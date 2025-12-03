@@ -4,11 +4,11 @@
 - (BOOL)_shouldPrelaunchOnSwipe;
 - (BOOL)_shouldPrewarmOnSwipe;
 - (BOOL)canHostAnApp;
-- (BOOL)dashBoardHostedAppViewController:(id)a3 shouldTransitionToMode:(int64_t)a4;
-- (BOOL)handleEvent:(id)a3;
-- (BOOL)homeGestureInteraction:(id)a3 shouldBeginGestureRecognizerOfType:(int64_t)a4;
+- (BOOL)dashBoardHostedAppViewController:(id)controller shouldTransitionToMode:(int64_t)mode;
+- (BOOL)handleEvent:(id)event;
+- (BOOL)homeGestureInteraction:(id)interaction shouldBeginGestureRecognizerOfType:(int64_t)type;
 - (BOOL)isHostingAnApp;
-- (CGPoint)_convertTranslationFromContainerOrientationToContentOrientation:(CGPoint)a3;
+- (CGPoint)_convertTranslationFromContainerOrientationToContentOrientation:(CGPoint)orientation;
 - (NSSet)actionsToDeliver;
 - (SBDashBoardCameraPageViewControllerDelegate)cameraPageDelegate;
 - (double)_prelaunchThreshold;
@@ -16,12 +16,12 @@
 - (id)_hostedContentModeDescription;
 - (id)_prewarmingCameraBundleIdentifier;
 - (id)_traitsArbiter;
-- (id)customScreenEdgePanGestureRecognizerForHomeGestureInteraction:(id)a3;
+- (id)customScreenEdgePanGestureRecognizerForHomeGestureInteraction:(id)interaction;
 - (id)hostedAppSceneHandle;
 - (id)hostedAppSceneHandles;
 - (id)requestedDismissalSettings;
-- (int64_t)_sbAnimationUpdateModeForCoverSheetTransitionMode:(int64_t)a3;
-- (unint64_t)homeGestureInteraction:(id)a3 systemGestureTypeForType:(int64_t)a4;
+- (int64_t)_sbAnimationUpdateModeForCoverSheetTransitionMode:(int64_t)mode;
+- (unint64_t)homeGestureInteraction:(id)interaction systemGestureTypeForType:(int64_t)type;
 - (void)_acquireTraitsParticipantIfNeeded;
 - (void)_addOrRemoveGestureForCurrentSettings;
 - (void)_bailIfFaceTimeCallComesIn;
@@ -29,55 +29,55 @@
 - (void)_createProperties;
 - (void)_endPrewarmBackoffPeriod;
 - (void)_ensureZStackParticipant;
-- (void)_handlePrelaunchForTransitionToVisible:(BOOL)a3 mode:(int64_t)a4;
-- (void)_handlePrewarmForTransitionToVisible:(BOOL)a3 mode:(int64_t)a4;
+- (void)_handlePrelaunchForTransitionToVisible:(BOOL)visible mode:(int64_t)mode;
+- (void)_handlePrewarmForTransitionToVisible:(BOOL)visible mode:(int64_t)mode;
 - (void)_invalidateCameraTraitsParticipant;
 - (void)_invalidateZStackParticipantIfNeeded;
 - (void)_makeApplicationStatic;
 - (void)_noteUserLaunchEventTime;
-- (void)_prepareForInteractiveGestureToCameraVisible:(BOOL)a3;
-- (void)_prewarmCameraInteractively:(BOOL)a3;
-- (void)_relinquishHiddenAssertionForHomeGrabber:(id)a3;
+- (void)_prepareForInteractiveGestureToCameraVisible:(BOOL)visible;
+- (void)_prewarmCameraInteractively:(BOOL)interactively;
+- (void)_relinquishHiddenAssertionForHomeGrabber:(id)grabber;
 - (void)_requestHomeGestureOwnership;
-- (void)_resetAfterInteractiveGestureToCameraVisible:(BOOL)a3;
+- (void)_resetAfterInteractiveGestureToCameraVisible:(BOOL)visible;
 - (void)_resetHostedEntityToDefault;
-- (void)_setSceneGrabberHidden:(BOOL)a3;
-- (void)_takeHiddenAssertionForHomeGrabber:(id)a3;
-- (void)_transitionAppViewWithProgress:(double)a3 transitionMode:(int64_t)a4;
-- (void)_updateCameraScale:(double)a3 dimmingAlpha:(double)a4 transitionMode:(int64_t)a5;
-- (void)_updateCameraScale:(double)a3 transitionMode:(int64_t)a4;
-- (void)_updateDimmingAlpha:(double)a3 transitionMode:(int64_t)a4;
-- (void)_updateForPropertyChangedForPresentation:(BOOL)a3;
+- (void)_setSceneGrabberHidden:(BOOL)hidden;
+- (void)_takeHiddenAssertionForHomeGrabber:(id)grabber;
+- (void)_transitionAppViewWithProgress:(double)progress transitionMode:(int64_t)mode;
+- (void)_updateCameraScale:(double)scale dimmingAlpha:(double)alpha transitionMode:(int64_t)mode;
+- (void)_updateCameraScale:(double)scale transitionMode:(int64_t)mode;
+- (void)_updateDimmingAlpha:(double)alpha transitionMode:(int64_t)mode;
+- (void)_updateForPropertyChangedForPresentation:(BOOL)presentation;
 - (void)_updateZStackPolicyAssistants;
-- (void)aggregateAppearance:(id)a3;
-- (void)aggregateBehavior:(id)a3;
-- (void)didTransitionToVisible:(BOOL)a3;
-- (void)handleAction:(id)a3 fromSender:(id)a4;
-- (void)homeGestureInteractionChanged:(id)a3;
-- (void)homeGestureInteractionEnded:(id)a3;
-- (void)homeGrabberViewDidReceiveClick:(id)a3;
-- (void)hostableEntityPresenter:(id)a3 didBeginHosting:(id)a4;
-- (void)hostableEntityPresenter:(id)a3 didEndHosting:(id)a4;
-- (void)hostableEntityPresenter:(id)a3 didFailToActivate:(id)a4;
-- (void)hostedAppWillRotateToInterfaceOrientation:(int64_t)a3;
+- (void)aggregateAppearance:(id)appearance;
+- (void)aggregateBehavior:(id)behavior;
+- (void)didTransitionToVisible:(BOOL)visible;
+- (void)handleAction:(id)action fromSender:(id)sender;
+- (void)homeGestureInteractionChanged:(id)changed;
+- (void)homeGestureInteractionEnded:(id)ended;
+- (void)homeGrabberViewDidReceiveClick:(id)click;
+- (void)hostableEntityPresenter:(id)presenter didBeginHosting:(id)hosting;
+- (void)hostableEntityPresenter:(id)presenter didEndHosting:(id)hosting;
+- (void)hostableEntityPresenter:(id)presenter didFailToActivate:(id)activate;
+- (void)hostedAppWillRotateToInterfaceOrientation:(int64_t)orientation;
 - (void)loadView;
 - (void)noteDefaultHostableEntityMayHaveChanged;
-- (void)sceneHandle:(id)a3 didCreateScene:(id)a4;
-- (void)sceneHandle:(id)a3 didDestroyScene:(id)a4;
-- (void)sceneHandle:(id)a3 didUpdateClientSettings:(id)a4;
-- (void)setActionsToDeliver:(id)a3;
-- (void)setCameraPageDelegate:(id)a3;
-- (void)setHostedEntity:(id)a3;
-- (void)setWantsHomeGestureOwnership:(BOOL)a3;
-- (void)updateTransitionToVisible:(BOOL)a3 progress:(double)a4 mode:(int64_t)a5;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)viewWillMoveToWindow:(id)a3;
-- (void)willTransitionToVisible:(BOOL)a3;
-- (void)zStackParticipant:(id)a3 updatePreferences:(id)a4;
+- (void)sceneHandle:(id)handle didCreateScene:(id)scene;
+- (void)sceneHandle:(id)handle didDestroyScene:(id)scene;
+- (void)sceneHandle:(id)handle didUpdateClientSettings:(id)settings;
+- (void)setActionsToDeliver:(id)deliver;
+- (void)setCameraPageDelegate:(id)delegate;
+- (void)setHostedEntity:(id)entity;
+- (void)setWantsHomeGestureOwnership:(BOOL)ownership;
+- (void)updateTransitionToVisible:(BOOL)visible progress:(double)progress mode:(int64_t)mode;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)viewWillMoveToWindow:(id)window;
+- (void)willTransitionToVisible:(BOOL)visible;
+- (void)zStackParticipant:(id)participant updatePreferences:(id)preferences;
 @end
 
 @implementation SBDashBoardCameraPageViewController
@@ -99,11 +99,11 @@
   hostedEntityViewController = self->_hostedEntityViewController;
   if (hostedEntityViewController)
   {
-    v4 = [(CSHostedEntityViewController *)hostedEntityViewController sceneHandleForTraitsParticipant];
-    if (v4)
+    sceneHandleForTraitsParticipant = [(CSHostedEntityViewController *)hostedEntityViewController sceneHandleForTraitsParticipant];
+    if (sceneHandleForTraitsParticipant)
     {
       v5 = objc_opt_class();
-      v6 = v4;
+      v6 = sceneHandleForTraitsParticipant;
       if (v5)
       {
         if (objc_opt_isKindOfClass())
@@ -122,12 +122,12 @@
         v7 = 0;
       }
 
-      v15 = v7;
+      homeGrabberView = v7;
 
-      if (v15)
+      if (homeGrabberView)
       {
-        v18 = [(CSHostedEntityViewController *)self->_hostedEntityViewController homeGrabberViewForTraitsParticipant];
-        [(SBSystemApertureZStackPolicyAssistant *)self->_systemApertureZStackPolicyAssistant setForegroundExclusiveSceneHandle:v15 homeGrabberView:v18];
+        homeGrabberViewForTraitsParticipant = [(CSHostedEntityViewController *)self->_hostedEntityViewController homeGrabberViewForTraitsParticipant];
+        [(SBSystemApertureZStackPolicyAssistant *)self->_systemApertureZStackPolicyAssistant setForegroundExclusiveSceneHandle:homeGrabberView homeGrabberView:homeGrabberViewForTraitsParticipant];
       }
 
       v22[0] = v6;
@@ -136,15 +136,15 @@
 
     else
     {
-      v14 = [(CSHostedEntityViewController *)self->_hostedEntityViewController sceneForTraitsParticipant];
-      v15 = v14;
-      if (!v14)
+      sceneForTraitsParticipant = [(CSHostedEntityViewController *)self->_hostedEntityViewController sceneForTraitsParticipant];
+      homeGrabberView = sceneForTraitsParticipant;
+      if (!sceneForTraitsParticipant)
       {
         v19 = 0;
         goto LABEL_27;
       }
 
-      v21 = v14;
+      v21 = sceneForTraitsParticipant;
       v16 = &v21;
     }
 
@@ -153,15 +153,15 @@
 
   else
   {
-    v4 = [(SBDashBoardHostedAppViewController *)self->_appViewController appView];
+    sceneHandleForTraitsParticipant = [(SBDashBoardHostedAppViewController *)self->_appViewController appView];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       appViewController = self->_appViewController;
-      v9 = v4;
-      v10 = [(SBDashBoardHostedAppViewController *)appViewController applicationSceneHandle];
+      v9 = sceneHandleForTraitsParticipant;
+      applicationSceneHandle = [(SBDashBoardHostedAppViewController *)appViewController applicationSceneHandle];
       v11 = objc_opt_class();
-      v12 = v10;
+      v12 = applicationSceneHandle;
       if (v11)
       {
         if (objc_opt_isKindOfClass())
@@ -182,16 +182,16 @@
 
       v17 = v13;
 
-      v15 = [v9 homeGrabberView];
+      homeGrabberView = [v9 homeGrabberView];
     }
 
     else
     {
       v17 = 0;
-      v15 = 0;
+      homeGrabberView = 0;
     }
 
-    [(SBSystemApertureZStackPolicyAssistant *)self->_systemApertureZStackPolicyAssistant setForegroundExclusiveSceneHandle:v17 homeGrabberView:v15];
+    [(SBSystemApertureZStackPolicyAssistant *)self->_systemApertureZStackPolicyAssistant setForegroundExclusiveSceneHandle:v17 homeGrabberView:homeGrabberView];
     if (v17)
     {
       v20 = v17;
@@ -219,9 +219,9 @@ void __56__SBDashBoardCameraPageViewController__createProperties__block_invoke(u
 - (void)_bailIfFaceTimeCallComesIn
 {
   v3 = +[SBConferenceManager sharedInstance];
-  v4 = [v3 inFaceTime];
+  inFaceTime = [v3 inFaceTime];
 
-  if (v4)
+  if (inFaceTime)
   {
 
     [(CSCoverSheetViewControllerBase *)self dismiss];
@@ -249,15 +249,15 @@ void __56__SBDashBoardCameraPageViewController__createProperties__block_invoke_2
   {
     if (!self->_cameraPrewarmSucceeded)
     {
-      v3 = [MEMORY[0x277D65DD0] sharedInstance];
-      [v3 emitEvent:45];
+      mEMORY[0x277D65DD0] = [MEMORY[0x277D65DD0] sharedInstance];
+      [mEMORY[0x277D65DD0] emitEvent:45];
     }
 
-    v4 = [(SBDashBoardCameraPageViewController *)self _prewarmingCameraBundleIdentifier];
+    _prewarmingCameraBundleIdentifier = [(SBDashBoardCameraPageViewController *)self _prewarmingCameraBundleIdentifier];
     v7 = *MEMORY[0x277CE5908];
     v8[0] = *MEMORY[0x277CE58F0];
     v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v8 forKeys:&v7 count:1];
-    MEMORY[0x223D6A9B0](v4, v5);
+    MEMORY[0x223D6A9B0](_prewarmingCameraBundleIdentifier, v5);
   }
 
   [(NSTimer *)self->_prewarmCancelTimer invalidate];
@@ -284,46 +284,46 @@ void __56__SBDashBoardCameraPageViewController__createProperties__block_invoke_2
 
 - (NSSet)actionsToDeliver
 {
-  v3 = [(SBDashBoardHostedAppViewController *)self->_appViewController actionsToDeliver];
-  v4 = v3;
-  if (v3)
+  actionsToDeliver = [(SBDashBoardHostedAppViewController *)self->_appViewController actionsToDeliver];
+  v4 = actionsToDeliver;
+  if (actionsToDeliver)
   {
-    v5 = v3;
+    actionsToDeliverToHostableEntity = actionsToDeliver;
   }
 
   else
   {
-    v5 = [(CSHostedEntityViewController *)self->_hostedEntityViewController actionsToDeliverToHostableEntity];
+    actionsToDeliverToHostableEntity = [(CSHostedEntityViewController *)self->_hostedEntityViewController actionsToDeliverToHostableEntity];
   }
 
-  v6 = v5;
+  v6 = actionsToDeliverToHostableEntity;
 
   return v6;
 }
 
-- (void)setActionsToDeliver:(id)a3
+- (void)setActionsToDeliver:(id)deliver
 {
   appViewController = self->_appViewController;
-  v5 = a3;
-  [(SBDashBoardHostedAppViewController *)appViewController setActionsToDeliver:v5];
-  [(CSHostedEntityViewController *)self->_hostedEntityViewController setActionsToDeliverToHostableEntity:v5];
+  deliverCopy = deliver;
+  [(SBDashBoardHostedAppViewController *)appViewController setActionsToDeliver:deliverCopy];
+  [(CSHostedEntityViewController *)self->_hostedEntityViewController setActionsToDeliverToHostableEntity:deliverCopy];
 }
 
-- (void)setHostedEntity:(id)a3
+- (void)setHostedEntity:(id)entity
 {
-  v5 = a3;
-  if (self->_hostedEntity != v5)
+  entityCopy = entity;
+  if (self->_hostedEntity != entityCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_hostedEntity, a3);
+    v6 = entityCopy;
+    objc_storeStrong(&self->_hostedEntity, entity);
     [(CSHostedEntityViewController *)self->_hostedEntityViewController setHostedEntity:self->_hostedEntity];
-    v5 = v6;
+    entityCopy = v6;
   }
 }
 
-- (void)setCameraPageDelegate:(id)a3
+- (void)setCameraPageDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_cameraPageDelegate);
 
   v5 = obj;
@@ -351,27 +351,27 @@ void __56__SBDashBoardCameraPageViewController__createProperties__block_invoke_2
   [(CSCoverSheetViewControllerBase *)&v59 loadView];
   self->_enforcesViewWindowRequirements = 1;
   self->_canWarmRealCamera = 1;
-  v3 = [(CSPageViewController *)self view];
+  view = [(CSPageViewController *)self view];
   [(SBDashBoardCameraPageViewController *)self _createProperties];
   v4 = objc_alloc(MEMORY[0x277D75D18]);
-  [v3 bounds];
+  [view bounds];
   v5 = [v4 initWithFrame:?];
   maskView = self->_maskView;
   self->_maskView = v5;
 
   [(UIView *)self->_maskView setClipsToBounds:1];
   v7 = self->_maskView;
-  v8 = [MEMORY[0x277D75348] blackColor];
-  [(UIView *)v7 setBackgroundColor:v8];
+  blackColor = [MEMORY[0x277D75348] blackColor];
+  [(UIView *)v7 setBackgroundColor:blackColor];
 
   [(UIView *)self->_maskView setAutoresizingMask:18];
-  [v3 addSubview:self->_maskView];
+  [view addSubview:self->_maskView];
   if ([SBApp lockScreenCameraSupported])
   {
     v9 = [SBDeviceApplicationSceneEntity alloc];
     v10 = +[SBApplicationController sharedInstance];
-    v11 = [v10 cameraApplication];
-    v12 = [(SBDeviceApplicationSceneEntity *)v9 initWithApplicationForMainDisplay:v11];
+    cameraApplication = [v10 cameraApplication];
+    v12 = [(SBDeviceApplicationSceneEntity *)v9 initWithApplicationForMainDisplay:cameraApplication];
 
     v13 = [(SBDeviceApplicationScenePlaceholderContentContext *)[SBMutableDeviceApplicationScenePlaceholderContentContext alloc] initWithActivationSettings:v12];
     [(SBDeviceApplicationScenePlaceholderContentContext *)v13 setPrefersLiveXIB:1];
@@ -390,8 +390,8 @@ void __56__SBDashBoardCameraPageViewController__createProperties__block_invoke_2
       [(CSHostedEntityViewController *)hostedEntityViewController setEntityPresenterDelegate:self];
       v17 = self->_hostedEntityViewController;
       v18 = +[SBLockScreenManager sharedInstance];
-      v19 = [v18 coverSheetViewController];
-      [(CSHostedEntityViewController *)v17 setCoverSheetViewController:v19];
+      coverSheetViewController = [v18 coverSheetViewController];
+      [(CSHostedEntityViewController *)v17 setCoverSheetViewController:coverSheetViewController];
 
       if (SBFEffectiveHomeButtonType() == 2)
       {
@@ -417,8 +417,8 @@ void __56__SBDashBoardCameraPageViewController__createProperties__block_invoke_2
       [(SBDashBoardHostedAppViewController *)self->_appViewController setPlaceholderContentContext:v13];
       [(SBDashBoardHostedAppViewController *)self->_appViewController setDelegate:self];
       [(CSCoverSheetViewControllerBase *)self->_appViewController setPresenter:self];
-      v25 = [(SBDashBoardHostedAppViewController *)self->_appViewController applicationSceneHandle];
-      [v25 addObserver:self];
+      applicationSceneHandle = [(SBDashBoardHostedAppViewController *)self->_appViewController applicationSceneHandle];
+      [applicationSceneHandle addObserver:self];
     }
 
     v26 = self->_appViewController;
@@ -436,33 +436,33 @@ void __56__SBDashBoardCameraPageViewController__createProperties__block_invoke_2
       orientedContentViewController = self->_orientedContentViewController;
       self->_orientedContentViewController = v30;
 
-      v32 = [(SBTraitsOrientedContentViewController *)self->_orientedContentViewController view];
-      v33 = [(CSPageViewController *)self view];
-      [v33 bounds];
+      view2 = [(SBTraitsOrientedContentViewController *)self->_orientedContentViewController view];
+      view3 = [(CSPageViewController *)self view];
+      [view3 bounds];
       v35 = v34;
       v37 = v36;
       v39 = v38;
       v41 = v40;
 
-      [v32 setFrame:{v35, v37, v39, v41}];
-      [v32 setContentViewBoundsInReferenceSpace:{v35, v37, v39, v41}];
-      [v32 setAutoresizingMask:18];
+      [view2 setFrame:{v35, v37, v39, v41}];
+      [view2 setContentViewBoundsInReferenceSpace:{v35, v37, v39, v41}];
+      [view2 setAutoresizingMask:18];
       v42 = self->_orientedContentViewController;
       v56[0] = MEMORY[0x277D85DD0];
       v56[1] = 3221225472;
       v56[2] = __47__SBDashBoardCameraPageViewController_loadView__block_invoke;
       v56[3] = &unk_2783A9460;
-      v57 = v32;
+      v57 = view2;
       v58 = v27;
-      v43 = v32;
+      v43 = view2;
       [(SBTraitsOrientedContentViewController *)v42 bs_addChildViewController:v58 animated:0 transitionBlock:v56];
 
       v29 = self->_orientedContentViewController;
     }
 
     objc_storeStrong(&self->_appViewControllerContainerVC, v29);
-    v44 = [(UIViewController *)self->_appViewControllerContainerVC view];
-    [v44 _setContinuousCornerRadius:SBScreenDisplayCornerRadius()];
+    view4 = [(UIViewController *)self->_appViewControllerContainerVC view];
+    [view4 _setContinuousCornerRadius:SBScreenDisplayCornerRadius()];
 
     appViewControllerContainerVC = self->_appViewControllerContainerVC;
     v55[0] = MEMORY[0x277D85DD0];
@@ -474,20 +474,20 @@ void __56__SBDashBoardCameraPageViewController__createProperties__block_invoke_2
   }
 
   v46 = objc_alloc(MEMORY[0x277D75D18]);
-  [v3 bounds];
+  [view bounds];
   v47 = [v46 initWithFrame:?];
   tintView = self->_tintView;
   self->_tintView = v47;
 
   v49 = self->_tintView;
-  v50 = [MEMORY[0x277D75348] blackColor];
-  [(UIView *)v49 setBackgroundColor:v50];
+  blackColor2 = [MEMORY[0x277D75348] blackColor];
+  [(UIView *)v49 setBackgroundColor:blackColor2];
 
   [(UIView *)self->_tintView setAutoresizingMask:18];
   [(UIView *)self->_maskView addSubview:self->_tintView];
-  v51 = [MEMORY[0x277D02C20] rootSettings];
+  rootSettings = [MEMORY[0x277D02C20] rootSettings];
   prototypeSettings = self->_prototypeSettings;
-  self->_prototypeSettings = v51;
+  self->_prototypeSettings = rootSettings;
 
   v53 = objc_alloc_init(MEMORY[0x277D65FF0]);
   lockScreenDefaults = self->_lockScreenDefaults;
@@ -509,11 +509,11 @@ void __47__SBDashBoardCameraPageViewController_loadView__block_invoke_2(uint64_t
   [v2 addSubview:v3];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = SBDashBoardCameraPageViewController;
-  [(CSCoverSheetViewControllerBase *)&v5 viewWillAppear:a3];
+  [(CSCoverSheetViewControllerBase *)&v5 viewWillAppear:appear];
   v4 = +[SBReachabilityManager sharedInstance];
   [v4 setReachabilityTemporarilyDisabled:1 forReason:@"SBDashBoardCameraPageReason"];
 
@@ -532,42 +532,42 @@ void __47__SBDashBoardCameraPageViewController_loadView__block_invoke_2(uint64_t
   [(SBDashBoardCameraPageViewController *)self _handlePrelaunchForTransitionToVisible:1 mode:0];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v8.receiver = self;
   v8.super_class = SBDashBoardCameraPageViewController;
-  [(CSCoverSheetViewControllerBase *)&v8 viewDidAppear:a3];
-  v4 = [SBApp accidentalActivationMitigationSessionCoordinator];
-  [v4 addObserver:self];
+  [(CSCoverSheetViewControllerBase *)&v8 viewDidAppear:appear];
+  accidentalActivationMitigationSessionCoordinator = [SBApp accidentalActivationMitigationSessionCoordinator];
+  [accidentalActivationMitigationSessionCoordinator addObserver:self];
 
   [(SBDashBoardCameraPageViewController *)self _ensureZStackParticipant];
   [(SBDashBoardCameraPageViewController *)self _addOrRemoveGestureForCurrentSettings];
   [(SBDashBoardCameraPageViewController *)self _updateZStackPolicyAssistants];
   v5 = +[SBKeyboardFocusCoordinator sharedInstance];
-  v6 = [(UIViewController *)self _sbWindowScene];
+  _sbWindowScene = [(UIViewController *)self _sbWindowScene];
   v7 = +[SBKeyboardFocusArbitrationReason quickCameraDidAppear];
-  [v5 requestArbitrationForSBWindowScene:v6 forReason:v7];
+  [v5 requestArbitrationForSBWindowScene:_sbWindowScene forReason:v7];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = SBDashBoardCameraPageViewController;
-  [(CSCoverSheetViewControllerBase *)&v4 viewWillDisappear:a3];
+  [(CSCoverSheetViewControllerBase *)&v4 viewWillDisappear:disappear];
   [(SBDashBoardCameraPageViewController *)self setWantsHomeGestureOwnership:0];
   [(SBDashBoardCameraPageViewController *)self _addOrRemoveGestureForCurrentSettings];
   [(SBDashBoardCameraPageViewController *)self _invalidateZStackParticipantIfNeeded];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   [(CSHostedEntityViewController *)self->_hostedEntityViewController setHostableEntityContentMode:1];
   v7.receiver = self;
   v7.super_class = SBDashBoardCameraPageViewController;
-  [(CSCoverSheetViewControllerBase *)&v7 viewDidDisappear:v3];
-  v5 = [SBApp accidentalActivationMitigationSessionCoordinator];
-  [v5 removeObserver:self];
+  [(CSCoverSheetViewControllerBase *)&v7 viewDidDisappear:disappearCopy];
+  accidentalActivationMitigationSessionCoordinator = [SBApp accidentalActivationMitigationSessionCoordinator];
+  [accidentalActivationMitigationSessionCoordinator removeObserver:self];
 
   [(SBDashBoardCameraPageViewController *)self _resetHostedEntityToDefault];
   [(SBDashBoardCameraPageViewController *)self _invalidateCameraTraitsParticipant];
@@ -575,9 +575,9 @@ void __47__SBDashBoardCameraPageViewController_loadView__block_invoke_2(uint64_t
   [v6 setReachabilityTemporarilyDisabled:0 forReason:@"SBDashBoardCameraPageReason"];
 }
 
-- (void)viewWillMoveToWindow:(id)a3
+- (void)viewWillMoveToWindow:(id)window
 {
-  if (!a3)
+  if (!window)
   {
     [(SBDashBoardHostedAppViewController *)self->_appViewController setMode:1];
     hostedEntityViewController = self->_hostedEntityViewController;
@@ -586,24 +586,24 @@ void __47__SBDashBoardCameraPageViewController_loadView__block_invoke_2(uint64_t
   }
 }
 
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear
 {
-  v4 = a4;
+  disappearCopy = disappear;
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  windowCopy = window;
   v12.receiver = self;
   v12.super_class = SBDashBoardCameraPageViewController;
-  [(SBDashBoardCameraPageViewController *)&v12 viewDidMoveToWindow:v6 shouldAppearOrDisappear:v4];
-  if (v6)
+  [(SBDashBoardCameraPageViewController *)&v12 viewDidMoveToWindow:windowCopy shouldAppearOrDisappear:disappearCopy];
+  if (windowCopy)
   {
     v7 = SBLogDashBoard();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(SBDashBoardCameraPageViewController *)self _hostedContentModeDescription];
+      _hostedContentModeDescription = [(SBDashBoardCameraPageViewController *)self _hostedContentModeDescription];
       *buf = 138412546;
-      v14 = v6;
+      v14 = windowCopy;
       v15 = 2112;
-      v16 = v8;
+      v16 = _hostedContentModeDescription;
       _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_DEFAULT, "View did move to window: %@, with mode: %@", buf, 0x16u);
     }
   }
@@ -615,21 +615,21 @@ void __47__SBDashBoardCameraPageViewController_loadView__block_invoke_2(uint64_t
     orientedContentViewController = self->_orientedContentViewController;
     v10 = objc_opt_class();
     v7 = SBSafeCast(v10, 0);
-    v11 = [v7 traitsParticipant];
-    [(SBTraitsOrientedContentViewController *)orientedContentViewController setContainerParticipant:v11];
+    traitsParticipant = [v7 traitsParticipant];
+    [(SBTraitsOrientedContentViewController *)orientedContentViewController setContainerParticipant:traitsParticipant];
   }
 }
 
-- (void)willTransitionToVisible:(BOOL)a3
+- (void)willTransitionToVisible:(BOOL)visible
 {
-  v3 = a3;
+  visibleCopy = visible;
   v6.receiver = self;
   v6.super_class = SBDashBoardCameraPageViewController;
   [(CSPageViewController *)&v6 willTransitionToVisible:?];
-  v5 = [(UIViewController *)self->_appViewControllerContainerVC view];
-  [v5 setClipsToBounds:1];
+  view = [(UIViewController *)self->_appViewControllerContainerVC view];
+  [view setClipsToBounds:1];
 
-  if (v3)
+  if (visibleCopy)
   {
     self->_hasWarmedCameraForThisPresentation = 0;
     self->_cameraPrewarmSucceeded = 0;
@@ -637,23 +637,23 @@ void __47__SBDashBoardCameraPageViewController_loadView__block_invoke_2(uint64_t
   }
 }
 
-- (void)updateTransitionToVisible:(BOOL)a3 progress:(double)a4 mode:(int64_t)a5
+- (void)updateTransitionToVisible:(BOOL)visible progress:(double)progress mode:(int64_t)mode
 {
-  v7 = a3;
+  visibleCopy = visible;
   v9.receiver = self;
   v9.super_class = SBDashBoardCameraPageViewController;
   [CSPageViewController updateTransitionToVisible:sel_updateTransitionToVisible_progress_mode_ progress:? mode:?];
-  if (!v7)
+  if (!visibleCopy)
   {
-    a4 = 1.0 - a4;
+    progress = 1.0 - progress;
   }
 
-  self->_presentationProgress = a4;
-  [(SBDashBoardCameraPageViewController *)self _transitionAppViewWithProgress:a5 transitionMode:a4];
-  self->_cameraPresentLargestPercent = vcvtmd_s64_f64(a4 * 100.0);
-  [(SBDashBoardCameraPageViewController *)self _handlePrewarmForTransitionToVisible:v7 mode:a5];
-  [(SBDashBoardCameraPageViewController *)self _handlePrelaunchForTransitionToVisible:v7 mode:a5];
-  if (!v7)
+  self->_presentationProgress = progress;
+  [(SBDashBoardCameraPageViewController *)self _transitionAppViewWithProgress:mode transitionMode:progress];
+  self->_cameraPresentLargestPercent = vcvtmd_s64_f64(progress * 100.0);
+  [(SBDashBoardCameraPageViewController *)self _handlePrewarmForTransitionToVisible:visibleCopy mode:mode];
+  [(SBDashBoardCameraPageViewController *)self _handlePrelaunchForTransitionToVisible:visibleCopy mode:mode];
+  if (!visibleCopy)
   {
     if (BSFloatIsOne())
     {
@@ -662,12 +662,12 @@ void __47__SBDashBoardCameraPageViewController_loadView__block_invoke_2(uint64_t
   }
 }
 
-- (void)_handlePrewarmForTransitionToVisible:(BOOL)a3 mode:(int64_t)a4
+- (void)_handlePrewarmForTransitionToVisible:(BOOL)visible mode:(int64_t)mode
 {
-  v5 = a3;
-  v7 = [(SBDashBoardCameraPageViewController *)self _shouldPrewarmOnSwipe];
+  visibleCopy = visible;
+  _shouldPrewarmOnSwipe = [(SBDashBoardCameraPageViewController *)self _shouldPrewarmOnSwipe];
   [(SBDashBoardCameraPageViewController *)self _prewarmThreshold];
-  if (v5 && v7 && BSFloatGreaterThanOrEqualToFloat() && [(SBDashBoardCameraPageViewController *)self _passesHasVisibleWindowTest]&& !self->_hasWarmedCameraForThisPresentation)
+  if (visibleCopy && _shouldPrewarmOnSwipe && BSFloatGreaterThanOrEqualToFloat() && [(SBDashBoardCameraPageViewController *)self _passesHasVisibleWindowTest]&& !self->_hasWarmedCameraForThisPresentation)
   {
     v8 = SBLogDashBoard();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -676,20 +676,20 @@ void __47__SBDashBoardCameraPageViewController_loadView__block_invoke_2(uint64_t
       _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEFAULT, "Prewarming Camera for swipe.", v9, 2u);
     }
 
-    [(SBDashBoardCameraPageViewController *)self _prewarmCameraInteractively:a4 == 3];
+    [(SBDashBoardCameraPageViewController *)self _prewarmCameraInteractively:mode == 3];
     self->_hasWarmedCameraForThisPresentation = 1;
     self->_cameraPrewarmSucceeded = 0;
   }
 }
 
-- (void)_handlePrelaunchForTransitionToVisible:(BOOL)a3 mode:(int64_t)a4
+- (void)_handlePrelaunchForTransitionToVisible:(BOOL)visible mode:(int64_t)mode
 {
-  v4 = a3;
+  visibleCopy = visible;
   v19 = *MEMORY[0x277D85DE8];
-  v7 = [(CSHostedEntityViewController *)self->_hostedEntityViewController hostableEntityContentMode:a3];
-  v8 = [(SBDashBoardCameraPageViewController *)self _shouldPrelaunchOnSwipe];
+  v7 = [(CSHostedEntityViewController *)self->_hostedEntityViewController hostableEntityContentMode:visible];
+  _shouldPrelaunchOnSwipe = [(SBDashBoardCameraPageViewController *)self _shouldPrelaunchOnSwipe];
   [(SBDashBoardCameraPageViewController *)self _prelaunchThreshold];
-  if (v4 && v8 && BSFloatGreaterThanOrEqualToFloat())
+  if (visibleCopy && _shouldPrelaunchOnSwipe && BSFloatGreaterThanOrEqualToFloat())
   {
     if ([(SBDashBoardCameraPageViewController *)self _passesHasVisibleWindowTest])
     {
@@ -716,16 +716,16 @@ void __47__SBDashBoardCameraPageViewController_loadView__block_invoke_2(uint64_t
         [(SBDashBoardHostedAppViewController *)self->_appViewController setMode:2];
       }
 
-      v14 = [MEMORY[0x277D65DD0] sharedInstance];
-      [v14 emitEvent:44];
+      mEMORY[0x277D65DD0] = [MEMORY[0x277D65DD0] sharedInstance];
+      [mEMORY[0x277D65DD0] emitEvent:44];
     }
 
     else
     {
       v9 = +[SBPlatformController sharedInstance];
-      v10 = [v9 isInternalInstall];
+      isInternalInstall = [v9 isInternalInstall];
 
-      if (v10)
+      if (isInternalInstall)
       {
         [(SBDashBoardCameraPageViewController *)self _handlePrelaunchForTransitionToVisible:a2 mode:?];
       }
@@ -759,12 +759,12 @@ void __47__SBDashBoardCameraPageViewController_loadView__block_invoke_2(uint64_t
 
   else
   {
-    v3 = [(CSPageViewController *)self view];
-    v4 = [v3 window];
+    view = [(CSPageViewController *)self view];
+    window = [view window];
 
-    if (v4)
+    if (window)
     {
-      v2 = [v4 isHidden] ^ 1;
+      v2 = [window isHidden] ^ 1;
     }
 
     else
@@ -776,19 +776,19 @@ void __47__SBDashBoardCameraPageViewController_loadView__block_invoke_2(uint64_t
   return v2;
 }
 
-- (void)didTransitionToVisible:(BOOL)a3
+- (void)didTransitionToVisible:(BOOL)visible
 {
-  v3 = a3;
+  visibleCopy = visible;
   v9.receiver = self;
   v9.super_class = SBDashBoardCameraPageViewController;
   [(CSPageViewController *)&v9 didTransitionToVisible:?];
-  v5 = [(UIViewController *)self->_appViewControllerContainerVC view];
-  [v5 setClipsToBounds:0];
+  view = [(UIViewController *)self->_appViewControllerContainerVC view];
+  [view setClipsToBounds:0];
 
-  [(SBTraitsSceneParticipantDelegate *)self->_traitsParticipantDelegate setCanDetermineActiveOrientation:v3];
+  [(SBTraitsSceneParticipantDelegate *)self->_traitsParticipantDelegate setCanDetermineActiveOrientation:visibleCopy];
   [(TRAParticipant *)self->_traitsParticipant setNeedsUpdatePreferencesWithReason:@"did transition to visible"];
   v6 = 0.0;
-  if (v3)
+  if (visibleCopy)
   {
     v6 = 1.0;
     v7 = 3;
@@ -800,8 +800,8 @@ void __47__SBDashBoardCameraPageViewController_loadView__block_invoke_2(uint64_t
   }
 
   [(SBDashBoardCameraPageViewController *)self _transitionAppViewWithProgress:v7 transitionMode:v6];
-  [(SBDashBoardCameraPageViewController *)self _resetAfterInteractiveGestureToCameraVisible:v3];
-  if (v3)
+  [(SBDashBoardCameraPageViewController *)self _resetAfterInteractiveGestureToCameraVisible:visibleCopy];
+  if (visibleCopy)
   {
     self->_cameraPrewarmSucceeded = 1;
     self->_cameraPresentLargestPercent = 100;
@@ -816,64 +816,64 @@ void __47__SBDashBoardCameraPageViewController_loadView__block_invoke_2(uint64_t
   }
 }
 
-- (void)_transitionAppViewWithProgress:(double)a3 transitionMode:(int64_t)a4
+- (void)_transitionAppViewWithProgress:(double)progress transitionMode:(int64_t)mode
 {
-  v6 = [(UIViewController *)self->_appViewControllerContainerVC view];
-  v7 = [v6 window];
-  [v7 center];
-  [v7 center];
-  [v7 convertPoint:self->_maskView toView:?];
-  [v6 setCenter:?];
-  [v7 bounds];
-  [v6 setBounds:?];
+  view = [(UIViewController *)self->_appViewControllerContainerVC view];
+  window = [view window];
+  [window center];
+  [window center];
+  [window convertPoint:self->_maskView toView:?];
+  [view setCenter:?];
+  [window bounds];
+  [view setBounds:?];
   if (!self->_interactiveDismissalInProgress)
   {
     BSIntervalMap();
     v9 = v8;
     BSIntervalMap();
-    [(SBDashBoardCameraPageViewController *)self _updateCameraScale:a4 dimmingAlpha:v9 transitionMode:1.0 - v10, 0, 1, 0x3FF0000000000000, 1, 0x3FD6666666666666, 1, 0x3FF0000000000000, 1];
+    [(SBDashBoardCameraPageViewController *)self _updateCameraScale:mode dimmingAlpha:v9 transitionMode:1.0 - v10, 0, 1, 0x3FF0000000000000, 1, 0x3FD6666666666666, 1, 0x3FF0000000000000, 1];
   }
 }
 
-- (void)aggregateAppearance:(id)a3
+- (void)aggregateAppearance:(id)appearance
 {
   v47.receiver = self;
   v47.super_class = SBDashBoardCameraPageViewController;
-  v4 = a3;
-  [(CSPageViewController *)&v47 aggregateAppearance:v4];
+  appearanceCopy = appearance;
+  [(CSPageViewController *)&v47 aggregateAppearance:appearanceCopy];
   v5 = objc_opt_new();
   v6 = [v5 priority:10];
   v7 = [v6 suppressHorizontalBounce:0];
-  [v4 addComponent:v7];
+  [appearanceCopy addComponent:v7];
 
-  v8 = [MEMORY[0x277D02BC8] dateView];
-  v9 = [v8 priority:10];
+  dateView = [MEMORY[0x277D02BC8] dateView];
+  v9 = [dateView priority:10];
   v10 = [v9 hidden:1];
-  [v4 addComponent:v10];
+  [appearanceCopy addComponent:v10];
 
-  v11 = [MEMORY[0x277D02BC8] wallpaper];
-  v12 = [v11 priority:10];
+  wallpaper = [MEMORY[0x277D02BC8] wallpaper];
+  v12 = [wallpaper priority:10];
   v13 = [v12 hidden:0];
-  [v4 addComponent:v13];
+  [appearanceCopy addComponent:v13];
 
   v14 = objc_opt_new();
   v15 = [v14 priority:10];
-  v16 = [(CSCoverSheetViewControllerBase *)self appearanceIdentifier];
-  v17 = [v15 identifier:v16];
+  appearanceIdentifier = [(CSCoverSheetViewControllerBase *)self appearanceIdentifier];
+  v17 = [v15 identifier:appearanceIdentifier];
   v18 = [v17 suppressTeachableMomentsAnimation:1];
   v19 = [v18 hidden:1];
-  [v4 addComponent:v19];
+  [appearanceCopy addComponent:v19];
 
   v20 = objc_opt_new();
   v21 = [v20 priority:10];
   v22 = [v21 optOutOfAlphaFadesForPageScroll:1];
   v23 = [v22 hidden:1];
-  [v4 addComponent:v23];
+  [appearanceCopy addComponent:v23];
 
   v24 = objc_opt_new();
   v25 = [v24 priority:10];
   v26 = [v25 shouldMatchMove:0];
-  [v4 addComponent:v26];
+  [appearanceCopy addComponent:v26];
 
   [(SBDashBoardCameraPageViewController *)self _setSceneGrabberHidden:[(SBFZStackParticipant *)self->_zStackParticipant ownsHomeGesture]^ 1];
   v27 = objc_opt_new();
@@ -882,88 +882,88 @@ void __47__SBDashBoardCameraPageViewController_loadView__block_invoke_2(uint64_t
   v30 = [v29 fakeStatusBar:BSSettingFlagForBool()];
   v31 = [v30 fakeStatusBarLevel:&unk_2833701F0];
 
-  [v4 addComponent:v31];
+  [appearanceCopy addComponent:v31];
   [*MEMORY[0x277D76620] userInterfaceLayoutDirection];
   CSComponentTransitionInputsMake();
-  v32 = [MEMORY[0x277D02BC8] slideableContent];
-  v33 = [v32 priority:10];
+  slideableContent = [MEMORY[0x277D02BC8] slideableContent];
+  v33 = [slideableContent priority:10];
   v34 = [v33 transitionModifiers:8];
   memset(v46, 0, sizeof(v46));
   v35 = [v34 transitionInputs:v46];
-  [v4 addComponent:v35];
+  [appearanceCopy addComponent:v35];
 
-  v36 = [MEMORY[0x277D02BC8] tinting];
-  v37 = [v36 priority:10];
+  tinting = [MEMORY[0x277D02BC8] tinting];
+  v37 = [tinting priority:10];
 
   [v37 setHidden:0];
-  [v4 addComponent:v37];
+  [appearanceCopy addComponent:v37];
   v38 = objc_opt_new();
   v39 = [v38 priority:10];
-  v40 = [(CSCoverSheetViewControllerBase *)self appearanceIdentifier];
-  v41 = [v39 identifier:v40];
+  appearanceIdentifier2 = [(CSCoverSheetViewControllerBase *)self appearanceIdentifier];
+  v41 = [v39 identifier:appearanceIdentifier2];
 
   v42 = [v41 showBackgroundWhileTransitioning:0];
 
   [v42 setHidden:0];
-  [v4 addComponent:v42];
+  [appearanceCopy addComponent:v42];
   v43 = objc_opt_new();
   v44 = [v43 priority:10];
   v45 = [v44 suppressVisibleChanges:0];
-  [v4 addComponent:v45];
+  [appearanceCopy addComponent:v45];
 
-  [v4 unionAppearance:self->_appViewController];
-  [v4 unionAppearance:self->_hostedEntityViewController];
+  [appearanceCopy unionAppearance:self->_appViewController];
+  [appearanceCopy unionAppearance:self->_hostedEntityViewController];
 }
 
-- (void)aggregateBehavior:(id)a3
+- (void)aggregateBehavior:(id)behavior
 {
-  v4 = a3;
+  behaviorCopy = behavior;
   v8.receiver = self;
   v8.super_class = SBDashBoardCameraPageViewController;
-  [(CSPageViewController *)&v8 aggregateBehavior:v4];
-  [v4 addRestrictedCapabilities:4104];
-  [v4 addRestrictedCapabilities:64];
-  [v4 setScrollingStrategy:3];
-  [v4 setIdleTimerDuration:14];
-  [v4 setIdleWarnMode:2];
-  [v4 setIdleTimerMode:1];
-  [v4 unionBehavior:self->_appViewController];
-  [v4 unionBehavior:self->_hostedEntityViewController];
-  if ([v4 idleTimerDuration] == 16)
+  [(CSPageViewController *)&v8 aggregateBehavior:behaviorCopy];
+  [behaviorCopy addRestrictedCapabilities:4104];
+  [behaviorCopy addRestrictedCapabilities:64];
+  [behaviorCopy setScrollingStrategy:3];
+  [behaviorCopy setIdleTimerDuration:14];
+  [behaviorCopy setIdleWarnMode:2];
+  [behaviorCopy setIdleTimerMode:1];
+  [behaviorCopy unionBehavior:self->_appViewController];
+  [behaviorCopy unionBehavior:self->_hostedEntityViewController];
+  if ([behaviorCopy idleTimerDuration] == 16)
   {
-    [v4 setIdleTimerDuration:17];
-    [v4 setIdleWarnMode:2];
+    [behaviorCopy setIdleTimerDuration:17];
+    [behaviorCopy setIdleWarnMode:2];
   }
 
-  v5 = [SBApp accidentalActivationMitigationSessionCoordinator];
-  v6 = [v5 currentSession];
-  v7 = [v6 state];
+  accidentalActivationMitigationSessionCoordinator = [SBApp accidentalActivationMitigationSessionCoordinator];
+  currentSession = [accidentalActivationMitigationSessionCoordinator currentSession];
+  state = [currentSession state];
 
-  if (v7 == 1)
+  if (state == 1)
   {
-    [v4 setNotificationBehavior:1];
+    [behaviorCopy setNotificationBehavior:1];
   }
 }
 
-- (BOOL)handleEvent:(id)a3
+- (BOOL)handleEvent:(id)event
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  eventCopy = event;
   v13.receiver = self;
   v13.super_class = SBDashBoardCameraPageViewController;
-  if (-[CSPresentationViewController handleEvent:](&v13, sel_handleEvent_, v4) && ([v4 isConsumable] & 1) != 0)
+  if (-[CSPresentationViewController handleEvent:](&v13, sel_handleEvent_, eventCopy) && ([eventCopy isConsumable] & 1) != 0)
   {
     goto LABEL_14;
   }
 
-  v5 = 0;
-  v6 = __ROR8__([v4 type] - 5, 1);
+  isConsumable = 0;
+  v6 = __ROR8__([eventCopy type] - 5, 1);
   if (v6 <= 5)
   {
     if (!v6)
     {
       [(SBDashBoardCameraPageViewController *)self _bailIfFaceTimeCallComesIn];
-      v5 = 0;
+      isConsumable = 0;
       goto LABEL_15;
     }
 
@@ -982,11 +982,11 @@ LABEL_10:
       v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:&v14 count:1];
       v9 = MEMORY[0x277D65DD0];
       v10 = v8;
-      v11 = [v9 sharedInstance];
-      [v11 emitEvent:46 withPayload:v10];
+      sharedInstance = [v9 sharedInstance];
+      [sharedInstance emitEvent:46 withPayload:v10];
     }
 
-    v5 = 0;
+    isConsumable = 0;
     self->_hasWarmedCameraForThisPresentation = 0;
     self->_cameraPrewarmSucceeded = 0;
     self->_cameraPresentLargestPercent = 0;
@@ -1003,19 +1003,19 @@ LABEL_10:
     case 11:
       [(CSCoverSheetViewControllerBase *)self dismiss];
 LABEL_14:
-      v5 = [v4 isConsumable];
+      isConsumable = [eventCopy isConsumable];
       break;
   }
 
 LABEL_15:
 
-  return v5;
+  return isConsumable;
 }
 
-- (BOOL)dashBoardHostedAppViewController:(id)a3 shouldTransitionToMode:(int64_t)a4
+- (BOOL)dashBoardHostedAppViewController:(id)controller shouldTransitionToMode:(int64_t)mode
 {
-  v6 = a3;
-  v7 = a4 != 2 || [(SBDashBoardCameraPageViewController *)self _appearState]!= 1 && ([(SBDashBoardCameraPageViewController *)self bs_isDisappearingOrDisappeared]& 1) == 0;
+  controllerCopy = controller;
+  v7 = mode != 2 || [(SBDashBoardCameraPageViewController *)self _appearState]!= 1 && ([(SBDashBoardCameraPageViewController *)self bs_isDisappearingOrDisappeared]& 1) == 0;
 
   return v7;
 }
@@ -1053,7 +1053,7 @@ LABEL_15:
   return [appViewController hostedAppSceneHandles];
 }
 
-- (void)hostedAppWillRotateToInterfaceOrientation:(int64_t)a3
+- (void)hostedAppWillRotateToInterfaceOrientation:(int64_t)orientation
 {
   if ((SBTraitsArbiterOrientationActuationEnabledForRole(@"SBTraitsParticipantRoleCoverSheetCamera") & 1) == 0)
   {
@@ -1063,56 +1063,56 @@ LABEL_15:
       appViewController = self->_hostedEntityViewController;
     }
 
-    [appViewController hostedAppWillRotateToInterfaceOrientation:a3];
+    [appViewController hostedAppWillRotateToInterfaceOrientation:orientation];
   }
 }
 
-- (void)sceneHandle:(id)a3 didCreateScene:(id)a4
+- (void)sceneHandle:(id)handle didCreateScene:(id)scene
 {
-  v11 = a4;
+  sceneCopy = scene;
   appViewController = self->_appViewController;
-  v7 = a3;
-  v8 = [(SBDashBoardHostedAppViewController *)appViewController applicationSceneHandle];
+  handleCopy = handle;
+  applicationSceneHandle = [(SBDashBoardHostedAppViewController *)appViewController applicationSceneHandle];
 
-  if (v11 && v8 == v7)
+  if (sceneCopy && applicationSceneHandle == handleCopy)
   {
     if ([(SBDashBoardCameraPageViewController *)self bs_isAppearingOrAppeared])
     {
       [(SBDashBoardCameraPageViewController *)self _acquireTraitsParticipantIfNeeded];
     }
 
-    v9 = [(SBTraitsOrientedContentViewController *)self->_orientedContentViewController view];
-    v10 = [v11 settings];
-    [v10 frame];
-    [v9 setContentViewBoundsInReferenceSpace:?];
+    view = [(SBTraitsOrientedContentViewController *)self->_orientedContentViewController view];
+    settings = [sceneCopy settings];
+    [settings frame];
+    [view setContentViewBoundsInReferenceSpace:?];
 
     [(SBDashBoardCameraPageViewController *)self _updateZStackPolicyAssistants];
   }
 }
 
-- (void)sceneHandle:(id)a3 didUpdateClientSettings:(id)a4
+- (void)sceneHandle:(id)handle didUpdateClientSettings:(id)settings
 {
-  v6 = a3;
-  v9 = [a4 settingsDiff];
-  v7 = [(SBDashBoardHostedAppViewController *)self->_appViewController applicationSceneHandle];
+  handleCopy = handle;
+  settingsDiff = [settings settingsDiff];
+  applicationSceneHandle = [(SBDashBoardHostedAppViewController *)self->_appViewController applicationSceneHandle];
 
-  if (v7 == v6 && v9 != 0)
+  if (applicationSceneHandle == handleCopy && settingsDiff != 0)
   {
     [(CSCoverSheetViewControllerBase *)self rebuildBehavior];
   }
 }
 
-- (void)sceneHandle:(id)a3 didDestroyScene:(id)a4
+- (void)sceneHandle:(id)handle didDestroyScene:(id)scene
 {
-  v10 = a3;
-  v6 = a4;
-  if (v6)
+  handleCopy = handle;
+  sceneCopy = scene;
+  if (sceneCopy)
   {
-    v7 = [v10 sceneIdentifier];
-    v8 = [(SBDashBoardHostedAppViewController *)self->_appViewController applicationSceneHandle];
-    v9 = [v8 sceneIdentifier];
+    sceneIdentifier = [handleCopy sceneIdentifier];
+    applicationSceneHandle = [(SBDashBoardHostedAppViewController *)self->_appViewController applicationSceneHandle];
+    sceneIdentifier2 = [applicationSceneHandle sceneIdentifier];
 
-    if (v7 == v9)
+    if (sceneIdentifier == sceneIdentifier2)
     {
       [(SBDashBoardCameraPageViewController *)self _invalidateCameraTraitsParticipant];
       [(SBDashBoardCameraPageViewController *)self _updateZStackPolicyAssistants];
@@ -1120,42 +1120,42 @@ LABEL_15:
   }
 }
 
-- (void)hostableEntityPresenter:(id)a3 didBeginHosting:(id)a4
+- (void)hostableEntityPresenter:(id)presenter didBeginHosting:(id)hosting
 {
-  v13 = a3;
+  presenterCopy = presenter;
   hostedEntityViewController = self->_hostedEntityViewController;
-  v7 = a4;
-  v8 = [(CSHostedEntityViewController *)hostedEntityViewController hostedEntity];
+  hostingCopy = hosting;
+  hostedEntity = [(CSHostedEntityViewController *)hostedEntityViewController hostedEntity];
 
-  if (v7 && v8 == v7)
+  if (hostingCopy && hostedEntity == hostingCopy)
   {
     if ([(SBDashBoardCameraPageViewController *)self bs_isAppearingOrAppeared])
     {
       [(SBDashBoardCameraPageViewController *)self _acquireTraitsParticipantIfNeeded];
     }
 
-    v9 = [v13 sceneHandleForTraitsParticipant];
-    v10 = [v9 scene];
+    sceneHandleForTraitsParticipant = [presenterCopy sceneHandleForTraitsParticipant];
+    scene = [sceneHandleForTraitsParticipant scene];
 
-    if (!v10)
+    if (!scene)
     {
-      v10 = [v13 sceneForTraitsParticipant];
+      scene = [presenterCopy sceneForTraitsParticipant];
     }
 
-    v11 = [(SBTraitsOrientedContentViewController *)self->_orientedContentViewController view];
-    v12 = [v10 settings];
-    [v12 frame];
-    [v11 setContentViewBoundsInReferenceSpace:?];
+    view = [(SBTraitsOrientedContentViewController *)self->_orientedContentViewController view];
+    settings = [scene settings];
+    [settings frame];
+    [view setContentViewBoundsInReferenceSpace:?];
 
     [(SBDashBoardCameraPageViewController *)self _updateZStackPolicyAssistants];
   }
 }
 
-- (void)handleAction:(id)a3 fromSender:(id)a4
+- (void)handleAction:(id)action fromSender:(id)sender
 {
-  v6 = a3;
-  v7 = a4;
-  if (LCSFeatureEnabled() && [v6 type] == 1 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  actionCopy = action;
+  senderCopy = sender;
+  if (LCSFeatureEnabled() && [actionCopy type] == 1 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     [(CSCoverSheetViewControllerBase *)self dismiss];
   }
@@ -1164,19 +1164,19 @@ LABEL_15:
   {
     v8.receiver = self;
     v8.super_class = SBDashBoardCameraPageViewController;
-    [(CSPageViewController *)&v8 handleAction:v6 fromSender:v7];
+    [(CSPageViewController *)&v8 handleAction:actionCopy fromSender:senderCopy];
   }
 }
 
-- (void)hostableEntityPresenter:(id)a3 didEndHosting:(id)a4
+- (void)hostableEntityPresenter:(id)presenter didEndHosting:(id)hosting
 {
-  v8 = a3;
-  v6 = a4;
-  if (v6)
+  presenterCopy = presenter;
+  hostingCopy = hosting;
+  if (hostingCopy)
   {
-    v7 = [(CSHostedEntityViewController *)self->_hostedEntityViewController hostedEntity];
+    hostedEntity = [(CSHostedEntityViewController *)self->_hostedEntityViewController hostedEntity];
 
-    if (v7 == v6)
+    if (hostedEntity == hostingCopy)
     {
       [(SBDashBoardCameraPageViewController *)self _invalidateCameraTraitsParticipant];
       [(SBDashBoardCameraPageViewController *)self _updateZStackPolicyAssistants];
@@ -1184,15 +1184,15 @@ LABEL_15:
   }
 }
 
-- (void)hostableEntityPresenter:(id)a3 didFailToActivate:(id)a4
+- (void)hostableEntityPresenter:(id)presenter didFailToActivate:(id)activate
 {
-  v8 = a3;
-  v6 = a4;
-  if (v6)
+  presenterCopy = presenter;
+  activateCopy = activate;
+  if (activateCopy)
   {
-    v7 = [(CSHostedEntityViewController *)self->_hostedEntityViewController hostedEntity];
+    hostedEntity = [(CSHostedEntityViewController *)self->_hostedEntityViewController hostedEntity];
 
-    if (v7 == v6)
+    if (hostedEntity == activateCopy)
     {
       [(CSCoverSheetViewControllerBase *)self dismiss];
     }
@@ -1203,19 +1203,19 @@ LABEL_15:
 {
   if (!self->_traitsParticipant)
   {
-    v3 = [(CSPageViewController *)self view];
-    v4 = [v3 window];
+    view = [(CSPageViewController *)self view];
+    window = [view window];
 
-    if (v4 && SBTraitsArbiterOrientationActuationEnabledForRole(@"SBTraitsParticipantRoleCoverSheetCamera"))
+    if (window && SBTraitsArbiterOrientationActuationEnabledForRole(@"SBTraitsParticipantRoleCoverSheetCamera"))
     {
-      v5 = [(SBDashBoardCameraPageViewController *)self _traitsArbiter];
+      _traitsArbiter = [(SBDashBoardCameraPageViewController *)self _traitsArbiter];
       hostedEntityViewController = self->_hostedEntityViewController;
       if (hostedEntityViewController)
       {
-        v7 = [(CSHostedEntityViewController *)hostedEntityViewController sceneHandleForTraitsParticipant];
-        if (v7)
+        sceneHandleForTraitsParticipant = [(CSHostedEntityViewController *)hostedEntityViewController sceneHandleForTraitsParticipant];
+        if (sceneHandleForTraitsParticipant)
         {
-          v8 = [[SBTraitsSceneParticipantDelegate alloc] initWithSceneHandle:v7];
+          v8 = [[SBTraitsSceneParticipantDelegate alloc] initWithSceneHandle:sceneHandleForTraitsParticipant];
           traitsParticipantDelegate = self->_traitsParticipantDelegate;
           self->_traitsParticipantDelegate = v8;
         }
@@ -1235,25 +1235,25 @@ LABEL_15:
       else
       {
         v10 = [SBTraitsSceneParticipantDelegate alloc];
-        v11 = [(SBDashBoardHostedAppViewController *)self->_appViewController applicationSceneHandle];
-        v12 = [(SBTraitsSceneParticipantDelegate *)v10 initWithSceneHandle:v11];
+        applicationSceneHandle = [(SBDashBoardHostedAppViewController *)self->_appViewController applicationSceneHandle];
+        v12 = [(SBTraitsSceneParticipantDelegate *)v10 initWithSceneHandle:applicationSceneHandle];
         v13 = self->_traitsParticipantDelegate;
         self->_traitsParticipantDelegate = v12;
       }
 
       if (self->_traitsParticipantDelegate)
       {
-        v16 = [v5 acquireParticipantWithRole:@"SBTraitsParticipantRoleCoverSheetCamera" delegate:?];
+        v16 = [_traitsArbiter acquireParticipantWithRole:@"SBTraitsParticipantRoleCoverSheetCamera" delegate:?];
         traitsParticipant = self->_traitsParticipant;
         self->_traitsParticipant = v16;
 
-        [(SBTraitsSceneParticipantDelegate *)self->_traitsParticipantDelegate setArbiter:v5];
+        [(SBTraitsSceneParticipantDelegate *)self->_traitsParticipantDelegate setArbiter:_traitsArbiter];
         [(SBTraitsSceneParticipantDelegate *)self->_traitsParticipantDelegate setParticipant:self->_traitsParticipant];
         v18 = self->_traitsParticipantDelegate;
         v19 = MEMORY[0x277CCABB0];
-        v20 = [(CSPageViewController *)self view];
-        v21 = [v20 window];
-        [v21 windowLevel];
+        view2 = [(CSPageViewController *)self view];
+        window2 = [view2 window];
+        [window2 windowLevel];
         v22 = [v19 numberWithDouble:?];
         [(SBTraitsSceneParticipantDelegate *)v18 setPreferredSceneLevel:v22];
 
@@ -1317,61 +1317,61 @@ void __72__SBDashBoardCameraPageViewController__acquireTraitsParticipantIfNeeded
 
 - (id)_traitsArbiter
 {
-  v4 = [(CSPageViewController *)self view];
-  v5 = [v4 window];
+  view = [(CSPageViewController *)self view];
+  window = [view window];
 
-  if (v5)
+  if (window)
   {
-    v6 = [v5 _sbWindowScene];
-    v7 = [v6 traitsArbiter];
+    _sbWindowScene = [window _sbWindowScene];
+    traitsArbiter = [_sbWindowScene traitsArbiter];
   }
 
   else
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"SBDashBoardCameraPageViewController.m" lineNumber:808 description:@"Unexpected nil window"];
-    v7 = 0;
+    _sbWindowScene = [MEMORY[0x277CCA890] currentHandler];
+    [_sbWindowScene handleFailureInMethod:a2 object:self file:@"SBDashBoardCameraPageViewController.m" lineNumber:808 description:@"Unexpected nil window"];
+    traitsArbiter = 0;
   }
 
-  return v7;
+  return traitsArbiter;
 }
 
-- (void)zStackParticipant:(id)a3 updatePreferences:(id)a4
+- (void)zStackParticipant:(id)participant updatePreferences:(id)preferences
 {
-  v14 = a4;
+  preferencesCopy = preferences;
   if (([(SBDashBoardCameraPageViewController *)self bs_isDisappearingOrDisappeared]& 1) == 0)
   {
-    [v14 setActivationPolicyForParticipantsBelow:2];
-    [v14 setSuppressSystemApertureForSystemChromeSuppression:-[SBSystemApertureZStackPolicyAssistant suppressSystemApertureForSystemChromeSuppression](self->_systemApertureZStackPolicyAssistant)];
-    v5 = [(SBCameraHardwareButton *)self->_systemApertureZStackPolicyAssistant allCameraShutterButtonPIDs];
-    [v14 setAssociatedBundleIdentifiersToSuppressInSystemAperture:v5];
+    [preferencesCopy setActivationPolicyForParticipantsBelow:2];
+    [preferencesCopy setSuppressSystemApertureForSystemChromeSuppression:-[SBSystemApertureZStackPolicyAssistant suppressSystemApertureForSystemChromeSuppression](self->_systemApertureZStackPolicyAssistant)];
+    allCameraShutterButtonPIDs = [(SBCameraHardwareButton *)self->_systemApertureZStackPolicyAssistant allCameraShutterButtonPIDs];
+    [preferencesCopy setAssociatedBundleIdentifiersToSuppressInSystemAperture:allCameraShutterButtonPIDs];
 
-    v6 = [(SBCameraHardwareButton *)self->_systemApertureZStackPolicyAssistant foregroundCameraShutterButtonPIDs];
-    [v14 setAssociatedSceneIdentifiersToSuppressInSystemAperture:v6];
+    foregroundCameraShutterButtonPIDs = [(SBCameraHardwareButton *)self->_systemApertureZStackPolicyAssistant foregroundCameraShutterButtonPIDs];
+    [preferencesCopy setAssociatedSceneIdentifiersToSuppressInSystemAperture:foregroundCameraShutterButtonPIDs];
 
-    v7 = [(SBAudioCategoryZStackPolicyAssistant *)self->_audioCategoryZStackPolicyAssistant audioCategoriesDisablingVolumeHUD];
-    [v14 setAudioCategoriesDisablingVolumeHUD:v7];
+    audioCategoriesDisablingVolumeHUD = [(SBAudioCategoryZStackPolicyAssistant *)self->_audioCategoryZStackPolicyAssistant audioCategoriesDisablingVolumeHUD];
+    [preferencesCopy setAudioCategoriesDisablingVolumeHUD:audioCategoriesDisablingVolumeHUD];
 
-    v8 = [(SBPhysicalButtonZStackPolicyAssistant *)self->_physicalButtonZStackPolicyAssistant physicalButtonSceneTargets];
-    [v14 setPhysicalButtonSceneTargets:v8];
+    physicalButtonSceneTargets = [(SBPhysicalButtonZStackPolicyAssistant *)self->_physicalButtonZStackPolicyAssistant physicalButtonSceneTargets];
+    [preferencesCopy setPhysicalButtonSceneTargets:physicalButtonSceneTargets];
 
-    v9 = [(SBPhysicalButtonZStackPolicyAssistant *)self->_physicalButtonZStackPolicyAssistant captureButtonFullFidelityEventRequestingScenes];
-    [v14 setCaptureButtonFullFidelityEventRequestingScenes:v9];
+    captureButtonFullFidelityEventRequestingScenes = [(SBPhysicalButtonZStackPolicyAssistant *)self->_physicalButtonZStackPolicyAssistant captureButtonFullFidelityEventRequestingScenes];
+    [preferencesCopy setCaptureButtonFullFidelityEventRequestingScenes:captureButtonFullFidelityEventRequestingScenes];
 
-    v10 = [(SBPhysicalButtonZStackPolicyAssistant *)self->_physicalButtonZStackPolicyAssistant foregroundCaptureSceneTargets];
-    [v14 setForegroundCaptureSceneTargets:v10];
-    if ([v10 count])
+    foregroundCaptureSceneTargets = [(SBPhysicalButtonZStackPolicyAssistant *)self->_physicalButtonZStackPolicyAssistant foregroundCaptureSceneTargets];
+    [preferencesCopy setForegroundCaptureSceneTargets:foregroundCaptureSceneTargets];
+    if ([foregroundCaptureSceneTargets count])
     {
-      [v14 setAllowsKeyboardArbiterToDetermineFocusTarget:1];
-      v11 = [v10 lastObject];
-      v12 = [v11 scene];
-      v13 = [SBKeyboardFocusTarget targetForFBScene:v12];
-      [v14 setOverrideKeyboardFocusTarget:v13];
+      [preferencesCopy setAllowsKeyboardArbiterToDetermineFocusTarget:1];
+      lastObject = [foregroundCaptureSceneTargets lastObject];
+      scene = [lastObject scene];
+      v13 = [SBKeyboardFocusTarget targetForFBScene:scene];
+      [preferencesCopy setOverrideKeyboardFocusTarget:v13];
     }
   }
 }
 
-- (void)homeGrabberViewDidReceiveClick:(id)a3
+- (void)homeGrabberViewDidReceiveClick:(id)click
 {
   if ([(SBFZStackParticipant *)self->_zStackParticipant ownsHomeGesture])
   {
@@ -1380,12 +1380,12 @@ void __72__SBDashBoardCameraPageViewController__acquireTraitsParticipantIfNeeded
   }
 }
 
-- (void)setWantsHomeGestureOwnership:(BOOL)a3
+- (void)setWantsHomeGestureOwnership:(BOOL)ownership
 {
-  if (self->_wantsHomeGestureOwnership != a3)
+  if (self->_wantsHomeGestureOwnership != ownership)
   {
-    self->_wantsHomeGestureOwnership = a3;
-    if (a3)
+    self->_wantsHomeGestureOwnership = ownership;
+    if (ownership)
     {
       [(SBDashBoardCameraPageViewController *)self _requestHomeGestureOwnership];
     }
@@ -1407,39 +1407,39 @@ void __72__SBDashBoardCameraPageViewController__acquireTraitsParticipantIfNeeded
 
 - (void)_ensureZStackParticipant
 {
-  v3 = [(SBDashBoardCameraPageViewController *)self zStackParticipant];
+  zStackParticipant = [(SBDashBoardCameraPageViewController *)self zStackParticipant];
 
-  if (!v3)
+  if (!zStackParticipant)
   {
-    v4 = [(CSPageViewController *)self view];
-    v5 = [v4 window];
+    view = [(CSPageViewController *)self view];
+    window = [view window];
 
-    v6 = [v5 _sbWindowScene];
-    v7 = [v6 zStackResolver];
-    v8 = [v7 acquireParticipantWithIdentifier:13 delegate:self];
+    _sbWindowScene = [window _sbWindowScene];
+    zStackResolver = [_sbWindowScene zStackResolver];
+    v8 = [zStackResolver acquireParticipantWithIdentifier:13 delegate:self];
 
     [(SBDashBoardCameraPageViewController *)self setZStackParticipant:v8];
   }
 
-  v9 = [(SBDashBoardCameraPageViewController *)self audioCategoryZStackPolicyAssistant];
+  audioCategoryZStackPolicyAssistant = [(SBDashBoardCameraPageViewController *)self audioCategoryZStackPolicyAssistant];
 
-  if (!v9)
+  if (!audioCategoryZStackPolicyAssistant)
   {
     v10 = [(SBZStackForegroundSceneOrderedPolicyAssistant *)[SBAudioCategoryZStackPolicyAssistant alloc] initWithParticipant:self->_zStackParticipant];
     [(SBDashBoardCameraPageViewController *)self setAudioCategoryZStackPolicyAssistant:v10];
   }
 
-  v11 = [(SBDashBoardCameraPageViewController *)self systemApertureZStackPolicyAssistant];
+  systemApertureZStackPolicyAssistant = [(SBDashBoardCameraPageViewController *)self systemApertureZStackPolicyAssistant];
 
-  if (!v11)
+  if (!systemApertureZStackPolicyAssistant)
   {
     v12 = [[SBSystemApertureZStackPolicyAssistant alloc] initWithParticipant:?];
     [(SBDashBoardCameraPageViewController *)self setSystemApertureZStackPolicyAssistant:v12];
   }
 
-  v13 = [(SBDashBoardCameraPageViewController *)self physicalButtonZStackPolicyAssistant];
+  physicalButtonZStackPolicyAssistant = [(SBDashBoardCameraPageViewController *)self physicalButtonZStackPolicyAssistant];
 
-  if (!v13)
+  if (!physicalButtonZStackPolicyAssistant)
   {
     v14 = [(SBZStackForegroundSceneOrderedPolicyAssistant *)[SBPhysicalButtonZStackPolicyAssistant alloc] initWithParticipant:self->_zStackParticipant];
     [(SBDashBoardCameraPageViewController *)self setPhysicalButtonZStackPolicyAssistant:v14];
@@ -1448,12 +1448,12 @@ void __72__SBDashBoardCameraPageViewController__acquireTraitsParticipantIfNeeded
 
 - (void)_invalidateZStackParticipantIfNeeded
 {
-  v3 = [(SBDashBoardCameraPageViewController *)self zStackParticipant];
+  zStackParticipant = [(SBDashBoardCameraPageViewController *)self zStackParticipant];
 
-  if (v3)
+  if (zStackParticipant)
   {
-    v4 = [(SBDashBoardCameraPageViewController *)self zStackParticipant];
-    [v4 invalidate];
+    zStackParticipant2 = [(SBDashBoardCameraPageViewController *)self zStackParticipant];
+    [zStackParticipant2 invalidate];
 
     [(SBDashBoardCameraPageViewController *)self setZStackParticipant:0];
     [(SBDashBoardCameraPageViewController *)self setSystemApertureZStackPolicyAssistant:0];
@@ -1463,29 +1463,29 @@ void __72__SBDashBoardCameraPageViewController__acquireTraitsParticipantIfNeeded
   }
 }
 
-- (void)_setSceneGrabberHidden:(BOOL)a3
+- (void)_setSceneGrabberHidden:(BOOL)hidden
 {
-  v3 = a3;
+  hiddenCopy = hidden;
   hostedEntityViewController = self->_hostedEntityViewController;
   if (hostedEntityViewController)
   {
-    v6 = [(CSHostedEntityViewController *)hostedEntityViewController homeGrabberViewForTraitsParticipant];
-    if (!v6)
+    homeGrabberViewForTraitsParticipant = [(CSHostedEntityViewController *)hostedEntityViewController homeGrabberViewForTraitsParticipant];
+    if (!homeGrabberViewForTraitsParticipant)
     {
       goto LABEL_13;
     }
 
-    v8 = v6;
-    [v6 setDelegate:self];
-    [v8 setPointerClickDelegate:self];
-    if (v3)
+    appView = homeGrabberViewForTraitsParticipant;
+    [homeGrabberViewForTraitsParticipant setDelegate:self];
+    [appView setPointerClickDelegate:self];
+    if (hiddenCopy)
     {
-      [(SBDashBoardCameraPageViewController *)self _takeHiddenAssertionForHomeGrabber:v8];
+      [(SBDashBoardCameraPageViewController *)self _takeHiddenAssertionForHomeGrabber:appView];
     }
 
     else
     {
-      [(SBDashBoardCameraPageViewController *)self _relinquishHiddenAssertionForHomeGrabber:v8];
+      [(SBDashBoardCameraPageViewController *)self _relinquishHiddenAssertionForHomeGrabber:appView];
     }
 
     [(SBDashBoardCameraPageViewController *)self _updateZStackPolicyAssistants];
@@ -1493,28 +1493,28 @@ void __72__SBDashBoardCameraPageViewController__acquireTraitsParticipantIfNeeded
 
   else
   {
-    v8 = [(SBDashBoardHostedAppViewController *)self->_appViewController appView];
+    appView = [(SBDashBoardHostedAppViewController *)self->_appViewController appView];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [v8 homeGrabberView];
-      [v7 setDelegate:self];
-      [v7 setPointerClickDelegate:self];
-      if (v3)
+      homeGrabberView = [appView homeGrabberView];
+      [homeGrabberView setDelegate:self];
+      [homeGrabberView setPointerClickDelegate:self];
+      if (hiddenCopy)
       {
-        [(SBDashBoardCameraPageViewController *)self _takeHiddenAssertionForHomeGrabber:v7];
+        [(SBDashBoardCameraPageViewController *)self _takeHiddenAssertionForHomeGrabber:homeGrabberView];
       }
 
       else
       {
-        [(SBDashBoardCameraPageViewController *)self _relinquishHiddenAssertionForHomeGrabber:v7];
+        [(SBDashBoardCameraPageViewController *)self _relinquishHiddenAssertionForHomeGrabber:homeGrabberView];
       }
 
       [(SBDashBoardCameraPageViewController *)self _updateZStackPolicyAssistants];
     }
   }
 
-  v6 = v8;
+  homeGrabberViewForTraitsParticipant = appView;
 LABEL_13:
 }
 
@@ -1533,28 +1533,28 @@ LABEL_13:
   [(SBDashBoardHostedAppViewController *)self->_appViewController setSupplementalActivationSettings:v8];
 }
 
-- (void)_takeHiddenAssertionForHomeGrabber:(id)a3
+- (void)_takeHiddenAssertionForHomeGrabber:(id)grabber
 {
   v3 = MEMORY[0x277D65E80];
-  v4 = a3;
-  v7 = [v3 rootSettings];
-  v5 = [v7 hideForHomeGestureOwnershipAnimationSettings];
-  v6 = [v5 BSAnimationSettings];
+  grabberCopy = grabber;
+  rootSettings = [v3 rootSettings];
+  hideForHomeGestureOwnershipAnimationSettings = [rootSettings hideForHomeGestureOwnershipAnimationSettings];
+  bSAnimationSettings = [hideForHomeGestureOwnershipAnimationSettings BSAnimationSettings];
 
-  [v4 setHidden:1 forReason:@"DashBoardCameraHomeOwnershipChanged" withAnimationSettings:v6];
-  [v4 setHomeAffordanceInteractionEnabled:0];
+  [grabberCopy setHidden:1 forReason:@"DashBoardCameraHomeOwnershipChanged" withAnimationSettings:bSAnimationSettings];
+  [grabberCopy setHomeAffordanceInteractionEnabled:0];
 }
 
-- (void)_relinquishHiddenAssertionForHomeGrabber:(id)a3
+- (void)_relinquishHiddenAssertionForHomeGrabber:(id)grabber
 {
   v3 = MEMORY[0x277D65E80];
-  v4 = a3;
-  v7 = [v3 rootSettings];
-  v5 = [v7 unhideForHomeGestureOwnershipAnimationSettings];
-  v6 = [v5 BSAnimationSettings];
+  grabberCopy = grabber;
+  rootSettings = [v3 rootSettings];
+  unhideForHomeGestureOwnershipAnimationSettings = [rootSettings unhideForHomeGestureOwnershipAnimationSettings];
+  bSAnimationSettings = [unhideForHomeGestureOwnershipAnimationSettings BSAnimationSettings];
 
-  [v4 setHidden:0 forReason:@"DashBoardCameraHomeOwnershipChanged" withAnimationSettings:v6];
-  [v4 setHomeAffordanceInteractionEnabled:1];
+  [grabberCopy setHidden:0 forReason:@"DashBoardCameraHomeOwnershipChanged" withAnimationSettings:bSAnimationSettings];
+  [grabberCopy setHomeAffordanceInteractionEnabled:1];
 }
 
 - (id)_prewarmingCameraBundleIdentifier
@@ -1569,23 +1569,23 @@ LABEL_13:
   return v2;
 }
 
-- (void)_prewarmCameraInteractively:(BOOL)a3
+- (void)_prewarmCameraInteractively:(BOOL)interactively
 {
   v41 = *MEMORY[0x277D85DE8];
   if (!self->_prewarmDebounceTimer && self->_canWarmRealCamera)
   {
-    v4 = a3;
+    interactivelyCopy = interactively;
     v5 = +[SBLockScreenManager sharedInstance];
-    v6 = [v5 coverSheetViewController];
+    coverSheetViewController = [v5 coverSheetViewController];
 
-    v7 = [v6 cameraPrewarmer];
-    v8 = [v7 currentActivePrewarmReasons];
+    cameraPrewarmer = [coverSheetViewController cameraPrewarmer];
+    currentActivePrewarmReasons = [cameraPrewarmer currentActivePrewarmReasons];
 
     v36 = 0u;
     v37 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v9 = v8;
+    v9 = currentActivePrewarmReasons;
     v10 = [v9 countByEnumeratingWithState:&v34 objects:v40 count:16];
     if (v10)
     {
@@ -1621,7 +1621,7 @@ LABEL_13:
     }
 
     v17 = MEMORY[0x277CE58F0];
-    if (!v4)
+    if (!interactivelyCopy)
     {
       v17 = MEMORY[0x277CE58D8];
     }
@@ -1638,7 +1638,7 @@ LABEL_13:
     v38[2] = *MEMORY[0x277CE5920];
     v39[2] = v20;
     v22 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v39 forKeys:v38 count:3];
-    v23 = [(SBDashBoardCameraPageViewController *)self _prewarmingCameraBundleIdentifier];
+    _prewarmingCameraBundleIdentifier = [(SBDashBoardCameraPageViewController *)self _prewarmingCameraBundleIdentifier];
     AVCapturePrewarmWithOptions();
 
     v24 = MEMORY[0x277CBEBB8];
@@ -1653,12 +1653,12 @@ LABEL_13:
     prewarmCancelTimer = self->_prewarmCancelTimer;
     self->_prewarmCancelTimer = v28;
 
-    v30 = [MEMORY[0x277CBEB88] currentRunLoop];
+    currentRunLoop = [MEMORY[0x277CBEB88] currentRunLoop];
     v31 = *MEMORY[0x277CBE738];
-    [v30 addTimer:self->_prewarmDebounceTimer forMode:*MEMORY[0x277CBE738]];
+    [currentRunLoop addTimer:self->_prewarmDebounceTimer forMode:*MEMORY[0x277CBE738]];
 
-    v32 = [MEMORY[0x277CBEB88] currentRunLoop];
-    [v32 addTimer:self->_prewarmCancelTimer forMode:v31];
+    currentRunLoop2 = [MEMORY[0x277CBEB88] currentRunLoop];
+    [currentRunLoop2 addTimer:self->_prewarmCancelTimer forMode:v31];
 
 LABEL_16:
   }
@@ -1764,8 +1764,8 @@ LABEL_16:
 {
   if (self->_hostedEntityViewController)
   {
-    v3 = [(SBDashBoardCameraPageViewController *)self cameraPageDelegate];
-    v5 = [v3 defaultHostableEntityForActivationOfCamera:self];
+    cameraPageDelegate = [(SBDashBoardCameraPageViewController *)self cameraPageDelegate];
+    v5 = [cameraPageDelegate defaultHostableEntityForActivationOfCamera:self];
 
     v4 = v5;
     if (v5)
@@ -1778,15 +1778,15 @@ LABEL_16:
 
 - (void)_addOrRemoveGestureForCurrentSettings
 {
-  v3 = [(SBDashBoardCameraPageViewController *)self _appearState];
-  if (v3 && v3 != 3 && SBHomeGestureEnabled())
+  _appearState = [(SBDashBoardCameraPageViewController *)self _appearState];
+  if (_appearState && _appearState != 3 && SBHomeGestureEnabled())
   {
     if (!self->_homeGestureInteraction)
     {
       v4 = [SBHomeGestureInteraction alloc];
-      v5 = [(UIViewController *)self _sbWindowScene];
-      v6 = [v5 systemGestureManager];
-      v7 = [(SBHomeGestureInteraction *)v4 initWithSystemGestureManager:v6 delegate:self];
+      _sbWindowScene = [(UIViewController *)self _sbWindowScene];
+      systemGestureManager = [_sbWindowScene systemGestureManager];
+      v7 = [(SBHomeGestureInteraction *)v4 initWithSystemGestureManager:systemGestureManager delegate:self];
       homeGestureInteraction = self->_homeGestureInteraction;
       self->_homeGestureInteraction = v7;
 
@@ -1806,20 +1806,20 @@ LABEL_16:
   }
 }
 
-- (unint64_t)homeGestureInteraction:(id)a3 systemGestureTypeForType:(int64_t)a4
+- (unint64_t)homeGestureInteraction:(id)interaction systemGestureTypeForType:(int64_t)type
 {
-  if ((a4 - 1) > 2)
+  if ((type - 1) > 2)
   {
     return 0;
   }
 
   else
   {
-    return qword_21F8A5E80[a4 - 1];
+    return qword_21F8A5E80[type - 1];
   }
 }
 
-- (id)customScreenEdgePanGestureRecognizerForHomeGestureInteraction:(id)a3
+- (id)customScreenEdgePanGestureRecognizerForHomeGestureInteraction:(id)interaction
 {
   v4 = [SBHomeGesturePanGestureRecognizer homeGesturePanGestureRecognizerWithTarget:0 action:0];
   [v4 setInterfaceDelegate:self];
@@ -1829,18 +1829,18 @@ LABEL_16:
   return v4;
 }
 
-- (BOOL)homeGestureInteraction:(id)a3 shouldBeginGestureRecognizerOfType:(int64_t)a4
+- (BOOL)homeGestureInteraction:(id)interaction shouldBeginGestureRecognizerOfType:(int64_t)type
 {
-  v6 = a3;
+  interactionCopy = interaction;
   if (([(SBFZStackParticipant *)self->_zStackParticipant ownsHomeGesture]& 1) != 0 || !self->_zStackParticipant)
   {
     v7 = 1;
-    if (a4 != 1)
+    if (type != 1)
     {
       goto LABEL_20;
     }
 
-    v8 = [v6 gestureRecognizerForType:1];
+    v8 = [interactionCopy gestureRecognizerForType:1];
     v25 = 0;
     v26 = &v25;
     v27 = 0x2020000000;
@@ -1856,7 +1856,7 @@ LABEL_19:
 
     if (SBTraitsArbiterOrientationActuationEnabledForRole(@"SBTraitsParticipantRoleCoverSheetCamera"))
     {
-      v9 = [(TRAParticipant *)self->_traitsParticipant sbf_currentOrientation];
+      sbf_currentOrientation = [(TRAParticipant *)self->_traitsParticipant sbf_currentOrientation];
     }
 
     else
@@ -1864,13 +1864,13 @@ LABEL_19:
       hostedEntityViewController = self->_hostedEntityViewController;
       if (!hostedEntityViewController)
       {
-        v19 = [(SBDashBoardHostedAppViewController *)self->_appViewController appView];
-        v11 = [v19 orientation];
+        appView = [(SBDashBoardHostedAppViewController *)self->_appViewController appView];
+        orientation = [appView orientation];
 
 LABEL_12:
         [v8 _touchInterfaceOrientation];
         v12 = _screenRegionGivenInterfaceOrientedRegion();
-        v13 = (1 << v11);
+        v13 = (1 << orientation);
         v20[0] = MEMORY[0x277D85DD0];
         v20[1] = 3221225472;
         v21 = __97__SBDashBoardCameraPageViewController_homeGestureInteraction_shouldBeginGestureRecognizerOfType___block_invoke;
@@ -1910,10 +1910,10 @@ LABEL_12:
         goto LABEL_19;
       }
 
-      v9 = [(CSHostedEntityViewController *)hostedEntityViewController hostableEntityOrientation];
+      sbf_currentOrientation = [(CSHostedEntityViewController *)hostedEntityViewController hostableEntityOrientation];
     }
 
-    v11 = v9;
+    orientation = sbf_currentOrientation;
     goto LABEL_12;
   }
 
@@ -1935,11 +1935,11 @@ uint64_t __97__SBDashBoardCameraPageViewController_homeGestureInteraction_should
   return result;
 }
 
-- (void)homeGestureInteractionChanged:(id)a3
+- (void)homeGestureInteractionChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [(CSPageViewController *)self view];
-  [v4 translationInView:v5];
+  changedCopy = changed;
+  view = [(CSPageViewController *)self view];
+  [changedCopy translationInView:view];
   v7 = v6;
   v9 = v8;
 
@@ -1950,7 +1950,7 @@ uint64_t __97__SBDashBoardCameraPageViewController_homeGestureInteraction_should
   [(SBDashBoardCameraPageViewController *)self _updateCameraScale:v11 dimmingAlpha:1.0 - v12, 0, 1, 0x3FF0000000000000, 1, 0x3FD6666666666666, 1, 0x3FF0000000000000, 1];
 }
 
-- (void)homeGestureInteractionEnded:(id)a3
+- (void)homeGestureInteractionEnded:(id)ended
 {
   if ([(SBDashBoardCameraPageViewController *)self _shouldCancelInteractiveDismissGesture])
   {
@@ -1970,24 +1970,24 @@ uint64_t __97__SBDashBoardCameraPageViewController_homeGestureInteraction_should
   [(SBDashBoardCameraPageViewController *)self _updateCameraScale:2 dimmingAlpha:v4 transitionMode:v5];
 }
 
-- (CGPoint)_convertTranslationFromContainerOrientationToContentOrientation:(CGPoint)a3
+- (CGPoint)_convertTranslationFromContainerOrientationToContentOrientation:(CGPoint)orientation
 {
   memset(&v14, 0, sizeof(v14));
-  CGAffineTransformMakeTranslation(&v14, a3.x, a3.y);
-  v4 = [(SBDashBoardCameraPageViewController *)self interfaceOrientation];
+  CGAffineTransformMakeTranslation(&v14, orientation.x, orientation.y);
+  interfaceOrientation = [(SBDashBoardCameraPageViewController *)self interfaceOrientation];
   hostedEntityViewController = self->_hostedEntityViewController;
   if (hostedEntityViewController)
   {
-    v6 = [(CSHostedEntityViewController *)hostedEntityViewController hostableEntityOrientation];
+    hostableEntityOrientation = [(CSHostedEntityViewController *)hostedEntityViewController hostableEntityOrientation];
   }
 
   else
   {
-    v7 = [(SBDashBoardHostedAppViewController *)self->_appViewController appView];
-    v6 = [v7 orientation];
+    appView = [(SBDashBoardHostedAppViewController *)self->_appViewController appView];
+    hostableEntityOrientation = [appView orientation];
   }
 
-  if (v4 != v6)
+  if (interfaceOrientation != hostableEntityOrientation)
   {
     memset(&v13, 0, sizeof(v13));
     SBFTransformFromOrientationToOrientation();
@@ -2007,14 +2007,14 @@ uint64_t __97__SBDashBoardCameraPageViewController_homeGestureInteraction_should
   return result;
 }
 
-- (void)_prepareForInteractiveGestureToCameraVisible:(BOOL)a3
+- (void)_prepareForInteractiveGestureToCameraVisible:(BOOL)visible
 {
-  v3 = a3;
-  v5 = [(UIViewController *)self->_appViewControllerContainerVC view];
-  [v5 setClipsToBounds:1];
+  visibleCopy = visible;
+  view = [(UIViewController *)self->_appViewControllerContainerVC view];
+  [view setClipsToBounds:1];
 
   v6 = 0.5;
-  if (v3)
+  if (visibleCopy)
   {
     v7 = 1.0;
   }
@@ -2030,11 +2030,11 @@ uint64_t __97__SBDashBoardCameraPageViewController_homeGestureInteraction_should
   self->_interactiveDismissalInProgress = 1;
 }
 
-- (void)_resetAfterInteractiveGestureToCameraVisible:(BOOL)a3
+- (void)_resetAfterInteractiveGestureToCameraVisible:(BOOL)visible
 {
   scaleProperty = self->_scaleProperty;
   v5 = 0.5;
-  if (a3)
+  if (visible)
   {
     v5 = 1.0;
     v6 = 0.0;
@@ -2078,9 +2078,9 @@ uint64_t __97__SBDashBoardCameraPageViewController_homeGestureInteraction_should
 
   [(UIViewFloatAnimatableProperty *)self->_scaleProperty setValue:1.0];
   [(UIViewFloatAnimatableProperty *)self->_scaleProperty setVelocityUsableForVFD:1];
-  v5 = [objc_alloc(MEMORY[0x277D65E60]) initWithDefaultValues];
+  initWithDefaultValues = [objc_alloc(MEMORY[0x277D65E60]) initWithDefaultValues];
   scaleSettings = self->_scaleSettings;
-  self->_scaleSettings = v5;
+  self->_scaleSettings = initWithDefaultValues;
 
   [(SBFFluidBehaviorSettings *)self->_scaleSettings setBehaviorType:2];
   [(SBFFluidBehaviorSettings *)self->_scaleSettings setDampingRatio:1.0];
@@ -2094,9 +2094,9 @@ uint64_t __97__SBDashBoardCameraPageViewController_homeGestureInteraction_should
 
   [(UIViewFloatAnimatableProperty *)self->_alphaProperty setValue:1.0];
   [(UIViewFloatAnimatableProperty *)self->_alphaProperty setVelocityUsableForVFD:1];
-  v10 = [objc_alloc(MEMORY[0x277D65E60]) initWithDefaultValues];
+  initWithDefaultValues2 = [objc_alloc(MEMORY[0x277D65E60]) initWithDefaultValues];
   alphaSettings = self->_alphaSettings;
-  self->_alphaSettings = v10;
+  self->_alphaSettings = initWithDefaultValues2;
 
   [(SBFFluidBehaviorSettings *)self->_alphaSettings setBehaviorType:1];
   [(SBFFluidBehaviorSettings *)self->_alphaSettings setDampingRatio:1.0];
@@ -2127,15 +2127,15 @@ uint64_t __97__SBDashBoardCameraPageViewController_homeGestureInteraction_should
   objc_destroyWeak(&location);
 }
 
-- (void)_updateForPropertyChangedForPresentation:(BOOL)a3
+- (void)_updateForPropertyChangedForPresentation:(BOOL)presentation
 {
-  v3 = a3;
-  v5 = [(UIViewController *)self->_appViewControllerContainerVC view];
+  presentationCopy = presentation;
+  view = [(UIViewController *)self->_appViewControllerContainerVC view];
   if (UIAccessibilityIsReduceMotionEnabled())
   {
     memset(&v25, 0, sizeof(v25));
     CGAffineTransformMakeScale(&v25, 1.0, 1.0);
-    if (!v3)
+    if (!presentationCopy)
     {
       goto LABEL_10;
     }
@@ -2144,7 +2144,7 @@ uint64_t __97__SBDashBoardCameraPageViewController_homeGestureInteraction_should
   else
   {
     scaleProperty = self->_scaleProperty;
-    if (!v3)
+    if (!presentationCopy)
     {
       [(UIViewFloatAnimatableProperty *)scaleProperty value];
       memset(&v25, 0, sizeof(v25));
@@ -2155,7 +2155,7 @@ LABEL_10:
       *&v24.m11 = *&v25.a;
       *&v24.m13 = *&v25.c;
       *&v24.m21 = *&v25.tx;
-      [v5 setTransform:&v24];
+      [view setTransform:&v24];
       [(UIView *)self->_tintView setAlpha:v16];
       goto LABEL_11;
     }
@@ -2191,7 +2191,7 @@ LABEL_10:
   *&v17.m11 = m;
   *&v17.m23 = v19;
   v11 = [MEMORY[0x277CCAE60] valueWithCATransform3D:&v17];
-  [v5 _setPresentationValue:v10 velocity:v11 preferredFrameRateRangeMaximum:120 forKey:@"transform"];
+  [view _setPresentationValue:v10 velocity:v11 preferredFrameRateRangeMaximum:120 forKey:@"transform"];
 
   tintView = self->_tintView;
   v13 = [MEMORY[0x277CCABB0] numberWithDouble:v9];
@@ -2200,50 +2200,50 @@ LABEL_10:
 LABEL_11:
 }
 
-- (int64_t)_sbAnimationUpdateModeForCoverSheetTransitionMode:(int64_t)a3
+- (int64_t)_sbAnimationUpdateModeForCoverSheetTransitionMode:(int64_t)mode
 {
-  if ((a3 - 1) > 3)
+  if ((mode - 1) > 3)
   {
     return 3;
   }
 
   else
   {
-    return qword_21F8A5E98[a3 - 1];
+    return qword_21F8A5E98[mode - 1];
   }
 }
 
-- (void)_updateCameraScale:(double)a3 transitionMode:(int64_t)a4
+- (void)_updateCameraScale:(double)scale transitionMode:(int64_t)mode
 {
-  v6 = [(SBDashBoardCameraPageViewController *)self _sbAnimationUpdateModeForCoverSheetTransitionMode:a4];
+  v6 = [(SBDashBoardCameraPageViewController *)self _sbAnimationUpdateModeForCoverSheetTransitionMode:mode];
   scaleSettings = self->_scaleSettings;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __73__SBDashBoardCameraPageViewController__updateCameraScale_transitionMode___block_invoke;
   v8[3] = &unk_2783A8BC8;
   v8[4] = self;
-  *&v8[5] = a3;
+  *&v8[5] = scale;
   [MEMORY[0x277D75D18] sb_animateWithSettings:scaleSettings mode:v6 animations:v8 completion:0];
 }
 
-- (void)_updateDimmingAlpha:(double)a3 transitionMode:(int64_t)a4
+- (void)_updateDimmingAlpha:(double)alpha transitionMode:(int64_t)mode
 {
-  v6 = [(SBDashBoardCameraPageViewController *)self _sbAnimationUpdateModeForCoverSheetTransitionMode:a4];
+  v6 = [(SBDashBoardCameraPageViewController *)self _sbAnimationUpdateModeForCoverSheetTransitionMode:mode];
   alphaSettings = self->_alphaSettings;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __74__SBDashBoardCameraPageViewController__updateDimmingAlpha_transitionMode___block_invoke;
   v8[3] = &unk_2783A8BC8;
   v8[4] = self;
-  *&v8[5] = a3;
+  *&v8[5] = alpha;
   [MEMORY[0x277D75D18] sb_animateWithSettings:alphaSettings mode:v6 animations:v8 completion:0];
 }
 
-- (void)_updateCameraScale:(double)a3 dimmingAlpha:(double)a4 transitionMode:(int64_t)a5
+- (void)_updateCameraScale:(double)scale dimmingAlpha:(double)alpha transitionMode:(int64_t)mode
 {
-  [(SBDashBoardCameraPageViewController *)self _updateCameraScale:a3 transitionMode:?];
+  [(SBDashBoardCameraPageViewController *)self _updateCameraScale:scale transitionMode:?];
 
-  [(SBDashBoardCameraPageViewController *)self _updateDimmingAlpha:a5 transitionMode:a4];
+  [(SBDashBoardCameraPageViewController *)self _updateDimmingAlpha:mode transitionMode:alpha];
 }
 
 - (SBDashBoardCameraPageViewControllerDelegate)cameraPageDelegate

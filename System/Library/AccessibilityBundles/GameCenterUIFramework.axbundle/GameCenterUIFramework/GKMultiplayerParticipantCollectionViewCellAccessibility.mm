@@ -1,26 +1,26 @@
 @interface GKMultiplayerParticipantCollectionViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityCustomActions;
 @end
 
 @implementation GKMultiplayerParticipantCollectionViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"GameCenterUI.GKMultiplayerParticipantCollectionViewCell" hasInstanceMethod:@"accessibilityNameLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"GameCenterUI.GKMultiplayerParticipantCollectionViewCell" hasInstanceMethod:@"accessibilitySubtitleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"GameCenterUI.GKMultiplayerParticipantCollectionViewCell" hasInstanceMethod:@"accessibilityStatusAccessoryView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"GameCenterUI.DynamicTypeButton"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"GameCenterUI.GKMultiplayerParticipantCollectionViewCell" hasInstanceMethod:@"accessibilityNameLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"GameCenterUI.GKMultiplayerParticipantCollectionViewCell" hasInstanceMethod:@"accessibilitySubtitleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"GameCenterUI.GKMultiplayerParticipantCollectionViewCell" hasInstanceMethod:@"accessibilityStatusAccessoryView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"GameCenterUI.DynamicTypeButton"];
 }
 
 - (id)accessibilityCustomActions
 {
-  v3 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   v17.receiver = self;
   v17.super_class = GKMultiplayerParticipantCollectionViewCellAccessibility;
-  v4 = [(GKMultiplayerParticipantCollectionViewCellAccessibility *)&v17 accessibilityCustomActions];
-  [v3 axSafelyAddObjectsFromArray:v4];
+  accessibilityCustomActions = [(GKMultiplayerParticipantCollectionViewCellAccessibility *)&v17 accessibilityCustomActions];
+  [array axSafelyAddObjectsFromArray:accessibilityCustomActions];
 
   v16 = 0;
   objc_opt_class();
@@ -38,10 +38,10 @@
     v15 = v6;
     v9 = [v7 initWithName:v8 actionHandler:&v11];
 
-    [v3 axSafelyAddObject:{v9, v11, v12, v13, v14}];
+    [array axSafelyAddObject:{v9, v11, v12, v13, v14}];
   }
 
-  return v3;
+  return array;
 }
 
 @end

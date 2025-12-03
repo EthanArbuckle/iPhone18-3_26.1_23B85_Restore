@@ -1,7 +1,7 @@
 @interface EFDevice
 + (EFDevice)currentDevice;
 + (OS_os_log)log;
-+ (void)setCurrentDevice:(id)a3;
++ (void)setCurrentDevice:(id)device;
 - (BOOL)isPad;
 - (BOOL)isPhone;
 - (BOOL)isRealityDevice;
@@ -119,21 +119,21 @@ void __17__EFDevice_isPad__block_invoke()
   identifier = self->_identifier;
   if (!identifier)
   {
-    v4 = [MEMORY[0x1E696AC08] defaultManager];
-    v5 = [v4 containerURLForSecurityApplicationGroupIdentifier:@"group.com.apple.mail"];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v5 = [defaultManager containerURLForSecurityApplicationGroupIdentifier:@"group.com.apple.mail"];
 
     if (v5)
     {
-      v6 = [objc_alloc(MEMORY[0x1E695E000]) initWithSuiteName:@"group.com.apple.mail"];
+      standardUserDefaults = [objc_alloc(MEMORY[0x1E695E000]) initWithSuiteName:@"group.com.apple.mail"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695E000] standardUserDefaults];
+      standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
     }
 
-    v7 = v6;
-    v8 = [v6 stringForKey:@"DeviceIdentifier"];
+    v7 = standardUserDefaults;
+    v8 = [standardUserDefaults stringForKey:@"DeviceIdentifier"];
     if (v8)
     {
       v9 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:v8];
@@ -147,8 +147,8 @@ void __17__EFDevice_isPad__block_invoke()
       v12 = self->_identifier;
       self->_identifier = v11;
 
-      v13 = [(NSUUID *)self->_identifier UUIDString];
-      [v7 setObject:v13 forKey:@"DeviceIdentifier"];
+      uUIDString = [(NSUUID *)self->_identifier UUIDString];
+      [v7 setObject:uUIDString forKey:@"DeviceIdentifier"];
     }
 
     identifier = self->_identifier;
@@ -188,7 +188,7 @@ void __27__EFDevice_isRealityDevice__block_invoke()
   block[1] = 3221225472;
   block[2] = __15__EFDevice_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_1 != -1)
   {
     dispatch_once(&log_onceToken_1, block);
@@ -207,26 +207,26 @@ void __15__EFDevice_log__block_invoke(uint64_t a1)
   log_log_1 = v1;
 }
 
-+ (void)setCurrentDevice:(id)a3
++ (void)setCurrentDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   if (currentDeviceOnceToken == -1)
   {
-    if (v4)
+    if (deviceCopy)
     {
 LABEL_3:
-      v5 = v4;
-      objc_storeStrong(&sCurrentDevice, a3);
-      v4 = v5;
+      v5 = deviceCopy;
+      objc_storeStrong(&sCurrentDevice, device);
+      deviceCopy = v5;
       goto LABEL_6;
     }
   }
 
   else
   {
-    v6 = v4;
+    v6 = deviceCopy;
     +[EFDevice setCurrentDevice:];
-    v4 = v6;
+    deviceCopy = v6;
     if (v6)
     {
       goto LABEL_3;

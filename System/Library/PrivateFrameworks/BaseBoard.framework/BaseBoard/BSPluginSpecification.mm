@@ -1,20 +1,20 @@
 @interface BSPluginSpecification
-+ (id)specificationsFromHostBundle:(uint64_t)a1;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
++ (id)specificationsFromHostBundle:(uint64_t)bundle;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
-- (uint64_t)matchesPluginBundle:(uint64_t)a1;
+- (uint64_t)matchesPluginBundle:(uint64_t)bundle;
 @end
 
 @implementation BSPluginSpecification
 
-+ (id)specificationsFromHostBundle:(uint64_t)a1
++ (id)specificationsFromHostBundle:(uint64_t)bundle
 {
   v36 = *MEMORY[0x1E69E9840];
   v27 = a2;
   v2 = objc_opt_self();
-  v28 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v3 = [v27 URLForResource:@"PluginSpecification" withExtension:@"plist"];
   if (v3)
   {
@@ -23,8 +23,8 @@
 
   else
   {
-    v5 = [v27 infoDictionary];
-    v4 = [v5 bs_safeArrayForKey:@"BSPluginSpecification"];
+    infoDictionary = [v27 infoDictionary];
+    v4 = [infoDictionary bs_safeArrayForKey:@"BSPluginSpecification"];
   }
 
   v32 = 0u;
@@ -78,7 +78,7 @@
 
             if (v12[2] && v12[3])
             {
-              [v28 addObject:v12];
+              [array addObject:v12];
             }
           }
 
@@ -96,30 +96,30 @@
     while (v6);
   }
 
-  return v28;
+  return array;
 }
 
-- (uint64_t)matchesPluginBundle:(uint64_t)a1
+- (uint64_t)matchesPluginBundle:(uint64_t)bundle
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (bundle)
   {
-    v5 = *(a1 + 16);
-    v6 = [v3 type];
-    LODWORD(v5) = [v5 isEqualToString:v6];
-    a1 = v5 && ((v7 = *(a1 + 8)) == 0 || ([v4 name], v8 = ;
+    v5 = *(bundle + 16);
+    type = [v3 type];
+    LODWORD(v5) = [v5 isEqualToString:type];
+    bundle = v5 && ((v7 = *(bundle + 8)) == 0 || ([v4 name], v8 = ;
   }
 
-  return a1;
+  return bundle;
 }
 
 - (id)succinctDescription
 {
-  v2 = [(BSPluginSpecification *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(BSPluginSpecification *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -131,19 +131,19 @@
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(BSPluginSpecification *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(BSPluginSpecification *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v3 = [(BSPluginSpecification *)self succinctDescriptionBuilder];
+  succinctDescriptionBuilder = [(BSPluginSpecification *)self succinctDescriptionBuilder];
 
-  return v3;
+  return succinctDescriptionBuilder;
 }
 
 @end

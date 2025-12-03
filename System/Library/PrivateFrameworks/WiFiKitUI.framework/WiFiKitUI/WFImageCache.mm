@@ -1,9 +1,9 @@
 @interface WFImageCache
 + (id)sharedImageCache;
-- (BOOL)_isUIKitImageName:(id)a3;
+- (BOOL)_isUIKitImageName:(id)name;
 - (WFImageCache)init;
-- (id)imageNamed:(id)a3;
-- (id)imageNamed:(id)a3 variableValue:(double)a4;
+- (id)imageNamed:(id)named;
+- (id)imageNamed:(id)named variableValue:(double)value;
 @end
 
 @implementation WFImageCache
@@ -57,23 +57,23 @@ id __41__WFImageCache_imageNamed_variableValue___block_invoke(uint64_t a1, void 
   return v2;
 }
 
-- (BOOL)_isUIKitImageName:(id)a3
+- (BOOL)_isUIKitImageName:(id)name
 {
   v3 = MEMORY[0x277CBEB98];
-  v4 = a3;
+  nameCopy = name;
   v5 = [v3 setWithObjects:{@"LockScreen_0_Bars", @"LockScreen_1_Bars", @"LockScreen_2_Bars", @"LockScreen_3_Bars", @"LockScreen_4_Bars", 0}];
-  v6 = [v5 containsObject:v4];
+  v6 = [v5 containsObject:nameCopy];
 
   return v6;
 }
 
-- (id)imageNamed:(id)a3
+- (id)imageNamed:(id)named
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  namedCopy = named;
+  if (namedCopy)
   {
-    v5 = [(NSMutableDictionary *)self->_imageCache objectForKey:v4];
+    v5 = [(NSMutableDictionary *)self->_imageCache objectForKey:namedCopy];
     if (v5)
     {
       goto LABEL_9;
@@ -97,13 +97,13 @@ id __41__WFImageCache_imageNamed_variableValue___block_invoke(uint64_t a1, void 
       goto LABEL_31;
     }
 
-    if ([(WFImageCache *)self _isUIKitImageName:v4])
+    if ([(WFImageCache *)self _isUIKitImageName:namedCopy])
     {
-      v7 = [MEMORY[0x277D755B8] kitImageNamed:v4];
+      v7 = [MEMORY[0x277D755B8] kitImageNamed:namedCopy];
       goto LABEL_6;
     }
 
-    if ([(__CFString *)v4 isEqualToString:@"checkmark"])
+    if ([(__CFString *)namedCopy isEqualToString:@"checkmark"])
     {
       [MEMORY[0x277D74310] defaultFontDescriptorWithTextStyle:*MEMORY[0x277D76918]];
       objc_claimAutoreleasedReturnValue();
@@ -117,7 +117,7 @@ id __41__WFImageCache_imageNamed_variableValue___block_invoke(uint64_t a1, void 
       v17 = @"checkmark";
     }
 
-    else if ([(__CFString *)v4 isEqualToString:@"Lock"])
+    else if ([(__CFString *)namedCopy isEqualToString:@"Lock"])
     {
       [MEMORY[0x277D74310] defaultFontDescriptorWithTextStyle:*MEMORY[0x277D76918]];
       objc_claimAutoreleasedReturnValue();
@@ -131,7 +131,7 @@ id __41__WFImageCache_imageNamed_variableValue___block_invoke(uint64_t a1, void 
       v17 = @"lock.fill";
     }
 
-    else if ([(__CFString *)v4 isEqualToString:@"Personal_Hotspot"])
+    else if ([(__CFString *)namedCopy isEqualToString:@"Personal_Hotspot"])
     {
       [MEMORY[0x277D74310] defaultFontDescriptorWithTextStyle:*MEMORY[0x277D76918]];
       objc_claimAutoreleasedReturnValue();
@@ -147,15 +147,15 @@ id __41__WFImageCache_imageNamed_variableValue___block_invoke(uint64_t a1, void 
 
     else
     {
-      if (![(__CFString *)v4 isEqualToString:@"WiFiBarsError"])
+      if (![(__CFString *)namedCopy isEqualToString:@"WiFiBarsError"])
       {
-        v7 = [MEMORY[0x277D755B8] imageNamed:v4 inBundle:v6 compatibleWithTraitCollection:0];
+        v7 = [MEMORY[0x277D755B8] imageNamed:namedCopy inBundle:v6 compatibleWithTraitCollection:0];
 LABEL_6:
         v5 = v7;
         if (v7)
         {
 LABEL_7:
-          [(NSMutableDictionary *)self->_imageCache setObject:v5 forKey:v4];
+          [(NSMutableDictionary *)self->_imageCache setObject:v5 forKey:namedCopy];
 LABEL_8:
 
           goto LABEL_9;
@@ -192,7 +192,7 @@ LABEL_21:
     }
 
     v33 = 138412290;
-    v34 = v4;
+    v34 = namedCopy;
     v29 = "Unable to get image named %@";
     v30 = v27;
     v31 = v28;
@@ -212,13 +212,13 @@ LABEL_9:
   return v5;
 }
 
-- (id)imageNamed:(id)a3 variableValue:(double)a4
+- (id)imageNamed:(id)named variableValue:(double)value
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (v6)
+  namedCopy = named;
+  if (namedCopy)
   {
-    v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%f", v6, *&a4];
+    v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%f", namedCopy, *&value];
     v8 = [(WFImageCache *)self imageNamed:v7];
     if (v8)
     {
@@ -226,7 +226,7 @@ LABEL_9:
       goto LABEL_14;
     }
 
-    if (([v6 isEqualToString:@"wifi"] & 1) != 0 || objc_msgSend(v6, "isEqualToString:", @"cellularbars"))
+    if (([namedCopy isEqualToString:@"wifi"] & 1) != 0 || objc_msgSend(namedCopy, "isEqualToString:", @"cellularbars"))
     {
       v10 = [MEMORY[0x277D75348] colorWithDynamicProvider:&__block_literal_global_60];
       v11 = [MEMORY[0x277D755D0] configurationWithHierarchicalColor:v10];
@@ -236,7 +236,7 @@ LABEL_9:
       v14 = [MEMORY[0x277D74300] fontWithDescriptor:v13 size:0.0];
       v15 = [MEMORY[0x277D755D0] configurationWithFont:v14 scale:1];
       v16 = [v11 configurationByApplyingConfiguration:v15];
-      v9 = [MEMORY[0x277D755B8] systemImageNamed:v6 variableValue:v16 withConfiguration:a4];
+      v9 = [MEMORY[0x277D755B8] systemImageNamed:namedCopy variableValue:v16 withConfiguration:value];
 
       if (v9)
       {

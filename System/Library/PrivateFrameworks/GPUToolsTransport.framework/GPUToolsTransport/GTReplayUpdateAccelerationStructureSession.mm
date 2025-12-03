@@ -1,20 +1,20 @@
 @interface GTReplayUpdateAccelerationStructureSession
-- (GTReplayUpdateAccelerationStructureSession)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (GTReplayUpdateAccelerationStructureSession)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation GTReplayUpdateAccelerationStructureSession
 
-- (GTReplayUpdateAccelerationStructureSession)initWithCoder:(id)a3
+- (GTReplayUpdateAccelerationStructureSession)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = GTReplayUpdateAccelerationStructureSession;
-  v5 = [(GTReplayRequest *)&v10 initWithCoder:v4];
+  v5 = [(GTReplayRequest *)&v10 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_sessionsID = [v4 decodeInt64ForKey:@"sessionsID"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"data"];
+    v5->_sessionsID = [coderCopy decodeInt64ForKey:@"sessionsID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"data"];
     data = v5->_data;
     v5->_data = v6;
 
@@ -24,14 +24,14 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = GTReplayUpdateAccelerationStructureSession;
-  v4 = a3;
-  [(GTReplayRequest *)&v5 encodeWithCoder:v4];
-  [v4 encodeInt64:self->_sessionsID forKey:{@"sessionsID", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_data forKey:@"data"];
+  coderCopy = coder;
+  [(GTReplayRequest *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInt64:self->_sessionsID forKey:{@"sessionsID", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_data forKey:@"data"];
 }
 
 @end

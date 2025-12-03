@@ -1,30 +1,30 @@
 @interface _UIBarBackgroundAppearanceData
-+ (id)decodeFromCoder:(id)a3 prefix:(id)a4;
++ (id)decodeFromCoder:(id)coder prefix:(id)prefix;
 + (id)opaqueBackgroundData;
 + (id)standardBackgroundData;
 + (id)transparentBackgroundData;
-- (BOOL)checkEqualTo:(id)a3;
+- (BOOL)checkEqualTo:(id)to;
 - (UIBlurEffect)backgroundEffect;
 - (UIColor)shadowViewBackgroundColor;
 - (UIColor)shadowViewTintColor;
 - (UIVibrancyEffect)shadowViewEffect;
 - (UIVibrancyEffect)tabBarVibrancyEffect;
 - (id)replicate;
-- (int64_t)hashInto:(int64_t)a3;
+- (int64_t)hashInto:(int64_t)into;
 - (void)_updateBackgroundFlags;
 - (void)_updateShadowFlags;
 - (void)configureWithDefaultShadow;
 - (void)configureWithoutShadow;
-- (void)describeInto:(id)a3;
-- (void)encodeToCoder:(id)a3 prefix:(id)a4;
-- (void)setBackgroundColor:(id)a3;
-- (void)setBackgroundEffect:(id)a3;
-- (void)setBackgroundEffects:(id)a3;
-- (void)setBackgroundImage:(id)a3;
-- (void)setOverrideTabBarVibrancyEffect:(id)a3;
-- (void)setShadowColor:(id)a3;
-- (void)setShadowEffect:(id)a3;
-- (void)setShadowImage:(id)a3;
+- (void)describeInto:(id)into;
+- (void)encodeToCoder:(id)coder prefix:(id)prefix;
+- (void)setBackgroundColor:(id)color;
+- (void)setBackgroundEffect:(id)effect;
+- (void)setBackgroundEffects:(id)effects;
+- (void)setBackgroundImage:(id)image;
+- (void)setOverrideTabBarVibrancyEffect:(id)effect;
+- (void)setShadowColor:(id)color;
+- (void)setShadowEffect:(id)effect;
+- (void)setShadowImage:(id)image;
 @end
 
 @implementation _UIBarBackgroundAppearanceData
@@ -82,7 +82,7 @@
     v11[13] = 0;
     [v11 _updateBackgroundFlags];
     [_MergedGlobals_1 configureWithDefaultShadow];
-    v12 = [_MergedGlobals_1 markReadOnly];
+    markReadOnly = [_MergedGlobals_1 markReadOnly];
     v2 = _MergedGlobals_1;
   }
 
@@ -141,15 +141,15 @@
 {
   if (*&self->_flags)
   {
-    v4 = [(NSArray *)self->_backgroundEffects firstObject];
+    firstObject = [(NSArray *)self->_backgroundEffects firstObject];
   }
 
   else
   {
-    v4 = 0;
+    firstObject = 0;
   }
 
-  return v4;
+  return firstObject;
 }
 
 - (void)configureWithoutShadow
@@ -195,7 +195,7 @@
     v9[13] = 1;
     [v9 _updateBackgroundFlags];
     [qword_1ED499180 configureWithoutShadow];
-    v10 = [qword_1ED499180 markReadOnly];
+    markReadOnly = [qword_1ED499180 markReadOnly];
     v2 = qword_1ED499180;
   }
 
@@ -206,38 +206,38 @@
 {
   v17.receiver = self;
   v17.super_class = _UIBarBackgroundAppearanceData;
-  v3 = [(_UIBarAppearanceData *)&v17 replicate];
-  *(v3 + 16) = *&self->_flags;
+  replicate = [(_UIBarAppearanceData *)&v17 replicate];
+  *(replicate + 16) = *&self->_flags;
   v4 = [(NSArray *)self->_backgroundEffects copy];
-  v5 = *(v3 + 40);
-  *(v3 + 40) = v4;
+  v5 = *(replicate + 40);
+  *(replicate + 40) = v4;
 
   v6 = [(UIColor *)self->_backgroundColor copy];
-  v7 = *(v3 + 48);
-  *(v3 + 48) = v6;
+  v7 = *(replicate + 48);
+  *(replicate + 48) = v6;
 
-  objc_storeStrong((v3 + 56), self->_backgroundImage);
-  *(v3 + 64) = self->_backgroundImageContentMode;
-  *(v3 + 104) = self->_visibility;
-  *(v3 + 112) = self->_visibilityOnScrollDistance;
+  objc_storeStrong((replicate + 56), self->_backgroundImage);
+  *(replicate + 64) = self->_backgroundImageContentMode;
+  *(replicate + 104) = self->_visibility;
+  *(replicate + 112) = self->_visibilityOnScrollDistance;
   v8 = [(UIVibrancyEffect *)self->_overrideTabBarVibrancyEffect copy];
-  v9 = *(v3 + 72);
-  *(v3 + 72) = v8;
+  v9 = *(replicate + 72);
+  *(replicate + 72) = v8;
 
   v10 = [(UIVibrancyEffect *)self->_shadowEffect copy];
-  v11 = *(v3 + 96);
-  *(v3 + 96) = v10;
+  v11 = *(replicate + 96);
+  *(replicate + 96) = v10;
 
-  objc_storeStrong((v3 + 88), self->_shadowImage);
+  objc_storeStrong((replicate + 88), self->_shadowImage);
   v12 = [(UIColor *)self->_shadowColor copy];
-  v13 = *(v3 + 80);
-  *(v3 + 80) = v12;
+  v13 = *(replicate + 80);
+  *(replicate + 80) = v12;
 
   v14 = [(UIVibrancyEffect *)self->_tabBarVibrancyEffect copy];
-  v15 = *(v3 + 32);
-  *(v3 + 32) = v14;
+  v15 = *(replicate + 32);
+  *(replicate + 32) = v14;
 
-  return v3;
+  return replicate;
 }
 
 - (UIVibrancyEffect)shadowViewEffect
@@ -340,37 +340,37 @@
     v9[13] = 2;
     [v9 _updateBackgroundFlags];
     [qword_1ED499178 configureWithDefaultShadow];
-    v10 = [qword_1ED499178 markReadOnly];
+    markReadOnly = [qword_1ED499178 markReadOnly];
     v2 = qword_1ED499178;
   }
 
   return v2;
 }
 
-+ (id)decodeFromCoder:(id)a3 prefix:(id)a4
++ (id)decodeFromCoder:(id)coder prefix:(id)prefix
 {
   v59[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  coderCopy = coder;
+  prefixCopy = prefix;
   v8 = @"Style";
-  if (v7)
+  if (prefixCopy)
   {
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v7, @"Style"];
+    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", prefixCopy, @"Style"];
   }
 
-  if (![v6 containsValueForKey:v8])
+  if (![coderCopy containsValueForKey:v8])
   {
     v11 = objc_opt_new();
     v12 = objc_opt_class();
-    if (v7)
+    if (prefixCopy)
     {
-      v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v7, @"Effect"];
-      v14 = [v6 decodeObjectOfClass:v12 forKey:v13];
+      v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", prefixCopy, @"Effect"];
+      v14 = [coderCopy decodeObjectOfClass:v12 forKey:v13];
     }
 
     else
     {
-      v14 = [v6 decodeObjectOfClass:v12 forKey:@"Effect"];
+      v14 = [coderCopy decodeObjectOfClass:v12 forKey:@"Effect"];
     }
 
     if (v14)
@@ -391,12 +391,12 @@
       v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v58 count:2];
       v20 = [v18 setWithArray:v19];
       v21 = @"Effects";
-      if (v7)
+      if (prefixCopy)
       {
-        v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v7, @"Effects", v58[0]];
+        v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", prefixCopy, @"Effects", v58[0]];
       }
 
-      v22 = [v6 decodeObjectOfClasses:v20 forKey:v21];
+      v22 = [coderCopy decodeObjectOfClasses:v20 forKey:v21];
       v23 = v22;
       if (v22)
       {
@@ -410,7 +410,7 @@
 
       objc_storeStrong((v11 + 40), v24);
 
-      if (v7)
+      if (prefixCopy)
       {
       }
 
@@ -420,20 +420,20 @@
     *(v11 + 16) = v17;
     v25 = objc_opt_class();
     v26 = @"Color";
-    if (v7)
+    if (prefixCopy)
     {
-      v26 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v7, @"Color"];
+      v26 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", prefixCopy, @"Color"];
     }
 
-    v27 = [v6 decodeObjectOfClass:v25 forKey:v26];
+    v27 = [coderCopy decodeObjectOfClass:v25 forKey:v26];
     v28 = *(v11 + 48);
     *(v11 + 48) = v27;
 
-    if (v7)
+    if (prefixCopy)
     {
 
       v29 = objc_opt_class();
-      v30 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v7, @"Image"];
+      v30 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", prefixCopy, @"Image"];
     }
 
     else
@@ -442,47 +442,47 @@
       v30 = @"Image";
     }
 
-    v31 = [v6 decodeObjectOfClass:v29 forKey:v30];
+    v31 = [coderCopy decodeObjectOfClass:v29 forKey:v30];
     v32 = *(v11 + 56);
     *(v11 + 56) = v31;
 
-    if (v7)
+    if (prefixCopy)
     {
 
-      v33 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v7, @"ImageContentMode"];
-      *(v11 + 64) = [v6 decodeIntegerForKey:v33];
+      v33 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", prefixCopy, @"ImageContentMode"];
+      *(v11 + 64) = [coderCopy decodeIntegerForKey:v33];
 
       [v11 _updateBackgroundFlags];
-      v34 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v7, @"Visibility"];
-      v35 = [v6 decodeIntegerForKey:v34];
+      v34 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", prefixCopy, @"Visibility"];
+      v35 = [coderCopy decodeIntegerForKey:v34];
 
       if (!v35)
       {
 LABEL_34:
-        v41 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v7, @"ShadowVersion"];
-        v42 = [v6 decodeIntegerForKey:v41];
+        v41 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", prefixCopy, @"ShadowVersion"];
+        v42 = [coderCopy decodeIntegerForKey:v41];
 
         goto LABEL_36;
       }
 
       *(v11 + 104) = v35;
-      v36 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v7, @"VisibilityOnScrollDistance"];
-      [v6 decodeDoubleForKey:v36];
+      v36 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", prefixCopy, @"VisibilityOnScrollDistance"];
+      [coderCopy decodeDoubleForKey:v36];
       v38 = v37;
     }
 
     else
     {
-      *(v11 + 64) = [v6 decodeIntegerForKey:@"ImageContentMode"];
+      *(v11 + 64) = [coderCopy decodeIntegerForKey:@"ImageContentMode"];
       [v11 _updateBackgroundFlags];
-      v39 = [v6 decodeIntegerForKey:@"Visibility"];
+      v39 = [coderCopy decodeIntegerForKey:@"Visibility"];
       if (!v39)
       {
         goto LABEL_35;
       }
 
       *(v11 + 104) = v39;
-      [v6 decodeDoubleForKey:@"VisibilityOnScrollDistance"];
+      [coderCopy decodeDoubleForKey:@"VisibilityOnScrollDistance"];
       v38 = v40;
     }
 
@@ -491,28 +491,28 @@ LABEL_34:
       *(v11 + 112) = v38;
     }
 
-    if (v7)
+    if (prefixCopy)
     {
       goto LABEL_34;
     }
 
 LABEL_35:
-    v42 = [v6 decodeIntegerForKey:@"ShadowVersion"];
+    v42 = [coderCopy decodeIntegerForKey:@"ShadowVersion"];
 LABEL_36:
     if (v42 == 2)
     {
       v47 = objc_opt_class();
       v48 = @"ShadowEffect";
-      if (v7)
+      if (prefixCopy)
       {
-        v48 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v7, @"ShadowEffect"];
+        v48 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", prefixCopy, @"ShadowEffect"];
       }
 
-      v49 = [v6 decodeObjectOfClass:v47 forKey:v48];
+      v49 = [coderCopy decodeObjectOfClass:v47 forKey:v48];
       v50 = *(v11 + 96);
       *(v11 + 96) = v49;
 
-      if (!v7)
+      if (!prefixCopy)
       {
         v51 = objc_opt_class();
         v44 = @"ShadowColor";
@@ -520,7 +520,7 @@ LABEL_36:
       }
 
       v51 = objc_opt_class();
-      [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v7, @"ShadowColor"];
+      [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", prefixCopy, @"ShadowColor"];
     }
 
     else
@@ -529,32 +529,32 @@ LABEL_36:
       {
         v43 = objc_opt_class();
         v44 = @"ShadowEffect";
-        if (v7)
+        if (prefixCopy)
         {
-          v44 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v7, @"ShadowEffect"];
+          v44 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", prefixCopy, @"ShadowEffect"];
         }
 
-        v45 = [v6 decodeObjectOfClass:v43 forKey:v44];
+        v45 = [coderCopy decodeObjectOfClass:v43 forKey:v44];
         v46 = 96;
         goto LABEL_54;
       }
 
       v51 = objc_opt_class();
       v44 = @"ShadowColor";
-      if (!v7)
+      if (!prefixCopy)
       {
 LABEL_53:
-        v45 = [v6 decodeObjectOfClass:v51 forKey:v44];
+        v45 = [coderCopy decodeObjectOfClass:v51 forKey:v44];
         v46 = 80;
 LABEL_54:
         v52 = *(v11 + v46);
         *(v11 + v46) = v45;
 
-        if (v7)
+        if (prefixCopy)
         {
 
           v53 = objc_opt_class();
-          v54 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v7, @"ShadowImage"];
+          v54 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", prefixCopy, @"ShadowImage"];
         }
 
         else
@@ -563,11 +563,11 @@ LABEL_54:
           v54 = @"ShadowImage";
         }
 
-        v55 = [v6 decodeObjectOfClass:v53 forKey:v54];
+        v55 = [coderCopy decodeObjectOfClass:v53 forKey:v54];
         v56 = *(v11 + 88);
         *(v11 + 88) = v55;
 
-        if (v7)
+        if (prefixCopy)
         {
         }
 
@@ -576,25 +576,25 @@ LABEL_54:
         goto LABEL_60;
       }
 
-      [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v7, @"ShadowColor"];
+      [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", prefixCopy, @"ShadowColor"];
     }
     v44 = ;
     goto LABEL_53;
   }
 
-  v9 = [v6 decodeIntegerForKey:v8];
+  v9 = [coderCopy decodeIntegerForKey:v8];
   switch(v9)
   {
     case 3:
-      v10 = [a1 transparentBackgroundData];
+      transparentBackgroundData = [self transparentBackgroundData];
       goto LABEL_50;
     case 2:
-      v10 = [a1 opaqueBackgroundData];
+      transparentBackgroundData = [self opaqueBackgroundData];
       goto LABEL_50;
     case 1:
-      v10 = [a1 standardBackgroundData];
+      transparentBackgroundData = [self standardBackgroundData];
 LABEL_50:
-      v11 = v10;
+      v11 = transparentBackgroundData;
       goto LABEL_60;
   }
 
@@ -604,22 +604,22 @@ LABEL_60:
   return v11;
 }
 
-- (void)encodeToCoder:(id)a3 prefix:(id)a4
+- (void)encodeToCoder:(id)coder prefix:(id)prefix
 {
-  v51 = a3;
-  v6 = a4;
-  v7 = v6;
+  coderCopy = coder;
+  prefixCopy = prefix;
+  v7 = prefixCopy;
   if (_MergedGlobals_1 == self)
   {
-    if (!v6)
+    if (!prefixCopy)
     {
-      v16 = v51;
+      v16 = coderCopy;
       v17 = 1;
       goto LABEL_20;
     }
 
-    v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v6, @"Style"];
-    v14 = v51;
+    v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", prefixCopy, @"Style"];
+    v14 = coderCopy;
     v15 = 1;
 LABEL_14:
     [v14 encodeInteger:v15 forKey:v13];
@@ -629,30 +629,30 @@ LABEL_14:
 
   if (qword_1ED499178 == self)
   {
-    if (!v6)
+    if (!prefixCopy)
     {
-      v16 = v51;
+      v16 = coderCopy;
       v17 = 2;
       goto LABEL_20;
     }
 
-    v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v6, @"Style"];
-    v14 = v51;
+    v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", prefixCopy, @"Style"];
+    v14 = coderCopy;
     v15 = 2;
     goto LABEL_14;
   }
 
   if (qword_1ED499180 == self)
   {
-    if (v6)
+    if (prefixCopy)
     {
-      v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v6, @"Style"];
-      v14 = v51;
+      v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", prefixCopy, @"Style"];
+      v14 = coderCopy;
       v15 = 3;
       goto LABEL_14;
     }
 
-    v16 = v51;
+    v16 = coderCopy;
     v17 = 3;
 LABEL_20:
     [v16 encodeInteger:v17 forKey:@"Style"];
@@ -664,40 +664,40 @@ LABEL_20:
     backgroundEffects = self->_backgroundEffects;
     if (*&self->_flags)
     {
-      v9 = [(NSArray *)self->_backgroundEffects firstObject];
+      firstObject = [(NSArray *)self->_backgroundEffects firstObject];
       if (v7)
       {
         v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v7, @"Effect"];
-        [v51 encodeObject:v9 forKey:v18];
+        [coderCopy encodeObject:firstObject forKey:v18];
 
 LABEL_25:
         goto LABEL_26;
       }
 
       v12 = @"Effect";
-      v10 = v51;
-      v11 = v9;
+      v10 = coderCopy;
+      v11 = firstObject;
     }
 
     else
     {
       if (!v7)
       {
-        [v51 encodeObject:self->_backgroundEffects forKey:@"Effects"];
+        [coderCopy encodeObject:self->_backgroundEffects forKey:@"Effects"];
         backgroundColor = self->_backgroundColor;
         if (!backgroundColor)
         {
           goto LABEL_31;
         }
 
-        v20 = v51;
+        v20 = coderCopy;
         goto LABEL_30;
       }
 
-      v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v7, @"Effects"];
-      v10 = v51;
+      firstObject = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v7, @"Effects"];
+      v10 = coderCopy;
       v11 = backgroundEffects;
-      v12 = v9;
+      v12 = firstObject;
     }
 
     [v10 encodeObject:v11 forKey:v12];
@@ -714,12 +714,12 @@ LABEL_26:
   if (v7)
   {
     v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v7, @"Color"];
-    [v51 encodeObject:v21 forKey:v22];
+    [coderCopy encodeObject:v21 forKey:v22];
 
     goto LABEL_31;
   }
 
-  v20 = v51;
+  v20 = coderCopy;
   backgroundColor = self->_backgroundColor;
 LABEL_30:
   [v20 encodeObject:backgroundColor forKey:@"Color"];
@@ -737,12 +737,12 @@ LABEL_34:
     if (v7)
     {
       v26 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v7, @"ImageContentMode"];
-      [v51 encodeInteger:backgroundImageContentMode forKey:v26];
+      [coderCopy encodeInteger:backgroundImageContentMode forKey:v26];
 
       goto LABEL_41;
     }
 
-    v28 = v51;
+    v28 = coderCopy;
     v27 = self->_backgroundImageContentMode;
     goto LABEL_40;
   }
@@ -750,19 +750,19 @@ LABEL_34:
   if (v7)
   {
     v24 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v7, @"Image"];
-    [v51 encodeObject:backgroundImage forKey:v24];
+    [coderCopy encodeObject:backgroundImage forKey:v24];
 
     goto LABEL_34;
   }
 
-  [v51 encodeObject:self->_backgroundImage forKey:@"Image"];
+  [coderCopy encodeObject:self->_backgroundImage forKey:@"Image"];
   v27 = self->_backgroundImageContentMode;
   if (!v27)
   {
     goto LABEL_41;
   }
 
-  v28 = v51;
+  v28 = coderCopy;
 LABEL_40:
   [v28 encodeInteger:v27 forKey:@"ImageContentMode"];
 LABEL_41:
@@ -779,12 +779,12 @@ LABEL_44:
     if (v7)
     {
       v32 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v7, @"VisibilityOnScrollDistance"];
-      [v51 encodeDouble:v32 forKey:visibilityOnScrollDistance];
+      [coderCopy encodeDouble:v32 forKey:visibilityOnScrollDistance];
 
       goto LABEL_51;
     }
 
-    v34 = v51;
+    v34 = coderCopy;
     v33 = self->_visibilityOnScrollDistance;
     goto LABEL_50;
   }
@@ -792,19 +792,19 @@ LABEL_44:
   if (v7)
   {
     v30 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v7, @"Visibility"];
-    [v51 encodeInteger:visibility forKey:v30];
+    [coderCopy encodeInteger:visibility forKey:v30];
 
     goto LABEL_44;
   }
 
-  [v51 encodeInteger:self->_visibility forKey:@"Visibility"];
+  [coderCopy encodeInteger:self->_visibility forKey:@"Visibility"];
   v33 = self->_visibilityOnScrollDistance;
   if (v33 == 0.0)
   {
     goto LABEL_51;
   }
 
-  v34 = v51;
+  v34 = coderCopy;
 LABEL_50:
   [v34 encodeDouble:@"VisibilityOnScrollDistance" forKey:v33];
 LABEL_51:
@@ -817,12 +817,12 @@ LABEL_51:
       if (v7)
       {
         v43 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v7, @"ShadowColor"];
-        [v51 encodeObject:shadowColor forKey:v43];
+        [coderCopy encodeObject:shadowColor forKey:v43];
       }
 
       else
       {
-        [v51 encodeObject:self->_shadowColor forKey:@"ShadowColor"];
+        [coderCopy encodeObject:self->_shadowColor forKey:@"ShadowColor"];
       }
     }
 
@@ -832,16 +832,16 @@ LABEL_51:
   if (v7)
   {
     v36 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v7, @"ShadowEffect"];
-    [v51 encodeObject:shadowEffect forKey:v36];
+    [coderCopy encodeObject:shadowEffect forKey:v36];
 
     v37 = self->_shadowColor;
     if (v37)
     {
       v38 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v7, @"ShadowColor"];
-      [v51 encodeObject:v37 forKey:v38];
+      [coderCopy encodeObject:v37 forKey:v38];
 
       v39 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v7, @"ShadowVersion"];
-      v40 = v51;
+      v40 = coderCopy;
       v41 = 2;
 LABEL_62:
       [v40 encodeInteger:v41 forKey:v39];
@@ -852,12 +852,12 @@ LABEL_62:
 
   else
   {
-    [v51 encodeObject:self->_shadowEffect forKey:@"ShadowEffect"];
+    [coderCopy encodeObject:self->_shadowEffect forKey:@"ShadowEffect"];
     v44 = self->_shadowColor;
     if (v44)
     {
-      [v51 encodeObject:v44 forKey:@"ShadowColor"];
-      v45 = v51;
+      [coderCopy encodeObject:v44 forKey:@"ShadowColor"];
+      v45 = coderCopy;
       v46 = 2;
       goto LABEL_65;
     }
@@ -867,17 +867,17 @@ LABEL_62:
   if (v7)
   {
     v48 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v7, @"ShadowColor"];
-    [v51 encodeObject:v47 forKey:v48];
+    [coderCopy encodeObject:v47 forKey:v48];
 
     v39 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v7, @"ShadowVersion"];
-    v40 = v51;
+    v40 = coderCopy;
     v41 = 1;
     goto LABEL_62;
   }
 
-  [v51 encodeObject:v47 forKey:@"ShadowColor"];
+  [coderCopy encodeObject:v47 forKey:@"ShadowColor"];
 
-  v45 = v51;
+  v45 = coderCopy;
   v46 = 1;
 LABEL_65:
   [v45 encodeInteger:v46 forKey:@"ShadowVersion"];
@@ -888,53 +888,53 @@ LABEL_66:
     if (v7)
     {
       v50 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v7, @"ShadowImage"];
-      [v51 encodeObject:shadowImage forKey:v50];
+      [coderCopy encodeObject:shadowImage forKey:v50];
     }
 
     else
     {
-      [v51 encodeObject:shadowImage forKey:@"ShadowImage"];
+      [coderCopy encodeObject:shadowImage forKey:@"ShadowImage"];
     }
   }
 
 LABEL_70:
 }
 
-- (void)describeInto:(id)a3
+- (void)describeInto:(id)into
 {
-  v4 = a3;
+  intoCopy = into;
   v9.receiver = self;
   v9.super_class = _UIBarBackgroundAppearanceData;
-  [(_UIBarAppearanceData *)&v9 describeInto:v4];
+  [(_UIBarAppearanceData *)&v9 describeInto:intoCopy];
   if ([(NSArray *)self->_backgroundEffects count])
   {
     backgroundEffects = self->_backgroundEffects;
     if (*&self->_flags)
     {
-      v6 = [(NSArray *)backgroundEffects firstObject];
-      [v4 appendFormat:@" effect=(%@)", v6];
+      firstObject = [(NSArray *)backgroundEffects firstObject];
+      [intoCopy appendFormat:@" effect=(%@)", firstObject];
     }
 
     else
     {
-      v6 = [(NSArray *)backgroundEffects componentsJoinedByString:@", "];
-      [v4 appendFormat:@" effects=(%@)", v6];
+      firstObject = [(NSArray *)backgroundEffects componentsJoinedByString:@", "];
+      [intoCopy appendFormat:@" effects=(%@)", firstObject];
     }
   }
 
   if (self->_backgroundColor)
   {
-    [v4 appendFormat:@" color=%@", self->_backgroundColor];
+    [intoCopy appendFormat:@" color=%@", self->_backgroundColor];
   }
 
   if (self->_backgroundImage)
   {
-    [v4 appendFormat:@" image=%@ contentMode=%li", self->_backgroundImage, self->_backgroundImageContentMode];
+    [intoCopy appendFormat:@" image=%@ contentMode=%li", self->_backgroundImage, self->_backgroundImageContentMode];
   }
 
   if (self->_visibility)
   {
-    [v4 appendString:@" visibility="];
+    [intoCopy appendString:@" visibility="];
     visibility = self->_visibility;
     if (visibility <= 1)
     {
@@ -947,12 +947,12 @@ LABEL_70:
       {
         v8 = @"hidden";
 LABEL_22:
-        [v4 appendString:v8];
+        [intoCopy appendString:v8];
         goto LABEL_23;
       }
 
 LABEL_19:
-      [v4 appendFormat:@"unknown(%ld)", self->_visibility];
+      [intoCopy appendFormat:@"unknown(%ld)", self->_visibility];
       goto LABEL_23;
     }
 
@@ -967,35 +967,35 @@ LABEL_19:
       goto LABEL_19;
     }
 
-    [v4 appendString:@"visibleOnScroll"];
+    [intoCopy appendString:@"visibleOnScroll"];
     if (self->_visibilityOnScrollDistance > 0.0)
     {
-      [v4 appendFormat:@"(distance=%0.2f)", *&self->_visibilityOnScrollDistance];
+      [intoCopy appendFormat:@"(distance=%0.2f)", *&self->_visibilityOnScrollDistance];
     }
   }
 
 LABEL_23:
   if (self->_shadowEffect)
   {
-    [v4 appendFormat:@" shadowEffect=%@", self->_shadowEffect];
+    [intoCopy appendFormat:@" shadowEffect=%@", self->_shadowEffect];
   }
 
   if (self->_shadowColor)
   {
-    [v4 appendFormat:@" shadowColor=%@", self->_shadowColor];
+    [intoCopy appendFormat:@" shadowColor=%@", self->_shadowColor];
   }
 
   if (self->_shadowImage)
   {
-    [v4 appendFormat:@" shadowImage=%@", self->_shadowImage];
+    [intoCopy appendFormat:@" shadowImage=%@", self->_shadowImage];
   }
 }
 
-- (int64_t)hashInto:(int64_t)a3
+- (int64_t)hashInto:(int64_t)into
 {
   v9.receiver = self;
   v9.super_class = _UIBarBackgroundAppearanceData;
-  v4 = [(_UIBarAppearanceData *)&v9 hashInto:a3];
+  v4 = [(_UIBarAppearanceData *)&v9 hashInto:into];
   v5 = [(NSArray *)self->_backgroundEffects count];
   v6 = 1;
   if (self->_backgroundColor)
@@ -1027,17 +1027,17 @@ LABEL_23:
   return (self->_visibility + v7 * v4 + self->_visibilityOnScrollDistance) << 8;
 }
 
-- (BOOL)checkEqualTo:(id)a3
+- (BOOL)checkEqualTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   v23.receiver = self;
   v23.super_class = _UIBarBackgroundAppearanceData;
-  if (![(_UIBarAppearanceData *)&v23 checkEqualTo:v4]|| self->_backgroundImageContentMode != *(v4 + 8))
+  if (![(_UIBarAppearanceData *)&v23 checkEqualTo:toCopy]|| self->_backgroundImageContentMode != *(toCopy + 8))
   {
     goto LABEL_31;
   }
 
-  v5 = *(v4 + 6);
+  v5 = *(toCopy + 6);
   v6 = self->_backgroundColor;
   v7 = v5;
   v8 = v7;
@@ -1070,7 +1070,7 @@ LABEL_23:
     }
   }
 
-  v11 = *(v4 + 7);
+  v11 = *(toCopy + 7);
   v6 = self->_backgroundImage;
   v12 = v11;
   v8 = v12;
@@ -1103,7 +1103,7 @@ LABEL_23:
     }
   }
 
-  v15 = *(v4 + 5);
+  v15 = *(toCopy + 5);
   v6 = self->_backgroundEffects;
   v16 = v15;
   v8 = v16;
@@ -1126,7 +1126,7 @@ LABEL_23:
     }
   }
 
-  v18 = *(v4 + 9);
+  v18 = *(toCopy + 9);
   v6 = self->_overrideTabBarVibrancyEffect;
   v19 = v18;
   v8 = v19;
@@ -1150,9 +1150,9 @@ LABEL_30:
   }
 
 LABEL_34:
-  if (_deferringTokenEqualToToken(self->_shadowEffect, *(v4 + 12)) && _deferringTokenEqualToToken(self->_shadowColor, *(v4 + 10)) && _deferringTokenEqualToToken(self->_shadowImage, *(v4 + 11)) && self->_visibility == *(v4 + 13))
+  if (_deferringTokenEqualToToken(self->_shadowEffect, *(toCopy + 12)) && _deferringTokenEqualToToken(self->_shadowColor, *(toCopy + 10)) && _deferringTokenEqualToToken(self->_shadowImage, *(toCopy + 11)) && self->_visibility == *(toCopy + 13))
   {
-    v21 = self->_visibilityOnScrollDistance == *(v4 + 14);
+    v21 = self->_visibilityOnScrollDistance == *(toCopy + 14);
     goto LABEL_32;
   }
 
@@ -1163,14 +1163,14 @@ LABEL_32:
   return v21;
 }
 
-- (void)setBackgroundEffect:(id)a3
+- (void)setBackgroundEffect:(id)effect
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  effectCopy = effect;
   [(_UIBarAppearanceData *)self assertMutable:a2];
-  if (v5)
+  if (effectCopy)
   {
-    v8[0] = v5;
+    v8[0] = effectCopy;
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:1];
     backgroundEffects = self->_backgroundEffects;
     self->_backgroundEffects = v6;
@@ -1186,13 +1186,13 @@ LABEL_32:
   [(_UIBarBackgroundAppearanceData *)self _updateBackgroundFlags];
 }
 
-- (void)setBackgroundEffects:(id)a3
+- (void)setBackgroundEffects:(id)effects
 {
-  v7 = a3;
+  effectsCopy = effects;
   [(_UIBarAppearanceData *)self assertMutable:a2];
-  if (v7)
+  if (effectsCopy)
   {
-    v5 = [v7 copy];
+    v5 = [effectsCopy copy];
   }
 
   else
@@ -1207,11 +1207,11 @@ LABEL_32:
   [(_UIBarBackgroundAppearanceData *)self _updateBackgroundFlags];
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   [(_UIBarAppearanceData *)self assertMutable:a2];
-  v6 = [v5 copy];
+  v6 = [colorCopy copy];
 
   backgroundColor = self->_backgroundColor;
   self->_backgroundColor = v6;
@@ -1219,31 +1219,31 @@ LABEL_32:
   [(_UIBarBackgroundAppearanceData *)self _updateBackgroundFlags];
 }
 
-- (void)setBackgroundImage:(id)a3
+- (void)setBackgroundImage:(id)image
 {
-  v5 = a3;
+  imageCopy = image;
   [(_UIBarAppearanceData *)self assertMutable:a2];
   backgroundImage = self->_backgroundImage;
-  self->_backgroundImage = v5;
+  self->_backgroundImage = imageCopy;
 
   [(_UIBarBackgroundAppearanceData *)self _updateBackgroundFlags];
 }
 
-- (void)setOverrideTabBarVibrancyEffect:(id)a3
+- (void)setOverrideTabBarVibrancyEffect:(id)effect
 {
-  v5 = a3;
+  effectCopy = effect;
   [(_UIBarAppearanceData *)self assertMutable:a2];
-  v6 = [v5 copy];
+  v6 = [effectCopy copy];
 
   overrideTabBarVibrancyEffect = self->_overrideTabBarVibrancyEffect;
   self->_overrideTabBarVibrancyEffect = v6;
 }
 
-- (void)setShadowColor:(id)a3
+- (void)setShadowColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   [(_UIBarAppearanceData *)self assertMutable:a2];
-  v6 = [v5 copy];
+  v6 = [colorCopy copy];
 
   shadowColor = self->_shadowColor;
   self->_shadowColor = v6;
@@ -1254,21 +1254,21 @@ LABEL_32:
   [(_UIBarBackgroundAppearanceData *)self _updateShadowFlags];
 }
 
-- (void)setShadowImage:(id)a3
+- (void)setShadowImage:(id)image
 {
-  v5 = a3;
+  imageCopy = image;
   [(_UIBarAppearanceData *)self assertMutable:a2];
   shadowImage = self->_shadowImage;
-  self->_shadowImage = v5;
+  self->_shadowImage = imageCopy;
 
   [(_UIBarBackgroundAppearanceData *)self _updateShadowFlags];
 }
 
-- (void)setShadowEffect:(id)a3
+- (void)setShadowEffect:(id)effect
 {
-  v5 = a3;
+  effectCopy = effect;
   [(_UIBarAppearanceData *)self assertMutable:a2];
-  v6 = [v5 copy];
+  v6 = [effectCopy copy];
 
   shadowEffect = self->_shadowEffect;
   self->_shadowEffect = v6;

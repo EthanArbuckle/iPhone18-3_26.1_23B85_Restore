@@ -8,7 +8,7 @@
 - (void)cancelTransition;
 - (void)cleanupPresentation;
 - (void)prepareForPresentation;
-- (void)updatePresentationWithProgress:(double)a3;
+- (void)updatePresentationWithProgress:(double)progress;
 @end
 
 @implementation CSInterstitialTransitionSource
@@ -25,17 +25,17 @@
   *&self->_transitionContext.value = v23;
   *&self->_transitionContext.interval.start.inclusive = v3;
   *&self->_transitionContext.interval.end.inclusive = v25;
-  v4 = [(CSInterstitialTransitionSource *)self transitioningDelegate];
+  transitioningDelegate = [(CSInterstitialTransitionSource *)self transitioningDelegate];
   v24 = 0u;
   v25 = 0u;
   v23 = 0u;
-  v5 = [v4 coverSheetView];
-  [v5 bounds];
+  coverSheetView = [transitioningDelegate coverSheetView];
+  [coverSheetView bounds];
   CSComponentTransitionInputsMake(0, &v23, 0.0, 0.0, v6 / -6.0, 0.0, 0.0);
 
   v7 = objc_opt_new();
-  v8 = [(CSInterstitialTransitionSource *)self appearanceIdentifier];
-  v9 = [v7 identifier:v8];
+  appearanceIdentifier = [(CSInterstitialTransitionSource *)self appearanceIdentifier];
+  v9 = [v7 identifier:appearanceIdentifier];
   v10 = [v9 transitionModifiers:8];
   v20 = v23;
   v21 = v24;
@@ -48,19 +48,19 @@
   if (SBSIsSystemApertureAvailable())
   {
     v14 = objc_opt_new();
-    v15 = [(CSInterstitialTransitionSource *)self appearanceIdentifier];
-    v16 = [v14 identifier:v15];
+    appearanceIdentifier2 = [(CSInterstitialTransitionSource *)self appearanceIdentifier];
+    v16 = [v14 identifier:appearanceIdentifier2];
     v17 = [v16 priority:60];
     v18 = [v17 hidden:1];
     statusBar = self->_statusBar;
     self->_statusBar = v18;
   }
 
-  [v4 transitionSource:self willBeginWithType:self->_transitionType];
+  [transitioningDelegate transitionSource:self willBeginWithType:self->_transitionType];
   [(CSInterstitialTransitionSource *)self updatePresentationWithProgress:0.0];
 }
 
-- (void)updatePresentationWithProgress:(double)a3
+- (void)updatePresentationWithProgress:(double)progress
 {
   v7 = 0u;
   v8 = 0x3FF0000000000000;
@@ -71,12 +71,12 @@
   *&self->_transitionContext.value = v10;
   *&self->_transitionContext.interval.start.inclusive = v4;
   *&self->_transitionContext.interval.end.inclusive = v12;
-  v5 = [(CSInterstitialTransitionSource *)self transitioningDelegate];
+  transitioningDelegate = [(CSInterstitialTransitionSource *)self transitioningDelegate];
   v6 = *&self->_transitionContext.interval.start.inclusive;
   v10 = *&self->_transitionContext.value;
   v11 = v6;
   v12 = *&self->_transitionContext.interval.end.inclusive;
-  [v5 transitionSource:self didUpdateTransitionWithContext:&v10];
+  [transitioningDelegate transitionSource:self didUpdateTransitionWithContext:&v10];
 }
 
 - (void)cleanupPresentation
@@ -85,12 +85,12 @@
   self->_homeAffordance = 0;
 
   self->_transitionType = 0;
-  v4 = [(CSInterstitialTransitionSource *)self transitioningDelegate];
+  transitioningDelegate = [(CSInterstitialTransitionSource *)self transitioningDelegate];
   v5 = *&self->_transitionContext.interval.start.inclusive;
   v6[0] = *&self->_transitionContext.value;
   v6[1] = v5;
   v6[2] = *&self->_transitionContext.interval.end.inclusive;
-  [v4 transitionSource:self didEndWithContext:v6];
+  [transitioningDelegate transitionSource:self didEndWithContext:v6];
 }
 
 - (NSString)coverSheetIdentifier

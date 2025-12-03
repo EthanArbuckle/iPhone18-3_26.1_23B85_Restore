@@ -1,15 +1,15 @@
 @interface SIE5RTPort
-- (id)initPortWithE5RTStreamOperation:(e5rt_execution_stream_operation *)a3 blobName:(id)a4 portType:(int64_t)a5 operationBackend:(int64_t)a6 surfaceAllocator:(id)a7;
-- (int64_t)bindPixelBuffer:(__CVBuffer *)a3;
+- (id)initPortWithE5RTStreamOperation:(e5rt_execution_stream_operation *)operation blobName:(id)name portType:(int64_t)type operationBackend:(int64_t)backend surfaceAllocator:(id)allocator;
+- (int64_t)bindPixelBuffer:(__CVBuffer *)buffer;
 @end
 
 @implementation SIE5RTPort
 
-- (id)initPortWithE5RTStreamOperation:(e5rt_execution_stream_operation *)a3 blobName:(id)a4 portType:(int64_t)a5 operationBackend:(int64_t)a6 surfaceAllocator:(id)a7
+- (id)initPortWithE5RTStreamOperation:(e5rt_execution_stream_operation *)operation blobName:(id)name portType:(int64_t)type operationBackend:(int64_t)backend surfaceAllocator:(id)allocator
 {
   v40 = *MEMORY[0x277D85DE8];
-  v12 = a4;
-  v13 = a7;
+  nameCopy = name;
+  allocatorCopy = allocator;
   v33.receiver = self;
   v33.super_class = SIE5RTPort;
   v14 = [(SIE5RTPort *)&v33 init];
@@ -19,11 +19,11 @@
     goto LABEL_27;
   }
 
-  objc_storeStrong(&v14->_name, a4);
-  v15->_portType = a5;
-  v15->_engineType = a6;
-  [v12 UTF8String];
-  if (!a5)
+  objc_storeStrong(&v14->_name, name);
+  v15->_portType = type;
+  v15->_engineType = backend;
+  [nameCopy UTF8String];
+  if (!type)
   {
     if (e5rt_execution_stream_operation_retain_input_port())
     {
@@ -51,7 +51,7 @@
       v36 = 1025;
       v37 = 47;
       v38 = 2113;
-      v39 = v12;
+      v39 = nameCopy;
       v22 = " %{private}s:%{private}d *** Failed to retain the input port for blob: %{private}@ ***";
       v23 = v21;
       v24 = 28;
@@ -170,7 +170,7 @@ LABEL_26:
     v36 = 1025;
     v37 = 51;
     v38 = 2113;
-    v39 = v12;
+    v39 = nameCopy;
     _os_log_impl(&dword_21DE0D000, v18, OS_LOG_TYPE_ERROR, " %{private}s:%{private}d *** Failed to retain the output port for blob: %{private}@ ***", buf, 0x1Cu);
   }
 
@@ -179,10 +179,10 @@ LABEL_27:
   return 0;
 }
 
-- (int64_t)bindPixelBuffer:(__CVBuffer *)a3
+- (int64_t)bindPixelBuffer:(__CVBuffer *)buffer
 {
   desc = self->_desc;
-  v4 = [[SIIOSurface alloc] initFromPixelBuffer:a3];
+  v4 = [[SIIOSurface alloc] initFromPixelBuffer:buffer];
   v5 = [(SIE5RTPortDescriptor *)desc bindSurface:v4];
 
   return v5;

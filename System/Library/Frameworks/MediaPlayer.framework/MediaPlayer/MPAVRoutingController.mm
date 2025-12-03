@@ -1,23 +1,23 @@
 @interface MPAVRoutingController
-+ (BOOL)bundleIdRepresentsLongFormVideoContent:(id)a3;
++ (BOOL)bundleIdRepresentsLongFormVideoContent:(id)content;
 + (MPAVRoute)systemRoute;
 + (id)_currentDeviceRoutingSymbolImage;
 + (id)_sharedWorkerQueue;
-+ (id)_symbolImageForRoute:(id)a3;
-+ (id)_symbolImageForRoutes:(id)a3;
-+ (id)_symbolNameForModelID:(id)a3;
-+ (id)_symbolNameForProductIdentifier:(id)a3;
-+ (id)_symbolNameForRoute:(id)a3;
-+ (id)_symbolNameForRoutes:(id)a3;
-+ (id)systemRouteWithContextUID:(id)a3;
-+ (void)_getActiveRouteWithTimeout:(double)a3 type:(int64_t)a4 completion:(id)a5;
-+ (void)getActiveRouteWithTimeout:(double)a3 completion:(id)a4;
-+ (void)setActiveRoute:(id)a3 completion:(id)a4;
-+ (void)setActiveRoute:(id)a3 reason:(id)a4 completion:(id)a5;
++ (id)_symbolImageForRoute:(id)route;
++ (id)_symbolImageForRoutes:(id)routes;
++ (id)_symbolNameForModelID:(id)d;
++ (id)_symbolNameForProductIdentifier:(id)identifier;
++ (id)_symbolNameForRoute:(id)route;
++ (id)_symbolNameForRoutes:(id)routes;
++ (id)systemRouteWithContextUID:(id)d;
++ (void)_getActiveRouteWithTimeout:(double)timeout type:(int64_t)type completion:(id)completion;
++ (void)getActiveRouteWithTimeout:(double)timeout completion:(id)completion;
++ (void)setActiveRoute:(id)route completion:(id)completion;
++ (void)setActiveRoute:(id)route reason:(id)reason completion:(id)completion;
 - (BOOL)_deviceAvailabilityOverrideState;
-- (BOOL)_pickRoute:(id)a3 completion:(id)a4;
+- (BOOL)_pickRoute:(id)route completion:(id)completion;
 - (BOOL)_shouldSendDelegateRoutesChanged;
-- (BOOL)addPickedRoute:(id)a3 completion:(id)a4;
+- (BOOL)addPickedRoute:(id)route completion:(id)completion;
 - (BOOL)airtunesRouteIsPicked;
 - (BOOL)alwaysAllowUpdates;
 - (BOOL)handsetRouteIsPicked;
@@ -25,7 +25,7 @@
 - (BOOL)pickHandsetRoute;
 - (BOOL)pickSpeakerRoute;
 - (BOOL)receiverRouteIsPicked;
-- (BOOL)removePickedRoute:(id)a3 completion:(id)a4;
+- (BOOL)removePickedRoute:(id)route completion:(id)completion;
 - (BOOL)routeOtherThanHandsetAndSpeakerAvailable;
 - (BOOL)routeOtherThanHandsetAvailable;
 - (BOOL)speakerRouteIsPicked;
@@ -35,53 +35,53 @@
 - (MPAVOutputDevicePlaybackDataSource)playbackDataSource;
 - (MPAVRoute)pickedRoute;
 - (MPAVRoutingController)init;
-- (MPAVRoutingController)initWithDataSource:(id)a3 name:(id)a4;
-- (MPAVRoutingController)initWithName:(id)a3;
+- (MPAVRoutingController)initWithDataSource:(id)source name:(id)name;
+- (MPAVRoutingController)initWithName:(id)name;
 - (MPAVRoutingControllerDelegate)delegate;
 - (NSArray)availableRoutes;
 - (NSArray)pickedRoutes;
 - (NSString)description;
 - (id)_fullStateDumpObject;
-- (id)_pickedRouteInArray:(id)a3;
-- (id)_pickedRoutesInArray:(id)a3;
+- (id)_pickedRouteInArray:(id)array;
+- (id)_pickedRoutesInArray:(id)array;
 - (id)_stateDumpObject;
 - (id)cachedPickedRoutes;
 - (id)cachedRoutes;
 - (id)updateAvailableRoutes;
 - (id)updatePickedRoutes;
-- (id)videoRouteForRoute:(id)a3;
-- (int64_t)_externalScreenType:(BOOL *)a3;
+- (id)videoRouteForRoute:(id)route;
+- (int64_t)_externalScreenType:(BOOL *)type;
 - (int64_t)_volumeControlStateForPickedRoute;
 - (int64_t)activeRouteType;
 - (int64_t)externalScreenType;
-- (void)_activeAudioRouteDidChangeNotification:(id)a3;
+- (void)_activeAudioRouteDidChangeNotification:(id)notification;
 - (void)_clearLegacyCachedRoute;
-- (void)_externalScreenTypeDidChangeNotification:(id)a3;
-- (void)_mediaServerDiedNotification:(id)a3;
-- (void)_onQueueSetExternalScreenType:(int64_t)a3;
-- (void)_pickableRoutesDidChangeNotification:(id)a3;
-- (void)_promptForHijackIfNeeded:(id)a3 handler:(id)a4;
+- (void)_externalScreenTypeDidChangeNotification:(id)notification;
+- (void)_mediaServerDiedNotification:(id)notification;
+- (void)_onQueueSetExternalScreenType:(int64_t)type;
+- (void)_pickableRoutesDidChangeNotification:(id)notification;
+- (void)_promptForHijackIfNeeded:(id)needed handler:(id)handler;
 - (void)_registerNotifications;
-- (void)_routeStatusDidChangeNotification:(id)a3;
+- (void)_routeStatusDidChangeNotification:(id)notification;
 - (void)_scheduleSendDelegateRoutesChanged;
-- (void)_sendDelegateFailedToPickRouteWithError:(id)a3;
+- (void)_sendDelegateFailedToPickRouteWithError:(id)error;
 - (void)_sendDelegatePickedRoutesChanged;
-- (void)_setExternalScreenType:(int64_t)a3;
-- (void)_setVolumeControlStateForPickedRoute:(int64_t)a3;
+- (void)_setExternalScreenType:(int64_t)type;
+- (void)_setVolumeControlStateForPickedRoute:(int64_t)route;
 - (void)_syncUpdateRoutes;
 - (void)_unregisterNotifications;
 - (void)_updateCachedRoutes;
-- (void)_volumeControlAvailabilityDidChangeNotification:(id)a3;
+- (void)_volumeControlAvailabilityDidChangeNotification:(id)notification;
 - (void)dealloc;
-- (void)fetchAvailableRoutesWithCompletionQueue:(id)a3 completionHandler:(id)a4;
-- (void)getActiveRouteWithTimeout:(double)a3 completion:(id)a4;
-- (void)selectRoute:(id)a3 operation:(int64_t)a4 completion:(id)a5;
-- (void)selectRoutes:(id)a3 operation:(int64_t)a4 completion:(id)a5;
-- (void)setCachedRoutes:(id)a3;
-- (void)setCategory:(id)a3;
-- (void)setPresentedBundleID:(id)a3;
-- (void)setRepresentedBundleID:(id)a3;
-- (void)unpickAirPlayScreenRouteWithCompletion:(id)a3;
+- (void)fetchAvailableRoutesWithCompletionQueue:(id)queue completionHandler:(id)handler;
+- (void)getActiveRouteWithTimeout:(double)timeout completion:(id)completion;
+- (void)selectRoute:(id)route operation:(int64_t)operation completion:(id)completion;
+- (void)selectRoutes:(id)routes operation:(int64_t)operation completion:(id)completion;
+- (void)setCachedRoutes:(id)routes;
+- (void)setCategory:(id)category;
+- (void)setPresentedBundleID:(id)d;
+- (void)setRepresentedBundleID:(id)d;
+- (void)unpickAirPlayScreenRouteWithCompletion:(id)completion;
 - (void)unpickTVRoutes;
 @end
 
@@ -108,20 +108,20 @@ void __36__MPAVRoutingController_systemRoute__block_invoke()
 
 - (void)_registerNotifications
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 addObserver:self selector:sel__pickableRoutesDidChangeNotification_ name:@"MPAVRoutingDataSourceRoutesDidChangeNotification" object:self->_dataSource];
-  [v3 addObserver:self selector:sel__routeStatusDidChangeNotification_ name:@"MPAVRoutingDataSourceFailureNotification" object:self->_dataSource];
-  [v3 addObserver:self selector:sel__volumeControlAvailabilityDidChangeNotification_ name:@"MPAVRoutingDataSourceVolumeControlAvailabilityDidChangeNotification" object:self->_dataSource];
-  [v3 addObserver:self selector:sel__externalScreenTypeDidChangeNotification_ name:@"MPAVRoutingDataSourceExternalScreenTypeDidChangeNotification" object:self->_dataSource];
-  [v3 addObserver:self selector:sel__activeAudioRouteDidChangeNotification_ name:@"MPAVRoutingDataSourceActiveAudioRouteDidChangeNotification" object:self->_dataSource];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__pickableRoutesDidChangeNotification_ name:@"MPAVRoutingDataSourceRoutesDidChangeNotification" object:self->_dataSource];
+  [defaultCenter addObserver:self selector:sel__routeStatusDidChangeNotification_ name:@"MPAVRoutingDataSourceFailureNotification" object:self->_dataSource];
+  [defaultCenter addObserver:self selector:sel__volumeControlAvailabilityDidChangeNotification_ name:@"MPAVRoutingDataSourceVolumeControlAvailabilityDidChangeNotification" object:self->_dataSource];
+  [defaultCenter addObserver:self selector:sel__externalScreenTypeDidChangeNotification_ name:@"MPAVRoutingDataSourceExternalScreenTypeDidChangeNotification" object:self->_dataSource];
+  [defaultCenter addObserver:self selector:sel__activeAudioRouteDidChangeNotification_ name:@"MPAVRoutingDataSourceActiveAudioRouteDidChangeNotification" object:self->_dataSource];
   objc_initWeak(&location, self);
-  v4 = [objc_opt_class() _sharedWorkerQueue];
+  _sharedWorkerQueue = [objc_opt_class() _sharedWorkerQueue];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __47__MPAVRoutingController__registerNotifications__block_invoke;
   v5[3] = &unk_1E7676D98;
   objc_copyWeak(&v6, &location);
-  notify_register_dispatch("com.apple.airplay.deviceAvailability", &self->_deviceAvailabilityNotifyToken, v4, v5);
+  notify_register_dispatch("com.apple.airplay.deviceAvailability", &self->_deviceAvailabilityNotifyToken, _sharedWorkerQueue, v5);
 
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
@@ -194,7 +194,7 @@ void __59__MPAVRoutingController__scheduleSendDelegateRoutesChanged__block_invok
 - (MPAVRoute)pickedRoute
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = [(MPAVRoutingController *)self pickedRoutes];
+  pickedRoutes = [(MPAVRoutingController *)self pickedRoutes];
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -212,23 +212,23 @@ void __59__MPAVRoutingController__scheduleSendDelegateRoutesChanged__block_invok
   v5 = v13[5];
   if (v5)
   {
-    v6 = v5;
+    firstObject = v5;
   }
 
   else
   {
-    v6 = [v3 firstObject];
+    firstObject = [pickedRoutes firstObject];
   }
 
-  v7 = v6;
+  v7 = firstObject;
   v8 = os_log_create("com.apple.amp.mediaplayer", "Routing");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    v9 = [v7 routeName];
+    routeName = [v7 routeName];
     *buf = 138543618;
-    v19 = self;
+    selfCopy = self;
     v20 = 2114;
-    v21 = v9;
+    v21 = routeName;
     _os_log_impl(&dword_1A238D000, v8, OS_LOG_TYPE_DEBUG, "%{public}@ returning single pickedRoute: %{public}@", buf, 0x16u);
   }
 
@@ -239,16 +239,16 @@ void __59__MPAVRoutingController__scheduleSendDelegateRoutesChanged__block_invok
 
 - (NSArray)pickedRoutes
 {
-  v3 = [(MPAVRoutingController *)self cachedPickedRoutes];
-  if (![v3 count] && -[MPAVRoutingController fetchAvailableRoutesSynchronously](self, "fetchAvailableRoutesSynchronously"))
+  cachedPickedRoutes = [(MPAVRoutingController *)self cachedPickedRoutes];
+  if (![cachedPickedRoutes count] && -[MPAVRoutingController fetchAvailableRoutesSynchronously](self, "fetchAvailableRoutesSynchronously"))
   {
     [(MPAVRoutingController *)self _syncUpdateRoutes];
-    v4 = [(MPAVRoutingController *)self cachedPickedRoutes];
+    cachedPickedRoutes2 = [(MPAVRoutingController *)self cachedPickedRoutes];
 
-    v3 = v4;
+    cachedPickedRoutes = cachedPickedRoutes2;
   }
 
-  return v3;
+  return cachedPickedRoutes;
 }
 
 - (id)cachedPickedRoutes
@@ -299,17 +299,17 @@ void __43__MPAVRoutingController_cachedPickedRoutes__block_invoke(uint64_t a1)
 
 - (BOOL)_shouldSendDelegateRoutesChanged
 {
-  v3 = [(MPAVRoutingController *)self dataSource];
-  if (([v3 didReceiveDiscoveryResults] & 1) == 0)
+  dataSource = [(MPAVRoutingController *)self dataSource];
+  if (([dataSource didReceiveDiscoveryResults] & 1) == 0)
   {
 
     goto LABEL_7;
   }
 
-  v4 = [(MPAVRoutingController *)self dataSource];
-  v5 = [v4 hasActiveAudioCategory];
+  dataSource2 = [(MPAVRoutingController *)self dataSource];
+  hasActiveAudioCategory = [dataSource2 hasActiveAudioCategory];
 
-  if (!v5)
+  if (!hasActiveAudioCategory)
   {
 LABEL_7:
     LOBYTE(v6) = 0;
@@ -410,11 +410,11 @@ void __48__MPAVRoutingController__clearLegacyCachedRoute__block_invoke(uint64_t 
   v8 = [MEMORY[0x1E696AD98] numberWithInteger:self->_discoveryMode];
   v21[3] = v8;
   v20[4] = @"cachedRoutes";
-  v9 = [(MPAVRoutingController *)self cachedRoutes];
-  v10 = v9;
-  if (v9)
+  cachedRoutes = [(MPAVRoutingController *)self cachedRoutes];
+  v10 = cachedRoutes;
+  if (cachedRoutes)
   {
-    v11 = v9;
+    v11 = cachedRoutes;
   }
 
   else
@@ -424,11 +424,11 @@ void __48__MPAVRoutingController__clearLegacyCachedRoute__block_invoke(uint64_t 
 
   v21[4] = v11;
   v20[5] = @"cachedPickedRoutes";
-  v12 = [(MPAVRoutingController *)self cachedPickedRoutes];
-  v13 = v12;
-  if (v12)
+  cachedPickedRoutes = [(MPAVRoutingController *)self cachedPickedRoutes];
+  v13 = cachedPickedRoutes;
+  if (cachedPickedRoutes)
   {
-    v14 = v12;
+    v14 = cachedPickedRoutes;
   }
 
   else
@@ -438,11 +438,11 @@ void __48__MPAVRoutingController__clearLegacyCachedRoute__block_invoke(uint64_t 
 
   v21[5] = v14;
   v20[6] = @"pendingRoutes";
-  v15 = [(MPAVRoutingControllerSelectionQueue *)self->_routingControllerSelectionQueue pendingPickedRoute];
-  v16 = v15;
-  if (v15)
+  pendingPickedRoute = [(MPAVRoutingControllerSelectionQueue *)self->_routingControllerSelectionQueue pendingPickedRoute];
+  v16 = pendingPickedRoute;
+  if (pendingPickedRoute)
   {
-    v17 = v15;
+    v17 = pendingPickedRoute;
   }
 
   else
@@ -475,29 +475,29 @@ void __48__MPAVRoutingController__clearLegacyCachedRoute__block_invoke(uint64_t 
   return v5;
 }
 
-- (BOOL)removePickedRoute:(id)a3 completion:(id)a4
+- (BOOL)removePickedRoute:(id)route completion:(id)completion
 {
-  [(MPAVRoutingController *)self selectRoute:a3 operation:2 completion:a4];
+  [(MPAVRoutingController *)self selectRoute:route operation:2 completion:completion];
 
   return [(MPAVRoutingController *)self supportsMultipleSelection];
 }
 
-- (BOOL)addPickedRoute:(id)a3 completion:(id)a4
+- (BOOL)addPickedRoute:(id)route completion:(id)completion
 {
-  [(MPAVRoutingController *)self selectRoute:a3 operation:1 completion:a4];
+  [(MPAVRoutingController *)self selectRoute:route operation:1 completion:completion];
 
   return [(MPAVRoutingController *)self supportsMultipleSelection];
 }
 
-- (BOOL)_pickRoute:(id)a3 completion:(id)a4
+- (BOOL)_pickRoute:(id)route completion:(id)completion
 {
   v32 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  routeCopy = route;
+  completionCopy = completion;
+  if (!routeCopy)
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"MPAVRoutingController.m" lineNumber:1168 description:{@"Invalid parameter not satisfying: %@", @"route"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPAVRoutingController.m" lineNumber:1168 description:{@"Invalid parameter not satisfying: %@", @"route"}];
   }
 
   [(MPAVRoutingController *)self _clearLegacyCachedRoute];
@@ -505,8 +505,8 @@ void __48__MPAVRoutingController__clearLegacyCachedRoute__block_invoke(uint64_t 
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v9 = [(MPAVRoutingController *)self cachedPickedRoutes];
-  v10 = [v9 countByEnumeratingWithState:&v26 objects:v31 count:16];
+  cachedPickedRoutes = [(MPAVRoutingController *)self cachedPickedRoutes];
+  v10 = [cachedPickedRoutes countByEnumeratingWithState:&v26 objects:v31 count:16];
   if (v10)
   {
     v11 = *v27;
@@ -517,20 +517,20 @@ void __48__MPAVRoutingController__clearLegacyCachedRoute__block_invoke(uint64_t 
       {
         if (*v27 != v11)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(cachedPickedRoutes);
         }
 
         [*(*(&v26 + 1) + 8 * v12++) setPicked:0];
       }
 
       while (v10 != v12);
-      v10 = [v9 countByEnumeratingWithState:&v26 objects:v31 count:16];
+      v10 = [cachedPickedRoutes countByEnumeratingWithState:&v26 objects:v31 count:16];
     }
 
     while (v10);
   }
 
-  v30 = v7;
+  v30 = routeCopy;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v30 count:1];
   [(MPAVRoutingControllerSelectionQueue *)self->_routingControllerSelectionQueue addPendingRoutes:v13];
   objc_initWeak(&location, self);
@@ -542,9 +542,9 @@ void __48__MPAVRoutingController__clearLegacyCachedRoute__block_invoke(uint64_t 
   objc_copyWeak(&v24, &location);
   v15 = v13;
   v21 = v15;
-  v16 = v7;
+  v16 = routeCopy;
   v22 = v16;
-  v17 = v8;
+  v17 = completionCopy;
   v23 = v17;
   [(MPAVRoutingDataSource *)dataSource setPickedRoute:v16 withPassword:0 completion:v20];
 
@@ -618,13 +618,13 @@ void __47__MPAVRoutingController__registerNotifications__block_invoke(uint64_t a
   }
 }
 
-- (void)_volumeControlAvailabilityDidChangeNotification:(id)a3
+- (void)_volumeControlAvailabilityDidChangeNotification:(id)notification
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:@"VolumeControlAvailability"];
-  v6 = [v5 BOOLValue];
+  userInfo = [notification userInfo];
+  v5 = [userInfo objectForKey:@"VolumeControlAvailability"];
+  bOOLValue = [v5 BOOLValue];
 
-  if (v6)
+  if (bOOLValue)
   {
     v7 = 1;
   }
@@ -638,26 +638,26 @@ void __47__MPAVRoutingController__registerNotifications__block_invoke(uint64_t a
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained routingController:self volumeControlAvailabilityDidChange:v6];
+    [WeakRetained routingController:self volumeControlAvailabilityDidChange:bOOLValue];
   }
 }
 
-- (void)_routeStatusDidChangeNotification:(id)a3
+- (void)_routeStatusDidChangeNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v10 = [v5 objectForKey:@"Route"];
+  notificationCopy = notification;
+  userInfo = [notificationCopy userInfo];
+  v10 = [userInfo objectForKey:@"Route"];
 
-  v6 = [v4 userInfo];
+  userInfo2 = [notificationCopy userInfo];
 
-  v7 = [v6 objectForKey:@"Error"];
+  v7 = [userInfo2 objectForKey:@"Error"];
 
   v8 = v10;
   if (v10)
   {
-    v9 = [v10 isPicked];
+    isPicked = [v10 isPicked];
     v8 = v10;
-    if ((v9 & 1) != 0 || v7)
+    if ((isPicked & 1) != 0 || v7)
     {
       [(MPAVRoutingControllerSelectionQueue *)self->_routingControllerSelectionQueue cancelInProgressSelectionForRoute:v10];
       v8 = v10;
@@ -670,15 +670,15 @@ void __47__MPAVRoutingController__registerNotifications__block_invoke(uint64_t a
   }
 }
 
-- (void)_pickableRoutesDidChangeNotification:(id)a3
+- (void)_pickableRoutesDidChangeNotification:(id)notification
 {
-  v4 = [objc_opt_class() _sharedWorkerQueue];
+  _sharedWorkerQueue = [objc_opt_class() _sharedWorkerQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __62__MPAVRoutingController__pickableRoutesDidChangeNotification___block_invoke;
   block[3] = &unk_1E7682518;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(_sharedWorkerQueue, block);
 }
 
 uint64_t __62__MPAVRoutingController__pickableRoutesDidChangeNotification___block_invoke(uint64_t a1)
@@ -701,34 +701,34 @@ uint64_t __62__MPAVRoutingController__pickableRoutesDidChangeNotification___bloc
   return [v2 _scheduleSendDelegateRoutesChanged];
 }
 
-- (void)_mediaServerDiedNotification:(id)a3
+- (void)_mediaServerDiedNotification:(id)notification
 {
   [(MPAVRoutingController *)self _unregisterNotifications];
 
   [(MPAVRoutingController *)self _registerNotifications];
 }
 
-- (void)_externalScreenTypeDidChangeNotification:(id)a3
+- (void)_externalScreenTypeDidChangeNotification:(id)notification
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:@"ExternalScreenType"];
-  v6 = [v5 integerValue];
+  userInfo = [notification userInfo];
+  v5 = [userInfo objectForKey:@"ExternalScreenType"];
+  integerValue = [v5 integerValue];
 
-  [(MPAVRoutingController *)self _setExternalScreenType:v6];
+  [(MPAVRoutingController *)self _setExternalScreenType:integerValue];
 }
 
-- (void)_activeAudioRouteDidChangeNotification:(id)a3
+- (void)_activeAudioRouteDidChangeNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   [(MPAVRoutingController *)self _clearLegacyCachedRoute];
   [(MPAVRoutingController *)self _updateCachedRoutes];
   v7 = MEMORY[0x1E69E9820];
   v8 = 3221225472;
   v9 = __64__MPAVRoutingController__activeAudioRouteDidChangeNotification___block_invoke;
   v10 = &unk_1E76823C0;
-  v5 = v4;
+  v5 = notificationCopy;
   v11 = v5;
-  v12 = self;
+  selfCopy = self;
   v6 = _Block_copy(&v7);
   if ([MEMORY[0x1E696AF00] isMainThread])
   {
@@ -790,16 +790,16 @@ void __64__MPAVRoutingController__activeAudioRouteDidChangeNotification___block_
 
 - (void)_unregisterNotifications
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:@"MPAVRoutingDataSourceRoutesDidChangeNotification" object:self->_dataSource];
-  [v3 removeObserver:self name:@"MPAVRoutingDataSourceFailureNotification" object:self->_dataSource];
-  [v3 removeObserver:self name:@"MPAVRoutingDataSourceVolumeControlAvailabilityDidChangeNotification" object:self->_dataSource];
-  [v3 removeObserver:self name:@"MPAVRoutingDataSourceExternalScreenTypeDidChangeNotification" object:self->_dataSource];
-  [v3 removeObserver:self name:@"MPAVRoutingDataSourceActiveAudioRouteDidChangeNotification" object:self->_dataSource];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:@"MPAVRoutingDataSourceRoutesDidChangeNotification" object:self->_dataSource];
+  [defaultCenter removeObserver:self name:@"MPAVRoutingDataSourceFailureNotification" object:self->_dataSource];
+  [defaultCenter removeObserver:self name:@"MPAVRoutingDataSourceVolumeControlAvailabilityDidChangeNotification" object:self->_dataSource];
+  [defaultCenter removeObserver:self name:@"MPAVRoutingDataSourceExternalScreenTypeDidChangeNotification" object:self->_dataSource];
+  [defaultCenter removeObserver:self name:@"MPAVRoutingDataSourceActiveAudioRouteDidChangeNotification" object:self->_dataSource];
   notify_cancel(self->_deviceAvailabilityNotifyToken);
 }
 
-- (void)_setVolumeControlStateForPickedRoute:(int64_t)a3
+- (void)_setVolumeControlStateForPickedRoute:(int64_t)route
 {
   serialQueue = self->_serialQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -807,7 +807,7 @@ void __64__MPAVRoutingController__activeAudioRouteDidChangeNotification___block_
   v4[2] = __62__MPAVRoutingController__setVolumeControlStateForPickedRoute___block_invoke;
   v4[3] = &unk_1E7682398;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = route;
   dispatch_sync(serialQueue, v4);
 }
 
@@ -836,7 +836,7 @@ void __62__MPAVRoutingController__setVolumeControlStateForPickedRoute___block_in
   [v2 postNotificationName:@"MPAVRoutingControllerDidUpdateVolumeControlStateNotification" object:*(a1 + 32) userInfo:0];
 }
 
-- (void)_setExternalScreenType:(int64_t)a3
+- (void)_setExternalScreenType:(int64_t)type
 {
   serialQueue = self->_serialQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -844,20 +844,20 @@ void __62__MPAVRoutingController__setVolumeControlStateForPickedRoute___block_in
   v4[2] = __48__MPAVRoutingController__setExternalScreenType___block_invoke;
   v4[3] = &unk_1E7682398;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = type;
   dispatch_sync(serialQueue, v4);
 }
 
-- (void)_sendDelegateFailedToPickRouteWithError:(id)a3
+- (void)_sendDelegateFailedToPickRouteWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __65__MPAVRoutingController__sendDelegateFailedToPickRouteWithError___block_invoke;
   v6[3] = &unk_1E76823C0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = errorCopy;
+  v5 = errorCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
@@ -870,12 +870,12 @@ void __65__MPAVRoutingController__sendDelegateFailedToPickRouteWithError___block
   }
 }
 
-- (void)_promptForHijackIfNeeded:(id)a3 handler:(id)a4
+- (void)_promptForHijackIfNeeded:(id)needed handler:(id)handler
 {
   v52 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  neededCopy = needed;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v9 = objc_opt_respondsToSelector();
@@ -889,29 +889,29 @@ void __65__MPAVRoutingController__sendDelegateFailedToPickRouteWithError___block
       v46[4] = __Block_byref_object_dispose__7465;
       v47 = 0;
       v10 = objc_alloc(MEMORY[0x1E69635F8]);
-      v11 = [(MPAVRoutingController *)self presentedBundleID];
-      v12 = [v10 initWithBundleIdentifier:v11 allowPlaceholder:0 error:0];
+      presentedBundleID = [(MPAVRoutingController *)self presentedBundleID];
+      v12 = [v10 initWithBundleIdentifier:presentedBundleID allowPlaceholder:0 error:0];
 
-      v13 = [v12 localizedName];
+      localizedName = [v12 localizedName];
       aBlock[0] = MEMORY[0x1E69E9820];
       aBlock[1] = 3221225472;
       aBlock[2] = __58__MPAVRoutingController__promptForHijackIfNeeded_handler___block_invoke;
       aBlock[3] = &unk_1E7676CD8;
       aBlock[4] = self;
-      v14 = v6;
+      v14 = neededCopy;
       v42 = v14;
       v45 = v46;
-      v15 = v13;
+      v15 = localizedName;
       v43 = v15;
-      v16 = v7;
+      v16 = handlerCopy;
       v44 = v16;
       v30 = _Block_copy(aBlock);
       v17 = objc_loadWeakRetained(&self->_playbackDataSource);
       v18 = objc_loadWeakRetained(&self->_delegate);
-      v19 = [v14 isPicked];
+      isPicked = [v14 isPicked];
       if (v17)
       {
-        v20 = v19;
+        v20 = isPicked;
       }
 
       else
@@ -937,19 +937,19 @@ void __65__MPAVRoutingController__sendDelegateFailedToPickRouteWithError___block
       else
       {
         v29 = v14;
-        v21 = [(MPAVRoutingController *)self dataSource];
+        dataSource = [(MPAVRoutingController *)self dataSource];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
 
         if (isKindOfClass)
         {
-          v23 = [(MPAVRoutingController *)self dataSource];
-          v24 = [v23 endpointRoute];
+          dataSource2 = [(MPAVRoutingController *)self dataSource];
+          endpointRoute = [dataSource2 endpointRoute];
         }
 
         else
         {
-          v24 = 0;
+          endpointRoute = 0;
         }
 
         v26 = os_log_create("com.apple.amp.mediaplayer", "Routing");
@@ -965,13 +965,13 @@ void __65__MPAVRoutingController__sendDelegateFailedToPickRouteWithError___block
         v31[2] = __58__MPAVRoutingController__promptForHijackIfNeeded_handler___block_invoke_74;
         v31[3] = &unk_1E7676D28;
         v32 = v29;
-        v27 = v24;
+        v27 = endpointRoute;
         v33 = v27;
         v28 = v32;
         v34 = v28;
         v35 = v18;
         v38 = v30;
-        v36 = self;
+        selfCopy = self;
         v39 = v16;
         v40 = v46;
         v37 = v15;
@@ -983,7 +983,7 @@ void __65__MPAVRoutingController__sendDelegateFailedToPickRouteWithError___block
 
     else
     {
-      (*(v7 + 2))(v7, 1);
+      (*(handlerCopy + 2))(handlerCopy, 1);
     }
   }
 }
@@ -1221,16 +1221,16 @@ LABEL_7:
   return (*(*(a1 + 40) + 16))();
 }
 
-- (id)_pickedRoutesInArray:(id)a3
+- (id)_pickedRoutesInArray:(id)array
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v3, "count")}];
+  arrayCopy = array;
+  v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(arrayCopy, "count")}];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = v3;
+  v5 = arrayCopy;
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -1261,15 +1261,15 @@ LABEL_7:
   return v4;
 }
 
-- (id)_pickedRouteInArray:(id)a3
+- (id)_pickedRouteInArray:(id)array
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  arrayCopy = array;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v4 = [arrayCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1281,7 +1281,7 @@ LABEL_7:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(arrayCopy);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
@@ -1293,7 +1293,7 @@ LABEL_7:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [arrayCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v5);
@@ -1307,13 +1307,13 @@ LABEL_7:
   return v6;
 }
 
-- (void)_onQueueSetExternalScreenType:(int64_t)a3
+- (void)_onQueueSetExternalScreenType:(int64_t)type
 {
-  if (self->_externalScreenType != a3)
+  if (self->_externalScreenType != type)
   {
     block[5] = v3;
     block[6] = v4;
-    self->_externalScreenType = a3;
+    self->_externalScreenType = type;
     self->_hasExternalScreenType = 1;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
@@ -1333,7 +1333,7 @@ void __55__MPAVRoutingController__onQueueSetExternalScreenType___block_invoke(ui
   }
 }
 
-- (int64_t)_externalScreenType:(BOOL *)a3
+- (int64_t)_externalScreenType:(BOOL *)type
 {
   v12 = 0;
   v13 = &v12;
@@ -1352,9 +1352,9 @@ void __55__MPAVRoutingController__onQueueSetExternalScreenType___block_invoke(ui
   block[5] = &v12;
   block[6] = &v8;
   dispatch_sync(serialQueue, block);
-  if (a3)
+  if (type)
   {
-    *a3 = *(v9 + 24);
+    *type = *(v9 + 24);
   }
 
   v5 = v13[3];
@@ -1445,10 +1445,10 @@ void *__45__MPAVRoutingController__externalScreenType___block_invoke(void *resul
 
   else
   {
-    v10 = [MEMORY[0x1E69587F0] sharedAudioPresentationOutputContext];
-    v11 = [MEMORY[0x1E69587F0] sharedAudioPresentationOutputContext];
-    v12 = [v11 outputDevices];
-    [v10 setOutputDevices:v12];
+    mEMORY[0x1E69587F0] = [MEMORY[0x1E69587F0] sharedAudioPresentationOutputContext];
+    mEMORY[0x1E69587F0]2 = [MEMORY[0x1E69587F0] sharedAudioPresentationOutputContext];
+    outputDevices = [mEMORY[0x1E69587F0]2 outputDevices];
+    [mEMORY[0x1E69587F0] setOutputDevices:outputDevices];
   }
 }
 
@@ -1459,8 +1459,8 @@ void *__45__MPAVRoutingController__externalScreenType___block_invoke(void *resul
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(MPAVRoutingController *)self availableRoutes];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  availableRoutes = [(MPAVRoutingController *)self availableRoutes];
+  v4 = [availableRoutes countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1471,7 +1471,7 @@ void *__45__MPAVRoutingController__externalScreenType___block_invoke(void *resul
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(availableRoutes);
         }
 
         v8 = *(*(&v10 + 1) + 8 * i);
@@ -1482,7 +1482,7 @@ void *__45__MPAVRoutingController__externalScreenType___block_invoke(void *resul
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [availableRoutes countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v5)
       {
         continue;
@@ -1497,24 +1497,24 @@ void *__45__MPAVRoutingController__externalScreenType___block_invoke(void *resul
 
 - (BOOL)wirelessDisplayRouteIsPicked
 {
-  v2 = [(MPAVRoutingController *)self pickedRoute];
-  v3 = [v2 routeType] == 2;
+  pickedRoute = [(MPAVRoutingController *)self pickedRoute];
+  v3 = [pickedRoute routeType] == 2;
 
   return v3;
 }
 
-- (id)videoRouteForRoute:(id)a3
+- (id)videoRouteForRoute:(id)route
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = [a3 routeUID];
-  if ([v4 length])
+  routeUID = [route routeUID];
+  if ([routeUID length])
   {
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v5 = [(MPAVRoutingController *)self availableRoutes];
-    v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    availableRoutes = [(MPAVRoutingController *)self availableRoutes];
+    v6 = [availableRoutes countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v6)
     {
       v7 = *v14;
@@ -1524,16 +1524,16 @@ void *__45__MPAVRoutingController__externalScreenType___block_invoke(void *resul
         {
           if (*v14 != v7)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(availableRoutes);
           }
 
           v9 = *(*(&v13 + 1) + 8 * i);
-          v10 = [v9 routeUID];
-          if ([v4 isEqualToString:v10])
+          routeUID2 = [v9 routeUID];
+          if ([routeUID isEqualToString:routeUID2])
           {
-            v11 = [v9 routeType];
+            routeType = [v9 routeType];
 
-            if (v11 == 1)
+            if (routeType == 1)
             {
               v6 = v9;
               goto LABEL_15;
@@ -1545,7 +1545,7 @@ void *__45__MPAVRoutingController__externalScreenType___block_invoke(void *resul
           }
         }
 
-        v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v6 = [availableRoutes countByEnumeratingWithState:&v13 objects:v17 count:16];
       }
 
       while (v6);
@@ -1562,16 +1562,16 @@ LABEL_15:
   return v6;
 }
 
-- (void)unpickAirPlayScreenRouteWithCompletion:(id)a3
+- (void)unpickAirPlayScreenRouteWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dataSource = self->_dataSource;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __64__MPAVRoutingController_unpickAirPlayScreenRouteWithCompletion___block_invoke;
   v7[3] = &unk_1E76816D0;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   [(MPAVRoutingDataSource *)dataSource unpickAirPlayAVRoutesWithCompletion:v7];
 }
 
@@ -1593,8 +1593,8 @@ uint64_t __64__MPAVRoutingController_unpickAirPlayScreenRouteWithCompletion___bl
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(MPAVRoutingController *)self availableRoutes];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  availableRoutes = [(MPAVRoutingController *)self availableRoutes];
+  v4 = [availableRoutes countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1606,7 +1606,7 @@ uint64_t __64__MPAVRoutingController_unpickAirPlayScreenRouteWithCompletion___bl
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(availableRoutes);
         }
 
         if ([*(*(&v9 + 1) + 8 * v7) pickableRouteType])
@@ -1619,7 +1619,7 @@ uint64_t __64__MPAVRoutingController_unpickAirPlayScreenRouteWithCompletion___bl
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [availableRoutes countByEnumeratingWithState:&v9 objects:v13 count:16];
       if (v5)
       {
         continue;
@@ -1639,8 +1639,8 @@ uint64_t __64__MPAVRoutingController_unpickAirPlayScreenRouteWithCompletion___bl
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(MPAVRoutingController *)self availableRoutes];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  availableRoutes = [(MPAVRoutingController *)self availableRoutes];
+  v4 = [availableRoutes countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1651,7 +1651,7 @@ uint64_t __64__MPAVRoutingController_unpickAirPlayScreenRouteWithCompletion___bl
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(availableRoutes);
         }
 
         v8 = *(*(&v10 + 1) + 8 * i);
@@ -1662,7 +1662,7 @@ uint64_t __64__MPAVRoutingController_unpickAirPlayScreenRouteWithCompletion___bl
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [availableRoutes countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v5)
       {
         continue;
@@ -1677,37 +1677,37 @@ uint64_t __64__MPAVRoutingController_unpickAirPlayScreenRouteWithCompletion___bl
 
 - (BOOL)receiverRouteIsPicked
 {
-  v2 = [(MPAVRoutingController *)self pickedRoute];
-  v3 = [v2 routeSubtype] == 4;
+  pickedRoute = [(MPAVRoutingController *)self pickedRoute];
+  v3 = [pickedRoute routeSubtype] == 4;
 
   return v3;
 }
 
 - (BOOL)speakerRouteIsPicked
 {
-  v2 = [(MPAVRoutingController *)self pickedRoute];
-  v3 = [v2 routeSubtype] == 1;
+  pickedRoute = [(MPAVRoutingController *)self pickedRoute];
+  v3 = [pickedRoute routeSubtype] == 1;
 
   return v3;
 }
 
-- (void)selectRoutes:(id)a3 operation:(int64_t)a4 completion:(id)a5
+- (void)selectRoutes:(id)routes operation:(int64_t)operation completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  [(MPAVRoutingControllerSelectionQueue *)self->_routingControllerSelectionQueue addPendingRoutes:v8];
-  v10 = [v8 firstObject];
+  routesCopy = routes;
+  completionCopy = completion;
+  [(MPAVRoutingControllerSelectionQueue *)self->_routingControllerSelectionQueue addPendingRoutes:routesCopy];
+  firstObject = [routesCopy firstObject];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __59__MPAVRoutingController_selectRoutes_operation_completion___block_invoke;
   v13[3] = &unk_1E7676C18;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v16 = a4;
-  v11 = v9;
-  v12 = v8;
-  [(MPAVRoutingController *)self _promptForHijackIfNeeded:v10 handler:v13];
+  v14 = routesCopy;
+  v15 = completionCopy;
+  operationCopy = operation;
+  v11 = completionCopy;
+  v12 = routesCopy;
+  [(MPAVRoutingController *)self _promptForHijackIfNeeded:firstObject handler:v13];
 }
 
 void __59__MPAVRoutingController_selectRoutes_operation_completion___block_invoke(void *a1, int a2)
@@ -1731,16 +1731,16 @@ void __59__MPAVRoutingController_selectRoutes_operation_completion___block_invok
   }
 }
 
-- (void)selectRoute:(id)a3 operation:(int64_t)a4 completion:(id)a5
+- (void)selectRoute:(id)route operation:(int64_t)operation completion:(id)completion
 {
   v13 = *MEMORY[0x1E69E9840];
-  v12 = a3;
+  routeCopy = route;
   v8 = MEMORY[0x1E695DEC8];
-  v9 = a5;
-  v10 = a3;
-  v11 = [v8 arrayWithObjects:&v12 count:1];
+  completionCopy = completion;
+  routeCopy2 = route;
+  v11 = [v8 arrayWithObjects:&routeCopy count:1];
 
-  [(MPAVRoutingController *)self selectRoutes:v11 operation:a4 completion:v9, v12, v13];
+  [(MPAVRoutingController *)self selectRoutes:v11 operation:operation completion:completionCopy, routeCopy, v13];
 }
 
 - (BOOL)pickSpeakerRoute
@@ -1750,8 +1750,8 @@ void __59__MPAVRoutingController_selectRoutes_operation_completion___block_invok
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v3 = [(MPAVRoutingController *)self availableRoutes];
-  v4 = [v3 countByEnumeratingWithState:&v14 objects:v19 count:16];
+  availableRoutes = [(MPAVRoutingController *)self availableRoutes];
+  v4 = [availableRoutes countByEnumeratingWithState:&v14 objects:v19 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1762,7 +1762,7 @@ void __59__MPAVRoutingController_selectRoutes_operation_completion___block_invok
       {
         if (*v15 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(availableRoutes);
         }
 
         v8 = *(*(&v14 + 1) + 8 * i);
@@ -1785,7 +1785,7 @@ void __59__MPAVRoutingController_selectRoutes_operation_completion___block_invok
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v14 objects:v19 count:16];
+      v5 = [availableRoutes countByEnumeratingWithState:&v14 objects:v19 count:16];
       if (v5)
       {
         continue;
@@ -1807,8 +1807,8 @@ LABEL_11:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = [(MPAVRoutingController *)self availableRoutes];
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v18 count:16];
+  availableRoutes = [(MPAVRoutingController *)self availableRoutes];
+  v4 = [availableRoutes countByEnumeratingWithState:&v13 objects:v18 count:16];
   if (v4)
   {
     v5 = *v14;
@@ -1818,7 +1818,7 @@ LABEL_11:
       {
         if (*v14 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(availableRoutes);
         }
 
         v7 = *(*(&v13 + 1) + 8 * i);
@@ -1842,7 +1842,7 @@ LABEL_11:
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v13 objects:v18 count:16];
+      v4 = [availableRoutes countByEnumeratingWithState:&v13 objects:v18 count:16];
       if (v4)
       {
         continue;
@@ -1864,8 +1864,8 @@ LABEL_11:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = [(MPAVRoutingController *)self availableRoutes];
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v18 count:16];
+  availableRoutes = [(MPAVRoutingController *)self availableRoutes];
+  v4 = [availableRoutes countByEnumeratingWithState:&v13 objects:v18 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1876,7 +1876,7 @@ LABEL_11:
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(availableRoutes);
         }
 
         v8 = *(*(&v13 + 1) + 8 * i);
@@ -1892,7 +1892,7 @@ LABEL_11:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v13 objects:v18 count:16];
+      v5 = [availableRoutes countByEnumeratingWithState:&v13 objects:v18 count:16];
       v9 = 0;
       if (v5)
       {
@@ -1915,33 +1915,33 @@ LABEL_13:
 
 - (BOOL)handsetRouteIsPicked
 {
-  v2 = [(MPAVRoutingController *)self pickedRoute];
-  v3 = [v2 pickableRouteType] == 0;
+  pickedRoute = [(MPAVRoutingController *)self pickedRoute];
+  v3 = [pickedRoute pickableRouteType] == 0;
 
   return v3;
 }
 
-- (void)getActiveRouteWithTimeout:(double)a3 completion:(id)a4
+- (void)getActiveRouteWithTimeout:(double)timeout completion:(id)completion
 {
-  v6 = a4;
-  [objc_opt_class() _getActiveRouteWithTimeout:-[MPAVRoutingController activeRouteType](self type:"activeRouteType") completion:{v6, a3}];
+  completionCopy = completion;
+  [objc_opt_class() _getActiveRouteWithTimeout:-[MPAVRoutingController activeRouteType](self type:"activeRouteType") completion:{completionCopy, timeout}];
 }
 
-- (void)fetchAvailableRoutesWithCompletionQueue:(id)a3 completionHandler:(id)a4
+- (void)fetchAvailableRoutesWithCompletionQueue:(id)queue completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  queueCopy = queue;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v8 = [objc_opt_class() _sharedWorkerQueue];
+    _sharedWorkerQueue = [objc_opt_class() _sharedWorkerQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __83__MPAVRoutingController_fetchAvailableRoutesWithCompletionQueue_completionHandler___block_invoke;
     block[3] = &unk_1E7681568;
     block[4] = self;
-    v10 = v6;
-    v11 = v7;
-    dispatch_async(v8, block);
+    v10 = queueCopy;
+    v11 = handlerCopy;
+    dispatch_async(_sharedWorkerQueue, block);
   }
 }
 
@@ -1979,19 +1979,19 @@ void __83__MPAVRoutingController_fetchAvailableRoutesWithCompletionQueue_complet
 
 - (BOOL)airtunesRouteIsPicked
 {
-  v2 = [(MPAVRoutingController *)self pickedRoute];
-  v3 = [v2 routeSubtype] == 9;
+  pickedRoute = [(MPAVRoutingController *)self pickedRoute];
+  v3 = [pickedRoute routeSubtype] == 9;
 
   return v3;
 }
 
-- (void)setRepresentedBundleID:(id)a3
+- (void)setRepresentedBundleID:(id)d
 {
-  v5 = a3;
-  if (self->_representedBundleID != v5)
+  dCopy = d;
+  if (self->_representedBundleID != dCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_representedBundleID, a3);
+    v7 = dCopy;
+    objc_storeStrong(&self->_representedBundleID, d);
     if ([objc_opt_class() bundleIdRepresentsLongFormVideoContent:self->_representedBundleID])
     {
       v6 = 1;
@@ -2003,17 +2003,17 @@ void __83__MPAVRoutingController_fetchAvailableRoutesWithCompletionQueue_complet
     }
 
     self->_representsLongFormVideoContent = v6;
-    v5 = v7;
+    dCopy = v7;
   }
 }
 
-- (void)setPresentedBundleID:(id)a3
+- (void)setPresentedBundleID:(id)d
 {
-  v5 = a3;
-  if (self->_presentedBundleID != v5)
+  dCopy = d;
+  if (self->_presentedBundleID != dCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_presentedBundleID, a3);
+    v7 = dCopy;
+    objc_storeStrong(&self->_presentedBundleID, d);
     if ([objc_opt_class() bundleIdRepresentsLongFormVideoContent:self->_presentedBundleID])
     {
       v6 = 1;
@@ -2025,14 +2025,14 @@ void __83__MPAVRoutingController_fetchAvailableRoutesWithCompletionQueue_complet
     }
 
     self->_representsLongFormVideoContent = v6;
-    v5 = v7;
+    dCopy = v7;
   }
 }
 
 - (BOOL)volumeControlIsAvailable
 {
-  v3 = [(MPAVRoutingController *)self _volumeControlStateForPickedRoute];
-  if (!v3)
+  _volumeControlStateForPickedRoute = [(MPAVRoutingController *)self _volumeControlStateForPickedRoute];
+  if (!_volumeControlStateForPickedRoute)
   {
     dataSource = self->_dataSource;
     v6[0] = MEMORY[0x1E69E9820];
@@ -2043,7 +2043,7 @@ void __83__MPAVRoutingController_fetchAvailableRoutesWithCompletionQueue_complet
     [(MPAVRoutingDataSource *)dataSource getPickedRouteHasVolumeControlWithCompletion:v6];
   }
 
-  return v3 == 1;
+  return _volumeControlStateForPickedRoute == 1;
 }
 
 uint64_t __49__MPAVRoutingController_volumeControlIsAvailable__block_invoke(uint64_t a1, int a2)
@@ -2064,10 +2064,10 @@ uint64_t __49__MPAVRoutingController_volumeControlIsAvailable__block_invoke(uint
   return [v4 _scheduleSendDelegateRoutesChanged];
 }
 
-- (void)setCategory:(id)a3
+- (void)setCategory:(id)category
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = [a3 copy];
+  v4 = [category copy];
   category = self->_category;
   self->_category = v4;
 
@@ -2103,13 +2103,13 @@ uint64_t __49__MPAVRoutingController_volumeControlIsAvailable__block_invoke(uint
 
 - (NSArray)availableRoutes
 {
-  v3 = [(MPAVRoutingController *)self cachedRoutes];
-  if (!v3)
+  cachedRoutes = [(MPAVRoutingController *)self cachedRoutes];
+  if (!cachedRoutes)
   {
     if ([(MPAVRoutingController *)self fetchAvailableRoutesSynchronously])
     {
       [(MPAVRoutingController *)self _syncUpdateRoutes];
-      v3 = [(MPAVRoutingController *)self cachedRoutes];
+      cachedRoutes = [(MPAVRoutingController *)self cachedRoutes];
       [(MPAVRoutingController *)self _scheduleSendDelegateRoutesChanged];
     }
 
@@ -2121,13 +2121,13 @@ uint64_t __49__MPAVRoutingController_volumeControlIsAvailable__block_invoke(uint
       v7[3] = &unk_1E7676BF0;
       v7[4] = self;
       [(MPAVRoutingController *)self fetchAvailableRoutesWithCompletionQueue:MEMORY[0x1E69E96A0] completionHandler:v7];
-      v3 = 0;
+      cachedRoutes = 0;
     }
   }
 
-  if ([(NSArray *)v3 count])
+  if ([(NSArray *)cachedRoutes count])
   {
-    v4 = v3;
+    v4 = cachedRoutes;
   }
 
   else
@@ -2140,10 +2140,10 @@ uint64_t __49__MPAVRoutingController_volumeControlIsAvailable__block_invoke(uint
   return v4;
 }
 
-- (void)setCachedRoutes:(id)a3
+- (void)setCachedRoutes:(id)routes
 {
-  v4 = a3;
-  v3 = v4;
+  routesCopy = routes;
+  v3 = routesCopy;
   msv_dispatch_sync_on_queue();
 }
 
@@ -2246,19 +2246,19 @@ void __37__MPAVRoutingController_cachedRoutes__block_invoke(uint64_t a1)
   return v4;
 }
 
-- (MPAVRoutingController)initWithName:(id)a3
+- (MPAVRoutingController)initWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = objc_alloc_init(MPAVOutputDeviceRoutingDataSource);
-  v6 = [(MPAVRoutingController *)self initWithDataSource:v5 name:v4];
+  v6 = [(MPAVRoutingController *)self initWithDataSource:v5 name:nameCopy];
 
   return v6;
 }
 
-- (MPAVRoutingController)initWithDataSource:(id)a3 name:(id)a4
+- (MPAVRoutingController)initWithDataSource:(id)source name:(id)name
 {
-  v7 = a3;
-  v8 = a4;
+  sourceCopy = source;
+  nameCopy = name;
   v21.receiver = self;
   v21.super_class = MPAVRoutingController;
   v9 = [(MPAVRoutingController *)&v21 init];
@@ -2266,8 +2266,8 @@ void __37__MPAVRoutingController_cachedRoutes__block_invoke(uint64_t a1)
   if (v9)
   {
     v9->_alwaysAllowUpdates = 1;
-    objc_storeStrong(&v9->_dataSource, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_dataSource, source);
+    v11 = [nameCopy copy];
     name = v10->_name;
     v10->_name = v11;
 
@@ -2351,16 +2351,16 @@ uint64_t __49__MPAVRoutingController_initWithDataSource_name___block_invoke_2(ui
   }
 }
 
-+ (void)_getActiveRouteWithTimeout:(double)a3 type:(int64_t)a4 completion:(id)a5
++ (void)_getActiveRouteWithTimeout:(double)timeout type:(int64_t)type completion:(id)completion
 {
-  v5 = a5;
+  completionCopy = completion;
   if (_getActiveRouteWithTimeout_type_completion__onceToken != -1)
   {
     dispatch_once(&_getActiveRouteWithTimeout_type_completion__onceToken, &__block_literal_global_59);
   }
 
-  v7 = v5;
-  v6 = v5;
+  v7 = completionCopy;
+  v6 = completionCopy;
   MRAVEndpointResolveActiveSystemEndpointWithType();
 }
 
@@ -2404,67 +2404,67 @@ void __68__MPAVRoutingController__getActiveRouteWithTimeout_type_completion___bl
   [v0 postNotificationName:@"MPAVRoutingControllerActiveSystemRouteDidChangeNotification" object:0];
 }
 
-+ (id)_symbolNameForProductIdentifier:(id)a3
++ (id)_symbolNameForProductIdentifier:(id)identifier
 {
   v3 = MEMORY[0x1E69B0A18];
-  v4 = a3;
-  v5 = [v3 sharedProvider];
-  v6 = [v5 symbolNameForProductIdentifier:v4];
+  identifierCopy = identifier;
+  sharedProvider = [v3 sharedProvider];
+  v6 = [sharedProvider symbolNameForProductIdentifier:identifierCopy];
 
   return v6;
 }
 
-+ (id)_symbolNameForModelID:(id)a3
++ (id)_symbolNameForModelID:(id)d
 {
   v3 = MEMORY[0x1E69B0A18];
-  v4 = a3;
-  v5 = [v3 sharedProvider];
-  v6 = [v5 symbolNameForModelID:v4];
+  dCopy = d;
+  sharedProvider = [v3 sharedProvider];
+  v6 = [sharedProvider symbolNameForModelID:dCopy];
 
   return v6;
 }
 
-+ (BOOL)bundleIdRepresentsLongFormVideoContent:(id)a3
++ (BOOL)bundleIdRepresentsLongFormVideoContent:(id)content
 {
   v3 = MEMORY[0x1E69AED10];
-  v4 = a3;
-  v5 = [v3 sharedAVSystemController];
-  v6 = [v5 hasRouteSharingPolicyLongFormVideo:v4];
+  contentCopy = content;
+  sharedAVSystemController = [v3 sharedAVSystemController];
+  v6 = [sharedAVSystemController hasRouteSharingPolicyLongFormVideo:contentCopy];
 
   return v6;
 }
 
-+ (id)systemRouteWithContextUID:(id)a3
++ (id)systemRouteWithContextUID:(id)d
 {
-  if (a3)
+  if (d)
   {
-    v3 = [[MPAVEndpointRoute alloc] initWithEndpoint:MRAVEndpointGetLocalEndpoint()];
+    systemRoute = [[MPAVEndpointRoute alloc] initWithEndpoint:MRAVEndpointGetLocalEndpoint()];
   }
 
   else
   {
-    v3 = [a1 systemRoute];
+    systemRoute = [self systemRoute];
   }
 
-  return v3;
+  return systemRoute;
 }
 
-+ (void)setActiveRoute:(id)a3 reason:(id)a4 completion:(id)a5
++ (void)setActiveRoute:(id)route reason:(id)reason completion:(id)completion
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = v7;
+  routeCopy = route;
+  reasonCopy = reason;
+  completionCopy = completion;
+  v10 = routeCopy;
   v11 = v10;
   if (v10 && (v12 = [v10 isDeviceRoute], v11, !v12))
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v14 = [v11 endpointWrapper];
-      [v14 unwrappedValue];
-      v17 = v9;
+      endpointWrapper = [v11 endpointWrapper];
+      [endpointWrapper unwrappedValue];
+      v17 = completionCopy;
       MRAVEndpointUpdateActiveSystemEndpointWithReason();
 
       v13 = v17;
@@ -2472,7 +2472,7 @@ void __68__MPAVRoutingController__getActiveRouteWithTimeout_type_completion___bl
 
     else
     {
-      if (!v9)
+      if (!completionCopy)
       {
         goto LABEL_5;
       }
@@ -2482,13 +2482,13 @@ void __68__MPAVRoutingController__getActiveRouteWithTimeout_type_completion___bl
       v20[0] = @"Active route must be of type MPAVEndpointRoute.";
       v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:&v19 count:1];
       v16 = [v15 errorWithDomain:@"MPAVRoutingControllerErrorDomain" code:4 userInfo:v13];
-      (*(v9 + 2))(v9, v16);
+      (*(completionCopy + 2))(completionCopy, v16);
     }
   }
 
   else
   {
-    v18 = v9;
+    v18 = completionCopy;
     MRAVEndpointUpdateActiveSystemEndpointWithReason();
     v13 = v18;
   }
@@ -2518,30 +2518,30 @@ uint64_t __58__MPAVRoutingController_setActiveRoute_reason_completion___block_in
   return result;
 }
 
-+ (void)setActiveRoute:(id)a3 completion:(id)a4
++ (void)setActiveRoute:(id)route completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
-  [objc_opt_class() setActiveRoute:v6 reason:0 completion:v5];
+  completionCopy = completion;
+  routeCopy = route;
+  [objc_opt_class() setActiveRoute:routeCopy reason:0 completion:completionCopy];
 }
 
-+ (void)getActiveRouteWithTimeout:(double)a3 completion:(id)a4
++ (void)getActiveRouteWithTimeout:(double)timeout completion:(id)completion
 {
-  v6 = a4;
-  [a1 _getActiveRouteWithTimeout:objc_msgSend(a1 type:"activeRouteType") completion:{v6, a3}];
+  completionCopy = completion;
+  [self _getActiveRouteWithTimeout:objc_msgSend(self type:"activeRouteType") completion:{completionCopy, timeout}];
 }
 
 + (id)_currentDeviceRoutingSymbolImage
 {
-  v2 = [a1 _currentDeviceRoutingSymbolName];
-  v3 = [MEMORY[0x1E69DCAB8] _systemImageNamed:v2];
+  _currentDeviceRoutingSymbolName = [self _currentDeviceRoutingSymbolName];
+  v3 = [MEMORY[0x1E69DCAB8] _systemImageNamed:_currentDeviceRoutingSymbolName];
 
   return v3;
 }
 
-+ (id)_symbolNameForRoutes:(id)a3
++ (id)_symbolNameForRoutes:(id)routes
 {
-  v3 = [a3 msv_flatMap:&__block_literal_global_43];
+  v3 = [routes msv_flatMap:&__block_literal_global_43];
   v4 = v3;
   v5 = MEMORY[0x1E695E0F0];
   if (v3)
@@ -2604,15 +2604,15 @@ LABEL_11:
   return v7;
 }
 
-+ (id)_symbolNameForRoute:(id)a3
++ (id)_symbolNameForRoute:(id)route
 {
   v10 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (route)
   {
-    v9 = a3;
+    routeCopy = route;
     v4 = MEMORY[0x1E695DEC8];
-    v5 = a3;
-    v6 = [v4 arrayWithObjects:&v9 count:1];
+    routeCopy2 = route;
+    v6 = [v4 arrayWithObjects:&routeCopy count:1];
   }
 
   else
@@ -2620,23 +2620,23 @@ LABEL_11:
     v6 = MEMORY[0x1E695E0F0];
   }
 
-  v7 = [a1 _symbolNameForRoutes:{v6, v9, v10}];
+  v7 = [self _symbolNameForRoutes:{v6, routeCopy, v10}];
 
   return v7;
 }
 
-+ (id)_symbolImageForRoute:(id)a3
++ (id)_symbolImageForRoute:(id)route
 {
-  v4 = [a1 _symbolNameForRoute:a3];
-  v5 = [a1 _symbolImageForIdentifier:v4];
+  v4 = [self _symbolNameForRoute:route];
+  v5 = [self _symbolImageForIdentifier:v4];
 
   return v5;
 }
 
-+ (id)_symbolImageForRoutes:(id)a3
++ (id)_symbolImageForRoutes:(id)routes
 {
-  v4 = [a1 _symbolNameForRoutes:a3];
-  v5 = [a1 _symbolImageForIdentifier:v4];
+  v4 = [self _symbolNameForRoutes:routes];
+  v5 = [self _symbolImageForIdentifier:v4];
 
   return v5;
 }

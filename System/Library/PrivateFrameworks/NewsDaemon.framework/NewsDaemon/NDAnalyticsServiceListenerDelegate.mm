@@ -1,7 +1,7 @@
 @interface NDAnalyticsServiceListenerDelegate
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (NDAnalyticsServiceListenerDelegate)init;
-- (NDAnalyticsServiceListenerDelegate)initWithService:(id)a3;
+- (NDAnalyticsServiceListenerDelegate)initWithService:(id)service;
 @end
 
 @implementation NDAnalyticsServiceListenerDelegate
@@ -29,10 +29,10 @@
   objc_exception_throw(v4);
 }
 
-- (NDAnalyticsServiceListenerDelegate)initWithService:(id)a3
+- (NDAnalyticsServiceListenerDelegate)initWithService:(id)service
 {
-  v5 = a3;
-  if (!v5 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+  serviceCopy = service;
+  if (!serviceCopy && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_100052BE4();
   }
@@ -43,25 +43,25 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_service, a3);
+    objc_storeStrong(&v6->_service, service);
   }
 
   return v7;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   v6 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___NDAnalyticsService];
   v7 = objc_opt_class();
   v8 = [NSSet setWithObjects:v7, objc_opt_class(), 0];
   [v6 setClasses:v8 forSelector:"submitEnvelopes:withCompletion:" argumentIndex:0 ofReply:0];
 
-  [v5 setExportedInterface:v6];
-  v9 = [(NDAnalyticsServiceListenerDelegate *)self service];
-  [v5 setExportedObject:v9];
+  [connectionCopy setExportedInterface:v6];
+  service = [(NDAnalyticsServiceListenerDelegate *)self service];
+  [connectionCopy setExportedObject:service];
 
-  [v5 resume];
+  [connectionCopy resume];
   return 1;
 }
 

@@ -11,7 +11,7 @@
   v5 = v4;
   if (v4)
   {
-    if (v4 == a1)
+    if (v4 == self)
     {
       v18 = 1;
       goto LABEL_20;
@@ -20,7 +20,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [a1 count];
+      v6 = [self count];
       if (v6 == [v5 count])
       {
         v34[0] = @"kMRMediaRemoteNowPlayingInfoTimestamp";
@@ -39,7 +39,7 @@
         v9 = v5;
         v28 = v9;
         v29 = &v30;
-        [a1 enumerateKeysAndObjectsUsingBlock:&v23];
+        [self enumerateKeysAndObjectsUsingBlock:&v23];
         if (*(v31 + 24) != 1)
         {
           v18 = 0;
@@ -49,16 +49,16 @@ LABEL_19:
           goto LABEL_20;
         }
 
-        v10 = [a1 objectForKey:{@"kMRMediaRemoteNowPlayingInfoTimestamp", v23, v24, v25, v26, v27}];
+        v10 = [self objectForKey:{@"kMRMediaRemoteNowPlayingInfoTimestamp", v23, v24, v25, v26, v27}];
         v11 = [v9 objectForKey:@"kMRMediaRemoteNowPlayingInfoTimestamp"];
-        v12 = [a1 objectForKey:@"kMRMediaRemoteNowPlayingInfoElapsedTime"];
+        v12 = [self objectForKey:@"kMRMediaRemoteNowPlayingInfoElapsedTime"];
         v13 = [v9 objectForKey:@"kMRMediaRemoteNowPlayingInfoElapsedTime"];
         v14 = v13;
         if (v10 && v11)
         {
           if (v12 && v13)
           {
-            v15 = _MRCreateTemporalContentItemFromNowPlayingInfo(a1);
+            v15 = _MRCreateTemporalContentItemFromNowPlayingInfo(self);
             v16 = _MRCreateTemporalContentItemFromNowPlayingInfo(v9);
             IsEqual = MRContentItemCalculatedPlaybackPositionIsEqual(v15, v16);
             *(v31 + 24) = IsEqual;

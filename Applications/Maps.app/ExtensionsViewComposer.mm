@@ -1,124 +1,124 @@
 @interface ExtensionsViewComposer
-+ (void)composeBannerAttributionView:(id)a3 forRideBookingRideStatus:(id)a4;
-+ (void)composeBannerView:(id)a3 forRidesharingCurrentRideViewController:(id)a4 rideBookingRideStatus:(id)a5;
-+ (void)composeBlankTemplatedBannerView:(id)a3 forRideBookingRideStatus:(id)a4;
-+ (void)composeCustomFeedbackHeaderView:(id)a3 forRideBookingRideStatus:(id)a4;
-+ (void)composeCustomHeaderView:(id)a3 forRideBookingRequestRideStatus:(id)a4;
-+ (void)composeCustomHeaderView:(id)a3 forRideBookingRideStatus:(id)a4;
-+ (void)composeFeedbackView:(id)a3 forRideBookingRideStatus:(id)a4 tippingViewDelegate:(id)a5;
-+ (void)composeOpenAppView:(id)a3 forRideBookingRequestRideStatus:(id)a4;
-+ (void)composeOpenAppView:(id)a3 forRideBookingRideStatus:(id)a4;
-+ (void)composePayView:(id)a3 forRideBookingRequestRideStatus:(id)a4;
-+ (void)composePrimaryDetailsView:(id)a3 forRideBookingRequestRideStatus:(id)a4;
-+ (void)composePrimaryDetailsView:(id)a3 forRideBookingRideStatus:(id)a4 withActionButtons:(id)a5;
-+ (void)composeSecondaryDetailsView:(id)a3 forRideBookingRequestRideStatus:(id)a4;
-+ (void)composeSecondaryDetailsView:(id)a3 forRideBookingRideStatus:(id)a4;
-+ (void)composeTemplatedBannerView:(id)a3 forRideBookingRideStatus:(id)a4;
++ (void)composeBannerAttributionView:(id)view forRideBookingRideStatus:(id)status;
++ (void)composeBannerView:(id)view forRidesharingCurrentRideViewController:(id)controller rideBookingRideStatus:(id)status;
++ (void)composeBlankTemplatedBannerView:(id)view forRideBookingRideStatus:(id)status;
++ (void)composeCustomFeedbackHeaderView:(id)view forRideBookingRideStatus:(id)status;
++ (void)composeCustomHeaderView:(id)view forRideBookingRequestRideStatus:(id)status;
++ (void)composeCustomHeaderView:(id)view forRideBookingRideStatus:(id)status;
++ (void)composeFeedbackView:(id)view forRideBookingRideStatus:(id)status tippingViewDelegate:(id)delegate;
++ (void)composeOpenAppView:(id)view forRideBookingRequestRideStatus:(id)status;
++ (void)composeOpenAppView:(id)view forRideBookingRideStatus:(id)status;
++ (void)composePayView:(id)view forRideBookingRequestRideStatus:(id)status;
++ (void)composePrimaryDetailsView:(id)view forRideBookingRequestRideStatus:(id)status;
++ (void)composePrimaryDetailsView:(id)view forRideBookingRideStatus:(id)status withActionButtons:(id)buttons;
++ (void)composeSecondaryDetailsView:(id)view forRideBookingRequestRideStatus:(id)status;
++ (void)composeSecondaryDetailsView:(id)view forRideBookingRideStatus:(id)status;
++ (void)composeTemplatedBannerView:(id)view forRideBookingRideStatus:(id)status;
 @end
 
 @implementation ExtensionsViewComposer
 
-+ (void)composeCustomFeedbackHeaderView:(id)a3 forRideBookingRideStatus:(id)a4
++ (void)composeCustomFeedbackHeaderView:(id)view forRideBookingRideStatus:(id)status
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v5 templatedViewTitle];
-  [v6 setTitle:v7];
+  statusCopy = status;
+  viewCopy = view;
+  templatedViewTitle = [statusCopy templatedViewTitle];
+  [viewCopy setTitle:templatedViewTitle];
 
-  v8 = [v5 templatedViewSubtitle];
+  templatedViewSubtitle = [statusCopy templatedViewSubtitle];
 
-  [v6 setSubtitle:v8];
+  [viewCopy setSubtitle:templatedViewSubtitle];
 }
 
-+ (void)composeCustomHeaderView:(id)a3 forRideBookingRideStatus:(id)a4
++ (void)composeCustomHeaderView:(id)view forRideBookingRideStatus:(id)status
 {
-  v5 = a4;
-  v6 = a3;
+  statusCopy = status;
+  viewCopy = view;
   v14 = [[NSMutableArray alloc] initWithCapacity:2];
-  v7 = [v5 pickupLocation];
-  v8 = [v7 _geoMapItem];
-  v9 = [SearchFieldItem searchFieldItemWithObject:v8];
+  pickupLocation = [statusCopy pickupLocation];
+  _geoMapItem = [pickupLocation _geoMapItem];
+  v9 = [SearchFieldItem searchFieldItemWithObject:_geoMapItem];
 
   [v14 addObject:v9];
-  v10 = [v5 dropoffLocation];
+  dropoffLocation = [statusCopy dropoffLocation];
 
-  v11 = [v10 _geoMapItem];
-  v12 = [SearchFieldItem searchFieldItemWithObject:v11];
+  _geoMapItem2 = [dropoffLocation _geoMapItem];
+  v12 = [SearchFieldItem searchFieldItemWithObject:_geoMapItem2];
 
   [v14 addObject:v12];
   v13 = [v14 copy];
-  [v6 setOverrideWaypoints:v13];
+  [viewCopy setOverrideWaypoints:v13];
 
-  [v6 updateWaypointsList];
+  [viewCopy updateWaypointsList];
 }
 
-+ (void)composeOpenAppView:(id)a3 forRideBookingRideStatus:(id)a4
++ (void)composeOpenAppView:(id)view forRideBookingRideStatus:(id)status
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v5 openInAppCommandTitle];
-  [v6 setOpenAppButtonTitle:v7];
+  statusCopy = status;
+  viewCopy = view;
+  openInAppCommandTitle = [statusCopy openInAppCommandTitle];
+  [viewCopy setOpenAppButtonTitle:openInAppCommandTitle];
 
-  v8 = [v5 cardActions];
+  cardActions = [statusCopy cardActions];
 
-  [v6 setActions:v8];
+  [viewCopy setActions:cardActions];
 }
 
-+ (void)composeSecondaryDetailsView:(id)a3 forRideBookingRideStatus:(id)a4
++ (void)composeSecondaryDetailsView:(id)view forRideBookingRideStatus:(id)status
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 informationLabel];
-  v8 = [v5 cardDisclaimer];
-  [v7 setText:v8];
+  statusCopy = status;
+  viewCopy = view;
+  informationLabel = [viewCopy informationLabel];
+  cardDisclaimer = [statusCopy cardDisclaimer];
+  [informationLabel setText:cardDisclaimer];
 
-  v9 = [v5 cardFareLineItems];
+  cardFareLineItems = [statusCopy cardFareLineItems];
 
-  [v6 setDetailEntries:v9];
+  [viewCopy setDetailEntries:cardFareLineItems];
 }
 
-+ (void)composePrimaryDetailsView:(id)a3 forRideBookingRideStatus:(id)a4 withActionButtons:(id)a5
++ (void)composePrimaryDetailsView:(id)view forRideBookingRideStatus:(id)status withActionButtons:(id)buttons
 {
-  v7 = a5;
-  v8 = a4;
-  v17 = a3;
-  v9 = [v17 appIconImageView];
-  v10 = [v8 cardIcon];
-  [v9 setImage:v10];
+  buttonsCopy = buttons;
+  statusCopy = status;
+  viewCopy = view;
+  appIconImageView = [viewCopy appIconImageView];
+  cardIcon = [statusCopy cardIcon];
+  [appIconImageView setImage:cardIcon];
 
-  v11 = [v17 titleLabel];
-  v12 = [v8 cardTitle];
-  [v11 setText:v12];
+  titleLabel = [viewCopy titleLabel];
+  cardTitle = [statusCopy cardTitle];
+  [titleLabel setText:cardTitle];
 
-  v13 = [v17 subtitleLabel];
-  v14 = [v8 cardSubtitle];
-  [v13 setText:v14];
+  subtitleLabel = [viewCopy subtitleLabel];
+  cardSubtitle = [statusCopy cardSubtitle];
+  [subtitleLabel setText:cardSubtitle];
 
-  v15 = [v8 cardTertiaryTitle];
-  v16 = [v8 cardFormattedPriceRangeBadge];
+  cardTertiaryTitle = [statusCopy cardTertiaryTitle];
+  cardFormattedPriceRangeBadge = [statusCopy cardFormattedPriceRangeBadge];
 
-  [v17 setTertiaryText:v15 badge:v16];
-  [v17 configureWithActionButtons:v7];
+  [viewCopy setTertiaryText:cardTertiaryTitle badge:cardFormattedPriceRangeBadge];
+  [viewCopy configureWithActionButtons:buttonsCopy];
 }
 
-+ (void)composeFeedbackView:(id)a3 forRideBookingRideStatus:(id)a4 tippingViewDelegate:(id)a5
++ (void)composeFeedbackView:(id)view forRideBookingRideStatus:(id)status tippingViewDelegate:(id)delegate
 {
-  v19 = a3;
-  v7 = a4;
-  v8 = a5;
-  v9 = [v7 tippingOptions];
-  [v19 setTippingOptions:v9];
+  viewCopy = view;
+  statusCopy = status;
+  delegateCopy = delegate;
+  tippingOptions = [statusCopy tippingOptions];
+  [viewCopy setTippingOptions:tippingOptions];
 
-  v10 = [v7 driverImage];
-  [v19 configureHeaderImage:v10];
+  driverImage = [statusCopy driverImage];
+  [viewCopy configureHeaderImage:driverImage];
 
-  [v19 setShowRatingOptions:{objc_msgSend(v7, "shouldShowRatingOptions")}];
-  [v19 configureTippingViewWithDelegate:v8];
+  [viewCopy setShowRatingOptions:{objc_msgSend(statusCopy, "shouldShowRatingOptions")}];
+  [viewCopy configureTippingViewWithDelegate:delegateCopy];
 
   v11 = +[NSBundle mainBundle];
   v12 = [v11 localizedStringForKey:@"Ridesharing submit default" value:@"localized string not found" table:0];
 
-  if ([v7 shouldShowRatingOptions])
+  if ([statusCopy shouldShowRatingOptions])
   {
     v13 = +[NSBundle mainBundle];
     v14 = [v13 localizedStringForKey:@"Ridesharing submit rating" value:@"localized string not found" table:0];
@@ -126,7 +126,7 @@
     v12 = v14;
   }
 
-  if ([v7 shouldShowTippingOptions])
+  if ([statusCopy shouldShowTippingOptions])
   {
     v15 = +[NSBundle mainBundle];
     v16 = [v15 localizedStringForKey:@"Ridesharing submit tip" value:@"localized string not found" table:0];
@@ -134,7 +134,7 @@
     v12 = v16;
   }
 
-  if ([v7 shouldShowRatingOptions] && objc_msgSend(v7, "shouldShowTippingOptions"))
+  if ([statusCopy shouldShowRatingOptions] && objc_msgSend(statusCopy, "shouldShowTippingOptions"))
   {
     v17 = +[NSBundle mainBundle];
     v18 = [v17 localizedStringForKey:@"Ridesharing submit rating and tip" value:@"localized string not found" table:0];
@@ -142,92 +142,92 @@
     v12 = v18;
   }
 
-  [v19 configureSubmitButtonTitle:v12];
+  [viewCopy configureSubmitButtonTitle:v12];
 }
 
-+ (void)composeBannerAttributionView:(id)a3 forRideBookingRideStatus:(id)a4
++ (void)composeBannerAttributionView:(id)view forRideBookingRideStatus:(id)status
 {
-  v5 = a4;
-  v7 = [a3 attributionLabel];
-  v6 = [v5 bannerAttributionTitle];
+  statusCopy = status;
+  attributionLabel = [view attributionLabel];
+  bannerAttributionTitle = [statusCopy bannerAttributionTitle];
 
-  [v7 setText:v6];
+  [attributionLabel setText:bannerAttributionTitle];
 }
 
-+ (void)composeTemplatedBannerView:(id)a3 forRideBookingRideStatus:(id)a4
++ (void)composeTemplatedBannerView:(id)view forRideBookingRideStatus:(id)status
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v5 templatedViewAppIcon];
-  [v6 setAppIcon:v7];
+  statusCopy = status;
+  viewCopy = view;
+  templatedViewAppIcon = [statusCopy templatedViewAppIcon];
+  [viewCopy setAppIcon:templatedViewAppIcon];
 
-  v8 = [v5 templatedViewTitle];
-  v9 = [v6 primaryLabel];
-  [v9 setText:v8];
+  templatedViewTitle = [statusCopy templatedViewTitle];
+  primaryLabel = [viewCopy primaryLabel];
+  [primaryLabel setText:templatedViewTitle];
 
-  v11 = [v5 templatedViewSubtitle];
+  templatedViewSubtitle = [statusCopy templatedViewSubtitle];
 
-  v10 = [v6 secondaryLabel];
+  secondaryLabel = [viewCopy secondaryLabel];
 
-  [v10 setText:v11];
+  [secondaryLabel setText:templatedViewSubtitle];
 }
 
-+ (void)composeBlankTemplatedBannerView:(id)a3 forRideBookingRideStatus:(id)a4
++ (void)composeBlankTemplatedBannerView:(id)view forRideBookingRideStatus:(id)status
 {
-  v4 = a3;
-  [v4 setAppIcon:0];
-  v5 = [v4 primaryLabel];
-  [v5 setText:&stru_1016631F0];
+  viewCopy = view;
+  [viewCopy setAppIcon:0];
+  primaryLabel = [viewCopy primaryLabel];
+  [primaryLabel setText:&stru_1016631F0];
 
-  v6 = [v4 secondaryLabel];
+  secondaryLabel = [viewCopy secondaryLabel];
 
-  [v6 setText:&stru_1016631F0];
+  [secondaryLabel setText:&stru_1016631F0];
 }
 
-+ (void)composeBannerView:(id)a3 forRidesharingCurrentRideViewController:(id)a4 rideBookingRideStatus:(id)a5
++ (void)composeBannerView:(id)view forRidesharingCurrentRideViewController:(id)controller rideBookingRideStatus:(id)status
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 _remoteViewController];
-  v11 = [v9 getRideStatusIntentResponse];
-  if (!v11)
+  viewCopy = view;
+  controllerCopy = controller;
+  statusCopy = status;
+  _remoteViewController = [controllerCopy _remoteViewController];
+  getRideStatusIntentResponse = [statusCopy getRideStatusIntentResponse];
+  if (!getRideStatusIntentResponse)
   {
-    v11 = [v9 requestRideIntentResponse];
+    getRideStatusIntentResponse = [statusCopy requestRideIntentResponse];
   }
 
   v12 = [INInteraction alloc];
   v13 = objc_opt_new();
-  v14 = [v12 initWithIntent:v13 response:v11];
+  v14 = [v12 initWithIntent:v13 response:getRideStatusIntentResponse];
 
-  [v10 configureWithInteraction:v14 context:1 completion:&stru_10164D710];
-  if (v10)
+  [_remoteViewController configureWithInteraction:v14 context:1 completion:&stru_10164D710];
+  if (_remoteViewController)
   {
-    v15 = [v10 parentViewController];
+    parentViewController = [_remoteViewController parentViewController];
 
-    if (!v15)
+    if (!parentViewController)
     {
-      [v10 beginAppearanceTransition:1 animated:0];
-      [v8 addChildViewController:v10];
-      v16 = [v10 view];
-      [v7 setRemoteView:v16];
+      [_remoteViewController beginAppearanceTransition:1 animated:0];
+      [controllerCopy addChildViewController:_remoteViewController];
+      view = [_remoteViewController view];
+      [viewCopy setRemoteView:view];
 
-      [v10 didMoveToParentViewController:v8];
-      [v10 endAppearanceTransition];
+      [_remoteViewController didMoveToParentViewController:controllerCopy];
+      [_remoteViewController endAppearanceTransition];
     }
   }
 
   else
   {
     v27 = v14;
-    v28 = v11;
-    v29 = v9;
+    v28 = getRideStatusIntentResponse;
+    v29 = statusCopy;
     v32 = 0u;
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v17 = [v8 childViewControllers];
-    v18 = [v17 countByEnumeratingWithState:&v30 objects:v34 count:16];
+    childViewControllers = [controllerCopy childViewControllers];
+    v18 = [childViewControllers countByEnumeratingWithState:&v30 objects:v34 count:16];
     if (v18)
     {
       v19 = v18;
@@ -238,7 +238,7 @@
         {
           if (*v31 != v20)
           {
-            objc_enumerationMutation(v17);
+            objc_enumerationMutation(childViewControllers);
           }
 
           v22 = *(*(&v30 + 1) + 8 * i);
@@ -256,14 +256,14 @@
           v24 = v23;
           if ([v24 isViewLoaded])
           {
-            v25 = [v24 view];
-            v26 = [v7 remoteView];
+            view2 = [v24 view];
+            remoteView = [viewCopy remoteView];
 
-            if (v25 == v26)
+            if (view2 == remoteView)
             {
               [v24 beginAppearanceTransition:0 animated:0];
               [v24 willMoveToParentViewController:0];
-              [v7 setRemoteView:0];
+              [viewCopy setRemoteView:0];
               [v24 removeFromParentViewController];
               [v24 endAppearanceTransition];
 
@@ -272,7 +272,7 @@
           }
         }
 
-        v19 = [v17 countByEnumeratingWithState:&v30 objects:v34 count:16];
+        v19 = [childViewControllers countByEnumeratingWithState:&v30 objects:v34 count:16];
         if (v19)
         {
           continue;
@@ -284,24 +284,24 @@
 
 LABEL_20:
 
-    v9 = v29;
+    statusCopy = v29;
     v14 = v27;
-    v11 = v28;
+    getRideStatusIntentResponse = v28;
   }
 }
 
-+ (void)composeCustomHeaderView:(id)a3 forRideBookingRequestRideStatus:(id)a4
++ (void)composeCustomHeaderView:(id)view forRideBookingRequestRideStatus:(id)status
 {
-  v24 = a3;
-  v5 = a4;
+  viewCopy = view;
+  statusCopy = status;
   v6 = [[NSMutableArray alloc] initWithCapacity:2];
   v7 = [PlaceholderWaypointRequest alloc];
-  v8 = [v5 origin];
-  v9 = [(PlaceholderWaypointRequest *)v7 initWithCLPlacemark:v8];
+  origin = [statusCopy origin];
+  v9 = [(PlaceholderWaypointRequest *)v7 initWithCLPlacemark:origin];
   v31[0] = v9;
   v10 = [PlaceholderWaypointRequest alloc];
-  v11 = [v5 destination];
-  v12 = [(PlaceholderWaypointRequest *)v10 initWithCLPlacemark:v11];
+  destination = [statusCopy destination];
+  v12 = [(PlaceholderWaypointRequest *)v10 initWithCLPlacemark:destination];
   v31[1] = v12;
   v13 = [NSArray arrayWithObjects:v31 count:2];
 
@@ -326,8 +326,8 @@ LABEL_20:
 
         v18 = *(*(&v26 + 1) + 8 * i);
         v19 = [WaypointPlaceholder alloc];
-        v20 = [v18 waypointName];
-        v21 = [(WaypointPlaceholder *)v19 initWithName:v20 displayableMarker:0];
+        waypointName = [v18 waypointName];
+        v21 = [(WaypointPlaceholder *)v19 initWithName:waypointName displayableMarker:0];
 
         v22 = [[RoutePlanningWaypointRequest alloc] initWithWaypointPlaceholder:v21 request:v18 preferredNameSource:0];
         v23 = [SearchFieldItem searchFieldItemWithObject:v22];
@@ -340,66 +340,66 @@ LABEL_20:
     while (v15);
   }
 
-  [v24 setOverrideWaypoints:v6];
-  [v24 updateWaypointsList];
+  [viewCopy setOverrideWaypoints:v6];
+  [viewCopy updateWaypointsList];
 }
 
-+ (void)composePayView:(id)a3 forRideBookingRequestRideStatus:(id)a4
++ (void)composePayView:(id)view forRideBookingRequestRideStatus:(id)status
 {
-  v5 = a3;
-  v9 = [a4 paymentMethod];
-  v6 = [v9 title];
-  v7 = [v9 subtitle];
-  v8 = [v9 icon];
-  [v5 configureForTitle:v6 subtitle:v7 image:v8];
+  viewCopy = view;
+  paymentMethod = [status paymentMethod];
+  title = [paymentMethod title];
+  subtitle = [paymentMethod subtitle];
+  icon = [paymentMethod icon];
+  [viewCopy configureForTitle:title subtitle:subtitle image:icon];
 }
 
-+ (void)composeOpenAppView:(id)a3 forRideBookingRequestRideStatus:(id)a4
++ (void)composeOpenAppView:(id)view forRideBookingRequestRideStatus:(id)status
 {
-  v6 = a3;
-  v5 = [a4 openInAppCommandTitle];
-  [v6 setOpenAppButtonTitle:v5];
+  viewCopy = view;
+  openInAppCommandTitle = [status openInAppCommandTitle];
+  [viewCopy setOpenAppButtonTitle:openInAppCommandTitle];
 
-  [v6 setActions:&__NSArray0__struct];
+  [viewCopy setActions:&__NSArray0__struct];
 }
 
-+ (void)composeSecondaryDetailsView:(id)a3 forRideBookingRequestRideStatus:(id)a4
++ (void)composeSecondaryDetailsView:(id)view forRideBookingRequestRideStatus:(id)status
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 disclaimerLabel];
-  v8 = [v5 disclaimerMessage];
-  [v7 setText:v8];
+  statusCopy = status;
+  viewCopy = view;
+  disclaimerLabel = [viewCopy disclaimerLabel];
+  disclaimerMessage = [statusCopy disclaimerMessage];
+  [disclaimerLabel setText:disclaimerMessage];
 
-  v9 = [v6 informationLabel];
-  v10 = [v5 appleDisclaimer];
-  [v9 setText:v10];
+  informationLabel = [viewCopy informationLabel];
+  appleDisclaimer = [statusCopy appleDisclaimer];
+  [informationLabel setText:appleDisclaimer];
 
-  v11 = [v5 cardFareLineItems];
+  cardFareLineItems = [statusCopy cardFareLineItems];
 
-  [v6 setDetailEntries:v11];
+  [viewCopy setDetailEntries:cardFareLineItems];
 }
 
-+ (void)composePrimaryDetailsView:(id)a3 forRideBookingRequestRideStatus:(id)a4
++ (void)composePrimaryDetailsView:(id)view forRideBookingRequestRideStatus:(id)status
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 appIconImageView];
-  v8 = [v5 cardIcon];
-  [v7 setImage:v8];
+  statusCopy = status;
+  viewCopy = view;
+  appIconImageView = [viewCopy appIconImageView];
+  cardIcon = [statusCopy cardIcon];
+  [appIconImageView setImage:cardIcon];
 
-  v9 = [v6 titleLabel];
-  v10 = [v5 cardTitle];
-  [v9 setText:v10];
+  titleLabel = [viewCopy titleLabel];
+  cardTitle = [statusCopy cardTitle];
+  [titleLabel setText:cardTitle];
 
-  v11 = [v6 subtitleLabel];
-  v12 = [v5 cardSubtitle];
-  [v11 setText:v12];
+  subtitleLabel = [viewCopy subtitleLabel];
+  cardSubtitle = [statusCopy cardSubtitle];
+  [subtitleLabel setText:cardSubtitle];
 
-  v14 = [v5 cardFormattedPriceRange];
-  v13 = [v5 cardFormattedPriceRangeBadge];
+  cardFormattedPriceRange = [statusCopy cardFormattedPriceRange];
+  cardFormattedPriceRangeBadge = [statusCopy cardFormattedPriceRangeBadge];
 
-  [v6 setTertiaryText:v14 badge:v13];
+  [viewCopy setTertiaryText:cardFormattedPriceRange badge:cardFormattedPriceRangeBadge];
 }
 
 @end

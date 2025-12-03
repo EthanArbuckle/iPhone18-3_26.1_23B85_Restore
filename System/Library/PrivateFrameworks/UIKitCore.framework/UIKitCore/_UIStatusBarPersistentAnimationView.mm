@@ -1,15 +1,15 @@
 @interface _UIStatusBarPersistentAnimationView
-- (id)actionForLayer:(id)a3 forKey:(id)a4;
-- (void)setPersistentAnimations:(id)a3;
+- (id)actionForLayer:(id)layer forKey:(id)key;
+- (void)setPersistentAnimations:(id)animations;
 @end
 
 @implementation _UIStatusBarPersistentAnimationView
 
-- (id)actionForLayer:(id)a3 forKey:(id)a4
+- (id)actionForLayer:(id)layer forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 isEqualToString:*MEMORY[0x1E6979EE8]])
+  layerCopy = layer;
+  keyCopy = key;
+  if ([keyCopy isEqualToString:*MEMORY[0x1E6979EE8]])
   {
     v8 = [UIViewBlockBasedCAAction alloc];
     v15[0] = MEMORY[0x1E69E9820];
@@ -23,7 +23,7 @@ LABEL_5:
     goto LABEL_7;
   }
 
-  if ([v7 isEqualToString:*MEMORY[0x1E6979EE0]])
+  if ([keyCopy isEqualToString:*MEMORY[0x1E6979EE0]])
   {
     v8 = [UIViewBlockBasedCAAction alloc];
     v14[0] = MEMORY[0x1E69E9820];
@@ -37,17 +37,17 @@ LABEL_5:
 
   v13.receiver = self;
   v13.super_class = _UIStatusBarPersistentAnimationView;
-  v10 = [(UIView *)&v13 actionForLayer:v6 forKey:v7];
+  v10 = [(UIView *)&v13 actionForLayer:layerCopy forKey:keyCopy];
 LABEL_7:
   v11 = v10;
 
   return v11;
 }
 
-- (void)setPersistentAnimations:(id)a3
+- (void)setPersistentAnimations:(id)animations
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  animationsCopy = animations;
   animations = self->_animations;
   if (animations)
   {
@@ -56,19 +56,19 @@ LABEL_7:
 
   else
   {
-    v6 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     v7 = self->_animations;
-    self->_animations = v6;
+    self->_animations = weakObjectsHashTable;
   }
 
-  v8 = [(UIView *)self layer];
-  v9 = [v8 context];
+  layer = [(UIView *)self layer];
+  context = [layer context];
 
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v10 = v4;
+  v10 = animationsCopy;
   v11 = [v10 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v11)
   {
@@ -85,7 +85,7 @@ LABEL_7:
 
         v15 = *(*(&v16 + 1) + 8 * i);
         [(NSHashTable *)self->_animations addObject:v15, v16];
-        if (!v9 && (objc_opt_respondsToSelector() & 1) != 0)
+        if (!context && (objc_opt_respondsToSelector() & 1) != 0)
         {
           [v15 pausePersistentAnimation];
         }

@@ -1,34 +1,34 @@
 @interface HMDIDSProxyMessageTransport
-+ (BOOL)transportSupportsDevice:(id)a3;
++ (BOOL)transportSupportsDevice:(id)device;
 + (id)logCategory;
-+ (int64_t)priorityForMessage:(id)a3;
-- (BOOL)canSendMessage:(id)a3;
-- (BOOL)isDeviceConnected:(id)a3;
-- (HMDIDSProxyMessageTransport)initWithAccountRegistry:(id)a3;
-- (id)deviceForHandle:(id)a3;
-- (id)deviceForSenderContext:(id)a3;
-- (id)remoteMessageFromMessage:(id)a3;
-- (id)sendMessage:(id)a3 fromHandle:(id)a4 destination:(id)a5 priority:(int64_t)a6 timeout:(double)a7 options:(unint64_t)a8 queueOneID:(id)a9 error:(id *)a10;
-- (id)watchDeviceForDevice:(id)a3;
-- (void)service:(id)a3 account:(id)a4 incomingMessage:(id)a5 fromID:(id)a6 context:(id)a7;
++ (int64_t)priorityForMessage:(id)message;
+- (BOOL)canSendMessage:(id)message;
+- (BOOL)isDeviceConnected:(id)connected;
+- (HMDIDSProxyMessageTransport)initWithAccountRegistry:(id)registry;
+- (id)deviceForHandle:(id)handle;
+- (id)deviceForSenderContext:(id)context;
+- (id)remoteMessageFromMessage:(id)message;
+- (id)sendMessage:(id)message fromHandle:(id)handle destination:(id)destination priority:(int64_t)priority timeout:(double)timeout options:(unint64_t)options queueOneID:(id)d error:(id *)self0;
+- (id)watchDeviceForDevice:(id)device;
+- (void)service:(id)service account:(id)account incomingMessage:(id)message fromID:(id)d context:(id)context;
 @end
 
 @implementation HMDIDSProxyMessageTransport
 
-- (void)service:(id)a3 account:(id)a4 incomingMessage:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)service:(id)service account:(id)account incomingMessage:(id)message fromID:(id)d context:(id)context
 {
   v28 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if (!v15)
+  serviceCopy = service;
+  accountCopy = account;
+  messageCopy = message;
+  dCopy = d;
+  contextCopy = context;
+  if (!dCopy)
   {
     goto LABEL_7;
   }
 
-  v17 = [HMDDeviceHandle deviceHandleForDestination:v15];
+  v17 = [HMDDeviceHandle deviceHandleForDestination:dCopy];
   if (!v17)
   {
 LABEL_6:
@@ -36,7 +36,7 @@ LABEL_6:
 LABEL_7:
     v23.receiver = self;
     v23.super_class = HMDIDSProxyMessageTransport;
-    [(HMDIDSMessageTransport *)&v23 service:v12 account:v13 incomingMessage:v14 fromID:v15 context:v16];
+    [(HMDIDSMessageTransport *)&v23 service:serviceCopy account:accountCopy incomingMessage:messageCopy fromID:dCopy context:contextCopy];
     goto LABEL_8;
   }
 
@@ -65,39 +65,39 @@ LABEL_8:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (id)sendMessage:(id)a3 fromHandle:(id)a4 destination:(id)a5 priority:(int64_t)a6 timeout:(double)a7 options:(unint64_t)a8 queueOneID:(id)a9 error:(id *)a10
+- (id)sendMessage:(id)message fromHandle:(id)handle destination:(id)destination priority:(int64_t)priority timeout:(double)timeout options:(unint64_t)options queueOneID:(id)d error:(id *)self0
 {
-  if (a6 != 100 && a7 == 0.0)
+  if (priority != 100 && timeout == 0.0)
   {
-    a7 = 180.0;
+    timeout = 180.0;
   }
 
   v12.receiver = self;
   v12.super_class = HMDIDSProxyMessageTransport;
-  v10 = [HMDIDSMessageTransport sendMessage:sel_sendMessage_fromHandle_destination_priority_timeout_options_queueOneID_error_ fromHandle:a3 destination:0 priority:a5 timeout:a7 options:a10 queueOneID:? error:?];
+  v10 = [HMDIDSMessageTransport sendMessage:sel_sendMessage_fromHandle_destination_priority_timeout_options_queueOneID_error_ fromHandle:message destination:0 priority:destination timeout:timeout options:error queueOneID:? error:?];
 
   return v10;
 }
 
-- (BOOL)isDeviceConnected:(id)a3
+- (BOOL)isDeviceConnected:(id)connected
 {
-  v4 = a3;
-  v5 = [(HMDIDSMessageTransport *)self service];
-  v6 = [v4 deviceForIDSService:v5];
+  connectedCopy = connected;
+  service = [(HMDIDSMessageTransport *)self service];
+  v6 = [connectedCopy deviceForIDSService:service];
 
-  LOBYTE(v4) = [v6 isConnected];
-  return v4;
+  LOBYTE(connectedCopy) = [v6 isConnected];
+  return connectedCopy;
 }
 
-- (BOOL)canSendMessage:(id)a3
+- (BOOL)canSendMessage:(id)message
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 destination];
+  messageCopy = message;
+  destination = [messageCopy destination];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = destination;
   }
 
   else
@@ -107,15 +107,15 @@ LABEL_8:
 
   v7 = v6;
 
-  if (!v7 || ([v4 restriction] & 4) == 0)
+  if (!v7 || ([messageCopy restriction] & 4) == 0)
   {
 LABEL_15:
     v12 = 0;
     goto LABEL_16;
   }
 
-  v8 = [v7 device];
-  v9 = [(HMDIDSProxyMessageTransport *)self isDeviceConnected:v8];
+  device = [v7 device];
+  v9 = [(HMDIDSProxyMessageTransport *)self isDeviceConnected:device];
 
   if (!v9)
   {
@@ -124,11 +124,11 @@ LABEL_15:
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
     {
       v19 = HMFGetLogIdentifier();
-      v20 = [v7 device];
+      device2 = [v7 device];
       v23 = 138543618;
       v24 = v19;
       v25 = 2112;
-      v26 = v20;
+      v26 = device2;
       _os_log_impl(&dword_229538000, v18, OS_LOG_TYPE_DEBUG, "%{public}@Cannot send message, the device, %@, is not currently connected", &v23, 0x16u);
     }
 
@@ -136,8 +136,8 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  v10 = [v7 device];
-  v11 = [(HMDIDSProxyMessageTransport *)self watchDeviceForDevice:v10];
+  device3 = [v7 device];
+  v11 = [(HMDIDSProxyMessageTransport *)self watchDeviceForDevice:device3];
 
   v12 = [objc_opt_class() transportSupportsDevice:v11];
   if ((v12 & 1) == 0)
@@ -147,11 +147,11 @@ LABEL_15:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
     {
       v15 = HMFGetLogIdentifier();
-      v16 = [v7 device];
+      device4 = [v7 device];
       v23 = 138543618;
       v24 = v15;
       v25 = 2112;
-      v26 = v16;
+      v26 = device4;
       _os_log_impl(&dword_229538000, v14, OS_LOG_TYPE_DEBUG, "%{public}@Cannot send message, the device, %@, is not supported", &v23, 0x16u);
     }
 
@@ -163,26 +163,26 @@ LABEL_16:
   return v12;
 }
 
-- (id)watchDeviceForDevice:(id)a3
+- (id)watchDeviceForDevice:(id)device
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDIDSProxyMessageTransport *)self companionManager];
+  deviceCopy = device;
+  companionManager = [(HMDIDSProxyMessageTransport *)self companionManager];
 
-  if (!v5)
+  if (!companionManager)
   {
-    v11 = [(HMDIDSProxyMessageTransport *)self watchManager];
+    watchManager = [(HMDIDSProxyMessageTransport *)self watchManager];
 
-    if (v11)
+    if (watchManager)
     {
       v23 = 0u;
       v24 = 0u;
       v21 = 0u;
       v22 = 0u;
-      v12 = [(HMDIDSProxyMessageTransport *)self watchManager];
-      v9 = [v12 watches];
+      watchManager2 = [(HMDIDSProxyMessageTransport *)self watchManager];
+      watches = [watchManager2 watches];
 
-      v13 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v13 = [watches countByEnumeratingWithState:&v21 objects:v25 count:16];
       if (v13)
       {
         v14 = v13;
@@ -193,18 +193,18 @@ LABEL_16:
           {
             if (*v22 != v15)
             {
-              objc_enumerationMutation(v9);
+              objc_enumerationMutation(watches);
             }
 
             v17 = *(*(&v21 + 1) + 8 * i);
-            if ([v17 isRelatedToDevice:v4])
+            if ([v17 isRelatedToDevice:deviceCopy])
             {
-              v10 = v17;
+              companion2 = v17;
               goto LABEL_16;
             }
           }
 
-          v14 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
+          v14 = [watches countByEnumeratingWithState:&v21 objects:v25 count:16];
           if (v14)
           {
             continue;
@@ -218,21 +218,21 @@ LABEL_16:
     goto LABEL_14;
   }
 
-  v6 = [(HMDIDSProxyMessageTransport *)self companionManager];
-  v7 = [v6 companion];
-  v8 = [v7 isRelatedToDevice:v4];
+  companionManager2 = [(HMDIDSProxyMessageTransport *)self companionManager];
+  companion = [companionManager2 companion];
+  v8 = [companion isRelatedToDevice:deviceCopy];
 
   if (!v8)
   {
 LABEL_14:
-    v18 = v4;
+    v18 = deviceCopy;
     goto LABEL_17;
   }
 
-  v9 = [(HMDIDSProxyMessageTransport *)self companionManager];
-  v10 = [v9 companion];
+  watches = [(HMDIDSProxyMessageTransport *)self companionManager];
+  companion2 = [watches companion];
 LABEL_16:
-  v18 = v10;
+  v18 = companion2;
 
 LABEL_17:
   v19 = *MEMORY[0x277D85DE8];
@@ -240,32 +240,32 @@ LABEL_17:
   return v18;
 }
 
-- (id)deviceForHandle:(id)a3
+- (id)deviceForHandle:(id)handle
 {
-  v4 = [HMDDevice deviceWithHandle:a3];
+  v4 = [HMDDevice deviceWithHandle:handle];
   v5 = [(HMDIDSProxyMessageTransport *)self watchDeviceForDevice:v4];
 
   return v5;
 }
 
-- (id)deviceForSenderContext:(id)a3
+- (id)deviceForSenderContext:(id)context
 {
-  v4 = [a3 deviceHandle];
-  v5 = [(HMDIDSProxyMessageTransport *)self deviceForHandle:v4];
+  deviceHandle = [context deviceHandle];
+  v5 = [(HMDIDSProxyMessageTransport *)self deviceForHandle:deviceHandle];
 
   return v5;
 }
 
-- (id)remoteMessageFromMessage:(id)a3
+- (id)remoteMessageFromMessage:(id)message
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [objc_opt_class() remoteMessageFromMessage:v4 secure:-[HMDIDSProxyMessageTransport isSecure](self accountRegistry:{"isSecure"), 0}];
-  v6 = [v4 destination];
+  messageCopy = message;
+  v5 = [objc_opt_class() remoteMessageFromMessage:messageCopy secure:-[HMDIDSProxyMessageTransport isSecure](self accountRegistry:{"isSecure"), 0}];
+  destination = [messageCopy destination];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
+    v7 = destination;
   }
 
   else
@@ -277,8 +277,8 @@ LABEL_17:
 
   if (v8)
   {
-    v9 = [v8 device];
-    v10 = [(HMDIDSProxyMessageTransport *)self watchDeviceForDevice:v9];
+    device = [v8 device];
+    v10 = [(HMDIDSProxyMessageTransport *)self watchDeviceForDevice:device];
 
     if (v10)
     {
@@ -287,11 +287,11 @@ LABEL_17:
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
       {
         v13 = HMFGetLogIdentifier();
-        v14 = [v8 device];
+        device2 = [v8 device];
         v20 = 138543874;
         v21 = v13;
         v22 = 2112;
-        v23 = v14;
+        v23 = device2;
         v24 = 2112;
         v25 = v10;
         _os_log_impl(&dword_229538000, v12, OS_LOG_TYPE_DEBUG, "%{public}@Replacing device destination, %@, with device: %@", &v20, 0x20u);
@@ -299,8 +299,8 @@ LABEL_17:
 
       objc_autoreleasePoolPop(v11);
       v15 = [HMDRemoteDeviceMessageDestination alloc];
-      v16 = [v8 target];
-      v17 = [(HMDRemoteDeviceMessageDestination *)v15 initWithTarget:v16 device:v10];
+      target = [v8 target];
+      v17 = [(HMDRemoteDeviceMessageDestination *)v15 initWithTarget:target device:v10];
 
       [v5 setDestination:v17];
     }
@@ -311,11 +311,11 @@ LABEL_17:
   return v5;
 }
 
-- (HMDIDSProxyMessageTransport)initWithAccountRegistry:(id)a3
+- (HMDIDSProxyMessageTransport)initWithAccountRegistry:(id)registry
 {
   v12.receiver = self;
   v12.super_class = HMDIDSProxyMessageTransport;
-  v3 = [(HMDIDSMessageTransport *)&v12 initWithAccountRegistry:a3 forServiceName:@"com.apple.private.alloy.willow.proxy"];
+  v3 = [(HMDIDSMessageTransport *)&v12 initWithAccountRegistry:registry forServiceName:@"com.apple.private.alloy.willow.proxy"];
   if (v3)
   {
     if (+[HMDDeviceCapabilities isCompanionCapable])
@@ -323,18 +323,18 @@ LABEL_17:
       v4 = &OBJC_IVAR___HMDIDSProxyMessageTransport__watchManager;
       v5 = off_278666380;
 LABEL_6:
-      v8 = [(__objc2_class *)*v5 sharedManager];
+      sharedManager = [(__objc2_class *)*v5 sharedManager];
       v9 = *v4;
       v10 = *(&v3->super.super.super.super.super.isa + v9);
-      *(&v3->super.super.super.super.super.isa + v9) = v8;
+      *(&v3->super.super.super.super.super.isa + v9) = sharedManager;
 
       return v3;
     }
 
-    v6 = [MEMORY[0x277D0F8E8] productInfo];
-    v7 = [v6 productPlatform];
+    productInfo = [MEMORY[0x277D0F8E8] productInfo];
+    productPlatform = [productInfo productPlatform];
 
-    if (v7 == 3)
+    if (productPlatform == 3)
     {
       v4 = &OBJC_IVAR___HMDIDSProxyMessageTransport__companionManager;
       v5 = off_2786660F0;
@@ -365,15 +365,15 @@ void __42__HMDIDSProxyMessageTransport_logCategory__block_invoke()
   logCategory__hmf_once_v3_260913 = v1;
 }
 
-+ (BOOL)transportSupportsDevice:(id)a3
++ (BOOL)transportSupportsDevice:(id)device
 {
-  v3 = a3;
-  v4 = [v3 version];
-  if (v4)
+  deviceCopy = device;
+  version = [deviceCopy version];
+  if (version)
   {
-    v5 = [v3 version];
+    version2 = [deviceCopy version];
     v6 = +[HMDHomeKitVersion version3];
-    v7 = [v5 isAtLeastVersion:v6];
+    v7 = [version2 isAtLeastVersion:v6];
   }
 
   else
@@ -384,10 +384,10 @@ void __42__HMDIDSProxyMessageTransport_logCategory__block_invoke()
   return v7;
 }
 
-+ (int64_t)priorityForMessage:(id)a3
++ (int64_t)priorityForMessage:(id)message
 {
-  v3 = [a3 qualityOfService];
-  switch(v3)
+  qualityOfService = [message qualityOfService];
+  switch(qualityOfService)
   {
     case 17:
       return 200;

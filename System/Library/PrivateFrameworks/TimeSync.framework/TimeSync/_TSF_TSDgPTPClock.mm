@@ -1,66 +1,66 @@
 @interface _TSF_TSDgPTPClock
 + (id)availablegPTPClockIdentifiers;
-+ (id)diagnosticInfoForService:(id)a3;
-+ (id)iokitMatchingDictionaryForClockIdentifier:(unint64_t)a3;
-- ($7DEDF3842AEFB7F1E6DF5AF62E424A02)convertFromMachAbsoluteTo128BitgPTPTime:(unint64_t)a3 grandmasterUsed:(unint64_t *)a4 portNumber:(unsigned __int16 *)a5;
-- ($7DEDF3842AEFB7F1E6DF5AF62E424A02)convertFromTimeSyncTimeTo128BitgPTPTime:(unint64_t)a3 grandmasterUsed:(unint64_t *)a4 portNumber:(unsigned __int16 *)a5;
-- (BOOL)addLinkLayerPortOnInterfaceNamed:(id)a3 allocatedPortNumber:(unsigned __int16 *)a4 error:(id *)a5;
-- (BOOL)addReverseSyncOnInterfaceNamed:(id)a3 withDomainNumner:(unsigned __int8)a4 syncInterval:(unsigned int)a5 error:(id *)a6;
-- (BOOL)addUnicastLinkLayerEtEPortOnInterfaceNamed:(id)a3 withDestinationAddress:(const char *)a4 allocatedPortNumber:(unsigned __int16 *)a5 error:(id *)a6;
-- (BOOL)addUnicastLinkLayerPtPPortOnInterfaceNamed:(id)a3 withDestinationAddress:(const char *)a4 allocatedPortNumber:(unsigned __int16 *)a5 error:(id *)a6;
-- (BOOL)addUnicastUDPv4EtEPortOnInterfaceNamed:(id)a3 withDestinationAddress:(unsigned int)a4 allocatedPortNumber:(unsigned __int16 *)a5 error:(id *)a6;
-- (BOOL)addUnicastUDPv4PtPPortOnInterfaceNamed:(id)a3 withDestinationAddress:(unsigned int)a4 allocatedPortNumber:(unsigned __int16 *)a5 error:(id *)a6;
-- (BOOL)addUnicastUDPv6EtEPortOnInterfaceNamed:(id)a3 withDestinationAddress:(const char *)a4 allocatedPortNumber:(unsigned __int16 *)a5 error:(id *)a6;
-- (BOOL)addUnicastUDPv6PtPPortOnInterfaceNamed:(id)a3 withDestinationAddress:(const char *)a4 allocatedPortNumber:(unsigned __int16 *)a5 error:(id *)a6;
-- (BOOL)getMachAbsoluteRateRatioNumerator:(unint64_t *)a3 denominator:(unint64_t *)a4 machAnchor:(unint64_t *)a5 andDomainAnchor:(unint64_t *)a6 forGrandmasterIdentity:(unint64_t *)a7 portNumber:(unsigned __int16 *)a8 withError:(id *)a9;
-- (BOOL)getSyncInfoWithSyncInfoValid:(BOOL *)a3 syncFlags:(char *)a4 timeSyncTime:(unint64_t *)a5 domainTimeHi:(unint64_t *)a6 domainTimeLo:(unint64_t *)a7 cumulativeScaledRate:(unint64_t *)a8 inverseCumulativeScaledRate:(unint64_t *)a9 grandmasterID:(unint64_t *)a10 localPortNumber:(unsigned __int16 *)a11 error:(id *)a12;
-- (BOOL)getTimeSyncTimeRateRatioNumerator:(unint64_t *)a3 denominator:(unint64_t *)a4 timeSyncAnchor:(unint64_t *)a5 andDomainAnchor:(unint64_t *)a6 forGrandmasterIdentity:(unint64_t *)a7 portNumber:(unsigned __int16 *)a8 withError:(id *)a9;
-- (BOOL)removeLinkLayerPortFromInterfaceNamed:(id)a3 error:(id *)a4;
-- (BOOL)removeReverseSyncFromInterfaceNamed:(id)a3 withDomainNumner:(unsigned __int8)a4 error:(id *)a5;
-- (BOOL)removeUnicastLinkLayerEtEPortFromInterfaceNamed:(id)a3 withDestinationAddress:(const char *)a4 error:(id *)a5;
-- (BOOL)removeUnicastLinkLayerPtPPortFromInterfaceNamed:(id)a3 withDestinationAddress:(const char *)a4 error:(id *)a5;
-- (BOOL)removeUnicastUDPv4EtEPortFromInterfaceNamed:(id)a3 withDestinationAddress:(unsigned int)a4 error:(id *)a5;
-- (BOOL)removeUnicastUDPv4PtPPortFromInterfaceNamed:(id)a3 withDestinationAddress:(unsigned int)a4 error:(id *)a5;
-- (BOOL)removeUnicastUDPv6EtEPortFromInterfaceNamed:(id)a3 withDestinationAddress:(const char *)a4 error:(id *)a5;
-- (BOOL)removeUnicastUDPv6PtPPortFromInterfaceNamed:(id)a3 withDestinationAddress:(const char *)a4 error:(id *)a5;
-- (BOOL)setPreferredGM:(BOOL)a3 error:(id *)a4;
-- (BOOL)updateNtpAnchorOffset:(int64_t)a3 isLocalClockSourceFromNTP:(BOOL)a4 error:(id *)a5;
++ (id)diagnosticInfoForService:(id)service;
++ (id)iokitMatchingDictionaryForClockIdentifier:(unint64_t)identifier;
+- ($7DEDF3842AEFB7F1E6DF5AF62E424A02)convertFromMachAbsoluteTo128BitgPTPTime:(unint64_t)time grandmasterUsed:(unint64_t *)used portNumber:(unsigned __int16 *)number;
+- ($7DEDF3842AEFB7F1E6DF5AF62E424A02)convertFromTimeSyncTimeTo128BitgPTPTime:(unint64_t)time grandmasterUsed:(unint64_t *)used portNumber:(unsigned __int16 *)number;
+- (BOOL)addLinkLayerPortOnInterfaceNamed:(id)named allocatedPortNumber:(unsigned __int16 *)number error:(id *)error;
+- (BOOL)addReverseSyncOnInterfaceNamed:(id)named withDomainNumner:(unsigned __int8)numner syncInterval:(unsigned int)interval error:(id *)error;
+- (BOOL)addUnicastLinkLayerEtEPortOnInterfaceNamed:(id)named withDestinationAddress:(const char *)address allocatedPortNumber:(unsigned __int16 *)number error:(id *)error;
+- (BOOL)addUnicastLinkLayerPtPPortOnInterfaceNamed:(id)named withDestinationAddress:(const char *)address allocatedPortNumber:(unsigned __int16 *)number error:(id *)error;
+- (BOOL)addUnicastUDPv4EtEPortOnInterfaceNamed:(id)named withDestinationAddress:(unsigned int)address allocatedPortNumber:(unsigned __int16 *)number error:(id *)error;
+- (BOOL)addUnicastUDPv4PtPPortOnInterfaceNamed:(id)named withDestinationAddress:(unsigned int)address allocatedPortNumber:(unsigned __int16 *)number error:(id *)error;
+- (BOOL)addUnicastUDPv6EtEPortOnInterfaceNamed:(id)named withDestinationAddress:(const char *)address allocatedPortNumber:(unsigned __int16 *)number error:(id *)error;
+- (BOOL)addUnicastUDPv6PtPPortOnInterfaceNamed:(id)named withDestinationAddress:(const char *)address allocatedPortNumber:(unsigned __int16 *)number error:(id *)error;
+- (BOOL)getMachAbsoluteRateRatioNumerator:(unint64_t *)numerator denominator:(unint64_t *)denominator machAnchor:(unint64_t *)anchor andDomainAnchor:(unint64_t *)domainAnchor forGrandmasterIdentity:(unint64_t *)identity portNumber:(unsigned __int16 *)number withError:(id *)error;
+- (BOOL)getSyncInfoWithSyncInfoValid:(BOOL *)valid syncFlags:(char *)flags timeSyncTime:(unint64_t *)time domainTimeHi:(unint64_t *)hi domainTimeLo:(unint64_t *)lo cumulativeScaledRate:(unint64_t *)rate inverseCumulativeScaledRate:(unint64_t *)scaledRate grandmasterID:(unint64_t *)self0 localPortNumber:(unsigned __int16 *)self1 error:(id *)self2;
+- (BOOL)getTimeSyncTimeRateRatioNumerator:(unint64_t *)numerator denominator:(unint64_t *)denominator timeSyncAnchor:(unint64_t *)anchor andDomainAnchor:(unint64_t *)domainAnchor forGrandmasterIdentity:(unint64_t *)identity portNumber:(unsigned __int16 *)number withError:(id *)error;
+- (BOOL)removeLinkLayerPortFromInterfaceNamed:(id)named error:(id *)error;
+- (BOOL)removeReverseSyncFromInterfaceNamed:(id)named withDomainNumner:(unsigned __int8)numner error:(id *)error;
+- (BOOL)removeUnicastLinkLayerEtEPortFromInterfaceNamed:(id)named withDestinationAddress:(const char *)address error:(id *)error;
+- (BOOL)removeUnicastLinkLayerPtPPortFromInterfaceNamed:(id)named withDestinationAddress:(const char *)address error:(id *)error;
+- (BOOL)removeUnicastUDPv4EtEPortFromInterfaceNamed:(id)named withDestinationAddress:(unsigned int)address error:(id *)error;
+- (BOOL)removeUnicastUDPv4PtPPortFromInterfaceNamed:(id)named withDestinationAddress:(unsigned int)address error:(id *)error;
+- (BOOL)removeUnicastUDPv6EtEPortFromInterfaceNamed:(id)named withDestinationAddress:(const char *)address error:(id *)error;
+- (BOOL)removeUnicastUDPv6PtPPortFromInterfaceNamed:(id)named withDestinationAddress:(const char *)address error:(id *)error;
+- (BOOL)setPreferredGM:(BOOL)m error:(id *)error;
+- (BOOL)updateNtpAnchorOffset:(int64_t)offset isLocalClockSourceFromNTP:(BOOL)p error:(id *)error;
 - (NSArray)ports;
 - (id)_gptpPath;
-- (id)gPTPTimeFromMachAbsoluteTime:(unint64_t)a3;
-- (id)gPTPTimeFromTimeSyncTime:(unint64_t)a3;
+- (id)gPTPTimeFromMachAbsoluteTime:(unint64_t)time;
+- (id)gPTPTimeFromTimeSyncTime:(unint64_t)time;
 - (id)getMetrics;
-- (id)getMetricsWithDelta:(id)a3;
-- (id)portWithPortNumber:(unsigned __int16)a3;
+- (id)getMetricsWithDelta:(id)delta;
+- (id)portWithPortNumber:(unsigned __int16)number;
 - (unint64_t)_grandmasterIdentity;
 - (unint64_t)clockIdentity;
-- (unint64_t)convertFrom128BitgPTPTimeToMachAbsoluteTime:(id)a3 grandmasterUsed:(unint64_t *)a4 portNumber:(unsigned __int16 *)a5;
-- (unint64_t)convertFrom128BitgPTPTimeToTimeSyncTime:(id)a3 grandmasterUsed:(unint64_t *)a4 portNumber:(unsigned __int16 *)a5;
-- (unint64_t)convertFrom32BitASToMachAbsoluteTime:(unsigned int)a3;
-- (unint64_t)convertFrom32BitASToTimeSyncTime:(unsigned int)a3;
-- (unint64_t)convertFromDomainTimeToTimeSyncTime:(unint64_t)a3 grandmasterUsed:(unint64_t *)a4 portNumber:(unsigned __int16 *)a5;
-- (unint64_t)convertFromDomainToMachAbsoluteTime:(unint64_t)a3 grandmasterUsed:(unint64_t *)a4 portNumber:(unsigned __int16 *)a5;
-- (unint64_t)convertFromMachAbsoluteToDomainTime:(unint64_t)a3 grandmasterUsed:(unint64_t *)a4 portNumber:(unsigned __int16 *)a5;
-- (unint64_t)convertFromTimeSyncTimeToDomainTime:(unint64_t)a3 grandmasterUsed:(unint64_t *)a4 portNumber:(unsigned __int16 *)a5;
-- (unint64_t)machAbsoluteFromgPTPTime:(id)a3;
-- (unint64_t)timeSyncTimeFromgPTPTime:(id)a3;
+- (unint64_t)convertFrom128BitgPTPTimeToMachAbsoluteTime:(id)time grandmasterUsed:(unint64_t *)used portNumber:(unsigned __int16 *)number;
+- (unint64_t)convertFrom128BitgPTPTimeToTimeSyncTime:(id)time grandmasterUsed:(unint64_t *)used portNumber:(unsigned __int16 *)number;
+- (unint64_t)convertFrom32BitASToMachAbsoluteTime:(unsigned int)time;
+- (unint64_t)convertFrom32BitASToTimeSyncTime:(unsigned int)time;
+- (unint64_t)convertFromDomainTimeToTimeSyncTime:(unint64_t)time grandmasterUsed:(unint64_t *)used portNumber:(unsigned __int16 *)number;
+- (unint64_t)convertFromDomainToMachAbsoluteTime:(unint64_t)time grandmasterUsed:(unint64_t *)used portNumber:(unsigned __int16 *)number;
+- (unint64_t)convertFromMachAbsoluteToDomainTime:(unint64_t)time grandmasterUsed:(unint64_t *)used portNumber:(unsigned __int16 *)number;
+- (unint64_t)convertFromTimeSyncTimeToDomainTime:(unint64_t)time grandmasterUsed:(unint64_t *)used portNumber:(unsigned __int16 *)number;
+- (unint64_t)machAbsoluteFromgPTPTime:(id)time;
+- (unint64_t)timeSyncTimeFromgPTPTime:(id)time;
 - (unsigned)clockAccuracy;
 - (unsigned)clockClass;
 - (unsigned)clockPriority1;
 - (unsigned)clockPriority2;
 - (void)_handleRefreshConnection;
 - (void)_refreshGrandmasterIdentityOnNotificationQueue;
-- (void)addImplClock:(id)a3;
+- (void)addImplClock:(id)clock;
 - (void)dealloc;
-- (void)removeImplClock:(id)a3;
+- (void)removeImplClock:(id)clock;
 @end
 
 @implementation _TSF_TSDgPTPClock
 
 - (id)_gptpPath
 {
-  v2 = [(_TSF_TSDKernelClock *)self service];
-  v3 = [v2 iodPropertyForKey:@"ASPath"];
+  service = [(_TSF_TSDKernelClock *)self service];
+  v3 = [service iodPropertyForKey:@"ASPath"];
 
   if (v3)
   {
@@ -77,25 +77,25 @@
 
 - (unint64_t)_grandmasterIdentity
 {
-  v2 = [(_TSF_TSDKernelClock *)self service];
-  v3 = [v2 iodPropertyForKey:@"GrandmasterID"];
+  service = [(_TSF_TSDKernelClock *)self service];
+  v3 = [service iodPropertyForKey:@"GrandmasterID"];
 
   if (v3)
   {
-    v4 = [v3 unsignedLongLongValue];
+    unsignedLongLongValue = [v3 unsignedLongLongValue];
   }
 
   else
   {
-    v4 = -1;
+    unsignedLongLongValue = -1;
   }
 
-  return v4;
+  return unsignedLongLongValue;
 }
 
 + (id)availablegPTPClockIdentifiers
 {
-  v2 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v3 = MEMORY[0x277D1AE20];
   v4 = [MEMORY[0x277D1AE20] serviceMatching:@"IOTimeSyncDomain"];
   v5 = [v3 matchingServices:v4 error:0];
@@ -104,21 +104,21 @@
   v8[1] = 3221225472;
   v8[2] = __50___TSF_TSDgPTPClock_availablegPTPClockIdentifiers__block_invoke;
   v8[3] = &unk_279DBD7A8;
-  v6 = v2;
+  v6 = array;
   v9 = v6;
   [v5 enumerateWithBlock:v8];
 
   return v6;
 }
 
-+ (id)iokitMatchingDictionaryForClockIdentifier:(unint64_t)a3
++ (id)iokitMatchingDictionaryForClockIdentifier:(unint64_t)identifier
 {
   v11[2] = *MEMORY[0x277D85DE8];
   v10[0] = @"IOProviderClass";
   v10[1] = @"IOPropertyMatch";
   v11[0] = @"IOTimeSyncDomain";
   v8 = @"ClockIdentifier";
-  v3 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a3];
+  v3 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:identifier];
   v9 = v3;
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v9 forKeys:&v8 count:1];
   v11[1] = v4;
@@ -129,14 +129,14 @@
   return v5;
 }
 
-- (unint64_t)convertFrom32BitASToMachAbsoluteTime:(unsigned int)a3
+- (unint64_t)convertFrom32BitASToMachAbsoluteTime:(unsigned int)time
 {
   v9[1] = *MEMORY[0x277D85DE8];
   v7 = 1;
   v8 = -1;
-  v9[0] = a3;
-  v3 = [(_TSF_TSDKernelClock *)self connection];
-  v4 = [v3 callMethodWithSelector:32 scalarInputs:v9 scalarInputCount:1 scalarOutputs:&v8 scalarOutputCount:&v7 error:0];
+  v9[0] = time;
+  connection = [(_TSF_TSDKernelClock *)self connection];
+  v4 = [connection callMethodWithSelector:32 scalarInputs:v9 scalarInputCount:1 scalarOutputs:&v8 scalarOutputCount:&v7 error:0];
 
   if ((v4 & 1) == 0)
   {
@@ -157,7 +157,7 @@
   return result;
 }
 
-- (id)gPTPTimeFromMachAbsoluteTime:(unint64_t)a3
+- (id)gPTPTimeFromMachAbsoluteTime:(unint64_t)time
 {
   v20[1] = *MEMORY[0x277D85DE8];
   v15 = -1;
@@ -166,9 +166,9 @@
   v19 = 0;
   v17 = -1;
   v13 = 5;
-  v20[0] = a3;
-  v3 = [(_TSF_TSDKernelClock *)self connection];
-  v4 = [v3 callMethodWithSelector:37 scalarInputs:v20 scalarInputCount:1 scalarOutputs:&v15 scalarOutputCount:&v13 error:0];
+  v20[0] = time;
+  connection = [(_TSF_TSDKernelClock *)self connection];
+  v4 = [connection callMethodWithSelector:37 scalarInputs:v20 scalarInputCount:1 scalarOutputs:&v15 scalarOutputCount:&v13 error:0];
 
   if (v4)
   {
@@ -191,18 +191,18 @@
   return v9;
 }
 
-- (unint64_t)machAbsoluteFromgPTPTime:(id)a3
+- (unint64_t)machAbsoluteFromgPTPTime:(id)time
 {
   v12[2] = *MEMORY[0x277D85DE8];
   v11 = -1;
   v10 = 1;
-  v4 = a3;
-  v12[0] = [v4 seconds];
-  v5 = [v4 nanoseconds];
+  timeCopy = time;
+  v12[0] = [timeCopy seconds];
+  nanoseconds = [timeCopy nanoseconds];
 
-  v12[1] = v5;
-  v6 = [(_TSF_TSDKernelClock *)self connection];
-  v7 = [v6 callMethodWithSelector:36 scalarInputs:v12 scalarInputCount:2 scalarOutputs:&v11 scalarOutputCount:&v10 error:0];
+  v12[1] = nanoseconds;
+  connection = [(_TSF_TSDKernelClock *)self connection];
+  v7 = [connection callMethodWithSelector:36 scalarInputs:v12 scalarInputCount:2 scalarOutputs:&v11 scalarOutputCount:&v10 error:0];
 
   if ((v7 & 1) == 0)
   {
@@ -223,7 +223,7 @@
   return result;
 }
 
-- ($7DEDF3842AEFB7F1E6DF5AF62E424A02)convertFromMachAbsoluteTo128BitgPTPTime:(unint64_t)a3 grandmasterUsed:(unint64_t *)a4 portNumber:(unsigned __int16 *)a5
+- ($7DEDF3842AEFB7F1E6DF5AF62E424A02)convertFromMachAbsoluteTo128BitgPTPTime:(unint64_t)time grandmasterUsed:(unint64_t *)used portNumber:(unsigned __int16 *)number
 {
   v19[1] = *MEMORY[0x277D85DE8];
   v15 = -1;
@@ -231,22 +231,22 @@
   v17 = -1;
   v18 = 0xFFFFLL;
   v12 = 4;
-  v19[0] = a3;
-  v7 = [(_TSF_TSDKernelClock *)self connection];
-  v8 = [v7 callMethodWithSelector:35 scalarInputs:v19 scalarInputCount:1 scalarOutputs:&v15 scalarOutputCount:&v12 error:0];
+  v19[0] = time;
+  connection = [(_TSF_TSDKernelClock *)self connection];
+  v8 = [connection callMethodWithSelector:35 scalarInputs:v19 scalarInputCount:1 scalarOutputs:&v15 scalarOutputCount:&v12 error:0];
 
   if (v8)
   {
     v9 = v15;
     v10 = v16;
-    if (a4)
+    if (used)
     {
-      *a4 = v17;
+      *used = v17;
     }
 
-    if (a5)
+    if (number)
     {
-      *a5 = v18;
+      *number = v18;
     }
   }
 
@@ -263,28 +263,28 @@
   return result;
 }
 
-- (unint64_t)convertFrom128BitgPTPTimeToMachAbsoluteTime:(id)a3 grandmasterUsed:(unint64_t *)a4 portNumber:(unsigned __int16 *)a5
+- (unint64_t)convertFrom128BitgPTPTimeToMachAbsoluteTime:(id)time grandmasterUsed:(unint64_t *)used portNumber:(unsigned __int16 *)number
 {
   v17 = *MEMORY[0x277D85DE8];
   v13 = -1;
   v14 = -1;
   v15 = 0xFFFFLL;
-  v16 = a3;
+  timeCopy = time;
   v11 = 3;
-  v7 = [(_TSF_TSDKernelClock *)self connection];
-  v8 = [v7 callMethodWithSelector:34 scalarInputs:&v16 scalarInputCount:2 scalarOutputs:&v13 scalarOutputCount:&v11 error:0];
+  connection = [(_TSF_TSDKernelClock *)self connection];
+  v8 = [connection callMethodWithSelector:34 scalarInputs:&timeCopy scalarInputCount:2 scalarOutputs:&v13 scalarOutputCount:&v11 error:0];
 
   if (v8)
   {
     result = v13;
-    if (a4)
+    if (used)
     {
-      *a4 = v14;
+      *used = v14;
     }
 
-    if (a5)
+    if (number)
     {
-      *a5 = v15;
+      *number = v15;
     }
   }
 
@@ -298,28 +298,28 @@
   return result;
 }
 
-- (unint64_t)convertFromMachAbsoluteToDomainTime:(unint64_t)a3 grandmasterUsed:(unint64_t *)a4 portNumber:(unsigned __int16 *)a5
+- (unint64_t)convertFromMachAbsoluteToDomainTime:(unint64_t)time grandmasterUsed:(unint64_t *)used portNumber:(unsigned __int16 *)number
 {
   v16[1] = *MEMORY[0x277D85DE8];
   v13 = -1;
   v14 = -1;
   v15 = 0;
-  v16[0] = a3;
+  v16[0] = time;
   v11 = 3;
-  v7 = [(_TSF_TSDKernelClock *)self connection];
-  v8 = [v7 callMethodWithSelector:38 scalarInputs:v16 scalarInputCount:1 scalarOutputs:&v13 scalarOutputCount:&v11 error:0];
+  connection = [(_TSF_TSDKernelClock *)self connection];
+  v8 = [connection callMethodWithSelector:38 scalarInputs:v16 scalarInputCount:1 scalarOutputs:&v13 scalarOutputCount:&v11 error:0];
 
   if (v8)
   {
     result = v13;
-    if (a4)
+    if (used)
     {
-      *a4 = v14;
+      *used = v14;
     }
 
-    if (a5)
+    if (number)
     {
-      *a5 = v15;
+      *number = v15;
     }
   }
 
@@ -333,28 +333,28 @@
   return result;
 }
 
-- (unint64_t)convertFromDomainToMachAbsoluteTime:(unint64_t)a3 grandmasterUsed:(unint64_t *)a4 portNumber:(unsigned __int16 *)a5
+- (unint64_t)convertFromDomainToMachAbsoluteTime:(unint64_t)time grandmasterUsed:(unint64_t *)used portNumber:(unsigned __int16 *)number
 {
   v16[1] = *MEMORY[0x277D85DE8];
   v13 = -1;
   v14 = -1;
   v15 = 0xFFFFLL;
-  v16[0] = a3;
+  v16[0] = time;
   v11 = 3;
-  v7 = [(_TSF_TSDKernelClock *)self connection];
-  v8 = [v7 callMethodWithSelector:39 scalarInputs:v16 scalarInputCount:1 scalarOutputs:&v13 scalarOutputCount:&v11 error:0];
+  connection = [(_TSF_TSDKernelClock *)self connection];
+  v8 = [connection callMethodWithSelector:39 scalarInputs:v16 scalarInputCount:1 scalarOutputs:&v13 scalarOutputCount:&v11 error:0];
 
   if (v8)
   {
     result = v13;
-    if (a4)
+    if (used)
     {
-      *a4 = v14;
+      *used = v14;
     }
 
-    if (a5)
+    if (number)
     {
-      *a5 = v15;
+      *number = v15;
     }
   }
 
@@ -368,7 +368,7 @@
   return result;
 }
 
-- (BOOL)getMachAbsoluteRateRatioNumerator:(unint64_t *)a3 denominator:(unint64_t *)a4 machAnchor:(unint64_t *)a5 andDomainAnchor:(unint64_t *)a6 forGrandmasterIdentity:(unint64_t *)a7 portNumber:(unsigned __int16 *)a8 withError:(id *)a9
+- (BOOL)getMachAbsoluteRateRatioNumerator:(unint64_t *)numerator denominator:(unint64_t *)denominator machAnchor:(unint64_t *)anchor andDomainAnchor:(unint64_t *)domainAnchor forGrandmasterIdentity:(unint64_t *)identity portNumber:(unsigned __int16 *)number withError:(id *)error
 {
   v25 = *MEMORY[0x277D85DE8];
   v20 = vdupq_n_s64(1uLL);
@@ -377,39 +377,39 @@
   v23 = -1;
   v24 = 0xFFFFLL;
   v19 = 6;
-  v15 = [(_TSF_TSDKernelClock *)self connection];
-  v16 = [v15 callMethodWithSelector:40 scalarInputs:0 scalarInputCount:0 scalarOutputs:&v20 scalarOutputCount:&v19 error:0];
+  connection = [(_TSF_TSDKernelClock *)self connection];
+  v16 = [connection callMethodWithSelector:40 scalarInputs:0 scalarInputCount:0 scalarOutputs:&v20 scalarOutputCount:&v19 error:0];
 
   if (v16)
   {
-    if (a3)
+    if (numerator)
     {
-      *a3 = v20.i64[0];
+      *numerator = v20.i64[0];
     }
 
-    if (a4)
+    if (denominator)
     {
-      *a4 = v20.u64[1];
+      *denominator = v20.u64[1];
     }
 
-    if (a5)
+    if (anchor)
     {
-      *a5 = v21;
+      *anchor = v21;
     }
 
-    if (a6)
+    if (domainAnchor)
     {
-      *a6 = v22;
+      *domainAnchor = v22;
     }
 
-    if (a7)
+    if (identity)
     {
-      *a7 = v23;
+      *identity = v23;
     }
 
-    if (a8)
+    if (number)
     {
-      *a8 = v24;
+      *number = v24;
     }
   }
 
@@ -422,14 +422,14 @@
   return v16;
 }
 
-- (unint64_t)convertFrom32BitASToTimeSyncTime:(unsigned int)a3
+- (unint64_t)convertFrom32BitASToTimeSyncTime:(unsigned int)time
 {
   v9[1] = *MEMORY[0x277D85DE8];
   v7 = 1;
   v8 = -1;
-  v9[0] = a3;
-  v3 = [(_TSF_TSDKernelClock *)self connection];
-  v4 = [v3 callMethodWithSelector:43 scalarInputs:v9 scalarInputCount:1 scalarOutputs:&v8 scalarOutputCount:&v7 error:0];
+  v9[0] = time;
+  connection = [(_TSF_TSDKernelClock *)self connection];
+  v4 = [connection callMethodWithSelector:43 scalarInputs:v9 scalarInputCount:1 scalarOutputs:&v8 scalarOutputCount:&v7 error:0];
 
   if ((v4 & 1) == 0)
   {
@@ -450,7 +450,7 @@
   return result;
 }
 
-- (id)gPTPTimeFromTimeSyncTime:(unint64_t)a3
+- (id)gPTPTimeFromTimeSyncTime:(unint64_t)time
 {
   v20[1] = *MEMORY[0x277D85DE8];
   v15 = -1;
@@ -459,9 +459,9 @@
   v19 = 0;
   v17 = -1;
   v13 = 5;
-  v20[0] = a3;
-  v3 = [(_TSF_TSDKernelClock *)self connection];
-  v4 = [v3 callMethodWithSelector:48 scalarInputs:v20 scalarInputCount:1 scalarOutputs:&v15 scalarOutputCount:&v13 error:0];
+  v20[0] = time;
+  connection = [(_TSF_TSDKernelClock *)self connection];
+  v4 = [connection callMethodWithSelector:48 scalarInputs:v20 scalarInputCount:1 scalarOutputs:&v15 scalarOutputCount:&v13 error:0];
 
   if (v4)
   {
@@ -484,18 +484,18 @@
   return v9;
 }
 
-- (unint64_t)timeSyncTimeFromgPTPTime:(id)a3
+- (unint64_t)timeSyncTimeFromgPTPTime:(id)time
 {
   v12[2] = *MEMORY[0x277D85DE8];
   v11 = -1;
   v10 = 1;
-  v4 = a3;
-  v12[0] = [v4 seconds];
-  v5 = [v4 nanoseconds];
+  timeCopy = time;
+  v12[0] = [timeCopy seconds];
+  nanoseconds = [timeCopy nanoseconds];
 
-  v12[1] = v5;
-  v6 = [(_TSF_TSDKernelClock *)self connection];
-  v7 = [v6 callMethodWithSelector:47 scalarInputs:v12 scalarInputCount:2 scalarOutputs:&v11 scalarOutputCount:&v10 error:0];
+  v12[1] = nanoseconds;
+  connection = [(_TSF_TSDKernelClock *)self connection];
+  v7 = [connection callMethodWithSelector:47 scalarInputs:v12 scalarInputCount:2 scalarOutputs:&v11 scalarOutputCount:&v10 error:0];
 
   if ((v7 & 1) == 0)
   {
@@ -516,7 +516,7 @@
   return result;
 }
 
-- ($7DEDF3842AEFB7F1E6DF5AF62E424A02)convertFromTimeSyncTimeTo128BitgPTPTime:(unint64_t)a3 grandmasterUsed:(unint64_t *)a4 portNumber:(unsigned __int16 *)a5
+- ($7DEDF3842AEFB7F1E6DF5AF62E424A02)convertFromTimeSyncTimeTo128BitgPTPTime:(unint64_t)time grandmasterUsed:(unint64_t *)used portNumber:(unsigned __int16 *)number
 {
   v19[1] = *MEMORY[0x277D85DE8];
   v15 = -1;
@@ -524,22 +524,22 @@
   v17 = -1;
   v18 = 0xFFFFLL;
   v12 = 4;
-  v19[0] = a3;
-  v7 = [(_TSF_TSDKernelClock *)self connection];
-  v8 = [v7 callMethodWithSelector:46 scalarInputs:v19 scalarInputCount:1 scalarOutputs:&v15 scalarOutputCount:&v12 error:0];
+  v19[0] = time;
+  connection = [(_TSF_TSDKernelClock *)self connection];
+  v8 = [connection callMethodWithSelector:46 scalarInputs:v19 scalarInputCount:1 scalarOutputs:&v15 scalarOutputCount:&v12 error:0];
 
   if (v8)
   {
     v9 = v15;
     v10 = v16;
-    if (a4)
+    if (used)
     {
-      *a4 = v17;
+      *used = v17;
     }
 
-    if (a5)
+    if (number)
     {
-      *a5 = v18;
+      *number = v18;
     }
   }
 
@@ -556,28 +556,28 @@
   return result;
 }
 
-- (unint64_t)convertFrom128BitgPTPTimeToTimeSyncTime:(id)a3 grandmasterUsed:(unint64_t *)a4 portNumber:(unsigned __int16 *)a5
+- (unint64_t)convertFrom128BitgPTPTimeToTimeSyncTime:(id)time grandmasterUsed:(unint64_t *)used portNumber:(unsigned __int16 *)number
 {
   v17 = *MEMORY[0x277D85DE8];
   v13 = -1;
   v14 = -1;
   v15 = 0xFFFFLL;
-  v16 = a3;
+  timeCopy = time;
   v11 = 3;
-  v7 = [(_TSF_TSDKernelClock *)self connection];
-  v8 = [v7 callMethodWithSelector:45 scalarInputs:&v16 scalarInputCount:2 scalarOutputs:&v13 scalarOutputCount:&v11 error:0];
+  connection = [(_TSF_TSDKernelClock *)self connection];
+  v8 = [connection callMethodWithSelector:45 scalarInputs:&timeCopy scalarInputCount:2 scalarOutputs:&v13 scalarOutputCount:&v11 error:0];
 
   if (v8)
   {
     result = v13;
-    if (a4)
+    if (used)
     {
-      *a4 = v14;
+      *used = v14;
     }
 
-    if (a5)
+    if (number)
     {
-      *a5 = v15;
+      *number = v15;
     }
   }
 
@@ -591,28 +591,28 @@
   return result;
 }
 
-- (unint64_t)convertFromTimeSyncTimeToDomainTime:(unint64_t)a3 grandmasterUsed:(unint64_t *)a4 portNumber:(unsigned __int16 *)a5
+- (unint64_t)convertFromTimeSyncTimeToDomainTime:(unint64_t)time grandmasterUsed:(unint64_t *)used portNumber:(unsigned __int16 *)number
 {
   v16[1] = *MEMORY[0x277D85DE8];
   v13 = -1;
   v14 = -1;
   v15 = 0;
-  v16[0] = a3;
+  v16[0] = time;
   v11 = 3;
-  v7 = [(_TSF_TSDKernelClock *)self connection];
-  v8 = [v7 callMethodWithSelector:49 scalarInputs:v16 scalarInputCount:1 scalarOutputs:&v13 scalarOutputCount:&v11 error:0];
+  connection = [(_TSF_TSDKernelClock *)self connection];
+  v8 = [connection callMethodWithSelector:49 scalarInputs:v16 scalarInputCount:1 scalarOutputs:&v13 scalarOutputCount:&v11 error:0];
 
   if (v8)
   {
     result = v13;
-    if (a4)
+    if (used)
     {
-      *a4 = v14;
+      *used = v14;
     }
 
-    if (a5)
+    if (number)
     {
-      *a5 = v15;
+      *number = v15;
     }
   }
 
@@ -626,28 +626,28 @@
   return result;
 }
 
-- (unint64_t)convertFromDomainTimeToTimeSyncTime:(unint64_t)a3 grandmasterUsed:(unint64_t *)a4 portNumber:(unsigned __int16 *)a5
+- (unint64_t)convertFromDomainTimeToTimeSyncTime:(unint64_t)time grandmasterUsed:(unint64_t *)used portNumber:(unsigned __int16 *)number
 {
   v16[1] = *MEMORY[0x277D85DE8];
   v13 = -1;
   v14 = -1;
   v15 = 0xFFFFLL;
-  v16[0] = a3;
+  v16[0] = time;
   v11 = 3;
-  v7 = [(_TSF_TSDKernelClock *)self connection];
-  v8 = [v7 callMethodWithSelector:50 scalarInputs:v16 scalarInputCount:1 scalarOutputs:&v13 scalarOutputCount:&v11 error:0];
+  connection = [(_TSF_TSDKernelClock *)self connection];
+  v8 = [connection callMethodWithSelector:50 scalarInputs:v16 scalarInputCount:1 scalarOutputs:&v13 scalarOutputCount:&v11 error:0];
 
   if (v8)
   {
     result = v13;
-    if (a4)
+    if (used)
     {
-      *a4 = v14;
+      *used = v14;
     }
 
-    if (a5)
+    if (number)
     {
-      *a5 = v15;
+      *number = v15;
     }
   }
 
@@ -661,7 +661,7 @@
   return result;
 }
 
-- (BOOL)getTimeSyncTimeRateRatioNumerator:(unint64_t *)a3 denominator:(unint64_t *)a4 timeSyncAnchor:(unint64_t *)a5 andDomainAnchor:(unint64_t *)a6 forGrandmasterIdentity:(unint64_t *)a7 portNumber:(unsigned __int16 *)a8 withError:(id *)a9
+- (BOOL)getTimeSyncTimeRateRatioNumerator:(unint64_t *)numerator denominator:(unint64_t *)denominator timeSyncAnchor:(unint64_t *)anchor andDomainAnchor:(unint64_t *)domainAnchor forGrandmasterIdentity:(unint64_t *)identity portNumber:(unsigned __int16 *)number withError:(id *)error
 {
   v25 = *MEMORY[0x277D85DE8];
   v20 = vdupq_n_s64(1uLL);
@@ -670,39 +670,39 @@
   v23 = -1;
   v24 = 0xFFFFLL;
   v19 = 6;
-  v15 = [(_TSF_TSDKernelClock *)self connection];
-  v16 = [v15 callMethodWithSelector:51 scalarInputs:0 scalarInputCount:0 scalarOutputs:&v20 scalarOutputCount:&v19 error:0];
+  connection = [(_TSF_TSDKernelClock *)self connection];
+  v16 = [connection callMethodWithSelector:51 scalarInputs:0 scalarInputCount:0 scalarOutputs:&v20 scalarOutputCount:&v19 error:0];
 
   if (v16)
   {
-    if (a3)
+    if (numerator)
     {
-      *a3 = v20.i64[0];
+      *numerator = v20.i64[0];
     }
 
-    if (a4)
+    if (denominator)
     {
-      *a4 = v20.u64[1];
+      *denominator = v20.u64[1];
     }
 
-    if (a5)
+    if (anchor)
     {
-      *a5 = v21;
+      *anchor = v21;
     }
 
-    if (a6)
+    if (domainAnchor)
     {
-      *a6 = v22;
+      *domainAnchor = v22;
     }
 
-    if (a7)
+    if (identity)
     {
-      *a7 = v23;
+      *identity = v23;
     }
 
-    if (a8)
+    if (number)
     {
-      *a8 = v24;
+      *number = v24;
     }
   }
 
@@ -718,46 +718,46 @@
 - (void)_refreshGrandmasterIdentityOnNotificationQueue
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = [(_TSF_TSDgPTPClock *)self _grandmasterIdentity];
-  v4 = [(_TSF_TSDgPTPClock *)self _gptpPath];
-  v5 = [(_TSF_TSDKernelClock *)self propertyUpdateQueue];
-  if (!v5)
+  _grandmasterIdentity = [(_TSF_TSDgPTPClock *)self _grandmasterIdentity];
+  _gptpPath = [(_TSF_TSDgPTPClock *)self _gptpPath];
+  propertyUpdateQueue = [(_TSF_TSDKernelClock *)self propertyUpdateQueue];
+  if (!propertyUpdateQueue)
   {
     goto LABEL_4;
   }
 
-  v6 = v5;
-  v7 = [(_TSF_TSDKernelClock *)self propertyUpdateQueue];
-  v8 = [(_TSF_TSDKernelClock *)self notificationQueue];
+  v6 = propertyUpdateQueue;
+  propertyUpdateQueue2 = [(_TSF_TSDKernelClock *)self propertyUpdateQueue];
+  notificationQueue = [(_TSF_TSDKernelClock *)self notificationQueue];
 
-  if (v7 == v8)
+  if (propertyUpdateQueue2 == notificationQueue)
   {
 LABEL_4:
-    if (v3 != [(_TSF_TSDgPTPClock *)self grandmasterIdentity])
+    if (_grandmasterIdentity != [(_TSF_TSDgPTPClock *)self grandmasterIdentity])
     {
-      [(_TSF_TSDgPTPClock *)self setGrandmasterIdentity:v3];
+      [(_TSF_TSDgPTPClock *)self setGrandmasterIdentity:_grandmasterIdentity];
     }
 
-    v10 = [(_TSF_TSDgPTPClock *)self gptpPath];
-    v11 = [v4 isEqual:v10];
+    gptpPath = [(_TSF_TSDgPTPClock *)self gptpPath];
+    v11 = [_gptpPath isEqual:gptpPath];
 
     if ((v11 & 1) == 0)
     {
-      [(_TSF_TSDgPTPClock *)self setGptpPath:v4];
+      [(_TSF_TSDgPTPClock *)self setGptpPath:_gptpPath];
     }
   }
 
   else
   {
-    v9 = [(_TSF_TSDKernelClock *)self propertyUpdateQueue];
+    propertyUpdateQueue3 = [(_TSF_TSDKernelClock *)self propertyUpdateQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __67___TSF_TSDgPTPClock__refreshGrandmasterIdentityOnNotificationQueue__block_invoke;
     block[3] = &unk_279DBD8C0;
-    v25 = v3;
+    v25 = _grandmasterIdentity;
     block[4] = self;
-    v24 = v4;
-    dispatch_sync(v9, block);
+    v24 = _gptpPath;
+    dispatch_sync(propertyUpdateQueue3, block);
   }
 
   os_unfair_lock_lock(&self->_implClocksLock);
@@ -784,7 +784,7 @@ LABEL_4:
         v17 = *(*(&v19 + 1) + 8 * i);
         if ([v17 conformsToProtocol:{&unk_287F28890, v19}])
         {
-          [v17 updateGrandmasterIdentity:v3 andgPTPPath:v4];
+          [v17 updateGrandmasterIdentity:_grandmasterIdentity andgPTPPath:_gptpPath];
         }
       }
 
@@ -808,106 +808,106 @@ LABEL_4:
 
 - (unint64_t)clockIdentity
 {
-  v2 = [(_TSF_TSDKernelClock *)self service];
-  v3 = [v2 iodPropertyForKey:@"ClockIdentity"];
+  service = [(_TSF_TSDKernelClock *)self service];
+  v3 = [service iodPropertyForKey:@"ClockIdentity"];
 
   if (v3)
   {
-    v4 = [v3 unsignedLongLongValue];
+    unsignedLongLongValue = [v3 unsignedLongLongValue];
   }
 
   else
   {
-    v4 = -1;
+    unsignedLongLongValue = -1;
   }
 
-  return v4;
+  return unsignedLongLongValue;
 }
 
 - (unsigned)clockPriority1
 {
-  v2 = [(_TSF_TSDKernelClock *)self service];
-  v3 = [v2 iodPropertyForKey:@"ClockPriority1"];
+  service = [(_TSF_TSDKernelClock *)self service];
+  v3 = [service iodPropertyForKey:@"ClockPriority1"];
 
   if (v3)
   {
-    v4 = [v3 unsignedCharValue];
+    unsignedCharValue = [v3 unsignedCharValue];
   }
 
   else
   {
-    v4 = 0;
+    unsignedCharValue = 0;
   }
 
-  return v4;
+  return unsignedCharValue;
 }
 
 - (unsigned)clockPriority2
 {
-  v2 = [(_TSF_TSDKernelClock *)self service];
-  v3 = [v2 iodPropertyForKey:@"ClockPriority2"];
+  service = [(_TSF_TSDKernelClock *)self service];
+  v3 = [service iodPropertyForKey:@"ClockPriority2"];
 
   if (v3)
   {
-    v4 = [v3 unsignedCharValue];
+    unsignedCharValue = [v3 unsignedCharValue];
   }
 
   else
   {
-    v4 = 0;
+    unsignedCharValue = 0;
   }
 
-  return v4;
+  return unsignedCharValue;
 }
 
 - (unsigned)clockClass
 {
-  v2 = [(_TSF_TSDKernelClock *)self service];
-  v3 = [v2 iodPropertyForKey:@"ClockClass"];
+  service = [(_TSF_TSDKernelClock *)self service];
+  v3 = [service iodPropertyForKey:@"ClockClass"];
 
   if (v3)
   {
-    v4 = [v3 unsignedCharValue];
+    unsignedCharValue = [v3 unsignedCharValue];
   }
 
   else
   {
-    v4 = 0;
+    unsignedCharValue = 0;
   }
 
-  return v4;
+  return unsignedCharValue;
 }
 
 - (unsigned)clockAccuracy
 {
-  v2 = [(_TSF_TSDKernelClock *)self service];
-  v3 = [v2 iodPropertyForKey:@"ClockAccuracy"];
+  service = [(_TSF_TSDKernelClock *)self service];
+  v3 = [service iodPropertyForKey:@"ClockAccuracy"];
 
   if (v3)
   {
-    v4 = [v3 unsignedCharValue];
+    unsignedCharValue = [v3 unsignedCharValue];
   }
 
   else
   {
-    v4 = 0;
+    unsignedCharValue = 0;
   }
 
-  return v4;
+  return unsignedCharValue;
 }
 
-- (BOOL)addLinkLayerPortOnInterfaceNamed:(id)a3 allocatedPortNumber:(unsigned __int16 *)a4 error:(id *)a5
+- (BOOL)addLinkLayerPortOnInterfaceNamed:(id)named allocatedPortNumber:(unsigned __int16 *)number error:(id *)error
 {
   v15[1] = *MEMORY[0x277D85DE8];
   v15[0] = 0;
   v14 = 1;
-  v8 = [a3 dataUsingEncoding:4];
-  v9 = [(_TSF_TSDKernelClock *)self connection];
-  v10 = [v9 callMethodWithSelector:18 scalarInputs:0 scalarInputCount:0 structInput:objc_msgSend(v8 structInputSize:"bytes") scalarOutputs:objc_msgSend(v8 scalarOutputCount:"length") error:{v15, &v14, a5}];
+  v8 = [named dataUsingEncoding:4];
+  connection = [(_TSF_TSDKernelClock *)self connection];
+  v10 = [connection callMethodWithSelector:18 scalarInputs:0 scalarInputCount:0 structInput:objc_msgSend(v8 structInputSize:"bytes") scalarOutputs:objc_msgSend(v8 scalarOutputCount:"length") error:{v15, &v14, error}];
 
   if ((v10 & 1) == 0)
   {
-    if ([_TSF_TSDgPTPClock addLinkLayerPortOnInterfaceNamed:a4 allocatedPortNumber:? error:?])
+    if ([_TSF_TSDgPTPClock addLinkLayerPortOnInterfaceNamed:number allocatedPortNumber:? error:?])
     {
       goto LABEL_5;
     }
@@ -916,11 +916,11 @@ LABEL_4:
     goto LABEL_4;
   }
 
-  if (a4)
+  if (number)
   {
     v11 = v15[0];
 LABEL_4:
-    *a4 = v11;
+    *number = v11;
   }
 
 LABEL_5:
@@ -929,11 +929,11 @@ LABEL_5:
   return v10;
 }
 
-- (BOOL)removeLinkLayerPortFromInterfaceNamed:(id)a3 error:(id *)a4
+- (BOOL)removeLinkLayerPortFromInterfaceNamed:(id)named error:(id *)error
 {
-  v6 = [a3 dataUsingEncoding:4];
-  v7 = [(_TSF_TSDKernelClock *)self connection];
-  v8 = [v7 callMethodWithSelector:19 structInput:objc_msgSend(v6 structInputSize:"bytes") error:{objc_msgSend(v6, "length"), a4}];
+  v6 = [named dataUsingEncoding:4];
+  connection = [(_TSF_TSDKernelClock *)self connection];
+  v8 = [connection callMethodWithSelector:19 structInput:objc_msgSend(v6 structInputSize:"bytes") error:{objc_msgSend(v6, "length"), error}];
 
   if ((v8 & 1) == 0)
   {
@@ -943,24 +943,24 @@ LABEL_5:
   return v8;
 }
 
-- (BOOL)addUnicastUDPv4PtPPortOnInterfaceNamed:(id)a3 withDestinationAddress:(unsigned int)a4 allocatedPortNumber:(unsigned __int16 *)a5 error:(id *)a6
+- (BOOL)addUnicastUDPv4PtPPortOnInterfaceNamed:(id)named withDestinationAddress:(unsigned int)address allocatedPortNumber:(unsigned __int16 *)number error:(id *)error
 {
   v20[1] = *MEMORY[0x277D85DE8];
   v20[0] = 0;
   v18 = 1;
-  v19 = a4;
+  addressCopy = address;
   v9 = MEMORY[0x277CBEB28];
-  v10 = a3;
-  v11 = [v9 dataWithBytes:&v19 length:4];
-  v12 = [v10 dataUsingEncoding:4];
+  namedCopy = named;
+  v11 = [v9 dataWithBytes:&addressCopy length:4];
+  v12 = [namedCopy dataUsingEncoding:4];
 
   [v11 appendData:v12];
-  v13 = [(_TSF_TSDKernelClock *)self connection];
-  v14 = [v13 callMethodWithSelector:20 scalarInputs:0 scalarInputCount:0 structInput:objc_msgSend(v11 structInputSize:"bytes") scalarOutputs:objc_msgSend(v11 scalarOutputCount:"length") error:{v20, &v18, a6}];
+  connection = [(_TSF_TSDKernelClock *)self connection];
+  v14 = [connection callMethodWithSelector:20 scalarInputs:0 scalarInputCount:0 structInput:objc_msgSend(v11 structInputSize:"bytes") scalarOutputs:objc_msgSend(v11 scalarOutputCount:"length") error:{v20, &v18, error}];
 
   if ((v14 & 1) == 0)
   {
-    if ([_TSF_TSDgPTPClock addUnicastUDPv4PtPPortOnInterfaceNamed:a5 withDestinationAddress:? allocatedPortNumber:? error:?])
+    if ([_TSF_TSDgPTPClock addUnicastUDPv4PtPPortOnInterfaceNamed:number withDestinationAddress:? allocatedPortNumber:? error:?])
     {
       goto LABEL_5;
     }
@@ -969,11 +969,11 @@ LABEL_5:
     goto LABEL_4;
   }
 
-  if (a5)
+  if (number)
   {
     v15 = v20[0];
 LABEL_4:
-    *a5 = v15;
+    *number = v15;
   }
 
 LABEL_5:
@@ -982,17 +982,17 @@ LABEL_5:
   return v14;
 }
 
-- (BOOL)removeUnicastUDPv4PtPPortFromInterfaceNamed:(id)a3 withDestinationAddress:(unsigned int)a4 error:(id *)a5
+- (BOOL)removeUnicastUDPv4PtPPortFromInterfaceNamed:(id)named withDestinationAddress:(unsigned int)address error:(id *)error
 {
-  v14 = a4;
+  addressCopy = address;
   v7 = MEMORY[0x277CBEB28];
-  v8 = a3;
-  v9 = [v7 dataWithBytes:&v14 length:4];
-  v10 = [v8 dataUsingEncoding:4];
+  namedCopy = named;
+  v9 = [v7 dataWithBytes:&addressCopy length:4];
+  v10 = [namedCopy dataUsingEncoding:4];
 
   [v9 appendData:v10];
-  v11 = [(_TSF_TSDKernelClock *)self connection];
-  v12 = [v11 callMethodWithSelector:21 structInput:objc_msgSend(v9 structInputSize:"bytes") error:{objc_msgSend(v9, "length"), a5}];
+  connection = [(_TSF_TSDKernelClock *)self connection];
+  v12 = [connection callMethodWithSelector:21 structInput:objc_msgSend(v9 structInputSize:"bytes") error:{objc_msgSend(v9, "length"), error}];
 
   if ((v12 & 1) == 0)
   {
@@ -1002,23 +1002,23 @@ LABEL_5:
   return v12;
 }
 
-- (BOOL)addUnicastUDPv6PtPPortOnInterfaceNamed:(id)a3 withDestinationAddress:(const char *)a4 allocatedPortNumber:(unsigned __int16 *)a5 error:(id *)a6
+- (BOOL)addUnicastUDPv6PtPPortOnInterfaceNamed:(id)named withDestinationAddress:(const char *)address allocatedPortNumber:(unsigned __int16 *)number error:(id *)error
 {
   v20[1] = *MEMORY[0x277D85DE8];
   v20[0] = 0;
   v19 = 1;
   v10 = MEMORY[0x277CBEB28];
-  v11 = a3;
-  v12 = [v10 dataWithBytes:a4 length:16];
-  v13 = [v11 dataUsingEncoding:4];
+  namedCopy = named;
+  v12 = [v10 dataWithBytes:address length:16];
+  v13 = [namedCopy dataUsingEncoding:4];
 
   [v12 appendData:v13];
-  v14 = [(_TSF_TSDKernelClock *)self connection];
-  v15 = [v14 callMethodWithSelector:22 scalarInputs:0 scalarInputCount:0 structInput:objc_msgSend(v12 structInputSize:"bytes") scalarOutputs:objc_msgSend(v12 scalarOutputCount:"length") error:{v20, &v19, a6}];
+  connection = [(_TSF_TSDKernelClock *)self connection];
+  v15 = [connection callMethodWithSelector:22 scalarInputs:0 scalarInputCount:0 structInput:objc_msgSend(v12 structInputSize:"bytes") scalarOutputs:objc_msgSend(v12 scalarOutputCount:"length") error:{v20, &v19, error}];
 
   if ((v15 & 1) == 0)
   {
-    if ([_TSF_TSDgPTPClock addUnicastUDPv6PtPPortOnInterfaceNamed:a5 withDestinationAddress:? allocatedPortNumber:? error:?])
+    if ([_TSF_TSDgPTPClock addUnicastUDPv6PtPPortOnInterfaceNamed:number withDestinationAddress:? allocatedPortNumber:? error:?])
     {
       goto LABEL_5;
     }
@@ -1027,11 +1027,11 @@ LABEL_5:
     goto LABEL_4;
   }
 
-  if (a5)
+  if (number)
   {
     v16 = v20[0];
 LABEL_4:
-    *a5 = v16;
+    *number = v16;
   }
 
 LABEL_5:
@@ -1040,16 +1040,16 @@ LABEL_5:
   return v15;
 }
 
-- (BOOL)removeUnicastUDPv6PtPPortFromInterfaceNamed:(id)a3 withDestinationAddress:(const char *)a4 error:(id *)a5
+- (BOOL)removeUnicastUDPv6PtPPortFromInterfaceNamed:(id)named withDestinationAddress:(const char *)address error:(id *)error
 {
   v8 = MEMORY[0x277CBEB28];
-  v9 = a3;
-  v10 = [v8 dataWithBytes:a4 length:16];
-  v11 = [v9 dataUsingEncoding:4];
+  namedCopy = named;
+  v10 = [v8 dataWithBytes:address length:16];
+  v11 = [namedCopy dataUsingEncoding:4];
 
   [v10 appendData:v11];
-  v12 = [(_TSF_TSDKernelClock *)self connection];
-  v13 = [v12 callMethodWithSelector:23 structInput:objc_msgSend(v10 structInputSize:"bytes") error:{objc_msgSend(v10, "length"), a5}];
+  connection = [(_TSF_TSDKernelClock *)self connection];
+  v13 = [connection callMethodWithSelector:23 structInput:objc_msgSend(v10 structInputSize:"bytes") error:{objc_msgSend(v10, "length"), error}];
 
   if ((v13 & 1) == 0)
   {
@@ -1059,23 +1059,23 @@ LABEL_5:
   return v13;
 }
 
-- (BOOL)addUnicastLinkLayerPtPPortOnInterfaceNamed:(id)a3 withDestinationAddress:(const char *)a4 allocatedPortNumber:(unsigned __int16 *)a5 error:(id *)a6
+- (BOOL)addUnicastLinkLayerPtPPortOnInterfaceNamed:(id)named withDestinationAddress:(const char *)address allocatedPortNumber:(unsigned __int16 *)number error:(id *)error
 {
   v20[1] = *MEMORY[0x277D85DE8];
   v20[0] = 0;
   v19 = 1;
   v10 = MEMORY[0x277CBEB28];
-  v11 = a3;
-  v12 = [v10 dataWithBytes:a4 length:6];
-  v13 = [v11 dataUsingEncoding:4];
+  namedCopy = named;
+  v12 = [v10 dataWithBytes:address length:6];
+  v13 = [namedCopy dataUsingEncoding:4];
 
   [v12 appendData:v13];
-  v14 = [(_TSF_TSDKernelClock *)self connection];
-  v15 = [v14 callMethodWithSelector:24 scalarInputs:0 scalarInputCount:0 structInput:objc_msgSend(v12 structInputSize:"bytes") scalarOutputs:objc_msgSend(v12 scalarOutputCount:"length") error:{v20, &v19, a6}];
+  connection = [(_TSF_TSDKernelClock *)self connection];
+  v15 = [connection callMethodWithSelector:24 scalarInputs:0 scalarInputCount:0 structInput:objc_msgSend(v12 structInputSize:"bytes") scalarOutputs:objc_msgSend(v12 scalarOutputCount:"length") error:{v20, &v19, error}];
 
   if ((v15 & 1) == 0)
   {
-    if ([_TSF_TSDgPTPClock addUnicastLinkLayerPtPPortOnInterfaceNamed:a5 withDestinationAddress:? allocatedPortNumber:? error:?])
+    if ([_TSF_TSDgPTPClock addUnicastLinkLayerPtPPortOnInterfaceNamed:number withDestinationAddress:? allocatedPortNumber:? error:?])
     {
       goto LABEL_5;
     }
@@ -1084,11 +1084,11 @@ LABEL_5:
     goto LABEL_4;
   }
 
-  if (a5)
+  if (number)
   {
     v16 = v20[0];
 LABEL_4:
-    *a5 = v16;
+    *number = v16;
   }
 
 LABEL_5:
@@ -1097,16 +1097,16 @@ LABEL_5:
   return v15;
 }
 
-- (BOOL)removeUnicastLinkLayerPtPPortFromInterfaceNamed:(id)a3 withDestinationAddress:(const char *)a4 error:(id *)a5
+- (BOOL)removeUnicastLinkLayerPtPPortFromInterfaceNamed:(id)named withDestinationAddress:(const char *)address error:(id *)error
 {
   v8 = MEMORY[0x277CBEB28];
-  v9 = a3;
-  v10 = [v8 dataWithBytes:a4 length:6];
-  v11 = [v9 dataUsingEncoding:4];
+  namedCopy = named;
+  v10 = [v8 dataWithBytes:address length:6];
+  v11 = [namedCopy dataUsingEncoding:4];
 
   [v10 appendData:v11];
-  v12 = [(_TSF_TSDKernelClock *)self connection];
-  v13 = [v12 callMethodWithSelector:25 structInput:objc_msgSend(v10 structInputSize:"bytes") error:{objc_msgSend(v10, "length"), a5}];
+  connection = [(_TSF_TSDKernelClock *)self connection];
+  v13 = [connection callMethodWithSelector:25 structInput:objc_msgSend(v10 structInputSize:"bytes") error:{objc_msgSend(v10, "length"), error}];
 
   if ((v13 & 1) == 0)
   {
@@ -1116,24 +1116,24 @@ LABEL_5:
   return v13;
 }
 
-- (BOOL)addUnicastUDPv4EtEPortOnInterfaceNamed:(id)a3 withDestinationAddress:(unsigned int)a4 allocatedPortNumber:(unsigned __int16 *)a5 error:(id *)a6
+- (BOOL)addUnicastUDPv4EtEPortOnInterfaceNamed:(id)named withDestinationAddress:(unsigned int)address allocatedPortNumber:(unsigned __int16 *)number error:(id *)error
 {
   v20[1] = *MEMORY[0x277D85DE8];
   v20[0] = 0;
   v18 = 1;
-  v19 = a4;
+  addressCopy = address;
   v9 = MEMORY[0x277CBEB28];
-  v10 = a3;
-  v11 = [v9 dataWithBytes:&v19 length:4];
-  v12 = [v10 dataUsingEncoding:4];
+  namedCopy = named;
+  v11 = [v9 dataWithBytes:&addressCopy length:4];
+  v12 = [namedCopy dataUsingEncoding:4];
 
   [v11 appendData:v12];
-  v13 = [(_TSF_TSDKernelClock *)self connection];
-  v14 = [v13 callMethodWithSelector:26 scalarInputs:0 scalarInputCount:0 structInput:objc_msgSend(v11 structInputSize:"bytes") scalarOutputs:objc_msgSend(v11 scalarOutputCount:"length") error:{v20, &v18, a6}];
+  connection = [(_TSF_TSDKernelClock *)self connection];
+  v14 = [connection callMethodWithSelector:26 scalarInputs:0 scalarInputCount:0 structInput:objc_msgSend(v11 structInputSize:"bytes") scalarOutputs:objc_msgSend(v11 scalarOutputCount:"length") error:{v20, &v18, error}];
 
   if ((v14 & 1) == 0)
   {
-    if ([_TSF_TSDgPTPClock addUnicastUDPv4EtEPortOnInterfaceNamed:a5 withDestinationAddress:? allocatedPortNumber:? error:?])
+    if ([_TSF_TSDgPTPClock addUnicastUDPv4EtEPortOnInterfaceNamed:number withDestinationAddress:? allocatedPortNumber:? error:?])
     {
       goto LABEL_5;
     }
@@ -1142,11 +1142,11 @@ LABEL_5:
     goto LABEL_4;
   }
 
-  if (a5)
+  if (number)
   {
     v15 = v20[0];
 LABEL_4:
-    *a5 = v15;
+    *number = v15;
   }
 
 LABEL_5:
@@ -1155,17 +1155,17 @@ LABEL_5:
   return v14;
 }
 
-- (BOOL)removeUnicastUDPv4EtEPortFromInterfaceNamed:(id)a3 withDestinationAddress:(unsigned int)a4 error:(id *)a5
+- (BOOL)removeUnicastUDPv4EtEPortFromInterfaceNamed:(id)named withDestinationAddress:(unsigned int)address error:(id *)error
 {
-  v14 = a4;
+  addressCopy = address;
   v7 = MEMORY[0x277CBEB28];
-  v8 = a3;
-  v9 = [v7 dataWithBytes:&v14 length:4];
-  v10 = [v8 dataUsingEncoding:4];
+  namedCopy = named;
+  v9 = [v7 dataWithBytes:&addressCopy length:4];
+  v10 = [namedCopy dataUsingEncoding:4];
 
   [v9 appendData:v10];
-  v11 = [(_TSF_TSDKernelClock *)self connection];
-  v12 = [v11 callMethodWithSelector:27 structInput:objc_msgSend(v9 structInputSize:"bytes") error:{objc_msgSend(v9, "length"), a5}];
+  connection = [(_TSF_TSDKernelClock *)self connection];
+  v12 = [connection callMethodWithSelector:27 structInput:objc_msgSend(v9 structInputSize:"bytes") error:{objc_msgSend(v9, "length"), error}];
 
   if ((v12 & 1) == 0)
   {
@@ -1175,23 +1175,23 @@ LABEL_5:
   return v12;
 }
 
-- (BOOL)addUnicastUDPv6EtEPortOnInterfaceNamed:(id)a3 withDestinationAddress:(const char *)a4 allocatedPortNumber:(unsigned __int16 *)a5 error:(id *)a6
+- (BOOL)addUnicastUDPv6EtEPortOnInterfaceNamed:(id)named withDestinationAddress:(const char *)address allocatedPortNumber:(unsigned __int16 *)number error:(id *)error
 {
   v20[1] = *MEMORY[0x277D85DE8];
   v20[0] = 0;
   v19 = 1;
   v10 = MEMORY[0x277CBEB28];
-  v11 = a3;
-  v12 = [v10 dataWithBytes:a4 length:16];
-  v13 = [v11 dataUsingEncoding:4];
+  namedCopy = named;
+  v12 = [v10 dataWithBytes:address length:16];
+  v13 = [namedCopy dataUsingEncoding:4];
 
   [v12 appendData:v13];
-  v14 = [(_TSF_TSDKernelClock *)self connection];
-  v15 = [v14 callMethodWithSelector:28 scalarInputs:0 scalarInputCount:0 structInput:objc_msgSend(v12 structInputSize:"bytes") scalarOutputs:objc_msgSend(v12 scalarOutputCount:"length") error:{v20, &v19, a6}];
+  connection = [(_TSF_TSDKernelClock *)self connection];
+  v15 = [connection callMethodWithSelector:28 scalarInputs:0 scalarInputCount:0 structInput:objc_msgSend(v12 structInputSize:"bytes") scalarOutputs:objc_msgSend(v12 scalarOutputCount:"length") error:{v20, &v19, error}];
 
   if ((v15 & 1) == 0)
   {
-    if ([_TSF_TSDgPTPClock addUnicastUDPv6EtEPortOnInterfaceNamed:a5 withDestinationAddress:? allocatedPortNumber:? error:?])
+    if ([_TSF_TSDgPTPClock addUnicastUDPv6EtEPortOnInterfaceNamed:number withDestinationAddress:? allocatedPortNumber:? error:?])
     {
       goto LABEL_5;
     }
@@ -1200,11 +1200,11 @@ LABEL_5:
     goto LABEL_4;
   }
 
-  if (a5)
+  if (number)
   {
     v16 = v20[0];
 LABEL_4:
-    *a5 = v16;
+    *number = v16;
   }
 
 LABEL_5:
@@ -1213,16 +1213,16 @@ LABEL_5:
   return v15;
 }
 
-- (BOOL)removeUnicastUDPv6EtEPortFromInterfaceNamed:(id)a3 withDestinationAddress:(const char *)a4 error:(id *)a5
+- (BOOL)removeUnicastUDPv6EtEPortFromInterfaceNamed:(id)named withDestinationAddress:(const char *)address error:(id *)error
 {
   v8 = MEMORY[0x277CBEB28];
-  v9 = a3;
-  v10 = [v8 dataWithBytes:a4 length:16];
-  v11 = [v9 dataUsingEncoding:4];
+  namedCopy = named;
+  v10 = [v8 dataWithBytes:address length:16];
+  v11 = [namedCopy dataUsingEncoding:4];
 
   [v10 appendData:v11];
-  v12 = [(_TSF_TSDKernelClock *)self connection];
-  v13 = [v12 callMethodWithSelector:29 structInput:objc_msgSend(v10 structInputSize:"bytes") error:{objc_msgSend(v10, "length"), a5}];
+  connection = [(_TSF_TSDKernelClock *)self connection];
+  v13 = [connection callMethodWithSelector:29 structInput:objc_msgSend(v10 structInputSize:"bytes") error:{objc_msgSend(v10, "length"), error}];
 
   if ((v13 & 1) == 0)
   {
@@ -1232,23 +1232,23 @@ LABEL_5:
   return v13;
 }
 
-- (BOOL)addUnicastLinkLayerEtEPortOnInterfaceNamed:(id)a3 withDestinationAddress:(const char *)a4 allocatedPortNumber:(unsigned __int16 *)a5 error:(id *)a6
+- (BOOL)addUnicastLinkLayerEtEPortOnInterfaceNamed:(id)named withDestinationAddress:(const char *)address allocatedPortNumber:(unsigned __int16 *)number error:(id *)error
 {
   v20[1] = *MEMORY[0x277D85DE8];
   v20[0] = 0;
   v19 = 1;
   v10 = MEMORY[0x277CBEB28];
-  v11 = a3;
-  v12 = [v10 dataWithBytes:a4 length:6];
-  v13 = [v11 dataUsingEncoding:4];
+  namedCopy = named;
+  v12 = [v10 dataWithBytes:address length:6];
+  v13 = [namedCopy dataUsingEncoding:4];
 
   [v12 appendData:v13];
-  v14 = [(_TSF_TSDKernelClock *)self connection];
-  v15 = [v14 callMethodWithSelector:30 scalarInputs:0 scalarInputCount:0 structInput:objc_msgSend(v12 structInputSize:"bytes") scalarOutputs:objc_msgSend(v12 scalarOutputCount:"length") error:{v20, &v19, a6}];
+  connection = [(_TSF_TSDKernelClock *)self connection];
+  v15 = [connection callMethodWithSelector:30 scalarInputs:0 scalarInputCount:0 structInput:objc_msgSend(v12 structInputSize:"bytes") scalarOutputs:objc_msgSend(v12 scalarOutputCount:"length") error:{v20, &v19, error}];
 
   if ((v15 & 1) == 0)
   {
-    if ([_TSF_TSDgPTPClock addUnicastLinkLayerEtEPortOnInterfaceNamed:a5 withDestinationAddress:? allocatedPortNumber:? error:?])
+    if ([_TSF_TSDgPTPClock addUnicastLinkLayerEtEPortOnInterfaceNamed:number withDestinationAddress:? allocatedPortNumber:? error:?])
     {
       goto LABEL_5;
     }
@@ -1257,11 +1257,11 @@ LABEL_5:
     goto LABEL_4;
   }
 
-  if (a5)
+  if (number)
   {
     v16 = v20[0];
 LABEL_4:
-    *a5 = v16;
+    *number = v16;
   }
 
 LABEL_5:
@@ -1270,16 +1270,16 @@ LABEL_5:
   return v15;
 }
 
-- (BOOL)removeUnicastLinkLayerEtEPortFromInterfaceNamed:(id)a3 withDestinationAddress:(const char *)a4 error:(id *)a5
+- (BOOL)removeUnicastLinkLayerEtEPortFromInterfaceNamed:(id)named withDestinationAddress:(const char *)address error:(id *)error
 {
   v8 = MEMORY[0x277CBEB28];
-  v9 = a3;
-  v10 = [v8 dataWithBytes:a4 length:6];
-  v11 = [v9 dataUsingEncoding:4];
+  namedCopy = named;
+  v10 = [v8 dataWithBytes:address length:6];
+  v11 = [namedCopy dataUsingEncoding:4];
 
   [v10 appendData:v11];
-  v12 = [(_TSF_TSDKernelClock *)self connection];
-  v13 = [v12 callMethodWithSelector:31 structInput:objc_msgSend(v10 structInputSize:"bytes") error:{objc_msgSend(v10, "length"), a5}];
+  connection = [(_TSF_TSDKernelClock *)self connection];
+  v13 = [connection callMethodWithSelector:31 structInput:objc_msgSend(v10 structInputSize:"bytes") error:{objc_msgSend(v10, "length"), error}];
 
   if ((v13 & 1) == 0)
   {
@@ -1289,15 +1289,15 @@ LABEL_5:
   return v13;
 }
 
-- (BOOL)addReverseSyncOnInterfaceNamed:(id)a3 withDomainNumner:(unsigned __int8)a4 syncInterval:(unsigned int)a5 error:(id *)a6
+- (BOOL)addReverseSyncOnInterfaceNamed:(id)named withDomainNumner:(unsigned __int8)numner syncInterval:(unsigned int)interval error:(id *)error
 {
   v14[2] = *MEMORY[0x277D85DE8];
-  v14[0] = a4;
-  v14[1] = a5;
+  v14[0] = numner;
+  v14[1] = interval;
   v13 = 0;
-  v8 = [a3 dataUsingEncoding:4];
-  v9 = [(_TSF_TSDKernelClock *)self connection];
-  v10 = [v9 callMethodWithSelector:41 scalarInputs:v14 scalarInputCount:2 structInput:objc_msgSend(v8 structInputSize:"bytes") scalarOutputs:objc_msgSend(v8 scalarOutputCount:"length") error:{0, &v13, a6}];
+  v8 = [named dataUsingEncoding:4];
+  connection = [(_TSF_TSDKernelClock *)self connection];
+  v10 = [connection callMethodWithSelector:41 scalarInputs:v14 scalarInputCount:2 structInput:objc_msgSend(v8 structInputSize:"bytes") scalarOutputs:objc_msgSend(v8 scalarOutputCount:"length") error:{0, &v13, error}];
 
   if ((v10 & 1) == 0)
   {
@@ -1308,14 +1308,14 @@ LABEL_5:
   return v10;
 }
 
-- (BOOL)removeReverseSyncFromInterfaceNamed:(id)a3 withDomainNumner:(unsigned __int8)a4 error:(id *)a5
+- (BOOL)removeReverseSyncFromInterfaceNamed:(id)named withDomainNumner:(unsigned __int8)numner error:(id *)error
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v13[0] = a4;
+  v13[0] = numner;
   v12 = 0;
-  v7 = [a3 dataUsingEncoding:4];
-  v8 = [(_TSF_TSDKernelClock *)self connection];
-  v9 = [v8 callMethodWithSelector:42 scalarInputs:v13 scalarInputCount:1 structInput:objc_msgSend(v7 structInputSize:"bytes") scalarOutputs:objc_msgSend(v7 scalarOutputCount:"length") error:{0, &v12, a5}];
+  v7 = [named dataUsingEncoding:4];
+  connection = [(_TSF_TSDKernelClock *)self connection];
+  v9 = [connection callMethodWithSelector:42 scalarInputs:v13 scalarInputCount:1 structInput:objc_msgSend(v7 structInputSize:"bytes") scalarOutputs:objc_msgSend(v7 scalarOutputCount:"length") error:{0, &v12, error}];
 
   if ((v9 & 1) == 0)
   {
@@ -1326,7 +1326,7 @@ LABEL_5:
   return v9;
 }
 
-- (BOOL)getSyncInfoWithSyncInfoValid:(BOOL *)a3 syncFlags:(char *)a4 timeSyncTime:(unint64_t *)a5 domainTimeHi:(unint64_t *)a6 domainTimeLo:(unint64_t *)a7 cumulativeScaledRate:(unint64_t *)a8 inverseCumulativeScaledRate:(unint64_t *)a9 grandmasterID:(unint64_t *)a10 localPortNumber:(unsigned __int16 *)a11 error:(id *)a12
+- (BOOL)getSyncInfoWithSyncInfoValid:(BOOL *)valid syncFlags:(char *)flags timeSyncTime:(unint64_t *)time domainTimeHi:(unint64_t *)hi domainTimeLo:(unint64_t *)lo cumulativeScaledRate:(unint64_t *)rate inverseCumulativeScaledRate:(unint64_t *)scaledRate grandmasterID:(unint64_t *)self0 localPortNumber:(unsigned __int16 *)self1 error:(id *)self2
 {
   v31 = *MEMORY[0x277D85DE8];
   v23 = -1;
@@ -1338,12 +1338,12 @@ LABEL_5:
   v29 = 0;
   v30 = 0xFFFFLL;
   v22 = 9;
-  v18 = [(_TSF_TSDKernelClock *)self connection];
-  v19 = [v18 callMethodWithSelector:52 scalarInputs:0 scalarInputCount:0 scalarOutputs:&v23 scalarOutputCount:&v22 error:a12];
+  connection = [(_TSF_TSDKernelClock *)self connection];
+  v19 = [connection callMethodWithSelector:52 scalarInputs:0 scalarInputCount:0 scalarOutputs:&v23 scalarOutputCount:&v22 error:error];
 
   if (v19)
   {
-    if (!a5)
+    if (!time)
     {
       goto LABEL_4;
     }
@@ -1352,51 +1352,51 @@ LABEL_5:
   }
 
   [_TSF_TSDgPTPClock getSyncInfoWithSyncInfoValid:syncFlags:timeSyncTime:domainTimeHi:domainTimeLo:cumulativeScaledRate:inverseCumulativeScaledRate:grandmasterID:localPortNumber:error:];
-  if (a5)
+  if (time)
   {
 LABEL_3:
-    *a5 = v23;
+    *time = v23;
   }
 
 LABEL_4:
-  if (a6)
+  if (hi)
   {
-    *a6 = v24;
+    *hi = v24;
   }
 
-  if (a7)
+  if (lo)
   {
-    *a7 = v25;
+    *lo = v25;
   }
 
-  if (a8)
+  if (rate)
   {
-    *a8 = v26.i64[0];
+    *rate = v26.i64[0];
   }
 
-  if (a9)
+  if (scaledRate)
   {
-    *a9 = v26.u64[1];
+    *scaledRate = v26.u64[1];
   }
 
-  if (a10)
+  if (d)
   {
-    *a10 = v27;
+    *d = v27;
   }
 
-  if (a3)
+  if (valid)
   {
-    *a3 = v28 != 0;
+    *valid = v28 != 0;
   }
 
-  if (a4)
+  if (flags)
   {
-    *a4 = v29;
+    *flags = v29;
   }
 
-  if (a11)
+  if (number)
   {
-    *a11 = v30;
+    *number = v30;
   }
 
   v20 = *MEMORY[0x277D85DE8];
@@ -1405,22 +1405,22 @@ LABEL_4:
 
 - (NSArray)ports
 {
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [(_TSF_TSDKernelClock *)self service];
-  v5 = [v4 childIteratorInServicePlaneWithError:0];
+  array = [MEMORY[0x277CBEB18] array];
+  service = [(_TSF_TSDKernelClock *)self service];
+  v5 = [service childIteratorInServicePlaneWithError:0];
 
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __26___TSF_TSDgPTPClock_ports__block_invoke;
   v8[3] = &unk_279DBD7A8;
-  v6 = v3;
+  v6 = array;
   v9 = v6;
   [v5 enumerateWithBlock:v8];
 
   return v6;
 }
 
-- (id)portWithPortNumber:(unsigned __int16)a3
+- (id)portWithPortNumber:(unsigned __int16)number
 {
   v10 = 0;
   v11 = &v10;
@@ -1428,14 +1428,14 @@ LABEL_4:
   v13 = __Block_byref_object_copy__1;
   v14 = __Block_byref_object_dispose__1;
   v15 = 0;
-  v4 = [(_TSF_TSDKernelClock *)self service];
-  v5 = [v4 childIteratorInServicePlaneWithError:0];
+  service = [(_TSF_TSDKernelClock *)self service];
+  v5 = [service childIteratorInServicePlaneWithError:0];
 
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __40___TSF_TSDgPTPClock_portWithPortNumber___block_invoke;
   v8[3] = &unk_279DBE058;
-  v9 = a3;
+  numberCopy = number;
   v8[4] = &v10;
   [v5 enumerateWithBlock:v8];
   v6 = v11[5];
@@ -1452,11 +1452,11 @@ LABEL_4:
   return v2;
 }
 
-- (id)getMetricsWithDelta:(id)a3
+- (id)getMetricsWithDelta:(id)delta
 {
-  v4 = a3;
-  v5 = [(_TSF_TSDgPTPClock *)self getMetrics];
-  v6 = [v5 getDelta:v4];
+  deltaCopy = delta;
+  getMetrics = [(_TSF_TSDgPTPClock *)self getMetrics];
+  v6 = [getMetrics getDelta:deltaCopy];
 
   return v6;
 }
@@ -1468,31 +1468,31 @@ LABEL_4:
   [(_TSF_TSDgPTPClock *)&v2 dealloc];
 }
 
-+ (id)diagnosticInfoForService:(id)a3
++ (id)diagnosticInfoForService:(id)service
 {
-  v11.receiver = a1;
+  v11.receiver = self;
   v11.super_class = &OBJC_METACLASS____TSF_TSDgPTPClock;
-  v3 = a3;
-  v4 = objc_msgSendSuper2(&v11, sel_diagnosticInfoForService_, v3);
-  v5 = [MEMORY[0x277CBEB18] array];
-  v6 = [v3 childIteratorInServicePlaneWithError:0];
+  serviceCopy = service;
+  v4 = objc_msgSendSuper2(&v11, sel_diagnosticInfoForService_, serviceCopy);
+  array = [MEMORY[0x277CBEB18] array];
+  v6 = [serviceCopy childIteratorInServicePlaneWithError:0];
 
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __46___TSF_TSDgPTPClock_diagnosticInfoForService___block_invoke;
   v9[3] = &unk_279DBD7A8;
-  v10 = v5;
-  v7 = v5;
+  v10 = array;
+  v7 = array;
   [v6 enumerateWithBlock:v9];
   [v4 setObject:v7 forKeyedSubscript:@"Ports"];
 
   return v4;
 }
 
-- (void)addImplClock:(id)a3
+- (void)addImplClock:(id)clock
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  clockCopy = clock;
   os_unfair_lock_lock(&self->_implClocksLock);
   [(NSPointerArray *)self->_implClocks compact];
   v13 = 0u;
@@ -1515,7 +1515,7 @@ LABEL_4:
           objc_enumerationMutation(v5);
         }
 
-        if (*(*(&v11 + 1) + 8 * v9) == v4)
+        if (*(*(&v11 + 1) + 8 * v9) == clockCopy)
         {
 
           goto LABEL_11;
@@ -1535,17 +1535,17 @@ LABEL_4:
     }
   }
 
-  [(NSPointerArray *)self->_implClocks addPointer:v4, v11];
+  [(NSPointerArray *)self->_implClocks addPointer:clockCopy, v11];
 LABEL_11:
   os_unfair_lock_unlock(&self->_implClocksLock);
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeImplClock:(id)a3
+- (void)removeImplClock:(id)clock
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  clockCopy = clock;
   os_unfair_lock_lock(&self->_implClocksLock);
   [(NSPointerArray *)self->_implClocks compact];
   v15 = 0u;
@@ -1571,7 +1571,7 @@ LABEL_11:
           objc_enumerationMutation(v5);
         }
 
-        if (*(*(&v13 + 1) + 8 * v10) == v4)
+        if (*(*(&v13 + 1) + 8 * v10) == clockCopy)
         {
 
           [(NSPointerArray *)self->_implClocks removePointerAtIndex:v11, v13];
@@ -1599,23 +1599,23 @@ LABEL_11:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)setPreferredGM:(BOOL)a3 error:(id *)a4
+- (BOOL)setPreferredGM:(BOOL)m error:(id *)error
 {
-  v5 = a3;
+  mCopy = m;
   v17[1] = *MEMORY[0x277D85DE8];
-  v17[0] = a3;
+  v17[0] = m;
   v16 = -1;
   v11 = 1;
-  v6 = [(_TSF_TSDKernelClock *)self connection];
-  v7 = [v6 callMethodWithSelector:55 scalarInputs:v17 scalarInputCount:1 scalarOutputs:&v16 scalarOutputCount:&v11 error:a4];
+  connection = [(_TSF_TSDKernelClock *)self connection];
+  v7 = [connection callMethodWithSelector:55 scalarInputs:v17 scalarInputCount:1 scalarOutputs:&v16 scalarOutputCount:&v11 error:error];
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [*a4 code];
+    code = [*error code];
     *buf = 67109376;
-    v13 = v5;
+    v13 = mCopy;
     v14 = 2048;
-    v15 = v8;
+    v15 = code;
     _os_log_impl(&dword_26F080000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "TSDgPTPClock setPreferredGm(%u) = %ld", buf, 0x12u);
   }
 
@@ -1623,24 +1623,24 @@ LABEL_11:
   return v7;
 }
 
-- (BOOL)updateNtpAnchorOffset:(int64_t)a3 isLocalClockSourceFromNTP:(BOOL)a4 error:(id *)a5
+- (BOOL)updateNtpAnchorOffset:(int64_t)offset isLocalClockSourceFromNTP:(BOOL)p error:(id *)error
 {
-  v6 = a4;
+  pCopy = p;
   v19[2] = *MEMORY[0x277D85DE8];
-  v19[0] = a3;
-  v19[1] = a4;
-  v8 = [(_TSF_TSDKernelClock *)self connection];
-  v9 = [v8 callMethodWithSelector:56 scalarInputs:v19 scalarInputCount:2 scalarOutputs:0 scalarOutputCount:0 error:a5];
+  v19[0] = offset;
+  v19[1] = p;
+  connection = [(_TSF_TSDKernelClock *)self connection];
+  v9 = [connection callMethodWithSelector:56 scalarInputs:v19 scalarInputCount:2 scalarOutputs:0 scalarOutputCount:0 error:error];
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [*a5 code];
+    code = [*error code];
     v13 = 134218496;
-    v14 = a3;
+    offsetCopy = offset;
     v15 = 1024;
-    v16 = v6;
+    v16 = pCopy;
     v17 = 2048;
-    v18 = v10;
+    v18 = code;
     _os_log_impl(&dword_26F080000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "TSDgPTPClock updateNtpAnchorOffset(%lld %d) = %ld", &v13, 0x1Cu);
   }
 

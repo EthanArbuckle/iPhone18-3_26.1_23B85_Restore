@@ -1,9 +1,9 @@
 @interface MTRWebRTCTransportProviderClusterSolicitOfferResponseParams
-- (ChipError)_setFieldsFromDecodableStruct:(const void *)a3;
+- (ChipError)_setFieldsFromDecodableStruct:(const void *)struct;
 - (MTRWebRTCTransportProviderClusterSolicitOfferResponseParams)init;
-- (MTRWebRTCTransportProviderClusterSolicitOfferResponseParams)initWithDecodableStruct:(const void *)a3;
-- (MTRWebRTCTransportProviderClusterSolicitOfferResponseParams)initWithResponseValue:(id)a3 error:(id *)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (MTRWebRTCTransportProviderClusterSolicitOfferResponseParams)initWithDecodableStruct:(const void *)struct;
+- (MTRWebRTCTransportProviderClusterSolicitOfferResponseParams)initWithResponseValue:(id)value error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -33,20 +33,20 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRWebRTCTransportProviderClusterSolicitOfferResponseParams);
-  v5 = [(MTRWebRTCTransportProviderClusterSolicitOfferResponseParams *)self webRTCSessionID];
-  [(MTRWebRTCTransportProviderClusterSolicitOfferResponseParams *)v4 setWebRTCSessionID:v5];
+  webRTCSessionID = [(MTRWebRTCTransportProviderClusterSolicitOfferResponseParams *)self webRTCSessionID];
+  [(MTRWebRTCTransportProviderClusterSolicitOfferResponseParams *)v4 setWebRTCSessionID:webRTCSessionID];
 
-  v6 = [(MTRWebRTCTransportProviderClusterSolicitOfferResponseParams *)self deferredOffer];
-  [(MTRWebRTCTransportProviderClusterSolicitOfferResponseParams *)v4 setDeferredOffer:v6];
+  deferredOffer = [(MTRWebRTCTransportProviderClusterSolicitOfferResponseParams *)self deferredOffer];
+  [(MTRWebRTCTransportProviderClusterSolicitOfferResponseParams *)v4 setDeferredOffer:deferredOffer];
 
-  v7 = [(MTRWebRTCTransportProviderClusterSolicitOfferResponseParams *)self videoStreamID];
-  [(MTRWebRTCTransportProviderClusterSolicitOfferResponseParams *)v4 setVideoStreamID:v7];
+  videoStreamID = [(MTRWebRTCTransportProviderClusterSolicitOfferResponseParams *)self videoStreamID];
+  [(MTRWebRTCTransportProviderClusterSolicitOfferResponseParams *)v4 setVideoStreamID:videoStreamID];
 
-  v8 = [(MTRWebRTCTransportProviderClusterSolicitOfferResponseParams *)self audioStreamID];
-  [(MTRWebRTCTransportProviderClusterSolicitOfferResponseParams *)v4 setAudioStreamID:v8];
+  audioStreamID = [(MTRWebRTCTransportProviderClusterSolicitOfferResponseParams *)self audioStreamID];
+  [(MTRWebRTCTransportProviderClusterSolicitOfferResponseParams *)v4 setAudioStreamID:audioStreamID];
 
   return v4;
 }
@@ -61,9 +61,9 @@
   return v6;
 }
 
-- (MTRWebRTCTransportProviderClusterSolicitOfferResponseParams)initWithResponseValue:(id)a3 error:(id *)a4
+- (MTRWebRTCTransportProviderClusterSolicitOfferResponseParams)initWithResponseValue:(id)value error:(id *)error
 {
-  v6 = a3;
+  valueCopy = value;
   v18.receiver = self;
   v18.super_class = MTRWebRTCTransportProviderClusterSolicitOfferResponseParams;
   v7 = [(MTRWebRTCTransportProviderClusterSolicitOfferResponseParams *)&v18 init];
@@ -73,7 +73,7 @@
     goto LABEL_10;
   }
 
-  [MTRBaseDevice _responseDataForCommand:v6 clusterID:1363 commandID:1 error:a4];
+  [MTRBaseDevice _responseDataForCommand:valueCopy clusterID:1363 commandID:1 error:error];
   if (v17)
   {
     sub_2393C5AAC(v16);
@@ -97,7 +97,7 @@
       }
     }
 
-    sub_238DD3F98(v8, v9, a4);
+    sub_238DD3F98(v8, v9, error);
   }
 
   v10 = 0;
@@ -108,7 +108,7 @@ LABEL_10:
   return v10;
 }
 
-- (MTRWebRTCTransportProviderClusterSolicitOfferResponseParams)initWithDecodableStruct:(const void *)a3
+- (MTRWebRTCTransportProviderClusterSolicitOfferResponseParams)initWithDecodableStruct:(const void *)struct
 {
   v10.receiver = self;
   v10.super_class = MTRWebRTCTransportProviderClusterSolicitOfferResponseParams;
@@ -116,7 +116,7 @@ LABEL_10:
   v5 = v4;
   if (v4)
   {
-    v6 = [(MTRWebRTCTransportProviderClusterSolicitOfferResponseParams *)v4 _setFieldsFromDecodableStruct:a3];
+    v6 = [(MTRWebRTCTransportProviderClusterSolicitOfferResponseParams *)v4 _setFieldsFromDecodableStruct:struct];
     if (!v6)
     {
       v8 = v5;
@@ -132,18 +132,18 @@ LABEL_6:
   return v8;
 }
 
-- (ChipError)_setFieldsFromDecodableStruct:(const void *)a3
+- (ChipError)_setFieldsFromDecodableStruct:(const void *)struct
 {
-  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:*a3];
+  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:*struct];
   [(MTRWebRTCTransportProviderClusterSolicitOfferResponseParams *)self setWebRTCSessionID:v5];
 
-  v6 = [MEMORY[0x277CCABB0] numberWithBool:*(a3 + 2)];
+  v6 = [MEMORY[0x277CCABB0] numberWithBool:*(struct + 2)];
   [(MTRWebRTCTransportProviderClusterSolicitOfferResponseParams *)self setDeferredOffer:v6];
 
-  if (*(a3 + 4) == 1 && (sub_238E0A934(a3 + 4)[2] & 1) != 0)
+  if (*(struct + 4) == 1 && (sub_238E0A934(struct + 4)[2] & 1) != 0)
   {
     v7 = MEMORY[0x277CCABB0];
-    v8 = sub_238E0A934(a3 + 4);
+    v8 = sub_238E0A934(struct + 4);
     if ((v8[2] & 1) == 0)
     {
       goto LABEL_12;
@@ -158,8 +158,8 @@ LABEL_6:
     [(MTRWebRTCTransportProviderClusterSolicitOfferResponseParams *)self setVideoStreamID:0];
   }
 
-  v11 = *(a3 + 10);
-  v10 = a3 + 10;
+  v11 = *(struct + 10);
+  v10 = struct + 10;
   if (v11 != 1 || (sub_238E0A934(v10)[2] & 1) == 0)
   {
     [(MTRWebRTCTransportProviderClusterSolicitOfferResponseParams *)self setAudioStreamID:0];

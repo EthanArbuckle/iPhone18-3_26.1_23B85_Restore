@@ -1,6 +1,6 @@
 @interface HFCategoryAccessoryType
 + (id)na_identity;
-- (HFCategoryAccessoryType)initWithCategoryType:(id)a3;
+- (HFCategoryAccessoryType)initWithCategoryType:(id)type;
 - (id)debugDescription;
 - (id)description;
 - (id)localizedCategory;
@@ -8,16 +8,16 @@
 
 @implementation HFCategoryAccessoryType
 
-- (HFCategoryAccessoryType)initWithCategoryType:(id)a3
+- (HFCategoryAccessoryType)initWithCategoryType:(id)type
 {
-  v5 = a3;
+  typeCopy = type;
   v9.receiver = self;
   v9.super_class = HFCategoryAccessoryType;
-  v6 = [(HFAccessoryType *)&v9 _init];
-  v7 = v6;
-  if (v6)
+  _init = [(HFAccessoryType *)&v9 _init];
+  v7 = _init;
+  if (_init)
   {
-    objc_storeStrong(v6 + 1, a3);
+    objc_storeStrong(_init + 1, type);
   }
 
   return v7;
@@ -47,8 +47,8 @@ void __38__HFCategoryAccessoryType_na_identity__block_invoke_2()
 
 - (id)localizedCategory
 {
-  v3 = [(HFCategoryAccessoryType *)self categoryType];
-  v4 = [v3 isEqualToString:@"9D302CDA-1467-4E19-ABC9-9ED36BE34508"];
+  categoryType = [(HFCategoryAccessoryType *)self categoryType];
+  v4 = [categoryType isEqualToString:@"9D302CDA-1467-4E19-ABC9-9ED36BE34508"];
 
   if (v4 & 1) != 0 || (-[HFCategoryAccessoryType categoryType](self, "categoryType"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 isEqualToString:@"3047A1A5-8BFC-4112-9888-21314F438FF3"], v5, (v6))
   {
@@ -57,11 +57,11 @@ void __38__HFCategoryAccessoryType_na_identity__block_invoke_2()
 
   else
   {
-    v8 = [(HFCategoryAccessoryType *)self categoryType];
+    categoryType2 = [(HFCategoryAccessoryType *)self categoryType];
     v9 = localizationKeyForAccessoryCategoryType();
 
-    v10 = [MEMORY[0x277CD1B30] sharedManager];
-    v7 = [v10 getLocalizedOrCustomString:v9];
+    mEMORY[0x277CD1B30] = [MEMORY[0x277CD1B30] sharedManager];
+    v7 = [mEMORY[0x277CD1B30] getLocalizedOrCustomString:v9];
   }
 
   return v7;
@@ -71,10 +71,10 @@ void __38__HFCategoryAccessoryType_na_identity__block_invoke_2()
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = MEMORY[0x277CD1650];
-  v5 = [(HFCategoryAccessoryType *)self categoryType];
-  v6 = [v4 hf_getUserFriendlyDescriptionKey:v5];
-  v7 = [(HFCategoryAccessoryType *)self categoryType];
-  v8 = [v3 stringWithFormat:@"categoryType: %@ (%@)", v6, v7];
+  categoryType = [(HFCategoryAccessoryType *)self categoryType];
+  v6 = [v4 hf_getUserFriendlyDescriptionKey:categoryType];
+  categoryType2 = [(HFCategoryAccessoryType *)self categoryType];
+  v8 = [v3 stringWithFormat:@"categoryType: %@ (%@)", v6, categoryType2];
 
   return v8;
 }
@@ -83,16 +83,16 @@ void __38__HFCategoryAccessoryType_na_identity__block_invoke_2()
 {
   v3 = [MEMORY[0x277D2C8F8] builderWithObject:self];
   v4 = MEMORY[0x277CD1650];
-  v5 = [(HFCategoryAccessoryType *)self categoryType];
-  v6 = [v4 hf_getUserFriendlyDescriptionKey:v5];
+  categoryType = [(HFCategoryAccessoryType *)self categoryType];
+  v6 = [v4 hf_getUserFriendlyDescriptionKey:categoryType];
 
-  v7 = [(HFCategoryAccessoryType *)self categoryType];
-  v8 = [v6 stringByAppendingFormat:@" (%@)", v7];
+  categoryType2 = [(HFCategoryAccessoryType *)self categoryType];
+  v8 = [v6 stringByAppendingFormat:@" (%@)", categoryType2];
   [v3 appendString:v8 withName:@"categoryType"];
 
-  v9 = [v3 build];
+  build = [v3 build];
 
-  return v9;
+  return build;
 }
 
 @end

@@ -1,7 +1,7 @@
 @interface _UIDocumentPickerAuxiliaryOption
 - (_UIDocumentPickerAuxiliaryOption)init;
-- (_UIDocumentPickerAuxiliaryOption)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_UIDocumentPickerAuxiliaryOption)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _UIDocumentPickerAuxiliaryOption
@@ -13,47 +13,47 @@
   v2 = [(_UIDocumentPickerAuxiliaryOption *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AFB0] UUID];
-    v4 = [v3 UUIDString];
-    [(_UIDocumentPickerAuxiliaryOption *)v2 setIdentifier:v4];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
+    [(_UIDocumentPickerAuxiliaryOption *)v2 setIdentifier:uUIDString];
   }
 
   return v2;
 }
 
-- (_UIDocumentPickerAuxiliaryOption)initWithCoder:(id)a3
+- (_UIDocumentPickerAuxiliaryOption)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = _UIDocumentPickerAuxiliaryOption;
   v5 = [(_UIDocumentPickerAuxiliaryOption *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UIImageKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UIImageKey"];
     [(_UIDocumentPickerAuxiliaryOption *)v5 setImage:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UITitleKey"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UITitleKey"];
     [(_UIDocumentPickerAuxiliaryOption *)v5 setTitle:v7];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UIIdentifierKey"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UIIdentifierKey"];
     [(_UIDocumentPickerAuxiliaryOption *)v5 setIdentifier:v8];
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UIOrderKey"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UIOrderKey"];
     -[_UIDocumentPickerAuxiliaryOption setOrder:](v5, "setOrder:", [v9 integerValue]);
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   image = self->_image;
-  v5 = a3;
-  [v5 encodeObject:image forKey:@"UIImageKey"];
-  [v5 encodeObject:self->_title forKey:@"UITitleKey"];
-  [v5 encodeObject:self->_identifier forKey:@"UIIdentifierKey"];
+  coderCopy = coder;
+  [coderCopy encodeObject:image forKey:@"UIImageKey"];
+  [coderCopy encodeObject:self->_title forKey:@"UITitleKey"];
+  [coderCopy encodeObject:self->_identifier forKey:@"UIIdentifierKey"];
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_order];
-  [v5 encodeObject:v6 forKey:@"UIOrderKey"];
+  [coderCopy encodeObject:v6 forKey:@"UIOrderKey"];
 }
 
 @end

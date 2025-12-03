@@ -1,5 +1,5 @@
 @interface CAMDescriptionOverlayViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityViewIsModal;
 - (BOOL)isAccessibilityElement;
 - (CGRect)accessibilityFrame;
@@ -8,18 +8,18 @@
 
 @implementation CAMDescriptionOverlayViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CAMDescriptionOverlayView" hasInstanceMethod:@"_titleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CAMDescriptionOverlayView" hasInstanceMethod:@"_descriptionTitleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CAMDescriptionOverlayView" hasInstanceMethod:@"_descriptionLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CAMDescriptionOverlayView" hasInstanceMethod:@"_infoTitleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CAMDescriptionOverlayView" hasInstanceMethod:@"_infoLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CAMDescriptionOverlayView" hasInstanceMethod:@"_primaryVibrancyEffectView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CAMDescriptionOverlayView" hasInstanceMethod:@"_acknowledgmentButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CAMDescriptionOverlayView" hasInstanceMethod:@"_detailButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CAMDescriptionOverlayView" hasInstanceMethod:@"isVisible" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CAMDescriptionOverlayView" hasInstanceMethod:@"_titleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CAMDescriptionOverlayView" hasInstanceMethod:@"_descriptionTitleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CAMDescriptionOverlayView" hasInstanceMethod:@"_descriptionLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CAMDescriptionOverlayView" hasInstanceMethod:@"_infoTitleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CAMDescriptionOverlayView" hasInstanceMethod:@"_infoLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CAMDescriptionOverlayView" hasInstanceMethod:@"_primaryVibrancyEffectView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CAMDescriptionOverlayView" hasInstanceMethod:@"_acknowledgmentButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CAMDescriptionOverlayView" hasInstanceMethod:@"_detailButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CAMDescriptionOverlayView" hasInstanceMethod:@"isVisible" withFullSignature:{"B", 0}];
 }
 
 - (BOOL)isAccessibilityElement
@@ -70,8 +70,8 @@
 {
   v12.receiver = self;
   v12.super_class = CAMDescriptionOverlayViewAccessibility;
-  v3 = [(CAMDescriptionOverlayViewAccessibility *)&v12 _accessibilitySupplementaryFooterViews];
-  v4 = [v3 mutableCopy];
+  _accessibilitySupplementaryFooterViews = [(CAMDescriptionOverlayViewAccessibility *)&v12 _accessibilitySupplementaryFooterViews];
+  v4 = [_accessibilitySupplementaryFooterViews mutableCopy];
 
   if (!v4)
   {
@@ -80,18 +80,18 @@
 
   v5 = [(CAMDescriptionOverlayViewAccessibility *)self safeValueForKey:@"_detailButton"];
   v6 = __UIAccessibilitySafeClass();
-  v7 = [v6 _accessibilityViewIsVisible];
+  _accessibilityViewIsVisible = [v6 _accessibilityViewIsVisible];
 
-  if (v7)
+  if (_accessibilityViewIsVisible)
   {
     [v4 axSafelyAddObject:v5];
   }
 
   v8 = [(CAMDescriptionOverlayViewAccessibility *)self safeValueForKey:@"_acknowledgmentButton"];
   v9 = __UIAccessibilitySafeClass();
-  v10 = [v9 _accessibilityViewIsVisible];
+  _accessibilityViewIsVisible2 = [v9 _accessibilityViewIsVisible];
 
-  if (v10)
+  if (_accessibilityViewIsVisible2)
   {
     [v4 axSafelyAddObject:v8];
   }

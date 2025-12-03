@@ -1,8 +1,8 @@
 @interface CLSTabooEventModel
-+ (unint64_t)baseSceneAnalysisVersionWithSceneAnalysisVersion:(unint64_t)a3;
-- (CLSTabooEventModel)initWithSceneAnalysisVersion:(unint64_t)a3;
++ (unint64_t)baseSceneAnalysisVersionWithSceneAnalysisVersion:(unint64_t)version;
+- (CLSTabooEventModel)initWithSceneAnalysisVersion:(unint64_t)version;
 - (id)modelInfo;
-- (id)nodeForSignalIdentifier:(unint64_t)a3;
+- (id)nodeForSignalIdentifier:(unint64_t)identifier;
 - (void)setupVersion32;
 - (void)setupVersion33;
 - (void)setupVersion50_4;
@@ -43,13 +43,13 @@ void __31__CLSTabooEventModel_modelInfo__block_invoke(uint64_t a1, void *a2)
   [v2 addObject:v3];
 }
 
-- (id)nodeForSignalIdentifier:(unint64_t)a3
+- (id)nodeForSignalIdentifier:(unint64_t)identifier
 {
-  if (a3 > 2147482874)
+  if (identifier > 2147482874)
   {
-    if (a3 <= 2147482876)
+    if (identifier <= 2147482876)
     {
-      if (a3 == 2147482875)
+      if (identifier == 2147482875)
       {
         funeralNode = self->_funeralNode;
       }
@@ -62,7 +62,7 @@ void __31__CLSTabooEventModel_modelInfo__block_invoke(uint64_t a1, void *a2)
       goto LABEL_22;
     }
 
-    switch(a3)
+    switch(identifier)
     {
       case 0x7FFFFCFDuLL:
         funeralNode = self->_religiousSettingNode;
@@ -80,14 +80,14 @@ LABEL_22:
 
   else
   {
-    if (a3 > 2147482871)
+    if (identifier > 2147482871)
     {
-      if (a3 == 2147482872)
+      if (identifier == 2147482872)
       {
         funeralNode = self->_demonstrationNode;
       }
 
-      else if (a3 == 2147482873)
+      else if (identifier == 2147482873)
       {
         funeralNode = self->_fireDevastationNode;
       }
@@ -100,23 +100,23 @@ LABEL_22:
       goto LABEL_22;
     }
 
-    if (a3 == 2147482870)
+    if (identifier == 2147482870)
     {
       funeralNode = self->_destructionNode;
       goto LABEL_22;
     }
 
-    if (a3 == 2147482871)
+    if (identifier == 2147482871)
     {
       funeralNode = self->_bloodNode;
       goto LABEL_22;
     }
   }
 
-  if ([(CLSTabooEventModel *)self isResponsibleForSignalIdentifier:a3])
+  if ([(CLSTabooEventModel *)self isResponsibleForSignalIdentifier:identifier])
   {
-    v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"TE - Unknown (%X)", a3];
-    v5 = [[CLSSignalNode alloc] initWithIdentifier:a3 name:v7 operatingPoint:0.0 highPrecisionOperatingPoint:0.0 highRecallOperatingPoint:0.0];
+    identifier = [MEMORY[0x277CCACA8] stringWithFormat:@"TE - Unknown (%X)", identifier];
+    v5 = [[CLSSignalNode alloc] initWithIdentifier:identifier name:identifier operatingPoint:0.0 highPrecisionOperatingPoint:0.0 highRecallOperatingPoint:0.0];
   }
 
   else
@@ -309,7 +309,7 @@ LABEL_23:
   MEMORY[0x2821F96F8]();
 }
 
-- (CLSTabooEventModel)initWithSceneAnalysisVersion:(unint64_t)a3
+- (CLSTabooEventModel)initWithSceneAnalysisVersion:(unint64_t)version
 {
   v14 = *MEMORY[0x277D85DE8];
   v9.receiver = self;
@@ -318,13 +318,13 @@ LABEL_23:
   v5 = v4;
   if (v4)
   {
-    if (a3 < 0x55)
+    if (version < 0x55)
     {
-      if (a3 < 0x32)
+      if (version < 0x32)
       {
-        if (a3 < 0x21)
+        if (version < 0x21)
         {
-          if (a3 == 32)
+          if (version == 32)
           {
             [(CLSTabooEventModel *)v4 setupVersion32];
           }
@@ -335,7 +335,7 @@ LABEL_23:
             {
               v6 = objc_opt_class();
               *buf = 67109378;
-              v11 = a3;
+              versionCopy = version;
               v12 = 2112;
               v13 = v6;
               _os_log_impl(&dword_25E5F0000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Unsupported version %d in %@", buf, 0x12u);
@@ -367,21 +367,21 @@ LABEL_23:
   return v5;
 }
 
-+ (unint64_t)baseSceneAnalysisVersionWithSceneAnalysisVersion:(unint64_t)a3
++ (unint64_t)baseSceneAnalysisVersionWithSceneAnalysisVersion:(unint64_t)version
 {
   v3 = 50;
   v4 = 33;
-  if (a3 <= 0x20)
+  if (version <= 0x20)
   {
-    v4 = 32 * (a3 == 32);
+    v4 = 32 * (version == 32);
   }
 
-  if (a3 <= 0x31)
+  if (version <= 0x31)
   {
     v3 = v4;
   }
 
-  if (a3 <= 0x54)
+  if (version <= 0x54)
   {
     return v3;
   }

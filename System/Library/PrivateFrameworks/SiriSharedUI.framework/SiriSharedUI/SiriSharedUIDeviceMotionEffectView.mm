@@ -1,26 +1,26 @@
 @interface SiriSharedUIDeviceMotionEffectView
 - (BOOL)isViewHighContrast;
-- (SiriSharedUIDeviceMotionEffectView)initWithFrame:(CGRect)a3;
+- (SiriSharedUIDeviceMotionEffectView)initWithFrame:(CGRect)frame;
 - (id)_currentWindowScene;
 - (int64_t)_currentInterfaceOrientation;
 - (int64_t)viewAppearanceStyle;
 - (void)_cleanUpIfNeeded;
 - (void)_configureDeviceMotionIfNeeded;
-- (void)_displayLinkFired:(id)a3;
-- (void)_motionManagerDidReceiveMotion:(id)a3;
+- (void)_displayLinkFired:(id)fired;
+- (void)_motionManagerDidReceiveMotion:(id)motion;
 - (void)_updateEffectView;
 - (void)layoutSubviews;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)updateMaskingForView:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
+- (void)updateMaskingForView:(id)view;
 @end
 
 @implementation SiriSharedUIDeviceMotionEffectView
 
-- (SiriSharedUIDeviceMotionEffectView)initWithFrame:(CGRect)a3
+- (SiriSharedUIDeviceMotionEffectView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = SiriSharedUIDeviceMotionEffectView;
-  v3 = [(SiriSharedUIDeviceMotionEffectView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SiriSharedUIDeviceMotionEffectView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x277D755E8]);
@@ -35,14 +35,14 @@
   return v3;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v7.receiver = self;
   v7.super_class = SiriSharedUIDeviceMotionEffectView;
-  v4 = a3;
-  [(SiriSharedUIDeviceMotionEffectView *)&v7 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(SiriSharedUIDeviceMotionEffectView *)&v7 traitCollectionDidChange:changeCopy];
   v5 = [(SiriSharedUIDeviceMotionEffectView *)self traitCollection:v7.receiver];
-  v6 = [v5 hasDifferentColorAppearanceComparedToTraitCollection:v4];
+  v6 = [v5 hasDifferentColorAppearanceComparedToTraitCollection:changeCopy];
 
   if (v6)
   {
@@ -50,10 +50,10 @@
   }
 }
 
-- (void)updateMaskingForView:(id)a3
+- (void)updateMaskingForView:(id)view
 {
-  v16 = a3;
-  if (!v16)
+  viewCopy = view;
+  if (!viewCopy)
   {
     [(SiriSharedUIDeviceMotionEffectView *)self _cleanUpIfNeeded];
     [(UIImageView *)self->_effectImageView setAlpha:0.0];
@@ -62,27 +62,27 @@
   }
 
   [(UIImageView *)self->_effectImageView setAlpha:1.0];
-  v4 = [(SiriSharedUIDeviceMotionEffectView *)self superview];
-  [v16 frame];
-  [v4 convertRect:self toView:?];
+  superview = [(SiriSharedUIDeviceMotionEffectView *)self superview];
+  [viewCopy frame];
+  [superview convertRect:self toView:?];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
 
-  v13 = [(SiriSharedUIDeviceMotionEffectView *)self maskView];
-  if (v13 != v16)
+  maskView = [(SiriSharedUIDeviceMotionEffectView *)self maskView];
+  if (maskView != viewCopy)
   {
 
 LABEL_6:
-    [v16 setFrame:{v6, v8, v10, v12}];
-    [(SiriSharedUIDeviceMotionEffectView *)self setMaskView:v16];
+    [viewCopy setFrame:{v6, v8, v10, v12}];
+    [(SiriSharedUIDeviceMotionEffectView *)self setMaskView:viewCopy];
     self->_forcefullyUpdateImageViewFrame = 1;
     goto LABEL_7;
   }
 
-  v14 = [(SiriSharedUIDeviceMotionEffectView *)self maskView];
-  [v14 frame];
+  maskView2 = [(SiriSharedUIDeviceMotionEffectView *)self maskView];
+  [maskView2 frame];
   v19.origin.x = v6;
   v19.origin.y = v8;
   v19.size.width = v10;
@@ -182,12 +182,12 @@ LABEL_8:
 
     if ([(SiriSharedUIDeviceMotionEffectView *)self _supportsDeviceMotion])
     {
-      v23 = [(SiriSharedUIDeviceMotionEffectView *)self _currentInterfaceOrientation];
-      if (v23)
+      _currentInterfaceOrientation = [(SiriSharedUIDeviceMotionEffectView *)self _currentInterfaceOrientation];
+      if (_currentInterfaceOrientation)
       {
-        if (v23 != self->_cachedInterfaceOrientation)
+        if (_currentInterfaceOrientation != self->_cachedInterfaceOrientation)
         {
-          self->_cachedInterfaceOrientation = v23;
+          self->_cachedInterfaceOrientation = _currentInterfaceOrientation;
         }
       }
     }
@@ -196,7 +196,7 @@ LABEL_8:
 
 - (void)_updateEffectView
 {
-  v3 = [MEMORY[0x277D75348] clearColor];
+  clearColor = [MEMORY[0x277D75348] clearColor];
   if (+[SiriSharedUIEnhancedMaterialUtilities isEnhancedMaterialEnabled])
   {
     if ([(SiriSharedUIDeviceMotionEffectView *)self viewAppearanceStyle])
@@ -208,9 +208,9 @@ LABEL_8:
     {
       [MEMORY[0x277D75348] blackColor];
     }
-    v4 = ;
+    labelColor = ;
     v11 = 0;
-    v5 = v3;
+    v5 = clearColor;
     v6 = 1.0;
   }
 
@@ -218,10 +218,10 @@ LABEL_8:
   {
     if (![(SiriSharedUIDeviceMotionEffectView *)self isViewHighContrast])
     {
-      v7 = [(SiriSharedUIDeviceMotionEffectView *)self viewAppearanceStyle];
+      viewAppearanceStyle = [(SiriSharedUIDeviceMotionEffectView *)self viewAppearanceStyle];
       v8 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v9 = v8;
-      if (v7 == 1)
+      if (viewAppearanceStyle == 1)
       {
         v10 = @"deviceMotionEffect_Dark";
       }
@@ -238,18 +238,18 @@ LABEL_8:
       goto LABEL_13;
     }
 
-    v4 = [MEMORY[0x277D75348] labelColor];
+    labelColor = [MEMORY[0x277D75348] labelColor];
     v11 = 0;
-    v5 = v3;
+    v5 = clearColor;
     v6 = 0.0;
   }
 
-  v3 = v4;
+  clearColor = labelColor;
 LABEL_13:
 
   [(UIImageView *)self->_effectImageView setImage:v11];
   [(UIImageView *)self->_effectImageView setAlpha:v6];
-  [(SiriSharedUIDeviceMotionEffectView *)self setBackgroundColor:v3];
+  [(SiriSharedUIDeviceMotionEffectView *)self setBackgroundColor:clearColor];
 }
 
 - (void)_configureDeviceMotionIfNeeded
@@ -274,8 +274,8 @@ LABEL_13:
 
   if ([(SiriSharedUIDeviceMotionEffectView *)self _supportsDeviceMotion])
   {
-    v5 = [MEMORY[0x277D759A0] mainScreen];
-    v6 = (1.0 / [v5 maximumFramesPerSecond]);
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    v6 = (1.0 / [mainScreen maximumFramesPerSecond]);
     self->_rotationIncrementalRateRadians = v6 * 0.20943951;
     if (!self->_motionManager)
     {
@@ -289,14 +289,14 @@ LABEL_13:
 
     if (!self->_displayLink)
     {
-      v9 = [MEMORY[0x277D759A0] mainScreen];
-      v10 = [v9 displayLinkWithTarget:self selector:sel__displayLinkFired_];
+      mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+      v10 = [mainScreen2 displayLinkWithTarget:self selector:sel__displayLinkFired_];
       displayLink = self->_displayLink;
       self->_displayLink = v10;
 
       v12 = self->_displayLink;
-      v13 = [MEMORY[0x277CBEB88] mainRunLoop];
-      [(CADisplayLink *)v12 addToRunLoop:v13 forMode:*MEMORY[0x277CBE738]];
+      mainRunLoop = [MEMORY[0x277CBEB88] mainRunLoop];
+      [(CADisplayLink *)v12 addToRunLoop:mainRunLoop forMode:*MEMORY[0x277CBE738]];
     }
   }
 
@@ -328,18 +328,18 @@ void __68__SiriSharedUIDeviceMotionEffectView__configureDeviceMotionIfNeeded__bl
   }
 }
 
-- (void)_displayLinkFired:(id)a3
+- (void)_displayLinkFired:(id)fired
 {
-  v4 = [(CMMotionManager *)self->_motionManager deviceMotion];
-  v5 = v4;
-  if (v4)
+  deviceMotion = [(CMMotionManager *)self->_motionManager deviceMotion];
+  v5 = deviceMotion;
+  if (deviceMotion)
   {
-    v6 = v4;
-    v4 = [(SiriSharedUIDeviceMotionEffectView *)self _motionManagerDidReceiveMotion:v4];
+    v6 = deviceMotion;
+    deviceMotion = [(SiriSharedUIDeviceMotionEffectView *)self _motionManagerDidReceiveMotion:deviceMotion];
     v5 = v6;
   }
 
-  MEMORY[0x2821F96F8](v4, v5);
+  MEMORY[0x2821F96F8](deviceMotion, v5);
 }
 
 - (void)_cleanUpIfNeeded
@@ -353,11 +353,11 @@ void __68__SiriSharedUIDeviceMotionEffectView__configureDeviceMotionIfNeeded__bl
   self->_motionManager = 0;
 }
 
-- (void)_motionManagerDidReceiveMotion:(id)a3
+- (void)_motionManagerDidReceiveMotion:(id)motion
 {
   initialOffsetRadians = self->_initialOffsetRadians;
   v5 = self->_cachedInterfaceOrientation - 3;
-  [a3 gravity];
+  [motion gravity];
   if (v5 < 2)
   {
     v6 = v7;
@@ -400,32 +400,32 @@ void __69__SiriSharedUIDeviceMotionEffectView__motionManagerDidReceiveMotion___b
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [MEMORY[0x277D75128] sharedApplication];
-  v3 = [v2 windows];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  windows = [mEMORY[0x277D75128] windows];
 
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
-  if (v4)
+  windowScene = [windows countByEnumeratingWithState:&v9 objects:v13 count:16];
+  if (windowScene)
   {
     v5 = *v10;
     while (2)
     {
-      for (i = 0; i != v4; i = i + 1)
+      for (i = 0; i != windowScene; i = i + 1)
       {
         if (*v10 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(windows);
         }
 
         v7 = *(*(&v9 + 1) + 8 * i);
         if ([v7 isKeyWindow])
         {
-          v4 = [v7 windowScene];
+          windowScene = [v7 windowScene];
           goto LABEL_11;
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
-      if (v4)
+      windowScene = [windows countByEnumeratingWithState:&v9 objects:v13 count:16];
+      if (windowScene)
       {
         continue;
       }
@@ -436,38 +436,38 @@ void __69__SiriSharedUIDeviceMotionEffectView__motionManagerDidReceiveMotion___b
 
 LABEL_11:
 
-  return v4;
+  return windowScene;
 }
 
 - (int64_t)_currentInterfaceOrientation
 {
-  v2 = [(SiriSharedUIDeviceMotionEffectView *)self _currentWindowScene];
-  v3 = v2;
-  if (v2)
+  _currentWindowScene = [(SiriSharedUIDeviceMotionEffectView *)self _currentWindowScene];
+  v3 = _currentWindowScene;
+  if (_currentWindowScene)
   {
-    v4 = [v2 interfaceOrientation];
+    interfaceOrientation = [_currentWindowScene interfaceOrientation];
   }
 
   else
   {
-    v4 = 0;
+    interfaceOrientation = 0;
   }
 
-  return v4;
+  return interfaceOrientation;
 }
 
 - (BOOL)isViewHighContrast
 {
-  v2 = [(SiriSharedUIDeviceMotionEffectView *)self traitCollection];
-  v3 = [v2 accessibilityContrast] == 1;
+  traitCollection = [(SiriSharedUIDeviceMotionEffectView *)self traitCollection];
+  v3 = [traitCollection accessibilityContrast] == 1;
 
   return v3;
 }
 
 - (int64_t)viewAppearanceStyle
 {
-  v2 = [(SiriSharedUIDeviceMotionEffectView *)self traitCollection];
-  v3 = [v2 userInterfaceStyle] == 2;
+  traitCollection = [(SiriSharedUIDeviceMotionEffectView *)self traitCollection];
+  v3 = [traitCollection userInterfaceStyle] == 2;
 
   return v3;
 }

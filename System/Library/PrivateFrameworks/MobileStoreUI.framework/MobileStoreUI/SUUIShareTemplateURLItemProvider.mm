@@ -1,28 +1,28 @@
 @interface SUUIShareTemplateURLItemProvider
-- (SUUIShareTemplateURLItemProvider)initWithTemplateElement:(id)a3;
-- (id)activityViewController:(id)a3 subjectForActivityType:(id)a4;
-- (id)activityViewController:(id)a3 thumbnailImageForActivityType:(id)a4 suggestedSize:(CGSize)a5;
+- (SUUIShareTemplateURLItemProvider)initWithTemplateElement:(id)element;
+- (id)activityViewController:(id)controller subjectForActivityType:(id)type;
+- (id)activityViewController:(id)controller thumbnailImageForActivityType:(id)type suggestedSize:(CGSize)size;
 - (id)item;
 @end
 
 @implementation SUUIShareTemplateURLItemProvider
 
-- (SUUIShareTemplateURLItemProvider)initWithTemplateElement:(id)a3
+- (SUUIShareTemplateURLItemProvider)initWithTemplateElement:(id)element
 {
-  v5 = a3;
+  elementCopy = element;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = __Block_byref_object_copy__79;
   v17 = __Block_byref_object_dispose__79;
   v18 = 0;
-  v6 = [v5 activities];
+  activities = [elementCopy activities];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __60__SUUIShareTemplateURLItemProvider_initWithTemplateElement___block_invoke;
   v12[3] = &unk_2798FCAE0;
   v12[4] = &v13;
-  [v6 enumerateObjectsUsingBlock:v12];
+  [activities enumerateObjectsUsingBlock:v12];
 
   v7 = v14[5];
   v11.receiver = self;
@@ -31,7 +31,7 @@
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_templateElement, a3);
+    objc_storeStrong(&v8->_templateElement, element);
   }
 
   _Block_object_dispose(&v13, 8);
@@ -55,25 +55,25 @@ void __60__SUUIShareTemplateURLItemProvider_initWithTemplateElement___block_invo
   }
 }
 
-- (id)activityViewController:(id)a3 subjectForActivityType:(id)a4
+- (id)activityViewController:(id)controller subjectForActivityType:(id)type
 {
   templateElement = self->_templateElement;
-  v5 = [(UIActivityItemProvider *)self activityType:a3];
+  v5 = [(UIActivityItemProvider *)self activityType:controller];
   v6 = [(SUUIShareTemplateViewElement *)templateElement activityForUIActivityType:v5];
 
-  v7 = [v6 title];
-  v8 = [v7 text];
-  v9 = [v8 string];
+  title = [v6 title];
+  text = [title text];
+  string = [text string];
 
-  return v9;
+  return string;
 }
 
-- (id)activityViewController:(id)a3 thumbnailImageForActivityType:(id)a4 suggestedSize:(CGSize)a5
+- (id)activityViewController:(id)controller thumbnailImageForActivityType:(id)type suggestedSize:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
-  v9 = a3;
-  v10 = a4;
+  height = size.height;
+  width = size.width;
+  controllerCopy = controller;
+  typeCopy = type;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -81,16 +81,16 @@ void __60__SUUIShareTemplateURLItemProvider_initWithTemplateElement___block_invo
   v25 = __Block_byref_object_dispose__79;
   v26 = 0;
   templateElement = self->_templateElement;
-  v12 = [(UIActivityItemProvider *)self activityType];
-  v13 = [(SUUIShareTemplateViewElement *)templateElement activityForUIActivityType:v12];
+  activityType = [(UIActivityItemProvider *)self activityType];
+  v13 = [(SUUIShareTemplateViewElement *)templateElement activityForUIActivityType:activityType];
 
-  v14 = [v13 image];
-  v15 = [v14 URL];
+  image = [v13 image];
+  v15 = [image URL];
   if (v15)
   {
     v16 = [objc_alloc(MEMORY[0x277D69CD8]) initWithURL:v15];
     [v16 setITunesStoreRequest:0];
-    v17 = [[SUUIStyledImageDataConsumer alloc] initWithViewElement:v14];
+    v17 = [[SUUIStyledImageDataConsumer alloc] initWithViewElement:image];
     [(SUUIStyledImageDataConsumer *)v17 setImageSize:width, height];
     [v16 setDataConsumer:v17];
     v20[0] = MEMORY[0x277D85DD0];
@@ -112,13 +112,13 @@ void __60__SUUIShareTemplateURLItemProvider_initWithTemplateElement___block_invo
 - (id)item
 {
   templateElement = self->_templateElement;
-  v3 = [(UIActivityItemProvider *)self activityType];
-  v4 = [(SUUIShareTemplateViewElement *)templateElement activityForUIActivityType:v3];
+  activityType = [(UIActivityItemProvider *)self activityType];
+  v4 = [(SUUIShareTemplateViewElement *)templateElement activityForUIActivityType:activityType];
 
   v5 = [v4 URL];
-  v6 = [v5 URL];
+  v5URL = [v5 URL];
 
-  return v6;
+  return v5URL;
 }
 
 @end

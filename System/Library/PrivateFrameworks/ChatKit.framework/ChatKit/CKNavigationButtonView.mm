@@ -1,21 +1,21 @@
 @interface CKNavigationButtonView
-- (CKNavigationButtonView)initWithImage:(id)a3 disabledImage:(id)a4 text:(id)a5 wantsLongPress:(BOOL)a6;
-- (CKNavigationButtonView)initWithImage:(id)a3 text:(id)a4 wantsLongPress:(BOOL)a5;
+- (CKNavigationButtonView)initWithImage:(id)image disabledImage:(id)disabledImage text:(id)text wantsLongPress:(BOOL)press;
+- (CKNavigationButtonView)initWithImage:(id)image text:(id)text wantsLongPress:(BOOL)press;
 - (id)_imageForCurrentState;
 - (void)_setupIconImageView;
 - (void)layoutSubviews;
-- (void)setEnabled:(BOOL)a3;
-- (void)setJoinButtonStyle:(int64_t)a3;
-- (void)setWantsVibrancy:(BOOL)a3;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setJoinButtonStyle:(int64_t)style;
+- (void)setWantsVibrancy:(BOOL)vibrancy;
 @end
 
 @implementation CKNavigationButtonView
 
-- (CKNavigationButtonView)initWithImage:(id)a3 text:(id)a4 wantsLongPress:(BOOL)a5
+- (CKNavigationButtonView)initWithImage:(id)image text:(id)text wantsLongPress:(BOOL)press
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  pressCopy = press;
+  imageCopy = image;
+  textCopy = text;
   v37.receiver = self;
   v37.super_class = CKNavigationButtonView;
   v10 = *MEMORY[0x1E695F058];
@@ -28,7 +28,7 @@
   {
     [(CKNavigationButtonView *)v14 setUserInteractionEnabled:1];
     [(CKNavigationButtonView *)v15 setClipsToBounds:0];
-    [(CKNavigationButtonView *)v15 setWantsLongPress:v5];
+    [(CKNavigationButtonView *)v15 setWantsLongPress:pressCopy];
     [(CKNavigationButtonView *)v15 setEnabled:1];
     v16 = [MEMORY[0x1E69DC730] effectWithStyle:1100];
     v17 = [MEMORY[0x1E69DD248] _effectForBlurEffect:v16 vibrancyStyle:110];
@@ -38,46 +38,46 @@
     [v18 setUserInteractionEnabled:0];
     [(CKNavigationButtonView *)v15 setVibrancyView:v18];
     [(CKNavigationButtonView *)v15 addSubview:v18];
-    if (v9)
+    if (textCopy)
     {
       v19 = [objc_alloc(MEMORY[0x1E69DCC10]) initWithFrame:{v10, v11, v12, v13}];
       [(CKNavigationButtonView *)v15 setTextLabel:v19];
 
       v20 = +[CKUIBehavior sharedBehaviors];
-      v21 = [v20 theme];
-      v22 = [v21 navBarGrayColor];
-      v23 = [(CKNavigationButtonView *)v15 textLabel];
-      [v23 setTextColor:v22];
+      theme = [v20 theme];
+      navBarGrayColor = [theme navBarGrayColor];
+      textLabel = [(CKNavigationButtonView *)v15 textLabel];
+      [textLabel setTextColor:navBarGrayColor];
 
       v24 = [CKUIBehavior fontWithStyle:*MEMORY[0x1E69DDD10] adjustedForMaxSizeCategory:*MEMORY[0x1E69DDC58]];
-      v25 = [(CKNavigationButtonView *)v15 textLabel];
-      [v25 setFont:v24];
+      textLabel2 = [(CKNavigationButtonView *)v15 textLabel];
+      [textLabel2 setFont:v24];
 
-      [(CKNavigationButtonView *)v15 setText:v9];
-      v26 = [(CKNavigationButtonView *)v15 textLabel];
-      [v26 setText:v9];
+      [(CKNavigationButtonView *)v15 setText:textCopy];
+      textLabel3 = [(CKNavigationButtonView *)v15 textLabel];
+      [textLabel3 setText:textCopy];
 
-      v27 = [(CKNavigationButtonView *)v15 textLabel];
-      [v27 setTextAlignment:1];
+      textLabel4 = [(CKNavigationButtonView *)v15 textLabel];
+      [textLabel4 setTextAlignment:1];
 
-      v28 = [v18 contentView];
-      v29 = [(CKNavigationButtonView *)v15 textLabel];
-      [v28 addSubview:v29];
+      contentView = [v18 contentView];
+      textLabel5 = [(CKNavigationButtonView *)v15 textLabel];
+      [contentView addSubview:textLabel5];
     }
 
-    if (v8)
+    if (imageCopy)
     {
       v30 = MEMORY[0x1E69DCAD8];
       v31 = +[CKUIBehavior sharedBehaviors];
       [v31 navbarButtonImagePointSize];
       v32 = [v30 configurationWithPointSize:?];
 
-      v33 = [v8 imageWithSymbolConfiguration:v32];
+      v33 = [imageCopy imageWithSymbolConfiguration:v32];
       v34 = [v33 imageWithRenderingMode:2];
       [(CKNavigationButtonView *)v15 setImage:v34];
 
-      v35 = [(CKNavigationButtonView *)v15 image];
-      [(CKNavigationButtonView *)v15 setDefaultImage:v35];
+      image = [(CKNavigationButtonView *)v15 image];
+      [(CKNavigationButtonView *)v15 setDefaultImage:image];
 
       [(CKNavigationButtonView *)v15 _setupIconImageView];
     }
@@ -86,24 +86,24 @@
   return v15;
 }
 
-- (CKNavigationButtonView)initWithImage:(id)a3 disabledImage:(id)a4 text:(id)a5 wantsLongPress:(BOOL)a6
+- (CKNavigationButtonView)initWithImage:(id)image disabledImage:(id)disabledImage text:(id)text wantsLongPress:(BOOL)press
 {
-  v6 = a6;
-  v10 = a5;
-  v11 = a3;
-  v12 = [a4 imageWithRenderingMode:2];
+  pressCopy = press;
+  textCopy = text;
+  imageCopy = image;
+  v12 = [disabledImage imageWithRenderingMode:2];
   disabledImage = self->_disabledImage;
   self->_disabledImage = v12;
 
-  v14 = [(CKNavigationButtonView *)self initWithImage:v11 text:v10 wantsLongPress:v6];
+  v14 = [(CKNavigationButtonView *)self initWithImage:imageCopy text:textCopy wantsLongPress:pressCopy];
   return v14;
 }
 
 - (void)_setupIconImageView
 {
-  v3 = [(CKNavigationButtonView *)self iconImageView];
+  iconImageView = [(CKNavigationButtonView *)self iconImageView];
 
-  if (!v3)
+  if (!iconImageView)
   {
     v4 = objc_alloc(MEMORY[0x1E69DCAE0]);
     v5 = +[CKUIBehavior sharedBehaviors];
@@ -114,24 +114,24 @@
     v10 = [v4 initWithFrame:{0.0, 0.0, v7, v9}];
     [(CKNavigationButtonView *)self setIconImageView:v10];
 
-    v11 = [(CKNavigationButtonView *)self iconImageView];
-    [v11 setContentMode:1];
+    iconImageView2 = [(CKNavigationButtonView *)self iconImageView];
+    [iconImageView2 setContentMode:1];
 
-    v12 = [(CKNavigationButtonView *)self iconImageView];
+    iconImageView3 = [(CKNavigationButtonView *)self iconImageView];
     v13 = +[CKUIBehavior sharedBehaviors];
-    v14 = [v13 theme];
-    v15 = [v14 navBarGrayColor];
-    [v12 setTintColor:v15];
+    theme = [v13 theme];
+    navBarGrayColor = [theme navBarGrayColor];
+    [iconImageView3 setTintColor:navBarGrayColor];
 
-    v16 = [(CKNavigationButtonView *)self vibrancyView];
-    v17 = [v16 contentView];
-    v18 = [(CKNavigationButtonView *)self iconImageView];
-    [v17 addSubview:v18];
+    vibrancyView = [(CKNavigationButtonView *)self vibrancyView];
+    contentView = [vibrancyView contentView];
+    iconImageView4 = [(CKNavigationButtonView *)self iconImageView];
+    [contentView addSubview:iconImageView4];
   }
 
-  v19 = [(CKNavigationButtonView *)self _imageForCurrentState];
-  v20 = [(CKNavigationButtonView *)self iconImageView];
-  [v20 setImage:v19];
+  _imageForCurrentState = [(CKNavigationButtonView *)self _imageForCurrentState];
+  iconImageView5 = [(CKNavigationButtonView *)self iconImageView];
+  [iconImageView5 setImage:_imageForCurrentState];
 
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
@@ -143,34 +143,34 @@
 
 - (id)_imageForCurrentState
 {
-  v3 = [(CKNavigationButtonView *)self image];
+  image = [(CKNavigationButtonView *)self image];
   if ([(CKNavigationButtonView *)self state]== 2)
   {
-    v4 = [(CKNavigationButtonView *)self disabledImage];
+    disabledImage = [(CKNavigationButtonView *)self disabledImage];
 
-    if (v4)
+    if (disabledImage)
     {
-      v5 = [(CKNavigationButtonView *)self disabledImage];
+      disabledImage2 = [(CKNavigationButtonView *)self disabledImage];
 
-      v3 = v5;
+      image = disabledImage2;
     }
   }
 
-  return v3;
+  return image;
 }
 
-- (void)setJoinButtonStyle:(int64_t)a3
+- (void)setJoinButtonStyle:(int64_t)style
 {
   if (setJoinButtonStyle__onceToken != -1)
   {
     [CKNavigationButtonView setJoinButtonStyle:];
   }
 
-  if (self->_joinButtonStyle != a3)
+  if (self->_joinButtonStyle != style)
   {
-    self->_joinButtonStyle = a3;
-    v5 = [(CKNavigationButtonView *)self iconImageView];
-    [v5 removeFromSuperview];
+    self->_joinButtonStyle = style;
+    iconImageView = [(CKNavigationButtonView *)self iconImageView];
+    [iconImageView removeFromSuperview];
 
     [(CKNavigationButtonView *)self setIconImageView:0];
     joinButtonStyle = self->_joinButtonStyle;
@@ -181,7 +181,7 @@
         if (joinButtonStyle == 6)
         {
           v7 = +[CKUIBehavior sharedBehaviors];
-          v8 = [v7 enabledExpanseImagePill];
+          enabledExpanseImagePill = [v7 enabledExpanseImagePill];
           v9 = MEMORY[0x1E69DC888];
           v10 = @"CKSystemBlueColor";
           goto LABEL_18;
@@ -217,12 +217,12 @@ LABEL_19:
         if (joinButtonStyle == 1)
         {
           v7 = +[CKUIBehavior sharedBehaviors];
-          v8 = [v7 enabledFacetimeVideoImagePill];
+          enabledExpanseImagePill = [v7 enabledFacetimeVideoImagePill];
           v9 = MEMORY[0x1E69DC888];
           v10 = @"CKSystemGreenColor";
 LABEL_18:
           v16 = [v9 ckColorNamed:v10];
-          v17 = _joinPillImage(v8, v16);
+          v17 = _joinPillImage(enabledExpanseImagePill, v16);
           [(CKNavigationButtonView *)self setImage:v17];
 
           goto LABEL_19;
@@ -266,22 +266,22 @@ void __45__CKNavigationButtonView_setJoinButtonStyle___block_invoke()
   setJoinButtonStyle__expanseImage = v12;
 }
 
-- (void)setWantsVibrancy:(BOOL)a3
+- (void)setWantsVibrancy:(BOOL)vibrancy
 {
-  if (self->_wantsVibrancy != a3)
+  if (self->_wantsVibrancy != vibrancy)
   {
     v10 = v3;
     v11 = v4;
-    self->_wantsVibrancy = a3;
+    self->_wantsVibrancy = vibrancy;
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __43__CKNavigationButtonView_setWantsVibrancy___block_invoke;
     v8[3] = &unk_1E72F7B08;
-    v9 = a3;
+    vibrancyCopy = vibrancy;
     v8[4] = self;
     v6 = __43__CKNavigationButtonView_setWantsVibrancy___block_invoke(v8);
-    v7 = [(CKNavigationButtonView *)self vibrancyView];
-    [v7 setEffect:v6];
+    vibrancyView = [(CKNavigationButtonView *)self vibrancyView];
+    [vibrancyView setEffect:v6];
   }
 }
 
@@ -330,20 +330,20 @@ id __43__CKNavigationButtonView_setWantsVibrancy___block_invoke(uint64_t a1)
   v6 = v5;
   v8 = v7 + 40.0;
   v10 = v9 + -20.0;
-  v11 = [(CKNavigationButtonView *)self vibrancyView];
-  [v11 setFrame:{v10, v4, v8, v6}];
+  vibrancyView = [(CKNavigationButtonView *)self vibrancyView];
+  [vibrancyView setFrame:{v10, v4, v8, v6}];
 
-  v12 = [(CKNavigationButtonView *)self vibrancyView];
-  [v12 bounds];
+  vibrancyView2 = [(CKNavigationButtonView *)self vibrancyView];
+  [vibrancyView2 bounds];
   v14 = v13;
   v16 = v15;
 
-  v17 = [(CKNavigationButtonView *)self iconImageView];
+  iconImageView = [(CKNavigationButtonView *)self iconImageView];
 
-  if (v17)
+  if (iconImageView)
   {
-    v18 = [(CKNavigationButtonView *)self image];
-    [v18 size];
+    image = [(CKNavigationButtonView *)self image];
+    [image size];
     v20 = v19;
     v22 = v21;
 
@@ -370,22 +370,22 @@ id __43__CKNavigationButtonView_setWantsVibrancy___block_invoke(uint64_t a1)
       v27 = 0.0;
     }
 
-    v28 = [(CKNavigationButtonView *)self iconImageView];
-    [v28 setFrame:{v25, v27, v20, v22}];
+    iconImageView2 = [(CKNavigationButtonView *)self iconImageView];
+    [iconImageView2 setFrame:{v25, v27, v20, v22}];
   }
 
-  v29 = [(CKNavigationButtonView *)self textLabel];
+  textLabel = [(CKNavigationButtonView *)self textLabel];
 
-  if (v29)
+  if (textLabel)
   {
     v30 = +[CKUIBehavior sharedBehaviors];
-    v31 = [v30 isAccessibilityPreferredContentSizeCategory];
+    isAccessibilityPreferredContentSizeCategory = [v30 isAccessibilityPreferredContentSizeCategory];
 
-    v32 = [(CKNavigationButtonView *)self textLabel];
-    [v32 sizeToFit];
+    textLabel2 = [(CKNavigationButtonView *)self textLabel];
+    [textLabel2 sizeToFit];
 
-    v33 = [(CKNavigationButtonView *)self textLabel];
-    [v33 frame];
+    textLabel3 = [(CKNavigationButtonView *)self textLabel];
+    [textLabel3 frame];
     v35 = v34;
     v37 = v36;
 
@@ -407,7 +407,7 @@ id __43__CKNavigationButtonView_setWantsVibrancy___block_invoke(uint64_t a1)
     }
 
     v40 = floor((v14 + (v16 - v35) * 0.5) * v39) / v39;
-    if (v31)
+    if (isAccessibilityPreferredContentSizeCategory)
     {
       v41 = 30.0;
     }
@@ -417,46 +417,46 @@ id __43__CKNavigationButtonView_setWantsVibrancy___block_invoke(uint64_t a1)
       v41 = 26.0;
     }
 
-    v42 = [(CKNavigationButtonView *)self textLabel];
-    [v42 setFrame:{v40, v41, v35, v37}];
+    textLabel4 = [(CKNavigationButtonView *)self textLabel];
+    [textLabel4 setFrame:{v40, v41, v35, v37}];
   }
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v4 = a3;
+  enabledCopy = enabled;
   v17.receiver = self;
   v17.super_class = CKNavigationButtonView;
   [(CKNavigationButtonView *)&v17 setEnabled:?];
-  v6 = [(CKNavigationButtonView *)self _imageForCurrentState];
-  v7 = [(CKNavigationButtonView *)self iconImageView];
-  [v7 setImage:v6];
+  _imageForCurrentState = [(CKNavigationButtonView *)self _imageForCurrentState];
+  iconImageView = [(CKNavigationButtonView *)self iconImageView];
+  [iconImageView setImage:_imageForCurrentState];
 
-  if (v4)
+  if (enabledCopy)
   {
-    v8 = +[CKUIBehavior sharedBehaviors];
-    v3 = [v8 theme];
-    v9 = [v3 navBarGrayColor];
+    disabledVibrancyEffect = +[CKUIBehavior sharedBehaviors];
+    theme = [disabledVibrancyEffect theme];
+    navBarGrayColor = [theme navBarGrayColor];
   }
 
   else
   {
-    v8 = [(CKNavigationButtonView *)self disabledVibrancyEffect];
+    disabledVibrancyEffect = [(CKNavigationButtonView *)self disabledVibrancyEffect];
 
-    if (!v8)
+    if (!disabledVibrancyEffect)
     {
-      v8 = [MEMORY[0x1E69DC730] effectWithStyle:1100];
-      v3 = [MEMORY[0x1E69DD248] _effectForBlurEffect:v8 vibrancyStyle:111];
-      [(CKNavigationButtonView *)self setDisabledVibrancyEffect:v3];
+      disabledVibrancyEffect = [MEMORY[0x1E69DC730] effectWithStyle:1100];
+      theme = [MEMORY[0x1E69DD248] _effectForBlurEffect:disabledVibrancyEffect vibrancyStyle:111];
+      [(CKNavigationButtonView *)self setDisabledVibrancyEffect:theme];
     }
 
-    v9 = [MEMORY[0x1E69DC888] systemMidGrayColor];
+    navBarGrayColor = [MEMORY[0x1E69DC888] systemMidGrayColor];
   }
 
-  v10 = [(CKNavigationButtonView *)self textLabel];
-  [v10 setTextColor:v9];
+  textLabel = [(CKNavigationButtonView *)self textLabel];
+  [textLabel setTextColor:navBarGrayColor];
 
-  if (v4)
+  if (enabledCopy)
   {
 
     [(CKNavigationButtonView *)self vibrancyEffect];
@@ -467,18 +467,18 @@ id __43__CKNavigationButtonView_setWantsVibrancy___block_invoke(uint64_t a1)
     [(CKNavigationButtonView *)self disabledVibrancyEffect];
   }
   v11 = ;
-  v12 = [(CKNavigationButtonView *)self vibrancyView];
-  [v12 setEffect:v11];
+  vibrancyView = [(CKNavigationButtonView *)self vibrancyView];
+  [vibrancyView setEffect:v11];
 
-  if (v4)
+  if (enabledCopy)
   {
 
     if ([(CKNavigationButtonView *)self wantsVibrancy])
     {
-      v13 = [(CKNavigationButtonView *)self vibrancyEffect];
+      vibrancyEffect = [(CKNavigationButtonView *)self vibrancyEffect];
 LABEL_14:
-      v14 = v13;
-      v15 = !v4;
+      v14 = vibrancyEffect;
+      v15 = !enabledCopy;
       goto LABEL_16;
     }
   }
@@ -488,23 +488,23 @@ LABEL_14:
 
     if ([(CKNavigationButtonView *)self wantsVibrancy])
     {
-      v13 = [(CKNavigationButtonView *)self disabledVibrancyEffect];
+      vibrancyEffect = [(CKNavigationButtonView *)self disabledVibrancyEffect];
       goto LABEL_14;
     }
   }
 
-  v4 = 0;
+  enabledCopy = 0;
   v15 = 0;
   v14 = 0;
 LABEL_16:
-  v16 = [(CKNavigationButtonView *)self vibrancyView];
-  [v16 setEffect:v14];
+  vibrancyView2 = [(CKNavigationButtonView *)self vibrancyView];
+  [vibrancyView2 setEffect:v14];
 
   if (v15)
   {
   }
 
-  if (v4)
+  if (enabledCopy)
   {
   }
 }

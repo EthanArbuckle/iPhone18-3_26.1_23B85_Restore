@@ -1,7 +1,7 @@
 @interface MCMResultWithURLBase
-- (BOOL)encodeResultOntoReply:(id)a3;
+- (BOOL)encodeResultOntoReply:(id)reply;
 - (BOOL)existed;
-- (MCMResultWithURLBase)initWithPath:(id)a3 existed:(BOOL)a4 sandboxToken:(const char *)a5;
+- (MCMResultWithURLBase)initWithPath:(id)path existed:(BOOL)existed sandboxToken:(const char *)token;
 - (NSString)path;
 - (NSURL)url;
 - (const)sandboxToken;
@@ -58,20 +58,20 @@
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (MCMResultWithURLBase)initWithPath:(id)a3 existed:(BOOL)a4 sandboxToken:(const char *)a5
+- (MCMResultWithURLBase)initWithPath:(id)path existed:(BOOL)existed sandboxToken:(const char *)token
 {
   v16 = *MEMORY[0x1E69E9840];
-  v9 = a3;
+  pathCopy = path;
   v15.receiver = self;
   v15.super_class = MCMResultWithURLBase;
   v10 = [(MCMResultBase *)&v15 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_path, a3);
-    if (a5)
+    objc_storeStrong(&v10->_path, path);
+    if (token)
     {
-      v12 = strndup(a5, 0x800uLL);
+      v12 = strndup(token, 0x800uLL);
     }
 
     else
@@ -80,45 +80,45 @@
     }
 
     v11->_sandboxToken = v12;
-    v11->_existed = a4;
+    v11->_existed = existed;
   }
 
   v13 = *MEMORY[0x1E69E9840];
   return v11;
 }
 
-- (BOOL)encodeResultOntoReply:(id)a3
+- (BOOL)encodeResultOntoReply:(id)reply
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  replyCopy = reply;
   v12.receiver = self;
   v12.super_class = MCMResultWithURLBase;
-  v5 = [(MCMResultBase *)&v12 encodeResultOntoReply:v4];
+  v5 = [(MCMResultBase *)&v12 encodeResultOntoReply:replyCopy];
   if (v5)
   {
-    v6 = [(MCMResultBase *)self error];
+    error = [(MCMResultBase *)self error];
 
-    if (!v6)
+    if (!error)
     {
-      v7 = [(MCMResultWithURLBase *)self path];
+      path = [(MCMResultWithURLBase *)self path];
 
-      if (v7)
+      if (path)
       {
-        v8 = [(MCMResultWithURLBase *)self path];
-        v9 = [v8 fileSystemRepresentation];
+        path2 = [(MCMResultWithURLBase *)self path];
+        fileSystemRepresentation = [path2 fileSystemRepresentation];
 
-        if (v9)
+        if (fileSystemRepresentation)
         {
-          xpc_dictionary_set_string(v4, "ReplyPath", v9);
+          xpc_dictionary_set_string(replyCopy, "ReplyPath", fileSystemRepresentation);
         }
       }
 
       if ([(MCMResultWithURLBase *)self sandboxToken])
       {
-        xpc_dictionary_set_string(v4, "ReplySandboxToken", [(MCMResultWithURLBase *)self sandboxToken]);
+        xpc_dictionary_set_string(replyCopy, "ReplySandboxToken", [(MCMResultWithURLBase *)self sandboxToken]);
       }
 
-      xpc_dictionary_set_BOOL(v4, "ReplyExisted", [(MCMResultWithURLBase *)self existed]);
+      xpc_dictionary_set_BOOL(replyCopy, "ReplyExisted", [(MCMResultWithURLBase *)self existed]);
     }
   }
 

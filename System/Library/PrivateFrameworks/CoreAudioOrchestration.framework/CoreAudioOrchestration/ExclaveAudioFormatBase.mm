@@ -1,16 +1,16 @@
 @interface ExclaveAudioFormatBase
-+ (id)createFrom:(id)a3 forUseCase:(unsigned int)a4 error:(id *)a5;
-- (BOOL)isEqual:(id)a3;
-- (ExclaveAudioFormatBase)initWithExclaveUseCaseFormat:(const ExADUseCaseFormat *)a3;
-- (id)initFormat:(id)a3;
++ (id)createFrom:(id)from forUseCase:(unsigned int)case error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (ExclaveAudioFormatBase)initWithExclaveUseCaseFormat:(const ExADUseCaseFormat *)format;
+- (id)initFormat:(id)format;
 @end
 
 @implementation ExclaveAudioFormatBase
 
-+ (id)createFrom:(id)a3 forUseCase:(unsigned int)a4 error:(id *)a5
++ (id)createFrom:(id)from forUseCase:(unsigned int)case error:(id *)error
 {
-  v7 = a3;
-  ExADUseCaseFormatForUseCaseFromEDT(v7, a4, a5, v10);
+  fromCopy = from;
+  ExADUseCaseFormatForUseCaseFromEDT(fromCopy, case, error, v10);
   if (v10[32])
   {
     v8 = [[ExclaveAudioFormatBase alloc] initWithExclaveUseCaseFormat:v10];
@@ -24,22 +24,22 @@
   return v8;
 }
 
-- (ExclaveAudioFormatBase)initWithExclaveUseCaseFormat:(const ExADUseCaseFormat *)a3
+- (ExclaveAudioFormatBase)initWithExclaveUseCaseFormat:(const ExADUseCaseFormat *)format
 {
   v12.receiver = self;
   v12.super_class = ExclaveAudioFormatBase;
   v4 = [(ExclaveAudioFormatBase *)&v12 init];
   if (v4)
   {
-    v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:a3->var1];
+    v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:format->var1];
     sampleRate = v4->_sampleRate;
     v4->_sampleRate = v5;
 
-    v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:a3->var2];
+    v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:format->var2];
     channels = v4->_channels;
     v4->_channels = v7;
 
-    v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:a3->var3];
+    v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:format->var3];
     framesPerIO = v4->_framesPerIO;
     v4->_framesPerIO = v9;
   }
@@ -47,35 +47,35 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_8;
   }
 
-  v5 = v4;
-  v6 = [v5 sampleRate];
-  v7 = [(ExclaveAudioFormatBase *)self sampleRate];
-  if (![v6 isEqualToNumber:v7])
+  v5 = equalCopy;
+  sampleRate = [v5 sampleRate];
+  sampleRate2 = [(ExclaveAudioFormatBase *)self sampleRate];
+  if (![sampleRate isEqualToNumber:sampleRate2])
   {
     goto LABEL_7;
   }
 
-  v8 = [v5 channels];
-  v9 = [(ExclaveAudioFormatBase *)self channels];
-  if (![v8 isEqualToNumber:v9])
+  channels = [v5 channels];
+  channels2 = [(ExclaveAudioFormatBase *)self channels];
+  if (![channels isEqualToNumber:channels2])
   {
 
 LABEL_7:
     goto LABEL_8;
   }
 
-  v10 = [v5 framesPerIO];
-  v11 = [(ExclaveAudioFormatBase *)self framesPerIO];
-  v12 = [v10 isEqualToNumber:v11];
+  framesPerIO = [v5 framesPerIO];
+  framesPerIO2 = [(ExclaveAudioFormatBase *)self framesPerIO];
+  v12 = [framesPerIO isEqualToNumber:framesPerIO2];
 
   if ((v12 & 1) == 0)
   {
@@ -90,25 +90,25 @@ LABEL_9:
   return v13;
 }
 
-- (id)initFormat:(id)a3
+- (id)initFormat:(id)format
 {
-  v4 = a3;
+  formatCopy = format;
   v13.receiver = self;
   v13.super_class = ExclaveAudioFormatBase;
   v5 = [(ExclaveAudioFormatBase *)&v13 init];
   if (v5)
   {
-    v6 = [v4 sampleRate];
+    sampleRate = [formatCopy sampleRate];
     sampleRate = v5->_sampleRate;
-    v5->_sampleRate = v6;
+    v5->_sampleRate = sampleRate;
 
-    v8 = [v4 channels];
+    channels = [formatCopy channels];
     channels = v5->_channels;
-    v5->_channels = v8;
+    v5->_channels = channels;
 
-    v10 = [v4 framesPerIO];
+    framesPerIO = [formatCopy framesPerIO];
     framesPerIO = v5->_framesPerIO;
-    v5->_framesPerIO = v10;
+    v5->_framesPerIO = framesPerIO;
   }
 
   return v5;

@@ -1,15 +1,15 @@
 @interface HKEmergencyCardOrganDonorTableItem
-- (BOOL)shouldHighlightRowAtIndex:(int64_t)a3;
-- (double)tableView:(id)a3 heightForRowAtIndex:(int64_t)a4;
+- (BOOL)shouldHighlightRowAtIndex:(int64_t)index;
+- (double)tableView:(id)view heightForRowAtIndex:(int64_t)index;
 - (id)_createEditableCell;
 - (id)possibleValues;
-- (id)tableView:(id)a3 cellForRowAtIndex:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndex:(int64_t)index;
 - (id)title;
-- (int64_t)commitEditingStyle:(int64_t)a3 forRowAtIndex:(int64_t)a4;
-- (int64_t)editingStyleForRowAtIndex:(int64_t)a3;
-- (void)didCommitEditingStyle:(int64_t)a3 forRowAtIndex:(int64_t)a4;
-- (void)medicalIDEditorCellDidChangeValue:(id)a3;
-- (void)promptOrganDonationRegistrationIfPossibleWithCompletion:(id)a3;
+- (int64_t)commitEditingStyle:(int64_t)style forRowAtIndex:(int64_t)index;
+- (int64_t)editingStyleForRowAtIndex:(int64_t)index;
+- (void)didCommitEditingStyle:(int64_t)style forRowAtIndex:(int64_t)index;
+- (void)medicalIDEditorCellDidChangeValue:(id)value;
+- (void)promptOrganDonationRegistrationIfPossibleWithCompletion:(id)completion;
 @end
 
 @implementation HKEmergencyCardOrganDonorTableItem
@@ -83,35 +83,35 @@ LABEL_7:
 - (id)_createEditableCell
 {
   v3 = [(HKMedicalIDEditorCell *)[HKMedicalIDEditorPickerCell alloc] initWithStyle:0 reuseIdentifier:@"kOrganDonorTableItemCellIdentifier"];
-  v4 = [(HKEmergencyCardOrganDonorTableItem *)self title];
-  [(HKMedicalIDEditorCell *)v3 setLabel:v4];
+  title = [(HKEmergencyCardOrganDonorTableItem *)self title];
+  [(HKMedicalIDEditorCell *)v3 setLabel:title];
 
   [(HKMedicalIDEditorCell *)v3 setMinimumLabelWidth:87.0];
   [(HKMedicalIDEditorCell *)v3 setEditDelegate:self];
-  v5 = [(HKEmergencyCardOrganDonorTableItem *)self possibleValues];
-  [(HKMedicalIDEditorPickerCell *)v3 setPossibleValues:v5];
+  possibleValues = [(HKEmergencyCardOrganDonorTableItem *)self possibleValues];
+  [(HKMedicalIDEditorPickerCell *)v3 setPossibleValues:possibleValues];
 
   return v3;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndex:(int64_t)a4
+- (id)tableView:(id)view cellForRowAtIndex:(int64_t)index
 {
-  v5 = a3;
+  viewCopy = view;
   if ([(HKEmergencyCardTableItem *)self isInEditMode])
   {
     if (self->_isEditing || (-[HKEmergencyCardTableItem data](self, "data"), v6 = objc_claimAutoreleasedReturnValue(), [v6 isOrganDonor], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v7))
     {
-      v8 = [v5 dequeueReusableCellWithIdentifier:@"kOrganDonorTableItemCellIdentifier"];
-      if (!v8)
+      _createEditableCell = [viewCopy dequeueReusableCellWithIdentifier:@"kOrganDonorTableItemCellIdentifier"];
+      if (!_createEditableCell)
       {
-        v8 = [(HKEmergencyCardOrganDonorTableItem *)self _createEditableCell];
+        _createEditableCell = [(HKEmergencyCardOrganDonorTableItem *)self _createEditableCell];
       }
 
-      v9 = [(HKEmergencyCardTableItem *)self data];
-      v10 = [v9 isOrganDonor];
-      [v8 setChosenValueIndex:{+[HKMedicalIDOrganDonorPickerDataProvider emergencyCardOrganDonorStatus:](HKMedicalIDOrganDonorPickerDataProvider, "emergencyCardOrganDonorStatus:", v10)}];
+      data = [(HKEmergencyCardTableItem *)self data];
+      isOrganDonor = [data isOrganDonor];
+      [_createEditableCell setChosenValueIndex:{+[HKMedicalIDOrganDonorPickerDataProvider emergencyCardOrganDonorStatus:](HKMedicalIDOrganDonorPickerDataProvider, "emergencyCardOrganDonorStatus:", isOrganDonor)}];
 
-      v11 = v8;
+      v11 = _createEditableCell;
       editableCell = self->_editableCell;
       self->_editableCell = v11;
     }
@@ -120,39 +120,39 @@ LABEL_7:
     {
       editableCell = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
       v21 = [editableCell localizedStringForKey:@"add_organ_donor" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
-      v11 = [(HKEmergencyCardTableItem *)self _dequeueNoValueCellInTableView:v5 withTitle:v21];
+      v11 = [(HKEmergencyCardTableItem *)self _dequeueNoValueCellInTableView:viewCopy withTitle:v21];
     }
   }
 
   else
   {
     v13 = +[_HKMedicalIDMultilineStringCell defaultReuseIdentifier];
-    v11 = [v5 dequeueReusableCellWithIdentifier:v13];
+    v11 = [viewCopy dequeueReusableCellWithIdentifier:v13];
 
-    v14 = [(HKEmergencyCardOrganDonorTableItem *)self title];
-    v15 = [(HKMedicalIDEditorPickerCell *)v11 titleLabel];
-    [v15 setText:v14];
+    title = [(HKEmergencyCardOrganDonorTableItem *)self title];
+    titleLabel = [(HKMedicalIDEditorPickerCell *)v11 titleLabel];
+    [titleLabel setText:title];
 
-    v16 = [(HKEmergencyCardTableItem *)self data];
-    v17 = [v16 isOrganDonor];
-    v18 = [HKMedicalIDOrganDonorPickerDataProvider emergencyCardOrganDonorStatus:v17];
+    data2 = [(HKEmergencyCardTableItem *)self data];
+    isOrganDonor2 = [data2 isOrganDonor];
+    v18 = [HKMedicalIDOrganDonorPickerDataProvider emergencyCardOrganDonorStatus:isOrganDonor2];
 
     editableCell = [HKMedicalIDOrganDonorPickerDataProvider displayValueForOrganDonorStatus:v18];
-    v19 = [(HKMedicalIDEditorPickerCell *)v11 detailLabel];
-    [v19 setText:editableCell];
+    detailLabel = [(HKMedicalIDEditorPickerCell *)v11 detailLabel];
+    [detailLabel setText:editableCell];
   }
 
   return v11;
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndex:(int64_t)a4
+- (double)tableView:(id)view heightForRowAtIndex:(int64_t)index
 {
-  v6 = a3;
+  viewCopy = view;
   if ([(HKEmergencyCardTableItem *)self isInEditMode])
   {
     v10.receiver = self;
     v10.super_class = HKEmergencyCardOrganDonorTableItem;
-    [(HKEmergencyCardTableItem *)&v10 tableView:v6 heightForRowAtIndex:a4];
+    [(HKEmergencyCardTableItem *)&v10 tableView:viewCopy heightForRowAtIndex:index];
     v8 = v7;
   }
 
@@ -164,7 +164,7 @@ LABEL_7:
   return v8;
 }
 
-- (BOOL)shouldHighlightRowAtIndex:(int64_t)a3
+- (BOOL)shouldHighlightRowAtIndex:(int64_t)index
 {
   if ([(HKEmergencyCardTableItem *)self isInEditMode])
   {
@@ -174,7 +174,7 @@ LABEL_7:
   return 0;
 }
 
-- (void)medicalIDEditorCellDidChangeValue:(id)a3
+- (void)medicalIDEditorCellDidChangeValue:(id)value
 {
   if ([(HKMedicalIDEditorPickerCell *)self->_editableCell chosenValueIndex]== 3)
   {
@@ -185,20 +185,20 @@ LABEL_7:
   else
   {
     v5 = [HKMedicalIDOrganDonorPickerDataProvider medicalIDOrganDonorStatus:[(HKMedicalIDEditorPickerCell *)self->_editableCell chosenValueIndex]];
-    v4 = [(HKEmergencyCardTableItem *)self data];
-    [v4 setIsOrganDonor:v5];
+    data = [(HKEmergencyCardTableItem *)self data];
+    [data setIsOrganDonor:v5];
   }
 }
 
-- (void)promptOrganDonationRegistrationIfPossibleWithCompletion:(id)a3
+- (void)promptOrganDonationRegistrationIfPossibleWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (+[HKOrganDonationConnectionManager isOrganDonationRegistrationAvailable](HKOrganDonationConnectionManager, "isOrganDonationRegistrationAvailable") && !+[HKOrganDonationConnectionManager hasStoredRegistrant])
   {
     objc_initWeak(&location, self);
     v9 = [HKOrganDonationIntroductionViewController alloc];
-    v10 = [(HKEmergencyCardTableItem *)self data];
-    v11 = [(HKOrganDonationBaseViewController *)v9 initWithMedicalIDData:v10];
+    data = [(HKEmergencyCardTableItem *)self data];
+    v11 = [(HKOrganDonationBaseViewController *)v9 initWithMedicalIDData:data];
 
     v12 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
     v13 = [v12 localizedStringForKey:@"OD_DONE" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
@@ -209,13 +209,13 @@ LABEL_7:
     v18 = __94__HKEmergencyCardOrganDonorTableItem_promptOrganDonationRegistrationIfPossibleWithCompletion___block_invoke;
     v19 = &unk_1E81B8DD0;
     objc_copyWeak(&v22, &location);
-    v20 = self;
-    v21 = v4;
+    selfCopy = self;
+    v21 = completionCopy;
     [(HKOrganDonationBaseViewController *)v11 setRegistrationCompletionHandler:&v16];
     [(HKMedicalIDEditorCell *)self->_editableCell dismissInputView:v16];
     v14 = [[HKNavigationController alloc] initWithRootViewController:v11];
-    v15 = [(HKEmergencyCardTableItem *)self owningViewController];
-    [v15 presentViewController:v14 animated:1 completion:0];
+    owningViewController = [(HKEmergencyCardTableItem *)self owningViewController];
+    [owningViewController presentViewController:v14 animated:1 completion:0];
 
     objc_destroyWeak(&v22);
     objc_destroyWeak(&location);
@@ -226,19 +226,19 @@ LABEL_7:
     if (+[HKOrganDonationConnectionManager isOrganDonationRegistrationAvailable](HKOrganDonationConnectionManager, "isOrganDonationRegistrationAvailable") && +[HKOrganDonationConnectionManager hasStoredRegistrant])
     {
       v5 = [HKMedicalIDOrganDonorPickerDataProvider medicalIDOrganDonorStatus:3];
-      v6 = [(HKEmergencyCardTableItem *)self data];
-      [v6 setIsOrganDonor:v5];
+      data2 = [(HKEmergencyCardTableItem *)self data];
+      [data2 setIsOrganDonor:v5];
 
-      v7 = [(HKEmergencyCardTableItem *)self data];
-      v8 = [v7 isOrganDonor];
-      [(HKMedicalIDEditorPickerCell *)self->_editableCell setChosenValueIndex:[HKMedicalIDOrganDonorPickerDataProvider emergencyCardOrganDonorStatus:v8]];
+      data3 = [(HKEmergencyCardTableItem *)self data];
+      isOrganDonor = [data3 isOrganDonor];
+      [(HKMedicalIDEditorPickerCell *)self->_editableCell setChosenValueIndex:[HKMedicalIDOrganDonorPickerDataProvider emergencyCardOrganDonorStatus:isOrganDonor]];
 
       [(HKMedicalIDEditorCell *)self->_editableCell updateValueLabel];
     }
 
-    if (v4)
+    if (completionCopy)
     {
-      v4[2](v4);
+      completionCopy[2](completionCopy);
     }
   }
 }
@@ -277,17 +277,17 @@ uint64_t __94__HKEmergencyCardOrganDonorTableItem_promptOrganDonationRegistratio
   return MEMORY[0x1EEE66BB8](WeakRetained, v5);
 }
 
-- (int64_t)editingStyleForRowAtIndex:(int64_t)a3
+- (int64_t)editingStyleForRowAtIndex:(int64_t)index
 {
   if (self->_isEditing)
   {
     return 1;
   }
 
-  v3 = [(HKEmergencyCardTableItem *)self data];
-  v4 = [v3 isOrganDonor];
+  data = [(HKEmergencyCardTableItem *)self data];
+  isOrganDonor = [data isOrganDonor];
 
-  if (v4)
+  if (isOrganDonor)
   {
     return 1;
   }
@@ -298,9 +298,9 @@ uint64_t __94__HKEmergencyCardOrganDonorTableItem_promptOrganDonationRegistratio
   }
 }
 
-- (int64_t)commitEditingStyle:(int64_t)a3 forRowAtIndex:(int64_t)a4
+- (int64_t)commitEditingStyle:(int64_t)style forRowAtIndex:(int64_t)index
 {
-  if (a3 == 1)
+  if (style == 1)
   {
     v5 = [(HKEmergencyCardTableItem *)self data:1];
     [v5 setIsOrganDonor:0];
@@ -317,9 +317,9 @@ uint64_t __94__HKEmergencyCardOrganDonorTableItem_promptOrganDonationRegistratio
   return 2;
 }
 
-- (void)didCommitEditingStyle:(int64_t)a3 forRowAtIndex:(int64_t)a4
+- (void)didCommitEditingStyle:(int64_t)style forRowAtIndex:(int64_t)index
 {
-  if (a3 == 2)
+  if (style == 2)
   {
     [(HKMedicalIDEditorPickerCell *)self->_editableCell beginEditing:2];
   }

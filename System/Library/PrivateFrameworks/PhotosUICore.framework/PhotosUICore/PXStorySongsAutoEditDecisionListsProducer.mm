@@ -1,42 +1,42 @@
 @interface PXStorySongsAutoEditDecisionListsProducer
-+ ($0AC6E346AE4835514AAA8AC86D8F4844)audioModeDecisionForAsset:(id)a3 minimumAudioScore:(float)a4 playbackStyle:(int64_t)a5 movieHighlight:(id)a6 storyConfiguration:(id)a7;
-- ($34B6A3E4F6D84C42DF3A29A209E596E5)_durationInfoForClip:(SEL)a3 durationMultiplier:(id)a4 songPace:(double)a5 transitionIn:(int64_t)a6 transitionOut:(double *)a7;
-- ($A35046FF140701A0BC97C4369CFAD28C)_optimizeOverallDurationOfClips:(SEL)a3 forSong:(id)a4;
++ ($0AC6E346AE4835514AAA8AC86D8F4844)audioModeDecisionForAsset:(id)asset minimumAudioScore:(float)score playbackStyle:(int64_t)style movieHighlight:(id)highlight storyConfiguration:(id)configuration;
+- ($34B6A3E4F6D84C42DF3A29A209E596E5)_durationInfoForClip:(SEL)clip durationMultiplier:(id)multiplier songPace:(double)pace transitionIn:(int64_t)in transitionOut:(double *)out;
+- ($A35046FF140701A0BC97C4369CFAD28C)_optimizeOverallDurationOfClips:(SEL)clips forSong:(id)song;
 - ($A35046FF140701A0BC97C4369CFAD28C)targetOverallDurationInfo;
-- (BOOL)_canOverlapAudioFromClip:(id)a3 withNextClip:(id)a4;
-- (BOOL)_canOverlapAudioFromClip:(id)a3 withPreviousClip:(id)a4;
+- (BOOL)_canOverlapAudioFromClip:(id)clip withNextClip:(id)nextClip;
+- (BOOL)_canOverlapAudioFromClip:(id)clip withPreviousClip:(id)previousClip;
 - (PXStorySongsAutoEditDecisionListsProducer)init;
-- (PXStorySongsAutoEditDecisionListsProducer)initWithAssetCollection:(id)a3 displayAssets:(id)a4 movieHighlights:(id)a5 chapterCollection:(id)a6 targetOverallDurationInfo:(id *)a7 configuration:(id)a8 storyConfiguration:(id)a9;
-- (_NSRange)_clipRangeForMoment:(id)a3 inClips:(id)a4;
-- (float)_volumeGainForAsset:(id)a3 movieHighlight:(id)a4 audioMode:(int64_t)a5;
-- (id)_decisionListForSong:(id)a3 pace:(int64_t)a4 colorGradeCategory:(id)a5;
-- (id)_diagnosticTextForAutoEditHUDAtDisplaySize:(CGSize)a3;
-- (id)_diagnosticTextForComposabilityHUDAtDisplaySize:(CGSize)a3;
-- (id)_diagnosticTextForMomentsHUDAtDisplaySize:(CGSize)a3;
-- (id)_indexesOfClips:(id)a3 atChapterBeginningInChapterCollection:(id)a4;
+- (PXStorySongsAutoEditDecisionListsProducer)initWithAssetCollection:(id)collection displayAssets:(id)assets movieHighlights:(id)highlights chapterCollection:(id)chapterCollection targetOverallDurationInfo:(id *)info configuration:(id)configuration storyConfiguration:(id)storyConfiguration;
+- (_NSRange)_clipRangeForMoment:(id)moment inClips:(id)clips;
+- (float)_volumeGainForAsset:(id)asset movieHighlight:(id)highlight audioMode:(int64_t)mode;
+- (id)_decisionListForSong:(id)song pace:(int64_t)pace colorGradeCategory:(id)category;
+- (id)_diagnosticTextForAutoEditHUDAtDisplaySize:(CGSize)size;
+- (id)_diagnosticTextForComposabilityHUDAtDisplaySize:(CGSize)size;
+- (id)_diagnosticTextForMomentsHUDAtDisplaySize:(CGSize)size;
+- (id)_indexesOfClips:(id)clips atChapterBeginningInChapterCollection:(id)collection;
 - (id)_makeRandomNumberGenerator;
-- (id)_movieHighlightForAsset:(id)a3 playbackStyle:(int64_t)a4;
-- (id)decisionListForSong:(id)a3 pace:(int64_t)a4 colorGradeCategory:(id)a5;
-- (id)diagnosticErrorsByComponentForHUDType:(int64_t)a3;
-- (id)diagnosticTextForHUDType:(int64_t)a3 displaySize:(CGSize)a4;
-- (id)requestAutoEditDecisionListsWithOptions:(unint64_t)a3 songs:(id)a4 colorGradeCategoriesBySong:(id)a5 resultHandler:(id)a6;
-- (id)requestDefaultAutoEditDecisionListsWithColorGradeCategory:(id)a3 options:(unint64_t)a4 resultHandler:(id)a5;
-- (int64_t)_playbackStyleForAsset:(id)a3 songPace:(int64_t)a4;
-- (unint64_t)_composeClips:(id)a3 inAssetRange:(_NSRange)a4;
-- (void)_adjustAudioPlaybackForClips:(id)a3;
-- (void)_adjustAudioTransitionForClips:(id)a3;
-- (void)_adjustDurationOfClips:(id)a3 forSongPace:(int64_t)a4;
-- (void)_adjustTransitionsInClips:(id)a3 forChapterCollection:(id)a4;
-- (void)_audioCutsFromClip:(id)a3 toClip:(id)a4 useJCut:(BOOL *)a5 useLCut:(BOOL *)a6;
-- (void)_composeClips:(id)a3 forSongPace:(int64_t)a4;
-- (void)_populateClips:(id)a3 forSongPace:(int64_t)a4 colorGradeCategory:(id)a5;
-- (void)_populateModulesInClips:(id)a3;
-- (void)_populateMomentRecipesInClips:(id)a3 forSongPace:(int64_t)a4 colorGradeCategory:(id)a5;
-- (void)_populateMotionStylesAndTransitionsInClips:(id)a3 forSongPace:(int64_t)a4 colorGradeCategory:(id)a5;
-- (void)_populateMotionStylesInClips:(id)a3 forSongPace:(int64_t)a4 colorGradeCategory:(id)a5;
-- (void)_populateTransitionsInClips:(id)a3 forSongPace:(int64_t)a4 colorGradeCategory:(id)a5;
-- (void)addVisualDiagnosticsToContext:(id)a3 completionHandler:(id)a4;
-- (void)collectTapToRadarDiagnosticsIntoContainer:(id)a3;
+- (id)_movieHighlightForAsset:(id)asset playbackStyle:(int64_t)style;
+- (id)decisionListForSong:(id)song pace:(int64_t)pace colorGradeCategory:(id)category;
+- (id)diagnosticErrorsByComponentForHUDType:(int64_t)type;
+- (id)diagnosticTextForHUDType:(int64_t)type displaySize:(CGSize)size;
+- (id)requestAutoEditDecisionListsWithOptions:(unint64_t)options songs:(id)songs colorGradeCategoriesBySong:(id)song resultHandler:(id)handler;
+- (id)requestDefaultAutoEditDecisionListsWithColorGradeCategory:(id)category options:(unint64_t)options resultHandler:(id)handler;
+- (int64_t)_playbackStyleForAsset:(id)asset songPace:(int64_t)pace;
+- (unint64_t)_composeClips:(id)clips inAssetRange:(_NSRange)range;
+- (void)_adjustAudioPlaybackForClips:(id)clips;
+- (void)_adjustAudioTransitionForClips:(id)clips;
+- (void)_adjustDurationOfClips:(id)clips forSongPace:(int64_t)pace;
+- (void)_adjustTransitionsInClips:(id)clips forChapterCollection:(id)collection;
+- (void)_audioCutsFromClip:(id)clip toClip:(id)toClip useJCut:(BOOL *)cut useLCut:(BOOL *)lCut;
+- (void)_composeClips:(id)clips forSongPace:(int64_t)pace;
+- (void)_populateClips:(id)clips forSongPace:(int64_t)pace colorGradeCategory:(id)category;
+- (void)_populateModulesInClips:(id)clips;
+- (void)_populateMomentRecipesInClips:(id)clips forSongPace:(int64_t)pace colorGradeCategory:(id)category;
+- (void)_populateMotionStylesAndTransitionsInClips:(id)clips forSongPace:(int64_t)pace colorGradeCategory:(id)category;
+- (void)_populateMotionStylesInClips:(id)clips forSongPace:(int64_t)pace colorGradeCategory:(id)category;
+- (void)_populateTransitionsInClips:(id)clips forSongPace:(int64_t)pace colorGradeCategory:(id)category;
+- (void)addVisualDiagnosticsToContext:(id)context completionHandler:(id)handler;
+- (void)collectTapToRadarDiagnosticsIntoContainer:(id)container;
 @end
 
 @implementation PXStorySongsAutoEditDecisionListsProducer
@@ -53,21 +53,21 @@
   return self;
 }
 
-- (id)diagnosticErrorsByComponentForHUDType:(int64_t)a3
+- (id)diagnosticErrorsByComponentForHUDType:(int64_t)type
 {
   v4 = objc_opt_new();
-  v5 = [(PXStoryAutoEditMomentsProvider *)self->_momentsProvider error];
-  [v4 setObject:v5 forKeyedSubscript:@"Moments"];
+  error = [(PXStoryAutoEditMomentsProvider *)self->_momentsProvider error];
+  [v4 setObject:error forKeyedSubscript:@"Moments"];
 
-  v6 = [(PXStoryAutoEditClipComposabilityProvider *)self->_composabilityProvider error];
-  [v4 setObject:v6 forKeyedSubscript:@"Composability"];
+  error2 = [(PXStoryAutoEditClipComposabilityProvider *)self->_composabilityProvider error];
+  [v4 setObject:error2 forKeyedSubscript:@"Composability"];
 
   v7 = [v4 copy];
 
   return v7;
 }
 
-- (id)_diagnosticTextForComposabilityHUDAtDisplaySize:(CGSize)a3
+- (id)_diagnosticTextForComposabilityHUDAtDisplaySize:(CGSize)size
 {
   v4 = objc_alloc_init(MEMORY[0x1E696AD60]);
   [v4 appendString:@"AutoEdit - Composability\n"];
@@ -90,16 +90,16 @@
   return v4;
 }
 
-- (id)_diagnosticTextForMomentsHUDAtDisplaySize:(CGSize)a3
+- (id)_diagnosticTextForMomentsHUDAtDisplaySize:(CGSize)size
 {
   v4 = objc_alloc_init(MEMORY[0x1E696AD60]);
   [v4 appendString:@"AutoEdit - Moments\n"];
-  v5 = [(PXStoryAutoEditMomentsProvider *)self->_momentsProvider statistics];
+  statistics = [(PXStoryAutoEditMomentsProvider *)self->_momentsProvider statistics];
   [v4 appendFormat:@"- count: %d\n", -[PXStoryAutoEditMomentsProvider count](self->_momentsProvider, "count")];
-  [v5 averageAssetCount];
+  [statistics averageAssetCount];
   [v4 appendFormat:@"- avg length: %.2f\n", v6];
-  [v4 appendFormat:@"- min length: %d\n", objc_msgSend(v5, "minimumAssetCount")];
-  [v4 appendFormat:@"- max length: %d\n", objc_msgSend(v5, "maximumAssetCount")];
+  [v4 appendFormat:@"- min length: %d\n", objc_msgSend(statistics, "minimumAssetCount")];
+  [v4 appendFormat:@"- max length: %d\n", objc_msgSend(statistics, "maximumAssetCount")];
   [v4 appendString:@"- moment counts:\n "];
   momentsProvider = self->_momentsProvider;
   v55[0] = MEMORY[0x1E69E9820];
@@ -110,14 +110,14 @@
   v56 = v8;
   [(PXStoryAutoEditMomentsProvider *)momentsProvider enumerateMomentsUsingBlock:v55];
   [v8 appendString:@"\n"];
-  v9 = [v5 clusteringDistanceCalculator];
-  [v9 locationWeight];
+  clusteringDistanceCalculator = [statistics clusteringDistanceCalculator];
+  [clusteringDistanceCalculator locationWeight];
   v11 = v10;
-  v12 = [v5 clusteringDistanceCalculator];
-  [v12 timeWeight];
+  clusteringDistanceCalculator2 = [statistics clusteringDistanceCalculator];
+  [clusteringDistanceCalculator2 timeWeight];
   v14 = v13;
-  v15 = [v5 clusteringDistanceCalculator];
-  [v15 faceWeight];
+  clusteringDistanceCalculator3 = [statistics clusteringDistanceCalculator];
+  [clusteringDistanceCalculator3 faceWeight];
   [v8 appendFormat:@"- moment weighted distances (l: %.3f, t: %.3f, f: %.3f):\n ", v11, v14, v16];
 
   v17 = self->_momentsProvider;
@@ -159,22 +159,22 @@
   v48 = v24;
   [(PXStoryAutoEditMomentsProvider *)v23 enumerateMomentsUsingBlock:v47];
   [v24 appendString:@"\n"];
-  [v5 clusteringDuration];
+  [statistics clusteringDuration];
   [v24 appendFormat:@"- clustering duration: %.2f\n", v25];
-  v26 = [v5 memoryCategoryName];
-  [v24 appendFormat:@"- clustering properties (%@):\n", v26];
+  memoryCategoryName = [statistics memoryCategoryName];
+  [v24 appendFormat:@"- clustering properties (%@):\n", memoryCategoryName];
 
-  v27 = [v5 clusteringProperties];
-  v28 = [v27 algorithm];
-  [v24 appendFormat:@"  - algorithm: %@\n", v28];
+  clusteringProperties = [statistics clusteringProperties];
+  algorithm = [clusteringProperties algorithm];
+  [v24 appendFormat:@"  - algorithm: %@\n", algorithm];
 
-  v29 = [v5 clusteringProperties];
-  v30 = [v29 algorithmProperties];
-  [v24 appendFormat:@"  - algorithmProperties: %@\n", v30];
+  clusteringProperties2 = [statistics clusteringProperties];
+  algorithmProperties = [clusteringProperties2 algorithmProperties];
+  [v24 appendFormat:@"  - algorithmProperties: %@\n", algorithmProperties];
 
-  v31 = [v5 clusteringProperties];
-  v32 = [v31 distanceWeights];
-  [v24 appendFormat:@"  - distanceWeights: %@\n", v32];
+  clusteringProperties3 = [statistics clusteringProperties];
+  distanceWeights = [clusteringProperties3 distanceWeights];
+  [v24 appendFormat:@"  - distanceWeights: %@\n", distanceWeights];
 
   [v24 appendString:@"\nModules\n"];
   v33 = self->_lastGeneratedAutoEditDecisionLists;
@@ -313,7 +313,7 @@ void __87__PXStorySongsAutoEditDecisionListsProducer__diagnosticTextForMomentsHU
   [v6 setObject:v8 forKeyedSubscript:v7];
 }
 
-- (id)_diagnosticTextForAutoEditHUDAtDisplaySize:(CGSize)a3
+- (id)_diagnosticTextForAutoEditHUDAtDisplaySize:(CGSize)size
 {
   v4 = objc_alloc_init(MEMORY[0x1E696AD60]);
   [v4 appendString:@"AutoEdit - Overview\n"];
@@ -362,18 +362,18 @@ void __88__PXStorySongsAutoEditDecisionListsProducer__diagnosticTextForAutoEditH
   [v7 appendFormat:@"%@ %ld Clips: %@; Song:%@;\n", v10, v11, v12, v14, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 }
 
-- (id)diagnosticTextForHUDType:(int64_t)a3 displaySize:(CGSize)a4
+- (id)diagnosticTextForHUDType:(int64_t)type displaySize:(CGSize)size
 {
-  switch(a3)
+  switch(type)
   {
     case 8:
-      v4 = [(PXStorySongsAutoEditDecisionListsProducer *)self _diagnosticTextForAutoEditHUDAtDisplaySize:a4.width, a4.height];
+      v4 = [(PXStorySongsAutoEditDecisionListsProducer *)self _diagnosticTextForAutoEditHUDAtDisplaySize:size.width, size.height];
       break;
     case 10:
-      v4 = [(PXStorySongsAutoEditDecisionListsProducer *)self _diagnosticTextForComposabilityHUDAtDisplaySize:a4.width, a4.height];
+      v4 = [(PXStorySongsAutoEditDecisionListsProducer *)self _diagnosticTextForComposabilityHUDAtDisplaySize:size.width, size.height];
       break;
     case 9:
-      v4 = [(PXStorySongsAutoEditDecisionListsProducer *)self _diagnosticTextForMomentsHUDAtDisplaySize:a4.width, a4.height];
+      v4 = [(PXStorySongsAutoEditDecisionListsProducer *)self _diagnosticTextForMomentsHUDAtDisplaySize:size.width, size.height];
       break;
     default:
       v4 = &stru_1F1741150;
@@ -383,15 +383,15 @@ void __88__PXStorySongsAutoEditDecisionListsProducer__diagnosticTextForAutoEditH
   return v4;
 }
 
-- (void)collectTapToRadarDiagnosticsIntoContainer:(id)a3
+- (void)collectTapToRadarDiagnosticsIntoContainer:(id)container
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  containerCopy = container;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v15 = self;
+  selfCopy = self;
   v5 = self->_ttrUnitTestsForFailedDurationConstraints;
   v6 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v6)
@@ -410,7 +410,7 @@ void __88__PXStorySongsAutoEditDecisionListsProducer__diagnosticTextForAutoEditH
 
         v10 = *(*(&v23 + 1) + 8 * v9);
         v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"failed_duration_test%d", v7];
-        [v4 addAttachmentWithSwiftCode:v10 name:v11];
+        [containerCopy addAttachmentWithSwiftCode:v10 name:v11];
 
         v7 = (v7 + 1);
         ++v9;
@@ -423,11 +423,11 @@ void __88__PXStorySongsAutoEditDecisionListsProducer__diagnosticTextForAutoEditH
     while (v6);
   }
 
-  [(NSMutableArray *)v15->_ttrUnitTestsForFailedDurationConstraints removeAllObjects];
-  v12 = [(PXStoryMovieHighlightsCollection *)v15->_movieHighlights diagnosticDescription];
-  if (v12)
+  [(NSMutableArray *)selfCopy->_ttrUnitTestsForFailedDurationConstraints removeAllObjects];
+  diagnosticDescription = [(PXStoryMovieHighlightsCollection *)selfCopy->_movieHighlights diagnosticDescription];
+  if (diagnosticDescription)
   {
-    [v4 addAttachmentWithText:v12 name:@"MovieHighlights"];
+    [containerCopy addAttachmentWithText:diagnosticDescription name:@"MovieHighlights"];
   }
 
   v17 = 0;
@@ -436,18 +436,18 @@ void __88__PXStorySongsAutoEditDecisionListsProducer__diagnosticTextForAutoEditH
   v20 = __Block_byref_object_copy__190001;
   v21 = __Block_byref_object_dispose__190002;
   v22 = 0;
-  queue = v15->_queue;
+  queue = selfCopy->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __87__PXStorySongsAutoEditDecisionListsProducer_collectTapToRadarDiagnosticsIntoContainer___block_invoke;
   block[3] = &unk_1E7749A28;
-  block[4] = v15;
+  block[4] = selfCopy;
   block[5] = &v17;
   dispatch_sync(queue, block);
   v14 = v18[5];
   if (v14)
   {
-    [v4 addAttachmentWithText:v14 name:@"ComposabilityProvider"];
+    [containerCopy addAttachmentWithText:v14 name:@"ComposabilityProvider"];
   }
 
   _Block_object_dispose(&v17, 8);
@@ -461,159 +461,159 @@ void __87__PXStorySongsAutoEditDecisionListsProducer_collectTapToRadarDiagnostic
   *(v3 + 40) = v2;
 }
 
-- (void)addVisualDiagnosticsToContext:(id)a3 completionHandler:(id)a4
+- (void)addVisualDiagnosticsToContext:(id)context completionHandler:(id)handler
 {
-  v7 = a4;
-  v6 = a3;
-  [v6 addTitlePageWithTitle:@"Auto Edit Visual Diagnostics" subtitle:&stru_1F1741150];
-  [(PXStorySongsAutoEditDecisionListsProducer *)self _addMomentsGraph:v6];
-  [(PXStorySongsAutoEditDecisionListsProducer *)self _addComposabilityGraph:v6];
-  [(PXStorySongsAutoEditDecisionListsProducer *)self _addTimeConstraintGraph:v6];
+  handlerCopy = handler;
+  contextCopy = context;
+  [contextCopy addTitlePageWithTitle:@"Auto Edit Visual Diagnostics" subtitle:&stru_1F1741150];
+  [(PXStorySongsAutoEditDecisionListsProducer *)self _addMomentsGraph:contextCopy];
+  [(PXStorySongsAutoEditDecisionListsProducer *)self _addComposabilityGraph:contextCopy];
+  [(PXStorySongsAutoEditDecisionListsProducer *)self _addTimeConstraintGraph:contextCopy];
 
-  v7[2](v7, 1, 0);
+  handlerCopy[2](handlerCopy, 1, 0);
 }
 
-- (BOOL)_canOverlapAudioFromClip:(id)a3 withNextClip:(id)a4
+- (BOOL)_canOverlapAudioFromClip:(id)clip withNextClip:(id)nextClip
 {
-  v6 = a4;
-  if (v6)
+  nextClipCopy = nextClip;
+  if (nextClipCopy)
   {
-    v7 = a3;
-    v8 = [v7 displayAssets];
-    v9 = [v8 firstObject];
-    v10 = [v7 playbackStyle];
+    clipCopy = clip;
+    displayAssets = [clipCopy displayAssets];
+    firstObject = [displayAssets firstObject];
+    playbackStyle = [clipCopy playbackStyle];
 
-    v11 = [(PXStorySongsAutoEditDecisionListsProducer *)self _movieHighlightForAsset:v9 playbackStyle:v10];
+    v11 = [(PXStorySongsAutoEditDecisionListsProducer *)self _movieHighlightForAsset:firstObject playbackStyle:playbackStyle];
 
-    v12 = [v6 displayAssets];
-    v13 = [v12 firstObject];
-    v14 = -[PXStorySongsAutoEditDecisionListsProducer _movieHighlightForAsset:playbackStyle:](self, "_movieHighlightForAsset:playbackStyle:", v13, [v6 playbackStyle]);
+    displayAssets2 = [nextClipCopy displayAssets];
+    firstObject2 = [displayAssets2 firstObject];
+    v14 = -[PXStorySongsAutoEditDecisionListsProducer _movieHighlightForAsset:playbackStyle:](self, "_movieHighlightForAsset:playbackStyle:", firstObject2, [nextClipCopy playbackStyle]);
 
     v15 = +[PXStorySettings sharedInstance];
-    v16 = [v15 audioLCutStrategy];
+    audioLCutStrategy = [v15 audioLCutStrategy];
 
-    if (v16 == 3)
+    if (audioLCutStrategy == 3)
     {
-      LODWORD(v16) = [v11 hasVoice];
-      [v6 audioInfo];
-      v18 = [v14 hasVoice];
-      v19 = [v14 hasFace];
-      if (v16 && v21 >= 2)
+      LODWORD(audioLCutStrategy) = [v11 hasVoice];
+      [nextClipCopy audioInfo];
+      hasVoice = [v14 hasVoice];
+      hasFace = [v14 hasFace];
+      if (audioLCutStrategy && v21 >= 2)
       {
-        LOBYTE(v16) = (v18 | v19) ^ 1;
+        LOBYTE(audioLCutStrategy) = (hasVoice | hasFace) ^ 1;
       }
     }
 
-    else if (v16 == 2)
+    else if (audioLCutStrategy == 2)
     {
-      LODWORD(v16) = [v11 hasVoice];
-      [v6 audioInfo];
-      v17 = [v14 hasVoice];
-      if (v16)
+      LODWORD(audioLCutStrategy) = [v11 hasVoice];
+      [nextClipCopy audioInfo];
+      hasVoice2 = [v14 hasVoice];
+      if (audioLCutStrategy)
       {
-        LOBYTE(v16) = (v22 < 2) | v17 ^ 1;
+        LOBYTE(audioLCutStrategy) = (v22 < 2) | hasVoice2 ^ 1;
       }
     }
 
-    else if (v16 != 1)
+    else if (audioLCutStrategy != 1)
     {
-      LOBYTE(v16) = 0;
+      LOBYTE(audioLCutStrategy) = 0;
     }
   }
 
   else
   {
-    LOBYTE(v16) = 0;
+    LOBYTE(audioLCutStrategy) = 0;
   }
 
-  return v16 & 1;
+  return audioLCutStrategy & 1;
 }
 
-- (BOOL)_canOverlapAudioFromClip:(id)a3 withPreviousClip:(id)a4
+- (BOOL)_canOverlapAudioFromClip:(id)clip withPreviousClip:(id)previousClip
 {
-  v6 = a4;
-  if (v6)
+  previousClipCopy = previousClip;
+  if (previousClipCopy)
   {
-    v7 = a3;
-    v8 = [v7 displayAssets];
-    v9 = [v8 firstObject];
-    v10 = [v7 playbackStyle];
+    clipCopy = clip;
+    displayAssets = [clipCopy displayAssets];
+    firstObject = [displayAssets firstObject];
+    playbackStyle = [clipCopy playbackStyle];
 
-    v11 = [(PXStorySongsAutoEditDecisionListsProducer *)self _movieHighlightForAsset:v9 playbackStyle:v10];
+    v11 = [(PXStorySongsAutoEditDecisionListsProducer *)self _movieHighlightForAsset:firstObject playbackStyle:playbackStyle];
 
-    v12 = [v6 displayAssets];
-    v13 = [v12 lastObject];
-    v14 = -[PXStorySongsAutoEditDecisionListsProducer _movieHighlightForAsset:playbackStyle:](self, "_movieHighlightForAsset:playbackStyle:", v13, [v6 playbackStyle]);
+    displayAssets2 = [previousClipCopy displayAssets];
+    lastObject = [displayAssets2 lastObject];
+    v14 = -[PXStorySongsAutoEditDecisionListsProducer _movieHighlightForAsset:playbackStyle:](self, "_movieHighlightForAsset:playbackStyle:", lastObject, [previousClipCopy playbackStyle]);
 
     v15 = +[PXStorySettings sharedInstance];
-    v16 = [v15 audioJCutStrategy];
+    audioJCutStrategy = [v15 audioJCutStrategy];
 
-    if (v16 == 3)
+    if (audioJCutStrategy == 3)
     {
-      LODWORD(v16) = [v11 hasVoice];
-      [v6 audioInfo];
-      v18 = [v14 hasVoice];
-      v19 = [v14 hasFace];
-      if (v16 && v21 >= 2)
+      LODWORD(audioJCutStrategy) = [v11 hasVoice];
+      [previousClipCopy audioInfo];
+      hasVoice = [v14 hasVoice];
+      hasFace = [v14 hasFace];
+      if (audioJCutStrategy && v21 >= 2)
       {
-        LOBYTE(v16) = (v18 | v19) ^ 1;
+        LOBYTE(audioJCutStrategy) = (hasVoice | hasFace) ^ 1;
       }
     }
 
-    else if (v16 == 2)
+    else if (audioJCutStrategy == 2)
     {
-      LODWORD(v16) = [v11 hasVoice];
-      [v6 audioInfo];
-      v17 = [v14 hasVoice];
-      if (v16)
+      LODWORD(audioJCutStrategy) = [v11 hasVoice];
+      [previousClipCopy audioInfo];
+      hasVoice2 = [v14 hasVoice];
+      if (audioJCutStrategy)
       {
-        LOBYTE(v16) = (v22 < 2) | v17 ^ 1;
+        LOBYTE(audioJCutStrategy) = (v22 < 2) | hasVoice2 ^ 1;
       }
     }
 
-    else if (v16 != 1)
+    else if (audioJCutStrategy != 1)
     {
-      LOBYTE(v16) = 0;
+      LOBYTE(audioJCutStrategy) = 0;
     }
   }
 
   else
   {
-    LOBYTE(v16) = 0;
+    LOBYTE(audioJCutStrategy) = 0;
   }
 
-  return v16 & 1;
+  return audioJCutStrategy & 1;
 }
 
-- (void)_audioCutsFromClip:(id)a3 toClip:(id)a4 useJCut:(BOOL *)a5 useLCut:(BOOL *)a6
+- (void)_audioCutsFromClip:(id)clip toClip:(id)toClip useJCut:(BOOL *)cut useLCut:(BOOL *)lCut
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = v11;
-  if (!v10)
+  clipCopy = clip;
+  toClipCopy = toClip;
+  v12 = toClipCopy;
+  if (!clipCopy)
   {
-    if (!v11)
+    if (!toClipCopy)
     {
       goto LABEL_13;
     }
 
-    [v11 audioInfo];
+    [toClipCopy audioInfo];
     v13 = v14;
 LABEL_10:
     if (v13 > 1)
     {
-      *a5 = [(PXStorySongsAutoEditDecisionListsProducer *)self _canOverlapAudioFromClip:v12 withPreviousClip:v10];
+      *cut = [(PXStorySongsAutoEditDecisionListsProducer *)self _canOverlapAudioFromClip:v12 withPreviousClip:clipCopy];
 LABEL_14:
-      *a6 = 0;
+      *lCut = 0;
       goto LABEL_15;
     }
 
 LABEL_13:
-    *a5 = 0;
+    *cut = 0;
     goto LABEL_14;
   }
 
-  [v10 audioInfo];
+  [clipCopy audioInfo];
   if (!v12)
   {
     if (v15 >= 2)
@@ -639,25 +639,25 @@ LABEL_13:
   if (v14 <= 1)
   {
 LABEL_16:
-    *a6 = [(PXStorySongsAutoEditDecisionListsProducer *)self _canOverlapAudioFromClip:v10 withNextClip:v12];
-    *a5 = 0;
+    *lCut = [(PXStorySongsAutoEditDecisionListsProducer *)self _canOverlapAudioFromClip:clipCopy withNextClip:v12];
+    *cut = 0;
     goto LABEL_15;
   }
 
-  *a5 = [(PXStorySongsAutoEditDecisionListsProducer *)self _canOverlapAudioFromClip:v12 withPreviousClip:v10];
-  *a6 = [(PXStorySongsAutoEditDecisionListsProducer *)self _canOverlapAudioFromClip:v10 withNextClip:v12];
+  *cut = [(PXStorySongsAutoEditDecisionListsProducer *)self _canOverlapAudioFromClip:v12 withPreviousClip:clipCopy];
+  *lCut = [(PXStorySongsAutoEditDecisionListsProducer *)self _canOverlapAudioFromClip:clipCopy withNextClip:v12];
 LABEL_15:
 }
 
-- (float)_volumeGainForAsset:(id)a3 movieHighlight:(id)a4 audioMode:(int64_t)a5
+- (float)_volumeGainForAsset:(id)asset movieHighlight:(id)highlight audioMode:(int64_t)mode
 {
   v5 = 0.0;
-  if (a5 >= 2)
+  if (mode >= 2)
   {
-    v7 = a4;
+    highlightCopy = highlight;
     v8 = +[PXStorySettings sharedInstance];
     v9 = v8;
-    if (a5 == 3)
+    if (mode == 3)
     {
       [v8 foregroundAudioLoudnessTarget];
     }
@@ -668,9 +668,9 @@ LABEL_15:
     }
 
     v11 = v10;
-    [v7 loudness];
+    [highlightCopy loudness];
     v13 = v11 - v12;
-    [v7 peakVolume];
+    [highlightCopy peakVolume];
     v15 = v14;
 
     v16 = fmin(fmax((log10f(v15) * -20.0), 0.0), 12.0);
@@ -681,17 +681,17 @@ LABEL_15:
   return v5;
 }
 
-- ($34B6A3E4F6D84C42DF3A29A209E596E5)_durationInfoForClip:(SEL)a3 durationMultiplier:(id)a4 songPace:(double)a5 transitionIn:(int64_t)a6 transitionOut:(double *)a7
+- ($34B6A3E4F6D84C42DF3A29A209E596E5)_durationInfoForClip:(SEL)clip durationMultiplier:(id)multiplier songPace:(double)pace transitionIn:(int64_t)in transitionOut:(double *)out
 {
   v73 = *MEMORY[0x1E69E9840];
-  v62 = a4;
-  if (!a6)
+  multiplierCopy = multiplier;
+  if (!in)
   {
-    v57 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v57 handleFailureInMethod:a3 object:self file:@"PXStorySongsAutoEditDecisionListsProducer.m" lineNumber:1121 description:{@"Invalid parameter not satisfying: %@", @"songPace != PFStoryRecipeSongPaceUnknown"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:clip object:self file:@"PXStorySongsAutoEditDecisionListsProducer.m" lineNumber:1121 description:{@"Invalid parameter not satisfying: %@", @"songPace != PFStoryRecipeSongPaceUnknown"}];
   }
 
-  v15 = [v62 playbackStyle];
+  playbackStyle = [multiplierCopy playbackStyle];
   *&retstr->var0.var0 = 0u;
   *&retstr->var0.var3 = 0u;
   *&retstr->var1.var1 = 0u;
@@ -700,13 +700,13 @@ LABEL_15:
   configuration = self->_configuration;
   if (configuration)
   {
-    [(PFStoryAutoEditConfiguration *)configuration durationInfoForPlaybackStyle:v15 songPace:a6];
+    [(PFStoryAutoEditConfiguration *)configuration durationInfoForPlaybackStyle:playbackStyle songPace:in];
   }
 
-  v17 = [v62 displayAssets];
-  v18 = [v17 firstObject];
+  displayAssets = [multiplierCopy displayAssets];
+  firstObject = [displayAssets firstObject];
 
-  if (v15 == 4 && ([v18 mediaSubtypes] & 0x60000) != 0)
+  if (playbackStyle == 4 && ([firstObject mediaSubtypes] & 0x60000) != 0)
   {
     time = *&retstr->var0.var0;
     *time_16 = retstr->var0.var3;
@@ -761,13 +761,13 @@ LABEL_15:
   v21 = *&retstr->var0.var3;
   time = *&retstr->var0.var0;
   *time_16 = v21;
-  v22 = llround(a5 * 600.0);
+  v22 = llround(pace * 600.0);
   memset(&lhs, 0, sizeof(lhs));
   time1[0] = retstr->var1;
   CMTimeMultiplyByRatio(&lhs, time1, v22, 600);
   memset(&time2, 0, sizeof(time2));
   memset(&v65, 0, sizeof(v65));
-  if (a5 < 1.0)
+  if (pace < 1.0)
   {
     *&time1[0].value = time;
     time1[0].epoch = *time_16;
@@ -807,7 +807,7 @@ LABEL_15:
   *&retstr->var0.var3 = v26;
   v72.timescale = 0;
   v72.value = 0;
-  if ((v15 - 3) > 1)
+  if ((playbackStyle - 3) > 1)
   {
     v31 = 0;
     value = 0;
@@ -818,7 +818,7 @@ LABEL_15:
 
   else
   {
-    v27 = [(PXStorySongsAutoEditDecisionListsProducer *)self _movieHighlightForAsset:v18 playbackStyle:v15];
+    v27 = [(PXStorySongsAutoEditDecisionListsProducer *)self _movieHighlightForAsset:firstObject playbackStyle:playbackStyle];
     v28 = v27;
     if (v27)
     {
@@ -830,7 +830,7 @@ LABEL_15:
       v60 = time1[0].epoch;
       v31 = time1[1].epoch;
       v61 = *&time1[1].timescale;
-      if (v15 == 4)
+      if (playbackStyle == 4)
       {
         memset(time1, 0, 48);
         time = *&retstr->var1.var0;
@@ -890,7 +890,7 @@ LABEL_15:
     v38 = PXStoryTimeDescription(time1);
     time1[0] = retstr->var2;
     PXStoryTimeDescription(time1);
-    v39 = v59 = v18;
+    v39 = v59 = firstObject;
     time1[0].value = v72.value;
     time1[0].timescale = v72.timescale;
     time1[0].flags = flags;
@@ -902,7 +902,7 @@ LABEL_15:
     v58 = v31;
     v40 = flags;
     v41 = value;
-    v43 = v42 = a7;
+    v43 = v42 = out;
     LODWORD(time1[0].value) = 138413058;
     *(&time1[0].value + 4) = v37;
     LOWORD(time1[0].flags) = 2112;
@@ -913,12 +913,12 @@ LABEL_15:
     *(&time1[1].timescale + 2) = v43;
     _os_log_impl(&dword_1A3C1C000, v36, OS_LOG_TYPE_DEBUG, "video clip duration min: %@, pref: %@, max: %@, playback range: %@", time1, 0x2Au);
 
-    a7 = v42;
+    out = v42;
     value = v41;
     flags = v40;
     v31 = v58;
 
-    v18 = v59;
+    firstObject = v59;
   }
 
   if ((flags & 1) != 0 && (v61 & 0x100000000) != 0 && !v31 && (value & 0x8000000000000000) == 0)
@@ -931,7 +931,7 @@ LABEL_15:
     if (CMTimeCompare(time1, &time))
     {
       memset(&lhs, 0, sizeof(lhs));
-      CMTimeMakeWithSeconds(&time2, *a7 + *a8, 600);
+      CMTimeMakeWithSeconds(&time2, *out + *a8, 600);
       time1[0].value = value;
       *&time1[0].timescale = v61;
       time1[0].epoch = 0;
@@ -953,7 +953,7 @@ LABEL_15:
           time1[1].value = value;
           *&time1[1].timescale = v61;
           v45 = PXStoryTimeRangeDescription(time1);
-          v46 = *a7;
+          v46 = *out;
           v47 = *a8;
           LODWORD(time1[0].value) = 138543874;
           *(&time1[0].value + 4) = v45;
@@ -964,16 +964,16 @@ LABEL_15:
           _os_log_impl(&dword_1A3C1C000, v44, OS_LOG_TYPE_DEBUG, "Playback range %{public}@ too small for transitions %0.1fs/%0.1fs", time1, 0x20u);
         }
 
-        if (*a8 >= *a7)
+        if (*a8 >= *out)
         {
           *a8 = 0.0;
-          v49 = *a7;
+          v49 = *out;
           v48 = 0.0;
         }
 
         else
         {
-          *a7 = 0.0;
+          *out = 0.0;
           v48 = *a8;
           v49 = 0.0;
         }
@@ -992,7 +992,7 @@ LABEL_15:
         if (CMTimeCompare(time1, &time) < 0)
         {
           *a8 = 0.0;
-          *a7 = 0.0;
+          *out = 0.0;
           lhs.value = value;
           *&lhs.timescale = v61;
           lhs.epoch = 0;
@@ -1017,19 +1017,19 @@ LABEL_15:
     }
   }
 
-  CMTimeMakeWithSeconds(&time2, *a7, 600);
+  CMTimeMakeWithSeconds(&time2, *out, 600);
   time1[0] = retstr->var0;
   time = *&time2.value;
   *time_16 = time2.epoch;
   CMTimeAdd(&lhs, time1, &time);
   retstr->var0 = lhs;
-  CMTimeMakeWithSeconds(&time2, *a7, 600);
+  CMTimeMakeWithSeconds(&time2, *out, 600);
   time1[0] = retstr->var1;
   time = *&time2.value;
   *time_16 = time2.epoch;
   CMTimeAdd(&lhs, time1, &time);
   retstr->var1 = lhs;
-  CMTimeMakeWithSeconds(&time2, *a7, 600);
+  CMTimeMakeWithSeconds(&time2, *out, 600);
   time1[0] = retstr->var2;
   time = *&time2.value;
   *time_16 = time2.epoch;
@@ -1038,7 +1038,7 @@ LABEL_15:
   v50 = PLStoryGetLog();
   if (os_log_type_enabled(v50, OS_LOG_TYPE_DEBUG))
   {
-    v51 = *a7;
+    v51 = *out;
     v52 = *a8;
     time1[0] = retstr->var0;
     v53 = PXStoryTimeDescription(time1);
@@ -1086,19 +1086,19 @@ LABEL_15:
   return result;
 }
 
-- (id)_movieHighlightForAsset:(id)a3 playbackStyle:(int64_t)a4
+- (id)_movieHighlightForAsset:(id)asset playbackStyle:(int64_t)style
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(PXStorySongsAutoEditDecisionListsProducer *)self movieHighlights];
-  v8 = [v7 movieHighlightsForDisplayAsset:v6];
+  assetCopy = asset;
+  movieHighlights = [(PXStorySongsAutoEditDecisionListsProducer *)self movieHighlights];
+  v8 = [movieHighlights movieHighlightsForDisplayAsset:assetCopy];
 
   if (!v8)
   {
     goto LABEL_17;
   }
 
-  switch(a4)
+  switch(style)
   {
     case 3:
       v9 = PXStoryMovieHighlightForPlaybackStyle(v8, 3);
@@ -1108,7 +1108,7 @@ LABEL_15:
         if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
         {
           v14 = 138412546;
-          v15 = v6;
+          v15 = assetCopy;
           v16 = 2112;
           v17 = v8;
           v11 = "No highlight for live photo: %@, curation: %@";
@@ -1127,7 +1127,7 @@ LABEL_15:
         if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
         {
           v14 = 138412546;
-          v15 = v6;
+          v15 = assetCopy;
           v16 = 2112;
           v17 = v8;
           v11 = "No highlight for looping video: %@, curation: %@";
@@ -1150,7 +1150,7 @@ LABEL_12:
         if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
         {
           v14 = 138412546;
-          v15 = v6;
+          v15 = assetCopy;
           v16 = 2112;
           v17 = v8;
           v11 = "No highlight for video: %@, curation: %@";
@@ -1172,13 +1172,13 @@ LABEL_18:
   return v12;
 }
 
-- (int64_t)_playbackStyleForAsset:(id)a3 songPace:(int64_t)a4
+- (int64_t)_playbackStyleForAsset:(id)asset songPace:(int64_t)pace
 {
-  v6 = a3;
-  v7 = [v6 playbackStyle];
-  if (v7 <= 2)
+  assetCopy = asset;
+  playbackStyle = [assetCopy playbackStyle];
+  if (playbackStyle <= 2)
   {
-    if (v7 == 2)
+    if (playbackStyle == 2)
     {
       v8 = 2;
     }
@@ -1188,12 +1188,12 @@ LABEL_18:
       v8 = 0;
     }
 
-    if (v7 == 1)
+    if (playbackStyle == 1)
     {
       v8 = 1;
     }
 
-    if (v7)
+    if (playbackStyle)
     {
       v9 = v8;
     }
@@ -1206,9 +1206,9 @@ LABEL_18:
     goto LABEL_33;
   }
 
-  if (v7 != 3)
+  if (playbackStyle != 3)
   {
-    if (v7 == 5)
+    if (playbackStyle == 5)
     {
       v10 = 5;
     }
@@ -1218,7 +1218,7 @@ LABEL_18:
       v10 = 0;
     }
 
-    if (v7 == 4)
+    if (playbackStyle == 4)
     {
       v9 = 4;
     }
@@ -1240,34 +1240,34 @@ LABEL_22:
     goto LABEL_33;
   }
 
-  v12 = [(PXStorySongsAutoEditDecisionListsProducer *)self storyConfiguration];
-  v13 = [v12 options];
+  storyConfiguration = [(PXStorySongsAutoEditDecisionListsProducer *)self storyConfiguration];
+  options = [storyConfiguration options];
 
-  if ((v13 & 0x10000) != 0)
+  if ((options & 0x10000) != 0)
   {
     goto LABEL_22;
   }
 
-  v14 = [(PXStorySongsAutoEditDecisionListsProducer *)self movieHighlights];
-  v15 = [v14 movieHighlightsForDisplayAsset:v6];
+  movieHighlights = [(PXStorySongsAutoEditDecisionListsProducer *)self movieHighlights];
+  v15 = [movieHighlights movieHighlightsForDisplayAsset:assetCopy];
 
   *&v31.value = PXStoryTimeZero;
   v31.epoch = 0;
-  v16 = [v15 livePhoto];
-  v17 = v16;
-  if (v16)
+  livePhoto = [v15 livePhoto];
+  v17 = livePhoto;
+  if (livePhoto)
   {
-    [v16 timeRange];
+    [livePhoto timeRange];
     v31 = v30;
   }
 
-  else if ([v6 isEligibleForAutoPlayback])
+  else if ([assetCopy isEligibleForAutoPlayback])
   {
-    v18 = [v15 defaultHighlight];
-    v19 = v18;
-    if (v18)
+    defaultHighlight = [v15 defaultHighlight];
+    v19 = defaultHighlight;
+    if (defaultHighlight)
     {
-      [v18 timeRange];
+      [defaultHighlight timeRange];
       v31 = v29;
     }
   }
@@ -1280,7 +1280,7 @@ LABEL_22:
   configuration = self->_configuration;
   if (configuration)
   {
-    [(PFStoryAutoEditConfiguration *)configuration durationInfoForPlaybackStyle:3 songPace:a4];
+    [(PFStoryAutoEditConfiguration *)configuration durationInfoForPlaybackStyle:3 songPace:pace];
   }
 
   time1 = v31;
@@ -1300,10 +1300,10 @@ LABEL_33:
   return v9;
 }
 
-- ($A35046FF140701A0BC97C4369CFAD28C)_optimizeOverallDurationOfClips:(SEL)a3 forSong:(id)a4
+- ($A35046FF140701A0BC97C4369CFAD28C)_optimizeOverallDurationOfClips:(SEL)clips forSong:(id)song
 {
   v111 = *MEMORY[0x1E69E9840];
-  v70 = a4;
+  songCopy = song;
   v8 = a5;
   [v8 pace];
   PXAudioAssetExportableDurationWithDefaultEntryPoint(v8, buf);
@@ -1329,19 +1329,19 @@ LABEL_33:
   v14 = v11 - 1;
   if (v11 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v12))
   {
-    v15 = self;
+    selfCopy = self;
     v16 = flags;
     v17 = v8;
     v18 = retstr;
-    v19 = [v70 numberOfClips];
+    numberOfClips = [songCopy numberOfClips];
     PFStoryRecipeSongPaceDescription();
     v20 = v68 = epoch;
     LODWORD(buf[0].value) = 134218242;
-    *(&buf[0].value + 4) = v19;
+    *(&buf[0].value + 4) = numberOfClips;
     retstr = v18;
     v8 = v17;
     flags = v16;
-    self = v15;
+    self = selfCopy;
     v14 = v11 - 1;
     LOWORD(buf[0].flags) = 2114;
     *(&buf[0].flags + 2) = v20;
@@ -1369,7 +1369,7 @@ LABEL_33:
     v100[3] = &unk_1E7743A80;
     v69 = v25;
     v101 = v69;
-    [v70 enumerateClipsUsingBlock:v100];
+    [songCopy enumerateClipsUsingBlock:v100];
     v26 = self->_targetOverallDurationInfo.kind;
     v67 = v14;
     if (v26 <= 2)
@@ -1533,8 +1533,8 @@ LABEL_79:
         }
 
 LABEL_51:
-        v64 = self;
-        if ([v70 numberOfClips] >= 1)
+        selfCopy2 = self;
+        if ([songCopy numberOfClips] >= 1)
         {
           v43 = 0;
           v44 = MEMORY[0x1E6960CC0];
@@ -1589,10 +1589,10 @@ LABEL_51:
             v76 = *&v108[1];
             v72 = *&buf[0].value;
             v73 = *&buf[0].epoch;
-            [v70 updateClipAtIndex:v43++ usingBlock:v71];
+            [songCopy updateClipAtIndex:v43++ usingBlock:v71];
           }
 
-          while (v43 < [v70 numberOfClips]);
+          while (v43 < [songCopy numberOfClips]);
         }
 
         if (v69)
@@ -1606,7 +1606,7 @@ LABEL_51:
           memset(buf, 0, sizeof(buf));
         }
 
-        self = v64;
+        self = selfCopy2;
         v47 = v14;
         v48 = v108[0];
         *&v66->var1.var1.var0 = *&buf[1].timescale;
@@ -1852,27 +1852,27 @@ uint64_t __85__PXStorySongsAutoEditDecisionListsProducer__optimizeOverallDuratio
   return [a2 setDurationInfo:v5];
 }
 
-- (void)_adjustAudioTransitionForClips:(id)a3
+- (void)_adjustAudioTransitionForClips:(id)clips
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  clipsCopy = clips;
   v5 = os_signpost_id_make_with_pointer(self->_log, self);
   v6 = self->_log;
   v7 = v6;
   if (v5 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v6))
   {
     *buf = 134217984;
-    v24 = [v4 numberOfClips];
+    numberOfClips = [clipsCopy numberOfClips];
     _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v7, OS_SIGNPOST_INTERVAL_BEGIN, v5, "PXStoryAutoEditDecisionList.AudioCuts", "Count=%ld", buf, 0xCu);
   }
 
   v8 = +[PXStorySettings sharedInstance];
-  v9 = [v8 wantsAudioJLCuts];
+  wantsAudioJLCuts = [v8 wantsAudioJLCuts];
   [v8 audioJCutDuration];
   v11 = v10;
   [v8 audioLCutDuration];
   v13 = v12;
-  v14 = [v8 wantsAudioFade];
+  wantsAudioFade = [v8 wantsAudioFade];
   [v8 audioFadeMinDuration];
   v16 = v15;
   [v8 audioFadeMaxDuration];
@@ -1881,13 +1881,13 @@ uint64_t __85__PXStorySongsAutoEditDecisionListsProducer__optimizeOverallDuratio
   v20[2] = __76__PXStorySongsAutoEditDecisionListsProducer__adjustAudioTransitionForClips___block_invoke;
   v20[3] = &unk_1E7741B10;
   v20[4] = self;
-  v21 = v9;
+  v21 = wantsAudioJLCuts;
   v20[5] = v11;
   v20[6] = v13;
-  v22 = v14;
+  v22 = wantsAudioFade;
   v20[7] = v16;
   v20[8] = v17;
-  [v4 enumeratePairsOfMutableClipsUsingBlock:v20];
+  [clipsCopy enumeratePairsOfMutableClipsUsingBlock:v20];
   v18 = self->_log;
   v19 = v18;
   if (v5 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v18))
@@ -2034,29 +2034,29 @@ void __76__PXStorySongsAutoEditDecisionListsProducer__adjustAudioTransitionForCl
   [v6 setAudioInfo:&v17];
 }
 
-- (void)_adjustAudioPlaybackForClips:(id)a3
+- (void)_adjustAudioPlaybackForClips:(id)clips
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  clipsCopy = clips;
   v5 = os_signpost_id_make_with_pointer(self->_log, self);
   v6 = self->_log;
   v7 = v6;
   if (v5 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v6))
   {
     *buf = 134217984;
-    v15 = [v4 numberOfClips];
+    numberOfClips = [clipsCopy numberOfClips];
     _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v7, OS_SIGNPOST_INTERVAL_BEGIN, v5, "PXStoryAutoEditDecisionList.AudioMode", "Count=%ld", buf, 0xCu);
   }
 
-  v8 = [(PXStorySongsAutoEditDecisionListsProducer *)self storyConfiguration];
+  storyConfiguration = [(PXStorySongsAutoEditDecisionListsProducer *)self storyConfiguration];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __74__PXStorySongsAutoEditDecisionListsProducer__adjustAudioPlaybackForClips___block_invoke;
   v12[3] = &unk_1E7741AC0;
   v12[4] = self;
-  v9 = v8;
+  v9 = storyConfiguration;
   v13 = v9;
-  [v4 enumerateMutableClipsUsingBlock:v12];
+  [clipsCopy enumerateMutableClipsUsingBlock:v12];
   v10 = self->_log;
   v11 = v10;
   if (v5 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
@@ -2092,19 +2092,19 @@ void __74__PXStorySongsAutoEditDecisionListsProducer__adjustAudioPlaybackForClip
   [v3 setAudioInfo:v17];
 }
 
-- (void)_adjustDurationOfClips:(id)a3 forSongPace:(int64_t)a4
+- (void)_adjustDurationOfClips:(id)clips forSongPace:(int64_t)pace
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  clipsCopy = clips;
   v7 = os_signpost_id_make_with_pointer(self->_log, self);
   v8 = self->_log;
   v9 = v8;
   if (v7 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v8))
   {
-    v10 = [v6 numberOfClips];
+    numberOfClips = [clipsCopy numberOfClips];
     v11 = PFStoryRecipeSongPaceDescription();
     *buf = 134218242;
-    v26 = v10;
+    v26 = numberOfClips;
     v27 = 2114;
     v28 = v11;
     _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v9, OS_SIGNPOST_INTERVAL_BEGIN, v7, "PXStoryAutoEditDecisionList.Durations", "Count=%ld pace=%{public}@", buf, 0x16u);
@@ -2118,8 +2118,8 @@ void __74__PXStorySongsAutoEditDecisionListsProducer__adjustAudioPlaybackForClip
   v23[4] = self;
   v13 = v12;
   v24 = v13;
-  [v6 enumerateMutableClipsUsingBlock:v23];
-  if ([v6 numberOfClips] >= 1)
+  [clipsCopy enumerateMutableClipsUsingBlock:v23];
+  if ([clipsCopy numberOfClips] >= 1)
   {
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
@@ -2127,14 +2127,14 @@ void __74__PXStorySongsAutoEditDecisionListsProducer__adjustAudioPlaybackForClip
     v21[3] = &unk_1E7741960;
     v14 = v13;
     v22 = v14;
-    [v6 updateClipAtIndex:0 usingBlock:v21];
-    v15 = [v6 numberOfClips] - 1;
+    [clipsCopy updateClipAtIndex:0 usingBlock:v21];
+    v15 = [clipsCopy numberOfClips] - 1;
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __80__PXStorySongsAutoEditDecisionListsProducer__adjustDurationOfClips_forSongPace___block_invoke_3;
     v19[3] = &unk_1E7741960;
     v20 = v14;
-    [v6 updateClipAtIndex:v15 usingBlock:v19];
+    [clipsCopy updateClipAtIndex:v15 usingBlock:v19];
   }
 
   v18[0] = MEMORY[0x1E69E9820];
@@ -2142,8 +2142,8 @@ void __74__PXStorySongsAutoEditDecisionListsProducer__adjustAudioPlaybackForClip
   v18[2] = __80__PXStorySongsAutoEditDecisionListsProducer__adjustDurationOfClips_forSongPace___block_invoke_4;
   v18[3] = &unk_1E7741AE8;
   v18[4] = self;
-  v18[5] = a4;
-  [v6 enumeratePairsOfMutableClipsUsingBlock:v18];
+  v18[5] = pace;
+  [clipsCopy enumeratePairsOfMutableClipsUsingBlock:v18];
   v16 = self->_log;
   v17 = v16;
   if (v7 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v16))
@@ -2345,21 +2345,21 @@ void __80__PXStorySongsAutoEditDecisionListsProducer__adjustDurationOfClips_forS
 LABEL_25:
 }
 
-- (id)_indexesOfClips:(id)a3 atChapterBeginningInChapterCollection:(id)a4
+- (id)_indexesOfClips:(id)clips atChapterBeginningInChapterCollection:(id)collection
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 numberOfClips];
+  clipsCopy = clips;
+  collectionCopy = collection;
+  numberOfClips = [clipsCopy numberOfClips];
   v8 = objc_alloc_init(MEMORY[0x1E696AD50]);
-  if (v7 >= 1)
+  if (numberOfClips >= 1)
   {
-    for (i = 0; i != v7; ++i)
+    for (i = 0; i != numberOfClips; ++i)
     {
-      v10 = [v5 clipAtIndex:i];
-      v11 = [v10 displayAssets];
-      v12 = [v11 firstObject];
+      v10 = [clipsCopy clipAtIndex:i];
+      displayAssets = [v10 displayAssets];
+      firstObject = [displayAssets firstObject];
 
-      if (v12 && [v6 containsChapterBeginningWithAsset:v12])
+      if (firstObject && [collectionCopy containsChapterBeginningWithAsset:firstObject])
       {
         [v8 addIndex:i];
       }
@@ -2371,25 +2371,25 @@ LABEL_25:
   return v13;
 }
 
-- (void)_adjustTransitionsInClips:(id)a3 forChapterCollection:(id)a4
+- (void)_adjustTransitionsInClips:(id)clips forChapterCollection:(id)collection
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 numberOfChapters])
+  clipsCopy = clips;
+  collectionCopy = collection;
+  if ([collectionCopy numberOfChapters])
   {
-    v8 = [(PXStorySongsAutoEditDecisionListsProducer *)self _indexesOfClips:v6 atChapterBeginningInChapterCollection:v7];
+    v8 = [(PXStorySongsAutoEditDecisionListsProducer *)self _indexesOfClips:clipsCopy atChapterBeginningInChapterCollection:collectionCopy];
     v9 = +[PXStoryTransitionsSettings sharedInstance];
-    v10 = [v9 forcedTransitionKindAtChapterBoundary];
-    v11 = [v9 disableUnsupportedTransitionsAtChapterBoundary];
+    forcedTransitionKindAtChapterBoundary = [v9 forcedTransitionKindAtChapterBoundary];
+    disableUnsupportedTransitionsAtChapterBoundary = [v9 disableUnsupportedTransitionsAtChapterBoundary];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __92__PXStorySongsAutoEditDecisionListsProducer__adjustTransitionsInClips_forChapterCollection___block_invoke;
     v13[3] = &unk_1E7741A98;
     v14 = v8;
-    v15 = v10;
-    v16 = v11;
+    v15 = forcedTransitionKindAtChapterBoundary;
+    v16 = disableUnsupportedTransitionsAtChapterBoundary;
     v12 = v8;
-    [v6 enumerateMutableClipsUsingBlock:v13];
+    [clipsCopy enumerateMutableClipsUsingBlock:v13];
   }
 }
 
@@ -2488,18 +2488,18 @@ LABEL_17:
   }
 }
 
-- (_NSRange)_clipRangeForMoment:(id)a3 inClips:(id)a4
+- (_NSRange)_clipRangeForMoment:(id)moment inClips:(id)clips
 {
   v36 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 firstGlobalIndex];
-  v9 = [v6 lastGlobalIndex];
-  v10 = [(PXDisplayAssetFetchResult *)self->_displayAssets objectAtIndexedSubscript:v8];
-  v11 = [v7 indexOfClipForDisplayAsset:v10];
+  momentCopy = moment;
+  clipsCopy = clips;
+  firstGlobalIndex = [momentCopy firstGlobalIndex];
+  lastGlobalIndex = [momentCopy lastGlobalIndex];
+  v10 = [(PXDisplayAssetFetchResult *)self->_displayAssets objectAtIndexedSubscript:firstGlobalIndex];
+  v11 = [clipsCopy indexOfClipForDisplayAsset:v10];
 
-  v12 = [(PXDisplayAssetFetchResult *)self->_displayAssets objectAtIndexedSubscript:v9];
-  v13 = [v7 indexOfClipForDisplayAsset:v12];
+  v12 = [(PXDisplayAssetFetchResult *)self->_displayAssets objectAtIndexedSubscript:lastGlobalIndex];
+  v13 = [clipsCopy indexOfClipForDisplayAsset:v12];
 
   if (v13 < v11)
   {
@@ -2507,15 +2507,15 @@ LABEL_17:
     if (os_log_type_enabled(v17, OS_LOG_TYPE_FAULT))
     {
       *buf = 134219010;
-      v27 = v8;
+      v27 = firstGlobalIndex;
       v28 = 2048;
-      v29 = v9;
+      v29 = lastGlobalIndex;
       v30 = 2048;
       v31 = v11;
       v32 = 2048;
       v33 = v13;
       v34 = 2112;
-      v35 = v6;
+      v35 = momentCopy;
       _os_log_impl(&dword_1A3C1C000, v17, OS_LOG_TYPE_FAULT, "Out of order clips detected. firstAssetIdx: %lu, lastAssetIdx: %lu, firstClipIdx: %lu, lastClipIdx: %lu, moment: %@", buf, 0x34u);
     }
 
@@ -2580,29 +2580,29 @@ LABEL_17:
   return result;
 }
 
-- (void)_populateTransitionsInClips:(id)a3 forSongPace:(int64_t)a4 colorGradeCategory:(id)a5
+- (void)_populateTransitionsInClips:(id)clips forSongPace:(int64_t)pace colorGradeCategory:(id)category
 {
   v35 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  clipsCopy = clips;
+  categoryCopy = category;
   v10 = os_signpost_id_make_with_pointer(self->_log, self);
   v11 = self->_log;
   v12 = v11;
   if (v10 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v11))
   {
-    v13 = [v8 numberOfClips];
+    numberOfClips = [clipsCopy numberOfClips];
     v14 = PFStoryRecipeSongPaceDescription();
     *buf = 134218498;
-    v30 = v13;
+    v30 = numberOfClips;
     v31 = 2114;
     v32 = v14;
     v33 = 2114;
-    v34 = v9;
+    v34 = categoryCopy;
     _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v12, OS_SIGNPOST_INTERVAL_BEGIN, v10, "PXStoryAutoEditDecisionList.Transitions", "Count=%ld pace=%{public}@, grade=%{public}@", buf, 0x20u);
   }
 
-  v15 = [(PXStorySongsAutoEditDecisionListsProducer *)self _makeRandomNumberGenerator];
-  v16 = [[PXStoryRecipeClipTransitionProvider alloc] initWithConfiguration:self->_configuration colorGradeCategory:v9 songPace:a4 randomNumberGenerator:v15];
+  _makeRandomNumberGenerator = [(PXStorySongsAutoEditDecisionListsProducer *)self _makeRandomNumberGenerator];
+  v16 = [[PXStoryRecipeClipTransitionProvider alloc] initWithConfiguration:self->_configuration colorGradeCategory:categoryCopy songPace:pace randomNumberGenerator:_makeRandomNumberGenerator];
   v17 = self->_configuration;
   momentsProvider = self->_momentsProvider;
   v24[0] = MEMORY[0x1E69E9820];
@@ -2610,13 +2610,13 @@ LABEL_17:
   v24[2] = __104__PXStorySongsAutoEditDecisionListsProducer__populateTransitionsInClips_forSongPace_colorGradeCategory___block_invoke;
   v24[3] = &unk_1E7741938;
   v24[4] = self;
-  v19 = v8;
+  v19 = clipsCopy;
   v25 = v19;
   v20 = v16;
   v26 = v20;
   v21 = v17;
   v27 = v21;
-  v28 = a4;
+  paceCopy = pace;
   [(PXStoryAutoEditMomentsProvider *)momentsProvider enumerateMomentsUsingBlock:v24];
   v22 = self->_log;
   v23 = v22;
@@ -2675,32 +2675,32 @@ void __104__PXStorySongsAutoEditDecisionListsProducer__populateTransitionsInClip
   [v5 setTransitionInfo:v7];
 }
 
-- (void)_populateMotionStylesInClips:(id)a3 forSongPace:(int64_t)a4 colorGradeCategory:(id)a5
+- (void)_populateMotionStylesInClips:(id)clips forSongPace:(int64_t)pace colorGradeCategory:(id)category
 {
   v34 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  clipsCopy = clips;
+  categoryCopy = category;
   v10 = os_signpost_id_make_with_pointer(self->_log, self);
   v11 = self->_log;
   v12 = v11;
   if (v10 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v11))
   {
-    v13 = [v8 numberOfClips];
+    numberOfClips = [clipsCopy numberOfClips];
     v14 = PFStoryRecipeSongPaceDescription();
     *buf = 134218498;
-    v29 = v13;
+    v29 = numberOfClips;
     v30 = 2114;
     v31 = v14;
     v32 = 2114;
-    v33 = v9;
+    v33 = categoryCopy;
     _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v12, OS_SIGNPOST_INTERVAL_BEGIN, v10, "PXStoryAutoEditDecisionList.MotionStyles", "Count=%ld pace=%{public}@, grade=%{public}@", buf, 0x20u);
   }
 
-  v15 = [(PXStorySongsAutoEditDecisionListsProducer *)self _makeRandomNumberGenerator];
+  _makeRandomNumberGenerator = [(PXStorySongsAutoEditDecisionListsProducer *)self _makeRandomNumberGenerator];
   v16 = [PXStoryRecipeClipMotionStyleProvider alloc];
   configuration = self->_configuration;
-  v18 = [(PXStorySongsAutoEditDecisionListsProducer *)self storyConfiguration];
-  v19 = [(PXStoryRecipeClipMotionStyleProvider *)v16 initWithConfiguration:configuration colorGradeCategory:v9 songPace:a4 randomNumberGenerator:v15 storyConfiguration:v18];
+  storyConfiguration = [(PXStorySongsAutoEditDecisionListsProducer *)self storyConfiguration];
+  v19 = [(PXStoryRecipeClipMotionStyleProvider *)v16 initWithConfiguration:configuration colorGradeCategory:categoryCopy songPace:pace randomNumberGenerator:_makeRandomNumberGenerator storyConfiguration:storyConfiguration];
 
   momentsProvider = self->_momentsProvider;
   v25[0] = MEMORY[0x1E69E9820];
@@ -2708,7 +2708,7 @@ void __104__PXStorySongsAutoEditDecisionListsProducer__populateTransitionsInClip
   v25[2] = __105__PXStorySongsAutoEditDecisionListsProducer__populateMotionStylesInClips_forSongPace_colorGradeCategory___block_invoke;
   v25[3] = &unk_1E7741A20;
   v25[4] = self;
-  v21 = v8;
+  v21 = clipsCopy;
   v26 = v21;
   v22 = v19;
   v27 = v22;
@@ -2755,32 +2755,32 @@ uint64_t __105__PXStorySongsAutoEditDecisionListsProducer__populateMotionStylesI
   return [a2 setMotionInfo:&v3];
 }
 
-- (void)_populateMomentRecipesInClips:(id)a3 forSongPace:(int64_t)a4 colorGradeCategory:(id)a5
+- (void)_populateMomentRecipesInClips:(id)clips forSongPace:(int64_t)pace colorGradeCategory:(id)category
 {
   v42 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  clipsCopy = clips;
+  categoryCopy = category;
   v10 = os_signpost_id_make_with_pointer(self->_log, self);
   v11 = self->_log;
   v12 = v11;
   v13 = v10 - 1;
   if (v10 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v11))
   {
-    v14 = [v8 numberOfClips];
+    numberOfClips = [clipsCopy numberOfClips];
     v15 = PFStoryRecipeSongPaceDescription();
     *buf = 134218498;
-    v37 = v14;
+    v37 = numberOfClips;
     v38 = 2114;
     v39 = v15;
     v40 = 2114;
-    v41 = v9;
+    v41 = categoryCopy;
     _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v12, OS_SIGNPOST_INTERVAL_BEGIN, v10, "PXStoryAutoEditDecisionList.MomentRecipes", "Count=%ld pace=%{public}@, grade=%{public}@", buf, 0x20u);
   }
 
   spid = v10;
 
-  v16 = [(PXStorySongsAutoEditDecisionListsProducer *)self _makeRandomNumberGenerator];
-  v17 = [[PXStoryMomentRecipeProvider alloc] initWithConfiguration:self->_configuration colorGradeCategory:v9 songPace:a4 randomNumberGenerator:v16];
+  _makeRandomNumberGenerator = [(PXStorySongsAutoEditDecisionListsProducer *)self _makeRandomNumberGenerator];
+  v17 = [[PXStoryMomentRecipeProvider alloc] initWithConfiguration:self->_configuration colorGradeCategory:categoryCopy songPace:pace randomNumberGenerator:_makeRandomNumberGenerator];
   v18 = self->_configuration;
   momentsProvider = self->_momentsProvider;
   v31[0] = MEMORY[0x1E69E9820];
@@ -2788,13 +2788,13 @@ uint64_t __105__PXStorySongsAutoEditDecisionListsProducer__populateMotionStylesI
   v31[2] = __106__PXStorySongsAutoEditDecisionListsProducer__populateMomentRecipesInClips_forSongPace_colorGradeCategory___block_invoke;
   v31[3] = &unk_1E7741938;
   v31[4] = self;
-  v20 = v8;
+  v20 = clipsCopy;
   v32 = v20;
   v21 = v17;
   v33 = v21;
   v22 = v18;
   v34 = v22;
-  v35 = a4;
+  paceCopy = pace;
   [(PXStoryAutoEditMomentsProvider *)momentsProvider enumerateMomentsUsingBlock:v31];
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
@@ -2912,48 +2912,48 @@ uint64_t __106__PXStorySongsAutoEditDecisionListsProducer__populateMomentRecipes
   return [a2 setTransitionInfo:v4];
 }
 
-- (void)_populateMotionStylesAndTransitionsInClips:(id)a3 forSongPace:(int64_t)a4 colorGradeCategory:(id)a5
+- (void)_populateMotionStylesAndTransitionsInClips:(id)clips forSongPace:(int64_t)pace colorGradeCategory:(id)category
 {
-  v12 = a3;
-  v8 = a5;
+  clipsCopy = clips;
+  categoryCopy = category;
   v9 = +[PXStorySettings sharedInstance];
-  v10 = [v9 autoEditUseMomentRecipes];
+  autoEditUseMomentRecipes = [v9 autoEditUseMomentRecipes];
 
-  if (v10)
+  if (autoEditUseMomentRecipes)
   {
-    [(PXStorySongsAutoEditDecisionListsProducer *)self _populateMomentRecipesInClips:v12 forSongPace:a4 colorGradeCategory:v8];
+    [(PXStorySongsAutoEditDecisionListsProducer *)self _populateMomentRecipesInClips:clipsCopy forSongPace:pace colorGradeCategory:categoryCopy];
   }
 
   else
   {
-    [(PXStorySongsAutoEditDecisionListsProducer *)self _populateMotionStylesInClips:v12 forSongPace:a4 colorGradeCategory:v8];
-    [(PXStorySongsAutoEditDecisionListsProducer *)self _populateTransitionsInClips:v12 forSongPace:a4 colorGradeCategory:v8];
+    [(PXStorySongsAutoEditDecisionListsProducer *)self _populateMotionStylesInClips:clipsCopy forSongPace:pace colorGradeCategory:categoryCopy];
+    [(PXStorySongsAutoEditDecisionListsProducer *)self _populateTransitionsInClips:clipsCopy forSongPace:pace colorGradeCategory:categoryCopy];
   }
 
-  v11 = [(PXStorySongsAutoEditDecisionListsProducer *)self chapterCollection];
-  [(PXStorySongsAutoEditDecisionListsProducer *)self _adjustTransitionsInClips:v12 forChapterCollection:v11];
+  chapterCollection = [(PXStorySongsAutoEditDecisionListsProducer *)self chapterCollection];
+  [(PXStorySongsAutoEditDecisionListsProducer *)self _adjustTransitionsInClips:clipsCopy forChapterCollection:chapterCollection];
 }
 
-- (void)_populateModulesInClips:(id)a3
+- (void)_populateModulesInClips:(id)clips
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  clipsCopy = clips;
   v5 = os_signpost_id_make_with_pointer(self->_log, self);
   v6 = self->_log;
   v7 = v6;
   if (v5 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v6))
   {
     *buf = 134217984;
-    v24 = [v4 numberOfClips];
+    numberOfClips = [clipsCopy numberOfClips];
     _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v7, OS_SIGNPOST_INTERVAL_BEGIN, v5, "PXStoryAutoEditDecisionList.Modules", "Count=%ld", buf, 0xCu);
   }
 
   v8 = [[PXStoryRecipeClipModuleProvider alloc] initWithConfiguration:self->_configuration];
   v9 = +[PXStorySettings sharedInstance];
-  v10 = [v9 autoEditModuleLengthMax];
+  autoEditModuleLengthMax = [v9 autoEditModuleLengthMax];
 
   v11 = +[PXStorySettings sharedInstance];
-  v12 = [v11 autoEditEmptySpaceLengthMax];
+  autoEditEmptySpaceLengthMax = [v11 autoEditEmptySpaceLengthMax];
 
   momentsProvider = self->_momentsProvider;
   v18[0] = MEMORY[0x1E69E9820];
@@ -2961,12 +2961,12 @@ uint64_t __106__PXStorySongsAutoEditDecisionListsProducer__populateMomentRecipes
   v18[2] = __69__PXStorySongsAutoEditDecisionListsProducer__populateModulesInClips___block_invoke;
   v18[3] = &unk_1E77418C8;
   v18[4] = self;
-  v14 = v4;
+  v14 = clipsCopy;
   v19 = v14;
   v15 = v8;
   v20 = v15;
-  v21 = v10;
-  v22 = v12;
+  v21 = autoEditModuleLengthMax;
+  v22 = autoEditEmptySpaceLengthMax;
   [(PXStoryAutoEditMomentsProvider *)momentsProvider enumerateMomentsUsingBlock:v18];
   v16 = self->_log;
   v17 = v16;
@@ -3022,20 +3022,20 @@ void __69__PXStorySongsAutoEditDecisionListsProducer__populateModulesInClips___b
   [v5 setModuleInfo:{v2, v6 | v3}];
 }
 
-- (unint64_t)_composeClips:(id)a3 inAssetRange:(_NSRange)a4
+- (unint64_t)_composeClips:(id)clips inAssetRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v7 = a3;
-  v8 = [(PXStorySongsAutoEditDecisionListsProducer *)self storyConfiguration];
-  v9 = [v8 disableNUp];
+  length = range.length;
+  location = range.location;
+  clipsCopy = clips;
+  storyConfiguration = [(PXStorySongsAutoEditDecisionListsProducer *)self storyConfiguration];
+  disableNUp = [storyConfiguration disableNUp];
 
-  if ((v9 & 1) == 0)
+  if ((disableNUp & 1) == 0)
   {
     v11 = [(PXStoryAutoEditMomentsProvider *)self->_momentsProvider momentForDisplayAssetIndex:location];
     v12 = location + length;
-    v13 = [v11 assetIndexRange];
-    if (location + length > v13 + v14 || !location || v12 == -[PXDisplayAssetFetchResult count](self->_displayAssets, "count") || (v15 = v12 - 1, -[PXDisplayAssetFetchResult objectAtIndexedSubscript:](self->_displayAssets, "objectAtIndexedSubscript:", location), v16 = objc_claimAutoreleasedReturnValue(), v17 = [v7 indexOfClipForDisplayAsset:v16], v16, -[PXDisplayAssetFetchResult objectAtIndexedSubscript:](self->_displayAssets, "objectAtIndexedSubscript:", v15), v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v7, "indexOfClipForDisplayAsset:", v18), v18, v19 == v17))
+    assetIndexRange = [v11 assetIndexRange];
+    if (location + length > assetIndexRange + v14 || !location || v12 == -[PXDisplayAssetFetchResult count](self->_displayAssets, "count") || (v15 = v12 - 1, -[PXDisplayAssetFetchResult objectAtIndexedSubscript:](self->_displayAssets, "objectAtIndexedSubscript:", location), v16 = objc_claimAutoreleasedReturnValue(), v17 = [clipsCopy indexOfClipForDisplayAsset:v16], v16, -[PXDisplayAssetFetchResult objectAtIndexedSubscript:](self->_displayAssets, "objectAtIndexedSubscript:", v15), v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(clipsCopy, "indexOfClipForDisplayAsset:", v18), v18, v19 == v17))
     {
       v10 = 0;
 LABEL_8:
@@ -3053,14 +3053,14 @@ LABEL_8:
       v46 = v17;
       do
       {
-        v21 = [v7 clipAtIndex:v46];
+        v21 = [clipsCopy clipAtIndex:v46];
         if ([v21 playbackStyle] != 1)
         {
           goto LABEL_35;
         }
 
-        v47 = [v21 displayAssets];
-        v10 += [v47 count];
+        displayAssets = [v21 displayAssets];
+        v10 += [displayAssets count];
 
         ++v46;
       }
@@ -3075,10 +3075,10 @@ LABEL_39:
 
       if (length == 2 && v10 == 3)
       {
-        v48 = [v7 clipAtIndex:v17];
-        v49 = [v48 displayAssets];
+        v48 = [clipsCopy clipAtIndex:v17];
+        displayAssets2 = [v48 displayAssets];
         v50 = [(PXDisplayAssetFetchResult *)self->_displayAssets objectAtIndexedSubscript:location];
-        v51 = [v49 indexOfObject:v50];
+        v51 = [displayAssets2 indexOfObject:v50];
 
         [(PXStoryAutoEditClipComposabilityProvider *)self->_composabilityProvider composabilityScoresForDisplayAssetIndex:location - v51];
         v53 = v52;
@@ -3097,7 +3097,7 @@ LABEL_39:
     v21 = +[PXStorySettings sharedInstance];
     if ([v21 autoEditUseMomentRecipes])
     {
-      v56 = [(PFStoryAutoEditConfiguration *)self->_configuration composabilityMaximumNUpRunCount];
+      composabilityMaximumNUpRunCount = [(PFStoryAutoEditConfiguration *)self->_configuration composabilityMaximumNUpRunCount];
       v22 = v17;
       if (v17 >= 1)
       {
@@ -3105,9 +3105,9 @@ LABEL_39:
         while (1)
         {
           v23 = v22 - 1;
-          v24 = [v7 clipAtIndex:v22 - 1];
-          v25 = [v24 displayAssets];
-          v26 = [v25 count];
+          v24 = [clipsCopy clipAtIndex:v22 - 1];
+          displayAssets3 = [v24 displayAssets];
+          v26 = [displayAssets3 count];
 
           if (v26 < 2)
           {
@@ -3128,20 +3128,20 @@ LABEL_39:
       do
       {
         v28 = v27++;
-        if (v27 >= [v7 numberOfClips])
+        if (v27 >= [clipsCopy numberOfClips])
         {
           break;
         }
 
-        v29 = [v7 clipAtIndex:v27];
-        v30 = [v29 displayAssets];
-        v31 = [v30 count];
+        v29 = [clipsCopy clipAtIndex:v27];
+        displayAssets4 = [v29 displayAssets];
+        v31 = [displayAssets4 count];
       }
 
       while (v31 > 1);
       v32 = v57 - (v60 + v22) + v28;
       v17 = v57;
-      if (v32 + 1 > v56)
+      if (v32 + 1 > composabilityMaximumNUpRunCount)
       {
         goto LABEL_35;
       }
@@ -3152,8 +3152,8 @@ LABEL_39:
       goto LABEL_40;
     }
 
-    v58 = [(PFStoryAutoEditConfiguration *)self->_configuration composabilityMinimum1UpRunCount];
-    v33 = (v17 - v58) & ~((v17 - v58) >> 63);
+    composabilityMinimum1UpRunCount = [(PFStoryAutoEditConfiguration *)self->_configuration composabilityMinimum1UpRunCount];
+    v33 = (v17 - composabilityMinimum1UpRunCount) & ~((v17 - composabilityMinimum1UpRunCount) >> 63);
     v34 = v17;
     if (v17 > v33)
     {
@@ -3161,9 +3161,9 @@ LABEL_39:
       do
       {
         v35 = v34 - 1;
-        v36 = [v7 clipAtIndex:v34 - 1];
-        v37 = [v36 displayAssets];
-        v38 = [v37 count];
+        v36 = [clipsCopy clipAtIndex:v34 - 1];
+        displayAssets5 = [v36 displayAssets];
+        v38 = [displayAssets5 count];
 
         if (v38 != 1)
         {
@@ -3181,25 +3181,25 @@ LABEL_39:
     {
       v40 = v39;
       v41 = v39 + 1;
-      if (v39 + 1 >= [v7 numberOfClips])
+      if (v39 + 1 >= [clipsCopy numberOfClips])
       {
         break;
       }
 
-      if (v40 >= v58 + v60)
+      if (v40 >= composabilityMinimum1UpRunCount + v60)
       {
         break;
       }
 
-      v42 = [v7 clipAtIndex:v41];
-      v43 = [v42 displayAssets];
-      v44 = [v43 count];
+      v42 = [clipsCopy clipAtIndex:v41];
+      displayAssets6 = [v42 displayAssets];
+      v44 = [displayAssets6 count];
 
       v39 = v40 + 1;
     }
 
     while (v44 == 1);
-    if (v17 - v34 >= 1 && v17 - v34 < v58 || v40 - v60 >= 1 && v40 - v60 < v58)
+    if (v17 - v34 >= 1 && v17 - v34 < composabilityMinimum1UpRunCount || v40 - v60 >= 1 && v40 - v60 < composabilityMinimum1UpRunCount)
     {
 LABEL_35:
       v10 = 0;
@@ -3208,7 +3208,7 @@ LABEL_35:
     else
     {
 LABEL_40:
-      [v7 composeClipsInRange:{v17, v59 + 1}];
+      [clipsCopy composeClipsInRange:{v17, v59 + 1}];
     }
 
 LABEL_42:
@@ -3222,10 +3222,10 @@ LABEL_9:
   return v10;
 }
 
-- (void)_composeClips:(id)a3 forSongPace:(int64_t)a4
+- (void)_composeClips:(id)clips forSongPace:(int64_t)pace
 {
   v131 = *MEMORY[0x1E69E9840];
-  v77 = a3;
+  clipsCopy = clips;
   v5 = os_signpost_id_make_with_pointer(self->_log, self);
   v6 = self->_log;
   v7 = v6;
@@ -3233,19 +3233,19 @@ LABEL_9:
   v75 = v5 - 1;
   if (v5 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v6))
   {
-    v8 = [v77 numberOfClips];
+    numberOfClips = [clipsCopy numberOfClips];
     v9 = PFStoryRecipeSongPaceDescription();
     *buf = 134218242;
-    *&buf[4] = v8;
+    *&buf[4] = numberOfClips;
     *&buf[12] = 2114;
     *&buf[14] = v9;
     _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v7, OS_SIGNPOST_INTERVAL_BEGIN, spid, "PXStoryAutoEditDecisionList.NUps", "Count=%ld pace=%{public}@", buf, 0x16u);
   }
 
-  v10 = [(PXStorySongsAutoEditDecisionListsProducer *)self storyConfiguration];
-  v11 = [v10 disableNUp];
+  storyConfiguration = [(PXStorySongsAutoEditDecisionListsProducer *)self storyConfiguration];
+  disableNUp = [storyConfiguration disableNUp];
 
-  if (v11)
+  if (disableNUp)
   {
     v12 = 0;
   }
@@ -3285,7 +3285,7 @@ LABEL_9:
   configuration = self->_configuration;
   if (configuration)
   {
-    [(PFStoryAutoEditConfiguration *)configuration durationInfoForPlaybackStyle:1 songPace:a4];
+    [(PFStoryAutoEditConfiguration *)configuration durationInfoForPlaybackStyle:1 songPace:pace];
   }
 
   else
@@ -3302,7 +3302,7 @@ LABEL_9:
   v23 = self->_configuration;
   if (v23)
   {
-    [(PFStoryAutoEditConfiguration *)v23 durationInfoForPlaybackStyle:4 songPace:a4];
+    [(PFStoryAutoEditConfiguration *)v23 durationInfoForPlaybackStyle:4 songPace:pace];
   }
 
   else
@@ -3319,7 +3319,7 @@ LABEL_9:
   v25 = self->_configuration;
   if (v25)
   {
-    [(PFStoryAutoEditConfiguration *)v25 durationInfoForPlaybackStyle:3 songPace:a4];
+    [(PFStoryAutoEditConfiguration *)v25 durationInfoForPlaybackStyle:3 songPace:pace];
   }
 
   else
@@ -3498,7 +3498,7 @@ LABEL_32:
   v78[4] = &time;
   v78[5] = &v83;
   v78[6] = &v79;
-  [v77 enumerateClipsUsingBlock:{v78, spid}];
+  [clipsCopy enumerateClipsUsingBlock:{v78, spid}];
   v40 = *(*&time.timescale + 24);
   v41 = *(v84 + 6);
   v42 = *(v80 + 6);
@@ -3523,27 +3523,27 @@ LABEL_32:
     _os_log_impl(&dword_1A3C1C000, v49, OS_LOG_TYPE_DEBUG, "Target duration: %0.2f, current duration: %0.2f, composable clips: %lu", buf, 0x20u);
   }
 
-  v53 = [(PFStoryAutoEditConfiguration *)self->_configuration composabilityMinimumNUpCount];
-  v54 = [(PXStorySongsAutoEditDecisionListsProducer *)self storyConfiguration];
-  v55 = [v54 nUpCompositionIgnoresOverallTargetDuration];
+  composabilityMinimumNUpCount = [(PFStoryAutoEditConfiguration *)self->_configuration composabilityMinimumNUpCount];
+  storyConfiguration2 = [(PXStorySongsAutoEditDecisionListsProducer *)self storyConfiguration];
+  nUpCompositionIgnoresOverallTargetDuration = [storyConfiguration2 nUpCompositionIgnoresOverallTargetDuration];
 
   v56 = 0;
   v57 = Seconds * (2.0 - v44);
   v58 = Seconds * (3.0 - v46);
-  while ([v12 count] && (v50 > v39) | v55 & 1)
+  while ([v12 count] && (v50 > v39) | nUpCompositionIgnoresOverallTargetDuration & 1)
   {
-    v59 = [v12 lastObject];
-    v60 = [v59 unsignedIntegerValue];
+    lastObject = [v12 lastObject];
+    unsignedIntegerValue = [lastObject unsignedIntegerValue];
 
     [v12 removeLastObject];
-    [(PXStoryAutoEditClipComposabilityProvider *)self->_composabilityProvider composabilityScoresForDisplayAssetIndex:v60];
+    [(PXStoryAutoEditClipComposabilityProvider *)self->_composabilityProvider composabilityScoresForDisplayAssetIndex:unsignedIntegerValue];
     v62 = v61;
     v64 = v63;
     v65 = PLStoryGetLog();
     if (os_log_type_enabled(v65, OS_LOG_TYPE_DEBUG))
     {
       *buf = 134218496;
-      *&buf[4] = v60;
+      *&buf[4] = unsignedIntegerValue;
       *&buf[12] = 2048;
       *&buf[14] = v64;
       *&buf[22] = 2048;
@@ -3551,7 +3551,7 @@ LABEL_32:
       _os_log_impl(&dword_1A3C1C000, v65, OS_LOG_TYPE_DEBUG, "Asset: %lu, Triptych score: %0.2f, diptych score: %0.2f", buf, 0x20u);
     }
 
-    if (v56 >= v53 && v50 <= v51)
+    if (v56 >= composabilityMinimumNUpCount && v50 <= v51)
     {
       [(PFStoryAutoEditConfiguration *)self->_configuration composabilityScoreThreshold];
       v67 = v62 >= v64 ? v62 : v64;
@@ -3563,7 +3563,7 @@ LABEL_32:
 
     if (v64 <= v62)
     {
-      v68 = [(PXStorySongsAutoEditDecisionListsProducer *)self _composeClips:v77 inAssetRange:v60, 2];
+      v68 = [(PXStorySongsAutoEditDecisionListsProducer *)self _composeClips:clipsCopy inAssetRange:unsignedIntegerValue, 2];
       if (v68 == 3)
       {
         v50 = v50 - (v58 - v57);
@@ -3582,7 +3582,7 @@ LABEL_32:
       ++v56;
     }
 
-    else if ([(PXStorySongsAutoEditDecisionListsProducer *)self _composeClips:v77 inAssetRange:v60, 3]== 3)
+    else if ([(PXStorySongsAutoEditDecisionListsProducer *)self _composeClips:clipsCopy inAssetRange:unsignedIntegerValue, 3]== 3)
     {
       ++v56;
       v50 = v50 - v58;
@@ -3668,11 +3668,11 @@ uint64_t __71__PXStorySongsAutoEditDecisionListsProducer__composeClips_forSongPa
   return result;
 }
 
-- (void)_populateClips:(id)a3 forSongPace:(int64_t)a4 colorGradeCategory:(id)a5
+- (void)_populateClips:(id)clips forSongPace:(int64_t)pace colorGradeCategory:(id)category
 {
   v33 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  clipsCopy = clips;
+  categoryCopy = category;
   v10 = os_signpost_id_make_with_pointer(self->_log, self);
   v11 = self->_log;
   v12 = v11;
@@ -3685,11 +3685,11 @@ uint64_t __71__PXStorySongsAutoEditDecisionListsProducer__composeClips_forSongPa
     *&buf[12] = 2114;
     *&buf[14] = v14;
     *&buf[22] = 2114;
-    *&buf[24] = v9;
+    *&buf[24] = categoryCopy;
     _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v12, OS_SIGNPOST_INTERVAL_BEGIN, v10, "PXStoryAutoEditDecisionList.Clips", "Count=%ld pace=%{public}@, grade=%{public}@", buf, 0x20u);
   }
 
-  v24 = v9;
+  v24 = categoryCopy;
 
   if ([(PXDisplayAssetFetchResult *)self->_displayAssets count]>= 1)
   {
@@ -3702,7 +3702,7 @@ uint64_t __71__PXStorySongsAutoEditDecisionListsProducer__composeClips_forSongPa
     do
     {
       v17 = [(PXDisplayAssetFetchResult *)self->_displayAssets objectAtIndexedSubscript:v15];
-      v18 = [(PXStorySongsAutoEditDecisionListsProducer *)self _playbackStyleForAsset:v17 songPace:a4];
+      v18 = [(PXStorySongsAutoEditDecisionListsProducer *)self _playbackStyleForAsset:v17 songPace:pace];
       if (v18 == 3)
       {
         if (v15 && v15 + 1 != [(PXDisplayAssetFetchResult *)self->_displayAssets count])
@@ -3716,10 +3716,10 @@ uint64_t __71__PXStorySongsAutoEditDecisionListsProducer__composeClips_forSongPa
         }
       }
 
-      v19 = [(PXStorySongsAutoEditDecisionListsProducer *)self storyConfiguration];
-      v20 = [v19 disableVideoPlayback];
+      storyConfiguration = [(PXStorySongsAutoEditDecisionListsProducer *)self storyConfiguration];
+      disableVideoPlayback = [storyConfiguration disableVideoPlayback];
 
-      if (v20)
+      if (disableVideoPlayback)
       {
         v18 = 1;
       }
@@ -3732,7 +3732,7 @@ uint64_t __71__PXStorySongsAutoEditDecisionListsProducer__composeClips_forSongPa
       *buf = v25;
       *&buf[16] = v26;
       [(PXStoryConcreteAutoEditClip *)v21 setDurationInfo:buf];
-      [v8 addClip:v21];
+      [clipsCopy addClip:v21];
 
       ++v15;
     }
@@ -3749,30 +3749,30 @@ uint64_t __71__PXStorySongsAutoEditDecisionListsProducer__composeClips_forSongPa
   }
 }
 
-- (id)_decisionListForSong:(id)a3 pace:(int64_t)a4 colorGradeCategory:(id)a5
+- (id)_decisionListForSong:(id)song pace:(int64_t)pace colorGradeCategory:(id)category
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [(PXStorySongsAutoEditDecisionListsProducer *)self displayAssets];
-  v11 = -[PXStoryConcreteAutoEditClipCatalog initWithCapacity:]([PXStoryConcreteMutableAutoEditClipCatalog alloc], "initWithCapacity:", [v10 count]);
-  [(PXStorySongsAutoEditDecisionListsProducer *)self _populateClips:v11 forSongPace:a4 colorGradeCategory:v8];
-  [(PXStorySongsAutoEditDecisionListsProducer *)self _composeClips:v11 forSongPace:a4];
+  categoryCopy = category;
+  songCopy = song;
+  displayAssets = [(PXStorySongsAutoEditDecisionListsProducer *)self displayAssets];
+  v11 = -[PXStoryConcreteAutoEditClipCatalog initWithCapacity:]([PXStoryConcreteMutableAutoEditClipCatalog alloc], "initWithCapacity:", [displayAssets count]);
+  [(PXStorySongsAutoEditDecisionListsProducer *)self _populateClips:v11 forSongPace:pace colorGradeCategory:categoryCopy];
+  [(PXStorySongsAutoEditDecisionListsProducer *)self _composeClips:v11 forSongPace:pace];
   [(PXStorySongsAutoEditDecisionListsProducer *)self _populateModulesInClips:v11];
-  [(PXStorySongsAutoEditDecisionListsProducer *)self _populateMotionStylesAndTransitionsInClips:v11 forSongPace:a4 colorGradeCategory:v8];
-  [(PXStorySongsAutoEditDecisionListsProducer *)self _adjustDurationOfClips:v11 forSongPace:a4];
+  [(PXStorySongsAutoEditDecisionListsProducer *)self _populateMotionStylesAndTransitionsInClips:v11 forSongPace:pace colorGradeCategory:categoryCopy];
+  [(PXStorySongsAutoEditDecisionListsProducer *)self _adjustDurationOfClips:v11 forSongPace:pace];
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
   v20 = 0u;
-  [(PXStorySongsAutoEditDecisionListsProducer *)self _optimizeOverallDurationOfClips:v11 forSong:v9];
+  [(PXStorySongsAutoEditDecisionListsProducer *)self _optimizeOverallDurationOfClips:v11 forSong:songCopy];
   [(PXStorySongsAutoEditDecisionListsProducer *)self _adjustAudioPlaybackForClips:v11];
   [(PXStorySongsAutoEditDecisionListsProducer *)self _adjustAudioTransitionForClips:v11];
   memset(&v19, 0, sizeof(v19));
-  [(PFStoryAutoEditConfiguration *)self->_configuration outroDurationForSongPace:a4];
+  [(PFStoryAutoEditConfiguration *)self->_configuration outroDurationForSongPace:pace];
   CMTimeMakeWithSeconds(&v19, v12, 600);
-  v13 = [(PXStorySongsAutoEditDecisionListsProducer *)self storyConfiguration];
-  LODWORD(a4) = [v13 disableNUp];
+  storyConfiguration = [(PXStorySongsAutoEditDecisionListsProducer *)self storyConfiguration];
+  LODWORD(pace) = [storyConfiguration disableNUp];
 
   v14 = [PXStoryConcreteAutoEditDecisionList alloc];
   v18[2] = v22;
@@ -3781,15 +3781,15 @@ uint64_t __71__PXStorySongsAutoEditDecisionListsProducer__composeClips_forSongPa
   v18[0] = v20;
   v18[1] = v21;
   v17 = v19;
-  v15 = [(PXStoryConcreteAutoEditDecisionList *)v14 initWithColorGradeCategory:v8 song:v9 clipCatalog:v11 constrainedOverallDurationInfo:v18 outroDuration:&v17 allowsNUp:a4 ^ 1];
+  v15 = [(PXStoryConcreteAutoEditDecisionList *)v14 initWithColorGradeCategory:categoryCopy song:songCopy clipCatalog:v11 constrainedOverallDurationInfo:v18 outroDuration:&v17 allowsNUp:pace ^ 1];
 
   return v15;
 }
 
-- (id)decisionListForSong:(id)a3 pace:(int64_t)a4 colorGradeCategory:(id)a5
+- (id)decisionListForSong:(id)song pace:(int64_t)pace colorGradeCategory:(id)category
 {
-  v8 = a3;
-  v9 = a5;
+  songCopy = song;
+  categoryCopy = category;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -3802,12 +3802,12 @@ uint64_t __71__PXStorySongsAutoEditDecisionListsProducer__composeClips_forSongPa
   block[2] = __89__PXStorySongsAutoEditDecisionListsProducer_decisionListForSong_pace_colorGradeCategory___block_invoke;
   block[3] = &unk_1E7741808;
   block[4] = self;
-  v16 = v8;
+  v16 = songCopy;
   v18 = &v20;
-  v19 = a4;
-  v17 = v9;
-  v11 = v9;
-  v12 = v8;
+  paceCopy = pace;
+  v17 = categoryCopy;
+  v11 = categoryCopy;
+  v12 = songCopy;
   dispatch_sync(queue, block);
   v13 = v21[5];
 
@@ -3824,10 +3824,10 @@ void __89__PXStorySongsAutoEditDecisionListsProducer_decisionListForSong_pace_co
   *(v3 + 40) = v2;
 }
 
-- (id)requestDefaultAutoEditDecisionListsWithColorGradeCategory:(id)a3 options:(unint64_t)a4 resultHandler:(id)a5
+- (id)requestDefaultAutoEditDecisionListsWithColorGradeCategory:(id)category options:(unint64_t)options resultHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a5;
+  categoryCopy = category;
+  handlerCopy = handler;
   v9 = os_signpost_id_make_with_pointer(self->_log, self);
   v10 = self->_log;
   v11 = v10;
@@ -3844,13 +3844,13 @@ void __89__PXStorySongsAutoEditDecisionListsProducer_decisionListForSong_pace_co
   block[2] = __125__PXStorySongsAutoEditDecisionListsProducer_requestDefaultAutoEditDecisionListsWithColorGradeCategory_options_resultHandler___block_invoke;
   block[3] = &unk_1E7743030;
   block[4] = self;
-  v21 = v7;
+  v21 = categoryCopy;
   v14 = v12;
   v22 = v14;
-  v23 = v8;
+  v23 = handlerCopy;
   v24 = v9;
-  v15 = v8;
-  v16 = v7;
+  v15 = handlerCopy;
+  v16 = categoryCopy;
   dispatch_async(queue, block);
   v17 = v23;
   v18 = v14;
@@ -3880,13 +3880,13 @@ void __125__PXStorySongsAutoEditDecisionListsProducer_requestDefaultAutoEditDeci
   }
 }
 
-- (id)requestAutoEditDecisionListsWithOptions:(unint64_t)a3 songs:(id)a4 colorGradeCategoriesBySong:(id)a5 resultHandler:(id)a6
+- (id)requestAutoEditDecisionListsWithOptions:(unint64_t)options songs:(id)songs colorGradeCategoriesBySong:(id)song resultHandler:(id)handler
 {
   v53 = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  v12 = [v9 count];
+  songsCopy = songs;
+  songCopy = song;
+  handlerCopy = handler;
+  v12 = [songsCopy count];
   if (v12)
   {
     v13 = 0;
@@ -3904,8 +3904,8 @@ void __125__PXStorySongsAutoEditDecisionListsProducer_requestDefaultAutoEditDeci
     v13 = PXStoryErrorCreateWithCodeDebugFormat(8, @"Auto-edit cannot produce any clips without song.", v15, v16, v17, v18, v19, v20, v42);
   }
 
-  v21 = [(PXStorySongsAutoEditDecisionListsProducer *)self displayAssets];
-  v22 = [v21 count];
+  displayAssets = [(PXStorySongsAutoEditDecisionListsProducer *)self displayAssets];
+  v22 = [displayAssets count];
 
   if (v22)
   {
@@ -3914,7 +3914,7 @@ void __125__PXStorySongsAutoEditDecisionListsProducer_requestDefaultAutoEditDeci
 LABEL_8:
       v23 = [[PXStoryProducerResult alloc] initWithObject:0];
       v24 = [(PXStoryProducerResult *)v23 error:v13];
-      v11[2](v11, v24);
+      handlerCopy[2](handlerCopy, v24);
       v25 = 0;
       goto LABEL_16;
     }
@@ -3957,10 +3957,10 @@ LABEL_8:
   v49 = v12;
   v39 = v37;
   v44 = v39;
-  v45 = v9;
-  v46 = v10;
-  v47 = self;
-  v48 = v11;
+  v45 = songsCopy;
+  v46 = songCopy;
+  selfCopy = self;
+  v48 = handlerCopy;
   v50 = v34;
   dispatch_async(queue, block);
   v40 = v48;
@@ -4098,29 +4098,29 @@ LABEL_24:
   return v2;
 }
 
-- (PXStorySongsAutoEditDecisionListsProducer)initWithAssetCollection:(id)a3 displayAssets:(id)a4 movieHighlights:(id)a5 chapterCollection:(id)a6 targetOverallDurationInfo:(id *)a7 configuration:(id)a8 storyConfiguration:(id)a9
+- (PXStorySongsAutoEditDecisionListsProducer)initWithAssetCollection:(id)collection displayAssets:(id)assets movieHighlights:(id)highlights chapterCollection:(id)chapterCollection targetOverallDurationInfo:(id *)info configuration:(id)configuration storyConfiguration:(id)storyConfiguration
 {
-  v27 = a3;
-  v26 = a4;
-  v25 = a5;
-  v16 = a6;
-  v17 = a8;
-  v18 = a9;
+  collectionCopy = collection;
+  assetsCopy = assets;
+  highlightsCopy = highlights;
+  chapterCollectionCopy = chapterCollection;
+  configurationCopy = configuration;
+  storyConfigurationCopy = storyConfiguration;
   v28.receiver = self;
   v28.super_class = PXStorySongsAutoEditDecisionListsProducer;
   v19 = [(PXStorySongsAutoEditDecisionListsProducer *)&v28 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_assetCollection, a3);
-    objc_storeStrong(&v20->_displayAssets, a4);
-    objc_storeStrong(&v20->_movieHighlights, a5);
-    objc_storeStrong(&v20->_chapterCollection, a6);
-    *&v20->_targetOverallDurationInfo.kind = *&a7->var0;
-    v21 = *&a7->var1.var0.var1;
-    v22 = *&a7->var1.var1.var0;
-    v23 = *&a7->var1.var2.var1;
-    *&v20->_targetOverallDurationInfo.specificDurationInfo.preferredDuration.epoch = *&a7->var1.var1.var3;
+    objc_storeStrong(&v19->_assetCollection, collection);
+    objc_storeStrong(&v20->_displayAssets, assets);
+    objc_storeStrong(&v20->_movieHighlights, highlights);
+    objc_storeStrong(&v20->_chapterCollection, chapterCollection);
+    *&v20->_targetOverallDurationInfo.kind = *&info->var0;
+    v21 = *&info->var1.var0.var1;
+    v22 = *&info->var1.var1.var0;
+    v23 = *&info->var1.var2.var1;
+    *&v20->_targetOverallDurationInfo.specificDurationInfo.preferredDuration.epoch = *&info->var1.var1.var3;
     *&v20->_targetOverallDurationInfo.specificDurationInfo.maximumDuration.timescale = v23;
     *&v20->_targetOverallDurationInfo.specificDurationInfo.minimumDuration.timescale = v21;
     *&v20->_targetOverallDurationInfo.specificDurationInfo.preferredDuration.value = v22;
@@ -4132,86 +4132,86 @@ LABEL_24:
 
 - (PXStorySongsAutoEditDecisionListsProducer)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXStorySongsAutoEditDecisionListsProducer.m" lineNumber:79 description:{@"%s is not available as initializer", "-[PXStorySongsAutoEditDecisionListsProducer init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStorySongsAutoEditDecisionListsProducer.m" lineNumber:79 description:{@"%s is not available as initializer", "-[PXStorySongsAutoEditDecisionListsProducer init]"}];
 
   abort();
 }
 
-+ ($0AC6E346AE4835514AAA8AC86D8F4844)audioModeDecisionForAsset:(id)a3 minimumAudioScore:(float)a4 playbackStyle:(int64_t)a5 movieHighlight:(id)a6 storyConfiguration:(id)a7
++ ($0AC6E346AE4835514AAA8AC86D8F4844)audioModeDecisionForAsset:(id)asset minimumAudioScore:(float)score playbackStyle:(int64_t)style movieHighlight:(id)highlight storyConfiguration:(id)configuration
 {
-  v11 = a3;
-  v12 = a6;
-  if (![a7 isAllowedToPlayAnyMusicOrSound])
+  assetCopy = asset;
+  highlightCopy = highlight;
+  if (![configuration isAllowedToPlayAnyMusicOrSound])
   {
-    a5 = 10;
+    style = 10;
     v13 = 1;
     goto LABEL_19;
   }
 
-  if (a5 != 1)
+  if (style != 1)
   {
     v14 = +[PXStorySettings sharedInstance];
-    if (v12)
+    if (highlightCopy)
     {
-      [v12 loudness];
+      [highlightCopy loudness];
       if (v15 < 0.0)
       {
-        [v12 peakVolume];
+        [highlightCopy peakVolume];
         if (v16 > 0.0)
         {
-          if ([v12 hasMusic] && (objc_msgSend(v14, "muteBackgroundMusic") & 1) != 0)
+          if ([highlightCopy hasMusic] && (objc_msgSend(v14, "muteBackgroundMusic") & 1) != 0)
           {
-            a5 = 4;
+            style = 4;
 LABEL_17:
             v13 = 1;
             goto LABEL_18;
           }
 
-          [v12 audioQualityScore];
-          if (v17 < a4)
+          [highlightCopy audioQualityScore];
+          if (v17 < score)
           {
-            a5 = 5;
+            style = 5;
             goto LABEL_17;
           }
 
-          [v11 audioScore];
-          if (v18 < a4)
+          [assetCopy audioScore];
+          if (v18 < score)
           {
-            a5 = 6;
+            style = 6;
             goto LABEL_17;
           }
 
-          switch(a5)
+          switch(style)
           {
             case 5:
-              v21 = [v14 loopingVideoAudioStrategy];
+              loopingVideoAudioStrategy = [v14 loopingVideoAudioStrategy];
               break;
             case 4:
-              if (([v11 mediaSubtypes] & 0x20000) != 0)
+              if (([assetCopy mediaSubtypes] & 0x20000) != 0)
               {
-                v21 = [v14 slomoVideoAudioStrategy];
+                loopingVideoAudioStrategy = [v14 slomoVideoAudioStrategy];
               }
 
               else
               {
-                v21 = [v14 videoAudioStrategy];
+                loopingVideoAudioStrategy = [v14 videoAudioStrategy];
               }
 
               break;
             case 3:
-              v21 = [v14 livePhotoAudioStrategy];
+              loopingVideoAudioStrategy = [v14 livePhotoAudioStrategy];
               break;
             default:
               goto LABEL_40;
           }
 
-          a5 = 0;
-          if (v21 > 2)
+          style = 0;
+          if (loopingVideoAudioStrategy > 2)
           {
-            if (v21 == 3)
+            if (loopingVideoAudioStrategy == 3)
             {
-              if ([v12 hasVoice])
+              if ([highlightCopy hasVoice])
               {
                 v13 = 3;
               }
@@ -4221,14 +4221,14 @@ LABEL_17:
                 v13 = 2;
               }
 
-              a5 = 8;
+              style = 8;
               goto LABEL_18;
             }
 
-            if (v21 == 4)
+            if (loopingVideoAudioStrategy == 4)
             {
-              v22 = [v12 hasVoice];
-              if ((v22 & [v12 hasFace]) != 0)
+              hasVoice = [highlightCopy hasVoice];
+              if ((hasVoice & [highlightCopy hasFace]) != 0)
               {
                 v13 = 3;
               }
@@ -4242,14 +4242,14 @@ LABEL_17:
             else
             {
               v13 = 0;
-              if (v21 != 5)
+              if (loopingVideoAudioStrategy != 5)
               {
                 goto LABEL_18;
               }
 
-              if ([v12 hasVoice])
+              if ([highlightCopy hasVoice])
               {
-                if ([v12 hasFace])
+                if ([highlightCopy hasFace])
                 {
                   v13 = 3;
                 }
@@ -4266,13 +4266,13 @@ LABEL_17:
               }
             }
 
-            a5 = 9;
+            style = 9;
             goto LABEL_18;
           }
 
-          if (v21)
+          if (loopingVideoAudioStrategy)
           {
-            if (v21 == 1)
+            if (loopingVideoAudioStrategy == 1)
             {
               v13 = 2;
             }
@@ -4280,7 +4280,7 @@ LABEL_17:
             else
             {
               v13 = 0;
-              if (v21 != 2)
+              if (loopingVideoAudioStrategy != 2)
               {
                 goto LABEL_18;
               }
@@ -4289,7 +4289,7 @@ LABEL_17:
             }
 
 LABEL_46:
-            a5 = 7;
+            style = 7;
             goto LABEL_18;
           }
 
@@ -4300,13 +4300,13 @@ LABEL_40:
       }
 
       v13 = 0;
-      a5 = 3;
+      style = 3;
     }
 
     else
     {
       v13 = 0;
-      a5 = 2;
+      style = 2;
     }
 
 LABEL_18:
@@ -4318,8 +4318,8 @@ LABEL_18:
 LABEL_19:
 
   v19 = v13;
-  v20 = a5;
-  result.var1 = v20;
+  styleCopy = style;
+  result.var1 = styleCopy;
   result.var0 = v19;
   return result;
 }

@@ -1,13 +1,13 @@
 @interface DUDocumentAttribute
-- (id)copyWithZone:(void *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(void *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DUDocumentAttribute
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v3 = self;
+  selfCopy = self;
   sub_232B5AD74(v6);
 
   sub_232B203C8(v6, v6[3]);
@@ -16,11 +16,11 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_232B5AE6C(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_232B5AE6C(coderCopy);
 }
 
 @end

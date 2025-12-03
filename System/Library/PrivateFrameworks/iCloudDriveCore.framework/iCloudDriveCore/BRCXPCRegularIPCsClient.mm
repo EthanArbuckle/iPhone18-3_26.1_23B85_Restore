@@ -1,181 +1,181 @@
 @interface BRCXPCRegularIPCsClient
-- (BOOL)_saveOrDeleteContainerMetadataRecordName:(id)a3 saveRecord:(BOOL)a4 error:(id *)a5;
-- (id)_loggedInUserPropertyValuesForKeys:(id)a3 error:(id *)a4;
-- (id)_removeSandboxedAttributes:(id)a3;
-- (id)startDownloadFileObject:(id)a3 existingContents:(id)a4 options:(unint64_t)a5 etagIfLoser:(id)a6 reply:(id)a7;
-- (id)uploadItemIdentifier:(id)a3 withContents:(id)a4 baseVersion:(id)a5 basedOnOriginalVersion:(BOOL)a6 options:(unint64_t)a7 reply:(id)a8;
-- (void)_createFileProvidingRequestOperationOfFileObject:(id)a3 existingContents:(id)a4 localItem:(id)a5 etagIfLoser:(id)a6 etagToDownload:(id)a7 progress:(id)a8 options:(unint64_t)a9 reply:(id)a10;
-- (void)_createSharingInfoForLocalItem:(id)a3 reply:(id)a4;
-- (void)_doesAnyRecordExistInContainerMetadataRecordName:(id)a3 completionHandler:(id)a4;
-- (void)_fetchLatestContentRevisionAndSharingStateForItemIdentifier:(id)a3 reply:(id)a4;
-- (void)_getPublishedURLForLocalItem:(id)a3 forStreaming:(BOOL)a4 requestedTTL:(unint64_t)a5 reply:(id)a6;
-- (void)_getiWorkNeedsShareMigrateForLocalItem:(id)a3 itemIdentifier:(id)a4 reply:(id)a5;
-- (void)_getiWorkPublishingBadgingStatusForLocalItem:(id)a3 itemIdentifier:(id)a4 reply:(id)a5;
-- (void)_getiWorkPublishingInfoForLocalItem:(id)a3 itemIdentifier:(id)a4 reply:(id)a5;
-- (void)_handleAcceptingCKShareMetadata:(id)a3 reply:(id)a4;
-- (void)_launchItemCountMismatchChecksForLocalItem:(id)a3 itemIdentifier:(id)a4 reply:(id)a5;
-- (void)_queueOrCallCompletionBlock:(id)a3;
-- (void)_refreshLatestRevisionAndSharingStateForItemIdentifier:(id)a3 retryOnApplyFailure:(BOOL)a4 reply:(id)a5;
-- (void)_startOperation:(id)a3 toCopyParticipantTokenWithLocalItem:(id)a4 reply:(id)a5;
-- (void)_startOperation:(id)a3 toCopySharingAccessTokenWithLocalItem:(id)a4 itemIdentifier:(id)a5 reply:(id)a6;
-- (void)_startOperation:(id)a3 toCopySharingInfoWithLocalItem:(id)a4 reply:(id)a5;
-- (void)_startOperation:(id)a3 toPrepFolderForSharingWithLocalItem:(id)a4 reply:(id)a5;
-- (void)_startOperation:(id)a3 toProcessSubitemsWithLocalItem:(id)a4 maxSubsharesFailures:(unint64_t)a5 processType:(unint64_t)a6 reply:(id)a7;
-- (void)_t_canReadFileAtURL:(id)a3 reply:(id)a4;
-- (void)_t_createFileAtURL:(id)a3 reply:(id)a4;
-- (void)_t_extractMetadataForAllContainersWithReply:(id)a3;
-- (void)_t_getContainerMetadataForContainerID:(id)a3 reply:(id)a4;
-- (void)_t_getEntitledContainerIDsForBundleID:(id)a3 reply:(id)a4;
-- (void)_t_getEntitlementsForBundleID:(id)a3 reply:(id)a4;
-- (void)_unboostFilePresenterForItemIdentifier:(id)a3 handledAppLibrarys:(id)a4 completionHandler:(id)a5;
+- (BOOL)_saveOrDeleteContainerMetadataRecordName:(id)name saveRecord:(BOOL)record error:(id *)error;
+- (id)_loggedInUserPropertyValuesForKeys:(id)keys error:(id *)error;
+- (id)_removeSandboxedAttributes:(id)attributes;
+- (id)startDownloadFileObject:(id)object existingContents:(id)contents options:(unint64_t)options etagIfLoser:(id)loser reply:(id)reply;
+- (id)uploadItemIdentifier:(id)identifier withContents:(id)contents baseVersion:(id)version basedOnOriginalVersion:(BOOL)originalVersion options:(unint64_t)options reply:(id)reply;
+- (void)_createFileProvidingRequestOperationOfFileObject:(id)object existingContents:(id)contents localItem:(id)item etagIfLoser:(id)loser etagToDownload:(id)download progress:(id)progress options:(unint64_t)options reply:(id)self0;
+- (void)_createSharingInfoForLocalItem:(id)item reply:(id)reply;
+- (void)_doesAnyRecordExistInContainerMetadataRecordName:(id)name completionHandler:(id)handler;
+- (void)_fetchLatestContentRevisionAndSharingStateForItemIdentifier:(id)identifier reply:(id)reply;
+- (void)_getPublishedURLForLocalItem:(id)item forStreaming:(BOOL)streaming requestedTTL:(unint64_t)l reply:(id)reply;
+- (void)_getiWorkNeedsShareMigrateForLocalItem:(id)item itemIdentifier:(id)identifier reply:(id)reply;
+- (void)_getiWorkPublishingBadgingStatusForLocalItem:(id)item itemIdentifier:(id)identifier reply:(id)reply;
+- (void)_getiWorkPublishingInfoForLocalItem:(id)item itemIdentifier:(id)identifier reply:(id)reply;
+- (void)_handleAcceptingCKShareMetadata:(id)metadata reply:(id)reply;
+- (void)_launchItemCountMismatchChecksForLocalItem:(id)item itemIdentifier:(id)identifier reply:(id)reply;
+- (void)_queueOrCallCompletionBlock:(id)block;
+- (void)_refreshLatestRevisionAndSharingStateForItemIdentifier:(id)identifier retryOnApplyFailure:(BOOL)failure reply:(id)reply;
+- (void)_startOperation:(id)operation toCopyParticipantTokenWithLocalItem:(id)item reply:(id)reply;
+- (void)_startOperation:(id)operation toCopySharingAccessTokenWithLocalItem:(id)item itemIdentifier:(id)identifier reply:(id)reply;
+- (void)_startOperation:(id)operation toCopySharingInfoWithLocalItem:(id)item reply:(id)reply;
+- (void)_startOperation:(id)operation toPrepFolderForSharingWithLocalItem:(id)item reply:(id)reply;
+- (void)_startOperation:(id)operation toProcessSubitemsWithLocalItem:(id)item maxSubsharesFailures:(unint64_t)failures processType:(unint64_t)type reply:(id)reply;
+- (void)_t_canReadFileAtURL:(id)l reply:(id)reply;
+- (void)_t_createFileAtURL:(id)l reply:(id)reply;
+- (void)_t_extractMetadataForAllContainersWithReply:(id)reply;
+- (void)_t_getContainerMetadataForContainerID:(id)d reply:(id)reply;
+- (void)_t_getEntitledContainerIDsForBundleID:(id)d reply:(id)reply;
+- (void)_t_getEntitlementsForBundleID:(id)d reply:(id)reply;
+- (void)_unboostFilePresenterForItemIdentifier:(id)identifier handledAppLibrarys:(id)librarys completionHandler:(id)handler;
 - (void)_unregisterPrematurely;
-- (void)accessItemIdentifier:(id)a3 dbAccessKind:(int64_t)a4 synchronouslyIfPossible:(BOOL)a5 LocalItemHandler:(id)a6 ServerItemHandler:(id)a7;
-- (void)accountDidChangeWithCellularEnabled:(BOOL)a3 isUnlimitedUpdatesEnabled:(BOOL)a4 reply:(id)a5;
-- (void)backupDatabaseWithURLWrapper:(id)a3 reply:(id)a4;
-- (void)boostFilePresenterForItemIdentifier:(id)a3 reply:(id)a4;
-- (void)calculateSignatureForItemIdentifier:(id)a3 forURL:(id)a4 reply:(id)a5;
-- (void)calculateSignatureForItemIdentifier:(id)a3 reply:(id)a4;
-- (void)cancelTreeConsistencyCheckWithReply:(id)a3;
-- (void)capabilityWhenTryingToReparentItemIdentifier:(id)a3 toNewParent:(id)a4 reply:(id)a5;
-- (void)checkIfItemIsShareableWithItemIdentifier:(id)a3 reply:(id)a4;
-- (void)cloneLatestContentRevisionForItemIdentifier:(id)a3 reply:(id)a4;
-- (void)computePurgeableSpaceForAllUrgenciesWithReply:(id)a3;
-- (void)copyCollaborationIdentifierForFileObjectID:(id)a3 reply:(id)a4;
-- (void)copyCurrentUserIdentifierWithReply:(id)a3;
-- (void)copyCurrentUserNameAndDisplayHandleWithReply:(id)a3;
-- (void)copyShareIDForItemIdentifier:(id)a3 reply:(id)a4;
-- (void)corruptDatabase:(id)a3;
-- (void)createAccountWithACAccountID:(id)a3 dsid:(id)a4 reply:(id)a5;
-- (void)createContainerWithID:(id)a3 ownerName:(id)a4 reply:(id)a5;
-- (void)createItemBasedOnTemplate:(id)a3 fields:(unint64_t)a4 contents:(id)a5 options:(unint64_t)a6 additionalItemAttributes:(id)a7 completionHandler:(id)a8;
-- (void)createSharingInfoForItemID:(id)a3 reply:(id)a4;
-- (void)currentNotifRankWithReply:(id)a3;
-- (void)deleteAllContentsOfContainerID:(id)a3 onClient:(BOOL)a4 onServer:(BOOL)a5 wait:(BOOL)a6 reply:(id)a7;
-- (void)deleteItemWithIdentifier:(id)a3 baseVersion:(id)a4 options:(unint64_t)a5 completionHandler:(id)a6;
-- (void)didReceiveHandoffRequestForBundleID:(id)a3 reply:(id)a4;
-- (void)dumpCoordinationInfoTo:(id)a3 reply:(id)a4;
-- (void)dumpDatabaseTo:(id)a3 containerID:(id)a4 personaID:(id)a5 includeAllItems:(BOOL)a6 verbose:(BOOL)a7 reply:(id)a8;
-- (void)dumpFPFSMigrationStatusTo:(id)a3 personaID:(id)a4 includeNonMigratedItems:(BOOL)a5 reply:(id)a6;
-- (void)enumerateItemsInFolder:(id)a3 sortOrder:(unsigned __int8)a4 offset:(unint64_t)a5 limit:(unint64_t)a6 completion:(id)a7;
-- (void)enumerateTrashItemsFromRank:(unint64_t)a3 limit:(unint64_t)a4 completion:(id)a5;
-- (void)enumerateWorkingSetChangesFromChangeToken:(id)a3 limit:(unint64_t)a4 completion:(id)a5;
-- (void)evictOldDocumentsWithReply:(id)a3;
-- (void)forceSyncContainerID:(id)a3 reply:(id)a4;
-- (void)forceSyncWithBarrierContainerID:(id)a3 timeout:(unint64_t)a4 reply:(id)a5;
-- (void)forceSyncZoneHealthWithBarrierWithTimeout:(unint64_t)a3 reply:(id)a4;
-- (void)generateSmallItemThumbnailForFileObject:(id)a3 reply:(id)a4;
-- (void)getApplicationDocumentUsageInfoForBundleID:(id)a3 withReply:(id)a4;
-- (void)getApplicationStatus:(id)a3;
-- (void)getApplicationStatusForProcess:(id *)a3 reply:(id)a4;
-- (void)getAttributeValues:(id)a3 forItemIdentifier:(id)a4 reply:(id)a5;
-- (void)getAvailableBytesForUploadOverCellularWithReply:(id)a3;
-- (void)getBGSystemTaskActivitiesDefaultConfig:(id)a3;
-- (void)getBookmarkDataForItemIdentifier:(id)a3 onlyAllowItemKnowByServer:(BOOL)a4 allowAccessByBundleID:(id)a5 documentID:(id)a6 isDirectory:(BOOL)a7 reply:(id)a8;
-- (void)getCKRecordIDsForFPItems:(id)a3 reply:(id)a4;
-- (void)getClientSaltingVerificationKeysAtItemIdentifier:(id)a3 reply:(id)a4;
-- (void)getContainerForMangledID:(id)a3 personaID:(id)a4 reply:(id)a5;
-- (void)getContainerLastServerUpdateWithID:(id)a3 reply:(id)a4;
-- (void)getContainerStatusWithID:(id)a3 reply:(id)a4;
-- (void)getContainerURLForID:(id)a3 forProcess:(id *)a4 reply:(id)a5;
-- (void)getContainersByID:(id)a3;
-- (void)getContainersNeedingUpload:(id)a3;
-- (void)getCreatorNameComponentsForItemIdentifier:(id)a3 reply:(id)a4;
-- (void)getDefaultAppContainerItemForContainerID:(id)a3 recreateDocumentsIfNeeded:(BOOL)a4 reply:(id)a5;
-- (void)getEnhancedDrivePrivacyStatusForContainer:(id)a3 onServer:(BOOL)a4 reply:(id)a5;
-- (void)getItemUpdateSenderWithReceiver:(id)a3 reply:(id)a4;
-- (void)getLastSyncDateWithReply:(id)a3;
-- (void)getLocalizedLastSyncWithReply:(id)a3;
-- (void)getLoggedInUserPropertyValuesForKeys:(id)a3 reply:(id)a4;
-- (void)getPathForRecordID:(id)a3 forContainer:(id)a4 reply:(id)a5;
-- (void)getPublishedURLForItemIdentifier:(id)a3 forStreaming:(BOOL)a4 requestedTTL:(unint64_t)a5 reply:(id)a6;
-- (void)getQueryItemForBRFileObjectID:(id)a3 reply:(id)a4;
-- (void)getServerContentSignatureAtItemIdentifier:(id)a3 reply:(id)a4;
-- (void)getServerSaltingKeysAtItemIdentifier:(id)a3 reply:(id)a4;
-- (void)getShareOptionsOfItemIdentifier:(id)a3 reply:(id)a4;
-- (void)getSyncState:(unint64_t)a3 reply:(id)a4;
-- (void)getTotalApplicationDocumentUsageWithReply:(id)a3;
-- (void)getiWorkNeedsShareMigrateForItemIdentifier:(id)a3 reply:(id)a4;
-- (void)getiWorkPublishingBadgingStatusForItemIdentifier:(id)a3 reply:(id)a4;
-- (void)getiWorkPublishingInfoForItemIdentifier:(id)a3 reply:(id)a4;
-- (void)handleCloudKitShareMetadata:(id)a3 completionHandler:(id)a4;
-- (void)hasOptimizeStorageWithReply:(id)a3;
-- (void)healthStatusStringForContainer:(id)a3 reply:(id)a4;
-- (void)iCloudDesktopSettingsChangedWithAttributes:(id)a3 reply:(id)a4;
-- (void)iWorkForceSyncContainerID:(id)a3 ownedByMe:(BOOL)a4 reply:(id)a5;
-- (void)invalidateAccountCacheWithReply:(id)a3;
-- (void)jetsamCloudDocsAppsWithReply:(id)a3;
-- (void)launchItemCountMismatchChecksForItemIdentifier:(id)a3 reply:(id)a4;
-- (void)launchSyncConsistencyChecksWithContainerIDs:(id)a3 reply:(id)a4;
-- (void)listNonLocalVersionsWithItemIdentifier:(id)a3 reply:(id)a4;
-- (void)logoutAccountWithACAccountID:(id)a3 reply:(id)a4;
-- (void)lookupCollectionGathererPacerMinFireInterval:(id)a3;
-- (void)lookupExcludedExtensionsForLogoutWithReply:(id)a3;
-- (void)lookupExcludedFilenamesForLogoutWithReply:(id)a3;
-- (void)lookupMinFileSizeForThumbnailTransferWithReply:(id)a3;
-- (void)modifyItem:(id)a3 baseVersion:(id)a4 changedFields:(unint64_t)a5 contents:(id)a6 options:(unint64_t)a7 additionalAttrs:(id)a8 completionHandler:(id)a9;
-- (void)notifyReimportCompleted:(id)a3;
-- (void)overrideUploadOnCellularConstraintsWithReply:(id)a3;
-- (void)pauseSyncConsistencyWithReply:(id)a3;
-- (void)performSelfCheck:(id)a3 reply:(id)a4;
-- (void)presyncContainerWithID:(id)a3 reply:(id)a4;
-- (void)printShareRequests:(id)a3 personaID:(id)a4 isPending:(BOOL)a5 asJSON:(BOOL)a6 reply:(id)a7;
-- (void)printStatus:(id)a3 containerID:(id)a4 reply:(id)a5;
-- (void)queryEligibleAccountDescriptorsWithReply:(id)a3;
-- (void)queryPathsForPersona:(id)a3 reply:(id)a4;
-- (void)queryTelemetryEnablementWithReply:(id)a3;
-- (void)reclaimAmount:(int64_t)a3 withUrgency:(int)a4 reply:(id)a5;
-- (void)refreshSharingStateForItemIdentifier:(id)a3 reply:(id)a4;
-- (void)registerInitialSyncBarrierForID:(id)a3 reply:(id)a4;
-- (void)reimportItemIdentifier:(id)a3 reply:(id)a4;
-- (void)removeFPFSDomain:(id)a3;
-- (void)resetBudgets:(id)a3 reply:(id)a4;
-- (void)resolveBookmarkDataToURL:(id)a3 reply:(id)a4;
-- (void)resolveFileObjectIDsToContentRecordIDsForThumbnails:(id)a3 reply:(id)a4;
-- (void)resumeSyncConsistencyWithReply:(id)a3;
-- (void)setEnhancedDrivePrivacyEnabled:(BOOL)a3 forContainer:(id)a4 onServer:(BOOL)a5 onClient:(BOOL)a6 reply:(id)a7;
-- (void)setMigrationStatus:(char)a3 forDSID:(id)a4 shouldUpdateAccount:(BOOL)a5 reply:(id)a6;
-- (void)setiWorkPublishingInfoForItemIdentifier:(id)a3 isForPublish:(BOOL)a4 readonly:(BOOL)a5 reply:(id)a6;
-- (void)setupInstanceWithDict:(id)a3 reply:(id)a4;
-- (void)simulateHealthIssueWithContainer:(id)a3 status:(id)a4 reply:(id)a5;
-- (void)startOperation:(id)a3 toAutoAcceptShareLink:(id)a4 reply:(id)a5;
-- (void)startOperation:(id)a3 toCopyAvailableQuotaWithReply:(id)a4;
-- (void)startOperation:(id)a3 toCopyDocumentURLForRecordID:(id)a4 syncIfNeeded:(BOOL)a5 reply:(id)a6;
-- (void)startOperation:(id)a3 toCopyParticipantTokenWithItemID:(id)a4 reply:(id)a5;
-- (void)startOperation:(id)a3 toCopyShareURLForShare:(id)a4 reply:(id)a5;
-- (void)startOperation:(id)a3 toCopySharingAccessTokenOfItemID:(id)a4 reply:(id)a5;
-- (void)startOperation:(id)a3 toCopySharingInfoWithItemID:(id)a4 reply:(id)a5;
-- (void)startOperation:(id)a3 toCopySharingWebAuthTokenForContainerID:(id)a4 reply:(id)a5;
-- (void)startOperation:(id)a3 toCopyShortTokenOfItemID:(id)a4 reply:(id)a5;
-- (void)startOperation:(id)a3 toLookupShareParticipants:(id)a4 reply:(id)a5;
-- (void)startOperation:(id)a3 toModifyRecordAccessWithItemID:(id)a4 allowAccess:(BOOL)a5 reply:(id)a6;
-- (void)startOperation:(id)a3 toPrepFolderForSharingWithItemID:(id)a4 reply:(id)a5;
-- (void)startOperation:(id)a3 toProcessSubitemsWithItemID:(id)a4 maxSubsharesFailures:(unint64_t)a5 processType:(unint64_t)a6 reply:(id)a7;
-- (void)startOperation:(id)a3 toSaveSharingInfo:(id)a4 reply:(id)a5;
-- (void)startOperation:(id)a3 toUnshareShare:(id)a4 forceDelete:(BOOL)a5 reply:(id)a6;
-- (void)startOperation:(id)a3 toUploadAllFilesInContainer:(id)a4 reply:(id)a5;
-- (void)startOperation:(id)a3 toWaitForFPFSMigrationWithReply:(id)a4;
-- (void)unboostFilePresenterForItemIdentifiers:(id)a3 reply:(id)a4;
-- (void)updateAccountDisplayName:(id)a3 reply:(id)a4;
-- (void)updateContainerMetadataForID:(id)a3;
-- (void)userVerifiedTermsWithReply:(id)a3;
-- (void)validateCloudDocsSupported:(BOOL)a3 withReply:(id)a4;
-- (void)validateConnectionDomainWithDomainIdentifier:(id)a3 databaseID:(id)a4 reply:(id)a5;
-- (void)verifyAccountLoaded:(id)a3;
-- (void)waitForAccountToLoadWithReply:(id)a3;
-- (void)waitForStabilizationWithReply:(id)a3;
-- (void)waitUntilIdle:(id)a3 timeout:(id)a4 reply:(id)a5;
-- (void)zoneNameForContainer:(id)a3 reply:(id)a4;
+- (void)accessItemIdentifier:(id)identifier dbAccessKind:(int64_t)kind synchronouslyIfPossible:(BOOL)possible LocalItemHandler:(id)handler ServerItemHandler:(id)itemHandler;
+- (void)accountDidChangeWithCellularEnabled:(BOOL)enabled isUnlimitedUpdatesEnabled:(BOOL)updatesEnabled reply:(id)reply;
+- (void)backupDatabaseWithURLWrapper:(id)wrapper reply:(id)reply;
+- (void)boostFilePresenterForItemIdentifier:(id)identifier reply:(id)reply;
+- (void)calculateSignatureForItemIdentifier:(id)identifier forURL:(id)l reply:(id)reply;
+- (void)calculateSignatureForItemIdentifier:(id)identifier reply:(id)reply;
+- (void)cancelTreeConsistencyCheckWithReply:(id)reply;
+- (void)capabilityWhenTryingToReparentItemIdentifier:(id)identifier toNewParent:(id)parent reply:(id)reply;
+- (void)checkIfItemIsShareableWithItemIdentifier:(id)identifier reply:(id)reply;
+- (void)cloneLatestContentRevisionForItemIdentifier:(id)identifier reply:(id)reply;
+- (void)computePurgeableSpaceForAllUrgenciesWithReply:(id)reply;
+- (void)copyCollaborationIdentifierForFileObjectID:(id)d reply:(id)reply;
+- (void)copyCurrentUserIdentifierWithReply:(id)reply;
+- (void)copyCurrentUserNameAndDisplayHandleWithReply:(id)reply;
+- (void)copyShareIDForItemIdentifier:(id)identifier reply:(id)reply;
+- (void)corruptDatabase:(id)database;
+- (void)createAccountWithACAccountID:(id)d dsid:(id)dsid reply:(id)reply;
+- (void)createContainerWithID:(id)d ownerName:(id)name reply:(id)reply;
+- (void)createItemBasedOnTemplate:(id)template fields:(unint64_t)fields contents:(id)contents options:(unint64_t)options additionalItemAttributes:(id)attributes completionHandler:(id)handler;
+- (void)createSharingInfoForItemID:(id)d reply:(id)reply;
+- (void)currentNotifRankWithReply:(id)reply;
+- (void)deleteAllContentsOfContainerID:(id)d onClient:(BOOL)client onServer:(BOOL)server wait:(BOOL)wait reply:(id)reply;
+- (void)deleteItemWithIdentifier:(id)identifier baseVersion:(id)version options:(unint64_t)options completionHandler:(id)handler;
+- (void)didReceiveHandoffRequestForBundleID:(id)d reply:(id)reply;
+- (void)dumpCoordinationInfoTo:(id)to reply:(id)reply;
+- (void)dumpDatabaseTo:(id)to containerID:(id)d personaID:(id)iD includeAllItems:(BOOL)items verbose:(BOOL)verbose reply:(id)reply;
+- (void)dumpFPFSMigrationStatusTo:(id)to personaID:(id)d includeNonMigratedItems:(BOOL)items reply:(id)reply;
+- (void)enumerateItemsInFolder:(id)folder sortOrder:(unsigned __int8)order offset:(unint64_t)offset limit:(unint64_t)limit completion:(id)completion;
+- (void)enumerateTrashItemsFromRank:(unint64_t)rank limit:(unint64_t)limit completion:(id)completion;
+- (void)enumerateWorkingSetChangesFromChangeToken:(id)token limit:(unint64_t)limit completion:(id)completion;
+- (void)evictOldDocumentsWithReply:(id)reply;
+- (void)forceSyncContainerID:(id)d reply:(id)reply;
+- (void)forceSyncWithBarrierContainerID:(id)d timeout:(unint64_t)timeout reply:(id)reply;
+- (void)forceSyncZoneHealthWithBarrierWithTimeout:(unint64_t)timeout reply:(id)reply;
+- (void)generateSmallItemThumbnailForFileObject:(id)object reply:(id)reply;
+- (void)getApplicationDocumentUsageInfoForBundleID:(id)d withReply:(id)reply;
+- (void)getApplicationStatus:(id)status;
+- (void)getApplicationStatusForProcess:(id *)process reply:(id)reply;
+- (void)getAttributeValues:(id)values forItemIdentifier:(id)identifier reply:(id)reply;
+- (void)getAvailableBytesForUploadOverCellularWithReply:(id)reply;
+- (void)getBGSystemTaskActivitiesDefaultConfig:(id)config;
+- (void)getBookmarkDataForItemIdentifier:(id)identifier onlyAllowItemKnowByServer:(BOOL)server allowAccessByBundleID:(id)d documentID:(id)iD isDirectory:(BOOL)directory reply:(id)reply;
+- (void)getCKRecordIDsForFPItems:(id)items reply:(id)reply;
+- (void)getClientSaltingVerificationKeysAtItemIdentifier:(id)identifier reply:(id)reply;
+- (void)getContainerForMangledID:(id)d personaID:(id)iD reply:(id)reply;
+- (void)getContainerLastServerUpdateWithID:(id)d reply:(id)reply;
+- (void)getContainerStatusWithID:(id)d reply:(id)reply;
+- (void)getContainerURLForID:(id)d forProcess:(id *)process reply:(id)reply;
+- (void)getContainersByID:(id)d;
+- (void)getContainersNeedingUpload:(id)upload;
+- (void)getCreatorNameComponentsForItemIdentifier:(id)identifier reply:(id)reply;
+- (void)getDefaultAppContainerItemForContainerID:(id)d recreateDocumentsIfNeeded:(BOOL)needed reply:(id)reply;
+- (void)getEnhancedDrivePrivacyStatusForContainer:(id)container onServer:(BOOL)server reply:(id)reply;
+- (void)getItemUpdateSenderWithReceiver:(id)receiver reply:(id)reply;
+- (void)getLastSyncDateWithReply:(id)reply;
+- (void)getLocalizedLastSyncWithReply:(id)reply;
+- (void)getLoggedInUserPropertyValuesForKeys:(id)keys reply:(id)reply;
+- (void)getPathForRecordID:(id)d forContainer:(id)container reply:(id)reply;
+- (void)getPublishedURLForItemIdentifier:(id)identifier forStreaming:(BOOL)streaming requestedTTL:(unint64_t)l reply:(id)reply;
+- (void)getQueryItemForBRFileObjectID:(id)d reply:(id)reply;
+- (void)getServerContentSignatureAtItemIdentifier:(id)identifier reply:(id)reply;
+- (void)getServerSaltingKeysAtItemIdentifier:(id)identifier reply:(id)reply;
+- (void)getShareOptionsOfItemIdentifier:(id)identifier reply:(id)reply;
+- (void)getSyncState:(unint64_t)state reply:(id)reply;
+- (void)getTotalApplicationDocumentUsageWithReply:(id)reply;
+- (void)getiWorkNeedsShareMigrateForItemIdentifier:(id)identifier reply:(id)reply;
+- (void)getiWorkPublishingBadgingStatusForItemIdentifier:(id)identifier reply:(id)reply;
+- (void)getiWorkPublishingInfoForItemIdentifier:(id)identifier reply:(id)reply;
+- (void)handleCloudKitShareMetadata:(id)metadata completionHandler:(id)handler;
+- (void)hasOptimizeStorageWithReply:(id)reply;
+- (void)healthStatusStringForContainer:(id)container reply:(id)reply;
+- (void)iCloudDesktopSettingsChangedWithAttributes:(id)attributes reply:(id)reply;
+- (void)iWorkForceSyncContainerID:(id)d ownedByMe:(BOOL)me reply:(id)reply;
+- (void)invalidateAccountCacheWithReply:(id)reply;
+- (void)jetsamCloudDocsAppsWithReply:(id)reply;
+- (void)launchItemCountMismatchChecksForItemIdentifier:(id)identifier reply:(id)reply;
+- (void)launchSyncConsistencyChecksWithContainerIDs:(id)ds reply:(id)reply;
+- (void)listNonLocalVersionsWithItemIdentifier:(id)identifier reply:(id)reply;
+- (void)logoutAccountWithACAccountID:(id)d reply:(id)reply;
+- (void)lookupCollectionGathererPacerMinFireInterval:(id)interval;
+- (void)lookupExcludedExtensionsForLogoutWithReply:(id)reply;
+- (void)lookupExcludedFilenamesForLogoutWithReply:(id)reply;
+- (void)lookupMinFileSizeForThumbnailTransferWithReply:(id)reply;
+- (void)modifyItem:(id)item baseVersion:(id)version changedFields:(unint64_t)fields contents:(id)contents options:(unint64_t)options additionalAttrs:(id)attrs completionHandler:(id)handler;
+- (void)notifyReimportCompleted:(id)completed;
+- (void)overrideUploadOnCellularConstraintsWithReply:(id)reply;
+- (void)pauseSyncConsistencyWithReply:(id)reply;
+- (void)performSelfCheck:(id)check reply:(id)reply;
+- (void)presyncContainerWithID:(id)d reply:(id)reply;
+- (void)printShareRequests:(id)requests personaID:(id)d isPending:(BOOL)pending asJSON:(BOOL)n reply:(id)reply;
+- (void)printStatus:(id)status containerID:(id)d reply:(id)reply;
+- (void)queryEligibleAccountDescriptorsWithReply:(id)reply;
+- (void)queryPathsForPersona:(id)persona reply:(id)reply;
+- (void)queryTelemetryEnablementWithReply:(id)reply;
+- (void)reclaimAmount:(int64_t)amount withUrgency:(int)urgency reply:(id)reply;
+- (void)refreshSharingStateForItemIdentifier:(id)identifier reply:(id)reply;
+- (void)registerInitialSyncBarrierForID:(id)d reply:(id)reply;
+- (void)reimportItemIdentifier:(id)identifier reply:(id)reply;
+- (void)removeFPFSDomain:(id)domain;
+- (void)resetBudgets:(id)budgets reply:(id)reply;
+- (void)resolveBookmarkDataToURL:(id)l reply:(id)reply;
+- (void)resolveFileObjectIDsToContentRecordIDsForThumbnails:(id)thumbnails reply:(id)reply;
+- (void)resumeSyncConsistencyWithReply:(id)reply;
+- (void)setEnhancedDrivePrivacyEnabled:(BOOL)enabled forContainer:(id)container onServer:(BOOL)server onClient:(BOOL)client reply:(id)reply;
+- (void)setMigrationStatus:(char)status forDSID:(id)d shouldUpdateAccount:(BOOL)account reply:(id)reply;
+- (void)setiWorkPublishingInfoForItemIdentifier:(id)identifier isForPublish:(BOOL)publish readonly:(BOOL)readonly reply:(id)reply;
+- (void)setupInstanceWithDict:(id)dict reply:(id)reply;
+- (void)simulateHealthIssueWithContainer:(id)container status:(id)status reply:(id)reply;
+- (void)startOperation:(id)operation toAutoAcceptShareLink:(id)link reply:(id)reply;
+- (void)startOperation:(id)operation toCopyAvailableQuotaWithReply:(id)reply;
+- (void)startOperation:(id)operation toCopyDocumentURLForRecordID:(id)d syncIfNeeded:(BOOL)needed reply:(id)reply;
+- (void)startOperation:(id)operation toCopyParticipantTokenWithItemID:(id)d reply:(id)reply;
+- (void)startOperation:(id)operation toCopyShareURLForShare:(id)share reply:(id)reply;
+- (void)startOperation:(id)operation toCopySharingAccessTokenOfItemID:(id)d reply:(id)reply;
+- (void)startOperation:(id)operation toCopySharingInfoWithItemID:(id)d reply:(id)reply;
+- (void)startOperation:(id)operation toCopySharingWebAuthTokenForContainerID:(id)d reply:(id)reply;
+- (void)startOperation:(id)operation toCopyShortTokenOfItemID:(id)d reply:(id)reply;
+- (void)startOperation:(id)operation toLookupShareParticipants:(id)participants reply:(id)reply;
+- (void)startOperation:(id)operation toModifyRecordAccessWithItemID:(id)d allowAccess:(BOOL)access reply:(id)reply;
+- (void)startOperation:(id)operation toPrepFolderForSharingWithItemID:(id)d reply:(id)reply;
+- (void)startOperation:(id)operation toProcessSubitemsWithItemID:(id)d maxSubsharesFailures:(unint64_t)failures processType:(unint64_t)type reply:(id)reply;
+- (void)startOperation:(id)operation toSaveSharingInfo:(id)info reply:(id)reply;
+- (void)startOperation:(id)operation toUnshareShare:(id)share forceDelete:(BOOL)delete reply:(id)reply;
+- (void)startOperation:(id)operation toUploadAllFilesInContainer:(id)container reply:(id)reply;
+- (void)startOperation:(id)operation toWaitForFPFSMigrationWithReply:(id)reply;
+- (void)unboostFilePresenterForItemIdentifiers:(id)identifiers reply:(id)reply;
+- (void)updateAccountDisplayName:(id)name reply:(id)reply;
+- (void)updateContainerMetadataForID:(id)d;
+- (void)userVerifiedTermsWithReply:(id)reply;
+- (void)validateCloudDocsSupported:(BOOL)supported withReply:(id)reply;
+- (void)validateConnectionDomainWithDomainIdentifier:(id)identifier databaseID:(id)d reply:(id)reply;
+- (void)verifyAccountLoaded:(id)loaded;
+- (void)waitForAccountToLoadWithReply:(id)reply;
+- (void)waitForStabilizationWithReply:(id)reply;
+- (void)waitUntilIdle:(id)idle timeout:(id)timeout reply:(id)reply;
+- (void)zoneNameForContainer:(id)container reply:(id)reply;
 @end
 
 @implementation BRCXPCRegularIPCsClient
 
-- (void)accessItemIdentifier:(id)a3 dbAccessKind:(int64_t)a4 synchronouslyIfPossible:(BOOL)a5 LocalItemHandler:(id)a6 ServerItemHandler:(id)a7
+- (void)accessItemIdentifier:(id)identifier dbAccessKind:(int64_t)kind synchronouslyIfPossible:(BOOL)possible LocalItemHandler:(id)handler ServerItemHandler:(id)itemHandler
 {
   v71 = *MEMORY[0x277D85DE8];
-  v51 = a3;
-  v11 = a6;
-  v12 = a7;
-  if ((v11 != 0) != (v12 == 0))
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  itemHandlerCopy = itemHandler;
+  if ((handlerCopy != 0) != (itemHandlerCopy == 0))
   {
     [BRCXPCRegularIPCsClient(FPFSAdditions) accessItemIdentifier:dbAccessKind:synchronouslyIfPossible:LocalItemHandler:ServerItemHandler:];
   }
@@ -185,26 +185,26 @@
   v62[1] = 3221225472;
   v62[2] = __135__BRCXPCRegularIPCsClient_FPFSAdditions__accessItemIdentifier_dbAccessKind_synchronouslyIfPossible_LocalItemHandler_ServerItemHandler___block_invoke;
   v62[3] = &unk_278503C18;
-  v14 = v11;
+  v14 = handlerCopy;
   v63 = v14;
-  v15 = v12;
+  v15 = itemHandlerCopy;
   v64 = v15;
   LODWORD(v13) = _brc_ipc_check_entitlement_and_logged_status(self, 1, v13, v62);
 
   if (v13)
   {
-    v16 = [(BRCXPCClient *)self session];
-    v17 = [v16 personaIdentifier];
-    if ([v17 isEqualToString:@"__defaultPersonaID__"])
+    session = [(BRCXPCClient *)self session];
+    personaIdentifier = [session personaIdentifier];
+    if ([personaIdentifier isEqualToString:@"__defaultPersonaID__"])
     {
     }
 
     else
     {
-      v18 = [(BRCXPCClient *)self session];
-      v19 = [v18 personaIdentifier];
+      session2 = [(BRCXPCClient *)self session];
+      personaIdentifier2 = [session2 personaIdentifier];
 
-      if (v19)
+      if (personaIdentifier2)
       {
         v20 = 0;
         goto LABEL_11;
@@ -216,16 +216,16 @@
       [BRCXPCRegularIPCsClient(FPFSAdditions) accessItemIdentifier:dbAccessKind:synchronouslyIfPossible:LocalItemHandler:ServerItemHandler:];
     }
 
-    v19 = accessItemIdentifier_dbAccessKind_synchronouslyIfPossible_LocalItemHandler_ServerItemHandler____personalPersona;
+    personaIdentifier2 = accessItemIdentifier_dbAccessKind_synchronouslyIfPossible_LocalItemHandler_ServerItemHandler____personalPersona;
     v20 = 1;
 LABEL_11:
-    v21 = [MEMORY[0x277D77BF8] sharedManager];
-    v50 = [v21 currentPersona];
+    mEMORY[0x277D77BF8] = [MEMORY[0x277D77BF8] sharedManager];
+    currentPersona = [mEMORY[0x277D77BF8] currentPersona];
 
     v61 = 0;
-    v22 = [v50 userPersonaUniqueString];
-    v23 = v22;
-    if (v22 == v19 || ([v22 isEqualToString:v19] & 1) != 0)
+    userPersonaUniqueString = [currentPersona userPersonaUniqueString];
+    v23 = userPersonaUniqueString;
+    if (userPersonaUniqueString == personaIdentifier2 || ([userPersonaUniqueString isEqualToString:personaIdentifier2] & 1) != 0)
     {
       v24 = 0;
     }
@@ -235,7 +235,7 @@ LABEL_11:
       if (voucher_process_can_use_arbitrary_personas())
       {
         v60 = 0;
-        v36 = [v50 copyCurrentPersonaContextWithError:&v60];
+        v36 = [currentPersona copyCurrentPersonaContextWithError:&v60];
         v37 = v60;
         v38 = v61;
         v61 = v36;
@@ -250,7 +250,7 @@ LABEL_11:
           }
         }
 
-        v24 = [v50 br_generateAndRestorePersonaContextWithPersonaUniqueString:v19];
+        v24 = [currentPersona br_generateAndRestorePersonaContextWithPersonaUniqueString:personaIdentifier2];
 
         if (!v24)
         {
@@ -261,23 +261,23 @@ LABEL_11:
         v42 = brc_default_log();
         if (os_log_type_enabled(v42, 0x90u))
         {
-          v43 = [(BRCXPCClient *)self session];
-          v44 = [v43 personaIdentifier];
-          v48 = v43;
+          session3 = [(BRCXPCClient *)self session];
+          personaIdentifier3 = [session3 personaIdentifier];
+          v48 = session3;
           *buf = 138412802;
-          v66 = v44;
+          v66 = personaIdentifier3;
           v67 = 2112;
           v68 = v24;
           v69 = 2112;
           v70 = v41;
-          v45 = v44;
+          v45 = personaIdentifier3;
           _os_log_error_impl(&dword_223E7A000, v42, 0x90u, "[ERROR] Can't adopt persona %@: %@%@", buf, 0x20u);
         }
       }
 
       else
       {
-        if (!v20 || ([v50 isDataSeparatedPersona] & 1) != 0)
+        if (!v20 || ([currentPersona isDataSeparatedPersona] & 1) != 0)
         {
           v46 = brc_bread_crumbs();
           v47 = brc_default_log();
@@ -302,17 +302,17 @@ LABEL_11:
     }
 
 LABEL_14:
-    if (a4 == 1 && (+[BRCUserDefaults defaultsForMangledID:](BRCUserDefaults, "defaultsForMangledID:", 0), v25 = objc_claimAutoreleasedReturnValue(), v26 = [v25 allowReadOnlyDBInIPC], v25, v26))
+    if (kind == 1 && (+[BRCUserDefaults defaultsForMangledID:](BRCUserDefaults, "defaultsForMangledID:", 0), v25 = objc_claimAutoreleasedReturnValue(), v26 = [v25 allowReadOnlyDBInIPC], v25, v26))
     {
-      v27 = [(BRCXPCClient *)self session];
-      v28 = [v27 readOnlyWorkloop];
+      session4 = [(BRCXPCClient *)self session];
+      readOnlyWorkloop = [session4 readOnlyWorkloop];
       v29 = 1;
     }
 
     else
     {
-      v27 = [(BRCXPCClient *)self session];
-      v28 = [v27 clientTruthWorkloop];
+      session4 = [(BRCXPCClient *)self session];
+      readOnlyWorkloop = [session4 clientTruthWorkloop];
       v29 = 0;
     }
 
@@ -322,14 +322,14 @@ LABEL_14:
     v55[3] = &unk_278503C40;
     v59 = v29;
     v55[4] = self;
-    v56 = v51;
+    v56 = identifierCopy;
     v30 = v14;
     v57 = v30;
     v31 = v15;
     v58 = v31;
     v32 = MEMORY[0x22AA4A310](v55);
     v33 = v32;
-    if (a5)
+    if (possible)
     {
       (*(v32 + 16))(v32);
     }
@@ -343,7 +343,7 @@ LABEL_14:
       v52[3] = &unk_278503C68;
       v53 = v30;
       v54 = v31;
-      brc_task_tracker_async_with_logs(tracker, v28, v33, v52);
+      brc_task_tracker_async_with_logs(tracker, readOnlyWorkloop, v33, v52);
     }
 
     _BRRestorePersona();
@@ -450,10 +450,10 @@ void __135__BRCXPCRegularIPCsClient_FPFSAdditions__accessItemIdentifier_dbAccess
   }
 }
 
-- (void)removeFPFSDomain:(id)a3
+- (void)removeFPFSDomain:(id)domain
 {
   v66 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  domainCopy = domain;
   memset(v55, 0, sizeof(v55));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient(FPFSAdditions) removeFPFSDomain:]", 207, 0, v55);
   v5 = brc_bread_crumbs();
@@ -464,9 +464,9 @@ void __135__BRCXPCRegularIPCsClient_FPFSAdditions__accessItemIdentifier_dbAccess
     v8 = qos_class_self();
     v9 = BRCPrettyPrintEnumWithContext(v8, &brc_qos_entries, 0);
     *buf = 134219010;
-    v57 = v7;
+    selfCopy4 = v7;
     v58 = 2112;
-    v59 = self;
+    selfCopy = self;
     v60 = 2112;
     v61 = v9;
     v62 = 2080;
@@ -482,33 +482,33 @@ void __135__BRCXPCRegularIPCsClient_FPFSAdditions__accessItemIdentifier_dbAccess
   v53[2] = __59__BRCXPCRegularIPCsClient_FPFSAdditions__removeFPFSDomain___block_invoke;
   v53[3] = &unk_2785014D0;
   v53[4] = self;
-  v11 = v4;
+  v11 = domainCopy;
   v54 = v11;
   LODWORD(v10) = _brc_ipc_check_entitlement_and_logged_status(self, 1, v10, v53);
 
   if (v10)
   {
-    v12 = [(BRCXPCClient *)self session];
-    v13 = [v12 personaIdentifier];
+    session = [(BRCXPCClient *)self session];
+    personaIdentifier = [session personaIdentifier];
 
-    if (!v13)
+    if (!personaIdentifier)
     {
-      v14 = [MEMORY[0x277D77BF8] sharedManager];
-      v13 = [v14 br_currentPersonaID];
+      mEMORY[0x277D77BF8] = [MEMORY[0x277D77BF8] sharedManager];
+      personaIdentifier = [mEMORY[0x277D77BF8] br_currentPersonaID];
     }
 
-    if ([(BRCXPCRegularIPCsClient *)v13 isEqualToString:@"__defaultPersonaID__"])
+    if ([(BRCXPCRegularIPCsClient *)personaIdentifier isEqualToString:@"__defaultPersonaID__"])
     {
       v15 = 0;
     }
 
     else
     {
-      v15 = v13;
+      v15 = personaIdentifier;
     }
 
     v16 = v15;
-    v17 = v13;
+    v17 = personaIdentifier;
     if (!v16)
     {
       if (removeFPFSDomain____personaOnceToken != -1)
@@ -519,13 +519,13 @@ void __135__BRCXPCRegularIPCsClient_FPFSAdditions__accessItemIdentifier_dbAccess
       v17 = removeFPFSDomain____personalPersona;
     }
 
-    v18 = [MEMORY[0x277D77BF8] sharedManager];
-    v45 = [v18 currentPersona];
+    mEMORY[0x277D77BF8]2 = [MEMORY[0x277D77BF8] sharedManager];
+    currentPersona = [mEMORY[0x277D77BF8]2 currentPersona];
 
     v52 = 0;
-    v19 = [v45 userPersonaUniqueString];
-    v20 = v19;
-    if (v19 == v17 || ([(BRCXPCRegularIPCsClient *)v19 isEqualToString:v17]& 1) != 0)
+    userPersonaUniqueString = [currentPersona userPersonaUniqueString];
+    v20 = userPersonaUniqueString;
+    if (userPersonaUniqueString == v17 || ([(BRCXPCRegularIPCsClient *)userPersonaUniqueString isEqualToString:v17]& 1) != 0)
     {
       goto LABEL_15;
     }
@@ -533,7 +533,7 @@ void __135__BRCXPCRegularIPCsClient_FPFSAdditions__accessItemIdentifier_dbAccess
     if (voucher_process_can_use_arbitrary_personas())
     {
       v51 = 0;
-      v30 = [v45 copyCurrentPersonaContextWithError:&v51];
+      v30 = [currentPersona copyCurrentPersonaContextWithError:&v51];
       v31 = v51;
       v32 = v52;
       v52 = v30;
@@ -548,7 +548,7 @@ void __135__BRCXPCRegularIPCsClient_FPFSAdditions__accessItemIdentifier_dbAccess
         }
       }
 
-      v44 = [v45 br_generateAndRestorePersonaContextWithPersonaUniqueString:v17];
+      v44 = [currentPersona br_generateAndRestorePersonaContextWithPersonaUniqueString:v17];
 
       if (!v44)
       {
@@ -572,9 +572,9 @@ LABEL_16:
           if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
           {
             *buf = 138412802;
-            v57 = self;
+            selfCopy4 = self;
             v58 = 2112;
-            v59 = v22;
+            selfCopy = v22;
             v60 = 2112;
             v61 = v25;
             _os_log_impl(&dword_223E7A000, v26, OS_LOG_TYPE_INFO, "[INFO] %@: reply(%@)%@", buf, 0x20u);
@@ -590,23 +590,23 @@ LABEL_16:
           if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
           {
             *buf = 138412802;
-            v57 = v21;
+            selfCopy4 = v21;
             v58 = 2112;
-            v59 = v13;
+            selfCopy = personaIdentifier;
             v60 = 2112;
             v61 = v27;
             _os_log_debug_impl(&dword_223E7A000, v28, OS_LOG_TYPE_DEBUG, "[DEBUG] removing FPFS domain %@ with adopted persona = %@%@", buf, 0x20u);
           }
 
-          v29 = [MEMORY[0x277CC64A8] br_sharedProviderManager];
+          br_sharedProviderManager = [MEMORY[0x277CC64A8] br_sharedProviderManager];
           v46[0] = MEMORY[0x277D85DD0];
           v46[1] = 3221225472;
           v46[2] = __59__BRCXPCRegularIPCsClient_FPFSAdditions__removeFPFSDomain___block_invoke_13;
           v46[3] = &unk_278501778;
           v47 = v21;
-          v48 = self;
+          selfCopy3 = self;
           v49 = v11;
-          [v29 br_removeDomain:v47 sync:0 completionHandler:v46];
+          [br_sharedProviderManager br_removeDomain:v47 sync:0 completionHandler:v46];
         }
 
         else
@@ -623,9 +623,9 @@ LABEL_16:
           if (os_log_type_enabled(v42, OS_LOG_TYPE_INFO))
           {
             *buf = 138412802;
-            v57 = self;
+            selfCopy4 = self;
             v58 = 2112;
-            v59 = 0;
+            selfCopy = 0;
             v60 = 2112;
             v61 = v41;
             _os_log_impl(&dword_223E7A000, v42, OS_LOG_TYPE_INFO, "[INFO] %@: reply(%@)%@", buf, 0x20u);
@@ -643,9 +643,9 @@ LABEL_16:
       if (os_log_type_enabled(v36, 0x90u))
       {
         *buf = 138412802;
-        v57 = v13;
+        selfCopy4 = personaIdentifier;
         v58 = 2112;
-        v59 = v44;
+        selfCopy = v44;
         v60 = 2112;
         v61 = v35;
         _os_log_error_impl(&dword_223E7A000, v36, 0x90u, "[ERROR] Can't adopt persona %@: %@%@", buf, 0x20u);
@@ -654,7 +654,7 @@ LABEL_16:
 
     else
     {
-      if (v16 || ([v45 isDataSeparatedPersona] & 1) != 0)
+      if (v16 || ([currentPersona isDataSeparatedPersona] & 1) != 0)
       {
         v37 = brc_bread_crumbs();
         v38 = brc_default_log();
@@ -757,12 +757,12 @@ void __59__BRCXPCRegularIPCsClient_FPFSAdditions__removeFPFSDomain___block_invok
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getPathForRecordID:(id)a3 forContainer:(id)a4 reply:(id)a5
+- (void)getPathForRecordID:(id)d forContainer:(id)container reply:(id)reply
 {
   v44 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  containerCopy = container;
+  replyCopy = reply;
   memset(v33, 0, 24);
   __brc_create_section(1, "[BRCXPCRegularIPCsClient(FPFSAdditions) getPathForRecordID:forContainer:reply:]", 247, 0, v33);
   v11 = brc_bread_crumbs();
@@ -773,9 +773,9 @@ void __59__BRCXPCRegularIPCsClient_FPFSAdditions__removeFPFSDomain___block_invok
     v14 = qos_class_self();
     v15 = BRCPrettyPrintEnumWithContext(v14, &brc_qos_entries, 0);
     *buf = 134219010;
-    v35 = v13;
+    selfCopy3 = v13;
     v36 = 2112;
-    v37 = self;
+    selfCopy = self;
     v38 = 2112;
     v39 = v15;
     v40 = 2080;
@@ -791,7 +791,7 @@ void __59__BRCXPCRegularIPCsClient_FPFSAdditions__removeFPFSDomain___block_invok
   v31[2] = __80__BRCXPCRegularIPCsClient_FPFSAdditions__getPathForRecordID_forContainer_reply___block_invoke;
   v31[3] = &unk_2785014D0;
   v31[4] = self;
-  v17 = v10;
+  v17 = replyCopy;
   v32 = v17;
   LODWORD(v16) = _brc_ipc_check_entitlement_and_logged_status(self, 1, v16, v31);
 
@@ -801,19 +801,19 @@ void __59__BRCXPCRegularIPCsClient_FPFSAdditions__removeFPFSDomain___block_invok
     v33[4] = 0;
     if (_br_parseUUIDString())
     {
-      v18 = [(BRCXPCClient *)self session];
-      v19 = [v18 clientTruthWorkloop];
+      session = [(BRCXPCClient *)self session];
+      clientTruthWorkloop = [session clientTruthWorkloop];
       v25[0] = MEMORY[0x277D85DD0];
       v25[1] = 3221225472;
       v25[2] = __80__BRCXPCRegularIPCsClient_FPFSAdditions__getPathForRecordID_forContainer_reply___block_invoke_17;
       v25[3] = &unk_278501638;
-      v26 = v18;
-      v27 = v9;
-      v28 = self;
+      v26 = session;
+      v27 = containerCopy;
+      selfCopy2 = self;
       v30 = v17;
-      v29 = v8;
-      v20 = v18;
-      dispatch_async(v19, v25);
+      v29 = dCopy;
+      v20 = session;
+      dispatch_async(clientTruthWorkloop, v25);
     }
 
     else
@@ -822,11 +822,11 @@ void __59__BRCXPCRegularIPCsClient_FPFSAdditions__removeFPFSDomain___block_invok
       v22 = brc_default_log();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
       {
-        v23 = [MEMORY[0x277CCA9B8] brc_errorInvalidParameter:@"RecordID" value:v8];
+        v23 = [MEMORY[0x277CCA9B8] brc_errorInvalidParameter:@"RecordID" value:dCopy];
         *buf = 138413058;
-        v35 = self;
+        selfCopy3 = self;
         v36 = 2112;
-        v37 = 0;
+        selfCopy = 0;
         v38 = 2112;
         v39 = v23;
         v40 = 2112;
@@ -834,7 +834,7 @@ void __59__BRCXPCRegularIPCsClient_FPFSAdditions__removeFPFSDomain___block_invok
         _os_log_impl(&dword_223E7A000, v22, OS_LOG_TYPE_INFO, "[INFO] %@: reply(%@, %@)%@", buf, 0x2Au);
       }
 
-      v20 = [MEMORY[0x277CCA9B8] brc_errorInvalidParameter:@"RecordID" value:v8];
+      v20 = [MEMORY[0x277CCA9B8] brc_errorInvalidParameter:@"RecordID" value:dCopy];
       (*(v17 + 2))(v17, 0, v20);
     }
   }
@@ -973,11 +973,11 @@ void __80__BRCXPCRegularIPCsClient_FPFSAdditions__getPathForRecordID_forContaine
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getQueryItemForBRFileObjectID:(id)a3 reply:(id)a4
+- (void)getQueryItemForBRFileObjectID:(id)d reply:(id)reply
 {
   v41 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  replyCopy = reply;
   memset(v30, 0, sizeof(v30));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient(FPFSAdditions) getQueryItemForBRFileObjectID:reply:]", 275, 0, v30);
   v8 = brc_bread_crumbs();
@@ -988,9 +988,9 @@ void __80__BRCXPCRegularIPCsClient_FPFSAdditions__getPathForRecordID_forContaine
     v11 = qos_class_self();
     v12 = BRCPrettyPrintEnumWithContext(v11, &brc_qos_entries, 0);
     *buf = 134219010;
-    v32 = v10;
+    selfCopy2 = v10;
     v33 = 2112;
-    v34 = self;
+    selfCopy = self;
     v35 = 2112;
     v36 = v12;
     v37 = 2080;
@@ -1006,21 +1006,21 @@ void __80__BRCXPCRegularIPCsClient_FPFSAdditions__getPathForRecordID_forContaine
   v28[2] = __78__BRCXPCRegularIPCsClient_FPFSAdditions__getQueryItemForBRFileObjectID_reply___block_invoke;
   v28[3] = &unk_2785014D0;
   v28[4] = self;
-  v14 = v7;
+  v14 = replyCopy;
   v29 = v14;
   LODWORD(v13) = _brc_ipc_check_entitlement_and_logged_status(self, 1, v13, v28);
 
   if (v13)
   {
-    if ([v6 isRootContainerItem])
+    if ([dCopy isRootContainerItem])
     {
       v15 = [BRCNotification alloc];
-      v16 = [(BRCXPCClient *)self session];
-      v17 = [(BRCNotification *)v15 initRootContainerNotificationWithSessionContext:v16];
+      session = [(BRCXPCClient *)self session];
+      v17 = [(BRCNotification *)v15 initRootContainerNotificationWithSessionContext:session];
 
-      v18 = [(BRCXPCClient *)self session];
-      v19 = [v18 fsUploader];
-      v20 = [v19 quotaAvailableForOwner:*MEMORY[0x277CBBF28]];
+      session2 = [(BRCXPCClient *)self session];
+      fsUploader = [session2 fsUploader];
+      v20 = [fsUploader quotaAvailableForOwner:*MEMORY[0x277CBBF28]];
 
       [(BRCXPCRegularIPCsClient *)v17 setAttribute:v20 forKey:*MEMORY[0x277CFB058]];
       v21 = brc_bread_crumbs();
@@ -1028,9 +1028,9 @@ void __80__BRCXPCRegularIPCsClient_FPFSAdditions__getPathForRecordID_forContaine
       if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
       {
         *buf = 138413058;
-        v32 = self;
+        selfCopy2 = self;
         v33 = 2112;
-        v34 = v17;
+        selfCopy = v17;
         v35 = 2112;
         v36 = 0;
         v37 = 2112;
@@ -1043,15 +1043,15 @@ void __80__BRCXPCRegularIPCsClient_FPFSAdditions__getPathForRecordID_forContaine
 
     else
     {
-      v23 = [(BRCXPCClient *)self session];
+      session3 = [(BRCXPCClient *)self session];
       v25[0] = MEMORY[0x277D85DD0];
       v25[1] = 3221225472;
       v25[2] = __78__BRCXPCRegularIPCsClient_FPFSAdditions__getQueryItemForBRFileObjectID_reply___block_invoke_22;
       v25[3] = &unk_278503CB8;
       v25[4] = self;
-      v26 = v6;
+      v26 = dCopy;
       v27 = v14;
-      [v23 performSyncOnClientReadDatabaseWorkloop:v25];
+      [session3 performSyncOnClientReadDatabaseWorkloop:v25];
     }
   }
 
@@ -1156,11 +1156,11 @@ void __78__BRCXPCRegularIPCsClient_FPFSAdditions__getQueryItemForBRFileObjectID_
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getDefaultAppContainerItemForContainerID:(id)a3 recreateDocumentsIfNeeded:(BOOL)a4 reply:(id)a5
+- (void)getDefaultAppContainerItemForContainerID:(id)d recreateDocumentsIfNeeded:(BOOL)needed reply:(id)reply
 {
   v52 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  dCopy = d;
+  replyCopy = reply;
   memset(v41, 0, sizeof(v41));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient(FPFSAdditions) getDefaultAppContainerItemForContainerID:recreateDocumentsIfNeeded:reply:]", 305, 0, v41);
   v10 = brc_bread_crumbs();
@@ -1171,9 +1171,9 @@ void __78__BRCXPCRegularIPCsClient_FPFSAdditions__getQueryItemForBRFileObjectID_
     v13 = qos_class_self();
     v14 = BRCPrettyPrintEnumWithContext(v13, &brc_qos_entries, 0);
     *buf = 134219010;
-    v43 = v12;
+    selfCopy4 = v12;
     v44 = 2112;
-    v45 = self;
+    selfCopy = self;
     v46 = 2112;
     v47 = v14;
     v48 = 2080;
@@ -1189,13 +1189,13 @@ void __78__BRCXPCRegularIPCsClient_FPFSAdditions__getQueryItemForBRFileObjectID_
   v39[2] = __115__BRCXPCRegularIPCsClient_FPFSAdditions__getDefaultAppContainerItemForContainerID_recreateDocumentsIfNeeded_reply___block_invoke;
   v39[3] = &unk_2785014D0;
   v39[4] = self;
-  v16 = v9;
+  v16 = replyCopy;
   v40 = v16;
   LODWORD(v15) = _brc_ipc_check_entitlement_and_logged_status(self, 1, v15, v39);
 
   if (v15)
   {
-    if (!v8 || (v17 = [objc_alloc(MEMORY[0x277CFAE60]) initWithAppLibraryName:v8]) == 0)
+    if (!dCopy || (v17 = [objc_alloc(MEMORY[0x277CFAE60]) initWithAppLibraryName:dCopy]) == 0)
     {
       v24 = brc_bread_crumbs();
       v25 = brc_default_log();
@@ -1203,9 +1203,9 @@ void __78__BRCXPCRegularIPCsClient_FPFSAdditions__getQueryItemForBRFileObjectID_
       {
         v26 = [MEMORY[0x277CCA9B8] brc_errorInvalidParameter:@"containerID" value:0];
         *buf = 138413058;
-        v43 = self;
+        selfCopy4 = self;
         v44 = 2112;
-        v45 = 0;
+        selfCopy = 0;
         v46 = 2112;
         v47 = v26;
         v48 = 2112;
@@ -1223,23 +1223,23 @@ void __78__BRCXPCRegularIPCsClient_FPFSAdditions__getQueryItemForBRFileObjectID_
     v19 = v18;
     if (v18)
     {
-      v20 = [v18 containerMetadata];
-      v21 = [v20 isDocumentScopePublic];
+      containerMetadata = [v18 containerMetadata];
+      isDocumentScopePublic = [containerMetadata isDocumentScopePublic];
 
-      if (v21)
+      if (isDocumentScopePublic)
       {
-        v22 = [(BRCXPCClient *)self session];
-        v23 = [v22 clientTruthWorkloop];
+        session = [(BRCXPCClient *)self session];
+        clientTruthWorkloop = [session clientTruthWorkloop];
         block[0] = MEMORY[0x277D85DD0];
         block[1] = 3221225472;
         block[2] = __115__BRCXPCRegularIPCsClient_FPFSAdditions__getDefaultAppContainerItemForContainerID_recreateDocumentsIfNeeded_reply___block_invoke_29;
         block[3] = &unk_278503CE0;
-        v37 = a4;
+        neededCopy = needed;
         block[4] = self;
         v34 = v19;
-        v35 = v8;
+        v35 = dCopy;
         v36 = v16;
-        dispatch_async_and_wait(v23, block);
+        dispatch_async_and_wait(clientTruthWorkloop, block);
 
 LABEL_19:
 LABEL_20:
@@ -1252,9 +1252,9 @@ LABEL_20:
       if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
       {
         *buf = 138413058;
-        v43 = self;
+        selfCopy4 = self;
         v44 = 2112;
-        v45 = 0;
+        selfCopy = 0;
         v46 = 2112;
         v47 = 0;
         v48 = 2112;
@@ -1272,9 +1272,9 @@ LABEL_20:
       if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
       {
         *buf = 138413058;
-        v43 = self;
+        selfCopy4 = self;
         v44 = 2112;
-        v45 = 0;
+        selfCopy = 0;
         v46 = 2112;
         v47 = v38;
         v48 = 2112;
@@ -1375,34 +1375,34 @@ void __115__BRCXPCRegularIPCsClient_FPFSAdditions__getDefaultAppContainerItemFor
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_queueOrCallCompletionBlock:(id)a3
+- (void)_queueOrCallCompletionBlock:(id)block
 {
-  v4 = a3;
-  v6 = [(BRCXPCClient *)self session];
-  v5 = [v6 clientDB];
-  [v5 scheduleFlushWithCheckpoint:1 whenFlushed:v4];
+  blockCopy = block;
+  session = [(BRCXPCClient *)self session];
+  clientDB = [session clientDB];
+  [clientDB scheduleFlushWithCheckpoint:1 whenFlushed:blockCopy];
 }
 
-- (void)createItemBasedOnTemplate:(id)a3 fields:(unint64_t)a4 contents:(id)a5 options:(unint64_t)a6 additionalItemAttributes:(id)a7 completionHandler:(id)a8
+- (void)createItemBasedOnTemplate:(id)template fields:(unint64_t)fields contents:(id)contents options:(unint64_t)options additionalItemAttributes:(id)attributes completionHandler:(id)handler
 {
   v100 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v68 = a5;
-  v67 = a7;
-  v14 = a8;
+  templateCopy = template;
+  contentsCopy = contents;
+  attributesCopy = attributes;
+  handlerCopy = handler;
   v92[0] = 0;
   v92[1] = v92;
   v92[2] = 0x3032000000;
   v92[3] = __Block_byref_object_copy__27;
   v92[4] = __Block_byref_object_dispose__27;
-  v15 = (a6 & 1);
+  v15 = (options & 1);
   v93 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v15];
   v89[0] = MEMORY[0x277D85DD0];
   v89[1] = 3221225472;
   v89[2] = __135__BRCXPCRegularIPCsClient_FPFSAdditions__createItemBasedOnTemplate_fields_contents_options_additionalItemAttributes_completionHandler___block_invoke;
   v89[3] = &unk_278503D08;
   v91 = v92;
-  v66 = v14;
+  v66 = handlerCopy;
   v90 = v66;
   v16 = MEMORY[0x22AA4A310](v89);
   memset(v88, 0, sizeof(v88));
@@ -1411,14 +1411,14 @@ void __115__BRCXPCRegularIPCsClient_FPFSAdditions__getDefaultAppContainerItemFor
   v18 = brc_default_log();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
   {
-    v19 = v13;
+    v19 = templateCopy;
     v20 = v88[0];
     v21 = qos_class_self();
     v22 = BRCPrettyPrintEnumWithContext(v21, &brc_qos_entries, 0);
     *buf = 134219010;
-    v95 = v20;
+    selfCopy4 = v20;
     v96 = 2112;
-    v97 = self;
+    selfCopy = self;
     v98 = 2112;
     *v99 = v22;
     *&v99[8] = 2080;
@@ -1427,7 +1427,7 @@ void __115__BRCXPCRegularIPCsClient_FPFSAdditions__getDefaultAppContainerItemFor
     *&v99[20] = v17;
     _os_log_impl(&dword_223E7A000, v18, OS_LOG_TYPE_INFO, "[INFO] ┏%llx %@ (%@) %s %@", buf, 0x34u);
 
-    v13 = v19;
+    templateCopy = v19;
   }
 
   v23 = *MEMORY[0x277CFAC68];
@@ -1442,31 +1442,31 @@ void __115__BRCXPCRegularIPCsClient_FPFSAdditions__getDefaultAppContainerItemFor
 
   if (v25)
   {
-    v26 = [(BRCXPCRegularIPCsClient *)v13 parentItemIdentifier];
-    v27 = [v26 isEqualToString:*MEMORY[0x277CC6358]];
+    parentItemIdentifier = [(BRCXPCRegularIPCsClient *)templateCopy parentItemIdentifier];
+    v27 = [parentItemIdentifier isEqualToString:*MEMORY[0x277CC6358]];
 
     if (v27)
     {
-      v28 = 0;
+      parentItemIdentifier5 = 0;
     }
 
     else
     {
       v29 = MEMORY[0x277CFAE50];
-      v30 = [(BRCXPCRegularIPCsClient *)v13 parentItemIdentifier];
-      v28 = [v29 fileObjectIDWithString:v30];
+      parentItemIdentifier2 = [(BRCXPCRegularIPCsClient *)templateCopy parentItemIdentifier];
+      parentItemIdentifier5 = [v29 fileObjectIDWithString:parentItemIdentifier2];
 
-      if (!v28)
+      if (!parentItemIdentifier5)
       {
         v47 = brc_bread_crumbs();
         v48 = brc_default_log();
         if (os_log_type_enabled(v48, OS_LOG_TYPE_DEBUG))
         {
-          v60 = [(BRCXPCRegularIPCsClient *)v13 parentItemIdentifier];
+          parentItemIdentifier3 = [(BRCXPCRegularIPCsClient *)templateCopy parentItemIdentifier];
           *buf = 138412802;
-          v95 = v60;
+          selfCopy4 = parentItemIdentifier3;
           v96 = 2112;
-          v97 = v13;
+          selfCopy = templateCopy;
           v98 = 2112;
           *v99 = v47;
           _os_log_debug_impl(&dword_223E7A000, v48, OS_LOG_TYPE_DEBUG, "[DEBUG] Failed to get new parent identifier from %@, template %@%@", buf, 0x20u);
@@ -1477,12 +1477,12 @@ void __115__BRCXPCRegularIPCsClient_FPFSAdditions__getDefaultAppContainerItemFor
         if (os_log_type_enabled(v50, OS_LOG_TYPE_INFO))
         {
           v51 = MEMORY[0x277CCA9B8];
-          v52 = [(BRCXPCRegularIPCsClient *)v13 parentItemIdentifier];
-          v53 = [v51 brc_errorInvalidParameter:@"parentItemIdentifier" value:v52];
+          parentItemIdentifier4 = [(BRCXPCRegularIPCsClient *)templateCopy parentItemIdentifier];
+          v53 = [v51 brc_errorInvalidParameter:@"parentItemIdentifier" value:parentItemIdentifier4];
           *buf = 138413314;
-          v95 = self;
+          selfCopy4 = self;
           v96 = 2112;
-          v97 = 0;
+          selfCopy = 0;
           v98 = 1024;
           *v99 = 0;
           *&v99[4] = 2112;
@@ -1493,24 +1493,24 @@ void __115__BRCXPCRegularIPCsClient_FPFSAdditions__getDefaultAppContainerItemFor
         }
 
         v54 = MEMORY[0x277CCA9B8];
-        v28 = [(BRCXPCRegularIPCsClient *)v13 parentItemIdentifier];
-        v65 = [v54 brc_errorInvalidParameter:@"parentItemIdentifier" value:v28];
-        (*(v24 + 2))(v24, 0, 0, v65);
+        parentItemIdentifier5 = [(BRCXPCRegularIPCsClient *)templateCopy parentItemIdentifier];
+        session = [v54 brc_errorInvalidParameter:@"parentItemIdentifier" value:parentItemIdentifier5];
+        (*(v24 + 2))(v24, 0, 0, session);
         goto LABEL_35;
       }
     }
 
-    v65 = [(BRCXPCClient *)self session];
-    if (![v28 isRootContainerItem])
+    session = [(BRCXPCClient *)self session];
+    if (![parentItemIdentifier5 isRootContainerItem])
     {
-      if (a6)
+      if (options)
       {
         buf[0] = 0;
         v38 = [BRCImportBookmark extractBookmarkDataFromTemplateItem:"extractBookmarkDataFromTemplateItem:isTrashBookmark:" isTrashBookmark:?];
         if ([v38 length])
         {
           v39 = [BRCImportBookmark alloc];
-          v15 = [(BRCImportBookmark *)v39 initWithBookmarkData:v38 isTrashBookmark:buf[0] session:v65];
+          v15 = [(BRCImportBookmark *)v39 initWithBookmarkData:v38 isTrashBookmark:buf[0] session:session];
           if (!v15)
           {
             v40 = brc_bread_crumbs();
@@ -1521,15 +1521,15 @@ void __115__BRCXPCRegularIPCsClient_FPFSAdditions__getDefaultAppContainerItemFor
             }
           }
 
-          v42 = [(BRCImportBookmark *)v15 mangledID];
-          if ([v42 isShared])
+          mangledID = [(BRCImportBookmark *)v15 mangledID];
+          if ([mangledID isShared])
           {
-            v43 = [v65 getOrCreateSharedZones:v42];
+            v43 = [session getOrCreateSharedZones:mangledID];
           }
 
           else
           {
-            v55 = [v65 getOrCreateAppLibraryAndPrivateZonesIfNecessary:v42];
+            v55 = [session getOrCreateAppLibraryAndPrivateZonesIfNecessary:mangledID];
           }
         }
 
@@ -1539,42 +1539,42 @@ void __115__BRCXPCRegularIPCsClient_FPFSAdditions__getDefaultAppContainerItemFor
         }
       }
 
-      v56 = [v65 clientReadWriteDatabaseFacade];
-      v57 = [v56 workloop];
+      clientReadWriteDatabaseFacade = [session clientReadWriteDatabaseFacade];
+      workloop = [clientReadWriteDatabaseFacade workloop];
       v69[0] = MEMORY[0x277D85DD0];
       v69[1] = 3221225472;
       v69[2] = __135__BRCXPCRegularIPCsClient_FPFSAdditions__createItemBasedOnTemplate_fields_contents_options_additionalItemAttributes_completionHandler___block_invoke_49;
       v69[3] = &unk_278503E40;
-      v70 = v68;
+      v70 = contentsCopy;
       v80 = v64;
-      v81 = a6;
-      v71 = v13;
+      optionsCopy = options;
+      v71 = templateCopy;
       v79 = v92;
-      v72 = v65;
+      v72 = session;
       v82 = v27;
-      v73 = v28;
-      v74 = self;
+      v73 = parentItemIdentifier5;
+      selfCopy3 = self;
       v78 = v24;
       v75 = v15;
-      v76 = v56;
-      v77 = v67;
-      v58 = v56;
-      v37 = v15;
-      dispatch_async_and_wait(v57, v69);
+      v76 = clientReadWriteDatabaseFacade;
+      v77 = attributesCopy;
+      v58 = clientReadWriteDatabaseFacade;
+      brc_errorExcludedFromSyncUnderRoot2 = v15;
+      dispatch_async_and_wait(workloop, v69);
 
       goto LABEL_34;
     }
 
-    v31 = [(BRCXPCRegularIPCsClient *)v13 contentType];
-    if ([v31 br_isDirectoryType])
+    contentType = [(BRCXPCRegularIPCsClient *)templateCopy contentType];
+    if ([contentType br_isDirectoryType])
     {
       v32 = MEMORY[0x277CFAE60];
-      v33 = [(BRCXPCRegularIPCsClient *)v13 filename];
-      LOBYTE(v32) = [v32 validateMangledIDString:v33 strict:1];
+      filename = [(BRCXPCRegularIPCsClient *)templateCopy filename];
+      LOBYTE(v32) = [v32 validateMangledIDString:filename strict:1];
 
       if (v32)
       {
-        if (v68)
+        if (contentsCopy)
         {
           v61 = brc_bread_crumbs();
           v62 = brc_default_log();
@@ -1584,10 +1584,10 @@ void __115__BRCXPCRegularIPCsClient_FPFSAdditions__getDefaultAppContainerItemFor
           }
         }
 
-        v34 = [v65 fsImporter];
-        v35 = [v34 importAppLibraryRootFromTemplateItem:v13];
+        fsImporter = [session fsImporter];
+        v35 = [fsImporter importAppLibraryRootFromTemplateItem:templateCopy];
 
-        v36 = [v65 clientTruthWorkloop];
+        clientTruthWorkloop = [session clientTruthWorkloop];
         block[0] = MEMORY[0x277D85DD0];
         block[1] = 3221225472;
         block[2] = __135__BRCXPCRegularIPCsClient_FPFSAdditions__createItemBasedOnTemplate_fields_contents_options_additionalItemAttributes_completionHandler___block_invoke_47;
@@ -1595,8 +1595,8 @@ void __115__BRCXPCRegularIPCsClient_FPFSAdditions__getDefaultAppContainerItemFor
         block[4] = self;
         v84 = v35;
         v85 = v24;
-        v37 = v35;
-        dispatch_async_and_wait(v36, block);
+        brc_errorExcludedFromSyncUnderRoot2 = v35;
+        dispatch_async_and_wait(clientTruthWorkloop, block);
 
 LABEL_34:
 LABEL_35:
@@ -1613,22 +1613,22 @@ LABEL_35:
     v45 = brc_default_log();
     if (os_log_type_enabled(v45, OS_LOG_TYPE_INFO))
     {
-      v46 = [MEMORY[0x277CCA9B8] brc_errorExcludedFromSyncUnderRoot];
+      brc_errorExcludedFromSyncUnderRoot = [MEMORY[0x277CCA9B8] brc_errorExcludedFromSyncUnderRoot];
       *buf = 138413314;
-      v95 = self;
+      selfCopy4 = self;
       v96 = 2112;
-      v97 = 0;
+      selfCopy = 0;
       v98 = 1024;
       *v99 = 0;
       *&v99[4] = 2112;
-      *&v99[6] = v46;
+      *&v99[6] = brc_errorExcludedFromSyncUnderRoot;
       *&v99[14] = 2112;
       *&v99[16] = v44;
       _os_log_impl(&dword_223E7A000, v45, OS_LOG_TYPE_INFO, "[INFO] %@: reply(%@, %d, %@)%@", buf, 0x30u);
     }
 
-    v37 = [MEMORY[0x277CCA9B8] brc_errorExcludedFromSyncUnderRoot];
-    (*(v24 + 2))(v24, 0, 0, v37);
+    brc_errorExcludedFromSyncUnderRoot2 = [MEMORY[0x277CCA9B8] brc_errorExcludedFromSyncUnderRoot];
+    (*(v24 + 2))(v24, 0, 0, brc_errorExcludedFromSyncUnderRoot2);
     goto LABEL_34;
   }
 
@@ -2008,11 +2008,11 @@ uint64_t __135__BRCXPCRegularIPCsClient_FPFSAdditions__createItemBasedOnTemplate
   return result;
 }
 
-- (void)listNonLocalVersionsWithItemIdentifier:(id)a3 reply:(id)a4
+- (void)listNonLocalVersionsWithItemIdentifier:(id)identifier reply:(id)reply
 {
   v35 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  replyCopy = reply;
   memset(v24, 0, sizeof(v24));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient(FPFSAdditions) listNonLocalVersionsWithItemIdentifier:reply:]", 517, 0, v24);
   v8 = brc_bread_crumbs();
@@ -2025,7 +2025,7 @@ uint64_t __135__BRCXPCRegularIPCsClient_FPFSAdditions__createItemBasedOnTemplate
     *buf = 134219010;
     v26 = v10;
     v27 = 2112;
-    v28 = self;
+    selfCopy = self;
     v29 = 2112;
     v30 = v12;
     v31 = 2080;
@@ -2041,22 +2041,22 @@ uint64_t __135__BRCXPCRegularIPCsClient_FPFSAdditions__createItemBasedOnTemplate
   v22[2] = __87__BRCXPCRegularIPCsClient_FPFSAdditions__listNonLocalVersionsWithItemIdentifier_reply___block_invoke;
   v22[3] = &unk_2785014D0;
   v22[4] = self;
-  v14 = v7;
+  v14 = replyCopy;
   v23 = v14;
   LODWORD(v13) = _brc_ipc_check_entitlement_and_logged_status(self, 1, v13, v22);
 
   if (v13)
   {
-    v15 = [(BRCXPCClient *)self session];
-    v16 = [v15 clientTruthWorkloop];
+    session = [(BRCXPCClient *)self session];
+    clientTruthWorkloop = [session clientTruthWorkloop];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __87__BRCXPCRegularIPCsClient_FPFSAdditions__listNonLocalVersionsWithItemIdentifier_reply___block_invoke_57;
     v18[3] = &unk_2784FF5B8;
-    v19 = v6;
-    v20 = self;
+    v19 = identifierCopy;
+    selfCopy2 = self;
     v21 = v14;
-    dispatch_async_and_wait(v16, v18);
+    dispatch_async_and_wait(clientTruthWorkloop, v18);
   }
 
   __brc_leave_section(v24);
@@ -2181,26 +2181,26 @@ void __87__BRCXPCRegularIPCsClient_FPFSAdditions__listNonLocalVersionsWithItemId
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_createFileProvidingRequestOperationOfFileObject:(id)a3 existingContents:(id)a4 localItem:(id)a5 etagIfLoser:(id)a6 etagToDownload:(id)a7 progress:(id)a8 options:(unint64_t)a9 reply:(id)a10
+- (void)_createFileProvidingRequestOperationOfFileObject:(id)object existingContents:(id)contents localItem:(id)item etagIfLoser:(id)loser etagToDownload:(id)download progress:(id)progress options:(unint64_t)options reply:(id)self0
 {
   v177 = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v149 = a8;
-  v148 = a10;
+  objectCopy = object;
+  contentsCopy = contents;
+  itemCopy = item;
+  loserCopy = loser;
+  downloadCopy = download;
+  progressCopy = progress;
+  replyCopy = reply;
   v20 = brc_bread_crumbs();
   v21 = brc_default_log();
-  v151 = v19;
+  v151 = downloadCopy;
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
   {
     BRCPrettyPrintBitmap();
-    v80 = v79 = v18;
-    v81 = [v16 url];
+    v80 = v79 = loserCopy;
+    v81 = [contentsCopy url];
     *buf = 138413570;
-    v170 = v17;
+    selfCopy6 = itemCopy;
     v171 = 2112;
     *v172 = v151;
     *&v172[8] = 2112;
@@ -2213,18 +2213,18 @@ void __87__BRCXPCRegularIPCsClient_FPFSAdditions__listNonLocalVersionsWithItemId
     v176 = v20;
     _os_log_debug_impl(&dword_223E7A000, v21, OS_LOG_TYPE_DEBUG, "[DEBUG] Creating a file providing request operation for: li = %@, etag = %@, etagIfLoser = %@, options = %@, existingContents = %@%@", buf, 0x3Eu);
 
-    v18 = v79;
-    v19 = v151;
+    loserCopy = v79;
+    downloadCopy = v151;
   }
 
-  if (!v17)
+  if (!itemCopy)
   {
     v52 = brc_bread_crumbs();
     v53 = brc_default_log();
     if (os_log_type_enabled(v53, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v170 = v15;
+      selfCopy6 = objectCopy;
       v171 = 2112;
       *v172 = v52;
       _os_log_impl(&dword_223E7A000, v53, OS_LOG_TYPE_DEFAULT, "[WARNING] We have no item to download for %@. Returning to FP that the item isn't found%@", buf, 0x16u);
@@ -2234,12 +2234,12 @@ void __87__BRCXPCRegularIPCsClient_FPFSAdditions__listNonLocalVersionsWithItemId
     v55 = brc_default_log();
     if (os_log_type_enabled(v55, OS_LOG_TYPE_INFO))
     {
-      v56 = v18;
+      v56 = loserCopy;
       v57 = MEMORY[0x277CCA9B8];
-      v58 = [(BRCXPCRegularIPCsClient *)v15 asString];
-      v59 = [v57 fileProviderErrorForNonExistentItemWithIdentifier:v58];
+      asString = [(BRCXPCRegularIPCsClient *)objectCopy asString];
+      v59 = [v57 fileProviderErrorForNonExistentItemWithIdentifier:asString];
       *buf = 138413058;
-      v170 = self;
+      selfCopy6 = self;
       v171 = 2112;
       *v172 = 0;
       *&v172[8] = 2112;
@@ -2248,26 +2248,26 @@ void __87__BRCXPCRegularIPCsClient_FPFSAdditions__listNonLocalVersionsWithItemId
       *&v172[20] = v54;
       _os_log_impl(&dword_223E7A000, v55, OS_LOG_TYPE_INFO, "[INFO] %@: reply(%@, %@)%@", buf, 0x2Au);
 
-      v18 = v56;
+      loserCopy = v56;
     }
 
     v60 = MEMORY[0x277CCA9B8];
-    v23 = [(BRCXPCRegularIPCsClient *)v15 asString];
-    v61 = [v60 fileProviderErrorForNonExistentItemWithIdentifier:v23];
-    v46 = v148;
-    (*(v148 + 2))(v148, 0, v61);
+    asString2 = [(BRCXPCRegularIPCsClient *)objectCopy asString];
+    v61 = [v60 fileProviderErrorForNonExistentItemWithIdentifier:asString2];
+    v46 = replyCopy;
+    (*(replyCopy + 2))(replyCopy, 0, v61);
 
     goto LABEL_80;
   }
 
-  if (!(v18 | v19))
+  if (!(loserCopy | downloadCopy))
   {
-    if (![(BRCXPCRegularIPCsClient *)v17 isDocument])
+    if (![(BRCXPCRegularIPCsClient *)itemCopy isDocument])
     {
       goto LABEL_72;
     }
 
-    if (-[BRCXPCRegularIPCsClient syncUpState](v17, "syncUpState") == 7 && (-[BRCXPCRegularIPCsClient asDocument](v17, "asDocument"), v62 = objc_claimAutoreleasedReturnValue(), v63 = [v62 hasFileIDForUpload], v62, (v63 & 1) == 0))
+    if (-[BRCXPCRegularIPCsClient syncUpState](itemCopy, "syncUpState") == 7 && (-[BRCXPCRegularIPCsClient asDocument](itemCopy, "asDocument"), v62 = objc_claimAutoreleasedReturnValue(), v63 = [v62 hasFileIDForUpload], v62, (v63 & 1) == 0))
     {
       v95 = brc_bread_crumbs();
       v96 = brc_default_log();
@@ -2286,22 +2286,22 @@ void __87__BRCXPCRegularIPCsClient_FPFSAdditions__listNonLocalVersionsWithItemId
 
     else
     {
-      v64 = [(BRCXPCRegularIPCsClient *)v17 asDocument];
-      v65 = [v64 isDocumentBeingCopiedToNewZone];
+      asDocument = [(BRCXPCRegularIPCsClient *)itemCopy asDocument];
+      isDocumentBeingCopiedToNewZone = [asDocument isDocumentBeingCopiedToNewZone];
 
-      if (!v65)
+      if (!isDocumentBeingCopiedToNewZone)
       {
-        v82 = [(BRCXPCRegularIPCsClient *)v17 asDocument];
-        v83 = [v82 localDiffs];
+        asDocument2 = [(BRCXPCRegularIPCsClient *)itemCopy asDocument];
+        localDiffs = [asDocument2 localDiffs];
 
-        if ((v83 & 0x400000000000000) != 0)
+        if ((localDiffs & 0x400000000000000) != 0)
         {
           v111 = brc_bread_crumbs();
           v112 = brc_default_log();
           if (os_log_type_enabled(v112, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412546;
-            v170 = v15;
+            selfCopy6 = objectCopy;
             v171 = 2112;
             *v172 = v111;
             _os_log_impl(&dword_223E7A000, v112, OS_LOG_TYPE_DEFAULT, "[WARNING] Item %@ is undergoing zone reset so returning back with busy error%@", buf, 0x16u);
@@ -2312,9 +2312,9 @@ void __87__BRCXPCRegularIPCsClient_FPFSAdditions__listNonLocalVersionsWithItemId
           if (os_log_type_enabled(v114, OS_LOG_TYPE_INFO))
           {
             [MEMORY[0x277CCA9B8] brc_errorItemBusy];
-            v116 = v115 = v18;
+            v116 = v115 = loserCopy;
             *buf = 138413058;
-            v170 = self;
+            selfCopy6 = self;
             v171 = 2112;
             *v172 = 0;
             *&v172[8] = 2112;
@@ -2323,30 +2323,30 @@ void __87__BRCXPCRegularIPCsClient_FPFSAdditions__listNonLocalVersionsWithItemId
             *&v172[20] = v113;
             _os_log_impl(&dword_223E7A000, v114, OS_LOG_TYPE_INFO, "[INFO] %@: reply(%@, %@)%@", buf, 0x2Au);
 
-            v18 = v115;
+            loserCopy = v115;
           }
 
-          v23 = [MEMORY[0x277CCA9B8] brc_errorItemBusy];
-          v46 = v148;
-          (*(v148 + 2))(v148, 0, v23);
+          asString2 = [MEMORY[0x277CCA9B8] brc_errorItemBusy];
+          v46 = replyCopy;
+          (*(replyCopy + 2))(replyCopy, 0, asString2);
           goto LABEL_80;
         }
 
-        v84 = [(BRCXPCRegularIPCsClient *)v17 asDocument];
-        v85 = [v84 currentVersion];
-        v86 = [v85 ckInfo];
-        if (v86)
+        asDocument3 = [(BRCXPCRegularIPCsClient *)itemCopy asDocument];
+        currentVersion = [asDocument3 currentVersion];
+        ckInfo = [currentVersion ckInfo];
+        if (ckInfo)
         {
 
           goto LABEL_72;
         }
 
-        [(BRCXPCRegularIPCsClient *)v17 asDocument];
-        v118 = v117 = v18;
-        v119 = [v118 isKnownByServer];
+        [(BRCXPCRegularIPCsClient *)itemCopy asDocument];
+        v118 = v117 = loserCopy;
+        isKnownByServer = [v118 isKnownByServer];
 
-        v18 = v117;
-        if (!v119)
+        loserCopy = v117;
+        if (!isKnownByServer)
         {
           goto LABEL_72;
         }
@@ -2362,28 +2362,28 @@ void __87__BRCXPCRegularIPCsClient_FPFSAdditions__listNonLocalVersionsWithItemId
         v69 = brc_default_log();
         if (os_log_type_enabled(v69, OS_LOG_TYPE_INFO))
         {
-          v122 = [MEMORY[0x277CCA9B8] brc_errorItemBusy];
+          brc_errorItemBusy = [MEMORY[0x277CCA9B8] brc_errorItemBusy];
           *buf = 138413058;
-          v170 = self;
+          selfCopy6 = self;
           v171 = 2112;
           *v172 = 0;
           *&v172[8] = 2112;
-          *&v172[10] = v122;
+          *&v172[10] = brc_errorItemBusy;
           *&v172[18] = 2112;
           *&v172[20] = v68;
           _os_log_impl(&dword_223E7A000, v69, OS_LOG_TYPE_INFO, "[INFO] %@: reply(%@, %@)%@", buf, 0x2Au);
 
-          v18 = v117;
+          loserCopy = v117;
         }
 
 LABEL_55:
 
-        v23 = [MEMORY[0x277CCA9B8] brc_errorItemBusy];
+        asString2 = [MEMORY[0x277CCA9B8] brc_errorItemBusy];
 LABEL_79:
-        v46 = v148;
-        (*(v148 + 2))(v148, 0, v23);
+        v46 = replyCopy;
+        (*(replyCopy + 2))(replyCopy, 0, asString2);
 LABEL_80:
-        v42 = v149;
+        v42 = progressCopy;
         goto LABEL_81;
       }
 
@@ -2392,7 +2392,7 @@ LABEL_80:
       if (os_log_type_enabled(v67, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v170 = v15;
+        selfCopy6 = objectCopy;
         v171 = 2112;
         *v172 = v66;
         _os_log_impl(&dword_223E7A000, v67, OS_LOG_TYPE_DEFAULT, "[WARNING] Item %@ is undergoing CZM so returning back with busy error%@", buf, 0x16u);
@@ -2407,9 +2407,9 @@ LABEL_80:
     }
 
     [MEMORY[0x277CCA9B8] brc_errorItemBusy];
-    v98 = v97 = v18;
+    v98 = v97 = loserCopy;
     *buf = 138413058;
-    v170 = self;
+    selfCopy6 = self;
     v171 = 2112;
     *v172 = 0;
     *&v172[8] = 2112;
@@ -2418,11 +2418,11 @@ LABEL_80:
     *&v172[20] = v68;
     _os_log_impl(&dword_223E7A000, v69, OS_LOG_TYPE_INFO, "[INFO] %@: reply(%@, %@)%@", buf, 0x2Au);
 
-    v18 = v97;
+    loserCopy = v97;
     goto LABEL_55;
   }
 
-  if (!v19)
+  if (!downloadCopy)
   {
 LABEL_72:
     v123 = brc_bread_crumbs();
@@ -2433,24 +2433,24 @@ LABEL_72:
     }
 
     v125 = MEMORY[0x277CCA9B8];
-    v126 = [(BRCXPCRegularIPCsClient *)v15 asString];
-    v23 = [v125 brc_errorNoEtagAvailableForDownloadOfItemWithIdentifier:v126];
+    asString3 = [(BRCXPCRegularIPCsClient *)objectCopy asString];
+    asString2 = [v125 brc_errorNoEtagAvailableForDownloadOfItemWithIdentifier:asString3];
 
-    v127 = [(BRCXPCRegularIPCsClient *)v17 clientZone];
-    LODWORD(v126) = [v127 isPrivateZone];
+    clientZone = [(BRCXPCRegularIPCsClient *)itemCopy clientZone];
+    LODWORD(asString3) = [clientZone isPrivateZone];
 
-    if (v126)
+    if (asString3)
     {
       v128 = +[BRCAutoBugCaptureReporter sharedABCReporter];
-      [v128 captureLogsForOperationType:@"SyncHealth" ofSubtype:@"ErrorFetchItemContent" forError:v23];
+      [v128 captureLogsForOperationType:@"SyncHealth" ofSubtype:@"ErrorFetchItemContent" forError:asString2];
 
-      v129 = [(BRCXPCClient *)self session];
-      v130 = [v129 tapToRadarManager];
-      [MEMORY[0x277CCACA8] stringWithFormat:@"Got a nil etag for %@. Can't tell which is the latest version to download", v17];
-      v132 = v131 = v18;
-      [v130 requestTapToRadarWithTitle:@"[fetch content: Got a nil etag on private zone]" description:v132 keywords:MEMORY[0x277CBEBF8] attachments:MEMORY[0x277CBEBF8] sendFullLog:1 displayReason:@"Can't tell which is the latest version to download" triggerRootCause:v23 additionalDevices:0];
+      session = [(BRCXPCClient *)self session];
+      tapToRadarManager = [session tapToRadarManager];
+      [MEMORY[0x277CCACA8] stringWithFormat:@"Got a nil etag for %@. Can't tell which is the latest version to download", itemCopy];
+      v132 = v131 = loserCopy;
+      [tapToRadarManager requestTapToRadarWithTitle:@"[fetch content: Got a nil etag on private zone]" description:v132 keywords:MEMORY[0x277CBEBF8] attachments:MEMORY[0x277CBEBF8] sendFullLog:1 displayReason:@"Can't tell which is the latest version to download" triggerRootCause:asString2 additionalDevices:0];
 
-      v18 = v131;
+      loserCopy = v131;
     }
 
     v133 = brc_bread_crumbs();
@@ -2458,11 +2458,11 @@ LABEL_72:
     if (os_log_type_enabled(v134, OS_LOG_TYPE_INFO))
     {
       *buf = 138413058;
-      v170 = self;
+      selfCopy6 = self;
       v171 = 2112;
       *v172 = 0;
       *&v172[8] = 2112;
-      *&v172[10] = v23;
+      *&v172[10] = asString2;
       *&v172[18] = 2112;
       *&v172[20] = v133;
       _os_log_impl(&dword_223E7A000, v134, OS_LOG_TYPE_INFO, "[INFO] %@: reply(%@, %@)%@", buf, 0x2Au);
@@ -2471,18 +2471,18 @@ LABEL_72:
     goto LABEL_79;
   }
 
-  v147 = v16;
-  v22 = [(BRCXPCClient *)self session];
-  v23 = [v22 fsDownloader];
+  v147 = contentsCopy;
+  session2 = [(BRCXPCClient *)self session];
+  asString2 = [session2 fsDownloader];
 
-  v24 = BRCConvertDownloadOptionsToInternal(a9);
-  v146 = [BRCFSDownloaderUtil downloadKindWithEtagIfLoser:v18 options:v24];
+  v24 = BRCConvertDownloadOptionsToInternal(options);
+  v146 = [BRCFSDownloaderUtil downloadKindWithEtagIfLoser:loserCopy options:v24];
   v25 = [BRCUserDefaults defaultsForMangledID:0];
   v26 = v25;
-  v145 = v18;
-  if ((a9 & 8) != 0 || ([v25 fastThrottleOnlyForSpeculativeDownloads] & 1) == 0)
+  v145 = loserCopy;
+  if ((options & 8) != 0 || ([v25 fastThrottleOnlyForSpeculativeDownloads] & 1) == 0)
   {
-    [v23 nextAllowedScheduleForItem:v17 withDownloadKind:v146];
+    [asString2 nextAllowedScheduleForItem:itemCopy withDownloadKind:v146];
     brc_current_date_nsec();
     brc_interval_from_nsec();
     v28 = v27;
@@ -2495,7 +2495,7 @@ LABEL_72:
       if (os_log_type_enabled(v71, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134218242;
-        v170 = *&v28;
+        selfCopy6 = *&v28;
         v171 = 2112;
         *v172 = v70;
         _os_log_impl(&dword_223E7A000, v71, OS_LOG_TYPE_DEFAULT, "[WARNING] Downloads are throttled for the next %f seconds. Returning fast error%@", buf, 0x16u);
@@ -2515,7 +2515,7 @@ LABEL_72:
       if (os_log_type_enabled(v78, OS_LOG_TYPE_INFO))
       {
         *buf = 138413058;
-        v170 = self;
+        selfCopy6 = self;
         v171 = 2112;
         *v172 = 0;
         *&v172[8] = 2112;
@@ -2525,47 +2525,47 @@ LABEL_72:
         _os_log_impl(&dword_223E7A000, v78, OS_LOG_TYPE_INFO, "[INFO] %@: reply(%@, %@)%@", buf, 0x2Au);
       }
 
-      v46 = v148;
-      (*(v148 + 2))(v148, 0, v50);
-      v42 = v149;
+      v46 = replyCopy;
+      (*(replyCopy + 2))(replyCopy, 0, v50);
+      v42 = progressCopy;
       goto LABEL_39;
     }
   }
 
-  v30 = [(BRCXPCRegularIPCsClient *)v17 asDocument];
-  v144 = [v23 generateContentStageFileNameForItem:v30 etag:v151];
+  asDocument4 = [(BRCXPCRegularIPCsClient *)itemCopy asDocument];
+  v144 = [asString2 generateContentStageFileNameForItem:asDocument4 etag:v151];
 
   if ((v24 & 4) == 0)
   {
-    [v23 addPendingOperationProgress:v149 withStageFileName:v144];
+    [asString2 addPendingOperationProgress:progressCopy withStageFileName:v144];
   }
 
   v142 = v24;
-  if ([(BRCXPCRegularIPCsClient *)v17 isPackage])
+  if ([(BRCXPCRegularIPCsClient *)itemCopy isPackage])
   {
-    v31 = [(BRCXPCClient *)self session];
-    v32 = [v31 stageRegistry];
-    [v32 unlinkPackageAuxiliaryContentsForStageID:v144];
+    session3 = [(BRCXPCClient *)self session];
+    stageRegistry = [session3 stageRegistry];
+    [stageRegistry unlinkPackageAuxiliaryContentsForStageID:v144];
   }
 
   v141 = v26;
-  if (!v18)
+  if (!loserCopy)
   {
-    v87 = [(BRCXPCRegularIPCsClient *)v17 isPackage];
-    if (v16)
+    isPackage = [(BRCXPCRegularIPCsClient *)itemCopy isPackage];
+    if (contentsCopy)
     {
-      if (v87)
+      if (isPackage)
       {
-        v88 = [v16 url];
+        v88 = [contentsCopy url];
 
         if (v88)
         {
-          v89 = [v16 url];
-          v140 = [(BRCXPCRegularIPCsClient *)v89 startAccessingSecurityScopedResource];
-          v90 = [(BRCXPCClient *)self session];
-          v91 = [v90 stageRegistry];
+          v89 = [contentsCopy url];
+          startAccessingSecurityScopedResource = [(BRCXPCRegularIPCsClient *)v89 startAccessingSecurityScopedResource];
+          session4 = [(BRCXPCClient *)self session];
+          stageRegistry2 = [session4 stageRegistry];
           v166 = 0;
-          v138 = [v91 clonePackageExistingContentFromSourceURL:v89 stageID:v144 error:&v166];
+          v138 = [stageRegistry2 clonePackageExistingContentFromSourceURL:v89 stageID:v144 error:&v166];
           v92 = v166;
 
           v93 = brc_bread_crumbs();
@@ -2573,7 +2573,7 @@ LABEL_72:
           if (os_log_type_enabled(v94, OS_LOG_TYPE_DEBUG))
           {
             *buf = 138413058;
-            v170 = v89;
+            selfCopy6 = v89;
             v171 = 1024;
             *v172 = v138;
             *&v172[4] = 2112;
@@ -2583,43 +2583,43 @@ LABEL_72:
             _os_log_debug_impl(&dword_223E7A000, v94, OS_LOG_TYPE_DEBUG, "[DEBUG] Cloned existing content from %@ - %d, %@%@", buf, 0x26u);
           }
 
-          if (v140)
+          if (startAccessingSecurityScopedResource)
           {
             [(BRCXPCRegularIPCsClient *)v89 stopAccessingSecurityScopedResource];
           }
 
-          v18 = v145;
+          loserCopy = v145;
         }
       }
     }
   }
 
-  v143 = v15;
-  if (![(BRCXPCRegularIPCsClient *)v17 isDocument]|| ([(BRCXPCRegularIPCsClient *)v17 isFinderBookmark]& 1) != 0)
+  v143 = objectCopy;
+  if (![(BRCXPCRegularIPCsClient *)itemCopy isDocument]|| ([(BRCXPCRegularIPCsClient *)itemCopy isFinderBookmark]& 1) != 0)
   {
-    v33 = v18;
+    v33 = loserCopy;
 LABEL_17:
     v34 = 0;
     goto LABEL_18;
   }
 
-  v99 = [(BRCXPCRegularIPCsClient *)v17 isPackage];
+  isPackage2 = [(BRCXPCRegularIPCsClient *)itemCopy isPackage];
   v34 = 0;
-  if (!v16)
+  if (!contentsCopy)
   {
-    v33 = v18;
+    v33 = loserCopy;
     goto LABEL_18;
   }
 
-  v33 = v18;
-  if ((v99 & 1) == 0)
+  v33 = loserCopy;
+  if ((isPackage2 & 1) == 0)
   {
-    v100 = [(BRCXPCRegularIPCsClient *)v17 appLibrary];
-    v101 = [v100 mangledID];
-    v102 = [BRCUserDefaults defaultsForMangledID:v101];
-    v103 = [(BRCXPCClient *)self session];
-    v104 = [v103 accountFacade];
-    v105 = [v102 shouldPrimeMMCSCacheBeforeDownloadWithAccountFacade:v104];
+    appLibrary = [(BRCXPCRegularIPCsClient *)itemCopy appLibrary];
+    mangledID = [appLibrary mangledID];
+    v102 = [BRCUserDefaults defaultsForMangledID:mangledID];
+    session5 = [(BRCXPCClient *)self session];
+    accountFacade = [session5 accountFacade];
+    v105 = [v102 shouldPrimeMMCSCacheBeforeDownloadWithAccountFacade:accountFacade];
 
     if (v105)
     {
@@ -2627,13 +2627,13 @@ LABEL_17:
       v107 = brc_default_log();
       if (os_log_type_enabled(v107, OS_LOG_TYPE_DEBUG))
       {
-        [BRCXPCRegularIPCsClient(FPFSAdditions) _createFileProvidingRequestOperationOfFileObject:v17 existingContents:? localItem:? etagIfLoser:? etagToDownload:? progress:? options:? reply:?];
+        [BRCXPCRegularIPCsClient(FPFSAdditions) _createFileProvidingRequestOperationOfFileObject:itemCopy existingContents:? localItem:? etagIfLoser:? etagToDownload:? progress:? options:? reply:?];
       }
 
       v108 = [BRCPrimeMMCSCacheOperation alloc];
-      v109 = [(BRCXPCRegularIPCsClient *)v17 asDocument];
-      v110 = [(BRCXPCClient *)self session];
-      v34 = [(BRCPrimeMMCSCacheOperation *)v108 initWithExistingContentsURL:v147 item:v109 sessionContext:v110];
+      asDocument5 = [(BRCXPCRegularIPCsClient *)itemCopy asDocument];
+      session6 = [(BRCXPCClient *)self session];
+      v34 = [(BRCPrimeMMCSCacheOperation *)v108 initWithExistingContentsURL:v147 item:asDocument5 sessionContext:session6];
 
       [(BRCXPCClient *)self addOperation:v34];
       goto LABEL_18;
@@ -2644,22 +2644,22 @@ LABEL_17:
 
 LABEL_18:
   v139 = v34;
-  v136 = [[BRCNotification alloc] initWithLocalItem:v17 itemDiffs:0];
-  v137 = [(BRCXPCRegularIPCsClient *)v17 liveStageFilename];
+  v136 = [[BRCNotification alloc] initWithLocalItem:itemCopy itemDiffs:0];
+  liveStageFilename = [(BRCXPCRegularIPCsClient *)itemCopy liveStageFilename];
   v35 = [BRCFileProvidingRequestOperation alloc];
-  v36 = [(BRCXPCRegularIPCsClient *)v17 asDocument];
-  v37 = [(BRCXPCClient *)self session];
-  v38 = [(BRCXPCClient *)self session];
-  v39 = [v38 downloadTrackers];
-  v40 = [(BRCFileProvidingRequestOperation *)v35 initWithDocumentItem:v36 client:self sessionContext:v37 downloadTrackersManager:v39 etagIfLoser:v33 stageFileName:v144 options:v142];
+  asDocument6 = [(BRCXPCRegularIPCsClient *)itemCopy asDocument];
+  session7 = [(BRCXPCClient *)self session];
+  session8 = [(BRCXPCClient *)self session];
+  downloadTrackers = [session8 downloadTrackers];
+  v40 = [(BRCFileProvidingRequestOperation *)v35 initWithDocumentItem:asDocument6 client:self sessionContext:session7 downloadTrackersManager:downloadTrackers etagIfLoser:v33 stageFileName:v144 options:v142];
 
   v41 = [MEMORY[0x277CCABB0] numberWithInt:v146];
-  v42 = v149;
-  [v149 setUserInfoObject:v41 forKey:@"BRProgressDownloadKindKey"];
+  v42 = progressCopy;
+  [progressCopy setUserInfoObject:v41 forKey:@"BRProgressDownloadKindKey"];
 
-  v43 = [(BRCXPCClient *)self session];
-  v44 = [v43 stageRegistry];
-  [v44 markDownloadActiveForStageID:v144];
+  session9 = [(BRCXPCClient *)self session];
+  stageRegistry3 = [session9 stageRegistry];
+  [stageRegistry3 markDownloadActiveForStageID:v144];
 
   v45 = v40;
   v152[0] = MEMORY[0x277D85DD0];
@@ -2668,20 +2668,20 @@ LABEL_18:
   v152[3] = &unk_278503EE0;
   v152[4] = self;
   v153 = v144;
-  v46 = v148;
-  v162 = v148;
+  v46 = replyCopy;
+  v162 = replyCopy;
   v154 = v143;
   v155 = v33;
   v165 = v146;
-  v156 = v23;
+  v156 = asString2;
   v157 = v136;
-  v163 = a9;
+  optionsCopy = options;
   v158 = v151;
   v164 = v142;
-  v159 = v149;
-  v160 = v137;
-  v161 = v17;
-  v47 = v137;
+  v159 = progressCopy;
+  v160 = liveStageFilename;
+  v161 = itemCopy;
+  v47 = liveStageFilename;
   v48 = v136;
   v49 = v144;
   [v45 addCompletionCallback:v152];
@@ -2693,12 +2693,12 @@ LABEL_18:
 
   [(BRCXPCClient *)self addOperation:v45];
 
-  v16 = v147;
+  contentsCopy = v147;
   v51 = v141;
-  v15 = v143;
+  objectCopy = v143;
 LABEL_39:
 
-  v18 = v145;
+  loserCopy = v145;
 LABEL_81:
 
   v135 = *MEMORY[0x277D85DE8];
@@ -2958,17 +2958,17 @@ void __168__BRCXPCRegularIPCsClient_FPFSAdditions___createFileProvidingRequestOp
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)generateSmallItemThumbnailForFileObject:(id)a3 reply:(id)a4
+- (void)generateSmallItemThumbnailForFileObject:(id)object reply:(id)reply
 {
-  v6 = a4;
+  replyCopy = reply;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __88__BRCXPCRegularIPCsClient_FPFSAdditions__generateSmallItemThumbnailForFileObject_reply___block_invoke;
   v9[3] = &unk_278503F30;
   v9[4] = self;
-  v10 = v6;
-  v7 = v6;
-  v8 = [(BRCXPCRegularIPCsClient *)self startDownloadFileObject:a3 existingContents:0 options:2 etagIfLoser:0 reply:v9];
+  v10 = replyCopy;
+  v7 = replyCopy;
+  v8 = [(BRCXPCRegularIPCsClient *)self startDownloadFileObject:object existingContents:0 options:2 etagIfLoser:0 reply:v9];
 }
 
 void __88__BRCXPCRegularIPCsClient_FPFSAdditions__generateSmallItemThumbnailForFileObject_reply___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -3156,31 +3156,31 @@ void __88__BRCXPCRegularIPCsClient_FPFSAdditions__generateSmallItemThumbnailForF
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (id)startDownloadFileObject:(id)a3 existingContents:(id)a4 options:(unint64_t)a5 etagIfLoser:(id)a6 reply:(id)a7
+- (id)startDownloadFileObject:(id)object existingContents:(id)contents options:(unint64_t)options etagIfLoser:(id)loser reply:(id)reply
 {
   v59 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
+  objectCopy = object;
+  contentsCopy = contents;
+  loserCopy = loser;
+  replyCopy = reply;
   memset(v48, 0, sizeof(v48));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient(FPFSAdditions) startDownloadFileObject:existingContents:options:etagIfLoser:reply:]", 806, 0, v48);
   v16 = brc_bread_crumbs();
   v17 = brc_default_log();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
   {
-    v37 = v15;
-    v18 = v14;
-    v19 = v13;
-    v20 = v12;
-    v21 = a5;
+    v37 = replyCopy;
+    v18 = loserCopy;
+    v19 = contentsCopy;
+    v20 = objectCopy;
+    optionsCopy = options;
     v22 = v48[0];
     v23 = qos_class_self();
     v24 = BRCPrettyPrintEnumWithContext(v23, &brc_qos_entries, 0);
     *buf = 134219010;
     v50 = v22;
     v51 = 2112;
-    v52 = self;
+    selfCopy = self;
     v53 = 2112;
     v54 = v24;
     v55 = 2080;
@@ -3189,11 +3189,11 @@ void __88__BRCXPCRegularIPCsClient_FPFSAdditions__generateSmallItemThumbnailForF
     v58 = v16;
     _os_log_impl(&dword_223E7A000, v17, OS_LOG_TYPE_INFO, "[INFO] ┏%llx %@ (%@) %s %@", buf, 0x34u);
 
-    a5 = v21;
-    v12 = v20;
-    v13 = v19;
-    v14 = v18;
-    v15 = v37;
+    options = optionsCopy;
+    objectCopy = v20;
+    contentsCopy = v19;
+    loserCopy = v18;
+    replyCopy = v37;
   }
 
   v46[0] = MEMORY[0x277D85DD0];
@@ -3201,33 +3201,33 @@ void __88__BRCXPCRegularIPCsClient_FPFSAdditions__generateSmallItemThumbnailForF
   v46[2] = __109__BRCXPCRegularIPCsClient_FPFSAdditions__startDownloadFileObject_existingContents_options_etagIfLoser_reply___block_invoke;
   v46[3] = &unk_2785014D0;
   v46[4] = self;
-  v25 = v15;
+  v25 = replyCopy;
   v47 = v25;
   v26 = _brc_ipc_check_applibrary_proxy(self, 1, v46);
 
   if (v26)
   {
     v27 = [[BRCProgress alloc] initWithIgnorePublish:1];
-    [(BRCProgress *)v27 setUserInfoObject:v14 forKey:@"BRProgressEtagIfLoserKey"];
-    v28 = [(BRCXPCClient *)self session];
-    v29 = [v28 clientReadWriteDatabaseFacade];
+    [(BRCProgress *)v27 setUserInfoObject:loserCopy forKey:@"BRProgressEtagIfLoserKey"];
+    session = [(BRCXPCClient *)self session];
+    clientReadWriteDatabaseFacade = [session clientReadWriteDatabaseFacade];
 
-    v30 = [v29 workloop];
+    workloop = [clientReadWriteDatabaseFacade workloop];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __109__BRCXPCRegularIPCsClient_FPFSAdditions__startDownloadFileObject_existingContents_options_etagIfLoser_reply___block_invoke_100;
     block[3] = &unk_278503FD0;
     block[4] = self;
-    v45 = a5;
-    v39 = v12;
-    v40 = v29;
+    optionsCopy2 = options;
+    v39 = objectCopy;
+    v40 = clientReadWriteDatabaseFacade;
     v44 = v25;
-    v41 = v14;
+    v41 = loserCopy;
     v31 = v27;
     v42 = v31;
-    v43 = v13;
-    v32 = v29;
-    dispatch_async(v30, block);
+    v43 = contentsCopy;
+    v32 = clientReadWriteDatabaseFacade;
+    dispatch_async(workloop, block);
 
     v33 = v43;
     v34 = v31;
@@ -3641,35 +3641,35 @@ void __109__BRCXPCRegularIPCsClient_FPFSAdditions__startDownloadFileObject_exist
   }
 }
 
-- (void)deleteItemWithIdentifier:(id)a3 baseVersion:(id)a4 options:(unint64_t)a5 completionHandler:(id)a6
+- (void)deleteItemWithIdentifier:(id)identifier baseVersion:(id)version options:(unint64_t)options completionHandler:(id)handler
 {
   v67 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v36 = a4;
-  v11 = a6;
+  optionsCopy2 = identifier;
+  versionCopy = version;
+  handlerCopy = handler;
   memset(v50, 0, sizeof(v50));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient(FPFSAdditions) deleteItemWithIdentifier:baseVersion:options:completionHandler:]", 938, 0, v50);
   v12 = brc_bread_crumbs();
   v13 = brc_default_log();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
-    v14 = v10;
+    v14 = optionsCopy2;
     v15 = v50[0];
     v16 = qos_class_self();
     v17 = BRCPrettyPrintEnumWithContext(v16, &brc_qos_entries, 0);
     *buf = 134219010;
     v52 = v15;
     v53 = 2112;
-    v54 = self;
+    selfCopy2 = self;
     v55 = 2112;
     v56 = v17;
     v57 = 2080;
     v58 = "[BRCXPCRegularIPCsClient(FPFSAdditions) deleteItemWithIdentifier:baseVersion:options:completionHandler:]";
     v59 = 2112;
-    v60 = v12;
+    optionsCopy3 = v12;
     _os_log_impl(&dword_223E7A000, v13, OS_LOG_TYPE_INFO, "[INFO] ┏%llx %@ (%@) %s %@", buf, 0x34u);
 
-    v10 = v14;
+    optionsCopy2 = v14;
   }
 
   v18 = *MEMORY[0x277CFAC68];
@@ -3678,7 +3678,7 @@ void __109__BRCXPCRegularIPCsClient_FPFSAdditions__startDownloadFileObject_exist
   v48[2] = __105__BRCXPCRegularIPCsClient_FPFSAdditions__deleteItemWithIdentifier_baseVersion_options_completionHandler___block_invoke;
   v48[3] = &unk_2785014D0;
   v48[4] = self;
-  v19 = v11;
+  v19 = handlerCopy;
   v49 = v19;
   LODWORD(v18) = _brc_ipc_check_entitlement_and_logged_status(self, 1, v18, v48);
 
@@ -3690,28 +3690,28 @@ void __109__BRCXPCRegularIPCsClient_FPFSAdditions__startDownloadFileObject_exist
     v21 = brc_default_log();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
     {
-      v22 = a5;
-      a5 = v10;
+      optionsCopy = options;
+      options = optionsCopy2;
       v23 = v47[0];
       v24 = qos_class_self();
       v25 = BRCPrettyPrintEnumWithContext(v24, &brc_qos_entries, 0);
-      v26 = [v36 br_prettyDescription];
+      br_prettyDescription = [versionCopy br_prettyDescription];
       *buf = 134219778;
       v52 = v23;
       v53 = 2112;
-      v54 = self;
+      selfCopy2 = self;
       v55 = 2112;
       v56 = v25;
       v57 = 2080;
       v58 = "[BRCXPCRegularIPCsClient(FPFSAdditions) deleteItemWithIdentifier:baseVersion:options:completionHandler:]";
       v59 = 2112;
-      v10 = a5;
-      v60 = a5;
+      optionsCopy2 = options;
+      optionsCopy3 = options;
       v61 = 2112;
-      v62 = v26;
+      v62 = br_prettyDescription;
       v63 = 2048;
-      LOBYTE(a5) = v22;
-      v64 = v22;
+      LOBYTE(options) = optionsCopy;
+      v64 = optionsCopy;
       v65 = 2112;
       v66 = v20;
       _os_log_impl(&dword_223E7A000, v21, OS_LOG_TYPE_INFO, "[INFO] ┏%llx %@ (%@) %s %@, %@, 0x%lx%@", buf, 0x52u);
@@ -3721,19 +3721,19 @@ void __109__BRCXPCRegularIPCsClient_FPFSAdditions__startDownloadFileObject_exist
     __brc_create_section(0, "[BRCXPCRegularIPCsClient(FPFSAdditions) deleteItemWithIdentifier:baseVersion:options:completionHandler:]", 950, 0, v46);
     v27 = brc_bread_crumbs();
     v28 = brc_default_log();
-    v29 = a5 & 1;
+    v29 = options & 1;
     if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
     {
       v35 = " recursively";
       *buf = 134218754;
-      if ((a5 & 1) == 0)
+      if ((options & 1) == 0)
       {
         v35 = "";
       }
 
       v52 = v46[0];
       v53 = 2112;
-      v54 = v10;
+      selfCopy2 = optionsCopy2;
       v55 = 2080;
       v56 = v35;
       v57 = 2112;
@@ -3741,7 +3741,7 @@ void __109__BRCXPCRegularIPCsClient_FPFSAdditions__startDownloadFileObject_exist
       _os_log_debug_impl(&dword_223E7A000, v28, OS_LOG_TYPE_DEBUG, "[DEBUG] ┏%llx deleting item %@%s%@", buf, 0x2Au);
     }
 
-    v30 = [MEMORY[0x277CFAE50] fileObjectIDWithString:v10];
+    v30 = [MEMORY[0x277CFAE50] fileObjectIDWithString:optionsCopy2];
     if ([v30 type] == 1 || !objc_msgSend(v30, "type"))
     {
       v44[0] = MEMORY[0x277D85DD0];
@@ -3755,20 +3755,20 @@ void __109__BRCXPCRegularIPCsClient_FPFSAdditions__startDownloadFileObject_exist
 
     else
     {
-      v31 = [(BRCXPCClient *)self session];
-      v32 = [v31 clientTruthWorkloop];
+      session = [(BRCXPCClient *)self session];
+      clientTruthWorkloop = [session clientTruthWorkloop];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __105__BRCXPCRegularIPCsClient_FPFSAdditions__deleteItemWithIdentifier_baseVersion_options_completionHandler___block_invoke_112;
       block[3] = &unk_278504020;
-      v38 = v31;
+      v38 = session;
       v39 = v30;
-      v40 = self;
+      selfCopy3 = self;
       v43 = v29;
-      v41 = v36;
+      v41 = versionCopy;
       v42 = v19;
-      v33 = v31;
-      dispatch_async_and_wait(v32, block);
+      v33 = session;
+      dispatch_async_and_wait(clientTruthWorkloop, block);
     }
 
     __brc_leave_section(v46);
@@ -3867,14 +3867,14 @@ void __105__BRCXPCRegularIPCsClient_FPFSAdditions__deleteItemWithIdentifier_base
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)modifyItem:(id)a3 baseVersion:(id)a4 changedFields:(unint64_t)a5 contents:(id)a6 options:(unint64_t)a7 additionalAttrs:(id)a8 completionHandler:(id)a9
+- (void)modifyItem:(id)item baseVersion:(id)version changedFields:(unint64_t)fields contents:(id)contents options:(unint64_t)options additionalAttrs:(id)attrs completionHandler:(id)handler
 {
   v76 = *MEMORY[0x277D85DE8];
-  v45 = a3;
-  v43 = a4;
-  v44 = a6;
-  v42 = a8;
-  v13 = a9;
+  itemCopy = item;
+  versionCopy = version;
+  contentsCopy = contents;
+  attrsCopy = attrs;
+  handlerCopy = handler;
   memset(v59, 0, sizeof(v59));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient(FPFSAdditions) modifyItem:baseVersion:changedFields:contents:options:additionalAttrs:completionHandler:]", 1003, 0, v59);
   v14 = brc_bread_crumbs();
@@ -3885,9 +3885,9 @@ void __105__BRCXPCRegularIPCsClient_FPFSAdditions__deleteItemWithIdentifier_base
     v17 = qos_class_self();
     v18 = BRCPrettyPrintEnumWithContext(v17, &brc_qos_entries, 0);
     *buf = 134219010;
-    v61 = v16;
+    selfCopy3 = v16;
     v62 = 2112;
-    v63 = self;
+    selfCopy2 = self;
     v64 = 2112;
     *v65 = v18;
     *&v65[8] = 2080;
@@ -3903,13 +3903,13 @@ void __105__BRCXPCRegularIPCsClient_FPFSAdditions__deleteItemWithIdentifier_base
   v57[2] = __130__BRCXPCRegularIPCsClient_FPFSAdditions__modifyItem_baseVersion_changedFields_contents_options_additionalAttrs_completionHandler___block_invoke;
   v57[3] = &unk_2785014D0;
   v57[4] = self;
-  v20 = v13;
+  v20 = handlerCopy;
   v58 = v20;
   LODWORD(v19) = _brc_ipc_check_entitlement_and_logged_status(self, 1, v19, v57);
 
   if (v19)
   {
-    v40 = [v44 url];
+    v40 = [contentsCopy url];
     memset(v56, 0, sizeof(v56));
     __brc_create_section(1, "[BRCXPCRegularIPCsClient(FPFSAdditions) modifyItem:baseVersion:changedFields:contents:options:additionalAttrs:completionHandler:]", 1014, 0, v56);
     v21 = brc_bread_crumbs();
@@ -3919,21 +3919,21 @@ void __105__BRCXPCRegularIPCsClient_FPFSAdditions__deleteItemWithIdentifier_base
       v23 = v56[0];
       v24 = qos_class_self();
       v25 = BRCPrettyPrintEnumWithContext(v24, &brc_qos_entries, 0);
-      v26 = [v43 br_prettyDescription];
+      br_prettyDescription = [versionCopy br_prettyDescription];
       v27 = BRCPrettyPrintBitmap();
       v28 = BRCPrettyPrintBitmap();
       *buf = 134220290;
-      v61 = v23;
+      selfCopy3 = v23;
       v62 = 2112;
-      v63 = self;
+      selfCopy2 = self;
       v64 = 2112;
       *v65 = v25;
       *&v65[8] = 2080;
       *&v65[10] = "[BRCXPCRegularIPCsClient(FPFSAdditions) modifyItem:baseVersion:changedFields:contents:options:additionalAttrs:completionHandler:]";
       *&v65[18] = 2112;
-      *&v65[20] = v45;
+      *&v65[20] = itemCopy;
       v66 = 2112;
-      v67 = v26;
+      v67 = br_prettyDescription;
       v68 = 2112;
       v69 = v27;
       v70 = 2112;
@@ -3945,25 +3945,25 @@ void __105__BRCXPCRegularIPCsClient_FPFSAdditions__deleteItemWithIdentifier_base
       _os_log_impl(&dword_223E7A000, v22, OS_LOG_TYPE_INFO, "[INFO] ┏%llx %@ (%@) %s %@, %@, <%@>, %@, %@%@", buf, 0x66u);
     }
 
-    v29 = [(BRCXPCClient *)self session];
+    session = [(BRCXPCClient *)self session];
     v30 = MEMORY[0x277CFAE50];
-    v31 = [v45 itemIdentifier];
-    v32 = [v30 fileObjectIDWithString:v31];
+    itemIdentifier = [itemCopy itemIdentifier];
+    v32 = [v30 fileObjectIDWithString:itemIdentifier];
 
     if ([v32 isRootContainerItem])
     {
       v33 = [BRCNotification alloc];
-      v34 = [(BRCXPCClient *)self session];
-      v35 = [(BRCNotification *)v33 initRootContainerNotificationWithSessionContext:v34];
+      session2 = [(BRCXPCClient *)self session];
+      v35 = [(BRCNotification *)v33 initRootContainerNotificationWithSessionContext:session2];
 
       v36 = brc_bread_crumbs();
       v37 = brc_default_log();
       if (os_log_type_enabled(v37, OS_LOG_TYPE_INFO))
       {
         *buf = 138413314;
-        v61 = self;
+        selfCopy3 = self;
         v62 = 2112;
-        v63 = v35;
+        selfCopy2 = v35;
         v64 = 1024;
         *v65 = 0;
         *&v65[4] = 2112;
@@ -3978,21 +3978,21 @@ void __105__BRCXPCRegularIPCsClient_FPFSAdditions__deleteItemWithIdentifier_base
 
     else
     {
-      v38 = [v29 clientTruthWorkloop];
+      clientTruthWorkloop = [session clientTruthWorkloop];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __130__BRCXPCRegularIPCsClient_FPFSAdditions__modifyItem_baseVersion_changedFields_contents_options_additionalAttrs_completionHandler___block_invoke_113;
       block[3] = &unk_2785040A0;
-      v47 = v29;
+      v47 = session;
       v48 = v32;
-      v49 = self;
-      v50 = v45;
+      selfCopy4 = self;
+      v50 = itemCopy;
       v54 = v20;
       v51 = v40;
-      v52 = v43;
-      v55 = a5;
-      v53 = v42;
-      dispatch_async(v38, block);
+      v52 = versionCopy;
+      fieldsCopy = fields;
+      v53 = attrsCopy;
+      dispatch_async(clientTruthWorkloop, block);
 
       v35 = v47;
     }
@@ -4211,11 +4211,11 @@ uint64_t __130__BRCXPCRegularIPCsClient_FPFSAdditions__modifyItem_baseVersion_ch
   return result;
 }
 
-- (void)reimportItemIdentifier:(id)a3 reply:(id)a4
+- (void)reimportItemIdentifier:(id)identifier reply:(id)reply
 {
   v57 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  replyCopy = reply;
   memset(v46, 0, sizeof(v46));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient(FPFSAdditions) reimportItemIdentifier:reply:]", 1076, 0, v46);
   v8 = brc_bread_crumbs();
@@ -4228,7 +4228,7 @@ uint64_t __130__BRCXPCRegularIPCsClient_FPFSAdditions__modifyItem_baseVersion_ch
     *buf = 134219010;
     v48 = v10;
     v49 = 2112;
-    v50 = self;
+    selfCopy = self;
     v51 = 2112;
     v52 = v12;
     v53 = 2080;
@@ -4244,7 +4244,7 @@ uint64_t __130__BRCXPCRegularIPCsClient_FPFSAdditions__modifyItem_baseVersion_ch
   v44[2] = __71__BRCXPCRegularIPCsClient_FPFSAdditions__reimportItemIdentifier_reply___block_invoke;
   v44[3] = &unk_2785014D0;
   v44[4] = self;
-  v14 = v7;
+  v14 = replyCopy;
   v45 = v14;
   LODWORD(v13) = _brc_ipc_check_entitlement_and_logged_status(self, 1, v13, v44);
 
@@ -4257,22 +4257,22 @@ uint64_t __130__BRCXPCRegularIPCsClient_FPFSAdditions__modifyItem_baseVersion_ch
       [BRCXPCRegularIPCsClient(FPFSAdditions) reimportItemIdentifier:reply:];
     }
 
-    v17 = [MEMORY[0x277D77BF8] sharedManager];
-    v18 = [v17 currentPersona];
-    v19 = [v18 br_personaID];
+    mEMORY[0x277D77BF8] = [MEMORY[0x277D77BF8] sharedManager];
+    currentPersona = [mEMORY[0x277D77BF8] currentPersona];
+    br_personaID = [currentPersona br_personaID];
 
-    if ([v19 isEqualToString:@"__defaultPersonaID__"])
+    if ([br_personaID isEqualToString:@"__defaultPersonaID__"])
     {
       v20 = 0;
     }
 
     else
     {
-      v20 = v19;
+      v20 = br_personaID;
     }
 
     v21 = v20;
-    v22 = v19;
+    v22 = br_personaID;
     if (!v21)
     {
       if (reimportItemIdentifier_reply____personaOnceToken != -1)
@@ -4283,13 +4283,13 @@ uint64_t __130__BRCXPCRegularIPCsClient_FPFSAdditions__modifyItem_baseVersion_ch
       v22 = reimportItemIdentifier_reply____personalPersona;
     }
 
-    v23 = [MEMORY[0x277D77BF8] sharedManager];
-    v24 = [v23 currentPersona];
+    mEMORY[0x277D77BF8]2 = [MEMORY[0x277D77BF8] sharedManager];
+    currentPersona2 = [mEMORY[0x277D77BF8]2 currentPersona];
 
     v43 = 0;
-    v25 = [v24 userPersonaUniqueString];
-    v26 = v25;
-    if (v25 == v22 || ([v25 isEqualToString:v22] & 1) != 0)
+    userPersonaUniqueString = [currentPersona2 userPersonaUniqueString];
+    v26 = userPersonaUniqueString;
+    if (userPersonaUniqueString == v22 || ([userPersonaUniqueString isEqualToString:v22] & 1) != 0)
     {
       v27 = 0;
     }
@@ -4299,7 +4299,7 @@ uint64_t __130__BRCXPCRegularIPCsClient_FPFSAdditions__modifyItem_baseVersion_ch
       if (voucher_process_can_use_arbitrary_personas())
       {
         v42 = 0;
-        v29 = [v24 copyCurrentPersonaContextWithError:&v42];
+        v29 = [currentPersona2 copyCurrentPersonaContextWithError:&v42];
         v37 = v42;
         v30 = v43;
         v43 = v29;
@@ -4314,7 +4314,7 @@ uint64_t __130__BRCXPCRegularIPCsClient_FPFSAdditions__modifyItem_baseVersion_ch
           }
         }
 
-        v27 = [v24 br_generateAndRestorePersonaContextWithPersonaUniqueString:{v22, v37}];
+        v27 = [currentPersona2 br_generateAndRestorePersonaContextWithPersonaUniqueString:{v22, v37}];
 
         if (!v27)
         {
@@ -4326,9 +4326,9 @@ uint64_t __130__BRCXPCRegularIPCsClient_FPFSAdditions__modifyItem_baseVersion_ch
         if (os_log_type_enabled(v33, 0x90u))
         {
           *buf = 138412802;
-          v48 = v19;
+          v48 = br_personaID;
           v49 = 2112;
-          v50 = v27;
+          selfCopy = v27;
           v51 = 2112;
           v34 = v39;
           v52 = v39;
@@ -4343,7 +4343,7 @@ uint64_t __130__BRCXPCRegularIPCsClient_FPFSAdditions__modifyItem_baseVersion_ch
 
       else
       {
-        if (v21 || ([v24 isDataSeparatedPersona] & 1) != 0)
+        if (v21 || ([currentPersona2 isDataSeparatedPersona] & 1) != 0)
         {
           v35 = brc_bread_crumbs();
           v36 = brc_default_log();
@@ -4374,7 +4374,7 @@ LABEL_16:
     v40[3] = &unk_2785014D0;
     v40[4] = self;
     v41 = v14;
-    [BRCImportUtil reimportItemsBelowItemWithIdentifier:v6 completionHandler:v40];
+    [BRCImportUtil reimportItemsBelowItemWithIdentifier:identifierCopy completionHandler:v40];
 
     _BRRestorePersona();
   }
@@ -4436,10 +4436,10 @@ void __71__BRCXPCRegularIPCsClient_FPFSAdditions__reimportItemIdentifier_reply__
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)enumerateTrashItemsFromRank:(unint64_t)a3 limit:(unint64_t)a4 completion:(id)a5
+- (void)enumerateTrashItemsFromRank:(unint64_t)rank limit:(unint64_t)limit completion:(id)completion
 {
   v42 = *MEMORY[0x277D85DE8];
-  v8 = a5;
+  completionCopy = completion;
   memset(v31, 0, sizeof(v31));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient(FPFSAdditions) enumerateTrashItemsFromRank:limit:completion:]", 1096, 0, v31);
   v9 = brc_bread_crumbs();
@@ -4452,7 +4452,7 @@ void __71__BRCXPCRegularIPCsClient_FPFSAdditions__reimportItemIdentifier_reply__
     *buf = 134219010;
     v33 = v11;
     v34 = 2112;
-    v35 = self;
+    selfCopy = self;
     v36 = 2112;
     v37 = v13;
     v38 = 2080;
@@ -4467,24 +4467,24 @@ void __71__BRCXPCRegularIPCsClient_FPFSAdditions__reimportItemIdentifier_reply__
   v29[2] = __87__BRCXPCRegularIPCsClient_FPFSAdditions__enumerateTrashItemsFromRank_limit_completion___block_invoke;
   v29[3] = &unk_2785014D0;
   v29[4] = self;
-  v14 = v8;
+  v14 = completionCopy;
   v30 = v14;
   v15 = _brc_ipc_check_applibrary_proxy(self, 1, v29);
 
   if (v15)
   {
-    v16 = [(BRCXPCClient *)self session];
+    session = [(BRCXPCClient *)self session];
     tracker = self->super._tracker;
-    v18 = [v16 readOnlyWorkloop];
+    readOnlyWorkloop = [session readOnlyWorkloop];
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __87__BRCXPCRegularIPCsClient_FPFSAdditions__enumerateTrashItemsFromRank_limit_completion___block_invoke_120;
     v23[3] = &unk_2785040C8;
-    v27 = a4;
-    v19 = v16;
-    v28 = a3;
+    limitCopy = limit;
+    v19 = session;
+    rankCopy = rank;
     v24 = v19;
-    v25 = self;
+    selfCopy2 = self;
     v26 = v14;
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
@@ -4492,7 +4492,7 @@ void __71__BRCXPCRegularIPCsClient_FPFSAdditions__reimportItemIdentifier_reply__
     v21[3] = &unk_278500048;
     v21[4] = self;
     v22 = v26;
-    brc_task_tracker_async_with_logs(tracker, v18, v23, v21);
+    brc_task_tracker_async_with_logs(tracker, readOnlyWorkloop, v23, v21);
   }
 
   __brc_leave_section(v31);
@@ -4644,10 +4644,10 @@ void __87__BRCXPCRegularIPCsClient_FPFSAdditions__enumerateTrashItemsFromRank_li
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)notifyReimportCompleted:(id)a3
+- (void)notifyReimportCompleted:(id)completed
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completedCopy = completed;
   memset(v22, 0, sizeof(v22));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient(FPFSAdditions) notifyReimportCompleted:]", 1128, 0, v22);
   v5 = brc_bread_crumbs();
@@ -4658,9 +4658,9 @@ void __87__BRCXPCRegularIPCsClient_FPFSAdditions__enumerateTrashItemsFromRank_li
     v8 = qos_class_self();
     v9 = BRCPrettyPrintEnumWithContext(v8, &brc_qos_entries, 0);
     *buf = 134219010;
-    v24 = v7;
+    selfCopy2 = v7;
     v25 = 2112;
-    v26 = self;
+    selfCopy = self;
     v27 = 2112;
     v28 = v9;
     v29 = 2080;
@@ -4676,30 +4676,30 @@ void __87__BRCXPCRegularIPCsClient_FPFSAdditions__enumerateTrashItemsFromRank_li
   v20[2] = __66__BRCXPCRegularIPCsClient_FPFSAdditions__notifyReimportCompleted___block_invoke;
   v20[3] = &unk_2785014D0;
   v20[4] = self;
-  v11 = v4;
+  v11 = completedCopy;
   v21 = v11;
   LODWORD(v10) = _brc_ipc_check_entitlement_and_logged_status(self, 1, v10, v20);
 
   if (v10)
   {
-    v12 = [(BRCXPCClient *)self session];
-    v13 = [v12 clientTruthWorkloop];
+    session = [(BRCXPCClient *)self session];
+    clientTruthWorkloop = [session clientTruthWorkloop];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __66__BRCXPCRegularIPCsClient_FPFSAdditions__notifyReimportCompleted___block_invoke_123;
     v18[3] = &unk_2784FF450;
-    v14 = v12;
+    v14 = session;
     v19 = v14;
-    dispatch_async_and_wait(v13, v18);
+    dispatch_async_and_wait(clientTruthWorkloop, v18);
 
     v15 = brc_bread_crumbs();
     v16 = brc_default_log();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
     {
       *buf = 138412802;
-      v24 = self;
+      selfCopy2 = self;
       v25 = 2112;
-      v26 = 0;
+      selfCopy = 0;
       v27 = 2112;
       v28 = v15;
       _os_log_impl(&dword_223E7A000, v16, OS_LOG_TYPE_INFO, "[INFO] %@: reply(%@)%@", buf, 0x20u);
@@ -4735,12 +4735,12 @@ void __66__BRCXPCRegularIPCsClient_FPFSAdditions__notifyReimportCompleted___bloc
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)boostFilePresenterForItemIdentifier:(id)a3 reply:(id)a4
+- (void)boostFilePresenterForItemIdentifier:(id)identifier reply:(id)reply
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 br_isBoostableItemIdentifier])
+  identifierCopy = identifier;
+  replyCopy = reply;
+  if ([identifierCopy br_isBoostableItemIdentifier])
   {
     memset(v18, 0, sizeof(v18));
     __brc_create_section(1, "[BRCXPCRegularIPCsClient(FPFSAdditions) boostFilePresenterForItemIdentifier:reply:]", 1170, 0, v18);
@@ -4752,15 +4752,15 @@ void __66__BRCXPCRegularIPCsClient_FPFSAdditions__notifyReimportCompleted___bloc
       v11 = qos_class_self();
       v12 = BRCPrettyPrintEnumWithContext(v11, &brc_qos_entries, 0);
       *buf = 134219266;
-      v20 = v10;
+      selfCopy2 = v10;
       v21 = 2112;
-      v22 = self;
+      selfCopy = self;
       v23 = 2112;
       v24 = v12;
       v25 = 2080;
       v26 = "[BRCXPCRegularIPCsClient(FPFSAdditions) boostFilePresenterForItemIdentifier:reply:]";
       v27 = 2112;
-      v28 = v6;
+      v28 = identifierCopy;
       v29 = 2112;
       v30 = v8;
       _os_log_impl(&dword_223E7A000, v9, OS_LOG_TYPE_INFO, "[INFO] ┏%llx %@ (%@) %s %@%@", buf, 0x3Eu);
@@ -4771,8 +4771,8 @@ void __66__BRCXPCRegularIPCsClient_FPFSAdditions__notifyReimportCompleted___bloc
     v16[2] = __84__BRCXPCRegularIPCsClient_FPFSAdditions__boostFilePresenterForItemIdentifier_reply___block_invoke;
     v16[3] = &unk_2785040F0;
     v16[4] = self;
-    v17 = v7;
-    [(BRCXPCRegularIPCsClient *)self accessItemIdentifierLocalItem:v6 dbAccessKind:0 synchronouslyIfPossible:0 handler:v16];
+    v17 = replyCopy;
+    [(BRCXPCRegularIPCsClient *)self accessItemIdentifierLocalItem:identifierCopy dbAccessKind:0 synchronouslyIfPossible:0 handler:v16];
 
     __brc_leave_section(v18);
   }
@@ -4784,15 +4784,15 @@ void __66__BRCXPCRegularIPCsClient_FPFSAdditions__notifyReimportCompleted___bloc
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
       *buf = 138412802;
-      v20 = self;
+      selfCopy2 = self;
       v21 = 2112;
-      v22 = 0;
+      selfCopy = 0;
       v23 = 2112;
       v24 = v13;
       _os_log_impl(&dword_223E7A000, v14, OS_LOG_TYPE_INFO, "[INFO] %@: reply(%@)%@", buf, 0x20u);
     }
 
-    (*(v7 + 2))(v7, 0);
+    (*(replyCopy + 2))(replyCopy, 0);
   }
 
   v15 = *MEMORY[0x277D85DE8];
@@ -4879,12 +4879,12 @@ void __84__BRCXPCRegularIPCsClient_FPFSAdditions__boostFilePresenterForItemIdent
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_unboostFilePresenterForItemIdentifier:(id)a3 handledAppLibrarys:(id)a4 completionHandler:(id)a5
+- (void)_unboostFilePresenterForItemIdentifier:(id)identifier handledAppLibrarys:(id)librarys completionHandler:(id)handler
 {
   v36 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  librarysCopy = librarys;
+  handlerCopy = handler;
   memset(v23, 0, sizeof(v23));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient(FPFSAdditions) _unboostFilePresenterForItemIdentifier:handledAppLibrarys:completionHandler:]", 1186, 0, v23);
   v11 = brc_bread_crumbs();
@@ -4897,13 +4897,13 @@ void __84__BRCXPCRegularIPCsClient_FPFSAdditions__boostFilePresenterForItemIdent
     *buf = 134219266;
     v25 = v13;
     v26 = 2112;
-    v27 = self;
+    selfCopy = self;
     v28 = 2112;
     v29 = v15;
     v30 = 2080;
     v31 = "[BRCXPCRegularIPCsClient(FPFSAdditions) _unboostFilePresenterForItemIdentifier:handledAppLibrarys:completionHandler:]";
     v32 = 2112;
-    v33 = v8;
+    v33 = identifierCopy;
     v34 = 2112;
     v35 = v11;
     _os_log_impl(&dword_223E7A000, v12, OS_LOG_TYPE_INFO, "[INFO] ┏%llx %@ (%@) %s %@%@", buf, 0x3Eu);
@@ -4913,12 +4913,12 @@ void __84__BRCXPCRegularIPCsClient_FPFSAdditions__boostFilePresenterForItemIdent
   v19[1] = 3221225472;
   v19[2] = __118__BRCXPCRegularIPCsClient_FPFSAdditions___unboostFilePresenterForItemIdentifier_handledAppLibrarys_completionHandler___block_invoke;
   v19[3] = &unk_278504118;
-  v16 = v10;
+  v16 = handlerCopy;
   v22 = v16;
-  v17 = v9;
+  v17 = librarysCopy;
   v20 = v17;
-  v21 = self;
-  [(BRCXPCRegularIPCsClient *)self accessItemIdentifierLocalItem:v8 dbAccessKind:0 synchronouslyIfPossible:0 handler:v19];
+  selfCopy2 = self;
+  [(BRCXPCRegularIPCsClient *)self accessItemIdentifierLocalItem:identifierCopy dbAccessKind:0 synchronouslyIfPossible:0 handler:v19];
 
   __brc_leave_section(v23);
   v18 = *MEMORY[0x277D85DE8];
@@ -4952,11 +4952,11 @@ void __118__BRCXPCRegularIPCsClient_FPFSAdditions___unboostFilePresenterForItemI
   }
 }
 
-- (void)unboostFilePresenterForItemIdentifiers:(id)a3 reply:(id)a4
+- (void)unboostFilePresenterForItemIdentifiers:(id)identifiers reply:(id)reply
 {
   v42 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v22 = a4;
+  identifiersCopy = identifiers;
+  replyCopy = reply;
   memset(v35, 0, sizeof(v35));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient(FPFSAdditions) unboostFilePresenterForItemIdentifiers:reply:]", 1191, 0, v35);
   v6 = brc_bread_crumbs();
@@ -4975,7 +4975,7 @@ void __118__BRCXPCRegularIPCsClient_FPFSAdditions___unboostFilePresenterForItemI
     *v39 = 2080;
     *&v39[2] = "[BRCXPCRegularIPCsClient(FPFSAdditions) unboostFilePresenterForItemIdentifiers:reply:]";
     *&v39[10] = 2112;
-    *&v39[12] = v5;
+    *&v39[12] = identifiersCopy;
     v40 = 2112;
     v41 = v6;
     _os_log_impl(&dword_223E7A000, v7, OS_LOG_TYPE_INFO, "[INFO] ┏%llx %@ (%@) %s %@%@", buf, 0x3Eu);
@@ -4993,7 +4993,7 @@ void __118__BRCXPCRegularIPCsClient_FPFSAdditions___unboostFilePresenterForItemI
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v13 = v5;
+  v13 = identifiersCopy;
   v14 = [v13 countByEnumeratingWithState:&v31 objects:v36 count:16];
   if (v14)
   {
@@ -5036,8 +5036,8 @@ void __118__BRCXPCRegularIPCsClient_FPFSAdditions___unboostFilePresenterForItemI
   block[3] = &unk_278504168;
   v26 = buf;
   block[4] = self;
-  v25 = v22;
-  v20 = v22;
+  v25 = replyCopy;
+  v20 = replyCopy;
   dispatch_group_notify(v12, queue, block);
 
   _Block_object_dispose(buf, 8);
@@ -5087,12 +5087,12 @@ uint64_t __87__BRCXPCRegularIPCsClient_FPFSAdditions__unboostFilePresenterForIte
   return result;
 }
 
-- (void)capabilityWhenTryingToReparentItemIdentifier:(id)a3 toNewParent:(id)a4 reply:(id)a5
+- (void)capabilityWhenTryingToReparentItemIdentifier:(id)identifier toNewParent:(id)parent reply:(id)reply
 {
   v35 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  parentCopy = parent;
+  replyCopy = reply;
   memset(v22, 0, sizeof(v22));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient(FPFSAdditions) capabilityWhenTryingToReparentItemIdentifier:toNewParent:reply:]", 1239, 0, v22);
   v11 = brc_bread_crumbs();
@@ -5105,13 +5105,13 @@ uint64_t __87__BRCXPCRegularIPCsClient_FPFSAdditions__unboostFilePresenterForIte
     *buf = 134219266;
     v24 = v13;
     v25 = 2112;
-    v26 = self;
+    selfCopy = self;
     v27 = 2112;
     v28 = v15;
     v29 = 2080;
     v30 = "[BRCXPCRegularIPCsClient(FPFSAdditions) capabilityWhenTryingToReparentItemIdentifier:toNewParent:reply:]";
     v31 = 2112;
-    v32 = v8;
+    v32 = identifierCopy;
     v33 = 2112;
     v34 = v11;
     _os_log_impl(&dword_223E7A000, v12, OS_LOG_TYPE_INFO, "[INFO] ┏%llx %@ (%@) %s %@%@", buf, 0x3Eu);
@@ -5122,11 +5122,11 @@ uint64_t __87__BRCXPCRegularIPCsClient_FPFSAdditions__unboostFilePresenterForIte
   v19[2] = __105__BRCXPCRegularIPCsClient_FPFSAdditions__capabilityWhenTryingToReparentItemIdentifier_toNewParent_reply___block_invoke;
   v19[3] = &unk_2785041B8;
   v19[4] = self;
-  v16 = v10;
+  v16 = replyCopy;
   v21 = v16;
-  v17 = v9;
+  v17 = parentCopy;
   v20 = v17;
-  [(BRCXPCRegularIPCsClient *)self accessItemIdentifierLocalItem:v8 dbAccessKind:1 synchronouslyIfPossible:0 handler:v19];
+  [(BRCXPCRegularIPCsClient *)self accessItemIdentifierLocalItem:identifierCopy dbAccessKind:1 synchronouslyIfPossible:0 handler:v19];
 
   __brc_leave_section(v22);
   v18 = *MEMORY[0x277D85DE8];
@@ -5292,56 +5292,56 @@ void __105__BRCXPCRegularIPCsClient_FPFSAdditions__capabilityWhenTryingToReparen
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getBookmarkDataForItemIdentifier:(id)a3 onlyAllowItemKnowByServer:(BOOL)a4 allowAccessByBundleID:(id)a5 documentID:(id)a6 isDirectory:(BOOL)a7 reply:(id)a8
+- (void)getBookmarkDataForItemIdentifier:(id)identifier onlyAllowItemKnowByServer:(BOOL)server allowAccessByBundleID:(id)d documentID:(id)iD isDirectory:(BOOL)directory reply:(id)reply
 {
   v50 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v29 = a5;
-  v15 = a6;
-  v16 = a8;
+  identifierCopy = identifier;
+  dCopy = d;
+  iDCopy = iD;
+  replyCopy = reply;
   memset(v37, 0, sizeof(v37));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient(FPFSAdditions) getBookmarkDataForItemIdentifier:onlyAllowItemKnowByServer:allowAccessByBundleID:documentID:isDirectory:reply:]", 1274, 0, v37);
   v17 = brc_bread_crumbs();
   v18 = brc_default_log();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
   {
-    v28 = v15;
-    v19 = a4;
-    v20 = a7;
+    v28 = iDCopy;
+    serverCopy = server;
+    directoryCopy = directory;
     v21 = v37[0];
     v22 = qos_class_self();
     v23 = BRCPrettyPrintEnumWithContext(v22, &brc_qos_entries, 0);
     *buf = 134219266;
     v39 = v21;
     v40 = 2112;
-    v41 = self;
+    selfCopy = self;
     v42 = 2112;
     v43 = v23;
     v44 = 2080;
     v45 = "[BRCXPCRegularIPCsClient(FPFSAdditions) getBookmarkDataForItemIdentifier:onlyAllowItemKnowByServer:allowAccessByBundleID:documentID:isDirectory:reply:]";
     v46 = 2112;
-    v47 = v14;
+    v47 = identifierCopy;
     v48 = 2112;
     v49 = v17;
     _os_log_impl(&dword_223E7A000, v18, OS_LOG_TYPE_INFO, "[INFO] ┏%llx %@ (%@) %s %@%@", buf, 0x3Eu);
 
-    a7 = v20;
-    a4 = v19;
-    v15 = v28;
+    directory = directoryCopy;
+    server = serverCopy;
+    iDCopy = v28;
   }
 
   v30[0] = MEMORY[0x277D85DD0];
   v30[1] = 3221225472;
   v30[2] = __152__BRCXPCRegularIPCsClient_FPFSAdditions__getBookmarkDataForItemIdentifier_onlyAllowItemKnowByServer_allowAccessByBundleID_documentID_isDirectory_reply___block_invoke;
   v30[3] = &unk_2785041E0;
-  v35 = a4;
-  v36 = a7;
-  v24 = v14;
+  serverCopy2 = server;
+  directoryCopy2 = directory;
+  v24 = identifierCopy;
   v31 = v24;
-  v25 = v15;
+  v25 = iDCopy;
   v32 = v25;
-  v33 = self;
-  v26 = v16;
+  selfCopy2 = self;
+  v26 = replyCopy;
   v34 = v26;
   [(BRCXPCRegularIPCsClient *)self accessItemIdentifierLocalItem:v24 dbAccessKind:0 synchronouslyIfPossible:0 handler:v30];
 
@@ -5436,17 +5436,17 @@ LABEL_14:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getPublishedURLForItemIdentifier:(id)a3 forStreaming:(BOOL)a4 requestedTTL:(unint64_t)a5 reply:(id)a6
+- (void)getPublishedURLForItemIdentifier:(id)identifier forStreaming:(BOOL)streaming requestedTTL:(unint64_t)l reply:(id)reply
 {
   v46 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a6;
+  identifierCopy = identifier;
+  replyCopy = reply;
   v32[0] = MEMORY[0x277D85DD0];
   v32[1] = 3221225472;
   v32[2] = __107__BRCXPCRegularIPCsClient_FPFSAdditions__getPublishedURLForItemIdentifier_forStreaming_requestedTTL_reply___block_invoke;
   v32[3] = &unk_278504208;
   v32[4] = self;
-  v12 = v11;
+  v12 = replyCopy;
   v33 = v12;
   v13 = MEMORY[0x22AA4A310](v32);
   memset(v31, 0, sizeof(v31));
@@ -5456,27 +5456,27 @@ LABEL_14:
   if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
   {
     v24 = v13;
-    v16 = a4;
-    v17 = a5;
+    streamingCopy = streaming;
+    lCopy = l;
     v18 = v31[0];
     v19 = qos_class_self();
     v20 = BRCPrettyPrintEnumWithContext(v19, &brc_qos_entries, 0);
     *buf = 134219266;
     v35 = v18;
     v36 = 2112;
-    v37 = self;
+    selfCopy = self;
     v38 = 2112;
     v39 = v20;
     v40 = 2080;
     v41 = "[BRCXPCRegularIPCsClient(FPFSAdditions) getPublishedURLForItemIdentifier:forStreaming:requestedTTL:reply:]";
     v42 = 2112;
-    v43 = v10;
+    v43 = identifierCopy;
     v44 = 2112;
     v45 = v14;
     _os_log_impl(&dword_223E7A000, v15, OS_LOG_TYPE_INFO, "[INFO] ┏%llx %@ (%@) %s %@%@", buf, 0x3Eu);
 
-    a5 = v17;
-    a4 = v16;
+    l = lCopy;
+    streaming = streamingCopy;
     v13 = v24;
   }
 
@@ -5486,11 +5486,11 @@ LABEL_14:
   v25[3] = &unk_278504230;
   v21 = v13;
   v28 = v21;
-  v22 = v10;
+  v22 = identifierCopy;
   v26 = v22;
-  v27 = self;
-  v30 = a4;
-  v29 = a5;
+  selfCopy2 = self;
+  streamingCopy2 = streaming;
+  lCopy2 = l;
   [(BRCXPCRegularIPCsClient *)self accessItemIdentifierLocalItem:v22 dbAccessKind:0 synchronouslyIfPossible:0 handler:v25];
 
   __brc_leave_section(v31);
@@ -5566,12 +5566,12 @@ void __107__BRCXPCRegularIPCsClient_FPFSAdditions__getPublishedURLForItemIdentif
   }
 }
 
-- (void)getAttributeValues:(id)a3 forItemIdentifier:(id)a4 reply:(id)a5
+- (void)getAttributeValues:(id)values forItemIdentifier:(id)identifier reply:(id)reply
 {
   v35 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  valuesCopy = values;
+  identifierCopy = identifier;
+  replyCopy = reply;
   memset(v22, 0, sizeof(v22));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient(FPFSAdditions) getAttributeValues:forItemIdentifier:reply:]", 1323, 0, v22);
   v11 = brc_bread_crumbs();
@@ -5584,13 +5584,13 @@ void __107__BRCXPCRegularIPCsClient_FPFSAdditions__getPublishedURLForItemIdentif
     *buf = 134219266;
     v24 = v13;
     v25 = 2112;
-    v26 = self;
+    selfCopy = self;
     v27 = 2112;
     v28 = v15;
     v29 = 2080;
     v30 = "[BRCXPCRegularIPCsClient(FPFSAdditions) getAttributeValues:forItemIdentifier:reply:]";
     v31 = 2112;
-    v32 = v9;
+    v32 = identifierCopy;
     v33 = 2112;
     v34 = v11;
     _os_log_impl(&dword_223E7A000, v12, OS_LOG_TYPE_INFO, "[INFO] ┏%llx %@ (%@) %s %@%@", buf, 0x3Eu);
@@ -5601,11 +5601,11 @@ void __107__BRCXPCRegularIPCsClient_FPFSAdditions__getPublishedURLForItemIdentif
   v19[2] = __85__BRCXPCRegularIPCsClient_FPFSAdditions__getAttributeValues_forItemIdentifier_reply___block_invoke;
   v19[3] = &unk_278504258;
   v19[4] = self;
-  v16 = v8;
+  v16 = valuesCopy;
   v20 = v16;
-  v17 = v10;
+  v17 = replyCopy;
   v21 = v17;
-  [(BRCXPCRegularIPCsClient *)self accessItemIdentifierLocalItem:v9 dbAccessKind:0 synchronouslyIfPossible:0 handler:v19];
+  [(BRCXPCRegularIPCsClient *)self accessItemIdentifierLocalItem:identifierCopy dbAccessKind:0 synchronouslyIfPossible:0 handler:v19];
 
   __brc_leave_section(v22);
   v18 = *MEMORY[0x277D85DE8];
@@ -5647,11 +5647,11 @@ void __85__BRCXPCRegularIPCsClient_FPFSAdditions__getAttributeValues_forItemIden
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getiWorkPublishingInfoForItemIdentifier:(id)a3 reply:(id)a4
+- (void)getiWorkPublishingInfoForItemIdentifier:(id)identifier reply:(id)reply
 {
   v40 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  replyCopy = reply;
   memset(v27, 0, sizeof(v27));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient(FPFSAdditions) getiWorkPublishingInfoForItemIdentifier:reply:]", 1331, 0, v27);
   v8 = brc_bread_crumbs();
@@ -5664,7 +5664,7 @@ void __85__BRCXPCRegularIPCsClient_FPFSAdditions__getAttributeValues_forItemIden
     *buf = 134219010;
     v29 = v10;
     v30 = 2112;
-    v31 = self;
+    selfCopy2 = self;
     v32 = 2112;
     v33 = v12;
     v34 = 2080;
@@ -5680,7 +5680,7 @@ void __85__BRCXPCRegularIPCsClient_FPFSAdditions__getAttributeValues_forItemIden
   v25[2] = __88__BRCXPCRegularIPCsClient_FPFSAdditions__getiWorkPublishingInfoForItemIdentifier_reply___block_invoke;
   v25[3] = &unk_2785014D0;
   v25[4] = self;
-  v14 = v7;
+  v14 = replyCopy;
   v26 = v14;
   LODWORD(v13) = _brc_ipc_check_entitlement_and_logged_status(self, 1, v13, v25);
 
@@ -5698,13 +5698,13 @@ void __85__BRCXPCRegularIPCsClient_FPFSAdditions__getAttributeValues_forItemIden
       *buf = 134219266;
       v29 = v17;
       v30 = 2112;
-      v31 = self;
+      selfCopy2 = self;
       v32 = 2112;
       v33 = v19;
       v34 = 2080;
       v35 = "[BRCXPCRegularIPCsClient(FPFSAdditions) getiWorkPublishingInfoForItemIdentifier:reply:]";
       v36 = 2112;
-      v37 = v6;
+      v37 = identifierCopy;
       v38 = 2112;
       v39 = v15;
       _os_log_impl(&dword_223E7A000, v16, OS_LOG_TYPE_INFO, "[INFO] ┏%llx %@ (%@) %s %@%@", buf, 0x3Eu);
@@ -5716,7 +5716,7 @@ void __85__BRCXPCRegularIPCsClient_FPFSAdditions__getAttributeValues_forItemIden
     v21[3] = &unk_2785041B8;
     v21[4] = self;
     v23 = v14;
-    v22 = v6;
+    v22 = identifierCopy;
     [(BRCXPCRegularIPCsClient *)self accessItemIdentifierLocalItem:v22 dbAccessKind:1 synchronouslyIfPossible:0 handler:v21];
 
     __brc_leave_section(v24);
@@ -5792,26 +5792,26 @@ void __88__BRCXPCRegularIPCsClient_FPFSAdditions__getiWorkPublishingInfoForItemI
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setiWorkPublishingInfoForItemIdentifier:(id)a3 isForPublish:(BOOL)a4 readonly:(BOOL)a5 reply:(id)a6
+- (void)setiWorkPublishingInfoForItemIdentifier:(id)identifier isForPublish:(BOOL)publish readonly:(BOOL)readonly reply:(id)reply
 {
   v50 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a6;
+  identifierCopy = identifier;
+  replyCopy = reply;
   memset(v37, 0, sizeof(v37));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient(FPFSAdditions) setiWorkPublishingInfoForItemIdentifier:isForPublish:readonly:reply:]", 1350, 0, v37);
   v12 = brc_bread_crumbs();
   v13 = brc_default_log();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
-    v14 = a4;
-    v15 = a5;
+    publishCopy = publish;
+    readonlyCopy = readonly;
     v16 = v37[0];
     v17 = qos_class_self();
     v18 = BRCPrettyPrintEnumWithContext(v17, &brc_qos_entries, 0);
     *buf = 134219010;
     v39 = v16;
     v40 = 2112;
-    v41 = self;
+    selfCopy2 = self;
     v42 = 2112;
     v43 = v18;
     v44 = 2080;
@@ -5820,8 +5820,8 @@ void __88__BRCXPCRegularIPCsClient_FPFSAdditions__getiWorkPublishingInfoForItemI
     v47 = v12;
     _os_log_impl(&dword_223E7A000, v13, OS_LOG_TYPE_INFO, "[INFO] ┏%llx %@ (%@) %s %@", buf, 0x34u);
 
-    a5 = v15;
-    a4 = v14;
+    readonly = readonlyCopy;
+    publish = publishCopy;
   }
 
   v19 = *MEMORY[0x277CFABB0];
@@ -5830,7 +5830,7 @@ void __88__BRCXPCRegularIPCsClient_FPFSAdditions__getiWorkPublishingInfoForItemI
   v35[2] = __110__BRCXPCRegularIPCsClient_FPFSAdditions__setiWorkPublishingInfoForItemIdentifier_isForPublish_readonly_reply___block_invoke;
   v35[3] = &unk_2785014D0;
   v35[4] = self;
-  v20 = v11;
+  v20 = replyCopy;
   v36 = v20;
   LODWORD(v19) = _brc_ipc_check_entitlement_and_logged_status(self, 1, v19, v35);
 
@@ -5842,27 +5842,27 @@ void __88__BRCXPCRegularIPCsClient_FPFSAdditions__getiWorkPublishingInfoForItemI
     v22 = brc_default_log();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
     {
-      v28 = a4;
-      v23 = a5;
+      publishCopy2 = publish;
+      readonlyCopy2 = readonly;
       v24 = v34[0];
       v25 = qos_class_self();
       v26 = BRCPrettyPrintEnumWithContext(v25, &brc_qos_entries, 0);
       *buf = 134219266;
       v39 = v24;
       v40 = 2112;
-      v41 = self;
+      selfCopy2 = self;
       v42 = 2112;
       v43 = v26;
       v44 = 2080;
       v45 = "[BRCXPCRegularIPCsClient(FPFSAdditions) setiWorkPublishingInfoForItemIdentifier:isForPublish:readonly:reply:]";
       v46 = 2112;
-      v47 = v10;
+      v47 = identifierCopy;
       v48 = 2112;
       v49 = v21;
       _os_log_impl(&dword_223E7A000, v22, OS_LOG_TYPE_INFO, "[INFO] ┏%llx %@ (%@) %s %@%@", buf, 0x3Eu);
 
-      a5 = v23;
-      a4 = v28;
+      readonly = readonlyCopy2;
+      publish = publishCopy2;
     }
 
     v29[0] = MEMORY[0x277D85DD0];
@@ -5871,9 +5871,9 @@ void __88__BRCXPCRegularIPCsClient_FPFSAdditions__getiWorkPublishingInfoForItemI
     v29[3] = &unk_278504280;
     v29[4] = self;
     v31 = v20;
-    v30 = v10;
-    v32 = a4;
-    v33 = a5;
+    v30 = identifierCopy;
+    publishCopy3 = publish;
+    readonlyCopy3 = readonly;
     [(BRCXPCRegularIPCsClient *)self accessItemIdentifierLocalItem:v30 dbAccessKind:0 synchronouslyIfPossible:0 handler:v29];
 
     __brc_leave_section(v34);
@@ -5940,11 +5940,11 @@ void __110__BRCXPCRegularIPCsClient_FPFSAdditions__setiWorkPublishingInfoForItem
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getiWorkPublishingBadgingStatusForItemIdentifier:(id)a3 reply:(id)a4
+- (void)getiWorkPublishingBadgingStatusForItemIdentifier:(id)identifier reply:(id)reply
 {
   v40 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  replyCopy = reply;
   memset(v27, 0, sizeof(v27));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient(FPFSAdditions) getiWorkPublishingBadgingStatusForItemIdentifier:reply:]", 1369, 0, v27);
   v8 = brc_bread_crumbs();
@@ -5957,7 +5957,7 @@ void __110__BRCXPCRegularIPCsClient_FPFSAdditions__setiWorkPublishingInfoForItem
     *buf = 134219010;
     v29 = v10;
     v30 = 2112;
-    v31 = self;
+    selfCopy2 = self;
     v32 = 2112;
     v33 = v12;
     v34 = 2080;
@@ -5973,7 +5973,7 @@ void __110__BRCXPCRegularIPCsClient_FPFSAdditions__setiWorkPublishingInfoForItem
   v25[2] = __97__BRCXPCRegularIPCsClient_FPFSAdditions__getiWorkPublishingBadgingStatusForItemIdentifier_reply___block_invoke;
   v25[3] = &unk_2785014D0;
   v25[4] = self;
-  v14 = v7;
+  v14 = replyCopy;
   v26 = v14;
   LODWORD(v13) = _brc_ipc_check_entitlement_and_logged_status(self, 1, v13, v25);
 
@@ -5991,13 +5991,13 @@ void __110__BRCXPCRegularIPCsClient_FPFSAdditions__setiWorkPublishingInfoForItem
       *buf = 134219266;
       v29 = v17;
       v30 = 2112;
-      v31 = self;
+      selfCopy2 = self;
       v32 = 2112;
       v33 = v19;
       v34 = 2080;
       v35 = "[BRCXPCRegularIPCsClient(FPFSAdditions) getiWorkPublishingBadgingStatusForItemIdentifier:reply:]";
       v36 = 2112;
-      v37 = v6;
+      v37 = identifierCopy;
       v38 = 2112;
       v39 = v15;
       _os_log_impl(&dword_223E7A000, v16, OS_LOG_TYPE_INFO, "[INFO] ┏%llx %@ (%@) %s %@%@", buf, 0x3Eu);
@@ -6009,7 +6009,7 @@ void __110__BRCXPCRegularIPCsClient_FPFSAdditions__setiWorkPublishingInfoForItem
     v21[3] = &unk_2785041B8;
     v21[4] = self;
     v23 = v14;
-    v22 = v6;
+    v22 = identifierCopy;
     [(BRCXPCRegularIPCsClient *)self accessItemIdentifierLocalItem:v22 dbAccessKind:1 synchronouslyIfPossible:0 handler:v21];
 
     __brc_leave_section(v24);
@@ -6077,11 +6077,11 @@ void __97__BRCXPCRegularIPCsClient_FPFSAdditions__getiWorkPublishingBadgingStatu
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getiWorkNeedsShareMigrateForItemIdentifier:(id)a3 reply:(id)a4
+- (void)getiWorkNeedsShareMigrateForItemIdentifier:(id)identifier reply:(id)reply
 {
   v40 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  replyCopy = reply;
   memset(v27, 0, sizeof(v27));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient(FPFSAdditions) getiWorkNeedsShareMigrateForItemIdentifier:reply:]", 1386, 0, v27);
   v8 = brc_bread_crumbs();
@@ -6094,7 +6094,7 @@ void __97__BRCXPCRegularIPCsClient_FPFSAdditions__getiWorkPublishingBadgingStatu
     *buf = 134219010;
     v29 = v10;
     v30 = 2112;
-    v31 = self;
+    selfCopy2 = self;
     v32 = 2112;
     v33 = v12;
     v34 = 2080;
@@ -6110,7 +6110,7 @@ void __97__BRCXPCRegularIPCsClient_FPFSAdditions__getiWorkPublishingBadgingStatu
   v25[2] = __91__BRCXPCRegularIPCsClient_FPFSAdditions__getiWorkNeedsShareMigrateForItemIdentifier_reply___block_invoke;
   v25[3] = &unk_2785014D0;
   v25[4] = self;
-  v14 = v7;
+  v14 = replyCopy;
   v26 = v14;
   LODWORD(v13) = _brc_ipc_check_entitlement_and_logged_status(self, 1, v13, v25);
 
@@ -6128,13 +6128,13 @@ void __97__BRCXPCRegularIPCsClient_FPFSAdditions__getiWorkPublishingBadgingStatu
       *buf = 134219266;
       v29 = v17;
       v30 = 2112;
-      v31 = self;
+      selfCopy2 = self;
       v32 = 2112;
       v33 = v19;
       v34 = 2080;
       v35 = "[BRCXPCRegularIPCsClient(FPFSAdditions) getiWorkNeedsShareMigrateForItemIdentifier:reply:]";
       v36 = 2112;
-      v37 = v6;
+      v37 = identifierCopy;
       v38 = 2112;
       v39 = v15;
       _os_log_impl(&dword_223E7A000, v16, OS_LOG_TYPE_INFO, "[INFO] ┏%llx %@ (%@) %s %@%@", buf, 0x3Eu);
@@ -6146,7 +6146,7 @@ void __97__BRCXPCRegularIPCsClient_FPFSAdditions__getiWorkPublishingBadgingStatu
     v21[3] = &unk_2785041B8;
     v21[4] = self;
     v23 = v14;
-    v22 = v6;
+    v22 = identifierCopy;
     [(BRCXPCRegularIPCsClient *)self accessItemIdentifierLocalItem:v22 dbAccessKind:1 synchronouslyIfPossible:0 handler:v21];
 
     __brc_leave_section(v24);
@@ -6214,11 +6214,11 @@ void __91__BRCXPCRegularIPCsClient_FPFSAdditions__getiWorkNeedsShareMigrateForIt
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_refreshLatestRevisionAndSharingStateForItemIdentifier:(id)a3 retryOnApplyFailure:(BOOL)a4 reply:(id)a5
+- (void)_refreshLatestRevisionAndSharingStateForItemIdentifier:(id)identifier retryOnApplyFailure:(BOOL)failure reply:(id)reply
 {
   v35 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  identifierCopy = identifier;
+  replyCopy = reply;
   memset(v22, 0, sizeof(v22));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient(FPFSAdditions) _refreshLatestRevisionAndSharingStateForItemIdentifier:retryOnApplyFailure:reply:]", 1453, 0, v22);
   v10 = brc_bread_crumbs();
@@ -6231,13 +6231,13 @@ void __91__BRCXPCRegularIPCsClient_FPFSAdditions__getiWorkNeedsShareMigrateForIt
     *buf = 134219266;
     v24 = v12;
     v25 = 2112;
-    v26 = self;
+    selfCopy = self;
     v27 = 2112;
     v28 = v14;
     v29 = 2080;
     v30 = "[BRCXPCRegularIPCsClient(FPFSAdditions) _refreshLatestRevisionAndSharingStateForItemIdentifier:retryOnApplyFailure:reply:]";
     v31 = 2112;
-    v32 = v8;
+    v32 = identifierCopy;
     v33 = 2112;
     v34 = v10;
     _os_log_impl(&dword_223E7A000, v11, OS_LOG_TYPE_INFO, "[INFO] ┏%llx %@ (%@) %s %@%@", buf, 0x3Eu);
@@ -6248,11 +6248,11 @@ void __91__BRCXPCRegularIPCsClient_FPFSAdditions__getiWorkNeedsShareMigrateForIt
   v18[2] = __123__BRCXPCRegularIPCsClient_FPFSAdditions___refreshLatestRevisionAndSharingStateForItemIdentifier_retryOnApplyFailure_reply___block_invoke;
   v18[3] = &unk_2785042D0;
   v18[4] = self;
-  v15 = v9;
+  v15 = replyCopy;
   v20 = v15;
-  v16 = v8;
+  v16 = identifierCopy;
   v19 = v16;
-  v21 = a4;
+  failureCopy = failure;
   [(BRCXPCRegularIPCsClient *)self accessItemIdentifierLocalItem:v16 dbAccessKind:0 synchronouslyIfPossible:0 handler:v18];
 
   __brc_leave_section(v22);
@@ -6434,19 +6434,19 @@ LABEL_13:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_fetchLatestContentRevisionAndSharingStateForItemIdentifier:(id)a3 reply:(id)a4
+- (void)_fetchLatestContentRevisionAndSharingStateForItemIdentifier:(id)identifier reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  replyCopy = reply;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __108__BRCXPCRegularIPCsClient_FPFSAdditions___fetchLatestContentRevisionAndSharingStateForItemIdentifier_reply___block_invoke;
   v10[3] = &unk_278504320;
-  v11 = v6;
-  v12 = v7;
+  v11 = identifierCopy;
+  v12 = replyCopy;
   v10[4] = self;
-  v8 = v6;
-  v9 = v7;
+  v8 = identifierCopy;
+  v9 = replyCopy;
   [(BRCXPCRegularIPCsClient *)self _refreshLatestRevisionAndSharingStateForItemIdentifier:v8 reply:v10];
 }
 
@@ -6553,11 +6553,11 @@ void __108__BRCXPCRegularIPCsClient_FPFSAdditions___fetchLatestContentRevisionAn
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)calculateSignatureForItemIdentifier:(id)a3 reply:(id)a4
+- (void)calculateSignatureForItemIdentifier:(id)identifier reply:(id)reply
 {
   v33 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  replyCopy = reply;
   memset(v22, 0, sizeof(v22));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient(FPFSAdditions) calculateSignatureForItemIdentifier:reply:]", 1486, 0, v22);
   v8 = brc_bread_crumbs();
@@ -6570,7 +6570,7 @@ void __108__BRCXPCRegularIPCsClient_FPFSAdditions___fetchLatestContentRevisionAn
     *buf = 134219010;
     v24 = v10;
     v25 = 2112;
-    v26 = self;
+    selfCopy = self;
     v27 = 2112;
     v28 = v12;
     v29 = 2080;
@@ -6586,21 +6586,21 @@ void __108__BRCXPCRegularIPCsClient_FPFSAdditions___fetchLatestContentRevisionAn
   v20[2] = __84__BRCXPCRegularIPCsClient_FPFSAdditions__calculateSignatureForItemIdentifier_reply___block_invoke;
   v20[3] = &unk_2785014D0;
   v20[4] = self;
-  v14 = v7;
+  v14 = replyCopy;
   v21 = v14;
   LODWORD(v13) = _brc_ipc_check_entitlement_and_logged_status(self, 1, v13, v20);
 
   if (v13)
   {
-    v15 = [MEMORY[0x277CC64A8] br_sharedProviderManager];
+    br_sharedProviderManager = [MEMORY[0x277CC64A8] br_sharedProviderManager];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __84__BRCXPCRegularIPCsClient_FPFSAdditions__calculateSignatureForItemIdentifier_reply___block_invoke_144;
     v17[3] = &unk_278504348;
     v17[4] = self;
     v19 = v14;
-    v18 = v6;
-    [v15 getUserVisibleURLForItemIdentifier:v18 completionHandler:v17];
+    v18 = identifierCopy;
+    [br_sharedProviderManager getUserVisibleURLForItemIdentifier:v18 completionHandler:v17];
   }
 
   __brc_leave_section(v22);
@@ -6807,12 +6807,12 @@ void __84__BRCXPCRegularIPCsClient_FPFSAdditions__calculateSignatureForItemIdent
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (void)calculateSignatureForItemIdentifier:(id)a3 forURL:(id)a4 reply:(id)a5
+- (void)calculateSignatureForItemIdentifier:(id)identifier forURL:(id)l reply:(id)reply
 {
   v44 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  lCopy = l;
+  replyCopy = reply;
   memset(v31, 0, sizeof(v31));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient(FPFSAdditions) calculateSignatureForItemIdentifier:forURL:reply:]", 1517, 0, v31);
   v11 = brc_bread_crumbs();
@@ -6825,7 +6825,7 @@ void __84__BRCXPCRegularIPCsClient_FPFSAdditions__calculateSignatureForItemIdent
     *buf = 134219010;
     v33 = v13;
     v34 = 2112;
-    v35 = self;
+    selfCopy2 = self;
     v36 = 2112;
     v37 = v15;
     v38 = 2080;
@@ -6841,7 +6841,7 @@ void __84__BRCXPCRegularIPCsClient_FPFSAdditions__calculateSignatureForItemIdent
   v29[2] = __91__BRCXPCRegularIPCsClient_FPFSAdditions__calculateSignatureForItemIdentifier_forURL_reply___block_invoke;
   v29[3] = &unk_2785014D0;
   v29[4] = self;
-  v17 = v10;
+  v17 = replyCopy;
   v30 = v17;
   LODWORD(v16) = _brc_ipc_check_entitlement_and_logged_status(self, 1, v16, v29);
 
@@ -6859,13 +6859,13 @@ void __84__BRCXPCRegularIPCsClient_FPFSAdditions__calculateSignatureForItemIdent
       *buf = 134219266;
       v33 = v20;
       v34 = 2112;
-      v35 = self;
+      selfCopy2 = self;
       v36 = 2112;
       v37 = v22;
       v38 = 2080;
       v39 = "[BRCXPCRegularIPCsClient(FPFSAdditions) calculateSignatureForItemIdentifier:forURL:reply:]";
       v40 = 2112;
-      v41 = v8;
+      v41 = identifierCopy;
       v42 = 2112;
       v43 = v18;
       _os_log_impl(&dword_223E7A000, v19, OS_LOG_TYPE_INFO, "[INFO] ┏%llx %@ (%@) %s %@%@", buf, 0x3Eu);
@@ -6876,9 +6876,9 @@ void __84__BRCXPCRegularIPCsClient_FPFSAdditions__calculateSignatureForItemIdent
     v24[2] = __91__BRCXPCRegularIPCsClient_FPFSAdditions__calculateSignatureForItemIdentifier_forURL_reply___block_invoke_150;
     v24[3] = &unk_278504190;
     v24[4] = self;
-    v25 = v8;
+    v25 = identifierCopy;
     v27 = v17;
-    v26 = v9;
+    v26 = lCopy;
     [(BRCXPCRegularIPCsClient *)self accessItemIdentifierLocalItem:v25 dbAccessKind:1 synchronouslyIfPossible:0 handler:v24];
 
     __brc_leave_section(v28);
@@ -7027,19 +7027,19 @@ void __91__BRCXPCRegularIPCsClient_FPFSAdditions__calculateSignatureForItemIdent
   v34 = *MEMORY[0x277D85DE8];
 }
 
-- (void)cloneLatestContentRevisionForItemIdentifier:(id)a3 reply:(id)a4
+- (void)cloneLatestContentRevisionForItemIdentifier:(id)identifier reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  replyCopy = reply;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __92__BRCXPCRegularIPCsClient_FPFSAdditions__cloneLatestContentRevisionForItemIdentifier_reply___block_invoke;
   v10[3] = &unk_278504320;
-  v11 = v6;
-  v12 = v7;
+  v11 = identifierCopy;
+  v12 = replyCopy;
   v10[4] = self;
-  v8 = v6;
-  v9 = v7;
+  v8 = identifierCopy;
+  v9 = replyCopy;
   [(BRCXPCRegularIPCsClient *)self _refreshLatestRevisionAndSharingStateForItemIdentifier:v8 reply:v10];
 }
 
@@ -7147,11 +7147,11 @@ void __92__BRCXPCRegularIPCsClient_FPFSAdditions__cloneLatestContentRevisionForI
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)refreshSharingStateForItemIdentifier:(id)a3 reply:(id)a4
+- (void)refreshSharingStateForItemIdentifier:(id)identifier reply:(id)reply
 {
   v41 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  replyCopy = reply;
   memset(v28, 0, sizeof(v28));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient(FPFSAdditions) refreshSharingStateForItemIdentifier:reply:]", 1564, 0, v28);
   v8 = brc_bread_crumbs();
@@ -7164,7 +7164,7 @@ void __92__BRCXPCRegularIPCsClient_FPFSAdditions__cloneLatestContentRevisionForI
     *buf = 134219010;
     v30 = v10;
     v31 = 2112;
-    v32 = self;
+    selfCopy2 = self;
     v33 = 2112;
     v34 = v12;
     v35 = 2080;
@@ -7179,7 +7179,7 @@ void __92__BRCXPCRegularIPCsClient_FPFSAdditions__cloneLatestContentRevisionForI
   v26[2] = __85__BRCXPCRegularIPCsClient_FPFSAdditions__refreshSharingStateForItemIdentifier_reply___block_invoke;
   v26[3] = &unk_2785014D0;
   v26[4] = self;
-  v13 = v7;
+  v13 = replyCopy;
   v27 = v13;
   v14 = _brc_ipc_check_applibrary_proxy(self, 1, v26);
 
@@ -7194,18 +7194,18 @@ void __92__BRCXPCRegularIPCsClient_FPFSAdditions__cloneLatestContentRevisionForI
       v17 = v25[0];
       v18 = qos_class_self();
       v19 = BRCPrettyPrintEnumWithContext(v18, &brc_qos_entries, 0);
-      v20 = v6;
-      v21 = [v6 UTF8String];
+      v20 = identifierCopy;
+      uTF8String = [identifierCopy UTF8String];
       *buf = 134219266;
       v30 = v17;
       v31 = 2112;
-      v32 = self;
+      selfCopy2 = self;
       v33 = 2112;
       v34 = v19;
       v35 = 2080;
       v36 = "[BRCXPCRegularIPCsClient(FPFSAdditions) refreshSharingStateForItemIdentifier:reply:]";
       v37 = 2080;
-      v38 = v21;
+      v38 = uTF8String;
       v39 = 2112;
       v40 = v15;
       _os_log_impl(&dword_223E7A000, v16, OS_LOG_TYPE_INFO, "[INFO] ┏%llx %@ (%@) %s Refreshing sharing state for %s%@", buf, 0x3Eu);
@@ -7216,7 +7216,7 @@ void __92__BRCXPCRegularIPCsClient_FPFSAdditions__cloneLatestContentRevisionForI
     v23[2] = __85__BRCXPCRegularIPCsClient_FPFSAdditions__refreshSharingStateForItemIdentifier_reply___block_invoke_152;
     v23[3] = &unk_278504370;
     v24 = v13;
-    [(BRCXPCRegularIPCsClient *)self _fetchLatestContentRevisionAndSharingStateForItemIdentifier:v6 reply:v23];
+    [(BRCXPCRegularIPCsClient *)self _fetchLatestContentRevisionAndSharingStateForItemIdentifier:identifierCopy reply:v23];
 
     __brc_leave_section(v25);
   }
@@ -7255,11 +7255,11 @@ void __85__BRCXPCRegularIPCsClient_FPFSAdditions__refreshSharingStateForItemIden
   (*(v4 + 16))(v4, v5);
 }
 
-- (void)launchItemCountMismatchChecksForItemIdentifier:(id)a3 reply:(id)a4
+- (void)launchItemCountMismatchChecksForItemIdentifier:(id)identifier reply:(id)reply
 {
   v40 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  replyCopy = reply;
   memset(v27, 0, sizeof(v27));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient(FPFSAdditions) launchItemCountMismatchChecksForItemIdentifier:reply:]", 1585, 0, v27);
   v8 = brc_bread_crumbs();
@@ -7272,7 +7272,7 @@ void __85__BRCXPCRegularIPCsClient_FPFSAdditions__refreshSharingStateForItemIden
     *buf = 134219010;
     v29 = v10;
     v30 = 2112;
-    v31 = self;
+    selfCopy2 = self;
     v32 = 2112;
     v33 = v12;
     v34 = 2080;
@@ -7288,7 +7288,7 @@ void __85__BRCXPCRegularIPCsClient_FPFSAdditions__refreshSharingStateForItemIden
   v25[2] = __95__BRCXPCRegularIPCsClient_FPFSAdditions__launchItemCountMismatchChecksForItemIdentifier_reply___block_invoke;
   v25[3] = &unk_2785014D0;
   v25[4] = self;
-  v14 = v7;
+  v14 = replyCopy;
   v26 = v14;
   LODWORD(v13) = _brc_ipc_check_entitlement_and_logged_status(self, 1, v13, v25);
 
@@ -7306,13 +7306,13 @@ void __85__BRCXPCRegularIPCsClient_FPFSAdditions__refreshSharingStateForItemIden
       *buf = 134219266;
       v29 = v17;
       v30 = 2112;
-      v31 = self;
+      selfCopy2 = self;
       v32 = 2112;
       v33 = v19;
       v34 = 2080;
       v35 = "[BRCXPCRegularIPCsClient(FPFSAdditions) launchItemCountMismatchChecksForItemIdentifier:reply:]";
       v36 = 2112;
-      v37 = v6;
+      v37 = identifierCopy;
       v38 = 2112;
       v39 = v15;
       _os_log_impl(&dword_223E7A000, v16, OS_LOG_TYPE_INFO, "[INFO] ┏%llx %@ (%@) %s %@%@", buf, 0x3Eu);
@@ -7324,7 +7324,7 @@ void __85__BRCXPCRegularIPCsClient_FPFSAdditions__refreshSharingStateForItemIden
     v21[3] = &unk_2785041B8;
     v21[4] = self;
     v23 = v14;
-    v22 = v6;
+    v22 = identifierCopy;
     [(BRCXPCRegularIPCsClient *)self accessItemIdentifierLocalItem:v22 dbAccessKind:0 synchronouslyIfPossible:0 handler:v21];
 
     __brc_leave_section(v24);
@@ -7392,11 +7392,11 @@ void __95__BRCXPCRegularIPCsClient_FPFSAdditions__launchItemCountMismatchChecksF
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyShareIDForItemIdentifier:(id)a3 reply:(id)a4
+- (void)copyShareIDForItemIdentifier:(id)identifier reply:(id)reply
 {
   v42 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  replyCopy = reply;
   memset(v29, 0, sizeof(v29));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient(FPFSAdditions) copyShareIDForItemIdentifier:reply:]", 1602, 0, v29);
   v8 = brc_bread_crumbs();
@@ -7409,7 +7409,7 @@ void __95__BRCXPCRegularIPCsClient_FPFSAdditions__launchItemCountMismatchChecksF
     *buf = 134219010;
     v31 = v10;
     v32 = 2112;
-    v33 = self;
+    selfCopy2 = self;
     v34 = 2112;
     v35 = v12;
     v36 = 2080;
@@ -7419,16 +7419,16 @@ void __95__BRCXPCRegularIPCsClient_FPFSAdditions__launchItemCountMismatchChecksF
     _os_log_impl(&dword_223E7A000, v9, OS_LOG_TYPE_INFO, "[INFO] ┏%llx %@ (%@) %s %@", buf, 0x34u);
   }
 
-  v13 = [(BRCXPCClient *)self clientPriviledgesDescriptor];
-  v14 = [v13 isSharingPrivateInterfaceEntitled];
+  clientPriviledgesDescriptor = [(BRCXPCClient *)self clientPriviledgesDescriptor];
+  isSharingPrivateInterfaceEntitled = [clientPriviledgesDescriptor isSharingPrivateInterfaceEntitled];
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
   v27[2] = __77__BRCXPCRegularIPCsClient_FPFSAdditions__copyShareIDForItemIdentifier_reply___block_invoke;
   v27[3] = &unk_2785014D0;
   v27[4] = self;
-  v15 = v7;
+  v15 = replyCopy;
   v28 = v15;
-  v16 = _brc_ipc_check_client_privilege(self, 1, v14, "isSharingPrivateInterfaceEntitled", v27);
+  v16 = _brc_ipc_check_client_privilege(self, 1, isSharingPrivateInterfaceEntitled, "isSharingPrivateInterfaceEntitled", v27);
 
   if (v16)
   {
@@ -7444,13 +7444,13 @@ void __95__BRCXPCRegularIPCsClient_FPFSAdditions__launchItemCountMismatchChecksF
       *buf = 134219266;
       v31 = v19;
       v32 = 2112;
-      v33 = self;
+      selfCopy2 = self;
       v34 = 2112;
       v35 = v21;
       v36 = 2080;
       v37 = "[BRCXPCRegularIPCsClient(FPFSAdditions) copyShareIDForItemIdentifier:reply:]";
       v38 = 2112;
-      v39 = v6;
+      v39 = identifierCopy;
       v40 = 2112;
       v41 = v17;
       _os_log_impl(&dword_223E7A000, v18, OS_LOG_TYPE_INFO, "[INFO] ┏%llx %@ (%@) %s %@%@", buf, 0x3Eu);
@@ -7462,7 +7462,7 @@ void __95__BRCXPCRegularIPCsClient_FPFSAdditions__launchItemCountMismatchChecksF
     v23[3] = &unk_2785041B8;
     v23[4] = self;
     v25 = v15;
-    v24 = v6;
+    v24 = identifierCopy;
     [(BRCXPCRegularIPCsClient *)self accessItemIdentifierLocalItem:v24 dbAccessKind:1 synchronouslyIfPossible:0 handler:v23];
 
     __brc_leave_section(v26);
@@ -7632,11 +7632,11 @@ LABEL_22:
   v33 = *MEMORY[0x277D85DE8];
 }
 
-- (void)checkIfItemIsShareableWithItemIdentifier:(id)a3 reply:(id)a4
+- (void)checkIfItemIsShareableWithItemIdentifier:(id)identifier reply:(id)reply
 {
   v39 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  replyCopy = reply;
   memset(v26, 0, sizeof(v26));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient(FPFSAdditions) checkIfItemIsShareableWithItemIdentifier:reply:]", 1626, 0, v26);
   v8 = brc_bread_crumbs();
@@ -7649,7 +7649,7 @@ LABEL_22:
     *buf = 134219010;
     v28 = v10;
     v29 = 2112;
-    v30 = self;
+    selfCopy2 = self;
     v31 = 2112;
     v32 = v12;
     v33 = 2080;
@@ -7665,7 +7665,7 @@ LABEL_22:
   v24[2] = __89__BRCXPCRegularIPCsClient_FPFSAdditions__checkIfItemIsShareableWithItemIdentifier_reply___block_invoke;
   v24[3] = &unk_2785014D0;
   v24[4] = self;
-  v14 = v7;
+  v14 = replyCopy;
   v25 = v14;
   LODWORD(v13) = _brc_ipc_check_entitlement_and_logged_status(self, 1, v13, v24);
 
@@ -7683,13 +7683,13 @@ LABEL_22:
       *buf = 134219266;
       v28 = v17;
       v29 = 2112;
-      v30 = self;
+      selfCopy2 = self;
       v31 = 2112;
       v32 = v19;
       v33 = 2080;
       v34 = "[BRCXPCRegularIPCsClient(FPFSAdditions) checkIfItemIsShareableWithItemIdentifier:reply:]";
       v35 = 2112;
-      v36 = v6;
+      v36 = identifierCopy;
       v37 = 2112;
       v38 = v15;
       _os_log_impl(&dword_223E7A000, v16, OS_LOG_TYPE_INFO, "[INFO] ┏%llx %@ (%@) %s %@%@", buf, 0x3Eu);
@@ -7701,7 +7701,7 @@ LABEL_22:
     v21[3] = &unk_2785040F0;
     v21[4] = self;
     v22 = v14;
-    [(BRCXPCRegularIPCsClient *)self accessItemIdentifierLocalItem:v6 dbAccessKind:1 synchronouslyIfPossible:0 handler:v21];
+    [(BRCXPCRegularIPCsClient *)self accessItemIdentifierLocalItem:identifierCopy dbAccessKind:1 synchronouslyIfPossible:0 handler:v21];
 
     __brc_leave_section(v23);
   }
@@ -7789,11 +7789,11 @@ void __89__BRCXPCRegularIPCsClient_FPFSAdditions__checkIfItemIsShareableWithItem
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getCreatorNameComponentsForItemIdentifier:(id)a3 reply:(id)a4
+- (void)getCreatorNameComponentsForItemIdentifier:(id)identifier reply:(id)reply
 {
   v40 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  replyCopy = reply;
   memset(v27, 0, sizeof(v27));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient(FPFSAdditions) getCreatorNameComponentsForItemIdentifier:reply:]", 1640, 0, v27);
   v8 = brc_bread_crumbs();
@@ -7806,7 +7806,7 @@ void __89__BRCXPCRegularIPCsClient_FPFSAdditions__checkIfItemIsShareableWithItem
     *buf = 134219010;
     v29 = v10;
     v30 = 2112;
-    v31 = self;
+    selfCopy2 = self;
     v32 = 2112;
     v33 = v12;
     v34 = 2080;
@@ -7822,7 +7822,7 @@ void __89__BRCXPCRegularIPCsClient_FPFSAdditions__checkIfItemIsShareableWithItem
   v25[2] = __90__BRCXPCRegularIPCsClient_FPFSAdditions__getCreatorNameComponentsForItemIdentifier_reply___block_invoke;
   v25[3] = &unk_2785014D0;
   v25[4] = self;
-  v14 = v7;
+  v14 = replyCopy;
   v26 = v14;
   LODWORD(v13) = _brc_ipc_check_entitlement_and_logged_status(self, 1, v13, v25);
 
@@ -7840,13 +7840,13 @@ void __89__BRCXPCRegularIPCsClient_FPFSAdditions__checkIfItemIsShareableWithItem
       *buf = 134219266;
       v29 = v17;
       v30 = 2112;
-      v31 = self;
+      selfCopy2 = self;
       v32 = 2112;
       v33 = v19;
       v34 = 2080;
       v35 = "[BRCXPCRegularIPCsClient(FPFSAdditions) getCreatorNameComponentsForItemIdentifier:reply:]";
       v36 = 2112;
-      v37 = v6;
+      v37 = identifierCopy;
       v38 = 2112;
       v39 = v15;
       _os_log_impl(&dword_223E7A000, v16, OS_LOG_TYPE_INFO, "[INFO] ┏%llx %@ (%@) %s %@%@", buf, 0x3Eu);
@@ -7858,7 +7858,7 @@ void __89__BRCXPCRegularIPCsClient_FPFSAdditions__checkIfItemIsShareableWithItem
     v21[3] = &unk_2785041B8;
     v21[4] = self;
     v23 = v14;
-    v22 = v6;
+    v22 = identifierCopy;
     [(BRCXPCRegularIPCsClient *)self accessItemIdentifierLocalItem:v22 dbAccessKind:1 synchronouslyIfPossible:0 handler:v21];
 
     __brc_leave_section(v24);
@@ -7999,12 +7999,12 @@ LABEL_5:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)validateConnectionDomainWithDomainIdentifier:(id)a3 databaseID:(id)a4 reply:(id)a5
+- (void)validateConnectionDomainWithDomainIdentifier:(id)identifier databaseID:(id)d reply:(id)reply
 {
   v74 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  dCopy = d;
+  replyCopy = reply;
   memset(v59, 0, sizeof(v59));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient(FPFSAdditions) validateConnectionDomainWithDomainIdentifier:databaseID:reply:]", 1663, 0, v59);
   v11 = brc_bread_crumbs();
@@ -8015,17 +8015,17 @@ LABEL_5:
     v14 = qos_class_self();
     v15 = BRCPrettyPrintEnumWithContext(v14, &brc_qos_entries, 0);
     *buf = 134219522;
-    v61 = v13;
+    selfCopy5 = v13;
     v62 = 2112;
-    v63 = self;
+    selfCopy = self;
     v64 = 2112;
     v65 = v15;
     v66 = 2080;
     v67 = "[BRCXPCRegularIPCsClient(FPFSAdditions) validateConnectionDomainWithDomainIdentifier:databaseID:reply:]";
     v68 = 2112;
-    v69 = v8;
+    v69 = identifierCopy;
     v70 = 2112;
-    v71 = v9;
+    v71 = dCopy;
     v72 = 2112;
     v73 = v11;
     _os_log_impl(&dword_223E7A000, v12, OS_LOG_TYPE_INFO, "[INFO] ┏%llx %@ (%@) %s %@, %@%@", buf, 0x48u);
@@ -8037,22 +8037,22 @@ LABEL_5:
   v57[2] = __104__BRCXPCRegularIPCsClient_FPFSAdditions__validateConnectionDomainWithDomainIdentifier_databaseID_reply___block_invoke;
   v57[3] = &unk_2785014D0;
   v57[4] = self;
-  v17 = v10;
+  v17 = replyCopy;
   v58 = v17;
   LODWORD(v16) = _brc_ipc_check_entitlement(self, v16, v57);
 
   if (v16)
   {
     v18 = +[BRCAccountsManager sharedManager];
-    v19 = [v18 accountsLoadingBarrier];
-    [v19 waitForBarrier];
+    accountsLoadingBarrier = [v18 accountsLoadingBarrier];
+    [accountsLoadingBarrier waitForBarrier];
 
     v20 = +[BRCAccountsManager sharedManager];
-    v21 = [v20 accountHandlerForCurrentPersona];
+    accountHandlerForCurrentPersona = [v20 accountHandlerForCurrentPersona];
 
-    v22 = [v21 waitForSessionDBLoadingBarrier];
-    v23 = v22;
-    if (!v22 || ([v22 databaseID], v24 = objc_claimAutoreleasedReturnValue(), v25 = v24 == 0, v24, v25))
+    waitForSessionDBLoadingBarrier = [accountHandlerForCurrentPersona waitForSessionDBLoadingBarrier];
+    v23 = waitForSessionDBLoadingBarrier;
+    if (!waitForSessionDBLoadingBarrier || ([waitForSessionDBLoadingBarrier databaseID], v24 = objc_claimAutoreleasedReturnValue(), v25 = v24 == 0, v24, v25))
     {
       v30 = brc_bread_crumbs();
       v31 = brc_default_log();
@@ -8062,9 +8062,9 @@ LABEL_5:
       {
         v34 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CC6300] code:-1000 userInfo:0];
         *buf = 138412802;
-        v61 = self;
+        selfCopy5 = self;
         v62 = 2112;
-        v63 = v34;
+        selfCopy = v34;
         v64 = 2112;
         v65 = v30;
         _os_log_impl(&dword_223E7A000, v31, OS_LOG_TYPE_INFO, "[INFO] %@: reply(%@)%@", buf, 0x20u);
@@ -8077,11 +8077,11 @@ LABEL_5:
       goto LABEL_35;
     }
 
-    v56 = [v23 domainID];
-    v55 = [v23 databaseID];
-    if (([(BRCXPCRegularIPCsClient *)v8 isEqualToString:v56]& 1) != 0)
+    domainID = [v23 domainID];
+    databaseID = [v23 databaseID];
+    if (([(BRCXPCRegularIPCsClient *)identifierCopy isEqualToString:domainID]& 1) != 0)
     {
-      if (([(BRCXPCRegularIPCsClient *)v9 isEqualToString:v55]& 1) != 0)
+      if (([(BRCXPCRegularIPCsClient *)dCopy isEqualToString:databaseID]& 1) != 0)
       {
         v26 = brc_bread_crumbs();
         v27 = brc_default_log();
@@ -8095,9 +8095,9 @@ LABEL_5:
         if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
         {
           *buf = 138412802;
-          v61 = self;
+          selfCopy5 = self;
           v62 = 2112;
-          v63 = 0;
+          selfCopy = 0;
           v64 = 2112;
           v65 = v28;
           _os_log_impl(&dword_223E7A000, v29, OS_LOG_TYPE_INFO, "[INFO] %@: reply(%@)%@", buf, 0x20u);
@@ -8112,37 +8112,37 @@ LABEL_5:
       if (os_log_type_enabled(v44, 0x90u))
       {
         *buf = 138412802;
-        v61 = v9;
+        selfCopy5 = dCopy;
         v62 = 2112;
-        v63 = v55;
+        selfCopy = databaseID;
         v64 = 2112;
         v65 = v43;
         _os_log_error_impl(&dword_223E7A000, v44, 0x90u, "[ERROR] Database ID %@ doesn't match loaded database ID %@%@", buf, 0x20u);
       }
 
-      if (!v9 && [v23 isOpen])
+      if (!dCopy && [v23 isOpen])
       {
         v45 = brc_bread_crumbs();
         v46 = brc_default_log();
         if (os_log_type_enabled(v46, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v61 = v45;
+          selfCopy5 = v45;
           _os_log_impl(&dword_223E7A000, v46, OS_LOG_TYPE_DEFAULT, "[WARNING] Recovering the domain decoration%@", buf, 0xCu);
         }
 
         [v23 fixFileProviderDomainDecorations];
         v47 = [BRCUserDefaults defaultsForMangledID:0];
-        v48 = [v47 reimportRootContainerWhenDomainDecorationIsInvalid];
+        reimportRootContainerWhenDomainDecorationIsInvalid = [v47 reimportRootContainerWhenDomainDecorationIsInvalid];
 
-        if (v48)
+        if (reimportRootContainerWhenDomainDecorationIsInvalid)
         {
           v49 = brc_bread_crumbs();
           v50 = brc_default_log();
           if (os_log_type_enabled(v50, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
-            v61 = v49;
+            selfCopy5 = v49;
             _os_log_impl(&dword_223E7A000, v50, OS_LOG_TYPE_DEFAULT, "[WARNING] Reimporting the root container to make sure the domain is fully synced with our DB%@", buf, 0xCu);
           }
 
@@ -8158,9 +8158,9 @@ LABEL_5:
       {
         v52 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CC6300] code:-1000 userInfo:0];
         *buf = 138412802;
-        v61 = self;
+        selfCopy5 = self;
         v62 = 2112;
-        v63 = v52;
+        selfCopy = v52;
         v64 = 2112;
         v65 = v38;
         _os_log_impl(&dword_223E7A000, v39, OS_LOG_TYPE_INFO, "[INFO] %@: reply(%@)%@", buf, 0x20u);
@@ -8174,9 +8174,9 @@ LABEL_5:
       if (os_log_type_enabled(v37, 0x90u))
       {
         *buf = 138412802;
-        v61 = v8;
+        selfCopy5 = identifierCopy;
         v62 = 2112;
-        v63 = v56;
+        selfCopy = domainID;
         v64 = 2112;
         v65 = v36;
         _os_log_error_impl(&dword_223E7A000, v37, 0x90u, "[ERROR] DomainID %@ doesn't match session domainID %@%@", buf, 0x20u);
@@ -8190,9 +8190,9 @@ LABEL_5:
       {
         v42 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CC6300] code:-1000 userInfo:0];
         *buf = 138412802;
-        v61 = self;
+        selfCopy5 = self;
         v62 = 2112;
-        v63 = v42;
+        selfCopy = v42;
         v64 = 2112;
         v65 = v38;
         _os_log_impl(&dword_223E7A000, v39, OS_LOG_TYPE_INFO, "[INFO] %@: reply(%@)%@", buf, 0x20u);
@@ -8249,11 +8249,11 @@ void __104__BRCXPCRegularIPCsClient_FPFSAdditions__validateConnectionDomainWithD
   }
 }
 
-- (void)startOperation:(id)a3 toWaitForFPFSMigrationWithReply:(id)a4
+- (void)startOperation:(id)operation toWaitForFPFSMigrationWithReply:(id)reply
 {
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  operationCopy = operation;
+  replyCopy = reply;
   memset(v21, 0, sizeof(v21));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient(FPFSAdditions) startOperation:toWaitForFPFSMigrationWithReply:]", 1724, 0, v21);
   v8 = brc_bread_crumbs();
@@ -8266,7 +8266,7 @@ void __104__BRCXPCRegularIPCsClient_FPFSAdditions__validateConnectionDomainWithD
     *buf = 134219010;
     v23 = v10;
     v24 = 2112;
-    v25 = self;
+    selfCopy = self;
     v26 = 2112;
     v27 = v12;
     v28 = 2080;
@@ -8281,20 +8281,20 @@ void __104__BRCXPCRegularIPCsClient_FPFSAdditions__validateConnectionDomainWithD
   v19[2] = __89__BRCXPCRegularIPCsClient_FPFSAdditions__startOperation_toWaitForFPFSMigrationWithReply___block_invoke;
   v19[3] = &unk_2785014D0;
   v19[4] = self;
-  v13 = v7;
+  v13 = replyCopy;
   v20 = v13;
   v14 = _brc_ipc_check_applibraries_access(self, 1, v19);
 
   if (v14)
   {
-    v15 = [(BRCAccountSession *)self->super.__session clientTruthWorkloop];
+    clientTruthWorkloop = [(BRCAccountSession *)self->super.__session clientTruthWorkloop];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __89__BRCXPCRegularIPCsClient_FPFSAdditions__startOperation_toWaitForFPFSMigrationWithReply___block_invoke_165;
     block[3] = &unk_278500048;
     block[4] = self;
     v18 = v13;
-    dispatch_async_and_wait(v15, block);
+    dispatch_async_and_wait(clientTruthWorkloop, block);
   }
 
   __brc_leave_section(v21);
@@ -8390,11 +8390,11 @@ void __89__BRCXPCRegularIPCsClient_FPFSAdditions__startOperation_toWaitForFPFSMi
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getClientSaltingVerificationKeysAtItemIdentifier:(id)a3 reply:(id)a4
+- (void)getClientSaltingVerificationKeysAtItemIdentifier:(id)identifier reply:(id)reply
 {
   v39 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  replyCopy = reply;
   memset(v26, 0, sizeof(v26));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient(FPFSAdditions) getClientSaltingVerificationKeysAtItemIdentifier:reply:]", 1744, 0, v26);
   v8 = brc_bread_crumbs();
@@ -8407,7 +8407,7 @@ void __89__BRCXPCRegularIPCsClient_FPFSAdditions__startOperation_toWaitForFPFSMi
     *buf = 134219010;
     v28 = v10;
     v29 = 2112;
-    v30 = self;
+    selfCopy2 = self;
     v31 = 2112;
     v32 = v12;
     v33 = 2080;
@@ -8423,7 +8423,7 @@ void __89__BRCXPCRegularIPCsClient_FPFSAdditions__startOperation_toWaitForFPFSMi
   v24[2] = __97__BRCXPCRegularIPCsClient_FPFSAdditions__getClientSaltingVerificationKeysAtItemIdentifier_reply___block_invoke;
   v24[3] = &unk_2785014D0;
   v24[4] = self;
-  v14 = v7;
+  v14 = replyCopy;
   v25 = v14;
   LODWORD(v13) = _brc_ipc_check_entitlement_and_logged_status(self, 1, v13, v24);
 
@@ -8441,13 +8441,13 @@ void __89__BRCXPCRegularIPCsClient_FPFSAdditions__startOperation_toWaitForFPFSMi
       *buf = 134219266;
       v28 = v17;
       v29 = 2112;
-      v30 = self;
+      selfCopy2 = self;
       v31 = 2112;
       v32 = v19;
       v33 = 2080;
       v34 = "[BRCXPCRegularIPCsClient(FPFSAdditions) getClientSaltingVerificationKeysAtItemIdentifier:reply:]";
       v35 = 2112;
-      v36 = v6;
+      v36 = identifierCopy;
       v37 = 2112;
       v38 = v15;
       _os_log_impl(&dword_223E7A000, v16, OS_LOG_TYPE_INFO, "[INFO] ┏%llx %@ (%@) %s %@%@", buf, 0x3Eu);
@@ -8459,7 +8459,7 @@ void __89__BRCXPCRegularIPCsClient_FPFSAdditions__startOperation_toWaitForFPFSMi
     v21[3] = &unk_2785043C0;
     v21[4] = self;
     v22 = v14;
-    [(BRCXPCRegularIPCsClient *)self accessItemIdentifierServerItem:v6 dbAccessKind:1 synchronouslyIfPossible:0 handler:v21];
+    [(BRCXPCRegularIPCsClient *)self accessItemIdentifierServerItem:identifierCopy dbAccessKind:1 synchronouslyIfPossible:0 handler:v21];
 
     __brc_leave_section(v23);
   }
@@ -8608,11 +8608,11 @@ void __97__BRCXPCRegularIPCsClient_FPFSAdditions__getClientSaltingVerificationKe
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getServerSaltingKeysAtItemIdentifier:(id)a3 reply:(id)a4
+- (void)getServerSaltingKeysAtItemIdentifier:(id)identifier reply:(id)reply
 {
   v43 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  replyCopy = reply;
   memset(v32, 0, sizeof(v32));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient(FPFSAdditions) getServerSaltingKeysAtItemIdentifier:reply:]", 1766, 0, v32);
   v8 = brc_bread_crumbs();
@@ -8623,9 +8623,9 @@ void __97__BRCXPCRegularIPCsClient_FPFSAdditions__getClientSaltingVerificationKe
     v11 = qos_class_self();
     v12 = BRCPrettyPrintEnumWithContext(v11, &brc_qos_entries, 0);
     *buf = 134219010;
-    v34 = v10;
+    selfCopy3 = v10;
     v35 = 2112;
-    v36 = self;
+    selfCopy2 = self;
     v37 = 2112;
     v38 = v12;
     v39 = 2080;
@@ -8641,16 +8641,16 @@ void __97__BRCXPCRegularIPCsClient_FPFSAdditions__getClientSaltingVerificationKe
   v30[2] = __85__BRCXPCRegularIPCsClient_FPFSAdditions__getServerSaltingKeysAtItemIdentifier_reply___block_invoke;
   v30[3] = &unk_2785014D0;
   v30[4] = self;
-  v14 = v7;
+  v14 = replyCopy;
   v31 = v14;
   LODWORD(v13) = _brc_ipc_check_entitlement_and_logged_status(self, 1, v13, v30);
 
   if (v13)
   {
     v15 = [BRCUserDefaults defaultsForMangledID:0];
-    v16 = [v15 supportsEnhancedDrivePrivacy];
+    supportsEnhancedDrivePrivacy = [v15 supportsEnhancedDrivePrivacy];
 
-    if (v16)
+    if (supportsEnhancedDrivePrivacy)
     {
       memset(v29, 0, sizeof(v29));
       __brc_create_section(1, "[BRCXPCRegularIPCsClient(FPFSAdditions) getServerSaltingKeysAtItemIdentifier:reply:]", 1811, 0, v29);
@@ -8662,15 +8662,15 @@ void __97__BRCXPCRegularIPCsClient_FPFSAdditions__getClientSaltingVerificationKe
         v20 = qos_class_self();
         v21 = BRCPrettyPrintEnumWithContext(v20, &brc_qos_entries, 0);
         *buf = 134219266;
-        v34 = v19;
+        selfCopy3 = v19;
         v35 = 2112;
-        v36 = self;
+        selfCopy2 = self;
         v37 = 2112;
         v38 = v21;
         v39 = 2080;
         v40 = "[BRCXPCRegularIPCsClient(FPFSAdditions) getServerSaltingKeysAtItemIdentifier:reply:]";
         v41 = 2112;
-        *v42 = v6;
+        *v42 = identifierCopy;
         *&v42[8] = 2112;
         *&v42[10] = v17;
         _os_log_impl(&dword_223E7A000, v18, OS_LOG_TYPE_INFO, "[INFO] ┏%llx %@ (%@) %s %@%@", buf, 0x3Eu);
@@ -8682,7 +8682,7 @@ void __97__BRCXPCRegularIPCsClient_FPFSAdditions__getClientSaltingVerificationKe
       v27[3] = &unk_2785040F0;
       v27[4] = self;
       v28 = v14;
-      [(BRCXPCRegularIPCsClient *)self accessItemIdentifierLocalItem:v6 dbAccessKind:1 synchronouslyIfPossible:0 handler:v27];
+      [(BRCXPCRegularIPCsClient *)self accessItemIdentifierLocalItem:identifierCopy dbAccessKind:1 synchronouslyIfPossible:0 handler:v27];
 
       __brc_leave_section(v29);
     }
@@ -8695,9 +8695,9 @@ void __97__BRCXPCRegularIPCsClient_FPFSAdditions__getClientSaltingVerificationKe
       {
         v24 = [MEMORY[0x277CCA9B8] brc_errorPermissionError:@"Enhanced Drive Privacy Not Enabled"];
         *buf = 138413826;
-        v34 = self;
+        selfCopy3 = self;
         v35 = 2112;
-        v36 = 0;
+        selfCopy2 = 0;
         v37 = 2112;
         v38 = 0;
         v39 = 2112;
@@ -8917,11 +8917,11 @@ void __85__BRCXPCRegularIPCsClient_FPFSAdditions__getServerSaltingKeysAtItemIden
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getServerContentSignatureAtItemIdentifier:(id)a3 reply:(id)a4
+- (void)getServerContentSignatureAtItemIdentifier:(id)identifier reply:(id)reply
 {
   v46 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  replyCopy = reply;
   memset(v33, 0, sizeof(v33));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient(FPFSAdditions) getServerContentSignatureAtItemIdentifier:reply:]", 1819, 0, v33);
   v8 = brc_bread_crumbs();
@@ -8932,9 +8932,9 @@ void __85__BRCXPCRegularIPCsClient_FPFSAdditions__getServerSaltingKeysAtItemIden
     v11 = qos_class_self();
     v12 = BRCPrettyPrintEnumWithContext(v11, &brc_qos_entries, 0);
     *buf = 134219010;
-    v35 = v10;
+    selfCopy3 = v10;
     v36 = 2112;
-    v37 = self;
+    selfCopy2 = self;
     v38 = 2112;
     v39 = v12;
     v40 = 2080;
@@ -8950,16 +8950,16 @@ void __85__BRCXPCRegularIPCsClient_FPFSAdditions__getServerSaltingKeysAtItemIden
   v31[2] = __90__BRCXPCRegularIPCsClient_FPFSAdditions__getServerContentSignatureAtItemIdentifier_reply___block_invoke;
   v31[3] = &unk_2785014D0;
   v31[4] = self;
-  v14 = v7;
+  v14 = replyCopy;
   v32 = v14;
   LODWORD(v13) = _brc_ipc_check_entitlement_and_logged_status(self, 1, v13, v31);
 
   if (v13)
   {
     v15 = [BRCUserDefaults defaultsForMangledID:0];
-    v16 = [v15 supportsEnhancedDrivePrivacy];
+    supportsEnhancedDrivePrivacy = [v15 supportsEnhancedDrivePrivacy];
 
-    if (v16)
+    if (supportsEnhancedDrivePrivacy)
     {
       memset(v30, 0, sizeof(v30));
       __brc_create_section(1, "[BRCXPCRegularIPCsClient(FPFSAdditions) getServerContentSignatureAtItemIdentifier:reply:]", 1848, 0, v30);
@@ -8971,15 +8971,15 @@ void __85__BRCXPCRegularIPCsClient_FPFSAdditions__getServerSaltingKeysAtItemIden
         v20 = qos_class_self();
         v21 = BRCPrettyPrintEnumWithContext(v20, &brc_qos_entries, 0);
         *buf = 134219266;
-        v35 = v19;
+        selfCopy3 = v19;
         v36 = 2112;
-        v37 = self;
+        selfCopy2 = self;
         v38 = 2112;
         v39 = v21;
         v40 = 2080;
         v41 = "[BRCXPCRegularIPCsClient(FPFSAdditions) getServerContentSignatureAtItemIdentifier:reply:]";
         v42 = 2112;
-        v43 = v6;
+        v43 = identifierCopy;
         v44 = 2112;
         v45 = v17;
         _os_log_impl(&dword_223E7A000, v18, OS_LOG_TYPE_INFO, "[INFO] ┏%llx %@ (%@) %s %@%@", buf, 0x3Eu);
@@ -8991,7 +8991,7 @@ void __85__BRCXPCRegularIPCsClient_FPFSAdditions__getServerSaltingKeysAtItemIden
       v27[3] = &unk_2785041B8;
       v27[4] = self;
       v29 = v14;
-      v28 = v6;
+      v28 = identifierCopy;
       [(BRCXPCRegularIPCsClient *)self accessItemIdentifierLocalItem:v28 dbAccessKind:1 synchronouslyIfPossible:0 handler:v27];
 
       __brc_leave_section(v30);
@@ -9005,9 +9005,9 @@ void __85__BRCXPCRegularIPCsClient_FPFSAdditions__getServerSaltingKeysAtItemIden
       {
         v24 = [MEMORY[0x277CCA9B8] brc_errorPermissionError:@"Enhanced Drive Privacy Not Enabled"];
         *buf = 138413058;
-        v35 = self;
+        selfCopy3 = self;
         v36 = 2112;
-        v37 = 0;
+        selfCopy2 = 0;
         v38 = 2112;
         v39 = v24;
         v40 = 2112;
@@ -9220,10 +9220,10 @@ void __90__BRCXPCRegularIPCsClient_FPFSAdditions__getServerContentSignatureAtIte
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getAvailableBytesForUploadOverCellularWithReply:(id)a3
+- (void)getAvailableBytesForUploadOverCellularWithReply:(id)reply
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  replyCopy = reply;
   memset(v21, 0, sizeof(v21));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient(FPFSAdditions) getAvailableBytesForUploadOverCellularWithReply:]", 1855, 0, v21);
   v5 = brc_bread_crumbs();
@@ -9234,9 +9234,9 @@ void __90__BRCXPCRegularIPCsClient_FPFSAdditions__getServerContentSignatureAtIte
     v8 = qos_class_self();
     v9 = BRCPrettyPrintEnumWithContext(v8, &brc_qos_entries, 0);
     *buf = 134219010;
-    v23 = v7;
+    selfCopy2 = v7;
     v24 = 2112;
-    v25 = self;
+    selfCopy = self;
     v26 = 2112;
     v27 = v9;
     v28 = 2080;
@@ -9252,7 +9252,7 @@ void __90__BRCXPCRegularIPCsClient_FPFSAdditions__getServerContentSignatureAtIte
   v19[2] = __90__BRCXPCRegularIPCsClient_FPFSAdditions__getAvailableBytesForUploadOverCellularWithReply___block_invoke;
   v19[3] = &unk_2785014D0;
   v19[4] = self;
-  v11 = v4;
+  v11 = replyCopy;
   v20 = v11;
   LODWORD(v10) = _brc_ipc_check_entitlement_and_logged_status(self, 0, v10, v19);
 
@@ -9263,11 +9263,11 @@ void __90__BRCXPCRegularIPCsClient_FPFSAdditions__getServerContentSignatureAtIte
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
       v14 = +[BRCUploadConstraintChecker defaultChecker];
-      v15 = [v14 availableSizeForUpload];
+      availableSizeForUpload = [v14 availableSizeForUpload];
       *buf = 138413058;
-      v23 = self;
+      selfCopy2 = self;
       v24 = 2112;
-      v25 = v15;
+      selfCopy = availableSizeForUpload;
       v26 = 2112;
       v27 = 0;
       v28 = 2112;
@@ -9276,8 +9276,8 @@ void __90__BRCXPCRegularIPCsClient_FPFSAdditions__getServerContentSignatureAtIte
     }
 
     v16 = +[BRCUploadConstraintChecker defaultChecker];
-    v17 = [v16 availableSizeForUpload];
-    (*(v11 + 2))(v11, v17, 0);
+    availableSizeForUpload2 = [v16 availableSizeForUpload];
+    (*(v11 + 2))(v11, availableSizeForUpload2, 0);
   }
 
   __brc_leave_section(v21);
@@ -9309,10 +9309,10 @@ void __90__BRCXPCRegularIPCsClient_FPFSAdditions__getAvailableBytesForUploadOver
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)overrideUploadOnCellularConstraintsWithReply:(id)a3
+- (void)overrideUploadOnCellularConstraintsWithReply:(id)reply
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  replyCopy = reply;
   memset(v18, 0, sizeof(v18));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient(FPFSAdditions) overrideUploadOnCellularConstraintsWithReply:]", 1864, 0, v18);
   v5 = brc_bread_crumbs();
@@ -9323,9 +9323,9 @@ void __90__BRCXPCRegularIPCsClient_FPFSAdditions__getAvailableBytesForUploadOver
     v8 = qos_class_self();
     v9 = BRCPrettyPrintEnumWithContext(v8, &brc_qos_entries, 0);
     *buf = 134219010;
-    v20 = v7;
+    selfCopy2 = v7;
     v21 = 2112;
-    v22 = self;
+    selfCopy = self;
     v23 = 2112;
     v24 = v9;
     v25 = 2080;
@@ -9340,7 +9340,7 @@ void __90__BRCXPCRegularIPCsClient_FPFSAdditions__getAvailableBytesForUploadOver
   v16[2] = __87__BRCXPCRegularIPCsClient_FPFSAdditions__overrideUploadOnCellularConstraintsWithReply___block_invoke;
   v16[3] = &unk_2785014D0;
   v16[4] = self;
-  v10 = v4;
+  v10 = replyCopy;
   v17 = v10;
   v11 = _brc_ipc_check_entitlement_and_logged_status(self, 1, @"com.apple.fileprovider.acl-read", v16);
 
@@ -9353,9 +9353,9 @@ void __90__BRCXPCRegularIPCsClient_FPFSAdditions__getAvailableBytesForUploadOver
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
       *buf = 138412802;
-      v20 = self;
+      selfCopy2 = self;
       v21 = 2112;
-      v22 = 0;
+      selfCopy = 0;
       v23 = 2112;
       v24 = v13;
       _os_log_impl(&dword_223E7A000, v14, OS_LOG_TYPE_INFO, "[INFO] %@: reply(%@)%@", buf, 0x20u);
@@ -9391,10 +9391,10 @@ void __87__BRCXPCRegularIPCsClient_FPFSAdditions__overrideUploadOnCellularConstr
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)waitForStabilizationWithReply:(id)a3
+- (void)waitForStabilizationWithReply:(id)reply
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  replyCopy = reply;
   memset(v18, 0, sizeof(v18));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient(FPFSAdditions) waitForStabilizationWithReply:]", 1875, 0, v18);
   v5 = brc_bread_crumbs();
@@ -9407,7 +9407,7 @@ void __87__BRCXPCRegularIPCsClient_FPFSAdditions__overrideUploadOnCellularConstr
     *buf = 134219010;
     v20 = v7;
     v21 = 2112;
-    v22 = self;
+    selfCopy = self;
     v23 = 2112;
     v24 = v9;
     v25 = 2080;
@@ -9423,20 +9423,20 @@ void __87__BRCXPCRegularIPCsClient_FPFSAdditions__overrideUploadOnCellularConstr
   v16[2] = __72__BRCXPCRegularIPCsClient_FPFSAdditions__waitForStabilizationWithReply___block_invoke;
   v16[3] = &unk_2785014D0;
   v16[4] = self;
-  v11 = v4;
+  v11 = replyCopy;
   v17 = v11;
   LODWORD(v10) = _brc_ipc_check_entitlement_and_logged_status(self, 1, v10, v16);
 
   if (v10)
   {
-    v12 = [(BRCXPCClient *)self session];
+    session = [(BRCXPCClient *)self session];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __72__BRCXPCRegularIPCsClient_FPFSAdditions__waitForStabilizationWithReply___block_invoke_191;
     v14[3] = &unk_2785014D0;
     v14[4] = self;
     v15 = v11;
-    [v12 waitForUploadsToCompleteInSyncBubbleWithReply:v14];
+    [session waitForUploadsToCompleteInSyncBubbleWithReply:v14];
   }
 
   __brc_leave_section(v18);
@@ -9513,14 +9513,14 @@ void __176__BRCXPCRegularIPCsClient_FPFSAdditions___uploadItemIdentifier_located
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (id)uploadItemIdentifier:(id)a3 withContents:(id)a4 baseVersion:(id)a5 basedOnOriginalVersion:(BOOL)a6 options:(unint64_t)a7 reply:(id)a8
+- (id)uploadItemIdentifier:(id)identifier withContents:(id)contents baseVersion:(id)version basedOnOriginalVersion:(BOOL)originalVersion options:(unint64_t)options reply:(id)reply
 {
-  v37 = a6;
+  originalVersionCopy = originalVersion;
   v71 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v39 = a4;
-  v13 = a5;
-  v14 = a8;
+  identifierCopy = identifier;
+  contentsCopy = contents;
+  versionCopy = version;
+  replyCopy = reply;
   memset(v52, 0, sizeof(v52));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient(FPFSAdditions) uploadItemIdentifier:withContents:baseVersion:basedOnOriginalVersion:options:reply:]", 1924, 0, v52);
   v15 = brc_bread_crumbs();
@@ -9533,7 +9533,7 @@ void __176__BRCXPCRegularIPCsClient_FPFSAdditions___uploadItemIdentifier_located
     *buf = 134219010;
     v54 = v17;
     v55 = 2112;
-    v56 = self;
+    selfCopy3 = self;
     v57 = 2112;
     v58 = v19;
     v59 = 2080;
@@ -9549,7 +9549,7 @@ void __176__BRCXPCRegularIPCsClient_FPFSAdditions___uploadItemIdentifier_located
   v50[2] = __125__BRCXPCRegularIPCsClient_FPFSAdditions__uploadItemIdentifier_withContents_baseVersion_basedOnOriginalVersion_options_reply___block_invoke;
   v50[3] = &unk_2785014D0;
   v50[4] = self;
-  v21 = v14;
+  v21 = replyCopy;
   v51 = v21;
   LODWORD(v20) = _brc_ipc_check_entitlement_and_logged_status(self, 1, v20, v50);
 
@@ -9567,19 +9567,19 @@ void __176__BRCXPCRegularIPCsClient_FPFSAdditions___uploadItemIdentifier_located
       *buf = 134220034;
       v54 = v24;
       v55 = 2112;
-      v56 = self;
+      selfCopy3 = self;
       v57 = 2112;
       v58 = v26;
       v59 = 2080;
       v60 = "[BRCXPCRegularIPCsClient(FPFSAdditions) uploadItemIdentifier:withContents:baseVersion:basedOnOriginalVersion:options:reply:]";
       v61 = 2112;
-      v62 = v12;
+      v62 = identifierCopy;
       v63 = 2112;
-      v64 = v13;
+      v64 = versionCopy;
       v65 = 1024;
-      v66 = v37;
+      v66 = originalVersionCopy;
       v67 = 2048;
-      v68 = a7;
+      optionsCopy = options;
       v69 = 2112;
       v70 = v22;
       _os_log_impl(&dword_223E7A000, v23, OS_LOG_TYPE_INFO, "[INFO] ┏%llx %@ (%@) %s uploadItemIdentifier %@ baseVersion:%@ basedOnOriginalVersion:%d options:%lu%@", buf, 0x58u);
@@ -9594,25 +9594,25 @@ void __176__BRCXPCRegularIPCsClient_FPFSAdditions___uploadItemIdentifier_located
     v29 = brc_default_log();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
     {
-      v36 = v13;
+      v36 = versionCopy;
       v30 = v48[0];
       v31 = qos_class_self();
       v32 = BRCPrettyPrintEnumWithContext(v31, &brc_qos_entries, 0);
       *buf = 134219266;
       v54 = v30;
       v55 = 2112;
-      v56 = self;
+      selfCopy3 = self;
       v57 = 2112;
       v58 = v32;
       v59 = 2080;
       v60 = "[BRCXPCRegularIPCsClient(FPFSAdditions) uploadItemIdentifier:withContents:baseVersion:basedOnOriginalVersion:options:reply:]";
       v61 = 2112;
-      v62 = v12;
+      v62 = identifierCopy;
       v63 = 2112;
       v64 = v28;
       _os_log_impl(&dword_223E7A000, v29, OS_LOG_TYPE_INFO, "[INFO] ┏%llx %@ (%@) %s %@%@", buf, 0x3Eu);
 
-      v13 = v36;
+      versionCopy = v36;
     }
 
     v40[0] = MEMORY[0x277D85DD0];
@@ -9620,11 +9620,11 @@ void __176__BRCXPCRegularIPCsClient_FPFSAdditions___uploadItemIdentifier_located
     v40[2] = __125__BRCXPCRegularIPCsClient_FPFSAdditions__uploadItemIdentifier_withContents_baseVersion_basedOnOriginalVersion_options_reply___block_invoke_193;
     v40[3] = &unk_278504410;
     v40[4] = self;
-    v41 = v12;
-    v42 = v39;
-    v47 = v37;
-    v43 = v13;
-    v46 = a7;
+    v41 = identifierCopy;
+    v42 = contentsCopy;
+    v47 = originalVersionCopy;
+    v43 = versionCopy;
+    optionsCopy2 = options;
     v33 = v27;
     v44 = v33;
     v45 = v21;
@@ -9670,11 +9670,11 @@ void __125__BRCXPCRegularIPCsClient_FPFSAdditions__uploadItemIdentifier_withCont
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getCKRecordIDsForFPItems:(id)a3 reply:(id)a4
+- (void)getCKRecordIDsForFPItems:(id)items reply:(id)reply
 {
   v44 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  itemsCopy = items;
+  replyCopy = reply;
   memset(v33, 0, sizeof(v33));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient(FPFSAdditions) getCKRecordIDsForFPItems:reply:]", 1986, 0, v33);
   v8 = brc_bread_crumbs();
@@ -9687,7 +9687,7 @@ void __125__BRCXPCRegularIPCsClient_FPFSAdditions__uploadItemIdentifier_withCont
     *buf = 134219010;
     v35 = v10;
     v36 = 2112;
-    v37 = self;
+    selfCopy = self;
     v38 = 2112;
     v39 = v12;
     v40 = 2080;
@@ -9702,32 +9702,32 @@ void __125__BRCXPCRegularIPCsClient_FPFSAdditions__uploadItemIdentifier_withCont
   v31[2] = __73__BRCXPCRegularIPCsClient_FPFSAdditions__getCKRecordIDsForFPItems_reply___block_invoke;
   v31[3] = &unk_2785014D0;
   v31[4] = self;
-  v13 = v7;
+  v13 = replyCopy;
   v32 = v13;
   v14 = _brc_ipc_check_logged_status(self, 1, v31);
 
   if (v14)
   {
-    v15 = [(BRCXPCClient *)self session];
-    v16 = [MEMORY[0x277CFAE58] br_getProviderIDForCurrentPersona];
-    v17 = [v15 fpDomain];
-    v18 = [v17 identifier];
+    session = [(BRCXPCClient *)self session];
+    br_getProviderIDForCurrentPersona = [MEMORY[0x277CFAE58] br_getProviderIDForCurrentPersona];
+    fpDomain = [session fpDomain];
+    identifier = [fpDomain identifier];
 
-    v19 = [v15 clientTruthWorkloop];
+    clientTruthWorkloop = [session clientTruthWorkloop];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __73__BRCXPCRegularIPCsClient_FPFSAdditions__getCKRecordIDsForFPItems_reply___block_invoke_195;
     block[3] = &unk_278504438;
-    v25 = v6;
-    v26 = v16;
-    v27 = v18;
-    v28 = v15;
-    v29 = self;
+    v25 = itemsCopy;
+    v26 = br_getProviderIDForCurrentPersona;
+    v27 = identifier;
+    v28 = session;
+    selfCopy2 = self;
     v30 = v13;
-    v20 = v15;
-    v21 = v18;
-    v22 = v16;
-    dispatch_async(v19, block);
+    v20 = session;
+    v21 = identifier;
+    v22 = br_getProviderIDForCurrentPersona;
+    dispatch_async(clientTruthWorkloop, block);
   }
 
   __brc_leave_section(v33);
@@ -9932,11 +9932,11 @@ void __80__BRCXPCRegularIPCsClient_getContainerURLForID_recreateDocumentsIfNeede
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)presyncContainerWithID:(id)a3 reply:(id)a4
+- (void)presyncContainerWithID:(id)d reply:(id)reply
 {
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  replyCopy = reply;
   memset(v21, 0, sizeof(v21));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient presyncContainerWithID:reply:]", 1556, 0, v21);
   v8 = brc_bread_crumbs();
@@ -9949,7 +9949,7 @@ void __80__BRCXPCRegularIPCsClient_getContainerURLForID_recreateDocumentsIfNeede
     *buf = 134219010;
     v23 = v10;
     v24 = 2112;
-    v25 = self;
+    selfCopy = self;
     v26 = 2112;
     v27 = v12;
     v28 = 2080;
@@ -9964,13 +9964,13 @@ void __80__BRCXPCRegularIPCsClient_getContainerURLForID_recreateDocumentsIfNeede
   v19[2] = __56__BRCXPCRegularIPCsClient_presyncContainerWithID_reply___block_invoke;
   v19[3] = &unk_2785014D0;
   v19[4] = self;
-  v13 = v7;
+  v13 = replyCopy;
   v20 = v13;
   v14 = _brc_ipc_check_applibrary_proxy(self, 1, v19);
 
   if (v14)
   {
-    v15 = [objc_alloc(MEMORY[0x277CFAE60]) initWithAppLibraryName:v6];
+    v15 = [objc_alloc(MEMORY[0x277CFAE60]) initWithAppLibraryName:dCopy];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __56__BRCXPCRegularIPCsClient_presyncContainerWithID_reply___block_invoke_300;
@@ -10037,11 +10037,11 @@ void __56__BRCXPCRegularIPCsClient_presyncContainerWithID_reply___block_invoke_3
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getContainerURLForID:(id)a3 forProcess:(id *)a4 reply:(id)a5
+- (void)getContainerURLForID:(id)d forProcess:(id *)process reply:(id)reply
 {
   v46 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  dCopy = d;
+  replyCopy = reply;
   memset(v38, 0, sizeof(v38));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient getContainerURLForID:forProcess:reply:]", 1571, 0, v38);
   v10 = brc_bread_crumbs();
@@ -10069,19 +10069,19 @@ void __56__BRCXPCRegularIPCsClient_presyncContainerWithID_reply___block_invoke_3
   v36[2] = __65__BRCXPCRegularIPCsClient_getContainerURLForID_forProcess_reply___block_invoke;
   v36[3] = &unk_2785014D0;
   v36[4] = self;
-  v15 = v9;
+  v15 = replyCopy;
   v37 = v15;
   v16 = _brc_ipc_check_applibrary_proxy(self, 1, v36);
 
   if (v16)
   {
     v17 = [BRCClientPrivilegesDescriptor alloc];
-    v18 = *&a4->var0[4];
-    *buf = *a4->var0;
+    v18 = *&process->var0[4];
+    *buf = *process->var0;
     *&buf[16] = v18;
     v19 = [(BRCClientPrivilegesDescriptor *)v17 initWithAuditToken:buf];
-    v20 = [(BRCClientPrivilegesDescriptor *)v19 appLibraryIDs];
-    v21 = v20 == 0;
+    appLibraryIDs = [(BRCClientPrivilegesDescriptor *)v19 appLibraryIDs];
+    v21 = appLibraryIDs == 0;
 
     if (v21)
     {
@@ -10090,8 +10090,8 @@ void __56__BRCXPCRegularIPCsClient_presyncContainerWithID_reply___block_invoke_3
       if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
       {
         v27 = MEMORY[0x277CCA9B8];
-        v28 = [(BRCClientPrivilegesDescriptor *)v19 applicationIdentifier];
-        v29 = [v27 brc_errorNoAppLibraryForBundle:v28];
+        applicationIdentifier = [(BRCClientPrivilegesDescriptor *)v19 applicationIdentifier];
+        v29 = [v27 brc_errorNoAppLibraryForBundle:applicationIdentifier];
         *buf = 138413570;
         *&buf[4] = self;
         *&buf[12] = 2112;
@@ -10108,25 +10108,25 @@ void __56__BRCXPCRegularIPCsClient_presyncContainerWithID_reply___block_invoke_3
       }
 
       v30 = MEMORY[0x277CCA9B8];
-      v24 = [(BRCClientPrivilegesDescriptor *)v19 applicationIdentifier];
-      v31 = [v30 brc_errorNoAppLibraryForBundle:v24];
+      applicationIdentifier2 = [(BRCClientPrivilegesDescriptor *)v19 applicationIdentifier];
+      v31 = [v30 brc_errorNoAppLibraryForBundle:applicationIdentifier2];
       (*(v15 + 2))(v15, 0, 0, 0, v31);
     }
 
     else
     {
-      if (!v8)
+      if (!dCopy)
       {
-        v8 = [(BRCClientPrivilegesDescriptor *)v19 defaultAppLibraryID];
+        dCopy = [(BRCClientPrivilegesDescriptor *)v19 defaultAppLibraryID];
       }
 
-      v22 = [(BRCClientPrivilegesDescriptor *)v19 appLibraryIDs];
-      v23 = [v22 containsObject:v8];
+      appLibraryIDs2 = [(BRCClientPrivilegesDescriptor *)v19 appLibraryIDs];
+      v23 = [appLibraryIDs2 containsObject:dCopy];
 
       if (v23)
       {
-        v24 = [objc_alloc(MEMORY[0x277CFAE60]) initWithAppLibraryName:v8];
-        [(BRCXPCClient *)self _setupAppLibraryAndZoneWithID:v24 recreateDocumentsIfNeeded:0 reply:v15];
+        applicationIdentifier2 = [objc_alloc(MEMORY[0x277CFAE60]) initWithAppLibraryName:dCopy];
+        [(BRCXPCClient *)self _setupAppLibraryAndZoneWithID:applicationIdentifier2 recreateDocumentsIfNeeded:0 reply:v15];
       }
 
       else
@@ -10135,7 +10135,7 @@ void __56__BRCXPCRegularIPCsClient_presyncContainerWithID_reply___block_invoke_3
         v33 = brc_default_log();
         if (os_log_type_enabled(v33, OS_LOG_TYPE_INFO))
         {
-          v34 = [MEMORY[0x277CCA9B8] brc_errorInvalidParameter:@"containerID" value:v8];
+          v34 = [MEMORY[0x277CCA9B8] brc_errorInvalidParameter:@"containerID" value:dCopy];
           *buf = 138413570;
           *&buf[4] = self;
           *&buf[12] = 2112;
@@ -10151,8 +10151,8 @@ void __56__BRCXPCRegularIPCsClient_presyncContainerWithID_reply___block_invoke_3
           _os_log_impl(&dword_223E7A000, v33, OS_LOG_TYPE_INFO, "[INFO] %@: reply(%@, %@, %@, %@)%@", buf, 0x3Eu);
         }
 
-        v24 = [MEMORY[0x277CCA9B8] brc_errorInvalidParameter:@"containerID" value:v8];
-        (*(v15 + 2))(v15, 0, 0, 0, v24);
+        applicationIdentifier2 = [MEMORY[0x277CCA9B8] brc_errorInvalidParameter:@"containerID" value:dCopy];
+        (*(v15 + 2))(v15, 0, 0, 0, applicationIdentifier2);
       }
     }
   }
@@ -10194,10 +10194,10 @@ void __65__BRCXPCRegularIPCsClient_getContainerURLForID_forProcess_reply___block
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateContainerMetadataForID:(id)a3
+- (void)updateContainerMetadataForID:(id)d
 {
   v48 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   memset(v35, 0, sizeof(v35));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient updateContainerMetadataForID:]", 1595, 0, v35);
   v5 = brc_bread_crumbs();
@@ -10208,23 +10208,23 @@ void __65__BRCXPCRegularIPCsClient_getContainerURLForID_forProcess_reply___block
     v8 = qos_class_self();
     v9 = BRCPrettyPrintEnumWithContext(v8, &brc_qos_entries, 0);
     *buf = 134219266;
-    v37 = v7;
+    selfCopy3 = v7;
     v38 = 2112;
-    v39 = self;
+    selfCopy = self;
     v40 = 2112;
     v41 = v9;
     v42 = 2080;
     v43 = "[BRCXPCRegularIPCsClient updateContainerMetadataForID:]";
     v44 = 2112;
-    v45 = v4;
+    v45 = dCopy;
     v46 = 2112;
     v47 = v5;
     _os_log_impl(&dword_223E7A000, v6, OS_LOG_TYPE_INFO, "[INFO] ┏%llx %@ (%@) %s %@%@", buf, 0x3Eu);
   }
 
-  if (v4)
+  if (dCopy)
   {
-    v10 = [objc_alloc(MEMORY[0x277CFAE60]) initWithAppLibraryName:v4];
+    v10 = [objc_alloc(MEMORY[0x277CFAE60]) initWithAppLibraryName:dCopy];
   }
 
   else
@@ -10237,17 +10237,17 @@ void __65__BRCXPCRegularIPCsClient_getContainerURLForID_forProcess_reply___block
   v33[2] = __56__BRCXPCRegularIPCsClient_updateContainerMetadataForID___block_invoke;
   v33[3] = &unk_2784FFFA8;
   v33[4] = self;
-  v11 = v4;
+  v11 = dCopy;
   v34 = v11;
   v12 = _brc_ipc_check_applibrary_write_access(self, 1, v10, v33);
 
   if (v12)
   {
-    if (v4 && (-[BRCXPCClient entitledAppLibraryIDs](self, "entitledAppLibraryIDs"), v13 = objc_claimAutoreleasedReturnValue(), v14 = [v13 containsObject:v11], v13, (v14 & 1) != 0))
+    if (dCopy && (-[BRCXPCClient entitledAppLibraryIDs](self, "entitledAppLibraryIDs"), v13 = objc_claimAutoreleasedReturnValue(), v14 = [v13 containsObject:v11], v13, (v14 & 1) != 0))
     {
-      v15 = [(BRCXPCClient *)self bundleID];
-      v16 = [(BRCXPCClient *)self session];
-      v17 = [v16 appLibraryByID:v11];
+      bundleID = [(BRCXPCClient *)self bundleID];
+      session = [(BRCXPCClient *)self session];
+      v17 = [session appLibraryByID:v11];
 
       if (v17)
       {
@@ -10259,8 +10259,8 @@ void __65__BRCXPCRegularIPCsClient_getContainerURLForID_forProcess_reply___block
         v19 = v18;
         v32 = v19;
         v20 = [v19 remoteObjectProxyWithErrorHandler:v31];
-        v21 = [v17 containerMetadata];
-        v22 = [v21 versionNumberForBundleIdentifier:v15];
+        containerMetadata = [v17 containerMetadata];
+        v22 = [containerMetadata versionNumberForBundleIdentifier:bundleID];
 
         v26[0] = MEMORY[0x277D85DD0];
         v26[1] = 3221225472;
@@ -10269,8 +10269,8 @@ void __65__BRCXPCRegularIPCsClient_getContainerURLForID_forProcess_reply___block
         v23 = v19;
         v27 = v23;
         v28 = v17;
-        v29 = self;
-        v30 = v15;
+        selfCopy2 = self;
+        v30 = bundleID;
         [v20 extractMetadataForContainerID:v11 bundleID:v30 minimumBundleVersion:v22 reply:v26];
 
         v24 = v32;
@@ -10289,16 +10289,16 @@ void __65__BRCXPCRegularIPCsClient_getContainerURLForID_forProcess_reply___block
 
     else
     {
-      v15 = brc_bread_crumbs();
+      bundleID = brc_bread_crumbs();
       v17 = brc_default_log();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_FAULT))
       {
         *buf = 138412802;
-        v37 = self;
+        selfCopy3 = self;
         v38 = 2112;
-        v39 = v11;
+        selfCopy = v11;
         v40 = 2112;
-        v41 = v15;
+        v41 = bundleID;
         _os_log_fault_impl(&dword_223E7A000, v17, OS_LOG_TYPE_FAULT, "[CRIT] UNREACHABLE: %@ is not owning %@ and updating its metadata%@", buf, 0x20u);
       }
     }
@@ -10384,21 +10384,21 @@ void __56__BRCXPCRegularIPCsClient_updateContainerMetadataForID___block_invoke_3
   }
 }
 
-- (void)deleteAllContentsOfContainerID:(id)a3 onClient:(BOOL)a4 onServer:(BOOL)a5 wait:(BOOL)a6 reply:(id)a7
+- (void)deleteAllContentsOfContainerID:(id)d onClient:(BOOL)client onServer:(BOOL)server wait:(BOOL)wait reply:(id)reply
 {
-  v8 = a5;
-  v9 = a4;
+  serverCopy = server;
+  clientCopy = client;
   v86 = *MEMORY[0x277D85DE8];
-  v54 = a3;
-  v10 = a7;
+  dCopy = d;
+  replyCopy = reply;
   v11 = 2;
-  if (v9)
+  if (clientCopy)
   {
     v11 = 3;
   }
 
-  v56 = v8;
-  if (v8)
+  v56 = serverCopy;
+  if (serverCopy)
   {
     v11 = 4;
   }
@@ -10411,9 +10411,9 @@ void __56__BRCXPCRegularIPCsClient_updateContainerMetadataForID___block_invoke_3
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134218498;
-    v77 = v73[0];
+    selfCopy2 = v73[0];
     v78 = 2112;
-    v79 = v54;
+    selfCopy = dCopy;
     v80 = 2112;
     v81 = v12;
     _os_log_debug_impl(&dword_223E7A000, v13, OS_LOG_TYPE_DEBUG, "[DEBUG] ┏%llx IPC-initiated reset for %@%@", buf, 0x20u);
@@ -10429,9 +10429,9 @@ void __56__BRCXPCRegularIPCsClient_updateContainerMetadataForID___block_invoke_3
     v17 = qos_class_self();
     v18 = BRCPrettyPrintEnumWithContext(v17, &brc_qos_entries, 0);
     *buf = 134219010;
-    v77 = v16;
+    selfCopy2 = v16;
     v78 = 2112;
-    v79 = self;
+    selfCopy = self;
     v80 = 2112;
     v81 = v18;
     v82 = 2080;
@@ -10446,15 +10446,15 @@ void __56__BRCXPCRegularIPCsClient_updateContainerMetadataForID___block_invoke_3
   v70[2] = __87__BRCXPCRegularIPCsClient_deleteAllContentsOfContainerID_onClient_onServer_wait_reply___block_invoke;
   v70[3] = &unk_2785014D0;
   v70[4] = self;
-  v49 = v10;
+  v49 = replyCopy;
   v71 = v49;
   v19 = _brc_ipc_check_applibrary_proxy(self, 1, v70);
 
   if (v19)
   {
-    v20 = [(BRCXPCClient *)self session];
+    session = [(BRCXPCClient *)self session];
     v69 = 0;
-    v21 = [v20 clientZonesMatchingSearchString:v54 error:&v69];
+    v21 = [session clientZonesMatchingSearchString:dCopy error:&v69];
     v48 = v69;
 
     v22 = objc_opt_new();
@@ -10478,16 +10478,16 @@ void __56__BRCXPCRegularIPCsClient_updateContainerMetadataForID___block_invoke_3
           }
 
           v27 = *(*(&v65 + 1) + 8 * i);
-          if ([v27 isCloudDocsZone] && (-[BRCXPCRegularIPCsClient isEqualToString:](v54, "isEqualToString:", v25) & 1) == 0)
+          if ([v27 isCloudDocsZone] && (-[BRCXPCRegularIPCsClient isEqualToString:](dCopy, "isEqualToString:", v25) & 1) == 0)
           {
             v28 = brc_bread_crumbs();
             v29 = brc_default_log();
             if (os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG))
             {
               *buf = 138412546;
-              v77 = v54;
+              selfCopy2 = dCopy;
               v78 = 2112;
-              v79 = v28;
+              selfCopy = v28;
               _os_log_debug_impl(&dword_223E7A000, v29, OS_LOG_TYPE_DEBUG, "[DEBUG] Not deleting container %@ which is moved to clouddocs%@", buf, 0x16u);
             }
           }
@@ -10536,9 +10536,9 @@ void __56__BRCXPCRegularIPCsClient_updateContainerMetadataForID___block_invoke_3
             if (os_log_type_enabled(v36, OS_LOG_TYPE_DEBUG))
             {
               *buf = 138412546;
-              v77 = v34;
+              selfCopy2 = v34;
               v78 = 2112;
-              v79 = v35;
+              selfCopy = v35;
               _os_log_debug_impl(&dword_223E7A000, v36, OS_LOG_TYPE_DEBUG, "[DEBUG] We can't delete server zone for shared zone, skipping %@%@", buf, 0x16u);
             }
 
@@ -10551,9 +10551,9 @@ void __56__BRCXPCRegularIPCsClient_updateContainerMetadataForID___block_invoke_3
           {
             v43 = BRCPrettyPrintEnum();
             *buf = 136315650;
-            v77 = v43;
+            selfCopy2 = v43;
             v78 = 2112;
-            v79 = v34;
+            selfCopy = v34;
             v80 = 2112;
             v81 = v37;
             _os_log_fault_impl(&dword_223E7A000, v38, OS_LOG_TYPE_FAULT, "[CRIT] %s reset for %@%@", buf, 0x20u);
@@ -10561,11 +10561,11 @@ void __56__BRCXPCRegularIPCsClient_updateContainerMetadataForID___block_invoke_3
 
           v39 = +[BRCEventsAnalytics sharedAnalytics];
           v40 = MEMORY[0x277CCACA8];
-          v41 = [(BRCXPCClient *)self bundleID];
-          v42 = [v40 stringWithFormat:@"ipc-%@", v41];
+          bundleID = [(BRCXPCClient *)self bundleID];
+          v42 = [v40 stringWithFormat:@"ipc-%@", bundleID];
           [v39 registerAndSendNewContainerResetWithOutcome:v42];
 
-          if (a6)
+          if (wait)
           {
             dispatch_group_enter(v30);
             v59[0] = MEMORY[0x277D85DD0];
@@ -10607,9 +10607,9 @@ LABEL_42:
     if (os_log_type_enabled(v46, OS_LOG_TYPE_INFO))
     {
       *buf = 138412802;
-      v77 = self;
+      selfCopy2 = self;
       v78 = 2112;
-      v79 = v48;
+      selfCopy = v48;
       v80 = 2112;
       v81 = v45;
       _os_log_impl(&dword_223E7A000, v46, OS_LOG_TYPE_INFO, "[INFO] %@: reply(%@)%@", buf, 0x20u);
@@ -10669,11 +10669,11 @@ uint64_t __87__BRCXPCRegularIPCsClient_deleteAllContentsOfContainerID_onClient_o
   return result;
 }
 
-- (void)registerInitialSyncBarrierForID:(id)a3 reply:(id)a4
+- (void)registerInitialSyncBarrierForID:(id)d reply:(id)reply
 {
   v39 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  replyCopy = reply;
   memset(v26, 0, sizeof(v26));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient registerInitialSyncBarrierForID:reply:]", 1730, 0, v26);
   v8 = brc_bread_crumbs();
@@ -10684,28 +10684,28 @@ uint64_t __87__BRCXPCRegularIPCsClient_deleteAllContentsOfContainerID_onClient_o
     v11 = qos_class_self();
     v12 = BRCPrettyPrintEnumWithContext(v11, &brc_qos_entries, 0);
     *buf = 134219266;
-    v28 = v10;
+    selfCopy2 = v10;
     v29 = 2112;
-    v30 = self;
+    selfCopy = self;
     v31 = 2112;
     v32 = v12;
     v33 = 2080;
     v34 = "[BRCXPCRegularIPCsClient registerInitialSyncBarrierForID:reply:]";
     v35 = 2112;
-    v36 = v6;
+    v36 = dCopy;
     v37 = 2112;
     v38 = v8;
     _os_log_impl(&dword_223E7A000, v9, OS_LOG_TYPE_INFO, "[INFO] ┏%llx %@ (%@) %s %@%@", buf, 0x3Eu);
   }
 
-  if (v6)
+  if (dCopy)
   {
-    v13 = [objc_alloc(MEMORY[0x277CFAE60]) initWithAppLibraryName:v6];
+    defaultMangledID = [objc_alloc(MEMORY[0x277CFAE60]) initWithAppLibraryName:dCopy];
   }
 
   else
   {
-    v13 = 0;
+    defaultMangledID = 0;
   }
 
   v24[0] = MEMORY[0x277D85DD0];
@@ -10713,25 +10713,25 @@ uint64_t __87__BRCXPCRegularIPCsClient_deleteAllContentsOfContainerID_onClient_o
   v24[2] = __65__BRCXPCRegularIPCsClient_registerInitialSyncBarrierForID_reply___block_invoke;
   v24[3] = &unk_2785014D0;
   v24[4] = self;
-  v14 = v7;
+  v14 = replyCopy;
   v25 = v14;
-  v15 = _brc_ipc_check_applibrary_read_access(self, 1, v13, v24);
+  v15 = _brc_ipc_check_applibrary_read_access(self, 1, defaultMangledID, v24);
 
   if (v15)
   {
     v23 = 0;
-    if (!v13)
+    if (!defaultMangledID)
     {
-      v13 = [(BRCXPCClient *)self defaultMangledID];
+      defaultMangledID = [(BRCXPCClient *)self defaultMangledID];
     }
 
-    v16 = [(BRCXPCClient *)self _setupAppLibrary:v13 error:&v23];
+    v16 = [(BRCXPCClient *)self _setupAppLibrary:defaultMangledID error:&v23];
     if (v16)
     {
       [(BRCXPCClient *)self addAppLibrary:v16];
-      v17 = [v16 defaultClientZone];
+      defaultClientZone = [v16 defaultClientZone];
       v18 = [(BRCXPCClient *)self description];
-      [v17 notifyClient:v18 whenFaultingIsDone:v14];
+      [defaultClientZone notifyClient:v18 whenFaultingIsDone:v14];
     }
 
     else
@@ -10740,18 +10740,18 @@ uint64_t __87__BRCXPCRegularIPCsClient_deleteAllContentsOfContainerID_onClient_o
       v20 = brc_default_log();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
       {
-        v21 = [v23 brc_wrappedError];
+        brc_wrappedError = [v23 brc_wrappedError];
         *buf = 138412802;
-        v28 = self;
+        selfCopy2 = self;
         v29 = 2112;
-        v30 = v21;
+        selfCopy = brc_wrappedError;
         v31 = 2112;
         v32 = v19;
         _os_log_impl(&dword_223E7A000, v20, OS_LOG_TYPE_INFO, "[INFO] %@: reply(%@)%@", buf, 0x20u);
       }
 
-      v17 = [v23 brc_wrappedError];
-      (*(v14 + 2))(v14, v17);
+      defaultClientZone = [v23 brc_wrappedError];
+      (*(v14 + 2))(v14, defaultClientZone);
     }
   }
 
@@ -10781,19 +10781,19 @@ void __65__BRCXPCRegularIPCsClient_registerInitialSyncBarrierForID_reply___block
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_removeSandboxedAttributes:(id)a3
+- (id)_removeSandboxedAttributes:(id)attributes
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
+  attributesCopy = attributes;
+  allObjects = attributesCopy;
   if (![(BRCXPCClient *)self isSandboxed])
   {
-    v5 = v4;
+    allObjects = attributesCopy;
     if (![(BRCXPCClient *)self hasPrivateSharingInterfaceEntitlement])
     {
-      v6 = [MEMORY[0x277CBEB58] setWithArray:v4];
+      v6 = [MEMORY[0x277CBEB58] setWithArray:attributesCopy];
       v7 = [MEMORY[0x277CBEB98] setWithObjects:{*MEMORY[0x277CBE9B8], *MEMORY[0x277CBE9B0], *MEMORY[0x277CBE9A8], 0}];
-      v5 = v4;
+      allObjects = attributesCopy;
       if ([v6 intersectsSet:v7])
       {
         [v6 minusSet:v7];
@@ -10802,7 +10802,7 @@ void __65__BRCXPCRegularIPCsClient_registerInitialSyncBarrierForID_reply___block
         if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412802;
-          v13 = v4;
+          v13 = attributesCopy;
           v14 = 2112;
           v15 = v6;
           v16 = 2112;
@@ -10810,21 +10810,21 @@ void __65__BRCXPCRegularIPCsClient_registerInitialSyncBarrierForID_reply___block
           _os_log_impl(&dword_223E7A000, v9, OS_LOG_TYPE_DEFAULT, "[WARNING] Stripping attributes request from %@ to %@%@", buf, 0x20u);
         }
 
-        v5 = [v6 allObjects];
+        allObjects = [v6 allObjects];
       }
     }
   }
 
   v10 = *MEMORY[0x277D85DE8];
 
-  return v5;
+  return allObjects;
 }
 
-- (void)getItemUpdateSenderWithReceiver:(id)a3 reply:(id)a4
+- (void)getItemUpdateSenderWithReceiver:(id)receiver reply:(id)reply
 {
   v63 = *MEMORY[0x277D85DE8];
-  v35 = a3;
-  v6 = a4;
+  receiverCopy = receiver;
+  replyCopy = reply;
   memset(v51, 0, sizeof(v51));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient getItemUpdateSenderWithReceiver:reply:]", 1774, 0, v51);
   v7 = brc_bread_crumbs();
@@ -10837,7 +10837,7 @@ void __65__BRCXPCRegularIPCsClient_registerInitialSyncBarrierForID_reply___block
     *buf = 134219010;
     v54 = v9;
     v55 = 2112;
-    v56 = self;
+    selfCopy = self;
     v57 = 2112;
     v58 = v11;
     v59 = 2080;
@@ -10852,7 +10852,7 @@ void __65__BRCXPCRegularIPCsClient_registerInitialSyncBarrierForID_reply___block
   v49[2] = __65__BRCXPCRegularIPCsClient_getItemUpdateSenderWithReceiver_reply___block_invoke;
   v49[3] = &unk_2785014D0;
   v49[4] = self;
-  v34 = v6;
+  v34 = replyCopy;
   v50 = v34;
   v12 = _brc_ipc_check_applibraries_access(self, 1, v49);
 
@@ -10865,24 +10865,24 @@ void __65__BRCXPCRegularIPCsClient_registerInitialSyncBarrierForID_reply___block
       [BRCXPCRegularIPCsClient getItemUpdateSenderWithReceiver:reply:];
     }
 
-    v15 = [(BRCXPCClient *)self session];
-    v33 = [v15 notificationManager];
+    session = [(BRCXPCClient *)self session];
+    notificationManager = [session notificationManager];
 
     v48 = 0;
     v44 = 0u;
     v45 = 0u;
     v46 = 0u;
     v47 = 0u;
-    v16 = [(BRCXPCClient *)self entitledAppLibraryIDs];
+    entitledAppLibraryIDs = [(BRCXPCClient *)self entitledAppLibraryIDs];
     v17 = 0;
-    v18 = [v16 countByEnumeratingWithState:&v44 objects:v52 count:16];
+    v18 = [entitledAppLibraryIDs countByEnumeratingWithState:&v44 objects:v52 count:16];
     if (v18)
     {
       v39 = 0;
       v40 = *v45;
       v37 = *MEMORY[0x277CFB030];
       v36 = *MEMORY[0x277CFB028];
-      obj = v16;
+      obj = entitledAppLibraryIDs;
       do
       {
         for (i = 0; i != v18; ++i)
@@ -10910,17 +10910,17 @@ void __65__BRCXPCRegularIPCsClient_registerInitialSyncBarrierForID_reply___block
               v24 = [(BRCXPCClient *)self issueContainerExtensionForURL:v23 error:0];
             }
 
-            v26 = [v22 containerMetadata];
-            v27 = [(BRCXPCClient *)self bundleID];
-            v25 = [v26 versionNumberForBundleIdentifier:v27];
+            containerMetadata = [v22 containerMetadata];
+            bundleID = [(BRCXPCClient *)self bundleID];
+            v25 = [containerMetadata versionNumberForBundleIdentifier:bundleID];
 
             if (v24 | v25)
             {
-              v28 = [MEMORY[0x277CBEB38] dictionary];
-              v29 = v28;
+              dictionary = [MEMORY[0x277CBEB38] dictionary];
+              v29 = dictionary;
               if (v24)
               {
-                [v28 setObject:v24 forKeyedSubscript:v37];
+                [dictionary setObject:v24 forKeyedSubscript:v37];
               }
 
               if (v25)
@@ -10933,8 +10933,8 @@ void __65__BRCXPCRegularIPCsClient_registerInitialSyncBarrierForID_reply___block
                 v39 = objc_alloc_init(MEMORY[0x277CBEB38]);
               }
 
-              v30 = [v22 appLibraryID];
-              [v39 setObject:v29 forKeyedSubscript:v30];
+              appLibraryID = [v22 appLibraryID];
+              [v39 setObject:v29 forKeyedSubscript:appLibraryID];
             }
 
             v17 = v23;
@@ -10949,7 +10949,7 @@ void __65__BRCXPCRegularIPCsClient_registerInitialSyncBarrierForID_reply___block
               *buf = 138412802;
               v54 = v20;
               v55 = 2112;
-              v56 = v48;
+              selfCopy = v48;
               v57 = 2112;
               v58 = v24;
               _os_log_error_impl(&dword_223E7A000, v25, 0x90u, "[ERROR] can't setup container %@: %@%@", buf, 0x20u);
@@ -10957,7 +10957,7 @@ void __65__BRCXPCRegularIPCsClient_registerInitialSyncBarrierForID_reply___block
           }
         }
 
-        v16 = obj;
+        entitledAppLibraryIDs = obj;
         v18 = [obj countByEnumeratingWithState:&v44 objects:v52 count:16];
       }
 
@@ -10977,7 +10977,7 @@ void __65__BRCXPCRegularIPCsClient_registerInitialSyncBarrierForID_reply___block
     v31 = v39;
     v42 = v31;
     v43 = v34;
-    [v33 getPipeWithXPCReceiver:v35 client:self reply:v41];
+    [notificationManager getPipeWithXPCReceiver:receiverCopy client:self reply:v41];
   }
 
   __brc_leave_section(v51);
@@ -11040,12 +11040,12 @@ void __65__BRCXPCRegularIPCsClient_getItemUpdateSenderWithReceiver_reply___block
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)queryPathsForPersona:(id)a3 reply:(id)a4
+- (void)queryPathsForPersona:(id)persona reply:(id)reply
 {
   v38 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CFAE10] queryFastPathsForPrimaryPersona:v6];
+  personaCopy = persona;
+  replyCopy = reply;
+  v8 = [MEMORY[0x277CFAE10] queryFastPathsForPrimaryPersona:personaCopy];
   if (v8)
   {
     v9 = brc_bread_crumbs();
@@ -11053,9 +11053,9 @@ void __65__BRCXPCRegularIPCsClient_getItemUpdateSenderWithReceiver_reply___block
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       *buf = 138413058;
-      v29 = self;
+      selfCopy3 = self;
       v30 = 2112;
-      v31 = v8;
+      selfCopy2 = v8;
       v32 = 2112;
       v33 = 0;
       v34 = 2112;
@@ -11063,7 +11063,7 @@ void __65__BRCXPCRegularIPCsClient_getItemUpdateSenderWithReceiver_reply___block
       _os_log_impl(&dword_223E7A000, v10, OS_LOG_TYPE_INFO, "[INFO] %@: reply(%@, %@)%@", buf, 0x2Au);
     }
 
-    v7[2](v7, v8, 0);
+    replyCopy[2](replyCopy, v8, 0);
   }
 
   else
@@ -11078,9 +11078,9 @@ void __65__BRCXPCRegularIPCsClient_getItemUpdateSenderWithReceiver_reply___block
       v14 = qos_class_self();
       v15 = BRCPrettyPrintEnumWithContext(v14, &brc_qos_entries, 0);
       *buf = 134219010;
-      v29 = v13;
+      selfCopy3 = v13;
       v30 = 2112;
-      v31 = self;
+      selfCopy2 = self;
       v32 = 2112;
       v33 = v15;
       v34 = 2080;
@@ -11095,24 +11095,24 @@ void __65__BRCXPCRegularIPCsClient_getItemUpdateSenderWithReceiver_reply___block
     v25[2] = __54__BRCXPCRegularIPCsClient_queryPathsForPersona_reply___block_invoke;
     v25[3] = &unk_2785014D0;
     v25[4] = self;
-    v16 = v7;
+    v16 = replyCopy;
     v26 = v16;
     v17 = _brc_ipc_check_logged_status(self, 0, v25);
 
     if (v17)
     {
-      v18 = [MEMORY[0x277CFAE18] cloudDocsHelper];
+      cloudDocsHelper = [MEMORY[0x277CFAE18] cloudDocsHelper];
       v24 = 0;
-      v19 = [v18 queryPathsForPersona:v6 withError:&v24];
+      v19 = [cloudDocsHelper queryPathsForPersona:personaCopy withError:&v24];
       v20 = v24;
       v21 = brc_bread_crumbs();
       v22 = brc_default_log();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
       {
         *buf = 138413058;
-        v29 = self;
+        selfCopy3 = self;
         v30 = 2112;
-        v31 = v19;
+        selfCopy2 = v19;
         v32 = 2112;
         v33 = v20;
         v34 = 2112;
@@ -11153,19 +11153,19 @@ void __54__BRCXPCRegularIPCsClient_queryPathsForPersona_reply___block_invoke(uin
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)queryEligibleAccountDescriptorsWithReply:(id)a3
+- (void)queryEligibleAccountDescriptorsWithReply:(id)reply
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  replyCopy = reply;
   v5 = brc_bread_crumbs();
   v6 = brc_default_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
-    v7 = [MEMORY[0x277CFAE00] allEligibleAccountDescriptors];
+    allEligibleAccountDescriptors = [MEMORY[0x277CFAE00] allEligibleAccountDescriptors];
     v10 = 138413058;
-    v11 = self;
+    selfCopy = self;
     v12 = 2112;
-    v13 = v7;
+    v13 = allEligibleAccountDescriptors;
     v14 = 2112;
     v15 = 0;
     v16 = 2112;
@@ -11173,16 +11173,16 @@ void __54__BRCXPCRegularIPCsClient_queryPathsForPersona_reply___block_invoke(uin
     _os_log_impl(&dword_223E7A000, v6, OS_LOG_TYPE_INFO, "[INFO] %@: reply(%@, %@)%@", &v10, 0x2Au);
   }
 
-  v8 = [MEMORY[0x277CFAE00] allEligibleAccountDescriptors];
-  v4[2](v4, v8, 0);
+  allEligibleAccountDescriptors2 = [MEMORY[0x277CFAE00] allEligibleAccountDescriptors];
+  replyCopy[2](replyCopy, allEligibleAccountDescriptors2, 0);
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getTotalApplicationDocumentUsageWithReply:(id)a3
+- (void)getTotalApplicationDocumentUsageWithReply:(id)reply
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  replyCopy = reply;
   memset(v23, 0, sizeof(v23));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient getTotalApplicationDocumentUsageWithReply:]", 1855, 0, v23);
   v5 = brc_bread_crumbs();
@@ -11195,7 +11195,7 @@ void __54__BRCXPCRegularIPCsClient_queryPathsForPersona_reply___block_invoke(uin
     *buf = 134219010;
     v25 = v7;
     v26 = 2112;
-    v27 = self;
+    selfCopy = self;
     v28 = 2112;
     v29 = v9;
     v30 = 2080;
@@ -11211,13 +11211,13 @@ void __54__BRCXPCRegularIPCsClient_queryPathsForPersona_reply___block_invoke(uin
   v21[2] = __69__BRCXPCRegularIPCsClient_getTotalApplicationDocumentUsageWithReply___block_invoke;
   v21[3] = &unk_2785014D0;
   v21[4] = self;
-  v11 = v4;
+  v11 = replyCopy;
   v22 = v11;
   LODWORD(v10) = _brc_ipc_check_entitlement_and_logged_status(self, 1, v10, v21);
 
   if (v10)
   {
-    v12 = [MEMORY[0x277CFAE58] br_getProviderDomainIDForCurrentPersona];
+    br_getProviderDomainIDForCurrentPersona = [MEMORY[0x277CFAE58] br_getProviderDomainIDForCurrentPersona];
     v13 = brc_bread_crumbs();
     v14 = brc_default_log();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
@@ -11232,7 +11232,7 @@ void __54__BRCXPCRegularIPCsClient_queryPathsForPersona_reply___block_invoke(uin
     v18[3] = &unk_2785043E8;
     v18[4] = self;
     v20 = v11;
-    v16 = v12;
+    v16 = br_getProviderDomainIDForCurrentPersona;
     v19 = v16;
     [v15 accumulatedSizeOfItemsInDomain:v16 completion:v18];
   }
@@ -11368,11 +11368,11 @@ void __69__BRCXPCRegularIPCsClient_getTotalApplicationDocumentUsageWithReply___b
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getApplicationDocumentUsageInfoForBundleID:(id)a3 withReply:(id)a4
+- (void)getApplicationDocumentUsageInfoForBundleID:(id)d withReply:(id)reply
 {
   v61 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  replyCopy = reply;
   memset(v48, 0, sizeof(v48));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient getApplicationDocumentUsageInfoForBundleID:withReply:]", 1885, 0, v48);
   v8 = brc_bread_crumbs();
@@ -11383,9 +11383,9 @@ void __69__BRCXPCRegularIPCsClient_getTotalApplicationDocumentUsageWithReply___b
     v11 = qos_class_self();
     v12 = BRCPrettyPrintEnumWithContext(v11, &brc_qos_entries, 0);
     *buf = 134219010;
-    v52 = v10;
+    selfCopy2 = v10;
     v53 = 2112;
-    v54 = self;
+    selfCopy = self;
     v55 = 2112;
     v56 = v12;
     v57 = 2080;
@@ -11401,7 +11401,7 @@ void __69__BRCXPCRegularIPCsClient_getTotalApplicationDocumentUsageWithReply___b
   v46[2] = __80__BRCXPCRegularIPCsClient_getApplicationDocumentUsageInfoForBundleID_withReply___block_invoke;
   v46[3] = &unk_2785014D0;
   v46[4] = self;
-  v14 = v7;
+  v14 = replyCopy;
   v47 = v14;
   LODWORD(v13) = _brc_ipc_check_entitlement_and_logged_status(self, 1, v13, v46);
 
@@ -11414,15 +11414,15 @@ void __69__BRCXPCRegularIPCsClient_getTotalApplicationDocumentUsageWithReply___b
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
     {
       *buf = 134218498;
-      v52 = v45[0];
+      selfCopy2 = v45[0];
       v53 = 2112;
-      v54 = v6;
+      selfCopy = dCopy;
       v55 = 2112;
       v56 = v15;
       _os_log_debug_impl(&dword_223E7A000, v16, OS_LOG_TYPE_DEBUG, "[DEBUG] ┏%llx getting usage for %@%@", buf, 0x20u);
     }
 
-    v17 = [MEMORY[0x277CC1E60] applicationProxyForIdentifier:v6 placeholder:0];
+    v17 = [MEMORY[0x277CC1E60] applicationProxyForIdentifier:dCopy placeholder:0];
     if (v17)
     {
       v18 = BREntitledContainerIdentifiersForProxy();
@@ -11435,9 +11435,9 @@ void __69__BRCXPCRegularIPCsClient_getTotalApplicationDocumentUsageWithReply___b
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v52 = v6;
+        selfCopy2 = dCopy;
         v53 = 2112;
-        v54 = v19;
+        selfCopy = v19;
         _os_log_impl(&dword_223E7A000, v20, OS_LOG_TYPE_DEFAULT, "[WARNING] unable to find bundleID %@%@", buf, 0x16u);
       }
 
@@ -11452,19 +11452,19 @@ void __69__BRCXPCRegularIPCsClient_getTotalApplicationDocumentUsageWithReply___b
     v38 = &v37;
     v39 = 0x2020000000;
     v40 = 0;
-    v21 = [(BRCXPCClient *)self session];
+    session = [(BRCXPCClient *)self session];
     if ([v18 count])
     {
-      v22 = [v21 clientTruthWorkloop];
+      clientTruthWorkloop = [session clientTruthWorkloop];
       v29 = MEMORY[0x277D85DD0];
       v30 = 3221225472;
       v31 = __80__BRCXPCRegularIPCsClient_getApplicationDocumentUsageInfoForBundleID_withReply___block_invoke_333;
       v32 = &unk_278506ED0;
       v33 = v18;
-      v34 = v21;
+      v34 = session;
       v35 = &v41;
       v36 = &v37;
-      dispatch_async_and_wait(v22, &v29);
+      dispatch_async_and_wait(clientTruthWorkloop, &v29);
     }
 
     v49[0] = *MEMORY[0x277CFAB78];
@@ -11480,9 +11480,9 @@ void __69__BRCXPCRegularIPCsClient_getTotalApplicationDocumentUsageWithReply___b
     if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
     {
       *buf = 138413058;
-      v52 = self;
+      selfCopy2 = self;
       v53 = 2112;
-      v54 = v25;
+      selfCopy = v25;
       v55 = 2112;
       v56 = 0;
       v57 = 2112;
@@ -11598,10 +11598,10 @@ LABEL_18:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)hasOptimizeStorageWithReply:(id)a3
+- (void)hasOptimizeStorageWithReply:(id)reply
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  replyCopy = reply;
   memset(v19, 0, sizeof(v19));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient hasOptimizeStorageWithReply:]", 1928, 0, v19);
   v5 = brc_bread_crumbs();
@@ -11612,7 +11612,7 @@ LABEL_18:
     v8 = qos_class_self();
     v9 = BRCPrettyPrintEnumWithContext(v8, &brc_qos_entries, 0);
     *buf = 134219010;
-    v21 = v7;
+    selfCopy = v7;
     v22 = 2112;
     *v23 = self;
     *&v23[8] = 2112;
@@ -11630,23 +11630,23 @@ LABEL_18:
   v17[2] = __55__BRCXPCRegularIPCsClient_hasOptimizeStorageWithReply___block_invoke;
   v17[3] = &unk_2785014D0;
   v17[4] = self;
-  v11 = v4;
+  v11 = replyCopy;
   v18 = v11;
   LODWORD(v10) = _brc_ipc_check_entitlement_and_logged_status(self, 1, v10, v17);
 
   if (v10)
   {
-    v12 = [(BRCXPCClient *)self session];
-    v13 = [v12 hasOptimizeStorageEnabled];
+    session = [(BRCXPCClient *)self session];
+    hasOptimizeStorageEnabled = [session hasOptimizeStorageEnabled];
 
     v14 = brc_bread_crumbs();
     v15 = brc_default_log();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
       *buf = 138413058;
-      v21 = self;
+      selfCopy = self;
       v22 = 1024;
-      *v23 = v13;
+      *v23 = hasOptimizeStorageEnabled;
       *&v23[4] = 2112;
       *&v23[6] = 0;
       *&v23[14] = 2112;
@@ -11654,7 +11654,7 @@ LABEL_18:
       _os_log_impl(&dword_223E7A000, v15, OS_LOG_TYPE_INFO, "[INFO] %@: reply(%d, %@)%@", buf, 0x26u);
     }
 
-    (*(v11 + 2))(v11, v13, 0);
+    (*(v11 + 2))(v11, hasOptimizeStorageEnabled, 0);
   }
 
   __brc_leave_section(v19);
@@ -11708,10 +11708,10 @@ void __62__BRCXPCRegularIPCsClient_setStorageOpimizationEnabled_reply___block_in
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)evictOldDocumentsWithReply:(id)a3
+- (void)evictOldDocumentsWithReply:(id)reply
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  replyCopy = reply;
   memset(v26, 0, sizeof(v26));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient evictOldDocumentsWithReply:]", 1948, 0, v26);
   v5 = brc_bread_crumbs();
@@ -11722,9 +11722,9 @@ void __62__BRCXPCRegularIPCsClient_setStorageOpimizationEnabled_reply___block_in
     v8 = qos_class_self();
     v9 = BRCPrettyPrintEnumWithContext(v8, &brc_qos_entries, 0);
     *buf = 134219010;
-    v28 = v7;
+    selfCopy2 = v7;
     v29 = 2112;
-    v30 = self;
+    selfCopy = self;
     v31 = 2112;
     v32 = v9;
     v33 = 2080;
@@ -11740,7 +11740,7 @@ void __62__BRCXPCRegularIPCsClient_setStorageOpimizationEnabled_reply___block_in
   v24[2] = __54__BRCXPCRegularIPCsClient_evictOldDocumentsWithReply___block_invoke;
   v24[3] = &unk_2785014D0;
   v24[4] = self;
-  v11 = v4;
+  v11 = replyCopy;
   v25 = v11;
   LODWORD(v10) = _brc_ipc_check_entitlement_and_logged_status(self, 1, v10, v24);
 
@@ -11751,10 +11751,10 @@ void __62__BRCXPCRegularIPCsClient_setStorageOpimizationEnabled_reply___block_in
     v14 = v13;
     [v12 defaultOnDiskAccessTimeDefaultForEviction];
     v16 = v15;
-    v17 = [(BRCXPCClient *)self session];
-    v18 = [v17 diskReclaimer];
+    session = [(BRCXPCClient *)self session];
+    diskReclaimer = [session diskReclaimer];
     v23 = 0;
-    [v18 performOptimizeStorageWithTimeDelta:&v23 onDiskAccessTimeDelta:v14 error:v16];
+    [diskReclaimer performOptimizeStorageWithTimeDelta:&v23 onDiskAccessTimeDelta:v14 error:v16];
     v19 = v23;
 
     v20 = brc_bread_crumbs();
@@ -11762,9 +11762,9 @@ void __62__BRCXPCRegularIPCsClient_setStorageOpimizationEnabled_reply___block_in
     if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
     {
       *buf = 138412802;
-      v28 = self;
+      selfCopy2 = self;
       v29 = 2112;
-      v30 = v19;
+      selfCopy = v19;
       v31 = 2112;
       v32 = v20;
       _os_log_impl(&dword_223E7A000, v21, OS_LOG_TYPE_INFO, "[INFO] %@: reply(%@)%@", buf, 0x20u);
@@ -11800,10 +11800,10 @@ void __54__BRCXPCRegularIPCsClient_evictOldDocumentsWithReply___block_invoke(uin
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)iCloudDesktopSettingsChangedWithAttributes:(id)a3 reply:(id)a4
+- (void)iCloudDesktopSettingsChangedWithAttributes:(id)attributes reply:(id)reply
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  replyCopy = reply;
   v6 = brc_bread_crumbs();
   v7 = brc_default_log();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_INFO);
@@ -11812,7 +11812,7 @@ void __54__BRCXPCRegularIPCsClient_evictOldDocumentsWithReply___block_invoke(uin
   {
     v10 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA050] code:3328 userInfo:0];
     v13 = 138412802;
-    v14 = self;
+    selfCopy = self;
     v15 = 2112;
     v16 = v10;
     v17 = 2112;
@@ -11821,15 +11821,15 @@ void __54__BRCXPCRegularIPCsClient_evictOldDocumentsWithReply___block_invoke(uin
   }
 
   v11 = [MEMORY[0x277CCA9B8] errorWithDomain:v9 code:3328 userInfo:0];
-  v5[2](v5, v11);
+  replyCopy[2](replyCopy, v11);
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getContainersByID:(id)a3
+- (void)getContainersByID:(id)d
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   memset(v25, 0, sizeof(v25));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient getContainersByID:]", 1986, 0, v25);
   v5 = brc_bread_crumbs();
@@ -11840,9 +11840,9 @@ void __54__BRCXPCRegularIPCsClient_evictOldDocumentsWithReply___block_invoke(uin
     v8 = qos_class_self();
     v9 = BRCPrettyPrintEnumWithContext(v8, &brc_qos_entries, 0);
     *buf = 134219010;
-    v27 = v7;
+    selfCopy2 = v7;
     v28 = 2112;
-    v29 = self;
+    selfCopy = self;
     v30 = 2112;
     v31 = v9;
     v32 = 2080;
@@ -11857,7 +11857,7 @@ void __54__BRCXPCRegularIPCsClient_evictOldDocumentsWithReply___block_invoke(uin
   v23[2] = __45__BRCXPCRegularIPCsClient_getContainersByID___block_invoke;
   v23[3] = &unk_2785014D0;
   v23[4] = self;
-  v10 = v4;
+  v10 = dCopy;
   v24 = v10;
   v11 = _brc_ipc_check_applibrary_proxy(self, 1, v23);
 
@@ -11865,7 +11865,7 @@ void __54__BRCXPCRegularIPCsClient_evictOldDocumentsWithReply___block_invoke(uin
   {
     v12 = objc_opt_new();
     v13 = +[BRCDaemonContainerHelper sharedHelper];
-    v14 = [(BRCXPCClient *)self session];
+    session = [(BRCXPCClient *)self session];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __45__BRCXPCRegularIPCsClient_getContainersByID___block_invoke_335;
@@ -11874,16 +11874,16 @@ void __54__BRCXPCRegularIPCsClient_evictOldDocumentsWithReply___block_invoke(uin
     v21 = v15;
     v16 = v12;
     v22 = v16;
-    [v14 enumerateAppLibraries:v20];
+    [session enumerateAppLibraries:v20];
 
     v17 = brc_bread_crumbs();
     v18 = brc_default_log();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
     {
       *buf = 138413058;
-      v27 = self;
+      selfCopy2 = self;
       v28 = 2112;
-      v29 = v16;
+      selfCopy = v16;
       v30 = 2112;
       v31 = 0;
       v32 = 2112;
@@ -11948,12 +11948,12 @@ uint64_t __45__BRCXPCRegularIPCsClient_getContainersByID___block_invoke_335(uint
   return 1;
 }
 
-- (void)getContainerForMangledID:(id)a3 personaID:(id)a4 reply:(id)a5
+- (void)getContainerForMangledID:(id)d personaID:(id)iD reply:(id)reply
 {
   v34 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  iDCopy = iD;
+  replyCopy = reply;
   memset(v23, 0, sizeof(v23));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient getContainerForMangledID:personaID:reply:]", 2024, 0, v23);
   v11 = brc_bread_crumbs();
@@ -11966,7 +11966,7 @@ uint64_t __45__BRCXPCRegularIPCsClient_getContainersByID___block_invoke_335(uint
     *buf = 134219010;
     v25 = v13;
     v26 = 2112;
-    v27 = self;
+    selfCopy = self;
     v28 = 2112;
     v29 = v15;
     v30 = 2080;
@@ -11981,14 +11981,14 @@ uint64_t __45__BRCXPCRegularIPCsClient_getContainersByID___block_invoke_335(uint
   v21[2] = __68__BRCXPCRegularIPCsClient_getContainerForMangledID_personaID_reply___block_invoke;
   v21[3] = &unk_2785014D0;
   v21[4] = self;
-  v16 = v10;
+  v16 = replyCopy;
   v22 = v16;
   v17 = _brc_ipc_check_logged_status(self, 0, v21);
 
   if (v17)
   {
     v20 = v16;
-    v19 = v8;
+    v19 = dCopy;
     BRPerformWithPersonaAndError();
   }
 
@@ -12104,11 +12104,11 @@ void __68__BRCXPCRegularIPCsClient_getContainerForMangledID_personaID_reply___bl
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didReceiveHandoffRequestForBundleID:(id)a3 reply:(id)a4
+- (void)didReceiveHandoffRequestForBundleID:(id)d reply:(id)reply
 {
   v44 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  replyCopy = reply;
   memset(v32, 0, sizeof(v32));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient didReceiveHandoffRequestForBundleID:reply:]", 2057, 0, v32);
   v8 = brc_bread_crumbs();
@@ -12119,9 +12119,9 @@ void __68__BRCXPCRegularIPCsClient_getContainerForMangledID_personaID_reply___bl
     v11 = qos_class_self();
     v12 = BRCPrettyPrintEnumWithContext(v11, &brc_qos_entries, 0);
     *buf = 134219010;
-    v35 = v10;
+    selfCopy2 = v10;
     v36 = 2112;
-    v37 = self;
+    selfCopy = self;
     v38 = 2112;
     v39 = v12;
     v40 = 2080;
@@ -12136,16 +12136,16 @@ void __68__BRCXPCRegularIPCsClient_getContainerForMangledID_personaID_reply___bl
   v30[2] = __69__BRCXPCRegularIPCsClient_didReceiveHandoffRequestForBundleID_reply___block_invoke;
   v30[3] = &unk_2785014D0;
   v30[4] = self;
-  v13 = v7;
+  v13 = replyCopy;
   v31 = v13;
   v14 = _brc_ipc_check_applibrary_proxy(self, 1, v30);
 
   if (v14)
   {
     v15 = +[BRCCloudDocsAppsMonitor cloudDocsAppsMonitor];
-    v16 = [v15 containerIDsForApplicationIdentifier:v6];
+    v16 = [v15 containerIDsForApplicationIdentifier:dCopy];
 
-    v17 = [(BRCXPCClient *)self session];
+    session = [(BRCXPCClient *)self session];
     v28 = 0u;
     v29 = 0u;
     v26 = 0u;
@@ -12165,7 +12165,7 @@ void __68__BRCXPCRegularIPCsClient_getContainerForMangledID_personaID_reply___bl
             objc_enumerationMutation(v18);
           }
 
-          v22 = [v17 appLibraryByID:{*(*(&v26 + 1) + 8 * v21), v26}];
+          v22 = [session appLibraryByID:{*(*(&v26 + 1) + 8 * v21), v26}];
           [v22 didReceiveHandoffRequest];
 
           ++v21;
@@ -12183,9 +12183,9 @@ void __68__BRCXPCRegularIPCsClient_getContainerForMangledID_personaID_reply___bl
     if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
     {
       *buf = 138412802;
-      v35 = self;
+      selfCopy2 = self;
       v36 = 2112;
-      v37 = 0;
+      selfCopy = 0;
       v38 = 2112;
       v39 = v23;
       _os_log_impl(&dword_223E7A000, v24, OS_LOG_TYPE_INFO, "[INFO] %@: reply(%@)%@", buf, 0x20u);
@@ -12221,23 +12221,23 @@ void __69__BRCXPCRegularIPCsClient_didReceiveHandoffRequestForBundleID_reply___b
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_loggedInUserPropertyValuesForKeys:(id)a3 error:(id *)a4
+- (id)_loggedInUserPropertyValuesForKeys:(id)keys error:(id *)error
 {
   v45 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v31 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v5, "count")}];
-  v6 = [MEMORY[0x277CB8F48] defaultStore];
-  v7 = [v6 br_accountForCurrentPersona];
-  if (v7)
+  keysCopy = keys;
+  v31 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(keysCopy, "count")}];
+  defaultStore = [MEMORY[0x277CB8F48] defaultStore];
+  br_accountForCurrentPersona = [defaultStore br_accountForCurrentPersona];
+  if (br_accountForCurrentPersona)
   {
-    v26 = a4;
-    v27 = v6;
+    errorCopy = error;
+    v27 = defaultStore;
     v34 = 0u;
     v35 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v28 = v5;
-    v8 = v5;
+    v28 = keysCopy;
+    v8 = keysCopy;
     v9 = [v8 countByEnumeratingWithState:&v32 objects:v36 count:16];
     if (v9)
     {
@@ -12262,34 +12262,34 @@ void __69__BRCXPCRegularIPCsClient_didReceiveHandoffRequestForBundleID_reply___b
           {
             if ([v14 isEqualToString:v12])
             {
-              v15 = [v7 br_firstName];
+              br_firstName = [br_accountForCurrentPersona br_firstName];
             }
 
             else if ([v14 isEqualToString:v30])
             {
-              v15 = [v7 br_lastName];
+              br_firstName = [br_accountForCurrentPersona br_lastName];
             }
 
             else
             {
               if (![v14 isEqualToString:v29])
               {
-                if (v26)
+                if (errorCopy)
                 {
-                  *v26 = [MEMORY[0x277CCA9B8] brc_errorUnknownKey:v14];
+                  *errorCopy = [MEMORY[0x277CCA9B8] brc_errorUnknownKey:v14];
                 }
 
                 v18 = 0;
                 goto LABEL_31;
               }
 
-              v15 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v7, "br_isManagedAppleID")}];
+              br_firstName = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(br_accountForCurrentPersona, "br_isManagedAppleID")}];
             }
 
-            v16 = v15;
-            if (v15)
+            v16 = br_firstName;
+            if (br_firstName)
             {
-              [v31 setObject:v15 forKeyedSubscript:v14];
+              [v31 setObject:br_firstName forKeyedSubscript:v14];
             }
           }
 
@@ -12323,8 +12323,8 @@ void __69__BRCXPCRegularIPCsClient_didReceiveHandoffRequestForBundleID_reply___b
 
     v18 = v31;
 LABEL_31:
-    v6 = v27;
-    v5 = v28;
+    defaultStore = v27;
+    keysCopy = v28;
   }
 
   else
@@ -12340,7 +12340,7 @@ LABEL_31:
         *buf = 136315906;
         v38 = "[BRCXPCRegularIPCsClient _loggedInUserPropertyValuesForKeys:error:]";
         v39 = 2080;
-        if (!a4)
+        if (!error)
         {
           v25 = "(ignored by caller)";
         }
@@ -12354,10 +12354,10 @@ LABEL_31:
       }
     }
 
-    if (a4)
+    if (error)
     {
       v22 = v19;
-      *a4 = v19;
+      *error = v19;
     }
 
     v18 = 0;
@@ -12368,11 +12368,11 @@ LABEL_31:
   return v18;
 }
 
-- (void)getLoggedInUserPropertyValuesForKeys:(id)a3 reply:(id)a4
+- (void)getLoggedInUserPropertyValuesForKeys:(id)keys reply:(id)reply
 {
   v36 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  keysCopy = keys;
+  replyCopy = reply;
   memset(v25, 0, sizeof(v25));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient getLoggedInUserPropertyValuesForKeys:reply:]", 2110, 0, v25);
   v8 = brc_bread_crumbs();
@@ -12383,9 +12383,9 @@ LABEL_31:
     v11 = qos_class_self();
     v12 = BRCPrettyPrintEnumWithContext(v11, &brc_qos_entries, 0);
     *buf = 134219010;
-    v27 = v10;
+    selfCopy2 = v10;
     v28 = 2112;
-    v29 = self;
+    selfCopy = self;
     v30 = 2112;
     v31 = v12;
     v32 = 2080;
@@ -12395,30 +12395,30 @@ LABEL_31:
     _os_log_impl(&dword_223E7A000, v9, OS_LOG_TYPE_INFO, "[INFO] ┏%llx %@ (%@) %s %@", buf, 0x34u);
   }
 
-  v13 = [(BRCXPCClient *)self clientPriviledgesDescriptor];
-  v14 = [v13 isSharingPrivateInterfaceEntitled];
+  clientPriviledgesDescriptor = [(BRCXPCClient *)self clientPriviledgesDescriptor];
+  isSharingPrivateInterfaceEntitled = [clientPriviledgesDescriptor isSharingPrivateInterfaceEntitled];
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __70__BRCXPCRegularIPCsClient_getLoggedInUserPropertyValuesForKeys_reply___block_invoke;
   v23[3] = &unk_2785014D0;
   v23[4] = self;
-  v15 = v7;
+  v15 = replyCopy;
   v24 = v15;
-  v16 = _brc_ipc_check_client_privilege(self, 1, v14, "isSharingPrivateInterfaceEntitled", v23);
+  v16 = _brc_ipc_check_client_privilege(self, 1, isSharingPrivateInterfaceEntitled, "isSharingPrivateInterfaceEntitled", v23);
 
   if (v16)
   {
     v22 = 0;
-    v17 = [(BRCXPCRegularIPCsClient *)self _loggedInUserPropertyValuesForKeys:v6 error:&v22];
+    v17 = [(BRCXPCRegularIPCsClient *)self _loggedInUserPropertyValuesForKeys:keysCopy error:&v22];
     v18 = v22;
     v19 = brc_bread_crumbs();
     v20 = brc_default_log();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
     {
       *buf = 138413058;
-      v27 = self;
+      selfCopy2 = self;
       v28 = 2112;
-      v29 = v17;
+      selfCopy = v17;
       v30 = 2112;
       v31 = v18;
       v32 = 2112;
@@ -12458,11 +12458,11 @@ void __70__BRCXPCRegularIPCsClient_getLoggedInUserPropertyValuesForKeys_reply___
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setupInstanceWithDict:(id)a3 reply:(id)a4
+- (void)setupInstanceWithDict:(id)dict reply:(id)reply
 {
   v29 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  dictCopy = dict;
+  replyCopy = reply;
   memset(v18, 0, sizeof(v18));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient setupInstanceWithDict:reply:]", 2124, 0, v18);
   v9 = brc_bread_crumbs();
@@ -12475,7 +12475,7 @@ void __70__BRCXPCRegularIPCsClient_getLoggedInUserPropertyValuesForKeys_reply___
     *buf = 134219010;
     v20 = v11;
     v21 = 2112;
-    v22 = self;
+    selfCopy = self;
     v23 = 2112;
     v24 = v13;
     v25 = 2080;
@@ -12490,7 +12490,7 @@ void __70__BRCXPCRegularIPCsClient_getLoggedInUserPropertyValuesForKeys_reply___
   v16[2] = __55__BRCXPCRegularIPCsClient_setupInstanceWithDict_reply___block_invoke;
   v16[3] = &unk_2785014D0;
   v16[4] = self;
-  v14 = v8;
+  v14 = replyCopy;
   v17 = v14;
   _brc_ipc_spi(self, -1, a2, v16);
 
@@ -12522,11 +12522,11 @@ void __55__BRCXPCRegularIPCsClient_setupInstanceWithDict_reply___block_invoke(ui
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)resetBudgets:(id)a3 reply:(id)a4
+- (void)resetBudgets:(id)budgets reply:(id)reply
 {
   v38 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  budgetsCopy = budgets;
+  replyCopy = reply;
   memset(v27, 0, sizeof(v27));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient resetBudgets:reply:]", 2132, 0, v27);
   v9 = brc_bread_crumbs();
@@ -12539,7 +12539,7 @@ void __55__BRCXPCRegularIPCsClient_setupInstanceWithDict_reply___block_invoke(ui
     *buf = 134219010;
     v29 = v11;
     v30 = 2112;
-    v31 = self;
+    selfCopy = self;
     v32 = 2112;
     v33 = v13;
     v34 = 2080;
@@ -12554,24 +12554,24 @@ void __55__BRCXPCRegularIPCsClient_setupInstanceWithDict_reply___block_invoke(ui
   v25[2] = __46__BRCXPCRegularIPCsClient_resetBudgets_reply___block_invoke;
   v25[3] = &unk_2785014D0;
   v25[4] = self;
-  v14 = v8;
+  v14 = replyCopy;
   v26 = v14;
   v15 = _brc_ipc_spi(self, 1, a2, v25);
 
   if (v15)
   {
-    v16 = [(BRCXPCClient *)self session];
-    v17 = [v16 clientDB];
+    session = [(BRCXPCClient *)self session];
+    clientDB = [session clientDB];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __46__BRCXPCRegularIPCsClient_resetBudgets_reply___block_invoke_344;
     v20[3] = &unk_278506EF8;
-    v18 = v16;
+    v18 = session;
     v21 = v18;
-    v22 = v7;
-    v23 = self;
+    v22 = budgetsCopy;
+    selfCopy2 = self;
     v24 = v14;
-    [v17 performWithFlags:5 action:v20];
+    [clientDB performWithFlags:5 action:v20];
   }
 
   __brc_leave_section(v27);
@@ -12660,11 +12660,11 @@ uint64_t __46__BRCXPCRegularIPCsClient_resetBudgets_reply___block_invoke_2(uint6
   return 1;
 }
 
-- (void)performSelfCheck:(id)a3 reply:(id)a4
+- (void)performSelfCheck:(id)check reply:(id)reply
 {
   v36 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  checkCopy = check;
+  replyCopy = reply;
   memset(v29, 0, sizeof(v29));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient performSelfCheck:reply:]", 2159, 0, v29);
   v9 = brc_bread_crumbs();
@@ -12675,7 +12675,7 @@ uint64_t __46__BRCXPCRegularIPCsClient_resetBudgets_reply___block_invoke_2(uint6
     v12 = qos_class_self();
     v13 = BRCPrettyPrintEnumWithContext(v12, &brc_qos_entries, 0);
     *buf = 134219010;
-    v31 = v11;
+    selfCopy2 = v11;
     v32 = 2112;
     *v33 = self;
     *&v33[8] = 2112;
@@ -12692,13 +12692,13 @@ uint64_t __46__BRCXPCRegularIPCsClient_resetBudgets_reply___block_invoke_2(uint6
   v27[2] = __50__BRCXPCRegularIPCsClient_performSelfCheck_reply___block_invoke;
   v27[3] = &unk_2785014D0;
   v27[4] = self;
-  v14 = v8;
+  v14 = replyCopy;
   v28 = v14;
   v15 = _brc_ipc_spi(self, 1, a2, v27);
 
   if (v15)
   {
-    v16 = dup([v7 fileDescriptor]);
+    v16 = dup([checkCopy fileDescriptor]);
     v17 = fdopen(v16, "a");
     if (v17)
     {
@@ -12708,12 +12708,12 @@ uint64_t __46__BRCXPCRegularIPCsClient_resetBudgets_reply___block_invoke_2(uint6
       fclose(v17);
       if (v19)
       {
-        v20 = 0;
+        br_errorFromErrno2 = 0;
       }
 
       else
       {
-        v20 = [MEMORY[0x277CCA9B8] br_errorWithDomain:*MEMORY[0x277CFACB0] code:1003 description:@"self check failed: broken invariant"];
+        br_errorFromErrno2 = [MEMORY[0x277CCA9B8] br_errorWithDomain:*MEMORY[0x277CFACB0] code:1003 description:@"self check failed: broken invariant"];
       }
 
       v24 = brc_bread_crumbs();
@@ -12721,17 +12721,17 @@ uint64_t __46__BRCXPCRegularIPCsClient_resetBudgets_reply___block_invoke_2(uint6
       if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
       {
         *buf = 138413058;
-        v31 = self;
+        selfCopy2 = self;
         v32 = 1024;
         *v33 = v19;
         *&v33[4] = 2112;
-        *&v33[6] = v20;
+        *&v33[6] = br_errorFromErrno2;
         *&v33[14] = 2112;
         *&v33[16] = v24;
         _os_log_impl(&dword_223E7A000, v25, OS_LOG_TYPE_INFO, "[INFO] %@: reply(success=%d, %@)%@", buf, 0x26u);
       }
 
-      (*(v14 + 2))(v14, v19, v20);
+      (*(v14 + 2))(v14, v19, br_errorFromErrno2);
     }
 
     else
@@ -12740,20 +12740,20 @@ uint64_t __46__BRCXPCRegularIPCsClient_resetBudgets_reply___block_invoke_2(uint6
       v22 = brc_default_log();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
       {
-        v23 = [MEMORY[0x277CCA9B8] br_errorFromErrno];
+        br_errorFromErrno = [MEMORY[0x277CCA9B8] br_errorFromErrno];
         *buf = 138413058;
-        v31 = self;
+        selfCopy2 = self;
         v32 = 1024;
         *v33 = 0;
         *&v33[4] = 2112;
-        *&v33[6] = v23;
+        *&v33[6] = br_errorFromErrno;
         *&v33[14] = 2112;
         *&v33[16] = v21;
         _os_log_impl(&dword_223E7A000, v22, OS_LOG_TYPE_INFO, "[INFO] %@: reply(success=%d, %@)%@", buf, 0x26u);
       }
 
-      v20 = [MEMORY[0x277CCA9B8] br_errorFromErrno];
-      (*(v14 + 2))(v14, 0, v20);
+      br_errorFromErrno2 = [MEMORY[0x277CCA9B8] br_errorFromErrno];
+      (*(v14 + 2))(v14, 0, br_errorFromErrno2);
     }
   }
 
@@ -12786,12 +12786,12 @@ void __50__BRCXPCRegularIPCsClient_performSelfCheck_reply___block_invoke(uint64_
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)printStatus:(id)a3 containerID:(id)a4 reply:(id)a5
+- (void)printStatus:(id)status containerID:(id)d reply:(id)reply
 {
   v41 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  statusCopy = status;
+  dCopy = d;
+  replyCopy = reply;
   memset(v30, 0, sizeof(v30));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient printStatus:containerID:reply:]", 2177, 0, v30);
   v12 = brc_bread_crumbs();
@@ -12804,7 +12804,7 @@ void __50__BRCXPCRegularIPCsClient_performSelfCheck_reply___block_invoke(uint64_
     *buf = 134219010;
     v32 = v14;
     v33 = 2112;
-    v34 = self;
+    selfCopy = self;
     v35 = 2112;
     v36 = v16;
     v37 = 2080;
@@ -12819,7 +12819,7 @@ void __50__BRCXPCRegularIPCsClient_performSelfCheck_reply___block_invoke(uint64_
   v28[2] = __57__BRCXPCRegularIPCsClient_printStatus_containerID_reply___block_invoke;
   v28[3] = &unk_2785014D0;
   v28[4] = self;
-  v17 = v11;
+  v17 = replyCopy;
   v29 = v17;
   v18 = _brc_ipc_spi(self, 1, a2, v28);
 
@@ -12832,8 +12832,8 @@ void __50__BRCXPCRegularIPCsClient_performSelfCheck_reply___block_invoke(uint64_
     v24[2] = __57__BRCXPCRegularIPCsClient_printStatus_containerID_reply___block_invoke_353;
     v24[3] = &unk_278500CE0;
     v24[4] = self;
-    v25 = v9;
-    v26 = v10;
+    v25 = statusCopy;
+    v26 = dCopy;
     v27 = v17;
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
@@ -12937,12 +12937,12 @@ void __57__BRCXPCRegularIPCsClient_printStatus_containerID_reply___block_invoke_
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)printShareRequests:(id)a3 personaID:(id)a4 isPending:(BOOL)a5 asJSON:(BOOL)a6 reply:(id)a7
+- (void)printShareRequests:(id)requests personaID:(id)d isPending:(BOOL)pending asJSON:(BOOL)n reply:(id)reply
 {
   v36 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a7;
+  requestsCopy = requests;
+  dCopy = d;
+  replyCopy = reply;
   memset(v25, 0, sizeof(v25));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient printShareRequests:personaID:isPending:asJSON:reply:]", 2198, 0, v25);
   v13 = brc_bread_crumbs();
@@ -12955,7 +12955,7 @@ void __57__BRCXPCRegularIPCsClient_printStatus_containerID_reply___block_invoke_
     *buf = 134219010;
     v27 = v15;
     v28 = 2112;
-    v29 = self;
+    selfCopy = self;
     v30 = 2112;
     v31 = v17;
     v32 = 2080;
@@ -12970,19 +12970,19 @@ void __57__BRCXPCRegularIPCsClient_printStatus_containerID_reply___block_invoke_
   v23[2] = __79__BRCXPCRegularIPCsClient_printShareRequests_personaID_isPending_asJSON_reply___block_invoke;
   v23[3] = &unk_2785014D0;
   v23[4] = self;
-  v18 = v12;
+  v18 = replyCopy;
   v24 = v18;
   v19 = _brc_ipc_check_logged_status(self, 1, v23);
 
   if (v19)
   {
-    if (!v11)
+    if (!dCopy)
     {
-      v11 = @"__defaultPersonaID__";
+      dCopy = @"__defaultPersonaID__";
     }
 
     v22 = v18;
-    v21 = v10;
+    v21 = requestsCopy;
     BRPerformWithPersonaAndError();
   }
 
@@ -13152,10 +13152,10 @@ void __79__BRCXPCRegularIPCsClient_printShareRequests_personaID_isPending_asJSON
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getBGSystemTaskActivitiesDefaultConfig:(id)a3
+- (void)getBGSystemTaskActivitiesDefaultConfig:(id)config
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  configCopy = config;
   memset(v21, 0, sizeof(v21));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient getBGSystemTaskActivitiesDefaultConfig:]", 2230, 0, v21);
   v5 = brc_bread_crumbs();
@@ -13166,9 +13166,9 @@ void __79__BRCXPCRegularIPCsClient_printShareRequests_personaID_isPending_asJSON
     v8 = qos_class_self();
     v9 = BRCPrettyPrintEnumWithContext(v8, &brc_qos_entries, 0);
     *buf = 134219010;
-    v23 = v7;
+    selfCopy2 = v7;
     v24 = 2112;
-    v25 = self;
+    selfCopy = self;
     v26 = 2112;
     v27 = v9;
     v28 = 2080;
@@ -13184,25 +13184,25 @@ void __79__BRCXPCRegularIPCsClient_printShareRequests_personaID_isPending_asJSON
   v19[2] = __66__BRCXPCRegularIPCsClient_getBGSystemTaskActivitiesDefaultConfig___block_invoke;
   v19[3] = &unk_2785014D0;
   v19[4] = self;
-  v11 = v4;
+  v11 = configCopy;
   v20 = v11;
   LODWORD(v10) = _brc_ipc_check_entitlement_and_logged_status(self, 1, v10, v19);
 
   if (v10)
   {
     v12 = [BRCUserDefaults defaultsForMangledID:0];
-    v13 = [(BRCXPCClient *)self session];
-    v14 = [v13 accountFacade];
-    v15 = [v12 getBirdBGSTActivitiesConfigsWithAccountFacade:v14];
+    session = [(BRCXPCClient *)self session];
+    accountFacade = [session accountFacade];
+    v15 = [v12 getBirdBGSTActivitiesConfigsWithAccountFacade:accountFacade];
 
     v16 = brc_bread_crumbs();
     v17 = brc_default_log();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
       *buf = 138413058;
-      v23 = self;
+      selfCopy2 = self;
       v24 = 2112;
-      v25 = v15;
+      selfCopy = v15;
       v26 = 2112;
       v27 = 0;
       v28 = 2112;
@@ -13242,12 +13242,12 @@ void __66__BRCXPCRegularIPCsClient_getBGSystemTaskActivitiesDefaultConfig___bloc
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)dumpFPFSMigrationStatusTo:(id)a3 personaID:(id)a4 includeNonMigratedItems:(BOOL)a5 reply:(id)a6
+- (void)dumpFPFSMigrationStatusTo:(id)to personaID:(id)d includeNonMigratedItems:(BOOL)items reply:(id)reply
 {
   v36 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  toCopy = to;
+  dCopy = d;
+  replyCopy = reply;
   memset(v25, 0, sizeof(v25));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient dumpFPFSMigrationStatusTo:personaID:includeNonMigratedItems:reply:]", 2244, 0, v25);
   v13 = brc_bread_crumbs();
@@ -13260,7 +13260,7 @@ void __66__BRCXPCRegularIPCsClient_getBGSystemTaskActivitiesDefaultConfig___bloc
     *buf = 134219010;
     v27 = v15;
     v28 = 2112;
-    v29 = self;
+    selfCopy = self;
     v30 = 2112;
     v31 = v17;
     v32 = 2080;
@@ -13275,19 +13275,19 @@ void __66__BRCXPCRegularIPCsClient_getBGSystemTaskActivitiesDefaultConfig___bloc
   v23[2] = __93__BRCXPCRegularIPCsClient_dumpFPFSMigrationStatusTo_personaID_includeNonMigratedItems_reply___block_invoke;
   v23[3] = &unk_2785014D0;
   v23[4] = self;
-  v18 = v12;
+  v18 = replyCopy;
   v24 = v18;
   v19 = _brc_ipc_spi(self, 0, a2, v23);
 
   if (v19)
   {
-    if (!v11)
+    if (!dCopy)
     {
-      v11 = @"__defaultPersonaID__";
+      dCopy = @"__defaultPersonaID__";
     }
 
     v22 = v18;
-    v21 = v10;
+    v21 = toCopy;
     BRPerformWithPersonaAndError();
   }
 
@@ -13474,28 +13474,28 @@ void __93__BRCXPCRegularIPCsClient_dumpFPFSMigrationStatusTo_personaID_includeNo
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)dumpDatabaseTo:(id)a3 containerID:(id)a4 personaID:(id)a5 includeAllItems:(BOOL)a6 verbose:(BOOL)a7 reply:(id)a8
+- (void)dumpDatabaseTo:(id)to containerID:(id)d personaID:(id)iD includeAllItems:(BOOL)items verbose:(BOOL)verbose reply:(id)reply
 {
   v43 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a8;
+  toCopy = to;
+  dCopy = d;
+  iDCopy = iD;
+  replyCopy = reply;
   memset(v32, 0, sizeof(v32));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient dumpDatabaseTo:containerID:personaID:includeAllItems:verbose:reply:]", 2282, 0, v32);
   v16 = brc_bread_crumbs();
   v17 = brc_default_log();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
   {
-    v18 = v13;
-    v19 = v12;
+    v18 = dCopy;
+    v19 = toCopy;
     v20 = v32[0];
     v21 = qos_class_self();
     v22 = BRCPrettyPrintEnumWithContext(v21, &brc_qos_entries, 0);
     *buf = 134219010;
     v34 = v20;
     v35 = 2112;
-    v36 = self;
+    selfCopy = self;
     v37 = 2112;
     v38 = v22;
     v39 = 2080;
@@ -13504,8 +13504,8 @@ void __93__BRCXPCRegularIPCsClient_dumpFPFSMigrationStatusTo_personaID_includeNo
     v42 = v16;
     _os_log_impl(&dword_223E7A000, v17, OS_LOG_TYPE_INFO, "[INFO] ┏%llx %@ (%@) %s %@", buf, 0x34u);
 
-    v12 = v19;
-    v13 = v18;
+    toCopy = v19;
+    dCopy = v18;
   }
 
   v30[0] = MEMORY[0x277D85DD0];
@@ -13513,20 +13513,20 @@ void __93__BRCXPCRegularIPCsClient_dumpFPFSMigrationStatusTo_personaID_includeNo
   v30[2] = __94__BRCXPCRegularIPCsClient_dumpDatabaseTo_containerID_personaID_includeAllItems_verbose_reply___block_invoke;
   v30[3] = &unk_2785014D0;
   v30[4] = self;
-  v23 = v15;
+  v23 = replyCopy;
   v31 = v23;
   v24 = _brc_ipc_spi(self, 0, a2, v30);
 
   if (v24)
   {
-    if (!v14)
+    if (!iDCopy)
     {
-      v14 = @"__defaultPersonaID__";
+      iDCopy = @"__defaultPersonaID__";
     }
 
     v29 = v23;
-    v27 = v12;
-    v28 = v13;
+    v27 = toCopy;
+    v28 = dCopy;
     BRPerformWithPersonaAndError();
   }
 
@@ -13790,11 +13790,11 @@ void __94__BRCXPCRegularIPCsClient_dumpDatabaseTo_containerID_personaID_includeA
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)backupDatabaseWithURLWrapper:(id)a3 reply:(id)a4
+- (void)backupDatabaseWithURLWrapper:(id)wrapper reply:(id)reply
 {
   v44 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  wrapperCopy = wrapper;
+  replyCopy = reply;
   memset(v33, 0, sizeof(v33));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient backupDatabaseWithURLWrapper:reply:]", 2319, 0, v33);
   v9 = brc_bread_crumbs();
@@ -13805,9 +13805,9 @@ void __94__BRCXPCRegularIPCsClient_dumpDatabaseTo_containerID_personaID_includeA
     v12 = qos_class_self();
     v13 = BRCPrettyPrintEnumWithContext(v12, &brc_qos_entries, 0);
     *buf = 134219010;
-    v35 = v11;
+    selfCopy3 = v11;
     v36 = 2112;
-    v37 = self;
+    selfCopy = self;
     v38 = 2112;
     v39 = v13;
     v40 = 2080;
@@ -13822,18 +13822,18 @@ void __94__BRCXPCRegularIPCsClient_dumpDatabaseTo_containerID_personaID_includeA
   v31[2] = __62__BRCXPCRegularIPCsClient_backupDatabaseWithURLWrapper_reply___block_invoke;
   v31[3] = &unk_2785014D0;
   v31[4] = self;
-  v14 = v8;
+  v14 = replyCopy;
   v32 = v14;
   v15 = _brc_ipc_spi(self, 1, a2, v31);
 
   if (v15)
   {
-    v16 = [v7 url];
+    v16 = [wrapperCopy url];
     v17 = MEMORY[0x277CBEBC0];
     v18 = MEMORY[0x277CCACA8];
-    v19 = [(BRCXPCClient *)self session];
-    v20 = [v19 sessionDirPath];
-    v21 = [v18 stringWithFormat:@"%@/db", v20];
+    session = [(BRCXPCClient *)self session];
+    sessionDirPath = [session sessionDirPath];
+    v21 = [v18 stringWithFormat:@"%@/db", sessionDirPath];
     v22 = [v17 fileURLWithPath:v21];
 
     v23 = v16;
@@ -13848,9 +13848,9 @@ void __94__BRCXPCRegularIPCsClient_dumpDatabaseTo_containerID_personaID_includeA
       if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
       {
         *buf = 138413058;
-        v35 = self;
+        selfCopy3 = self;
         v36 = 2112;
-        v37 = v23;
+        selfCopy = v23;
         v38 = 2112;
         v39 = v25;
         v40 = 2112;
@@ -13868,9 +13868,9 @@ void __94__BRCXPCRegularIPCsClient_dumpDatabaseTo_containerID_personaID_includeA
       if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
       {
         *buf = 138413058;
-        v35 = self;
+        selfCopy3 = self;
         v36 = 2112;
-        v37 = 0;
+        selfCopy = 0;
         v38 = 2112;
         v39 = v25;
         v40 = 2112;
@@ -13913,11 +13913,11 @@ void __62__BRCXPCRegularIPCsClient_backupDatabaseWithURLWrapper_reply___block_in
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)dumpCoordinationInfoTo:(id)a3 reply:(id)a4
+- (void)dumpCoordinationInfoTo:(id)to reply:(id)reply
 {
   v37 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  toCopy = to;
+  replyCopy = reply;
   memset(v26, 0, sizeof(v26));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient dumpCoordinationInfoTo:reply:]", 2340, 0, v26);
   v9 = brc_bread_crumbs();
@@ -13930,7 +13930,7 @@ void __62__BRCXPCRegularIPCsClient_backupDatabaseWithURLWrapper_reply___block_in
     *buf = 134219010;
     v28 = v11;
     v29 = 2112;
-    v30 = self;
+    selfCopy = self;
     v31 = 2112;
     v32 = v13;
     v33 = 2080;
@@ -13945,7 +13945,7 @@ void __62__BRCXPCRegularIPCsClient_backupDatabaseWithURLWrapper_reply___block_in
   v24[2] = __56__BRCXPCRegularIPCsClient_dumpCoordinationInfoTo_reply___block_invoke;
   v24[3] = &unk_2785014D0;
   v24[4] = self;
-  v14 = v8;
+  v14 = replyCopy;
   v25 = v14;
   v15 = _brc_ipc_spi(self, 1, a2, v24);
 
@@ -13958,7 +13958,7 @@ void __62__BRCXPCRegularIPCsClient_backupDatabaseWithURLWrapper_reply___block_in
     v21[2] = __56__BRCXPCRegularIPCsClient_dumpCoordinationInfoTo_reply___block_invoke_369;
     v21[3] = &unk_2784FF5B8;
     v21[4] = self;
-    v22 = v7;
+    v22 = toCopy;
     v23 = v14;
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
@@ -14060,12 +14060,12 @@ void __56__BRCXPCRegularIPCsClient_dumpCoordinationInfoTo_reply___block_invoke_3
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)simulateHealthIssueWithContainer:(id)a3 status:(id)a4 reply:(id)a5
+- (void)simulateHealthIssueWithContainer:(id)container status:(id)status reply:(id)reply
 {
   v93 = *MEMORY[0x277D85DE8];
-  v69 = a3;
-  v9 = a4;
-  v10 = a5;
+  containerCopy = container;
+  statusCopy = status;
+  replyCopy = reply;
   memset(v79, 0, sizeof(v79));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient simulateHealthIssueWithContainer:status:reply:]", 2356, 0, v79);
   v11 = brc_bread_crumbs();
@@ -14076,9 +14076,9 @@ void __56__BRCXPCRegularIPCsClient_dumpCoordinationInfoTo_reply___block_invoke_3
     v14 = qos_class_self();
     v15 = BRCPrettyPrintEnumWithContext(v14, &brc_qos_entries, 0);
     *buf = 134219010;
-    v82 = v13;
+    selfCopy6 = v13;
     v83 = 2112;
-    v84 = self;
+    selfCopy3 = self;
     v85 = 2112;
     v86 = v15;
     v87 = 2080;
@@ -14093,7 +14093,7 @@ void __56__BRCXPCRegularIPCsClient_dumpCoordinationInfoTo_reply___block_invoke_3
   v77[2] = __73__BRCXPCRegularIPCsClient_simulateHealthIssueWithContainer_status_reply___block_invoke;
   v77[3] = &unk_2785014D0;
   v77[4] = self;
-  v16 = v10;
+  v16 = replyCopy;
   v78 = v16;
   v17 = _brc_ipc_spi(self, 1, a2, v77);
 
@@ -14109,23 +14109,23 @@ void __56__BRCXPCRegularIPCsClient_dumpCoordinationInfoTo_reply___block_invoke_3
       v21 = qos_class_self();
       v22 = BRCPrettyPrintEnumWithContext(v21, &brc_qos_entries, 0);
       *buf = 134219266;
-      v82 = v20;
+      selfCopy6 = v20;
       v83 = 2112;
-      v84 = self;
+      selfCopy3 = self;
       v85 = 2112;
       v86 = v22;
       v87 = 2080;
       v88 = "[BRCXPCRegularIPCsClient simulateHealthIssueWithContainer:status:reply:]";
       v89 = 2112;
-      v90 = v69;
+      v90 = containerCopy;
       v91 = 2112;
       v92 = v18;
       _os_log_impl(&dword_223E7A000, v19, OS_LOG_TYPE_INFO, "[INFO] ┏%llx %@ (%@) %s %@%@", buf, 0x3Eu);
     }
 
-    if (v69)
+    if (containerCopy)
     {
-      v23 = [objc_alloc(MEMORY[0x277CFAE60]) initWithAppLibraryName:v69];
+      v23 = [objc_alloc(MEMORY[0x277CFAE60]) initWithAppLibraryName:containerCopy];
     }
 
     else
@@ -14144,7 +14144,7 @@ void __56__BRCXPCRegularIPCsClient_dumpCoordinationInfoTo_reply___block_invoke_3
 
     if (!v26)
     {
-      v24 = v9;
+      lowercaseString = statusCopy;
 LABEL_31:
 
       __brc_leave_section(v76);
@@ -14164,9 +14164,9 @@ LABEL_31:
       v32 = qos_class_self();
       v33 = BRCPrettyPrintEnumWithContext(v32, &brc_qos_entries, 0);
       *buf = 134219010;
-      v82 = v31;
+      selfCopy6 = v31;
       v83 = 2112;
-      v84 = self;
+      selfCopy3 = self;
       v85 = 2112;
       v86 = v33;
       v87 = 2080;
@@ -14185,55 +14185,55 @@ LABEL_31:
     if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412802;
-      v82 = v69;
+      selfCopy6 = containerCopy;
       v83 = 2112;
-      v84 = v9;
+      selfCopy3 = statusCopy;
       v85 = 2112;
       v86 = v34;
       _os_log_impl(&dword_223E7A000, v35, OS_LOG_TYPE_DEFAULT, "[NOTICE] simulating health issue on %@: %@%@", buf, 0x20u);
     }
 
-    v66 = [(BRCXPCClient *)self session];
-    v36 = [v66 appLibraryByID:v69];
-    v68 = [v36 defaultClientZone];
+    session = [(BRCXPCClient *)self session];
+    v36 = [session appLibraryByID:containerCopy];
+    defaultClientZone = [v36 defaultClientZone];
 
-    if (v68)
+    if (defaultClientZone)
     {
-      v24 = [(BRCXPCRegularIPCsClient *)v9 lowercaseString];
+      lowercaseString = [(BRCXPCRegularIPCsClient *)statusCopy lowercaseString];
 
-      if ([(BRCXPCRegularIPCsClient *)v24 isEqualToString:@"healthy"])
+      if ([(BRCXPCRegularIPCsClient *)lowercaseString isEqualToString:@"healthy"])
       {
         v37 = objc_alloc(MEMORY[0x277CBC5D0]);
-        v38 = [v68 zoneName];
-        v39 = [MEMORY[0x277CBC5F8] brc_zoneHealthZoneID];
-        v40 = [v37 initWithRecordName:v38 zoneID:v39];
+        zoneName = [defaultClientZone zoneName];
+        brc_zoneHealthZoneID = [MEMORY[0x277CBC5F8] brc_zoneHealthZoneID];
+        v40 = [v37 initWithRecordName:zoneName zoneID:brc_zoneHealthZoneID];
 
         v41 = [objc_alloc(MEMORY[0x277CBC5A0]) initWithRecordType:@"zoneState" recordID:v40];
         [v41 setObject:&unk_2837B0508 forKeyedSubscript:@"state"];
         v42 = MEMORY[0x277CCABB0];
-        v43 = [MEMORY[0x277CBEAA8] date];
-        [v43 timeIntervalSince1970];
+        date = [MEMORY[0x277CBEAA8] date];
+        [date timeIntervalSince1970];
         v45 = [v42 numberWithUnsignedLongLong:v44];
         [v41 setObject:v45 forKeyedSubscript:@"updateTime"];
 
         [v41 setObject:&stru_2837504F0 forKeyedSubscript:@"clientInfo"];
-        v46 = [v68 zoneHealthState];
-        v47 = [v46 ckInfo];
-        [v47 setCKInfoFieldsInRecord:v41 includeCZMEtag:0];
+        zoneHealthState = [defaultClientZone zoneHealthState];
+        ckInfo = [zoneHealthState ckInfo];
+        [ckInfo setCKInfoFieldsInRecord:v41 includeCZMEtag:0];
 
         v48 = objc_alloc(MEMORY[0x277CBC4A0]);
         v80 = v41;
         v49 = [MEMORY[0x277CBEA60] arrayWithObjects:&v80 count:1];
         v50 = [v48 initWithRecordsToSave:v49 recordIDsToDelete:0];
 
-        v51 = [MEMORY[0x277CBC4F8] br_zoneHealthSimulation];
-        [v50 setGroup:v51];
+        br_zoneHealthSimulation = [MEMORY[0x277CBC4F8] br_zoneHealthSimulation];
+        [v50 setGroup:br_zoneHealthSimulation];
 
         v52 = objc_opt_new();
         [v50 setConfiguration:v52];
 
-        v53 = [v50 configuration];
-        [v53 setSourceApplicationBundleIdentifier:*MEMORY[0x277CFADD0]];
+        configuration = [v50 configuration];
+        [configuration setSourceApplicationBundleIdentifier:*MEMORY[0x277CFADD0]];
 
         v70[0] = MEMORY[0x277D85DD0];
         v70[1] = 3221225472;
@@ -14241,29 +14241,29 @@ LABEL_31:
         v70[3] = &unk_2785067F8;
         v70[4] = self;
         v72 = v25;
-        v54 = v66;
+        v54 = session;
         v71 = v54;
         [v50 setModifyRecordsCompletionBlock:v70];
-        v55 = [v54 syncContextProvider];
-        v56 = [v55 zoneHealthSyncContext];
-        [v56 addOperation:v50];
+        syncContextProvider = [v54 syncContextProvider];
+        zoneHealthSyncContext = [syncContextProvider zoneHealthSyncContext];
+        [zoneHealthSyncContext addOperation:v50];
 
-        v9 = v24;
+        statusCopy = lowercaseString;
       }
 
       else
       {
-        if ([(BRCXPCRegularIPCsClient *)v24 isEqualToString:@"partial"])
+        if ([(BRCXPCRegularIPCsClient *)lowercaseString isEqualToString:@"partial"])
         {
-          [v68 reportProblemWithType:6 recordName:@"root"];
+          [defaultClientZone reportProblemWithType:6 recordName:@"root"];
           v60 = brc_bread_crumbs();
           v61 = brc_default_log();
           if (os_log_type_enabled(v61, OS_LOG_TYPE_INFO))
           {
             *buf = 138412802;
-            v82 = self;
+            selfCopy6 = self;
             v83 = 2112;
-            v84 = 0;
+            selfCopy3 = 0;
             v85 = 2112;
             v86 = v60;
             _os_log_impl(&dword_223E7A000, v61, OS_LOG_TYPE_INFO, "[INFO] %@: reply(%@)%@", buf, 0x20u);
@@ -14277,19 +14277,19 @@ LABEL_31:
         v63 = brc_default_log();
         if (os_log_type_enabled(v63, OS_LOG_TYPE_INFO))
         {
-          v64 = [MEMORY[0x277CCA9B8] brc_errorInvalidParameter:@"newStatus" value:v24];
+          v64 = [MEMORY[0x277CCA9B8] brc_errorInvalidParameter:@"newStatus" value:lowercaseString];
           *buf = 138412802;
-          v82 = self;
+          selfCopy6 = self;
           v83 = 2112;
-          v84 = v64;
+          selfCopy3 = v64;
           v85 = 2112;
           v86 = v62;
           _os_log_impl(&dword_223E7A000, v63, OS_LOG_TYPE_INFO, "[INFO] %@: reply(%@)%@", buf, 0x20u);
         }
 
-        v40 = [MEMORY[0x277CCA9B8] brc_errorInvalidParameter:@"newStatus" value:v24];
+        v40 = [MEMORY[0x277CCA9B8] brc_errorInvalidParameter:@"newStatus" value:lowercaseString];
         (*(v25 + 2))(v25, v40);
-        v9 = v24;
+        statusCopy = lowercaseString;
       }
     }
 
@@ -14299,28 +14299,28 @@ LABEL_31:
       v58 = brc_default_log();
       if (os_log_type_enabled(v58, OS_LOG_TYPE_INFO))
       {
-        v59 = [MEMORY[0x277CCA9B8] brc_errorAppLibraryNotFound:v69];
+        v59 = [MEMORY[0x277CCA9B8] brc_errorAppLibraryNotFound:containerCopy];
         *buf = 138412802;
-        v82 = self;
+        selfCopy6 = self;
         v83 = 2112;
-        v84 = v59;
+        selfCopy3 = v59;
         v85 = 2112;
         v86 = v57;
         _os_log_impl(&dword_223E7A000, v58, OS_LOG_TYPE_INFO, "[INFO] %@: reply(%@)%@", buf, 0x20u);
       }
 
-      v40 = [MEMORY[0x277CCA9B8] brc_errorAppLibraryNotFound:v69];
+      v40 = [MEMORY[0x277CCA9B8] brc_errorAppLibraryNotFound:containerCopy];
       (*(v25 + 2))(v25, v40);
     }
 
-    v24 = v9;
+    lowercaseString = statusCopy;
 LABEL_30:
 
     __brc_leave_section(v73);
     goto LABEL_31;
   }
 
-  v24 = v9;
+  lowercaseString = statusCopy;
 LABEL_32:
   __brc_leave_section(v79);
 
@@ -14400,11 +14400,11 @@ void __73__BRCXPCRegularIPCsClient_simulateHealthIssueWithContainer_status_reply
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)healthStatusStringForContainer:(id)a3 reply:(id)a4
+- (void)healthStatusStringForContainer:(id)container reply:(id)reply
 {
   v62 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  containerCopy = container;
+  replyCopy = reply;
   memset(v49, 0, sizeof(v49));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient healthStatusStringForContainer:reply:]", 2410, 0, v49);
   v9 = brc_bread_crumbs();
@@ -14415,9 +14415,9 @@ void __73__BRCXPCRegularIPCsClient_simulateHealthIssueWithContainer_status_reply
     v12 = qos_class_self();
     v13 = BRCPrettyPrintEnumWithContext(v12, &brc_qos_entries, 0);
     *buf = 134219010;
-    v51 = v11;
+    selfCopy5 = v11;
     v52 = 2112;
-    v53 = self;
+    selfCopy3 = self;
     v54 = 2112;
     v55 = v13;
     v56 = 2080;
@@ -14432,7 +14432,7 @@ void __73__BRCXPCRegularIPCsClient_simulateHealthIssueWithContainer_status_reply
   v47[2] = __64__BRCXPCRegularIPCsClient_healthStatusStringForContainer_reply___block_invoke;
   v47[3] = &unk_2785014D0;
   v47[4] = self;
-  v14 = v8;
+  v14 = replyCopy;
   v48 = v14;
   v15 = _brc_ipc_spi(self, 1, a2, v47);
 
@@ -14448,23 +14448,23 @@ void __73__BRCXPCRegularIPCsClient_simulateHealthIssueWithContainer_status_reply
       v19 = qos_class_self();
       v20 = BRCPrettyPrintEnumWithContext(v19, &brc_qos_entries, 0);
       *buf = 134219266;
-      v51 = v18;
+      selfCopy5 = v18;
       v52 = 2112;
-      v53 = self;
+      selfCopy3 = self;
       v54 = 2112;
       v55 = v20;
       v56 = 2080;
       v57 = "[BRCXPCRegularIPCsClient healthStatusStringForContainer:reply:]";
       v58 = 2112;
-      v59 = v7;
+      v59 = containerCopy;
       v60 = 2112;
       v61 = v16;
       _os_log_impl(&dword_223E7A000, v17, OS_LOG_TYPE_INFO, "[INFO] ┏%llx %@ (%@) %s %@%@", buf, 0x3Eu);
     }
 
-    if (v7)
+    if (containerCopy)
     {
-      v21 = [objc_alloc(MEMORY[0x277CFAE60]) initWithAppLibraryName:v7];
+      v21 = [objc_alloc(MEMORY[0x277CFAE60]) initWithAppLibraryName:containerCopy];
     }
 
     else
@@ -14494,36 +14494,36 @@ void __73__BRCXPCRegularIPCsClient_simulateHealthIssueWithContainer_status_reply
         v27 = qos_class_self();
         v28 = BRCPrettyPrintEnumWithContext(v27, &brc_qos_entries, 0);
         *buf = 134219266;
-        v51 = v26;
+        selfCopy5 = v26;
         v52 = 2112;
-        v53 = self;
+        selfCopy3 = self;
         v54 = 2112;
         v55 = v28;
         v56 = 2080;
         v57 = "[BRCXPCRegularIPCsClient healthStatusStringForContainer:reply:]";
         v58 = 2112;
-        v59 = v7;
+        v59 = containerCopy;
         v60 = 2112;
         v61 = v24;
         _os_log_impl(&dword_223E7A000, v25, OS_LOG_TYPE_INFO, "[INFO] ┏%llx %@ (%@) %s getting health status on %@%@", buf, 0x3Eu);
       }
 
-      v29 = [(BRCXPCClient *)self session];
-      v30 = [v29 appLibraryByID:v7];
-      v31 = [v30 defaultClientZone];
+      session = [(BRCXPCClient *)self session];
+      v30 = [session appLibraryByID:containerCopy];
+      defaultClientZone = [v30 defaultClientZone];
 
-      if (v31)
+      if (defaultClientZone)
       {
         v32 = brc_bread_crumbs();
         v33 = brc_default_log();
         if (os_log_type_enabled(v33, OS_LOG_TYPE_INFO))
         {
-          v34 = [v31 zoneHealthState];
-          v35 = zoneHealthStateDescriptionForCode([v34 state]);
+          zoneHealthState = [defaultClientZone zoneHealthState];
+          v35 = zoneHealthStateDescriptionForCode([zoneHealthState state]);
           *buf = 138413058;
-          v51 = self;
+          selfCopy5 = self;
           v52 = 2112;
-          v53 = v35;
+          selfCopy3 = v35;
           v54 = 2112;
           v55 = 0;
           v56 = 2112;
@@ -14531,8 +14531,8 @@ void __73__BRCXPCRegularIPCsClient_simulateHealthIssueWithContainer_status_reply
           _os_log_impl(&dword_223E7A000, v33, OS_LOG_TYPE_INFO, "[INFO] %@: reply(%@, %@)%@", buf, 0x2Au);
         }
 
-        v36 = [v31 zoneHealthState];
-        v37 = zoneHealthStateDescriptionForCode([v36 state]);
+        zoneHealthState2 = [defaultClientZone zoneHealthState];
+        v37 = zoneHealthStateDescriptionForCode([zoneHealthState2 state]);
         (*(v22 + 2))(v22, v37, 0);
       }
 
@@ -14542,11 +14542,11 @@ void __73__BRCXPCRegularIPCsClient_simulateHealthIssueWithContainer_status_reply
         v39 = brc_default_log();
         if (os_log_type_enabled(v39, OS_LOG_TYPE_INFO))
         {
-          v40 = [MEMORY[0x277CCA9B8] brc_errorAppLibraryNotFound:v7];
+          v40 = [MEMORY[0x277CCA9B8] brc_errorAppLibraryNotFound:containerCopy];
           *buf = 138413058;
-          v51 = self;
+          selfCopy5 = self;
           v52 = 2112;
-          v53 = 0;
+          selfCopy3 = 0;
           v54 = 2112;
           v55 = v40;
           v56 = 2112;
@@ -14554,8 +14554,8 @@ void __73__BRCXPCRegularIPCsClient_simulateHealthIssueWithContainer_status_reply
           _os_log_impl(&dword_223E7A000, v39, OS_LOG_TYPE_INFO, "[INFO] %@: reply(%@, %@)%@", buf, 0x2Au);
         }
 
-        v36 = [MEMORY[0x277CCA9B8] brc_errorAppLibraryNotFound:v7];
-        (*(v22 + 2))(v22, 0, v36);
+        zoneHealthState2 = [MEMORY[0x277CCA9B8] brc_errorAppLibraryNotFound:containerCopy];
+        (*(v22 + 2))(v22, 0, zoneHealthState2);
       }
 
       __brc_leave_section(v43);
@@ -14617,11 +14617,11 @@ void __64__BRCXPCRegularIPCsClient_healthStatusStringForContainer_reply___block_
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)zoneNameForContainer:(id)a3 reply:(id)a4
+- (void)zoneNameForContainer:(id)container reply:(id)reply
 {
   v57 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  containerCopy = container;
+  replyCopy = reply;
   memset(v44, 0, sizeof(v44));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient zoneNameForContainer:reply:]", 2431, 0, v44);
   v9 = brc_bread_crumbs();
@@ -14632,9 +14632,9 @@ void __64__BRCXPCRegularIPCsClient_healthStatusStringForContainer_reply___block_
     v12 = qos_class_self();
     v13 = BRCPrettyPrintEnumWithContext(v12, &brc_qos_entries, 0);
     *buf = 134219010;
-    v46 = v11;
+    selfCopy5 = v11;
     v47 = 2112;
-    v48 = self;
+    selfCopy2 = self;
     v49 = 2112;
     v50 = v13;
     v51 = 2080;
@@ -14649,7 +14649,7 @@ void __64__BRCXPCRegularIPCsClient_healthStatusStringForContainer_reply___block_
   v42[2] = __54__BRCXPCRegularIPCsClient_zoneNameForContainer_reply___block_invoke;
   v42[3] = &unk_2785014D0;
   v42[4] = self;
-  v14 = v8;
+  v14 = replyCopy;
   v43 = v14;
   v15 = _brc_ipc_spi(self, 1, a2, v42);
 
@@ -14665,23 +14665,23 @@ void __64__BRCXPCRegularIPCsClient_healthStatusStringForContainer_reply___block_
       v19 = qos_class_self();
       v20 = BRCPrettyPrintEnumWithContext(v19, &brc_qos_entries, 0);
       *buf = 134219266;
-      v46 = v18;
+      selfCopy5 = v18;
       v47 = 2112;
-      v48 = self;
+      selfCopy2 = self;
       v49 = 2112;
       v50 = v20;
       v51 = 2080;
       v52 = "[BRCXPCRegularIPCsClient zoneNameForContainer:reply:]";
       v53 = 2112;
-      v54 = v7;
+      v54 = containerCopy;
       v55 = 2112;
       v56 = v16;
       _os_log_impl(&dword_223E7A000, v17, OS_LOG_TYPE_INFO, "[INFO] ┏%llx %@ (%@) %s %@%@", buf, 0x3Eu);
     }
 
-    if (v7)
+    if (containerCopy)
     {
-      v21 = [objc_alloc(MEMORY[0x277CFAE60]) initWithAppLibraryName:v7];
+      v21 = [objc_alloc(MEMORY[0x277CFAE60]) initWithAppLibraryName:containerCopy];
     }
 
     else
@@ -14693,7 +14693,7 @@ void __64__BRCXPCRegularIPCsClient_healthStatusStringForContainer_reply___block_
     v36 = 3221225472;
     v37 = __54__BRCXPCRegularIPCsClient_zoneNameForContainer_reply___block_invoke_399;
     v38 = &unk_2785014D0;
-    v39 = self;
+    selfCopy3 = self;
     v22 = v14;
     v40 = v22;
     v23 = _brc_ipc_check_applibrary_read_access(self, 1, v21, &v35);
@@ -14701,20 +14701,20 @@ void __64__BRCXPCRegularIPCsClient_healthStatusStringForContainer_reply___block_
     if (v23)
     {
       v24 = [(BRCXPCClient *)self session:v35];
-      v25 = [v24 appLibraryByID:v7];
-      v26 = [v25 defaultClientZone];
+      v25 = [v24 appLibraryByID:containerCopy];
+      defaultClientZone = [v25 defaultClientZone];
 
-      if (v26)
+      if (defaultClientZone)
       {
         v27 = brc_bread_crumbs();
         v28 = brc_default_log();
         if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
         {
-          v29 = [v26 zoneName];
+          zoneName = [defaultClientZone zoneName];
           *buf = 138413058;
-          v46 = self;
+          selfCopy5 = self;
           v47 = 2112;
-          v48 = v29;
+          selfCopy2 = zoneName;
           v49 = 2112;
           v50 = 0;
           v51 = 2112;
@@ -14722,8 +14722,8 @@ void __64__BRCXPCRegularIPCsClient_healthStatusStringForContainer_reply___block_
           _os_log_impl(&dword_223E7A000, v28, OS_LOG_TYPE_INFO, "[INFO] %@: reply(%@, %@)%@", buf, 0x2Au);
         }
 
-        v30 = [v26 zoneName];
-        (*(v22 + 2))(v22, v30, 0);
+        zoneName2 = [defaultClientZone zoneName];
+        (*(v22 + 2))(v22, zoneName2, 0);
       }
 
       else
@@ -14732,11 +14732,11 @@ void __64__BRCXPCRegularIPCsClient_healthStatusStringForContainer_reply___block_
         v32 = brc_default_log();
         if (os_log_type_enabled(v32, OS_LOG_TYPE_INFO))
         {
-          v33 = [MEMORY[0x277CCA9B8] brc_errorAppLibraryNotFound:v7];
+          v33 = [MEMORY[0x277CCA9B8] brc_errorAppLibraryNotFound:containerCopy];
           *buf = 138413058;
-          v46 = self;
+          selfCopy5 = self;
           v47 = 2112;
-          v48 = 0;
+          selfCopy2 = 0;
           v49 = 2112;
           v50 = v33;
           v51 = 2112;
@@ -14744,8 +14744,8 @@ void __64__BRCXPCRegularIPCsClient_healthStatusStringForContainer_reply___block_
           _os_log_impl(&dword_223E7A000, v32, OS_LOG_TYPE_INFO, "[INFO] %@: reply(%@, %@)%@", buf, 0x2Au);
         }
 
-        v30 = [MEMORY[0x277CCA9B8] brc_errorAppLibraryNotFound:v7];
-        (*(v22 + 2))(v22, 0, v30);
+        zoneName2 = [MEMORY[0x277CCA9B8] brc_errorAppLibraryNotFound:containerCopy];
+        (*(v22 + 2))(v22, 0, zoneName2);
       }
     }
 
@@ -14805,10 +14805,10 @@ void __54__BRCXPCRegularIPCsClient_zoneNameForContainer_reply___block_invoke_399
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)forceSyncZoneHealthWithBarrierWithTimeout:(unint64_t)a3 reply:(id)a4
+- (void)forceSyncZoneHealthWithBarrierWithTimeout:(unint64_t)timeout reply:(id)reply
 {
   v64 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  replyCopy = reply;
   memset(v54, 0, sizeof(v54));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient forceSyncZoneHealthWithBarrierWithTimeout:reply:]", 2450, 0, v54);
   v7 = brc_bread_crumbs();
@@ -14836,7 +14836,7 @@ void __54__BRCXPCRegularIPCsClient_zoneNameForContainer_reply___block_invoke_399
   v52[2] = __75__BRCXPCRegularIPCsClient_forceSyncZoneHealthWithBarrierWithTimeout_reply___block_invoke;
   v52[3] = &unk_2785014D0;
   v52[4] = self;
-  v12 = v6;
+  v12 = replyCopy;
   v53 = v12;
   v13 = _brc_ipc_check_applibraries_access(self, 1, v52);
 
@@ -14865,8 +14865,8 @@ void __54__BRCXPCRegularIPCsClient_zoneNameForContainer_reply___block_invoke_399
     *v63 = __Block_byref_object_dispose__52;
     *&v63[8] = 0;
     dispatch_group_enter(v16);
-    v17 = [(BRCXPCClient *)self session];
-    v18 = [v17 containerScheduler];
+    session = [(BRCXPCClient *)self session];
+    containerScheduler = [session containerScheduler];
     v41[0] = MEMORY[0x277D85DD0];
     v41[1] = 3221225472;
     v41[2] = __75__BRCXPCRegularIPCsClient_forceSyncZoneHealthWithBarrierWithTimeout_reply___block_invoke_400;
@@ -14876,11 +14876,11 @@ void __54__BRCXPCRegularIPCsClient_zoneNameForContainer_reply___block_invoke_399
     v43 = buf;
     v19 = v16;
     v42 = v19;
-    [v18 notifyAfterNextZoneHealthSyncDown:v41];
+    [containerScheduler notifyAfterNextZoneHealthSyncDown:v41];
 
-    v20 = [(BRCXPCClient *)self session];
-    v21 = [v20 containerScheduler];
-    [v21 scheduleSyncDownForZoneHealthWithGroup:0];
+    session2 = [(BRCXPCClient *)self session];
+    containerScheduler2 = [session2 containerScheduler];
+    [containerScheduler2 scheduleSyncDownForZoneHealthWithGroup:0];
 
     queue = self->super._queue;
     block[0] = MEMORY[0x277D85DD0];
@@ -14895,9 +14895,9 @@ void __54__BRCXPCRegularIPCsClient_zoneNameForContainer_reply___block_invoke_399
     v23 = v12;
     v36 = v23;
     dispatch_group_notify(v19, queue, block);
-    if (a3)
+    if (timeout)
     {
-      v24 = dispatch_time(0, 1000000000 * a3);
+      v24 = dispatch_time(0, 1000000000 * timeout);
       if (dispatch_group_wait(v19, v24))
       {
         v33 = v50;
@@ -14909,8 +14909,8 @@ void __54__BRCXPCRegularIPCsClient_zoneNameForContainer_reply___block_invoke_399
           [BRCXPCRegularIPCsClient forceSyncZoneHealthWithBarrierWithTimeout:? reply:?];
         }
 
-        v27 = self;
-        objc_sync_enter(v27);
+        selfCopy = self;
+        objc_sync_enter(selfCopy);
         if ((v47[3] & 1) == 0)
         {
           *(v47 + 24) = 1;
@@ -14920,7 +14920,7 @@ void __54__BRCXPCRegularIPCsClient_zoneNameForContainer_reply___block_invoke_399
           {
             v30 = [MEMORY[0x277CCA9B8] br_errorWithPOSIXCode:60 description:{@"zone-health sync timed-out", v33, v34}];
             *v55 = 138412802;
-            v56 = v27;
+            v56 = selfCopy;
             v57 = 2112;
             v58 = v30;
             v59 = 2112;
@@ -14932,7 +14932,7 @@ void __54__BRCXPCRegularIPCsClient_zoneNameForContainer_reply___block_invoke_399
           (*(v23 + 2))(v23, v31);
         }
 
-        objc_sync_exit(v27);
+        objc_sync_exit(selfCopy);
 
         __brc_leave_section(&v33);
       }
@@ -15042,11 +15042,11 @@ void __75__BRCXPCRegularIPCsClient_forceSyncZoneHealthWithBarrierWithTimeout_rep
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)forceSyncWithBarrierContainerID:(id)a3 timeout:(unint64_t)a4 reply:(id)a5
+- (void)forceSyncWithBarrierContainerID:(id)d timeout:(unint64_t)timeout reply:(id)reply
 {
   v94 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
+  dCopy = d;
+  replyCopy = reply;
   memset(v81, 0, sizeof(v81));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient forceSyncWithBarrierContainerID:timeout:reply:]", 2497, 0, v81);
   v9 = brc_bread_crumbs();
@@ -15065,20 +15065,20 @@ void __75__BRCXPCRegularIPCsClient_forceSyncZoneHealthWithBarrierWithTimeout_rep
     *v91 = 2080;
     *&v91[2] = "[BRCXPCRegularIPCsClient forceSyncWithBarrierContainerID:timeout:reply:]";
     *&v91[10] = 2112;
-    *&v91[12] = v7;
+    *&v91[12] = dCopy;
     v92 = 2112;
     v93 = v9;
     _os_log_impl(&dword_223E7A000, v10, OS_LOG_TYPE_INFO, "[INFO] ┏%llx %@ (%@) %s %@%@", buf, 0x3Eu);
   }
 
-  if (v7)
+  if (dCopy)
   {
-    v14 = [objc_alloc(MEMORY[0x277CFAE60]) initWithAppLibraryName:v7];
+    defaultMangledID = [objc_alloc(MEMORY[0x277CFAE60]) initWithAppLibraryName:dCopy];
   }
 
   else
   {
-    v14 = 0;
+    defaultMangledID = 0;
   }
 
   v79[0] = MEMORY[0x277D85DD0];
@@ -15086,9 +15086,9 @@ void __75__BRCXPCRegularIPCsClient_forceSyncZoneHealthWithBarrierWithTimeout_rep
   v79[2] = __73__BRCXPCRegularIPCsClient_forceSyncWithBarrierContainerID_timeout_reply___block_invoke;
   v79[3] = &unk_2785014D0;
   v79[4] = self;
-  v15 = v8;
+  v15 = replyCopy;
   v80 = v15;
-  v16 = _brc_ipc_check_applibrary_read_access(self, 1, v14, v79);
+  v16 = _brc_ipc_check_applibrary_read_access(self, 1, defaultMangledID, v79);
 
   if (v16)
   {
@@ -15112,7 +15112,7 @@ void __75__BRCXPCRegularIPCsClient_forceSyncZoneHealthWithBarrierWithTimeout_rep
     v88[2] = *MEMORY[0x277CFADD0];
     v88[3] = v18;
     v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v88 count:4];
-    v20 = [v19 containsObject:v7];
+    v20 = [v19 containsObject:dCopy];
     v21 = v20;
     v49 = v19;
     if (v20)
@@ -15124,43 +15124,43 @@ void __75__BRCXPCRegularIPCsClient_forceSyncZoneHealthWithBarrierWithTimeout_rep
         [BRCXPCRegularIPCsClient forceSyncWithBarrierContainerID:timeout:reply:];
       }
 
-      v24 = v7;
+      zoneName = dCopy;
       v25 = 0;
     }
 
     else
     {
-      if (!v14)
+      if (!defaultMangledID)
       {
-        v14 = [(BRCXPCClient *)self defaultMangledID];
+        defaultMangledID = [(BRCXPCClient *)self defaultMangledID];
       }
 
-      v25 = [(BRCXPCClient *)self _setupAppLibrary:v14 error:*&buf[8] + 40];
+      v25 = [(BRCXPCClient *)self _setupAppLibrary:defaultMangledID error:*&buf[8] + 40];
       if (!v25)
       {
         v46 = brc_bread_crumbs();
         v47 = brc_default_log();
         if (os_log_type_enabled(v47, OS_LOG_TYPE_INFO))
         {
-          v48 = [*(*&buf[8] + 40) brc_wrappedError];
+          brc_wrappedError = [*(*&buf[8] + 40) brc_wrappedError];
           *v84 = 138412802;
           *&v84[4] = self;
           *&v84[12] = 2112;
-          *&v84[14] = v48;
+          *&v84[14] = brc_wrappedError;
           *&v84[22] = 2112;
           v85 = v46;
           _os_log_impl(&dword_223E7A000, v47, OS_LOG_TYPE_INFO, "[INFO] %@: reply(%@)%@", v84, 0x20u);
         }
 
-        v34 = [*(*&buf[8] + 40) brc_wrappedError];
-        (*(v15 + 2))(v15, v34);
+        brc_wrappedError2 = [*(*&buf[8] + 40) brc_wrappedError];
+        (*(v15 + 2))(v15, brc_wrappedError2);
         v25 = 0;
         goto LABEL_29;
       }
 
       [(BRCXPCClient *)self addAppLibrary:v25];
-      v26 = [v25 defaultClientZone];
-      v24 = [v26 zoneName];
+      defaultClientZone = [v25 defaultClientZone];
+      zoneName = [defaultClientZone zoneName];
     }
 
     memset(v82, 0, sizeof(v82));
@@ -15172,9 +15172,9 @@ void __75__BRCXPCRegularIPCsClient_forceSyncZoneHealthWithBarrierWithTimeout_rep
       *v84 = 134218754;
       *&v84[4] = *v82;
       *&v84[12] = 2112;
-      *&v84[14] = v7;
+      *&v84[14] = dCopy;
       *&v84[22] = 2112;
-      v85 = v24;
+      v85 = zoneName;
       v86 = 2112;
       v87 = v27;
       _os_log_debug_impl(&dword_223E7A000, v28, OS_LOG_TYPE_DEBUG, "[DEBUG] ┣%llx waiting for next sync down for %@ -> %@%@", v84, 0x2Au);
@@ -15185,7 +15185,7 @@ void __75__BRCXPCRegularIPCsClient_forceSyncZoneHealthWithBarrierWithTimeout_rep
     if ((v21 & 1) == 0)
     {
       dispatch_group_enter(group);
-      v29 = [v25 defaultClientZone];
+      defaultClientZone2 = [v25 defaultClientZone];
       v30 = [(BRCXPCClient *)self description];
       v69[0] = MEMORY[0x277D85DD0];
       v69[1] = 3221225472;
@@ -15193,10 +15193,10 @@ void __75__BRCXPCRegularIPCsClient_forceSyncZoneHealthWithBarrierWithTimeout_rep
       v69[3] = &unk_278507038;
       v73 = v75;
       v74 = v76;
-      v70 = v24;
+      v70 = zoneName;
       v72 = buf;
       v71 = group;
-      [v29 notifyClient:v30 afterNextSyncDown:v69];
+      [defaultClientZone2 notifyClient:v30 afterNextSyncDown:v69];
     }
 
     dispatch_group_enter(group);
@@ -15206,7 +15206,7 @@ void __75__BRCXPCRegularIPCsClient_forceSyncZoneHealthWithBarrierWithTimeout_rep
     v63[3] = &unk_278507038;
     v67 = v75;
     v68 = v76;
-    v31 = v24;
+    v31 = zoneName;
     v64 = v31;
     v66 = v77;
     v32 = group;
@@ -15223,18 +15223,18 @@ void __75__BRCXPCRegularIPCsClient_forceSyncZoneHealthWithBarrierWithTimeout_rep
     block[3] = &unk_278507060;
     v61 = v75;
     v62 = v76;
-    v34 = v31;
-    v55 = v34;
-    v56 = self;
+    brc_wrappedError2 = v31;
+    v55 = brc_wrappedError2;
+    selfCopy = self;
     v58 = v84;
     v59 = buf;
     v60 = v77;
     v35 = v15;
     v57 = v35;
     dispatch_group_notify(v32, queue, block);
-    if (a4)
+    if (timeout)
     {
-      v36 = dispatch_time(0, 1000000000 * a4);
+      v36 = dispatch_time(0, 1000000000 * timeout);
       if (dispatch_group_wait(v32, v36))
       {
         v52 = v75;
@@ -15246,14 +15246,14 @@ void __75__BRCXPCRegularIPCsClient_forceSyncZoneHealthWithBarrierWithTimeout_rep
           *v82 = 134218498;
           *&v82[4] = v52;
           *&v82[12] = 2112;
-          *&v82[14] = v34;
+          *&v82[14] = brc_wrappedError2;
           *&v82[22] = 2112;
           v83 = v37;
           _os_log_debug_impl(&dword_223E7A000, v38, OS_LOG_TYPE_DEBUG, "[DEBUG] ┳%llx timed-out: sync of %@%@", v82, 0x20u);
         }
 
-        v39 = self;
-        objc_sync_enter(v39);
+        selfCopy2 = self;
+        objc_sync_enter(selfCopy2);
         if ((*(*&v84[8] + 24) & 1) == 0)
         {
           *(*&v84[8] + 24) = 1;
@@ -15262,9 +15262,9 @@ void __75__BRCXPCRegularIPCsClient_forceSyncZoneHealthWithBarrierWithTimeout_rep
           if (os_log_type_enabled(v41, OS_LOG_TYPE_INFO))
           {
             v42 = v40;
-            v43 = [MEMORY[0x277CCA9B8] br_errorWithPOSIXCode:60 description:{@"sync-down timed out: %@", v7, v49}];
+            v43 = [MEMORY[0x277CCA9B8] br_errorWithPOSIXCode:60 description:{@"sync-down timed out: %@", dCopy, v49}];
             *v82 = 138412802;
-            *&v82[4] = v39;
+            *&v82[4] = selfCopy2;
             *&v82[12] = 2112;
             *&v82[14] = v43;
             *&v82[22] = 2112;
@@ -15274,11 +15274,11 @@ void __75__BRCXPCRegularIPCsClient_forceSyncZoneHealthWithBarrierWithTimeout_rep
             v40 = v42;
           }
 
-          v44 = [MEMORY[0x277CCA9B8] br_errorWithPOSIXCode:60 description:{@"sync-down timed out: %@", v7}];
+          v44 = [MEMORY[0x277CCA9B8] br_errorWithPOSIXCode:60 description:{@"sync-down timed out: %@", dCopy}];
           (*(v35 + 2))(v35, v44);
         }
 
-        objc_sync_exit(v39);
+        objc_sync_exit(selfCopy2);
 
         __brc_leave_section(&v52);
       }
@@ -15459,11 +15459,11 @@ void __73__BRCXPCRegularIPCsClient_forceSyncWithBarrierContainerID_timeout_reply
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)forceSyncContainerID:(id)a3 reply:(id)a4
+- (void)forceSyncContainerID:(id)d reply:(id)reply
 {
   v111 = *MEMORY[0x277D85DE8];
-  v70 = a3;
-  v69 = a4;
+  dCopy = d;
+  replyCopy = reply;
   v93 = 0;
   v94 = &v93;
   v95 = 0x3032000000;
@@ -15480,9 +15480,9 @@ void __73__BRCXPCRegularIPCsClient_forceSyncWithBarrierContainerID_timeout_reply
     v9 = qos_class_self();
     v10 = BRCPrettyPrintEnumWithContext(v9, &brc_qos_entries, 0);
     *buf = 134219010;
-    v102 = v8;
+    selfCopy9 = v8;
     v103 = 2112;
-    v104 = self;
+    selfCopy3 = self;
     v105 = 2112;
     v106 = v10;
     v107 = 2080;
@@ -15525,9 +15525,9 @@ void __73__BRCXPCRegularIPCsClient_forceSyncWithBarrierContainerID_timeout_reply
 LABEL_52:
       v61 = v94[5];
       *buf = 138412802;
-      v102 = self;
+      selfCopy9 = self;
       v103 = 2112;
-      v104 = v61;
+      selfCopy3 = v61;
       v105 = 2112;
       v106 = v23;
       _os_log_impl(&dword_223E7A000, v24, OS_LOG_TYPE_INFO, "[INFO] %@: reply(%@)%@", buf, 0x20u);
@@ -15535,7 +15535,7 @@ LABEL_52:
 
 LABEL_53:
 
-    v69[2](v69, v94[5]);
+    replyCopy[2](replyCopy, v94[5]);
     goto LABEL_54;
   }
 
@@ -15547,33 +15547,33 @@ LABEL_6:
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134218754;
-    v102 = v90[0];
+    selfCopy9 = v90[0];
     v103 = 2112;
-    v104 = self;
+    selfCopy3 = self;
     v105 = 2112;
-    v106 = v70;
+    v106 = dCopy;
     v107 = 2112;
     v108 = v12;
     _os_log_debug_impl(&dword_223E7A000, v13, OS_LOG_TYPE_DEBUG, "[DEBUG] ┏%llx %@: force syncing containers matching '%@'%@", buf, 0x2Au);
   }
 
-  if (v70)
+  if (dCopy)
   {
-    v14 = [*MEMORY[0x277CFADA8] lowercaseString];
-    v15 = [v70 lowercaseString];
-    v16 = [v14 containsString:v15];
+    lowercaseString = [*MEMORY[0x277CFADA8] lowercaseString];
+    lowercaseString2 = [dCopy lowercaseString];
+    v16 = [lowercaseString containsString:lowercaseString2];
 
-    v17 = [*MEMORY[0x277CFAD58] lowercaseString];
-    v18 = [v70 lowercaseString];
-    v68 = [v17 containsString:v18];
+    lowercaseString3 = [*MEMORY[0x277CFAD58] lowercaseString];
+    lowercaseString4 = [dCopy lowercaseString];
+    v68 = [lowercaseString3 containsString:lowercaseString4];
 
-    v19 = [*MEMORY[0x277CFADD0] lowercaseString];
-    v20 = [v70 lowercaseString];
-    v67 = [v19 containsString:v20];
+    lowercaseString5 = [*MEMORY[0x277CFADD0] lowercaseString];
+    lowercaseString6 = [dCopy lowercaseString];
+    v67 = [lowercaseString5 containsString:lowercaseString6];
 
-    v21 = [*MEMORY[0x277CFB070] lowercaseString];
-    v22 = [v70 lowercaseString];
-    v66 = [v21 containsString:v22];
+    lowercaseString7 = [*MEMORY[0x277CFB070] lowercaseString];
+    lowercaseString8 = [dCopy lowercaseString];
+    v66 = [lowercaseString7 containsString:lowercaseString8];
   }
 
   else
@@ -15586,7 +15586,7 @@ LABEL_6:
 
   [(BRCXPCClient *)self session];
   v72 = v89 = 0;
-  v25 = [v72 appLibrariesMatchingSearchString:v70 error:&v89];
+  v25 = [v72 appLibrariesMatchingSearchString:dCopy error:&v89];
   v26 = v89;
   v65 = v25;
   if ((v25 != 0) | (v16 | v68 | v67 | v66) & 1)
@@ -15612,8 +15612,8 @@ LABEL_6:
 
           v32 = *(*(&v85 + 1) + 8 * i);
           [(BRCXPCClient *)self addAppLibrary:v32];
-          v33 = [v32 defaultClientZone];
-          [v27 addObject:v33];
+          defaultClientZone = [v32 defaultClientZone];
+          [v27 addObject:defaultClientZone];
         }
 
         v29 = [v28 countByEnumeratingWithState:&v85 objects:v100 count:16];
@@ -15623,7 +15623,7 @@ LABEL_6:
     }
 
     v84 = v26;
-    v64 = [v72 clientZonesMatchingSearchString:v70 error:&v84];
+    v64 = [v72 clientZonesMatchingSearchString:dCopy error:&v84];
     v63 = v84;
 
     [v27 addObjectsFromArray:v64];
@@ -15634,14 +15634,14 @@ LABEL_6:
       if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v102 = self;
+        selfCopy9 = self;
         v103 = 2112;
-        v104 = v34;
+        selfCopy3 = v34;
         _os_log_impl(&dword_223E7A000, v35, OS_LOG_TYPE_DEFAULT, "[NOTICE] %@: force syncing shared database%@", buf, 0x16u);
       }
 
-      v36 = [v72 containerScheduler];
-      [v36 scheduleSyncDownForSharedDatabaseImmediately:1];
+      containerScheduler = [v72 containerScheduler];
+      [containerScheduler scheduleSyncDownForSharedDatabaseImmediately:1];
     }
 
     v37 = dispatch_group_create();
@@ -15668,11 +15668,11 @@ LABEL_6:
           v43 = brc_default_log();
           if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
           {
-            v44 = [v41 mangledID];
+            mangledID = [v41 mangledID];
             *buf = 138412802;
-            v102 = self;
+            selfCopy9 = self;
             v103 = 2112;
-            v104 = v44;
+            selfCopy3 = mangledID;
             v105 = 2112;
             v106 = v42;
             _os_log_impl(&dword_223E7A000, v43, OS_LOG_TYPE_DEFAULT, "[NOTICE] %@: force syncing %@%@", buf, 0x20u);
@@ -15680,7 +15680,7 @@ LABEL_6:
 
           dispatch_group_enter(v37);
           tracker = self->super._tracker;
-          v46 = [v72 clientTruthWorkloop];
+          clientTruthWorkloop = [v72 clientTruthWorkloop];
           v78[0] = MEMORY[0x277D85DD0];
           v78[1] = 3221225472;
           v78[2] = __54__BRCXPCRegularIPCsClient_forceSyncContainerID_reply___block_invoke_411;
@@ -15692,7 +15692,7 @@ LABEL_6:
           v76[2] = __54__BRCXPCRegularIPCsClient_forceSyncContainerID_reply___block_invoke_2;
           v76[3] = &unk_2784FF450;
           v77 = v79;
-          brc_task_tracker_async_with_logs(tracker, v46, v78, v76);
+          brc_task_tracker_async_with_logs(tracker, clientTruthWorkloop, v78, v76);
         }
 
         v38 = [obj countByEnumeratingWithState:&v80 objects:v99 count:16];
@@ -15708,14 +15708,14 @@ LABEL_6:
       if (os_log_type_enabled(v48, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v102 = self;
+        selfCopy9 = self;
         v103 = 2112;
-        v104 = v47;
+        selfCopy3 = v47;
         _os_log_impl(&dword_223E7A000, v48, OS_LOG_TYPE_DEFAULT, "[NOTICE] %@: force syncing container metadata%@", buf, 0x16u);
       }
 
-      v49 = [v72 containerScheduler];
-      [v49 scheduleSyncDownForContainerMetadataWithGroup:0];
+      containerScheduler2 = [v72 containerScheduler];
+      [containerScheduler2 scheduleSyncDownForContainerMetadataWithGroup:0];
     }
 
     if (v67)
@@ -15725,14 +15725,14 @@ LABEL_6:
       if (os_log_type_enabled(v51, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v102 = self;
+        selfCopy9 = self;
         v103 = 2112;
-        v104 = v50;
+        selfCopy3 = v50;
         _os_log_impl(&dword_223E7A000, v51, OS_LOG_TYPE_DEFAULT, "[NOTICE] %@: forcing syncing zone health%@", buf, 0x16u);
       }
 
-      v52 = [v72 containerScheduler];
-      [v52 scheduleSyncDownForZoneHealthWithGroup:0];
+      containerScheduler3 = [v72 containerScheduler];
+      [containerScheduler3 scheduleSyncDownForZoneHealthWithGroup:0];
     }
 
     if (v66)
@@ -15742,15 +15742,15 @@ LABEL_6:
       if (os_log_type_enabled(v54, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v102 = self;
+        selfCopy9 = self;
         v103 = 2112;
-        v104 = v53;
+        selfCopy3 = v53;
         _os_log_impl(&dword_223E7A000, v54, OS_LOG_TYPE_DEFAULT, "[NOTICE] %@: forcing syncing side car zone%@", buf, 0x16u);
       }
 
-      v55 = [v72 containerScheduler];
-      v56 = [MEMORY[0x277CBC4F8] br_syncDownPushTriggered];
-      [v55 scheduleSyncDownForSideCarWithGroup:v56];
+      containerScheduler4 = [v72 containerScheduler];
+      br_syncDownPushTriggered = [MEMORY[0x277CBC4F8] br_syncDownPushTriggered];
+      [containerScheduler4 scheduleSyncDownForSideCarWithGroup:br_syncDownPushTriggered];
     }
 
     queue = self->super._queue;
@@ -15759,7 +15759,7 @@ LABEL_6:
     block[2] = __54__BRCXPCRegularIPCsClient_forceSyncContainerID_reply___block_invoke_412;
     block[3] = &unk_278500048;
     block[4] = self;
-    v75 = v69;
+    v75 = replyCopy;
     dispatch_group_notify(v37, queue, block);
 
     v26 = v63;
@@ -15773,15 +15773,15 @@ LABEL_6:
     if (os_log_type_enabled(v60, OS_LOG_TYPE_INFO))
     {
       *buf = 138412802;
-      v102 = self;
+      selfCopy9 = self;
       v103 = 2112;
-      v104 = v26;
+      selfCopy3 = v26;
       v105 = 2112;
       v106 = v59;
       _os_log_impl(&dword_223E7A000, v60, OS_LOG_TYPE_INFO, "[INFO] %@: reply(%@)%@", buf, 0x20u);
     }
 
-    (v69)[2](v69, v26);
+    (replyCopy)[2](replyCopy, v26);
     v58 = v65;
   }
 
@@ -15825,12 +15825,12 @@ uint64_t __54__BRCXPCRegularIPCsClient_forceSyncContainerID_reply___block_invoke
   return result;
 }
 
-- (void)iWorkForceSyncContainerID:(id)a3 ownedByMe:(BOOL)a4 reply:(id)a5
+- (void)iWorkForceSyncContainerID:(id)d ownedByMe:(BOOL)me reply:(id)reply
 {
-  v6 = a4;
+  meCopy = me;
   v49 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  dCopy = d;
+  replyCopy = reply;
   memset(v40, 0, sizeof(v40));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient iWorkForceSyncContainerID:ownedByMe:reply:]", 2667, 0, v40);
   v10 = brc_bread_crumbs();
@@ -15841,9 +15841,9 @@ uint64_t __54__BRCXPCRegularIPCsClient_forceSyncContainerID_reply___block_invoke
     v13 = qos_class_self();
     v14 = BRCPrettyPrintEnumWithContext(v13, &brc_qos_entries, 0);
     *buf = 134219010;
-    v42 = v12;
+    selfCopy4 = v12;
     v43 = 2112;
-    v44 = self;
+    selfCopy2 = self;
     v45 = 2112;
     v46 = v14;
     v47 = 2080;
@@ -15853,16 +15853,16 @@ uint64_t __54__BRCXPCRegularIPCsClient_forceSyncContainerID_reply___block_invoke
     _os_log_impl(&dword_223E7A000, v11, OS_LOG_TYPE_INFO, "[INFO] ┏%llx %@ (%@) %s %@", buf, 0x34u);
   }
 
-  v15 = [(BRCXPCClient *)self clientPriviledgesDescriptor];
-  v16 = [v15 isSharingPrivateInterfaceEntitled];
+  clientPriviledgesDescriptor = [(BRCXPCClient *)self clientPriviledgesDescriptor];
+  isSharingPrivateInterfaceEntitled = [clientPriviledgesDescriptor isSharingPrivateInterfaceEntitled];
   v38[0] = MEMORY[0x277D85DD0];
   v38[1] = 3221225472;
   v38[2] = __69__BRCXPCRegularIPCsClient_iWorkForceSyncContainerID_ownedByMe_reply___block_invoke;
   v38[3] = &unk_2785014D0;
   v38[4] = self;
-  v17 = v9;
+  v17 = replyCopy;
   v39 = v17;
-  v18 = _brc_ipc_check_client_privilege(self, 1, v16, "isSharingPrivateInterfaceEntitled", v38);
+  v18 = _brc_ipc_check_client_privilege(self, 1, isSharingPrivateInterfaceEntitled, "isSharingPrivateInterfaceEntitled", v38);
 
   if (v18)
   {
@@ -15873,38 +15873,38 @@ uint64_t __54__BRCXPCRegularIPCsClient_forceSyncContainerID_reply___block_invoke
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
     {
       *buf = 134219010;
-      v42 = v37[0];
+      selfCopy4 = v37[0];
       v43 = 2112;
-      v44 = self;
+      selfCopy2 = self;
       v45 = 2112;
-      v46 = v8;
+      v46 = dCopy;
       v47 = 1024;
-      *v48 = v6;
+      *v48 = meCopy;
       *&v48[4] = 2112;
       *&v48[6] = v19;
       _os_log_debug_impl(&dword_223E7A000, v20, OS_LOG_TYPE_DEBUG, "[DEBUG] ┏%llx %@: iWork force syncing containers matching '%@' ownedByMe:%d%@", buf, 0x30u);
     }
 
-    v21 = [(BRCXPCClient *)self session];
-    v22 = v21;
-    if (v6)
+    session = [(BRCXPCClient *)self session];
+    v22 = session;
+    if (meCopy)
     {
-      v23 = [v21 appLibraryByID:v8];
+      v23 = [session appLibraryByID:dCopy];
       tracker = self->super._tracker;
-      v25 = [v22 clientTruthWorkloop];
+      clientTruthWorkloop = [v22 clientTruthWorkloop];
       v35[0] = MEMORY[0x277D85DD0];
       v35[1] = 3221225472;
       v35[2] = __69__BRCXPCRegularIPCsClient_iWorkForceSyncContainerID_ownedByMe_reply___block_invoke_413;
       v35[3] = &unk_2784FF450;
       v26 = v23;
       v36 = v26;
-      brc_task_tracker_async_with_logs(tracker, v25, v35, 0);
+      brc_task_tracker_async_with_logs(tracker, clientTruthWorkloop, v35, 0);
 
       v27 = brc_bread_crumbs();
       v28 = brc_default_log();
       if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
       {
-        if (v8)
+        if (dCopy)
         {
           v29 = 0;
         }
@@ -15915,18 +15915,18 @@ uint64_t __54__BRCXPCRegularIPCsClient_forceSyncContainerID_reply___block_invoke
         }
 
         *buf = 138412802;
-        v42 = self;
+        selfCopy4 = self;
         v43 = 2112;
-        v44 = v29;
+        selfCopy2 = v29;
         v45 = 2112;
         v46 = v27;
         _os_log_impl(&dword_223E7A000, v28, OS_LOG_TYPE_INFO, "[INFO] %@: reply(%@)%@", buf, 0x20u);
-        if (!v8)
+        if (!dCopy)
         {
         }
       }
 
-      if (v8)
+      if (dCopy)
       {
         v33 = 0;
       }
@@ -15937,24 +15937,24 @@ uint64_t __54__BRCXPCRegularIPCsClient_forceSyncContainerID_reply___block_invoke
       }
 
       (*(v17 + 2))(v17, v33);
-      if (!v8)
+      if (!dCopy)
       {
       }
     }
 
     else
     {
-      v30 = [v21 containerScheduler];
-      [v30 scheduleSyncDownForSharedDatabaseImmediately:1];
+      containerScheduler = [session containerScheduler];
+      [containerScheduler scheduleSyncDownForSharedDatabaseImmediately:1];
 
       v31 = brc_bread_crumbs();
       v32 = brc_default_log();
       if (os_log_type_enabled(v32, OS_LOG_TYPE_INFO))
       {
         *buf = 138412802;
-        v42 = self;
+        selfCopy4 = self;
         v43 = 2112;
-        v44 = 0;
+        selfCopy2 = 0;
         v45 = 2112;
         v46 = v31;
         _os_log_impl(&dword_223E7A000, v32, OS_LOG_TYPE_INFO, "[INFO] %@: reply(%@)%@", buf, 0x20u);
@@ -15999,12 +15999,12 @@ void __69__BRCXPCRegularIPCsClient_iWorkForceSyncContainerID_ownedByMe_reply___b
   [v1 scheduleSyncDown];
 }
 
-- (void)createContainerWithID:(id)a3 ownerName:(id)a4 reply:(id)a5
+- (void)createContainerWithID:(id)d ownerName:(id)name reply:(id)reply
 {
   v39 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dCopy = d;
+  nameCopy = name;
+  replyCopy = reply;
   memset(v28, 0, sizeof(v28));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient createContainerWithID:ownerName:reply:]", 2689, 0, v28);
   v12 = brc_bread_crumbs();
@@ -16015,9 +16015,9 @@ void __69__BRCXPCRegularIPCsClient_iWorkForceSyncContainerID_ownedByMe_reply___b
     v15 = qos_class_self();
     v16 = BRCPrettyPrintEnumWithContext(v15, &brc_qos_entries, 0);
     *buf = 134219010;
-    v30 = v14;
+    selfCopy2 = v14;
     v31 = 2112;
-    v32 = self;
+    selfCopy = self;
     v33 = 2112;
     v34 = v16;
     v35 = 2080;
@@ -16032,22 +16032,22 @@ void __69__BRCXPCRegularIPCsClient_iWorkForceSyncContainerID_ownedByMe_reply___b
   v26[2] = __65__BRCXPCRegularIPCsClient_createContainerWithID_ownerName_reply___block_invoke;
   v26[3] = &unk_2785014D0;
   v26[4] = self;
-  v17 = v11;
+  v17 = replyCopy;
   v27 = v17;
   v18 = _brc_ipc_spi(self, 1, a2, v26);
 
   if (v18)
   {
-    v19 = [(BRCXPCClient *)self session];
-    v20 = [objc_alloc(MEMORY[0x277CFAE60]) initWithZoneName:v9 ownerName:v10];
+    session = [(BRCXPCClient *)self session];
+    v20 = [objc_alloc(MEMORY[0x277CFAE60]) initWithZoneName:dCopy ownerName:nameCopy];
     if ([v20 isShared])
     {
-      v21 = [v19 getOrCreateSharedZones:v20];
+      v21 = [session getOrCreateSharedZones:v20];
     }
 
     else
     {
-      v22 = [v19 getOrCreateAppLibraryAndPrivateZonesIfNecessary:v20];
+      v22 = [session getOrCreateAppLibraryAndPrivateZonesIfNecessary:v20];
     }
 
     v23 = brc_bread_crumbs();
@@ -16055,9 +16055,9 @@ void __69__BRCXPCRegularIPCsClient_iWorkForceSyncContainerID_ownedByMe_reply___b
     if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
     {
       *buf = 138412802;
-      v30 = self;
+      selfCopy2 = self;
       v31 = 2112;
-      v32 = 0;
+      selfCopy = 0;
       v33 = 2112;
       v34 = v23;
       _os_log_impl(&dword_223E7A000, v24, OS_LOG_TYPE_INFO, "[INFO] %@: reply(%@)%@", buf, 0x20u);
@@ -16093,10 +16093,10 @@ void __65__BRCXPCRegularIPCsClient_createContainerWithID_ownerName_reply___block
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)computePurgeableSpaceForAllUrgenciesWithReply:(id)a3
+- (void)computePurgeableSpaceForAllUrgenciesWithReply:(id)reply
 {
   v35 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  replyCopy = reply;
   memset(v24, 0, sizeof(v24));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient computePurgeableSpaceForAllUrgenciesWithReply:]", 2708, 0, v24);
   v6 = brc_bread_crumbs();
@@ -16107,9 +16107,9 @@ void __65__BRCXPCRegularIPCsClient_createContainerWithID_ownerName_reply___block
     v9 = qos_class_self();
     v10 = BRCPrettyPrintEnumWithContext(v9, &brc_qos_entries, 0);
     *buf = 134219010;
-    v26 = v8;
+    selfCopy2 = v8;
     v27 = 2112;
-    v28 = self;
+    selfCopy = self;
     v29 = 2112;
     v30 = v10;
     v31 = 2080;
@@ -16124,16 +16124,16 @@ void __65__BRCXPCRegularIPCsClient_createContainerWithID_ownerName_reply___block
   v22[2] = __73__BRCXPCRegularIPCsClient_computePurgeableSpaceForAllUrgenciesWithReply___block_invoke;
   v22[3] = &unk_2785014D0;
   v22[4] = self;
-  v11 = v5;
+  v11 = replyCopy;
   v23 = v11;
   v12 = _brc_ipc_spi(self, 1, a2, v22);
 
   if (v12)
   {
-    v13 = [(BRCXPCClient *)self session];
-    v14 = [v13 diskReclaimer];
+    session = [(BRCXPCClient *)self session];
+    diskReclaimer = [session diskReclaimer];
 
-    if (v14)
+    if (diskReclaimer)
     {
       v20[0] = MEMORY[0x277D85DD0];
       v20[1] = 3221225472;
@@ -16141,7 +16141,7 @@ void __65__BRCXPCRegularIPCsClient_createContainerWithID_ownerName_reply___block
       v20[3] = &unk_278507088;
       v20[4] = self;
       v21 = v11;
-      [v14 computePurgeableSpaceForAllUrgenciesWithReply:v20];
+      [diskReclaimer computePurgeableSpaceForAllUrgenciesWithReply:v20];
     }
 
     else
@@ -16150,22 +16150,22 @@ void __65__BRCXPCRegularIPCsClient_createContainerWithID_ownerName_reply___block
       v16 = brc_default_log();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
       {
-        v17 = [MEMORY[0x277CCA9B8] brc_errorLoggedOut];
+        brc_errorLoggedOut = [MEMORY[0x277CCA9B8] brc_errorLoggedOut];
         *buf = 138413314;
-        v26 = self;
+        selfCopy2 = self;
         v27 = 2112;
-        v28 = 0;
+        selfCopy = 0;
         v29 = 2112;
         v30 = 0;
         v31 = 2112;
-        v32 = v17;
+        v32 = brc_errorLoggedOut;
         v33 = 2112;
         v34 = v15;
         _os_log_impl(&dword_223E7A000, v16, OS_LOG_TYPE_INFO, "[INFO] %@: reply(%@, %@, %@)%@", buf, 0x34u);
       }
 
-      v18 = [MEMORY[0x277CCA9B8] brc_errorLoggedOut];
-      (*(v11 + 2))(v11, 0, 0, v18);
+      brc_errorLoggedOut2 = [MEMORY[0x277CCA9B8] brc_errorLoggedOut];
+      (*(v11 + 2))(v11, 0, 0, brc_errorLoggedOut2);
     }
   }
 
@@ -16250,10 +16250,10 @@ uint64_t __57__BRCXPCRegularIPCsClient_purgeAmount_withUrgency_reply___block_inv
   return result;
 }
 
-- (void)reclaimAmount:(int64_t)a3 withUrgency:(int)a4 reply:(id)a5
+- (void)reclaimAmount:(int64_t)amount withUrgency:(int)urgency reply:(id)reply
 {
   v34 = *MEMORY[0x277D85DE8];
-  v7 = a5;
+  replyCopy = reply;
   memset(v23, 0, sizeof(v23));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient reclaimAmount:withUrgency:reply:]", 2736, 0, v23);
   v8 = brc_bread_crumbs();
@@ -16264,9 +16264,9 @@ uint64_t __57__BRCXPCRegularIPCsClient_purgeAmount_withUrgency_reply___block_inv
     v11 = qos_class_self();
     v12 = BRCPrettyPrintEnumWithContext(v11, &brc_qos_entries, 0);
     *buf = 134219010;
-    v25 = v10;
+    selfCopy2 = v10;
     v26 = 2112;
-    v27 = self;
+    selfCopy = self;
     v28 = 2112;
     v29 = v12;
     v30 = 2080;
@@ -16281,30 +16281,30 @@ uint64_t __57__BRCXPCRegularIPCsClient_purgeAmount_withUrgency_reply___block_inv
   v21[2] = __59__BRCXPCRegularIPCsClient_reclaimAmount_withUrgency_reply___block_invoke;
   v21[3] = &unk_2785014D0;
   v21[4] = self;
-  v13 = v7;
+  v13 = replyCopy;
   v22 = v13;
   v14 = _brc_ipc_spi(self, 1, a2, v21);
 
   if (v14)
   {
-    v15 = [(BRCXPCClient *)self session];
-    v16 = [v15 diskReclaimer];
+    session = [(BRCXPCClient *)self session];
+    diskReclaimer = [session diskReclaimer];
 
-    v17 = [v16 periodicReclaimSpace];
+    periodicReclaimSpace = [diskReclaimer periodicReclaimSpace];
     v18 = brc_bread_crumbs();
     v19 = brc_default_log();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
     {
       *buf = 138412802;
-      v25 = self;
+      selfCopy2 = self;
       v26 = 2048;
-      v27 = v17;
+      selfCopy = periodicReclaimSpace;
       v28 = 2112;
       v29 = v18;
       _os_log_impl(&dword_223E7A000, v19, OS_LOG_TYPE_INFO, "[INFO] %@: reply(%lld)%@", buf, 0x20u);
     }
 
-    (*(v13 + 2))(v13, v17);
+    (*(v13 + 2))(v13, periodicReclaimSpace);
   }
 
   __brc_leave_section(v23);
@@ -16334,11 +16334,11 @@ uint64_t __59__BRCXPCRegularIPCsClient_reclaimAmount_withUrgency_reply___block_i
   return result;
 }
 
-- (void)launchSyncConsistencyChecksWithContainerIDs:(id)a3 reply:(id)a4
+- (void)launchSyncConsistencyChecksWithContainerIDs:(id)ds reply:(id)reply
 {
   v53 = *MEMORY[0x277D85DE8];
-  v32 = a3;
-  v6 = a4;
+  dsCopy = ds;
+  replyCopy = reply;
   memset(v41, 0, sizeof(v41));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient launchSyncConsistencyChecksWithContainerIDs:reply:]", 2759, 0, v41);
   v7 = brc_bread_crumbs();
@@ -16349,9 +16349,9 @@ uint64_t __59__BRCXPCRegularIPCsClient_reclaimAmount_withUrgency_reply___block_i
     v10 = qos_class_self();
     v11 = BRCPrettyPrintEnumWithContext(v10, &brc_qos_entries, 0);
     *buf = 134219010;
-    v44 = v9;
+    selfCopy2 = v9;
     v45 = 2112;
-    v46 = self;
+    selfCopy = self;
     v47 = 2112;
     v48 = v11;
     v49 = 2080;
@@ -16367,19 +16367,19 @@ uint64_t __59__BRCXPCRegularIPCsClient_reclaimAmount_withUrgency_reply___block_i
   v39[2] = __77__BRCXPCRegularIPCsClient_launchSyncConsistencyChecksWithContainerIDs_reply___block_invoke;
   v39[3] = &unk_2785014D0;
   v39[4] = self;
-  v13 = v6;
+  v13 = replyCopy;
   v40 = v13;
   LODWORD(v12) = _brc_ipc_check_entitlement_and_logged_status(self, 1, v12, v39);
 
   if (v12)
   {
-    v31 = [(BRCXPCClient *)self session];
-    v14 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v32, "count")}];
+    session = [(BRCXPCClient *)self session];
+    v14 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(dsCopy, "count")}];
     v37 = 0u;
     v38 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v15 = v32;
+    v15 = dsCopy;
     v16 = [v15 countByEnumeratingWithState:&v35 objects:v42 count:16];
     if (v16)
     {
@@ -16405,9 +16405,9 @@ uint64_t __59__BRCXPCRegularIPCsClient_reclaimAmount_withUrgency_reply___block_i
             {
               v28 = [MEMORY[0x277CCA9B8] brc_errorAppLibraryNotFound:v19];
               *buf = 138413314;
-              v44 = self;
+              selfCopy2 = self;
               v45 = 2112;
-              v46 = 0;
+              selfCopy = 0;
               v47 = 2112;
               v48 = 0;
               v49 = 2112;
@@ -16423,8 +16423,8 @@ uint64_t __59__BRCXPCRegularIPCsClient_reclaimAmount_withUrgency_reply___block_i
             goto LABEL_16;
           }
 
-          v22 = [v20 mangledIDString];
-          [v14 addObject:v22];
+          mangledIDString = [v20 mangledIDString];
+          [v14 addObject:mangledIDString];
 
           ++v18;
         }
@@ -16440,10 +16440,10 @@ uint64_t __59__BRCXPCRegularIPCsClient_reclaimAmount_withUrgency_reply___block_i
       }
     }
 
-    v23 = [v31 applyScheduler];
-    v24 = [v23 hasActiveWorkGroup];
+    applyScheduler = [session applyScheduler];
+    hasActiveWorkGroup = [applyScheduler hasActiveWorkGroup];
     v25 = dispatch_time(0, 10000000000);
-    dispatch_group_wait(v24, v25);
+    dispatch_group_wait(hasActiveWorkGroup, v25);
 
     v33[0] = MEMORY[0x277D85DD0];
     v33[1] = 3221225472;
@@ -16451,7 +16451,7 @@ uint64_t __59__BRCXPCRegularIPCsClient_reclaimAmount_withUrgency_reply___block_i
     v33[3] = &unk_2785070B0;
     v33[4] = self;
     v34 = v13;
-    [BRCSyncConsistencyReport generateReportWithSession:v31 mangledIDs:v14 completion:v33];
+    [BRCSyncConsistencyReport generateReportWithSession:session mangledIDs:v14 completion:v33];
 
 LABEL_16:
   }
@@ -16591,10 +16591,10 @@ void __77__BRCXPCRegularIPCsClient_launchSyncConsistencyChecksWithContainerIDs_r
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)pauseSyncConsistencyWithReply:(id)a3
+- (void)pauseSyncConsistencyWithReply:(id)reply
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  replyCopy = reply;
   memset(v19, 0, sizeof(v19));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient pauseSyncConsistencyWithReply:]", 2795, 0, v19);
   v5 = brc_bread_crumbs();
@@ -16605,9 +16605,9 @@ void __77__BRCXPCRegularIPCsClient_launchSyncConsistencyChecksWithContainerIDs_r
     v8 = qos_class_self();
     v9 = BRCPrettyPrintEnumWithContext(v8, &brc_qos_entries, 0);
     *buf = 134219010;
-    v21 = v7;
+    selfCopy2 = v7;
     v22 = 2112;
-    v23 = self;
+    selfCopy = self;
     v24 = 2112;
     v25 = v9;
     v26 = 2080;
@@ -16623,24 +16623,24 @@ void __77__BRCXPCRegularIPCsClient_launchSyncConsistencyChecksWithContainerIDs_r
   v17[2] = __57__BRCXPCRegularIPCsClient_pauseSyncConsistencyWithReply___block_invoke;
   v17[3] = &unk_2785014D0;
   v17[4] = self;
-  v11 = v4;
+  v11 = replyCopy;
   v18 = v11;
   LODWORD(v10) = _brc_ipc_check_entitlement_and_logged_status(self, 1, v10, v17);
 
   if (v10)
   {
     v12 = BRDiskCheckerServiceConnection();
-    v13 = [v12 remoteObjectProxy];
-    [v13 pauseTreeConsistencyCheck];
+    remoteObjectProxy = [v12 remoteObjectProxy];
+    [remoteObjectProxy pauseTreeConsistencyCheck];
 
     v14 = brc_bread_crumbs();
     v15 = brc_default_log();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
       *buf = 138412802;
-      v21 = self;
+      selfCopy2 = self;
       v22 = 2112;
-      v23 = 0;
+      selfCopy = 0;
       v24 = 2112;
       v25 = v14;
       _os_log_impl(&dword_223E7A000, v15, OS_LOG_TYPE_INFO, "[INFO] %@: reply(%@)%@", buf, 0x20u);
@@ -16676,10 +16676,10 @@ void __57__BRCXPCRegularIPCsClient_pauseSyncConsistencyWithReply___block_invoke(
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)resumeSyncConsistencyWithReply:(id)a3
+- (void)resumeSyncConsistencyWithReply:(id)reply
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  replyCopy = reply;
   memset(v22, 0, sizeof(v22));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient resumeSyncConsistencyWithReply:]", 2807, 0, v22);
   v5 = brc_bread_crumbs();
@@ -16692,7 +16692,7 @@ void __57__BRCXPCRegularIPCsClient_pauseSyncConsistencyWithReply___block_invoke(
     *buf = 134219010;
     v24 = v7;
     v25 = 2112;
-    v26 = self;
+    selfCopy = self;
     v27 = 2112;
     v28 = v9;
     v29 = 2080;
@@ -16708,7 +16708,7 @@ void __57__BRCXPCRegularIPCsClient_pauseSyncConsistencyWithReply___block_invoke(
   v20[2] = __58__BRCXPCRegularIPCsClient_resumeSyncConsistencyWithReply___block_invoke;
   v20[3] = &unk_2785014D0;
   v20[4] = self;
-  v11 = v4;
+  v11 = replyCopy;
   v21 = v11;
   LODWORD(v10) = _brc_ipc_check_entitlement_and_logged_status(self, 1, v10, v20);
 
@@ -16803,10 +16803,10 @@ void __58__BRCXPCRegularIPCsClient_resumeSyncConsistencyWithReply___block_invoke
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)cancelTreeConsistencyCheckWithReply:(id)a3
+- (void)cancelTreeConsistencyCheckWithReply:(id)reply
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  replyCopy = reply;
   memset(v19, 0, sizeof(v19));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient cancelTreeConsistencyCheckWithReply:]", 2821, 0, v19);
   v5 = brc_bread_crumbs();
@@ -16817,9 +16817,9 @@ void __58__BRCXPCRegularIPCsClient_resumeSyncConsistencyWithReply___block_invoke
     v8 = qos_class_self();
     v9 = BRCPrettyPrintEnumWithContext(v8, &brc_qos_entries, 0);
     *buf = 134219010;
-    v21 = v7;
+    selfCopy2 = v7;
     v22 = 2112;
-    v23 = self;
+    selfCopy = self;
     v24 = 2112;
     v25 = v9;
     v26 = 2080;
@@ -16835,24 +16835,24 @@ void __58__BRCXPCRegularIPCsClient_resumeSyncConsistencyWithReply___block_invoke
   v17[2] = __63__BRCXPCRegularIPCsClient_cancelTreeConsistencyCheckWithReply___block_invoke;
   v17[3] = &unk_2785014D0;
   v17[4] = self;
-  v11 = v4;
+  v11 = replyCopy;
   v18 = v11;
   LODWORD(v10) = _brc_ipc_check_entitlement_and_logged_status(self, 1, v10, v17);
 
   if (v10)
   {
     v12 = BRDiskCheckerServiceConnection();
-    v13 = [v12 remoteObjectProxy];
-    [v13 cancelTreeConsistencyCheck];
+    remoteObjectProxy = [v12 remoteObjectProxy];
+    [remoteObjectProxy cancelTreeConsistencyCheck];
 
     v14 = brc_bread_crumbs();
     v15 = brc_default_log();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
       *buf = 138412802;
-      v21 = self;
+      selfCopy2 = self;
       v22 = 2112;
-      v23 = 0;
+      selfCopy = 0;
       v24 = 2112;
       v25 = v14;
       _os_log_impl(&dword_223E7A000, v15, OS_LOG_TYPE_INFO, "[INFO] %@: reply(%@)%@", buf, 0x20u);
@@ -16888,13 +16888,13 @@ void __63__BRCXPCRegularIPCsClient_cancelTreeConsistencyCheckWithReply___block_i
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)waitForAccountToLoadWithReply:(id)a3
+- (void)waitForAccountToLoadWithReply:(id)reply
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  replyCopy = reply;
   v5 = +[BRCAccountsManager sharedManager];
-  v6 = [v5 accountsLoadingBarrier];
-  [v6 waitForBarrier];
+  accountsLoadingBarrier = [v5 accountsLoadingBarrier];
+  [accountsLoadingBarrier waitForBarrier];
 
   memset(v19, 0, sizeof(v19));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient waitForAccountToLoadWithReply:]", 2898, 0, v19);
@@ -16906,9 +16906,9 @@ void __63__BRCXPCRegularIPCsClient_cancelTreeConsistencyCheckWithReply___block_i
     v10 = qos_class_self();
     v11 = BRCPrettyPrintEnumWithContext(v10, &brc_qos_entries, 0);
     *buf = 134219010;
-    v21 = v9;
+    selfCopy2 = v9;
     v22 = 2112;
-    v23 = self;
+    selfCopy = self;
     v24 = 2112;
     v25 = v11;
     v26 = 2080;
@@ -16923,7 +16923,7 @@ void __63__BRCXPCRegularIPCsClient_cancelTreeConsistencyCheckWithReply___block_i
   v17[2] = __57__BRCXPCRegularIPCsClient_waitForAccountToLoadWithReply___block_invoke;
   v17[3] = &unk_2785014D0;
   v17[4] = self;
-  v12 = v4;
+  v12 = replyCopy;
   v18 = v12;
   v13 = _brc_ipc_check_logged_status(self, 1, v17);
 
@@ -16934,9 +16934,9 @@ void __63__BRCXPCRegularIPCsClient_cancelTreeConsistencyCheckWithReply___block_i
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
       *buf = 138412802;
-      v21 = self;
+      selfCopy2 = self;
       v22 = 2112;
-      v23 = 0;
+      selfCopy = 0;
       v24 = 2112;
       v25 = v14;
       _os_log_impl(&dword_223E7A000, v15, OS_LOG_TYPE_INFO, "[INFO] %@: reply(%@)%@", buf, 0x20u);
@@ -16972,11 +16972,11 @@ void __57__BRCXPCRegularIPCsClient_waitForAccountToLoadWithReply___block_invoke(
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)validateCloudDocsSupported:(BOOL)a3 withReply:(id)a4
+- (void)validateCloudDocsSupported:(BOOL)supported withReply:(id)reply
 {
-  v4 = a3;
+  supportedCopy = supported;
   v38 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  replyCopy = reply;
   memset(v27, 0, sizeof(v27));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient validateCloudDocsSupported:withReply:]", 2905, 0, v27);
   v7 = brc_bread_crumbs();
@@ -16987,9 +16987,9 @@ void __57__BRCXPCRegularIPCsClient_waitForAccountToLoadWithReply___block_invoke(
     v10 = qos_class_self();
     v11 = BRCPrettyPrintEnumWithContext(v10, &brc_qos_entries, 0);
     *buf = 134219010;
-    v29 = v9;
+    selfCopy2 = v9;
     v30 = 2112;
-    v31 = self;
+    selfCopy = self;
     v32 = 2112;
     v33 = v11;
     v34 = 2080;
@@ -17003,10 +17003,10 @@ void __57__BRCXPCRegularIPCsClient_waitForAccountToLoadWithReply___block_invoke(
   v12 = [BRCSystemSupportAnalyzer isCloudDocsSupportedWithError:&v26];
   v13 = v26;
   v14 = v13;
-  if (!v12 && v4 && [(BRCXPCRegularIPCsClient *)v13 br_isCloudDocsErrorCode:121])
+  if (!v12 && supportedCopy && [(BRCXPCRegularIPCsClient *)v13 br_isCloudDocsErrorCode:121])
   {
-    v15 = [(BRCXPCRegularIPCsClient *)v14 userInfo];
-    v16 = [v15 objectForKeyedSubscript:@"unsupportedReason"];
+    userInfo = [(BRCXPCRegularIPCsClient *)v14 userInfo];
+    v16 = [userInfo objectForKeyedSubscript:@"unsupportedReason"];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -17020,8 +17020,8 @@ void __57__BRCXPCRegularIPCsClient_waitForAccountToLoadWithReply___block_invoke(
       }
     }
 
-    v18 = [(BRCXPCRegularIPCsClient *)v14 userInfo];
-    v19 = [v18 objectForKeyedSubscript:@"unsupportedReason"];
+    userInfo2 = [(BRCXPCRegularIPCsClient *)v14 userInfo];
+    v19 = [userInfo2 objectForKeyedSubscript:@"unsupportedReason"];
 
     v20 = +[BRCUserNotification defaultInstance];
     [v20 showErrorVolumeNotSupportedWithReason:{objc_msgSend(v19, "intValue")}];
@@ -17032,26 +17032,26 @@ void __57__BRCXPCRegularIPCsClient_waitForAccountToLoadWithReply___block_invoke(
   if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
   {
     *buf = 138412802;
-    v29 = self;
+    selfCopy2 = self;
     v30 = 2112;
-    v31 = v14;
+    selfCopy = v14;
     v32 = 2112;
     v33 = v21;
     _os_log_impl(&dword_223E7A000, v22, OS_LOG_TYPE_INFO, "[INFO] %@: reply(%@)%@", buf, 0x20u);
   }
 
-  v6[2](v6, v14);
+  replyCopy[2](replyCopy, v14);
   __brc_leave_section(v27);
 
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)createAccountWithACAccountID:(id)a3 dsid:(id)a4 reply:(id)a5
+- (void)createAccountWithACAccountID:(id)d dsid:(id)dsid reply:(id)reply
 {
   v44 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  dsidCopy = dsid;
+  replyCopy = reply;
   memset(v33, 0, sizeof(v33));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient createAccountWithACAccountID:dsid:reply:]", 2944, 0, v33);
   v11 = brc_bread_crumbs();
@@ -17062,9 +17062,9 @@ void __57__BRCXPCRegularIPCsClient_waitForAccountToLoadWithReply___block_invoke(
     v14 = qos_class_self();
     v15 = BRCPrettyPrintEnumWithContext(v14, &brc_qos_entries, 0);
     *buf = 134219010;
-    v35 = v13;
+    selfCopy2 = v13;
     v36 = 2112;
-    v37 = self;
+    selfCopy = self;
     v38 = 2112;
     v39 = v15;
     v40 = 2080;
@@ -17079,7 +17079,7 @@ void __57__BRCXPCRegularIPCsClient_waitForAccountToLoadWithReply___block_invoke(
   v31[2] = __67__BRCXPCRegularIPCsClient_createAccountWithACAccountID_dsid_reply___block_invoke;
   v31[3] = &unk_2785014D0;
   v31[4] = self;
-  v16 = v10;
+  v16 = replyCopy;
   v32 = v16;
   v17 = _brc_ipc_check_account_access(self, -1, v31);
 
@@ -17103,7 +17103,7 @@ void __57__BRCXPCRegularIPCsClient_waitForAccountToLoadWithReply___block_invoke(
         v29[3] = &unk_2785070D8;
         v29[4] = self;
         v30 = v16;
-        [v18 createSessionWithACAccountID:v8 dsid:v9 completionHandler:v29];
+        [v18 createSessionWithACAccountID:dCopy dsid:dsidCopy completionHandler:v29];
       }
 
       else
@@ -17119,25 +17119,25 @@ void __57__BRCXPCRegularIPCsClient_waitForAccountToLoadWithReply___block_invoke(
         v24 = brc_default_log();
         if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
         {
-          v25 = [MEMORY[0x277CCA9B8] brc_errorInvalidParameter:@"accountID" value:v9];
+          v25 = [MEMORY[0x277CCA9B8] brc_errorInvalidParameter:@"accountID" value:dsidCopy];
           *buf = 138412802;
-          v35 = self;
+          selfCopy2 = self;
           v36 = 2112;
-          v37 = v25;
+          selfCopy = v25;
           v38 = 2112;
           v39 = v23;
           _os_log_impl(&dword_223E7A000, v24, OS_LOG_TYPE_INFO, "[INFO] %@: reply(%@)%@", buf, 0x20u);
         }
 
-        v26 = [MEMORY[0x277CCA9B8] brc_errorInvalidParameter:@"accountID" value:v9];
+        v26 = [MEMORY[0x277CCA9B8] brc_errorInvalidParameter:@"accountID" value:dsidCopy];
         (*(v16 + 2))(v16, v26);
       }
     }
 
     else
     {
-      v27 = [MEMORY[0x277CCA9B8] brc_errorBuddyFlowNeedsToRun];
-      (*(v16 + 2))(v16, v27);
+      brc_errorBuddyFlowNeedsToRun = [MEMORY[0x277CCA9B8] brc_errorBuddyFlowNeedsToRun];
+      (*(v16 + 2))(v16, brc_errorBuddyFlowNeedsToRun);
     }
   }
 
@@ -17202,30 +17202,30 @@ void __67__BRCXPCRegularIPCsClient_createAccountWithACAccountID_dsid_reply___blo
 
 - (void)_unregisterPrematurely
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (*(&v2->super + 32))
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (*(&selfCopy->super + 32))
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = v2->super.__session;
+    v4 = selfCopy->super.__session;
   }
 
-  session = v2->super.__session;
-  v2->super.__session = 0;
+  session = selfCopy->super.__session;
+  selfCopy->super.__session = 0;
 
-  objc_sync_exit(v2);
-  [(BRCAccountSession *)v4 unregisterClient:v2];
+  objc_sync_exit(selfCopy);
+  [(BRCAccountSession *)v4 unregisterClient:selfCopy];
 }
 
-- (void)logoutAccountWithACAccountID:(id)a3 reply:(id)a4
+- (void)logoutAccountWithACAccountID:(id)d reply:(id)reply
 {
   v39 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  replyCopy = reply;
   memset(v28, 0, sizeof(v28));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient logoutAccountWithACAccountID:reply:]", 2995, 0, v28);
   v8 = brc_bread_crumbs();
@@ -17236,9 +17236,9 @@ void __67__BRCXPCRegularIPCsClient_createAccountWithACAccountID_dsid_reply___blo
     v11 = qos_class_self();
     v12 = BRCPrettyPrintEnumWithContext(v11, &brc_qos_entries, 0);
     *buf = 134219010;
-    v30 = v10;
+    selfCopy2 = v10;
     v31 = 2112;
-    v32 = self;
+    selfCopy = self;
     v33 = 2112;
     v34 = v12;
     v35 = 2080;
@@ -17253,7 +17253,7 @@ void __67__BRCXPCRegularIPCsClient_createAccountWithACAccountID_dsid_reply___blo
   v26[2] = __62__BRCXPCRegularIPCsClient_logoutAccountWithACAccountID_reply___block_invoke;
   v26[3] = &unk_2785014D0;
   v26[4] = self;
-  v13 = v7;
+  v13 = replyCopy;
   v27 = v13;
   v14 = _brc_ipc_check_account_access(self, 3, v26);
 
@@ -17265,14 +17265,14 @@ void __67__BRCXPCRegularIPCsClient_createAccountWithACAccountID_dsid_reply___blo
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v30 = v6;
+      selfCopy2 = dCopy;
       v31 = 2112;
-      v32 = v15;
+      selfCopy = v15;
       _os_log_impl(&dword_223E7A000, v16, OS_LOG_TYPE_DEFAULT, "[NOTICE] Requested to logout of account %@%@", buf, 0x16u);
     }
 
     v17 = +[BRCAccountsManager sharedManager];
-    v18 = [v17 destroySessionWithACAccountID:v6];
+    v18 = [v17 destroySessionWithACAccountID:dCopy];
 
     v19 = brc_bread_crumbs();
     v20 = brc_default_log();
@@ -17296,9 +17296,9 @@ void __67__BRCXPCRegularIPCsClient_createAccountWithACAccountID_dsid_reply___blo
       }
 
       *buf = 138412802;
-      v30 = self;
+      selfCopy2 = self;
       v31 = 2112;
-      v32 = v23;
+      selfCopy = v23;
       v33 = 2112;
       v34 = v21;
       _os_log_impl(&dword_223E7A000, v22, OS_LOG_TYPE_INFO, "[INFO] %@: reply(%@)%@", buf, 0x20u);
@@ -17350,11 +17350,11 @@ void __62__BRCXPCRegularIPCsClient_logoutAccountWithACAccountID_reply___block_in
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateAccountDisplayName:(id)a3 reply:(id)a4
+- (void)updateAccountDisplayName:(id)name reply:(id)reply
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  replyCopy = reply;
   memset(v23, 0, sizeof(v23));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient updateAccountDisplayName:reply:]", 3017, 0, v23);
   v8 = brc_bread_crumbs();
@@ -17367,7 +17367,7 @@ void __62__BRCXPCRegularIPCsClient_logoutAccountWithACAccountID_reply___block_in
     *buf = 134219010;
     v25 = v10;
     v26 = 2112;
-    v27 = self;
+    selfCopy = self;
     v28 = 2112;
     v29 = v12;
     v30 = 2080;
@@ -17382,7 +17382,7 @@ void __62__BRCXPCRegularIPCsClient_logoutAccountWithACAccountID_reply___block_in
   v21[2] = __58__BRCXPCRegularIPCsClient_updateAccountDisplayName_reply___block_invoke;
   v21[3] = &unk_2785014D0;
   v21[4] = self;
-  v13 = v7;
+  v13 = replyCopy;
   v22 = v13;
   v14 = _brc_ipc_check_account_access(self, 1, v21);
 
@@ -17393,9 +17393,9 @@ void __62__BRCXPCRegularIPCsClient_logoutAccountWithACAccountID_reply___block_in
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v25 = v6;
+      v25 = nameCopy;
       v26 = 2112;
-      v27 = v15;
+      selfCopy = v15;
       _os_log_impl(&dword_223E7A000, v16, OS_LOG_TYPE_DEFAULT, "[NOTICE] Requested to update display name of account %@%@", buf, 0x16u);
     }
 
@@ -17406,7 +17406,7 @@ void __62__BRCXPCRegularIPCsClient_logoutAccountWithACAccountID_reply___block_in
     v19[3] = &unk_2785014D0;
     v19[4] = self;
     v20 = v13;
-    [v17 updateAccountDisplayName:v6 completionHandler:v19];
+    [v17 updateAccountDisplayName:nameCopy completionHandler:v19];
   }
 
   __brc_leave_section(v23);
@@ -17468,10 +17468,10 @@ void __58__BRCXPCRegularIPCsClient_updateAccountDisplayName_reply___block_invoke
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)userVerifiedTermsWithReply:(id)a3
+- (void)userVerifiedTermsWithReply:(id)reply
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  replyCopy = reply;
   memset(v23, 0, sizeof(v23));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient userVerifiedTermsWithReply:]", 3032, 0, v23);
   v5 = brc_bread_crumbs();
@@ -17482,9 +17482,9 @@ void __58__BRCXPCRegularIPCsClient_updateAccountDisplayName_reply___block_invoke
     v8 = qos_class_self();
     v9 = BRCPrettyPrintEnumWithContext(v8, &brc_qos_entries, 0);
     *buf = 134219010;
-    v25 = v7;
+    selfCopy2 = v7;
     v26 = 2112;
-    v27 = self;
+    selfCopy = self;
     v28 = 2112;
     v29 = v9;
     v30 = 2080;
@@ -17499,15 +17499,15 @@ void __58__BRCXPCRegularIPCsClient_updateAccountDisplayName_reply___block_invoke
   v21[2] = __54__BRCXPCRegularIPCsClient_userVerifiedTermsWithReply___block_invoke;
   v21[3] = &unk_2785014D0;
   v21[4] = self;
-  v10 = v4;
+  v10 = replyCopy;
   v22 = v10;
   v11 = _brc_ipc_check_account_access(self, 1, v21);
 
   if (v11)
   {
-    v12 = [(BRCXPCClient *)self session];
-    v13 = [v12 fsUploader];
-    [v13 userVerifiedTerms];
+    session = [(BRCXPCClient *)self session];
+    fsUploader = [session fsUploader];
+    [fsUploader userVerifiedTerms];
 
     v14 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CC6300] code:-1000 userInfo:0];
     v15 = brc_bread_crumbs();
@@ -17517,17 +17517,17 @@ void __58__BRCXPCRegularIPCsClient_updateAccountDisplayName_reply___block_invoke
       [BRCXPCRegularIPCsClient userVerifiedTermsWithReply:];
     }
 
-    v17 = [MEMORY[0x277CC64A8] br_sharedProviderManager];
-    [v17 signalErrorResolved:v14 completionHandler:&__block_literal_global_444];
+    br_sharedProviderManager = [MEMORY[0x277CC64A8] br_sharedProviderManager];
+    [br_sharedProviderManager signalErrorResolved:v14 completionHandler:&__block_literal_global_444];
 
     v18 = brc_bread_crumbs();
     v19 = brc_default_log();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
     {
       *buf = 138412802;
-      v25 = self;
+      selfCopy2 = self;
       v26 = 2112;
-      v27 = 0;
+      selfCopy = 0;
       v28 = 2112;
       v29 = v18;
       _os_log_impl(&dword_223E7A000, v19, OS_LOG_TYPE_INFO, "[INFO] %@: reply(%@)%@", buf, 0x20u);
@@ -17574,12 +17574,12 @@ void __54__BRCXPCRegularIPCsClient_userVerifiedTermsWithReply___block_invoke_442
   }
 }
 
-- (void)accountDidChangeWithCellularEnabled:(BOOL)a3 isUnlimitedUpdatesEnabled:(BOOL)a4 reply:(id)a5
+- (void)accountDidChangeWithCellularEnabled:(BOOL)enabled isUnlimitedUpdatesEnabled:(BOOL)updatesEnabled reply:(id)reply
 {
-  v5 = a4;
-  v6 = a3;
+  updatesEnabledCopy = updatesEnabled;
+  enabledCopy = enabled;
   v56 = *MEMORY[0x277D85DE8];
-  v8 = a5;
+  replyCopy = reply;
   memset(v44, 0, sizeof(v44));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient accountDidChangeWithCellularEnabled:isUnlimitedUpdatesEnabled:reply:]", 3051, 0, v44);
   v9 = brc_bread_crumbs();
@@ -17590,9 +17590,9 @@ void __54__BRCXPCRegularIPCsClient_userVerifiedTermsWithReply___block_invoke_442
     v12 = qos_class_self();
     v13 = BRCPrettyPrintEnumWithContext(v12, &brc_qos_entries, 0);
     *buf = 134219010;
-    v47 = v11;
+    selfCopy2 = v11;
     v48 = 2112;
-    v49 = self;
+    selfCopy = self;
     v50 = 2112;
     v51 = v13;
     v52 = 2080;
@@ -17607,46 +17607,46 @@ void __54__BRCXPCRegularIPCsClient_userVerifiedTermsWithReply___block_invoke_442
   v42[2] = __95__BRCXPCRegularIPCsClient_accountDidChangeWithCellularEnabled_isUnlimitedUpdatesEnabled_reply___block_invoke;
   v42[3] = &unk_2785014D0;
   v42[4] = self;
-  v14 = v8;
+  v14 = replyCopy;
   v43 = v14;
   v15 = _brc_ipc_check_account_access(self, 1, v42);
 
   if (v15)
   {
-    v16 = [MEMORY[0x277CB8F48] defaultStore];
-    [v16 invalidateAccountForPersonaCache];
+    defaultStore = [MEMORY[0x277CB8F48] defaultStore];
+    [defaultStore invalidateAccountForPersonaCache];
 
-    v17 = [MEMORY[0x277D77BF8] sharedManager];
-    v18 = [v17 br_currentPersonaID];
+    mEMORY[0x277D77BF8] = [MEMORY[0x277D77BF8] sharedManager];
+    br_currentPersonaID = [mEMORY[0x277D77BF8] br_currentPersonaID];
 
     v19 = +[BRCContainerCellularSettings containerCellularSettings];
-    [v19 accountDidChangeForPersona:v18];
+    [v19 accountDidChangeForPersona:br_currentPersonaID];
 
-    if (v6)
+    if (enabledCopy)
     {
-      v20 = [(BRCXPCClient *)self session];
-      v21 = [v20 fsUploader];
-      [v21 rescheduleJobsPendingCellular];
+      session = [(BRCXPCClient *)self session];
+      fsUploader = [session fsUploader];
+      [fsUploader rescheduleJobsPendingCellular];
 
-      v22 = [MEMORY[0x277CC64A8] br_sharedProviderManager];
-      v23 = [MEMORY[0x277CCA9B8] brc_errorNetworkUnreachableDueToCellularOverICDDisabled];
-      v24 = [v23 br_fileProviderError];
-      [v22 signalErrorResolved:v24 completionHandler:&__block_literal_global_448];
+      br_sharedProviderManager = [MEMORY[0x277CC64A8] br_sharedProviderManager];
+      brc_errorNetworkUnreachableDueToCellularOverICDDisabled = [MEMORY[0x277CCA9B8] brc_errorNetworkUnreachableDueToCellularOverICDDisabled];
+      br_fileProviderError = [brc_errorNetworkUnreachableDueToCellularOverICDDisabled br_fileProviderError];
+      [br_sharedProviderManager signalErrorResolved:br_fileProviderError completionHandler:&__block_literal_global_448];
 
-      v25 = [MEMORY[0x277CFAEA0] sharedReachabilityMonitor];
-      LODWORD(v23) = [v25 isCellularNetwork];
+      mEMORY[0x277CFAEA0] = [MEMORY[0x277CFAEA0] sharedReachabilityMonitor];
+      LODWORD(brc_errorNetworkUnreachableDueToCellularOverICDDisabled) = [mEMORY[0x277CFAEA0] isCellularNetwork];
 
-      if (v23)
+      if (brc_errorNetworkUnreachableDueToCellularOverICDDisabled)
       {
         v40 = 0u;
         v41 = 0u;
         v38 = 0u;
         v39 = 0u;
-        v26 = [(BRCXPCClient *)self session];
-        v27 = [v26 syncContextProvider];
-        v28 = [v27 allSyncContexts];
+        session2 = [(BRCXPCClient *)self session];
+        syncContextProvider = [session2 syncContextProvider];
+        allSyncContexts = [syncContextProvider allSyncContexts];
 
-        v29 = [v28 countByEnumeratingWithState:&v38 objects:v45 count:16];
+        v29 = [allSyncContexts countByEnumeratingWithState:&v38 objects:v45 count:16];
         if (v29)
         {
           v30 = *v39;
@@ -17657,21 +17657,21 @@ void __54__BRCXPCRegularIPCsClient_userVerifiedTermsWithReply___block_invoke_442
             {
               if (*v39 != v30)
               {
-                objc_enumerationMutation(v28);
+                objc_enumerationMutation(allSyncContexts);
               }
 
               [*(*(&v38 + 1) + 8 * v31++) cancelWiFiOnlyOperationsIfNeeded];
             }
 
             while (v29 != v31);
-            v29 = [v28 countByEnumeratingWithState:&v38 objects:v45 count:16];
+            v29 = [allSyncContexts countByEnumeratingWithState:&v38 objects:v45 count:16];
           }
 
           while (v29);
         }
       }
 
-      if (v5)
+      if (updatesEnabledCopy)
       {
         v32 = brc_bread_crumbs();
         v33 = brc_default_log();
@@ -17690,9 +17690,9 @@ void __54__BRCXPCRegularIPCsClient_userVerifiedTermsWithReply___block_invoke_442
     if (os_log_type_enabled(v36, OS_LOG_TYPE_INFO))
     {
       *buf = 138412802;
-      v47 = self;
+      selfCopy2 = self;
       v48 = 2112;
-      v49 = 0;
+      selfCopy = 0;
       v50 = 2112;
       v51 = v35;
       _os_log_impl(&dword_223E7A000, v36, OS_LOG_TYPE_INFO, "[INFO] %@: reply(%@)%@", buf, 0x20u);
@@ -17739,10 +17739,10 @@ void __95__BRCXPCRegularIPCsClient_accountDidChangeWithCellularEnabled_isUnlimit
   }
 }
 
-- (void)invalidateAccountCacheWithReply:(id)a3
+- (void)invalidateAccountCacheWithReply:(id)reply
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  replyCopy = reply;
   memset(v18, 0, sizeof(v18));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient invalidateAccountCacheWithReply:]", 3082, 0, v18);
   v5 = brc_bread_crumbs();
@@ -17753,9 +17753,9 @@ void __95__BRCXPCRegularIPCsClient_accountDidChangeWithCellularEnabled_isUnlimit
     v8 = qos_class_self();
     v9 = BRCPrettyPrintEnumWithContext(v8, &brc_qos_entries, 0);
     *buf = 134219010;
-    v20 = v7;
+    selfCopy2 = v7;
     v21 = 2112;
-    v22 = self;
+    selfCopy = self;
     v23 = 2112;
     v24 = v9;
     v25 = 2080;
@@ -17770,23 +17770,23 @@ void __95__BRCXPCRegularIPCsClient_accountDidChangeWithCellularEnabled_isUnlimit
   v16[2] = __59__BRCXPCRegularIPCsClient_invalidateAccountCacheWithReply___block_invoke;
   v16[3] = &unk_2785014D0;
   v16[4] = self;
-  v10 = v4;
+  v10 = replyCopy;
   v17 = v10;
   v11 = _brc_ipc_check_account_access(self, 0, v16);
 
   if (v11)
   {
-    v12 = [MEMORY[0x277CB8F48] defaultStore];
-    [v12 invalidateAccountForPersonaCache];
+    defaultStore = [MEMORY[0x277CB8F48] defaultStore];
+    [defaultStore invalidateAccountForPersonaCache];
 
     v13 = brc_bread_crumbs();
     v14 = brc_default_log();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
       *buf = 138412802;
-      v20 = self;
+      selfCopy2 = self;
       v21 = 2112;
-      v22 = 0;
+      selfCopy = 0;
       v23 = 2112;
       v24 = v13;
       _os_log_impl(&dword_223E7A000, v14, OS_LOG_TYPE_INFO, "[INFO] %@: reply(%@)%@", buf, 0x20u);
@@ -17822,10 +17822,10 @@ void __59__BRCXPCRegularIPCsClient_invalidateAccountCacheWithReply___block_invok
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)jetsamCloudDocsAppsWithReply:(id)a3
+- (void)jetsamCloudDocsAppsWithReply:(id)reply
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  replyCopy = reply;
   memset(v23, 0, sizeof(v23));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient jetsamCloudDocsAppsWithReply:]", 3093, 0, v23);
   v5 = brc_bread_crumbs();
@@ -17836,9 +17836,9 @@ void __59__BRCXPCRegularIPCsClient_invalidateAccountCacheWithReply___block_invok
     v8 = qos_class_self();
     v9 = BRCPrettyPrintEnumWithContext(v8, &brc_qos_entries, 0);
     *buf = 134219010;
-    v25 = v7;
+    selfCopy2 = v7;
     v26 = 2112;
-    v27 = self;
+    selfCopy = self;
     v28 = 2112;
     v29 = v9;
     v30 = 2080;
@@ -17853,38 +17853,38 @@ void __59__BRCXPCRegularIPCsClient_invalidateAccountCacheWithReply___block_invok
   v21[2] = __56__BRCXPCRegularIPCsClient_jetsamCloudDocsAppsWithReply___block_invoke;
   v21[3] = &unk_2785014D0;
   v21[4] = self;
-  v10 = v4;
+  v10 = replyCopy;
   v22 = v10;
   v11 = _brc_ipc_check_account_access(self, 0, v21);
 
   if (v11)
   {
-    v12 = [(BRCXPCClient *)self session];
-    v13 = [v12 accountHandler];
-    v14 = v13;
-    if (v13)
+    session = [(BRCXPCClient *)self session];
+    accountHandler = [session accountHandler];
+    v14 = accountHandler;
+    if (accountHandler)
     {
-      v15 = v13;
+      accountHandlerForCurrentPersona = accountHandler;
     }
 
     else
     {
       v16 = +[BRCAccountsManager sharedManager];
-      v15 = [v16 accountHandlerForCurrentPersona];
+      accountHandlerForCurrentPersona = [v16 accountHandlerForCurrentPersona];
     }
 
-    [v15 jetsamCloudDocsApps];
-    v17 = [MEMORY[0x277CB8F48] defaultStore];
-    [v17 invalidateAccountForPersonaCache];
+    [accountHandlerForCurrentPersona jetsamCloudDocsApps];
+    defaultStore = [MEMORY[0x277CB8F48] defaultStore];
+    [defaultStore invalidateAccountForPersonaCache];
 
     v18 = brc_bread_crumbs();
     v19 = brc_default_log();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
     {
       *buf = 138412802;
-      v25 = self;
+      selfCopy2 = self;
       v26 = 2112;
-      v27 = 0;
+      selfCopy = 0;
       v28 = 2112;
       v29 = v18;
       _os_log_impl(&dword_223E7A000, v19, OS_LOG_TYPE_INFO, "[INFO] %@: reply(%@)%@", buf, 0x20u);
@@ -17920,10 +17920,10 @@ void __56__BRCXPCRegularIPCsClient_jetsamCloudDocsAppsWithReply___block_invoke(u
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getContainersNeedingUpload:(id)a3
+- (void)getContainersNeedingUpload:(id)upload
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  uploadCopy = upload;
   memset(v25, 0, sizeof(v25));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient getContainersNeedingUpload:]", 3106, 0, v25);
   v5 = brc_bread_crumbs();
@@ -17936,7 +17936,7 @@ void __56__BRCXPCRegularIPCsClient_jetsamCloudDocsAppsWithReply___block_invoke(u
     *buf = 134219010;
     v27 = v7;
     v28 = 2112;
-    v29 = self;
+    selfCopy = self;
     v30 = 2112;
     v31 = v9;
     v32 = 2080;
@@ -17951,22 +17951,22 @@ void __56__BRCXPCRegularIPCsClient_jetsamCloudDocsAppsWithReply___block_invoke(u
   v23[2] = __54__BRCXPCRegularIPCsClient_getContainersNeedingUpload___block_invoke;
   v23[3] = &unk_2785014D0;
   v23[4] = self;
-  v10 = v4;
+  v10 = uploadCopy;
   v24 = v10;
   v11 = _brc_ipc_check_account_access(self, 1, v23);
 
   if (v11)
   {
-    v12 = [(BRCXPCClient *)self session];
+    session = [(BRCXPCClient *)self session];
     tracker = self->super._tracker;
-    v14 = [v12 clientTruthWorkloop];
+    clientTruthWorkloop = [session clientTruthWorkloop];
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __54__BRCXPCRegularIPCsClient_getContainersNeedingUpload___block_invoke_451;
     v19[3] = &unk_2784FF5B8;
-    v15 = v12;
+    v15 = session;
     v20 = v15;
-    v21 = self;
+    selfCopy2 = self;
     v22 = v10;
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
@@ -17974,7 +17974,7 @@ void __56__BRCXPCRegularIPCsClient_jetsamCloudDocsAppsWithReply___block_invoke(u
     v17[3] = &unk_278500048;
     v17[4] = self;
     v18 = v22;
-    brc_task_tracker_async_with_logs(tracker, v14, v19, v17);
+    brc_task_tracker_async_with_logs(tracker, clientTruthWorkloop, v19, v17);
   }
 
   __brc_leave_section(v25);
@@ -18081,11 +18081,11 @@ void __54__BRCXPCRegularIPCsClient_getContainersNeedingUpload___block_invoke_452
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setMigrationStatus:(char)a3 forDSID:(id)a4 shouldUpdateAccount:(BOOL)a5 reply:(id)a6
+- (void)setMigrationStatus:(char)status forDSID:(id)d shouldUpdateAccount:(BOOL)account reply:(id)reply
 {
   v44 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a6;
+  dCopy = d;
+  replyCopy = reply;
   memset(v33, 0, sizeof(v33));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient setMigrationStatus:forDSID:shouldUpdateAccount:reply:]", 3129, 0, v33);
   v10 = brc_bread_crumbs();
@@ -18096,9 +18096,9 @@ void __54__BRCXPCRegularIPCsClient_getContainersNeedingUpload___block_invoke_452
     v13 = qos_class_self();
     v14 = BRCPrettyPrintEnumWithContext(v13, &brc_qos_entries, 0);
     *buf = 134219010;
-    v35 = v12;
+    selfCopy2 = v12;
     v36 = 2112;
-    v37 = self;
+    selfCopy = self;
     v38 = 2112;
     v39 = v14;
     v40 = 2080;
@@ -18113,24 +18113,24 @@ void __54__BRCXPCRegularIPCsClient_getContainersNeedingUpload___block_invoke_452
   v31[2] = __80__BRCXPCRegularIPCsClient_setMigrationStatus_forDSID_shouldUpdateAccount_reply___block_invoke;
   v31[3] = &unk_2785014D0;
   v31[4] = self;
-  v15 = v9;
+  v15 = replyCopy;
   v32 = v15;
   v16 = _brc_ipc_check_account_access(self, 0, v31);
 
   if (v16)
   {
     v17 = +[BRCAccountsManager sharedManager];
-    v18 = [MEMORY[0x277CB8F48] defaultStore];
-    v19 = [v18 br_appleAccountWithPersonID:v8];
+    defaultStore = [MEMORY[0x277CB8F48] defaultStore];
+    v19 = [defaultStore br_appleAccountWithPersonID:dCopy];
 
-    v20 = [v19 identifier];
-    if (v20)
+    identifier = [v19 identifier];
+    if (identifier)
     {
-      v21 = [v19 br_personaIdentifier];
+      br_personaIdentifier = [v19 br_personaIdentifier];
       v30 = v15;
       v27 = v17;
       v28 = v19;
-      v29 = v8;
+      v29 = dCopy;
       BRPerformWithPersonaAndError();
     }
 
@@ -18140,18 +18140,18 @@ void __54__BRCXPCRegularIPCsClient_getContainersNeedingUpload___block_invoke_452
       v23 = brc_default_log();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
       {
-        v24 = [MEMORY[0x277CCA9B8] brc_errorLoggedOut];
+        brc_errorLoggedOut = [MEMORY[0x277CCA9B8] brc_errorLoggedOut];
         *buf = 138412802;
-        v35 = self;
+        selfCopy2 = self;
         v36 = 2112;
-        v37 = v24;
+        selfCopy = brc_errorLoggedOut;
         v38 = 2112;
         v39 = v22;
         _os_log_impl(&dword_223E7A000, v23, OS_LOG_TYPE_INFO, "[INFO] %@: reply(%@)%@", buf, 0x20u);
       }
 
-      v25 = [MEMORY[0x277CCA9B8] brc_errorLoggedOut];
-      (*(v15 + 2))(v15, v25);
+      brc_errorLoggedOut2 = [MEMORY[0x277CCA9B8] brc_errorLoggedOut];
+      (*(v15 + 2))(v15, brc_errorLoggedOut2);
     }
   }
 
@@ -18270,10 +18270,10 @@ uint64_t __80__BRCXPCRegularIPCsClient_setMigrationStatus_forDSID_shouldUpdateAc
   return result;
 }
 
-- (void)getSyncState:(unint64_t)a3 reply:(id)a4
+- (void)getSyncState:(unint64_t)state reply:(id)reply
 {
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  replyCopy = reply;
   memset(v21, 0, sizeof(v21));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient getSyncState:reply:]", 3159, 0, v21);
   v7 = brc_bread_crumbs();
@@ -18286,7 +18286,7 @@ uint64_t __80__BRCXPCRegularIPCsClient_setMigrationStatus_forDSID_shouldUpdateAc
     *buf = 134219010;
     v23 = v9;
     v24 = 2112;
-    v25 = self;
+    selfCopy = self;
     v26 = 2112;
     v27 = v11;
     v28 = 2080;
@@ -18301,21 +18301,21 @@ uint64_t __80__BRCXPCRegularIPCsClient_setMigrationStatus_forDSID_shouldUpdateAc
   v19[2] = __46__BRCXPCRegularIPCsClient_getSyncState_reply___block_invoke;
   v19[3] = &unk_2785014D0;
   v19[4] = self;
-  v12 = v6;
+  v12 = replyCopy;
   v20 = v12;
   v13 = _brc_ipc_check_entitlement_and_logged_status(self, 1, @"com.apple.fileprovider.acl-read", v19);
 
   if (v13)
   {
-    v14 = [(BRCXPCClient *)self session];
+    session = [(BRCXPCClient *)self session];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __46__BRCXPCRegularIPCsClient_getSyncState_reply___block_invoke_458;
     v16[3] = &unk_278507128;
     v16[4] = self;
-    v18 = a3;
+    stateCopy = state;
     v17 = v12;
-    [v14 performAsyncOnClientReadDatabaseWorkloop:v16];
+    [session performAsyncOnClientReadDatabaseWorkloop:v16];
   }
 
   __brc_leave_section(v21);
@@ -18399,11 +18399,11 @@ uint64_t __46__BRCXPCRegularIPCsClient_getSyncState_reply___block_invoke_2(uint6
   return 1;
 }
 
-- (void)resolveFileObjectIDsToContentRecordIDsForThumbnails:(id)a3 reply:(id)a4
+- (void)resolveFileObjectIDsToContentRecordIDsForThumbnails:(id)thumbnails reply:(id)reply
 {
   v43 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  thumbnailsCopy = thumbnails;
+  replyCopy = reply;
   memset(v32, 0, sizeof(v32));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient resolveFileObjectIDsToContentRecordIDsForThumbnails:reply:]", 3218, 0, v32);
   v8 = brc_bread_crumbs();
@@ -18416,7 +18416,7 @@ uint64_t __46__BRCXPCRegularIPCsClient_getSyncState_reply___block_invoke_2(uint6
     *buf = 134219010;
     v34 = v10;
     v35 = 2112;
-    v36 = self;
+    selfCopy = self;
     v37 = 2112;
     v38 = v12;
     v39 = 2080;
@@ -18431,26 +18431,26 @@ uint64_t __46__BRCXPCRegularIPCsClient_getSyncState_reply___block_invoke_2(uint6
   v30[2] = __85__BRCXPCRegularIPCsClient_resolveFileObjectIDsToContentRecordIDsForThumbnails_reply___block_invoke;
   v30[3] = &unk_2785014D0;
   v30[4] = self;
-  v13 = v7;
+  v13 = replyCopy;
   v31 = v13;
   v14 = _brc_ipc_check_applibrary_proxy(self, 1, v30);
 
   if (v14)
   {
-    v15 = [(BRCXPCClient *)self session];
-    v16 = [v15 clientReadDatabaseFacade];
+    session = [(BRCXPCClient *)self session];
+    clientReadDatabaseFacade = [session clientReadDatabaseFacade];
     tracker = self->super._tracker;
-    v18 = [v16 workloop];
+    workloop = [clientReadDatabaseFacade workloop];
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
     v24[2] = __85__BRCXPCRegularIPCsClient_resolveFileObjectIDsToContentRecordIDsForThumbnails_reply___block_invoke_462;
     v24[3] = &unk_278502FF8;
-    v25 = v6;
-    v19 = v15;
+    v25 = thumbnailsCopy;
+    v19 = session;
     v26 = v19;
-    v20 = v16;
+    v20 = clientReadDatabaseFacade;
     v27 = v20;
-    v28 = self;
+    selfCopy2 = self;
     v29 = v13;
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
@@ -18458,7 +18458,7 @@ uint64_t __46__BRCXPCRegularIPCsClient_getSyncState_reply___block_invoke_2(uint6
     v22[3] = &unk_278500048;
     v22[4] = self;
     v23 = v29;
-    brc_task_tracker_async_with_logs(tracker, v18, v24, v22);
+    brc_task_tracker_async_with_logs(tracker, workloop, v24, v22);
   }
 
   __brc_leave_section(v32);
@@ -18669,11 +18669,11 @@ void __85__BRCXPCRegularIPCsClient_resolveFileObjectIDsToContentRecordIDsForThum
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)resolveBookmarkDataToURL:(id)a3 reply:(id)a4
+- (void)resolveBookmarkDataToURL:(id)l reply:(id)reply
 {
   v60 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  replyCopy = reply;
   memset(v45, 0, sizeof(v45));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient resolveBookmarkDataToURL:reply:]", 3271, 0, v45);
   v8 = brc_bread_crumbs();
@@ -18684,9 +18684,9 @@ void __85__BRCXPCRegularIPCsClient_resolveFileObjectIDsToContentRecordIDsForThum
     v11 = qos_class_self();
     v12 = BRCPrettyPrintEnumWithContext(v11, &brc_qos_entries, 0);
     *buf = 134219010;
-    v47 = v10;
+    selfCopy3 = v10;
     v48 = 2112;
-    v49 = self;
+    selfCopy = self;
     v50 = 2112;
     v51 = v12;
     v52 = 2080;
@@ -18701,7 +18701,7 @@ void __85__BRCXPCRegularIPCsClient_resolveFileObjectIDsToContentRecordIDsForThum
   v43[2] = __58__BRCXPCRegularIPCsClient_resolveBookmarkDataToURL_reply___block_invoke;
   v43[3] = &unk_2785014D0;
   v43[4] = self;
-  v13 = v7;
+  v13 = replyCopy;
   v44 = v13;
   v14 = _brc_ipc_check_logged_status(self, 1, v43);
 
@@ -18718,9 +18718,9 @@ void __85__BRCXPCRegularIPCsClient_resolveFileObjectIDsToContentRecordIDsForThum
     v42 = 0;
     v39 = 0;
     v40 = 0;
-    v17 = [(BRCXPCClient *)self session];
+    session = [(BRCXPCClient *)self session];
     v38 = 0;
-    v18 = [v6 parseBookmarkDataWithAccountSession:v17 docID:&v39 itemID:&v42 mangledID:&v41 unsaltedBookmarkData:&v40 error:&v38];
+    v18 = [lCopy parseBookmarkDataWithAccountSession:session docID:&v39 itemID:&v42 mangledID:&v41 unsaltedBookmarkData:&v40 error:&v38];
     v19 = v38;
     if (v18)
     {
@@ -18729,9 +18729,9 @@ void __85__BRCXPCRegularIPCsClient_resolveFileObjectIDsToContentRecordIDsForThum
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138413314;
-        v47 = v39;
+        selfCopy3 = v39;
         v48 = 2112;
-        v49 = v42;
+        selfCopy = v42;
         v50 = 2112;
         v51 = v41;
         v52 = 2112;
@@ -18742,14 +18742,14 @@ void __85__BRCXPCRegularIPCsClient_resolveFileObjectIDsToContentRecordIDsForThum
       }
 
       tracker = self->super._tracker;
-      v23 = [v17 clientTruthWorkloop];
+      clientTruthWorkloop = [session clientTruthWorkloop];
       v31[0] = MEMORY[0x277D85DD0];
       v31[1] = 3221225472;
       v31[2] = __58__BRCXPCRegularIPCsClient_resolveBookmarkDataToURL_reply___block_invoke_464;
       v31[3] = &unk_2785071A0;
-      v32 = v17;
+      v32 = session;
       v33 = v41;
-      v34 = self;
+      selfCopy2 = self;
       v35 = v42;
       v37 = v13;
       v36 = v39;
@@ -18759,9 +18759,9 @@ void __85__BRCXPCRegularIPCsClient_resolveFileObjectIDsToContentRecordIDsForThum
       v29[3] = &unk_278500048;
       v29[4] = self;
       v30 = v37;
-      brc_task_tracker_async_with_logs(tracker, v23, v31, v29);
+      brc_task_tracker_async_with_logs(tracker, clientTruthWorkloop, v31, v29);
 
-      v24 = v32;
+      brc_wrappedError2 = v32;
     }
 
     else
@@ -18770,11 +18770,11 @@ void __85__BRCXPCRegularIPCsClient_resolveFileObjectIDsToContentRecordIDsForThum
       v26 = brc_default_log();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
       {
-        v27 = [v19 brc_wrappedError];
+        brc_wrappedError = [v19 brc_wrappedError];
         *buf = 138413826;
-        v47 = self;
+        selfCopy3 = self;
         v48 = 2112;
-        v49 = 0;
+        selfCopy = 0;
         v50 = 2112;
         v51 = 0;
         v52 = 2112;
@@ -18782,14 +18782,14 @@ void __85__BRCXPCRegularIPCsClient_resolveFileObjectIDsToContentRecordIDsForThum
         v54 = 2112;
         v55 = 0;
         v56 = 2112;
-        v57 = v27;
+        v57 = brc_wrappedError;
         v58 = 2112;
         v59 = v25;
         _os_log_impl(&dword_223E7A000, v26, OS_LOG_TYPE_INFO, "[INFO] %@: reply(%@, %@, %@, %@, %@)%@", buf, 0x48u);
       }
 
-      v24 = [v19 brc_wrappedError];
-      (*(v13 + 2))(v13, 0, 0, 0, 0, v24);
+      brc_wrappedError2 = [v19 brc_wrappedError];
+      (*(v13 + 2))(v13, 0, 0, 0, 0, brc_wrappedError2);
     }
   }
 
@@ -19251,10 +19251,10 @@ void __58__BRCXPCRegularIPCsClient_resolveBookmarkDataToURL_reply___block_invoke
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getApplicationStatus:(id)a3
+- (void)getApplicationStatus:(id)status
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  statusCopy = status;
   memset(v18, 0, sizeof(v18));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient getApplicationStatus:]", 3428, 0, v18);
   v5 = brc_bread_crumbs();
@@ -19265,7 +19265,7 @@ void __58__BRCXPCRegularIPCsClient_resolveBookmarkDataToURL_reply___block_invoke
     v8 = qos_class_self();
     v9 = BRCPrettyPrintEnumWithContext(v8, &brc_qos_entries, 0);
     *buf = 134219010;
-    v20 = v7;
+    selfCopy = v7;
     v21 = 2112;
     *v22 = self;
     *&v22[8] = 2112;
@@ -19282,7 +19282,7 @@ void __58__BRCXPCRegularIPCsClient_resolveBookmarkDataToURL_reply___block_invoke
   v16[2] = __48__BRCXPCRegularIPCsClient_getApplicationStatus___block_invoke;
   v16[3] = &unk_2785014D0;
   v16[4] = self;
-  v10 = v4;
+  v10 = statusCopy;
   v17 = v10;
   v11 = _brc_ipc_check_logged_status(self, 0, v16);
 
@@ -19292,11 +19292,11 @@ void __58__BRCXPCRegularIPCsClient_resolveBookmarkDataToURL_reply___block_invoke
     v13 = brc_default_log();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
-      v14 = [(BRCXPCClient *)self cloudEnabledStatus];
+      cloudEnabledStatus = [(BRCXPCClient *)self cloudEnabledStatus];
       *buf = 138413058;
-      v20 = self;
+      selfCopy = self;
       v21 = 1024;
-      *v22 = v14;
+      *v22 = cloudEnabledStatus;
       *&v22[4] = 2112;
       *&v22[6] = 0;
       *&v22[14] = 2112;
@@ -19336,10 +19336,10 @@ void __48__BRCXPCRegularIPCsClient_getApplicationStatus___block_invoke(uint64_t 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getApplicationStatusForProcess:(id *)a3 reply:(id)a4
+- (void)getApplicationStatusForProcess:(id *)process reply:(id)reply
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  replyCopy = reply;
   memset(v24, 0, sizeof(v24));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient getApplicationStatusForProcess:reply:]", 3437, 0, v24);
   v7 = brc_bread_crumbs();
@@ -19367,19 +19367,19 @@ void __48__BRCXPCRegularIPCsClient_getApplicationStatus___block_invoke(uint64_t 
   v22[2] = __64__BRCXPCRegularIPCsClient_getApplicationStatusForProcess_reply___block_invoke;
   v22[3] = &unk_2785014D0;
   v22[4] = self;
-  v12 = v6;
+  v12 = replyCopy;
   v23 = v12;
   v13 = _brc_ipc_check_applibrary_proxy(self, 0, v22);
 
   if (v13)
   {
     v14 = [BRCClientPrivilegesDescriptor alloc];
-    v15 = *&a3->var0[4];
-    *buf = *a3->var0;
+    v15 = *&process->var0[4];
+    *buf = *process->var0;
     *&buf[16] = v15;
     v16 = [(BRCClientPrivilegesDescriptor *)v14 initWithAuditToken:buf];
-    v17 = [(BRCXPCClient *)self session];
-    v18 = [(BRCClientPrivilegesDescriptor *)v16 cloudEnabledStatusWithHasSession:v17 != 0];
+    session = [(BRCXPCClient *)self session];
+    v18 = [(BRCClientPrivilegesDescriptor *)v16 cloudEnabledStatusWithHasSession:session != 0];
 
     v19 = brc_bread_crumbs();
     v20 = brc_default_log();
@@ -19428,10 +19428,10 @@ void __64__BRCXPCRegularIPCsClient_getApplicationStatusForProcess_reply___block_
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getLastSyncDateWithReply:(id)a3
+- (void)getLastSyncDateWithReply:(id)reply
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  replyCopy = reply;
   memset(v23, 0, sizeof(v23));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient getLastSyncDateWithReply:]", 3451, 0, v23);
   v5 = brc_bread_crumbs();
@@ -19442,9 +19442,9 @@ void __64__BRCXPCRegularIPCsClient_getApplicationStatusForProcess_reply___block_
     v8 = qos_class_self();
     v9 = BRCPrettyPrintEnumWithContext(v8, &brc_qos_entries, 0);
     *buf = 134219010;
-    v25 = v7;
+    selfCopy2 = v7;
     v26 = 2112;
-    v27 = self;
+    selfCopy = self;
     v28 = 2112;
     v29 = v9;
     v30 = 2080;
@@ -19459,7 +19459,7 @@ void __64__BRCXPCRegularIPCsClient_getApplicationStatusForProcess_reply___block_
   v21[2] = __52__BRCXPCRegularIPCsClient_getLastSyncDateWithReply___block_invoke;
   v21[3] = &unk_2785014D0;
   v21[4] = self;
-  v10 = v4;
+  v10 = replyCopy;
   v22 = v10;
   v11 = _brc_ipc_check_logged_status(self, 0, v21);
 
@@ -19469,13 +19469,13 @@ void __64__BRCXPCRegularIPCsClient_getApplicationStatusForProcess_reply___block_
     v13 = brc_default_log();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
-      v14 = [(BRCXPCClient *)self session];
-      v15 = [v14 serverState];
-      v16 = [v15 lastSyncDownDate];
+      session = [(BRCXPCClient *)self session];
+      serverState = [session serverState];
+      lastSyncDownDate = [serverState lastSyncDownDate];
       *buf = 138413058;
-      v25 = self;
+      selfCopy2 = self;
       v26 = 2112;
-      v27 = v16;
+      selfCopy = lastSyncDownDate;
       v28 = 2112;
       v29 = 0;
       v30 = 2112;
@@ -19483,10 +19483,10 @@ void __64__BRCXPCRegularIPCsClient_getApplicationStatusForProcess_reply___block_
       _os_log_impl(&dword_223E7A000, v13, OS_LOG_TYPE_INFO, "[INFO] %@: reply(%@, %@)%@", buf, 0x2Au);
     }
 
-    v17 = [(BRCXPCClient *)self session];
-    v18 = [v17 serverState];
-    v19 = [v18 lastSyncDownDate];
-    (*(v10 + 2))(v10, v19, 0);
+    session2 = [(BRCXPCClient *)self session];
+    serverState2 = [session2 serverState];
+    lastSyncDownDate2 = [serverState2 lastSyncDownDate];
+    (*(v10 + 2))(v10, lastSyncDownDate2, 0);
   }
 
   __brc_leave_section(v23);
@@ -19518,10 +19518,10 @@ void __52__BRCXPCRegularIPCsClient_getLastSyncDateWithReply___block_invoke(uint6
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getLocalizedLastSyncWithReply:(id)a3
+- (void)getLocalizedLastSyncWithReply:(id)reply
 {
   v56 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  replyCopy = reply;
   memset(v45, 0, sizeof(v45));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient getLocalizedLastSyncWithReply:]", 3460, 0, v45);
   v5 = brc_bread_crumbs();
@@ -19532,9 +19532,9 @@ void __52__BRCXPCRegularIPCsClient_getLastSyncDateWithReply___block_invoke(uint6
     v8 = qos_class_self();
     v9 = BRCPrettyPrintEnumWithContext(v8, &brc_qos_entries, 0);
     *buf = 134219010;
-    v47 = v7;
+    selfCopy3 = v7;
     v48 = 2112;
-    v49 = self;
+    selfCopy = self;
     v50 = 2112;
     v51 = v9;
     v52 = 2080;
@@ -19549,26 +19549,26 @@ void __52__BRCXPCRegularIPCsClient_getLastSyncDateWithReply___block_invoke(uint6
   v43[2] = __57__BRCXPCRegularIPCsClient_getLocalizedLastSyncWithReply___block_invoke;
   v43[3] = &unk_2785014D0;
   v43[4] = self;
-  v10 = v4;
+  v10 = replyCopy;
   v44 = v10;
   v11 = _brc_ipc_check_logged_status(self, 0, v43);
 
   if (v11)
   {
-    v12 = [(BRCXPCClient *)self session];
-    v13 = [v12 serverState];
-    v14 = [v13 lastSyncDownDate];
+    session = [(BRCXPCClient *)self session];
+    serverState = [session serverState];
+    lastSyncDownDate = [serverState lastSyncDownDate];
 
-    if (!v14)
+    if (!lastSyncDownDate)
     {
       v23 = brc_bread_crumbs();
       v24 = brc_default_log();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
       {
         *buf = 138413058;
-        v47 = self;
+        selfCopy3 = self;
         v48 = 2112;
-        v49 = 0;
+        selfCopy = 0;
         v50 = 2112;
         v51 = 0;
         v52 = 2112;
@@ -19580,13 +19580,13 @@ void __52__BRCXPCRegularIPCsClient_getLastSyncDateWithReply___block_invoke(uint6
       goto LABEL_15;
     }
 
-    v15 = [MEMORY[0x277CBEAA8] date];
-    [v15 timeIntervalSinceDate:v14];
+    date = [MEMORY[0x277CBEAA8] date];
+    [date timeIntervalSinceDate:lastSyncDownDate];
     v17 = v16;
-    v18 = [MEMORY[0x277CBEA80] currentCalendar];
-    v19 = [v18 components:16 fromDate:v14 toDate:v15 options:0];
-    v20 = [MEMORY[0x277CBEAA8] date];
-    [v18 rangeOfUnit:16 inUnit:512 forDate:v20];
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+    v19 = [currentCalendar components:16 fromDate:lastSyncDownDate toDate:date options:0];
+    date2 = [MEMORY[0x277CBEAA8] date];
+    [currentCalendar rangeOfUnit:16 inUnit:512 forDate:date2];
     v22 = v21;
 
     if (v17 < 60.0 || v17 < 3600.0)
@@ -19594,9 +19594,9 @@ void __52__BRCXPCRegularIPCsClient_getLastSyncDateWithReply___block_invoke(uint6
       goto LABEL_11;
     }
 
-    [v14 timeIntervalSinceReferenceDate];
+    [lastSyncDownDate timeIntervalSinceReferenceDate];
     v31 = v30;
-    v32 = [v18 startOfDayForDate:v15];
+    v32 = [currentCalendar startOfDayForDate:date];
     [v32 timeIntervalSinceReferenceDate];
     v34 = v31 > v33;
 
@@ -19606,7 +19606,7 @@ void __52__BRCXPCRegularIPCsClient_getLastSyncDateWithReply___block_invoke(uint6
       [v25 setTimeStyle:1];
       [v25 setDateStyle:0];
       v35 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-      v36 = [v25 stringFromDate:v14];
+      v36 = [v25 stringFromDate:lastSyncDownDate];
       v37 = _BRLocalizedStringWithFormat();
     }
 
@@ -19624,9 +19624,9 @@ LABEL_12:
         if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
         {
           *buf = 138413058;
-          v47 = self;
+          selfCopy3 = self;
           v48 = 2112;
-          v49 = v26;
+          selfCopy = v26;
           v50 = 2112;
           v51 = 0;
           v52 = 2112;
@@ -19644,12 +19644,12 @@ LABEL_15:
       {
         v25 = objc_alloc_init(MEMORY[0x277CCA968]);
         v38 = MEMORY[0x277CCA968];
-        v39 = [MEMORY[0x277CBEAF8] currentLocale];
-        v35 = [v38 dateFormatFromTemplate:@"EEEE" options:0 locale:v39];
+        currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+        v35 = [v38 dateFormatFromTemplate:@"EEEE" options:0 locale:currentLocale];
 
         [v25 setDateFormat:v35];
         v36 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-        v40 = [v25 stringFromDate:v14];
+        v40 = [v25 stringFromDate:lastSyncDownDate];
         v41 = _BRLocalizedStringWithFormat();
         v42 = v40;
         v26 = v41;
@@ -19661,7 +19661,7 @@ LABEL_15:
       [v25 setTimeStyle:0];
       [v25 setDateStyle:2];
       v35 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-      v36 = [v25 stringFromDate:v14];
+      v36 = [v25 stringFromDate:lastSyncDownDate];
       v37 = _BRLocalizedStringWithFormat();
     }
 
@@ -19701,11 +19701,11 @@ void __57__BRCXPCRegularIPCsClient_getLocalizedLastSyncWithReply___block_invoke(
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getContainerStatusWithID:(id)a3 reply:(id)a4
+- (void)getContainerStatusWithID:(id)d reply:(id)reply
 {
   v40 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  replyCopy = reply;
   memset(v31, 0, sizeof(v31));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient getContainerStatusWithID:reply:]", 3517, 0, v31);
   v8 = brc_bread_crumbs();
@@ -19716,7 +19716,7 @@ void __57__BRCXPCRegularIPCsClient_getLocalizedLastSyncWithReply___block_invoke(
     v11 = qos_class_self();
     v12 = BRCPrettyPrintEnumWithContext(v11, &brc_qos_entries, 0);
     *buf = 134219266;
-    v33 = v10;
+    selfCopy2 = v10;
     v34 = 2112;
     *v35 = self;
     *&v35[8] = 2112;
@@ -19724,15 +19724,15 @@ void __57__BRCXPCRegularIPCsClient_getLocalizedLastSyncWithReply___block_invoke(
     *&v35[18] = 2080;
     *&v35[20] = "[BRCXPCRegularIPCsClient getContainerStatusWithID:reply:]";
     v36 = 2112;
-    v37 = v6;
+    v37 = dCopy;
     v38 = 2112;
     v39 = v8;
     _os_log_impl(&dword_223E7A000, v9, OS_LOG_TYPE_INFO, "[INFO] ┏%llx %@ (%@) %s %@%@", buf, 0x3Eu);
   }
 
-  if (v6)
+  if (dCopy)
   {
-    v13 = [objc_alloc(MEMORY[0x277CFAE60]) initWithAppLibraryName:v6];
+    v13 = [objc_alloc(MEMORY[0x277CFAE60]) initWithAppLibraryName:dCopy];
   }
 
   else
@@ -19745,14 +19745,14 @@ void __57__BRCXPCRegularIPCsClient_getLocalizedLastSyncWithReply___block_invoke(
   v29[2] = __58__BRCXPCRegularIPCsClient_getContainerStatusWithID_reply___block_invoke;
   v29[3] = &unk_2785014D0;
   v29[4] = self;
-  v14 = v7;
+  v14 = replyCopy;
   v30 = v14;
   v15 = _brc_ipc_check_applibrary_read_access(self, 1, v13, v29);
 
   if (v15)
   {
-    v16 = [(BRCXPCClient *)self session];
-    v17 = [v16 appLibraryByID:v6];
+    session = [(BRCXPCClient *)self session];
+    v17 = [session appLibraryByID:dCopy];
 
     if (!v17)
     {
@@ -19760,9 +19760,9 @@ void __57__BRCXPCRegularIPCsClient_getLocalizedLastSyncWithReply___block_invoke(
       v19 = brc_default_log();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
       {
-        v20 = [MEMORY[0x277CCA9B8] brc_errorInvalidParameter:@"containerID" value:v6];
+        v20 = [MEMORY[0x277CCA9B8] brc_errorInvalidParameter:@"containerID" value:dCopy];
         *buf = 138413058;
-        v33 = self;
+        selfCopy2 = self;
         v34 = 1024;
         *v35 = 0;
         *&v35[4] = 2112;
@@ -19772,7 +19772,7 @@ void __57__BRCXPCRegularIPCsClient_getLocalizedLastSyncWithReply___block_invoke(
         _os_log_impl(&dword_223E7A000, v19, OS_LOG_TYPE_INFO, "[INFO] %@: reply(%d, %@)%@", buf, 0x26u);
       }
 
-      v21 = [MEMORY[0x277CCA9B8] brc_errorInvalidParameter:@"containerID" value:v6];
+      v21 = [MEMORY[0x277CCA9B8] brc_errorInvalidParameter:@"containerID" value:dCopy];
       (*(v14 + 2))(v14, 0, v21);
     }
 
@@ -19780,10 +19780,10 @@ void __57__BRCXPCRegularIPCsClient_getLocalizedLastSyncWithReply___block_invoke(
     v23 = brc_default_log();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
     {
-      v24 = [v17 defaultClientZone];
-      v25 = BRContainerStatusFromSyncState([v24 syncState]);
+      defaultClientZone = [v17 defaultClientZone];
+      v25 = BRContainerStatusFromSyncState([defaultClientZone syncState]);
       *buf = 138413058;
-      v33 = self;
+      selfCopy2 = self;
       v34 = 1024;
       *v35 = v25;
       *&v35[4] = 2112;
@@ -19793,8 +19793,8 @@ void __57__BRCXPCRegularIPCsClient_getLocalizedLastSyncWithReply___block_invoke(
       _os_log_impl(&dword_223E7A000, v23, OS_LOG_TYPE_INFO, "[INFO] %@: reply(%d, %@)%@", buf, 0x26u);
     }
 
-    v26 = [v17 defaultClientZone];
-    v27 = BRContainerStatusFromSyncState([v26 syncState]);
+    defaultClientZone2 = [v17 defaultClientZone];
+    v27 = BRContainerStatusFromSyncState([defaultClientZone2 syncState]);
     (*(v14 + 2))(v14, v27, 0);
   }
 
@@ -19826,11 +19826,11 @@ void __58__BRCXPCRegularIPCsClient_getContainerStatusWithID_reply___block_invoke
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getContainerLastServerUpdateWithID:(id)a3 reply:(id)a4
+- (void)getContainerLastServerUpdateWithID:(id)d reply:(id)reply
 {
   v44 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  replyCopy = reply;
   memset(v35, 0, sizeof(v35));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient getContainerLastServerUpdateWithID:reply:]", 3531, 0, v35);
   v8 = brc_bread_crumbs();
@@ -19841,7 +19841,7 @@ void __58__BRCXPCRegularIPCsClient_getContainerStatusWithID_reply___block_invoke
     v11 = qos_class_self();
     v12 = BRCPrettyPrintEnumWithContext(v11, &brc_qos_entries, 0);
     *buf = 134219266;
-    v37 = v10;
+    selfCopy2 = v10;
     v38 = 2112;
     *v39 = self;
     *&v39[8] = 2112;
@@ -19849,15 +19849,15 @@ void __58__BRCXPCRegularIPCsClient_getContainerStatusWithID_reply___block_invoke
     *&v39[18] = 2080;
     *&v39[20] = "[BRCXPCRegularIPCsClient getContainerLastServerUpdateWithID:reply:]";
     v40 = 2112;
-    v41 = v6;
+    v41 = dCopy;
     v42 = 2112;
     v43 = v8;
     _os_log_impl(&dword_223E7A000, v9, OS_LOG_TYPE_INFO, "[INFO] ┏%llx %@ (%@) %s %@%@", buf, 0x3Eu);
   }
 
-  if (v6)
+  if (dCopy)
   {
-    v13 = [objc_alloc(MEMORY[0x277CFAE60]) initWithAppLibraryName:v6];
+    v13 = [objc_alloc(MEMORY[0x277CFAE60]) initWithAppLibraryName:dCopy];
   }
 
   else
@@ -19870,14 +19870,14 @@ void __58__BRCXPCRegularIPCsClient_getContainerStatusWithID_reply___block_invoke
   v33[2] = __68__BRCXPCRegularIPCsClient_getContainerLastServerUpdateWithID_reply___block_invoke;
   v33[3] = &unk_2785014D0;
   v33[4] = self;
-  v14 = v7;
+  v14 = replyCopy;
   v34 = v14;
   v15 = _brc_ipc_check_applibrary_read_access(self, 1, v13, v33);
 
   if (v15)
   {
-    v16 = [(BRCXPCClient *)self session];
-    v32 = [v16 appLibraryByID:v6];
+    session = [(BRCXPCClient *)self session];
+    v32 = [session appLibraryByID:dCopy];
 
     if (!v32)
     {
@@ -19885,9 +19885,9 @@ void __58__BRCXPCRegularIPCsClient_getContainerStatusWithID_reply___block_invoke
       v18 = brc_default_log();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
       {
-        v19 = [MEMORY[0x277CCA9B8] brc_errorInvalidParameter:@"containerID" value:v6];
+        v19 = [MEMORY[0x277CCA9B8] brc_errorInvalidParameter:@"containerID" value:dCopy];
         *buf = 138413058;
-        v37 = self;
+        selfCopy2 = self;
         v38 = 1024;
         *v39 = 0;
         *&v39[4] = 2112;
@@ -19897,7 +19897,7 @@ void __58__BRCXPCRegularIPCsClient_getContainerStatusWithID_reply___block_invoke
         _os_log_impl(&dword_223E7A000, v18, OS_LOG_TYPE_INFO, "[INFO] %@: reply(%d, %@)%@", buf, 0x26u);
       }
 
-      v20 = [MEMORY[0x277CCA9B8] brc_errorInvalidParameter:@"containerID" value:v6];
+      v20 = [MEMORY[0x277CCA9B8] brc_errorInvalidParameter:@"containerID" value:dCopy];
       (*(v14 + 2))(v14, 0, v20);
     }
 
@@ -19905,14 +19905,14 @@ void __58__BRCXPCRegularIPCsClient_getContainerStatusWithID_reply___block_invoke
     v22 = brc_default_log();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
     {
-      v23 = [v32 defaultClientZone];
-      v24 = [v23 serverZone];
-      v25 = [v24 changeState];
-      v26 = [v25 lastSyncDownDate];
+      defaultClientZone = [v32 defaultClientZone];
+      serverZone = [defaultClientZone serverZone];
+      changeState = [serverZone changeState];
+      lastSyncDownDate = [changeState lastSyncDownDate];
       *buf = 138413058;
-      v37 = self;
+      selfCopy2 = self;
       v38 = 2112;
-      *v39 = v26;
+      *v39 = lastSyncDownDate;
       *&v39[8] = 2112;
       *&v39[10] = 0;
       *&v39[18] = 2112;
@@ -19920,11 +19920,11 @@ void __58__BRCXPCRegularIPCsClient_getContainerStatusWithID_reply___block_invoke
       _os_log_impl(&dword_223E7A000, v22, OS_LOG_TYPE_INFO, "[INFO] %@: reply(%@, %@)%@", buf, 0x2Au);
     }
 
-    v27 = [v32 defaultClientZone];
-    v28 = [v27 serverZone];
-    v29 = [v28 changeState];
-    v30 = [v29 lastSyncDownDate];
-    (*(v14 + 2))(v14, v30, 0);
+    defaultClientZone2 = [v32 defaultClientZone];
+    serverZone2 = [defaultClientZone2 serverZone];
+    changeState2 = [serverZone2 changeState];
+    lastSyncDownDate2 = [changeState2 lastSyncDownDate];
+    (*(v14 + 2))(v14, lastSyncDownDate2, 0);
   }
 
   __brc_leave_section(v35);
@@ -19955,10 +19955,10 @@ void __68__BRCXPCRegularIPCsClient_getContainerLastServerUpdateWithID_reply___bl
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)currentNotifRankWithReply:(id)a3
+- (void)currentNotifRankWithReply:(id)reply
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  replyCopy = reply;
   memset(v19, 0, sizeof(v19));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient currentNotifRankWithReply:]", 3547, 0, v19);
   v5 = brc_bread_crumbs();
@@ -19971,7 +19971,7 @@ void __68__BRCXPCRegularIPCsClient_getContainerLastServerUpdateWithID_reply___bl
     *buf = 134219010;
     v21 = v7;
     v22 = 2112;
-    v23 = self;
+    selfCopy = self;
     v24 = 2112;
     v25 = v9;
     v26 = 2080;
@@ -19986,21 +19986,21 @@ void __68__BRCXPCRegularIPCsClient_getContainerLastServerUpdateWithID_reply___bl
   v17[2] = __53__BRCXPCRegularIPCsClient_currentNotifRankWithReply___block_invoke;
   v17[3] = &unk_2785014D0;
   v17[4] = self;
-  v10 = v4;
+  v10 = replyCopy;
   v18 = v10;
   v11 = _brc_ipc_check_applibrary_proxy(self, 1, v17);
 
   if (v11)
   {
-    v12 = [(BRCXPCClient *)self session];
-    v13 = [v12 notificationManager];
+    session = [(BRCXPCClient *)self session];
+    notificationManager = [session notificationManager];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __53__BRCXPCRegularIPCsClient_currentNotifRankWithReply___block_invoke_502;
     v15[3] = &unk_2785071C8;
     v15[4] = self;
     v16 = v10;
-    [v13 fetchLastFlushedRankWithReply:v15];
+    [notificationManager fetchLastFlushedRankWithReply:v15];
   }
 
   __brc_leave_section(v19);
@@ -20056,42 +20056,42 @@ uint64_t __53__BRCXPCRegularIPCsClient_currentNotifRankWithReply___block_invoke_
   return result;
 }
 
-- (void)enumerateItemsInFolder:(id)a3 sortOrder:(unsigned __int8)a4 offset:(unint64_t)a5 limit:(unint64_t)a6 completion:(id)a7
+- (void)enumerateItemsInFolder:(id)folder sortOrder:(unsigned __int8)order offset:(unint64_t)offset limit:(unint64_t)limit completion:(id)completion
 {
   v59 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a7;
+  folderCopy = folder;
+  completionCopy = completion;
   memset(v48, 0, sizeof(v48));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient enumerateItemsInFolder:sortOrder:offset:limit:completion:]", 3567, 0, v48);
   v14 = brc_bread_crumbs();
   v15 = brc_default_log();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
   {
-    v34 = v13;
-    v16 = a5;
-    v17 = v12;
-    v18 = a4;
-    v19 = a6;
+    v34 = completionCopy;
+    offsetCopy = offset;
+    v17 = folderCopy;
+    orderCopy = order;
+    limitCopy = limit;
     v20 = v48[0];
     v21 = qos_class_self();
     v22 = BRCPrettyPrintEnumWithContext(v21, &brc_qos_entries, 0);
     *buf = 134219010;
     v50 = v20;
     v51 = 2112;
-    v52 = self;
+    offsetCopy2 = self;
     v53 = 2112;
-    v54 = v22;
+    limitCopy2 = v22;
     v55 = 2080;
     v56 = "[BRCXPCRegularIPCsClient enumerateItemsInFolder:sortOrder:offset:limit:completion:]";
     v57 = 2112;
     v58 = v14;
     _os_log_impl(&dword_223E7A000, v15, OS_LOG_TYPE_INFO, "[INFO] ┏%llx %@ (%@) %s %@", buf, 0x34u);
 
-    a6 = v19;
-    a4 = v18;
-    v12 = v17;
-    a5 = v16;
-    v13 = v34;
+    limit = limitCopy;
+    order = orderCopy;
+    folderCopy = v17;
+    offset = offsetCopy;
+    completionCopy = v34;
   }
 
   v46[0] = MEMORY[0x277D85DD0];
@@ -20099,7 +20099,7 @@ uint64_t __53__BRCXPCRegularIPCsClient_currentNotifRankWithReply___block_invoke_
   v46[2] = __84__BRCXPCRegularIPCsClient_enumerateItemsInFolder_sortOrder_offset_limit_completion___block_invoke;
   v46[3] = &unk_2785014D0;
   v46[4] = self;
-  v23 = v13;
+  v23 = completionCopy;
   v47 = v23;
   v24 = _brc_ipc_check_applibrary_proxy(self, 1, v46);
 
@@ -20110,41 +20110,41 @@ uint64_t __53__BRCXPCRegularIPCsClient_currentNotifRankWithReply___block_invoke_
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138413058;
-      v50 = v12;
+      v50 = folderCopy;
       v51 = 2048;
-      v52 = a5;
+      offsetCopy2 = offset;
       v53 = 2048;
-      v54 = a6;
+      limitCopy2 = limit;
       v55 = 2112;
       v56 = v25;
       _os_log_debug_impl(&dword_223E7A000, v26, OS_LOG_TYPE_DEBUG, "[DEBUG] enumerating items in %@ offset:%lld limit:%lld%@", buf, 0x2Au);
     }
 
-    v27 = [(BRCXPCClient *)self session];
-    v28 = [v27 clientReadDatabaseFacade];
+    session = [(BRCXPCClient *)self session];
+    clientReadDatabaseFacade = [session clientReadDatabaseFacade];
     tracker = self->super._tracker;
-    v30 = [v28 workloop];
+    workloop = [clientReadDatabaseFacade workloop];
     v37[0] = MEMORY[0x277D85DD0];
     v37[1] = 3221225472;
     v37[2] = __84__BRCXPCRegularIPCsClient_enumerateItemsInFolder_sortOrder_offset_limit_completion___block_invoke_504;
     v37[3] = &unk_278507218;
-    v38 = v12;
-    v31 = v27;
+    v38 = folderCopy;
+    v31 = session;
     v39 = v31;
-    v32 = v28;
+    v32 = clientReadDatabaseFacade;
     v40 = v32;
-    v41 = self;
-    v43 = a5;
-    v45 = a4;
+    selfCopy2 = self;
+    offsetCopy3 = offset;
+    orderCopy2 = order;
     v42 = v23;
-    v44 = a6;
+    limitCopy3 = limit;
     v35[0] = MEMORY[0x277D85DD0];
     v35[1] = 3221225472;
     v35[2] = __84__BRCXPCRegularIPCsClient_enumerateItemsInFolder_sortOrder_offset_limit_completion___block_invoke_518;
     v35[3] = &unk_278500048;
     v35[4] = self;
     v36 = v42;
-    brc_task_tracker_async_with_logs(tracker, v30, v37, v35);
+    brc_task_tracker_async_with_logs(tracker, workloop, v37, v35);
   }
 
   __brc_leave_section(v48);
@@ -20436,11 +20436,11 @@ void __84__BRCXPCRegularIPCsClient_enumerateItemsInFolder_sortOrder_offset_limit
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)enumerateWorkingSetChangesFromChangeToken:(id)a3 limit:(unint64_t)a4 completion:(id)a5
+- (void)enumerateWorkingSetChangesFromChangeToken:(id)token limit:(unint64_t)limit completion:(id)completion
 {
   v49 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  tokenCopy = token;
+  completionCopy = completion;
   memset(v38, 0, sizeof(v38));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient enumerateWorkingSetChangesFromChangeToken:limit:completion:]", 3668, 0, v38);
   v10 = brc_bread_crumbs();
@@ -20453,7 +20453,7 @@ void __84__BRCXPCRegularIPCsClient_enumerateItemsInFolder_sortOrder_offset_limit
     *buf = 134219010;
     v40 = v12;
     v41 = 2112;
-    v42 = self;
+    selfCopy2 = self;
     v43 = 2112;
     v44 = v14;
     v45 = 2080;
@@ -20468,7 +20468,7 @@ void __84__BRCXPCRegularIPCsClient_enumerateItemsInFolder_sortOrder_offset_limit
   v36[2] = __86__BRCXPCRegularIPCsClient_enumerateWorkingSetChangesFromChangeToken_limit_completion___block_invoke;
   v36[3] = &unk_2785014D0;
   v36[4] = self;
-  v15 = v9;
+  v15 = completionCopy;
   v37 = v15;
   v16 = _brc_ipc_check_applibrary_proxy(self, 1, v36);
 
@@ -20486,7 +20486,7 @@ void __84__BRCXPCRegularIPCsClient_enumerateItemsInFolder_sortOrder_offset_limit
       *buf = 134219010;
       v40 = v19;
       v41 = 2112;
-      v42 = self;
+      selfCopy2 = self;
       v43 = 2112;
       v44 = v21;
       v45 = 2080;
@@ -20496,18 +20496,18 @@ void __84__BRCXPCRegularIPCsClient_enumerateItemsInFolder_sortOrder_offset_limit
       _os_log_impl(&dword_223E7A000, v18, OS_LOG_TYPE_INFO, "[INFO] ┏%llx %@ (%@) %s enumerating working set changes%@", buf, 0x34u);
     }
 
-    v22 = [(BRCXPCClient *)self session];
+    session = [(BRCXPCClient *)self session];
     tracker = self->super._tracker;
-    v24 = [v22 clientTruthWorkloop];
+    clientTruthWorkloop = [session clientTruthWorkloop];
     v29[0] = MEMORY[0x277D85DD0];
     v29[1] = 3221225472;
     v29[2] = __86__BRCXPCRegularIPCsClient_enumerateWorkingSetChangesFromChangeToken_limit_completion___block_invoke_519;
     v29[3] = &unk_2785018F0;
-    v25 = v22;
+    v25 = session;
     v30 = v25;
-    v34 = a4;
-    v31 = v8;
-    v32 = self;
+    limitCopy = limit;
+    v31 = tokenCopy;
+    selfCopy3 = self;
     v33 = v15;
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
@@ -20515,7 +20515,7 @@ void __84__BRCXPCRegularIPCsClient_enumerateItemsInFolder_sortOrder_offset_limit
     v27[3] = &unk_278500048;
     v27[4] = self;
     v28 = v33;
-    brc_task_tracker_async_with_logs(tracker, v24, v29, v27);
+    brc_task_tracker_async_with_logs(tracker, clientTruthWorkloop, v29, v27);
 
     __brc_leave_section(v35);
   }
@@ -20630,13 +20630,13 @@ void __86__BRCXPCRegularIPCsClient_enumerateWorkingSetChangesFromChangeToken_lim
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_getPublishedURLForLocalItem:(id)a3 forStreaming:(BOOL)a4 requestedTTL:(unint64_t)a5 reply:(id)a6
+- (void)_getPublishedURLForLocalItem:(id)item forStreaming:(BOOL)streaming requestedTTL:(unint64_t)l reply:(id)reply
 {
-  v8 = a4;
+  streamingCopy = streaming;
   v53[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a6;
-  if (([v10 isDocument] & 1) == 0)
+  itemCopy = item;
+  replyCopy = reply;
+  if (([itemCopy isDocument] & 1) == 0)
   {
     v18 = MEMORY[0x277CCA9B8];
     v19 = 2;
@@ -20645,54 +20645,54 @@ LABEL_6:
     goto LABEL_8;
   }
 
-  v12 = [v10 asDocument];
-  v13 = [v12 currentVersion];
-  v14 = [v13 ckInfo];
+  asDocument = [itemCopy asDocument];
+  currentVersion = [asDocument currentVersion];
+  ckInfo = [currentVersion ckInfo];
 
-  if (v14)
+  if (ckInfo)
   {
-    v15 = [v10 asDocument];
-    v16 = [v15 currentVersion];
-    v17 = [v16 isPackage];
+    asDocument2 = [itemCopy asDocument];
+    currentVersion2 = [asDocument2 currentVersion];
+    isPackage = [currentVersion2 isPackage];
 
-    if (!v17)
+    if (!isPackage)
     {
-      v40 = [v10 serverZone];
-      v22 = [v40 mangledID];
-      v21 = [BRCUserDefaults defaultsForMangledID:v22];
+      serverZone = [itemCopy serverZone];
+      mangledID = [serverZone mangledID];
+      v21 = [BRCUserDefaults defaultsForMangledID:mangledID];
 
-      v23 = [v10 asDocument];
-      v24 = [v23 documentRecordID];
+      asDocument3 = [itemCopy asDocument];
+      documentRecordID = [asDocument3 documentRecordID];
 
       v25 = objc_alloc(MEMORY[0x277CBC570]);
-      v41 = v24;
-      v53[0] = v24;
+      v41 = documentRecordID;
+      v53[0] = documentRecordID;
       v26 = [MEMORY[0x277CBEA60] arrayWithObjects:v53 count:1];
       v27 = [v25 initWithRecordIDs:v26];
 
-      v28 = [MEMORY[0x277CBC4F8] br_publishingRequest];
-      [v27 setGroup:v28];
+      br_publishingRequest = [MEMORY[0x277CBC4F8] br_publishingRequest];
+      [v27 setGroup:br_publishingRequest];
 
       v51 = @"fileContent";
-      v29 = [v10 st];
-      v30 = [v29 logicalName];
-      v52 = v30;
+      v29 = [itemCopy st];
+      logicalName = [v29 logicalName];
+      v52 = logicalName;
       v31 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v52 forKeys:&v51 count:1];
       [v27 setFileNamesByAssetFieldNames:v31];
 
-      if (!a5)
+      if (!l)
       {
-        a5 = [v21 publishURLTimeout];
+        l = [v21 publishURLTimeout];
       }
 
-      [v27 setRequestedTTL:a5];
-      v32 = [v27 configuration];
-      [v32 setDiscretionaryNetworkBehavior:0];
+      [v27 setRequestedTTL:l];
+      configuration = [v27 configuration];
+      [configuration setDiscretionaryNetworkBehavior:0];
 
-      v33 = [v27 configuration];
-      [v33 setAutomaticallyRetryNetworkFailures:0];
+      configuration2 = [v27 configuration];
+      [configuration2 setAutomaticallyRetryNetworkFailures:0];
 
-      if (v8)
+      if (streamingCopy)
       {
         [v27 setURLOptions:1];
       }
@@ -20701,7 +20701,7 @@ LABEL_6:
       v48[1] = 3221225472;
       v48[2] = __88__BRCXPCRegularIPCsClient__getPublishedURLForLocalItem_forStreaming_requestedTTL_reply___block_invoke;
       v48[3] = &unk_278507268;
-      v34 = v11;
+      v34 = replyCopy;
       v49 = v34;
       v50 = v27;
       [v27 setAssetPublishedBlock:v48];
@@ -20718,10 +20718,10 @@ LABEL_6:
       v42[1] = 3221225472;
       v42[2] = __88__BRCXPCRegularIPCsClient__getPublishedURLForLocalItem_forStreaming_requestedTTL_reply___block_invoke_3;
       v42[3] = &unk_2784FF478;
-      v43 = v40;
+      v43 = serverZone;
       v44 = v27;
       v37 = v27;
-      v38 = v40;
+      v38 = serverZone;
       brc_task_tracker_async_with_logs(tracker, queue, v42, 0);
 
       goto LABEL_15;
@@ -20737,7 +20737,7 @@ LABEL_8:
   v21 = v20;
   if (v20)
   {
-    (*(v11 + 2))(v11, 0, 0, v20);
+    (*(replyCopy + 2))(replyCopy, 0, 0, v20);
 LABEL_15:
   }
 
@@ -20774,21 +20774,21 @@ void __88__BRCXPCRegularIPCsClient__getPublishedURLForLocalItem_forStreaming_req
   [v2 addOperation:*(a1 + 40)];
 }
 
-- (void)_getiWorkPublishingInfoForLocalItem:(id)a3 itemIdentifier:(id)a4 reply:(id)a5
+- (void)_getiWorkPublishingInfoForLocalItem:(id)item itemIdentifier:(id)identifier reply:(id)reply
 {
   v50 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8)
+  itemCopy = item;
+  identifierCopy = identifier;
+  replyCopy = reply;
+  if (!itemCopy)
   {
     v18 = brc_bread_crumbs();
     v19 = brc_default_log();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
     {
-      v20 = [MEMORY[0x277CCA9B8] brc_errorItemNotFound:v9];
+      v20 = [MEMORY[0x277CCA9B8] brc_errorItemNotFound:identifierCopy];
       *buf = 138413570;
-      v39 = self;
+      selfCopy4 = self;
       v40 = 1024;
       v41 = 0;
       v42 = 1024;
@@ -20802,19 +20802,19 @@ void __88__BRCXPCRegularIPCsClient__getPublishedURLForLocalItem_forStreaming_req
       _os_log_impl(&dword_223E7A000, v19, OS_LOG_TYPE_INFO, "[INFO] %@: reply(%d, %d, %@, %@)%@", buf, 0x36u);
     }
 
-    v21 = [MEMORY[0x277CCA9B8] brc_errorItemNotFound:v9];
+    v21 = [MEMORY[0x277CCA9B8] brc_errorItemNotFound:identifierCopy];
     goto LABEL_18;
   }
 
-  if (([v8 isDocument] & 1) == 0)
+  if (([itemCopy isDocument] & 1) == 0)
   {
     v22 = brc_bread_crumbs();
     v23 = brc_default_log();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
     {
-      v24 = [MEMORY[0x277CCA9B8] brc_errorNoDocument:v9 underlyingPOSIXError:21];
+      v24 = [MEMORY[0x277CCA9B8] brc_errorNoDocument:identifierCopy underlyingPOSIXError:21];
       *buf = 138413570;
-      v39 = self;
+      selfCopy4 = self;
       v40 = 1024;
       v41 = 0;
       v42 = 1024;
@@ -20828,19 +20828,19 @@ void __88__BRCXPCRegularIPCsClient__getPublishedURLForLocalItem_forStreaming_req
       _os_log_impl(&dword_223E7A000, v23, OS_LOG_TYPE_INFO, "[INFO] %@: reply(%d, %d, %@, %@)%@", buf, 0x36u);
     }
 
-    v21 = [MEMORY[0x277CCA9B8] brc_errorNoDocument:v9 underlyingPOSIXError:21];
+    v21 = [MEMORY[0x277CCA9B8] brc_errorNoDocument:identifierCopy underlyingPOSIXError:21];
     goto LABEL_18;
   }
 
-  if (([v8 isKnownByServer] & 1) == 0)
+  if (([itemCopy isKnownByServer] & 1) == 0)
   {
     v25 = brc_bread_crumbs();
     v26 = brc_default_log();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
     {
-      v27 = [MEMORY[0x277CCA9B8] brc_errorNotInCloud:v9];
+      v27 = [MEMORY[0x277CCA9B8] brc_errorNotInCloud:identifierCopy];
       *buf = 138413570;
-      v39 = self;
+      selfCopy4 = self;
       v40 = 1024;
       v41 = 0;
       v42 = 1024;
@@ -20854,22 +20854,22 @@ void __88__BRCXPCRegularIPCsClient__getPublishedURLForLocalItem_forStreaming_req
       _os_log_impl(&dword_223E7A000, v26, OS_LOG_TYPE_INFO, "[INFO] %@: reply(%d, %d, %@, %@)%@", buf, 0x36u);
     }
 
-    v21 = [MEMORY[0x277CCA9B8] brc_errorNotInCloud:v9];
+    v21 = [MEMORY[0x277CCA9B8] brc_errorNotInCloud:identifierCopy];
     goto LABEL_18;
   }
 
-  v11 = [v8 st];
-  v12 = [v11 iWorkShareable];
+  v11 = [itemCopy st];
+  iWorkShareable = [v11 iWorkShareable];
 
-  if ((v12 & 1) == 0)
+  if ((iWorkShareable & 1) == 0)
   {
     v28 = brc_bread_crumbs();
     v29 = brc_default_log();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
     {
-      v30 = [MEMORY[0x277CCA9B8] brc_errorInvalidParameter:@"path isn't iWork Shareable" value:v9];
+      v30 = [MEMORY[0x277CCA9B8] brc_errorInvalidParameter:@"path isn't iWork Shareable" value:identifierCopy];
       *buf = 138413570;
-      v39 = self;
+      selfCopy4 = self;
       v40 = 1024;
       v41 = 0;
       v42 = 1024;
@@ -20883,24 +20883,24 @@ void __88__BRCXPCRegularIPCsClient__getPublishedURLForLocalItem_forStreaming_req
       _os_log_impl(&dword_223E7A000, v29, OS_LOG_TYPE_INFO, "[INFO] %@: reply(%d, %d, %@, %@)%@", buf, 0x36u);
     }
 
-    v21 = [MEMORY[0x277CCA9B8] brc_errorInvalidParameter:@"path isn't iWork Shareable" value:v9];
+    v21 = [MEMORY[0x277CCA9B8] brc_errorInvalidParameter:@"path isn't iWork Shareable" value:identifierCopy];
 LABEL_18:
     v16 = v21;
-    (*(v10 + 2))(v10, 0, 0, 0, v21);
+    (*(replyCopy + 2))(replyCopy, 0, 0, 0, v21);
     goto LABEL_19;
   }
 
   v13 = [BRCFetchiWorkSharingInfoOperation alloc];
-  v14 = [v8 asDocument];
-  v15 = [(BRCXPCClient *)self session];
-  v16 = [(BRCFetchiWorkSharingInfoOperation *)v13 initWithDocumentItem:v14 sessionContext:v15];
+  asDocument = [itemCopy asDocument];
+  session = [(BRCXPCClient *)self session];
+  v16 = [(BRCFetchiWorkSharingInfoOperation *)v13 initWithDocumentItem:asDocument sessionContext:session];
 
   v32 = MEMORY[0x277D85DD0];
   v33 = 3221225472;
   v34 = __84__BRCXPCRegularIPCsClient__getiWorkPublishingInfoForLocalItem_itemIdentifier_reply___block_invoke;
   v35 = &unk_2785072B8;
-  v36 = self;
-  v37 = v10;
+  selfCopy5 = self;
+  v37 = replyCopy;
   [(_BRCOperation *)v16 setFinishBlock:&v32];
   v17 = [(BRCXPCClient *)self session:v32];
   [v17 addMiscOperation:v16];
@@ -21116,21 +21116,21 @@ void __101__BRCXPCRegularIPCsClient__setiWorkPublishingInfoForLocalItem_itemIden
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_getiWorkPublishingBadgingStatusForLocalItem:(id)a3 itemIdentifier:(id)a4 reply:(id)a5
+- (void)_getiWorkPublishingBadgingStatusForLocalItem:(id)item itemIdentifier:(id)identifier reply:(id)reply
 {
   v38 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8)
+  itemCopy = item;
+  identifierCopy = identifier;
+  replyCopy = reply;
+  if (!itemCopy)
   {
     v15 = brc_bread_crumbs();
     v16 = brc_default_log();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
     {
-      v17 = [MEMORY[0x277CCA9B8] brc_errorItemNotFound:v9];
+      v17 = [MEMORY[0x277CCA9B8] brc_errorItemNotFound:identifierCopy];
       v30 = 138413058;
-      v31 = self;
+      selfCopy5 = self;
       v32 = 1024;
       v33 = 0;
       v34 = 2112;
@@ -21140,19 +21140,19 @@ void __101__BRCXPCRegularIPCsClient__setiWorkPublishingInfoForLocalItem_itemIden
       _os_log_impl(&dword_223E7A000, v16, OS_LOG_TYPE_INFO, "[INFO] %@: reply(%d, %@)%@", &v30, 0x26u);
     }
 
-    v18 = [MEMORY[0x277CCA9B8] brc_errorItemNotFound:v9];
+    v18 = [MEMORY[0x277CCA9B8] brc_errorItemNotFound:identifierCopy];
     goto LABEL_20;
   }
 
-  if (([v8 isDocument] & 1) == 0)
+  if (([itemCopy isDocument] & 1) == 0)
   {
     v19 = brc_bread_crumbs();
     v20 = brc_default_log();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
     {
-      v21 = [MEMORY[0x277CCA9B8] brc_errorNoDocument:v9 underlyingPOSIXError:21];
+      v21 = [MEMORY[0x277CCA9B8] brc_errorNoDocument:identifierCopy underlyingPOSIXError:21];
       v30 = 138413058;
-      v31 = self;
+      selfCopy5 = self;
       v32 = 1024;
       v33 = 0;
       v34 = 2112;
@@ -21162,19 +21162,19 @@ void __101__BRCXPCRegularIPCsClient__setiWorkPublishingInfoForLocalItem_itemIden
       _os_log_impl(&dword_223E7A000, v20, OS_LOG_TYPE_INFO, "[INFO] %@: reply(%d, %@)%@", &v30, 0x26u);
     }
 
-    v18 = [MEMORY[0x277CCA9B8] brc_errorNoDocument:v9 underlyingPOSIXError:21];
+    v18 = [MEMORY[0x277CCA9B8] brc_errorNoDocument:identifierCopy underlyingPOSIXError:21];
     goto LABEL_20;
   }
 
-  if (([v8 isKnownByServer] & 1) == 0)
+  if (([itemCopy isKnownByServer] & 1) == 0)
   {
     v22 = brc_bread_crumbs();
     v23 = brc_default_log();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
     {
-      v24 = [MEMORY[0x277CCA9B8] brc_errorNotInCloud:v9];
+      v24 = [MEMORY[0x277CCA9B8] brc_errorNotInCloud:identifierCopy];
       v30 = 138413058;
-      v31 = self;
+      selfCopy5 = self;
       v32 = 1024;
       v33 = 0;
       v34 = 2112;
@@ -21184,22 +21184,22 @@ void __101__BRCXPCRegularIPCsClient__setiWorkPublishingInfoForLocalItem_itemIden
       _os_log_impl(&dword_223E7A000, v23, OS_LOG_TYPE_INFO, "[INFO] %@: reply(%d, %@)%@", &v30, 0x26u);
     }
 
-    v18 = [MEMORY[0x277CCA9B8] brc_errorNotInCloud:v9];
+    v18 = [MEMORY[0x277CCA9B8] brc_errorNotInCloud:identifierCopy];
     goto LABEL_20;
   }
 
-  v11 = [v8 st];
-  v12 = [v11 iWorkShareable];
+  v11 = [itemCopy st];
+  iWorkShareable = [v11 iWorkShareable];
 
-  if ((v12 & 1) == 0)
+  if ((iWorkShareable & 1) == 0)
   {
     v25 = brc_bread_crumbs();
     v26 = brc_default_log();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
     {
-      v27 = [MEMORY[0x277CCA9B8] brc_errorInvalidParameter:@"path isn't iWork Shareable" value:v9];
+      v27 = [MEMORY[0x277CCA9B8] brc_errorInvalidParameter:@"path isn't iWork Shareable" value:identifierCopy];
       v30 = 138413058;
-      v31 = self;
+      selfCopy5 = self;
       v32 = 1024;
       v33 = 0;
       v34 = 2112;
@@ -21209,10 +21209,10 @@ void __101__BRCXPCRegularIPCsClient__setiWorkPublishingInfoForLocalItem_itemIden
       _os_log_impl(&dword_223E7A000, v26, OS_LOG_TYPE_INFO, "[INFO] %@: reply(%d, %@)%@", &v30, 0x26u);
     }
 
-    v18 = [MEMORY[0x277CCA9B8] brc_errorInvalidParameter:@"path isn't iWork Shareable" value:v9];
+    v18 = [MEMORY[0x277CCA9B8] brc_errorInvalidParameter:@"path isn't iWork Shareable" value:identifierCopy];
 LABEL_20:
     v28 = v18;
-    v10[2](v10, 0, v18);
+    replyCopy[2](replyCopy, 0, v18);
 
     goto LABEL_21;
   }
@@ -21222,9 +21222,9 @@ LABEL_20:
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
     v30 = 138413058;
-    v31 = self;
+    selfCopy5 = self;
     v32 = 1024;
-    LOBYTE(v33) = [v8 sharingOptions] & 3;
+    LOBYTE(v33) = [itemCopy sharingOptions] & 3;
     v33 = v33;
     v34 = 2112;
     v35 = 0;
@@ -21233,27 +21233,27 @@ LABEL_20:
     _os_log_impl(&dword_223E7A000, v14, OS_LOG_TYPE_INFO, "[INFO] %@: reply(%d, %@)%@", &v30, 0x26u);
   }
 
-  v10[2](v10, [v8 sharingOptions] & 3, 0);
+  replyCopy[2](replyCopy, [itemCopy sharingOptions] & 3, 0);
 LABEL_21:
 
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_getiWorkNeedsShareMigrateForLocalItem:(id)a3 itemIdentifier:(id)a4 reply:(id)a5
+- (void)_getiWorkNeedsShareMigrateForLocalItem:(id)item itemIdentifier:(id)identifier reply:(id)reply
 {
   v39 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8)
+  itemCopy = item;
+  identifierCopy = identifier;
+  replyCopy = reply;
+  if (!itemCopy)
   {
     v16 = brc_bread_crumbs();
     v17 = brc_default_log();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
-      v18 = [MEMORY[0x277CCA9B8] brc_errorItemNotFound:v9];
+      v18 = [MEMORY[0x277CCA9B8] brc_errorItemNotFound:identifierCopy];
       v31 = 138413058;
-      v32 = self;
+      selfCopy5 = self;
       v33 = 1024;
       v34 = 0;
       v35 = 2112;
@@ -21263,19 +21263,19 @@ LABEL_21:
       _os_log_impl(&dword_223E7A000, v17, OS_LOG_TYPE_INFO, "[INFO] %@: reply(%d, %@)%@", &v31, 0x26u);
     }
 
-    v19 = [MEMORY[0x277CCA9B8] brc_errorItemNotFound:v9];
+    v19 = [MEMORY[0x277CCA9B8] brc_errorItemNotFound:identifierCopy];
     goto LABEL_20;
   }
 
-  if (([v8 isDocument] & 1) == 0)
+  if (([itemCopy isDocument] & 1) == 0)
   {
     v20 = brc_bread_crumbs();
     v21 = brc_default_log();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
     {
-      v22 = [MEMORY[0x277CCA9B8] brc_errorNoDocument:v9 underlyingPOSIXError:21];
+      v22 = [MEMORY[0x277CCA9B8] brc_errorNoDocument:identifierCopy underlyingPOSIXError:21];
       v31 = 138413058;
-      v32 = self;
+      selfCopy5 = self;
       v33 = 1024;
       v34 = 0;
       v35 = 2112;
@@ -21285,19 +21285,19 @@ LABEL_21:
       _os_log_impl(&dword_223E7A000, v21, OS_LOG_TYPE_INFO, "[INFO] %@: reply(%d, %@)%@", &v31, 0x26u);
     }
 
-    v19 = [MEMORY[0x277CCA9B8] brc_errorNoDocument:v9 underlyingPOSIXError:21];
+    v19 = [MEMORY[0x277CCA9B8] brc_errorNoDocument:identifierCopy underlyingPOSIXError:21];
     goto LABEL_20;
   }
 
-  if (([v8 isKnownByServer] & 1) == 0)
+  if (([itemCopy isKnownByServer] & 1) == 0)
   {
     v23 = brc_bread_crumbs();
     v24 = brc_default_log();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
     {
-      v25 = [MEMORY[0x277CCA9B8] brc_errorNotInCloud:v9];
+      v25 = [MEMORY[0x277CCA9B8] brc_errorNotInCloud:identifierCopy];
       v31 = 138413058;
-      v32 = self;
+      selfCopy5 = self;
       v33 = 1024;
       v34 = 0;
       v35 = 2112;
@@ -21307,22 +21307,22 @@ LABEL_21:
       _os_log_impl(&dword_223E7A000, v24, OS_LOG_TYPE_INFO, "[INFO] %@: reply(%d, %@)%@", &v31, 0x26u);
     }
 
-    v19 = [MEMORY[0x277CCA9B8] brc_errorNotInCloud:v9];
+    v19 = [MEMORY[0x277CCA9B8] brc_errorNotInCloud:identifierCopy];
     goto LABEL_20;
   }
 
-  v11 = [v8 st];
-  v12 = [v11 iWorkShareable];
+  v11 = [itemCopy st];
+  iWorkShareable = [v11 iWorkShareable];
 
-  if ((v12 & 1) == 0)
+  if ((iWorkShareable & 1) == 0)
   {
     v26 = brc_bread_crumbs();
     v27 = brc_default_log();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
     {
-      v28 = [MEMORY[0x277CCA9B8] brc_errorInvalidParameter:@"path isn't iWork Shareable" value:v9];
+      v28 = [MEMORY[0x277CCA9B8] brc_errorInvalidParameter:@"path isn't iWork Shareable" value:identifierCopy];
       v31 = 138413058;
-      v32 = self;
+      selfCopy5 = self;
       v33 = 1024;
       v34 = 0;
       v35 = 2112;
@@ -21332,21 +21332,21 @@ LABEL_21:
       _os_log_impl(&dword_223E7A000, v27, OS_LOG_TYPE_INFO, "[INFO] %@: reply(%d, %@)%@", &v31, 0x26u);
     }
 
-    v19 = [MEMORY[0x277CCA9B8] brc_errorInvalidParameter:@"path isn't iWork Shareable" value:v9];
+    v19 = [MEMORY[0x277CCA9B8] brc_errorInvalidParameter:@"path isn't iWork Shareable" value:identifierCopy];
 LABEL_20:
     v29 = v19;
-    v10[2](v10, 0, v19);
+    replyCopy[2](replyCopy, 0, v19);
 
     goto LABEL_21;
   }
 
-  v13 = [v8 sharingOptions] & 0x4D;
+  v13 = [itemCopy sharingOptions] & 0x4D;
   v14 = brc_bread_crumbs();
   v15 = brc_default_log();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
   {
     v31 = 138413058;
-    v32 = self;
+    selfCopy5 = self;
     v33 = 1024;
     v34 = v13 == 1;
     v35 = 2112;
@@ -21356,27 +21356,27 @@ LABEL_20:
     _os_log_impl(&dword_223E7A000, v15, OS_LOG_TYPE_INFO, "[INFO] %@: reply(%d, %@)%@", &v31, 0x26u);
   }
 
-  (v10)[2](v10, v13 == 1, 0);
+  (replyCopy)[2](replyCopy, v13 == 1, 0);
 LABEL_21:
 
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_launchItemCountMismatchChecksForLocalItem:(id)a3 itemIdentifier:(id)a4 reply:(id)a5
+- (void)_launchItemCountMismatchChecksForLocalItem:(id)item itemIdentifier:(id)identifier reply:(id)reply
 {
   v35 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8)
+  itemCopy = item;
+  identifierCopy = identifier;
+  replyCopy = reply;
+  if (!itemCopy)
   {
     v16 = brc_bread_crumbs();
     v17 = brc_default_log();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
-      v18 = [MEMORY[0x277CCA9B8] brc_errorItemNotFound:v9];
+      v18 = [MEMORY[0x277CCA9B8] brc_errorItemNotFound:identifierCopy];
       *buf = 138413058;
-      v28 = self;
+      selfCopy2 = self;
       v29 = 1024;
       v30 = 0;
       v31 = 2112;
@@ -21386,19 +21386,19 @@ LABEL_21:
       _os_log_impl(&dword_223E7A000, v17, OS_LOG_TYPE_INFO, "[INFO] %@: reply(%d, %@)%@", buf, 0x26u);
     }
 
-    v19 = [MEMORY[0x277CCA9B8] brc_errorItemNotFound:v9];
+    v19 = [MEMORY[0x277CCA9B8] brc_errorItemNotFound:identifierCopy];
     goto LABEL_10;
   }
 
-  if (([v8 isDirectory] & 1) == 0)
+  if (([itemCopy isDirectory] & 1) == 0)
   {
     v20 = brc_bread_crumbs();
     v21 = brc_default_log();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
     {
-      v22 = [MEMORY[0x277CCA9B8] brc_errorNoDocument:v9 underlyingPOSIXError:20];
+      v22 = [MEMORY[0x277CCA9B8] brc_errorNoDocument:identifierCopy underlyingPOSIXError:20];
       *buf = 138413058;
-      v28 = self;
+      selfCopy2 = self;
       v29 = 1024;
       v30 = 0;
       v31 = 2112;
@@ -21408,28 +21408,28 @@ LABEL_21:
       _os_log_impl(&dword_223E7A000, v21, OS_LOG_TYPE_INFO, "[INFO] %@: reply(%d, %@)%@", buf, 0x26u);
     }
 
-    v19 = [MEMORY[0x277CCA9B8] brc_errorNoDocument:v9 underlyingPOSIXError:20];
+    v19 = [MEMORY[0x277CCA9B8] brc_errorNoDocument:identifierCopy underlyingPOSIXError:20];
 LABEL_10:
     v23 = v19;
-    v10[2](v10, 0, v19);
+    replyCopy[2](replyCopy, 0, v19);
 
     goto LABEL_11;
   }
 
-  v11 = [(BRCXPCClient *)self session];
-  v12 = [v11 applyScheduler];
-  v13 = [v12 hasActiveWorkGroup];
+  session = [(BRCXPCClient *)self session];
+  applyScheduler = [session applyScheduler];
+  hasActiveWorkGroup = [applyScheduler hasActiveWorkGroup];
   v14 = dispatch_time(0, 10000000000);
-  dispatch_group_wait(v13, v14);
+  dispatch_group_wait(hasActiveWorkGroup, v14);
 
-  v15 = [v8 asDirectory];
+  asDirectory = [itemCopy asDirectory];
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = __91__BRCXPCRegularIPCsClient__launchItemCountMismatchChecksForLocalItem_itemIdentifier_reply___block_invoke;
   v25[3] = &unk_2785072E0;
   v25[4] = self;
-  v26 = v10;
-  [BRCItemCountMismatchReport generateReportForSharedFolder:v15 qualityOfService:25 completionHandler:v25];
+  v26 = replyCopy;
+  [BRCItemCountMismatchReport generateReportForSharedFolder:asDirectory qualityOfService:25 completionHandler:v25];
 
 LABEL_11:
   v24 = *MEMORY[0x277D85DE8];
@@ -21494,29 +21494,29 @@ void __91__BRCXPCRegularIPCsClient__launchItemCountMismatchChecksForLocalItem_it
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_startOperation:(id)a3 toCopySharingAccessTokenWithLocalItem:(id)a4 itemIdentifier:(id)a5 reply:(id)a6
+- (void)_startOperation:(id)operation toCopySharingAccessTokenWithLocalItem:(id)item itemIdentifier:(id)identifier reply:(id)reply
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = a3;
+  itemCopy = item;
+  identifierCopy = identifier;
+  replyCopy = reply;
+  operationCopy = operation;
   v14 = [BRCSharingCopyAccessTokenOperation alloc];
-  v15 = [v10 asDocument];
-  v16 = [(BRCXPCClient *)self session];
-  v17 = [(BRCSharingCopyAccessTokenOperation *)v14 initWithItem:v15 sessionContext:v16];
+  asDocument = [itemCopy asDocument];
+  session = [(BRCXPCClient *)self session];
+  v17 = [(BRCSharingCopyAccessTokenOperation *)v14 initWithItem:asDocument sessionContext:session];
 
-  [(_BRCFrameworkOperation *)v17 setRemoteClientProxy:v13];
+  [(_BRCFrameworkOperation *)v17 setRemoteClientProxy:operationCopy];
   v22 = MEMORY[0x277D85DD0];
   v23 = 3221225472;
   v24 = __102__BRCXPCRegularIPCsClient__startOperation_toCopySharingAccessTokenWithLocalItem_itemIdentifier_reply___block_invoke;
   v25 = &unk_278507308;
-  v26 = v10;
-  v27 = v11;
-  v28 = self;
-  v29 = v12;
-  v18 = v12;
-  v19 = v11;
-  v20 = v10;
+  v26 = itemCopy;
+  v27 = identifierCopy;
+  selfCopy = self;
+  v29 = replyCopy;
+  v18 = replyCopy;
+  v19 = identifierCopy;
+  v20 = itemCopy;
   [(_BRCOperation *)v17 setFinishBlock:&v22];
   v21 = [(BRCXPCClient *)self session:v22];
   [v21 addMiscOperation:v17];
@@ -21592,11 +21592,11 @@ void __102__BRCXPCRegularIPCsClient__startOperation_toCopySharingAccessTokenWith
   [v1 scheduleSyncDown];
 }
 
-- (void)_startOperation:(id)a3 toCopySharingInfoWithLocalItem:(id)a4 reply:(id)a5
+- (void)_startOperation:(id)operation toCopySharingInfoWithLocalItem:(id)item reply:(id)reply
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
+  itemCopy = item;
+  replyCopy = reply;
+  operationCopy = operation;
   v11 = brc_bread_crumbs();
   v12 = brc_default_log();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -21605,19 +21605,19 @@ void __102__BRCXPCRegularIPCsClient__startOperation_toCopySharingAccessTokenWith
   }
 
   v13 = [BRCSharingCopyShareOperation alloc];
-  v14 = [(BRCXPCClient *)self session];
-  v15 = [(BRCSharingCopyShareOperation *)v13 initWithItem:v8 sessionContext:v14];
+  session = [(BRCXPCClient *)self session];
+  v15 = [(BRCSharingCopyShareOperation *)v13 initWithItem:itemCopy sessionContext:session];
 
-  [(_BRCFrameworkOperation *)v15 setRemoteClientProxy:v10];
+  [(_BRCFrameworkOperation *)v15 setRemoteClientProxy:operationCopy];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __80__BRCXPCRegularIPCsClient__startOperation_toCopySharingInfoWithLocalItem_reply___block_invoke;
   v18[3] = &unk_278503E90;
-  v19 = v8;
-  v20 = self;
-  v21 = v9;
-  v16 = v9;
-  v17 = v8;
+  v19 = itemCopy;
+  selfCopy = self;
+  v21 = replyCopy;
+  v16 = replyCopy;
+  v17 = itemCopy;
   [(_BRCOperation *)v15 setFinishBlock:v18];
   [(_BRCOperation *)v15 schedule];
 }
@@ -21744,12 +21744,12 @@ void __80__BRCXPCRegularIPCsClient__startOperation_toCopySharingInfoWithLocalIte
   [v1 scheduleSyncDown];
 }
 
-- (void)startOperation:(id)a3 toCopySharingInfoWithItemID:(id)a4 reply:(id)a5
+- (void)startOperation:(id)operation toCopySharingInfoWithItemID:(id)d reply:(id)reply
 {
   v39 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  operationCopy = operation;
+  dCopy = d;
+  replyCopy = reply;
   memset(v28, 0, sizeof(v28));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient startOperation:toCopySharingInfoWithItemID:reply:]", 3950, 0, v28);
   v11 = brc_bread_crumbs();
@@ -21762,7 +21762,7 @@ void __80__BRCXPCRegularIPCsClient__startOperation_toCopySharingInfoWithLocalIte
     *buf = 134219010;
     v30 = v13;
     v31 = 2112;
-    v32 = self;
+    selfCopy = self;
     v33 = 2112;
     v34 = v15;
     v35 = 2080;
@@ -21772,29 +21772,29 @@ void __80__BRCXPCRegularIPCsClient__startOperation_toCopySharingInfoWithLocalIte
     _os_log_impl(&dword_223E7A000, v12, OS_LOG_TYPE_INFO, "[INFO] ┏%llx %@ (%@) %s %@", buf, 0x34u);
   }
 
-  v16 = [(BRCXPCClient *)self clientPriviledgesDescriptor];
-  v17 = [v16 isSharingProxyEntitled];
+  clientPriviledgesDescriptor = [(BRCXPCClient *)self clientPriviledgesDescriptor];
+  isSharingProxyEntitled = [clientPriviledgesDescriptor isSharingProxyEntitled];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __76__BRCXPCRegularIPCsClient_startOperation_toCopySharingInfoWithItemID_reply___block_invoke;
   v26[3] = &unk_2785014D0;
   v26[4] = self;
-  v18 = v10;
+  v18 = replyCopy;
   v27 = v18;
-  v19 = _brc_ipc_check_client_privilege(self, 1, v17, "isSharingProxyEntitled", v26);
+  v19 = _brc_ipc_check_client_privilege(self, 1, isSharingProxyEntitled, "isSharingProxyEntitled", v26);
 
   if (v19)
   {
-    v20 = [(BRCAccountSession *)self->super.__session clientTruthWorkloop];
+    clientTruthWorkloop = [(BRCAccountSession *)self->super.__session clientTruthWorkloop];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __76__BRCXPCRegularIPCsClient_startOperation_toCopySharingInfoWithItemID_reply___block_invoke_576;
     block[3] = &unk_2785003B0;
     block[4] = self;
-    v23 = v9;
+    v23 = dCopy;
     v25 = v18;
-    v24 = v8;
-    dispatch_async_and_wait(v20, block);
+    v24 = operationCopy;
+    dispatch_async_and_wait(clientTruthWorkloop, block);
   }
 
   __brc_leave_section(v28);
@@ -21870,12 +21870,12 @@ void __76__BRCXPCRegularIPCsClient_startOperation_toCopySharingInfoWithItemID_re
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startOperation:(id)a3 toCopySharingAccessTokenOfItemID:(id)a4 reply:(id)a5
+- (void)startOperation:(id)operation toCopySharingAccessTokenOfItemID:(id)d reply:(id)reply
 {
   v39 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  operationCopy = operation;
+  dCopy = d;
+  replyCopy = reply;
   memset(v28, 0, sizeof(v28));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient startOperation:toCopySharingAccessTokenOfItemID:reply:]", 3966, 0, v28);
   v11 = brc_bread_crumbs();
@@ -21888,7 +21888,7 @@ void __76__BRCXPCRegularIPCsClient_startOperation_toCopySharingInfoWithItemID_re
     *buf = 134219010;
     v30 = v13;
     v31 = 2112;
-    v32 = self;
+    selfCopy = self;
     v33 = 2112;
     v34 = v15;
     v35 = 2080;
@@ -21898,29 +21898,29 @@ void __76__BRCXPCRegularIPCsClient_startOperation_toCopySharingInfoWithItemID_re
     _os_log_impl(&dword_223E7A000, v12, OS_LOG_TYPE_INFO, "[INFO] ┏%llx %@ (%@) %s %@", buf, 0x34u);
   }
 
-  v16 = [(BRCXPCClient *)self clientPriviledgesDescriptor];
-  v17 = [v16 isSharingProxyEntitled];
+  clientPriviledgesDescriptor = [(BRCXPCClient *)self clientPriviledgesDescriptor];
+  isSharingProxyEntitled = [clientPriviledgesDescriptor isSharingProxyEntitled];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __81__BRCXPCRegularIPCsClient_startOperation_toCopySharingAccessTokenOfItemID_reply___block_invoke;
   v26[3] = &unk_2785014D0;
   v26[4] = self;
-  v18 = v10;
+  v18 = replyCopy;
   v27 = v18;
-  v19 = _brc_ipc_check_client_privilege(self, 1, v17, "isSharingProxyEntitled", v26);
+  v19 = _brc_ipc_check_client_privilege(self, 1, isSharingProxyEntitled, "isSharingProxyEntitled", v26);
 
   if (v19)
   {
-    v20 = [(BRCAccountSession *)self->super.__session clientTruthWorkloop];
+    clientTruthWorkloop = [(BRCAccountSession *)self->super.__session clientTruthWorkloop];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __81__BRCXPCRegularIPCsClient_startOperation_toCopySharingAccessTokenOfItemID_reply___block_invoke_578;
     block[3] = &unk_2785003B0;
     block[4] = self;
-    v23 = v9;
+    v23 = dCopy;
     v25 = v18;
-    v24 = v8;
-    dispatch_async_and_wait(v20, block);
+    v24 = operationCopy;
+    dispatch_async_and_wait(clientTruthWorkloop, block);
   }
 
   __brc_leave_section(v28);
@@ -22009,12 +22009,12 @@ LABEL_12:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startOperation:(id)a3 toCopyShortTokenOfItemID:(id)a4 reply:(id)a5
+- (void)startOperation:(id)operation toCopyShortTokenOfItemID:(id)d reply:(id)reply
 {
   v39 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  operationCopy = operation;
+  dCopy = d;
+  replyCopy = reply;
   memset(v28, 0, sizeof(v28));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient startOperation:toCopyShortTokenOfItemID:reply:]", 3990, 0, v28);
   v11 = brc_bread_crumbs();
@@ -22027,7 +22027,7 @@ LABEL_12:
     *buf = 134219010;
     v30 = v13;
     v31 = 2112;
-    v32 = self;
+    selfCopy = self;
     v33 = 2112;
     v34 = v15;
     v35 = 2080;
@@ -22037,29 +22037,29 @@ LABEL_12:
     _os_log_impl(&dword_223E7A000, v12, OS_LOG_TYPE_INFO, "[INFO] ┏%llx %@ (%@) %s %@", buf, 0x34u);
   }
 
-  v16 = [(BRCXPCClient *)self clientPriviledgesDescriptor];
-  v17 = [v16 isSharingProxyEntitled];
+  clientPriviledgesDescriptor = [(BRCXPCClient *)self clientPriviledgesDescriptor];
+  isSharingProxyEntitled = [clientPriviledgesDescriptor isSharingProxyEntitled];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __73__BRCXPCRegularIPCsClient_startOperation_toCopyShortTokenOfItemID_reply___block_invoke;
   v26[3] = &unk_2785014D0;
   v26[4] = self;
-  v18 = v10;
+  v18 = replyCopy;
   v27 = v18;
-  v19 = _brc_ipc_check_client_privilege(self, 1, v17, "isSharingProxyEntitled", v26);
+  v19 = _brc_ipc_check_client_privilege(self, 1, isSharingProxyEntitled, "isSharingProxyEntitled", v26);
 
   if (v19)
   {
-    v20 = [(BRCAccountSession *)self->super.__session clientTruthWorkloop];
+    clientTruthWorkloop = [(BRCAccountSession *)self->super.__session clientTruthWorkloop];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __73__BRCXPCRegularIPCsClient_startOperation_toCopyShortTokenOfItemID_reply___block_invoke_579;
     block[3] = &unk_2785003B0;
     block[4] = self;
-    v23 = v9;
+    v23 = dCopy;
     v25 = v18;
-    v24 = v8;
-    dispatch_async_and_wait(v20, block);
+    v24 = operationCopy;
+    dispatch_async_and_wait(clientTruthWorkloop, block);
   }
 
   __brc_leave_section(v28);
@@ -22186,12 +22186,12 @@ void __73__BRCXPCRegularIPCsClient_startOperation_toCopyShortTokenOfItemID_reply
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startOperation:(id)a3 toCopySharingWebAuthTokenForContainerID:(id)a4 reply:(id)a5
+- (void)startOperation:(id)operation toCopySharingWebAuthTokenForContainerID:(id)d reply:(id)reply
 {
   v41 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  operationCopy = operation;
+  dCopy = d;
+  replyCopy = reply;
   memset(v30, 0, sizeof(v30));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient startOperation:toCopySharingWebAuthTokenForContainerID:reply:]", 4018, 0, v30);
   v11 = brc_bread_crumbs();
@@ -22204,7 +22204,7 @@ void __73__BRCXPCRegularIPCsClient_startOperation_toCopyShortTokenOfItemID_reply
     *buf = 134219010;
     v32 = v13;
     v33 = 2112;
-    v34 = self;
+    selfCopy = self;
     v35 = 2112;
     v36 = v15;
     v37 = 2080;
@@ -22214,26 +22214,26 @@ void __73__BRCXPCRegularIPCsClient_startOperation_toCopyShortTokenOfItemID_reply
     _os_log_impl(&dword_223E7A000, v12, OS_LOG_TYPE_INFO, "[INFO] ┏%llx %@ (%@) %s %@", buf, 0x34u);
   }
 
-  v16 = [(BRCXPCClient *)self clientPriviledgesDescriptor];
-  v17 = [v16 isSharingPrivateInterfaceEntitled];
+  clientPriviledgesDescriptor = [(BRCXPCClient *)self clientPriviledgesDescriptor];
+  isSharingPrivateInterfaceEntitled = [clientPriviledgesDescriptor isSharingPrivateInterfaceEntitled];
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
   v28[2] = __88__BRCXPCRegularIPCsClient_startOperation_toCopySharingWebAuthTokenForContainerID_reply___block_invoke;
   v28[3] = &unk_2785014D0;
   v28[4] = self;
-  v18 = v10;
+  v18 = replyCopy;
   v29 = v18;
-  v19 = _brc_ipc_check_client_privilege(self, 1, v17, "isSharingPrivateInterfaceEntitled", v28);
+  v19 = _brc_ipc_check_client_privilege(self, 1, isSharingPrivateInterfaceEntitled, "isSharingPrivateInterfaceEntitled", v28);
 
   if (v19)
   {
-    v20 = [(BRCXPCClient *)self session];
+    session = [(BRCXPCClient *)self session];
     v21 = [BRCSharingCopyWebAuthTokenOperation alloc];
-    v22 = [v20 syncContextProvider];
-    v23 = [v22 defaultSyncContext];
-    v24 = [(BRCSharingCopyWebAuthTokenOperation *)v21 initWithSyncContext:v23 ckContainerID:v9 sessionContext:v20];
+    syncContextProvider = [session syncContextProvider];
+    defaultSyncContext = [syncContextProvider defaultSyncContext];
+    v24 = [(BRCSharingCopyWebAuthTokenOperation *)v21 initWithSyncContext:defaultSyncContext ckContainerID:dCopy sessionContext:session];
 
-    [(_BRCFrameworkOperation *)v24 setRemoteClientProxy:v8];
+    [(_BRCFrameworkOperation *)v24 setRemoteClientProxy:operationCopy];
     v26[0] = MEMORY[0x277D85DD0];
     v26[1] = 3221225472;
     v26[2] = __88__BRCXPCRegularIPCsClient_startOperation_toCopySharingWebAuthTokenForContainerID_reply___block_invoke_583;
@@ -22241,7 +22241,7 @@ void __73__BRCXPCRegularIPCsClient_startOperation_toCopyShortTokenOfItemID_reply
     v26[4] = self;
     v27 = v18;
     [(_BRCOperation *)v24 setFinishBlock:v26];
-    [v20 addMiscOperation:v24];
+    [session addMiscOperation:v24];
     [(_BRCOperation *)v24 schedule];
   }
 
@@ -22303,13 +22303,13 @@ void __88__BRCXPCRegularIPCsClient_startOperation_toCopySharingWebAuthTokenForCo
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startOperation:(id)a3 toCopyDocumentURLForRecordID:(id)a4 syncIfNeeded:(BOOL)a5 reply:(id)a6
+- (void)startOperation:(id)operation toCopyDocumentURLForRecordID:(id)d syncIfNeeded:(BOOL)needed reply:(id)reply
 {
-  v36 = a5;
+  neededCopy = needed;
   v62 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
+  operationCopy = operation;
+  dCopy = d;
+  replyCopy = reply;
   memset(v47, 0, sizeof(v47));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient startOperation:toCopyDocumentURLForRecordID:syncIfNeeded:reply:]", 4037, 0, v47);
   v12 = brc_bread_crumbs();
@@ -22322,7 +22322,7 @@ void __88__BRCXPCRegularIPCsClient_startOperation_toCopySharingWebAuthTokenForCo
     *buf = 134219010;
     v49 = v14;
     v50 = 2112;
-    v51 = self;
+    selfCopy2 = self;
     v52 = 2112;
     v53 = v16;
     v54 = 2080;
@@ -22332,16 +22332,16 @@ void __88__BRCXPCRegularIPCsClient_startOperation_toCopySharingWebAuthTokenForCo
     _os_log_impl(&dword_223E7A000, v13, OS_LOG_TYPE_INFO, "[INFO] ┏%llx %@ (%@) %s %@", buf, 0x34u);
   }
 
-  v17 = [(BRCXPCClient *)self clientPriviledgesDescriptor];
-  v18 = [v17 isSharingPrivateInterfaceEntitled];
+  clientPriviledgesDescriptor = [(BRCXPCClient *)self clientPriviledgesDescriptor];
+  isSharingPrivateInterfaceEntitled = [clientPriviledgesDescriptor isSharingPrivateInterfaceEntitled];
   v45[0] = MEMORY[0x277D85DD0];
   v45[1] = 3221225472;
   v45[2] = __90__BRCXPCRegularIPCsClient_startOperation_toCopyDocumentURLForRecordID_syncIfNeeded_reply___block_invoke;
   v45[3] = &unk_2785014D0;
   v45[4] = self;
-  v19 = v11;
+  v19 = replyCopy;
   v46 = v19;
-  v20 = _brc_ipc_check_client_privilege(self, 1, v18, "isSharingPrivateInterfaceEntitled", v45);
+  v20 = _brc_ipc_check_client_privilege(self, 1, isSharingPrivateInterfaceEntitled, "isSharingPrivateInterfaceEntitled", v45);
 
   if (v20)
   {
@@ -22359,18 +22359,18 @@ void __88__BRCXPCRegularIPCsClient_startOperation_toCopySharingWebAuthTokenForCo
       *buf = 134219522;
       v49 = v23;
       v50 = 2112;
-      if (v36)
+      if (neededCopy)
       {
         v27 = "Yes";
       }
 
-      v51 = self;
+      selfCopy2 = self;
       v52 = 2112;
       v53 = v25;
       v54 = 2080;
       v55 = "[BRCXPCRegularIPCsClient startOperation:toCopyDocumentURLForRecordID:syncIfNeeded:reply:]";
       v56 = 2112;
-      v57 = v10;
+      v57 = dCopy;
       v58 = 2080;
       v59 = v27;
       v60 = 2112;
@@ -22378,10 +22378,10 @@ void __88__BRCXPCRegularIPCsClient_startOperation_toCopySharingWebAuthTokenForCo
       _os_log_impl(&dword_223E7A000, v22, OS_LOG_TYPE_INFO, "[INFO] ┏%llx %@ (%@) %s looking up url for recordID %@ fetching from server:%s%@", buf, 0x48u);
     }
 
-    v28 = [(BRCXPCClient *)self session];
+    session = [(BRCXPCClient *)self session];
     v29 = self->super._tracker;
-    v30 = [(BRCXPCClient *)self session];
-    v31 = [v30 clientTruthWorkloop];
+    session2 = [(BRCXPCClient *)self session];
+    clientTruthWorkloop = [session2 clientTruthWorkloop];
 
     v37[0] = MEMORY[0x277D85DD0];
     v37[1] = 3221225472;
@@ -22391,12 +22391,12 @@ void __88__BRCXPCRegularIPCsClient_startOperation_toCopySharingWebAuthTokenForCo
     v42 = v19;
     v32 = v29;
     v38 = v32;
-    v33 = v31;
+    v33 = clientTruthWorkloop;
     v39 = v33;
-    v40 = v10;
-    v34 = v28;
+    v40 = dCopy;
+    v34 = session;
     v41 = v34;
-    v43 = v36;
+    v43 = neededCopy;
     [v34 fetchUserRecordIDWithCompletionHandler:v37];
 
     __brc_leave_section(v44);
@@ -22986,11 +22986,11 @@ void __90__BRCXPCRegularIPCsClient_startOperation_toCopyDocumentURLForRecordID_s
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startOperation:(id)a3 toCopyAvailableQuotaWithReply:(id)a4
+- (void)startOperation:(id)operation toCopyAvailableQuotaWithReply:(id)reply
 {
   v36 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  operationCopy = operation;
+  replyCopy = reply;
   memset(v25, 0, sizeof(v25));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient startOperation:toCopyAvailableQuotaWithReply:]", 4147, 0, v25);
   v8 = brc_bread_crumbs();
@@ -23003,7 +23003,7 @@ void __90__BRCXPCRegularIPCsClient_startOperation_toCopyDocumentURLForRecordID_s
     *buf = 134219010;
     v27 = v10;
     v28 = 2112;
-    v29 = self;
+    selfCopy = self;
     v30 = 2112;
     v31 = v12;
     v32 = 2080;
@@ -23013,21 +23013,21 @@ void __90__BRCXPCRegularIPCsClient_startOperation_toCopyDocumentURLForRecordID_s
     _os_log_impl(&dword_223E7A000, v9, OS_LOG_TYPE_INFO, "[INFO] ┏%llx %@ (%@) %s %@", buf, 0x34u);
   }
 
-  v13 = [(BRCXPCClient *)self clientPriviledgesDescriptor];
-  v14 = [v13 canFetchUserQuota];
+  clientPriviledgesDescriptor = [(BRCXPCClient *)self clientPriviledgesDescriptor];
+  canFetchUserQuota = [clientPriviledgesDescriptor canFetchUserQuota];
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __72__BRCXPCRegularIPCsClient_startOperation_toCopyAvailableQuotaWithReply___block_invoke;
   v23[3] = &unk_2785014D0;
   v23[4] = self;
-  v15 = v7;
+  v15 = replyCopy;
   v24 = v15;
-  v16 = _brc_ipc_check_client_privilege(self, 1, v14, "canFetchUserQuota", v23);
+  v16 = _brc_ipc_check_client_privilege(self, 1, canFetchUserQuota, "canFetchUserQuota", v23);
 
   if (v16)
   {
-    v17 = [(BRCXPCClient *)self session];
-    v18 = [[BRCFetchQuotaOperation alloc] initWithSessionContext:v17];
+    session = [(BRCXPCClient *)self session];
+    v18 = [[BRCFetchQuotaOperation alloc] initWithSessionContext:session];
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __72__BRCXPCRegularIPCsClient_startOperation_toCopyAvailableQuotaWithReply___block_invoke_604;
@@ -23035,10 +23035,10 @@ void __90__BRCXPCRegularIPCsClient_startOperation_toCopyDocumentURLForRecordID_s
     v21[4] = self;
     v22 = v15;
     [(_BRCOperation *)v18 setFinishBlock:v21];
-    v19 = [MEMORY[0x277CBC4F8] br_quotaUpdateXPC];
-    [(_BRCOperation *)v18 setGroup:v19];
+    br_quotaUpdateXPC = [MEMORY[0x277CBC4F8] br_quotaUpdateXPC];
+    [(_BRCOperation *)v18 setGroup:br_quotaUpdateXPC];
 
-    [v17 addMiscOperation:v18];
+    [session addMiscOperation:v18];
     [(_BRCOperation *)v18 schedule];
   }
 
@@ -23096,12 +23096,12 @@ void __72__BRCXPCRegularIPCsClient_startOperation_toCopyAvailableQuotaWithReply_
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startOperation:(id)a3 toUploadAllFilesInContainer:(id)a4 reply:(id)a5
+- (void)startOperation:(id)operation toUploadAllFilesInContainer:(id)container reply:(id)reply
 {
   v51 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  operationCopy = operation;
+  containerCopy = container;
+  replyCopy = reply;
   memset(v39, 0, sizeof(v39));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient startOperation:toUploadAllFilesInContainer:reply:]", 4165, 0, v39);
   v11 = brc_bread_crumbs();
@@ -23112,9 +23112,9 @@ void __72__BRCXPCRegularIPCsClient_startOperation_toCopyAvailableQuotaWithReply_
     v14 = qos_class_self();
     v15 = BRCPrettyPrintEnumWithContext(v14, &brc_qos_entries, 0);
     *buf = 134219010;
-    v42 = v13;
+    selfCopy2 = v13;
     v43 = 2112;
-    v44 = self;
+    selfCopy = self;
     v45 = 2112;
     v46 = v15;
     v47 = 2080;
@@ -23129,17 +23129,17 @@ void __72__BRCXPCRegularIPCsClient_startOperation_toCopyAvailableQuotaWithReply_
   v37[2] = __76__BRCXPCRegularIPCsClient_startOperation_toUploadAllFilesInContainer_reply___block_invoke;
   v37[3] = &unk_2785014D0;
   v37[4] = self;
-  v16 = v10;
+  v16 = replyCopy;
   v38 = v16;
   v17 = _brc_ipc_check_applibraries_access(self, 1, v37);
 
   if (v17)
   {
-    v18 = [(BRCXPCClient *)self session];
-    if (v9)
+    session = [(BRCXPCClient *)self session];
+    if (containerCopy)
     {
-      v19 = [(BRCXPCClient *)self session];
-      v20 = [v19 appLibraryByID:v9];
+      session2 = [(BRCXPCClient *)self session];
+      v20 = [session2 appLibraryByID:containerCopy];
 
       if (!v20)
       {
@@ -23147,17 +23147,17 @@ void __72__BRCXPCRegularIPCsClient_startOperation_toCopyAvailableQuotaWithReply_
         v26 = brc_default_log();
         if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
         {
-          v27 = [MEMORY[0x277CCA9B8] brc_errorAppLibraryNotFound:v9];
+          v27 = [MEMORY[0x277CCA9B8] brc_errorAppLibraryNotFound:containerCopy];
           *buf = 138412802;
-          v42 = self;
+          selfCopy2 = self;
           v43 = 2112;
-          v44 = v27;
+          selfCopy = v27;
           v45 = 2112;
           v46 = v25;
           _os_log_impl(&dword_223E7A000, v26, OS_LOG_TYPE_INFO, "[INFO] %@: reply(%@)%@", buf, 0x20u);
         }
 
-        v23 = [MEMORY[0x277CCA9B8] brc_errorAppLibraryNotFound:v9];
+        v23 = [MEMORY[0x277CCA9B8] brc_errorAppLibraryNotFound:containerCopy];
         (*(v16 + 2))(v16, v23);
         goto LABEL_12;
       }
@@ -23166,7 +23166,7 @@ void __72__BRCXPCRegularIPCsClient_startOperation_toCopyAvailableQuotaWithReply_
       v21 = [BRCUploadAllFilesTrackerOperation alloc];
       v40 = v20;
       v22 = [MEMORY[0x277CBEA60] arrayWithObjects:&v40 count:1];
-      v23 = [(BRCUploadAllFilesTrackerOperation *)v21 initWithSessionContext:v18 appLibraries:v22];
+      v23 = [(BRCUploadAllFilesTrackerOperation *)v21 initWithSessionContext:session appLibraries:v22];
     }
 
     else
@@ -23179,19 +23179,19 @@ void __72__BRCXPCRegularIPCsClient_startOperation_toCopyAvailableQuotaWithReply_
       v35[4] = self;
       v20 = v24;
       v36 = v20;
-      [v18 enumerateAppLibraries:v35];
-      v23 = [[BRCUploadAllFilesTrackerOperation alloc] initWithSessionContext:v18 appLibraries:v20];
+      [session enumerateAppLibraries:v35];
+      v23 = [[BRCUploadAllFilesTrackerOperation alloc] initWithSessionContext:session appLibraries:v20];
     }
 
-    [(_BRCFrameworkOperation *)v23 setRemoteClientProxy:v8];
+    [(_BRCFrameworkOperation *)v23 setRemoteClientProxy:operationCopy];
     v29 = MEMORY[0x277D85DD0];
     v30 = 3221225472;
     v31 = __76__BRCXPCRegularIPCsClient_startOperation_toUploadAllFilesInContainer_reply___block_invoke_2;
     v32 = &unk_2785024A0;
-    v33 = self;
+    selfCopy3 = self;
     v34 = v16;
     [(_BRCOperation *)v23 setFinishBlock:&v29];
-    [v18 addMiscOperation:{v23, v29, v30, v31, v32, v33}];
+    [session addMiscOperation:{v23, v29, v30, v31, v32, selfCopy3}];
     [(_BRCOperation *)v23 schedule];
 
 LABEL_12:
@@ -23256,11 +23256,11 @@ void __76__BRCXPCRegularIPCsClient_startOperation_toUploadAllFilesInContainer_re
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyCurrentUserIdentifierWithReply:(id)a3
+- (void)copyCurrentUserIdentifierWithReply:(id)reply
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(BRCXPCClient *)self session];
+  replyCopy = reply;
+  session = [(BRCXPCClient *)self session];
   memset(v25, 0, sizeof(v25));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient copyCurrentUserIdentifierWithReply:]", 4203, 0, v25);
   v6 = brc_bread_crumbs();
@@ -23273,7 +23273,7 @@ void __76__BRCXPCRegularIPCsClient_startOperation_toUploadAllFilesInContainer_re
     *buf = 134219010;
     v27 = v8;
     v28 = 2112;
-    v29 = self;
+    selfCopy = self;
     v30 = 2112;
     v31 = v10;
     v32 = 2080;
@@ -23283,26 +23283,26 @@ void __76__BRCXPCRegularIPCsClient_startOperation_toUploadAllFilesInContainer_re
     _os_log_impl(&dword_223E7A000, v7, OS_LOG_TYPE_INFO, "[INFO] ┏%llx %@ (%@) %s %@", buf, 0x34u);
   }
 
-  v11 = [(BRCXPCClient *)self clientPriviledgesDescriptor];
-  v12 = [v11 isSharingPrivateInterfaceEntitled];
+  clientPriviledgesDescriptor = [(BRCXPCClient *)self clientPriviledgesDescriptor];
+  isSharingPrivateInterfaceEntitled = [clientPriviledgesDescriptor isSharingPrivateInterfaceEntitled];
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __62__BRCXPCRegularIPCsClient_copyCurrentUserIdentifierWithReply___block_invoke;
   v23[3] = &unk_2785014D0;
   v23[4] = self;
-  v13 = v4;
+  v13 = replyCopy;
   v24 = v13;
-  v14 = _brc_ipc_check_client_privilege(self, 1, v12, "isSharingPrivateInterfaceEntitled", v23);
+  v14 = _brc_ipc_check_client_privilege(self, 1, isSharingPrivateInterfaceEntitled, "isSharingPrivateInterfaceEntitled", v23);
 
   if (v14)
   {
     v15 = [BRCSharingFetchUserRecordIDOperation alloc];
-    v16 = [v5 syncContextProvider];
-    v17 = [v16 defaultSyncContext];
-    v18 = [(BRCSharingFetchUserRecordIDOperation *)v15 initWithSyncContext:v17 sessionContext:v5];
+    syncContextProvider = [session syncContextProvider];
+    defaultSyncContext = [syncContextProvider defaultSyncContext];
+    v18 = [(BRCSharingFetchUserRecordIDOperation *)v15 initWithSyncContext:defaultSyncContext sessionContext:session];
 
-    v19 = [MEMORY[0x277CBC4F8] br_fetchIdentityXPC];
-    [(_BRCOperation *)v18 setGroup:v19];
+    br_fetchIdentityXPC = [MEMORY[0x277CBC4F8] br_fetchIdentityXPC];
+    [(_BRCOperation *)v18 setGroup:br_fetchIdentityXPC];
 
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
@@ -23311,7 +23311,7 @@ void __76__BRCXPCRegularIPCsClient_startOperation_toUploadAllFilesInContainer_re
     v21[4] = self;
     v22 = v13;
     [(_BRCOperation *)v18 setFinishBlock:v21];
-    [v5 addMiscOperation:v18];
+    [session addMiscOperation:v18];
     [(_BRCOperation *)v18 schedule];
   }
 
@@ -23375,10 +23375,10 @@ void __62__BRCXPCRegularIPCsClient_copyCurrentUserIdentifierWithReply___block_in
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyCurrentUserNameAndDisplayHandleWithReply:(id)a3
+- (void)copyCurrentUserNameAndDisplayHandleWithReply:(id)reply
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  replyCopy = reply;
   memset(v28, 0, sizeof(v28));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient copyCurrentUserNameAndDisplayHandleWithReply:]", 4222, 0, v28);
   v5 = brc_bread_crumbs();
@@ -23391,7 +23391,7 @@ void __62__BRCXPCRegularIPCsClient_copyCurrentUserIdentifierWithReply___block_in
     *buf = 134219010;
     v30 = v7;
     v31 = 2112;
-    v32 = self;
+    selfCopy = self;
     v33 = 2112;
     v34 = v9;
     v35 = 2080;
@@ -23401,36 +23401,36 @@ void __62__BRCXPCRegularIPCsClient_copyCurrentUserIdentifierWithReply___block_in
     _os_log_impl(&dword_223E7A000, v6, OS_LOG_TYPE_INFO, "[INFO] ┏%llx %@ (%@) %s %@", buf, 0x34u);
   }
 
-  v10 = [(BRCXPCClient *)self clientPriviledgesDescriptor];
-  v11 = [v10 isSharingProxyEntitled];
+  clientPriviledgesDescriptor = [(BRCXPCClient *)self clientPriviledgesDescriptor];
+  isSharingProxyEntitled = [clientPriviledgesDescriptor isSharingProxyEntitled];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __72__BRCXPCRegularIPCsClient_copyCurrentUserNameAndDisplayHandleWithReply___block_invoke;
   v26[3] = &unk_2785014D0;
   v26[4] = self;
-  v12 = v4;
+  v12 = replyCopy;
   v27 = v12;
-  v13 = _brc_ipc_check_client_privilege(self, 1, v11, "isSharingProxyEntitled", v26);
+  v13 = _brc_ipc_check_client_privilege(self, 1, isSharingProxyEntitled, "isSharingProxyEntitled", v26);
 
   if (v13)
   {
-    v14 = [MEMORY[0x277D77BF8] sharedManager];
-    v15 = [v14 currentPersona];
-    v16 = [v15 br_personaID];
+    mEMORY[0x277D77BF8] = [MEMORY[0x277D77BF8] sharedManager];
+    currentPersona = [mEMORY[0x277D77BF8] currentPersona];
+    br_personaID = [currentPersona br_personaID];
 
-    v17 = [(BRCXPCClient *)self session];
-    v18 = [v17 syncContextProvider];
-    v19 = [v18 defaultSyncContext];
-    v20 = [v19 ckContainer];
+    session = [(BRCXPCClient *)self session];
+    syncContextProvider = [session syncContextProvider];
+    defaultSyncContext = [syncContextProvider defaultSyncContext];
+    ckContainer = [defaultSyncContext ckContainer];
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __72__BRCXPCRegularIPCsClient_copyCurrentUserNameAndDisplayHandleWithReply___block_invoke_610;
     v23[3] = &unk_278507498;
     v23[4] = self;
-    v21 = v16;
+    v21 = br_personaID;
     v24 = v21;
     v25 = v12;
-    [v20 fetchFullNameAndFormattedUsernameOfAccountWithCompletionHandler:v23];
+    [ckContainer fetchFullNameAndFormattedUsernameOfAccountWithCompletionHandler:v23];
   }
 
   __brc_leave_section(v28);
@@ -23533,11 +23533,11 @@ void __72__BRCXPCRegularIPCsClient_copyCurrentUserNameAndDisplayHandleWithReply_
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyCollaborationIdentifierForFileObjectID:(id)a3 reply:(id)a4
+- (void)copyCollaborationIdentifierForFileObjectID:(id)d reply:(id)reply
 {
   v36 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  replyCopy = reply;
   memset(v25, 0, sizeof(v25));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient copyCollaborationIdentifierForFileObjectID:reply:]", 4237, 0, v25);
   v8 = brc_bread_crumbs();
@@ -23550,7 +23550,7 @@ void __72__BRCXPCRegularIPCsClient_copyCurrentUserNameAndDisplayHandleWithReply_
     *buf = 134219010;
     v27 = v10;
     v28 = 2112;
-    v29 = self;
+    selfCopy = self;
     v30 = 2112;
     v31 = v12;
     v32 = 2080;
@@ -23560,29 +23560,29 @@ void __72__BRCXPCRegularIPCsClient_copyCurrentUserNameAndDisplayHandleWithReply_
     _os_log_impl(&dword_223E7A000, v9, OS_LOG_TYPE_INFO, "[INFO] ┏%llx %@ (%@) %s %@", buf, 0x34u);
   }
 
-  v13 = [(BRCXPCClient *)self clientPriviledgesDescriptor];
-  v14 = [v13 isSharingProxyEntitled];
+  clientPriviledgesDescriptor = [(BRCXPCClient *)self clientPriviledgesDescriptor];
+  isSharingProxyEntitled = [clientPriviledgesDescriptor isSharingProxyEntitled];
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __76__BRCXPCRegularIPCsClient_copyCollaborationIdentifierForFileObjectID_reply___block_invoke;
   v23[3] = &unk_2785014D0;
   v23[4] = self;
-  v15 = v7;
+  v15 = replyCopy;
   v24 = v15;
-  v16 = _brc_ipc_check_client_privilege(self, 1, v14, "isSharingProxyEntitled", v23);
+  v16 = _brc_ipc_check_client_privilege(self, 1, isSharingProxyEntitled, "isSharingProxyEntitled", v23);
 
   if (v16)
   {
-    v17 = [(BRCXPCClient *)self session];
-    v18 = [v17 clientTruthWorkloop];
+    session = [(BRCXPCClient *)self session];
+    clientTruthWorkloop = [session clientTruthWorkloop];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __76__BRCXPCRegularIPCsClient_copyCollaborationIdentifierForFileObjectID_reply___block_invoke_612;
     v20[3] = &unk_2784FF5B8;
     v20[4] = self;
-    v21 = v6;
+    v21 = dCopy;
     v22 = v15;
-    dispatch_async_and_wait(v18, v20);
+    dispatch_async_and_wait(clientTruthWorkloop, v20);
   }
 
   __brc_leave_section(v25);
@@ -23680,11 +23680,11 @@ void __76__BRCXPCRegularIPCsClient_copyCollaborationIdentifierForFileObjectID_re
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_createSharingInfoForLocalItem:(id)a3 reply:(id)a4
+- (void)_createSharingInfoForLocalItem:(id)item reply:(id)reply
 {
   v54 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  replyCopy = reply;
   v8 = brc_bread_crumbs();
   v9 = brc_default_log();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -23692,36 +23692,36 @@ void __76__BRCXPCRegularIPCsClient_copyCollaborationIdentifierForFileObjectID_re
     [BRCXPCRegularIPCsClient _createSharingInfoForLocalItem:reply:];
   }
 
-  if ([v6 isKnownByServer])
+  if ([itemCopy isKnownByServer])
   {
-    if (![v6 isDirectory])
+    if (![itemCopy isDirectory])
     {
       goto LABEL_29;
     }
 
-    v10 = [v6 appLibrary];
-    v11 = [v10 mangledID];
-    v12 = [BRCUserDefaults defaultsForMangledID:v11];
-    v13 = [v12 isBlacklistedFromFolderSharing];
+    appLibrary = [itemCopy appLibrary];
+    mangledID = [appLibrary mangledID];
+    v12 = [BRCUserDefaults defaultsForMangledID:mangledID];
+    isBlacklistedFromFolderSharing = [v12 isBlacklistedFromFolderSharing];
 
-    if ((v13 & 1) == 0)
+    if ((isBlacklistedFromFolderSharing & 1) == 0)
     {
       v25 = objc_alloc(MEMORY[0x277CBC5D0]);
-      v26 = [v6 asShareableItem];
-      v19 = [v25 initShareIDWithShareableItem:v26];
+      asShareableItem = [itemCopy asShareableItem];
+      uploadError = [v25 initShareIDWithShareableItem:asShareableItem];
 
-      v27 = [v6 asDirectory];
-      v28 = [v27 folderRootStructureRecord];
+      asDirectory = [itemCopy asDirectory];
+      folderRootStructureRecord = [asDirectory folderRootStructureRecord];
 
-      v29 = [objc_alloc(MEMORY[0x277CBC680]) initWithRootRecord:v28 shareID:v19];
-      v30 = [v6 st];
-      v31 = [v30 logicalName];
-      [v29 brc_updateWithLogicalName:v31 isFolder:1];
+      v29 = [objc_alloc(MEMORY[0x277CBC680]) initWithRootRecord:folderRootStructureRecord shareID:uploadError];
+      v30 = [itemCopy st];
+      logicalName = [v30 logicalName];
+      [v29 brc_updateWithLogicalName:logicalName isFolder:1];
 
-      v32 = [v6 serverZone];
-      v33 = [v32 metadataSyncContext];
-      v34 = [v33 ckContainerID];
-      [v29 CKAssignToContainerWithID:v34];
+      serverZone = [itemCopy serverZone];
+      metadataSyncContext = [serverZone metadataSyncContext];
+      ckContainerID = [metadataSyncContext ckContainerID];
+      [v29 CKAssignToContainerWithID:ckContainerID];
 
       v35 = brc_bread_crumbs();
       v36 = brc_default_log();
@@ -23729,7 +23729,7 @@ void __76__BRCXPCRegularIPCsClient_copyCollaborationIdentifierForFileObjectID_re
       {
 LABEL_24:
         v46 = 138413058;
-        v47 = self;
+        selfCopy4 = self;
         v48 = 2112;
         v49 = v29;
         v50 = 2112;
@@ -23743,7 +23743,7 @@ LABEL_24:
     else
     {
 LABEL_29:
-      if (![v6 isDocument] || objc_msgSend(v6, "isFinderBookmark"))
+      if (![itemCopy isDocument] || objc_msgSend(itemCopy, "isFinderBookmark"))
       {
         v14 = brc_bread_crumbs();
         v15 = brc_default_log();
@@ -23751,7 +23751,7 @@ LABEL_29:
         {
           v16 = [MEMORY[0x277CCA9B8] brc_errorNoDocument:0 underlyingPOSIXError:21];
           v46 = 138413058;
-          v47 = self;
+          selfCopy4 = self;
           v48 = 2112;
           v49 = 0;
           v50 = 2112;
@@ -23766,21 +23766,21 @@ LABEL_29:
       }
 
       v37 = objc_alloc(MEMORY[0x277CBC5D0]);
-      v38 = [v6 asShareableItem];
-      v19 = [v37 initShareIDWithShareableItem:v38];
+      asShareableItem2 = [itemCopy asShareableItem];
+      uploadError = [v37 initShareIDWithShareableItem:asShareableItem2];
 
-      v39 = [v6 asDocument];
-      v28 = [v39 baseRecord];
+      asDocument = [itemCopy asDocument];
+      folderRootStructureRecord = [asDocument baseRecord];
 
-      v29 = [objc_alloc(MEMORY[0x277CBC680]) initWithRootRecord:v28 shareID:v19];
-      v40 = [v6 st];
-      v41 = [v40 logicalName];
-      [v29 brc_updateWithLogicalName:v41 isFolder:0];
+      v29 = [objc_alloc(MEMORY[0x277CBC680]) initWithRootRecord:folderRootStructureRecord shareID:uploadError];
+      v40 = [itemCopy st];
+      logicalName2 = [v40 logicalName];
+      [v29 brc_updateWithLogicalName:logicalName2 isFolder:0];
 
-      v42 = [v6 serverZone];
-      v43 = [v42 metadataSyncContext];
-      v44 = [v43 ckContainerID];
-      [v29 CKAssignToContainerWithID:v44];
+      serverZone2 = [itemCopy serverZone];
+      metadataSyncContext2 = [serverZone2 metadataSyncContext];
+      ckContainerID2 = [metadataSyncContext2 ckContainerID];
+      [v29 CKAssignToContainerWithID:ckContainerID2];
 
       v35 = brc_bread_crumbs();
       v36 = brc_default_log();
@@ -23790,27 +23790,27 @@ LABEL_29:
       }
     }
 
-    v7[2](v7, v29, 0);
+    replyCopy[2](replyCopy, v29, 0);
     goto LABEL_26;
   }
 
-  if ([v6 isDocument])
+  if ([itemCopy isDocument])
   {
-    v18 = [v6 asDocument];
-    v19 = [v18 uploadError];
+    asDocument2 = [itemCopy asDocument];
+    uploadError = [asDocument2 uploadError];
 
-    if (v19)
+    if (uploadError)
     {
       v20 = brc_bread_crumbs();
       v21 = brc_default_log();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
       {
         v46 = 138413058;
-        v47 = self;
+        selfCopy4 = self;
         v48 = 2112;
         v49 = 0;
         v50 = 2112;
-        v51 = v19;
+        v51 = uploadError;
         v52 = 2112;
         v53 = v20;
         _os_log_impl(&dword_223E7A000, v21, OS_LOG_TYPE_INFO, "[INFO] %@: reply(%@, %@)%@", &v46, 0x2Au);
@@ -23826,7 +23826,7 @@ LABEL_29:
   {
     v24 = [MEMORY[0x277CCA9B8] brc_errorNotInCloud:0];
     v46 = 138413058;
-    v47 = self;
+    selfCopy4 = self;
     v48 = 2112;
     v49 = 0;
     v50 = 2112;
@@ -23838,19 +23838,19 @@ LABEL_29:
 
   v17 = [MEMORY[0x277CCA9B8] brc_errorNotInCloud:0];
 LABEL_19:
-  v19 = v17;
+  uploadError = v17;
 LABEL_20:
-  (v7)[2](v7, 0, v19);
+  (replyCopy)[2](replyCopy, 0, uploadError);
 LABEL_26:
 
   v45 = *MEMORY[0x277D85DE8];
 }
 
-- (void)createSharingInfoForItemID:(id)a3 reply:(id)a4
+- (void)createSharingInfoForItemID:(id)d reply:(id)reply
 {
   v35 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  replyCopy = reply;
   memset(v24, 0, sizeof(v24));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient createSharingInfoForItemID:reply:]", 4289, 0, v24);
   v8 = brc_bread_crumbs();
@@ -23863,7 +23863,7 @@ LABEL_26:
     *buf = 134219010;
     v26 = v10;
     v27 = 2112;
-    v28 = self;
+    selfCopy = self;
     v29 = 2112;
     v30 = v12;
     v31 = 2080;
@@ -23873,28 +23873,28 @@ LABEL_26:
     _os_log_impl(&dword_223E7A000, v9, OS_LOG_TYPE_INFO, "[INFO] ┏%llx %@ (%@) %s %@", buf, 0x34u);
   }
 
-  v13 = [(BRCXPCClient *)self clientPriviledgesDescriptor];
-  v14 = [v13 isSharingProxyEntitled];
+  clientPriviledgesDescriptor = [(BRCXPCClient *)self clientPriviledgesDescriptor];
+  isSharingProxyEntitled = [clientPriviledgesDescriptor isSharingProxyEntitled];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __60__BRCXPCRegularIPCsClient_createSharingInfoForItemID_reply___block_invoke;
   v22[3] = &unk_2785014D0;
   v22[4] = self;
-  v15 = v7;
+  v15 = replyCopy;
   v23 = v15;
-  v16 = _brc_ipc_check_client_privilege(self, 1, v14, "isSharingProxyEntitled", v22);
+  v16 = _brc_ipc_check_client_privilege(self, 1, isSharingProxyEntitled, "isSharingProxyEntitled", v22);
 
   if (v16)
   {
-    v17 = [(BRCAccountSession *)self->super.__session clientTruthWorkloop];
+    clientTruthWorkloop = [(BRCAccountSession *)self->super.__session clientTruthWorkloop];
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __60__BRCXPCRegularIPCsClient_createSharingInfoForItemID_reply___block_invoke_614;
     v19[3] = &unk_2784FF5B8;
     v19[4] = self;
-    v20 = v6;
+    v20 = dCopy;
     v21 = v15;
-    dispatch_async_and_wait(v17, v19);
+    dispatch_async_and_wait(clientTruthWorkloop, v19);
   }
 
   __brc_leave_section(v24);
@@ -23973,12 +23973,12 @@ void __60__BRCXPCRegularIPCsClient_createSharingInfoForItemID_reply___block_invo
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startOperation:(id)a3 toSaveSharingInfo:(id)a4 reply:(id)a5
+- (void)startOperation:(id)operation toSaveSharingInfo:(id)info reply:(id)reply
 {
   v97 = *MEMORY[0x277D85DE8];
-  v73 = a3;
-  v8 = a4;
-  v9 = a5;
+  operationCopy = operation;
+  infoCopy = info;
+  replyCopy = reply;
   memset(v86, 0, sizeof(v86));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient startOperation:toSaveSharingInfo:reply:]", 4304, 0, v86);
   v10 = brc_bread_crumbs();
@@ -23989,9 +23989,9 @@ void __60__BRCXPCRegularIPCsClient_createSharingInfoForItemID_reply___block_invo
     v13 = qos_class_self();
     v14 = BRCPrettyPrintEnumWithContext(v13, &brc_qos_entries, 0);
     *buf = 134219010;
-    v88 = v12;
+    selfCopy6 = v12;
     v89 = 2112;
-    v90 = self;
+    selfCopy3 = self;
     v91 = 2112;
     v92 = v14;
     v93 = 2080;
@@ -24001,23 +24001,23 @@ void __60__BRCXPCRegularIPCsClient_createSharingInfoForItemID_reply___block_invo
     _os_log_impl(&dword_223E7A000, v11, OS_LOG_TYPE_INFO, "[INFO] ┏%llx %@ (%@) %s %@", buf, 0x34u);
   }
 
-  v15 = [(BRCXPCClient *)self clientPriviledgesDescriptor];
-  v16 = [v15 isSharingProxyEntitled];
+  clientPriviledgesDescriptor = [(BRCXPCClient *)self clientPriviledgesDescriptor];
+  isSharingProxyEntitled = [clientPriviledgesDescriptor isSharingProxyEntitled];
   v84[0] = MEMORY[0x277D85DD0];
   v84[1] = 3221225472;
   v84[2] = __66__BRCXPCRegularIPCsClient_startOperation_toSaveSharingInfo_reply___block_invoke;
   v84[3] = &unk_2785014D0;
   v84[4] = self;
-  v17 = v9;
+  v17 = replyCopy;
   v85 = v17;
-  v18 = _brc_ipc_check_client_privilege(self, 1, v16, "isSharingProxyEntitled", v84);
+  v18 = _brc_ipc_check_client_privilege(self, 1, isSharingProxyEntitled, "isSharingProxyEntitled", v84);
 
   if ((v18 & 1) == 0)
   {
     goto LABEL_48;
   }
 
-  if (!v8)
+  if (!infoCopy)
   {
     v35 = brc_bread_crumbs();
     v36 = brc_default_log();
@@ -24025,9 +24025,9 @@ void __60__BRCXPCRegularIPCsClient_createSharingInfoForItemID_reply___block_invo
     {
       v37 = [MEMORY[0x277CCA9B8] brc_errorInvalidParameter:@"share" value:0];
       *buf = 138413058;
-      v88 = self;
+      selfCopy6 = self;
       v89 = 2112;
-      v90 = 0;
+      selfCopy3 = 0;
       v91 = 2112;
       v92 = v37;
       v93 = 2112;
@@ -24040,7 +24040,7 @@ void __60__BRCXPCRegularIPCsClient_createSharingInfoForItemID_reply___block_invo
     goto LABEL_47;
   }
 
-  v19 = [(BRCXPCRegularIPCsClient *)v8 objectForKeyedSubscript:*MEMORY[0x277CBC0A0]];
+  v19 = [(BRCXPCRegularIPCsClient *)infoCopy objectForKeyedSubscript:*MEMORY[0x277CBC0A0]];
   v20 = [v19 isEqual:*MEMORY[0x277CFAD00]];
 
   if (v20)
@@ -24055,9 +24055,9 @@ void __60__BRCXPCRegularIPCsClient_createSharingInfoForItemID_reply___block_invo
       v24 = qos_class_self();
       v25 = BRCPrettyPrintEnumWithContext(v24, &brc_qos_entries, 0);
       *buf = 134219010;
-      v88 = v23;
+      selfCopy6 = v23;
       v89 = 2112;
-      v90 = self;
+      selfCopy3 = self;
       v91 = 2112;
       v92 = v25;
       v93 = 2080;
@@ -24067,15 +24067,15 @@ void __60__BRCXPCRegularIPCsClient_createSharingInfoForItemID_reply___block_invo
       _os_log_impl(&dword_223E7A000, v22, OS_LOG_TYPE_INFO, "[INFO] ┏%llx %@ (%@) %s %@", buf, 0x34u);
     }
 
-    v26 = [(BRCXPCClient *)self clientPriviledgesDescriptor];
-    v27 = [v26 isFolderSharingProxyEntitled];
+    clientPriviledgesDescriptor2 = [(BRCXPCClient *)self clientPriviledgesDescriptor];
+    isFolderSharingProxyEntitled = [clientPriviledgesDescriptor2 isFolderSharingProxyEntitled];
     v81[0] = MEMORY[0x277D85DD0];
     v81[1] = 3221225472;
     v81[2] = __66__BRCXPCRegularIPCsClient_startOperation_toSaveSharingInfo_reply___block_invoke_616;
     v81[3] = &unk_2785014D0;
     v81[4] = self;
     v82 = v17;
-    v28 = _brc_ipc_check_client_privilege(self, 1, v27, "isFolderSharingProxyEntitled", v81);
+    v28 = _brc_ipc_check_client_privilege(self, 1, isFolderSharingProxyEntitled, "isFolderSharingProxyEntitled", v81);
 
     __brc_leave_section(v83);
     if ((v28 & 1) == 0)
@@ -24084,7 +24084,7 @@ void __60__BRCXPCRegularIPCsClient_createSharingInfoForItemID_reply___block_invo
     }
   }
 
-  if ([(BRCXPCRegularIPCsClient *)v8 publicPermission]!= 1)
+  if ([(BRCXPCRegularIPCsClient *)infoCopy publicPermission]!= 1)
   {
 LABEL_33:
     v46 = brc_bread_crumbs();
@@ -24095,34 +24095,34 @@ LABEL_33:
     }
 
     v48 = objc_alloc(MEMORY[0x277CFAE60]);
-    v49 = [(BRCXPCRegularIPCsClient *)v8 recordID];
-    v50 = [v49 zoneID];
-    v38 = [v48 initWithRecordZoneID:v50];
+    recordID = [(BRCXPCRegularIPCsClient *)infoCopy recordID];
+    zoneID = [recordID zoneID];
+    v38 = [v48 initWithRecordZoneID:zoneID];
 
-    v51 = [(BRCXPCClient *)self session];
-    v52 = [v51 clientZoneByMangledID:v38];
+    session = [(BRCXPCClient *)self session];
+    v52 = [session clientZoneByMangledID:v38];
     if (v52)
     {
       v53 = [BRCSharingSaveShareOperation alloc];
-      v54 = [v52 serverZone];
-      v55 = [(BRCSharingSaveShareOperation *)v53 initWithShare:v8 zone:v54 sessionContext:v51];
+      serverZone = [v52 serverZone];
+      appLibraryOrZoneName2 = [(BRCSharingSaveShareOperation *)v53 initWithShare:infoCopy zone:serverZone sessionContext:session];
 
-      [(_BRCFrameworkOperation *)v55 setRemoteClientProxy:v73];
+      [(_BRCFrameworkOperation *)appLibraryOrZoneName2 setRemoteClientProxy:operationCopy];
       v74[0] = MEMORY[0x277D85DD0];
       v74[1] = 3221225472;
       v74[2] = __66__BRCXPCRegularIPCsClient_startOperation_toSaveSharingInfo_reply___block_invoke_619;
       v74[3] = &unk_2785074C0;
       v74[4] = self;
       v76 = v17;
-      v56 = v8;
+      v56 = infoCopy;
       v75 = v56;
-      [(_BRCOperation *)v55 setFinishBlock:v74];
+      [(_BRCOperation *)appLibraryOrZoneName2 setFinishBlock:v74];
       if (v20)
       {
-        v57 = [v52 asPrivateClientZone];
-        v58 = [(BRCXPCRegularIPCsClient *)v56 recordID];
-        v59 = [v58 brc_shareItemID];
-        v60 = [v57 pcsChainOperationForItemID:v59];
+        asPrivateClientZone = [v52 asPrivateClientZone];
+        recordID2 = [(BRCXPCRegularIPCsClient *)v56 recordID];
+        brc_shareItemID = [recordID2 brc_shareItemID];
+        v60 = [asPrivateClientZone pcsChainOperationForItemID:brc_shareItemID];
 
         if (v60)
         {
@@ -24133,12 +24133,12 @@ LABEL_33:
             [BRCXPCRegularIPCsClient startOperation:toSaveSharingInfo:reply:];
           }
 
-          [(_BRCOperation *)v55 addDependency:v60];
+          [(_BRCOperation *)appLibraryOrZoneName2 addDependency:v60];
         }
       }
 
-      [v51 addMiscOperation:v55];
-      [(_BRCOperation *)v55 schedule];
+      [session addMiscOperation:appLibraryOrZoneName2];
+      [(_BRCOperation *)appLibraryOrZoneName2 schedule];
     }
 
     else
@@ -24148,12 +24148,12 @@ LABEL_33:
       if (os_log_type_enabled(v64, OS_LOG_TYPE_INFO))
       {
         v65 = MEMORY[0x277CCA9B8];
-        v66 = [v38 appLibraryOrZoneName];
-        v67 = [v65 brc_errorAppLibraryNotFound:v66];
+        appLibraryOrZoneName = [v38 appLibraryOrZoneName];
+        v67 = [v65 brc_errorAppLibraryNotFound:appLibraryOrZoneName];
         *buf = 138413058;
-        v88 = self;
+        selfCopy6 = self;
         v89 = 2112;
-        v90 = 0;
+        selfCopy3 = 0;
         v91 = 2112;
         v92 = v67;
         v93 = 2112;
@@ -24162,8 +24162,8 @@ LABEL_33:
       }
 
       v68 = MEMORY[0x277CCA9B8];
-      v55 = [v38 appLibraryOrZoneName];
-      v69 = [v68 brc_errorAppLibraryNotFound:v55];
+      appLibraryOrZoneName2 = [v38 appLibraryOrZoneName];
+      v69 = [v68 brc_errorAppLibraryNotFound:appLibraryOrZoneName2];
       (*(v17 + 2))(v17, 0, v69);
     }
 
@@ -24172,26 +24172,26 @@ LABEL_47:
   }
 
   v29 = [BRCUserDefaults defaultsForMangledID:0];
-  if (![v29 deleteShareOnEmptySave] || (-[BRCXPCRegularIPCsClient allowsAccessRequests](v8, "allowsAccessRequests") & 1) != 0)
+  if (![v29 deleteShareOnEmptySave] || (-[BRCXPCRegularIPCsClient allowsAccessRequests](infoCopy, "allowsAccessRequests") & 1) != 0)
   {
 LABEL_32:
 
     goto LABEL_33;
   }
 
-  v30 = [(BRCXPCRegularIPCsClient *)v8 participants];
-  if ([v30 count])
+  participants = [(BRCXPCRegularIPCsClient *)infoCopy participants];
+  if ([participants count])
   {
-    v31 = [(BRCXPCRegularIPCsClient *)v8 participants];
-    if ([v31 count] == 1)
+    participants2 = [(BRCXPCRegularIPCsClient *)infoCopy participants];
+    if ([participants2 count] == 1)
     {
-      v32 = [(BRCXPCRegularIPCsClient *)v8 participants];
-      v33 = [v32 firstObject];
-      if ([v33 isCurrentUser])
+      participants3 = [(BRCXPCRegularIPCsClient *)infoCopy participants];
+      firstObject = [participants3 firstObject];
+      if ([firstObject isCurrentUser])
       {
-        v72 = [(BRCXPCRegularIPCsClient *)v8 participants];
-        v34 = [v72 firstObject];
-        v71 = [v34 role] == 1;
+        participants4 = [(BRCXPCRegularIPCsClient *)infoCopy participants];
+        firstObject2 = [participants4 firstObject];
+        v71 = [firstObject2 role] == 1;
 
         if (!v71)
         {
@@ -24206,18 +24206,18 @@ LABEL_32:
   }
 
 LABEL_21:
-  v39 = [(BRCXPCRegularIPCsClient *)v8 etag];
+  etag = [(BRCXPCRegularIPCsClient *)infoCopy etag];
 
-  if (v39)
+  if (etag)
   {
     v40 = brc_bread_crumbs();
     v41 = brc_default_log();
     if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v88 = v8;
+      selfCopy6 = infoCopy;
       v89 = 2112;
-      v90 = v40;
+      selfCopy3 = v40;
       _os_log_impl(&dword_223E7A000, v41, OS_LOG_TYPE_DEFAULT, "[WARNING] Deleting share %@ because we're being asked to save a share with no participants%@", buf, 0x16u);
     }
 
@@ -24225,10 +24225,10 @@ LABEL_21:
     v77[1] = 3221225472;
     v77[2] = __66__BRCXPCRegularIPCsClient_startOperation_toSaveSharingInfo_reply___block_invoke_617;
     v77[3] = &unk_278501778;
-    v78 = v8;
-    v79 = self;
+    v78 = infoCopy;
+    selfCopy5 = self;
     v80 = v17;
-    [(BRCXPCRegularIPCsClient *)self startOperation:v73 toUnshareShare:v78 forceDelete:1 reply:v77];
+    [(BRCXPCRegularIPCsClient *)self startOperation:operationCopy toUnshareShare:v78 forceDelete:1 reply:v77];
 
     v38 = v78;
     goto LABEL_47;
@@ -24246,9 +24246,9 @@ LABEL_21:
   if (os_log_type_enabled(v45, OS_LOG_TYPE_INFO))
   {
     *buf = 138413058;
-    v88 = self;
+    selfCopy6 = self;
     v89 = 2112;
-    v90 = v8;
+    selfCopy3 = infoCopy;
     v91 = 2112;
     v92 = 0;
     v93 = 2112;
@@ -24256,7 +24256,7 @@ LABEL_21:
     _os_log_impl(&dword_223E7A000, v45, OS_LOG_TYPE_INFO, "[INFO] %@: reply(%@, %@)%@", buf, 0x2Au);
   }
 
-  (*(v17 + 2))(v17, v8, 0);
+  (*(v17 + 2))(v17, infoCopy, 0);
 LABEL_48:
   __brc_leave_section(v86);
 
@@ -24411,12 +24411,12 @@ void __66__BRCXPCRegularIPCsClient_startOperation_toSaveSharingInfo_reply___bloc
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startOperation:(id)a3 toUnshareShare:(id)a4 forceDelete:(BOOL)a5 reply:(id)a6
+- (void)startOperation:(id)operation toUnshareShare:(id)share forceDelete:(BOOL)delete reply:(id)reply
 {
   v75 = *MEMORY[0x277D85DE8];
-  v56 = a3;
-  v10 = a4;
-  v11 = a6;
+  operationCopy = operation;
+  shareCopy = share;
+  replyCopy = reply;
   memset(v68, 0, sizeof(v68));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient startOperation:toUnshareShare:forceDelete:reply:]", 4382, 0, v68);
   v12 = brc_bread_crumbs();
@@ -24439,20 +24439,20 @@ void __66__BRCXPCRegularIPCsClient_startOperation_toSaveSharingInfo_reply___bloc
     _os_log_impl(&dword_223E7A000, v13, OS_LOG_TYPE_INFO, "[INFO] ┏%llx %@ (%@) %s %@", buf, 0x34u);
   }
 
-  v17 = [(BRCXPCClient *)self clientPriviledgesDescriptor];
-  v18 = [v17 isSharingProxyEntitled];
+  clientPriviledgesDescriptor = [(BRCXPCClient *)self clientPriviledgesDescriptor];
+  isSharingProxyEntitled = [clientPriviledgesDescriptor isSharingProxyEntitled];
   v66[0] = MEMORY[0x277D85DD0];
   v66[1] = 3221225472;
   v66[2] = __75__BRCXPCRegularIPCsClient_startOperation_toUnshareShare_forceDelete_reply___block_invoke;
   v66[3] = &unk_2785014D0;
   v66[4] = self;
-  v19 = v11;
+  v19 = replyCopy;
   v67 = v19;
-  v20 = _brc_ipc_check_client_privilege(self, 1, v18, "isSharingProxyEntitled", v66);
+  v20 = _brc_ipc_check_client_privilege(self, 1, isSharingProxyEntitled, "isSharingProxyEntitled", v66);
 
   if (v20)
   {
-    v21 = [v10 objectForKeyedSubscript:*MEMORY[0x277CBC0A0]];
+    v21 = [shareCopy objectForKeyedSubscript:*MEMORY[0x277CBC0A0]];
     v22 = [v21 isEqual:*MEMORY[0x277CFAD00]];
 
     if (!v22)
@@ -24482,15 +24482,15 @@ void __66__BRCXPCRegularIPCsClient_startOperation_toSaveSharingInfo_reply___bloc
       _os_log_impl(&dword_223E7A000, v24, OS_LOG_TYPE_INFO, "[INFO] ┏%llx %@ (%@) %s %@", buf, 0x34u);
     }
 
-    v28 = [(BRCXPCClient *)self clientPriviledgesDescriptor];
-    v29 = [v28 isFolderSharingProxyEntitled];
+    clientPriviledgesDescriptor2 = [(BRCXPCClient *)self clientPriviledgesDescriptor];
+    isFolderSharingProxyEntitled = [clientPriviledgesDescriptor2 isFolderSharingProxyEntitled];
     v63[0] = MEMORY[0x277D85DD0];
     v63[1] = 3221225472;
     v63[2] = __75__BRCXPCRegularIPCsClient_startOperation_toUnshareShare_forceDelete_reply___block_invoke_620;
     v63[3] = &unk_2785014D0;
     v63[4] = self;
     v64 = v19;
-    v30 = _brc_ipc_check_client_privilege(self, 1, v29, "isFolderSharingProxyEntitled", v63);
+    v30 = _brc_ipc_check_client_privilege(self, 1, isFolderSharingProxyEntitled, "isFolderSharingProxyEntitled", v63);
 
     __brc_leave_section(v65);
     if (v30)
@@ -24503,42 +24503,42 @@ LABEL_8:
         [BRCXPCRegularIPCsClient startOperation:toUnshareShare:forceDelete:reply:];
       }
 
-      v33 = [(BRCXPCClient *)self session];
+      session = [(BRCXPCClient *)self session];
       v34 = objc_alloc(MEMORY[0x277CFAE60]);
-      v35 = [v10 recordID];
-      v36 = [v35 zoneID];
-      v37 = [v34 initWithRecordZoneID:v36];
+      recordID = [shareCopy recordID];
+      zoneID = [recordID zoneID];
+      v37 = [v34 initWithRecordZoneID:zoneID];
 
-      v55 = [v33 clientZoneByMangledID:v37];
-      v38 = [v55 serverZone];
-      if (v38)
+      v55 = [session clientZoneByMangledID:v37];
+      serverZone = [v55 serverZone];
+      if (serverZone)
       {
         v39 = [BRCUserDefaults defaultsForMangledID:v37];
-        v40 = [v39 destroyiWorkShares];
+        destroyiWorkShares = [v39 destroyiWorkShares];
 
         *buf = 0;
         *&buf[8] = buf;
         *&buf[16] = 0x2020000000;
         LOBYTE(v70) = 1;
-        if (!a5 && (([v38 isSharedZone] | v40) & 1) == 0)
+        if (!delete && (([serverZone isSharedZone] | destroyiWorkShares) & 1) == 0)
         {
-          v41 = [v10 recordID];
-          v42 = [v41 brc_shareItemID];
+          recordID2 = [shareCopy recordID];
+          brc_shareItemID = [recordID2 brc_shareItemID];
 
-          v43 = [v33 clientTruthWorkloop];
+          clientTruthWorkloop = [session clientTruthWorkloop];
           block[0] = MEMORY[0x277D85DD0];
           block[1] = 3221225472;
           block[2] = __75__BRCXPCRegularIPCsClient_startOperation_toUnshareShare_forceDelete_reply___block_invoke_621;
           block[3] = &unk_278502B88;
           v60 = v55;
-          v61 = v42;
+          v61 = brc_shareItemID;
           v62 = buf;
-          v44 = v42;
-          dispatch_async_and_wait(v43, block);
+          v44 = brc_shareItemID;
+          dispatch_async_and_wait(clientTruthWorkloop, block);
         }
 
-        v45 = [[BRCSharingDestroyShareOperation alloc] initWithShare:v10 zone:v38 sessionContext:v33];
-        [(_BRCFrameworkOperation *)v45 setRemoteClientProxy:v56];
+        v45 = [[BRCSharingDestroyShareOperation alloc] initWithShare:shareCopy zone:serverZone sessionContext:session];
+        [(_BRCFrameworkOperation *)v45 setRemoteClientProxy:operationCopy];
         v57[0] = MEMORY[0x277D85DD0];
         v57[1] = 3221225472;
         v57[2] = __75__BRCXPCRegularIPCsClient_startOperation_toUnshareShare_forceDelete_reply___block_invoke_2;
@@ -24546,7 +24546,7 @@ LABEL_8:
         v57[4] = self;
         v58 = v19;
         [(_BRCOperation *)v45 setFinishBlock:v57];
-        [v33 addMiscOperation:v45];
+        [session addMiscOperation:v45];
         [(_BRCOperation *)v45 schedule];
 
         _Block_object_dispose(buf, 8);
@@ -24559,8 +24559,8 @@ LABEL_8:
         if (os_log_type_enabled(v47, OS_LOG_TYPE_INFO))
         {
           v48 = MEMORY[0x277CCA9B8];
-          v49 = [v37 appLibraryOrZoneName];
-          v50 = [v48 brc_errorAppLibraryNotFound:v49];
+          appLibraryOrZoneName = [v37 appLibraryOrZoneName];
+          v50 = [v48 brc_errorAppLibraryNotFound:appLibraryOrZoneName];
           *buf = 138412802;
           *&buf[4] = self;
           *&buf[12] = 2112;
@@ -24571,8 +24571,8 @@ LABEL_8:
         }
 
         v51 = MEMORY[0x277CCA9B8];
-        v52 = [v37 appLibraryOrZoneName];
-        v53 = [v51 brc_errorAppLibraryNotFound:v52];
+        appLibraryOrZoneName2 = [v37 appLibraryOrZoneName];
+        v53 = [v51 brc_errorAppLibraryNotFound:appLibraryOrZoneName2];
         (*(v19 + 2))(v19, v53);
       }
     }
@@ -24665,12 +24665,12 @@ void __75__BRCXPCRegularIPCsClient_startOperation_toUnshareShare_forceDelete_rep
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startOperation:(id)a3 toLookupShareParticipants:(id)a4 reply:(id)a5
+- (void)startOperation:(id)operation toLookupShareParticipants:(id)participants reply:(id)reply
 {
   v40 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  operationCopy = operation;
+  participantsCopy = participants;
+  replyCopy = reply;
   memset(v29, 0, sizeof(v29));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient startOperation:toLookupShareParticipants:reply:]", 4428, 0, v29);
   v11 = brc_bread_crumbs();
@@ -24683,7 +24683,7 @@ void __75__BRCXPCRegularIPCsClient_startOperation_toUnshareShare_forceDelete_rep
     *buf = 134219010;
     v31 = v13;
     v32 = 2112;
-    v33 = self;
+    selfCopy = self;
     v34 = 2112;
     v35 = v15;
     v36 = 2080;
@@ -24693,16 +24693,16 @@ void __75__BRCXPCRegularIPCsClient_startOperation_toUnshareShare_forceDelete_rep
     _os_log_impl(&dword_223E7A000, v12, OS_LOG_TYPE_INFO, "[INFO] ┏%llx %@ (%@) %s %@", buf, 0x34u);
   }
 
-  v16 = [(BRCXPCClient *)self clientPriviledgesDescriptor];
-  v17 = [v16 isSharingProxyEntitled];
+  clientPriviledgesDescriptor = [(BRCXPCClient *)self clientPriviledgesDescriptor];
+  isSharingProxyEntitled = [clientPriviledgesDescriptor isSharingProxyEntitled];
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
   v27[2] = __74__BRCXPCRegularIPCsClient_startOperation_toLookupShareParticipants_reply___block_invoke;
   v27[3] = &unk_2785014D0;
   v27[4] = self;
-  v18 = v10;
+  v18 = replyCopy;
   v28 = v18;
-  v19 = _brc_ipc_check_client_privilege(self, 0, v17, "isSharingProxyEntitled", v27);
+  v19 = _brc_ipc_check_client_privilege(self, 0, isSharingProxyEntitled, "isSharingProxyEntitled", v27);
 
   if (v19)
   {
@@ -24719,8 +24719,8 @@ void __75__BRCXPCRegularIPCsClient_startOperation_toUnshareShare_forceDelete_rep
     v23[3] = &unk_2785074E8;
     v23[4] = self;
     v26 = v18;
-    v24 = v9;
-    v25 = v8;
+    v24 = participantsCopy;
+    v25 = operationCopy;
     [(BRCXPCClient *)self performBlockWithAnySession:v23];
   }
 
@@ -24863,12 +24863,12 @@ void __95__BRCXPCRegularIPCsClient__startOperation_toModifyRecordAccessWithLocal
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startOperation:(id)a3 toModifyRecordAccessWithItemID:(id)a4 allowAccess:(BOOL)a5 reply:(id)a6
+- (void)startOperation:(id)operation toModifyRecordAccessWithItemID:(id)d allowAccess:(BOOL)access reply:(id)reply
 {
   v42 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  operationCopy = operation;
+  dCopy = d;
+  replyCopy = reply;
   memset(v31, 0, sizeof(v31));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient startOperation:toModifyRecordAccessWithItemID:allowAccess:reply:]", 4464, 0, v31);
   v13 = brc_bread_crumbs();
@@ -24881,7 +24881,7 @@ void __95__BRCXPCRegularIPCsClient__startOperation_toModifyRecordAccessWithLocal
     *buf = 134219010;
     v33 = v15;
     v34 = 2112;
-    v35 = self;
+    selfCopy = self;
     v36 = 2112;
     v37 = v17;
     v38 = 2080;
@@ -24891,30 +24891,30 @@ void __95__BRCXPCRegularIPCsClient__startOperation_toModifyRecordAccessWithLocal
     _os_log_impl(&dword_223E7A000, v14, OS_LOG_TYPE_INFO, "[INFO] ┏%llx %@ (%@) %s %@", buf, 0x34u);
   }
 
-  v18 = [(BRCXPCClient *)self clientPriviledgesDescriptor];
-  v19 = [v18 isSharingProxyEntitled];
+  clientPriviledgesDescriptor = [(BRCXPCClient *)self clientPriviledgesDescriptor];
+  isSharingProxyEntitled = [clientPriviledgesDescriptor isSharingProxyEntitled];
   v29[0] = MEMORY[0x277D85DD0];
   v29[1] = 3221225472;
   v29[2] = __91__BRCXPCRegularIPCsClient_startOperation_toModifyRecordAccessWithItemID_allowAccess_reply___block_invoke;
   v29[3] = &unk_2785014D0;
   v29[4] = self;
-  v20 = v12;
+  v20 = replyCopy;
   v30 = v20;
-  v21 = _brc_ipc_check_client_privilege(self, 1, v19, "isSharingProxyEntitled", v29);
+  v21 = _brc_ipc_check_client_privilege(self, 1, isSharingProxyEntitled, "isSharingProxyEntitled", v29);
 
   if (v21)
   {
-    v22 = [(BRCAccountSession *)self->super.__session clientTruthWorkloop];
+    clientTruthWorkloop = [(BRCAccountSession *)self->super.__session clientTruthWorkloop];
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
     v24[2] = __91__BRCXPCRegularIPCsClient_startOperation_toModifyRecordAccessWithItemID_allowAccess_reply___block_invoke_634;
     v24[3] = &unk_278507510;
     v24[4] = self;
-    v25 = v11;
+    v25 = dCopy;
     v27 = v20;
-    v26 = v10;
-    v28 = a5;
-    dispatch_async_and_wait(v22, v24);
+    v26 = operationCopy;
+    accessCopy = access;
+    dispatch_async_and_wait(clientTruthWorkloop, v24);
   }
 
   __brc_leave_section(v31);
@@ -24990,12 +24990,12 @@ void __91__BRCXPCRegularIPCsClient_startOperation_toModifyRecordAccessWithItemID
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_startOperation:(id)a3 toCopyParticipantTokenWithLocalItem:(id)a4 reply:(id)a5
+- (void)_startOperation:(id)operation toCopyParticipantTokenWithLocalItem:(id)item reply:(id)reply
 {
   v37 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  operationCopy = operation;
+  itemCopy = item;
+  replyCopy = reply;
   v11 = brc_bread_crumbs();
   v12 = brc_default_log();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -25003,21 +25003,21 @@ void __91__BRCXPCRegularIPCsClient_startOperation_toModifyRecordAccessWithItemID
     [BRCXPCRegularIPCsClient _startOperation:toCopyParticipantTokenWithLocalItem:reply:];
   }
 
-  if (([v9 sharingOptions] & 0x48) != 0)
+  if (([itemCopy sharingOptions] & 0x48) != 0)
   {
     v13 = [BRCSharingCopyParticipantTokenOperation alloc];
-    v14 = [v9 asDocument];
-    v15 = [(BRCXPCClient *)self session];
-    v16 = [(BRCSharingCopyParticipantTokenOperation *)v13 initWithItem:v14 sessionContext:v15];
+    asDocument = [itemCopy asDocument];
+    session = [(BRCXPCClient *)self session];
+    v16 = [(BRCSharingCopyParticipantTokenOperation *)v13 initWithItem:asDocument sessionContext:session];
 
     v21 = MEMORY[0x277D85DD0];
     v22 = 3221225472;
     v23 = __85__BRCXPCRegularIPCsClient__startOperation_toCopyParticipantTokenWithLocalItem_reply___block_invoke;
     v24 = &unk_2785024A0;
-    v25 = self;
-    v26 = v10;
+    selfCopy = self;
+    v26 = replyCopy;
     [(_BRCOperation *)v16 setFinishBlock:&v21];
-    [(BRCXPCClient *)self _startSharingOperationAfterAcceptation:v16 client:v8 item:v9, v21, v22, v23, v24, v25];
+    [(BRCXPCClient *)self _startSharingOperationAfterAcceptation:v16 client:operationCopy item:itemCopy, v21, v22, v23, v24, selfCopy];
   }
 
   else
@@ -25028,7 +25028,7 @@ void __91__BRCXPCRegularIPCsClient_startOperation_toModifyRecordAccessWithItemID
     {
       v19 = [MEMORY[0x277CCA9B8] brc_errorDocumentIsNotSharedAtIdentifier:0];
       *buf = 138413314;
-      v28 = self;
+      selfCopy2 = self;
       v29 = 2112;
       v30 = 0;
       v31 = 2112;
@@ -25041,7 +25041,7 @@ void __91__BRCXPCRegularIPCsClient_startOperation_toModifyRecordAccessWithItemID
     }
 
     v16 = [MEMORY[0x277CCA9B8] brc_errorDocumentIsNotSharedAtIdentifier:0];
-    (*(v10 + 2))(v10, 0, 0, v16);
+    (*(replyCopy + 2))(replyCopy, 0, 0, v16);
   }
 
   v20 = *MEMORY[0x277D85DE8];
@@ -25081,12 +25081,12 @@ void __85__BRCXPCRegularIPCsClient__startOperation_toCopyParticipantTokenWithLoc
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startOperation:(id)a3 toCopyParticipantTokenWithItemID:(id)a4 reply:(id)a5
+- (void)startOperation:(id)operation toCopyParticipantTokenWithItemID:(id)d reply:(id)reply
 {
   v39 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  operationCopy = operation;
+  dCopy = d;
+  replyCopy = reply;
   memset(v28, 0, sizeof(v28));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient startOperation:toCopyParticipantTokenWithItemID:reply:]", 4500, 0, v28);
   v11 = brc_bread_crumbs();
@@ -25099,7 +25099,7 @@ void __85__BRCXPCRegularIPCsClient__startOperation_toCopyParticipantTokenWithLoc
     *buf = 134219010;
     v30 = v13;
     v31 = 2112;
-    v32 = self;
+    selfCopy = self;
     v33 = 2112;
     v34 = v15;
     v35 = 2080;
@@ -25109,29 +25109,29 @@ void __85__BRCXPCRegularIPCsClient__startOperation_toCopyParticipantTokenWithLoc
     _os_log_impl(&dword_223E7A000, v12, OS_LOG_TYPE_INFO, "[INFO] ┏%llx %@ (%@) %s %@", buf, 0x34u);
   }
 
-  v16 = [(BRCXPCClient *)self clientPriviledgesDescriptor];
-  v17 = [v16 isSharingPrivateInterfaceEntitled];
+  clientPriviledgesDescriptor = [(BRCXPCClient *)self clientPriviledgesDescriptor];
+  isSharingPrivateInterfaceEntitled = [clientPriviledgesDescriptor isSharingPrivateInterfaceEntitled];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __81__BRCXPCRegularIPCsClient_startOperation_toCopyParticipantTokenWithItemID_reply___block_invoke;
   v26[3] = &unk_2785014D0;
   v26[4] = self;
-  v18 = v10;
+  v18 = replyCopy;
   v27 = v18;
-  v19 = _brc_ipc_check_client_privilege(self, 1, v17, "isSharingPrivateInterfaceEntitled", v26);
+  v19 = _brc_ipc_check_client_privilege(self, 1, isSharingPrivateInterfaceEntitled, "isSharingPrivateInterfaceEntitled", v26);
 
   if (v19)
   {
-    v20 = [(BRCAccountSession *)self->super.__session clientTruthWorkloop];
+    clientTruthWorkloop = [(BRCAccountSession *)self->super.__session clientTruthWorkloop];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __81__BRCXPCRegularIPCsClient_startOperation_toCopyParticipantTokenWithItemID_reply___block_invoke_642;
     block[3] = &unk_2785003B0;
     block[4] = self;
-    v23 = v9;
+    v23 = dCopy;
     v25 = v18;
-    v24 = v8;
-    dispatch_async_and_wait(v20, block);
+    v24 = operationCopy;
+    dispatch_async_and_wait(clientTruthWorkloop, block);
   }
 
   __brc_leave_section(v28);
@@ -25207,17 +25207,17 @@ void __81__BRCXPCRegularIPCsClient_startOperation_toCopyParticipantTokenWithItem
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_startOperation:(id)a3 toPrepFolderForSharingWithLocalItem:(id)a4 reply:(id)a5
+- (void)_startOperation:(id)operation toPrepFolderForSharingWithLocalItem:(id)item reply:(id)reply
 {
   v76 = *MEMORY[0x277D85DE8];
-  v56 = a3;
-  v7 = a4;
-  v59 = a5;
+  operationCopy = operation;
+  itemCopy = item;
+  replyCopy = reply;
   v66 = 0;
   v67 = &v66;
   v68 = 0x2020000000;
-  v8 = [MEMORY[0x277CBEAA8] date];
-  [v8 timeIntervalSinceReferenceDate];
+  date = [MEMORY[0x277CBEAA8] date];
+  [date timeIntervalSinceReferenceDate];
   v10 = v9;
 
   v69 = v10;
@@ -25229,28 +25229,28 @@ void __81__BRCXPCRegularIPCsClient_startOperation_toCopyParticipantTokenWithItem
   }
 
   v58 = +[BRCEventsAnalytics sharedAnalytics];
-  if (([v7 isDirectory] & 1) == 0)
+  if (([itemCopy isDirectory] & 1) == 0)
   {
     v18 = [MEMORY[0x277CCA9B8] brc_errorNoDocument:0 underlyingPOSIXError:2];
     v23 = [BRCUserDefaults defaultsForMangledID:0];
-    v24 = [v23 reportXPCErrorOnPCSChain];
+    reportXPCErrorOnPCSChain = [v23 reportXPCErrorOnPCSChain];
 
-    if (v24)
+    if (reportXPCErrorOnPCSChain)
     {
-      v25 = [MEMORY[0x277CBEAA8] date];
-      [v25 timeIntervalSinceReferenceDate];
+      date2 = [MEMORY[0x277CBEAA8] date];
+      [date2 timeIntervalSinceReferenceDate];
       v27 = v26;
       v28 = v67[3];
 
-      v29 = [v7 clientZone];
-      v30 = [v29 mangledID];
-      v31 = [v7 clientZone];
-      v32 = [v31 enhancedDrivePrivacyEnabled];
-      v33 = [v7 itemID];
-      v34 = [v33 itemIDString];
-      v35 = [(BRCXPCClient *)self session];
-      v36 = [v35 analyticsReporter];
-      [v58 registerAndSendNewFolderSharePCSChainingTime:MEMORY[0x277CBEC28] chainedRecordsCount:v30 zoneMangledID:v32 enhancedDrivePrivacyEnabled:v34 itemIDString:v18 error:v36 analyticsReporter:v27 - v28];
+      clientZone = [itemCopy clientZone];
+      mangledID = [clientZone mangledID];
+      clientZone2 = [itemCopy clientZone];
+      enhancedDrivePrivacyEnabled = [clientZone2 enhancedDrivePrivacyEnabled];
+      itemID = [itemCopy itemID];
+      itemIDString = [itemID itemIDString];
+      session = [(BRCXPCClient *)self session];
+      analyticsReporter = [session analyticsReporter];
+      [v58 registerAndSendNewFolderSharePCSChainingTime:MEMORY[0x277CBEC28] chainedRecordsCount:mangledID zoneMangledID:enhancedDrivePrivacyEnabled enhancedDrivePrivacyEnabled:itemIDString itemIDString:v18 error:analyticsReporter analyticsReporter:v27 - v28];
     }
 
     v37 = brc_bread_crumbs();
@@ -25258,7 +25258,7 @@ void __81__BRCXPCRegularIPCsClient_startOperation_toCopyParticipantTokenWithItem
     if (os_log_type_enabled(v38, OS_LOG_TYPE_INFO))
     {
       *buf = 138412802;
-      v71 = self;
+      selfCopy2 = self;
       v72 = 2112;
       v73 = v18;
       v74 = 2112;
@@ -25269,28 +25269,28 @@ void __81__BRCXPCRegularIPCsClient_startOperation_toCopyParticipantTokenWithItem
     goto LABEL_16;
   }
 
-  if (([v7 isKnownByServer] & 1) == 0)
+  if (([itemCopy isKnownByServer] & 1) == 0)
   {
     v18 = [MEMORY[0x277CCA9B8] brc_errorNotInCloud:0];
     v39 = [BRCUserDefaults defaultsForMangledID:0];
-    v40 = [v39 reportXPCErrorOnPCSChain];
+    reportXPCErrorOnPCSChain2 = [v39 reportXPCErrorOnPCSChain];
 
-    if (v40)
+    if (reportXPCErrorOnPCSChain2)
     {
-      v41 = [MEMORY[0x277CBEAA8] date];
-      [v41 timeIntervalSinceReferenceDate];
+      date3 = [MEMORY[0x277CBEAA8] date];
+      [date3 timeIntervalSinceReferenceDate];
       v43 = v42;
       v44 = v67[3];
 
-      v45 = [v7 clientZone];
-      v46 = [v45 mangledID];
-      v47 = [v7 clientZone];
-      v48 = [v47 enhancedDrivePrivacyEnabled];
-      v49 = [v7 itemID];
-      v50 = [v49 itemIDString];
-      v51 = [(BRCXPCClient *)self session];
-      v52 = [v51 analyticsReporter];
-      [v58 registerAndSendNewFolderSharePCSChainingTime:MEMORY[0x277CBEC28] chainedRecordsCount:v46 zoneMangledID:v48 enhancedDrivePrivacyEnabled:v50 itemIDString:v18 error:v52 analyticsReporter:v43 - v44];
+      clientZone3 = [itemCopy clientZone];
+      mangledID2 = [clientZone3 mangledID];
+      clientZone4 = [itemCopy clientZone];
+      enhancedDrivePrivacyEnabled2 = [clientZone4 enhancedDrivePrivacyEnabled];
+      itemID2 = [itemCopy itemID];
+      itemIDString2 = [itemID2 itemIDString];
+      session2 = [(BRCXPCClient *)self session];
+      analyticsReporter2 = [session2 analyticsReporter];
+      [v58 registerAndSendNewFolderSharePCSChainingTime:MEMORY[0x277CBEC28] chainedRecordsCount:mangledID2 zoneMangledID:enhancedDrivePrivacyEnabled2 enhancedDrivePrivacyEnabled:itemIDString2 itemIDString:v18 error:analyticsReporter2 analyticsReporter:v43 - v44];
     }
 
     v37 = brc_bread_crumbs();
@@ -25298,7 +25298,7 @@ void __81__BRCXPCRegularIPCsClient_startOperation_toCopyParticipantTokenWithItem
     if (os_log_type_enabled(v38, OS_LOG_TYPE_INFO))
     {
       *buf = 138412802;
-      v71 = self;
+      selfCopy2 = self;
       v72 = 2112;
       v73 = v18;
       v74 = 2112;
@@ -25308,33 +25308,33 @@ void __81__BRCXPCRegularIPCsClient_startOperation_toCopyParticipantTokenWithItem
 
 LABEL_16:
 
-    v59[2](v59, v18);
+    replyCopy[2](replyCopy, v18);
     goto LABEL_17;
   }
 
   v13 = [BRCSharingPCSChainFolderOperation alloc];
-  v14 = [v7 asDirectory];
-  v15 = [(BRCXPCClient *)self session];
-  v16 = [(BRCXPCClient *)self session];
-  v17 = [v16 syncUpScheduler];
-  v18 = [(BRCSharingPCSChainFolderOperation *)v13 initWithItem:v14 sessionContext:v15 syncUpCallback:v17];
+  asDirectory = [itemCopy asDirectory];
+  session3 = [(BRCXPCClient *)self session];
+  session4 = [(BRCXPCClient *)self session];
+  syncUpScheduler = [session4 syncUpScheduler];
+  v18 = [(BRCSharingPCSChainFolderOperation *)v13 initWithItem:asDirectory sessionContext:session3 syncUpCallback:syncUpScheduler];
 
-  [(_BRCFrameworkOperation *)v18 setRemoteClientProxy:v56];
+  [(_BRCFrameworkOperation *)v18 setRemoteClientProxy:operationCopy];
   v60[0] = MEMORY[0x277D85DD0];
   v60[1] = 3221225472;
   v60[2] = __85__BRCXPCRegularIPCsClient__startOperation_toPrepFolderForSharingWithLocalItem_reply___block_invoke;
   v60[3] = &unk_278507538;
   v65 = &v66;
   v61 = v58;
-  v19 = v7;
+  v19 = itemCopy;
   v62 = v19;
-  v63 = self;
-  v64 = v59;
+  selfCopy3 = self;
+  v64 = replyCopy;
   [(_BRCOperation *)v18 setFinishBlock:v60];
-  v20 = [v19 clientZone];
-  LOBYTE(v17) = [v20 isPrivateZone];
+  clientZone5 = [v19 clientZone];
+  LOBYTE(syncUpScheduler) = [clientZone5 isPrivateZone];
 
-  if ((v17 & 1) == 0)
+  if ((syncUpScheduler & 1) == 0)
   {
     v54 = brc_bread_crumbs();
     v55 = brc_default_log();
@@ -25344,9 +25344,9 @@ LABEL_16:
     }
   }
 
-  v21 = [v19 clientZone];
-  v22 = [v21 asPrivateClientZone];
-  [v22 registerPCSChainingOperation:v18];
+  clientZone6 = [v19 clientZone];
+  asPrivateClientZone = [clientZone6 asPrivateClientZone];
+  [asPrivateClientZone registerPCSChainingOperation:v18];
 
   [(_BRCOperation *)v18 schedule];
 LABEL_17:
@@ -25398,12 +25398,12 @@ void __85__BRCXPCRegularIPCsClient__startOperation_toPrepFolderForSharingWithLoc
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startOperation:(id)a3 toPrepFolderForSharingWithItemID:(id)a4 reply:(id)a5
+- (void)startOperation:(id)operation toPrepFolderForSharingWithItemID:(id)d reply:(id)reply
 {
   v39 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  operationCopy = operation;
+  dCopy = d;
+  replyCopy = reply;
   memset(v28, 0, sizeof(v28));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient startOperation:toPrepFolderForSharingWithItemID:reply:]", 4569, 0, v28);
   v11 = brc_bread_crumbs();
@@ -25416,7 +25416,7 @@ void __85__BRCXPCRegularIPCsClient__startOperation_toPrepFolderForSharingWithLoc
     *buf = 134219010;
     v30 = v13;
     v31 = 2112;
-    v32 = self;
+    selfCopy = self;
     v33 = 2112;
     v34 = v15;
     v35 = 2080;
@@ -25426,29 +25426,29 @@ void __85__BRCXPCRegularIPCsClient__startOperation_toPrepFolderForSharingWithLoc
     _os_log_impl(&dword_223E7A000, v12, OS_LOG_TYPE_INFO, "[INFO] ┏%llx %@ (%@) %s %@", buf, 0x34u);
   }
 
-  v16 = [(BRCXPCClient *)self clientPriviledgesDescriptor];
-  v17 = [v16 isSharingPrivateInterfaceEntitled];
+  clientPriviledgesDescriptor = [(BRCXPCClient *)self clientPriviledgesDescriptor];
+  isSharingPrivateInterfaceEntitled = [clientPriviledgesDescriptor isSharingPrivateInterfaceEntitled];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __81__BRCXPCRegularIPCsClient_startOperation_toPrepFolderForSharingWithItemID_reply___block_invoke;
   v26[3] = &unk_2785014D0;
   v26[4] = self;
-  v18 = v10;
+  v18 = replyCopy;
   v27 = v18;
-  v19 = _brc_ipc_check_client_privilege(self, 1, v17, "isSharingPrivateInterfaceEntitled", v26);
+  v19 = _brc_ipc_check_client_privilege(self, 1, isSharingPrivateInterfaceEntitled, "isSharingPrivateInterfaceEntitled", v26);
 
   if (v19)
   {
-    v20 = [(BRCAccountSession *)self->super.__session clientTruthWorkloop];
+    clientTruthWorkloop = [(BRCAccountSession *)self->super.__session clientTruthWorkloop];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __81__BRCXPCRegularIPCsClient_startOperation_toPrepFolderForSharingWithItemID_reply___block_invoke_644;
     block[3] = &unk_2785003B0;
     block[4] = self;
-    v23 = v9;
+    v23 = dCopy;
     v25 = v18;
-    v24 = v8;
-    dispatch_async_and_wait(v20, block);
+    v24 = operationCopy;
+    dispatch_async_and_wait(clientTruthWorkloop, block);
   }
 
   __brc_leave_section(v28);
@@ -25516,12 +25516,12 @@ void __81__BRCXPCRegularIPCsClient_startOperation_toPrepFolderForSharingWithItem
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_startOperation:(id)a3 toProcessSubitemsWithLocalItem:(id)a4 maxSubsharesFailures:(unint64_t)a5 processType:(unint64_t)a6 reply:(id)a7
+- (void)_startOperation:(id)operation toProcessSubitemsWithLocalItem:(id)item maxSubsharesFailures:(unint64_t)failures processType:(unint64_t)type reply:(id)reply
 {
   v38 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
+  operationCopy = operation;
+  itemCopy = item;
+  replyCopy = reply;
   v15 = brc_bread_crumbs();
   v16 = brc_default_log();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
@@ -25529,20 +25529,20 @@ void __81__BRCXPCRegularIPCsClient_startOperation_toPrepFolderForSharingWithItem
     [BRCXPCRegularIPCsClient _startOperation:toProcessSubitemsWithLocalItem:maxSubsharesFailures:processType:reply:];
   }
 
-  if ([v13 isDirectory])
+  if ([itemCopy isDirectory])
   {
     v17 = [BRCSharingProcessFolderSubitemsOperation alloc];
-    v18 = [v13 asDirectory];
-    v19 = [(BRCXPCClient *)self session];
-    v20 = [(BRCSharingProcessFolderSubitemsOperation *)v17 initWithItem:v18 sessionContext:v19 processType:a6 maxSubitemsToFail:a5];
+    asDirectory = [itemCopy asDirectory];
+    session = [(BRCXPCClient *)self session];
+    v20 = [(BRCSharingProcessFolderSubitemsOperation *)v17 initWithItem:asDirectory sessionContext:session processType:type maxSubitemsToFail:failures];
 
-    [(_BRCFrameworkOperation *)v20 setRemoteClientProxy:v12];
+    [(_BRCFrameworkOperation *)v20 setRemoteClientProxy:operationCopy];
     v26 = MEMORY[0x277D85DD0];
     v27 = 3221225472;
     v28 = __113__BRCXPCRegularIPCsClient__startOperation_toProcessSubitemsWithLocalItem_maxSubsharesFailures_processType_reply___block_invoke;
     v29 = &unk_2785024A0;
-    v30 = self;
-    v31 = v14;
+    selfCopy = self;
+    v31 = replyCopy;
     [(_BRCOperation *)v20 setFinishBlock:&v26];
     v21 = [(BRCXPCClient *)self session:v26];
     [v21 addMiscOperation:v20];
@@ -25558,7 +25558,7 @@ void __81__BRCXPCRegularIPCsClient_startOperation_toPrepFolderForSharingWithItem
     {
       v24 = [MEMORY[0x277CCA9B8] brc_errorNoDocument:0 underlyingPOSIXError:2];
       *buf = 138412802;
-      v33 = self;
+      selfCopy2 = self;
       v34 = 2112;
       v35 = v24;
       v36 = 2112;
@@ -25567,7 +25567,7 @@ void __81__BRCXPCRegularIPCsClient_startOperation_toPrepFolderForSharingWithItem
     }
 
     v20 = [MEMORY[0x277CCA9B8] brc_errorNoDocument:0 underlyingPOSIXError:2];
-    (*(v14 + 2))(v14, v20);
+    (*(replyCopy + 2))(replyCopy, v20);
   }
 
   v25 = *MEMORY[0x277D85DE8];
@@ -25599,30 +25599,30 @@ void __113__BRCXPCRegularIPCsClient__startOperation_toProcessSubitemsWithLocalIt
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startOperation:(id)a3 toProcessSubitemsWithItemID:(id)a4 maxSubsharesFailures:(unint64_t)a5 processType:(unint64_t)a6 reply:(id)a7
+- (void)startOperation:(id)operation toProcessSubitemsWithItemID:(id)d maxSubsharesFailures:(unint64_t)failures processType:(unint64_t)type reply:(id)reply
 {
   v50 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
+  operationCopy = operation;
+  dCopy = d;
+  replyCopy = reply;
   memset(v39, 0, sizeof(v39));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient startOperation:toProcessSubitemsWithItemID:maxSubsharesFailures:processType:reply:]", 4606, 0, v39);
   v15 = brc_bread_crumbs();
   v16 = brc_default_log();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
   {
-    v30 = v14;
-    v17 = v13;
-    v18 = v12;
-    v19 = a5;
-    v20 = a6;
+    v30 = replyCopy;
+    v17 = dCopy;
+    v18 = operationCopy;
+    failuresCopy = failures;
+    typeCopy = type;
     v21 = v39[0];
     v22 = qos_class_self();
     v23 = BRCPrettyPrintEnumWithContext(v22, &brc_qos_entries, 0);
     *buf = 134219010;
     v41 = v21;
     v42 = 2112;
-    v43 = self;
+    selfCopy = self;
     v44 = 2112;
     v45 = v23;
     v46 = 2080;
@@ -25631,38 +25631,38 @@ void __113__BRCXPCRegularIPCsClient__startOperation_toProcessSubitemsWithLocalIt
     v49 = v15;
     _os_log_impl(&dword_223E7A000, v16, OS_LOG_TYPE_INFO, "[INFO] ┏%llx %@ (%@) %s %@", buf, 0x34u);
 
-    a6 = v20;
-    a5 = v19;
-    v12 = v18;
-    v13 = v17;
-    v14 = v30;
+    type = typeCopy;
+    failures = failuresCopy;
+    operationCopy = v18;
+    dCopy = v17;
+    replyCopy = v30;
   }
 
-  v24 = [(BRCXPCClient *)self clientPriviledgesDescriptor];
-  v25 = [v24 isFolderSharingProxyEntitled];
+  clientPriviledgesDescriptor = [(BRCXPCClient *)self clientPriviledgesDescriptor];
+  isFolderSharingProxyEntitled = [clientPriviledgesDescriptor isFolderSharingProxyEntitled];
   v37[0] = MEMORY[0x277D85DD0];
   v37[1] = 3221225472;
   v37[2] = __109__BRCXPCRegularIPCsClient_startOperation_toProcessSubitemsWithItemID_maxSubsharesFailures_processType_reply___block_invoke;
   v37[3] = &unk_2785014D0;
   v37[4] = self;
-  v26 = v14;
+  v26 = replyCopy;
   v38 = v26;
-  v27 = _brc_ipc_check_client_privilege(self, 1, v25, "isFolderSharingProxyEntitled", v37);
+  v27 = _brc_ipc_check_client_privilege(self, 1, isFolderSharingProxyEntitled, "isFolderSharingProxyEntitled", v37);
 
   if (v27)
   {
-    v28 = [(BRCAccountSession *)self->super.__session clientTruthWorkloop];
+    clientTruthWorkloop = [(BRCAccountSession *)self->super.__session clientTruthWorkloop];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __109__BRCXPCRegularIPCsClient_startOperation_toProcessSubitemsWithItemID_maxSubsharesFailures_processType_reply___block_invoke_646;
     block[3] = &unk_278507560;
     block[4] = self;
-    v32 = v13;
+    v32 = dCopy;
     v34 = v26;
-    v33 = v12;
-    v35 = a5;
-    v36 = a6;
-    dispatch_async_and_wait(v28, block);
+    v33 = operationCopy;
+    failuresCopy2 = failures;
+    typeCopy2 = type;
+    dispatch_async_and_wait(clientTruthWorkloop, block);
   }
 
   __brc_leave_section(v39);
@@ -25778,12 +25778,12 @@ void __84__BRCXPCRegularIPCsClient_startOperation_toAcceptShareLink_skipAcceptDi
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startOperation:(id)a3 toAutoAcceptShareLink:(id)a4 reply:(id)a5
+- (void)startOperation:(id)operation toAutoAcceptShareLink:(id)link reply:(id)reply
 {
   v59 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  operationCopy = operation;
+  linkCopy = link;
+  replyCopy = reply;
   memset(v48, 0, sizeof(v48));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient startOperation:toAutoAcceptShareLink:reply:]", 4664, 0, v48);
   v11 = brc_bread_crumbs();
@@ -25796,7 +25796,7 @@ void __84__BRCXPCRegularIPCsClient_startOperation_toAcceptShareLink_skipAcceptDi
     *buf = 134219010;
     v50 = v13;
     v51 = 2112;
-    v52 = self;
+    selfCopy2 = self;
     v53 = 2112;
     v54 = v15;
     v55 = 2080;
@@ -25806,16 +25806,16 @@ void __84__BRCXPCRegularIPCsClient_startOperation_toAcceptShareLink_skipAcceptDi
     _os_log_impl(&dword_223E7A000, v12, OS_LOG_TYPE_INFO, "[INFO] ┏%llx %@ (%@) %s %@", buf, 0x34u);
   }
 
-  v16 = [(BRCXPCClient *)self clientPriviledgesDescriptor];
-  v17 = [v16 isSharingPrivateInterfaceEntitled];
+  clientPriviledgesDescriptor = [(BRCXPCClient *)self clientPriviledgesDescriptor];
+  isSharingPrivateInterfaceEntitled = [clientPriviledgesDescriptor isSharingPrivateInterfaceEntitled];
   v46[0] = MEMORY[0x277D85DD0];
   v46[1] = 3221225472;
   v46[2] = __70__BRCXPCRegularIPCsClient_startOperation_toAutoAcceptShareLink_reply___block_invoke;
   v46[3] = &unk_2785014D0;
   v46[4] = self;
-  v18 = v10;
+  v18 = replyCopy;
   v47 = v18;
-  v19 = _brc_ipc_check_client_privilege(self, 1, v17, "isSharingPrivateInterfaceEntitled", v46);
+  v19 = _brc_ipc_check_client_privilege(self, 1, isSharingPrivateInterfaceEntitled, "isSharingPrivateInterfaceEntitled", v46);
 
   if (v19)
   {
@@ -25825,15 +25825,15 @@ void __84__BRCXPCRegularIPCsClient_startOperation_toAcceptShareLink_skipAcceptDi
     v21 = brc_default_log();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
     {
-      v22 = v9;
-      v23 = v8;
+      v22 = linkCopy;
+      v23 = operationCopy;
       v24 = v45[0];
       v25 = qos_class_self();
       v26 = BRCPrettyPrintEnumWithContext(v25, &brc_qos_entries, 0);
       *buf = 134219010;
       v50 = v24;
       v51 = 2112;
-      v52 = self;
+      selfCopy2 = self;
       v53 = 2112;
       v54 = v26;
       v55 = 2080;
@@ -25842,8 +25842,8 @@ void __84__BRCXPCRegularIPCsClient_startOperation_toAcceptShareLink_skipAcceptDi
       v58 = v20;
       _os_log_impl(&dword_223E7A000, v21, OS_LOG_TYPE_INFO, "[INFO] ┏%llx %@ (%@) %s %@", buf, 0x34u);
 
-      v8 = v23;
-      v9 = v22;
+      operationCopy = v23;
+      linkCopy = v22;
     }
 
     v27 = *MEMORY[0x277CFAC50];
@@ -25859,19 +25859,19 @@ void __84__BRCXPCRegularIPCsClient_startOperation_toAcceptShareLink_skipAcceptDi
     if (v27)
     {
       v29 = [BRCFetchCKShareMetadataOperation alloc];
-      v30 = [(BRCXPCClient *)self session];
-      v31 = [(BRCFetchCKShareMetadataOperation *)v29 initWithShareLink:v9 sessionContext:v30];
+      session = [(BRCXPCClient *)self session];
+      v31 = [(BRCFetchCKShareMetadataOperation *)v29 initWithShareLink:linkCopy sessionContext:session];
 
-      v32 = [MEMORY[0x277CBC4F8] br_fetchCKShareMetadata];
-      [(_BRCOperation *)v31 setGroup:v32];
+      br_fetchCKShareMetadata = [MEMORY[0x277CBC4F8] br_fetchCKShareMetadata];
+      [(_BRCOperation *)v31 setGroup:br_fetchCKShareMetadata];
 
       objc_initWeak(buf, self);
       v35 = MEMORY[0x277D85DD0];
       v36 = 3221225472;
       v37 = __70__BRCXPCRegularIPCsClient_startOperation_toAutoAcceptShareLink_reply___block_invoke_652;
       v38 = &unk_278507588;
-      v39 = v9;
-      v40 = self;
+      v39 = linkCopy;
+      selfCopy3 = self;
       v41 = v28;
       objc_copyWeak(&v42, buf);
       [(_BRCOperation *)v31 setFinishBlock:&v35];
@@ -26045,12 +26045,12 @@ void __70__BRCXPCRegularIPCsClient_startOperation_toAutoAcceptShareLink_reply___
   }
 }
 
-- (void)startOperation:(id)a3 toCopyShareURLForShare:(id)a4 reply:(id)a5
+- (void)startOperation:(id)operation toCopyShareURLForShare:(id)share reply:(id)reply
 {
   v47 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  operationCopy = operation;
+  shareCopy = share;
+  replyCopy = reply;
   memset(v36, 0, sizeof(v36));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient startOperation:toCopyShareURLForShare:reply:]", 4703, 0, v36);
   v11 = brc_bread_crumbs();
@@ -26063,7 +26063,7 @@ void __70__BRCXPCRegularIPCsClient_startOperation_toAutoAcceptShareLink_reply___
     *buf = 134219010;
     v38 = v13;
     v39 = 2112;
-    v40 = self;
+    selfCopy = self;
     v41 = 2112;
     v42 = v15;
     v43 = 2080;
@@ -26073,16 +26073,16 @@ void __70__BRCXPCRegularIPCsClient_startOperation_toAutoAcceptShareLink_reply___
     _os_log_impl(&dword_223E7A000, v12, OS_LOG_TYPE_INFO, "[INFO] ┏%llx %@ (%@) %s %@", buf, 0x34u);
   }
 
-  v16 = [(BRCXPCClient *)self clientPriviledgesDescriptor];
-  v17 = [v16 isSharingProxyEntitled];
+  clientPriviledgesDescriptor = [(BRCXPCClient *)self clientPriviledgesDescriptor];
+  isSharingProxyEntitled = [clientPriviledgesDescriptor isSharingProxyEntitled];
   v34[0] = MEMORY[0x277D85DD0];
   v34[1] = 3221225472;
   v34[2] = __71__BRCXPCRegularIPCsClient_startOperation_toCopyShareURLForShare_reply___block_invoke;
   v34[3] = &unk_2785014D0;
   v34[4] = self;
-  v18 = v10;
+  v18 = replyCopy;
   v35 = v18;
-  v19 = _brc_ipc_check_client_privilege(self, 1, v17, "isSharingProxyEntitled", v34);
+  v19 = _brc_ipc_check_client_privilege(self, 1, isSharingProxyEntitled, "isSharingProxyEntitled", v34);
 
   if (v19)
   {
@@ -26093,18 +26093,18 @@ void __70__BRCXPCRegularIPCsClient_startOperation_toAutoAcceptShareLink_reply___
       [BRCXPCRegularIPCsClient startOperation:toCopyShareURLForShare:reply:];
     }
 
-    v22 = [(BRCXPCClient *)self session];
+    session = [(BRCXPCClient *)self session];
     v23 = objc_alloc(MEMORY[0x277CFAE60]);
-    v24 = [v9 recordID];
-    v25 = [v24 zoneID];
-    v26 = [v23 initWithRecordZoneID:v25];
+    recordID = [shareCopy recordID];
+    zoneID = [recordID zoneID];
+    v26 = [v23 initWithRecordZoneID:zoneID];
 
-    v27 = [v22 clientZoneByMangledID:v26];
+    v27 = [session clientZoneByMangledID:v26];
     v28 = [BRCSharingCopyShareURLOperation alloc];
-    v29 = [v27 serverZone];
-    v30 = [(BRCSharingCopyShareURLOperation *)v28 initWithShare:v9 zone:v29 sessionContext:v22];
+    serverZone = [v27 serverZone];
+    v30 = [(BRCSharingCopyShareURLOperation *)v28 initWithShare:shareCopy zone:serverZone sessionContext:session];
 
-    [(_BRCFrameworkOperation *)v30 setRemoteClientProxy:v8];
+    [(_BRCFrameworkOperation *)v30 setRemoteClientProxy:operationCopy];
     v32[0] = MEMORY[0x277D85DD0];
     v32[1] = 3221225472;
     v32[2] = __71__BRCXPCRegularIPCsClient_startOperation_toCopyShareURLForShare_reply___block_invoke_658;
@@ -26112,7 +26112,7 @@ void __70__BRCXPCRegularIPCsClient_startOperation_toAutoAcceptShareLink_reply___
     v32[4] = self;
     v33 = v18;
     [(_BRCOperation *)v30 setFinishBlock:v32];
-    [v22 addMiscOperation:v30];
+    [session addMiscOperation:v30];
     [(_BRCOperation *)v30 schedule];
   }
 
@@ -26182,11 +26182,11 @@ void __71__BRCXPCRegularIPCsClient_startOperation_toCopyShareURLForShare_reply__
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getShareOptionsOfItemIdentifier:(id)a3 reply:(id)a4
+- (void)getShareOptionsOfItemIdentifier:(id)identifier reply:(id)reply
 {
   v49 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  replyCopy = reply;
   memset(v36, 0, sizeof(v36));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient getShareOptionsOfItemIdentifier:reply:]", 4724, 0, v36);
   v8 = brc_bread_crumbs();
@@ -26199,7 +26199,7 @@ void __71__BRCXPCRegularIPCsClient_startOperation_toCopyShareURLForShare_reply__
     *buf = 134219010;
     v38 = v10;
     v39 = 2112;
-    v40 = self;
+    selfCopy2 = self;
     v41 = 2112;
     v42 = v12;
     v43 = 2080;
@@ -26214,7 +26214,7 @@ void __71__BRCXPCRegularIPCsClient_startOperation_toCopyShareURLForShare_reply__
   v34[2] = __65__BRCXPCRegularIPCsClient_getShareOptionsOfItemIdentifier_reply___block_invoke;
   v34[3] = &unk_2785014D0;
   v34[4] = self;
-  v13 = v7;
+  v13 = replyCopy;
   v35 = v13;
   v14 = _brc_ipc_check_applibrary_proxy(self, 1, v34);
 
@@ -26229,33 +26229,33 @@ void __71__BRCXPCRegularIPCsClient_startOperation_toCopyShareURLForShare_reply__
       v17 = v33[0];
       v18 = qos_class_self();
       v19 = BRCPrettyPrintEnumWithContext(v18, &brc_qos_entries, 0);
-      v20 = v6;
-      v21 = [v6 UTF8String];
+      v20 = identifierCopy;
+      uTF8String = [identifierCopy UTF8String];
       *buf = 134219266;
       v38 = v17;
       v39 = 2112;
-      v40 = self;
+      selfCopy2 = self;
       v41 = 2112;
       v42 = v19;
       v43 = 2080;
       v44 = "[BRCXPCRegularIPCsClient getShareOptionsOfItemIdentifier:reply:]";
       v45 = 2080;
-      v46 = v21;
+      v46 = uTF8String;
       v47 = 2112;
       v48 = v15;
       _os_log_impl(&dword_223E7A000, v16, OS_LOG_TYPE_INFO, "[INFO] ┏%llx %@ (%@) %s Getting sharing options for %s%@", buf, 0x3Eu);
     }
 
-    v22 = [(BRCXPCClient *)self session];
+    session = [(BRCXPCClient *)self session];
     tracker = self->super._tracker;
-    v24 = [v22 clientDB];
-    v25 = [v24 serialQueue];
+    clientDB = [session clientDB];
+    serialQueue = [clientDB serialQueue];
     v29[0] = MEMORY[0x277D85DD0];
     v29[1] = 3221225472;
     v29[2] = __65__BRCXPCRegularIPCsClient_getShareOptionsOfItemIdentifier_reply___block_invoke_662;
     v29[3] = &unk_2784FF5B8;
-    v30 = v6;
-    v31 = self;
+    v30 = identifierCopy;
+    selfCopy3 = self;
     v32 = v13;
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
@@ -26263,7 +26263,7 @@ void __71__BRCXPCRegularIPCsClient_startOperation_toCopyShareURLForShare_reply__
     v27[3] = &unk_278500048;
     v27[4] = self;
     v28 = v32;
-    brc_task_tracker_async_with_logs(tracker, v25, v29, v27);
+    brc_task_tracker_async_with_logs(tracker, serialQueue, v29, v27);
 
     __brc_leave_section(v33);
   }
@@ -26452,12 +26452,12 @@ void __65__BRCXPCRegularIPCsClient_getShareOptionsOfItemIdentifier_reply___block
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleAcceptingCKShareMetadata:(id)a3 reply:(id)a4
+- (void)_handleAcceptingCKShareMetadata:(id)metadata reply:(id)reply
 {
   v44 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v28 = [(BRCXPCClient *)self session];
+  metadataCopy = metadata;
+  replyCopy = reply;
+  session = [(BRCXPCClient *)self session];
   memset(v33, 0, sizeof(v33));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient _handleAcceptingCKShareMetadata:reply:]", 4767, 0, v33);
   v8 = brc_bread_crumbs();
@@ -26468,9 +26468,9 @@ void __65__BRCXPCRegularIPCsClient_getShareOptionsOfItemIdentifier_reply___block
     v11 = qos_class_self();
     v12 = BRCPrettyPrintEnumWithContext(v11, &brc_qos_entries, 0);
     *buf = 134219010;
-    v35 = v10;
+    selfCopy2 = v10;
     v36 = 2112;
-    v37 = self;
+    selfCopy = self;
     v38 = 2112;
     v39 = v12;
     v40 = 2080;
@@ -26485,18 +26485,18 @@ void __65__BRCXPCRegularIPCsClient_getShareOptionsOfItemIdentifier_reply___block
   v31[2] = __65__BRCXPCRegularIPCsClient__handleAcceptingCKShareMetadata_reply___block_invoke;
   v31[3] = &unk_2785014D0;
   v31[4] = self;
-  v13 = v7;
+  v13 = replyCopy;
   v32 = v13;
   v14 = _brc_ipc_check_logged_status(self, 0, v31);
 
   if (v14)
   {
-    v15 = [v6 share];
-    v16 = [v15 URL];
+    share = [metadataCopy share];
+    v16 = [share URL];
 
     v27 = objc_opt_new();
     v17 = +[BRCUserActionsNavigator defaultNavigator];
-    v18 = [[BRCSharingAcceptFlowOperation alloc] initWithShareMetadata:v6 client:self sessionContext:v28 userNotifier:v27 userActionsNavigator:v17];
+    v18 = [[BRCSharingAcceptFlowOperation alloc] initWithShareMetadata:metadataCopy client:self sessionContext:session userNotifier:v27 userActionsNavigator:v17];
     v29[0] = MEMORY[0x277D85DD0];
     v29[1] = 3221225472;
     v29[2] = __65__BRCXPCRegularIPCsClient__handleAcceptingCKShareMetadata_reply___block_invoke_666;
@@ -26523,9 +26523,9 @@ void __65__BRCXPCRegularIPCsClient_getShareOptionsOfItemIdentifier_reply___block
       if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
       {
         *buf = 138412802;
-        v35 = self;
+        selfCopy2 = self;
         v36 = 2112;
-        v37 = 0;
+        selfCopy = 0;
         v38 = 2112;
         v39 = v24;
         _os_log_impl(&dword_223E7A000, v25, OS_LOG_TYPE_INFO, "[INFO] %@: reply(%@)%@", buf, 0x20u);
@@ -26584,11 +26584,11 @@ uint64_t __65__BRCXPCRegularIPCsClient__handleAcceptingCKShareMetadata_reply___b
   return result;
 }
 
-- (void)handleCloudKitShareMetadata:(id)a3 completionHandler:(id)a4
+- (void)handleCloudKitShareMetadata:(id)metadata completionHandler:(id)handler
 {
   v40 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  metadataCopy = metadata;
+  handlerCopy = handler;
   memset(v29, 0, sizeof(v29));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient handleCloudKitShareMetadata:completionHandler:]", 4824, 0, v29);
   v8 = brc_bread_crumbs();
@@ -26601,7 +26601,7 @@ uint64_t __65__BRCXPCRegularIPCsClient__handleAcceptingCKShareMetadata_reply___b
     *buf = 134219010;
     v31 = v10;
     v32 = 2112;
-    v33 = self;
+    selfCopy = self;
     v34 = 2112;
     v35 = v12;
     v36 = 2080;
@@ -26615,10 +26615,10 @@ uint64_t __65__BRCXPCRegularIPCsClient__handleAcceptingCKShareMetadata_reply___b
   v25[1] = 3221225472;
   v25[2] = __73__BRCXPCRegularIPCsClient_handleCloudKitShareMetadata_completionHandler___block_invoke;
   v25[3] = &unk_278501778;
-  v13 = v6;
+  v13 = metadataCopy;
   v26 = v13;
-  v27 = self;
-  v14 = v7;
+  selfCopy2 = self;
+  v14 = handlerCopy;
   v28 = v14;
   v15 = _brc_ipc_check_logged_status(self, 0, v25);
 
@@ -26631,12 +26631,12 @@ uint64_t __65__BRCXPCRegularIPCsClient__handleAcceptingCKShareMetadata_reply___b
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
     {
       v19 = v24[0];
-      v20 = [v13 share];
-      v21 = [v20 URL];
+      share = [v13 share];
+      v21 = [share URL];
       *buf = 134218498;
       v31 = v19;
       v32 = 2112;
-      v33 = v21;
+      selfCopy = v21;
       v34 = 2112;
       v35 = v16;
       _os_log_debug_impl(&dword_223E7A000, v17, OS_LOG_TYPE_DEBUG, "[DEBUG] ┏%llx handling share at %@%@", buf, 0x20u);
@@ -26779,11 +26779,11 @@ void __56__BRCXPCRegularIPCsClient_keepDataLocalOnSignOut_reply___block_invoke_6
   [v8 forceBatchStart];
 }
 
-- (BOOL)_saveOrDeleteContainerMetadataRecordName:(id)a3 saveRecord:(BOOL)a4 error:(id *)a5
+- (BOOL)_saveOrDeleteContainerMetadataRecordName:(id)name saveRecord:(BOOL)record error:(id *)error
 {
-  v6 = a4;
+  recordCopy = record;
   v32[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  nameCopy = name;
   v25 = 0;
   v26 = &v25;
   v27 = 0x3032000000;
@@ -26791,10 +26791,10 @@ void __56__BRCXPCRegularIPCsClient_keepDataLocalOnSignOut_reply___block_invoke_6
   v29 = __Block_byref_object_dispose__52;
   v30 = 0;
   v9 = objc_alloc(MEMORY[0x277CBC5D0]);
-  v10 = [MEMORY[0x277CBC5F8] brc_containerMetadataZoneID];
-  v11 = [v9 initWithRecordName:v8 zoneID:v10];
+  brc_containerMetadataZoneID = [MEMORY[0x277CBC5F8] brc_containerMetadataZoneID];
+  v11 = [v9 initWithRecordName:nameCopy zoneID:brc_containerMetadataZoneID];
 
-  if (v6)
+  if (recordCopy)
   {
     v12 = [objc_alloc(MEMORY[0x277CBC5A0]) initWithRecordType:@"AppContainer" recordID:v11];
     v13 = objc_alloc(MEMORY[0x277CBC4A0]);
@@ -26811,8 +26811,8 @@ void __56__BRCXPCRegularIPCsClient_keepDataLocalOnSignOut_reply___block_invoke_6
     v15 = [v16 initWithRecordsToSave:0 recordIDsToDelete:v12];
   }
 
-  v17 = [MEMORY[0x277CBC4F8] br_testTrigger];
-  [v15 setGroup:v17];
+  br_testTrigger = [MEMORY[0x277CBC4F8] br_testTrigger];
+  [v15 setGroup:br_testTrigger];
 
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
@@ -26820,15 +26820,15 @@ void __56__BRCXPCRegularIPCsClient_keepDataLocalOnSignOut_reply___block_invoke_6
   v24[3] = &unk_2785075B0;
   v24[4] = &v25;
   [v15 setModifyRecordsCompletionBlock:v24];
-  v18 = [(BRCXPCClient *)self session];
-  v19 = [v18 syncContextProvider];
-  v20 = [v19 defaultSyncContext];
-  [v20 addOperation:v15];
+  session = [(BRCXPCClient *)self session];
+  syncContextProvider = [session syncContextProvider];
+  defaultSyncContext = [syncContextProvider defaultSyncContext];
+  [defaultSyncContext addOperation:v15];
 
   [v15 waitUntilFinished];
-  if (a5)
+  if (error)
   {
-    *a5 = v26[5];
+    *error = v26[5];
   }
 
   v21 = v26[5] == 0;
@@ -26838,18 +26838,18 @@ void __56__BRCXPCRegularIPCsClient_keepDataLocalOnSignOut_reply___block_invoke_6
   return v21;
 }
 
-- (void)_doesAnyRecordExistInContainerMetadataRecordName:(id)a3 completionHandler:(id)a4
+- (void)_doesAnyRecordExistInContainerMetadataRecordName:(id)name completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  handlerCopy = handler;
   v19[0] = 0;
   v19[1] = v19;
   v19[2] = 0x2020000000;
   v20 = 0;
-  v8 = [v6 br_transform:&__block_literal_global_677];
+  v8 = [nameCopy br_transform:&__block_literal_global_677];
   v9 = [objc_alloc(MEMORY[0x277CBC3E0]) initWithRecordIDs:v8];
-  v10 = [MEMORY[0x277CBC4F8] br_testTrigger];
-  [v9 setGroup:v10];
+  br_testTrigger = [MEMORY[0x277CBC4F8] br_testTrigger];
+  [v9 setGroup:br_testTrigger];
 
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
@@ -26861,14 +26861,14 @@ void __56__BRCXPCRegularIPCsClient_keepDataLocalOnSignOut_reply___block_invoke_6
   v15[1] = 3221225472;
   v15[2] = __94__BRCXPCRegularIPCsClient__doesAnyRecordExistInContainerMetadataRecordName_completionHandler___block_invoke_680;
   v15[3] = &unk_278507620;
-  v11 = v7;
+  v11 = handlerCopy;
   v16 = v11;
   v17 = v19;
   [v9 setFetchRecordsCompletionBlock:v15];
-  v12 = [(BRCXPCClient *)self session];
-  v13 = [v12 syncContextProvider];
-  v14 = [v13 defaultSyncContext];
-  [v14 addOperation:v9];
+  session = [(BRCXPCClient *)self session];
+  syncContextProvider = [session syncContextProvider];
+  defaultSyncContext = [syncContextProvider defaultSyncContext];
+  [defaultSyncContext addOperation:v9];
 
   _Block_object_dispose(v19, 8);
 }
@@ -26913,11 +26913,11 @@ void __94__BRCXPCRegularIPCsClient__doesAnyRecordExistInContainerMetadataRecordN
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_t_createFileAtURL:(id)a3 reply:(id)a4
+- (void)_t_createFileAtURL:(id)l reply:(id)reply
 {
   v39 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  replyCopy = reply;
   memset(v28, 0, sizeof(v28));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient _t_createFileAtURL:reply:]", 4919, 0, v28);
   v8 = brc_bread_crumbs();
@@ -26928,9 +26928,9 @@ void __94__BRCXPCRegularIPCsClient__doesAnyRecordExistInContainerMetadataRecordN
     v11 = qos_class_self();
     v12 = BRCPrettyPrintEnumWithContext(v11, &brc_qos_entries, 0);
     *buf = 134219010;
-    v30 = v10;
+    selfCopy3 = v10;
     v31 = 2112;
-    v32 = self;
+    selfCopy = self;
     v33 = 2112;
     v34 = v12;
     v35 = 2080;
@@ -26946,14 +26946,14 @@ void __94__BRCXPCRegularIPCsClient__doesAnyRecordExistInContainerMetadataRecordN
   v26[2] = __52__BRCXPCRegularIPCsClient__t_createFileAtURL_reply___block_invoke;
   v26[3] = &unk_2785014D0;
   v26[4] = self;
-  v14 = v7;
+  v14 = replyCopy;
   v27 = v14;
   LODWORD(v13) = _brc_ipc_check_entitlement_and_logged_status(self, 2, v13, v26);
 
   if (v13)
   {
     v25 = 0;
-    v15 = [@"testing" writeToFile:v6 atomically:1 encoding:4 error:&v25];
+    v15 = [@"testing" writeToFile:lCopy atomically:1 encoding:4 error:&v25];
     v16 = v25;
     if (v15)
     {
@@ -26969,9 +26969,9 @@ void __94__BRCXPCRegularIPCsClient__doesAnyRecordExistInContainerMetadataRecordN
       if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
       {
         *buf = 138412802;
-        v30 = self;
+        selfCopy3 = self;
         v31 = 2112;
-        v32 = 0;
+        selfCopy = 0;
         v33 = 2112;
         v34 = v19;
         _os_log_impl(&dword_223E7A000, v20, OS_LOG_TYPE_INFO, "[INFO] %@: reply(%@)%@", buf, 0x20u);
@@ -26994,9 +26994,9 @@ void __94__BRCXPCRegularIPCsClient__doesAnyRecordExistInContainerMetadataRecordN
       if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
       {
         *buf = 138412802;
-        v30 = self;
+        selfCopy3 = self;
         v31 = 2112;
-        v32 = v16;
+        selfCopy = v16;
         v33 = 2112;
         v34 = v19;
         _os_log_impl(&dword_223E7A000, v20, OS_LOG_TYPE_INFO, "[INFO] %@: reply(%@)%@", buf, 0x20u);
@@ -27035,13 +27035,13 @@ void __52__BRCXPCRegularIPCsClient__t_createFileAtURL_reply___block_invoke(uint6
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_t_canReadFileAtURL:(id)a3 reply:(id)a4
+- (void)_t_canReadFileAtURL:(id)l reply:(id)reply
 {
   v25 = *MEMORY[0x277D85DE8];
   v6 = MEMORY[0x277CCACA8];
   v18 = 0;
-  v7 = a4;
-  v8 = [v6 stringWithContentsOfFile:a3 encoding:4 error:&v18];
+  replyCopy = reply;
+  v8 = [v6 stringWithContentsOfFile:l encoding:4 error:&v18];
   v9 = v18;
 
   if (v8)
@@ -27058,7 +27058,7 @@ void __52__BRCXPCRegularIPCsClient__t_createFileAtURL_reply___block_invoke(uint6
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
       *buf = 138412802;
-      v20 = self;
+      selfCopy2 = self;
       v21 = 2112;
       v22 = 0;
       v23 = 2112;
@@ -27083,7 +27083,7 @@ void __52__BRCXPCRegularIPCsClient__t_createFileAtURL_reply___block_invoke(uint6
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
       *buf = 138412802;
-      v20 = self;
+      selfCopy2 = self;
       v21 = 2112;
       v22 = v9;
       v23 = 2112;
@@ -27094,28 +27094,28 @@ void __52__BRCXPCRegularIPCsClient__t_createFileAtURL_reply___block_invoke(uint6
     v14 = v9;
   }
 
-  (v7)[2](v7, v14);
+  (replyCopy)[2](replyCopy, v14);
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setEnhancedDrivePrivacyEnabled:(BOOL)a3 forContainer:(id)a4 onServer:(BOOL)a5 onClient:(BOOL)a6 reply:(id)a7
+- (void)setEnhancedDrivePrivacyEnabled:(BOOL)enabled forContainer:(id)container onServer:(BOOL)server onClient:(BOOL)client reply:(id)reply
 {
-  v8 = a6;
-  v9 = a5;
+  clientCopy = client;
+  serverCopy = server;
   v72 = *MEMORY[0x277D85DE8];
-  v12 = a4;
-  v13 = a7;
+  containerCopy = container;
+  replyCopy = reply;
   memset(v62, 0, sizeof(v62));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient setEnhancedDrivePrivacyEnabled:forContainer:onServer:onClient:reply:]", 4950, 0, v62);
   v14 = brc_bread_crumbs();
   v15 = brc_default_log();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
   {
-    v47 = v13;
-    v16 = v9;
-    v17 = v8;
-    v18 = v12;
-    v19 = a3;
+    v47 = replyCopy;
+    v16 = serverCopy;
+    v17 = clientCopy;
+    v18 = containerCopy;
+    enabledCopy = enabled;
     v20 = v62[0];
     v21 = qos_class_self();
     v22 = BRCPrettyPrintEnumWithContext(v21, &brc_qos_entries, 0);
@@ -27131,11 +27131,11 @@ void __52__BRCXPCRegularIPCsClient__t_createFileAtURL_reply___block_invoke(uint6
     *&v71[12] = v14;
     _os_log_impl(&dword_223E7A000, v15, OS_LOG_TYPE_INFO, "[INFO] ┏%llx %@ (%@) %s %@", buf, 0x34u);
 
-    a3 = v19;
-    v12 = v18;
-    v8 = v17;
-    v9 = v16;
-    v13 = v47;
+    enabled = enabledCopy;
+    containerCopy = v18;
+    clientCopy = v17;
+    serverCopy = v16;
+    replyCopy = v47;
   }
 
   v23 = *MEMORY[0x277CFAC58];
@@ -27144,16 +27144,16 @@ void __52__BRCXPCRegularIPCsClient__t_createFileAtURL_reply___block_invoke(uint6
   v60[2] = __95__BRCXPCRegularIPCsClient_setEnhancedDrivePrivacyEnabled_forContainer_onServer_onClient_reply___block_invoke;
   v60[3] = &unk_2785014D0;
   v60[4] = self;
-  v24 = v13;
+  v24 = replyCopy;
   v61 = v24;
   LODWORD(v23) = _brc_ipc_check_entitlement_and_logged_status(self, 1, v23, v60);
 
   if (v23)
   {
     v25 = [BRCUserDefaults defaultsForMangledID:0];
-    v26 = [v25 supportsEnhancedDrivePrivacy];
+    supportsEnhancedDrivePrivacy = [v25 supportsEnhancedDrivePrivacy];
 
-    if ((v26 & 1) == 0)
+    if ((supportsEnhancedDrivePrivacy & 1) == 0)
     {
       v34 = brc_bread_crumbs();
       v35 = brc_default_log();
@@ -27169,16 +27169,16 @@ void __52__BRCXPCRegularIPCsClient__t_createFileAtURL_reply___block_invoke(uint6
         _os_log_impl(&dword_223E7A000, v35, OS_LOG_TYPE_INFO, "[INFO] %@: reply(%@)%@", buf, 0x20u);
       }
 
-      v27 = [MEMORY[0x277CCA9B8] brc_errorPermissionError:@"Enhanced Drive Privacy Not Enabled"];
-      (*(v24 + 2))(v24, v27);
+      session = [MEMORY[0x277CCA9B8] brc_errorPermissionError:@"Enhanced Drive Privacy Not Enabled"];
+      (*(v24 + 2))(v24, session);
       goto LABEL_29;
     }
 
-    v27 = [(BRCXPCClient *)self session];
-    v28 = [v12 isEqualToString:@"all"];
-    v29 = [v12 isEqualToString:@"all-private"];
+    session = [(BRCXPCClient *)self session];
+    v28 = [containerCopy isEqualToString:@"all"];
+    v29 = [containerCopy isEqualToString:@"all-private"];
     v30 = v29;
-    if (v9)
+    if (serverCopy)
     {
       *buf = 0;
       *&buf[8] = buf;
@@ -27192,10 +27192,10 @@ void __52__BRCXPCRegularIPCsClient__t_createFileAtURL_reply___block_invoke(uint6
         v58[1] = 3221225472;
         v58[2] = __95__BRCXPCRegularIPCsClient_setEnhancedDrivePrivacyEnabled_forContainer_onServer_onClient_reply___block_invoke_693;
         v58[3] = &unk_278507648;
-        v59 = a3;
+        enabledCopy2 = enabled;
         v58[4] = self;
         v58[5] = buf;
-        [v27 enumeratePrivateClientZones:v58];
+        [session enumeratePrivateClientZones:v58];
         if (*(*&buf[8] + 40))
         {
           v31 = brc_bread_crumbs();
@@ -27204,7 +27204,7 @@ void __52__BRCXPCRegularIPCsClient__t_createFileAtURL_reply___block_invoke(uint6
           {
             v33 = *(*&buf[8] + 40);
             *v63 = 138412802;
-            v64 = self;
+            selfCopy2 = self;
             v65 = 2112;
             v66 = v33;
             v67 = 2112;
@@ -27230,7 +27230,7 @@ LABEL_29:
 
         else
         {
-          v37 = [v12 stringByAppendingString:@".lobodon.enabled"];
+          v37 = [containerCopy stringByAppendingString:@".lobodon.enabled"];
         }
 
         v38 = *&buf[8];
@@ -27246,7 +27246,7 @@ LABEL_29:
           {
             v45 = *(*&buf[8] + 40);
             *v63 = 138412802;
-            v64 = self;
+            selfCopy2 = self;
             v65 = 2112;
             v66 = v45;
             v67 = 2112;
@@ -27262,21 +27262,21 @@ LABEL_29:
       _Block_object_dispose(buf, 8);
     }
 
-    if (v8)
+    if (clientCopy)
     {
-      v40 = [v27 clientTruthWorkloop];
+      clientTruthWorkloop = [session clientTruthWorkloop];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __95__BRCXPCRegularIPCsClient_setEnhancedDrivePrivacyEnabled_forContainer_onServer_onClient_reply___block_invoke_701;
       block[3] = &unk_2785076B8;
-      v54 = a3;
+      enabledCopy3 = enabled;
       v55 = v28;
-      v50 = v27;
+      v50 = session;
       v56 = v30;
-      v51 = v12;
-      v52 = self;
+      v51 = containerCopy;
+      selfCopy3 = self;
       v53 = v24;
-      dispatch_async_and_wait(v40, block);
+      dispatch_async_and_wait(clientTruthWorkloop, block);
     }
 
     v41 = brc_bread_crumbs();
@@ -27433,12 +27433,12 @@ uint64_t __95__BRCXPCRegularIPCsClient_setEnhancedDrivePrivacyEnabled_forContain
   }
 }
 
-- (void)getEnhancedDrivePrivacyStatusForContainer:(id)a3 onServer:(BOOL)a4 reply:(id)a5
+- (void)getEnhancedDrivePrivacyStatusForContainer:(id)container onServer:(BOOL)server reply:(id)reply
 {
-  v6 = a4;
+  serverCopy = server;
   v49 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  containerCopy = container;
+  replyCopy = reply;
   memset(v41, 0, sizeof(v41));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient getEnhancedDrivePrivacyStatusForContainer:onServer:reply:]", 5024, 0, v41);
   v10 = brc_bread_crumbs();
@@ -27449,7 +27449,7 @@ uint64_t __95__BRCXPCRegularIPCsClient_setEnhancedDrivePrivacyEnabled_forContain
     v13 = qos_class_self();
     v14 = BRCPrettyPrintEnumWithContext(v13, &brc_qos_entries, 0);
     *buf = 134219010;
-    v44 = v12;
+    selfCopy2 = v12;
     v45 = 2112;
     *v46 = self;
     *&v46[8] = 2112;
@@ -27467,16 +27467,16 @@ uint64_t __95__BRCXPCRegularIPCsClient_setEnhancedDrivePrivacyEnabled_forContain
   v39[2] = __84__BRCXPCRegularIPCsClient_getEnhancedDrivePrivacyStatusForContainer_onServer_reply___block_invoke;
   v39[3] = &unk_2785014D0;
   v39[4] = self;
-  v16 = v9;
+  v16 = replyCopy;
   v40 = v16;
   LODWORD(v15) = _brc_ipc_check_entitlement_and_logged_status(self, 1, v15, v39);
 
   if (v15)
   {
     v17 = [BRCUserDefaults defaultsForMangledID:0];
-    v18 = [v17 supportsEnhancedDrivePrivacy];
+    supportsEnhancedDrivePrivacy = [v17 supportsEnhancedDrivePrivacy];
 
-    if ((v18 & 1) == 0)
+    if ((supportsEnhancedDrivePrivacy & 1) == 0)
     {
       v21 = brc_bread_crumbs();
       v22 = brc_default_log();
@@ -27484,7 +27484,7 @@ uint64_t __95__BRCXPCRegularIPCsClient_setEnhancedDrivePrivacyEnabled_forContain
       {
 LABEL_9:
         *buf = 138413058;
-        v44 = self;
+        selfCopy2 = self;
         v45 = 1024;
         *v46 = 0;
         *&v46[4] = 2112;
@@ -27501,9 +27501,9 @@ LABEL_10:
     }
 
     v19 = [BRCUserDefaults defaultsForMangledID:0];
-    v20 = [v19 enhancedDrivePrivacyRolledBack];
+    enhancedDrivePrivacyRolledBack = [v19 enhancedDrivePrivacyRolledBack];
 
-    if (v20)
+    if (enhancedDrivePrivacyRolledBack)
     {
       v21 = brc_bread_crumbs();
       v22 = brc_default_log();
@@ -27515,10 +27515,10 @@ LABEL_10:
       goto LABEL_10;
     }
 
-    v23 = [(BRCXPCClient *)self session];
-    if (v6)
+    session = [(BRCXPCClient *)self session];
+    if (serverCopy)
     {
-      v24 = [v8 stringByAppendingString:@".lobodon.enabled"];
+      v24 = [containerCopy stringByAppendingString:@".lobodon.enabled"];
       v42[0] = @"com.apple.lobodon.forced";
       v42[1] = v24;
       v25 = [MEMORY[0x277CBEA60] arrayWithObjects:v42 count:2];
@@ -27534,16 +27534,16 @@ LABEL_10:
     else
     {
       v26 = [BRCUserDefaults defaultsForMangledID:0];
-      v27 = [v26 enhancedDrivePrivacyForced];
+      enhancedDrivePrivacyForced = [v26 enhancedDrivePrivacyForced];
 
-      if (v27)
+      if (enhancedDrivePrivacyForced)
       {
         v28 = brc_bread_crumbs();
         v29 = brc_default_log();
         if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
         {
           *buf = 138413058;
-          v44 = self;
+          selfCopy2 = self;
           v45 = 1024;
           *v46 = 1;
           *&v46[4] = 2112;
@@ -27557,16 +27557,16 @@ LABEL_10:
         goto LABEL_19;
       }
 
-      v30 = [v23 clientTruthWorkloop];
+      clientTruthWorkloop = [session clientTruthWorkloop];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __84__BRCXPCRegularIPCsClient_getEnhancedDrivePrivacyStatusForContainer_onServer_reply___block_invoke_705;
       block[3] = &unk_278500CE0;
-      v33 = v23;
-      v34 = v8;
-      v35 = self;
+      v33 = session;
+      v34 = containerCopy;
+      selfCopy3 = self;
       v36 = v16;
-      dispatch_async_and_wait(v30, block);
+      dispatch_async_and_wait(clientTruthWorkloop, block);
 
       v24 = v33;
     }
@@ -27705,10 +27705,10 @@ void __79__BRCXPCRegularIPCsClient_setEnhancedDrivePrivacySupported_forContainer
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)verifyAccountLoaded:(id)a3
+- (void)verifyAccountLoaded:(id)loaded
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  loadedCopy = loaded;
   memset(v17, 0, sizeof(v17));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient verifyAccountLoaded:]", 5079, 0, v17);
   v5 = brc_bread_crumbs();
@@ -27719,9 +27719,9 @@ void __79__BRCXPCRegularIPCsClient_setEnhancedDrivePrivacySupported_forContainer
     v8 = qos_class_self();
     v9 = BRCPrettyPrintEnumWithContext(v8, &brc_qos_entries, 0);
     *buf = 134219010;
-    v19 = v7;
+    selfCopy2 = v7;
     v20 = 2112;
-    v21 = self;
+    selfCopy = self;
     v22 = 2112;
     v23 = v9;
     v24 = 2080;
@@ -27736,7 +27736,7 @@ void __79__BRCXPCRegularIPCsClient_setEnhancedDrivePrivacySupported_forContainer
   v15[2] = __47__BRCXPCRegularIPCsClient_verifyAccountLoaded___block_invoke;
   v15[3] = &unk_2785014D0;
   v15[4] = self;
-  v10 = v4;
+  v10 = loadedCopy;
   v16 = v10;
   v11 = _brc_ipc_check_logged_status(self, 1, v15);
 
@@ -27747,9 +27747,9 @@ void __79__BRCXPCRegularIPCsClient_setEnhancedDrivePrivacySupported_forContainer
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
       *buf = 138412802;
-      v19 = self;
+      selfCopy2 = self;
       v20 = 2112;
-      v21 = 0;
+      selfCopy = 0;
       v22 = 2112;
       v23 = v12;
       _os_log_impl(&dword_223E7A000, v13, OS_LOG_TYPE_INFO, "[INFO] %@: reply(%@)%@", buf, 0x20u);
@@ -27785,16 +27785,16 @@ void __47__BRCXPCRegularIPCsClient_verifyAccountLoaded___block_invoke(uint64_t a
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_t_getEntitlementsForBundleID:(id)a3 reply:(id)a4
+- (void)_t_getEntitlementsForBundleID:(id)d reply:(id)reply
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  replyCopy = reply;
   v6 = brc_bread_crumbs();
   v7 = brc_default_log();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v9 = 138412802;
-    v10 = self;
+    selfCopy = self;
     v11 = 2112;
     v12 = 0;
     v13 = 2112;
@@ -27802,20 +27802,20 @@ void __47__BRCXPCRegularIPCsClient_verifyAccountLoaded___block_invoke(uint64_t a
     _os_log_impl(&dword_223E7A000, v7, OS_LOG_TYPE_INFO, "[INFO] %@: reply(%@)%@", &v9, 0x20u);
   }
 
-  v5[2](v5, 0);
+  replyCopy[2](replyCopy, 0);
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_t_getEntitledContainerIDsForBundleID:(id)a3 reply:(id)a4
+- (void)_t_getEntitledContainerIDsForBundleID:(id)d reply:(id)reply
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  replyCopy = reply;
   v6 = brc_bread_crumbs();
   v7 = brc_default_log();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v9 = 138412802;
-    v10 = self;
+    selfCopy = self;
     v11 = 2112;
     v12 = 0;
     v13 = 2112;
@@ -27823,14 +27823,14 @@ void __47__BRCXPCRegularIPCsClient_verifyAccountLoaded___block_invoke(uint64_t a
     _os_log_impl(&dword_223E7A000, v7, OS_LOG_TYPE_INFO, "[INFO] %@: reply(%@)%@", &v9, 0x20u);
   }
 
-  v5[2](v5, 0);
+  replyCopy[2](replyCopy, 0);
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_t_extractMetadataForAllContainersWithReply:(id)a3
+- (void)_t_extractMetadataForAllContainersWithReply:(id)reply
 {
   v60 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  replyCopy = reply;
   memset(v49, 0, sizeof(v49));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient _t_extractMetadataForAllContainersWithReply:]", 6005, 0, v49);
   v5 = brc_bread_crumbs();
@@ -27859,7 +27859,7 @@ void __47__BRCXPCRegularIPCsClient_verifyAccountLoaded___block_invoke(uint64_t a
   v47[2] = __71__BRCXPCRegularIPCsClient__t_extractMetadataForAllContainersWithReply___block_invoke;
   v47[3] = &unk_2785014D0;
   v47[4] = self;
-  v34 = v4;
+  v34 = replyCopy;
   v48 = v34;
   v11 = _brc_ipc_check_entitlement_and_logged_status(self, 0, v10, v47);
 
@@ -27875,12 +27875,12 @@ void __47__BRCXPCRegularIPCsClient_verifyAccountLoaded___block_invoke(uint64_t a
     v44 = 0u;
     v45 = 0u;
     v46 = 0u;
-    v12 = [(BRCXPCClient *)self entitledAppLibraryIDs];
-    v13 = [v12 countByEnumeratingWithState:&v43 objects:v56 count:16];
+    entitledAppLibraryIDs = [(BRCXPCClient *)self entitledAppLibraryIDs];
+    v13 = [entitledAppLibraryIDs countByEnumeratingWithState:&v43 objects:v56 count:16];
     if (v13)
     {
       v36 = *v44;
-      obj = v12;
+      obj = entitledAppLibraryIDs;
       while (2)
       {
         for (i = 0; i != v13; ++i)
@@ -27891,9 +27891,9 @@ void __47__BRCXPCRegularIPCsClient_verifyAccountLoaded___block_invoke(uint64_t a
           }
 
           v15 = *(*(&v43 + 1) + 8 * i);
-          v16 = [(BRCXPCClient *)self bundleID];
-          v17 = [(BRCXPCClient *)self session];
-          v18 = [v17 appLibraryByID:v15];
+          bundleID = [(BRCXPCClient *)self bundleID];
+          session = [(BRCXPCClient *)self session];
+          v18 = [session appLibraryByID:v15];
 
           if (!v18)
           {
@@ -27905,7 +27905,7 @@ void __47__BRCXPCRegularIPCsClient_verifyAccountLoaded___block_invoke(uint64_t a
             }
 
 LABEL_17:
-            v12 = obj;
+            entitledAppLibraryIDs = obj;
             goto LABEL_18;
           }
 
@@ -27917,8 +27917,8 @@ LABEL_17:
           v20 = v19;
           v42 = v20;
           v21 = [v20 remoteObjectProxyWithErrorHandler:v41];
-          v22 = [v18 containerMetadata];
-          v23 = [v22 versionNumberForBundleIdentifier:v16];
+          containerMetadata = [v18 containerMetadata];
+          v23 = [containerMetadata versionNumberForBundleIdentifier:bundleID];
 
           v24 = dispatch_group_create();
           v37[0] = MEMORY[0x277D85DD0];
@@ -27931,7 +27931,7 @@ LABEL_17:
           v38 = v25;
           v26 = v24;
           v39 = v26;
-          [v21 extractMetadataForContainerID:v15 bundleID:v16 minimumBundleVersion:v23 reply:v37];
+          [v21 extractMetadataForContainerID:v15 bundleID:bundleID minimumBundleVersion:v23 reply:v37];
           dispatch_group_wait(v26, 0xFFFFFFFFFFFFFFFFLL);
           v27 = *(*&buf[8] + 40) == 0;
 
@@ -27941,7 +27941,7 @@ LABEL_17:
           }
         }
 
-        v12 = obj;
+        entitledAppLibraryIDs = obj;
         v13 = [obj countByEnumeratingWithState:&v43 objects:v56 count:16];
         if (v13)
         {
@@ -27960,7 +27960,7 @@ LABEL_18:
     {
       v32 = *(*&buf[8] + 40);
       *v50 = 138412802;
-      v51 = self;
+      selfCopy = self;
       v52 = 2112;
       v53 = v32;
       v54 = 2112;
@@ -28049,11 +28049,11 @@ void __71__BRCXPCRegularIPCsClient__t_extractMetadataForAllContainersWithReply__
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_t_getContainerMetadataForContainerID:(id)a3 reply:(id)a4
+- (void)_t_getContainerMetadataForContainerID:(id)d reply:(id)reply
 {
   v42 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  replyCopy = reply;
   memset(v31, 0, sizeof(v31));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient _t_getContainerMetadataForContainerID:reply:]", 6051, 0, v31);
   v8 = brc_bread_crumbs();
@@ -28064,9 +28064,9 @@ void __71__BRCXPCRegularIPCsClient__t_extractMetadataForAllContainersWithReply__
     v11 = qos_class_self();
     v12 = BRCPrettyPrintEnumWithContext(v11, &brc_qos_entries, 0);
     *buf = 134219010;
-    v33 = v10;
+    selfCopy3 = v10;
     v34 = 2112;
-    v35 = self;
+    selfCopy = self;
     v36 = 2112;
     v37 = v12;
     v38 = 2080;
@@ -28082,14 +28082,14 @@ void __71__BRCXPCRegularIPCsClient__t_extractMetadataForAllContainersWithReply__
   v29[2] = __71__BRCXPCRegularIPCsClient__t_getContainerMetadataForContainerID_reply___block_invoke;
   v29[3] = &unk_2785014D0;
   v29[4] = self;
-  v14 = v7;
+  v14 = replyCopy;
   v30 = v14;
   LODWORD(v13) = _brc_ipc_check_entitlement_and_logged_status(self, 1, v13, v29);
 
   if (v13)
   {
-    v15 = [(BRCXPCClient *)self session];
-    v16 = [v15 appLibraryByID:v6];
+    session = [(BRCXPCClient *)self session];
+    v16 = [session appLibraryByID:dCopy];
 
     if (v16)
     {
@@ -28097,12 +28097,12 @@ void __71__BRCXPCRegularIPCsClient__t_extractMetadataForAllContainersWithReply__
       v18 = brc_default_log();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
       {
-        v19 = [v16 containerMetadata];
-        v20 = [v19 computedProperties];
+        containerMetadata = [v16 containerMetadata];
+        computedProperties = [containerMetadata computedProperties];
         *buf = 138413058;
-        v33 = self;
+        selfCopy3 = self;
         v34 = 2112;
-        v35 = v20;
+        selfCopy = computedProperties;
         v36 = 2112;
         v37 = 0;
         v38 = 2112;
@@ -28110,9 +28110,9 @@ void __71__BRCXPCRegularIPCsClient__t_extractMetadataForAllContainersWithReply__
         _os_log_impl(&dword_223E7A000, v18, OS_LOG_TYPE_INFO, "[INFO] %@: reply(%@, %@)%@", buf, 0x2Au);
       }
 
-      v21 = [v16 containerMetadata];
-      v22 = [v21 computedProperties];
-      (*(v14 + 2))(v14, v22, 0);
+      containerMetadata2 = [v16 containerMetadata];
+      computedProperties2 = [containerMetadata2 computedProperties];
+      (*(v14 + 2))(v14, computedProperties2, 0);
     }
 
     else
@@ -28128,11 +28128,11 @@ void __71__BRCXPCRegularIPCsClient__t_extractMetadataForAllContainersWithReply__
       v26 = brc_default_log();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
       {
-        v27 = [MEMORY[0x277CCA9B8] brc_errorAppLibraryNotFound:v6];
+        v27 = [MEMORY[0x277CCA9B8] brc_errorAppLibraryNotFound:dCopy];
         *buf = 138413058;
-        v33 = self;
+        selfCopy3 = self;
         v34 = 2112;
-        v35 = 0;
+        selfCopy = 0;
         v36 = 2112;
         v37 = v27;
         v38 = 2112;
@@ -28140,8 +28140,8 @@ void __71__BRCXPCRegularIPCsClient__t_extractMetadataForAllContainersWithReply__
         _os_log_impl(&dword_223E7A000, v26, OS_LOG_TYPE_INFO, "[INFO] %@: reply(%@, %@)%@", buf, 0x2Au);
       }
 
-      v21 = [MEMORY[0x277CCA9B8] brc_errorAppLibraryNotFound:v6];
-      (*(v14 + 2))(v14, 0, v21);
+      containerMetadata2 = [MEMORY[0x277CCA9B8] brc_errorAppLibraryNotFound:dCopy];
+      (*(v14 + 2))(v14, 0, containerMetadata2);
     }
   }
 
@@ -28174,10 +28174,10 @@ void __71__BRCXPCRegularIPCsClient__t_getContainerMetadataForContainerID_reply__
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)lookupExcludedFilenamesForLogoutWithReply:(id)a3
+- (void)lookupExcludedFilenamesForLogoutWithReply:(id)reply
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  replyCopy = reply;
   memset(v19, 0, sizeof(v19));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient lookupExcludedFilenamesForLogoutWithReply:]", 6068, 0, v19);
   v5 = brc_bread_crumbs();
@@ -28188,9 +28188,9 @@ void __71__BRCXPCRegularIPCsClient__t_getContainerMetadataForContainerID_reply__
     v8 = qos_class_self();
     v9 = BRCPrettyPrintEnumWithContext(v8, &brc_qos_entries, 0);
     *buf = 134219010;
-    v21 = v7;
+    selfCopy2 = v7;
     v22 = 2112;
-    v23 = self;
+    selfCopy = self;
     v24 = 2112;
     v25 = v9;
     v26 = 2080;
@@ -28205,23 +28205,23 @@ void __71__BRCXPCRegularIPCsClient__t_getContainerMetadataForContainerID_reply__
   v17[2] = __69__BRCXPCRegularIPCsClient_lookupExcludedFilenamesForLogoutWithReply___block_invoke;
   v17[3] = &unk_2785014D0;
   v17[4] = self;
-  v10 = v4;
+  v10 = replyCopy;
   v18 = v10;
   v11 = _brc_ipc_check_logged_status(self, 1, v17);
 
   if (v11)
   {
     v12 = [BRCUserDefaults defaultsForMangledID:0];
-    v13 = [v12 excludedFilenamesWorthWarningAtLogout];
+    excludedFilenamesWorthWarningAtLogout = [v12 excludedFilenamesWorthWarningAtLogout];
 
     v14 = brc_bread_crumbs();
     v15 = brc_default_log();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
       *buf = 138413058;
-      v21 = self;
+      selfCopy2 = self;
       v22 = 2112;
-      v23 = v13;
+      selfCopy = excludedFilenamesWorthWarningAtLogout;
       v24 = 2112;
       v25 = 0;
       v26 = 2112;
@@ -28229,7 +28229,7 @@ void __71__BRCXPCRegularIPCsClient__t_getContainerMetadataForContainerID_reply__
       _os_log_impl(&dword_223E7A000, v15, OS_LOG_TYPE_INFO, "[INFO] %@: reply(%@, %@)%@", buf, 0x2Au);
     }
 
-    (*(v10 + 2))(v10, v13, 0);
+    (*(v10 + 2))(v10, excludedFilenamesWorthWarningAtLogout, 0);
   }
 
   __brc_leave_section(v19);
@@ -28261,10 +28261,10 @@ void __69__BRCXPCRegularIPCsClient_lookupExcludedFilenamesForLogoutWithReply___b
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)lookupExcludedExtensionsForLogoutWithReply:(id)a3
+- (void)lookupExcludedExtensionsForLogoutWithReply:(id)reply
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  replyCopy = reply;
   memset(v19, 0, sizeof(v19));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient lookupExcludedExtensionsForLogoutWithReply:]", 6078, 0, v19);
   v5 = brc_bread_crumbs();
@@ -28275,9 +28275,9 @@ void __69__BRCXPCRegularIPCsClient_lookupExcludedFilenamesForLogoutWithReply___b
     v8 = qos_class_self();
     v9 = BRCPrettyPrintEnumWithContext(v8, &brc_qos_entries, 0);
     *buf = 134219010;
-    v21 = v7;
+    selfCopy2 = v7;
     v22 = 2112;
-    v23 = self;
+    selfCopy = self;
     v24 = 2112;
     v25 = v9;
     v26 = 2080;
@@ -28292,23 +28292,23 @@ void __69__BRCXPCRegularIPCsClient_lookupExcludedFilenamesForLogoutWithReply___b
   v17[2] = __70__BRCXPCRegularIPCsClient_lookupExcludedExtensionsForLogoutWithReply___block_invoke;
   v17[3] = &unk_2785014D0;
   v17[4] = self;
-  v10 = v4;
+  v10 = replyCopy;
   v18 = v10;
   v11 = _brc_ipc_check_logged_status(self, 1, v17);
 
   if (v11)
   {
     v12 = [BRCUserDefaults defaultsForMangledID:0];
-    v13 = [v12 excludedExtensionsWorthPreserving];
+    excludedExtensionsWorthPreserving = [v12 excludedExtensionsWorthPreserving];
 
     v14 = brc_bread_crumbs();
     v15 = brc_default_log();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
       *buf = 138413058;
-      v21 = self;
+      selfCopy2 = self;
       v22 = 2112;
-      v23 = v13;
+      selfCopy = excludedExtensionsWorthPreserving;
       v24 = 2112;
       v25 = 0;
       v26 = 2112;
@@ -28316,7 +28316,7 @@ void __69__BRCXPCRegularIPCsClient_lookupExcludedFilenamesForLogoutWithReply___b
       _os_log_impl(&dword_223E7A000, v15, OS_LOG_TYPE_INFO, "[INFO] %@: reply(%@, %@)%@", buf, 0x2Au);
     }
 
-    (*(v10 + 2))(v10, v13, 0);
+    (*(v10 + 2))(v10, excludedExtensionsWorthPreserving, 0);
   }
 
   __brc_leave_section(v19);
@@ -28348,10 +28348,10 @@ void __70__BRCXPCRegularIPCsClient_lookupExcludedExtensionsForLogoutWithReply___
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)lookupMinFileSizeForThumbnailTransferWithReply:(id)a3
+- (void)lookupMinFileSizeForThumbnailTransferWithReply:(id)reply
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  replyCopy = reply;
   memset(v23, 0, sizeof(v23));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient lookupMinFileSizeForThumbnailTransferWithReply:]", 6088, 0, v23);
   v5 = brc_bread_crumbs();
@@ -28362,9 +28362,9 @@ void __70__BRCXPCRegularIPCsClient_lookupExcludedExtensionsForLogoutWithReply___
     v8 = qos_class_self();
     v9 = BRCPrettyPrintEnumWithContext(v8, &brc_qos_entries, 0);
     *buf = 134219010;
-    v25 = v7;
+    selfCopy2 = v7;
     v26 = 2112;
-    v27 = self;
+    selfCopy = self;
     v28 = 2112;
     v29 = v9;
     v30 = 2080;
@@ -28379,7 +28379,7 @@ void __70__BRCXPCRegularIPCsClient_lookupExcludedExtensionsForLogoutWithReply___
   v21[2] = __74__BRCXPCRegularIPCsClient_lookupMinFileSizeForThumbnailTransferWithReply___block_invoke;
   v21[3] = &unk_2785014D0;
   v21[4] = self;
-  v10 = v4;
+  v10 = replyCopy;
   v22 = v10;
   v11 = _brc_ipc_check_logged_status(self, 1, v21);
 
@@ -28393,9 +28393,9 @@ void __70__BRCXPCRegularIPCsClient_lookupExcludedExtensionsForLogoutWithReply___
       v15 = [BRCUserDefaults defaultsForMangledID:0];
       v16 = [v14 numberWithLongLong:{objc_msgSend(v15, "minFileSizeForThumbnailTransfer")}];
       *buf = 138413058;
-      v25 = self;
+      selfCopy2 = self;
       v26 = 2112;
-      v27 = v16;
+      selfCopy = v16;
       v28 = 2112;
       v29 = 0;
       v30 = 2112;
@@ -28438,10 +28438,10 @@ void __74__BRCXPCRegularIPCsClient_lookupMinFileSizeForThumbnailTransferWithRepl
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)lookupCollectionGathererPacerMinFireInterval:(id)a3
+- (void)lookupCollectionGathererPacerMinFireInterval:(id)interval
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  intervalCopy = interval;
   memset(v23, 0, sizeof(v23));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient lookupCollectionGathererPacerMinFireInterval:]", 6097, 0, v23);
   v5 = brc_bread_crumbs();
@@ -28452,9 +28452,9 @@ void __74__BRCXPCRegularIPCsClient_lookupMinFileSizeForThumbnailTransferWithRepl
     v8 = qos_class_self();
     v9 = BRCPrettyPrintEnumWithContext(v8, &brc_qos_entries, 0);
     *buf = 134219010;
-    v25 = v7;
+    selfCopy2 = v7;
     v26 = 2112;
-    v27 = self;
+    selfCopy = self;
     v28 = 2112;
     v29 = v9;
     v30 = 2080;
@@ -28469,7 +28469,7 @@ void __74__BRCXPCRegularIPCsClient_lookupMinFileSizeForThumbnailTransferWithRepl
   v21[2] = __72__BRCXPCRegularIPCsClient_lookupCollectionGathererPacerMinFireInterval___block_invoke;
   v21[3] = &unk_2785014D0;
   v21[4] = self;
-  v10 = v4;
+  v10 = intervalCopy;
   v22 = v10;
   v11 = _brc_ipc_check_logged_status(self, 1, v21);
 
@@ -28484,9 +28484,9 @@ void __74__BRCXPCRegularIPCsClient_lookupMinFileSizeForThumbnailTransferWithRepl
       [v15 collectionGathererPacerMinFireInterval];
       v16 = [v14 numberWithDouble:?];
       *buf = 138413058;
-      v25 = self;
+      selfCopy2 = self;
       v26 = 2112;
-      v27 = v16;
+      selfCopy = v16;
       v28 = 2112;
       v29 = 0;
       v30 = 2112;
@@ -28530,10 +28530,10 @@ void __72__BRCXPCRegularIPCsClient_lookupCollectionGathererPacerMinFireInterval_
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)queryTelemetryEnablementWithReply:(id)a3
+- (void)queryTelemetryEnablementWithReply:(id)reply
 {
   v26 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  replyCopy = reply;
   memset(v19, 0, sizeof(v19));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient queryTelemetryEnablementWithReply:]", 6113, 0, v19);
   v6 = brc_bread_crumbs();
@@ -28544,7 +28544,7 @@ void __72__BRCXPCRegularIPCsClient_lookupCollectionGathererPacerMinFireInterval_
     v9 = qos_class_self();
     v10 = BRCPrettyPrintEnumWithContext(v9, &brc_qos_entries, 0);
     *buf = 134219010;
-    v21 = v8;
+    selfCopy = v8;
     v22 = 2112;
     *v23 = self;
     *&v23[8] = 2112;
@@ -28561,7 +28561,7 @@ void __72__BRCXPCRegularIPCsClient_lookupCollectionGathererPacerMinFireInterval_
   v17[2] = __61__BRCXPCRegularIPCsClient_queryTelemetryEnablementWithReply___block_invoke;
   v17[3] = &unk_2785014D0;
   v17[4] = self;
-  v11 = v5;
+  v11 = replyCopy;
   v18 = v11;
   v12 = _brc_ipc_spi(self, 1, a2, v17);
 
@@ -28573,7 +28573,7 @@ void __72__BRCXPCRegularIPCsClient_lookupCollectionGathererPacerMinFireInterval_
     {
       v15 = +[BRCAnalyticsReporter isTelemetryReportingEnabled];
       *buf = 138413058;
-      v21 = self;
+      selfCopy = self;
       v22 = 1024;
       *v23 = v15;
       *&v23[4] = 2112;
@@ -28615,10 +28615,10 @@ void __61__BRCXPCRegularIPCsClient_queryTelemetryEnablementWithReply___block_inv
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)corruptDatabase:(id)a3
+- (void)corruptDatabase:(id)database
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  databaseCopy = database;
   memset(v19, 0, sizeof(v19));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient corruptDatabase:]", 6122, 0, v19);
   v5 = brc_bread_crumbs();
@@ -28629,9 +28629,9 @@ void __61__BRCXPCRegularIPCsClient_queryTelemetryEnablementWithReply___block_inv
     v8 = qos_class_self();
     v9 = BRCPrettyPrintEnumWithContext(v8, &brc_qos_entries, 0);
     *buf = 134219010;
-    v21 = v7;
+    selfCopy2 = v7;
     v22 = 2112;
-    v23 = self;
+    selfCopy = self;
     v24 = 2112;
     v25 = v9;
     v26 = 2080;
@@ -28647,24 +28647,24 @@ void __61__BRCXPCRegularIPCsClient_queryTelemetryEnablementWithReply___block_inv
   v17[2] = __43__BRCXPCRegularIPCsClient_corruptDatabase___block_invoke;
   v17[3] = &unk_2785014D0;
   v17[4] = self;
-  v11 = v4;
+  v11 = databaseCopy;
   v18 = v11;
   LODWORD(v10) = _brc_ipc_check_entitlement_and_logged_status(self, 1, v10, v17);
 
   if (v10)
   {
     v12 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CFABD0] code:10000 userInfo:0];
-    v13 = [(BRCXPCClient *)self session];
-    [v13 dbBecameCorruptedWithDescription:@"Testing brctl reset corrupt-db" error:v12];
+    session = [(BRCXPCClient *)self session];
+    [session dbBecameCorruptedWithDescription:@"Testing brctl reset corrupt-db" error:v12];
 
     v14 = brc_bread_crumbs();
     v15 = brc_default_log();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
       *buf = 138412802;
-      v21 = self;
+      selfCopy2 = self;
       v22 = 2112;
-      v23 = 0;
+      selfCopy = 0;
       v24 = 2112;
       v25 = v14;
       _os_log_impl(&dword_223E7A000, v15, OS_LOG_TYPE_INFO, "[INFO] %@: reply(%@)%@", buf, 0x20u);
@@ -28700,12 +28700,12 @@ void __43__BRCXPCRegularIPCsClient_corruptDatabase___block_invoke(uint64_t a1, v
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)waitUntilIdle:(id)a3 timeout:(id)a4 reply:(id)a5
+- (void)waitUntilIdle:(id)idle timeout:(id)timeout reply:(id)reply
 {
   v91 = *MEMORY[0x277D85DE8];
-  v49 = a3;
-  v48 = a4;
-  v7 = a5;
+  idleCopy = idle;
+  timeoutCopy = timeout;
+  replyCopy = reply;
   memset(v77, 0, sizeof(v77));
   __brc_create_section(1, "[BRCXPCRegularIPCsClient waitUntilIdle:timeout:reply:]", 6135, 0, v77);
   v8 = brc_bread_crumbs();
@@ -28734,7 +28734,7 @@ void __43__BRCXPCRegularIPCsClient_corruptDatabase___block_invoke(uint64_t a1, v
   v75[2] = __55__BRCXPCRegularIPCsClient_waitUntilIdle_timeout_reply___block_invoke;
   v75[3] = &unk_2785014D0;
   v75[4] = self;
-  v50 = v7;
+  v50 = replyCopy;
   v76 = v50;
   LODWORD(v13) = _brc_ipc_check_entitlement_and_logged_status(self, 1, v13, v75);
 
@@ -28780,9 +28780,9 @@ void __43__BRCXPCRegularIPCsClient_corruptDatabase___block_invoke(uint64_t a1, v
       *v90 = __Block_byref_object_dispose__52;
       *&v90[8] = MEMORY[0x277CBEC38];
       group = dispatch_group_create();
-      v20 = [(BRCXPCClient *)self session];
+      session = [(BRCXPCClient *)self session];
       v71 = 0;
-      v21 = [v20 appLibrariesMatchingSearchString:v49 error:&v71];
+      v21 = [session appLibrariesMatchingSearchString:idleCopy error:&v71];
       v45 = v71;
 
       v22 = objc_opt_new();
@@ -28806,8 +28806,8 @@ void __43__BRCXPCRegularIPCsClient_corruptDatabase___block_invoke(uint64_t a1, v
                 objc_enumerationMutation(obj);
               }
 
-              v26 = [*(*(&v67 + 1) + 8 * i) defaultClientZone];
-              [v22 addObject:v26];
+              defaultClientZone = [*(*(&v67 + 1) + 8 * i) defaultClientZone];
+              [v22 addObject:defaultClientZone];
             }
 
             v23 = [obj countByEnumeratingWithState:&v67 objects:v79 count:16];
@@ -28825,7 +28825,7 @@ void __43__BRCXPCRegularIPCsClient_corruptDatabase___block_invoke(uint64_t a1, v
         if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
         {
           *v80 = 134218498;
-          v81 = v63;
+          selfCopy3 = v63;
           v82 = 2112;
           v83 = v22;
           v84 = 2112;
@@ -28854,8 +28854,8 @@ void __43__BRCXPCRegularIPCsClient_corruptDatabase___block_invoke(uint64_t a1, v
               }
 
               v33 = *(*(&v59 + 1) + 8 * j);
-              v34 = [v33 defaultAppLibrary];
-              [(BRCXPCClient *)self addAppLibrary:v34];
+              defaultAppLibrary = [v33 defaultAppLibrary];
+              [(BRCXPCClient *)self addAppLibrary:defaultAppLibrary];
 
               dispatch_group_enter(group);
               v35 = [(BRCXPCClient *)self description];
@@ -28877,9 +28877,9 @@ void __43__BRCXPCRegularIPCsClient_corruptDatabase___block_invoke(uint64_t a1, v
           while (v30);
         }
 
-        if (v48)
+        if (timeoutCopy)
         {
-          v36 = dispatch_time(0, 1000000000 * [v48 unsignedLongLongValue]);
+          v36 = dispatch_time(0, 1000000000 * [timeoutCopy unsignedLongLongValue]);
         }
 
         else
@@ -28894,7 +28894,7 @@ void __43__BRCXPCRegularIPCsClient_corruptDatabase___block_invoke(uint64_t a1, v
           if (os_log_type_enabled(v40, OS_LOG_TYPE_INFO))
           {
             *v80 = 138413058;
-            v81 = self;
+            selfCopy3 = self;
             v82 = 2112;
             v83 = MEMORY[0x277CBEC28];
             v84 = 2112;
@@ -28915,7 +28915,7 @@ void __43__BRCXPCRegularIPCsClient_corruptDatabase___block_invoke(uint64_t a1, v
           {
             v43 = *(*&buf[8] + 40);
             *v80 = 138413058;
-            v81 = self;
+            selfCopy3 = self;
             v82 = 2112;
             v83 = v43;
             v84 = 2112;
@@ -28936,7 +28936,7 @@ void __43__BRCXPCRegularIPCsClient_corruptDatabase___block_invoke(uint64_t a1, v
         if (os_log_type_enabled(v38, OS_LOG_TYPE_INFO))
         {
           *v80 = 138413058;
-          v81 = self;
+          selfCopy3 = self;
           v82 = 2112;
           v83 = 0;
           v84 = 2112;

@@ -1,33 +1,33 @@
 @interface _UIFocusContainerGuideRegion
-- (BOOL)isEqual:(id)a3;
-- (id)_fallbackFocusItemForMovementRequest:(id)a3 inFocusMap:(id)a4 withSnapshot:(id)a5;
-- (id)_focusRegionWithAdjustedFrame:(CGRect)a3 coordinateSpace:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (id)_fallbackFocusItemForMovementRequest:(id)request inFocusMap:(id)map withSnapshot:(id)snapshot;
+- (id)_focusRegionWithAdjustedFrame:(CGRect)frame coordinateSpace:(id)space;
 @end
 
 @implementation _UIFocusContainerGuideRegion
 
-- (id)_focusRegionWithAdjustedFrame:(CGRect)a3 coordinateSpace:(id)a4
+- (id)_focusRegionWithAdjustedFrame:(CGRect)frame coordinateSpace:(id)space
 {
   v9.receiver = self;
   v9.super_class = _UIFocusContainerGuideRegion;
-  v5 = [(_UIFocusGuideRegion *)&v9 _focusRegionWithAdjustedFrame:a4 coordinateSpace:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
-  v6 = [(_UIFocusContainerGuideRegion *)self fallbackRootRegionContainer];
-  [v5 setFallbackRootRegionContainer:v6];
+  v5 = [(_UIFocusGuideRegion *)&v9 _focusRegionWithAdjustedFrame:space coordinateSpace:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
+  fallbackRootRegionContainer = [(_UIFocusContainerGuideRegion *)self fallbackRootRegionContainer];
+  [v5 setFallbackRootRegionContainer:fallbackRootRegionContainer];
 
-  v7 = [(_UIFocusContainerGuideRegion *)self contentFocusRegionContainer];
-  [v5 setContentFocusRegionContainer:v7];
+  contentFocusRegionContainer = [(_UIFocusContainerGuideRegion *)self contentFocusRegionContainer];
+  [v5 setContentFocusRegionContainer:contentFocusRegionContainer];
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v18.receiver = self;
   v18.super_class = _UIFocusContainerGuideRegion;
-  if ([(_UIFocusGuideRegion *)&v18 isEqual:v4])
+  if ([(_UIFocusGuideRegion *)&v18 isEqual:equalCopy])
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = v5[10];
     v7 = self->_contentFocusRegionContainer;
     v8 = v6;
@@ -104,16 +104,16 @@ LABEL_21:
   return v12;
 }
 
-- (id)_fallbackFocusItemForMovementRequest:(id)a3 inFocusMap:(id)a4 withSnapshot:(id)a5
+- (id)_fallbackFocusItemForMovementRequest:(id)request inFocusMap:(id)map withSnapshot:(id)snapshot
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  mapCopy = map;
+  snapshotCopy = snapshot;
   v27.receiver = self;
   v27.super_class = _UIFocusContainerGuideRegion;
-  v11 = [(_UIFocusGuideRegion *)&v27 _fallbackFocusItemForMovementRequest:v8 inFocusMap:v9 withSnapshot:v10];
-  v12 = [(_UIFocusContainerGuideRegion *)self contentFocusRegionContainer];
-  v13 = v12;
+  v11 = [(_UIFocusGuideRegion *)&v27 _fallbackFocusItemForMovementRequest:requestCopy inFocusMap:mapCopy withSnapshot:snapshotCopy];
+  contentFocusRegionContainer = [(_UIFocusContainerGuideRegion *)self contentFocusRegionContainer];
+  v13 = contentFocusRegionContainer;
   if (v11)
   {
     v14 = 1;
@@ -121,29 +121,29 @@ LABEL_21:
 
   else
   {
-    v14 = v12 == 0;
+    v14 = contentFocusRegionContainer == 0;
   }
 
   if (!v14)
   {
-    v15 = [(_UIFocusContainerGuideRegion *)self fallbackRootRegionContainer];
-    v16 = v15;
-    if (v15)
+    fallbackRootRegionContainer = [(_UIFocusContainerGuideRegion *)self fallbackRootRegionContainer];
+    v16 = fallbackRootRegionContainer;
+    if (fallbackRootRegionContainer)
     {
-      v17 = v15;
+      contentFocusRegionContainer2 = fallbackRootRegionContainer;
       v18 = [_UIFocusMap alloc];
-      v19 = [v9 focusSystem];
-      v20 = [(_UIFocusMap *)v18 initWithFocusSystem:v19 rootContainer:v17 coordinateSpace:0 searchInfo:0 ignoresRootContainerClippingRect:0];
+      focusSystem = [mapCopy focusSystem];
+      v20 = [(_UIFocusMap *)v18 initWithFocusSystem:focusSystem rootContainer:contentFocusRegionContainer2 coordinateSpace:0 searchInfo:0 ignoresRootContainerClippingRect:0];
     }
 
     else
     {
-      v17 = [(_UIFocusContainerGuideRegion *)self contentFocusRegionContainer];
-      v20 = v9;
+      contentFocusRegionContainer2 = [(_UIFocusContainerGuideRegion *)self contentFocusRegionContainer];
+      v20 = mapCopy;
     }
 
-    v21 = [v10 originalRegionForRegion:self];
-    v22 = [(_UIFocusMap *)v20 _allRegionsInContainer:v17 intersectingRegion:v21];
+    v21 = [snapshotCopy originalRegionForRegion:self];
+    v22 = [(_UIFocusMap *)v20 _allRegionsInContainer:contentFocusRegionContainer2 intersectingRegion:v21];
 
     v23 = objc_opt_class();
     v26[0] = MEMORY[0x277D85DD0];
@@ -153,7 +153,7 @@ LABEL_21:
     v26[4] = v23;
     v24 = [v22 bs_filter:v26];
 
-    v11 = [(_UIFocusMap *)v20 _nextFocusedItemForFocusMovementRequest:v8 inRegions:v24 withSnapshot:v10];
+    v11 = [(_UIFocusMap *)v20 _nextFocusedItemForFocusMovementRequest:requestCopy inRegions:v24 withSnapshot:snapshotCopy];
   }
 
   return v11;

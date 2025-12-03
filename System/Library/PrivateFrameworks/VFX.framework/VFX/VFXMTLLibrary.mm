@@ -1,21 +1,21 @@
 @interface VFXMTLLibrary
-- (VFXMTLLibrary)initWithPath:(id)a3 manager:(id)a4;
+- (VFXMTLLibrary)initWithPath:(id)path manager:(id)manager;
 - (void)_load;
 - (void)dealloc;
 @end
 
 @implementation VFXMTLLibrary
 
-- (VFXMTLLibrary)initWithPath:(id)a3 manager:(id)a4
+- (VFXMTLLibrary)initWithPath:(id)path manager:(id)manager
 {
   v24.receiver = self;
   v24.super_class = VFXMTLLibrary;
   v8 = [(VFXMTLLibrary *)&v24 init];
   if (v8)
   {
-    if (a3)
+    if (path)
     {
-      v9 = objc_msgSend_fileURLWithPath_(MEMORY[0x1E695DFF8], v6, a3, v7);
+      v9 = objc_msgSend_fileURLWithPath_(MEMORY[0x1E695DFF8], v6, path, v7);
     }
 
     else
@@ -24,10 +24,10 @@
     }
 
     v8->_libraryURL = v9;
-    objc_storeWeak(&v8->_manager, a4);
+    objc_storeWeak(&v8->_manager, manager);
     v23 = 0;
     v13 = objc_msgSend_defaultManager(MEMORY[0x1E696AC08], v10, v11, v12);
-    v15 = objc_msgSend_attributesOfItemAtPath_error_(v13, v14, a3, &v23);
+    v15 = objc_msgSend_attributesOfItemAtPath_error_(v13, v14, path, &v23);
     v18 = objc_msgSend_objectForKey_(v15, v16, *MEMORY[0x1E696A350], v17);
     if (v23 || !v18)
     {

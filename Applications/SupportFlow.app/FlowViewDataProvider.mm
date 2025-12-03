@@ -1,15 +1,15 @@
 @interface FlowViewDataProvider
 - (void)logForAppTerminate;
-- (void)updateSessionMapWithIdentifier:(id)a3 data:(id)a4;
+- (void)updateSessionMapWithIdentifier:(id)identifier data:(id)data;
 @end
 
 @implementation FlowViewDataProvider
 
-- (void)updateSessionMapWithIdentifier:(id)a3 data:(id)a4
+- (void)updateSessionMapWithIdentifier:(id)identifier data:(id)data
 {
   v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v7 = v6;
-  v8 = a4;
+  dataCopy = data;
 
   v9 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v11 = v10;

@@ -1,28 +1,28 @@
 @interface TIKeyboardInputManagerPinyin
 - (BOOL)acceptAutocorrectionCommitsInline;
 - (BOOL)currentShuangpinTypeUsesSemicolon;
-- (BOOL)isShuangpinSemicolon:(id)a3;
-- (BOOL)isSpecialInput:(id)a3;
+- (BOOL)isShuangpinSemicolon:(id)semicolon;
+- (BOOL)isSpecialInput:(id)input;
 - (BOOL)usesGeometryModelData;
 - (id)keyboardBehaviors;
-- (id)remapInput:(id)a3 isFacemarkInput:(BOOL *)a4;
+- (id)remapInput:(id)input isFacemarkInput:(BOOL *)facemarkInput;
 - (id)validCharacterSetForAutocorrection;
 - (unint64_t)initialSelectedIndex;
 @end
 
 @implementation TIKeyboardInputManagerPinyin
 
-- (id)remapInput:(id)a3 isFacemarkInput:(BOOL *)a4
+- (id)remapInput:(id)input isFacemarkInput:(BOOL *)facemarkInput
 {
   v9.receiver = self;
   v9.super_class = TIKeyboardInputManagerPinyin;
-  v5 = [(TIKeyboardInputManagerChinesePhonetic *)&v9 remapInput:a3 isFacemarkInput:a4];
+  v5 = [(TIKeyboardInputManagerChinesePhonetic *)&v9 remapInput:input isFacemarkInput:facemarkInput];
   if ([(__CFString *)v5 isEqualToString:@"；"])
   {
     if ([(TIKeyboardInputManagerPinyin *)self currentShuangpinTypeUsesSemicolon])
     {
-      v6 = [(TIKeyboardInputManagerChinesePhonetic *)self inputString];
-      v7 = [v6 length];
+      inputString = [(TIKeyboardInputManagerChinesePhonetic *)self inputString];
+      v7 = [inputString length];
 
       if (v7)
       {
@@ -35,35 +35,35 @@
   return v5;
 }
 
-- (BOOL)isSpecialInput:(id)a3
+- (BOOL)isSpecialInput:(id)input
 {
-  v4 = a3;
+  inputCopy = input;
   v7.receiver = self;
   v7.super_class = TIKeyboardInputManagerPinyin;
-  v5 = [(TIKeyboardInputManagerChinesePhonetic *)&v7 isSpecialInput:v4]|| [(TIKeyboardInputManagerPinyin *)self isShuangpinSemicolon:v4];
+  v5 = [(TIKeyboardInputManagerChinesePhonetic *)&v7 isSpecialInput:inputCopy]|| [(TIKeyboardInputManagerPinyin *)self isShuangpinSemicolon:inputCopy];
 
   return v5;
 }
 
-- (BOOL)isShuangpinSemicolon:(id)a3
+- (BOOL)isShuangpinSemicolon:(id)semicolon
 {
-  if (![a3 isEqualToString:@";"] || !-[TIKeyboardInputManagerPinyin currentShuangpinTypeUsesSemicolon](self, "currentShuangpinTypeUsesSemicolon"))
+  if (![semicolon isEqualToString:@";"] || !-[TIKeyboardInputManagerPinyin currentShuangpinTypeUsesSemicolon](self, "currentShuangpinTypeUsesSemicolon"))
   {
     return 0;
   }
 
-  v4 = [(TIKeyboardInputManagerChinesePhonetic *)self inputString];
-  v5 = [v4 length] != 0;
+  inputString = [(TIKeyboardInputManagerChinesePhonetic *)self inputString];
+  v5 = [inputString length] != 0;
 
   return v5;
 }
 
 - (BOOL)currentShuangpinTypeUsesSemicolon
 {
-  v2 = [(TIKeyboardInputManagerChinese *)self wordSearch];
-  v3 = [v2 shuangpinType];
+  wordSearch = [(TIKeyboardInputManagerChinese *)self wordSearch];
+  shuangpinType = [wordSearch shuangpinType];
 
-  return v3 == 7 || v3 == 2;
+  return shuangpinType == 7 || shuangpinType == 2;
 }
 
 - (id)validCharacterSetForAutocorrection
@@ -117,32 +117,32 @@ void __66__TIKeyboardInputManagerPinyin_validCharacterSetForAutocorrection__bloc
 
 - (unint64_t)initialSelectedIndex
 {
-  v3 = [MEMORY[0x277D6F470] sharedPreferencesController];
-  v4 = [v3 BOOLForPreferenceKey:*MEMORY[0x277D6FA90]];
+  mEMORY[0x277D6F470] = [MEMORY[0x277D6F470] sharedPreferencesController];
+  v4 = [mEMORY[0x277D6F470] BOOLForPreferenceKey:*MEMORY[0x277D6FA90]];
 
-  v5 = [(TIKeyboardInputManagerPinyin *)self keyboardState];
-  v6 = [v5 hardwareKeyboardMode];
+  keyboardState = [(TIKeyboardInputManagerPinyin *)self keyboardState];
+  hardwareKeyboardMode = [keyboardState hardwareKeyboardMode];
 
-  if (v6 && v4)
+  if (hardwareKeyboardMode && v4)
   {
-    v7 = [(TIKeyboardInputManagerMecabra *)self wordSearchCandidateResultSet];
-    v8 = [v7 candidates];
-    v9 = [v8 count];
-    if (v9 && (-[TIKeyboardInputManagerChinesePhonetic inputString](self, "inputString"), v6 = objc_claimAutoreleasedReturnValue(), [v6 length]))
+    wordSearchCandidateResultSet = [(TIKeyboardInputManagerMecabra *)self wordSearchCandidateResultSet];
+    candidates = [wordSearchCandidateResultSet candidates];
+    v9 = [candidates count];
+    if (v9 && (-[TIKeyboardInputManagerChinesePhonetic inputString](self, "inputString"), hardwareKeyboardMode = objc_claimAutoreleasedReturnValue(), [hardwareKeyboardMode length]))
     {
-      v10 = 0;
+      initialSelectedIndex = 0;
     }
 
     else
     {
       v13.receiver = self;
       v13.super_class = TIKeyboardInputManagerPinyin;
-      v10 = [(TIKeyboardInputManagerChinese *)&v13 initialSelectedIndex];
+      initialSelectedIndex = [(TIKeyboardInputManagerChinese *)&v13 initialSelectedIndex];
       if (!v9)
       {
 LABEL_11:
 
-        return v10;
+        return initialSelectedIndex;
       }
     }
 

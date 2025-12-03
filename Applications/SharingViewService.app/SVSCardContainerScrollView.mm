@@ -1,40 +1,40 @@
 @interface SVSCardContainerScrollView
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (SVSCardContainerScrollView)initWithGestureRecognizerEvaluator:(id)a3;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (SVSCardContainerScrollView)initWithGestureRecognizerEvaluator:(id)evaluator;
 @end
 
 @implementation SVSCardContainerScrollView
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = [(SVSCardContainerScrollView *)self panGestureRecognizer];
+  beginCopy = begin;
+  panGestureRecognizer = [(SVSCardContainerScrollView *)self panGestureRecognizer];
 
-  if (v5 == v4)
+  if (panGestureRecognizer == beginCopy)
   {
-    v7 = [(SVSCardContainerScrollView *)self recognizerEvaluator];
-    v6 = (v7)[2](v7, v4);
+    recognizerEvaluator = [(SVSCardContainerScrollView *)self recognizerEvaluator];
+    v6 = (recognizerEvaluator)[2](recognizerEvaluator, beginCopy);
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = SVSCardContainerScrollView;
-    v6 = [(SVSCardContainerScrollView *)&v9 gestureRecognizerShouldBegin:v4];
+    v6 = [(SVSCardContainerScrollView *)&v9 gestureRecognizerShouldBegin:beginCopy];
   }
 
   return v6;
 }
 
-- (SVSCardContainerScrollView)initWithGestureRecognizerEvaluator:(id)a3
+- (SVSCardContainerScrollView)initWithGestureRecognizerEvaluator:(id)evaluator
 {
-  v4 = a3;
+  evaluatorCopy = evaluator;
   v9.receiver = self;
   v9.super_class = SVSCardContainerScrollView;
   v5 = [(SVSCardContainerScrollView *)&v9 init];
   if (v5)
   {
-    v6 = objc_retainBlock(v4);
+    v6 = objc_retainBlock(evaluatorCopy);
     recognizerEvaluator = v5->_recognizerEvaluator;
     v5->_recognizerEvaluator = v6;
   }

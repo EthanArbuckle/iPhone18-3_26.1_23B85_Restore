@@ -1,13 +1,13 @@
 @interface FaceObserver
 - (_TtC15NanoFaceGallery12FaceObserver)init;
-- (void)faceResourceDirectoryDidChange:(void *)a1;
+- (void)faceResourceDirectoryDidChange:(void *)change;
 @end
 
 @implementation FaceObserver
 
-- (void)faceResourceDirectoryDidChange:(void *)a1
+- (void)faceResourceDirectoryDidChange:(void *)change
 {
-  v1 = a1;
+  changeCopy = change;
   sub_25B0864D8();
 }
 

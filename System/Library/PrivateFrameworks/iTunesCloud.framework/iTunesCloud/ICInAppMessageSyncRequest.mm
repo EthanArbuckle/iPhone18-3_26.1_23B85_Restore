@@ -1,21 +1,21 @@
 @interface ICInAppMessageSyncRequest
-- (ICInAppMessageSyncRequest)initWithStoreRequestContext:(id)a3 fromRevision:(unint64_t)a4;
+- (ICInAppMessageSyncRequest)initWithStoreRequestContext:(id)context fromRevision:(unint64_t)revision;
 - (void)execute;
-- (void)performRequestWithResponseHandler:(id)a3;
+- (void)performRequestWithResponseHandler:(id)handler;
 @end
 
 @implementation ICInAppMessageSyncRequest
 
 - (void)execute
 {
-  v3 = [(ICStoreRequestContext *)self->_storeRequestContext identityStore];
-  v4 = [(ICStoreRequestContext *)self->_storeRequestContext identity];
+  identityStore = [(ICStoreRequestContext *)self->_storeRequestContext identityStore];
+  identity = [(ICStoreRequestContext *)self->_storeRequestContext identity];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __36__ICInAppMessageSyncRequest_execute__block_invoke;
   v5[3] = &unk_1E7BF7B20;
   v5[4] = self;
-  [v3 getPropertiesForUserIdentity:v4 completionHandler:v5];
+  [identityStore getPropertiesForUserIdentity:identity completionHandler:v5];
 }
 
 void __36__ICInAppMessageSyncRequest_execute__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -213,34 +213,34 @@ void __36__ICInAppMessageSyncRequest_execute__block_invoke_12(uint64_t a1, void 
   [*(a1 + 32) finishWithError:v9];
 }
 
-- (void)performRequestWithResponseHandler:(id)a3
+- (void)performRequestWithResponseHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __63__ICInAppMessageSyncRequest_performRequestWithResponseHandler___block_invoke;
   v6[3] = &unk_1E7BFA490;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   [(ICRequestOperation *)self performRequestWithCompletionHandler:v6];
 }
 
-- (ICInAppMessageSyncRequest)initWithStoreRequestContext:(id)a3 fromRevision:(unint64_t)a4
+- (ICInAppMessageSyncRequest)initWithStoreRequestContext:(id)context fromRevision:(unint64_t)revision
 {
-  v7 = a3;
+  contextCopy = context;
   v13.receiver = self;
   v13.super_class = ICInAppMessageSyncRequest;
   v8 = [(ICRequestOperation *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_storeRequestContext, a3);
-    v10 = [v7 copyWithBlock:&__block_literal_global_30905];
+    objc_storeStrong(&v8->_storeRequestContext, context);
+    v10 = [contextCopy copyWithBlock:&__block_literal_global_30905];
     storeRequestContext = v9->_storeRequestContext;
     v9->_storeRequestContext = v10;
 
-    v9->_fromRevision = a4;
+    v9->_fromRevision = revision;
   }
 
   return v9;

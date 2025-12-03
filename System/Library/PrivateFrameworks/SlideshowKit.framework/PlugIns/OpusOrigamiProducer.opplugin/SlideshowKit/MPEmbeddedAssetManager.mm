@@ -1,34 +1,34 @@
 @interface MPEmbeddedAssetManager
-- (BOOL)isAssetAtPathASupportedAudio:(id)a3;
-- (BOOL)isAssetAtPathASupportedImage:(id)a3;
-- (BOOL)isAssetAtPathASupportedMovie:(id)a3;
-- (CGSize)resolutionForAssetAtPath:(id)a3;
-- (double)durationForAssetAtPath:(id)a3;
+- (BOOL)isAssetAtPathASupportedAudio:(id)audio;
+- (BOOL)isAssetAtPathASupportedImage:(id)image;
+- (BOOL)isAssetAtPathASupportedMovie:(id)movie;
+- (CGSize)resolutionForAssetAtPath:(id)path;
+- (double)durationForAssetAtPath:(id)path;
 @end
 
 @implementation MPEmbeddedAssetManager
 
-- (CGSize)resolutionForAssetAtPath:(id)a3
+- (CGSize)resolutionForAssetAtPath:(id)path
 {
-  if (!a3 || [MPUtilities pathIsRelative:?])
+  if (!path || [MPUtilities pathIsRelative:?])
   {
     goto LABEL_15;
   }
 
-  if ([a3 isAbsolutePath])
+  if ([path isAbsolutePath])
   {
-    v4 = [NSURL fileURLWithPath:a3];
+    v4 = [NSURL fileURLWithPath:path];
   }
 
   else
   {
-    v4 = [NSURL URLWithString:a3];
+    v4 = [NSURL URLWithString:path];
   }
 
   v5 = CGImageSourceCreateWithURL(v4, 0);
   if (!v5)
   {
-    NSLog(@"Marimba: Requesting size of path that dosen't exist: %@", a3);
+    NSLog(@"Marimba: Requesting size of path that dosen't exist: %@", path);
 LABEL_15:
     width = CGSizeZero.width;
     height = CGSizeZero.height;
@@ -78,76 +78,76 @@ LABEL_16:
   return result;
 }
 
-- (BOOL)isAssetAtPathASupportedImage:(id)a3
+- (BOOL)isAssetAtPathASupportedImage:(id)image
 {
-  v3 = a3;
-  if (a3)
+  imageCopy = image;
+  if (image)
   {
-    v4 = [a3 rangeOfString:@"?"];
+    v4 = [image rangeOfString:@"?"];
     if (v4 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v3 = [v3 substringToIndex:v4];
+      imageCopy = [imageCopy substringToIndex:v4];
     }
 
-    PreferredIdentifierForTag = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, [v3 pathExtension], 0);
-    LOBYTE(v3) = UTTypeConformsTo(PreferredIdentifierForTag, kUTTypeImage) != 0;
+    PreferredIdentifierForTag = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, [imageCopy pathExtension], 0);
+    LOBYTE(imageCopy) = UTTypeConformsTo(PreferredIdentifierForTag, kUTTypeImage) != 0;
     CFRelease(PreferredIdentifierForTag);
   }
 
-  return v3;
+  return imageCopy;
 }
 
-- (BOOL)isAssetAtPathASupportedMovie:(id)a3
+- (BOOL)isAssetAtPathASupportedMovie:(id)movie
 {
-  v3 = a3;
-  if (a3)
+  movieCopy = movie;
+  if (movie)
   {
-    v4 = [a3 rangeOfString:@"?"];
+    v4 = [movie rangeOfString:@"?"];
     if (v4 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v3 = [v3 substringToIndex:v4];
+      movieCopy = [movieCopy substringToIndex:v4];
     }
 
-    PreferredIdentifierForTag = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, [v3 pathExtension], 0);
-    LOBYTE(v3) = UTTypeConformsTo(PreferredIdentifierForTag, kUTTypeMovie) != 0;
+    PreferredIdentifierForTag = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, [movieCopy pathExtension], 0);
+    LOBYTE(movieCopy) = UTTypeConformsTo(PreferredIdentifierForTag, kUTTypeMovie) != 0;
     CFRelease(PreferredIdentifierForTag);
   }
 
-  return v3;
+  return movieCopy;
 }
 
-- (BOOL)isAssetAtPathASupportedAudio:(id)a3
+- (BOOL)isAssetAtPathASupportedAudio:(id)audio
 {
-  v3 = a3;
-  if (a3)
+  audioCopy = audio;
+  if (audio)
   {
-    v4 = [a3 rangeOfString:@"?"];
+    v4 = [audio rangeOfString:@"?"];
     if (v4 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v3 = [v3 substringToIndex:v4];
+      audioCopy = [audioCopy substringToIndex:v4];
     }
 
-    PreferredIdentifierForTag = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, [v3 pathExtension], 0);
-    LOBYTE(v3) = UTTypeConformsTo(PreferredIdentifierForTag, kUTTypeAudio) != 0;
+    PreferredIdentifierForTag = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, [audioCopy pathExtension], 0);
+    LOBYTE(audioCopy) = UTTypeConformsTo(PreferredIdentifierForTag, kUTTypeAudio) != 0;
     CFRelease(PreferredIdentifierForTag);
   }
 
-  return v3;
+  return audioCopy;
 }
 
-- (double)durationForAssetAtPath:(id)a3
+- (double)durationForAssetAtPath:(id)path
 {
   Seconds = 0.0;
   if (![(MPEmbeddedAssetManager *)self isAssetAtPathASupportedImage:?])
   {
-    if ([a3 isAbsolutePath])
+    if ([path isAbsolutePath])
     {
-      v5 = [NSURL fileURLWithPath:a3];
+      v5 = [NSURL fileURLWithPath:path];
     }
 
     else
     {
-      v5 = [NSURL URLWithString:a3];
+      v5 = [NSURL URLWithString:path];
     }
 
     v6 = [[AVURLAsset alloc] initWithURL:v5 options:0];

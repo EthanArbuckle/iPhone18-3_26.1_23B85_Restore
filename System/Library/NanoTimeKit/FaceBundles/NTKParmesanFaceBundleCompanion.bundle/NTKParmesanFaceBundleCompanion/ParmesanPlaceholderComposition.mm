@@ -1,5 +1,5 @@
 @interface ParmesanPlaceholderComposition
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (int64_t)hash;
 @end
 
@@ -7,17 +7,17 @@
 
 - (int64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_23BF8D56C();
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_23BFFA960();
     swift_unknownObjectRelease();
@@ -26,7 +26,7 @@
   else
   {
     memset(v11, 0, sizeof(v11));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   sub_23BF4B33C(v11, v9, &qword_27E1E0530);

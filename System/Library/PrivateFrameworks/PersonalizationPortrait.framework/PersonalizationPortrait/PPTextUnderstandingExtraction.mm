@@ -1,21 +1,21 @@
 @interface PPTextUnderstandingExtraction
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToTextUnderstandingExtraction:(id)a3;
-- (PPTextUnderstandingExtraction)initWithCoder:(id)a3;
-- (PPTextUnderstandingExtraction)initWithNamedEntities:(id)a3 topics:(id)a4 topicAlgorithm:(unint64_t)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToTextUnderstandingExtraction:(id)extraction;
+- (PPTextUnderstandingExtraction)initWithCoder:(id)coder;
+- (PPTextUnderstandingExtraction)initWithNamedEntities:(id)entities topics:(id)topics topicAlgorithm:(unint64_t)algorithm;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PPTextUnderstandingExtraction
 
-- (BOOL)isEqualToTextUnderstandingExtraction:(id)a3
+- (BOOL)isEqualToTextUnderstandingExtraction:(id)extraction
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4 || self->_topicAlgorithm != v4[3])
+  extractionCopy = extraction;
+  v5 = extractionCopy;
+  if (!extractionCopy || self->_topicAlgorithm != extractionCopy[3])
   {
     goto LABEL_5;
   }
@@ -54,24 +54,24 @@ LABEL_11:
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PPTextUnderstandingExtraction *)self isEqualToTextUnderstandingExtraction:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PPTextUnderstandingExtraction *)self isEqualToTextUnderstandingExtraction:v5];
   }
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   objc_opt_class();
   v4 = objc_opt_new();
@@ -91,25 +91,25 @@ LABEL_11:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   namedEntities = self->_namedEntities;
-  v5 = a3;
-  [v5 encodeObject:namedEntities forKey:@"nes"];
-  [v5 encodeObject:self->_topics forKey:@"top"];
-  [v5 encodeInt32:LODWORD(self->_topicAlgorithm) forKey:@"tal"];
+  coderCopy = coder;
+  [coderCopy encodeObject:namedEntities forKey:@"nes"];
+  [coderCopy encodeObject:self->_topics forKey:@"top"];
+  [coderCopy encodeInt32:LODWORD(self->_topicAlgorithm) forKey:@"tal"];
 }
 
-- (PPTextUnderstandingExtraction)initWithCoder:(id)a3
+- (PPTextUnderstandingExtraction)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_autoreleasePoolPush();
   v6 = objc_alloc(MEMORY[0x1E695DFD8]);
   v7 = objc_opt_class();
   v8 = objc_opt_class();
   v9 = [v6 initWithObjects:{v7, v8, objc_opt_class(), 0}];
   objc_autoreleasePoolPop(v5);
-  v10 = [v4 decodeObjectOfClasses:v9 forKey:@"nes"];
+  v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"nes"];
 
   v11 = objc_autoreleasePoolPush();
   v12 = objc_alloc(MEMORY[0x1E695DFD8]);
@@ -117,9 +117,9 @@ LABEL_11:
   v14 = objc_opt_class();
   v15 = [v12 initWithObjects:{v13, v14, objc_opt_class(), 0}];
   objc_autoreleasePoolPop(v11);
-  v16 = [v4 decodeObjectOfClasses:v15 forKey:@"top"];
+  v16 = [coderCopy decodeObjectOfClasses:v15 forKey:@"top"];
 
-  v17 = -[PPTextUnderstandingExtraction initWithNamedEntities:topics:topicAlgorithm:](self, "initWithNamedEntities:topics:topicAlgorithm:", v10, v16, [v4 decodeInt32ForKey:@"tal"]);
+  v17 = -[PPTextUnderstandingExtraction initWithNamedEntities:topics:topicAlgorithm:](self, "initWithNamedEntities:topics:topicAlgorithm:", v10, v16, [coderCopy decodeInt32ForKey:@"tal"]);
   return v17;
 }
 
@@ -137,24 +137,24 @@ LABEL_11:
   return v2;
 }
 
-- (PPTextUnderstandingExtraction)initWithNamedEntities:(id)a3 topics:(id)a4 topicAlgorithm:(unint64_t)a5
+- (PPTextUnderstandingExtraction)initWithNamedEntities:(id)entities topics:(id)topics topicAlgorithm:(unint64_t)algorithm
 {
-  v8 = a3;
-  v9 = a4;
+  entitiesCopy = entities;
+  topicsCopy = topics;
   v16.receiver = self;
   v16.super_class = PPTextUnderstandingExtraction;
   v10 = [(PPTextUnderstandingExtraction *)&v16 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [entitiesCopy copy];
     namedEntities = v10->_namedEntities;
     v10->_namedEntities = v11;
 
-    v13 = [v9 copy];
+    v13 = [topicsCopy copy];
     topics = v10->_topics;
     v10->_topics = v13;
 
-    v10->_topicAlgorithm = a5;
+    v10->_topicAlgorithm = algorithm;
   }
 
   return v10;

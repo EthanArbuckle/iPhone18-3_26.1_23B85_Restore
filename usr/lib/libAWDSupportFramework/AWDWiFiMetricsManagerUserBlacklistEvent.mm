@@ -1,20 +1,20 @@
 @interface AWDWiFiMetricsManagerUserBlacklistEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDstChange:(BOOL)a3;
-- (void)setHasEventType:(BOOL)a3;
-- (void)setHasLocState:(BOOL)a3;
-- (void)setHasMoState:(BOOL)a3;
-- (void)setHasSecurityType:(BOOL)a3;
-- (void)setHasTimestamp:(BOOL)a3;
-- (void)setHasTrigger:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasDstChange:(BOOL)change;
+- (void)setHasEventType:(BOOL)type;
+- (void)setHasLocState:(BOOL)state;
+- (void)setHasMoState:(BOOL)state;
+- (void)setHasSecurityType:(BOOL)type;
+- (void)setHasTimestamp:(BOOL)timestamp;
+- (void)setHasTrigger:(BOOL)trigger;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDWiFiMetricsManagerUserBlacklistEvent
@@ -28,9 +28,9 @@
   [(AWDWiFiMetricsManagerUserBlacklistEvent *)&v3 dealloc];
 }
 
-- (void)setHasTimestamp:(BOOL)a3
+- (void)setHasTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 4;
   }
@@ -43,9 +43,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasEventType:(BOOL)a3
+- (void)setHasEventType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 16;
   }
@@ -58,9 +58,9 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasSecurityType:(BOOL)a3
+- (void)setHasSecurityType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 0x80;
   }
@@ -73,9 +73,9 @@
   *&self->_has = v3 & 0x80 | *&self->_has & 0x7F;
 }
 
-- (void)setHasTrigger:(BOOL)a3
+- (void)setHasTrigger:(BOOL)trigger
 {
-  if (a3)
+  if (trigger)
   {
     v3 = 8;
   }
@@ -88,9 +88,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasDstChange:(BOOL)a3
+- (void)setHasDstChange:(BOOL)change
 {
-  if (a3)
+  if (change)
   {
     v3 = 2;
   }
@@ -103,9 +103,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasMoState:(BOOL)a3
+- (void)setHasMoState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 64;
   }
@@ -118,9 +118,9 @@
   *&self->_has = *&self->_has & 0xBF | v3;
 }
 
-- (void)setHasLocState:(BOOL)a3
+- (void)setHasLocState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 32;
   }
@@ -142,23 +142,23 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if ((has & 4) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
     has = self->_has;
   }
 
   if ((has & 0x10) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_eventType), @"eventType"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_eventType), @"eventType"}];
   }
 
   ssid = self->_ssid;
   if (ssid)
   {
-    [v3 setObject:ssid forKey:@"ssid"];
+    [dictionary setObject:ssid forKey:@"ssid"];
   }
 
   v6 = self->_has;
@@ -172,25 +172,25 @@
     goto LABEL_9;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_securityType), @"securityType"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_securityType), @"securityType"}];
   *&v6 = self->_has;
   if ((*&v6 & 8) != 0)
   {
 LABEL_9:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_trigger), @"trigger"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_trigger), @"trigger"}];
     *&v6 = self->_has;
   }
 
 LABEL_10:
   if (*&v6)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_blacklistDuration), @"blacklistDuration"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_blacklistDuration), @"blacklistDuration"}];
   }
 
   apuuid = self->_apuuid;
   if (apuuid)
   {
-    [v3 setObject:apuuid forKey:@"apuuid"];
+    [dictionary setObject:apuuid forKey:@"apuuid"];
   }
 
   v8 = self->_has;
@@ -202,16 +202,16 @@ LABEL_10:
     }
 
 LABEL_20:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_moState), @"moState"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_moState), @"moState"}];
     if ((*&self->_has & 0x20) == 0)
     {
-      return v3;
+      return dictionary;
     }
 
     goto LABEL_17;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_dstChange), @"dstChange"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_dstChange), @"dstChange"}];
   v8 = self->_has;
   if ((v8 & 0x40) != 0)
   {
@@ -222,13 +222,13 @@ LABEL_16:
   if ((v8 & 0x20) != 0)
   {
 LABEL_17:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_locState), @"locState"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_locState), @"locState"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if ((has & 4) != 0)
@@ -322,25 +322,25 @@ LABEL_20:
   PBDataWriterWriteUint32Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if ((has & 4) != 0)
   {
-    *(a3 + 3) = self->_timestamp;
-    *(a3 + 72) |= 4u;
+    *(to + 3) = self->_timestamp;
+    *(to + 72) |= 4u;
     has = self->_has;
   }
 
   if ((has & 0x10) != 0)
   {
-    *(a3 + 12) = self->_eventType;
-    *(a3 + 72) |= 0x10u;
+    *(to + 12) = self->_eventType;
+    *(to + 72) |= 0x10u;
   }
 
   if (self->_ssid)
   {
-    [a3 setSsid:?];
+    [to setSsid:?];
   }
 
   v6 = self->_has;
@@ -354,34 +354,34 @@ LABEL_20:
     goto LABEL_9;
   }
 
-  *(a3 + 15) = self->_securityType;
-  *(a3 + 72) |= 0x80u;
+  *(to + 15) = self->_securityType;
+  *(to + 72) |= 0x80u;
   *&v6 = self->_has;
   if ((*&v6 & 8) != 0)
   {
 LABEL_9:
-    *(a3 + 4) = self->_trigger;
-    *(a3 + 72) |= 8u;
+    *(to + 4) = self->_trigger;
+    *(to + 72) |= 8u;
     *&v6 = self->_has;
   }
 
 LABEL_10:
   if (*&v6)
   {
-    *(a3 + 1) = self->_blacklistDuration;
-    *(a3 + 72) |= 1u;
+    *(to + 1) = self->_blacklistDuration;
+    *(to + 72) |= 1u;
   }
 
   if (self->_apuuid)
   {
-    [a3 setApuuid:?];
+    [to setApuuid:?];
   }
 
   v7 = self->_has;
   if ((v7 & 2) != 0)
   {
-    *(a3 + 2) = self->_dstChange;
-    *(a3 + 72) |= 2u;
+    *(to + 2) = self->_dstChange;
+    *(to + 72) |= 2u;
     v7 = self->_has;
     if ((v7 & 0x40) == 0)
     {
@@ -400,19 +400,19 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  *(a3 + 14) = self->_moState;
-  *(a3 + 72) |= 0x40u;
+  *(to + 14) = self->_moState;
+  *(to + 72) |= 0x40u;
   if ((*&self->_has & 0x20) != 0)
   {
 LABEL_17:
-    *(a3 + 13) = self->_locState;
-    *(a3 + 72) |= 0x20u;
+    *(to + 13) = self->_locState;
+    *(to + 72) |= 0x20u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 4) != 0)
@@ -428,7 +428,7 @@ LABEL_17:
     *(v5 + 72) |= 0x10u;
   }
 
-  *(v6 + 64) = [(NSString *)self->_ssid copyWithZone:a3];
+  *(v6 + 64) = [(NSString *)self->_ssid copyWithZone:zone];
   v8 = self->_has;
   if ((*&v8 & 0x80000000) == 0)
   {
@@ -458,7 +458,7 @@ LABEL_8:
     *(v6 + 72) |= 1u;
   }
 
-  *(v6 + 40) = [(NSString *)self->_apuuid copyWithZone:a3];
+  *(v6 + 40) = [(NSString *)self->_apuuid copyWithZone:zone];
   v9 = self->_has;
   if ((v9 & 2) == 0)
   {
@@ -497,41 +497,41 @@ LABEL_13:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     has = self->_has;
-    v7 = *(a3 + 72);
+    v7 = *(equal + 72);
     if ((has & 4) != 0)
     {
-      if ((*(a3 + 72) & 4) == 0 || self->_timestamp != *(a3 + 3))
+      if ((*(equal + 72) & 4) == 0 || self->_timestamp != *(equal + 3))
       {
         goto LABEL_47;
       }
     }
 
-    else if ((*(a3 + 72) & 4) != 0)
+    else if ((*(equal + 72) & 4) != 0)
     {
       goto LABEL_47;
     }
 
     if ((*&self->_has & 0x10) != 0)
     {
-      if ((*(a3 + 72) & 0x10) == 0 || self->_eventType != *(a3 + 12))
+      if ((*(equal + 72) & 0x10) == 0 || self->_eventType != *(equal + 12))
       {
         goto LABEL_47;
       }
     }
 
-    else if ((*(a3 + 72) & 0x10) != 0)
+    else if ((*(equal + 72) & 0x10) != 0)
     {
       goto LABEL_47;
     }
 
     ssid = self->_ssid;
-    if (ssid | *(a3 + 8))
+    if (ssid | *(equal + 8))
     {
       v5 = [(NSString *)ssid isEqual:?];
       if (!v5)
@@ -542,16 +542,16 @@ LABEL_13:
       has = self->_has;
     }
 
-    v9 = *(a3 + 72);
+    v9 = *(equal + 72);
     if (has < 0)
     {
-      if ((*(a3 + 72) & 0x80) == 0 || self->_securityType != *(a3 + 15))
+      if ((*(equal + 72) & 0x80) == 0 || self->_securityType != *(equal + 15))
       {
         goto LABEL_47;
       }
     }
 
-    else if ((*(a3 + 72) & 0x80) != 0)
+    else if ((*(equal + 72) & 0x80) != 0)
     {
 LABEL_47:
       LOBYTE(v5) = 0;
@@ -560,32 +560,32 @@ LABEL_47:
 
     if ((has & 8) != 0)
     {
-      if ((*(a3 + 72) & 8) == 0 || self->_trigger != *(a3 + 4))
+      if ((*(equal + 72) & 8) == 0 || self->_trigger != *(equal + 4))
       {
         goto LABEL_47;
       }
     }
 
-    else if ((*(a3 + 72) & 8) != 0)
+    else if ((*(equal + 72) & 8) != 0)
     {
       goto LABEL_47;
     }
 
     if (has)
     {
-      if ((*(a3 + 72) & 1) == 0 || self->_blacklistDuration != *(a3 + 1))
+      if ((*(equal + 72) & 1) == 0 || self->_blacklistDuration != *(equal + 1))
       {
         goto LABEL_47;
       }
     }
 
-    else if (*(a3 + 72))
+    else if (*(equal + 72))
     {
       goto LABEL_47;
     }
 
     apuuid = self->_apuuid;
-    if (apuuid | *(a3 + 5))
+    if (apuuid | *(equal + 5))
     {
       v5 = [(NSString *)apuuid isEqual:?];
       if (!v5)
@@ -598,34 +598,34 @@ LABEL_47:
 
     if ((has & 2) != 0)
     {
-      if ((*(a3 + 72) & 2) == 0 || self->_dstChange != *(a3 + 2))
+      if ((*(equal + 72) & 2) == 0 || self->_dstChange != *(equal + 2))
       {
         goto LABEL_47;
       }
     }
 
-    else if ((*(a3 + 72) & 2) != 0)
+    else if ((*(equal + 72) & 2) != 0)
     {
       goto LABEL_47;
     }
 
     if ((has & 0x40) != 0)
     {
-      if ((*(a3 + 72) & 0x40) == 0 || self->_moState != *(a3 + 14))
+      if ((*(equal + 72) & 0x40) == 0 || self->_moState != *(equal + 14))
       {
         goto LABEL_47;
       }
     }
 
-    else if ((*(a3 + 72) & 0x40) != 0)
+    else if ((*(equal + 72) & 0x40) != 0)
     {
       goto LABEL_47;
     }
 
-    LOBYTE(v5) = (*(a3 + 72) & 0x20) == 0;
+    LOBYTE(v5) = (*(equal + 72) & 0x20) == 0;
     if ((has & 0x20) != 0)
     {
-      if ((*(a3 + 72) & 0x20) == 0 || self->_locState != *(a3 + 13))
+      if ((*(equal + 72) & 0x20) == 0 || self->_locState != *(equal + 13))
       {
         goto LABEL_47;
       }
@@ -737,28 +737,28 @@ LABEL_16:
   return v4 ^ v3 ^ v6 ^ v7 ^ v8 ^ v5 ^ v9 ^ v10 ^ v11 ^ v12;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v5 = *(a3 + 72);
+  v5 = *(from + 72);
   if ((v5 & 4) != 0)
   {
-    self->_timestamp = *(a3 + 3);
+    self->_timestamp = *(from + 3);
     *&self->_has |= 4u;
-    v5 = *(a3 + 72);
+    v5 = *(from + 72);
   }
 
   if ((v5 & 0x10) != 0)
   {
-    self->_eventType = *(a3 + 12);
+    self->_eventType = *(from + 12);
     *&self->_has |= 0x10u;
   }
 
-  if (*(a3 + 8))
+  if (*(from + 8))
   {
     [(AWDWiFiMetricsManagerUserBlacklistEvent *)self setSsid:?];
   }
 
-  v6 = *(a3 + 72);
+  v6 = *(from + 72);
   if ((v6 & 0x80000000) == 0)
   {
     if ((v6 & 8) == 0)
@@ -769,35 +769,35 @@ LABEL_16:
     goto LABEL_9;
   }
 
-  self->_securityType = *(a3 + 15);
+  self->_securityType = *(from + 15);
   *&self->_has |= 0x80u;
-  LOBYTE(v6) = *(a3 + 72);
+  LOBYTE(v6) = *(from + 72);
   if ((v6 & 8) != 0)
   {
 LABEL_9:
-    self->_trigger = *(a3 + 4);
+    self->_trigger = *(from + 4);
     *&self->_has |= 8u;
-    LOBYTE(v6) = *(a3 + 72);
+    LOBYTE(v6) = *(from + 72);
   }
 
 LABEL_10:
   if (v6)
   {
-    self->_blacklistDuration = *(a3 + 1);
+    self->_blacklistDuration = *(from + 1);
     *&self->_has |= 1u;
   }
 
-  if (*(a3 + 5))
+  if (*(from + 5))
   {
     [(AWDWiFiMetricsManagerUserBlacklistEvent *)self setApuuid:?];
   }
 
-  v7 = *(a3 + 72);
+  v7 = *(from + 72);
   if ((v7 & 2) != 0)
   {
-    self->_dstChange = *(a3 + 2);
+    self->_dstChange = *(from + 2);
     *&self->_has |= 2u;
-    v7 = *(a3 + 72);
+    v7 = *(from + 72);
     if ((v7 & 0x40) == 0)
     {
 LABEL_16:
@@ -810,17 +810,17 @@ LABEL_16:
     }
   }
 
-  else if ((*(a3 + 72) & 0x40) == 0)
+  else if ((*(from + 72) & 0x40) == 0)
   {
     goto LABEL_16;
   }
 
-  self->_moState = *(a3 + 14);
+  self->_moState = *(from + 14);
   *&self->_has |= 0x40u;
-  if ((*(a3 + 72) & 0x20) != 0)
+  if ((*(from + 72) & 0x20) != 0)
   {
 LABEL_17:
-    self->_locState = *(a3 + 13);
+    self->_locState = *(from + 13);
     *&self->_has |= 0x20u;
   }
 }

@@ -1,21 +1,21 @@
 @interface BKDataBinding
-- (BKDataBinding)initWithBinding:(id)a3 key:(id)a4 to:(id)a5 key:(id)a6 transmitInitialValue:(BOOL)a7;
+- (BKDataBinding)initWithBinding:(id)binding key:(id)key to:(id)to key:(id)a6 transmitInitialValue:(BOOL)value;
 - (NSObject)dstObj;
 - (NSObject)srcObj;
 - (id)description;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)unbind;
 @end
 
 @implementation BKDataBinding
 
-- (BKDataBinding)initWithBinding:(id)a3 key:(id)a4 to:(id)a5 key:(id)a6 transmitInitialValue:(BOOL)a7
+- (BKDataBinding)initWithBinding:(id)binding key:(id)key to:(id)to key:(id)a6 transmitInitialValue:(BOOL)value
 {
-  v7 = a7;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
+  valueCopy = value;
+  bindingCopy = binding;
+  keyCopy = key;
+  toCopy = to;
   v15 = a6;
   v22.receiver = self;
   v22.super_class = BKDataBinding;
@@ -23,13 +23,13 @@
   v17 = v16;
   if (v16)
   {
-    [(BKDataBinding *)v16 setSrcKey:v13];
+    [(BKDataBinding *)v16 setSrcKey:keyCopy];
     [(BKDataBinding *)v17 setDstKey:v15];
-    [(BKDataBinding *)v17 setSrcObj:v12];
-    [(BKDataBinding *)v17 setDstObj:v14];
-    v18 = [(BKDataBinding *)v17 srcObj];
-    v19 = [(BKDataBinding *)v17 srcKey];
-    if (v7)
+    [(BKDataBinding *)v17 setSrcObj:bindingCopy];
+    [(BKDataBinding *)v17 setDstObj:toCopy];
+    srcObj = [(BKDataBinding *)v17 srcObj];
+    srcKey = [(BKDataBinding *)v17 srcKey];
+    if (valueCopy)
     {
       v20 = 5;
     }
@@ -39,7 +39,7 @@
       v20 = 1;
     }
 
-    [v18 addObserver:v17 forKeyPath:v19 options:v20 context:off_100ACEC18];
+    [srcObj addObserver:v17 forKeyPath:srcKey options:v20 context:off_100ACEC18];
   }
 
   return v17;
@@ -55,35 +55,35 @@
 
 - (void)unbind
 {
-  v3 = [(BKDataBinding *)self srcObj];
-  v4 = [(BKDataBinding *)self srcKey];
-  [v3 removeObserver:self forKeyPath:v4 context:off_100ACEC18];
+  srcObj = [(BKDataBinding *)self srcObj];
+  srcKey = [(BKDataBinding *)self srcKey];
+  [srcObj removeObserver:self forKeyPath:srcKey context:off_100ACEC18];
 
   objc_storeWeak(&self->_srcObj, 0);
 
   objc_storeWeak(&self->_dstObj, 0);
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (off_100ACEC18 == a6)
+  if (off_100ACEC18 == context)
   {
-    v7 = [(BKDataBinding *)self srcObj:a3];
-    v8 = [(BKDataBinding *)self srcKey];
-    v17 = [v7 valueForKey:v8];
+    v7 = [(BKDataBinding *)self srcObj:path];
+    srcKey = [(BKDataBinding *)self srcKey];
+    v17 = [v7 valueForKey:srcKey];
 
-    v9 = [(BKDataBinding *)self dstObj];
-    v10 = [(BKDataBinding *)self dstKey];
-    v11 = [v9 valueForKey:v10];
+    dstObj = [(BKDataBinding *)self dstObj];
+    dstKey = [(BKDataBinding *)self dstKey];
+    v11 = [dstObj valueForKey:dstKey];
 
     if (v17 != v11 && ([v17 isEqual:v11] & 1) == 0)
     {
-      v12 = [(BKDataBinding *)self dstObj];
-      v13 = [(BKDataBinding *)self srcObj];
-      v14 = [(BKDataBinding *)self srcKey];
-      v15 = [v13 valueForKey:v14];
-      v16 = [(BKDataBinding *)self dstKey];
-      [v12 setValue:v15 forKey:v16];
+      dstObj2 = [(BKDataBinding *)self dstObj];
+      srcObj = [(BKDataBinding *)self srcObj];
+      srcKey2 = [(BKDataBinding *)self srcKey];
+      v15 = [srcObj valueForKey:srcKey2];
+      dstKey2 = [(BKDataBinding *)self dstKey];
+      [dstObj2 setValue:v15 forKey:dstKey2];
     }
   }
 
@@ -91,17 +91,17 @@
   {
     v18.receiver = self;
     v18.super_class = BKDataBinding;
-    [(BKDataBinding *)&v18 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(BKDataBinding *)&v18 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 
 - (id)description
 {
-  v3 = [(BKDataBinding *)self srcKey];
-  v4 = [(BKDataBinding *)self dstKey];
-  v5 = [(BKDataBinding *)self srcObj];
-  v6 = [(BKDataBinding *)self dstObj];
-  v7 = [NSString stringWithFormat:@"Binding: %@ to %@ for %@ and %@", v3, v4, v5, v6];
+  srcKey = [(BKDataBinding *)self srcKey];
+  dstKey = [(BKDataBinding *)self dstKey];
+  srcObj = [(BKDataBinding *)self srcObj];
+  dstObj = [(BKDataBinding *)self dstObj];
+  v7 = [NSString stringWithFormat:@"Binding: %@ to %@ for %@ and %@", srcKey, dstKey, srcObj, dstObj];
 
   return v7;
 }

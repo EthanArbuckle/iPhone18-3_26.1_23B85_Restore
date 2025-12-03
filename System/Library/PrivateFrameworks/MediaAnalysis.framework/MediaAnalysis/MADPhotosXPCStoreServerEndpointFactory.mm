@@ -1,20 +1,20 @@
 @interface MADPhotosXPCStoreServerEndpointFactory
-- (MADPhotosXPCStoreServerEndpointFactory)initWithPhotoLibrary:(id)a3;
+- (MADPhotosXPCStoreServerEndpointFactory)initWithPhotoLibrary:(id)library;
 - (id)newEndpoint;
 @end
 
 @implementation MADPhotosXPCStoreServerEndpointFactory
 
-- (MADPhotosXPCStoreServerEndpointFactory)initWithPhotoLibrary:(id)a3
+- (MADPhotosXPCStoreServerEndpointFactory)initWithPhotoLibrary:(id)library
 {
-  v5 = a3;
+  libraryCopy = library;
   v9.receiver = self;
   v9.super_class = MADPhotosXPCStoreServerEndpointFactory;
   v6 = [(MADPhotosXPCStoreServerEndpointFactory *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_photoLibrary, a3);
+    objc_storeStrong(&v6->_photoLibrary, library);
   }
 
   return v7;

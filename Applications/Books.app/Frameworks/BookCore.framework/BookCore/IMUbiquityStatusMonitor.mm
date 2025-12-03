@@ -3,36 +3,36 @@
 - (BOOL)dq_isICloudDriveEnabled;
 - (BOOL)isICloudDriveEnabled;
 - (IMUbiquityStatusChangeObserving)coordinatingObserver;
-- (IMUbiquityStatusMonitor)initWithContainerIdentifier:(id)a3;
+- (IMUbiquityStatusMonitor)initWithContainerIdentifier:(id)identifier;
 - (NSURL)containerURL;
 - (NSURL)documentsURL;
 - (id)_stateForLog;
 - (id)description;
 - (id)makeOSStateHandler;
-- (void)_notifyObserversForChangesWithCurrentToken:(id)a3 lastToken:(id)a4;
-- (void)_notifyObserversForUnchangedWithCurrentToken:(id)a3;
-- (void)addObserver:(id)a3;
+- (void)_notifyObserversForChangesWithCurrentToken:(id)token lastToken:(id)lastToken;
+- (void)_notifyObserversForUnchangedWithCurrentToken:(id)token;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
 - (void)dq_archiveCurrentUbiquityIdentityToken;
 - (void)dq_refreshUbiquityAvailabilityStatus;
-- (void)p_ubiquityIdentityDidChange:(id)a3;
-- (void)registerCoordinatingObserver:(id)a3;
-- (void)removeObserver:(id)a3;
+- (void)p_ubiquityIdentityDidChange:(id)change;
+- (void)registerCoordinatingObserver:(id)observer;
+- (void)removeObserver:(id)observer;
 - (void)restartObserving;
 @end
 
 @implementation IMUbiquityStatusMonitor
 
-- (IMUbiquityStatusMonitor)initWithContainerIdentifier:(id)a3
+- (IMUbiquityStatusMonitor)initWithContainerIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v24.receiver = self;
   v24.super_class = IMUbiquityStatusMonitor;
   v6 = [(IMUbiquityStatusMonitor *)&v24 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_containerIdentifier, a3);
+    objc_storeStrong(&v6->_containerIdentifier, identifier);
     v8 = [NSHashTable hashTableWithOptions:517];
     observers = v7->_observers;
     v7->_observers = v8;
@@ -87,14 +87,14 @@
   v10 = sub_4C374;
   v11 = sub_4C384;
   v12 = 0;
-  v3 = [(IMUbiquityStatusMonitor *)self dispatchQueue];
+  dispatchQueue = [(IMUbiquityStatusMonitor *)self dispatchQueue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_4C38C;
   v6[3] = &unk_2C7AE0;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(dispatchQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -158,38 +158,38 @@
 
 - (BOOL)isICloudDriveEnabled
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(IMUbiquityStatusMonitor *)self dispatchQueue];
+  dispatchQueue = [(IMUbiquityStatusMonitor *)self dispatchQueue];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_4C5D8;
   v5[3] = &unk_2C7AE0;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(dispatchQueue, v5);
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v11 = a3;
-  if (v11)
+  observerCopy = observer;
+  if (observerCopy)
   {
-    v12 = [(IMUbiquityStatusMonitor *)self dispatchQueue];
+    dispatchQueue = [(IMUbiquityStatusMonitor *)self dispatchQueue];
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_4C6CC;
     v13[3] = &unk_2C7BE8;
     v13[4] = self;
-    v14 = v11;
-    dispatch_async(v12, v13);
+    v14 = observerCopy;
+    dispatch_async(dispatchQueue, v13);
   }
 
   else
@@ -198,19 +198,19 @@
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v11 = a3;
-  if (v11)
+  observerCopy = observer;
+  if (observerCopy)
   {
-    v12 = [(IMUbiquityStatusMonitor *)self dispatchQueue];
+    dispatchQueue = [(IMUbiquityStatusMonitor *)self dispatchQueue];
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_4C81C;
     v13[3] = &unk_2C7BE8;
     v13[4] = self;
-    v14 = v11;
-    dispatch_async(v12, v13);
+    v14 = observerCopy;
+    dispatch_async(dispatchQueue, v13);
   }
 
   else
@@ -219,19 +219,19 @@
   }
 }
 
-- (void)registerCoordinatingObserver:(id)a3
+- (void)registerCoordinatingObserver:(id)observer
 {
-  v11 = a3;
-  if (v11)
+  observerCopy = observer;
+  if (observerCopy)
   {
-    v12 = [(IMUbiquityStatusMonitor *)self dispatchQueue];
+    dispatchQueue = [(IMUbiquityStatusMonitor *)self dispatchQueue];
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_4C970;
     v13[3] = &unk_2C7BE8;
     v13[4] = self;
-    v14 = v11;
-    dispatch_async(v12, v13);
+    v14 = observerCopy;
+    dispatch_async(dispatchQueue, v13);
   }
 
   else
@@ -242,57 +242,57 @@
 
 - (void)restartObserving
 {
-  v3 = [(IMUbiquityStatusMonitor *)self dispatchQueue];
+  dispatchQueue = [(IMUbiquityStatusMonitor *)self dispatchQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_4CA4C;
   block[3] = &unk_2C7D40;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(dispatchQueue, block);
 }
 
 - (void)dq_archiveCurrentUbiquityIdentityToken
 {
   v3 = +[NSUserDefaults standardUserDefaults];
-  v4 = [(IMUbiquityStatusMonitor *)self currentUbiquityIdentityToken];
-  v5 = [v4 token];
-  [v3 setObject:v5 forKey:@"ubiquityIdentityToken"];
+  currentUbiquityIdentityToken = [(IMUbiquityStatusMonitor *)self currentUbiquityIdentityToken];
+  token = [currentUbiquityIdentityToken token];
+  [v3 setObject:token forKey:@"ubiquityIdentityToken"];
 
-  v6 = [(IMUbiquityStatusMonitor *)self currentUbiquityIdentityToken];
+  currentUbiquityIdentityToken2 = [(IMUbiquityStatusMonitor *)self currentUbiquityIdentityToken];
 
-  if (v6)
+  if (currentUbiquityIdentityToken2)
   {
     v7 = +[NSUserDefaults standardUserDefaults];
-    v8 = [(IMUbiquityStatusMonitor *)self currentUbiquityIdentityToken];
-    v9 = [v8 token];
-    [v7 setObject:v9 forKey:@"nonNilUbiquityIdentityToken"];
+    currentUbiquityIdentityToken3 = [(IMUbiquityStatusMonitor *)self currentUbiquityIdentityToken];
+    token2 = [currentUbiquityIdentityToken3 token];
+    [v7 setObject:token2 forKey:@"nonNilUbiquityIdentityToken"];
   }
 
   v10 = +[NSUserDefaults standardUserDefaults];
   [v10 synchronize];
 }
 
-- (void)p_ubiquityIdentityDidChange:(id)a3
+- (void)p_ubiquityIdentityDidChange:(id)change
 {
-  v4 = [(IMUbiquityStatusMonitor *)self dispatchQueue];
+  dispatchQueue = [(IMUbiquityStatusMonitor *)self dispatchQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_4CEF4;
   block[3] = &unk_2C7D40;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(dispatchQueue, block);
 }
 
-- (void)_notifyObserversForChangesWithCurrentToken:(id)a3 lastToken:(id)a4
+- (void)_notifyObserversForChangesWithCurrentToken:(id)token lastToken:(id)lastToken
 {
-  v16 = a3;
-  v6 = a4;
+  tokenCopy = token;
+  lastTokenCopy = lastToken;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v7 = [(IMUbiquityStatusMonitor *)self observers];
-  v8 = [v7 countByEnumeratingWithState:&v25 objects:v29 count:16];
+  observers = [(IMUbiquityStatusMonitor *)self observers];
+  v8 = [observers countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v8)
   {
     v9 = v8;
@@ -304,57 +304,57 @@
       {
         if (*v26 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(observers);
         }
 
         v12 = *(*(&v25 + 1) + 8 * v11);
         if (objc_opt_respondsToSelector())
         {
-          v13 = [(IMUbiquityStatusMonitor *)self notifyQueue];
+          notifyQueue = [(IMUbiquityStatusMonitor *)self notifyQueue];
           block[0] = _NSConcreteStackBlock;
           block[1] = 3221225472;
           block[2] = sub_4D324;
           block[3] = &unk_2C89F8;
-          v22 = v16;
-          v23 = v6;
+          v22 = tokenCopy;
+          v23 = lastTokenCopy;
           v24 = v12;
-          dispatch_async(v13, block);
+          dispatch_async(notifyQueue, block);
         }
 
         v11 = v11 + 1;
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v25 objects:v29 count:16];
+      v9 = [observers countByEnumeratingWithState:&v25 objects:v29 count:16];
     }
 
     while (v9);
   }
 
-  v14 = [(IMUbiquityStatusMonitor *)self coordinatingObserver];
-  if (v14 && (objc_opt_respondsToSelector() & 1) != 0)
+  coordinatingObserver = [(IMUbiquityStatusMonitor *)self coordinatingObserver];
+  if (coordinatingObserver && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v15 = [(IMUbiquityStatusMonitor *)self notifyQueue];
+    notifyQueue2 = [(IMUbiquityStatusMonitor *)self notifyQueue];
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
     v17[2] = sub_4D3E4;
     v17[3] = &unk_2C89F8;
-    v18 = v16;
-    v19 = v6;
-    v20 = v14;
-    dispatch_async(v15, v17);
+    v18 = tokenCopy;
+    v19 = lastTokenCopy;
+    v20 = coordinatingObserver;
+    dispatch_async(notifyQueue2, v17);
   }
 }
 
-- (void)_notifyObserversForUnchangedWithCurrentToken:(id)a3
+- (void)_notifyObserversForUnchangedWithCurrentToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v5 = [(IMUbiquityStatusMonitor *)self observers];
-  v6 = [v5 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  observers = [(IMUbiquityStatusMonitor *)self observers];
+  v6 = [observers countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v6)
   {
     v7 = v6;
@@ -366,43 +366,43 @@
       {
         if (*v21 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(observers);
         }
 
         v10 = *(*(&v20 + 1) + 8 * v9);
         if (objc_opt_respondsToSelector())
         {
-          v11 = [(IMUbiquityStatusMonitor *)self notifyQueue];
+          notifyQueue = [(IMUbiquityStatusMonitor *)self notifyQueue];
           block[0] = _NSConcreteStackBlock;
           block[1] = 3221225472;
           block[2] = sub_4D6F8;
           block[3] = &unk_2C7BE8;
-          v18 = v4;
+          v18 = tokenCopy;
           v19 = v10;
-          dispatch_async(v11, block);
+          dispatch_async(notifyQueue, block);
         }
 
         v9 = v9 + 1;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v7 = [observers countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v7);
   }
 
-  v12 = [(IMUbiquityStatusMonitor *)self coordinatingObserver];
-  if (v12 && (objc_opt_respondsToSelector() & 1) != 0)
+  coordinatingObserver = [(IMUbiquityStatusMonitor *)self coordinatingObserver];
+  if (coordinatingObserver && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v13 = [(IMUbiquityStatusMonitor *)self notifyQueue];
+    notifyQueue2 = [(IMUbiquityStatusMonitor *)self notifyQueue];
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_4D7A8;
     v14[3] = &unk_2C7BE8;
-    v15 = v4;
-    v16 = v12;
-    dispatch_async(v13, v14);
+    v15 = tokenCopy;
+    v16 = coordinatingObserver;
+    dispatch_async(notifyQueue2, v14);
   }
 }
 
@@ -423,11 +423,11 @@
   v10 = BCUbiquityEnabledLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
-    v16 = [(IMUbiquityStatusMonitor *)self containerIdentifier];
+    containerIdentifier = [(IMUbiquityStatusMonitor *)self containerIdentifier];
     v17 = self->_currentUbiquityIdentityToken;
     v18 = self->_lastArchivedUbiquityIdentityToken;
     *buf = 138412802;
-    v22 = v16;
+    v22 = containerIdentifier;
     v23 = 2112;
     v24 = v17;
     v25 = 2112;
@@ -436,8 +436,8 @@
   }
 
   v11 = self->_currentUbiquityIdentityToken;
-  v12 = [(IMUbiquityStatusMonitor *)self containerQueue];
-  v13 = v12;
+  containerQueue = [(IMUbiquityStatusMonitor *)self containerQueue];
+  v13 = containerQueue;
   if (v11)
   {
     v14 = v20;
@@ -457,7 +457,7 @@
   v14[2] = v15;
   v14[3] = &unk_2C7D40;
   v14[4] = self;
-  dispatch_async(v12, v14);
+  dispatch_async(containerQueue, v14);
 }
 
 - (NSURL)containerURL
@@ -468,14 +468,14 @@
   v10 = sub_4C374;
   v11 = sub_4C384;
   v12 = 0;
-  v3 = [(IMUbiquityStatusMonitor *)self containerQueue];
+  containerQueue = [(IMUbiquityStatusMonitor *)self containerQueue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_4E284;
   v6[3] = &unk_2C7AE0;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(containerQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -491,14 +491,14 @@
   v10 = sub_4C374;
   v11 = sub_4C384;
   v12 = 0;
-  v3 = [(IMUbiquityStatusMonitor *)self containerQueue];
+  containerQueue = [(IMUbiquityStatusMonitor *)self containerQueue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_4E3B4;
   v6[3] = &unk_2C7AE0;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(containerQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -520,9 +520,9 @@
     v5 = @"NO";
   }
 
-  v6 = [(IMUbiquityStatusMonitor *)self containerURL];
-  v7 = [(IMUbiquityStatusMonitor *)self documentsURL];
-  v8 = [NSString stringWithFormat:@"<%@(%p) iCloudDrive=%@ containerURL='%@' documentsURL='%@'", v4, self, v5, v6, v7];
+  containerURL = [(IMUbiquityStatusMonitor *)self containerURL];
+  documentsURL = [(IMUbiquityStatusMonitor *)self documentsURL];
+  v8 = [NSString stringWithFormat:@"<%@(%p) iCloudDrive=%@ containerURL='%@' documentsURL='%@'", v4, self, v5, containerURL, documentsURL];
 
   return v8;
 }
@@ -546,13 +546,13 @@
 - (id)_stateForLog
 {
   v8 = @"ubiquityIdentityToken";
-  v2 = [(IMUbiquityStatusMonitor *)self ubiquityIdentityToken];
-  v3 = [v2 token];
-  v4 = v3;
+  ubiquityIdentityToken = [(IMUbiquityStatusMonitor *)self ubiquityIdentityToken];
+  token = [ubiquityIdentityToken token];
+  v4 = token;
   v5 = &stru_2D2930;
-  if (v3)
+  if (token)
   {
-    v5 = v3;
+    v5 = token;
   }
 
   v9 = v5;

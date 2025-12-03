@@ -1,7 +1,7 @@
 @interface _CPUITextField
-- (_TtC20ColorPickerUIServiceP33_B2FE14F7DB151A9888581FFCE687814914_CPUITextField)initWithCoder:(id)a3;
-- (_TtC20ColorPickerUIServiceP33_B2FE14F7DB151A9888581FFCE687814914_CPUITextField)initWithFrame:(CGRect)a3;
-- (void)buildMenuWithBuilder:(id)a3;
+- (_TtC20ColorPickerUIServiceP33_B2FE14F7DB151A9888581FFCE687814914_CPUITextField)initWithCoder:(id)coder;
+- (_TtC20ColorPickerUIServiceP33_B2FE14F7DB151A9888581FFCE687814914_CPUITextField)initWithFrame:(CGRect)frame;
+- (void)buildMenuWithBuilder:(id)builder;
 - (void)tintColorDidChange;
 @end
 
@@ -13,40 +13,40 @@
   v6.super_class = type metadata accessor for _CPUITextField();
   v2 = v6.receiver;
   [(_CPUITextField *)&v6 tintColorDidChange];
-  v3 = [v2 inputAccessoryView];
-  if (v3)
+  inputAccessoryView = [v2 inputAccessoryView];
+  if (inputAccessoryView)
   {
-    v4 = v3;
-    v5 = [v2 tintColor];
-    [v4 setTintColor:v5];
+    v4 = inputAccessoryView;
+    tintColor = [v2 tintColor];
+    [v4 setTintColor:tintColor];
   }
 }
 
-- (void)buildMenuWithBuilder:(id)a3
+- (void)buildMenuWithBuilder:(id)builder
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_100003494(a3);
+  selfCopy = self;
+  sub_100003494(builder);
   swift_unknownObjectRelease();
 }
 
-- (_TtC20ColorPickerUIServiceP33_B2FE14F7DB151A9888581FFCE687814914_CPUITextField)initWithFrame:(CGRect)a3
+- (_TtC20ColorPickerUIServiceP33_B2FE14F7DB151A9888581FFCE687814914_CPUITextField)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8.receiver = self;
   v8.super_class = type metadata accessor for _CPUITextField();
   return [(_CPUITextField *)&v8 initWithFrame:x, y, width, height];
 }
 
-- (_TtC20ColorPickerUIServiceP33_B2FE14F7DB151A9888581FFCE687814914_CPUITextField)initWithCoder:(id)a3
+- (_TtC20ColorPickerUIServiceP33_B2FE14F7DB151A9888581FFCE687814914_CPUITextField)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for _CPUITextField();
-  v4 = a3;
-  v5 = [(_CPUITextField *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(_CPUITextField *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

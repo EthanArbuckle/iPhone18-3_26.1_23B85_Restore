@@ -2,8 +2,8 @@
 + (id)sharedInstance;
 - (VUIUpNextRequestManager)init;
 - (id)_init;
-- (void)_postUpNextRequestFinishedNotificationForCanonicalId:(id)a3 userInfo:(id)a4;
-- (void)sendRequestForCanonicalID:(id)a3 action:(unint64_t)a4 confirmationShouldWaitCompletion:(BOOL)a5;
+- (void)_postUpNextRequestFinishedNotificationForCanonicalId:(id)id userInfo:(id)info;
+- (void)sendRequestForCanonicalID:(id)d action:(unint64_t)action confirmationShouldWaitCompletion:(BOOL)completion;
 @end
 
 @implementation VUIUpNextRequestManager
@@ -34,9 +34,9 @@ void __41__VUIUpNextRequestManager_sharedInstance__block_invoke()
   v2 = [(VUIUpNextRequestManager *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     ongoingCanonicalIDOperationDictionary = v2->_ongoingCanonicalIDOperationDictionary;
-    v2->_ongoingCanonicalIDOperationDictionary = v3;
+    v2->_ongoingCanonicalIDOperationDictionary = dictionary;
   }
 
   return v2;
@@ -48,23 +48,23 @@ void __41__VUIUpNextRequestManager_sharedInstance__block_invoke()
   objc_exception_throw(v2);
 }
 
-- (void)sendRequestForCanonicalID:(id)a3 action:(unint64_t)a4 confirmationShouldWaitCompletion:(BOOL)a5
+- (void)sendRequestForCanonicalID:(id)d action:(unint64_t)action confirmationShouldWaitCompletion:(BOOL)completion
 {
-  v7 = a3;
-  v8 = [(NSMutableDictionary *)self->_ongoingCanonicalIDOperationDictionary objectForKey:v7];
+  dCopy = d;
+  v8 = [(NSMutableDictionary *)self->_ongoingCanonicalIDOperationDictionary objectForKey:dCopy];
   v9 = v8;
   if (v8 && ([v8 isCancelled] & 1) == 0)
   {
-    if ([v9 action] != a4)
+    if ([v9 action] != action)
     {
       [v9 cancel];
-      [(NSMutableDictionary *)self->_ongoingCanonicalIDOperationDictionary removeObjectForKey:v7];
+      [(NSMutableDictionary *)self->_ongoingCanonicalIDOperationDictionary removeObjectForKey:dCopy];
     }
   }
 
   else
   {
-    v10 = [objc_alloc(MEMORY[0x1E69E1628]) initWithAction:a4 canonicalID:v7 caller:0];
+    v10 = [objc_alloc(MEMORY[0x1E69E1628]) initWithAction:action canonicalID:dCopy caller:0];
     if (v10)
     {
       objc_initWeak(&location, v10);
@@ -75,12 +75,12 @@ void __41__VUIUpNextRequestManager_sharedInstance__block_invoke()
       v13[3] = &unk_1E8730290;
       objc_copyWeak(&v15, &location);
       objc_copyWeak(&v16, &from);
-      v11 = v7;
+      v11 = dCopy;
       v14 = v11;
       [v10 setCompletionBlock:v13];
       [(NSMutableDictionary *)self->_ongoingCanonicalIDOperationDictionary setValue:v10 forKey:v11];
-      v12 = [MEMORY[0x1E696ADC8] wlkDefaultQueue];
-      [v12 addOperation:v10];
+      wlkDefaultQueue = [MEMORY[0x1E696ADC8] wlkDefaultQueue];
+      [wlkDefaultQueue addOperation:v10];
 
       objc_destroyWeak(&v16);
       objc_destroyWeak(&v15);
@@ -153,16 +153,16 @@ void __93__VUIUpNextRequestManager_sendRequestForCanonicalID_action_confirmation
   [WeakRetained _postUpNextRequestFinishedNotificationForCanonicalId:*(a1 + 32) userInfo:*(a1 + 40)];
 }
 
-- (void)_postUpNextRequestFinishedNotificationForCanonicalId:(id)a3 userInfo:(id)a4
+- (void)_postUpNextRequestFinishedNotificationForCanonicalId:(id)id userInfo:(id)info
 {
   v5 = MEMORY[0x1E696AD88];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 defaultCenter];
-  [v8 postNotificationName:@"VUIUpNextRequestDidFinishNotification" object:v7 userInfo:v6];
+  infoCopy = info;
+  idCopy = id;
+  defaultCenter = [v5 defaultCenter];
+  [defaultCenter postNotificationName:@"VUIUpNextRequestDidFinishNotification" object:idCopy userInfo:infoCopy];
 
-  v9 = [MEMORY[0x1E696ABB0] defaultCenter];
-  [v9 vui_postNotificationName:@"com.apple.VideosUI.UpNextRequestDidFinishNotification" object:v7 userInfo:v6];
+  defaultCenter2 = [MEMORY[0x1E696ABB0] defaultCenter];
+  [defaultCenter2 vui_postNotificationName:@"com.apple.VideosUI.UpNextRequestDidFinishNotification" object:idCopy userInfo:infoCopy];
 }
 
 @end

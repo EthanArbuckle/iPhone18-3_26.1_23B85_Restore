@@ -1,12 +1,12 @@
 @interface Pride2025ComplicationFactory
-- (id)initForDevice:(id)a3;
-- (id)keylineViewForComplicationSlot:(id)a3;
-- (id)newLegacyViewForComplication:(id)a3 family:(int64_t)a4 slot:(id)a5;
-- (id)newLegacyViewForComplication:(id)a3 family:(int64_t)a4 slot:(id)a5 faceView:(id)a6;
-- (void)configureComplicationView:(id)a3 forSlot:(id)a4;
-- (void)configureComplicationView:(id)a3 forSlot:(id)a4 faceView:(id)a5;
+- (id)initForDevice:(id)device;
+- (id)keylineViewForComplicationSlot:(id)slot;
+- (id)newLegacyViewForComplication:(id)complication family:(int64_t)family slot:(id)slot;
+- (id)newLegacyViewForComplication:(id)complication family:(int64_t)family slot:(id)slot faceView:(id)view;
+- (void)configureComplicationView:(id)view forSlot:(id)slot;
+- (void)configureComplicationView:(id)view forSlot:(id)slot faceView:(id)faceView;
 - (void)loadLayoutRules;
-- (void)loadLayoutRulesForFaceView:(id)a3;
+- (void)loadLayoutRulesForFaceView:(id)view;
 @end
 
 @implementation Pride2025ComplicationFactory
@@ -21,14 +21,14 @@
     __chkstk_darwin();
     v6[2] = self;
     v6[3] = v4;
-    v5 = self;
+    selfCopy = self;
     sub_2548(sub_3084, v6);
   }
 }
 
-- (id)newLegacyViewForComplication:(id)a3 family:(int64_t)a4 slot:(id)a5
+- (id)newLegacyViewForComplication:(id)complication family:(int64_t)family slot:(id)slot
 {
-  if (a5)
+  if (slot)
   {
     v7 = sub_12784();
     v9 = v8;
@@ -40,16 +40,16 @@
     v9 = 0;
   }
 
-  v10 = a3;
-  v11 = self;
-  v12 = sub_2D70(a3, v7, v9);
+  complicationCopy = complication;
+  selfCopy = self;
+  v12 = sub_2D70(complication, v7, v9);
 
   return v12;
 }
 
-- (void)configureComplicationView:(id)a3 forSlot:(id)a4
+- (void)configureComplicationView:(id)view forSlot:(id)slot
 {
-  if (a4)
+  if (slot)
   {
     v6 = sub_12784();
     v8 = v7;
@@ -61,55 +61,55 @@
     v8 = 0;
   }
 
-  v9 = a3;
-  v10 = self;
-  sub_1F5C(a3, v6, v8);
+  viewCopy = view;
+  selfCopy = self;
+  sub_1F5C(view, v6, v8);
 }
 
-- (id)initForDevice:(id)a3
+- (id)initForDevice:(id)device
 {
-  v3 = a3;
-  v4 = sub_2E60(v3);
+  deviceCopy = device;
+  v4 = sub_2E60(deviceCopy);
 
   return v4;
 }
 
-- (id)keylineViewForComplicationSlot:(id)a3
+- (id)keylineViewForComplicationSlot:(id)slot
 {
   v3 = NTKKeylineViewWithContinuousCurveCornerRadius();
 
   return v3;
 }
 
-- (void)loadLayoutRulesForFaceView:(id)a3
+- (void)loadLayoutRulesForFaceView:(id)view
 {
   sub_12834();
   v7[2] = self;
-  v7[3] = a3;
-  v5 = a3;
-  v6 = self;
+  v7[3] = view;
+  viewCopy = view;
+  selfCopy = self;
   sub_2548(sub_2CEC, v7);
 }
 
-- (id)newLegacyViewForComplication:(id)a3 family:(int64_t)a4 slot:(id)a5 faceView:(id)a6
+- (id)newLegacyViewForComplication:(id)complication family:(int64_t)family slot:(id)slot faceView:(id)view
 {
-  v6 = a3;
-  v7 = [v6 complicationType];
+  complicationCopy = complication;
+  complicationType = [complicationCopy complicationType];
   sub_12834();
-  v10[2] = v7;
+  v10[2] = complicationType;
   v8 = sub_26D0(sub_2C90, v10, "NTKPride2025FaceBundle/Pride2025ComplicationFactory.swift", 57);
 
   return v8;
 }
 
-- (void)configureComplicationView:(id)a3 forSlot:(id)a4 faceView:(id)a5
+- (void)configureComplicationView:(id)view forSlot:(id)slot faceView:(id)faceView
 {
   v13.receiver = self;
   v13.super_class = swift_getObjectType();
-  v8 = a3;
-  v9 = a5;
+  viewCopy = view;
+  faceViewCopy = faceView;
   v10 = v13.receiver;
-  [(Pride2025ComplicationFactory *)&v13 configureComplicationView:v8 forSlot:a4 faceView:v9];
+  [(Pride2025ComplicationFactory *)&v13 configureComplicationView:viewCopy forSlot:slot faceView:faceViewCopy];
   objc_opt_self();
   if (swift_dynamicCastObjCClass())
   {

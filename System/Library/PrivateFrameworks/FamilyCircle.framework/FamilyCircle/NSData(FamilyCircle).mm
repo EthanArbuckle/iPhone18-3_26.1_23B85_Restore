@@ -10,7 +10,7 @@
 
 - (CFTypeRef)_faCreateImageRef
 {
-  v1 = CGDataProviderCreateWithCFData(a1);
+  v1 = CGDataProviderCreateWithCFData(self);
   v2 = v1;
   if (!v1 || (v3 = CGImageSourceCreateWithDataProvider(v1, 0)) == 0)
   {
@@ -71,7 +71,7 @@
     CGContextAddPath(v16, v17);
     CGContextClip(v16);
     Width = CGImageGetWidth(cf);
-    [a1 _faTranformedRectForImageSize:Width cropRect:CGImageGetHeight(cf) diameter:{a4, a5, a6, a7, a8}];
+    [self _faTranformedRectForImageSize:Width cropRect:CGImageGetHeight(cf) diameter:{a4, a5, a6, a7, a8}];
     CGContextDrawImage(v16, v22, cf);
   }
 
@@ -109,9 +109,9 @@
 
   else
   {
-    if ([a1 _faCreateImageRef])
+    if ([self _faCreateImageRef])
     {
-      v13 = CFRetain([a1 _faCreateImageRef]);
+      v13 = CFRetain([self _faCreateImageRef]);
     }
 
     else
@@ -119,9 +119,9 @@
       v13 = 0;
     }
 
-    if ([a1 _faCreateContextWithImage:v13 crop:a3 diameter:{a4, a5, a6, a2}])
+    if ([self _faCreateContextWithImage:v13 crop:a3 diameter:{a4, a5, a6, a2}])
     {
-      v16 = CFRetain([a1 _faCreateContextWithImage:v13 crop:a3 diameter:{a4, a5, a6, a2}]);
+      v16 = CFRetain([self _faCreateContextWithImage:v13 crop:a3 diameter:{a4, a5, a6, a2}]);
     }
 
     else
@@ -176,7 +176,7 @@
 - (id)fa_dictionaryFromPlistData
 {
   v4 = 0;
-  v1 = [MEMORY[0x1E696AE40] propertyListWithData:a1 options:0 format:0 error:&v4];
+  v1 = [MEMORY[0x1E696AE40] propertyListWithData:self options:0 format:0 error:&v4];
   if (v4 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v2 = 0;

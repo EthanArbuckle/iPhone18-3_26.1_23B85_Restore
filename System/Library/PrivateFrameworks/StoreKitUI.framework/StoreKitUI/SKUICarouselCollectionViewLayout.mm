@@ -1,20 +1,20 @@
 @interface SKUICarouselCollectionViewLayout
 - (CGPoint)_collectionViewBoundsCenter;
-- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)a3 withScrollingVelocity:(CGPoint)a4;
-- (id)layoutAttributesForElementsInRect:(CGRect)a3;
-- (void)_panGestureRecognized:(id)a3;
-- (void)prepareForTransitionToLayout:(id)a3;
+- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)offset withScrollingVelocity:(CGPoint)velocity;
+- (id)layoutAttributesForElementsInRect:(CGRect)rect;
+- (void)_panGestureRecognized:(id)recognized;
+- (void)prepareForTransitionToLayout:(id)layout;
 - (void)prepareLayout;
 @end
 
 @implementation SKUICarouselCollectionViewLayout
 
-- (id)layoutAttributesForElementsInRect:(CGRect)a3
+- (id)layoutAttributesForElementsInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v31 = *MEMORY[0x277D85DE8];
   if (os_variant_has_internal_content())
   {
@@ -30,16 +30,16 @@
 
   v29.receiver = self;
   v29.super_class = SKUICarouselCollectionViewLayout;
-  v16 = [(UICollectionViewFlowLayout *)&v29 layoutAttributesForElementsInRect:x, y, width, height];
-  v17 = [(SKUICarouselCollectionViewLayout *)self collectionView];
-  v18 = [v17 delegate];
+  height = [(UICollectionViewFlowLayout *)&v29 layoutAttributesForElementsInRect:x, y, width, height];
+  collectionView = [(SKUICarouselCollectionViewLayout *)self collectionView];
+  delegate = [collectionView delegate];
   if (objc_opt_respondsToSelector())
   {
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v19 = v16;
+    v19 = height;
     v20 = [v19 countByEnumeratingWithState:&v25 objects:v30 count:16];
     if (v20)
     {
@@ -54,7 +54,7 @@
             objc_enumerationMutation(v19);
           }
 
-          [v18 collectionView:v17 carouselLayout:self willApplyLayoutAttributes:{*(*(&v25 + 1) + 8 * i), v25}];
+          [delegate collectionView:collectionView carouselLayout:self willApplyLayoutAttributes:{*(*(&v25 + 1) + 8 * i), v25}];
         }
 
         v21 = [v19 countByEnumeratingWithState:&v25 objects:v30 count:16];
@@ -64,7 +64,7 @@
     }
   }
 
-  return v16;
+  return height;
 }
 
 - (void)prepareLayout
@@ -84,18 +84,18 @@
   v15.receiver = self;
   v15.super_class = SKUICarouselCollectionViewLayout;
   [(UICollectionViewFlowLayout *)&v15 prepareLayout];
-  v11 = [(SKUICarouselCollectionViewLayout *)self collectionView];
-  v12 = [v11 panGestureRecognizer];
-  [v12 removeTarget:self action:0];
+  collectionView = [(SKUICarouselCollectionViewLayout *)self collectionView];
+  panGestureRecognizer = [collectionView panGestureRecognizer];
+  [panGestureRecognizer removeTarget:self action:0];
 
-  v13 = [(SKUICarouselCollectionViewLayout *)self collectionView];
-  v14 = [v13 panGestureRecognizer];
-  [v14 addTarget:self action:sel__panGestureRecognized_];
+  collectionView2 = [(SKUICarouselCollectionViewLayout *)self collectionView];
+  panGestureRecognizer2 = [collectionView2 panGestureRecognizer];
+  [panGestureRecognizer2 addTarget:self action:sel__panGestureRecognized_];
 }
 
-- (void)prepareForTransitionToLayout:(id)a3
+- (void)prepareForTransitionToLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -110,18 +110,18 @@
 
   v15.receiver = self;
   v15.super_class = SKUICarouselCollectionViewLayout;
-  [(SKUICarouselCollectionViewLayout *)&v15 prepareForTransitionToLayout:v4];
-  v13 = [(SKUICarouselCollectionViewLayout *)self collectionView];
-  v14 = [v13 panGestureRecognizer];
-  [v14 removeTarget:self action:0];
+  [(SKUICarouselCollectionViewLayout *)&v15 prepareForTransitionToLayout:layoutCopy];
+  collectionView = [(SKUICarouselCollectionViewLayout *)self collectionView];
+  panGestureRecognizer = [collectionView panGestureRecognizer];
+  [panGestureRecognizer removeTarget:self action:0];
 }
 
-- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)a3 withScrollingVelocity:(CGPoint)a4
+- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)offset withScrollingVelocity:(CGPoint)velocity
 {
-  y = a4.y;
-  x = a4.x;
-  v6 = a3.y;
-  v7 = a3.x;
+  y = velocity.y;
+  x = velocity.x;
+  v6 = offset.y;
+  v7 = offset.x;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -138,19 +138,19 @@
   v53.super_class = SKUICarouselCollectionViewLayout;
   [(SKUICarouselCollectionViewLayout *)&v53 targetContentOffsetForProposedContentOffset:v7 withScrollingVelocity:v6, x, y];
   v18 = v17;
-  v19 = [(SKUICarouselCollectionViewLayout *)self collectionView];
-  [v19 bounds];
+  collectionView = [(SKUICarouselCollectionViewLayout *)self collectionView];
+  [collectionView bounds];
   v21 = v20;
   [(UICollectionViewFlowLayout *)self itemSize];
   v23 = v22;
   [(UICollectionViewFlowLayout *)self minimumInteritemSpacing];
   v25 = v23 + v24;
-  v26 = [(SKUICarouselCollectionViewLayout *)self startScrollingIndexPath];
+  startScrollingIndexPath = [(SKUICarouselCollectionViewLayout *)self startScrollingIndexPath];
   [(SKUICarouselCollectionViewLayout *)self _collectionViewBoundsCenter];
   v28 = v27;
   v30 = v29;
-  v31 = [(SKUICarouselCollectionViewLayout *)self collectionView];
-  v32 = [v31 indexPathForItemAtPoint:{v28, v30}];
+  collectionView2 = [(SKUICarouselCollectionViewLayout *)self collectionView];
+  v32 = [collectionView2 indexPathForItemAtPoint:{v28, v30}];
 
   v33 = (v21 - v25) * 0.5;
   v34 = floorf(v33);
@@ -168,7 +168,7 @@
 
   if (v37)
   {
-    v38 = [v26 item] - 1;
+    item2 = [startScrollingIndexPath item] - 1;
   }
 
   else
@@ -185,15 +185,15 @@
 
     if (v39)
     {
-      v38 = [v26 item] + 1;
+      item2 = [startScrollingIndexPath item] + 1;
     }
 
     else
     {
-      v40 = [v32 item];
-      if (v40 == [v26 item])
+      item = [v32 item];
+      if (item == [startScrollingIndexPath item])
       {
-        v41 = v26;
+        v41 = startScrollingIndexPath;
       }
 
       else
@@ -201,24 +201,24 @@
         v41 = v32;
       }
 
-      v38 = [v41 item];
+      item2 = [v41 item];
     }
   }
 
-  v42 = -(v34 - v38 * v25);
+  v42 = -(v34 - item2 * v25);
   if (v36)
   {
-    [v19 contentSize];
+    [collectionView contentSize];
     v44 = v43;
-    [v19 bounds];
+    [collectionView bounds];
     v42 = v44 - CGRectGetWidth(v55) - v42;
   }
 
-  [v19 contentSize];
+  [collectionView contentSize];
   v46 = v45;
-  [v19 contentInset];
+  [collectionView contentInset];
   v48 = v46 + v47;
-  [v19 bounds];
+  [collectionView bounds];
   if (v42 >= v48 - v49)
   {
     v50 = v48 - v49;
@@ -238,8 +238,8 @@
 
 - (CGPoint)_collectionViewBoundsCenter
 {
-  v2 = [(SKUICarouselCollectionViewLayout *)self collectionView];
-  [v2 bounds];
+  collectionView = [(SKUICarouselCollectionViewLayout *)self collectionView];
+  [collectionView bounds];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -261,15 +261,15 @@
   return result;
 }
 
-- (void)_panGestureRecognized:(id)a3
+- (void)_panGestureRecognized:(id)recognized
 {
-  if ([a3 state] == 1)
+  if ([recognized state] == 1)
   {
     [(SKUICarouselCollectionViewLayout *)self _collectionViewBoundsCenter];
     v5 = v4;
     v7 = v6;
-    v8 = [(SKUICarouselCollectionViewLayout *)self collectionView];
-    v9 = [v8 indexPathForItemAtPoint:{v5, v7}];
+    collectionView = [(SKUICarouselCollectionViewLayout *)self collectionView];
+    v9 = [collectionView indexPathForItemAtPoint:{v5, v7}];
 
     [(SKUICarouselCollectionViewLayout *)self setStartScrollingIndexPath:v9];
   }

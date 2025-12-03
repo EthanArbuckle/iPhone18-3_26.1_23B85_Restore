@@ -1,26 +1,26 @@
 @interface _WBSCRDTPositionGeneratorStride
-- (_WBSCRDTPositionGeneratorStride)initWithRecordNames:(id)a3 beforePosition:(id)a4 afterPosition:(id)a5;
+- (_WBSCRDTPositionGeneratorStride)initWithRecordNames:(id)names beforePosition:(id)position afterPosition:(id)afterPosition;
 - (id)description;
 @end
 
 @implementation _WBSCRDTPositionGeneratorStride
 
-- (_WBSCRDTPositionGeneratorStride)initWithRecordNames:(id)a3 beforePosition:(id)a4 afterPosition:(id)a5
+- (_WBSCRDTPositionGeneratorStride)initWithRecordNames:(id)names beforePosition:(id)position afterPosition:(id)afterPosition
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  namesCopy = names;
+  positionCopy = position;
+  afterPositionCopy = afterPosition;
   v16.receiver = self;
   v16.super_class = _WBSCRDTPositionGeneratorStride;
   v11 = [(_WBSCRDTPositionGeneratorStride *)&v16 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [namesCopy copy];
     recordNames = v11->_recordNames;
     v11->_recordNames = v12;
 
-    objc_storeStrong(&v11->_beforePosition, a4);
-    objc_storeStrong(&v11->_afterPosition, a5);
+    objc_storeStrong(&v11->_beforePosition, position);
+    objc_storeStrong(&v11->_afterPosition, afterPosition);
     v14 = v11;
   }
 

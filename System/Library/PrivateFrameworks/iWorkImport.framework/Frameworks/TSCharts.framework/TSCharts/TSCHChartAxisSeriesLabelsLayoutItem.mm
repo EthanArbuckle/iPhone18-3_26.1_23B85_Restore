@@ -1,20 +1,20 @@
 @interface TSCHChartAxisSeriesLabelsLayoutItem
-- (BOOL)showLabelsForAxis:(id)a3;
+- (BOOL)showLabelsForAxis:(id)axis;
 - (CGSize)calcMinSize;
-- (TSCHChartAxisSeriesLabelsLayoutItem)initWithParent:(id)a3;
-- (double)unitSpaceValueForAxis:(id)a3 index:(unint64_t)a4;
-- (id)labelStringForAxis:(id)a3 index:(unint64_t)a4;
+- (TSCHChartAxisSeriesLabelsLayoutItem)initWithParent:(id)parent;
+- (double)unitSpaceValueForAxis:(id)axis index:(unint64_t)index;
+- (id)labelStringForAxis:(id)axis index:(unint64_t)index;
 - (id)selectionPathLabelType;
-- (unint64_t)numberOfLabelsForAxis:(id)a3;
+- (unint64_t)numberOfLabelsForAxis:(id)axis;
 @end
 
 @implementation TSCHChartAxisSeriesLabelsLayoutItem
 
-- (TSCHChartAxisSeriesLabelsLayoutItem)initWithParent:(id)a3
+- (TSCHChartAxisSeriesLabelsLayoutItem)initWithParent:(id)parent
 {
   v4.receiver = self;
   v4.super_class = TSCHChartAxisSeriesLabelsLayoutItem;
-  return [(TSCHChartCategoryAxisLabelsLayoutItem *)&v4 initWithParent:a3];
+  return [(TSCHChartCategoryAxisLabelsLayoutItem *)&v4 initWithParent:parent];
 }
 
 - (CGSize)calcMinSize
@@ -47,17 +47,17 @@
   return result;
 }
 
-- (BOOL)showLabelsForAxis:(id)a3
+- (BOOL)showLabelsForAxis:(id)axis
 {
-  v3 = a3;
-  v8 = objc_msgSend_model(v3, v4, v5, v6, v7);
+  axisCopy = axis;
+  v8 = objc_msgSend_model(axisCopy, v4, v5, v6, v7);
   v13 = objc_msgSend_chartInfo(v8, v9, v10, v11, v12);
   v18 = objc_msgSend_chartType(v13, v14, v15, v16, v17);
   v23 = objc_msgSend_supportsSeriesLabels(v18, v19, v20, v21, v22);
 
   if (v23)
   {
-    v28 = objc_msgSend_intValueForProperty_defaultValue_(v3, v24, v25, v26, v27, 1059, 0) != 0;
+    v28 = objc_msgSend_intValueForProperty_defaultValue_(axisCopy, v24, v25, v26, v27, 1059, 0) != 0;
   }
 
   else
@@ -68,15 +68,15 @@
   return v28;
 }
 
-- (unint64_t)numberOfLabelsForAxis:(id)a3
+- (unint64_t)numberOfLabelsForAxis:(id)axis
 {
-  v3 = a3;
-  if (objc_msgSend_isCategory(v3, v4, v5, v6, v7))
+  axisCopy = axis;
+  if (objc_msgSend_isCategory(axisCopy, v4, v5, v6, v7))
   {
-    v12 = objc_msgSend_model(v3, v8, v9, v10, v11);
+    v12 = objc_msgSend_model(axisCopy, v8, v9, v10, v11);
     v17 = objc_msgSend_numberOfValues(v12, v13, v14, v15, v16);
 
-    v22 = objc_msgSend_model(v3, v18, v19, v20, v21);
+    v22 = objc_msgSend_model(axisCopy, v18, v19, v20, v21);
     v27 = objc_msgSend_numberOfSeries(v22, v23, v24, v25, v26);
 
     v28 = v27 * v17;
@@ -90,15 +90,15 @@
   return v28;
 }
 
-- (double)unitSpaceValueForAxis:(id)a3 index:(unint64_t)a4
+- (double)unitSpaceValueForAxis:(id)axis index:(unint64_t)index
 {
-  v5 = a3;
-  v10 = objc_msgSend_model(v5, v6, v7, v8, v9);
+  axisCopy = axis;
+  v10 = objc_msgSend_model(axisCopy, v6, v7, v8, v9);
   v15 = objc_msgSend_numberOfSeries(v10, v11, v12, v13, v14);
 
-  if (objc_msgSend_isRangeContinuous(v5, v16, v17, v18, v19))
+  if (objc_msgSend_isRangeContinuous(axisCopy, v16, v17, v18, v19))
   {
-    objc_msgSend_unitSpaceValueForDataSpaceValue_(v5, v20, a4, v21, v22);
+    objc_msgSend_unitSpaceValueForDataSpaceValue_(axisCopy, v20, index, v21, v22);
     v24 = v23;
   }
 
@@ -114,12 +114,12 @@
       v25 = v15;
     }
 
-    v26 = a4 % v25;
-    objc_msgSend_unitSpaceValueForCountSpaceValue_(v5, v20, (a4 / v25), v21, v22);
+    v26 = index % v25;
+    objc_msgSend_unitSpaceValueForCountSpaceValue_(axisCopy, v20, (index / v25), v21, v22);
     v28 = v27;
     v39 = 0;
     v38 = 0.0;
-    v32 = objc_msgSend_model(v5, v29, v27, v30, v31);
+    v32 = objc_msgSend_model(axisCopy, v29, v27, v30, v31);
     LODWORD(v33) = 1.0;
     objc_msgSend_calculateGapsForChartModel_forTotalWidth_outBarWidth_outBarGroupGap_outBarGap_(TSCHBarColumnElementBuilder, v34, v33, v35, v36, v32, &v39 + 4, &v38, &v39);
 
@@ -129,12 +129,12 @@
   return v24;
 }
 
-- (id)labelStringForAxis:(id)a3 index:(unint64_t)a4
+- (id)labelStringForAxis:(id)axis index:(unint64_t)index
 {
-  v5 = a3;
-  if (objc_msgSend_isCategory(v5, v6, v7, v8, v9))
+  axisCopy = axis;
+  if (objc_msgSend_isCategory(axisCopy, v6, v7, v8, v9))
   {
-    v14 = objc_msgSend_model(v5, v10, v11, v12, v13);
+    v14 = objc_msgSend_model(axisCopy, v10, v11, v12, v13);
     v19 = objc_msgSend_numberOfSeries(v14, v15, v16, v17, v18);
 
     if (v19 <= 1)
@@ -147,8 +147,8 @@
       v24 = v19;
     }
 
-    v25 = a4 % v24;
-    v26 = objc_msgSend_model(v5, v20, v21, v22, v23);
+    v25 = index % v24;
+    v26 = objc_msgSend_model(axisCopy, v20, v21, v22, v23);
     v31 = objc_msgSend_nameForSeries_(v26, v27, v28, v29, v30, v25);
   }
 

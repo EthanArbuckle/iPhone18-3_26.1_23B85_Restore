@@ -7,12 +7,12 @@
 - (void)_cn_times:()ContactsFoundation
 {
   v6 = a3;
-  if (([a1 integerValue] & 0x8000000000000000) == 0)
+  if (([self integerValue] & 0x8000000000000000) == 0)
   {
-    v4 = [a1 integerValue];
-    if (v4)
+    integerValue = [self integerValue];
+    if (integerValue)
     {
-      v5 = v4;
+      v5 = integerValue;
       do
       {
         v6[2]();

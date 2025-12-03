@@ -1,20 +1,20 @@
 @interface LSFeatureFlagPredicateEvaluator
 + (id)defaultEvaluator;
-- (LSFeatureFlagPredicateEvaluator)initWithResolver:(id)a3;
+- (LSFeatureFlagPredicateEvaluator)initWithResolver:(id)resolver;
 @end
 
 @implementation LSFeatureFlagPredicateEvaluator
 
-- (LSFeatureFlagPredicateEvaluator)initWithResolver:(id)a3
+- (LSFeatureFlagPredicateEvaluator)initWithResolver:(id)resolver
 {
-  v5 = a3;
+  resolverCopy = resolver;
   v9.receiver = self;
   v9.super_class = LSFeatureFlagPredicateEvaluator;
   v6 = [(LSFeatureFlagPredicateEvaluator *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_resolver, a3);
+    objc_storeStrong(&v6->_resolver, resolver);
   }
 
   return v7;

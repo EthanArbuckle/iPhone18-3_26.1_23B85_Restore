@@ -1,48 +1,48 @@
 @interface TRIDownloadOptions
 + (id)inexpensiveOptions;
 - (BOOL)allowsExpensiveNetworkAccess;
-- (BOOL)isEqual:(id)a3;
-- (TRIDownloadOptions)initWithAllowsCellular:(BOOL)a3 discretionaryBehavior:(unint64_t)a4;
-- (TRIDownloadOptions)initWithAllowsCellular:(BOOL)a3 discretionaryBehavior:(unint64_t)a4 activity:(id)a5;
-- (TRIDownloadOptions)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (TRIDownloadOptions)initWithAllowsCellular:(BOOL)cellular discretionaryBehavior:(unint64_t)behavior;
+- (TRIDownloadOptions)initWithAllowsCellular:(BOOL)cellular discretionaryBehavior:(unint64_t)behavior activity:(id)activity;
+- (TRIDownloadOptions)initWithCoder:(id)coder;
 - (id)description;
-- (id)initFromPersistedBehavior:(id)a3;
+- (id)initFromPersistedBehavior:(id)behavior;
 - (id)serializeToPersistedBehavior;
 - (unint64_t)hash;
 - (unint64_t)requiredCapability;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TRIDownloadOptions
 
-- (TRIDownloadOptions)initWithAllowsCellular:(BOOL)a3 discretionaryBehavior:(unint64_t)a4
+- (TRIDownloadOptions)initWithAllowsCellular:(BOOL)cellular discretionaryBehavior:(unint64_t)behavior
 {
   v7.receiver = self;
   v7.super_class = TRIDownloadOptions;
   result = [(TRIDownloadOptions *)&v7 init];
   if (result)
   {
-    result->_allowsCellularAccess = a3;
+    result->_allowsCellularAccess = cellular;
     *&result->_allowsBatteryUsage = 0;
-    result->_discretionaryBehavior = a4;
+    result->_discretionaryBehavior = behavior;
   }
 
   return result;
 }
 
-- (TRIDownloadOptions)initWithAllowsCellular:(BOOL)a3 discretionaryBehavior:(unint64_t)a4 activity:(id)a5
+- (TRIDownloadOptions)initWithAllowsCellular:(BOOL)cellular discretionaryBehavior:(unint64_t)behavior activity:(id)activity
 {
-  v9 = a5;
+  activityCopy = activity;
   v13.receiver = self;
   v13.super_class = TRIDownloadOptions;
   v10 = [(TRIDownloadOptions *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    v10->_allowsCellularAccess = a3;
+    v10->_allowsCellularAccess = cellular;
     v10->_allowsBatteryUsage = 0;
-    v10->_discretionaryBehavior = a4;
-    objc_storeStrong(&v10->_activity, a5);
+    v10->_discretionaryBehavior = behavior;
+    objc_storeStrong(&v10->_activity, activity);
     v11->_boostPriority = 0;
   }
 
@@ -70,15 +70,15 @@
 
 - (BOOL)allowsExpensiveNetworkAccess
 {
-  v3 = [(TRIDownloadOptions *)self activity];
+  activity = [(TRIDownloadOptions *)self activity];
 
-  if (v3)
+  if (activity)
   {
-    v4 = [(TRIDownloadOptions *)self activity];
-    v5 = xpc_activity_copy_criteria(v4);
+    activity2 = [(TRIDownloadOptions *)self activity];
+    v5 = xpc_activity_copy_criteria(activity2);
 
-    LOBYTE(v4) = xpc_dictionary_get_BOOL(v5, *MEMORY[0x277D86390]);
-    return v4 ^ 1;
+    LOBYTE(activity2) = xpc_dictionary_get_BOOL(v5, *MEMORY[0x277D86390]);
+    return activity2 ^ 1;
   }
 
   else
@@ -110,20 +110,20 @@ void __40__TRIDownloadOptions_inexpensiveOptions__block_invoke()
   objc_autoreleasePoolPop(v0);
 }
 
-- (id)initFromPersistedBehavior:(id)a3
+- (id)initFromPersistedBehavior:(id)behavior
 {
-  v4 = a3;
-  if ([v4 hasAllowsCellular] && objc_msgSend(v4, "hasNetworkBehavior"))
+  behaviorCopy = behavior;
+  if ([behaviorCopy hasAllowsCellular] && objc_msgSend(behaviorCopy, "hasNetworkBehavior"))
   {
-    v5 = [v4 allowsCellular];
-    v6 = [v4 networkBehavior];
+    allowsCellular = [behaviorCopy allowsCellular];
+    networkBehavior = [behaviorCopy networkBehavior];
     v7 = 1;
-    if (v6 != 2)
+    if (networkBehavior != 2)
     {
       v7 = 2;
     }
 
-    if (v6 == 3)
+    if (networkBehavior == 3)
     {
       v8 = 0;
     }
@@ -133,24 +133,24 @@ void __40__TRIDownloadOptions_inexpensiveOptions__block_invoke()
       v8 = v7;
     }
 
-    self = -[TRIDownloadOptions initWithAllowsCellular:discretionaryBehavior:boostPriority:](self, "initWithAllowsCellular:discretionaryBehavior:boostPriority:", v5, v8, [v4 boostPriority]);
-    v9 = self;
+    self = -[TRIDownloadOptions initWithAllowsCellular:discretionaryBehavior:boostPriority:](self, "initWithAllowsCellular:discretionaryBehavior:boostPriority:", allowsCellular, v8, [behaviorCopy boostPriority]);
+    selfCopy = self;
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
-- (TRIDownloadOptions)initWithCoder:(id)a3
+- (TRIDownloadOptions)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeBoolForKey:@"cellular"];
-  v6 = [v4 decodeIntegerForKey:@"networkBehavior"];
-  v7 = [v4 decodeBoolForKey:@"boostPriority"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeBoolForKey:@"cellular"];
+  v6 = [coderCopy decodeIntegerForKey:@"networkBehavior"];
+  v7 = [coderCopy decodeBoolForKey:@"boostPriority"];
 
   return [(TRIDownloadOptions *)self initWithAllowsCellular:v5 discretionaryBehavior:v6 boostPriority:v7];
 }
@@ -159,8 +159,8 @@ void __40__TRIDownloadOptions_inexpensiveOptions__block_invoke()
 {
   v3 = objc_opt_new();
   [v3 setAllowsCellular:{-[TRIDownloadOptions allowsCellularAccess](self, "allowsCellularAccess")}];
-  v4 = [(TRIDownloadOptions *)self discretionaryBehavior];
-  if (v4 == 1)
+  discretionaryBehavior = [(TRIDownloadOptions *)self discretionaryBehavior];
+  if (discretionaryBehavior == 1)
   {
     v5 = 2;
   }
@@ -170,7 +170,7 @@ void __40__TRIDownloadOptions_inexpensiveOptions__block_invoke()
     v5 = 3;
   }
 
-  if (v4 == 2)
+  if (discretionaryBehavior == 2)
   {
     v6 = 1;
   }
@@ -186,12 +186,12 @@ void __40__TRIDownloadOptions_inexpensiveOptions__block_invoke()
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeBool:-[TRIDownloadOptions allowsCellularAccess](self forKey:{"allowsCellularAccess"), @"cellular"}];
-  [v4 encodeInteger:-[TRIDownloadOptions discretionaryBehavior](self forKey:{"discretionaryBehavior"), @"networkBehavior"}];
-  [v4 encodeBool:-[TRIDownloadOptions boostPriority](self forKey:{"boostPriority"), @"boostPriority"}];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[TRIDownloadOptions allowsCellularAccess](self forKey:{"allowsCellularAccess"), @"cellular"}];
+  [coderCopy encodeInteger:-[TRIDownloadOptions discretionaryBehavior](self forKey:{"discretionaryBehavior"), @"networkBehavior"}];
+  [coderCopy encodeBool:-[TRIDownloadOptions boostPriority](self forKey:{"boostPriority"), @"boostPriority"}];
 }
 
 - (id)description
@@ -210,14 +210,14 @@ void __40__TRIDownloadOptions_inexpensiveOptions__block_invoke()
     v5 = @"NO";
   }
 
-  v6 = [(TRIDownloadOptions *)self discretionaryBehavior];
+  discretionaryBehavior = [(TRIDownloadOptions *)self discretionaryBehavior];
   v7 = @"non-discretionary";
-  if (v6 == 1)
+  if (discretionaryBehavior == 1)
   {
     v7 = @"discretionary when backgrounded";
   }
 
-  if (v6 == 2)
+  if (discretionaryBehavior == 2)
   {
     v7 = @"discretionary";
   }
@@ -227,10 +227,10 @@ void __40__TRIDownloadOptions_inexpensiveOptions__block_invoke()
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     LOBYTE(v9) = 1;
   }
@@ -240,12 +240,12 @@ void __40__TRIDownloadOptions_inexpensiveOptions__block_invoke()
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(TRIDownloadOptions *)self allowsCellularAccess];
-      if (v6 == [(TRIDownloadOptions *)v5 allowsCellularAccess]&& (v7 = [(TRIDownloadOptions *)self discretionaryBehavior], v7 == [(TRIDownloadOptions *)v5 discretionaryBehavior]))
+      v5 = equalCopy;
+      allowsCellularAccess = [(TRIDownloadOptions *)self allowsCellularAccess];
+      if (allowsCellularAccess == [(TRIDownloadOptions *)v5 allowsCellularAccess]&& (v7 = [(TRIDownloadOptions *)self discretionaryBehavior], v7 == [(TRIDownloadOptions *)v5 discretionaryBehavior]))
       {
-        v8 = [(TRIDownloadOptions *)self boostPriority];
-        v9 = v8 ^ [(TRIDownloadOptions *)v5 boostPriority]^ 1;
+        boostPriority = [(TRIDownloadOptions *)self boostPriority];
+        v9 = boostPriority ^ [(TRIDownloadOptions *)v5 boostPriority]^ 1;
       }
 
       else

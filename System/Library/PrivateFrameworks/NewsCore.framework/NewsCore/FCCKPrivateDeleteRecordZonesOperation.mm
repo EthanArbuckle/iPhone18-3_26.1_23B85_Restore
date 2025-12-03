@@ -1,6 +1,6 @@
 @interface FCCKPrivateDeleteRecordZonesOperation
 - (BOOL)validateOperation;
-- (void)operationWillFinishWithError:(id)a3;
+- (void)operationWillFinishWithError:(id)error;
 - (void)performOperation;
 @end
 
@@ -11,9 +11,9 @@
   v18 = *MEMORY[0x1E69E9840];
   v9.receiver = self;
   v9.super_class = FCCKPrivateDeleteRecordZonesOperation;
-  v3 = [(FCCKPrivateDatabaseOperation *)&v9 validateOperation];
-  v4 = [(FCCKPrivateDeleteRecordZonesOperation *)self recordZoneIDsToDelete];
-  v5 = [v4 count];
+  validateOperation = [(FCCKPrivateDatabaseOperation *)&v9 validateOperation];
+  recordZoneIDsToDelete = [(FCCKPrivateDeleteRecordZonesOperation *)self recordZoneIDsToDelete];
+  v5 = [recordZoneIDsToDelete count];
 
   if (!v5 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
@@ -31,7 +31,7 @@
 
   if (v5)
   {
-    result = v3;
+    result = validateOperation;
   }
 
   else
@@ -46,19 +46,19 @@
 - (void)performOperation
 {
   v3 = objc_alloc_init(FCCKPrivateDatabaseCKOperationResults);
-  v4 = [(FCCKPrivateDatabaseOperation *)self skipPreflight];
+  skipPreflight = [(FCCKPrivateDatabaseOperation *)self skipPreflight];
   if ([(FCCKPrivateDeleteRecordZonesOperation *)self secureDatabaseOnly])
   {
-    v5 = v4 | 4;
+    v5 = skipPreflight | 4;
   }
 
   else
   {
-    v5 = v4;
+    v5 = skipPreflight;
   }
 
-  v6 = [(FCCKPrivateDatabaseOperation *)self database];
-  v7 = [(FCCKPrivateDeleteRecordZonesOperation *)self recordZoneIDsToDelete];
+  database = [(FCCKPrivateDatabaseOperation *)self database];
+  recordZoneIDsToDelete = [(FCCKPrivateDeleteRecordZonesOperation *)self recordZoneIDsToDelete];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __57__FCCKPrivateDeleteRecordZonesOperation_performOperation__block_invoke;
@@ -66,15 +66,15 @@
   v11[4] = self;
   v12 = v3;
   v8 = v3;
-  [(FCCKPrivateDatabase *)v6 enumeratePayloadsWithRecordIDs:0 records:v7 zoneIDs:0 zones:v5 options:v11 payloadHandler:?];
+  [(FCCKPrivateDatabase *)database enumeratePayloadsWithRecordIDs:0 records:recordZoneIDsToDelete zoneIDs:0 zones:v5 options:v11 payloadHandler:?];
 
-  v9 = [(FCCKPrivateDeleteRecordZonesOperation *)self qualityOfService];
+  qualityOfService = [(FCCKPrivateDeleteRecordZonesOperation *)self qualityOfService];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __57__FCCKPrivateDeleteRecordZonesOperation_performOperation__block_invoke_13;
   v10[3] = &unk_1E7C37750;
   v10[4] = self;
-  [(FCCKPrivateDatabaseCKOperationResults *)v8 notifyWhenFinishWithQoS:v9 completionHandler:v10];
+  [(FCCKPrivateDatabaseCKOperationResults *)v8 notifyWhenFinishWithQoS:qualityOfService completionHandler:v10];
 }
 
 void __57__FCCKPrivateDeleteRecordZonesOperation_performOperation__block_invoke(uint64_t a1, void *a2)
@@ -183,16 +183,16 @@ void __57__FCCKPrivateDeleteRecordZonesOperation_performOperation__block_invoke_
   [*(a1 + 32) finishedPerformingOperationWithError:v6];
 }
 
-- (void)operationWillFinishWithError:(id)a3
+- (void)operationWillFinishWithError:(id)error
 {
-  v7 = a3;
-  v4 = [(FCCKPrivateDeleteRecordZonesOperation *)self deleteRecordZonesCompletionBlock];
+  errorCopy = error;
+  deleteRecordZonesCompletionBlock = [(FCCKPrivateDeleteRecordZonesOperation *)self deleteRecordZonesCompletionBlock];
 
-  if (v4)
+  if (deleteRecordZonesCompletionBlock)
   {
-    v5 = [(FCCKPrivateDeleteRecordZonesOperation *)self deleteRecordZonesCompletionBlock];
-    v6 = [(FCCKPrivateDeleteRecordZonesOperation *)self resultDeletedRecordZoneIDs];
-    (v5)[2](v5, v6, v7);
+    deleteRecordZonesCompletionBlock2 = [(FCCKPrivateDeleteRecordZonesOperation *)self deleteRecordZonesCompletionBlock];
+    resultDeletedRecordZoneIDs = [(FCCKPrivateDeleteRecordZonesOperation *)self resultDeletedRecordZoneIDs];
+    (deleteRecordZonesCompletionBlock2)[2](deleteRecordZonesCompletionBlock2, resultDeletedRecordZoneIDs, errorCopy);
   }
 }
 

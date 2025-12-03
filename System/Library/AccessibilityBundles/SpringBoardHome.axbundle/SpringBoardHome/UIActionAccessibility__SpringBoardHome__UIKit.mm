@@ -9,7 +9,7 @@
 {
   LOBYTE(v25) = 0;
   v3 = __UIAccessibilitySafeClass();
-  v4 = [v3 identifier];
+  identifier = [v3 identifier];
   v30 = 0;
   v31 = &v30;
   v32 = 0x2020000000;
@@ -34,17 +34,17 @@
     [UIActionAccessibility__SpringBoardHome__UIKit accessibilityLabel];
   }
 
-  v7 = [v4 isEqualToString:*v5];
+  v7 = [identifier isEqualToString:*v5];
 
   if (v7)
   {
     v8 = @"small.widget.size";
 LABEL_21:
-    v21 = accessibilityLocalizedString(v8);
+    accessibilityLabel = accessibilityLocalizedString(v8);
     goto LABEL_22;
   }
 
-  v9 = [v3 identifier];
+  identifier2 = [v3 identifier];
   v30 = 0;
   v31 = &v30;
   v32 = 0x2020000000;
@@ -69,7 +69,7 @@ LABEL_21:
     [UIActionAccessibility__SpringBoardHome__UIKit accessibilityLabel];
   }
 
-  v12 = [v9 isEqualToString:*v10];
+  v12 = [identifier2 isEqualToString:*v10];
 
   if (v12)
   {
@@ -77,7 +77,7 @@ LABEL_21:
     goto LABEL_21;
   }
 
-  v13 = [v3 identifier];
+  identifier3 = [v3 identifier];
   v30 = 0;
   v31 = &v30;
   v32 = 0x2020000000;
@@ -102,7 +102,7 @@ LABEL_21:
     [UIActionAccessibility__SpringBoardHome__UIKit accessibilityLabel];
   }
 
-  v16 = [v13 isEqualToString:*v14];
+  v16 = [identifier3 isEqualToString:*v14];
 
   if (v16)
   {
@@ -110,7 +110,7 @@ LABEL_21:
     goto LABEL_21;
   }
 
-  v17 = [v3 identifier];
+  identifier4 = [v3 identifier];
   v30 = 0;
   v31 = &v30;
   v32 = 0x2020000000;
@@ -135,7 +135,7 @@ LABEL_21:
     [UIActionAccessibility__SpringBoardHome__UIKit accessibilityLabel];
   }
 
-  v20 = [v17 isEqualToString:*v18];
+  v20 = [identifier4 isEqualToString:*v18];
 
   if (v20)
   {
@@ -145,18 +145,18 @@ LABEL_21:
 
   v24.receiver = self;
   v24.super_class = UIActionAccessibility__SpringBoardHome__UIKit;
-  v21 = [(UIActionAccessibility__SpringBoardHome__UIKit *)&v24 accessibilityLabel];
+  accessibilityLabel = [(UIActionAccessibility__SpringBoardHome__UIKit *)&v24 accessibilityLabel];
 LABEL_22:
-  v22 = v21;
+  v22 = accessibilityLabel;
 
   return v22;
 }
 
 - (void)accessibilityLabel
 {
-  v0 = [MEMORY[0x29EDB9F28] currentHandler];
+  currentHandler = [MEMORY[0x29EDB9F28] currentHandler];
   v1 = [MEMORY[0x29EDBA0F8] stringWithUTF8String:"NSString *getkSBHIconChangeWidgetSizeToSmallApplicationShortcutItemType(void)"];
-  [v0 handleFailureInFunction:v1 file:@"UIActionAccessibility.m" lineNumber:19 description:{@"%s", dlerror()}];
+  [currentHandler handleFailureInFunction:v1 file:@"UIActionAccessibility.m" lineNumber:19 description:{@"%s", dlerror()}];
 
   __break(1u);
 }

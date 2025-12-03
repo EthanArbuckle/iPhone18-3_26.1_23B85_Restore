@@ -1,27 +1,27 @@
 @interface HMBCloudDatabaseConfiguration
-- (HMBCloudDatabaseConfiguration)initWithContainerID:(id)a3;
+- (HMBCloudDatabaseConfiguration)initWithContainerID:(id)d;
 - (id)attributeDescriptions;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 @end
 
 @implementation HMBCloudDatabaseConfiguration
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [HMBMutableCloudDatabaseConfiguration alloc];
-  v5 = [(HMBCloudDatabaseConfiguration *)self containerID];
-  v6 = [(HMBCloudDatabaseConfiguration *)v4 initWithContainerID:v5];
+  containerID = [(HMBCloudDatabaseConfiguration *)self containerID];
+  v6 = [(HMBCloudDatabaseConfiguration *)v4 initWithContainerID:containerID];
 
-  v7 = [(HMBCloudDatabaseConfiguration *)self sourceApplicationBundleIdentifier];
-  [(HMBCloudDatabaseConfiguration *)v6 setSourceApplicationBundleIdentifier:v7];
+  sourceApplicationBundleIdentifier = [(HMBCloudDatabaseConfiguration *)self sourceApplicationBundleIdentifier];
+  [(HMBCloudDatabaseConfiguration *)v6 setSourceApplicationBundleIdentifier:sourceApplicationBundleIdentifier];
 
   [(HMBCloudDatabaseConfiguration *)v6 setManateeContainer:[(HMBCloudDatabaseConfiguration *)self isManateeContainer]];
-  v8 = [(HMBCloudDatabaseConfiguration *)self defaultOperationConfiguration];
-  [(HMBCloudDatabaseConfiguration *)v6 setDefaultOperationConfiguration:v8];
+  defaultOperationConfiguration = [(HMBCloudDatabaseConfiguration *)self defaultOperationConfiguration];
+  [(HMBCloudDatabaseConfiguration *)v6 setDefaultOperationConfiguration:defaultOperationConfiguration];
 
   [(HMBCloudDatabaseConfiguration *)v6 setSubscriptionPushRegistrationAction:[(HMBCloudDatabaseConfiguration *)self subscriptionPushRegistrationAction]];
-  v9 = [(HMBCloudDatabaseConfiguration *)self operationQueue];
-  [(HMBCloudDatabaseConfiguration *)v6 setOperationQueue:v9];
+  operationQueue = [(HMBCloudDatabaseConfiguration *)self operationQueue];
+  [(HMBCloudDatabaseConfiguration *)v6 setOperationQueue:operationQueue];
 
   return v6;
 }
@@ -30,12 +30,12 @@
 {
   v24[6] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277D0F778]);
-  v23 = [(HMBCloudDatabaseConfiguration *)self containerID];
-  v22 = [v3 initWithName:@"Container ID" value:v23];
+  containerID = [(HMBCloudDatabaseConfiguration *)self containerID];
+  v22 = [v3 initWithName:@"Container ID" value:containerID];
   v24[0] = v22;
   v4 = objc_alloc(MEMORY[0x277D0F778]);
-  v21 = [(HMBCloudDatabaseConfiguration *)self sourceApplicationBundleIdentifier];
-  v5 = [v4 initWithName:@"Bundle ID" value:v21];
+  sourceApplicationBundleIdentifier = [(HMBCloudDatabaseConfiguration *)self sourceApplicationBundleIdentifier];
+  v5 = [v4 initWithName:@"Bundle ID" value:sourceApplicationBundleIdentifier];
   v24[1] = v5;
   v6 = objc_alloc(MEMORY[0x277D0F778]);
   [(HMBCloudDatabaseConfiguration *)self isManateeContainer];
@@ -43,16 +43,16 @@
   v8 = [v6 initWithName:@"Manatee Container" value:v7];
   v24[2] = v8;
   v9 = objc_alloc(MEMORY[0x277D0F778]);
-  v10 = [(HMBCloudDatabaseConfiguration *)self defaultOperationConfiguration];
-  v11 = [v9 initWithName:@"Default Operation Configuration" value:v10];
+  defaultOperationConfiguration = [(HMBCloudDatabaseConfiguration *)self defaultOperationConfiguration];
+  v11 = [v9 initWithName:@"Default Operation Configuration" value:defaultOperationConfiguration];
   v24[3] = v11;
   v12 = objc_alloc(MEMORY[0x277D0F778]);
   v13 = [MEMORY[0x277CCABB0] numberWithInteger:{-[HMBCloudDatabaseConfiguration subscriptionPushRegistrationAction](self, "subscriptionPushRegistrationAction")}];
   v14 = [v12 initWithName:@"Subscription Push Registration Action" value:v13];
   v24[4] = v14;
   v15 = objc_alloc(MEMORY[0x277D0F778]);
-  v16 = [(HMBCloudDatabaseConfiguration *)self operationQueue];
-  v17 = [v15 initWithName:@"Operations Queue" value:v16];
+  operationQueue = [(HMBCloudDatabaseConfiguration *)self operationQueue];
+  v17 = [v15 initWithName:@"Operations Queue" value:operationQueue];
   v24[5] = v17;
   v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v24 count:6];
 
@@ -61,12 +61,12 @@
   return v18;
 }
 
-- (HMBCloudDatabaseConfiguration)initWithContainerID:(id)a3
+- (HMBCloudDatabaseConfiguration)initWithContainerID:(id)d
 {
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
-    v5 = v4;
+    v5 = dCopy;
     v17.receiver = self;
     v17.super_class = HMBCloudDatabaseConfiguration;
     v6 = [(HMBCloudDatabaseConfiguration *)&v17 init];

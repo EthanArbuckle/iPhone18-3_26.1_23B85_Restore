@@ -1,22 +1,22 @@
 @interface HUImageIconContentView
-- (HUImageIconContentView)initWithFrame:(CGRect)a3;
-- (id)_imageForImageIconDescriptor:(id)a3;
-- (id)_imageForVariableImageIconDescriptor:(id)a3;
+- (HUImageIconContentView)initWithFrame:(CGRect)frame;
+- (id)_imageForImageIconDescriptor:(id)descriptor;
+- (id)_imageForVariableImageIconDescriptor:(id)descriptor;
 - (id)description;
-- (int64_t)renderingModeForSubview:(id)a3 suggestedRenderingMode:(int64_t)a4;
+- (int64_t)renderingModeForSubview:(id)subview suggestedRenderingMode:(int64_t)mode;
 - (void)_updateIconImage;
 - (void)layoutSubviews;
-- (void)setIconContentMode:(int64_t)a3;
-- (void)setIconSize:(unint64_t)a3;
+- (void)setIconContentMode:(int64_t)mode;
+- (void)setIconSize:(unint64_t)size;
 @end
 
 @implementation HUImageIconContentView
 
-- (HUImageIconContentView)initWithFrame:(CGRect)a3
+- (HUImageIconContentView)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = HUImageIconContentView;
-  v3 = [(HUIconContentView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(HUIconContentView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x277D755E0]);
@@ -26,18 +26,18 @@
 
     v3->_iconContentMode = 1;
     [(UIImageView *)v3->_imageView setContentMode:1];
-    v6 = [(HUImageIconContentView *)v3 imageView];
-    [(HUImageIconContentView *)v3 addSubview:v6];
+    imageView = [(HUImageIconContentView *)v3 imageView];
+    [(HUImageIconContentView *)v3 addSubview:imageView];
   }
 
   return v3;
 }
 
-- (void)setIconContentMode:(int64_t)a3
+- (void)setIconContentMode:(int64_t)mode
 {
-  self->_iconContentMode = a3;
-  v4 = [(HUImageIconContentView *)self imageView];
-  [v4 setContentMode:a3];
+  self->_iconContentMode = mode;
+  imageView = [(HUImageIconContentView *)self imageView];
+  [imageView setContentMode:mode];
 }
 
 - (void)layoutSubviews
@@ -50,46 +50,46 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(HUImageIconContentView *)self imageView];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  imageView = [(HUImageIconContentView *)self imageView];
+  [imageView setFrame:{v4, v6, v8, v10}];
 }
 
-- (void)setIconSize:(unint64_t)a3
+- (void)setIconSize:(unint64_t)size
 {
-  v5 = [(HUIconContentView *)self iconSize];
+  iconSize = [(HUIconContentView *)self iconSize];
   v6.receiver = self;
   v6.super_class = HUImageIconContentView;
-  [(HUIconContentView *)&v6 setIconSize:a3];
-  if (v5 != a3)
+  [(HUIconContentView *)&v6 setIconSize:size];
+  if (iconSize != size)
   {
     [(HUImageIconContentView *)self _updateIconImage];
   }
 }
 
-- (id)_imageForImageIconDescriptor:(id)a3
+- (id)_imageForImageIconDescriptor:(id)descriptor
 {
-  v4 = a3;
-  v5 = [v4 imageIdentifier];
-  if ([v4 isDemoModeDescriptor])
+  descriptorCopy = descriptor;
+  imageIdentifier = [descriptorCopy imageIdentifier];
+  if ([descriptorCopy isDemoModeDescriptor])
   {
-    v6 = [objc_alloc(MEMORY[0x277D755B0]) initWithContentsOfFile:v5];
+    v6 = [objc_alloc(MEMORY[0x277D755B0]) initWithContentsOfFile:imageIdentifier];
     if (v6)
     {
       goto LABEL_10;
     }
   }
 
-  else if ([v4 isSystemImage])
+  else if ([descriptorCopy isSystemImage])
   {
-    v7 = [v4 imageSymbolConfiguration];
-    if (v7)
+    imageSymbolConfiguration = [descriptorCopy imageSymbolConfiguration];
+    if (imageSymbolConfiguration)
     {
-      [MEMORY[0x277D755B0] _systemImageNamed:v5 withConfiguration:v7];
+      [MEMORY[0x277D755B0] _systemImageNamed:imageIdentifier withConfiguration:imageSymbolConfiguration];
     }
 
     else
     {
-      [MEMORY[0x277D755B0] _systemImageNamed:v5];
+      [MEMORY[0x277D755B0] _systemImageNamed:imageIdentifier];
     }
     v6 = ;
 
@@ -99,32 +99,32 @@
     }
   }
 
-  v6 = [objc_opt_class() iconImageNamed:v5 withSize:-[HUIconContentView iconSize](self displayStyle:{"iconSize"), -[HUIconContentView displayStyle](self, "displayStyle")}];
+  v6 = [objc_opt_class() iconImageNamed:imageIdentifier withSize:-[HUIconContentView iconSize](self displayStyle:{"iconSize"), -[HUIconContentView displayStyle](self, "displayStyle")}];
 LABEL_10:
 
   return v6;
 }
 
-- (id)_imageForVariableImageIconDescriptor:(id)a3
+- (id)_imageForVariableImageIconDescriptor:(id)descriptor
 {
-  v4 = a3;
-  v5 = [v4 imageIdentifier];
-  v6 = [v4 imageSymbolConfiguration];
+  descriptorCopy = descriptor;
+  imageIdentifier = [descriptorCopy imageIdentifier];
+  imageSymbolConfiguration = [descriptorCopy imageSymbolConfiguration];
   v7 = MEMORY[0x277D755B0];
-  if (v6)
+  if (imageSymbolConfiguration)
   {
-    [v4 variableValue];
-    [v7 _systemImageNamed:v5 variableValue:v6 withConfiguration:?];
+    [descriptorCopy variableValue];
+    [v7 _systemImageNamed:imageIdentifier variableValue:imageSymbolConfiguration withConfiguration:?];
   }
 
   else
   {
-    [MEMORY[0x277D755B0] _systemImageNamed:v5];
+    [MEMORY[0x277D755B0] _systemImageNamed:imageIdentifier];
   }
   v8 = ;
   if (!v8)
   {
-    v8 = [objc_opt_class() iconImageNamed:v5 withSize:-[HUIconContentView iconSize](self displayStyle:{"iconSize"), -[HUIconContentView displayStyle](self, "displayStyle")}];
+    v8 = [objc_opt_class() iconImageNamed:imageIdentifier withSize:-[HUIconContentView iconSize](self displayStyle:{"iconSize"), -[HUIconContentView displayStyle](self, "displayStyle")}];
   }
 
   return v8;
@@ -133,10 +133,10 @@ LABEL_10:
 - (void)_updateIconImage
 {
   objc_opt_class();
-  v3 = [(HUIconContentView *)self iconDescriptor];
+  iconDescriptor = [(HUIconContentView *)self iconDescriptor];
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = iconDescriptor;
   }
 
   else
@@ -148,16 +148,16 @@ LABEL_10:
 
   if (v24)
   {
-    v5 = [(HUImageIconContentView *)self _imageForVariableImageIconDescriptor:v24];
-    -[HUImageIconContentView setOriginalImageRenderingMode:](self, "setOriginalImageRenderingMode:", [v5 renderingMode]);
-    v6 = [(HUImageIconContentView *)self imageView];
-    v7 = [v5 imageWithRenderingMode:{-[HUImageIconContentView renderingModeForSubview:suggestedRenderingMode:](self, "renderingModeForSubview:suggestedRenderingMode:", v6, -[HUIconContentView renderingMode](self, "renderingMode"))}];
-    v8 = [(HUImageIconContentView *)self imageView];
-    [v8 setImage:v7];
+    iconDescriptor2 = [(HUImageIconContentView *)self _imageForVariableImageIconDescriptor:v24];
+    -[HUImageIconContentView setOriginalImageRenderingMode:](self, "setOriginalImageRenderingMode:", [iconDescriptor2 renderingMode]);
+    imageView = [(HUImageIconContentView *)self imageView];
+    v7 = [iconDescriptor2 imageWithRenderingMode:{-[HUImageIconContentView renderingModeForSubview:suggestedRenderingMode:](self, "renderingModeForSubview:suggestedRenderingMode:", imageView, -[HUIconContentView renderingMode](self, "renderingMode"))}];
+    imageView2 = [(HUImageIconContentView *)self imageView];
+    [imageView2 setImage:v7];
 
-    [v5 size];
+    [iconDescriptor2 size];
     v10 = v9;
-    [v5 size];
+    [iconDescriptor2 size];
     v12 = v10 / v11;
 LABEL_6:
     [(HUIconContentView *)self setAspectRatio:v12];
@@ -165,10 +165,10 @@ LABEL_6:
   }
 
   objc_opt_class();
-  v5 = [(HUIconContentView *)self iconDescriptor];
+  iconDescriptor2 = [(HUIconContentView *)self iconDescriptor];
   if (objc_opt_isKindOfClass())
   {
-    v13 = v5;
+    v13 = iconDescriptor2;
   }
 
   else
@@ -180,12 +180,12 @@ LABEL_6:
 
   if (v14)
   {
-    v15 = [v14 imageIdentifier];
+    imageIdentifier = [v14 imageIdentifier];
 
-    if (!v15)
+    if (!imageIdentifier)
     {
-      v23 = [(HUImageIconContentView *)self imageView];
-      [v23 setImage:0];
+      imageView3 = [(HUImageIconContentView *)self imageView];
+      [imageView3 setImage:0];
 
       v12 = 1.0;
       goto LABEL_6;
@@ -193,10 +193,10 @@ LABEL_6:
 
     v16 = [(HUImageIconContentView *)self _imageForImageIconDescriptor:v14];
     -[HUImageIconContentView setOriginalImageRenderingMode:](self, "setOriginalImageRenderingMode:", [v16 renderingMode]);
-    v17 = [(HUImageIconContentView *)self imageView];
-    v18 = [v16 imageWithRenderingMode:{-[HUImageIconContentView renderingModeForSubview:suggestedRenderingMode:](self, "renderingModeForSubview:suggestedRenderingMode:", v17, -[HUIconContentView renderingMode](self, "renderingMode"))}];
-    v19 = [(HUImageIconContentView *)self imageView];
-    [v19 setImage:v18];
+    imageView4 = [(HUImageIconContentView *)self imageView];
+    v18 = [v16 imageWithRenderingMode:{-[HUImageIconContentView renderingModeForSubview:suggestedRenderingMode:](self, "renderingModeForSubview:suggestedRenderingMode:", imageView4, -[HUIconContentView renderingMode](self, "renderingMode"))}];
+    imageView5 = [(HUImageIconContentView *)self imageView];
+    [imageView5 setImage:v18];
 
     [v16 size];
     v21 = v20;
@@ -206,24 +206,24 @@ LABEL_6:
 
   else
   {
-    v5 = 0;
+    iconDescriptor2 = 0;
   }
 
 LABEL_7:
 }
 
-- (int64_t)renderingModeForSubview:(id)a3 suggestedRenderingMode:(int64_t)a4
+- (int64_t)renderingModeForSubview:(id)subview suggestedRenderingMode:(int64_t)mode
 {
-  v6 = a3;
-  v7 = [(HUImageIconContentView *)self imageView];
-  v8 = v7;
-  if (v7 == v6)
+  subviewCopy = subview;
+  imageView = [(HUImageIconContentView *)self imageView];
+  v8 = imageView;
+  if (imageView == subviewCopy)
   {
-    v10 = [(HUImageIconContentView *)self originalImageRenderingMode];
+    originalImageRenderingMode = [(HUImageIconContentView *)self originalImageRenderingMode];
 
-    if (v10)
+    if (originalImageRenderingMode)
     {
-      v9 = [(HUImageIconContentView *)self originalImageRenderingMode];
+      originalImageRenderingMode2 = [(HUImageIconContentView *)self originalImageRenderingMode];
       goto LABEL_6;
     }
   }
@@ -234,9 +234,9 @@ LABEL_7:
 
   v13.receiver = self;
   v13.super_class = HUImageIconContentView;
-  v9 = [(HUIconContentView *)&v13 renderingModeForSubview:v6 suggestedRenderingMode:a4];
+  originalImageRenderingMode2 = [(HUIconContentView *)&v13 renderingModeForSubview:subviewCopy suggestedRenderingMode:mode];
 LABEL_6:
-  v11 = v9;
+  v11 = originalImageRenderingMode2;
 
   return v11;
 }
@@ -244,29 +244,29 @@ LABEL_6:
 - (id)description
 {
   v3 = [MEMORY[0x277D2C8F0] builderWithObject:self];
-  v4 = [v3 appendSuper];
-  v5 = [(HUImageIconContentView *)self imageView];
-  v6 = [v3 appendObject:v5 withName:@"imageView"];
+  appendSuper = [v3 appendSuper];
+  imageView = [(HUImageIconContentView *)self imageView];
+  v6 = [v3 appendObject:imageView withName:@"imageView"];
 
-  v7 = [(HUImageIconContentView *)self imageView];
-  v8 = [v7 hu_contentModeString];
-  v9 = [v3 appendObject:v8 withName:@"contentMode"];
+  imageView2 = [(HUImageIconContentView *)self imageView];
+  hu_contentModeString = [imageView2 hu_contentModeString];
+  v9 = [v3 appendObject:hu_contentModeString withName:@"contentMode"];
 
   v20.width = HUDefaultSizeForIconSize([(HUIconContentView *)self iconSize]);
   v10 = NSStringFromCGSize(v20);
   v11 = [v3 appendObject:v10 withName:@"iconSize"];
 
-  v12 = [(HUImageIconContentView *)self imageView];
-  v13 = [v12 image];
-  [v13 size];
+  imageView3 = [(HUImageIconContentView *)self imageView];
+  image = [imageView3 image];
+  [image size];
   v14 = NSStringFromCGSize(v21);
   v15 = [v3 appendObject:v14 withName:@"imageSize"];
 
   [(HUIconContentView *)self aspectRatio];
   v16 = [v3 appendDouble:@"aspectRatio" withName:2 decimalPrecision:?];
-  v17 = [v3 build];
+  build = [v3 build];
 
-  return v17;
+  return build;
 }
 
 @end

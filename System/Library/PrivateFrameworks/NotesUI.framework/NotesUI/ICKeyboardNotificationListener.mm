@@ -3,8 +3,8 @@
 - (CGRect)keyboardFrame;
 - (ICKeyboardNotificationListener)init;
 - (void)dealloc;
-- (void)handleKeyboardDidChangeFrame:(id)a3;
-- (void)handleKeyboardWillShow:(id)a3;
+- (void)handleKeyboardDidChangeFrame:(id)frame;
+- (void)handleKeyboardWillShow:(id)show;
 @end
 
 @implementation ICKeyboardNotificationListener
@@ -39,14 +39,14 @@ uint64_t __48__ICKeyboardNotificationListener_sharedListener__block_invoke()
     v4 = *(MEMORY[0x1E695F050] + 16);
     *(v2 + 8) = *MEMORY[0x1E695F050];
     *(v2 + 24) = v4;
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 addObserver:v3 selector:sel_handleKeyboardWillShow_ name:*MEMORY[0x1E69DE080] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel_handleKeyboardWillShow_ name:*MEMORY[0x1E69DE080] object:0];
 
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v6 addObserver:v3 selector:sel_handleKeyboardDidChangeFrame_ name:*MEMORY[0x1E69DDF68] object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v3 selector:sel_handleKeyboardDidChangeFrame_ name:*MEMORY[0x1E69DDF68] object:0];
 
-    v7 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v7 addObserver:v3 selector:sel_handleKeyboardWillHide_ name:*MEMORY[0x1E69DE078] object:0];
+    defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter3 addObserver:v3 selector:sel_handleKeyboardWillHide_ name:*MEMORY[0x1E69DE078] object:0];
   }
 
   return v3;
@@ -54,18 +54,18 @@ uint64_t __48__ICKeyboardNotificationListener_sharedListener__block_invoke()
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = ICKeyboardNotificationListener;
   [(ICKeyboardNotificationListener *)&v4 dealloc];
 }
 
-- (void)handleKeyboardWillShow:(id)a3
+- (void)handleKeyboardWillShow:(id)show
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:*MEMORY[0x1E69DDFA0]];
+  userInfo = [show userInfo];
+  v5 = [userInfo objectForKey:*MEMORY[0x1E69DDFA0]];
   [v5 CGRectValue];
   v7 = v6;
   v9 = v8;
@@ -75,10 +75,10 @@ uint64_t __48__ICKeyboardNotificationListener_sharedListener__block_invoke()
   [(ICKeyboardNotificationListener *)self setKeyboardFrame:v7, v9, v11, v13];
 }
 
-- (void)handleKeyboardDidChangeFrame:(id)a3
+- (void)handleKeyboardDidChangeFrame:(id)frame
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:*MEMORY[0x1E69DDFA0]];
+  userInfo = [frame userInfo];
+  v5 = [userInfo objectForKey:*MEMORY[0x1E69DDFA0]];
   [v5 CGRectValue];
   v7 = v6;
   v9 = v8;

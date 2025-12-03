@@ -1,12 +1,12 @@
 @interface CKTranscriptScrollIntentUpdateRequest
-- (CKTranscriptScrollIntentUpdateRequest)initWithAnimatedIntent:(int64_t)a3 animationProperties:(id)a4;
+- (CKTranscriptScrollIntentUpdateRequest)initWithAnimatedIntent:(int64_t)intent animationProperties:(id)properties;
 - (id)description;
-- (id)initDeferredScrollIntentEnforcementWithIntent:(int64_t)a3;
+- (id)initDeferredScrollIntentEnforcementWithIntent:(int64_t)intent;
 @end
 
 @implementation CKTranscriptScrollIntentUpdateRequest
 
-- (id)initDeferredScrollIntentEnforcementWithIntent:(int64_t)a3
+- (id)initDeferredScrollIntentEnforcementWithIntent:(int64_t)intent
 {
   v8.receiver = self;
   v8.super_class = CKTranscriptScrollIntentUpdateRequest;
@@ -15,7 +15,7 @@
   if (v4)
   {
     animationProperties = v4->_animationProperties;
-    v4->_intent = a3;
+    v4->_intent = intent;
     v4->_animationProperties = 0;
 
     v5->_wantsDeferredScrollIntentEnforcement = 1;
@@ -24,17 +24,17 @@
   return v5;
 }
 
-- (CKTranscriptScrollIntentUpdateRequest)initWithAnimatedIntent:(int64_t)a3 animationProperties:(id)a4
+- (CKTranscriptScrollIntentUpdateRequest)initWithAnimatedIntent:(int64_t)intent animationProperties:(id)properties
 {
-  v7 = a4;
+  propertiesCopy = properties;
   v11.receiver = self;
   v11.super_class = CKTranscriptScrollIntentUpdateRequest;
   v8 = [(CKTranscriptScrollIntentUpdateRequest *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_intent = a3;
-    objc_storeStrong(&v8->_animationProperties, a4);
+    v8->_intent = intent;
+    objc_storeStrong(&v8->_animationProperties, properties);
     v9->_wantsDeferredScrollIntentEnforcement = 0;
   }
 
@@ -47,12 +47,12 @@
   v4 = CKDebugNameForCKTranscriptScrollIntent([(CKTranscriptScrollIntentUpdateRequest *)self intent]);
   [v3 appendFormat:@" intent=%@", v4];
 
-  v5 = [(CKTranscriptScrollIntentUpdateRequest *)self animationProperties];
-  [v3 appendFormat:@" animationProperties=%@", v5];
+  animationProperties = [(CKTranscriptScrollIntentUpdateRequest *)self animationProperties];
+  [v3 appendFormat:@" animationProperties=%@", animationProperties];
 
-  v6 = [(CKTranscriptScrollIntentUpdateRequest *)self wantsDeferredScrollIntentEnforcement];
+  wantsDeferredScrollIntentEnforcement = [(CKTranscriptScrollIntentUpdateRequest *)self wantsDeferredScrollIntentEnforcement];
   v7 = @"NO";
-  if (v6)
+  if (wantsDeferredScrollIntentEnforcement)
   {
     v7 = @"YES";
   }

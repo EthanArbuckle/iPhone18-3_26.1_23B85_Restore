@@ -1,21 +1,21 @@
 @interface CMIOExtensionProxy
-- (CMIOExtensionProxy)initWithEndpoint:(id)a3 extensionPID:(int)a4 delegate:(id)a5;
+- (CMIOExtensionProxy)initWithEndpoint:(id)endpoint extensionPID:(int)d delegate:(id)delegate;
 - (OS_xpc_object)endpoint;
 - (OS_xpc_object)proxyEndpoint;
-- (void)addConnection:(id)a3;
+- (void)addConnection:(id)connection;
 - (void)dealloc;
 - (void)invalidate;
-- (void)proxyContextHasBeenInvalidated:(id)a3;
+- (void)proxyContextHasBeenInvalidated:(id)invalidated;
 - (void)proxyStreamHasStarted;
-- (void)proxyStreamsHaveStopped:(int)a3;
+- (void)proxyStreamsHaveStopped:(int)stopped;
 @end
 
 @implementation CMIOExtensionProxy
 
-- (CMIOExtensionProxy)initWithEndpoint:(id)a3 extensionPID:(int)a4 delegate:(id)a5
+- (CMIOExtensionProxy)initWithEndpoint:(id)endpoint extensionPID:(int)d delegate:(id)delegate
 {
   v34 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (endpoint)
   {
     v25.receiver = self;
     v25.super_class = CMIOExtensionProxy;
@@ -41,12 +41,12 @@
 
       objc_initWeak(buf, v8);
       v8[2] = 0;
-      *(v8 + 3) = a3;
+      *(v8 + 3) = endpoint;
       v13 = xpc_connection_create(0, 0);
       *(v8 + 2) = v13;
       *(v8 + 4) = xpc_endpoint_create(v13);
-      *(v8 + 5) = a5;
-      v8[12] = a4;
+      *(v8 + 5) = delegate;
+      v8[12] = d;
       v8[13] = 0;
       *(v8 + 7) = objc_alloc_init(MEMORY[0x277CBEB18]);
       v14 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
@@ -173,7 +173,7 @@ void __61__CMIOExtensionProxy_initWithEndpoint_extensionPID_delegate___block_inv
         v15 = 2080;
         v16 = "[CMIOExtensionProxy dealloc]";
         v17 = 2113;
-        v18 = self;
+        selfCopy = self;
         _os_log_impl(&dword_22EA08000, v4, OS_LOG_TYPE_DEFAULT, "%s:%d:%s %{private}@", buf, 0x26u);
       }
     }
@@ -194,7 +194,7 @@ void __61__CMIOExtensionProxy_initWithEndpoint_extensionPID_delegate___block_inv
       v15 = 2080;
       v16 = "[CMIOExtensionProxy dealloc]";
       v17 = 1025;
-      LODWORD(v18) = extensionPID;
+      LODWORD(selfCopy) = extensionPID;
       _os_log_impl(&dword_22EA08000, v6, OS_LOG_TYPE_DEFAULT, "%s:%d:%s [%{private}d] cancelling update stream state timer", buf, 0x22u);
     }
   }
@@ -270,11 +270,11 @@ void __61__CMIOExtensionProxy_initWithEndpoint_extensionPID_delegate___block_inv
   }
 }
 
-- (void)addConnection:(id)a3
+- (void)addConnection:(id)connection
 {
   v21 = *MEMORY[0x277D85DE8];
   v5 = xpc_connection_create_from_endpoint(self->_endpoint);
-  v6 = [[CMIOExtensionProxyContext alloc] initWithConnection:a3 serverConnection:v5 queue:0 delegate:self];
+  v6 = [[CMIOExtensionProxyContext alloc] initWithConnection:connection serverConnection:v5 queue:0 delegate:self];
   xpc_release(v5);
   if (v6)
   {
@@ -294,7 +294,7 @@ void __61__CMIOExtensionProxy_initWithEndpoint_extensionPID_delegate___block_inv
         v15 = 2080;
         v16 = "[CMIOExtensionProxy addConnection:]";
         v17 = 1025;
-        pid = xpc_connection_get_pid(a3);
+        pid = xpc_connection_get_pid(connection);
         v19 = 2112;
         v20 = v6;
         _os_log_impl(&dword_22EA08000, v8, OS_LOG_TYPE_INFO, "%s:%d:%s New proxy [%{private}d] %@", &v11, 0x2Cu);
@@ -387,10 +387,10 @@ uint64_t __43__CMIOExtensionProxy_proxyStreamHasStarted__block_invoke(uint64_t a
   return result;
 }
 
-- (void)proxyStreamsHaveStopped:(int)a3
+- (void)proxyStreamsHaveStopped:(int)stopped
 {
   v26 = *MEMORY[0x277D85DE8];
-  if (a3 >= 1)
+  if (stopped >= 1)
   {
     v5 = CMIOLog();
     if (v5)
@@ -412,7 +412,7 @@ uint64_t __43__CMIOExtensionProxy_proxyStreamHasStarted__block_invoke(uint64_t a
         v22 = 1024;
         v23 = activeStreams;
         v24 = 1024;
-        v25 = a3;
+        stoppedCopy = stopped;
         _os_log_impl(&dword_22EA08000, v6, OS_LOG_TYPE_DEFAULT, "%s:%d:%s [%{private}d] activeStreams %d will loose %d", buf, 0x2Eu);
       }
     }
@@ -423,7 +423,7 @@ uint64_t __43__CMIOExtensionProxy_proxyStreamHasStarted__block_invoke(uint64_t a
     v12[2] = __46__CMIOExtensionProxy_proxyStreamsHaveStopped___block_invoke;
     v12[3] = &unk_27885C2C8;
     v12[4] = self;
-    v13 = a3;
+    stoppedCopy2 = stopped;
     dispatch_sync(updateStreamStateQueue, v12);
   }
 
@@ -479,10 +479,10 @@ void __46__CMIOExtensionProxy_proxyStreamsHaveStopped___block_invoke(uint64_t a1
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)proxyContextHasBeenInvalidated:(id)a3
+- (void)proxyContextHasBeenInvalidated:(id)invalidated
 {
   os_unfair_lock_lock(&self->_lock);
-  [(NSMutableArray *)self->_contexts removeObject:a3];
+  [(NSMutableArray *)self->_contexts removeObject:invalidated];
 
   os_unfair_lock_unlock(&self->_lock);
 }

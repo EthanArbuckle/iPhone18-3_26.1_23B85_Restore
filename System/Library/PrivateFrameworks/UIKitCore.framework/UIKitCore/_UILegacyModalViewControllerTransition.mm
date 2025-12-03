@@ -1,15 +1,15 @@
 @interface _UILegacyModalViewControllerTransition
-+ (id)transitionWithStyle:(int64_t)a3;
++ (id)transitionWithStyle:(int64_t)style;
 @end
 
 @implementation _UILegacyModalViewControllerTransition
 
-+ (id)transitionWithStyle:(int64_t)a3
++ (id)transitionWithStyle:(int64_t)style
 {
-  v4 = [[a1 alloc] _init];
-  v4[1] = a3;
+  _init = [[self alloc] _init];
+  _init[1] = style;
 
-  return v4;
+  return _init;
 }
 
 @end

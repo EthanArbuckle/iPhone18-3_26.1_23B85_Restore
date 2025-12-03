@@ -1,17 +1,17 @@
 @interface EKEventCalendarDetailItemAccessibility
-- (id)cellForSubitemAtIndex:(unint64_t)a3 withTraitCollection:(id)a4;
+- (id)cellForSubitemAtIndex:(unint64_t)index withTraitCollection:(id)collection;
 @end
 
 @implementation EKEventCalendarDetailItemAccessibility
 
-- (id)cellForSubitemAtIndex:(unint64_t)a3 withTraitCollection:(id)a4
+- (id)cellForSubitemAtIndex:(unint64_t)index withTraitCollection:(id)collection
 {
-  v6 = a4;
+  collectionCopy = collection;
   v14 = 0;
   objc_opt_class();
   v13.receiver = self;
   v13.super_class = EKEventCalendarDetailItemAccessibility;
-  v7 = [(EKEventCalendarDetailItemAccessibility *)&v13 cellForSubitemAtIndex:a3 withTraitCollection:v6];
+  v7 = [(EKEventCalendarDetailItemAccessibility *)&v13 cellForSubitemAtIndex:index withTraitCollection:collectionCopy];
   v8 = __UIAccessibilityCastAsClass();
 
   if (v14 == 1)
@@ -19,10 +19,10 @@
     abort();
   }
 
-  v9 = [v8 detailTextLabel];
-  v10 = [v9 text];
-  v11 = [v8 detailTextLabel];
-  [v11 setAccessibilityLabel:v10];
+  detailTextLabel = [v8 detailTextLabel];
+  text = [detailTextLabel text];
+  detailTextLabel2 = [v8 detailTextLabel];
+  [detailTextLabel2 setAccessibilityLabel:text];
 
   return v8;
 }

@@ -1,23 +1,23 @@
 @interface _PKColorPickerView
-- (BOOL)pointIsSignificantlyOutside:(CGPoint)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_PKColorPickerView)initWithFrame:(CGRect)a3;
+- (BOOL)pointIsSignificantlyOutside:(CGPoint)outside;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_PKColorPickerView)initWithFrame:(CGRect)frame;
 - (_PKColorPickerViewDelegate)delegate;
-- (void)_setSelectedColorForPoint:(CGPoint)a3;
-- (void)colorPickerImplementationDidChangeSelectedColor:(id)a3;
-- (void)colorPickerImplementationUserDidTouchUpInside:(id)a3;
-- (void)didPanCrosshair:(id)a3;
+- (void)_setSelectedColorForPoint:(CGPoint)point;
+- (void)colorPickerImplementationDidChangeSelectedColor:(id)color;
+- (void)colorPickerImplementationUserDidTouchUpInside:(id)inside;
+- (void)didPanCrosshair:(id)crosshair;
 - (void)layoutSubviews;
-- (void)setSelectedColor:(id)a3;
+- (void)setSelectedColor:(id)color;
 @end
 
 @implementation _PKColorPickerView
 
-- (_PKColorPickerView)initWithFrame:(CGRect)a3
+- (_PKColorPickerView)initWithFrame:(CGRect)frame
 {
   v21.receiver = self;
   v21.super_class = _PKColorPickerView;
-  v3 = [(_PKColorPickerView *)&v21 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_PKColorPickerView *)&v21 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(_PKColorPickerView *)v3 setClipsToBounds:0];
   v4 = [MEMORY[0x1E69DC888] colorWithRed:0.0 green:0.0 blue:0.0 alpha:1.0];
   selectedColor = v3->_selectedColor;
@@ -33,11 +33,11 @@
   v3->_gridColorPicker = v11;
 
   [(PKColorMatrixView *)v3->_gridColorPicker setColorPickerDelegate:v3];
-  v13 = [(_PKColorPickerView *)v3 selectedColor];
-  [(PKColorMatrixView *)v3->_gridColorPicker setSelectedColor:v13];
+  selectedColor = [(_PKColorPickerView *)v3 selectedColor];
+  [(PKColorMatrixView *)v3->_gridColorPicker setSelectedColor:selectedColor];
 
-  v14 = [(PKColorMatrixView *)v3->_gridColorPicker layer];
-  [v14 setCornerRadius:9.0];
+  layer = [(PKColorMatrixView *)v3->_gridColorPicker layer];
+  [layer setCornerRadius:9.0];
 
   [(PKColorMatrixView *)v3->_gridColorPicker setClipsToBounds:1];
   v15 = [[PKColorPickerCrosshairView alloc] initWithFrame:v7, v8, v9, v10];
@@ -52,26 +52,26 @@
   [(_PKColorPickerView *)v3 addGestureRecognizer:v3->_crosshairPanGR];
   [(_PKColorPickerView *)v3 addSubview:v3->_gridColorPicker];
   [(_PKColorPickerView *)v3 addSubview:v3->_crosshairView];
-  v19 = [(_PKColorPickerView *)v3 crosshairView];
-  [v19 update];
+  crosshairView = [(_PKColorPickerView *)v3 crosshairView];
+  [crosshairView update];
 
   [(_PKColorPickerView *)v3 setAccessibilityIdentifier:@"gridColorPicker"];
   [(PKColorMatrixView *)v3->_gridColorPicker setHidden:0];
   return v3;
 }
 
-- (void)setSelectedColor:(id)a3
+- (void)setSelectedColor:(id)color
 {
-  v4 = a3;
-  v5 = [(_PKColorPickerView *)self gridColorPicker];
-  v6 = [v5 representableColorForColor:v4];
+  colorCopy = color;
+  gridColorPicker = [(_PKColorPickerView *)self gridColorPicker];
+  v6 = [gridColorPicker representableColorForColor:colorCopy];
 
   selectedColor = self->_selectedColor;
   self->_selectedColor = v6;
   v8 = v6;
 
-  v9 = [(_PKColorPickerView *)self gridColorPicker];
-  [v9 setSelectedColor:v8];
+  gridColorPicker2 = [(_PKColorPickerView *)self gridColorPicker];
+  [gridColorPicker2 setSelectedColor:v8];
 
   [(_PKColorPickerView *)self setNeedsLayout];
 }
@@ -86,14 +86,14 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(_PKColorPickerView *)self gridColorPicker];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  gridColorPicker = [(_PKColorPickerView *)self gridColorPicker];
+  [gridColorPicker setFrame:{v4, v6, v8, v10}];
 
-  v12 = [(_PKColorPickerView *)self crosshairView];
-  [v12 update];
+  crosshairView = [(_PKColorPickerView *)self crosshairView];
+  [crosshairView update];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v3 = 352.0;
   v4 = 296.0;
@@ -102,61 +102,61 @@
   return result;
 }
 
-- (void)didPanCrosshair:(id)a3
+- (void)didPanCrosshair:(id)crosshair
 {
-  v7 = a3;
-  if ([v7 state] == 1)
+  crosshairCopy = crosshair;
+  if ([crosshairCopy state] == 1)
   {
-    v4 = [(_PKColorPickerView *)self selectedColor];
+    selectedColor = [(_PKColorPickerView *)self selectedColor];
     initialColor = self->_initialColor;
-    self->_initialColor = v4;
+    self->_initialColor = selectedColor;
   }
 
-  else if ([v7 state] == 2)
+  else if ([crosshairCopy state] == 2)
   {
-    [v7 locationInView:self];
+    [crosshairCopy locationInView:self];
     [(_PKColorPickerView *)self _setSelectedColorForPoint:?];
   }
 
-  else if ([v7 state] == 3)
+  else if ([crosshairCopy state] == 3)
   {
-    v6 = [(_PKColorPickerView *)self delegate];
-    [v6 _colorPickerViewUserDidTouchUpInside:self];
+    delegate = [(_PKColorPickerView *)self delegate];
+    [delegate _colorPickerViewUserDidTouchUpInside:self];
   }
 }
 
-- (void)_setSelectedColorForPoint:(CGPoint)a3
+- (void)_setSelectedColorForPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  if ((*&a3.x & 0x7FFFFFFFFFFFFFFFuLL) <= 0x7FEFFFFFFFFFFFFFLL && (*&a3.y & 0x7FFFFFFFFFFFFFFFuLL) < 0x7FF0000000000000)
+  y = point.y;
+  x = point.x;
+  if ((*&point.x & 0x7FFFFFFFFFFFFFFFuLL) <= 0x7FEFFFFFFFFFFFFFLL && (*&point.y & 0x7FFFFFFFFFFFFFFFuLL) < 0x7FF0000000000000)
   {
-    v6 = [(_PKColorPickerView *)self crosshairView];
-    [v6 setCenter:{x, y}];
+    crosshairView = [(_PKColorPickerView *)self crosshairView];
+    [crosshairView setCenter:{x, y}];
 
     if ([(_PKColorPickerView *)self pointIsSignificantlyOutside:x, y]&& self->_initialColor)
     {
-      v7 = [(_PKColorPickerView *)self crosshairView];
-      v8 = [v7 delegate];
-      [v8 colorPickerCrosshairViewShouldUpdateWithColor:self->_initialColor];
+      crosshairView2 = [(_PKColorPickerView *)self crosshairView];
+      delegate = [crosshairView2 delegate];
+      [delegate colorPickerCrosshairViewShouldUpdateWithColor:self->_initialColor];
     }
 
     else
     {
-      v7 = [(_PKColorPickerView *)self crosshairView];
-      v8 = [v7 delegate];
-      v9 = [(_PKColorPickerView *)self crosshairView];
-      [v8 colorPickerCrosshairViewShouldUpdateColor:v9 point:{x, y}];
+      crosshairView2 = [(_PKColorPickerView *)self crosshairView];
+      delegate = [crosshairView2 delegate];
+      crosshairView3 = [(_PKColorPickerView *)self crosshairView];
+      [delegate colorPickerCrosshairViewShouldUpdateColor:crosshairView3 point:{x, y}];
     }
 
     [(_PKColorPickerView *)self setNeedsLayout];
   }
 }
 
-- (BOOL)pointIsSignificantlyOutside:(CGPoint)a3
+- (BOOL)pointIsSignificantlyOutside:(CGPoint)outside
 {
-  y = a3.y;
-  x = a3.x;
+  y = outside.y;
+  x = outside.x;
   [(_PKColorPickerView *)self bounds];
   DKDDistanceToRect(x, y, v6, v7, v8, v9);
   v11 = v10;
@@ -176,19 +176,19 @@
   return !CGRectContainsPoint(v18, v17);
 }
 
-- (void)colorPickerImplementationDidChangeSelectedColor:(id)a3
+- (void)colorPickerImplementationDidChangeSelectedColor:(id)color
 {
-  v4 = [a3 selectedColor];
-  [(_PKColorPickerView *)self setSelectedColor:v4];
+  selectedColor = [color selectedColor];
+  [(_PKColorPickerView *)self setSelectedColor:selectedColor];
 
-  v5 = [(_PKColorPickerView *)self delegate];
-  [v5 _colorPickerViewDidChangeSelectedColor:self];
+  delegate = [(_PKColorPickerView *)self delegate];
+  [delegate _colorPickerViewDidChangeSelectedColor:self];
 }
 
-- (void)colorPickerImplementationUserDidTouchUpInside:(id)a3
+- (void)colorPickerImplementationUserDidTouchUpInside:(id)inside
 {
-  v4 = [(_PKColorPickerView *)self delegate];
-  [v4 _colorPickerViewUserDidTouchUpInside:self];
+  delegate = [(_PKColorPickerView *)self delegate];
+  [delegate _colorPickerViewUserDidTouchUpInside:self];
 }
 
 - (_PKColorPickerViewDelegate)delegate

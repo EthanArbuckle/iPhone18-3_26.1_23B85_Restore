@@ -1,12 +1,12 @@
 @interface GKGameActivity
-+ (BOOL)isValidPartyCode:(id)a3;
++ (BOOL)isValidPartyCode:(id)code;
 + (NSArray)validPartyCodeAlphabet;
-+ (id)startWithDefinition:(id)a3 error:(id *)a4;
-+ (id)startWithDefinition:(id)a3 partyCode:(id)a4 error:(id *)a5;
-+ (void)checkPendingGameActivityExistenceWithCompletionHandler:(id)a3;
-+ (void)createFromGameActivityInstance:(id)a3 completionHandler:(id)a4;
++ (id)startWithDefinition:(id)definition error:(id *)error;
++ (id)startWithDefinition:(id)definition partyCode:(id)code error:(id *)error;
++ (void)checkPendingGameActivityExistenceWithCompletionHandler:(id)handler;
++ (void)createFromGameActivityInstance:(id)instance completionHandler:(id)handler;
 - (GKGameActivity)init;
-- (GKGameActivity)initWithIdentifier:(id)a3 activityDefinition:(id)a4 properties:(id)a5 state:(unint64_t)a6 partyCode:(id)a7 creationDate:(id)a8 startDate:(id)a9 lastResumeDate:(id)a10 endDate:(id)a11 duration:(double)a12 achievements:(id)a13 leaderboardScores:(id)a14 creator:(id)a15 initiatedByApple:(BOOL)a16 referralLeaderboard:(id)a17 referralAchievement:(id)a18 participants:(id)a19 participantStates:(id)a20 shortGroupID:(id)a21 consumptionState:(id)a22 support:(id)a23 error:(id *)a24;
+- (GKGameActivity)initWithIdentifier:(id)identifier activityDefinition:(id)definition properties:(id)properties state:(unint64_t)state partyCode:(id)code creationDate:(id)date startDate:(id)startDate lastResumeDate:(id)self0 endDate:(id)self1 duration:(double)self2 achievements:(id)self3 leaderboardScores:(id)self4 creator:(id)self5 initiatedByApple:(BOOL)self6 referralLeaderboard:(id)self7 referralAchievement:(id)self8 participants:(id)self9 participantStates:(id)states shortGroupID:(id)d consumptionState:(id)consumptionState support:(id)support error:(id *)error;
 - (NSDate)creationDate;
 - (NSDictionary)participantStates;
 - (NSDictionary)properties;
@@ -16,40 +16,40 @@
 - (NSURL)partyURL;
 - (OS_dispatch_source_timer)gsTimer;
 - (double)duration;
-- (double)getProgressOnAchievement:(id)a3;
+- (double)getProgressOnAchievement:(id)achievement;
 - (id)fallbackPartyURL;
-- (id)getScoreOnLeaderboard:(id)a3;
+- (id)getScoreOnLeaderboard:(id)leaderboard;
 - (id)makeMatchRequest;
 - (unint64_t)state;
 - (void)end;
-- (void)findMatchWithCompletionHandler:(id)a3;
-- (void)findPlayersForHostedMatchWithCompletionHandler:(id)a3;
+- (void)findMatchWithCompletionHandler:(id)handler;
+- (void)findPlayersForHostedMatchWithCompletionHandler:(id)handler;
 - (void)markAsProcessed;
 - (void)pause;
-- (void)removeAchievements:(id)a3;
-- (void)removeScoresFromLeaderboards:(id)a3;
+- (void)removeAchievements:(id)achievements;
+- (void)removeScoresFromLeaderboards:(id)leaderboards;
 - (void)resume;
-- (void)setGsTimer:(id)a3;
-- (void)setLastUpdateTime:(id)a3;
-- (void)setProgressOnAchievement:(id)a3 toPercentComplete:(double)a4;
-- (void)setProperties:(id)a3;
-- (void)setScoreOnLeaderboard:(id)a3 toScore:(int64_t)a4;
-- (void)setScoreOnLeaderboard:(id)a3 toScore:(int64_t)a4 context:(int64_t)a5;
+- (void)setGsTimer:(id)timer;
+- (void)setLastUpdateTime:(id)time;
+- (void)setProgressOnAchievement:(id)achievement toPercentComplete:(double)complete;
+- (void)setProperties:(id)properties;
+- (void)setScoreOnLeaderboard:(id)leaderboard toScore:(int64_t)score;
+- (void)setScoreOnLeaderboard:(id)leaderboard toScore:(int64_t)score context:(int64_t)context;
 - (void)setupUpdateSubscription;
 - (void)start;
 @end
 
 @implementation GKGameActivity
 
-+ (void)checkPendingGameActivityExistenceWithCompletionHandler:(id)a3
++ (void)checkPendingGameActivityExistenceWithCompletionHandler:(id)handler
 {
   v5 = (*(*(__swift_instantiateConcreteTypeFromMangledNameV2(&qword_27CC06E10, &qword_2186B9590) - 8) + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
   MEMORY[0x28223BE20]();
   v7 = &v13 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
-  *(v9 + 24) = a1;
+  *(v9 + 24) = self;
   v10 = sub_2186B7B7C();
   (*(*(v10 - 8) + 56))(v7, 1, 1, v10);
   v11 = swift_allocObject();
@@ -73,10 +73,10 @@
   return v3;
 }
 
-- (void)setGsTimer:(id)a3
+- (void)setGsTimer:(id)timer
 {
   v3 = *(self + OBJC_IVAR___GKGameActivity_gsTimer);
-  *(self + OBJC_IVAR___GKGameActivity_gsTimer) = a3;
+  *(self + OBJC_IVAR___GKGameActivity_gsTimer) = timer;
   swift_unknownObjectRetain();
 
   swift_unknownObjectRelease();
@@ -87,7 +87,7 @@
   v2 = *(self + OBJC_IVAR___GKGameActivity__instanceSnapshot);
   v3 = *(*v2 + *MEMORY[0x277D841D0] + 16);
   v4 = (*(*v2 + 48) + 3) & 0x1FFFFFFFCLL;
-  v5 = self;
+  selfCopy = self;
   os_unfair_lock_lock((v2 + v4));
   sub_2186B70BC();
   os_unfair_lock_unlock((v2 + v4));
@@ -97,13 +97,13 @@
   return v6;
 }
 
-- (void)setProperties:(id)a3
+- (void)setProperties:(id)properties
 {
   sub_2186B79BC();
   v4 = *(self + OBJC_IVAR___GKGameActivity__instanceSnapshot);
   v5 = *(*v4 + *MEMORY[0x277D841D0] + 16);
   v6 = (*(*v4 + 48) + 3) & 0x1FFFFFFFCLL;
-  v7 = self;
+  selfCopy = self;
   os_unfair_lock_lock((v4 + v6));
   sub_2186A8744();
   os_unfair_lock_unlock((v4 + v6));
@@ -119,7 +119,7 @@
   v8 = *(self + OBJC_IVAR___GKGameActivity__instanceSnapshot);
   v9 = *(*v8 + *MEMORY[0x277D841D0] + 16);
   v10 = (*(*v8 + 48) + 3) & 0x1FFFFFFFCLL;
-  v11 = self;
+  selfCopy = self;
   os_unfair_lock_lock((v8 + v10));
   sub_2186B71FC();
   v12 = (*(v4 + 88))(v7, v3);
@@ -154,7 +154,7 @@
   v2 = *(self + OBJC_IVAR___GKGameActivity__instanceSnapshot);
   v3 = *(*v2 + *MEMORY[0x277D841D0] + 16);
   v4 = (*(*v2 + 48) + 3) & 0x1FFFFFFFCLL;
-  v5 = self;
+  selfCopy = self;
   os_unfair_lock_lock((v2 + v4));
   sub_2186A86EC(v9);
   os_unfair_lock_unlock((v2 + v4));
@@ -180,10 +180,10 @@
   MEMORY[0x28223BE20](v3 - 8);
   v6 = &v17[-v5];
   v7 = *(self + OBJC_IVAR___GKGameActivity__instanceSnapshot);
-  v18 = self;
+  selfCopy = self;
   v8 = *(*v7 + *MEMORY[0x277D841D0] + 16);
   v9 = (*(*v7 + 48) + 3) & 0x1FFFFFFFCLL;
-  v10 = self;
+  selfCopy2 = self;
   os_unfair_lock_lock((v7 + v9));
   sub_2186A86D4(v6);
   os_unfair_lock_unlock((v7 + v9));
@@ -212,7 +212,7 @@
   v8 = *(self + OBJC_IVAR___GKGameActivity__instanceSnapshot);
   v9 = *(*v8 + *MEMORY[0x277D841D0] + 16);
   v10 = (*(*v8 + 48) + 3) & 0x1FFFFFFFCLL;
-  v11 = self;
+  selfCopy = self;
   os_unfair_lock_lock((v8 + v10));
   sub_2186B70DC();
   os_unfair_lock_unlock((v8 + v10));
@@ -228,7 +228,7 @@
   v2 = *(self + OBJC_IVAR___GKGameActivity__instanceSnapshot);
   v3 = *(*v2 + *MEMORY[0x277D841D0] + 16);
   v4 = (*(*v2 + 48) + 3) & 0x1FFFFFFFCLL;
-  v5 = self;
+  selfCopy = self;
   os_unfair_lock_lock((v2 + v4));
   sub_2186B725C();
   sub_2186B7EDC();
@@ -269,7 +269,7 @@
   v2 = *(self + OBJC_IVAR___GKGameActivity__instanceSnapshot);
   v3 = *(*v2 + *MEMORY[0x277D841D0] + 16);
   v4 = (*(*v2 + 48) + 3) & 0x1FFFFFFFCLL;
-  v5 = self;
+  selfCopy = self;
   os_unfair_lock_lock((v2 + v4));
   sub_2186B711C();
   os_unfair_lock_unlock((v2 + v4));
@@ -279,11 +279,11 @@
   return v6;
 }
 
-- (GKGameActivity)initWithIdentifier:(id)a3 activityDefinition:(id)a4 properties:(id)a5 state:(unint64_t)a6 partyCode:(id)a7 creationDate:(id)a8 startDate:(id)a9 lastResumeDate:(id)a10 endDate:(id)a11 duration:(double)a12 achievements:(id)a13 leaderboardScores:(id)a14 creator:(id)a15 initiatedByApple:(BOOL)a16 referralLeaderboard:(id)a17 referralAchievement:(id)a18 participants:(id)a19 participantStates:(id)a20 shortGroupID:(id)a21 consumptionState:(id)a22 support:(id)a23 error:(id *)a24
+- (GKGameActivity)initWithIdentifier:(id)identifier activityDefinition:(id)definition properties:(id)properties state:(unint64_t)state partyCode:(id)code creationDate:(id)date startDate:(id)startDate lastResumeDate:(id)self0 endDate:(id)self1 duration:(double)self2 achievements:(id)self3 leaderboardScores:(id)self4 creator:(id)self5 initiatedByApple:(BOOL)self6 referralLeaderboard:(id)self7 referralAchievement:(id)self8 participants:(id)self9 participantStates:(id)states shortGroupID:(id)d consumptionState:(id)consumptionState support:(id)support error:(id *)error
 {
-  v106 = a6;
-  v107 = self;
-  v119 = a4;
+  stateCopy = state;
+  selfCopy = self;
+  definitionCopy = definition;
   v25 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27CC06F08, &qword_2186B90A8);
   v26 = *(*(v25 - 8) + 64);
   v27 = MEMORY[0x28223BE20](v25 - 8);
@@ -303,7 +303,7 @@
   v102 = v39;
   v103 = v38;
   v101 = sub_2186B79BC();
-  if (a7)
+  if (code)
   {
     v100 = sub_2186B7A0C();
     v99 = v40;
@@ -315,16 +315,16 @@
     v99 = 0;
   }
 
-  v115 = a21;
-  v116 = a22;
-  v113 = a19;
-  v114 = a20;
-  v110 = a13;
-  v111 = a14;
+  dCopy = d;
+  consumptionStateCopy = consumptionState;
+  participantsCopy = participants;
+  statesCopy = states;
+  achievementsCopy = achievements;
+  scoresCopy = scores;
   sub_2186B6FFC();
   v41 = v117;
   v104 = v37;
-  if (a9)
+  if (startDate)
   {
     v42 = v109;
     sub_2186B6FFC();
@@ -339,28 +339,28 @@
     v43 = v108;
   }
 
-  v112 = a23;
+  supportCopy = support;
   v45 = *(v43 + 56);
   v45(v41, v44, 1, v32);
-  v98 = a15;
-  if (a10)
+  creatorCopy = creator;
+  if (resumeDate)
   {
     v46 = v109;
     sub_2186B6FFC();
     v95 = *(v43 + 32);
-    v47 = v119;
-    v48 = a11;
-    v49 = v110;
-    v50 = v111;
-    v51 = a15;
-    v52 = a17;
-    v53 = a18;
-    v54 = a18;
-    v55 = v113;
-    v56 = v114;
-    v57 = v115;
-    v58 = v116;
-    v59 = v112;
+    v47 = definitionCopy;
+    endDateCopy = endDate;
+    v49 = achievementsCopy;
+    v50 = scoresCopy;
+    creatorCopy2 = creator;
+    leaderboardCopy = leaderboard;
+    achievementCopy3 = achievement;
+    achievementCopy2 = achievement;
+    v55 = participantsCopy;
+    v56 = statesCopy;
+    v57 = dCopy;
+    v58 = consumptionStateCopy;
+    v59 = supportCopy;
     v60 = v118;
     v95(v118, v46, v32);
     v45(v60, 0, 1, v32);
@@ -369,26 +369,26 @@
   else
   {
     v45(v118, 1, 1, v32);
-    v61 = v119;
-    v62 = a11;
-    v63 = v110;
-    v64 = v111;
-    v65 = a15;
-    v66 = a17;
-    v53 = a18;
-    v67 = a18;
-    v68 = v113;
-    v69 = v114;
-    v70 = v115;
-    v71 = v116;
-    v72 = v112;
+    v61 = definitionCopy;
+    endDateCopy2 = endDate;
+    v63 = achievementsCopy;
+    v64 = scoresCopy;
+    creatorCopy3 = creator;
+    leaderboardCopy2 = leaderboard;
+    achievementCopy3 = achievement;
+    achievementCopy4 = achievement;
+    v68 = participantsCopy;
+    v69 = statesCopy;
+    v70 = dCopy;
+    v71 = consumptionStateCopy;
+    v72 = supportCopy;
   }
 
   v73 = v105;
-  LODWORD(v105) = a16;
-  v97 = a17;
-  v96 = v53;
-  if (a11)
+  LODWORD(v105) = apple;
+  leaderboardCopy3 = leaderboard;
+  v96 = achievementCopy3;
+  if (endDate)
   {
     v74 = v109;
     sub_2186B6FFC();
@@ -405,81 +405,81 @@
   v45(v73, v75, 1, v32);
   sub_2186804FC(0, &qword_27CC06E60, &off_278236520);
   sub_21869D768(&qword_27CC06E68, &qword_27CC06E60, &off_278236520);
-  v76 = v110;
+  v76 = achievementsCopy;
   v77 = sub_2186B7B9C();
 
   sub_2186804FC(0, &qword_27CC06E70, &off_278236548);
   sub_21869D768(&qword_27CC06E78, &qword_27CC06E70, &off_278236548);
-  v78 = v111;
+  v78 = scoresCopy;
   v79 = sub_2186B7B9C();
 
-  v80 = v113;
+  v80 = participantsCopy;
   v81 = sub_2186B7B9C();
 
-  v82 = v114;
+  v82 = statesCopy;
   v83 = v73;
   v84 = sub_2186B79BC();
 
-  v85 = v115;
+  v85 = dCopy;
   v86 = sub_2186B7A0C();
   v88 = v87;
 
-  v89 = v116;
+  v89 = consumptionStateCopy;
   v90 = sub_2186B7A0C();
   v92 = v91;
 
-  return sub_218688454(v103, v102, v119, v101, v106, v100, v99, v104, v117, v118, v83, v77, v79, v98, v105, v97, v96, v81, v84, v86, v88, v90, v92, v112);
+  return sub_218688454(v103, v102, definitionCopy, v101, stateCopy, v100, v99, v104, v117, v118, v83, v77, v79, creatorCopy, v105, leaderboardCopy3, v96, v81, v84, v86, v88, v90, v92, supportCopy);
 }
 
-- (void)setLastUpdateTime:(id)a3
+- (void)setLastUpdateTime:(id)time
 {
   v4 = *(self + OBJC_IVAR___GKGameActivity_lastUpdateTime);
-  *(self + OBJC_IVAR___GKGameActivity_lastUpdateTime) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___GKGameActivity_lastUpdateTime) = time;
+  timeCopy = time;
 }
 
 - (void)setupUpdateSubscription
 {
-  v2 = self;
+  selfCopy = self;
   sub_21868B22C();
 }
 
-+ (id)startWithDefinition:(id)a3 partyCode:(id)a4 error:(id *)a5
++ (id)startWithDefinition:(id)definition partyCode:(id)code error:(id *)error
 {
   sub_2186B7A0C();
   v6 = qword_2811ED5E0;
-  v7 = a3;
-  v8 = v7;
+  definitionCopy = definition;
+  v8 = definitionCopy;
   if (v6 != -1)
   {
-    v7 = swift_once();
+    definitionCopy = swift_once();
   }
 
-  v9 = MEMORY[0x28223BE20](v7);
+  v9 = MEMORY[0x28223BE20](definitionCopy);
   type metadata accessor for GKGameActivity(v9);
   sub_2186832AC(sub_2186A8670);
 
   return v11;
 }
 
-+ (id)startWithDefinition:(id)a3 error:(id *)a4
++ (id)startWithDefinition:(id)definition error:(id *)error
 {
   v4 = qword_2811ED5E0;
-  v5 = a3;
-  v6 = v5;
+  definitionCopy = definition;
+  v6 = definitionCopy;
   if (v4 != -1)
   {
-    v5 = swift_once();
+    definitionCopy = swift_once();
   }
 
-  v7 = MEMORY[0x28223BE20](v5);
+  v7 = MEMORY[0x28223BE20](definitionCopy);
   type metadata accessor for GKGameActivity(v7);
   sub_2186832AC(sub_2186A8670);
 
   return v9;
 }
 
-+ (BOOL)isValidPartyCode:(id)a3
++ (BOOL)isValidPartyCode:(id)code
 {
   sub_2186B7A0C();
   valid = _sSo14GKGameActivityC7GameKitE16isValidPartyCodeySbSSFZ_0();
@@ -492,7 +492,7 @@
   v2 = *(self + OBJC_IVAR___GKGameActivity__instanceSnapshot);
   v3 = *(*v2 + *MEMORY[0x277D841D0] + 16);
   v4 = (*(*v2 + 48) + 3) & 0x1FFFFFFFCLL;
-  v5 = self;
+  selfCopy = self;
   os_unfair_lock_lock((v2 + v4));
   sub_2186A86BC();
   os_unfair_lock_unlock((v2 + v4));
@@ -503,7 +503,7 @@
   v2 = *(self + OBJC_IVAR___GKGameActivity__instanceSnapshot);
   v3 = *(*v2 + *MEMORY[0x277D841D0] + 16);
   v4 = (*(*v2 + 48) + 3) & 0x1FFFFFFFCLL;
-  v5 = self;
+  selfCopy = self;
   os_unfair_lock_lock((v2 + v4));
   sub_2186A86A4(v2 + v3);
   os_unfair_lock_unlock((v2 + v4));
@@ -514,7 +514,7 @@
   v2 = *(self + OBJC_IVAR___GKGameActivity__instanceSnapshot);
   v3 = *(*v2 + *MEMORY[0x277D841D0] + 16);
   v4 = (*(*v2 + 48) + 3) & 0x1FFFFFFFCLL;
-  v5 = self;
+  selfCopy = self;
   os_unfair_lock_lock((v2 + v4));
   sub_2186A868C();
   os_unfair_lock_unlock((v2 + v4));
@@ -522,63 +522,63 @@
 
 - (void)end
 {
-  v2 = self;
+  selfCopy = self;
   GKGameActivity.end()();
 }
 
-- (void)setScoreOnLeaderboard:(id)a3 toScore:(int64_t)a4 context:(int64_t)a5
+- (void)setScoreOnLeaderboard:(id)leaderboard toScore:(int64_t)score context:(int64_t)context
 {
-  v8 = a3;
-  v9 = self;
-  GKGameActivity.setScore(on:to:context:)(v8, a4, a5);
+  leaderboardCopy = leaderboard;
+  selfCopy = self;
+  GKGameActivity.setScore(on:to:context:)(leaderboardCopy, score, context);
 }
 
-- (void)setScoreOnLeaderboard:(id)a3 toScore:(int64_t)a4
+- (void)setScoreOnLeaderboard:(id)leaderboard toScore:(int64_t)score
 {
-  v6 = a3;
-  v7 = self;
-  GKGameActivity.setScore(on:to:)(v6, a4);
+  leaderboardCopy = leaderboard;
+  selfCopy = self;
+  GKGameActivity.setScore(on:to:)(leaderboardCopy, score);
 }
 
-- (id)getScoreOnLeaderboard:(id)a3
+- (id)getScoreOnLeaderboard:(id)leaderboard
 {
-  v4 = a3;
-  v5 = self;
-  v6 = GKGameActivity.score(on:)(v4);
+  leaderboardCopy = leaderboard;
+  selfCopy = self;
+  v6 = GKGameActivity.score(on:)(leaderboardCopy);
 
   return v6;
 }
 
-- (void)removeScoresFromLeaderboards:(id)a3
+- (void)removeScoresFromLeaderboards:(id)leaderboards
 {
   sub_2186804FC(0, &qword_27CC06FD8, &off_278236540);
   v4 = sub_2186B7AAC();
-  v5 = self;
+  selfCopy = self;
   GKGameActivity.removeScores(from:)(v4);
 }
 
-- (void)setProgressOnAchievement:(id)a3 toPercentComplete:(double)a4
+- (void)setProgressOnAchievement:(id)achievement toPercentComplete:(double)complete
 {
-  v6 = a3;
-  v7 = self;
-  GKGameActivity.setProgress(on:to:)(v6, a4);
+  achievementCopy = achievement;
+  selfCopy = self;
+  GKGameActivity.setProgress(on:to:)(achievementCopy, complete);
 }
 
-- (double)getProgressOnAchievement:(id)a3
+- (double)getProgressOnAchievement:(id)achievement
 {
-  v4 = a3;
-  v5 = self;
-  v6 = GKGameActivity.progress(on:)(v4);
+  achievementCopy = achievement;
+  selfCopy = self;
+  v6 = GKGameActivity.progress(on:)(achievementCopy);
 
   return v6;
 }
 
-- (void)removeAchievements:(id)a3
+- (void)removeAchievements:(id)achievements
 {
   sub_2186804FC(0, &qword_27CC06E60, &off_278236520);
   sub_2186B7AAC();
   v4 = *(self + OBJC_IVAR___GKGameActivity__achievements);
-  v5 = self;
+  selfCopy = self;
   os_unfair_lock_lock((v4 + 24));
   sub_2186A875C((v4 + 16));
   os_unfair_lock_unlock((v4 + 24));
@@ -586,19 +586,19 @@
 
 - (id)makeMatchRequest
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_2186921A0();
 
   return v3;
 }
 
-- (void)findMatchWithCompletionHandler:(id)a3
+- (void)findMatchWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27CC06E10, &qword_2186B9590);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x28223BE20](v5 - 8);
   v8 = &v15 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -614,17 +614,17 @@
   v13[3] = 0;
   v13[4] = &unk_2186B92F8;
   v13[5] = v12;
-  v14 = self;
+  selfCopy = self;
   sub_2186A12F8(0, 0, v8, &unk_2186B9300, v13);
 }
 
-- (void)findPlayersForHostedMatchWithCompletionHandler:(id)a3
+- (void)findPlayersForHostedMatchWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27CC06E10, &qword_2186B9590);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x28223BE20](v5 - 8);
   v8 = &v15 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -640,7 +640,7 @@
   v13[3] = 0;
   v13[4] = &unk_2186B92B8;
   v13[5] = v12;
-  v14 = self;
+  selfCopy = self;
   sub_2186A12F8(0, 0, v8, &unk_2186B92C0, v13);
 }
 
@@ -651,17 +651,17 @@
   return result;
 }
 
-+ (void)createFromGameActivityInstance:(id)a3 completionHandler:(id)a4
++ (void)createFromGameActivityInstance:(id)instance completionHandler:(id)handler
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27CC06E10, &qword_2186B9590);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x28223BE20](v7 - 8);
   v10 = &v16 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = instance;
   v12[3] = v11;
-  v12[4] = a1;
+  v12[4] = self;
   v13 = sub_2186B7B7C();
   (*(*(v13 - 8) + 56))(v10, 1, 1, v13);
   v14 = swift_allocObject();
@@ -683,7 +683,7 @@
   v2 = *(self + OBJC_IVAR___GKGameActivity__instanceSnapshot);
   v3 = *(*v2 + *MEMORY[0x277D841D0] + 16);
   v4 = (*(*v2 + 48) + 3) & 0x1FFFFFFFCLL;
-  v5 = self;
+  selfCopy = self;
   os_unfair_lock_lock((v2 + v4));
   sub_2186A79D4();
   os_unfair_lock_unlock((v2 + v4));
@@ -695,7 +695,7 @@
   v4 = *(*(v3 - 8) + 64);
   MEMORY[0x28223BE20](v3 - 8);
   v6 = &v14 - v5;
-  v7 = self;
+  selfCopy = self;
   sub_21869ADCC(v6);
 
   v8 = sub_2186B6FAC();

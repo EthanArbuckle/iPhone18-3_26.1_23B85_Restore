@@ -1,17 +1,17 @@
 @interface _UITextFieldRoundedRectBackgroundViewNeue
 - (double)_cornerRadiusAdjustedForBoundsHeight;
 - (double)_screenScale;
-- (id)_fillColor:(BOOL)a3;
-- (id)_initWithFrame:(CGRect)a3 active:(BOOL)a4 usesSinglePixelLineWidth:(BOOL)a5 updateView:(BOOL)a6;
-- (id)_strokeColor:(BOOL)a3;
+- (id)_fillColor:(BOOL)color;
+- (id)_initWithFrame:(CGRect)frame active:(BOOL)active usesSinglePixelLineWidth:(BOOL)width updateView:(BOOL)view;
+- (id)_strokeColor:(BOOL)color;
 - (void)layoutSubviews;
-- (void)setCornerRadius:(double)a3;
-- (void)setEnabled:(BOOL)a3 animated:(BOOL)a4;
-- (void)setFillColor:(id)a3;
-- (void)setHasFlexibleCornerRadius:(BOOL)a3;
-- (void)setLineWidth:(double)a3;
-- (void)setStrokeColor:(id)a3;
-- (void)setUsesSinglePixelLineWidth:(BOOL)a3;
+- (void)setCornerRadius:(double)radius;
+- (void)setEnabled:(BOOL)enabled animated:(BOOL)animated;
+- (void)setFillColor:(id)color;
+- (void)setHasFlexibleCornerRadius:(BOOL)radius;
+- (void)setLineWidth:(double)width;
+- (void)setStrokeColor:(id)color;
+- (void)setUsesSinglePixelLineWidth:(BOOL)width;
 - (void)updateView;
 @end
 
@@ -43,14 +43,14 @@
   }
 
   v3 = +[UITraitCollection _currentTraitCollectionIfExists];
-  v4 = [(UIView *)self traitCollection];
-  [UITraitCollection setCurrentTraitCollection:v4];
+  traitCollection = [(UIView *)self traitCollection];
+  [UITraitCollection setCurrentTraitCollection:traitCollection];
 
   v5 = _UISetCurrentFallbackEnvironment(self);
   if ([(_UITextFieldRoundedRectBackgroundViewNeue *)self usesSinglePixelLineWidth])
   {
-    v6 = [(UIView *)self traitCollection];
-    [v6 displayScale];
+    traitCollection2 = [(UIView *)self traitCollection];
+    [traitCollection2 displayScale];
     lineWidth = 1.0 / v7;
   }
 
@@ -84,10 +84,10 @@
 
   v14 = v13;
   [(UIView *)self setBackgroundColor:v13];
-  v15 = [(UIView *)self layer];
-  [v15 setBorderColor:{-[UIColor CGColor](v11, "CGColor")}];
-  [v15 setBorderWidth:lineWidth];
-  [v15 setCornerCurve:*MEMORY[0x1E69796E8]];
+  layer = [(UIView *)self layer];
+  [layer setBorderColor:{-[UIColor CGColor](v11, "CGColor")}];
+  [layer setBorderWidth:lineWidth];
+  [layer setCornerCurve:*MEMORY[0x1E69796E8]];
   if ([(_UITextFieldRoundedRectBackgroundViewNeue *)self hasFlexibleCornerRadius])
   {
     [(_UITextFieldRoundedRectBackgroundViewNeue *)self _cornerRadiusAdjustedForBoundsHeight];
@@ -96,7 +96,7 @@
   else
   {
     cornerRadius = self->_cornerRadius;
-    [v15 bounds];
+    [layer bounds];
     if (cornerRadius <= CGRectGetHeight(v22) * 0.5)
     {
       v16 = self->_cornerRadius;
@@ -104,12 +104,12 @@
 
     else
     {
-      [v15 bounds];
+      [layer bounds];
       v16 = CGRectGetHeight(v23) * 0.5;
     }
   }
 
-  [v15 setCornerRadius:v16];
+  [layer setCornerRadius:v16];
   _UIRestorePreviousFallbackEnvironment(v5);
   [UITraitCollection setCurrentTraitCollection:v3];
 }
@@ -130,20 +130,20 @@
 
 - (double)_screenScale
 {
-  v2 = [(UIView *)self window];
-  v3 = [v2 screen];
-  v4 = v3;
-  if (v3)
+  window = [(UIView *)self window];
+  screen = [window screen];
+  v4 = screen;
+  if (screen)
   {
-    v5 = v3;
+    mainScreen = screen;
   }
 
   else
   {
-    v5 = [objc_opt_self() mainScreen];
+    mainScreen = [objc_opt_self() mainScreen];
   }
 
-  v6 = v5;
+  v6 = mainScreen;
 
   [v6 scale];
   v8 = v7;
@@ -151,20 +151,20 @@
   return v8;
 }
 
-- (id)_initWithFrame:(CGRect)a3 active:(BOOL)a4 usesSinglePixelLineWidth:(BOOL)a5 updateView:(BOOL)a6
+- (id)_initWithFrame:(CGRect)frame active:(BOOL)active usesSinglePixelLineWidth:(BOOL)width updateView:(BOOL)view
 {
-  v6 = a6;
-  v7 = a5;
+  viewCopy = view;
+  widthCopy = width;
   v12.receiver = self;
   v12.super_class = _UITextFieldRoundedRectBackgroundViewNeue;
-  v8 = [(UIView *)&v12 initWithFrame:a4, a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v8 = [(UIView *)&v12 initWithFrame:active, frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v9 = v8;
   if (v8)
   {
     [(UIView *)v8 setAutoresizingMask:18];
     [(UIView *)v9 setOpaque:0];
     [(UIView *)v9 setUserInteractionEnabled:0];
-    if (v7)
+    if (widthCopy)
     {
       v10 = 5;
     }
@@ -176,7 +176,7 @@
 
     *&v9->_flags = *&v9->_flags & 0xF8 | v10;
     v9->_cornerRadius = 5.0;
-    if (v6)
+    if (viewCopy)
     {
       [(_UITextFieldRoundedRectBackgroundViewNeue *)v9 updateView];
     }
@@ -185,11 +185,11 @@
   return v9;
 }
 
-- (void)setStrokeColor:(id)a3
+- (void)setStrokeColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   v6 = self->_strokeColor;
-  v7 = v5;
+  v7 = colorCopy;
   v9 = v7;
   if (v6 == v7)
   {
@@ -208,18 +208,18 @@
   if (!v8)
   {
 LABEL_8:
-    objc_storeStrong(&self->_strokeColor, a3);
+    objc_storeStrong(&self->_strokeColor, color);
     [(_UITextFieldRoundedRectBackgroundViewNeue *)self updateView];
   }
 
 LABEL_9:
 }
 
-- (void)setFillColor:(id)a3
+- (void)setFillColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   v6 = self->_fillColor;
-  v7 = v5;
+  v7 = colorCopy;
   v9 = v7;
   if (v6 == v7)
   {
@@ -238,49 +238,49 @@ LABEL_9:
   if (!v8)
   {
 LABEL_8:
-    objc_storeStrong(&self->_fillColor, a3);
+    objc_storeStrong(&self->_fillColor, color);
     [(_UITextFieldRoundedRectBackgroundViewNeue *)self updateView];
   }
 
 LABEL_9:
 }
 
-- (void)setLineWidth:(double)a3
+- (void)setLineWidth:(double)width
 {
   [(_UITextFieldRoundedRectBackgroundViewNeue *)self setUsesSinglePixelLineWidth:0];
-  if (self->_lineWidth != a3)
+  if (self->_lineWidth != width)
   {
-    self->_lineWidth = a3;
+    self->_lineWidth = width;
 
     [(_UITextFieldRoundedRectBackgroundViewNeue *)self updateView];
   }
 }
 
-- (void)setCornerRadius:(double)a3
+- (void)setCornerRadius:(double)radius
 {
-  if (self->_cornerRadius != a3)
+  if (self->_cornerRadius != radius)
   {
-    self->_cornerRadius = a3;
+    self->_cornerRadius = radius;
     [(_UITextFieldRoundedRectBackgroundViewNeue *)self updateView];
   }
 }
 
-- (void)setEnabled:(BOOL)a3 animated:(BOOL)a4
-{
-  flags = self->_flags;
-  if ((flags & 1) != a3)
-  {
-    *&self->_flags = flags & 0xFE | a3;
-    [(_UITextFieldRoundedRectBackgroundViewNeue *)self updateView];
-  }
-}
-
-- (void)setHasFlexibleCornerRadius:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled animated:(BOOL)animated
 {
   flags = self->_flags;
-  if (((((flags & 2) == 0) ^ a3) & 1) == 0)
+  if ((flags & 1) != enabled)
   {
-    if (a3)
+    *&self->_flags = flags & 0xFE | enabled;
+    [(_UITextFieldRoundedRectBackgroundViewNeue *)self updateView];
+  }
+}
+
+- (void)setHasFlexibleCornerRadius:(BOOL)radius
+{
+  flags = self->_flags;
+  if (((((flags & 2) == 0) ^ radius) & 1) == 0)
+  {
+    if (radius)
     {
       v4 = 2;
     }
@@ -295,12 +295,12 @@ LABEL_9:
   }
 }
 
-- (void)setUsesSinglePixelLineWidth:(BOOL)a3
+- (void)setUsesSinglePixelLineWidth:(BOOL)width
 {
   flags = self->_flags;
-  if (((((flags & 4) == 0) ^ a3) & 1) == 0)
+  if (((((flags & 4) == 0) ^ width) & 1) == 0)
   {
-    if (a3)
+    if (width)
     {
       v4 = 4;
     }
@@ -315,15 +315,15 @@ LABEL_9:
   }
 }
 
-- (id)_strokeColor:(BOOL)a3
+- (id)_strokeColor:(BOOL)color
 {
-  v3 = a3;
-  v4 = [(UIView *)self traitCollection];
-  v5 = [v4 userInterfaceIdiom];
+  colorCopy = color;
+  traitCollection = [(UIView *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v5 > 8 || ((1 << v5) & 0x144) == 0)
+  if (userInterfaceIdiom > 8 || ((1 << userInterfaceIdiom) & 0x144) == 0)
   {
-    if (v3)
+    if (colorCopy)
     {
       +[UIColor _textFieldBorderColor];
     }
@@ -343,22 +343,22 @@ LABEL_9:
   return v7;
 }
 
-- (id)_fillColor:(BOOL)a3
+- (id)_fillColor:(BOOL)color
 {
-  v3 = a3;
-  v4 = [(UIView *)self traitCollection];
-  v5 = [v4 userInterfaceIdiom];
+  colorCopy = color;
+  traitCollection = [(UIView *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v5 == 8)
+  if (userInterfaceIdiom == 8)
   {
     goto LABEL_4;
   }
 
-  if (v5 != 6)
+  if (userInterfaceIdiom != 6)
   {
-    if (v5 != 2)
+    if (userInterfaceIdiom != 2)
     {
-      if (v3)
+      if (colorCopy)
       {
         +[UIColor _textFieldBackgroundColor];
       }

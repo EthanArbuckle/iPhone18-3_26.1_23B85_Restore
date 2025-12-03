@@ -1,15 +1,15 @@
 @interface UIShapeResolutionContext
 - (UIResolvedShape)contentShape;
-- (UIShapeResolutionContext)initWithView:(id)a3;
+- (UIShapeResolutionContext)initWithView:(id)view;
 @end
 
 @implementation UIShapeResolutionContext
 
-- (UIShapeResolutionContext)initWithView:(id)a3
+- (UIShapeResolutionContext)initWithView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v5 = [(UIShapeResolutionContext *)self init];
-  v6 = [v4 layer];
+  layer = [viewCopy layer];
   sub_188E83750(v18);
 
   v7 = (v5 + OBJC_IVAR___UIShapeResolutionContext_value);
@@ -45,7 +45,7 @@
 
 - (UIResolvedShape)contentShape
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_18922F2A8();
 
   return v3;

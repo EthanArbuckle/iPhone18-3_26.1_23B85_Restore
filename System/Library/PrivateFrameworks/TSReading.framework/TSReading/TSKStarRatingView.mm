@@ -1,17 +1,17 @@
 @interface TSKStarRatingView
-+ (void)renderRating:(int64_t)a3 intoContext:(CGContext *)a4 rect:(CGRect)a5 style:(int)a6 showDots:(BOOL)a7;
-- (TSKStarRatingView)initWithCoder:(id)a3;
-- (TSKStarRatingView)initWithFrame:(CGRect)a3;
-- (int64_t)p_starRatingForGesture:(id)a3;
-- (int64_t)p_starRatingForLocation:(double)a3;
++ (void)renderRating:(int64_t)rating intoContext:(CGContext *)context rect:(CGRect)rect style:(int)style showDots:(BOOL)dots;
+- (TSKStarRatingView)initWithCoder:(id)coder;
+- (TSKStarRatingView)initWithFrame:(CGRect)frame;
+- (int64_t)p_starRatingForGesture:(id)gesture;
+- (int64_t)p_starRatingForLocation:(double)location;
 - (void)dealloc;
-- (void)drawRect:(CGRect)a3;
-- (void)p_horizontalDrag:(id)a3;
+- (void)drawRect:(CGRect)rect;
+- (void)p_horizontalDrag:(id)drag;
 - (void)p_setupGestureRecognizers;
-- (void)p_tapped:(id)a3;
-- (void)setValue:(int64_t)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)willMoveToSuperview:(id)a3;
+- (void)p_tapped:(id)p_tapped;
+- (void)setValue:(int64_t)value;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)willMoveToSuperview:(id)superview;
 @end
 
 @implementation TSKStarRatingView
@@ -29,11 +29,11 @@
   [(TSKStarRatingView *)self addGestureRecognizer:v5];
 }
 
-- (TSKStarRatingView)initWithFrame:(CGRect)a3
+- (TSKStarRatingView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = TSKStarRatingView;
-  v3 = [(TSKStarRatingView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(TSKStarRatingView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -45,11 +45,11 @@
   return v4;
 }
 
-- (TSKStarRatingView)initWithCoder:(id)a3
+- (TSKStarRatingView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = TSKStarRatingView;
-  v3 = [(TSKStarRatingView *)&v6 initWithCoder:a3];
+  v3 = [(TSKStarRatingView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -67,11 +67,11 @@
   [(TSKStarRatingView *)&v3 dealloc];
 }
 
-- (int64_t)p_starRatingForLocation:(double)a3
+- (int64_t)p_starRatingForLocation:(double)location
 {
   [(TSKStarRatingView *)self bounds];
-  v5 = a3 / v4;
-  if (a3 / v4 < 0.0500000007)
+  v5 = location / v4;
+  if (location / v4 < 0.0500000007)
   {
     return 0;
   }
@@ -99,40 +99,40 @@
   return 4;
 }
 
-- (int64_t)p_starRatingForGesture:(id)a3
+- (int64_t)p_starRatingForGesture:(id)gesture
 {
-  [a3 locationOfTouch:0 inView:self];
+  [gesture locationOfTouch:0 inView:self];
 
   return [(TSKStarRatingView *)self p_starRatingForLocation:?];
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  [objc_msgSend(a3 "anyObject")];
+  [objc_msgSend(began "anyObject")];
   [(TSKStarRatingView *)self setValue:[(TSKStarRatingView *)self p_starRatingForLocation:?]];
 
   [(TSKStarRatingView *)self sendActionsForControlEvents:4097];
 }
 
-- (void)p_tapped:(id)a3
+- (void)p_tapped:(id)p_tapped
 {
-  [(TSKStarRatingView *)self setValue:[(TSKStarRatingView *)self p_starRatingForGesture:a3]];
+  [(TSKStarRatingView *)self setValue:[(TSKStarRatingView *)self p_starRatingForGesture:p_tapped]];
 
   [(TSKStarRatingView *)self sendActionsForControlEvents:64];
 }
 
-- (void)p_horizontalDrag:(id)a3
+- (void)p_horizontalDrag:(id)drag
 {
-  v5 = [a3 state];
-  if (v5 > 2)
+  state = [drag state];
+  if (state > 2)
   {
-    if (v5 == 3)
+    if (state == 3)
     {
       v7 = 64;
       goto LABEL_12;
     }
 
-    if (v5 != 4)
+    if (state != 4)
     {
       return;
     }
@@ -141,21 +141,21 @@
     v7 = 256;
   }
 
-  else if (v5 == 1)
+  else if (state == 1)
   {
     self->mRatingOnFingerDown = self->mRating;
-    mRatingOnFingerDown = [(TSKStarRatingView *)self p_starRatingForGesture:a3];
+    mRatingOnFingerDown = [(TSKStarRatingView *)self p_starRatingForGesture:drag];
     v7 = 1;
   }
 
   else
   {
-    if (v5 != 2)
+    if (state != 2)
     {
       return;
     }
 
-    mRatingOnFingerDown = [(TSKStarRatingView *)self p_starRatingForGesture:a3];
+    mRatingOnFingerDown = [(TSKStarRatingView *)self p_starRatingForGesture:drag];
     v7 = 4096;
   }
 
@@ -165,7 +165,7 @@ LABEL_12:
   [(TSKStarRatingView *)self sendActionsForControlEvents:v7];
 }
 
-- (void)willMoveToSuperview:(id)a3
+- (void)willMoveToSuperview:(id)superview
 {
   while (1)
   {
@@ -176,8 +176,8 @@ LABEL_12:
       break;
     }
 
-    a3 = [a3 superview];
-    if (!a3)
+    superview = [superview superview];
+    if (!superview)
     {
       return;
     }
@@ -189,7 +189,7 @@ LABEL_12:
   [(TSKHorizontalDragRecognizer *)mDragGesture setContainingScrollView:v6];
 }
 
-- (void)setValue:(int64_t)a3
+- (void)setValue:(int64_t)value
 {
   TSUClamp();
   self->mRating = v4;
@@ -197,33 +197,33 @@ LABEL_12:
   [(TSKStarRatingView *)self setNeedsDisplay];
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(TSKStarRatingView *)self renderClass];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  renderClass = [(TSKStarRatingView *)self renderClass];
   mRating = self->mRating;
   CurrentContext = UIGraphicsGetCurrentContext();
-  v11 = [(TSKStarRatingView *)self style];
-  v12 = [(TSKStarRatingView *)self showsDots];
-  v13 = [(TSKStarRatingView *)self color];
+  style = [(TSKStarRatingView *)self style];
+  showsDots = [(TSKStarRatingView *)self showsDots];
+  color = [(TSKStarRatingView *)self color];
 
-  [(objc_class *)v8 renderRating:mRating intoContext:CurrentContext rect:v11 style:v12 showDots:v13 color:x, y, width, height];
+  [(objc_class *)renderClass renderRating:mRating intoContext:CurrentContext rect:style style:showsDots showDots:color color:x, y, width, height];
 }
 
-+ (void)renderRating:(int64_t)a3 intoContext:(CGContext *)a4 rect:(CGRect)a5 style:(int)a6 showDots:(BOOL)a7
++ (void)renderRating:(int64_t)rating intoContext:(CGContext *)context rect:(CGRect)rect style:(int)style showDots:(BOOL)dots
 {
-  v7 = a7;
-  v8 = *&a6;
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v15 = [MEMORY[0x277D6C2A8] blackColor];
+  dotsCopy = dots;
+  v8 = *&style;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  blackColor = [MEMORY[0x277D6C2A8] blackColor];
 
-  [TSKStarRatingViewRenderer renderRating:a3 intoContext:a4 rect:v8 style:v7 showDots:v15 color:x, y, width, height];
+  [TSKStarRatingViewRenderer renderRating:rating intoContext:context rect:v8 style:dotsCopy showDots:blackColor color:x, y, width, height];
 }
 
 @end

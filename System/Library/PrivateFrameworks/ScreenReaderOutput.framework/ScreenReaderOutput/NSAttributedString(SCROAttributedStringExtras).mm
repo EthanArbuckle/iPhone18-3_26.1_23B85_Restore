@@ -10,7 +10,7 @@
 - (uint64_t)getRange:()SCROAttributedStringExtras ofAttribute:
 {
   v6 = a4;
-  v7 = [a1 length];
+  v7 = [self length];
   v14 = 0uLL;
   if (v7)
   {
@@ -18,7 +18,7 @@
     v9 = 0;
     while (1)
     {
-      v10 = [a1 attribute:v6 atIndex:v9 longestEffectiveRange:&v14 inRange:{v9, v8}];
+      v10 = [self attribute:v6 atIndex:v9 longestEffectiveRange:&v14 inRange:{v9, v8}];
       if (v10)
       {
         break;
@@ -51,7 +51,7 @@ LABEL_5:
 {
   v8 = a4;
   v9 = a5;
-  v10 = [a1 length];
+  v10 = [self length];
   v18 = 0uLL;
   if (v10)
   {
@@ -59,7 +59,7 @@ LABEL_5:
     v12 = 0;
     while (1)
     {
-      v13 = [a1 attribute:v8 atIndex:v12 longestEffectiveRange:&v18 inRange:{v12, v11}];
+      v13 = [self attribute:v8 atIndex:v12 longestEffectiveRange:&v18 inRange:{v12, v11}];
       v14 = v13;
       if (v13)
       {
@@ -95,9 +95,9 @@ LABEL_6:
 
 - (void)deepCopyWithZone:()SCROAttributedStringExtras
 {
-  v2 = [a1 string];
-  v3 = [objc_alloc(MEMORY[0x277CCAB48]) initWithString:v2];
-  v4 = [v2 length];
+  string = [self string];
+  v3 = [objc_alloc(MEMORY[0x277CCAB48]) initWithString:string];
+  v4 = [string length];
   v11 = 0;
   v12 = 0;
   if (v4)
@@ -106,7 +106,7 @@ LABEL_6:
     v6 = 0;
     do
     {
-      v7 = [a1 attributesAtIndex:v6 longestEffectiveRange:&v11 inRange:{v6, v5 - v6}];
+      v7 = [self attributesAtIndex:v6 longestEffectiveRange:&v11 inRange:{v6, v5 - v6}];
       if (v7 && v12)
       {
         v8 = [objc_alloc(MEMORY[0x277CBEAC0]) initWithDictionary:v7 copyItems:0];
@@ -132,7 +132,7 @@ LABEL_6:
 
 - (id)scrAttributedStringByTrimmingTrailingNewlines
 {
-  v1 = [a1 mutableCopy];
+  v1 = [self mutableCopy];
   [v1 scrAttributedStringTrimTrailingNewlines];
   v2 = [v1 copy];
 

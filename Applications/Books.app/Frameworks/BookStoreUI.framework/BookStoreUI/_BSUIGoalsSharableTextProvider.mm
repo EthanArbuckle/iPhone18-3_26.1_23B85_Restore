@@ -1,73 +1,73 @@
 @interface _BSUIGoalsSharableTextProvider
-- (_BSUIGoalsSharableTextProvider)initWithSharableImage:(id)a3 kind:(unint64_t)a4 year:(unint64_t)a5 title:(id)a6 sharingUrls:(id)a7;
+- (_BSUIGoalsSharableTextProvider)initWithSharableImage:(id)image kind:(unint64_t)kind year:(unint64_t)year title:(id)title sharingUrls:(id)urls;
 - (id)_baseMessageForGoalKind;
 - (id)_buildMailHTML;
-- (id)_escapeHTMLCharactersInString:(id)a3;
+- (id)_escapeHTMLCharactersInString:(id)string;
 - (id)_generateLinkMetaData;
 - (id)_generateLocalizedYear;
-- (id)_generateMessageWithURLForActivityType:(id)a3;
+- (id)_generateMessageWithURLForActivityType:(id)type;
 - (id)_generateTwitterMessage;
 - (id)_mailMessageForGoalKind;
 - (id)_mailSubjectForGoalKind;
 - (id)_messageForGoalKind;
-- (id)_readingGoalsURLForActivityType:(id)a3;
-- (id)activityViewController:(id)a3 itemForActivityType:(id)a4;
-- (id)activityViewController:(id)a3 subjectForActivityType:(id)a4;
+- (id)_readingGoalsURLForActivityType:(id)type;
+- (id)activityViewController:(id)controller itemForActivityType:(id)type;
+- (id)activityViewController:(id)controller subjectForActivityType:(id)type;
 @end
 
 @implementation _BSUIGoalsSharableTextProvider
 
-- (_BSUIGoalsSharableTextProvider)initWithSharableImage:(id)a3 kind:(unint64_t)a4 year:(unint64_t)a5 title:(id)a6 sharingUrls:(id)a7
+- (_BSUIGoalsSharableTextProvider)initWithSharableImage:(id)image kind:(unint64_t)kind year:(unint64_t)year title:(id)title sharingUrls:(id)urls
 {
-  v13 = a3;
-  v14 = a6;
-  v15 = a7;
+  imageCopy = image;
+  titleCopy = title;
+  urlsCopy = urls;
   v19.receiver = self;
   v19.super_class = _BSUIGoalsSharableTextProvider;
   v16 = [(_BSUIGoalsSharableTextProvider *)&v19 init];
   v17 = v16;
   if (v16)
   {
-    v16->_kind = a4;
-    objc_storeStrong(&v16->_sharedImage, a3);
-    v17->_year = a5;
-    objc_storeStrong(&v17->_title, a6);
-    objc_storeStrong(&v17->_sharingUrls, a7);
+    v16->_kind = kind;
+    objc_storeStrong(&v16->_sharedImage, image);
+    v17->_year = year;
+    objc_storeStrong(&v17->_title, title);
+    objc_storeStrong(&v17->_sharingUrls, urls);
   }
 
   return v17;
 }
 
-- (id)activityViewController:(id)a3 itemForActivityType:(id)a4
+- (id)activityViewController:(id)controller itemForActivityType:(id)type
 {
-  v5 = a4;
-  if ([v5 isEqualToString:UIActivityTypePostToFacebook])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:UIActivityTypePostToFacebook])
   {
-    v6 = [(_BSUIGoalsSharableTextProvider *)self _generateFacebookMessage];
+    _generateFacebookMessage = [(_BSUIGoalsSharableTextProvider *)self _generateFacebookMessage];
   }
 
-  else if ([v5 isEqualToString:UIActivityTypePostToTwitter])
+  else if ([typeCopy isEqualToString:UIActivityTypePostToTwitter])
   {
-    v6 = [(_BSUIGoalsSharableTextProvider *)self _generateTwitterMessage];
+    _generateFacebookMessage = [(_BSUIGoalsSharableTextProvider *)self _generateTwitterMessage];
   }
 
-  else if ([v5 isEqualToString:UIActivityTypeMail])
+  else if ([typeCopy isEqualToString:UIActivityTypeMail])
   {
-    v6 = [(_BSUIGoalsSharableTextProvider *)self _buildMailHTML];
+    _generateFacebookMessage = [(_BSUIGoalsSharableTextProvider *)self _buildMailHTML];
   }
 
   else
   {
-    if ([v5 isEqualToString:@"com.burbn.instagram.shareextension"])
+    if ([typeCopy isEqualToString:@"com.burbn.instagram.shareextension"])
     {
       v7 = 0;
       goto LABEL_11;
     }
 
-    v6 = [(_BSUIGoalsSharableTextProvider *)self _generateMessageWithURLForActivityType:v5];
+    _generateFacebookMessage = [(_BSUIGoalsSharableTextProvider *)self _generateMessageWithURLForActivityType:typeCopy];
   }
 
-  v7 = v6;
+  v7 = _generateFacebookMessage;
 LABEL_11:
 
   return v7;
@@ -109,13 +109,13 @@ LABEL_11:
   return v3;
 }
 
-- (id)activityViewController:(id)a3 subjectForActivityType:(id)a4
+- (id)activityViewController:(id)controller subjectForActivityType:(id)type
 {
-  v5 = [(_BSUIGoalsSharableTextProvider *)self _mailSubjectForGoalKind:a3];
+  v5 = [(_BSUIGoalsSharableTextProvider *)self _mailSubjectForGoalKind:controller];
   if (self->_kind == 8)
   {
-    v6 = [(_BSUIGoalsSharableTextProvider *)self _generateLocalizedYear];
-    v7 = [NSString localizedStringWithFormat:v5, v6];
+    _generateLocalizedYear = [(_BSUIGoalsSharableTextProvider *)self _generateLocalizedYear];
+    v7 = [NSString localizedStringWithFormat:v5, _generateLocalizedYear];
 
     v5 = v7;
   }
@@ -123,9 +123,9 @@ LABEL_11:
   return v5;
 }
 
-- (id)_readingGoalsURLForActivityType:(id)a3
+- (id)_readingGoalsURLForActivityType:(id)type
 {
-  v5 = a3;
+  typeCopy = type;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -135,7 +135,7 @@ LABEL_11:
   if (self->_sharingUrls)
   {
     objc_opt_class();
-    v6 = [(NSDictionary *)self->_sharingUrls objectForKeyedSubscript:v5];
+    v6 = [(NSDictionary *)self->_sharingUrls objectForKeyedSubscript:typeCopy];
     v7 = BUDynamicCast();
     v8 = v7;
     if (!v7)
@@ -155,7 +155,7 @@ LABEL_11:
   {
     v9 = dispatch_semaphore_create(0);
     v10 = +[BUBag defaultBag];
-    v11 = [v10 readingGoalShareURL];
+    readingGoalShareURL = [v10 readingGoalShareURL];
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = sub_8E88;
@@ -163,7 +163,7 @@ LABEL_11:
     v18 = &v19;
     v6 = v9;
     v17 = v6;
-    [v11 valueWithCompletion:v16];
+    [readingGoalShareURL valueWithCompletion:v16];
 
     v12 = dispatch_time(0, 300000000);
     if (!dispatch_semaphore_wait(v6, v12))
@@ -189,16 +189,16 @@ LABEL_11:
   v3 = BSUIBundle();
   v4 = [v3 localizedStringForKey:@"Set your own reading goals on %@Apple Books%@." value:&stru_3960F8 table:@"BookStoreUILocalizable"];
 
-  v5 = [(_BSUIGoalsSharableTextProvider *)self _mailMessageForGoalKind];
+  _mailMessageForGoalKind = [(_BSUIGoalsSharableTextProvider *)self _mailMessageForGoalKind];
   v6 = [(_BSUIGoalsSharableTextProvider *)self _readingGoalsURLForActivityType:UIActivityTypeMail];
   v7 = [(_BSUIGoalsSharableTextProvider *)self _escapeHTMLCharactersInString:v4];
 
-  v8 = [(_BSUIGoalsSharableTextProvider *)self _escapeHTMLCharactersInString:v5];
+  v8 = [(_BSUIGoalsSharableTextProvider *)self _escapeHTMLCharactersInString:_mailMessageForGoalKind];
 
   if (self->_kind == 8)
   {
-    v9 = [(_BSUIGoalsSharableTextProvider *)self _generateLocalizedYear];
-    v10 = [NSString localizedStringWithFormat:v8, v9];
+    _generateLocalizedYear = [(_BSUIGoalsSharableTextProvider *)self _generateLocalizedYear];
+    v10 = [NSString localizedStringWithFormat:v8, _generateLocalizedYear];
 
     v8 = v10;
   }
@@ -216,9 +216,9 @@ LABEL_11:
   return v18;
 }
 
-- (id)_escapeHTMLCharactersInString:(id)a3
+- (id)_escapeHTMLCharactersInString:(id)string
 {
-  v3 = [a3 stringByReplacingOccurrencesOfString:@"&" withString:@"&amp"];;
+  v3 = [string stringByReplacingOccurrencesOfString:@"&" withString:@"&amp"];;
   v4 = [v3 stringByReplacingOccurrencesOfString:@"<" withString:@"&lt"];;
 
   v5 = [v4 stringByReplacingOccurrencesOfString:@">" withString:@"&gt"];;
@@ -304,30 +304,30 @@ LABEL_11:
 
 - (id)_generateTwitterMessage
 {
-  v2 = [(_BSUIGoalsSharableTextProvider *)self _baseMessageForGoalKind];
+  _baseMessageForGoalKind = [(_BSUIGoalsSharableTextProvider *)self _baseMessageForGoalKind];
   v3 = BSUIBundle();
   v4 = [v3 localizedStringForKey:@"Set your own #ReadingGoals on @AppleBooks. apple.co/ReadingGoals" value:&stru_3960F8 table:@"BookStoreUILocalizable"];
 
-  v5 = [v2 stringByAppendingFormat:@" %@", v4];
+  v5 = [_baseMessageForGoalKind stringByAppendingFormat:@" %@", v4];
 
   return v5;
 }
 
-- (id)_generateMessageWithURLForActivityType:(id)a3
+- (id)_generateMessageWithURLForActivityType:(id)type
 {
-  v4 = a3;
-  v5 = [(_BSUIGoalsSharableTextProvider *)self _messageForGoalKind];
-  v6 = [(_BSUIGoalsSharableTextProvider *)self _readingGoalsURLForActivityType:v4];
+  typeCopy = type;
+  _messageForGoalKind = [(_BSUIGoalsSharableTextProvider *)self _messageForGoalKind];
+  v6 = [(_BSUIGoalsSharableTextProvider *)self _readingGoalsURLForActivityType:typeCopy];
 
   if (self->_kind == 8)
   {
-    v7 = [(_BSUIGoalsSharableTextProvider *)self _generateLocalizedYear];
-    v8 = [NSString localizedStringWithFormat:v5, v7];
+    _generateLocalizedYear = [(_BSUIGoalsSharableTextProvider *)self _generateLocalizedYear];
+    v8 = [NSString localizedStringWithFormat:_messageForGoalKind, _generateLocalizedYear];
 
-    v5 = v8;
+    _messageForGoalKind = v8;
   }
 
-  v9 = [NSString stringWithFormat:@"%@%@", v5, v6];
+  v9 = [NSString stringWithFormat:@"%@%@", _messageForGoalKind, v6];
 
   return v9;
 }

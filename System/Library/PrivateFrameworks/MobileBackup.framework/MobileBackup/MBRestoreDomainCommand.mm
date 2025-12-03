@@ -1,11 +1,11 @@
 @interface MBRestoreDomainCommand
-+ (BOOL)restoreWithDomain:(id)a3 rootPath:(id)a4 snapshotUUID:(id)a5 deviceUUID:(id)a6 verified:(BOOL)a7 account:(id)a8 connection:(id)a9 error:(id *)a10;
++ (BOOL)restoreWithDomain:(id)domain rootPath:(id)path snapshotUUID:(id)d deviceUUID:(id)iD verified:(BOOL)verified account:(id)account connection:(id)connection error:(id *)self0;
 - (_TtC7backupd22MBRestoreDomainCommand)init;
 @end
 
 @implementation MBRestoreDomainCommand
 
-+ (BOOL)restoreWithDomain:(id)a3 rootPath:(id)a4 snapshotUUID:(id)a5 deviceUUID:(id)a6 verified:(BOOL)a7 account:(id)a8 connection:(id)a9 error:(id *)a10
++ (BOOL)restoreWithDomain:(id)domain rootPath:(id)path snapshotUUID:(id)d deviceUUID:(id)iD verified:(BOOL)verified account:(id)account connection:(id)connection error:(id *)self0
 {
   v11 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v13 = v12;
@@ -15,9 +15,9 @@
   v19 = v18;
   v20 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v22 = v21;
-  v23 = a8;
-  v24 = a9;
-  sub_1000414E4(v11, v13, v14, v16, v17, v19, v20, v22, a7, v23, v24);
+  accountCopy = account;
+  connectionCopy = connection;
+  sub_1000414E4(v11, v13, v14, v16, v17, v19, v20, v22, verified, accountCopy, connectionCopy);
 
   return 1;
 }

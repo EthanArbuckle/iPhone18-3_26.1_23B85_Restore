@@ -1,5 +1,5 @@
 @interface _MFMailboxUidEnumerator
-- (_MFMailboxUidEnumerator)initWithMailbox:(id)a3;
+- (_MFMailboxUidEnumerator)initWithMailbox:(id)mailbox;
 - (id)nextObject;
 - (void)dealloc;
 @end
@@ -13,9 +13,9 @@
   [(_MFMailboxUidEnumerator *)&v3 dealloc];
 }
 
-- (_MFMailboxUidEnumerator)initWithMailbox:(id)a3
+- (_MFMailboxUidEnumerator)initWithMailbox:(id)mailbox
 {
-  if (a3)
+  if (mailbox)
   {
     v7.receiver = self;
     v7.super_class = _MFMailboxUidEnumerator;
@@ -24,7 +24,7 @@
     {
       v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
       v4->_mailboxes = v5;
-      [a3 addToPostOrderTraversal:v5];
+      [mailbox addToPostOrderTraversal:v5];
     }
   }
 

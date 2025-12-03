@@ -1,49 +1,49 @@
 @interface AMSFinanceExpressCheckoutResponse
-+ (BOOL)_isExpressCheckoutEnabledForBag:(id)a3;
-+ (BOOL)_isExpressCheckoutRecordUserChoiceEnabledForBag:(id)a3;
-+ (BOOL)isEligibleForBag:(id)a3;
-+ (BOOL)isExpressCheckoutPayload:(id)a3;
-+ (BOOL)isExpressCheckoutShouldCheckForWalletBiometricsForBag:(id)a3;
-- (AMSFinanceExpressCheckoutResponse)initWithResponseDictionary:(id)a3 taskInfo:(id)a4;
-- (id)_buyParamFromPayload:(id)a3;
-- (id)_createClientDataForPaymentChoices:(id)a3;
-- (id)_createPageEventForPaymentChoices:(id)a3;
-- (id)_fetchCardDataForMerchantIdentifier:(id)a3 countryCode:(id)a4;
-- (id)_paymentChoicesBodyForCardData:(id)a3;
-- (id)_paymentChoicesForCardData:(id)a3;
-- (id)_paymentChoicesRequestForCardData:(id)a3;
-- (id)_presentEngagementForPaymentChoices:(id)a3;
-- (id)_recordUserChoiceForEngagementResult:(id)a3;
++ (BOOL)_isExpressCheckoutEnabledForBag:(id)bag;
++ (BOOL)_isExpressCheckoutRecordUserChoiceEnabledForBag:(id)bag;
++ (BOOL)isEligibleForBag:(id)bag;
++ (BOOL)isExpressCheckoutPayload:(id)payload;
++ (BOOL)isExpressCheckoutShouldCheckForWalletBiometricsForBag:(id)bag;
+- (AMSFinanceExpressCheckoutResponse)initWithResponseDictionary:(id)dictionary taskInfo:(id)info;
+- (id)_buyParamFromPayload:(id)payload;
+- (id)_createClientDataForPaymentChoices:(id)choices;
+- (id)_createPageEventForPaymentChoices:(id)choices;
+- (id)_fetchCardDataForMerchantIdentifier:(id)identifier countryCode:(id)code;
+- (id)_paymentChoicesBodyForCardData:(id)data;
+- (id)_paymentChoicesForCardData:(id)data;
+- (id)_paymentChoicesRequestForCardData:(id)data;
+- (id)_presentEngagementForPaymentChoices:(id)choices;
+- (id)_recordUserChoiceForEngagementResult:(id)result;
 - (id)_recordUserChoiceRequest;
-- (id)performWithTaskInfo:(id)a3;
-- (int64_t)_expressCheckoutModeFromPayload:(id)a3;
-- (void)AMSURLSession:(id)a3 task:(id)a4 handleAuthenticateRequest:(id)a5 completion:(id)a6;
-- (void)AMSURLSession:(id)a3 task:(id)a4 handleDialogRequest:(id)a5 completion:(id)a6;
-- (void)AMSURLSession:(id)a3 task:(id)a4 handleEngagementRequest:(id)a5 completion:(id)a6;
-- (void)performWithTaskInfo:(id)a3 completionHandler:(id)a4;
+- (id)performWithTaskInfo:(id)info;
+- (int64_t)_expressCheckoutModeFromPayload:(id)payload;
+- (void)AMSURLSession:(id)session task:(id)task handleAuthenticateRequest:(id)request completion:(id)completion;
+- (void)AMSURLSession:(id)session task:(id)task handleDialogRequest:(id)request completion:(id)completion;
+- (void)AMSURLSession:(id)session task:(id)task handleEngagementRequest:(id)request completion:(id)completion;
+- (void)performWithTaskInfo:(id)info completionHandler:(id)handler;
 - (void)removeExpressCheckoutSession;
 @end
 
 @implementation AMSFinanceExpressCheckoutResponse
 
-- (AMSFinanceExpressCheckoutResponse)initWithResponseDictionary:(id)a3 taskInfo:(id)a4
+- (AMSFinanceExpressCheckoutResponse)initWithResponseDictionary:(id)dictionary taskInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  infoCopy = info;
   v24.receiver = self;
   v24.super_class = AMSFinanceExpressCheckoutResponse;
-  v8 = [(AMSFinancePaymentSheetResponse *)&v24 initWithResponseDictionary:v6 confirmationOnly:0 delegateAuthenticationRequired:0 biometricSignatureRequired:1 taskInfo:v7];
+  v8 = [(AMSFinancePaymentSheetResponse *)&v24 initWithResponseDictionary:dictionaryCopy confirmationOnly:0 delegateAuthenticationRequired:0 biometricSignatureRequired:1 taskInfo:infoCopy];
   v9 = v8;
   if (v8)
   {
-    v10 = [(AMSFinanceExpressCheckoutResponse *)v8 _expressCheckoutModeFromPayload:v6];
+    v10 = [(AMSFinanceExpressCheckoutResponse *)v8 _expressCheckoutModeFromPayload:dictionaryCopy];
     v9->_expressCheckoutMode = v10;
     v11 = [MEMORY[0x1E696AD98] numberWithInteger:v10];
-    v12 = [v7 properties];
-    v13 = [v12 purchaseInfo];
-    [v13 setExpressCheckoutMode:v11];
+    properties = [infoCopy properties];
+    purchaseInfo = [properties purchaseInfo];
+    [purchaseInfo setExpressCheckoutMode:v11];
 
-    v14 = [(AMSFinanceExpressCheckoutResponse *)v9 _buyParamFromPayload:v6];
+    v14 = [(AMSFinanceExpressCheckoutResponse *)v9 _buyParamFromPayload:dictionaryCopy];
     buyParams = v9->_buyParams;
     v9->_buyParams = v14;
 
@@ -55,29 +55,29 @@
     session = v9->_session;
     v9->_session = v19;
 
-    v21 = [v7 properties];
+    properties2 = [infoCopy properties];
     parentProperties = v9->_parentProperties;
-    v9->_parentProperties = v21;
+    v9->_parentProperties = properties2;
   }
 
   return v9;
 }
 
-- (id)performWithTaskInfo:(id)a3
+- (id)performWithTaskInfo:(id)info
 {
   v17 = *MEMORY[0x1E69E9840];
   v3 = +[AMSUnitTests isRunningUnitTests];
   v4 = +[AMSLogConfig sharedPurchaseConfig];
-  v5 = v4;
+  defaultCenter = v4;
   if (v3)
   {
     if (!v4)
     {
-      v5 = +[AMSLogConfig sharedConfig];
+      defaultCenter = +[AMSLogConfig sharedConfig];
     }
 
-    v6 = [v5 OSLogObject];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    oSLogObject = [defaultCenter OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v7 = objc_opt_class();
       v8 = AMSLogKey();
@@ -87,20 +87,20 @@
       v16 = v8;
     }
 
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    v9 = +[AMSLogConfig sharedPurchaseConfig];
-    [v5 postNotificationName:@"com.apple.AppleMediaServicesTests.FaultLogged" object:v9 userInfo:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    oSLogObject2 = +[AMSLogConfig sharedPurchaseConfig];
+    [defaultCenter postNotificationName:@"com.apple.AppleMediaServicesTests.FaultLogged" object:oSLogObject2 userInfo:0];
   }
 
   else
   {
     if (!v4)
     {
-      v5 = +[AMSLogConfig sharedConfig];
+      defaultCenter = +[AMSLogConfig sharedConfig];
     }
 
-    v9 = [v5 OSLogObject];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
+    oSLogObject2 = [defaultCenter OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_FAULT))
     {
       v10 = objc_opt_class();
       v11 = AMSLogKey();
@@ -114,25 +114,25 @@
   return 0;
 }
 
-- (void)performWithTaskInfo:(id)a3 completionHandler:(id)a4
+- (void)performWithTaskInfo:(id)info completionHandler:(id)handler
 {
   v31[2] = *MEMORY[0x1E69E9840];
-  v22 = a3;
-  v6 = a4;
-  v7 = [(AMSFinanceExpressCheckoutResponse *)self parentProperties];
-  v8 = [v7 bag];
+  infoCopy = info;
+  handlerCopy = handler;
+  parentProperties = [(AMSFinanceExpressCheckoutResponse *)self parentProperties];
+  v8 = [parentProperties bag];
 
-  v9 = [(AMSFinanceExpressCheckoutResponse *)self parentProperties];
-  v23 = [v9 account];
+  parentProperties2 = [(AMSFinanceExpressCheckoutResponse *)self parentProperties];
+  account = [parentProperties2 account];
 
   v10 = [v8 stringForKey:@"applepay-merchant-id"];
-  v11 = [v10 valuePromise];
+  valuePromise = [v10 valuePromise];
 
   v12 = [v8 stringForKey:@"countryCode"];
-  v13 = [v12 valuePromise];
+  valuePromise2 = [v12 valuePromise];
 
-  v31[0] = v11;
-  v31[1] = v13;
+  v31[0] = valuePromise;
+  v31[1] = valuePromise2;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v31 count:2];
   v15 = [AMSPromise promiseWithAll:v14];
 
@@ -166,10 +166,10 @@
   v24[2] = __75__AMSFinanceExpressCheckoutResponse_performWithTaskInfo_completionHandler___block_invoke_5;
   v24[3] = &unk_1E73B7D48;
   v24[4] = self;
-  v25 = v22;
-  v26 = v6;
-  v20 = v22;
-  v21 = v6;
+  v25 = infoCopy;
+  v26 = handlerCopy;
+  v20 = infoCopy;
+  v21 = handlerCopy;
   [v19 addFinishBlock:v24];
 }
 
@@ -422,21 +422,21 @@ LABEL_41:
 LABEL_44:
 }
 
-- (id)_fetchCardDataForMerchantIdentifier:(id)a3 countryCode:(id)a4
+- (id)_fetchCardDataForMerchantIdentifier:(id)identifier countryCode:(id)code
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  codeCopy = code;
   if ([(AMSFinanceExpressCheckoutResponse *)self expressCheckoutMode]== 2)
   {
-    v8 = [[AMSCardRegistrationTask alloc] initWithCountryCode:v7 merchantIdentifier:v6];
+    v8 = [[AMSCardRegistrationTask alloc] initWithCountryCode:codeCopy merchantIdentifier:identifierCopy];
     [(AMSTask *)v8 setRunMode:1];
-    v9 = [(AMSCardRegistrationTask *)v8 performCardRegistration];
+    performCardRegistration = [(AMSCardRegistrationTask *)v8 performCardRegistration];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __85__AMSFinanceExpressCheckoutResponse__fetchCardDataForMerchantIdentifier_countryCode___block_invoke;
     v12[3] = &unk_1E73B7D70;
     v12[4] = self;
-    v10 = [v9 thenWithBlock:v12];
+    v10 = [performCardRegistration thenWithBlock:v12];
   }
 
   else
@@ -487,11 +487,11 @@ id __85__AMSFinanceExpressCheckoutResponse__fetchCardDataForMerchantIdentifier_c
   return v10;
 }
 
-- (id)_paymentChoicesForCardData:(id)a3
+- (id)_paymentChoicesForCardData:(id)data
 {
-  v4 = [(AMSFinanceExpressCheckoutResponse *)self _paymentChoicesRequestForCardData:a3];
-  v5 = [(AMSFinanceExpressCheckoutResponse *)self session];
-  v6 = [v5 dataTaskPromiseWithRequestPromise:v4];
+  v4 = [(AMSFinanceExpressCheckoutResponse *)self _paymentChoicesRequestForCardData:data];
+  session = [(AMSFinanceExpressCheckoutResponse *)self session];
+  v6 = [session dataTaskPromiseWithRequestPromise:v4];
   v7 = [v6 thenWithBlock:&__block_literal_global_62];
 
   return v7;
@@ -505,28 +505,28 @@ id __64__AMSFinanceExpressCheckoutResponse__paymentChoicesForCardData___block_in
   return v3;
 }
 
-- (id)_paymentChoicesRequestForCardData:(id)a3
+- (id)_paymentChoicesRequestForCardData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = [AMSURLRequestEncoder alloc];
-  v6 = [(AMSFinanceExpressCheckoutResponse *)self parentProperties];
-  v7 = [v6 bag];
+  parentProperties = [(AMSFinanceExpressCheckoutResponse *)self parentProperties];
+  v7 = [parentProperties bag];
   v8 = [(AMSURLRequestEncoder *)v5 initWithBag:v7];
 
   [(AMSURLRequestEncoder *)v8 setRequestEncoding:3];
-  v9 = [(AMSFinanceExpressCheckoutResponse *)self parentProperties];
-  v10 = [v9 account];
-  [(AMSURLRequestEncoder *)v8 setAccount:v10];
+  parentProperties2 = [(AMSFinanceExpressCheckoutResponse *)self parentProperties];
+  account = [parentProperties2 account];
+  [(AMSURLRequestEncoder *)v8 setAccount:account];
 
   v11 = [[AMSCodableResponseDecoder alloc] initWithRootClass:objc_opt_class()];
   [(AMSURLRequestEncoder *)v8 setResponseDecoder:v11];
 
-  v12 = [(AMSFinanceExpressCheckoutResponse *)self _paymentChoicesBodyForCardData:v4];
+  v12 = [(AMSFinanceExpressCheckoutResponse *)self _paymentChoicesBodyForCardData:dataCopy];
 
-  v13 = [(AMSFinanceExpressCheckoutResponse *)self parentProperties];
-  v14 = [v13 bag];
+  parentProperties3 = [(AMSFinanceExpressCheckoutResponse *)self parentProperties];
+  v14 = [parentProperties3 bag];
   v15 = [v14 BOOLForKey:@"applePayExpressCheckoutPaymentChoicesUsePost"];
-  v16 = [v15 valuePromise];
+  valuePromise = [v15 valuePromise];
 
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
@@ -537,7 +537,7 @@ id __64__AMSFinanceExpressCheckoutResponse__paymentChoicesForCardData___block_in
   v23 = v12;
   v17 = v12;
   v18 = v8;
-  v19 = [v16 continueWithBlock:v21];
+  v19 = [valuePromise continueWithBlock:v21];
 
   return v19;
 }
@@ -588,27 +588,27 @@ id __71__AMSFinanceExpressCheckoutResponse__paymentChoicesRequestForCardData___b
   return v15;
 }
 
-- (id)_paymentChoicesBodyForCardData:(id)a3
+- (id)_paymentChoicesBodyForCardData:(id)data
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dataCopy = data;
   v5 = objc_opt_new();
   buyParams = self->_buyParams;
   if (buyParams)
   {
-    v7 = [(AMSBuyParams *)buyParams dictionary];
+    dictionary = [(AMSBuyParams *)buyParams dictionary];
   }
 
   else
   {
-    v8 = [(AMSFinanceExpressCheckoutResponse *)self parentProperties];
-    v9 = [v8 purchaseInfo];
-    v10 = [v9 buyParams];
-    v7 = [v10 dictionary];
+    parentProperties = [(AMSFinanceExpressCheckoutResponse *)self parentProperties];
+    purchaseInfo = [parentProperties purchaseInfo];
+    buyParams = [purchaseInfo buyParams];
+    dictionary = [buyParams dictionary];
   }
 
   v20 = 0;
-  v11 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v7 options:0 error:&v20];
+  v11 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionary options:0 error:&v20];
   v12 = v20;
   v13 = 0x1E696A000uLL;
   if (v12)
@@ -619,8 +619,8 @@ id __71__AMSFinanceExpressCheckoutResponse__paymentChoicesRequestForCardData___b
       v14 = +[AMSLogConfig sharedConfig];
     }
 
-    v15 = [v14 OSLogObject];
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v14 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v16 = objc_opt_class();
       v17 = AMSLogKey();
@@ -631,7 +631,7 @@ id __71__AMSFinanceExpressCheckoutResponse__paymentChoicesRequestForCardData___b
       v24 = v17;
       v25 = 2114;
       v26 = v12;
-      _os_log_impl(&dword_192869000, v15, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to encode buyParams. %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to encode buyParams. %{public}@", buf, 0x20u);
     }
   }
 
@@ -647,9 +647,9 @@ id __71__AMSFinanceExpressCheckoutResponse__paymentChoicesRequestForCardData___b
   }
 
 LABEL_13:
-  if ([v4 length])
+  if ([dataCopy length])
   {
-    [v5 setObject:v4 forKeyedSubscript:@"cardData"];
+    [v5 setObject:dataCopy forKeyedSubscript:@"cardData"];
   }
 
   v18 = [*(v13 + 3776) stringWithFormat:@"%lu", -[AMSFinanceExpressCheckoutResponse expressCheckoutMode](self, "expressCheckoutMode")];
@@ -658,11 +658,11 @@ LABEL_13:
   return v5;
 }
 
-- (id)_presentEngagementForPaymentChoices:(id)a3
+- (id)_presentEngagementForPaymentChoices:(id)choices
 {
   v40 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 isEmpty] && -[AMSFinanceExpressCheckoutResponse expressCheckoutMode](self, "expressCheckoutMode") == 2)
+  choicesCopy = choices;
+  if ([choicesCopy isEmpty] && -[AMSFinanceExpressCheckoutResponse expressCheckoutMode](self, "expressCheckoutMode") == 2)
   {
     v5 = +[AMSLogConfig sharedPurchaseConfig];
     if (!v5)
@@ -670,8 +670,8 @@ LABEL_13:
       v5 = +[AMSLogConfig sharedConfig];
     }
 
-    v6 = [v5 OSLogObject];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v5 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v7 = objc_opt_class();
       v8 = AMSLogKey();
@@ -679,11 +679,11 @@ LABEL_13:
       v35 = v7;
       v36 = 2114;
       v37 = v8;
-      _os_log_impl(&dword_192869000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Payment choices is empty & expressCheckout mode is AURUM, so marking the Express Checkout path as ineligible", &v34, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Payment choices is empty & expressCheckout mode is AURUM, so marking the Express Checkout path as ineligible", &v34, 0x16u);
     }
 
-    v9 = [[AMSEngagementResult alloc] initWithPath:0];
-    v10 = [AMSPromise promiseWithResult:v9];
+    delegate = [[AMSEngagementResult alloc] initWithPath:0];
+    v10 = [AMSPromise promiseWithResult:delegate];
   }
 
   else
@@ -694,8 +694,8 @@ LABEL_13:
       v11 = +[AMSLogConfig sharedConfig];
     }
 
-    v12 = [v11 OSLogObject];
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+    oSLogObject2 = [v11 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
     {
       v13 = objc_opt_class();
       v14 = AMSLogKey();
@@ -703,20 +703,20 @@ LABEL_13:
       v35 = v13;
       v36 = 2114;
       v37 = v14;
-      _os_log_impl(&dword_192869000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Attempting Express Checkout engagement", &v34, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Attempting Express Checkout engagement", &v34, 0x16u);
     }
 
-    v15 = [(AMSFinanceExpressCheckoutResponse *)self parentProperties];
-    v16 = [v15 purchaseInfo];
-    v9 = [v16 delegate];
+    parentProperties = [(AMSFinanceExpressCheckoutResponse *)self parentProperties];
+    purchaseInfo = [parentProperties purchaseInfo];
+    delegate = [purchaseInfo delegate];
 
     if (objc_opt_respondsToSelector())
     {
-      v17 = [[AMSExpressCheckoutModel alloc] initWithMode:[(AMSFinanceExpressCheckoutResponse *)self expressCheckoutMode] paymentChoices:v4];
+      v17 = [[AMSExpressCheckoutModel alloc] initWithMode:[(AMSFinanceExpressCheckoutResponse *)self expressCheckoutMode] paymentChoices:choicesCopy];
       v18 = [[AMSEngagementRequest alloc] initWithModel:v17 destinationStyle:3];
-      v19 = [(AMSFinanceExpressCheckoutResponse *)self parentProperties];
-      v20 = [v19 account];
-      [(AMSEngagementRequest *)v18 setAccount:v20];
+      parentProperties2 = [(AMSFinanceExpressCheckoutResponse *)self parentProperties];
+      account = [parentProperties2 account];
+      [(AMSEngagementRequest *)v18 setAccount:account];
 
       v21 = AMSLogKey();
       [(AMSEngagementRequest *)v18 setLogKey:v21];
@@ -725,18 +725,18 @@ LABEL_13:
       v22 = [MEMORY[0x1E695DFF8] URLWithString:@"https://amsui.apple.com/dynamic/marketing#route=expressCheckout"];
       [(AMSEngagementRequest *)v18 setURL:v22];
 
-      v23 = [(AMSFinanceExpressCheckoutResponse *)self _createPageEventForPaymentChoices:v4];
+      v23 = [(AMSFinanceExpressCheckoutResponse *)self _createPageEventForPaymentChoices:choicesCopy];
       [(AMSEngagementRequest *)v18 setMetricsOverlay:v23];
 
-      v24 = [(AMSFinanceExpressCheckoutResponse *)self _createClientDataForPaymentChoices:v4];
+      v24 = [(AMSFinanceExpressCheckoutResponse *)self _createClientDataForPaymentChoices:choicesCopy];
       [(AMSEngagementRequest *)v18 setClientData:v24];
 
       v10 = objc_alloc_init(AMSPromise);
-      v25 = [(AMSFinanceExpressCheckoutResponse *)self parentProperties];
-      v26 = [v25 purchaseInfo];
-      v27 = [v26 purchase];
-      v28 = [(AMSPromise *)v10 completionHandlerAdapter];
-      [(AMSEngagementResult *)v9 purchase:v27 handleEngagementRequest:v18 completion:v28];
+      parentProperties3 = [(AMSFinanceExpressCheckoutResponse *)self parentProperties];
+      purchaseInfo2 = [parentProperties3 purchaseInfo];
+      purchase = [purchaseInfo2 purchase];
+      completionHandlerAdapter = [(AMSPromise *)v10 completionHandlerAdapter];
+      [(AMSEngagementResult *)delegate purchase:purchase handleEngagementRequest:v18 completion:completionHandlerAdapter];
     }
 
     else
@@ -748,8 +748,8 @@ LABEL_13:
         v29 = +[AMSLogConfig sharedConfig];
       }
 
-      v30 = [v29 OSLogObject];
-      if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
+      oSLogObject3 = [v29 OSLogObject];
+      if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_ERROR))
       {
         v31 = objc_opt_class();
         v32 = AMSLogKey();
@@ -759,7 +759,7 @@ LABEL_13:
         v37 = v32;
         v38 = 2114;
         v39 = v17;
-        _os_log_impl(&dword_192869000, v30, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to present engagement (no delegate). %{public}@", &v34, 0x20u);
+        _os_log_impl(&dword_192869000, oSLogObject3, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to present engagement (no delegate). %{public}@", &v34, 0x20u);
       }
 
       v10 = [AMSPromise promiseWithError:v17];
@@ -769,11 +769,11 @@ LABEL_13:
   return v10;
 }
 
-- (id)_recordUserChoiceForEngagementResult:(id)a3
+- (id)_recordUserChoiceForEngagementResult:(id)result
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 expressCheckoutPath] != 4)
+  resultCopy = result;
+  if ([resultCopy expressCheckoutPath] != 4)
   {
     v11 = +[AMSLogConfig sharedPurchaseConfig];
     if (!v11)
@@ -781,8 +781,8 @@ LABEL_13:
       v11 = +[AMSLogConfig sharedConfig];
     }
 
-    v12 = [v11 OSLogObject];
-    if (!os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v11 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       goto LABEL_13;
     }
@@ -797,25 +797,25 @@ LABEL_13:
     goto LABEL_12;
   }
 
-  v5 = [(AMSFinanceExpressCheckoutResponse *)self parentProperties];
-  v6 = [v5 bag];
+  parentProperties = [(AMSFinanceExpressCheckoutResponse *)self parentProperties];
+  v6 = [parentProperties bag];
   v7 = [AMSFinanceExpressCheckoutResponse _isExpressCheckoutRecordUserChoiceEnabledForBag:v6];
 
   if (v7)
   {
-    v8 = [(AMSFinanceExpressCheckoutResponse *)self _recordUserChoiceRequest];
+    _recordUserChoiceRequest = [(AMSFinanceExpressCheckoutResponse *)self _recordUserChoiceRequest];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __74__AMSFinanceExpressCheckoutResponse__recordUserChoiceForEngagementResult___block_invoke;
     v20[3] = &unk_1E73B3510;
     v20[4] = self;
-    v9 = [v8 thenWithBlock:v20];
+    v9 = [_recordUserChoiceRequest thenWithBlock:v20];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __74__AMSFinanceExpressCheckoutResponse__recordUserChoiceForEngagementResult___block_invoke_83;
     v18[3] = &unk_1E73B7DC0;
     v18[4] = self;
-    v19 = v4;
+    v19 = resultCopy;
     v10 = [v9 continueWithBlock:v18];
 
     goto LABEL_14;
@@ -827,8 +827,8 @@ LABEL_13:
     v11 = +[AMSLogConfig sharedConfig];
   }
 
-  v12 = [v11 OSLogObject];
-  if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v11 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v16 = objc_opt_class();
     v14 = AMSLogKey();
@@ -838,12 +838,12 @@ LABEL_13:
     v24 = v14;
     v15 = "%{public}@: [%{public}@] Skipping recording user choice due to not enabled by bag key";
 LABEL_12:
-    _os_log_impl(&dword_192869000, v12, OS_LOG_TYPE_DEFAULT, v15, buf, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, v15, buf, 0x16u);
   }
 
 LABEL_13:
 
-  v10 = [AMSPromise promiseWithResult:v4];
+  v10 = [AMSPromise promiseWithResult:resultCopy];
 LABEL_14:
 
   return v10;
@@ -912,16 +912,16 @@ id __74__AMSFinanceExpressCheckoutResponse__recordUserChoiceForEngagementResult_
 - (id)_recordUserChoiceRequest
 {
   v3 = [AMSURLRequestEncoder alloc];
-  v4 = [(AMSFinanceExpressCheckoutResponse *)self parentProperties];
-  v5 = [v4 bag];
+  parentProperties = [(AMSFinanceExpressCheckoutResponse *)self parentProperties];
+  v5 = [parentProperties bag];
   v6 = [(AMSURLRequestEncoder *)v3 initWithBag:v5];
 
-  v7 = [(AMSFinanceExpressCheckoutResponse *)self parentProperties];
-  v8 = [v7 account];
-  [(AMSURLRequestEncoder *)v6 setAccount:v8];
+  parentProperties2 = [(AMSFinanceExpressCheckoutResponse *)self parentProperties];
+  account = [parentProperties2 account];
+  [(AMSURLRequestEncoder *)v6 setAccount:account];
 
-  v9 = [(AMSFinanceExpressCheckoutResponse *)self parentProperties];
-  v10 = [v9 bag];
+  parentProperties3 = [(AMSFinanceExpressCheckoutResponse *)self parentProperties];
+  v10 = [parentProperties3 bag];
   v11 = [v10 URLForKey:@"applicationUserChoiceUrl"];
 
   v12 = [(AMSURLRequestEncoder *)v6 requestWithMethod:2 bagURL:v11 parameters:&unk_1F0779D58];
@@ -939,52 +939,52 @@ id __61__AMSFinanceExpressCheckoutResponse__recordUserChoiceRequest__block_invok
   return v3;
 }
 
-- (id)_createClientDataForPaymentChoices:(id)a3
+- (id)_createClientDataForPaymentChoices:(id)choices
 {
-  v4 = a3;
+  choicesCopy = choices;
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v6 = [(AMSFinancePaymentSheetResponse *)self paymentSheetRequest];
-  v7 = [v6 confirmationTitle];
+  paymentSheetRequest = [(AMSFinancePaymentSheetResponse *)self paymentSheetRequest];
+  confirmationTitle = [paymentSheetRequest confirmationTitle];
   v8 = @"one_time_buy";
-  if (v7 == 6)
+  if (confirmationTitle == 6)
   {
     v8 = @"subscription";
   }
 
   v9 = v8;
 
-  v10 = [(AMSFinancePaymentSheetResponse *)self paymentSheetRequest];
-  v11 = [v10 price];
-  [v5 setObject:v11 forKeyedSubscript:@"contentPrice"];
+  paymentSheetRequest2 = [(AMSFinancePaymentSheetResponse *)self paymentSheetRequest];
+  price = [paymentSheetRequest2 price];
+  [v5 setObject:price forKeyedSubscript:@"contentPrice"];
 
-  v12 = [(AMSFinancePaymentSheetResponse *)self paymentSheetRequest];
-  v13 = [v12 currencyCode];
-  [v5 setObject:v13 forKeyedSubscript:@"purchaseCurrency"];
+  paymentSheetRequest3 = [(AMSFinancePaymentSheetResponse *)self paymentSheetRequest];
+  currencyCode = [paymentSheetRequest3 currencyCode];
+  [v5 setObject:currencyCode forKeyedSubscript:@"purchaseCurrency"];
 
   [v5 setObject:v9 forKeyedSubscript:@"purchaseFrequency"];
   if ([(AMSFinanceExpressCheckoutResponse *)self expressCheckoutMode]== 2)
   {
-    v14 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v4, "cardsCount")}];
+    v14 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(choicesCopy, "cardsCount")}];
     [v5 setObject:v14 forKeyedSubscript:@"applePayCardsShown"];
   }
 
   return v5;
 }
 
-- (id)_createPageEventForPaymentChoices:(id)a3
+- (id)_createPageEventForPaymentChoices:(id)choices
 {
   v39 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = self->_buyParams;
-  if (!v5)
+  choicesCopy = choices;
+  buyParams = self->_buyParams;
+  if (!buyParams)
   {
-    v6 = [(AMSFinanceExpressCheckoutResponse *)self parentProperties];
-    v7 = [v6 purchaseInfo];
-    v5 = [v7 buyParams];
+    parentProperties = [(AMSFinanceExpressCheckoutResponse *)self parentProperties];
+    purchaseInfo = [parentProperties purchaseInfo];
+    buyParams = [purchaseInfo buyParams];
   }
 
-  v8 = [(AMSBuyParams *)v5 objectForKeyedSubscript:@"appAdamId"];
-  v9 = [(AMSBuyParams *)v5 objectForKeyedSubscript:@"salableAdamId"];
+  v8 = [(AMSBuyParams *)buyParams objectForKeyedSubscript:@"appAdamId"];
+  v9 = [(AMSBuyParams *)buyParams objectForKeyedSubscript:@"salableAdamId"];
   v10 = v9;
   if (v8)
   {
@@ -1028,98 +1028,98 @@ LABEL_11:
   v16 = objc_alloc_init(MEMORY[0x1E695DF90]);
   [v16 setObject:@"finance" forKeyedSubscript:0x1F0726258];
   [v16 setObject:v15 forKeyedSubscript:0x1F07307B8];
-  v17 = [v4 metrics];
+  metrics = [choicesCopy metrics];
 
-  if (v17)
+  if (metrics)
   {
-    v18 = [v4 metrics];
-    [v16 addEntriesFromDictionary:v18];
+    metrics2 = [choicesCopy metrics];
+    [v16 addEntriesFromDictionary:metrics2];
   }
 
-  v19 = v4;
+  v19 = choicesCopy;
   v20 = [(AMSFinanceExpressCheckoutResponse *)self parentProperties:v29];
-  v21 = [v20 purchaseInfo];
-  v22 = [v21 purchase];
-  v23 = [v22 metricsOverlay];
+  purchaseInfo2 = [v20 purchaseInfo];
+  purchase = [purchaseInfo2 purchase];
+  metricsOverlay = [purchase metricsOverlay];
 
-  if (v23)
+  if (metricsOverlay)
   {
-    v24 = [(AMSFinanceExpressCheckoutResponse *)self parentProperties];
-    v25 = [v24 purchaseInfo];
-    v26 = [v25 purchase];
-    v27 = [v26 metricsOverlay];
-    [v16 addEntriesFromDictionary:v27];
+    parentProperties2 = [(AMSFinanceExpressCheckoutResponse *)self parentProperties];
+    purchaseInfo3 = [parentProperties2 purchaseInfo];
+    purchase2 = [purchaseInfo3 purchase];
+    metricsOverlay2 = [purchase2 metricsOverlay];
+    [v16 addEntriesFromDictionary:metricsOverlay2];
   }
 
   return v16;
 }
 
-- (void)AMSURLSession:(id)a3 task:(id)a4 handleAuthenticateRequest:(id)a5 completion:(id)a6
+- (void)AMSURLSession:(id)session task:(id)task handleAuthenticateRequest:(id)request completion:(id)completion
 {
-  v13 = a5;
-  v8 = a6;
-  v9 = [(AMSFinanceExpressCheckoutResponse *)self parentProperties];
-  v10 = [v9 purchaseInfo];
+  requestCopy = request;
+  completionCopy = completion;
+  parentProperties = [(AMSFinanceExpressCheckoutResponse *)self parentProperties];
+  purchaseInfo = [parentProperties purchaseInfo];
 
-  v11 = [v10 delegate];
+  delegate = [purchaseInfo delegate];
   if (objc_opt_respondsToSelector())
   {
-    v12 = [v10 purchase];
-    [v11 purchase:v12 handleAuthenticateRequest:v13 completion:v8];
+    purchase = [purchaseInfo purchase];
+    [delegate purchase:purchase handleAuthenticateRequest:requestCopy completion:completionCopy];
   }
 
   else
   {
-    v12 = AMSError(2, @"Purchase Authentication Failed", @"Purchase delegate not observing callback", 0);
-    v8[2](v8, 0, v12);
+    purchase = AMSError(2, @"Purchase Authentication Failed", @"Purchase delegate not observing callback", 0);
+    completionCopy[2](completionCopy, 0, purchase);
   }
 }
 
-- (void)AMSURLSession:(id)a3 task:(id)a4 handleDialogRequest:(id)a5 completion:(id)a6
+- (void)AMSURLSession:(id)session task:(id)task handleDialogRequest:(id)request completion:(id)completion
 {
-  v13 = a5;
-  v8 = a6;
-  v9 = [(AMSFinanceExpressCheckoutResponse *)self parentProperties];
-  v10 = [v9 purchaseInfo];
+  requestCopy = request;
+  completionCopy = completion;
+  parentProperties = [(AMSFinanceExpressCheckoutResponse *)self parentProperties];
+  purchaseInfo = [parentProperties purchaseInfo];
 
-  v11 = [v10 delegate];
+  delegate = [purchaseInfo delegate];
   if (objc_opt_respondsToSelector())
   {
-    v12 = [v10 purchase];
-    [v11 purchase:v12 handleDialogRequest:v13 completion:v8];
+    purchase = [purchaseInfo purchase];
+    [delegate purchase:purchase handleDialogRequest:requestCopy completion:completionCopy];
   }
 
   else
   {
-    v12 = AMSError(2, @"Purchase Dialog Failed", @"Purchase delegate not observing callback", 0);
-    v8[2](v8, 0, v12);
+    purchase = AMSError(2, @"Purchase Dialog Failed", @"Purchase delegate not observing callback", 0);
+    completionCopy[2](completionCopy, 0, purchase);
   }
 }
 
-- (void)AMSURLSession:(id)a3 task:(id)a4 handleEngagementRequest:(id)a5 completion:(id)a6
+- (void)AMSURLSession:(id)session task:(id)task handleEngagementRequest:(id)request completion:(id)completion
 {
-  v13 = a5;
-  v8 = a6;
-  v9 = [(AMSFinanceExpressCheckoutResponse *)self parentProperties];
-  v10 = [v9 purchaseInfo];
+  requestCopy = request;
+  completionCopy = completion;
+  parentProperties = [(AMSFinanceExpressCheckoutResponse *)self parentProperties];
+  purchaseInfo = [parentProperties purchaseInfo];
 
-  v11 = [v10 delegate];
+  delegate = [purchaseInfo delegate];
   if (objc_opt_respondsToSelector())
   {
-    v12 = [v10 purchase];
-    [v11 purchase:v12 handleEngagementRequest:v13 completion:v8];
+    purchase = [purchaseInfo purchase];
+    [delegate purchase:purchase handleEngagementRequest:requestCopy completion:completionCopy];
   }
 
   else
   {
-    v12 = AMSError(2, @"Purchase Engagement Failed", @"Purchase delegate not observing callback", 0);
-    v8[2](v8, 0, v12);
+    purchase = AMSError(2, @"Purchase Engagement Failed", @"Purchase delegate not observing callback", 0);
+    completionCopy[2](completionCopy, 0, purchase);
   }
 }
 
-- (int64_t)_expressCheckoutModeFromPayload:(id)a3
+- (int64_t)_expressCheckoutModeFromPayload:(id)payload
 {
-  v3 = [a3 valueForKey:0x1F0729EF8];
+  v3 = [payload valueForKey:0x1F0729EF8];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -1143,13 +1143,13 @@ LABEL_11:
     v6 = 0;
   }
 
-  v7 = [v6 integerValue];
-  return v7;
+  integerValue = [v6 integerValue];
+  return integerValue;
 }
 
-- (id)_buyParamFromPayload:(id)a3
+- (id)_buyParamFromPayload:(id)payload
 {
-  v3 = [a3 valueForKey:0x1F0729EF8];
+  v3 = [payload valueForKey:0x1F0729EF8];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -1200,32 +1200,32 @@ LABEL_12:
 
 - (void)removeExpressCheckoutSession
 {
-  v3 = [(AMSFinancePaymentSheetResponse *)self paymentSheetRequest];
-  [v3 setMerchantSession:0];
+  paymentSheetRequest = [(AMSFinancePaymentSheetResponse *)self paymentSheetRequest];
+  [paymentSheetRequest setMerchantSession:0];
 
-  v4 = [(AMSFinancePaymentSheetResponse *)self paymentSheetRequest];
-  [v4 setApplePayClassic:0];
+  paymentSheetRequest2 = [(AMSFinancePaymentSheetResponse *)self paymentSheetRequest];
+  [paymentSheetRequest2 setApplePayClassic:0];
 
-  v5 = [(AMSFinancePaymentSheetResponse *)self paymentSheetRequest];
-  v6 = [v5 responseDictionary];
-  v9 = [AMSFinancePaymentSheetResponse fallbackTitleFromResponse:v6];
+  paymentSheetRequest3 = [(AMSFinancePaymentSheetResponse *)self paymentSheetRequest];
+  responseDictionary = [paymentSheetRequest3 responseDictionary];
+  v9 = [AMSFinancePaymentSheetResponse fallbackTitleFromResponse:responseDictionary];
 
   if (v9)
   {
-    v7 = [(AMSFinancePaymentSheetResponse *)self paymentSheetRequest];
-    [v7 setTitle:v9];
+    paymentSheetRequest4 = [(AMSFinancePaymentSheetResponse *)self paymentSheetRequest];
+    [paymentSheetRequest4 setTitle:v9];
 
-    v8 = [(AMSFinancePaymentSheetResponse *)self paymentSheetRequest];
-    [v8 setTitleType:0];
+    paymentSheetRequest5 = [(AMSFinancePaymentSheetResponse *)self paymentSheetRequest];
+    [paymentSheetRequest5 setTitleType:0];
   }
 }
 
-+ (BOOL)isEligibleForBag:(id)a3
++ (BOOL)isEligibleForBag:(id)bag
 {
-  v3 = a3;
-  if ([AMSCardEnrollment isAURUMWithBag:v3])
+  bagCopy = bag;
+  if ([AMSCardEnrollment isAURUMWithBag:bagCopy])
   {
-    v4 = [AMSFinanceExpressCheckoutResponse _isExpressCheckoutEnabledForBag:v3];
+    v4 = [AMSFinanceExpressCheckoutResponse _isExpressCheckoutEnabledForBag:bagCopy];
   }
 
   else
@@ -1236,10 +1236,10 @@ LABEL_12:
   return v4;
 }
 
-+ (BOOL)isExpressCheckoutPayload:(id)a3
++ (BOOL)isExpressCheckoutPayload:(id)payload
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [a3 valueForKey:0x1F0729EF8];
+  v3 = [payload valueForKey:0x1F0729EF8];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -1260,8 +1260,8 @@ LABEL_12:
     v7 = +[AMSLogConfig sharedConfig];
   }
 
-  v8 = [v7 OSLogObject];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v7 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v9 = objc_opt_class();
     v10 = MEMORY[0x1E696AD98];
@@ -1273,35 +1273,35 @@ LABEL_12:
     v17 = v6;
     v18 = 2114;
     v19 = v12;
-    _os_log_impl(&dword_192869000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Express Checkout payload eligibility status: %{public}@", &v14, 0x20u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Express Checkout payload eligibility status: %{public}@", &v14, 0x20u);
   }
 
   return v5 != 0;
 }
 
-+ (BOOL)isExpressCheckoutShouldCheckForWalletBiometricsForBag:(id)a3
++ (BOOL)isExpressCheckoutShouldCheckForWalletBiometricsForBag:(id)bag
 {
   v29 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  bagCopy = bag;
   v4 = AMSSetLogKeyIfNeeded();
-  v5 = [v3 BOOLForKey:@"applePayExpressCheckoutShouldCheckForWalletBiometrics"];
+  v5 = [bagCopy BOOLForKey:@"applePayExpressCheckoutShouldCheckForWalletBiometrics"];
   v22 = 0;
   v6 = [v5 valueWithError:&v22];
   v7 = v22;
   if (objc_opt_respondsToSelector())
   {
-    v8 = [v3 BOOLForKey:@"applePayExpressCheckoutShouldCheckForWalletBiometrics"];
+    v8 = [bagCopy BOOLForKey:@"applePayExpressCheckoutShouldCheckForWalletBiometrics"];
     v21 = v7;
     v9 = [v8 valueWithError:&v21];
     v10 = v21;
 
-    v11 = [v9 BOOLValue];
+    bOOLValue = [v9 BOOLValue];
     v7 = v10;
   }
 
   else
   {
-    v11 = 0;
+    bOOLValue = 0;
   }
 
   if (v7)
@@ -1312,8 +1312,8 @@ LABEL_12:
       v12 = +[AMSLogConfig sharedConfig];
     }
 
-    v13 = [v12 OSLogObject];
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v12 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v14 = objc_opt_class();
       *buf = 138543874;
@@ -1323,10 +1323,10 @@ LABEL_12:
       v27 = 2114;
       v28 = v7;
       v15 = v14;
-      _os_log_impl(&dword_192869000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] No bag key found for shouldCheckForWalletBiometrics, but the flag is default to enabled, if bag key does not exist , error: %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] No bag key found for shouldCheckForWalletBiometrics, but the flag is default to enabled, if bag key does not exist , error: %{public}@", buf, 0x20u);
     }
 
-    LOBYTE(v11) = 1;
+    LOBYTE(bOOLValue) = 1;
   }
 
   else
@@ -1337,44 +1337,44 @@ LABEL_12:
       v12 = +[AMSLogConfig sharedConfig];
     }
 
-    v13 = [v12 OSLogObject];
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v12 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v16 = objc_opt_class();
       v17 = MEMORY[0x1E696AD98];
       v18 = v16;
-      v19 = [v17 numberWithBool:v11];
+      v19 = [v17 numberWithBool:bOOLValue];
       *buf = 138543874;
       v24 = v16;
       v25 = 2114;
       v26 = v4;
       v27 = 2114;
       v28 = v19;
-      _os_log_impl(&dword_192869000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Express Checkout shouldCheckForWalletBiometrics from the bag: %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Express Checkout shouldCheckForWalletBiometrics from the bag: %{public}@", buf, 0x20u);
     }
   }
 
-  return v11;
+  return bOOLValue;
 }
 
-+ (BOOL)_isExpressCheckoutEnabledForBag:(id)a3
++ (BOOL)_isExpressCheckoutEnabledForBag:(id)bag
 {
   v32 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  bagCopy = bag;
   v4 = AMSSetLogKeyIfNeeded();
-  v5 = [v3 BOOLForKey:@"applePayExpressCheckoutEnabled"];
+  v5 = [bagCopy BOOLForKey:@"applePayExpressCheckoutEnabled"];
   v23 = 0;
   v6 = [v5 valueWithError:&v23];
   v7 = v23;
   if (objc_opt_respondsToSelector())
   {
-    v8 = [v3 BOOLForKey:@"applePayExpressCheckoutEnabled"];
+    v8 = [bagCopy BOOLForKey:@"applePayExpressCheckoutEnabled"];
     v22 = v7;
     v9 = [v8 valueWithError:&v22];
     v10 = v22;
 
-    v11 = [v9 BOOLValue];
-    v12 = v11;
+    bOOLValue = [v9 BOOLValue];
+    v12 = bOOLValue;
     v7 = v10;
   }
 
@@ -1391,8 +1391,8 @@ LABEL_12:
       v13 = +[AMSLogConfig sharedConfig];
     }
 
-    v14 = [v13 OSLogObject];
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v13 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v15 = objc_opt_class();
       *buf = 138544130;
@@ -1404,7 +1404,7 @@ LABEL_12:
       v30 = 2114;
       v31 = v7;
       v16 = v15;
-      _os_log_impl(&dword_192869000, v14, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] No bag key found: %{public}@, error: %{public}@", buf, 0x2Au);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] No bag key found: %{public}@, error: %{public}@", buf, 0x2Au);
     }
 
     LOBYTE(v12) = 0;
@@ -1418,8 +1418,8 @@ LABEL_12:
       v13 = +[AMSLogConfig sharedConfig];
     }
 
-    v14 = [v13 OSLogObject];
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v13 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v17 = objc_opt_class();
       v18 = MEMORY[0x1E696AD98];
@@ -1431,36 +1431,36 @@ LABEL_12:
       v27 = v4;
       v28 = 2114;
       v29 = v20;
-      _os_log_impl(&dword_192869000, v14, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Express Checkout bag enabled status: %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Express Checkout bag enabled status: %{public}@", buf, 0x20u);
     }
   }
 
   return v12;
 }
 
-+ (BOOL)_isExpressCheckoutRecordUserChoiceEnabledForBag:(id)a3
++ (BOOL)_isExpressCheckoutRecordUserChoiceEnabledForBag:(id)bag
 {
   v31 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  bagCopy = bag;
   v4 = AMSSetLogKeyIfNeeded();
-  v5 = [v3 BOOLForKey:@"applePayExpressCheckoutRecordUserChoiceEnabled"];
+  v5 = [bagCopy BOOLForKey:@"applePayExpressCheckoutRecordUserChoiceEnabled"];
   v22 = 0;
   v6 = [v5 valueWithError:&v22];
   v7 = v22;
   if (objc_opt_respondsToSelector())
   {
-    v8 = [v3 BOOLForKey:@"applePayExpressCheckoutRecordUserChoiceEnabled"];
+    v8 = [bagCopy BOOLForKey:@"applePayExpressCheckoutRecordUserChoiceEnabled"];
     v21 = v7;
     v9 = [v8 valueWithError:&v21];
     v10 = v21;
 
-    v11 = [v9 BOOLValue];
+    bOOLValue = [v9 BOOLValue];
     v7 = v10;
   }
 
   else
   {
-    v11 = 0;
+    bOOLValue = 0;
   }
 
   if (v7)
@@ -1471,8 +1471,8 @@ LABEL_12:
       v12 = +[AMSLogConfig sharedConfig];
     }
 
-    v13 = [v12 OSLogObject];
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v12 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v14 = objc_opt_class();
       *buf = 138544130;
@@ -1484,10 +1484,10 @@ LABEL_12:
       v29 = 2114;
       v30 = v7;
       v15 = v14;
-      _os_log_impl(&dword_192869000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] No bag key found: %{public}@, error: %{public}@", buf, 0x2Au);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] No bag key found: %{public}@, error: %{public}@", buf, 0x2Au);
     }
 
-    LOBYTE(v11) = 1;
+    LOBYTE(bOOLValue) = 1;
   }
 
   else
@@ -1498,24 +1498,24 @@ LABEL_12:
       v12 = +[AMSLogConfig sharedConfig];
     }
 
-    v13 = [v12 OSLogObject];
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v12 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v16 = objc_opt_class();
       v17 = MEMORY[0x1E696AD98];
       v18 = v16;
-      v19 = [v17 numberWithBool:v11];
+      v19 = [v17 numberWithBool:bOOLValue];
       *buf = 138543874;
       v24 = v16;
       v25 = 2114;
       v26 = v4;
       v27 = 2114;
       v28 = v19;
-      _os_log_impl(&dword_192869000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Express Checkout Record User Choice bag enabled status: %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Express Checkout Record User Choice bag enabled status: %{public}@", buf, 0x20u);
     }
   }
 
-  return v11;
+  return bOOLValue;
 }
 
 @end

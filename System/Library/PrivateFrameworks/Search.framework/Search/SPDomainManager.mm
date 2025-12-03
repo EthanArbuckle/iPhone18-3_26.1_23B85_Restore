@@ -1,14 +1,14 @@
 @interface SPDomainManager
 + (void)initialize;
-- (void)_removeAllDomainsForDisplayIdentifier:(id)a3;
-- (void)registerApplication:(id)a3 withCategories:(id)a4;
+- (void)_removeAllDomainsForDisplayIdentifier:(id)identifier;
+- (void)registerApplication:(id)application withCategories:(id)categories;
 @end
 
 @implementation SPDomainManager
 
-- (void)_removeAllDomainsForDisplayIdentifier:(id)a3
+- (void)_removeAllDomainsForDisplayIdentifier:(id)identifier
 {
-  v9 = a3;
+  identifierCopy = identifier;
   v3 = [MEMORY[0x1E695DF70] arrayWithArray:MEMORY[0x1E695E0F0]];
   v4 = [v3 count];
   if (v4)
@@ -18,7 +18,7 @@
     {
       v6 = [v3 objectAtIndex:v5];
       v7 = [v6 objectForKey:@"SPDisplayIdentifier"];
-      v8 = [v7 isEqualToString:v9];
+      v8 = [v7 isEqualToString:identifierCopy];
 
       if (v8)
       {
@@ -32,19 +32,19 @@
   }
 }
 
-- (void)registerApplication:(id)a3 withCategories:(id)a4
+- (void)registerApplication:(id)application withCategories:(id)categories
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v18 = self;
-  [(SPDomainManager *)self _removeAllDomainsForDisplayIdentifier:v6];
+  applicationCopy = application;
+  categoriesCopy = categories;
+  selfCopy = self;
+  [(SPDomainManager *)self _removeAllDomainsForDisplayIdentifier:applicationCopy];
   v8 = [MEMORY[0x1E695DF70] arrayWithArray:MEMORY[0x1E695E0F0]];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v9 = v7;
+  v9 = categoriesCopy;
   v10 = [v9 countByEnumeratingWithState:&v19 objects:v27 count:16];
   if (v10)
   {
@@ -60,7 +60,7 @@
           objc_enumerationMutation(v9);
         }
 
-        v14 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{v6, @"SPDisplayIdentifier", *(*(&v19 + 1) + 8 * v13), @"SPCategory", 0}];
+        v14 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{applicationCopy, @"SPDisplayIdentifier", *(*(&v19 + 1) + 8 * v13), @"SPCategory", 0}];
         [v8 addObject:v14];
 
         ++v13;
@@ -80,18 +80,18 @@
     *buf = 138412546;
     v24 = v9;
     v25 = 2112;
-    v26 = v6;
+    v26 = applicationCopy;
     _os_log_impl(&dword_1C81BF000, v15, ((v16 & 1) == 0), "Installed application domains %@ for %@", buf, 0x16u);
   }
 
-  [(SPDomainManager *)v18 notifyIndexer];
+  [(SPDomainManager *)selfCopy notifyIndexer];
   v17 = *MEMORY[0x1E69E9840];
 }
 
 + (void)initialize
 {
   v11[26] = *MEMORY[0x1E69E9840];
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v3 = objc_alloc_init(SPDomainManager);
     v4 = __defaultManager;
@@ -157,7 +157,7 @@
     __siriSuggestionsEnabled = [v7 containsObject:@"DOMAIN_ZKWS"] ^ 1;
 
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
-    CFNotificationCenterAddObserver(DarwinNotifyCenter, a1, _userPrefsChanged, @"com.apple.spotlightui.prefschanged", 0, CFNotificationSuspensionBehaviorDeliverImmediately);
+    CFNotificationCenterAddObserver(DarwinNotifyCenter, self, _userPrefsChanged, @"com.apple.spotlightui.prefschanged", 0, CFNotificationSuspensionBehaviorDeliverImmediately);
   }
 
   v9 = *MEMORY[0x1E69E9840];

@@ -22,7 +22,7 @@
   v7 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [(ASDRequestOptions *)v4 manifestURL];
+    manifestURL = [(ASDRequestOptions *)v4 manifestURL];
     if (self)
     {
       client = self->super._client;
@@ -34,14 +34,14 @@
     }
 
     v10 = client;
-    v11 = [(XPCClient *)v10 clientID];
+    clientID = [(XPCClient *)v10 clientID];
     v12 = sub_100304BEC(v6);
     *buf = 138413314;
     v38 = v5;
     v39 = 2114;
-    v40 = v8;
+    v40 = manifestURL;
     v41 = 2114;
-    v42 = v11;
+    v42 = clientID;
     v43 = 2114;
     v44 = v12;
     v45 = 1024;
@@ -51,9 +51,9 @@
 
   v13 = objc_alloc_init(TaskQueue);
   v14 = [UPPManifestDownloadTask alloc];
-  v15 = [(ASDRequestOptions *)v4 manifestURL];
+  manifestURL2 = [(ASDRequestOptions *)v4 manifestURL];
   v16 = sub_1003FA4F0(XPCRequestToken, 1);
-  v17 = sub_100215504(v14, v15, v16, [(ASDRequestOptions *)v4 shouldHideUserPrompts]);
+  v17 = sub_100215504(v14, manifestURL2, v16, [(ASDRequestOptions *)v4 shouldHideUserPrompts]);
 
   if (v17)
   {
@@ -71,11 +71,11 @@
   }
 
   v20 = v19;
-  v21 = [(XPCClient *)v20 clientID];
-  v23 = v21;
+  clientID2 = [(XPCClient *)v20 clientID];
+  v23 = clientID2;
   if (v17)
   {
-    objc_setProperty_atomic(v17, v22, v21, 82);
+    objc_setProperty_atomic(v17, v22, clientID2, 82);
 
     *(v17 + 78) = v6;
   }

@@ -1,11 +1,11 @@
 @interface SUUIMobileDescriptorAgreementStatusRegistry
 - (SUUIMobileDescriptorAgreementStatusRegistry)init;
-- (SUUIMobileDescriptorAgreementStatusRegistry)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SUUIMobileDescriptorAgreementStatusRegistry)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (int)agreementStatusForType:(unint64_t)a3 descriptor:(id)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAgreementStatus:(int)a3 type:(unint64_t)a4 forDescriptor:(id)a5;
+- (int)agreementStatusForType:(unint64_t)type descriptor:(id)descriptor;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAgreementStatus:(int)status type:(unint64_t)type forDescriptor:(id)descriptor;
 @end
 
 @implementation SUUIMobileDescriptorAgreementStatusRegistry
@@ -33,40 +33,40 @@
   return v5;
 }
 
-- (int)agreementStatusForType:(unint64_t)a3 descriptor:(id)a4
+- (int)agreementStatusForType:(unint64_t)type descriptor:(id)descriptor
 {
   v32 = *MEMORY[0x277D85DE8];
-  v22 = self;
+  selfCopy = self;
   v21 = a2;
-  v20 = a3;
+  typeCopy = type;
   location = 0;
-  objc_storeStrong(&location, a4);
-  if (location && v20)
+  objc_storeStrong(&location, descriptor);
+  if (location && typeCopy)
   {
     v17[0] = 2;
-    p_lock = &v22->_lock;
+    p_lock = &selfCopy->_lock;
     v24 = 0;
     os_unfair_lock_lock_with_options();
     v17[1] = p_lock;
-    v16 = [(NSMutableDictionary *)v22->_statusMap objectForKeyedSubscript:location];
+    v16 = [(NSMutableDictionary *)selfCopy->_statusMap objectForKeyedSubscript:location];
     v15 = 0;
     if (v16)
     {
-      v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v20];
+      v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:typeCopy];
       v9 = [v16 objectForKeyedSubscript:?];
       v29 = 0;
       objc_storeStrong(&v29, v9);
       if (v29)
       {
-        v27 = [v29 integerValue];
-        if (v27 > 2)
+        integerValue = [v29 integerValue];
+        if (integerValue > 2)
         {
           v30 = 0;
         }
 
         else
         {
-          v30 = v27;
+          v30 = integerValue;
         }
 
         v28 = 1;
@@ -84,25 +84,25 @@
       MEMORY[0x277D82BD8](v10);
     }
 
-    v8 = [MEMORY[0x277D64B58] statefulUILogger];
-    v14 = [v8 oslog];
-    MEMORY[0x277D82BD8](v8);
+    statefulUILogger = [MEMORY[0x277D64B58] statefulUILogger];
+    oslog = [statefulUILogger oslog];
+    MEMORY[0x277D82BD8](statefulUILogger);
     v13 = OS_LOG_TYPE_DEFAULT;
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [location humanReadableUpdateName];
-      v12 = MEMORY[0x277D82BE0](v7);
+      humanReadableUpdateName = [location humanReadableUpdateName];
+      v12 = MEMORY[0x277D82BE0](humanReadableUpdateName);
       v6 = SUStringFromAgreementStatus();
       v11 = MEMORY[0x277D82BE0](v6);
       __os_log_helper_16_2_3_8_34_8_66_8_66(v31, "[SUUIMobileDescriptorAgreementStatusRegistry agreementStatusForType:descriptor:]", v12, v11);
-      _os_log_impl(&dword_26B0B9000, v14, v13, "%{public}s: Retrieving agreement status to descriptor %{public}@: %{public}@", v31, 0x20u);
+      _os_log_impl(&dword_26B0B9000, oslog, v13, "%{public}s: Retrieving agreement status to descriptor %{public}@: %{public}@", v31, 0x20u);
       MEMORY[0x277D82BD8](v6);
-      MEMORY[0x277D82BD8](v7);
+      MEMORY[0x277D82BD8](humanReadableUpdateName);
       objc_storeStrong(&v11, 0);
       objc_storeStrong(&v12, 0);
     }
 
-    objc_storeStrong(&v14, 0);
+    objc_storeStrong(&oslog, 0);
     v23 = v15;
     v18 = 1;
     objc_storeStrong(&v16, 0);
@@ -138,52 +138,52 @@
   return v23;
 }
 
-- (void)setAgreementStatus:(int)a3 type:(unint64_t)a4 forDescriptor:(id)a5
+- (void)setAgreementStatus:(int)status type:(unint64_t)type forDescriptor:(id)descriptor
 {
   v28 = *MEMORY[0x277D85DE8];
-  v23 = self;
+  selfCopy = self;
   v22 = a2;
-  v21 = a3;
-  v20 = a4;
+  statusCopy = status;
+  typeCopy = type;
   location = 0;
-  objc_storeStrong(&location, a5);
-  if (location && v20)
+  objc_storeStrong(&location, descriptor);
+  if (location && typeCopy)
   {
     v17[0] = 2;
-    p_lock = &v23->_lock;
+    p_lock = &selfCopy->_lock;
     v24 = 0;
     os_unfair_lock_lock_with_options();
     v17[1] = p_lock;
-    v16 = [(NSMutableDictionary *)v23->_statusMap objectForKeyedSubscript:location];
+    v16 = [(NSMutableDictionary *)selfCopy->_statusMap objectForKeyedSubscript:location];
     if (!v16)
     {
       v16 = objc_alloc_init(MEMORY[0x277CBEB38]);
       MEMORY[0x277D82BD8](0);
-      [(NSMutableDictionary *)v23->_statusMap setObject:v16 forKeyedSubscript:location];
+      [(NSMutableDictionary *)selfCopy->_statusMap setObject:v16 forKeyedSubscript:location];
     }
 
-    v11 = [MEMORY[0x277D64B58] statefulUILogger];
-    v15 = [v11 oslog];
-    MEMORY[0x277D82BD8](v11);
+    statefulUILogger = [MEMORY[0x277D64B58] statefulUILogger];
+    oslog = [statefulUILogger oslog];
+    MEMORY[0x277D82BD8](statefulUILogger);
     v14 = OS_LOG_TYPE_DEFAULT;
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [location humanReadableUpdateName];
-      v13 = MEMORY[0x277D82BE0](v10);
+      humanReadableUpdateName = [location humanReadableUpdateName];
+      v13 = MEMORY[0x277D82BE0](humanReadableUpdateName);
       v9 = SUStringFromAgreementStatus();
       v12 = MEMORY[0x277D82BE0](v9);
       __os_log_helper_16_2_3_8_34_8_66_8_66(v27, "[SUUIMobileDescriptorAgreementStatusRegistry setAgreementStatus:type:forDescriptor:]", v13, v12);
-      _os_log_impl(&dword_26B0B9000, v15, v14, "%{public}s: Assigning agreement status to descriptor %{public}@: %{public}@", v27, 0x20u);
+      _os_log_impl(&dword_26B0B9000, oslog, v14, "%{public}s: Assigning agreement status to descriptor %{public}@: %{public}@", v27, 0x20u);
       MEMORY[0x277D82BD8](v9);
-      MEMORY[0x277D82BD8](v10);
+      MEMORY[0x277D82BD8](humanReadableUpdateName);
       objc_storeStrong(&v12, 0);
       objc_storeStrong(&v13, 0);
     }
 
-    objc_storeStrong(&v15, 0);
-    v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v21];
+    objc_storeStrong(&oslog, 0);
+    v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:statusCopy];
     v8 = v16;
-    v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v20];
+    v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:typeCopy];
     [v8 setObject:v7 forKeyedSubscript:?];
     MEMORY[0x277D82BD8](v6);
     MEMORY[0x277D82BD8](v7);
@@ -219,16 +219,16 @@
 - (id)description
 {
   v41 = *MEMORY[0x277D85DE8];
-  v34 = self;
+  selfCopy = self;
   v33[2] = a2;
   v33[0] = 2;
   p_lock = &self->_lock;
   v36 = 0;
   os_unfair_lock_lock_with_options();
   v33[1] = p_lock;
-  v31 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{-[NSMutableDictionary count](v34->_statusMap, "count")}];
+  v31 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{-[NSMutableDictionary count](selfCopy->_statusMap, "count")}];
   memset(__b, 0, sizeof(__b));
-  obj = MEMORY[0x277D82BE0](v34->_statusMap);
+  obj = MEMORY[0x277D82BE0](selfCopy->_statusMap);
   v24 = [obj countByEnumeratingWithState:__b objects:v40 count:16];
   if (v24)
   {
@@ -244,7 +244,7 @@
       }
 
       v30 = *(__b[1] + 8 * v21);
-      v28 = [(NSMutableDictionary *)v34->_statusMap objectForKeyedSubscript:v30];
+      v28 = [(NSMutableDictionary *)selfCopy->_statusMap objectForKeyedSubscript:v30];
       location = objc_opt_new();
       memset(v25, 0, sizeof(v25));
       v17 = MEMORY[0x277D82BE0](v28);
@@ -289,9 +289,9 @@
       MEMORY[0x277D82BD8](v17);
       v7 = v31;
       v6 = [location componentsJoinedByString:{@", "}];
-      v5 = [v30 humanReadableUpdateName];
+      humanReadableUpdateName = [v30 humanReadableUpdateName];
       [v7 setObject:v6 forKey:?];
-      MEMORY[0x277D82BD8](v5);
+      MEMORY[0x277D82BD8](humanReadableUpdateName);
       MEMORY[0x277D82BD8](v6);
       objc_storeStrong(&location, 0);
       objc_storeStrong(&v28, 0);
@@ -309,7 +309,7 @@
   }
 
   MEMORY[0x277D82BD8](obj);
-  v35 = [MEMORY[0x277D64B68] descriptionForObject:v34 properties:v31];
+  v35 = [MEMORY[0x277D64B68] descriptionForObject:selfCopy properties:v31];
   v32 = 1;
   objc_storeStrong(&v31, 0);
   v38 = v33;
@@ -333,19 +333,19 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v17 = self;
+  selfCopy = self;
   v16[2] = a2;
-  v16[1] = a3;
-  v16[0] = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v16[1] = zone;
+  v16[0] = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v15[0] = 2;
-  p_lock = &v17->_lock;
+  p_lock = &selfCopy->_lock;
   v18 = 0;
   os_unfair_lock_lock_with_options();
-  v15[1] = &v17->_lock;
+  v15[1] = &selfCopy->_lock;
   v13 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  statusMap = v17->_statusMap;
+  statusMap = selfCopy->_statusMap;
   v7 = MEMORY[0x277D85DD0];
   v8 = -1073741824;
   v9 = 0;
@@ -392,38 +392,38 @@ void __60__SUUIMobileDescriptorAgreementStatusRegistry_copyWithZone___block_invo
   objc_storeStrong(location, 0);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, coder);
   v3 = 2;
-  p_lock = &v6->_lock;
+  p_lock = &selfCopy->_lock;
   v7 = 0;
   os_unfair_lock_lock_with_options();
   v4 = p_lock;
-  [location[0] encodeObject:v6->_statusMap forKey:@"statusMap"];
+  [location[0] encodeObject:selfCopy->_statusMap forKey:@"statusMap"];
   v9 = &v3;
   os_unfair_lock_unlock(v4);
   objc_storeStrong(location, 0);
 }
 
-- (SUUIMobileDescriptorAgreementStatusRegistry)initWithCoder:(id)a3
+- (SUUIMobileDescriptorAgreementStatusRegistry)initWithCoder:(id)coder
 {
-  v20 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v20;
-  v20 = 0;
+  objc_storeStrong(location, coder);
+  v3 = selfCopy;
+  selfCopy = 0;
   v17 = [(SUUIMobileDescriptorAgreementStatusRegistry *)v3 init];
-  v20 = v17;
-  objc_storeStrong(&v20, v17);
+  selfCopy = v17;
+  objc_storeStrong(&selfCopy, v17);
   if (v17)
   {
     v18[0] = 2;
-    p_lock = &v20->_lock;
+    p_lock = &selfCopy->_lock;
     v21 = 0;
     os_unfair_lock_lock_with_options();
     v18[1] = p_lock;
@@ -434,16 +434,16 @@ void __60__SUUIMobileDescriptorAgreementStatusRegistry_copyWithZone___block_invo
     v12 = [v15 setWithObjects:{v16, v13, objc_opt_class(), 0}];
     v10 = [v14 decodeObjectOfClasses:? forKey:?];
     v11 = [v10 mutableCopy];
-    statusMap = v20->_statusMap;
-    v20->_statusMap = v11;
+    statusMap = selfCopy->_statusMap;
+    selfCopy->_statusMap = v11;
     MEMORY[0x277D82BD8](statusMap);
     MEMORY[0x277D82BD8](v10);
     MEMORY[0x277D82BD8](v12);
-    if (!v20->_statusMap)
+    if (!selfCopy->_statusMap)
     {
       v9 = objc_alloc_init(MEMORY[0x277CBEB38]);
-      v5 = v20->_statusMap;
-      v20->_statusMap = v9;
+      v5 = selfCopy->_statusMap;
+      selfCopy->_statusMap = v9;
       MEMORY[0x277D82BD8](v5);
     }
 
@@ -463,9 +463,9 @@ void __60__SUUIMobileDescriptorAgreementStatusRegistry_copyWithZone___block_invo
     }
   }
 
-  v8 = MEMORY[0x277D82BE0](v20);
+  v8 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v20, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v8;
 }
 

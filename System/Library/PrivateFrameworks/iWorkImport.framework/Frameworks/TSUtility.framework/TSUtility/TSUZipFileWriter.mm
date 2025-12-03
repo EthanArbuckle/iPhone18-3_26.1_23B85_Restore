@@ -1,21 +1,21 @@
 @interface TSUZipFileWriter
-+ (void)zipDirectoryAtURL:(id)a3 customDirectoryFilename:(id)a4 toURL:(id)a5 queue:(id)a6 progressHandler:(id)a7;
-+ (void)zipDirectoryAtURL:(id)a3 toURL:(id)a4 queue:(id)a5 completion:(id)a6;
-- (TSUZipFileWriter)initWithURL:(id)a3 options:(unint64_t)a4 error:(id *)a5;
-- (TSUZipFileWriter)initWithZipFileArchive:(id)a3 options:(unint64_t)a4 error:(id *)a5;
-- (id)prepareWriteChannelWithCloseCompletionHandler:(id)a3;
-- (void)copyEntriesFromZipFileWriter:(id)a3 readingFromURL:(id)a4 options:(unint64_t)a5 completionHandler:(id)a6;
-- (void)copyRemainingEntries:(id)a3 fromArchive:(id)a4 progress:(id)a5 completionHandler:(id)a6;
++ (void)zipDirectoryAtURL:(id)l customDirectoryFilename:(id)filename toURL:(id)rL queue:(id)queue progressHandler:(id)handler;
++ (void)zipDirectoryAtURL:(id)l toURL:(id)rL queue:(id)queue completion:(id)completion;
+- (TSUZipFileWriter)initWithURL:(id)l options:(unint64_t)options error:(id *)error;
+- (TSUZipFileWriter)initWithZipFileArchive:(id)archive options:(unint64_t)options error:(id *)error;
+- (id)prepareWriteChannelWithCloseCompletionHandler:(id)handler;
+- (void)copyEntriesFromZipFileWriter:(id)writer readingFromURL:(id)l options:(unint64_t)options completionHandler:(id)handler;
+- (void)copyRemainingEntries:(id)entries fromArchive:(id)archive progress:(id)progress completionHandler:(id)handler;
 @end
 
 @implementation TSUZipFileWriter
 
-- (TSUZipFileWriter)initWithURL:(id)a3 options:(unint64_t)a4 error:(id *)a5
+- (TSUZipFileWriter)initWithURL:(id)l options:(unint64_t)options error:(id *)error
 {
-  v8 = a3;
+  lCopy = l;
   v21.receiver = self;
   v21.super_class = TSUZipFileWriter;
-  v9 = [(TSUZipWriter *)&v21 initWithOptions:a4];
+  v9 = [(TSUZipWriter *)&v21 initWithOptions:options];
   if (v9)
   {
     objc_initWeak(&location, v9);
@@ -25,7 +25,7 @@
     v17 = sub_2770DEB58;
     v18 = &unk_27A703248;
     objc_copyWeak(&v19, &location);
-    v11 = [(TSUFileIOChannel *)v10 initForRandomWritingURL:v8 error:a5 cleanupHandler:&v15];
+    v11 = [(TSUFileIOChannel *)v10 initForRandomWritingURL:lCopy error:error cleanupHandler:&v15];
     writeChannel = v9->_writeChannel;
     v9->_writeChannel = v11;
 
@@ -48,10 +48,10 @@
   return v9;
 }
 
-- (TSUZipFileWriter)initWithZipFileArchive:(id)a3 options:(unint64_t)a4 error:(id *)a5
+- (TSUZipFileWriter)initWithZipFileArchive:(id)archive options:(unint64_t)options error:(id *)error
 {
-  v8 = a3;
-  v9 = [v8 URL];
+  archiveCopy = archive;
+  v9 = [archiveCopy URL];
   v35 = 0;
   v36 = &v35;
   v37 = 0x3032000000;
@@ -60,11 +60,11 @@
   v40 = 0;
   v34.receiver = self;
   v34.super_class = TSUZipFileWriter;
-  v10 = [(TSUZipWriter *)&v34 initWithOptions:a4];
+  v10 = [(TSUZipWriter *)&v34 initWithOptions:options];
   if (!v10)
   {
     v11 = 0;
-    if (!a5)
+    if (!error)
     {
       goto LABEL_10;
     }
@@ -78,8 +78,8 @@
   v32[3] = &unk_27A703270;
   v11 = v10;
   v33 = v11;
-  [v8 enumerateEntriesUsingBlock:v32];
-  if ([v8 endOfLastEntry] <= 0)
+  [archiveCopy enumerateEntriesUsingBlock:v32];
+  if ([archiveCopy endOfLastEntry] <= 0)
   {
     v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSUZipFileWriter initWithZipFileArchive:options:error:]"];
     v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/utility/TSUZipFileWriter.m"];
@@ -88,7 +88,7 @@
     +[TSUAssertionHandler logBacktraceThrottled];
   }
 
-  -[TSUZipWriter setEntryInsertionOffset:](v11, "setEntryInsertionOffset:", [v8 endOfLastEntry]);
+  -[TSUZipWriter setEntryInsertionOffset:](v11, "setEntryInsertionOffset:", [archiveCopy endOfLastEntry]);
   objc_initWeak(&location, v11);
   v14 = [TSUFileIOChannel alloc];
   v15 = v36;
@@ -109,7 +109,7 @@
     [(TSURandomWriteChannel *)v18 setLowWater:-1];
     v19 = dispatch_semaphore_create(0);
     v20 = v11->_writeChannel;
-    v21 = [v8 endOfLastEntry];
+    endOfLastEntry = [archiveCopy endOfLastEntry];
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
     v25[2] = sub_2770DF040;
@@ -117,7 +117,7 @@
     v27 = &v35;
     v22 = v19;
     v26 = v22;
-    [(TSURandomWriteChannel *)v20 truncateToLength:v21 completion:v25];
+    [(TSURandomWriteChannel *)v20 truncateToLength:endOfLastEntry completion:v25];
     dispatch_semaphore_wait(v22, 0xFFFFFFFFFFFFFFFFLL);
   }
 
@@ -130,10 +130,10 @@
   objc_destroyWeak(&v29);
   objc_destroyWeak(&location);
 
-  if (a5)
+  if (error)
   {
 LABEL_9:
-    *a5 = v36[5];
+    *error = v36[5];
   }
 
 LABEL_10:
@@ -143,15 +143,15 @@ LABEL_10:
   return v23;
 }
 
-- (void)copyEntriesFromZipFileWriter:(id)a3 readingFromURL:(id)a4 options:(unint64_t)a5 completionHandler:(id)a6
+- (void)copyEntriesFromZipFileWriter:(id)writer readingFromURL:(id)l options:(unint64_t)options completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  if ([v10 isClosed])
+  writerCopy = writer;
+  lCopy = l;
+  handlerCopy = handler;
+  if ([writerCopy isClosed])
   {
     v30 = 0;
-    v13 = [[TSUZipFileArchive alloc] initWithWriter:v10 forReadingFromURL:v11 options:a5 error:&v30];
+    v13 = [[TSUZipFileArchive alloc] initWithWriter:writerCopy forReadingFromURL:lCopy options:options error:&v30];
     v14 = v30;
     v15 = v14;
     if (v13)
@@ -171,22 +171,22 @@ LABEL_10:
       [(TSUZipArchive *)v13 enumerateEntriesUsingBlock:v23];
       [v17 sortUsingComparator:&unk_28862B380];
       v18 = [MEMORY[0x277CCAC48] progressWithTotalUnitCount:v27[3]];
-      [(TSUZipFileWriter *)self copyRemainingEntries:v17 fromArchive:v13 progress:v18 completionHandler:v12];
+      [(TSUZipFileWriter *)self copyRemainingEntries:v17 fromArchive:v13 progress:v18 completionHandler:handlerCopy];
 
       _Block_object_dispose(&v26, 8);
     }
 
-    else if (v12)
+    else if (handlerCopy)
     {
       if (v14)
       {
-        v12[2](v12, v14);
+        handlerCopy[2](handlerCopy, v14);
       }
 
       else
       {
         v22 = [MEMORY[0x277CCA9B8] tsu_fileWriteUnknownErrorWithUserInfo:0];
-        v12[2](v12, v22);
+        handlerCopy[2](handlerCopy, v22);
       }
     }
   }
@@ -198,42 +198,42 @@ LABEL_10:
     [TSUAssertionHandler handleFailureInFunction:v19 file:v20 lineNumber:112 isFatal:0 description:"Closed writer must be closed."];
 
     +[TSUAssertionHandler logBacktraceThrottled];
-    if (v12)
+    if (handlerCopy)
     {
       v21 = [MEMORY[0x277CCA9B8] tsu_fileWriteUnknownErrorWithUserInfo:0];
-      v12[2](v12, v21);
+      handlerCopy[2](handlerCopy, v21);
     }
   }
 }
 
-- (void)copyRemainingEntries:(id)a3 fromArchive:(id)a4 progress:(id)a5 completionHandler:(id)a6
+- (void)copyRemainingEntries:(id)entries fromArchive:(id)archive progress:(id)progress completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [v10 firstObject];
-  if (v14)
+  entriesCopy = entries;
+  archiveCopy = archive;
+  progressCopy = progress;
+  handlerCopy = handler;
+  firstObject = [entriesCopy firstObject];
+  if (firstObject)
   {
-    [v10 removeObjectAtIndex:0];
-    v15 = [v11 streamReadChannelForEntry:v14];
+    [entriesCopy removeObjectAtIndex:0];
+    v15 = [archiveCopy streamReadChannelForEntry:firstObject];
     if (v15)
     {
-      v16 = [v14 name];
-      v17 = [v14 lastModificationDate];
-      v22 = [v14 size];
-      v21 = [v14 CRC];
+      name = [firstObject name];
+      lastModificationDate = [firstObject lastModificationDate];
+      v22 = [firstObject size];
+      v21 = [firstObject CRC];
       v23[0] = MEMORY[0x277D85DD0];
       v23[1] = 3221225472;
       v23[2] = sub_2770DF6B4;
       v23[3] = &unk_27A7032E0;
-      v29 = v13;
-      v24 = v12;
-      v25 = v14;
-      v26 = self;
-      v27 = v10;
-      v28 = v11;
-      [(TSUZipWriter *)self writeEntryWithName:v16 force32BitSize:0 lastModificationDate:v17 size:v22 CRC:v21 fromReadChannel:v15 completion:v23];
+      v29 = handlerCopy;
+      v24 = progressCopy;
+      v25 = firstObject;
+      selfCopy = self;
+      v27 = entriesCopy;
+      v28 = archiveCopy;
+      [(TSUZipWriter *)self writeEntryWithName:name force32BitSize:0 lastModificationDate:lastModificationDate size:v22 CRC:v21 fromReadChannel:v15 completion:v23];
     }
 
     else
@@ -243,23 +243,23 @@ LABEL_10:
       [TSUAssertionHandler handleFailureInFunction:v18 file:v19 lineNumber:156 isFatal:0 description:"invalid nil value for '%{public}s'", "channel"];
 
       +[TSUAssertionHandler logBacktraceThrottled];
-      if (v13)
+      if (handlerCopy)
       {
         v20 = [MEMORY[0x277CCA9B8] tsu_fileWriteUnknownErrorWithUserInfo:0];
-        (*(v13 + 2))(v13, v20);
+        (*(handlerCopy + 2))(handlerCopy, v20);
       }
     }
   }
 
-  else if (v13)
+  else if (handlerCopy)
   {
-    (*(v13 + 2))(v13, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
-- (id)prepareWriteChannelWithCloseCompletionHandler:(id)a3
+- (id)prepareWriteChannelWithCloseCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (self->_writeChannelCompletionHandler)
   {
     v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSUZipFileWriter prepareWriteChannelWithCloseCompletionHandler:]"];
@@ -269,7 +269,7 @@ LABEL_10:
     +[TSUAssertionHandler logBacktraceThrottled];
   }
 
-  v7 = [v4 copy];
+  v7 = [handlerCopy copy];
   writeChannelCompletionHandler = self->_writeChannelCompletionHandler;
   self->_writeChannelCompletionHandler = v7;
 
@@ -289,31 +289,31 @@ LABEL_10:
   return writeChannel;
 }
 
-+ (void)zipDirectoryAtURL:(id)a3 toURL:(id)a4 queue:(id)a5 completion:(id)a6
++ (void)zipDirectoryAtURL:(id)l toURL:(id)rL queue:(id)queue completion:(id)completion
 {
-  v10 = a6;
+  completionCopy = completion;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = sub_2770DF9DC;
   v12[3] = &unk_27A703308;
-  v13 = v10;
-  v11 = v10;
-  [a1 zipDirectoryAtURL:a3 customDirectoryFilename:0 toURL:a4 queue:a5 progressHandler:v12];
+  v13 = completionCopy;
+  v11 = completionCopy;
+  [self zipDirectoryAtURL:l customDirectoryFilename:0 toURL:rL queue:queue progressHandler:v12];
 }
 
-+ (void)zipDirectoryAtURL:(id)a3 customDirectoryFilename:(id)a4 toURL:(id)a5 queue:(id)a6 progressHandler:(id)a7
++ (void)zipDirectoryAtURL:(id)l customDirectoryFilename:(id)filename toURL:(id)rL queue:(id)queue progressHandler:(id)handler
 {
   v114[2] = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v71 = a4;
-  v12 = a5;
-  queue = a6;
-  v73 = a7;
-  v66 = v11;
-  v67 = v12;
-  if (v11)
+  lCopy = l;
+  filenameCopy = filename;
+  rLCopy = rL;
+  queue = queue;
+  handlerCopy = handler;
+  v66 = lCopy;
+  v67 = rLCopy;
+  if (lCopy)
   {
-    if (v12)
+    if (rLCopy)
     {
       goto LABEL_6;
     }
@@ -347,7 +347,7 @@ LABEL_6:
     +[TSUAssertionHandler logBacktraceThrottled];
   }
 
-  if (!v73)
+  if (!handlerCopy)
   {
     v19 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[TSUZipFileWriter zipDirectoryAtURL:customDirectoryFilename:toURL:queue:progressHandler:]"];
     v20 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/utility/TSUZipFileWriter.m"];
@@ -362,27 +362,27 @@ LABEL_6:
   v65 = v21;
   if (v72)
   {
-    v22 = [v11 path];
-    v23 = v22;
-    if (!v71)
+    path = [lCopy path];
+    v23 = path;
+    if (!filenameCopy)
     {
-      v24 = [v22 stringByDeletingLastPathComponent];
+      stringByDeletingLastPathComponent = [path stringByDeletingLastPathComponent];
 
-      v23 = v24;
+      v23 = stringByDeletingLastPathComponent;
     }
 
-    v25 = [v23 stringByStandardizingPath];
-    v64 = [v25 precomposedStringWithCanonicalMapping];
+    stringByStandardizingPath = [v23 stringByStandardizingPath];
+    precomposedStringWithCanonicalMapping = [stringByStandardizingPath precomposedStringWithCanonicalMapping];
 
-    v70 = [v64 length];
-    v26 = [MEMORY[0x277CCAA00] defaultManager];
+    v70 = [precomposedStringWithCanonicalMapping length];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v27 = *MEMORY[0x277CBE868];
     v28 = *MEMORY[0x277CBE838];
     v114[0] = *MEMORY[0x277CBE868];
     v114[1] = v28;
     v76 = v28;
     v29 = [MEMORY[0x277CBEA60] arrayWithObjects:v114 count:2];
-    v30 = [v26 enumeratorAtURL:v11 includingPropertiesForKeys:v29 options:0 errorHandler:0];
+    v30 = [defaultManager enumeratorAtURL:lCopy includingPropertiesForKeys:v29 options:0 errorHandler:0];
 
     v107[0] = 0;
     v107[1] = v107;
@@ -477,14 +477,14 @@ LABEL_6:
           }
 
           v48 = *(*(&v91 + 1) + 8 * j);
-          v49 = [v48 path];
-          v50 = [v49 stringByStandardizingPath];
-          v51 = [v50 precomposedStringWithCanonicalMapping];
+          path2 = [v48 path];
+          stringByStandardizingPath2 = [path2 stringByStandardizingPath];
+          precomposedStringWithCanonicalMapping2 = [stringByStandardizingPath2 precomposedStringWithCanonicalMapping];
 
-          v52 = [v51 substringFromIndex:v70 + 1];
-          if (v71)
+          v52 = [precomposedStringWithCanonicalMapping2 substringFromIndex:v70 + 1];
+          if (filenameCopy)
           {
-            v53 = [v71 stringByAppendingPathComponent:v52];
+            v53 = [filenameCopy stringByAppendingPathComponent:v52];
 
             v52 = v53;
           }
@@ -520,16 +520,16 @@ LABEL_6:
             v62 = 0;
           }
 
-          v63 = [v59 unsignedLongLongValue];
+          unsignedLongLongValue = [v59 unsignedLongLongValue];
           v83[0] = MEMORY[0x277D85DD0];
           v83[1] = 3221225472;
           v83[2] = sub_2770E0480;
           v83[3] = &unk_27A703330;
           v85 = v107;
-          v84 = v73;
+          v84 = handlerCopy;
           v86 = &v95;
           v87 = v77;
-          [(TSUZipWriter *)v72 writeEntryWithName:v52 force32BitSize:0 lastModificationDate:v62 size:v63 CRC:0 fromReadChannel:v56 writeHandler:v83];
+          [(TSUZipWriter *)v72 writeEntryWithName:v52 force32BitSize:0 lastModificationDate:v62 size:unsignedLongLongValue CRC:0 fromReadChannel:v56 writeHandler:v83];
         }
 
         v45 = [v69 countByEnumeratingWithState:&v91 objects:v112 count:16];
@@ -548,7 +548,7 @@ LABEL_45:
     v79[1] = 3221225472;
     v79[2] = sub_2770E0570;
     v79[3] = &unk_27A703358;
-    v80 = v73;
+    v80 = handlerCopy;
     v81 = &v95;
     v82 = v77;
     [(TSUZipWriter *)v72 closeWithQueue:queue completion:v79];
@@ -556,7 +556,7 @@ LABEL_45:
     _Block_object_dispose(&v95, 8);
     _Block_object_dispose(v107, 8);
 
-    v44 = v64;
+    v44 = precomposedStringWithCanonicalMapping;
   }
 
   else
@@ -566,7 +566,7 @@ LABEL_45:
     block[1] = 3221225472;
     block[2] = sub_2770E043C;
     block[3] = &unk_27A702378;
-    v110 = v73;
+    v110 = handlerCopy;
     v109 = v43;
     dispatch_async(queue, block);
 

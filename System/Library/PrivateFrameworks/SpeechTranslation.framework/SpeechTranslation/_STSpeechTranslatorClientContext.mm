@@ -1,20 +1,20 @@
 @interface _STSpeechTranslatorClientContext
-- (_STSpeechTranslatorClientContext)initWithClientPeer:(id)a3;
+- (_STSpeechTranslatorClientContext)initWithClientPeer:(id)peer;
 - (id)description;
 @end
 
 @implementation _STSpeechTranslatorClientContext
 
-- (_STSpeechTranslatorClientContext)initWithClientPeer:(id)a3
+- (_STSpeechTranslatorClientContext)initWithClientPeer:(id)peer
 {
-  v4 = a3;
+  peerCopy = peer;
   v10.receiver = self;
   v10.super_class = _STSpeechTranslatorClientContext;
   v5 = [(_STSpeechTranslatorClientContext *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    [(_STSpeechTranslatorClientContext *)v5 setClientPeer:v4];
+    [(_STSpeechTranslatorClientContext *)v5 setClientPeer:peerCopy];
     v7 = v6;
   }
 
@@ -23,7 +23,7 @@
     v8 = _LTOSLogSTMultiprocess();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      [(_STSpeechTranslatorClientContext *)v4 initWithClientPeer:v8];
+      [(_STSpeechTranslatorClientContext *)peerCopy initWithClientPeer:v8];
     }
   }
 

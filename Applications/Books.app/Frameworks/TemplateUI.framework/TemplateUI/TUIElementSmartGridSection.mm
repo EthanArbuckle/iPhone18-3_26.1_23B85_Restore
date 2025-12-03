@@ -1,18 +1,18 @@
 @interface TUIElementSmartGridSection
-+ (void)configureObject:(id)a3 withNode:(id)a4 attributes:(id)a5 context:(id)a6;
++ (void)configureObject:(id)object withNode:(id)node attributes:(id)attributes context:(id)context;
 @end
 
 @implementation TUIElementSmartGridSection
 
-+ (void)configureObject:(id)a3 withNode:(id)a4 attributes:(id)a5 context:(id)a6
++ (void)configureObject:(id)object withNode:(id)node attributes:(id)attributes context:(id)context
 {
-  var0 = a4.var0;
-  v8 = a5;
-  v10 = a3;
-  [v10 setColumns:{objc_msgSend(v8, "unsignedIntegerForAttribute:withDefault:node:", 52, 0x7FFFFFFFFFFFFFFFLL, var0)}];
-  v9 = [v8 unsignedIntegerForAttribute:179 withDefault:0x7FFFFFFFFFFFFFFFLL node:var0];
+  var0 = node.var0;
+  attributesCopy = attributes;
+  objectCopy = object;
+  [objectCopy setColumns:{objc_msgSend(attributesCopy, "unsignedIntegerForAttribute:withDefault:node:", 52, 0x7FFFFFFFFFFFFFFFLL, var0)}];
+  v9 = [attributesCopy unsignedIntegerForAttribute:179 withDefault:0x7FFFFFFFFFFFFFFFLL node:var0];
 
-  [v10 setRows:v9];
+  [objectCopy setRows:v9];
 }
 
 @end

@@ -1,20 +1,20 @@
 @interface NPKProtoCompanionMigratedResponse
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasSuccess:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasSuccess:(BOOL)success;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NPKProtoCompanionMigratedResponse
 
-- (void)setHasSuccess:(BOOL)a3
+- (void)setHasSuccess:(BOOL)success
 {
-  if (a3)
+  if (success)
   {
     v3 = 2;
   }
@@ -33,20 +33,20 @@
   v8.receiver = self;
   v8.super_class = NPKProtoCompanionMigratedResponse;
   v4 = [(NPKProtoCompanionMigratedResponse *)&v8 description];
-  v5 = [(NPKProtoCompanionMigratedResponse *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NPKProtoCompanionMigratedResponse *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if (has)
   {
     v5 = [MEMORY[0x277CCABB0] numberWithBool:self->_pending];
-    [v3 setObject:v5 forKey:@"pending"];
+    [dictionary setObject:v5 forKey:@"pending"];
 
     has = self->_has;
   }
@@ -54,46 +54,46 @@
   if ((has & 2) != 0)
   {
     v6 = [MEMORY[0x277CCABB0] numberWithBool:self->_success];
-    [v3 setObject:v6 forKey:@"success"];
+    [dictionary setObject:v6 forKey:@"success"];
   }
 
   errorData = self->_errorData;
   if (errorData)
   {
-    [v3 setObject:errorData forKey:@"errorData"];
+    [dictionary setObject:errorData forKey:@"errorData"];
   }
 
   paymentWebServiceContextData = self->_paymentWebServiceContextData;
   if (paymentWebServiceContextData)
   {
-    [v3 setObject:paymentWebServiceContextData forKey:@"paymentWebServiceContextData"];
+    [dictionary setObject:paymentWebServiceContextData forKey:@"paymentWebServiceContextData"];
   }
 
   peerPaymentWebServiceContextData = self->_peerPaymentWebServiceContextData;
   if (peerPaymentWebServiceContextData)
   {
-    [v3 setObject:peerPaymentWebServiceContextData forKey:@"peerPaymentWebServiceContextData"];
+    [dictionary setObject:peerPaymentWebServiceContextData forKey:@"peerPaymentWebServiceContextData"];
   }
 
   peerPaymentAccountData = self->_peerPaymentAccountData;
   if (peerPaymentAccountData)
   {
-    [v3 setObject:peerPaymentAccountData forKey:@"peerPaymentAccountData"];
+    [dictionary setObject:peerPaymentAccountData forKey:@"peerPaymentAccountData"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v8 = v4;
+  v8 = toCopy;
   if (has)
   {
     pending = self->_pending;
     PBDataWriterWriteBOOLField();
-    v4 = v8;
+    toCopy = v8;
     has = self->_has;
   }
 
@@ -101,80 +101,80 @@
   {
     success = self->_success;
     PBDataWriterWriteBOOLField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_errorData)
   {
     PBDataWriterWriteDataField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_paymentWebServiceContextData)
   {
     PBDataWriterWriteDataField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_peerPaymentWebServiceContextData)
   {
     PBDataWriterWriteDataField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_peerPaymentAccountData)
   {
     PBDataWriterWriteDataField();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[40] = self->_pending;
-    v4[44] |= 1u;
+    toCopy[40] = self->_pending;
+    toCopy[44] |= 1u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    v4[41] = self->_success;
-    v4[44] |= 2u;
+    toCopy[41] = self->_success;
+    toCopy[44] |= 2u;
   }
 
-  v6 = v4;
+  v6 = toCopy;
   if (self->_errorData)
   {
-    [v4 setErrorData:?];
-    v4 = v6;
+    [toCopy setErrorData:?];
+    toCopy = v6;
   }
 
   if (self->_paymentWebServiceContextData)
   {
     [v6 setPaymentWebServiceContextData:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_peerPaymentWebServiceContextData)
   {
     [v6 setPeerPaymentWebServiceContextData:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_peerPaymentAccountData)
   {
     [v6 setPeerPaymentAccountData:?];
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if (has)
@@ -190,64 +190,64 @@
     v5[44] |= 2u;
   }
 
-  v8 = [(NSData *)self->_errorData copyWithZone:a3];
+  v8 = [(NSData *)self->_errorData copyWithZone:zone];
   v9 = v6[1];
   v6[1] = v8;
 
-  v10 = [(NSData *)self->_paymentWebServiceContextData copyWithZone:a3];
+  v10 = [(NSData *)self->_paymentWebServiceContextData copyWithZone:zone];
   v11 = v6[2];
   v6[2] = v10;
 
-  v12 = [(NSData *)self->_peerPaymentWebServiceContextData copyWithZone:a3];
+  v12 = [(NSData *)self->_peerPaymentWebServiceContextData copyWithZone:zone];
   v13 = v6[4];
   v6[4] = v12;
 
-  v14 = [(NSData *)self->_peerPaymentAccountData copyWithZone:a3];
+  v14 = [(NSData *)self->_peerPaymentAccountData copyWithZone:zone];
   v15 = v6[3];
   v6[3] = v14;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_25;
   }
 
-  v5 = *(v4 + 44);
+  v5 = *(equalCopy + 44);
   if (*&self->_has)
   {
-    if ((*(v4 + 44) & 1) == 0)
+    if ((*(equalCopy + 44) & 1) == 0)
     {
       goto LABEL_25;
     }
 
-    v11 = *(v4 + 40);
+    v11 = *(equalCopy + 40);
     if (self->_pending)
     {
-      if ((*(v4 + 40) & 1) == 0)
+      if ((*(equalCopy + 40) & 1) == 0)
       {
         goto LABEL_25;
       }
     }
 
-    else if (*(v4 + 40))
+    else if (*(equalCopy + 40))
     {
       goto LABEL_25;
     }
   }
 
-  else if (*(v4 + 44))
+  else if (*(equalCopy + 44))
   {
     goto LABEL_25;
   }
 
   if ((*&self->_has & 2) == 0)
   {
-    if ((*(v4 + 44) & 2) == 0)
+    if ((*(equalCopy + 44) & 2) == 0)
     {
       goto LABEL_6;
     }
@@ -257,34 +257,34 @@ LABEL_25:
     goto LABEL_26;
   }
 
-  if ((*(v4 + 44) & 2) == 0)
+  if ((*(equalCopy + 44) & 2) == 0)
   {
     goto LABEL_25;
   }
 
-  v12 = *(v4 + 41);
+  v12 = *(equalCopy + 41);
   if (self->_success)
   {
-    if ((*(v4 + 41) & 1) == 0)
+    if ((*(equalCopy + 41) & 1) == 0)
     {
       goto LABEL_25;
     }
   }
 
-  else if (*(v4 + 41))
+  else if (*(equalCopy + 41))
   {
     goto LABEL_25;
   }
 
 LABEL_6:
   errorData = self->_errorData;
-  if (errorData | *(v4 + 1) && ![(NSData *)errorData isEqual:?])
+  if (errorData | *(equalCopy + 1) && ![(NSData *)errorData isEqual:?])
   {
     goto LABEL_25;
   }
 
   paymentWebServiceContextData = self->_paymentWebServiceContextData;
-  if (paymentWebServiceContextData | *(v4 + 2))
+  if (paymentWebServiceContextData | *(equalCopy + 2))
   {
     if (![(NSData *)paymentWebServiceContextData isEqual:?])
     {
@@ -293,7 +293,7 @@ LABEL_6:
   }
 
   peerPaymentWebServiceContextData = self->_peerPaymentWebServiceContextData;
-  if (peerPaymentWebServiceContextData | *(v4 + 4))
+  if (peerPaymentWebServiceContextData | *(equalCopy + 4))
   {
     if (![(NSData *)peerPaymentWebServiceContextData isEqual:?])
     {
@@ -302,7 +302,7 @@ LABEL_6:
   }
 
   peerPaymentAccountData = self->_peerPaymentAccountData;
-  if (peerPaymentAccountData | *(v4 + 3))
+  if (peerPaymentAccountData | *(equalCopy + 3))
   {
     v10 = [(NSData *)peerPaymentAccountData isEqual:?];
   }
@@ -347,46 +347,46 @@ LABEL_6:
   return v7 ^ [(NSData *)self->_peerPaymentAccountData hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4[44];
+  fromCopy = from;
+  v5 = fromCopy[44];
   if (v5)
   {
-    self->_pending = v4[40];
+    self->_pending = fromCopy[40];
     *&self->_has |= 1u;
-    v5 = v4[44];
+    v5 = fromCopy[44];
   }
 
   if ((v5 & 2) != 0)
   {
-    self->_success = v4[41];
+    self->_success = fromCopy[41];
     *&self->_has |= 2u;
   }
 
-  v6 = v4;
-  if (*(v4 + 1))
+  v6 = fromCopy;
+  if (*(fromCopy + 1))
   {
     [(NPKProtoCompanionMigratedResponse *)self setErrorData:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(NPKProtoCompanionMigratedResponse *)self setPaymentWebServiceContextData:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(NPKProtoCompanionMigratedResponse *)self setPeerPaymentWebServiceContextData:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(NPKProtoCompanionMigratedResponse *)self setPeerPaymentAccountData:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 }
 

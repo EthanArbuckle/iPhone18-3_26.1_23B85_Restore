@@ -1,24 +1,24 @@
 @interface iCloudMailboxSpecifierProvider
 - (AAUISpecifierProviderDelegate)delegate;
 - (NSArray)specifiers;
-- (iCloudMailboxSpecifierProvider)initWithAccountManager:(id)a3 presenter:(id)a4;
-- (void)_presentAdvancedSettings:(int64_t)a3 specifier:(id)a4;
+- (iCloudMailboxSpecifierProvider)initWithAccountManager:(id)manager presenter:(id)presenter;
+- (void)_presentAdvancedSettings:(int64_t)settings specifier:(id)specifier;
 @end
 
 @implementation iCloudMailboxSpecifierProvider
 
-- (iCloudMailboxSpecifierProvider)initWithAccountManager:(id)a3 presenter:(id)a4
+- (iCloudMailboxSpecifierProvider)initWithAccountManager:(id)manager presenter:(id)presenter
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  presenterCopy = presenter;
   v12.receiver = self;
   v12.super_class = iCloudMailboxSpecifierProvider;
   v9 = [(iCloudMailboxSpecifierProvider *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_accountManager, a3);
-    objc_storeWeak(&v10->_presenter, v8);
+    objc_storeStrong(&v9->_accountManager, manager);
+    objc_storeWeak(&v10->_presenter, presenterCopy);
   }
 
   return v10;
@@ -29,8 +29,8 @@
   specifiers = self->_specifiers;
   if (!specifiers)
   {
-    v4 = [(AIDAAccountManager *)self->_accountManager accounts];
-    v5 = [v4 objectForKeyedSubscript:AIDAServiceTypeCloud];
+    accounts = [(AIDAAccountManager *)self->_accountManager accounts];
+    v5 = [accounts objectForKeyedSubscript:AIDAServiceTypeCloud];
 
     v6 = ACUIAccountKey;
     v22 = ACUIAccountKey;
@@ -40,10 +40,10 @@
 
     if ([v5 aa_isAccountClass:AAAccountClassPrimary])
     {
-      v9 = [v5 aa_childMailAccount];
-      if (v9)
+      aa_childMailAccount = [v5 aa_childMailAccount];
+      if (aa_childMailAccount)
       {
-        [v8 setObject:v9 forKeyedSubscript:v6];
+        [v8 setObject:aa_childMailAccount forKeyedSubscript:v6];
       }
     }
 
@@ -76,15 +76,15 @@
   return specifiers;
 }
 
-- (void)_presentAdvancedSettings:(int64_t)a3 specifier:(id)a4
+- (void)_presentAdvancedSettings:(int64_t)settings specifier:(id)specifier
 {
-  v17 = a4;
+  specifierCopy = specifier;
   WeakRetained = objc_loadWeakRetained(&self->_presenter);
   if (WeakRetained)
   {
     v7 = objc_alloc_init(PSSetupController);
-    v8 = [v17 userInfo];
-    v9 = [v8 mutableCopy];
+    userInfo = [specifierCopy userInfo];
+    v9 = [userInfo mutableCopy];
 
     v10 = [v9 objectForKey:ACUIAccountKey];
     v11 = [MFAccount accountWithPersistentAccount:v10];
@@ -99,14 +99,14 @@
 
     [v9 setObject:self->_accountValues forKeyedSubscript:@"values"];
     [v9 setObject:self->_originalAccountValues forKeyedSubscript:@"originalValues"];
-    [v17 setUserInfo:v9];
-    v16 = [[iCloudMailAdvancedController alloc] initWithPageType:a3];
-    [(iCloudMailAdvancedController *)v16 setSpecifier:v17];
+    [specifierCopy setUserInfo:v9];
+    v16 = [[iCloudMailAdvancedController alloc] initWithPageType:settings];
+    [(iCloudMailAdvancedController *)v16 setSpecifier:specifierCopy];
     [(iCloudMailAdvancedController *)v16 setParentController:v7];
     [(iCloudMailAdvancedController *)v16 setRootController:v7];
     [v7 showController:v16];
     [v7 setParentController:WeakRetained];
-    [v7 setSpecifier:v17];
+    [v7 setSpecifier:specifierCopy];
     [v7 setModalPresentationStyle:2];
     [WeakRetained presentViewController:v7 animated:1 completion:0];
   }

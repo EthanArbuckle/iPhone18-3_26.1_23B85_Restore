@@ -1,22 +1,22 @@
 @interface GTBulkDataServiceXPCProxy
-- (BOOL)respondsToSelector:(SEL)a3;
-- (BOOL)uploadChunk:(id)a3 forHandle:(unint64_t)a4 isFinalChunk:(BOOL)a5 error:(id *)a6;
-- (GTBulkDataServiceXPCProxy)initWithConnection:(id)a3 remoteProperties:(id)a4;
-- (id)downloadData:(unint64_t)a3 usingTransferOptions:(id)a4 error:(id *)a5;
+- (BOOL)respondsToSelector:(SEL)selector;
+- (BOOL)uploadChunk:(id)chunk forHandle:(unint64_t)handle isFinalChunk:(BOOL)finalChunk error:(id *)error;
+- (GTBulkDataServiceXPCProxy)initWithConnection:(id)connection remoteProperties:(id)properties;
+- (id)downloadData:(unint64_t)data usingTransferOptions:(id)options error:(id *)error;
 - (id)transferOptions;
-- (unint64_t)newUploadWithDescriptor:(id)a3 error:(id *)a4;
-- (unint64_t)uploadData:(id)a3 usingTransferOptions:(id)a4 error:(id *)a5;
-- (void)downloadData:(unint64_t)a3 usingTransferOptions:(id)a4 chunkHandler:(id)a5;
-- (void)downloadData:(unint64_t)a3 usingTransferOptions:(id)a4 completionHandler:(id)a5;
-- (void)uploadData:(id)a3 usingTransferOptions:(id)a4 completionHandler:(id)a5;
+- (unint64_t)newUploadWithDescriptor:(id)descriptor error:(id *)error;
+- (unint64_t)uploadData:(id)data usingTransferOptions:(id)options error:(id *)error;
+- (void)downloadData:(unint64_t)data usingTransferOptions:(id)options chunkHandler:(id)handler;
+- (void)downloadData:(unint64_t)data usingTransferOptions:(id)options completionHandler:(id)handler;
+- (void)uploadData:(id)data usingTransferOptions:(id)options completionHandler:(id)handler;
 @end
 
 @implementation GTBulkDataServiceXPCProxy
 
-- (GTBulkDataServiceXPCProxy)initWithConnection:(id)a3 remoteProperties:(id)a4
+- (GTBulkDataServiceXPCProxy)initWithConnection:(id)connection remoteProperties:(id)properties
 {
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  propertiesCopy = properties;
   v23.receiver = self;
   v23.super_class = GTBulkDataServiceXPCProxy;
   v8 = [(GTBulkDataServiceXPCProxy *)&v23 init];
@@ -27,8 +27,8 @@
     v8->_serialQueue = v9;
 
     v11 = [GTServiceConnection alloc];
-    v12 = [v7 deviceUDID];
-    v13 = -[GTServiceConnection initWithConnection:device:port:](v11, "initWithConnection:device:port:", v6, v12, [v7 servicePort]);
+    deviceUDID = [propertiesCopy deviceUDID];
+    v13 = -[GTServiceConnection initWithConnection:device:port:](v11, "initWithConnection:device:port:", connectionCopy, deviceUDID, [propertiesCopy servicePort]);
     connection = v8->_connection;
     v8->_connection = v13;
 
@@ -36,13 +36,13 @@
     defaultTransferOptions = v8->_defaultTransferOptions;
     v8->_defaultTransferOptions = v15;
 
-    v17 = [v7 deviceUDID];
+    deviceUDID2 = [propertiesCopy deviceUDID];
     [(GTBulkDataTransferOptions *)v8->_defaultTransferOptions setChunkSize:0x400000];
 
     [(GTBulkDataTransferOptions *)v8->_defaultTransferOptions setCompressionAlgorithm:0];
     v18 = [GTServiceProperties protocolMethods:&unk_2860EBFC0];
-    v19 = [v7 protocolMethods];
-    v20 = newSetWithArrayMinusArray(v18, v19);
+    protocolMethods = [propertiesCopy protocolMethods];
+    v20 = newSetWithArrayMinusArray(v18, protocolMethods);
     ignoreMethods = v8->_ignoreMethods;
     v8->_ignoreMethods = v20;
   }
@@ -50,10 +50,10 @@
   return v8;
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
   ignoreMethods = self->_ignoreMethods;
-  v6 = NSStringFromSelector(a3);
+  v6 = NSStringFromSelector(selector);
   if ([(NSSet *)ignoreMethods containsObject:v6])
   {
     v7 = 0;
@@ -63,7 +63,7 @@
   {
     v9.receiver = self;
     v9.super_class = GTBulkDataServiceXPCProxy;
-    v7 = [(GTBulkDataServiceXPCProxy *)&v9 respondsToSelector:a3];
+    v7 = [(GTBulkDataServiceXPCProxy *)&v9 respondsToSelector:selector];
   }
 
   return v7;
@@ -76,26 +76,26 @@
   return v2;
 }
 
-- (void)downloadData:(unint64_t)a3 usingTransferOptions:(id)a4 chunkHandler:(id)a5
+- (void)downloadData:(unint64_t)data usingTransferOptions:(id)options chunkHandler:(id)handler
 {
-  v9 = a5;
-  v10 = a4;
+  handlerCopy = handler;
+  optionsCopy = options;
   xdict = xpc_dictionary_create_empty();
   Name = sel_getName(a2);
   xpc_dictionary_set_string(xdict, "_cmd", Name);
-  xpc_dictionary_set_uint64(xdict, "handle", a3);
-  xpc_dictionary_set_nsobject(xdict, "transferOptions", v10);
+  xpc_dictionary_set_uint64(xdict, "handle", data);
+  xpc_dictionary_set_nsobject(xdict, "transferOptions", optionsCopy);
 
-  v12 = [[GTBulkDataReplyStream alloc] initWithCallback:v9];
+  v12 = [[GTBulkDataReplyStream alloc] initWithCallback:handlerCopy];
   v13 = [(GTServiceConnection *)self->_connection registerDispatcher:v12];
   [(GTBulkDataReplyStream *)v12 setDispatcherId:v13];
   [(GTServiceConnection *)self->_connection sendMessage:xdict withReplyStreamId:v13];
 }
 
-- (void)downloadData:(unint64_t)a3 usingTransferOptions:(id)a4 completionHandler:(id)a5
+- (void)downloadData:(unint64_t)data usingTransferOptions:(id)options completionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
+  optionsCopy = options;
+  handlerCopy = handler;
   v16[0] = 0;
   v16[1] = v16;
   v16[2] = 0x3032000000;
@@ -106,12 +106,12 @@
   v12[1] = 3221225472;
   v12[2] = __81__GTBulkDataServiceXPCProxy_downloadData_usingTransferOptions_completionHandler___block_invoke;
   v12[3] = &unk_279661350;
-  v14 = v9;
+  v14 = handlerCopy;
   v15 = v16;
-  v13 = v8;
-  v10 = v9;
-  v11 = v8;
-  [(GTBulkDataServiceXPCProxy *)self downloadData:a3 usingTransferOptions:v11 chunkHandler:v12];
+  v13 = optionsCopy;
+  v10 = handlerCopy;
+  v11 = optionsCopy;
+  [(GTBulkDataServiceXPCProxy *)self downloadData:data usingTransferOptions:v11 chunkHandler:v12];
 
   _Block_object_dispose(v16, 8);
 }
@@ -152,9 +152,9 @@ void __81__GTBulkDataServiceXPCProxy_downloadData_usingTransferOptions_completio
 LABEL_9:
 }
 
-- (id)downloadData:(unint64_t)a3 usingTransferOptions:(id)a4 error:(id *)a5
+- (id)downloadData:(unint64_t)data usingTransferOptions:(id)options error:(id *)error
 {
-  v8 = a4;
+  optionsCopy = options;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -176,17 +176,17 @@ LABEL_9:
   v17 = &v18;
   v10 = v9;
   v15 = v10;
-  [(GTBulkDataServiceXPCProxy *)self downloadData:a3 usingTransferOptions:v8 chunkHandler:v14];
+  [(GTBulkDataServiceXPCProxy *)self downloadData:data usingTransferOptions:optionsCopy chunkHandler:v14];
   dispatch_semaphore_wait(v10, 0xFFFFFFFFFFFFFFFFLL);
-  if (a5)
+  if (error)
   {
-    *a5 = v19[5];
+    *error = v19[5];
   }
 
   v11 = v25[5];
   if (v11)
   {
-    v12 = GTBulkDataDecompress(v11, [v8 compressionAlgorithm], a5);
+    v12 = GTBulkDataDecompress(v11, [optionsCopy compressionAlgorithm], error);
   }
 
   else
@@ -225,22 +225,22 @@ LABEL_6:
 LABEL_7:
 }
 
-- (unint64_t)newUploadWithDescriptor:(id)a3 error:(id *)a4
+- (unint64_t)newUploadWithDescriptor:(id)descriptor error:(id *)error
 {
-  v7 = a3;
+  descriptorCopy = descriptor;
   empty = xpc_dictionary_create_empty();
   Name = sel_getName(a2);
   xpc_dictionary_set_string(empty, "_cmd", Name);
-  xpc_dictionary_set_nsobject(empty, "descriptor", v7);
+  xpc_dictionary_set_nsobject(empty, "descriptor", descriptorCopy);
 
-  v10 = [(GTServiceConnection *)self->_connection sendMessageWithReplySync:empty error:a4];
+  v10 = [(GTServiceConnection *)self->_connection sendMessageWithReplySync:empty error:error];
   v11 = v10;
   if (v10)
   {
     uint64 = xpc_dictionary_get_uint64(v10, "result");
-    if (a4)
+    if (error)
     {
-      *a4 = xpc_dictionary_get_nserror(v11, "error");
+      *error = xpc_dictionary_get_nserror(v11, "error");
     }
   }
 
@@ -252,24 +252,24 @@ LABEL_7:
   return uint64;
 }
 
-- (BOOL)uploadChunk:(id)a3 forHandle:(unint64_t)a4 isFinalChunk:(BOOL)a5 error:(id *)a6
+- (BOOL)uploadChunk:(id)chunk forHandle:(unint64_t)handle isFinalChunk:(BOOL)finalChunk error:(id *)error
 {
-  v11 = a3;
+  chunkCopy = chunk;
   empty = xpc_dictionary_create_empty();
   Name = sel_getName(a2);
   xpc_dictionary_set_string(empty, "_cmd", Name);
-  xpc_dictionary_set_nsdata(empty, "chunk", v11);
+  xpc_dictionary_set_nsdata(empty, "chunk", chunkCopy);
 
-  xpc_dictionary_set_uint64(empty, "handle", a4);
-  xpc_dictionary_set_BOOL(empty, "isFinalChunk", a5);
-  v14 = [(GTServiceConnection *)self->_connection sendMessageWithReplySync:empty error:a6];
+  xpc_dictionary_set_uint64(empty, "handle", handle);
+  xpc_dictionary_set_BOOL(empty, "isFinalChunk", finalChunk);
+  v14 = [(GTServiceConnection *)self->_connection sendMessageWithReplySync:empty error:error];
   v15 = v14;
   if (v14)
   {
     v16 = xpc_dictionary_get_BOOL(v14, "result");
-    if (a6)
+    if (error)
     {
-      *a6 = xpc_dictionary_get_nserror(v15, "error");
+      *error = xpc_dictionary_get_nserror(v15, "error");
     }
   }
 
@@ -281,23 +281,23 @@ LABEL_7:
   return v16;
 }
 
-- (void)uploadData:(id)a3 usingTransferOptions:(id)a4 completionHandler:(id)a5
+- (void)uploadData:(id)data usingTransferOptions:(id)options completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dataCopy = data;
+  optionsCopy = options;
+  handlerCopy = handler;
   serialQueue = self->_serialQueue;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __79__GTBulkDataServiceXPCProxy_uploadData_usingTransferOptions_completionHandler___block_invoke;
   v15[3] = &unk_2796613A0;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v9;
-  v13 = v8;
-  v14 = v10;
+  v16 = dataCopy;
+  v17 = optionsCopy;
+  v18 = handlerCopy;
+  v12 = optionsCopy;
+  v13 = dataCopy;
+  v14 = handlerCopy;
   dispatch_async(serialQueue, v15);
 }
 
@@ -313,18 +313,18 @@ void __79__GTBulkDataServiceXPCProxy_uploadData_usingTransferOptions_completionH
   (*(v4 + 16))(v4, v5);
 }
 
-- (unint64_t)uploadData:(id)a3 usingTransferOptions:(id)a4 error:(id *)a5
+- (unint64_t)uploadData:(id)data usingTransferOptions:(id)options error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  dataCopy = data;
+  optionsCopy = options;
   v10 = objc_opt_new();
-  [v10 setSizeHint:{objc_msgSend(v8, "length")}];
-  [v10 setCompressionAlgorithm:{objc_msgSend(v9, "compressionAlgorithm")}];
-  v11 = [(GTBulkDataServiceXPCProxy *)self newUploadWithDescriptor:v10 error:a5];
+  [v10 setSizeHint:{objc_msgSend(dataCopy, "length")}];
+  [v10 setCompressionAlgorithm:{objc_msgSend(optionsCopy, "compressionAlgorithm")}];
+  v11 = [(GTBulkDataServiceXPCProxy *)self newUploadWithDescriptor:v10 error:error];
   if (v11)
   {
     v12 = v11;
-    v13 = GTBulkDataCompress(v8, [v9 compressionAlgorithm], a5);
+    v13 = GTBulkDataCompress(dataCopy, [optionsCopy compressionAlgorithm], error);
     v14 = v13;
     if (v13)
     {
@@ -338,15 +338,15 @@ LABEL_29:
       v15 = 0;
       while (1)
       {
-        v16 = [v9 chunkSize];
-        v17 = v16 >= [v14 length] - v15 ? objc_msgSend(v14, "length") - v15 : objc_msgSend(v9, "chunkSize");
+        chunkSize = [optionsCopy chunkSize];
+        v17 = chunkSize >= [v14 length] - v15 ? objc_msgSend(v14, "length") - v15 : objc_msgSend(optionsCopy, "chunkSize");
         v18 = [MEMORY[0x277CBEA90] dataWithBytesNoCopy:objc_msgSend(v14 length:"bytes") + v15 freeWhenDone:{v17, 0}];
-        if (!-[GTBulkDataServiceXPCProxy uploadChunk:forHandle:isFinalChunk:error:](self, "uploadChunk:forHandle:isFinalChunk:error:", v18, v12, [v9 chunkSize] + v15 >= objc_msgSend(v14, "length"), a5))
+        if (!-[GTBulkDataServiceXPCProxy uploadChunk:forHandle:isFinalChunk:error:](self, "uploadChunk:forHandle:isFinalChunk:error:", v18, v12, [optionsCopy chunkSize] + v15 >= objc_msgSend(v14, "length"), error))
         {
           break;
         }
 
-        v15 += [v9 chunkSize];
+        v15 += [optionsCopy chunkSize];
         if (v15 >= [v14 length])
         {
           goto LABEL_29;

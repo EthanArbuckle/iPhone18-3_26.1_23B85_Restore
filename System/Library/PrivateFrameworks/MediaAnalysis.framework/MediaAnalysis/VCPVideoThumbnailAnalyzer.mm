@@ -1,42 +1,42 @@
 @interface VCPVideoThumbnailAnalyzer
-- (VCPVideoThumbnailAnalyzer)initWithExistingThumbnails:(id)a3;
-- (float)computeFaceScore:(id *)a3 faceResults:(id)a4 penaltyScore:(float *)a5;
-- (float)distanceBetweenFrames:(float)a3 keyFrame2:(float)a4;
-- (id)addThumbnailIdsToFaceAnimalPrint:(id)a3 isFace:(BOOL)a4;
-- (id)addThumbnailIdsToHumanActionClassification:(id)a3;
-- (id)addThumbnailIdsToSummarizedEmbedding:(id)a3;
-- (id)addThumbnailToResults:(id)a3 withPrivateResults:(id)a4 videoRange:(id *)a5 assetMaxNumThumbnails:(int)a6;
-- (id)findThumbnailID:(id *)a3;
-- (id)getKeyFrameResults:(id)a3;
-- (id)sceneIdsToThumbnailIdsMapping:(id)a3;
-- (void)addFrameToThumbnails:(id)a3;
-- (void)reduceNumThumbnails:(int)a3;
+- (VCPVideoThumbnailAnalyzer)initWithExistingThumbnails:(id)thumbnails;
+- (float)computeFaceScore:(id *)score faceResults:(id)results penaltyScore:(float *)penaltyScore;
+- (float)distanceBetweenFrames:(float)frames keyFrame2:(float)frame2;
+- (id)addThumbnailIdsToFaceAnimalPrint:(id)print isFace:(BOOL)face;
+- (id)addThumbnailIdsToHumanActionClassification:(id)classification;
+- (id)addThumbnailIdsToSummarizedEmbedding:(id)embedding;
+- (id)addThumbnailToResults:(id)results withPrivateResults:(id)privateResults videoRange:(id *)range assetMaxNumThumbnails:(int)thumbnails;
+- (id)findThumbnailID:(id *)d;
+- (id)getKeyFrameResults:(id)results;
+- (id)sceneIdsToThumbnailIdsMapping:(id)mapping;
+- (void)addFrameToThumbnails:(id)thumbnails;
+- (void)reduceNumThumbnails:(int)thumbnails;
 @end
 
 @implementation VCPVideoThumbnailAnalyzer
 
-- (VCPVideoThumbnailAnalyzer)initWithExistingThumbnails:(id)a3
+- (VCPVideoThumbnailAnalyzer)initWithExistingThumbnails:(id)thumbnails
 {
-  v5 = a3;
+  thumbnailsCopy = thumbnails;
   v10.receiver = self;
   v10.super_class = VCPVideoThumbnailAnalyzer;
   v6 = [(VCPVideoThumbnailAnalyzer *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_existingThumbnails, a3);
+    objc_storeStrong(&v6->_existingThumbnails, thumbnails);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (id)addThumbnailToResults:(id)a3 withPrivateResults:(id)a4 videoRange:(id *)a5 assetMaxNumThumbnails:(int)a6
+- (id)addThumbnailToResults:(id)results withPrivateResults:(id)privateResults videoRange:(id *)range assetMaxNumThumbnails:(int)thumbnails
 {
   v81 = *MEMORY[0x1E69E9840];
-  v57 = a3;
-  v53 = a4;
-  time = a5->var1;
+  resultsCopy = results;
+  privateResultsCopy = privateResults;
+  time = range->var1;
   v9 = CMTimeGetSeconds(&time) / 60.0;
   v10 = llroundf(v9);
   if (v10 <= 1)
@@ -49,25 +49,25 @@
     v11 = v10;
   }
 
-  v12 = +[VCPVideoThumbnailAnalyzer getMaxNumThumbnailsPerMin]* v11;
-  if (v12 >= a6)
+  thumbnailsCopy = +[VCPVideoThumbnailAnalyzer getMaxNumThumbnailsPerMin]* v11;
+  if (thumbnailsCopy >= thumbnails)
   {
-    v12 = a6;
+    thumbnailsCopy = thumbnails;
   }
 
-  v58 = v12;
-  if (v12)
+  v58 = thumbnailsCopy;
+  if (thumbnailsCopy)
   {
-    v64 = [v57 objectForKeyedSubscript:@"VideoEmbeddingResults"];
-    v56 = [v57 objectForKeyedSubscript:?];
-    v67 = [v57 objectForKeyedSubscript:@"ClassificationResults"];
-    v63 = [v57 objectForKeyedSubscript:@"FaceResults"];
-    v54 = [v57 objectForKeyedSubscript:?];
-    v61 = [v57 objectForKeyedSubscript:@"AnimalResults"];
-    v55 = [v57 objectForKeyedSubscript:?];
-    v62 = [v57 objectForKeyedSubscript:@"TorsoResults"];
-    v66 = [v57 objectForKeyedSubscript:?];
-    v13 = [v57 objectForKeyedSubscript:@"FeatureVectorResults"];
+    v64 = [resultsCopy objectForKeyedSubscript:@"VideoEmbeddingResults"];
+    v56 = [resultsCopy objectForKeyedSubscript:?];
+    v67 = [resultsCopy objectForKeyedSubscript:@"ClassificationResults"];
+    v63 = [resultsCopy objectForKeyedSubscript:@"FaceResults"];
+    v54 = [resultsCopy objectForKeyedSubscript:?];
+    v61 = [resultsCopy objectForKeyedSubscript:@"AnimalResults"];
+    v55 = [resultsCopy objectForKeyedSubscript:?];
+    v62 = [resultsCopy objectForKeyedSubscript:@"TorsoResults"];
+    v66 = [resultsCopy objectForKeyedSubscript:?];
+    v13 = [resultsCopy objectForKeyedSubscript:@"FeatureVectorResults"];
     featureResults = self->_featureResults;
     self->_featureResults = v13;
 
@@ -83,10 +83,10 @@
       v65 = 0;
     }
 
-    v52 = [(VCPVideoThumbnailAnalyzer *)self getKeyFrameResults:v57];
-    v17 = [MEMORY[0x1E695DF70] array];
+    v52 = [(VCPVideoThumbnailAnalyzer *)self getKeyFrameResults:resultsCopy];
+    array = [MEMORY[0x1E695DF70] array];
     pickedThumbnails = self->_pickedThumbnails;
-    self->_pickedThumbnails = v17;
+    self->_pickedThumbnails = array;
 
     v73 = 0u;
     v74 = 0u;
@@ -160,7 +160,7 @@
         [(VCPVideoThumbnailAnalyzer *)self reduceNumThumbnails:v58];
       }
 
-      v60 = [MEMORY[0x1E695DF70] array];
+      array2 = [MEMORY[0x1E695DF70] array];
       v59 = [(NSArray *)self->_existingThumbnails count];
       for (j = 0; [(NSMutableArray *)self->_pickedThumbnails count]> j; ++j)
       {
@@ -189,51 +189,51 @@
         v78[1] = v39;
         v77[2] = @"attributes";
         v75 = @"thumbnailID";
-        v40 = [v35 thumbnailID];
-        v76 = v40;
+        thumbnailID = [v35 thumbnailID];
+        v76 = thumbnailID;
         v41 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v76 forKeys:&v75 count:1];
         v78[2] = v41;
         v42 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v78 forKeys:v77 count:3];
-        [v60 addObject:v42];
+        [array2 addObject:v42];
       }
 
-      [v57 setObject:v60 forKeyedSubscript:@"VideoThumbnailResults"];
+      [resultsCopy setObject:array2 forKeyedSubscript:@"VideoThumbnailResults"];
       if (v56 && [v56 count])
       {
         v43 = [(VCPVideoThumbnailAnalyzer *)self addThumbnailIdsToSummarizedEmbedding:v56];
-        [v57 setObject:v43 forKeyedSubscript:@"SummarizedEmbeddingResults"];
+        [resultsCopy setObject:v43 forKeyedSubscript:@"SummarizedEmbeddingResults"];
       }
 
       if (v67 && [v67 count])
       {
         v44 = [(VCPVideoThumbnailAnalyzer *)self sceneIdsToThumbnailIdsMapping:v67];
-        [v57 setObject:v44 forKeyedSubscript:@"VideoSceneThumbnailResults"];
+        [resultsCopy setObject:v44 forKeyedSubscript:@"VideoSceneThumbnailResults"];
       }
 
       if (v54 && [v54 count])
       {
         v45 = [(VCPVideoThumbnailAnalyzer *)self addThumbnailIdsToFaceAnimalPrint:v54 isFace:1];
-        [v57 setObject:v45 forKeyedSubscript:@"FacePrintResults"];
+        [resultsCopy setObject:v45 forKeyedSubscript:@"FacePrintResults"];
       }
 
       if (v55 && [v55 count])
       {
         v46 = [(VCPVideoThumbnailAnalyzer *)self addThumbnailIdsToFaceAnimalPrint:v55 isFace:0];
-        [v57 setObject:v46 forKeyedSubscript:@"AnimalPrintResults"];
+        [resultsCopy setObject:v46 forKeyedSubscript:@"AnimalPrintResults"];
       }
 
       if (v66 && [v66 count])
       {
         v47 = [(VCPVideoThumbnailAnalyzer *)self addThumbnailIdsToHumanActionClassification:v66];
-        [v57 setObject:v47 forKeyedSubscript:@"HumanActionClassificationResults"];
+        [resultsCopy setObject:v47 forKeyedSubscript:@"HumanActionClassificationResults"];
       }
 
-      v48 = v57;
+      v48 = resultsCopy;
     }
 
     else
     {
-      v50 = v57;
+      v50 = resultsCopy;
     }
   }
 
@@ -244,49 +244,49 @@
       LODWORD(time.value) = 67109376;
       HIDWORD(time.value) = v11;
       LOWORD(time.timescale) = 1024;
-      *(&time.timescale + 2) = a6;
+      *(&time.timescale + 2) = thumbnails;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "[ThumbnailAnalyzer] maxNumThumbnails set to 0, no thumbnail results will be persisted (numSegments=%d, assetMaxThumbnails=%d)", &time, 0xEu);
     }
 
-    v49 = v57;
+    v49 = resultsCopy;
   }
 
-  return v57;
+  return resultsCopy;
 }
 
-- (id)getKeyFrameResults:(id)a3
+- (id)getKeyFrameResults:(id)results
 {
   v54[1] = *MEMORY[0x1E69E9840];
-  v45 = a3;
-  v44 = [v45 objectForKeyedSubscript:@"KeyFrameResults"];
+  resultsCopy = results;
+  v44 = [resultsCopy objectForKeyedSubscript:@"KeyFrameResults"];
   if (v44 && [v44 count])
   {
     v4 = v44;
-    v46 = v44;
+    array = v44;
   }
 
   else
   {
-    v46 = [MEMORY[0x1E695DF70] array];
-    v5 = [v45 objectForKeyedSubscript:@"QualityResults"];
+    array = [MEMORY[0x1E695DF70] array];
+    v5 = [resultsCopy objectForKeyedSubscript:@"QualityResults"];
     v6 = v5;
     if (v5 && [v5 count])
     {
-      v42 = self;
+      selfCopy = self;
       memset(&v51, 0, sizeof(v51));
-      v7 = [v6 firstObject];
-      CMTimeRangeMakeFromDictionary(&v50, v7);
+      firstObject = [v6 firstObject];
+      CMTimeRangeMakeFromDictionary(&v50, firstObject);
       start = v50.start;
-      v8 = [v6 lastObject];
-      CMTimeRangeMakeFromDictionary(&range, v8);
+      lastObject = [v6 lastObject];
+      CMTimeRangeMakeFromDictionary(&range, lastObject);
       CMTimeRangeGetEnd(&end, &range);
       CMTimeRangeFromTimeToTime(&v51, &start, &end);
 
       memset(&end, 0, sizeof(end));
       CMTimeMake(&end, 60, 60);
-      v43 = [v45 objectForKeyedSubscript:@"FaceResults"];
-      v9 = [v45 objectForKeyedSubscript:@"HumanActionResults"];
-      v10 = [v45 objectForKeyedSubscript:@"FineSubjectMotionResults"];
+      v43 = [resultsCopy objectForKeyedSubscript:@"FaceResults"];
+      v9 = [resultsCopy objectForKeyedSubscript:@"HumanActionResults"];
+      v10 = [resultsCopy objectForKeyedSubscript:@"FineSubjectMotionResults"];
       LODWORD(i) = 0;
       LODWORD(j) = 0;
       v13 = 0;
@@ -303,14 +303,14 @@
           break;
         }
 
-        v14 = [MEMORY[0x1E695DF90] dictionary];
+        dictionary = [MEMORY[0x1E695DF90] dictionary];
         v53 = @"timestamp";
         *&v50.start.value = *&v47.value;
         v50.start.epoch = v47.epoch;
         v15 = [MEMORY[0x1E696AD98] numberWithDouble:CMTimeGetSeconds(&v50.start)];
         v54[0] = v15;
         v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v54 forKeys:&v53 count:1];
-        [v14 setObject:v16 forKeyedSubscript:@"attributes"];
+        [dictionary setObject:v16 forKeyedSubscript:@"attributes"];
 
         for (i = i; ; ++i)
         {
@@ -339,8 +339,8 @@
         if (v21 < 0.5)
         {
 LABEL_13:
-          [v14 setObject:&unk_1F49BB1D8 forKeyedSubscript:@"quality"];
-          [v46 addObject:v14];
+          [dictionary setObject:&unk_1F49BB1D8 forKeyedSubscript:@"quality"];
+          [array addObject:dictionary];
           goto LABEL_27;
         }
 
@@ -401,16 +401,16 @@ LABEL_26:
         LODWORD(range.start.value) = 0;
         *&v50.start.value = *&v47.value;
         v50.start.epoch = v47.epoch;
-        [(VCPVideoThumbnailAnalyzer *)v42 computeFaceScore:&v50 faceResults:v43 penaltyScore:&range];
+        [(VCPVideoThumbnailAnalyzer *)selfCopy computeFaceScore:&v50 faceResults:v43 penaltyScore:&range];
         LODWORD(v35) = v34;
         LODWORD(v36) = v23;
         LODWORD(v37) = v29;
-        [(VCPVideoThumbnailAnalyzer *)v42 computeContentScore:v36 faceScore:v35 humanActionScore:v37];
+        [(VCPVideoThumbnailAnalyzer *)selfCopy computeContentScore:v36 faceScore:v35 humanActionScore:v37];
         *&v39 = (((v38 * 0.65) + 0.1) / 0.75) * *&range.start.value;
         v40 = [MEMORY[0x1E696AD98] numberWithFloat:v39];
-        [v14 setObject:v40 forKeyedSubscript:@"quality"];
+        [dictionary setObject:v40 forKeyedSubscript:@"quality"];
 
-        [v46 addObject:v14];
+        [array addObject:dictionary];
         v13 = k;
 LABEL_27:
 
@@ -425,17 +425,17 @@ LABEL_27:
     v4 = v44;
   }
 
-  return v46;
+  return array;
 }
 
-- (float)computeFaceScore:(id *)a3 faceResults:(id)a4 penaltyScore:(float *)a5
+- (float)computeFaceScore:(id *)score faceResults:(id)results penaltyScore:(float *)penaltyScore
 {
   v54 = *MEMORY[0x1E69E9840];
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
-  obj = a4;
+  obj = results;
   v6 = [obj countByEnumeratingWithState:&v49 objects:v53 count:16];
   if (v6)
   {
@@ -459,11 +459,11 @@ LABEL_27:
         memset(&v48, 0, sizeof(v48));
         CMTimeRangeMakeFromDictionary(&v48, v12);
         range = v48;
-        time = *a3;
+        time = *score;
         if (CMTimeRangeContainsTime(&range, &time))
         {
           v13 = [(__CFDictionary *)v12 objectForKeyedSubscript:@"flags"];
-          v14 = [v13 intValue];
+          intValue = [v13 intValue];
 
           v15 = [(__CFDictionary *)v12 objectForKeyedSubscript:@"attributes"];
           v16 = [v15 objectForKeyedSubscript:@"faceBounds"];
@@ -484,11 +484,11 @@ LABEL_27:
           }
 
           v22 = [v15 objectForKeyedSubscript:@"facePosition"];
-          v23 = [v22 intValue];
+          intValue2 = [v22 intValue];
 
           v24 = v21;
           v25 = 1.0;
-          if (v23 != 16)
+          if (intValue2 != 16)
           {
             v25 = 0.5;
           }
@@ -496,8 +496,8 @@ LABEL_27:
           v26 = v25 * v24;
           if (v26 > v10)
           {
-            v42 = (v14 >> 1) & 1;
-            v43 = (v14 >> 2) & 1;
+            v42 = (intValue >> 1) & 1;
+            v43 = (intValue >> 2) & 1;
             v9 = v21;
             v10 = v26;
           }
@@ -507,7 +507,7 @@ LABEL_27:
             v27 = x;
             v28 = y;
             v31 = fminf(v27, v28);
-            v32 = (v14 & 4) != 0 || v31 < 0.05;
+            v32 = (intValue & 4) != 0 || v31 < 0.05;
             v29 = x + width;
             v30 = y + height;
             v33 = fmax(v29, v30);
@@ -571,17 +571,17 @@ LABEL_27:
     v38 = 1.0;
   }
 
-  *a5 = v38;
+  *penaltyScore = v38;
 
   return v37;
 }
 
-- (id)addThumbnailIdsToSummarizedEmbedding:(id)a3
+- (id)addThumbnailIdsToSummarizedEmbedding:(id)embedding
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4 && (v26 = v4, v5 = v4, [v4 count]))
+  embeddingCopy = embedding;
+  v5 = embeddingCopy;
+  if (embeddingCopy && (v26 = embeddingCopy, v5 = embeddingCopy, [embeddingCopy count]))
   {
     v27 = [v26 mutableCopy];
     v6 = [v27 objectAtIndexedSubscript:0];
@@ -591,21 +591,21 @@ LABEL_27:
 
     v25 = v8;
     v9 = [v8 objectForKeyedSubscript:@"embeddingIds"];
-    v10 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     for (i = 0; [v9 count] > i; ++i)
     {
       for (j = 0; [(NSMutableArray *)self->_pickedThumbnails count]> j; ++j)
       {
         v13 = [(NSMutableArray *)self->_pickedThumbnails objectAtIndexedSubscript:j];
-        v14 = [v13 embeddingRepresentativeIDs];
+        embeddingRepresentativeIDs = [v13 embeddingRepresentativeIDs];
         v15 = [v9 objectAtIndexedSubscript:i];
-        v16 = [v14 containsObject:v15];
+        v16 = [embeddingRepresentativeIDs containsObject:v15];
 
         if (v16)
         {
           v19 = [(NSMutableArray *)self->_pickedThumbnails objectAtIndexedSubscript:j];
-          v20 = [v19 thumbnailID];
-          [v10 addObject:v20];
+          thumbnailID = [v19 thumbnailID];
+          [array addObject:thumbnailID];
 
           break;
         }
@@ -620,13 +620,13 @@ LABEL_27:
           }
 
           v17 = [(NSMutableArray *)self->_pickedThumbnails objectAtIndexedSubscript:0];
-          v18 = [v17 thumbnailID];
-          [v10 addObject:v18];
+          thumbnailID2 = [v17 thumbnailID];
+          [array addObject:thumbnailID2];
         }
       }
     }
 
-    [v25 setObject:v10 forKeyedSubscript:@"thumbnailID"];
+    [v25 setObject:array forKeyedSubscript:@"thumbnailID"];
     v21 = [v27 objectAtIndexedSubscript:0];
     v22 = [v21 mutableCopy];
 
@@ -644,16 +644,16 @@ LABEL_27:
   return v27;
 }
 
-- (id)sceneIdsToThumbnailIdsMapping:(id)a3
+- (id)sceneIdsToThumbnailIdsMapping:(id)mapping
 {
   v50 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF90] dictionary];
+  mappingCopy = mapping;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v43 = 0u;
   v44 = 0u;
   v41 = 0u;
   v42 = 0u;
-  obj = v3;
+  obj = mappingCopy;
   v31 = [obj countByEnumeratingWithState:&v41 objects:v49 count:16];
   if (v31)
   {
@@ -691,13 +691,13 @@ LABEL_27:
               }
 
               v11 = *(*(&v36 + 1) + 8 * j);
-              v12 = [v4 allKeys];
-              v13 = [v12 containsObject:v11];
+              allKeys = [dictionary allKeys];
+              v13 = [allKeys containsObject:v11];
 
               if ((v13 & 1) == 0)
               {
-                v14 = [MEMORY[0x1E69C0858] vcp_sharedTaxonomy];
-                v15 = [v14 nodeForExtendedSceneClassId:{objc_msgSend(v11, "longLongValue")}];
+                vcp_sharedTaxonomy = [MEMORY[0x1E69C0858] vcp_sharedTaxonomy];
+                v15 = [vcp_sharedTaxonomy nodeForExtendedSceneClassId:{objc_msgSend(v11, "longLongValue")}];
 
                 if (v15)
                 {
@@ -720,7 +720,7 @@ LABEL_27:
                       v7 = [(VCPVideoThumbnailAnalyzer *)self findThumbnailID:&v35];
                     }
 
-                    [v4 setObject:v7 forKeyedSubscript:v11];
+                    [dictionary setObject:v7 forKeyedSubscript:v11];
                   }
                 }
               }
@@ -740,7 +740,7 @@ LABEL_27:
   }
 
   v45 = @"attributes";
-  v46 = v4;
+  v46 = dictionary;
   v26 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v46 forKeys:&v45 count:1];
   v47 = v26;
   v27 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v47 count:1];
@@ -748,11 +748,11 @@ LABEL_27:
   return v27;
 }
 
-- (id)addThumbnailIdsToFaceAnimalPrint:(id)a3 isFace:(BOOL)a4
+- (id)addThumbnailIdsToFaceAnimalPrint:(id)print isFace:(BOOL)face
 {
-  v4 = a4;
-  v21 = a3;
-  v22 = [v21 mutableCopy];
+  faceCopy = face;
+  printCopy = print;
+  v22 = [printCopy mutableCopy];
   for (i = 0; i < [v22 count]; ++i)
   {
     v7 = [v22 objectAtIndexedSubscript:i];
@@ -761,7 +761,7 @@ LABEL_27:
     v9 = [v8 objectForKeyedSubscript:@"attributes"];
     v10 = [v9 mutableCopy];
 
-    if (v4)
+    if (faceCopy)
     {
       [v10 objectForKeyedSubscript:@"faceId"];
     }
@@ -774,7 +774,7 @@ LABEL_27:
     for (j = 0; [(NSMutableArray *)self->_pickedThumbnails count]> j; ++j)
     {
       v13 = [(NSMutableArray *)self->_pickedThumbnails objectAtIndexedSubscript:j];
-      if (v4)
+      if (faceCopy)
       {
         [v13 faceIDs];
       }
@@ -794,8 +794,8 @@ LABEL_27:
         if (v17)
         {
           v18 = [(NSMutableArray *)self->_pickedThumbnails objectAtIndexedSubscript:j];
-          v19 = [v18 thumbnailID];
-          [v10 setObject:v19 forKeyedSubscript:@"thumbnailID"];
+          thumbnailID = [v18 thumbnailID];
+          [v10 setObject:thumbnailID forKeyedSubscript:@"thumbnailID"];
 
           break;
         }
@@ -813,10 +813,10 @@ LABEL_27:
   return v22;
 }
 
-- (id)addThumbnailIdsToHumanActionClassification:(id)a3
+- (id)addThumbnailIdsToHumanActionClassification:(id)classification
 {
-  v4 = a3;
-  v5 = [v4 mutableCopy];
+  classificationCopy = classification;
+  v5 = [classificationCopy mutableCopy];
   for (i = 0; i < [v5 count]; ++i)
   {
     v7 = [v5 objectAtIndexedSubscript:i];
@@ -835,7 +835,7 @@ LABEL_27:
   return v5;
 }
 
-- (id)findThumbnailID:(id *)a3
+- (id)findThumbnailID:(id *)d
 {
   v34 = *MEMORY[0x1E69E9840];
   if ([(NSMutableArray *)self->_pickedThumbnails count])
@@ -863,7 +863,7 @@ LABEL_27:
 
         *&time1.start.value = v30;
         time1.start.epoch = v31;
-        time2 = a3->var0;
+        time2 = d->var0;
         v11 = CMTimeCompare(&time1.start, &time2);
 
         if (v11 >= 0)
@@ -883,8 +883,8 @@ LABEL_27:
             }
 
             Seconds = CMTimeGetSeconds(&time1.start);
-            *&time1.start.value = *&a3->var0.var0;
-            time1.start.epoch = a3->var0.var3;
+            *&time1.start.value = *&d->var0.var0;
+            time1.start.epoch = d->var0.var3;
             v21 = CMTimeGetSeconds(&time1.start);
 
             v22 = [(NSMutableArray *)self->_pickedThumbnails objectAtIndexedSubscript:v6 >> 32];
@@ -900,8 +900,8 @@ LABEL_27:
             }
 
             v24 = CMTimeGetSeconds(&time1.start);
-            *&time1.start.value = *&a3->var0.var0;
-            time1.start.epoch = a3->var0.var3;
+            *&time1.start.value = *&d->var0.var0;
+            time1.start.epoch = d->var0.var3;
             v25 = CMTimeGetSeconds(&time1.start);
 
             v26 = Seconds - v21;
@@ -917,13 +917,13 @@ LABEL_27:
               [(NSMutableArray *)pickedThumbnails objectAtIndexedSubscript:v6 >> 32];
             }
             v29 = ;
-            v15 = [v29 thumbnailID];
+            thumbnailID = [v29 thumbnailID];
           }
 
           else
           {
             v19 = [(NSMutableArray *)self->_pickedThumbnails objectAtIndexedSubscript:0];
-            v15 = [v19 thumbnailID];
+            thumbnailID = [v19 thumbnailID];
           }
 
           goto LABEL_14;
@@ -943,13 +943,13 @@ LABEL_27:
 
   if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
   {
-    *&time1.start.value = *&a3->var0.var0;
-    time1.start.epoch = a3->var0.var3;
+    *&time1.start.value = *&d->var0.var0;
+    time1.start.epoch = d->var0.var3;
     v12 = CMTimeGetSeconds(&time1.start);
-    v13 = *&a3->var0.var3;
-    *&time1.start.value = *&a3->var0.var0;
+    v13 = *&d->var0.var3;
+    *&time1.start.value = *&d->var0.var0;
     *&time1.start.epoch = v13;
-    *&time1.duration.timescale = *&a3->var1.var1;
+    *&time1.duration.timescale = *&d->var1.var1;
     CMTimeRangeGetEnd(&time2, &time1);
     v14 = CMTimeGetSeconds(&time2);
     LODWORD(time1.start.value) = 134218240;
@@ -959,27 +959,27 @@ LABEL_27:
     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "[VCPVideoThumbnailAnalyzer] Didn't find thumbnail for range [%.2f, %.2f] - set to default (0)", &time1, 0x16u);
   }
 
-  v15 = 0;
+  thumbnailID = 0;
 LABEL_14:
 
-  return v15;
+  return thumbnailID;
 }
 
-- (void)addFrameToThumbnails:(id)a3
+- (void)addFrameToThumbnails:(id)thumbnails
 {
-  v10 = a3;
+  thumbnailsCopy = thumbnails;
   for (i = 0; ; ++i)
   {
     v5 = [(NSMutableArray *)self->_pickedThumbnails count];
     pickedThumbnails = self->_pickedThumbnails;
     if (v5 <= i)
     {
-      [(NSMutableArray *)pickedThumbnails addObject:v10];
+      [(NSMutableArray *)pickedThumbnails addObject:thumbnailsCopy];
       goto LABEL_8;
     }
 
     v7 = [(NSMutableArray *)pickedThumbnails objectAtIndexedSubscript:i];
-    v8 = [v10 compareWith:v7];
+    v8 = [thumbnailsCopy compareWith:v7];
 
     if (v8 == 2)
     {
@@ -993,22 +993,22 @@ LABEL_14:
   }
 
   v9 = [(NSMutableArray *)self->_pickedThumbnails objectAtIndexedSubscript:i];
-  [v10 mergeWith:v9];
+  [thumbnailsCopy mergeWith:v9];
 
-  [(NSMutableArray *)self->_pickedThumbnails setObject:v10 atIndexedSubscript:i];
+  [(NSMutableArray *)self->_pickedThumbnails setObject:thumbnailsCopy atIndexedSubscript:i];
 LABEL_8:
 }
 
-- (void)reduceNumThumbnails:(int)a3
+- (void)reduceNumThumbnails:(int)thumbnails
 {
   v66[2] = *MEMORY[0x1E69E9840];
-  v59 = [(NSMutableArray *)self->_pickedThumbnails count]- a3;
+  v59 = [(NSMutableArray *)self->_pickedThumbnails count]- thumbnails;
   if (v59 < 1)
   {
     return;
   }
 
-  v60 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   for (i = 1; [(NSMutableArray *)self->_pickedThumbnails count]> i; i = v16 + 2)
   {
     memset(&v65, 0, sizeof(v65));
@@ -1053,22 +1053,22 @@ LABEL_8:
     v17 = [MEMORY[0x1E696AD98] numberWithInt:v8 - 1];
     v66[1] = v17;
     v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v66 count:2];
-    [v60 addObject:v18];
+    [array addObject:v18];
   }
 
-  [v60 sortUsingComparator:&__block_literal_global_52];
-  v19 = [MEMORY[0x1E695DF90] dictionary];
+  [array sortUsingComparator:&__block_literal_global_52];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v20 = 0;
   do
   {
-    v21 = [v60 objectAtIndexedSubscript:v20];
+    v21 = [array objectAtIndexedSubscript:v20];
     v22 = [v21 objectAtIndexedSubscript:1];
-    v23 = [v22 intValue];
+    intValue = [v22 intValue];
 
-    v24 = (v23 + 1);
+    intValue2 = (intValue + 1);
     while (1)
     {
-      v25 = [(NSMutableArray *)self->_pickedThumbnails objectAtIndexedSubscript:v23];
+      v25 = [(NSMutableArray *)self->_pickedThumbnails objectAtIndexedSubscript:intValue];
       [v25 frameScore];
       v27 = v26 < 0.0;
 
@@ -1077,14 +1077,14 @@ LABEL_8:
         break;
       }
 
-      v28 = [MEMORY[0x1E696AD98] numberWithInt:v23];
-      v29 = [v19 objectForKeyedSubscript:v28];
-      v23 = [v29 intValue];
+      v28 = [MEMORY[0x1E696AD98] numberWithInt:intValue];
+      v29 = [dictionary objectForKeyedSubscript:v28];
+      intValue = [v29 intValue];
     }
 
     while (1)
     {
-      v32 = [(NSMutableArray *)self->_pickedThumbnails objectAtIndexedSubscript:v24];
+      v32 = [(NSMutableArray *)self->_pickedThumbnails objectAtIndexedSubscript:intValue2];
       [v32 frameScore];
       v34 = v33 < 0.0;
 
@@ -1093,29 +1093,29 @@ LABEL_8:
         break;
       }
 
-      v30 = [MEMORY[0x1E696AD98] numberWithInt:v24];
-      v31 = [v19 objectForKeyedSubscript:v30];
-      v24 = [v31 intValue];
+      v30 = [MEMORY[0x1E696AD98] numberWithInt:intValue2];
+      v31 = [dictionary objectForKeyedSubscript:v30];
+      intValue2 = [v31 intValue];
     }
 
-    if (v23 <= v24)
+    if (intValue <= intValue2)
     {
-      v35 = v24;
-    }
-
-    else
-    {
-      v35 = v23;
-    }
-
-    if (v23 >= v24)
-    {
-      v36 = v24;
+      v35 = intValue2;
     }
 
     else
     {
-      v36 = v23;
+      v35 = intValue;
+    }
+
+    if (intValue >= intValue2)
+    {
+      v36 = intValue2;
+    }
+
+    else
+    {
+      v36 = intValue;
     }
 
     v61 = v35;
@@ -1160,7 +1160,7 @@ LABEL_8:
 
     v52 = [MEMORY[0x1E696AD98] numberWithInt:v62];
     v53 = [MEMORY[0x1E696AD98] numberWithInt:v47];
-    [v19 setObject:v52 forKeyedSubscript:v53];
+    [dictionary setObject:v52 forKeyedSubscript:v53];
 
     ++v20;
   }
@@ -1227,7 +1227,7 @@ uint64_t __49__VCPVideoThumbnailAnalyzer_reduceNumThumbnails___block_invoke(uint
   return v12;
 }
 
-- (float)distanceBetweenFrames:(float)a3 keyFrame2:(float)a4
+- (float)distanceBetweenFrames:(float)frames keyFrame2:(float)frame2
 {
   v32 = *MEMORY[0x1E69E9840];
   v27 = 0u;
@@ -1261,7 +1261,7 @@ uint64_t __49__VCPVideoThumbnailAnalyzer_reduceNumThumbnails___block_invoke(uint
         v17 = [v16 objectForKeyedSubscript:@"featureVector"];
 
         v18 = Seconds;
-        v19 = vabds_f32(v18, a3);
+        v19 = vabds_f32(v18, frames);
         if (v19 < v10)
         {
           v20 = [VCPImageDescriptor descriptorWithData:v17];
@@ -1270,7 +1270,7 @@ uint64_t __49__VCPVideoThumbnailAnalyzer_reduceNumThumbnails___block_invoke(uint
           v8 = v20;
         }
 
-        v21 = vabds_f32(v18, a4);
+        v21 = vabds_f32(v18, frame2);
         if (v21 < v11)
         {
           v22 = [VCPImageDescriptor descriptorWithData:v17];

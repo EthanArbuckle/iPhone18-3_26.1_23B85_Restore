@@ -2,9 +2,9 @@
 + (id)sharedManager;
 - (BOOL)hasActiveWindowScenes;
 - (ICNAWindowSceneReportingManager)init;
-- (void)windowSceneDidEnd:(id)a3;
-- (void)windowSceneMayBeResized:(id)a3;
-- (void)windowSceneWillBegin:(id)a3;
+- (void)windowSceneDidEnd:(id)end;
+- (void)windowSceneMayBeResized:(id)resized;
+- (void)windowSceneWillBegin:(id)begin;
 @end
 
 @implementation ICNAWindowSceneReportingManager
@@ -43,73 +43,73 @@ uint64_t __48__ICNAWindowSceneReportingManager_sharedManager__block_invoke()
   return v2;
 }
 
-- (void)windowSceneWillBegin:(id)a3
+- (void)windowSceneWillBegin:(id)begin
 {
-  v4 = a3;
-  if (v4)
+  beginCopy = begin;
+  if (beginCopy)
   {
-    v15 = v4;
-    v5 = [v4 session];
-    v6 = [v5 persistentIdentifier];
+    v15 = beginCopy;
+    session = [beginCopy session];
+    persistentIdentifier = [session persistentIdentifier];
 
-    v7 = [(ICNAWindowSceneReportingManager *)self eventReporters];
-    v8 = [v7 objectForKeyedSubscript:v6];
+    eventReporters = [(ICNAWindowSceneReportingManager *)self eventReporters];
+    v8 = [eventReporters objectForKeyedSubscript:persistentIdentifier];
 
     if (!v8 && +[(ICNAOptedInObject *)ICNAEventReporter])
     {
       v9 = +[ICNAIdentityManager sharedManager];
-      v10 = [v9 saltedID:v6 forClass:objc_opt_class()];
+      v10 = [v9 saltedID:persistentIdentifier forClass:objc_opt_class()];
 
       v11 = [[ICNAWindowSceneEventReporter alloc] initWithSubTrackerName:v10 windowScene:v15];
-      v12 = [(ICNAWindowSceneReportingManager *)self eventReporters];
-      [v12 setObject:v11 forKeyedSubscript:v6];
+      eventReporters2 = [(ICNAWindowSceneReportingManager *)self eventReporters];
+      [eventReporters2 setObject:v11 forKeyedSubscript:persistentIdentifier];
     }
 
-    v13 = [(ICNAWindowSceneReportingManager *)self eventReporters];
-    v14 = [v13 objectForKeyedSubscript:v6];
+    eventReporters3 = [(ICNAWindowSceneReportingManager *)self eventReporters];
+    v14 = [eventReporters3 objectForKeyedSubscript:persistentIdentifier];
 
     [v14 startWindowSceneEventDurationTracking];
     [v14 submitWindowSceneResizeEventIfNecessaryWithWindowScene:v15 forceSubmit:1];
 
-    v4 = v15;
+    beginCopy = v15;
   }
 }
 
-- (void)windowSceneDidEnd:(id)a3
+- (void)windowSceneDidEnd:(id)end
 {
-  if (a3)
+  if (end)
   {
-    v4 = [a3 session];
-    v8 = [v4 persistentIdentifier];
+    session = [end session];
+    persistentIdentifier = [session persistentIdentifier];
 
-    v5 = [(ICNAWindowSceneReportingManager *)self eventReporters];
-    v6 = [v5 objectForKeyedSubscript:v8];
+    eventReporters = [(ICNAWindowSceneReportingManager *)self eventReporters];
+    v6 = [eventReporters objectForKeyedSubscript:persistentIdentifier];
 
     [v6 submitWindowSceneEvent];
-    v7 = [(ICNAWindowSceneReportingManager *)self eventReporters];
-    [v7 setObject:0 forKeyedSubscript:v8];
+    eventReporters2 = [(ICNAWindowSceneReportingManager *)self eventReporters];
+    [eventReporters2 setObject:0 forKeyedSubscript:persistentIdentifier];
   }
 }
 
-- (void)windowSceneMayBeResized:(id)a3
+- (void)windowSceneMayBeResized:(id)resized
 {
-  if (a3)
+  if (resized)
   {
-    v4 = a3;
-    v5 = [v4 session];
-    v8 = [v5 persistentIdentifier];
+    resizedCopy = resized;
+    session = [resizedCopy session];
+    persistentIdentifier = [session persistentIdentifier];
 
-    v6 = [(ICNAWindowSceneReportingManager *)self eventReporters];
-    v7 = [v6 objectForKeyedSubscript:v8];
+    eventReporters = [(ICNAWindowSceneReportingManager *)self eventReporters];
+    v7 = [eventReporters objectForKeyedSubscript:persistentIdentifier];
 
-    [v7 submitWindowSceneResizeEventIfNecessaryWithWindowScene:v4 forceSubmit:0];
+    [v7 submitWindowSceneResizeEventIfNecessaryWithWindowScene:resizedCopy forceSubmit:0];
   }
 }
 
 - (BOOL)hasActiveWindowScenes
 {
-  v2 = [(ICNAWindowSceneReportingManager *)self eventReporters];
-  v3 = [v2 count] != 0;
+  eventReporters = [(ICNAWindowSceneReportingManager *)self eventReporters];
+  v3 = [eventReporters count] != 0;
 
   return v3;
 }

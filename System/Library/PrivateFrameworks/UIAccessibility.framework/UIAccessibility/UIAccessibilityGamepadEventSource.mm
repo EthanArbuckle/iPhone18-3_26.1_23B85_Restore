@@ -1,7 +1,7 @@
 @interface UIAccessibilityGamepadEventSource
 - (UIAccessibilityGamepadEventSource)init;
-- (id)observeGamepadEvents:(id)a3;
-- (void)publishGamepadEvent:(id)a3;
+- (id)observeGamepadEvents:(id)events;
+- (void)publishGamepadEvent:(id)event;
 @end
 
 @implementation UIAccessibilityGamepadEventSource
@@ -21,22 +21,22 @@
   return v2;
 }
 
-- (void)publishGamepadEvent:(id)a3
+- (void)publishGamepadEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   handlers = self->_handlers;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __57__UIAccessibilityGamepadEventSource_publishGamepadEvent___block_invoke;
   v7[3] = &unk_1E78AB590;
-  v8 = v4;
-  v6 = v4;
+  v8 = eventCopy;
+  v6 = eventCopy;
   [(NSMutableArray *)handlers enumerateObjectsUsingBlock:v7];
 }
 
-- (id)observeGamepadEvents:(id)a3
+- (id)observeGamepadEvents:(id)events
 {
-  v4 = [a3 copy];
+  v4 = [events copy];
   handlers = self->_handlers;
   v6 = _Block_copy(v4);
   [(NSMutableArray *)handlers addObject:v6];

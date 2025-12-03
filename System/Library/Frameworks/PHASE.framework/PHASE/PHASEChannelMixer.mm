@@ -1,6 +1,6 @@
 @interface PHASEChannelMixer
 - (PHASEChannelMixer)init;
-- (PHASEChannelMixer)initWithIdentifier:(id)a3 inputChannelLayout:(id)a4;
+- (PHASEChannelMixer)initWithIdentifier:(id)identifier inputChannelLayout:(id)layout;
 @end
 
 @implementation PHASEChannelMixer
@@ -19,16 +19,16 @@
   return v3;
 }
 
-- (PHASEChannelMixer)initWithIdentifier:(id)a3 inputChannelLayout:(id)a4
+- (PHASEChannelMixer)initWithIdentifier:(id)identifier inputChannelLayout:(id)layout
 {
-  v7 = a4;
+  layoutCopy = layout;
   v12.receiver = self;
   v12.super_class = PHASEChannelMixer;
-  v8 = [(PHASEMixer *)&v12 initWithIdentifier:a3];
+  v8 = [(PHASEMixer *)&v12 initWithIdentifier:identifier];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_inputChannelLayout, a4);
+    objc_storeStrong(&v8->_inputChannelLayout, layout);
     v10 = v9;
   }
 

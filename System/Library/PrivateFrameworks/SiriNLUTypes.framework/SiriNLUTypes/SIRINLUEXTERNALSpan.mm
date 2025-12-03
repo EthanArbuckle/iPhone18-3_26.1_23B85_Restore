@@ -1,53 +1,53 @@
 @interface SIRINLUEXTERNALSpan
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsMatcherNames:(id)a3;
-- (int)matcherNamesAtIndex:(unint64_t)a3;
+- (int)StringAsMatcherNames:(id)names;
+- (int)matcherNamesAtIndex:(unint64_t)index;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasEndTokenIndex:(BOOL)a3;
-- (void)setHasStartTokenIndex:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasEndTokenIndex:(BOOL)index;
+- (void)setHasStartTokenIndex:(BOOL)index;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SIRINLUEXTERNALSpan
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v11 = v4;
-  if (*(v4 + 7))
+  fromCopy = from;
+  v11 = fromCopy;
+  if (*(fromCopy + 7))
   {
     [(SIRINLUEXTERNALSpan *)self setLabel:?];
-    v4 = v11;
+    fromCopy = v11;
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(SIRINLUEXTERNALSpan *)self setInput:?];
-    v4 = v11;
+    fromCopy = v11;
   }
 
-  v5 = *(v4 + 80);
+  v5 = *(fromCopy + 80);
   if ((v5 & 4) != 0)
   {
-    self->_startTokenIndex = *(v4 + 16);
+    self->_startTokenIndex = *(fromCopy + 16);
     *&self->_has |= 4u;
-    v5 = *(v4 + 80);
+    v5 = *(fromCopy + 80);
   }
 
   if ((v5 & 2) != 0)
   {
-    self->_endTokenIndex = *(v4 + 10);
+    self->_endTokenIndex = *(fromCopy + 10);
     *&self->_has |= 2u;
   }
 
   usoGraph = self->_usoGraph;
-  v7 = *(v4 + 9);
+  v7 = *(fromCopy + 9);
   if (usoGraph)
   {
     if (!v7)
@@ -68,18 +68,18 @@
     [(SIRINLUEXTERNALSpan *)self setUsoGraph:?];
   }
 
-  v4 = v11;
+  fromCopy = v11;
 LABEL_15:
-  if (*(v4 + 80))
+  if (*(fromCopy + 80))
   {
-    self->_score = *(v4 + 4);
+    self->_score = *(fromCopy + 4);
     *&self->_has |= 1u;
   }
 
-  v8 = [v4 matcherNamesCount];
-  if (v8)
+  matcherNamesCount = [fromCopy matcherNamesCount];
+  if (matcherNamesCount)
   {
-    v9 = v8;
+    v9 = matcherNamesCount;
     for (i = 0; i != v9; ++i)
     {
       -[SIRINLUEXTERNALSpan addMatcherNames:](self, "addMatcherNames:", [v11 matcherNamesAtIndex:i]);
@@ -150,16 +150,16 @@ LABEL_6:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v10 ^ PBRepeatedInt32Hash();
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_25;
   }
 
   label = self->_label;
-  if (label | *(v4 + 7))
+  if (label | *(equalCopy + 7))
   {
     if (![(NSString *)label isEqual:?])
     {
@@ -168,7 +168,7 @@ LABEL_6:
   }
 
   input = self->_input;
-  if (input | *(v4 + 6))
+  if (input | *(equalCopy + 6))
   {
     if (![(NSString *)input isEqual:?])
     {
@@ -177,35 +177,35 @@ LABEL_6:
   }
 
   has = self->_has;
-  v8 = *(v4 + 80);
+  v8 = *(equalCopy + 80);
   if ((has & 4) != 0)
   {
-    if ((*(v4 + 80) & 4) == 0 || self->_startTokenIndex != *(v4 + 16))
+    if ((*(equalCopy + 80) & 4) == 0 || self->_startTokenIndex != *(equalCopy + 16))
     {
       goto LABEL_25;
     }
   }
 
-  else if ((*(v4 + 80) & 4) != 0)
+  else if ((*(equalCopy + 80) & 4) != 0)
   {
     goto LABEL_25;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 80) & 2) == 0 || self->_endTokenIndex != *(v4 + 10))
+    if ((*(equalCopy + 80) & 2) == 0 || self->_endTokenIndex != *(equalCopy + 10))
     {
       goto LABEL_25;
     }
   }
 
-  else if ((*(v4 + 80) & 2) != 0)
+  else if ((*(equalCopy + 80) & 2) != 0)
   {
     goto LABEL_25;
   }
 
   usoGraph = self->_usoGraph;
-  if (usoGraph | *(v4 + 9))
+  if (usoGraph | *(equalCopy + 9))
   {
     if (![(SIRINLUEXTERNALUsoGraph *)usoGraph isEqual:?])
     {
@@ -215,12 +215,12 @@ LABEL_25:
     }
 
     has = self->_has;
-    v8 = *(v4 + 80);
+    v8 = *(equalCopy + 80);
   }
 
   if (has)
   {
-    if ((v8 & 1) == 0 || self->_score != *(v4 + 4))
+    if ((v8 & 1) == 0 || self->_score != *(equalCopy + 4))
     {
       goto LABEL_25;
     }
@@ -237,14 +237,14 @@ LABEL_26:
   return IsEqual;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_label copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_label copyWithZone:zone];
   v7 = *(v5 + 56);
   *(v5 + 56) = v6;
 
-  v8 = [(NSString *)self->_input copyWithZone:a3];
+  v8 = [(NSString *)self->_input copyWithZone:zone];
   v9 = *(v5 + 48);
   *(v5 + 48) = v8;
 
@@ -262,7 +262,7 @@ LABEL_26:
     *(v5 + 80) |= 2u;
   }
 
-  v11 = [(SIRINLUEXTERNALUsoGraph *)self->_usoGraph copyWithZone:a3];
+  v11 = [(SIRINLUEXTERNALUsoGraph *)self->_usoGraph copyWithZone:zone];
   v12 = *(v5 + 72);
   *(v5 + 72) = v11;
 
@@ -276,55 +276,55 @@ LABEL_26:
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v9 = v4;
+  toCopy = to;
+  v9 = toCopy;
   if (self->_label)
   {
-    [v4 setLabel:?];
-    v4 = v9;
+    [toCopy setLabel:?];
+    toCopy = v9;
   }
 
   if (self->_input)
   {
     [v9 setInput:?];
-    v4 = v9;
+    toCopy = v9;
   }
 
   has = self->_has;
   if ((has & 4) != 0)
   {
-    *(v4 + 16) = self->_startTokenIndex;
-    *(v4 + 80) |= 4u;
+    *(toCopy + 16) = self->_startTokenIndex;
+    *(toCopy + 80) |= 4u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    *(v4 + 10) = self->_endTokenIndex;
-    *(v4 + 80) |= 2u;
+    *(toCopy + 10) = self->_endTokenIndex;
+    *(toCopy + 80) |= 2u;
   }
 
   if (self->_usoGraph)
   {
     [v9 setUsoGraph:?];
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 4) = *&self->_score;
-    *(v4 + 80) |= 1u;
+    *(toCopy + 4) = *&self->_score;
+    *(toCopy + 80) |= 1u;
   }
 
   if ([(SIRINLUEXTERNALSpan *)self matcherNamesCount])
   {
     [v9 clearMatcherNames];
-    v6 = [(SIRINLUEXTERNALSpan *)self matcherNamesCount];
-    if (v6)
+    matcherNamesCount = [(SIRINLUEXTERNALSpan *)self matcherNamesCount];
+    if (matcherNamesCount)
     {
-      v7 = v6;
+      v7 = matcherNamesCount;
       for (i = 0; i != v7; ++i)
       {
         [v9 addMatcherNames:{-[SIRINLUEXTERNALSpan matcherNamesAtIndex:](self, "matcherNamesAtIndex:", i)}];
@@ -333,20 +333,20 @@ LABEL_26:
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v12 = v4;
+  toCopy = to;
+  v12 = toCopy;
   if (self->_label)
   {
     PBDataWriterWriteStringField();
-    v4 = v12;
+    toCopy = v12;
   }
 
   if (self->_input)
   {
     PBDataWriterWriteStringField();
-    v4 = v12;
+    toCopy = v12;
   }
 
   has = self->_has;
@@ -354,7 +354,7 @@ LABEL_26:
   {
     startTokenIndex = self->_startTokenIndex;
     PBDataWriterWriteUint32Field();
-    v4 = v12;
+    toCopy = v12;
     has = self->_has;
   }
 
@@ -362,20 +362,20 @@ LABEL_26:
   {
     endTokenIndex = self->_endTokenIndex;
     PBDataWriterWriteUint32Field();
-    v4 = v12;
+    toCopy = v12;
   }
 
   if (self->_usoGraph)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v12;
+    toCopy = v12;
   }
 
   if (*&self->_has)
   {
     score = self->_score;
     PBDataWriterWriteDoubleField();
-    v4 = v12;
+    toCopy = v12;
   }
 
   p_matcherNames = &self->_matcherNames;
@@ -386,7 +386,7 @@ LABEL_26:
     {
       v11 = p_matcherNames->list[v10];
       PBDataWriterWriteInt32Field();
-      v4 = v12;
+      toCopy = v12;
       ++v10;
     }
 
@@ -396,12 +396,12 @@ LABEL_26:
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   label = self->_label;
   if (label)
   {
-    [v3 setObject:label forKey:@"label"];
+    [dictionary setObject:label forKey:@"label"];
   }
 
   input = self->_input;
@@ -428,8 +428,8 @@ LABEL_26:
   usoGraph = self->_usoGraph;
   if (usoGraph)
   {
-    v11 = [(SIRINLUEXTERNALUsoGraph *)usoGraph dictionaryRepresentation];
-    [v4 setObject:v11 forKey:@"uso_graph"];
+    dictionaryRepresentation = [(SIRINLUEXTERNALUsoGraph *)usoGraph dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"uso_graph"];
   }
 
   if (*&self->_has)
@@ -478,36 +478,36 @@ LABEL_26:
   v8.receiver = self;
   v8.super_class = SIRINLUEXTERNALSpan;
   v4 = [(SIRINLUEXTERNALSpan *)&v8 description];
-  v5 = [(SIRINLUEXTERNALSpan *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SIRINLUEXTERNALSpan *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (int)StringAsMatcherNames:(id)a3
+- (int)StringAsMatcherNames:(id)names
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN"])
+  namesCopy = names;
+  if ([namesCopy isEqualToString:@"UNKNOWN"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"SIRI_VOCABULARY_MATCHER"])
+  else if ([namesCopy isEqualToString:@"SIRI_VOCABULARY_MATCHER"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"MRR_DETECTOR"])
+  else if ([namesCopy isEqualToString:@"MRR_DETECTOR"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"MRR_MATCHER"])
+  else if ([namesCopy isEqualToString:@"MRR_MATCHER"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"CONTEXT_MATCHER"])
+  else if ([namesCopy isEqualToString:@"CONTEXT_MATCHER"])
   {
     v4 = 4;
   }
@@ -520,25 +520,25 @@ LABEL_26:
   return v4;
 }
 
-- (int)matcherNamesAtIndex:(unint64_t)a3
+- (int)matcherNamesAtIndex:(unint64_t)index
 {
   p_matcherNames = &self->_matcherNames;
   count = self->_matcherNames.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x1E695DF30];
     v7 = *MEMORY[0x1E695DA20];
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_matcherNames->list[a3];
+  return p_matcherNames->list[index];
 }
 
-- (void)setHasEndTokenIndex:(BOOL)a3
+- (void)setHasEndTokenIndex:(BOOL)index
 {
-  if (a3)
+  if (index)
   {
     v3 = 2;
   }
@@ -551,9 +551,9 @@ LABEL_26:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasStartTokenIndex:(BOOL)a3
+- (void)setHasStartTokenIndex:(BOOL)index
 {
-  if (a3)
+  if (index)
   {
     v3 = 4;
   }

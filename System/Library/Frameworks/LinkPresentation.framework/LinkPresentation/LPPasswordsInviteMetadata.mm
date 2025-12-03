@@ -1,31 +1,31 @@
 @interface LPPasswordsInviteMetadata
-- (BOOL)isEqual:(id)a3;
-- (LPPasswordsInviteMetadata)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (LPPasswordsInviteMetadata)initWithCoder:(id)coder;
 - (id)_overrideURL;
 - (id)_subtitle;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)presentationPropertiesForTransformer:(id)a3;
-- (id)previewImageForTransformer:(id)a3;
-- (id)previewSummaryForTransformer:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)populateMetadataForBackwardCompatibility:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)presentationPropertiesForTransformer:(id)transformer;
+- (id)previewImageForTransformer:(id)transformer;
+- (id)previewSummaryForTransformer:(id)transformer;
+- (void)encodeWithCoder:(id)coder;
+- (void)populateMetadataForBackwardCompatibility:(id)compatibility;
 @end
 
 @implementation LPPasswordsInviteMetadata
 
-- (LPPasswordsInviteMetadata)initWithCoder:(id)a3
+- (LPPasswordsInviteMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = LPPasswordsInviteMetadata;
   v5 = [(LPPasswordsInviteMetadata *)&v12 init];
   if (v5)
   {
-    v6 = decodeStringForKey(v4, @"groupName");
+    v6 = decodeStringForKey(coderCopy, @"groupName");
     groupName = v5->_groupName;
     v5->_groupName = v6;
 
-    v8 = decodeStringForKey(v4, @"urlParameters");
+    v8 = decodeStringForKey(coderCopy, @"urlParameters");
     urlParameters = v5->_urlParameters;
     v5->_urlParameters = v8;
 
@@ -35,23 +35,23 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 _lp_encodeStringIfNotNil:self->_groupName forKey:@"groupName"];
-  [v4 _lp_encodeStringIfNotNil:self->_urlParameters forKey:@"urlParameters"];
+  coderCopy = coder;
+  [coderCopy _lp_encodeStringIfNotNil:self->_groupName forKey:@"groupName"];
+  [coderCopy _lp_encodeStringIfNotNil:self->_urlParameters forKey:@"urlParameters"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [LPPasswordsInviteMetadata allocWithZone:a3];
+  v4 = [LPPasswordsInviteMetadata allocWithZone:zone];
   if (v4)
   {
-    v5 = [(LPPasswordsInviteMetadata *)self groupName];
-    [(LPPasswordsInviteMetadata *)v4 setGroupName:v5];
+    groupName = [(LPPasswordsInviteMetadata *)self groupName];
+    [(LPPasswordsInviteMetadata *)v4 setGroupName:groupName];
 
-    v6 = [(LPPasswordsInviteMetadata *)self urlParameters];
-    [(LPPasswordsInviteMetadata *)v4 setUrlParameters:v6];
+    urlParameters = [(LPPasswordsInviteMetadata *)self urlParameters];
+    [(LPPasswordsInviteMetadata *)v4 setUrlParameters:urlParameters];
 
     v7 = v4;
   }
@@ -59,12 +59,12 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v12.receiver = self;
   v12.super_class = LPPasswordsInviteMetadata;
-  if ([(LPPasswordsInviteMetadata *)&v12 isEqual:v4])
+  if ([(LPPasswordsInviteMetadata *)&v12 isEqual:equalCopy])
   {
     v5 = 1;
   }
@@ -74,16 +74,16 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v4;
+      v6 = equalCopy;
       groupName = self->_groupName;
-      v8 = [v6 groupName];
-      LOBYTE(groupName) = objectsAreEqual_0(groupName, v8);
+      groupName = [v6 groupName];
+      LOBYTE(groupName) = objectsAreEqual_0(groupName, groupName);
 
       if (groupName)
       {
         urlParameters = self->_urlParameters;
-        v10 = [v6 urlParameters];
-        v5 = objectsAreEqual_0(urlParameters, v10);
+        urlParameters = [v6 urlParameters];
+        v5 = objectsAreEqual_0(urlParameters, urlParameters);
       }
 
       else
@@ -105,8 +105,8 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = LPLocalizedString(@"You have been invited to join the group “%@”.");
-  v5 = [(LPPasswordsInviteMetadata *)self groupName];
-  v6 = [v3 localizedStringWithFormat:v4, v5];
+  groupName = [(LPPasswordsInviteMetadata *)self groupName];
+  v6 = [v3 localizedStringWithFormat:v4, groupName];
 
   return v6;
 }
@@ -134,12 +134,12 @@
   _Block_object_dispose(&v28, 8);
   if (objc_opt_respondsToSelector())
   {
-    v5 = objc_alloc_init(MEMORY[0x1E696AF20]);
-    v6 = [(LPPasswordsInviteMetadata *)self urlParameters];
-    v7 = v6;
-    if (v6)
+    _baseURL = objc_alloc_init(MEMORY[0x1E696AF20]);
+    urlParameters = [(LPPasswordsInviteMetadata *)self urlParameters];
+    v7 = urlParameters;
+    if (urlParameters)
     {
-      v8 = v6;
+      v8 = urlParameters;
     }
 
     else
@@ -147,15 +147,15 @@
       v8 = &stru_1F2447CF0;
     }
 
-    [v5 setQuery:v8];
+    [_baseURL setQuery:v8];
 
-    v9 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v25 = 0u;
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v10 = [v5 queryItems];
-    v11 = [v10 countByEnumeratingWithState:&v23 objects:v32 count:16];
+    queryItems = [_baseURL queryItems];
+    v11 = [queryItems countByEnumeratingWithState:&v23 objects:v32 count:16];
     if (v11)
     {
       v12 = *v24;
@@ -165,108 +165,108 @@
         {
           if (*v24 != v12)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(queryItems);
           }
 
           v14 = *(*(&v23 + 1) + 8 * i);
-          v15 = [v14 value];
-          v16 = [v14 name];
-          [v9 setObject:v15 forKeyedSubscript:v16];
+          value = [v14 value];
+          name = [v14 name];
+          [dictionary setObject:value forKeyedSubscript:name];
         }
 
-        v11 = [v10 countByEnumeratingWithState:&v23 objects:v32 count:16];
+        v11 = [queryItems countByEnumeratingWithState:&v23 objects:v32 count:16];
       }
 
       while (v11);
     }
 
-    v17 = [v3 passwordManagerURLWithParameters:v9];
+    v17 = [v3 passwordManagerURLWithParameters:dictionary];
   }
 
   else
   {
-    v5 = [(LPPasswordsInviteMetadata *)self _baseURL];
-    v18 = [(LPPasswordsInviteMetadata *)self urlParameters];
-    v19 = [v18 length];
+    _baseURL = [(LPPasswordsInviteMetadata *)self _baseURL];
+    urlParameters2 = [(LPPasswordsInviteMetadata *)self urlParameters];
+    v19 = [urlParameters2 length];
 
     if (v19)
     {
-      v20 = [(LPPasswordsInviteMetadata *)self urlParameters];
-      v21 = [v5 stringByAppendingString:v20];
+      urlParameters3 = [(LPPasswordsInviteMetadata *)self urlParameters];
+      v21 = [_baseURL stringByAppendingString:urlParameters3];
 
-      v5 = v21;
+      _baseURL = v21;
     }
 
-    v17 = [MEMORY[0x1E695DFF8] URLWithString:v5];
+    v17 = [MEMORY[0x1E695DFF8] URLWithString:_baseURL];
   }
 
   return v17;
 }
 
-- (id)presentationPropertiesForTransformer:(id)a3
+- (id)presentationPropertiesForTransformer:(id)transformer
 {
-  v4 = a3;
-  v5 = [v4 unspecializedPresentationProperties];
+  transformerCopy = transformer;
+  unspecializedPresentationProperties = [transformerCopy unspecializedPresentationProperties];
   v6 = LPLocalizedString(@"Shared Passwords");
-  v7 = [v5 captionBar];
-  v8 = [v7 top];
-  v9 = [v8 leading];
-  [v9 setText:v6];
+  captionBar = [unspecializedPresentationProperties captionBar];
+  v8 = [captionBar top];
+  leading = [v8 leading];
+  [leading setText:v6];
 
-  v10 = [(LPPasswordsInviteMetadata *)self _subtitle];
-  v11 = [v5 captionBar];
-  v12 = [v11 bottom];
-  v13 = [v12 leading];
-  [v13 setText:v10];
+  _subtitle = [(LPPasswordsInviteMetadata *)self _subtitle];
+  captionBar2 = [unspecializedPresentationProperties captionBar];
+  bottom = [captionBar2 bottom];
+  leading2 = [bottom leading];
+  [leading2 setText:_subtitle];
 
-  v14 = [v5 captionBar];
-  [v14 setLeadingIcon:0];
+  captionBar3 = [unspecializedPresentationProperties captionBar];
+  [captionBar3 setLeadingIcon:0];
 
-  v15 = [v5 captionBar];
-  [v15 setTrailingIcon:0];
+  captionBar4 = [unspecializedPresentationProperties captionBar];
+  [captionBar4 setTrailingIcon:0];
 
-  if ([v4 _rowConfigurationForStyle:{objc_msgSend(v5, "style")}] == 3)
+  if ([transformerCopy _rowConfigurationForStyle:{objc_msgSend(unspecializedPresentationProperties, "style")}] == 3)
   {
-    v16 = [v5 captionBar];
-    v17 = [v16 bottom];
-    v18 = [v17 leading];
-    [v18 setMaximumNumberOfLines:&unk_1F2483470];
+    captionBar5 = [unspecializedPresentationProperties captionBar];
+    bottom2 = [captionBar5 bottom];
+    leading3 = [bottom2 leading];
+    [leading3 setMaximumNumberOfLines:&unk_1F2483470];
   }
 
-  [v5 setOverrideAllowOpeningSensitiveURLs:MEMORY[0x1E695E118]];
-  v19 = [(LPPasswordsInviteMetadata *)self _overrideURL];
-  [v5 setOverrideURL:v19];
+  [unspecializedPresentationProperties setOverrideAllowOpeningSensitiveURLs:MEMORY[0x1E695E118]];
+  _overrideURL = [(LPPasswordsInviteMetadata *)self _overrideURL];
+  [unspecializedPresentationProperties setOverrideURL:_overrideURL];
 
   v20 = +[LPResources passwordsInviteIcon];
-  [v5 setImage:v20];
+  [unspecializedPresentationProperties setImage:v20];
 
-  [v5 setStyle:48];
+  [unspecializedPresentationProperties setStyle:48];
 
-  return v5;
+  return unspecializedPresentationProperties;
 }
 
-- (id)previewImageForTransformer:(id)a3
+- (id)previewImageForTransformer:(id)transformer
 {
   v3 = +[LPResources passwordsInviteIcon];
 
   return v3;
 }
 
-- (id)previewSummaryForTransformer:(id)a3
+- (id)previewSummaryForTransformer:(id)transformer
 {
-  v3 = [(LPPasswordsInviteMetadata *)self _subtitle];
+  _subtitle = [(LPPasswordsInviteMetadata *)self _subtitle];
 
-  return v3;
+  return _subtitle;
 }
 
-- (void)populateMetadataForBackwardCompatibility:(id)a3
+- (void)populateMetadataForBackwardCompatibility:(id)compatibility
 {
-  v5 = a3;
+  compatibilityCopy = compatibility;
   v3 = LPLocalizedString(@"Shared Passwords Invitation");
-  [v5 setTitle:v3];
+  [compatibilityCopy setTitle:v3];
 
   v4 = [LPImage _PNGImageNamed:@"PasswordsInvite"];
-  [v5 setImage:v4];
+  [compatibilityCopy setImage:v4];
 }
 
 @end

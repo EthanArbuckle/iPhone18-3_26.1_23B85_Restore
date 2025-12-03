@@ -1,32 +1,32 @@
 @interface IMAcceptChatCommandProcessingPipelineComponent
-- (IMAcceptChatCommandProcessingPipelineComponent)initWithPipelineResources:(id)a3;
-- (id)runIndividuallyWithInput:(id)a3;
+- (IMAcceptChatCommandProcessingPipelineComponent)initWithPipelineResources:(id)resources;
+- (id)runIndividuallyWithInput:(id)input;
 @end
 
 @implementation IMAcceptChatCommandProcessingPipelineComponent
 
-- (IMAcceptChatCommandProcessingPipelineComponent)initWithPipelineResources:(id)a3
+- (IMAcceptChatCommandProcessingPipelineComponent)initWithPipelineResources:(id)resources
 {
-  v5 = a3;
+  resourcesCopy = resources;
   v9.receiver = self;
   v9.super_class = IMAcceptChatCommandProcessingPipelineComponent;
   v6 = [(IMAcceptChatCommandProcessingPipelineComponent *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_pipelineResources, a3);
+    objc_storeStrong(&v6->_pipelineResources, resources);
   }
 
   return v7;
 }
 
-- (id)runIndividuallyWithInput:(id)a3
+- (id)runIndividuallyWithInput:(id)input
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 GUID];
+  inputCopy = input;
+  gUID = [inputCopy GUID];
   v6 = IMOSLoggingEnabled();
-  if (!v5)
+  if (!gUID)
   {
     if (v6)
     {
@@ -47,12 +47,12 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v30 = v5;
+      v30 = gUID;
       _os_log_impl(&dword_22B4CC000, v7, OS_LOG_TYPE_INFO, "<IMAcceptChatCommandProcessingPipelineComponent> Started processing accept chat command for message GUID: %@", buf, 0xCu);
     }
   }
 
-  if (([v4 isFromMe] & 1) == 0)
+  if (([inputCopy isFromMe] & 1) == 0)
   {
     if (IMOSLoggingEnabled())
     {
@@ -60,19 +60,19 @@
       if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v30 = v5;
+        v30 = gUID;
         _os_log_impl(&dword_22B4CC000, v21, OS_LOG_TYPE_INFO, "Ignoring accept chat command not from me for message: %@", buf, 0xCu);
       }
     }
 
 LABEL_38:
-    v19 = [objc_alloc(MEMORY[0x277D18E08]) initWithValue:v4];
+    v19 = [objc_alloc(MEMORY[0x277D18E08]) initWithValue:inputCopy];
     goto LABEL_39;
   }
 
-  v8 = [(IMAcceptChatCommandProcessingPipelineComponent *)self pipelineResources];
-  v9 = [v8 messageStore];
-  v10 = [v9 chatsForMessageGUID:v5];
+  pipelineResources = [(IMAcceptChatCommandProcessingPipelineComponent *)self pipelineResources];
+  messageStore = [pipelineResources messageStore];
+  v10 = [messageStore chatsForMessageGUID:gUID];
 
   if (IMOSLoggingEnabled())
   {
@@ -80,7 +80,7 @@ LABEL_38:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v30 = v5;
+      v30 = gUID;
       _os_log_impl(&dword_22B4CC000, v11, OS_LOG_TYPE_INFO, "Found chats for message guid: %@", buf, 0xCu);
     }
   }
@@ -137,7 +137,7 @@ LABEL_38:
     while (v14);
   }
 
-  v19 = [objc_alloc(MEMORY[0x277D18E08]) initWithValue:v4];
+  v19 = [objc_alloc(MEMORY[0x277D18E08]) initWithValue:inputCopy];
 LABEL_39:
 
   v22 = *MEMORY[0x277D85DE8];

@@ -1,19 +1,19 @@
 @interface PAGetTorch
-- (PAGetTorch)initWithDictionary:(id)a3;
+- (PAGetTorch)initWithDictionary:(id)dictionary;
 - (void)_performQueuedRequests;
-- (void)_performWithCompletion:(id)a3;
+- (void)_performWithCompletion:(id)completion;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)performWithCompletion:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)performWithCompletion:(id)completion;
 @end
 
 @implementation PAGetTorch
 
-- (PAGetTorch)initWithDictionary:(id)a3
+- (PAGetTorch)initWithDictionary:(id)dictionary
 {
   v10.receiver = self;
   v10.super_class = PAGetTorch;
-  v3 = [(PAGetTorch *)&v10 initWithDictionary:a3];
+  v3 = [(PAGetTorch *)&v10 initWithDictionary:dictionary];
   if (v3)
   {
     v4 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_UTILITY, 0);
@@ -51,23 +51,23 @@
   [(PAGetTorch *)&v3 dealloc];
 }
 
-- (void)performWithCompletion:(id)a3
+- (void)performWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   flashlightQueue = self->_flashlightQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_54C8;
   v7[3] = &unk_10598;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(flashlightQueue, v7);
 }
 
-- (void)_performWithCompletion:(id)a3
+- (void)_performWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (+[AVFlashlight hasFlashlight]&& [(AVFlashlight *)self->_flashlight isAvailable]&& ([(AVFlashlight *)self->_flashlight isOverheated]& 1) == 0)
   {
     [(AVFlashlight *)self->_flashlight flashlightLevel];
@@ -97,16 +97,16 @@
     _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "########## PAGetTorch (%@)", &v12, 0xCu);
   }
 
-  v10 = [v7 dictionary];
-  v4[2](v4, v10);
+  dictionary = [v7 dictionary];
+  completionCopy[2](completionCopy, dictionary);
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (([v10 isEqualToString:@"available"] & 1) != 0 || (objc_msgSend(v10, "isEqualToString:", @"flashlightLevel") & 1) != 0 || objc_msgSend(v10, "isEqualToString:", @"overheated"))
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (([pathCopy isEqualToString:@"available"] & 1) != 0 || (objc_msgSend(pathCopy, "isEqualToString:", @"flashlightLevel") & 1) != 0 || objc_msgSend(pathCopy, "isEqualToString:", @"overheated"))
   {
     flashlightQueue = self->_flashlightQueue;
     block[0] = _NSConcreteStackBlock;
@@ -121,7 +121,7 @@
   {
     v14.receiver = self;
     v14.super_class = PAGetTorch;
-    [(PAGetTorch *)&v14 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(PAGetTorch *)&v14 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 

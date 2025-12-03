@@ -1,23 +1,23 @@
 @interface SessionFilterRecordingUpdater
-- (void)appendData:(id)a3 toFileHandle:(id)a4 withReply:(id)a5;
-- (void)closeFileWithFileHandle:(id)a3 withReply:(id)a4;
-- (void)createDirectoryAtURL:(id)a3 withReply:(id)a4;
-- (void)createFileAtURL:(id)a3 withReply:(id)a4;
-- (void)deleteItemAtURL:(id)a3 withReply:(id)a4;
-- (void)fileExistsAtURL:(id)a3 isDirectory:(BOOL)a4 withReply:(id)a5;
-- (void)filesSortedByCreationDateInDirectory:(id)a3 withPathExtension:(id)a4 withReply:(id)a5;
+- (void)appendData:(id)data toFileHandle:(id)handle withReply:(id)reply;
+- (void)closeFileWithFileHandle:(id)handle withReply:(id)reply;
+- (void)createDirectoryAtURL:(id)l withReply:(id)reply;
+- (void)createFileAtURL:(id)l withReply:(id)reply;
+- (void)deleteItemAtURL:(id)l withReply:(id)reply;
+- (void)fileExistsAtURL:(id)l isDirectory:(BOOL)directory withReply:(id)reply;
+- (void)filesSortedByCreationDateInDirectory:(id)directory withPathExtension:(id)extension withReply:(id)reply;
 @end
 
 @implementation SessionFilterRecordingUpdater
 
-- (void)createDirectoryAtURL:(id)a3 withReply:(id)a4
+- (void)createDirectoryAtURL:(id)l withReply:(id)reply
 {
-  v5 = a3;
-  v6 = a4;
+  lCopy = l;
+  replyCopy = reply;
   v14 = 0;
   v7 = +[NSFileManager defaultManager];
-  v8 = [v5 path];
-  v9 = [v7 fileExistsAtPath:v8 isDirectory:&v14];
+  path = [lCopy path];
+  v9 = [v7 fileExistsAtPath:path isDirectory:&v14];
 
   if (v9 && (v14 & 1) != 0)
   {
@@ -31,18 +31,18 @@
     v16 = NSFileProtectionCompleteUnlessOpen;
     v12 = [NSDictionary dictionaryWithObjects:&v16 forKeys:&v15 count:1];
     v13 = 0;
-    [v11 createDirectoryAtURL:v5 withIntermediateDirectories:1 attributes:v12 error:&v13];
+    [v11 createDirectoryAtURL:lCopy withIntermediateDirectories:1 attributes:v12 error:&v13];
     v10 = v13;
   }
 
-  v6[2](v6, v10);
+  replyCopy[2](replyCopy, v10);
 }
 
-- (void)filesSortedByCreationDateInDirectory:(id)a3 withPathExtension:(id)a4 withReply:(id)a5
+- (void)filesSortedByCreationDateInDirectory:(id)directory withPathExtension:(id)extension withReply:(id)reply
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  directoryCopy = directory;
+  extensionCopy = extension;
+  replyCopy = reply;
   v10 = objc_alloc_init(NSMutableArray);
   v11 = +[NSFileManager defaultManager];
   v40[0] = NSURLPathKey;
@@ -52,16 +52,16 @@
   v40[4] = NSURLFileSizeKey;
   v12 = [NSArray arrayWithObjects:v40 count:5];
   v38 = 0;
-  v13 = [v11 contentsOfDirectoryAtURL:v7 includingPropertiesForKeys:v12 options:4 error:&v38];
+  v13 = [v11 contentsOfDirectoryAtURL:directoryCopy includingPropertiesForKeys:v12 options:4 error:&v38];
   v14 = v38;
 
   if (!v14)
   {
     v28 = v13;
     v31 = v10;
-    v32 = v8;
-    v29 = v9;
-    v30 = v7;
+    v32 = extensionCopy;
+    v29 = replyCopy;
+    v30 = directoryCopy;
     v36 = 0u;
     v37 = 0u;
     v34 = 0u;
@@ -90,9 +90,9 @@
           {
             if ([v22 BOOLValue])
             {
-              v24 = [v20 path];
-              v25 = [v24 lastPathComponent];
-              v26 = [v25 hasSuffix:v32];
+              path = [v20 path];
+              lastPathComponent = [path lastPathComponent];
+              v26 = [lastPathComponent hasSuffix:v32];
 
               if (v26)
               {
@@ -110,15 +110,15 @@
 
     v10 = v31;
     [v31 sortUsingComparator:&__block_literal_global_1];
-    v9 = v29;
-    v7 = v30;
-    v8 = v32;
+    replyCopy = v29;
+    directoryCopy = v30;
+    extensionCopy = v32;
     v14 = 0;
     v13 = v28;
   }
 
   v27 = [v10 copy];
-  v9[2](v9, v27, v14);
+  replyCopy[2](replyCopy, v27, v14);
 }
 
 int64_t __98__SessionFilterRecordingUpdater_filesSortedByCreationDateInDirectory_withPathExtension_withReply___block_invoke(id a1, NSURL *a2, NSURL *a3)
@@ -134,23 +134,23 @@ int64_t __98__SessionFilterRecordingUpdater_filesSortedByCreationDateInDirectory
   return v6;
 }
 
-- (void)deleteItemAtURL:(id)a3 withReply:(id)a4
+- (void)deleteItemAtURL:(id)l withReply:(id)reply
 {
-  v5 = a4;
-  v6 = a3;
+  replyCopy = reply;
+  lCopy = l;
   v7 = +[NSFileManager defaultManager];
   v9 = 0;
-  [v7 removeItemAtURL:v6 error:&v9];
+  [v7 removeItemAtURL:lCopy error:&v9];
 
   v8 = v9;
-  v5[2](v5, v8);
+  replyCopy[2](replyCopy, v8);
 }
 
-- (void)createFileAtURL:(id)a3 withReply:(id)a4
+- (void)createFileAtURL:(id)l withReply:(id)reply
 {
-  v5 = a4;
-  v6 = [a3 path];
-  v7 = open([v6 UTF8String], 513, 420);
+  replyCopy = reply;
+  path = [l path];
+  v7 = open([path UTF8String], 513, 420);
 
   if (v7 == -1)
   {
@@ -165,16 +165,16 @@ int64_t __98__SessionFilterRecordingUpdater_filesSortedByCreationDateInDirectory
   }
 
   v10 = v9;
-  v5[2](v5, v8);
+  replyCopy[2](replyCopy, v8);
 }
 
-- (void)closeFileWithFileHandle:(id)a3 withReply:(id)a4
+- (void)closeFileWithFileHandle:(id)handle withReply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  handleCopy = handle;
+  replyCopy = reply;
+  if (handleCopy)
   {
-    if (close([v6 fileDescriptor]) == -1)
+    if (close([handleCopy fileDescriptor]) == -1)
     {
       v8 = [[NSError alloc] initWithDomain:NSPOSIXErrorDomain code:*__error() userInfo:0];
     }
@@ -187,69 +187,69 @@ int64_t __98__SessionFilterRecordingUpdater_filesSortedByCreationDateInDirectory
 
   else
   {
-    v9 = [(SessionFilterRecordingUpdater *)self errorDomain];
+    errorDomain = [(SessionFilterRecordingUpdater *)self errorDomain];
     v11 = NSLocalizedDescriptionKey;
     v12 = @"No file handle";
     v10 = [NSDictionary dictionaryWithObjects:&v12 forKeys:&v11 count:1];
-    v8 = [NSError errorWithDomain:v9 code:0 userInfo:v10];
+    v8 = [NSError errorWithDomain:errorDomain code:0 userInfo:v10];
   }
 
-  v7[2](v7, v8);
+  replyCopy[2](replyCopy, v8);
 }
 
-- (void)appendData:(id)a3 toFileHandle:(id)a4 withReply:(id)a5
+- (void)appendData:(id)data toFileHandle:(id)handle withReply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dataCopy = data;
+  handleCopy = handle;
+  replyCopy = reply;
   v19 = 0;
-  if (!v9)
+  if (!handleCopy)
   {
-    v14 = [(SessionFilterRecordingUpdater *)self errorDomain];
+    errorDomain = [(SessionFilterRecordingUpdater *)self errorDomain];
     v20 = NSLocalizedDescriptionKey;
     v21 = @"No file handle";
     v15 = [NSDictionary dictionaryWithObjects:&v21 forKeys:&v20 count:1];
-    v12 = [NSError errorWithDomain:v14 code:0 userInfo:v15];
+    v12 = [NSError errorWithDomain:errorDomain code:0 userInfo:v15];
 
 LABEL_6:
     goto LABEL_8;
   }
 
   v18 = 0;
-  v11 = [v9 seekToEndReturningOffset:&v19 error:&v18];
+  v11 = [handleCopy seekToEndReturningOffset:&v19 error:&v18];
   v12 = v18;
   if (v11)
   {
     v17 = 0;
-    v13 = [v9 writeData:v8 error:&v17];
-    v14 = v17;
+    v13 = [handleCopy writeData:dataCopy error:&v17];
+    errorDomain = v17;
 
     if (!v13)
     {
-      v12 = v14;
+      v12 = errorDomain;
       goto LABEL_8;
     }
 
     v16 = 0;
-    [v9 getOffset:&v19 error:&v16];
+    [handleCopy getOffset:&v19 error:&v16];
     v12 = v16;
     goto LABEL_6;
   }
 
 LABEL_8:
-  v10[2](v10, v19, v12);
+  replyCopy[2](replyCopy, v19, v12);
 }
 
-- (void)fileExistsAtURL:(id)a3 isDirectory:(BOOL)a4 withReply:(id)a5
+- (void)fileExistsAtURL:(id)l isDirectory:(BOOL)directory withReply:(id)reply
 {
   v13 = 0;
-  v7 = a5;
-  v8 = a3;
+  replyCopy = reply;
+  lCopy = l;
   v9 = +[NSFileManager defaultManager];
-  v10 = [v8 path];
+  path = [lCopy path];
 
-  v11 = [v9 fileExistsAtPath:v10 isDirectory:&v13];
-  if (a4 == v13)
+  v11 = [v9 fileExistsAtPath:path isDirectory:&v13];
+  if (directory == v13)
   {
     v12 = v11;
   }
@@ -259,7 +259,7 @@ LABEL_8:
     v12 = 0;
   }
 
-  v7[2](v7, v12);
+  replyCopy[2](replyCopy, v12);
 }
 
 @end

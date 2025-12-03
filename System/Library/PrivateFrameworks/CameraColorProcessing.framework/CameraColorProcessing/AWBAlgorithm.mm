@@ -1,46 +1,46 @@
 @interface AWBAlgorithm
-+ (int)awbSensorCalibrationsLoad:(id)a3 idealColorCalibrations:(id)a4 to:(id)a5;
-+ (int)calculateSTRBKeyFromWideCamera:(id *)a3 moduleConfig:(id)a4 secondaryModuleConfig:(id)a5;
-+ (int)calculateSTRBKeyFromWideCameraLatticeModel:(id *)a3 moduleConfig:(id)a4 absoluteColorCalibrations:(id)a5 secondaryModuleConfig:(id)a6 secondaryAbsoluteColorCalibrations:(id)a7;
-+ (int)doAWBConfigLoad:(id)a3 to:(id)a4;
-+ (int)encodeSetFileIDForModuleConfig:(id)a3 setFileID:(unsigned int *)a4;
-+ (int)getColorCalibrationsUsingIdealColorCalbrations:(id)a3 absoluteColorCalibrations:(id)a4 colorCalibrationsOut:(id *)a5 awbConfig:(id)a6;
-+ (int)getInternalAWBMetadataForMIWB:(id)a3 cameraInfo:(id)a4 metadata:(id)a5 validRect:(id)a6 secondaryModuleConfig:(id)a7 secondaryCameraInfo:(id)a8;
-+ (int)getInternalAWBMetadataForMIWB:(id)a3 cameraInfo:(id)a4 metadata:(id)a5 validRect:(id)a6 secondaryModuleConfig:(id)a7 secondaryCameraInfo:(id)a8 platformID:(int)a9;
-+ (int)populateSlaveConfigWithModuleConfigIfColorMatchingModelExistsInPrimaryAWBConfig:(id)a3 secondaryAWBConfig:(id)a4 secondaryIdealColorCals:(id)a5 secondaryAbsoluteColorCals:(id)a6 secondarySetFileID:(unsigned int)a7 secondarySensorConfig:(SensorConfigAWBParams *)a8;
-+ (int)translateAWBGainsToSecondaryPortType:(id)a3 cameraInfo:(id)a4 metadata:(id)a5 validRect:(id)a6 secondaryModuleConfig:(id)a7 secondaryCameraInfo:(id)a8 primaryRGain:(float)a9 primaryBGain:(float)a10 secondaryChannelID:(unsigned int)a11 secondaryRGain:(float *)a12 secondaryBGain:(float *)a13;
-+ (void)calculateNonComboGainsFromComboGains:(unsigned int)a3[3] awbAlgorithm:(CAWBAFEH14 *)a4 gains:(unsigned int)a5[3];
++ (int)awbSensorCalibrationsLoad:(id)load idealColorCalibrations:(id)calibrations to:(id)to;
++ (int)calculateSTRBKeyFromWideCamera:(id *)camera moduleConfig:(id)config secondaryModuleConfig:(id)moduleConfig;
++ (int)calculateSTRBKeyFromWideCameraLatticeModel:(id *)model moduleConfig:(id)config absoluteColorCalibrations:(id)calibrations secondaryModuleConfig:(id)moduleConfig secondaryAbsoluteColorCalibrations:(id)colorCalibrations;
++ (int)doAWBConfigLoad:(id)load to:(id)to;
++ (int)encodeSetFileIDForModuleConfig:(id)config setFileID:(unsigned int *)d;
++ (int)getColorCalibrationsUsingIdealColorCalbrations:(id)calbrations absoluteColorCalibrations:(id)calibrations colorCalibrationsOut:(id *)out awbConfig:(id)config;
++ (int)getInternalAWBMetadataForMIWB:(id)b cameraInfo:(id)info metadata:(id)metadata validRect:(id)rect secondaryModuleConfig:(id)config secondaryCameraInfo:(id)cameraInfo;
++ (int)getInternalAWBMetadataForMIWB:(id)b cameraInfo:(id)info metadata:(id)metadata validRect:(id)rect secondaryModuleConfig:(id)config secondaryCameraInfo:(id)cameraInfo platformID:(int)d;
++ (int)populateSlaveConfigWithModuleConfigIfColorMatchingModelExistsInPrimaryAWBConfig:(id)config secondaryAWBConfig:(id)bConfig secondaryIdealColorCals:(id)cals secondaryAbsoluteColorCals:(id)colorCals secondarySetFileID:(unsigned int)d secondarySensorConfig:(SensorConfigAWBParams *)sensorConfig;
++ (int)translateAWBGainsToSecondaryPortType:(id)type cameraInfo:(id)info metadata:(id)metadata validRect:(id)rect secondaryModuleConfig:(id)config secondaryCameraInfo:(id)cameraInfo primaryRGain:(float)gain primaryBGain:(float)self0 secondaryChannelID:(unsigned int)self1 secondaryRGain:(float *)self2 secondaryBGain:(float *)self3;
++ (void)calculateNonComboGainsFromComboGains:(unsigned int)gains[3] awbAlgorithm:(CAWBAFEH14 *)algorithm gains:(unsigned int)a5[3];
 - ($938B03310D06493B2963E5A84CB75A7E)awbComboGains;
 - ($938B03310D06493B2963E5A84CB75A7E)awbComboGainsNormalized;
 - ($938B03310D06493B2963E5A84CB75A7E)awbGains;
-- (AWBAlgorithm)initWithAWBObject:(id)a3;
-- (AWBAlgorithm)initWithMetalContext:(id)a3 platformID:(int)a4;
+- (AWBAlgorithm)initWithAWBObject:(id)object;
+- (AWBAlgorithm)initWithMetalContext:(id)context platformID:(int)d;
 - (CGRect)tileStatsROIRect;
 - (id).cxx_construct;
-- (int)_calculateComboGainsAndNormalizedGainsFromAWBGains:(id)a3 awbComboGains:(id)a4 colorCalGains:(id)a5;
-- (int)_processSkyMask:(void *)a3 skyMaskWidth:(int)a4 skyMaskHeight:(int)a5 cropRectFromSourceDict:(id)a6;
+- (int)_calculateComboGainsAndNormalizedGainsFromAWBGains:(id)gains awbComboGains:(id)comboGains colorCalGains:(id)calGains;
+- (int)_processSkyMask:(void *)mask skyMaskWidth:(int)width skyMaskHeight:(int)height cropRectFromSourceDict:(id)dict;
 - (int)_updateHRGainDownRatioMetadata;
-- (int)awbConfigLoad:(id)a3 to:(CAWBAFE *)a4;
-- (int)calculateEIT:(id)a3 result:(unint64_t *)a4;
-- (int)calculateInternalAWBMetadataForMIWB:(float)a3 bGain:(float)a4 rSkinGain:(float)a5 bSkinGain:(float)a6 cct:(float)a7 internalMetadata:(id)a8;
-- (int)configFaceMetadata:(id)a3 awbParams:(id)a4;
-- (int)configFallbackMetadata:(id)a3;
-- (int)configFlashRFCMetadata:(id)a3 cameraInfo:(id)a4 moduleConfig:(id)a5;
-- (int)configFlickerDetectionMetadata:(id)a3 moduleConfig:(id)a4;
-- (int)configPortTypeMetadata:(id)a3;
-- (int)configWithModuleConfig:(id)a3 metadata:(id)a4 cameraInfo:(id)a5 awbParams:(id)a6;
-- (int)initTuningParameters:(id)a3;
+- (int)awbConfigLoad:(id)load to:(CAWBAFE *)to;
+- (int)calculateEIT:(id)t result:(unint64_t *)result;
+- (int)calculateInternalAWBMetadataForMIWB:(float)b bGain:(float)gain rSkinGain:(float)skinGain bSkinGain:(float)bSkinGain cct:(float)cct internalMetadata:(id)metadata;
+- (int)configFaceMetadata:(id)metadata awbParams:(id)params;
+- (int)configFallbackMetadata:(id)metadata;
+- (int)configFlashRFCMetadata:(id)metadata cameraInfo:(id)info moduleConfig:(id)config;
+- (int)configFlickerDetectionMetadata:(id)metadata moduleConfig:(id)config;
+- (int)configPortTypeMetadata:(id)metadata;
+- (int)configWithModuleConfig:(id)config metadata:(id)metadata cameraInfo:(id)info awbParams:(id)params;
+- (int)initTuningParameters:(id)parameters;
 - (int)process;
-- (int)translateAWBGainsToSecondaryChannelID:(unsigned int)a3[3] secondaryChannelID:(unsigned int)a4 secondaryConfig:(SensorConfigAWBParams *)a5 secondaryAWBParams:(sSlaveCameraAWBParam *)a6;
+- (int)translateAWBGainsToSecondaryChannelID:(unsigned int)d[3] secondaryChannelID:(unsigned int)iD secondaryConfig:(SensorConfigAWBParams *)config secondaryAWBParams:(sSlaveCameraAWBParam *)params;
 - (uint64_t)_updateHRGainDownRatioMetadata;
 - (void)dealloc;
 @end
 
 @implementation AWBAlgorithm
 
-- (AWBAlgorithm)initWithMetalContext:(id)a3 platformID:(int)a4
+- (AWBAlgorithm)initWithMetalContext:(id)context platformID:(int)d
 {
-  v6 = a3;
+  contextCopy = context;
   v7 = MEMORY[0x1E695FF58];
   if (*MEMORY[0x1E695FF58] == 1)
   {
@@ -57,9 +57,9 @@
     goto LABEL_13;
   }
 
-  if (v6)
+  if (contextCopy)
   {
-    objc_storeStrong(&v8->_metalContext, a3);
+    objc_storeStrong(&v8->_metalContext, context);
     if (![(AWBAlgorithm *)v9 _createShaders])
     {
       operator new();
@@ -94,9 +94,9 @@ LABEL_13:
   return 0;
 }
 
-- (AWBAlgorithm)initWithAWBObject:(id)a3
+- (AWBAlgorithm)initWithAWBObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v5 = MEMORY[0x1E695FF58];
   if (*MEMORY[0x1E695FF58] == 1)
   {
@@ -106,7 +106,7 @@ LABEL_13:
   v10.receiver = self;
   v10.super_class = AWBAlgorithm;
   v6 = [(AWBAlgorithm *)&v10 init];
-  if (v6 && (v7 = [v4 pointerValue], (v6->_AWBAlgorithmObj = v7) != 0))
+  if (v6 && (v7 = [objectCopy pointerValue], (v6->_AWBAlgorithmObj = v7) != 0))
   {
     v8 = v6;
   }
@@ -125,19 +125,19 @@ LABEL_13:
   return v8;
 }
 
-- (int)configWithModuleConfig:(id)a3 metadata:(id)a4 cameraInfo:(id)a5 awbParams:(id)a6
+- (int)configWithModuleConfig:(id)config metadata:(id)metadata cameraInfo:(id)info awbParams:(id)params
 {
-  v9 = a3;
-  v96 = a4;
-  v88 = a5;
-  v91 = a6;
-  v87 = v9;
+  configCopy = config;
+  metadataCopy = metadata;
+  infoCopy = info;
+  paramsCopy = params;
+  v87 = configCopy;
   if (*MEMORY[0x1E695FF58] == 1)
   {
     kdebug_trace();
   }
 
-  if (![v96 count])
+  if (![metadataCopy count])
   {
     v80 = v85;
     LODWORD(v79) = 0;
@@ -151,20 +151,20 @@ LABEL_43:
   self->_awbGains.bGain = 0;
   *&self->_awbComboGains.rGain = 0u;
   *&self->_awbComboGainsNormalized.gGain = 0u;
-  v10 = [v91 digitalFlash];
+  digitalFlash = [paramsCopy digitalFlash];
   digitalFlash = self->_digitalFlash;
-  self->_digitalFlash = v10;
+  self->_digitalFlash = digitalFlash;
 
   *&self->_numTilesX = 0x2000000020;
   v107[0] = 0;
-  [v96 cmi_floatValueForKey:*MEMORY[0x1E6991090] defaultValue:v107 found:COERCE_DOUBLE(COERCE_UNSIGNED_INT(1.0) | 0x2000000000)];
+  [metadataCopy cmi_floatValueForKey:*MEMORY[0x1E6991090] defaultValue:v107 found:COERCE_DOUBLE(COERCE_UNSIGNED_INT(1.0) | 0x2000000000)];
   self->_sMetaData.ae.luxLevel = v12;
   v13 = [MEMORY[0x1E696AD98] numberWithDouble:v12];
   [v13 doubleValue];
   *&v14 = v14;
   self->_sMetaData.ae.luxLevel = *&v14;
 
-  if ((v107[0] & 1) == 0 || (self->_sMetaData.ae.gainDigi.v16 = [v96 cmi_intValueForKey:*MEMORY[0x1E6990CD8] defaultValue:1 found:v107], (v107[0] & 1) == 0) || (self->_sMetaData.ae.gainAnal.v16 = objc_msgSend(v96, "cmi_intValueForKey:defaultValue:found:", *MEMORY[0x1E6990CC8], 1, v107), (v107[0] & 1) == 0) || (LODWORD(v15) = 1.0, objc_msgSend(v96, "cmi_floatValueForKey:defaultValue:found:", *MEMORY[0x1E6990CD0], v107, v15), (v107[0] & 1) == 0) || (self->_sMetaData.ae.exposureTime = (v16 * 1000000.0), self->_sMetaData.ae.gainDigiSensor.v16 = objc_msgSend(v96, "cmi_intValueForKey:defaultValue:found:", *MEMORY[0x1E6990CE0], 1, v107), (v107[0] & 1) == 0) || (LODWORD(v17) = 1.0, objc_msgSend(v96, "cmi_floatValueForKey:defaultValue:found:", *MEMORY[0x1E6990FB0], v107, v17), (v107[0] & 1) == 0) || (self->_sMetaData.frameRate = vcvts_n_u32_f32(v18, 8uLL), self->_sMetaData.flash.flashCaptureCount = objc_msgSend(v96, "cmi_BOOLValueForKey:defaultValue:found:", *MEMORY[0x1E6991028], 0, v107), (v107[0] & 1) == 0) || (LODWORD(v19) = 1.0, objc_msgSend(v96, "cmi_floatValueForKey:defaultValue:found:", *MEMORY[0x1E69910B8], 0, v19), self->_sMetaData.ae.inverseBinningGainFactor = vcvts_n_s32_f32(v20, 8uLL), objc_msgSend(v9, "objectForKeyedSubscript:", @"Exposure"), v21 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v21, "objectForKeyedSubscript:", @"LuxModel"), v22 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v22, "objectForKeyedSubscript:", @"Scale"), v23 = objc_claimAutoreleasedReturnValue(), v23, v22, v21, !v23) || (objc_msgSend(v9, "objectForKeyedSubscript:", @"Exposure"), v24 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v24, "objectForKeyedSubscript:", @"LuxModel"), v25 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v25, "objectForKeyedSubscript:", @"Scale"), v26 = objc_claimAutoreleasedReturnValue(), self->_sMetaData.ae.luxCalcParams.scale = objc_msgSend(v26, "intValue"), v26, v25, v24, objc_msgSend(v9, "objectForKeyedSubscript:", @"Exposure"), v27 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v27, "objectForKeyedSubscript:", @"LuxModel"), v28 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v28, "objectForKeyedSubscript:", @"ScaleShift"), v29 = objc_claimAutoreleasedReturnValue(), v29, v28, v27, !v29))
+  if ((v107[0] & 1) == 0 || (self->_sMetaData.ae.gainDigi.v16 = [metadataCopy cmi_intValueForKey:*MEMORY[0x1E6990CD8] defaultValue:1 found:v107], (v107[0] & 1) == 0) || (self->_sMetaData.ae.gainAnal.v16 = objc_msgSend(metadataCopy, "cmi_intValueForKey:defaultValue:found:", *MEMORY[0x1E6990CC8], 1, v107), (v107[0] & 1) == 0) || (LODWORD(v15) = 1.0, objc_msgSend(metadataCopy, "cmi_floatValueForKey:defaultValue:found:", *MEMORY[0x1E6990CD0], v107, v15), (v107[0] & 1) == 0) || (self->_sMetaData.ae.exposureTime = (v16 * 1000000.0), self->_sMetaData.ae.gainDigiSensor.v16 = objc_msgSend(metadataCopy, "cmi_intValueForKey:defaultValue:found:", *MEMORY[0x1E6990CE0], 1, v107), (v107[0] & 1) == 0) || (LODWORD(v17) = 1.0, objc_msgSend(metadataCopy, "cmi_floatValueForKey:defaultValue:found:", *MEMORY[0x1E6990FB0], v107, v17), (v107[0] & 1) == 0) || (self->_sMetaData.frameRate = vcvts_n_u32_f32(v18, 8uLL), self->_sMetaData.flash.flashCaptureCount = objc_msgSend(metadataCopy, "cmi_BOOLValueForKey:defaultValue:found:", *MEMORY[0x1E6991028], 0, v107), (v107[0] & 1) == 0) || (LODWORD(v19) = 1.0, objc_msgSend(metadataCopy, "cmi_floatValueForKey:defaultValue:found:", *MEMORY[0x1E69910B8], 0, v19), self->_sMetaData.ae.inverseBinningGainFactor = vcvts_n_s32_f32(v20, 8uLL), objc_msgSend(configCopy, "objectForKeyedSubscript:", @"Exposure"), v21 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v21, "objectForKeyedSubscript:", @"LuxModel"), v22 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v22, "objectForKeyedSubscript:", @"Scale"), v23 = objc_claimAutoreleasedReturnValue(), v23, v22, v21, !v23) || (objc_msgSend(configCopy, "objectForKeyedSubscript:", @"Exposure"), v24 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v24, "objectForKeyedSubscript:", @"LuxModel"), v25 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v25, "objectForKeyedSubscript:", @"Scale"), v26 = objc_claimAutoreleasedReturnValue(), self->_sMetaData.ae.luxCalcParams.scale = objc_msgSend(v26, "intValue"), v26, v25, v24, objc_msgSend(configCopy, "objectForKeyedSubscript:", @"Exposure"), v27 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v27, "objectForKeyedSubscript:", @"LuxModel"), v28 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v28, "objectForKeyedSubscript:", @"ScaleShift"), v29 = objc_claimAutoreleasedReturnValue(), v29, v28, v27, !v29))
   {
     v80 = v85;
     LODWORD(v79) = 0;
@@ -172,12 +172,12 @@ LABEL_43:
     goto LABEL_43;
   }
 
-  v30 = [v9 objectForKeyedSubscript:@"Exposure"];
+  v30 = [configCopy objectForKeyedSubscript:@"Exposure"];
   v31 = [v30 objectForKeyedSubscript:@"LuxModel"];
   v32 = [v31 objectForKeyedSubscript:@"ScaleShift"];
   self->_sMetaData.ae.luxCalcParams.scaleShift = [v32 intValue];
 
-  [(AWBAlgorithm *)self calculateEIT:v96 result:&self->_sMetaData.ae.currentEIT];
+  [(AWBAlgorithm *)self calculateEIT:metadataCopy result:&self->_sMetaData.ae.currentEIT];
   *&self->_sMetaData.flash.flashStatusAE = 0x100000001;
   self->_sMetaData.flash.strobeStatus = 1;
   self->_sMetaData.flash.flashCaptureSequence = 0;
@@ -186,7 +186,7 @@ LABEL_43:
   self->_sMetaData.awb.isDefaultSetting = 1;
   self->_sMetaData.maxLSgainUnadjusted = 0x2000;
   self->_sMetaData.isReplay = 1;
-  [(AWBAlgorithm *)self configPortTypeMetadata:v96];
+  [(AWBAlgorithm *)self configPortTypeMetadata:metadataCopy];
   self->_sMetaData.ae.UBMisc.awbReflow.bGenerateReflowAWB = [(NSNumber *)self->_digitalFlash intValue]!= 0;
   if (((*(self->_AWBAlgorithmObj->var0 + 2))(self->_AWBAlgorithmObj, 1) & 1) == 0)
   {
@@ -197,7 +197,7 @@ LABEL_43:
     goto LABEL_30;
   }
 
-  v102 = [v9 objectForKeyedSubscript:@"AutoWhiteBalance"];
+  v102 = [configCopy objectForKeyedSubscript:@"AutoWhiteBalance"];
   if (!v102)
   {
     goto LABEL_47;
@@ -220,7 +220,7 @@ LABEL_43:
     goto LABEL_23;
   }
 
-  v35 = [v88 objectForKeyedSubscript:*MEMORY[0x1E6990C50]];
+  v35 = [infoCopy objectForKeyedSubscript:*MEMORY[0x1E6990C50]];
   v99 = v35;
   if (!v35)
   {
@@ -277,7 +277,7 @@ LABEL_47:
           FigDebugAssert3();
           v34 = FigSignalErrorAtGM();
           v65 = 6;
-          v9 = v87;
+          configCopy = v87;
           v67 = v99;
           v66 = 0;
           goto LABEL_23;
@@ -345,16 +345,16 @@ LABEL_47:
     v97 = 0;
   }
 
-  v9 = v87;
+  configCopy = v87;
   v67 = v99;
 LABEL_23:
 
   if (v65 != 6)
   {
     CAWBAFE::SetDigitalFlashBehaviorMode(self->_AWBAlgorithmObj, [(NSNumber *)self->_digitalFlash intValue]);
-    v68 = [(AWBAlgorithm *)self initTuningParameters:v96];
+    v68 = [(AWBAlgorithm *)self initTuningParameters:metadataCopy];
     v34 = v68;
-    if (v68 || (v68 = [(AWBAlgorithm *)self configFallbackMetadata:v96], (v34 = v68) != 0) || (v68 = [(AWBAlgorithm *)self configFaceMetadata:v96 awbParams:v91], (v34 = v68) != 0) || (v68 = [(AWBAlgorithm *)self configFlickerDetectionMetadata:v96 moduleConfig:v9], (v34 = v68) != 0) || (v68 = [(AWBAlgorithm *)self configFlashRFCMetadata:v96 cameraInfo:v88 moduleConfig:v9], (v34 = v68) != 0))
+    if (v68 || (v68 = [(AWBAlgorithm *)self configFallbackMetadata:metadataCopy], (v34 = v68) != 0) || (v68 = [(AWBAlgorithm *)self configFaceMetadata:metadataCopy awbParams:paramsCopy], (v34 = v68) != 0) || (v68 = [(AWBAlgorithm *)self configFlickerDetectionMetadata:metadataCopy moduleConfig:configCopy], (v34 = v68) != 0) || (v68 = [(AWBAlgorithm *)self configFlashRFCMetadata:metadataCopy cameraInfo:infoCopy moduleConfig:configCopy], (v34 = v68) != 0))
     {
       v80 = v85;
       LODWORD(v79) = v68;
@@ -382,35 +382,35 @@ LABEL_30:
 
     if (v71)
     {
-      v103 = [v91 imageTex];
-      v101 = [v91 clippedTex];
-      v100 = [v91 lscGainsTex];
-      v98 = [v91 skinMask];
-      v95 = [v91 skyMask];
-      v93 = [v91 firstPixel];
-      [v93 intValue];
-      v90 = [v91 cfaLayout];
-      [v90 intValue];
-      v86 = [v91 downsizeFactor];
-      [v86 intValue];
-      v84 = [v91 digitalFlash];
-      [v84 intValue];
-      v83 = [v91 skipDemosaic];
-      [v83 intValue];
-      v82 = [v91 lscMaxGain];
-      [v82 floatValue];
-      v81 = [v91 faceAssistedBehaviorMode];
-      [v81 intValue];
-      v72 = [v91 validRectInSensorReadoutCoords];
-      v73 = stringFromCGRectDictionaryRepresentation(v72);
-      v74 = [v91 validRectInBufferCoords];
-      v75 = stringFromCGRectDictionaryRepresentation(v74);
-      v76 = [v91 regionOfInterestRectInBufferCoords];
-      v106 = stringFromCGRectDictionaryRepresentation(v76);
+      imageTex = [paramsCopy imageTex];
+      clippedTex = [paramsCopy clippedTex];
+      lscGainsTex = [paramsCopy lscGainsTex];
+      skinMask = [paramsCopy skinMask];
+      skyMask = [paramsCopy skyMask];
+      firstPixel = [paramsCopy firstPixel];
+      [firstPixel intValue];
+      cfaLayout = [paramsCopy cfaLayout];
+      [cfaLayout intValue];
+      downsizeFactor = [paramsCopy downsizeFactor];
+      [downsizeFactor intValue];
+      digitalFlash2 = [paramsCopy digitalFlash];
+      [digitalFlash2 intValue];
+      skipDemosaic = [paramsCopy skipDemosaic];
+      [skipDemosaic intValue];
+      lscMaxGain = [paramsCopy lscMaxGain];
+      [lscMaxGain floatValue];
+      faceAssistedBehaviorMode = [paramsCopy faceAssistedBehaviorMode];
+      [faceAssistedBehaviorMode intValue];
+      validRectInSensorReadoutCoords = [paramsCopy validRectInSensorReadoutCoords];
+      v73 = stringFromCGRectDictionaryRepresentation(validRectInSensorReadoutCoords);
+      validRectInBufferCoords = [paramsCopy validRectInBufferCoords];
+      v75 = stringFromCGRectDictionaryRepresentation(validRectInBufferCoords);
+      regionOfInterestRectInBufferCoords = [paramsCopy regionOfInterestRectInBufferCoords];
+      v106 = stringFromCGRectDictionaryRepresentation(regionOfInterestRectInBufferCoords);
       v77 = v105;
       _os_log_send_and_compose_impl();
 
-      v9 = v87;
+      configCopy = v87;
     }
 
     else
@@ -429,18 +429,18 @@ LABEL_30:
   return v34;
 }
 
-- (int)calculateEIT:(id)a3 result:(unint64_t *)a4
+- (int)calculateEIT:(id)t result:(unint64_t *)result
 {
-  v5 = a3;
-  v6 = v5;
+  tCopy = t;
+  v6 = tCopy;
   v18 = 0;
-  if (v5 && a4)
+  if (tCopy && result)
   {
-    v7 = [v5 cmi_intValueForKey:*MEMORY[0x1E6991158] defaultValue:0 found:&v18];
+    v7 = [tCopy cmi_intValueForKey:*MEMORY[0x1E6991158] defaultValue:0 found:&v18];
     if (v18 & 1) != 0 && (v8 = v7, v9 = [v6 cmi_intValueForKey:*MEMORY[0x1E6990ED8] defaultValue:0 found:&v18], (v18) && (v10 = v9, objc_msgSend(v6, "cmi_floatValueForKey:defaultValue:found:", *MEMORY[0x1E6991170], &v18, 0.0), (v18) && (v12 = v11, objc_msgSend(v6, "cmi_floatValueForKey:defaultValue:found:", *MEMORY[0x1E6991160], &v18, 0.0), (v18) && (v14 = v13, objc_msgSend(v6, "cmi_doubleValueForKey:defaultValue:found:", *MEMORY[0x1E6990FC8], &v18, 0.0), (v18))
     {
       v16 = 0;
-      *a4 = (v15 * 1000000.0 * (((vcvts_n_f32_s32(v8, 8uLL) * vcvts_n_f32_s32(v10, 8uLL)) * v12) * v14));
+      *result = (v15 * 1000000.0 * (((vcvts_n_f32_s32(v8, 8uLL) * vcvts_n_f32_s32(v10, 8uLL)) * v12) * v14));
     }
 
     else
@@ -459,9 +459,9 @@ LABEL_30:
   return v16;
 }
 
-- (int)calculateInternalAWBMetadataForMIWB:(float)a3 bGain:(float)a4 rSkinGain:(float)a5 bSkinGain:(float)a6 cct:(float)a7 internalMetadata:(id)a8
+- (int)calculateInternalAWBMetadataForMIWB:(float)b bGain:(float)gain rSkinGain:(float)skinGain bSkinGain:(float)bSkinGain cct:(float)cct internalMetadata:(id)metadata
 {
-  v16 = a8;
+  metadataCopy = metadata;
   v39 = 0;
   v40 = 0;
   v38 = 0.0;
@@ -471,39 +471,39 @@ LABEL_30:
   v34 = 4096;
   v33 = 4096;
   CAWBAFE::GetSensorCalGain(self->_AWBAlgorithmObj, &v35);
-  CAWBAFE::GetNewCSensorCalGains(self->_AWBAlgorithmObj, &v34, &v33, a7, &v35);
+  CAWBAFE::GetNewCSensorCalGains(self->_AWBAlgorithmObj, &v34, &v33, cct, &v35);
   LOWORD(v9) = v34;
   LOWORD(v8) = v33;
-  CAWBAFE::ComputeHistWPFromChannelGains(self->_AWBAlgorithmObj, a3, a4, &v40, &v40 + 1, v17, v18);
+  CAWBAFE::ComputeHistWPFromChannelGains(self->_AWBAlgorithmObj, b, gain, &v40, &v40 + 1, v17, v18);
   LODWORD(v19) = 4.0;
   *&v20 = v9;
-  v21 = ((a5 * 4096.0) * 4.0) / v9;
-  v22 = ((a6 * 4096.0) * 4.0) / v8;
+  v21 = ((skinGain * 4096.0) * 4.0) / v9;
+  v22 = ((bSkinGain * 4096.0) * 4.0) / v8;
   CAWBAFE::ComputeHistWPFromChannelGains(self->_AWBAlgorithmObj, v21, v22, &v39, &v39 + 1, v19, v20);
   CAWBAFE::GetDaylightScore(self->_AWBAlgorithmObj, &v36);
-  CAWBAFE::CalculateSkyWhitePoint(self->_AWBAlgorithmObj, a7, &v40, &v37);
+  CAWBAFE::CalculateSkyWhitePoint(self->_AWBAlgorithmObj, cct, &v40, &v37);
   CAWBAFE::CalculateSkinWeightForSTF(self->_AWBAlgorithmObj, 0, &v40, &v39, &v36 + 1);
-  if (v16)
+  if (metadataCopy)
   {
     v23 = [MEMORY[0x1E696AD98] numberWithInt:((v21 * 4096.0) + 0.5)];
-    [v16 setObject:v23 forKeyedSubscript:@"MIWBSkinNonComboRGain"];
+    [metadataCopy setObject:v23 forKeyedSubscript:@"MIWBSkinNonComboRGain"];
 
     v24 = [MEMORY[0x1E696AD98] numberWithInt:((v22 * 4096.0) + 0.5)];
-    [v16 setObject:v24 forKeyedSubscript:@"MIWBSkinNonComboBGain"];
+    [metadataCopy setObject:v24 forKeyedSubscript:@"MIWBSkinNonComboBGain"];
 
     v25 = [MEMORY[0x1E696AD98] numberWithInt:((*&v37 * 4096.0) + 0.5)];
-    [v16 setObject:v25 forKeyedSubscript:@"MIWBSkyRGain"];
+    [metadataCopy setObject:v25 forKeyedSubscript:@"MIWBSkyRGain"];
 
     v26 = [MEMORY[0x1E696AD98] numberWithInt:((v38 * 4096.0) + 0.5)];
-    [v16 setObject:v26 forKeyedSubscript:@"MIWBSkyBGain"];
+    [metadataCopy setObject:v26 forKeyedSubscript:@"MIWBSkyBGain"];
 
     LODWORD(v27) = HIDWORD(v36);
     v28 = [MEMORY[0x1E696AD98] numberWithFloat:v27];
-    [v16 setObject:v28 forKeyedSubscript:@"MIWBSkinWeight"];
+    [metadataCopy setObject:v28 forKeyedSubscript:@"MIWBSkinWeight"];
 
     LODWORD(v29) = v36;
     v30 = [MEMORY[0x1E696AD98] numberWithFloat:v29];
-    [v16 setObject:v30 forKeyedSubscript:@"DaylightScore"];
+    [metadataCopy setObject:v30 forKeyedSubscript:@"DaylightScore"];
 
     v31 = 0;
   }
@@ -517,12 +517,12 @@ LABEL_30:
   return v31;
 }
 
-- (int)translateAWBGainsToSecondaryChannelID:(unsigned int)a3[3] secondaryChannelID:(unsigned int)a4 secondaryConfig:(SensorConfigAWBParams *)a5 secondaryAWBParams:(sSlaveCameraAWBParam *)a6
+- (int)translateAWBGainsToSecondaryChannelID:(unsigned int)d[3] secondaryChannelID:(unsigned int)iD secondaryConfig:(SensorConfigAWBParams *)config secondaryAWBParams:(sSlaveCameraAWBParam *)params
 {
   AWBAlgorithmObj = self->_AWBAlgorithmObj;
   if (AWBAlgorithmObj)
   {
-    v9 = a4;
+    iDCopy = iD;
     v17 = 0;
     v18 = &v17;
     v19 = 0x2020000000;
@@ -543,15 +543,15 @@ LABEL_30:
     if (v11)
     {
       v12 = v11() > 11;
-      (*(AWBAlgorithmObj->var0 + 5))(AWBAlgorithmObj, a3, v9, a5, a6, 0, v12);
+      (*(AWBAlgorithmObj->var0 + 5))(AWBAlgorithmObj, d, iDCopy, config, params, 0, v12);
       return 0;
     }
 
     else
     {
-      v14 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v15 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"FigCapturePlatformID soft_FigCapturePlatformIdentifier()"];
-      [v14 handleFailureInFunction:v15 file:@"AWBAlgorithm.mm" lineNumber:52 description:{@"%s", dlerror()}];
+      [currentHandler handleFailureInFunction:v15 file:@"AWBAlgorithm.mm" lineNumber:52 description:{@"%s", dlerror()}];
 
       __break(1u);
     }
@@ -566,18 +566,18 @@ LABEL_30:
   return result;
 }
 
-- (int)initTuningParameters:(id)a3
+- (int)initTuningParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   v5 = MEMORY[0x1E695FF58];
   if (*MEMORY[0x1E695FF58] == 1)
   {
     kdebug_trace();
   }
 
-  if ([v4 count])
+  if ([parametersCopy count])
   {
-    v6 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69910A8]];
+    v6 = [parametersCopy objectForKeyedSubscript:*MEMORY[0x1E69910A8]];
     if ([v6 isEqual:*MEMORY[0x1E6990C80]] & 1) != 0 || (objc_msgSend(v6, "isEqual:", *MEMORY[0x1E6990C90]) & 1) != 0 || (objc_msgSend(v6, "isEqual:", *MEMORY[0x1E6990C98]))
     {
       v7 = 0;
@@ -633,16 +633,16 @@ LABEL_9:
   return v13;
 }
 
-- (int)configFaceMetadata:(id)a3 awbParams:(id)a4
+- (int)configFaceMetadata:(id)metadata awbParams:(id)params
 {
-  v5 = a3;
-  v6 = a4;
+  metadataCopy = metadata;
+  paramsCopy = params;
   memset(v135, 0, 44);
   bzero(__src, 0x5F0uLL);
-  v113 = v5;
-  dict = [v6 validRectInBufferCoords];
-  v115 = [v6 regionOfInterestRectInBufferCoords];
-  v117 = [v6 faceAssistedBehaviorMode];
+  v113 = metadataCopy;
+  dict = [paramsCopy validRectInBufferCoords];
+  regionOfInterestRectInBufferCoords = [paramsCopy regionOfInterestRectInBufferCoords];
+  faceAssistedBehaviorMode = [paramsCopy faceAssistedBehaviorMode];
   v7 = *(MEMORY[0x1E695F050] + 16);
   rect.origin = *MEMORY[0x1E695F050];
   rect.size = v7;
@@ -653,11 +653,11 @@ LABEL_9:
   *&v130.a = *MEMORY[0x1E695EFD0];
   *&v130.c = v9;
   *&v130.tx = *(MEMORY[0x1E695EFD0] + 32);
-  v10 = [v5 objectForKeyedSubscript:*MEMORY[0x1E6991108]];
-  v11 = [v10 intValue];
+  v10 = [metadataCopy objectForKeyedSubscript:*MEMORY[0x1E6991108]];
+  intValue = [v10 intValue];
 
-  v12 = v117;
-  if (!v117)
+  v12 = faceAssistedBehaviorMode;
+  if (!faceAssistedBehaviorMode)
   {
     LODWORD(v88) = 0;
     FigDebugAssert3();
@@ -672,7 +672,7 @@ LABEL_9:
     kdebug_trace();
   }
 
-  if (![v5 count])
+  if (![metadataCopy count])
   {
     FigDebugAssert3();
 LABEL_91:
@@ -688,12 +688,12 @@ LABEL_91:
     goto LABEL_91;
   }
 
-  if (!v115)
+  if (!regionOfInterestRectInBufferCoords)
   {
     goto LABEL_11;
   }
 
-  if (!CGRectMakeWithDictionaryRepresentation(v115, &v131))
+  if (!CGRectMakeWithDictionaryRepresentation(regionOfInterestRectInBufferCoords, &v131))
   {
     FigDebugAssert3();
     goto LABEL_91;
@@ -713,24 +713,24 @@ LABEL_91:
   }
 
 LABEL_11:
-  [(GeometryUtilities *)v5 getTransformCropRectFromSensorCoordsToValidBufferCoordsWithMetadata:rect.origin.x validBufferRect:rect.origin.y, rect.size.width, rect.size.height];
+  [(GeometryUtilities *)metadataCopy getTransformCropRectFromSensorCoordsToValidBufferCoordsWithMetadata:rect.origin.x validBufferRect:rect.origin.y, rect.size.width, rect.size.height];
   v130 = v125;
-  v13 = [v5 objectForKeyedSubscript:*MEMORY[0x1E6990FB8]];
+  v13 = [metadataCopy objectForKeyedSubscript:*MEMORY[0x1E6990FB8]];
   v119 = v13;
   if (v13 && ([v13 objectForKeyedSubscript:*MEMORY[0x1E6990E98]], (v14 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v112 = v6;
+    v112 = paramsCopy;
     v120 = v14;
-    v15 = [v14 objectForKeyedSubscript:*MEMORY[0x1E6990EC0]];
-    if ([v15 count])
+    faceAssistedSkinGainsToMatch = [v14 objectForKeyedSubscript:*MEMORY[0x1E6990EC0]];
+    if ([faceAssistedSkinGainsToMatch count])
     {
-      v16 = [v15 sortedArrayUsingComparator:&__block_literal_global_0];
+      v16 = [faceAssistedSkinGainsToMatch sortedArrayUsingComparator:&__block_literal_global_0];
       v17 = v16;
       if (v16 && [v16 count])
       {
         v18 = 0;
         v111 = *MEMORY[0x1E69910D8];
-        if (v11 == 2324)
+        if (intValue == 2324)
         {
           v19 = v8;
         }
@@ -830,28 +830,28 @@ LABEL_84:
             break;
           }
 
-          v46 = [v44 unsignedIntValue];
-          *v22 = *v22 & 0xFFFFFC00 | v46 & 0x3FF;
-          DWORD1(v135[2]) = DWORD1(v135[2]) & 0xFFFFE007 | (8 * (v46 & 0x3FF));
+          unsignedIntValue = [v44 unsignedIntValue];
+          *v22 = *v22 & 0xFFFFFC00 | unsignedIntValue & 0x3FF;
+          DWORD1(v135[2]) = DWORD1(v135[2]) & 0xFFFFE007 | (8 * (unsignedIntValue & 0x3FF));
           if (!v45)
           {
             break;
           }
 
-          v47 = [v45 unsignedIntValue];
-          *v22 = *v22 & 0xFFF003FF | ((v47 & 0x3FF) << 10);
+          unsignedIntValue2 = [v45 unsignedIntValue];
+          *v22 = *v22 & 0xFFF003FF | ((unsignedIntValue2 & 0x3FF) << 10);
           v22 += 38;
           LODWORD(v135[2]) = 0;
-          DWORD1(v135[2]) = DWORD1(v135[2]) & 0xFF801FFF | ((v47 & 0x3FF) << 13);
+          DWORD1(v135[2]) = DWORD1(v135[2]) & 0xFF801FFF | ((unsignedIntValue2 & 0x3FF) << 13);
 
           ++v18;
-          v5 = v113;
+          metadataCopy = v113;
         }
 
         FigDebugAssert3();
 
         v85 = 0;
-        v5 = v113;
+        metadataCopy = v113;
 LABEL_87:
 
         goto LABEL_78;
@@ -865,7 +865,7 @@ LABEL_87:
 
 LABEL_37:
 
-    v6 = v112;
+    paramsCopy = v112;
   }
 
   else
@@ -899,9 +899,9 @@ LABEL_75:
     goto LABEL_79;
   }
 
-  v112 = v6;
-  v15 = [v6 faceAssistedSkinGainsToMatch];
-  if (!v15)
+  v112 = paramsCopy;
+  faceAssistedSkinGainsToMatch = [paramsCopy faceAssistedSkinGainsToMatch];
+  if (!faceAssistedSkinGainsToMatch)
   {
     v99 = v109;
     LODWORD(v89) = 0;
@@ -909,7 +909,7 @@ LABEL_75:
     FigSignalErrorAtGM();
   }
 
-  if (![v15 count])
+  if (![faceAssistedSkinGainsToMatch count])
   {
     v100 = v109;
     LODWORD(v90) = 0;
@@ -919,7 +919,7 @@ LABEL_75:
 
   v128 = 0;
   v129 = 0;
-  v50 = [v15 objectForKeyedSubscript:{@"wpRgLogRatio", v90, v100}];
+  v50 = [faceAssistedSkinGainsToMatch objectForKeyedSubscript:{@"wpRgLogRatio", v90, v100}];
 
   if (!v50)
   {
@@ -929,12 +929,12 @@ LABEL_75:
     FigSignalErrorAtGM();
   }
 
-  v51 = [v15 objectForKeyedSubscript:{@"wpRgLogRatio", v91, v101}];
+  v51 = [faceAssistedSkinGainsToMatch objectForKeyedSubscript:{@"wpRgLogRatio", v91, v101}];
   [v51 floatValue];
   v53 = v52;
   *&v129 = v52;
 
-  v54 = [v15 objectForKeyedSubscript:@"wpBgLogRatio"];
+  v54 = [faceAssistedSkinGainsToMatch objectForKeyedSubscript:@"wpBgLogRatio"];
 
   if (!v54)
   {
@@ -944,12 +944,12 @@ LABEL_75:
     FigSignalErrorAtGM();
   }
 
-  v55 = [v15 objectForKeyedSubscript:{@"wpBgLogRatio", v92, v102}];
+  v55 = [faceAssistedSkinGainsToMatch objectForKeyedSubscript:{@"wpBgLogRatio", v92, v102}];
   [v55 floatValue];
   v57 = v56;
   *(&v129 + 1) = v56;
 
-  v58 = [v15 objectForKeyedSubscript:@"wpSkinRgLogRatio"];
+  v58 = [faceAssistedSkinGainsToMatch objectForKeyedSubscript:@"wpSkinRgLogRatio"];
 
   if (!v58)
   {
@@ -959,12 +959,12 @@ LABEL_75:
     FigSignalErrorAtGM();
   }
 
-  v59 = [v15 objectForKeyedSubscript:{@"wpSkinRgLogRatio", v93, v103}];
+  v59 = [faceAssistedSkinGainsToMatch objectForKeyedSubscript:{@"wpSkinRgLogRatio", v93, v103}];
   [v59 floatValue];
   v61 = v60;
   *&v128 = v60;
 
-  v62 = [v15 objectForKeyedSubscript:@"wpSkinBgLogRatio"];
+  v62 = [faceAssistedSkinGainsToMatch objectForKeyedSubscript:@"wpSkinBgLogRatio"];
 
   if (!v62)
   {
@@ -974,12 +974,12 @@ LABEL_75:
     FigSignalErrorAtGM();
   }
 
-  v63 = [v15 objectForKeyedSubscript:{@"wpSkinBgLogRatio", v94, v104}];
+  v63 = [faceAssistedSkinGainsToMatch objectForKeyedSubscript:{@"wpSkinBgLogRatio", v94, v104}];
   [v63 floatValue];
   v65 = v64;
   *(&v128 + 1) = v64;
 
-  v66 = [v15 objectForKeyedSubscript:@"continuousFDTimes"];
+  v66 = [faceAssistedSkinGainsToMatch objectForKeyedSubscript:@"continuousFDTimes"];
 
   if (!v66)
   {
@@ -989,10 +989,10 @@ LABEL_75:
     FigSignalErrorAtGM();
   }
 
-  v67 = [v15 objectForKeyedSubscript:{@"continuousFDTimes", v95, v105}];
-  v68 = [v67 intValue];
+  v67 = [faceAssistedSkinGainsToMatch objectForKeyedSubscript:{@"continuousFDTimes", v95, v105}];
+  intValue2 = [v67 intValue];
 
-  v69 = [v15 objectForKeyedSubscript:@"skinColorSampleNum"];
+  v69 = [faceAssistedSkinGainsToMatch objectForKeyedSubscript:@"skinColorSampleNum"];
 
   if (!v69)
   {
@@ -1002,10 +1002,10 @@ LABEL_75:
     FigSignalErrorAtGM();
   }
 
-  v70 = [v15 objectForKeyedSubscript:{@"skinColorSampleNum", v96, v106}];
-  v71 = [v70 intValue];
+  v70 = [faceAssistedSkinGainsToMatch objectForKeyedSubscript:{@"skinColorSampleNum", v96, v106}];
+  intValue3 = [v70 intValue];
 
-  v72 = [v15 objectForKeyedSubscript:@"skinColorSampleVariance"];
+  v72 = [faceAssistedSkinGainsToMatch objectForKeyedSubscript:@"skinColorSampleVariance"];
 
   if (!v72)
   {
@@ -1015,11 +1015,11 @@ LABEL_75:
     FigSignalErrorAtGM();
   }
 
-  v73 = [v15 objectForKeyedSubscript:{@"skinColorSampleVariance", v97, v107}];
+  v73 = [faceAssistedSkinGainsToMatch objectForKeyedSubscript:{@"skinColorSampleVariance", v97, v107}];
   [v73 floatValue];
   v75 = v74;
 
-  v76 = [v15 objectForKeyedSubscript:@"minDistSkinToWhiteMapping"];
+  v76 = [faceAssistedSkinGainsToMatch objectForKeyedSubscript:@"minDistSkinToWhiteMapping"];
 
   if (!v76)
   {
@@ -1029,12 +1029,12 @@ LABEL_75:
     FigSignalErrorAtGM();
   }
 
-  v77 = [v15 objectForKeyedSubscript:{@"minDistSkinToWhiteMapping", v98, v108}];
+  v77 = [faceAssistedSkinGainsToMatch objectForKeyedSubscript:{@"minDistSkinToWhiteMapping", v98, v108}];
   [v77 floatValue];
   v79 = v78;
 
-  v80 = [MEMORY[0x1E696AEC0] stringWithFormat:@"wbLogRatios=[%.3f, %.3f], wbSkinLogRatios=[%.3f, %.3f], continuousFDTimes=%d, skinColorSampleNum=%d, skinColorSampleVariance=%.3f, minDistSkinToWhiteMapping=%.3f", v53, v57, v61, v65, v68, v71, v75, v79];
-  v81 = [MEMORY[0x1E696AEC0] stringWithFormat:@"wblr=[%d, %d], wbslr=[%d, %d], cfdt=%d, scsn=%d, scsv=%d, mdstwm=%d", v53 != 0.0, v57 != 0.0, v61 != 0.0, v65 != 0.0, v68 != 0, v71 != 0, v75 != 0.0, v79 != 0.0];
+  v80 = [MEMORY[0x1E696AEC0] stringWithFormat:@"wbLogRatios=[%.3f, %.3f], wbSkinLogRatios=[%.3f, %.3f], continuousFDTimes=%d, skinColorSampleNum=%d, skinColorSampleVariance=%.3f, minDistSkinToWhiteMapping=%.3f", v53, v57, v61, v65, intValue2, intValue3, v75, v79];
+  v81 = [MEMORY[0x1E696AEC0] stringWithFormat:@"wblr=[%d, %d], wbslr=[%d, %d], cfdt=%d, scsn=%d, scsv=%d, mdstwm=%d", v53 != 0.0, v57 != 0.0, v61 != 0.0, v65 != 0.0, intValue2 != 0, intValue3 != 0, v75 != 0.0, v79 != 0.0];
 
   if (dword_1EDD78228)
   {
@@ -1064,13 +1064,13 @@ LABEL_75:
     fig_log_call_emit_and_clean_up_after_send_and_compose();
   }
 
-  CAWBAFE::SetFaceAssistedAWBResultsForMatchProvidedSkinGains(self->_AWBAlgorithmObj, &v129, &v128, v71, v68, v75, v79);
+  CAWBAFE::SetFaceAssistedAWBResultsForMatchProvidedSkinGains(self->_AWBAlgorithmObj, &v129, &v128, intValue3, intValue2, v75, v79);
 
   v85 = 0;
 LABEL_78:
   v86 = MEMORY[0x1E695FF58];
 
-  v6 = v112;
+  paramsCopy = v112;
 LABEL_79:
   if (*v86 == 1)
   {
@@ -1117,16 +1117,16 @@ LABEL_8:
   return v10;
 }
 
-- (int)configFlickerDetectionMetadata:(id)a3 moduleConfig:(id)a4
+- (int)configFlickerDetectionMetadata:(id)metadata moduleConfig:(id)config
 {
-  v39 = a3;
-  v40 = a4;
+  metadataCopy = metadata;
+  configCopy = config;
   if (*MEMORY[0x1E695FF58] == 1)
   {
     kdebug_trace();
   }
 
-  v41 = [v39 objectForKeyedSubscript:*MEMORY[0x1E69910A0]];
+  v41 = [metadataCopy objectForKeyedSubscript:*MEMORY[0x1E69910A0]];
   v6 = [v41 objectForKeyedSubscript:*MEMORY[0x1E6991198]];
   v7 = v6;
   if (v6)
@@ -1134,9 +1134,9 @@ LABEL_8:
     self->_flickerDetectionStatus = [v6 intValue];
   }
 
-  if (v40)
+  if (configCopy)
   {
-    v8 = [v40 objectForKeyedSubscript:@"AutoWhiteBalance"];
+    v8 = [configCopy objectForKeyedSubscript:@"AutoWhiteBalance"];
     if (!v8)
     {
       FigDebugAssert3();
@@ -1255,20 +1255,20 @@ LABEL_29:
   return v36;
 }
 
-- (int)configFlashRFCMetadata:(id)a3 cameraInfo:(id)a4 moduleConfig:(id)a5
+- (int)configFlashRFCMetadata:(id)metadata cameraInfo:(id)info moduleConfig:(id)config
 {
-  v97 = a3;
-  v91 = a4;
-  v94 = a5;
+  metadataCopy = metadata;
+  infoCopy = info;
+  configCopy = config;
   if (*MEMORY[0x1E695FF58] == 1)
   {
     kdebug_trace();
   }
 
-  v7 = [v97 objectForKeyedSubscript:*MEMORY[0x1E6991028]];
-  v8 = [v7 BOOLValue];
+  v7 = [metadataCopy objectForKeyedSubscript:*MEMORY[0x1E6991028]];
+  bOOLValue = [v7 BOOLValue];
 
-  if (!v8)
+  if (!bOOLValue)
   {
     v96 = 0;
     v92 = 0;
@@ -1277,8 +1277,8 @@ LABEL_29:
   }
 
   self->_isNominalStrobe = 1;
-  v92 = [v97 objectForKeyedSubscript:*MEMORY[0x1E6991120]];
-  v9 = [v97 objectForKeyedSubscript:*MEMORY[0x1E6991128]];
+  v92 = [metadataCopy objectForKeyedSubscript:*MEMORY[0x1E6991120]];
+  v9 = [metadataCopy objectForKeyedSubscript:*MEMORY[0x1E6991128]];
   v93 = v9;
   if (v92)
   {
@@ -1298,24 +1298,24 @@ LABEL_29:
     self->_flashRatio = 1.0 - (v12 / v13);
   }
 
-  if (v91)
+  if (infoCopy)
   {
-    v14 = [v91 objectForKeyedSubscript:*MEMORY[0x1E69911A0]];
+    v14 = [infoCopy objectForKeyedSubscript:*MEMORY[0x1E69911A0]];
     v15 = v14;
     if (v14)
     {
-      v16 = [v14 bytes];
+      bytes = [v14 bytes];
       self->_pmLEDCalibData.isvalid = 1;
       self->_ledType = 10;
-      v17 = *v16;
-      if (*v16)
+      v17 = *bytes;
+      if (*bytes)
       {
         if (v17 == 1)
         {
           self->_pmLEDCalibData.programID = 0;
           self->_pmLEDCalibData.version = 3;
-          self->_pmLEDCalibData.ledWidePtrn_rg = *(v16 + 4);
-          self->_pmLEDCalibData.ledWidePtrn_bg = *(v16 + 8);
+          self->_pmLEDCalibData.ledWidePtrn_rg = *(bytes + 4);
+          self->_pmLEDCalibData.ledWidePtrn_bg = *(bytes + 8);
         }
 
         else
@@ -1333,22 +1333,22 @@ LABEL_29:
 
           self->_pmLEDCalibData.programID = 1;
           self->_pmLEDCalibData.version = 3;
-          self->_pmLEDCalibData.ledWidePtrn_rg = *(v16 + 4);
-          self->_pmLEDCalibData.ledWidePtrn_bg = *(v16 + 8);
-          self->_pmLEDCalibData.ledTelePtrn_rg = *(v16 + 4);
-          self->_pmLEDCalibData.ledTelePtrn_bg = *(v16 + 8);
-          self->_pmLEDCalibData.ledSWidePtrn_rg = *(v16 + 4);
-          self->_pmLEDCalibData.ledSWidePtrn_bg = *(v16 + 8);
+          self->_pmLEDCalibData.ledWidePtrn_rg = *(bytes + 4);
+          self->_pmLEDCalibData.ledWidePtrn_bg = *(bytes + 8);
+          self->_pmLEDCalibData.ledTelePtrn_rg = *(bytes + 4);
+          self->_pmLEDCalibData.ledTelePtrn_bg = *(bytes + 8);
+          self->_pmLEDCalibData.ledSWidePtrn_rg = *(bytes + 4);
+          self->_pmLEDCalibData.ledSWidePtrn_bg = *(bytes + 8);
         }
       }
 
       else
       {
         self->_pmLEDCalibData.version = 2;
-        self->_pmLEDCalibData.cw_rg = *(v16 + 4);
-        self->_pmLEDCalibData.cw_bg = *(v16 + 8);
-        self->_pmLEDCalibData.ww_rg = *(v16 + 12);
-        self->_pmLEDCalibData.ww_bg = *(v16 + 16);
+        self->_pmLEDCalibData.cw_rg = *(bytes + 4);
+        self->_pmLEDCalibData.cw_bg = *(bytes + 8);
+        self->_pmLEDCalibData.ww_rg = *(bytes + 12);
+        self->_pmLEDCalibData.ww_bg = *(bytes + 16);
       }
 
       v96 = v15;
@@ -1366,10 +1366,10 @@ LABEL_29:
     v96 = 0;
   }
 
-  if (!v94)
+  if (!configCopy)
   {
 LABEL_49:
-    v66 = [v97 objectForKeyedSubscript:*MEMORY[0x1E6991158]];
+    v66 = [metadataCopy objectForKeyedSubscript:*MEMORY[0x1E6991158]];
     v67 = v66;
     if (!v66)
     {
@@ -1382,7 +1382,7 @@ LABEL_49:
     }
 
     self->_sMetaData.ae.gainDigiAE = vcvtms_s32_f32([v66 intValue] / 1.0159);
-    v68 = [v97 objectForKeyedSubscript:*MEMORY[0x1E6990FD0]];
+    v68 = [metadataCopy objectForKeyedSubscript:*MEMORY[0x1E6990FD0]];
     v69 = v68;
     if (v68)
     {
@@ -1395,15 +1395,15 @@ LABEL_49:
       v71 = 1;
     }
 
-    v72 = self;
+    selfCopy2 = self;
     self->_sMetaData.ae.ev0Ratio = v71;
-    if (v94)
+    if (configCopy)
     {
-      v73 = [v94 objectForKeyedSubscript:@"Exposure"];
+      v73 = [configCopy objectForKeyedSubscript:@"Exposure"];
       v74 = [v73 objectForKeyedSubscript:@"LuxModel"];
       v75 = [v74 objectForKeyedSubscript:@"Scale"];
 
-      if (!v75 || ([v94 objectForKeyedSubscript:@"Exposure"], v76 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v76, "objectForKeyedSubscript:", @"LuxModel"), v77 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v77, "objectForKeyedSubscript:", @"Scale"), v78 = objc_claimAutoreleasedReturnValue(), self->_sMetaData.ae.luxCalcParams.scale = objc_msgSend(v78, "intValue"), v78, v77, v76, objc_msgSend(v94, "objectForKeyedSubscript:", @"Exposure"), v79 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v79, "objectForKeyedSubscript:", @"LuxModel"), v80 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v80, "objectForKeyedSubscript:", @"ScaleShift"), v81 = objc_claimAutoreleasedReturnValue(), v81, v80, v79, !v81))
+      if (!v75 || ([configCopy objectForKeyedSubscript:@"Exposure"], v76 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v76, "objectForKeyedSubscript:", @"LuxModel"), v77 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v77, "objectForKeyedSubscript:", @"Scale"), v78 = objc_claimAutoreleasedReturnValue(), self->_sMetaData.ae.luxCalcParams.scale = objc_msgSend(v78, "intValue"), v78, v77, v76, objc_msgSend(configCopy, "objectForKeyedSubscript:", @"Exposure"), v79 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v79, "objectForKeyedSubscript:", @"LuxModel"), v80 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v80, "objectForKeyedSubscript:", @"ScaleShift"), v81 = objc_claimAutoreleasedReturnValue(), v81, v80, v79, !v81))
       {
         FigDebugAssert3();
         v88 = 0;
@@ -1411,15 +1411,15 @@ LABEL_49:
         goto LABEL_66;
       }
 
-      v82 = [v94 objectForKeyedSubscript:@"Exposure"];
+      v82 = [configCopy objectForKeyedSubscript:@"Exposure"];
       v83 = [v82 objectForKeyedSubscript:@"LuxModel"];
       v84 = [v83 objectForKeyedSubscript:@"ScaleShift"];
-      v72 = self;
+      selfCopy2 = self;
       self->_sMetaData.ae.luxCalcParams.scaleShift = [v84 intValue];
     }
 
-    v72->_sMetaData.ae.overflowDGain = 256;
-    if (v91 && ([v91 objectForKeyedSubscript:*MEMORY[0x1E69911A8]], v85 = objc_claimAutoreleasedReturnValue(), (v86 = v85) != 0))
+    selfCopy2->_sMetaData.ae.overflowDGain = 256;
+    if (infoCopy && ([infoCopy objectForKeyedSubscript:*MEMORY[0x1E69911A8]], v85 = objc_claimAutoreleasedReturnValue(), (v86 = v85) != 0))
     {
       v87 = 0;
       self->_sensorClockFreqHz = [v85 unsignedIntValue];
@@ -1436,7 +1436,7 @@ LABEL_49:
     goto LABEL_66;
   }
 
-  v18 = [v94 objectForKeyedSubscript:@"AutoWhiteBalance"];
+  v18 = [configCopy objectForKeyedSubscript:@"AutoWhiteBalance"];
   v90 = v18;
   if (v18)
   {
@@ -1640,9 +1640,9 @@ LABEL_66:
   return v87;
 }
 
-- (int)configFallbackMetadata:(id)a3
+- (int)configFallbackMetadata:(id)metadata
 {
-  v5 = a3;
+  metadataCopy = metadata;
   v6 = MEMORY[0x1E695FF58];
   if (*MEMORY[0x1E695FF58] == 1)
   {
@@ -1650,7 +1650,7 @@ LABEL_66:
   }
 
   self->_fallbackGains.validAWBData = 1;
-  v7 = [v5 objectForKeyedSubscript:*MEMORY[0x1E6990F20]];
+  v7 = [metadataCopy objectForKeyedSubscript:*MEMORY[0x1E6990F20]];
   awbRGain = self->_fallbackGains.awbRGain;
   self->_fallbackGains.awbRGain = v7;
 
@@ -1662,7 +1662,7 @@ LABEL_66:
     self->_fallbackGains.validAWBData = 0;
   }
 
-  v9 = [v5 objectForKeyedSubscript:{*MEMORY[0x1E6990F18], v20, v25}];
+  v9 = [metadataCopy objectForKeyedSubscript:{*MEMORY[0x1E6990F18], v20, v25}];
   awbGGain = self->_fallbackGains.awbGGain;
   self->_fallbackGains.awbGGain = v9;
 
@@ -1674,7 +1674,7 @@ LABEL_66:
     self->_fallbackGains.validAWBData = 0;
   }
 
-  v11 = [v5 objectForKeyedSubscript:{*MEMORY[0x1E6990EE0], v21, v26}];
+  v11 = [metadataCopy objectForKeyedSubscript:{*MEMORY[0x1E6990EE0], v21, v26}];
   awbBGain = self->_fallbackGains.awbBGain;
   self->_fallbackGains.awbBGain = v11;
 
@@ -1686,7 +1686,7 @@ LABEL_66:
     self->_fallbackGains.validAWBData = 0;
   }
 
-  v13 = [v5 objectForKeyedSubscript:{*MEMORY[0x1E6990EF8], v22, v27}];
+  v13 = [metadataCopy objectForKeyedSubscript:{*MEMORY[0x1E6990EF8], v22, v27}];
   awbComboRGain = self->_fallbackGains.awbComboRGain;
   self->_fallbackGains.awbComboRGain = v13;
 
@@ -1698,7 +1698,7 @@ LABEL_66:
     self->_fallbackGains.validAWBData = 0;
   }
 
-  v15 = [v5 objectForKeyedSubscript:{*MEMORY[0x1E6990EF0], v23, v28}];
+  v15 = [metadataCopy objectForKeyedSubscript:{*MEMORY[0x1E6990EF0], v23, v28}];
   awbComboGGain = self->_fallbackGains.awbComboGGain;
   self->_fallbackGains.awbComboGGain = v15;
 
@@ -1710,7 +1710,7 @@ LABEL_66:
     self->_fallbackGains.validAWBData = 0;
   }
 
-  v17 = [v5 objectForKeyedSubscript:{*MEMORY[0x1E6990EE8], v24, v29}];
+  v17 = [metadataCopy objectForKeyedSubscript:{*MEMORY[0x1E6990EE8], v24, v29}];
   awbComboBGain = self->_fallbackGains.awbComboBGain;
   self->_fallbackGains.awbComboBGain = v17;
 
@@ -1728,10 +1728,10 @@ LABEL_66:
   return 0;
 }
 
-- (int)configPortTypeMetadata:(id)a3
+- (int)configPortTypeMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69910A8]];
+  metadataCopy = metadata;
+  v5 = [metadataCopy objectForKeyedSubscript:*MEMORY[0x1E69910A8]];
   if (([v5 isEqual:*MEMORY[0x1E6990CA0]] & 1) != 0 || objc_msgSend(v5, "isEqual:", *MEMORY[0x1E6990CA8]))
   {
     v6 = 2;
@@ -1759,17 +1759,17 @@ LABEL_5:
   return 0;
 }
 
-+ (int)doAWBConfigLoad:(id)a3 to:(id)a4
++ (int)doAWBConfigLoad:(id)load to:(id)to
 {
-  v186 = a3;
-  v173 = a4;
+  loadCopy = load;
+  toCopy = to;
   if (*MEMORY[0x1E695FF58] == 1)
   {
     kdebug_trace();
   }
 
-  v174 = [v173 pointerValue];
-  if (!v186 || !v174)
+  pointerValue = [toCopy pointerValue];
+  if (!loadCopy || !pointerValue)
   {
     FigDebugAssert3();
     v172 = 0;
@@ -1793,7 +1793,7 @@ LABEL_84:
     goto LABEL_85;
   }
 
-  v5 = [v186 objectForKeyedSubscript:@"Histogram"];
+  v5 = [loadCopy objectForKeyedSubscript:@"Histogram"];
   v6 = [v5 objectForKeyedSubscript:@"WeightMasks"];
 
   v190 = v6;
@@ -1820,9 +1820,9 @@ LABEL_84:
     }
   }
 
-  CAWBAFE::SetHistogramWeight(v174, [v6 count], v7);
+  CAWBAFE::SetHistogramWeight(pointerValue, [v6 count], v7);
   free(v7);
-  v188 = [v186 objectForKeyedSubscript:@"CSC"];
+  v188 = [loadCopy objectForKeyedSubscript:@"CSC"];
   if (!v188)
   {
     FigDebugAssert3();
@@ -1890,7 +1890,7 @@ LABEL_84:
   v32 = [v188 objectForKeyedSubscript:@"CSCChromaScale1"];
   v208.var5[1] = [v32 intValue];
 
-  v33 = [v186 objectForKeyedSubscript:{@"Histogram", CAWBAFE::UpdateCSCConfig(v174, &v208).n128_f64[0]}];
+  v33 = [loadCopy objectForKeyedSubscript:{@"Histogram", CAWBAFE::UpdateCSCConfig(pointerValue, &v208).n128_f64[0]}];
   v34 = [v33 objectForKeyedSubscript:@"Config"];
 
   v183 = v34;
@@ -1942,7 +1942,7 @@ LABEL_93:
   v44 = [v34 objectForKeyedSubscript:@"C2Scale"];
   v207.var5 = [v44 intValue];
 
-  v45 = [v186 objectForKeyedSubscript:{@"ProjectionPoint", CAWBAFE::UpdateColorHistConfig(v174, &v207).n128_f64[0]}];
+  v45 = [loadCopy objectForKeyedSubscript:{@"ProjectionPoint", CAWBAFE::UpdateColorHistConfig(pointerValue, &v207).n128_f64[0]}];
   if (!v45)
   {
     FigDebugAssert3();
@@ -1974,9 +1974,9 @@ LABEL_93:
     *(v51 + 1) = [v53 intValue];
   }
 
-  CAWBAFE::SetProjectionPoint(v174, [v184 count], v46);
+  CAWBAFE::SetProjectionPoint(pointerValue, [v184 count], v46);
   free(v46);
-  v54 = [v186 objectForKeyedSubscript:@"Histogram"];
+  v54 = [loadCopy objectForKeyedSubscript:@"Histogram"];
   v55 = [v54 objectForKeyedSubscript:@"XToCCT"];
 
   if (!v55)
@@ -2016,9 +2016,9 @@ LABEL_93:
     *(v60 + 2) = [v64 intValue];
   }
 
-  CAWBAFE::SetHistogramXToCCTLut(v174, [v55 count], v56);
+  CAWBAFE::SetHistogramXToCCTLut(pointerValue, [v55 count], v56);
   free(v56);
-  v182 = [v186 objectForKeyedSubscript:@"AWBSkinToWhiteLut"];
+  v182 = [loadCopy objectForKeyedSubscript:@"AWBSkinToWhiteLut"];
   if (v182 && [v182 count] <= 0x96)
   {
     v65 = malloc_type_malloc(8 * [v182 count], 0x100004000313F17uLL);
@@ -2060,11 +2060,11 @@ LABEL_105:
       *(v69 + 1) = [v75 unsignedIntValue];
     }
 
-    CAWBAFE::SetSkinToWhiteLut(v174, [v182 count], v65);
+    CAWBAFE::SetSkinToWhiteLut(pointerValue, [v182 count], v65);
     free(v65);
   }
 
-  v189 = [v186 objectForKeyedSubscript:@"CCM"];
+  v189 = [loadCopy objectForKeyedSubscript:@"CCM"];
   if (!v189)
   {
     goto LABEL_105;
@@ -2103,10 +2103,10 @@ LABEL_105:
   }
 
   while (v76 != 9);
-  v90 = [v189 objectForKeyedSubscript:{@"CCMLuxClipLevel", CAWBAFE::SetCCM2DCoefficient(v174, v201, v202, v203, v204, v205, &v206).n128_f64[0]}];
-  CAWBAFE::SetCCMLuxClip(v174, [v90 intValue]);
+  v90 = [v189 objectForKeyedSubscript:{@"CCMLuxClipLevel", CAWBAFE::SetCCM2DCoefficient(pointerValue, v201, v202, v203, v204, v205, &v206).n128_f64[0]}];
+  CAWBAFE::SetCCMLuxClip(pointerValue, [v90 intValue]);
 
-  v91 = [v186 objectForKeyedSubscript:@"PostTint"];
+  v91 = [loadCopy objectForKeyedSubscript:@"PostTint"];
   if (v91)
   {
     v187 = v91;
@@ -2137,9 +2137,9 @@ LABEL_105:
       *(v97 + 3) = [v103 intValue];
     }
 
-    CAWBAFE::SetPostTintParam(v174, [v187 count], v92);
+    CAWBAFE::SetPostTintParam(pointerValue, [v187 count], v92);
     free(v92);
-    v104 = [v186 objectForKeyedSubscript:@"MixLighting"];
+    v104 = [loadCopy objectForKeyedSubscript:@"MixLighting"];
     v105 = [v104 objectForKeyedSubscript:@"XCoordinate"];
 
     v181 = v105;
@@ -2151,8 +2151,8 @@ LABEL_105:
         v200[mm] = [v107 intValue];
       }
 
-      CAWBAFE::SetMixLightingXLoc(v174, v200);
-      v108 = [v186 objectForKeyedSubscript:@"MixLighting"];
+      CAWBAFE::SetMixLightingXLoc(pointerValue, v200);
+      v108 = [loadCopy objectForKeyedSubscript:@"MixLighting"];
       v109 = [v108 objectForKeyedSubscript:@"CCM"];
 
       v180 = v109;
@@ -2164,7 +2164,7 @@ LABEL_105:
           v199.n128_u16[nn] = [v111 intValue];
         }
 
-        v179 = [v186 objectForKeyedSubscript:{@"YThreshold", CAWBAFE::SetMixLightingCCM(v174, &v199).n128_f64[0]}];
+        v179 = [loadCopy objectForKeyedSubscript:{@"YThreshold", CAWBAFE::SetMixLightingCCM(pointerValue, &v199).n128_f64[0]}];
         if (v179)
         {
           v112 = 0;
@@ -2180,8 +2180,8 @@ LABEL_105:
           }
 
           while ((v114 & 1) != 0);
-          CAWBAFE::SetTileStatsYThreshold(v174, v198);
-          v178 = [v186 objectForKeyedSubscript:@"RatioSpace2ndGainThreshold"];
+          CAWBAFE::SetTileStatsYThreshold(pointerValue, v198);
+          v178 = [loadCopy objectForKeyedSubscript:@"RatioSpace2ndGainThreshold"];
           if (v178)
           {
             v116 = 0;
@@ -2197,8 +2197,8 @@ LABEL_105:
             }
 
             while ((v118 & 1) != 0);
-            CAWBAFE::SetRatioSpace2ndGainThreshold(v174, v197);
-            v120 = [v186 objectForKeyedSubscript:@"Histogram"];
+            CAWBAFE::SetRatioSpace2ndGainThreshold(pointerValue, v197);
+            v120 = [loadCopy objectForKeyedSubscript:@"Histogram"];
             v121 = [v120 objectForKeyedSubscript:@"TrimFilterV"];
 
             v177 = v121;
@@ -2210,7 +2210,7 @@ LABEL_105:
                 v196[i1] = [v123 intValue];
               }
 
-              v124 = [v186 objectForKeyedSubscript:{@"Histogram", CAWBAFE::SetHistogramTrimFilterV(v174, v196).n128_f64[0]}];
+              v124 = [loadCopy objectForKeyedSubscript:{@"Histogram", CAWBAFE::SetHistogramTrimFilterV(pointerValue, v196).n128_f64[0]}];
               v125 = [v124 objectForKeyedSubscript:@"TrimFilterH"];
 
               v176 = v125;
@@ -2222,8 +2222,8 @@ LABEL_105:
                   v195[i2] = [v127 intValue];
                 }
 
-                CAWBAFE::SetHistogramTrimFilterH(v174, v195);
-                v128 = [v186 objectForKeyedSubscript:@"Histogram"];
+                CAWBAFE::SetHistogramTrimFilterH(pointerValue, v195);
+                v128 = [loadCopy objectForKeyedSubscript:@"Histogram"];
                 v129 = [v128 objectForKeyedSubscript:@"TrimScaleProfile"];
 
                 v175 = v129;
@@ -2235,20 +2235,20 @@ LABEL_105:
                     v194[i3] = [v131 intValue];
                   }
 
-                  v132 = [v186 objectForKeyedSubscript:{@"Scheme", CAWBAFE::SetHistogramTrimScaleProfile(v174, v194).n128_f64[0]}];
+                  v132 = [loadCopy objectForKeyedSubscript:{@"Scheme", CAWBAFE::SetHistogramTrimScaleProfile(pointerValue, v194).n128_f64[0]}];
                   v133 = v132;
                   if (v132)
                   {
-                    CAWBAFE::SetScheme(v174, [v132 isEqualToString:@"2DHistogram"]);
+                    CAWBAFE::SetScheme(pointerValue, [v132 isEqualToString:@"2DHistogram"]);
                     v172 = v133;
                     memset(v193, 0, sizeof(v193));
                     v192 = 0u;
-                    v134 = [v186 objectForKeyedSubscript:@"ColorMatchingModel"];
+                    v134 = [loadCopy objectForKeyedSubscript:@"ColorMatchingModel"];
                     [v134 count];
 
                     for (i4 = 0; ; i4 = v138 + 1)
                     {
-                      v136 = [v186 objectForKeyedSubscript:@"ColorMatchingModel"];
+                      v136 = [loadCopy objectForKeyedSubscript:@"ColorMatchingModel"];
                       v137 = [v136 count];
                       v138 = i4;
 
@@ -2257,7 +2257,7 @@ LABEL_105:
                         break;
                       }
 
-                      v139 = [v186 objectForKeyedSubscript:@"ColorMatchingModel"];
+                      v139 = [loadCopy objectForKeyedSubscript:@"ColorMatchingModel"];
                       v140 = [v139 objectAtIndexedSubscript:i4];
 
                       if (!v140)
@@ -2292,16 +2292,16 @@ LABEL_105:
                       *(&v193[-1] + 7 * v138) = [v150 intValue];
                     }
 
-                    v151 = [v186 objectForKeyedSubscript:@"ColorMatchingModel"];
-                    (*(*v174 + 144))(v174, [v151 count], &v192);
+                    v151 = [loadCopy objectForKeyedSubscript:@"ColorMatchingModel"];
+                    (*(*pointerValue + 144))(pointerValue, [v151 count], &v192);
 
                     bzero(v191, 0xA40uLL);
-                    v152 = [v186 objectForKeyedSubscript:@"ColorMatchingLatticeModel"];
+                    v152 = [loadCopy objectForKeyedSubscript:@"ColorMatchingLatticeModel"];
                     [v152 count];
 
                     for (i6 = 0; ; i6 = v156 + 1)
                     {
-                      v154 = [v186 objectForKeyedSubscript:@"ColorMatchingLatticeModel"];
+                      v154 = [loadCopy objectForKeyedSubscript:@"ColorMatchingLatticeModel"];
                       v155 = [v154 count];
                       v156 = i6;
 
@@ -2310,15 +2310,15 @@ LABEL_105:
                         break;
                       }
 
-                      v157 = [v186 objectForKeyedSubscript:@"ColorMatchingLatticeModel"];
+                      v157 = [loadCopy objectForKeyedSubscript:@"ColorMatchingLatticeModel"];
                       v158 = [v157 objectAtIndexedSubscript:i6];
 
                       if (v158)
                       {
                         v159 = [v158 objectForKeyedSubscript:@"latticeModelLUTGridSize"];
-                        v160 = [v159 intValue];
+                        intValue = [v159 intValue];
 
-                        if (v160 == 9)
+                        if (intValue == 9)
                         {
                           v161 = [v158 objectForKeyedSubscript:@"wbGainMatchingModel"];
                           v162 = v161;
@@ -2342,8 +2342,8 @@ LABEL_105:
                       }
                     }
 
-                    v169 = [v186 objectForKeyedSubscript:@"ColorMatchingLatticeModel"];
-                    (*(*v174 + 152))(v174, [v169 count], v191);
+                    v169 = [loadCopy objectForKeyedSubscript:@"ColorMatchingLatticeModel"];
+                    (*(*pointerValue + 152))(pointerValue, [v169 count], v191);
 
                     goto LABEL_84;
                   }
@@ -2461,13 +2461,13 @@ LABEL_85:
   return v170;
 }
 
-- (int)awbConfigLoad:(id)a3 to:(CAWBAFE *)a4
+- (int)awbConfigLoad:(id)load to:(CAWBAFE *)to
 {
-  v5 = a3;
-  if (v5 && a4)
+  loadCopy = load;
+  if (loadCopy && to)
   {
-    v6 = [MEMORY[0x1E696B098] valueWithPointer:a4];
-    v7 = [AWBAlgorithm doAWBConfigLoad:v5 to:v6];
+    v6 = [MEMORY[0x1E696B098] valueWithPointer:to];
+    v7 = [AWBAlgorithm doAWBConfigLoad:loadCopy to:v6];
   }
 
   else
@@ -2479,33 +2479,33 @@ LABEL_85:
   return v7;
 }
 
-+ (int)awbSensorCalibrationsLoad:(id)a3 idealColorCalibrations:(id)a4 to:(id)a5
++ (int)awbSensorCalibrationsLoad:(id)load idealColorCalibrations:(id)calibrations to:(id)to
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  loadCopy = load;
+  calibrationsCopy = calibrations;
+  toCopy = to;
   if (*MEMORY[0x1E695FF58] == 1)
   {
     kdebug_trace();
   }
 
   v60 = 0;
-  v10 = [v9 pointerValue];
-  if (v10)
+  pointerValue = [toCopy pointerValue];
+  if (pointerValue)
   {
     v60 = 0;
     v11 = MEMORY[0x1E6990E48];
     v12 = MEMORY[0x1E6990E40];
     v13 = MEMORY[0x1E6990E38];
     v14 = MEMORY[0x1E6990E50];
-    if (v7)
+    if (loadCopy)
     {
       v15 = *MEMORY[0x1E6990E48];
-      v16 = [v7 objectForKeyedSubscript:*MEMORY[0x1E6990E48]];
+      v16 = [loadCopy objectForKeyedSubscript:*MEMORY[0x1E6990E48]];
 
       if (v16)
       {
-        v17 = [v7 objectForKeyedSubscript:v15];
+        v17 = [loadCopy objectForKeyedSubscript:v15];
         LODWORD(v18) = 1.0;
         [v17 cmi_floatValueForKey:*v12 defaultValue:&v60 found:v18];
         v20 = ((v19 * 16384.0) + 0.5);
@@ -2517,11 +2517,11 @@ LABEL_85:
       }
 
       v60 = 0;
-      v24 = [v7 objectForKeyedSubscript:v15];
+      v24 = [loadCopy objectForKeyedSubscript:v15];
 
       if (v24)
       {
-        v25 = [v7 objectForKeyedSubscript:v15];
+        v25 = [loadCopy objectForKeyedSubscript:v15];
         LODWORD(v26) = 1.0;
         [v25 cmi_floatValueForKey:*v13 defaultValue:&v60 found:v26];
         v22 = ((v27 * 16384.0) + 0.5);
@@ -2534,11 +2534,11 @@ LABEL_85:
 
       v60 = 0;
       v28 = *v14;
-      v29 = [v7 objectForKeyedSubscript:*v14];
+      v29 = [loadCopy objectForKeyedSubscript:*v14];
 
       if (v29)
       {
-        v30 = [v7 objectForKeyedSubscript:v28];
+        v30 = [loadCopy objectForKeyedSubscript:v28];
         LODWORD(v31) = 1.0;
         [v30 cmi_floatValueForKey:*v12 defaultValue:&v60 found:v31];
         v21 = ((v32 * 16384.0) + 0.5);
@@ -2550,11 +2550,11 @@ LABEL_85:
       }
 
       v60 = 0;
-      v33 = [v7 objectForKeyedSubscript:v28];
+      v33 = [loadCopy objectForKeyedSubscript:v28];
 
       if (v33)
       {
-        v34 = [v7 objectForKeyedSubscript:v28];
+        v34 = [loadCopy objectForKeyedSubscript:v28];
         LODWORD(v35) = 1.0;
         [v34 cmi_floatValueForKey:*v13 defaultValue:&v60 found:v35];
         v23 = ((v36 * 16384.0) + 0.5);
@@ -2575,14 +2575,14 @@ LABEL_85:
     }
 
     v60 = 0;
-    if (v8)
+    if (calibrationsCopy)
     {
       v37 = *v11;
-      v38 = [v8 objectForKeyedSubscript:*v11];
+      v38 = [calibrationsCopy objectForKeyedSubscript:*v11];
 
       if (v38)
       {
-        v39 = [v8 objectForKeyedSubscript:v37];
+        v39 = [calibrationsCopy objectForKeyedSubscript:v37];
         LODWORD(v40) = 1182793728;
         [v39 cmi_floatValueForKey:*v12 defaultValue:&v60 found:v40];
         v42 = v41;
@@ -2594,11 +2594,11 @@ LABEL_85:
       }
 
       v60 = 0;
-      v46 = [v8 objectForKeyedSubscript:v37];
+      v46 = [calibrationsCopy objectForKeyedSubscript:v37];
 
       if (v46)
       {
-        v47 = [v8 objectForKeyedSubscript:v37];
+        v47 = [calibrationsCopy objectForKeyedSubscript:v37];
         LODWORD(v48) = 1182793728;
         [v47 cmi_floatValueForKey:*v13 defaultValue:&v60 found:v48];
         v44 = v49;
@@ -2611,11 +2611,11 @@ LABEL_85:
 
       v60 = 0;
       v50 = *v14;
-      v51 = [v8 objectForKeyedSubscript:*v14];
+      v51 = [calibrationsCopy objectForKeyedSubscript:*v14];
 
       if (v51)
       {
-        v52 = [v8 objectForKeyedSubscript:v50];
+        v52 = [calibrationsCopy objectForKeyedSubscript:v50];
         LODWORD(v53) = 1182793728;
         [v52 cmi_floatValueForKey:*v12 defaultValue:&v60 found:v53];
         v43 = v54;
@@ -2627,11 +2627,11 @@ LABEL_85:
       }
 
       v60 = 0;
-      v55 = [v8 objectForKeyedSubscript:v50];
+      v55 = [calibrationsCopy objectForKeyedSubscript:v50];
 
       if (v55)
       {
-        v56 = [v8 objectForKeyedSubscript:v50];
+        v56 = [calibrationsCopy objectForKeyedSubscript:v50];
         LODWORD(v57) = 1182793728;
         [v56 cmi_floatValueForKey:*v13 defaultValue:&v60 found:v57];
         v45 = v58;
@@ -2651,7 +2651,7 @@ LABEL_85:
       v45 = 16384.0;
     }
 
-    CAWBAFE::SensorCalSet(v10, v20, v22, v21, v23, v42, v44, v43, v45);
+    CAWBAFE::SensorCalSet(pointerValue, v20, v22, v21, v23, v42, v44, v43, v45);
   }
 
   else
@@ -2667,12 +2667,12 @@ LABEL_85:
   return 0;
 }
 
-+ (int)populateSlaveConfigWithModuleConfigIfColorMatchingModelExistsInPrimaryAWBConfig:(id)a3 secondaryAWBConfig:(id)a4 secondaryIdealColorCals:(id)a5 secondaryAbsoluteColorCals:(id)a6 secondarySetFileID:(unsigned int)a7 secondarySensorConfig:(SensorConfigAWBParams *)a8
++ (int)populateSlaveConfigWithModuleConfigIfColorMatchingModelExistsInPrimaryAWBConfig:(id)config secondaryAWBConfig:(id)bConfig secondaryIdealColorCals:(id)cals secondaryAbsoluteColorCals:(id)colorCals secondarySetFileID:(unsigned int)d secondarySensorConfig:(SensorConfigAWBParams *)sensorConfig
 {
-  v135 = a3;
-  v133 = a4;
-  v131 = a5;
-  v132 = a6;
+  configCopy = config;
+  bConfigCopy = bConfig;
+  calsCopy = cals;
+  colorCalsCopy = colorCals;
   v136 = 0;
   if (*MEMORY[0x1E695FF58] == 1)
   {
@@ -2682,7 +2682,7 @@ LABEL_85:
   v13 = 0;
   do
   {
-    v14 = [v135 objectForKeyedSubscript:@"ColorMatchingLatticeModel"];
+    v14 = [configCopy objectForKeyedSubscript:@"ColorMatchingLatticeModel"];
     v15 = [v14 count];
 
     if (v15 <= v13)
@@ -2697,31 +2697,31 @@ LABEL_11:
       goto LABEL_86;
     }
 
-    v16 = [v135 objectForKeyedSubscript:@"ColorMatchingLatticeModel"];
+    v16 = [configCopy objectForKeyedSubscript:@"ColorMatchingLatticeModel"];
     v17 = [v16 objectAtIndexedSubscript:v13];
 
     v18 = [v17 objectForKeyedSubscript:@"SlaveCameraID"];
-    v19 = [v18 intValue];
+    intValue = [v18 intValue];
 
     ++v13;
   }
 
-  while (((v19 ^ a7) & 0xFFFFFF) != 0 || !v19);
-  a8->var4 = v19;
+  while (((intValue ^ d) & 0xFFFFFF) != 0 || !intValue);
+  sensorConfig->var4 = intValue;
   v136 = 0;
   v20 = MEMORY[0x1E6990E48];
   v21 = MEMORY[0x1E6990E40];
   v22 = MEMORY[0x1E6990E38];
   v23 = MEMORY[0x1E6990E50];
-  v134 = a8;
-  if (v132)
+  sensorConfigCopy = sensorConfig;
+  if (colorCalsCopy)
   {
     v24 = *MEMORY[0x1E6990E48];
-    v25 = [v132 objectForKeyedSubscript:*MEMORY[0x1E6990E48]];
+    v25 = [colorCalsCopy objectForKeyedSubscript:*MEMORY[0x1E6990E48]];
 
     if (v25)
     {
-      v26 = [v132 objectForKeyedSubscript:v24];
+      v26 = [colorCalsCopy objectForKeyedSubscript:v24];
       LODWORD(v27) = 1.0;
       [v26 cmi_floatValueForKey:*v21 defaultValue:&v136 found:v27];
       v29 = ((v28 * 16384.0) + 0.5);
@@ -2733,11 +2733,11 @@ LABEL_11:
     }
 
     v136 = 0;
-    v38 = [v132 objectForKeyedSubscript:v24];
+    v38 = [colorCalsCopy objectForKeyedSubscript:v24];
 
     if (v38)
     {
-      v39 = [v132 objectForKeyedSubscript:v24];
+      v39 = [colorCalsCopy objectForKeyedSubscript:v24];
       LODWORD(v40) = 1.0;
       [v39 cmi_floatValueForKey:*v22 defaultValue:&v136 found:v40];
       v36 = ((v41 * 16384.0) + 0.5);
@@ -2750,11 +2750,11 @@ LABEL_11:
 
     v136 = 0;
     v42 = *v23;
-    v43 = [v132 objectForKeyedSubscript:*v23];
+    v43 = [colorCalsCopy objectForKeyedSubscript:*v23];
 
     if (v43)
     {
-      v44 = [v132 objectForKeyedSubscript:v42];
+      v44 = [colorCalsCopy objectForKeyedSubscript:v42];
       LODWORD(v45) = 1.0;
       [v44 cmi_floatValueForKey:*v21 defaultValue:&v136 found:v45];
       v35 = ((v46 * 16384.0) + 0.5);
@@ -2766,11 +2766,11 @@ LABEL_11:
     }
 
     v136 = 0;
-    v47 = [v132 objectForKeyedSubscript:v42];
+    v47 = [colorCalsCopy objectForKeyedSubscript:v42];
 
     if (v47)
     {
-      v48 = [v132 objectForKeyedSubscript:v42];
+      v48 = [colorCalsCopy objectForKeyedSubscript:v42];
       LODWORD(v49) = 1.0;
       [v48 cmi_floatValueForKey:*v22 defaultValue:&v136 found:v49];
       v37 = ((v50 * 16384.0) + 0.5);
@@ -2791,14 +2791,14 @@ LABEL_11:
   }
 
   v136 = 0;
-  if (v131)
+  if (calsCopy)
   {
     v51 = *v20;
-    v52 = [v131 objectForKeyedSubscript:*v20];
+    v52 = [calsCopy objectForKeyedSubscript:*v20];
 
     if (v52)
     {
-      v53 = [v131 objectForKeyedSubscript:v51];
+      v53 = [calsCopy objectForKeyedSubscript:v51];
       LODWORD(v54) = 1182793728;
       [v53 cmi_floatValueForKey:*v21 defaultValue:&v136 found:v54];
       v56 = v55;
@@ -2810,11 +2810,11 @@ LABEL_11:
     }
 
     v136 = 0;
-    v60 = [v131 objectForKeyedSubscript:v51];
+    v60 = [calsCopy objectForKeyedSubscript:v51];
 
     if (v60)
     {
-      v61 = [v131 objectForKeyedSubscript:v51];
+      v61 = [calsCopy objectForKeyedSubscript:v51];
       LODWORD(v62) = 1182793728;
       [v61 cmi_floatValueForKey:*v22 defaultValue:&v136 found:v62];
       v58 = v63;
@@ -2827,11 +2827,11 @@ LABEL_11:
 
     v136 = 0;
     v64 = *v23;
-    v65 = [v131 objectForKeyedSubscript:*v23];
+    v65 = [calsCopy objectForKeyedSubscript:*v23];
 
     if (v65)
     {
-      v66 = [v131 objectForKeyedSubscript:v64];
+      v66 = [calsCopy objectForKeyedSubscript:v64];
       LODWORD(v67) = 1182793728;
       [v66 cmi_floatValueForKey:*v21 defaultValue:&v136 found:v67];
       v57 = v68;
@@ -2843,11 +2843,11 @@ LABEL_11:
     }
 
     v136 = 0;
-    v69 = [v131 objectForKeyedSubscript:v64];
+    v69 = [calsCopy objectForKeyedSubscript:v64];
 
     if (v69)
     {
-      v70 = [v131 objectForKeyedSubscript:v64];
+      v70 = [calsCopy objectForKeyedSubscript:v64];
       LODWORD(v71) = 1182793728;
       [v70 cmi_floatValueForKey:*v22 defaultValue:&v136 found:v71];
       v59 = v72;
@@ -2867,14 +2867,14 @@ LABEL_11:
     v59 = 16384.0;
   }
 
-  a8->var0.var0 = v57;
-  a8->var0.var1 = v59;
-  a8->var0.var2 = v56;
-  a8->var0.var3 = v58;
-  a8->var1.var0 = v35;
-  a8->var1.var1 = v37;
-  a8->var1.var2 = v29;
-  a8->var1.var3 = v36;
+  sensorConfig->var0.var0 = v57;
+  sensorConfig->var0.var1 = v59;
+  sensorConfig->var0.var2 = v56;
+  sensorConfig->var0.var3 = v58;
+  sensorConfig->var1.var0 = v35;
+  sensorConfig->var1.var1 = v37;
+  sensorConfig->var1.var2 = v29;
+  sensorConfig->var1.var3 = v36;
   v73 = v57 > 0.0;
   if (v35 <= 0.0)
   {
@@ -2891,7 +2891,7 @@ LABEL_11:
     LOWORD(v74) = 0x4000;
   }
 
-  a8->var3.var0 = v74;
+  sensorConfig->var3.var0 = v74;
   v75 = v59 > 0.0;
   if (v37 <= 0.0)
   {
@@ -2908,7 +2908,7 @@ LABEL_11:
     LOWORD(v76) = 0x4000;
   }
 
-  a8->var3.var1 = v76;
+  sensorConfig->var3.var1 = v76;
   v77 = v56 > 0.0;
   if (v29 <= 0.0)
   {
@@ -2925,7 +2925,7 @@ LABEL_11:
     LOWORD(v78) = 0x4000;
   }
 
-  a8->var3.var2 = v78;
+  sensorConfig->var3.var2 = v78;
   v79 = v58 > 0.0;
   if (v36 <= 0.0)
   {
@@ -2942,7 +2942,7 @@ LABEL_11:
     LOWORD(v80) = 0x4000;
   }
 
-  a8->var3.var3 = v80;
+  sensorConfig->var3.var3 = v80;
   if (v73)
   {
     v81 = ((v35 * 16384.0) / v57);
@@ -2953,7 +2953,7 @@ LABEL_11:
     LOWORD(v81) = 0x4000;
   }
 
-  a8->var2.var0 = v81;
+  sensorConfig->var2.var0 = v81;
   if (v75)
   {
     v82 = ((v37 * 16384.0) / v59);
@@ -2964,7 +2964,7 @@ LABEL_11:
     LOWORD(v82) = 0x4000;
   }
 
-  a8->var2.var1 = v82;
+  sensorConfig->var2.var1 = v82;
   if (v77)
   {
     v83 = ((v29 * 16384.0) / v56);
@@ -2975,7 +2975,7 @@ LABEL_11:
     LOWORD(v83) = 0x4000;
   }
 
-  a8->var2.var2 = v83;
+  sensorConfig->var2.var2 = v83;
   if (v79)
   {
     v84 = ((v36 * 16384.0) / v58);
@@ -2986,8 +2986,8 @@ LABEL_11:
     LOWORD(v84) = 0x4000;
   }
 
-  a8->var2.var3 = v84;
-  v130 = [v133 objectForKeyedSubscript:@"CSC"];
+  sensorConfig->var2.var3 = v84;
+  v130 = [bConfigCopy objectForKeyedSubscript:@"CSC"];
   if (!v130)
   {
     FigDebugAssert3();
@@ -2996,7 +2996,7 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  p_var6 = &a8->var6;
+  p_var6 = &sensorConfig->var6;
   v86 = -9;
   do
   {
@@ -3012,22 +3012,22 @@ LABEL_11:
   }
 
   while (!__CFADD__(v86++, 1));
-  *a8->var6.var2 = 0;
+  *sensorConfig->var6.var2 = 0;
   v92 = [v130 objectForKeyedSubscript:@"CSCChromaScale0"];
-  a8->var6.var3[0] = [v92 intValue];
+  sensorConfig->var6.var3[0] = [v92 intValue];
 
   v93 = [v130 objectForKeyedSubscript:@"CSCChromaScale1"];
-  a8->var6.var3[1] = [v93 intValue];
+  sensorConfig->var6.var3[1] = [v93 intValue];
 
-  v94 = [v133 objectForKeyedSubscript:@"CCM"];
+  v94 = [bConfigCopy objectForKeyedSubscript:@"CCM"];
   v95 = [v94 objectForKeyedSubscript:@"CCMLuxClipLevel"];
-  a8->var6.var4 = [v95 intValue];
+  sensorConfig->var6.var4 = [v95 intValue];
 
-  v96 = [v133 objectForKeyedSubscript:@"CCM"];
+  v96 = [bConfigCopy objectForKeyedSubscript:@"CCM"];
   if (v96)
   {
     v97 = 0;
-    v98 = v134->var6.var5[5];
+    v98 = sensorConfigCopy->var6.var5[5];
     do
     {
       v99 = [v96 objectForKeyedSubscript:@"Offset"];
@@ -3058,7 +3058,7 @@ LABEL_11:
     }
 
     while (v97 != 9);
-    v111 = [v133 objectForKeyedSubscript:@"Histogram"];
+    v111 = [bConfigCopy objectForKeyedSubscript:@"Histogram"];
     v32 = [v111 objectForKeyedSubscript:@"XToCCT"];
 
     if (v32)
@@ -3073,7 +3073,7 @@ LABEL_11:
 
         v114 = [v32 objectAtIndexedSubscript:i];
         v115 = [v114 objectForKeyedSubscript:@"X"];
-        v116 = v134->var6.var6[v113];
+        v116 = sensorConfigCopy->var6.var6[v113];
         *v116 = [v115 intValue];
 
         v117 = [v32 objectAtIndexedSubscript:v113];
@@ -3085,7 +3085,7 @@ LABEL_11:
         v116[2] = [v120 intValue];
       }
 
-      v121 = [v133 objectForKeyedSubscript:@"ProjectionPoint"];
+      v121 = [bConfigCopy objectForKeyedSubscript:@"ProjectionPoint"];
       if (v121)
       {
         for (j = 0; ; j = v123 + 1)
@@ -3098,7 +3098,7 @@ LABEL_11:
 
           v124 = [v121 objectAtIndexedSubscript:j];
           v125 = [v124 objectForKeyedSubscript:@"X"];
-          v126 = v134->var6.var7[v123];
+          v126 = sensorConfigCopy->var6.var7[v123];
           *v126 = [v125 intValue];
 
           v127 = [v121 objectAtIndexedSubscript:v123];
@@ -3149,20 +3149,20 @@ LABEL_86:
   return v31;
 }
 
-+ (void)calculateNonComboGainsFromComboGains:(unsigned int)a3[3] awbAlgorithm:(CAWBAFEH14 *)a4 gains:(unsigned int)a5[3]
++ (void)calculateNonComboGainsFromComboGains:(unsigned int)gains[3] awbAlgorithm:(CAWBAFEH14 *)algorithm gains:(unsigned int)a5[3]
 {
-  v12 = COERCE_DOUBLE(vcvt_f32_u32(*a3));
+  v12 = COERCE_DOUBLE(vcvt_f32_u32(*gains));
   v24 = v12;
-  *&v12 = a3[2];
+  *&v12 = gains[2];
   v25 = *&v12;
   v23 = 0;
   *v22 = 0;
-  CAWBAFE::GetBinIndices(a4, &v23 + 1, &v23, &v24, 0, v12, v5, v6, v7, v8);
-  CCTFromColorRatio = CAWBAFE::GetCCTFromColorRatio(a4, *(&v23 + 1), v13, v14, v15, v16);
-  CAWBAFE::GetInterpolatedCSensorCalGains(a4, &v22[1], v22, CCTFromColorRatio);
+  CAWBAFE::GetBinIndices(algorithm, &v23 + 1, &v23, &v24, 0, v12, v5, v6, v7, v8);
+  CCTFromColorRatio = CAWBAFE::GetCCTFromColorRatio(algorithm, *(&v23 + 1), v13, v14, v15, v16);
+  CAWBAFE::GetInterpolatedCSensorCalGains(algorithm, &v22[1], v22, CCTFromColorRatio);
   LOWORD(v18) = v22[1];
-  v19 = (*a3 * 4.0) / v18;
-  *&v20 = a3[2];
+  v19 = (*gains * 4.0) / v18;
+  *&v20 = gains[2];
   v21 = *&v20 * 4.0;
   LOWORD(v20) = v22[0];
   *a5 = ((v19 * 4096.0) + 0.5);
@@ -3255,7 +3255,7 @@ LABEL_86:
   *(v3 + 3876) = vuzp1q_s32(v28, v27);
   v252 = 0;
   v253 = 0;
-  v254 = 0;
+  bytes3 = 0;
   v30 = [*(v3 + 5072) objectForKey:@"tileStats"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -3320,11 +3320,11 @@ LABEL_37:
   CAWBAFE::SetScheme(*(v3 + 16), 1);
   v39 = *(v3 + 16);
   v40 = [*(v3 + 5072) objectForKeyedSubscript:@"tileStats"];
-  v41 = [v40 bytes];
+  bytes = [v40 bytes];
   v42 = [*(v3 + 5072) objectForKeyedSubscript:@"windowStats"];
-  v43 = [v42 bytes];
+  bytes2 = [v42 bytes];
   v44 = [*(v3 + 5072) objectForKeyedSubscript:@"histStats"];
-  CAWBAFE::SetStats(v39, v255, v41, v43, [v44 bytes], 0);
+  CAWBAFE::SetStats(v39, v255, bytes, bytes2, [v44 bytes], 0);
 
   CAWBAFE::SetFrameRateForHistAWB(*(v3 + 16), *(v3 + 88));
   CAWBAFE::SetSensorClockFreq(*(v3 + 16), *(v3 + 4988));
@@ -3348,7 +3348,7 @@ LABEL_37:
     if (v46 && (([*(v3 + 5072) objectForKeyedSubscript:@"anstSkinMask"], v47 = objc_claimAutoreleasedReturnValue(), v48 = objc_msgSend(v47, "length"), v47, v48 == 49152) || -[AWBAlgorithm process].cold.1()))
     {
       v49 = [*(v3 + 5072) objectForKeyedSubscript:@"anstSkinMask"];
-      v254 = [v49 bytes];
+      bytes3 = [v49 bytes];
 
       CAWBAFE::SetSemanticConfidenceMap(*(v3 + 16), &v252);
       *(v3 + 4868) = 0u;
@@ -3389,7 +3389,7 @@ LABEL_37:
   if (v74)
   {
     v75 = [*(v3 + 5072) objectForKeyedSubscript:@"skyMaskData"];
-    v76 = [v75 bytes];
+    bytes4 = [v75 bytes];
 
     v77 = [*(v3 + 5072) objectForKeyedSubscript:@"skyMaskSize"];
     if ([v77 pointerValue])
@@ -3421,7 +3421,7 @@ LABEL_37:
     if (v84 == v82 * v79 || [AWBAlgorithm process])
     {
       v85 = [*(v3 + 5088) objectForKeyedSubscript:*MEMORY[0x1E6990DA0]];
-      [v3 _processSkyMask:v76 skyMaskWidth:v79 skyMaskHeight:v82 cropRectFromSourceDict:v85];
+      [v3 _processSkyMask:bytes4 skyMaskWidth:v79 skyMaskHeight:v82 cropRectFromSourceDict:v85];
     }
   }
 
@@ -3461,14 +3461,14 @@ LABEL_37:
     *(v3 + 5120) = [*(v3 + 5008) unsignedIntValue];
     *(v3 + 5124) = [*(v3 + 5016) unsignedIntValue];
     *(v3 + 5128) = [*(v3 + 5024) unsignedIntValue];
-    v93 = [*(v3 + 5032) unsignedIntValue];
-    v94 = [*(v3 + 5040) unsignedIntValue];
-    v95 = [*(v3 + 5048) unsignedIntValue];
+    unsignedIntValue = [*(v3 + 5032) unsignedIntValue];
+    unsignedIntValue2 = [*(v3 + 5040) unsignedIntValue];
+    unsignedIntValue3 = [*(v3 + 5048) unsignedIntValue];
     v96 = word_1EDD77BC0;
     v97 = *(v3 + 5120);
     v98 = *(v3 + 5128);
-    v99 = v93 | (v94 << 32);
-    v100 = v95;
+    v99 = unsignedIntValue | (unsignedIntValue2 << 32);
+    v100 = unsignedIntValue3;
     v101 = word_1EDD77BBE | 0x400000000000;
     v102 = v3;
   }
@@ -3514,9 +3514,9 @@ LABEL_37:
     v126 = &unk_1EDD77C74;
     do
     {
-      v127 = [*(v3 + 5080) BOOLValue];
+      bOOLValue = [*(v3 + 5080) BOOLValue];
       v128 = v126 - 227;
-      if (v127)
+      if (bOOLValue)
       {
         v128 = v126;
       }
@@ -3565,15 +3565,15 @@ LABEL_37:
     [*(v3 + 5088) setObject:v139 forKeyedSubscript:*MEMORY[0x1E6990EE8]];
 
     v140 = [*(v3 + 5088) objectForKeyedSubscript:*MEMORY[0x1E6991038]];
-    v141 = [v140 BOOLValue];
+    bOOLValue2 = [v140 BOOLValue];
 
-    if (v141)
+    if (bOOLValue2)
     {
-      v142 = [v3 _updateHRGainDownRatioMetadata];
-      if (v142)
+      _updateHRGainDownRatioMetadata = [v3 _updateHRGainDownRatioMetadata];
+      if (_updateHRGainDownRatioMetadata)
       {
         v204 = v2;
-        LODWORD(v203) = v142;
+        LODWORD(v203) = _updateHRGainDownRatioMetadata;
         FigDebugAssert3();
         FigSignalErrorAtGM();
       }
@@ -3591,12 +3591,12 @@ LABEL_37:
     v146 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:dword_1EDD77C00];
     [*(v3 + 5088) setObject:v146 forKeyedSubscript:*MEMORY[0x1E6990F40]];
 
-    v223 = [MEMORY[0x1E695DF90] dictionary];
-    if (v223)
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    if (dictionary)
     {
       LODWORD(v147) = dword_1EDD77B84;
       v148 = [MEMORY[0x1E696AD98] numberWithFloat:v147];
-      [v223 setObject:v148 forKeyedSubscript:@"FlashProjMixWeighting"];
+      [dictionary setObject:v148 forKeyedSubscript:@"FlashProjMixWeighting"];
 
       v149 = MEMORY[0x1E695DEC8];
       v150 = [MEMORY[0x1E696AD98] numberWithInt:dword_1EDD77C94];
@@ -3604,10 +3604,10 @@ LABEL_37:
       v152 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:dword_1EDD77C9C];
       v153 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:dword_1EDD77CA0];
       v154 = [v149 arrayWithObjects:{v150, v151, v152, v153, 0}];
-      [v223 setObject:v154 forKeyedSubscript:@"TileStatsRegionInRaw"];
+      [dictionary setObject:v154 forKeyedSubscript:@"TileStatsRegionInRaw"];
 
       v155 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:dword_1EDD77C00];
-      [v223 setObject:v155 forKeyedSubscript:@"FdAWBChistMixFactor"];
+      [dictionary setObject:v155 forKeyedSubscript:@"FdAWBChistMixFactor"];
 
       v156 = MEMORY[0x1E695DEC8];
       v157 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:word_1EDD77B79];
@@ -3615,7 +3615,7 @@ LABEL_37:
       v159 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:word_1EDD77B7D];
       v160 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:word_1EDD77B7F];
       v161 = [v156 arrayWithObjects:{v157, v158, v159, v160, 0}];
-      [v223 setObject:v161 forKeyedSubscript:@"AwbGainsSkinOnly"];
+      [dictionary setObject:v161 forKeyedSubscript:@"AwbGainsSkinOnly"];
 
       v162 = MEMORY[0x1E695DEC8];
       v163 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:word_1EDD77B88];
@@ -3623,33 +3623,33 @@ LABEL_37:
       v165 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:word_1EDD77B8C];
       v166 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:word_1EDD77B8E];
       v167 = [v162 arrayWithObjects:{v163, v164, v165, v166, 0}];
-      [v223 setObject:v167 forKeyedSubscript:@"AwbGainsFlashProj"];
+      [dictionary setObject:v167 forKeyedSubscript:@"AwbGainsFlashProj"];
 
       v168 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:dword_1EDD77B74];
-      [v223 setObject:v168 forKeyedSubscript:@"AwbColorspace"];
+      [dictionary setObject:v168 forKeyedSubscript:@"AwbColorspace"];
 
       v169 = [MEMORY[0x1E696AD98] numberWithBool:byte_1EDD77B82];
-      v170 = v223;
-      [v223 setObject:v169 forKeyedSubscript:@"IsLEDMainFlashforAWB"];
+      v170 = dictionary;
+      [dictionary setObject:v169 forKeyedSubscript:@"IsLEDMainFlashforAWB"];
 
-      v171 = [MEMORY[0x1E695DF90] dictionary];
-      if (v171)
+      dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+      if (dictionary2)
       {
         v251 = 0.0;
         *&v172 = CAWBAFE::GetMixedLightingScore(*(v3 + 16), &v251);
         v250 = 0;
         CAWBAFE::GetSkyCCT(*(v3 + 16), &v250, v172, v173, v174, v175, v176);
         v177 = [MEMORY[0x1E696AD98] numberWithBool:byte_1EDD77BC4];
-        [v171 setObject:v177 forKeyedSubscript:@"UsePrevFrameWP"];
+        [dictionary2 setObject:v177 forKeyedSubscript:@"UsePrevFrameWP"];
 
         *&v178 = v251;
         v179 = [MEMORY[0x1E696AD98] numberWithFloat:v178];
-        [v171 setObject:v179 forKeyedSubscript:@"MixedLightingScore"];
+        [dictionary2 setObject:v179 forKeyedSubscript:@"MixedLightingScore"];
 
         v180 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v250];
-        [v171 setObject:v180 forKeyedSubscript:@"SkyCCT"];
+        [dictionary2 setObject:v180 forKeyedSubscript:@"SkyCCT"];
 
-        [v171 setObject:v220 forKeyedSubscript:@"StrobeWhitePointCCM"];
+        [dictionary2 setObject:v220 forKeyedSubscript:@"StrobeWhitePointCCM"];
         *type = 0;
         v249 = 0;
         v246 = 0;
@@ -3657,44 +3657,44 @@ LABEL_37:
         CAWBAFE::GetFaceAssistedAWBResultsForMatchProvidedSkinGains(*(v3 + 16), &v249, type, v247, &v247[1], &v246 + 1, &v246);
         LODWORD(v181) = v249;
         v182 = [MEMORY[0x1E696AD98] numberWithFloat:v181];
-        [v171 setObject:v182 forKeyedSubscript:@"wpRgLogRatio"];
+        [dictionary2 setObject:v182 forKeyedSubscript:@"wpRgLogRatio"];
 
         LODWORD(v183) = HIDWORD(v249);
         v184 = [MEMORY[0x1E696AD98] numberWithFloat:v183];
-        [v171 setObject:v184 forKeyedSubscript:@"wpBgLogRatio"];
+        [dictionary2 setObject:v184 forKeyedSubscript:@"wpBgLogRatio"];
 
         LODWORD(v185) = *type;
         v186 = [MEMORY[0x1E696AD98] numberWithFloat:v185];
-        [v171 setObject:v186 forKeyedSubscript:@"wpSkinRgLogRatio"];
+        [dictionary2 setObject:v186 forKeyedSubscript:@"wpSkinRgLogRatio"];
 
         LODWORD(v187) = *&type[4];
         v188 = [MEMORY[0x1E696AD98] numberWithFloat:v187];
-        [v171 setObject:v188 forKeyedSubscript:@"wpSkinBgLogRatio"];
+        [dictionary2 setObject:v188 forKeyedSubscript:@"wpSkinBgLogRatio"];
 
         v189 = [MEMORY[0x1E696AD98] numberWithInt:v247[1]];
-        [v171 setObject:v189 forKeyedSubscript:@"continuousFDTimes"];
+        [dictionary2 setObject:v189 forKeyedSubscript:@"continuousFDTimes"];
 
         v190 = [MEMORY[0x1E696AD98] numberWithInt:v247[0]];
-        [v171 setObject:v190 forKeyedSubscript:@"skinColorSampleNum"];
+        [dictionary2 setObject:v190 forKeyedSubscript:@"skinColorSampleNum"];
 
         LODWORD(v191) = HIDWORD(v246);
         v192 = [MEMORY[0x1E696AD98] numberWithFloat:v191];
-        [v171 setObject:v192 forKeyedSubscript:@"skinColorSampleVariance"];
+        [dictionary2 setObject:v192 forKeyedSubscript:@"skinColorSampleVariance"];
 
         LODWORD(v193) = v246;
         v194 = [MEMORY[0x1E696AD98] numberWithFloat:v193];
-        [v171 setObject:v194 forKeyedSubscript:@"minDistSkinToWhiteMapping"];
+        [dictionary2 setObject:v194 forKeyedSubscript:@"minDistSkinToWhiteMapping"];
 
-        v195 = [MEMORY[0x1E695DF90] dictionary];
+        dictionary3 = [MEMORY[0x1E695DF90] dictionary];
         v201 = v217;
-        if (v195)
+        if (dictionary3)
         {
           *&v196 = *(v3 + 5120) * 0.00024414;
           *&v198 = vcvts_n_f32_u32(word_1EDD77B79, 0xCuLL);
           *&v197 = *(v3 + 5128) * 0.00024414;
           *&v199 = vcvts_n_f32_u32(word_1EDD77B7F, 0xCuLL);
           *&v200 = dword_1EDD77BB8;
-          v202 = [v3 calculateInternalAWBMetadataForMIWB:v195 bGain:v196 rSkinGain:v197 bSkinGain:v198 cct:v199 internalMetadata:v200];
+          v202 = [v3 calculateInternalAWBMetadataForMIWB:dictionary3 bGain:v196 rSkinGain:v197 bSkinGain:v198 cct:v199 internalMetadata:v200];
           if (v202)
           {
             v205 = v2;
@@ -3702,7 +3702,7 @@ LABEL_37:
             FigDebugAssert3();
             v201 = v217;
             v54 = FigSignalErrorAtGM();
-            v170 = v223;
+            v170 = dictionary;
           }
 
           else
@@ -3711,8 +3711,8 @@ LABEL_37:
           }
 
           [*(v3 + 5088) setObject:v170 forKeyedSubscript:{@"SpatialCCMOutputMetadata", v203, v205}];
-          [*(v3 + 5088) setObject:v171 forKeyedSubscript:@"AwbOutputMetadata"];
-          [*(v3 + 5088) setObject:v195 forKeyedSubscript:@"MIWBOutputMetadata"];
+          [*(v3 + 5088) setObject:dictionary2 forKeyedSubscript:@"AwbOutputMetadata"];
+          [*(v3 + 5088) setObject:dictionary3 forKeyedSubscript:@"MIWBOutputMetadata"];
         }
 
         else
@@ -3746,11 +3746,11 @@ LABEL_108:
     goto LABEL_40;
   }
 
-  v104 = [MEMORY[0x1E695DF90] dictionary];
-  v219 = v104;
-  if (v104)
+  dictionary4 = [MEMORY[0x1E695DF90] dictionary];
+  v219 = dictionary4;
+  if (dictionary4)
   {
-    v105 = v104;
+    v105 = dictionary4;
     v106 = [MEMORY[0x1E696AD98] numberWithBool:byte_1EDD77BC4];
     [v105 setObject:v106 forKeyedSubscript:@"UsePrevFrameWP"];
 
@@ -3764,37 +3764,37 @@ LABEL_108:
       [*(v3 + 5088) setObject:v105 forKeyedSubscript:@"AwbOutputMetadata"];
     }
 
-    v222 = [MEMORY[0x1E695DF90] dictionary];
-    if (v222)
+    dictionary5 = [MEMORY[0x1E695DF90] dictionary];
+    if (dictionary5)
     {
       v109 = [*(v3 + 5088) objectForKeyedSubscript:*MEMORY[0x1E6990F20]];
-      v110 = [v109 intValue];
+      intValue = [v109 intValue];
       v111 = [*(v3 + 5088) objectForKeyedSubscript:*MEMORY[0x1E6990EE0]];
-      v112 = [v111 intValue];
+      intValue2 = [v111 intValue];
       v113 = [*(v3 + 5088) objectForKeyedSubscript:*MEMORY[0x1E6990F38]];
-      v114 = [v113 intValue];
+      intValue3 = [v113 intValue];
       v115 = [*(v3 + 5088) objectForKeyedSubscript:*MEMORY[0x1E6990F28]];
-      v116 = [v115 intValue];
+      intValue4 = [v115 intValue];
       v117 = [*(v3 + 5088) objectForKeyedSubscript:*MEMORY[0x1E6990F90]];
-      v118 = [v117 intValue];
-      *&v119 = vcvts_n_f32_s32(v110, 0xCuLL);
-      *&v120 = vcvts_n_f32_s32(v112, 0xCuLL);
-      *&v121 = vcvts_n_f32_s32(v114, 0xCuLL);
-      *&v122 = vcvts_n_f32_s32(v116, 0xCuLL);
-      *&v123 = v118;
-      v54 = [v3 calculateInternalAWBMetadataForMIWB:v222 bGain:v119 rSkinGain:v120 bSkinGain:v121 cct:v122 internalMetadata:v123];
+      intValue5 = [v117 intValue];
+      *&v119 = vcvts_n_f32_s32(intValue, 0xCuLL);
+      *&v120 = vcvts_n_f32_s32(intValue2, 0xCuLL);
+      *&v121 = vcvts_n_f32_s32(intValue3, 0xCuLL);
+      *&v122 = vcvts_n_f32_s32(intValue4, 0xCuLL);
+      *&v123 = intValue5;
+      v54 = [v3 calculateInternalAWBMetadataForMIWB:dictionary5 bGain:v119 rSkinGain:v120 bSkinGain:v121 cct:v122 internalMetadata:v123];
 
       if (v54)
       {
         LODWORD(v203) = v54;
         FigDebugAssert3();
         v54 = FigSignalErrorAtGM();
-        [*(v3 + 5088) setObject:v222 forKeyedSubscript:{@"MIWBOutputMetadata", v203, v2}];
+        [*(v3 + 5088) setObject:dictionary5 forKeyedSubscript:{@"MIWBOutputMetadata", v203, v2}];
       }
 
       else
       {
-        [*(v3 + 5088) setObject:v222 forKeyedSubscript:{@"MIWBOutputMetadata", v203, v204}];
+        [*(v3 + 5088) setObject:dictionary5 forKeyedSubscript:{@"MIWBOutputMetadata", v203, v204}];
       }
     }
 
@@ -3968,24 +3968,24 @@ LABEL_40:
   return v54;
 }
 
-- (int)_processSkyMask:(void *)a3 skyMaskWidth:(int)a4 skyMaskHeight:(int)a5 cropRectFromSourceDict:(id)a6
+- (int)_processSkyMask:(void *)mask skyMaskWidth:(int)width skyMaskHeight:(int)height cropRectFromSourceDict:(id)dict
 {
-  v10 = a6;
-  v11 = v10;
-  if (a3)
+  dictCopy = dict;
+  v11 = dictCopy;
+  if (mask)
   {
-    if (v10 && CGRectMakeWithDictionaryRepresentation(v10, &rect))
+    if (dictCopy && CGRectMakeWithDictionaryRepresentation(dictCopy, &rect))
     {
-      v12 = (rect.size.width * a4);
-      v13 = (rect.size.height * a5);
-      v14 = (rect.origin.y * a5);
+      v12 = (rect.size.width * width);
+      v13 = (rect.size.height * height);
+      v14 = (rect.origin.y * height);
       v15 = v13 * v12;
       if (v14 < v13)
       {
         v16 = 0;
-        v17 = (rect.origin.x * a4);
+        v17 = (rect.origin.x * width);
         v18 = v14;
-        v19 = a3 + v17 + v14 * a4;
+        v19 = mask + v17 + v14 * width;
         do
         {
           v20 = v12 - v17;
@@ -4007,7 +4007,7 @@ LABEL_40:
           }
 
           ++v18;
-          v19 += a4;
+          v19 += width;
         }
 
         while (v18 != v13);
@@ -4017,15 +4017,15 @@ LABEL_40:
 
     else
     {
-      v15 = a5 * a4;
-      if (a5 * a4 >= 1)
+      v15 = height * width;
+      if (height * width >= 1)
       {
         v16 = 0;
-        v23 = (a5 * a4);
+        v23 = (height * width);
         do
         {
-          v24 = *a3;
-          a3 = a3 + 1;
+          v24 = *mask;
+          mask = mask + 1;
           if (v24 > 0x32)
           {
             ++v16;
@@ -4053,45 +4053,45 @@ LABEL_21:
   return 0;
 }
 
-- (int)_calculateComboGainsAndNormalizedGainsFromAWBGains:(id)a3 awbComboGains:(id)a4 colorCalGains:(id)a5
+- (int)_calculateComboGainsAndNormalizedGainsFromAWBGains:(id)gains awbComboGains:(id)comboGains colorCalGains:(id)calGains
 {
-  var1 = a4.var1;
-  self->_awbGains = a3;
-  v5.i64[0] = *&a4.var0;
-  v5.i32[2] = a4.var2;
+  var1 = comboGains.var1;
+  self->_awbGains = gains;
+  v5.i64[0] = *&comboGains.var0;
+  v5.i32[2] = comboGains.var2;
   v7 = vtstq_s32(v5, v5);
   v7.i32[3] = v7.i32[2];
   if ((vminvq_u32(v7) & 0x80000000) == 0)
   {
-    if ((a5.var0 * a3.var0) >> 14 >= 0xFFFF)
+    if ((calGains.var0 * gains.var0) >> 14 >= 0xFFFF)
     {
-      a4.var0 = 0xFFFF;
+      comboGains.var0 = 0xFFFF;
     }
 
     else
     {
-      a4.var0 = (a5.var0 * a3.var0) >> 14;
+      comboGains.var0 = (calGains.var0 * gains.var0) >> 14;
     }
 
-    if ((a5.var2 * a3.var2) >> 14 >= 0xFFFF)
+    if ((calGains.var2 * gains.var2) >> 14 >= 0xFFFF)
     {
-      a4.var2 = 0xFFFF;
+      comboGains.var2 = 0xFFFF;
     }
 
     else
     {
-      a4.var2 = (a5.var2 * a3.var2) >> 14;
+      comboGains.var2 = (calGains.var2 * gains.var2) >> 14;
     }
 
-    var1 = a3.var1;
+    var1 = gains.var1;
   }
 
-  self->_awbComboGains.rGain = a4.var0;
+  self->_awbComboGains.rGain = comboGains.var0;
   self->_awbComboGains.gGain = var1;
-  self->_awbComboGains.bGain = a4.var2;
-  if (var1 <= a4.var2)
+  self->_awbComboGains.bGain = comboGains.var2;
+  if (var1 <= comboGains.var2)
   {
-    var2 = a4.var2;
+    var2 = comboGains.var2;
   }
 
   else
@@ -4099,9 +4099,9 @@ LABEL_21:
     var2 = var1;
   }
 
-  if (var1 >= a4.var2)
+  if (var1 >= comboGains.var2)
   {
-    v9 = a4.var2;
+    v9 = comboGains.var2;
   }
 
   else
@@ -4109,20 +4109,20 @@ LABEL_21:
     v9 = var1;
   }
 
-  if (a4.var0 > var2)
+  if (comboGains.var0 > var2)
   {
-    LOWORD(var2) = a4.var0;
+    LOWORD(var2) = comboGains.var0;
   }
 
-  if (a4.var0 < v9)
+  if (comboGains.var0 < v9)
   {
-    LOWORD(v9) = a4.var0;
+    LOWORD(v9) = comboGains.var0;
   }
 
   v10 = ((var2 << 12) / v9);
-  self->_awbComboGainsNormalized.rGain = ((a4.var0 << 12) / v10);
+  self->_awbComboGainsNormalized.rGain = ((comboGains.var0 << 12) / v10);
   self->_awbComboGainsNormalized.gGain = ((var1 << 12) / v10);
-  self->_awbComboGainsNormalized.bGain = ((a4.var2 << 12) / v10);
+  self->_awbComboGainsNormalized.bGain = ((comboGains.var2 << 12) / v10);
   return 0;
 }
 
@@ -4138,7 +4138,7 @@ LABEL_21:
   }
 
   v5 = [(NSMutableDictionary *)self->_outputMetadata objectForKeyedSubscript:v3];
-  v6 = [v5 unsignedIntValue];
+  unsignedIntValue = [v5 unsignedIntValue];
 
   v7 = *MEMORY[0x1E6990EF0];
   v8 = [(NSMutableDictionary *)self->_outputMetadata objectForKeyedSubscript:*MEMORY[0x1E6990EF0]];
@@ -4150,7 +4150,7 @@ LABEL_21:
   }
 
   v9 = [(NSMutableDictionary *)self->_outputMetadata objectForKeyedSubscript:v7];
-  v10 = [v9 unsignedIntValue];
+  unsignedIntValue2 = [v9 unsignedIntValue];
 
   v11 = *MEMORY[0x1E6990EE8];
   v12 = [(NSMutableDictionary *)self->_outputMetadata objectForKeyedSubscript:*MEMORY[0x1E6990EE8]];
@@ -4162,21 +4162,21 @@ LABEL_21:
   }
 
   v13 = [(NSMutableDictionary *)self->_outputMetadata objectForKeyedSubscript:v11];
-  v14 = [v13 unsignedIntValue];
+  unsignedIntValue3 = [v13 unsignedIntValue];
 
-  if (v14 <= v6)
+  if (unsignedIntValue3 <= unsignedIntValue)
   {
-    v17 = v6;
+    v17 = unsignedIntValue;
   }
 
   else
   {
-    v17 = v14;
+    v17 = unsignedIntValue3;
   }
 
-  if (v10 > v17)
+  if (unsignedIntValue2 > v17)
   {
-    v17 = v10;
+    v17 = unsignedIntValue2;
   }
 
   if (v17 <= 0xFFF)
@@ -4185,8 +4185,8 @@ LABEL_21:
     return v25;
   }
 
-  v16.i64[0] = __PAIR64__(v10, v6);
-  v16.i32[2] = v14;
+  v16.i64[0] = __PAIR64__(unsignedIntValue2, unsignedIntValue);
+  v16.i32[2] = unsignedIntValue3;
   v18 = vaddq_s32(vdupq_n_s32(v17 >> 1), vshlq_n_s32(v16, 0xCuLL));
   v18.i32[0] /= v17;
   v18.i32[1] /= v17;
@@ -4215,77 +4215,77 @@ LABEL_21:
   return 0;
 }
 
-+ (int)getColorCalibrationsUsingIdealColorCalbrations:(id)a3 absoluteColorCalibrations:(id)a4 colorCalibrationsOut:(id *)a5 awbConfig:(id)a6
++ (int)getColorCalibrationsUsingIdealColorCalbrations:(id)calbrations absoluteColorCalibrations:(id)calibrations colorCalibrationsOut:(id *)out awbConfig:(id)config
 {
-  a3;
-  a4;
-  v8 = a6;
+  calbrations;
+  calibrations;
+  configCopy = config;
   operator new();
 }
 
-+ (int)calculateSTRBKeyFromWideCamera:(id *)a3 moduleConfig:(id)a4 secondaryModuleConfig:(id)a5
++ (int)calculateSTRBKeyFromWideCamera:(id *)camera moduleConfig:(id)config secondaryModuleConfig:(id)moduleConfig
 {
-  a4;
-  a5;
+  config;
+  moduleConfig;
   operator new();
 }
 
-+ (int)calculateSTRBKeyFromWideCameraLatticeModel:(id *)a3 moduleConfig:(id)a4 absoluteColorCalibrations:(id)a5 secondaryModuleConfig:(id)a6 secondaryAbsoluteColorCalibrations:(id)a7
++ (int)calculateSTRBKeyFromWideCameraLatticeModel:(id *)model moduleConfig:(id)config absoluteColorCalibrations:(id)calibrations secondaryModuleConfig:(id)moduleConfig secondaryAbsoluteColorCalibrations:(id)colorCalibrations
 {
-  v10 = a4;
-  a5;
-  v11 = a6;
-  a7;
+  configCopy = config;
+  calibrations;
+  moduleConfigCopy = moduleConfig;
+  colorCalibrations;
   operator new();
 }
 
-+ (int)translateAWBGainsToSecondaryPortType:(id)a3 cameraInfo:(id)a4 metadata:(id)a5 validRect:(id)a6 secondaryModuleConfig:(id)a7 secondaryCameraInfo:(id)a8 primaryRGain:(float)a9 primaryBGain:(float)a10 secondaryChannelID:(unsigned int)a11 secondaryRGain:(float *)a12 secondaryBGain:(float *)a13
++ (int)translateAWBGainsToSecondaryPortType:(id)type cameraInfo:(id)info metadata:(id)metadata validRect:(id)rect secondaryModuleConfig:(id)config secondaryCameraInfo:(id)cameraInfo primaryRGain:(float)gain primaryBGain:(float)self0 secondaryChannelID:(unsigned int)self1 secondaryRGain:(float *)self2 secondaryBGain:(float *)self3
 {
-  a3;
-  a4;
-  a5;
-  a6;
-  a7;
-  a8;
+  type;
+  info;
+  metadata;
+  rect;
+  config;
+  cameraInfo;
   operator new();
 }
 
-+ (int)getInternalAWBMetadataForMIWB:(id)a3 cameraInfo:(id)a4 metadata:(id)a5 validRect:(id)a6 secondaryModuleConfig:(id)a7 secondaryCameraInfo:(id)a8
++ (int)getInternalAWBMetadataForMIWB:(id)b cameraInfo:(id)info metadata:(id)metadata validRect:(id)rect secondaryModuleConfig:(id)config secondaryCameraInfo:(id)cameraInfo
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  bCopy = b;
+  infoCopy = info;
+  metadataCopy = metadata;
+  rectCopy = rect;
+  configCopy = config;
+  cameraInfoCopy = cameraInfo;
   LODWORD(v21) = +[FWPlatformIDUtilities getFWPlatformID];
-  v19 = [AWBAlgorithm getInternalAWBMetadataForMIWB:v13 cameraInfo:v14 metadata:v15 validRect:v16 secondaryModuleConfig:v17 secondaryCameraInfo:v18 platformID:v21];
+  v19 = [AWBAlgorithm getInternalAWBMetadataForMIWB:bCopy cameraInfo:infoCopy metadata:metadataCopy validRect:rectCopy secondaryModuleConfig:configCopy secondaryCameraInfo:cameraInfoCopy platformID:v21];
 
   return v19;
 }
 
-+ (int)getInternalAWBMetadataForMIWB:(id)a3 cameraInfo:(id)a4 metadata:(id)a5 validRect:(id)a6 secondaryModuleConfig:(id)a7 secondaryCameraInfo:(id)a8 platformID:(int)a9
++ (int)getInternalAWBMetadataForMIWB:(id)b cameraInfo:(id)info metadata:(id)metadata validRect:(id)rect secondaryModuleConfig:(id)config secondaryCameraInfo:(id)cameraInfo platformID:(int)d
 {
-  v35 = a3;
-  v34 = a4;
-  v15 = a5;
-  v16 = a6;
-  v33 = a7;
-  v17 = a8;
+  bCopy = b;
+  infoCopy = info;
+  metadataCopy = metadata;
+  rectCopy = rect;
+  configCopy = config;
+  cameraInfoCopy = cameraInfo;
   v39 = 0;
   v38 = 0;
-  [v15 cmi_intValueForKey:*MEMORY[0x1E6990F20] defaultValue:4096 found:&v38];
+  [metadataCopy cmi_intValueForKey:*MEMORY[0x1E6990F20] defaultValue:4096 found:&v38];
   if (v38)
   {
-    [v15 cmi_intValueForKey:*MEMORY[0x1E6990EE0] defaultValue:4096 found:&v38];
+    [metadataCopy cmi_intValueForKey:*MEMORY[0x1E6990EE0] defaultValue:4096 found:&v38];
     if (v38 == 1)
     {
       v32 = *MEMORY[0x1E6990E20];
-      v18 = [v15 objectForKeyedSubscript:?];
+      v18 = [metadataCopy objectForKeyedSubscript:?];
 
       if (v18)
       {
-        v20 = [v15 objectForKeyedSubscript:v32];
+        v20 = [metadataCopy objectForKeyedSubscript:v32];
         v21 = v20;
         if (v20)
         {
@@ -4299,16 +4299,16 @@ LABEL_21:
             v25 = [v23 cmi_intValueForKey:*MEMORY[0x1E6990F28] defaultValue:4096 found:&v36];
             if (v37)
             {
-              if (v17)
+              if (cameraInfoCopy)
               {
-                if (v33)
+                if (configCopy)
                 {
                   if (v36)
                   {
                     *&v26 = v24;
                     *&v27 = v25;
                     LODWORD(v30) = 4;
-                    v28 = [AWBAlgorithm translateAWBGainsToSecondaryPortType:v33 cameraInfo:v17 metadata:v15 validRect:v16 secondaryModuleConfig:v35 secondaryCameraInfo:v34 primaryRGain:v26 primaryBGain:v27 secondaryChannelID:v30 secondaryRGain:&v39 + 4 secondaryBGain:&v39];
+                    v28 = [AWBAlgorithm translateAWBGainsToSecondaryPortType:configCopy cameraInfo:cameraInfoCopy metadata:metadataCopy validRect:rectCopy secondaryModuleConfig:bCopy secondaryCameraInfo:infoCopy primaryRGain:v26 primaryBGain:v27 secondaryChannelID:v30 secondaryRGain:&v39 + 4 secondaryBGain:&v39];
                     if (v28)
                     {
                       v31 = v9;
@@ -4324,12 +4324,12 @@ LABEL_21:
       }
 
       LODWORD(v19) = HIDWORD(v39);
-      if (*(&v39 + 1) != 0.0 || (*(&v39 + 1) = [v15 cmi_intValueForKey:*MEMORY[0x1E6990F38] defaultValue:4096 found:{&v38, v19}], v38 == 1))
+      if (*(&v39 + 1) != 0.0 || (*(&v39 + 1) = [metadataCopy cmi_intValueForKey:*MEMORY[0x1E6990F38] defaultValue:4096 found:{&v38, v19}], v38 == 1))
       {
         LODWORD(v19) = v39;
-        if (*&v39 != 0.0 || (*&v19 = [v15 cmi_intValueForKey:*MEMORY[0x1E6990F28] defaultValue:4096 found:{&v38, v19}], *&v39 = *&v19, v38 == 1))
+        if (*&v39 != 0.0 || (*&v19 = [metadataCopy cmi_intValueForKey:*MEMORY[0x1E6990F28] defaultValue:4096 found:{&v38, v19}], *&v39 = *&v19, v38 == 1))
         {
-          [v15 cmi_intValueForKey:*MEMORY[0x1E6990F90] defaultValue:6500 found:{&v38, v19, v30, v31}];
+          [metadataCopy cmi_intValueForKey:*MEMORY[0x1E6990F90] defaultValue:6500 found:{&v38, v19, v30, v31}];
           if (v38 == 1)
           {
             *&v39 = *&v39 * 0.00024414;
@@ -4344,11 +4344,11 @@ LABEL_21:
   return 0;
 }
 
-+ (int)encodeSetFileIDForModuleConfig:(id)a3 setFileID:(unsigned int *)a4
++ (int)encodeSetFileIDForModuleConfig:(id)config setFileID:(unsigned int *)d
 {
-  v5 = a3;
+  configCopy = config;
   v14 = 0;
-  v6 = [v5 objectForKeyedSubscript:@"SetFile"];
+  v6 = [configCopy objectForKeyedSubscript:@"SetFile"];
   v7 = [v6 objectForKeyedSubscript:@"Origin"];
 
   if (v7)
@@ -4363,10 +4363,10 @@ LABEL_21:
       [v9 scanHexInt:&v14];
       v10 = BYTE1(v14) << 8;
       LODWORD(v14) = v10;
-      if (a4)
+      if (d)
       {
         v11 = 0;
-        *a4 = (HIDWORD(v14) >> 8) | (v10 << 8) | (BYTE4(v14) << 8);
+        *d = (HIDWORD(v14) >> 8) | (v10 << 8) | (BYTE4(v14) << 8);
       }
 
       else
@@ -4475,7 +4475,7 @@ LABEL_21:
   OUTLINED_FUNCTION_2_0();
   FigDebugAssert3();
   result = FigSignalErrorAtGM();
-  *a1 = result;
+  *self = result;
   return result;
 }
 

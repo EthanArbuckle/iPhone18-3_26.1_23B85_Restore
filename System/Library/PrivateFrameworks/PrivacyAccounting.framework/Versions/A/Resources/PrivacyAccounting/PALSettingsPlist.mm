@@ -1,16 +1,16 @@
 @interface PALSettingsPlist
-+ (id)settingsFromFile:(id)a3 withError:(id *)a4;
++ (id)settingsFromFile:(id)file withError:(id *)error;
 - (PALSettingsPlist)init;
-- (PALSettingsPlist)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (PALSettingsPlist)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PALSettingsPlist
 
-+ (id)settingsFromFile:(id)a3 withError:(id *)a4
++ (id)settingsFromFile:(id)file withError:(id *)error
 {
   v12 = 0;
-  v5 = [NSData dataWithContentsOfFile:a3 options:0 error:&v12];
+  v5 = [NSData dataWithContentsOfFile:file options:0 error:&v12];
   v6 = v12;
   if (v5)
   {
@@ -20,7 +20,7 @@
     v8 = v11;
 
     v6 = v8;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_7;
     }
@@ -29,7 +29,7 @@
   else
   {
     v7 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_7;
     }
@@ -38,7 +38,7 @@
   if (v6)
   {
     v9 = v6;
-    *a4 = v6;
+    *error = v6;
   }
 
 LABEL_7:
@@ -60,24 +60,24 @@ LABEL_7:
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   loggingEnabled = self->_loggingEnabled;
-  v5 = a3;
-  [v5 encodeBool:loggingEnabled forKey:@"loggingEnabled"];
-  [v5 encodeDouble:@"lastPreflightCheck" forKey:self->_lastPreflightCheck];
+  coderCopy = coder;
+  [coderCopy encodeBool:loggingEnabled forKey:@"loggingEnabled"];
+  [coderCopy encodeDouble:@"lastPreflightCheck" forKey:self->_lastPreflightCheck];
 }
 
-- (PALSettingsPlist)initWithCoder:(id)a3
+- (PALSettingsPlist)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = PALSettingsPlist;
   v5 = [(PALSettingsPlist *)&v8 init];
   if (v5)
   {
-    v5->_loggingEnabled = [v4 decodeBoolForKey:@"loggingEnabled"];
-    [v4 decodeDoubleForKey:@"lastPreflightCheck"];
+    v5->_loggingEnabled = [coderCopy decodeBoolForKey:@"loggingEnabled"];
+    [coderCopy decodeDoubleForKey:@"lastPreflightCheck"];
     v5->_lastPreflightCheck = v6;
   }
 

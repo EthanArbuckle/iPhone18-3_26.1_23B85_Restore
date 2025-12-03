@@ -1,7 +1,7 @@
 @interface SCNMTLSmoothNormalsDeformer
-- (unint64_t)updateWithComputeContext:(id)a3 buffers:(id *)a4;
+- (unint64_t)updateWithComputeContext:(id)context buffers:(id *)buffers;
 - (void)dealloc;
-- (void)initWithMesh:(int)a3 dataKind:(void *)a4 resourceManager:(void *)a5 computeContext:;
+- (void)initWithMesh:(int)mesh dataKind:(void *)kind resourceManager:(void *)manager computeContext:;
 @end
 
 @implementation SCNMTLSmoothNormalsDeformer
@@ -136,70 +136,70 @@ void __84__SCNMTLSmoothNormalsDeformer_initWithMesh_dataKind_resourceManager_com
   [(SCNMTLSmoothNormalsDeformer *)&v3 dealloc];
 }
 
-- (unint64_t)updateWithComputeContext:(id)a3 buffers:(id *)a4
+- (unint64_t)updateWithComputeContext:(id)context buffers:(id *)buffers
 {
-  v7 = [a3 currentFrameHash];
-  if (self->_currentFrameHash == v7)
+  currentFrameHash = [context currentFrameHash];
+  if (self->_currentFrameHash == currentFrameHash)
   {
     return 0;
   }
 
-  self->_currentFrameHash = v7;
-  v9 = [a3 currentComputeEncoder];
-  bzero(v9, 0x678uLL);
-  var1 = a4->var1;
+  self->_currentFrameHash = currentFrameHash;
+  currentComputeEncoder = [context currentComputeEncoder];
+  bzero(currentComputeEncoder, 0x678uLL);
+  var1 = buffers->var1;
   if (var1)
   {
-    v9->_buffers[0] = var1;
-    v9->_buffersToBind[0] |= 1uLL;
+    currentComputeEncoder->_buffers[0] = var1;
+    currentComputeEncoder->_buffersToBind[0] |= 1uLL;
   }
 
-  var3 = a4->var3;
+  var3 = buffers->var3;
   if (var3)
   {
-    v9->_buffers[1] = var3;
-    v9->_offsets[1] = 0;
-    v9->_buffersToBind[0] |= 2uLL;
+    currentComputeEncoder->_buffers[1] = var3;
+    currentComputeEncoder->_offsets[1] = 0;
+    currentComputeEncoder->_buffersToBind[0] |= 2uLL;
   }
 
   perVertexTrianglesOffsets = self->_perVertexTrianglesOffsets;
   if (perVertexTrianglesOffsets)
   {
-    v9->_buffers[2] = perVertexTrianglesOffsets;
-    v9->_offsets[2] = 0;
-    v9->_buffersToBind[0] |= 4uLL;
+    currentComputeEncoder->_buffers[2] = perVertexTrianglesOffsets;
+    currentComputeEncoder->_offsets[2] = 0;
+    currentComputeEncoder->_buffersToBind[0] |= 4uLL;
   }
 
   perVertexTrianglesIndices = self->_perVertexTrianglesIndices;
   if (perVertexTrianglesIndices)
   {
-    v9->_buffers[3] = perVertexTrianglesIndices;
-    v9->_offsets[3] = 0;
-    v9->_buffersToBind[0] |= 8uLL;
+    currentComputeEncoder->_buffers[3] = perVertexTrianglesIndices;
+    currentComputeEncoder->_offsets[3] = 0;
+    currentComputeEncoder->_buffersToBind[0] |= 8uLL;
   }
 
-  SCNMTLComputeCommandEncoder::setBytes(v9, &self->_baseVertexCount, 4uLL, 4uLL);
-  v14 = [(SCNMTLOpenSubdivComputeEvaluator *)self->_smoothNormalsPipeline computeEvaluator];
+  SCNMTLComputeCommandEncoder::setBytes(currentComputeEncoder, &self->_baseVertexCount, 4uLL, 4uLL);
+  computeEvaluator = [(SCNMTLOpenSubdivComputeEvaluator *)self->_smoothNormalsPipeline computeEvaluator];
   baseVertexCount = self->_baseVertexCount;
-  if (v9->_computePipelineState != v14)
+  if (currentComputeEncoder->_computePipelineState != computeEvaluator)
   {
-    v9->_computePipelineState = v14;
-    [(MTLComputeCommandEncoder *)v9->_encoder setComputePipelineState:v14];
+    currentComputeEncoder->_computePipelineState = computeEvaluator;
+    [(MTLComputeCommandEncoder *)currentComputeEncoder->_encoder setComputePipelineState:computeEvaluator];
   }
 
-  SCNMTLComputeCommandEncoder::dispatchOnGrid1D(v9, baseVertexCount);
+  SCNMTLComputeCommandEncoder::dispatchOnGrid1D(currentComputeEncoder, baseVertexCount);
   return 1;
 }
 
-- (void)initWithMesh:(int)a3 dataKind:(void *)a4 resourceManager:(void *)a5 computeContext:
+- (void)initWithMesh:(int)mesh dataKind:(void *)kind resourceManager:(void *)manager computeContext:
 {
   v93 = *MEMORY[0x277D85DE8];
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v89.receiver = a1;
+  v89.receiver = self;
   v89.super_class = SCNMTLSmoothNormalsDeformer;
   v8 = objc_msgSendSuper2(&v89, sel_init);
   if (!v8)
@@ -208,8 +208,8 @@ void __84__SCNMTLSmoothNormalsDeformer_initWithMesh_dataKind_resourceManager_com
   }
 
   v9 = v8;
-  v74 = a5;
-  SourceWithSemanticAtIndex = C3DMeshGetSourceWithSemanticAtIndex(a2, 0, 0, a3);
+  managerCopy = manager;
+  SourceWithSemanticAtIndex = C3DMeshGetSourceWithSemanticAtIndex(a2, 0, 0, mesh);
   v75 = v9;
   *(v9 + 4) = C3DMeshSourceGetCount(SourceWithSemanticAtIndex);
   ElementsCount = C3DMeshGetElementsCount(a2);
@@ -498,8 +498,8 @@ void __84__SCNMTLSmoothNormalsDeformer_initWithMesh_dataKind_resourceManager_com
         }
       }
 
-      v75[3] = -[SCNMTLResourceManager newPrivateBufferWithBytes:length:blitEncoder:](a4, v52, v50, [v74 currentBlitEncoder]);
-      v75[4] = -[SCNMTLResourceManager newPrivateBufferWithBytes:length:blitEncoder:](a4, v58, v56, [v74 currentBlitEncoder]);
+      v75[3] = -[SCNMTLResourceManager newPrivateBufferWithBytes:length:blitEncoder:](kind, v52, v50, [managerCopy currentBlitEncoder]);
+      v75[4] = -[SCNMTLResourceManager newPrivateBufferWithBytes:length:blitEncoder:](kind, v58, v56, [managerCopy currentBlitEncoder]);
       free(v52);
       free(v58);
       v20 = v81;
@@ -507,8 +507,8 @@ void __84__SCNMTLSmoothNormalsDeformer_initWithMesh_dataKind_resourceManager_com
 
     else
     {
-      v75[3] = -[SCNMTLResourceManager newPrivateBufferWithBytes:length:blitEncoder:](a4, v24, v71 & 0x3FFFFFFFCLL, [v74 currentBlitEncoder]);
-      v75[4] = -[SCNMTLResourceManager newPrivateBufferWithBytes:length:blitEncoder:](a4, v33, v69, [v74 currentBlitEncoder]);
+      v75[3] = -[SCNMTLResourceManager newPrivateBufferWithBytes:length:blitEncoder:](kind, v24, v71 & 0x3FFFFFFFCLL, [managerCopy currentBlitEncoder]);
+      v75[4] = -[SCNMTLResourceManager newPrivateBufferWithBytes:length:blitEncoder:](kind, v33, v69, [managerCopy currentBlitEncoder]);
       v30 = v72;
     }
 
@@ -527,7 +527,7 @@ void __84__SCNMTLSmoothNormalsDeformer_initWithMesh_dataKind_resourceManager_com
     v66 = @"unify_u16";
   }
 
-  v67 = [a4 computePipelineStateForKernel:v66];
+  v67 = [kind computePipelineStateForKernel:v66];
   v49 = v75;
   v75[5] = v67;
   return v49;

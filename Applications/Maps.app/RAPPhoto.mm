@@ -1,33 +1,33 @@
 @interface RAPPhoto
-- (RAPPhoto)initWithPhoto:(id)a3 date:(id)a4 location:(id)a5;
+- (RAPPhoto)initWithPhoto:(id)photo date:(id)date location:(id)location;
 @end
 
 @implementation RAPPhoto
 
-- (RAPPhoto)initWithPhoto:(id)a3 date:(id)a4 location:(id)a5
+- (RAPPhoto)initWithPhoto:(id)photo date:(id)date location:(id)location
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  photoCopy = photo;
+  dateCopy = date;
+  locationCopy = location;
   v22.receiver = self;
   v22.super_class = RAPPhoto;
   v12 = [(RAPPhoto *)&v22 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_photo, a3);
-    v14 = [v11 copy];
+    objc_storeStrong(&v12->_photo, photo);
+    v14 = [locationCopy copy];
     location = v13->_location;
     v13->_location = v14;
 
-    v16 = [v10 copy];
+    v16 = [dateCopy copy];
     date = v13->_date;
     v13->_date = v16;
 
     v18 = +[NSUUID UUID];
-    v19 = [v18 UUIDString];
+    uUIDString = [v18 UUIDString];
     identifier = v13->_identifier;
-    v13->_identifier = v19;
+    v13->_identifier = uUIDString;
   }
 
   return v13;

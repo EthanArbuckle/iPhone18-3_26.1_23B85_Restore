@@ -1,16 +1,16 @@
 @interface AppStoreContentPlatterView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (void)addSubview:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (void)addSubview:(id)subview;
 - (void)layoutSubviews;
 @end
 
 @implementation AppStoreContentPlatterView
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = fits.height;
+  width = fits.width;
+  selfCopy = self;
   v6 = sub_24E24450C(width, height);
   v8 = v7;
 
@@ -23,15 +23,15 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_24E244830();
 }
 
-- (void)addSubview:(id)a3
+- (void)addSubview:(id)subview
 {
-  v4 = a3;
-  v5 = self;
-  sub_24E244EF0(v4);
+  subviewCopy = subview;
+  selfCopy = self;
+  sub_24E244EF0(subviewCopy);
 }
 
 @end

@@ -1,6 +1,6 @@
 @interface SUSUISoftwareUpdateDefaults
 - (SUSUISoftwareUpdateDefaults)init;
-- (id)_initWithLegacyDefaults:(id)a3;
+- (id)_initWithLegacyDefaults:(id)defaults;
 - (void)_bindAndRegisterDefaults;
 - (void)_clearLegacySpringBoardPreferences;
 - (void)_migrateLegacySpringBoardPreferences;
@@ -12,15 +12,15 @@
 - (SUSUISoftwareUpdateDefaults)init
 {
   location = self;
-  v6 = [MEMORY[0x277CCA8D8] mainBundle];
-  v7 = [v6 bundleIdentifier];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
   v10 = 0;
   v8 = 0;
-  if ([v7 isEqualToString:init_springBoardBundleIdentifier])
+  if ([bundleIdentifier isEqualToString:init_springBoardBundleIdentifier])
   {
-    v11 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
     v10 = 1;
-    v4 = v11;
+    v4 = standardUserDefaults;
   }
 
   else
@@ -40,34 +40,34 @@
 
   if (v10)
   {
-    MEMORY[0x277D82BD8](v11);
+    MEMORY[0x277D82BD8](standardUserDefaults);
   }
 
-  MEMORY[0x277D82BD8](v7);
-  MEMORY[0x277D82BD8](v6);
+  MEMORY[0x277D82BD8](bundleIdentifier);
+  MEMORY[0x277D82BD8](mainBundle);
   objc_storeStrong(&location, 0);
   return v13;
 }
 
-- (id)_initWithLegacyDefaults:(id)a3
+- (id)_initWithLegacyDefaults:(id)defaults
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v8;
-  v8 = 0;
+  objc_storeStrong(location, defaults);
+  v3 = selfCopy;
+  selfCopy = 0;
   v6 = [(BSAbstractDefaultDomain *)v3 _initWithDomain:@"com.apple.softwareupdateservices.ui.ios"];
-  v8 = v6;
-  objc_storeStrong(&v8, v6);
+  selfCopy = v6;
+  objc_storeStrong(&selfCopy, v6);
   if (v6)
   {
-    objc_storeStrong(&v8->_sbLegacyDefaults, location[0]);
+    objc_storeStrong(&selfCopy->_sbLegacyDefaults, location[0]);
   }
 
-  v5 = MEMORY[0x277D82BE0](v8);
+  v5 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v8, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v5;
 }
 
@@ -89,23 +89,23 @@
   [(SUSUISoftwareUpdateDefaults *)self _migrateLegacySpringBoardPreferences];
   [(SUSUISoftwareUpdateDefaults *)self _clearLegacySpringBoardPreferences];
   [(SUSUISoftwareUpdateDefaults *)self setNeedsAlertPresentationAfterOTAUpdate:0];
-  v2 = [(BSAbstractDefaultDomain *)self _store];
-  [v2 synchronize];
-  MEMORY[0x277D82BD8](v2);
+  _store = [(BSAbstractDefaultDomain *)self _store];
+  [_store synchronize];
+  MEMORY[0x277D82BD8](_store);
 }
 
 - (void)_migrateLegacySpringBoardPreferences
 {
-  v14 = self;
+  selfCopy = self;
   v13[1] = a2;
   v13[0] = [(NSUserDefaults *)self->_sbLegacyDefaults dictionaryForKey:@"SBBootTransitionContext"];
   v5 = [v13[0] valueForKey:@"__fromOTASoftwareUpdate"];
-  v6 = [v5 BOOLValue];
+  bOOLValue = [v5 BOOLValue];
   MEMORY[0x277D82BD8](v5);
-  v12 = v6;
-  v11 = [(NSUserDefaults *)v14->_sbLegacyDefaults BOOLForKey:@"SBFromOTASoftwareUpdate"];
-  v10 = [(SUSUISoftwareUpdateDefaults *)v14 needsAlertPresentationAfterOTAUpdate];
-  if (v11 || (v12 & 1) != 0 || (v10 & 1) != 0)
+  v12 = bOOLValue;
+  v11 = [(NSUserDefaults *)selfCopy->_sbLegacyDefaults BOOLForKey:@"SBFromOTASoftwareUpdate"];
+  needsAlertPresentationAfterOTAUpdate = [(SUSUISoftwareUpdateDefaults *)selfCopy needsAlertPresentationAfterOTAUpdate];
+  if (v11 || (v12 & 1) != 0 || (needsAlertPresentationAfterOTAUpdate & 1) != 0)
   {
     location = SUSUILog();
     v8 = OS_LOG_TYPE_DEFAULT;

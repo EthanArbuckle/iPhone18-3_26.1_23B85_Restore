@@ -1,41 +1,41 @@
 @interface CKAcknowledgmentBalloonView
-- (void)configureForAggregateAcknowledgmentChatItem:(id)a3;
-- (void)legacyAcknowledgementConfigurationForChatItem:(id)a3;
+- (void)configureForAggregateAcknowledgmentChatItem:(id)item;
+- (void)legacyAcknowledgementConfigurationForChatItem:(id)item;
 - (void)prepareForReuse;
-- (void)setColoredPart:(int64_t)a3;
-- (void)setGlyphView:(id)a3;
-- (void)setTranscriptBackgroundLuminance:(double)a3;
+- (void)setColoredPart:(int64_t)part;
+- (void)setGlyphView:(id)view;
+- (void)setTranscriptBackgroundLuminance:(double)luminance;
 @end
 
 @implementation CKAcknowledgmentBalloonView
 
-- (void)configureForAggregateAcknowledgmentChatItem:(id)a3
+- (void)configureForAggregateAcknowledgmentChatItem:(id)item
 {
-  v6 = a3;
+  itemCopy = item;
   v4 = +[CKUIBehavior sharedBehaviors];
-  v5 = [v4 usesFannedBubbleStyle];
+  usesFannedBubbleStyle = [v4 usesFannedBubbleStyle];
 
-  if ((v5 & 1) == 0)
+  if ((usesFannedBubbleStyle & 1) == 0)
   {
-    [(CKAcknowledgmentBalloonView *)self legacyAcknowledgementConfigurationForChatItem:v6];
+    [(CKAcknowledgmentBalloonView *)self legacyAcknowledgementConfigurationForChatItem:itemCopy];
   }
 
-  -[CKBalloonView setOrientation:](self, "setOrientation:", [v6 balloonOrientation]);
+  -[CKBalloonView setOrientation:](self, "setOrientation:", [itemCopy balloonOrientation]);
 }
 
-- (void)legacyAcknowledgementConfigurationForChatItem:(id)a3
+- (void)legacyAcknowledgementConfigurationForChatItem:(id)item
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v6 = [v5 isEmojiTapbacksEnabled];
+  itemCopy = item;
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isEmojiTapbacksEnabled = [mEMORY[0x1E69A8070] isEmojiTapbacksEnabled];
 
-  if (v6)
+  if (isEmojiTapbacksEnabled)
   {
-    v7 = [v4 latestTapback];
-    if (v7)
+    latestTapback = [itemCopy latestTapback];
+    if (latestTapback)
     {
-      v8 = +[CKTapbackViewUtils viewFor:isSelected:](CKTapbackViewUtils, "viewFor:isSelected:", v7, [v4 latestIsFromMe]);
+      v8 = +[CKTapbackViewUtils viewFor:isSelected:](CKTapbackViewUtils, "viewFor:isSelected:", latestTapback, [itemCopy latestIsFromMe]);
       [(CKAcknowledgmentBalloonView *)self setGlyphView:v8];
     }
 
@@ -46,9 +46,9 @@
         v18 = OSLogHandleForIMFoundationCategory();
         if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
         {
-          v19 = [v4 guid];
+          guid = [itemCopy guid];
           v22 = 138412290;
-          v23 = v19;
+          v23 = guid;
           _os_log_impl(&dword_19020E000, v18, OS_LOG_TYPE_INFO, "Missing tapback. Unable to render transcript view. GUID: %@", &v22, 0xCu);
         }
       }
@@ -59,30 +59,30 @@
 
   else
   {
-    v9 = [v4 latestAcknowledgmentType];
-    v10 = [(CKAcknowledgmentBalloonView *)self glyphView];
-    v11 = v10;
-    if (!v10 || [v10 acknowledgmentType] != v9)
+    latestAcknowledgmentType = [itemCopy latestAcknowledgmentType];
+    glyphView = [(CKAcknowledgmentBalloonView *)self glyphView];
+    v11 = glyphView;
+    if (!glyphView || [glyphView acknowledgmentType] != latestAcknowledgmentType)
     {
       v12 = +[CKUIBehavior sharedBehaviors];
-      v13 = [v12 theme];
-      v14 = [v4 acknowledgmentImageColor];
-      v15 = [v13 ckAcknowledgementColorTypeForColor:v14];
+      theme = [v12 theme];
+      acknowledgmentImageColor = [itemCopy acknowledgmentImageColor];
+      v15 = [theme ckAcknowledgementColorTypeForColor:acknowledgmentImageColor];
 
-      v16 = [CKAcknowledgmentGlyphView glyphViewForAcknowledgmentType:v9 glyphColor:v15];
+      v16 = [CKAcknowledgmentGlyphView glyphViewForAcknowledgmentType:latestAcknowledgmentType glyphColor:v15];
       [(CKAcknowledgmentBalloonView *)self setGlyphView:v16];
     }
 
-    v17 = [v4 acknowledgmentImageColor];
-    [v11 setGlyphColor:v17];
+    acknowledgmentImageColor2 = [itemCopy acknowledgmentImageColor];
+    [v11 setGlyphColor:acknowledgmentImageColor2];
   }
 
-  v20 = [v4 acknowledgments];
-  -[CKAcknowledgmentBalloonView setStackCount:](self, "setStackCount:", [v20 count]);
+  acknowledgments = [itemCopy acknowledgments];
+  -[CKAcknowledgmentBalloonView setStackCount:](self, "setStackCount:", [acknowledgments count]);
 
-  if ([v4 includesFromMe])
+  if ([itemCopy includesFromMe])
   {
-    if ([v4 latestIsFromMe])
+    if ([itemCopy latestIsFromMe])
     {
       v21 = 2;
     }
@@ -101,30 +101,30 @@
   [(CKAcknowledgmentBalloonView *)self setColoredPart:v21];
 }
 
-- (void)setColoredPart:(int64_t)a3
+- (void)setColoredPart:(int64_t)part
 {
   v3 = *(&self->super.super.super.super.super.isa + OBJC_IVAR___CKAcknowledgmentBalloonView_coloredPart);
-  *(&self->super.super.super.super.super.isa + OBJC_IVAR___CKAcknowledgmentBalloonView_coloredPart) = a3;
-  if (v3 != a3)
+  *(&self->super.super.super.super.super.isa + OBJC_IVAR___CKAcknowledgmentBalloonView_coloredPart) = part;
+  if (v3 != part)
   {
     [(CKBalloonView *)self setNeedsPrepareForDisplay];
   }
 }
 
-- (void)setGlyphView:(id)a3
+- (void)setGlyphView:(id)view
 {
   v6 = *(&self->super.super.super.super.super.isa + OBJC_IVAR___CKAcknowledgmentBalloonView_glyphView);
-  *(&self->super.super.super.super.super.isa + OBJC_IVAR___CKAcknowledgmentBalloonView_glyphView) = a3;
-  v4 = a3;
-  v5 = self;
+  *(&self->super.super.super.super.super.isa + OBJC_IVAR___CKAcknowledgmentBalloonView_glyphView) = view;
+  viewCopy = view;
+  selfCopy = self;
   sub_19090CCE0(v6);
 }
 
-- (void)setTranscriptBackgroundLuminance:(double)a3
+- (void)setTranscriptBackgroundLuminance:(double)luminance
 {
   v3 = *(&self->super.super.super.super.super.isa + OBJC_IVAR___CKAcknowledgmentBalloonView_transcriptBackgroundLuminance);
-  *(&self->super.super.super.super.super.isa + OBJC_IVAR___CKAcknowledgmentBalloonView_transcriptBackgroundLuminance) = a3;
-  if (v3 != a3)
+  *(&self->super.super.super.super.super.isa + OBJC_IVAR___CKAcknowledgmentBalloonView_transcriptBackgroundLuminance) = luminance;
+  if (v3 != luminance)
   {
     [(CKAcknowledgmentBalloonView *)self transcriptBackgroundLuminanceChanged];
   }
@@ -134,9 +134,9 @@
 {
   v3.receiver = self;
   v3.super_class = CKAcknowledgmentBalloonView;
-  v2 = self;
+  selfCopy = self;
   [(CKBalloonView *)&v3 prepareForReuse];
-  [(CKAcknowledgmentBalloonView *)v2 setGlyphView:0, v3.receiver, v3.super_class];
+  [(CKAcknowledgmentBalloonView *)selfCopy setGlyphView:0, v3.receiver, v3.super_class];
 }
 
 @end

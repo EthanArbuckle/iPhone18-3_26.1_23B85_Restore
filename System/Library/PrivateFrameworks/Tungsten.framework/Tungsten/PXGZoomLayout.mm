@@ -1,28 +1,28 @@
 @interface PXGZoomLayout
 - (CGPoint)anchorViewportCenter;
-- (CGRect)sublayout:(id)a3 visibleRectForRequestedVisibleRect:(CGRect)a4;
+- (CGRect)sublayout:(id)sublayout visibleRectForRequestedVisibleRect:(CGRect)rect;
 - (PXGZoomLayout)init;
 - (UIEdgeInsets)padding;
 - (id)axSpriteIndexes;
-- (int64_t)itemForSpriteIndex:(unsigned int)a3;
+- (int64_t)itemForSpriteIndex:(unsigned int)index;
 - (int64_t)scrollableAxis;
-- (int64_t)sublayoutIndexForObjectReference:(id)a3 options:(unint64_t)a4 updatedObjectReference:(id *)a5;
+- (int64_t)sublayoutIndexForObjectReference:(id)reference options:(unint64_t)options updatedObjectReference:(id *)objectReference;
 - (void)_configureSublayouts;
 - (void)_updateSublayoutGeometries;
 - (void)didChangeSublayoutOrigins;
 - (void)displayScaleDidChange;
-- (void)enumerateVisibleAnchoringLayoutsUsingBlock:(id)a3;
+- (void)enumerateVisibleAnchoringLayoutsUsingBlock:(id)block;
 - (void)referenceDepthDidChange;
 - (void)referenceSizeDidChange;
 - (void)safeAreaInsetsDidChange;
 - (void)scrollSpeedRegimeDidChange;
-- (void)setAnchorObjectReference:(id)a3;
-- (void)setAnchorViewportCenter:(CGPoint)a3;
-- (void)setLayers:(id)a3 primaryLayer:(id)a4;
-- (void)setPadding:(UIEdgeInsets)a3;
-- (void)sublayoutDidChangeContentSize:(id)a3;
-- (void)sublayoutDidChangeLastBaseline:(id)a3;
-- (void)sublayoutNeedsUpdate:(id)a3;
+- (void)setAnchorObjectReference:(id)reference;
+- (void)setAnchorViewportCenter:(CGPoint)center;
+- (void)setLayers:(id)layers primaryLayer:(id)layer;
+- (void)setPadding:(UIEdgeInsets)padding;
+- (void)sublayoutDidChangeContentSize:(id)size;
+- (void)sublayoutDidChangeLastBaseline:(id)baseline;
+- (void)sublayoutNeedsUpdate:(id)update;
 - (void)update;
 - (void)userInterfaceDirectionDidChange;
 - (void)viewEnvironmentDidChange;
@@ -65,9 +65,9 @@ LABEL_7:
 LABEL_6:
       if (self->_updateFlags.updated)
       {
-        v6 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
         v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGZoomLayout viewEnvironmentDidChange]"];
-        [v6 handleFailureInFunction:v7 file:@"PXGZoomLayout.m" lineNumber:194 description:{@"invalidating %lu after it already has been updated", 1}];
+        [currentHandler handleFailureInFunction:v7 file:@"PXGZoomLayout.m" lineNumber:194 description:{@"invalidating %lu after it already has been updated", 1}];
 
         abort();
       }
@@ -92,32 +92,32 @@ LABEL_6:
 - (void)_configureSublayouts
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = [(PXGZoomLayout *)self layers];
-  v5 = [(PXGZoomLayout *)self primaryLayer];
-  v6 = [v4 containsObject:v5];
+  layers = [(PXGZoomLayout *)self layers];
+  primaryLayer = [(PXGZoomLayout *)self primaryLayer];
+  v6 = [layers containsObject:primaryLayer];
 
   if ((v6 & 1) == 0)
   {
-    v25 = [MEMORY[0x277CCA890] currentHandler];
-    [v25 handleFailureInMethod:a2 object:self file:@"PXGZoomLayout.m" lineNumber:106 description:@"primaryLayer must be one of the layers"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGZoomLayout.m" lineNumber:106 description:@"primaryLayer must be one of the layers"];
   }
 
-  v7 = [(PXGZoomLayout *)self layers];
-  v8 = [(PXGLayout *)self sublayoutDataStore];
-  v9 = [MEMORY[0x277CCAB58] indexSet];
-  v10 = [(PXGLayout *)self sublayoutDataStore];
+  layers2 = [(PXGZoomLayout *)self layers];
+  sublayoutDataStore = [(PXGLayout *)self sublayoutDataStore];
+  indexSet = [MEMORY[0x277CCAB58] indexSet];
+  sublayoutDataStore2 = [(PXGLayout *)self sublayoutDataStore];
   v30[0] = MEMORY[0x277D85DD0];
   v30[1] = 3221225472;
   v30[2] = __37__PXGZoomLayout__configureSublayouts__block_invoke;
   v30[3] = &unk_2782A7BD8;
-  v11 = v7;
+  v11 = layers2;
   v31 = v11;
-  v12 = v9;
+  v12 = indexSet;
   v32 = v12;
-  [v10 enumerateSublayoutsUsingBlock:v30];
+  [sublayoutDataStore2 enumerateSublayoutsUsingBlock:v30];
 
   [(PXGLayout *)self removeSublayoutsAtIndexes:v12];
-  v13 = [(PXGZoomLayout *)self anchorObjectReference];
+  anchorObjectReference = [(PXGZoomLayout *)self anchorObjectReference];
   [(PXGZoomLayout *)self anchorViewportCenter];
   v15 = v14;
   v17 = v16;
@@ -142,14 +142,14 @@ LABEL_6:
         }
 
         v23 = *(*(&v26 + 1) + 8 * v22);
-        if (!v8 || [v8 indexOfSublayout:{*(*(&v26 + 1) + 8 * v22), v26}] == 0x7FFFFFFFFFFFFFFFLL)
+        if (!sublayoutDataStore || [sublayoutDataStore indexOfSublayout:{*(*(&v26 + 1) + 8 * v22), v26}] == 0x7FFFFFFFFFFFFFFFLL)
         {
           [(PXGLayout *)self addSublayout:v23, v26];
         }
 
-        v24 = [v23 itemsLayout];
-        [v24 setAnchorObjectReference:v13];
-        [v24 setAnchorViewportCenter:{v15, v17}];
+        itemsLayout = [v23 itemsLayout];
+        [itemsLayout setAnchorObjectReference:anchorObjectReference];
+        [itemsLayout setAnchorViewportCenter:{v15, v17}];
 
         ++v22;
       }
@@ -192,9 +192,9 @@ LABEL_7:
 LABEL_6:
       if (self->_updateFlags.updated)
       {
-        v6 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
         v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGZoomLayout referenceSizeDidChange]"];
-        [v6 handleFailureInFunction:v7 file:@"PXGZoomLayout.m" lineNumber:201 description:{@"invalidating %lu after it already has been updated", 1}];
+        [currentHandler handleFailureInFunction:v7 file:@"PXGZoomLayout.m" lineNumber:201 description:{@"invalidating %lu after it already has been updated", 1}];
 
         abort();
       }
@@ -237,9 +237,9 @@ LABEL_7:
 LABEL_6:
       if (self->_updateFlags.updated)
       {
-        v6 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
         v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGZoomLayout displayScaleDidChange]"];
-        [v6 handleFailureInFunction:v7 file:@"PXGZoomLayout.m" lineNumber:229 description:{@"invalidating %lu after it already has been updated", 1}];
+        [currentHandler handleFailureInFunction:v7 file:@"PXGZoomLayout.m" lineNumber:229 description:{@"invalidating %lu after it already has been updated", 1}];
 
         abort();
       }
@@ -282,9 +282,9 @@ LABEL_7:
 LABEL_6:
       if (self->_updateFlags.updated)
       {
-        v6 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
         v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGZoomLayout safeAreaInsetsDidChange]"];
-        [v6 handleFailureInFunction:v7 file:@"PXGZoomLayout.m" lineNumber:222 description:{@"invalidating %lu after it already has been updated", 1}];
+        [currentHandler handleFailureInFunction:v7 file:@"PXGZoomLayout.m" lineNumber:222 description:{@"invalidating %lu after it already has been updated", 1}];
 
         abort();
       }
@@ -327,9 +327,9 @@ LABEL_7:
 LABEL_6:
       if (self->_updateFlags.updated)
       {
-        v6 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
         v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGZoomLayout visibleRectDidChange]"];
-        [v6 handleFailureInFunction:v7 file:@"PXGZoomLayout.m" lineNumber:215 description:{@"invalidating %lu after it already has been updated", 1}];
+        [currentHandler handleFailureInFunction:v7 file:@"PXGZoomLayout.m" lineNumber:215 description:{@"invalidating %lu after it already has been updated", 1}];
 
         abort();
       }
@@ -360,9 +360,9 @@ LABEL_6:
   {
     if (self->_updateFlags.isPerformingUpdate)
     {
-      v5 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGZoomLayout update]"];
-      [v5 handleFailureInFunction:v6 file:@"PXGZoomLayout.m" lineNumber:96 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
+      [currentHandler handleFailureInFunction:v6 file:@"PXGZoomLayout.m" lineNumber:96 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
 
       needsUpdate = p_updateFlags->needsUpdate;
     }
@@ -379,9 +379,9 @@ LABEL_6:
     p_updateFlags->isPerformingUpdate = 0;
     if (needsUpdate)
     {
-      v7 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGZoomLayout update]"];
-      [v7 handleFailureInFunction:v8 file:@"PXGZoomLayout.m" lineNumber:100 description:{@"still needing to update %lu after update pass", p_updateFlags->needsUpdate}];
+      [currentHandler2 handleFailureInFunction:v8 file:@"PXGZoomLayout.m" lineNumber:100 description:{@"still needing to update %lu after update pass", p_updateFlags->needsUpdate}];
     }
   }
 
@@ -405,7 +405,7 @@ LABEL_6:
   v55 = v11;
   [(PXGLayout *)self referenceDepth];
   v53 = v12;
-  v13 = [(PXGLayout *)self viewEnvironment];
+  viewEnvironment = [(PXGLayout *)self viewEnvironment];
   [(PXGLayout *)self safeAreaInsets];
   v51 = v15;
   v52 = v14;
@@ -421,14 +421,14 @@ LABEL_6:
   [(PXGLayout *)self lastScrollDirection];
   v28 = v27;
   v30 = v29;
-  v31 = [(PXGLayout *)self scrollSpeedRegime];
-  v32 = [(PXGLayout *)self userInterfaceDirection];
-  v33 = [(PXGLayout *)self sublayoutDataStore];
+  scrollSpeedRegime = [(PXGLayout *)self scrollSpeedRegime];
+  userInterfaceDirection = [(PXGLayout *)self userInterfaceDirection];
+  sublayoutDataStore = [(PXGLayout *)self sublayoutDataStore];
   v60[0] = MEMORY[0x277D85DD0];
   v60[1] = 3221225472;
   v60[2] = __43__PXGZoomLayout__updateSublayoutGeometries__block_invoke;
   v60[3] = &unk_2782A7C00;
-  v61 = v13;
+  v61 = viewEnvironment;
   v62 = v11;
   v63 = v54;
   v64 = v53;
@@ -437,26 +437,26 @@ LABEL_6:
   v67 = v24;
   v68 = v26;
   v69 = v48;
-  v70 = v31;
+  v70 = scrollSpeedRegime;
   v71 = v28;
   v72 = v30;
   v73 = v52;
   v74 = v51;
   v75 = v50;
   v76 = v49;
-  v77 = v32;
-  v34 = v13;
-  [v33 enumerateSublayoutsUsingBlock:v60];
+  v77 = userInterfaceDirection;
+  v34 = viewEnvironment;
+  [sublayoutDataStore enumerateSublayoutsUsingBlock:v60];
 
-  v35 = [(PXGZoomLayout *)self primaryLayer];
-  [v35 visibleRect];
+  primaryLayer = [(PXGZoomLayout *)self primaryLayer];
+  [primaryLayer visibleRect];
   v37 = v36;
   v39 = v38;
   v41 = v40;
   v43 = v42;
-  [v35 contentSize];
+  [primaryLayer contentSize];
   v45 = v56 + v57 + v44;
-  v46 = [(PXGLayout *)self sublayoutDataStore];
+  sublayoutDataStore2 = [(PXGLayout *)self sublayoutDataStore];
   v59[0] = MEMORY[0x277D85DD0];
   v59[1] = 3221225472;
   v59[2] = __43__PXGZoomLayout__updateSublayoutGeometries__block_invoke_2;
@@ -464,10 +464,10 @@ LABEL_6:
   *&v59[4] = v58;
   *&v59[5] = v57;
   v59[6] = 0;
-  [v46 enumerateSublayoutGeometriesUsingBlock:v59];
+  [sublayoutDataStore2 enumerateSublayoutGeometriesUsingBlock:v59];
 
   [(PXGLayout *)self setContentSize:v55, v45];
-  [v35 lastBaseline];
+  [primaryLayer lastBaseline];
   [(PXGLayout *)self setLastBaseline:v57 + v47];
   [(PXGLayout *)self changeVisibleRectToProposedVisibleRect:v37, v39, v41, v43];
   self->_isUpdatingSublayouts = 0;
@@ -530,55 +530,55 @@ void *__43__PXGZoomLayout__updateSublayoutGeometries__block_invoke_2(uint64_t a1
 
 - (int64_t)scrollableAxis
 {
-  v2 = [(PXGZoomLayout *)self primaryLayer];
-  v3 = [v2 scrollableAxis];
+  primaryLayer = [(PXGZoomLayout *)self primaryLayer];
+  scrollableAxis = [primaryLayer scrollableAxis];
 
-  return v3;
+  return scrollableAxis;
 }
 
-- (void)enumerateVisibleAnchoringLayoutsUsingBlock:(id)a3
+- (void)enumerateVisibleAnchoringLayoutsUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(PXGZoomLayout *)self primaryLayer];
-  if (v5)
+  blockCopy = block;
+  primaryLayer = [(PXGZoomLayout *)self primaryLayer];
+  if (primaryLayer)
   {
     v6 = 0;
-    v4[2](v4, v5, &v6);
+    blockCopy[2](blockCopy, primaryLayer, &v6);
   }
 }
 
-- (int64_t)sublayoutIndexForObjectReference:(id)a3 options:(unint64_t)a4 updatedObjectReference:(id *)a5
+- (int64_t)sublayoutIndexForObjectReference:(id)reference options:(unint64_t)options updatedObjectReference:(id *)objectReference
 {
-  v8 = a3;
-  *a5 = a3;
-  v9 = [(PXGZoomLayout *)self primaryLayer];
+  referenceCopy = reference;
+  *objectReference = reference;
+  primaryLayer = [(PXGZoomLayout *)self primaryLayer];
 
-  if (!v9)
+  if (!primaryLayer)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v10 = [(PXGLayout *)self sublayoutDataStore];
-  v11 = [(PXGZoomLayout *)self primaryLayer];
-  v12 = [v10 indexOfSublayout:v11];
+  sublayoutDataStore = [(PXGLayout *)self sublayoutDataStore];
+  primaryLayer2 = [(PXGZoomLayout *)self primaryLayer];
+  v12 = [sublayoutDataStore indexOfSublayout:primaryLayer2];
 
   return v12;
 }
 
-- (CGRect)sublayout:(id)a3 visibleRectForRequestedVisibleRect:(CGRect)a4
+- (CGRect)sublayout:(id)sublayout visibleRectForRequestedVisibleRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3;
-  [v9 visibleRect];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  sublayoutCopy = sublayout;
+  [sublayoutCopy visibleRect];
   v11 = v10;
   v13 = v12;
   v15 = v14;
   v17 = v16;
-  v18 = [(PXGZoomLayout *)self primaryLayer];
-  v19 = [v9 isDescendantOfLayout:v18];
+  primaryLayer = [(PXGZoomLayout *)self primaryLayer];
+  v19 = [sublayoutCopy isDescendantOfLayout:primaryLayer];
 
   if (v19)
   {
@@ -648,9 +648,9 @@ LABEL_7:
 LABEL_6:
       if (self->_updateFlags.updated)
       {
-        v6 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
         v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGZoomLayout didChangeSublayoutOrigins]"];
-        [v6 handleFailureInFunction:v7 file:@"PXGZoomLayout.m" lineNumber:271 description:{@"invalidating %lu after it already has been updated", 1}];
+        [currentHandler handleFailureInFunction:v7 file:@"PXGZoomLayout.m" lineNumber:271 description:{@"invalidating %lu after it already has been updated", 1}];
 
         abort();
       }
@@ -672,12 +672,12 @@ LABEL_6:
   }
 }
 
-- (void)sublayoutDidChangeLastBaseline:(id)a3
+- (void)sublayoutDidChangeLastBaseline:(id)baseline
 {
-  v4 = a3;
+  baselineCopy = baseline;
   v10.receiver = self;
   v10.super_class = PXGZoomLayout;
-  [(PXGLayout *)&v10 sublayoutDidChangeLastBaseline:v4];
+  [(PXGLayout *)&v10 sublayoutDidChangeLastBaseline:baselineCopy];
   if (!self->_isUpdatingSublayouts)
   {
     p_updateFlags = &self->_updateFlags;
@@ -694,9 +694,9 @@ LABEL_7:
 LABEL_6:
       if (self->_updateFlags.updated)
       {
-        v8 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
         v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGZoomLayout sublayoutDidChangeLastBaseline:]"];
-        [v8 handleFailureInFunction:v9 file:@"PXGZoomLayout.m" lineNumber:264 description:{@"invalidating %lu after it already has been updated", 1}];
+        [currentHandler handleFailureInFunction:v9 file:@"PXGZoomLayout.m" lineNumber:264 description:{@"invalidating %lu after it already has been updated", 1}];
 
         abort();
       }
@@ -720,12 +720,12 @@ LABEL_6:
 LABEL_8:
 }
 
-- (void)sublayoutDidChangeContentSize:(id)a3
+- (void)sublayoutDidChangeContentSize:(id)size
 {
-  v4 = a3;
+  sizeCopy = size;
   v10.receiver = self;
   v10.super_class = PXGZoomLayout;
-  [(PXGLayout *)&v10 sublayoutDidChangeContentSize:v4];
+  [(PXGLayout *)&v10 sublayoutDidChangeContentSize:sizeCopy];
   if (!self->_isUpdatingSublayouts)
   {
     p_updateFlags = &self->_updateFlags;
@@ -742,9 +742,9 @@ LABEL_7:
 LABEL_6:
       if (self->_updateFlags.updated)
       {
-        v8 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
         v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGZoomLayout sublayoutDidChangeContentSize:]"];
-        [v8 handleFailureInFunction:v9 file:@"PXGZoomLayout.m" lineNumber:257 description:{@"invalidating %lu after it already has been updated", 1}];
+        [currentHandler handleFailureInFunction:v9 file:@"PXGZoomLayout.m" lineNumber:257 description:{@"invalidating %lu after it already has been updated", 1}];
 
         abort();
       }
@@ -768,12 +768,12 @@ LABEL_6:
 LABEL_8:
 }
 
-- (void)sublayoutNeedsUpdate:(id)a3
+- (void)sublayoutNeedsUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   v10.receiver = self;
   v10.super_class = PXGZoomLayout;
-  [(PXGLayout *)&v10 sublayoutNeedsUpdate:v4];
+  [(PXGLayout *)&v10 sublayoutNeedsUpdate:updateCopy];
   if (!self->_isUpdatingSublayouts)
   {
     p_updateFlags = &self->_updateFlags;
@@ -790,9 +790,9 @@ LABEL_7:
 LABEL_6:
       if (self->_updateFlags.updated)
       {
-        v8 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
         v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGZoomLayout sublayoutNeedsUpdate:]"];
-        [v8 handleFailureInFunction:v9 file:@"PXGZoomLayout.m" lineNumber:250 description:{@"invalidating %lu after it already has been updated", 1}];
+        [currentHandler handleFailureInFunction:v9 file:@"PXGZoomLayout.m" lineNumber:250 description:{@"invalidating %lu after it already has been updated", 1}];
 
         abort();
       }
@@ -837,9 +837,9 @@ LABEL_7:
 LABEL_6:
       if (self->_updateFlags.updated)
       {
-        v6 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
         v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGZoomLayout userInterfaceDirectionDidChange]"];
-        [v6 handleFailureInFunction:v7 file:@"PXGZoomLayout.m" lineNumber:243 description:{@"invalidating %lu after it already has been updated", 1}];
+        [currentHandler handleFailureInFunction:v7 file:@"PXGZoomLayout.m" lineNumber:243 description:{@"invalidating %lu after it already has been updated", 1}];
 
         abort();
       }
@@ -882,9 +882,9 @@ LABEL_7:
 LABEL_6:
       if (self->_updateFlags.updated)
       {
-        v6 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
         v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGZoomLayout scrollSpeedRegimeDidChange]"];
-        [v6 handleFailureInFunction:v7 file:@"PXGZoomLayout.m" lineNumber:236 description:{@"invalidating %lu after it already has been updated", 1}];
+        [currentHandler handleFailureInFunction:v7 file:@"PXGZoomLayout.m" lineNumber:236 description:{@"invalidating %lu after it already has been updated", 1}];
 
         abort();
       }
@@ -927,9 +927,9 @@ LABEL_7:
 LABEL_6:
       if (self->_updateFlags.updated)
       {
-        v6 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
         v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGZoomLayout referenceDepthDidChange]"];
-        [v6 handleFailureInFunction:v7 file:@"PXGZoomLayout.m" lineNumber:208 description:{@"invalidating %lu after it already has been updated", 1}];
+        [currentHandler handleFailureInFunction:v7 file:@"PXGZoomLayout.m" lineNumber:208 description:{@"invalidating %lu after it already has been updated", 1}];
 
         abort();
       }
@@ -964,11 +964,11 @@ uint64_t __37__PXGZoomLayout__configureSublayouts__block_invoke(uint64_t a1, uin
   return result;
 }
 
-- (void)setAnchorViewportCenter:(CGPoint)a3
+- (void)setAnchorViewportCenter:(CGPoint)center
 {
-  if (self->_anchorViewportCenter.x != a3.x || self->_anchorViewportCenter.y != a3.y)
+  if (self->_anchorViewportCenter.x != center.x || self->_anchorViewportCenter.y != center.y)
   {
-    self->_anchorViewportCenter = a3;
+    self->_anchorViewportCenter = center;
     [(PXGZoomLayout *)self _configureSublayouts];
     p_updateFlags = &self->_updateFlags;
     needsUpdate = self->_updateFlags.needsUpdate;
@@ -984,9 +984,9 @@ LABEL_10:
 LABEL_9:
       if (self->_updateFlags.updated)
       {
-        v8 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
         v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGZoomLayout setAnchorViewportCenter:]"];
-        [v8 handleFailureInFunction:v9 file:@"PXGZoomLayout.m" lineNumber:90 description:{@"invalidating %lu after it already has been updated", 1}];
+        [currentHandler handleFailureInFunction:v9 file:@"PXGZoomLayout.m" lineNumber:90 description:{@"invalidating %lu after it already has been updated", 1}];
 
         abort();
       }
@@ -1009,13 +1009,13 @@ LABEL_9:
   }
 }
 
-- (void)setAnchorObjectReference:(id)a3
+- (void)setAnchorObjectReference:(id)reference
 {
-  v5 = a3;
-  if (self->_anchorObjectReference != v5)
+  referenceCopy = reference;
+  if (self->_anchorObjectReference != referenceCopy)
   {
-    v11 = v5;
-    objc_storeStrong(&self->_anchorObjectReference, a3);
+    v11 = referenceCopy;
+    objc_storeStrong(&self->_anchorObjectReference, reference);
     [(PXGZoomLayout *)self _configureSublayouts];
     p_updateFlags = &self->_updateFlags;
     needsUpdate = self->_updateFlags.needsUpdate;
@@ -1026,16 +1026,16 @@ LABEL_9:
 LABEL_7:
         p_updateFlags->needsUpdate = needsUpdate | 1;
 LABEL_8:
-        v5 = v11;
+        referenceCopy = v11;
         goto LABEL_9;
       }
 
 LABEL_6:
       if (self->_updateFlags.updated)
       {
-        v9 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
         v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGZoomLayout setAnchorObjectReference:]"];
-        [v9 handleFailureInFunction:v10 file:@"PXGZoomLayout.m" lineNumber:81 description:{@"invalidating %lu after it already has been updated", 1}];
+        [currentHandler handleFailureInFunction:v10 file:@"PXGZoomLayout.m" lineNumber:81 description:{@"invalidating %lu after it already has been updated", 1}];
 
         abort();
       }
@@ -1050,7 +1050,7 @@ LABEL_6:
 
     willPerformUpdate = self->_updateFlags.willPerformUpdate;
     p_updateFlags->needsUpdate = 1;
-    v5 = v11;
+    referenceCopy = v11;
     if (!willPerformUpdate)
     {
       [(PXGLayout *)self setNeedsUpdate];
@@ -1061,14 +1061,14 @@ LABEL_6:
 LABEL_9:
 }
 
-- (int64_t)itemForSpriteIndex:(unsigned int)a3
+- (int64_t)itemForSpriteIndex:(unsigned int)index
 {
-  v3 = *&a3;
+  v3 = *&index;
   v5 = [(PXGLayout *)self sublayoutForSpriteIndex:?];
-  v6 = [v5 itemsLayout];
-  if (v6 && (v7 = -[PXGLayout convertSpriteIndex:toDescendantLayout:](self, "convertSpriteIndex:toDescendantLayout:", v3, v6), [v6 spriteIndexIsItem:v7]))
+  itemsLayout = [v5 itemsLayout];
+  if (itemsLayout && (v7 = -[PXGLayout convertSpriteIndex:toDescendantLayout:](self, "convertSpriteIndex:toDescendantLayout:", v3, itemsLayout), [itemsLayout spriteIndexIsItem:v7]))
   {
-    v8 = [v6 itemForSpriteIndex:v7];
+    v8 = [itemsLayout itemForSpriteIndex:v7];
   }
 
   else
@@ -1079,12 +1079,12 @@ LABEL_9:
   return v8;
 }
 
-- (void)setPadding:(UIEdgeInsets)a3
+- (void)setPadding:(UIEdgeInsets)padding
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = padding.right;
+  bottom = padding.bottom;
+  left = padding.left;
+  top = padding.top;
   p_padding = &self->_padding;
   if ((PXEdgeInsetsEqualToEdgeInsets() & 1) == 0)
   {
@@ -1106,9 +1106,9 @@ LABEL_7:
 LABEL_6:
       if (self->_updateFlags.updated)
       {
-        v12 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
         v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGZoomLayout setPadding:]"];
-        [v12 handleFailureInFunction:v13 file:@"PXGZoomLayout.m" lineNumber:59 description:{@"invalidating %lu after it already has been updated", 1}];
+        [currentHandler handleFailureInFunction:v13 file:@"PXGZoomLayout.m" lineNumber:59 description:{@"invalidating %lu after it already has been updated", 1}];
 
         abort();
       }
@@ -1131,17 +1131,17 @@ LABEL_6:
   }
 }
 
-- (void)setLayers:(id)a3 primaryLayer:(id)a4
+- (void)setLayers:(id)layers primaryLayer:(id)layer
 {
-  v11 = a3;
-  v7 = a4;
+  layersCopy = layers;
+  layerCopy = layer;
   v8 = self->_layers;
   v9 = v8;
-  if (v8 == v11)
+  if (v8 == layersCopy)
   {
 
 LABEL_5:
-    if (self->_primaryLayer == v7)
+    if (self->_primaryLayer == layerCopy)
     {
       goto LABEL_7;
     }
@@ -1157,8 +1157,8 @@ LABEL_5:
   }
 
 LABEL_6:
-  objc_storeStrong(&self->_layers, a3);
-  objc_storeStrong(&self->_primaryLayer, a4);
+  objc_storeStrong(&self->_layers, layers);
+  objc_storeStrong(&self->_primaryLayer, layer);
   [(PXGZoomLayout *)self _configureSublayouts];
   [(PXGLayout *)self setNeedsUpdateOfScrollableAxis];
 LABEL_7:

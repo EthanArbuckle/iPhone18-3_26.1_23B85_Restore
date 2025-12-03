@@ -1,10 +1,10 @@
 @interface ChargingNetworkPickerViewController
 + (NSString)reuseIdentifier;
-- (_TtC4Maps35ChargingNetworkPickerViewController)initWithExcludedNetworks:(id)a3 delegate:(id)a4;
+- (_TtC4Maps35ChargingNetworkPickerViewController)initWithExcludedNetworks:(id)networks delegate:(id)delegate;
 - (_TtP4Maps43ChargingNetworkPickerViewControllerDelegate_)delegate;
-- (void)didSelectNetwork:(id)a3 isSuggested:(BOOL)a4;
+- (void)didSelectNetwork:(id)network isSuggested:(BOOL)suggested;
 - (void)reloadData;
-- (void)searchBarCancelButtonClicked:(id)a3;
+- (void)searchBarCancelButtonClicked:(id)clicked;
 - (void)viewDidLoad;
 @end
 
@@ -24,48 +24,48 @@
   return v2;
 }
 
-- (_TtC4Maps35ChargingNetworkPickerViewController)initWithExcludedNetworks:(id)a3 delegate:(id)a4
+- (_TtC4Maps35ChargingNetworkPickerViewController)initWithExcludedNetworks:(id)networks delegate:(id)delegate
 {
-  v4 = a3;
-  if (a3)
+  networksCopy = networks;
+  if (networks)
   {
     sub_100014C84(0, &unk_101917480);
     sub_10029BDD8();
-    v4 = static Set._unconditionallyBridgeFromObjectiveC(_:)();
+    networksCopy = static Set._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
   swift_unknownObjectRetain();
-  return sub_100524044(v4);
+  return sub_100524044(networksCopy);
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_100524348();
 }
 
-- (void)didSelectNetwork:(id)a3 isSuggested:(BOOL)a4
+- (void)didSelectNetwork:(id)network isSuggested:(BOOL)suggested
 {
-  v6 = a3;
-  v7 = self;
-  sub_100524A30(v6, a4);
+  networkCopy = network;
+  selfCopy = self;
+  sub_100524A30(networkCopy, suggested);
 }
 
 - (void)reloadData
 {
-  v2 = self;
-  if ([(ChargingNetworkPickerViewController *)v2 isViewLoaded])
+  selfCopy = self;
+  if ([(ChargingNetworkPickerViewController *)selfCopy isViewLoaded])
   {
-    [*(v2 + OBJC_IVAR____TtC4Maps35ChargingNetworkPickerViewController_tableView) reloadData];
+    [*(selfCopy + OBJC_IVAR____TtC4Maps35ChargingNetworkPickerViewController_tableView) reloadData];
   }
 }
 
-- (void)searchBarCancelButtonClicked:(id)a3
+- (void)searchBarCancelButtonClicked:(id)clicked
 {
-  v4 = a3;
-  v5 = self;
-  [v4 resignFirstResponder];
-  [(ChargingNetworkPickerViewController *)v5 dismissViewControllerAnimated:1 completion:0];
+  clickedCopy = clicked;
+  selfCopy = self;
+  [clickedCopy resignFirstResponder];
+  [(ChargingNetworkPickerViewController *)selfCopy dismissViewControllerAnimated:1 completion:0];
 }
 
 @end

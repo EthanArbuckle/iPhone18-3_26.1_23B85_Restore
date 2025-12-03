@@ -1,94 +1,94 @@
 @interface SESVehicleReport
-- (SESVehicleReport)initWithCoder:(id)a3;
-- (SESVehicleReport)initWithKeyIdentifier:(id)a3 readerIdentifier:(id)a4 supportedFunctions:(id)a5 functionsInProgress:(id)a6 status:(id)a7 proprietaryData:(id)a8;
-- (void)encodeWithCoder:(id)a3;
+- (SESVehicleReport)initWithCoder:(id)coder;
+- (SESVehicleReport)initWithKeyIdentifier:(id)identifier readerIdentifier:(id)readerIdentifier supportedFunctions:(id)functions functionsInProgress:(id)progress status:(id)status proprietaryData:(id)data;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SESVehicleReport
 
-- (SESVehicleReport)initWithKeyIdentifier:(id)a3 readerIdentifier:(id)a4 supportedFunctions:(id)a5 functionsInProgress:(id)a6 status:(id)a7 proprietaryData:(id)a8
+- (SESVehicleReport)initWithKeyIdentifier:(id)identifier readerIdentifier:(id)readerIdentifier supportedFunctions:(id)functions functionsInProgress:(id)progress status:(id)status proprietaryData:(id)data
 {
-  v23 = a3;
-  v22 = a4;
-  v21 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  identifierCopy = identifier;
+  readerIdentifierCopy = readerIdentifier;
+  functionsCopy = functions;
+  progressCopy = progress;
+  statusCopy = status;
+  dataCopy = data;
   v24.receiver = self;
   v24.super_class = SESVehicleReport;
   v18 = [(SESVehicleReport *)&v24 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_keyIdentifier, a3);
-    objc_storeStrong(&v19->_readerIdentifier, a4);
-    objc_storeStrong(&v19->_supportedFunctions, a5);
-    objc_storeStrong(&v19->_functionsInProgress, a6);
-    objc_storeStrong(&v19->_status, a7);
-    objc_storeStrong(&v19->_proprietaryData, a8);
+    objc_storeStrong(&v18->_keyIdentifier, identifier);
+    objc_storeStrong(&v19->_readerIdentifier, readerIdentifier);
+    objc_storeStrong(&v19->_supportedFunctions, functions);
+    objc_storeStrong(&v19->_functionsInProgress, progress);
+    objc_storeStrong(&v19->_status, status);
+    objc_storeStrong(&v19->_proprietaryData, data);
   }
 
   return v19;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(SESVehicleReport *)self keyIdentifier];
-  [v4 encodeObject:v5 forKey:@"keyIdentifier"];
+  coderCopy = coder;
+  keyIdentifier = [(SESVehicleReport *)self keyIdentifier];
+  [coderCopy encodeObject:keyIdentifier forKey:@"keyIdentifier"];
 
-  v6 = [(SESVehicleReport *)self readerIdentifier];
-  [v4 encodeObject:v6 forKey:@"readerIdentifier"];
+  readerIdentifier = [(SESVehicleReport *)self readerIdentifier];
+  [coderCopy encodeObject:readerIdentifier forKey:@"readerIdentifier"];
 
-  v7 = [(SESVehicleReport *)self supportedFunctions];
-  [v4 encodeObject:v7 forKey:@"supportedFunctions"];
+  supportedFunctions = [(SESVehicleReport *)self supportedFunctions];
+  [coderCopy encodeObject:supportedFunctions forKey:@"supportedFunctions"];
 
-  v8 = [(SESVehicleReport *)self functionsInProgress];
-  [v4 encodeObject:v8 forKey:@"functionsInProgress"];
+  functionsInProgress = [(SESVehicleReport *)self functionsInProgress];
+  [coderCopy encodeObject:functionsInProgress forKey:@"functionsInProgress"];
 
-  v9 = [(SESVehicleReport *)self status];
-  [v4 encodeObject:v9 forKey:@"status"];
+  status = [(SESVehicleReport *)self status];
+  [coderCopy encodeObject:status forKey:@"status"];
 
-  v10 = [(SESVehicleReport *)self proprietaryData];
-  [v4 encodeObject:v10 forKey:@"proprietaryData"];
+  proprietaryData = [(SESVehicleReport *)self proprietaryData];
+  [coderCopy encodeObject:proprietaryData forKey:@"proprietaryData"];
 }
 
-- (SESVehicleReport)initWithCoder:(id)a3
+- (SESVehicleReport)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v26.receiver = self;
   v26.super_class = SESVehicleReport;
   v5 = [(SESVehicleReport *)&v26 init];
   v6 = v5;
   if (v5)
   {
-    v7 = [(SESVehicleReport *)v5 keyIdentifier];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"keyIdentifier"];
+    keyIdentifier = [(SESVehicleReport *)v5 keyIdentifier];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"keyIdentifier"];
     keyIdentifier = v6->_keyIdentifier;
     v6->_keyIdentifier = v8;
 
-    v10 = [(SESVehicleReport *)v6 readerIdentifier];
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"readerIdentifier"];
+    readerIdentifier = [(SESVehicleReport *)v6 readerIdentifier];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"readerIdentifier"];
     readerIdentifier = v6->_readerIdentifier;
     v6->_readerIdentifier = v11;
 
-    v13 = [(SESVehicleReport *)v6 supportedFunctions];
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"supportedFunctions"];
+    supportedFunctions = [(SESVehicleReport *)v6 supportedFunctions];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"supportedFunctions"];
     supportedFunctions = v6->_supportedFunctions;
     v6->_supportedFunctions = v14;
 
-    v16 = [(SESVehicleReport *)v6 functionsInProgress];
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"functionsInProgress"];
+    functionsInProgress = [(SESVehicleReport *)v6 functionsInProgress];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"functionsInProgress"];
     functionsInProgress = v6->_functionsInProgress;
     v6->_functionsInProgress = v17;
 
-    v19 = [(SESVehicleReport *)v6 status];
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"status"];
+    status = [(SESVehicleReport *)v6 status];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"status"];
     status = v6->_status;
     v6->_status = v20;
 
-    v22 = [(SESVehicleReport *)v6 proprietaryData];
-    v23 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"proprietaryData"];
+    proprietaryData = [(SESVehicleReport *)v6 proprietaryData];
+    v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"proprietaryData"];
     proprietaryData = v6->_proprietaryData;
     v6->_proprietaryData = v23;
   }

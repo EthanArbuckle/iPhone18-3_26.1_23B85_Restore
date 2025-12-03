@@ -4,40 +4,40 @@
 - (NSError)error;
 - (NSString)reason;
 - (NSUUID)identifier;
-- (void)beginPhaseIfNeeded:(int64_t)a3;
+- (void)beginPhaseIfNeeded:(int64_t)needed;
 - (void)beginSessionIfNeeded;
-- (void)fetchedRecordWasAdded:(id)a3 type:(id)a4;
-- (void)fetchedRecordWasChanged:(id)a3 type:(id)a4;
-- (void)fetchedRecordWasDeleted:(id)a3 type:(id)a4;
-- (void)operationEndedForPhase:(int64_t)a3 metrics:(id)a4 error:(id)a5;
-- (void)phaseEnded:(int64_t)a3;
-- (void)recordAdditionWasPushed:(id)a3 type:(id)a4;
-- (void)recordDeletionWasPushed:(id)a3 type:(id)a4;
-- (void)recordModificationWasPushed:(id)a3 type:(id)a4;
+- (void)fetchedRecordWasAdded:(id)added type:(id)type;
+- (void)fetchedRecordWasChanged:(id)changed type:(id)type;
+- (void)fetchedRecordWasDeleted:(id)deleted type:(id)type;
+- (void)operationEndedForPhase:(int64_t)phase metrics:(id)metrics error:(id)error;
+- (void)phaseEnded:(int64_t)ended;
+- (void)recordAdditionWasPushed:(id)pushed type:(id)type;
+- (void)recordDeletionWasPushed:(id)pushed type:(id)type;
+- (void)recordModificationWasPushed:(id)pushed type:(id)type;
 - (void)sessionCancelled;
-- (void)sessionEndedWithError:(id)a3;
-- (void)setError:(id)a3;
-- (void)setHasCompletedInitialSync:(BOOL)a3;
-- (void)setIdentifier:(id)a3;
-- (void)setReason:(id)a3;
-- (void)zoneWasChanged:(id)a3;
-- (void)zoneWasDeleted:(id)a3;
+- (void)sessionEndedWithError:(id)error;
+- (void)setError:(id)error;
+- (void)setHasCompletedInitialSync:(BOOL)sync;
+- (void)setIdentifier:(id)identifier;
+- (void)setReason:(id)reason;
+- (void)zoneWasChanged:(id)changed;
+- (void)zoneWasDeleted:(id)deleted;
 @end
 
 @implementation ICCloudSession
 
-- (void)setHasCompletedInitialSync:(BOOL)a3
+- (void)setHasCompletedInitialSync:(BOOL)sync
 {
   v5 = swift_allocObject();
   *(v5 + 16) = self;
-  *(v5 + 24) = a3;
-  v6 = self;
+  *(v5 + 24) = sync;
+  selfCopy = self;
   sub_214F33518(sub_214F43F4C, v5);
 }
 
 - (NSError)error
 {
-  v2 = self;
+  selfCopy = self;
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27CA41D98);
   sub_2150A55B0();
 
@@ -54,15 +54,15 @@
   return v3;
 }
 
-- (void)setError:(id)a3
+- (void)setError:(id)error
 {
   v5 = swift_allocObject();
   *(v5 + 16) = self;
-  *(v5 + 24) = a3;
-  v6 = self;
-  v7 = a3;
-  v9 = v6;
-  v8 = v7;
+  *(v5 + 24) = error;
+  selfCopy = self;
+  errorCopy = error;
+  v9 = selfCopy;
+  v8 = errorCopy;
   sub_214F33518(sub_214F43EE4, v5);
 }
 
@@ -81,7 +81,7 @@
   return v8;
 }
 
-- (void)setIdentifier:(id)a3
+- (void)setIdentifier:(id)identifier
 {
   v4 = sub_2150A3A00();
   v5 = *(v4 - 8);
@@ -91,7 +91,7 @@
   v8 = OBJC_IVAR___ICCloudSession_identifier;
   swift_beginAccess();
   v9 = *(v5 + 40);
-  v10 = self;
+  selfCopy = self;
   v9(self + v8, v7, v4);
   swift_endAccess();
 }
@@ -105,7 +105,7 @@
   return v2;
 }
 
-- (void)setReason:(id)a3
+- (void)setReason:(id)reason
 {
   v4 = sub_2150A4AD0();
   v6 = v5;
@@ -138,7 +138,7 @@
   v8[2] = sub_214F34100;
   v8[3] = &block_descriptor_360;
   v6 = _Block_copy(v8);
-  v7 = self;
+  selfCopy = self;
 
   dispatch_sync(v3, v6);
   _Block_release(v6);
@@ -150,11 +150,11 @@
   }
 }
 
-- (void)sessionEndedWithError:(id)a3
+- (void)sessionEndedWithError:(id)error
 {
-  v4 = self;
-  v5 = a3;
-  sub_214F34D64(a3);
+  selfCopy = self;
+  errorCopy = error;
+  sub_214F34D64(error);
 }
 
 - (void)sessionCancelled
@@ -172,7 +172,7 @@
   v8[2] = sub_214F34100;
   v8[3] = &block_descriptor_349;
   v6 = _Block_copy(v8);
-  v7 = self;
+  selfCopy = self;
 
   dispatch_sync(v3, v6);
   _Block_release(v6);
@@ -184,12 +184,12 @@
   }
 }
 
-- (void)beginPhaseIfNeeded:(int64_t)a3
+- (void)beginPhaseIfNeeded:(int64_t)needed
 {
   v5 = *(self + OBJC_IVAR___ICCloudSession_queue);
   v6 = swift_allocObject();
   *(v6 + 16) = self;
-  *(v6 + 24) = a3;
+  *(v6 + 24) = needed;
   v7 = swift_allocObject();
   *(v7 + 16) = sub_214F43F60;
   *(v7 + 24) = v6;
@@ -200,7 +200,7 @@
   v10[2] = sub_214F34100;
   v10[3] = &block_descriptor_338;
   v8 = _Block_copy(v10);
-  v9 = self;
+  selfCopy = self;
 
   dispatch_sync(v5, v8);
   _Block_release(v8);
@@ -212,60 +212,60 @@
   }
 }
 
-- (void)phaseEnded:(int64_t)a3
+- (void)phaseEnded:(int64_t)ended
 {
   v5 = swift_allocObject();
   *(v5 + 16) = self;
-  *(v5 + 24) = a3;
-  v6 = self;
+  *(v5 + 24) = ended;
+  selfCopy = self;
   sub_214F33518(sub_214F43F5C, v5);
 }
 
-- (void)operationEndedForPhase:(int64_t)a3 metrics:(id)a4 error:(id)a5
+- (void)operationEndedForPhase:(int64_t)phase metrics:(id)metrics error:(id)error
 {
   v9 = swift_allocObject();
   v9[2] = self;
-  v9[3] = a3;
-  v9[4] = a4;
-  v9[5] = a5;
-  v10 = a4;
-  v11 = self;
-  v12 = a5;
-  v15 = v11;
-  v13 = v10;
-  v14 = v12;
+  v9[3] = phase;
+  v9[4] = metrics;
+  v9[5] = error;
+  metricsCopy = metrics;
+  selfCopy = self;
+  errorCopy = error;
+  v15 = selfCopy;
+  v13 = metricsCopy;
+  v14 = errorCopy;
   sub_214F33518(sub_214F44010, v9);
 }
 
-- (void)zoneWasChanged:(id)a3
+- (void)zoneWasChanged:(id)changed
 {
-  v4 = a3;
-  v5 = self;
+  changedCopy = changed;
+  selfCopy = self;
   sub_214F39584(0xD000000000000012, 0x80000002150E1DC0);
   v6 = swift_allocObject();
-  *(v6 + 16) = v5;
-  *(v6 + 24) = v4;
-  v7 = v4;
-  v8 = v5;
+  *(v6 + 16) = selfCopy;
+  *(v6 + 24) = changedCopy;
+  v7 = changedCopy;
+  v8 = selfCopy;
   sub_214F33518(sub_214F43F58, v6);
 }
 
-- (void)zoneWasDeleted:(id)a3
+- (void)zoneWasDeleted:(id)deleted
 {
-  v4 = a3;
-  v5 = self;
+  deletedCopy = deleted;
+  selfCopy = self;
   sub_214F39584(0xD000000000000012, 0x80000002150E1DE0);
   v6 = swift_allocObject();
-  *(v6 + 16) = v5;
-  *(v6 + 24) = v4;
-  v7 = v4;
-  v8 = v5;
+  *(v6 + 16) = selfCopy;
+  *(v6 + 24) = deletedCopy;
+  v7 = deletedCopy;
+  v8 = selfCopy;
   sub_214F33518(sub_214F43F54, v6);
 }
 
-- (void)fetchedRecordWasAdded:(id)a3 type:(id)a4
+- (void)fetchedRecordWasAdded:(id)added type:(id)type
 {
-  if (a4)
+  if (type)
   {
     v6 = sub_2150A4AD0();
     v8 = v7;
@@ -277,22 +277,22 @@
     v8 = 0;
   }
 
-  v9 = a3;
-  v10 = self;
+  addedCopy = added;
+  selfCopy = self;
   sub_214F39584(0xD00000000000001ELL, 0x80000002150E1E00);
   v11 = swift_allocObject();
-  v11[2] = v10;
-  v11[3] = v9;
+  v11[2] = selfCopy;
+  v11[3] = addedCopy;
   v11[4] = v6;
   v11[5] = v8;
-  v12 = v9;
-  v13 = v10;
+  v12 = addedCopy;
+  v13 = selfCopy;
   sub_214F33518(sub_214F4400C, v11);
 }
 
-- (void)fetchedRecordWasChanged:(id)a3 type:(id)a4
+- (void)fetchedRecordWasChanged:(id)changed type:(id)type
 {
-  if (a4)
+  if (type)
   {
     v6 = sub_2150A4AD0();
     v8 = v7;
@@ -304,22 +304,22 @@
     v8 = 0;
   }
 
-  v9 = a3;
-  v10 = self;
+  changedCopy = changed;
+  selfCopy = self;
   sub_214F39584(0xD000000000000020, 0x80000002150E1E20);
   v11 = swift_allocObject();
-  v11[2] = v10;
-  v11[3] = v9;
+  v11[2] = selfCopy;
+  v11[3] = changedCopy;
   v11[4] = v6;
   v11[5] = v8;
-  v12 = v9;
-  v13 = v10;
+  v12 = changedCopy;
+  v13 = selfCopy;
   sub_214F33518(sub_214F44008, v11);
 }
 
-- (void)fetchedRecordWasDeleted:(id)a3 type:(id)a4
+- (void)fetchedRecordWasDeleted:(id)deleted type:(id)type
 {
-  if (a4)
+  if (type)
   {
     v6 = sub_2150A4AD0();
     v8 = v7;
@@ -331,22 +331,22 @@
     v8 = 0;
   }
 
-  v9 = a3;
-  v10 = self;
+  deletedCopy = deleted;
+  selfCopy = self;
   sub_214F39584(0xD000000000000020, 0x80000002150E1E50);
   v11 = swift_allocObject();
-  v11[2] = v10;
-  v11[3] = v9;
+  v11[2] = selfCopy;
+  v11[3] = deletedCopy;
   v11[4] = v6;
   v11[5] = v8;
-  v12 = v9;
-  v13 = v10;
+  v12 = deletedCopy;
+  v13 = selfCopy;
   sub_214F33518(sub_214F44004, v11);
 }
 
-- (void)recordAdditionWasPushed:(id)a3 type:(id)a4
+- (void)recordAdditionWasPushed:(id)pushed type:(id)type
 {
-  if (a4)
+  if (type)
   {
     v6 = sub_2150A4AD0();
     v8 = v7;
@@ -358,22 +358,22 @@
     v8 = 0;
   }
 
-  v9 = a3;
-  v10 = self;
+  pushedCopy = pushed;
+  selfCopy = self;
   sub_214F39584(0xD000000000000020, 0x80000002150E1E80);
   v11 = swift_allocObject();
-  v11[2] = v10;
-  v11[3] = v9;
+  v11[2] = selfCopy;
+  v11[3] = pushedCopy;
   v11[4] = v6;
   v11[5] = v8;
-  v12 = v9;
-  v13 = v10;
+  v12 = pushedCopy;
+  v13 = selfCopy;
   sub_214F33518(sub_214F44000, v11);
 }
 
-- (void)recordModificationWasPushed:(id)a3 type:(id)a4
+- (void)recordModificationWasPushed:(id)pushed type:(id)type
 {
-  if (a4)
+  if (type)
   {
     v6 = sub_2150A4AD0();
     v8 = v7;
@@ -385,22 +385,22 @@
     v8 = 0;
   }
 
-  v9 = a3;
-  v10 = self;
+  pushedCopy = pushed;
+  selfCopy = self;
   sub_214F39584(0xD000000000000024, 0x80000002150E1EB0);
   v11 = swift_allocObject();
-  v11[2] = v10;
-  v11[3] = v9;
+  v11[2] = selfCopy;
+  v11[3] = pushedCopy;
   v11[4] = v6;
   v11[5] = v8;
-  v12 = v9;
-  v13 = v10;
+  v12 = pushedCopy;
+  v13 = selfCopy;
   sub_214F33518(sub_214F43FFC, v11);
 }
 
-- (void)recordDeletionWasPushed:(id)a3 type:(id)a4
+- (void)recordDeletionWasPushed:(id)pushed type:(id)type
 {
-  if (a4)
+  if (type)
   {
     v6 = sub_2150A4AD0();
     v8 = v7;
@@ -412,16 +412,16 @@
     v8 = 0;
   }
 
-  v9 = a3;
-  v10 = self;
+  pushedCopy = pushed;
+  selfCopy = self;
   sub_214F39584(0xD000000000000020, 0x80000002150E1EE0);
   v11 = swift_allocObject();
-  v11[2] = v10;
-  v11[3] = v9;
+  v11[2] = selfCopy;
+  v11[3] = pushedCopy;
   v11[4] = v6;
   v11[5] = v8;
-  v12 = v9;
-  v13 = v10;
+  v12 = pushedCopy;
+  v13 = selfCopy;
   sub_214F33518(sub_214F43FF8, v11);
 }
 

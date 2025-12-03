@@ -1,39 +1,39 @@
 @interface NSSNewsViewController
-- (NSSNewsViewController)initWithArticleID:(id)a3;
-- (NSSNewsViewController)initWithArticleIDs:(id)a3;
-- (NSSNewsViewController)initWithURL:(id)a3;
+- (NSSNewsViewController)initWithArticleID:(id)d;
+- (NSSNewsViewController)initWithArticleIDs:(id)ds;
+- (NSSNewsViewController)initWithURL:(id)l;
 - (void)dealloc;
 - (void)requestRemoteViewController;
-- (void)setupRemoteViewController:(id)a3;
+- (void)setupRemoteViewController:(id)controller;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
 
 @implementation NSSNewsViewController
 
-- (NSSNewsViewController)initWithArticleID:(id)a3
+- (NSSNewsViewController)initWithArticleID:(id)d
 {
   v11 = *MEMORY[0x277D85DE8];
-  v10 = a3;
+  dCopy = d;
   v4 = MEMORY[0x277CBEA60];
-  v5 = a3;
-  v6 = [v4 arrayWithObjects:&v10 count:1];
+  dCopy2 = d;
+  v6 = [v4 arrayWithObjects:&dCopy count:1];
 
-  v7 = [(NSSNewsViewController *)self initWithArticleIDs:v6, v10, v11];
+  v7 = [(NSSNewsViewController *)self initWithArticleIDs:v6, dCopy, v11];
   v8 = *MEMORY[0x277D85DE8];
   return v7;
 }
 
-- (NSSNewsViewController)initWithArticleIDs:(id)a3
+- (NSSNewsViewController)initWithArticleIDs:(id)ds
 {
-  v5 = a3;
+  dsCopy = ds;
   v9.receiver = self;
   v9.super_class = NSSNewsViewController;
   v6 = [(NSSNewsViewController *)&v9 initWithNibName:0 bundle:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_articleIDs, a3);
+    objc_storeStrong(&v6->_articleIDs, ds);
     v7->_linkPreviewing = 0;
     [(NSSNewsViewController *)v7 requestRemoteViewController];
   }
@@ -41,50 +41,50 @@
   return v7;
 }
 
-- (NSSNewsViewController)initWithURL:(id)a3
+- (NSSNewsViewController)initWithURL:(id)l
 {
   v10[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([NSSNewsViewController canOpenURL:v4])
+  lCopy = l;
+  if ([NSSNewsViewController canOpenURL:lCopy])
   {
-    v5 = [v4 fc_NewsArticleID];
-    v10[0] = v5;
+    fc_NewsArticleID = [lCopy fc_NewsArticleID];
+    v10[0] = fc_NewsArticleID;
     v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:1];
     self = [(NSSNewsViewController *)self initWithArticleIDs:v6];
 
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
   v8 = *MEMORY[0x277D85DE8];
-  return v7;
+  return selfCopy;
 }
 
 - (void)dealloc
 {
-  v3 = [(NSSNewsViewController *)self remoteViewContainerViewController];
+  remoteViewContainerViewController = [(NSSNewsViewController *)self remoteViewContainerViewController];
 
-  if (v3)
+  if (remoteViewContainerViewController)
   {
-    v4 = [(NSSNewsViewController *)self remoteViewContainerViewController];
-    v5 = [v4 isViewLoaded];
+    remoteViewContainerViewController2 = [(NSSNewsViewController *)self remoteViewContainerViewController];
+    isViewLoaded = [remoteViewContainerViewController2 isViewLoaded];
 
-    if (v5)
+    if (isViewLoaded)
     {
-      v6 = [(NSSNewsViewController *)self remoteViewContainerViewController];
-      v7 = [v6 view];
-      [v7 removeFromSuperview];
+      remoteViewContainerViewController3 = [(NSSNewsViewController *)self remoteViewContainerViewController];
+      view = [remoteViewContainerViewController3 view];
+      [view removeFromSuperview];
     }
 
-    v8 = [(NSSNewsViewController *)self remoteViewContainerViewController];
-    [v8 willMoveToParentViewController:0];
+    remoteViewContainerViewController4 = [(NSSNewsViewController *)self remoteViewContainerViewController];
+    [remoteViewContainerViewController4 willMoveToParentViewController:0];
 
-    v9 = [(NSSNewsViewController *)self remoteViewContainerViewController];
-    [v9 removeFromParentViewController];
+    remoteViewContainerViewController5 = [(NSSNewsViewController *)self remoteViewContainerViewController];
+    [remoteViewContainerViewController5 removeFromParentViewController];
   }
 
   v10.receiver = self;
@@ -97,39 +97,39 @@
   v25.receiver = self;
   v25.super_class = NSSNewsViewController;
   [(NSSNewsViewController *)&v25 viewDidLoad];
-  v3 = [(NSSNewsViewController *)self view];
-  v4 = [MEMORY[0x277D75348] whiteColor];
-  [v3 setBackgroundColor:v4];
+  view = [(NSSNewsViewController *)self view];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  [view setBackgroundColor:whiteColor];
 
-  v5 = [(NSSNewsViewController *)self remoteViewContainerViewController];
-  if (v5)
+  remoteViewContainerViewController = [(NSSNewsViewController *)self remoteViewContainerViewController];
+  if (remoteViewContainerViewController)
   {
-    v6 = v5;
-    v7 = [(NSSNewsViewController *)self remoteViewContainerViewController];
-    v8 = [v7 parentViewController];
+    v6 = remoteViewContainerViewController;
+    remoteViewContainerViewController2 = [(NSSNewsViewController *)self remoteViewContainerViewController];
+    parentViewController = [remoteViewContainerViewController2 parentViewController];
 
-    if (v8 != self)
+    if (parentViewController != self)
     {
-      v9 = [(NSSNewsViewController *)self remoteViewContainerViewController];
-      [(NSSNewsViewController *)self addChildViewController:v9];
+      remoteViewContainerViewController3 = [(NSSNewsViewController *)self remoteViewContainerViewController];
+      [(NSSNewsViewController *)self addChildViewController:remoteViewContainerViewController3];
 
-      v10 = [(NSSNewsViewController *)self view];
-      v11 = [(NSSNewsViewController *)self remoteViewContainerViewController];
-      v12 = [v11 view];
-      [v10 addSubview:v12];
+      view2 = [(NSSNewsViewController *)self view];
+      remoteViewContainerViewController4 = [(NSSNewsViewController *)self remoteViewContainerViewController];
+      view3 = [remoteViewContainerViewController4 view];
+      [view2 addSubview:view3];
 
-      v13 = [(NSSNewsViewController *)self view];
-      [v13 bounds];
+      view4 = [(NSSNewsViewController *)self view];
+      [view4 bounds];
       v15 = v14;
       v17 = v16;
       v19 = v18;
       v21 = v20;
-      v22 = [(NSSNewsViewController *)self remoteViewContainerViewController];
-      v23 = [v22 view];
-      [v23 setFrame:{v15, v17, v19, v21}];
+      remoteViewContainerViewController5 = [(NSSNewsViewController *)self remoteViewContainerViewController];
+      view5 = [remoteViewContainerViewController5 view];
+      [view5 setFrame:{v15, v17, v19, v21}];
 
-      v24 = [(NSSNewsViewController *)self remoteViewContainerViewController];
-      [v24 didMoveToParentViewController:self];
+      remoteViewContainerViewController6 = [(NSSNewsViewController *)self remoteViewContainerViewController];
+      [remoteViewContainerViewController6 didMoveToParentViewController:self];
     }
   }
 }
@@ -139,19 +139,19 @@
   v15.receiver = self;
   v15.super_class = NSSNewsViewController;
   [(NSSNewsViewController *)&v15 viewDidLayoutSubviews];
-  v3 = [(NSSNewsViewController *)self remoteViewContainerViewController];
+  remoteViewContainerViewController = [(NSSNewsViewController *)self remoteViewContainerViewController];
 
-  if (v3)
+  if (remoteViewContainerViewController)
   {
-    v4 = [(NSSNewsViewController *)self view];
-    [v4 bounds];
+    view = [(NSSNewsViewController *)self view];
+    [view bounds];
     v6 = v5;
     v8 = v7;
     v10 = v9;
     v12 = v11;
-    v13 = [(NSSNewsViewController *)self remoteViewContainerViewController];
-    v14 = [v13 view];
-    [v14 setBounds:{v6, v8, v10, v12}];
+    remoteViewContainerViewController2 = [(NSSNewsViewController *)self remoteViewContainerViewController];
+    view2 = [remoteViewContainerViewController2 view];
+    [view2 setBounds:{v6, v8, v10, v12}];
   }
 }
 
@@ -176,26 +176,26 @@
 
     if ([(NSSNewsViewController *)self isViewLoaded])
     {
-      v8 = [(NSSNewsViewController *)self remoteViewContainerViewController];
-      [(NSSNewsViewController *)self addChildViewController:v8];
+      remoteViewContainerViewController = [(NSSNewsViewController *)self remoteViewContainerViewController];
+      [(NSSNewsViewController *)self addChildViewController:remoteViewContainerViewController];
 
-      v9 = [(NSSNewsViewController *)self view];
-      v10 = [(NSSNewsViewController *)self remoteViewContainerViewController];
-      v11 = [v10 view];
-      [v9 addSubview:v11];
+      view = [(NSSNewsViewController *)self view];
+      remoteViewContainerViewController2 = [(NSSNewsViewController *)self remoteViewContainerViewController];
+      view2 = [remoteViewContainerViewController2 view];
+      [view addSubview:view2];
 
-      v12 = [(NSSNewsViewController *)self view];
-      [v12 bounds];
+      view3 = [(NSSNewsViewController *)self view];
+      [view3 bounds];
       v14 = v13;
       v16 = v15;
       v18 = v17;
       v20 = v19;
-      v21 = [(NSSNewsViewController *)self remoteViewContainerViewController];
-      v22 = [v21 view];
-      [v22 setFrame:{v14, v16, v18, v20}];
+      remoteViewContainerViewController3 = [(NSSNewsViewController *)self remoteViewContainerViewController];
+      view4 = [remoteViewContainerViewController3 view];
+      [view4 setFrame:{v14, v16, v18, v20}];
 
-      v23 = [(NSSNewsViewController *)self remoteViewContainerViewController];
-      [v23 didMoveToParentViewController:self];
+      remoteViewContainerViewController4 = [(NSSNewsViewController *)self remoteViewContainerViewController];
+      [remoteViewContainerViewController4 didMoveToParentViewController:self];
     }
 
     objc_destroyWeak(&v25);
@@ -214,17 +214,17 @@ void __52__NSSNewsViewController_requestRemoteViewController__block_invoke(uint6
   }
 }
 
-- (void)setupRemoteViewController:(id)a3
+- (void)setupRemoteViewController:(id)controller
 {
-  v7 = a3;
-  v4 = [(NSSNewsViewController *)self articleIDs];
+  controllerCopy = controller;
+  articleIDs = [(NSSNewsViewController *)self articleIDs];
 
-  if (v7 && v4)
+  if (controllerCopy && articleIDs)
   {
-    v5 = [v7 serviceViewControllerProxy];
-    [v5 articleViewServiceProviderShouldPresentForLinkPreviewing:{-[NSSNewsViewController isLinkPreviewing](self, "isLinkPreviewing")}];
-    v6 = [(NSSNewsViewController *)self articleIDs];
-    [v5 articleViewServiceProviderShouldLoadArticlesForArticleIDs:v6];
+    serviceViewControllerProxy = [controllerCopy serviceViewControllerProxy];
+    [serviceViewControllerProxy articleViewServiceProviderShouldPresentForLinkPreviewing:{-[NSSNewsViewController isLinkPreviewing](self, "isLinkPreviewing")}];
+    articleIDs2 = [(NSSNewsViewController *)self articleIDs];
+    [serviceViewControllerProxy articleViewServiceProviderShouldLoadArticlesForArticleIDs:articleIDs2];
   }
 
   [(NSSNewsViewController *)self _endDelayingPresentation];

@@ -2,9 +2,9 @@
 + (BOOL)isIdleTimerServiceAvailable;
 + (id)sharedInstance;
 - (id)_init;
-- (id)_initWithModel:(id)a3;
-- (id)newAssertionToDisableIdleTimerForReason:(id)a3 error:(id *)a4;
-- (id)newIdleTimerAssertionWithConfiguration:(id)a3 forReason:(id)a4 error:(id *)a5;
+- (id)_initWithModel:(id)model;
+- (id)newAssertionToDisableIdleTimerForReason:(id)reason error:(id *)error;
+- (id)newIdleTimerAssertionWithConfiguration:(id)configuration forReason:(id)reason error:(id *)error;
 @end
 
 @implementation ITIdleTimerState
@@ -36,9 +36,9 @@ uint64_t __34__ITIdleTimerState_sharedInstance__block_invoke()
   return v4;
 }
 
-- (id)_initWithModel:(id)a3
+- (id)_initWithModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v9.receiver = self;
   v9.super_class = ITIdleTimerState;
   v6 = [(ITIdleTimerState *)&v9 init];
@@ -46,7 +46,7 @@ uint64_t __34__ITIdleTimerState_sharedInstance__block_invoke()
   if (v6)
   {
     v6->_accessLock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v6->_model, a3);
+    objc_storeStrong(&v6->_model, model);
   }
 
   return v7;
@@ -58,7 +58,7 @@ uint64_t __34__ITIdleTimerState_sharedInstance__block_invoke()
   block[1] = 3221225472;
   block[2] = __47__ITIdleTimerState_isIdleTimerServiceAvailable__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (isIdleTimerServiceAvailable_onceToken != -1)
   {
     dispatch_once(&isIdleTimerServiceAvailable_onceToken, block);
@@ -73,25 +73,25 @@ void __47__ITIdleTimerState_isIdleTimerServiceAvailable__block_invoke(uint64_t a
   isIdleTimerServiceAvailable_isIdleTimerServiceAvailable = [v1 isIdleTimerServiceAvailable];
 }
 
-- (id)newAssertionToDisableIdleTimerForReason:(id)a3 error:(id *)a4
+- (id)newAssertionToDisableIdleTimerForReason:(id)reason error:(id *)error
 {
-  v6 = a3;
-  if (!v6)
+  reasonCopy = reason;
+  if (!reasonCopy)
   {
     [ITIdleTimerState newAssertionToDisableIdleTimerForReason:error:];
   }
 
   v7 = +[ITIdleTimerConfiguration configurationToDisableIdleTimer];
-  v8 = [(ITIdleTimerState *)self newIdleTimerAssertionWithConfiguration:v7 forReason:v6 error:a4];
+  v8 = [(ITIdleTimerState *)self newIdleTimerAssertionWithConfiguration:v7 forReason:reasonCopy error:error];
 
   return v8;
 }
 
-- (id)newIdleTimerAssertionWithConfiguration:(id)a3 forReason:(id)a4 error:(id *)a5
+- (id)newIdleTimerAssertionWithConfiguration:(id)configuration forReason:(id)reason error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v9)
+  configurationCopy = configuration;
+  reasonCopy = reason;
+  if (!reasonCopy)
   {
     [ITIdleTimerState newIdleTimerAssertionWithConfiguration:forReason:error:];
   }
@@ -99,8 +99,8 @@ void __47__ITIdleTimerState_isIdleTimerServiceAvailable__block_invoke(uint64_t a
   if ([objc_opt_class() isIdleTimerServiceAvailable])
   {
     model = self->_model;
-    v11 = [v8 _copyWithNewIdentifier];
-    v12 = [(ITIdleTimerStateModel *)model newIdleTimerAssertionWithConfiguration:v11 forReason:v9 error:a5];
+    _copyWithNewIdentifier = [configurationCopy _copyWithNewIdentifier];
+    v12 = [(ITIdleTimerStateModel *)model newIdleTimerAssertionWithConfiguration:_copyWithNewIdentifier forReason:reasonCopy error:error];
   }
 
   else
@@ -112,9 +112,9 @@ void __47__ITIdleTimerState_isIdleTimerServiceAvailable__block_invoke(uint64_t a
     }
 
     v12 = 0;
-    if (a5)
+    if (error)
     {
-      *a5 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:@"ITIdleTimerConfigurationErrorDomain" code:1 userInfo:0];
+      *error = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:@"ITIdleTimerConfigurationErrorDomain" code:1 userInfo:0];
     }
   }
 

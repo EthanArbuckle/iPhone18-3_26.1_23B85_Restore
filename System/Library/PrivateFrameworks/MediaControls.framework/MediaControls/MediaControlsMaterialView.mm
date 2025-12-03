@@ -1,23 +1,23 @@
 @interface MediaControlsMaterialView
-- (MediaControlsMaterialView)initWithFrame:(CGRect)a3;
-- (id)visualStylingProviderForCategory:(int64_t)a3;
-- (void)_setContinuousCornerRadius:(double)a3;
+- (MediaControlsMaterialView)initWithFrame:(CGRect)frame;
+- (id)visualStylingProviderForCategory:(int64_t)category;
+- (void)_setContinuousCornerRadius:(double)radius;
 - (void)layoutSubviews;
-- (void)setHighlighted:(BOOL)a3;
+- (void)setHighlighted:(BOOL)highlighted;
 @end
 
 @implementation MediaControlsMaterialView
 
-- (MediaControlsMaterialView)initWithFrame:(CGRect)a3
+- (MediaControlsMaterialView)initWithFrame:(CGRect)frame
 {
   v12.receiver = self;
   v12.super_class = MediaControlsMaterialView;
-  v3 = [(MediaControlsMaterialView *)&v12 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MediaControlsMaterialView *)&v12 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x1E6997268] controlCenterDarkMaterial];
+    controlCenterDarkMaterial = [MEMORY[0x1E6997268] controlCenterDarkMaterial];
     backgroundView = v3->_backgroundView;
-    v3->_backgroundView = v4;
+    v3->_backgroundView = controlCenterDarkMaterial;
 
     v6 = objc_alloc(MEMORY[0x1E69DD250]);
     [(MediaControlsMaterialView *)v3 bounds];
@@ -37,20 +37,20 @@
   return v3;
 }
 
-- (void)_setContinuousCornerRadius:(double)a3
+- (void)_setContinuousCornerRadius:(double)radius
 {
   [(UIView *)self->_backgroundView _setContinuousCornerRadius:?];
   highlightView = self->_highlightView;
 
-  [(UIView *)highlightView _setContinuousCornerRadius:a3];
+  [(UIView *)highlightView _setContinuousCornerRadius:radius];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  if (self->_highlighted != a3)
+  if (self->_highlighted != highlighted)
   {
-    self->_highlighted = a3;
-    [(UIView *)self->_highlightView setHidden:!a3];
+    self->_highlighted = highlighted;
+    [(UIView *)self->_highlightView setHidden:!highlighted];
   }
 }
 
@@ -68,11 +68,11 @@
   [(UIView *)self->_backgroundView setFrame:v4, v6, v8, v10];
 }
 
-- (id)visualStylingProviderForCategory:(int64_t)a3
+- (id)visualStylingProviderForCategory:(int64_t)category
 {
   if (objc_opt_respondsToSelector())
   {
-    v5 = [(UIView *)self->_backgroundView visualStylingProviderForCategory:a3];
+    v5 = [(UIView *)self->_backgroundView visualStylingProviderForCategory:category];
   }
 
   else

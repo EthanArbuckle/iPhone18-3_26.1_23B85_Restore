@@ -1,146 +1,146 @@
 @interface VCAudioStream
 + (id)capabilities;
-+ (id)newPayloadConfigForCodecConfig:(id)a3 streamConfig:(id)a4 inputSampleRate:(unsigned int)a5;
++ (id)newPayloadConfigForCodecConfig:(id)config streamConfig:(id)streamConfig inputSampleRate:(unsigned int)rate;
 + (id)supportedAudioPayloads;
-+ (int)operatingModeForAudioStreamMode:(int64_t)a3;
-+ (unsigned)audioChannelCountForMode:(id)a3;
-+ (unsigned)audioIODirectionWithMediaStreamDirection:(int64_t)a3;
-+ (unsigned)audioIOTypeForMode:(int64_t)a3;
++ (int)operatingModeForAudioStreamMode:(int64_t)mode;
++ (unsigned)audioChannelCountForMode:(id)mode;
++ (unsigned)audioIODirectionWithMediaStreamDirection:(int64_t)direction;
++ (unsigned)audioIOTypeForMode:(int64_t)mode;
 - (BOOL)createAudioReceiver;
-- (BOOL)createAudioTransmitter:(int64_t)a3 streamIDs:(id)a4;
-- (BOOL)generateRTCPXRSummaryReports:(tagVCRTCPXRSummaryReport *)a3 reportCount:(char *)a4;
-- (BOOL)generateRTCPXRVoIPMetricsReports:(tagVCRTCPXRVoIPMetricsReport *)a3 reportCount:(char *)a4;
-- (BOOL)generateReceptionReportList:(_RTCP_RECEPTION_REPORT *)a3 reportCount:(char *)a4;
-- (BOOL)getCodecModeChangeEvent:(_VCAudioCodecModeChangeEvent *)a3 forCodecBitrate:(unsigned int)a4 payload:(int)a5;
-- (BOOL)handleUplinkBitrateChange:(_VCAudioCodecModeChangeEvent *)a3 reason:(unsigned __int8)a4;
+- (BOOL)createAudioTransmitter:(int64_t)transmitter streamIDs:(id)ds;
+- (BOOL)generateRTCPXRSummaryReports:(tagVCRTCPXRSummaryReport *)reports reportCount:(char *)count;
+- (BOOL)generateRTCPXRVoIPMetricsReports:(tagVCRTCPXRVoIPMetricsReport *)reports reportCount:(char *)count;
+- (BOOL)generateReceptionReportList:(_RTCP_RECEPTION_REPORT *)list reportCount:(char *)count;
+- (BOOL)getCodecModeChangeEvent:(_VCAudioCodecModeChangeEvent *)event forCodecBitrate:(unsigned int)bitrate payload:(int)payload;
+- (BOOL)handleUplinkBitrateChange:(_VCAudioCodecModeChangeEvent *)change reason:(unsigned __int8)reason;
 - (BOOL)isVoLTERateAdaptationEnabled;
-- (BOOL)networkUplinkClockUsesBaseband:(int64_t)a3;
-- (BOOL)onConfigureStreamWithConfiguration:(id)a3 error:(id *)a4;
+- (BOOL)networkUplinkClockUsesBaseband:(int64_t)baseband;
+- (BOOL)onConfigureStreamWithConfiguration:(id)configuration error:(id *)error;
 - (BOOL)setReceiverPayloads;
-- (BOOL)setupAudioStreamWithClientPid:(int)a3 enableAudioPowerSpectrum:(BOOL)a4;
+- (BOOL)setupAudioStreamWithClientPid:(int)pid enableAudioPowerSpectrum:(BOOL)spectrum;
 - (BOOL)setupPayloads;
-- (BOOL)setupSourceTransport:(id)a3;
-- (BOOL)shouldEnableAACELDInactiveFrames:(BOOL)a3 streamConfig:(id)a4;
+- (BOOL)setupSourceTransport:(id)transport;
+- (BOOL)shouldEnableAACELDInactiveFrames:(BOOL)frames streamConfig:(id)config;
 - (BOOL)shouldEnableFixedJitterBufferInitialOvershootResiliency;
-- (BOOL)shouldSetUpMediaRecorderWithParticipantInfoDictionary:(id)a3;
-- (BOOL)validateAudioStreamConfigurations:(id)a3;
-- (VCAudioStream)initWithClientPid:(int)a3;
-- (VCAudioStream)initWithClientPid:(int)a3 ssrc:(unsigned int)a4 transportSessionID:(unsigned int)a5 streamToken:(int64_t)a6 experimentManager:(id)a7 logPrefix:(id)a8;
-- (_METER_INFO)meterWithType:(int)a3;
-- (__CFDictionary)getClientSpecificUserInfo:(id)a3;
+- (BOOL)shouldSetUpMediaRecorderWithParticipantInfoDictionary:(id)dictionary;
+- (BOOL)validateAudioStreamConfigurations:(id)configurations;
+- (VCAudioStream)initWithClientPid:(int)pid;
+- (VCAudioStream)initWithClientPid:(int)pid ssrc:(unsigned int)ssrc transportSessionID:(unsigned int)d streamToken:(int64_t)token experimentManager:(id)manager logPrefix:(id)prefix;
+- (_METER_INFO)meterWithType:(int)type;
+- (__CFDictionary)getClientSpecificUserInfo:(id)info;
 - (__CFString)getReportingClientName;
 - (double)lastReceivedRTCPPacketTime;
-- (id)addAudioPayload:(int)a3;
-- (id)codecConfigForOpusWithStreamConfig:(id)a3;
-- (id)configForPayloadType:(int)a3;
-- (id)createTransportWithStreamConfig:(id)a3;
-- (id)getCodecConfigForPayload:(int)a3 streamConfig:(id)a4;
+- (id)addAudioPayload:(int)payload;
+- (id)codecConfigForOpusWithStreamConfig:(id)config;
+- (id)configForPayloadType:(int)type;
+- (id)createTransportWithStreamConfig:(id)config;
+- (id)getCodecConfigForPayload:(int)payload streamConfig:(id)config;
 - (id)getReportingServiceID;
 - (id)getSupportedPayloads;
-- (id)setLocalParticipantInfo:(id)a3 networkSockets:(id)a4 withError:(id *)a5;
+- (id)setLocalParticipantInfo:(id)info networkSockets:(id)sockets withError:(id *)error;
 - (id)streamIDsFromTransport;
 - (id)supportedPayloads;
-- (int)getConnectionTypeForStreamMode:(int64_t)a3;
-- (int)getPacketsPerBundleForStreamConfig:(id)a3;
+- (int)getConnectionTypeForStreamMode:(int64_t)mode;
+- (int)getPacketsPerBundleForStreamConfig:(id)config;
 - (int)getRTPTimeStampRateScaleFactor;
 - (int)getReportingClientType;
-- (int)preferredAudioCodecWithStreamConfig:(id)a3;
-- (int)selectCodecBandwidthForCodecRateMode:(int)a3;
-- (unsigned)computePacketTimestampWithInputTimestamp:(unsigned int)a3 numSamples:(int)a4 hostTime:(double)a5;
-- (unsigned)internalSampleRateForCodecType:(int64_t)a3;
-- (unsigned)packetExpirationTimeForStreamConfig:(id)a3;
-- (unsigned)preferredAudioBitrateForPayload:(int)a3;
-- (void)_computeInternalFormatForStreamConfigurations:(id)a3;
-- (void)addStreamStartingMetricsToReport:(const __CFDictionary *)a3;
-- (void)addSyncSourceDelegate:(id)a3;
+- (int)preferredAudioCodecWithStreamConfig:(id)config;
+- (int)selectCodecBandwidthForCodecRateMode:(int)mode;
+- (unsigned)computePacketTimestampWithInputTimestamp:(unsigned int)timestamp numSamples:(int)samples hostTime:(double)time;
+- (unsigned)internalSampleRateForCodecType:(int64_t)type;
+- (unsigned)packetExpirationTimeForStreamConfig:(id)config;
+- (unsigned)preferredAudioBitrateForPayload:(int)payload;
+- (void)_computeInternalFormatForStreamConfigurations:(id)configurations;
+- (void)addStreamStartingMetricsToReport:(const __CFDictionary *)report;
+- (void)addSyncSourceDelegate:(id)delegate;
 - (void)cleanUpAudioMachineLearningCoordinators;
 - (void)cleanUpMediaRecorder;
 - (void)cleanupAudio;
-- (void)cleanupBeforeReconfigure:(id)a3;
-- (void)collectRxChannelMetrics:(id *)a3;
-- (void)collectTxChannelMetrics:(id *)a3;
-- (void)configureAudioJBAlgos:(tagVCAudioReceiverConfig *)a3;
+- (void)cleanupBeforeReconfigure:(id)reconfigure;
+- (void)collectRxChannelMetrics:(id *)metrics;
+- (void)collectTxChannelMetrics:(id *)metrics;
+- (void)configureAudioJBAlgos:(tagVCAudioReceiverConfig *)algos;
 - (void)configureCellularFeatures;
 - (void)createAudioReceiver;
-- (void)createReportSSRCListWithStreamConfigs:(id)a3;
+- (void)createReportSSRCListWithStreamConfigs:(id)configs;
 - (void)dealloc;
-- (void)didChangeThermalLevel:(int)a3;
-- (void)didEnterState:(int)a3 oldState:(int)a4;
-- (void)didResumeAudioIO:(id)a3;
-- (void)didSuspendAudioIO:(id)a3;
-- (void)didUpdateBasebandCodec:(const _VCRemoteCodecInfo *)a3;
-- (void)gatherRealtimeStats:(__CFDictionary *)a3;
-- (void)getCodecConfigForPayload:(int)a3 block:(id)a4;
-- (void)handleANBR:(unsigned int)a3 forDirection:(int64_t)a4;
-- (void)handleActiveConnectionChange:(id)a3;
-- (void)handleBasebandRateTrendSuggestion:(int)a3;
+- (void)didChangeThermalLevel:(int)level;
+- (void)didEnterState:(int)state oldState:(int)oldState;
+- (void)didResumeAudioIO:(id)o;
+- (void)didSuspendAudioIO:(id)o;
+- (void)didUpdateBasebandCodec:(const _VCRemoteCodecInfo *)codec;
+- (void)gatherRealtimeStats:(__CFDictionary *)stats;
+- (void)getCodecConfigForPayload:(int)payload block:(id)block;
+- (void)handleANBR:(unsigned int)r forDirection:(int64_t)direction;
+- (void)handleActiveConnectionChange:(id)change;
+- (void)handleBasebandRateTrendSuggestion:(int)suggestion;
 - (void)handleCellularToWiFiHandover;
-- (void)handleCodecModeChangeEvent:(_VCAudioCodecModeChangeEvent *)a3;
-- (void)handleDownlinkANBR:(_VCAudioCodecModeChangeEvent *)a3;
-- (void)handleUplinkANBR:(_VCAudioCodecModeChangeEvent *)a3;
+- (void)handleCodecModeChangeEvent:(_VCAudioCodecModeChangeEvent *)event;
+- (void)handleDownlinkANBR:(_VCAudioCodecModeChangeEvent *)r;
+- (void)handleUplinkANBR:(_VCAudioCodecModeChangeEvent *)r;
 - (void)handleWiFiToCelluarHandover;
-- (void)notifyCodecModeChangeEvent:(_VCAudioCodecModeChangeEvent *)a3 didUpdateBandwidth:(BOOL)a4 didUpdateBitrate:(BOOL)a5;
-- (void)notifyCodecModeChangeToCT:(_VCAudioCodecModeChangeEvent *)a3;
+- (void)notifyCodecModeChangeEvent:(_VCAudioCodecModeChangeEvent *)event didUpdateBandwidth:(BOOL)bandwidth didUpdateBitrate:(BOOL)bitrate;
+- (void)notifyCodecModeChangeToCT:(_VCAudioCodecModeChangeEvent *)t;
 - (void)onCallIDChanged;
-- (void)onPauseWithCompletionHandler:(id)a3;
+- (void)onPauseWithCompletionHandler:(id)handler;
 - (void)onRTCPTimeout;
-- (void)onResumeWithCompletionHandler:(id)a3;
+- (void)onResumeWithCompletionHandler:(id)handler;
 - (void)onSendRTCPPacket;
-- (void)onStartWithCompletionHandler:(id)a3;
-- (void)onStopWithCompletionHandler:(id)a3;
+- (void)onStartWithCompletionHandler:(id)handler;
+- (void)onStopWithCompletionHandler:(id)handler;
 - (void)prepareAudio;
-- (void)queryAnbrBitrate:(unsigned int)a3 forDirection:(int64_t)a4;
-- (void)rateAdaptation:(id)a3 targetBitrateDidChange:(unsigned int)a4 rateChangeCounter:(unsigned int)a5;
+- (void)queryAnbrBitrate:(unsigned int)bitrate forDirection:(int64_t)direction;
+- (void)rateAdaptation:(id)adaptation targetBitrateDidChange:(unsigned int)change rateChangeCounter:(unsigned int)counter;
 - (void)registerActiveAudioStreamChangeNotifications;
 - (void)registerCodecRateModeChangeNotifications;
-- (void)removeSyncSourceDelegate:(id)a3;
-- (void)reportTimestampJumpsWithReportingDictionary:(__CFDictionary *)a3;
-- (void)reportingAlgosAudioStreamEvent:(unsigned __int16)a3;
-- (void)reportingAudioStreamEvent:(unsigned __int16)a3;
-- (void)sendDTMFEvent:(id)a3;
+- (void)removeSyncSourceDelegate:(id)delegate;
+- (void)reportTimestampJumpsWithReportingDictionary:(__CFDictionary *)dictionary;
+- (void)reportingAlgosAudioStreamEvent:(unsigned __int16)event;
+- (void)reportingAudioStreamEvent:(unsigned __int16)event;
+- (void)sendDTMFEvent:(id)event;
 - (void)serverDidDie;
-- (void)setCurrentDTXEnable:(BOOL)a3;
-- (void)setDTXPayload:(id)a3;
-- (void)setDeviceRoleForAudioStreamMode:(int64_t)a3 direction:(int64_t)a4;
-- (void)setFrequencyMeteringEnabled:(BOOL)a3 meterType:(int)a4;
-- (void)setIsLocalCelluar:(unsigned int)a3;
-- (void)setJitterBufferMode:(int)a3;
-- (void)setOverlayToken:(int64_t)a3;
-- (void)setPreferredMediaBitrateWithConfiguration:(id)a3;
+- (void)setCurrentDTXEnable:(BOOL)enable;
+- (void)setDTXPayload:(id)payload;
+- (void)setDeviceRoleForAudioStreamMode:(int64_t)mode direction:(int64_t)direction;
+- (void)setFrequencyMeteringEnabled:(BOOL)enabled meterType:(int)type;
+- (void)setIsLocalCelluar:(unsigned int)celluar;
+- (void)setJitterBufferMode:(int)mode;
+- (void)setOverlayToken:(int64_t)token;
+- (void)setPreferredMediaBitrateWithConfiguration:(id)configuration;
 - (void)setReceiverPayloads;
-- (void)setRemoteCodecTypeAndSampleRate:(_VCAudioCodecModeChangeEvent *)a3;
-- (void)setSendActiveVoiceOnly:(BOOL)a3;
-- (void)setStreamDirection:(int64_t)a3;
-- (void)setTargetBitrate:(unsigned int)a3 rateChangeCounter:(unsigned int)a4;
-- (void)setTargetStreamID:(id)a3;
+- (void)setRemoteCodecTypeAndSampleRate:(_VCAudioCodecModeChangeEvent *)rate;
+- (void)setSendActiveVoiceOnly:(BOOL)only;
+- (void)setStreamDirection:(int64_t)direction;
+- (void)setTargetBitrate:(unsigned int)bitrate rateChangeCounter:(unsigned int)counter;
+- (void)setTargetStreamID:(id)d;
 - (void)setUpMediaRecorder;
-- (void)setVCStatistics:(tagVCStatisticsMessage *)a3;
-- (void)setVolume:(float)a3;
-- (void)setupAudioMachineLearningCoordinatorsWithFormat:(tagVCAudioFrameFormat *)a3 direction:(int64_t)a4;
+- (void)setVCStatistics:(tagVCStatisticsMessage *)statistics;
+- (void)setVolume:(float)volume;
+- (void)setupAudioMachineLearningCoordinatorsWithFormat:(tagVCAudioFrameFormat *)format direction:(int64_t)direction;
 - (void)setupAudioPowerSpectrum;
 - (void)setupPayloads;
 - (void)setupPeriodicReporting;
-- (void)setupReportingAgent:(id)a3;
-- (void)startAudioWithCompletionHandler:(id)a3;
-- (void)stopAudioWithCompletionHandler:(id)a3;
+- (void)setupReportingAgent:(id)agent;
+- (void)startAudioWithCompletionHandler:(id)handler;
+- (void)stopAudioWithCompletionHandler:(id)handler;
 - (void)stopSendDTMFEvent;
-- (void)storeLastCodecModeChangeEvent:(_VCAudioCodecModeChangeEvent *)a3;
-- (void)telephonyInterface:(id)a3 anbrActivationUpdate:(BOOL)a4;
-- (void)telephonyInterface:(id)a3 anbrRecommendation:(unsigned int)a4 forDirection:(int64_t)a5;
-- (void)updateCodecPayloadAndBitrateForStartEvent:(int *)a3 bitrate:(unsigned int *)a4;
-- (void)updateOperatingMode:(int)a3;
-- (void)updateSyncSourceState:(int)a3;
+- (void)storeLastCodecModeChangeEvent:(_VCAudioCodecModeChangeEvent *)event;
+- (void)telephonyInterface:(id)interface anbrActivationUpdate:(BOOL)update;
+- (void)telephonyInterface:(id)interface anbrRecommendation:(unsigned int)recommendation forDirection:(int64_t)direction;
+- (void)updateCodecPayloadAndBitrateForStartEvent:(int *)event bitrate:(unsigned int *)bitrate;
+- (void)updateOperatingMode:(int)mode;
+- (void)updateSyncSourceState:(int)state;
 - (void)waitIdleForSyncSourceDelegates;
-- (void)willExitState:(int)a3 newState:(int)a4;
+- (void)willExitState:(int)state newState:(int)newState;
 @end
 
 @implementation VCAudioStream
 
-- (void)setOverlayToken:(int64_t)a3
+- (void)setOverlayToken:(int64_t)token
 {
-  if (self->_overlayToken != a3)
+  if (self->_overlayToken != token)
   {
-    self->_overlayToken = a3;
+    self->_overlayToken = token;
     if (VCOverlayManager_isOverlayEnabled())
     {
       audioReceiver = self->_sourceContext.audioReceiver;
@@ -154,7 +154,7 @@
   }
 }
 
-- (unsigned)computePacketTimestampWithInputTimestamp:(unsigned int)a3 numSamples:(int)a4 hostTime:(double)a5
+- (unsigned)computePacketTimestampWithInputTimestamp:(unsigned int)timestamp numSamples:(int)samples hostTime:(double)time
 {
   v42 = *MEMORY[0x1E69E9840];
   if (self->super._operatingMode != 6)
@@ -167,10 +167,10 @@
 
     else
     {
-      v9 = a5 - dAudioHostTime;
-      v10 = self->_vpioFormat.format.mSampleRate / a4;
-      v11 = llround(v9 * v10) * a4;
-      if (v11 != a4)
+      v9 = time - dAudioHostTime;
+      v10 = self->_vpioFormat.format.mSampleRate / samples;
+      v11 = llround(v9 * v10) * samples;
+      if (v11 != samples)
       {
         if (VRTraceGetErrorLogLevelForModule() >= 3)
         {
@@ -189,11 +189,11 @@
             v24 = 2080;
             v25 = "[VCAudioStream computePacketTimestampWithInputTimestamp:numSamples:hostTime:]";
             v26 = 1024;
-            v27 = a3 - lastInputAudioTimeStamp;
+            v27 = timestamp - lastInputAudioTimeStamp;
             v28 = 1024;
             v29 = lastInputAudioTimeStamp;
             v30 = 1024;
-            v31 = a3;
+            timestampCopy = timestamp;
             v32 = 2048;
             v33 = v9;
             v34 = 1024;
@@ -201,26 +201,26 @@
             v36 = 2048;
             v37 = v17;
             v38 = 2048;
-            v39 = a5;
+            timeCopy = time;
             v40 = 1024;
             v41 = v11;
             _os_log_error_impl(&dword_1DB56E000, v13, OS_LOG_TYPE_ERROR, "VCAudioStream [%s] %s:%d %s Timestamp jumped: %u (%u to %u), host time: %f (%d samples) (%f to %f). Adjustment: %d", &v18, 0x62u);
           }
         }
 
-        a4 = v11;
+        samples = v11;
       }
 
-      v14 = (([(VCAudioPayloadConfig *)[(VCAudioTransmitter *)[(VCAudioStream *)self audioTransmitter] currentAudioPayloadConfig] codecSampleRate]* a4) / self->_vpioFormat.format.mSampleRate);
+      v14 = (([(VCAudioPayloadConfig *)[(VCAudioTransmitter *)[(VCAudioStream *)self audioTransmitter] currentAudioPayloadConfig] codecSampleRate]* samples) / self->_vpioFormat.format.mSampleRate);
     }
 
     return self->lastSentAudioSampleTime + v14;
   }
 
-  return a3;
+  return timestamp;
 }
 
-- (unsigned)internalSampleRateForCodecType:(int64_t)a3
+- (unsigned)internalSampleRateForCodecType:(int64_t)type
 {
   operatingMode = self->super._operatingMode;
   if (operatingMode == 6 || self->_isVoiceProcessingAt24KSupported)
@@ -229,7 +229,7 @@
   }
 
   result = 8000;
-  switch(a3)
+  switch(type)
   {
     case 1:
     case 5:
@@ -274,15 +274,15 @@
   return result;
 }
 
-- (void)_computeInternalFormatForStreamConfigurations:(id)a3
+- (void)_computeInternalFormatForStreamConfigurations:(id)configurations
 {
   v32 = *MEMORY[0x1E69E9840];
-  v21 = +[VCAudioStream audioChannelCountForMode:](VCAudioStream, "audioChannelCountForMode:", [a3 firstObject]);
+  v21 = +[VCAudioStream audioChannelCountForMode:](VCAudioStream, "audioChannelCountForMode:", [configurations firstObject]);
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v28 objects:v27 count:16];
+  v5 = [configurations countByEnumeratingWithState:&v28 objects:v27 count:16];
   if (v5)
   {
     v6 = v5;
@@ -294,16 +294,16 @@
       {
         if (*v29 != v8)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(configurations);
         }
 
         v10 = *(*(&v28 + 1) + 8 * i);
         if ([v10 useExternalIO])
         {
-          v17 = [v10 externalIOFormat];
-          v19 = v17[1];
-          v18 = v17[2];
-          *&self->_vpioFormat.format.mSampleRate = *v17;
+          externalIOFormat = [v10 externalIOFormat];
+          v19 = externalIOFormat[1];
+          v18 = externalIOFormat[2];
+          *&self->_vpioFormat.format.mSampleRate = *externalIOFormat;
           *&self->_vpioFormat.format.mBytesPerPacket = v19;
           *&self->_vpioFormat.format.mBitsPerChannel = v18;
           v20 = 1;
@@ -344,11 +344,11 @@
 
         if (self->super._operatingMode == 11)
         {
-          v21 = [objc_msgSend(a3 objectAtIndexedSubscript:{0), "channelCount"}];
+          v21 = [objc_msgSend(configurations objectAtIndexedSubscript:{0), "channelCount"}];
         }
       }
 
-      v6 = [a3 countByEnumeratingWithState:&v28 objects:v27 count:16];
+      v6 = [configurations countByEnumeratingWithState:&v28 objects:v27 count:16];
       if (v6)
       {
         continue;
@@ -369,11 +369,11 @@ LABEL_24:
   self->_useExternalIO = v20;
 }
 
-- (BOOL)generateRTCPXRSummaryReports:(tagVCRTCPXRSummaryReport *)a3 reportCount:(char *)a4
+- (BOOL)generateRTCPXRSummaryReports:(tagVCRTCPXRSummaryReport *)reports reportCount:(char *)count
 {
   v32 = *MEMORY[0x1E69E9840];
-  v6 = *a4;
-  *a4 = 0;
+  v6 = *count;
+  *count = 0;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
@@ -403,11 +403,11 @@ LABEL_24:
       if ([v14 isRTCPXREnabled])
       {
         v20 = v6;
-        if ([v14 generateRTCPXRSummaryReport:a3 reportCount:&v20])
+        if ([v14 generateRTCPXRSummaryReport:reports reportCount:&v20])
         {
           v15 = v20;
-          a3 += v20;
-          *a4 += v20;
+          reports += v20;
+          *count += v20;
           v6 -= v15;
           v11 = 1;
         }
@@ -437,14 +437,14 @@ LABEL_24:
   return v11;
 }
 
-- (BOOL)generateRTCPXRVoIPMetricsReports:(tagVCRTCPXRVoIPMetricsReport *)a3 reportCount:(char *)a4
+- (BOOL)generateRTCPXRVoIPMetricsReports:(tagVCRTCPXRVoIPMetricsReport *)reports reportCount:(char *)count
 {
   v89 = *MEMORY[0x1E69E9840];
   audioReceiver = self->_sourceContext.audioReceiver;
   if (audioReceiver)
   {
-    v7 = *a4;
-    *a4 = 0;
+    v7 = *count;
+    *count = 0;
     v49 = 0u;
     v50 = 0u;
     v51 = 0u;
@@ -454,7 +454,7 @@ LABEL_24:
     if (v9)
     {
       v11 = v9;
-      v46 = a4;
+      countCopy = count;
       v12 = 0;
       v13 = *v50;
       *&v10 = 136315650;
@@ -472,14 +472,14 @@ LABEL_24:
           if ([v15 isRTCPXREnabled])
           {
             v47 = v7;
-            if ([v15 generateRTCPXRVoIPMetricsReport:a3 reportCount:&v47])
+            if ([v15 generateRTCPXRVoIPMetricsReport:reports reportCount:&v47])
             {
               DiscardRate = VCJitterBuffer_GetDiscardRate(audioReceiver->var2);
               v17 = *&DiscardRate;
               TargetTime = VCJitterBuffer_GetTargetTime(audioReceiver->var2);
-              a3->var1 = (v17 * 255.0);
+              reports->var1 = (v17 * 255.0);
               *buf = -1;
-              v19 = *&a3->var20;
+              v19 = *&reports->var20;
               *&buf[8] = -1431655766;
               *v54 = v19;
               VCJitterBuffer_GetBurstMetrics(audioReceiver->var2, buf);
@@ -490,7 +490,7 @@ LABEL_24:
                 LOBYTE(v20) = -1;
               }
 
-              a3->var2 = v20;
+              reports->var2 = v20;
               if (v21 >= 0xFF)
               {
                 v22 = -1;
@@ -501,39 +501,39 @@ LABEL_24:
                 v22 = v21;
               }
 
-              a3->var3 = v22;
-              *&a3->var4 = *&buf[8];
+              reports->var3 = v22;
+              *&reports->var4 = *&buf[8];
               v23 = TargetTime + 3;
               if ((TargetTime + 3) >= 0xFFFF)
               {
                 v23 = -1;
               }
 
-              a3->var7 = v23;
-              *&a3->var8 = 0x7F7F7F7F107F7F7FLL;
-              a3->var16 = -16;
-              VCJitterBuffer_GetRTCPXRJitterBufferParameters(audioReceiver->var2, &a3->var17, &a3->var18, &a3->var19);
+              reports->var7 = v23;
+              *&reports->var8 = 0x7F7F7F7F107F7F7FLL;
+              reports->var16 = -16;
+              VCJitterBuffer_GetRTCPXRJitterBufferParameters(audioReceiver->var2, &reports->var17, &reports->var18, &reports->var19);
               if (VRTraceGetErrorLogLevelForModule() >= 7)
               {
                 v24 = VRTraceErrorLogLevelToCSTR();
                 v25 = *MEMORY[0x1E6986650];
                 if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
                 {
-                  var20 = a3->var20;
-                  var21 = a3->var21;
-                  var0 = a3->var0;
-                  var1 = a3->var1;
-                  v30 = vcvtd_n_f64_u32(a3->var2, 8uLL) * 100.0;
-                  v31 = vcvtd_n_f64_u32(a3->var3, 8uLL) * 100.0;
-                  var4 = a3->var4;
-                  var5 = a3->var5;
-                  var6 = a3->var6;
-                  var7 = a3->var7;
-                  var11 = a3->var11;
-                  var16 = a3->var16;
-                  var17 = a3->var17;
-                  var18 = a3->var18;
-                  var19 = a3->var19;
+                  var20 = reports->var20;
+                  var21 = reports->var21;
+                  var0 = reports->var0;
+                  var1 = reports->var1;
+                  v30 = vcvtd_n_f64_u32(reports->var2, 8uLL) * 100.0;
+                  v31 = vcvtd_n_f64_u32(reports->var3, 8uLL) * 100.0;
+                  var4 = reports->var4;
+                  var5 = reports->var5;
+                  var6 = reports->var6;
+                  var7 = reports->var7;
+                  var11 = reports->var11;
+                  var16 = reports->var16;
+                  var17 = reports->var17;
+                  var18 = reports->var18;
+                  var19 = reports->var19;
                   *buf = 136319746;
                   *&buf[4] = v24;
                   *v54 = 2080;
@@ -577,8 +577,8 @@ LABEL_24:
               }
 
               v41 = v47;
-              a3 += v47;
-              *v46 += v47;
+              reports += v47;
+              *countCopy += v47;
               v7 -= v41;
               v12 = 1;
             }
@@ -622,7 +622,7 @@ LABEL_24:
   return v12 & 1;
 }
 
-- (void)startAudioWithCompletionHandler:(id)a3
+- (void)startAudioWithCompletionHandler:(id)handler
 {
   v30 = *MEMORY[0x1E69E9840];
   VCMediaStream_Lock(self);
@@ -652,9 +652,9 @@ LABEL_24:
     if ([(VCAudioStream *)self audioTransmitter]&& ![(VCAudioTransmitter *)[(VCAudioStream *)self audioTransmitter] setupAudio:&v12])
     {
       VCMediaStream_Unlock(self);
-      if (a3)
+      if (handler)
       {
-        (*(a3 + 2))(a3, 0, v12);
+        (*(handler + 2))(handler, 0, v12);
       }
     }
 
@@ -664,9 +664,9 @@ LABEL_24:
       self->_allowedAudioPayloads = [(NSArray *)[(VCAudioTransmitter *)[(VCAudioStream *)self audioTransmitter] audioPayloads] mutableCopy];
       if (self->super._operatingMode == 6)
       {
-        if (a3)
+        if (handler)
         {
-          (*(a3 + 2))(a3, 1, 0);
+          (*(handler + 2))(handler, 1, 0);
         }
       }
 
@@ -696,14 +696,14 @@ LABEL_24:
             v17 = 1024;
             v18 = 683;
             v19 = 2048;
-            v20 = self;
+            selfCopy = self;
             v21 = 2048;
             v22 = audioIO;
             _os_log_impl(&dword_1DB56E000, v10, OS_LOG_TYPE_DEFAULT, "VCAudioStream [%s] %s:%d (%p) starting audioIO=%p", v13, 0x30u);
           }
         }
 
-        [(VCAudioIO *)self->_audioIO startWithCompletionHandler:a3];
+        [(VCAudioIO *)self->_audioIO startWithCompletionHandler:handler];
       }
 
       [(VCAudioStream *)self reportingAlgosAudioStreamEvent:0];
@@ -724,20 +724,20 @@ LABEL_24:
     }
 
     VCMediaStream_Unlock(self);
-    if (a3)
+    if (handler)
     {
-      (*(a3 + 2))(a3, 1, 0);
+      (*(handler + 2))(handler, 1, 0);
     }
   }
 }
 
-- (void)stopAudioWithCompletionHandler:(id)a3
+- (void)stopAudioWithCompletionHandler:(id)handler
 {
   v18 = *MEMORY[0x1E69E9840];
   VCMediaStream_Lock(self);
   if (self->super._operatingMode == 6)
   {
-    (*(a3 + 2))(a3, 1, 0);
+    (*(handler + 2))(handler, 1, 0);
   }
 
   else
@@ -758,19 +758,19 @@ LABEL_24:
           v12 = 1024;
           v13 = 701;
           v14 = 2048;
-          v15 = self;
+          selfCopy = self;
           v16 = 2048;
           v17 = audioIO;
           _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, "VCAudioStream [%s] %s:%d [%p] stopping audioIO=%p", &v8, 0x30u);
         }
       }
 
-      [(VCAudioIO *)self->_audioIO stopWithCompletionHandler:a3];
+      [(VCAudioIO *)self->_audioIO stopWithCompletionHandler:handler];
     }
 
     else
     {
-      (*(a3 + 2))(a3, 1, 0);
+      (*(handler + 2))(handler, 1, 0);
     }
 
     if ((self->super._operatingMode - 1) >= 2)
@@ -806,12 +806,12 @@ LABEL_24:
         }
 
         v18 = v4;
-        v5 = [*(*(&v31 + 1) + 8 * v4) streamConfig];
+        streamConfig = [*(*(&v31 + 1) + 8 * v4) streamConfig];
         v26 = 0u;
         v27 = 0u;
         v28 = 0u;
         v29 = 0u;
-        v6 = [objc_msgSend(v5 "allCodecConfigurations")];
+        v6 = [objc_msgSend(streamConfig "allCodecConfigurations")];
         v7 = [v6 countByEnumeratingWithState:&v26 objects:v25 count:16];
         if (v7)
         {
@@ -874,14 +874,14 @@ LABEL_24:
 - (BOOL)setupPayloads
 {
   v44 = *MEMORY[0x1E69E9840];
-  v3 = [(VCAudioStream *)self getSupportedPayloads];
+  getSupportedPayloads = [(VCAudioStream *)self getSupportedPayloads];
   [(NSMutableArray *)self->audioPayloads removeAllObjects];
   self->currentAudioPayload = 0;
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v40 objects:v39 count:16];
+  v4 = [getSupportedPayloads countByEnumeratingWithState:&v40 objects:v39 count:16];
   if (v4)
   {
     v5 = v4;
@@ -892,18 +892,18 @@ LABEL_24:
       {
         if (*v41 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(getSupportedPayloads);
         }
 
-        v8 = [*(*(&v40 + 1) + 8 * i) unsignedIntValue];
-        v9 = [(VCAudioStream *)self addAudioPayload:v8];
-        if (v8 == self->preferredAudioCodec)
+        unsignedIntValue = [*(*(&v40 + 1) + 8 * i) unsignedIntValue];
+        v9 = [(VCAudioStream *)self addAudioPayload:unsignedIntValue];
+        if (unsignedIntValue == self->preferredAudioCodec)
         {
           self->currentAudioPayload = v9;
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v40 objects:v39 count:16];
+      v5 = [getSupportedPayloads countByEnumeratingWithState:&v40 objects:v39 count:16];
     }
 
     while (v5);
@@ -936,19 +936,19 @@ LABEL_24:
 
   if (!self->_useExternalIO)
   {
-    v11 = [(VCAudioPayloadConfig *)[(VCAudioPayload *)currentAudioPayload config] samplesPerFrame];
-    if (v11 / [(VCAudioPayloadConfig *)[(VCAudioPayload *)self->currentAudioPayload config] inputSampleRate]>= 0.02)
+    samplesPerFrame = [(VCAudioPayloadConfig *)[(VCAudioPayload *)currentAudioPayload config] samplesPerFrame];
+    if (samplesPerFrame / [(VCAudioPayloadConfig *)[(VCAudioPayload *)self->currentAudioPayload config] inputSampleRate]>= 0.02)
     {
-      v13 = [(VCAudioPayloadConfig *)[(VCAudioPayload *)self->currentAudioPayload config] samplesPerFrame];
+      samplesPerFrame2 = [(VCAudioPayloadConfig *)[(VCAudioPayload *)self->currentAudioPayload config] samplesPerFrame];
     }
 
     else
     {
       v12 = [(VCAudioStream *)self getPacketsPerBundleForStreamConfig:[(VCMediaStream *)self defaultStreamConfig]];
-      v13 = [(VCAudioPayloadConfig *)[(VCAudioPayload *)self->currentAudioPayload config] samplesPerFrame]* v12;
+      samplesPerFrame2 = [(VCAudioPayloadConfig *)[(VCAudioPayload *)self->currentAudioPayload config] samplesPerFrame]* v12;
     }
 
-    self->_vpioFormat.samplesPerFrame = v13;
+    self->_vpioFormat.samplesPerFrame = samplesPerFrame2;
     v37 = 0u;
     v38 = 0u;
     *__str = 0u;
@@ -979,7 +979,7 @@ LABEL_24:
       WORD2(v32) = 2112;
       *(&v32 + 6) = v17;
       HIWORD(v32) = 2080;
-      v33 = v18;
+      selfCopy = v18;
       *v34 = 1024;
       *&v34[2] = samplesPerFrame;
       v20 = "VCAudioStream [%s] %s:%d currentAudioPayload=%@ vpioFormat=%s samplesPerFrame=%u";
@@ -1023,7 +1023,7 @@ LABEL_24:
       WORD2(v32) = 2112;
       *(&v32 + 6) = v14;
       HIWORD(v32) = 2048;
-      v33 = self;
+      selfCopy = self;
       *v34 = 2112;
       *&v34[2] = v26;
       *&v34[10] = 2080;
@@ -1050,15 +1050,15 @@ LABEL_32:
   return v23;
 }
 
-- (id)getCodecConfigForPayload:(int)a3 streamConfig:(id)a4
+- (id)getCodecConfigForPayload:(int)payload streamConfig:(id)config
 {
   v7 = [VCPayloadUtils codecTypeForPayload:?];
-  v8 = [a4 allCodecConfigurations];
-  v9 = [v8 objectForKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInteger:", v7)}];
+  allCodecConfigurations = [config allCodecConfigurations];
+  v9 = [allCodecConfigurations objectForKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInteger:", v7)}];
   v10 = v9;
-  if (a3 != 119 || v9)
+  if (payload != 119 || v9)
   {
-    if (a3 == 113 && v9)
+    if (payload == 113 && v9)
     {
       [v9 setIsACC24FixedBitrateModeEnabled:{-[VCExperimentManager isEnabledExperiment:forceDisable:](self->super._experimentManager, "isEnabledExperiment:forceDisable:", @"enableACC24FixedBitrateMode", !VCFeatureFlagManager_AudioCodecACC24FixedBitrateMode())}];
     }
@@ -1069,13 +1069,13 @@ LABEL_32:
   else
   {
 
-    return [(VCAudioStream *)self codecConfigForOpusWithStreamConfig:a4];
+    return [(VCAudioStream *)self codecConfigForOpusWithStreamConfig:config];
   }
 }
 
-- (void)getCodecConfigForPayload:(int)a3 block:(id)a4
+- (void)getCodecConfigForPayload:(int)payload block:(id)block
 {
-  v5 = *&a3;
+  v5 = *&payload;
   v32 = *MEMORY[0x1E69E9840];
   v28 = 0u;
   v29 = 0u;
@@ -1096,11 +1096,11 @@ LABEL_32:
           objc_enumerationMutation(transportArray);
         }
 
-        v12 = [*(*(&v28 + 1) + 8 * i) streamConfig];
-        v13 = [(VCAudioStream *)self getCodecConfigForPayload:v5 streamConfig:v12];
+        streamConfig = [*(*(&v28 + 1) + 8 * i) streamConfig];
+        v13 = [(VCAudioStream *)self getCodecConfigForPayload:v5 streamConfig:streamConfig];
         if (v13)
         {
-          (*(a4 + 2))(a4, v12, v13);
+          (*(block + 2))(block, streamConfig, v13);
           return;
         }
       }
@@ -1154,14 +1154,14 @@ LABEL_32:
         v23 = 2112;
         v24 = v14;
         v25 = 2048;
-        v26 = self;
+        selfCopy = self;
         _os_log_error_impl(&dword_1DB56E000, v16, OS_LOG_TYPE_ERROR, "VCAudioStream [%s] %s:%d %@(%p) Failed to retrieve codec config.", &v17, 0x30u);
       }
     }
   }
 }
 
-- (unsigned)preferredAudioBitrateForPayload:(int)a3
+- (unsigned)preferredAudioBitrateForPayload:(int)payload
 {
   v10 = *MEMORY[0x1E69E9840];
   preferredMediaBitrate = self->_preferredMediaBitrate;
@@ -1176,7 +1176,7 @@ LABEL_32:
     v5[2] = __49__VCAudioStream_preferredAudioBitrateForPayload___block_invoke;
     v5[3] = &unk_1E85F54A0;
     v5[4] = &v6;
-    [(VCAudioStream *)self getCodecConfigForPayload:*&a3 block:v5];
+    [(VCAudioStream *)self getCodecConfigForPayload:*&payload block:v5];
     preferredMediaBitrate = *(v7 + 6);
     _Block_object_dispose(&v6, 8);
   }
@@ -1191,15 +1191,15 @@ uint64_t __49__VCAudioStream_preferredAudioBitrateForPayload___block_invoke(uint
   return result;
 }
 
-+ (unsigned)audioChannelCountForMode:(id)a3
++ (unsigned)audioChannelCountForMode:(id)mode
 {
-  v4 = [a3 audioStreamMode];
+  audioStreamMode = [mode audioStreamMode];
   result = 1;
-  if (v4 > 10)
+  if (audioStreamMode > 10)
   {
-    if (v4 != 12)
+    if (audioStreamMode != 12)
     {
-      if (v4 != 11)
+      if (audioStreamMode != 11)
       {
         return result;
       }
@@ -1208,9 +1208,9 @@ uint64_t __49__VCAudioStream_preferredAudioBitrateForPayload___block_invoke(uint
     }
   }
 
-  else if (v4 != 8)
+  else if (audioStreamMode != 8)
   {
-    if (v4 != 9)
+    if (audioStreamMode != 9)
     {
       return result;
     }
@@ -1218,19 +1218,19 @@ uint64_t __49__VCAudioStream_preferredAudioBitrateForPayload___block_invoke(uint
     return 2;
   }
 
-  if (![a3 channelCount])
+  if (![mode channelCount])
   {
     return 1;
   }
 
-  return [a3 channelCount];
+  return [mode channelCount];
 }
 
-+ (unsigned)audioIOTypeForMode:(int64_t)a3
++ (unsigned)audioIOTypeForMode:(int64_t)mode
 {
-  if ((a3 - 1) < 0xC)
+  if ((mode - 1) < 0xC)
   {
-    return dword_1DBD477A8[a3 - 1];
+    return dword_1DBD477A8[mode - 1];
   }
 
   if (VRTraceGetErrorLogLevelForModule() >= 3)
@@ -1248,19 +1248,19 @@ uint64_t __49__VCAudioStream_preferredAudioBitrateForPayload___block_invoke(uint
   return 0;
 }
 
-+ (id)newPayloadConfigForCodecConfig:(id)a3 streamConfig:(id)a4 inputSampleRate:(unsigned int)a5
++ (id)newPayloadConfigForCodecConfig:(id)config streamConfig:(id)streamConfig inputSampleRate:(unsigned int)rate
 {
-  v5 = *&a5;
+  v5 = *&rate;
   v49 = *MEMORY[0x1E69E9840];
   v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v9 = +[VCPayloadUtils payloadForCodecType:](VCPayloadUtils, "payloadForCodecType:", [a3 codecType]);
+  v9 = +[VCPayloadUtils payloadForCodecType:](VCPayloadUtils, "payloadForCodecType:", [config codecType]);
   v10 = v9;
   if (v9 == 108)
   {
-    v11 = [a4 forceEVSWideBand];
+    forceEVSWideBand = [streamConfig forceEVSWideBand];
     v12 = kVCAudioPayloadConfigKeyPayloadType;
     v13 = v10;
-    if (v11)
+    if (forceEVSWideBand)
     {
       [v8 setObject:&unk_1F5798B38 forKeyedSubscript:@"vcAudioPayloadConfigKeyPayloadType"];
       v12 = kVCAudioPayloadConfigKeyPayloadTypeOverride;
@@ -1275,8 +1275,8 @@ uint64_t __49__VCAudioStream_preferredAudioBitrateForPayload___block_invoke(uint
   }
 
   [v8 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedInt:", v13), *v12}];
-  [v8 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInteger:", objc_msgSend(a3, "codecType")), @"vcAudioPayloadConfigKeyCodecType"}];
-  if ([a3 codecType] == 12)
+  [v8 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInteger:", objc_msgSend(config, "codecType")), @"vcAudioPayloadConfigKeyCodecType"}];
+  if ([config codecType] == 12)
   {
     [v8 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", 320), @"vcAudioPayloadConfigKeyBlockSize"}];
     [v8 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", 16000), @"vcPayloadConfigKeySampleRate"}];
@@ -1286,15 +1286,15 @@ uint64_t __49__VCAudioStream_preferredAudioBitrateForPayload___block_invoke(uint
   v14 = v10 - 97;
   if ((v10 - 97) <= 0x16 && ((1 << v14) & 0x404C03) != 0)
   {
-    v15 = [a3 pTime];
-    [v8 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedInt:", v15 / 0x14), @"vcPayloadConfigKeyInternalBundleFactor"}];
+    pTime = [config pTime];
+    [v8 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedInt:", pTime / 0x14), @"vcPayloadConfigKeyInternalBundleFactor"}];
   }
 
-  if ([a3 codecType] == 19)
+  if ([config codecType] == 19)
   {
-    v16 = [a3 pTime];
-    v17 = (v16 / 1000.0 * 48000.0);
-    [v8 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", VCDefaults_GetBoolValueForKey(@"useRestrictedLowDelayModeForOpus", v16 == 5)), @"vcAudioPayloadConfigKeyOpusRestrictedLowDelayEnabled"}];
+    pTime2 = [config pTime];
+    v17 = (pTime2 / 1000.0 * 48000.0);
+    [v8 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", VCDefaults_GetBoolValueForKey(@"useRestrictedLowDelayModeForOpus", pTime2 == 5)), @"vcAudioPayloadConfigKeyOpusRestrictedLowDelayEnabled"}];
     [v8 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", v17), @"vcAudioPayloadConfigKeyBlockSize"}];
     [v8 setObject:&unk_1F5798B50 forKeyedSubscript:@"vcPayloadConfigKeySampleRate"];
     [v8 setObject:&unk_1F5798B68 forKeyedSubscript:@"vcPayloadConfigKeyInternalBundleFactor"];
@@ -1302,7 +1302,7 @@ uint64_t __49__VCAudioStream_preferredAudioBitrateForPayload___block_invoke(uint
 
   if ((v10 - 107) <= 4 && ((1 << (v10 - 107)) & 0x13) != 0)
   {
-    if (+[VCAudioStream isTelephony:](VCAudioStream, "isTelephony:", [a4 audioStreamMode]))
+    if (+[VCAudioStream isTelephony:](VCAudioStream, "isTelephony:", [streamConfig audioStreamMode]))
     {
       v18 = 0;
     }
@@ -1313,38 +1313,38 @@ uint64_t __49__VCAudioStream_preferredAudioBitrateForPayload___block_invoke(uint
     }
 
     IntValueForKey = VCDefaults_GetIntValueForKey(@"EVSSIDDuration", v18);
-    [v8 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedShort:", objc_msgSend(a3, "evsChannelAwareOffset")), @"vcPayloadConfigKeyEVSChannelAwareOffset"}];
-    [v8 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", objc_msgSend(a3, "evsHeaderFullOnly")), @"vcPayloadConfigKeyEVSHeaderFullOnly"}];
+    [v8 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedShort:", objc_msgSend(config, "evsChannelAwareOffset")), @"vcPayloadConfigKeyEVSChannelAwareOffset"}];
+    [v8 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", objc_msgSend(config, "evsHeaderFullOnly")), @"vcPayloadConfigKeyEVSHeaderFullOnly"}];
     [v8 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedInt:", IntValueForKey), @"vcPayloadConfigKeyEVSSIDPeriod"}];
-    [v8 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", objc_msgSend(a3, "evsCMRMode")), @"vcPayloadConfigKeyEVSCMRMode"}];
+    [v8 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", objc_msgSend(config, "evsCMRMode")), @"vcPayloadConfigKeyEVSCMRMode"}];
   }
 
   if (VCPayloadUtils_supportsInternalDTXForPayload(v10))
   {
-    [v8 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", objc_msgSend(a3, "isDTXEnabled")), @"vcPayloadConfigKeyDTXEnabled"}];
+    [v8 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", objc_msgSend(config, "isDTXEnabled")), @"vcPayloadConfigKeyDTXEnabled"}];
   }
 
   if (v14 <= 1)
   {
-    [v8 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", objc_msgSend(a3, "isOctetAligned")), @"vcPayloadConfigKeyOctetAligned"}];
+    [v8 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", objc_msgSend(config, "isOctetAligned")), @"vcPayloadConfigKeyOctetAligned"}];
   }
 
   if ((v10 - 101) <= 5 && ((1 << (v10 - 101)) & 0x39) != 0)
   {
-    v20 = +[VCAudioStream shouldUseAACELDSBRForMode:](VCAudioStream, "shouldUseAACELDSBRForMode:", [a4 audioStreamMode]);
+    v20 = +[VCAudioStream shouldUseAACELDSBRForMode:](VCAudioStream, "shouldUseAACELDSBRForMode:", [streamConfig audioStreamMode]);
     [v8 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", v20), @"vcPayloadConfigKeyUseSBR"}];
   }
 
-  if ([a3 supportedModes] && +[VCPayloadUtils supportsCodecRateModesForCodecType:](VCPayloadUtils, "supportsCodecRateModesForCodecType:", objc_msgSend(a3, "codecType")))
+  if ([config supportedModes] && +[VCPayloadUtils supportsCodecRateModesForCodecType:](VCPayloadUtils, "supportsCodecRateModesForCodecType:", objc_msgSend(config, "codecType")))
   {
     v38 = v10;
-    v21 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(objc_msgSend(a3, "supportedModes"), "count")}];
+    v21 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(objc_msgSend(config, "supportedModes"), "count")}];
     v45 = 0u;
     v46 = 0u;
     v47 = 0u;
     v48 = 0u;
-    v22 = [a3 supportedModes];
-    v23 = [v22 countByEnumeratingWithState:&v45 objects:v44 count:16];
+    supportedModes = [config supportedModes];
+    v23 = [supportedModes countByEnumeratingWithState:&v45 objects:v44 count:16];
     if (v23)
     {
       v24 = v23;
@@ -1355,34 +1355,34 @@ uint64_t __49__VCAudioStream_preferredAudioBitrateForPayload___block_invoke(uint
         {
           if (*v46 != v25)
           {
-            objc_enumerationMutation(v22);
+            objc_enumerationMutation(supportedModes);
           }
 
-          v27 = +[VCPayloadUtils bitrateForCodecType:mode:](VCPayloadUtils, "bitrateForCodecType:mode:", [a3 codecType], objc_msgSend(*(*(&v45 + 1) + 8 * i), "unsignedIntValue"));
+          v27 = +[VCPayloadUtils bitrateForCodecType:mode:](VCPayloadUtils, "bitrateForCodecType:mode:", [config codecType], objc_msgSend(*(*(&v45 + 1) + 8 * i), "unsignedIntValue"));
           [v21 setObject:objc_msgSend(MEMORY[0x1E696AD98] atIndexedSubscript:{"numberWithUnsignedInt:", v27), objc_msgSend(v21, "count")}];
         }
 
-        v24 = [v22 countByEnumeratingWithState:&v45 objects:v44 count:16];
+        v24 = [supportedModes countByEnumeratingWithState:&v45 objects:v44 count:16];
       }
 
       while (v24);
     }
 
     [v8 setObject:v21 forKeyedSubscript:@"vcPayloadConfigKeyCodecBitrates"];
-    [v8 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedInt:", +[VCPayloadUtils bitrateForCodecType:mode:](VCPayloadUtils, "bitrateForCodecType:mode:", objc_msgSend(a3, "codecType"), objc_msgSend(a3, "preferredMode"))), @"vcPayloadConfigKeyPreferredBitrate"}];
+    [v8 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedInt:", +[VCPayloadUtils bitrateForCodecType:mode:](VCPayloadUtils, "bitrateForCodecType:mode:", objc_msgSend(config, "codecType"), objc_msgSend(config, "preferredMode"))), @"vcPayloadConfigKeyPreferredBitrate"}];
 
     LODWORD(v10) = v38;
   }
 
-  if ([objc_msgSend(a3 "supportedBandwidths")] && +[VCPayloadUtils supportsCodecBandwidthUpdateForCodecType:](VCPayloadUtils, "supportsCodecBandwidthUpdateForCodecType:", objc_msgSend(a3, "codecType")))
+  if ([objc_msgSend(config "supportedBandwidths")] && +[VCPayloadUtils supportsCodecBandwidthUpdateForCodecType:](VCPayloadUtils, "supportsCodecBandwidthUpdateForCodecType:", objc_msgSend(config, "codecType")))
   {
-    v28 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(objc_msgSend(a3, "supportedBandwidths"), "count")}];
+    v28 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(objc_msgSend(config, "supportedBandwidths"), "count")}];
     v40 = 0u;
     v41 = 0u;
     v42 = 0u;
     v43 = 0u;
-    v29 = [a3 supportedBandwidths];
-    v30 = [v29 countByEnumeratingWithState:&v40 objects:v39 count:16];
+    supportedBandwidths = [config supportedBandwidths];
+    v30 = [supportedBandwidths countByEnumeratingWithState:&v40 objects:v39 count:16];
     if (v30)
     {
       v31 = v30;
@@ -1393,13 +1393,13 @@ uint64_t __49__VCAudioStream_preferredAudioBitrateForPayload___block_invoke(uint
         {
           if (*v41 != v32)
           {
-            objc_enumerationMutation(v29);
+            objc_enumerationMutation(supportedBandwidths);
           }
 
           [v28 setObject:*(*(&v40 + 1) + 8 * j) atIndexedSubscript:{objc_msgSend(v28, "count")}];
         }
 
-        v31 = [v29 countByEnumeratingWithState:&v40 objects:v39 count:16];
+        v31 = [supportedBandwidths countByEnumeratingWithState:&v40 objects:v39 count:16];
       }
 
       while (v31);
@@ -1410,14 +1410,14 @@ uint64_t __49__VCAudioStream_preferredAudioBitrateForPayload___block_invoke(uint
 
   if (v10 == 113)
   {
-    v34 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(a3, "isACC24FixedBitrateModeEnabled")}];
+    v34 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(config, "isACC24FixedBitrateModeEnabled")}];
     v35 = kVCAudioPayloadConfigKeyACC24FixedBitrateModeEnabled;
     goto LABEL_49;
   }
 
   if (v10 == 119)
   {
-    v34 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(a3, "isOpusInBandFecEnabled")}];
+    v34 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(config, "isOpusInBandFecEnabled")}];
     v35 = kVCAudioPayloadConfigKeyOPUSInBandFecEnabled;
 LABEL_49:
     [v8 setObject:v34 forKeyedSubscript:*v35];
@@ -1428,7 +1428,7 @@ LABEL_49:
   return v36;
 }
 
-- (id)configForPayloadType:(int)a3
+- (id)configForPayloadType:(int)type
 {
   v12 = *MEMORY[0x1E69E9840];
   v6 = 0;
@@ -1443,7 +1443,7 @@ LABEL_49:
   v5[3] = &unk_1E85F54C8;
   v5[4] = self;
   v5[5] = &v6;
-  [(VCAudioStream *)self getCodecConfigForPayload:*&a3 block:v5];
+  [(VCAudioStream *)self getCodecConfigForPayload:*&type block:v5];
   v3 = v7[5];
   _Block_object_dispose(&v6, 8);
   return v3;
@@ -1456,9 +1456,9 @@ id __38__VCAudioStream_configForPayloadType___block_invoke(uint64_t a1, uint64_t
   return result;
 }
 
-- (id)addAudioPayload:(int)a3
+- (id)addAudioPayload:(int)payload
 {
-  v4 = [[VCAudioPayload alloc] initWithConfig:[(VCAudioStream *)self configForPayloadType:*&a3]];
+  v4 = [[VCAudioPayload alloc] initWithConfig:[(VCAudioStream *)self configForPayloadType:*&payload]];
   if (v4)
   {
     [(NSMutableArray *)self->audioPayloads addObject:v4];
@@ -1467,14 +1467,14 @@ id __38__VCAudioStream_configForPayloadType___block_invoke(uint64_t a1, uint64_t
   return v4;
 }
 
-- (void)setDTXPayload:(id)a3
+- (void)setDTXPayload:(id)payload
 {
   v27 = *MEMORY[0x1E69E9840];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v4 = [objc_msgSend(a3 "codecConfigurations")];
+  v4 = [objc_msgSend(payload "codecConfigurations")];
   v5 = [v4 countByEnumeratingWithState:&v23 objects:v22 count:16];
   if (v5)
   {
@@ -1566,7 +1566,7 @@ LABEL_20:
   }
 
   v5 = v4;
-  v38 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = *v68;
   do
@@ -1601,7 +1601,7 @@ LABEL_20:
   v65 = 0u;
   v62 = 0u;
   v63 = 0u;
-  obj = v38->super._transportArray;
+  obj = selfCopy->super._transportArray;
   v36 = [(NSMutableArray *)obj countByEnumeratingWithState:&v62 objects:v61 count:16];
   v33 = v10;
   if (v36)
@@ -1620,15 +1620,15 @@ LABEL_20:
         }
 
         v37 = v11;
-        v12 = [*(*(&v62 + 1) + 8 * v11) streamConfig];
-        BoolValueForKey = VCDefaults_GetBoolValueForKey(@"dtmfTonePlaybackEnabled", [v12 dtmfTonePlaybackEnabled]);
-        v14 = VCDefaults_GetBoolValueForKey(@"dtmfEventCallbacksEnabled", [v12 dtmfEventCallbacksEnabled]);
+        streamConfig = [*(*(&v62 + 1) + 8 * v11) streamConfig];
+        BoolValueForKey = VCDefaults_GetBoolValueForKey(@"dtmfTonePlaybackEnabled", [streamConfig dtmfTonePlaybackEnabled]);
+        v14 = VCDefaults_GetBoolValueForKey(@"dtmfEventCallbacksEnabled", [streamConfig dtmfEventCallbacksEnabled]);
         v57 = 0u;
         v58 = 0u;
         v59 = 0u;
         v60 = 0u;
-        v45 = v12;
-        v44 = [objc_msgSend(v12 "codecConfigurations")];
+        v45 = streamConfig;
+        v44 = [objc_msgSend(streamConfig "codecConfigurations")];
         v15 = [v44 countByEnumeratingWithState:&v57 objects:v56 count:16];
         if (v15)
         {
@@ -1652,10 +1652,10 @@ LABEL_20:
               if (BoolValueForKey | (([v19 isDTMF] & 1) == 0) | v14)
               {
                 v20 = +[VCPayloadUtils payloadForCodecType:](VCPayloadUtils, "payloadForCodecType:", [v19 codecType]);
-                v21 = v20;
+                networkPayload = v20;
                 if ([v19 networkPayload] != 0xFFFF)
                 {
-                  v21 = [v19 networkPayload];
+                  networkPayload = [v19 networkPayload];
                 }
 
                 if (v20 == 117)
@@ -1665,7 +1665,7 @@ LABEL_20:
 
                 else
                 {
-                  v22 = [VCAudioStream newPayloadConfigForCodecConfig:v19 streamConfig:v45 inputSampleRate:v38->_vpioFormat.format.mSampleRate];
+                  v22 = [VCAudioStream newPayloadConfigForCodecConfig:v19 streamConfig:v45 inputSampleRate:selfCopy->_vpioFormat.format.mSampleRate];
                 }
 
                 if (v46 >= 1)
@@ -1676,7 +1676,7 @@ LABEL_20:
                   {
                     if (*(v24 - 1) == v20)
                     {
-                      if (*v24 == v21)
+                      if (*v24 == networkPayload)
                       {
                         goto LABEL_35;
                       }
@@ -1697,7 +1697,7 @@ LABEL_20:
                           v53 = 1024;
                           *v54 = v27;
                           *&v54[4] = 1024;
-                          *&v54[6] = v21;
+                          *&v54[6] = networkPayload;
                           LOWORD(v55) = 1024;
                           *(&v55 + 2) = v20;
                           _os_log_impl(&dword_1DB56E000, v26, OS_LOG_TYPE_DEFAULT, "VCAudioStream [%s] %s:%d Multiple network payloads=%d, %d for internal payload=%d. Creating decoders for both", buf, 0x2Eu);
@@ -1713,7 +1713,7 @@ LABEL_20:
                 }
 
                 *v10 = v20;
-                v10[1] = v21;
+                v10[1] = networkPayload;
                 *(v10 + 16) = [v19 isOctetAligned];
                 *(v10 + 36) = [v19 evsHeaderFullOnly];
                 *(v10 + 25) = [v19 isOpusInBandFecEnabled];
@@ -1723,7 +1723,7 @@ LABEL_20:
                 v10[3] = [v22 flags];
                 v10[2] = [v22 samplesPerFrame];
                 *(v10 + 24) = [v45 forceEVSWideBand];
-                *(v10 + 17) = v38->_sourceContext.audioReceiver->var0.var21;
+                *(v10 + 17) = selfCopy->_sourceContext.audioReceiver->var0.var21;
                 ++v46;
                 v10 += 10;
 LABEL_35:
@@ -1758,10 +1758,10 @@ LABEL_35:
     v46 = 0;
   }
 
-  v28 = VCAudioReceiver_SetupDecoders(v38->_sourceContext.audioReceiver, v33, v46, &v38->_vpioFormat, 0);
+  v28 = VCAudioReceiver_SetupDecoders(selfCopy->_sourceContext.audioReceiver, v33, v46, &selfCopy->_vpioFormat, 0);
   if ((v28 & 1) == 0)
   {
-    if (objc_opt_class() == v38)
+    if (objc_opt_class() == selfCopy)
     {
       if (VRTraceGetErrorLogLevelForModule() >= 3)
       {
@@ -1777,7 +1777,7 @@ LABEL_35:
     {
       if (objc_opt_respondsToSelector())
       {
-        v29 = [(VCAudioStream *)v38 performSelector:sel_logPrefix];
+        v29 = [(VCAudioStream *)selfCopy performSelector:sel_logPrefix];
       }
 
       else
@@ -1800,7 +1800,7 @@ LABEL_35:
           v53 = 2112;
           *v54 = v29;
           *&v54[8] = 2048;
-          v55 = v38;
+          v55 = selfCopy;
           _os_log_error_impl(&dword_1DB56E000, v31, OS_LOG_TYPE_ERROR, "VCAudioStream [%s] %s:%d %@(%p) Failed to setup receiver decoders.", buf, 0x30u);
         }
       }
@@ -1854,7 +1854,7 @@ LABEL_35:
   return v6;
 }
 
-- (void)updateSyncSourceState:(int)a3
+- (void)updateSyncSourceState:(int)state
 {
   os_unfair_lock_lock(&self->_delegateLock);
   syncSourceDelegates = self->_syncSourceDelegates;
@@ -1867,7 +1867,7 @@ LABEL_35:
       do
       {
         ValueAtIndex = CFArrayGetValueAtIndex(self->_syncSourceDelegates, v7);
-        VCMediaStreamSyncSourceDelegate_updateSourceState(ValueAtIndex, a3);
+        VCMediaStreamSyncSourceDelegate_updateSourceState(ValueAtIndex, state);
         --v7;
       }
 
@@ -1878,27 +1878,27 @@ LABEL_35:
   os_unfair_lock_unlock(&self->_delegateLock);
 }
 
-- (void)willExitState:(int)a3 newState:(int)a4
+- (void)willExitState:(int)state newState:(int)newState
 {
-  if (a3 == 2)
+  if (state == 2)
   {
-    [(VCAudioStream *)self updateSyncSourceState:1, *&a4];
+    [(VCAudioStream *)self updateSyncSourceState:1, *&newState];
   }
 }
 
-- (void)didEnterState:(int)a3 oldState:(int)a4
+- (void)didEnterState:(int)state oldState:(int)oldState
 {
-  if (a3 == 2 && self->super._operatingMode != 5)
+  if (state == 2 && self->super._operatingMode != 5)
   {
-    [(VCAudioStream *)self updateSyncSourceState:0, *&a4];
+    [(VCAudioStream *)self updateSyncSourceState:0, *&oldState];
   }
 }
 
-+ (int)operatingModeForAudioStreamMode:(int64_t)a3
++ (int)operatingModeForAudioStreamMode:(int64_t)mode
 {
-  if (a3 < 0xD)
+  if (mode < 0xD)
   {
-    return dword_1DBD477D8[a3];
+    return dword_1DBD477D8[mode];
   }
 
   if (VRTraceGetErrorLogLevelForModule() >= 3)
@@ -1916,10 +1916,10 @@ LABEL_35:
   return 0;
 }
 
-+ (unsigned)audioIODirectionWithMediaStreamDirection:(int64_t)a3
++ (unsigned)audioIODirectionWithMediaStreamDirection:(int64_t)direction
 {
-  v3 = 0x3010200u >> (8 * a3);
-  if (a3 >= 4)
+  v3 = 0x3010200u >> (8 * direction);
+  if (direction >= 4)
   {
     LOBYTE(v3) = 0;
   }
@@ -1927,26 +1927,26 @@ LABEL_35:
   return v3 & 3;
 }
 
-- (void)setDeviceRoleForAudioStreamMode:(int64_t)a3 direction:(int64_t)a4
+- (void)setDeviceRoleForAudioStreamMode:(int64_t)mode direction:(int64_t)direction
 {
-  if (a3 <= 0xC)
+  if (mode <= 0xC)
   {
-    if (((1 << a3) & 0xAB2) != 0)
+    if (((1 << mode) & 0xAB2) != 0)
     {
       goto LABEL_10;
     }
 
-    if (((1 << a3) & 0x44C) != 0)
+    if (((1 << mode) & 0x44C) != 0)
     {
       v4 = 3;
       goto LABEL_11;
     }
 
-    if (((1 << a3) & 0x1100) != 0)
+    if (((1 << mode) & 0x1100) != 0)
     {
-      if ((a4 - 2) < 2)
+      if ((direction - 2) < 2)
       {
-        if (a3 == 8)
+        if (mode == 8)
         {
           v4 = 7;
         }
@@ -1958,13 +1958,13 @@ LABEL_35:
 
 LABEL_11:
 
-        [(VCAudioStream *)self setDeviceRole:v4, a4];
+        [(VCAudioStream *)self setDeviceRole:v4, direction];
         return;
       }
 
-      if (a4)
+      if (direction)
       {
-        if (a4 != 1)
+        if (direction != 1)
         {
           return;
         }
@@ -2000,21 +2000,21 @@ LABEL_10:
   [(VCAudioPowerSpectrumManager *)v3 registerAudioPowerMeterSource:audioPowerSpectrumSourceDownlink];
 }
 
-- (BOOL)shouldSetUpMediaRecorderWithParticipantInfoDictionary:(id)a3
+- (BOOL)shouldSetUpMediaRecorderWithParticipantInfoDictionary:(id)dictionary
 {
   if (self->super._operatingMode == 11)
   {
     return 0;
   }
 
-  v6 = [a3 objectForKeyedSubscript:{@"vcMediaStreamSetUpRecording", v3}];
+  v6 = [dictionary objectForKeyedSubscript:{@"vcMediaStreamSetUpRecording", v3}];
 
   return [v6 BOOLValue];
 }
 
 - (void)setUpMediaRecorder
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     if (VRTraceGetErrorLogLevelForModule() < 3)
     {
@@ -2077,9 +2077,9 @@ LABEL_11:
   self->_isCaptionsFormatValid = 0;
 }
 
-- (VCAudioStream)initWithClientPid:(int)a3
+- (VCAudioStream)initWithClientPid:(int)pid
 {
-  v3 = *&a3;
+  v3 = *&pid;
   v8 = *MEMORY[0x1E69E9840];
   v7.receiver = self;
   v7.super_class = VCAudioStream;
@@ -2094,17 +2094,17 @@ LABEL_11:
   return v5;
 }
 
-- (VCAudioStream)initWithClientPid:(int)a3 ssrc:(unsigned int)a4 transportSessionID:(unsigned int)a5 streamToken:(int64_t)a6 experimentManager:(id)a7 logPrefix:(id)a8
+- (VCAudioStream)initWithClientPid:(int)pid ssrc:(unsigned int)ssrc transportSessionID:(unsigned int)d streamToken:(int64_t)token experimentManager:(id)manager logPrefix:(id)prefix
 {
-  v9 = *&a3;
+  v9 = *&pid;
   v14 = *MEMORY[0x1E69E9840];
   v13.receiver = self;
   v13.super_class = VCAudioStream;
-  v10 = [(VCMediaStream *)&v13 initWithTransportSessionID:*&a5 localSSRC:*&a4 streamToken:a6 logPrefix:a8];
+  v10 = [(VCMediaStream *)&v13 initWithTransportSessionID:*&d localSSRC:*&ssrc streamToken:token logPrefix:prefix];
   v11 = v10;
   if (v10)
   {
-    [(VCMediaStream *)v10 setExperimentManager:a7];
+    [(VCMediaStream *)v10 setExperimentManager:manager];
     if (![(VCAudioStream *)v11 setupAudioStreamWithClientPid:v9 enableAudioPowerSpectrum:0])
     {
 
@@ -2115,9 +2115,9 @@ LABEL_11:
   return v11;
 }
 
-- (BOOL)setupAudioStreamWithClientPid:(int)a3 enableAudioPowerSpectrum:(BOOL)a4
+- (BOOL)setupAudioStreamWithClientPid:(int)pid enableAudioPowerSpectrum:(BOOL)spectrum
 {
-  v4 = a4;
+  spectrumCopy = spectrum;
   v36 = *MEMORY[0x1E69E9840];
   VRTraceReset();
   VRTracePrintLoggingInfo();
@@ -2128,7 +2128,7 @@ LABEL_11:
     SoundDec_PrepareAudioConverter();
   }
 
-  self->_clientPid = a3;
+  self->_clientPid = pid;
   self->_currentDTXEnable = 1;
   self->_audioSessionId = VCUniqueIDGenerator_GenerateID();
   pthread_rwlock_init(&self->stateLock, 0);
@@ -2154,8 +2154,8 @@ LABEL_11:
     if (v9)
     {
       [(VCObject *)self setReportingAgent:0];
-      self->_enableAudioPowerSpectrum = v4;
-      if (v4)
+      self->_enableAudioPowerSpectrum = spectrumCopy;
+      if (spectrumCopy)
       {
         [(VCAudioStream *)self setupAudioPowerSpectrum];
       }
@@ -2220,7 +2220,7 @@ LABEL_11:
         v32 = 2112;
         v33 = v10;
         v34 = 2048;
-        v35 = self;
+        selfCopy3 = self;
         v15 = "VCAudioStream [%s] %s:%d %@(%p) ";
         v16 = v20;
         v17 = 48;
@@ -2266,7 +2266,7 @@ LABEL_27:
       v32 = 2112;
       v33 = v12;
       v34 = 2048;
-      v35 = self;
+      selfCopy3 = self;
       v23 = "VCAudioStream [%s] %s:%d %@(%p) Failed to allocate the DTMF event handler";
       goto LABEL_39;
     }
@@ -2320,7 +2320,7 @@ LABEL_27:
     v32 = 2112;
     v33 = v11;
     v34 = 2048;
-    v35 = self;
+    selfCopy3 = self;
     v23 = "VCAudioStream [%s] %s:%d %@(%p) Failed to allocate audio payloads";
 LABEL_39:
     _os_log_error_impl(&dword_1DB56E000, v22, OS_LOG_TYPE_ERROR, v23, &v26, 0x30u);
@@ -2398,7 +2398,7 @@ LABEL_11:
         v28 = 2112;
         v29 = v3;
         v30 = 2048;
-        v31 = self;
+        selfCopy = self;
         v6 = "VCAudioStream [%s] %s:%d %@(%p) ";
         v7 = v10;
         v8 = 48;
@@ -2507,11 +2507,11 @@ LABEL_11:
   [(VCMediaStream *)&v22 dealloc];
 }
 
-- (int)getPacketsPerBundleForStreamConfig:(id)a3
+- (int)getPacketsPerBundleForStreamConfig:(id)config
 {
   v5 = [VCPayloadUtils codecTypeForPayload:[(VCAudioPayloadConfig *)[(VCAudioPayload *)self->currentAudioPayload config] payload]];
-  v6 = [a3 allCodecConfigurations];
-  v7 = [objc_msgSend(v6 objectForKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInteger:", v5)), "pTime"}];
+  allCodecConfigurations = [config allCodecConfigurations];
+  v7 = [objc_msgSend(allCodecConfigurations objectForKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInteger:", v5)), "pTime"}];
   if ([(VCAudioPayloadConfig *)[(VCAudioPayload *)self->currentAudioPayload config] payload]== 106)
   {
     if (v7 == 60)
@@ -2550,7 +2550,7 @@ LABEL_11:
 
   else
   {
-    v10 = [(VCAudioPayloadConfig *)[(VCAudioPayload *)self->currentAudioPayload config] payload];
+    payload = [(VCAudioPayloadConfig *)[(VCAudioPayload *)self->currentAudioPayload config] payload];
     if (v7 == 40)
     {
       v11 = 4;
@@ -2566,7 +2566,7 @@ LABEL_11:
       v11 = 2;
     }
 
-    if (v10 == 101)
+    if (payload == 101)
     {
       return v11;
     }
@@ -2578,10 +2578,10 @@ LABEL_11:
   }
 }
 
-- (void)configureAudioJBAlgos:(tagVCAudioReceiverConfig *)a3
+- (void)configureAudioJBAlgos:(tagVCAudioReceiverConfig *)algos
 {
-  v5 = [(VCMediaStream *)self defaultStreamConfig];
-  v6 = v5;
+  defaultStreamConfig = [(VCMediaStream *)self defaultStreamConfig];
+  v6 = defaultStreamConfig;
   isTelephony = self->_isTelephony;
   v8 = 2;
   if (isTelephony)
@@ -2591,9 +2591,9 @@ LABEL_11:
 
   else
   {
-    v10 = [(VCMediaStreamConfig *)v5 channelCount];
-    v9 = v10 < 2;
-    if (v10 >= 2)
+    channelCount = [(VCMediaStreamConfig *)defaultStreamConfig channelCount];
+    v9 = channelCount < 2;
+    if (channelCount >= 2)
     {
       v8 = 2;
     }
@@ -2604,23 +2604,23 @@ LABEL_11:
     }
   }
 
-  a3->var6 = VCDefaults_GetIntValueForKey(@"audioTimescaleAlgorithm", v8);
-  a3->var20 = VCDefaults_GetIntValueForKey(@"audioJitterBufferQueueManagementAlgo", v9);
-  a3->var18 = VCDefaults_GetBoolValueForKey(@"audioJitterBufferDisableSpikeManagement", isTelephony);
-  v11 = [(VCMediaStreamConfig *)v6 audioStreamMode];
-  if (v11 == 12)
+  algos->var6 = VCDefaults_GetIntValueForKey(@"audioTimescaleAlgorithm", v8);
+  algos->var20 = VCDefaults_GetIntValueForKey(@"audioJitterBufferQueueManagementAlgo", v9);
+  algos->var18 = VCDefaults_GetBoolValueForKey(@"audioJitterBufferDisableSpikeManagement", isTelephony);
+  audioStreamMode = [(VCMediaStreamConfig *)v6 audioStreamMode];
+  if (audioStreamMode == 12)
   {
     v12 = 1;
   }
 
   else
   {
-    v12 = a3->var11 && [(VCMediaStreamConfig *)v6 channelCount]< 2;
+    v12 = algos->var11 && [(VCMediaStreamConfig *)v6 channelCount]< 2;
   }
 
-  a3->var7 = v12;
-  a3->var46 = v11 == 12;
-  a3->var47 = [(VCAudioStream *)self shouldEnableFixedJitterBufferInitialOvershootResiliency];
+  algos->var7 = v12;
+  algos->var46 = audioStreamMode == 12;
+  algos->var47 = [(VCAudioStream *)self shouldEnableFixedJitterBufferInitialOvershootResiliency];
   if (+[GKSConnectivitySettings supportsEVSCodec])
   {
     v13 = [VCAudioStream isVoLTE:[(VCMediaStreamConfig *)[(VCMediaStream *)self defaultStreamConfig] audioStreamMode]];
@@ -2631,16 +2631,16 @@ LABEL_11:
     v13 = 0;
   }
 
-  a3->var21 = VCDefaults_GetBoolValueForKey(@"enableEVSWidebandDecodeForAMRWideband", v13);
+  algos->var21 = VCDefaults_GetBoolValueForKey(@"enableEVSWidebandDecodeForAMRWideband", v13);
 }
 
-- (BOOL)shouldEnableAACELDInactiveFrames:(BOOL)a3 streamConfig:(id)a4
+- (BOOL)shouldEnableAACELDInactiveFrames:(BOOL)frames streamConfig:(id)config
 {
   v26 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (frames)
   {
     operatingMode = self->super._operatingMode;
-    v9 = (!a4 || ![objc_msgSend(a4 "multiwayConfig")] || (v7 = objc_msgSend(a4, "direction") & 0xFFFFFFFFFFFFFFFELL, operatingMode = objc_msgSend(a4, "oneToOneOperatingMode"), v7 == 2)) && (operatingMode == 6 || (operatingMode - 1) < 2);
+    v9 = (!config || ![objc_msgSend(config "multiwayConfig")] || (v7 = objc_msgSend(config, "direction") & 0xFFFFFFFFFFFFFFFELL, operatingMode = objc_msgSend(config, "oneToOneOperatingMode"), v7 == 2)) && (operatingMode == 6 || (operatingMode - 1) < 2);
     if (VRTraceGetErrorLogLevelForModule() >= 7)
     {
       v10 = VRTraceErrorLogLevelToCSTR();
@@ -2660,7 +2660,7 @@ LABEL_11:
         v18 = 1024;
         v19 = 1673;
         v20 = 2048;
-        v21 = self;
+        selfCopy = self;
         v22 = 2080;
         v23 = v12;
         v24 = 1024;
@@ -2696,9 +2696,9 @@ LABEL_11:
   v75 = 0u;
   v73 = 0u;
   memset(v72, 0, sizeof(v72));
-  v3 = [(VCMediaStreamConfig *)[(VCMediaStream *)self defaultStreamConfig] defaultRemoteSSRC];
+  defaultRemoteSSRC = [(VCMediaStreamConfig *)[(VCMediaStream *)self defaultStreamConfig] defaultRemoteSSRC];
   v4 = 0uLL;
-  if (!v3)
+  if (!defaultRemoteSSRC)
   {
     if (self->super._callID)
     {
@@ -2707,12 +2707,12 @@ LABEL_11:
       callID = self->super._callID;
       if (v5 == 1)
       {
-        v3 = [(NSString *)callID integerValue];
+        defaultRemoteSSRC = [(NSString *)callID integerValue];
       }
 
       else
       {
-        v3 = [(NSString *)callID hash];
+        defaultRemoteSSRC = [(NSString *)callID hash];
       }
 
       v4 = 0uLL;
@@ -2720,11 +2720,11 @@ LABEL_11:
 
     else
     {
-      v3 = 0;
+      defaultRemoteSSRC = 0;
     }
   }
 
-  v54 = v3;
+  v54 = defaultRemoteSSRC;
   v70 = v4;
   v71 = v4;
   v68 = v4;
@@ -2748,33 +2748,33 @@ LABEL_11:
         }
 
         v12 = *(*(&v68 + 1) + 8 * v11);
-        v13 = [objc_msgSend(v12 streamConfig];
-        self->_sourceContext.isMultiwayConfig |= v13 != 0;
-        v14 = [v13 hasIdsStreamID];
-        *(&v72[1] + 56 * LODWORD(v72[0]) + 2) = v14;
-        if ([v13 hasIdsStreamID])
+        streamConfig = [objc_msgSend(v12 streamConfig];
+        self->_sourceContext.isMultiwayConfig |= streamConfig != 0;
+        hasIdsStreamID = [streamConfig hasIdsStreamID];
+        *(&v72[1] + 56 * LODWORD(v72[0]) + 2) = hasIdsStreamID;
+        if ([streamConfig hasIdsStreamID])
         {
-          v15 = [v12 idsStreamId];
-          *(&v72[1] + 28 * LODWORD(v72[0])) = v15;
+          idsStreamId = [v12 idsStreamId];
+          *(&v72[1] + 28 * LODWORD(v72[0])) = idsStreamId;
         }
 
-        v16 = [v13 isOneToOne];
+        isOneToOne = [streamConfig isOneToOne];
         v17 = v72 + 56 * LODWORD(v72[0]) + 8;
-        v17[11] = v16;
+        v17[11] = isOneToOne;
         *(v17 + 6) = 1;
         v18 = [objc_msgSend(objc_msgSend(v12 "streamConfig")];
         *(&v72[3] + 7 * LODWORD(v72[0])) = v18;
         v19 = [objc_msgSend(objc_msgSend(v12 "streamConfig")];
         *(&v72[3] + 7 * LODWORD(v72[0]) + 1) = v19;
-        if ([v13 isOneToOne])
+        if ([streamConfig isOneToOne])
         {
           *(&v72[2] + 14 * LODWORD(v72[0])) = 0;
-          v20 = [v13 shouldIgnoreRTPHeaderExtensions];
-          *(&v72[2] + 56 * LODWORD(v72[0]) + 4) = v20;
+          shouldIgnoreRTPHeaderExtensions = [streamConfig shouldIgnoreRTPHeaderExtensions];
+          *(&v72[2] + 56 * LODWORD(v72[0]) + 4) = shouldIgnoreRTPHeaderExtensions;
           self->_sourceContext.oneToOneStreamID = [v12 idsStreamId];
           self->_sourceContext.oneToOneStatisticsCollector = [(VCMediaStreamRateControlConfig *)[(VCMediaStreamConfig *)[(VCMediaStream *)self oneToOneStreamConfig] rateControlConfig] statisticsCollector];
-          v21 = [(VCMediaStreamRateControlConfig *)[(VCMediaStreamConfig *)[(VCMediaStream *)self oneToOneStreamConfig] rateControlConfig] statisticsCollector];
-          *(&v72[3] + 7 * LODWORD(v72[0]) + 1) = v21;
+          statisticsCollector = [(VCMediaStreamRateControlConfig *)[(VCMediaStreamConfig *)[(VCMediaStream *)self oneToOneStreamConfig] rateControlConfig] statisticsCollector];
+          *(&v72[3] + 7 * LODWORD(v72[0]) + 1) = statisticsCollector;
           if (!self->super._isWRMinitialized)
           {
             if ([(VCMediaStream *)self networkFeedbackController])
@@ -2806,11 +2806,11 @@ LABEL_11:
           *(&v81 + 1) = [objc_msgSend(objc_msgSend(v12 "streamConfig")];
         }
 
-        v22 = [v12 rtpHandle];
-        *(v72 + 7 * LODWORD(v72[0]) + 1) = v22;
-        v23 = [v12 receiverSframeCryptor];
+        rtpHandle = [v12 rtpHandle];
+        *(v72 + 7 * LODWORD(v72[0]) + 1) = rtpHandle;
+        receiverSframeCryptor = [v12 receiverSframeCryptor];
         v24 = LODWORD(v72[0])++;
-        *(&v72[1] + 7 * v24 + 1) = v23;
+        *(&v72[1] + 7 * v24 + 1) = receiverSframeCryptor;
         ++v11;
       }
 
@@ -2822,16 +2822,16 @@ LABEL_11:
     while (v27);
   }
 
-  v28 = [(VCMediaStream *)self defaultStreamConfig];
+  defaultStreamConfig = [(VCMediaStream *)self defaultStreamConfig];
   BoolValueForKey = VCDefaults_GetBoolValueForKey(@"useErasureSensitiveMode", 0);
-  v30 = 0;
+  jitterBufferMode = 0;
   if (!BoolValueForKey)
   {
-    v30 = [(VCMediaStreamConfig *)v28 jitterBufferMode];
+    jitterBufferMode = [(VCMediaStreamConfig *)defaultStreamConfig jitterBufferMode];
   }
 
-  DWORD1(v74) = v30;
-  if ([VCAudioStream isVoWiFi:[(VCMediaStreamConfig *)v28 audioStreamMode]])
+  DWORD1(v74) = jitterBufferMode;
+  if ([VCAudioStream isVoWiFi:[(VCMediaStreamConfig *)defaultStreamConfig audioStreamMode]])
   {
     if (self->_shouldEnableJBLatencySenstiveModeForVoWiFi)
     {
@@ -2854,8 +2854,8 @@ LABEL_11:
     }
   }
 
-  DWORD2(v74) = [(VCMediaStreamConfig *)v28 fixedJitterBufferSize];
-  v33 = ([(VCMediaStreamConfig *)v28 isLowLatency]& 1) != 0 || [(VCMediaStreamConfig *)v28 audioStreamMode]== 9;
+  DWORD2(v74) = [(VCMediaStreamConfig *)defaultStreamConfig fixedJitterBufferSize];
+  v33 = ([(VCMediaStreamConfig *)defaultStreamConfig isLowLatency]& 1) != 0 || [(VCMediaStreamConfig *)defaultStreamConfig audioStreamMode]== 9;
   BYTE8(v83) = v33;
   LODWORD(v74) = v54;
   *(&v73 + 1) = [(VCMediaStream *)self mediaControlInfoGenerator];
@@ -2870,8 +2870,8 @@ LABEL_11:
   *(&v79 + 1) = _VCAudioStream_StreamSwitchCallback;
   *&v80 = VCMediaStream_RTCPPacketsCallback;
   *&v81 = [(VCMediaStreamConfig *)[(VCMediaStream *)self defaultStreamConfig] jbTargetEstimatorSynchronizer];
-  BYTE14(v77) = VCDefaults_GetBoolValueForKey(@"dtmfTonePlaybackEnabled", [(VCMediaStreamConfig *)v28 dtmfTonePlaybackEnabled]);
-  v34 = VCDefaults_GetBoolValueForKey(@"dtmfEventCallbacksEnabled", [(VCMediaStreamConfig *)v28 dtmfEventCallbacksEnabled]);
+  BYTE14(v77) = VCDefaults_GetBoolValueForKey(@"dtmfTonePlaybackEnabled", [(VCMediaStreamConfig *)defaultStreamConfig dtmfTonePlaybackEnabled]);
+  v34 = VCDefaults_GetBoolValueForKey(@"dtmfEventCallbacksEnabled", [(VCMediaStreamConfig *)defaultStreamConfig dtmfEventCallbacksEnabled]);
   BYTE9(v85) = v34;
   if (v34)
   {
@@ -2882,13 +2882,13 @@ LABEL_11:
     }
   }
 
-  LODWORD(v83) = [(VCMediaStreamConfig *)v28 dtmfSampleRate];
-  BYTE9(v84) = [(VCMediaStreamConfig *)v28 outOfProcessCodecsEnabled];
+  LODWORD(v83) = [(VCMediaStreamConfig *)defaultStreamConfig dtmfSampleRate];
+  BYTE9(v84) = [(VCMediaStreamConfig *)defaultStreamConfig outOfProcessCodecsEnabled];
   *&v85 = self->super._callID;
-  WORD4(v77) = [(VCMediaStreamConfig *)v28 direction];
-  BYTE11(v85) = [VCAudioStream isVoLTE:[(VCMediaStreamConfig *)v28 audioStreamMode]];
-  LOBYTE(v86) = [(VCAudioStream *)self shouldEnableAACELDInactiveFrames:[(VCMediaStreamConfig *)v28 detectInactiveAudioFramesAACELD] streamConfig:[(VCMediaStream *)self oneToOneStreamConfig]];
-  BYTE4(v86) = [(VCMediaStreamConfig *)v28 externalSampleReblockingEnabled];
+  WORD4(v77) = [(VCMediaStreamConfig *)defaultStreamConfig direction];
+  BYTE11(v85) = [VCAudioStream isVoLTE:[(VCMediaStreamConfig *)defaultStreamConfig audioStreamMode]];
+  LOBYTE(v86) = [(VCAudioStream *)self shouldEnableAACELDInactiveFrames:[(VCMediaStreamConfig *)defaultStreamConfig detectInactiveAudioFramesAACELD] streamConfig:[(VCMediaStream *)self oneToOneStreamConfig]];
+  BYTE4(v86) = [(VCMediaStreamConfig *)defaultStreamConfig externalSampleReblockingEnabled];
   [(VCAudioStream *)self configureAudioJBAlgos:v72];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
   {
@@ -2910,11 +2910,11 @@ LABEL_11:
 
   if (BYTE4(v76) == 1)
   {
-    DWORD2(v82) = [(VCMediaStreamMultiwayConfig *)[(VCMediaStreamConfig *)v28 multiwayConfig] streamGroupID];
-    *(&v76 + 1) = [(VCMediaStreamMultiwayConfig *)[(VCMediaStreamConfig *)v28 multiwayConfig] participantId];
-    *&v77 = [(VCMediaStreamMultiwayConfig *)[(VCMediaStreamConfig *)v28 multiwayConfig] sessionId];
-    BYTE12(v77) = [(VCMediaStreamMultiwayConfig *)[(VCMediaStreamConfig *)v28 multiwayConfig] shouldIgnoreRTPHeaderExtensions];
-    *&v84 = [(VCMediaStreamMultiwayConfig *)[(VCMediaStreamConfig *)v28 multiwayConfig] remoteIDSParticipantID];
+    DWORD2(v82) = [(VCMediaStreamMultiwayConfig *)[(VCMediaStreamConfig *)defaultStreamConfig multiwayConfig] streamGroupID];
+    *(&v76 + 1) = [(VCMediaStreamMultiwayConfig *)[(VCMediaStreamConfig *)defaultStreamConfig multiwayConfig] participantId];
+    *&v77 = [(VCMediaStreamMultiwayConfig *)[(VCMediaStreamConfig *)defaultStreamConfig multiwayConfig] sessionId];
+    BYTE12(v77) = [(VCMediaStreamMultiwayConfig *)[(VCMediaStreamConfig *)defaultStreamConfig multiwayConfig] shouldIgnoreRTPHeaderExtensions];
+    *&v84 = [(VCMediaStreamMultiwayConfig *)[(VCMediaStreamConfig *)defaultStreamConfig multiwayConfig] remoteIDSParticipantID];
   }
 
   if (self->_isTelephony)
@@ -2922,12 +2922,12 @@ LABEL_11:
     BYTE12(v82) = [GKSConnectivitySettings isFeatureEnabledForStorebagKey:@"vc-audio-issue-detector-enabled" userDefaultKey:@"audioIssueDetectorEnabled" featureFlagDomain:"AVConference" featureFlagName:"UseAudioIssueDetectors"];
   }
 
-  DWORD1(v83) = [(VCAudioStream *)self getConnectionTypeForStreamMode:[(VCMediaStreamConfig *)v28 audioStreamMode]];
+  DWORD1(v83) = [(VCAudioStream *)self getConnectionTypeForStreamMode:[(VCMediaStreamConfig *)defaultStreamConfig audioStreamMode]];
   BYTE9(v83) = self->super._isNWMonitorSignalEnabled;
   v37 = self->_isVoiceProcessingAt24KSupported && self->_isRamStadSRCEnabled;
   BYTE8(v85) = v37;
   BYTE8(v84) = VCDefaults_GetBoolValueForKey(@"audioDumpEnabled", 0);
-  BYTE10(v85) = [(VCMediaStreamConfig *)v28 isEnhancedJBAdaptationsEnabled];
+  BYTE10(v85) = [(VCMediaStreamConfig *)defaultStreamConfig isEnhancedJBAdaptationsEnabled];
   HIDWORD(v85) = [+[GKSConnectivitySettings readStorebagValueForStorebagKey:userDefaultKey:defaultValue:isDoubleType:](GKSConnectivitySettings readStorebagValueForStorebagKey:@"vc-reporting-audio-erasure-percentage-symptom-threshold" userDefaultKey:0 defaultValue:&unk_1F5798B80 isDoubleType:{0), "intValue"}];
   BYTE3(v86) = self->_sendActiveVoiceOnly;
   Receiver = VCAudioReceiver_CreateReceiver(v72);
@@ -3004,7 +3004,7 @@ LABEL_66:
         v61 = 2112;
         v62 = v39;
         v63 = 2048;
-        v64 = self;
+        selfCopy = self;
         v65 = 2048;
         v66 = v49;
         v44 = "VCAudioStream [%s] %s:%d %@(%p) audioReceiver=%p";
@@ -3054,12 +3054,12 @@ LABEL_66:
   return v40;
 }
 
-- (BOOL)createAudioTransmitter:(int64_t)a3 streamIDs:(id)a4
+- (BOOL)createAudioTransmitter:(int64_t)transmitter streamIDs:(id)ds
 {
   v41 = *MEMORY[0x1E69E9840];
   v7 = objc_alloc_init(VCAudioTransmitterConfig);
-  v8 = [(VCMediaStream *)self defaultStreamConfig];
-  v9 = [(VCAudioStream *)self getPacketsPerBundleForStreamConfig:v8];
+  defaultStreamConfig = [(VCMediaStream *)self defaultStreamConfig];
+  v9 = [(VCAudioStream *)self getPacketsPerBundleForStreamConfig:defaultStreamConfig];
   v10 = [VCPayloadUtils codecTypeForPayload:[(VCAudioPayloadConfig *)[(VCAudioPayload *)self->currentAudioPayload config] payload]];
   [(VCAudioTransmitterConfig *)v7 setRtpHandle:[(VCMediaStreamTransport *)[(VCMediaStream *)self defaultTransport] rtpHandle]];
   [(VCAudioTransmitterConfig *)v7 setControlInfoGenerator:[(VCMediaStream *)self mediaControlInfoGenerator]];
@@ -3072,13 +3072,13 @@ LABEL_66:
   *&v39[32] = *&self->_vpioFormat.format.mBitsPerChannel;
   [(VCAudioTransmitterConfig *)v7 setInputFormat:v39];
   [(VCAudioTransmitterConfig *)v7 setAfrcHandle:0xFFFFFFFFLL];
-  [(VCAudioTransmitterConfig *)v7 setUseRateControl:[(VCMediaStreamMultiwayConfig *)[(VCMediaStreamConfig *)v8 multiwayConfig] isOneToOne]];
-  [(VCAudioTransmitterConfig *)v7 setBundlingScheme:[(VCMediaStreamConfig *)v8 bundlingScheme]];
+  [(VCAudioTransmitterConfig *)v7 setUseRateControl:[(VCMediaStreamMultiwayConfig *)[(VCMediaStreamConfig *)defaultStreamConfig multiwayConfig] isOneToOne]];
+  [(VCAudioTransmitterConfig *)v7 setBundlingScheme:[(VCMediaStreamConfig *)defaultStreamConfig bundlingScheme]];
   [(VCAudioTransmitterConfig *)v7 setAllowAudioSwitching:self->super._operatingMode == 6];
   cachedConnectionMTU = self->_cachedConnectionMTU;
   if (!cachedConnectionMTU)
   {
-    cachedConnectionMTU = [(VCMediaStreamConfig *)v8 recommendedMTU];
+    cachedConnectionMTU = [(VCMediaStreamConfig *)defaultStreamConfig recommendedMTU];
   }
 
   [(VCAudioTransmitterConfig *)v7 setMaxAudioPacketSize:cachedConnectionMTU];
@@ -3093,7 +3093,7 @@ LABEL_66:
   }
 
   [(VCAudioTransmitterConfig *)v7 setConstantTransportOverhead:constantTransportOverhead];
-  [(VCAudioTransmitterConfig *)v7 setSupportsAdaptation:[(VCMediaStreamConfig *)v8 supportsAdaptation]];
+  [(VCAudioTransmitterConfig *)v7 setSupportsAdaptation:[(VCMediaStreamConfig *)defaultStreamConfig supportsAdaptation]];
   [(VCAudioTransmitterConfig *)v7 setNeedsPacketThread:0];
   [(VCAudioTransmitterConfig *)v7 setReportingAgent:[(VCObject *)self reportingAgent]];
   [(VCAudioTransmitterConfig *)v7 setReportingParentID:self->_reportingModuleID];
@@ -3101,59 +3101,59 @@ LABEL_66:
   v14 = 0;
   if (self->super._operatingMode == 6)
   {
-    v14 = [(VCMediaStreamMultiwayConfig *)[(VCMediaStreamConfig *)v8 multiwayConfig] isOneToOne]^ 1;
+    v14 = [(VCMediaStreamMultiwayConfig *)[(VCMediaStreamConfig *)defaultStreamConfig multiwayConfig] isOneToOne]^ 1;
   }
 
   [(VCAudioTransmitterConfig *)v7 setTransmitROC:v14];
   [(VCAudioTransmitterConfig *)v7 setIgnoreSilence:0];
   [(VCAudioTransmitterConfig *)v7 setChosenRedPayloadType:20];
-  [(VCAudioTransmitterConfig *)v7 setRedEnabled:[(VCMediaStreamConfig *)v8 isRedEnabled]];
+  [(VCAudioTransmitterConfig *)v7 setRedEnabled:[(VCMediaStreamConfig *)defaultStreamConfig isRedEnabled]];
   [(VCAudioTransmitterConfig *)v7 setIncludeRedSequenceOffset:self->super._operatingMode == 6];
-  [(VCAudioTransmitterConfig *)v7 setRedNumPayloads:[(VCMediaStreamConfig *)v8 numRedundantPayloads]];
-  [(VCAudioTransmitterConfig *)v7 setRedMaxDelay20ms:[(VCMediaStreamConfig *)v8 numRedundantPayloads]];
-  [(VCAudioTransmitterConfig *)v7 setStatisticsCollector:[(VCMediaStreamRateControlConfig *)[(VCMediaStreamConfig *)v8 rateControlConfig] statisticsCollector]];
-  [(VCAudioTransmitterConfig *)v7 setStreamIDs:a4];
-  [(VCAudioTransmitterConfig *)v7 setTierNetworkBitrate:[(VCMediaStreamMultiwayConfig *)[(VCMediaStreamConfig *)v8 multiwayConfig] maxNetworkBitrate]];
-  [(VCAudioTransmitterConfig *)v7 setMaxIDSStreamIdCount:[(VCMediaStreamMultiwayConfig *)[(VCMediaStreamConfig *)v8 multiwayConfig] maxIDSStreamIdCount]];
-  [(VCAudioTransmitterConfig *)v7 setSupportedNumRedundantPayload:[(VCMediaStreamConfig *)v8 supportedNumRedundantPayload]];
+  [(VCAudioTransmitterConfig *)v7 setRedNumPayloads:[(VCMediaStreamConfig *)defaultStreamConfig numRedundantPayloads]];
+  [(VCAudioTransmitterConfig *)v7 setRedMaxDelay20ms:[(VCMediaStreamConfig *)defaultStreamConfig numRedundantPayloads]];
+  [(VCAudioTransmitterConfig *)v7 setStatisticsCollector:[(VCMediaStreamRateControlConfig *)[(VCMediaStreamConfig *)defaultStreamConfig rateControlConfig] statisticsCollector]];
+  [(VCAudioTransmitterConfig *)v7 setStreamIDs:ds];
+  [(VCAudioTransmitterConfig *)v7 setTierNetworkBitrate:[(VCMediaStreamMultiwayConfig *)[(VCMediaStreamConfig *)defaultStreamConfig multiwayConfig] maxNetworkBitrate]];
+  [(VCAudioTransmitterConfig *)v7 setMaxIDSStreamIdCount:[(VCMediaStreamMultiwayConfig *)[(VCMediaStreamConfig *)defaultStreamConfig multiwayConfig] maxIDSStreamIdCount]];
+  [(VCAudioTransmitterConfig *)v7 setSupportedNumRedundantPayload:[(VCMediaStreamConfig *)defaultStreamConfig supportedNumRedundantPayload]];
   [(VCAudioTransmitterConfig *)v7 setSendActiveVoiceOnly:self->_sendActiveVoiceOnly];
   [(VCAudioTransmitterConfig *)v7 setCurrentDTXEnable:self->_currentDTXEnable];
   [(VCAudioTransmitterConfig *)v7 setAlwaysOnAudioRedundancyEnabled:1];
   [(VCAudioTransmitterConfig *)v7 setCellularAllowRedLowBitratesEnabled:0];
   [(VCAudioTransmitterConfig *)v7 setWifiAllowRedLowBitratesEnabled:0];
-  [(VCAudioTransmitterConfig *)v7 setRemoteIDSParticipantID:[(VCMediaStreamMultiwayConfig *)[(VCMediaStreamConfig *)v8 multiwayConfig] remoteIDSParticipantID]];
-  if ([(VCMediaStreamConfig *)v8 rateControlConfig])
+  [(VCAudioTransmitterConfig *)v7 setRemoteIDSParticipantID:[(VCMediaStreamMultiwayConfig *)[(VCMediaStreamConfig *)defaultStreamConfig multiwayConfig] remoteIDSParticipantID]];
+  if ([(VCMediaStreamConfig *)defaultStreamConfig rateControlConfig])
   {
-    v15 = [(VCMediaStreamRateControlConfig *)[(VCMediaStreamConfig *)v8 rateControlConfig] mediaQueue];
+    mediaQueue = [(VCMediaStreamRateControlConfig *)[(VCMediaStreamConfig *)defaultStreamConfig rateControlConfig] mediaQueue];
   }
 
   else
   {
-    v15 = 0xFFFFFFFFLL;
+    mediaQueue = 0xFFFFFFFFLL;
   }
 
-  [(VCAudioTransmitterConfig *)v7 setMediaQueue:v15];
+  [(VCAudioTransmitterConfig *)v7 setMediaQueue:mediaQueue];
   [(VCAudioTransmitterConfig *)v7 setShouldCreateRedundancyController:self->super._operatingMode != 6];
   [(VCAudioTransmitterConfig *)v7 setUseChannelDataFormat:self->super._operatingMode == 6];
-  [(VCAudioTransmitterConfig *)v7 setPacketExpirationTime:[(VCAudioStream *)self packetExpirationTimeForStreamConfig:v8]];
-  if ([(VCMediaStreamMultiwayConfig *)[(VCMediaStreamConfig *)v8 multiwayConfig] isOneToOne])
+  [(VCAudioTransmitterConfig *)v7 setPacketExpirationTime:[(VCAudioStream *)self packetExpirationTimeForStreamConfig:defaultStreamConfig]];
+  if ([(VCMediaStreamMultiwayConfig *)[(VCMediaStreamConfig *)defaultStreamConfig multiwayConfig] isOneToOne])
   {
-    v16 = [(VCMediaStreamConfig *)v8 isACC24ForU1Enabled];
+    isACC24ForU1Enabled = [(VCMediaStreamConfig *)defaultStreamConfig isACC24ForU1Enabled];
   }
 
   else
   {
-    v16 = [(VCMediaStreamConfig *)v8 isACC24ForGFTEnabled];
+    isACC24ForU1Enabled = [(VCMediaStreamConfig *)defaultStreamConfig isACC24ForGFTEnabled];
   }
 
-  [(VCAudioTransmitterConfig *)v7 setIsACC24Enabled:v16];
+  [(VCAudioTransmitterConfig *)v7 setIsACC24Enabled:isACC24ForU1Enabled];
   IntValueForKey = VCDefaults_GetIntValueForKey(@"forceAudioPacketExpirationTime", 0xFFFFFFFFLL);
   if ((IntValueForKey & 0x80000000) == 0)
   {
     [(VCAudioTransmitterConfig *)v7 setPacketExpirationTime:IntValueForKey];
   }
 
-  if ([VCAudioStream isVoLTE:a3])
+  if ([VCAudioStream isVoLTE:transmitter])
   {
     v18 = [VCPayloadUtils supportsCodecBandwidthUpdateForCodecType:v10];
   }
@@ -3164,28 +3164,28 @@ LABEL_66:
   }
 
   [(VCAudioTransmitterConfig *)v7 setSupportsCodecBandwidthUpdate:v18];
-  if ([(VCMediaStreamMultiwayConfig *)[(VCMediaStreamConfig *)v8 multiwayConfig] isOneToOne])
+  if ([(VCMediaStreamMultiwayConfig *)[(VCMediaStreamConfig *)defaultStreamConfig multiwayConfig] isOneToOne])
   {
     [(VCAudioTransmitterConfig *)v7 setUseChannelDataFormat:0];
   }
 
-  [(VCAudioTransmitterConfig *)v7 setShouldApplyRedAsBoolean:[(VCMediaStreamConfig *)v8 shouldApplyRedAsBoolean]];
-  [(VCAudioTransmitterConfig *)v7 setUseWifiTiers:[(VCMediaStreamConfig *)v8 useWifiTiers]];
-  if ([(VCMediaStreamMultiwayConfig *)[(VCMediaStreamConfig *)v8 multiwayConfig] hasQualityIndex])
+  [(VCAudioTransmitterConfig *)v7 setShouldApplyRedAsBoolean:[(VCMediaStreamConfig *)defaultStreamConfig shouldApplyRedAsBoolean]];
+  [(VCAudioTransmitterConfig *)v7 setUseWifiTiers:[(VCMediaStreamConfig *)defaultStreamConfig useWifiTiers]];
+  if ([(VCMediaStreamMultiwayConfig *)[(VCMediaStreamConfig *)defaultStreamConfig multiwayConfig] hasQualityIndex])
   {
-    [(VCAudioTransmitterConfig *)v7 setQualityIndex:[(VCMediaStreamMultiwayConfig *)[(VCMediaStreamConfig *)v8 multiwayConfig] qualityIndex]];
+    [(VCAudioTransmitterConfig *)v7 setQualityIndex:[(VCMediaStreamMultiwayConfig *)[(VCMediaStreamConfig *)defaultStreamConfig multiwayConfig] qualityIndex]];
   }
 
   [(VCAudioTransmitterConfig *)v7 setSframeCryptor:[(VCMediaStreamTransport *)[(VCMediaStream *)self defaultTransport] transmitterSframeCryptor]];
-  [(VCAudioTransmitterConfig *)v7 setRatType:[(VCAudioStream *)self getConnectionTypeForStreamMode:[(VCMediaStreamConfig *)v8 audioStreamMode]]];
+  [(VCAudioTransmitterConfig *)v7 setRatType:[(VCAudioStream *)self getConnectionTypeForStreamMode:[(VCMediaStreamConfig *)defaultStreamConfig audioStreamMode]]];
   if (self->_isTelephony)
   {
     [(VCAudioTransmitterConfig *)v7 setAudioIssueDetectorEnabled:[GKSConnectivitySettings isFeatureEnabledForStorebagKey:@"vc-audio-issue-detector-enabled" userDefaultKey:@"audioIssueDetectorEnabled" featureFlagDomain:"AVConference" featureFlagName:"UseAudioIssueDetectors"]];
   }
 
-  if ([(VCMediaStreamMultiwayConfig *)[(VCMediaStreamConfig *)v8 multiwayConfig] isOneToOne])
+  if ([(VCMediaStreamMultiwayConfig *)[(VCMediaStreamConfig *)defaultStreamConfig multiwayConfig] isOneToOne])
   {
-    operatingMode = [(VCMediaStreamConfig *)v8 oneToOneOperatingMode];
+    operatingMode = [(VCMediaStreamConfig *)defaultStreamConfig oneToOneOperatingMode];
   }
 
   else
@@ -3200,9 +3200,9 @@ LABEL_66:
     v21 = *MEMORY[0x1E6986650];
     if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
     {
-      v22 = [(VCAudioTransmitterConfig *)v7 operatingMode];
-      v23 = [(VCMediaStreamMultiwayConfig *)[(VCMediaStreamConfig *)v8 multiwayConfig] isOneToOne];
-      v24 = [(VCMediaStreamConfig *)v8 oneToOneOperatingMode];
+      operatingMode = [(VCAudioTransmitterConfig *)v7 operatingMode];
+      isOneToOne = [(VCMediaStreamMultiwayConfig *)[(VCMediaStreamConfig *)defaultStreamConfig multiwayConfig] isOneToOne];
+      oneToOneOperatingMode = [(VCMediaStreamConfig *)defaultStreamConfig oneToOneOperatingMode];
       v25 = self->super._operatingMode;
       *v39 = 136316674;
       *&v39[4] = v20;
@@ -3211,11 +3211,11 @@ LABEL_66:
       *&v39[22] = 1024;
       *&v39[24] = 1888;
       *&v39[28] = 1024;
-      *&v39[30] = v22;
+      *&v39[30] = operatingMode;
       *&v39[34] = 1024;
-      *&v39[36] = v23;
+      *&v39[36] = isOneToOne;
       *&v39[40] = 1024;
-      *&v39[42] = v24;
+      *&v39[42] = oneToOneOperatingMode;
       *&v39[46] = 1024;
       v40[0] = v25;
       _os_log_impl(&dword_1DB56E000, v21, OS_LOG_TYPE_DEFAULT, "VCAudioStream [%s] %s:%d Setting audioTransmitterConfig.operatingMode=%d streamConfig.multiwayConfig.isOneToOne=%d streamConfig.oneToOneOperatingMode=%d _operatingMode=%d", v39, 0x34u);
@@ -3224,7 +3224,7 @@ LABEL_66:
 
   [(VCAudioTransmitterConfig *)v7 setTargetBitrateIsAudioOnly:[(VCAudioStream *)self bitrateIsAudioOnly]];
   [(VCAudioTransmitterConfig *)v7 setAudioDumpEnabled:VCDefaults_GetBoolValueForKey(@"audioDumpEnabled", 0)];
-  [(VCAudioTransmitterConfig *)v7 setTierPickerMode:[VCAudioTierPicker operatingModeToTierPickerMode:[(VCAudioTransmitterConfig *)v7 operatingMode] isLowLatency:[(VCMediaStreamConfig *)v8 isLowLatency] preferPlistForTierTable:!self->_isTelephony]];
+  [(VCAudioTransmitterConfig *)v7 setTierPickerMode:[VCAudioTierPicker operatingModeToTierPickerMode:[(VCAudioTransmitterConfig *)v7 operatingMode] isLowLatency:[(VCMediaStreamConfig *)defaultStreamConfig isLowLatency] preferPlistForTierTable:!self->_isTelephony]];
   isRamStadSRCEnabled = 0;
   if (self->_isVoiceProcessingAt24KSupported)
   {
@@ -3232,12 +3232,12 @@ LABEL_66:
   }
 
   [(VCAudioTransmitterConfig *)v7 setRamStadSRCEnabled:isRamStadSRCEnabled];
-  [(VCAudioTransmitterConfig *)v7 setIsHigherAudioREDCutoverU1Enabled:[(VCMediaStreamConfig *)v8 isHigherAudioREDCutoverU1Enabled]];
+  [(VCAudioTransmitterConfig *)v7 setIsHigherAudioREDCutoverU1Enabled:[(VCMediaStreamConfig *)defaultStreamConfig isHigherAudioREDCutoverU1Enabled]];
   [(VCAudioTransmitterConfig *)v7 setExperimentManager:self->super._experimentManager];
   self->_audioTransmitter = [[VCAudioTransmitter alloc] initWithConfig:v7];
 
-  v27 = [(VCAudioStream *)self audioTransmitter];
-  if (v27)
+  audioTransmitter = [(VCAudioStream *)self audioTransmitter];
+  if (audioTransmitter)
   {
     if (objc_opt_class() == self)
     {
@@ -3314,12 +3314,12 @@ LABEL_47:
     }
   }
 
-  return v27 != 0;
+  return audioTransmitter != 0;
 }
 
-- (void)updateOperatingMode:(int)a3
+- (void)updateOperatingMode:(int)mode
 {
-  v3 = *&a3;
+  v3 = *&mode;
   v22 = *MEMORY[0x1E69E9840];
   VCMediaStream_Lock(self);
   self->super._operatingMode = v3;
@@ -3353,22 +3353,22 @@ LABEL_47:
   VCMediaStream_Unlock(self);
 }
 
-- (void)sendDTMFEvent:(id)a3
+- (void)sendDTMFEvent:(id)event
 {
   dtmfEventHandler = self->dtmfEventHandler;
   lastSentAudioSampleTime = self->lastSentAudioSampleTime;
-  v6 = [(VCAudioPayloadConfig *)[(VCAudioTransmitter *)self->_audioTransmitter currentAudioPayloadConfig] codecSampleRate];
+  codecSampleRate = [(VCAudioPayloadConfig *)[(VCAudioTransmitter *)self->_audioTransmitter currentAudioPayloadConfig] codecSampleRate];
 
-  [(DTMFEventHandler *)dtmfEventHandler sendDTMFEvent:a3 atTimestamp:lastSentAudioSampleTime withSampleRate:v6];
+  [(DTMFEventHandler *)dtmfEventHandler sendDTMFEvent:event atTimestamp:lastSentAudioSampleTime withSampleRate:codecSampleRate];
 }
 
 - (void)stopSendDTMFEvent
 {
   dtmfEventHandler = self->dtmfEventHandler;
   lastSentAudioSampleTime = self->lastSentAudioSampleTime;
-  v4 = [(VCAudioPayloadConfig *)[(VCAudioTransmitter *)self->_audioTransmitter currentAudioPayloadConfig] codecSampleRate];
+  codecSampleRate = [(VCAudioPayloadConfig *)[(VCAudioTransmitter *)self->_audioTransmitter currentAudioPayloadConfig] codecSampleRate];
 
-  [(DTMFEventHandler *)dtmfEventHandler stopDTMFEventAtTimestamp:lastSentAudioSampleTime withSampleRate:v4];
+  [(DTMFEventHandler *)dtmfEventHandler stopDTMFEventAtTimestamp:lastSentAudioSampleTime withSampleRate:codecSampleRate];
 }
 
 + (id)supportedAudioPayloads
@@ -3395,9 +3395,9 @@ LABEL_47:
   return [MEMORY[0x1E695DF20] dictionaryWithObjects:v4 forKeys:&v3 count:1];
 }
 
-- (_METER_INFO)meterWithType:(int)a3
+- (_METER_INFO)meterWithType:(int)type
 {
-  if (a3)
+  if (type)
   {
     return &self->_sourceContext.soundMeter;
   }
@@ -3408,14 +3408,14 @@ LABEL_47:
   }
 }
 
-- (void)setFrequencyMeteringEnabled:(BOOL)a3 meterType:(int)a4
+- (void)setFrequencyMeteringEnabled:(BOOL)enabled meterType:(int)type
 {
-  v4 = a3;
-  v5 = [(VCAudioStream *)self meterWithType:*&a4];
-  if (v5->frequencyMeteringEnabled != v4)
+  enabledCopy = enabled;
+  v5 = [(VCAudioStream *)self meterWithType:*&type];
+  if (v5->frequencyMeteringEnabled != enabledCopy)
   {
     v6 = v5;
-    if (v4)
+    if (enabledCopy)
     {
       v5->fftMeter = VCFFTMeter_Create();
     }
@@ -3426,7 +3426,7 @@ LABEL_47:
       v6->fftMeter = 0;
     }
 
-    v6->frequencyMeteringEnabled = v4;
+    v6->frequencyMeteringEnabled = enabledCopy;
   }
 }
 
@@ -3447,55 +3447,55 @@ LABEL_47:
   p_sourceContext->momentsCollectorDelegate = 0;
 }
 
-- (BOOL)generateReceptionReportList:(_RTCP_RECEPTION_REPORT *)a3 reportCount:(char *)a4
+- (BOOL)generateReceptionReportList:(_RTCP_RECEPTION_REPORT *)list reportCount:(char *)count
 {
   v9 = *MEMORY[0x1E69E9840];
   v8.receiver = self;
   v8.super_class = VCAudioStream;
-  v6 = [(VCMediaStream *)&v8 generateReceptionReportList:a3 reportCount:a4];
+  v6 = [(VCMediaStream *)&v8 generateReceptionReportList:list reportCount:count];
   if (v6)
   {
-    a3->var7 = VCAudioReceiver_CalculateBurstLoss(self->_sourceContext.audioReceiver);
+    list->var7 = VCAudioReceiver_CalculateBurstLoss(self->_sourceContext.audioReceiver);
   }
 
   return v6;
 }
 
-- (void)setStreamDirection:(int64_t)a3
+- (void)setStreamDirection:(int64_t)direction
 {
   v6 = *MEMORY[0x1E69E9840];
   VCMediaStream_Lock(self);
   v5.receiver = self;
   v5.super_class = VCAudioStream;
-  [(VCMediaStream *)&v5 setStreamDirection:a3];
-  [(VCAudioIO *)self->_audioIO setDirection:[VCAudioStream audioIODirectionWithMediaStreamDirection:a3]];
+  [(VCMediaStream *)&v5 setStreamDirection:direction];
+  [(VCAudioIO *)self->_audioIO setDirection:[VCAudioStream audioIODirectionWithMediaStreamDirection:direction]];
   VCMediaStream_Unlock(self);
 }
 
-- (void)setSendActiveVoiceOnly:(BOOL)a3
+- (void)setSendActiveVoiceOnly:(BOOL)only
 {
-  v3 = a3;
+  onlyCopy = only;
   VCMediaStream_Lock(self);
-  self->_sendActiveVoiceOnly = v3;
-  [(VCAudioTransmitter *)self->_audioTransmitter setSendActiveVoiceOnly:v3];
+  self->_sendActiveVoiceOnly = onlyCopy;
+  [(VCAudioTransmitter *)self->_audioTransmitter setSendActiveVoiceOnly:onlyCopy];
   audioReceiver = self->_sourceContext.audioReceiver;
   if (audioReceiver)
   {
-    VCAudioReceiver_SetVADFiltering(audioReceiver, v3);
+    VCAudioReceiver_SetVADFiltering(audioReceiver, onlyCopy);
   }
 
   VCMediaStream_Unlock(self);
 }
 
-- (void)setCurrentDTXEnable:(BOOL)a3
+- (void)setCurrentDTXEnable:(BOOL)enable
 {
   VCMediaStream_Lock(self);
-  self->_currentDTXEnable = a3;
+  self->_currentDTXEnable = enable;
 
   VCMediaStream_Unlock(self);
 }
 
-- (void)setVolume:(float)a3
+- (void)setVolume:(float)volume
 {
   v18 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() > 6)
@@ -3512,27 +3512,27 @@ LABEL_47:
       v12 = 1024;
       v13 = 2065;
       v14 = 2048;
-      v15 = volume;
+      volumeCopy = volume;
       v16 = 2048;
-      v17 = a3;
+      volumeCopy2 = volume;
       _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, "VCAudioStream [%s] %s:%d Setting volume from %f to %f", &v8, 0x30u);
     }
   }
 
-  self->_sourceContext.volume = a3;
+  self->_sourceContext.volume = volume;
 }
 
-- (void)setVCStatistics:(tagVCStatisticsMessage *)a3
+- (void)setVCStatistics:(tagVCStatisticsMessage *)statistics
 {
-  v4 = [(VCMediaStreamRateControlConfig *)[(VCMediaStreamConfig *)[(VCMediaStream *)self defaultStreamConfig] rateControlConfig] statisticsCollector];
+  statisticsCollector = [(VCMediaStreamRateControlConfig *)[(VCMediaStreamConfig *)[(VCMediaStream *)self defaultStreamConfig] rateControlConfig] statisticsCollector];
 
-  AVCStatisticsCollector_SetVCStatistics(v4, a3);
+  AVCStatisticsCollector_SetVCStatistics(statisticsCollector, statistics);
 }
 
-- (void)setTargetBitrate:(unsigned int)a3 rateChangeCounter:(unsigned int)a4
+- (void)setTargetBitrate:(unsigned int)bitrate rateChangeCounter:(unsigned int)counter
 {
-  v4 = *&a4;
-  [(VCAudioTransmitter *)self->_audioTransmitter setTargetBitrate:*&a3];
+  v4 = *&counter;
+  [(VCAudioTransmitter *)self->_audioTransmitter setTargetBitrate:*&bitrate];
   audioTransmitter = self->_audioTransmitter;
 
   [(VCAudioTransmitter *)audioTransmitter setRateChangeCounter:v4];
@@ -3553,7 +3553,7 @@ LABEL_47:
 - (void)onCallIDChanged
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = [(NSString *)self->super._callID integerValue];
+  integerValue = [(NSString *)self->super._callID integerValue];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -3574,7 +3574,7 @@ LABEL_47:
           objc_enumerationMutation(transportArray);
         }
 
-        [*(*(&v10 + 1) + 8 * v8++) setWRMCallId:v3];
+        [*(*(&v10 + 1) + 8 * v8++) setWRMCallId:integerValue];
       }
 
       while (v6 != v8);
@@ -3585,10 +3585,10 @@ LABEL_47:
   }
 }
 
-- (BOOL)validateAudioStreamConfigurations:(id)a3
+- (BOOL)validateAudioStreamConfigurations:(id)configurations
 {
   v38 = *MEMORY[0x1E69E9840];
-  if (![a3 count])
+  if (![configurations count])
   {
     if (VRTraceGetErrorLogLevelForModule() >= 3)
     {
@@ -3605,10 +3605,10 @@ LABEL_47:
     goto LABEL_20;
   }
 
-  v4 = [a3 objectAtIndexedSubscript:0];
-  if ([a3 count] < 2 || objc_msgSend(v4, "direction") == 2)
+  v4 = [configurations objectAtIndexedSubscript:0];
+  if ([configurations count] < 2 || objc_msgSend(v4, "direction") == 2)
   {
-    if ([a3 count] < 2)
+    if ([configurations count] < 2)
     {
 LABEL_9:
       LOBYTE(v9) = 1;
@@ -3619,21 +3619,21 @@ LABEL_9:
       v5 = 1;
       while (1)
       {
-        v6 = [a3 objectAtIndexedSubscript:v5];
-        v7 = [v6 audioStreamMode];
-        if (v7 != [v4 audioStreamMode])
+        v6 = [configurations objectAtIndexedSubscript:v5];
+        audioStreamMode = [v6 audioStreamMode];
+        if (audioStreamMode != [v4 audioStreamMode])
         {
           break;
         }
 
-        v8 = [v6 direction];
-        if (v8 != [v4 direction])
+        direction = [v6 direction];
+        if (direction != [v4 direction])
         {
           break;
         }
 
         v5 = (v5 + 1);
-        if ([a3 count] <= v5)
+        if ([configurations count] <= v5)
         {
           goto LABEL_9;
         }
@@ -3658,19 +3658,19 @@ LABEL_9:
         v24 = 1024;
         v25 = v5;
         v26 = 1024;
-        *v27 = [a3 count];
+        *v27 = [configurations count];
         *&v27[4] = 2048;
         *&v27[6] = [v6 audioStreamMode];
         v28 = 2048;
-        v29 = [v4 audioStreamMode];
+        audioStreamMode2 = [v4 audioStreamMode];
         v30 = 1024;
-        v31 = [v6 jitterBufferMode];
+        jitterBufferMode = [v6 jitterBufferMode];
         v32 = 1024;
-        v33 = [v4 jitterBufferMode];
+        jitterBufferMode2 = [v4 jitterBufferMode];
         v34 = 2048;
-        v35 = [v6 direction];
+        direction2 = [v6 direction];
         v36 = 2048;
-        v37 = [v4 direction];
+        direction3 = [v4 direction];
         v12 = "VCAudioStream [%s] %s:%d Failure at index i=%u of streamConfigArray.count=%u audioStreamConfig.audioStreamMode=%ld firstAudioStreamConfig.audioStreamMode=%ld audioStreamConfig.jitterBufferMode=%u firstAudioStreamConfig.jitterBufferMode=%u audioStreamConfig.direction=%ld firstAudioStreamConfig.direction=%ld";
         v13 = v11;
         v14 = 92;
@@ -3702,7 +3702,7 @@ LABEL_20:
     v22 = 1024;
     v23 = 2162;
     v24 = 1024;
-    v25 = [a3 count];
+    v25 = [configurations count];
     v26 = 2048;
     *v27 = [v4 direction];
     v12 = "VCAudioStream [%s] %s:%d streamConfigArray.count=%u, but firstAudioStreamConfig.direction=%ld";
@@ -3714,14 +3714,14 @@ LABEL_20:
   return v9;
 }
 
-- (BOOL)setupSourceTransport:(id)a3
+- (BOOL)setupSourceTransport:(id)transport
 {
   v9 = *MEMORY[0x1E69E9840];
   v5 = malloc_type_calloc(1uLL, 0x10uLL, 0xA0040AFF93C70uLL);
   if (v5)
   {
     v6 = v5;
-    v5[1] = [a3 realtimeContext];
+    v5[1] = [transport realtimeContext];
     if (VCSingleLinkedListPush(&self->_sourceContext.transports, v6))
     {
       return 1;
@@ -3741,9 +3741,9 @@ LABEL_20:
   }
 }
 
-- (id)createTransportWithStreamConfig:(id)a3
+- (id)createTransportWithStreamConfig:(id)config
 {
-  v5 = [(VCMediaStream *)self createRTPHandleWithStreamConfig:a3 payloadType:0 localSSRC:self->super._localSSRC];
+  v5 = [(VCMediaStream *)self createRTPHandleWithStreamConfig:config payloadType:0 localSSRC:self->super._localSSRC];
   if (v5 == 0xFFFFFFFFLL)
   {
     [VCAudioStream createTransportWithStreamConfig:];
@@ -3753,9 +3753,9 @@ LABEL_20:
   else
   {
     v6 = v5;
-    if ([a3 rateControlConfig])
+    if ([config rateControlConfig])
     {
-      v7 = [objc_msgSend(a3 "rateControlConfig")];
+      v7 = [objc_msgSend(config "rateControlConfig")];
       if (v7 != 0xFFFFFFFFLL)
       {
         MediaQueue_SetRTPHandle(v7, v6);
@@ -3786,7 +3786,7 @@ LABEL_20:
   return v8;
 }
 
-- (void)createReportSSRCListWithStreamConfigs:(id)a3
+- (void)createReportSSRCListWithStreamConfigs:(id)configs
 {
   v22 = *MEMORY[0x1E69E9840];
   reportingSSRCList = self->_reportingSSRCList;
@@ -3797,9 +3797,9 @@ LABEL_20:
   }
 
   self->_reportingSSRCCount = 0;
-  if ([a3 count])
+  if ([configs count])
   {
-    v6 = malloc_type_calloc([a3 count], 4uLL, 0x100004052888210uLL);
+    v6 = malloc_type_calloc([configs count], 4uLL, 0x100004052888210uLL);
     self->_reportingSSRCList = v6;
     if (self->super._operatingMode == 6)
     {
@@ -3807,7 +3807,7 @@ LABEL_20:
       v21 = 0u;
       v18 = 0u;
       v19 = 0u;
-      v7 = [a3 countByEnumeratingWithState:&v18 objects:v17 count:16];
+      v7 = [configs countByEnumeratingWithState:&v18 objects:v17 count:16];
       if (v7)
       {
         v8 = v7;
@@ -3818,7 +3818,7 @@ LABEL_20:
           {
             if (*v19 != v9)
             {
-              objc_enumerationMutation(a3);
+              objc_enumerationMutation(configs);
             }
 
             v11 = *(*(&v18 + 1) + 8 * i);
@@ -3838,7 +3838,7 @@ LABEL_20:
             v13[reportingSSRCCount] = localSSRC;
           }
 
-          v8 = [a3 countByEnumeratingWithState:&v18 objects:v17 count:16];
+          v8 = [configs countByEnumeratingWithState:&v18 objects:v17 count:16];
         }
 
         while (v8);
@@ -3855,7 +3855,7 @@ LABEL_20:
   }
 }
 
-- (void)cleanupBeforeReconfigure:(id)a3
+- (void)cleanupBeforeReconfigure:(id)reconfigure
 {
   v24 = *MEMORY[0x1E69E9840];
   [(VCAudioStream *)self setAudioTransmitter:0];
@@ -3876,9 +3876,9 @@ LABEL_20:
     v6 = 0;
   }
 
-  if ([a3 count])
+  if ([reconfigure count])
   {
-    v7 = [objc_msgSend(a3 objectAtIndexedSubscript:{0), "localSSRC"}];
+    v7 = [objc_msgSend(reconfigure objectAtIndexedSubscript:{0), "localSSRC"}];
   }
 
   else
@@ -3886,7 +3886,7 @@ LABEL_20:
     v7 = 0;
   }
 
-  v8 = [a3 count];
+  v8 = [reconfigure count];
   if (v8 != [(NSMutableArray *)self->super._transportArray count]|| v7 != v6)
   {
     if ([(NSMutableArray *)self->super._transportArray count])
@@ -3930,7 +3930,7 @@ LABEL_20:
             v20 = 2112;
             v21 = v10;
             v22 = 2048;
-            v23 = self;
+            selfCopy = self;
             _os_log_error_impl(&dword_1DB56E000, v12, OS_LOG_TYPE_ERROR, "VCAudioStream [%s] %s:%d %@(%p) Reconfiguring VCAudioStream with a different number of transports.", &v14, 0x30u);
           }
         }
@@ -3950,7 +3950,7 @@ LABEL_20:
       free(v13);
     }
 
-    [(VCAudioStream *)self createReportSSRCListWithStreamConfigs:a3];
+    [(VCAudioStream *)self createReportSSRCListWithStreamConfigs:reconfigure];
   }
 }
 
@@ -4003,40 +4003,40 @@ LABEL_20:
   return v3;
 }
 
-- (void)setPreferredMediaBitrateWithConfiguration:(id)a3
+- (void)setPreferredMediaBitrateWithConfiguration:(id)configuration
 {
   self->_preferredMediaBitrate = 0;
-  if ([a3 audioStreamMode] == 5)
+  if ([configuration audioStreamMode] == 5)
   {
-    v5 = [objc_msgSend(a3 "multiwayConfig")];
+    preferredMediaBitRate = [objc_msgSend(configuration "multiwayConfig")];
   }
 
   else
   {
-    if ([a3 audioStreamMode] != 8 && objc_msgSend(a3, "audioStreamMode") != 9 && objc_msgSend(a3, "audioStreamMode") != 11 && objc_msgSend(a3, "audioStreamMode") != 12)
+    if ([configuration audioStreamMode] != 8 && objc_msgSend(configuration, "audioStreamMode") != 9 && objc_msgSend(configuration, "audioStreamMode") != 11 && objc_msgSend(configuration, "audioStreamMode") != 12)
     {
       preferredMediaBitrate = self->_preferredMediaBitrate;
       goto LABEL_9;
     }
 
-    v5 = [a3 preferredMediaBitRate];
+    preferredMediaBitRate = [configuration preferredMediaBitRate];
   }
 
-  preferredMediaBitrate = v5;
-  self->_preferredMediaBitrate = v5;
+  preferredMediaBitrate = preferredMediaBitRate;
+  self->_preferredMediaBitrate = preferredMediaBitRate;
 LABEL_9:
   self->_preferredMediaBitrate = VCDefaults_GetIntValueForKey(@"audioStreamPreferredMediaBitrate", preferredMediaBitrate);
 }
 
 - (int)getRTPTimeStampRateScaleFactor
 {
-  v2 = [(VCAudioPayloadConfig *)[(VCAudioPayload *)self->currentAudioPayload config] payload];
+  payload = [(VCAudioPayloadConfig *)[(VCAudioPayload *)self->currentAudioPayload config] payload];
   result = 5;
-  if (v2 <= 106)
+  if (payload <= 106)
   {
-    if (v2 != 97)
+    if (payload != 97)
     {
-      if (v2 == 98)
+      if (payload == 98)
       {
         return result;
       }
@@ -4049,14 +4049,14 @@ LABEL_9:
 
   else
   {
-    if (v2 == 107)
+    if (payload == 107)
     {
       return result;
     }
 
-    if (v2 != 111)
+    if (payload != 111)
     {
-      if (v2 == 108)
+      if (payload == 108)
       {
         return 7;
       }
@@ -4068,10 +4068,10 @@ LABEL_9:
   }
 }
 
-- (BOOL)networkUplinkClockUsesBaseband:(int64_t)a3
+- (BOOL)networkUplinkClockUsesBaseband:(int64_t)baseband
 {
   result = +[VCHardwareSettings supportsOptimizedHandoversForTelephony];
-  if (a3 != 7)
+  if (baseband != 7)
   {
     return 0;
   }
@@ -4079,9 +4079,9 @@ LABEL_9:
   return result;
 }
 
-- (int)preferredAudioCodecWithStreamConfig:(id)a3
+- (int)preferredAudioCodecWithStreamConfig:(id)config
 {
-  if (self->super._operatingMode == 6 && ([a3 isLowLatency] & 1) != 0)
+  if (self->super._operatingMode == 6 && ([config isLowLatency] & 1) != 0)
   {
     return 101;
   }
@@ -4094,18 +4094,18 @@ LABEL_9:
 
 - (BOOL)shouldEnableFixedJitterBufferInitialOvershootResiliency
 {
-  v2 = [(VCMediaStream *)self defaultStreamConfig];
-  v3 = [objc_msgSend(-[VCMediaStreamConfig codecConfigurations](v2 "codecConfigurations")] == 5 && -[VCMediaStreamConfig jitterBufferMode](v2, "jitterBufferMode") == 3;
+  defaultStreamConfig = [(VCMediaStream *)self defaultStreamConfig];
+  v3 = [objc_msgSend(-[VCMediaStreamConfig codecConfigurations](defaultStreamConfig "codecConfigurations")] == 5 && -[VCMediaStreamConfig jitterBufferMode](defaultStreamConfig, "jitterBufferMode") == 3;
 
   return VCDefaults_GetBoolValueForKey(@"audioStreamEnableFixedJitterBufferInitialOvershootResiliency", v3);
 }
 
-- (BOOL)onConfigureStreamWithConfiguration:(id)a3 error:(id *)a4
+- (BOOL)onConfigureStreamWithConfiguration:(id)configuration error:(id *)error
 {
   v131 = *MEMORY[0x1E69E9840];
   if (![(VCAudioStream *)self validateAudioStreamConfigurations:?])
   {
-    +[GKVoiceChatError getNSError:code:detailedCode:filePath:description:reason:](GKVoiceChatError, "getNSError:code:detailedCode:filePath:description:reason:", a4, 32016, 105, [MEMORY[0x1E696AEC0] stringWithFormat:@"%s:%d", "/Library/Caches/com.apple.xbs/Sources/AVConference/AVConference.subproj/Sources/VCAudioStream.m", 2358], @"Invalid Parameter", @"Called with an invalid parameter");
+    +[GKVoiceChatError getNSError:code:detailedCode:filePath:description:reason:](GKVoiceChatError, "getNSError:code:detailedCode:filePath:description:reason:", error, 32016, 105, [MEMORY[0x1E696AEC0] stringWithFormat:@"%s:%d", "/Library/Caches/com.apple.xbs/Sources/AVConference/AVConference.subproj/Sources/VCAudioStream.m", 2358], @"Invalid Parameter", @"Called with an invalid parameter");
     if (objc_opt_class() != self)
     {
       if (objc_opt_respondsToSelector())
@@ -4128,12 +4128,12 @@ LABEL_9:
       v53 = *MEMORY[0x1E6986650];
       if (IsOSFaultDisabled)
       {
-        v22 = os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_ERROR);
-        if (v22)
+        setupPayloads = os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_ERROR);
+        if (setupPayloads)
         {
-          if (*a4)
+          if (*error)
           {
-            v54 = [objc_msgSend(*a4 "description")];
+            v54 = [objc_msgSend(*error "description")];
           }
 
           else
@@ -4163,12 +4163,12 @@ LABEL_175:
 
       else
       {
-        v22 = os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_FAULT);
-        if (v22)
+        setupPayloads = os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_FAULT);
+        if (setupPayloads)
         {
-          if (*a4)
+          if (*error)
           {
-            v56 = [objc_msgSend(*a4 "description")];
+            v56 = [objc_msgSend(*error "description")];
           }
 
           else
@@ -4194,7 +4194,7 @@ LABEL_175:
         }
       }
 
-      return v22;
+      return setupPayloads;
     }
 
     if (VRTraceGetErrorLogLevelForModule() >= 2)
@@ -4202,32 +4202,32 @@ LABEL_175:
       v49 = VRTraceErrorLogLevelToCSTR();
       if (VRTraceIsOSFaultDisabled())
       {
-        v22 = os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_ERROR);
-        if (!v22)
+        setupPayloads = os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_ERROR);
+        if (!setupPayloads)
         {
-          return v22;
+          return setupPayloads;
         }
 
-        [VCAudioStream onConfigureStreamWithConfiguration:v49 error:a4];
+        [VCAudioStream onConfigureStreamWithConfiguration:v49 error:error];
       }
 
       else
       {
-        v22 = os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_FAULT);
-        if (!v22)
+        setupPayloads = os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_FAULT);
+        if (!setupPayloads)
         {
-          return v22;
+          return setupPayloads;
         }
 
-        [VCAudioStream onConfigureStreamWithConfiguration:v49 error:a4];
+        [VCAudioStream onConfigureStreamWithConfiguration:v49 error:error];
       }
     }
 
     goto LABEL_161;
   }
 
-  v7 = [a3 objectAtIndexedSubscript:0];
-  [(VCAudioStream *)self cleanupBeforeReconfigure:a3];
+  v7 = [configuration objectAtIndexedSubscript:0];
+  [(VCAudioStream *)self cleanupBeforeReconfigure:configuration];
   -[VCAudioStream setDeviceRoleForAudioStreamMode:direction:](self, "setDeviceRoleForAudioStreamMode:direction:", [v7 audioStreamMode], objc_msgSend(v7, "direction"));
   v105 = v7;
   v8 = +[VCAudioStream isTelephony:](VCAudioStream, "isTelephony:", [v7 audioStreamMode]);
@@ -4270,20 +4270,20 @@ LABEL_175:
       self->_reportingModuleID = VCReporting_GetDynamicReportingModuleID();
       [(VCObject *)self reportingAgent];
       [(VCAudioStream *)self getReportingServiceID];
-      [(VCAudioStream *)self getClientSpecificUserInfo:a3];
+      [(VCAudioStream *)self getClientSpecificUserInfo:configuration];
       reportingCacheModuleSpecificInfo();
     }
   }
 
   else if (![(VCObject *)self reportingAgent])
   {
-    [(VCAudioStream *)self setupReportingAgent:a3];
+    [(VCAudioStream *)self setupReportingAgent:configuration];
   }
 
-  v104 = a4;
+  errorCopy = error;
   [(VCAudioStream *)self setPreferredMediaBitrateWithConfiguration:v7];
   self->preferredAudioCodec = [(VCAudioStream *)self preferredAudioCodecWithStreamConfig:v7];
-  [(VCAudioStream *)self _computeInternalFormatForStreamConfigurations:a3];
+  [(VCAudioStream *)self _computeInternalFormatForStreamConfigurations:configuration];
   self->super._transportSetupInfo.sourceRate = self->_vpioFormat.format.mSampleRate;
   self->super._useRandomTS = [VCAudioStream shouldUseRandomRTPTimestampForMode:self->super._operatingMode];
   if ([(VCMediaStream *)self networkFeedbackController])
@@ -4297,12 +4297,12 @@ LABEL_175:
   v128 = 0u;
   v129 = 0u;
   v130 = 0u;
-  v13 = [a3 countByEnumeratingWithState:&v127 objects:v126 count:16];
+  v13 = [configuration countByEnumeratingWithState:&v127 objects:v126 count:16];
   if (v13)
   {
     v14 = v13;
     v15 = *v128;
-    obj = a3;
+    obj = configuration;
 LABEL_22:
     v16 = 0;
     while (1)
@@ -4328,7 +4328,7 @@ LABEL_22:
       {
         if (objc_opt_class() == self)
         {
-          v57 = v104;
+          v57 = errorCopy;
           if (VRTraceGetErrorLogLevelForModule() >= 3)
           {
             VRTraceErrorLogLevelToCSTR();
@@ -4351,7 +4351,7 @@ LABEL_22:
             v50 = &stru_1F570E008;
           }
 
-          v57 = v104;
+          v57 = errorCopy;
           if (VRTraceGetErrorLogLevelForModule() >= 3)
           {
             v58 = VRTraceErrorLogLevelToCSTR();
@@ -4378,7 +4378,7 @@ LABEL_22:
       }
 
       v20 = [objc_msgSend(v17 "rateControlConfig")];
-      if (([v19 configureWithStreamConfig:v17 setupInfo:&self->super._transportSetupInfo reducedSizeRTCPPackets:self->super._operatingMode == 6 hopByHopEncryptRTCPPackets:self->super._operatingMode == 6 statisticsCollector:v20 basebandCongestionDetector:objc_msgSend(objc_msgSend(v17 error:{"rateControlConfig"), "basebandCongestionDetector"), v104}] & 1) == 0)
+      if (([v19 configureWithStreamConfig:v17 setupInfo:&self->super._transportSetupInfo reducedSizeRTCPPackets:self->super._operatingMode == 6 hopByHopEncryptRTCPPackets:self->super._operatingMode == 6 statisticsCollector:v20 basebandCongestionDetector:objc_msgSend(objc_msgSend(v17 error:{"rateControlConfig"), "basebandCongestionDetector"), errorCopy}] & 1) == 0)
       {
         break;
       }
@@ -4398,7 +4398,7 @@ LABEL_22:
       VCAudioReceiver_FlushQueues(self->_sourceContext.audioReceiver);
       if (v14 == ++v16)
       {
-        a3 = obj;
+        configuration = obj;
         v14 = [obj countByEnumeratingWithState:&v127 objects:v126 count:16];
         if (!v14)
         {
@@ -4419,10 +4419,10 @@ LABEL_22:
       VRTraceErrorLogLevelToCSTR();
       if (VRTraceIsOSFaultDisabled())
       {
-        v22 = os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_ERROR);
-        if (!v22)
+        setupPayloads = os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_ERROR);
+        if (!setupPayloads)
         {
-          return v22;
+          return setupPayloads;
         }
 
         [VCAudioStream onConfigureStreamWithConfiguration:error:];
@@ -4430,10 +4430,10 @@ LABEL_22:
 
       else
       {
-        v22 = os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_FAULT);
-        if (!v22)
+        setupPayloads = os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_FAULT);
+        if (!setupPayloads)
         {
-          return v22;
+          return setupPayloads;
         }
 
         [VCAudioStream onConfigureStreamWithConfiguration:error:];
@@ -4462,10 +4462,10 @@ LABEL_22:
     v62 = *MEMORY[0x1E6986650];
     if (v61)
     {
-      v22 = os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_ERROR);
-      if (!v22)
+      setupPayloads = os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_ERROR);
+      if (!setupPayloads)
       {
-        return v22;
+        return setupPayloads;
       }
 
       *buf = 136316418;
@@ -4485,10 +4485,10 @@ LABEL_22:
       goto LABEL_175;
     }
 
-    v22 = os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_FAULT);
-    if (!v22)
+    setupPayloads = os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_FAULT);
+    if (!setupPayloads)
     {
-      return v22;
+      return setupPayloads;
     }
 
     *buf = 136316418;
@@ -4511,13 +4511,13 @@ LABEL_178:
   }
 
 LABEL_36:
-  v22 = [(VCAudioStream *)self setupPayloads];
-  if (!v22)
+  setupPayloads = [(VCAudioStream *)self setupPayloads];
+  if (!setupPayloads)
   {
-    return v22;
+    return setupPayloads;
   }
 
-  obja = a3;
+  obja = configuration;
   [(VCAudioStream *)self setDTXPayload:v7];
   dtmfEventHandler = self->dtmfEventHandler;
   if (dtmfEventHandler)
@@ -4547,8 +4547,8 @@ LABEL_36:
         v27 = *(*(&v122 + 1) + 8 * i);
         if (self->_isTelephony)
         {
-          v28 = [*(*(&v122 + 1) + 8 * i) realtimeContext];
-          *(v28 + 220) = +[VCAudioStream isVoLTE:](VCAudioStream, "isVoLTE:", [v105 audioStreamMode]);
+          realtimeContext = [*(*(&v122 + 1) + 8 * i) realtimeContext];
+          *(realtimeContext + 220) = +[VCAudioStream isVoLTE:](VCAudioStream, "isVoLTE:", [v105 audioStreamMode]);
           if (objc_opt_class() == self)
           {
             if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -4557,7 +4557,7 @@ LABEL_36:
               v37 = *MEMORY[0x1E6986650];
               if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
               {
-                v38 = *(v28 + 220);
+                v38 = *(realtimeContext + 220);
                 *buf = 136315906;
                 *&buf[4] = v36;
                 *&buf[12] = 2080;
@@ -4588,7 +4588,7 @@ LABEL_36:
               v31 = *MEMORY[0x1E6986650];
               if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
               {
-                v32 = *(v28 + 220);
+                v32 = *(realtimeContext + 220);
                 *buf = 136316418;
                 *&buf[4] = v30;
                 *&buf[12] = 2080;
@@ -4633,39 +4633,39 @@ LABEL_60:
         v42 = operatingMode == 6 && -[VCAudioPayloadConfig inputSampleRate](-[VCAudioPayload config](self->currentAudioPayload, "config"), "inputSampleRate") == 48000 && [objc_msgSend(v27 "streamConfig")] == 24000;
         if (self->_isVoiceProcessingAt24KSupported)
         {
-          v43 = [v27 rtpHandle];
-          v44 = [(VCAudioStream *)self getRTPTimeStampRateScaleFactor];
-          v45 = v43;
+          rtpHandle = [v27 rtpHandle];
+          getRTPTimeStampRateScaleFactor = [(VCAudioStream *)self getRTPTimeStampRateScaleFactor];
+          rtpHandle2 = rtpHandle;
         }
 
         else if (v40 || v42)
         {
-          v45 = [v27 rtpHandle];
-          v44 = 1;
+          rtpHandle2 = [v27 rtpHandle];
+          getRTPTimeStampRateScaleFactor = 1;
         }
 
         else if (v41 || self->super._operatingMode != 5 && -[VCAudioPayloadConfig payload](-[VCAudioPayload config](self->currentAudioPayload, "config"), "payload") == 119 && -[VCAudioPayloadConfig inputSampleRate](-[VCAudioPayload config](self->currentAudioPayload, "config"), "inputSampleRate") == 24000 && [objc_msgSend(v27 "streamConfig")] == 48000)
         {
-          v45 = [v27 rtpHandle];
-          v44 = 2;
+          rtpHandle2 = [v27 rtpHandle];
+          getRTPTimeStampRateScaleFactor = 2;
         }
 
         else
         {
-          v46 = [(VCAudioPayloadConfig *)[(VCAudioPayload *)self->currentAudioPayload config] inputSampleRate];
-          v45 = [v27 rtpHandle];
-          if (v46 == 32000)
+          inputSampleRate = [(VCAudioPayloadConfig *)[(VCAudioPayload *)self->currentAudioPayload config] inputSampleRate];
+          rtpHandle2 = [v27 rtpHandle];
+          if (inputSampleRate == 32000)
           {
-            v44 = 3;
+            getRTPTimeStampRateScaleFactor = 3;
           }
 
           else
           {
-            v44 = 0;
+            getRTPTimeStampRateScaleFactor = 0;
           }
         }
 
-        RTPSetTimestampRateScale(v45, v44);
+        RTPSetTimestampRateScale(rtpHandle2, getRTPTimeStampRateScaleFactor);
       }
 
       v25 = [(NSMutableArray *)transportArray countByEnumeratingWithState:&v122 objects:v121 count:16];
@@ -4778,9 +4778,9 @@ LABEL_130:
     buf[44] = 0;
     *&v112 = self->super._streamToken;
     DWORD2(v112) = +[VCAudioStream audioChannelCountForMode:](VCAudioStream, "audioChannelCountForMode:", [obja firstObject]);
-    v78 = [v105 streamInputID];
+    streamInputID = [v105 streamInputID];
     streamToken = self->super._streamToken;
-    *&v113 = v78;
+    *&v113 = streamInputID;
     *(&v113 + 1) = streamToken;
     *&v114 = [v105 networkClockID];
     WORD4(v114) = 256;
@@ -4891,7 +4891,7 @@ LABEL_141:
         goto LABEL_140;
       }
 
-      +[GKVoiceChatError getNSError:code:detailedCode:filePath:description:reason:](GKVoiceChatError, "getNSError:code:detailedCode:filePath:description:reason:", v104, 32016, 105, [MEMORY[0x1E696AEC0] stringWithFormat:@"%s:%d", "/Library/Caches/com.apple.xbs/Sources/AVConference/AVConference.subproj/Sources/VCAudioStream.m", 2517], @"Failed to create VCAudioIO", @"Invalid config caused VCAudioIO init to fail");
+      +[GKVoiceChatError getNSError:code:detailedCode:filePath:description:reason:](GKVoiceChatError, "getNSError:code:detailedCode:filePath:description:reason:", errorCopy, 32016, 105, [MEMORY[0x1E696AEC0] stringWithFormat:@"%s:%d", "/Library/Caches/com.apple.xbs/Sources/AVConference/AVConference.subproj/Sources/VCAudioStream.m", 2517], @"Failed to create VCAudioIO", @"Invalid config caused VCAudioIO init to fail");
       if (objc_opt_class() == self)
       {
         if (VRTraceGetErrorLogLevelForModule() < 5)
@@ -4960,8 +4960,8 @@ LABEL_141:
     }
 
 LABEL_161:
-    LOBYTE(v22) = 0;
-    return v22;
+    LOBYTE(setupPayloads) = 0;
+    return setupPayloads;
   }
 
 LABEL_142:
@@ -5006,8 +5006,8 @@ LABEL_152:
     }
 
     [(VCTransportSession *)self->super._transportSession setShouldIgnoreConnectionRefusedError:self->_isTelephony];
-    LOBYTE(v22) = 1;
-    return v22;
+    LOBYTE(setupPayloads) = 1;
+    return setupPayloads;
   }
 
   if (VRTraceGetErrorLogLevelForModule() >= 3)
@@ -5024,12 +5024,12 @@ LABEL_152:
   self->_sourceContext.audioReceiver = 0;
   [(VCMediaStream *)self unregisterMediaControlInfoGenerator];
 
-  LOBYTE(v22) = 0;
+  LOBYTE(setupPayloads) = 0;
   self->_audioTransmitter = 0;
-  return v22;
+  return setupPayloads;
 }
 
-- (void)onStartWithCompletionHandler:(id)a3
+- (void)onStartWithCompletionHandler:(id)handler
 {
   v6[6] = *MEMORY[0x1E69E9840];
   [(VCAudioStream *)self prepareAudio];
@@ -5045,7 +5045,7 @@ LABEL_152:
   v6[2] = __46__VCAudioStream_onStartWithCompletionHandler___block_invoke;
   v6[3] = &unk_1E85F5518;
   v6[4] = self;
-  v6[5] = a3;
+  v6[5] = handler;
   [(VCAudioStream *)self startAudioWithCompletionHandler:v6];
   if ([(VCAudioStream *)self shouldRegisterReportingPeriodicTask])
   {
@@ -5162,7 +5162,7 @@ void __46__VCAudioStream_onStartWithCompletionHandler___block_invoke_2(uint64_t 
   }
 }
 
-- (void)onStopWithCompletionHandler:(id)a3
+- (void)onStopWithCompletionHandler:(id)handler
 {
   v5[6] = *MEMORY[0x1E69E9840];
   if (self->_isTelephony)
@@ -5178,7 +5178,7 @@ void __46__VCAudioStream_onStartWithCompletionHandler___block_invoke_2(uint64_t 
   v5[2] = __45__VCAudioStream_onStopWithCompletionHandler___block_invoke;
   v5[3] = &unk_1E85F5518;
   v5[4] = self;
-  v5[5] = a3;
+  v5[5] = handler;
   [(VCAudioStream *)self stopAudioWithCompletionHandler:v5];
 }
 
@@ -5208,15 +5208,15 @@ uint64_t __45__VCAudioStream_onStopWithCompletionHandler___block_invoke(uint64_t
   return v2();
 }
 
-- (void)onPauseWithCompletionHandler:(id)a3
+- (void)onPauseWithCompletionHandler:(id)handler
 {
   v23 = *MEMORY[0x1E69E9840];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v9 = __46__VCAudioStream_onPauseWithCompletionHandler___block_invoke;
   v10 = &unk_1E85F5518;
-  v11 = self;
-  v12 = a3;
+  selfCopy = self;
+  handlerCopy = handler;
   v4 = [v8 copy];
   if (self->super._operatingMode == 6)
   {
@@ -5240,7 +5240,7 @@ uint64_t __45__VCAudioStream_onStopWithCompletionHandler___block_invoke(uint64_t
         v17 = 1024;
         v18 = 2792;
         v19 = 2048;
-        v20 = self;
+        selfCopy2 = self;
         v21 = 2048;
         v22 = audioIO;
         _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, "VCAudioStream [%s] %s:%d (%p) pausing audioIO=%p", buf, 0x30u);
@@ -5269,7 +5269,7 @@ uint64_t __46__VCAudioStream_onPauseWithCompletionHandler___block_invoke(uint64_
   return (*(*(a1 + 40) + 16))();
 }
 
-- (void)onResumeWithCompletionHandler:(id)a3
+- (void)onResumeWithCompletionHandler:(id)handler
 {
   v34 = *MEMORY[0x1E69E9840];
   v30 = 0u;
@@ -5307,8 +5307,8 @@ uint64_t __46__VCAudioStream_onPauseWithCompletionHandler___block_invoke(uint64_
   v14 = 3221225472;
   v15 = __47__VCAudioStream_onResumeWithCompletionHandler___block_invoke;
   v16 = &unk_1E85F5518;
-  v17 = self;
-  v18 = a3;
+  selfCopy = self;
+  handlerCopy = handler;
   if (self->super._operatingMode == 6)
   {
     [(VCAudioTransmitter *)[(VCAudioStream *)self audioTransmitter:v13] setPeriodicReportingEnabled:1];
@@ -5331,7 +5331,7 @@ uint64_t __46__VCAudioStream_onPauseWithCompletionHandler___block_invoke(uint64_
         v23 = 1024;
         v24 = 2823;
         v25 = 2048;
-        v26 = self;
+        selfCopy2 = self;
         v27 = 2048;
         v28 = audioIO;
         _os_log_impl(&dword_1DB56E000, v11, OS_LOG_TYPE_DEFAULT, "VCAudioStream [%s] %s:%d (%p) resume audioIO=%p", buf, 0x30u);
@@ -5436,7 +5436,7 @@ uint64_t __47__VCAudioStream_onResumeWithCompletionHandler___block_invoke(uint64
   }
 }
 
-- (void)setTargetStreamID:(id)a3
+- (void)setTargetStreamID:(id)d
 {
   v29 = *MEMORY[0x1E69E9840];
   if ([(NSNumber *)self->_targetStreamID isEqualToNumber:?])
@@ -5457,7 +5457,7 @@ uint64_t __47__VCAudioStream_onResumeWithCompletionHandler___block_invoke(uint64
           v21 = 1024;
           v22 = 2897;
           v23 = 2112;
-          v24 = a3;
+          dCopy2 = d;
           _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, "VCAudioStream [%s] %s:%d TargetStreamID didn't change %@", &v17, 0x26u);
         }
       }
@@ -5492,7 +5492,7 @@ uint64_t __47__VCAudioStream_onResumeWithCompletionHandler___block_invoke(uint64
     v21 = 1024;
     v22 = 2900;
     v23 = 2112;
-    v24 = a3;
+    dCopy2 = d;
     v11 = "VCAudioStream [%s] %s:%d Setting target stream id: %@";
     v12 = v10;
     v13 = 38;
@@ -5529,11 +5529,11 @@ uint64_t __47__VCAudioStream_onResumeWithCompletionHandler___block_invoke(uint64
     v21 = 1024;
     v22 = 2900;
     v23 = 2112;
-    v24 = v8;
+    dCopy2 = v8;
     v25 = 2048;
-    v26 = self;
+    selfCopy = self;
     v27 = 2112;
-    v28 = a3;
+    dCopy3 = d;
     v11 = "VCAudioStream [%s] %s:%d %@(%p) Setting target stream id: %@";
     v12 = v15;
     v13 = 58;
@@ -5542,12 +5542,12 @@ uint64_t __47__VCAudioStream_onResumeWithCompletionHandler___block_invoke(uint64
   _os_log_impl(&dword_1DB56E000, v12, OS_LOG_TYPE_DEFAULT, v11, &v17, v13);
 LABEL_17:
 
-  self->_targetStreamID = a3;
+  self->_targetStreamID = d;
   VCMediaStream_Lock(self);
   audioReceiver = self->_sourceContext.audioReceiver;
   if (audioReceiver)
   {
-    VCAudioReceiver_SetTargetStreamID(audioReceiver, [a3 unsignedShortValue]);
+    VCAudioReceiver_SetTargetStreamID(audioReceiver, [d unsignedShortValue]);
   }
 
   VCMediaStream_Unlock(self);
@@ -5574,11 +5574,11 @@ uint64_t __39__VCAudioStream_setupPeriodicReporting__block_invoke(uint64_t a1, v
   return VCMediaStream_Unlock(a2);
 }
 
-- (void)setupReportingAgent:(id)a3
+- (void)setupReportingAgent:(id)agent
 {
   self->super._isReportingAgentOwner = 1;
-  v5 = [(VCAudioStream *)self getReportingClientType];
-  -[VCMediaStream applyClientSessionID:clientUserInfo:](self, "applyClientSessionID:clientUserInfo:", v5, [MEMORY[0x1E695DF90] dictionary]);
+  getReportingClientType = [(VCAudioStream *)self getReportingClientType];
+  -[VCMediaStream applyClientSessionID:clientUserInfo:](self, "applyClientSessionID:clientUserInfo:", getReportingClientType, [MEMORY[0x1E695DF90] dictionary]);
   [(VCAudioStream *)self getReportingClientName];
   [(VCAudioStream *)self getReportingServiceID];
   Agent = reportingCreateAgent();
@@ -5594,7 +5594,7 @@ uint64_t __39__VCAudioStream_setupPeriodicReporting__block_invoke(uint64_t a1, v
   [(VCObject *)self reportingAgent];
   [(VCAudioStream *)self getReportingClientName];
   [(VCAudioStream *)self getReportingServiceID];
-  [(VCAudioStream *)self getClientSpecificUserInfo:a3];
+  [(VCAudioStream *)self getClientSpecificUserInfo:agent];
   reportingSetUserInfo();
 }
 
@@ -5654,21 +5654,21 @@ void __37__VCAudioStream_setupReportingAgent___block_invoke(uint64_t a1, void *a
   }
 }
 
-- (__CFDictionary)getClientSpecificUserInfo:(id)a3
+- (__CFDictionary)getClientSpecificUserInfo:(id)info
 {
   v25 = *MEMORY[0x1E69E9840];
-  if (-[VCAudioStream isStandaloneStreamClientSpecificUserInfoSupported](self, "isStandaloneStreamClientSpecificUserInfoSupported") && [a3 count])
+  if (-[VCAudioStream isStandaloneStreamClientSpecificUserInfoSupported](self, "isStandaloneStreamClientSpecificUserInfoSupported") && [info count])
   {
-    v5 = [MEMORY[0x1E695DF90] dictionary];
-    [v5 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInteger:", self->super._streamToken), @"VCVSStreamToken"}];
-    [v5 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInteger:", objc_msgSend(objc_msgSend(a3, "objectAtIndexedSubscript:", 0), "direction")), @"VCMSDirection"}];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInteger:", self->super._streamToken), @"VCVSStreamToken"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInteger:", objc_msgSend(objc_msgSend(info, "objectAtIndexedSubscript:", 0), "direction")), @"VCMSDirection"}];
     callID = self->super._callID;
     if (callID)
     {
-      [v5 setObject:callID forKeyedSubscript:@"CallID"];
+      [dictionary setObject:callID forKeyedSubscript:@"CallID"];
     }
 
-    [(VCMediaStream *)self applyClientSessionID:[(VCAudioStream *)self getReportingClientType] clientUserInfo:v5];
+    [(VCMediaStream *)self applyClientSessionID:[(VCAudioStream *)self getReportingClientType] clientUserInfo:dictionary];
   }
 
   else if (self->super._operatingMode == 6)
@@ -5678,7 +5678,7 @@ void __37__VCAudioStream_setupReportingAgent___block_invoke(uint64_t a1, void *a
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v8 = [a3 countByEnumeratingWithState:&v21 objects:v20 count:16];
+    v8 = [info countByEnumeratingWithState:&v21 objects:v20 count:16];
     if (v8)
     {
       v9 = v8;
@@ -5689,42 +5689,42 @@ void __37__VCAudioStream_setupReportingAgent___block_invoke(uint64_t a1, void *a
         {
           if (*v22 != v10)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(info);
           }
 
           v12 = *(*(&v21 + 1) + 8 * i);
           v13 = [objc_msgSend(v12 "multiwayConfig")];
           v14 = MEMORY[0x1E696AD98];
-          v15 = [v12 multiwayConfig];
+          multiwayConfig = [v12 multiwayConfig];
           if (v13)
           {
-            v16 = [v14 numberWithUnsignedShort:{objc_msgSend(v15, "idsStreamID")}];
+            v16 = [v14 numberWithUnsignedShort:{objc_msgSend(multiwayConfig, "idsStreamID")}];
           }
 
           else
           {
-            v16 = [v14 numberWithUnsignedInt:{objc_msgSend(v15, "streamGroupID")}];
+            v16 = [v14 numberWithUnsignedInt:{objc_msgSend(multiwayConfig, "streamGroupID")}];
           }
 
           [v7 addObject:v16];
         }
 
-        v9 = [a3 countByEnumeratingWithState:&v21 objects:v20 count:16];
+        v9 = [info countByEnumeratingWithState:&v21 objects:v20 count:16];
       }
 
       while (v9);
     }
 
-    v17 = [a3 objectAtIndexedSubscript:0];
+    v17 = [info objectAtIndexedSubscript:0];
     [objc_msgSend(v17 "multiwayConfig")];
     v18 = reportingStreamGroupFromStreamGroupID();
-    v5 = [MEMORY[0x1E695DF90] dictionary];
-    [v5 setObject:objc_msgSend(objc_msgSend(v17 forKeyedSubscript:{"multiwayConfig"), "sessionId"), @"VCSUUID"}];
-    [v5 setObject:objc_msgSend(objc_msgSend(v17 forKeyedSubscript:{"multiwayConfig"), "participantId"), @"VCSPUUID"}];
-    [v5 setObject:objc_msgSend(v7 forKeyedSubscript:{"componentsJoinedByString:", @", "), @"VCASStreamIDs"}];
-    [v5 setObject:objc_msgSend(objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInteger:", objc_msgSend(v17, "direction")), "stringValue"), @"VCMSDirection"}];
-    [v5 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedInt:", v18), @"VCMSStreamGroup"}];
-    [(VCMediaStream *)self applyClientSessionID:[(VCAudioStream *)self getReportingClientType] clientUserInfo:v5];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    [dictionary setObject:objc_msgSend(objc_msgSend(v17 forKeyedSubscript:{"multiwayConfig"), "sessionId"), @"VCSUUID"}];
+    [dictionary setObject:objc_msgSend(objc_msgSend(v17 forKeyedSubscript:{"multiwayConfig"), "participantId"), @"VCSPUUID"}];
+    [dictionary setObject:objc_msgSend(v7 forKeyedSubscript:{"componentsJoinedByString:", @", "), @"VCASStreamIDs"}];
+    [dictionary setObject:objc_msgSend(objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInteger:", objc_msgSend(v17, "direction")), "stringValue"), @"VCMSDirection"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithUnsignedInt:", v18), @"VCMSStreamGroup"}];
+    [(VCMediaStream *)self applyClientSessionID:[(VCAudioStream *)self getReportingClientType] clientUserInfo:dictionary];
   }
 
   else
@@ -5732,7 +5732,7 @@ void __37__VCAudioStream_setupReportingAgent___block_invoke(uint64_t a1, void *a
     return 0;
   }
 
-  return v5;
+  return dictionary;
 }
 
 - (int)getReportingClientType
@@ -5922,41 +5922,41 @@ void __37__VCAudioStream_setupReportingAgent___block_invoke(uint64_t a1, void *a
   return result;
 }
 
-- (void)reportTimestampJumpsWithReportingDictionary:(__CFDictionary *)a3
+- (void)reportTimestampJumpsWithReportingDictionary:(__CFDictionary *)dictionary
 {
   v4 = MEMORY[0x1E696AD98];
   p_periodicReportingMetrics = &self->_periodicReportingMetrics;
   atomic_exchange(&self->_periodicReportingMetrics.timestampJumpDuration, 0);
-  CFDictionaryAddValue(a3, @"VCASTimestampJumpDuration", [v4 numberWithUnsignedLong:?]);
+  CFDictionaryAddValue(dictionary, @"VCASTimestampJumpDuration", [v4 numberWithUnsignedLong:?]);
   v6 = MEMORY[0x1E696AD98];
   atomic_exchange(p_periodicReportingMetrics, 0);
-  CFDictionaryAddValue(a3, @"VCASTimestampJumpCount", [v6 numberWithUnsignedInt:?]);
+  CFDictionaryAddValue(dictionary, @"VCASTimestampJumpCount", [v6 numberWithUnsignedInt:?]);
   v7 = MEMORY[0x1E696AD98];
   v8 = atomic_load(&p_periodicReportingMetrics->timestampJumpMax);
   v9 = [v7 numberWithUnsignedLong:v8];
 
-  CFDictionaryAddValue(a3, @"VCASTimestampJumpMax", v9);
+  CFDictionaryAddValue(dictionary, @"VCASTimestampJumpMax", v9);
 }
 
-- (void)gatherRealtimeStats:(__CFDictionary *)a3
+- (void)gatherRealtimeStats:(__CFDictionary *)stats
 {
-  v5 = [(VCAudioIO *)self->_audioIO reportingStats];
-  if (v5)
+  reportingStats = [(VCAudioIO *)self->_audioIO reportingStats];
+  if (reportingStats)
   {
-    VCUtil_AppendFromDictionary(a3, v5);
+    VCUtil_AppendFromDictionary(stats, reportingStats);
   }
 
-  [(VCAudioStream *)self reportTimestampJumpsWithReportingDictionary:a3];
+  [(VCAudioStream *)self reportTimestampJumpsWithReportingDictionary:stats];
 
-  [(VCMediaStream *)self collectChannelSequenceMetrics:a3];
+  [(VCMediaStream *)self collectChannelSequenceMetrics:stats];
 }
 
-- (void)updateCodecPayloadAndBitrateForStartEvent:(int *)a3 bitrate:(unsigned int *)a4
+- (void)updateCodecPayloadAndBitrateForStartEvent:(int *)event bitrate:(unsigned int *)bitrate
 {
   v30 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (event)
   {
-    if (a4)
+    if (bitrate)
     {
       v28 = 0u;
       v29 = 0u;
@@ -5978,12 +5978,12 @@ void __37__VCAudioStream_setupReportingAgent___block_invoke(uint64_t a1, void *a
             }
 
             v18 = v5;
-            v6 = [*(*(&v26 + 1) + 8 * v5) streamConfig];
+            streamConfig = [*(*(&v26 + 1) + 8 * v5) streamConfig];
             v21 = 0u;
             v22 = 0u;
             v23 = 0u;
             v24 = 0u;
-            v7 = [objc_msgSend(v6 "allCodecConfigurations")];
+            v7 = [objc_msgSend(streamConfig "allCodecConfigurations")];
             v8 = [v7 countByEnumeratingWithState:&v21 objects:v20 count:16];
             if (v8)
             {
@@ -6001,10 +6001,10 @@ void __37__VCAudioStream_setupReportingAgent___block_invoke(uint64_t a1, void *a
                   v12 = *(*(&v21 + 1) + 8 * i);
                   v13 = +[VCPayloadUtils payloadForCodecType:](VCPayloadUtils, "payloadForCodecType:", [v12 codecType]);
                   v14 = +[VCPayloadUtils bitrateForCodecType:mode:](VCPayloadUtils, "bitrateForCodecType:mode:", [v12 codecType], objc_msgSend(v12, "preferredMode"));
-                  if (v14 > *a4)
+                  if (v14 > *bitrate)
                   {
-                    *a4 = v14;
-                    *a3 = v13;
+                    *bitrate = v14;
+                    *event = v13;
                   }
                 }
 
@@ -6037,91 +6037,91 @@ void __37__VCAudioStream_setupReportingAgent___block_invoke(uint64_t a1, void *a
   }
 }
 
-- (void)addStreamStartingMetricsToReport:(const __CFDictionary *)a3
+- (void)addStreamStartingMetricsToReport:(const __CFDictionary *)report
 {
-  v5 = [(VCMediaStream *)self defaultStreamConfig];
-  CFDictionaryAddValue(a3, @"VCASMaxNetworkBitRate", [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[VCMediaStreamMultiwayConfig maxNetworkBitrate](-[VCMediaStreamConfig multiwayConfig](v5, "multiwayConfig"), "maxNetworkBitrate")}]);
+  defaultStreamConfig = [(VCMediaStream *)self defaultStreamConfig];
+  CFDictionaryAddValue(report, @"VCASMaxNetworkBitRate", [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[VCMediaStreamMultiwayConfig maxNetworkBitrate](-[VCMediaStreamConfig multiwayConfig](defaultStreamConfig, "multiwayConfig"), "maxNetworkBitrate")}]);
   if ([(VCAudioStream *)self isStandaloneStreamClientSpecificUserInfoSupported])
   {
-    CFDictionaryAddValue(a3, @"VCVSStreamToken", [MEMORY[0x1E696AD98] numberWithInteger:self->super._streamToken]);
-    CFDictionaryAddValue(a3, @"VCMSDirection", [MEMORY[0x1E696AD98] numberWithInteger:{-[VCMediaStreamConfig direction](v5, "direction")}]);
+    CFDictionaryAddValue(report, @"VCVSStreamToken", [MEMORY[0x1E696AD98] numberWithInteger:self->super._streamToken]);
+    CFDictionaryAddValue(report, @"VCMSDirection", [MEMORY[0x1E696AD98] numberWithInteger:{-[VCMediaStreamConfig direction](defaultStreamConfig, "direction")}]);
     callID = self->super._callID;
     if (callID)
     {
-      CFDictionaryAddValue(a3, @"CallID", callID);
+      CFDictionaryAddValue(report, @"CallID", callID);
     }
 
     remoteEndpointInfo = self->super._remoteEndpointInfo;
     if (remoteEndpointInfo)
     {
-      CFDictionaryAddValue(a3, @"VCVSRemoteDeviceModel", [(VCCallInfoBlob *)remoteEndpointInfo deviceType]);
-      v8 = [(VCCallInfoBlob *)self->super._remoteEndpointInfo osVersion];
+      CFDictionaryAddValue(report, @"VCVSRemoteDeviceModel", [(VCCallInfoBlob *)remoteEndpointInfo deviceType]);
+      osVersion = [(VCCallInfoBlob *)self->super._remoteEndpointInfo osVersion];
       v9 = @"VCVSRemoteOSBuildVersion";
 LABEL_8:
-      CFDictionaryAddValue(a3, v9, v8);
+      CFDictionaryAddValue(report, v9, osVersion);
     }
   }
 
   else if (self->super._operatingMode == 3)
   {
-    v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[VCMediaStreamConfig outOfProcessCodecsEnabled](v5, "outOfProcessCodecsEnabled")}];
+    osVersion = [MEMORY[0x1E696AD98] numberWithBool:{-[VCMediaStreamConfig outOfProcessCodecsEnabled](defaultStreamConfig, "outOfProcessCodecsEnabled")}];
     v9 = @"VCMSOOPCodecs";
     goto LABEL_8;
   }
 
-  if ([(VCMediaStreamConfig *)v5 remoteEndpoints]&& [(NSArray *)[(VCMediaStreamConfig *)v5 remoteEndpoints] count])
+  if ([(VCMediaStreamConfig *)defaultStreamConfig remoteEndpoints]&& [(NSArray *)[(VCMediaStreamConfig *)defaultStreamConfig remoteEndpoints] count])
   {
-    CFDictionaryAddValue(a3, @"RemoteEndpoints", [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[NSArray count](-[VCMediaStreamConfig remoteEndpoints](v5, "remoteEndpoints"), "count")}]);
+    CFDictionaryAddValue(report, @"RemoteEndpoints", [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[NSArray count](-[VCMediaStreamConfig remoteEndpoints](defaultStreamConfig, "remoteEndpoints"), "count")}]);
   }
 
-  v10 = [VCAudioStream audioChannelCountForMode:v5];
-  if ([(VCMediaStreamConfig *)v5 direction]== 1 || [(VCMediaStreamConfig *)v5 direction]== 3)
+  v10 = [VCAudioStream audioChannelCountForMode:defaultStreamConfig];
+  if ([(VCMediaStreamConfig *)defaultStreamConfig direction]== 1 || [(VCMediaStreamConfig *)defaultStreamConfig direction]== 3)
   {
-    CFDictionaryAddValue(a3, @"ATCC", [MEMORY[0x1E696AD98] numberWithUnsignedInt:v10]);
+    CFDictionaryAddValue(report, @"ATCC", [MEMORY[0x1E696AD98] numberWithUnsignedInt:v10]);
   }
 
-  if ([(VCMediaStreamConfig *)v5 direction]== 2 || [(VCMediaStreamConfig *)v5 direction]== 3)
+  if ([(VCMediaStreamConfig *)defaultStreamConfig direction]== 2 || [(VCMediaStreamConfig *)defaultStreamConfig direction]== 3)
   {
     v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v10];
 
-    CFDictionaryAddValue(a3, @"ARCC", v11);
+    CFDictionaryAddValue(report, @"ARCC", v11);
   }
 }
 
-- (void)reportingAudioStreamEvent:(unsigned __int16)a3
+- (void)reportingAudioStreamEvent:(unsigned __int16)event
 {
-  v3 = a3;
+  eventCopy = event;
   v13 = *MEMORY[0x1E69E9840];
   Mutable = CFDictionaryCreateMutable(*MEMORY[0x1E695E480], 0, MEMORY[0x1E695E9D8], MEMORY[0x1E695E9E8]);
-  v6 = [(VCMediaStream *)self defaultStreamConfig];
-  v7 = [(VCAudioPayloadConfig *)[(VCAudioPayload *)self->currentAudioPayload config] payload];
-  HIDWORD(v12) = v7;
+  defaultStreamConfig = [(VCMediaStream *)self defaultStreamConfig];
+  payload = [(VCAudioPayloadConfig *)[(VCAudioPayload *)self->currentAudioPayload config] payload];
+  HIDWORD(v12) = payload;
   LODWORD(v12) = [(VCAudioPayload *)self->currentAudioPayload bitrate];
   if (self->super._operatingMode == 6)
   {
-    v8 = [(VCMediaStreamConfig *)v6 direction];
-    if (v3 == 182 && v8 == 1)
+    direction = [(VCMediaStreamConfig *)defaultStreamConfig direction];
+    if (eventCopy == 182 && direction == 1)
     {
       [(VCAudioStream *)self updateCodecPayloadAndBitrateForStartEvent:&v12 + 4 bitrate:&v12];
 LABEL_8:
       [(VCAudioStream *)self addStreamStartingMetricsToReport:Mutable, v12, v13];
       CFDictionaryAddValue(Mutable, @"VCMSConnectionType", [MEMORY[0x1E696AD98] numberWithUnsignedChar:self->super._connectionType]);
-      v7 = HIDWORD(v12);
+      payload = HIDWORD(v12);
       goto LABEL_9;
     }
   }
 
-  if (v3 != 187)
+  if (eventCopy != 187)
   {
-    if (v3 == 183)
+    if (eventCopy == 183)
     {
-      v11 = [(VCMediaStream *)self endReason];
-      v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v11];
+      endReason = [(VCMediaStream *)self endReason];
+      v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:endReason];
       v10 = @"VCMSEndReason";
       goto LABEL_11;
     }
 
-    if (v3 != 182)
+    if (eventCopy != 182)
     {
       goto LABEL_12;
     }
@@ -6130,7 +6130,7 @@ LABEL_8:
   }
 
 LABEL_9:
-  CFDictionaryAddValue(Mutable, @"VCASCurrentPayload", [MEMORY[0x1E696AD98] numberWithUnsignedInt:{v7, v12}]);
+  CFDictionaryAddValue(Mutable, @"VCASCurrentPayload", [MEMORY[0x1E696AD98] numberWithUnsignedInt:{payload, v12}]);
   CFDictionaryAddValue(Mutable, @"VCASCodecBitRate", [MEMORY[0x1E696AD98] numberWithUnsignedInt:v12]);
   CFDictionaryAddValue(Mutable, @"VCASRedundancyLevel", [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[VCAudioTransmitter redNumPayloads](self->_audioTransmitter, "redNumPayloads")}]);
   v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[VCAudioTransmitter redMaxDelay20ms](self->_audioTransmitter, "redMaxDelay20ms")}];
@@ -6146,13 +6146,13 @@ LABEL_12:
   }
 }
 
-- (void)reportingAlgosAudioStreamEvent:(unsigned __int16)a3
+- (void)reportingAlgosAudioStreamEvent:(unsigned __int16)event
 {
-  v4 = [(VCMediaStream *)self defaultStreamConfig];
+  defaultStreamConfig = [(VCMediaStream *)self defaultStreamConfig];
   if (self->super._operatingMode == 6)
   {
-    v5 = v4;
-    if ([(VCMediaStreamConfig *)v4 direction]== 2)
+    v5 = defaultStreamConfig;
+    if ([(VCMediaStreamConfig *)defaultStreamConfig direction]== 2)
     {
       Mutable = CFDictionaryCreateMutable(*MEMORY[0x1E695E480], 0, MEMORY[0x1E695E9D8], MEMORY[0x1E695E9E8]);
       CFDictionaryAddValue(Mutable, @"VCSPUUID", [(VCMediaStreamMultiwayConfig *)[(VCMediaStreamConfig *)v5 multiwayConfig] participantId]);
@@ -6167,14 +6167,14 @@ LABEL_12:
   }
 }
 
-- (int)getConnectionTypeForStreamMode:(int64_t)a3
+- (int)getConnectionTypeForStreamMode:(int64_t)mode
 {
   result = -1;
-  if (a3 > 2)
+  if (mode > 2)
   {
-    if (a3 != 3)
+    if (mode != 3)
     {
-      if (a3 == 10 || a3 == 7)
+      if (mode == 10 || mode == 7)
       {
         return 2;
       }
@@ -6185,9 +6185,9 @@ LABEL_12:
     return 3;
   }
 
-  if (a3)
+  if (mode)
   {
-    if (a3 != 1)
+    if (mode != 1)
     {
       return result;
     }
@@ -6207,22 +6207,22 @@ LABEL_12:
   return -1;
 }
 
-- (void)addSyncSourceDelegate:(id)a3
+- (void)addSyncSourceDelegate:(id)delegate
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = _VCAudioStream_NewSyncDelegateEvent(0, self, a3);
+  v5 = _VCAudioStream_NewSyncDelegateEvent(0, self, delegate);
   v12 = v5;
   VCMediaStream_Lock(self);
   os_unfair_lock_lock(&self->_delegateLock);
-  CFArrayAppendValue(self->_syncSourceDelegates, a3);
-  v6 = [(VCMediaStream *)self state];
-  if (v6 != 2)
+  CFArrayAppendValue(self->_syncSourceDelegates, delegate);
+  state = [(VCMediaStream *)self state];
+  if (state != 2)
   {
     _VCAudioStream_RegisterSyncDelegateEvent(self, v5);
 LABEL_7:
     if (self->super._operatingMode != 5)
     {
-      VCMediaStreamSyncSourceDelegate_updateSourceState(a3, v6 != 2);
+      VCMediaStreamSyncSourceDelegate_updateSourceState(delegate, state != 2);
     }
 
     os_unfair_lock_unlock(&self->_delegateLock);
@@ -6277,7 +6277,7 @@ LABEL_7:
         v19 = 2112;
         v20 = v9;
         v21 = 2048;
-        v22 = self;
+        selfCopy = self;
         v23 = 1024;
         v24 = v8;
         _os_log_error_impl(&dword_1DB56E000, v11, OS_LOG_TYPE_ERROR, "VCAudioStream [%s] %s:%d %@(%p) CMSimpleQueueEnqueue enqueue failed with error=%d", buf, 0x36u);
@@ -6291,10 +6291,10 @@ LABEL_7:
   [(VCAudioStream *)self waitIdleForSyncSourceDelegates];
 }
 
-- (void)removeSyncSourceDelegate:(id)a3
+- (void)removeSyncSourceDelegate:(id)delegate
 {
   v28 = *MEMORY[0x1E69E9840];
-  v5 = _VCAudioStream_NewSyncDelegateEvent(1, self, a3);
+  v5 = _VCAudioStream_NewSyncDelegateEvent(1, self, delegate);
   v15 = v5;
   VCMediaStream_Lock(self);
   os_unfair_lock_lock(&self->_delegateLock);
@@ -6352,7 +6352,7 @@ LABEL_7:
         v22 = 2112;
         v23 = v8;
         v24 = 2048;
-        v25 = self;
+        selfCopy = self;
         v26 = 1024;
         v27 = v7;
         _os_log_error_impl(&dword_1DB56E000, v11, OS_LOG_TYPE_ERROR, "VCAudioStream [%s] %s:%d %@(%p) CMSimpleQueueEnqueue enqueue failed with error=%d", buf, 0x36u);
@@ -6369,7 +6369,7 @@ LABEL_16:
   {
     do
     {
-      if (CFArrayGetValueAtIndex(self->_syncSourceDelegates, v13) == a3)
+      if (CFArrayGetValueAtIndex(self->_syncSourceDelegates, v13) == delegate)
       {
         CFArrayRemoveValueAtIndex(self->_syncSourceDelegates, v13);
       }
@@ -6378,7 +6378,7 @@ LABEL_16:
     while (v13-- > 0);
   }
 
-  VCMediaStreamSyncSourceDelegate_updateSourceState(a3, 1);
+  VCMediaStreamSyncSourceDelegate_updateSourceState(delegate, 1);
   os_unfair_lock_unlock(&self->_delegateLock);
   VCMediaStream_Unlock(self);
   if ((v9 & 1) == 0)
@@ -6453,7 +6453,7 @@ LABEL_16:
         v26 = 2112;
         v27 = v5;
         v28 = 2048;
-        v29 = self;
+        selfCopy2 = self;
         v15 = "VCAudioStream [%s] %s:%d %@(%p) Sink run lock semaphore was not signaled!";
         v16 = v19;
         v17 = 48;
@@ -6519,7 +6519,7 @@ LABEL_16:
         v26 = 2112;
         v27 = v3;
         v28 = 2048;
-        v29 = self;
+        selfCopy2 = self;
         v30 = 2112;
         v31 = @"skipAudioManagerIdleWait";
         v8 = "VCAudioStream [%s] %s:%d %@(%p) %@ set. Skipping idle wait";
@@ -6549,7 +6549,7 @@ LABEL_16:
   VCAudioReceiver_RegisterActiveAudioStreamRequestCallback(self->_sourceContext.audioReceiver, _VCAudioStream_ActiveStreamChangeCallback, &v2);
 }
 
-- (void)didSuspendAudioIO:(id)a3
+- (void)didSuspendAudioIO:(id)o
 {
   VCMediaStream_Lock(self);
   VCAudioReceiver_Reset(self->_sourceContext.audioReceiver);
@@ -6570,7 +6570,7 @@ LABEL_16:
   VCMediaStream_Unlock(self);
 }
 
-- (void)didResumeAudioIO:(id)a3
+- (void)didResumeAudioIO:(id)o
 {
   VCMediaStream_Lock(self);
   [(VCMediaStream *)self delegate];
@@ -6600,11 +6600,11 @@ LABEL_16:
   }
 }
 
-- (void)collectRxChannelMetrics:(id *)a3
+- (void)collectRxChannelMetrics:(id *)metrics
 {
   v27 = *MEMORY[0x1E69E9840];
   p_sourceContext = &self->_sourceContext;
-  VCAudioReceiver_CollectChannelMetrics(self->_sourceContext.audioReceiver, a3);
+  VCAudioReceiver_CollectChannelMetrics(self->_sourceContext.audioReceiver, metrics);
   if (VRTraceGetErrorLogLevelForModule() >= 7)
   {
     v5 = VRTraceErrorLogLevelToCSTR();
@@ -6612,8 +6612,8 @@ LABEL_16:
     if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
     {
       framesProcessed = p_sourceContext->framesProcessed;
-      v8 = [(VCMediaStream *)self state];
-      v9 = [(VCMediaStreamMultiwayConfig *)[(VCMediaStreamConfig *)[(VCMediaStream *)self defaultStreamConfig] multiwayConfig] participantId];
+      state = [(VCMediaStream *)self state];
+      participantId = [(VCMediaStreamMultiwayConfig *)[(VCMediaStreamConfig *)[(VCMediaStream *)self defaultStreamConfig] multiwayConfig] participantId];
       audioReceiver = p_sourceContext->audioReceiver;
       v11 = 136316930;
       v12 = v5;
@@ -6622,13 +6622,13 @@ LABEL_16:
       v15 = 1024;
       v16 = 3658;
       v17 = 2048;
-      v18 = self;
+      selfCopy = self;
       v19 = 1024;
       v20 = framesProcessed;
       v21 = 1024;
-      v22 = v8;
+      v22 = state;
       v23 = 2112;
-      v24 = v9;
+      v24 = participantId;
       v25 = 2048;
       v26 = audioReceiver;
       _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, "VCAudioStream [%s] %s:%d VCAudioStream[%p] PullAudioSamples count:%u, state:%d, participantID:[%@], audioReceiver[%p]", &v11, 0x46u);
@@ -6636,7 +6636,7 @@ LABEL_16:
   }
 }
 
-- (void)collectTxChannelMetrics:(id *)a3
+- (void)collectTxChannelMetrics:(id *)metrics
 {
   audioTransmitter = self->_audioTransmitter;
   if (audioTransmitter)
@@ -6654,34 +6654,34 @@ LABEL_16:
     v5 = 0u;
   }
 
-  *&a3->var3 = v7;
-  *&a3->var4.height = v8;
-  *&a3->var6 = v9;
-  *&a3->var8 = v10;
-  *&a3->var0 = v5;
-  *&a3->var1[3] = v6;
+  *&metrics->var3 = v7;
+  *&metrics->var4.height = v8;
+  *&metrics->var6 = v9;
+  *&metrics->var8 = v10;
+  *&metrics->var0 = v5;
+  *&metrics->var1[3] = v6;
 }
 
-- (void)handleActiveConnectionChange:(id)a3
+- (void)handleActiveConnectionChange:(id)change
 {
   VCMediaStream_Lock(self);
-  self->_cachedConnectionMTU = [a3 maxConnectionMTU];
-  self->_constantTransportOverhead = VCConnection_PerPacketConnectionOverhead(a3);
+  self->_cachedConnectionMTU = [change maxConnectionMTU];
+  self->_constantTransportOverhead = VCConnection_PerPacketConnectionOverhead(change);
   if (self->super._operatingMode == 6)
   {
     [(VCMediaStream *)self updateTransportsWithConstantConnectionOverhead:?];
   }
 
-  [(VCAudioTransmitter *)self->_audioTransmitter handleActiveConnectionChange:a3];
+  [(VCAudioTransmitter *)self->_audioTransmitter handleActiveConnectionChange:change];
   audioReceiver = self->_sourceContext.audioReceiver;
-  v6 = VCConnection_LocalCellTech(a3);
-  v7 = VCConnection_RemoteCellTech(a3);
+  v6 = VCConnection_LocalCellTech(change);
+  v7 = VCConnection_RemoteCellTech(change);
   VCAudioReceiver_UpdateCellTech(audioReceiver, v6, v7);
 
   VCMediaStream_Unlock(self);
 }
 
-- (void)didUpdateBasebandCodec:(const _VCRemoteCodecInfo *)a3
+- (void)didUpdateBasebandCodec:(const _VCRemoteCodecInfo *)codec
 {
   if (VRTraceGetErrorLogLevelForModule() >= 3)
   {
@@ -6693,11 +6693,11 @@ LABEL_16:
   }
 }
 
-- (void)didChangeThermalLevel:(int)a3
+- (void)didChangeThermalLevel:(int)level
 {
   v5[1] = *MEMORY[0x1E69E9840];
   v4 = @"Thermal";
-  v5[0] = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*&a3];
+  v5[0] = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*&level];
   [MEMORY[0x1E695DF20] dictionaryWithObjects:v5 forKeys:&v4 count:1];
   VCMediaStream_Lock(self);
   reportingGenericEvent();
@@ -6764,7 +6764,7 @@ uint64_t ___VCAudioStream_ActiveStreamChangeCallback_block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setIsLocalCelluar:(unsigned int)a3
+- (void)setIsLocalCelluar:(unsigned int)celluar
 {
   v37 = *MEMORY[0x1E69E9840];
   v33 = 0u;
@@ -6788,7 +6788,7 @@ uint64_t ___VCAudioStream_ActiveStreamChangeCallback_block_invoke(uint64_t a1)
           objc_enumerationMutation(transportArray);
         }
 
-        *([*(*(&v33 + 1) + 8 * i) realtimeContext] + 220) = a3;
+        *([*(*(&v33 + 1) + 8 * i) realtimeContext] + 220) = celluar;
         if (objc_opt_class() == self)
         {
           if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -6804,7 +6804,7 @@ uint64_t ___VCAudioStream_ActiveStreamChangeCallback_block_invoke(uint64_t a1)
               v24 = 1024;
               v25 = 37;
               v26 = 1024;
-              LODWORD(v27) = a3;
+              LODWORD(v27) = celluar;
               v14 = v18;
               v15 = " [%s] %s:%d WiFi<->Cellular handover isLocalCellular=%d";
               v16 = 34;
@@ -6836,9 +6836,9 @@ uint64_t ___VCAudioStream_ActiveStreamChangeCallback_block_invoke(uint64_t a1)
               v26 = 2112;
               v27 = v11;
               v28 = 2048;
-              v29 = self;
+              selfCopy = self;
               v30 = 1024;
-              v31 = a3;
+              celluarCopy = celluar;
               v14 = v13;
               v15 = " [%s] %s:%d %@(%p) WiFi<->Cellular handover isLocalCellular=%d";
               v16 = 54;
@@ -6886,7 +6886,7 @@ LABEL_15:
   [(VCMediaStreamRateAdaptation *)rateAdaptation start];
 }
 
-- (void)setJitterBufferMode:(int)a3
+- (void)setJitterBufferMode:(int)mode
 {
   VCMediaStream_Lock(self);
   audioReceiver = self->_sourceContext.audioReceiver;
@@ -6895,10 +6895,10 @@ LABEL_15:
     if (!self->_shouldEnableJBLatencySenstiveModeForVoWiFi)
     {
       audioReceiver->var75 = 1;
-      audioReceiver->var0.var4 = a3;
+      audioReceiver->var0.var4 = mode;
     }
 
-    if (a3 == 1)
+    if (mode == 1)
     {
       if (self->_isTelephony)
       {
@@ -6906,7 +6906,7 @@ LABEL_15:
       }
     }
 
-    else if (!a3 && self->_isTelephony)
+    else if (!mode && self->_isTelephony)
     {
       [(VCAudioStream *)self handleCellularToWiFiHandover];
     }
@@ -6922,21 +6922,21 @@ LABEL_15:
 
 - (BOOL)isVoLTERateAdaptationEnabled
 {
-  v3 = [(VCMediaStreamConfig *)[(VCMediaStream *)self defaultStreamConfig] isRateAdaptationEnabled];
-  if (v3)
+  isRateAdaptationEnabled = [(VCMediaStreamConfig *)[(VCMediaStream *)self defaultStreamConfig] isRateAdaptationEnabled];
+  if (isRateAdaptationEnabled)
   {
-    v3 = [VCAudioStream isVoLTE:[(VCMediaStreamConfig *)[(VCMediaStream *)self defaultStreamConfig] audioStreamMode]];
-    if (v3)
+    isRateAdaptationEnabled = [VCAudioStream isVoLTE:[(VCMediaStreamConfig *)[(VCMediaStream *)self defaultStreamConfig] audioStreamMode]];
+    if (isRateAdaptationEnabled)
     {
-      v3 = [VCPayloadUtils isEVSPayload:[(VCAudioPayloadConfig *)[(VCAudioPayload *)self->currentAudioPayload config] payload]];
-      if (v3)
+      isRateAdaptationEnabled = [VCPayloadUtils isEVSPayload:[(VCAudioPayloadConfig *)[(VCAudioPayload *)self->currentAudioPayload config] payload]];
+      if (isRateAdaptationEnabled)
       {
-        LOBYTE(v3) = [(VCAudioPayloadConfig *)[(VCAudioTransmitter *)self->_audioTransmitter currentAudioPayloadConfig] bitrate]== 24400;
+        LOBYTE(isRateAdaptationEnabled) = [(VCAudioPayloadConfig *)[(VCAudioTransmitter *)self->_audioTransmitter currentAudioPayloadConfig] bitrate]== 24400;
       }
     }
   }
 
-  return v3;
+  return isRateAdaptationEnabled;
 }
 
 - (void)configureCellularFeatures
@@ -6961,16 +6961,16 @@ LABEL_15:
   }
 }
 
-- (void)setRemoteCodecTypeAndSampleRate:(_VCAudioCodecModeChangeEvent *)a3
+- (void)setRemoteCodecTypeAndSampleRate:(_VCAudioCodecModeChangeEvent *)rate
 {
-  v5 = [VCPayloadUtils audioCodecTypeForPayload:a3->payload];
-  v6 = [VCPayloadUtils sampleRateForCodecBandwidth:a3->codecBandwidth];
+  v5 = [VCPayloadUtils audioCodecTypeForPayload:rate->payload];
+  v6 = [VCPayloadUtils sampleRateForCodecBandwidth:rate->codecBandwidth];
   audioIO = self->_audioIO;
 
   [(VCAudioIO *)audioIO setRemoteCodecType:v5 sampleRate:v6];
 }
 
-- (void)queryAnbrBitrate:(unsigned int)a3 forDirection:(int64_t)a4
+- (void)queryAnbrBitrate:(unsigned int)bitrate forDirection:(int64_t)direction
 {
   v7 = *MEMORY[0x1E69E9840];
   telephonyInterface = self->_telephonyInterface;
@@ -6978,10 +6978,10 @@ LABEL_15:
   v5[1] = 3221225472;
   v5[2] = __58__VCAudioStream_Telephony__queryAnbrBitrate_forDirection___block_invoke;
   v5[3] = &unk_1E85F7E40;
-  v6 = a3;
+  bitrateCopy = bitrate;
   v5[4] = self;
-  v5[5] = a4;
-  [(VCTelephonyInterface *)telephonyInterface queryAnbrBitrateRecommendation:*&a3 direction:a4 completionHandler:v5];
+  v5[5] = direction;
+  [(VCTelephonyInterface *)telephonyInterface queryAnbrBitrateRecommendation:*&bitrate direction:direction completionHandler:v5];
 }
 
 void __58__VCAudioStream_Telephony__queryAnbrBitrate_forDirection___block_invoke(uint64_t a1, uint64_t a2)
@@ -7071,28 +7071,28 @@ LABEL_13:
   }
 }
 
-- (void)notifyCodecModeChangeEvent:(_VCAudioCodecModeChangeEvent *)a3 didUpdateBandwidth:(BOOL)a4 didUpdateBitrate:(BOOL)a5
+- (void)notifyCodecModeChangeEvent:(_VCAudioCodecModeChangeEvent *)event didUpdateBandwidth:(BOOL)bandwidth didUpdateBitrate:(BOOL)bitrate
 {
   v8 = *MEMORY[0x1E69E9840];
-  if (a4)
+  if (bandwidth)
   {
-    v7 = *a3;
-    [(VCAudioStream *)self setRemoteCodecTypeAndSampleRate:&v7, a4, a5];
+    v7 = *event;
+    [(VCAudioStream *)self setRemoteCodecTypeAndSampleRate:&v7, bandwidth, bitrate];
   }
 
-  else if (!a5)
+  else if (!bitrate)
   {
     return;
   }
 
-  v7 = *a3;
+  v7 = *event;
   [(VCAudioStream *)self notifyCodecModeChangeToCT:&v7];
 }
 
-- (void)handleCodecModeChangeEvent:(_VCAudioCodecModeChangeEvent *)a3
+- (void)handleCodecModeChangeEvent:(_VCAudioCodecModeChangeEvent *)event
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = [VCPayloadUtils codecTypeForPayload:a3->payload];
+  v5 = [VCPayloadUtils codecTypeForPayload:event->payload];
   v6 = [VCAudioStream isVoLTE:[(VCMediaStreamConfig *)[(VCMediaStream *)self defaultStreamConfig] audioStreamMode]];
   if (!v5)
   {
@@ -7100,18 +7100,18 @@ LABEL_13:
     return;
   }
 
-  if (a3->codecRateMode == -1)
+  if (event->codecRateMode == -1)
   {
     [VCAudioStream(Telephony) handleCodecModeChangeEvent:];
     return;
   }
 
   v7 = v6;
-  v8 = [(VCAudioPayloadConfig *)[(VCAudioPayload *)self->currentAudioPayload config] supportedBitrates];
-  p_codecBitrate = &a3->codecBitrate;
-  if (!-[NSArray containsObject:](v8, "containsObject:", [MEMORY[0x1E696AD98] numberWithUnsignedInt:a3->codecBitrate]))
+  supportedBitrates = [(VCAudioPayloadConfig *)[(VCAudioPayload *)self->currentAudioPayload config] supportedBitrates];
+  p_codecBitrate = &event->codecBitrate;
+  if (!-[NSArray containsObject:](supportedBitrates, "containsObject:", [MEMORY[0x1E696AD98] numberWithUnsignedInt:event->codecBitrate]))
   {
-    [(VCAudioStream(Telephony) *)a3 handleCodecModeChangeEvent:?];
+    [(VCAudioStream(Telephony) *)event handleCodecModeChangeEvent:?];
     return;
   }
 
@@ -7124,11 +7124,11 @@ LABEL_13:
 
   else
   {
-    *v18 = *&a3->payload;
-    *&v18[16] = a3->RFParams;
-    if ([(VCAudioStream *)self handleUplinkBitrateChange:v18 reason:1]&& [VCPayloadUtils isEVSPayload:a3->payload]&& self->super._rateAdaptation)
+    *v18 = *&event->payload;
+    *&v18[16] = event->RFParams;
+    if ([(VCAudioStream *)self handleUplinkBitrateChange:v18 reason:1]&& [VCPayloadUtils isEVSPayload:event->payload]&& self->super._rateAdaptation)
     {
-      if (VCPayloadUtils_AudioCodecRateModeForBitrate(a3->payload, [(VCAudioPayload *)self->currentAudioPayload bitrate]) > 8)
+      if (VCPayloadUtils_AudioCodecRateModeForBitrate(event->payload, [(VCAudioPayload *)self->currentAudioPayload bitrate]) > 8)
       {
         self->_uplinkRateAdaptationMaxAllowedBitrate = [(VCAudioPayload *)self->currentAudioPayload bitrate];
         if (VRTraceGetErrorLogLevelForModule() < 6)
@@ -7170,7 +7170,7 @@ LABEL_13:
           return;
         }
 
-        v14 = [(VCAudioPayload *)self->currentAudioPayload bitrate];
+        bitrate = [(VCAudioPayload *)self->currentAudioPayload bitrate];
         *v18 = 136315906;
         *&v18[4] = v12;
         *&v18[12] = 2080;
@@ -7178,7 +7178,7 @@ LABEL_13:
         *&v18[22] = 1024;
         v19 = 162;
         v20 = 1024;
-        v21 = v14;
+        v21 = bitrate;
         v15 = " [%s] %s:%d Disabling uplink rate adaptation due to EVS AMRWB-IO bitrate=%u";
       }
 
@@ -7187,25 +7187,25 @@ LABEL_13:
   }
 }
 
-- (void)storeLastCodecModeChangeEvent:(_VCAudioCodecModeChangeEvent *)a3
+- (void)storeLastCodecModeChangeEvent:(_VCAudioCodecModeChangeEvent *)event
 {
   self->_cmrBitrateActive = 1;
-  v3 = *&a3->payload;
-  self->_lastCodecModeChangeEvent.RFParams = a3->RFParams;
+  v3 = *&event->payload;
+  self->_lastCodecModeChangeEvent.RFParams = event->RFParams;
   *&self->_lastCodecModeChangeEvent.payload = v3;
 }
 
-- (BOOL)handleUplinkBitrateChange:(_VCAudioCodecModeChangeEvent *)a3 reason:(unsigned __int8)a4
+- (BOOL)handleUplinkBitrateChange:(_VCAudioCodecModeChangeEvent *)change reason:(unsigned __int8)reason
 {
-  v4 = a4;
+  reasonCopy = reason;
   v37 = *MEMORY[0x1E69E9840];
   v24 = 0;
-  if (a4 == 4 || !self->_basebandThermalMitigationsEnabled)
+  if (reason == 4 || !self->_basebandThermalMitigationsEnabled)
   {
-    v8 = [(VCAudioStream *)self audioTransmitter];
-    buf = *a3;
-    [(VCAudioTransmitter *)v8 handleCodecModeChangeEvent:&buf didUpdateBandwidth:&v24 didUpdateBitrate:&v24 + 1];
-    buf = *a3;
+    audioTransmitter = [(VCAudioStream *)self audioTransmitter];
+    buf = *change;
+    [(VCAudioTransmitter *)audioTransmitter handleCodecModeChangeEvent:&buf didUpdateBandwidth:&v24 didUpdateBitrate:&v24 + 1];
+    buf = *change;
     [(VCAudioStream *)self notifyCodecModeChangeEvent:&buf didUpdateBandwidth:v24 didUpdateBitrate:HIBYTE(v24)];
     if ((v24 & 0x100) == 0 && v24 != 1)
     {
@@ -7219,18 +7219,18 @@ LABEL_19:
       if (VRTraceGetErrorLogLevelForModule() < 6 || (v10 = VRTraceErrorLogLevelToCSTR(), v11 = *MEMORY[0x1E6986650], !os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT)))
       {
 LABEL_17:
-        if (v4 != 4)
+        if (reasonCopy != 4)
         {
-          buf = *a3;
+          buf = *change;
           [(VCAudioStream *)self storeLastCodecModeChangeEvent:&buf];
         }
 
         goto LABEL_19;
       }
 
-      payload = a3->payload;
-      codecBandwidth = a3->codecBandwidth;
-      codecBitrate = a3->codecBitrate;
+      payload = change->payload;
+      codecBandwidth = change->codecBandwidth;
+      codecBitrate = change->codecBitrate;
       buf.payload = 136316674;
       *&buf.codecRateMode = v10;
       LOWORD(buf.codecBitrate) = 2080;
@@ -7238,12 +7238,12 @@ LABEL_17:
       HIWORD(buf.RFParams.indicator) = 1024;
       v26 = 194;
       v27 = 1024;
-      *v28 = v4;
+      *v28 = reasonCopy;
       *&v28[4] = 1024;
       *&v28[6] = payload;
-      LOWORD(v29) = 1024;
-      *(&v29 + 2) = codecBitrate;
-      HIWORD(v29) = 1024;
+      LOWORD(selfCopy) = 1024;
+      *(&selfCopy + 2) = codecBitrate;
+      HIWORD(selfCopy) = 1024;
       *v30 = codecBandwidth;
       v15 = " [%s] %s:%d Bitrate adaptation performed: reason=%d, payload=%d, suggestedBitrate=%d, suggestedBandwidth=%d";
       v16 = v11;
@@ -7274,9 +7274,9 @@ LABEL_17:
         goto LABEL_17;
       }
 
-      v20 = a3->payload;
-      v22 = a3->codecBandwidth;
-      v21 = a3->codecBitrate;
+      v20 = change->payload;
+      v22 = change->codecBandwidth;
+      v21 = change->codecBitrate;
       buf.payload = 136317186;
       *&buf.codecRateMode = v18;
       LOWORD(buf.codecBitrate) = 2080;
@@ -7286,9 +7286,9 @@ LABEL_17:
       v27 = 2112;
       *v28 = v9;
       *&v28[8] = 2048;
-      v29 = self;
+      selfCopy = self;
       *v30 = 1024;
-      *&v30[2] = v4;
+      *&v30[2] = reasonCopy;
       v31 = 1024;
       v32 = v20;
       v33 = 1024;
@@ -7304,16 +7304,16 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  buf = *a3;
+  buf = *change;
   [(VCAudioStream *)self storeLastCodecModeChangeEvent:&buf];
   v7 = 0;
   return v7 & 1;
 }
 
-- (BOOL)getCodecModeChangeEvent:(_VCAudioCodecModeChangeEvent *)a3 forCodecBitrate:(unsigned int)a4 payload:(int)a5
+- (BOOL)getCodecModeChangeEvent:(_VCAudioCodecModeChangeEvent *)event forCodecBitrate:(unsigned int)bitrate payload:(int)payload
 {
   v30 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!event)
   {
     [VCAudioStream(Telephony) getCodecModeChangeEvent:? forCodecBitrate:? payload:?];
 LABEL_9:
@@ -7321,21 +7321,21 @@ LABEL_9:
     return v11;
   }
 
-  if (!a4 || a5 == 128)
+  if (!bitrate || payload == 128)
   {
-    [VCAudioStream(Telephony) getCodecModeChangeEvent:a4 forCodecBitrate:&v16 payload:?];
+    [VCAudioStream(Telephony) getCodecModeChangeEvent:bitrate forCodecBitrate:&v16 payload:?];
     goto LABEL_9;
   }
 
-  v9 = VCPayloadUtils_AudioCodecRateModeForBitrate(a5, a4);
+  v9 = VCPayloadUtils_AudioCodecRateModeForBitrate(payload, bitrate);
   v10 = [(VCAudioStream *)self selectCodecBandwidthForCodecRateMode:v9];
   if ([VCPayloadUtils isCodecModeSupported:v9 forBandwidth:v10 withPayload:[(VCAudioPayloadConfig *)[(VCAudioPayload *)self->currentAudioPayload config] payload]])
   {
-    a3->codecBandwidth = v10;
-    a3->codecBitrate = a4;
+    event->codecBandwidth = v10;
+    event->codecBitrate = bitrate;
     LOBYTE(v11) = 1;
-    a3->payload = a5;
-    a3->codecRateMode = v9;
+    event->payload = payload;
+    event->codecRateMode = v9;
   }
 
   else
@@ -7350,7 +7350,7 @@ LABEL_9:
         return v11;
       }
 
-      v14 = [(VCAudioPayloadConfig *)[(VCAudioTransmitter *)self->_audioTransmitter currentAudioPayloadConfig] payload];
+      payload = [(VCAudioPayloadConfig *)[(VCAudioTransmitter *)self->_audioTransmitter currentAudioPayloadConfig] payload];
       v16 = 136316674;
       v17 = v12;
       v18 = 2080;
@@ -7358,9 +7358,9 @@ LABEL_9:
       v20 = 1024;
       v21 = 215;
       v22 = 1024;
-      v23 = v14;
+      v23 = payload;
       v24 = 1024;
-      v25 = a4;
+      bitrateCopy = bitrate;
       v26 = 1024;
       v27 = v9;
       v28 = 1024;
@@ -7374,7 +7374,7 @@ LABEL_9:
   return v11;
 }
 
-- (void)handleBasebandRateTrendSuggestion:(int)a3
+- (void)handleBasebandRateTrendSuggestion:(int)suggestion
 {
   v35 = *MEMORY[0x1E69E9840];
   v20 = 0uLL;
@@ -7388,14 +7388,14 @@ LABEL_9:
 
   v5 = [VCPayloadUtils allowedBitratesForPayload:[(VCAudioPayloadConfig *)[(VCAudioTransmitter *)self->_audioTransmitter currentAudioPayloadConfig] payload] supportedBitrates:[(VCAudioPayloadConfig *)[(VCAudioTransmitter *)self->_audioTransmitter currentAudioPayloadConfig] supportedBitrates] supportedBandwidths:[(VCAudioPayloadConfig *)[(VCAudioTransmitter *)self->_audioTransmitter currentAudioPayloadConfig] supportedBandwidths]];
   v6 = v5;
-  if (a3 == 0x80000000)
+  if (suggestion == 0x80000000)
   {
     v7 = 0;
   }
 
   else
   {
-    if (a3 != 0x7FFFFFFF)
+    if (suggestion != 0x7FFFFFFF)
     {
       v11 = 0;
       v20 = *&self->_lastCodecModeChangeEvent.payload;
@@ -7449,10 +7449,10 @@ LABEL_13:
       v24 = 1024;
       *v25 = v11;
       *&v25[4] = 1024;
-      *&v25[6] = a3;
-      LOWORD(v26) = 1024;
-      *(&v26 + 2) = v20;
-      HIWORD(v26) = 1024;
+      *&v25[6] = suggestion;
+      LOWORD(selfCopy) = 1024;
+      *(&selfCopy + 2) = v20;
+      HIWORD(selfCopy) = 1024;
       *v27 = HIDWORD(v20);
       *&v27[4] = 1024;
       *v28 = DWORD2(v20);
@@ -7494,11 +7494,11 @@ LABEL_13:
       v24 = 2112;
       *v25 = v12;
       *&v25[8] = 2048;
-      v26 = self;
+      selfCopy = self;
       *v27 = 1024;
       *&v27[2] = v11;
       *v28 = 1024;
-      *&v28[2] = a3;
+      *&v28[2] = suggestion;
       v29 = 1024;
       v30 = v20;
       v31 = 1024;
@@ -7521,24 +7521,24 @@ LABEL_25:
   self->_basebandThermalMitigationsEnabled = v11;
 }
 
-- (void)handleUplinkANBR:(_VCAudioCodecModeChangeEvent *)a3
+- (void)handleUplinkANBR:(_VCAudioCodecModeChangeEvent *)r
 {
   v4 = *MEMORY[0x1E69E9840];
-  v3 = *a3;
+  v3 = *r;
   [(VCAudioStream *)self handleUplinkBitrateChange:&v3 reason:3];
 }
 
-- (void)handleDownlinkANBR:(_VCAudioCodecModeChangeEvent *)a3
+- (void)handleDownlinkANBR:(_VCAudioCodecModeChangeEvent *)r
 {
   v6 = *MEMORY[0x1E69E9840];
-  v4 = [(VCAudioStream *)self audioTransmitter];
-  v5 = *a3;
-  [(VCAudioTransmitter *)v4 sendCodecModeChangeEvent:&v5];
+  audioTransmitter = [(VCAudioStream *)self audioTransmitter];
+  v5 = *r;
+  [(VCAudioTransmitter *)audioTransmitter sendCodecModeChangeEvent:&v5];
 }
 
-- (int)selectCodecBandwidthForCodecRateMode:(int)a3
+- (int)selectCodecBandwidthForCodecRateMode:(int)mode
 {
-  v3 = *&a3;
+  v3 = *&mode;
   v19 = *MEMORY[0x1E69E9840];
   v5 = VCPayloadUtils_DefaultAudioCodecBandwidthCodecForSampleRate([(VCAudioPayloadConfig *)[(VCAudioTransmitter *)self->_audioTransmitter currentAudioPayloadConfig] codecSampleRate]);
   v6 = [VCPayloadUtils codecTypeForPayload:[(VCAudioPayloadConfig *)[(VCAudioTransmitter *)self->_audioTransmitter currentAudioPayloadConfig] payload]];
@@ -7552,8 +7552,8 @@ LABEL_25:
         v18 = 0u;
         v15 = 0u;
         v16 = 0u;
-        v7 = [(NSArray *)[(VCAudioPayloadConfig *)[(VCAudioPayload *)self->currentAudioPayload config] supportedBandwidths] reverseObjectEnumerator];
-        v8 = [(NSEnumerator *)v7 countByEnumeratingWithState:&v15 objects:v14 count:16];
+        reverseObjectEnumerator = [(NSArray *)[(VCAudioPayloadConfig *)[(VCAudioPayload *)self->currentAudioPayload config] supportedBandwidths] reverseObjectEnumerator];
+        v8 = [(NSEnumerator *)reverseObjectEnumerator countByEnumeratingWithState:&v15 objects:v14 count:16];
         if (v8)
         {
           v9 = v8;
@@ -7565,7 +7565,7 @@ LABEL_25:
             {
               if (*v16 != v10)
               {
-                objc_enumerationMutation(v7);
+                objc_enumerationMutation(reverseObjectEnumerator);
               }
 
               v5 = *(*(&v15 + 1) + 8 * i);
@@ -7576,7 +7576,7 @@ LABEL_25:
               }
             }
 
-            v9 = [(NSEnumerator *)v7 countByEnumeratingWithState:&v15 objects:v14 count:16];
+            v9 = [(NSEnumerator *)reverseObjectEnumerator countByEnumeratingWithState:&v15 objects:v14 count:16];
             if (v9)
             {
               continue;
@@ -7594,9 +7594,9 @@ LABEL_25:
   return v5;
 }
 
-- (void)handleANBR:(unsigned int)a3 forDirection:(int64_t)a4
+- (void)handleANBR:(unsigned int)r forDirection:(int64_t)direction
 {
-  v5 = *&a3;
+  v5 = *&r;
   v28 = *MEMORY[0x1E69E9840];
   if ([VCPayloadUtils codecTypeForPayload:[(VCAudioPayloadConfig *)[(VCAudioTransmitter *)self->_audioTransmitter currentAudioPayloadConfig] payload]])
   {
@@ -7616,19 +7616,19 @@ LABEL_25:
         v11 = [(VCAudioStream *)self selectCodecBandwidthForCodecRateMode:v8];
         if ([VCPayloadUtils isCodecModeSupported:v8 forBandwidth:v11 withPayload:[(VCAudioPayloadConfig *)[(VCAudioPayload *)self->currentAudioPayload config] payload]])
         {
-          v12 = [(VCAudioPayloadConfig *)[(VCAudioTransmitter *)self->_audioTransmitter currentAudioPayloadConfig] payload];
-          if (a4 == 2)
+          payload = [(VCAudioPayloadConfig *)[(VCAudioTransmitter *)self->_audioTransmitter currentAudioPayloadConfig] payload];
+          if (direction == 2)
           {
-            v16 = v12;
+            v16 = payload;
             v17 = __PAIR64__(v11, v8);
             *v18 = v10;
             *&v18[4] = 0;
             [(VCAudioStream *)self handleDownlinkANBR:&v16];
           }
 
-          else if (a4 == 1)
+          else if (direction == 1)
           {
-            v16 = v12;
+            v16 = payload;
             v17 = __PAIR64__(v11, v8);
             *v18 = v10;
             *&v18[4] = 0;
@@ -7642,7 +7642,7 @@ LABEL_25:
           v14 = *MEMORY[0x1E6986650];
           if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_ERROR))
           {
-            v15 = [(VCAudioPayloadConfig *)[(VCAudioTransmitter *)self->_audioTransmitter currentAudioPayloadConfig] payload];
+            payload2 = [(VCAudioPayloadConfig *)[(VCAudioTransmitter *)self->_audioTransmitter currentAudioPayloadConfig] payload];
             v16 = 136316674;
             v17 = v13;
             *v18 = 2080;
@@ -7650,7 +7650,7 @@ LABEL_25:
             *&v18[10] = 1024;
             v19 = 317;
             v20 = 1024;
-            v21 = v15;
+            v21 = payload2;
             v22 = 1024;
             v23 = v10;
             v24 = 1024;
@@ -7675,22 +7675,22 @@ LABEL_25:
   }
 }
 
-- (void)telephonyInterface:(id)a3 anbrActivationUpdate:(BOOL)a4
+- (void)telephonyInterface:(id)interface anbrActivationUpdate:(BOOL)update
 {
   VCMediaStream_Lock(self);
-  self->_anbrActive = a4;
+  self->_anbrActive = update;
 
   VCMediaStream_Unlock(self);
 }
 
-- (void)telephonyInterface:(id)a3 anbrRecommendation:(unsigned int)a4 forDirection:(int64_t)a5
+- (void)telephonyInterface:(id)interface anbrRecommendation:(unsigned int)recommendation forDirection:(int64_t)direction
 {
-  v6 = *&a4;
+  v6 = *&recommendation;
   v26 = *MEMORY[0x1E69E9840];
   VCMediaStream_Lock(self);
   if (self->_anbrEnabled)
   {
-    [(VCAudioStream *)self handleANBR:v6 forDirection:a5];
+    [(VCAudioStream *)self handleANBR:v6 forDirection:direction];
   }
 
   else if (VRTraceGetErrorLogLevelForModule() >= 3)
@@ -7714,7 +7714,7 @@ LABEL_25:
       v22 = 1024;
       v23 = v6;
       v24 = 2048;
-      v25 = a5;
+      directionCopy = direction;
       _os_log_error_impl(&dword_1DB56E000, v9, OS_LOG_TYPE_ERROR, " [%s] %s:%d Received a bitrate recommendation when ANBR is not enabled. anbrEnabled=%d, anbrActive=%d, bitrate=%u, direction=%ld", &v12, 0x38u);
     }
   }
@@ -7722,22 +7722,22 @@ LABEL_25:
   VCMediaStream_Unlock(self);
 }
 
-- (void)rateAdaptation:(id)a3 targetBitrateDidChange:(unsigned int)a4 rateChangeCounter:(unsigned int)a5
+- (void)rateAdaptation:(id)adaptation targetBitrateDidChange:(unsigned int)change rateChangeCounter:(unsigned int)counter
 {
-  uplinkRateAdaptationMaxAllowedBitrate = a4;
+  uplinkRateAdaptationMaxAllowedBitrate = change;
   v45 = *MEMORY[0x1E69E9840];
-  [(VCMediaStream *)self lock:a3];
+  [(VCMediaStream *)self lock:adaptation];
   rateAdaptation = self->super._rateAdaptation;
-  if (!rateAdaptation || rateAdaptation != a3 || self->_anbrEnabled)
+  if (!rateAdaptation || rateAdaptation != adaptation || self->_anbrEnabled)
   {
     [VCAudioStream(Telephony) rateAdaptation:? targetBitrateDidChange:? rateChangeCounter:?];
     goto LABEL_26;
   }
 
-  v9 = [(VCAudioPayloadConfig *)[(VCAudioTransmitter *)self->_audioTransmitter currentAudioPayloadConfig] payload];
-  if (![VCPayloadUtils isEVSPayload:v9]|| ![VCAudioStream isVoLTE:[(VCMediaStreamConfig *)[(VCMediaStream *)self defaultStreamConfig] audioStreamMode]])
+  payload = [(VCAudioPayloadConfig *)[(VCAudioTransmitter *)self->_audioTransmitter currentAudioPayloadConfig] payload];
+  if (![VCPayloadUtils isEVSPayload:payload]|| ![VCAudioStream isVoLTE:[(VCMediaStreamConfig *)[(VCMediaStream *)self defaultStreamConfig] audioStreamMode]])
   {
-    [VCAudioStream(Telephony) rateAdaptation:v9 targetBitrateDidChange:? rateChangeCounter:?];
+    [VCAudioStream(Telephony) rateAdaptation:payload targetBitrateDidChange:? rateChangeCounter:?];
     goto LABEL_26;
   }
 
@@ -7788,7 +7788,7 @@ LABEL_25:
     WORD2(v41) = 2112;
     *(&v41 + 6) = v13;
     HIWORD(v41) = 2048;
-    v42 = self;
+    selfCopy3 = self;
     LOWORD(v43) = 1024;
     *(&v43 + 2) = uplinkRateAdaptationMaxAllowedBitrate;
     v30 = " [%s] %s:%d %@(%p) Target bitrate change not supported targetBitrate=%d";
@@ -7804,9 +7804,9 @@ LABEL_34:
     uplinkRateAdaptationMaxAllowedBitrate = self->_uplinkRateAdaptationMaxAllowedBitrate;
   }
 
-  v10 = [(VCAudioPayload *)self->currentAudioPayload bitrate];
+  bitrate = [(VCAudioPayload *)self->currentAudioPayload bitrate];
   v11 = objc_opt_class();
-  if (v10 != uplinkRateAdaptationMaxAllowedBitrate)
+  if (bitrate != uplinkRateAdaptationMaxAllowedBitrate)
   {
     if (v11 == self)
     {
@@ -7822,7 +7822,7 @@ LABEL_34:
         goto LABEL_25;
       }
 
-      v16 = [(VCAudioPayload *)self->currentAudioPayload bitrate];
+      bitrate2 = [(VCAudioPayload *)self->currentAudioPayload bitrate];
       v17 = self->_uplinkRateAdaptationMaxAllowedBitrate;
       *v40 = 136316418;
       *&v40[4] = v14;
@@ -7831,11 +7831,11 @@ LABEL_34:
       *&v40[22] = 1024;
       LODWORD(v41) = 366;
       WORD2(v41) = 1024;
-      *(&v41 + 6) = v16;
+      *(&v41 + 6) = bitrate2;
       WORD5(v41) = 1024;
       HIDWORD(v41) = v17;
-      LOWORD(v42) = 1024;
-      *(&v42 + 2) = uplinkRateAdaptationMaxAllowedBitrate;
+      LOWORD(selfCopy3) = 1024;
+      *(&selfCopy3 + 2) = uplinkRateAdaptationMaxAllowedBitrate;
       v18 = " [%s] %s:%d Applying uplink rate adaptation recommendation currentBitrate=%u maxAllowedBitrate=%d uplinkTargetBitrate=%d";
       v19 = v15;
       v20 = 46;
@@ -7865,7 +7865,7 @@ LABEL_34:
         goto LABEL_25;
       }
 
-      v23 = [(VCAudioPayload *)self->currentAudioPayload bitrate];
+      bitrate3 = [(VCAudioPayload *)self->currentAudioPayload bitrate];
       v24 = self->_uplinkRateAdaptationMaxAllowedBitrate;
       *v40 = 136316930;
       *&v40[4] = v21;
@@ -7876,9 +7876,9 @@ LABEL_34:
       WORD2(v41) = 2112;
       *(&v41 + 6) = v12;
       HIWORD(v41) = 2048;
-      v42 = self;
+      selfCopy3 = self;
       LOWORD(v43) = 1024;
-      *(&v43 + 2) = v23;
+      *(&v43 + 2) = bitrate3;
       HIWORD(v43) = 1024;
       LODWORD(v44) = v24;
       WORD2(v44) = 1024;
@@ -7890,11 +7890,11 @@ LABEL_34:
 
     _os_log_impl(&dword_1DB56E000, v19, OS_LOG_TYPE_DEFAULT, v18, v40, v20);
 LABEL_25:
-    v25 = VCPayloadUtils_AudioCodecRateModeForBitrate(v9, uplinkRateAdaptationMaxAllowedBitrate);
-    v26 = [(VCAudioPayload *)self->currentAudioPayload bandwidth];
-    *v40 = v9;
+    v25 = VCPayloadUtils_AudioCodecRateModeForBitrate(payload, uplinkRateAdaptationMaxAllowedBitrate);
+    bandwidth = [(VCAudioPayload *)self->currentAudioPayload bandwidth];
+    *v40 = payload;
     *&v40[4] = v25;
-    *&v40[8] = v26;
+    *&v40[8] = bandwidth;
     *&v40[12] = uplinkRateAdaptationMaxAllowedBitrate;
     *&v40[16] = 0;
     [(VCAudioStream *)self handleUplinkBitrateChange:v40 reason:2];
@@ -7958,7 +7958,7 @@ LABEL_25:
       WORD2(v41) = 2112;
       *(&v41 + 6) = v33;
       HIWORD(v41) = 2048;
-      v42 = self;
+      selfCopy3 = self;
       LOWORD(v43) = 1024;
       *(&v43 + 2) = uplinkRateAdaptationMaxAllowedBitrate;
       HIWORD(v43) = 1024;
@@ -7974,20 +7974,20 @@ LABEL_26:
   [(VCMediaStream *)self unlock:*v40];
 }
 
-- (id)codecConfigForOpusWithStreamConfig:(id)a3
+- (id)codecConfigForOpusWithStreamConfig:(id)config
 {
-  result = [objc_msgSend(a3 "codecConfigurations")];
+  result = [objc_msgSend(config "codecConfigurations")];
   if (!result)
   {
-    v5 = [a3 codecConfigurations];
+    codecConfigurations = [config codecConfigurations];
 
-    return [v5 objectForKeyedSubscript:&unk_1F5798B20];
+    return [codecConfigurations objectForKeyedSubscript:&unk_1F5798B20];
   }
 
   return result;
 }
 
-- (void)setupAudioMachineLearningCoordinatorsWithFormat:(tagVCAudioFrameFormat *)a3 direction:(int64_t)a4
+- (void)setupAudioMachineLearningCoordinatorsWithFormat:(tagVCAudioFrameFormat *)format direction:(int64_t)direction
 {
   v58 = *MEMORY[0x1E69E9840];
   if (!self->_shouldSetUpCaptions)
@@ -7997,7 +7997,7 @@ LABEL_26:
 
   if (self->_isCaptionsFormatValid)
   {
-    if (!memcmp(&self->_captionsFormat, a3, 0x30uLL))
+    if (!memcmp(&self->_captionsFormat, format, 0x30uLL))
     {
       return;
     }
@@ -8020,7 +8020,7 @@ LABEL_26:
   v38 = v42;
   v37 = v8;
   v36 = v40;
-  if (a4 == 3)
+  if (direction == 3)
   {
     v13 = [VCAudioMachineLearningCoordinator alloc];
     OUTLINED_FUNCTION_45();
@@ -8121,7 +8121,7 @@ LABEL_64:
     goto LABEL_65;
   }
 
-  if (a4 == 2)
+  if (direction == 2)
   {
     v12 = [VCAudioMachineLearningCoordinator alloc];
     OUTLINED_FUNCTION_45();
@@ -8172,7 +8172,7 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  if (a4 != 1)
+  if (direction != 1)
   {
     goto LABEL_19;
   }
@@ -8246,11 +8246,11 @@ LABEL_19:
         v46 = "[VCAudioStream setupAudioMachineLearningCoordinatorsWithFormat:direction:]";
         OUTLINED_FUNCTION_44();
         v48 = 2048;
-        v49 = a4;
+        directionCopy = direction;
         v50 = 2048;
-        v51 = v20;
+        selfCopy = v20;
         v52 = 2048;
-        v53 = v21;
+        directionCopy2 = v21;
         v22 = "VCAudioStream [%s] %s:%d Registered audio machine learning coordinators for direction=%ld, _audioMachineLearningCoordinatorUplink=%p, _audioMachineLearningCoordinatorDownlink=%p";
         v23 = v19;
         v24 = 58;
@@ -8285,11 +8285,11 @@ LABEL_29:
         v46 = "[VCAudioStream setupAudioMachineLearningCoordinatorsWithFormat:direction:]";
         OUTLINED_FUNCTION_44();
         v48 = 2112;
-        v49 = v17;
+        directionCopy = v17;
         v50 = 2048;
-        v51 = self;
+        selfCopy = self;
         v52 = 2048;
-        v53 = a4;
+        directionCopy2 = direction;
         v54 = 2048;
         v55 = v27;
         v56 = 2048;
@@ -8303,22 +8303,22 @@ LABEL_29:
   }
 }
 
-- (id)setLocalParticipantInfo:(id)a3 networkSockets:(id)a4 withError:(id *)a5
+- (id)setLocalParticipantInfo:(id)info networkSockets:(id)sockets withError:(id *)error
 {
   v13 = *MEMORY[0x1E69E9840];
   v12 = 0;
-  if (!a4 && self->super._operatingMode == 5)
+  if (!sockets && self->super._operatingMode == 5)
   {
     self->super._connectionType = 1;
   }
 
   v11.receiver = self;
   v11.super_class = VCAudioStream;
-  v8 = [VCMediaStream setLocalParticipantInfo:sel_setLocalParticipantInfo_networkSockets_withError_ networkSockets:a3 withError:?];
+  v8 = [VCMediaStream setLocalParticipantInfo:sel_setLocalParticipantInfo_networkSockets_withError_ networkSockets:info withError:?];
   if (v12)
   {
     v9 = 0;
-    if (!a5)
+    if (!error)
     {
       return v9;
     }
@@ -8334,26 +8334,26 @@ LABEL_29:
     [v9 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInteger:", self->super._streamTokenDownlink), @"avcKeyAudioPowerSpectrumTokenOutput"}];
   }
 
-  self->_shouldSetUpCaptions = [objc_msgSend(a3 objectForKeyedSubscript:{@"vcMediaStreamSetUpCaptioning", "BOOLValue"}];
+  self->_shouldSetUpCaptions = [objc_msgSend(info objectForKeyedSubscript:{@"vcMediaStreamSetUpCaptioning", "BOOLValue"}];
   if ([OUTLINED_FUNCTION_39_3() shouldSetUpMediaRecorderWithParticipantInfoDictionary:?])
   {
     [(VCAudioStream *)self setUpMediaRecorder];
   }
 
-  if (a5)
+  if (error)
   {
 LABEL_10:
-    *a5 = v12;
+    *error = v12;
   }
 
   return v9;
 }
 
-- (unsigned)packetExpirationTimeForStreamConfig:(id)a3
+- (unsigned)packetExpirationTimeForStreamConfig:(id)config
 {
-  if ([a3 audioStreamMode] == 8)
+  if ([config audioStreamMode] == 8)
   {
-    return [a3 packetExpirationTime];
+    return [config packetExpirationTime];
   }
 
   else
@@ -8882,13 +8882,13 @@ LABEL_11:
   _os_log_error_impl(v0, v1, v2, v3, v4, v5);
 }
 
-- (void)notifyCodecModeChangeToCT:(_VCAudioCodecModeChangeEvent *)a3
+- (void)notifyCodecModeChangeToCT:(_VCAudioCodecModeChangeEvent *)t
 {
   v5 = *MEMORY[0x1E69E9840];
   if (self->_isTelephony)
   {
     telephonyInterface = self->_telephonyInterface;
-    v4 = *a3;
+    v4 = *t;
     [(VCTelephonyInterface *)telephonyInterface notifyCodecModeChangeEventToCT:&v4];
   }
 }

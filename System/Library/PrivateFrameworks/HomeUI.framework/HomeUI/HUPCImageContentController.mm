@@ -1,27 +1,27 @@
 @interface HUPCImageContentController
-- (HUPCImageContentController)initWithTitle:(id)a3 detailText:(id)a4 contentImage:(id)a5;
+- (HUPCImageContentController)initWithTitle:(id)title detailText:(id)text contentImage:(id)image;
 - (UIImage)contentImage;
 - (double)_contentAspectRatio;
 - (void)_updateContentMode;
 - (void)_viewDidUpdateContent;
-- (void)setContentImage:(id)a3;
+- (void)setContentImage:(id)image;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
 
 @implementation HUPCImageContentController
 
-- (HUPCImageContentController)initWithTitle:(id)a3 detailText:(id)a4 contentImage:(id)a5
+- (HUPCImageContentController)initWithTitle:(id)title detailText:(id)text contentImage:(id)image
 {
   v8 = MEMORY[0x277D755E8];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [[v8 alloc] initWithImage:v9];
+  imageCopy = image;
+  textCopy = text;
+  titleCopy = title;
+  v12 = [[v8 alloc] initWithImage:imageCopy];
 
   v15.receiver = self;
   v15.super_class = HUPCImageContentController;
-  v13 = [(HUPCCenterFillContentController *)&v15 initWithTitle:v11 detailText:v10 contentView:v12];
+  v13 = [(HUPCCenterFillContentController *)&v15 initWithTitle:titleCopy detailText:textCopy contentView:v12];
 
   if (v13)
   {
@@ -50,45 +50,45 @@
 
 - (UIImage)contentImage
 {
-  v2 = [(HUPCImageContentController *)self contentImageView];
-  v3 = [v2 image];
+  contentImageView = [(HUPCImageContentController *)self contentImageView];
+  image = [contentImageView image];
 
-  return v3;
+  return image;
 }
 
-- (void)setContentImage:(id)a3
+- (void)setContentImage:(id)image
 {
-  v9 = a3;
-  v4 = [(HUPCImageContentController *)self contentImageView];
-  v5 = [v4 image];
+  imageCopy = image;
+  contentImageView = [(HUPCImageContentController *)self contentImageView];
+  image = [contentImageView image];
 
-  v6 = v9;
-  if (v5 != v9)
+  v6 = imageCopy;
+  if (image != imageCopy)
   {
-    v7 = [(HUPCImageContentController *)self contentImageView];
-    [v7 setImage:v9];
+    contentImageView2 = [(HUPCImageContentController *)self contentImageView];
+    [contentImageView2 setImage:imageCopy];
 
-    v8 = [(HUPCImageContentController *)self isViewLoaded];
-    v6 = v9;
-    if (v8)
+    isViewLoaded = [(HUPCImageContentController *)self isViewLoaded];
+    v6 = imageCopy;
+    if (isViewLoaded)
     {
       [(HUPCImageContentController *)self _viewDidUpdateContent];
-      v6 = v9;
+      v6 = imageCopy;
     }
   }
 }
 
 - (double)_contentAspectRatio
 {
-  v3 = [(HUPCImageContentController *)self contentImage];
+  contentImage = [(HUPCImageContentController *)self contentImage];
 
-  if (v3)
+  if (contentImage)
   {
-    v4 = [(HUPCImageContentController *)self contentImage];
-    [v4 size];
+    contentImage2 = [(HUPCImageContentController *)self contentImage];
+    [contentImage2 size];
     v6 = v5;
-    v7 = [(HUPCImageContentController *)self contentImage];
-    [v7 size];
+    contentImage3 = [(HUPCImageContentController *)self contentImage];
+    [contentImage3 size];
     v9 = v6 / v8;
   }
 
@@ -113,8 +113,8 @@
 
 - (void)_updateContentMode
 {
-  v3 = [(HUPCImageContentController *)self contentImage];
-  [v3 size];
+  contentImage = [(HUPCImageContentController *)self contentImage];
+  [contentImage size];
   v5 = v4;
   [(UIImageView *)self->_contentImageView bounds];
   if (v5 > v6)
@@ -125,8 +125,8 @@
 
   else
   {
-    v7 = [(HUPCImageContentController *)self contentImage];
-    [v7 size];
+    contentImage2 = [(HUPCImageContentController *)self contentImage];
+    [contentImage2 size];
     v9 = v8;
     [(UIImageView *)self->_contentImageView bounds];
     v11 = v10;

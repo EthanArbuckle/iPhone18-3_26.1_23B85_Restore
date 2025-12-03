@@ -1,15 +1,15 @@
 @interface CalDispatchQueueAsyncBlockPerformer
-- (CalDispatchQueueAsyncBlockPerformer)initWithQueue:(id)a3;
-- (id)performAfterDelay:(double)a3 block:(id)a4;
-- (id)performAsync:(id)a3;
+- (CalDispatchQueueAsyncBlockPerformer)initWithQueue:(id)queue;
+- (id)performAfterDelay:(double)delay block:(id)block;
+- (id)performAsync:(id)async;
 @end
 
 @implementation CalDispatchQueueAsyncBlockPerformer
 
-- (CalDispatchQueueAsyncBlockPerformer)initWithQueue:(id)a3
+- (CalDispatchQueueAsyncBlockPerformer)initWithQueue:(id)queue
 {
-  v6 = a3;
-  if (!v6)
+  queueCopy = queue;
+  if (!queueCopy)
   {
     [(CalDispatchQueueAsyncBlockPerformer *)a2 initWithQueue:?];
   }
@@ -20,32 +20,32 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_queue, a3);
+    objc_storeStrong(&v7->_queue, queue);
   }
 
   return v8;
 }
 
-- (id)performAsync:(id)a3
+- (id)performAsync:(id)async
 {
-  v4 = a3;
+  asyncCopy = async;
   v5 = [CalCancelableDispatchBlock alloc];
-  v6 = [(CalDispatchQueueAsyncBlockPerformer *)self queue];
-  v7 = [(CalCancelableDispatchBlock *)v5 initWithBlock:v4 inQueue:v6];
+  queue = [(CalDispatchQueueAsyncBlockPerformer *)self queue];
+  v7 = [(CalCancelableDispatchBlock *)v5 initWithBlock:asyncCopy inQueue:queue];
 
   [(CalCancelableDispatchBlock *)v7 performAsync];
 
   return v7;
 }
 
-- (id)performAfterDelay:(double)a3 block:(id)a4
+- (id)performAfterDelay:(double)delay block:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v7 = [CalCancelableDispatchBlock alloc];
-  v8 = [(CalDispatchQueueAsyncBlockPerformer *)self queue];
-  v9 = [(CalCancelableDispatchBlock *)v7 initWithBlock:v6 inQueue:v8];
+  queue = [(CalDispatchQueueAsyncBlockPerformer *)self queue];
+  v9 = [(CalCancelableDispatchBlock *)v7 initWithBlock:blockCopy inQueue:queue];
 
-  [(CalCancelableDispatchBlock *)v9 performAfterDelay:a3];
+  [(CalCancelableDispatchBlock *)v9 performAfterDelay:delay];
 
   return v9;
 }

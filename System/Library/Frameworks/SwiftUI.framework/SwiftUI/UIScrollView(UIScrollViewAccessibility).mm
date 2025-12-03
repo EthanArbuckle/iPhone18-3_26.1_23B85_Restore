@@ -8,13 +8,13 @@
 - (void)setSwiftUI_accessibilityScrollStatus:()UIScrollViewAccessibility
 {
   v4 = _Block_copy(aBlock);
-  objc_setAssociatedObject(a1, sel_swiftUI_accessibilityScrollStatus, v4, 0x303);
+  objc_setAssociatedObject(self, sel_swiftUI_accessibilityScrollStatus, v4, 0x303);
 }
 
 - (void)setSwiftUI_accessibilityAttributedScrollStatus:()UIScrollViewAccessibility
 {
   v4 = _Block_copy(aBlock);
-  objc_setAssociatedObject(a1, sel_swiftUI_accessibilityAttributedScrollStatus, v4, 0x303);
+  objc_setAssociatedObject(self, sel_swiftUI_accessibilityAttributedScrollStatus, v4, 0x303);
 }
 
 @end

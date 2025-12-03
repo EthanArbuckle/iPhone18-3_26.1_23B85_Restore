@@ -1,21 +1,21 @@
 @interface MTUIFocusedTouchGestureRecognizer
-- (MTUIFocusedTouchGestureRecognizer)initWithFocusedView:(id)a3 touchAllowance:(UIEdgeInsets)a4;
+- (MTUIFocusedTouchGestureRecognizer)initWithFocusedView:(id)view touchAllowance:(UIEdgeInsets)allowance;
 - (UIEdgeInsets)touchAllowance;
 - (void)reset;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
 @end
 
 @implementation MTUIFocusedTouchGestureRecognizer
 
-- (MTUIFocusedTouchGestureRecognizer)initWithFocusedView:(id)a3 touchAllowance:(UIEdgeInsets)a4
+- (MTUIFocusedTouchGestureRecognizer)initWithFocusedView:(id)view touchAllowance:(UIEdgeInsets)allowance
 {
-  right = a4.right;
-  bottom = a4.bottom;
-  left = a4.left;
-  top = a4.top;
-  v10 = a3;
-  if (v10)
+  right = allowance.right;
+  bottom = allowance.bottom;
+  left = allowance.left;
+  top = allowance.top;
+  viewCopy = view;
+  if (viewCopy)
   {
     v15.receiver = self;
     v15.super_class = MTUIFocusedTouchGestureRecognizer;
@@ -23,7 +23,7 @@
     v12 = v11;
     if (v11)
     {
-      objc_storeStrong(&v11->_focusedView, a3);
+      objc_storeStrong(&v11->_focusedView, view);
       v12->_touchAllowance.top = top;
       v12->_touchAllowance.left = left;
       v12->_touchAllowance.bottom = bottom;
@@ -31,15 +31,15 @@
     }
 
     self = v12;
-    v13 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v13 = 0;
+    selfCopy = 0;
   }
 
-  return v13;
+  return selfCopy;
 }
 
 - (void)reset
@@ -53,23 +53,23 @@
   [(MTUIFocusedTouchGestureRecognizer *)&v4 reset];
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   v43 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  beganCopy = began;
+  eventCopy = event;
+  v8 = eventCopy;
   if (self->_didTouchOutside)
   {
     goto LABEL_27;
   }
 
-  v32 = v7;
+  v32 = eventCopy;
   v39 = 0u;
   v40 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v9 = [v6 countByEnumeratingWithState:&v37 objects:v42 count:16];
+  v9 = [beganCopy countByEnumeratingWithState:&v37 objects:v42 count:16];
   if (v9)
   {
     v10 = v9;
@@ -81,7 +81,7 @@
       {
         if (*v38 != v12)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(beganCopy);
         }
 
         v14 = *(*(&v37 + 1) + 8 * i);
@@ -112,7 +112,7 @@
         }
       }
 
-      v10 = [v6 countByEnumeratingWithState:&v37 objects:v42 count:16];
+      v10 = [beganCopy countByEnumeratingWithState:&v37 objects:v42 count:16];
     }
 
     while (v10);
@@ -167,21 +167,21 @@ LABEL_27:
     activeTouches = self->_activeTouches;
     if (activeTouches)
     {
-      [(NSMutableSet *)activeTouches unionSet:v6];
+      [(NSMutableSet *)activeTouches unionSet:beganCopy];
     }
 
     else
     {
-      v30 = [objc_alloc(MEMORY[0x277CBEB58]) initWithSet:v6];
+      v30 = [objc_alloc(MEMORY[0x277CBEB58]) initWithSet:beganCopy];
       v31 = self->_activeTouches;
       self->_activeTouches = v30;
     }
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  [(NSMutableSet *)self->_activeTouches minusSet:a3, a4];
+  [(NSMutableSet *)self->_activeTouches minusSet:ended, event];
   if (![(NSMutableSet *)self->_activeTouches count])
   {
     if (self->_didTouchOutside)

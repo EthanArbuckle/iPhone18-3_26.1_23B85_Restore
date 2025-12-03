@@ -1,14 +1,14 @@
 @interface AVUserInteractionObserverGestureRecognizer
-- (AVUserInteractionObserverGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
-- (void)_touchesEndedOrCancelled:(id)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
+- (AVUserInteractionObserverGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
+- (void)_touchesEndedOrCancelled:(id)cancelled;
+- (void)touchesBegan:(id)began withEvent:(id)event;
 @end
 
 @implementation AVUserInteractionObserverGestureRecognizer
 
-- (void)_touchesEndedOrCancelled:(id)a3
+- (void)_touchesEndedOrCancelled:(id)cancelled
 {
-  [(NSMutableSet *)self->_trackedTouches minusSet:a3];
+  [(NSMutableSet *)self->_trackedTouches minusSet:cancelled];
   if (![(NSMutableSet *)self->_trackedTouches count])
   {
 
@@ -16,18 +16,18 @@
   }
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v5 = a3;
+  beganCopy = began;
   [(AVUserInteractionObserverGestureRecognizer *)self setState:1];
-  [(NSMutableSet *)self->_trackedTouches unionSet:v5];
+  [(NSMutableSet *)self->_trackedTouches unionSet:beganCopy];
 }
 
-- (AVUserInteractionObserverGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (AVUserInteractionObserverGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
   v8.receiver = self;
   v8.super_class = AVUserInteractionObserverGestureRecognizer;
-  v4 = [(AVUserInteractionObserverGestureRecognizer *)&v8 initWithTarget:a3 action:a4];
+  v4 = [(AVUserInteractionObserverGestureRecognizer *)&v8 initWithTarget:target action:action];
   if (v4)
   {
     v5 = [MEMORY[0x1E695DFA8] set];

@@ -9,8 +9,8 @@
   v11[1] = *MEMORY[0x1E69E9840];
   v9.receiver = self;
   v9.super_class = WFRunShortcutIntentAction;
-  v2 = [(WFOverridableLinkAction *)&v9 parameterOverrides];
-  v3 = [v2 mutableCopy];
+  parameterOverrides = [(WFOverridableLinkAction *)&v9 parameterOverrides];
+  v3 = [parameterOverrides mutableCopy];
 
   v10 = @"Class";
   v4 = objc_opt_class();

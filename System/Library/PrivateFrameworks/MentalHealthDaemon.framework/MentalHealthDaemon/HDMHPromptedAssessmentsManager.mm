@@ -1,57 +1,57 @@
 @interface HDMHPromptedAssessmentsManager
-- (HDMHPromptedAssessmentsManager)initWithProfile:(id)a3 periodicAssessmentsAvailability:(id)a4 loggingPatternEscalationsAvailability:(id)a5;
-- (HDMHPromptedAssessmentsManager)initWithProfile:(id)a3 periodicAssessmentsAvailability:(id)a4 loggingPatternEscalationsAvailability:(id)a5 periodicAssessmentsManager:(id)a6 loggingPatternEscalationsManager:(id)a7;
+- (HDMHPromptedAssessmentsManager)initWithProfile:(id)profile periodicAssessmentsAvailability:(id)availability loggingPatternEscalationsAvailability:(id)escalationsAvailability;
+- (HDMHPromptedAssessmentsManager)initWithProfile:(id)profile periodicAssessmentsAvailability:(id)availability loggingPatternEscalationsAvailability:(id)escalationsAvailability periodicAssessmentsManager:(id)manager loggingPatternEscalationsManager:(id)escalationsManager;
 - (HDProfile)profile;
-- (id)promptedAssessmentsWithError:(id *)a3;
-- (int64_t)periodicAssessmentPromptCadenceInDaysWithError:(id *)a3;
+- (id)promptedAssessmentsWithError:(id *)error;
+- (int64_t)periodicAssessmentPromptCadenceInDaysWithError:(id *)error;
 - (void)_notifyObserversForPromptedAssessmentsUpdate;
 - (void)_startObserving;
 - (void)_stopObserving;
-- (void)featureStatusProviding:(id)a3 didUpdateFeatureStatus:(id)a4;
-- (void)loggingPatternEscalationsManagerDidUpdatePromptedAssessment:(id)a3;
-- (void)periodicPromptedAssessmentsManagerDidUpdatePromptedAssessment:(id)a3;
-- (void)registerObserver:(id)a3 queue:(id)a4;
-- (void)unregisterObserver:(id)a3;
+- (void)featureStatusProviding:(id)providing didUpdateFeatureStatus:(id)status;
+- (void)loggingPatternEscalationsManagerDidUpdatePromptedAssessment:(id)assessment;
+- (void)periodicPromptedAssessmentsManagerDidUpdatePromptedAssessment:(id)assessment;
+- (void)registerObserver:(id)observer queue:(id)queue;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation HDMHPromptedAssessmentsManager
 
-- (HDMHPromptedAssessmentsManager)initWithProfile:(id)a3 periodicAssessmentsAvailability:(id)a4 loggingPatternEscalationsAvailability:(id)a5
+- (HDMHPromptedAssessmentsManager)initWithProfile:(id)profile periodicAssessmentsAvailability:(id)availability loggingPatternEscalationsAvailability:(id)escalationsAvailability
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[HDMHPeriodicPromptedAssessmentsManager alloc] initWithProfile:v10];
-  v12 = [[HDMHLoggingPatternEscalationsManager alloc] initWithProfile:v10];
-  v13 = [(HDMHPromptedAssessmentsManager *)self initWithProfile:v10 periodicAssessmentsAvailability:v9 loggingPatternEscalationsAvailability:v8 periodicAssessmentsManager:v11 loggingPatternEscalationsManager:v12];
+  escalationsAvailabilityCopy = escalationsAvailability;
+  availabilityCopy = availability;
+  profileCopy = profile;
+  v11 = [[HDMHPeriodicPromptedAssessmentsManager alloc] initWithProfile:profileCopy];
+  v12 = [[HDMHLoggingPatternEscalationsManager alloc] initWithProfile:profileCopy];
+  v13 = [(HDMHPromptedAssessmentsManager *)self initWithProfile:profileCopy periodicAssessmentsAvailability:availabilityCopy loggingPatternEscalationsAvailability:escalationsAvailabilityCopy periodicAssessmentsManager:v11 loggingPatternEscalationsManager:v12];
 
   return v13;
 }
 
-- (HDMHPromptedAssessmentsManager)initWithProfile:(id)a3 periodicAssessmentsAvailability:(id)a4 loggingPatternEscalationsAvailability:(id)a5 periodicAssessmentsManager:(id)a6 loggingPatternEscalationsManager:(id)a7
+- (HDMHPromptedAssessmentsManager)initWithProfile:(id)profile periodicAssessmentsAvailability:(id)availability loggingPatternEscalationsAvailability:(id)escalationsAvailability periodicAssessmentsManager:(id)manager loggingPatternEscalationsManager:(id)escalationsManager
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  profileCopy = profile;
+  availabilityCopy = availability;
+  escalationsAvailabilityCopy = escalationsAvailability;
+  managerCopy = manager;
+  escalationsManagerCopy = escalationsManager;
   v29.receiver = self;
   v29.super_class = HDMHPromptedAssessmentsManager;
   v17 = [(HDMHPromptedAssessmentsManager *)&v29 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeWeak(&v17->_profile, v12);
-    v19 = [objc_alloc(MEMORY[0x277CCD460]) initWithFeatureAvailabilityProviding:v13 healthDataSource:v12 countryCodeSource:0];
+    objc_storeWeak(&v17->_profile, profileCopy);
+    v19 = [objc_alloc(MEMORY[0x277CCD460]) initWithFeatureAvailabilityProviding:availabilityCopy healthDataSource:profileCopy countryCodeSource:0];
     periodicAssessmentsFeatureStatusManager = v18->_periodicAssessmentsFeatureStatusManager;
     v18->_periodicAssessmentsFeatureStatusManager = v19;
 
-    v21 = [objc_alloc(MEMORY[0x277CCD460]) initWithFeatureAvailabilityProviding:v14 healthDataSource:v12 countryCodeSource:0];
+    v21 = [objc_alloc(MEMORY[0x277CCD460]) initWithFeatureAvailabilityProviding:escalationsAvailabilityCopy healthDataSource:profileCopy countryCodeSource:0];
     loggingPatternEscalationsFeatureStatusManager = v18->_loggingPatternEscalationsFeatureStatusManager;
     v18->_loggingPatternEscalationsFeatureStatusManager = v21;
 
-    objc_storeStrong(&v18->_periodicAssessmentsManager, a6);
-    objc_storeStrong(&v18->_loggingPatternEscalationsManager, a7);
+    objc_storeStrong(&v18->_periodicAssessmentsManager, manager);
+    objc_storeStrong(&v18->_loggingPatternEscalationsManager, escalationsManager);
     v23 = objc_alloc(MEMORY[0x277CCD738]);
     v24 = objc_opt_class();
     v25 = NSStringFromClass(v24);
@@ -63,35 +63,35 @@
   return v18;
 }
 
-- (int64_t)periodicAssessmentPromptCadenceInDaysWithError:(id *)a3
+- (int64_t)periodicAssessmentPromptCadenceInDaysWithError:(id *)error
 {
-  v4 = [(HKFeatureStatusManager *)self->_periodicAssessmentsFeatureStatusManager featureStatusWithError:a3];
+  v4 = [(HKFeatureStatusManager *)self->_periodicAssessmentsFeatureStatusManager featureStatusWithError:error];
   periodicAssessmentsManager = self->_periodicAssessmentsManager;
-  v6 = [v4 onboardingRecord];
-  v7 = [v6 featureSettings];
-  v8 = [(HDMHPeriodicPromptedAssessmentsManager *)periodicAssessmentsManager _periodicAssessmentPromptCadenceInDaysWithFeatureSettings:v7];
+  onboardingRecord = [v4 onboardingRecord];
+  featureSettings = [onboardingRecord featureSettings];
+  v8 = [(HDMHPeriodicPromptedAssessmentsManager *)periodicAssessmentsManager _periodicAssessmentPromptCadenceInDaysWithFeatureSettings:featureSettings];
 
   return v8;
 }
 
-- (id)promptedAssessmentsWithError:(id *)a3
+- (id)promptedAssessmentsWithError:(id *)error
 {
   v5 = [(HKFeatureStatusManager *)self->_periodicAssessmentsFeatureStatusManager featureStatusWithError:?];
   if (v5)
   {
     periodicAssessmentsManager = self->_periodicAssessmentsManager;
     v18 = 0;
-    v7 = [(HDMHPeriodicPromptedAssessmentsManager *)periodicAssessmentsManager promptedAssessment:&v18 featureStatus:v5 error:a3];
+    v7 = [(HDMHPeriodicPromptedAssessmentsManager *)periodicAssessmentsManager promptedAssessment:&v18 featureStatus:v5 error:error];
     v8 = v18;
     v9 = 0;
     if (v7)
     {
-      v10 = [(HKFeatureStatusManager *)self->_loggingPatternEscalationsFeatureStatusManager featureStatusWithError:a3];
+      v10 = [(HKFeatureStatusManager *)self->_loggingPatternEscalationsFeatureStatusManager featureStatusWithError:error];
       if (v10)
       {
         loggingPatternEscalationsManager = self->_loggingPatternEscalationsManager;
         v17 = 0;
-        v12 = [(HDMHLoggingPatternEscalationsManager *)loggingPatternEscalationsManager promptedAssessment:&v17 featureStatus:v10 pendingStateOfMind:0 error:a3];
+        v12 = [(HDMHLoggingPatternEscalationsManager *)loggingPatternEscalationsManager promptedAssessment:&v17 featureStatus:v10 pendingStateOfMind:0 error:error];
         v13 = v17;
         v9 = 0;
         if (v12)
@@ -127,7 +127,7 @@
   return v9;
 }
 
-- (void)registerObserver:(id)a3 queue:(id)a4
+- (void)registerObserver:(id)observer queue:(id)queue
 {
   observers = self->_observers;
   v5[0] = MEMORY[0x277D85DD0];
@@ -135,7 +135,7 @@
   v5[2] = __57__HDMHPromptedAssessmentsManager_registerObserver_queue___block_invoke;
   v5[3] = &unk_2798AAB58;
   v5[4] = self;
-  [(HKObserverSet *)observers registerObserver:a3 queue:a4 runIfFirstObserver:v5];
+  [(HKObserverSet *)observers registerObserver:observer queue:queue runIfFirstObserver:v5];
 }
 
 - (void)_startObserving
@@ -148,7 +148,7 @@
   [(HDMHLoggingPatternEscalationsManager *)loggingPatternEscalationsManager registerObserver:self];
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
   observers = self->_observers;
   v4[0] = MEMORY[0x277D85DD0];
@@ -156,7 +156,7 @@
   v4[2] = __53__HDMHPromptedAssessmentsManager_unregisterObserver___block_invoke;
   v4[3] = &unk_2798AAB58;
   v4[4] = self;
-  [(HKObserverSet *)observers unregisterObserver:a3 runIfLastObserver:v4];
+  [(HKObserverSet *)observers unregisterObserver:observer runIfLastObserver:v4];
 }
 
 - (void)_stopObserving
@@ -180,10 +180,10 @@
   [(HKObserverSet *)observers notifyObservers:v3];
 }
 
-- (void)featureStatusProviding:(id)a3 didUpdateFeatureStatus:(id)a4
+- (void)featureStatusProviding:(id)providing didUpdateFeatureStatus:(id)status
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  providingCopy = providing;
   _HKInitializeLogging();
   v6 = *MEMORY[0x277CCC2F0];
   if (os_log_type_enabled(*MEMORY[0x277CCC2F0], OS_LOG_TYPE_DEFAULT))
@@ -191,11 +191,11 @@
     v7 = v6;
     v8 = objc_opt_class();
     v9 = v8;
-    v10 = [v5 featureIdentifier];
+    featureIdentifier = [providingCopy featureIdentifier];
     v12 = 138543618;
     v13 = v8;
     v14 = 2114;
-    v15 = v10;
+    v15 = featureIdentifier;
     _os_log_impl(&dword_258977000, v7, OS_LOG_TYPE_DEFAULT, "[%{public}@] Observed change in feature status for %{public}@", &v12, 0x16u);
   }
 
@@ -204,7 +204,7 @@
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)periodicPromptedAssessmentsManagerDidUpdatePromptedAssessment:(id)a3
+- (void)periodicPromptedAssessmentsManagerDidUpdatePromptedAssessment:(id)assessment
 {
   v9 = *MEMORY[0x277D85DE8];
   _HKInitializeLogging();
@@ -222,7 +222,7 @@
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)loggingPatternEscalationsManagerDidUpdatePromptedAssessment:(id)a3
+- (void)loggingPatternEscalationsManagerDidUpdatePromptedAssessment:(id)assessment
 {
   v9 = *MEMORY[0x277D85DE8];
   _HKInitializeLogging();

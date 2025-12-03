@@ -1,20 +1,20 @@
 @interface SBSARootPreferencesProvider
-- (BOOL)_handleBounceRequest:(id)a3;
-- (BOOL)_handleEjectRequest:(id)a3;
-- (BOOL)_handlePulseRequest:(id)a3;
-- (BOOL)_handleShakeRequest:(id)a3;
-- (SBSARootPreferencesProvider)initWithParentProvider:(id)a3;
-- (id)preferencesFromContext:(id)a3;
-- (void)_handleRequests:(id)a3;
-- (void)_updateDynamicsSessionProviders:(id)a3;
+- (BOOL)_handleBounceRequest:(id)request;
+- (BOOL)_handleEjectRequest:(id)request;
+- (BOOL)_handlePulseRequest:(id)request;
+- (BOOL)_handleShakeRequest:(id)request;
+- (SBSARootPreferencesProvider)initWithParentProvider:(id)provider;
+- (id)preferencesFromContext:(id)context;
+- (void)_handleRequests:(id)requests;
+- (void)_updateDynamicsSessionProviders:(id)providers;
 - (void)removeFromParentProvider;
 @end
 
 @implementation SBSARootPreferencesProvider
 
-- (SBSARootPreferencesProvider)initWithParentProvider:(id)a3
+- (SBSARootPreferencesProvider)initWithParentProvider:(id)provider
 {
-  if (a3)
+  if (provider)
   {
     [SBSARootPreferencesProvider initWithParentProvider:];
   }
@@ -26,18 +26,18 @@
 
 - (void)removeFromParentProvider
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"SBSARootPreferencesProvider.m" lineNumber:62 description:@"This is a root provider class"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SBSARootPreferencesProvider.m" lineNumber:62 description:@"This is a root provider class"];
 }
 
-- (id)preferencesFromContext:(id)a3
+- (id)preferencesFromContext:(id)context
 {
   v58[14] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = v5;
+  contextCopy = context;
+  v6 = contextCopy;
   if (!self->_configuredInitialStack)
   {
-    v46 = v5;
+    v46 = contextCopy;
     v47 = a2;
     v45 = objc_opt_self();
     v58[0] = v45;
@@ -81,7 +81,7 @@
       v15 = v19;
     }
 
-    v20 = self;
+    selfCopy = self;
     v53 = 0u;
     v54 = 0u;
     v55 = 0u;
@@ -95,7 +95,7 @@
       do
       {
         v25 = 0;
-        v26 = v20;
+        v26 = selfCopy;
         do
         {
           if (*v54 != v24)
@@ -103,10 +103,10 @@
             objc_enumerationMutation(v21);
           }
 
-          v20 = [objc_alloc(*(*(&v53 + 1) + 8 * v25)) initWithParentProvider:v26];
+          selfCopy = [objc_alloc(*(*(&v53 + 1) + 8 * v25)) initWithParentProvider:v26];
 
           ++v25;
-          v26 = v20;
+          v26 = selfCopy;
         }
 
         while (v23 != v25);
@@ -145,14 +145,14 @@
 
   if (v30)
   {
-    v31 = [v30 elementContexts];
+    elementContexts = [v30 elementContexts];
     v49[0] = MEMORY[0x277D85DD0];
     v49[1] = 3221225472;
     v49[2] = __54__SBSARootPreferencesProvider_preferencesFromContext___block_invoke;
     v49[3] = &unk_2783AD778;
     v52 = a2;
     v49[4] = self;
-    v32 = v31;
+    v32 = elementContexts;
     v50 = v32;
     v51 = v30;
     v33 = v30;
@@ -164,8 +164,8 @@
     v36 = v32;
 
     [(SBSARootPreferencesProvider *)self _updateDynamicsSessionProviders:v36];
-    v37 = [v30 requests];
-    [(SBSARootPreferencesProvider *)self _handleRequests:v37];
+    requests = [v30 requests];
+    [(SBSARootPreferencesProvider *)self _handleRequests:requests];
   }
 
   v48.receiver = self;
@@ -239,10 +239,10 @@ void __54__SBSARootPreferencesProvider_preferencesFromContext___block_invoke(uin
   }
 }
 
-- (BOOL)_handleShakeRequest:(id)a3
+- (BOOL)_handleShakeRequest:(id)request
 {
-  v4 = a3;
-  if (v4)
+  requestCopy = request;
+  if (requestCopy)
   {
     v5 = objc_opt_self();
     v6 = [(SBSABasePreferencesProvider *)self firstChildPreferenceProviderOfClass:v5];
@@ -250,27 +250,27 @@ void __54__SBSARootPreferencesProvider_preferencesFromContext___block_invoke(uin
     if (!v6)
     {
       v7 = [SBSAShakeBehaviorProvider alloc];
-      v8 = [v4 participantIdentifier];
-      v9 = [v4 triggeredBlock];
-      v10 = [(SBSAShakeBehaviorProvider *)v7 initWithParticipantIdentifier:v8 triggeredBlock:v9];
+      participantIdentifier = [requestCopy participantIdentifier];
+      triggeredBlock = [requestCopy triggeredBlock];
+      v10 = [(SBSAShakeBehaviorProvider *)v7 initWithParticipantIdentifier:participantIdentifier triggeredBlock:triggeredBlock];
 
       [(SBSABasePreferencesProvider *)self setChildProvider:v10];
     }
   }
 
-  return v4 != 0;
+  return requestCopy != 0;
 }
 
-- (BOOL)_handleBounceRequest:(id)a3
+- (BOOL)_handleBounceRequest:(id)request
 {
-  if (a3)
+  if (request)
   {
-    v5 = a3;
+    requestCopy = request;
     v6 = [SBSAAcceptanceBounceBehaviorProvider alloc];
-    v7 = [v5 style];
-    v8 = [v5 triggeredBlock];
+    style = [requestCopy style];
+    triggeredBlock = [requestCopy triggeredBlock];
 
-    v9 = [(SBSAAcceptanceBounceBehaviorProvider *)v6 initWithParticipantIdentifier:0 style:v7 triggeredBlock:v8];
+    v9 = [(SBSAAcceptanceBounceBehaviorProvider *)v6 initWithParticipantIdentifier:0 style:style triggeredBlock:triggeredBlock];
     v10 = objc_opt_self();
     v11 = [(SBSABasePreferencesProvider *)self firstChildPreferenceProviderOfClass:v10];
 
@@ -282,12 +282,12 @@ void __54__SBSARootPreferencesProvider_preferencesFromContext___block_invoke(uin
     [v11 setChildProvider:v9];
   }
 
-  return a3 != 0;
+  return request != 0;
 }
 
-- (BOOL)_handleEjectRequest:(id)a3
+- (BOOL)_handleEjectRequest:(id)request
 {
-  if (a3)
+  if (request)
   {
     v5 = objc_alloc_init(SBSAEjectStretchBehaviorProvider);
     v6 = objc_opt_self();
@@ -301,27 +301,27 @@ void __54__SBSARootPreferencesProvider_preferencesFromContext___block_invoke(uin
     [v7 setChildProvider:v5];
   }
 
-  return a3 != 0;
+  return request != 0;
 }
 
-- (BOOL)_handlePulseRequest:(id)a3
+- (BOOL)_handlePulseRequest:(id)request
 {
-  v4 = a3;
-  if (v4)
+  requestCopy = request;
+  if (requestCopy)
   {
     v5 = objc_opt_self();
     v6 = [(SBSABasePreferencesProvider *)self firstChildPreferenceProviderOfClass:v5];
 
     if (v6)
     {
-      [v6 didRequestAdditionalPulse:v4];
+      [v6 didRequestAdditionalPulse:requestCopy];
     }
 
     else
     {
       v7 = [SBSAContainerDynamicsPulseAnimationProvider alloc];
-      v8 = [v4 participantIdentifier];
-      v9 = -[SBSAContainerDynamicsPulseAnimationProvider initWithElementIdentity:pulseStyle:](v7, "initWithElementIdentity:pulseStyle:", v8, [v4 pulseStyle]);
+      participantIdentifier = [requestCopy participantIdentifier];
+      v9 = -[SBSAContainerDynamicsPulseAnimationProvider initWithElementIdentity:pulseStyle:](v7, "initWithElementIdentity:pulseStyle:", participantIdentifier, [requestCopy pulseStyle]);
 
       v10 = objc_opt_self();
       v11 = [(SBSABasePreferencesProvider *)self firstChildPreferenceProviderOfClass:v10];
@@ -335,18 +335,18 @@ void __54__SBSARootPreferencesProvider_preferencesFromContext___block_invoke(uin
     }
   }
 
-  return v4 != 0;
+  return requestCopy != 0;
 }
 
-- (void)_handleRequests:(id)a3
+- (void)_handleRequests:(id)requests
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  requestsCopy = requests;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v29 objects:v33 count:16];
+  v5 = [requestsCopy countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v5)
   {
     v6 = v5;
@@ -358,7 +358,7 @@ void __54__SBSARootPreferencesProvider_preferencesFromContext___block_invoke(uin
       {
         if (*v30 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(requestsCopy);
         }
 
         v9 = *(*(&v29 + 1) + 8 * v8);
@@ -452,22 +452,22 @@ void __54__SBSARootPreferencesProvider_preferencesFromContext___block_invoke(uin
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v29 objects:v33 count:16];
+      v6 = [requestsCopy countByEnumeratingWithState:&v29 objects:v33 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)_updateDynamicsSessionProviders:(id)a3
+- (void)_updateDynamicsSessionProviders:(id)providers
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  providersCopy = providers;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  v5 = [providersCopy countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v5)
   {
     v6 = v5;
@@ -480,7 +480,7 @@ void __54__SBSARootPreferencesProvider_preferencesFromContext___block_invoke(uin
       {
         if (*v25 != v9)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(providersCopy);
         }
 
         v11 = *(*(&v24 + 1) + 8 * i);
@@ -495,7 +495,7 @@ void __54__SBSARootPreferencesProvider_preferencesFromContext___block_invoke(uin
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v24 objects:v28 count:16];
+      v6 = [providersCopy countByEnumeratingWithState:&v24 objects:v28 count:16];
     }
 
     while (v6);
@@ -508,15 +508,15 @@ void __54__SBSARootPreferencesProvider_preferencesFromContext___block_invoke(uin
       {
         v14 = objc_opt_self();
         v15 = [(SBSABasePreferencesProvider *)self firstChildPreferenceProviderOfClass:v14];
-        v16 = [v15 parentProvider];
+        parentProvider = [v15 parentProvider];
 
-        if (!v16)
+        if (!parentProvider)
         {
           [SBSARootPreferencesProvider _updateDynamicsSessionProviders:];
         }
 
         v17 = objc_alloc_init(SBSAContainerDynamicsBumpAnimationProvider);
-        [v16 setChildProvider:v17];
+        [parentProvider setChildProvider:v17];
       }
     }
 
@@ -529,15 +529,15 @@ void __54__SBSARootPreferencesProvider_preferencesFromContext___block_invoke(uin
       {
         v20 = objc_opt_self();
         v21 = [(SBSABasePreferencesProvider *)self firstChildPreferenceProviderOfClass:v20];
-        v22 = [v21 parentProvider];
+        parentProvider2 = [v21 parentProvider];
 
-        if (!v22)
+        if (!parentProvider2)
         {
           [SBSARootPreferencesProvider _updateDynamicsSessionProviders:];
         }
 
         v23 = objc_alloc_init(SBSAContainerDynamicsInflateAnimationProvider);
-        [v22 setChildProvider:v23];
+        [parentProvider2 setChildProvider:v23];
       }
     }
   }

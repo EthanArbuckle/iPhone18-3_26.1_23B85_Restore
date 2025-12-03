@@ -1,17 +1,17 @@
 @interface ExternalDownloadState
 - (ExternalDownloadState)init;
-- (id)_copyValueForEntity:(int64_t)a3 property:(id)a4 dictionary:(id)a5;
-- (id)externalValuesForAssetID:(int64_t)a3;
-- (id)externalValuesForDownloadID:(int64_t)a3;
-- (id)valueForExternalProperty:(id)a3 ofAssetID:(int64_t)a4;
-- (id)valueForExternalProperty:(id)a3 ofDownloadID:(int64_t)a4;
-- (void)_setValue:(id)a3 forEntity:(int64_t)a4 property:(id)a5 dictionary:(id)a6;
-- (void)_setValues:(id)a3 forEntity:(int64_t)a4 dictionary:(id)a5;
+- (id)_copyValueForEntity:(int64_t)entity property:(id)property dictionary:(id)dictionary;
+- (id)externalValuesForAssetID:(int64_t)d;
+- (id)externalValuesForDownloadID:(int64_t)d;
+- (id)valueForExternalProperty:(id)property ofAssetID:(int64_t)d;
+- (id)valueForExternalProperty:(id)property ofDownloadID:(int64_t)d;
+- (void)_setValue:(id)value forEntity:(int64_t)entity property:(id)property dictionary:(id)dictionary;
+- (void)_setValues:(id)values forEntity:(int64_t)entity dictionary:(id)dictionary;
 - (void)dealloc;
-- (void)removeExternalValuesForAssetID:(int64_t)a3;
-- (void)removeExternalValuesForDownloadID:(int64_t)a3;
-- (void)setBytesDownloaded:(int64_t)a3 forAssetID:(int64_t)a4 ofDownloadID:(int64_t)a5;
-- (void)setBytesUploaded:(int64_t)a3 forAssetID:(int64_t)a4 ofDownloadID:(int64_t)a5;
+- (void)removeExternalValuesForAssetID:(int64_t)d;
+- (void)removeExternalValuesForDownloadID:(int64_t)d;
+- (void)setBytesDownloaded:(int64_t)downloaded forAssetID:(int64_t)d ofDownloadID:(int64_t)iD;
+- (void)setBytesUploaded:(int64_t)uploaded forAssetID:(int64_t)d ofDownloadID:(int64_t)iD;
 @end
 
 @implementation ExternalDownloadState
@@ -37,147 +37,147 @@
   [(ExternalDownloadState *)&v3 dealloc];
 }
 
-- (id)externalValuesForAssetID:(int64_t)a3
+- (id)externalValuesForAssetID:(int64_t)d
 {
-  v4 = [[NSNumber alloc] initWithLongLong:a3];
+  v4 = [[NSNumber alloc] initWithLongLong:d];
   v5 = [-[NSMutableDictionary objectForKey:](self->_externalAssetValues objectForKey:{v4), "copy"}];
 
   return v5;
 }
 
-- (id)externalValuesForDownloadID:(int64_t)a3
+- (id)externalValuesForDownloadID:(int64_t)d
 {
-  v4 = [[NSNumber alloc] initWithLongLong:a3];
+  v4 = [[NSNumber alloc] initWithLongLong:d];
   v5 = [-[NSMutableDictionary objectForKey:](self->_externalDownloadValues objectForKey:{v4), "copy"}];
 
   return v5;
 }
 
-- (void)removeExternalValuesForAssetID:(int64_t)a3
+- (void)removeExternalValuesForAssetID:(int64_t)d
 {
-  v4 = [[NSNumber alloc] initWithLongLong:a3];
+  v4 = [[NSNumber alloc] initWithLongLong:d];
   [(NSMutableDictionary *)self->_externalAssetValues removeObjectForKey:v4];
 }
 
-- (void)removeExternalValuesForDownloadID:(int64_t)a3
+- (void)removeExternalValuesForDownloadID:(int64_t)d
 {
-  v4 = [[NSNumber alloc] initWithLongLong:a3];
+  v4 = [[NSNumber alloc] initWithLongLong:d];
   [(NSMutableDictionary *)self->_externalDownloadValues removeObjectForKey:v4];
 }
 
-- (void)setBytesDownloaded:(int64_t)a3 forAssetID:(int64_t)a4 ofDownloadID:(int64_t)a5
+- (void)setBytesDownloaded:(int64_t)downloaded forAssetID:(int64_t)d ofDownloadID:(int64_t)iD
 {
   v9 = SSDownloadAssetExternalPropertyBytesDownloaded;
-  v15 = [(ExternalDownloadState *)self _copyValueForEntity:a4 property:SSDownloadAssetExternalPropertyBytesDownloaded dictionary:self->_externalAssetValues];
+  v15 = [(ExternalDownloadState *)self _copyValueForEntity:d property:SSDownloadAssetExternalPropertyBytesDownloaded dictionary:self->_externalAssetValues];
   v10 = SSDownloadExternalPropertyBytesDownloaded;
-  v11 = [(ExternalDownloadState *)self _copyValueForEntity:a5 property:SSDownloadExternalPropertyBytesDownloaded dictionary:self->_externalDownloadValues];
+  v11 = [(ExternalDownloadState *)self _copyValueForEntity:iD property:SSDownloadExternalPropertyBytesDownloaded dictionary:self->_externalDownloadValues];
   v12 = v11;
   if (v11)
   {
-    v13 = [v11 longLongValue];
+    longLongValue = [v11 longLongValue];
   }
 
   else
   {
-    v13 = 0;
+    longLongValue = 0;
   }
 
-  v14 = a3;
+  downloadedCopy = downloaded;
   if (v15)
   {
-    v14 = a3 - [v15 longLongValue];
+    downloadedCopy = downloaded - [v15 longLongValue];
   }
 
-  [(ExternalDownloadState *)self _setValue:[NSNumber numberWithLongLong:?]dictionary:a4, v9, self->_externalAssetValues];
-  [(ExternalDownloadState *)self _setValue:[NSNumber numberWithLongLong:?]dictionary:a5, v10, self->_externalDownloadValues];
+  [(ExternalDownloadState *)self _setValue:[NSNumber numberWithLongLong:?]dictionary:d, v9, self->_externalAssetValues];
+  [(ExternalDownloadState *)self _setValue:[NSNumber numberWithLongLong:?]dictionary:iD, v10, self->_externalDownloadValues];
 }
 
-- (void)setBytesUploaded:(int64_t)a3 forAssetID:(int64_t)a4 ofDownloadID:(int64_t)a5
+- (void)setBytesUploaded:(int64_t)uploaded forAssetID:(int64_t)d ofDownloadID:(int64_t)iD
 {
   v9 = SSDownloadAssetExternalPropertyBytesUploaded;
-  v15 = [(ExternalDownloadState *)self _copyValueForEntity:a4 property:SSDownloadAssetExternalPropertyBytesUploaded dictionary:self->_externalAssetValues];
+  v15 = [(ExternalDownloadState *)self _copyValueForEntity:d property:SSDownloadAssetExternalPropertyBytesUploaded dictionary:self->_externalAssetValues];
   v10 = SSDownloadExternalPropertyBytesUploaded;
-  v11 = [(ExternalDownloadState *)self _copyValueForEntity:a5 property:SSDownloadExternalPropertyBytesUploaded dictionary:self->_externalDownloadValues];
+  v11 = [(ExternalDownloadState *)self _copyValueForEntity:iD property:SSDownloadExternalPropertyBytesUploaded dictionary:self->_externalDownloadValues];
   v12 = v11;
   if (v11)
   {
-    v13 = [v11 longLongValue];
+    longLongValue = [v11 longLongValue];
   }
 
   else
   {
-    v13 = 0;
+    longLongValue = 0;
   }
 
-  v14 = a3;
+  uploadedCopy = uploaded;
   if (v15)
   {
-    v14 = a3 - [v15 longLongValue];
+    uploadedCopy = uploaded - [v15 longLongValue];
   }
 
-  [(ExternalDownloadState *)self _setValue:[NSNumber numberWithLongLong:?]dictionary:a4, v9, self->_externalAssetValues];
-  [(ExternalDownloadState *)self _setValue:[NSNumber numberWithLongLong:?]dictionary:a5, v10, self->_externalDownloadValues];
+  [(ExternalDownloadState *)self _setValue:[NSNumber numberWithLongLong:?]dictionary:d, v9, self->_externalAssetValues];
+  [(ExternalDownloadState *)self _setValue:[NSNumber numberWithLongLong:?]dictionary:iD, v10, self->_externalDownloadValues];
 }
 
-- (id)valueForExternalProperty:(id)a3 ofAssetID:(int64_t)a4
+- (id)valueForExternalProperty:(id)property ofAssetID:(int64_t)d
 {
-  v4 = [(ExternalDownloadState *)self _copyValueForEntity:a4 property:a3 dictionary:self->_externalAssetValues];
+  v4 = [(ExternalDownloadState *)self _copyValueForEntity:d property:property dictionary:self->_externalAssetValues];
 
   return v4;
 }
 
-- (id)valueForExternalProperty:(id)a3 ofDownloadID:(int64_t)a4
+- (id)valueForExternalProperty:(id)property ofDownloadID:(int64_t)d
 {
-  v4 = [(ExternalDownloadState *)self _copyValueForEntity:a4 property:a3 dictionary:self->_externalDownloadValues];
+  v4 = [(ExternalDownloadState *)self _copyValueForEntity:d property:property dictionary:self->_externalDownloadValues];
 
   return v4;
 }
 
-- (id)_copyValueForEntity:(int64_t)a3 property:(id)a4 dictionary:(id)a5
+- (id)_copyValueForEntity:(int64_t)entity property:(id)property dictionary:(id)dictionary
 {
-  v7 = [[NSNumber alloc] initWithLongLong:a3];
-  v8 = [objc_msgSend(a5 objectForKey:{v7), "objectForKey:", a4}];
+  v7 = [[NSNumber alloc] initWithLongLong:entity];
+  v8 = [objc_msgSend(dictionary objectForKey:{v7), "objectForKey:", property}];
 
   return v8;
 }
 
-- (void)_setValue:(id)a3 forEntity:(int64_t)a4 property:(id)a5 dictionary:(id)a6
+- (void)_setValue:(id)value forEntity:(int64_t)entity property:(id)property dictionary:(id)dictionary
 {
-  v11 = [[NSNumber alloc] initWithLongLong:a4];
-  v9 = [a6 objectForKey:?];
+  v11 = [[NSNumber alloc] initWithLongLong:entity];
+  v9 = [dictionary objectForKey:?];
   if (v9)
   {
-    if (a3)
+    if (value)
     {
-      [v9 setObject:a3 forKey:a5];
+      [v9 setObject:value forKey:property];
     }
 
     else
     {
-      [v9 removeObjectForKey:a5];
+      [v9 removeObjectForKey:property];
     }
   }
 
-  else if (a3)
+  else if (value)
   {
-    v10 = [[NSMutableDictionary alloc] initWithObjectsAndKeys:{a3, a5, 0}];
-    [a6 setObject:v10 forKey:v11];
+    v10 = [[NSMutableDictionary alloc] initWithObjectsAndKeys:{value, property, 0}];
+    [dictionary setObject:v10 forKey:v11];
   }
 }
 
-- (void)_setValues:(id)a3 forEntity:(int64_t)a4 dictionary:(id)a5
+- (void)_setValues:(id)values forEntity:(int64_t)entity dictionary:(id)dictionary
 {
-  v9 = [[NSNumber alloc] initWithLongLong:a4];
-  v7 = [a5 objectForKey:?];
+  v9 = [[NSNumber alloc] initWithLongLong:entity];
+  v7 = [dictionary objectForKey:?];
   if (v7)
   {
-    [v7 addEntriesFromDictionary:a3];
+    [v7 addEntriesFromDictionary:values];
   }
 
-  else if (a3)
+  else if (values)
   {
-    v8 = [a3 mutableCopy];
-    [a5 setObject:v8 forKey:v9];
+    v8 = [values mutableCopy];
+    [dictionary setObject:v8 forKey:v9];
   }
 }
 

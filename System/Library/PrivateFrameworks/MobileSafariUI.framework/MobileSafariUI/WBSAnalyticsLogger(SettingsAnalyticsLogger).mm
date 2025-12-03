@@ -8,17 +8,17 @@
 
 - (void)_settingsAnalyticsLogger_updatePeriodicCoreAnalyticsLastReportTime
 {
-  v0 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v0 setDouble:@"LastPeriodicSettingsReportTime" forKey:CFAbsoluteTimeGetCurrent()];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults setDouble:@"LastPeriodicSettingsReportTime" forKey:CFAbsoluteTimeGetCurrent()];
 }
 
 - (void)_performNewTabBehaviorReport
 {
-  v0 = [MEMORY[0x277CBEBD0] safari_browserDefaults];
-  v1 = [v0 BOOLForKey:*MEMORY[0x277D29088]];
+  safari_browserDefaults = [MEMORY[0x277CBEBD0] safari_browserDefaults];
+  v1 = [safari_browserDefaults BOOLForKey:*MEMORY[0x277D29088]];
 
-  v2 = [MEMORY[0x277D499B8] sharedLogger];
-  v4 = v2;
+  mEMORY[0x277D499B8] = [MEMORY[0x277D499B8] sharedLogger];
+  v4 = mEMORY[0x277D499B8];
   if (v1)
   {
     v3 = 0;
@@ -29,7 +29,7 @@
     v3 = 5;
   }
 
-  [v2 reportNewTabBehavior:v3];
+  [mEMORY[0x277D499B8] reportNewTabBehavior:v3];
 }
 
 - (void)schedulePeriodicSettingsReport
@@ -39,7 +39,7 @@
   block[1] = 3221225472;
   block[2] = __77__WBSAnalyticsLogger_SettingsAnalyticsLogger__schedulePeriodicSettingsReport__block_invoke;
   block[3] = &unk_2781D4D40;
-  block[4] = a1;
+  block[4] = self;
   dispatch_after(WeeklyAnalyticsReportForKey, MEMORY[0x277D85CD0], block);
 }
 

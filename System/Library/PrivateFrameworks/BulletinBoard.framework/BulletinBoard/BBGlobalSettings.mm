@@ -1,38 +1,38 @@
 @interface BBGlobalSettings
-- (BBGlobalSettings)initWithCoder:(id)a3;
-- (BBGlobalSettings)initWithContentPreviewSetting:(int64_t)a3 announceSetting:(int64_t)a4 announceHeadphonesSetting:(int64_t)a5 announceCarPlaySetting:(int64_t)a6 scheduledDeliverySetting:(int64_t)a7 scheduledDeliveryTimes:(id)a8 scheduledDeliveryShowNextSummarySetting:(int64_t)a9 notificationListDisplayStyleSetting:(int64_t)a10 summarizationSetting:(int64_t)a11 highlightsSettings:(int64_t)a12;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BBGlobalSettings)initWithCoder:(id)coder;
+- (BBGlobalSettings)initWithContentPreviewSetting:(int64_t)setting announceSetting:(int64_t)announceSetting announceHeadphonesSetting:(int64_t)headphonesSetting announceCarPlaySetting:(int64_t)playSetting scheduledDeliverySetting:(int64_t)deliverySetting scheduledDeliveryTimes:(id)times scheduledDeliveryShowNextSummarySetting:(int64_t)summarySetting notificationListDisplayStyleSetting:(int64_t)self0 summarizationSetting:(int64_t)self1 highlightsSettings:(int64_t)self2;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (int64_t)globalSpokenNotificationSetting;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BBGlobalSettings
 
-- (BBGlobalSettings)initWithContentPreviewSetting:(int64_t)a3 announceSetting:(int64_t)a4 announceHeadphonesSetting:(int64_t)a5 announceCarPlaySetting:(int64_t)a6 scheduledDeliverySetting:(int64_t)a7 scheduledDeliveryTimes:(id)a8 scheduledDeliveryShowNextSummarySetting:(int64_t)a9 notificationListDisplayStyleSetting:(int64_t)a10 summarizationSetting:(int64_t)a11 highlightsSettings:(int64_t)a12
+- (BBGlobalSettings)initWithContentPreviewSetting:(int64_t)setting announceSetting:(int64_t)announceSetting announceHeadphonesSetting:(int64_t)headphonesSetting announceCarPlaySetting:(int64_t)playSetting scheduledDeliverySetting:(int64_t)deliverySetting scheduledDeliveryTimes:(id)times scheduledDeliveryShowNextSummarySetting:(int64_t)summarySetting notificationListDisplayStyleSetting:(int64_t)self0 summarizationSetting:(int64_t)self1 highlightsSettings:(int64_t)self2
 {
-  v18 = a8;
+  timesCopy = times;
   v24.receiver = self;
   v24.super_class = BBGlobalSettings;
   v19 = [(BBGlobalSettings *)&v24 init];
   v20 = v19;
   if (v19)
   {
-    v19->_globalContentPreviewSetting = a3;
-    v19->_globalAnnounceSetting = a4;
-    v19->_globalAnnounceHeadphonesSetting = a5;
-    v19->_globalAnnounceCarPlaySetting = a6;
-    v19->_globalScheduledDeliverySetting = a7;
-    v21 = [v18 copy];
+    v19->_globalContentPreviewSetting = setting;
+    v19->_globalAnnounceSetting = announceSetting;
+    v19->_globalAnnounceHeadphonesSetting = headphonesSetting;
+    v19->_globalAnnounceCarPlaySetting = playSetting;
+    v19->_globalScheduledDeliverySetting = deliverySetting;
+    v21 = [timesCopy copy];
     globalScheduledDeliveryTimes = v20->_globalScheduledDeliveryTimes;
     v20->_globalScheduledDeliveryTimes = v21;
 
-    v20->_globalScheduledDeliveryShowNextSummarySetting = a9;
-    v20->_globalNotificationListDisplayStyleSetting = a10;
-    v20->_globalSummarizationSetting = a11;
-    v20->_globalHighlightsSetting = a12;
+    v20->_globalScheduledDeliveryShowNextSummarySetting = summarySetting;
+    v20->_globalNotificationListDisplayStyleSetting = styleSetting;
+    v20->_globalSummarizationSetting = summarizationSetting;
+    v20->_globalHighlightsSetting = settings;
   }
 
   return v20;
@@ -84,9 +84,9 @@
     v4 = v12;
   }
 
-  v13 = [(BBGlobalSettings *)self globalScheduledDeliveryTimes];
+  globalScheduledDeliveryTimes = [(BBGlobalSettings *)self globalScheduledDeliveryTimes];
 
-  if (v13)
+  if (globalScheduledDeliveryTimes)
   {
     v14 = [(__CFString *)v4 stringByAppendingFormat:@"Scheduled Delivery Times: [ "];
 
@@ -94,8 +94,8 @@
     v37 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v15 = [(BBGlobalSettings *)self globalScheduledDeliveryTimes];
-    v16 = [v15 countByEnumeratingWithState:&v34 objects:v38 count:16];
+    globalScheduledDeliveryTimes2 = [(BBGlobalSettings *)self globalScheduledDeliveryTimes];
+    v16 = [globalScheduledDeliveryTimes2 countByEnumeratingWithState:&v34 objects:v38 count:16];
     if (v16)
     {
       v17 = v16;
@@ -108,7 +108,7 @@
         {
           if (*v35 != v18)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(globalScheduledDeliveryTimes2);
           }
 
           v14 = [v20 stringByAppendingFormat:@" %li:%li, ", objc_msgSend(*(*(&v34 + 1) + 8 * v19), "hour"), objc_msgSend(*(*(&v34 + 1) + 8 * v19), "minute")];
@@ -118,7 +118,7 @@
         }
 
         while (v17 != v19);
-        v17 = [v15 countByEnumeratingWithState:&v34 objects:v38 count:16];
+        v17 = [globalScheduledDeliveryTimes2 countByEnumeratingWithState:&v34 objects:v38 count:16];
       }
 
       while (v17);
@@ -171,25 +171,25 @@
 
 - (unint64_t)hash
 {
-  v3 = [(BBGlobalSettings *)self globalContentPreviewSetting];
-  v4 = [(BBGlobalSettings *)self globalAnnounceSetting]^ v3;
-  v5 = [(BBGlobalSettings *)self globalAnnounceHeadphonesSetting];
-  v6 = v4 ^ v5 ^ [(BBGlobalSettings *)self globalAnnounceCarPlaySetting];
-  v7 = [(BBGlobalSettings *)self globalScheduledDeliverySetting];
-  v8 = [(BBGlobalSettings *)self globalScheduledDeliveryTimes];
-  v9 = v6 ^ v7 ^ [v8 hash];
-  v10 = [(BBGlobalSettings *)self globalScheduledDeliveryShowNextSummarySetting];
-  v11 = v10 ^ [(BBGlobalSettings *)self globalNotificationListDisplayStyleSetting];
+  globalContentPreviewSetting = [(BBGlobalSettings *)self globalContentPreviewSetting];
+  v4 = [(BBGlobalSettings *)self globalAnnounceSetting]^ globalContentPreviewSetting;
+  globalAnnounceHeadphonesSetting = [(BBGlobalSettings *)self globalAnnounceHeadphonesSetting];
+  v6 = v4 ^ globalAnnounceHeadphonesSetting ^ [(BBGlobalSettings *)self globalAnnounceCarPlaySetting];
+  globalScheduledDeliverySetting = [(BBGlobalSettings *)self globalScheduledDeliverySetting];
+  globalScheduledDeliveryTimes = [(BBGlobalSettings *)self globalScheduledDeliveryTimes];
+  v9 = v6 ^ globalScheduledDeliverySetting ^ [globalScheduledDeliveryTimes hash];
+  globalScheduledDeliveryShowNextSummarySetting = [(BBGlobalSettings *)self globalScheduledDeliveryShowNextSummarySetting];
+  v11 = globalScheduledDeliveryShowNextSummarySetting ^ [(BBGlobalSettings *)self globalNotificationListDisplayStyleSetting];
   v12 = v11 ^ [(BBGlobalSettings *)self globalSummarizationSetting];
   v13 = v12 ^ [(BBGlobalSettings *)self globalHighlightsSetting];
 
   return v9 ^ v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v17 = 1;
   }
@@ -199,16 +199,16 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass() & 1) != 0 && (objc_opt_class(), (objc_opt_isKindOfClass()))
     {
-      v5 = v4;
-      v6 = [(BBGlobalSettings *)self globalContentPreviewSetting];
-      if (v6 == [(BBGlobalSettings *)v5 globalContentPreviewSetting]&& (v7 = [(BBGlobalSettings *)self globalAnnounceSetting], v7 == [(BBGlobalSettings *)v5 globalAnnounceSetting]) && (v8 = [(BBGlobalSettings *)self globalAnnounceHeadphonesSetting], v8 == [(BBGlobalSettings *)v5 globalAnnounceHeadphonesSetting]) && (v9 = [(BBGlobalSettings *)self globalAnnounceCarPlaySetting], v9 == [(BBGlobalSettings *)v5 globalAnnounceCarPlaySetting]) && (v10 = [(BBGlobalSettings *)self globalScheduledDeliverySetting], v10 == [(BBGlobalSettings *)v5 globalScheduledDeliverySetting]))
+      v5 = equalCopy;
+      globalContentPreviewSetting = [(BBGlobalSettings *)self globalContentPreviewSetting];
+      if (globalContentPreviewSetting == [(BBGlobalSettings *)v5 globalContentPreviewSetting]&& (v7 = [(BBGlobalSettings *)self globalAnnounceSetting], v7 == [(BBGlobalSettings *)v5 globalAnnounceSetting]) && (v8 = [(BBGlobalSettings *)self globalAnnounceHeadphonesSetting], v8 == [(BBGlobalSettings *)v5 globalAnnounceHeadphonesSetting]) && (v9 = [(BBGlobalSettings *)self globalAnnounceCarPlaySetting], v9 == [(BBGlobalSettings *)v5 globalAnnounceCarPlaySetting]) && (v10 = [(BBGlobalSettings *)self globalScheduledDeliverySetting], v10 == [(BBGlobalSettings *)v5 globalScheduledDeliverySetting]))
       {
-        v11 = [(BBGlobalSettings *)self globalScheduledDeliveryTimes];
-        v12 = [(BBGlobalSettings *)v5 globalScheduledDeliveryTimes];
-        if ([v11 isEqualToArray:v12] && (v13 = -[BBGlobalSettings globalScheduledDeliveryShowNextSummarySetting](self, "globalScheduledDeliveryShowNextSummarySetting"), v13 == -[BBGlobalSettings globalScheduledDeliveryShowNextSummarySetting](v5, "globalScheduledDeliveryShowNextSummarySetting")) && (v14 = -[BBGlobalSettings globalNotificationListDisplayStyleSetting](self, "globalNotificationListDisplayStyleSetting"), v14 == -[BBGlobalSettings globalNotificationListDisplayStyleSetting](v5, "globalNotificationListDisplayStyleSetting")) && (v15 = -[BBGlobalSettings globalSummarizationSetting](self, "globalSummarizationSetting"), v15 == -[BBGlobalSettings globalSummarizationSetting](v5, "globalSummarizationSetting")))
+        globalScheduledDeliveryTimes = [(BBGlobalSettings *)self globalScheduledDeliveryTimes];
+        globalScheduledDeliveryTimes2 = [(BBGlobalSettings *)v5 globalScheduledDeliveryTimes];
+        if ([globalScheduledDeliveryTimes isEqualToArray:globalScheduledDeliveryTimes2] && (v13 = -[BBGlobalSettings globalScheduledDeliveryShowNextSummarySetting](self, "globalScheduledDeliveryShowNextSummarySetting"), v13 == -[BBGlobalSettings globalScheduledDeliveryShowNextSummarySetting](v5, "globalScheduledDeliveryShowNextSummarySetting")) && (v14 = -[BBGlobalSettings globalNotificationListDisplayStyleSetting](self, "globalNotificationListDisplayStyleSetting"), v14 == -[BBGlobalSettings globalNotificationListDisplayStyleSetting](v5, "globalNotificationListDisplayStyleSetting")) && (v15 = -[BBGlobalSettings globalSummarizationSetting](self, "globalSummarizationSetting"), v15 == -[BBGlobalSettings globalSummarizationSetting](v5, "globalSummarizationSetting")))
         {
-          v16 = [(BBGlobalSettings *)self globalHighlightsSetting];
-          v17 = v16 == [(BBGlobalSettings *)v5 globalHighlightsSetting];
+          globalHighlightsSetting = [(BBGlobalSettings *)self globalHighlightsSetting];
+          v17 = globalHighlightsSetting == [(BBGlobalSettings *)v5 globalHighlightsSetting];
         }
 
         else
@@ -232,16 +232,16 @@
   return v17;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setGlobalContentPreviewSetting:{-[BBGlobalSettings globalContentPreviewSetting](self, "globalContentPreviewSetting")}];
   [v4 setGlobalAnnounceSetting:{-[BBGlobalSettings globalAnnounceSetting](self, "globalAnnounceSetting")}];
   [v4 setGlobalAnnounceHeadphonesSetting:{-[BBGlobalSettings globalAnnounceHeadphonesSetting](self, "globalAnnounceHeadphonesSetting")}];
   [v4 setGlobalAnnounceCarPlaySetting:{-[BBGlobalSettings globalAnnounceCarPlaySetting](self, "globalAnnounceCarPlaySetting")}];
   [v4 setGlobalScheduledDeliverySetting:{-[BBGlobalSettings globalScheduledDeliverySetting](self, "globalScheduledDeliverySetting")}];
-  v5 = [(BBGlobalSettings *)self globalScheduledDeliveryTimes];
-  [v4 setGlobalScheduledDeliveryTimes:v5];
+  globalScheduledDeliveryTimes = [(BBGlobalSettings *)self globalScheduledDeliveryTimes];
+  [v4 setGlobalScheduledDeliveryTimes:globalScheduledDeliveryTimes];
 
   [v4 setGlobalScheduledDeliveryShowNextSummarySetting:{-[BBGlobalSettings globalScheduledDeliveryShowNextSummarySetting](self, "globalScheduledDeliveryShowNextSummarySetting")}];
   [v4 setGlobalNotificationListDisplayStyleSetting:{-[BBGlobalSettings globalNotificationListDisplayStyleSetting](self, "globalNotificationListDisplayStyleSetting")}];
@@ -250,28 +250,28 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  [v5 encodeInteger:-[BBGlobalSettings globalContentPreviewSetting](self forKey:{"globalContentPreviewSetting"), @"contentPreviews"}];
-  [v5 encodeInteger:-[BBGlobalSettings globalAnnounceSetting](self forKey:{"globalAnnounceSetting"), @"announce"}];
-  [v5 encodeInteger:-[BBGlobalSettings globalAnnounceHeadphonesSetting](self forKey:{"globalAnnounceHeadphonesSetting"), @"announceHeadphones"}];
-  [v5 encodeInteger:-[BBGlobalSettings globalAnnounceCarPlaySetting](self forKey:{"globalAnnounceCarPlaySetting"), @"announceCarPlay"}];
-  [v5 encodeInteger:-[BBGlobalSettings globalScheduledDeliverySetting](self forKey:{"globalScheduledDeliverySetting"), @"scheduledDelivery"}];
-  v4 = [(BBGlobalSettings *)self globalScheduledDeliveryTimes];
-  [v5 encodeObject:v4 forKey:@"scheduledDeliveryTimes"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[BBGlobalSettings globalContentPreviewSetting](self forKey:{"globalContentPreviewSetting"), @"contentPreviews"}];
+  [coderCopy encodeInteger:-[BBGlobalSettings globalAnnounceSetting](self forKey:{"globalAnnounceSetting"), @"announce"}];
+  [coderCopy encodeInteger:-[BBGlobalSettings globalAnnounceHeadphonesSetting](self forKey:{"globalAnnounceHeadphonesSetting"), @"announceHeadphones"}];
+  [coderCopy encodeInteger:-[BBGlobalSettings globalAnnounceCarPlaySetting](self forKey:{"globalAnnounceCarPlaySetting"), @"announceCarPlay"}];
+  [coderCopy encodeInteger:-[BBGlobalSettings globalScheduledDeliverySetting](self forKey:{"globalScheduledDeliverySetting"), @"scheduledDelivery"}];
+  globalScheduledDeliveryTimes = [(BBGlobalSettings *)self globalScheduledDeliveryTimes];
+  [coderCopy encodeObject:globalScheduledDeliveryTimes forKey:@"scheduledDeliveryTimes"];
 
-  [v5 encodeInteger:-[BBGlobalSettings globalScheduledDeliveryShowNextSummarySetting](self forKey:{"globalScheduledDeliveryShowNextSummarySetting"), @"scheduledDeliveryShowNextSummary"}];
-  [v5 encodeInteger:-[BBGlobalSettings globalNotificationListDisplayStyleSetting](self forKey:{"globalNotificationListDisplayStyleSetting"), @"notificationListDisplayStyle"}];
-  [v5 encodeInteger:-[BBGlobalSettings globalSummarizationSetting](self forKey:{"globalSummarizationSetting"), @"summarization"}];
-  [v5 encodeInteger:-[BBGlobalSettings globalHighlightsSetting](self forKey:{"globalHighlightsSetting"), @"highlights"}];
+  [coderCopy encodeInteger:-[BBGlobalSettings globalScheduledDeliveryShowNextSummarySetting](self forKey:{"globalScheduledDeliveryShowNextSummarySetting"), @"scheduledDeliveryShowNextSummary"}];
+  [coderCopy encodeInteger:-[BBGlobalSettings globalNotificationListDisplayStyleSetting](self forKey:{"globalNotificationListDisplayStyleSetting"), @"notificationListDisplayStyle"}];
+  [coderCopy encodeInteger:-[BBGlobalSettings globalSummarizationSetting](self forKey:{"globalSummarizationSetting"), @"summarization"}];
+  [coderCopy encodeInteger:-[BBGlobalSettings globalHighlightsSetting](self forKey:{"globalHighlightsSetting"), @"highlights"}];
 }
 
-- (BBGlobalSettings)initWithCoder:(id)a3
+- (BBGlobalSettings)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = [v3 decodeIntegerForKey:@"contentPreviews"];
-  if ([v3 containsValueForKey:@"announce"])
+  coderCopy = coder;
+  v4 = [coderCopy decodeIntegerForKey:@"contentPreviews"];
+  if ([coderCopy containsValueForKey:@"announce"])
   {
     v5 = @"announce";
   }
@@ -281,24 +281,24 @@
     v5 = @"spokenNotifications";
   }
 
-  v6 = [v3 decodeIntegerForKey:v5];
-  v7 = [v3 decodeIntegerForKey:@"announceHeadphones"];
-  v8 = [v3 decodeIntegerForKey:@"announceCarPlay"];
-  v9 = [v3 decodeIntegerForKey:@"scheduledDelivery"];
+  v6 = [coderCopy decodeIntegerForKey:v5];
+  v7 = [coderCopy decodeIntegerForKey:@"announceHeadphones"];
+  v8 = [coderCopy decodeIntegerForKey:@"announceCarPlay"];
+  v9 = [coderCopy decodeIntegerForKey:@"scheduledDelivery"];
   v10 = MEMORY[0x277CBEB98];
   v11 = objc_opt_class();
   v12 = [v10 setWithObjects:{v11, objc_opt_class(), 0}];
-  v13 = [v3 decodeObjectOfClasses:v12 forKey:@"scheduledDeliveryTimes"];
+  v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"scheduledDeliveryTimes"];
 
-  v14 = -[BBGlobalSettings initWithContentPreviewSetting:announceSetting:announceHeadphonesSetting:announceCarPlaySetting:scheduledDeliverySetting:scheduledDeliveryTimes:scheduledDeliveryShowNextSummarySetting:notificationListDisplayStyleSetting:summarizationSetting:highlightsSettings:](self, "initWithContentPreviewSetting:announceSetting:announceHeadphonesSetting:announceCarPlaySetting:scheduledDeliverySetting:scheduledDeliveryTimes:scheduledDeliveryShowNextSummarySetting:notificationListDisplayStyleSetting:summarizationSetting:highlightsSettings:", v4, v6, v7, v8, v9, v13, [v3 decodeIntegerForKey:@"scheduledDeliveryShowNextSummary"], objc_msgSend(v3, "decodeIntegerForKey:", @"notificationListDisplayStyle"), objc_msgSend(v3, "decodeIntegerForKey:", @"summarization"), objc_msgSend(v3, "decodeIntegerForKey:", @"highlights"));
+  v14 = -[BBGlobalSettings initWithContentPreviewSetting:announceSetting:announceHeadphonesSetting:announceCarPlaySetting:scheduledDeliverySetting:scheduledDeliveryTimes:scheduledDeliveryShowNextSummarySetting:notificationListDisplayStyleSetting:summarizationSetting:highlightsSettings:](self, "initWithContentPreviewSetting:announceSetting:announceHeadphonesSetting:announceCarPlaySetting:scheduledDeliverySetting:scheduledDeliveryTimes:scheduledDeliveryShowNextSummarySetting:notificationListDisplayStyleSetting:summarizationSetting:highlightsSettings:", v4, v6, v7, v8, v9, v13, [coderCopy decodeIntegerForKey:@"scheduledDeliveryShowNextSummary"], objc_msgSend(coderCopy, "decodeIntegerForKey:", @"notificationListDisplayStyle"), objc_msgSend(coderCopy, "decodeIntegerForKey:", @"summarization"), objc_msgSend(coderCopy, "decodeIntegerForKey:", @"highlights"));
   return v14;
 }
 
 - (int64_t)globalSpokenNotificationSetting
 {
-  v2 = [(BBGlobalSettings *)self globalAnnounceSetting];
+  globalAnnounceSetting = [(BBGlobalSettings *)self globalAnnounceSetting];
 
-  return BBSpokenNotificationSettingForAnnounceSetting(v2);
+  return BBSpokenNotificationSettingForAnnounceSetting(globalAnnounceSetting);
 }
 
 @end

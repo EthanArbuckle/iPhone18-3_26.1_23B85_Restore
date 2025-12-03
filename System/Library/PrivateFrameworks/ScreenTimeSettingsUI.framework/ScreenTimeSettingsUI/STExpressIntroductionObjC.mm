@@ -1,21 +1,21 @@
 @interface STExpressIntroductionObjC
-+ (id)downtimeFromIntroductionViewModel:(id)a3;
-+ (void)updateIntroductionViewModel:(id)a3 withDowntime:(id)a4;
++ (id)downtimeFromIntroductionViewModel:(id)model;
++ (void)updateIntroductionViewModel:(id)model withDowntime:(id)downtime;
 @end
 
 @implementation STExpressIntroductionObjC
 
-+ (id)downtimeFromIntroductionViewModel:(id)a3
++ (id)downtimeFromIntroductionViewModel:(id)model
 {
-  v3 = [a3 bedtime];
-  v4 = v3;
-  if (v3)
+  bedtime = [model bedtime];
+  v4 = bedtime;
+  if (bedtime)
   {
-    v5 = [v3 simpleSchedule];
+    simpleSchedule = [bedtime simpleSchedule];
     v6 = [STExpressIntroductionObjCDowntime alloc];
-    v7 = [v5 startTime];
-    v8 = [v5 endTime];
-    v9 = [(STExpressIntroductionObjCDowntime *)v6 initWithStartTime:v7 endTime:v8];
+    startTime = [simpleSchedule startTime];
+    endTime = [simpleSchedule endTime];
+    v9 = [(STExpressIntroductionObjCDowntime *)v6 initWithStartTime:startTime endTime:endTime];
   }
 
   else
@@ -26,22 +26,22 @@
   return v9;
 }
 
-+ (void)updateIntroductionViewModel:(id)a3 withDowntime:(id)a4
++ (void)updateIntroductionViewModel:(id)model withDowntime:(id)downtime
 {
-  if (a4)
+  if (downtime)
   {
-    v5 = a4;
-    v6 = a3;
+    downtimeCopy = downtime;
+    modelCopy = model;
     v10 = objc_opt_new();
-    v7 = [v5 startTime];
-    [v10 setStartTime:v7];
+    startTime = [downtimeCopy startTime];
+    [v10 setStartTime:startTime];
 
-    v8 = [v5 endTime];
+    endTime = [downtimeCopy endTime];
 
-    [v10 setEndTime:v8];
+    [v10 setEndTime:endTime];
     v9 = objc_opt_new();
     [v9 setSimpleSchedule:v10];
-    [v6 setBedtime:v9];
+    [modelCopy setBedtime:v9];
   }
 }
 

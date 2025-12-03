@@ -1,14 +1,14 @@
 @interface _UISheetPresentationControllerAppearance
-+ (_UISheetPresentationControllerAppearance)appearanceWithLargestUndimmedDetentIdentifier:(id)a3;
-+ (_UISheetPresentationControllerAppearance)appearanceWithSmallestDimmedDetentIdentifier:(id)a3;
-+ (id)appearancePreferringDimmingVisible:(BOOL)a3;
++ (_UISheetPresentationControllerAppearance)appearanceWithLargestUndimmedDetentIdentifier:(id)identifier;
++ (_UISheetPresentationControllerAppearance)appearanceWithSmallestDimmedDetentIdentifier:(id)identifier;
++ (id)appearancePreferringDimmingVisible:(BOOL)visible;
 - (BOOL)_isDimmingAlwaysVisible;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (_UISheetPresentationControllerAppearance)initWithBSXPCCoder:(id)a3;
-- (_UISheetPresentationControllerAppearance)initWithCoder:(id)a3;
-- (void)encodeWithBSXPCCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_UISheetPresentationControllerAppearance)initWithBSXPCCoder:(id)coder;
+- (_UISheetPresentationControllerAppearance)initWithCoder:(id)coder;
+- (void)encodeWithBSXPCCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _UISheetPresentationControllerAppearance
@@ -20,47 +20,47 @@
     return 0;
   }
 
-  v3 = [(_UISheetPresentationControllerAppearance *)self _largestUndimmedDetentIdentifier];
-  if (v3)
+  _largestUndimmedDetentIdentifier = [(_UISheetPresentationControllerAppearance *)self _largestUndimmedDetentIdentifier];
+  if (_largestUndimmedDetentIdentifier)
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = [(_UISheetPresentationControllerAppearance *)self _smallestDimmedDetentIdentifier];
-    v4 = v5 == 0;
+    _smallestDimmedDetentIdentifier = [(_UISheetPresentationControllerAppearance *)self _smallestDimmedDetentIdentifier];
+    v4 = _smallestDimmedDetentIdentifier == 0;
   }
 
   return v4;
 }
 
-+ (id)appearancePreferringDimmingVisible:(BOOL)a3
++ (id)appearancePreferringDimmingVisible:(BOOL)visible
 {
   v4 = objc_alloc_init(_UISheetPresentationControllerAppearance);
-  v4->__prefersDimmingVisible = a3;
+  v4->__prefersDimmingVisible = visible;
 
   return v4;
 }
 
-+ (_UISheetPresentationControllerAppearance)appearanceWithLargestUndimmedDetentIdentifier:(id)a3
++ (_UISheetPresentationControllerAppearance)appearanceWithLargestUndimmedDetentIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = objc_alloc_init(_UISheetPresentationControllerAppearance);
   v4->__prefersDimmingVisible = 1;
   largestUndimmedDetentIdentifier = v4->__largestUndimmedDetentIdentifier;
-  v4->__largestUndimmedDetentIdentifier = v3;
+  v4->__largestUndimmedDetentIdentifier = identifierCopy;
 
   return v4;
 }
 
-+ (_UISheetPresentationControllerAppearance)appearanceWithSmallestDimmedDetentIdentifier:(id)a3
++ (_UISheetPresentationControllerAppearance)appearanceWithSmallestDimmedDetentIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = objc_alloc_init(_UISheetPresentationControllerAppearance);
   v4->__prefersDimmingVisible = 0;
   smallestDimmedDetentIdentifier = v4->__smallestDimmedDetentIdentifier;
-  v4->__smallestDimmedDetentIdentifier = v3;
+  v4->__smallestDimmedDetentIdentifier = identifierCopy;
 
   return v4;
 }
@@ -80,15 +80,15 @@
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(_UISheetPresentationControllerAppearance *)self _prefersDimmingVisible];
-    if (v6 != [v5 _prefersDimmingVisible])
+    v5 = equalCopy;
+    _prefersDimmingVisible = [(_UISheetPresentationControllerAppearance *)self _prefersDimmingVisible];
+    if (_prefersDimmingVisible != [v5 _prefersDimmingVisible])
     {
       LOBYTE(v7) = 0;
 LABEL_19:
@@ -96,10 +96,10 @@ LABEL_19:
       goto LABEL_20;
     }
 
-    v8 = [(_UISheetPresentationControllerAppearance *)self _largestUndimmedDetentIdentifier];
-    v9 = [v5 _largestUndimmedDetentIdentifier];
-    v10 = v8;
-    v11 = v9;
+    _largestUndimmedDetentIdentifier = [(_UISheetPresentationControllerAppearance *)self _largestUndimmedDetentIdentifier];
+    _largestUndimmedDetentIdentifier2 = [v5 _largestUndimmedDetentIdentifier];
+    v10 = _largestUndimmedDetentIdentifier;
+    v11 = _largestUndimmedDetentIdentifier2;
     v12 = v11;
     if (v10 == v11)
     {
@@ -126,10 +126,10 @@ LABEL_18:
       }
     }
 
-    v15 = [(_UISheetPresentationControllerAppearance *)self _smallestDimmedDetentIdentifier];
-    v16 = [v5 _smallestDimmedDetentIdentifier];
-    v14 = v15;
-    v17 = v16;
+    _smallestDimmedDetentIdentifier = [(_UISheetPresentationControllerAppearance *)self _smallestDimmedDetentIdentifier];
+    _smallestDimmedDetentIdentifier2 = [v5 _smallestDimmedDetentIdentifier];
+    v14 = _smallestDimmedDetentIdentifier;
+    v17 = _smallestDimmedDetentIdentifier2;
     v13 = v17;
     if (v14 == v17)
     {
@@ -154,20 +154,20 @@ LABEL_20:
   return v7;
 }
 
-- (_UISheetPresentationControllerAppearance)initWithCoder:(id)a3
+- (_UISheetPresentationControllerAppearance)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = _UISheetPresentationControllerAppearance;
   v5 = [(_UISheetPresentationControllerAppearance *)&v11 init];
   if (v5)
   {
-    v5->__prefersDimmingVisible = [v4 decodeBoolForKey:@"_prefersDimmingVisible"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_largestUndimmedDetentIdentifier"];
+    v5->__prefersDimmingVisible = [coderCopy decodeBoolForKey:@"_prefersDimmingVisible"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_largestUndimmedDetentIdentifier"];
     largestUndimmedDetentIdentifier = v5->__largestUndimmedDetentIdentifier;
     v5->__largestUndimmedDetentIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_smallestDimmedDetentIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_smallestDimmedDetentIdentifier"];
     smallestDimmedDetentIdentifier = v5->__smallestDimmedDetentIdentifier;
     v5->__smallestDimmedDetentIdentifier = v8;
   }
@@ -175,20 +175,20 @@ LABEL_20:
   return v5;
 }
 
-- (_UISheetPresentationControllerAppearance)initWithBSXPCCoder:(id)a3
+- (_UISheetPresentationControllerAppearance)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = _UISheetPresentationControllerAppearance;
   v5 = [(_UISheetPresentationControllerAppearance *)&v11 init];
   if (v5)
   {
-    v5->__prefersDimmingVisible = [v4 decodeBoolForKey:@"_prefersDimmingVisible"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_largestUndimmedDetentIdentifier"];
+    v5->__prefersDimmingVisible = [coderCopy decodeBoolForKey:@"_prefersDimmingVisible"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_largestUndimmedDetentIdentifier"];
     largestUndimmedDetentIdentifier = v5->__largestUndimmedDetentIdentifier;
     v5->__largestUndimmedDetentIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_smallestDimmedDetentIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_smallestDimmedDetentIdentifier"];
     smallestDimmedDetentIdentifier = v5->__smallestDimmedDetentIdentifier;
     v5->__smallestDimmedDetentIdentifier = v8;
   }
@@ -196,26 +196,26 @@ LABEL_20:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeBool:-[_UISheetPresentationControllerAppearance _prefersDimmingVisible](self forKey:{"_prefersDimmingVisible"), @"_prefersDimmingVisible"}];
-  v5 = [(_UISheetPresentationControllerAppearance *)self _largestUndimmedDetentIdentifier];
-  [v4 encodeObject:v5 forKey:@"_largestUndimmedDetentIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[_UISheetPresentationControllerAppearance _prefersDimmingVisible](self forKey:{"_prefersDimmingVisible"), @"_prefersDimmingVisible"}];
+  _largestUndimmedDetentIdentifier = [(_UISheetPresentationControllerAppearance *)self _largestUndimmedDetentIdentifier];
+  [coderCopy encodeObject:_largestUndimmedDetentIdentifier forKey:@"_largestUndimmedDetentIdentifier"];
 
-  v6 = [(_UISheetPresentationControllerAppearance *)self _smallestDimmedDetentIdentifier];
-  [v4 encodeObject:v6 forKey:@"_smallestDimmedDetentIdentifier"];
+  _smallestDimmedDetentIdentifier = [(_UISheetPresentationControllerAppearance *)self _smallestDimmedDetentIdentifier];
+  [coderCopy encodeObject:_smallestDimmedDetentIdentifier forKey:@"_smallestDimmedDetentIdentifier"];
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeBool:-[_UISheetPresentationControllerAppearance _prefersDimmingVisible](self forKey:{"_prefersDimmingVisible"), @"_prefersDimmingVisible"}];
-  v5 = [(_UISheetPresentationControllerAppearance *)self _largestUndimmedDetentIdentifier];
-  [v4 encodeObject:v5 forKey:@"_largestUndimmedDetentIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[_UISheetPresentationControllerAppearance _prefersDimmingVisible](self forKey:{"_prefersDimmingVisible"), @"_prefersDimmingVisible"}];
+  _largestUndimmedDetentIdentifier = [(_UISheetPresentationControllerAppearance *)self _largestUndimmedDetentIdentifier];
+  [coderCopy encodeObject:_largestUndimmedDetentIdentifier forKey:@"_largestUndimmedDetentIdentifier"];
 
-  v6 = [(_UISheetPresentationControllerAppearance *)self _smallestDimmedDetentIdentifier];
-  [v4 encodeObject:v6 forKey:@"_smallestDimmedDetentIdentifier"];
+  _smallestDimmedDetentIdentifier = [(_UISheetPresentationControllerAppearance *)self _smallestDimmedDetentIdentifier];
+  [coderCopy encodeObject:_smallestDimmedDetentIdentifier forKey:@"_smallestDimmedDetentIdentifier"];
 }
 
 @end

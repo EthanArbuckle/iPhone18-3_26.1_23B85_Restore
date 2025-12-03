@@ -1,33 +1,33 @@
 @interface _DPRecordQueryPredicates
-+ (id)entityForKey:(id)a3;
-+ (id)predicateForKey:(id)a3 beginsWith:(BOOL)a4 matchReportVersion:(BOOL)a5;
++ (id)entityForKey:(id)key;
++ (id)predicateForKey:(id)key beginsWith:(BOOL)with matchReportVersion:(BOOL)version;
 @end
 
 @implementation _DPRecordQueryPredicates
 
-+ (id)predicateForKey:(id)a3 beginsWith:(BOOL)a4 matchReportVersion:(BOOL)a5
++ (id)predicateForKey:(id)key beginsWith:(BOOL)with matchReportVersion:(BOOL)version
 {
-  v5 = a5;
-  v6 = a4;
+  versionCopy = version;
+  withCopy = with;
   v17[2] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  if (v6)
+  keyCopy = key;
+  if (withCopy)
   {
-    [a1 predicateForKeyBeginsWith:v8];
+    [self predicateForKeyBeginsWith:keyCopy];
   }
 
   else
   {
-    [a1 predicateForKey:v8];
+    [self predicateForKey:keyCopy];
   }
   v9 = ;
   v10 = v9;
-  if (v5)
+  if (versionCopy)
   {
-    v11 = [MEMORY[0x277CCAC30] predicateWithFormat:@"reportVersion == %ld", kDPCurrentReportVersion];
+    kDPCurrentReportVersion = [MEMORY[0x277CCAC30] predicateWithFormat:@"reportVersion == %ld", kDPCurrentReportVersion];
     v12 = MEMORY[0x277CCA920];
     v17[0] = v10;
-    v17[1] = v11;
+    v17[1] = kDPCurrentReportVersion;
     v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:2];
     v14 = [v12 andPredicateWithSubpredicates:v13];
   }
@@ -42,14 +42,14 @@
   return v14;
 }
 
-+ (id)entityForKey:(id)a3
++ (id)entityForKey:(id)key
 {
-  v3 = [_DPKeyNames keyPropertiesForKey:a3];
+  v3 = [_DPKeyNames keyPropertiesForKey:key];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 dataAlgorithm];
-    if (v5 == 1)
+    dataAlgorithm = [v3 dataAlgorithm];
+    if (dataAlgorithm == 1)
     {
       if ([v4 privatizationAlgorithm] == 3)
       {
@@ -58,7 +58,7 @@
       }
     }
 
-    else if (v5 == 4)
+    else if (dataAlgorithm == 4)
     {
       v7 = [v4 privatizationAlgorithm] - 5;
       if (v7 <= 0xF && ((0xFFD3u >> v7) & 1) != 0)
@@ -68,19 +68,19 @@
       }
     }
 
-    else if (v5 == 2 && [v4 privatizationAlgorithm] == 1)
+    else if (dataAlgorithm == 2 && [v4 privatizationAlgorithm] == 1)
     {
       v6 = off_27858A310;
 LABEL_12:
-      v8 = [(__objc2_class *)*v6 entityName];
+      entityName = [(__objc2_class *)*v6 entityName];
       goto LABEL_14;
     }
   }
 
-  v8 = 0;
+  entityName = 0;
 LABEL_14:
 
-  return v8;
+  return entityName;
 }
 
 @end

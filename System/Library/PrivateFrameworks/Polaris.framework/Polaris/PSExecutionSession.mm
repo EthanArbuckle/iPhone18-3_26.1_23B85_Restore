@@ -1,73 +1,73 @@
 @interface PSExecutionSession
-+ (PSExecutionSession)sessionWithName:(id)a3;
++ (PSExecutionSession)sessionWithName:(id)name;
 + (PSExecutionSession)sharedInstance;
-+ (id)nameForExecutionSessionKey:(int)a3;
++ (id)nameForExecutionSessionKey:(int)key;
 + (id)sessionRegistrationDict;
-+ (id)sharedInstanceWithProvider:(id)a3;
-+ (id)uniqueSessionWithName:(id)a3;
++ (id)sharedInstanceWithProvider:(id)provider;
++ (id)uniqueSessionWithName:(id)name;
 + (os_unfair_lock_s)sessionRegistrationLock;
-+ (void)removeSessionWithName:(id)a3;
-+ (void)setSession:(id)a3 forName:(id)a4;
-- (BOOL)createWorkgroupInterval:(const char *)a3 workloadID:(const char *)a4 type:(unsigned __int16)a5 graphTag:(id)a6;
-- (BOOL)destroyWorkgroupForGraphTag:(id)a3;
++ (void)removeSessionWithName:(id)name;
++ (void)setSession:(id)session forName:(id)name;
+- (BOOL)createWorkgroupInterval:(const char *)interval workloadID:(const char *)d type:(unsigned __int16)type graphTag:(id)tag;
+- (BOOL)destroyWorkgroupForGraphTag:(id)tag;
 - (BOOL)requestSystemReplayEnd;
 - (BOOL)requestSystemReplayStart;
-- (PSExecutionSession)initWithName:(id)a3 isUniqueSession:(BOOL)a4;
+- (PSExecutionSession)initWithName:(id)name isUniqueSession:(BOOL)session;
 - (id)initForLocalReplay;
-- (id)initForLocalReplayWithSystemPulseRate:(id)a3 telemetryEnabled:(BOOL)a4;
+- (id)initForLocalReplayWithSystemPulseRate:(id)rate telemetryEnabled:(BOOL)enabled;
 - (id)initForLocalReplayWithTelemetryEnabled;
 - (uint64_t)deleteSession;
 - (uint64_t)publishContext;
-- (unint64_t)getRetainedBufferCountForKey:(id)a3;
-- (unint64_t)getRetainedBufferCountForStream:(id)a3;
-- (unsigned)copyWorkgroupPortForGraphTag:(id)a3;
+- (unint64_t)getRetainedBufferCountForKey:(id)key;
+- (unint64_t)getRetainedBufferCountForStream:(id)stream;
+- (unsigned)copyWorkgroupPortForGraphTag:(id)tag;
 - (void)dealloc;
 - (void)deleteSession;
-- (void)deregisterFromResourceAvailabilityUpdates:(id)a3;
+- (void)deregisterFromResourceAvailabilityUpdates:(id)updates;
 - (void)enteringSleep;
 - (void)exitingSleep;
-- (void)failedToProcessNotificationsOfResourcesNoLongerWanted:(id)a3 reason:(unint64_t)a4;
-- (void)failedToProcessPauseRequests:(id)a3 reason:(unint64_t)a4;
-- (void)failedToProcessResourceRequests:(id)a3 reason:(unint64_t)a4;
-- (void)failedToProcessSetupRequests:(id)a3 reason:(unint64_t)a4;
-- (void)pauseRequestsAreComplete:(id)a3;
-- (void)producedStridesWillChangeTo:(id)a3 atFrameID:(id)a4 isPhysicalFrameID:(BOOL)a5 forBaseMSGSyncID:(id)a6;
-- (void)producedStridesWillChangeTo:(id)a3 atPhysicalFrameID:(id)a4;
-- (void)producibleStridesHaveChangedTo:(id)a3;
+- (void)failedToProcessNotificationsOfResourcesNoLongerWanted:(id)wanted reason:(unint64_t)reason;
+- (void)failedToProcessPauseRequests:(id)requests reason:(unint64_t)reason;
+- (void)failedToProcessResourceRequests:(id)requests reason:(unint64_t)reason;
+- (void)failedToProcessSetupRequests:(id)requests reason:(unint64_t)reason;
+- (void)pauseRequestsAreComplete:(id)complete;
+- (void)producedStridesWillChangeTo:(id)to atFrameID:(id)d isPhysicalFrameID:(BOOL)iD forBaseMSGSyncID:(id)syncID;
+- (void)producedStridesWillChangeTo:(id)to atPhysicalFrameID:(id)d;
+- (void)producibleStridesHaveChangedTo:(id)to;
 - (void)publishContext;
-- (void)publishContext:(id)a3;
+- (void)publishContext:(id)context;
 - (void)publishContextForLocalReplay;
-- (void)registerForContextUpdatesFromResourcesWithCategory:(unint64_t)a3;
-- (void)registerForResourceAvailabilityUpdates:(id)a3;
-- (void)requestedResourcesAreBeingProduced:(id)a3;
-- (void)resourceAvailabilityHasChangedTo:(id)a3;
-- (void)resourceRequestsAreComplete:(id)a3;
-- (void)resourcesNoLongerWantedProcessed:(id)a3;
-- (void)resumedProducingRequestedResources:(id)a3 reason:(unint64_t)a4;
-- (void)setupRequestsAreComplete:(id)a3;
-- (void)waitForContextFromExecutionSessionsProvidingResources:(id)a3;
-- (void)willStopProducingRequestedResources:(id)a3 reason:(unint64_t)a4;
+- (void)registerForContextUpdatesFromResourcesWithCategory:(unint64_t)category;
+- (void)registerForResourceAvailabilityUpdates:(id)updates;
+- (void)requestedResourcesAreBeingProduced:(id)produced;
+- (void)resourceAvailabilityHasChangedTo:(id)to;
+- (void)resourceRequestsAreComplete:(id)complete;
+- (void)resourcesNoLongerWantedProcessed:(id)processed;
+- (void)resumedProducingRequestedResources:(id)resources reason:(unint64_t)reason;
+- (void)setupRequestsAreComplete:(id)complete;
+- (void)waitForContextFromExecutionSessionsProvidingResources:(id)resources;
+- (void)willStopProducingRequestedResources:(id)resources reason:(unint64_t)reason;
 @end
 
 @implementation PSExecutionSession
 
-+ (id)uniqueSessionWithName:(id)a3
++ (id)uniqueSessionWithName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v4 = MEMORY[0x277CCACA8];
-  v5 = [MEMORY[0x277CCAC38] processInfo];
-  v6 = [v5 processName];
-  v7 = [MEMORY[0x277CCAD78] UUID];
-  v8 = [v7 UUIDString];
-  v9 = v8;
-  if (v3)
+  processInfo = [MEMORY[0x277CCAC38] processInfo];
+  processName = [processInfo processName];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  v9 = uUIDString;
+  if (nameCopy)
   {
-    [v4 stringWithFormat:@"%@-%@-%@", v6, v3, v8];
+    [v4 stringWithFormat:@"%@-%@-%@", processName, nameCopy, uUIDString];
   }
 
   else
   {
-    [v4 stringWithFormat:@"%@-%@", v6, v8, v13];
+    [v4 stringWithFormat:@"%@-%@", processName, uUIDString, v13];
   }
   v10 = ;
 
@@ -99,12 +99,12 @@
   return v6;
 }
 
-+ (id)sharedInstanceWithProvider:(id)a3
++ (id)sharedInstanceWithProvider:(id)provider
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  providerCopy = provider;
   v4 = +[PSExecutionSessionWorkarounds sharedInstance];
-  v5 = [v4 keyForProviderName:v3];
+  v5 = [v4 keyForProviderName:providerCopy];
 
   if (v5 == 28)
   {
@@ -112,7 +112,7 @@
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
       v11 = 136315138;
-      v12 = [v3 UTF8String];
+      uTF8String = [providerCopy UTF8String];
       _os_log_impl(&dword_25EA3A000, v6, OS_LOG_TYPE_ERROR, "Deprecated API +[PSExecutionSession sharedInstanceWithProvider:] was called and the given providerName (%s) was not grandfathered in. Please use +[PSExecutionSession sharedInstanceForExecutionSessionKey] instead", &v11, 0xCu);
     }
   }
@@ -140,22 +140,22 @@ LABEL_22:
   v3 = __PLSLogSharedInstance();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(NSString *)self->_name UTF8String];
+    uTF8String = [(NSString *)self->_name UTF8String];
     v18 = 136315138;
-    v19 = v4;
+    v19 = uTF8String;
     _os_log_impl(&dword_25EA3A000, v3, OS_LOG_TYPE_DEFAULT, "Deleting execution session for key %s", &v18, 0xCu);
   }
 
-  v5 = [(PSExecutionDashboard *)self->_dashboard getRunningGraphs];
-  v6 = [v5 count] == 0;
+  getRunningGraphs = [(PSExecutionDashboard *)self->_dashboard getRunningGraphs];
+  v6 = [getRunningGraphs count] == 0;
 
   if (v6)
   {
     transitionManager = self->_transitionManager;
     if (transitionManager)
     {
-      v8 = [(PSTransitionManager *)transitionManager compiler];
-      [v8 destroyAllThreadPools];
+      compiler = [(PSTransitionManager *)transitionManager compiler];
+      [compiler destroyAllThreadPools];
 
       v9 = self->_transitionManager;
       self->_transitionManager = 0;
@@ -256,99 +256,99 @@ uint64_t __45__PSExecutionSession_sessionRegistrationDict__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-+ (PSExecutionSession)sessionWithName:(id)a3
++ (PSExecutionSession)sessionWithName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v4 = +[PSExecutionSession sessionRegistrationDict];
-  v5 = [v4 objectForKey:v3];
+  v5 = [v4 objectForKey:nameCopy];
 
   return v5;
 }
 
-+ (void)setSession:(id)a3 forName:(id)a4
++ (void)setSession:(id)session forName:(id)name
 {
-  v5 = a4;
-  v6 = a3;
+  nameCopy = name;
+  sessionCopy = session;
   v7 = +[PSExecutionSession sessionRegistrationDict];
-  [v7 setObject:v6 forKey:v5];
+  [v7 setObject:sessionCopy forKey:nameCopy];
 }
 
-+ (void)removeSessionWithName:(id)a3
++ (void)removeSessionWithName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v4 = +[PSExecutionSession sessionRegistrationDict];
-  [v4 removeObjectForKey:v3];
+  [v4 removeObjectForKey:nameCopy];
 }
 
-+ (id)nameForExecutionSessionKey:(int)a3
++ (id)nameForExecutionSessionKey:(int)key
 {
-  if (a3 < 0x1C)
+  if (key < 0x1C)
   {
     goto LABEL_2;
   }
 
-  if (a3 > 32)
+  if (key > 32)
   {
-    if (a3 == 33)
+    if (key == 33)
     {
 LABEL_13:
-      v5 = [MEMORY[0x277CCAD78] UUID];
-      v6 = [v5 UUIDString];
+      uUID = [MEMORY[0x277CCAD78] UUID];
+      uUIDString = [uUID UUIDString];
       goto LABEL_14;
     }
 
-    if (a3 != 34)
+    if (key != 34)
     {
 LABEL_12:
-      [(PSExecutionSession *)&v7 nameForExecutionSessionKey:a3];
+      [(PSExecutionSession *)&v7 nameForExecutionSessionKey:key];
       goto LABEL_13;
     }
 
 LABEL_2:
-    v3 = [MEMORY[0x277CCACA8] stringWithUTF8String:PSExecutionSessionKeyDescription[a3]];
+    v3 = [MEMORY[0x277CCACA8] stringWithUTF8String:PSExecutionSessionKeyDescription[key]];
     goto LABEL_3;
   }
 
-  if ((a3 - 29) < 4)
+  if ((key - 29) < 4)
   {
     goto LABEL_2;
   }
 
-  if (a3 != 28)
+  if (key != 28)
   {
     goto LABEL_12;
   }
 
-  v5 = [MEMORY[0x277CCAC38] processInfo];
-  v6 = [v5 processName];
+  uUID = [MEMORY[0x277CCAC38] processInfo];
+  uUIDString = [uUID processName];
 LABEL_14:
-  v3 = v6;
+  v3 = uUIDString;
 
 LABEL_3:
 
   return v3;
 }
 
-- (PSExecutionSession)initWithName:(id)a3 isUniqueSession:(BOOL)a4
+- (PSExecutionSession)initWithName:(id)name isUniqueSession:(BOOL)session
 {
   v52 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  nameCopy = name;
   v49.receiver = self;
   v49.super_class = PSExecutionSession;
   v7 = [(PSExecutionSession *)&v49 init];
   v8 = v7;
   if (v7)
   {
-    [(PSExecutionSession *)v7 setName:v6];
-    v8->_isUniqueSession = a4;
+    [(PSExecutionSession *)v7 setName:nameCopy];
+    v8->_isUniqueSession = session;
     v9 = objc_alloc_init(MEMORY[0x277CBEB58]);
     resourceCategorySubscriptions = v8->_resourceCategorySubscriptions;
     v8->_resourceCategorySubscriptions = v9;
 
     v11 = +[PLSSettings currentSettings];
-    v12 = [v11 enableEntitlementChecks];
+    enableEntitlementChecks = [v11 enableEntitlementChecks];
 
-    if (!v12 || (ps_util_check_process_entitlements() & 1) != 0)
+    if (!enableEntitlementChecks || (ps_util_check_process_entitlements() & 1) != 0)
     {
       v13 = MEMORY[0x277CCABB0];
       v14 = +[PLSSettings currentSettings];
@@ -363,9 +363,9 @@ LABEL_3:
         v8->_systemGraph = v16;
 
         v18 = +[PLSSettings currentSettings];
-        v19 = [v18 enableFastTransition];
+        enableFastTransition = [v18 enableFastTransition];
 
-        if (v19)
+        if (enableFastTransition)
         {
           error_out = 0;
           v20 = xpc_session_create_mach_service("com.apple.polaris.systemgraph_v2", 0, XPC_SESSION_CREATE_NONE, &error_out);
@@ -402,9 +402,9 @@ LABEL_3:
 
         v8->_isCoreAnalyticsEnabled = 1;
         v27 = +[PSExecutionSessionWorkarounds sharedInstance];
-        v28 = [v27 shouldDisableCoreAnalytics];
+        shouldDisableCoreAnalytics = [v27 shouldDisableCoreAnalytics];
 
-        if (v28)
+        if (shouldDisableCoreAnalytics)
         {
           v29 = __PLSLogSharedInstance();
           if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
@@ -422,8 +422,8 @@ LABEL_3:
         }
 
         v30 = objc_alloc(MEMORY[0x277D3E688]);
-        v31 = [(PSExecutionSession *)v8 name];
-        v32 = [v30 initForExecutionSession:v31];
+        name = [(PSExecutionSession *)v8 name];
+        v32 = [v30 initForExecutionSession:name];
         context = v8->_context;
         v8->_context = v32;
 
@@ -443,9 +443,9 @@ LABEL_3:
         if (v8->_systemGraphSession)
         {
           v40 = +[PLSSettings currentSettings];
-          v41 = [v40 enableFastTransition];
+          enableFastTransition2 = [v40 enableFastTransition];
 
-          if (v41)
+          if (enableFastTransition2)
           {
             ps_gsm_assign_system_graph_session(v8->_gsm, v8->_systemGraphSession);
           }
@@ -479,7 +479,7 @@ LABEL_3:
     if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v51 = v6;
+      v51 = nameCopy;
       _os_log_impl(&dword_25EA3A000, v43, OS_LOG_TYPE_DEFAULT, "Created execution session with name %@", buf, 0xCu);
     }
 
@@ -495,10 +495,10 @@ LABEL_3:
   return v3;
 }
 
-- (id)initForLocalReplayWithSystemPulseRate:(id)a3 telemetryEnabled:(BOOL)a4
+- (id)initForLocalReplayWithSystemPulseRate:(id)rate telemetryEnabled:(BOOL)enabled
 {
   v34 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  rateCopy = rate;
   v27.receiver = self;
   v27.super_class = PSExecutionSession;
   v6 = [(PSExecutionSession *)&v27 init];
@@ -508,9 +508,9 @@ LABEL_3:
     name = v6->_name;
     v6->_name = @"LocalReplaySession";
 
-    v9 = [objc_alloc(MEMORY[0x277D3E688]) initForLocalResources];
+    initForLocalResources = [objc_alloc(MEMORY[0x277D3E688]) initForLocalResources];
     context = v7->_context;
-    v7->_context = v9;
+    v7->_context = initForLocalResources;
 
     v11 = [[PLSDevice alloc] initWithContext:v7->_context isLocalReplay:1];
     device = v7->_device;
@@ -526,11 +526,11 @@ LABEL_3:
 
     v7->_gsm = ps_gsm_create_local();
     [(PSExecutionSession *)v7 setSystemPulseRate:&unk_2870CABF0];
-    if (v5)
+    if (rateCopy)
     {
-      if (([v5 isEqual:&unk_2870CAC08] & 1) != 0 || objc_msgSend(v5, "isEqual:", &unk_2870CABF0))
+      if (([rateCopy isEqual:&unk_2870CAC08] & 1) != 0 || objc_msgSend(rateCopy, "isEqual:", &unk_2870CABF0))
       {
-        [(PSExecutionSession *)v7 setSystemPulseRate:v5];
+        [(PSExecutionSession *)v7 setSystemPulseRate:rateCopy];
       }
 
       else
@@ -538,9 +538,9 @@ LABEL_3:
         v17 = __PLSLogSharedInstance();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
         {
-          v18 = [v5 intValue];
+          intValue = [rateCopy intValue];
           *buf = 67175425;
-          *v29 = v18;
+          *v29 = intValue;
           *&v29[4] = 1025;
           *&v29[6] = 90;
           v30 = 1025;
@@ -557,9 +557,9 @@ LABEL_3:
     pthread_threadid_np(0, &v26);
     v19 = MEMORY[0x277CCACA8];
     v20 = v26;
-    v21 = [MEMORY[0x277CCAD78] UUID];
-    v22 = [v21 UUIDString];
-    v23 = [v19 stringWithFormat:@"LocalReplayFactory-%llu-%@", v20, v22];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    v23 = [v19 stringWithFormat:@"LocalReplayFactory-%llu-%@", v20, uUIDString];
 
     [v23 UTF8String];
     ps_prm_create_manager_for_replay_session();
@@ -586,20 +586,20 @@ void __45__PSExecutionSession_setDeterministicReplay___block_invoke(uint64_t a1)
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)publishContext:(id)a3
+- (void)publishContext:(id)context
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(PSExecutionSession *)self context];
+  contextCopy = context;
+  context = [(PSExecutionSession *)self context];
 
-  if (v5 == v4)
+  if (context == contextCopy)
   {
     [(PSExecutionSession *)self publishContext];
   }
 
   else
   {
-    v6 = [v4 resourceStreamsForExecutionSession:&stru_2870BCDD8];
+    v6 = [contextCopy resourceStreamsForExecutionSession:&stru_2870BCDD8];
     v19 = [MEMORY[0x277CBEB58] set];
     v20 = 0u;
     v21 = 0u;
@@ -622,8 +622,8 @@ void __45__PSExecutionSession_setDeterministicReplay___block_invoke(uint64_t a1)
 
           v12 = *(*(&v20 + 1) + 8 * i);
           v13 = +[PSExecutionSessionWorkarounds sharedInstance];
-          v14 = [(PSExecutionSession *)self name];
-          v15 = [v13 shouldOverrideCameraStreamProviderType:v14];
+          name = [(PSExecutionSession *)self name];
+          v15 = [v13 shouldOverrideCameraStreamProviderType:name];
 
           if (v15)
           {
@@ -643,8 +643,8 @@ void __45__PSExecutionSession_setDeterministicReplay___block_invoke(uint64_t a1)
       while (v9);
     }
 
-    v17 = [(PSExecutionSession *)self systemGraph];
-    [v17 publishResourceStreamsForKeys:v19 fromContext:v4 withDevice:self->_device];
+    systemGraph = [(PSExecutionSession *)self systemGraph];
+    [systemGraph publishResourceStreamsForKeys:v19 fromContext:contextCopy withDevice:self->_device];
   }
 
   v18 = *MEMORY[0x277D85DE8];
@@ -653,9 +653,9 @@ void __45__PSExecutionSession_setDeterministicReplay___block_invoke(uint64_t a1)
 - (void)publishContextForLocalReplay
 {
   v29 = *MEMORY[0x277D85DE8];
-  v3 = [(PSExecutionSession *)self context];
-  v4 = [(PSExecutionSession *)self name];
-  v5 = [v3 resourceStreamsForExecutionSession:v4];
+  context = [(PSExecutionSession *)self context];
+  name = [(PSExecutionSession *)self name];
+  v5 = [context resourceStreamsForExecutionSession:name];
 
   v6 = createSupportedStridesInfo();
   v22 = 0u;
@@ -679,12 +679,12 @@ void __45__PSExecutionSession_setDeterministicReplay___block_invoke(uint64_t a1)
         }
 
         v12 = [*(*(&v22 + 1) + 8 * v11) key];
-        v13 = [(PSExecutionSession *)self context];
-        v14 = [v13 resourceStreamForKey:v12];
+        context2 = [(PSExecutionSession *)self context];
+        v14 = [context2 resourceStreamForKey:v12];
 
-        v15 = [v14 supportedStrides];
-        v16 = [v14 defaultStride];
-        populateSupportedStridesInfo(v6, v12, v15, v16);
+        supportedStrides = [v14 supportedStrides];
+        defaultStride = [v14 defaultStride];
+        populateSupportedStridesInfo(v6, v12, supportedStrides, defaultStride);
 
         ++v11;
       }
@@ -696,8 +696,8 @@ void __45__PSExecutionSession_setDeterministicReplay___block_invoke(uint64_t a1)
     while (v9);
   }
 
-  v17 = [(PSExecutionSession *)self systemGraphSession];
-  v18 = xpc_session_send_message(v17, v6);
+  systemGraphSession = [(PSExecutionSession *)self systemGraphSession];
+  v18 = xpc_session_send_message(systemGraphSession, v6);
 
   if (v18)
   {
@@ -717,14 +717,14 @@ void __45__PSExecutionSession_setDeterministicReplay___block_invoke(uint64_t a1)
 - (void)publishContext
 {
   v61 = *MEMORY[0x277D85DE8];
-  v3 = [(PSExecutionSession *)self context];
-  v4 = [(PSExecutionSession *)self name];
-  v5 = [v3 resourceStreamsForExecutionSession:v4];
+  context = [(PSExecutionSession *)self context];
+  name = [(PSExecutionSession *)self name];
+  v5 = [context resourceStreamsForExecutionSession:name];
 
   v6 = +[PSExecutionSessionWorkarounds sharedInstance];
-  LODWORD(v4) = [v6 shouldOverrideCameraStreamDomains];
+  LODWORD(name) = [v6 shouldOverrideCameraStreamDomains];
 
-  if (v4)
+  if (name)
   {
     v56 = 0u;
     v57 = 0u;
@@ -747,9 +747,9 @@ void __45__PSExecutionSession_setDeterministicReplay___block_invoke(uint64_t a1)
           }
 
           v13 = *(*(&v54 + 1) + 8 * i);
-          v14 = [v13 domain];
+          domain = [v13 domain];
 
-          if (!v14)
+          if (!domain)
           {
             device = self->_device;
             v16 = [v13 key];
@@ -802,8 +802,8 @@ void __45__PSExecutionSession_setDeterministicReplay___block_invoke(uint64_t a1)
 
         v26 = *(*(&v49 + 1) + 8 * j);
         v27 = +[PSExecutionSessionWorkarounds sharedInstance];
-        v28 = [(PSExecutionSession *)self name];
-        v29 = [v27 shouldOverrideCameraStreamProviderType:v28];
+        name2 = [(PSExecutionSession *)self name];
+        v29 = [v27 shouldOverrideCameraStreamProviderType:name2];
 
         if (v29)
         {
@@ -823,11 +823,11 @@ void __45__PSExecutionSession_setDeterministicReplay___block_invoke(uint64_t a1)
     while (v23);
   }
 
-  v31 = [(PSExecutionSession *)self systemGraph];
-  v32 = [(PSExecutionSession *)self context];
-  [v31 publishResourceStreamsForKeys:v21 fromContext:v32 withDevice:self->_device];
+  systemGraph = [(PSExecutionSession *)self systemGraph];
+  context2 = [(PSExecutionSession *)self context];
+  [systemGraph publishResourceStreamsForKeys:v21 fromContext:context2 withDevice:self->_device];
 
-  v33 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
@@ -849,9 +849,9 @@ void __45__PSExecutionSession_setDeterministicReplay___block_invoke(uint64_t a1)
 
         v39 = *(*(&v45 + 1) + 8 * k);
         v40 = [PSExecutionSessionResourceAvailability alloc];
-        v41 = [(PSExecutionSession *)self context];
-        v42 = -[PSExecutionSessionResourceAvailability initWithResourceKey:availability:](v40, "initWithResourceKey:availability:", v39, [v41 availabilityForResource:v39]);
-        [v33 addObject:v42];
+        context3 = [(PSExecutionSession *)self context];
+        v42 = -[PSExecutionSessionResourceAvailability initWithResourceKey:availability:](v40, "initWithResourceKey:availability:", v39, [context3 availabilityForResource:v39]);
+        [array addObject:v42];
       }
 
       v36 = [v34 countByEnumeratingWithState:&v45 objects:v58 count:16];
@@ -860,46 +860,46 @@ void __45__PSExecutionSession_setDeterministicReplay___block_invoke(uint64_t a1)
     while (v36);
   }
 
-  [(PSExecutionSession *)self resourceAvailabilityHasChangedTo:v33];
+  [(PSExecutionSession *)self resourceAvailabilityHasChangedTo:array];
   v43 = *MEMORY[0x277D85DE8];
 }
 
-- (void)waitForContextFromExecutionSessionsProvidingResources:(id)a3
+- (void)waitForContextFromExecutionSessionsProvidingResources:(id)resources
 {
-  v9 = [MEMORY[0x277CBEB58] setWithSet:a3];
+  v9 = [MEMORY[0x277CBEB58] setWithSet:resources];
   v4 = MEMORY[0x277CBEB98];
-  v5 = [(PSExecutionSession *)self context];
-  v6 = [v5 allResourceKeys];
-  v7 = [v4 setWithArray:v6];
+  context = [(PSExecutionSession *)self context];
+  allResourceKeys = [context allResourceKeys];
+  v7 = [v4 setWithArray:allResourceKeys];
 
   [v9 minusSet:v7];
   if ([v9 count])
   {
-    v8 = [(PSExecutionSession *)self systemGraph];
-    [v8 addResourceStreamsForResourceKeys:v9 toContext:self->_context];
+    systemGraph = [(PSExecutionSession *)self systemGraph];
+    [systemGraph addResourceStreamsForResourceKeys:v9 toContext:self->_context];
   }
 }
 
 - (void)enteringSleep
 {
-  v2 = [(PSExecutionSession *)self systemGraph];
-  [v2 enteringSleep];
+  systemGraph = [(PSExecutionSession *)self systemGraph];
+  [systemGraph enteringSleep];
 }
 
 - (void)exitingSleep
 {
-  v2 = [(PSExecutionSession *)self systemGraph];
-  [v2 exitingSleep];
+  systemGraph = [(PSExecutionSession *)self systemGraph];
+  [systemGraph exitingSleep];
 }
 
-- (unint64_t)getRetainedBufferCountForKey:(id)a3
+- (unint64_t)getRetainedBufferCountForKey:(id)key
 {
-  v3 = a3;
-  if ([PSRCConstants checkBufferConfigExistsForKey:v3])
+  keyCopy = key;
+  if ([PSRCConstants checkBufferConfigExistsForKey:keyCopy])
   {
-    v4 = [PSRCConstants getCameraDepthForKey:v3];
-    v5 = [PSRCConstants getReaderDepthForKey:v3]+ v4;
-    v6 = v5 + [PSRCConstants getWriterDepthForKey:v3];
+    v4 = [PSRCConstants getCameraDepthForKey:keyCopy];
+    v5 = [PSRCConstants getReaderDepthForKey:keyCopy]+ v4;
+    v6 = v5 + [PSRCConstants getWriterDepthForKey:keyCopy];
   }
 
   else
@@ -910,19 +910,19 @@ void __45__PSExecutionSession_setDeterministicReplay___block_invoke(uint64_t a1)
   return v6;
 }
 
-- (unint64_t)getRetainedBufferCountForStream:(id)a3
+- (unint64_t)getRetainedBufferCountForStream:(id)stream
 {
-  v3 = a3;
-  v4 = [v3 resourceClass];
-  v5 = [v3 key];
+  streamCopy = stream;
+  resourceClass = [streamCopy resourceClass];
+  v5 = [streamCopy key];
   if ([PSRCConstants checkBufferConfigExistsForKey:v5])
   {
-    v6 = v4 == 9;
-    v7 = [v3 key];
+    v6 = resourceClass == 9;
+    v7 = [streamCopy key];
     v8 = [PSRCConstants getCameraDepthForKey:v7];
-    v9 = [v3 key];
+    v9 = [streamCopy key];
     v10 = [PSRCConstants getReaderDepthForKey:v9];
-    v11 = [v3 key];
+    v11 = [streamCopy key];
     v12 = (([PSRCConstants getWriterDepthForKey:v11]+ v10) << (2 * v6)) + v8;
   }
 
@@ -934,21 +934,21 @@ void __45__PSExecutionSession_setDeterministicReplay___block_invoke(uint64_t a1)
   return v12;
 }
 
-- (void)resumedProducingRequestedResources:(id)a3 reason:(unint64_t)a4
+- (void)resumedProducingRequestedResources:(id)resources reason:(unint64_t)reason
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (a4 > 1)
+  resourcesCopy = resources;
+  if (reason > 1)
   {
-    [PSExecutionSession resumedProducingRequestedResources:a4 reason:?];
+    [PSExecutionSession resumedProducingRequestedResources:reason reason:?];
   }
 
-  v7 = v6;
+  v7 = resourcesCopy;
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v8 = [resourcesCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v8)
   {
     v9 = v8;
@@ -964,8 +964,8 @@ void __45__PSExecutionSession_setDeterministicReplay___block_invoke(uint64_t a1)
         }
 
         v12 = *(*(&v16 + 1) + 8 * v11);
-        v13 = [(PSTransitionManager *)self->_transitionManager compiler];
-        [v13 withWriterForKey:v12 perform:&__block_literal_global_53];
+        compiler = [(PSTransitionManager *)self->_transitionManager compiler];
+        [compiler withWriterForKey:v12 perform:&__block_literal_global_53];
 
         ++v11;
       }
@@ -990,25 +990,25 @@ void __64__PSExecutionSession_resumedProducingRequestedResources_reason___block_
   }
 }
 
-- (void)producedStridesWillChangeTo:(id)a3 atFrameID:(id)a4 isPhysicalFrameID:(BOOL)a5 forBaseMSGSyncID:(id)a6
+- (void)producedStridesWillChangeTo:(id)to atFrameID:(id)d isPhysicalFrameID:(BOOL)iD forBaseMSGSyncID:(id)syncID
 {
   v31 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  toCopy = to;
+  dCopy = d;
+  syncIDCopy = syncID;
   v13 = +[PLSSettings currentSettings];
-  v14 = [v13 enableFastTransition];
+  enableFastTransition = [v13 enableFastTransition];
 
-  if (v14)
+  if (enableFastTransition)
   {
-    v15 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v10, "count")}];
+    v15 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(toCopy, "count")}];
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
     v27[2] = __95__PSExecutionSession_producedStridesWillChangeTo_atFrameID_isPhysicalFrameID_forBaseMSGSyncID___block_invoke;
     v27[3] = &unk_279A482E0;
     v16 = v15;
     v28 = v16;
-    [v10 enumerateObjectsUsingBlock:v27];
+    [toCopy enumerateObjectsUsingBlock:v27];
     v26 = 0;
     v17 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v16 requiringSecureCoding:1 error:&v26];
     v18 = v26;
@@ -1022,8 +1022,8 @@ LABEL_13:
         goto LABEL_14;
       }
 
-      v20 = [v18 localizedDescription];
-      v21 = [v20 cStringUsingEncoding:134217984];
+      localizedDescription = [v18 localizedDescription];
+      v21 = [localizedDescription cStringUsingEncoding:134217984];
       *buf = 136315138;
       v30 = v21;
       _os_log_impl(&dword_25EA3A000, v19, OS_LOG_TYPE_ERROR, "Error encoding array: %s", buf, 0xCu);
@@ -1044,13 +1044,13 @@ LABEL_13:
       }
 
       v19 = xpc_dictionary_create(0, 0, 0);
-      populateProducedStridesWillChange(v19, v17, [v11 integerValue], a5, v12);
-      v22 = [(PSExecutionSession *)self systemGraphSession];
-      v20 = xpc_session_send_message(v22, v19);
+      populateProducedStridesWillChange(v19, v17, [dCopy integerValue], iD, syncIDCopy);
+      systemGraphSession = [(PSExecutionSession *)self systemGraphSession];
+      localizedDescription = xpc_session_send_message(systemGraphSession, v19);
 
-      if (v20)
+      if (localizedDescription)
       {
-        v23 = xpc_rich_error_copy_description(v20);
+        v23 = xpc_rich_error_copy_description(localizedDescription);
         v24 = __PLSLogSharedInstance();
         if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
         {
@@ -1091,12 +1091,12 @@ void __95__PSExecutionSession_producedStridesWillChangeTo_atFrameID_isPhysicalFr
   [v2 addObject:v6];
 }
 
-- (void)producedStridesWillChangeTo:(id)a3 atPhysicalFrameID:(id)a4
+- (void)producedStridesWillChangeTo:(id)to atPhysicalFrameID:(id)d
 {
   v42 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (![v6 count])
+  toCopy = to;
+  dCopy = d;
+  if (![toCopy count])
   {
     goto LABEL_26;
   }
@@ -1105,7 +1105,7 @@ void __95__PSExecutionSession_producedStridesWillChangeTo_atFrameID_isPhysicalFr
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v8 = v6;
+  v8 = toCopy;
   v9 = [v8 countByEnumeratingWithState:&v27 objects:v41 count:16];
   if (v9)
   {
@@ -1121,33 +1121,33 @@ void __95__PSExecutionSession_producedStridesWillChangeTo_atFrameID_isPhysicalFr
           objc_enumerationMutation(v8);
         }
 
-        v14 = [*(*(&v27 + 1) + 8 * i) resourceKey];
-        v15 = [(PSExecutionSession *)self context];
-        v16 = [v15 resourceStreamForKey:v14];
+        resourceKey = [*(*(&v27 + 1) + 8 * i) resourceKey];
+        context = [(PSExecutionSession *)self context];
+        v16 = [context resourceStreamForKey:resourceKey];
 
-        v17 = [v16 baseMSGSyncID];
-        if (!v17)
+        baseMSGSyncID = [v16 baseMSGSyncID];
+        if (!baseMSGSyncID)
         {
-          [PSExecutionSession producedStridesWillChangeTo:buf atPhysicalFrameID:v14];
+          [PSExecutionSession producedStridesWillChangeTo:buf atPhysicalFrameID:resourceKey];
 LABEL_18:
           v26 = 0;
-          asprintf(&v26, "All resources must have the same MSG sync id: %s (%u != %u)", [v14 UTF8String], objc_msgSend(v15, "unsignedIntValue"), objc_msgSend(v11, "unsignedIntValue"));
+          asprintf(&v26, "All resources must have the same MSG sync id: %s (%u != %u)", [resourceKey UTF8String], objc_msgSend(context, "unsignedIntValue"), objc_msgSend(v11, "unsignedIntValue"));
           v19 = __PLSLogSharedInstance();
           if (os_log_type_enabled(v19, OS_LOG_TYPE_FAULT))
           {
-            v20 = [v14 UTF8String];
-            v21 = [v15 unsignedIntValue];
-            v22 = [v11 unsignedIntValue];
+            uTF8String = [resourceKey UTF8String];
+            unsignedIntValue = [context unsignedIntValue];
+            unsignedIntValue2 = [v11 unsignedIntValue];
             *buf = 136316162;
             v32 = "[PSExecutionSession producedStridesWillChangeTo:atPhysicalFrameID:]";
             v33 = 1024;
             v34 = 953;
             v35 = 2080;
-            v36 = v20;
+            v36 = uTF8String;
             v37 = 1024;
-            v38 = v21;
+            v38 = unsignedIntValue;
             v39 = 1024;
-            v40 = v22;
+            v40 = unsignedIntValue2;
             _os_log_impl(&dword_25EA3A000, v19, OS_LOG_TYPE_FAULT, "%s:%d All resources must have the same MSG sync id: %s (%u != %u)", buf, 0x28u);
           }
 
@@ -1176,10 +1176,10 @@ LABEL_26:
           [PSExecutionSession producedStridesWillChangeTo:buf atPhysicalFrameID:?];
         }
 
-        v15 = v17;
+        context = baseMSGSyncID;
         if (v11)
         {
-          if (([v11 isEqualToNumber:v17] & 1) == 0)
+          if (([v11 isEqualToNumber:baseMSGSyncID] & 1) == 0)
           {
             goto LABEL_18;
           }
@@ -1187,7 +1187,7 @@ LABEL_26:
 
         else
         {
-          v11 = v17;
+          v11 = baseMSGSyncID;
         }
       }
 
@@ -1202,20 +1202,20 @@ LABEL_26:
   v11 = 0;
 LABEL_16:
 
-  [(PSExecutionSession *)self producedStridesWillChangeTo:v8 atFrameID:v7 isPhysicalFrameID:1 forBaseMSGSyncID:v11];
+  [(PSExecutionSession *)self producedStridesWillChangeTo:v8 atFrameID:dCopy isPhysicalFrameID:1 forBaseMSGSyncID:v11];
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)requestedResourcesAreBeingProduced:(id)a3
+- (void)requestedResourcesAreBeingProduced:(id)produced
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
+  producedCopy = produced;
+  array = [MEMORY[0x277CBEB18] array];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = v4;
+  v6 = producedCopy;
   v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
@@ -1232,7 +1232,7 @@ LABEL_16:
         }
 
         v11 = [MEMORY[0x277D3E828] entryWithKey:*(*(&v13 + 1) + 8 * v10) stride:{0, v13}];
-        [v5 addObject:v11];
+        [array addObject:v11];
 
         ++v10;
       }
@@ -1244,23 +1244,23 @@ LABEL_16:
     while (v8);
   }
 
-  [(PSExecutionSession *)self resourceRequestsAreComplete:v5];
+  [(PSExecutionSession *)self resourceRequestsAreComplete:array];
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)resourceRequestsAreComplete:(id)a3
+- (void)resourceRequestsAreComplete:(id)complete
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completeCopy = complete;
   v5 = objc_alloc_init(MEMORY[0x277D3E820]);
   [v5 setResourcesNoLongerWanted:0];
-  [v5 setResourcesWantedWithStrides:v4];
+  [v5 setResourcesWantedWithStrides:completeCopy];
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [v5 resourcesWantedWithStrides];
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  resourcesWantedWithStrides = [v5 resourcesWantedWithStrides];
+  v7 = [resourcesWantedWithStrides countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1272,25 +1272,25 @@ LABEL_16:
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(resourcesWantedWithStrides);
         }
 
-        v11 = [*(*(&v15 + 1) + 8 * v10) resourceKey];
-        v12 = [(PSTransitionManager *)self->_transitionManager compiler];
-        [v12 withWriterForKey:v11 perform:&__block_literal_global_268];
+        resourceKey = [*(*(&v15 + 1) + 8 * v10) resourceKey];
+        compiler = [(PSTransitionManager *)self->_transitionManager compiler];
+        [compiler withWriterForKey:resourceKey perform:&__block_literal_global_268];
 
         ++v10;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [resourcesWantedWithStrides countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);
   }
 
-  v13 = [(PSExecutionSession *)self systemGraph];
-  [v13 resourceRequestWithStridesCompleted:v5];
+  systemGraph = [(PSExecutionSession *)self systemGraph];
+  [systemGraph resourceRequestWithStridesCompleted:v5];
 
   v14 = *MEMORY[0x277D85DE8];
 }
@@ -1305,15 +1305,15 @@ void __68__PSExecutionSession_ResourceProvider__resourceRequestsAreComplete___bl
   }
 }
 
-- (void)willStopProducingRequestedResources:(id)a3 reason:(unint64_t)a4
+- (void)willStopProducingRequestedResources:(id)resources reason:(unint64_t)reason
 {
   v22 = *MEMORY[0x277D85DE8];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = a3;
-  v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  resourcesCopy = resources;
+  v7 = [resourcesCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1325,46 +1325,46 @@ void __68__PSExecutionSession_ResourceProvider__resourceRequestsAreComplete___bl
       {
         if (*v18 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(resourcesCopy);
         }
 
         v11 = *(*(&v17 + 1) + 8 * v10);
-        v12 = [(PSTransitionManager *)self->_transitionManager compiler];
-        [v12 withWriterForKey:v11 perform:&__block_literal_global_270];
+        compiler = [(PSTransitionManager *)self->_transitionManager compiler];
+        [compiler withWriterForKey:v11 perform:&__block_literal_global_270];
 
         ++v10;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v8 = [resourcesCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v8);
   }
 
-  if (a4 - 1 < 2)
+  if (reason - 1 < 2)
   {
-    v13 = __PLSLogSharedInstance();
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+    systemGraph = __PLSLogSharedInstance();
+    if (os_log_type_enabled(systemGraph, OS_LOG_TYPE_DEFAULT))
     {
       LOWORD(v16[0]) = 0;
-      _os_log_impl(&dword_25EA3A000, v13, OS_LOG_TYPE_DEFAULT, "OysterID transition", v16, 2u);
+      _os_log_impl(&dword_25EA3A000, systemGraph, OS_LOG_TYPE_DEFAULT, "OysterID transition", v16, 2u);
     }
 
     goto LABEL_13;
   }
 
-  if (!a4)
+  if (!reason)
   {
-    v13 = [(PSExecutionSession *)self systemGraph];
-    [v13 resourcesAreStopped:v6 reason:0];
+    systemGraph = [(PSExecutionSession *)self systemGraph];
+    [systemGraph resourcesAreStopped:resourcesCopy reason:0];
 LABEL_13:
 
     v14 = *MEMORY[0x277D85DE8];
     return;
   }
 
-  v15 = [PSExecutionSession(ResourceProvider) willStopProducingRequestedResources:v16 reason:a4];
+  v15 = [PSExecutionSession(ResourceProvider) willStopProducingRequestedResources:v16 reason:reason];
   __83__PSExecutionSession_ResourceProvider__willStopProducingRequestedResources_reason___block_invoke(v15);
 }
 
@@ -1378,19 +1378,19 @@ void __83__PSExecutionSession_ResourceProvider__willStopProducingRequestedResour
   }
 }
 
-- (void)failedToProcessResourceRequests:(id)a3 reason:(unint64_t)a4
+- (void)failedToProcessResourceRequests:(id)requests reason:(unint64_t)reason
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  requestsCopy = requests;
   v6 = objc_alloc_init(MEMORY[0x277D3E820]);
   [v6 setResourcesNoLongerWanted:0];
-  [v6 setResourcesWantedWithStrides:v5];
+  [v6 setResourcesWantedWithStrides:requestsCopy];
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = [v6 resourcesWantedWithStrides];
-  v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  resourcesWantedWithStrides = [v6 resourcesWantedWithStrides];
+  v8 = [resourcesWantedWithStrides countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v8)
   {
     v9 = v8;
@@ -1402,25 +1402,25 @@ void __83__PSExecutionSession_ResourceProvider__willStopProducingRequestedResour
       {
         if (*v18 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(resourcesWantedWithStrides);
         }
 
-        v12 = [*(*(&v17 + 1) + 8 * v11) resourceKey];
-        v13 = [(PSTransitionManager *)self->_transitionManager compiler];
-        [v13 withWriterForKey:v12 perform:&__block_literal_global_273];
+        resourceKey = [*(*(&v17 + 1) + 8 * v11) resourceKey];
+        compiler = [(PSTransitionManager *)self->_transitionManager compiler];
+        [compiler withWriterForKey:resourceKey perform:&__block_literal_global_273];
 
         ++v11;
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v9 = [resourcesWantedWithStrides countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v9);
   }
 
-  v14 = [(PSExecutionSession *)self systemGraph];
-  [v14 resourceRequestsFailed:v6 reason:a4];
+  systemGraph = [(PSExecutionSession *)self systemGraph];
+  [systemGraph resourceRequestsFailed:v6 reason:reason];
 
   v15 = *MEMORY[0x277D85DE8];
 }
@@ -1435,30 +1435,30 @@ void __79__PSExecutionSession_ResourceProvider__failedToProcessResourceRequests_
   }
 }
 
-- (void)failedToProcessNotificationsOfResourcesNoLongerWanted:(id)a3 reason:(unint64_t)a4
+- (void)failedToProcessNotificationsOfResourcesNoLongerWanted:(id)wanted reason:(unint64_t)reason
 {
-  v6 = a3;
-  v7 = [(PSExecutionSession *)self systemGraph];
-  [v7 resourcesNoLongerWantedFailed:v6 reason:a4];
+  wantedCopy = wanted;
+  systemGraph = [(PSExecutionSession *)self systemGraph];
+  [systemGraph resourcesNoLongerWantedFailed:wantedCopy reason:reason];
 }
 
-- (void)producibleStridesHaveChangedTo:(id)a3
+- (void)producibleStridesHaveChangedTo:(id)to
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   v5 = +[PLSSettings currentSettings];
-  v6 = [v5 enableFastTransition];
+  enableFastTransition = [v5 enableFastTransition];
 
-  if (v6)
+  if (enableFastTransition)
   {
-    v7 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v4, "count")}];
+    v7 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(toCopy, "count")}];
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __71__PSExecutionSession_ResourceProvider__producibleStridesHaveChangedTo___block_invoke;
     v19[3] = &unk_279A48308;
     v8 = v7;
     v20 = v8;
-    [v4 enumerateObjectsUsingBlock:v19];
+    [toCopy enumerateObjectsUsingBlock:v19];
     v18 = 0;
     v9 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v8 requiringSecureCoding:1 error:&v18];
     v10 = v18;
@@ -1472,8 +1472,8 @@ LABEL_13:
         goto LABEL_14;
       }
 
-      v12 = [v10 localizedDescription];
-      v13 = [v12 cStringUsingEncoding:134217984];
+      localizedDescription = [v10 localizedDescription];
+      v13 = [localizedDescription cStringUsingEncoding:134217984];
       *buf = 136315138;
       v22 = v13;
       _os_log_impl(&dword_25EA3A000, v11, OS_LOG_TYPE_ERROR, "Error encoding array: %s", buf, 0xCu);
@@ -1495,12 +1495,12 @@ LABEL_13:
 
       v11 = xpc_dictionary_create(0, 0, 0);
       populateProducibleStridesHaveChangedTo(v11, v9);
-      v14 = [(PSExecutionSession *)self systemGraphSession];
-      v12 = xpc_session_send_message(v14, v11);
+      systemGraphSession = [(PSExecutionSession *)self systemGraphSession];
+      localizedDescription = xpc_session_send_message(systemGraphSession, v11);
 
-      if (v12)
+      if (localizedDescription)
       {
-        v15 = xpc_rich_error_copy_description(v12);
+        v15 = xpc_rich_error_copy_description(localizedDescription);
         v16 = __PLSLogSharedInstance();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
         {
@@ -1541,55 +1541,55 @@ void __71__PSExecutionSession_ResourceProvider__producibleStridesHaveChangedTo__
   [v2 addObject:v6];
 }
 
-- (void)resourceAvailabilityHasChangedTo:(id)a3
+- (void)resourceAvailabilityHasChangedTo:(id)to
 {
-  v4 = a3;
-  v5 = [(PSExecutionSession *)self systemGraph];
-  [v5 resourceAvailabilityHasChangedTo:v4];
+  toCopy = to;
+  systemGraph = [(PSExecutionSession *)self systemGraph];
+  [systemGraph resourceAvailabilityHasChangedTo:toCopy];
 }
 
-- (void)resourcesNoLongerWantedProcessed:(id)a3
+- (void)resourcesNoLongerWantedProcessed:(id)processed
 {
-  v4 = a3;
-  v5 = [(PSExecutionSession *)self systemGraph];
-  [v5 resourcesNoLongerWantedProcessed:v4];
+  processedCopy = processed;
+  systemGraph = [(PSExecutionSession *)self systemGraph];
+  [systemGraph resourcesNoLongerWantedProcessed:processedCopy];
 }
 
-- (void)setupRequestsAreComplete:(id)a3
+- (void)setupRequestsAreComplete:(id)complete
 {
   v4 = MEMORY[0x277D3E820];
-  v5 = a3;
+  completeCopy = complete;
   v7 = objc_alloc_init(v4);
   [v7 setResourcesNoLongerWanted:0];
-  [v7 setResourcesWantedWithStrides:v5];
+  [v7 setResourcesWantedWithStrides:completeCopy];
 
-  v6 = [(PSExecutionSession *)self systemGraph];
-  [v6 setupRequestsAreComplete:v7];
+  systemGraph = [(PSExecutionSession *)self systemGraph];
+  [systemGraph setupRequestsAreComplete:v7];
 }
 
-- (void)failedToProcessSetupRequests:(id)a3 reason:(unint64_t)a4
+- (void)failedToProcessSetupRequests:(id)requests reason:(unint64_t)reason
 {
-  v6 = a3;
-  v7 = [(PSExecutionSession *)self systemGraph];
-  [v7 failedToProcessSetupRequests:v6 reason:a4];
+  requestsCopy = requests;
+  systemGraph = [(PSExecutionSession *)self systemGraph];
+  [systemGraph failedToProcessSetupRequests:requestsCopy reason:reason];
 }
 
-- (void)pauseRequestsAreComplete:(id)a3
+- (void)pauseRequestsAreComplete:(id)complete
 {
-  v4 = a3;
-  v5 = [(PSExecutionSession *)self systemGraph];
-  [v5 pauseRequestsAreComplete:v4];
+  completeCopy = complete;
+  systemGraph = [(PSExecutionSession *)self systemGraph];
+  [systemGraph pauseRequestsAreComplete:completeCopy];
 }
 
-- (void)failedToProcessPauseRequests:(id)a3 reason:(unint64_t)a4
+- (void)failedToProcessPauseRequests:(id)requests reason:(unint64_t)reason
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  requestsCopy = requests;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v7 = [requestsCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1601,25 +1601,25 @@ void __71__PSExecutionSession_ResourceProvider__producibleStridesHaveChangedTo__
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(requestsCopy);
         }
 
         v11 = *(*(&v15 + 1) + 8 * v10);
-        v12 = [(PSTransitionManager *)self->_transitionManager compiler];
-        [v12 withWriterForKey:v11 perform:&__block_literal_global_286];
+        compiler = [(PSTransitionManager *)self->_transitionManager compiler];
+        [compiler withWriterForKey:v11 perform:&__block_literal_global_286];
 
         ++v10;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [requestsCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);
   }
 
-  v13 = [(PSExecutionSession *)self systemGraph];
-  [v13 failedToProcessPauseRequests:v6 reason:a4];
+  systemGraph = [(PSExecutionSession *)self systemGraph];
+  [systemGraph failedToProcessPauseRequests:requestsCopy reason:reason];
 
   v14 = *MEMORY[0x277D85DE8];
 }
@@ -1634,18 +1634,18 @@ void __77__PSExecutionSession_PauseSetupSupport__failedToProcessPauseRequests_re
   }
 }
 
-- (BOOL)createWorkgroupInterval:(const char *)a3 workloadID:(const char *)a4 type:(unsigned __int16)a5 graphTag:(id)a6
+- (BOOL)createWorkgroupInterval:(const char *)interval workloadID:(const char *)d type:(unsigned __int16)type graphTag:(id)tag
 {
   v37 = *MEMORY[0x277D85DE8];
-  v8 = a6;
-  v9 = [(PSExecutionSession *)self transitionManager];
-  v10 = [v9 compiler];
+  tagCopy = tag;
+  transitionManager = [(PSExecutionSession *)self transitionManager];
+  compiler = [transitionManager compiler];
 
-  os_unfair_lock_lock(v10 + 2);
-  v11 = [(PSExecutionSession *)self transitionManager];
-  v12 = [v11 compiler];
-  v13 = [v12 taggedWorkgroups];
-  v14 = [v13 objectForKeyedSubscript:v8];
+  os_unfair_lock_lock(compiler + 2);
+  transitionManager2 = [(PSExecutionSession *)self transitionManager];
+  compiler2 = [transitionManager2 compiler];
+  taggedWorkgroups = [compiler2 taggedWorkgroups];
+  v14 = [taggedWorkgroups objectForKeyedSubscript:tagCopy];
 
   if (!v14)
   {
@@ -1672,7 +1672,7 @@ LABEL_11:
       v21 = os_workgroup_attr_set_telemetry_flavor();
       if (!v21)
       {
-        if (a4)
+        if (d)
         {
           v17 = os_workgroup_interval_create_with_workload_id();
         }
@@ -1686,23 +1686,23 @@ LABEL_11:
         v16 = v17 != 0;
         if (v17)
         {
-          v25 = [(PSExecutionSession *)self transitionManager];
-          v26 = [v25 compiler];
-          v27 = [v26 taggedWorkgroups];
-          [v27 setObject:v17 forKeyedSubscript:v8];
+          transitionManager3 = [(PSExecutionSession *)self transitionManager];
+          compiler3 = [transitionManager3 compiler];
+          taggedWorkgroups2 = [compiler3 taggedWorkgroups];
+          [taggedWorkgroups2 setObject:v17 forKeyedSubscript:tagCopy];
         }
 
         else
         {
           v28 = *v24;
-          v25 = __PLSLogSharedInstance();
-          if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
+          transitionManager3 = __PLSLogSharedInstance();
+          if (os_log_type_enabled(transitionManager3, OS_LOG_TYPE_ERROR))
           {
             *v29 = 136315394;
             v30 = strerror(v28);
             v31 = 1024;
             v32 = v28;
-            _os_log_impl(&dword_25EA3A000, v25, OS_LOG_TYPE_ERROR, "Couldn't create workgroup interval: %s (%d)", v29, 0x12u);
+            _os_log_impl(&dword_25EA3A000, transitionManager3, OS_LOG_TYPE_ERROR, "Couldn't create workgroup interval: %s (%d)", v29, 0x12u);
           }
         }
 
@@ -1731,31 +1731,31 @@ LABEL_13:
   if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412290;
-    *&v34 = v8;
+    *&v34 = tagCopy;
     _os_log_impl(&dword_25EA3A000, v15, OS_LOG_TYPE_ERROR, "Workgroup interval already exists for graph tag %@", buf, 0xCu);
   }
 
   v16 = 0;
 LABEL_14:
-  os_unfair_lock_unlock(v10 + 2);
+  os_unfair_lock_unlock(compiler + 2);
 
   v22 = *MEMORY[0x277D85DE8];
   return v16;
 }
 
-- (unsigned)copyWorkgroupPortForGraphTag:(id)a3
+- (unsigned)copyWorkgroupPortForGraphTag:(id)tag
 {
-  v4 = a3;
-  v5 = [(PSExecutionSession *)self transitionManager];
-  v6 = [v5 compiler];
+  tagCopy = tag;
+  transitionManager = [(PSExecutionSession *)self transitionManager];
+  compiler = [transitionManager compiler];
 
-  os_unfair_lock_lock(v6 + 2);
-  v7 = [(PSExecutionSession *)self transitionManager];
-  v8 = [v7 compiler];
-  v9 = [v8 taggedWorkgroups];
-  v10 = [v9 objectForKeyedSubscript:v4];
+  os_unfair_lock_lock(compiler + 2);
+  transitionManager2 = [(PSExecutionSession *)self transitionManager];
+  compiler2 = [transitionManager2 compiler];
+  taggedWorkgroups = [compiler2 taggedWorkgroups];
+  v10 = [taggedWorkgroups objectForKeyedSubscript:tagCopy];
 
-  os_unfair_lock_unlock(v6 + 2);
+  os_unfair_lock_unlock(compiler + 2);
   if (v10)
   {
     mach_port_out = 0;
@@ -1778,32 +1778,32 @@ LABEL_14:
   return v11;
 }
 
-- (BOOL)destroyWorkgroupForGraphTag:(id)a3
+- (BOOL)destroyWorkgroupForGraphTag:(id)tag
 {
-  v4 = a3;
-  v5 = [(PSExecutionSession *)self transitionManager];
-  v6 = [v5 compiler];
+  tagCopy = tag;
+  transitionManager = [(PSExecutionSession *)self transitionManager];
+  compiler = [transitionManager compiler];
 
-  os_unfair_lock_lock(v6 + 2);
-  v7 = [(PSExecutionSession *)self transitionManager];
-  v8 = [v7 compiler];
-  v9 = [v8 taggedWorkgroups];
-  v10 = [v9 objectForKeyedSubscript:v4];
+  os_unfair_lock_lock(compiler + 2);
+  transitionManager2 = [(PSExecutionSession *)self transitionManager];
+  compiler2 = [transitionManager2 compiler];
+  taggedWorkgroups = [compiler2 taggedWorkgroups];
+  v10 = [taggedWorkgroups objectForKeyedSubscript:tagCopy];
 
   if (v10)
   {
-    v11 = [(PSExecutionSession *)self transitionManager];
-    v12 = [v11 compiler];
-    v13 = [v12 taggedWorkgroups];
-    [v13 removeObjectForKey:v4];
+    transitionManager3 = [(PSExecutionSession *)self transitionManager];
+    compiler3 = [transitionManager3 compiler];
+    taggedWorkgroups2 = [compiler3 taggedWorkgroups];
+    [taggedWorkgroups2 removeObjectForKey:tagCopy];
 
-    os_unfair_lock_unlock(v6 + 2);
+    os_unfair_lock_unlock(compiler + 2);
     os_workgroup_cancel(v10);
   }
 
   else
   {
-    os_unfair_lock_unlock(v6 + 2);
+    os_unfair_lock_unlock(compiler + 2);
   }
 
   return v10 != 0;
@@ -1811,27 +1811,27 @@ LABEL_14:
 
 - (BOOL)requestSystemReplayStart
 {
-  v2 = [(PSExecutionSession *)self systemGraph];
-  [v2 startSystemReplay];
+  systemGraph = [(PSExecutionSession *)self systemGraph];
+  [systemGraph startSystemReplay];
 
   return 1;
 }
 
 - (BOOL)requestSystemReplayEnd
 {
-  v2 = [(PSExecutionSession *)self systemGraph];
-  [v2 stopSystemReplay];
+  systemGraph = [(PSExecutionSession *)self systemGraph];
+  [systemGraph stopSystemReplay];
 
   return 1;
 }
 
-- (void)registerForContextUpdatesFromResourcesWithCategory:(unint64_t)a3
+- (void)registerForContextUpdatesFromResourcesWithCategory:(unint64_t)category
 {
   resourceCategorySubscriptions = self->_resourceCategorySubscriptions;
   v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:?];
   [(NSMutableSet *)resourceCategorySubscriptions addObject:v6];
 
-  if (a3 == 1 && ![(PSExecutionDashboard *)self->_dashboard isLocalReplaySession])
+  if (category == 1 && ![(PSExecutionDashboard *)self->_dashboard isLocalReplaySession])
   {
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
@@ -1846,11 +1846,11 @@ LABEL_14:
 
   else
   {
-    v8 = [(PSContext *)self->_context resourceKeysForCategory:a3];
+    v8 = [(PSContext *)self->_context resourceKeysForCategory:category];
     if ([v8 count])
     {
-      v7 = [(PSExecutionSession *)self transitionManager];
-      [v7 deliverDynamicResourcesAvailableNotification:v8];
+      transitionManager = [(PSExecutionSession *)self transitionManager];
+      [transitionManager deliverDynamicResourcesAvailableNotification:v8];
     }
   }
 }
@@ -1880,25 +1880,25 @@ void __91__PSExecutionSession_ResourceConsumer__registerForContextUpdatesFromRes
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)registerForResourceAvailabilityUpdates:(id)a3
+- (void)registerForResourceAvailabilityUpdates:(id)updates
 {
-  v4 = a3;
-  v5 = [(PSExecutionSession *)self systemGraph];
-  [v5 registerForResourceAvailabilityUpdates:v4 context:self->_context];
+  updatesCopy = updates;
+  systemGraph = [(PSExecutionSession *)self systemGraph];
+  [systemGraph registerForResourceAvailabilityUpdates:updatesCopy context:self->_context];
 }
 
-- (void)deregisterFromResourceAvailabilityUpdates:(id)a3
+- (void)deregisterFromResourceAvailabilityUpdates:(id)updates
 {
-  v4 = a3;
-  v5 = [(PSExecutionSession *)self systemGraph];
-  [v5 deregisterFromResourceAvailabilityUpdates:v4];
+  updatesCopy = updates;
+  systemGraph = [(PSExecutionSession *)self systemGraph];
+  [systemGraph deregisterFromResourceAvailabilityUpdates:updatesCopy];
 }
 
 - (uint64_t)deleteSession
 {
   v18 = *MEMORY[0x277D85DE8];
-  *a1 = 0;
-  asprintf(a1, "Execution session was deallocated while graphs were still running.");
+  *self = 0;
+  asprintf(self, "Execution session was deallocated while graphs were still running.");
   v3 = __PLSLogSharedInstance();
   if (OUTLINED_FUNCTION_5(v3))
   {
@@ -1924,7 +1924,7 @@ void __91__PSExecutionSession_ResourceConsumer__registerForContextUpdatesFromRes
     OUTLINED_FUNCTION_7();
   }
 
-  v14 = *a1;
+  v14 = *self;
   result = abort_with_reason();
   __break(1u);
   return result;
@@ -2042,9 +2042,9 @@ void __91__PSExecutionSession_ResourceConsumer__registerForContextUpdatesFromRes
 - (uint64_t)publishContext
 {
   v26 = *MEMORY[0x277D85DE8];
-  *a1 = 0;
+  *self = 0;
   v4 = [a2 key];
-  asprintf(a1, "Unable to populate domain from RC for camera key %s", [v4 UTF8String]);
+  asprintf(self, "Unable to populate domain from RC for camera key %s", [v4 UTF8String]);
 
   v5 = __PLSLogSharedInstance();
   if (OUTLINED_FUNCTION_5(v5))

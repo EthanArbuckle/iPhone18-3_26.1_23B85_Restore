@@ -1,9 +1,9 @@
 @interface VFXTextureSource
 - (double)textureSize;
-- (id)metalTextureWithEngineContext:(__CFXEngineContext *)a3 textureSampler:(id)a4 nextFrameTime:(double *)a5 status:(id *)a6;
+- (id)metalTextureWithEngineContext:(__CFXEngineContext *)context textureSampler:(id)sampler nextFrameTime:(double *)time status:(id *)status;
 - (void)dealloc;
-- (void)renderWithEngineContext:(__CFXEngineContext *)a3 textureSampler:(id)a4 nextFrameTime:(double *)a5;
-- (void)setMTLTextureCache:(id)a3;
+- (void)renderWithEngineContext:(__CFXEngineContext *)context textureSampler:(id)sampler nextFrameTime:(double *)time;
+- (void)setMTLTextureCache:(id)cache;
 @end
 
 @implementation VFXTextureSource
@@ -28,9 +28,9 @@
   return result;
 }
 
-- (id)metalTextureWithEngineContext:(__CFXEngineContext *)a3 textureSampler:(id)a4 nextFrameTime:(double *)a5 status:(id *)a6
+- (id)metalTextureWithEngineContext:(__CFXEngineContext *)context textureSampler:(id)sampler nextFrameTime:(double *)time status:(id *)status
 {
-  v10 = sub_1AF12E2AC(a3);
+  v10 = sub_1AF12E2AC(context);
   if (!v10)
   {
     v11 = sub_1AF0D5194();
@@ -73,7 +73,7 @@
   return result;
 }
 
-- (void)renderWithEngineContext:(__CFXEngineContext *)a3 textureSampler:(id)a4 nextFrameTime:(double *)a5
+- (void)renderWithEngineContext:(__CFXEngineContext *)context textureSampler:(id)sampler nextFrameTime:(double *)time
 {
   v6 = sub_1AF0D5194();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -82,13 +82,13 @@
   }
 }
 
-- (void)setMTLTextureCache:(id)a3
+- (void)setMTLTextureCache:(id)cache
 {
   mtlTextureCache = self->_mtlTextureCache;
-  if (mtlTextureCache != a3)
+  if (mtlTextureCache != cache)
   {
 
-    self->_mtlTextureCache = a3;
+    self->_mtlTextureCache = cache;
   }
 }
 

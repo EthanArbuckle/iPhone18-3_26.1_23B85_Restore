@@ -1,7 +1,7 @@
 @interface OADCamera
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (OADCamera)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -25,10 +25,10 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(OADRotation3D *)self->mRotation copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(OADRotation3D *)self->mRotation copyWithZone:zone];
   v7 = *(v5 + 8);
   *(v5 + 8) = v6;
 
@@ -38,16 +38,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = v4) != 0)
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = equalCopy) != 0)
   {
     v6 = v5;
     mRotation = self->mRotation;
-    v8 = [v5 rotation];
-    if (-[OADRotation3D isEqual:](mRotation, "isEqual:", v8) && (mCameraType = self->mCameraType, mCameraType == [v6 cameraType]) && (mFieldOfView = self->mFieldOfView, objc_msgSend(v6, "fieldOfView"), mFieldOfView == v11))
+    rotation = [v5 rotation];
+    if (-[OADRotation3D isEqual:](mRotation, "isEqual:", rotation) && (mCameraType = self->mCameraType, mCameraType == [v6 cameraType]) && (mFieldOfView = self->mFieldOfView, objc_msgSend(v6, "fieldOfView"), mFieldOfView == v11))
     {
       mZoom = self->mZoom;
       [v6 zoom];

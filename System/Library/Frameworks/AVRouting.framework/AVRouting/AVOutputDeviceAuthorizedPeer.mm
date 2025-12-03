@@ -1,6 +1,6 @@
 @interface AVOutputDeviceAuthorizedPeer
-- (AVOutputDeviceAuthorizedPeer)initWithID:(id)a3 publicKey:(id)a4 hasAdministratorPrivileges:(BOOL)a5;
-- (BOOL)isEqual:(id)a3;
+- (AVOutputDeviceAuthorizedPeer)initWithID:(id)d publicKey:(id)key hasAdministratorPrivileges:(BOOL)privileges;
+- (BOOL)isEqual:(id)equal;
 - (unint64_t)hash;
 - (void)dealloc;
 @end
@@ -21,19 +21,19 @@
   [(AVOutputDeviceAuthorizedPeer *)&v4 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [objc_msgSend(a3 "peerID")];
+    v5 = [objc_msgSend(equal "peerID")];
     if (v5)
     {
-      v5 = [objc_msgSend(a3 "publicKey")];
+      v5 = [objc_msgSend(equal "publicKey")];
       if (v5)
       {
-        v6 = [a3 hasAdministratorPrivileges];
-        LOBYTE(v5) = v6 ^ [(AVOutputDeviceAuthorizedPeer *)self hasAdministratorPrivileges]^ 1;
+        hasAdministratorPrivileges = [equal hasAdministratorPrivileges];
+        LOBYTE(v5) = hasAdministratorPrivileges ^ [(AVOutputDeviceAuthorizedPeer *)self hasAdministratorPrivileges]^ 1;
       }
     }
   }
@@ -53,16 +53,16 @@
   return v4 ^ [(AVOutputDeviceAuthorizedPeer *)self hasAdministratorPrivileges];
 }
 
-- (AVOutputDeviceAuthorizedPeer)initWithID:(id)a3 publicKey:(id)a4 hasAdministratorPrivileges:(BOOL)a5
+- (AVOutputDeviceAuthorizedPeer)initWithID:(id)d publicKey:(id)key hasAdministratorPrivileges:(BOOL)privileges
 {
   v14.receiver = self;
   v14.super_class = AVOutputDeviceAuthorizedPeer;
   v8 = [(AVOutputDeviceAuthorizedPeer *)&v14 init];
   v9 = objc_alloc_init(AVOutputDeviceAuthorizedPeerInternal);
   v8->_ivars = v9;
-  if (v9 && (OUTLINED_FUNCTION_5_1([a3 copy]), v10) && (v8->_ivars->publicKey = objc_msgSend(a4, "copy"), ivars = v8->_ivars, ivars->publicKey))
+  if (v9 && (OUTLINED_FUNCTION_5_1([d copy]), v10) && (v8->_ivars->publicKey = objc_msgSend(key, "copy"), ivars = v8->_ivars, ivars->publicKey))
   {
-    ivars->isAdmin = a5;
+    ivars->isAdmin = privileges;
     v12 = v8;
   }
 

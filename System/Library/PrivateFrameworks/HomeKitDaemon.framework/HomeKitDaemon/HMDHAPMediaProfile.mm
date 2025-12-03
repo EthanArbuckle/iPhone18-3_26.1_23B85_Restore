@@ -1,10 +1,10 @@
 @interface HMDHAPMediaProfile
-- (BOOL)_updateAudioControl:(id)a3;
-- (BOOL)_updatePlayback:(id)a3;
-- (BOOL)_updateRefreshPlayback:(id)a3;
+- (BOOL)_updateAudioControl:(id)control;
+- (BOOL)_updatePlayback:(id)playback;
+- (BOOL)_updateRefreshPlayback:(id)playback;
 - (HMDCharacteristic)smartSpeakerCurrentMediaStateCharacteristic;
 - (HMDCharacteristic)smartSpeakerVolumeCharacteristic;
-- (HMDHAPMediaProfile)initWithMediaServices:(id)a3;
+- (HMDHAPMediaProfile)initWithMediaServices:(id)services;
 - (id)_allCharacteristicsToMonitor;
 - (id)_mediaSessionStateFromProfile;
 - (id)_smartSpeakerAirPlayEnableCharacteristic;
@@ -12,45 +12,45 @@
 - (id)_smartSpeakerCurrentMediaStateReadRequest;
 - (id)_smartSpeakerMutedCharacteristic;
 - (id)_smartSpeakerMutedReadRequest;
-- (id)_smartSpeakerMutedWriteRequestWithMuted:(id)a3;
+- (id)_smartSpeakerMutedWriteRequestWithMuted:(id)muted;
 - (id)_smartSpeakerTargetMediaStateCharacteristic;
-- (id)_smartSpeakerTargetMediaStateWriteRequestWithPlaybackState:(id)a3;
+- (id)_smartSpeakerTargetMediaStateWriteRequestWithPlaybackState:(id)state;
 - (id)_smartSpeakerVolumeReadRequest;
-- (id)_smartSpeakerVolumeWriteRequestWithVolumePercentage:(id)a3;
+- (id)_smartSpeakerVolumeWriteRequestWithVolumePercentage:(id)percentage;
 - (id)mediaSessionFromProfile;
-- (id)playStateWriteRequestWithPlaybackState:(int64_t)a3;
+- (id)playStateWriteRequestWithPlaybackState:(int64_t)state;
 - (int64_t)airPlayEnable;
 - (void)_disableCharacteristicNotifications;
-- (void)_handleCharacteristicChanges:(id)a3;
-- (void)_notifyProfileSettingsUpdated:(id)a3;
+- (void)_handleCharacteristicChanges:(id)changes;
+- (void)_notifyProfileSettingsUpdated:(id)updated;
 - (void)_updateCharacteristicChanges;
-- (void)_updateCurrentMediaState:(id)a3 volumePercentage:(id)a4 muted:(id)a5 enable:(id)a6 message:(id)a7;
-- (void)encodeWithCoder:(id)a3;
-- (void)handleAccessoryConfigured:(id)a3;
-- (void)handleCharacteristicsUpdated:(id)a3;
-- (void)handleHomeCharacteristicValuesChanged:(id)a3;
-- (void)handlePrimaryResidentChanged:(id)a3;
-- (void)handleResidentAdded:(id)a3;
+- (void)_updateCurrentMediaState:(id)state volumePercentage:(id)percentage muted:(id)muted enable:(id)enable message:(id)message;
+- (void)encodeWithCoder:(id)coder;
+- (void)handleAccessoryConfigured:(id)configured;
+- (void)handleCharacteristicsUpdated:(id)updated;
+- (void)handleHomeCharacteristicValuesChanged:(id)changed;
+- (void)handlePrimaryResidentChanged:(id)changed;
+- (void)handleResidentAdded:(id)added;
 - (void)registerForNotifications;
-- (void)setAirPlayEnable:(int64_t)a3;
-- (void)setEnable:(int64_t)a3 completionHandler:(id)a4;
-- (void)updateMediaSessionState:(id)a3 usingCharacteristics:(id)a4;
-- (void)updateMediaSessionState:(id)a3 usingServices:(id)a4;
+- (void)setAirPlayEnable:(int64_t)enable;
+- (void)setEnable:(int64_t)enable completionHandler:(id)handler;
+- (void)updateMediaSessionState:(id)state usingCharacteristics:(id)characteristics;
+- (void)updateMediaSessionState:(id)state usingServices:(id)services;
 @end
 
 @implementation HMDHAPMediaProfile
 
-- (void)setEnable:(int64_t)a3 completionHandler:(id)a4
+- (void)setEnable:(int64_t)enable completionHandler:(id)handler
 {
   v40 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  if (a3 < 2)
+  handlerCopy = handler;
+  if (enable < 2)
   {
-    v8 = [(HMDAccessoryProfile *)self accessory];
+    accessory = [(HMDAccessoryProfile *)self accessory];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = v8;
+      v9 = accessory;
     }
 
     else
@@ -62,20 +62,20 @@
 
     if (v10)
     {
-      v11 = [(HMDHAPMediaProfile *)self _smartSpeakerAirPlayEnableCharacteristic];
-      if (!v11)
+      _smartSpeakerAirPlayEnableCharacteristic = [(HMDHAPMediaProfile *)self _smartSpeakerAirPlayEnableCharacteristic];
+      if (!_smartSpeakerAirPlayEnableCharacteristic)
       {
         goto LABEL_14;
       }
 
-      v12 = [MEMORY[0x277CCABB0] numberWithInteger:a3 == 1];
-      v13 = [v11 authorizationData];
-      v14 = [HMDCharacteristicWriteRequest writeRequestWithCharacteristic:v11 value:v12 authorizationData:v13 type:0];
+      v12 = [MEMORY[0x277CCABB0] numberWithInteger:enable == 1];
+      authorizationData = [_smartSpeakerAirPlayEnableCharacteristic authorizationData];
+      v14 = [HMDCharacteristicWriteRequest writeRequestWithCharacteristic:_smartSpeakerAirPlayEnableCharacteristic value:v12 authorizationData:authorizationData type:0];
 
       if (v14)
       {
         v15 = objc_autoreleasePoolPush();
-        v16 = self;
+        selfCopy = self;
         v17 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
         {
@@ -83,15 +83,15 @@
           *buf = 138543618;
           v37 = v18;
           v38 = 2048;
-          v39 = a3;
+          enableCopy = enable;
           _os_log_impl(&dword_229538000, v17, OS_LOG_TYPE_INFO, "%{public}@Set airplay enable %zd", buf, 0x16u);
         }
 
         objc_autoreleasePoolPop(v15);
-        objc_initWeak(buf, v16);
+        objc_initWeak(buf, selfCopy);
         v35 = v14;
         v19 = [MEMORY[0x277CBEA60] arrayWithObjects:&v35 count:1];
-        v20 = [(HMDAccessoryProfile *)v16 workQueue];
+        workQueue = [(HMDAccessoryProfile *)selfCopy workQueue];
         v31[0] = MEMORY[0x277D85DD0];
         v31[1] = 3221225472;
         v31[2] = __50__HMDHAPMediaProfile_setEnable_completionHandler___block_invoke;
@@ -99,9 +99,9 @@
         objc_copyWeak(v34, buf);
         v21 = v14;
         v32 = v21;
-        v33 = v6;
-        v34[1] = a3;
-        [v10 writeCharacteristicValues:v19 source:1160 queue:v20 completionHandler:v31];
+        v33 = handlerCopy;
+        v34[1] = enable;
+        [v10 writeCharacteristicValues:v19 source:1160 queue:workQueue completionHandler:v31];
 
         objc_destroyWeak(v34);
         objc_destroyWeak(buf);
@@ -111,7 +111,7 @@
       {
 LABEL_14:
         v22 = objc_autoreleasePoolPush();
-        v23 = self;
+        selfCopy2 = self;
         v24 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
         {
@@ -123,9 +123,9 @@ LABEL_14:
 
         objc_autoreleasePoolPop(v22);
         v21 = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
-        if (v6)
+        if (handlerCopy)
         {
-          (*(v6 + 2))(v6, v21);
+          (*(handlerCopy + 2))(handlerCopy, v21);
         }
       }
     }
@@ -133,7 +133,7 @@ LABEL_14:
     else
     {
       v26 = objc_autoreleasePoolPush();
-      v27 = self;
+      selfCopy3 = self;
       v28 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
       {
@@ -144,10 +144,10 @@ LABEL_14:
       }
 
       objc_autoreleasePoolPop(v26);
-      v11 = [MEMORY[0x277CCA9B8] hmErrorWithCode:4];
-      if (v6)
+      _smartSpeakerAirPlayEnableCharacteristic = [MEMORY[0x277CCA9B8] hmErrorWithCode:4];
+      if (handlerCopy)
       {
-        (*(v6 + 2))(v6, v11);
+        (*(handlerCopy + 2))(handlerCopy, _smartSpeakerAirPlayEnableCharacteristic);
       }
     }
   }
@@ -155,9 +155,9 @@ LABEL_14:
   else
   {
     v7 = [MEMORY[0x277CCA9B8] hmErrorWithCode:3];
-    if (v6)
+    if (handlerCopy)
     {
-      (*(v6 + 2))(v6, v7);
+      (*(handlerCopy + 2))(handlerCopy, v7);
     }
   }
 
@@ -300,65 +300,65 @@ void __50__HMDHAPMediaProfile_setEnable_completionHandler___block_invoke(uint64_
   v34 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_notifyProfileSettingsUpdated:(id)a3
+- (void)_notifyProfileSettingsUpdated:(id)updated
 {
-  v5 = a3;
-  if ([v5 count])
+  updatedCopy = updated;
+  if ([updatedCopy count])
   {
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v4 postNotificationName:@"HMDHAPMediaProfileUpdatedNotification" object:self userInfo:v5];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"HMDHAPMediaProfileUpdatedNotification" object:self userInfo:updatedCopy];
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = HMDHAPMediaProfile;
-  [(HMDMediaProfile *)&v7 encodeWithCoder:v4];
-  v5 = [(HMDMediaProfile *)self mediaSession];
+  [(HMDMediaProfile *)&v7 encodeWithCoder:coderCopy];
+  mediaSession = [(HMDMediaProfile *)self mediaSession];
 
-  if (!v5)
+  if (!mediaSession)
   {
-    v6 = [(HMDHAPMediaProfile *)self mediaSessionFromProfile];
-    [v4 encodeObject:v6 forKey:*MEMORY[0x277CD08D8]];
+    mediaSessionFromProfile = [(HMDHAPMediaProfile *)self mediaSessionFromProfile];
+    [coderCopy encodeObject:mediaSessionFromProfile forKey:*MEMORY[0x277CD08D8]];
   }
 }
 
-- (void)_updateCurrentMediaState:(id)a3 volumePercentage:(id)a4 muted:(id)a5 enable:(id)a6 message:(id)a7
+- (void)_updateCurrentMediaState:(id)state volumePercentage:(id)percentage muted:(id)muted enable:(id)enable message:(id)message
 {
   v51 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if (v12 || v13 || v14 || v15)
+  stateCopy = state;
+  percentageCopy = percentage;
+  mutedCopy = muted;
+  enableCopy = enable;
+  messageCopy = message;
+  if (stateCopy || percentageCopy || mutedCopy || enableCopy)
   {
     v17 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:3];
     v18 = v17;
-    if (v12)
+    if (stateCopy)
     {
-      [v17 setValue:v12 forKey:*MEMORY[0x277CD0938]];
+      [v17 setValue:stateCopy forKey:*MEMORY[0x277CD0938]];
     }
 
-    if (v13)
+    if (percentageCopy)
     {
-      [v18 setValue:v13 forKey:*MEMORY[0x277CD09B0]];
+      [v18 setValue:percentageCopy forKey:*MEMORY[0x277CD09B0]];
     }
 
-    if (v14)
+    if (mutedCopy)
     {
-      [v18 setValue:v14 forKey:*MEMORY[0x277CD0928]];
+      [v18 setValue:mutedCopy forKey:*MEMORY[0x277CD0928]];
     }
 
     v42 = v18;
     v19 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:1];
-    if (v15)
+    if (enableCopy)
     {
-      v20 = [v15 integerValue];
-      v21 = v20 == 1 ? 1 : -1;
-      v22 = v20 ? v21 : 0;
+      integerValue = [enableCopy integerValue];
+      v21 = integerValue == 1 ? 1 : -1;
+      v22 = integerValue ? v21 : 0;
       if ([(HMDHAPMediaProfile *)self airPlayEnable]!= v22)
       {
         [(HMDHAPMediaProfile *)self setAirPlayEnable:v22];
@@ -368,9 +368,9 @@ void __50__HMDHAPMediaProfile_setEnable_completionHandler___block_invoke(uint64_
     }
 
     v40 = v19;
-    v41 = v15;
+    v41 = enableCopy;
     v24 = objc_autoreleasePoolPush();
-    v25 = self;
+    selfCopy = self;
     v26 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
     {
@@ -378,54 +378,54 @@ void __50__HMDHAPMediaProfile_setEnable_completionHandler___block_invoke(uint64_
       *buf = 138544130;
       v44 = v27;
       v45 = 2112;
-      v46 = v12;
+      v46 = stateCopy;
       v47 = 2112;
-      v48 = v13;
+      v48 = percentageCopy;
       v49 = 2112;
-      v50 = v14;
+      v50 = mutedCopy;
       _os_log_impl(&dword_229538000, v26, OS_LOG_TYPE_INFO, "%{public}@Notifying XPC clients of updated current media state %@, volume %@, muted %@", buf, 0x2Au);
     }
 
     objc_autoreleasePoolPop(v24);
     v28 = objc_alloc(MEMORY[0x277D0F820]);
-    v29 = [(HMDAccessoryProfile *)v25 uniqueIdentifier];
-    v30 = [v28 initWithTarget:v29];
+    uniqueIdentifier = [(HMDAccessoryProfile *)selfCopy uniqueIdentifier];
+    v30 = [v28 initWithTarget:uniqueIdentifier];
 
     v31 = MEMORY[0x277D0F848];
     v32 = *MEMORY[0x277CD0940];
     v33 = [v42 copy];
     v34 = [v31 messageWithName:v32 destination:v30 payload:v33];
 
-    v35 = v16;
-    v36 = [v16 identifier];
-    if (v36)
+    v35 = messageCopy;
+    identifier = [messageCopy identifier];
+    if (identifier)
     {
-      [v34 setIdentifier:v36];
+      [v34 setIdentifier:identifier];
     }
 
     [v34 setRequiresSPIEntitlement];
-    v37 = [(HMDAccessoryProfile *)v25 msgDispatcher];
+    msgDispatcher = [(HMDAccessoryProfile *)selfCopy msgDispatcher];
     v38 = [v34 copy];
-    [v37 sendMessage:v38 completionHandler:0];
+    [msgDispatcher sendMessage:v38 completionHandler:0];
 
-    [(HMDHAPMediaProfile *)v25 _notifyProfileSettingsUpdated:v40];
-    v16 = v35;
-    v15 = v41;
+    [(HMDHAPMediaProfile *)selfCopy _notifyProfileSettingsUpdated:v40];
+    messageCopy = v35;
+    enableCopy = v41;
   }
 
   v39 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_updateAudioControl:(id)a3
+- (BOOL)_updateAudioControl:(id)control
 {
   v42 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  controlCopy = control;
   v37.receiver = self;
   v37.super_class = HMDHAPMediaProfile;
-  if (![(HMDMediaProfile *)&v37 _updateAudioControl:v4])
+  if (![(HMDMediaProfile *)&v37 _updateAudioControl:controlCopy])
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
@@ -436,15 +436,15 @@ void __50__HMDHAPMediaProfile_setEnable_completionHandler___block_invoke(uint64_
     }
 
     objc_autoreleasePoolPop(v6);
-    v10 = [v4 numberForKey:*MEMORY[0x277CD0908]];
-    v11 = [v4 numberForKey:*MEMORY[0x277CD08F0]];
+    v10 = [controlCopy numberForKey:*MEMORY[0x277CD0908]];
+    v11 = [controlCopy numberForKey:*MEMORY[0x277CD08F0]];
     if (v10 | v11)
     {
-      v12 = [(HMDAccessoryProfile *)v7 accessory];
+      accessory = [(HMDAccessoryProfile *)selfCopy accessory];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v13 = v12;
+        v13 = accessory;
       }
 
       else
@@ -457,7 +457,7 @@ void __50__HMDHAPMediaProfile_setEnable_completionHandler___block_invoke(uint64_
       if (!v14)
       {
         v17 = objc_autoreleasePoolPush();
-        v18 = v7;
+        v18 = selfCopy;
         v19 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
         {
@@ -478,7 +478,7 @@ void __50__HMDHAPMediaProfile_setEnable_completionHandler___block_invoke(uint64_
       v15 = [MEMORY[0x277CBEB18] arrayWithCapacity:2];
       if (v10)
       {
-        v16 = [(HMDHAPMediaProfile *)v7 _smartSpeakerVolumeWriteRequestWithVolumePercentage:v10];
+        v16 = [(HMDHAPMediaProfile *)selfCopy _smartSpeakerVolumeWriteRequestWithVolumePercentage:v10];
         if (v16)
         {
           [v15 addObject:v16];
@@ -487,7 +487,7 @@ void __50__HMDHAPMediaProfile_setEnable_completionHandler___block_invoke(uint64_
         else
         {
           context = objc_autoreleasePoolPush();
-          v21 = v7;
+          v21 = selfCopy;
           v22 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
           {
@@ -503,7 +503,7 @@ void __50__HMDHAPMediaProfile_setEnable_completionHandler___block_invoke(uint64_
 
       if (v11)
       {
-        v24 = [(HMDHAPMediaProfile *)v7 _smartSpeakerMutedWriteRequestWithMuted:v11];
+        v24 = [(HMDHAPMediaProfile *)selfCopy _smartSpeakerMutedWriteRequestWithMuted:v11];
         if (v24)
         {
           [v15 addObject:v24];
@@ -512,7 +512,7 @@ void __50__HMDHAPMediaProfile_setEnable_completionHandler___block_invoke(uint64_
         else
         {
           context = objc_autoreleasePoolPush();
-          v25 = v7;
+          v25 = selfCopy;
           v26 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
           {
@@ -528,16 +528,16 @@ void __50__HMDHAPMediaProfile_setEnable_completionHandler___block_invoke(uint64_
 
       if ([v15 count])
       {
-        objc_initWeak(buf, v7);
-        v28 = [(HMDAccessoryProfile *)v7 workQueue];
+        objc_initWeak(buf, selfCopy);
+        workQueue = [(HMDAccessoryProfile *)selfCopy workQueue];
         v33[0] = MEMORY[0x277D85DD0];
         v33[1] = 3221225472;
         v33[2] = __42__HMDHAPMediaProfile__updateAudioControl___block_invoke;
         v33[3] = &unk_278684610;
         objc_copyWeak(&v36, buf);
         v34 = v15;
-        v35 = v4;
-        [v14 writeCharacteristicValues:v34 source:1160 message:v35 queue:v28 completionHandler:v33];
+        v35 = controlCopy;
+        [v14 writeCharacteristicValues:v34 source:1160 message:v35 queue:workQueue completionHandler:v33];
 
         objc_destroyWeak(&v36);
         objc_destroyWeak(buf);
@@ -546,14 +546,14 @@ void __50__HMDHAPMediaProfile_setEnable_completionHandler___block_invoke(uint64_
       else
       {
         v29 = [MEMORY[0x277CCA9B8] hmErrorWithCode:27];
-        [v4 respondWithError:v29];
+        [controlCopy respondWithError:v29];
       }
     }
 
     else
     {
       v14 = [MEMORY[0x277CCA9B8] hmErrorWithCode:27];
-      [v4 respondWithError:v14];
+      [controlCopy respondWithError:v14];
     }
 
     v5 = 1;
@@ -688,15 +688,15 @@ void __42__HMDHAPMediaProfile__updateAudioControl___block_invoke(uint64_t a1, vo
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handlePrimaryResidentChanged:(id)a3
+- (void)handlePrimaryResidentChanged:(id)changed
 {
-  v4 = [(HMDAccessoryProfile *)self workQueue];
+  workQueue = [(HMDAccessoryProfile *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __51__HMDHAPMediaProfile_handlePrimaryResidentChanged___block_invoke;
   block[3] = &unk_27868A728;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(workQueue, block);
 }
 
 void __51__HMDHAPMediaProfile_handlePrimaryResidentChanged___block_invoke(uint64_t a1)
@@ -783,18 +783,18 @@ void __51__HMDHAPMediaProfile_handlePrimaryResidentChanged___block_invoke(uint64
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleResidentAdded:(id)a3
+- (void)handleResidentAdded:(id)added
 {
-  v4 = a3;
-  v5 = [(HMDAccessoryProfile *)self workQueue];
+  addedCopy = added;
+  workQueue = [(HMDAccessoryProfile *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __42__HMDHAPMediaProfile_handleResidentAdded___block_invoke;
   v7[3] = &unk_27868A750;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = addedCopy;
+  selfCopy = self;
+  v6 = addedCopy;
+  dispatch_async(workQueue, v7);
 }
 
 void __42__HMDHAPMediaProfile_handleResidentAdded___block_invoke(uint64_t a1)
@@ -854,14 +854,14 @@ void __42__HMDHAPMediaProfile_handleResidentAdded___block_invoke(uint64_t a1)
 - (void)_disableCharacteristicNotifications
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDHAPMediaProfile *)self _allCharacteristicsToMonitor];
-  if ([v3 count])
+  _allCharacteristicsToMonitor = [(HMDHAPMediaProfile *)self _allCharacteristicsToMonitor];
+  if ([_allCharacteristicsToMonitor count])
   {
-    v4 = [(HMDAccessoryProfile *)self accessory];
+    accessory = [(HMDAccessoryProfile *)self accessory];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = accessory;
     }
 
     else
@@ -872,7 +872,7 @@ void __42__HMDHAPMediaProfile_handleResidentAdded___block_invoke(uint64_t a1)
     v6 = v5;
 
     v7 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
@@ -880,13 +880,13 @@ void __42__HMDHAPMediaProfile_handleResidentAdded___block_invoke(uint64_t a1)
       v13 = 138543618;
       v14 = v10;
       v15 = 2112;
-      v16 = v3;
+      v16 = _allCharacteristicsToMonitor;
       _os_log_impl(&dword_229538000, v9, OS_LOG_TYPE_INFO, "%{public}@Disabling notifications for characteristics :%@", &v13, 0x16u);
     }
 
     objc_autoreleasePoolPop(v7);
-    v11 = [(HMDHAPMediaProfile *)v8 clientIdentifier];
-    [v6 enableNotification:0 forCharacteristics:v3 message:0 clientIdentifier:v11];
+    clientIdentifier = [(HMDHAPMediaProfile *)selfCopy clientIdentifier];
+    [v6 enableNotification:0 forCharacteristics:_allCharacteristicsToMonitor message:0 clientIdentifier:clientIdentifier];
   }
 
   v12 = *MEMORY[0x277D85DE8];
@@ -895,10 +895,10 @@ void __42__HMDHAPMediaProfile_handleResidentAdded___block_invoke(uint64_t a1)
 - (id)_allCharacteristicsToMonitor
 {
   v3 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:1];
-  v4 = [(HMDHAPMediaProfile *)self _smartSpeakerAirPlayEnableCharacteristic];
-  if (v4)
+  _smartSpeakerAirPlayEnableCharacteristic = [(HMDHAPMediaProfile *)self _smartSpeakerAirPlayEnableCharacteristic];
+  if (_smartSpeakerAirPlayEnableCharacteristic)
   {
-    [v3 addObject:v4];
+    [v3 addObject:_smartSpeakerAirPlayEnableCharacteristic];
   }
 
   v5 = [v3 copy];
@@ -906,18 +906,18 @@ void __42__HMDHAPMediaProfile_handleResidentAdded___block_invoke(uint64_t a1)
   return v5;
 }
 
-- (void)handleCharacteristicsUpdated:(id)a3
+- (void)handleCharacteristicsUpdated:(id)updated
 {
-  v4 = a3;
-  v5 = [(HMDAccessoryProfile *)self workQueue];
+  updatedCopy = updated;
+  workQueue = [(HMDAccessoryProfile *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __51__HMDHAPMediaProfile_handleCharacteristicsUpdated___block_invoke;
   v7[3] = &unk_27868A750;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = updatedCopy;
+  v6 = updatedCopy;
+  dispatch_async(workQueue, v7);
 }
 
 uint64_t __51__HMDHAPMediaProfile_handleCharacteristicsUpdated___block_invoke(uint64_t a1)
@@ -943,18 +943,18 @@ uint64_t __51__HMDHAPMediaProfile_handleCharacteristicsUpdated___block_invoke(ui
   return result;
 }
 
-- (void)handleAccessoryConfigured:(id)a3
+- (void)handleAccessoryConfigured:(id)configured
 {
-  v4 = a3;
-  v5 = [(HMDAccessoryProfile *)self workQueue];
+  configuredCopy = configured;
+  workQueue = [(HMDAccessoryProfile *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __48__HMDHAPMediaProfile_handleAccessoryConfigured___block_invoke;
   v7[3] = &unk_27868A750;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = configuredCopy;
+  v6 = configuredCopy;
+  dispatch_async(workQueue, v7);
 }
 
 uint64_t __48__HMDHAPMediaProfile_handleAccessoryConfigured___block_invoke(uint64_t a1)
@@ -981,46 +981,46 @@ uint64_t __48__HMDHAPMediaProfile_handleAccessoryConfigured___block_invoke(uint6
   return result;
 }
 
-- (void)handleHomeCharacteristicValuesChanged:(id)a3
+- (void)handleHomeCharacteristicValuesChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 hmf_arrayForKey:@"kModifiedCharacteristicsKey"];
+  changedCopy = changed;
+  userInfo = [changedCopy userInfo];
+  v6 = [userInfo hmf_arrayForKey:@"kModifiedCharacteristicsKey"];
 
   if ([v6 count])
   {
-    v7 = [(HMDAccessoryProfile *)self workQueue];
+    workQueue = [(HMDAccessoryProfile *)self workQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __60__HMDHAPMediaProfile_handleHomeCharacteristicValuesChanged___block_invoke;
     block[3] = &unk_27868A750;
     v18 = v6;
-    v19 = self;
-    dispatch_async(v7, block);
+    selfCopy = self;
+    dispatch_async(workQueue, block);
 
     v8 = v18;
   }
 
   else
   {
-    v9 = [v4 userInfo];
-    v8 = [v9 hmf_dictionaryForKey:@"kModifiedCharacteristicsForAccessoryKey"];
+    userInfo2 = [changedCopy userInfo];
+    v8 = [userInfo2 hmf_dictionaryForKey:@"kModifiedCharacteristicsForAccessoryKey"];
 
-    v10 = [(HMDAccessoryProfile *)self accessory];
-    v11 = [v10 uuid];
-    v12 = [v11 UUIDString];
-    v13 = [v8 hmf_dictionaryForKey:v12];
+    accessory = [(HMDAccessoryProfile *)self accessory];
+    uuid = [accessory uuid];
+    uUIDString = [uuid UUIDString];
+    v13 = [v8 hmf_dictionaryForKey:uUIDString];
 
     if (v13)
     {
-      v14 = [(HMDAccessoryProfile *)self workQueue];
+      workQueue2 = [(HMDAccessoryProfile *)self workQueue];
       v15[0] = MEMORY[0x277D85DD0];
       v15[1] = 3221225472;
       v15[2] = __60__HMDHAPMediaProfile_handleHomeCharacteristicValuesChanged___block_invoke_2;
       v15[3] = &unk_27868A750;
       v15[4] = self;
       v16 = v13;
-      dispatch_async(v14, v15);
+      dispatch_async(workQueue2, v15);
     }
   }
 }
@@ -1272,13 +1272,13 @@ void __60__HMDHAPMediaProfile_handleHomeCharacteristicValuesChanged___block_invo
 - (void)_updateCharacteristicChanges
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(HMDAccessoryProfile *)self services];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  services = [(HMDAccessoryProfile *)self services];
+  v5 = [services countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1290,35 +1290,35 @@ void __60__HMDHAPMediaProfile_handleHomeCharacteristicValuesChanged___block_invo
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(services);
         }
 
-        v9 = [*(*(&v11 + 1) + 8 * v8) characteristics];
-        [v3 addObjectsFromArray:v9];
+        characteristics = [*(*(&v11 + 1) + 8 * v8) characteristics];
+        [array addObjectsFromArray:characteristics];
 
         ++v8;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [services countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
   }
 
-  [(HMDHAPMediaProfile *)self _handleCharacteristicChanges:v3];
+  [(HMDHAPMediaProfile *)self _handleCharacteristicChanges:array];
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleCharacteristicChanges:(id)a3
+- (void)_handleCharacteristicChanges:(id)changes
 {
-  v32 = self;
+  selfCopy = self;
   v43 = *MEMORY[0x277D85DE8];
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  obj = a3;
+  obj = changes;
   v3 = [obj countByEnumeratingWithState:&v38 objects:v42 count:16];
   if (!v3)
   {
@@ -1349,16 +1349,16 @@ void __60__HMDHAPMediaProfile_handleHomeCharacteristicValuesChanged___block_invo
       }
 
       v10 = *(*(&v38 + 1) + 8 * v9);
-      v11 = [v10 type];
-      v12 = [v11 isEqualToString:v7];
+      type = [v10 type];
+      v12 = [type isEqualToString:v7];
 
       if (v12)
       {
-        v13 = [v10 value];
+        value = [v10 value];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v14 = v13;
+          v14 = value;
         }
 
         else
@@ -1381,22 +1381,22 @@ void __60__HMDHAPMediaProfile_handleHomeCharacteristicValuesChanged___block_invo
         }
 
         [v16 numberWithInteger:v18];
-        v5 = v23 = v5;
+        v5 = value3 = v5;
 LABEL_19:
 
         goto LABEL_20;
       }
 
-      v19 = [v10 type];
-      v20 = [v19 isEqualToString:v8];
+      type2 = [v10 type];
+      v20 = [type2 isEqualToString:v8];
 
       if (v20)
       {
-        v21 = [v10 value];
+        value2 = [v10 value];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v22 = v21;
+          v22 = value2;
         }
 
         else
@@ -1407,20 +1407,20 @@ LABEL_19:
         v15 = v22;
 
         __percentageForCharacteristicValue(0, v15);
-        v36 = v23 = v36;
+        v36 = value3 = v36;
         goto LABEL_19;
       }
 
-      v24 = [v10 type];
-      v25 = [v24 isEqualToString:v34];
+      type3 = [v10 type];
+      v25 = [type3 isEqualToString:v34];
 
       if (v25)
       {
-        v23 = [v10 value];
+        value3 = [v10 value];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v26 = v23;
+          v26 = value3;
         }
 
         else
@@ -1433,16 +1433,16 @@ LABEL_19:
         goto LABEL_19;
       }
 
-      v27 = [v10 type];
-      v28 = [v27 isEqualToString:@"0000025B-0000-1000-8000-0026BB765291"];
+      type4 = [v10 type];
+      v28 = [type4 isEqualToString:@"0000025B-0000-1000-8000-0026BB765291"];
 
       if (v28)
       {
-        v23 = [v10 value];
+        value3 = [v10 value];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v29 = v23;
+          v29 = value3;
         }
 
         else
@@ -1466,21 +1466,21 @@ LABEL_20:
 
   while (v30);
 LABEL_35:
-  [(HMDHAPMediaProfile *)v32 _updateCurrentMediaState:v5 volumePercentage:v36 muted:v35 enable:v33 message:0, v32];
+  [(HMDHAPMediaProfile *)selfCopy _updateCurrentMediaState:v5 volumePercentage:v36 muted:v35 enable:v33 message:0, selfCopy];
 
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateMediaSessionState:(id)a3 usingCharacteristics:(id)a4
+- (void)updateMediaSessionState:(id)state usingCharacteristics:(id)characteristics
 {
   v40 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  stateCopy = state;
+  characteristicsCopy = characteristics;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v35 objects:v39 count:16];
+  v7 = [characteristicsCopy countByEnumeratingWithState:&v35 objects:v39 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1495,20 +1495,20 @@ LABEL_35:
       {
         if (*v36 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(characteristicsCopy);
         }
 
         v13 = *(*(&v35 + 1) + 8 * v12);
-        v14 = [v13 type];
-        v15 = [v14 isEqualToString:v10];
+        type = [v13 type];
+        v15 = [type isEqualToString:v10];
 
         if (v15)
         {
-          v16 = [v13 value];
+          value = [v13 value];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v17 = v16;
+            v17 = value;
           }
 
           else
@@ -1518,32 +1518,32 @@ LABEL_35:
 
           v18 = v17;
 
-          v19 = [v18 integerValue];
-          if ((v19 - 1) > 4)
+          integerValue = [v18 integerValue];
+          if ((integerValue - 1) > 4)
           {
             v20 = 1;
           }
 
           else
           {
-            v20 = qword_22A587F08[v19 - 1];
+            v20 = qword_22A587F08[integerValue - 1];
           }
 
-          [v5 setPlaybackState:v20];
+          [stateCopy setPlaybackState:v20];
         }
 
         else
         {
-          v21 = [v13 type];
-          v22 = [v21 isEqualToString:v11];
+          type2 = [v13 type];
+          v22 = [type2 isEqualToString:v11];
 
           if (v22)
           {
-            v23 = [v13 value];
+            value2 = [v13 value];
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v24 = v23;
+              v24 = value2;
             }
 
             else
@@ -1555,21 +1555,21 @@ LABEL_35:
 
             v26 = __percentageForCharacteristicValue(0, v25);
 
-            [v5 setVolume:v26];
+            [stateCopy setVolume:v26];
           }
 
           else
           {
-            v27 = [v13 type];
-            v28 = [v27 isEqualToString:v34];
+            type3 = [v13 type];
+            v28 = [type3 isEqualToString:v34];
 
             if (v28)
             {
-              v29 = [v13 value];
+              value3 = [v13 value];
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
-                v30 = v29;
+                v30 = value3;
               }
 
               else
@@ -1579,7 +1579,7 @@ LABEL_35:
 
               v31 = v30;
 
-              [v5 setMuted:v31];
+              [stateCopy setMuted:v31];
             }
           }
         }
@@ -1588,7 +1588,7 @@ LABEL_35:
       }
 
       while (v8 != v12);
-      v32 = [v6 countByEnumeratingWithState:&v35 objects:v39 count:16];
+      v32 = [characteristicsCopy countByEnumeratingWithState:&v35 objects:v39 count:16];
       v8 = v32;
     }
 
@@ -1598,15 +1598,15 @@ LABEL_35:
   v33 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateMediaSessionState:(id)a3 usingServices:(id)a4
+- (void)updateMediaSessionState:(id)state usingServices:(id)services
 {
-  v9 = a3;
-  v6 = [a4 na_filter:&__block_literal_global_246417];
+  stateCopy = state;
+  v6 = [services na_filter:&__block_literal_global_246417];
   if ([v6 count])
   {
-    v7 = [v6 firstObject];
-    v8 = [v7 characteristics];
-    [(HMDHAPMediaProfile *)self updateMediaSessionState:v9 usingCharacteristics:v8];
+    firstObject = [v6 firstObject];
+    characteristics = [firstObject characteristics];
+    [(HMDHAPMediaProfile *)self updateMediaSessionState:stateCopy usingCharacteristics:characteristics];
   }
 }
 
@@ -1621,24 +1621,24 @@ uint64_t __60__HMDHAPMediaProfile_updateMediaSessionState_usingServices___block_
 - (id)_mediaSessionStateFromProfile
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDAccessoryProfile *)self accessory];
-  if (v3)
+  accessory = [(HMDAccessoryProfile *)self accessory];
+  if (accessory)
   {
     v4 = [HMDMediaSessionState alloc];
-    v5 = [v3 identifier];
-    v6 = [(HMDMediaSessionState *)v4 initWithSessionIdentifier:v5];
+    identifier = [accessory identifier];
+    v6 = [(HMDMediaSessionState *)v4 initWithSessionIdentifier:identifier];
 
-    if ([v3 isReachable])
+    if ([accessory isReachable])
     {
-      v7 = [(HMDAccessoryProfile *)self services];
-      [(HMDHAPMediaProfile *)self updateMediaSessionState:v6 usingServices:v7];
+      services = [(HMDAccessoryProfile *)self services];
+      [(HMDHAPMediaProfile *)self updateMediaSessionState:v6 usingServices:services];
     }
   }
 
   else
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
@@ -1660,19 +1660,19 @@ uint64_t __60__HMDHAPMediaProfile_updateMediaSessionState_usingServices___block_
 - (id)mediaSessionFromProfile
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDHAPMediaProfile *)self _mediaSessionStateFromProfile];
-  if (v3)
+  _mediaSessionStateFromProfile = [(HMDHAPMediaProfile *)self _mediaSessionStateFromProfile];
+  if (_mediaSessionStateFromProfile)
   {
     v4 = [HMDMediaSession alloc];
-    v13 = self;
-    v5 = [MEMORY[0x277CBEA60] arrayWithObjects:&v13 count:1];
-    v6 = [(HMDMediaSession *)v4 initWithEndpoint:0 mediaProfiles:v5 state:v3];
+    selfCopy = self;
+    v5 = [MEMORY[0x277CBEA60] arrayWithObjects:&selfCopy count:1];
+    v6 = [(HMDMediaSession *)v4 initWithEndpoint:0 mediaProfiles:v5 state:_mediaSessionStateFromProfile];
   }
 
   else
   {
     v7 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy2 = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
@@ -1691,16 +1691,16 @@ uint64_t __60__HMDHAPMediaProfile_updateMediaSessionState_usingServices___block_
   return v6;
 }
 
-- (BOOL)_updateRefreshPlayback:(id)a3
+- (BOOL)_updateRefreshPlayback:(id)playback
 {
   v57 = *MEMORY[0x277D85DE8];
   v51.receiver = self;
   v51.super_class = HMDHAPMediaProfile;
-  v39 = a3;
+  playbackCopy = playback;
   if (![(HMDMediaProfile *)&v51 _updateRefreshPlayback:?])
   {
     v4 = objc_autoreleasePoolPush();
-    v5 = self;
+    selfCopy = self;
     v6 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
@@ -1711,11 +1711,11 @@ uint64_t __60__HMDHAPMediaProfile_updateMediaSessionState_usingServices___block_
     }
 
     objc_autoreleasePoolPop(v4);
-    v8 = [(HMDAccessoryProfile *)v5 accessory];
+    accessory = [(HMDAccessoryProfile *)selfCopy accessory];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = v8;
+      v9 = accessory;
     }
 
     else
@@ -1729,16 +1729,16 @@ uint64_t __60__HMDHAPMediaProfile_updateMediaSessionState_usingServices___block_
     if (v37)
     {
       v42 = [MEMORY[0x277CBEB18] arrayWithCapacity:3];
-      v35 = [(HMDHAPMediaProfile *)v5 _smartSpeakerAirPlayEnableReadRequest];
-      if (v35)
+      _smartSpeakerAirPlayEnableReadRequest = [(HMDHAPMediaProfile *)selfCopy _smartSpeakerAirPlayEnableReadRequest];
+      if (_smartSpeakerAirPlayEnableReadRequest)
       {
-        [v42 addObject:v35];
+        [v42 addObject:_smartSpeakerAirPlayEnableReadRequest];
       }
 
       else
       {
         v14 = objc_autoreleasePoolPush();
-        v15 = v5;
+        v15 = selfCopy;
         v16 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
         {
@@ -1751,7 +1751,7 @@ uint64_t __60__HMDHAPMediaProfile_updateMediaSessionState_usingServices___block_
         objc_autoreleasePoolPop(v14);
       }
 
-      [v39 arrayForKey:{*MEMORY[0x277CD0948], v35}];
+      [playbackCopy arrayForKey:{*MEMORY[0x277CD0948], _smartSpeakerAirPlayEnableReadRequest}];
       v49 = 0u;
       v50 = 0u;
       v47 = 0u;
@@ -1775,11 +1775,11 @@ uint64_t __60__HMDHAPMediaProfile_updateMediaSessionState_usingServices___block_
             v23 = *(*(&v47 + 1) + 8 * i);
             if ([v23 isEqual:v20])
             {
-              v24 = [(HMDHAPMediaProfile *)v5 _smartSpeakerCurrentMediaStateReadRequest];
-              if (!v24)
+              _smartSpeakerCurrentMediaStateReadRequest = [(HMDHAPMediaProfile *)selfCopy _smartSpeakerCurrentMediaStateReadRequest];
+              if (!_smartSpeakerCurrentMediaStateReadRequest)
               {
                 v25 = objc_autoreleasePoolPush();
-                v26 = v5;
+                v26 = selfCopy;
                 v27 = HMFGetOSLogHandle();
                 if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
                 {
@@ -1792,18 +1792,18 @@ uint64_t __60__HMDHAPMediaProfile_updateMediaSessionState_usingServices___block_
 LABEL_39:
 
                 objc_autoreleasePoolPop(v25);
-                v24 = 0;
+                _smartSpeakerCurrentMediaStateReadRequest = 0;
                 goto LABEL_40;
               }
             }
 
             else if ([v23 isEqual:v21])
             {
-              v24 = [(HMDHAPMediaProfile *)v5 _smartSpeakerVolumeReadRequest];
-              if (!v24)
+              _smartSpeakerCurrentMediaStateReadRequest = [(HMDHAPMediaProfile *)selfCopy _smartSpeakerVolumeReadRequest];
+              if (!_smartSpeakerCurrentMediaStateReadRequest)
               {
                 v25 = objc_autoreleasePoolPush();
-                v26 = v5;
+                v26 = selfCopy;
                 v27 = HMFGetOSLogHandle();
                 if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
                 {
@@ -1824,11 +1824,11 @@ LABEL_39:
                 continue;
               }
 
-              v24 = [(HMDHAPMediaProfile *)v5 _smartSpeakerMutedReadRequest];
-              if (!v24)
+              _smartSpeakerCurrentMediaStateReadRequest = [(HMDHAPMediaProfile *)selfCopy _smartSpeakerMutedReadRequest];
+              if (!_smartSpeakerCurrentMediaStateReadRequest)
               {
                 v25 = objc_autoreleasePoolPush();
-                v26 = v5;
+                v26 = selfCopy;
                 v27 = HMFGetOSLogHandle();
                 if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
                 {
@@ -1842,7 +1842,7 @@ LABEL_39:
               }
             }
 
-            [v42 addObject:v24];
+            [v42 addObject:_smartSpeakerCurrentMediaStateReadRequest];
 LABEL_40:
           }
 
@@ -1852,8 +1852,8 @@ LABEL_40:
         while (v18);
       }
 
-      objc_initWeak(buf, v5);
-      v31 = [(HMDAccessoryProfile *)v5 workQueue];
+      objc_initWeak(buf, selfCopy);
+      workQueue = [(HMDAccessoryProfile *)selfCopy workQueue];
       v43[0] = MEMORY[0x277D85DD0];
       v43[1] = 3221225472;
       v43[2] = __45__HMDHAPMediaProfile__updateRefreshPlayback___block_invoke;
@@ -1861,8 +1861,8 @@ LABEL_40:
       objc_copyWeak(&v46, buf);
       v32 = v42;
       v44 = v32;
-      v45 = v39;
-      [v37 readCharacteristicValues:v32 source:1160 queue:v31 completionHandler:v43];
+      v45 = playbackCopy;
+      [v37 readCharacteristicValues:v32 source:1160 queue:workQueue completionHandler:v43];
 
       objc_destroyWeak(&v46);
       objc_destroyWeak(buf);
@@ -1871,7 +1871,7 @@ LABEL_40:
     else
     {
       v10 = objc_autoreleasePoolPush();
-      v11 = v5;
+      v11 = selfCopy;
       v12 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
@@ -2127,13 +2127,13 @@ LABEL_47:
   v50 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_updatePlayback:(id)a3
+- (BOOL)_updatePlayback:(id)playback
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  playbackCopy = playback;
   v31.receiver = self;
   v31.super_class = HMDHAPMediaProfile;
-  if ([(HMDMediaProfile *)&v31 _updatePlayback:v4])
+  if ([(HMDMediaProfile *)&v31 _updatePlayback:playbackCopy])
   {
     v5 = 1;
   }
@@ -2141,7 +2141,7 @@ LABEL_47:
   else
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
@@ -2152,14 +2152,14 @@ LABEL_47:
     }
 
     objc_autoreleasePoolPop(v6);
-    v10 = [v4 numberForKey:*MEMORY[0x277CD0938]];
+    v10 = [playbackCopy numberForKey:*MEMORY[0x277CD0938]];
     if (v10)
     {
-      v11 = [(HMDAccessoryProfile *)v7 accessory];
+      accessory = [(HMDAccessoryProfile *)selfCopy accessory];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v12 = v11;
+        v12 = accessory;
       }
 
       else
@@ -2171,22 +2171,22 @@ LABEL_47:
 
       if (v13)
       {
-        v14 = [(HMDHAPMediaProfile *)v7 _smartSpeakerTargetMediaStateWriteRequestWithPlaybackState:v10];
+        v14 = [(HMDHAPMediaProfile *)selfCopy _smartSpeakerTargetMediaStateWriteRequestWithPlaybackState:v10];
         v5 = v14 != 0;
         if (v14)
         {
-          objc_initWeak(buf, v7);
+          objc_initWeak(buf, selfCopy);
           v32 = v14;
           v15 = [MEMORY[0x277CBEA60] arrayWithObjects:&v32 count:1];
-          v16 = [(HMDAccessoryProfile *)v7 workQueue];
+          workQueue = [(HMDAccessoryProfile *)selfCopy workQueue];
           v27[0] = MEMORY[0x277D85DD0];
           v27[1] = 3221225472;
           v27[2] = __38__HMDHAPMediaProfile__updatePlayback___block_invoke;
           v27[3] = &unk_278684610;
           objc_copyWeak(&v30, buf);
           v28 = v14;
-          v29 = v4;
-          [v13 writeCharacteristicValues:v15 source:1160 message:v29 queue:v16 completionHandler:v27];
+          v29 = playbackCopy;
+          [v13 writeCharacteristicValues:v15 source:1160 message:v29 queue:workQueue completionHandler:v27];
 
           objc_destroyWeak(&v30);
           objc_destroyWeak(buf);
@@ -2195,7 +2195,7 @@ LABEL_47:
         else
         {
           v21 = objc_autoreleasePoolPush();
-          v22 = v7;
+          v22 = selfCopy;
           v23 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
           {
@@ -2212,7 +2212,7 @@ LABEL_47:
       else
       {
         v17 = objc_autoreleasePoolPush();
-        v18 = v7;
+        v18 = selfCopy;
         v19 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
         {
@@ -2231,7 +2231,7 @@ LABEL_47:
     else
     {
       v13 = [MEMORY[0x277CCA9B8] hmErrorWithCode:27];
-      [v4 respondWithError:v13];
+      [playbackCopy respondWithError:v13];
       v5 = 1;
     }
   }
@@ -2357,20 +2357,20 @@ void __38__HMDHAPMediaProfile__updatePlayback___block_invoke(uint64_t a1, void *
   return airPlayEnable;
 }
 
-- (void)setAirPlayEnable:(int64_t)a3
+- (void)setAirPlayEnable:(int64_t)enable
 {
   os_unfair_lock_lock_with_options();
-  self->_airPlayEnable = a3;
+  self->_airPlayEnable = enable;
 
   os_unfair_lock_unlock(&self->super._lock.lock);
 }
 
 - (id)_smartSpeakerAirPlayEnableReadRequest
 {
-  v2 = [(HMDHAPMediaProfile *)self _smartSpeakerAirPlayEnableCharacteristic];
-  if (v2)
+  _smartSpeakerAirPlayEnableCharacteristic = [(HMDHAPMediaProfile *)self _smartSpeakerAirPlayEnableCharacteristic];
+  if (_smartSpeakerAirPlayEnableCharacteristic)
   {
-    v3 = [HMDCharacteristicRequest requestWithCharacteristic:v2];
+    v3 = [HMDCharacteristicRequest requestWithCharacteristic:_smartSpeakerAirPlayEnableCharacteristic];
   }
 
   else
@@ -2383,21 +2383,21 @@ void __38__HMDHAPMediaProfile__updatePlayback___block_invoke(uint64_t a1, void *
 
 - (id)_smartSpeakerAirPlayEnableCharacteristic
 {
-  v2 = [(HMDHAPMediaProfile *)self _smartSpeakerService];
-  v3 = [v2 findCharacteristicWithType:@"0000025B-0000-1000-8000-0026BB765291"];
+  _smartSpeakerService = [(HMDHAPMediaProfile *)self _smartSpeakerService];
+  v3 = [_smartSpeakerService findCharacteristicWithType:@"0000025B-0000-1000-8000-0026BB765291"];
 
   return v3;
 }
 
-- (id)_smartSpeakerMutedWriteRequestWithMuted:(id)a3
+- (id)_smartSpeakerMutedWriteRequestWithMuted:(id)muted
 {
-  v4 = a3;
-  v5 = [(HMDHAPMediaProfile *)self _smartSpeakerMutedCharacteristic];
-  v6 = v5;
-  if (v4 | v5)
+  mutedCopy = muted;
+  _smartSpeakerMutedCharacteristic = [(HMDHAPMediaProfile *)self _smartSpeakerMutedCharacteristic];
+  v6 = _smartSpeakerMutedCharacteristic;
+  if (mutedCopy | _smartSpeakerMutedCharacteristic)
   {
-    v7 = [v5 authorizationData];
-    v8 = [HMDCharacteristicWriteRequest writeRequestWithCharacteristic:v6 value:v4 authorizationData:v7 type:0];
+    authorizationData = [_smartSpeakerMutedCharacteristic authorizationData];
+    v8 = [HMDCharacteristicWriteRequest writeRequestWithCharacteristic:v6 value:mutedCopy authorizationData:authorizationData type:0];
   }
 
   else
@@ -2410,10 +2410,10 @@ void __38__HMDHAPMediaProfile__updatePlayback___block_invoke(uint64_t a1, void *
 
 - (id)_smartSpeakerMutedReadRequest
 {
-  v2 = [(HMDHAPMediaProfile *)self _smartSpeakerMutedCharacteristic];
-  if (v2)
+  _smartSpeakerMutedCharacteristic = [(HMDHAPMediaProfile *)self _smartSpeakerMutedCharacteristic];
+  if (_smartSpeakerMutedCharacteristic)
   {
-    v3 = [HMDCharacteristicRequest requestWithCharacteristic:v2];
+    v3 = [HMDCharacteristicRequest requestWithCharacteristic:_smartSpeakerMutedCharacteristic];
   }
 
   else
@@ -2426,30 +2426,30 @@ void __38__HMDHAPMediaProfile__updatePlayback___block_invoke(uint64_t a1, void *
 
 - (id)_smartSpeakerMutedCharacteristic
 {
-  v2 = [(HMDHAPMediaProfile *)self _smartSpeakerService];
-  v3 = [v2 findCharacteristicWithType:*MEMORY[0x277CCF980]];
+  _smartSpeakerService = [(HMDHAPMediaProfile *)self _smartSpeakerService];
+  v3 = [_smartSpeakerService findCharacteristicWithType:*MEMORY[0x277CCF980]];
 
   return v3;
 }
 
-- (id)_smartSpeakerVolumeWriteRequestWithVolumePercentage:(id)a3
+- (id)_smartSpeakerVolumeWriteRequestWithVolumePercentage:(id)percentage
 {
-  v4 = a3;
-  v5 = [(HMDHAPMediaProfile *)self smartSpeakerVolumeCharacteristic];
-  v6 = v5;
-  if (v4 | v5)
+  percentageCopy = percentage;
+  smartSpeakerVolumeCharacteristic = [(HMDHAPMediaProfile *)self smartSpeakerVolumeCharacteristic];
+  v6 = smartSpeakerVolumeCharacteristic;
+  if (percentageCopy | smartSpeakerVolumeCharacteristic)
   {
     v7 = 0;
-    if (v4 && v5)
+    if (percentageCopy && smartSpeakerVolumeCharacteristic)
     {
-      [v4 floatValue];
+      [percentageCopy floatValue];
       v9 = v8;
-      v10 = [v6 metadata];
-      v11 = [v10 minimumValue];
-      if (v11)
+      metadata = [v6 metadata];
+      minimumValue = [metadata minimumValue];
+      if (minimumValue)
       {
-        v12 = [v10 minimumValue];
-        [v12 floatValue];
+        minimumValue2 = [metadata minimumValue];
+        [minimumValue2 floatValue];
         v14 = v13;
       }
 
@@ -2458,11 +2458,11 @@ void __38__HMDHAPMediaProfile__updatePlayback___block_invoke(uint64_t a1, void *
         v14 = 0.0;
       }
 
-      v16 = [v10 maximumValue];
-      if (v16)
+      maximumValue = [metadata maximumValue];
+      if (maximumValue)
       {
-        v17 = [v10 maximumValue];
-        [v17 floatValue];
+        maximumValue2 = [metadata maximumValue];
+        [maximumValue2 floatValue];
         v19 = v18;
       }
 
@@ -2472,11 +2472,11 @@ void __38__HMDHAPMediaProfile__updatePlayback___block_invoke(uint64_t a1, void *
       }
 
       v20 = v14 + (v9 * (v19 - v14));
-      v21 = [v10 stepValue];
-      v23 = v21;
-      if (v21)
+      stepValue = [metadata stepValue];
+      v23 = stepValue;
+      if (stepValue)
       {
-        [v21 floatValue];
+        [stepValue floatValue];
         v20 = *&v22 * roundf(v20 / *&v22);
       }
 
@@ -2484,8 +2484,8 @@ void __38__HMDHAPMediaProfile__updatePlayback___block_invoke(uint64_t a1, void *
       v7 = [MEMORY[0x277CCABB0] numberWithFloat:v22];
     }
 
-    v24 = [v6 authorizationData];
-    v15 = [HMDCharacteristicWriteRequest writeRequestWithCharacteristic:v6 value:v7 authorizationData:v24 type:0];
+    authorizationData = [v6 authorizationData];
+    v15 = [HMDCharacteristicWriteRequest writeRequestWithCharacteristic:v6 value:v7 authorizationData:authorizationData type:0];
   }
 
   else
@@ -2498,10 +2498,10 @@ void __38__HMDHAPMediaProfile__updatePlayback___block_invoke(uint64_t a1, void *
 
 - (id)_smartSpeakerVolumeReadRequest
 {
-  v2 = [(HMDHAPMediaProfile *)self smartSpeakerVolumeCharacteristic];
-  if (v2)
+  smartSpeakerVolumeCharacteristic = [(HMDHAPMediaProfile *)self smartSpeakerVolumeCharacteristic];
+  if (smartSpeakerVolumeCharacteristic)
   {
-    v3 = [HMDCharacteristicRequest requestWithCharacteristic:v2];
+    v3 = [HMDCharacteristicRequest requestWithCharacteristic:smartSpeakerVolumeCharacteristic];
   }
 
   else
@@ -2514,18 +2514,18 @@ void __38__HMDHAPMediaProfile__updatePlayback___block_invoke(uint64_t a1, void *
 
 - (HMDCharacteristic)smartSpeakerVolumeCharacteristic
 {
-  v2 = [(HMDHAPMediaProfile *)self _smartSpeakerService];
-  v3 = [v2 findCharacteristicWithType:*MEMORY[0x277CCFBA8]];
+  _smartSpeakerService = [(HMDHAPMediaProfile *)self _smartSpeakerService];
+  v3 = [_smartSpeakerService findCharacteristicWithType:*MEMORY[0x277CCFBA8]];
 
   return v3;
 }
 
 - (id)_smartSpeakerCurrentMediaStateReadRequest
 {
-  v2 = [(HMDHAPMediaProfile *)self smartSpeakerCurrentMediaStateCharacteristic];
-  if (v2)
+  smartSpeakerCurrentMediaStateCharacteristic = [(HMDHAPMediaProfile *)self smartSpeakerCurrentMediaStateCharacteristic];
+  if (smartSpeakerCurrentMediaStateCharacteristic)
   {
-    v3 = [HMDCharacteristicRequest requestWithCharacteristic:v2];
+    v3 = [HMDCharacteristicRequest requestWithCharacteristic:smartSpeakerCurrentMediaStateCharacteristic];
   }
 
   else
@@ -2538,33 +2538,33 @@ void __38__HMDHAPMediaProfile__updatePlayback___block_invoke(uint64_t a1, void *
 
 - (HMDCharacteristic)smartSpeakerCurrentMediaStateCharacteristic
 {
-  v2 = [(HMDHAPMediaProfile *)self _smartSpeakerService];
-  v3 = [v2 findCharacteristicWithType:*MEMORY[0x277CCF840]];
+  _smartSpeakerService = [(HMDHAPMediaProfile *)self _smartSpeakerService];
+  v3 = [_smartSpeakerService findCharacteristicWithType:*MEMORY[0x277CCF840]];
 
   return v3;
 }
 
-- (id)_smartSpeakerTargetMediaStateWriteRequestWithPlaybackState:(id)a3
+- (id)_smartSpeakerTargetMediaStateWriteRequestWithPlaybackState:(id)state
 {
-  v4 = a3;
-  v5 = [(HMDHAPMediaProfile *)self _smartSpeakerTargetMediaStateCharacteristic];
-  if (v5)
+  stateCopy = state;
+  _smartSpeakerTargetMediaStateCharacteristic = [(HMDHAPMediaProfile *)self _smartSpeakerTargetMediaStateCharacteristic];
+  if (_smartSpeakerTargetMediaStateCharacteristic)
   {
     v6 = MEMORY[0x277CCABB0];
-    v7 = [v4 integerValue];
-    if (v7 > 6)
+    integerValue = [stateCopy integerValue];
+    if (integerValue > 6)
     {
       v8 = 0;
     }
 
     else
     {
-      v8 = qword_22A587ED0[v7];
+      v8 = qword_22A587ED0[integerValue];
     }
 
     v10 = [v6 numberWithInteger:v8];
-    v11 = [v5 authorizationData];
-    v9 = [HMDCharacteristicWriteRequest writeRequestWithCharacteristic:v5 value:v10 authorizationData:v11 type:0];
+    authorizationData = [_smartSpeakerTargetMediaStateCharacteristic authorizationData];
+    v9 = [HMDCharacteristicWriteRequest writeRequestWithCharacteristic:_smartSpeakerTargetMediaStateCharacteristic value:v10 authorizationData:authorizationData type:0];
   }
 
   else
@@ -2575,9 +2575,9 @@ void __38__HMDHAPMediaProfile__updatePlayback___block_invoke(uint64_t a1, void *
   return v9;
 }
 
-- (id)playStateWriteRequestWithPlaybackState:(int64_t)a3
+- (id)playStateWriteRequestWithPlaybackState:(int64_t)state
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithInteger:state];
   v5 = [(HMDHAPMediaProfile *)self _smartSpeakerTargetMediaStateWriteRequestWithPlaybackState:v4];
 
   return v5;
@@ -2585,8 +2585,8 @@ void __38__HMDHAPMediaProfile__updatePlayback___block_invoke(uint64_t a1, void *
 
 - (id)_smartSpeakerTargetMediaStateCharacteristic
 {
-  v2 = [(HMDHAPMediaProfile *)self _smartSpeakerService];
-  v3 = [v2 findCharacteristicWithType:*MEMORY[0x277CCFB48]];
+  _smartSpeakerService = [(HMDHAPMediaProfile *)self _smartSpeakerService];
+  v3 = [_smartSpeakerService findCharacteristicWithType:*MEMORY[0x277CCFB48]];
 
   return v3;
 }
@@ -2597,35 +2597,35 @@ void __38__HMDHAPMediaProfile__updatePlayback___block_invoke(uint64_t a1, void *
   v18.receiver = self;
   v18.super_class = HMDHAPMediaProfile;
   [(HMDMediaProfile *)&v18 registerForNotifications];
-  v3 = [(HMDAccessoryProfile *)self accessory];
-  v4 = v3;
-  if (v3)
+  accessory = [(HMDAccessoryProfile *)self accessory];
+  v4 = accessory;
+  if (accessory)
   {
-    v5 = [v3 home];
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v6 addObserver:self selector:sel_handleHomeCharacteristicValuesChanged_ name:@"HMDAccessoryCharacteristicsChangedNotification" object:v4];
+    home = [accessory home];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:self selector:sel_handleHomeCharacteristicValuesChanged_ name:@"HMDAccessoryCharacteristicsChangedNotification" object:v4];
 
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v7 addObserver:self selector:sel_handleHomeCharacteristicValuesChanged_ name:@"HMDAccessoryCharacteristicsResponseReceivedNotification" object:v5];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:self selector:sel_handleHomeCharacteristicValuesChanged_ name:@"HMDAccessoryCharacteristicsResponseReceivedNotification" object:home];
 
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v8 addObserver:self selector:sel_handleAccessoryConfigured_ name:@"HMDAccessoryConnectedNotification" object:v4];
+    defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter3 addObserver:self selector:sel_handleAccessoryConfigured_ name:@"HMDAccessoryConnectedNotification" object:v4];
 
-    v9 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v9 addObserver:self selector:sel_handleCharacteristicsUpdated_ name:@"kHMDNotificationCharacteristicsUpdated" object:v4];
+    defaultCenter4 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter4 addObserver:self selector:sel_handleCharacteristicsUpdated_ name:@"kHMDNotificationCharacteristicsUpdated" object:v4];
 
-    v10 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v10 addObserver:self selector:sel_handleResidentAdded_ name:@"HMDResidentDeviceManagerAddResidentNotification" object:0];
+    defaultCenter5 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter5 addObserver:self selector:sel_handleResidentAdded_ name:@"HMDResidentDeviceManagerAddResidentNotification" object:0];
 
-    v11 = [MEMORY[0x277CCAB98] defaultCenter];
-    v12 = [v5 residentDeviceManager];
-    [v11 addObserver:self selector:sel_handlePrimaryResidentChanged_ name:@"HMDResidentDeviceConfirmedStateChangedNotification" object:v12];
+    defaultCenter6 = [MEMORY[0x277CCAB98] defaultCenter];
+    residentDeviceManager = [home residentDeviceManager];
+    [defaultCenter6 addObserver:self selector:sel_handlePrimaryResidentChanged_ name:@"HMDResidentDeviceConfirmedStateChangedNotification" object:residentDeviceManager];
   }
 
   else
   {
     v13 = objc_autoreleasePoolPush();
-    v14 = self;
+    selfCopy = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
@@ -2641,18 +2641,18 @@ void __38__HMDHAPMediaProfile__updatePlayback___block_invoke(uint64_t a1, void *
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDHAPMediaProfile)initWithMediaServices:(id)a3
+- (HMDHAPMediaProfile)initWithMediaServices:(id)services
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 firstObject];
-  v6 = [v5 accessory];
-  if (v6)
+  servicesCopy = services;
+  firstObject = [servicesCopy firstObject];
+  accessory = [firstObject accessory];
+  if (accessory)
   {
-    v7 = [objc_opt_class() uniqueIdentifierFromAccessory:v6];
+    v7 = [objc_opt_class() uniqueIdentifierFromAccessory:accessory];
     v18.receiver = self;
     v18.super_class = HMDHAPMediaProfile;
-    v8 = [(HMDAccessoryProfile *)&v18 initWithAccessory:v6 uniqueIdentifier:v7 services:v4];
+    v8 = [(HMDAccessoryProfile *)&v18 initWithAccessory:accessory uniqueIdentifier:v7 services:servicesCopy];
     v9 = v8;
     if (v8)
     {
@@ -2664,7 +2664,7 @@ void __38__HMDHAPMediaProfile__updatePlayback___block_invoke(uint64_t a1, void *
 
     self = v9;
 
-    v12 = self;
+    selfCopy = self;
   }
 
   else
@@ -2677,16 +2677,16 @@ void __38__HMDHAPMediaProfile__updatePlayback___block_invoke(uint64_t a1, void *
       *buf = 138543618;
       v20 = v15;
       v21 = 2112;
-      v22 = v5;
+      v22 = firstObject;
       _os_log_impl(&dword_229538000, v14, OS_LOG_TYPE_ERROR, "%{public}@Cannot create media profile, cannot determine accessory from services %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v13);
-    v12 = 0;
+    selfCopy = 0;
   }
 
   v16 = *MEMORY[0x277D85DE8];
-  return v12;
+  return selfCopy;
 }
 
 @end

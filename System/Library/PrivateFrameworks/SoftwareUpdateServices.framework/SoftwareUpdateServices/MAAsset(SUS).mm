@@ -18,11 +18,11 @@
     if (result)
     {
       v4 = result;
-      result = [a1 attributes];
+      result = [self attributes];
       if (result)
       {
-        v5 = [objc_msgSend(a1 "attributes")];
-        v6 = [objc_msgSend(a1 "attributes")];
+        v5 = [objc_msgSend(self "attributes")];
+        v6 = [objc_msgSend(self "attributes")];
         result = 0;
         if (v5)
         {
@@ -48,11 +48,11 @@
 
 - (uint64_t)cancelDownloadIfNecessary
 {
-  result = [a1 isDownloading];
+  result = [self isDownloading];
   if (result)
   {
 
-    return [a1 cancelDownload:&__block_literal_global_395];
+    return [self cancelDownload:&__block_literal_global_395];
   }
 
   return result;
@@ -65,7 +65,7 @@
   block[1] = 3221225472;
   block[2] = __28__MAAsset_SUS__cleanupAsset__block_invoke;
   block[3] = &unk_279CAAC40;
-  block[4] = a1;
+  block[4] = self;
   dispatch_async(v2, block);
 }
 
@@ -82,7 +82,7 @@
   v6[3] = &unk_279CAACB0;
   v6[4] = v2;
   v6[5] = &v7;
-  [a1 cancelDownload:v6];
+  [self cancelDownload:v6];
   v3 = dispatch_time(0, 10000000000);
   dispatch_semaphore_wait(v2, v3);
   dispatch_release(v2);
@@ -98,7 +98,7 @@
   v16 = 0x2020000000;
   v17 = 0;
   v2 = dispatch_semaphore_create(0);
-  if ([a1 isInstalled])
+  if ([self isInstalled])
   {
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
@@ -106,7 +106,7 @@
     v13[3] = &unk_279CAACB0;
     v13[4] = v2;
     v13[5] = &v14;
-    [a1 purge:v13];
+    [self purge:v13];
     v10 = dispatch_time(0, 10000000000);
     dispatch_semaphore_wait(v2, v10);
   }

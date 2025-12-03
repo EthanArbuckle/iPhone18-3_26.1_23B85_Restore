@@ -1,26 +1,26 @@
 @interface PFCloudKitSchemaGenerator
-+ (__CFString)representativeValueFor:(uint64_t)a1;
-+ (void)newRepresentativeRecordForStaticFieldsInEntity:(uint64_t)a3 inZoneWithID:;
-- (NSManagedObject)representativeObjectForEntity:(uint64_t)a3 inStore:(void *)a4 withManagedObjectContext:(void *)a5 cache:(int)a6 populate:(uint64_t)a7 error:;
-- (PFCloudKitSchemaGenerator)initWithMirroringOptions:(id)a3 forStoreInMonitor:(id)a4;
-- (uint64_t)createRepresentativeFileBackedFutureInContext:(uint64_t *)a1 error:(void *)a2;
-- (uint64_t)newRepresentativeRecords:(uint64_t)a1;
-- (uint64_t)populateRelationshipsOnObject:(uint64_t)a3 inStore:(uint64_t)a4 withCache:(uint64_t)a5 error:;
-- (uint64_t)populateValuesOnObject:(uint64_t)a3 error:;
++ (__CFString)representativeValueFor:(uint64_t)for;
++ (void)newRepresentativeRecordForStaticFieldsInEntity:(uint64_t)entity inZoneWithID:;
+- (NSManagedObject)representativeObjectForEntity:(uint64_t)entity inStore:(void *)store withManagedObjectContext:(void *)context cache:(int)cache populate:(uint64_t)populate error:;
+- (PFCloudKitSchemaGenerator)initWithMirroringOptions:(id)options forStoreInMonitor:(id)monitor;
+- (uint64_t)createRepresentativeFileBackedFutureInContext:(uint64_t *)context error:(void *)error;
+- (uint64_t)newRepresentativeRecords:(uint64_t)records;
+- (uint64_t)populateRelationshipsOnObject:(uint64_t)object inStore:(uint64_t)store withCache:(uint64_t)cache error:;
+- (uint64_t)populateValuesOnObject:(uint64_t)object error:;
 - (void)dealloc;
 @end
 
 @implementation PFCloudKitSchemaGenerator
 
-- (PFCloudKitSchemaGenerator)initWithMirroringOptions:(id)a3 forStoreInMonitor:(id)a4
+- (PFCloudKitSchemaGenerator)initWithMirroringOptions:(id)options forStoreInMonitor:(id)monitor
 {
   v8.receiver = self;
   v8.super_class = PFCloudKitSchemaGenerator;
   v6 = [(PFCloudKitSchemaGenerator *)&v8 init];
   if (v6)
   {
-    v6->_mirroringOptions = a3;
-    v6->_storeMonitor = a4;
+    v6->_mirroringOptions = options;
+    v6->_storeMonitor = monitor;
   }
 
   return v6;
@@ -34,11 +34,11 @@
   [(PFCloudKitSchemaGenerator *)&v3 dealloc];
 }
 
-- (uint64_t)newRepresentativeRecords:(uint64_t)a1
+- (uint64_t)newRepresentativeRecords:(uint64_t)records
 {
-  v2 = a1;
+  recordsCopy = records;
   v26 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (records)
   {
     v18 = 0;
     v19 = &v18;
@@ -51,19 +51,19 @@
     v16 = __Block_byref_object_dispose__48;
     v17 = 0;
     v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v5 = *(v2 + 16);
+    v5 = *(recordsCopy + 16);
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __54__PFCloudKitSchemaGenerator_newRepresentativeRecords___block_invoke;
     v11[3] = &unk_1E6EC5578;
     v11[6] = &v12;
     v11[7] = &v18;
-    v11[4] = v2;
+    v11[4] = recordsCopy;
     v11[5] = v4;
     [(PFCloudKitStoreMonitor *)v5 performBlock:v11];
     if (*(v19 + 24) == 1)
     {
-      v2 = [v4 copy];
+      recordsCopy = [v4 copy];
 LABEL_12:
 
       v13[5] = 0;
@@ -77,7 +77,7 @@ LABEL_12:
     {
       if (a2)
       {
-        v2 = 0;
+        recordsCopy = 0;
         *a2 = v6;
         goto LABEL_12;
       }
@@ -106,13 +106,13 @@ LABEL_12:
       }
     }
 
-    v2 = 0;
+    recordsCopy = 0;
     goto LABEL_12;
   }
 
 LABEL_13:
   v9 = *MEMORY[0x1E69E9840];
-  return v2;
+  return recordsCopy;
 }
 
 void __54__PFCloudKitSchemaGenerator_newRepresentativeRecords___block_invoke(uint64_t a1)
@@ -285,17 +285,17 @@ LABEL_14:
   v29 = *MEMORY[0x1E69E9840];
 }
 
-- (NSManagedObject)representativeObjectForEntity:(uint64_t)a3 inStore:(void *)a4 withManagedObjectContext:(void *)a5 cache:(int)a6 populate:(uint64_t)a7 error:
+- (NSManagedObject)representativeObjectForEntity:(uint64_t)entity inStore:(void *)store withManagedObjectContext:(void *)context cache:(int)cache populate:(uint64_t)populate error:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v14 = [a5 objectForKey:{objc_msgSend(a2, "name")}];
+  v14 = [context objectForKey:{objc_msgSend(a2, "name")}];
   if (v14)
   {
-    if (!a6)
+    if (!cache)
     {
       return v14;
     }
@@ -303,21 +303,21 @@ LABEL_14:
 
   else
   {
-    v14 = +[NSEntityDescription insertNewObjectForEntityForName:inManagedObjectContext:](NSEntityDescription, "insertNewObjectForEntityForName:inManagedObjectContext:", [a2 name], a4);
-    [a4 assignObject:v14 toPersistentStore:a3];
-    [a5 setObject:v14 forKey:{objc_msgSend(a2, "name")}];
-    if (!a6)
+    v14 = +[NSEntityDescription insertNewObjectForEntityForName:inManagedObjectContext:](NSEntityDescription, "insertNewObjectForEntityForName:inManagedObjectContext:", [a2 name], store);
+    [store assignObject:v14 toPersistentStore:entity];
+    [context setObject:v14 forKey:{objc_msgSend(a2, "name")}];
+    if (!cache)
     {
       return v14;
     }
   }
 
-  if (![(PFCloudKitSchemaGenerator *)a1 populateValuesOnObject:v14 error:a7])
+  if (![(PFCloudKitSchemaGenerator *)self populateValuesOnObject:v14 error:populate])
   {
     return 0;
   }
 
-  if (![(PFCloudKitSchemaGenerator *)a1 populateRelationshipsOnObject:v14 inStore:a3 withCache:a5 error:a7])
+  if (![(PFCloudKitSchemaGenerator *)self populateRelationshipsOnObject:v14 inStore:entity withCache:context error:populate])
   {
     return 0;
   }
@@ -325,9 +325,9 @@ LABEL_14:
   return v14;
 }
 
-- (uint64_t)populateValuesOnObject:(uint64_t)a3 error:
+- (uint64_t)populateValuesOnObject:(uint64_t)object error:
 {
-  if (a1)
+  if (self)
   {
     v10 = 0;
     v11 = &v10;
@@ -339,9 +339,9 @@ LABEL_14:
     v9[2] = __58__PFCloudKitSchemaGenerator_populateValuesOnObject_error___block_invoke;
     v9[3] = &unk_1E6EC55A0;
     v9[4] = a2;
-    v9[5] = a1;
+    v9[5] = self;
     v9[6] = &v10;
-    v9[7] = a3;
+    v9[7] = object;
     [v6 enumerateKeysAndObjectsUsingBlock:v9];
     v7 = *(v11 + 24);
     _Block_object_dispose(&v10, 8);
@@ -355,29 +355,29 @@ LABEL_14:
   return v7 & 1;
 }
 
-- (uint64_t)populateRelationshipsOnObject:(uint64_t)a3 inStore:(uint64_t)a4 withCache:(uint64_t)a5 error:
+- (uint64_t)populateRelationshipsOnObject:(uint64_t)object inStore:(uint64_t)store withCache:(uint64_t)cache error:
 {
-  if (a1)
+  if (self)
   {
     v16 = 0;
     v17 = &v16;
     v18 = 0x2020000000;
     v19 = 1;
-    v10 = [a2 entity];
-    v11 = [a2 managedObjectContext];
-    v12 = [v10 relationshipsByName];
+    entity = [a2 entity];
+    managedObjectContext = [a2 managedObjectContext];
+    relationshipsByName = [entity relationshipsByName];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __83__PFCloudKitSchemaGenerator_populateRelationshipsOnObject_inStore_withCache_error___block_invoke;
     v15[3] = &unk_1E6EC55C8;
     v15[4] = a2;
-    v15[5] = a1;
-    v15[6] = a3;
-    v15[7] = v11;
-    v15[8] = a4;
+    v15[5] = self;
+    v15[6] = object;
+    v15[7] = managedObjectContext;
+    v15[8] = store;
     v15[9] = &v16;
-    v15[10] = a5;
-    [v12 enumerateKeysAndObjectsUsingBlock:v15];
+    v15[10] = cache;
+    [relationshipsByName enumerateKeysAndObjectsUsingBlock:v15];
     v13 = *(v17 + 24);
     _Block_object_dispose(&v16, 8);
   }
@@ -445,24 +445,24 @@ uint64_t __58__PFCloudKitSchemaGenerator_populateValuesOnObject_error___block_in
   return result;
 }
 
-- (uint64_t)createRepresentativeFileBackedFutureInContext:(uint64_t *)a1 error:(void *)a2
+- (uint64_t)createRepresentativeFileBackedFutureInContext:(uint64_t *)context error:(void *)error
 {
-  v2 = a1;
+  contextCopy = context;
   v23 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (context)
   {
     v18 = 0;
-    v3 = a1[3];
+    v3 = context[3];
     if (v3)
     {
 LABEL_3:
-      v2 = v3;
+      contextCopy = v3;
 LABEL_4:
 
       goto LABEL_5;
     }
 
-    v7 = a1[2];
+    v7 = context[2];
     if (v7 && (*(v7 + 21) & 1) != 0)
     {
       v8 = objc_alloc(MEMORY[0x1E696ABC0]);
@@ -472,15 +472,15 @@ LABEL_4:
 
     else
     {
-      v10 = [(PFCloudKitStoreMonitor *)v7 retainedMonitoredStore];
-      v11 = [PFCloudKitSerializer generateCKAssetFileURLForObjectInStore:v10];
+      retainedMonitoredStore = [(PFCloudKitStoreMonitor *)v7 retainedMonitoredStore];
+      v11 = [PFCloudKitSerializer generateCKAssetFileURLForObjectInStore:retainedMonitoredStore];
       v12 = [@"Some sample data generated by PFCloudKitSchemaGenerator for a representative file backed future" dataUsingEncoding:1];
       if ([v12 writeToURL:v11 options:0 error:&v18])
       {
         v13 = [_NSDataFileBackedFuture alloc];
-        v2[3] = -[_NSDataFileBackedFuture initWithURL:UUID:size:](v13, v11, [MEMORY[0x1E696AFB0] UUID], objc_msgSend(v12, "length"));
+        contextCopy[3] = -[_NSDataFileBackedFuture initWithURL:UUID:size:](v13, v11, [MEMORY[0x1E696AFB0] UUID], objc_msgSend(v12, "length"));
 
-        v3 = v2[3];
+        v3 = contextCopy[3];
         goto LABEL_3;
       }
 
@@ -492,10 +492,10 @@ LABEL_4:
     v15 = v9;
     if (v15)
     {
-      if (a2)
+      if (error)
       {
-        v2 = 0;
-        *a2 = v15;
+        contextCopy = 0;
+        *error = v15;
         goto LABEL_4;
       }
     }
@@ -523,30 +523,30 @@ LABEL_4:
       }
     }
 
-    v2 = 0;
+    contextCopy = 0;
     goto LABEL_4;
   }
 
 LABEL_5:
   v4 = *MEMORY[0x1E69E9840];
-  return v2;
+  return contextCopy;
 }
 
-+ (__CFString)representativeValueFor:(uint64_t)a1
++ (__CFString)representativeValueFor:(uint64_t)for
 {
   objc_opt_self();
-  v3 = [a2 defaultValue];
-  v4 = [a2 attributeType];
-  if (v3)
+  defaultValue = [a2 defaultValue];
+  attributeType = [a2 attributeType];
+  if (defaultValue)
   {
-    return v3;
+    return defaultValue;
   }
 
-  if (v4 <= 699)
+  if (attributeType <= 699)
   {
-    if (v4 > 399)
+    if (attributeType > 399)
     {
-      if (v4 != 400 && v4 != 500 && v4 != 600)
+      if (attributeType != 400 && attributeType != 500 && attributeType != 600)
       {
         goto LABEL_28;
       }
@@ -556,7 +556,7 @@ LABEL_5:
 
     else
     {
-      if (v4 != 100 && v4 != 200 && v4 != 300)
+      if (attributeType != 100 && attributeType != 200 && attributeType != 300)
       {
         goto LABEL_28;
       }
@@ -565,19 +565,19 @@ LABEL_5:
     }
   }
 
-  if (v4 <= 999)
+  if (attributeType <= 999)
   {
-    if (v4 == 700)
+    if (attributeType == 700)
     {
       return @"An example core data string";
     }
 
-    if (v4 == 800)
+    if (attributeType == 800)
     {
       return MEMORY[0x1E695E118];
     }
 
-    if (v4 != 900)
+    if (attributeType != 900)
     {
       goto LABEL_28;
     }
@@ -589,11 +589,11 @@ LABEL_5:
 
   else
   {
-    if (v4 <= 1199)
+    if (attributeType <= 1199)
     {
-      if (v4 != 1000)
+      if (attributeType != 1000)
       {
-        if (v4 == 1100)
+        if (attributeType == 1100)
         {
           v6 = MEMORY[0x1E696AFB0];
 
@@ -627,9 +627,9 @@ LABEL_5:
       goto LABEL_37;
     }
 
-    if (v4 != 1200)
+    if (attributeType != 1200)
     {
-      if (v4 == 1800)
+      if (attributeType == 1800)
       {
 LABEL_37:
 
@@ -742,18 +742,18 @@ LABEL_10:
   return [v12 setValue:v11 forKey:a2];
 }
 
-+ (void)newRepresentativeRecordForStaticFieldsInEntity:(uint64_t)a3 inZoneWithID:
++ (void)newRepresentativeRecordForStaticFieldsInEntity:(uint64_t)entity inZoneWithID:
 {
   v23 = *MEMORY[0x1E69E9840];
   objc_opt_self();
   v5 = objc_alloc(getCloudKitCKRecordClass[0]());
-  v6 = [v5 initWithRecordType:+[PFCloudKitSerializer recordTypeForEntity:](PFCloudKitSerializer zoneID:{a2), a3}];
+  v6 = [v5 initWithRecordType:+[PFCloudKitSerializer recordTypeForEntity:](PFCloudKitSerializer zoneID:{a2), entity}];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v7 = [objc_msgSend(a2 attributesByName];
-  v8 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  attributesByName = [objc_msgSend(a2 attributesByName];
+  v8 = [attributesByName countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v8)
   {
     v9 = v8;
@@ -764,25 +764,25 @@ LABEL_10:
       {
         if (*v19 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(attributesByName);
         }
 
         v12 = *(*(&v18 + 1) + 8 * i);
-        v13 = [v12 attributeType];
-        if (v13 && v13 != 2000 && (+[PFCloudKitSerializer isVariableLengthAttributeType:](PFCloudKitSerializer, [v12 attributeType]) & 1) == 0)
+        attributeType = [v12 attributeType];
+        if (attributeType && attributeType != 2000 && (+[PFCloudKitSerializer isVariableLengthAttributeType:](PFCloudKitSerializer, [v12 attributeType]) & 1) == 0)
         {
           v14 = [PFCloudKitSchemaGenerator representativeValueFor:v12];
           if ([v12 attributeType] == 1100)
           {
-            v15 = [(__CFString *)v14 UUIDString];
+            uUIDString = [(__CFString *)v14 UUIDString];
             goto LABEL_13;
           }
 
           if ([v12 attributeType] == 1200)
           {
-            v15 = [(__CFString *)v14 absoluteString];
+            uUIDString = [(__CFString *)v14 absoluteString];
 LABEL_13:
-            v14 = v15;
+            v14 = uUIDString;
           }
 
           [v6 setObject:v14 forKey:{+[PFCloudKitSerializer applyCDPrefixToName:](PFCloudKitSerializer, objc_msgSend(v12, "name"))}];
@@ -790,7 +790,7 @@ LABEL_13:
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v9 = [attributesByName countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v9);

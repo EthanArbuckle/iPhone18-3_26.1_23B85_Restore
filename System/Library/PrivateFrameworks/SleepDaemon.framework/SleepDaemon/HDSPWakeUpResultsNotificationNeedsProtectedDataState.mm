@@ -10,47 +10,47 @@
 
 - (id)expirationDate
 {
-  v3 = [(HDSPWakeUpResultsNotificationStateMachineState *)self infoProvider];
-  v4 = [(HDSPWakeUpResultsNotificationStateMachineState *)self infoProvider];
-  v5 = [v4 currentDate];
-  v6 = [v3 notificationAttemptWindowForWakeUpBeforeDate:v5];
-  v7 = [v6 endDate];
+  infoProvider = [(HDSPWakeUpResultsNotificationStateMachineState *)self infoProvider];
+  infoProvider2 = [(HDSPWakeUpResultsNotificationStateMachineState *)self infoProvider];
+  currentDate = [infoProvider2 currentDate];
+  v6 = [infoProvider notificationAttemptWindowForWakeUpBeforeDate:currentDate];
+  endDate = [v6 endDate];
 
-  return v7;
+  return endDate;
 }
 
 - (void)didEnter
 {
-  v3 = [(HKSPStateMachineState *)self stateMachine];
-  v4 = [v3 currentContext];
-  v5 = [v4 hasStateTransitionOrInitializing];
+  stateMachine = [(HKSPStateMachineState *)self stateMachine];
+  currentContext = [stateMachine currentContext];
+  hasStateTransitionOrInitializing = [currentContext hasStateTransitionOrInitializing];
 
-  if (v5)
+  if (hasStateTransitionOrInitializing)
   {
-    v6 = [(HKSPStateMachineState *)self stateMachine];
-    [v6 startObservingProtectedHealthDataAvailability];
+    stateMachine2 = [(HKSPStateMachineState *)self stateMachine];
+    [stateMachine2 startObservingProtectedHealthDataAvailability];
   }
 }
 
 - (void)didExit
 {
-  v3 = [(HKSPStateMachineState *)self stateMachine];
-  v12 = [v3 currentContext];
+  stateMachine = [(HKSPStateMachineState *)self stateMachine];
+  currentContext = [stateMachine currentContext];
 
-  if ([v12 hasStateTransitionOrInitializing])
+  if ([currentContext hasStateTransitionOrInitializing])
   {
-    v4 = [(HKSPStateMachineState *)self stateMachine];
-    v5 = [v12 nextState];
-    if (v5)
+    stateMachine2 = [(HKSPStateMachineState *)self stateMachine];
+    nextState = [currentContext nextState];
+    if (nextState)
     {
-      v6 = v5;
-      v7 = [v4 queryingState];
-      if (v7)
+      v6 = nextState;
+      queryingState = [stateMachine2 queryingState];
+      if (queryingState)
       {
-        v8 = v7;
-        v9 = [v12 nextState];
-        v10 = [v4 queryingState];
-        v11 = [v9 isMemberOfClass:objc_opt_class()];
+        v8 = queryingState;
+        nextState2 = [currentContext nextState];
+        queryingState2 = [stateMachine2 queryingState];
+        v11 = [nextState2 isMemberOfClass:objc_opt_class()];
 
         if (v11)
         {
@@ -63,7 +63,7 @@
       }
     }
 
-    [v4 stopObservingProtectedHealthDataAvailability];
+    [stateMachine2 stopObservingProtectedHealthDataAvailability];
 LABEL_8:
   }
 }
@@ -96,9 +96,9 @@ LABEL_8:
     _os_log_impl(&dword_269B11000, v3, OS_LOG_TYPE_DEFAULT, "[%{public}@] Transitioning to querying state", &v8, 0xCu);
   }
 
-  v5 = [(HKSPStateMachineState *)self stateMachine];
-  v6 = [v5 queryingState];
-  [v5 enterState:v6];
+  stateMachine = [(HKSPStateMachineState *)self stateMachine];
+  queryingState = [stateMachine queryingState];
+  [stateMachine enterState:queryingState];
 
   v7 = *MEMORY[0x277D85DE8];
 }

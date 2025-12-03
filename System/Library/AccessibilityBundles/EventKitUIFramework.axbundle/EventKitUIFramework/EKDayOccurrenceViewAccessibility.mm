@@ -1,5 +1,5 @@
 @interface EKDayOccurrenceViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityIsInWidget;
 - (BOOL)_axIsInPreview;
 - (BOOL)canBecomeFocused;
@@ -21,57 +21,57 @@
 
 @implementation EKDayOccurrenceViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"EKLayoutContainerView"];
-  [v3 validateClass:@"EKDayViewController"];
-  [v3 validateClass:@"EKDayGridView"];
-  [v3 validateClass:@"EKDayView"];
-  [v3 validateClass:@"EKEvent"];
-  [v3 validateClass:@"EKDayOccurrenceView" isKindOfClass:@"UIView"];
-  [v3 validateClass:@"EKLayoutContainerView" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"EKDayOccurrenceView" hasInstanceMethod:@"arrayOfResizeHandles" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"EKDayOccurrenceView" hasInstanceMethod:@"occurrence" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"EKDayOccurrenceView" hasInstanceMethod:@"isAllDay" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"EKDayOccurrenceView" hasInstanceMethod:@"prepareForReuse" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"EKDayOccurrenceView" hasInstanceMethod:@"isCancelled" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"EKDayOccurrenceView" hasInstanceMethod:@"isBirthday" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"EKDayOccurrenceView" hasInstanceMethod:@"isTentative" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"EKDayOccurrenceView" hasInstanceMethod:@"isDeclined" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"EKDayOccurrenceView" hasInstanceMethod:@"needsReply" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"EKDayOccurrenceView" hasInstanceMethod:@"isSelectedCopyView" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"EKDayOccurrenceView" hasInstanceMethod:@"setDrawsResizeHandles:" withFullSignature:{"v", "B", 0}];
-  [v3 validateClass:@"EKDayOccurrenceView" hasInstanceMethod:@"occurrence" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"EKDayViewController" hasInstanceMethod:@"currentDayView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"EKDayViewController" hasInstanceVariable:@"_eventGestureController" withType:"EKEventGestureController"];
-  [v3 validateClass:@"EKEventGestureController" hasInstanceVariable:@"_draggingView" withType:"EKDayOccurrenceView"];
-  [v3 validateClass:@"EKEvent" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"EKEvent" hasInstanceMethod:@"virtualConference" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"EKVirtualConference" hasInstanceMethod:@"joinMethods" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"EKCalendarItem" hasInstanceMethod:@"location" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"EKEvent" isKindOfClass:@"EKCalendarItem"];
-  [v3 validateClass:@"UIView" hasInstanceMethod:@"canBecomeFocused" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"EKLayoutContainerView"];
+  [validationsCopy validateClass:@"EKDayViewController"];
+  [validationsCopy validateClass:@"EKDayGridView"];
+  [validationsCopy validateClass:@"EKDayView"];
+  [validationsCopy validateClass:@"EKEvent"];
+  [validationsCopy validateClass:@"EKDayOccurrenceView" isKindOfClass:@"UIView"];
+  [validationsCopy validateClass:@"EKLayoutContainerView" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"EKDayOccurrenceView" hasInstanceMethod:@"arrayOfResizeHandles" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"EKDayOccurrenceView" hasInstanceMethod:@"occurrence" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"EKDayOccurrenceView" hasInstanceMethod:@"isAllDay" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"EKDayOccurrenceView" hasInstanceMethod:@"prepareForReuse" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"EKDayOccurrenceView" hasInstanceMethod:@"isCancelled" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"EKDayOccurrenceView" hasInstanceMethod:@"isBirthday" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"EKDayOccurrenceView" hasInstanceMethod:@"isTentative" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"EKDayOccurrenceView" hasInstanceMethod:@"isDeclined" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"EKDayOccurrenceView" hasInstanceMethod:@"needsReply" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"EKDayOccurrenceView" hasInstanceMethod:@"isSelectedCopyView" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"EKDayOccurrenceView" hasInstanceMethod:@"setDrawsResizeHandles:" withFullSignature:{"v", "B", 0}];
+  [validationsCopy validateClass:@"EKDayOccurrenceView" hasInstanceMethod:@"occurrence" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"EKDayViewController" hasInstanceMethod:@"currentDayView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"EKDayViewController" hasInstanceVariable:@"_eventGestureController" withType:"EKEventGestureController"];
+  [validationsCopy validateClass:@"EKEventGestureController" hasInstanceVariable:@"_draggingView" withType:"EKDayOccurrenceView"];
+  [validationsCopy validateClass:@"EKEvent" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"EKEvent" hasInstanceMethod:@"virtualConference" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"EKVirtualConference" hasInstanceMethod:@"joinMethods" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"EKCalendarItem" hasInstanceMethod:@"location" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"EKEvent" isKindOfClass:@"EKCalendarItem"];
+  [validationsCopy validateClass:@"UIView" hasInstanceMethod:@"canBecomeFocused" withFullSignature:{"B", 0}];
 }
 
 - (BOOL)_axIsInPreview
 {
   v2 = [(EKDayOccurrenceViewAccessibility *)self _accessibilityAncestorIsKindOf:NSClassFromString(&cfstr_Ekdaygridview.isa)];
-  v3 = [v2 accessibilityIsPreviewGridView];
+  accessibilityIsPreviewGridView = [v2 accessibilityIsPreviewGridView];
 
-  return v3;
+  return accessibilityIsPreviewGridView;
 }
 
 - (BOOL)isAccessibilityElement
 {
-  v3 = [(EKDayOccurrenceViewAccessibility *)self isAccessibilityUserDefinedElement];
+  isAccessibilityUserDefinedElement = [(EKDayOccurrenceViewAccessibility *)self isAccessibilityUserDefinedElement];
 
-  if (v3)
+  if (isAccessibilityUserDefinedElement)
   {
-    v4 = [(EKDayOccurrenceViewAccessibility *)self isAccessibilityUserDefinedElement];
-    v5 = [v4 BOOLValue];
+    isAccessibilityUserDefinedElement2 = [(EKDayOccurrenceViewAccessibility *)self isAccessibilityUserDefinedElement];
+    bOOLValue = [isAccessibilityUserDefinedElement2 BOOLValue];
 
-    return v5;
+    return bOOLValue;
   }
 
   else if (([(EKDayOccurrenceViewAccessibility *)self safeBoolForKey:@"isSelectedCopyView"]& 1) != 0)
@@ -93,12 +93,12 @@
 
 - (CGRect)accessibilityFrameForScrolling
 {
-  v3 = [(EKDayOccurrenceViewAccessibility *)self _axRealFrameInSuperview];
-  v4 = [(EKDayOccurrenceViewAccessibility *)self superview];
-  v5 = v4;
-  if (v3 && v4)
+  _axRealFrameInSuperview = [(EKDayOccurrenceViewAccessibility *)self _axRealFrameInSuperview];
+  superview = [(EKDayOccurrenceViewAccessibility *)self superview];
+  v5 = superview;
+  if (_axRealFrameInSuperview && superview)
   {
-    [v3 CGRectValue];
+    [_axRealFrameInSuperview CGRectValue];
     UIAccessibilityFrameForBounds();
   }
 
@@ -186,15 +186,15 @@
     v6 = v9;
   }
 
-  v10 = [v4 virtualConference];
-  v11 = [v10 safeArrayForKey:@"joinMethods"];
-  v12 = [v11 firstObject];
+  virtualConference = [v4 virtualConference];
+  v11 = [virtualConference safeArrayForKey:@"joinMethods"];
+  firstObject = [v11 firstObject];
 
-  v13 = [v12 URL];
-  v14 = [v13 absoluteString];
-  v15 = [v14 lowercaseString];
+  v13 = [firstObject URL];
+  absoluteString = [v13 absoluteString];
+  lowercaseString = [absoluteString lowercaseString];
 
-  if ([v15 containsString:@"facetime.apple.com"])
+  if ([lowercaseString containsString:@"facetime.apple.com"])
   {
     v41 = accessibilityLocalizedString(@"application.name.facetime");
     v52 = @"__AXStringForVariablesSentinel";
@@ -206,8 +206,8 @@
   v17 = [v4 safeStringForKey:{@"location", v41, v52}];
   if (v4)
   {
-    v62 = v12;
-    v60 = [v4 _accessibilityDurationString];
+    v62 = firstObject;
+    _accessibilityDurationString = [v4 _accessibilityDurationString];
     v18 = __UIAXStringForVariables();
 
     [v4 travelTime];
@@ -239,33 +239,33 @@
       v18 = v22;
     }
 
-    v23 = [MEMORY[0x29EDB8D98] currentCalendar];
-    v24 = [v4 startDate];
-    if (v24)
+    currentCalendar = [MEMORY[0x29EDB8D98] currentCalendar];
+    startDate = [v4 startDate];
+    if (startDate)
     {
-      v25 = [v23 components:62 fromDate:v24];
-      v26 = [v4 endDate];
-      if (v26)
+      v25 = [currentCalendar components:62 fromDate:startDate];
+      endDate = [v4 endDate];
+      if (endDate)
       {
         v58 = v5;
-        v59 = [v23 components:62 fromDate:v26];
-        v27 = [MEMORY[0x29EDB8DB0] date];
-        v28 = [v23 components:62 fromDate:v27];
+        v59 = [currentCalendar components:62 fromDate:endDate];
+        date = [MEMORY[0x29EDB8DB0] date];
+        v28 = [currentCalendar components:62 fromDate:date];
 
-        v29 = [v25 year];
-        if (v29 == [v28 year])
+        year = [v25 year];
+        if (year == [v28 year])
         {
-          v30 = [v25 month];
-          if (v30 == [v28 month])
+          month = [v25 month];
+          if (month == [v28 month])
           {
             v31 = [v25 day];
             if (v31 == [v28 day])
             {
-              v32 = [v25 hour];
-              if (v32 >= [v28 hour])
+              hour = [v25 hour];
+              if (hour >= [v28 hour])
               {
-                v33 = [v59 hour];
-                if (v33 <= [v28 hour])
+                hour2 = [v59 hour];
+                if (hour2 <= [v28 hour])
                 {
                   v42 = accessibilityLocalizedString(@"in.progress");
                   v53 = @"__AXStringForVariablesSentinel";
@@ -296,7 +296,7 @@
 
     v6 = v18;
     v17 = v61;
-    v12 = v62;
+    firstObject = v62;
   }
 
   if ([(EKDayOccurrenceViewAccessibility *)self safeBoolForKey:@"isBirthday", v42, v53])
@@ -333,8 +333,8 @@
 - (id)_accessibilitySupplementaryFooterViews
 {
   v7[1] = *MEMORY[0x29EDCA608];
-  v2 = [(EKDayOccurrenceViewAccessibility *)self _axDraggingView];
-  v3 = [v2 safeValueForKey:@"_endResizeHandle"];
+  _axDraggingView = [(EKDayOccurrenceViewAccessibility *)self _axDraggingView];
+  v3 = [_axDraggingView safeValueForKey:@"_endResizeHandle"];
 
   if ([v3 _accessibilityViewIsVisible])
   {
@@ -355,8 +355,8 @@
 - (id)_accessibilitySupplementaryHeaderViews
 {
   v7[1] = *MEMORY[0x29EDCA608];
-  v2 = [(EKDayOccurrenceViewAccessibility *)self _axDraggingView];
-  v3 = [v2 safeValueForKey:@"_startResizeHandle"];
+  _axDraggingView = [(EKDayOccurrenceViewAccessibility *)self _axDraggingView];
+  v3 = [_axDraggingView safeValueForKey:@"_startResizeHandle"];
 
   if ([v3 _accessibilityViewIsVisible])
   {
@@ -400,16 +400,16 @@ LABEL_9:
     goto LABEL_12;
   }
 
-  v8 = [v7 superview];
+  superview = [v7 superview];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v15 = v5;
-    v16 = v8;
+    v16 = superview;
     _AXAssert();
   }
 
-  v9 = [v8 safeValueForKey:{@"delegate", v15, v16}];
+  v9 = [superview safeValueForKey:{@"delegate", v15, v16}];
   NSClassFromString(&cfstr_Weekviewcontro.isa);
   if (objc_opt_isKindOfClass())
   {
@@ -439,9 +439,9 @@ LABEL_12:
 - (id)accessibilityCustomRotors
 {
   v16[1] = *MEMORY[0x29EDCA608];
-  v3 = [(EKDayOccurrenceViewAccessibility *)self _axDraggingView];
+  _axDraggingView = [(EKDayOccurrenceViewAccessibility *)self _axDraggingView];
 
-  if (v3)
+  if (_axDraggingView)
   {
     v4 = [(EKDayOccurrenceViewAccessibility *)self _accessibilityValueForKey:@"AXCustomRotor"];
     if (!v4)
@@ -493,20 +493,20 @@ id __61__EKDayOccurrenceViewAccessibility_accessibilityCustomRotors__block_invok
 {
   v22.receiver = self;
   v22.super_class = EKDayOccurrenceViewAccessibility;
-  v3 = [(EKDayOccurrenceViewAccessibility *)&v22 accessibilityTraits];
-  v4 = [(EKDayOccurrenceViewAccessibility *)self _axIsInPreview];
+  accessibilityTraits = [(EKDayOccurrenceViewAccessibility *)&v22 accessibilityTraits];
+  _axIsInPreview = [(EKDayOccurrenceViewAccessibility *)self _axIsInPreview];
   v5 = *MEMORY[0x29EDC7F70];
-  if (v4)
+  if (_axIsInPreview)
   {
     v5 = 0;
   }
 
-  v6 = v5 | v3;
-  v7 = [(EKDayOccurrenceViewAccessibility *)self _axWidgetContainerView];
-  v8 = v7;
-  if (v7)
+  v6 = v5 | accessibilityTraits;
+  _axWidgetContainerView = [(EKDayOccurrenceViewAccessibility *)self _axWidgetContainerView];
+  v8 = _axWidgetContainerView;
+  if (_axWidgetContainerView)
   {
-    [v7 accessibilityFrame];
+    [_axWidgetContainerView accessibilityFrame];
     v10 = v9;
     v12 = v11;
     v14 = v13;
@@ -538,8 +538,8 @@ id __61__EKDayOccurrenceViewAccessibility_accessibilityCustomRotors__block_invok
 
 - (BOOL)_accessibilityIsInWidget
 {
-  v2 = [(EKDayOccurrenceViewAccessibility *)self _axWidgetContainerView];
-  v3 = v2 != 0;
+  _axWidgetContainerView = [(EKDayOccurrenceViewAccessibility *)self _axWidgetContainerView];
+  v3 = _axWidgetContainerView != 0;
 
   return v3;
 }
@@ -608,39 +608,39 @@ id __61__EKDayOccurrenceViewAccessibility_accessibilityCustomRotors__block_invok
     v15 = [v13 initWithName:v14 point:v4 inView:?];
 
     v21[0] = v15;
-    v16 = [MEMORY[0x29EDB8D80] arrayWithObjects:v21 count:1];
+    accessibilityDragSourceDescriptors = [MEMORY[0x29EDB8D80] arrayWithObjects:v21 count:1];
   }
 
   else
   {
     v19.receiver = self;
     v19.super_class = EKDayOccurrenceViewAccessibility;
-    v16 = [(EKDayOccurrenceViewAccessibility *)&v19 accessibilityDragSourceDescriptors];
+    accessibilityDragSourceDescriptors = [(EKDayOccurrenceViewAccessibility *)&v19 accessibilityDragSourceDescriptors];
   }
 
   v17 = *MEMORY[0x29EDCA608];
 
-  return v16;
+  return accessibilityDragSourceDescriptors;
 }
 
 - (id)accessibilityDropPointDescriptors
 {
-  v3 = [(EKDayOccurrenceViewAccessibility *)self _axDropPointDescriptorsProvider];
-  v4 = [v3 accessibilityDropPointDescriptors];
+  _axDropPointDescriptorsProvider = [(EKDayOccurrenceViewAccessibility *)self _axDropPointDescriptorsProvider];
+  accessibilityDropPointDescriptors = [_axDropPointDescriptorsProvider accessibilityDropPointDescriptors];
 
-  if ([v4 count])
+  if ([accessibilityDropPointDescriptors count])
   {
-    v5 = v4;
+    accessibilityDropPointDescriptors2 = accessibilityDropPointDescriptors;
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = EKDayOccurrenceViewAccessibility;
-    v5 = [(EKDayOccurrenceViewAccessibility *)&v8 accessibilityDropPointDescriptors];
+    accessibilityDropPointDescriptors2 = [(EKDayOccurrenceViewAccessibility *)&v8 accessibilityDropPointDescriptors];
   }
 
-  v6 = v5;
+  v6 = accessibilityDropPointDescriptors2;
 
   return v6;
 }
@@ -650,11 +650,11 @@ id __61__EKDayOccurrenceViewAccessibility_accessibilityCustomRotors__block_invok
   if ([(EKDayOccurrenceViewAccessibility *)self _accessibilityIsFKARunningForFocusItem])
   {
     v3 = [(EKDayOccurrenceViewAccessibility *)self _accessibilityFindAncestor:&__block_literal_global_2 startWithSelf:0];
-    v4 = [v3 _accessibilityViewController];
+    _accessibilityViewController = [v3 _accessibilityViewController];
 
-    if (v4)
+    if (_accessibilityViewController)
     {
-      v5 = [v4 safeValueForKey:@"currentDayView"];
+      v5 = [_accessibilityViewController safeValueForKey:@"currentDayView"];
       v6 = [(EKDayOccurrenceViewAccessibility *)self _accessibilityAncestorIsKindOf:NSClassFromString(&cfstr_Ekdayview.isa)];
 
       if (v5 != v6)

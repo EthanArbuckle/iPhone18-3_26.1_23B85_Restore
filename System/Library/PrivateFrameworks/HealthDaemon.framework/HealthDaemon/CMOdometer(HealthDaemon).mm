@@ -13,7 +13,7 @@
   v7[3] = &unk_27861BB88;
   v8 = v5;
   v6 = v5;
-  [a1 startCyclingWorkoutDistanceUpdatesWithHandler:v7];
+  [self startCyclingWorkoutDistanceUpdatesWithHandler:v7];
 }
 
 @end

@@ -1,24 +1,24 @@
 @interface _DNDSPendingMessageRecipients
-- (_DNDSPendingMessageRecipients)initWithLastUpdateDate:(id)a3 deviceIdentifiers:(id)a4;
+- (_DNDSPendingMessageRecipients)initWithLastUpdateDate:(id)date deviceIdentifiers:(id)identifiers;
 - (id)description;
 @end
 
 @implementation _DNDSPendingMessageRecipients
 
-- (_DNDSPendingMessageRecipients)initWithLastUpdateDate:(id)a3 deviceIdentifiers:(id)a4
+- (_DNDSPendingMessageRecipients)initWithLastUpdateDate:(id)date deviceIdentifiers:(id)identifiers
 {
-  v6 = a3;
-  v7 = a4;
+  dateCopy = date;
+  identifiersCopy = identifiers;
   v14.receiver = self;
   v14.super_class = _DNDSPendingMessageRecipients;
   v8 = [(_DNDSPendingMessageRecipients *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [dateCopy copy];
     lastUpdateDate = v8->_lastUpdateDate;
     v8->_lastUpdateDate = v9;
 
-    v11 = [v7 copy];
+    v11 = [identifiersCopy copy];
     deviceIdentifiers = v8->_deviceIdentifiers;
     v8->_deviceIdentifiers = v11;
   }

@@ -1,31 +1,31 @@
 @interface UIKeyboardStickerEditorViewController
-- (UIKeyboardStickerEditorViewController)initWithStickerIdentifier:(id)a3 sourceRect:(CGRect)a4;
+- (UIKeyboardStickerEditorViewController)initWithStickerIdentifier:(id)identifier sourceRect:(CGRect)rect;
 - (void)configureBackdropView;
 - (void)configureEditorViewController;
 - (void)configureVisualEffectView;
 - (void)dismiss;
-- (void)dismissAnimated:(BOOL)a3;
+- (void)dismissAnimated:(BOOL)animated;
 - (void)showInKeyboard;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 - (void)viewDidLoad;
 @end
 
 @implementation UIKeyboardStickerEditorViewController
 
-- (UIKeyboardStickerEditorViewController)initWithStickerIdentifier:(id)a3 sourceRect:(CGRect)a4
+- (UIKeyboardStickerEditorViewController)initWithStickerIdentifier:(id)identifier sourceRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v10 = a3;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  identifierCopy = identifier;
   v14.receiver = self;
   v14.super_class = UIKeyboardStickerEditorViewController;
   v11 = [(UIViewController *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_stickerIdentifier, a3);
+    objc_storeStrong(&v11->_stickerIdentifier, identifier);
     v12->_sourceRect.origin.x = x;
     v12->_sourceRect.origin.y = y;
     v12->_sourceRect.size.width = width;
@@ -40,44 +40,44 @@
   v4.receiver = self;
   v4.super_class = UIKeyboardStickerEditorViewController;
   [(UIViewController *)&v4 viewDidLoad];
-  v3 = [(UIViewController *)self view];
-  [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
+  view = [(UIViewController *)self view];
+  [view setTranslatesAutoresizingMaskIntoConstraints:0];
 }
 
 - (void)configureBackdropView
 {
   v31[4] = *MEMORY[0x1E69E9840];
   v3 = [UIKBBackdropView alloc];
-  v4 = [(UIViewController *)self view];
-  [v4 bounds];
+  view = [(UIViewController *)self view];
+  [view bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(UIViewController *)self view];
-  v14 = [v13 _inheritedRenderConfig];
-  v15 = -[UIKBBackdropView initWithFrame:style:](v3, "initWithFrame:style:", [v14 backdropStyle], v6, v8, v10, v12);
+  view2 = [(UIViewController *)self view];
+  _inheritedRenderConfig = [view2 _inheritedRenderConfig];
+  v15 = -[UIKBBackdropView initWithFrame:style:](v3, "initWithFrame:style:", [_inheritedRenderConfig backdropStyle], v6, v8, v10, v12);
   backdropView = self->_backdropView;
   self->_backdropView = v15;
 
   [(UIView *)self->_backdropView setTranslatesAutoresizingMaskIntoConstraints:0];
-  v17 = [(UIViewController *)self view];
-  [v17 addSubview:self->_backdropView];
-  v30 = [(UIView *)self->_backdropView topAnchor];
-  v29 = [v17 topAnchor];
-  v28 = [v30 constraintEqualToAnchor:v29];
+  view3 = [(UIViewController *)self view];
+  [view3 addSubview:self->_backdropView];
+  topAnchor = [(UIView *)self->_backdropView topAnchor];
+  topAnchor2 = [view3 topAnchor];
+  v28 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v31[0] = v28;
-  v27 = [(UIView *)self->_backdropView bottomAnchor];
-  v18 = [v17 bottomAnchor];
-  v19 = [v27 constraintEqualToAnchor:v18];
+  bottomAnchor = [(UIView *)self->_backdropView bottomAnchor];
+  bottomAnchor2 = [view3 bottomAnchor];
+  v19 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v31[1] = v19;
-  v20 = [(UIView *)self->_backdropView leftAnchor];
-  v21 = [v17 leftAnchor];
-  v22 = [v20 constraintEqualToAnchor:v21];
+  leftAnchor = [(UIView *)self->_backdropView leftAnchor];
+  leftAnchor2 = [view3 leftAnchor];
+  v22 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
   v31[2] = v22;
-  v23 = [(UIView *)self->_backdropView rightAnchor];
-  v24 = [v17 rightAnchor];
-  v25 = [v23 constraintEqualToAnchor:v24];
+  rightAnchor = [(UIView *)self->_backdropView rightAnchor];
+  rightAnchor2 = [view3 rightAnchor];
+  v25 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
   v31[3] = v25;
   v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:v31 count:4];
 
@@ -98,23 +98,23 @@
   [(UIVisualEffectView *)self->_visualEffectView _setGroupName:v7];
 
   [(UIVisualEffectView *)self->_visualEffectView _setCornerRadius:13.0];
-  v8 = [(UIViewController *)self view];
-  [v8 addSubview:self->_visualEffectView];
-  v21 = [(UIView *)self->_visualEffectView topAnchor];
-  v20 = [v8 topAnchor];
-  v19 = [v21 constraintEqualToAnchor:v20];
+  view = [(UIViewController *)self view];
+  [view addSubview:self->_visualEffectView];
+  topAnchor = [(UIView *)self->_visualEffectView topAnchor];
+  topAnchor2 = [view topAnchor];
+  v19 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v22[0] = v19;
-  v18 = [(UIView *)self->_visualEffectView bottomAnchor];
-  v9 = [v8 bottomAnchor];
-  v10 = [v18 constraintEqualToAnchor:v9];
+  bottomAnchor = [(UIView *)self->_visualEffectView bottomAnchor];
+  bottomAnchor2 = [view bottomAnchor];
+  v10 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v22[1] = v10;
-  v11 = [(UIView *)self->_visualEffectView leftAnchor];
-  v12 = [v8 leftAnchor];
-  v13 = [v11 constraintEqualToAnchor:v12];
+  leftAnchor = [(UIView *)self->_visualEffectView leftAnchor];
+  leftAnchor2 = [view leftAnchor];
+  v13 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
   v22[2] = v13;
-  v14 = [(UIView *)self->_visualEffectView rightAnchor];
-  v15 = [v8 rightAnchor];
-  v16 = [v14 constraintEqualToAnchor:v15];
+  rightAnchor = [(UIView *)self->_visualEffectView rightAnchor];
+  rightAnchor2 = [view rightAnchor];
+  v16 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
   v22[3] = v16;
   v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:4];
 
@@ -128,17 +128,17 @@
   {
     self->_shown = 1;
     v3 = +[UIKeyboardImpl activeInstance];
-    v4 = [v3 _rootInputWindowController];
-    v5 = [v4 bottomEdgeView];
+    _rootInputWindowController = [v3 _rootInputWindowController];
+    bottomEdgeView = [_rootInputWindowController bottomEdgeView];
 
-    v6 = [v3 isEmojiPopoverPresented];
-    if (v6)
+    isEmojiPopoverPresented = [v3 isEmojiPopoverPresented];
+    if (isEmojiPopoverPresented)
     {
-      v7 = [v3 emojiPopoverController];
-      v8 = [v7 view];
+      emojiPopoverController = [v3 emojiPopoverController];
+      view = [emojiPopoverController view];
 
       [(UIKeyboardStickerEditorViewController *)self configureVisualEffectView];
-      v5 = v8;
+      bottomEdgeView = view;
     }
 
     else if (_UISolariumEnabled())
@@ -152,78 +152,78 @@
       [(UIKeyboardStickerEditorViewController *)self configureBackdropView];
     }
 
-    v9 = [v5 _viewControllerForAncestor];
-    v10 = [v5 _rootInputWindowController];
-    v11 = [(UIViewController *)self view];
-    if (!v9)
+    _viewControllerForAncestor = [bottomEdgeView _viewControllerForAncestor];
+    _rootInputWindowController2 = [bottomEdgeView _rootInputWindowController];
+    view2 = [(UIViewController *)self view];
+    if (!_viewControllerForAncestor)
     {
       goto LABEL_30;
     }
 
-    v59 = v11;
+    v59 = view2;
     v12 = +[UIKeyboardImpl isFloating];
     if (v12)
     {
-      [v10 _inputView];
+      [_rootInputWindowController2 _inputView];
     }
 
     else
     {
-      [v10 view];
+      [_rootInputWindowController2 view];
     }
     v60 = ;
     v58 = v3;
-    v56 = v10;
-    if (v6)
+    v56 = _rootInputWindowController2;
+    if (isEmojiPopoverPresented)
     {
-      v13 = [v3 emojiPopoverController];
-      v14 = [v13 view];
+      emojiPopoverController2 = [v3 emojiPopoverController];
+      view3 = [emojiPopoverController2 view];
 
-      v15 = [v3 emojiPopoverController];
-      v16 = [v15 view];
-      v17 = [v16 topAnchor];
+      emojiPopoverController3 = [v3 emojiPopoverController];
+      view4 = [emojiPopoverController3 view];
+      topAnchor = [view4 topAnchor];
 
 LABEL_27:
-      v57 = v9;
-      [v9 addChildViewController:self];
-      [v5 addSubview:v59];
-      v54 = [v59 topAnchor];
-      v55 = v17;
-      v53 = [v54 constraintEqualToAnchor:v17];
+      v57 = _viewControllerForAncestor;
+      [_viewControllerForAncestor addChildViewController:self];
+      [bottomEdgeView addSubview:v59];
+      topAnchor2 = [v59 topAnchor];
+      v55 = topAnchor;
+      v53 = [topAnchor2 constraintEqualToAnchor:topAnchor];
       v63[0] = v53;
-      v52 = [v59 bottomAnchor];
-      v51 = [v14 bottomAnchor];
-      v29 = [v52 constraintEqualToAnchor:v51];
+      bottomAnchor = [v59 bottomAnchor];
+      bottomAnchor2 = [view3 bottomAnchor];
+      v29 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
       v63[1] = v29;
-      v30 = [v59 leftAnchor];
-      v31 = [v14 leftAnchor];
-      v32 = [v30 constraintEqualToAnchor:v31];
+      leftAnchor = [v59 leftAnchor];
+      leftAnchor2 = [view3 leftAnchor];
+      v32 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
       v63[2] = v32;
-      v33 = [v59 rightAnchor];
-      v61 = v14;
-      [v14 rightAnchor];
-      v35 = v34 = v5;
-      v36 = [v33 constraintEqualToAnchor:v35];
+      rightAnchor = [v59 rightAnchor];
+      v61 = view3;
+      [view3 rightAnchor];
+      v35 = v34 = bottomEdgeView;
+      v36 = [rightAnchor constraintEqualToAnchor:v35];
       v63[3] = v36;
       v37 = [MEMORY[0x1E695DEC8] arrayWithObjects:v63 count:4];
 
       v38 = v37;
-      v5 = v34;
+      bottomEdgeView = v34;
 
-      v9 = v57;
+      _viewControllerForAncestor = v57;
       [MEMORY[0x1E69977A0] activateConstraints:v37];
       [(UIViewController *)self didMoveToParentViewController:v57];
       [(UIKeyboardStickerEditorViewController *)self configureEditorViewController];
-      v39 = [(UIViewController *)self view];
-      [v39 setAlpha:1.0];
+      view5 = [(UIViewController *)self view];
+      [view5 setAlpha:1.0];
 
       [(UIView *)self->_backdropView setAlpha:0.0];
       [(UIView *)self->_visualEffectView setAlpha:0.0];
       [v34 layoutIfNeeded];
-      v40 = [(UIViewController *)self view];
-      v41 = [v40 window];
-      v42 = [(STKRemoteStickerEffectEditorViewController *)self->_editorViewController view];
-      [v41 convertRect:v42 toView:{self->_sourceRect.origin.x, self->_sourceRect.origin.y, self->_sourceRect.size.width, self->_sourceRect.size.height}];
+      view6 = [(UIViewController *)self view];
+      window = [view6 window];
+      view7 = [(STKRemoteStickerEffectEditorViewController *)self->_editorViewController view];
+      [window convertRect:view7 toView:{self->_sourceRect.origin.x, self->_sourceRect.origin.y, self->_sourceRect.size.width, self->_sourceRect.size.height}];
       v44 = v43;
       v46 = v45;
       v48 = v47;
@@ -242,20 +242,20 @@ LABEL_27:
       [UIView animateWithDuration:0 delay:v62 usingSpringWithDamping:&__block_literal_global_546 initialSpringVelocity:0.5 options:0.0 animations:1.0 completion:1.0];
 
       v3 = v58;
-      v11 = v59;
-      v10 = v56;
+      view2 = v59;
+      _rootInputWindowController2 = v56;
 LABEL_30:
 
       return;
     }
 
-    v18 = [v10 _inputAccessoryView];
+    _inputAccessoryView = [_rootInputWindowController2 _inputAccessoryView];
 
-    if (v18)
+    if (_inputAccessoryView)
     {
-      v19 = [v10 _inputAccessoryView];
+      _inputAccessoryView2 = [_rootInputWindowController2 _inputAccessoryView];
 LABEL_24:
-      v17 = [v19 topAnchor];
+      topAnchor = [_inputAccessoryView2 topAnchor];
 
       if (v12)
       {
@@ -265,27 +265,27 @@ LABEL_24:
         +[UIKeyboardPopoverContainer contentInsets];
       }
 
-      v14 = v60;
+      view3 = v60;
       goto LABEL_27;
     }
 
-    v20 = v9;
-    v21 = [v10 _inputAssistantView];
-    v22 = [v21 superview];
-    if (v22)
+    v20 = _viewControllerForAncestor;
+    _inputAssistantView = [_rootInputWindowController2 _inputAssistantView];
+    superview = [_inputAssistantView superview];
+    if (superview)
     {
-      v23 = v22;
+      v23 = superview;
       +[UIKeyboardImpl activeInstance];
-      v25 = v24 = v10;
-      v26 = [v25 _showsScribbleIconsInAssistantView];
+      v25 = v24 = _rootInputWindowController2;
+      _showsScribbleIconsInAssistantView = [v25 _showsScribbleIconsInAssistantView];
 
-      v10 = v24;
-      if ((v26 & 1) == 0)
+      _rootInputWindowController2 = v24;
+      if ((_showsScribbleIconsInAssistantView & 1) == 0)
       {
-        v27 = [v24 _inputAssistantView];
+        _inputAssistantView2 = [v24 _inputAssistantView];
 LABEL_23:
-        v19 = v27;
-        v9 = v20;
+        _inputAccessoryView2 = _inputAssistantView2;
+        _viewControllerForAncestor = v20;
         goto LABEL_24;
       }
     }
@@ -294,18 +294,18 @@ LABEL_23:
     {
     }
 
-    v28 = [v10 _inputView];
+    _inputView = [_rootInputWindowController2 _inputView];
 
-    if (v28)
+    if (_inputView)
     {
-      [v10 _inputView];
+      [_rootInputWindowController2 _inputView];
     }
 
     else
     {
-      [v10 view];
+      [_rootInputWindowController2 view];
     }
-    v27 = ;
+    _inputAssistantView2 = ;
     goto LABEL_23;
   }
 }
@@ -333,14 +333,14 @@ void __55__UIKeyboardStickerEditorViewController_showInKeyboard__block_invoke(ui
     {
       [(STKRemoteStickerEffectEditorViewController *)v7 setDelegate:self];
       [(UIViewController *)self addChildViewController:self->_editorViewController];
-      v8 = [(UIViewController *)self view];
-      v9 = [(STKRemoteStickerEffectEditorViewController *)self->_editorViewController view];
-      [v8 addSubview:v9];
-      [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
+      view = [(UIViewController *)self view];
+      view2 = [(STKRemoteStickerEffectEditorViewController *)self->_editorViewController view];
+      [view addSubview:view2];
+      [view2 setTranslatesAutoresizingMaskIntoConstraints:0];
       v10 = +[UIKeyboardImpl activeInstance];
-      v11 = [v10 isEmojiPopoverPresented];
+      isEmojiPopoverPresented = [v10 isEmojiPopoverPresented];
 
-      if (v11)
+      if (isEmojiPopoverPresented)
       {
         v12 = 10.0;
       }
@@ -350,7 +350,7 @@ void __55__UIKeyboardStickerEditorViewController_showInKeyboard__block_invoke(ui
         v12 = 0.0;
       }
 
-      if (v11)
+      if (isEmojiPopoverPresented)
       {
         v13 = 15.0;
       }
@@ -360,15 +360,15 @@ void __55__UIKeyboardStickerEditorViewController_showInKeyboard__block_invoke(ui
         v13 = 0.0;
       }
 
-      v14 = [v9 leftAnchor];
-      v15 = [v8 leftAnchor];
-      v16 = [v14 constraintEqualToAnchor:v15 constant:v12];
+      leftAnchor = [view2 leftAnchor];
+      leftAnchor2 = [view leftAnchor];
+      v16 = [leftAnchor constraintEqualToAnchor:leftAnchor2 constant:v12];
       v49[0] = v16;
-      v41 = v9;
-      v17 = [v9 rightAnchor];
-      v42 = v8;
-      v18 = [v8 rightAnchor];
-      v19 = [v17 constraintEqualToAnchor:v18 constant:-v12];
+      v41 = view2;
+      rightAnchor = [view2 rightAnchor];
+      v42 = view;
+      rightAnchor2 = [view rightAnchor];
+      v19 = [rightAnchor constraintEqualToAnchor:rightAnchor2 constant:-v12];
       v49[1] = v19;
       v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v49 count:2];
       v21 = [v20 mutableCopy];
@@ -402,23 +402,23 @@ void __55__UIKeyboardStickerEditorViewController_showInKeyboard__block_invoke(ui
         while (v25);
       }
 
-      v40 = [v41 centerXAnchor];
-      v39 = [v8 centerXAnchor];
-      v38 = [v40 constraintEqualToAnchor:v39];
+      centerXAnchor = [v41 centerXAnchor];
+      centerXAnchor2 = [view centerXAnchor];
+      v38 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
       v47[0] = v38;
-      v28 = [v41 topAnchor];
-      v29 = [v8 topAnchor];
-      v30 = [v28 constraintEqualToAnchor:v29 constant:v13];
+      topAnchor = [v41 topAnchor];
+      topAnchor2 = [view topAnchor];
+      v30 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:v13];
       v47[1] = v30;
-      v31 = [v41 bottomAnchor];
-      v32 = [v8 bottomAnchor];
-      v33 = [v31 constraintEqualToAnchor:v32 constant:-v13];
+      bottomAnchor = [v41 bottomAnchor];
+      bottomAnchor2 = [view bottomAnchor];
+      v33 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-v13];
       v47[2] = v33;
       v34 = [MEMORY[0x1E695DEC8] arrayWithObjects:v47 count:3];
       [v22 addObjectsFromArray:v34];
 
-      v35 = [v41 widthAnchor];
-      v36 = [v35 constraintLessThanOrEqualToConstant:430.0];
+      widthAnchor = [v41 widthAnchor];
+      v36 = [widthAnchor constraintLessThanOrEqualToConstant:430.0];
 
       LODWORD(v37) = 1144750080;
       [v36 setPriority:v37];
@@ -429,10 +429,10 @@ void __55__UIKeyboardStickerEditorViewController_showInKeyboard__block_invoke(ui
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = [(UIViewController *)self traitCollection];
-  if ([v4 userInterfaceStyle] == 2)
+  traitCollection = [(UIViewController *)self traitCollection];
+  if ([traitCollection userInterfaceStyle] == 2)
   {
     +[UIKBRenderConfig darkConfig];
   }
@@ -449,22 +449,22 @@ void __55__UIKeyboardStickerEditorViewController_showInKeyboard__block_invoke(ui
 - (void)dismiss
 {
   [(UIViewController *)self willMoveToParentViewController:0];
-  v3 = [(UIViewController *)self view];
-  [v3 removeFromSuperview];
+  view = [(UIViewController *)self view];
+  [view removeFromSuperview];
 
   [(UIViewController *)self removeFromParentViewController];
 }
 
-- (void)dismissAnimated:(BOOL)a3
+- (void)dismissAnimated:(BOOL)animated
 {
   if (self->_shown)
   {
-    if (a3)
+    if (animated)
     {
-      v4 = [(UIViewController *)self view];
-      v5 = [v4 window];
-      v6 = [(STKRemoteStickerEffectEditorViewController *)self->_editorViewController view];
-      [v5 convertRect:v6 toView:{self->_sourceRect.origin.x, self->_sourceRect.origin.y, self->_sourceRect.size.width, self->_sourceRect.size.height}];
+      view = [(UIViewController *)self view];
+      window = [view window];
+      view2 = [(STKRemoteStickerEffectEditorViewController *)self->_editorViewController view];
+      [window convertRect:view2 toView:{self->_sourceRect.origin.x, self->_sourceRect.origin.y, self->_sourceRect.size.width, self->_sourceRect.size.height}];
       v8 = v7;
       v10 = v9;
       v12 = v11;
@@ -490,8 +490,8 @@ void __55__UIKeyboardStickerEditorViewController_showInKeyboard__block_invoke(ui
 
     else
     {
-      v15 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v15 postNotificationName:0x1EFB79250 object:self];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter postNotificationName:0x1EFB79250 object:self];
 
       [(UIKeyboardStickerEditorViewController *)self dismiss];
     }

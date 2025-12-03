@@ -1,48 +1,48 @@
 @interface WBSSavedAccountSidecar
-- (BOOL)_siteIsAdditionalSite:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)_siteIsAdditionalSite:(id)site;
+- (BOOL)isEqual:(id)equal;
 - (NSDate)lastUsedDateAcrossAllContextsAndSites;
 - (NSDictionary)contextSpecificData;
 - (NSDictionary)dictionaryRepresentation;
 - (NSString)description;
-- (WBSSavedAccountSidecar)initWithSharedSidecar:(id)a3;
-- (WBSSavedAccountSidecar)initWithUser:(id)a3 protectionSpace:(id)a4 dictionaryRepresentation:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)lastUsedDateAcrossAllContextsForSite:(id)a3;
-- (id)lastUsedDateForSite:(id)a3 inContext:(id)a4;
+- (WBSSavedAccountSidecar)initWithSharedSidecar:(id)sidecar;
+- (WBSSavedAccountSidecar)initWithUser:(id)user protectionSpace:(id)space dictionaryRepresentation:(id)representation;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)lastUsedDateAcrossAllContextsForSite:(id)site;
+- (id)lastUsedDateForSite:(id)site inContext:(id)context;
 - (unint64_t)hash;
-- (void)adoptSharableDataFromSharedSidecar:(id)a3;
+- (void)adoptSharableDataFromSharedSidecar:(id)sidecar;
 - (void)removeSharableData;
-- (void)setLastUsedDate:(id)a3 forSite:(id)a4 inContext:(id)a5;
+- (void)setLastUsedDate:(id)date forSite:(id)site inContext:(id)context;
 @end
 
 @implementation WBSSavedAccountSidecar
 
-- (WBSSavedAccountSidecar)initWithUser:(id)a3 protectionSpace:(id)a4 dictionaryRepresentation:(id)a5
+- (WBSSavedAccountSidecar)initWithUser:(id)user protectionSpace:(id)space dictionaryRepresentation:(id)representation
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  userCopy = user;
+  spaceCopy = space;
+  representationCopy = representation;
   v58.receiver = self;
   v58.super_class = WBSSavedAccountSidecar;
   v11 = [(WBSSavedAccountSidecar *)&v58 init];
   if (v11)
   {
-    v12 = [v10 copy];
+    v12 = [representationCopy copy];
     originalKeychainDictionary = v11->_originalKeychainDictionary;
     v11->_originalKeychainDictionary = v12;
 
-    v55 = v8;
-    v14 = [v8 copy];
+    v55 = userCopy;
+    v14 = [userCopy copy];
     user = v11->_user;
     v11->_user = v14;
 
-    v54 = v9;
-    v16 = [v9 copy];
+    v54 = spaceCopy;
+    v16 = [spaceCopy copy];
     protectionSpace = v11->_protectionSpace;
     v11->_protectionSpace = v16;
 
-    v18 = [v10 objectForKeyedSubscript:@"totp"];
+    v18 = [representationCopy objectForKeyedSubscript:@"totp"];
     if (v18)
     {
       v19 = [[WBSTOTPGenerator alloc] initWithDictionaryRepresentation:v18];
@@ -51,7 +51,7 @@
     }
 
     v53 = v18;
-    v21 = [v10 objectForKeyedSubscript:@"notes"];
+    v21 = [representationCopy objectForKeyedSubscript:@"notes"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -62,7 +62,7 @@
       }
     }
 
-    v23 = [v10 objectForKeyedSubscript:@"title"];
+    v23 = [representationCopy objectForKeyedSubscript:@"title"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -73,7 +73,7 @@
       }
     }
 
-    v25 = [v10 objectForKeyedSubscript:@"hwm"];
+    v25 = [representationCopy objectForKeyedSubscript:@"hwm"];
     if (v25)
     {
       v26 = [[WBSPasswordWarningHideMarker alloc] initWithDictionaryRepresentation:v25];
@@ -81,7 +81,7 @@
       v11->_hideWarningMarker = v26;
     }
 
-    v28 = [v10 safari_numberForKey:{@"otsd", v25}];
+    v28 = [representationCopy safari_numberForKey:{@"otsd", v25}];
     v29 = v28;
     if (v28)
     {
@@ -93,10 +93,10 @@
     }
 
     v52 = v23;
-    v33 = [v10 objectForKeyedSubscript:@"ctxt"];
-    v34 = [MEMORY[0x1E695DF90] dictionary];
+    v33 = [representationCopy objectForKeyedSubscript:@"ctxt"];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     contextSpecificData = v11->_contextSpecificData;
-    v11->_contextSpecificData = v34;
+    v11->_contextSpecificData = dictionary;
 
     v56[0] = MEMORY[0x1E69E9820];
     v56[1] = 3221225472;
@@ -105,7 +105,7 @@
     v36 = v11;
     v57 = v36;
     [v33 enumerateKeysAndObjectsUsingBlock:v56];
-    v37 = [v10 objectForKeyedSubscript:@"fsm"];
+    v37 = [representationCopy objectForKeyedSubscript:@"fsm"];
     if (v37)
     {
       v38 = [[WBSFormerlySharedSavedAccountMarker alloc] initWithDictionaryRepresentation:v37];
@@ -113,7 +113,7 @@
       v36->_formerlySharedSavedAccountMarker = v38;
     }
 
-    v40 = [v10 objectForKeyedSubscript:@"s_as"];
+    v40 = [representationCopy objectForKeyedSubscript:@"s_as"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -128,7 +128,7 @@
     additionalSites = v36->_additionalSites;
     v36->_additionalSites = v41;
 
-    v43 = [v10 objectForKeyedSubscript:@"s_hi"];
+    v43 = [representationCopy objectForKeyedSubscript:@"s_hi"];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) != 0 && +[WBSFeatureAvailability isSavedAccountHistoryEnabled])
     {
@@ -137,7 +137,7 @@
       v36->_historyItems = v44;
     }
 
-    v46 = [v10 objectForKeyedSubscript:@"s_fvrk"];
+    v46 = [representationCopy objectForKeyedSubscript:@"s_fvrk"];
     if (v46)
     {
       v47 = [[WBSFileVaultRecoveryKeyDeviceInfo alloc] initWithDictionaryRepresentation:v46];
@@ -147,8 +147,8 @@
 
     v49 = v36;
 
-    v9 = v54;
-    v8 = v55;
+    spaceCopy = v54;
+    userCopy = v55;
   }
 
   return v11;
@@ -172,48 +172,48 @@ WBSSavedAccountAdditionalSite *__80__WBSSavedAccountSidecar_initWithUser_protect
   return v3;
 }
 
-- (WBSSavedAccountSidecar)initWithSharedSidecar:(id)a3
+- (WBSSavedAccountSidecar)initWithSharedSidecar:(id)sidecar
 {
-  v4 = a3;
-  v5 = [v4 user];
-  v6 = [v4 protectionSpace];
-  v7 = [(WBSSavedAccountSidecar *)self initWithUser:v5 protectionSpace:v6 dictionaryRepresentation:MEMORY[0x1E695E0F8]];
+  sidecarCopy = sidecar;
+  user = [sidecarCopy user];
+  protectionSpace = [sidecarCopy protectionSpace];
+  v7 = [(WBSSavedAccountSidecar *)self initWithUser:user protectionSpace:protectionSpace dictionaryRepresentation:MEMORY[0x1E695E0F8]];
 
   if (v7)
   {
-    [(WBSSavedAccountSidecar *)v7 adoptSharableDataFromSharedSidecar:v4];
+    [(WBSSavedAccountSidecar *)v7 adoptSharableDataFromSharedSidecar:sidecarCopy];
     v8 = v7;
   }
 
   return v7;
 }
 
-- (void)adoptSharableDataFromSharedSidecar:(id)a3
+- (void)adoptSharableDataFromSharedSidecar:(id)sidecar
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 totpGenerator];
+  sidecarCopy = sidecar;
+  totpGenerator = [sidecarCopy totpGenerator];
   totpGenerator = self->_totpGenerator;
-  self->_totpGenerator = v5;
+  self->_totpGenerator = totpGenerator;
 
-  v7 = [v4 notesEntry];
-  v8 = [v7 copy];
+  notesEntry = [sidecarCopy notesEntry];
+  v8 = [notesEntry copy];
   notesEntry = self->_notesEntry;
   self->_notesEntry = v8;
 
-  v10 = [v4 customTitle];
-  v11 = [v10 copy];
+  customTitle = [sidecarCopy customTitle];
+  v11 = [customTitle copy];
   customTitle = self->_customTitle;
   self->_customTitle = v11;
 
   if (+[WBSFeatureAvailability isSavedAccountHistoryEnabled])
   {
     historyItems = self->_historyItems;
-    v14 = [v4 historyItems];
-    v15 = v14;
+    historyItems = [sidecarCopy historyItems];
+    v15 = historyItems;
     if (historyItems)
     {
-      v16 = [(NSArray *)historyItems arrayByAddingObjectsFromArray:v14];
+      v16 = [(NSArray *)historyItems arrayByAddingObjectsFromArray:historyItems];
       v17 = self->_historyItems;
       self->_historyItems = v16;
     }
@@ -221,22 +221,22 @@ WBSSavedAccountAdditionalSite *__80__WBSSavedAccountSidecar_initWithUser_protect
     else
     {
       v18 = self->_historyItems;
-      self->_historyItems = v14;
+      self->_historyItems = historyItems;
       v15 = v18;
     }
 
-    [v4 setHistoryItems:MEMORY[0x1E695E0F0]];
+    [sidecarCopy setHistoryItems:MEMORY[0x1E695E0F0]];
   }
 
   if (!self->_originalKeychainDictionary)
   {
-    v19 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     originalKeychainDictionary = self->_originalKeychainDictionary;
-    self->_originalKeychainDictionary = v19;
+    self->_originalKeychainDictionary = dictionary;
   }
 
-  v21 = [v4 prefixedSharableData];
-  v22 = [v21 count];
+  prefixedSharableData = [sidecarCopy prefixedSharableData];
+  v22 = [prefixedSharableData count];
   v23 = WBS_LOG_CHANNEL_PREFIXPasswords();
   if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
   {
@@ -251,8 +251,8 @@ WBSSavedAccountAdditionalSite *__80__WBSSavedAccountSidecar_initWithUser_protect
     }
 
     v25 = v23;
-    v26 = [v21 allKeys];
-    v27 = [v26 componentsJoinedByString:{@", "}];
+    allKeys = [prefixedSharableData allKeys];
+    v27 = [allKeys componentsJoinedByString:{@", "}];
     v31 = 134218498;
     v32 = v22;
     v33 = 2080;
@@ -262,7 +262,7 @@ WBSSavedAccountAdditionalSite *__80__WBSSavedAccountSidecar_initWithUser_protect
     _os_log_impl(&dword_1B8447000, v25, OS_LOG_TYPE_DEFAULT, "Migrating %ld unknown key%s from shared sidecar to personal sidecar: %@", &v31, 0x20u);
   }
 
-  v28 = [(NSDictionary *)self->_originalKeychainDictionary safari_setValuesFromDictionary:v21];
+  v28 = [(NSDictionary *)self->_originalKeychainDictionary safari_setValuesFromDictionary:prefixedSharableData];
   v29 = self->_originalKeychainDictionary;
   self->_originalKeychainDictionary = v28;
 
@@ -310,60 +310,60 @@ void *__44__WBSSavedAccountSidecar_removeSharableData__block_invoke(uint64_t a1,
   return v2;
 }
 
-- (void)setLastUsedDate:(id)a3 forSite:(id)a4 inContext:(id)a5
+- (void)setLastUsedDate:(id)date forSite:(id)site inContext:(id)context
 {
-  v14 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (!v9)
+  dateCopy = date;
+  siteCopy = site;
+  contextCopy = context;
+  if (!contextCopy)
   {
-    v9 = +[WBSSavedAccountContext defaultContext];
+    contextCopy = +[WBSSavedAccountContext defaultContext];
   }
 
-  v10 = [(NSMutableDictionary *)self->_contextSpecificData objectForKeyedSubscript:v9];
+  v10 = [(NSMutableDictionary *)self->_contextSpecificData objectForKeyedSubscript:contextCopy];
   if (!v10)
   {
     v11 = [WBSSavedAccountSidecarContextSpecificData alloc];
     v10 = [(WBSSavedAccountSidecarContextSpecificData *)v11 initWithDictionaryRepresentation:MEMORY[0x1E695E0F8]];
-    [(NSMutableDictionary *)self->_contextSpecificData setObject:v10 forKeyedSubscript:v9];
+    [(NSMutableDictionary *)self->_contextSpecificData setObject:v10 forKeyedSubscript:contextCopy];
   }
 
-  v12 = [(NSURLProtectionSpace *)self->_protectionSpace host];
-  v13 = [v8 isEqualToString:v12];
+  host = [(NSURLProtectionSpace *)self->_protectionSpace host];
+  v13 = [siteCopy isEqualToString:host];
 
-  if (![(WBSSavedAccountSidecar *)self _siteIsAdditionalSite:v8]|| (v13 & 1) != 0)
+  if (![(WBSSavedAccountSidecar *)self _siteIsAdditionalSite:siteCopy]|| (v13 & 1) != 0)
   {
-    [(WBSSavedAccountSidecarContextSpecificData *)v10 setLastUsedDate:v14];
+    [(WBSSavedAccountSidecarContextSpecificData *)v10 setLastUsedDate:dateCopy];
   }
 
   else
   {
-    [(WBSSavedAccountSidecarContextSpecificData *)v10 setLastUsedDate:v14 forSite:v8];
+    [(WBSSavedAccountSidecarContextSpecificData *)v10 setLastUsedDate:dateCopy forSite:siteCopy];
   }
 }
 
-- (id)lastUsedDateForSite:(id)a3 inContext:(id)a4
+- (id)lastUsedDateForSite:(id)site inContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  siteCopy = site;
+  contextCopy = context;
+  if (!contextCopy)
   {
-    v7 = +[WBSSavedAccountContext defaultContext];
+    contextCopy = +[WBSSavedAccountContext defaultContext];
   }
 
-  v8 = [(NSMutableDictionary *)self->_contextSpecificData objectForKeyedSubscript:v7];
-  v9 = [(NSURLProtectionSpace *)self->_protectionSpace host];
-  v10 = [v6 isEqualToString:v9];
+  v8 = [(NSMutableDictionary *)self->_contextSpecificData objectForKeyedSubscript:contextCopy];
+  host = [(NSURLProtectionSpace *)self->_protectionSpace host];
+  v10 = [siteCopy isEqualToString:host];
 
-  v11 = [(WBSSavedAccountSidecar *)self _siteIsAdditionalSite:v6];
+  v11 = [(WBSSavedAccountSidecar *)self _siteIsAdditionalSite:siteCopy];
   if (v10 && v11)
   {
-    v12 = [v8 lastUsedDate];
-    v13 = [v8 lastUsedDateForSite:v6];
+    lastUsedDate = [v8 lastUsedDate];
+    v13 = [v8 lastUsedDateForSite:siteCopy];
     v14 = v13;
-    if (v12 && v13)
+    if (lastUsedDate && v13)
     {
-      v15 = [v12 laterDate:v13];
+      v15 = [lastUsedDate laterDate:v13];
     }
 
     else if (v13)
@@ -373,53 +373,53 @@ void *__44__WBSSavedAccountSidecar_removeSharableData__block_invoke(uint64_t a1,
 
     else
     {
-      v15 = v12;
+      v15 = lastUsedDate;
     }
 
-    v18 = v15;
+    lastUsedDate2 = v15;
   }
 
   else
   {
     if (!v11)
     {
-      v18 = [v8 lastUsedDate];
+      lastUsedDate2 = [v8 lastUsedDate];
       goto LABEL_19;
     }
 
-    v16 = [v8 lastUsedDateForSite:v6];
-    v12 = v16;
+    v16 = [v8 lastUsedDateForSite:siteCopy];
+    lastUsedDate = v16;
     if (v16)
     {
-      v17 = v16;
+      lastUsedDate3 = v16;
     }
 
     else
     {
-      v17 = [v8 lastUsedDate];
+      lastUsedDate3 = [v8 lastUsedDate];
     }
 
-    v18 = v17;
+    lastUsedDate2 = lastUsedDate3;
   }
 
 LABEL_19:
 
-  return v18;
+  return lastUsedDate2;
 }
 
-- (id)lastUsedDateAcrossAllContextsForSite:(id)a3
+- (id)lastUsedDateAcrossAllContextsForSite:(id)site
 {
-  v4 = a3;
-  v5 = [(WBSSavedAccountSidecar *)self _siteIsAdditionalSite:v4];
-  v6 = [(NSMutableDictionary *)self->_contextSpecificData allValues];
+  siteCopy = site;
+  v5 = [(WBSSavedAccountSidecar *)self _siteIsAdditionalSite:siteCopy];
+  allValues = [(NSMutableDictionary *)self->_contextSpecificData allValues];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __63__WBSSavedAccountSidecar_lastUsedDateAcrossAllContextsForSite___block_invoke;
   v10[3] = &unk_1E7CF45C8;
   v12 = v5;
-  v11 = v4;
-  v7 = v4;
-  v8 = [v6 safari_reduceObjectsUsingBlock:v10];
+  v11 = siteCopy;
+  v7 = siteCopy;
+  v8 = [allValues safari_reduceObjectsUsingBlock:v10];
 
   return v8;
 }
@@ -471,8 +471,8 @@ id __63__WBSSavedAccountSidecar_lastUsedDateAcrossAllContextsForSite___block_inv
 
 - (NSDate)lastUsedDateAcrossAllContextsAndSites
 {
-  v2 = [(NSMutableDictionary *)self->_contextSpecificData allValues];
-  v3 = [v2 safari_reduceObjectsUsingBlock:&__block_literal_global_79];
+  allValues = [(NSMutableDictionary *)self->_contextSpecificData allValues];
+  v3 = [allValues safari_reduceObjectsUsingBlock:&__block_literal_global_79];
 
   return v3;
 }
@@ -502,10 +502,10 @@ id __63__WBSSavedAccountSidecar_lastUsedDateAcrossAllContextsAndSites__block_inv
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v24 = 1;
   }
@@ -515,41 +515,41 @@ id __63__WBSSavedAccountSidecar_lastUsedDateAcrossAllContextsAndSites__block_inv
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       user = self->_user;
-      v7 = [(WBSSavedAccountSidecar *)v5 user];
-      if ([(NSString *)user isEqual:v7])
+      user = [(WBSSavedAccountSidecar *)v5 user];
+      if ([(NSString *)user isEqual:user])
       {
         totpGenerator = self->_totpGenerator;
-        v9 = [(WBSSavedAccountSidecar *)v5 totpGenerator];
-        if (WBSIsEqual(totpGenerator, v9))
+        totpGenerator = [(WBSSavedAccountSidecar *)v5 totpGenerator];
+        if (WBSIsEqual(totpGenerator, totpGenerator))
         {
           notesEntry = self->_notesEntry;
-          v11 = [(WBSSavedAccountSidecar *)v5 notesEntry];
-          if (WBSIsEqual(notesEntry, v11))
+          notesEntry = [(WBSSavedAccountSidecar *)v5 notesEntry];
+          if (WBSIsEqual(notesEntry, notesEntry))
           {
             customTitle = self->_customTitle;
-            v13 = [(WBSSavedAccountSidecar *)v5 customTitle];
-            if (WBSIsEqual(customTitle, v13) && WBSIsEqual(self->_contextSpecificData, v5->_contextSpecificData))
+            customTitle = [(WBSSavedAccountSidecar *)v5 customTitle];
+            if (WBSIsEqual(customTitle, customTitle) && WBSIsEqual(self->_contextSpecificData, v5->_contextSpecificData))
             {
               hideWarningMarker = self->_hideWarningMarker;
-              v15 = [(WBSSavedAccountSidecar *)v5 hideWarningMarker];
-              if (WBSIsEqual(hideWarningMarker, v15))
+              hideWarningMarker = [(WBSSavedAccountSidecar *)v5 hideWarningMarker];
+              if (WBSIsEqual(hideWarningMarker, hideWarningMarker))
               {
                 lastOneTimeShareDateForPasskey = self->_lastOneTimeShareDateForPasskey;
-                v17 = [(WBSSavedAccountSidecar *)v5 lastOneTimeShareDateForPasskey];
-                if (WBSIsEqual(lastOneTimeShareDateForPasskey, v17))
+                lastOneTimeShareDateForPasskey = [(WBSSavedAccountSidecar *)v5 lastOneTimeShareDateForPasskey];
+                if (WBSIsEqual(lastOneTimeShareDateForPasskey, lastOneTimeShareDateForPasskey))
                 {
                   additionalSites = self->_additionalSites;
-                  v27 = [(WBSSavedAccountSidecar *)v5 additionalSites];
-                  if (WBSIsEqual(additionalSites, v27))
+                  additionalSites = [(WBSSavedAccountSidecar *)v5 additionalSites];
+                  if (WBSIsEqual(additionalSites, additionalSites))
                   {
                     historyItems = self->_historyItems;
-                    v26 = [(WBSSavedAccountSidecar *)v5 historyItems];
-                    if (WBSIsEqual(historyItems, v26))
+                    historyItems = [(WBSSavedAccountSidecar *)v5 historyItems];
+                    if (WBSIsEqual(historyItems, historyItems))
                     {
                       fileVaultRecoveryKeyDeviceInfo = self->_fileVaultRecoveryKeyDeviceInfo;
-                      v21 = [(WBSSavedAccountSidecar *)v5 fileVaultRecoveryKeyDeviceInfo:v26];
+                      v21 = [(WBSSavedAccountSidecar *)v5 fileVaultRecoveryKeyDeviceInfo:historyItems];
                       v22 = fileVaultRecoveryKeyDeviceInfo;
                       v23 = v21;
                       if (WBSIsEqual(v22, v21))
@@ -641,18 +641,18 @@ id __63__WBSSavedAccountSidecar_lastUsedDateAcrossAllContextsAndSites__block_inv
   v4 = v3;
   if (v3)
   {
-    v5 = v3;
+    dictionary = v3;
   }
 
   else
   {
-    v5 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
   }
 
-  v6 = v5;
+  v6 = dictionary;
 
-  v7 = [(WBSTOTPGenerator *)self->_totpGenerator dictionaryRepresentation];
-  [v6 setObject:v7 forKeyedSubscript:@"totp"];
+  dictionaryRepresentation = [(WBSTOTPGenerator *)self->_totpGenerator dictionaryRepresentation];
+  [v6 setObject:dictionaryRepresentation forKeyedSubscript:@"totp"];
 
   v8 = [(NSString *)self->_notesEntry dataUsingEncoding:4];
   [v6 setObject:v8 forKeyedSubscript:@"notes"];
@@ -660,8 +660,8 @@ id __63__WBSSavedAccountSidecar_lastUsedDateAcrossAllContextsAndSites__block_inv
   v9 = [(NSString *)self->_customTitle dataUsingEncoding:4];
   [v6 setObject:v9 forKeyedSubscript:@"title"];
 
-  v10 = [(WBSPasswordWarningHideMarker *)self->_hideWarningMarker dictionaryRepresentation];
-  [v6 setObject:v10 forKeyedSubscript:@"hwm"];
+  dictionaryRepresentation2 = [(WBSPasswordWarningHideMarker *)self->_hideWarningMarker dictionaryRepresentation];
+  [v6 setObject:dictionaryRepresentation2 forKeyedSubscript:@"hwm"];
 
   lastOneTimeShareDateForPasskey = self->_lastOneTimeShareDateForPasskey;
   if (lastOneTimeShareDateForPasskey)
@@ -677,14 +677,14 @@ id __63__WBSSavedAccountSidecar_lastUsedDateAcrossAllContextsAndSites__block_inv
     [v6 setObject:0 forKeyedSubscript:@"otsd"];
   }
 
-  v14 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary2 = [MEMORY[0x1E695DF90] dictionary];
   contextSpecificData = self->_contextSpecificData;
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __50__WBSSavedAccountSidecar_dictionaryRepresentation__block_invoke;
   v23[3] = &unk_1E7CF4610;
-  v24 = v14;
-  v16 = v14;
+  v24 = dictionary2;
+  v16 = dictionary2;
   [(NSMutableDictionary *)contextSpecificData enumerateKeysAndObjectsUsingBlock:v23];
   if ([v16 count])
   {
@@ -697,8 +697,8 @@ id __63__WBSSavedAccountSidecar_lastUsedDateAcrossAllContextsAndSites__block_inv
   }
 
   [v6 setObject:v17 forKeyedSubscript:@"ctxt"];
-  v18 = [(WBSFormerlySharedSavedAccountMarker *)self->_formerlySharedSavedAccountMarker dictionaryRepresentation];
-  [v6 setObject:v18 forKeyedSubscript:@"fsm"];
+  dictionaryRepresentation3 = [(WBSFormerlySharedSavedAccountMarker *)self->_formerlySharedSavedAccountMarker dictionaryRepresentation];
+  [v6 setObject:dictionaryRepresentation3 forKeyedSubscript:@"fsm"];
 
   v19 = [(NSArray *)self->_additionalSites safari_mapObjectsUsingBlock:&__block_literal_global_85_1];
   [v6 setObject:v19 forKeyedSubscript:@"s_as"];
@@ -706,8 +706,8 @@ id __63__WBSSavedAccountSidecar_lastUsedDateAcrossAllContextsAndSites__block_inv
   v20 = [(NSArray *)self->_historyItems safari_mapObjectsUsingBlock:&__block_literal_global_88_1];
   [v6 setObject:v20 forKeyedSubscript:@"s_hi"];
 
-  v21 = [(WBSFileVaultRecoveryKeyDeviceInfo *)self->_fileVaultRecoveryKeyDeviceInfo dictionaryRepresentation];
-  [v6 setObject:v21 forKeyedSubscript:@"s_fvrk"];
+  dictionaryRepresentation4 = [(WBSFileVaultRecoveryKeyDeviceInfo *)self->_fileVaultRecoveryKeyDeviceInfo dictionaryRepresentation];
+  [v6 setObject:dictionaryRepresentation4 forKeyedSubscript:@"s_fvrk"];
 
   return v6;
 }
@@ -747,22 +747,22 @@ void *__46__WBSSavedAccountSidecar_prefixedSharableData__block_invoke(uint64_t a
   v9.super_class = WBSSavedAccountSidecar;
   v4 = [(WBSSavedAccountSidecar *)&v9 description];
   user = self->_user;
-  v6 = [(NSURLProtectionSpace *)self->_protectionSpace host];
-  v7 = [v3 stringWithFormat:@"<%@ user:%@ host:%@>", v4, user, v6];
+  host = [(NSURLProtectionSpace *)self->_protectionSpace host];
+  v7 = [v3 stringWithFormat:@"<%@ user:%@ host:%@>", v4, user, host];
 
   return v7;
 }
 
-- (BOOL)_siteIsAdditionalSite:(id)a3
+- (BOOL)_siteIsAdditionalSite:(id)site
 {
-  v4 = a3;
+  siteCopy = site;
   additionalSites = self->_additionalSites;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __48__WBSSavedAccountSidecar__siteIsAdditionalSite___block_invoke;
   v8[3] = &unk_1E7CF4220;
-  v9 = v4;
-  v6 = v4;
+  v9 = siteCopy;
+  v6 = siteCopy;
   LOBYTE(additionalSites) = [(NSArray *)additionalSites safari_containsObjectPassingTest:v8];
 
   return additionalSites;
@@ -776,7 +776,7 @@ uint64_t __48__WBSSavedAccountSidecar__siteIsAdditionalSite___block_invoke(uint6
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[WBSSavedAccountSidecar alloc] initWithUser:self->_user protectionSpace:self->_protectionSpace];
   v5 = [(NSDictionary *)self->_originalKeychainDictionary copy];

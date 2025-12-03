@@ -1,11 +1,11 @@
 @interface TFInterprocessDiagnosticDumpNotifier
-- (TFInterprocessDiagnosticDumpNotifier)initWithNotificationName:(id)a3 diagnosticTempDir:(id)a4 log:(id)a5;
+- (TFInterprocessDiagnosticDumpNotifier)initWithNotificationName:(id)name diagnosticTempDir:(id)dir log:(id)log;
 - (void)triggerDiagnosticFileDump;
 @end
 
 @implementation TFInterprocessDiagnosticDumpNotifier
 
-- (TFInterprocessDiagnosticDumpNotifier)initWithNotificationName:(id)a3 diagnosticTempDir:(id)a4 log:(id)a5
+- (TFInterprocessDiagnosticDumpNotifier)initWithNotificationName:(id)name diagnosticTempDir:(id)dir log:(id)log
 {
   v6 = sub_1BF17923C();
   v7 = *(*(v6 - 8) + 64);
@@ -14,12 +14,12 @@
   v10 = sub_1BF17A0AC();
   v12 = v11;
   sub_1BF1791BC();
-  return InterprocessDiagnosticDumpNotifier.init(notificationName:diagnosticTempDir:log:)(v10, v12, v9, a5);
+  return InterprocessDiagnosticDumpNotifier.init(notificationName:diagnosticTempDir:log:)(v10, v12, v9, log);
 }
 
 - (void)triggerDiagnosticFileDump
 {
-  v2 = self;
+  selfCopy = self;
   InterprocessDiagnosticDumpNotifier.triggerDiagnosticFileDump()();
 }
 

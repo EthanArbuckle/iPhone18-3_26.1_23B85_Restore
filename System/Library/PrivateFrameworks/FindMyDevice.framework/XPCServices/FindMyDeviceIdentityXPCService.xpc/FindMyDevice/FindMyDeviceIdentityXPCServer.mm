@@ -1,41 +1,41 @@
 @interface FindMyDeviceIdentityXPCServer
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (void)baaIdentityAttestationForSigningRequest:(id)a3 completion:(id)a4;
-- (void)identityForPasscodeActivationUnlockWithContext:(id)a3 completion:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (void)baaIdentityAttestationForSigningRequest:(id)request completion:(id)completion;
+- (void)identityForPasscodeActivationUnlockWithContext:(id)context completion:(id)completion;
 @end
 
 @implementation FindMyDeviceIdentityXPCServer
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   v6 = sub_100001AC8();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = v5;
+    v10 = connectionCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Received new XPC connection %@", &v9, 0xCu);
   }
 
   v7 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___FindMyDeviceIdentityXPCInterface];
-  [v5 setExportedInterface:v7];
-  [v5 setExportedObject:self];
-  [v5 resume];
+  [connectionCopy setExportedInterface:v7];
+  [connectionCopy setExportedObject:self];
+  [connectionCopy resume];
 
   return 1;
 }
 
-- (void)identityForPasscodeActivationUnlockWithContext:(id)a3 completion:(id)a4
+- (void)identityForPasscodeActivationUnlockWithContext:(id)context completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   v8 = sub_100001AC8();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v25 = "[FindMyDeviceIdentityXPCServer identityForPasscodeActivationUnlockWithContext:completion:]";
     v26 = 2048;
-    v27 = [v6 count];
+    v27 = [contextCopy count];
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "FRAMEWORK API: %s with %ld context keys", buf, 0x16u);
   }
 
@@ -51,8 +51,8 @@
     v20[1] = 3221225472;
     v20[2] = sub_1000015AC;
     v20[3] = &unk_10000CC90;
-    v21 = v7;
-    [(FMDPasscodeActivationUnlockIdentityEncoder *)v13 identityForPasscodeActivationUnlockWithContext:v6 completion:v20];
+    v21 = completionCopy;
+    [(FMDPasscodeActivationUnlockIdentityEncoder *)v13 identityForPasscodeActivationUnlockWithContext:contextCopy completion:v20];
   }
 
   else
@@ -83,25 +83,25 @@
       sub_100003EB4(v11, v19);
     }
 
-    if (v7)
+    if (completionCopy)
     {
-      (*(v7 + 2))(v7, 0, v12);
+      (*(completionCopy + 2))(completionCopy, 0, v12);
     }
   }
 }
 
-- (void)baaIdentityAttestationForSigningRequest:(id)a3 completion:(id)a4
+- (void)baaIdentityAttestationForSigningRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   v8 = sub_100001AC8();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v6 dataToSign];
+    dataToSign = [requestCopy dataToSign];
     *buf = 136315394;
     v26 = "[FindMyDeviceIdentityXPCServer baaIdentityAttestationForSigningRequest:completion:]";
     v27 = 1024;
-    v28 = v9 != 0;
+    v28 = dataToSign != 0;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "FRAMEWORK API: %s with %i", buf, 0x12u);
   }
 
@@ -117,8 +117,8 @@
     v21[1] = 3221225472;
     v21[2] = sub_1000018C4;
     v21[3] = &unk_10000CCB8;
-    v22 = v7;
-    [(FMDActivationLockIdentityEncoder *)v14 identityForActivationLockRequest:v6 completion:v21];
+    v22 = completionCopy;
+    [(FMDActivationLockIdentityEncoder *)v14 identityForActivationLockRequest:requestCopy completion:v21];
   }
 
   else
@@ -149,9 +149,9 @@
       sub_100003EB4(v12, v20);
     }
 
-    if (v7)
+    if (completionCopy)
     {
-      (*(v7 + 2))(v7, 0, v13);
+      (*(completionCopy + 2))(completionCopy, 0, v13);
     }
   }
 }

@@ -13,13 +13,13 @@
 - (UIImage)occlusionLeftImage;
 - (UIImage)occlusionRightImage;
 - (_TtC13HearingModeUI32AnyHearingFeatureContentProvider)init;
-- (_TtC13HearingModeUI32AnyHearingFeatureContentProvider)initWithDevice:(id)a3;
-- (id)fitWelcomeControllerWithBluetoothDevice:(id)a3 contentProvider:(id)a4;
-- (id)leftImageWithIsDark:(BOOL)a3;
-- (id)rightImageWithIsDark:(BOOL)a3;
+- (_TtC13HearingModeUI32AnyHearingFeatureContentProvider)initWithDevice:(id)device;
+- (id)fitWelcomeControllerWithBluetoothDevice:(id)device contentProvider:(id)provider;
+- (id)leftImageWithIsDark:(BOOL)dark;
+- (id)rightImageWithIsDark:(BOOL)dark;
 - (unsigned)defaultFiltersID;
 - (unsigned)deviceColor;
-- (void)setHeadphoneDevice:(id)a3;
+- (void)setHeadphoneDevice:(id)device;
 @end
 
 @implementation AnyHearingFeatureContentProvider
@@ -31,26 +31,26 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setHeadphoneDevice:(id)a3
+- (void)setHeadphoneDevice:(id)device
 {
   v5 = OBJC_IVAR____TtC13HearingModeUI32AnyHearingFeatureContentProvider_headphoneDevice;
   swift_beginAccess();
   v6 = *(&self->super.isa + v5);
-  *(&self->super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.isa + v5) = device;
+  deviceCopy = device;
 }
 
-- (_TtC13HearingModeUI32AnyHearingFeatureContentProvider)initWithDevice:(id)a3
+- (_TtC13HearingModeUI32AnyHearingFeatureContentProvider)initWithDevice:(id)device
 {
-  v4 = a3;
-  v5 = sub_25203E340(a3);
+  deviceCopy = device;
+  v5 = sub_25203E340(device);
 
   return v5;
 }
 
 - (UIImage)faultcheckUnknownImage
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AnyHearingFeatureContentProvider.faultcheckUnknownImage.getter();
 
   return v3;
@@ -58,7 +58,7 @@
 
 - (UIImage)faultcheckFailedImage
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AnyHearingFeatureContentProvider.faultcheckFailedImage.getter();
 
   return v3;
@@ -66,7 +66,7 @@
 
 - (UIImage)occlusionLeftImage
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AnyHearingFeatureContentProvider.occlusionLeftImage.getter();
 
   return v3;
@@ -74,7 +74,7 @@
 
 - (UIImage)occlusionRightImage
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AnyHearingFeatureContentProvider.occlusionRightImage.getter();
 
   return v3;
@@ -82,7 +82,7 @@
 
 - (UIImage)fitNoiseLeft
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AnyHearingFeatureContentProvider.fitNoiseLeft.getter();
 
   return v3;
@@ -90,7 +90,7 @@
 
 - (UIImage)fitNoiseRight
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AnyHearingFeatureContentProvider.fitNoiseRight.getter();
 
   return v3;
@@ -98,7 +98,7 @@
 
 - (NSBundle)videoAirPodAdjustBundle
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AnyHearingFeatureContentProvider.videoAirPodAdjustBundle.getter();
 
   return v3;
@@ -106,7 +106,7 @@
 
 - (NSBundle)videoAirPodLeftRightBundle
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AnyHearingFeatureContentProvider.videoAirPodLeftRightBundle.getter();
 
   return v3;
@@ -123,14 +123,14 @@
     v5 = v13;
     __swift_project_boxed_opaque_existential_0(v11, v12);
     v6 = *(v5 + 136);
-    v7 = self;
+    selfCopy = self;
     v6(v4, v5);
     __swift_destroy_boxed_opaque_existential_0(v11);
   }
 
   else
   {
-    v8 = self;
+    selfCopy2 = self;
     sub_252039F34(v11, &qword_27F4C9A10, &qword_2520677F0);
   }
 
@@ -150,7 +150,7 @@
     v5 = v12;
     __swift_project_boxed_opaque_existential_0(v10, v11);
     v6 = *(v5 + 144);
-    v7 = self;
+    selfCopy = self;
     v8 = v6(v4, v5);
 
     __swift_destroy_boxed_opaque_existential_0(v10);
@@ -176,7 +176,7 @@
     v5 = v12;
     __swift_project_boxed_opaque_existential_0(v10, v11);
     v6 = *(v5 + 152);
-    v7 = self;
+    selfCopy = self;
     v8 = v6(v4, v5);
 
     __swift_destroy_boxed_opaque_existential_0(v10);
@@ -202,14 +202,14 @@
     v5 = v13;
     __swift_project_boxed_opaque_existential_0(v11, v12);
     v6 = *(v5 + 160);
-    v7 = self;
+    selfCopy = self;
     v6(v4, v5);
     __swift_destroy_boxed_opaque_existential_0(v11);
   }
 
   else
   {
-    v8 = self;
+    selfCopy2 = self;
     sub_252039F34(v11, &qword_27F4C9A10, &qword_2520677F0);
     sub_25203E7DC(MEMORY[0x277D84F90]);
   }
@@ -230,7 +230,7 @@
     v5 = v12;
     __swift_project_boxed_opaque_existential_0(v10, v11);
     v6 = *(v5 + 168);
-    v7 = self;
+    selfCopy = self;
     v8 = v6(v4, v5);
 
     __swift_destroy_boxed_opaque_existential_0(v10);
@@ -245,23 +245,23 @@
   return v8;
 }
 
-- (id)leftImageWithIsDark:(BOOL)a3
+- (id)leftImageWithIsDark:(BOOL)dark
 {
-  v4 = self;
-  v5.super.isa = AnyHearingFeatureContentProvider.leftImage(isDark:)(a3).super.isa;
+  selfCopy = self;
+  v5.super.isa = AnyHearingFeatureContentProvider.leftImage(isDark:)(dark).super.isa;
 
   return v5.super.isa;
 }
 
-- (id)rightImageWithIsDark:(BOOL)a3
+- (id)rightImageWithIsDark:(BOOL)dark
 {
-  v4 = self;
-  v5.super.isa = AnyHearingFeatureContentProvider.rightImage(isDark:)(a3).super.isa;
+  selfCopy = self;
+  v5.super.isa = AnyHearingFeatureContentProvider.rightImage(isDark:)(dark).super.isa;
 
   return v5.super.isa;
 }
 
-- (id)fitWelcomeControllerWithBluetoothDevice:(id)a3 contentProvider:(id)a4
+- (id)fitWelcomeControllerWithBluetoothDevice:(id)device contentProvider:(id)provider
 {
   v7 = OBJC_IVAR____TtC13HearingModeUI32AnyHearingFeatureContentProvider_featureContent;
   swift_beginAccess();
@@ -273,9 +273,9 @@
     __swift_project_boxed_opaque_existential_0(v15, v16);
     v10 = *(v9 + 208);
     swift_unknownObjectRetain();
-    v11 = a4;
-    v12 = self;
-    v13 = v10(a3, v11, v8, v9);
+    providerCopy = provider;
+    selfCopy = self;
+    v13 = v10(device, providerCopy, v8, v9);
     swift_unknownObjectRelease();
 
     __swift_destroy_boxed_opaque_existential_0(v15);

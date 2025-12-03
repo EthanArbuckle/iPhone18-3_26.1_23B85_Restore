@@ -1,7 +1,7 @@
 @interface AFLinkedListItem
-- (AFLinkedListItem)initWithObject:(id)a3;
-- (void)insertAfterItem:(id)a3;
-- (void)insertBeforeItem:(id)a3;
+- (AFLinkedListItem)initWithObject:(id)object;
+- (void)insertAfterItem:(id)item;
+- (void)insertBeforeItem:(id)item;
 - (void)removeFromList;
 @end
 
@@ -9,50 +9,50 @@
 
 - (void)removeFromList
 {
-  v4 = [(AFLinkedListItem *)self previousItem];
-  v3 = [(AFLinkedListItem *)self nextItem];
-  [v4 setNextItem:v3];
+  previousItem = [(AFLinkedListItem *)self previousItem];
+  nextItem = [(AFLinkedListItem *)self nextItem];
+  [previousItem setNextItem:nextItem];
   [(AFLinkedListItem *)self setPreviousItem:0];
   [(AFLinkedListItem *)self setNextItem:0];
-  [v3 setPreviousItem:v4];
+  [nextItem setPreviousItem:previousItem];
 }
 
-- (void)insertAfterItem:(id)a3
+- (void)insertAfterItem:(id)item
 {
-  v5 = a3;
-  v4 = [(AFLinkedListItem *)v5 nextItem];
-  if (v5 != self && v4 != self)
+  itemCopy = item;
+  nextItem = [(AFLinkedListItem *)itemCopy nextItem];
+  if (itemCopy != self && nextItem != self)
   {
-    [(AFLinkedListItem *)v5 setNextItem:self];
-    [(AFLinkedListItem *)self setPreviousItem:v5];
-    [(AFLinkedListItem *)self setNextItem:v4];
-    [(AFLinkedListItem *)v4 setPreviousItem:self];
+    [(AFLinkedListItem *)itemCopy setNextItem:self];
+    [(AFLinkedListItem *)self setPreviousItem:itemCopy];
+    [(AFLinkedListItem *)self setNextItem:nextItem];
+    [(AFLinkedListItem *)nextItem setPreviousItem:self];
   }
 }
 
-- (void)insertBeforeItem:(id)a3
+- (void)insertBeforeItem:(id)item
 {
-  v5 = a3;
-  v4 = [(AFLinkedListItem *)v5 previousItem];
-  if (v5 != self && v4 != self)
+  itemCopy = item;
+  previousItem = [(AFLinkedListItem *)itemCopy previousItem];
+  if (itemCopy != self && previousItem != self)
   {
-    [(AFLinkedListItem *)v4 setNextItem:self];
-    [(AFLinkedListItem *)self setPreviousItem:v4];
-    [(AFLinkedListItem *)self setNextItem:v5];
-    [(AFLinkedListItem *)v5 setPreviousItem:self];
+    [(AFLinkedListItem *)previousItem setNextItem:self];
+    [(AFLinkedListItem *)self setPreviousItem:previousItem];
+    [(AFLinkedListItem *)self setNextItem:itemCopy];
+    [(AFLinkedListItem *)itemCopy setPreviousItem:self];
   }
 }
 
-- (AFLinkedListItem)initWithObject:(id)a3
+- (AFLinkedListItem)initWithObject:(id)object
 {
-  v5 = a3;
+  objectCopy = object;
   v9.receiver = self;
   v9.super_class = AFLinkedListItem;
   v6 = [(AFLinkedListItem *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_object, a3);
+    objc_storeStrong(&v6->_object, object);
   }
 
   return v7;

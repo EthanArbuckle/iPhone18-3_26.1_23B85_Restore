@@ -9,9 +9,9 @@
   v5.receiver = self;
   v5.super_class = SSSDebugUICatalogContentViewController;
   [(SSSDebugUICatalogContentViewController *)&v5 viewDidLoad];
-  v3 = [(SSSDebugUICatalogContentViewController *)self view];
+  view = [(SSSDebugUICatalogContentViewController *)self view];
   v4 = +[UIColor clearColor];
-  [v3 setBackgroundColor:v4];
+  [view setBackgroundColor:v4];
 }
 
 @end

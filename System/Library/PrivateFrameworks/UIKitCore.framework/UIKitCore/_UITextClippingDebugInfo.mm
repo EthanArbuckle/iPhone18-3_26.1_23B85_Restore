@@ -1,24 +1,24 @@
 @interface _UITextClippingDebugInfo
 - (CGRect)visibleBounds;
 - (UIView)clippingView;
-- (_UITextClippingDebugInfo)initWithClippingView:(id)a3 visibleBounds:(CGRect)a4 ignoresResult:(BOOL)a5 edgesClipped:(unint64_t)a6;
+- (_UITextClippingDebugInfo)initWithClippingView:(id)view visibleBounds:(CGRect)bounds ignoresResult:(BOOL)result edgesClipped:(unint64_t)clipped;
 @end
 
 @implementation _UITextClippingDebugInfo
 
-- (_UITextClippingDebugInfo)initWithClippingView:(id)a3 visibleBounds:(CGRect)a4 ignoresResult:(BOOL)a5 edgesClipped:(unint64_t)a6
+- (_UITextClippingDebugInfo)initWithClippingView:(id)view visibleBounds:(CGRect)bounds ignoresResult:(BOOL)result edgesClipped:(unint64_t)clipped
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  objc_storeWeak(&self->_clippingView, a3);
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  objc_storeWeak(&self->_clippingView, view);
   self->_visibleBounds.origin.x = x;
   self->_visibleBounds.origin.y = y;
   self->_visibleBounds.size.width = width;
   self->_visibleBounds.size.height = height;
-  self->_ignoresResult = a5;
-  self->_edgesClipped = a6;
+  self->_ignoresResult = result;
+  self->_edgesClipped = clipped;
   return self;
 }
 

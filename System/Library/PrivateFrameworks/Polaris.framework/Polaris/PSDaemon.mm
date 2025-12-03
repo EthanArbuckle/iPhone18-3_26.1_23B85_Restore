@@ -1,14 +1,14 @@
 @interface PSDaemon
-- (PSDaemon)initWithDispatchQueue:(id)a3;
+- (PSDaemon)initWithDispatchQueue:(id)queue;
 - (id)initInProcess;
 - (void)dealloc;
 @end
 
 @implementation PSDaemon
 
-- (PSDaemon)initWithDispatchQueue:(id)a3
+- (PSDaemon)initWithDispatchQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v17.receiver = self;
   v17.super_class = PSDaemon;
   v6 = [(PSDaemon *)&v17 init];
@@ -41,7 +41,7 @@
     v6->_resource_factory = ps_buffer_create_factory_with_options();
     v6->_ca_server = ps_ca_create_server();
     v6->_gsm = ps_gsm_create_shared(0x400uLL, 0x400uLL);
-    objc_storeStrong(&death_notifier_callback_queue, a3);
+    objc_storeStrong(&death_notifier_callback_queue, queue);
     gsm = v6->_gsm;
     ps_death_notifier_register_callback_for_death_notification();
     ps_telemetry_init_daemon();
@@ -77,12 +77,12 @@
     comms_server = v2->_comms_server;
     v2->_resource_factory = ps_buffer_create_factory_with_options();
     v7 = +[PLSSettings currentSettings];
-    v8 = [v7 numGSTsInSharedGSM];
+    numGSTsInSharedGSM = [v7 numGSTsInSharedGSM];
 
     v9 = +[PLSSettings currentSettings];
-    v10 = [v9 numSourcesInSharedGSM];
+    numSourcesInSharedGSM = [v9 numSourcesInSharedGSM];
 
-    v2->_gsm = ps_gsm_create_shared(v8, v10);
+    v2->_gsm = ps_gsm_create_shared(numGSTsInSharedGSM, numSourcesInSharedGSM);
     ps_telemetry_init_daemon();
     ps_liveness_server_init(1024, 0x100000);
     xpc_server = v2->_xpc_server;

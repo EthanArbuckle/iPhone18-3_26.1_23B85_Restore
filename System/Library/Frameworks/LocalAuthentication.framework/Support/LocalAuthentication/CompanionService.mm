@@ -1,11 +1,11 @@
 @interface CompanionService
 - (BOOL)isCompanionDeviceAvailable;
-- (CompanionService)initWithUIController:(id)a3 workQueue:(id)a4;
+- (CompanionService)initWithUIController:(id)controller workQueue:(id)queue;
 - (id)_subprocessors;
 - (id)processor;
 - (void)cancelAllRequests;
-- (void)cancelRequestsForContextID:(id)a3;
-- (void)domainStateForRequest:(id)a3 completion:(id)a4;
+- (void)cancelRequestsForContextID:(id)d;
+- (void)domainStateForRequest:(id)request completion:(id)completion;
 - (void)startServices;
 @end
 
@@ -13,8 +13,8 @@
 
 - (id)processor
 {
-  v2 = [(CompanionService *)self _subprocessors];
-  v3 = [LACEvaluationRequestProcessorFactory makeProcessorWithSubprocessors:v2];
+  _subprocessors = [(CompanionService *)self _subprocessors];
+  v3 = [LACEvaluationRequestProcessorFactory makeProcessorWithSubprocessors:_subprocessors];
 
   return v3;
 }
@@ -42,8 +42,8 @@
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v11 + 1) + 8 * i) processor];
-        [v3 addObject:v9];
+        processor = [*(*(&v11 + 1) + 8 * i) processor];
+        [v3 addObject:processor];
       }
 
       v6 = [(NSArray *)v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
@@ -97,10 +97,10 @@ LABEL_11:
   return v3;
 }
 
-- (CompanionService)initWithUIController:(id)a3 workQueue:(id)a4
+- (CompanionService)initWithUIController:(id)controller workQueue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
+  controllerCopy = controller;
+  queueCopy = queue;
   v35.receiver = self;
   v35.super_class = CompanionService;
   v9 = [(CompanionService *)&v35 init];
@@ -110,11 +110,11 @@ LABEL_11:
     v11 = objc_alloc_init(LACOnenessEnvironmentProvider);
     v12 = [LACCompanionAuthenticationSessionMonitor alloc];
     v33 = v11;
-    v13 = [v12 initForCompanion:LACCompanionTypeMac environmentProvider:v11 replyQueue:v8];
+    v13 = [v12 initForCompanion:LACCompanionTypeMac environmentProvider:v11 replyQueue:queueCopy];
     onenessSessionMonitor = v9->_onenessSessionMonitor;
     v9->_onenessSessionMonitor = v13;
 
-    v15 = [[OnenessService alloc] initWithEnvironmentProvider:v11 sessionMonitor:v9->_onenessSessionMonitor uiController:v7 workQueue:v8];
+    v15 = [[OnenessService alloc] initWithEnvironmentProvider:v11 sessionMonitor:v9->_onenessSessionMonitor uiController:controllerCopy workQueue:queueCopy];
     onenessService = v9->_onenessService;
     v9->_onenessService = v15;
 
@@ -123,15 +123,15 @@ LABEL_11:
     v18 = [[LACSharingManager alloc] initWithReplyQueue:v17];
     v19 = [LACPhoneIntegrationEnvironmentProvider alloc];
     +[LACEligibilityHelper sharedInstance];
-    v20 = v34 = v7;
+    v20 = v34 = controllerCopy;
     v21 = [v19 initWithEligibilityHelper:v20 sharingManager:v18 workQueue:v17];
 
     v22 = [LACCompanionAuthenticationSessionMonitor alloc];
-    v23 = [v22 initForCompanion:LACCompanionTypeVision environmentProvider:v21 replyQueue:v8];
+    v23 = [v22 initForCompanion:LACCompanionTypeVision environmentProvider:v21 replyQueue:queueCopy];
     phoneIntegrationSessionMonitor = v9->_phoneIntegrationSessionMonitor;
     v9->_phoneIntegrationSessionMonitor = v23;
 
-    v25 = [[PhoneIntegrationService alloc] initWithEnvironmentProvider:v21 sessionMonitor:v9->_phoneIntegrationSessionMonitor workQueue:v8];
+    v25 = [[PhoneIntegrationService alloc] initWithEnvironmentProvider:v21 sessionMonitor:v9->_phoneIntegrationSessionMonitor workQueue:queueCopy];
     phoneIntegrationService = v9->_phoneIntegrationService;
     v9->_phoneIntegrationService = v25;
 
@@ -140,15 +140,15 @@ LABEL_11:
     phoneIntegrationSessionProcessor = v9->_phoneIntegrationSessionProcessor;
     v9->_phoneIntegrationSessionProcessor = v27;
 
-    v29 = a4;
+    queueCopy2 = queue;
     services = v9->_services;
     v9->_services = v10;
     v31 = v10;
 
-    objc_storeStrong(&v9->_uiController, a3);
-    objc_storeStrong(&v9->_workQueue, v29);
+    objc_storeStrong(&v9->_uiController, controller);
+    objc_storeStrong(&v9->_workQueue, queueCopy2);
 
-    v7 = v34;
+    controllerCopy = v34;
   }
 
   return v9;
@@ -188,9 +188,9 @@ LABEL_11:
   }
 }
 
-- (void)cancelRequestsForContextID:(id)a3
+- (void)cancelRequestsForContextID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -211,7 +211,7 @@ LABEL_11:
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v10 + 1) + 8 * v9) cancelRequestsForContextID:{v4, v10}];
+        [*(*(&v10 + 1) + 8 * v9) cancelRequestsForContextID:{dCopy, v10}];
         v9 = v9 + 1;
       }
 
@@ -257,10 +257,10 @@ LABEL_11:
   }
 }
 
-- (void)domainStateForRequest:(id)a3 completion:(id)a4
+- (void)domainStateForRequest:(id)request completion:(id)completion
 {
-  v15 = a3;
-  v6 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   v7 = dispatch_group_create();
   v33[0] = 0;
   v33[1] = v33;
@@ -308,7 +308,7 @@ LABEL_11:
         v23 = v33;
         v24 = v31;
         v21 = v7;
-        [v11 domainStateForRequest:v15 completion:v20];
+        [v11 domainStateForRequest:requestCopy completion:v20];
       }
 
       v8 = [(NSArray *)obj countByEnumeratingWithState:&v25 objects:v35 count:16];
@@ -322,10 +322,10 @@ LABEL_11:
   block[1] = 3221225472;
   block[2] = sub_10000EF10;
   block[3] = &unk_100055318;
-  v17 = v6;
+  v17 = completionCopy;
   v18 = v29;
   v19 = v31;
-  v13 = v6;
+  v13 = completionCopy;
   dispatch_group_notify(v7, workQueue, block);
 
   _Block_object_dispose(v29, 8);

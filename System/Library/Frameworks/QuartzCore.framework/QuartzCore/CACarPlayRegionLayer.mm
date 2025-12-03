@@ -1,16 +1,16 @@
 @interface CACarPlayRegionLayer
-+ (BOOL)CA_automaticallyNotifiesObservers:(Class)a3;
++ (BOOL)CA_automaticallyNotifiesObservers:(Class)observers;
 - (NSString)identifier;
-- (void)_copyRenderLayer:(void *)a3 layerFlags:(unsigned int)a4 commitFlags:(unsigned int *)a5;
-- (void)setIdentifier:(id)a3;
+- (void)_copyRenderLayer:(void *)layer layerFlags:(unsigned int)flags commitFlags:(unsigned int *)commitFlags;
+- (void)setIdentifier:(id)identifier;
 @end
 
 @implementation CACarPlayRegionLayer
 
-- (void)setIdentifier:(id)a3
+- (void)setIdentifier:(id)identifier
 {
   v3[1] = *MEMORY[0x1E69E9840];
-  *&v3[0] = a3;
+  *&v3[0] = identifier;
   CA::Layer::setter(self->super._attr.layer, 0x134, 3, v3);
 }
 
@@ -22,13 +22,13 @@
   return v3[0];
 }
 
-- (void)_copyRenderLayer:(void *)a3 layerFlags:(unsigned int)a4 commitFlags:(unsigned int *)a5
+- (void)_copyRenderLayer:(void *)layer layerFlags:(unsigned int)flags commitFlags:(unsigned int *)commitFlags
 {
   v14 = *MEMORY[0x1E69E9840];
   v13.receiver = self;
   v13.super_class = CACarPlayRegionLayer;
-  v7 = [(CALayer *)&v13 _copyRenderLayer:a3 layerFlags:*&a4 commitFlags:?];
-  if (v7 && (*(a5 + 2) & 1) != 0)
+  v7 = [(CALayer *)&v13 _copyRenderLayer:layer layerFlags:*&flags commitFlags:?];
+  if (v7 && (*(commitFlags + 2) & 1) != 0)
   {
     if (x_malloc_get_zone::once != -1)
     {
@@ -46,19 +46,19 @@
       *(v8 + 2) = 0;
     }
 
-    v10 = [(CACarPlayRegionLayer *)self identifier];
+    identifier = [(CACarPlayRegionLayer *)self identifier];
     v11 = *(v9 + 2);
-    if (v11 != v10)
+    if (v11 != identifier)
     {
       if (v11)
       {
         CFRelease(v11);
       }
 
-      *(v9 + 2) = v10;
-      if (v10)
+      *(v9 + 2) = identifier;
+      if (identifier)
       {
-        CFRetain(v10);
+        CFRetain(identifier);
       }
     }
 
@@ -72,17 +72,17 @@
   return v7;
 }
 
-+ (BOOL)CA_automaticallyNotifiesObservers:(Class)a3
++ (BOOL)CA_automaticallyNotifiesObservers:(Class)observers
 {
   v7 = *MEMORY[0x1E69E9840];
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == observers)
   {
     return 0;
   }
 
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___CACarPlayRegionLayer;
-  return objc_msgSendSuper2(&v6, sel_CA_automaticallyNotifiesObservers_, a3);
+  return objc_msgSendSuper2(&v6, sel_CA_automaticallyNotifiesObservers_, observers);
 }
 
 @end

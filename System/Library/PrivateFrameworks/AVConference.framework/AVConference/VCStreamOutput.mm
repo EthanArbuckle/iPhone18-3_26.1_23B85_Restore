@@ -1,24 +1,24 @@
 @interface VCStreamOutput
 - (BOOL)createRemoteQueue;
 - (BOOL)initXPCCommandQueue;
-- (VCStreamOutput)initWithStreamToken:(int64_t)a3 clientProcessID:(int)a4 delegate:(id)a5 delegateQueue:(id)a6;
+- (VCStreamOutput)initWithStreamToken:(int64_t)token clientProcessID:(int)d delegate:(id)delegate delegateQueue:(id)queue;
 - (id)copyXpcSenderQueue;
 - (void)createRemoteQueue;
 - (void)dealloc;
-- (void)didDegrade:(BOOL)a3;
+- (void)didDegrade:(BOOL)degrade;
 - (void)didInvalidate;
-- (void)didPause:(BOOL)a3;
-- (void)didReceiveSampleBuffer:(opaqueCMSampleBuffer *)a3;
-- (void)didStall:(BOOL)a3;
-- (void)didSuspend:(BOOL)a3;
-- (void)didUpdateAttachments:(__CFDictionary *)a3;
+- (void)didPause:(BOOL)pause;
+- (void)didReceiveSampleBuffer:(opaqueCMSampleBuffer *)buffer;
+- (void)didStall:(BOOL)stall;
+- (void)didSuspend:(BOOL)suspend;
+- (void)didUpdateAttachments:(__CFDictionary *)attachments;
 - (void)initXPCCommandQueue;
 - (void)invalidate;
 @end
 
 @implementation VCStreamOutput
 
-- (VCStreamOutput)initWithStreamToken:(int64_t)a3 clientProcessID:(int)a4 delegate:(id)a5 delegateQueue:(id)a6
+- (VCStreamOutput)initWithStreamToken:(int64_t)token clientProcessID:(int)d delegate:(id)delegate delegateQueue:(id)queue
 {
   v39 = *MEMORY[0x1E69E9840];
   v26.receiver = self;
@@ -30,17 +30,17 @@
     goto LABEL_28;
   }
 
-  v10->_streamToken = a3;
-  v10->_clientProcessID = a4;
+  v10->_streamToken = token;
+  v10->_clientProcessID = d;
   v12 = getpid();
-  v11->_isClientInProcess = v12 == a4;
-  if (v12 == a4)
+  v11->_isClientInProcess = v12 == d;
+  if (v12 == d)
   {
-    if (a5 && a6)
+    if (delegate && queue)
     {
-      v11->_delegateQueue = a6;
-      dispatch_retain(a6);
-      v11->_delegate = a5;
+      v11->_delegateQueue = queue;
+      dispatch_retain(queue);
+      v11->_delegate = delegate;
       goto LABEL_8;
     }
 
@@ -50,7 +50,7 @@ LABEL_28:
     return 0;
   }
 
-  if (a5 | a6)
+  if (delegate | queue)
   {
     [VCStreamOutput initWithStreamToken:clientProcessID:delegate:delegateQueue:];
     goto LABEL_28;
@@ -260,7 +260,7 @@ void __VCStreamOutput_EnqueueSampleBuffer_block_invoke(uint64_t a1)
   return v4 != 0;
 }
 
-- (void)didPause:(BOOL)a3
+- (void)didPause:(BOOL)pause
 {
   v5 = *MEMORY[0x1E69E9840];
   block[0] = MEMORY[0x1E69E9820];
@@ -268,7 +268,7 @@ void __VCStreamOutput_EnqueueSampleBuffer_block_invoke(uint64_t a1)
   block[2] = __27__VCStreamOutput_didPause___block_invoke;
   block[3] = &unk_1E85F37A0;
   block[4] = self;
-  v4 = a3;
+  pauseCopy = pause;
   if (self->_isClientInProcess)
   {
     dispatch_async(self->_delegateQueue, block);
@@ -284,7 +284,7 @@ void __VCStreamOutput_EnqueueSampleBuffer_block_invoke(uint64_t a1)
   }
 }
 
-- (void)didDegrade:(BOOL)a3
+- (void)didDegrade:(BOOL)degrade
 {
   v5 = *MEMORY[0x1E69E9840];
   block[0] = MEMORY[0x1E69E9820];
@@ -292,7 +292,7 @@ void __VCStreamOutput_EnqueueSampleBuffer_block_invoke(uint64_t a1)
   block[2] = __29__VCStreamOutput_didDegrade___block_invoke;
   block[3] = &unk_1E85F37A0;
   block[4] = self;
-  v4 = a3;
+  degradeCopy = degrade;
   if (self->_isClientInProcess)
   {
     dispatch_async(self->_delegateQueue, block);
@@ -331,7 +331,7 @@ void __VCStreamOutput_EnqueueSampleBuffer_block_invoke(uint64_t a1)
   }
 }
 
-- (void)didReceiveSampleBuffer:(opaqueCMSampleBuffer *)a3
+- (void)didReceiveSampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
   block[6] = *MEMORY[0x1E69E9840];
   block[0] = MEMORY[0x1E69E9820];
@@ -339,7 +339,7 @@ void __VCStreamOutput_EnqueueSampleBuffer_block_invoke(uint64_t a1)
   block[2] = __41__VCStreamOutput_didReceiveSampleBuffer___block_invoke;
   block[3] = &unk_1E85F40E0;
   block[4] = self;
-  block[5] = a3;
+  block[5] = buffer;
   if (self->_isClientInProcess)
   {
     dispatch_async(self->_delegateQueue, block);
@@ -355,7 +355,7 @@ void __VCStreamOutput_EnqueueSampleBuffer_block_invoke(uint64_t a1)
   }
 }
 
-- (void)didStall:(BOOL)a3
+- (void)didStall:(BOOL)stall
 {
   v5 = *MEMORY[0x1E69E9840];
   block[0] = MEMORY[0x1E69E9820];
@@ -363,7 +363,7 @@ void __VCStreamOutput_EnqueueSampleBuffer_block_invoke(uint64_t a1)
   block[2] = __27__VCStreamOutput_didStall___block_invoke;
   block[3] = &unk_1E85F37A0;
   block[4] = self;
-  v4 = a3;
+  stallCopy = stall;
   if (self->_isClientInProcess)
   {
     dispatch_async(self->_delegateQueue, block);
@@ -379,7 +379,7 @@ void __VCStreamOutput_EnqueueSampleBuffer_block_invoke(uint64_t a1)
   }
 }
 
-- (void)didSuspend:(BOOL)a3
+- (void)didSuspend:(BOOL)suspend
 {
   v5 = *MEMORY[0x1E69E9840];
   block[0] = MEMORY[0x1E69E9820];
@@ -387,7 +387,7 @@ void __VCStreamOutput_EnqueueSampleBuffer_block_invoke(uint64_t a1)
   block[2] = __29__VCStreamOutput_didSuspend___block_invoke;
   block[3] = &unk_1E85F37A0;
   block[4] = self;
-  v4 = a3;
+  suspendCopy = suspend;
   if (self->_isClientInProcess)
   {
     dispatch_async(self->_delegateQueue, block);
@@ -403,7 +403,7 @@ void __VCStreamOutput_EnqueueSampleBuffer_block_invoke(uint64_t a1)
   }
 }
 
-- (void)didUpdateAttachments:(__CFDictionary *)a3
+- (void)didUpdateAttachments:(__CFDictionary *)attachments
 {
   block[6] = *MEMORY[0x1E69E9840];
   block[0] = MEMORY[0x1E69E9820];
@@ -411,7 +411,7 @@ void __VCStreamOutput_EnqueueSampleBuffer_block_invoke(uint64_t a1)
   block[2] = __39__VCStreamOutput_didUpdateAttachments___block_invoke;
   block[3] = &unk_1E85F40E0;
   block[4] = self;
-  block[5] = a3;
+  block[5] = attachments;
   if (self->_isClientInProcess)
   {
     dispatch_async(self->_delegateQueue, block);
@@ -497,7 +497,7 @@ void ___VCStreamOutput_SendSampleBufferToXPCClient_block_invoke(uint64_t a1)
     }
   }
 
-  *a2 = a1;
+  *a2 = self;
 }
 
 - (void)initXPCCommandQueue

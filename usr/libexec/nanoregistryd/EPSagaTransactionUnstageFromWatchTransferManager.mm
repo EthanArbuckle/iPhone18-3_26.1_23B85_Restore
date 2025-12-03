@@ -1,7 +1,7 @@
 @interface EPSagaTransactionUnstageFromWatchTransferManager
 - (EPTransactionDelegate)delegate;
 - (id)registry;
-- (void)beginTransactionWithRoutingSlipEntry:(id)a3 serviceRegistry:(id)a4;
+- (void)beginTransactionWithRoutingSlipEntry:(id)entry serviceRegistry:(id)registry;
 @end
 
 @implementation EPSagaTransactionUnstageFromWatchTransferManager
@@ -14,10 +14,10 @@
   return [(EPServiceRegistry *)serviceRegistry serviceFromClass:v3];
 }
 
-- (void)beginTransactionWithRoutingSlipEntry:(id)a3 serviceRegistry:(id)a4
+- (void)beginTransactionWithRoutingSlipEntry:(id)entry serviceRegistry:(id)registry
 {
-  v6 = a3;
-  v7 = a4;
+  entryCopy = entry;
+  registryCopy = registry;
   v8 = nr_daemon_log();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
 
@@ -33,21 +33,21 @@
   }
 
   serviceRegistry = self->_serviceRegistry;
-  self->_serviceRegistry = v7;
-  v12 = v7;
+  self->_serviceRegistry = registryCopy;
+  v12 = registryCopy;
 
-  v13 = [v6 objectForKeyedSubscript:@"nrDeviceIdentifier"];
-  v14 = [(EPSagaTransactionUnstageFromWatchTransferManager *)self registry];
+  v13 = [entryCopy objectForKeyedSubscript:@"nrDeviceIdentifier"];
+  registry = [(EPSagaTransactionUnstageFromWatchTransferManager *)self registry];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_1000DB22C;
   v17[3] = &unk_100176328;
   v17[4] = self;
   v18 = v13;
-  v19 = v6;
-  v15 = v6;
+  v19 = entryCopy;
+  v15 = entryCopy;
   v16 = v13;
-  [v14 grabRegistryWithWriteBlockAsync:v17];
+  [registry grabRegistryWithWriteBlockAsync:v17];
 }
 
 - (EPTransactionDelegate)delegate

@@ -13,19 +13,19 @@
   [(LPiTunesMediaPlaylistMetadata *)v3 setName:self->_name];
   [(LPiTunesMediaPlaylistMetadata *)v3 setCurator:self->_curator];
   [(LPiTunesMediaPlaylistMetadata *)v3 setCuratorHandle:self->_curatorHandle];
-  v4 = [(LPiTunesMediaAsset *)self->_artwork metadata];
-  [(LPiTunesMediaPlaylistMetadata *)v3 setArtworkMetadata:v4];
+  metadata = [(LPiTunesMediaAsset *)self->_artwork metadata];
+  [(LPiTunesMediaPlaylistMetadata *)v3 setArtworkMetadata:metadata];
 
   return v3;
 }
 
 - (id)assetsToFetch
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = v3;
+  array = [MEMORY[0x1E695DF70] array];
+  v4 = array;
   if (self->_artwork)
   {
-    [v3 addObject:?];
+    [array addObject:?];
   }
 
   if (self->_curatorID)

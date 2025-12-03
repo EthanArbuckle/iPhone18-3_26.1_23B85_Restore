@@ -1,29 +1,29 @@
 @interface WFLocationTriggerEditorMapDragRadiusView
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (BOOL)usesMetric;
 - (CAShapeLayer)shapeLayer;
 - (CGPoint)center;
 - (CGPoint)maxPoint;
 - (CGPoint)minPoint;
-- (WFLocationTriggerEditorMapDragRadiusView)initWithFrame:(CGRect)a3;
+- (WFLocationTriggerEditorMapDragRadiusView)initWithFrame:(CGRect)frame;
 - (WFLocationTriggerEditorMapDragRadiusViewDelegate)delegate;
 - (double)currentHandleDistance;
 - (double)currentHandleDistanceNormalized;
 - (double)maximumRadiusNormalized;
 - (double)minimumInMeters;
 - (double)minimumRadiusNormalized;
-- (id)bezierPathWithEndPoint:(CGPoint)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (id)shapeLayerWithEndPoint:(CGPoint)a3;
-- (void)addHandleForAnnotation:(id)a3 withOverlay:(id)a4;
-- (void)animateHandleIn:(BOOL)a3;
-- (void)drawRect:(CGRect)a3;
+- (id)bezierPathWithEndPoint:(CGPoint)point;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (id)shapeLayerWithEndPoint:(CGPoint)point;
+- (void)addHandleForAnnotation:(id)annotation withOverlay:(id)overlay;
+- (void)animateHandleIn:(BOOL)in;
+- (void)drawRect:(CGRect)rect;
 - (void)popAnimateHandle;
-- (void)removeHandle:(BOOL)a3;
+- (void)removeHandle:(BOOL)handle;
 - (void)resizeCircleAfterDelay;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation WFLocationTriggerEditorMapDragRadiusView
@@ -37,18 +37,18 @@
 
 - (BOOL)usesMetric
 {
-  v2 = [MEMORY[0x277CBEAF8] currentLocale];
-  v3 = [v2 objectForKey:*MEMORY[0x277CBE718]];
-  v4 = [v3 BOOLValue];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  v3 = [currentLocale objectForKey:*MEMORY[0x277CBE718]];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (double)minimumRadiusNormalized
 {
-  v2 = [(WFLocationTriggerEditorMapDragRadiusView *)self usesMetric];
+  usesMetric = [(WFLocationTriggerEditorMapDragRadiusView *)self usesMetric];
   result = 328.084015;
-  if (v2)
+  if (usesMetric)
   {
     return 100.0;
   }
@@ -58,9 +58,9 @@
 
 - (double)maximumRadiusNormalized
 {
-  v2 = [(WFLocationTriggerEditorMapDragRadiusView *)self usesMetric];
+  usesMetric = [(WFLocationTriggerEditorMapDragRadiusView *)self usesMetric];
   result = 7920000.0;
-  if (v2)
+  if (usesMetric)
   {
     return 2414016.0;
   }
@@ -70,23 +70,23 @@
 
 - (double)currentHandleDistance
 {
-  v3 = [(WFLocationTriggerEditorMapDragRadiusView *)self handleEndpointView];
-  [v3 center];
+  handleEndpointView = [(WFLocationTriggerEditorMapDragRadiusView *)self handleEndpointView];
+  [handleEndpointView center];
   v5 = v4;
   v7 = v6;
 
-  v8 = [(WFLocationTriggerEditorMapDragRadiusView *)self mapView];
-  [v8 convertPoint:self toCoordinateFromView:{v5, v7}];
+  mapView = [(WFLocationTriggerEditorMapDragRadiusView *)self mapView];
+  [mapView convertPoint:self toCoordinateFromView:{v5, v7}];
   v10 = v9;
   v12 = v11;
 
   v13 = [objc_alloc(MEMORY[0x277CE41F8]) initWithLatitude:v10 longitude:v12];
   v14 = objc_alloc(MEMORY[0x277CE41F8]);
-  v15 = [(WFLocationTriggerEditorMapDragRadiusView *)self annotation];
-  [v15 coordinate];
+  annotation = [(WFLocationTriggerEditorMapDragRadiusView *)self annotation];
+  [annotation coordinate];
   v17 = v16;
-  v18 = [(WFLocationTriggerEditorMapDragRadiusView *)self annotation];
-  [v18 coordinate];
+  annotation2 = [(WFLocationTriggerEditorMapDragRadiusView *)self annotation];
+  [annotation2 coordinate];
   v19 = [v14 initWithLatitude:v17 longitude:?];
 
   [v13 distanceFromLocation:v19];
@@ -99,9 +99,9 @@
 {
   [(WFLocationTriggerEditorMapDragRadiusView *)self currentHandleDistance];
   v4 = v3;
-  v5 = [(WFLocationTriggerEditorMapDragRadiusView *)self usesMetric];
+  usesMetric = [(WFLocationTriggerEditorMapDragRadiusView *)self usesMetric];
   v6 = v4 * 3.28083992;
-  if (v5)
+  if (usesMetric)
   {
     v6 = v4;
   }
@@ -111,19 +111,19 @@
 
 - (CGPoint)maxPoint
 {
-  v3 = [(WFLocationTriggerEditorMapDragRadiusView *)self annotation];
-  v4 = MEMORY[0x277C59360]([v3 coordinate]);
+  annotation = [(WFLocationTriggerEditorMapDragRadiusView *)self annotation];
+  v4 = MEMORY[0x277C59360]([annotation coordinate]);
 
   [(WFLocationTriggerEditorMapDragRadiusView *)self usesMetric];
-  v5 = [(WFLocationTriggerEditorMapDragRadiusView *)self annotation];
-  [v5 coordinate];
+  annotation2 = [(WFLocationTriggerEditorMapDragRadiusView *)self annotation];
+  [annotation2 coordinate];
   v6 = MKMapPointForCoordinate(v15);
 
   v16.x = v6.x + v4 * 2414016.0;
   v16.y = v6.y;
   v7 = MKCoordinateForMapPoint(v16);
-  v8 = [(WFLocationTriggerEditorMapDragRadiusView *)self mapView];
-  [v8 convertCoordinate:self toPointToView:{v7.latitude, v7.longitude}];
+  mapView = [(WFLocationTriggerEditorMapDragRadiusView *)self mapView];
+  [mapView convertCoordinate:self toPointToView:{v7.latitude, v7.longitude}];
   v10 = v9;
   v12 = v11;
 
@@ -136,8 +136,8 @@
 
 - (CGPoint)minPoint
 {
-  v3 = [(WFLocationTriggerEditorMapDragRadiusView *)self annotation];
-  v4 = MEMORY[0x277C59360]([v3 coordinate]);
+  annotation = [(WFLocationTriggerEditorMapDragRadiusView *)self annotation];
+  v4 = MEMORY[0x277C59360]([annotation coordinate]);
 
   if ([(WFLocationTriggerEditorMapDragRadiusView *)self usesMetric])
   {
@@ -149,15 +149,15 @@
     v5 = 100.000008;
   }
 
-  v6 = [(WFLocationTriggerEditorMapDragRadiusView *)self annotation];
-  [v6 coordinate];
+  annotation2 = [(WFLocationTriggerEditorMapDragRadiusView *)self annotation];
+  [annotation2 coordinate];
   v7 = MKMapPointForCoordinate(v16);
 
   v17.x = v7.x + v4 * v5;
   v17.y = v7.y;
   v8 = MKCoordinateForMapPoint(v17);
-  v9 = [(WFLocationTriggerEditorMapDragRadiusView *)self mapView];
-  [v9 convertCoordinate:self toPointToView:{v8.latitude, v8.longitude}];
+  mapView = [(WFLocationTriggerEditorMapDragRadiusView *)self mapView];
+  [mapView convertCoordinate:self toPointToView:{v8.latitude, v8.longitude}];
   v11 = v10;
   v13 = v12;
 
@@ -172,9 +172,9 @@
 {
   [(WFLocationTriggerEditorMapDragRadiusView *)self setIsDragging:0];
   [(WFLocationTriggerEditorMapDragRadiusView *)self removeHandle:0];
-  v3 = [(WFLocationTriggerEditorMapDragRadiusView *)self annotation];
-  v4 = [(WFLocationTriggerEditorMapDragRadiusView *)self overlay];
-  [(WFLocationTriggerEditorMapDragRadiusView *)self addHandleForAnnotation:v3 withOverlay:v4];
+  annotation = [(WFLocationTriggerEditorMapDragRadiusView *)self annotation];
+  overlay = [(WFLocationTriggerEditorMapDragRadiusView *)self overlay];
+  [(WFLocationTriggerEditorMapDragRadiusView *)self addHandleForAnnotation:annotation withOverlay:overlay];
 
   [(WFLocationTriggerEditorMapDragRadiusView *)self setNeedsDisplay];
 }
@@ -190,10 +190,10 @@
   return result;
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  v5 = [a3 anyObject];
-  [v5 locationInView:self];
+  anyObject = [ended anyObject];
+  [anyObject locationInView:self];
   v7 = v6;
 
   [(WFLocationTriggerEditorMapDragRadiusView *)self minPoint];
@@ -234,8 +234,8 @@
     v12 = 104.0;
   }
 
-  v13 = [(WFLocationTriggerEditorMapDragRadiusView *)self delegate];
-  v14 = v13;
+  delegate = [(WFLocationTriggerEditorMapDragRadiusView *)self delegate];
+  v14 = delegate;
   if (v11 >= v12)
   {
     v15 = v11;
@@ -246,38 +246,38 @@
     v15 = v12;
   }
 
-  v23 = [v13 mapRadiusView:self overlayForRadius:v15];
+  v23 = [delegate mapRadiusView:self overlayForRadius:v15];
 
   if (v23)
   {
-    v16 = [(WFLocationTriggerEditorMapDragRadiusView *)self mapView];
-    v17 = [(WFLocationTriggerEditorMapDragRadiusView *)self overlay];
-    [v16 removeOverlay:v17];
+    mapView = [(WFLocationTriggerEditorMapDragRadiusView *)self mapView];
+    overlay = [(WFLocationTriggerEditorMapDragRadiusView *)self overlay];
+    [mapView removeOverlay:overlay];
 
     [(WFLocationTriggerEditorMapDragRadiusView *)self setNeedsDisplay];
     [(WFLocationTriggerEditorMapDragRadiusView *)self setOverlay:v23];
-    v18 = [(WFLocationTriggerEditorMapDragRadiusView *)self mapView];
-    v19 = [(WFLocationTriggerEditorMapDragRadiusView *)self overlay];
-    [v18 addOverlay:v19];
+    mapView2 = [(WFLocationTriggerEditorMapDragRadiusView *)self mapView];
+    overlay2 = [(WFLocationTriggerEditorMapDragRadiusView *)self overlay];
+    [mapView2 addOverlay:overlay2];
 
     [(WFLocationTriggerEditorMapDragRadiusView *)self performSelector:sel_resizeCircleAfterDelay withObject:0 afterDelay:0.00999999978];
     [(WFLocationTriggerEditorMapDragRadiusView *)self popAnimateHandle];
   }
 
-  v20 = [(WFLocationTriggerEditorMapDragRadiusView *)self mapView];
-  [v20 setScrollEnabled:1];
+  mapView3 = [(WFLocationTriggerEditorMapDragRadiusView *)self mapView];
+  [mapView3 setScrollEnabled:1];
 
-  v21 = [(WFLocationTriggerEditorMapDragRadiusView *)self mapView];
-  [v21 setZoomEnabled:1];
+  mapView4 = [(WFLocationTriggerEditorMapDragRadiusView *)self mapView];
+  [mapView4 setZoomEnabled:1];
 
-  v22 = [(WFLocationTriggerEditorMapDragRadiusView *)self delegate];
-  [v22 mapRadiusView:self radiusDidChange:v11];
+  delegate2 = [(WFLocationTriggerEditorMapDragRadiusView *)self delegate];
+  [delegate2 mapRadiusView:self radiusDidChange:v11];
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
-  v20 = [a3 anyObject];
-  [v20 locationInView:self];
+  anyObject = [moved anyObject];
+  [anyObject locationInView:self];
   v6 = v5;
   [(WFLocationTriggerEditorMapDragRadiusView *)self minPoint];
   v8 = v7;
@@ -300,39 +300,39 @@
       v11 = v10;
     }
 
-    v12 = [(WFLocationTriggerEditorMapDragRadiusView *)self handleEndpointView];
-    [v12 frame];
+    handleEndpointView = [(WFLocationTriggerEditorMapDragRadiusView *)self handleEndpointView];
+    [handleEndpointView frame];
     v14 = v13;
     v16 = v15;
     v18 = v17;
 
-    v19 = [(WFLocationTriggerEditorMapDragRadiusView *)self handleEndpointView];
-    [v19 setFrame:{v11 + -12.0, v14, v16, v18}];
+    handleEndpointView2 = [(WFLocationTriggerEditorMapDragRadiusView *)self handleEndpointView];
+    [handleEndpointView2 setFrame:{v11 + -12.0, v14, v16, v18}];
 
     [(WFLocationTriggerEditorMapDragRadiusView *)self setNeedsDisplay];
   }
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  [(WFLocationTriggerEditorMapDragRadiusView *)self setIsDragging:1, a4];
-  v5 = [(WFLocationTriggerEditorMapDragRadiusView *)self mapView];
-  v6 = [(WFLocationTriggerEditorMapDragRadiusView *)self overlay];
-  [v5 removeOverlay:v6];
+  [(WFLocationTriggerEditorMapDragRadiusView *)self setIsDragging:1, event];
+  mapView = [(WFLocationTriggerEditorMapDragRadiusView *)self mapView];
+  overlay = [(WFLocationTriggerEditorMapDragRadiusView *)self overlay];
+  [mapView removeOverlay:overlay];
 
-  v7 = [(WFLocationTriggerEditorMapDragRadiusView *)self mapView];
-  [v7 setScrollEnabled:0];
+  mapView2 = [(WFLocationTriggerEditorMapDragRadiusView *)self mapView];
+  [mapView2 setScrollEnabled:0];
 
-  v8 = [(WFLocationTriggerEditorMapDragRadiusView *)self mapView];
-  [v8 setZoomEnabled:0];
+  mapView3 = [(WFLocationTriggerEditorMapDragRadiusView *)self mapView];
+  [mapView3 setZoomEnabled:0];
 
   [(WFLocationTriggerEditorMapDragRadiusView *)self setNeedsDisplay];
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  if (-[WFLocationTriggerEditorMapDragRadiusView isDragging](self, "isDragging") && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [v4 numberOfTouches] < 2)
+  beginCopy = begin;
+  if (-[WFLocationTriggerEditorMapDragRadiusView isDragging](self, "isDragging") && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [beginCopy numberOfTouches] < 2)
   {
     v5 = 0;
   }
@@ -341,18 +341,18 @@
   {
     v7.receiver = self;
     v7.super_class = WFLocationTriggerEditorMapDragRadiusView;
-    v5 = [(WFLocationTriggerEditorMapDragRadiusView *)&v7 gestureRecognizerShouldBegin:v4];
+    v5 = [(WFLocationTriggerEditorMapDragRadiusView *)&v7 gestureRecognizerShouldBegin:beginCopy];
   }
 
   return v5;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = [(WFLocationTriggerEditorMapDragRadiusView *)self handleEndpointView];
-  [v7 frame];
+  y = test.y;
+  x = test.x;
+  handleEndpointView = [(WFLocationTriggerEditorMapDragRadiusView *)self handleEndpointView];
+  [handleEndpointView frame];
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -366,23 +366,23 @@
   v21.y = y;
   if (CGRectContainsPoint(v22, v21) && (-[WFLocationTriggerEditorMapDragRadiusView handleEndpointView](self, "handleEndpointView"), v16 = objc_claimAutoreleasedReturnValue(), [v16 superview], v17 = objc_claimAutoreleasedReturnValue(), v17, v16, v17))
   {
-    v18 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v18 = 0;
+    selfCopy = 0;
   }
 
-  return v18;
+  return selfCopy;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v57[3] = *MEMORY[0x277D85DE8];
   *&rect.origin.y = self;
   *&rect.size.width = WFLocationTriggerEditorMapDragRadiusView;
@@ -392,21 +392,21 @@
     [(WFLocationTriggerEditorMapDragRadiusView *)self center];
     v9 = v8;
     v53 = v10;
-    v11 = [(WFLocationTriggerEditorMapDragRadiusView *)self handleEndpointView];
-    [v11 center];
+    handleEndpointView = [(WFLocationTriggerEditorMapDragRadiusView *)self handleEndpointView];
+    [handleEndpointView center];
     rect.origin.x = v9;
     v13 = v12 - v9;
 
-    v14 = [(WFLocationTriggerEditorMapDragRadiusView *)self handleEndpointView];
-    [v14 center];
+    handleEndpointView2 = [(WFLocationTriggerEditorMapDragRadiusView *)self handleEndpointView];
+    [handleEndpointView2 center];
     v16 = v15 - (v13 + v13);
-    v17 = [(WFLocationTriggerEditorMapDragRadiusView *)self handleEndpointView];
-    [v17 center];
+    handleEndpointView3 = [(WFLocationTriggerEditorMapDragRadiusView *)self handleEndpointView];
+    [handleEndpointView3 center];
     v19 = v18 - v13;
 
-    v20 = [MEMORY[0x277D75348] clearColor];
-    v21 = [MEMORY[0x277D75348] systemBlueColor];
-    v22 = [v21 colorWithAlphaComponent:0.15];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+    v22 = [systemBlueColor colorWithAlphaComponent:0.15];
 
     CurrentContext = UIGraphicsGetCurrentContext();
     if ([(WFLocationTriggerEditorMapDragRadiusView *)self proximity]== 2)
@@ -450,10 +450,10 @@
     v61.size.width = v13 + v13;
     v61.size.height = v13 + v13;
     CGContextAddEllipseInRect(CurrentContext, v61);
-    CGContextSetStrokeColorWithColor(CurrentContext, [v20 CGColor]);
+    CGContextSetStrokeColorWithColor(CurrentContext, [clearColor CGColor]);
     CGContextSetLineWidth(CurrentContext, 4.0);
     CGContextStrokePath(CurrentContext);
-    v24 = [v20 colorWithAlphaComponent:0.5];
+    v24 = [clearColor colorWithAlphaComponent:0.5];
     CGContextSetStrokeColorWithColor(CurrentContext, [v24 CGColor]);
 
     [(WFLocationTriggerEditorMapDragRadiusView *)self currentHandleDistanceNormalized];
@@ -483,8 +483,8 @@
     v32 = ;
     v33 = [v31 initWithDoubleValue:v32 unit:v28];
 
-    v34 = [(WFLocationTriggerEditorMapDragRadiusView *)self measurmentFormatter];
-    v35 = [v34 stringFromMeasurement:v33];
+    measurmentFormatter = [(WFLocationTriggerEditorMapDragRadiusView *)self measurmentFormatter];
+    v35 = [measurmentFormatter stringFromMeasurement:v33];
 
     v62.origin.y = v53 + -16.0;
     v62.size.height = 16.0;
@@ -516,8 +516,8 @@
     v46 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v57 forKeys:&rect.size.height count:3];
 
     [v35 drawWithRect:33 options:v46 attributes:0 context:{v36, v37 + -0.5, v38, v39}];
-    v47 = [(WFLocationTriggerEditorMapDragRadiusView *)self handleEndpointView];
-    [v47 center];
+    handleEndpointView4 = [(WFLocationTriggerEditorMapDragRadiusView *)self handleEndpointView];
+    [handleEndpointView4 center];
     v49 = v48;
     v51 = v50;
 
@@ -525,56 +525,56 @@
   }
 }
 
-- (void)removeHandle:(BOOL)a3
+- (void)removeHandle:(BOOL)handle
 {
-  v3 = a3;
+  handleCopy = handle;
   if (![(WFLocationTriggerEditorMapDragRadiusView *)self isDragging])
   {
-    if (v3)
+    if (handleCopy)
     {
       [(WFLocationTriggerEditorMapDragRadiusView *)self setAnnotation:0];
       [(WFLocationTriggerEditorMapDragRadiusView *)self setOverlay:0];
     }
 
-    v5 = [(WFLocationTriggerEditorMapDragRadiusView *)self handleEndpointView];
-    [v5 removeFromSuperview];
+    handleEndpointView = [(WFLocationTriggerEditorMapDragRadiusView *)self handleEndpointView];
+    [handleEndpointView removeFromSuperview];
 
-    v6 = [(WFLocationTriggerEditorMapDragRadiusView *)self shapeLayer];
-    [v6 removeFromSuperlayer];
+    shapeLayer = [(WFLocationTriggerEditorMapDragRadiusView *)self shapeLayer];
+    [shapeLayer removeFromSuperlayer];
   }
 }
 
-- (void)addHandleForAnnotation:(id)a3 withOverlay:(id)a4
+- (void)addHandleForAnnotation:(id)annotation withOverlay:(id)overlay
 {
-  if (a3)
+  if (annotation)
   {
-    v6 = a4;
-    v7 = a3;
-    v8 = [(WFLocationTriggerEditorMapDragRadiusView *)self annotation];
-    v9 = v8 != v7;
+    overlayCopy = overlay;
+    annotationCopy = annotation;
+    annotation = [(WFLocationTriggerEditorMapDragRadiusView *)self annotation];
+    v9 = annotation != annotationCopy;
 
-    [(WFLocationTriggerEditorMapDragRadiusView *)self setAnnotation:v7];
-    [(WFLocationTriggerEditorMapDragRadiusView *)self setOverlay:v6];
+    [(WFLocationTriggerEditorMapDragRadiusView *)self setAnnotation:annotationCopy];
+    [(WFLocationTriggerEditorMapDragRadiusView *)self setOverlay:overlayCopy];
 
     [(WFLocationTriggerEditorMapDragRadiusView *)self animateHandleIn:v9];
   }
 }
 
-- (void)animateHandleIn:(BOOL)a3
+- (void)animateHandleIn:(BOOL)in
 {
-  v3 = a3;
+  inCopy = in;
   [(WFLocationTriggerEditorMapDragRadiusView *)self center];
   v6 = v5;
   v8 = v7;
-  v9 = [(WFLocationTriggerEditorMapDragRadiusView *)self handleEndpointView];
-  [v9 setCenter:{v6, v8}];
+  handleEndpointView = [(WFLocationTriggerEditorMapDragRadiusView *)self handleEndpointView];
+  [handleEndpointView setCenter:{v6, v8}];
 
-  v10 = [(WFLocationTriggerEditorMapDragRadiusView *)self handleEndpointView];
-  [(WFLocationTriggerEditorMapDragRadiusView *)self addSubview:v10];
+  handleEndpointView2 = [(WFLocationTriggerEditorMapDragRadiusView *)self handleEndpointView];
+  [(WFLocationTriggerEditorMapDragRadiusView *)self addSubview:handleEndpointView2];
 
-  v11 = [(WFLocationTriggerEditorMapDragRadiusView *)self delegate];
-  v12 = [(WFLocationTriggerEditorMapDragRadiusView *)self overlay];
-  [v11 mapRadiusView:self boundingMapRectForOverlay:v12];
+  delegate = [(WFLocationTriggerEditorMapDragRadiusView *)self delegate];
+  overlay = [(WFLocationTriggerEditorMapDragRadiusView *)self overlay];
+  [delegate mapRadiusView:self boundingMapRectForOverlay:overlay];
   v14 = v13;
   v16 = v15;
   v18 = v17;
@@ -589,8 +589,8 @@
   longitude = v47.center.longitude;
   latitudeDelta = v47.span.latitudeDelta;
   longitudeDelta = v47.span.longitudeDelta;
-  v25 = [(WFLocationTriggerEditorMapDragRadiusView *)self mapView];
-  [v25 convertRegion:self toRectToView:{latitude, longitude, latitudeDelta, longitudeDelta}];
+  mapView = [(WFLocationTriggerEditorMapDragRadiusView *)self mapView];
+  [mapView convertRegion:self toRectToView:{latitude, longitude, latitudeDelta, longitudeDelta}];
   v27 = v26;
   v29 = v28;
   v31 = v30;
@@ -601,11 +601,11 @@
   v48.size.width = v31;
   v48.size.height = v33;
   v34 = floor(CGRectGetMaxX(v48));
-  v35 = [(WFLocationTriggerEditorMapDragRadiusView *)self handleEndpointView];
-  v41 = v35;
+  handleEndpointView3 = [(WFLocationTriggerEditorMapDragRadiusView *)self handleEndpointView];
+  handleEndpointView4 = handleEndpointView3;
   if (v34 - v6 >= 12.0)
   {
-    [v35 setAlpha:1.0];
+    [handleEndpointView3 setAlpha:1.0];
 
     [(WFLocationTriggerEditorMapDragRadiusView *)self frame];
     v45.width = v36;
@@ -616,7 +616,7 @@
     v39 = [(WFLocationTriggerEditorMapDragRadiusView *)self shapeLayerWithEndPoint:v34, v8];
     CGContextRestoreGState(CurrentContext);
     UIGraphicsEndImageContext();
-    if (v3)
+    if (inCopy)
     {
       v40 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"strokeEnd"];
       [v40 setDuration:0.35];
@@ -640,13 +640,13 @@
       return;
     }
 
-    v41 = [(WFLocationTriggerEditorMapDragRadiusView *)self handleEndpointView];
-    [v41 setCenter:{v34, v8}];
+    handleEndpointView4 = [(WFLocationTriggerEditorMapDragRadiusView *)self handleEndpointView];
+    [handleEndpointView4 setCenter:{v34, v8}];
   }
 
   else
   {
-    [v35 setAlpha:0.0];
+    [handleEndpointView3 setAlpha:0.0];
   }
 }
 
@@ -668,20 +668,20 @@ uint64_t __60__WFLocationTriggerEditorMapDragRadiusView_animateHandleIn___block_
   return result;
 }
 
-- (id)shapeLayerWithEndPoint:(CGPoint)a3
+- (id)shapeLayerWithEndPoint:(CGPoint)point
 {
-  v4 = [(WFLocationTriggerEditorMapDragRadiusView *)self bezierPathWithEndPoint:a3.x, a3.y];
-  v5 = [(WFLocationTriggerEditorMapDragRadiusView *)self shapeLayer];
-  [v5 setPath:{objc_msgSend(v4, "CGPath")}];
-  v6 = [v5 superlayer];
+  v4 = [(WFLocationTriggerEditorMapDragRadiusView *)self bezierPathWithEndPoint:point.x, point.y];
+  shapeLayer = [(WFLocationTriggerEditorMapDragRadiusView *)self shapeLayer];
+  [shapeLayer setPath:{objc_msgSend(v4, "CGPath")}];
+  superlayer = [shapeLayer superlayer];
 
-  if (!v6)
+  if (!superlayer)
   {
-    v7 = [(WFLocationTriggerEditorMapDragRadiusView *)self layer];
-    [v7 addSublayer:v5];
+    layer = [(WFLocationTriggerEditorMapDragRadiusView *)self layer];
+    [layer addSublayer:shapeLayer];
   }
 
-  return v5;
+  return shapeLayer;
 }
 
 - (CAShapeLayer)shapeLayer
@@ -690,8 +690,8 @@ uint64_t __60__WFLocationTriggerEditorMapDragRadiusView_animateHandleIn___block_
   if (!shapeLayer)
   {
     v4 = objc_alloc_init(MEMORY[0x277CD9F90]);
-    v5 = [MEMORY[0x277D75348] systemBlueColor];
-    [v4 setStrokeColor:{objc_msgSend(v5, "CGColor")}];
+    systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+    [v4 setStrokeColor:{objc_msgSend(systemBlueColor, "CGColor")}];
     [v4 setLineDashPattern:&unk_288386A70];
     [v4 setLineCap:@"round"];
     [v4 setLineWidth:2.0];
@@ -706,48 +706,48 @@ uint64_t __60__WFLocationTriggerEditorMapDragRadiusView_animateHandleIn___block_
   return shapeLayer;
 }
 
-- (id)bezierPathWithEndPoint:(CGPoint)a3
+- (id)bezierPathWithEndPoint:(CGPoint)point
 {
   v12 = *MEMORY[0x277D85DE8];
   [(WFLocationTriggerEditorMapDragRadiusView *)self center];
-  v3 = [MEMORY[0x277D75208] bezierPath];
+  bezierPath = [MEMORY[0x277D75208] bezierPath];
   v11 = xmmword_274660700;
-  [v3 setLineDash:&v11 count:2 phase:0.0];
-  [v3 setLineWidth:2.0];
-  [v3 setLineCapStyle:1];
+  [bezierPath setLineDash:&v11 count:2 phase:0.0];
+  [bezierPath setLineWidth:2.0];
+  [bezierPath setLineCapStyle:1];
   UIRoundToViewScale();
   v5 = v4;
   UIRoundToViewScale();
-  [v3 moveToPoint:{v5, v6}];
+  [bezierPath moveToPoint:{v5, v6}];
   UIRoundToViewScale();
   v8 = v7;
   UIRoundToViewScale();
-  [v3 addLineToPoint:{v8, v9}];
-  [v3 stroke];
+  [bezierPath addLineToPoint:{v8, v9}];
+  [bezierPath stroke];
 
-  return v3;
+  return bezierPath;
 }
 
 - (void)popAnimateHandle
 {
-  v2 = [(WFLocationTriggerEditorMapDragRadiusView *)self handleEndpointView];
-  v3 = [v2 layer];
+  handleEndpointView = [(WFLocationTriggerEditorMapDragRadiusView *)self handleEndpointView];
+  layer = [handleEndpointView layer];
 
   v4 = [MEMORY[0x277CD9EC8] animationWithKeyPath:@"transform"];
   [v4 setDuration:0.349999994];
   memset(&v30, 0, sizeof(v30));
-  if (v3)
+  if (layer)
   {
-    [v3 transform];
+    [layer transform];
     CATransform3DScale(&v30, &v29, 0.5, 0.5, 1.0);
     memset(&v29, 0, sizeof(v29));
-    [v3 transform];
+    [layer transform];
     CATransform3DScale(&v29, &v28, 1.20000005, 1.20000005, 1.0);
     memset(&v28, 0, sizeof(v28));
-    [v3 transform];
+    [layer transform];
     CATransform3DScale(&v28, &v27, 0.899999976, 0.899999976, 1.0);
     memset(&v27, 0, sizeof(v27));
-    [v3 transform];
+    [layer transform];
   }
 
   else
@@ -796,15 +796,15 @@ uint64_t __60__WFLocationTriggerEditorMapDragRadiusView_animateHandleIn___block_
   [v4 setTimingFunctions:v25];
   [v4 setFillMode:*MEMORY[0x277CDA238]];
   [v4 setRemovedOnCompletion:0];
-  [v3 addAnimation:v4 forKey:@"transform"];
+  [layer addAnimation:v4 forKey:@"transform"];
 }
 
 - (CGPoint)center
 {
-  v3 = [(WFLocationTriggerEditorMapDragRadiusView *)self mapView];
-  v4 = [(WFLocationTriggerEditorMapDragRadiusView *)self annotation];
-  [v4 coordinate];
-  [v3 convertCoordinate:self toPointToView:?];
+  mapView = [(WFLocationTriggerEditorMapDragRadiusView *)self mapView];
+  annotation = [(WFLocationTriggerEditorMapDragRadiusView *)self annotation];
+  [annotation coordinate];
+  [mapView convertCoordinate:self toPointToView:?];
   v6 = v5;
   v8 = v7;
 
@@ -815,36 +815,36 @@ uint64_t __60__WFLocationTriggerEditorMapDragRadiusView_animateHandleIn___block_
   return result;
 }
 
-- (WFLocationTriggerEditorMapDragRadiusView)initWithFrame:(CGRect)a3
+- (WFLocationTriggerEditorMapDragRadiusView)initWithFrame:(CGRect)frame
 {
   v15.receiver = self;
   v15.super_class = WFLocationTriggerEditorMapDragRadiusView;
-  v3 = [(WFLocationTriggerEditorMapDragRadiusView *)&v15 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(WFLocationTriggerEditorMapDragRadiusView *)&v15 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [objc_alloc(MEMORY[0x277D75D18]) initWithFrame:{0.0, 0.0, 16.0, 16.0}];
     [(WFLocationTriggerEditorMapDragRadiusView *)v3 setHandleEndpointView:v4];
 
-    v5 = [(WFLocationTriggerEditorMapDragRadiusView *)v3 handleEndpointView];
-    v6 = [v5 layer];
-    [v6 setCornerRadius:8.0];
+    handleEndpointView = [(WFLocationTriggerEditorMapDragRadiusView *)v3 handleEndpointView];
+    layer = [handleEndpointView layer];
+    [layer setCornerRadius:8.0];
 
-    v7 = [MEMORY[0x277D75348] systemBlueColor];
-    v8 = [(WFLocationTriggerEditorMapDragRadiusView *)v3 handleEndpointView];
-    [v8 setBackgroundColor:v7];
+    systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+    handleEndpointView2 = [(WFLocationTriggerEditorMapDragRadiusView *)v3 handleEndpointView];
+    [handleEndpointView2 setBackgroundColor:systemBlueColor];
 
-    v9 = [(WFLocationTriggerEditorMapDragRadiusView *)v3 handleEndpointView];
-    v10 = [v9 layer];
-    [v10 setZPosition:50.0];
+    handleEndpointView3 = [(WFLocationTriggerEditorMapDragRadiusView *)v3 handleEndpointView];
+    layer2 = [handleEndpointView3 layer];
+    [layer2 setZPosition:50.0];
 
     v11 = objc_alloc_init(MEMORY[0x277CCAB18]);
     [(WFLocationTriggerEditorMapDragRadiusView *)v3 setMeasurmentFormatter:v11];
 
-    v12 = [(WFLocationTriggerEditorMapDragRadiusView *)v3 measurmentFormatter];
-    [v12 setUnitOptions:3];
+    measurmentFormatter = [(WFLocationTriggerEditorMapDragRadiusView *)v3 measurmentFormatter];
+    [measurmentFormatter setUnitOptions:3];
 
-    v13 = [(WFLocationTriggerEditorMapDragRadiusView *)v3 measurmentFormatter];
-    [v13 setUnitStyle:3];
+    measurmentFormatter2 = [(WFLocationTriggerEditorMapDragRadiusView *)v3 measurmentFormatter];
+    [measurmentFormatter2 setUnitStyle:3];
   }
 
   return v3;

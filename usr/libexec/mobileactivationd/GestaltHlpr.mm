@@ -1,12 +1,12 @@
 @interface GestaltHlpr
 + (id)getSharedInstance;
-- (BOOL)getBoolAnswer:(__CFString *)a3;
-- (id)copyAnswer:(__CFString *)a3;
-- (id)copyDeviceIDInfo:(id *)a3;
-- (id)copyDeviceInfo:(id *)a3;
-- (id)copyRegulatoryImagesInfo:(id *)a3;
-- (void)addAGestaltKey:(__CFString *)a3 toDictionary:(id)a4 required:(BOOL)a5 errors:(id)a6;
-- (void)updateRecertInfo:(id)a3 errors:(id *)a4;
+- (BOOL)getBoolAnswer:(__CFString *)answer;
+- (id)copyAnswer:(__CFString *)answer;
+- (id)copyDeviceIDInfo:(id *)info;
+- (id)copyDeviceInfo:(id *)info;
+- (id)copyRegulatoryImagesInfo:(id *)info;
+- (void)addAGestaltKey:(__CFString *)key toDictionary:(id)dictionary required:(BOOL)required errors:(id)errors;
+- (void)updateRecertInfo:(id)info errors:(id *)errors;
 @end
 
 @implementation GestaltHlpr
@@ -30,9 +30,9 @@ void __32__GestaltHlpr_getSharedInstance__block_invoke(id a1)
   getSharedInstance_sharedInstance_0 = v1;
 }
 
-- (id)copyAnswer:(__CFString *)a3
+- (id)copyAnswer:(__CFString *)answer
 {
-  if (!a3)
+  if (!answer)
   {
     return 0;
   }
@@ -41,7 +41,7 @@ void __32__GestaltHlpr_getSharedInstance__block_invoke(id a1)
   [@"com.apple.mobileactivationd" UTF8String];
   if (os_variant_allows_internal_security_policies() && is_virtual_machine())
   {
-    if (([(__CFString *)a3 isEqualToString:@"ProductType"]& 1) != 0)
+    if (([(__CFString *)answer isEqualToString:@"ProductType"]& 1) != 0)
     {
       v5 = @"iPod5,1";
 LABEL_9:
@@ -49,7 +49,7 @@ LABEL_9:
       return v5;
     }
 
-    if ([(__CFString *)a3 isEqualToString:@"DeviceClass"])
+    if ([(__CFString *)answer isEqualToString:@"DeviceClass"])
     {
       v5 = @"iPod";
       goto LABEL_9;
@@ -59,51 +59,51 @@ LABEL_9:
   return v4;
 }
 
-- (BOOL)getBoolAnswer:(__CFString *)a3
+- (BOOL)getBoolAnswer:(__CFString *)answer
 {
-  v3 = [(GestaltHlpr *)self copyAnswer:a3];
+  v3 = [(GestaltHlpr *)self copyAnswer:answer];
   v4 = isNSNumber(v3);
 
   LOBYTE(v3) = [v4 BOOLValue];
   return v3;
 }
 
-- (void)addAGestaltKey:(__CFString *)a3 toDictionary:(id)a4 required:(BOOL)a5 errors:(id)a6
+- (void)addAGestaltKey:(__CFString *)key toDictionary:(id)dictionary required:(BOOL)required errors:(id)errors
 {
-  v7 = a5;
-  v10 = a4;
-  v11 = a6;
-  v12 = [(GestaltHlpr *)self copyAnswer:a3];
+  requiredCopy = required;
+  dictionaryCopy = dictionary;
+  errorsCopy = errors;
+  v12 = [(GestaltHlpr *)self copyAnswer:key];
   v13 = v12;
   if (v12 && ((v14 = isNSString(v12)) == 0 || (v15 = v14, v16 = [v13 length], v15, v16)))
   {
-    [v10 setObject:v13 forKeyedSubscript:a3];
+    [dictionaryCopy setObject:v13 forKeyedSubscript:key];
   }
 
-  else if (v7)
+  else if (requiredCopy)
   {
-    v17 = [NSString stringWithFormat:@"Failed to query required gestalt key: %@", a3];
-    [v11 addObject:v17];
+    v17 = [NSString stringWithFormat:@"Failed to query required gestalt key: %@", key];
+    [errorsCopy addObject:v17];
   }
 }
 
-- (id)copyDeviceIDInfo:(id *)a3
+- (id)copyDeviceIDInfo:(id *)info
 {
   v5 = objc_alloc_init(NSMutableArray);
   v6 = objc_alloc_init(NSMutableDictionary);
   [(GestaltHlpr *)self addAGestaltKey:@"SerialNumber" toDictionary:v6 required:1 errors:v5];
   [(GestaltHlpr *)self addAGestaltKey:@"UniqueDeviceID" toDictionary:v6 required:1 errors:v5];
   v7 = [v5 count];
-  if (a3 && v7)
+  if (info && v7)
   {
     v8 = v5;
-    *a3 = v5;
+    *info = v5;
   }
 
   return v6;
 }
 
-- (id)copyDeviceInfo:(id *)a3
+- (id)copyDeviceInfo:(id *)info
 {
   v5 = objc_alloc_init(NSMutableArray);
   v6 = objc_alloc_init(NSMutableDictionary);
@@ -132,51 +132,51 @@ LABEL_9:
   }
 
   v9 = [v5 count];
-  if (a3 && v9)
+  if (info && v9)
   {
     v10 = v5;
-    *a3 = v5;
+    *info = v5;
   }
 
   return v6;
 }
 
-- (id)copyRegulatoryImagesInfo:(id *)a3
+- (id)copyRegulatoryImagesInfo:(id *)info
 {
   v5 = objc_alloc_init(NSMutableArray);
   v6 = objc_alloc_init(NSMutableDictionary);
   [(GestaltHlpr *)self addAGestaltKey:@"DeviceVariant" toDictionary:v6 required:1 errors:v5];
   v7 = [v5 count];
-  if (a3 && v7)
+  if (info && v7)
   {
     v8 = v5;
-    *a3 = v5;
+    *info = v5;
   }
 
   return v6;
 }
 
-- (void)updateRecertInfo:(id)a3 errors:(id *)a4
+- (void)updateRecertInfo:(id)info errors:(id *)errors
 {
-  v6 = a3;
+  infoCopy = info;
   v7 = objc_alloc_init(NSMutableArray);
-  if (v6)
+  if (infoCopy)
   {
-    [(GestaltHlpr *)self addAGestaltKey:@"SerialNumber" toDictionary:v6 required:0 errors:v7];
-    [(GestaltHlpr *)self addAGestaltKey:@"DeviceClass" toDictionary:v6 required:1 errors:v7];
-    [(GestaltHlpr *)self addAGestaltKey:@"ProductType" toDictionary:v6 required:1 errors:v7];
-    [(GestaltHlpr *)self addAGestaltKey:@"BuildVersion" toDictionary:v6 required:0 errors:v7];
-    [(GestaltHlpr *)self addAGestaltKey:@"UniqueDeviceID" toDictionary:v6 required:0 errors:v7];
+    [(GestaltHlpr *)self addAGestaltKey:@"SerialNumber" toDictionary:infoCopy required:0 errors:v7];
+    [(GestaltHlpr *)self addAGestaltKey:@"DeviceClass" toDictionary:infoCopy required:1 errors:v7];
+    [(GestaltHlpr *)self addAGestaltKey:@"ProductType" toDictionary:infoCopy required:1 errors:v7];
+    [(GestaltHlpr *)self addAGestaltKey:@"BuildVersion" toDictionary:infoCopy required:0 errors:v7];
+    [(GestaltHlpr *)self addAGestaltKey:@"UniqueDeviceID" toDictionary:infoCopy required:0 errors:v7];
     if ([(GestaltHlpr *)self getBoolAnswer:@"HasBaseband"])
     {
-      [(GestaltHlpr *)self addAGestaltKey:@"InternationalMobileEquipmentIdentity" toDictionary:v6 required:0 errors:v7];
+      [(GestaltHlpr *)self addAGestaltKey:@"InternationalMobileEquipmentIdentity" toDictionary:infoCopy required:0 errors:v7];
       v8 = [(GestaltHlpr *)self copyAnswer:@"xRyzf9zFE/ycr/wJPweZvQ"];
       if (v8)
       {
-        [v6 setObject:v8 forKeyedSubscript:@"InternationalMobileEquipmentIdentity2"];
+        [infoCopy setObject:v8 forKeyedSubscript:@"InternationalMobileEquipmentIdentity2"];
       }
 
-      [(GestaltHlpr *)self addAGestaltKey:@"MobileEquipmentIdentifier" toDictionary:v6 required:0 errors:v7];
+      [(GestaltHlpr *)self addAGestaltKey:@"MobileEquipmentIdentifier" toDictionary:infoCopy required:0 errors:v7];
     }
 
     else
@@ -185,10 +185,10 @@ LABEL_9:
     }
 
     v9 = [v7 count];
-    if (a4 && v9)
+    if (errors && v9)
     {
       v10 = v7;
-      *a4 = v7;
+      *errors = v7;
     }
   }
 

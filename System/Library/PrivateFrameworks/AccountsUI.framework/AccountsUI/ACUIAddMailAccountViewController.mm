@@ -1,46 +1,46 @@
 @interface ACUIAddMailAccountViewController
-- (id)giantSpecifierWithName:(id)a3 forAccountTypeID:(id)a4;
+- (id)giantSpecifierWithName:(id)name forAccountTypeID:(id)d;
 - (id)specifierForOtherAccounts;
-- (void)nonModalDataclassConfigurationControllerDidCompleteWithSuccess:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)nonModalDataclassConfigurationControllerDidCompleteWithSuccess:(BOOL)success;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation ACUIAddMailAccountViewController
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
-  v7 = a3;
+  appearCopy = appear;
   v6.receiver = self;
   v6.super_class = ACUIAddMailAccountViewController;
-  [(ACUIAddAccountViewController *)&v6 viewWillAppear:a3];
+  [(ACUIAddAccountViewController *)&v6 viewWillAppear:appear];
   if (([MEMORY[0x277D75128] shouldMakeUIForDefaultPNG] & 1) == 0)
   {
-    v5 = [(ACUIAddMailAccountViewController *)v9 navigationItem];
+    navigationItem = [(ACUIAddMailAccountViewController *)selfCopy navigationItem];
     v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v3 = [v4 localizedStringForKey:@"WELCOME_TO_MAIL" value:&stru_2850054A0 table:@"Localizable"];
-    [v5 setTitle:?];
+    [navigationItem setTitle:?];
     MEMORY[0x277D82BD8](v3);
     MEMORY[0x277D82BD8](v4);
-    MEMORY[0x277D82BD8](v5);
+    MEMORY[0x277D82BD8](navigationItem);
   }
 }
 
-- (id)giantSpecifierWithName:(id)a3 forAccountTypeID:(id)a4
+- (id)giantSpecifierWithName:(id)name forAccountTypeID:(id)d
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, name);
   v11 = 0;
-  objc_storeStrong(&v11, a4);
-  v9.receiver = v13;
+  objc_storeStrong(&v11, d);
+  v9.receiver = selfCopy;
   v9.super_class = ACUIAddMailAccountViewController;
   v10 = [(ACUIAddAccountViewController *)&v9 giantSpecifierWithName:location[0] forAccountTypeID:v11];
-  v7 = [v10 userInfo];
-  v8 = [v7 mutableCopy];
-  MEMORY[0x277D82BD8](v7);
+  userInfo = [v10 userInfo];
+  v8 = [userInfo mutableCopy];
+  MEMORY[0x277D82BD8](userInfo);
   if (!v8)
   {
     v8 = objc_alloc_init(MEMORY[0x277CBEB38]);
@@ -60,21 +60,21 @@
 
 - (id)specifierForOtherAccounts
 {
-  v15 = self;
+  selfCopy = self;
   v14[1] = a2;
   v5 = MEMORY[0x277D3FAD8];
   v7 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v6 = [v7 localizedStringForKey:@"OTHER" value:&stru_2850054A0 table:@"Localizable"];
-  v14[0] = [v5 preferenceSpecifierNamed:v6 target:v15 set:0 get:0 detail:objc_opt_class() cell:11 edit:0];
+  v14[0] = [v5 preferenceSpecifierNamed:v6 target:selfCopy set:0 get:0 detail:objc_opt_class() cell:11 edit:0];
   MEMORY[0x277D82BD8](v6);
   MEMORY[0x277D82BD8](v7);
-  v8 = [(ACUIAddAccountViewController *)v15 viewProvidersManager];
+  viewProvidersManager = [(ACUIAddAccountViewController *)selfCopy viewProvidersManager];
   v9 = MEMORY[0x277CB8C60];
-  v13 = [(ACUIAccountViewProvidersManager *)v8 viewControllerClassForCreatingAccountWithType:*MEMORY[0x277CB8C60]];
-  MEMORY[0x277D82BD8](v8);
-  v10 = [(ACUIAddAccountViewController *)v15 viewProvidersManager];
-  location = [(ACUIAccountViewProvidersManager *)v10 configurationInfoForCreatingAccountWithType:*v9];
-  MEMORY[0x277D82BD8](v10);
+  v13 = [(ACUIAccountViewProvidersManager *)viewProvidersManager viewControllerClassForCreatingAccountWithType:*MEMORY[0x277CB8C60]];
+  MEMORY[0x277D82BD8](viewProvidersManager);
+  viewProvidersManager2 = [(ACUIAddAccountViewController *)selfCopy viewProvidersManager];
+  location = [(ACUIAccountViewProvidersManager *)viewProvidersManager2 configurationInfoForCreatingAccountWithType:*v9];
+  MEMORY[0x277D82BD8](viewProvidersManager2);
   v11 = NSStringFromClass(v13);
   v2 = *MEMORY[0x277D400B8];
   [v14[0] setProperty:? forKey:?];
@@ -91,13 +91,13 @@
   return v4;
 }
 
-- (void)nonModalDataclassConfigurationControllerDidCompleteWithSuccess:(BOOL)a3
+- (void)nonModalDataclassConfigurationControllerDidCompleteWithSuccess:(BOOL)success
 {
-  if (!a3)
+  if (!success)
   {
-    v4 = [(ACUIAddMailAccountViewController *)self navigationController];
-    v3 = [v4 popToViewController:self animated:1];
-    MEMORY[0x277D82BD8](v4);
+    navigationController = [(ACUIAddMailAccountViewController *)self navigationController];
+    v3 = [navigationController popToViewController:self animated:1];
+    MEMORY[0x277D82BD8](navigationController);
   }
 }
 

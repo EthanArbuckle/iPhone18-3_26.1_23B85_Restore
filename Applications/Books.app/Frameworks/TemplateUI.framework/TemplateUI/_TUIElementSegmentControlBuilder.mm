@@ -1,16 +1,16 @@
 @interface _TUIElementSegmentControlBuilder
 - (id)finalizeAnimationGroups;
 - (id)finalizeSegments;
-- (void)addAnimationGroup:(id)a3 withName:(id)a4;
-- (void)addSegmentWithTitle:(id)a3;
+- (void)addAnimationGroup:(id)group withName:(id)name;
+- (void)addSegmentWithTitle:(id)title;
 @end
 
 @implementation _TUIElementSegmentControlBuilder
 
-- (void)addAnimationGroup:(id)a3 withName:(id)a4
+- (void)addAnimationGroup:(id)group withName:(id)name
 {
-  v10 = a3;
-  v6 = a4;
+  groupCopy = group;
+  nameCopy = name;
   animations = self->_animations;
   if (!animations)
   {
@@ -21,7 +21,7 @@
     animations = self->_animations;
   }
 
-  [(NSMutableDictionary *)animations setObject:v10 forKeyedSubscript:v6];
+  [(NSMutableDictionary *)animations setObject:groupCopy forKeyedSubscript:nameCopy];
 }
 
 - (id)finalizeAnimationGroups
@@ -40,11 +40,11 @@
   return v3;
 }
 
-- (void)addSegmentWithTitle:(id)a3
+- (void)addSegmentWithTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   segments = self->_segments;
-  v8 = v4;
+  v8 = titleCopy;
   if (!segments)
   {
     v6 = objc_opt_new();
@@ -52,10 +52,10 @@
     self->_segments = v6;
 
     segments = self->_segments;
-    v4 = v8;
+    titleCopy = v8;
   }
 
-  [(NSMutableArray *)segments addObject:v4];
+  [(NSMutableArray *)segments addObject:titleCopy];
 }
 
 - (id)finalizeSegments

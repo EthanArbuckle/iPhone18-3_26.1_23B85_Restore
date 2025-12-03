@@ -1,14 +1,14 @@
 @interface TSKMockUIAlert
-- (TSKMockUIAlert)initWithTitle:(id)a3 message:(id)a4 cancelButtonTitle:(id)a5 otherButtonTitle:(id)a6;
+- (TSKMockUIAlert)initWithTitle:(id)title message:(id)message cancelButtonTitle:(id)buttonTitle otherButtonTitle:(id)otherButtonTitle;
 @end
 
 @implementation TSKMockUIAlert
 
-- (TSKMockUIAlert)initWithTitle:(id)a3 message:(id)a4 cancelButtonTitle:(id)a5 otherButtonTitle:(id)a6
+- (TSKMockUIAlert)initWithTitle:(id)title message:(id)message cancelButtonTitle:(id)buttonTitle otherButtonTitle:(id)otherButtonTitle
 {
   v7.receiver = self;
   v7.super_class = TSKMockUIAlert;
-  return [(TSKAbstractAlert *)&v7 init:a3];
+  return [(TSKAbstractAlert *)&v7 init:title];
 }
 
 @end

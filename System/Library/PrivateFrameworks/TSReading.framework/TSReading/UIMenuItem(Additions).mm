@@ -6,7 +6,7 @@
 
 + (id)menuItemWithTitle:()Additions action:
 {
-  v4 = [[a1 alloc] initWithTitle:a3 action:a4];
+  v4 = [[self alloc] initWithTitle:a3 action:a4];
 
   return v4;
 }

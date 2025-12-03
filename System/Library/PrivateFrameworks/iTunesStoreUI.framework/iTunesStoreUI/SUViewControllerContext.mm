@@ -1,19 +1,19 @@
 @interface SUViewControllerContext
-- (SUViewControllerContext)initWithCoder:(id)a3;
-- (id)_typeStringForType:(int64_t)a3;
+- (SUViewControllerContext)initWithCoder:(id)coder;
+- (id)_typeStringForType:(int64_t)type;
 - (id)copyViewController;
 - (id)description;
-- (int64_t)_typeForTypeString:(id)a3;
+- (int64_t)_typeForTypeString:(id)string;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)setValue:(id)a3 forMetadataKey:(id)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)setValue:(id)value forMetadataKey:(id)key;
 @end
 
 @implementation SUViewControllerContext
 
-- (SUViewControllerContext)initWithCoder:(id)a3
+- (SUViewControllerContext)initWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     [(SUViewControllerContext *)a2 initWithCoder:?];
   }
@@ -32,16 +32,16 @@
     v12 = objc_opt_class();
     v13 = objc_opt_class();
     v14 = objc_opt_class();
-    v6->_metadata = [a3 decodeObjectOfClasses:objc_msgSend(v19 forKey:{"setWithObjects:", v18, v17, v7, v8, v9, v10, v11, v12, v13, v14, objc_opt_class(), 0), @"metadata"}];
-    v6->_sectionIdentifier = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"section"];
-    if ([a3 containsValueForKey:@"typeString"])
+    v6->_metadata = [coder decodeObjectOfClasses:objc_msgSend(v19 forKey:{"setWithObjects:", v18, v17, v7, v8, v9, v10, v11, v12, v13, v14, objc_opt_class(), 0), @"metadata"}];
+    v6->_sectionIdentifier = [coder decodeObjectOfClass:objc_opt_class() forKey:@"section"];
+    if ([coder containsValueForKey:@"typeString"])
     {
-      v15 = -[SUViewControllerContext _typeForTypeString:](v6, "_typeForTypeString:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"typeString"]);
+      v15 = -[SUViewControllerContext _typeForTypeString:](v6, "_typeForTypeString:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"typeString"]);
     }
 
     else
     {
-      v15 = [a3 decodeIntegerForKey:@"type"];
+      v15 = [coder decodeIntegerForKey:@"type"];
     }
 
     v6->_type = v15;
@@ -50,19 +50,19 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     [(SUViewControllerContext *)a2 encodeWithCoder:?];
   }
 
-  [a3 encodeObject:self->_metadata forKey:@"metadata"];
-  [a3 encodeObject:self->_sectionIdentifier forKey:@"section"];
-  [a3 encodeInteger:self->_type forKey:@"type"];
+  [coder encodeObject:self->_metadata forKey:@"metadata"];
+  [coder encodeObject:self->_sectionIdentifier forKey:@"section"];
+  [coder encodeInteger:self->_type forKey:@"type"];
   v6 = [(SUViewControllerContext *)self _typeStringForType:self->_type];
 
-  [a3 encodeObject:v6 forKey:@"typeString"];
+  [coder encodeObject:v6 forKey:@"typeString"];
 }
 
 - (void)dealloc
@@ -106,10 +106,10 @@
   return [MEMORY[0x1E696AEC0] stringWithFormat:@"%@: %ld, %@", -[SUViewControllerContext description](&v3, sel_description), -[SUViewControllerContext type](self, "type"), -[SUViewControllerContext sectionIdentifier](self, "sectionIdentifier")];
 }
 
-- (void)setValue:(id)a3 forMetadataKey:(id)a4
+- (void)setValue:(id)value forMetadataKey:(id)key
 {
   metadata = self->_metadata;
-  if (a3)
+  if (value)
   {
     if (!metadata)
     {
@@ -117,44 +117,44 @@
       self->_metadata = metadata;
     }
 
-    [(NSMutableDictionary *)metadata setObject:a3 forKey:a4];
+    [(NSMutableDictionary *)metadata setObject:value forKey:key];
   }
 
   else
   {
 
-    [(NSMutableDictionary *)metadata removeObjectForKey:a4];
+    [(NSMutableDictionary *)metadata removeObjectForKey:key];
   }
 }
 
-- (int64_t)_typeForTypeString:(id)a3
+- (int64_t)_typeForTypeString:(id)string
 {
-  if ([a3 isEqualToString:@"storepage"])
+  if ([string isEqualToString:@"storepage"])
   {
     return 1;
   }
 
-  if ([a3 isEqualToString:@"overlay"])
+  if ([string isEqualToString:@"overlay"])
   {
     return 3;
   }
 
-  if ([a3 isEqualToString:@"overlay-bg"])
+  if ([string isEqualToString:@"overlay-bg"])
   {
     return 2;
   }
 
-  if ([a3 isEqualToString:@"split-view"])
+  if ([string isEqualToString:@"split-view"])
   {
     return 5;
   }
 
-  if ([a3 isEqualToString:@"navigation"])
+  if ([string isEqualToString:@"navigation"])
   {
     return 4;
   }
 
-  if ([a3 isEqualToString:@"searchpage"])
+  if ([string isEqualToString:@"searchpage"])
   {
     return 6;
   }
@@ -162,16 +162,16 @@
   return 0;
 }
 
-- (id)_typeStringForType:(int64_t)a3
+- (id)_typeStringForType:(int64_t)type
 {
-  if ((a3 - 1) > 5)
+  if ((type - 1) > 5)
   {
     return @"unknown";
   }
 
   else
   {
-    return off_1E8164BF0[a3 - 1];
+    return off_1E8164BF0[type - 1];
   }
 }
 

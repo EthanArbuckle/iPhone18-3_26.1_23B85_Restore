@@ -3,13 +3,13 @@
 - (id)_headerItem;
 - (id)newTermsAndConditionsFooter;
 - (void)_reloadHeaderView;
-- (void)_writeAReview:(id)a3;
+- (void)_writeAReview:(id)review;
 - (void)dealloc;
 - (void)loadView;
 - (void)reloadData;
-- (void)reloadForChangedRowCount:(int64_t)a3;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)reloadForChangedRowCount:(int64_t)count;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation SUReviewsListingViewController
@@ -29,9 +29,9 @@
   v4.receiver = self;
   v4.super_class = SUReviewsListingViewController;
   [(SUTableViewController *)&v4 loadView];
-  v3 = [(SUTableViewController *)self tableView];
-  [(UITableView *)v3 setBackgroundColor:SUGetReviewListOddRowColor()];
-  [(UITableView *)v3 setTopExtensionViewColor:SUGetReviewListEvenRowColor()];
+  tableView = [(SUTableViewController *)self tableView];
+  [(UITableView *)tableView setBackgroundColor:SUGetReviewListOddRowColor()];
+  [(UITableView *)tableView setTopExtensionViewColor:SUGetReviewListEvenRowColor()];
   [(SUReviewsListingViewController *)self _reloadHeaderView];
 }
 
@@ -43,9 +43,9 @@
   [(SUReviewsListingViewController *)self _reloadHeaderView];
 }
 
-- (void)reloadForChangedRowCount:(int64_t)a3
+- (void)reloadForChangedRowCount:(int64_t)count
 {
-  if (a3)
+  if (count)
   {
     v5 = SUGetReviewListOddRowColor();
   }
@@ -58,24 +58,24 @@
   [(UITableView *)[(SUTableViewController *)self tableView] setBackgroundColor:v5];
   v6.receiver = self;
   v6.super_class = SUReviewsListingViewController;
-  [(SUTableViewController *)&v6 reloadForChangedRowCount:a3];
+  [(SUTableViewController *)&v6 reloadForChangedRowCount:count];
 }
 
 - (id)newTermsAndConditionsFooter
 {
   v4.receiver = self;
   v4.super_class = SUReviewsListingViewController;
-  v2 = [(SUStructuredPageViewController *)&v4 newTermsAndConditionsFooter];
-  [v2 setStyle:2];
-  return v2;
+  newTermsAndConditionsFooter = [(SUStructuredPageViewController *)&v4 newTermsAndConditionsFooter];
+  [newTermsAndConditionsFooter setStyle:2];
+  return newTermsAndConditionsFooter;
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
   v8.receiver = self;
   v8.super_class = SUReviewsListingViewController;
-  [SUTableViewController tableView:sel_tableView_willDisplayCell_forRowAtIndexPath_ willDisplayCell:a3 forRowAtIndexPath:?];
-  if ([a5 row])
+  [SUTableViewController tableView:sel_tableView_willDisplayCell_forRowAtIndexPath_ willDisplayCell:view forRowAtIndexPath:?];
+  if ([path row])
   {
     v7 = SUGetReviewListOddRowColor();
   }
@@ -85,32 +85,32 @@
     v7 = SUGetReviewListEvenRowColor();
   }
 
-  [a4 setBackgroundColor:v7];
-  [a4 setBottomBorderColor:SUGetReviewListBorderColor()];
-  [a4 setTopBorderColor:0];
+  [cell setBackgroundColor:v7];
+  [cell setBottomBorderColor:SUGetReviewListBorderColor()];
+  [cell setTopBorderColor:0];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   [(SUGradientButton *)[(SUButtonAccessoryView *)self->_accessoryView button] setSelected:0];
   v5.receiver = self;
   v5.super_class = SUReviewsListingViewController;
-  [(SUStructuredPageViewController *)&v5 viewWillAppear:v3];
+  [(SUStructuredPageViewController *)&v5 viewWillAppear:appearCopy];
 }
 
-- (void)_writeAReview:(id)a3
+- (void)_writeAReview:(id)review
 {
-  v4 = [objc_msgSend(-[SUReviewsListingViewController _headerItem](self _headerItem];
-  v5 = [(SUViewController *)self clientInterface];
-  v6 = -[SUViewControllerFactory newComposeReviewViewControllerWithCompositionURL:](-[SUClientInterface viewControllerFactory](v5, "viewControllerFactory"), "newComposeReviewViewControllerWithCompositionURL:", [v4 URL]);
+  _headerItem = [objc_msgSend(-[SUReviewsListingViewController _headerItem](self _headerItem];
+  clientInterface = [(SUViewController *)self clientInterface];
+  v6 = -[SUViewControllerFactory newComposeReviewViewControllerWithCompositionURL:](-[SUClientInterface viewControllerFactory](clientInterface, "viewControllerFactory"), "newComposeReviewViewControllerWithCompositionURL:", [_headerItem URL]);
   if (!v6)
   {
-    v6 = -[SUComposeReviewViewController initWithCompositionURL:]([SUComposeReviewViewController alloc], "initWithCompositionURL:", [v4 URL]);
+    v6 = -[SUComposeReviewViewController initWithCompositionURL:]([SUComposeReviewViewController alloc], "initWithCompositionURL:", [_headerItem URL]);
   }
 
   v7 = v6;
-  [(SUViewController *)v6 setClientInterface:v5];
+  [(SUViewController *)v6 setClientInterface:clientInterface];
   [SUClientDispatch composeReviewWithViewController:v7 animated:1];
 }
 
@@ -182,24 +182,24 @@ LABEL_9:
 {
   if ([(SUReviewsListingViewController *)self _canWriteReview])
   {
-    v3 = [(SUReviewsListingViewController *)self _accessoryView];
+    _accessoryView = [(SUReviewsListingViewController *)self _accessoryView];
     v4 = [objc_msgSend(objc_msgSend(-[SUReviewsListingViewController _headerItem](self "_headerItem")];
     if (![v4 length])
     {
       v4 = [objc_msgSend(MEMORY[0x1E696AAE8] bundleForClass:{objc_opt_class()), "localizedStringForKey:value:table:", @"WRITE_A_REVIEW", &stru_1F41B3660, 0}];
     }
 
-    [objc_msgSend(v3 "button")];
+    [objc_msgSend(_accessoryView "button")];
   }
 
   else
   {
-    v3 = 0;
+    _accessoryView = 0;
   }
 
-  v5 = [(SUTableViewController *)self tableView];
+  tableView = [(SUTableViewController *)self tableView];
 
-  [(UITableView *)v5 setTableHeaderView:v3];
+  [(UITableView *)tableView setTableHeaderView:_accessoryView];
 }
 
 @end

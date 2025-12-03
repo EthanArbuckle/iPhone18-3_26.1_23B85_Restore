@@ -1,32 +1,32 @@
 @interface LPTapToLoadView
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (LPTapToLoadView)initWithHost:(id)a3 style:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (LPTapToLoadView)initWithHost:(id)host style:(id)style;
 - (LPTapToLoadViewDelegate)tapToLoadViewDelegate;
 - (id)_createIndeterminateProgressIndicator;
 - (void)_animateToProgressView;
 - (void)_buildViews;
 - (void)_didScroll;
-- (void)_highlightLongPressRecognized:(id)a3;
-- (void)_tapRecognized:(id)a3;
-- (void)animateOutWithCompletionHandler:(id)a3;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
+- (void)_highlightLongPressRecognized:(id)recognized;
+- (void)_tapRecognized:(id)recognized;
+- (void)animateOutWithCompletionHandler:(id)handler;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
 - (void)layoutComponentView;
 @end
 
 @implementation LPTapToLoadView
 
-- (LPTapToLoadView)initWithHost:(id)a3 style:(id)a4
+- (LPTapToLoadView)initWithHost:(id)host style:(id)style
 {
-  v6 = a3;
-  v7 = a4;
+  hostCopy = host;
+  styleCopy = style;
   v15.receiver = self;
   v15.super_class = LPTapToLoadView;
-  v8 = [(LPComponentView *)&v15 initWithHost:v6];
+  v8 = [(LPComponentView *)&v15 initWithHost:hostCopy];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_style, a4);
+    objc_storeStrong(&v8->_style, style);
     [(LPTapToLoadView *)v9 _buildViews];
     v10 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:v9 action:sel__tapRecognized_];
     [(LPTapToLoadView *)v9 addGestureRecognizer:v10];
@@ -43,13 +43,13 @@
   return v9;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v4 = [(LPTapToLoadViewStyle *)self->_style width:a3.width];
+  v4 = [(LPTapToLoadViewStyle *)self->_style width:fits.width];
   [v4 value];
   v6 = v5;
-  v7 = [(LPTapToLoadViewStyle *)self->_style height];
-  [v7 value];
+  height = [(LPTapToLoadViewStyle *)self->_style height];
+  [height value];
   v9 = v8;
 
   v10 = v6;
@@ -80,15 +80,15 @@
 
 - (void)_buildViews
 {
-  v13 = [(LPTapToLoadViewStyle *)self->_style backgroundColor];
+  backgroundColor = [(LPTapToLoadViewStyle *)self->_style backgroundColor];
   [(UIView *)self _lp_setBackgroundColor:?];
 
   v14 = LPLocalizedString(@"Tap to Load Preview");
   v3 = [LPTextView alloc];
-  v4 = [(LPComponentView *)self host];
+  host = [(LPComponentView *)self host];
   v5 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v14];
-  v6 = [(LPTapToLoadViewStyle *)self->_style caption];
-  v7 = [(LPTextView *)v3 initWithHost:v4 text:v5 style:v6];
+  caption = [(LPTapToLoadViewStyle *)self->_style caption];
+  v7 = [(LPTextView *)v3 initWithHost:host text:v5 style:caption];
   captionView = self->_captionView;
   self->_captionView = v7;
 
@@ -99,8 +99,8 @@
 
   [(UIView *)self->_highlightView setHidden:1];
   v11 = self->_highlightView;
-  v12 = [(LPTapToLoadViewStyle *)self->_style tapHighlightColor];
-  [(UIView *)v11 _lp_setBackgroundColor:v12];
+  tapHighlightColor = [(LPTapToLoadViewStyle *)self->_style tapHighlightColor];
+  [(UIView *)v11 _lp_setBackgroundColor:tapHighlightColor];
 
   [(LPTapToLoadView *)self addSubview:self->_highlightView];
 }
@@ -113,9 +113,9 @@
   return v2;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v4 = a4;
+  gestureRecognizerCopy = gestureRecognizer;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -139,37 +139,37 @@
   [(UILongPressGestureRecognizer *)highlightGestureRecognizer setEnabled:1];
 }
 
-- (void)_highlightLongPressRecognized:(id)a3
+- (void)_highlightLongPressRecognized:(id)recognized
 {
-  v7 = a3;
-  v4 = [v7 state];
-  if ((v4 - 3) >= 2)
+  recognizedCopy = recognized;
+  state = [recognizedCopy state];
+  if ((state - 3) >= 2)
   {
-    if (v4 != 1)
+    if (state != 1)
     {
       goto LABEL_6;
     }
 
-    v6 = [(UIView *)self->_highlightView layer];
-    [v6 setHidden:0];
+    layer = [(UIView *)self->_highlightView layer];
+    [layer setHidden:0];
   }
 
   else
   {
     wasTapped = self->_wasTapped;
-    v6 = [(UIView *)self->_highlightView layer];
-    [v6 setHidden:!wasTapped];
+    layer = [(UIView *)self->_highlightView layer];
+    [layer setHidden:!wasTapped];
   }
 
 LABEL_6:
 }
 
-- (void)_tapRecognized:(id)a3
+- (void)_tapRecognized:(id)recognized
 {
-  v11 = a3;
+  recognizedCopy = recognized;
   self->_wasTapped = 1;
-  v4 = [(UIView *)self->_highlightView layer];
-  [v4 setHidden:0];
+  layer = [(UIView *)self->_highlightView layer];
+  [layer setHidden:0];
 
   WeakRetained = objc_loadWeakRetained(&self->_tapToLoadViewDelegate);
   v6 = objc_opt_respondsToSelector();
@@ -180,14 +180,14 @@ LABEL_6:
     [v7 tapToLoadViewWasTapped:self];
   }
 
-  [(LPTapToLoadView *)self removeGestureRecognizer:v11];
+  [(LPTapToLoadView *)self removeGestureRecognizer:recognizedCopy];
   [(LPTapToLoadView *)self removeGestureRecognizer:self->_highlightGestureRecognizer];
   highlightGestureRecognizer = self->_highlightGestureRecognizer;
   self->_highlightGestureRecognizer = 0;
 
-  v9 = [(LPTapToLoadView *)self _createIndeterminateProgressIndicator];
+  _createIndeterminateProgressIndicator = [(LPTapToLoadView *)self _createIndeterminateProgressIndicator];
   progressView = self->_progressView;
-  self->_progressView = v9;
+  self->_progressView = _createIndeterminateProgressIndicator;
 
   [(LPTapToLoadView *)self addSubview:self->_progressView];
   [(UIView *)self _lp_setNeedsLayout];
@@ -196,8 +196,8 @@ LABEL_6:
 
 - (void)_animateToProgressView
 {
-  v15 = [(LPTapToLoadView *)self layer];
-  [v15 convertTime:0 fromLayer:CACurrentMediaTime()];
+  layer = [(LPTapToLoadView *)self layer];
+  [layer convertTime:0 fromLayer:CACurrentMediaTime()];
   v4 = v3;
 
   v16 = [MEMORY[0x1E69794A8] _lp_springWithMass:2.0 stiffness:800.0 damping:37.0];
@@ -207,14 +207,14 @@ LABEL_6:
   v5 = *MEMORY[0x1E69797E0];
   [v16 setFillMode:*MEMORY[0x1E69797E0]];
   [v16 setToValue:&unk_1F24836B0];
-  v6 = [(LPTextView *)self->_captionView layer];
-  [v6 addAnimation:v16 forKey:@"captionFadeOutSpring"];
+  layer2 = [(LPTextView *)self->_captionView layer];
+  [layer2 addAnimation:v16 forKey:@"captionFadeOutSpring"];
 
   v7 = [v16 copy];
   [v7 setKeyPath:@"transform.scale.xy"];
   [v7 setToValue:&unk_1F2483DC8];
-  v8 = [(LPTextView *)self->_captionView layer];
-  [v8 addAnimation:v7 forKey:@"captionShrinkSpring"];
+  layer3 = [(LPTextView *)self->_captionView layer];
+  [layer3 addAnimation:v7 forKey:@"captionShrinkSpring"];
 
   v9 = objc_alloc_init(MEMORY[0x1E6979318]);
   [v9 setDuration:0.25];
@@ -223,26 +223,26 @@ LABEL_6:
   [v9 setRemovedOnCompletion:0];
   [v9 setFillMode:v5];
   [v9 setToValue:&unk_1F24836B0];
-  v10 = [(UIView *)self->_highlightView layer];
-  [v10 addAnimation:v9 forKey:@"highlightFadeOut"];
+  layer4 = [(UIView *)self->_highlightView layer];
+  [layer4 addAnimation:v9 forKey:@"highlightFadeOut"];
 
   v11 = [MEMORY[0x1E69794A8] _lp_springWithMass:2.0 stiffness:700.0 damping:37.0];
   [v11 setBeginTime:v4 + 0.18];
   [v11 setKeyPath:@"opacity"];
   [v11 setFromValue:&unk_1F24836B0];
-  v12 = [(UIView *)self->_progressView layer];
-  [v12 addAnimation:v11 forKey:@"progressFadeInSpring"];
+  layer5 = [(UIView *)self->_progressView layer];
+  [layer5 addAnimation:v11 forKey:@"progressFadeInSpring"];
 
   v13 = [v11 _lp_copyWithBeginTime:v4 + 0.135];
   [v13 setKeyPath:@"transform.scale.xy"];
   [v13 setFromValue:&unk_1F2483DD8];
-  v14 = [(UIView *)self->_progressView layer];
-  [v14 addAnimation:v13 forKey:@"progressGrowSpring"];
+  layer6 = [(UIView *)self->_progressView layer];
+  [layer6 addAnimation:v13 forKey:@"progressGrowSpring"];
 }
 
-- (void)animateOutWithCompletionHandler:(id)a3
+- (void)animateOutWithCompletionHandler:(id)handler
 {
-  aBlock = a3;
+  aBlock = handler;
   v4 = objc_alloc_init(MEMORY[0x1E6979318]);
   [v4 setDuration:0.25];
   [v4 setKeyPath:@"opacity"];
@@ -258,8 +258,8 @@ LABEL_6:
   [v4 setTimingFunction:v10];
 
   [v4 setToValue:&unk_1F24836B0];
-  v11 = [(LPTapToLoadView *)self layer];
-  [v11 addAnimation:v4 forKey:@"fadeOut"];
+  layer = [(LPTapToLoadView *)self layer];
+  [layer addAnimation:v4 forKey:@"fadeOut"];
 
   v12 = objc_alloc_init(MEMORY[0x1E6979318]);
   [v12 setDuration:0.25];
@@ -273,41 +273,41 @@ LABEL_6:
 
   [v12 setFillMode:v5];
   [v12 setToValue:&unk_1F2483DE8];
-  v18 = [(UIView *)self->_progressView layer];
-  [v18 addAnimation:v12 forKey:@"scaleOut"];
+  layer2 = [(UIView *)self->_progressView layer];
+  [layer2 addAnimation:v12 forKey:@"scaleOut"];
 
   v19 = _Block_copy(aBlock);
   animateOutCompletionHandler = self->_animateOutCompletionHandler;
   self->_animateOutCompletionHandler = v19;
 }
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
-  v15 = a3;
-  v5 = [(LPTextView *)self->_captionView layer];
-  v6 = [v5 animationForKey:@"captionFadeOutSpring"];
+  stopCopy = stop;
+  layer = [(LPTextView *)self->_captionView layer];
+  v6 = [layer animationForKey:@"captionFadeOutSpring"];
 
-  if (v6 == v15)
+  if (v6 == stopCopy)
   {
     [(LPTextView *)self->_captionView removeFromSuperview];
     captionView = self->_captionView;
     self->_captionView = 0;
   }
 
-  v8 = [(UIView *)self->_highlightView layer];
-  v9 = [v8 animationForKey:@"highlightFadeOutSpring"];
+  layer2 = [(UIView *)self->_highlightView layer];
+  v9 = [layer2 animationForKey:@"highlightFadeOutSpring"];
 
-  if (v9 == v15)
+  if (v9 == stopCopy)
   {
     [(UIView *)self->_highlightView removeFromSuperview];
     highlightView = self->_highlightView;
     self->_highlightView = 0;
   }
 
-  v11 = [(LPTapToLoadView *)self layer];
-  v12 = [v11 animationForKey:@"fadeOut"];
+  layer3 = [(LPTapToLoadView *)self layer];
+  v12 = [layer3 animationForKey:@"fadeOut"];
 
-  if (v12 == v15)
+  if (v12 == stopCopy)
   {
     animateOutCompletionHandler = self->_animateOutCompletionHandler;
     if (animateOutCompletionHandler)

@@ -1,20 +1,20 @@
 @interface CalendarPopupButtonCell
-- (CalendarPopupButtonCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (CalendarPopupButtonCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)_configureConstraints;
-- (void)_configureViews:(id)a3;
+- (void)_configureViews:(id)views;
 - (void)_setupViews;
 - (void)prepareForReuse;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
-- (void)setPopupMenu:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
+- (void)setPopupMenu:(id)menu;
 @end
 
 @implementation CalendarPopupButtonCell
 
-- (CalendarPopupButtonCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (CalendarPopupButtonCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = CalendarPopupButtonCell;
-  v4 = [(CalendarPopupButtonCell *)&v7 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(CalendarPopupButtonCell *)&v7 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -35,52 +35,52 @@
   [(CalendarPopupButtonCell *)self setRowLabel:v5];
 
   v6 = +[UIScreen mainScreen];
-  v7 = [v6 traitCollection];
-  v8 = [UIFont preferredFontForTextStyle:UIFontTextStyleBody compatibleWithTraitCollection:v7];
-  v9 = [(CalendarPopupButtonCell *)self rowLabel];
-  [v9 setFont:v8];
+  traitCollection = [v6 traitCollection];
+  v8 = [UIFont preferredFontForTextStyle:UIFontTextStyleBody compatibleWithTraitCollection:traitCollection];
+  rowLabel = [(CalendarPopupButtonCell *)self rowLabel];
+  [rowLabel setFont:v8];
 
-  v10 = [_callingSpecifier identifier];
-  LODWORD(v9) = [v10 isEqualToString:@"SEND_FROM_SPECIFIER_ID"];
+  identifier = [_callingSpecifier identifier];
+  LODWORD(rowLabel) = [identifier isEqualToString:@"SEND_FROM_SPECIFIER_ID"];
 
-  v11 = [(CalendarPopupButtonCell *)self rowLabel];
-  v13 = v11;
-  if (v9)
+  rowLabel2 = [(CalendarPopupButtonCell *)self rowLabel];
+  popupButton = rowLabel2;
+  if (rowLabel)
   {
     LODWORD(v12) = 1148846080;
-    [v11 setContentCompressionResistancePriority:0 forAxis:v12];
+    [rowLabel2 setContentCompressionResistancePriority:0 forAxis:v12];
   }
 
   else
   {
     LODWORD(v12) = 1132068864;
-    [v11 setContentCompressionResistancePriority:0 forAxis:v12];
+    [rowLabel2 setContentCompressionResistancePriority:0 forAxis:v12];
 
-    v13 = [(CalendarPopupButtonCell *)self popupButton];
+    popupButton = [(CalendarPopupButtonCell *)self popupButton];
     LODWORD(v14) = 1148846080;
-    [v13 setContentHuggingPriority:0 forAxis:v14];
+    [popupButton setContentHuggingPriority:0 forAxis:v14];
   }
 
-  v15 = [(CalendarPopupButtonCell *)self rowLabel];
-  [v15 setTranslatesAutoresizingMaskIntoConstraints:0];
+  rowLabel3 = [(CalendarPopupButtonCell *)self rowLabel];
+  [rowLabel3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v16 = [(CalendarPopupButtonCell *)self rowLabel];
+  rowLabel4 = [(CalendarPopupButtonCell *)self rowLabel];
   v17 = +[UIColor labelColor];
-  [v16 setTextColor:v17];
+  [rowLabel4 setTextColor:v17];
 
-  v18 = [(CalendarPopupButtonCell *)self rowLabel];
-  [v18 setNumberOfLines:1];
+  rowLabel5 = [(CalendarPopupButtonCell *)self rowLabel];
+  [rowLabel5 setNumberOfLines:1];
 
-  v19 = [(CalendarPopupButtonCell *)self rowLabel];
-  [v19 setLineBreakMode:4];
+  rowLabel6 = [(CalendarPopupButtonCell *)self rowLabel];
+  [rowLabel6 setLineBreakMode:4];
 
-  v20 = [(CalendarPopupButtonCell *)self rowLabel];
+  rowLabel7 = [(CalendarPopupButtonCell *)self rowLabel];
   [_containerView bounds];
-  [v20 setPreferredMaxLayoutWidth:v21];
+  [rowLabel7 setPreferredMaxLayoutWidth:v21];
 
   v22 = _containerView;
-  v23 = [(CalendarPopupButtonCell *)self rowLabel];
-  [v22 addSubview:v23];
+  rowLabel8 = [(CalendarPopupButtonCell *)self rowLabel];
+  [v22 addSubview:rowLabel8];
 
   v24 = objc_alloc_init(UILayoutGuide);
   v25 = _layOutGuide;
@@ -96,17 +96,17 @@
   v28 = [UIButton buttonWithConfiguration:v26 primaryAction:0];
   [(CalendarPopupButtonCell *)self setPopupButton:v28];
 
-  v29 = [(CalendarPopupButtonCell *)self popupButton];
-  [v29 setTranslatesAutoresizingMaskIntoConstraints:0];
+  popupButton2 = [(CalendarPopupButtonCell *)self popupButton];
+  [popupButton2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v30 = [(CalendarPopupButtonCell *)self popupButton];
-  [v30 setShowsMenuAsPrimaryAction:1];
+  popupButton3 = [(CalendarPopupButtonCell *)self popupButton];
+  [popupButton3 setShowsMenuAsPrimaryAction:1];
 
-  v31 = [(CalendarPopupButtonCell *)self popupButton];
-  [v31 setChangesSelectionAsPrimaryAction:1];
+  popupButton4 = [(CalendarPopupButtonCell *)self popupButton];
+  [popupButton4 setChangesSelectionAsPrimaryAction:1];
 
-  v32 = [(CalendarPopupButtonCell *)self popupButton];
-  [v32 setShowsMenuAsPrimaryAction:1];
+  popupButton5 = [(CalendarPopupButtonCell *)self popupButton];
+  [popupButton5 setShowsMenuAsPrimaryAction:1];
 
   v33 = [UIAction actionWithTitle:@"test" image:0 identifier:0 handler:&stru_147E8];
   v34 = [UIAction actionWithTitle:@"test1" image:0 identifier:0 handler:&stru_14808];
@@ -114,154 +114,154 @@
   v42[1] = v34;
   v35 = [NSArray arrayWithObjects:v42 count:2];
   v36 = [UIMenu menuWithChildren:v35];
-  v37 = [(CalendarPopupButtonCell *)self popupButton];
-  [v37 setMenu:v36];
+  popupButton6 = [(CalendarPopupButtonCell *)self popupButton];
+  [popupButton6 setMenu:v36];
 
-  v38 = [(CalendarPopupButtonCell *)self popupButton];
-  [v38 sizeToFit];
+  popupButton7 = [(CalendarPopupButtonCell *)self popupButton];
+  [popupButton7 sizeToFit];
 
   [_containerView setTranslatesAutoresizingMaskIntoConstraints:0];
-  v39 = [(CalendarPopupButtonCell *)self contentView];
-  [v39 addSubview:_containerView];
+  contentView = [(CalendarPopupButtonCell *)self contentView];
+  [contentView addSubview:_containerView];
 
-  v40 = [(CalendarPopupButtonCell *)self contentView];
-  v41 = [(CalendarPopupButtonCell *)self popupButton];
-  [v40 addSubview:v41];
+  contentView2 = [(CalendarPopupButtonCell *)self contentView];
+  popupButton8 = [(CalendarPopupButtonCell *)self popupButton];
+  [contentView2 addSubview:popupButton8];
 }
 
 - (void)_configureConstraints
 {
-  v46 = [_containerView leadingAnchor];
-  v45 = [(CalendarPopupButtonCell *)self leadingAnchor];
-  v44 = [v46 constraintEqualToAnchor:v45];
+  leadingAnchor = [_containerView leadingAnchor];
+  leadingAnchor2 = [(CalendarPopupButtonCell *)self leadingAnchor];
+  v44 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v47[0] = v44;
-  v42 = [_containerView trailingAnchor];
-  v43 = [(CalendarPopupButtonCell *)self popupButton];
-  v41 = [v43 leadingAnchor];
-  v40 = [v42 constraintEqualToAnchor:v41];
+  trailingAnchor = [_containerView trailingAnchor];
+  popupButton = [(CalendarPopupButtonCell *)self popupButton];
+  leadingAnchor3 = [popupButton leadingAnchor];
+  v40 = [trailingAnchor constraintEqualToAnchor:leadingAnchor3];
   v47[1] = v40;
-  v39 = [_containerView bottomAnchor];
-  v38 = [(CalendarPopupButtonCell *)self bottomAnchor];
-  v37 = [v39 constraintEqualToAnchor:v38];
+  bottomAnchor = [_containerView bottomAnchor];
+  bottomAnchor2 = [(CalendarPopupButtonCell *)self bottomAnchor];
+  v37 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v47[2] = v37;
-  v36 = [_containerView topAnchor];
-  v35 = [(CalendarPopupButtonCell *)self topAnchor];
-  v34 = [v36 constraintEqualToAnchor:v35];
+  topAnchor = [_containerView topAnchor];
+  topAnchor2 = [(CalendarPopupButtonCell *)self topAnchor];
+  v34 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v47[3] = v34;
-  v33 = [_layOutGuide widthAnchor];
-  v32 = [v33 constraintEqualToConstant:10.0];
+  widthAnchor = [_layOutGuide widthAnchor];
+  v32 = [widthAnchor constraintEqualToConstant:10.0];
   v47[4] = v32;
-  v31 = [_layOutGuide centerYAnchor];
-  v30 = [_containerView centerYAnchor];
-  v29 = [v31 constraintEqualToAnchor:v30];
+  centerYAnchor = [_layOutGuide centerYAnchor];
+  centerYAnchor2 = [_containerView centerYAnchor];
+  v29 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v47[5] = v29;
-  v28 = [_layOutGuide trailingAnchor];
-  v27 = [_containerView trailingAnchor];
-  v26 = [v28 constraintEqualToAnchor:v27];
+  trailingAnchor2 = [_layOutGuide trailingAnchor];
+  trailingAnchor3 = [_containerView trailingAnchor];
+  v26 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3];
   v47[6] = v26;
-  v25 = [(CalendarPopupButtonCell *)self rowLabel];
-  v24 = [v25 leadingAnchor];
-  v23 = [_containerView leadingAnchor];
-  v22 = [v24 constraintEqualToAnchor:v23 constant:16.0];
+  rowLabel = [(CalendarPopupButtonCell *)self rowLabel];
+  leadingAnchor4 = [rowLabel leadingAnchor];
+  leadingAnchor5 = [_containerView leadingAnchor];
+  v22 = [leadingAnchor4 constraintEqualToAnchor:leadingAnchor5 constant:16.0];
   v47[7] = v22;
-  v21 = [(CalendarPopupButtonCell *)self rowLabel];
-  v20 = [v21 centerYAnchor];
-  v19 = [_containerView centerYAnchor];
-  v18 = [v20 constraintEqualToAnchor:v19];
+  rowLabel2 = [(CalendarPopupButtonCell *)self rowLabel];
+  centerYAnchor3 = [rowLabel2 centerYAnchor];
+  centerYAnchor4 = [_containerView centerYAnchor];
+  v18 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
   v47[8] = v18;
-  v17 = [(CalendarPopupButtonCell *)self rowLabel];
-  v16 = [v17 trailingAnchor];
-  v15 = [_layOutGuide leadingAnchor];
-  v14 = [v16 constraintEqualToAnchor:v15];
+  rowLabel3 = [(CalendarPopupButtonCell *)self rowLabel];
+  trailingAnchor4 = [rowLabel3 trailingAnchor];
+  leadingAnchor6 = [_layOutGuide leadingAnchor];
+  v14 = [trailingAnchor4 constraintEqualToAnchor:leadingAnchor6];
   v47[9] = v14;
-  v13 = [(CalendarPopupButtonCell *)self popupButton];
-  v3 = [v13 centerYAnchor];
-  v4 = [(CalendarPopupButtonCell *)self contentView];
-  v5 = [v4 centerYAnchor];
-  v6 = [v3 constraintEqualToAnchor:v5];
+  popupButton2 = [(CalendarPopupButtonCell *)self popupButton];
+  centerYAnchor5 = [popupButton2 centerYAnchor];
+  contentView = [(CalendarPopupButtonCell *)self contentView];
+  centerYAnchor6 = [contentView centerYAnchor];
+  v6 = [centerYAnchor5 constraintEqualToAnchor:centerYAnchor6];
   v47[10] = v6;
-  v7 = [(CalendarPopupButtonCell *)self popupButton];
-  v8 = [v7 trailingAnchor];
-  v9 = [(CalendarPopupButtonCell *)self contentView];
-  v10 = [v9 trailingAnchor];
-  v11 = [v8 constraintEqualToAnchor:v10];
+  popupButton3 = [(CalendarPopupButtonCell *)self popupButton];
+  trailingAnchor5 = [popupButton3 trailingAnchor];
+  contentView2 = [(CalendarPopupButtonCell *)self contentView];
+  trailingAnchor6 = [contentView2 trailingAnchor];
+  v11 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
   v47[11] = v11;
   v12 = [NSArray arrayWithObjects:v47 count:12];
   [NSLayoutConstraint activateConstraints:v12];
 }
 
-- (void)_configureViews:(id)a3
+- (void)_configureViews:(id)views
 {
-  v4 = a3;
-  v5 = [(CalendarPopupButtonCell *)self rowLabel];
-  [v5 setText:v4];
+  viewsCopy = views;
+  rowLabel = [(CalendarPopupButtonCell *)self rowLabel];
+  [rowLabel setText:viewsCopy];
 
-  v6 = [(CalendarPopupButtonCell *)self rowLabel];
-  [v6 setNumberOfLines:1];
+  rowLabel2 = [(CalendarPopupButtonCell *)self rowLabel];
+  [rowLabel2 setNumberOfLines:1];
 
-  v7 = [(CalendarPopupButtonCell *)self rowLabel];
-  [v7 setLineBreakMode:4];
+  rowLabel3 = [(CalendarPopupButtonCell *)self rowLabel];
+  [rowLabel3 setLineBreakMode:4];
 
-  v8 = [_callingSpecifier identifier];
-  LODWORD(v5) = [v8 isEqualToString:@"SEND_FROM_SPECIFIER_ID"];
+  identifier = [_callingSpecifier identifier];
+  LODWORD(rowLabel) = [identifier isEqualToString:@"SEND_FROM_SPECIFIER_ID"];
 
-  v9 = [(CalendarPopupButtonCell *)self rowLabel];
-  v11 = v9;
-  if (v5)
+  rowLabel4 = [(CalendarPopupButtonCell *)self rowLabel];
+  popupButton = rowLabel4;
+  if (rowLabel)
   {
     LODWORD(v10) = 1148846080;
-    [v9 setContentCompressionResistancePriority:0 forAxis:v10];
+    [rowLabel4 setContentCompressionResistancePriority:0 forAxis:v10];
   }
 
   else
   {
     LODWORD(v10) = 1132068864;
-    [v9 setContentCompressionResistancePriority:0 forAxis:v10];
+    [rowLabel4 setContentCompressionResistancePriority:0 forAxis:v10];
 
-    v11 = [(CalendarPopupButtonCell *)self popupButton];
+    popupButton = [(CalendarPopupButtonCell *)self popupButton];
     LODWORD(v12) = 1148846080;
-    [v11 setContentHuggingPriority:0 forAxis:v12];
+    [popupButton setContentHuggingPriority:0 forAxis:v12];
   }
 
-  v13 = [(CalendarPopupButtonCell *)self popupButton];
-  [v13 sizeToFit];
+  popupButton2 = [(CalendarPopupButtonCell *)self popupButton];
+  [popupButton2 sizeToFit];
 }
 
-- (void)setPopupMenu:(id)a3
+- (void)setPopupMenu:(id)menu
 {
-  v4 = a3;
-  v5 = [(CalendarPopupButtonCell *)self popupButton];
-  [v5 setMenu:v4];
+  menuCopy = menu;
+  popupButton = [(CalendarPopupButtonCell *)self popupButton];
+  [popupButton setMenu:menuCopy];
 
-  v6 = [(CalendarPopupButtonCell *)self popupButton];
-  [v6 sizeToFit];
+  popupButton2 = [(CalendarPopupButtonCell *)self popupButton];
+  [popupButton2 sizeToFit];
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
-  v5 = a3;
+  specifierCopy = specifier;
   v11.receiver = self;
   v11.super_class = CalendarPopupButtonCell;
-  [(CalendarPopupButtonCell *)&v11 refreshCellContentsWithSpecifier:v5];
-  objc_storeStrong(&_callingSpecifier, a3);
-  v6 = [v5 target];
-  v7 = [(CalendarPopupButtonCell *)self popupButton];
-  [v7 addTarget:v6 action:objc_msgSend(v5 forControlEvents:{"buttonAction"), 64}];
+  [(CalendarPopupButtonCell *)&v11 refreshCellContentsWithSpecifier:specifierCopy];
+  objc_storeStrong(&_callingSpecifier, specifier);
+  target = [specifierCopy target];
+  popupButton = [(CalendarPopupButtonCell *)self popupButton];
+  [popupButton addTarget:target action:objc_msgSend(specifierCopy forControlEvents:{"buttonAction"), 64}];
 
-  v8 = [_callingSpecifier identifier];
-  LODWORD(v7) = [v8 isEqualToString:@"SEND_FROM_SPECIFIER_ID"];
+  identifier = [_callingSpecifier identifier];
+  LODWORD(popupButton) = [identifier isEqualToString:@"SEND_FROM_SPECIFIER_ID"];
 
-  if (v7)
+  if (popupButton)
   {
-    v9 = [NSBundle bundleForClass:objc_opt_class()];
-    v10 = [v9 localizedStringForKey:@"CALENDAR_SEND_FROM_LABEL" value:&stru_14AB8 table:@"calendarSettings"];
+    identifier2 = [NSBundle bundleForClass:objc_opt_class()];
+    v10 = [identifier2 localizedStringForKey:@"CALENDAR_SEND_FROM_LABEL" value:&stru_14AB8 table:@"calendarSettings"];
     [(CalendarPopupButtonCell *)self _configureViews:v10];
   }
 
   else
   {
-    v9 = [v5 identifier];
-    [(CalendarPopupButtonCell *)self _configureViews:v9];
+    identifier2 = [specifierCopy identifier];
+    [(CalendarPopupButtonCell *)self _configureViews:identifier2];
   }
 
   [(CalendarPopupButtonCell *)self layoutIfNeeded];

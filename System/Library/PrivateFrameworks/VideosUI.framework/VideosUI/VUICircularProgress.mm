@@ -1,14 +1,14 @@
 @interface VUICircularProgress
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4;
-- (CGSize)vui_sizeThatFits:(CGSize)a3;
-- (VUICircularProgress)initWithFrame:(CGRect)a3;
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only;
+- (CGSize)vui_sizeThatFits:(CGSize)fits;
+- (VUICircularProgress)initWithFrame:(CGRect)frame;
 - (id)_indeterminatePath;
 - (id)_progressPath;
 - (void)_addActivityIndicatorView;
 - (void)_addIndeterminateLayer;
 - (void)_addProgressLayer;
-- (void)_applicationWillEnterForeground:(id)a3;
-- (void)_configureProgress:(BOOL)a3;
+- (void)_applicationWillEnterForeground:(id)foreground;
+- (void)_configureProgress:(BOOL)progress;
 - (void)_removeActivityIndicatorView;
 - (void)_removeIndeterminateLayer;
 - (void)_removeProgressLayer;
@@ -16,22 +16,22 @@
 - (void)_startIndeterminateAnimation;
 - (void)_updateColors;
 - (void)dealloc;
-- (void)setIndeterminate:(BOOL)a3;
-- (void)setProgress:(double)a3;
-- (void)setProgressBgColor:(id)a3;
-- (void)setProgressFillColor:(id)a3;
+- (void)setIndeterminate:(BOOL)indeterminate;
+- (void)setProgress:(double)progress;
+- (void)setProgressBgColor:(id)color;
+- (void)setProgressFillColor:(id)color;
 - (void)tintColorDidChange;
 - (void)vui_didMoveToWindow;
 @end
 
 @implementation VUICircularProgress
 
-- (VUICircularProgress)initWithFrame:(CGRect)a3
+- (VUICircularProgress)initWithFrame:(CGRect)frame
 {
   v17[1] = *MEMORY[0x1E69E9840];
   v16.receiver = self;
   v16.super_class = VUICircularProgress;
-  v3 = [(VUICircularProgress *)&v16 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(VUICircularProgress *)&v16 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -39,19 +39,19 @@
     v3->_indeterminateWidth = 2.0;
     v3->_centerSquareWidth = 8.0;
     v3->_centerSquareCornerRadius = 1.5;
-    v5 = [MEMORY[0x1E69DC888] vui_keyColor];
+    vui_keyColor = [MEMORY[0x1E69DC888] vui_keyColor];
     progressFillColor = v4->_progressFillColor;
-    v4->_progressFillColor = v5;
+    v4->_progressFillColor = vui_keyColor;
 
-    v7 = [MEMORY[0x1E69DC888] vui_systemLightGrayColor];
+    vui_systemLightGrayColor = [MEMORY[0x1E69DC888] vui_systemLightGrayColor];
     progressBgColor = v4->_progressBgColor;
-    v4->_progressBgColor = v7;
+    v4->_progressBgColor = vui_systemLightGrayColor;
 
     v4->_progressBgHidden = 0;
     v4->_indeterminateType = 0;
     [(VUICircularProgress *)v4 setVuiClipsToBounds:1];
-    v9 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v9 addObserver:v4 selector:sel__applicationWillEnterForeground_ name:*MEMORY[0x1E69DF7E8] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v4 selector:sel__applicationWillEnterForeground_ name:*MEMORY[0x1E69DF7E8] object:0];
 
     v10 = objc_initWeak(&location, v4);
     v17[0] = objc_opt_class();
@@ -93,58 +93,58 @@ void __37__VUICircularProgress_initWithFrame___block_invoke_2(uint64_t a1)
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = VUICircularProgress;
   [(VUICircularProgress *)&v4 dealloc];
 }
 
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only
 {
-  height = a3.height;
-  width = a3.width;
-  if (a4)
+  height = subviews.height;
+  width = subviews.width;
+  if (only)
   {
-    [(VUICircularProgress *)self vui_sizeThatFits:a3.width, a3.height];
+    [(VUICircularProgress *)self vui_sizeThatFits:subviews.width, subviews.height];
     width = v7;
     height = v8;
   }
 
   else
   {
-    v9 = [(VUICircularProgress *)self progressLayer];
+    progressLayer = [(VUICircularProgress *)self progressLayer];
 
-    if (v9)
+    if (progressLayer)
     {
       [(VUICircularProgress *)self bounds];
       v11 = v10;
       v13 = v12;
       v15 = v14;
       v17 = v16;
-      v18 = [(VUICircularProgress *)self progressLayer];
-      [v18 setFrame:{v11, v13, v15, v17}];
+      progressLayer2 = [(VUICircularProgress *)self progressLayer];
+      [progressLayer2 setFrame:{v11, v13, v15, v17}];
 
-      v19 = [(VUICircularProgress *)self progressBackgroundLayer];
+      progressBackgroundLayer = [(VUICircularProgress *)self progressBackgroundLayer];
       v67 = v17;
       v68 = v15;
-      [v19 setFrame:{v11, v13, v15, v17}];
+      [progressBackgroundLayer setFrame:{v11, v13, v15, v17}];
 
-      v20 = [(VUICircularProgress *)self progressLayer];
-      v21 = [(VUICircularProgress *)self _progressPath];
-      [v20 setPath:{objc_msgSend(v21, "vuiCGPath")}];
+      progressLayer3 = [(VUICircularProgress *)self progressLayer];
+      _progressPath = [(VUICircularProgress *)self _progressPath];
+      [progressLayer3 setPath:{objc_msgSend(_progressPath, "vuiCGPath")}];
 
-      v22 = [(VUICircularProgress *)self progressBackgroundLayer];
-      v23 = [(VUICircularProgress *)self _progressPath];
-      [v22 setPath:{objc_msgSend(v23, "vuiCGPath")}];
+      progressBackgroundLayer2 = [(VUICircularProgress *)self progressBackgroundLayer];
+      _progressPath2 = [(VUICircularProgress *)self _progressPath];
+      [progressBackgroundLayer2 setPath:{objc_msgSend(_progressPath2, "vuiCGPath")}];
 
-      v24 = [(VUICircularProgress *)self progressBackgroundLayer];
-      [v24 setHidden:{-[VUICircularProgress progressBgHidden](self, "progressBgHidden")}];
+      progressBackgroundLayer3 = [(VUICircularProgress *)self progressBackgroundLayer];
+      [progressBackgroundLayer3 setHidden:{-[VUICircularProgress progressBgHidden](self, "progressBgHidden")}];
 
-      v25 = [(VUICircularProgress *)self centerLayer];
+      centerLayer = [(VUICircularProgress *)self centerLayer];
 
-      if (v25)
+      if (centerLayer)
       {
         [(VUICircularProgress *)self centerSquareWidth];
         v65 = v26;
@@ -161,21 +161,21 @@ void __37__VUICircularProgress_initWithFrame___block_invoke_2(uint64_t a1)
         v37 = v36;
         [(VUICircularProgress *)self centerSquareWidth];
         v39 = (v37 - v38) * 0.5;
-        v40 = [(VUICircularProgress *)self centerLayer];
+        centerLayer2 = [(VUICircularProgress *)self centerLayer];
         v41 = v39;
         height = v35;
         v42 = v30;
         v11 = v28;
         v13 = v27;
-        [v40 setFrame:{v34, v41, v65, v42}];
+        [centerLayer2 setFrame:{v34, v41, v65, v42}];
       }
 
-      v43 = [(VUICircularProgress *)self centerImageView];
+      centerImageView = [(VUICircularProgress *)self centerImageView];
 
-      if (v43)
+      if (centerImageView)
       {
-        v44 = [(VUICircularProgress *)self centerImage];
-        [v44 size];
+        centerImage = [(VUICircularProgress *)self centerImage];
+        [centerImage size];
         v46 = v45;
         v66 = height;
         v48 = v47;
@@ -195,35 +195,35 @@ void __37__VUICircularProgress_initWithFrame___block_invoke_2(uint64_t a1)
         CGRectGetMidY(v71);
         VUIRoundValue();
         v52 = v51;
-        v53 = [(VUICircularProgress *)self centerImageView];
+        centerImageView2 = [(VUICircularProgress *)self centerImageView];
         v54 = v52;
         v55 = v48;
         width = v64;
         height = v66;
-        [v53 setFrame:{v50, v54, v46, v55}];
+        [centerImageView2 setFrame:{v50, v54, v46, v55}];
       }
     }
 
-    v56 = [(VUICircularProgress *)self indeterminateLayer];
+    indeterminateLayer = [(VUICircularProgress *)self indeterminateLayer];
 
-    if (v56)
+    if (indeterminateLayer)
     {
-      v57 = [(VUICircularProgress *)self indeterminateLayer];
+      indeterminateLayer2 = [(VUICircularProgress *)self indeterminateLayer];
       [(VUICircularProgress *)self bounds];
-      [v57 setFrame:?];
+      [indeterminateLayer2 setFrame:?];
 
-      v58 = [(VUICircularProgress *)self indeterminateLayer];
-      v59 = [(VUICircularProgress *)self _indeterminatePath];
-      [v58 setPath:{objc_msgSend(v59, "vuiCGPath")}];
+      indeterminateLayer3 = [(VUICircularProgress *)self indeterminateLayer];
+      _indeterminatePath = [(VUICircularProgress *)self _indeterminatePath];
+      [indeterminateLayer3 setPath:{objc_msgSend(_indeterminatePath, "vuiCGPath")}];
     }
 
-    v60 = [(VUICircularProgress *)self activityIndicatorView];
+    activityIndicatorView = [(VUICircularProgress *)self activityIndicatorView];
 
-    if (v60)
+    if (activityIndicatorView)
     {
-      v61 = [(VUICircularProgress *)self activityIndicatorView];
+      activityIndicatorView2 = [(VUICircularProgress *)self activityIndicatorView];
       [(VUICircularProgress *)self bounds];
-      [v61 setFrame:?];
+      [activityIndicatorView2 setFrame:?];
     }
   }
 
@@ -246,20 +246,20 @@ void __37__VUICircularProgress_initWithFrame___block_invoke_2(uint64_t a1)
 {
   if ([(VUICircularProgress *)self isIndeterminate])
   {
-    v3 = [(VUICircularProgress *)self vuiTintColor];
-    v4 = [(VUICircularProgress *)self vuiTraitCollection];
-    v8 = [v3 resolvedColorWithTraitCollection:v4];
+    vuiTintColor = [(VUICircularProgress *)self vuiTintColor];
+    vuiTraitCollection = [(VUICircularProgress *)self vuiTraitCollection];
+    v8 = [vuiTintColor resolvedColorWithTraitCollection:vuiTraitCollection];
 
     v5 = v8;
-    v6 = [v8 CGColor];
-    v7 = [(VUICircularProgress *)self indeterminateLayer];
-    [v7 setStrokeColor:v6];
+    cGColor = [v8 CGColor];
+    indeterminateLayer = [(VUICircularProgress *)self indeterminateLayer];
+    [indeterminateLayer setStrokeColor:cGColor];
   }
 }
 
-- (CGSize)vui_sizeThatFits:(CGSize)a3
+- (CGSize)vui_sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
+  width = fits.width;
   v4 = 28.0;
   if (width == 0.0)
   {
@@ -273,9 +273,9 @@ void __37__VUICircularProgress_initWithFrame___block_invoke_2(uint64_t a1)
       width = 28.0;
     }
 
-    if (a3.height <= 28.0)
+    if (fits.height <= 28.0)
     {
-      height = a3.height;
+      height = fits.height;
     }
 
     else
@@ -283,8 +283,8 @@ void __37__VUICircularProgress_initWithFrame___block_invoke_2(uint64_t a1)
       height = 28.0;
     }
 
-    v6 = a3.height == 0.0;
-    if (a3.height == 0.0)
+    v6 = fits.height == 0.0;
+    if (fits.height == 0.0)
     {
       v7 = 28.0;
     }
@@ -305,67 +305,67 @@ void __37__VUICircularProgress_initWithFrame___block_invoke_2(uint64_t a1)
   return result;
 }
 
-- (void)setIndeterminate:(BOOL)a3
+- (void)setIndeterminate:(BOOL)indeterminate
 {
-  if (self->_indeterminate != a3)
+  if (self->_indeterminate != indeterminate)
   {
-    v4 = a3;
-    self->_indeterminate = a3;
+    indeterminateCopy = indeterminate;
+    self->_indeterminate = indeterminate;
     if ([(VUICircularProgress *)self vui_isInAWindow])
     {
-      [(VUICircularProgress *)self _configureProgress:v4];
+      [(VUICircularProgress *)self _configureProgress:indeterminateCopy];
     }
 
     [(VUICircularProgress *)self vui_setNeedsLayout];
   }
 }
 
-- (void)setProgress:(double)a3
+- (void)setProgress:(double)progress
 {
-  if (self->_progress != a3)
+  if (self->_progress != progress)
   {
-    self->_progress = a3;
-    v5 = [(VUICircularProgress *)self progressLayer];
+    self->_progress = progress;
+    progressLayer = [(VUICircularProgress *)self progressLayer];
 
-    if (!v5)
+    if (!progressLayer)
     {
       [(VUICircularProgress *)self _addProgressLayer];
     }
 
-    v6 = 1.0;
-    if (a3 <= 0.99)
+    progressCopy = 1.0;
+    if (progress <= 0.99)
     {
-      if (a3 <= 0.0)
+      if (progress <= 0.0)
       {
-        v6 = 0.0;
+        progressCopy = 0.0;
       }
 
       else
       {
-        v6 = a3;
+        progressCopy = progress;
       }
     }
 
-    v7 = [(VUICircularProgress *)self progressLayer];
-    [v7 setStrokeEnd:v6];
+    progressLayer2 = [(VUICircularProgress *)self progressLayer];
+    [progressLayer2 setStrokeEnd:progressCopy];
 
     [(VUICircularProgress *)self vui_setNeedsDisplay];
   }
 }
 
-- (void)setProgressFillColor:(id)a3
+- (void)setProgressFillColor:(id)color
 {
-  v5 = a3;
-  if (self->_progressFillColor != v5)
+  colorCopy = color;
+  if (self->_progressFillColor != colorCopy)
   {
-    objc_storeStrong(&self->_progressFillColor, a3);
+    objc_storeStrong(&self->_progressFillColor, color);
     objc_initWeak(&location, self);
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __44__VUICircularProgress_setProgressFillColor___block_invoke;
     v6[3] = &unk_1E872F038;
     objc_copyWeak(&v8, &location);
-    v7 = v5;
+    v7 = colorCopy;
     [(VUICircularProgress *)self vui_performAsCurrentTraitCollection:v6];
 
     objc_destroyWeak(&v8);
@@ -393,19 +393,19 @@ void __44__VUICircularProgress_setProgressFillColor___block_invoke(uint64_t a1)
   [MEMORY[0x1E6979518] commit];
 }
 
-- (void)setProgressBgColor:(id)a3
+- (void)setProgressBgColor:(id)color
 {
-  v5 = a3;
-  if (self->_progressBgColor != v5)
+  colorCopy = color;
+  if (self->_progressBgColor != colorCopy)
   {
-    objc_storeStrong(&self->_progressBgColor, a3);
+    objc_storeStrong(&self->_progressBgColor, color);
     objc_initWeak(&location, self);
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __42__VUICircularProgress_setProgressBgColor___block_invoke;
     v6[3] = &unk_1E872F038;
     objc_copyWeak(&v8, &location);
-    v7 = v5;
+    v7 = colorCopy;
     [(VUICircularProgress *)self vui_performAsCurrentTraitCollection:v6];
 
     objc_destroyWeak(&v8);
@@ -422,34 +422,34 @@ void __42__VUICircularProgress_setProgressBgColor___block_invoke(uint64_t a1)
 
 - (void)_updateColors
 {
-  v3 = [(VUICircularProgress *)self indeterminateLayer];
-  v4 = [(VUICircularProgress *)self vuiTintColor];
-  [v3 setStrokeColor:{objc_msgSend(v4, "CGColor")}];
+  indeterminateLayer = [(VUICircularProgress *)self indeterminateLayer];
+  vuiTintColor = [(VUICircularProgress *)self vuiTintColor];
+  [indeterminateLayer setStrokeColor:{objc_msgSend(vuiTintColor, "CGColor")}];
 
-  v5 = [(VUICircularProgress *)self centerLayer];
-  v6 = [(VUICircularProgress *)self progressFillColor];
-  [v5 setBackgroundColor:{objc_msgSend(v6, "CGColor")}];
+  centerLayer = [(VUICircularProgress *)self centerLayer];
+  progressFillColor = [(VUICircularProgress *)self progressFillColor];
+  [centerLayer setBackgroundColor:{objc_msgSend(progressFillColor, "CGColor")}];
 
-  v7 = [(VUICircularProgress *)self centerImageView];
-  v8 = [(VUICircularProgress *)self progressFillColor];
-  [v7 _setTintColor:v8];
+  centerImageView = [(VUICircularProgress *)self centerImageView];
+  progressFillColor2 = [(VUICircularProgress *)self progressFillColor];
+  [centerImageView _setTintColor:progressFillColor2];
 
-  v9 = [(VUICircularProgress *)self progressLayer];
-  v10 = [(VUICircularProgress *)self progressFillColor];
-  [v9 setStrokeColor:{objc_msgSend(v10, "CGColor")}];
+  progressLayer = [(VUICircularProgress *)self progressLayer];
+  progressFillColor3 = [(VUICircularProgress *)self progressFillColor];
+  [progressLayer setStrokeColor:{objc_msgSend(progressFillColor3, "CGColor")}];
 
-  v12 = [(VUICircularProgress *)self progressBackgroundLayer];
-  v11 = [(VUICircularProgress *)self progressBgColor];
-  [v12 setStrokeColor:{objc_msgSend(v11, "CGColor")}];
+  progressBackgroundLayer = [(VUICircularProgress *)self progressBackgroundLayer];
+  progressBgColor = [(VUICircularProgress *)self progressBgColor];
+  [progressBackgroundLayer setStrokeColor:{objc_msgSend(progressBgColor, "CGColor")}];
 }
 
-- (void)_configureProgress:(BOOL)a3
+- (void)_configureProgress:(BOOL)progress
 {
-  v3 = a3;
-  v5 = [(VUICircularProgress *)self indeterminateType];
-  if (v3)
+  progressCopy = progress;
+  indeterminateType = [(VUICircularProgress *)self indeterminateType];
+  if (progressCopy)
   {
-    if (v5)
+    if (indeterminateType)
     {
       [(VUICircularProgress *)self _addActivityIndicatorView];
       [(VUICircularProgress *)self _removeProgressLayer];
@@ -466,7 +466,7 @@ void __42__VUICircularProgress_setProgressBgColor___block_invoke(uint64_t a1)
 
   else
   {
-    if (v5)
+    if (indeterminateType)
     {
       [(VUICircularProgress *)self _removeActivityIndicatorView];
     }
@@ -497,17 +497,17 @@ void __42__VUICircularProgress_setProgressBgColor___block_invoke(uint64_t a1)
 
 - (void)_addProgressLayer
 {
-  v3 = [(VUICircularProgress *)self progressLayer];
+  progressLayer = [(VUICircularProgress *)self progressLayer];
 
-  if (!v3)
+  if (!progressLayer)
   {
-    v4 = [(VUICircularProgress *)self centerImage];
+    centerImage = [(VUICircularProgress *)self centerImage];
 
-    if (v4)
+    if (centerImage)
     {
       v5 = objc_opt_new();
-      v6 = [(VUICircularProgress *)self centerImage];
-      [v5 setImage:v6];
+      centerImage2 = [(VUICircularProgress *)self centerImage];
+      [v5 setImage:centerImage2];
 
       [(VUICircularProgress *)self setCenterImageView:v5];
       [(VUICircularProgress *)self addSubview:v5];
@@ -518,8 +518,8 @@ void __42__VUICircularProgress_setProgressBgColor___block_invoke(uint64_t a1)
       v5 = objc_opt_new();
       [(VUICircularProgress *)self centerSquareCornerRadius];
       [v5 setCornerRadius:?];
-      v7 = [(VUICircularProgress *)self vuiLayer];
-      [v7 addSublayer:v5];
+      vuiLayer = [(VUICircularProgress *)self vuiLayer];
+      [vuiLayer addSublayer:v5];
 
       [(VUICircularProgress *)self setCenterLayer:v5];
     }
@@ -527,29 +527,29 @@ void __42__VUICircularProgress_setProgressBgColor___block_invoke(uint64_t a1)
     v8 = objc_opt_new();
     [(VUICircularProgress *)self progressWidth];
     [v8 setLineWidth:?];
-    v9 = [MEMORY[0x1E69DC888] clearColor];
-    [v8 setFillColor:{objc_msgSend(v9, "CGColor")}];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [v8 setFillColor:{objc_msgSend(clearColor, "CGColor")}];
 
-    v10 = [(VUICircularProgress *)self _progressPath];
-    [v8 setPath:{objc_msgSend(v10, "vuiCGPath")}];
+    _progressPath = [(VUICircularProgress *)self _progressPath];
+    [v8 setPath:{objc_msgSend(_progressPath, "vuiCGPath")}];
 
-    v11 = [(VUICircularProgress *)self vuiLayer];
-    [v11 addSublayer:v8];
+    vuiLayer2 = [(VUICircularProgress *)self vuiLayer];
+    [vuiLayer2 addSublayer:v8];
 
     [(VUICircularProgress *)self setProgressBackgroundLayer:v8];
     v12 = objc_opt_new();
-    v13 = [MEMORY[0x1E69DC888] clearColor];
-    [v12 setFillColor:{objc_msgSend(v13, "CGColor")}];
+    clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+    [v12 setFillColor:{objc_msgSend(clearColor2, "CGColor")}];
 
     [(VUICircularProgress *)self progressWidth];
     [v12 setLineWidth:?];
     [v12 setLineCap:*MEMORY[0x1E6979E78]];
-    v14 = [(VUICircularProgress *)self _progressPath];
-    [v12 setPath:{objc_msgSend(v14, "vuiCGPath")}];
+    _progressPath2 = [(VUICircularProgress *)self _progressPath];
+    [v12 setPath:{objc_msgSend(_progressPath2, "vuiCGPath")}];
 
     [v12 setStrokeEnd:0.0];
-    v15 = [(VUICircularProgress *)self vuiLayer];
-    [v15 addSublayer:v12];
+    vuiLayer3 = [(VUICircularProgress *)self vuiLayer];
+    [vuiLayer3 addSublayer:v12];
 
     [(VUICircularProgress *)self setProgressLayer:v12];
     objc_initWeak(&location, self);
@@ -591,20 +591,20 @@ void __40__VUICircularProgress__addProgressLayer__block_invoke(uint64_t a1)
 
 - (void)_removeProgressLayer
 {
-  v3 = [(VUICircularProgress *)self progressLayer];
-  [v3 removeFromSuperlayer];
+  progressLayer = [(VUICircularProgress *)self progressLayer];
+  [progressLayer removeFromSuperlayer];
 
   [(VUICircularProgress *)self setProgressLayer:0];
-  v4 = [(VUICircularProgress *)self progressBackgroundLayer];
-  [v4 removeFromSuperlayer];
+  progressBackgroundLayer = [(VUICircularProgress *)self progressBackgroundLayer];
+  [progressBackgroundLayer removeFromSuperlayer];
 
   [(VUICircularProgress *)self setProgressBackgroundLayer:0];
-  v5 = [(VUICircularProgress *)self centerLayer];
-  [v5 removeFromSuperlayer];
+  centerLayer = [(VUICircularProgress *)self centerLayer];
+  [centerLayer removeFromSuperlayer];
 
   [(VUICircularProgress *)self setCenterLayer:0];
-  v6 = [(VUICircularProgress *)self centerImageView];
-  [v6 removeFromSuperview];
+  centerImageView = [(VUICircularProgress *)self centerImageView];
+  [centerImageView removeFromSuperview];
 
   [(VUICircularProgress *)self setCenterImageView:0];
 }
@@ -624,13 +624,13 @@ void __40__VUICircularProgress__addProgressLayer__block_invoke(uint64_t a1)
 
 - (void)_addActivityIndicatorView
 {
-  v3 = [(VUICircularProgress *)self activityIndicatorView];
+  activityIndicatorView = [(VUICircularProgress *)self activityIndicatorView];
 
-  if (!v3)
+  if (!activityIndicatorView)
   {
     v4 = [VUIActivityIndicatorView vui_activityIndicatorViewWithActivityIndicatorStyle:0];
-    v5 = [MEMORY[0x1E69DC888] clearColor];
-    [v4 setVuiBackgroundColor:v5];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [v4 setVuiBackgroundColor:clearColor];
 
     objc_initWeak(&location, self);
     v7[0] = MEMORY[0x1E69E9820];
@@ -658,23 +658,23 @@ void __48__VUICircularProgress__addActivityIndicatorView__block_invoke(uint64_t 
 
 - (void)_startActivityIndicatorViewAnimation
 {
-  v2 = [(VUICircularProgress *)self activityIndicatorView];
-  [v2 vui_startAnimating];
+  activityIndicatorView = [(VUICircularProgress *)self activityIndicatorView];
+  [activityIndicatorView vui_startAnimating];
 }
 
 - (void)_removeActivityIndicatorView
 {
-  v3 = [(VUICircularProgress *)self activityIndicatorView];
-  [v3 vui_removeFromSuperView];
+  activityIndicatorView = [(VUICircularProgress *)self activityIndicatorView];
+  [activityIndicatorView vui_removeFromSuperView];
 
   [(VUICircularProgress *)self setActivityIndicatorView:0];
 }
 
 - (void)_addIndeterminateLayer
 {
-  v3 = [(VUICircularProgress *)self indeterminateLayer];
+  indeterminateLayer = [(VUICircularProgress *)self indeterminateLayer];
 
-  if (!v3)
+  if (!indeterminateLayer)
   {
     v4 = objc_opt_new();
     objc_initWeak(&location, self);
@@ -686,14 +686,14 @@ void __48__VUICircularProgress__addActivityIndicatorView__block_invoke(uint64_t 
     v5 = v4;
     v9 = v5;
     [(VUICircularProgress *)self vui_performAsCurrentTraitCollection:v8];
-    v6 = [MEMORY[0x1E69DC888] clearColor];
-    [v5 setFillColor:{objc_msgSend(v6, "CGColor")}];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [v5 setFillColor:{objc_msgSend(clearColor, "CGColor")}];
 
     [(VUICircularProgress *)self indeterminateWidth];
     [v5 setLineWidth:?];
     [v5 setLineCap:*MEMORY[0x1E6979E78]];
-    v7 = [(VUICircularProgress *)self vuiLayer];
-    [v7 addSublayer:v5];
+    vuiLayer = [(VUICircularProgress *)self vuiLayer];
+    [vuiLayer addSublayer:v5];
 
     [(VUICircularProgress *)self setIndeterminateLayer:v5];
     objc_destroyWeak(&v10);
@@ -717,22 +717,22 @@ void __45__VUICircularProgress__addIndeterminateLayer__block_invoke(uint64_t a1)
   [v5 setDuration:1.0];
   LODWORD(v3) = 2139095040;
   [v5 setRepeatCount:v3];
-  v4 = [(VUICircularProgress *)self indeterminateLayer];
-  [v4 addAnimation:v5 forKey:@"indeterminateAnimation"];
+  indeterminateLayer = [(VUICircularProgress *)self indeterminateLayer];
+  [indeterminateLayer addAnimation:v5 forKey:@"indeterminateAnimation"];
 }
 
 - (void)_removeIndeterminateLayer
 {
-  v3 = [(VUICircularProgress *)self indeterminateLayer];
-  [v3 removeFromSuperlayer];
+  indeterminateLayer = [(VUICircularProgress *)self indeterminateLayer];
+  [indeterminateLayer removeFromSuperlayer];
 
   [(VUICircularProgress *)self setIndeterminateLayer:0];
 }
 
-- (void)_applicationWillEnterForeground:(id)a3
+- (void)_applicationWillEnterForeground:(id)foreground
 {
-  v4 = [(VUICircularProgress *)self indeterminateLayer];
-  v5 = [v4 animationForKey:@"indeterminateAnimation"];
+  indeterminateLayer = [(VUICircularProgress *)self indeterminateLayer];
+  v5 = [indeterminateLayer animationForKey:@"indeterminateAnimation"];
 
   if (!v5 && [(VUICircularProgress *)self isIndeterminate])
   {

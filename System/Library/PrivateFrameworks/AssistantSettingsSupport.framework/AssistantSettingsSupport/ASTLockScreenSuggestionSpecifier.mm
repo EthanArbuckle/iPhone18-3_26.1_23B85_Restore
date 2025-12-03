@@ -1,19 +1,19 @@
 @interface ASTLockScreenSuggestionSpecifier
-- (ASTLockScreenSuggestionSpecifier)initWithListController:(id)a3 groupSpecifier:(id)a4;
-- (id)isLockScreenSwitchEnabled:(id)a3;
-- (id)specifierForBundleID:(id)a3;
+- (ASTLockScreenSuggestionSpecifier)initWithListController:(id)controller groupSpecifier:(id)specifier;
+- (id)isLockScreenSwitchEnabled:(id)enabled;
+- (id)specifierForBundleID:(id)d;
 - (id)specifiers;
-- (void)setLockScreenSwitchEnabled:(id)a3 forSpecifier:(id)a4;
+- (void)setLockScreenSwitchEnabled:(id)enabled forSpecifier:(id)specifier;
 - (void)specifiers;
 @end
 
 @implementation ASTLockScreenSuggestionSpecifier
 
-- (ASTLockScreenSuggestionSpecifier)initWithListController:(id)a3 groupSpecifier:(id)a4
+- (ASTLockScreenSuggestionSpecifier)initWithListController:(id)controller groupSpecifier:(id)specifier
 {
   v5.receiver = self;
   v5.super_class = ASTLockScreenSuggestionSpecifier;
-  return [(ASTLockScreenSuggestionSpecifier *)&v5 init:a3];
+  return [(ASTLockScreenSuggestionSpecifier *)&v5 init:controller];
 }
 
 - (id)specifiers
@@ -21,10 +21,10 @@
   v28 = *MEMORY[0x277D85DE8];
   if (!self->_disabledLockScreenBundles)
   {
-    v3 = [MEMORY[0x277CEF608] sharedInstance];
-    v4 = [v3 disabledLockScreenBundles];
+    mEMORY[0x277CEF608] = [MEMORY[0x277CEF608] sharedInstance];
+    disabledLockScreenBundles = [mEMORY[0x277CEF608] disabledLockScreenBundles];
     disabledLockScreenBundles = self->_disabledLockScreenBundles;
-    self->_disabledLockScreenBundles = v4;
+    self->_disabledLockScreenBundles = disabledLockScreenBundles;
   }
 
   v23 = 0;
@@ -100,40 +100,40 @@ uint64_t __46__ASTLockScreenSuggestionSpecifier_specifiers__block_invoke(uint64_
   return v7;
 }
 
-- (id)specifierForBundleID:(id)a3
+- (id)specifierForBundleID:(id)d
 {
-  v4 = [MEMORY[0x277CC1E60] applicationProxyForIdentifier:a3];
-  v5 = [v4 bundleIdentifier];
+  v4 = [MEMORY[0x277CC1E60] applicationProxyForIdentifier:d];
+  bundleIdentifier = [v4 bundleIdentifier];
 
-  if (v5)
+  if (bundleIdentifier)
   {
-    v6 = [v4 localizedName];
-    if ([v6 length])
+    localizedName = [v4 localizedName];
+    if ([localizedName length])
     {
 LABEL_6:
-      v8 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:v6 target:self set:sel_setLockScreenSwitchEnabled_forSpecifier_ get:sel_isLockScreenSwitchEnabled_ detail:0 cell:6 edit:0];
-      [v8 setProperty:v6 forKey:@"APP_NAME"];
-      v9 = [v4 bundleIdentifier];
-      [v8 setProperty:v9 forKey:@"BUNDLE_ID"];
+      v8 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:localizedName target:self set:sel_setLockScreenSwitchEnabled_forSpecifier_ get:sel_isLockScreenSwitchEnabled_ detail:0 cell:6 edit:0];
+      [v8 setProperty:localizedName forKey:@"APP_NAME"];
+      bundleIdentifier2 = [v4 bundleIdentifier];
+      [v8 setProperty:bundleIdentifier2 forKey:@"BUNDLE_ID"];
 
       [v8 setProperty:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277D40020]];
-      v10 = [v4 bundleIdentifier];
-      [v8 setProperty:v10 forKey:*MEMORY[0x277D40008]];
+      bundleIdentifier3 = [v4 bundleIdentifier];
+      [v8 setProperty:bundleIdentifier3 forKey:*MEMORY[0x277D40008]];
 
       goto LABEL_8;
     }
 
-    v7 = [v4 localizedShortName];
+    localizedShortName = [v4 localizedShortName];
 
-    if ([v7 length])
+    if ([localizedShortName length])
     {
-      v6 = v7;
+      localizedName = localizedShortName;
       goto LABEL_6;
     }
 
-    v6 = [v4 itemName];
+    localizedName = [v4 itemName];
 
-    if (v6)
+    if (localizedName)
     {
       goto LABEL_6;
     }
@@ -145,37 +145,37 @@ LABEL_8:
   return v8;
 }
 
-- (id)isLockScreenSwitchEnabled:(id)a3
+- (id)isLockScreenSwitchEnabled:(id)enabled
 {
   v3 = MEMORY[0x277CCABB0];
   disabledLockScreenBundles = self->_disabledLockScreenBundles;
-  v5 = [a3 propertyForKey:@"BUNDLE_ID"];
+  v5 = [enabled propertyForKey:@"BUNDLE_ID"];
   v6 = [v3 numberWithInt:{-[NSSet containsObject:](disabledLockScreenBundles, "containsObject:", v5) ^ 1}];
 
   return v6;
 }
 
-- (void)setLockScreenSwitchEnabled:(id)a3 forSpecifier:(id)a4
+- (void)setLockScreenSwitchEnabled:(id)enabled forSpecifier:(id)specifier
 {
   v6 = MEMORY[0x277CEF608];
-  v7 = a4;
-  v8 = a3;
-  v13 = [v6 sharedInstance];
-  v9 = [v8 BOOLValue];
+  specifierCopy = specifier;
+  enabledCopy = enabled;
+  sharedInstance = [v6 sharedInstance];
+  bOOLValue = [enabledCopy BOOLValue];
 
-  v10 = [v7 propertyForKey:@"BUNDLE_ID"];
+  v10 = [specifierCopy propertyForKey:@"BUNDLE_ID"];
 
-  [v13 setLockScreenEnabled:v9 bundleId:v10];
-  v11 = [v13 disabledLockScreenBundles];
+  [sharedInstance setLockScreenEnabled:bOOLValue bundleId:v10];
+  disabledLockScreenBundles = [sharedInstance disabledLockScreenBundles];
   disabledLockScreenBundles = self->_disabledLockScreenBundles;
-  self->_disabledLockScreenBundles = v11;
+  self->_disabledLockScreenBundles = disabledLockScreenBundles;
 }
 
 - (void)specifiers
 {
-  v0 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v1 = [MEMORY[0x277CCACA8] stringWithUTF8String:"CFSetRef PSSBSCopyDisplayIdentifiers(void)"];
-  [v0 handleFailureInFunction:v1 file:@"ASTLockScreenSuggestionSpecifier.m" lineNumber:18 description:{@"%s", dlerror()}];
+  [currentHandler handleFailureInFunction:v1 file:@"ASTLockScreenSuggestionSpecifier.m" lineNumber:18 description:{@"%s", dlerror()}];
 
   __break(1u);
 }

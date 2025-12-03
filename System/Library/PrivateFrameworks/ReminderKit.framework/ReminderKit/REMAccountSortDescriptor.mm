@@ -1,29 +1,29 @@
 @interface REMAccountSortDescriptor
-- (REMAccountSortDescriptor)initWithCoder:(id)a3;
-- (REMAccountSortDescriptor)initWithType:(int64_t)a3 ascending:(BOOL)a4;
-- (void)encodeWithCoder:(id)a3;
+- (REMAccountSortDescriptor)initWithCoder:(id)coder;
+- (REMAccountSortDescriptor)initWithType:(int64_t)type ascending:(BOOL)ascending;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation REMAccountSortDescriptor
 
-- (REMAccountSortDescriptor)initWithType:(int64_t)a3 ascending:(BOOL)a4
+- (REMAccountSortDescriptor)initWithType:(int64_t)type ascending:(BOOL)ascending
 {
   v7.receiver = self;
   v7.super_class = REMAccountSortDescriptor;
   result = [(REMAccountSortDescriptor *)&v7 init];
   if (result)
   {
-    result->_type = a3;
-    result->_ascending = a4;
+    result->_type = type;
+    result->_ascending = ascending;
   }
 
   return result;
 }
 
-- (REMAccountSortDescriptor)initWithCoder:(id)a3
+- (REMAccountSortDescriptor)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"type"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"type"];
   if (v5)
   {
     v6 = v5;
@@ -34,16 +34,16 @@
     }
   }
 
-  v8 = -[REMAccountSortDescriptor initWithType:ascending:](self, "initWithType:ascending:", 0, [v4 decodeBoolForKey:@"ascending"]);
+  v8 = -[REMAccountSortDescriptor initWithType:ascending:](self, "initWithType:ascending:", 0, [coderCopy decodeBoolForKey:@"ascending"]);
 
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[REMAccountSortDescriptor type](self forKey:{"type"), @"type"}];
-  [v4 encodeBool:-[REMAccountSortDescriptor ascending](self forKey:{"ascending"), @"ascending"}];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[REMAccountSortDescriptor type](self forKey:{"type"), @"type"}];
+  [coderCopy encodeBool:-[REMAccountSortDescriptor ascending](self forKey:{"ascending"), @"ascending"}];
 }
 
 - (void)initWithCoder:(uint64_t)a1 .cold.1(uint64_t a1, NSObject *a2)

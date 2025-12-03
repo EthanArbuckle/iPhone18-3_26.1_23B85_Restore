@@ -1,39 +1,39 @@
 @interface CSUSceneNetV5NetworkOutput
-- (CSUSceneNetV5NetworkOutput)initWithScenePrint:(id)a3 sceneClassificationLikelihoods:(id)a4 aestheticsAttributeScores:(id)a5 aestheticsGlobalScores:(id)a6 detectionScoreHeatMap:(id)a7 detectionCoordinateOffsetMap:(id)a8 saliencyAttentionMap:(id)a9 saliencyObjectnessMap:(id)a10 fingerprintEmbedding:(id)a11 entityNetClassificationLikelihoods:(id)a12;
+- (CSUSceneNetV5NetworkOutput)initWithScenePrint:(id)print sceneClassificationLikelihoods:(id)likelihoods aestheticsAttributeScores:(id)scores aestheticsGlobalScores:(id)globalScores detectionScoreHeatMap:(id)map detectionCoordinateOffsetMap:(id)offsetMap saliencyAttentionMap:(id)attentionMap saliencyObjectnessMap:(id)self0 fingerprintEmbedding:(id)self1 entityNetClassificationLikelihoods:(id)self2;
 @end
 
 @implementation CSUSceneNetV5NetworkOutput
 
-- (CSUSceneNetV5NetworkOutput)initWithScenePrint:(id)a3 sceneClassificationLikelihoods:(id)a4 aestheticsAttributeScores:(id)a5 aestheticsGlobalScores:(id)a6 detectionScoreHeatMap:(id)a7 detectionCoordinateOffsetMap:(id)a8 saliencyAttentionMap:(id)a9 saliencyObjectnessMap:(id)a10 fingerprintEmbedding:(id)a11 entityNetClassificationLikelihoods:(id)a12
+- (CSUSceneNetV5NetworkOutput)initWithScenePrint:(id)print sceneClassificationLikelihoods:(id)likelihoods aestheticsAttributeScores:(id)scores aestheticsGlobalScores:(id)globalScores detectionScoreHeatMap:(id)map detectionCoordinateOffsetMap:(id)offsetMap saliencyAttentionMap:(id)attentionMap saliencyObjectnessMap:(id)self0 fingerprintEmbedding:(id)self1 entityNetClassificationLikelihoods:(id)self2
 {
-  v33 = a3;
-  obj = a4;
-  v32 = a4;
-  v25 = a5;
-  v31 = a5;
-  v30 = a6;
-  v29 = a7;
-  v28 = a8;
-  v27 = a9;
-  v18 = a10;
-  v19 = a11;
-  v20 = a12;
+  printCopy = print;
+  obj = likelihoods;
+  likelihoodsCopy = likelihoods;
+  scoresCopy = scores;
+  scoresCopy2 = scores;
+  globalScoresCopy = globalScores;
+  mapCopy = map;
+  offsetMapCopy = offsetMap;
+  attentionMapCopy = attentionMap;
+  objectnessMapCopy = objectnessMap;
+  embeddingCopy = embedding;
+  classificationLikelihoodsCopy = classificationLikelihoods;
   v34.receiver = self;
   v34.super_class = CSUSceneNetV5NetworkOutput;
   v21 = [(CSUSceneNetV5NetworkOutput *)&v34 init];
   v22 = v21;
   if (v21)
   {
-    objc_storeStrong(&v21->_scenePrint, a3);
+    objc_storeStrong(&v21->_scenePrint, print);
     objc_storeStrong(&v22->_sceneClassificationLikelihoods, obj);
-    objc_storeStrong(&v22->_aestheticsAttributeScores, v25);
-    objc_storeStrong(&v22->_aestheticsGlobalScores, a6);
-    objc_storeStrong(&v22->_detectionScoreHeatMap, a7);
-    objc_storeStrong(&v22->_detectionCoordinateOffsetMap, a8);
-    objc_storeStrong(&v22->_saliencyAttentionMap, a9);
-    objc_storeStrong(&v22->_saliencyObjectnessMap, a10);
-    objc_storeStrong(&v22->_fingerprintEmbedding, a11);
-    objc_storeStrong(&v22->_entityNetClassificationLikelihoods, a12);
+    objc_storeStrong(&v22->_aestheticsAttributeScores, scoresCopy);
+    objc_storeStrong(&v22->_aestheticsGlobalScores, globalScores);
+    objc_storeStrong(&v22->_detectionScoreHeatMap, map);
+    objc_storeStrong(&v22->_detectionCoordinateOffsetMap, offsetMap);
+    objc_storeStrong(&v22->_saliencyAttentionMap, attentionMap);
+    objc_storeStrong(&v22->_saliencyObjectnessMap, objectnessMap);
+    objc_storeStrong(&v22->_fingerprintEmbedding, embedding);
+    objc_storeStrong(&v22->_entityNetClassificationLikelihoods, classificationLikelihoods);
   }
 
   return v22;

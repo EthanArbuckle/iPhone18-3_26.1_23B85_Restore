@@ -1,27 +1,27 @@
 @interface MBTelemetry
-+ (BOOL)submitEngineCompletedEventName:(id)a3 engineStarted:(double)a4 engineError:(id)a5;
-+ (BOOL)submitEventName:(id)a3 event:(id)a4;
-+ (id)_dictToJSONString:(id)a3;
-+ (void)sendBackgroundRestoreCompletion:(unint64_t)a3 snapshotIdentifier:(id)a4 snapshotFormat:(int64_t)a5 isRestoringUsingFileLists:(BOOL)a6 duration:(double)a7 error:(id)a8 fatalErrors:(id)a9 domainsTopNSizes:(id)a10 domainsTopNFileCount:(id)a11 failedDomains:(id)a12;
-+ (void)sendBackgroundRestoreHeartbeat:(unint64_t)a3 restoreInfo:(id)a4;
-+ (void)sendBackupEngineCompletionStatus:(id)a3 duration:(double)a4 error:(id)a5;
-+ (void)sendBackupEngineStateChangeStatus:(id)a3 state:(unint64_t)a4 start:(id)a5 end:(id)a6;
-+ (void)sendRestoreEngineCompletionStatus:(id)a3 duration:(double)a4 error:(id)a5;
-+ (void)sendRestoreEngineStateChangeStatus:(id)a3 state:(unint64_t)a4 start:(id)a5 end:(id)a6;
++ (BOOL)submitEngineCompletedEventName:(id)name engineStarted:(double)started engineError:(id)error;
++ (BOOL)submitEventName:(id)name event:(id)event;
++ (id)_dictToJSONString:(id)string;
++ (void)sendBackgroundRestoreCompletion:(unint64_t)completion snapshotIdentifier:(id)identifier snapshotFormat:(int64_t)format isRestoringUsingFileLists:(BOOL)lists duration:(double)duration error:(id)error fatalErrors:(id)errors domainsTopNSizes:(id)self0 domainsTopNFileCount:(id)self1 failedDomains:(id)self2;
++ (void)sendBackgroundRestoreHeartbeat:(unint64_t)heartbeat restoreInfo:(id)info;
++ (void)sendBackupEngineCompletionStatus:(id)status duration:(double)duration error:(id)error;
++ (void)sendBackupEngineStateChangeStatus:(id)status state:(unint64_t)state start:(id)start end:(id)end;
++ (void)sendRestoreEngineCompletionStatus:(id)status duration:(double)duration error:(id)error;
++ (void)sendRestoreEngineStateChangeStatus:(id)status state:(unint64_t)state start:(id)start end:(id)end;
 @end
 
 @implementation MBTelemetry
 
-+ (BOOL)submitEventName:(id)a3 event:(id)a4
++ (BOOL)submitEventName:(id)name event:(id)event
 {
-  v5 = a3;
-  v6 = a4;
-  if (!v5 || (v7 = v6) == 0)
+  nameCopy = name;
+  eventCopy = event;
+  if (!nameCopy || (v7 = eventCopy) == 0)
   {
     __assert_rtn("+[MBTelemetry submitEventName:event:]", "MBTelemetry.m", 19, "eventName && event");
   }
 
-  if ([v6 count])
+  if ([eventCopy count])
   {
     v8 = [v7 objectForKeyedSubscript:@"successes"];
     if (v8)
@@ -48,7 +48,7 @@
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
       *buf = 138543618;
-      v19 = v5;
+      v19 = nameCopy;
       v20 = 2112;
       v21 = v7;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "=analytics= Submitting %{public}@: %@", buf, 0x16u);
@@ -64,7 +64,7 @@
       if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
       {
         *buf = 138543362;
-        v19 = v5;
+        v19 = nameCopy;
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "=analytics= Successfully submitted %{public}@", buf, 0xCu);
 LABEL_17:
         _MBLog();
@@ -74,7 +74,7 @@ LABEL_17:
     else if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v19 = v5;
+      v19 = nameCopy;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "=analytics= Failed to submit %{public}@", buf, 0xCu);
       goto LABEL_17;
     }
@@ -91,34 +91,34 @@ LABEL_20:
   return v12;
 }
 
-+ (BOOL)submitEngineCompletedEventName:(id)a3 engineStarted:(double)a4 engineError:(id)a5
++ (BOOL)submitEngineCompletedEventName:(id)name engineStarted:(double)started engineError:(id)error
 {
-  v8 = a5;
-  v9 = a3;
+  errorCopy = error;
+  nameCopy = name;
   v10 = +[NSMutableDictionary dictionary];
   [v10 setObject:&off_1003E0CD8 forKeyedSubscript:@"total"];
   v11 = [NSNumber numberWithUnsignedLongLong:MBPeakProcessMemoryUsage()];
   [v10 setObject:v11 forKeyedSubscript:@"peakMemoryUsage"];
 
-  if (v8)
+  if (errorCopy)
   {
     [v10 setObject:&off_1003E0CD8 forKeyedSubscript:@"failed"];
-    v12 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v8 code]);
+    v12 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [errorCopy code]);
     [v10 setObject:v12 forKeyedSubscript:@"errorCode"];
 
-    v13 = [v8 domain];
-    [v10 setObject:v13 forKeyedSubscript:@"errorDomain"];
+    domain = [errorCopy domain];
+    [v10 setObject:domain forKeyedSubscript:@"errorDomain"];
 
-    v14 = [v8 underlyingErrors];
-    v15 = [v14 firstObject];
+    underlyingErrors = [errorCopy underlyingErrors];
+    firstObject = [underlyingErrors firstObject];
 
-    if (v15)
+    if (firstObject)
     {
-      v16 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v15 code]);
+      v16 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [firstObject code]);
       [v10 setObject:v16 forKeyedSubscript:@"underlyingErrorCode"];
 
-      v17 = [v15 domain];
-      [v10 setObject:v17 forKeyedSubscript:@"underlyingErrorDomain"];
+      domain2 = [firstObject domain];
+      [v10 setObject:domain2 forKeyedSubscript:@"underlyingErrorDomain"];
     }
   }
 
@@ -126,40 +126,40 @@ LABEL_20:
   {
     [v10 setObject:&off_1003E0CD8 forKeyedSubscript:@"successes"];
     +[NSDate timeIntervalSinceReferenceDate];
-    v15 = [NSNumber numberWithDouble:v18 - a4];
-    [v10 setObject:v15 forKeyedSubscript:@"duration"];
+    firstObject = [NSNumber numberWithDouble:v18 - started];
+    [v10 setObject:firstObject forKeyedSubscript:@"duration"];
   }
 
-  v19 = [a1 submitEventName:v9 event:v10];
+  v19 = [self submitEventName:nameCopy event:v10];
   return v19;
 }
 
-+ (id)_dictToJSONString:(id)a3
++ (id)_dictToJSONString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = [NSString alloc];
-  v5 = [NSJSONSerialization dataWithJSONObject:v3 options:1 error:0];
+  v5 = [NSJSONSerialization dataWithJSONObject:stringCopy options:1 error:0];
 
   v6 = [v4 initWithData:v5 encoding:4];
 
   return v6;
 }
 
-+ (void)sendBackupEngineCompletionStatus:(id)a3 duration:(double)a4 error:(id)a5
++ (void)sendBackupEngineCompletionStatus:(id)status duration:(double)duration error:(id)error
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [v7 serviceAccount];
-  if (v9)
+  statusCopy = status;
+  errorCopy = error;
+  serviceAccount = [statusCopy serviceAccount];
+  if (serviceAccount)
   {
-    [MBCKStatusRequest sendStatusRequestWithEngine:v7 duration:v8 error:a4];
+    [MBCKStatusRequest sendStatusRequestWithEngine:statusCopy duration:errorCopy error:duration];
     v10 = objc_opt_new();
-    v11 = [v7 telemetry];
-    v12 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v11 telemetryID]);
+    telemetry = [statusCopy telemetry];
+    v12 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [telemetry telemetryID]);
     [v10 setObject:v12 forKeyedSubscript:@"sessionID"];
 
     [v10 setObject:@"BackupCompletion" forKeyedSubscript:@"telemetryType"];
-    [v7 backupPolicy];
+    [statusCopy backupPolicy];
     v13 = MBStringForBackupPolicy();
     [v10 setObject:v13 forKeyedSubscript:@"policy"];
 
@@ -169,19 +169,19 @@ LABEL_20:
       [v10 setObject:v14 forKeyedSubscript:@"backupOnWiFiWithDAS"];
     }
 
-    [v7 backupReason];
+    [statusCopy backupReason];
     v15 = MBStringForBackupReason();
     [v10 setObject:v15 forKeyedSubscript:@"reason"];
 
-    v16 = [v7 backupStateDescription];
-    [v10 setObject:v16 forKeyedSubscript:@"state"];
+    backupStateDescription = [statusCopy backupStateDescription];
+    [v10 setObject:backupStateDescription forKeyedSubscript:@"state"];
 
-    v17 = MBStringForCameraRollState([v7 cameraRollBackupState]);
+    v17 = MBStringForCameraRollState([statusCopy cameraRollBackupState]);
     [v10 setObject:v17 forKeyedSubscript:@"cameraRollBackupState"];
 
-    v18 = [v7 telemetry];
+    telemetry2 = [statusCopy telemetry];
     v105 = 0;
-    v19 = +[L28BackupStats l28BackupStatsForAccount:snapshotFormat:backupReason:backupError:error:](L28BackupStats, "l28BackupStatsForAccount:snapshotFormat:backupReason:backupError:error:", v9, [v18 snapshotFormat], objc_msgSend(v7, "backupReason"), v8, &v105);
+    v19 = +[L28BackupStats l28BackupStatsForAccount:snapshotFormat:backupReason:backupError:error:](L28BackupStats, "l28BackupStatsForAccount:snapshotFormat:backupReason:backupError:error:", serviceAccount, [telemetry2 snapshotFormat], objc_msgSend(statusCopy, "backupReason"), errorCopy, &v105);
     v20 = v105;
 
     if (v19)
@@ -204,86 +204,86 @@ LABEL_20:
 
     v102 = v20;
     v103 = v19;
-    v104 = v9;
-    v22 = [v7 telemetry];
-    v23 = [v7 attemptSummary];
-    [v23 snapshotFormat];
-    v24 = [v22 scannedDomainsCount];
-    [v10 setObject:v24 forKeyedSubscript:@"scannedDomainsCount"];
+    v104 = serviceAccount;
+    telemetry3 = [statusCopy telemetry];
+    attemptSummary = [statusCopy attemptSummary];
+    [attemptSummary snapshotFormat];
+    scannedDomainsCount = [telemetry3 scannedDomainsCount];
+    [v10 setObject:scannedDomainsCount forKeyedSubscript:@"scannedDomainsCount"];
 
-    v25 = [v22 enabledDomainsCount];
-    [v10 setObject:v25 forKeyedSubscript:@"enabledDomainsCount"];
+    enabledDomainsCount = [telemetry3 enabledDomainsCount];
+    [v10 setObject:enabledDomainsCount forKeyedSubscript:@"enabledDomainsCount"];
 
-    v26 = [v7 attemptSummary];
-    v27 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v26 emptyDomainCount]);
+    attemptSummary2 = [statusCopy attemptSummary];
+    v27 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [attemptSummary2 emptyDomainCount]);
     [v10 setObject:v27 forKeyedSubscript:@"emptyDomainsCount"];
 
     if (MBSnapshotFormatContainsManifests())
     {
-      v28 = [v22 backupFileCount];
-      [v10 setObject:v28 forKeyedSubscript:@"fileCount"];
+      backupFileCount = [telemetry3 backupFileCount];
+      [v10 setObject:backupFileCount forKeyedSubscript:@"fileCount"];
 
-      v29 = [v22 backupDirectoryCount];
-      [v10 setObject:v29 forKeyedSubscript:@"directoryCount"];
+      backupDirectoryCount = [telemetry3 backupDirectoryCount];
+      [v10 setObject:backupDirectoryCount forKeyedSubscript:@"directoryCount"];
     }
 
     if (MBSnapshotFormatContainsFileLists())
     {
-      v30 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v23 modifiedDirectoryCount]);
+      v30 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [attemptSummary modifiedDirectoryCount]);
       [v10 setObject:v30 forKeyedSubscript:@"modifiedDirectoryCount"];
 
-      v31 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v23 modifiedRegularFileCount]);
+      v31 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [attemptSummary modifiedRegularFileCount]);
       [v10 setObject:v31 forKeyedSubscript:@"modifiedRegularFileCount"];
 
-      v32 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v23 unmodifiedDirectoryCount]);
+      v32 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [attemptSummary unmodifiedDirectoryCount]);
       [v10 setObject:v32 forKeyedSubscript:@"unmodifiedDirectoryCount"];
 
-      v33 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v23 unmodifiedRegularFileCount]);
+      v33 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [attemptSummary unmodifiedRegularFileCount]);
       [v10 setObject:v33 forKeyedSubscript:@"unmodifiedRegularFileCount"];
 
-      v34 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v23 deletedFileCount]);
+      v34 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [attemptSummary deletedFileCount]);
       [v10 setObject:v34 forKeyedSubscript:@"deletedFileCount"];
     }
 
-    v35 = [v22 backupTotalSize];
-    [v10 setObject:v35 forKeyedSubscript:@"totalSize"];
+    backupTotalSize = [telemetry3 backupTotalSize];
+    [v10 setObject:backupTotalSize forKeyedSubscript:@"totalSize"];
 
     if (MBSnapshotFormatContainsManifests())
     {
-      v36 = [v22 queuedSize];
-      [v10 setObject:v36 forKeyedSubscript:@"queuedSize"];
+      queuedSize = [telemetry3 queuedSize];
+      [v10 setObject:queuedSize forKeyedSubscript:@"queuedSize"];
 
-      v37 = [v22 uploadedSize];
-      [v10 setObject:v37 forKeyedSubscript:@"uploadedSize"];
+      uploadedSize = [telemetry3 uploadedSize];
+      [v10 setObject:uploadedSize forKeyedSubscript:@"uploadedSize"];
 
-      v38 = [v22 queuedFileCount];
-      [v10 setObject:v38 forKeyedSubscript:@"queuedFileCount"];
+      queuedFileCount = [telemetry3 queuedFileCount];
+      [v10 setObject:queuedFileCount forKeyedSubscript:@"queuedFileCount"];
 
-      v39 = [v22 uploadedFileCount];
-      [v10 setObject:v39 forKeyedSubscript:@"uploadedFileCount"];
+      uploadedFileCount = [telemetry3 uploadedFileCount];
+      [v10 setObject:uploadedFileCount forKeyedSubscript:@"uploadedFileCount"];
 
-      v40 = [v22 skippedFilesCount];
-      [v10 setObject:v40 forKeyedSubscript:@"skippedFilesCount"];
+      skippedFilesCount = [telemetry3 skippedFilesCount];
+      [v10 setObject:skippedFilesCount forKeyedSubscript:@"skippedFilesCount"];
     }
 
     if (MBSnapshotFormatContainsFileLists())
     {
-      v41 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v23 queuedAssetSize]);
+      v41 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [attemptSummary queuedAssetSize]);
       [v10 setObject:v41 forKeyedSubscript:@"queuedAssetSize"];
 
-      v42 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v23 queuedAssetCount]);
+      v42 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [attemptSummary queuedAssetCount]);
       [v10 setObject:v42 forKeyedSubscript:@"queuedAssetCount"];
 
-      v43 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v23 uploadedAssetCount]);
+      v43 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [attemptSummary uploadedAssetCount]);
       [v10 setObject:v43 forKeyedSubscript:@"uploadedAssetCount"];
 
-      v44 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v23 uploadedAssetSize]);
+      v44 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [attemptSummary uploadedAssetSize]);
       [v10 setObject:v44 forKeyedSubscript:@"uploadedAssetSize"];
     }
 
-    v45 = [v7 cacheRefreshSummary];
-    v46 = v45;
-    if (v45 && [v45 downloadedSnapshotCount])
+    cacheRefreshSummary = [statusCopy cacheRefreshSummary];
+    v46 = cacheRefreshSummary;
+    if (cacheRefreshSummary && [cacheRefreshSummary downloadedSnapshotCount])
     {
       v47 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v46 cachedSnapshotCount]);
       [v10 setObject:v47 forKeyedSubscript:@"cachedSnapshotCount"];
@@ -306,121 +306,121 @@ LABEL_20:
       v53 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v46 downloadedSnapshotVerificationFailureCount]);
       [v10 setObject:v53 forKeyedSubscript:@"downloadedSnapshotVerificationFailureCount"];
 
-      v54 = [v46 verificationFailureStrings];
-      if ([v54 count])
+      verificationFailureStrings = [v46 verificationFailureStrings];
+      if ([verificationFailureStrings count])
       {
-        v55 = [v54 componentsJoinedByString:@" "];
+        v55 = [verificationFailureStrings componentsJoinedByString:@" "];
         [v10 setObject:v55 forKeyedSubscript:@"verificationFailures"];
       }
     }
 
-    v56 = [NSNumber numberWithDouble:a4];
+    v56 = [NSNumber numberWithDouble:duration];
     [v10 setObject:v56 forKeyedSubscript:@"duration"];
 
-    v57 = [v22 cacheSize];
-    [v10 setObject:v57 forKeyedSubscript:@"cacheSize"];
+    cacheSize = [telemetry3 cacheSize];
+    [v10 setObject:cacheSize forKeyedSubscript:@"cacheSize"];
 
-    v58 = [v22 freeDiskSpace];
-    [v10 setObject:v58 forKeyedSubscript:@"freeDiskSpace"];
+    freeDiskSpace = [telemetry3 freeDiskSpace];
+    [v10 setObject:freeDiskSpace forKeyedSubscript:@"freeDiskSpace"];
 
-    [v22 fseventDuration];
+    [telemetry3 fseventDuration];
     v59 = [NSNumber numberWithDouble:?];
     [v10 setObject:v59 forKeyedSubscript:@"fseventDuration"];
 
-    v60 = [v7 attemptSummary];
-    v61 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v60 peakMemoryUsage]);
+    attemptSummary3 = [statusCopy attemptSummary];
+    v61 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [attemptSummary3 peakMemoryUsage]);
     [v10 setObject:v61 forKeyedSubscript:@"peakMemoryUsage"];
 
-    v62 = [v7 attemptSummary];
-    v63 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v62 uploadedFileListSize]);
+    attemptSummary4 = [statusCopy attemptSummary];
+    v63 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [attemptSummary4 uploadedFileListSize]);
     [v10 setObject:v63 forKeyedSubscript:@"uploadedFileListSize"];
 
-    v64 = MBStringForChargingType([v22 chargingType]);
+    v64 = MBStringForChargingType([telemetry3 chargingType]);
     [v10 setObject:v64 forKeyedSubscript:@"chargingType"];
 
-    v65 = [v22 topDomainsWithMissingEncryptionKeys];
-    v66 = [v65 count];
+    topDomainsWithMissingEncryptionKeys = [telemetry3 topDomainsWithMissingEncryptionKeys];
+    v66 = [topDomainsWithMissingEncryptionKeys count];
 
     if (v66)
     {
-      v67 = [v22 topDomainsWithMissingEncryptionKeys];
-      v68 = [v67 componentsJoinedByString:@" "];
+      topDomainsWithMissingEncryptionKeys2 = [telemetry3 topDomainsWithMissingEncryptionKeys];
+      v68 = [topDomainsWithMissingEncryptionKeys2 componentsJoinedByString:@" "];
       [v10 setObject:v68 forKeyedSubscript:@"topDomainsWithMissingEncryptionKeys"];
     }
 
     if (MBSnapshotFormatContainsManifests())
     {
-      v69 = [v22 classAFilesMissingEncryptionKeys];
-      [v10 setObject:v69 forKeyedSubscript:@"classAFilesMissingEncryptionKeys"];
+      classAFilesMissingEncryptionKeys = [telemetry3 classAFilesMissingEncryptionKeys];
+      [v10 setObject:classAFilesMissingEncryptionKeys forKeyedSubscript:@"classAFilesMissingEncryptionKeys"];
 
-      [v22 classBFilesMissingEncryptionKeys];
+      [telemetry3 classBFilesMissingEncryptionKeys];
     }
 
     else
     {
-      v70 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v23 classAFilesMissingEncryptionKeys]);
+      v70 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [attemptSummary classAFilesMissingEncryptionKeys]);
       [v10 setObject:v70 forKeyedSubscript:@"classAFilesMissingEncryptionKeys"];
 
-      +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v23 classBFilesMissingEncryptionKeys]);
+      +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [attemptSummary classBFilesMissingEncryptionKeys]);
     }
     v71 = ;
     [v10 setObject:v71 forKeyedSubscript:@"classBFilesMissingEncryptionKeys"];
 
-    v72 = [v7 attemptSummary];
-    v73 = [v72 keyBagValidationResult];
+    attemptSummary5 = [statusCopy attemptSummary];
+    keyBagValidationResult = [attemptSummary5 keyBagValidationResult];
 
-    v74 = [v7 attemptSummary];
-    v75 = MBStringForKeyBagValidationResult([v74 keyBagValidationResult]);
+    attemptSummary6 = [statusCopy attemptSummary];
+    v75 = MBStringForKeyBagValidationResult([attemptSummary6 keyBagValidationResult]);
     [v10 setObject:v75 forKeyedSubscript:@"keyBagValidationResult"];
 
-    if (v73)
+    if (keyBagValidationResult)
     {
-      v76 = [v7 attemptSummary];
-      v77 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v76 encryptionKeysPendingRepairCount]);
+      attemptSummary7 = [statusCopy attemptSummary];
+      v77 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [attemptSummary7 encryptionKeysPendingRepairCount]);
       [v10 setObject:v77 forKeyedSubscript:@"encryptionKeysPendingRepairCount"];
 
-      v78 = [v7 attemptSummary];
-      v79 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v78 invalidKeyBagReferenceCount]);
+      attemptSummary8 = [statusCopy attemptSummary];
+      v79 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [attemptSummary8 invalidKeyBagReferenceCount]);
       [v10 setObject:v79 forKeyedSubscript:@"invalidKeyBagReferenceCount"];
 
-      v80 = [v7 attemptSummary];
-      v81 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v80 validKeyBagReferenceCount]);
+      attemptSummary9 = [statusCopy attemptSummary];
+      v81 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [attemptSummary9 validKeyBagReferenceCount]);
       [v10 setObject:v81 forKeyedSubscript:@"validKeyBagReferenceCount"];
     }
 
-    v82 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v22 backupAttemptCount]);
+    v82 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [telemetry3 backupAttemptCount]);
     [v10 setObject:v82 forKeyedSubscript:@"attemptCount"];
 
-    v83 = [v7 device];
-    v84 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v83 pendingSnapshotQuotaReserved]);
+    device = [statusCopy device];
+    v84 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [device pendingSnapshotQuotaReserved]);
     [v10 setObject:v84 forKeyedSubscript:@"pendingSnapshotQuotaReserved"];
 
-    [v22 snapshotType];
+    [telemetry3 snapshotType];
     v85 = MBStringForSnapshotType();
     [v10 setObject:v85 forKeyedSubscript:@"snapshotType"];
 
-    [v22 snapshotFormat];
+    [telemetry3 snapshotFormat];
     v86 = MBStringForSnapshotFormat();
     [v10 setObject:v86 forKeyedSubscript:@"snapshotFormat"];
 
-    [v22 previousSnapshotFormat];
+    [telemetry3 previousSnapshotFormat];
     v87 = MBStringForSnapshotFormat();
     [v10 setObject:v87 forKeyedSubscript:@"previousSnapshotFormat"];
 
-    v88 = [v7 attemptSummary];
-    v89 = [v88 commitID];
+    attemptSummary10 = [statusCopy attemptSummary];
+    commitID = [attemptSummary10 commitID];
 
-    if (v89)
+    if (commitID)
     {
-      v90 = [v7 attemptSummary];
-      v91 = [v90 commitID];
-      v92 = sub_1002498EC(v91, @"backup");
+      attemptSummary11 = [statusCopy attemptSummary];
+      commitID2 = [attemptSummary11 commitID];
+      v92 = sub_1002498EC(commitID2, @"backup");
       [v10 setObject:v92 forKeyedSubscript:@"pendingSnapshotID"];
     }
 
-    if (v8)
+    if (errorCopy)
     {
-      v93 = [MBError isError:v8 withCode:0];
+      v93 = [MBError isError:errorCopy withCode:0];
     }
 
     else
@@ -428,27 +428,27 @@ LABEL_20:
       v93 = 1;
     }
 
-    v94 = MBExtractFirstMBErrorOrCKError(v8);
+    v94 = MBExtractFirstMBErrorOrCKError(errorCopy);
     v95 = [NSNumber numberWithBool:v93];
     [v10 setObject:v95 forKeyedSubscript:@"success"];
 
     if (v94)
     {
-      v96 = [v94 domain];
-      [v10 setObject:v96 forKeyedSubscript:@"errorDomain"];
+      domain = [v94 domain];
+      [v10 setObject:domain forKeyedSubscript:@"errorDomain"];
 
       v97 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v94 code]);
       [v10 setObject:v97 forKeyedSubscript:@"errorCode"];
     }
 
-    v98 = [v22 snapshotVerificationStatus];
+    snapshotVerificationStatus = [telemetry3 snapshotVerificationStatus];
 
-    if (v98)
+    if (snapshotVerificationStatus)
     {
-      v99 = [v22 snapshotVerificationStatus];
-      [v10 setObject:v99 forKeyedSubscript:@"snapshotVerificationStatus"];
+      snapshotVerificationStatus2 = [telemetry3 snapshotVerificationStatus];
+      [v10 setObject:snapshotVerificationStatus2 forKeyedSubscript:@"snapshotVerificationStatus"];
 
-      [v22 snapshotVerificationDuration];
+      [telemetry3 snapshotVerificationDuration];
       v100 = [NSNumber numberWithDouble:?];
       [v10 setObject:v100 forKeyedSubscript:@"snapshotVerificationDuration"];
     }
@@ -460,7 +460,7 @@ LABEL_20:
 
     [MBTelemetry submitEventName:@"com.apple.massStorage.MobileBackupInfo.Backup_1" event:v10];
 
-    v9 = v104;
+    serviceAccount = v104;
   }
 
   else
@@ -475,28 +475,28 @@ LABEL_20:
   }
 }
 
-+ (void)sendRestoreEngineCompletionStatus:(id)a3 duration:(double)a4 error:(id)a5
++ (void)sendRestoreEngineCompletionStatus:(id)status duration:(double)duration error:(id)error
 {
-  v7 = a3;
-  v8 = a5;
-  if (v8 || [v7 isForegroundRestore])
+  statusCopy = status;
+  errorCopy = error;
+  if (errorCopy || [statusCopy isForegroundRestore])
   {
-    [MBCKStatusRequest sendStatusRequestWithEngine:v7 duration:v8 error:a4];
+    [MBCKStatusRequest sendStatusRequestWithEngine:statusCopy duration:errorCopy error:duration];
   }
 
-  if ([v7 isForegroundRestore])
+  if ([statusCopy isForegroundRestore])
   {
     v9 = objc_opt_new();
-    v10 = [v7 serviceManager];
-    v11 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v10 restoreTelemetryID]);
+    serviceManager = [statusCopy serviceManager];
+    v11 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [serviceManager restoreTelemetryID]);
     [v9 setObject:v11 forKeyedSubscript:@"sessionID"];
 
     [v9 setObject:@"ForegroundRestoreCompletion" forKeyedSubscript:@"telemetryType"];
-    v12 = [v7 engineError];
-    if (v12)
+    engineError = [statusCopy engineError];
+    if (engineError)
     {
-      v13 = [v7 engineError];
-      v14 = [MBError isError:v13 withCode:0];
+      engineError2 = [statusCopy engineError];
+      v14 = [MBError isError:engineError2 withCode:0];
     }
 
     else
@@ -504,58 +504,58 @@ LABEL_20:
       v14 = 1;
     }
 
-    [v7 backupPolicy];
+    [statusCopy backupPolicy];
     v15 = MBStringForBackupPolicy();
     [v9 setObject:v15 forKeyedSubscript:@"policy"];
 
-    v16 = [v7 restoreStateDescription];
-    [v9 setObject:v16 forKeyedSubscript:@"state"];
+    restoreStateDescription = [statusCopy restoreStateDescription];
+    [v9 setObject:restoreStateDescription forKeyedSubscript:@"state"];
 
-    v17 = [NSNumber numberWithDouble:a4];
+    v17 = [NSNumber numberWithDouble:duration];
     [v9 setObject:v17 forKeyedSubscript:@"duration"];
 
     v18 = [NSNumber numberWithUnsignedLongLong:MBPeakProcessMemoryUsage()];
     [v9 setObject:v18 forKeyedSubscript:@"peakMemoryUsage"];
 
-    v19 = [v7 freeDiskSpace];
-    [v9 setObject:v19 forKeyedSubscript:@"freeDiskSpace"];
+    freeDiskSpace = [statusCopy freeDiskSpace];
+    [v9 setObject:freeDiskSpace forKeyedSubscript:@"freeDiskSpace"];
 
-    v20 = MBStringForChargingType([v7 chargingType]);
+    v20 = MBStringForChargingType([statusCopy chargingType]);
     [v9 setObject:v20 forKeyedSubscript:@"chargingType"];
 
-    v21 = MBExtractFirstMBErrorOrCKError(v8);
+    v21 = MBExtractFirstMBErrorOrCKError(errorCopy);
     v22 = [NSNumber numberWithBool:v14];
     [v9 setObject:v22 forKeyedSubscript:@"success"];
 
     if (v21)
     {
-      v23 = [v21 domain];
-      [v9 setObject:v23 forKeyedSubscript:@"errorDomain"];
+      domain = [v21 domain];
+      [v9 setObject:domain forKeyedSubscript:@"errorDomain"];
 
       v24 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v21 code]);
       [v9 setObject:v24 forKeyedSubscript:@"errorCode"];
     }
 
-    v25 = [v7 foregroundRestorableSize];
-    [v9 setObject:v25 forKeyedSubscript:@"foregroundRestorableSize"];
+    foregroundRestorableSize = [statusCopy foregroundRestorableSize];
+    [v9 setObject:foregroundRestorableSize forKeyedSubscript:@"foregroundRestorableSize"];
 
-    v26 = [v7 backgroundRestorableSize];
-    [v9 setObject:v26 forKeyedSubscript:@"backgroundRestorableSize"];
+    backgroundRestorableSize = [statusCopy backgroundRestorableSize];
+    [v9 setObject:backgroundRestorableSize forKeyedSubscript:@"backgroundRestorableSize"];
 
-    v27 = [v7 foregroundRestorableFileCount];
-    [v9 setObject:v27 forKeyedSubscript:@"foregroundRestorableFileCount"];
+    foregroundRestorableFileCount = [statusCopy foregroundRestorableFileCount];
+    [v9 setObject:foregroundRestorableFileCount forKeyedSubscript:@"foregroundRestorableFileCount"];
 
-    v28 = [v7 backgroundRestorableFileCount];
-    [v9 setObject:v28 forKeyedSubscript:@"backgroundRestorableFileCount"];
+    backgroundRestorableFileCount = [statusCopy backgroundRestorableFileCount];
+    [v9 setObject:backgroundRestorableFileCount forKeyedSubscript:@"backgroundRestorableFileCount"];
 
-    v29 = [v7 foregroundRestorableDomainCount];
-    [v9 setObject:v29 forKeyedSubscript:@"foregroundRestoreDomainsCount"];
+    foregroundRestorableDomainCount = [statusCopy foregroundRestorableDomainCount];
+    [v9 setObject:foregroundRestorableDomainCount forKeyedSubscript:@"foregroundRestoreDomainsCount"];
 
-    v30 = [v7 foregroundRestoreVerificationStatus];
-    v31 = v30;
-    if (v30)
+    foregroundRestoreVerificationStatus = [statusCopy foregroundRestoreVerificationStatus];
+    v31 = foregroundRestoreVerificationStatus;
+    if (foregroundRestoreVerificationStatus)
     {
-      v32 = v30;
+      v32 = foregroundRestoreVerificationStatus;
     }
 
     else
@@ -565,16 +565,16 @@ LABEL_20:
 
     [v9 setObject:v32 forKeyedSubscript:@"foregroundRestoreVerificationStatus"];
 
-    v33 = [v7 targetSnapshot];
-    [v33 snapshotFormat];
+    targetSnapshot = [statusCopy targetSnapshot];
+    [targetSnapshot snapshotFormat];
     v34 = MBStringForSnapshotFormat();
     [v9 setObject:v34 forKeyedSubscript:@"snapshotFormat"];
 
     v50 = 0;
-    v35 = [v7 serviceAccount];
-    v36 = [v35 persona];
+    serviceAccount = [statusCopy serviceAccount];
+    persona = [serviceAccount persona];
     v49 = 0;
-    v37 = [MBRestoreCloudFormatPolicy isRestoringFromFileLists:&v50 persona:v36 error:&v49];
+    v37 = [MBRestoreCloudFormatPolicy isRestoringFromFileLists:&v50 persona:persona error:&v49];
     v38 = v49;
 
     if (v37)
@@ -605,91 +605,91 @@ LABEL_20:
       }
     }
 
-    v41 = [v7 targetSnapshot];
-    v42 = [v41 commitID];
-    v43 = v42;
-    if (!v42)
+    targetSnapshot2 = [statusCopy targetSnapshot];
+    commitID = [targetSnapshot2 commitID];
+    snapshotID = commitID;
+    if (!commitID)
     {
-      v43 = [v41 snapshotID];
+      snapshotID = [targetSnapshot2 snapshotID];
     }
 
-    v44 = sub_1002498EC(v43, @"restore");
+    v44 = sub_1002498EC(snapshotID, @"restore");
     [v9 setObject:v44 forKeyedSubscript:@"snapshotID"];
 
-    if (!v42)
+    if (!commitID)
     {
     }
 
-    v45 = [v41 device];
-    v46 = [v45 hardwareModel];
-    [v9 setObject:v46 forKeyedSubscript:@"sourceDeviceHardwareModel"];
+    device = [targetSnapshot2 device];
+    hardwareModel = [device hardwareModel];
+    [v9 setObject:hardwareModel forKeyedSubscript:@"sourceDeviceHardwareModel"];
 
-    v47 = [v41 buildVersion];
-    [v9 setObject:v47 forKeyedSubscript:@"sourceDeviceBuildVersion"];
+    buildVersion = [targetSnapshot2 buildVersion];
+    [v9 setObject:buildVersion forKeyedSubscript:@"sourceDeviceBuildVersion"];
 
     [MBTelemetry submitEventName:@"com.apple.massStorage.MobileBackupInfo.FGRestore_1" event:v9];
   }
 }
 
-+ (void)sendBackupEngineStateChangeStatus:(id)a3 state:(unint64_t)a4 start:(id)a5 end:(id)a6
++ (void)sendBackupEngineStateChangeStatus:(id)status state:(unint64_t)state start:(id)start end:(id)end
 {
-  v30 = a3;
-  v9 = a6;
-  v10 = a5;
+  statusCopy = status;
+  endCopy = end;
+  startCopy = start;
   v11 = objc_opt_new();
-  v12 = [v30 telemetry];
-  v13 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v12 telemetryID]);
+  telemetry = [statusCopy telemetry];
+  v13 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [telemetry telemetryID]);
   [v11 setObject:v13 forKeyedSubscript:@"sessionID"];
 
   [v11 setObject:@"BackupStateChange" forKeyedSubscript:@"telemetryType"];
-  v14 = [v30 backupStateDescription];
-  [v11 setObject:v14 forKeyedSubscript:@"state"];
+  backupStateDescription = [statusCopy backupStateDescription];
+  [v11 setObject:backupStateDescription forKeyedSubscript:@"state"];
 
-  [v9 timeIntervalSinceDate:v10];
+  [endCopy timeIntervalSinceDate:startCopy];
   v16 = v15;
 
   v17 = [NSNumber numberWithDouble:v16];
   [v11 setObject:v17 forKeyedSubscript:@"duration"];
 
-  v18 = [v30 engineError];
-  v19 = MBExtractFirstMBErrorOrCKError(v18);
+  engineError = [statusCopy engineError];
+  v19 = MBExtractFirstMBErrorOrCKError(engineError);
 
   if (v19)
   {
-    v20 = [v19 domain];
-    [v11 setObject:v20 forKeyedSubscript:@"errorDomain"];
+    domain = [v19 domain];
+    [v11 setObject:domain forKeyedSubscript:@"errorDomain"];
 
     v21 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v19 code]);
     [v11 setObject:v21 forKeyedSubscript:@"errorCode"];
   }
 
-  [v30 backupPolicy];
+  [statusCopy backupPolicy];
   v22 = MBStringForBackupPolicy();
   [v11 setObject:v22 forKeyedSubscript:@"policy"];
 
-  [v30 backupReason];
+  [statusCopy backupReason];
   v23 = MBStringForBackupReason();
   [v11 setObject:v23 forKeyedSubscript:@"reason"];
 
-  v24 = [v30 telemetry];
-  [v24 snapshotFormat];
+  telemetry2 = [statusCopy telemetry];
+  [telemetry2 snapshotFormat];
   v25 = MBStringForSnapshotFormat();
   [v11 setObject:v25 forKeyedSubscript:@"snapshotFormat"];
 
-  [v24 snapshotType];
+  [telemetry2 snapshotType];
   v26 = MBStringForSnapshotType();
   [v11 setObject:v26 forKeyedSubscript:@"snapshotType"];
 
-  if (a4 == 8)
+  if (state == 8)
   {
-    v27 = [v24 snapshotVerificationStatus];
+    snapshotVerificationStatus = [telemetry2 snapshotVerificationStatus];
 
-    if (v27)
+    if (snapshotVerificationStatus)
     {
-      v28 = [v24 snapshotVerificationStatus];
-      [v11 setObject:v28 forKeyedSubscript:@"snapshotVerificationStatus"];
+      snapshotVerificationStatus2 = [telemetry2 snapshotVerificationStatus];
+      [v11 setObject:snapshotVerificationStatus2 forKeyedSubscript:@"snapshotVerificationStatus"];
 
-      [v24 snapshotVerificationDuration];
+      [telemetry2 snapshotVerificationDuration];
       v29 = [NSNumber numberWithDouble:?];
       [v11 setObject:v29 forKeyedSubscript:@"snapshotVerificationDuration"];
     }
@@ -703,33 +703,33 @@ LABEL_20:
   [MBTelemetry submitEventName:@"com.apple.massStorage.MobileBackupInfo.Backup_1" event:v11];
 }
 
-+ (void)sendRestoreEngineStateChangeStatus:(id)a3 state:(unint64_t)a4 start:(id)a5 end:(id)a6
++ (void)sendRestoreEngineStateChangeStatus:(id)status state:(unint64_t)state start:(id)start end:(id)end
 {
-  v20 = a3;
-  v9 = a5;
-  v10 = a6;
-  if ([v20 isForegroundRestore])
+  statusCopy = status;
+  startCopy = start;
+  endCopy = end;
+  if ([statusCopy isForegroundRestore])
   {
     v11 = objc_opt_new();
-    v12 = [v20 serviceManager];
-    v13 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v12 restoreTelemetryID]);
+    serviceManager = [statusCopy serviceManager];
+    v13 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [serviceManager restoreTelemetryID]);
     [v11 setObject:v13 forKeyedSubscript:@"sessionID"];
 
     [v11 setObject:@"ForegroundRestoreStateChange" forKeyedSubscript:@"telemetryType"];
-    v14 = MBCKStringForRestoreState(a4);
+    v14 = MBCKStringForRestoreState(state);
     [v11 setObject:v14 forKeyedSubscript:@"state"];
 
-    [v10 timeIntervalSinceDate:v9];
+    [endCopy timeIntervalSinceDate:startCopy];
     v15 = [NSNumber numberWithDouble:?];
     [v11 setObject:v15 forKeyedSubscript:@"duration"];
 
-    v16 = [v20 engineError];
-    v17 = MBExtractFirstMBErrorOrCKError(v16);
+    engineError = [statusCopy engineError];
+    v17 = MBExtractFirstMBErrorOrCKError(engineError);
 
     if (v17)
     {
-      v18 = [v17 domain];
-      [v11 setObject:v18 forKeyedSubscript:@"errorDomain"];
+      domain = [v17 domain];
+      [v11 setObject:domain forKeyedSubscript:@"errorDomain"];
 
       v19 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v17 code]);
       [v11 setObject:v19 forKeyedSubscript:@"errorCode"];
@@ -739,27 +739,27 @@ LABEL_20:
   }
 }
 
-+ (void)sendBackgroundRestoreHeartbeat:(unint64_t)a3 restoreInfo:(id)a4
++ (void)sendBackgroundRestoreHeartbeat:(unint64_t)heartbeat restoreInfo:(id)info
 {
-  v5 = a4;
+  infoCopy = info;
   v6 = +[NSMutableDictionary dictionary];
-  v7 = [NSNumber numberWithUnsignedInteger:a3];
+  v7 = [NSNumber numberWithUnsignedInteger:heartbeat];
   [v6 setObject:v7 forKeyedSubscript:@"sessionID"];
 
   [v6 setObject:@"BackgroundRestoreHeartbeat" forKeyedSubscript:@"telemetryType"];
   v8 = [NSNumber numberWithInt:BYSetupAssistantNeedsToRun() ^ 1];
   [v6 setObject:v8 forKeyedSubscript:@"setupAssistantFinished"];
 
-  v9 = v5;
-  v10 = [v5 commitID];
-  v11 = [v9 snapshotID];
-  v12 = v11;
-  if (v10)
+  v9 = infoCopy;
+  commitID = [infoCopy commitID];
+  snapshotID = [v9 snapshotID];
+  v12 = snapshotID;
+  if (commitID)
   {
-    v11 = v10;
+    snapshotID = commitID;
   }
 
-  v13 = sub_1002498EC(v11, @"restore");
+  v13 = sub_1002498EC(snapshotID, @"restore");
   [v6 setObject:v13 forKeyedSubscript:@"snapshotID"];
   [v9 snapshotFormat];
   v38 = MBStringForSnapshotFormat();
@@ -779,14 +779,14 @@ LABEL_20:
     v18 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v9 bytesRemaining]);
     [v6 setObject:v18 forKeyedSubscript:@"bytesRemaining"];
 
-    v19 = [v9 recentATCErrors];
-    v20 = [v19 count];
+    recentATCErrors = [v9 recentATCErrors];
+    v20 = [recentATCErrors count];
 
     p_weak_ivar_lyt = &MBRestoreDomainCommand.weak_ivar_lyt;
     if (v20)
     {
-      v21 = [v9 recentATCErrors];
-      v22 = [MBTelemetry _dictToJSONString:v21];
+      recentATCErrors2 = [v9 recentATCErrors];
+      v22 = [MBTelemetry _dictToJSONString:recentATCErrors2];
       [v6 setObject:v22 forKeyedSubscript:@"recentATCErrors"];
 
       p_weak_ivar_lyt = &MBRestoreDomainCommand.weak_ivar_lyt;
@@ -794,16 +794,16 @@ LABEL_20:
   }
 
   [p_weak_ivar_lyt + 180 submitEventName:@"com.apple.massStorage.MobileBackupInfo.BGRestore_1" event:v6];
-  v23 = [v9 perClassItemsRemaining];
-  v24 = [v23 count];
+  perClassItemsRemaining = [v9 perClassItemsRemaining];
+  v24 = [perClassItemsRemaining count];
 
   if (v24)
   {
     v35 = v12;
-    v36 = v10;
+    v36 = commitID;
     v37 = v6;
     v25 = +[NSMutableDictionary dictionary];
-    v26 = [NSNumber numberWithUnsignedInteger:a3];
+    v26 = [NSNumber numberWithUnsignedInteger:heartbeat];
     [v25 setObject:v26 forKeyedSubscript:@"sessionID"];
 
     [v25 setObject:@"BackgroundRestoreHeartbeat-Items" forKeyedSubscript:@"telemetryType"];
@@ -843,35 +843,35 @@ LABEL_20:
       while (v28);
     }
 
-    v10 = v36;
+    commitID = v36;
     v6 = v37;
     v12 = v35;
   }
 }
 
-+ (void)sendBackgroundRestoreCompletion:(unint64_t)a3 snapshotIdentifier:(id)a4 snapshotFormat:(int64_t)a5 isRestoringUsingFileLists:(BOOL)a6 duration:(double)a7 error:(id)a8 fatalErrors:(id)a9 domainsTopNSizes:(id)a10 domainsTopNFileCount:(id)a11 failedDomains:(id)a12
++ (void)sendBackgroundRestoreCompletion:(unint64_t)completion snapshotIdentifier:(id)identifier snapshotFormat:(int64_t)format isRestoringUsingFileLists:(BOOL)lists duration:(double)duration error:(id)error fatalErrors:(id)errors domainsTopNSizes:(id)self0 domainsTopNFileCount:(id)self1 failedDomains:(id)self2
 {
-  v15 = a6;
-  v17 = a4;
-  v18 = a8;
-  v19 = a9;
-  v67 = a10;
-  v66 = a11;
-  v20 = a12;
+  listsCopy = lists;
+  identifierCopy = identifier;
+  errorCopy = error;
+  errorsCopy = errors;
+  sizesCopy = sizes;
+  countCopy = count;
+  domainsCopy = domains;
   v21 = objc_opt_new();
-  v72 = a3;
-  v22 = [NSNumber numberWithUnsignedInteger:a3];
+  completionCopy = completion;
+  v22 = [NSNumber numberWithUnsignedInteger:completion];
   [v21 setObject:v22 forKeyedSubscript:@"sessionID"];
 
   [v21 setObject:@"BackgroundRestoreCompletion" forKeyedSubscript:@"telemetryType"];
-  if ([v19 count])
+  if ([errorsCopy count])
   {
     v23 = 0;
   }
 
-  else if (v18)
+  else if (errorCopy)
   {
-    v23 = [MBError isError:v18 withCode:0];
+    v23 = [MBError isError:errorCopy withCode:0];
   }
 
   else
@@ -879,24 +879,24 @@ LABEL_20:
     v23 = 1;
   }
 
-  if ([MBError shouldReportLowDiskSpaceForError:v18])
+  if ([MBError shouldReportLowDiskSpaceForError:errorCopy])
   {
     v24 = [NSNumber numberWithUnsignedLongLong:MBFreeDiskSpace()];
     [v21 setObject:v24 forKeyedSubscript:@"freeDiskSpace"];
   }
 
-  v64 = v18;
-  v25 = [NSNumber numberWithDouble:a7];
+  v64 = errorCopy;
+  v25 = [NSNumber numberWithDouble:duration];
   [v21 setObject:v25 forKeyedSubscript:@"duration"];
 
   v26 = [NSNumber numberWithUnsignedLongLong:MBPeakProcessMemoryUsage()];
   [v21 setObject:v26 forKeyedSubscript:@"peakMemoryUsage"];
 
-  v65 = v17;
-  v27 = sub_1002498EC(v17, @"restore");
+  v65 = identifierCopy;
+  v27 = sub_1002498EC(identifierCopy, @"restore");
   v28 = MBStringForSnapshotFormat();
   v29 = @"Legacy";
-  if (v15)
+  if (listsCopy)
   {
     v29 = @"Lightrail";
   }
@@ -911,21 +911,21 @@ LABEL_20:
   v31 = [NSNumber numberWithBool:v23];
   [v21 setObject:v31 forKeyedSubscript:@"success"];
 
-  if ([v20 count])
+  if ([domainsCopy count])
   {
-    v32 = [v20 componentsJoinedByString:@" "];
+    v32 = [domainsCopy componentsJoinedByString:@" "];
     [v21 setObject:v32 forKeyedSubscript:@"failedDomains"];
   }
 
   v62 = v21;
-  v63 = v20;
+  v63 = domainsCopy;
   [MBTelemetry submitEventName:@"com.apple.massStorage.MobileBackupInfo.BGRestore_1" event:v21];
   v33 = objc_opt_new();
   v81 = 0u;
   v82 = 0u;
   v83 = 0u;
   v84 = 0u;
-  obj = v19;
+  obj = errorsCopy;
   v34 = [obj countByEnumeratingWithState:&v81 objects:v87 count:16];
   if (v34)
   {
@@ -944,12 +944,12 @@ LABEL_20:
         [v33 setObject:v27 forKeyedSubscript:@"snapshotID"];
         [v33 setObject:v70 forKeyedSubscript:@"snapshotFormat"];
         [v33 setObject:v69 forKeyedSubscript:@"snapshotFormatRestored"];
-        v39 = [NSNumber numberWithUnsignedInteger:a3];
+        v39 = [NSNumber numberWithUnsignedInteger:completion];
         [v33 setObject:v39 forKeyedSubscript:@"sessionID"];
 
         [v33 setObject:@"BackgroundRestoreCompletion-Domains" forKeyedSubscript:@"telemetryType"];
-        v40 = [v38 domain];
-        [v33 setObject:v40 forKeyedSubscript:@"errorDomain"];
+        domain = [v38 domain];
+        [v33 setObject:domain forKeyedSubscript:@"errorDomain"];
 
         v41 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v38 code]);
         [v33 setObject:v41 forKeyedSubscript:@"errorCode"];
@@ -966,10 +966,10 @@ LABEL_20:
     while (v35);
   }
 
-  if ([v67 count])
+  if ([sizesCopy count])
   {
     v43 = +[NSMutableDictionary dictionary];
-    v44 = [NSNumber numberWithUnsignedInteger:a3];
+    v44 = [NSNumber numberWithUnsignedInteger:completion];
     [v43 setObject:v44 forKeyedSubscript:@"sessionID"];
 
     [v43 setObject:@"BackgroundRestoreCompletion-Domains" forKeyedSubscript:@"telemetryType"];
@@ -977,7 +977,7 @@ LABEL_20:
     v80 = 0u;
     v77 = 0u;
     v78 = 0u;
-    v45 = v67;
+    v45 = sizesCopy;
     v46 = [v45 countByEnumeratingWithState:&v77 objects:v86 count:16];
     if (v46)
     {
@@ -1007,11 +1007,11 @@ LABEL_20:
     }
   }
 
-  v52 = v66;
-  if ([v66 count])
+  v52 = countCopy;
+  if ([countCopy count])
   {
     v53 = +[NSMutableDictionary dictionary];
-    v54 = [NSNumber numberWithUnsignedInteger:v72];
+    v54 = [NSNumber numberWithUnsignedInteger:completionCopy];
     [v53 setObject:v54 forKeyedSubscript:@"sessionID"];
 
     [v53 setObject:@"BackgroundRestoreCompletion-Domains" forKeyedSubscript:@"telemetryType"];
@@ -1019,7 +1019,7 @@ LABEL_20:
     v76 = 0u;
     v73 = 0u;
     v74 = 0u;
-    v55 = v66;
+    v55 = countCopy;
     v56 = [v55 countByEnumeratingWithState:&v73 objects:v85 count:16];
     if (v56)
     {
@@ -1048,7 +1048,7 @@ LABEL_20:
       while (v57);
     }
 
-    v52 = v66;
+    v52 = countCopy;
   }
 }
 

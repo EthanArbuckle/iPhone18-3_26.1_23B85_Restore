@@ -1,16 +1,16 @@
 @interface TSWPTextStatistics
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)addTextStatistics:(id)a3;
-- (void)removeTextStatistics:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)addTextStatistics:(id)statistics;
+- (void)removeTextStatistics:(id)statistics;
 - (void)resetStatistics;
-- (void)setTextStatistics:(id)a3;
+- (void)setTextStatistics:(id)statistics;
 @end
 
 @implementation TSWPTextStatistics
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setWordCount:self->_wordCount];
   [v4 setCharactersNoWhiteSpace:self->_charactersNoWhiteSpace];
   [v4 setParagraphCount:self->_paragraphCount];
@@ -27,31 +27,31 @@
   [(TSWPTextStatistics *)self setIsAccurate:0];
 }
 
-- (void)setTextStatistics:(id)a3
+- (void)setTextStatistics:(id)statistics
 {
-  -[TSWPTextStatistics setWordCount:](self, "setWordCount:", [a3 wordCount]);
-  -[TSWPTextStatistics setCharactersNoWhiteSpace:](self, "setCharactersNoWhiteSpace:", [a3 charactersNoWhiteSpace]);
-  v5 = [a3 paragraphCount];
+  -[TSWPTextStatistics setWordCount:](self, "setWordCount:", [statistics wordCount]);
+  -[TSWPTextStatistics setCharactersNoWhiteSpace:](self, "setCharactersNoWhiteSpace:", [statistics charactersNoWhiteSpace]);
+  paragraphCount = [statistics paragraphCount];
 
-  [(TSWPTextStatistics *)self setParagraphCount:v5];
+  [(TSWPTextStatistics *)self setParagraphCount:paragraphCount];
 }
 
-- (void)addTextStatistics:(id)a3
+- (void)addTextStatistics:(id)statistics
 {
-  -[TSWPTextStatistics setWordCount:](self, "setWordCount:", [a3 wordCount] + -[TSWPTextStatistics wordCount](self, "wordCount"));
-  -[TSWPTextStatistics setCharactersNoWhiteSpace:](self, "setCharactersNoWhiteSpace:", [a3 charactersNoWhiteSpace] + -[TSWPTextStatistics charactersNoWhiteSpace](self, "charactersNoWhiteSpace"));
-  v5 = [(TSWPTextStatistics *)self paragraphCount];
-  v6 = [a3 paragraphCount] + v5;
+  -[TSWPTextStatistics setWordCount:](self, "setWordCount:", [statistics wordCount] + -[TSWPTextStatistics wordCount](self, "wordCount"));
+  -[TSWPTextStatistics setCharactersNoWhiteSpace:](self, "setCharactersNoWhiteSpace:", [statistics charactersNoWhiteSpace] + -[TSWPTextStatistics charactersNoWhiteSpace](self, "charactersNoWhiteSpace"));
+  paragraphCount = [(TSWPTextStatistics *)self paragraphCount];
+  v6 = [statistics paragraphCount] + paragraphCount;
 
   [(TSWPTextStatistics *)self setParagraphCount:v6];
 }
 
-- (void)removeTextStatistics:(id)a3
+- (void)removeTextStatistics:(id)statistics
 {
-  -[TSWPTextStatistics setWordCount:](self, "setWordCount:", -[TSWPTextStatistics wordCount](self, "wordCount") - [a3 wordCount]);
-  -[TSWPTextStatistics setCharactersNoWhiteSpace:](self, "setCharactersNoWhiteSpace:", -[TSWPTextStatistics charactersNoWhiteSpace](self, "charactersNoWhiteSpace") - [a3 charactersNoWhiteSpace]);
-  v5 = [(TSWPTextStatistics *)self paragraphCount];
-  v6 = v5 - [a3 paragraphCount];
+  -[TSWPTextStatistics setWordCount:](self, "setWordCount:", -[TSWPTextStatistics wordCount](self, "wordCount") - [statistics wordCount]);
+  -[TSWPTextStatistics setCharactersNoWhiteSpace:](self, "setCharactersNoWhiteSpace:", -[TSWPTextStatistics charactersNoWhiteSpace](self, "charactersNoWhiteSpace") - [statistics charactersNoWhiteSpace]);
+  paragraphCount = [(TSWPTextStatistics *)self paragraphCount];
+  v6 = paragraphCount - [statistics paragraphCount];
 
   [(TSWPTextStatistics *)self setParagraphCount:v6];
 }

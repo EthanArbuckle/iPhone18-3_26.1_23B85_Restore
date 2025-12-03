@@ -1,6 +1,6 @@
 @interface CPUStatistics
 - (CPUStatistics)init;
-- (void)addCPUPerformanceIntervalStart:(id *)a3 end:(id *)a4;
+- (void)addCPUPerformanceIntervalStart:(id *)start end:(id *)end;
 - (void)dealloc;
 - (void)printCPUStatistics;
 @end
@@ -45,13 +45,13 @@
   printf("\tInit Time %f ms \n\tCPU Workload Time %f ms \n\tCPU Workload Cycles %f \n\tSystem Resident Memory = %f MB\n\tCPU Frequency = %f GHz\nfor: \n\titerations = %lu\n", v17, v23, v29, v35, v47, v52);
 }
 
-- (void)addCPUPerformanceIntervalStart:(id *)a3 end:(id *)a4
+- (void)addCPUPerformanceIntervalStart:(id *)start end:(id *)end
 {
   CPUWorkloadCycles = self->_CPUWorkloadCycles;
-  v8 = kpc_cycle_diff(a3, a4);
+  v8 = kpc_cycle_diff(start, end);
   objc_msgSend_addValue_(CPUWorkloadCycles, v9, v10, v11, v12, v8);
   CPUWorkloadTime = self->_CPUWorkloadTime;
-  v18 = a4->var1 - a3->var1;
+  v18 = end->var1 - start->var1;
 
   objc_msgSend_addValue_(CPUWorkloadTime, v13, v14, v15, v16, v18);
 }

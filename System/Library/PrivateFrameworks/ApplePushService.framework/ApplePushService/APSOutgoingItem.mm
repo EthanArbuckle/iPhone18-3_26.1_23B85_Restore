@@ -1,13 +1,13 @@
 @interface APSOutgoingItem
-- (APSOutgoingItem)initWithSendBlock:(id)a3 completionBlock:(id)a4 timeout:(double)a5;
+- (APSOutgoingItem)initWithSendBlock:(id)block completionBlock:(id)completionBlock timeout:(double)timeout;
 @end
 
 @implementation APSOutgoingItem
 
-- (APSOutgoingItem)initWithSendBlock:(id)a3 completionBlock:(id)a4 timeout:(double)a5
+- (APSOutgoingItem)initWithSendBlock:(id)block completionBlock:(id)completionBlock timeout:(double)timeout
 {
-  v8 = a3;
-  v9 = a4;
+  blockCopy = block;
+  completionBlockCopy = completionBlock;
   v19.receiver = self;
   v19.super_class = APSOutgoingItem;
   v10 = [(APSOutgoingItem *)&v19 init];
@@ -17,12 +17,12 @@
     timestamp = v10->_timestamp;
     v10->_timestamp = v11;
 
-    v10->_timeout = a5;
-    v13 = objc_retainBlock(v9);
+    v10->_timeout = timeout;
+    v13 = objc_retainBlock(completionBlockCopy);
     completionBlock = v10->_completionBlock;
     v10->_completionBlock = v13;
 
-    v15 = objc_retainBlock(v8);
+    v15 = objc_retainBlock(blockCopy);
     sendBlock = v10->_sendBlock;
     v10->_sendBlock = v15;
 

@@ -1,38 +1,38 @@
 @interface _UIDragInteractionLongPressDriver
 - (BOOL)_wantsTimeDelayedFailureRequirementGate;
-- (BOOL)canExcludeCompetingGestureRecognizer:(id)a3;
-- (BOOL)gestureRecognizer:(id)a3 shouldBeRequiredToFailByGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)canExcludeCompetingGestureRecognizer:(id)recognizer;
+- (BOOL)gestureRecognizer:(id)recognizer shouldBeRequiredToFailByGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (BOOL)hasExceededAllowableMovement;
 - (BOOL)hasMoveHysteresisBeenReached;
-- (BOOL)shouldDelayCompetingGestureRecognizer:(id)a3;
-- (_UIDragInteractionLongPressDriver)initWithBehavior:(unint64_t)a3;
+- (BOOL)shouldDelayCompetingGestureRecognizer:(id)recognizer;
+- (_UIDragInteractionLongPressDriver)initWithBehavior:(unint64_t)behavior;
 - (double)translationInWindow;
-- (void)_dragInitiationGestureStateChanged:(id)a3;
+- (void)_dragInitiationGestureStateChanged:(id)changed;
 - (void)_gateCompetingGestureRecognizers;
-- (void)_gestureRecognizerFailed:(id)a3;
+- (void)_gestureRecognizerFailed:(id)failed;
 - (void)_updateLiftMoveHysteresisInDragInitiationGesture;
-- (void)attachToView:(id)a3;
-- (void)detachFromView:(id)a3;
+- (void)attachToView:(id)view;
+- (void)detachFromView:(id)view;
 - (void)didTransitionToBeginState;
 - (void)didTransitionToCancelState;
 - (void)didTransitionToDeferred;
 - (void)didTransitionToInactiveState;
 - (void)didTransitionToInflightState;
 - (void)didTransitionToPreparing;
-- (void)dragInitiationGestureStateChanged:(id)a3;
+- (void)dragInitiationGestureStateChanged:(id)changed;
 - (void)invalidateCancellationTimer;
 - (void)invalidateCompetingGestureRecognizerGateTimer;
-- (void)openCompetingGestureRecognizerGateCancelingGestures:(id)a3;
+- (void)openCompetingGestureRecognizerGateCancelingGestures:(id)gestures;
 - (void)openGateCancelingAddItemsGestures;
 - (void)reset;
-- (void)setAllowedTouchTypes:(id)a3;
-- (void)setAutomaticallyAddsFailureRelationships:(BOOL)a3;
-- (void)setLiftDelay:(double)a3;
-- (void)setLiftMoveHysteresis:(double)a3;
+- (void)setAllowedTouchTypes:(id)types;
+- (void)setAutomaticallyAddsFailureRelationships:(BOOL)relationships;
+- (void)setLiftDelay:(double)delay;
+- (void)setLiftMoveHysteresis:(double)hysteresis;
 @end
 
 @implementation _UIDragInteractionLongPressDriver
@@ -90,7 +90,7 @@
   self->_cancellationTimer = 0;
 }
 
-- (_UIDragInteractionLongPressDriver)initWithBehavior:(unint64_t)a3
+- (_UIDragInteractionLongPressDriver)initWithBehavior:(unint64_t)behavior
 {
   v19.receiver = self;
   v19.super_class = _UIDragInteractionLongPressDriver;
@@ -98,7 +98,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_behavior = a3;
+    v4->_behavior = behavior;
     [(_UIDragInteractionDriver *)v4 setShouldAnimateLift:1];
     [(_UIDragInteractionDriver *)v5 setCompetingLongPressDelay:_UIDragInteractionDefaultCompetingLongPressDelay()];
     [(_UIDragInteractionDriver *)v5 setCancellationDelay:_UIDragInteractionDefaultCancellationDelay()];
@@ -155,22 +155,22 @@
   return v5;
 }
 
-- (void)attachToView:(id)a3
+- (void)attachToView:(id)view
 {
   gestureRecognizerForDragInitiation = self->_gestureRecognizerForDragInitiation;
-  v5 = a3;
-  [v5 addGestureRecognizer:gestureRecognizerForDragInitiation];
-  [v5 addGestureRecognizer:self->_gestureRecognizerForExclusionRelationship];
-  [v5 addGestureRecognizer:self->_gestureRecognizerForFailureRelationship];
+  viewCopy = view;
+  [viewCopy addGestureRecognizer:gestureRecognizerForDragInitiation];
+  [viewCopy addGestureRecognizer:self->_gestureRecognizerForExclusionRelationship];
+  [viewCopy addGestureRecognizer:self->_gestureRecognizerForFailureRelationship];
 }
 
-- (void)detachFromView:(id)a3
+- (void)detachFromView:(id)view
 {
   gestureRecognizerForDragInitiation = self->_gestureRecognizerForDragInitiation;
-  v5 = a3;
-  [v5 removeGestureRecognizer:gestureRecognizerForDragInitiation];
-  [v5 removeGestureRecognizer:self->_gestureRecognizerForExclusionRelationship];
-  [v5 removeGestureRecognizer:self->_gestureRecognizerForFailureRelationship];
+  viewCopy = view;
+  [viewCopy removeGestureRecognizer:gestureRecognizerForDragInitiation];
+  [viewCopy removeGestureRecognizer:self->_gestureRecognizerForExclusionRelationship];
+  [viewCopy removeGestureRecognizer:self->_gestureRecognizerForFailureRelationship];
 }
 
 - (void)didTransitionToPreparing
@@ -195,8 +195,8 @@
 
 - (void)didTransitionToInflightState
 {
-  v3 = [(_UIDragInteractionDriver *)self delegate];
-  v4 = [v3 dragDriverBeginLift:self];
+  delegate = [(_UIDragInteractionDriver *)self delegate];
+  v4 = [delegate dragDriverBeginLift:self];
 
   if (v4)
   {
@@ -243,8 +243,8 @@
   [(_UIDragInteractionLongPressDriver *)self invalidateCompetingGestureRecognizerGateTimer];
   [(_UIDragInteractionLongPressDriver *)self invalidateCancellationTimer];
   v4 = self->_gestureRecognizerForDragInitiation;
-  v5 = [(UIGestureRecognizer *)v4 _allActiveTouches];
-  if (![v5 count])
+  _allActiveTouches = [(UIGestureRecognizer *)v4 _allActiveTouches];
+  if (![_allActiveTouches count])
   {
     v10 = *(__UILogGetCategoryCachedImpl("Dragging", &_MergedGlobals_9_17) + 8);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -252,7 +252,7 @@
       v7 = v10;
       v8 = NSStringFromSelector(a2);
       *buf = 138412802;
-      v29 = self;
+      selfCopy2 = self;
       v30 = 2112;
       v31 = v8;
       v32 = 2112;
@@ -266,7 +266,7 @@ LABEL_10:
     goto LABEL_19;
   }
 
-  if ([v5 count] >= 3)
+  if ([_allActiveTouches count] >= 3)
   {
     v6 = *(__UILogGetCategoryCachedImpl("Dragging", &qword_1ED499DC8) + 8);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -274,7 +274,7 @@ LABEL_10:
       v7 = v6;
       v8 = NSStringFromSelector(a2);
       *buf = 138412802;
-      v29 = self;
+      selfCopy2 = self;
       v30 = 2112;
       v31 = v8;
       v32 = 2112;
@@ -290,15 +290,15 @@ LABEL_9:
   }
 
   v11 = UIApp;
-  v12 = [(_UIDragInteractionDriver *)self view];
-  v13 = [v12 window];
-  v14 = [v11 _touchesEventForWindow:v13];
+  view = [(_UIDragInteractionDriver *)self view];
+  window = [view window];
+  v14 = [v11 _touchesEventForWindow:window];
 
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v15 = v5;
+  v15 = _allActiveTouches;
   v16 = [v15 countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v16)
   {
@@ -322,71 +322,71 @@ LABEL_9:
     while (v17);
   }
 
-  v20 = [(_UIDragInteractionDriver *)self delegate];
-  v21 = [(_UIDragInteractionDriver *)self itemUpdater];
-  [v20 dragDriver:self beginDragWithTouches:v15 itemUpdater:v21 beginningSessionHandler:0];
+  delegate = [(_UIDragInteractionDriver *)self delegate];
+  itemUpdater = [(_UIDragInteractionDriver *)self itemUpdater];
+  [delegate dragDriver:self beginDragWithTouches:v15 itemUpdater:itemUpdater beginningSessionHandler:0];
 
 LABEL_19:
 }
 
-- (void)setAutomaticallyAddsFailureRelationships:(BOOL)a3
+- (void)setAutomaticallyAddsFailureRelationships:(BOOL)relationships
 {
-  v3 = a3;
-  if ([(_UIDragInteractionDriver *)self automaticallyAddsFailureRelationships]!= a3)
+  relationshipsCopy = relationships;
+  if ([(_UIDragInteractionDriver *)self automaticallyAddsFailureRelationships]!= relationships)
   {
     v8.receiver = self;
     v8.super_class = _UIDragInteractionLongPressDriver;
-    [(_UIDragInteractionDriver *)&v8 setAutomaticallyAddsFailureRelationships:v3];
-    v5 = [(_UIDragInteractionDriver *)self view];
-    if (v5)
+    [(_UIDragInteractionDriver *)&v8 setAutomaticallyAddsFailureRelationships:relationshipsCopy];
+    view = [(_UIDragInteractionDriver *)self view];
+    if (view)
     {
-      v6 = [(_UIDragInteractionDriver *)self automaticallyAddsFailureRelationships];
+      automaticallyAddsFailureRelationships = [(_UIDragInteractionDriver *)self automaticallyAddsFailureRelationships];
       gestureRecognizerForFailureRelationship = self->_gestureRecognizerForFailureRelationship;
-      if (v6)
+      if (automaticallyAddsFailureRelationships)
       {
-        [v5 addGestureRecognizer:gestureRecognizerForFailureRelationship];
+        [view addGestureRecognizer:gestureRecognizerForFailureRelationship];
       }
 
       else
       {
-        [v5 removeGestureRecognizer:gestureRecognizerForFailureRelationship];
+        [view removeGestureRecognizer:gestureRecognizerForFailureRelationship];
       }
     }
   }
 }
 
-- (void)setAllowedTouchTypes:(id)a3
+- (void)setAllowedTouchTypes:(id)types
 {
   v5.receiver = self;
   v5.super_class = _UIDragInteractionLongPressDriver;
-  v4 = a3;
-  [(_UIDragInteractionDriver *)&v5 setAllowedTouchTypes:v4];
-  [(UIGestureRecognizer *)self->_gestureRecognizerForDragInitiation setAllowedTouchTypes:v4, v5.receiver, v5.super_class];
+  typesCopy = types;
+  [(_UIDragInteractionDriver *)&v5 setAllowedTouchTypes:typesCopy];
+  [(UIGestureRecognizer *)self->_gestureRecognizerForDragInitiation setAllowedTouchTypes:typesCopy, v5.receiver, v5.super_class];
 }
 
-- (void)setLiftMoveHysteresis:(double)a3
+- (void)setLiftMoveHysteresis:(double)hysteresis
 {
   v4.receiver = self;
   v4.super_class = _UIDragInteractionLongPressDriver;
-  [(_UIDragInteractionDriver *)&v4 setLiftMoveHysteresis:a3];
+  [(_UIDragInteractionDriver *)&v4 setLiftMoveHysteresis:hysteresis];
   [(_UIDragInteractionLongPressDriver *)self _updateLiftMoveHysteresisInDragInitiationGesture];
 }
 
-- (void)setLiftDelay:(double)a3
+- (void)setLiftDelay:(double)delay
 {
   v5.receiver = self;
   v5.super_class = _UIDragInteractionLongPressDriver;
   [(_UIDragInteractionDriver *)&v5 setLiftDelay:?];
-  [(UILongPressGestureRecognizer *)self->_gestureRecognizerForDragInitiation setMinimumPressDuration:a3];
+  [(UILongPressGestureRecognizer *)self->_gestureRecognizerForDragInitiation setMinimumPressDuration:delay];
 }
 
 - (BOOL)_wantsTimeDelayedFailureRequirementGate
 {
-  v3 = [(_UIDragInteractionDriver *)self view];
-  v4 = [v3 traitCollection];
-  v5 = [v4 horizontalSizeClass];
+  view = [(_UIDragInteractionDriver *)self view];
+  traitCollection = [view traitCollection];
+  horizontalSizeClass = [traitCollection horizontalSizeClass];
 
-  if (v5 == 1)
+  if (horizontalSizeClass == 1)
   {
     return 0;
   }
@@ -399,9 +399,9 @@ LABEL_19:
 
 - (void)_gateCompetingGestureRecognizers
 {
-  v3 = [(_UIDragInteractionLongPressDriver *)self _wantsTimeDelayedFailureRequirementGate];
+  _wantsTimeDelayedFailureRequirementGate = [(_UIDragInteractionLongPressDriver *)self _wantsTimeDelayedFailureRequirementGate];
   gateTimer = self->_gateTimer;
-  if (v3)
+  if (_wantsTimeDelayedFailureRequirementGate)
   {
     if (gateTimer)
     {
@@ -423,9 +423,9 @@ LABEL_19:
     [(_UIDragInteractionLongPressDriver *)self invalidateCompetingGestureRecognizerGateTimer];
   }
 
-  v8 = [(_UIDragInteractionDriver *)self cancellationTimerEnabled];
+  cancellationTimerEnabled = [(_UIDragInteractionDriver *)self cancellationTimerEnabled];
   cancellationTimer = self->_cancellationTimer;
-  if (v8)
+  if (cancellationTimerEnabled)
   {
     if (cancellationTimer)
     {
@@ -450,14 +450,14 @@ LABEL_19:
   }
 }
 
-- (void)openCompetingGestureRecognizerGateCancelingGestures:(id)a3
+- (void)openCompetingGestureRecognizerGateCancelingGestures:(id)gestures
 {
-  if (a3)
+  if (gestures)
   {
     v4 = UIApp;
-    v5 = a3;
-    v6 = [v4 _gestureEnvironment];
-    [(UIGestureEnvironment *)v6 _cancelGestureRecognizers:v5];
+    gesturesCopy = gestures;
+    _gestureEnvironment = [v4 _gestureEnvironment];
+    [(UIGestureEnvironment *)_gestureEnvironment _cancelGestureRecognizers:gesturesCopy];
   }
 
   gestureRecognizerForFailureRelationship = self->_gestureRecognizerForFailureRelationship;
@@ -468,19 +468,19 @@ LABEL_19:
 - (void)openGateCancelingAddItemsGestures
 {
   [(_UIDragInteractionLongPressDriver *)self openCompetingGestureRecognizerGateCancelingGestures:0];
-  v3 = [(_UIDragInteractionDriver *)self delegate];
-  [v3 dragDriverCancelAddItemsGesture:self];
+  delegate = [(_UIDragInteractionDriver *)self delegate];
+  [delegate dragDriverCancelAddItemsGesture:self];
 }
 
-- (void)dragInitiationGestureStateChanged:(id)a3
+- (void)dragInitiationGestureStateChanged:(id)changed
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_UIDragInteractionLongPressDriver *)self gestureRecognizerForDragInitiation];
+  changedCopy = changed;
+  gestureRecognizerForDragInitiation = [(_UIDragInteractionLongPressDriver *)self gestureRecognizerForDragInitiation];
 
-  if (v5 == v4)
+  if (gestureRecognizerForDragInitiation == changedCopy)
   {
-    [(_UIDragInteractionLongPressDriver *)self _dragInitiationGestureStateChanged:v4];
+    [(_UIDragInteractionLongPressDriver *)self _dragInitiationGestureStateChanged:changedCopy];
   }
 
   else
@@ -489,17 +489,17 @@ LABEL_19:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
       v7 = 138412290;
-      v8 = v4;
+      v8 = changedCopy;
       _os_log_impl(&dword_188A29000, v6, OS_LOG_TYPE_ERROR, "Invalid gesture recognizer sent to drag interaction %@", &v7, 0xCu);
     }
   }
 }
 
-- (void)_dragInitiationGestureStateChanged:(id)a3
+- (void)_dragInitiationGestureStateChanged:(id)changed
 {
-  v17 = a3;
-  v4 = [v17 state];
-  if (v4 == 3)
+  changedCopy = changed;
+  state = [changedCopy state];
+  if (state == 3)
   {
     if (!self)
     {
@@ -507,14 +507,14 @@ LABEL_19:
     }
 
     p_stateMachine = &self->super._stateMachine;
-    v13 = self;
+    selfCopy4 = self;
     v14 = 4;
     goto LABEL_16;
   }
 
-  if (v4 != 2)
+  if (state != 2)
   {
-    if (v4 != 1)
+    if (state != 1)
     {
       [(_UIDragInteractionDriver *)self cancel];
       goto LABEL_17;
@@ -522,26 +522,26 @@ LABEL_19:
 
     if (self->_behavior != 1)
     {
-      v15 = [(_UIDragInteractionDriver *)self view];
-      v16 = [v15 window];
-      [v17 locationInView:v16];
+      view = [(_UIDragInteractionDriver *)self view];
+      window = [view window];
+      [changedCopy locationInView:window];
       [(_UIDragInteractionDriver *)self setInitialLocationInWindow:?];
 
       p_stateMachine = &self->super._stateMachine;
-      v13 = self;
+      selfCopy4 = self;
       v14 = 0;
 LABEL_16:
-      _UIDragInteractionDriverStateMachineHandleEvent(p_stateMachine, v13, v14);
+      _UIDragInteractionDriverStateMachineHandleEvent(p_stateMachine, selfCopy4, v14);
       goto LABEL_17;
     }
 
-    v5 = [v17 view];
-    [v17 startPoint];
+    view2 = [changedCopy view];
+    [changedCopy startPoint];
     v7 = v6;
     v9 = v8;
-    v10 = [(_UIDragInteractionDriver *)self view];
-    v11 = [v10 window];
-    [v5 convertPoint:v11 toView:{v7, v9}];
+    view3 = [(_UIDragInteractionDriver *)self view];
+    window2 = [view3 window];
+    [view2 convertPoint:window2 toView:{v7, v9}];
     [(_UIDragInteractionDriver *)self setInitialLocationInWindow:?];
 
     _UIDragInteractionDriverStateMachineHandleEvent(&self->super._stateMachine, self, 0);
@@ -549,7 +549,7 @@ LABEL_7:
     if (self->super._stateMachine.state == 3 && [(_UIDragInteractionLongPressDriver *)self hasExceededAllowableMovement])
     {
       p_stateMachine = &self->super._stateMachine;
-      v13 = self;
+      selfCopy4 = self;
       v14 = 2;
     }
 
@@ -561,7 +561,7 @@ LABEL_7:
       }
 
       p_stateMachine = &self->super._stateMachine;
-      v13 = self;
+      selfCopy4 = self;
       v14 = 3;
     }
 
@@ -583,9 +583,9 @@ LABEL_17:
   v4 = v3;
   v6 = v5;
   gestureRecognizerForDragInitiation = self->_gestureRecognizerForDragInitiation;
-  v8 = [(_UIDragInteractionDriver *)self view];
-  v9 = [v8 window];
-  [(UILongPressGestureRecognizer *)gestureRecognizerForDragInitiation locationInView:v9];
+  view = [(_UIDragInteractionDriver *)self view];
+  window = [view window];
+  [(UILongPressGestureRecognizer *)gestureRecognizerForDragInitiation locationInView:window];
   v12 = sqrt((v4 - v10) * (v4 - v10) + (v6 - v11) * (v6 - v11));
 
   return v12;
@@ -607,9 +607,9 @@ LABEL_17:
   return v4 > v5;
 }
 
-- (BOOL)shouldDelayCompetingGestureRecognizer:(id)a3
+- (BOOL)shouldDelayCompetingGestureRecognizer:(id)recognizer
 {
-  v4 = a3;
+  recognizerCopy = recognizer;
   if (qword_1ED499DD8 != -1)
   {
     dispatch_once(&qword_1ED499DD8, &__block_literal_global_728);
@@ -618,32 +618,32 @@ LABEL_17:
   v5 = qword_1ED499DD0;
   v6 = [v5 containsObject:objc_opt_class()];
 
-  if ((v6 & 1) != 0 || ![v4 _isGestureType:1])
+  if ((v6 & 1) != 0 || ![recognizerCopy _isGestureType:1])
   {
     v8 = 0;
   }
 
   else
   {
-    v7 = [(_UIDragInteractionDriver *)self delegate];
-    v8 = [v7 dragDriver:self shouldDelayCompetingGestureRecognizer:v4];
+    delegate = [(_UIDragInteractionDriver *)self delegate];
+    v8 = [delegate dragDriver:self shouldDelayCompetingGestureRecognizer:recognizerCopy];
   }
 
   return v8;
 }
 
-- (BOOL)canExcludeCompetingGestureRecognizer:(id)a3
+- (BOOL)canExcludeCompetingGestureRecognizer:(id)recognizer
 {
-  v4 = a3;
-  v5 = [(_UIDragInteractionDriver *)self delegate];
-  if ([v5 dragDriverWantsExclusionOverride:self])
+  recognizerCopy = recognizer;
+  delegate = [(_UIDragInteractionDriver *)self delegate];
+  if ([delegate dragDriverWantsExclusionOverride:self])
   {
-    v6 = [v5 dragDriver:self canExcludeCompetingGestureRecognizer:v4];
+    v6 = [delegate dragDriver:self canExcludeCompetingGestureRecognizer:recognizerCopy];
   }
 
   else
   {
-    v7 = [v4 _isGestureType:1];
+    v7 = [recognizerCopy _isGestureType:1];
 
     v6 = v7 ^ 1;
   }
@@ -651,17 +651,17 @@ LABEL_17:
   return v6;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v6 = a3;
-  v7 = a4;
+  recognizerCopy = recognizer;
+  touchCopy = touch;
   if (![(_UIDragInteractionDriver *)self isEnabled])
   {
     goto LABEL_8;
   }
 
-  v8 = [(_UIDragInteractionDriver *)self delegate];
-  v9 = [v8 dragDriver:self shouldReceiveTouch:v7];
+  delegate = [(_UIDragInteractionDriver *)self delegate];
+  v9 = [delegate dragDriver:self shouldReceiveTouch:touchCopy];
 
   if (!v9)
   {
@@ -671,7 +671,7 @@ LABEL_17:
   behavior = self->_behavior;
   if (behavior - 1 >= 2)
   {
-    if (behavior || ([v7 _originatesFromPointerEvent] & 1) == 0)
+    if (behavior || ([touchCopy _originatesFromPointerEvent] & 1) == 0)
     {
       goto LABEL_10;
     }
@@ -681,7 +681,7 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if (([v7 _originatesFromPointerEvent] & 1) == 0)
+  if (([touchCopy _originatesFromPointerEvent] & 1) == 0)
   {
     goto LABEL_8;
   }
@@ -689,10 +689,10 @@ LABEL_8:
 LABEL_10:
   if ([(_UIDragInteractionDriver *)self additionalTouchesCancelLift])
   {
-    v13 = [(UIGestureRecognizer *)self->_gestureRecognizerForDragInitiation _allActiveTouches];
-    v14 = [v13 count];
+    _allActiveTouches = [(UIGestureRecognizer *)self->_gestureRecognizerForDragInitiation _allActiveTouches];
+    v14 = [_allActiveTouches count];
 
-    if (v14 >= 1 && self->_gestureRecognizerForDragInitiation == v6 && self->super._stateMachine.state != 5)
+    if (v14 >= 1 && self->_gestureRecognizerForDragInitiation == recognizerCopy && self->super._stateMachine.state != 5)
     {
       [(_UIDragInteractionDriver *)self cancel];
     }
@@ -704,39 +704,39 @@ LABEL_9:
   return v11;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  if (self->_gestureRecognizerForDragInitiation == v4 && [(UIGestureRecognizer *)self->_gestureRecognizerForExclusionRelationship state]<= UIGestureRecognizerStateChanged)
+  beginCopy = begin;
+  if (self->_gestureRecognizerForDragInitiation == beginCopy && [(UIGestureRecognizer *)self->_gestureRecognizerForExclusionRelationship state]<= UIGestureRecognizerStateChanged)
   {
-    v5 = [(_UIDragInteractionDriver *)self view];
-    [(UIGestureRecognizer *)v4 locationInView:v5];
+    view = [(_UIDragInteractionDriver *)self view];
+    [(UIGestureRecognizer *)beginCopy locationInView:view];
     v7 = v6;
     v9 = v8;
 
-    v10 = [(_UIDragInteractionDriver *)self delegate];
-    v11 = [v10 dragDriver:self shouldBeginAtLocation:{v7, v9}];
+    delegate = [(_UIDragInteractionDriver *)self delegate];
+    v11 = [delegate dragDriver:self shouldBeginAtLocation:{v7, v9}];
   }
 
   else
   {
-    v11 = self->_gestureRecognizerForExclusionRelationship == v4;
+    v11 = self->_gestureRecognizerForExclusionRelationship == beginCopy;
   }
 
   return v11;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a3;
-  v7 = a4;
-  if (self->_gestureRecognizerForFailureRelationship == v6)
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
+  if (self->_gestureRecognizerForFailureRelationship == recognizerCopy)
   {
     v8 = 1;
     goto LABEL_9;
   }
 
-  if (self->_gestureRecognizerForDragInitiation == v6)
+  if (self->_gestureRecognizerForDragInitiation == recognizerCopy)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
@@ -745,9 +745,9 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if (self->_gestureRecognizerForExclusionRelationship == v6)
+  if (self->_gestureRecognizerForExclusionRelationship == recognizerCopy)
   {
-    isKindOfClass = [(_UIDragInteractionLongPressDriver *)self canExcludeCompetingGestureRecognizer:v7];
+    isKindOfClass = [(_UIDragInteractionLongPressDriver *)self canExcludeCompetingGestureRecognizer:gestureRecognizerCopy];
     goto LABEL_8;
   }
 
@@ -757,19 +757,19 @@ LABEL_9:
   return v8 & 1;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldBeRequiredToFailByGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldBeRequiredToFailByGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self->_gestureRecognizerForExclusionRelationship != v6 && self->_gestureRecognizerForFailureRelationship == v6 && [(_UIDragInteractionLongPressDriver *)self shouldDelayCompetingGestureRecognizer:v7];
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
+  v8 = self->_gestureRecognizerForExclusionRelationship != recognizerCopy && self->_gestureRecognizerForFailureRelationship == recognizerCopy && [(_UIDragInteractionLongPressDriver *)self shouldDelayCompetingGestureRecognizer:gestureRecognizerCopy];
 
   return v8;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a4;
-  if (self->_gestureRecognizerForDragInitiation == a3)
+  gestureRecognizerCopy = gestureRecognizer;
+  if (self->_gestureRecognizerForDragInitiation == recognizer)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -779,8 +779,8 @@ LABEL_9:
 
     else
     {
-      v8 = [(_UIDragInteractionDriver *)self delegate];
-      v7 = [v8 dragDriver:self competingGestureRecognizerShouldDelayLift:v6];
+      delegate = [(_UIDragInteractionDriver *)self delegate];
+      v7 = [delegate dragDriver:self competingGestureRecognizerShouldDelayLift:gestureRecognizerCopy];
     }
   }
 
@@ -792,16 +792,16 @@ LABEL_9:
   return v7;
 }
 
-- (void)_gestureRecognizerFailed:(id)a3
+- (void)_gestureRecognizerFailed:(id)failed
 {
   v6[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  failedCopy = failed;
   if ([(UIGestureRecognizer *)self->_gestureRecognizerForDragInitiation state]== UIGestureRecognizerStateFailed || [(UIGestureRecognizer *)self->_gestureRecognizerForDragInitiation state]== UIGestureRecognizerStateCancelled)
   {
     [(_UIDragInteractionLongPressDriver *)self openCompetingGestureRecognizerGateCancelingGestures:0];
   }
 
-  else if (self->_gestureRecognizerForExclusionRelationship == v4)
+  else if (self->_gestureRecognizerForExclusionRelationship == failedCopy)
   {
     if (self->super._stateMachine.state == 1)
     {

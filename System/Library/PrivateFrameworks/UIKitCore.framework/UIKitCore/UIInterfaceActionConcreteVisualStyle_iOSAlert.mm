@@ -23,15 +23,15 @@
 
 - (id)_regularActionFont
 {
-  v3 = [(UIInterfaceActionConcreteVisualStyle_iOS *)self traitCollection];
-  v4 = _traitCollectionByFlooringContentSizeCategoryToLarge(v3);
+  traitCollection = [(UIInterfaceActionConcreteVisualStyle_iOS *)self traitCollection];
+  v4 = _traitCollectionByFlooringContentSizeCategoryToLarge(traitCollection);
   v5 = [off_1E70ECC20 _preferredFontDescriptorWithTextStyle:@"UICTFontTextStyleBody" addingSymbolicTraits:0x8000 compatibleWithTraitCollection:v4];
 
   if (_UISolariumEnabled())
   {
     v6 = *off_1E70ECD20;
-    v7 = [(UIInterfaceActionConcreteVisualStyle_iOS *)self traitCollection];
-    v8 = _traitCollectionByFlooringContentSizeCategoryToLarge(v7);
+    traitCollection2 = [(UIInterfaceActionConcreteVisualStyle_iOS *)self traitCollection];
+    v8 = _traitCollectionByFlooringContentSizeCategoryToLarge(traitCollection2);
     v9 = [off_1E70ECC20 _preferredFontDescriptorWithTextStyle:@"UICTFontTextStyleBody" design:0 weight:v8 compatibleWithTraitCollection:v6];
 
     v5 = v9;
@@ -44,15 +44,15 @@
 
 - (id)_preferredActionFont
 {
-  v3 = [(UIInterfaceActionConcreteVisualStyle_iOS *)self traitCollection];
-  v4 = _traitCollectionByFlooringContentSizeCategoryToLarge(v3);
+  traitCollection = [(UIInterfaceActionConcreteVisualStyle_iOS *)self traitCollection];
+  v4 = _traitCollectionByFlooringContentSizeCategoryToLarge(traitCollection);
   v5 = [off_1E70ECC20 _preferredFontDescriptorWithTextStyle:@"UICTFontTextStyleHeadline" addingSymbolicTraits:0x8000 compatibleWithTraitCollection:v4];
 
   if (_UISolariumEnabled())
   {
     v6 = *off_1E70ECD30;
-    v7 = [(UIInterfaceActionConcreteVisualStyle_iOS *)self traitCollection];
-    v8 = _traitCollectionByFlooringContentSizeCategoryToLarge(v7);
+    traitCollection2 = [(UIInterfaceActionConcreteVisualStyle_iOS *)self traitCollection];
+    v8 = _traitCollectionByFlooringContentSizeCategoryToLarge(traitCollection2);
     v9 = [off_1E70ECC20 _preferredFontDescriptorWithTextStyle:@"UICTFontTextStyleBody" design:0 weight:v8 compatibleWithTraitCollection:v6];
 
     v5 = v9;

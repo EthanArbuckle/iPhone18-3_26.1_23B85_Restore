@@ -1,10 +1,10 @@
 @interface CMDiagramArrowMapper
 + (void)initialize;
 - (CGRect)circumscribedBounds;
-- (CGSize)sizeForNode:(id)a3 atIndex:(unint64_t)a4;
-- (CGSize)textSizeForShapeSize:(CGSize)a3;
-- (CMDiagramArrowMapper)initWithOddDiagram:(id)a3 drawingContext:(id)a4 orientedBounds:(id)a5 identifier:(id)a6 parent:(id)a7;
-- (void)mapChildrenAt:(id)a3 withState:(id)a4;
+- (CGSize)sizeForNode:(id)node atIndex:(unint64_t)index;
+- (CGSize)textSizeForShapeSize:(CGSize)size;
+- (CMDiagramArrowMapper)initWithOddDiagram:(id)diagram drawingContext:(id)context orientedBounds:(id)bounds identifier:(id)identifier parent:(id)parent;
+- (void)mapChildrenAt:(id)at withState:(id)state;
 @end
 
 @implementation CMDiagramArrowMapper
@@ -48,12 +48,12 @@
   return result;
 }
 
-- (CMDiagramArrowMapper)initWithOddDiagram:(id)a3 drawingContext:(id)a4 orientedBounds:(id)a5 identifier:(id)a6 parent:(id)a7
+- (CMDiagramArrowMapper)initWithOddDiagram:(id)diagram drawingContext:(id)context orientedBounds:(id)bounds identifier:(id)identifier parent:(id)parent
 {
-  v12 = a6;
+  identifierCopy = identifier;
   v24.receiver = self;
   v24.super_class = CMDiagramArrowMapper;
-  v13 = [(CMDiagramShapeMapper *)&v24 initWithOddDiagram:a3 drawingContext:a4 orientedBounds:a5 identifier:v12 parent:a7];
+  v13 = [(CMDiagramShapeMapper *)&v24 initWithOddDiagram:diagram drawingContext:context orientedBounds:bounds identifier:identifierCopy parent:parent];
   v14 = v13;
   if (v13)
   {
@@ -62,7 +62,7 @@
     mChildCount = v13->super.mChildCount;
     *(&v13->super.mDefaultScale + 4) = mChildCount == 1;
     v16 = *&dword_27FC698E4;
-    v17 = [v12 isEqualToString:@"arrow5"];
+    v17 = [identifierCopy isEqualToString:@"arrow5"];
     v18 = tan(v16 * 3.14159265 / mChildCount);
     v19 = v18 + v18;
     if (v17)
@@ -90,19 +90,19 @@
   return v14;
 }
 
-- (void)mapChildrenAt:(id)a3 withState:(id)a4
+- (void)mapChildrenAt:(id)at withState:(id)state
 {
-  v51 = a3;
-  v50 = a4;
-  v6 = [MEMORY[0x277CCA878] transform];
+  atCopy = at;
+  stateCopy = state;
+  transform = [MEMORY[0x277CCA878] transform];
   [(OADOrientedBounds *)self->super.mDiagramShapeBounds bounds];
   v8 = v7;
   [(OADOrientedBounds *)self->super.mDiagramShapeBounds bounds];
-  [v6 translateXBy:v8 yBy:?];
-  [(CMDrawingContext *)self->super.super.mDrawingContext addTransform:v6];
+  [transform translateXBy:v8 yBy:?];
+  [(CMDrawingContext *)self->super.super.mDrawingContext addTransform:transform];
   [(CMDiagramShapeMapper *)self setDefaultFonSize];
   mChildCount = self->super.mChildCount;
-  v48 = v6;
+  v48 = transform;
   if (mChildCount == 2)
   {
     v16 = *&dword_27FC698D0;
@@ -125,23 +125,23 @@
     do
     {
       v29 = v27;
-      v30 = [(ODDDiagram *)self->super.super.mDiagram documentPoint];
-      v31 = [v30 children];
-      v32 = [v31 objectAtIndex:v22];
+      documentPoint = [(ODDDiagram *)self->super.super.mDiagram documentPoint];
+      children = [documentPoint children];
+      v32 = [children objectAtIndex:v22];
 
-      LODWORD(v31) = *(&self->super.mDefaultScale + 5);
+      LODWORD(children) = *(&self->super.mDefaultScale + 5);
       v33 = [CMShapeUtils internalBoundsWithBounds:self->super.mDiagramShapeBounds scaleBounds:(v25 * v22), 0.0, v26, v28];
       v34 = v33;
       v35 = 180 * v22 - 90;
       *&v36 = v35;
-      if (!v31)
+      if (!children)
       {
         *&v36 = -v35;
       }
 
       [v33 setRotation:v36];
       v37 = [[CMDiagramPointArrowMapper alloc] initWithPoint:v32 drawingContext:self->super.super.mDrawingContext orientedBounds:v34 parent:self];
-      [(CMDiagramPointArrowMapper *)v37 mapAt:v51 withState:v50];
+      [(CMDiagramPointArrowMapper *)v37 mapAt:atCopy withState:stateCopy];
 
       v27 = 0;
       v22 = 1;
@@ -155,13 +155,13 @@
     v10 = [CMShapeUtils relatvieBoundsWithAbsoluteInnerBounds:self->super.mDiagramShapeBounds parentBounds:self->super.mDiagramShapeBounds];
     [v10 setRotation:0.0];
     v11 = [CMDiagramPointArrowMapper alloc];
-    v12 = [(ODDDiagram *)self->super.super.mDiagram documentPoint];
-    v13 = [v12 children];
-    v14 = [v13 objectAtIndex:0];
+    documentPoint2 = [(ODDDiagram *)self->super.super.mDiagram documentPoint];
+    children2 = [documentPoint2 children];
+    v14 = [children2 objectAtIndex:0];
     v15 = [(CMDiagramPointArrowMapper *)v11 initWithPoint:v14 drawingContext:self->super.super.mDrawingContext orientedBounds:v10 parent:self];
 
     [(CMDiagramShapeMapper *)self setDefaultFonSize];
-    [(CMDiagramPointArrowMapper *)v15 mapAt:v51 withState:v50];
+    [(CMDiagramPointArrowMapper *)v15 mapAt:atCopy withState:stateCopy];
   }
 
   else if (mChildCount)
@@ -170,9 +170,9 @@
     v49 = mChildCount;
     do
     {
-      v39 = [(ODDDiagram *)self->super.super.mDiagram documentPoint];
-      v40 = [v39 children];
-      v41 = [v40 objectAtIndex:v38];
+      documentPoint3 = [(ODDDiagram *)self->super.super.mDiagram documentPoint];
+      children3 = [documentPoint3 children];
+      v41 = [children3 objectAtIndex:v38];
 
       if (mChildCount == 2)
       {
@@ -194,7 +194,7 @@
       TSURectWithOriginAndSize(v44);
       v45 = [OADOrientedBounds orientedBoundsWithBounds:"orientedBoundsWithBounds:rotation:flipX:flipY:" rotation:0 flipX:0 flipY:?];
       v46 = [[CMDiagramPointArrowMapper alloc] initWithPoint:v41 drawingContext:self->super.super.mDrawingContext orientedBounds:v45 parent:self];
-      [(CMDiagramPointArrowMapper *)v46 mapAt:v51 withState:v50];
+      [(CMDiagramPointArrowMapper *)v46 mapAt:atCopy withState:stateCopy];
 
       ++v38;
     }
@@ -206,9 +206,9 @@
   [(CMDrawingContext *)self->super.super.mDrawingContext restoreLastTransform];
 }
 
-- (CGSize)sizeForNode:(id)a3 atIndex:(unint64_t)a4
+- (CGSize)sizeForNode:(id)node atIndex:(unint64_t)index
 {
-  [(OADOrientedBounds *)self->super.mDiagramShapeBounds bounds:a3];
+  [(OADOrientedBounds *)self->super.mDiagramShapeBounds bounds:node];
   Width = CGRectGetWidth(v13);
   [(CMDiagramArrowMapper *)self circumscribedBounds];
   v6 = Width / CGRectGetWidth(v14);
@@ -236,7 +236,7 @@
   return result;
 }
 
-- (CGSize)textSizeForShapeSize:(CGSize)a3
+- (CGSize)textSizeForShapeSize:(CGSize)size
 {
   v3 = *&dword_27FC698E0;
   if (*(&self->super.mDefaultScale + 4))
@@ -270,8 +270,8 @@
     v5 = *(&_MergedGlobals_25 + 1);
   }
 
-  v7 = a3.width * v4 / v6;
-  v8 = a3.height * v3 / v5;
+  v7 = size.width * v4 / v6;
+  v8 = size.height * v3 / v5;
   v9 = v7;
   v10 = v8;
   result.height = v10;

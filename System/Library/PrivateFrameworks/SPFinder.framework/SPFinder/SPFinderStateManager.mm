@@ -3,12 +3,12 @@
 - (SPFinderStateXPCProtocol)proxy;
 - (id)remoteInterface;
 - (void)dealloc;
-- (void)disableFinderModeWithCompletion:(id)a3;
-- (void)enableFinderModeWithCompletion:(id)a3;
-- (void)fetchFinderState:(id)a3;
-- (void)setActiveCache:(int64_t)a3 completion:(id)a4;
+- (void)disableFinderModeWithCompletion:(id)completion;
+- (void)enableFinderModeWithCompletion:(id)completion;
+- (void)fetchFinderState:(id)state;
+- (void)setActiveCache:(int64_t)cache completion:(id)completion;
 - (void)start;
-- (void)stateInfoWithCompletion:(id)a3;
+- (void)stateInfoWithCompletion:(id)completion;
 - (void)updateStateBlock;
 @end
 
@@ -27,8 +27,8 @@
     v2->_queue = v4;
 
     v6 = objc_alloc(MEMORY[0x277D07BA0]);
-    v7 = [(SPFinderStateManager *)v2 remoteInterface];
-    v8 = [v6 initWithMachServiceName:@"com.apple.icloud.searchpartyd.finderstatemanager" options:0 remoteObjectInterface:v7 interruptionHandler:0 invalidationHandler:0];
+    remoteInterface = [(SPFinderStateManager *)v2 remoteInterface];
+    v8 = [v6 initWithMachServiceName:@"com.apple.icloud.searchpartyd.finderstatemanager" options:0 remoteObjectInterface:remoteInterface interruptionHandler:0 invalidationHandler:0];
     serviceDescription = v2->_serviceDescription;
     v2->_serviceDescription = v8;
   }
@@ -65,9 +65,9 @@
   [(SPFinderStateManager *)self updateStateBlock];
 }
 
-- (void)enableFinderModeWithCompletion:(id)a3
+- (void)enableFinderModeWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = LogCategory_Unspecified();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -75,15 +75,15 @@
     _os_log_impl(&dword_2643BF000, v5, OS_LOG_TYPE_DEFAULT, "enableFinderModeWithCompletion", buf, 2u);
   }
 
-  v6 = [(SPFinderStateManager *)self queue];
+  queue = [(SPFinderStateManager *)self queue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __55__SPFinderStateManager_enableFinderModeWithCompletion___block_invoke;
   v8[3] = &unk_279B577E8;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = completionCopy;
+  v7 = completionCopy;
+  dispatch_async(queue, v8);
 }
 
 void __55__SPFinderStateManager_enableFinderModeWithCompletion___block_invoke(uint64_t a1)
@@ -104,9 +104,9 @@ void __55__SPFinderStateManager_enableFinderModeWithCompletion___block_invoke_2(
   [v2 enableFinderModeWithCompletion:*(a1 + 40)];
 }
 
-- (void)disableFinderModeWithCompletion:(id)a3
+- (void)disableFinderModeWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = LogCategory_Unspecified();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -114,15 +114,15 @@ void __55__SPFinderStateManager_enableFinderModeWithCompletion___block_invoke_2(
     _os_log_impl(&dword_2643BF000, v5, OS_LOG_TYPE_DEFAULT, "disableFinderModeWithCompletion", buf, 2u);
   }
 
-  v6 = [(SPFinderStateManager *)self queue];
+  queue = [(SPFinderStateManager *)self queue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __56__SPFinderStateManager_disableFinderModeWithCompletion___block_invoke;
   v8[3] = &unk_279B577E8;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = completionCopy;
+  v7 = completionCopy;
+  dispatch_async(queue, v8);
 }
 
 void __56__SPFinderStateManager_disableFinderModeWithCompletion___block_invoke(uint64_t a1)
@@ -143,19 +143,19 @@ void __56__SPFinderStateManager_disableFinderModeWithCompletion___block_invoke_2
   [v2 disableFinderModeWithCompletion:*(a1 + 40)];
 }
 
-- (void)setActiveCache:(int64_t)a3 completion:(id)a4
+- (void)setActiveCache:(int64_t)cache completion:(id)completion
 {
-  v6 = a4;
-  v7 = [(SPFinderStateManager *)self queue];
+  completionCopy = completion;
+  queue = [(SPFinderStateManager *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __50__SPFinderStateManager_setActiveCache_completion___block_invoke;
   block[3] = &unk_279B57818;
-  v10 = v6;
-  v11 = a3;
+  v10 = completionCopy;
+  cacheCopy = cache;
   block[4] = self;
-  v8 = v6;
-  dispatch_async(v7, block);
+  v8 = completionCopy;
+  dispatch_async(queue, block);
 }
 
 void __50__SPFinderStateManager_setActiveCache_completion___block_invoke(void *a1)
@@ -261,12 +261,12 @@ void __40__SPFinderStateManager_updateStateBlock__block_invoke_2(uint64_t a1)
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&dword_2643BF000, v3, OS_LOG_TYPE_DEFAULT, "SPFinderStateManager: Dealloc %@", buf, 0xCu);
   }
 
-  v4 = [(SPFinderStateManager *)self session];
-  [v4 invalidate];
+  session = [(SPFinderStateManager *)self session];
+  [session invalidate];
 
   [(SPFinderStateManager *)self setSession:0];
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
@@ -280,43 +280,43 @@ void __40__SPFinderStateManager_updateStateBlock__block_invoke_2(uint64_t a1)
 - (SPFinderStateXPCProtocol)proxy
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [(SPFinderStateManager *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(SPFinderStateManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(SPFinderStateManager *)self session];
+  session = [(SPFinderStateManager *)self session];
 
-  if (!v4)
+  if (!session)
   {
     v5 = objc_alloc(MEMORY[0x277D07BA8]);
-    v6 = [(SPFinderStateManager *)self serviceDescription];
-    v7 = [v5 initWithServiceDescription:v6];
+    serviceDescription = [(SPFinderStateManager *)self serviceDescription];
+    v7 = [v5 initWithServiceDescription:serviceDescription];
     [(SPFinderStateManager *)self setSession:v7];
 
     v8 = LogCategory_Unspecified();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [(SPFinderStateManager *)self serviceDescription];
-      v10 = [v9 machService];
+      serviceDescription2 = [(SPFinderStateManager *)self serviceDescription];
+      machService = [serviceDescription2 machService];
       v16 = 138412290;
-      v17 = v10;
+      v17 = machService;
       _os_log_impl(&dword_2643BF000, v8, OS_LOG_TYPE_DEFAULT, "SPFinderStateManager: Establishing XPC connection to %@", &v16, 0xCu);
     }
 
-    v11 = [(SPFinderStateManager *)self session];
-    [v11 resume];
+    session2 = [(SPFinderStateManager *)self session];
+    [session2 resume];
   }
 
-  v12 = [(SPFinderStateManager *)self session];
-  v13 = [v12 proxy];
+  session3 = [(SPFinderStateManager *)self session];
+  proxy = [session3 proxy];
 
   v14 = *MEMORY[0x277D85DE8];
 
-  return v13;
+  return proxy;
 }
 
-- (void)fetchFinderState:(id)a3
+- (void)fetchFinderState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v5 = LogCategory_Unspecified();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -324,15 +324,15 @@ void __40__SPFinderStateManager_updateStateBlock__block_invoke_2(uint64_t a1)
     _os_log_impl(&dword_2643BF000, v5, OS_LOG_TYPE_DEFAULT, "fetching Finder State...", buf, 2u);
   }
 
-  v6 = [(SPFinderStateManager *)self queue];
+  queue = [(SPFinderStateManager *)self queue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __41__SPFinderStateManager_fetchFinderState___block_invoke;
   v8[3] = &unk_279B577E8;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = stateCopy;
+  v7 = stateCopy;
+  dispatch_async(queue, v8);
 }
 
 void __41__SPFinderStateManager_fetchFinderState___block_invoke(uint64_t a1)
@@ -353,18 +353,18 @@ void __41__SPFinderStateManager_fetchFinderState___block_invoke_2(uint64_t a1)
   [v2 fetchFinderState:*(a1 + 40)];
 }
 
-- (void)stateInfoWithCompletion:(id)a3
+- (void)stateInfoWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(SPFinderStateManager *)self queue];
+  completionCopy = completion;
+  queue = [(SPFinderStateManager *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __48__SPFinderStateManager_stateInfoWithCompletion___block_invoke;
   v7[3] = &unk_279B577E8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = completionCopy;
+  v6 = completionCopy;
+  dispatch_async(queue, v7);
 }
 
 void __48__SPFinderStateManager_stateInfoWithCompletion___block_invoke(uint64_t a1)

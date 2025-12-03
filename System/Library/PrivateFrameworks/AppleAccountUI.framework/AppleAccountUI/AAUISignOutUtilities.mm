@@ -1,30 +1,30 @@
 @interface AAUISignOutUtilities
-- (void)signOutServiceAccountsWithServiceOwnersManager:(id)a3 forAltDSID:(id)a4 DSID:(id)a5 context:(id)a6 completion:(id)a7;
+- (void)signOutServiceAccountsWithServiceOwnersManager:(id)manager forAltDSID:(id)d DSID:(id)iD context:(id)context completion:(id)completion;
 @end
 
 @implementation AAUISignOutUtilities
 
-- (void)signOutServiceAccountsWithServiceOwnersManager:(id)a3 forAltDSID:(id)a4 DSID:(id)a5 context:(id)a6 completion:(id)a7
+- (void)signOutServiceAccountsWithServiceOwnersManager:(id)manager forAltDSID:(id)d DSID:(id)iD context:(id)context completion:(id)completion
 {
   v53 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v36 = a6;
-  v14 = a7;
+  managerCopy = manager;
+  dCopy = d;
+  iDCopy = iD;
+  contextCopy = context;
+  completionCopy = completion;
   v15 = _AAUILogSystem();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138739971;
-    v49 = v12;
+    v49 = dCopy;
     _os_log_impl(&dword_1C5355000, v15, OS_LOG_TYPE_DEFAULT, "Signing out service accounts with altDSID: %{sensitive}@", buf, 0xCu);
   }
 
-  v34 = v14;
+  v34 = completionCopy;
 
   group = dispatch_group_create();
-  v16 = [objc_opt_class() supportedServices];
-  v17 = [v16 mutableCopy];
+  supportedServices = [objc_opt_class() supportedServices];
+  v17 = [supportedServices mutableCopy];
 
   v33 = [MEMORY[0x1E695DEC8] arrayWithObjects:{*MEMORY[0x1E698C218], *MEMORY[0x1E698C238], 0}];
   [v17 removeObjectsInArray:?];
@@ -44,7 +44,7 @@
   {
     v20 = v19;
     v21 = *v45;
-    v37 = v13;
+    v37 = iDCopy;
     do
     {
       for (i = 0; i != v20; ++i)
@@ -55,12 +55,12 @@
         }
 
         v23 = *(*(&v44 + 1) + 8 * i);
-        v24 = [v11 accountForService:v23];
+        v24 = [managerCopy accountForService:v23];
         if (v24)
         {
-          v25 = [v11 altDSIDForAccount:v24 service:v23];
+          v25 = [managerCopy altDSIDForAccount:v24 service:v23];
           v26 = v25;
-          if (v12 && [v25 isEqualToString:v12])
+          if (dCopy && [v25 isEqualToString:dCopy])
           {
             v27 = _AAUILogSystem();
             if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
@@ -89,7 +89,7 @@ LABEL_22:
             v42[3] = &unk_1E820CCC8;
             v42[4] = v23;
             v43 = group;
-            [v11 signOutService:v23 withContext:v36 completion:v42];
+            [managerCopy signOutService:v23 withContext:contextCopy completion:v42];
 
             goto LABEL_30;
           }
@@ -104,9 +104,9 @@ LABEL_22:
             _os_log_impl(&dword_1C5355000, v28, OS_LOG_TYPE_DEFAULT, "Service account for %@ has altDSID (%{sensitive}@) that does not match, checking DSID...", buf, 0x16u);
           }
 
-          v29 = [v11 DSIDForAccount:v24 service:v23];
+          v29 = [managerCopy DSIDForAccount:v24 service:v23];
           v27 = v29;
-          if (v13 && [v29 isEqualToString:v13])
+          if (iDCopy && [v29 isEqualToString:iDCopy])
           {
             v30 = _AAUILogSystem();
             if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
@@ -116,7 +116,7 @@ LABEL_22:
               _os_log_impl(&dword_1C5355000, v30, OS_LOG_TYPE_DEFAULT, "Service account for %@ has matching DSID...", buf, 0xCu);
             }
 
-            v13 = v37;
+            iDCopy = v37;
             goto LABEL_22;
           }
 
@@ -130,7 +130,7 @@ LABEL_22:
             _os_log_impl(&dword_1C5355000, v32, OS_LOG_TYPE_DEFAULT, "Service account for %@ has DSID (%{sensitive}@) that does not match, bailing!", buf, 0x16u);
           }
 
-          v13 = v37;
+          iDCopy = v37;
         }
 
         else

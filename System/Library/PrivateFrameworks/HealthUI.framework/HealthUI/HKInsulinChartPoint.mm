@@ -1,22 +1,22 @@
 @interface HKInsulinChartPoint
-- (HKInsulinChartPoint)initWithStartDate:(id)a3 endDate:(id)a4;
+- (HKInsulinChartPoint)initWithStartDate:(id)date endDate:(id)endDate;
 - (id)allYValues;
 @end
 
 @implementation HKInsulinChartPoint
 
-- (HKInsulinChartPoint)initWithStartDate:(id)a3 endDate:(id)a4
+- (HKInsulinChartPoint)initWithStartDate:(id)date endDate:(id)endDate
 {
-  v7 = a3;
-  v8 = a4;
+  dateCopy = date;
+  endDateCopy = endDate;
   v14.receiver = self;
   v14.super_class = HKInsulinChartPoint;
   v9 = [(HKInsulinChartPoint *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_startDate, a3);
-    v11 = HKUIMidDate(v7, v8);
+    objc_storeStrong(&v9->_startDate, date);
+    v11 = HKUIMidDate(dateCopy, endDateCopy);
     midDate = v10->_midDate;
     v10->_midDate = v11;
   }
@@ -27,11 +27,11 @@
 - (id)allYValues
 {
   v11[2] = *MEMORY[0x1E69E9840];
-  v3 = [(HKInsulinChartPoint *)self basalSum];
-  v4 = v3;
-  if (v3)
+  basalSum = [(HKInsulinChartPoint *)self basalSum];
+  v4 = basalSum;
+  if (basalSum)
   {
-    v5 = v3;
+    v5 = basalSum;
   }
 
   else
@@ -40,11 +40,11 @@
   }
 
   v11[0] = v5;
-  v6 = [(HKInsulinChartPoint *)self totalSum];
-  v7 = v6;
-  if (v6)
+  totalSum = [(HKInsulinChartPoint *)self totalSum];
+  v7 = totalSum;
+  if (totalSum)
   {
-    v8 = v6;
+    v8 = totalSum;
   }
 
   else

@@ -6,13 +6,13 @@
 - (id)_context;
 - (id)_itemsDescription;
 - (id)description;
-- (void)_addItem:(id)a3;
+- (void)_addItem:(id)item;
 - (void)_associate;
-- (void)_changedParameterForBody:(id)a3;
+- (void)_changedParameterForBody:(id)body;
 - (void)_dissociate;
-- (void)_removeItem:(id)a3;
-- (void)_setItems:(id)a3;
-- (void)_updateAutolayoutEngagementForItemIfNecessary:(id)a3 detach:(BOOL)a4;
+- (void)_removeItem:(id)item;
+- (void)_setItems:(id)items;
+- (void)_updateAutolayoutEngagementForItemIfNecessary:(id)necessary detach:(BOOL)detach;
 - (void)addChildBehavior:(UIDynamicBehavior *)behavior;
 - (void)removeChildBehavior:(UIDynamicBehavior *)behavior;
 - (void)willMoveToAnimator:(UIDynamicAnimator *)dynamicAnimator;
@@ -22,21 +22,21 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
     _UISetupPhysicsKit();
   }
 }
 
-- (void)_setItems:(id)a3
+- (void)_setItems:(id)items
 {
   v32 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  itemsCopy = items;
   v6 = self->_items;
-  v7 = [(UIDynamicBehavior *)self _context];
+  _context = [(UIDynamicBehavior *)self _context];
 
-  if (v7)
+  if (_context)
   {
     v28 = 0u;
     v29 = 0u;
@@ -60,7 +60,7 @@
           }
 
           v14 = *(*(&v26 + 1) + 8 * i);
-          if ([v5 containsObject:v14])
+          if ([itemsCopy containsObject:v14])
           {
             v12 = 0;
           }
@@ -82,12 +82,12 @@
       v12 = 1;
     }
 
-    objc_storeStrong(&self->_items, a3);
+    objc_storeStrong(&self->_items, items);
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v15 = v5;
+    v15 = itemsCopy;
     v16 = [v15 countByEnumeratingWithState:&v22 objects:v30 count:16];
     if (v16)
     {
@@ -120,23 +120,23 @@
 
   else
   {
-    objc_storeStrong(&self->_items, a3);
+    objc_storeStrong(&self->_items, items);
   }
 }
 
-- (void)_addItem:(id)a3
+- (void)_addItem:(id)item
 {
   items = self->_items;
-  v5 = a3;
-  [(NSMutableArray *)items addObject:v5];
-  [(UIDynamicBehavior *)self _detachAutolayoutFromItemIfNecessary:v5];
+  itemCopy = item;
+  [(NSMutableArray *)items addObject:itemCopy];
+  [(UIDynamicBehavior *)self _detachAutolayoutFromItemIfNecessary:itemCopy];
 }
 
-- (void)_removeItem:(id)a3
+- (void)_removeItem:(id)item
 {
-  v4 = a3;
-  [(UIDynamicBehavior *)self _reattachAutolayoutToItemIfNecessary:v4];
-  [(NSMutableArray *)self->_items removeObject:v4];
+  itemCopy = item;
+  [(UIDynamicBehavior *)self _reattachAutolayoutToItemIfNecessary:itemCopy];
+  [(NSMutableArray *)self->_items removeObject:itemCopy];
 }
 
 - (id)_context
@@ -160,9 +160,9 @@
   v2 = [(UIDynamicBehavior *)&v9 init];
   if (v2)
   {
-    v3 = [objc_opt_class() _isPrimitiveBehavior];
+    _isPrimitiveBehavior = [objc_opt_class() _isPrimitiveBehavior];
     v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    if (v3)
+    if (_isPrimitiveBehavior)
     {
       v5 = 16;
     }
@@ -213,10 +213,10 @@
           {
             if (v9)
             {
-              v10 = [v9 _disableLayoutFlushingCount];
-              if (v10 >= 1)
+              _disableLayoutFlushingCount = [v9 _disableLayoutFlushingCount];
+              if (_disableLayoutFlushingCount >= 1)
               {
-                v11 = v10 + 1;
+                v11 = _disableLayoutFlushingCount + 1;
               }
 
               else
@@ -246,34 +246,34 @@
   }
 }
 
-- (void)_updateAutolayoutEngagementForItemIfNecessary:(id)a3 detach:(BOOL)a4
+- (void)_updateAutolayoutEngagementForItemIfNecessary:(id)necessary detach:(BOOL)detach
 {
-  v4 = a4;
-  v12 = a3;
-  v6 = [(UIDynamicBehavior *)self _context];
+  detachCopy = detach;
+  necessaryCopy = necessary;
+  _context = [(UIDynamicBehavior *)self _context];
 
-  v7 = v12;
-  if (v6)
+  v7 = necessaryCopy;
+  if (_context)
   {
     v8 = objc_opt_respondsToSelector();
-    v7 = v12;
+    v7 = necessaryCopy;
     if (v8)
     {
-      v9 = [v12 _wantsAutolayout];
-      v7 = v12;
-      if (v9)
+      _wantsAutolayout = [necessaryCopy _wantsAutolayout];
+      v7 = necessaryCopy;
+      if (_wantsAutolayout)
       {
-        if (v4)
+        if (detachCopy)
         {
-          if (!v12)
+          if (!necessaryCopy)
           {
             goto LABEL_12;
           }
 
-          v10 = [v12 _disableLayoutFlushingCount];
-          if (v10 >= 1)
+          _disableLayoutFlushingCount = [necessaryCopy _disableLayoutFlushingCount];
+          if (_disableLayoutFlushingCount >= 1)
           {
-            v11 = v10 + 1;
+            v11 = _disableLayoutFlushingCount + 1;
           }
 
           else
@@ -281,16 +281,16 @@
             v11 = 1;
           }
 
-          [v12 _setDisableLayoutFlushingCount:v11];
-          [v12 _disableLayoutFlushing];
+          [necessaryCopy _setDisableLayoutFlushingCount:v11];
+          [necessaryCopy _disableLayoutFlushing];
         }
 
         else
         {
-          [(UIView *)v12 _popDisableLayoutFlushing];
+          [(UIView *)necessaryCopy _popDisableLayoutFlushing];
         }
 
-        v7 = v12;
+        v7 = necessaryCopy;
       }
     }
   }
@@ -390,9 +390,9 @@ LABEL_12:
 
   if (![(NSMutableArray *)self->_behaviors count])
   {
-    v9 = [(UIDynamicBehavior *)self action];
+    action = [(UIDynamicBehavior *)self action];
 
-    if (v9)
+    if (action)
     {
       return 0;
     }
@@ -408,7 +408,7 @@ LABEL_12:
   {
     v6 = v5;
     v7 = *v12;
-    v3 = 1;
+    allowsAnimatorToStop = 1;
     do
     {
       for (i = 0; i != v6; ++i)
@@ -418,14 +418,14 @@ LABEL_12:
           objc_enumerationMutation(v4);
         }
 
-        if (v3)
+        if (allowsAnimatorToStop)
         {
-          v3 = [*(*(&v11 + 1) + 8 * i) allowsAnimatorToStop];
+          allowsAnimatorToStop = [*(*(&v11 + 1) + 8 * i) allowsAnimatorToStop];
         }
 
         else
         {
-          v3 = 0;
+          allowsAnimatorToStop = 0;
         }
       }
 
@@ -437,10 +437,10 @@ LABEL_12:
 
   else
   {
-    v3 = 1;
+    allowsAnimatorToStop = 1;
   }
 
-  return v3;
+  return allowsAnimatorToStop;
 }
 
 - (void)addChildBehavior:(UIDynamicBehavior *)behavior
@@ -490,34 +490,34 @@ LABEL_12:
   }
 }
 
-- (void)_changedParameterForBody:(id)a3
+- (void)_changedParameterForBody:(id)body
 {
-  [a3 setResting:0];
-  v4 = [(UIDynamicBehavior *)self _context];
-  [v4 _tickle];
+  [body setResting:0];
+  _context = [(UIDynamicBehavior *)self _context];
+  [_context _tickle];
 }
 
 - (id)_itemsDescription
 {
   v32 = *MEMORY[0x1E69E9840];
-  v3 = [(UIDynamicBehavior *)self _items];
-  v4 = [v3 count];
+  _items = [(UIDynamicBehavior *)self _items];
+  v4 = [_items count];
 
   if (v4)
   {
-    v5 = [(UIDynamicBehavior *)self _items];
-    v6 = [v5 count];
+    _items2 = [(UIDynamicBehavior *)self _items];
+    v6 = [_items2 count];
 
     if (v6 < 4)
     {
-      v10 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       v27 = 0u;
       v28 = 0u;
       v29 = 0u;
       v30 = 0u;
-      v26 = self;
-      v11 = [(UIDynamicBehavior *)self _items];
-      v12 = [v11 countByEnumeratingWithState:&v27 objects:v31 count:16];
+      selfCopy = self;
+      _items3 = [(UIDynamicBehavior *)self _items];
+      v12 = [_items3 countByEnumeratingWithState:&v27 objects:v31 count:16];
       if (v12)
       {
         v13 = v12;
@@ -528,7 +528,7 @@ LABEL_12:
           {
             if (*v28 != v14)
             {
-              objc_enumerationMutation(v11);
+              objc_enumerationMutation(_items3);
             }
 
             v16 = *(*(&v27 + 1) + 8 * i);
@@ -536,27 +536,27 @@ LABEL_12:
             v18 = objc_opt_class();
             v19 = NSStringFromClass(v18);
             v20 = [v17 stringWithFormat:@"%@:%p", v19, v16];
-            [v10 addObject:v20];
+            [array addObject:v20];
           }
 
-          v13 = [v11 countByEnumeratingWithState:&v27 objects:v31 count:16];
+          v13 = [_items3 countByEnumeratingWithState:&v27 objects:v31 count:16];
         }
 
         while (v13);
       }
 
       v21 = MEMORY[0x1E696AEC0];
-      v22 = [(UIDynamicBehavior *)v26 _items];
-      v23 = [v22 count];
-      v24 = [v10 componentsJoinedByString:{@", "}];
+      _items4 = [(UIDynamicBehavior *)selfCopy _items];
+      v23 = [_items4 count];
+      v24 = [array componentsJoinedByString:{@", "}];
       v9 = [v21 stringWithFormat:@"(%lu items: [%@])", v23, v24];
     }
 
     else
     {
       v7 = MEMORY[0x1E696AEC0];
-      v8 = [(UIDynamicBehavior *)self _items];
-      v9 = [v7 stringWithFormat:@"(%lu items)", objc_msgSend(v8, "count")];
+      _items5 = [(UIDynamicBehavior *)self _items];
+      v9 = [v7 stringWithFormat:@"(%lu items)", objc_msgSend(_items5, "count")];
     }
   }
 

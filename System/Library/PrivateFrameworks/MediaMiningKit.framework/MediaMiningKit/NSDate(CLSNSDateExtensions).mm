@@ -9,16 +9,16 @@
 
 - (id)previousWeekend
 {
-  v2 = [CLSCalendar dayOfWeekFromDate:a1];
+  v2 = [CLSCalendar dayOfWeekFromDate:self];
 
-  return [CLSCalendar dateByAddingDays:v2 toDate:a1];
+  return [CLSCalendar dateByAddingDays:v2 toDate:self];
 }
 
 - (id)nextWeekend
 {
-  v2 = (7 - [CLSCalendar dayFromDate:a1]) % 7;
+  v2 = (7 - [CLSCalendar dayFromDate:self]) % 7;
 
-  return [CLSCalendar dateByAddingDays:v2 toDate:a1];
+  return [CLSCalendar dateByAddingDays:v2 toDate:self];
 }
 
 + (id)dateComponentsFromString:()CLSNSDateExtensions
@@ -50,8 +50,8 @@
     }
 
     v7 = dateComponentsFromString__calendar;
-    v8 = [*v4 timeZone];
-    v9 = [v7 componentsInTimeZone:v8 fromDate:v6];
+    timeZone = [*v4 timeZone];
+    v9 = [v7 componentsInTimeZone:timeZone fromDate:v6];
 
 LABEL_10:
     goto LABEL_12;
@@ -114,8 +114,8 @@ LABEL_12:
   {
     v13 = v12;
     v14 = dateFromString__calendar;
-    v15 = [MEMORY[0x277CBEAA8] date];
-    v16 = [v14 components:28 fromDate:v15];
+    date = [MEMORY[0x277CBEAA8] date];
+    v16 = [v14 components:28 fromDate:date];
 
     v17 = [dateFromString__calendar components:224 fromDate:v13];
     [v16 setHour:{objc_msgSend(v17, "hour")}];
@@ -134,8 +134,8 @@ LABEL_12:
   {
     v19 = v18;
     v20 = dateFromString__calendar;
-    v21 = [MEMORY[0x277CBEAA8] date];
-    v22 = [v20 components:28 fromDate:v21];
+    date2 = [MEMORY[0x277CBEAA8] date];
+    v22 = [v20 components:28 fromDate:date2];
 
     v23 = [dateFromString__calendar components:96 fromDate:v19];
     [v22 setHour:{objc_msgSend(v23, "hour")}];

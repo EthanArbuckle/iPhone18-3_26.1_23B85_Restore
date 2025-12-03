@@ -1,14 +1,14 @@
 @interface SKUISettingsEditTransaction
 - (BOOL)isCommiting;
 - (BOOL)isValid;
-- (SKUISettingsEditTransaction)initWithSettingDescriptions:(id)a3;
+- (SKUISettingsEditTransaction)initWithSettingDescriptions:(id)descriptions;
 - (SKUISettingsEditTransactionDelegate)delegate;
 - (void)_delegateDidCompleteTransaction;
 - (void)_delegateDidFailTransaction;
 - (void)_delegateWillBeginTransaction;
 - (void)_delegateWillCommitTransaction;
 - (void)_finalizeCommit;
-- (void)_settingDescription:(id)a3 completedWithSuccess:(BOOL)a4;
+- (void)_settingDescription:(id)description completedWithSuccess:(BOOL)success;
 - (void)beginTransaction;
 - (void)cancelTransaction;
 - (void)commitTransaction;
@@ -17,9 +17,9 @@
 
 @implementation SKUISettingsEditTransaction
 
-- (SKUISettingsEditTransaction)initWithSettingDescriptions:(id)a3
+- (SKUISettingsEditTransaction)initWithSettingDescriptions:(id)descriptions
 {
-  v4 = a3;
+  descriptionsCopy = descriptions;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUISettingsEditTransaction initWithSettingDescriptions:];
@@ -30,7 +30,7 @@
   v5 = [(SKUISettingsEditTransaction *)&v11 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [descriptionsCopy copy];
     all = v5->_all;
     v5->_all = v6;
 
@@ -380,13 +380,13 @@ uint64_t __46__SKUISettingsEditTransaction__finalizeCommit__block_invoke(uint64_
   }
 }
 
-- (void)_settingDescription:(id)a3 completedWithSuccess:(BOOL)a4
+- (void)_settingDescription:(id)description completedWithSuccess:(BOOL)success
 {
   lock = self->_lock;
-  v7 = a3;
+  descriptionCopy = description;
   [(NSLock *)lock lock];
-  self->_success &= a4;
-  [(NSMutableSet *)self->_pending removeObject:v7];
+  self->_success &= success;
+  [(NSMutableSet *)self->_pending removeObject:descriptionCopy];
 
   v8 = [(NSMutableSet *)self->_pending count];
   [(NSLock *)self->_lock unlock];

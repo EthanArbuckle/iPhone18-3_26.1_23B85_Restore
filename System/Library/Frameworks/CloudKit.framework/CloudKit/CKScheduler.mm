@@ -1,21 +1,21 @@
 @interface CKScheduler
-+ (id)activityFromXPCActivity:(id)a3;
++ (id)activityFromXPCActivity:(id)activity;
 + (id)sharedScheduler;
-+ (id)xpcActivityIdentifierForCKActivityIdentifier:(id)a3;
-- (BOOL)hasPendingActivityWithActivityIdentifier:(id)a3;
-- (BOOL)isXPCActivityPending:(id)a3;
-- (id)activityForActivityIdentifier:(id)a3;
++ (id)xpcActivityIdentifierForCKActivityIdentifier:(id)identifier;
+- (BOOL)hasPendingActivityWithActivityIdentifier:(id)identifier;
+- (BOOL)isXPCActivityPending:(id)pending;
+- (id)activityForActivityIdentifier:(id)identifier;
 - (id)initInternal;
-- (id)suggestedXPCActivityCriteriaForActivity:(id)a3;
-- (id)xpcActivityForActivityWithIdentifier:(id)a3;
-- (int64_t)currentPriorityForActivityIdentifier:(id)a3;
-- (void)cancelActivityWithIdentifier:(id)a3;
-- (void)performAsyncOnQueue:(id)a3;
-- (void)registerActivityIdentifier:(id)a3 replaceExistingHandler:(BOOL)a4 handler:(id)a5;
-- (void)setXPCActivity:(id)a3 forActivityIdentifier:(id)a4;
-- (void)submitActivity:(id)a3 completionHandler:(id)a4;
-- (void)unregisterActivityIdentifier:(id)a3;
-- (void)unregisterHandlerForActivityIdentifier:(id)a3;
+- (id)suggestedXPCActivityCriteriaForActivity:(id)activity;
+- (id)xpcActivityForActivityWithIdentifier:(id)identifier;
+- (int64_t)currentPriorityForActivityIdentifier:(id)identifier;
+- (void)cancelActivityWithIdentifier:(id)identifier;
+- (void)performAsyncOnQueue:(id)queue;
+- (void)registerActivityIdentifier:(id)identifier replaceExistingHandler:(BOOL)handler handler:(id)a5;
+- (void)setXPCActivity:(id)activity forActivityIdentifier:(id)identifier;
+- (void)submitActivity:(id)activity completionHandler:(id)handler;
+- (void)unregisterActivityIdentifier:(id)identifier;
+- (void)unregisterHandlerForActivityIdentifier:(id)identifier;
 @end
 
 @implementation CKScheduler
@@ -66,13 +66,13 @@
   return v2;
 }
 
-- (void)submitActivity:(id)a3 completionHandler:(id)a4
+- (void)submitActivity:(id)activity completionHandler:(id)handler
 {
   v60 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  activityCopy = activity;
+  handlerCopy = handler;
   v52 = 0;
-  v8 = _CKCheckArgument("activity", v6, 0, 0, 0, &v52);
+  v8 = _CKCheckArgument("activity", activityCopy, 0, 0, 0, &v52);
   v9 = v52;
   v10 = v9;
   if ((v8 & 1) == 0)
@@ -99,7 +99,7 @@
   if (os_log_type_enabled(ck_log_facility_scheduler, OS_LOG_TYPE_DEBUG))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v6;
+    *(&buf + 4) = activityCopy;
     _os_log_debug_impl(&dword_1883EA000, v12, OS_LOG_TYPE_DEBUG, "About to submit activity: %@", &buf, 0xCu);
   }
 
@@ -125,7 +125,7 @@
   block[3] = &unk_1E70BFF08;
   v44 = &v45;
   block[4] = self;
-  v14 = v6;
+  v14 = activityCopy;
   v43 = v14;
   dispatch_sync(queue, block);
   if (!v46[5])
@@ -141,7 +141,7 @@
   v16 = objc_msgSend_suggestedXPCActivityCriteriaForActivity_(self, v15, v14);
   v17 = v14;
   v18 = v16;
-  v19 = v7;
+  v19 = handlerCopy;
   if (self)
   {
     xpcActivityRegisterQueue = self->_xpcActivityRegisterQueue;
@@ -151,7 +151,7 @@
     v55 = &unk_1E70BFEB8;
     v21 = v17;
     v56 = v21;
-    v57 = self;
+    selfCopy = self;
     v22 = v18;
     v58 = v22;
     v59 = v19;
@@ -169,11 +169,11 @@
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setXPCActivity:(id)a3 forActivityIdentifier:(id)a4
+- (void)setXPCActivity:(id)activity forActivityIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  activityCopy = activity;
+  identifierCopy = identifier;
+  v8 = identifierCopy;
   if (self)
   {
     queue = self->_queue;
@@ -189,19 +189,19 @@
   block[2] = sub_18864C81C;
   block[3] = &unk_1E70BC360;
   block[4] = self;
-  v13 = v7;
-  v14 = v6;
-  v10 = v6;
+  v13 = identifierCopy;
+  v14 = activityCopy;
+  v10 = activityCopy;
   v11 = v8;
   dispatch_sync(queue, block);
 }
 
-- (void)registerActivityIdentifier:(id)a3 replaceExistingHandler:(BOOL)a4 handler:(id)a5
+- (void)registerActivityIdentifier:(id)identifier replaceExistingHandler:(BOOL)handler handler:(id)a5
 {
-  v8 = a3;
+  identifierCopy = identifier;
   v9 = a5;
   v48 = 0;
-  v10 = _CKCheckArgument("ckActivityIdentifier", v8, 0, 0, 0, &v48);
+  v10 = _CKCheckArgument("ckActivityIdentifier", identifierCopy, 0, 0, 0, &v48);
   v11 = v48;
   v12 = v11;
   if ((v10 & 1) == 0 || (v11, v13 = _Block_copy(v9), v47 = 0, v14 = _CKCheckArgument("handler", v13, 0, 0, 0, &v47), v12 = v47, v13, (v14 & 1) == 0))
@@ -237,10 +237,10 @@
   block[1] = 3221225472;
   block[2] = sub_18864CB88;
   block[3] = &unk_1E70C0080;
-  v17 = v8;
-  v41 = a4;
+  v17 = identifierCopy;
+  handlerCopy = handler;
   v37 = v17;
-  v38 = self;
+  selfCopy = self;
   v40 = &v42;
   v18 = v9;
   v39 = v18;
@@ -275,11 +275,11 @@
   os_activity_scope_leave(&state);
 }
 
-- (void)unregisterActivityIdentifier:(id)a3
+- (void)unregisterActivityIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v22 = 0;
-  v5 = _CKCheckArgument("ckActivityIdentifier", v4, 0, 0, 0, &v22);
+  v5 = _CKCheckArgument("ckActivityIdentifier", identifierCopy, 0, 0, 0, &v22);
   v6 = v22;
   v7 = v6;
   if ((v5 & 1) == 0)
@@ -297,16 +297,16 @@
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v8, &state);
-  objc_msgSend_unregisterHandlerForActivityIdentifier_(self, v9, v4);
-  objc_msgSend_cancelActivityWithIdentifier_(self, v10, v4);
+  objc_msgSend_unregisterHandlerForActivityIdentifier_(self, v9, identifierCopy);
+  objc_msgSend_cancelActivityWithIdentifier_(self, v10, identifierCopy);
   os_activity_scope_leave(&state);
 }
 
-- (void)unregisterHandlerForActivityIdentifier:(id)a3
+- (void)unregisterHandlerForActivityIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v25 = 0;
-  v5 = _CKCheckArgument("ckActivityIdentifier", v4, 0, 0, 0, &v25);
+  v5 = _CKCheckArgument("ckActivityIdentifier", identifierCopy, 0, 0, 0, &v25);
   v6 = v25;
   v7 = v6;
   if ((v5 & 1) == 0)
@@ -338,19 +338,19 @@
   block[1] = 3221225472;
   block[2] = sub_18864D108;
   block[3] = &unk_1E70BEEC0;
-  v22 = v4;
-  v23 = self;
-  v10 = v4;
+  v22 = identifierCopy;
+  selfCopy = self;
+  v10 = identifierCopy;
   dispatch_sync(queue, block);
 
   os_activity_scope_leave(&state);
 }
 
-- (void)cancelActivityWithIdentifier:(id)a3
+- (void)cancelActivityWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v24 = 0;
-  v5 = _CKCheckArgument("ckActivityIdentifier", v4, 0, 0, 0, &v24);
+  v5 = _CKCheckArgument("ckActivityIdentifier", identifierCopy, 0, 0, 0, &v24);
   v6 = v24;
   v7 = v6;
   if ((v5 & 1) == 0)
@@ -383,16 +383,16 @@
   block[2] = sub_18864D37C;
   block[3] = &unk_1E70BEEC0;
   block[4] = self;
-  v22 = v4;
-  v10 = v4;
+  v22 = identifierCopy;
+  v10 = identifierCopy;
   dispatch_sync(queue, block);
 
   os_activity_scope_leave(&state);
 }
 
-- (id)xpcActivityForActivityWithIdentifier:(id)a3
+- (id)xpcActivityForActivityWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -413,10 +413,10 @@
   block[1] = 3221225472;
   block[2] = sub_18864E87C;
   block[3] = &unk_1E70BFF08;
-  v10 = v4;
+  v10 = identifierCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = identifierCopy;
   dispatch_sync(queue, block);
   v7 = v13[5];
 
@@ -425,14 +425,14 @@
   return v7;
 }
 
-- (id)suggestedXPCActivityCriteriaForActivity:(id)a3
+- (id)suggestedXPCActivityCriteriaForActivity:(id)activity
 {
   v205 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  activityCopy = activity;
   v5 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_BOOL(v5, *MEMORY[0x1E69E9C40], 1);
-  v8 = objc_msgSend_container(v4, v6, v7);
-  v11 = objc_msgSend_container(v4, v9, v10);
+  v8 = objc_msgSend_container(activityCopy, v6, v7);
+  v11 = objc_msgSend_container(activityCopy, v9, v10);
   v14 = objc_msgSend_deviceContext(v11, v12, v13);
   v17 = objc_msgSend_useLiveServer(v14, v15, v16);
 
@@ -447,7 +447,7 @@
 
     if (hasNetworkSocketDelegateEntitlement)
     {
-      v28 = objc_msgSend_relatedApplicationBundleIdentifiers(v4, v26, v27);
+      v28 = objc_msgSend_relatedApplicationBundleIdentifiers(activityCopy, v26, v27);
       v31 = objc_msgSend_firstObject(v28, v29, v30);
 
       if (v31 || (objc_msgSend_defaultRelatedApplicationBundleIdentifiersForContainer_(CKSchedulerActivity, v32, v8), v33 = objc_claimAutoreleasedReturnValue(), objc_msgSend_firstObject(v33, v34, v35), v31 = objc_claimAutoreleasedReturnValue(), v33, v31))
@@ -479,7 +479,7 @@
     xpc_dictionary_set_BOOL(v5, *MEMORY[0x1E69E9D90], 1);
   }
 
-  v51 = objc_msgSend_relatedApplicationBundleIdentifiers(v4, v49, v50);
+  v51 = objc_msgSend_relatedApplicationBundleIdentifiers(activityCopy, v49, v50);
   v54 = objc_msgSend_count(v51, v52, v53);
 
   if (v54)
@@ -489,7 +489,7 @@
     v192 = 0u;
     v193 = 0u;
     v194 = 0u;
-    v60 = objc_msgSend_relatedApplicationBundleIdentifiers(v4, v58, v59);
+    v60 = objc_msgSend_relatedApplicationBundleIdentifiers(activityCopy, v58, v59);
     v62 = objc_msgSend_countByEnumeratingWithState_objects_count_(v60, v61, &v191, v199, 16);
     if (v62)
     {
@@ -517,33 +517,33 @@
     xpc_dictionary_set_value(v5, *MEMORY[0x1E69E9C88], empty);
   }
 
-  v70 = objc_msgSend_priority(v4, v55, v56);
+  v70 = objc_msgSend_priority(activityCopy, v55, v56);
   xpc_dictionary_set_int64(v5, "ck_scheduler_priority", v70);
-  v73 = objc_msgSend_identifier(v4, v71, v72);
+  v73 = objc_msgSend_identifier(activityCopy, v71, v72);
   v74 = v73;
   v77 = objc_msgSend_UTF8String(v73, v75, v76);
   xpc_dictionary_set_string(v5, "ck_scheduler_activity_identifier", v77);
 
-  v80 = objc_msgSend_containerID(v4, v78, v79);
+  v80 = objc_msgSend_containerID(activityCopy, v78, v79);
   v83 = objc_msgSend_containerIdentifier(v80, v81, v82);
   v84 = v83;
   v87 = objc_msgSend_UTF8String(v83, v85, v86);
   xpc_dictionary_set_string(v5, "ck_container_identifier", v87);
 
-  v90 = objc_msgSend_containerID(v4, v88, v89);
+  v90 = objc_msgSend_containerID(activityCopy, v88, v89);
   v93 = objc_msgSend_environment(v90, v91, v92);
   xpc_dictionary_set_int64(v5, "ck_environment", v93);
 
-  v96 = objc_msgSend_earliestStartDate(v4, v94, v95);
+  v96 = objc_msgSend_earliestStartDate(activityCopy, v94, v95);
 
   if (v96)
   {
-    v99 = objc_msgSend_earliestStartDate(v4, v97, v98);
+    v99 = objc_msgSend_earliestStartDate(activityCopy, v97, v98);
     objc_msgSend_timeIntervalSinceReferenceDate(v99, v100, v101);
     xpc_dictionary_set_double(v5, "ck_earliest_start_date", v102);
   }
 
-  v103 = objc_msgSend_fileProtectionType(v4, v97, v98);
+  v103 = objc_msgSend_fileProtectionType(activityCopy, v97, v98);
   if (objc_msgSend_isEqualToString_(v103, v104, *MEMORY[0x1E696A378]))
   {
     v106 = MEMORY[0x1E69E9D98];
@@ -566,19 +566,19 @@ LABEL_28:
     xpc_dictionary_set_BOOL(v5, *MEMORY[0x1E69E9DA8], 1);
   }
 
-  if (objc_msgSend_expectedTransferSizeBytes(v4, v108, v109))
+  if (objc_msgSend_expectedTransferSizeBytes(activityCopy, v108, v109))
   {
-    v112 = objc_msgSend_expectedTransferSizeBytes(v4, v110, v111);
+    v112 = objc_msgSend_expectedTransferSizeBytes(activityCopy, v110, v111);
     xpc_dictionary_set_int64(v5, *MEMORY[0x1E69E9D40], v112);
   }
 
-  if (objc_msgSend_userRequestedBackupTask(v4, v110, v111))
+  if (objc_msgSend_userRequestedBackupTask(activityCopy, v110, v111))
   {
-    v115 = objc_msgSend_userRequestedBackupTask(v4, v113, v114);
+    v115 = objc_msgSend_userRequestedBackupTask(activityCopy, v113, v114);
     xpc_dictionary_set_BOOL(v5, *MEMORY[0x1E69E9DE0], v115);
   }
 
-  v116 = objc_msgSend_priority(v4, v113, v114);
+  v116 = objc_msgSend_priority(activityCopy, v113, v114);
   v119 = 0.0;
   if (!v116 || v116 == 2)
   {
@@ -602,7 +602,7 @@ LABEL_28:
     v121 = 1;
   }
 
-  v123 = objc_msgSend_earliestStartDate(v4, v117, v118);
+  v123 = objc_msgSend_earliestStartDate(activityCopy, v117, v118);
   objc_msgSend_timeIntervalSinceNow(v123, v124, v125);
   v127 = v126;
 
@@ -619,12 +619,12 @@ LABEL_28:
   xpc_dictionary_set_int64(v5, *MEMORY[0x1E69E9C68], v128);
   xpc_dictionary_set_int64(v5, *MEMORY[0x1E69E9C98], v122);
   xpc_dictionary_set_string(v5, *MEMORY[0x1E69E9D68], v120);
-  if (((v121 | objc_msgSend_userRequestedBackupTask(v4, v129, v130)) & 1) == 0)
+  if (((v121 | objc_msgSend_userRequestedBackupTask(activityCopy, v129, v130)) & 1) == 0)
   {
     xpc_dictionary_set_BOOL(v5, *MEMORY[0x1E69E9DD0], 1);
   }
 
-  v133 = objc_msgSend_overrideRateLimiting(v4, v131, v132);
+  v133 = objc_msgSend_overrideRateLimiting(activityCopy, v131, v132);
   if (v133)
   {
     v136 = sub_18864F540(v133, v134, v135);
@@ -757,8 +757,8 @@ LABEL_81:
 
 LABEL_67:
   v5 = v5;
-  v168 = v4;
-  v4 = v168;
+  v168 = activityCopy;
+  activityCopy = v168;
   if (self)
   {
     v171 = objc_msgSend_xpcActivityCriteriaOverrides(v168, v169, v170);
@@ -766,14 +766,14 @@ LABEL_67:
     if (v171)
     {
       v172 = xpc_dictionary_create(0, 0, 0);
-      v175 = objc_msgSend_xpcActivityCriteriaOverrides(v4, v173, v174);
+      v175 = objc_msgSend_xpcActivityCriteriaOverrides(activityCopy, v173, v174);
       *applier = MEMORY[0x1E69E9820];
       *&applier[8] = 3221225472;
       *&applier[16] = sub_18864F6A4;
       v201 = &unk_1E70C0198;
       v176 = v5;
       v202 = v176;
-      v203 = v4;
+      v203 = activityCopy;
       v204 = v172;
       v177 = v172;
       xpc_dictionary_apply(v175, applier);
@@ -814,22 +814,22 @@ LABEL_75:
   return v5;
 }
 
-+ (id)xpcActivityIdentifierForCKActivityIdentifier:(id)a3
++ (id)xpcActivityIdentifierForCKActivityIdentifier:(id)identifier
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v6 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v5, @"%@.", @"com.apple.xpc.activity.test");
-  hasPrefix = objc_msgSend_hasPrefix_(v4, v7, v6);
+  hasPrefix = objc_msgSend_hasPrefix_(identifierCopy, v7, v6);
   if (hasPrefix)
   {
     v11 = objc_msgSend_length(v6, v8, v9);
-    v13 = objc_msgSend_substringFromIndex_(v4, v12, v11);
+    v13 = objc_msgSend_substringFromIndex_(identifierCopy, v12, v11);
     v17 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v14, @"%@.%@", @"com.apple.xpc.activity.test", v13);
   }
 
   else
   {
-    v17 = v4;
+    v17 = identifierCopy;
     v13 = v17;
   }
 
@@ -872,7 +872,7 @@ LABEL_9:
   v23 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v22, @"%@.%@", @"com.apple.xpc.activity.test", v20);
 LABEL_13:
   v26 = v23;
-  v25 = objc_msgSend_xpcActivityIdentifierForCKActivityIdentifier_(a1, v24, v23);
+  v25 = objc_msgSend_xpcActivityIdentifierForCKActivityIdentifier_(self, v24, v23);
 
 LABEL_14:
   v27 = *MEMORY[0x1E69E9840];
@@ -880,11 +880,11 @@ LABEL_14:
   return v25;
 }
 
-+ (id)activityFromXPCActivity:(id)a3
++ (id)activityFromXPCActivity:(id)activity
 {
   v69 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = xpc_activity_copy_criteria(v3);
+  activityCopy = activity;
+  v4 = xpc_activity_copy_criteria(activityCopy);
   v5 = v4;
   if (v4)
   {
@@ -949,10 +949,10 @@ LABEL_52:
 
     v22 = [CKSchedulerActivity alloc];
     v16 = objc_msgSend_initWithIdentifier_containerID_priority_(v22, v23, v21, v14, v18);
-    if (xpc_activity_get_state(v3))
+    if (xpc_activity_get_state(activityCopy))
     {
       v24 = [CKXPCActivity alloc];
-      v26 = objc_msgSend_initWithActivity_(v24, v25, v3);
+      v26 = objc_msgSend_initWithActivity_(v24, v25, activityCopy);
       objc_msgSend_setBackgroundTask_(v16, v27, v26);
     }
 
@@ -1061,7 +1061,7 @@ LABEL_30:
   if (os_log_type_enabled(ck_log_facility_scheduler, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v68 = v3;
+    v68 = activityCopy;
     _os_log_debug_impl(&dword_1883EA000, v15, OS_LOG_TYPE_DEBUG, "Couldn't get XPC activity criteria for xpc_activity %@", buf, 0xCu);
   }
 
@@ -1073,25 +1073,25 @@ LABEL_53:
   return v16;
 }
 
-- (BOOL)hasPendingActivityWithActivityIdentifier:(id)a3
+- (BOOL)hasPendingActivityWithActivityIdentifier:(id)identifier
 {
-  v3 = self;
-  v4 = objc_msgSend_xpcActivityForActivityWithIdentifier_(self, a2, a3);
-  LOBYTE(v3) = objc_msgSend_isXPCActivityPending_(v3, v5, v4);
+  selfCopy = self;
+  v4 = objc_msgSend_xpcActivityForActivityWithIdentifier_(self, a2, identifier);
+  LOBYTE(selfCopy) = objc_msgSend_isXPCActivityPending_(selfCopy, v5, v4);
 
-  return v3;
+  return selfCopy;
 }
 
-- (BOOL)isXPCActivityPending:(id)a3
+- (BOOL)isXPCActivityPending:(id)pending
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  pendingCopy = pending;
+  v4 = pendingCopy;
+  if (!pendingCopy)
   {
     goto LABEL_6;
   }
 
-  state = xpc_activity_get_state(v3);
+  state = xpc_activity_get_state(pendingCopy);
   if (!state)
   {
     v7 = xpc_activity_copy_criteria(v4);
@@ -1116,9 +1116,9 @@ LABEL_8:
   return v6;
 }
 
-- (id)activityForActivityIdentifier:(id)a3
+- (id)activityForActivityIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -1140,9 +1140,9 @@ LABEL_8:
   block[2] = sub_188650354;
   block[3] = &unk_1E70BF4B0;
   block[4] = self;
-  v10 = v4;
+  v10 = identifierCopy;
   v11 = &v12;
-  v6 = v4;
+  v6 = identifierCopy;
   dispatch_sync(queue, block);
   v7 = v13[5];
 
@@ -1151,9 +1151,9 @@ LABEL_8:
   return v7;
 }
 
-- (int64_t)currentPriorityForActivityIdentifier:(id)a3
+- (int64_t)currentPriorityForActivityIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -1173,9 +1173,9 @@ LABEL_8:
   block[2] = sub_18865056C;
   block[3] = &unk_1E70BF4B0;
   block[4] = self;
-  v10 = v4;
+  v10 = identifierCopy;
   v11 = &v12;
-  v6 = v4;
+  v6 = identifierCopy;
   dispatch_sync(queue, block);
   v7 = v13[3];
 
@@ -1183,14 +1183,14 @@ LABEL_8:
   return v7;
 }
 
-- (void)performAsyncOnQueue:(id)a3
+- (void)performAsyncOnQueue:(id)queue
 {
   if (self)
   {
     self = self->_queue;
   }
 
-  dispatch_async(&self->super, a3);
+  dispatch_async(&self->super, queue);
 }
 
 @end

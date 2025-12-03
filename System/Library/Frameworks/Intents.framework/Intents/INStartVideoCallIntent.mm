@@ -4,26 +4,26 @@
 - (NSArray)contacts;
 - (id)_dictionaryRepresentation;
 - (id)_metadata;
-- (id)_titleWithLocalizer:(id)a3 fromBundleURL:(id)a4;
+- (id)_titleWithLocalizer:(id)localizer fromBundleURL:(id)l;
 - (id)_typedBackingStore;
 - (int64_t)audioRoute;
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4;
-- (void)_setMetadata:(id)a3;
-- (void)setAudioRoute:(int64_t)a3;
-- (void)setCallRequestMetadata:(id)a3;
-- (void)setContacts:(id)a3;
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id;
+- (void)_setMetadata:(id)metadata;
+- (void)setAudioRoute:(int64_t)route;
+- (void)setCallRequestMetadata:(id)metadata;
+- (void)setContacts:(id)contacts;
 @end
 
 @implementation INStartVideoCallIntent
 
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id
 {
-  v6 = a4;
-  v7 = [(INStartVideoCallIntent *)self _typedBackingStore];
-  v11 = v6;
-  v8 = [v7 copy];
-  v9 = [v7 contacts];
-  v10 = INIntentSlotValueRedactedDialingContactsFromDialingContacts(v9, a3, v11);
+  idCopy = id;
+  _typedBackingStore = [(INStartVideoCallIntent *)self _typedBackingStore];
+  v11 = idCopy;
+  v8 = [_typedBackingStore copy];
+  contacts = [_typedBackingStore contacts];
+  v10 = INIntentSlotValueRedactedDialingContactsFromDialingContacts(contacts, options, v11);
 
   [v8 setContacts:v10];
   [(INIntent *)self setBackingStore:v8];
@@ -33,16 +33,16 @@
 {
   v8[1] = *MEMORY[0x1E69E9840];
   v7 = @"contacts";
-  v2 = [(INStartVideoCallIntent *)self contacts];
-  v3 = v2;
-  if (!v2)
+  contacts = [(INStartVideoCallIntent *)self contacts];
+  null = contacts;
+  if (!contacts)
   {
-    v3 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v8[0] = v3;
+  v8[0] = null;
   v4 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:&v7 count:1];
-  if (!v2)
+  if (!contacts)
   {
   }
 
@@ -51,45 +51,45 @@
   return v4;
 }
 
-- (void)setCallRequestMetadata:(id)a3
+- (void)setCallRequestMetadata:(id)metadata
 {
-  v4 = a3;
-  v6 = [(INStartVideoCallIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToStartCallRequestMetadata(v4);
+  metadataCopy = metadata;
+  _typedBackingStore = [(INStartVideoCallIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToStartCallRequestMetadata(metadataCopy);
 
-  [v6 setCallRequestMetadata:v5];
+  [_typedBackingStore setCallRequestMetadata:v5];
 }
 
 - (INStartCallRequestMetadata)callRequestMetadata
 {
-  v2 = [(INStartVideoCallIntent *)self _typedBackingStore];
-  v3 = [v2 callRequestMetadata];
-  v4 = INIntentSlotValueTransformFromStartCallRequestMetadata(v3);
+  _typedBackingStore = [(INStartVideoCallIntent *)self _typedBackingStore];
+  callRequestMetadata = [_typedBackingStore callRequestMetadata];
+  v4 = INIntentSlotValueTransformFromStartCallRequestMetadata(callRequestMetadata);
 
   return v4;
 }
 
-- (void)setContacts:(id)a3
+- (void)setContacts:(id)contacts
 {
-  v4 = a3;
-  v6 = [(INStartVideoCallIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToDialingContacts(v4);
+  contactsCopy = contacts;
+  _typedBackingStore = [(INStartVideoCallIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToDialingContacts(contactsCopy);
 
-  [v6 setContacts:v5];
+  [_typedBackingStore setContacts:v5];
 }
 
 - (NSArray)contacts
 {
-  v2 = [(INStartVideoCallIntent *)self _typedBackingStore];
-  v3 = [v2 contacts];
-  v4 = INIntentSlotValueTransformFromDialingContacts(v3);
+  _typedBackingStore = [(INStartVideoCallIntent *)self _typedBackingStore];
+  contacts = [_typedBackingStore contacts];
+  v4 = INIntentSlotValueTransformFromDialingContacts(contacts);
 
   return v4;
 }
 
-- (void)setAudioRoute:(int64_t)a3
+- (void)setAudioRoute:(int64_t)route
 {
-  switch(a3)
+  switch(route)
   {
     case 1:
       v3 = 2;
@@ -100,25 +100,25 @@
     case 2:
       v3 = 3;
 LABEL_7:
-      v4 = [(INStartVideoCallIntent *)self _typedBackingStore];
-      [v4 setAudioRoute:v3];
+      _typedBackingStore = [(INStartVideoCallIntent *)self _typedBackingStore];
+      [_typedBackingStore setAudioRoute:v3];
       goto LABEL_9;
   }
 
-  v4 = [(INStartVideoCallIntent *)self _typedBackingStore];
-  [v4 setHasAudioRoute:0];
+  _typedBackingStore = [(INStartVideoCallIntent *)self _typedBackingStore];
+  [_typedBackingStore setHasAudioRoute:0];
 LABEL_9:
 }
 
 - (int64_t)audioRoute
 {
-  v3 = [(INStartVideoCallIntent *)self _typedBackingStore];
-  v4 = [v3 hasAudioRoute];
-  v5 = [(INStartVideoCallIntent *)self _typedBackingStore];
-  v6 = [v5 audioRoute];
-  if (v4 && (v6 - 2) <= 2)
+  _typedBackingStore = [(INStartVideoCallIntent *)self _typedBackingStore];
+  hasAudioRoute = [_typedBackingStore hasAudioRoute];
+  _typedBackingStore2 = [(INStartVideoCallIntent *)self _typedBackingStore];
+  audioRoute = [_typedBackingStore2 audioRoute];
+  if (hasAudioRoute && (audioRoute - 2) <= 2)
   {
-    v7 = qword_18EE5EFD0[v6 - 2];
+    v7 = qword_18EE5EFD0[audioRoute - 2];
   }
 
   else
@@ -144,28 +144,28 @@ LABEL_9:
   return v6;
 }
 
-- (void)_setMetadata:(id)a3
+- (void)_setMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = [(INStartVideoCallIntent *)self _typedBackingStore];
-  [v5 setIntentMetadata:v4];
+  metadataCopy = metadata;
+  _typedBackingStore = [(INStartVideoCallIntent *)self _typedBackingStore];
+  [_typedBackingStore setIntentMetadata:metadataCopy];
 }
 
 - (id)_metadata
 {
-  v2 = [(INStartVideoCallIntent *)self _typedBackingStore];
-  v3 = [v2 intentMetadata];
+  _typedBackingStore = [(INStartVideoCallIntent *)self _typedBackingStore];
+  intentMetadata = [_typedBackingStore intentMetadata];
 
-  return v3;
+  return intentMetadata;
 }
 
 - (id)_typedBackingStore
 {
-  v2 = [(INIntent *)self backingStore];
+  backingStore = [(INIntent *)self backingStore];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = backingStore;
   }
 
   else
@@ -178,19 +178,19 @@ LABEL_9:
   return v3;
 }
 
-- (id)_titleWithLocalizer:(id)a3 fromBundleURL:(id)a4
+- (id)_titleWithLocalizer:(id)localizer fromBundleURL:(id)l
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(INIntent *)self _intents_bundleIdForDisplay];
-  v9 = [v8 isEqualToString:@"com.apple.facetime"];
+  localizerCopy = localizer;
+  lCopy = l;
+  _intents_bundleIdForDisplay = [(INIntent *)self _intents_bundleIdForDisplay];
+  v9 = [_intents_bundleIdForDisplay isEqualToString:@"com.apple.facetime"];
 
   if (v9)
   {
     v10 = MEMORY[0x1E696AEC0];
-    v11 = INLocalizedStringWithLocalizer(@"FaceTime %@", @"FaceTime %@", v6);
-    v12 = [(INStartVideoCallIntent *)self contacts];
-    v13 = [v12 _intents_readableTitleWithLocalizer:v6];
+    v11 = INLocalizedStringWithLocalizer(@"FaceTime %@", @"FaceTime %@", localizerCopy);
+    contacts = [(INStartVideoCallIntent *)self contacts];
+    v13 = [contacts _intents_readableTitleWithLocalizer:localizerCopy];
     v14 = [v10 stringWithFormat:v11, v13];
   }
 
@@ -198,7 +198,7 @@ LABEL_9:
   {
     v16.receiver = self;
     v16.super_class = INStartVideoCallIntent;
-    v14 = [(INIntent *)&v16 _titleWithLocalizer:v6 fromBundleURL:v7];
+    v14 = [(INIntent *)&v16 _titleWithLocalizer:localizerCopy fromBundleURL:lCopy];
   }
 
   return v14;

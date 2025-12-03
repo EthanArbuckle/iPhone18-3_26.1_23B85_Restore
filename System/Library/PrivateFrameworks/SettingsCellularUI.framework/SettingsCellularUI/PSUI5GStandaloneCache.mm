@@ -1,23 +1,23 @@
 @interface PSUI5GStandaloneCache
 + (PSUI5GStandaloneCache)sharedInstance;
-- (BOOL)are5GRATModesUserInteractableForContext:(id)a3;
-- (BOOL)is5GSAEnabledForContext:(id)a3;
-- (BOOL)is5GSASupportedForContext:(id)a3;
-- (BOOL)is5GSASwitchUserInteractableForContext:(id)a3;
+- (BOOL)are5GRATModesUserInteractableForContext:(id)context;
+- (BOOL)is5GSAEnabledForContext:(id)context;
+- (BOOL)is5GSASupportedForContext:(id)context;
+- (BOOL)is5GSASwitchUserInteractableForContext:(id)context;
 - (PSUI5GStandaloneCache)init;
-- (PSUI5GStandaloneCache)initWithCoreTelephonyClient:(id)a3 simStatusCache:(id)a4;
+- (PSUI5GStandaloneCache)initWithCoreTelephonyClient:(id)client simStatusCache:(id)cache;
 - (id)initPrivate;
-- (unint64_t)getNSADisableStatusReasonMaskForContext:(id)a3;
-- (unint64_t)getSADisableStatusReasonMaskForContext:(id)a3;
-- (void)carrierBundleChange:(id)a3;
+- (unint64_t)getNSADisableStatusReasonMaskForContext:(id)context;
+- (unint64_t)getSADisableStatusReasonMaskForContext:(id)context;
+- (void)carrierBundleChange:(id)change;
 - (void)clearCache;
 - (void)clearCacheAndRefresh;
-- (void)currentDataSimChanged:(id)a3;
+- (void)currentDataSimChanged:(id)changed;
 - (void)dealloc;
 - (void)fetch5GSupportAndEnabledStatusIfNeeded;
 - (void)fetchNRStatus;
 - (void)notifyClientsNeedRefresh;
-- (void)nrDisableStatusChanged:(id)a3 status:(id)a4;
+- (void)nrDisableStatusChanged:(id)changed status:(id)status;
 @end
 
 @implementation PSUI5GStandaloneCache
@@ -47,27 +47,27 @@ uint64_t __39__PSUI5GStandaloneCache_sharedInstance__block_invoke()
   v4 = [MEMORY[0x277D4D878] createCTClientSerialQueue:@"5G_SA_cache"];
   v5 = [v3 initWithQueue:v4];
 
-  v6 = [MEMORY[0x277D4D868] sharedInstance];
-  v7 = [(PSUI5GStandaloneCache *)self initWithCoreTelephonyClient:v5 simStatusCache:v6];
+  mEMORY[0x277D4D868] = [MEMORY[0x277D4D868] sharedInstance];
+  v7 = [(PSUI5GStandaloneCache *)self initWithCoreTelephonyClient:v5 simStatusCache:mEMORY[0x277D4D868]];
 
   return v7;
 }
 
-- (PSUI5GStandaloneCache)initWithCoreTelephonyClient:(id)a3 simStatusCache:(id)a4
+- (PSUI5GStandaloneCache)initWithCoreTelephonyClient:(id)client simStatusCache:(id)cache
 {
-  v7 = a3;
-  v8 = a4;
+  clientCopy = client;
+  cacheCopy = cache;
   v13.receiver = self;
   v13.super_class = PSUI5GStandaloneCache;
   v9 = [(PSUI5GStandaloneCache *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_client, a3);
+    objc_storeStrong(&v9->_client, client);
     [(CoreTelephonyClient *)v10->_client setDelegate:v10];
-    objc_storeStrong(&v10->_simStatusCache, a4);
-    v11 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v11 addObserver:v10 selector:sel_willEnterForeground name:*MEMORY[0x277D76758] object:0];
+    objc_storeStrong(&v10->_simStatusCache, cache);
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v10 selector:sel_willEnterForeground name:*MEMORY[0x277D76758] object:0];
 
     [(PSUI5GStandaloneCache *)v10 clearCache];
     [(PSUI5GStandaloneCache *)v10 fetchNRStatus];
@@ -78,11 +78,11 @@ uint64_t __39__PSUI5GStandaloneCache_sharedInstance__block_invoke()
 
 - (PSUI5GStandaloneCache)init
 {
-  v2 = [(PSUI5GStandaloneCache *)self getLogger];
-  if (os_log_type_enabled(v2, OS_LOG_TYPE_ERROR))
+  getLogger = [(PSUI5GStandaloneCache *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_ERROR))
   {
     *v3 = 0;
-    _os_log_error_impl(&dword_2658DE000, v2, OS_LOG_TYPE_ERROR, "Error: unsupported initializer called", v3, 2u);
+    _os_log_error_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_ERROR, "Error: unsupported initializer called", v3, 2u);
   }
 
   objc_exception_throw([objc_alloc(MEMORY[0x277CBEAD8]) initWithName:@"Unsupported initializer" reason:@"Unsupported initializer called" userInfo:0]);
@@ -90,42 +90,42 @@ uint64_t __39__PSUI5GStandaloneCache_sharedInstance__block_invoke()
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = PSUI5GStandaloneCache;
   [(PSUI5GStandaloneCache *)&v4 dealloc];
 }
 
-- (BOOL)is5GSASupportedForContext:(id)a3
+- (BOOL)is5GSASupportedForContext:(id)context
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(PSUI5GStandaloneCache *)self getLogger];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
+  contextCopy = context;
+  getLogger = [(PSUI5GStandaloneCache *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_INFO))
   {
     v16 = 138412290;
-    v17 = v4;
-    _os_log_impl(&dword_2658DE000, v5, OS_LOG_TYPE_INFO, "5GSA Support status request for context: %@", &v16, 0xCu);
+    v17 = contextCopy;
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_INFO, "5GSA Support status request for context: %@", &v16, 0xCu);
   }
 
   [(PSUI5GStandaloneCache *)self fetchNRStatus];
-  v6 = self;
-  objc_sync_enter(v6);
-  NRStatusDict = v6->_NRStatusDict;
-  v8 = [MEMORY[0x277CC3718] descriptorWithSubscriptionContext:v4];
-  v9 = [v8 instance];
-  v10 = [(NSMutableDictionary *)NRStatusDict objectForKeyedSubscript:v9];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  NRStatusDict = selfCopy->_NRStatusDict;
+  v8 = [MEMORY[0x277CC3718] descriptorWithSubscriptionContext:contextCopy];
+  instance = [v8 instance];
+  v10 = [(NSMutableDictionary *)NRStatusDict objectForKeyedSubscript:instance];
 
-  v11 = [v10 isSASwitchVisible];
-  objc_sync_exit(v6);
+  isSASwitchVisible = [v10 isSASwitchVisible];
+  objc_sync_exit(selfCopy);
 
-  v12 = [(PSUI5GStandaloneCache *)v6 getLogger];
-  if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
+  getLogger2 = [(PSUI5GStandaloneCache *)selfCopy getLogger];
+  if (os_log_type_enabled(getLogger2, OS_LOG_TYPE_INFO))
   {
     v13 = @"NOT SUPPORTED";
-    if (v11)
+    if (isSASwitchVisible)
     {
       v13 = @"SUPPORTED";
     }
@@ -133,40 +133,40 @@ uint64_t __39__PSUI5GStandaloneCache_sharedInstance__block_invoke()
     v16 = 138412546;
     v17 = v13;
     v18 = 2112;
-    v19 = v4;
-    _os_log_impl(&dword_2658DE000, v12, OS_LOG_TYPE_INFO, "5GSA %@ for context: %@", &v16, 0x16u);
+    v19 = contextCopy;
+    _os_log_impl(&dword_2658DE000, getLogger2, OS_LOG_TYPE_INFO, "5GSA %@ for context: %@", &v16, 0x16u);
   }
 
   v14 = *MEMORY[0x277D85DE8];
-  return v11;
+  return isSASwitchVisible;
 }
 
-- (BOOL)is5GSAEnabledForContext:(id)a3
+- (BOOL)is5GSAEnabledForContext:(id)context
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(PSUI5GStandaloneCache *)self getLogger];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
+  contextCopy = context;
+  getLogger = [(PSUI5GStandaloneCache *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_INFO))
   {
     v15 = 138412290;
-    v16 = v4;
-    _os_log_impl(&dword_2658DE000, v5, OS_LOG_TYPE_INFO, "5GSA Enabled status request for context: %@", &v15, 0xCu);
+    v16 = contextCopy;
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_INFO, "5GSA Enabled status request for context: %@", &v15, 0xCu);
   }
 
   [(PSUI5GStandaloneCache *)self fetch5GSupportAndEnabledStatusIfNeeded];
-  v6 = self;
-  objc_sync_enter(v6);
-  SAEnabledDict = v6->_SAEnabledDict;
-  v8 = [MEMORY[0x277CCABB0] numberWithInteger:{-[__CFString slotID](v4, "slotID")}];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  SAEnabledDict = selfCopy->_SAEnabledDict;
+  v8 = [MEMORY[0x277CCABB0] numberWithInteger:{-[__CFString slotID](contextCopy, "slotID")}];
   v9 = [(NSMutableDictionary *)SAEnabledDict objectForKeyedSubscript:v8];
-  v10 = [v9 BOOLValue];
+  bOOLValue = [v9 BOOLValue];
 
-  objc_sync_exit(v6);
-  v11 = [(PSUI5GStandaloneCache *)v6 getLogger];
-  if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
+  objc_sync_exit(selfCopy);
+  getLogger2 = [(PSUI5GStandaloneCache *)selfCopy getLogger];
+  if (os_log_type_enabled(getLogger2, OS_LOG_TYPE_INFO))
   {
     v12 = @"DISABLED";
-    if (v10)
+    if (bOOLValue)
     {
       v12 = @"ENABLED";
     }
@@ -174,41 +174,41 @@ uint64_t __39__PSUI5GStandaloneCache_sharedInstance__block_invoke()
     v15 = 138412546;
     v16 = v12;
     v17 = 2112;
-    v18 = v4;
-    _os_log_impl(&dword_2658DE000, v11, OS_LOG_TYPE_INFO, "5GSA %@ for context: %@", &v15, 0x16u);
+    v18 = contextCopy;
+    _os_log_impl(&dword_2658DE000, getLogger2, OS_LOG_TYPE_INFO, "5GSA %@ for context: %@", &v15, 0x16u);
   }
 
   v13 = *MEMORY[0x277D85DE8];
-  return v10;
+  return bOOLValue;
 }
 
-- (BOOL)is5GSASwitchUserInteractableForContext:(id)a3
+- (BOOL)is5GSASwitchUserInteractableForContext:(id)context
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(PSUI5GStandaloneCache *)self getLogger];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
+  contextCopy = context;
+  getLogger = [(PSUI5GStandaloneCache *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_INFO))
   {
     v16 = 138412290;
-    v17 = v4;
-    _os_log_impl(&dword_2658DE000, v5, OS_LOG_TYPE_INFO, "5GSA Switch User Interactive status request for context: %@", &v16, 0xCu);
+    v17 = contextCopy;
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_INFO, "5GSA Switch User Interactive status request for context: %@", &v16, 0xCu);
   }
 
-  v6 = self;
-  objc_sync_enter(v6);
-  NRStatusDict = v6->_NRStatusDict;
-  v8 = [MEMORY[0x277CC3718] descriptorWithSubscriptionContext:v4];
-  v9 = [v8 instance];
-  v10 = [(NSMutableDictionary *)NRStatusDict objectForKeyedSubscript:v9];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  NRStatusDict = selfCopy->_NRStatusDict;
+  v8 = [MEMORY[0x277CC3718] descriptorWithSubscriptionContext:contextCopy];
+  instance = [v8 instance];
+  v10 = [(NSMutableDictionary *)NRStatusDict objectForKeyedSubscript:instance];
 
-  v11 = [v10 isSASwitchConfigurable];
-  objc_sync_exit(v6);
+  isSASwitchConfigurable = [v10 isSASwitchConfigurable];
+  objc_sync_exit(selfCopy);
 
-  v12 = [(PSUI5GStandaloneCache *)v6 getLogger];
-  if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
+  getLogger2 = [(PSUI5GStandaloneCache *)selfCopy getLogger];
+  if (os_log_type_enabled(getLogger2, OS_LOG_TYPE_INFO))
   {
     v13 = @"NOT INTERACTABLE";
-    if (v11)
+    if (isSASwitchConfigurable)
     {
       v13 = @"INTERACTABLE";
     }
@@ -216,69 +216,69 @@ uint64_t __39__PSUI5GStandaloneCache_sharedInstance__block_invoke()
     v16 = 138412546;
     v17 = v13;
     v18 = 2112;
-    v19 = v4;
-    _os_log_impl(&dword_2658DE000, v12, OS_LOG_TYPE_INFO, "5GSA Switch is User Interactive %@ for context: %@", &v16, 0x16u);
+    v19 = contextCopy;
+    _os_log_impl(&dword_2658DE000, getLogger2, OS_LOG_TYPE_INFO, "5GSA Switch is User Interactive %@ for context: %@", &v16, 0x16u);
   }
 
   v14 = *MEMORY[0x277D85DE8];
-  return v11;
+  return isSASwitchConfigurable;
 }
 
-- (unint64_t)getSADisableStatusReasonMaskForContext:(id)a3
+- (unint64_t)getSADisableStatusReasonMaskForContext:(id)context
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  NRStatusDict = v5->_NRStatusDict;
-  v7 = [MEMORY[0x277CC3718] descriptorWithSubscriptionContext:v4];
-  v8 = [v7 instance];
-  v9 = [(NSMutableDictionary *)NRStatusDict objectForKeyedSubscript:v8];
+  contextCopy = context;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  NRStatusDict = selfCopy->_NRStatusDict;
+  v7 = [MEMORY[0x277CC3718] descriptorWithSubscriptionContext:contextCopy];
+  instance = [v7 instance];
+  v9 = [(NSMutableDictionary *)NRStatusDict objectForKeyedSubscript:instance];
 
-  v10 = [v9 saDisabledReasonMask];
-  objc_sync_exit(v5);
+  saDisabledReasonMask = [v9 saDisabledReasonMask];
+  objc_sync_exit(selfCopy);
 
-  v11 = [(PSUI5GStandaloneCache *)v5 getLogger];
-  if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
+  getLogger = [(PSUI5GStandaloneCache *)selfCopy getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_INFO))
   {
     v14 = 134218242;
-    v15 = v10;
+    v15 = saDisabledReasonMask;
     v16 = 2112;
-    v17 = v4;
-    _os_log_impl(&dword_2658DE000, v11, OS_LOG_TYPE_INFO, "5GSA Switch reasonMask %lu for context: %@", &v14, 0x16u);
+    v17 = contextCopy;
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_INFO, "5GSA Switch reasonMask %lu for context: %@", &v14, 0x16u);
   }
 
   v12 = *MEMORY[0x277D85DE8];
-  return v10;
+  return saDisabledReasonMask;
 }
 
-- (BOOL)are5GRATModesUserInteractableForContext:(id)a3
+- (BOOL)are5GRATModesUserInteractableForContext:(id)context
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(PSUI5GStandaloneCache *)self getLogger];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
+  contextCopy = context;
+  getLogger = [(PSUI5GStandaloneCache *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_INFO))
   {
     v16 = 138412290;
-    v17 = v4;
-    _os_log_impl(&dword_2658DE000, v5, OS_LOG_TYPE_INFO, "5G RAT Modes User Interactive status request for context: %@", &v16, 0xCu);
+    v17 = contextCopy;
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_INFO, "5G RAT Modes User Interactive status request for context: %@", &v16, 0xCu);
   }
 
-  v6 = self;
-  objc_sync_enter(v6);
-  NRStatusDict = v6->_NRStatusDict;
-  v8 = [MEMORY[0x277CC3718] descriptorWithSubscriptionContext:v4];
-  v9 = [v8 instance];
-  v10 = [(NSMutableDictionary *)NRStatusDict objectForKeyedSubscript:v9];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  NRStatusDict = selfCopy->_NRStatusDict;
+  v8 = [MEMORY[0x277CC3718] descriptorWithSubscriptionContext:contextCopy];
+  instance = [v8 instance];
+  v10 = [(NSMutableDictionary *)NRStatusDict objectForKeyedSubscript:instance];
 
-  v11 = [v10 are5GRATModeCellsUserInteractable];
-  objc_sync_exit(v6);
+  are5GRATModeCellsUserInteractable = [v10 are5GRATModeCellsUserInteractable];
+  objc_sync_exit(selfCopy);
 
-  v12 = [(PSUI5GStandaloneCache *)v6 getLogger];
-  if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
+  getLogger2 = [(PSUI5GStandaloneCache *)selfCopy getLogger];
+  if (os_log_type_enabled(getLogger2, OS_LOG_TYPE_INFO))
   {
     v13 = @"NOT INTERACTABLE";
-    if (v11)
+    if (are5GRATModeCellsUserInteractable)
     {
       v13 = @"INTERACTABLE";
     }
@@ -286,66 +286,66 @@ uint64_t __39__PSUI5GStandaloneCache_sharedInstance__block_invoke()
     v16 = 138412546;
     v17 = v13;
     v18 = 2112;
-    v19 = v4;
-    _os_log_impl(&dword_2658DE000, v12, OS_LOG_TYPE_INFO, "5G RAT Modes User Interactive %@ for context: %@", &v16, 0x16u);
+    v19 = contextCopy;
+    _os_log_impl(&dword_2658DE000, getLogger2, OS_LOG_TYPE_INFO, "5G RAT Modes User Interactive %@ for context: %@", &v16, 0x16u);
   }
 
   v14 = *MEMORY[0x277D85DE8];
-  return v11;
+  return are5GRATModeCellsUserInteractable;
 }
 
-- (unint64_t)getNSADisableStatusReasonMaskForContext:(id)a3
+- (unint64_t)getNSADisableStatusReasonMaskForContext:(id)context
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  NRStatusDict = v5->_NRStatusDict;
-  v7 = [MEMORY[0x277CC3718] descriptorWithSubscriptionContext:v4];
-  v8 = [v7 instance];
-  v9 = [(NSMutableDictionary *)NRStatusDict objectForKeyedSubscript:v8];
+  contextCopy = context;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  NRStatusDict = selfCopy->_NRStatusDict;
+  v7 = [MEMORY[0x277CC3718] descriptorWithSubscriptionContext:contextCopy];
+  instance = [v7 instance];
+  v9 = [(NSMutableDictionary *)NRStatusDict objectForKeyedSubscript:instance];
 
-  v10 = [v9 nsaDisabledReasonMask];
-  objc_sync_exit(v5);
+  nsaDisabledReasonMask = [v9 nsaDisabledReasonMask];
+  objc_sync_exit(selfCopy);
 
-  v11 = [(PSUI5GStandaloneCache *)v5 getLogger];
-  if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
+  getLogger = [(PSUI5GStandaloneCache *)selfCopy getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_INFO))
   {
     v14 = 134218242;
-    v15 = v10;
+    v15 = nsaDisabledReasonMask;
     v16 = 2112;
-    v17 = v4;
-    _os_log_impl(&dword_2658DE000, v11, OS_LOG_TYPE_INFO, "5G NSA reasonMask %lu for context: %@", &v14, 0x16u);
+    v17 = contextCopy;
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_INFO, "5G NSA reasonMask %lu for context: %@", &v14, 0x16u);
   }
 
   v12 = *MEMORY[0x277D85DE8];
-  return v10;
+  return nsaDisabledReasonMask;
 }
 
 - (void)fetch5GSupportAndEnabledStatusIfNeeded
 {
   v35 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
-  cacheNeedsRefresh = v2->_cacheNeedsRefresh;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  cacheNeedsRefresh = selfCopy->_cacheNeedsRefresh;
+  objc_sync_exit(selfCopy);
 
   if (cacheNeedsRefresh)
   {
-    v4 = [(PSUI5GStandaloneCache *)v2 getLogger];
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+    getLogger = [(PSUI5GStandaloneCache *)selfCopy getLogger];
+    if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_2658DE000, v4, OS_LOG_TYPE_DEFAULT, "Fetching SA Support and Enabled Status", buf, 2u);
+      _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "Fetching SA Support and Enabled Status", buf, 2u);
     }
 
-    v5 = [(PSSimStatusCache *)v2->_simStatusCache subscriptionContexts];
+    subscriptionContexts = [(PSSimStatusCache *)selfCopy->_simStatusCache subscriptionContexts];
     v23 = objc_alloc_init(MEMORY[0x277CBEB38]);
     v28 = 0u;
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    obj = v5;
+    obj = subscriptionContexts;
     v6 = [obj countByEnumeratingWithState:&v26 objects:v34 count:16];
     if (v6)
     {
@@ -363,17 +363,17 @@ uint64_t __39__PSUI5GStandaloneCache_sharedInstance__block_invoke()
 
           v10 = *(*(&v26 + 1) + 8 * i);
           v11 = [MEMORY[0x277CC3718] descriptorWithSubscriptionContext:{v10, v22}];
-          client = v2->_client;
+          client = selfCopy->_client;
           v25 = 0;
           v13 = [(CoreTelephonyClient *)client getSupports5GStandalone:v11 error:&v25];
           v14 = v25;
-          v15 = [v13 BOOLValue];
+          bOOLValue = [v13 BOOLValue];
 
-          v16 = [(PSUI5GStandaloneCache *)v2 getLogger];
-          v17 = v16;
+          getLogger2 = [(PSUI5GStandaloneCache *)selfCopy getLogger];
+          v17 = getLogger2;
           if (v14)
           {
-            if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+            if (os_log_type_enabled(getLogger2, OS_LOG_TYPE_ERROR))
             {
               *buf = v22;
               v31 = v10;
@@ -385,11 +385,11 @@ uint64_t __39__PSUI5GStandaloneCache_sharedInstance__block_invoke()
 
           else
           {
-            if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+            if (os_log_type_enabled(getLogger2, OS_LOG_TYPE_DEFAULT))
             {
               *buf = v22;
               v18 = @"DISABLED";
-              if (v15)
+              if (bOOLValue)
               {
                 v18 = @"ENABLED";
               }
@@ -400,7 +400,7 @@ uint64_t __39__PSUI5GStandaloneCache_sharedInstance__block_invoke()
               _os_log_impl(&dword_2658DE000, v17, OS_LOG_TYPE_DEFAULT, "SA Support and Enabled Status Fetch succeeded for context: %@, %@", buf, 0x16u);
             }
 
-            v17 = [MEMORY[0x277CCABB0] numberWithBool:v15];
+            v17 = [MEMORY[0x277CCABB0] numberWithBool:bOOLValue];
             v19 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v10, "slotID")}];
             [v23 setObject:v17 forKeyedSubscript:v19];
           }
@@ -412,10 +412,10 @@ uint64_t __39__PSUI5GStandaloneCache_sharedInstance__block_invoke()
       while (v6);
     }
 
-    v20 = v2;
+    v20 = selfCopy;
     objc_sync_enter(v20);
     [(PSUI5GStandaloneCache *)v20 setSAEnabledDict:v23];
-    v2->_cacheNeedsRefresh = 0;
+    selfCopy->_cacheNeedsRefresh = 0;
     objc_sync_exit(v20);
   }
 
@@ -425,20 +425,20 @@ uint64_t __39__PSUI5GStandaloneCache_sharedInstance__block_invoke()
 - (void)fetchNRStatus
 {
   v34 = *MEMORY[0x277D85DE8];
-  v3 = [(PSUI5GStandaloneCache *)self getLogger];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSUI5GStandaloneCache *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
-    _os_log_impl(&dword_2658DE000, v3, OS_LOG_TYPE_DEFAULT, "Fetching NR status", buf, 2u);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "Fetching NR status", buf, 2u);
   }
 
-  v4 = [(PSSimStatusCache *)self->_simStatusCache subscriptionContexts];
+  subscriptionContexts = [(PSSimStatusCache *)self->_simStatusCache subscriptionContexts];
   v22 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  obj = v4;
+  obj = subscriptionContexts;
   v5 = [obj countByEnumeratingWithState:&v25 objects:v33 count:16];
   if (v5)
   {
@@ -463,27 +463,27 @@ uint64_t __39__PSUI5GStandaloneCache_sharedInstance__block_invoke()
 
         if (v13)
         {
-          v14 = [(PSUI5GStandaloneCache *)self getLogger];
-          if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+          getLogger2 = [(PSUI5GStandaloneCache *)self getLogger];
+          if (os_log_type_enabled(getLogger2, OS_LOG_TYPE_ERROR))
           {
             *buf = v21;
             v30 = v9;
             v31 = 2112;
             v32 = v13;
-            _os_log_error_impl(&dword_2658DE000, v14, OS_LOG_TYPE_ERROR, "NR status fetch failed for context: %@, %@", buf, 0x16u);
+            _os_log_error_impl(&dword_2658DE000, getLogger2, OS_LOG_TYPE_ERROR, "NR status fetch failed for context: %@, %@", buf, 0x16u);
           }
         }
 
         else
         {
-          v14 = [MEMORY[0x277CC3718] descriptorWithSubscriptionContext:v9];
-          v15 = [(PSUI5GStandaloneCache *)self getLogger];
-          if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+          getLogger2 = [MEMORY[0x277CC3718] descriptorWithSubscriptionContext:v9];
+          getLogger3 = [(PSUI5GStandaloneCache *)self getLogger];
+          if (os_log_type_enabled(getLogger3, OS_LOG_TYPE_DEFAULT))
           {
-            v16 = [v12 isSADisabled];
+            isSADisabled = [v12 isSADisabled];
             *buf = v21;
             v17 = @"SA ENABLED";
-            if (v16)
+            if (isSADisabled)
             {
               v17 = @"SA DISABLED";
             }
@@ -491,11 +491,11 @@ uint64_t __39__PSUI5GStandaloneCache_sharedInstance__block_invoke()
             v30 = v9;
             v31 = 2112;
             v32 = v17;
-            _os_log_impl(&dword_2658DE000, v15, OS_LOG_TYPE_DEFAULT, "NR status fetch succeeded for context: %@, %@", buf, 0x16u);
+            _os_log_impl(&dword_2658DE000, getLogger3, OS_LOG_TYPE_DEFAULT, "NR status fetch succeeded for context: %@, %@", buf, 0x16u);
           }
 
-          v18 = [v14 instance];
-          [v22 setObject:v12 forKeyedSubscript:v18];
+          instance = [getLogger2 instance];
+          [v22 setObject:v12 forKeyedSubscript:instance];
         }
       }
 
@@ -505,46 +505,46 @@ uint64_t __39__PSUI5GStandaloneCache_sharedInstance__block_invoke()
     while (v5);
   }
 
-  v19 = self;
-  objc_sync_enter(v19);
-  [(PSUI5GStandaloneCache *)v19 setNRStatusDict:v22];
-  objc_sync_exit(v19);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(PSUI5GStandaloneCache *)selfCopy setNRStatusDict:v22];
+  objc_sync_exit(selfCopy);
 
   v20 = *MEMORY[0x277D85DE8];
 }
 
 - (void)clearCache
 {
-  v3 = [(PSUI5GStandaloneCache *)self getLogger];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSUI5GStandaloneCache *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     *v7 = 0;
-    _os_log_impl(&dword_2658DE000, v3, OS_LOG_TYPE_DEFAULT, "Clearing SA Status cache", v7, 2u);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "Clearing SA Status cache", v7, 2u);
   }
 
-  v4 = self;
-  objc_sync_enter(v4);
-  v4->_cacheNeedsRefresh = 1;
-  NRStatusDict = v4->_NRStatusDict;
-  v4->_NRStatusDict = 0;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  selfCopy->_cacheNeedsRefresh = 1;
+  NRStatusDict = selfCopy->_NRStatusDict;
+  selfCopy->_NRStatusDict = 0;
 
-  SAEnabledDict = v4->_SAEnabledDict;
-  v4->_SAEnabledDict = 0;
+  SAEnabledDict = selfCopy->_SAEnabledDict;
+  selfCopy->_SAEnabledDict = 0;
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)notifyClientsNeedRefresh
 {
-  v2 = [(PSUI5GStandaloneCache *)self getLogger];
-  if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSUI5GStandaloneCache *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     *v4 = 0;
-    _os_log_impl(&dword_2658DE000, v2, OS_LOG_TYPE_DEFAULT, "Notifying SA Cache Clients should refresh", v4, 2u);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "Notifying SA Cache Clients should refresh", v4, 2u);
   }
 
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 postNotificationName:@"PSUI5GStandaloneCacheRefreshNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"PSUI5GStandaloneCacheRefreshNotification" object:0];
 }
 
 - (void)clearCacheAndRefresh
@@ -555,9 +555,9 @@ uint64_t __39__PSUI5GStandaloneCache_sharedInstance__block_invoke()
   [(PSUI5GStandaloneCache *)self notifyClientsNeedRefresh];
 }
 
-- (void)nrDisableStatusChanged:(id)a3 status:(id)a4
+- (void)nrDisableStatusChanged:(id)changed status:(id)status
 {
-  v5 = [(PSUI5GStandaloneCache *)self getLogger:a3];
+  v5 = [(PSUI5GStandaloneCache *)self getLogger:changed];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *v6 = 0;
@@ -567,25 +567,25 @@ uint64_t __39__PSUI5GStandaloneCache_sharedInstance__block_invoke()
   [(PSUI5GStandaloneCache *)self clearCacheAndRefresh];
 }
 
-- (void)currentDataSimChanged:(id)a3
+- (void)currentDataSimChanged:(id)changed
 {
-  v4 = [(PSUI5GStandaloneCache *)self getLogger];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSUI5GStandaloneCache *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     *v5 = 0;
-    _os_log_impl(&dword_2658DE000, v4, OS_LOG_TYPE_DEFAULT, "Recieved Current Data Sim Changed, updating all info.", v5, 2u);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "Recieved Current Data Sim Changed, updating all info.", v5, 2u);
   }
 
   [(PSUI5GStandaloneCache *)self clearCacheAndRefresh];
 }
 
-- (void)carrierBundleChange:(id)a3
+- (void)carrierBundleChange:(id)change
 {
-  v4 = [(PSUI5GStandaloneCache *)self getLogger];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSUI5GStandaloneCache *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     *v5 = 0;
-    _os_log_impl(&dword_2658DE000, v4, OS_LOG_TYPE_DEFAULT, "Recieved Carrier Bundle Changed, updating all info.", v5, 2u);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "Recieved Carrier Bundle Changed, updating all info.", v5, 2u);
   }
 
   [(PSUI5GStandaloneCache *)self clearCacheAndRefresh];

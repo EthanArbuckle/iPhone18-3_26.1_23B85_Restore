@@ -1,36 +1,36 @@
 @interface BSXPCServiceConnectionChildContext
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)debugDescription;
-- (void)_initWithParent:(uint64_t)a3 identifier:(char)a4 remote:(void *)a5 proem:;
+- (void)_initWithParent:(uint64_t)parent identifier:(char)identifier remote:(void *)remote proem:;
 @end
 
 @implementation BSXPCServiceConnectionChildContext
 
-- (void)_initWithParent:(uint64_t)a3 identifier:(char)a4 remote:(void *)a5 proem:
+- (void)_initWithParent:(uint64_t)parent identifier:(char)identifier remote:(void *)remote proem:
 {
   v9 = a2;
-  v10 = a5;
-  if (a1)
+  remoteCopy = remote;
+  if (self)
   {
-    a1 = [(BSXPCServiceConnectionContext *)a1 _initWithProem:v10];
-    if (a1)
+    self = [(BSXPCServiceConnectionContext *)self _initWithProem:remoteCopy];
+    if (self)
     {
       v11 = [v9 copy];
-      v12 = a1[2];
-      a1[2] = v11;
+      v12 = self[2];
+      self[2] = v11;
 
-      a1[4] = a3;
-      *(a1 + 24) = a4;
+      self[4] = parent;
+      *(self + 24) = identifier;
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -38,7 +38,7 @@
   else
   {
     v5 = objc_opt_class();
-    v8 = v5 == objc_opt_class() && (parent = self->_parent, v7 = v4->_parent, BSEqualObjects()) && self->_identifier == v4->_identifier && self->_remote == v4->_remote;
+    v8 = v5 == objc_opt_class() && (parent = self->_parent, v7 = equalCopy->_parent, BSEqualObjects()) && self->_identifier == equalCopy->_identifier && self->_remote == equalCopy->_remote;
   }
 
   return v8;

@@ -1,16 +1,16 @@
 @interface RMDeviceAuthenticationCredential
-- (BOOL)prepareURLRequest:(id)a3 error:(id *)a4;
+- (BOOL)prepareURLRequest:(id)request error:(id *)error;
 @end
 
 @implementation RMDeviceAuthenticationCredential
 
-- (BOOL)prepareURLRequest:(id)a3 error:(id *)a4
+- (BOOL)prepareURLRequest:(id)request error:(id *)error
 {
-  v5 = a3;
-  v6 = [v5 HTTPBody];
-  if (!v6)
+  requestCopy = request;
+  hTTPBody = [requestCopy HTTPBody];
+  if (!hTTPBody)
   {
-    v6 = [&stru_1000D3680 dataUsingEncoding:4];
+    hTTPBody = [&stru_1000D3680 dataUsingEncoding:4];
   }
 
   v33 = 0;
@@ -40,7 +40,7 @@
   v9 = v7;
   v16 = v9;
   v18 = &v33;
-  v10 = v6;
+  v10 = hTTPBody;
   v17 = v10;
   v19 = &v21;
   v20 = &v27;
@@ -51,13 +51,13 @@
   v11 = v22[5];
   if (v11)
   {
-    if (a4)
+    if (error)
     {
       v12 = +[RMErrorUtilities createInternalError];
       if (v12)
       {
         v12 = v12;
-        *a4 = v12;
+        *error = v12;
       }
     }
   }
@@ -70,8 +70,8 @@
       sub_1000094DC(v13);
     }
 
-    [v5 setValue:v34[5] forHTTPHeaderField:@"X-Apple-RM-Signature-Data"];
-    [v5 setValue:v28[5] forHTTPHeaderField:@"X-Apple-RM-Signature-Certificates"];
+    [requestCopy setValue:v34[5] forHTTPHeaderField:@"X-Apple-RM-Signature-Data"];
+    [requestCopy setValue:v28[5] forHTTPHeaderField:@"X-Apple-RM-Signature-Certificates"];
   }
 
   _Block_object_dispose(&v21, 8);

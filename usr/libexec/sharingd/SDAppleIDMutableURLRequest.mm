@@ -1,15 +1,15 @@
 @interface SDAppleIDMutableURLRequest
-- (SDAppleIDMutableURLRequest)initWithURL:(id)a3 gsToken:(id)a4;
+- (SDAppleIDMutableURLRequest)initWithURL:(id)l gsToken:(id)token;
 @end
 
 @implementation SDAppleIDMutableURLRequest
 
-- (SDAppleIDMutableURLRequest)initWithURL:(id)a3 gsToken:(id)a4
+- (SDAppleIDMutableURLRequest)initWithURL:(id)l gsToken:(id)token
 {
-  v6 = a4;
+  tokenCopy = token;
   v10.receiver = self;
   v10.super_class = SDAppleIDMutableURLRequest;
-  v7 = [(SDAppleIDMutableURLRequest *)&v10 initWithURL:a3];
+  v7 = [(SDAppleIDMutableURLRequest *)&v10 initWithURL:l];
   v8 = v7;
   if (v7)
   {
@@ -28,7 +28,7 @@
     }
 
     [(SDAppleIDMutableURLRequest *)v8 setValue:qword_10098A078 forHTTPHeaderField:@"X-Mme-Device-ID"];
-    [(SDAppleIDMutableURLRequest *)v8 setValue:v6 forHTTPHeaderField:@"X-Apple-GS-Token"];
+    [(SDAppleIDMutableURLRequest *)v8 setValue:tokenCopy forHTTPHeaderField:@"X-Apple-GS-Token"];
     if (IsAppleInternalBuild())
     {
       [(SDAppleIDMutableURLRequest *)v8 setValue:@"true" forHTTPHeaderField:@"X-Apple-I-88CC-99DE-EE63-2736"];

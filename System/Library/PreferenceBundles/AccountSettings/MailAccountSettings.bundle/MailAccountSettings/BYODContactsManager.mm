@@ -2,16 +2,16 @@
 + (BYODContactsManager)sharedInstance;
 + (id)log;
 - (BYODContactsManager)init;
-- (id)_avatarImageForContacts:(id)a3;
+- (id)_avatarImageForContacts:(id)contacts;
 - (id)_avatarImageRenderer;
 - (id)_defaultKeyDescriptors;
-- (id)_fetchContactForUser:(id)a3;
+- (id)_fetchContactForUser:(id)user;
 - (id)avatarImageForMeContact;
-- (id)avatarImageForUser:(id)a3;
-- (id)fetchNameFromContacts:(id)a3;
-- (id)fullNameWithFirstName:(id)a3 lastName:(id)a4;
-- (id)monogramWithFirstName:(id)a3 andLastName:(id)a4;
-- (void)fetchAvatarImageForUser:(id)a3 withCompletion:(id)a4;
+- (id)avatarImageForUser:(id)user;
+- (id)fetchNameFromContacts:(id)contacts;
+- (id)fullNameWithFirstName:(id)name lastName:(id)lastName;
+- (id)monogramWithFirstName:(id)name andLastName:(id)lastName;
+- (void)fetchAvatarImageForUser:(id)user withCompletion:(id)completion;
 @end
 
 @implementation BYODContactsManager
@@ -22,7 +22,7 @@
   block[1] = 3221225472;
   block[2] = sub_2E0C8;
   block[3] = &unk_B8D78;
-  block[4] = a1;
+  block[4] = self;
   if (qword_D64D0 != -1)
   {
     dispatch_once(&qword_D64D0, block);
@@ -71,8 +71,8 @@
 
 - (id)_defaultKeyDescriptors
 {
-  v2 = [(CNAvatarViewController *)self->_avatar descriptorForRequiredKeys];
-  v5 = v2;
+  descriptorForRequiredKeys = [(CNAvatarViewController *)self->_avatar descriptorForRequiredKeys];
+  v5 = descriptorForRequiredKeys;
   v3 = [NSArray arrayWithObjects:&v5 count:1];
 
   return v3;
@@ -81,9 +81,9 @@
 - (id)avatarImageForMeContact
 {
   localContactStore = self->_localContactStore;
-  v4 = [(BYODContactsManager *)self _defaultKeyDescriptors];
+  _defaultKeyDescriptors = [(BYODContactsManager *)self _defaultKeyDescriptors];
   v10 = 0;
-  v5 = [(CNContactStore *)localContactStore _ios_meContactWithKeysToFetch:v4 error:&v10];
+  v5 = [(CNContactStore *)localContactStore _ios_meContactWithKeysToFetch:_defaultKeyDescriptors error:&v10];
   v6 = v10;
 
   if (v5)
@@ -101,10 +101,10 @@
   return v8;
 }
 
-- (id)avatarImageForUser:(id)a3
+- (id)avatarImageForUser:(id)user
 {
-  v4 = a3;
-  v5 = [(BYODContactsManager *)self _fetchContactForUser:v4];
+  userCopy = user;
+  v5 = [(BYODContactsManager *)self _fetchContactForUser:userCopy];
   v6 = v5;
   if (v5 && [v5 count])
   {
@@ -113,36 +113,36 @@
 
   else
   {
-    v8 = [v4 firstName];
-    v9 = [v8 length];
+    firstName = [userCopy firstName];
+    v9 = [firstName length];
 
     if (v9)
     {
-      v10 = [v4 firstName];
-      v11 = [v4 lastName];
-      v7 = [(BYODContactsManager *)self monogramWithFirstName:v10 andLastName:v11];
+      firstName2 = [userCopy firstName];
+      lastName = [userCopy lastName];
+      v7 = [(BYODContactsManager *)self monogramWithFirstName:firstName2 andLastName:lastName];
     }
 
     else
     {
-      v10 = [v4 invitationHandle];
-      v7 = [(BYODContactsManager *)self monogramWithFirstName:v10 andLastName:&stru_B9FC8];
+      firstName2 = [userCopy invitationHandle];
+      v7 = [(BYODContactsManager *)self monogramWithFirstName:firstName2 andLastName:&stru_B9FC8];
     }
   }
 
   return v7;
 }
 
-- (void)fetchAvatarImageForUser:(id)a3 withCompletion:(id)a4
+- (void)fetchAvatarImageForUser:(id)user withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 dsid];
-  if ([v6 isFamilyMember])
+  userCopy = user;
+  completionCopy = completion;
+  dsid = [userCopy dsid];
+  if ([userCopy isFamilyMember])
   {
     v9 = objc_alloc_init(NSNumberFormatter);
     [v9 setNumberStyle:1];
-    v10 = [v9 numberFromString:v8];
+    v10 = [v9 numberFromString:dsid];
     v11 = [[FAFetchFamilyPhotoRequest alloc] initWithFamilyMemberDSID:v10 size:1 localFallback:1];
     [v11 setUseMonogramAsLastResort:1];
     v15[0] = 0;
@@ -156,7 +156,7 @@
     v12[2] = sub_2E81C;
     v12[3] = &unk_B92D0;
     v14 = v15;
-    v13 = v7;
+    v13 = completionCopy;
     [v11 startRequestWithCompletionHandler:v12];
 
     _Block_object_dispose(v15, 8);
@@ -164,18 +164,18 @@
 
   else
   {
-    v9 = [(BYODContactsManager *)self avatarImageForUser:v6];
-    (*(v7 + 2))(v7, v9);
+    v9 = [(BYODContactsManager *)self avatarImageForUser:userCopy];
+    (*(completionCopy + 2))(completionCopy, v9);
   }
 }
 
-- (id)monogramWithFirstName:(id)a3 andLastName:(id)a4
+- (id)monogramWithFirstName:(id)name andLastName:(id)lastName
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  lastNameCopy = lastName;
   v8 = objc_alloc_init(CNMutableContact);
-  [v8 setGivenName:v6];
-  [v8 setFamilyName:v7];
+  [v8 setGivenName:nameCopy];
+  [v8 setFamilyName:lastNameCopy];
   v12 = v8;
   v9 = [NSArray arrayWithObjects:&v12 count:1];
   v10 = [(BYODContactsManager *)self _avatarImageForContacts:v9];
@@ -183,16 +183,16 @@
   return v10;
 }
 
-- (id)fetchNameFromContacts:(id)a3
+- (id)fetchNameFromContacts:(id)contacts
 {
-  v4 = [(BYODContactsManager *)self _fetchContactForUser:a3];
+  v4 = [(BYODContactsManager *)self _fetchContactForUser:contacts];
   v5 = v4;
   if (v4 && [v4 count])
   {
-    v6 = [v5 firstObject];
-    v7 = [v6 givenName];
-    v8 = [v6 familyName];
-    v9 = [(BYODContactsManager *)self fullNameWithFirstName:v7 lastName:v8];
+    firstObject = [v5 firstObject];
+    givenName = [firstObject givenName];
+    familyName = [firstObject familyName];
+    v9 = [(BYODContactsManager *)self fullNameWithFirstName:givenName lastName:familyName];
   }
 
   else
@@ -203,25 +203,25 @@
   return v9;
 }
 
-- (id)fullNameWithFirstName:(id)a3 lastName:(id)a4
+- (id)fullNameWithFirstName:(id)name lastName:(id)lastName
 {
-  v5 = a3;
-  v6 = a4;
+  nameCopy = name;
+  lastNameCopy = lastName;
   v7 = objc_alloc_init(NSPersonNameComponents);
-  [v7 setGivenName:v5];
-  [v7 setFamilyName:v6];
+  [v7 setGivenName:nameCopy];
+  [v7 setFamilyName:lastNameCopy];
   v8 = [NSPersonNameComponentsFormatter localizedStringFromPersonNameComponents:v7 style:2 options:0];
   if ([v8 length])
   {
-    v9 = v8;
+    lastNameCopy = v8;
   }
 
   else
   {
-    v9 = [NSString stringWithFormat:@"%@ %@", v5, v6];
+    lastNameCopy = [NSString stringWithFormat:@"%@ %@", nameCopy, lastNameCopy];
   }
 
-  v10 = v9;
+  v10 = lastNameCopy;
 
   return v10;
 }
@@ -243,43 +243,43 @@
   return contactsAvatarImageRenderer;
 }
 
-- (id)_avatarImageForContacts:(id)a3
+- (id)_avatarImageForContacts:(id)contacts
 {
-  v4 = a3;
+  contactsCopy = contacts;
   v5 = +[UIScreen mainScreen];
   [v5 scale];
   v7 = [CNAvatarImageRenderingScope scopeWithPointSize:0 scale:0 rightToLeft:38.0 style:38.0, v6];
 
-  if ([v4 count] >= 2)
+  if ([contactsCopy count] >= 2)
   {
-    v8 = [v4 firstObject];
-    v9 = [NSArray arrayWithObject:v8];
+    firstObject = [contactsCopy firstObject];
+    v9 = [NSArray arrayWithObject:firstObject];
 
-    v4 = v9;
+    contactsCopy = v9;
   }
 
-  v10 = [(BYODContactsManager *)self _avatarImageRenderer];
-  v11 = [v10 avatarImageForContacts:v4 scope:v7];
+  _avatarImageRenderer = [(BYODContactsManager *)self _avatarImageRenderer];
+  v11 = [_avatarImageRenderer avatarImageForContacts:contactsCopy scope:v7];
 
   return v11;
 }
 
-- (id)_fetchContactForUser:(id)a3
+- (id)_fetchContactForUser:(id)user
 {
-  v4 = a3;
-  v5 = [v4 emailAddress];
-  v6 = [v5 length];
+  userCopy = user;
+  emailAddress = [userCopy emailAddress];
+  v6 = [emailAddress length];
 
   if (v6)
   {
-    v7 = [v4 emailAddress];
-    v8 = [CNContact predicateForContactsMatchingEmailAddress:v7];
+    emailAddress2 = [userCopy emailAddress];
+    v8 = [CNContact predicateForContactsMatchingEmailAddress:emailAddress2];
   }
 
   else
   {
-    v9 = [v4 phoneNumber];
-    v10 = [v9 length];
+    phoneNumber = [userCopy phoneNumber];
+    v10 = [phoneNumber length];
 
     if (!v10)
     {
@@ -288,8 +288,8 @@ LABEL_10:
       goto LABEL_13;
     }
 
-    v7 = [v4 phoneNumber];
-    v11 = [CNPhoneNumber phoneNumberWithStringValue:v7];
+    emailAddress2 = [userCopy phoneNumber];
+    v11 = [CNPhoneNumber phoneNumberWithStringValue:emailAddress2];
     v8 = [CNContact predicateForContactsMatchingPhoneNumber:v11];
   }
 
@@ -298,10 +298,10 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v12 = [(BYODContactsManager *)self _defaultKeyDescriptors];
+  _defaultKeyDescriptors = [(BYODContactsManager *)self _defaultKeyDescriptors];
   localContactStore = self->_localContactStore;
   v18 = 0;
-  v14 = [(CNContactStore *)localContactStore unifiedContactsMatchingPredicate:v8 keysToFetch:v12 error:&v18];
+  v14 = [(CNContactStore *)localContactStore unifiedContactsMatchingPredicate:v8 keysToFetch:_defaultKeyDescriptors error:&v18];
   v15 = v18;
   if (v15 || ![v14 count])
   {

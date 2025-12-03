@@ -1,14 +1,14 @@
 @interface SGDetectedAttributeDissector
-- (id)detailTypeFromPrefix:(id)a3 detectedLabelPointer:(_NSRange *)a4;
-- (id)getLineContaining:(_NSRange)a3 inText:(id)a4;
-- (void)_dissectMessage:(id)a3 entity:(id)a4;
+- (id)detailTypeFromPrefix:(id)prefix detectedLabelPointer:(_NSRange *)pointer;
+- (id)getLineContaining:(_NSRange)containing inText:(id)text;
+- (void)_dissectMessage:(id)message entity:(id)entity;
 @end
 
 @implementation SGDetectedAttributeDissector
 
-- (id)detailTypeFromPrefix:(id)a3 detectedLabelPointer:(_NSRange *)a4
+- (id)detailTypeFromPrefix:(id)prefix detectedLabelPointer:(_NSRange *)pointer
 {
-  v5 = a3;
+  prefixCopy = prefix;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -33,11 +33,11 @@
   v14 = v10;
   v15 = &v22;
   v16 = &v17;
-  [v8 enumerateMatchesInString:v5 ngroups:v9 block:v13];
+  [v8 enumerateMatchesInString:prefixCopy ngroups:v9 block:v13];
 
-  if (a4)
+  if (pointer)
   {
-    *a4 = v18[2];
+    *pointer = v18[2];
   }
 
   v11 = v23[5];
@@ -71,17 +71,17 @@ uint64_t __74__SGDetectedAttributeDissector_detailTypeFromPrefix_detectedLabelPo
   return 0;
 }
 
-- (id)getLineContaining:(_NSRange)a3 inText:(id)a4
+- (id)getLineContaining:(_NSRange)containing inText:(id)text
 {
-  length = a3.length;
-  location = a3.location;
-  v6 = a4;
-  v7 = [v6 rangeOfString:@"\n" options:6 range:{0, location}];
+  length = containing.length;
+  location = containing.location;
+  textCopy = text;
+  v7 = [textCopy rangeOfString:@"\n" options:6 range:{0, location}];
   v9 = v8;
-  v10 = [v6 rangeOfString:@"\n" options:2 range:{location + length, objc_msgSend(v6, "length") - (location + length)}];
+  v10 = [textCopy rangeOfString:@"\n" options:2 range:{location + length, objc_msgSend(textCopy, "length") - (location + length)}];
   if (!v11)
   {
-    v10 = [v6 length];
+    v10 = [textCopy length];
   }
 
   v12 = v10;
@@ -96,27 +96,27 @@ uint64_t __74__SGDetectedAttributeDissector_detailTypeFromPrefix_detectedLabelPo
   }
 
   v14 = objc_autoreleasePoolPush();
-  v15 = [v6 substringWithRange:{v13, v12 - v13}];
+  v15 = [textCopy substringWithRange:{v13, v12 - v13}];
   objc_autoreleasePoolPop(v14);
 
   return v15;
 }
 
-- (void)_dissectMessage:(id)a3 entity:(id)a4
+- (void)_dissectMessage:(id)message entity:(id)entity
 {
   v232 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v199 = v5;
-  v188 = [v5 textContent];
-  if (!v188)
+  messageCopy = message;
+  entityCopy = entity;
+  v199 = messageCopy;
+  textContent = [messageCopy textContent];
+  if (!textContent)
   {
     goto LABEL_200;
   }
 
-  v7 = [v5 author];
+  author = [messageCopy author];
 
-  if (!v7)
+  if (!author)
   {
     v16 = sgLogHandle();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
@@ -131,17 +131,17 @@ LABEL_12:
     goto LABEL_200;
   }
 
-  v8 = [v6 plainTextSigRange];
+  plainTextSigRange = [entityCopy plainTextSigRange];
   v197 = v9;
-  v198 = v8;
-  v196 = [v5 detectedDataSignatureRange];
-  v10 = [v6 tags];
-  if (v10)
+  v198 = plainTextSigRange;
+  detectedDataSignatureRange = [messageCopy detectedDataSignatureRange];
+  tags = [entityCopy tags];
+  if (tags)
   {
-    v11 = v10;
-    v12 = [v6 isInhuman];
+    v11 = tags;
+    isInhuman = [entityCopy isInhuman];
 
-    if (v12)
+    if (isInhuman)
     {
       v13 = sgLogHandle();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -150,13 +150,13 @@ LABEL_12:
         _os_log_debug_impl(&dword_231E60000, v13, OS_LOG_TYPE_DEBUG, "Skipping DetectedAttribute dissection: Inhuman sender.", &buf, 2u);
       }
 
-      [SGDetectedAttributeMetrics recordExtractionOutcome:*MEMORY[0x277D02248] forDetectionsInMessage:v199 signatureRange:v198 isDDSignature:v197, v196 != 0x7FFFFFFFFFFFFFFFLL];
+      [SGDetectedAttributeMetrics recordExtractionOutcome:*MEMORY[0x277D02248] forDetectionsInMessage:v199 signatureRange:v198 isDDSignature:v197, detectedDataSignatureRange != 0x7FFFFFFFFFFFFFFFLL];
       goto LABEL_200;
     }
   }
 
-  v14 = [v199 source];
-  v15 = [v14 isEqual:@"warmUpSuggestions"];
+  source = [v199 source];
+  v15 = [source isEqual:@"warmUpSuggestions"];
 
   if (v15)
   {
@@ -180,16 +180,16 @@ LABEL_76:
     v19 = v18;
     if (v18)
     {
-      v20 = [v18 conversationIdentifier];
-      v21 = [v20 length];
+      conversationIdentifier = [v18 conversationIdentifier];
+      v21 = [conversationIdentifier length];
 
       if (v21)
       {
         v22 = objc_autoreleasePoolPush();
         v23 = +[SGTextMessageConversationTracker instance];
         v24 = [SGTextMessageItem alloc];
-        v25 = [v19 plainTextDetectedData];
-        v26 = [(SGTextMessageItem *)v24 initWithTextMessage:v19 detectedData:v25];
+        plainTextDetectedData = [v19 plainTextDetectedData];
+        v26 = [(SGTextMessageItem *)v24 initWithTextMessage:v19 detectedData:plainTextDetectedData];
         v177 = [v23 addTextMessageItem:v26];
 
         objc_autoreleasePoolPop(v22);
@@ -237,8 +237,8 @@ LABEL_22:
     goto LABEL_198;
   }
 
-  v28 = [v199 author];
-  v29 = [SGIdentityKey keyForPersonHandle:v28];
+  author2 = [v199 author];
+  v29 = [SGIdentityKey keyForPersonHandle:author2];
 
   log = v29;
   if (!v29)
@@ -247,36 +247,36 @@ LABEL_22:
     goto LABEL_199;
   }
 
-  v30 = [v199 plainTextDetectedData];
+  plainTextDetectedData2 = [v199 plainTextDetectedData];
   if (v27)
   {
-    v31 = [v27 quotedRegions];
+    quotedRegions = [v27 quotedRegions];
   }
 
   else
   {
-    v31 = objc_opt_new();
+    quotedRegions = objc_opt_new();
   }
 
-  v184 = v31;
+  v184 = quotedRegions;
 
-  [v6 releaseDissectorLock];
+  [entityCopy releaseDissectorLock];
   v32 = sgLogHandle();
   if (os_log_type_enabled(v32, OS_LOG_TYPE_DEBUG))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v30;
+    *(&buf + 4) = plainTextDetectedData2;
     _os_log_debug_impl(&dword_231E60000, v32, OS_LOG_TYPE_DEBUG, "Detections: %@", &buf, 0xCu);
   }
 
   v165 = v27;
-  v190 = v6;
+  v190 = entityCopy;
 
   v220 = 0u;
   v221 = 0u;
   v218 = 0u;
   v219 = 0u;
-  v33 = v30;
+  v33 = plainTextDetectedData2;
   v34 = [v33 countByEnumeratingWithState:&v218 objects:v231 count:16];
   obj = v33;
   if (v34)
@@ -301,9 +301,9 @@ LABEL_22:
         v235.length = v197;
         v235.location = v198;
         length = NSIntersectionRange(v233, v235).length;
-        v42 = [v40 matchType];
-        v43 = v42 == 0;
-        if (v42)
+        matchType = [v40 matchType];
+        v43 = matchType == 0;
+        if (matchType)
         {
           v44 = v201;
         }
@@ -314,9 +314,9 @@ LABEL_22:
         }
 
         v201 = v44;
-        v45 = [v40 matchType];
-        v46 = v45 == 1;
-        if (v45 == 1)
+        matchType2 = [v40 matchType];
+        v46 = matchType2 == 1;
+        if (matchType2 == 1)
         {
           ++v37;
         }
@@ -361,7 +361,7 @@ LABEL_22:
         _os_log_debug_impl(&dword_231E60000, v48, OS_LOG_TYPE_DEBUG, "Skipping DetectedAttribute dissection: too many phone numbers (%i, limit %i)", &buf, 0xEu);
       }
 
-      v6 = v190;
+      entityCopy = v190;
       [v190 acquireDissectorLock];
       goto LABEL_197;
     }
@@ -399,8 +399,8 @@ LABEL_22:
           }
 
           ml = self->_ml;
-          v56 = [v177 likelyLanguage];
-          [(SGDetectedAttributeML *)ml handleTextMessageContactSharingWithNegativeSample:v19 andLanguage:v56];
+          likelyLanguage = [v177 likelyLanguage];
+          [(SGDetectedAttributeML *)ml handleTextMessageContactSharingWithNegativeSample:v19 andLanguage:likelyLanguage];
 
           v57 = sgSignpostHandle();
           v58 = v57;
@@ -416,12 +416,12 @@ LABEL_22:
     objc_autoreleasePoolPop(v49);
   }
 
-  v59 = [MEMORY[0x277D02548] detectLanguageFromText:v188];
+  v59 = [MEMORY[0x277D02548] detectLanguageFromText:textContent];
   v174 = v59;
   if (v59)
   {
     v60 = &OBJC_IVAR___SGDetectedAttributeDissector__hmmTrustedLanguages;
-    if (v196 != 0x7FFFFFFFFFFFFFFFLL)
+    if (detectedDataSignatureRange != 0x7FFFFFFFFFFFFFFFLL)
     {
       v60 = &OBJC_IVAR___SGDetectedAttributeDissector__ddTrustedLanguages;
     }
@@ -442,8 +442,8 @@ LABEL_22:
   v214 = 0u;
   v215 = 0u;
   v216 = xmmword_232106CE0;
-  v179 = [obj reverseObjectEnumerator];
-  v189 = [v179 countByEnumeratingWithState:&v212 objects:v230 count:16];
+  reverseObjectEnumerator = [obj reverseObjectEnumerator];
+  v189 = [reverseObjectEnumerator countByEnumeratingWithState:&v212 objects:v230 count:16];
   if (!v189)
   {
     v175 = 0;
@@ -466,7 +466,7 @@ LABEL_22:
     {
       if (*v213 != v187)
       {
-        objc_enumerationMutation(v179);
+        objc_enumerationMutation(reverseObjectEnumerator);
       }
 
       v64 = *(*(&v212 + 1) + 8 * v63);
@@ -475,8 +475,8 @@ LABEL_22:
       {
         if (![v64 matchType])
         {
-          v66 = [v64 range];
-          if (SGIsPhoneNumberWithRangeBlocked(v188, v66, v67))
+          range = [v64 range];
+          if (SGIsPhoneNumberWithRangeBlocked(textContent, range, v67))
           {
             v68 = sgLogHandle();
             if (os_log_type_enabled(v68, OS_LOG_TYPE_DEBUG))
@@ -494,8 +494,8 @@ LABEL_22:
         v236.length = v197;
         v236.location = v198;
         v69 = NSIntersectionRange(v234, v236).length;
-        v70 = [v64 range];
-        if ([v184 intersectsIndexesInRange:{v70, v71}])
+        range2 = [v64 range];
+        if ([v184 intersectsIndexesInRange:{range2, v71}])
         {
           v72 = objc_autoreleasePoolPush();
           v73 = sgLogHandle();
@@ -506,7 +506,7 @@ LABEL_22:
           }
 
           LOBYTE(v162) = 0;
-          [SGDetectedAttributeMetrics recordExtractionOutcome:v178 fromMessage:v199 foundInSignature:v69 != 0 isDDSignature:v196 != 0x7FFFFFFFFFFFFFFFLL match:v64 modelVersion:&unk_284749B48 isUnlikelyPhone:v162];
+          [SGDetectedAttributeMetrics recordExtractionOutcome:v178 fromMessage:v199 foundInSignature:v69 != 0 isDDSignature:detectedDataSignatureRange != 0x7FFFFFFFFFFFFFFFLL match:v64 modelVersion:&unk_284749B48 isUnlikelyPhone:v162];
           objc_autoreleasePoolPop(v72);
 LABEL_96:
           v65 = v195;
@@ -520,15 +520,15 @@ LABEL_96:
 
         else
         {
-          v75 = [v64 valueString];
-          v74 = [v75 containsString:{@", "}];
+          valueString = [v64 valueString];
+          v74 = [valueString containsString:{@", "}];
         }
 
         if (self->_filterWithAddressBook && ![v64 matchType])
         {
           contactsHelper = self->_contactsHelper;
-          v97 = [v64 valueString];
-          v76 = ![(SGContactPipelineHelper *)contactsHelper numberMatchesContactsForm:v97];
+          valueString2 = [v64 valueString];
+          v76 = ![(SGContactPipelineHelper *)contactsHelper numberMatchesContactsForm:valueString2];
         }
 
         else
@@ -568,8 +568,8 @@ LABEL_96:
         v229 = v37;
         BYTE4(buf) = [v64 matchType] == 0;
         BYTE5(buf) = [v64 matchType] == 1;
-        v82 = [v64 range];
-        v83 = v82 / [v188 length];
+        range3 = [v64 range];
+        v83 = range3 / [textContent length];
         *(&buf + 2) = v83;
         v84 = [[SGContactDetailSupervision alloc] initWithMessage:v199 ddMatch:v64 isUnlikelyPhone:v77 & 1];
         v85 = objc_autoreleasePoolPush();
@@ -585,7 +585,7 @@ LABEL_96:
             v191 = v88;
             if (os_log_type_enabled(v89, OS_LOG_TYPE_DEBUG))
             {
-              v136 = [v88 extraction];
+              extraction = [v88 extraction];
               *v224 = 138412290;
-              v225 = v136;
+              v225 = extraction;
 @end

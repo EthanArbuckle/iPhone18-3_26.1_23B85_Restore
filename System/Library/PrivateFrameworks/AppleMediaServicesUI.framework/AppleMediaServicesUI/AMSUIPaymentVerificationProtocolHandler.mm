@@ -1,31 +1,31 @@
 @interface AMSUIPaymentVerificationProtocolHandler
-+ (id)_accountToUseFromGivenAccount:(id)a3 accountParameters:(id)a4 accountStore:(id)a5;
-+ (id)_encoderWithBag:(id)a3 account:(id)a4;
-+ (id)_headersFromAccount:(id)a3;
-+ (id)_headersFromAccountParameters:(id)a3;
-+ (id)_promiseToFetchURLResponseForAccount:(id)a3 accountParameters:(id)a4 url:(id)a5 bag:(id)a6 requestBody:(id)a7 bodyEncoding:(int64_t)a8 contentType:(id)a9;
-+ (id)_sessionWithBag:(id)a3 account:(id)a4 accountParameters:(id)a5;
-+ (id)headersFromAccount:(id)a3 accountParameters:(id)a4;
-+ (id)requestAddingHeaders:(id)a3 to:(id)a4;
-+ (void)_setHeaders:(id)a3 on:(id)a4;
-- (AMSUIPaymentVerificationProtocolHandler)initWithAccount:(id)a3 accountParameters:(id)a4;
-- (void)AMSURLSession:(id)a3 task:(id)a4 handleAuthenticateRequest:(id)a5 completion:(id)a6;
++ (id)_accountToUseFromGivenAccount:(id)account accountParameters:(id)parameters accountStore:(id)store;
++ (id)_encoderWithBag:(id)bag account:(id)account;
++ (id)_headersFromAccount:(id)account;
++ (id)_headersFromAccountParameters:(id)parameters;
++ (id)_promiseToFetchURLResponseForAccount:(id)account accountParameters:(id)parameters url:(id)url bag:(id)bag requestBody:(id)body bodyEncoding:(int64_t)encoding contentType:(id)type;
++ (id)_sessionWithBag:(id)bag account:(id)account accountParameters:(id)parameters;
++ (id)headersFromAccount:(id)account accountParameters:(id)parameters;
++ (id)requestAddingHeaders:(id)headers to:(id)to;
++ (void)_setHeaders:(id)headers on:(id)on;
+- (AMSUIPaymentVerificationProtocolHandler)initWithAccount:(id)account accountParameters:(id)parameters;
+- (void)AMSURLSession:(id)session task:(id)task handleAuthenticateRequest:(id)request completion:(id)completion;
 @end
 
 @implementation AMSUIPaymentVerificationProtocolHandler
 
-- (AMSUIPaymentVerificationProtocolHandler)initWithAccount:(id)a3 accountParameters:(id)a4
+- (AMSUIPaymentVerificationProtocolHandler)initWithAccount:(id)account accountParameters:(id)parameters
 {
-  v7 = a3;
-  v8 = a4;
+  accountCopy = account;
+  parametersCopy = parameters;
   v14.receiver = self;
   v14.super_class = AMSUIPaymentVerificationProtocolHandler;
   v9 = [(AMSURLProtocolHandler *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_account, a3);
-    v11 = [v8 mutableCopy];
+    objc_storeStrong(&v9->_account, account);
+    v11 = [parametersCopy mutableCopy];
     accountParameters = v10->_accountParameters;
     v10->_accountParameters = v11;
   }
@@ -33,44 +33,44 @@
   return v10;
 }
 
-+ (id)requestAddingHeaders:(id)a3 to:(id)a4
++ (id)requestAddingHeaders:(id)headers to:(id)to
 {
-  v5 = a4;
+  toCopy = to;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __67__AMSUIPaymentVerificationProtocolHandler_requestAddingHeaders_to___block_invoke;
   v8[3] = &unk_1E7F25730;
-  v6 = v5;
+  v6 = toCopy;
   v9 = v6;
-  [a3 enumerateKeysAndObjectsUsingBlock:v8];
+  [headers enumerateKeysAndObjectsUsingBlock:v8];
 
   return v6;
 }
 
-+ (id)headersFromAccount:(id)a3 accountParameters:(id)a4
++ (id)headersFromAccount:(id)account accountParameters:(id)parameters
 {
-  if (a4)
+  if (parameters)
   {
-    [a1 _headersFromAccountParameters:a4];
+    [self _headersFromAccountParameters:parameters];
   }
 
   else
   {
-    [a1 _headersFromAccount:a3];
+    [self _headersFromAccount:account];
   }
   v4 = ;
 
   return v4;
 }
 
-+ (id)_headersFromAccount:(id)a3
++ (id)_headersFromAccount:(id)account
 {
   v37 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E698C8A8] deviceGUID];
-  v5 = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
+  accountCopy = account;
+  deviceGUID = [MEMORY[0x1E698C8A8] deviceGUID];
+  ams_sharedAccountStore = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
   v27 = 0;
-  v6 = [v5 ams_fetchGrandSlamTokenForAccount:v3 withIdentifier:@"com.apple.gs.ams.pvkit" error:&v27];
+  v6 = [ams_sharedAccountStore ams_fetchGrandSlamTokenForAccount:accountCopy withIdentifier:@"com.apple.gs.ams.pvkit" error:&v27];
   v7 = v27;
 
   v28 = 0;
@@ -91,23 +91,23 @@
 
   v9 = v8;
   _Block_object_dispose(&v28, 8);
-  v10 = [v8 currentInfo];
-  v11 = [v10 clientInfoHeader];
+  currentInfo = [v8 currentInfo];
+  clientInfoHeader = [currentInfo clientInfoHeader];
 
-  v12 = [MEMORY[0x1E698DD60] currentDevice];
-  v13 = [v12 uniqueDeviceIdentifier];
+  currentDevice = [MEMORY[0x1E698DD60] currentDevice];
+  uniqueDeviceIdentifier = [currentDevice uniqueDeviceIdentifier];
 
   v14 = v6;
   if (!v6)
   {
-    v15 = [MEMORY[0x1E698C968] sharedConfig];
-    if (!v15)
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
+    if (!mEMORY[0x1E698C968])
     {
-      v15 = [MEMORY[0x1E698C968] sharedConfig];
+      mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
     }
 
-    v16 = [v15 OSLogObject];
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+    oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v17 = objc_opt_class();
       v18 = AMSLogKey();
@@ -117,7 +117,7 @@
       *&buf[14] = v18;
       *&buf[22] = 2114;
       v35 = v7;
-      _os_log_impl(&dword_1BB036000, v16, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Unable to fetch GS Token from account %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Unable to fetch GS Token from account %{public}@", buf, 0x20u);
     }
 
     v14 = &stru_1F3921360;
@@ -126,9 +126,9 @@
   v19 = *MEMORY[0x1E698C598];
   v32[0] = *MEMORY[0x1E698C588];
   v32[1] = v19;
-  if (v11)
+  if (clientInfoHeader)
   {
-    v20 = v11;
+    v20 = clientInfoHeader;
   }
 
   else
@@ -138,9 +138,9 @@
 
   v33[0] = v14;
   v33[1] = v20;
-  if (v13)
+  if (uniqueDeviceIdentifier)
   {
-    v21 = v13;
+    v21 = uniqueDeviceIdentifier;
   }
 
   else
@@ -151,9 +151,9 @@
   v22 = *MEMORY[0x1E698C590];
   v32[2] = *MEMORY[0x1E698C5A0];
   v32[3] = v22;
-  if (v4)
+  if (deviceGUID)
   {
-    v23 = v4;
+    v23 = deviceGUID;
   }
 
   else
@@ -174,14 +174,14 @@
   return v24;
 }
 
-+ (id)_headersFromAccountParameters:(id)a3
++ (id)_headersFromAccountParameters:(id)parameters
 {
   v20[6] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E698C8A8];
-  v4 = a3;
-  v5 = [v3 deviceGUID];
+  parametersCopy = parameters;
+  deviceGUID = [v3 deviceGUID];
   v19[0] = *MEMORY[0x1E698C588];
-  v6 = [v4 objectForKeyedSubscript:@"gsToken"];
+  v6 = [parametersCopy objectForKeyedSubscript:@"gsToken"];
   v7 = v6;
   if (v6)
   {
@@ -195,7 +195,7 @@
 
   v20[0] = v8;
   v19[1] = *MEMORY[0x1E698C598];
-  v9 = [v4 objectForKeyedSubscript:@"mmeClientInfo"];
+  v9 = [parametersCopy objectForKeyedSubscript:@"mmeClientInfo"];
   v10 = v9;
   if (v9)
   {
@@ -209,7 +209,7 @@
 
   v20[1] = v11;
   v19[2] = *MEMORY[0x1E698C5A0];
-  v12 = [v4 objectForKeyedSubscript:@"deviceId"];
+  v12 = [parametersCopy objectForKeyedSubscript:@"deviceId"];
 
   if (v12)
   {
@@ -222,9 +222,9 @@
   }
 
   v14 = *MEMORY[0x1E698C590];
-  if (v5)
+  if (deviceGUID)
   {
-    v15 = v5;
+    v15 = deviceGUID;
   }
 
   else
@@ -246,32 +246,32 @@
   return v16;
 }
 
-+ (void)_setHeaders:(id)a3 on:(id)a4
++ (void)_setHeaders:(id)headers on:(id)on
 {
-  v5 = a4;
+  onCopy = on;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __58__AMSUIPaymentVerificationProtocolHandler__setHeaders_on___block_invoke;
   v7[3] = &unk_1E7F25730;
-  v8 = v5;
-  v6 = v5;
-  [a3 enumerateKeysAndObjectsUsingBlock:v7];
+  v8 = onCopy;
+  v6 = onCopy;
+  [headers enumerateKeysAndObjectsUsingBlock:v7];
 }
 
-- (void)AMSURLSession:(id)a3 task:(id)a4 handleAuthenticateRequest:(id)a5 completion:(id)a6
+- (void)AMSURLSession:(id)session task:(id)task handleAuthenticateRequest:(id)request completion:(id)completion
 {
   v28 = *MEMORY[0x1E69E9840];
-  v8 = a6;
+  completionCopy = completion;
   v9 = MEMORY[0x1E698C968];
-  v10 = a5;
-  v11 = [v9 sharedConfig];
-  if (!v11)
+  requestCopy = request;
+  sharedConfig = [v9 sharedConfig];
+  if (!sharedConfig)
   {
-    v11 = [MEMORY[0x1E698C968] sharedConfig];
+    sharedConfig = [MEMORY[0x1E698C968] sharedConfig];
   }
 
-  v12 = [v11 OSLogObject];
-  if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [sharedConfig OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v13 = objc_opt_class();
     v14 = AMSLogKey();
@@ -279,24 +279,24 @@
     v25 = v13;
     v26 = 2114;
     v27 = v14;
-    _os_log_impl(&dword_1BB036000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Attempting GS token update", buf, 0x16u);
+    _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Attempting GS token update", buf, 0x16u);
   }
 
-  v15 = [v10 options];
+  options = [requestCopy options];
 
-  v16 = [v15 copy];
+  v16 = [options copy];
   [v16 setServiceIdentifier:@"com.apple.gs.ams.pvkit"];
-  v17 = [(AMSUIPaymentVerificationProtocolHandler *)self account];
-  v18 = [objc_alloc(MEMORY[0x1E698C7A8]) initWithAccount:v17 options:v16];
-  v19 = [v18 performAuthKitUpdate];
+  account = [(AMSUIPaymentVerificationProtocolHandler *)self account];
+  v18 = [objc_alloc(MEMORY[0x1E698C7A8]) initWithAccount:account options:v16];
+  performAuthKitUpdate = [v18 performAuthKitUpdate];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __99__AMSUIPaymentVerificationProtocolHandler_AMSURLSession_task_handleAuthenticateRequest_completion___block_invoke;
   v22[3] = &unk_1E7F25758;
   v22[4] = self;
-  v23 = v8;
-  v20 = v8;
-  [v19 addFinishBlock:v22];
+  v23 = completionCopy;
+  v20 = completionCopy;
+  [performAuthKitUpdate addFinishBlock:v22];
 
   v21 = *MEMORY[0x1E69E9840];
 }
@@ -406,14 +406,14 @@ LABEL_10:
   v31 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)_encoderWithBag:(id)a3 account:(id)a4
++ (id)_encoderWithBag:(id)bag account:(id)account
 {
   v5 = MEMORY[0x1E698CB88];
-  v6 = a4;
-  v7 = a3;
-  v8 = [[v5 alloc] initWithBag:v7];
+  accountCopy = account;
+  bagCopy = bag;
+  v8 = [[v5 alloc] initWithBag:bagCopy];
 
-  [v8 setAccount:v6];
+  [v8 setAccount:accountCopy];
   v9 = objc_alloc_init(MEMORY[0x1E698C948]);
   [v9 setAuthenticationFallbackVisible:0];
   [v9 setDisplayAuthenticationReason:0];
@@ -424,51 +424,51 @@ LABEL_10:
   return v8;
 }
 
-+ (id)_sessionWithBag:(id)a3 account:(id)a4 accountParameters:(id)a5
++ (id)_sessionWithBag:(id)bag account:(id)account accountParameters:(id)parameters
 {
   v7 = MEMORY[0x1E696AF80];
   v8 = MEMORY[0x1E698CAC8];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [v8 currentProcess];
-  v13 = [v7 ams_configurationWithProcessInfo:v12 bag:v11];
+  parametersCopy = parameters;
+  accountCopy = account;
+  bagCopy = bag;
+  currentProcess = [v8 currentProcess];
+  v13 = [v7 ams_configurationWithProcessInfo:currentProcess bag:bagCopy];
 
-  v14 = [[AMSUIPaymentVerificationProtocolHandler alloc] initWithAccount:v10 accountParameters:v9];
+  v14 = [[AMSUIPaymentVerificationProtocolHandler alloc] initWithAccount:accountCopy accountParameters:parametersCopy];
   v15 = [objc_alloc(MEMORY[0x1E698CBA8]) initWithConfiguration:v13 delegate:v14 delegateQueue:0];
   [v15 setProtocolHandler:v14];
 
   return v15;
 }
 
-+ (id)_promiseToFetchURLResponseForAccount:(id)a3 accountParameters:(id)a4 url:(id)a5 bag:(id)a6 requestBody:(id)a7 bodyEncoding:(int64_t)a8 contentType:(id)a9
++ (id)_promiseToFetchURLResponseForAccount:(id)account accountParameters:(id)parameters url:(id)url bag:(id)bag requestBody:(id)body bodyEncoding:(int64_t)encoding contentType:(id)type
 {
-  v13 = a6;
-  v14 = a9;
-  v15 = a7;
-  v16 = a5;
-  v17 = a4;
-  v18 = a3;
-  v19 = [AMSUIPaymentVerificationProtocolHandler _encoderWithBag:v13 account:v18];
+  bagCopy = bag;
+  typeCopy = type;
+  bodyCopy = body;
+  urlCopy = url;
+  parametersCopy = parameters;
+  accountCopy = account;
+  v19 = [AMSUIPaymentVerificationProtocolHandler _encoderWithBag:bagCopy account:accountCopy];
   v20 = v19;
-  if (v15)
+  if (bodyCopy)
   {
-    [v19 setRequestEncoding:a8];
+    [v19 setRequestEncoding:encoding];
   }
 
-  v21 = [AMSUIPaymentVerificationProtocolHandler _sessionWithBag:v13 account:v18 accountParameters:v17];
-  v22 = [AMSUIPaymentVerificationProtocolHandler headersFromAccount:v18 accountParameters:v17];
+  v21 = [AMSUIPaymentVerificationProtocolHandler _sessionWithBag:bagCopy account:accountCopy accountParameters:parametersCopy];
+  v22 = [AMSUIPaymentVerificationProtocolHandler headersFromAccount:accountCopy accountParameters:parametersCopy];
 
-  v23 = [v20 requestWithMethod:4 URL:v16 headers:v22 parameters:v15];
+  v23 = [v20 requestWithMethod:4 URL:urlCopy headers:v22 parameters:bodyCopy];
 
   v29[0] = MEMORY[0x1E69E9820];
   v29[1] = 3221225472;
   v29[2] = __143__AMSUIPaymentVerificationProtocolHandler__promiseToFetchURLResponseForAccount_accountParameters_url_bag_requestBody_bodyEncoding_contentType___block_invoke;
   v29[3] = &unk_1E7F25780;
-  v30 = v14;
+  v30 = typeCopy;
   v31 = v21;
   v24 = v21;
-  v25 = v14;
+  v25 = typeCopy;
   v26 = [v23 thenWithBlock:v29];
 
   return v26;
@@ -489,19 +489,19 @@ id __143__AMSUIPaymentVerificationProtocolHandler__promiseToFetchURLResponseForA
   return v6;
 }
 
-+ (id)_accountToUseFromGivenAccount:(id)a3 accountParameters:(id)a4 accountStore:(id)a5
++ (id)_accountToUseFromGivenAccount:(id)account accountParameters:(id)parameters accountStore:(id)store
 {
-  v7 = a3;
-  v8 = a5;
-  if (v7)
+  accountCopy = account;
+  storeCopy = store;
+  if (accountCopy)
   {
-    v9 = v7;
+    v9 = accountCopy;
   }
 
   else
   {
-    v10 = [a4 objectForKeyedSubscript:@"altDsId"];
-    v11 = [v8 ams_iTunesAccountWithAltDSID:v10];
+    v10 = [parameters objectForKeyedSubscript:@"altDsId"];
+    v11 = [storeCopy ams_iTunesAccountWithAltDSID:v10];
     v12 = v11;
     if (v11)
     {
@@ -510,13 +510,13 @@ id __143__AMSUIPaymentVerificationProtocolHandler__promiseToFetchURLResponseForA
 
     else
     {
-      v13 = [v8 ams_activeiCloudAccount];
-      v14 = [v13 ams_altDSID];
-      v15 = [v14 isEqualToString:v10];
+      ams_activeiCloudAccount = [storeCopy ams_activeiCloudAccount];
+      ams_altDSID = [ams_activeiCloudAccount ams_altDSID];
+      v15 = [ams_altDSID isEqualToString:v10];
 
       if (v15)
       {
-        v16 = [v8 ams_iTunesAccountForAccount:v13];
+        v16 = [storeCopy ams_iTunesAccountForAccount:ams_activeiCloudAccount];
         v17 = v16;
         if (v16)
         {
@@ -525,7 +525,7 @@ id __143__AMSUIPaymentVerificationProtocolHandler__promiseToFetchURLResponseForA
 
         else
         {
-          v18 = v13;
+          v18 = ams_activeiCloudAccount;
         }
 
         v9 = v18;

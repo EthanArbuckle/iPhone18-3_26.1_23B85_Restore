@@ -1,10 +1,10 @@
 @interface HMDMediaDestinationControllerAggregateDataGenerator
 - (HMDMediaDestinationControllerAggregateDataGeneratorDataSource)dataSource;
-- (id)aggregateDataWithDestinations:(id)a3 controllers:(id)a4 groups:(id)a5;
-- (id)availableDestinationIdentifiersForDestinationControllerData:(id)a3 destinations:(id)a4 groups:(id)a5;
-- (id)rootDestinationIdentifierForLeafDestinationIdentifier:(id)a3 destinations:(id)a4 groups:(id)a5;
-- (id)sameRoomAccessoryUUIDsForDestinationControllerData:(id)a3;
-- (id)validDestinationIdentifierForDestinationControllerData:(id)a3 inDestinations:(id)a4;
+- (id)aggregateDataWithDestinations:(id)destinations controllers:(id)controllers groups:(id)groups;
+- (id)availableDestinationIdentifiersForDestinationControllerData:(id)data destinations:(id)destinations groups:(id)groups;
+- (id)rootDestinationIdentifierForLeafDestinationIdentifier:(id)identifier destinations:(id)destinations groups:(id)groups;
+- (id)sameRoomAccessoryUUIDsForDestinationControllerData:(id)data;
+- (id)validDestinationIdentifierForDestinationControllerData:(id)data inDestinations:(id)destinations;
 @end
 
 @implementation HMDMediaDestinationControllerAggregateDataGenerator
@@ -16,30 +16,30 @@
   return WeakRetained;
 }
 
-- (id)sameRoomAccessoryUUIDsForDestinationControllerData:(id)a3
+- (id)sameRoomAccessoryUUIDsForDestinationControllerData:(id)data
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDMediaDestinationControllerAggregateDataGenerator *)self dataSource];
-  v6 = v5;
-  if (v5)
+  dataCopy = data;
+  dataSource = [(HMDMediaDestinationControllerAggregateDataGenerator *)self dataSource];
+  v6 = dataSource;
+  if (dataSource)
   {
-    v7 = [v5 sameRoomAccessoryUUIDsForDestinationControllerData:v4 generator:self];
+    v7 = [dataSource sameRoomAccessoryUUIDsForDestinationControllerData:dataCopy generator:self];
   }
 
   else
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       v11 = HMFGetLogIdentifier();
-      v12 = [v4 identifier];
+      identifier = [dataCopy identifier];
       v15 = 138543618;
       v16 = v11;
       v17 = 2112;
-      v18 = v12;
+      v18 = identifier;
       _os_log_impl(&dword_2531F8000, v10, OS_LOG_TYPE_ERROR, "%{public}@Failed to get same room accessory UUIDs for destination controller data: %@ due to no data source", &v15, 0x16u);
     }
 
@@ -52,17 +52,17 @@
   return v7;
 }
 
-- (id)rootDestinationIdentifierForLeafDestinationIdentifier:(id)a3 destinations:(id)a4 groups:(id)a5
+- (id)rootDestinationIdentifierForLeafDestinationIdentifier:(id)identifier destinations:(id)destinations groups:(id)groups
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  destinationsCopy = destinations;
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __129__HMDMediaDestinationControllerAggregateDataGenerator_rootDestinationIdentifierForLeafDestinationIdentifier_destinations_groups___block_invoke;
   v21[3] = &unk_27972E038;
-  v9 = v7;
+  v9 = identifierCopy;
   v22 = v9;
-  v10 = [a5 na_firstObjectPassingTest:v21];
+  v10 = [groups na_firstObjectPassingTest:v21];
   v11 = v10;
   if (v10)
   {
@@ -71,25 +71,25 @@
     v18 = __129__HMDMediaDestinationControllerAggregateDataGenerator_rootDestinationIdentifierForLeafDestinationIdentifier_destinations_groups___block_invoke_2;
     v19 = &unk_27972DFC0;
     v20 = v10;
-    v12 = [v8 na_firstObjectPassingTest:&v16];
+    v12 = [destinationsCopy na_firstObjectPassingTest:&v16];
     v13 = v12;
     if (v12 && [v12 containsHomeTheaterSupportedOptions])
     {
-      v14 = [v13 uniqueIdentifier];
+      uniqueIdentifier = [v13 uniqueIdentifier];
     }
 
     else
     {
-      v14 = 0;
+      uniqueIdentifier = 0;
     }
   }
 
   else
   {
-    v14 = v9;
+    uniqueIdentifier = v9;
   }
 
-  return v14;
+  return uniqueIdentifier;
 }
 
 uint64_t __129__HMDMediaDestinationControllerAggregateDataGenerator_rootDestinationIdentifierForLeafDestinationIdentifier_destinations_groups___block_invoke(uint64_t a1, void *a2)
@@ -110,32 +110,32 @@ uint64_t __129__HMDMediaDestinationControllerAggregateDataGenerator_rootDestinat
   return v5;
 }
 
-- (id)availableDestinationIdentifiersForDestinationControllerData:(id)a3 destinations:(id)a4 groups:(id)a5
+- (id)availableDestinationIdentifiersForDestinationControllerData:(id)data destinations:(id)destinations groups:(id)groups
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [(HMDMediaDestinationControllerAggregateDataGenerator *)self sameRoomAccessoryUUIDsForDestinationControllerData:a3];
+  destinationsCopy = destinations;
+  groupsCopy = groups;
+  v10 = [(HMDMediaDestinationControllerAggregateDataGenerator *)self sameRoomAccessoryUUIDsForDestinationControllerData:data];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __135__HMDMediaDestinationControllerAggregateDataGenerator_availableDestinationIdentifiersForDestinationControllerData_destinations_groups___block_invoke;
   v26[3] = &unk_27972DFE8;
   v27 = v10;
   v11 = v10;
-  v12 = [v8 na_map:v26];
+  v12 = [destinationsCopy na_map:v26];
   v19 = MEMORY[0x277D85DD0];
   v20 = 3221225472;
   v21 = __135__HMDMediaDestinationControllerAggregateDataGenerator_availableDestinationIdentifiersForDestinationControllerData_destinations_groups___block_invoke_2;
   v22 = &unk_27972E010;
-  v23 = self;
-  v24 = v8;
-  v25 = v9;
-  v13 = v9;
-  v14 = v8;
+  selfCopy = self;
+  v24 = destinationsCopy;
+  v25 = groupsCopy;
+  v13 = groupsCopy;
+  v14 = destinationsCopy;
   v15 = [v12 na_map:&v19];
-  v16 = [MEMORY[0x277CBEB98] setWithArray:{v15, v19, v20, v21, v22, v23}];
-  v17 = [v16 allObjects];
+  v16 = [MEMORY[0x277CBEB98] setWithArray:{v15, v19, v20, v21, v22, selfCopy}];
+  allObjects = [v16 allObjects];
 
-  return v17;
+  return allObjects;
 }
 
 id __135__HMDMediaDestinationControllerAggregateDataGenerator_availableDestinationIdentifiersForDestinationControllerData_destinations_groups___block_invoke(uint64_t a1, void *a2)
@@ -164,33 +164,33 @@ id __135__HMDMediaDestinationControllerAggregateDataGenerator_availableDestinati
   return v6;
 }
 
-- (id)validDestinationIdentifierForDestinationControllerData:(id)a3 inDestinations:(id)a4
+- (id)validDestinationIdentifierForDestinationControllerData:(id)data inDestinations:(id)destinations
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 destinationIdentifier];
+  dataCopy = data;
+  destinationsCopy = destinations;
+  destinationIdentifier = [dataCopy destinationIdentifier];
 
-  if (v7)
+  if (destinationIdentifier)
   {
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __125__HMDMediaDestinationControllerAggregateDataGenerator_validDestinationIdentifierForDestinationControllerData_inDestinations___block_invoke;
     v11[3] = &unk_27972DFC0;
-    v12 = v5;
-    v8 = [v6 na_firstObjectPassingTest:v11];
+    v12 = dataCopy;
+    v8 = [destinationsCopy na_firstObjectPassingTest:v11];
     v9 = v8;
     if (v8)
     {
-      v7 = [v8 uniqueIdentifier];
+      destinationIdentifier = [v8 uniqueIdentifier];
     }
 
     else
     {
-      v7 = 0;
+      destinationIdentifier = 0;
     }
   }
 
-  return v7;
+  return destinationIdentifier;
 }
 
 uint64_t __125__HMDMediaDestinationControllerAggregateDataGenerator_validDestinationIdentifierForDestinationControllerData_inDestinations___block_invoke(uint64_t a1, void *a2)
@@ -263,20 +263,20 @@ LABEL_15:
   return v13;
 }
 
-- (id)aggregateDataWithDestinations:(id)a3 controllers:(id)a4 groups:(id)a5
+- (id)aggregateDataWithDestinations:(id)destinations controllers:(id)controllers groups:(id)groups
 {
-  v8 = a3;
-  v9 = a5;
+  destinationsCopy = destinations;
+  groupsCopy = groups;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __104__HMDMediaDestinationControllerAggregateDataGenerator_aggregateDataWithDestinations_controllers_groups___block_invoke;
   v15[3] = &unk_27972DF98;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v10 = v9;
-  v11 = v8;
-  v12 = [a4 na_map:v15];
+  v16 = destinationsCopy;
+  v17 = groupsCopy;
+  v10 = groupsCopy;
+  v11 = destinationsCopy;
+  v12 = [controllers na_map:v15];
   v13 = [[HMDMediaGroupsAggregateData alloc] initWithDestinations:v11 destinationControllersData:v12 groups:v10];
 
   return v13;

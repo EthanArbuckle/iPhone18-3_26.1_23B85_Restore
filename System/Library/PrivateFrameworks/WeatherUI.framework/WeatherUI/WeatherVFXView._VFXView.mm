@@ -1,5 +1,5 @@
 @interface WeatherVFXView._VFXView
-- (_TtCV9WeatherUI14WeatherVFXViewP33_101D7DA744F6F695065549099A4FF6838_VFXView)initWithFrame:(CGRect)a3 options:(id)a4;
+- (_TtCV9WeatherUI14WeatherVFXViewP33_101D7DA744F6F695065549099A4FF6838_VFXView)initWithFrame:(CGRect)frame options:(id)options;
 - (void)layoutSubviews;
 @end
 
@@ -7,17 +7,17 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BCA6FC80();
 }
 
-- (_TtCV9WeatherUI14WeatherVFXViewP33_101D7DA744F6F695065549099A4FF6838_VFXView)initWithFrame:(CGRect)a3 options:(id)a4
+- (_TtCV9WeatherUI14WeatherVFXViewP33_101D7DA744F6F695065549099A4FF6838_VFXView)initWithFrame:(CGRect)frame options:(id)options
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (a4)
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  if (options)
   {
     v8 = sub_1BCE1D110();
   }

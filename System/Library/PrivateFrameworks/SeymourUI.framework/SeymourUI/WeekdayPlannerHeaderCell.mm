@@ -1,5 +1,5 @@
 @interface WeekdayPlannerHeaderCell
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority;
 - (void)didMoveToWindow;
 - (void)prepareForReuse;
 @end
@@ -13,7 +13,7 @@
   v2 = v7.receiver;
   [(WeekdayPlannerHeaderCell *)&v7 didMoveToWindow];
   v3 = *&v2[OBJC_IVAR____TtC9SeymourUI24WeekdayPlannerHeaderCell_separatorHeightConstraint];
-  v4 = [v2 window];
+  window = [v2 window];
   sub_20C138804();
   v6 = v5;
 
@@ -29,25 +29,25 @@
   v6 = type metadata accessor for WeekdayPlannerHeaderCell();
   v11.receiver = self;
   v11.super_class = v6;
-  v7 = self;
+  selfCopy = self;
   [(WeekdayPlannerHeaderCell *)&v11 prepareForReuse];
   v8 = type metadata accessor for ShelfCellItemInfo();
   (*(*(v8 - 8) + 56))(v5, 1, 1, v8);
   v9 = OBJC_IVAR____TtC9SeymourUI24WeekdayPlannerHeaderCell_itemInfo;
   swift_beginAccess();
-  sub_20B5E267C(v5, v7 + v9);
+  sub_20B5E267C(v5, selfCopy + v9);
   swift_endAccess();
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority
 {
-  height = a3.height;
-  width = a3.width;
-  v9 = self;
-  v10 = [(WeekdayPlannerHeaderCell *)v9 contentView];
-  *&v11 = a4;
-  *&v12 = a5;
-  [v10 systemLayoutSizeFittingSize:width withHorizontalFittingPriority:height verticalFittingPriority:{v11, v12}];
+  height = size.height;
+  width = size.width;
+  selfCopy = self;
+  contentView = [(WeekdayPlannerHeaderCell *)selfCopy contentView];
+  *&v11 = priority;
+  *&v12 = fittingPriority;
+  [contentView systemLayoutSizeFittingSize:width withHorizontalFittingPriority:height verticalFittingPriority:{v11, v12}];
   v14 = v13;
   v16 = v15;
 

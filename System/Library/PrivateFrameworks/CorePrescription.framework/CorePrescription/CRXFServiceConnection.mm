@@ -1,6 +1,6 @@
 @interface CRXFServiceConnection
 - (BOOL)isActivated;
-- (CRXFServiceConnection)initWithServiceName:(id)a3 xpcInterface:(id)a4;
+- (CRXFServiceConnection)initWithServiceName:(id)name xpcInterface:(id)interface;
 - (id)activate;
 - (void)activate;
 - (void)forceInvalidate;
@@ -9,16 +9,16 @@
 
 @implementation CRXFServiceConnection
 
-- (CRXFServiceConnection)initWithServiceName:(id)a3 xpcInterface:(id)a4
+- (CRXFServiceConnection)initWithServiceName:(id)name xpcInterface:(id)interface
 {
-  v7 = a4;
+  interfaceCopy = interface;
   if (self)
   {
-    v8 = [a3 copy];
+    v8 = [name copy];
     serviceName = self->_serviceName;
     self->_serviceName = v8;
 
-    objc_storeStrong(&self->_xpcInterface, a4);
+    objc_storeStrong(&self->_xpcInterface, interface);
     self->_activateCount = 0;
     xpcConnection = self->_xpcConnection;
     self->_xpcConnection = 0;
@@ -40,16 +40,16 @@
     [(CRXFServiceConnection *)self activate];
   }
 
-  v4 = self;
-  objc_sync_enter(v4);
-  activateCount = v4->_activateCount;
-  v4->_activateCount = activateCount + 1;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  activateCount = selfCopy->_activateCount;
+  selfCopy->_activateCount = activateCount + 1;
   v6 = os_log_type_enabled(self->_log, OS_LOG_TYPE_DEBUG);
   if (activateCount)
   {
     if (v6)
     {
-      [(CRXFServiceConnection *)v4 activate];
+      [(CRXFServiceConnection *)selfCopy activate];
     }
   }
 
@@ -57,26 +57,26 @@
   {
     if (v6)
     {
-      [(CRXFServiceConnection *)v4 activate];
+      [(CRXFServiceConnection *)selfCopy activate];
     }
 
-    v7 = [objc_alloc(MEMORY[0x277CCAE80]) initWithServiceName:v4->_serviceName];
-    xpcConnection = v4->_xpcConnection;
-    v4->_xpcConnection = v7;
+    v7 = [objc_alloc(MEMORY[0x277CCAE80]) initWithServiceName:selfCopy->_serviceName];
+    xpcConnection = selfCopy->_xpcConnection;
+    selfCopy->_xpcConnection = v7;
 
-    [(NSXPCConnection *)v4->_xpcConnection setRemoteObjectInterface:v4->_xpcInterface];
-    [(NSXPCConnection *)v4->_xpcConnection activate];
+    [(NSXPCConnection *)selfCopy->_xpcConnection setRemoteObjectInterface:selfCopy->_xpcInterface];
+    [(NSXPCConnection *)selfCopy->_xpcConnection activate];
   }
 
   v9 = self->_log;
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
-    v10 = [MEMORY[0x277CCABB0] numberWithInt:v4->_activateCount];
+    v10 = [MEMORY[0x277CCABB0] numberWithInt:selfCopy->_activateCount];
     [(CRXFServiceConnection *)v10 activate];
   }
 
-  v11 = v4->_xpcConnection;
-  objc_sync_exit(v4);
+  v11 = selfCopy->_xpcConnection;
+  objc_sync_exit(selfCopy);
 
   v12 = *MEMORY[0x277D85DE8];
 
@@ -85,7 +85,7 @@
 
 - (void)invalidate
 {
-  OUTLINED_FUNCTION_4_1(a1, *MEMORY[0x277D85DE8]);
+  OUTLINED_FUNCTION_4_1(self, *MEMORY[0x277D85DE8]);
   OUTLINED_FUNCTION_1_1();
   OUTLINED_FUNCTION_0_1();
   OUTLINED_FUNCTION_2_1(&dword_24732C000, v1, v2, "%s @%d: Invalidating connection to %{public}@", v3, v4, v5, v6, 2u);
@@ -94,7 +94,7 @@
 
 - (void)forceInvalidate
 {
-  OUTLINED_FUNCTION_4_1(a1, *MEMORY[0x277D85DE8]);
+  OUTLINED_FUNCTION_4_1(self, *MEMORY[0x277D85DE8]);
   OUTLINED_FUNCTION_1_1();
   OUTLINED_FUNCTION_0_1();
   OUTLINED_FUNCTION_2_1(&dword_24732C000, v1, v2, "%s @%d: Invalidating connection to %{public}@", v3, v4, v5, v6, 2u);
@@ -103,10 +103,10 @@
 
 - (BOOL)isActivated
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_activateCount > 0;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_activateCount > 0;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -118,7 +118,7 @@
   *(buf + 6) = 1024;
   *(buf + 14) = 51;
   *(buf + 9) = 2112;
-  *(buf + 20) = a1;
+  *(buf + 20) = self;
   _os_log_debug_impl(&dword_24732C000, log, OS_LOG_TYPE_DEBUG, "%s @%d: leaving activate; Activate count is now %@", buf, 0x1Cu);
 }
 

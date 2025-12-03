@@ -1,16 +1,16 @@
 @interface SiriSharedUICompactResultPlatterViewController
-- (void)setSiriContentViewControllers:(id)a3;
+- (void)setSiriContentViewControllers:(id)controllers;
 @end
 
 @implementation SiriSharedUICompactResultPlatterViewController
 
-- (void)setSiriContentViewControllers:(id)a3
+- (void)setSiriContentViewControllers:(id)controllers
 {
-  v5 = a3;
-  if (self->_siriContentViewControllers != v5)
+  controllersCopy = controllers;
+  if (self->_siriContentViewControllers != controllersCopy)
   {
-    v11 = v5;
-    objc_storeStrong(&self->_siriContentViewControllers, a3);
+    v11 = controllersCopy;
+    objc_storeStrong(&self->_siriContentViewControllers, controllers);
     v6 = objc_opt_new();
     if ([(NSArray *)self->_siriContentViewControllers count])
     {
@@ -18,11 +18,11 @@
       do
       {
         v8 = [(NSArray *)v11 objectAtIndex:v7];
-        v9 = [(NSArray *)v11 lastObject];
+        lastObject = [(NSArray *)v11 lastObject];
 
         [v6 addObject:v8];
         ++v7;
-        if (v8 != v9)
+        if (v8 != lastObject)
         {
           v10 = [(NSArray *)v11 objectAtIndex:v7];
           [(SiriSharedUIContentPlatterViewController *)self appendSeparatorToViewControllers:v6 forNextViewController:v10];
@@ -34,7 +34,7 @@
 
     [(SiriSharedUIContentPlatterViewController *)self setContentViewControllers:v6];
 
-    v5 = v11;
+    controllersCopy = v11;
   }
 }
 

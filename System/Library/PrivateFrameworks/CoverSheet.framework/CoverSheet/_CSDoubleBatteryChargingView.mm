@@ -1,25 +1,25 @@
 @interface _CSDoubleBatteryChargingView
-- (_CSDoubleBatteryChargingView)initWithFrame:(CGRect)a3;
+- (_CSDoubleBatteryChargingView)initWithFrame:(CGRect)frame;
 - (double)_batteryTopPadding;
 - (double)_chargingBoltTopOffset;
 - (double)_deviceNameBaselineOffset;
 - (double)_spaceBetweenBatteryImages;
 - (id)_chargePercentFont;
 - (void)layoutSubviews;
-- (void)performAnimation:(unint64_t)a3 completionHandler:(id)a4;
-- (void)setBatteryVisible:(BOOL)a3;
-- (void)setLegibilitySettings:(id)a3;
-- (void)setPrimaryBatteryText:(id)a3 forBattery:(id)a4;
-- (void)setSecondaryBatteryText:(id)a3 forBattery:(id)a4;
+- (void)performAnimation:(unint64_t)animation completionHandler:(id)handler;
+- (void)setBatteryVisible:(BOOL)visible;
+- (void)setLegibilitySettings:(id)settings;
+- (void)setPrimaryBatteryText:(id)text forBattery:(id)battery;
+- (void)setSecondaryBatteryText:(id)text forBattery:(id)battery;
 @end
 
 @implementation _CSDoubleBatteryChargingView
 
-- (_CSDoubleBatteryChargingView)initWithFrame:(CGRect)a3
+- (_CSDoubleBatteryChargingView)initWithFrame:(CGRect)frame
 {
   v58.receiver = self;
   v58.super_class = _CSDoubleBatteryChargingView;
-  v3 = [(CSBatteryChargingView *)&v58 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CSBatteryChargingView *)&v58 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v57 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -39,8 +39,8 @@
     v3->_internalBatteryFillView = v15;
 
     v17 = v3->_internalBatteryFillView;
-    v18 = [MEMORY[0x277D75348] clearColor];
-    [(CSBatteryFillView *)v17 setBackgroundColor:v18];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(CSBatteryFillView *)v17 setBackgroundColor:clearColor];
 
     v19 = [MEMORY[0x277D75DF0] settingsForPrivateStyle:2020];
     [v19 setRenderingHint:1];
@@ -59,29 +59,29 @@
     v3->_internalBatteryContainerView = v23;
 
     v25 = v3->_internalBatteryContainerView;
-    v26 = [MEMORY[0x277D75348] clearColor];
-    [(UIView *)v25 setBackgroundColor:v26];
+    clearColor2 = [MEMORY[0x277D75348] clearColor];
+    [(UIView *)v25 setBackgroundColor:clearColor2];
 
     [(UIView *)v3->_internalBatteryContainerView setAutoresizingMask:18];
     [(UIView *)v3->_internalBatteryContainerView setClipsToBounds:1];
     [(UIView *)v3->_internalBatteryContainerView addSubview:v3->_internalBatteryBlurView];
     [(UIView *)v3->_internalBatteryContainerView addSubview:v3->_internalBatteryFillView];
-    v27 = [(_UIBackdropView *)v3->_internalBatteryBlurView inputSettings];
-    [v27 setGrayscaleTintMaskImage:v4];
+    inputSettings = [(_UIBackdropView *)v3->_internalBatteryBlurView inputSettings];
+    [inputSettings setGrayscaleTintMaskImage:v4];
 
-    v28 = [(_UIBackdropView *)v3->_internalBatteryBlurView inputSettings];
-    [v28 setColorTintMaskImage:v4];
+    inputSettings2 = [(_UIBackdropView *)v3->_internalBatteryBlurView inputSettings];
+    [inputSettings2 setColorTintMaskImage:v4];
 
-    v29 = [(_UIBackdropView *)v3->_internalBatteryBlurView inputSettings];
-    [v29 setFilterMaskImage:v4];
+    inputSettings3 = [(_UIBackdropView *)v3->_internalBatteryBlurView inputSettings];
+    [inputSettings3 setFilterMaskImage:v4];
 
     v30 = [[CSBatteryFillView alloc] initWithFrame:0 isInternalBattery:20 lowBatteryLevel:0.0, 0.0, v11, v13];
     externalBatteryFillView = v3->_externalBatteryFillView;
     v3->_externalBatteryFillView = v30;
 
     v32 = v3->_externalBatteryFillView;
-    v33 = [MEMORY[0x277D75348] clearColor];
-    [(CSBatteryFillView *)v32 setBackgroundColor:v33];
+    clearColor3 = [MEMORY[0x277D75348] clearColor];
+    [(CSBatteryFillView *)v32 setBackgroundColor:clearColor3];
 
     v34 = [MEMORY[0x277D75DF0] settingsForPrivateStyle:2020];
     [v34 setRenderingHint:1];
@@ -101,8 +101,8 @@
     v3->_externalBatteryContainerView = v38;
 
     v40 = v3->_externalBatteryContainerView;
-    v41 = [MEMORY[0x277D75348] clearColor];
-    [(UIView *)v40 setBackgroundColor:v41];
+    clearColor4 = [MEMORY[0x277D75348] clearColor];
+    [(UIView *)v40 setBackgroundColor:clearColor4];
 
     [(UIView *)v3->_externalBatteryContainerView setAutoresizingMask:18];
     [(UIView *)v3->_externalBatteryContainerView setClipsToBounds:1];
@@ -127,8 +127,8 @@
     v3->_batteryContainerView = v49;
 
     v51 = v3->_batteryContainerView;
-    v52 = [MEMORY[0x277D75348] clearColor];
-    [(UIView *)v51 setBackgroundColor:v52];
+    clearColor5 = [MEMORY[0x277D75348] clearColor];
+    [(UIView *)v51 setBackgroundColor:clearColor5];
 
     [(UIView *)v3->_batteryContainerView addSubview:v3->_internalBatteryContainerView];
     [(UIView *)v3->_batteryContainerView addSubview:v3->_externalBatteryContainerView];
@@ -139,11 +139,11 @@
   return v3;
 }
 
-- (void)setBatteryVisible:(BOOL)a3
+- (void)setBatteryVisible:(BOOL)visible
 {
   batteryContainerView = self->_batteryContainerView;
   v5 = 0.0;
-  if (a3)
+  if (visible)
   {
     v5 = 1.0;
   }
@@ -153,59 +153,59 @@
   [(_CSDoubleBatteryChargingView *)self setNeedsLayout];
 }
 
-- (void)setLegibilitySettings:(id)a3
+- (void)setLegibilitySettings:(id)settings
 {
   v17.receiver = self;
   v17.super_class = _CSDoubleBatteryChargingView;
-  v4 = a3;
-  [(CSBatteryChargingView *)&v17 setLegibilitySettings:v4];
+  settingsCopy = settings;
+  [(CSBatteryChargingView *)&v17 setLegibilitySettings:settingsCopy];
   internalChargingNameLabel = self->_internalChargingNameLabel;
   v6 = [(CSBatteryChargingView *)self legibilitySettings:v17.receiver];
   [(SBUILegibilityLabel *)internalChargingNameLabel setLegibilitySettings:v6];
 
   externalChargingNameLabel = self->_externalChargingNameLabel;
-  v8 = [(CSBatteryChargingView *)self legibilitySettings];
-  [(SBUILegibilityLabel *)externalChargingNameLabel setLegibilitySettings:v8];
+  legibilitySettings = [(CSBatteryChargingView *)self legibilitySettings];
+  [(SBUILegibilityLabel *)externalChargingNameLabel setLegibilitySettings:legibilitySettings];
 
   internalChargePercentLabel = self->_internalChargePercentLabel;
-  v10 = [(CSBatteryChargingView *)self legibilitySettings];
-  [(SBUILegibilityLabel *)internalChargePercentLabel setLegibilitySettings:v10];
+  legibilitySettings2 = [(CSBatteryChargingView *)self legibilitySettings];
+  [(SBUILegibilityLabel *)internalChargePercentLabel setLegibilitySettings:legibilitySettings2];
 
   externalChargePercentLabel = self->_externalChargePercentLabel;
-  v12 = [(CSBatteryChargingView *)self legibilitySettings];
-  [(SBUILegibilityLabel *)externalChargePercentLabel setLegibilitySettings:v12];
+  legibilitySettings3 = [(CSBatteryChargingView *)self legibilitySettings];
+  [(SBUILegibilityLabel *)externalChargePercentLabel setLegibilitySettings:legibilitySettings3];
 
   internalChargingIndicator = self->_internalChargingIndicator;
-  v14 = [v4 primaryColor];
-  [(UIImageView *)internalChargingIndicator setTintColor:v14];
+  primaryColor = [settingsCopy primaryColor];
+  [(UIImageView *)internalChargingIndicator setTintColor:primaryColor];
 
   externalChargingIndicator = self->_externalChargingIndicator;
-  v16 = [v4 primaryColor];
+  primaryColor2 = [settingsCopy primaryColor];
 
-  [(UIImageView *)externalChargingIndicator setTintColor:v16];
+  [(UIImageView *)externalChargingIndicator setTintColor:primaryColor2];
 }
 
-- (void)setPrimaryBatteryText:(id)a3 forBattery:(id)a4
+- (void)setPrimaryBatteryText:(id)text forBattery:(id)battery
 {
-  v22 = a4;
-  v6 = [(CSBatteryChargingView *)self _updateChargeString:a3 oldLabel:self->_internalChargePercentLabel];
+  batteryCopy = battery;
+  v6 = [(CSBatteryChargingView *)self _updateChargeString:text oldLabel:self->_internalChargePercentLabel];
   internalChargePercentLabel = self->_internalChargePercentLabel;
   self->_internalChargePercentLabel = v6;
 
-  -[CSBatteryFillView setChargePercentage:](self->_internalBatteryFillView, "setChargePercentage:", [v22 percentCharge]);
+  -[CSBatteryFillView setChargePercentage:](self->_internalBatteryFillView, "setChargePercentage:", [batteryCopy percentCharge]);
   if (!self->_internalChargingNameLabel)
   {
-    v8 = [MEMORY[0x277D65E90] rootSettings];
-    v9 = [(CSBatteryChargingView *)self legibilitySettings];
-    [v8 dateStrengthForStyle:{objc_msgSend(v9, "style")}];
+    rootSettings = [MEMORY[0x277D65E90] rootSettings];
+    legibilitySettings = [(CSBatteryChargingView *)self legibilitySettings];
+    [rootSettings dateStrengthForStyle:{objc_msgSend(legibilitySettings, "style")}];
     v11 = v10;
 
     v12 = objc_alloc(MEMORY[0x277D67CF8]);
-    v13 = [(CSBatteryChargingView *)self legibilitySettings];
-    v14 = [MEMORY[0x277D75418] currentDevice];
-    v15 = [v14 model];
-    v16 = [(_CSDoubleBatteryChargingView *)self _chargePercentFont];
-    v17 = [v12 initWithSettings:v13 strength:v15 string:v16 font:v11];
+    legibilitySettings2 = [(CSBatteryChargingView *)self legibilitySettings];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    model = [currentDevice model];
+    _chargePercentFont = [(_CSDoubleBatteryChargingView *)self _chargePercentFont];
+    v17 = [v12 initWithSettings:legibilitySettings2 strength:model string:_chargePercentFont font:v11];
     internalChargingNameLabel = self->_internalChargingNameLabel;
     self->_internalChargingNameLabel = v17;
 
@@ -213,9 +213,9 @@
   }
 
   internalChargingIndicator = self->_internalChargingIndicator;
-  v20 = [v22 isCharging];
+  isCharging = [batteryCopy isCharging];
   v21 = 0.0;
-  if (v20)
+  if (isCharging)
   {
     v21 = 1.0;
   }
@@ -224,35 +224,35 @@
   [(_CSDoubleBatteryChargingView *)self setNeedsLayout];
 }
 
-- (void)setSecondaryBatteryText:(id)a3 forBattery:(id)a4
+- (void)setSecondaryBatteryText:(id)text forBattery:(id)battery
 {
   externalChargePercentLabel = self->_externalChargePercentLabel;
-  v7 = a4;
-  v8 = [(CSBatteryChargingView *)self _updateChargeString:a3 oldLabel:externalChargePercentLabel];
+  batteryCopy = battery;
+  v8 = [(CSBatteryChargingView *)self _updateChargeString:text oldLabel:externalChargePercentLabel];
   v9 = self->_externalChargePercentLabel;
   self->_externalChargePercentLabel = v8;
 
-  -[CSBatteryFillView setChargePercentage:](self->_externalBatteryFillView, "setChargePercentage:", [v7 percentCharge]);
+  -[CSBatteryFillView setChargePercentage:](self->_externalBatteryFillView, "setChargePercentage:", [batteryCopy percentCharge]);
   [(SBUILegibilityLabel *)self->_externalChargingNameLabel removeFromSuperview];
-  v10 = [MEMORY[0x277D65E90] rootSettings];
-  v11 = [(CSBatteryChargingView *)self legibilitySettings];
-  [v10 dateStrengthForStyle:{objc_msgSend(v11, "style")}];
+  rootSettings = [MEMORY[0x277D65E90] rootSettings];
+  legibilitySettings = [(CSBatteryChargingView *)self legibilitySettings];
+  [rootSettings dateStrengthForStyle:{objc_msgSend(legibilitySettings, "style")}];
   v13 = v12;
 
   v14 = objc_alloc(MEMORY[0x277D67CF8]);
-  v15 = [(CSBatteryChargingView *)self legibilitySettings];
-  v16 = [v7 name];
-  v17 = [(_CSDoubleBatteryChargingView *)self _chargePercentFont];
-  v18 = [v14 initWithSettings:v15 strength:v16 string:v17 font:v13];
+  legibilitySettings2 = [(CSBatteryChargingView *)self legibilitySettings];
+  name = [batteryCopy name];
+  _chargePercentFont = [(_CSDoubleBatteryChargingView *)self _chargePercentFont];
+  v18 = [v14 initWithSettings:legibilitySettings2 strength:name string:_chargePercentFont font:v13];
   externalChargingNameLabel = self->_externalChargingNameLabel;
   self->_externalChargingNameLabel = v18;
 
   [(_CSDoubleBatteryChargingView *)self addSubview:self->_externalChargingNameLabel];
   externalChargingIndicator = self->_externalChargingIndicator;
-  LODWORD(v15) = [v7 isCharging];
+  LODWORD(legibilitySettings2) = [batteryCopy isCharging];
 
   v21 = 0.0;
-  if (v15)
+  if (legibilitySettings2)
   {
     v21 = 1.0;
   }
@@ -262,11 +262,11 @@
   [(_CSDoubleBatteryChargingView *)self setNeedsLayout];
 }
 
-- (void)performAnimation:(unint64_t)a3 completionHandler:(id)a4
+- (void)performAnimation:(unint64_t)animation completionHandler:(id)handler
 {
-  if (a4)
+  if (handler)
   {
-    (*(a4 + 2))(a4);
+    (*(handler + 2))(handler);
   }
 }
 
@@ -327,7 +327,7 @@
   MaxX = CGRectGetMaxX(v120);
   [(_CSDoubleBatteryChargingView *)self _spaceBetweenBatteryImages];
   [v16 setFrame:{MaxX + v28, 0.0, v24, v26}];
-  v29 = [(_CSDoubleBatteryChargingView *)self _chargePercentFont];
+  _chargePercentFont = [(_CSDoubleBatteryChargingView *)self _chargePercentFont];
   [(UIView *)self->_externalBatteryContainerView frame];
   v31 = v30;
   v33 = v32;
@@ -389,9 +389,9 @@
   v67 = CGRectGetMaxY(v125);
   [(_CSDoubleBatteryChargingView *)self _deviceNameBaselineOffset];
   v69 = v67 + v68;
-  [v29 descender];
+  [_chargePercentFont descender];
   v71 = v69 - ceil(v70);
-  [v29 _bodyLeading];
+  [_chargePercentFont _bodyLeading];
   v73 = round(v71 - v72);
   [(SBUILegibilityLabel *)self->_internalChargingNameLabel sizeToFit];
   [(SBUILegibilityLabel *)self->_internalChargingNameLabel frame];
@@ -423,9 +423,9 @@
   v87 = CGRectGetMaxY(v128);
   [(_CSDoubleBatteryChargingView *)self _deviceChargeBaselineOffset];
   v89 = v87 + v88;
-  [v29 descender];
+  [_chargePercentFont descender];
   v91 = v89 - ceil(v90);
-  [v29 _bodyLeading];
+  [_chargePercentFont _bodyLeading];
   v93 = round(v91 - v92);
   [(SBUILegibilityLabel *)self->_internalChargePercentLabel sizeToFit];
   [(SBUILegibilityLabel *)self->_internalChargePercentLabel frame];
@@ -460,8 +460,8 @@
 
   else
   {
-    v3 = [MEMORY[0x277D75418] currentDevice];
-    v2 = [v3 userInterfaceIdiom] == 1;
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    v2 = [currentDevice userInterfaceIdiom] == 1;
   }
 
   result = 15.0;
@@ -490,8 +490,8 @@
 
   else
   {
-    v3 = [MEMORY[0x277D75418] currentDevice];
-    v2 = [v3 userInterfaceIdiom] == 1;
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    v2 = [currentDevice userInterfaceIdiom] == 1;
   }
 
   result = 5.0;
@@ -512,8 +512,8 @@
 
   else
   {
-    v3 = [MEMORY[0x277D75418] currentDevice];
-    v2 = [v3 userInterfaceIdiom] == 1;
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    v2 = [currentDevice userInterfaceIdiom] == 1;
   }
 
   result = 33.0;
@@ -527,10 +527,10 @@
 
 - (id)_chargePercentFont
 {
-  v2 = [MEMORY[0x277D75418] currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v3 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     [MEMORY[0x277D02CF0] fontSizeForElementType:2 isLandscapeVariant:0];
     v5 = v4;

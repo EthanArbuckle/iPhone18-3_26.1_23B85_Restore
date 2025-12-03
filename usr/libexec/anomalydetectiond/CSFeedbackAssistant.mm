@@ -1,17 +1,17 @@
 @interface CSFeedbackAssistant
-+ (double)timeIntervalToNearestEightOClock:(id)a3;
-+ (id)dateWithHour:(int64_t)a3 fromDate:(id)a4;
-+ (void)showFeedbackAssistantSurveyWithUUID:(id)a3;
++ (double)timeIntervalToNearestEightOClock:(id)clock;
++ (id)dateWithHour:(int64_t)hour fromDate:(id)date;
++ (void)showFeedbackAssistantSurveyWithUUID:(id)d;
 @end
 
 @implementation CSFeedbackAssistant
 
-+ (id)dateWithHour:(int64_t)a3 fromDate:(id)a4
++ (id)dateWithHour:(int64_t)hour fromDate:(id)date
 {
-  v5 = a4;
+  dateCopy = date;
   v6 = +[NSCalendar currentCalendar];
-  v7 = [v6 components:28 fromDate:v5];
-  [v7 setHour:a3];
+  v7 = [v6 components:28 fromDate:dateCopy];
+  [v7 setHour:hour];
   [v7 setMinute:0];
   [v7 setSecond:0];
   v8 = [v6 dateFromComponents:v7];
@@ -19,18 +19,18 @@
   return v8;
 }
 
-+ (double)timeIntervalToNearestEightOClock:(id)a3
++ (double)timeIntervalToNearestEightOClock:(id)clock
 {
-  v4 = a3;
+  clockCopy = clock;
   v5 = +[NSCalendar currentCalendar];
-  v6 = [v5 components:252 fromDate:v4];
-  v7 = [a1 dateWithHour:8 fromDate:v4];
-  v8 = [a1 dateWithHour:20 fromDate:v4];
-  v9 = [v6 hour];
+  v6 = [v5 components:252 fromDate:clockCopy];
+  v7 = [self dateWithHour:8 fromDate:clockCopy];
+  v8 = [self dateWithHour:20 fromDate:clockCopy];
+  hour = [v6 hour];
   v10 = v7;
-  if (v9 >= 2 && (v10 = v8, (v9 - 2) >= 0xC))
+  if (hour >= 2 && (v10 = v8, (hour - 2) >= 0xC))
   {
-    if ((v9 - 14) > 9)
+    if ((hour - 14) > 9)
     {
       v12 = 0;
       goto LABEL_5;
@@ -46,31 +46,31 @@
 
   v12 = v11;
 LABEL_5:
-  [v12 timeIntervalSinceDate:v4];
+  [v12 timeIntervalSinceDate:clockCopy];
   v14 = v13;
 
   return v14;
 }
 
-+ (void)showFeedbackAssistantSurveyWithUUID:(id)a3
++ (void)showFeedbackAssistantSurveyWithUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = +[CSPersistentConfiguration sharedConfiguration];
   v6 = [v5 getFloatDefault:@"FeedbackAssistantOverride"];
   v7 = HIDWORD(v6);
   v8 = (v6 & 0x7FFFFFFF) != 0;
   v9 = [v5 getBooleanDefault:@"FeedbackAssistantDisabled"];
   v10 = +[CSPermissions sharedInstance];
-  v11 = [v10 isAuthorizedToCollectData];
+  isAuthorizedToCollectData = [v10 isAuthorizedToCollectData];
 
   v12 = +[CSPlatformInfo sharedInstance];
-  v13 = [v12 isInternalInstall];
+  isInternalInstall = [v12 isInternalInstall];
 
   v14 = +[CSPlatformInfo sharedInstance];
-  v15 = [v14 isFeedbackAssistantEligible];
+  isFeedbackAssistantEligible = [v14 isFeedbackAssistantEligible];
   v16 = v7 & v8;
 
-  if (v9 & ((v9 & 0x100) >> 8) & 1 | ((v15 & 1) == 0))
+  if (v9 & ((v9 & 0x100) >> 8) & 1 | ((isFeedbackAssistantEligible & 1) == 0))
   {
     if (qword_100456978 != -1)
     {
@@ -81,9 +81,9 @@ LABEL_5:
     if (os_log_type_enabled(qword_100456980, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67110144;
-      *v53 = v11;
+      *v53 = isAuthorizedToCollectData;
       *&v53[4] = 1024;
-      *&v53[6] = v13;
+      *&v53[6] = isInternalInstall;
       v54 = 1024;
       v55 = 0;
       v56 = 1024;
@@ -105,9 +105,9 @@ LABEL_5:
     if (os_log_type_enabled(qword_100456980, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67110144;
-      *v53 = v11;
+      *v53 = isAuthorizedToCollectData;
       *&v53[4] = 1024;
-      *&v53[6] = v13;
+      *&v53[6] = isInternalInstall;
       v54 = 1024;
       v55 = 0;
       v56 = 1024;
@@ -127,8 +127,8 @@ LABEL_5:
     v23 = [UNNotificationIcon iconForApplicationIdentifier:@"com.apple.appleseed.FeedbackAssistant"];
     [v19 setIcon:v23];
 
-    v24 = [v19 title];
-    if (!v24 || ([v19 body], v25 = objc_claimAutoreleasedReturnValue(), v26 = v25 == 0, v25, v24, v26))
+    title = [v19 title];
+    if (!title || ([v19 body], v25 = objc_claimAutoreleasedReturnValue(), v26 = v25 == 0, v25, title, v26))
     {
       if (qword_100456978 != -1)
       {
@@ -145,19 +145,19 @@ LABEL_5:
 
     else
     {
-      v27 = [SOSSettingsURLSourceKey UTF8String];
-      v28 = [@"crashdetection_feedback_request" UTF8String];
-      v29 = [@"uuid" UTF8String];
-      v30 = v4;
-      v31 = [v4 UTF8String];
-      v32 = [SOSSettingsURLBaseString stringByAppendingFormat:@"&%s=%s&%s=%s", v27, v28, v29, v31];
+      uTF8String = [SOSSettingsURLSourceKey UTF8String];
+      uTF8String2 = [@"crashdetection_feedback_request" UTF8String];
+      uTF8String3 = [@"uuid" UTF8String];
+      v30 = dCopy;
+      uTF8String4 = [dCopy UTF8String];
+      v32 = [SOSSettingsURLBaseString stringByAppendingFormat:@"&%s=%s&%s=%s", uTF8String, uTF8String2, uTF8String3, uTF8String4];
       v33 = [NSURL URLWithString:v32];
       [v19 setDefaultActionURL:v33];
 
       [v19 setCategoryIdentifier:@"com.apple.SOSNotification"];
       v34 = [v5 getFloatDefault:@"FeedbackAssistantNotificationDelayOverride"];
       v35 = +[NSDate now];
-      [a1 timeIntervalToNearestEightOClock:v35];
+      [self timeIntervalToNearestEightOClock:v35];
       v37 = v36;
 
       if ((v34 & &_mh_execute_header) != 0)
@@ -211,7 +211,7 @@ LABEL_5:
       v50[1] = 3221225472;
       v50[2] = sub_100002250;
       v50[3] = &unk_100411168;
-      v51 = v4;
+      v51 = dCopy;
       [v44 addNotificationRequest:v42 withCompletionHandler:v50];
     }
   }

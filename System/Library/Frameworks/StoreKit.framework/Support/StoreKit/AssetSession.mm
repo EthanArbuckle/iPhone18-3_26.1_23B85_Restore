@@ -2,24 +2,24 @@
 + (id)defaultSession;
 + (void)obliterateBackgroundSessionsAndHandleEventStream;
 - (AssetSession)init;
-- (AssetSession)initWithConfiguration:(id)a3;
-- (id)_findSessionUsingTaskInfo:(id)a3 withProperties:(id)a4;
-- (id)assetPromiseWithRequest:(id)a3;
-- (void)URLSession:(id)a3 _willRetryBackgroundDataTask:(id)a4 withError:(id)a5;
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveData:(id)a5;
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveResponse:(id)a5 completionHandler:(id)a6;
-- (void)URLSession:(id)a3 task:(id)a4 _willSendRequestForEstablishedConnection:(id)a5 completionHandler:(id)a6;
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 didFinishCollectingMetrics:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 didReceiveChallenge:(id)a5 completionHandler:(id)a6;
-- (void)_completeNetworkActivityWithReason:(int)a3 usingTaskInfo:(id)a4;
-- (void)_finishPromiseUsingTaskInfo:(id)a3;
-- (void)_prepareDataConsumerUsingTaskInfo:(id)a3;
-- (void)_prepareRequestUsingTaskInfo:(id)a3;
-- (void)_reportMetricsForTaskInfo:(id)a3 withCompletionError:(id)a4;
-- (void)_retryTaskUsingTaskInfo:(id)a3;
-- (void)_startNetworkActivityUsingTaskInfo:(id)a3 withTask:(id)a4;
-- (void)_startTaskUsingTaskInfo:(id)a3 withRequest:(id)a4;
+- (AssetSession)initWithConfiguration:(id)configuration;
+- (id)_findSessionUsingTaskInfo:(id)info withProperties:(id)properties;
+- (id)assetPromiseWithRequest:(id)request;
+- (void)URLSession:(id)session _willRetryBackgroundDataTask:(id)task withError:(id)error;
+- (void)URLSession:(id)session dataTask:(id)task didReceiveData:(id)data;
+- (void)URLSession:(id)session dataTask:(id)task didReceiveResponse:(id)response completionHandler:(id)handler;
+- (void)URLSession:(id)session task:(id)task _willSendRequestForEstablishedConnection:(id)connection completionHandler:(id)handler;
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error;
+- (void)URLSession:(id)session task:(id)task didFinishCollectingMetrics:(id)metrics;
+- (void)URLSession:(id)session task:(id)task didReceiveChallenge:(id)challenge completionHandler:(id)handler;
+- (void)_completeNetworkActivityWithReason:(int)reason usingTaskInfo:(id)info;
+- (void)_finishPromiseUsingTaskInfo:(id)info;
+- (void)_prepareDataConsumerUsingTaskInfo:(id)info;
+- (void)_prepareRequestUsingTaskInfo:(id)info;
+- (void)_reportMetricsForTaskInfo:(id)info withCompletionError:(id)error;
+- (void)_retryTaskUsingTaskInfo:(id)info;
+- (void)_startNetworkActivityUsingTaskInfo:(id)info withTask:(id)task;
+- (void)_startTaskUsingTaskInfo:(id)info withRequest:(id)request;
 @end
 
 @implementation AssetSession
@@ -61,13 +61,13 @@
   return v2;
 }
 
-- (AssetSession)initWithConfiguration:(id)a3
+- (AssetSession)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = [(AssetSession *)self init];
   if (v5)
   {
-    v6 = [NSURLSession sessionWithConfiguration:v4 delegate:v5 delegateQueue:v5->_delegateQueue];
+    v6 = [NSURLSession sessionWithConfiguration:configurationCopy delegate:v5 delegateQueue:v5->_delegateQueue];
     session = v5->_session;
     v5->_session = v6;
   }
@@ -84,40 +84,40 @@
   [NSURLSession _obliterateAllBackgroundSessionsWithCompletionHandler:&stru_100382160];
 }
 
-- (id)assetPromiseWithRequest:(id)a3
+- (id)assetPromiseWithRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 copyRequestProperties];
+    copyRequestProperties = [requestCopy copyRequestProperties];
   }
 
   else
   {
-    v5 = objc_alloc_init(AssetRequestProperties);
+    copyRequestProperties = objc_alloc_init(AssetRequestProperties);
   }
 
-  v6 = v5;
+  v6 = copyRequestProperties;
   v7 = objc_alloc_init(AssetTaskInfo);
-  [(AssetTaskInfo *)v7 setRequest:v4];
+  [(AssetTaskInfo *)v7 setRequest:requestCopy];
   [(AssetTaskInfo *)v7 setProperties:v6];
-  v8 = [(AssetRequestProperties *)v6 requestUUID];
-  -[AssetTaskInfo setSignpostId:](v7, "setSignpostId:", [v8 lib_signpostId]);
-  v9 = [(AssetRequestProperties *)v6 logKey];
+  requestUUID = [(AssetRequestProperties *)v6 requestUUID];
+  -[AssetTaskInfo setSignpostId:](v7, "setSignpostId:", [requestUUID lib_signpostId]);
+  logKey = [(AssetRequestProperties *)v6 logKey];
 
-  if (v9)
+  if (logKey)
   {
-    v10 = [(AssetRequestProperties *)v6 logKey];
-    v11 = [v8 lib_logUUID];
-    v12 = [NSString stringWithFormat:@"%@/%@", v10, v11];
+    logKey2 = [(AssetRequestProperties *)v6 logKey];
+    lib_logUUID = [requestUUID lib_logUUID];
+    v12 = [NSString stringWithFormat:@"%@/%@", logKey2, lib_logUUID];
     [(AssetTaskInfo *)v7 setLogKey:v12];
   }
 
   else
   {
-    v10 = [v8 lib_logUUID];
-    [(AssetTaskInfo *)v7 setLogKey:v10];
+    logKey2 = [requestUUID lib_logUUID];
+    [(AssetTaskInfo *)v7 setLogKey:logKey2];
   }
 
   v13 = [NSProgress progressWithTotalUnitCount:[(AssetRequestProperties *)v6 expectedContentLength]];
@@ -129,21 +129,21 @@
   v19[2] = sub_100050298;
   v19[3] = &unk_1003821B0;
   v20 = v7;
-  v21 = v4;
-  v22 = self;
-  v15 = v4;
+  v21 = requestCopy;
+  selfCopy = self;
+  v15 = requestCopy;
   v16 = v7;
-  v17 = [(AssetPromise *)v14 initWithRequestID:v8 promiseBlock:v19];
+  v17 = [(AssetPromise *)v14 initWithRequestID:requestUUID promiseBlock:v19];
   [(AssetTaskInfo *)v16 setPromise:v17];
 
   return v17;
 }
 
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveData:(id)a5
+- (void)URLSession:(id)session dataTask:(id)task didReceiveData:(id)data
 {
-  v6 = a4;
-  v7 = a5;
-  v8 = [AssetTaskInfo taskInfoForTask:v6];
+  taskCopy = task;
+  dataCopy = data;
+  v8 = [AssetTaskInfo taskInfoForTask:taskCopy];
   if (v8)
   {
     if (qword_1003D43E0 != -1)
@@ -161,36 +161,36 @@
       v9 = off_1003CB810;
       if (os_log_type_enabled(off_1003CB810, OS_LOG_TYPE_DEBUG))
       {
-        sub_1002CE3C4(v9, v8, v6);
+        sub_1002CE3C4(v9, v8, taskCopy);
       }
     }
 
-    v10 = [v8 progress];
-    [v10 setCompletedUnitCount:{objc_msgSend(v7, "length") + objc_msgSend(v10, "completedUnitCount")}];
+    progress = [v8 progress];
+    [progress setCompletedUnitCount:{objc_msgSend(dataCopy, "length") + objc_msgSend(progress, "completedUnitCount")}];
 
-    v11 = [v8 promise];
-    v12 = [v11 progress];
+    promise = [v8 promise];
+    progress2 = [promise progress];
 
-    if (v12)
+    if (progress2)
     {
-      (v12)[2](v12, 1, [v6 countOfBytesReceived] + objc_msgSend(v8, "requestOffset"), objc_msgSend(v6, "countOfBytesExpectedToReceive") + objc_msgSend(v8, "requestOffset"));
+      (progress2)[2](progress2, 1, [taskCopy countOfBytesReceived] + objc_msgSend(v8, "requestOffset"), objc_msgSend(taskCopy, "countOfBytesExpectedToReceive") + objc_msgSend(v8, "requestOffset"));
     }
 
     v13 = dispatch_semaphore_create(0);
-    v14 = [v8 properties];
-    v15 = [v14 dataConsumer];
+    properties = [v8 properties];
+    dataConsumer = [properties dataConsumer];
 
     v21[0] = _NSConcreteStackBlock;
     v21[1] = 3221225472;
     v21[2] = sub_1000509D8;
     v21[3] = &unk_1003821D8;
-    v16 = v6;
+    v16 = taskCopy;
     v22 = v16;
     v17 = v8;
     v23 = v17;
     v18 = v13;
     v24 = v18;
-    [v15 consumeData:v7 withCompletionHandler:v21];
+    [dataConsumer consumeData:dataCopy withCompletionHandler:v21];
     v19 = dispatch_time(0, 300000000000);
     if (dispatch_semaphore_wait(v18, v19))
     {
@@ -213,37 +213,37 @@
       sub_1002CE4C4();
     }
 
-    [v6 cancel];
+    [taskCopy cancel];
   }
 }
 
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveResponse:(id)a5 completionHandler:(id)a6
+- (void)URLSession:(id)session dataTask:(id)task didReceiveResponse:(id)response completionHandler:(id)handler
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  v12 = [v10 asset_statusCode];
-  v13 = [AssetTaskInfo taskInfoForTask:v9];
+  taskCopy = task;
+  responseCopy = response;
+  handlerCopy = handler;
+  asset_statusCode = [responseCopy asset_statusCode];
+  v13 = [AssetTaskInfo taskInfoForTask:taskCopy];
   if (v13)
   {
-    v66 = self;
+    selfCopy = self;
     if (qword_1003D43E0 != -1)
     {
       sub_1002CE3B0();
     }
 
     v14 = off_1003CB810;
-    v15 = [v13 signpostId];
-    if ((v15 - 1) <= 0xFFFFFFFFFFFFFFFDLL)
+    signpostId = [v13 signpostId];
+    if ((signpostId - 1) <= 0xFFFFFFFFFFFFFFFDLL)
     {
-      v16 = v15;
+      v16 = signpostId;
       if (os_signpost_enabled(v14))
       {
-        v17 = [v13 logKey];
+        logKey = [v13 logKey];
         *buf = 138543618;
-        v77 = v17;
+        v77 = logKey;
         v78 = 2050;
-        v79 = v12;
+        v79 = asset_statusCode;
         _os_signpost_emit_with_name_impl(&_mh_execute_header, v14, OS_SIGNPOST_INTERVAL_BEGIN, v16, "Download/Transfer", " uuid=%{public, signpost.description:attribute}@  status=%{public, signpost.description:attribute}ld ", buf, 0x16u);
       }
     }
@@ -257,21 +257,21 @@
     if (os_log_type_enabled(off_1003CB810, OS_LOG_TYPE_DEFAULT))
     {
       v19 = v18;
-      v20 = [v13 logKey];
+      logKey2 = [v13 logKey];
       *buf = 138543618;
-      v77 = v20;
+      v77 = logKey2;
       v78 = 2114;
-      v79 = v10;
+      v79 = responseCopy;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "[%{public}@] Received response: %{public}@", buf, 0x16u);
     }
 
-    v21 = [v13 logKey];
-    v22 = +[KeepAlive keepAliveWithFormat:](KeepAlive, "keepAliveWithFormat:", @"com.apple.storekit.AssetTask:%@-%lu", v21, [v9 taskIdentifier]);
+    logKey3 = [v13 logKey];
+    v22 = +[KeepAlive keepAliveWithFormat:](KeepAlive, "keepAliveWithFormat:", @"com.apple.storekit.AssetTask:%@-%lu", logKey3, [taskCopy taskIdentifier]);
     [v13 setKeepAlive:v22];
 
-    v23 = [v10 asset_cdnUUID];
-    v24 = v23;
-    if (v23 && [v23 length])
+    asset_cdnUUID = [responseCopy asset_cdnUUID];
+    v24 = asset_cdnUUID;
+    if (asset_cdnUUID && [asset_cdnUUID length])
     {
       if (qword_1003D43E0 != -1)
       {
@@ -282,20 +282,20 @@
       if (os_log_type_enabled(off_1003CB810, OS_LOG_TYPE_DEFAULT))
       {
         v26 = v25;
-        v27 = [v13 logKey];
+        logKey4 = [v13 logKey];
         *buf = 138543874;
-        v77 = v27;
+        v77 = logKey4;
         v78 = 2114;
-        v79 = v9;
+        v79 = taskCopy;
         v80 = 2114;
         v81 = v24;
         _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "[%{public}@] Task: %{public}@ CDNUUID: %{public}@", buf, 0x20u);
       }
     }
 
-    if (v12 > 399)
+    if (asset_statusCode > 399)
     {
-      switch(v12)
+      switch(asset_statusCode)
       {
         case 416:
           if (qword_1003D43E0 != -1)
@@ -304,15 +304,15 @@
           }
 
           v48 = off_1003CB810;
-          v49 = [v13 signpostId];
-          if ((v49 - 1) <= 0xFFFFFFFFFFFFFFFDLL)
+          signpostId2 = [v13 signpostId];
+          if ((signpostId2 - 1) <= 0xFFFFFFFFFFFFFFFDLL)
           {
-            v50 = v49;
+            v50 = signpostId2;
             if (os_signpost_enabled(v48))
             {
-              v51 = [v13 logKey];
+              logKey5 = [v13 logKey];
               *buf = 138543618;
-              v77 = v51;
+              v77 = logKey5;
               v78 = 2050;
               v79 = 416;
               _os_signpost_emit_with_name_impl(&_mh_execute_header, v48, OS_SIGNPOST_EVENT, v50, "RequestRange", " uuid=%{public, signpost.description:attribute}@  status=%{public, signpost.description:attribute}ld ", buf, 0x16u);
@@ -329,18 +329,18 @@
             sub_1002CE554();
           }
 
-          v52 = [v13 properties];
-          v53 = [v52 dataConsumer];
+          properties = [v13 properties];
+          dataConsumer = [properties dataConsumer];
 
           v67[0] = _NSConcreteStackBlock;
           v67[1] = 3221225472;
           v67[2] = sub_100052168;
           v67[3] = &unk_100380070;
-          v67[4] = v66;
+          v67[4] = selfCopy;
           v68 = v13;
-          v69 = v9;
-          v70 = v11;
-          [v53 truncateWithCompletionHandler:v67];
+          v69 = taskCopy;
+          v70 = handlerCopy;
+          [dataConsumer truncateWithCompletionHandler:v67];
 
           goto LABEL_83;
         case 408:
@@ -350,15 +350,15 @@
           }
 
           v44 = off_1003CB810;
-          v45 = [v13 signpostId];
-          if ((v45 - 1) <= 0xFFFFFFFFFFFFFFFDLL)
+          signpostId3 = [v13 signpostId];
+          if ((signpostId3 - 1) <= 0xFFFFFFFFFFFFFFFDLL)
           {
-            v46 = v45;
+            v46 = signpostId3;
             if (os_signpost_enabled(v44))
             {
-              v47 = [v13 logKey];
+              logKey6 = [v13 logKey];
               *buf = 138543618;
-              v77 = v47;
+              v77 = logKey6;
               v78 = 2050;
               v79 = 408;
               _os_signpost_emit_with_name_impl(&_mh_execute_header, v44, OS_SIGNPOST_EVENT, v46, "RequestTimeout", " uuid=%{public, signpost.description:attribute}@  status=%{public, signpost.description:attribute}ld ", buf, 0x16u);
@@ -384,15 +384,15 @@
           }
 
           v38 = off_1003CB810;
-          v39 = [v13 signpostId];
-          if ((v39 - 1) <= 0xFFFFFFFFFFFFFFFDLL)
+          signpostId4 = [v13 signpostId];
+          if ((signpostId4 - 1) <= 0xFFFFFFFFFFFFFFFDLL)
           {
-            v40 = v39;
+            v40 = signpostId4;
             if (os_signpost_enabled(v38))
             {
-              v41 = [v13 logKey];
+              logKey7 = [v13 logKey];
               *buf = 138543618;
-              v77 = v41;
+              v77 = logKey7;
               v78 = 2050;
               v79 = 403;
               _os_signpost_emit_with_name_impl(&_mh_execute_header, v38, OS_SIGNPOST_EVENT, v40, "RequestExpired", " uuid=%{public, signpost.description:attribute}@  status=%{public, signpost.description:attribute}ld ", buf, 0x16u);
@@ -420,17 +420,17 @@
           }
 
           v54 = off_1003CB810;
-          v55 = [v13 signpostId];
-          if ((v55 - 1) <= 0xFFFFFFFFFFFFFFFDLL)
+          signpostId5 = [v13 signpostId];
+          if ((signpostId5 - 1) <= 0xFFFFFFFFFFFFFFFDLL)
           {
-            v56 = v55;
+            v56 = signpostId5;
             if (os_signpost_enabled(v54))
             {
-              v57 = [v13 logKey];
+              logKey8 = [v13 logKey];
               *buf = 138543618;
-              v77 = v57;
+              v77 = logKey8;
               v78 = 2050;
-              v79 = v12;
+              v79 = asset_statusCode;
               _os_signpost_emit_with_name_impl(&_mh_execute_header, v54, OS_SIGNPOST_EVENT, v56, "RequestStatus", " uuid=%{public, signpost.description:attribute}@  status=%{public, signpost.description:attribute}ld ", buf, 0x16u);
             }
           }
@@ -444,44 +444,44 @@
           if (os_log_type_enabled(off_1003CB810, OS_LOG_TYPE_ERROR))
           {
             v64 = v58;
-            v65 = [v13 logKey];
+            logKey9 = [v13 logKey];
             *buf = 138543874;
-            v77 = v65;
+            v77 = logKey9;
             v78 = 2114;
-            v79 = v9;
+            v79 = taskCopy;
             v80 = 2048;
-            v81 = v12;
+            v81 = asset_statusCode;
             _os_log_error_impl(&_mh_execute_header, v64, OS_LOG_TYPE_ERROR, "[%{public}@] Canceling task: %{public}@ after receiving invalid status code: %ld", buf, 0x20u);
           }
 
-          v59 = [NSError errorWithDomain:@"AssetErrorDomain" code:v12 + 1000 userInfo:0];
+          v59 = [NSError errorWithDomain:@"AssetErrorDomain" code:asset_statusCode + 1000 userInfo:0];
           v60 = objc_claimAutoreleasedReturnValue();
           v61 = ASDErrorWithUnderlyingErrorAndDescription();
           [v13 setError:v61];
 
-          (*(v11 + 2))(v11, 0);
+          (*(handlerCopy + 2))(handlerCopy, 0);
           goto LABEL_83;
       }
 
-      (*(v11 + 2))(v11, 0);
+      (*(handlerCopy + 2))(handlerCopy, 0);
     }
 
     else
     {
-      v28 = [v9 currentRequest];
-      v29 = [v28 asset_rangeOffset];
+      currentRequest = [taskCopy currentRequest];
+      asset_rangeOffset = [currentRequest asset_rangeOffset];
 
-      if (!v29 || v12 == 206)
+      if (!asset_rangeOffset || asset_statusCode == 206)
       {
-        v43 = [v13 promise];
-        v37 = [v43 progress];
+        promise = [v13 promise];
+        progress = [promise progress];
 
-        if (v37)
+        if (progress)
         {
-          v37[2](v37, 0, [v13 requestOffset], objc_msgSend(v9, "countOfBytesExpectedToReceive") + objc_msgSend(v13, "requestOffset"));
+          progress[2](progress, 0, [v13 requestOffset], objc_msgSend(taskCopy, "countOfBytesExpectedToReceive") + objc_msgSend(v13, "requestOffset"));
         }
 
-        (*(v11 + 2))(v11, 1);
+        (*(handlerCopy + 2))(handlerCopy, 1);
       }
 
       else
@@ -492,17 +492,17 @@
         }
 
         v30 = off_1003CB810;
-        v31 = [v13 signpostId];
-        if ((v31 - 1) <= 0xFFFFFFFFFFFFFFFDLL)
+        signpostId6 = [v13 signpostId];
+        if ((signpostId6 - 1) <= 0xFFFFFFFFFFFFFFFDLL)
         {
-          v32 = v31;
+          v32 = signpostId6;
           if (os_signpost_enabled(v30))
           {
-            v33 = [v13 logKey];
+            logKey10 = [v13 logKey];
             *buf = 138543618;
-            v77 = v33;
+            v77 = logKey10;
             v78 = 2050;
-            v79 = v12;
+            v79 = asset_statusCode;
             _os_signpost_emit_with_name_impl(&_mh_execute_header, v30, OS_SIGNPOST_EVENT, v32, "ConsumerReset", " uuid=%{public, signpost.description:attribute}@  status=%{public, signpost.description:attribute}ld ", buf, 0x16u);
           }
         }
@@ -516,30 +516,30 @@
         if (os_log_type_enabled(off_1003CB810, OS_LOG_TYPE_ERROR))
         {
           v62 = v34;
-          v63 = [v13 logKey];
+          logKey11 = [v13 logKey];
           *buf = 138543874;
-          v77 = v63;
+          v77 = logKey11;
           v78 = 2114;
-          v79 = v9;
+          v79 = taskCopy;
           v80 = 2048;
-          v81 = v12;
+          v81 = asset_statusCode;
           _os_log_error_impl(&_mh_execute_header, v62, OS_LOG_TYPE_ERROR, "[%{public}@] Resetting data consumer for task: %{public}@ after receiving status code: %ld", buf, 0x20u);
         }
 
-        v35 = [v13 properties];
-        v36 = [v35 dataConsumer];
+        properties2 = [v13 properties];
+        dataConsumer2 = [properties2 dataConsumer];
 
         v71[0] = _NSConcreteStackBlock;
         v71[1] = 3221225472;
         v71[2] = sub_100051928;
         v71[3] = &unk_10037FF58;
-        v71[4] = v66;
-        v72 = v36;
+        v71[4] = selfCopy;
+        v72 = dataConsumer2;
         v73 = v13;
-        v74 = v9;
-        v75 = v11;
-        v37 = v36;
-        [v37 truncateWithCompletionHandler:v71];
+        v74 = taskCopy;
+        v75 = handlerCopy;
+        progress = dataConsumer2;
+        [progress truncateWithCompletionHandler:v71];
       }
     }
 
@@ -558,15 +558,15 @@ LABEL_83:
     sub_1002CE764();
   }
 
-  (*(v11 + 2))(v11, 0);
+  (*(handlerCopy + 2))(handlerCopy, 0);
 LABEL_84:
 }
 
-- (void)URLSession:(id)a3 _willRetryBackgroundDataTask:(id)a4 withError:(id)a5
+- (void)URLSession:(id)session _willRetryBackgroundDataTask:(id)task withError:(id)error
 {
-  v6 = a4;
-  v7 = a5;
-  v8 = [AssetTaskInfo taskInfoForTask:v6];
+  taskCopy = task;
+  errorCopy = error;
+  v8 = [AssetTaskInfo taskInfoForTask:taskCopy];
   v9 = v8;
   if (v8)
   {
@@ -581,13 +581,13 @@ LABEL_84:
       if (os_log_type_enabled(off_1003CB810, OS_LOG_TYPE_ERROR))
       {
         v22 = v10;
-        v23 = [v9 logKey];
+        logKey = [v9 logKey];
         v26 = 138543874;
-        v27 = v23;
+        v27 = logKey;
         v28 = 2114;
-        v29 = v6;
+        v29 = taskCopy;
         v30 = 2114;
-        v31 = v7;
+        v31 = errorCopy;
         _os_log_error_impl(&_mh_execute_header, v22, OS_LOG_TYPE_ERROR, "[%{public}@] Retry scheduled for task: %{public}@ error: %{public}@", &v26, 0x20u);
       }
 
@@ -596,20 +596,20 @@ LABEL_84:
         sub_1002CE52C();
       }
 
-      v11 = off_1003CB810;
-      v12 = [v9 signpostId];
-      if ((v12 - 1) <= 0xFFFFFFFFFFFFFFFDLL)
+      task = off_1003CB810;
+      signpostId = [v9 signpostId];
+      if ((signpostId - 1) <= 0xFFFFFFFFFFFFFFFDLL)
       {
-        v13 = v12;
-        if (os_signpost_enabled(v11))
+        v13 = signpostId;
+        if (os_signpost_enabled(task))
         {
-          v14 = [v9 logKey];
-          v15 = [v7 lib_shortDescription];
+          logKey2 = [v9 logKey];
+          lib_shortDescription = [errorCopy lib_shortDescription];
           v26 = 138543618;
-          v27 = v14;
+          v27 = logKey2;
           v28 = 2114;
-          v29 = v15;
-          _os_signpost_emit_with_name_impl(&_mh_execute_header, v11, OS_SIGNPOST_EVENT, v13, "WillRetry", " uuid=%{public, signpost.description:attribute}@  error=%{public, signpost.description:attribute}@ ", &v26, 0x16u);
+          v29 = lib_shortDescription;
+          _os_signpost_emit_with_name_impl(&_mh_execute_header, task, OS_SIGNPOST_EVENT, v13, "WillRetry", " uuid=%{public, signpost.description:attribute}@  error=%{public, signpost.description:attribute}@ ", &v26, 0x16u);
         }
       }
     }
@@ -625,13 +625,13 @@ LABEL_84:
       if (os_log_type_enabled(off_1003CB810, OS_LOG_TYPE_ERROR))
       {
         v24 = v16;
-        v25 = [v9 logKey];
+        logKey3 = [v9 logKey];
         v26 = 138543874;
-        v27 = v25;
+        v27 = logKey3;
         v28 = 2114;
-        v29 = v6;
+        v29 = taskCopy;
         v30 = 2114;
-        v31 = v7;
+        v31 = errorCopy;
         _os_log_error_impl(&_mh_execute_header, v24, OS_LOG_TYPE_ERROR, "[%{public}@] Canceling task: %{public}@ after cache request failed with error: %{public}@", &v26, 0x20u);
       }
 
@@ -641,26 +641,26 @@ LABEL_84:
       }
 
       v17 = off_1003CB810;
-      v18 = [v9 signpostId];
-      if ((v18 - 1) <= 0xFFFFFFFFFFFFFFFDLL)
+      signpostId2 = [v9 signpostId];
+      if ((signpostId2 - 1) <= 0xFFFFFFFFFFFFFFFDLL)
       {
-        v19 = v18;
+        v19 = signpostId2;
         if (os_signpost_enabled(v17))
         {
-          v20 = [v9 logKey];
-          v21 = [v7 lib_shortDescription];
+          logKey4 = [v9 logKey];
+          lib_shortDescription2 = [errorCopy lib_shortDescription];
           v26 = 138543618;
-          v27 = v20;
+          v27 = logKey4;
           v28 = 2114;
-          v29 = v21;
+          v29 = lib_shortDescription2;
           _os_signpost_emit_with_name_impl(&_mh_execute_header, v17, OS_SIGNPOST_EVENT, v19, "CacheFail", " uuid=%{public, signpost.description:attribute}@  error=%{public, signpost.description:attribute}@ ", &v26, 0x16u);
         }
       }
 
       [v9 setAction:1];
       [v9 setIgnoreAssetCache:1];
-      v11 = [v9 task];
-      [v11 cancel];
+      task = [v9 task];
+      [task cancel];
     }
   }
 
@@ -676,15 +676,15 @@ LABEL_84:
       sub_1002CE888();
     }
 
-    [v6 cancel];
+    [taskCopy cancel];
   }
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [AssetTaskInfo taskInfoForTask:v7];
+  taskCopy = task;
+  errorCopy = error;
+  v9 = [AssetTaskInfo taskInfoForTask:taskCopy];
   if (v9)
   {
     if (qword_1003D43E0 != -1)
@@ -693,10 +693,10 @@ LABEL_84:
     }
 
     v10 = off_1003CB810;
-    v11 = [v9 signpostId];
-    if ((v11 - 1) <= 0xFFFFFFFFFFFFFFFDLL)
+    signpostId = [v9 signpostId];
+    if ((signpostId - 1) <= 0xFFFFFFFFFFFFFFFDLL)
     {
-      v12 = v11;
+      v12 = signpostId;
       if (os_signpost_enabled(v10))
       {
         *buf = 0;
@@ -713,16 +713,16 @@ LABEL_84:
     if (os_log_type_enabled(off_1003CB810, OS_LOG_TYPE_DEFAULT))
     {
       v14 = v13;
-      v15 = [v9 logKey];
+      logKey = [v9 logKey];
       *buf = 138543618;
-      v27 = v15;
+      v27 = logKey;
       v28 = 2114;
-      v29 = v7;
+      v29 = taskCopy;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "[%{public}@] Completed task: %{public}@", buf, 0x16u);
     }
 
-    v16 = [v9 action];
-    if (v8 && !v16)
+    action = [v9 action];
+    if (errorCopy && !action)
     {
       if (([v9 ignoreAssetCache] & 1) == 0)
       {
@@ -740,23 +740,23 @@ LABEL_84:
         [v9 setAction:1];
       }
 
-      v17 = [v9 error];
+      error = [v9 error];
 
-      if (!v17)
+      if (!error)
       {
-        [v9 setError:v8];
+        [v9 setError:errorCopy];
       }
 
       [(AssetSession *)self _completeNetworkActivityWithReason:3 usingTaskInfo:v9];
     }
 
-    v18 = [v9 error];
-    [(AssetSession *)self _reportMetricsForTaskInfo:v9 withCompletionError:v18];
+    error2 = [v9 error];
+    [(AssetSession *)self _reportMetricsForTaskInfo:v9 withCompletionError:error2];
 
-    v19 = [v9 properties];
-    v20 = [v19 dataConsumer];
+    properties = [v9 properties];
+    dataConsumer = [properties dataConsumer];
 
-    if (v8 && [v9 action] != 2)
+    if (errorCopy && [v9 action] != 2)
     {
       [(AssetSession *)self _completeNetworkActivityWithReason:4 usingTaskInfo:v9];
       v22[0] = _NSConcreteStackBlock;
@@ -766,7 +766,7 @@ LABEL_84:
       v22[4] = self;
       v21 = &v23;
       v23 = v9;
-      [v20 suspendWithCompletionHandler:v22];
+      [dataConsumer suspendWithCompletionHandler:v22];
     }
 
     else
@@ -779,7 +779,7 @@ LABEL_84:
       v24[4] = self;
       v21 = &v25;
       v25 = v9;
-      [v20 finishWithCompletionHandler:v24];
+      [dataConsumer finishWithCompletionHandler:v24];
     }
   }
 
@@ -797,11 +797,11 @@ LABEL_84:
   }
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didFinishCollectingMetrics:(id)a5
+- (void)URLSession:(id)session task:(id)task didFinishCollectingMetrics:(id)metrics
 {
-  v6 = a4;
-  v7 = a5;
-  v8 = [AssetTaskInfo taskInfoForTask:v6];
+  taskCopy = task;
+  metricsCopy = metrics;
+  v8 = [AssetTaskInfo taskInfoForTask:taskCopy];
   if (v8)
   {
     if (qword_1003D43E0 != -1)
@@ -813,23 +813,23 @@ LABEL_84:
     if (os_log_type_enabled(off_1003CB810, OS_LOG_TYPE_INFO))
     {
       v10 = v9;
-      v11 = [v8 logKey];
+      logKey = [v8 logKey];
       *buf = 138543874;
-      v33 = v11;
+      v33 = logKey;
       v34 = 2114;
-      v35 = *&v6;
+      v35 = *&taskCopy;
       v36 = 2114;
-      v37 = v7;
+      v37 = metricsCopy;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "[%{public}@] Collected metrics for task: %{public}@ metrics: %{public}@", buf, 0x20u);
     }
 
-    v26 = v6;
+    v26 = taskCopy;
     v29 = 0u;
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v12 = [v7 transactionMetrics];
-    v13 = [v12 countByEnumeratingWithState:&v27 objects:v31 count:16];
+    transactionMetrics = [metricsCopy transactionMetrics];
+    v13 = [transactionMetrics countByEnumeratingWithState:&v27 objects:v31 count:16];
     if (v13)
     {
       v14 = v13;
@@ -841,12 +841,12 @@ LABEL_84:
         {
           if (*v28 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(transactionMetrics);
           }
 
           v17 = *(*(&v27 + 1) + 8 * v16);
-          v18 = [v17 lib_responseInterval];
-          if (v18)
+          lib_responseInterval = [v17 lib_responseInterval];
+          if (lib_responseInterval)
           {
             if (qword_1003D43E0 != -1)
             {
@@ -857,13 +857,13 @@ LABEL_84:
             if (os_log_type_enabled(off_1003CB810, OS_LOG_TYPE_DEFAULT))
             {
               v20 = v19;
-              v21 = [v8 logKey];
-              v22 = [v17 countOfResponseBodyBytesReceived];
-              [v18 duration];
+              logKey2 = [v8 logKey];
+              countOfResponseBodyBytesReceived = [v17 countOfResponseBodyBytesReceived];
+              [lib_responseInterval duration];
               *buf = 138543618;
-              v33 = v21;
+              v33 = logKey2;
               v34 = 2048;
-              v35 = v22 / v23;
+              v35 = countOfResponseBodyBytesReceived / v23;
               _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "[%{public}@] Response body bytes received speed: %.0f", buf, 0x16u);
             }
           }
@@ -872,15 +872,15 @@ LABEL_84:
         }
 
         while (v14 != v16);
-        v14 = [v12 countByEnumeratingWithState:&v27 objects:v31 count:16];
+        v14 = [transactionMetrics countByEnumeratingWithState:&v27 objects:v31 count:16];
       }
 
       while (v14);
     }
 
-    v7 = v25;
+    metricsCopy = v25;
     [v8 setMetrics:v25];
-    v6 = v26;
+    taskCopy = v26;
   }
 
   else
@@ -894,23 +894,23 @@ LABEL_84:
     if (os_log_type_enabled(off_1003CB810, OS_LOG_TYPE_INFO))
     {
       *buf = 138543362;
-      v33 = v6;
+      v33 = taskCopy;
       _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_INFO, "Untracked task: %{public}@ did finish collecting metrics", buf, 0xCu);
     }
   }
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didReceiveChallenge:(id)a5 completionHandler:(id)a6
+- (void)URLSession:(id)session task:(id)task didReceiveChallenge:(id)challenge completionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a6;
-  v11 = [AssetTaskInfo taskInfoForTask:v8];
+  taskCopy = task;
+  challengeCopy = challenge;
+  handlerCopy = handler;
+  v11 = [AssetTaskInfo taskInfoForTask:taskCopy];
   if (v11)
   {
-    v12 = [v9 protectionSpace];
-    v13 = [v12 authenticationMethod];
-    if ([v13 isEqualToString:NSURLAuthenticationMethodClientCertificate])
+    protectionSpace = [challengeCopy protectionSpace];
+    authenticationMethod = [protectionSpace authenticationMethod];
+    if ([authenticationMethod isEqualToString:NSURLAuthenticationMethodClientCertificate])
     {
       if (qword_1003D43E0 != -1)
       {
@@ -921,19 +921,19 @@ LABEL_84:
       if (os_log_type_enabled(off_1003CB810, OS_LOG_TYPE_DEFAULT))
       {
         v15 = v14;
-        v16 = [v11 logKey];
+        logKey = [v11 logKey];
         *buf = 138543362;
-        v40 = v16;
+        v40 = logKey;
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "[%{public}@] Using client certificate for authentication challenge", buf, 0xCu);
       }
 
-      v10[2](v10, 1, 0);
+      handlerCopy[2](handlerCopy, 1, 0);
     }
 
-    else if ([v13 isEqualToString:NSURLAuthenticationMethodServerTrust])
+    else if ([authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust])
     {
       error = 0;
-      if (SecTrustEvaluateWithError([v12 serverTrust], &error))
+      if (SecTrustEvaluateWithError([protectionSpace serverTrust], &error))
       {
         if (qword_1003D43E0 != -1)
         {
@@ -944,14 +944,14 @@ LABEL_84:
         if (os_log_type_enabled(off_1003CB810, OS_LOG_TYPE_DEFAULT))
         {
           v18 = v17;
-          v19 = [v11 logKey];
+          logKey2 = [v11 logKey];
           *buf = 138543362;
-          v40 = v19;
+          v40 = logKey2;
           _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "[%{public}@] Using server trust for authentication challenge", buf, 0xCu);
         }
 
-        v20 = +[NSURLCredential credentialForTrust:](NSURLCredential, "credentialForTrust:", [v12 serverTrust]);
-        (v10)[2](v10, 0, v20);
+        v20 = +[NSURLCredential credentialForTrust:](NSURLCredential, "credentialForTrust:", [protectionSpace serverTrust]);
+        (handlerCopy)[2](handlerCopy, 0, v20);
       }
 
       else
@@ -966,7 +966,7 @@ LABEL_84:
           sub_1002CEB4C();
         }
 
-        v10[2](v10, 2, 0);
+        handlerCopy[2](handlerCopy, 2, 0);
       }
 
       if (error)
@@ -977,10 +977,10 @@ LABEL_84:
 
     else
     {
-      v21 = [v11 properties];
-      v22 = [v21 allowsAuthentication];
+      properties = [v11 properties];
+      allowsAuthentication = [properties allowsAuthentication];
 
-      if (v22)
+      if (allowsAuthentication)
       {
         if (qword_1003D43E0 != -1)
         {
@@ -991,25 +991,25 @@ LABEL_84:
         if (os_log_type_enabled(off_1003CB810, OS_LOG_TYPE_DEFAULT))
         {
           v24 = v23;
-          v25 = [v11 logKey];
+          logKey3 = [v11 logKey];
           *buf = 138543362;
-          v40 = v25;
+          v40 = logKey3;
           _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "[%{public}@] Prompting user for authentication challenge", buf, 0xCu);
         }
 
-        v26 = [[AuthenticationChallenge alloc] initWithAuthenticationChallenge:v9];
+        v26 = [[AuthenticationChallenge alloc] initWithAuthenticationChallenge:challengeCopy];
         v27 = [AuthenticationChallengeDialogRequest dialogForAuthenticationChallenge:v26];
         v28 = [[AMSSystemAlertDialogTask alloc] initWithRequest:v27];
-        v29 = [v28 present];
+        present = [v28 present];
         v34[0] = _NSConcreteStackBlock;
         v34[1] = 3221225472;
         v34[2] = sub_100053774;
         v34[3] = &unk_1003822C8;
         v35 = v11;
         v36 = v26;
-        v37 = v10;
+        v37 = handlerCopy;
         v30 = v26;
-        [v29 addFinishBlock:v34];
+        [present addFinishBlock:v34];
       }
 
       else
@@ -1023,13 +1023,13 @@ LABEL_84:
         if (os_log_type_enabled(off_1003CB810, OS_LOG_TYPE_DEFAULT))
         {
           v32 = v31;
-          v33 = [v11 logKey];
+          logKey4 = [v11 logKey];
           *buf = 138543362;
-          v40 = v33;
+          v40 = logKey4;
           _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "[%{public}@] Prompting for authentication is not permitted", buf, 0xCu);
         }
 
-        v10[2](v10, 2, 0);
+        handlerCopy[2](handlerCopy, 2, 0);
       }
     }
   }
@@ -1046,16 +1046,16 @@ LABEL_84:
       sub_1002CEBEC();
     }
 
-    v10[2](v10, 2, 0);
+    handlerCopy[2](handlerCopy, 2, 0);
   }
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 _willSendRequestForEstablishedConnection:(id)a5 completionHandler:(id)a6
+- (void)URLSession:(id)session task:(id)task _willSendRequestForEstablishedConnection:(id)connection completionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a6;
-  v11 = [AssetTaskInfo taskInfoForTask:v8];
+  taskCopy = task;
+  connectionCopy = connection;
+  handlerCopy = handler;
+  v11 = [AssetTaskInfo taskInfoForTask:taskCopy];
   if (v11)
   {
     if (qword_1003D43E0 != -1)
@@ -1064,15 +1064,15 @@ LABEL_84:
     }
 
     v12 = off_1003CB810;
-    v13 = [v11 signpostId];
-    if ((v13 - 1) <= 0xFFFFFFFFFFFFFFFDLL)
+    signpostId = [v11 signpostId];
+    if ((signpostId - 1) <= 0xFFFFFFFFFFFFFFFDLL)
     {
-      v14 = v13;
+      v14 = signpostId;
       if (os_signpost_enabled(v12))
       {
-        v15 = [v11 logKey];
+        logKey = [v11 logKey];
         v21 = 138543362;
-        v22 = v15;
+        v22 = logKey;
         _os_signpost_emit_with_name_impl(&_mh_execute_header, v12, OS_SIGNPOST_EVENT, v14, "TaskConnecting", " uuid=%{public, signpost.description:attribute}@ ", &v21, 0xCu);
       }
     }
@@ -1084,18 +1084,18 @@ LABEL_84:
 
     v16 = off_1003CB810;
     v17 = os_log_type_enabled(off_1003CB810, OS_LOG_TYPE_DEFAULT);
-    v18 = v9;
+    v18 = connectionCopy;
     if (v17)
     {
       v19 = v16;
-      v20 = [v11 logKey];
+      logKey2 = [v11 logKey];
       v21 = 138543618;
-      v22 = v20;
+      v22 = logKey2;
       v23 = 2114;
-      v24 = v8;
+      v24 = taskCopy;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "[%{public}@] Task: %{public}@ will send request", &v21, 0x16u);
 
-      v18 = v9;
+      v18 = connectionCopy;
     }
   }
 
@@ -1114,36 +1114,36 @@ LABEL_84:
     v18 = 0;
   }
 
-  (v10)[2](v10, v18);
+  (handlerCopy)[2](handlerCopy, v18);
 }
 
-- (void)_completeNetworkActivityWithReason:(int)a3 usingTaskInfo:(id)a4
+- (void)_completeNetworkActivityWithReason:(int)reason usingTaskInfo:(id)info
 {
-  v5 = a4;
-  v4 = [v5 networkActivity];
-  if (v4)
+  infoCopy = info;
+  networkActivity = [infoCopy networkActivity];
+  if (networkActivity)
   {
     nw_activity_complete_with_reason();
-    [v5 setNetworkActivity:0];
+    [infoCopy setNetworkActivity:0];
   }
 }
 
-- (id)_findSessionUsingTaskInfo:(id)a3 withProperties:(id)a4
+- (id)_findSessionUsingTaskInfo:(id)info withProperties:(id)properties
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [NSURLSessionConfiguration asset_configurationIdentifierUsingProperties:v7];
-  [v6 setConfigurationID:v8];
+  infoCopy = info;
+  propertiesCopy = properties;
+  v8 = [NSURLSessionConfiguration asset_configurationIdentifierUsingProperties:propertiesCopy];
+  [infoCopy setConfigurationID:v8];
   v9 = [(NSMutableDictionary *)self->_sessions objectForKeyedSubscript:v8];
-  v10 = [v9 maximumWatchCellularTransferSize];
-  if (v10)
+  maximumWatchCellularTransferSize = [v9 maximumWatchCellularTransferSize];
+  if (maximumWatchCellularTransferSize)
   {
-    v11 = v10;
-    v12 = [v9 maximumWatchCellularTransferSize];
-    v13 = [v12 unsignedLongLongValue];
-    v14 = [v7 expectedContentLength];
+    v11 = maximumWatchCellularTransferSize;
+    maximumWatchCellularTransferSize2 = [v9 maximumWatchCellularTransferSize];
+    unsignedLongLongValue = [maximumWatchCellularTransferSize2 unsignedLongLongValue];
+    expectedContentLength = [propertiesCopy expectedContentLength];
 
-    if (v13 < v14)
+    if (unsignedLongLongValue < expectedContentLength)
     {
       if (qword_1003D43E0 != -1)
       {
@@ -1154,14 +1154,14 @@ LABEL_84:
       if (os_log_type_enabled(off_1003CB810, OS_LOG_TYPE_DEFAULT))
       {
         v16 = v15;
-        v17 = [v6 logKey];
-        v18 = [v9 maximumWatchCellularTransferSize];
+        logKey = [infoCopy logKey];
+        maximumWatchCellularTransferSize3 = [v9 maximumWatchCellularTransferSize];
         *buf = 138543874;
-        v39 = v17;
+        v39 = logKey;
         v40 = 2048;
-        v41 = [v18 unsignedLongLongValue];
+        unsignedLongLongValue2 = [maximumWatchCellularTransferSize3 unsignedLongLongValue];
         v42 = 2048;
-        v43 = [v7 expectedContentLength];
+        expectedContentLength2 = [propertiesCopy expectedContentLength];
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "[%{public}@] Creating new session because download exceeds maximum watch cellular transfer size for existing session (Max: %lld, Download: %lld)", buf, 0x20u);
       }
 
@@ -1172,20 +1172,20 @@ LABEL_84:
   if (!v9)
   {
 LABEL_15:
-    v29 = [v7 discretionaryType];
-    if (v29)
+    discretionaryType = [propertiesCopy discretionaryType];
+    if (discretionaryType)
     {
-      [NSURLSessionConfiguration asset_backgroundSessionConfigurationUsingProperties:v7];
+      [NSURLSessionConfiguration asset_backgroundSessionConfigurationUsingProperties:propertiesCopy];
     }
 
     else
     {
-      [NSURLSessionConfiguration asset_ephemeralSessionConfigurationUsingProperties:v7];
+      [NSURLSessionConfiguration asset_ephemeralSessionConfigurationUsingProperties:propertiesCopy];
     }
-    v27 = ;
-    v28 = [NSURLSession sessionWithConfiguration:v27 delegate:self delegateQueue:self->_delegateQueue];
-    v30 = [v7 maximumWatchCellularTransferSize];
-    v9 = [CachedURLSession cachedSession:v28 maximumWatchCellularTransferSize:v30];
+    identifier3 = ;
+    v28 = [NSURLSession sessionWithConfiguration:identifier3 delegate:self delegateQueue:self->_delegateQueue];
+    maximumWatchCellularTransferSize4 = [propertiesCopy maximumWatchCellularTransferSize];
+    v9 = [CachedURLSession cachedSession:v28 maximumWatchCellularTransferSize:maximumWatchCellularTransferSize4];
     [(NSMutableDictionary *)self->_sessions setObject:v9 forKeyedSubscript:v8];
 
     if (qword_1003D43E0 != -1)
@@ -1197,8 +1197,8 @@ LABEL_15:
     if (os_log_type_enabled(off_1003CB810, OS_LOG_TYPE_DEFAULT))
     {
       v32 = v31;
-      v33 = [v6 logKey];
-      if (v29)
+      logKey2 = [infoCopy logKey];
+      if (discretionaryType)
       {
         v34 = "background";
       }
@@ -1208,13 +1208,13 @@ LABEL_15:
         v34 = "ephemeral";
       }
 
-      v35 = [v27 identifier];
+      identifier = [identifier3 identifier];
       *buf = 138544130;
-      v39 = v33;
+      v39 = logKey2;
       v40 = 2080;
-      v41 = v34;
+      unsignedLongLongValue2 = v34;
       v42 = 2114;
-      v43 = v35;
+      expectedContentLength2 = identifier;
       v44 = 2114;
       v45 = v8;
       _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "[%{public}@] Created new %s session with identifier: %{public}@ (%{public}@)", buf, 0x2Au);
@@ -1232,48 +1232,48 @@ LABEL_15:
   if (os_log_type_enabled(off_1003CB810, OS_LOG_TYPE_DEFAULT))
   {
     v20 = v19;
-    v21 = [v6 logKey];
-    v22 = [v9 session];
-    v23 = [v22 configuration];
-    v24 = [v23 identifier];
+    logKey3 = [infoCopy logKey];
+    session = [v9 session];
+    configuration = [session configuration];
+    identifier2 = [configuration identifier];
     *buf = 138543874;
-    v39 = v21;
+    v39 = logKey3;
     v40 = 2114;
-    v41 = v24;
+    unsignedLongLongValue2 = identifier2;
     v42 = 2114;
-    v43 = v8;
+    expectedContentLength2 = v8;
     _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "[%{public}@] Reusing existing session with identifier: %{public}@ (%{public}@)", buf, 0x20u);
   }
 
-  v25 = [v9 session];
-  v26 = [v25 configuration];
-  v27 = [v26 identifier];
+  session2 = [v9 session];
+  configuration2 = [session2 configuration];
+  identifier3 = [configuration2 identifier];
 
-  if (v27)
+  if (identifier3)
   {
-    v28 = [v27 stringByAppendingFormat:@" (%@)", v8];
-    [v6 setConfigurationID:v28];
+    v28 = [identifier3 stringByAppendingFormat:@" (%@)", v8];
+    [infoCopy setConfigurationID:v28];
 LABEL_25:
   }
 
-  v36 = [v9 session];
+  session3 = [v9 session];
 
-  return v36;
+  return session3;
 }
 
-- (void)_finishPromiseUsingTaskInfo:(id)a3
+- (void)_finishPromiseUsingTaskInfo:(id)info
 {
-  v3 = a3;
+  infoCopy = info;
   if (qword_1003D43E0 != -1)
   {
     sub_1002CE3B0();
   }
 
   v4 = off_1003CB810;
-  v5 = [v3 signpostId];
-  if ((v5 - 1) <= 0xFFFFFFFFFFFFFFFDLL)
+  signpostId = [infoCopy signpostId];
+  if ((signpostId - 1) <= 0xFFFFFFFFFFFFFFFDLL)
   {
-    v6 = v5;
+    v6 = signpostId;
     if (os_signpost_enabled(v4))
     {
       LOWORD(v20) = 0;
@@ -1281,7 +1281,7 @@ LABEL_25:
     }
   }
 
-  [v3 setKeepAlive:0];
+  [infoCopy setKeepAlive:0];
   if (qword_1003D43E0 != -1)
   {
     sub_1002CE52C();
@@ -1291,16 +1291,16 @@ LABEL_25:
   if (os_log_type_enabled(off_1003CB810, OS_LOG_TYPE_DEFAULT))
   {
     v8 = v7;
-    v9 = [v3 logKey];
+    logKey = [infoCopy logKey];
     v20 = 138543362;
-    v21 = v9;
+    v21 = logKey;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "[%{public}@] Finishing asset promise", &v20, 0xCu);
   }
 
-  v10 = [v3 promise];
-  if ([v10 isFinished])
+  promise = [infoCopy promise];
+  if ([promise isFinished])
   {
-    if (([v10 isCancelled] & 1) == 0)
+    if (([promise isCancelled] & 1) == 0)
     {
       if (qword_1003D43E0 != -1)
       {
@@ -1318,18 +1318,18 @@ LABEL_25:
   else
   {
     v12 = objc_alloc_init(AssetResult);
-    -[AssetResult setBytesReceived:](v12, "setBytesReceived:", [v3 bytesReceived]);
-    v13 = [v3 properties];
-    v14 = [v13 dataConsumer];
-    [(AssetResult *)v12 setDataConsumer:v14];
+    -[AssetResult setBytesReceived:](v12, "setBytesReceived:", [infoCopy bytesReceived]);
+    properties = [infoCopy properties];
+    dataConsumer = [properties dataConsumer];
+    [(AssetResult *)v12 setDataConsumer:dataConsumer];
 
-    v15 = [v3 error];
-    [(AssetResult *)v12 setError:v15];
+    error = [infoCopy error];
+    [(AssetResult *)v12 setError:error];
 
-    v16 = [v3 metrics];
-    [(AssetResult *)v12 setMetrics:v16];
+    metrics = [infoCopy metrics];
+    [(AssetResult *)v12 setMetrics:metrics];
 
-    [v10 finishWithResult:v12];
+    [promise finishWithResult:v12];
     if (qword_1003D43E0 != -1)
     {
       sub_1002CE52C();
@@ -1339,47 +1339,47 @@ LABEL_25:
     if (os_log_type_enabled(off_1003CB810, OS_LOG_TYPE_DEFAULT))
     {
       v18 = v17;
-      v19 = [v3 logKey];
+      logKey2 = [infoCopy logKey];
       v20 = 138543362;
-      v21 = v19;
+      v21 = logKey2;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "[%{public}@] Finished asset promise", &v20, 0xCu);
     }
   }
 
-  [AssetTaskInfo removeTaskInfo:v3];
+  [AssetTaskInfo removeTaskInfo:infoCopy];
 }
 
-- (void)_reportMetricsForTaskInfo:(id)a3 withCompletionError:(id)a4
+- (void)_reportMetricsForTaskInfo:(id)info withCompletionError:(id)error
 {
-  v5 = a3;
-  v6 = a4;
+  infoCopy = info;
+  errorCopy = error;
   v7 = [AMSMetricsLoadURLContext alloc];
-  v8 = [v5 task];
-  v9 = [v5 metrics];
-  v10 = [v7 initWithTask:v8 metrics:v9];
+  task = [infoCopy task];
+  metrics = [infoCopy metrics];
+  v10 = [v7 initWithTask:task metrics:metrics];
 
   v11 = +[_TtC9storekitd3Bag defaultBag];
   [v10 setBag:v11];
 
-  [v10 setError:v6];
-  v12 = [v5 session];
-  [v10 setSession:v12];
+  [v10 setError:errorCopy];
+  session = [infoCopy session];
+  [v10 setSession:session];
 
   v13 = [AMSMetricsLoadURLEvent shouldCollectMetricsPromiseForContext:v10];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_100054674;
   v16[3] = &unk_100382318;
-  v17 = v5;
+  v17 = infoCopy;
   v18 = v10;
   v14 = v10;
-  v15 = v5;
+  v15 = infoCopy;
   [v13 resultWithCompletion:v16];
 }
 
-- (void)_retryTaskUsingTaskInfo:(id)a3
+- (void)_retryTaskUsingTaskInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   if (qword_1003D43E0 != -1)
   {
@@ -1387,15 +1387,15 @@ LABEL_25:
   }
 
   v5 = off_1003CB810;
-  v6 = [v4 signpostId];
-  if ((v6 - 1) <= 0xFFFFFFFFFFFFFFFDLL)
+  signpostId = [infoCopy signpostId];
+  if ((signpostId - 1) <= 0xFFFFFFFFFFFFFFFDLL)
   {
-    v7 = v6;
+    v7 = signpostId;
     if (os_signpost_enabled(v5))
     {
-      v8 = [v4 logKey];
+      logKey = [infoCopy logKey];
       *buf = 138543362;
-      v18 = v8;
+      v18 = logKey;
       _os_signpost_emit_with_name_impl(&_mh_execute_header, v5, OS_SIGNPOST_EVENT, v7, "Retry", " uuid=%{public, signpost.description:attribute}@ ", buf, 0xCu);
     }
   }
@@ -1409,33 +1409,33 @@ LABEL_25:
   if (os_log_type_enabled(off_1003CB810, OS_LOG_TYPE_DEFAULT))
   {
     v10 = v9;
-    v11 = [v4 logKey];
+    logKey2 = [infoCopy logKey];
     *buf = 138543362;
-    v18 = v11;
+    v18 = logKey2;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "[%{public}@] Retrying request", buf, 0xCu);
   }
 
-  [v4 setAction:0];
-  [v4 setError:0];
-  [v4 setKeepAlive:0];
-  v12 = [v4 properties];
-  v13 = [v12 dataConsumer];
+  [infoCopy setAction:0];
+  [infoCopy setError:0];
+  [infoCopy setKeepAlive:0];
+  properties = [infoCopy properties];
+  dataConsumer = [properties dataConsumer];
 
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100054BD4;
   v15[3] = &unk_100380188;
   v15[4] = self;
-  v16 = v4;
-  v14 = v4;
-  [v13 resetWithCompletionHandler:v15];
+  v16 = infoCopy;
+  v14 = infoCopy;
+  [dataConsumer resetWithCompletionHandler:v15];
 }
 
-- (void)_prepareDataConsumerUsingTaskInfo:(id)a3
+- (void)_prepareDataConsumerUsingTaskInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  if ([v4 action] == 3)
+  if ([infoCopy action] == 3)
   {
     if (qword_1003D43E0 != -1)
     {
@@ -1448,29 +1448,29 @@ LABEL_25:
       sub_1002CF050(v5);
     }
 
-    [(AssetSession *)self _finishPromiseUsingTaskInfo:v4];
+    [(AssetSession *)self _finishPromiseUsingTaskInfo:infoCopy];
   }
 
   else
   {
-    v6 = [v4 properties];
-    v7 = [v6 dataConsumer];
+    properties = [infoCopy properties];
+    dataConsumer = [properties dataConsumer];
 
-    if (v7)
+    if (dataConsumer)
     {
       v16[0] = _NSConcreteStackBlock;
       v16[1] = 3221225472;
       v16[2] = sub_100055000;
       v16[3] = &unk_100382340;
       v16[4] = self;
-      v17 = v4;
-      [v7 prepareWithCompletionHandler:v16];
+      v17 = infoCopy;
+      [dataConsumer prepareWithCompletionHandler:v16];
     }
 
     else
     {
       v8 = ASDErrorWithDescription();
-      [v4 setError:v8];
+      [infoCopy setError:v8];
 
       if (qword_1003D43E0 != -1)
       {
@@ -1478,19 +1478,19 @@ LABEL_25:
       }
 
       v9 = off_1003CB810;
-      v10 = [v4 signpostId];
-      if ((v10 - 1) <= 0xFFFFFFFFFFFFFFFDLL)
+      signpostId = [infoCopy signpostId];
+      if ((signpostId - 1) <= 0xFFFFFFFFFFFFFFFDLL)
       {
-        v11 = v10;
+        v11 = signpostId;
         if (os_signpost_enabled(v9))
         {
-          v12 = [v4 logKey];
-          v13 = [v4 error];
-          v14 = [v13 lib_shortDescription];
+          logKey = [infoCopy logKey];
+          error = [infoCopy error];
+          lib_shortDescription = [error lib_shortDescription];
           *buf = 138543618;
-          v19 = v12;
+          v19 = logKey;
           v20 = 2114;
-          v21 = v14;
+          v21 = lib_shortDescription;
           _os_signpost_emit_with_name_impl(&_mh_execute_header, v9, OS_SIGNPOST_EVENT, v11, "ConsumerError", " uuid=%{public, signpost.description:attribute}@  error=%{public, signpost.description:attribute}@ ", buf, 0x16u);
         }
       }
@@ -1506,16 +1506,16 @@ LABEL_25:
         sub_1002CEFC0(v15);
       }
 
-      [(AssetSession *)self _finishPromiseUsingTaskInfo:v4];
+      [(AssetSession *)self _finishPromiseUsingTaskInfo:infoCopy];
     }
   }
 }
 
-- (void)_prepareRequestUsingTaskInfo:(id)a3
+- (void)_prepareRequestUsingTaskInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  if ([v4 action] == 3)
+  if ([infoCopy action] == 3)
   {
     if (qword_1003D43E0 != -1)
     {
@@ -1528,37 +1528,37 @@ LABEL_25:
       sub_1002CF050(v5);
     }
 
-    [(AssetSession *)self _finishPromiseUsingTaskInfo:v4];
+    [(AssetSession *)self _finishPromiseUsingTaskInfo:infoCopy];
   }
 
   else
   {
-    v6 = [v4 properties];
-    if (([v4 ignoreAssetCache] & 1) != 0 || !objc_msgSend(v6, "locateAssetCache"))
+    properties = [infoCopy properties];
+    if (([infoCopy ignoreAssetCache] & 1) != 0 || !objc_msgSend(properties, "locateAssetCache"))
     {
-      [v4 setIgnoreAssetCache:1];
-      v9 = [v4 request];
-      [(AssetSession *)self _startTaskUsingTaskInfo:v4 withRequest:v9];
+      [infoCopy setIgnoreAssetCache:1];
+      request = [infoCopy request];
+      [(AssetSession *)self _startTaskUsingTaskInfo:infoCopy withRequest:request];
     }
 
     else
     {
-      v7 = [v4 request];
-      v8 = [v7 URL];
-      v10 = v4;
+      request2 = [infoCopy request];
+      v8 = [request2 URL];
+      v10 = infoCopy;
       ACSLocateCachingServer();
     }
   }
 }
 
-- (void)_startNetworkActivityUsingTaskInfo:(id)a3 withTask:(id)a4
+- (void)_startNetworkActivityUsingTaskInfo:(id)info withTask:(id)task
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 properties];
-  v8 = [v7 requestReason];
+  infoCopy = info;
+  taskCopy = task;
+  properties = [infoCopy properties];
+  requestReason = [properties requestReason];
 
-  if (v8 <= 9 && (((1 << v8) & 0x35E) != 0 || v8 == 5 || v8 == 7))
+  if (requestReason <= 9 && (((1 << requestReason) & 0x35E) != 0 || requestReason == 5 || requestReason == 7))
   {
     v9 = nw_activity_create();
     if (v9)
@@ -1572,21 +1572,21 @@ LABEL_25:
       if (os_log_type_enabled(off_1003CB810, OS_LOG_TYPE_INFO))
       {
         v11 = v10;
-        v12 = [v5 logKey];
+        logKey = [infoCopy logKey];
         v14 = 138543618;
-        v15 = v12;
+        v15 = logKey;
         v16 = 2114;
         v17 = v9;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "[%{public}@] Activating network activity: %{public}@", &v14, 0x16u);
       }
 
       nw_activity_activate();
-      [v6 set_nw_activity:v9];
-      [v5 setNetworkActivity:v9];
+      [taskCopy set_nw_activity:v9];
+      [infoCopy setNetworkActivity:v9];
     }
   }
 
-  else if (v8)
+  else if (requestReason)
   {
     if (qword_1003D43E0 != -1)
     {
@@ -1614,12 +1614,12 @@ LABEL_25:
   }
 }
 
-- (void)_startTaskUsingTaskInfo:(id)a3 withRequest:(id)a4
+- (void)_startTaskUsingTaskInfo:(id)info withRequest:(id)request
 {
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  requestCopy = request;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  if ([v6 action] == 3)
+  if ([infoCopy action] == 3)
   {
     if (qword_1003D43E0 != -1)
     {
@@ -1632,28 +1632,28 @@ LABEL_25:
       sub_1002CF050(v8);
     }
 
-    [(AssetSession *)self _finishPromiseUsingTaskInfo:v6];
+    [(AssetSession *)self _finishPromiseUsingTaskInfo:infoCopy];
   }
 
   else
   {
-    v60 = [v6 properties];
-    v59 = [[NSMutableURLRequest alloc] _initWithCFURLRequest:{objc_msgSend(v7, "_CFURLRequest")}];
-    v9 = [v59 HTTPUserAgent];
+    properties = [infoCopy properties];
+    v59 = [[NSMutableURLRequest alloc] _initWithCFURLRequest:{objc_msgSend(requestCopy, "_CFURLRequest")}];
+    hTTPUserAgent = [v59 HTTPUserAgent];
 
-    if (!v9)
+    if (!hTTPUserAgent)
     {
       v10 = +[AMSProcessInfo currentProcess];
       v11 = [AMSUserAgent userAgentForProcessInfo:v10];
       [v59 setHTTPUserAgent:v11];
     }
 
-    if ([v6 requestOffset])
+    if ([infoCopy requestOffset])
     {
-      [v59 asset_setRangeOffset:{objc_msgSend(v6, "requestOffset")}];
+      [v59 asset_setRangeOffset:{objc_msgSend(infoCopy, "requestOffset")}];
     }
 
-    v12 = sub_100004020([v60 requestReason]);
+    v12 = sub_100004020([properties requestReason]);
     if (v12)
     {
       [v59 setValue:v12 forHTTPHeaderField:@"Apple-Download-Type"];
@@ -1661,43 +1661,43 @@ LABEL_25:
 
     if (self->_session)
     {
-      [v6 setSession:?];
+      [infoCopy setSession:?];
     }
 
-    v13 = [v6 session];
+    session = [infoCopy session];
 
-    if (!v13)
+    if (!session)
     {
-      v14 = [(AssetSession *)self _findSessionUsingTaskInfo:v6 withProperties:v60];
-      [v6 setSession:v14];
+      v14 = [(AssetSession *)self _findSessionUsingTaskInfo:infoCopy withProperties:properties];
+      [infoCopy setSession:v14];
     }
 
-    v15 = [v6 session];
+    session2 = [infoCopy session];
 
-    if (v15)
+    if (session2)
     {
-      v16 = [v6 session];
-      v17 = [v16 dataTaskWithRequest:v59];
+      session3 = [infoCopy session];
+      v17 = [session3 dataTaskWithRequest:v59];
 
       if (v17)
       {
-        [(AssetSession *)self _startNetworkActivityUsingTaskInfo:v6 withTask:v17];
+        [(AssetSession *)self _startNetworkActivityUsingTaskInfo:infoCopy withTask:v17];
         if (qword_1003D43E0 != -1)
         {
           sub_1002CE3B0();
         }
 
         v18 = off_1003CB810;
-        v19 = [v6 signpostId];
-        if ((v19 - 1) <= 0xFFFFFFFFFFFFFFFDLL)
+        signpostId = [infoCopy signpostId];
+        if ((signpostId - 1) <= 0xFFFFFFFFFFFFFFFDLL)
         {
-          v20 = v19;
+          v20 = signpostId;
           if (os_signpost_enabled(v18))
           {
-            v21 = [v6 logKey];
-            v22 = [v7 URL];
+            logKey = [infoCopy logKey];
+            v22 = [requestCopy URL];
             *buf = 138543618;
-            v66 = v21;
+            v66 = logKey;
             v67 = 2114;
             v68 = v22;
             _os_signpost_emit_with_name_impl(&_mh_execute_header, v18, OS_SIGNPOST_EVENT, v20, "TaskCreated", " uuid=%{public, signpost.description:attribute}@  request=%{public, signpost.description:attribute}@ ", buf, 0x16u);
@@ -1713,27 +1713,27 @@ LABEL_25:
         if (os_log_type_enabled(off_1003CB810, OS_LOG_TYPE_DEFAULT))
         {
           v24 = v23;
-          v25 = [v6 logKey];
-          v26 = [v6 configurationID];
-          v27 = [v7 URL];
+          logKey2 = [infoCopy logKey];
+          configurationID = [infoCopy configurationID];
+          v27 = [requestCopy URL];
           *buf = 138544130;
-          v66 = v25;
+          v66 = logKey2;
           v67 = 2114;
           v68 = v17;
           v69 = 2114;
-          v70 = v26;
+          v70 = configurationID;
           v71 = 2114;
           v72 = v27;
           _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "[%{public}@] Created task: %{public}@ in session: %{public}@ for URL: %{public}@ ", buf, 0x2Au);
         }
 
-        [AssetTaskInfo recordTaskInfo:v6 forTask:v17];
-        v28 = [v60 taskPriority];
+        [AssetTaskInfo recordTaskInfo:infoCopy forTask:v17];
+        taskPriority = [properties taskPriority];
 
-        if (v28)
+        if (taskPriority)
         {
-          v29 = [v60 taskPriority];
-          [v17 set_priority:{objc_msgSend(v29, "longLongValue")}];
+          taskPriority2 = [properties taskPriority];
+          [v17 set_priority:{objc_msgSend(taskPriority2, "longLongValue")}];
         }
 
         else
@@ -1753,25 +1753,25 @@ LABEL_25:
           [v17 setPriority:v43];
         }
 
-        v44 = [v60 bytesPerSecondLimit];
+        bytesPerSecondLimit = [properties bytesPerSecondLimit];
 
-        if (v44)
+        if (bytesPerSecondLimit)
         {
-          v45 = [v60 bytesPerSecondLimit];
-          [v17 set_bytesPerSecondLimit:{objc_msgSend(v45, "longLongValue")}];
+          bytesPerSecondLimit2 = [properties bytesPerSecondLimit];
+          [v17 set_bytesPerSecondLimit:{objc_msgSend(bytesPerSecondLimit2, "longLongValue")}];
         }
 
-        v46 = [v60 loadingPriority];
+        loadingPriority = [properties loadingPriority];
 
-        if (v46)
+        if (loadingPriority)
         {
-          v47 = [v60 loadingPriority];
-          [v47 doubleValue];
+          loadingPriority2 = [properties loadingPriority];
+          [loadingPriority2 doubleValue];
           [v17 set_loadingPriority:?];
         }
 
-        v48 = [v60 qosClass];
-        if (!v48)
+        qosClass = [properties qosClass];
+        if (!qosClass)
         {
           if (qword_1003D43E0 != -1)
           {
@@ -1784,37 +1784,37 @@ LABEL_25:
             sub_1002CF3EC(v49);
           }
 
-          v48 = 17;
+          qosClass = 17;
         }
 
         v61[0] = _NSConcreteStackBlock;
         v61[1] = 3221225472;
         v61[2] = sub_100056208;
         v61[3] = &unk_1003822A0;
-        v50 = v6;
+        v50 = infoCopy;
         v62 = v50;
-        v63 = v7;
+        v63 = requestCopy;
         v64 = v17;
         v51 = objc_retainBlock(v61);
-        v52 = [v50 properties];
-        v53 = [v52 externalID];
+        properties2 = [v50 properties];
+        externalID = [properties2 externalID];
 
-        if (v53)
+        if (externalID)
         {
           v54 = +[VoucherStore sharedInstance];
-          v55 = [v50 properties];
-          [v55 externalID];
-          v56 = v7;
+          properties3 = [v50 properties];
+          [properties3 externalID];
+          v56 = requestCopy;
           v58 = v57 = v12;
-          [v54 usingVoucherForExternalID:v58 applyQOSClass:v48 executeBlock:v51];
+          [v54 usingVoucherForExternalID:v58 applyQOSClass:qosClass executeBlock:v51];
 
           v12 = v57;
-          v7 = v56;
+          requestCopy = v56;
         }
 
         else
         {
-          v54 = dispatch_get_global_queue(v48, 0);
+          v54 = dispatch_get_global_queue(qosClass, 0);
           dispatch_async(v54, v51);
         }
       }
@@ -1827,16 +1827,16 @@ LABEL_25:
         }
 
         v36 = off_1003CB810;
-        v37 = [v6 signpostId];
-        if ((v37 - 1) <= 0xFFFFFFFFFFFFFFFDLL)
+        signpostId2 = [infoCopy signpostId];
+        if ((signpostId2 - 1) <= 0xFFFFFFFFFFFFFFFDLL)
         {
-          v38 = v37;
+          v38 = signpostId2;
           if (os_signpost_enabled(v36))
           {
-            v39 = [v6 logKey];
-            v40 = [v7 URL];
+            logKey3 = [infoCopy logKey];
+            v40 = [requestCopy URL];
             *buf = 138543618;
-            v66 = v39;
+            v66 = logKey3;
             v67 = 2114;
             v68 = v40;
             _os_signpost_emit_with_name_impl(&_mh_execute_header, v36, OS_SIGNPOST_EVENT, v38, "TaskError", " uuid=%{public, signpost.description:attribute}@  request=%{public, signpost.description:attribute}@ ", buf, 0x16u);
@@ -1854,9 +1854,9 @@ LABEL_25:
         }
 
         v41 = [NSError errorWithDomain:@"AssetErrorDomain" code:5 userInfo:0];
-        [v6 setError:v41];
+        [infoCopy setError:v41];
 
-        [(AssetSession *)self _finishPromiseUsingTaskInfo:v6];
+        [(AssetSession *)self _finishPromiseUsingTaskInfo:infoCopy];
       }
     }
 
@@ -1868,16 +1868,16 @@ LABEL_25:
       }
 
       v30 = off_1003CB810;
-      v31 = [v6 signpostId];
-      if ((v31 - 1) <= 0xFFFFFFFFFFFFFFFDLL)
+      signpostId3 = [infoCopy signpostId];
+      if ((signpostId3 - 1) <= 0xFFFFFFFFFFFFFFFDLL)
       {
-        v32 = v31;
+        v32 = signpostId3;
         if (os_signpost_enabled(v30))
         {
-          v33 = [v6 logKey];
-          v34 = [v7 URL];
+          logKey4 = [infoCopy logKey];
+          v34 = [requestCopy URL];
           *buf = 138543618;
-          v66 = v33;
+          v66 = logKey4;
           v67 = 2114;
           v68 = v34;
           _os_signpost_emit_with_name_impl(&_mh_execute_header, v30, OS_SIGNPOST_EVENT, v32, "SessionError", " uuid=%{public, signpost.description:attribute}@  request=%{public, signpost.description:attribute}@ ", buf, 0x16u);
@@ -1895,9 +1895,9 @@ LABEL_25:
       }
 
       v35 = [NSError errorWithDomain:@"AssetErrorDomain" code:4 userInfo:0];
-      [v6 setError:v35];
+      [infoCopy setError:v35];
 
-      [(AssetSession *)self _finishPromiseUsingTaskInfo:v6];
+      [(AssetSession *)self _finishPromiseUsingTaskInfo:infoCopy];
     }
   }
 }

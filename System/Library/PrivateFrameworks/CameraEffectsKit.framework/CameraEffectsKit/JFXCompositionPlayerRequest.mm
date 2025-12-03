@@ -1,7 +1,7 @@
 @interface JFXCompositionPlayerRequest
-+ (id)stringFromRequestType:(unint64_t)a3;
++ (id)stringFromRequestType:(unint64_t)type;
 - (JFXCompositionPlayer)player;
-- (JFXCompositionPlayerRequest)initWithBlock:(id)a3 ofType:(unint64_t)a4;
+- (JFXCompositionPlayerRequest)initWithBlock:(id)block ofType:(unint64_t)type;
 - (id)description;
 - (void)didBegin;
 - (void)didCancel;
@@ -11,21 +11,21 @@
 
 @implementation JFXCompositionPlayerRequest
 
-- (JFXCompositionPlayerRequest)initWithBlock:(id)a3 ofType:(unint64_t)a4
+- (JFXCompositionPlayerRequest)initWithBlock:(id)block ofType:(unint64_t)type
 {
-  v6 = a3;
+  blockCopy = block;
   v14.receiver = self;
   v14.super_class = JFXCompositionPlayerRequest;
   v7 = [(JFXCompositionPlayerRequest *)&v14 init];
   if (v7)
   {
-    v8 = [MEMORY[0x277CCAD78] UUID];
-    v9 = [v8 UUIDString];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
     uniqueID = v7->_uniqueID;
-    v7->_uniqueID = v9;
+    v7->_uniqueID = uUIDString;
 
-    v7->_type = a4;
-    v11 = MEMORY[0x245D22230](v6);
+    v7->_type = type;
+    v11 = MEMORY[0x245D22230](blockCopy);
     block = v7->_block;
     v7->_block = v11;
   }
@@ -33,16 +33,16 @@
   return v7;
 }
 
-+ (id)stringFromRequestType:(unint64_t)a3
++ (id)stringFromRequestType:(unint64_t)type
 {
-  if (a3 - 1 > 6)
+  if (type - 1 > 6)
   {
     return 0;
   }
 
   else
   {
-    return *(&off_278D7C450 + a3 - 1);
+    return *(&off_278D7C450 + type - 1);
   }
 }
 
@@ -52,11 +52,11 @@
   v11.receiver = self;
   v11.super_class = JFXCompositionPlayerRequest;
   v4 = [(JFXCompositionPlayerRequest *)&v11 description];
-  v5 = [(JFXCompositionPlayerRequest *)self uniqueID];
+  uniqueID = [(JFXCompositionPlayerRequest *)self uniqueID];
   v6 = [objc_opt_class() stringFromRequestType:{-[JFXCompositionPlayerRequest type](self, "type")}];
-  v7 = [(JFXCompositionPlayerRequest *)self player];
-  v8 = [v7 displayName];
-  v9 = [v3 stringWithFormat:@"<%@ id %@ type %@ player %@>", v4, v5, v6, v8];
+  player = [(JFXCompositionPlayerRequest *)self player];
+  displayName = [player displayName];
+  v9 = [v3 stringWithFormat:@"<%@ id %@ type %@ player %@>", v4, uniqueID, v6, displayName];
 
   return v9;
 }
@@ -65,14 +65,14 @@
 {
   v8 = *MEMORY[0x277D85DE8];
   v3 = JFXPlaybackEventSignpostPointCategory();
-  v4 = [(JFXCompositionPlayerRequest *)self signPostID];
-  if (v4 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+  signPostID = [(JFXCompositionPlayerRequest *)self signPostID];
+  if (signPostID - 1 <= 0xFFFFFFFFFFFFFFFDLL)
   {
-    v5 = v4;
+    v5 = signPostID;
     if (os_signpost_enabled(v3))
     {
       v6 = 138412290;
-      v7 = self;
+      selfCopy = self;
       _os_signpost_emit_with_name_impl(&dword_242A3B000, v3, OS_SIGNPOST_EVENT, v5, "PlayerRequest", "enqueue %@", &v6, 0xCu);
     }
   }
@@ -82,14 +82,14 @@
 {
   v8 = *MEMORY[0x277D85DE8];
   v3 = JFXPlaybackIntervalSignpostCategory();
-  v4 = [(JFXCompositionPlayerRequest *)self signPostID];
-  if (v4 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+  signPostID = [(JFXCompositionPlayerRequest *)self signPostID];
+  if (signPostID - 1 <= 0xFFFFFFFFFFFFFFFDLL)
   {
-    v5 = v4;
+    v5 = signPostID;
     if (os_signpost_enabled(v3))
     {
       v6 = 138543362;
-      v7 = self;
+      selfCopy = self;
       _os_signpost_emit_with_name_impl(&dword_242A3B000, v3, OS_SIGNPOST_INTERVAL_BEGIN, v5, "PlayerRequest", "Request %{public}@", &v6, 0xCu);
     }
   }
@@ -98,10 +98,10 @@
 - (void)didComplete
 {
   v3 = JFXPlaybackIntervalSignpostCategory();
-  v4 = [(JFXCompositionPlayerRequest *)self signPostID];
-  if (v4 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+  signPostID = [(JFXCompositionPlayerRequest *)self signPostID];
+  if (signPostID - 1 <= 0xFFFFFFFFFFFFFFFDLL)
   {
-    v5 = v4;
+    v5 = signPostID;
     if (os_signpost_enabled(v3))
     {
       *v6 = 0;
@@ -113,10 +113,10 @@
 - (void)didCancel
 {
   v3 = JFXPlaybackIntervalSignpostCategory();
-  v4 = [(JFXCompositionPlayerRequest *)self signPostID];
-  if (v4 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+  signPostID = [(JFXCompositionPlayerRequest *)self signPostID];
+  if (signPostID - 1 <= 0xFFFFFFFFFFFFFFFDLL)
   {
-    v5 = v4;
+    v5 = signPostID;
     if (os_signpost_enabled(v3))
     {
       *v6 = 0;

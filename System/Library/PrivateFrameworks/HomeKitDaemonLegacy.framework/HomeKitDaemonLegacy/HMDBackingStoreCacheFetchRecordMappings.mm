@@ -1,5 +1,5 @@
 @interface HMDBackingStoreCacheFetchRecordMappings
-- (HMDBackingStoreCacheFetchRecordMappings)initWithGroup:(id)a3 fetchResult:(id)a4;
+- (HMDBackingStoreCacheFetchRecordMappings)initWithGroup:(id)group fetchResult:(id)result;
 - (id)mainReturningError;
 @end
 
@@ -7,7 +7,7 @@
 
 - (id)mainReturningError
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -21,13 +21,13 @@
   v16 = &unk_279723740;
   objc_copyWeak(&v19, &location);
   v18 = &v21;
-  v4 = v3;
+  v4 = array;
   v17 = v4;
   v5 = _Block_copy(&v13);
   v6 = [(HMDBackingStoreOperation *)self store:v13];
-  v7 = [v6 local];
-  v8 = [(HMDBackingStoreCacheFetchRecordMappings *)self group];
-  [v7 _fetchRecordMapWithGroupID:objc_msgSend(v8 callback:{"groupID"), v5}];
+  local = [v6 local];
+  group = [(HMDBackingStoreCacheFetchRecordMappings *)self group];
+  [local _fetchRecordMapWithGroupID:objc_msgSend(group callback:{"groupID"), v5}];
 
   if (v22[5])
   {
@@ -35,12 +35,12 @@
     v4 = 0;
   }
 
-  v9 = [(HMDBackingStoreCacheFetchRecordMappings *)self fetchResult];
+  fetchResult = [(HMDBackingStoreCacheFetchRecordMappings *)self fetchResult];
 
-  if (v9)
+  if (fetchResult)
   {
-    v10 = [(HMDBackingStoreCacheFetchRecordMappings *)self fetchResult];
-    (v10)[2](v10, v4, v22[5]);
+    fetchResult2 = [(HMDBackingStoreCacheFetchRecordMappings *)self fetchResult];
+    (fetchResult2)[2](fetchResult2, v4, v22[5]);
   }
 
   v11 = v22[5];
@@ -89,18 +89,18 @@ LABEL_6:
   return v15 != 0;
 }
 
-- (HMDBackingStoreCacheFetchRecordMappings)initWithGroup:(id)a3 fetchResult:(id)a4
+- (HMDBackingStoreCacheFetchRecordMappings)initWithGroup:(id)group fetchResult:(id)result
 {
-  v7 = a3;
-  v8 = a4;
+  groupCopy = group;
+  resultCopy = result;
   v15.receiver = self;
   v15.super_class = HMDBackingStoreCacheFetchRecordMappings;
   v9 = [(HMDBackingStoreOperation *)&v15 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_group, a3);
-    v11 = _Block_copy(v8);
+    objc_storeStrong(&v9->_group, group);
+    v11 = _Block_copy(resultCopy);
     fetchResult = v10->_fetchResult;
     v10->_fetchResult = v11;
 

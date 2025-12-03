@@ -1,18 +1,18 @@
 @interface SGThreadParser
-+ (id)emailFrom:(id)a3 entity:(id)a4;
-+ (id)ipsosMessageWithSearchableItem:(id)a3;
-+ (id)nextMessage:(id)a3 entity:(id)a4;
-+ (id)stripChevrons:(id)a3;
-+ (void)enumeratePreviousMessages:(id)a3 inEntity:(id)a4 usingBlock:(id)a5;
++ (id)emailFrom:(id)from entity:(id)entity;
++ (id)ipsosMessageWithSearchableItem:(id)item;
++ (id)nextMessage:(id)message entity:(id)entity;
++ (id)stripChevrons:(id)chevrons;
++ (void)enumeratePreviousMessages:(id)messages inEntity:(id)entity usingBlock:(id)block;
 @end
 
 @implementation SGThreadParser
 
-+ (id)ipsosMessageWithSearchableItem:(id)a3
++ (id)ipsosMessageWithSearchableItem:(id)item
 {
-  v3 = [(SGMessage *)SGSimpleMailMessage messageWithSearchableItem:a3];
-  v4 = [v3 textContent];
-  v5 = [v4 length];
+  v3 = [(SGMessage *)SGSimpleMailMessage messageWithSearchableItem:item];
+  textContent = [v3 textContent];
+  v5 = [textContent length];
 
   if (v5)
   {
@@ -27,13 +27,13 @@
   return v6;
 }
 
-+ (void)enumeratePreviousMessages:(id)a3 inEntity:(id)a4 usingBlock:(id)a5
++ (void)enumeratePreviousMessages:(id)messages inEntity:(id)entity usingBlock:(id)block
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  messagesCopy = messages;
+  entityCopy = entity;
+  blockCopy = block;
   v10 = objc_autoreleasePoolPush();
-  v11 = [SGThreadParser nextMessage:v7 entity:v8];
+  v11 = [SGThreadParser nextMessage:messagesCopy entity:entityCopy];
   objc_autoreleasePoolPop(v10);
   if (v11)
   {
@@ -44,16 +44,16 @@
       v14 = [v12 namedEmailAddressWithFieldValue:v13];
 
       v15 = [v11 objectAtIndexedSubscript:0];
-      v16 = [v14 emailAddress];
+      emailAddress = [v14 emailAddress];
       v17 = SGNormalizeEmailAddress();
-      v9[2](v9, v15, v17);
+      blockCopy[2](blockCopy, v15, v17);
 
       v19 = [v11 objectAtIndexedSubscript:0];
 
       v18 = objc_autoreleasePoolPush();
-      v11 = [SGThreadParser nextMessage:v19 entity:v8];
+      v11 = [SGThreadParser nextMessage:v19 entity:entityCopy];
       objc_autoreleasePoolPop(v18);
-      v7 = v19;
+      messagesCopy = v19;
     }
 
     while (v11);
@@ -61,21 +61,21 @@
 
   else
   {
-    v19 = v7;
+    v19 = messagesCopy;
   }
 }
 
-+ (id)nextMessage:(id)a3 entity:(id)a4
++ (id)nextMessage:(id)message entity:(id)entity
 {
   v72[2] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  messageCopy = message;
+  entityCopy = entity;
   v66 = 0;
   v67 = &v66;
   v68 = 0x3032000000;
   v69 = __Block_byref_object_copy__9240;
   v70 = __Block_byref_object_dispose__9241;
-  v7 = v5;
+  v7 = messageCopy;
   v71 = v7;
   v63 = 0;
   v64[0] = &v63;
@@ -134,17 +134,17 @@
         goto LABEL_28;
       }
 
-      v15 = -1;
+      rangeValue2 = -1;
       goto LABEL_9;
     }
 
-    v15 = -1;
+    rangeValue2 = -1;
 LABEL_6:
-    v17 = [v16 rangeValue];
+    rangeValue = [v16 rangeValue];
     goto LABEL_10;
   }
 
-  v15 = [v14 rangeValue];
+  rangeValue2 = [v14 rangeValue];
   v16 = *(v61[0] + 40);
   if (v16)
   {
@@ -152,10 +152,10 @@ LABEL_6:
   }
 
 LABEL_9:
-  v17 = -1;
+  rangeValue = -1;
 LABEL_10:
   v18 = v55[5];
-  if (v18 && (v19 = [v18 rangeValue], v19 < v15) && v19 < v17)
+  if (v18 && (v19 = [v18 rangeValue], v19 < rangeValue2) && v19 < rangeValue)
   {
     v20 = objc_autoreleasePoolPush();
     v21 = [v67[5] substringFromIndex:{objc_msgSend(v55[5], "rangeValue")}];
@@ -174,19 +174,19 @@ LABEL_10:
   {
     v26 = objc_autoreleasePoolPush();
     v27 = v64;
-    if (v15 >= v17)
+    if (rangeValue2 >= rangeValue)
     {
       v27 = v61;
     }
 
     v28 = *(*v27 + 40);
     v29 = v67[5];
-    v30 = [v28 rangeValue];
-    v32 = [v29 substringWithRange:{v30, v31}];
+    rangeValue3 = [v28 rangeValue];
+    v32 = [v29 substringWithRange:{rangeValue3, v31}];
     v33 = v67[5];
-    v34 = [v28 rangeValue];
+    rangeValue4 = [v28 rangeValue];
     [v28 rangeValue];
-    v36 = [v33 substringFromIndex:v35 + v34];
+    v36 = [v33 substringFromIndex:v35 + rangeValue4];
     v37 = v67[5];
     v67[5] = v36;
 
@@ -213,7 +213,7 @@ LABEL_10:
       v67[5] = v43;
     }
 
-    v45 = [SGThreadParser emailFrom:v32 entity:v6];
+    v45 = [SGThreadParser emailFrom:v32 entity:entityCopy];
     v46 = v45;
     if (v45)
     {
@@ -297,10 +297,10 @@ uint64_t __37__SGThreadParser_nextMessage_entity___block_invoke_4(uint64_t a1, v
   return 0;
 }
 
-+ (id)emailFrom:(id)a3 entity:(id)a4
++ (id)emailFrom:(id)from entity:(id)entity
 {
-  v5 = a3;
-  v6 = a4;
+  fromCopy = from;
+  entityCopy = entity;
   v41 = 0;
   v42 = &v41;
   v43 = 0x2020000000;
@@ -317,7 +317,7 @@ uint64_t __37__SGThreadParser_nextMessage_entity___block_invoke_4(uint64_t a1, v
   v36[3] = &unk_27894CBB8;
   v36[4] = &v41;
   v36[5] = &v37;
-  [v8 enumerateMatchesInString:v5 ngroups:0 block:v36];
+  [v8 enumerateMatchesInString:fromCopy ngroups:0 block:v36];
 
   v9 = v42[3];
   if (v9 == 0x7FFFFFFFFFFFFFFFLL || v38[3] == v9)
@@ -328,10 +328,10 @@ uint64_t __37__SGThreadParser_nextMessage_entity___block_invoke_4(uint64_t a1, v
   else
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = [v5 substringWithRange:{v42[3], v38[3] - v42[3]}];
+    v12 = [fromCopy substringWithRange:{v42[3], v38[3] - v42[3]}];
     objc_autoreleasePoolPop(v11);
-    v13 = [v6 emailToCanonicalEmailCache];
-    v14 = [v13 objectForKeyedSubscript:v12];
+    emailToCanonicalEmailCache = [entityCopy emailToCanonicalEmailCache];
+    v14 = [emailToCanonicalEmailCache objectForKeyedSubscript:v12];
 
     if (v14)
     {
@@ -340,8 +340,8 @@ uint64_t __37__SGThreadParser_nextMessage_entity___block_invoke_4(uint64_t a1, v
 
     else
     {
-      v15 = [v5 length] - 1;
-      if (v38[3] < v15 && [v5 characterAtIndex:?] == 62)
+      v15 = [fromCopy length] - 1;
+      if (v38[3] < v15 && [fromCopy characterAtIndex:?] == 62)
       {
         ++v38[3];
       }
@@ -349,7 +349,7 @@ uint64_t __37__SGThreadParser_nextMessage_entity___block_invoke_4(uint64_t a1, v
       v16 = v42[3];
       if (v16)
       {
-        v17 = [v5 characterAtIndex:v16 - 1];
+        v17 = [fromCopy characterAtIndex:v16 - 1];
         v18 = v42[3];
         if (v17 == 60)
         {
@@ -358,7 +358,7 @@ uint64_t __37__SGThreadParser_nextMessage_entity___block_invoke_4(uint64_t a1, v
 
         if (v18)
         {
-          v19 = [v5 characterAtIndex:v18 - 1];
+          v19 = [fromCopy characterAtIndex:v18 - 1];
           v20 = MEMORY[0x277D85DE0];
           if (v19 > 0x7F ? __maskrune(v19, 0x4000uLL) : *(MEMORY[0x277D85DE0] + 4 * v19 + 60) & 0x4000)
           {
@@ -371,7 +371,7 @@ uint64_t __37__SGThreadParser_nextMessage_entity___block_invoke_4(uint64_t a1, v
                 break;
               }
 
-              v23 = [v5 characterAtIndex:v22 - 2];
+              v23 = [fromCopy characterAtIndex:v22 - 2];
               if (v23 > 0x7F)
               {
                 if (!__maskrune(v23, 0x4000uLL))
@@ -380,7 +380,7 @@ LABEL_22:
                   v24 = v42[3];
                   if (v24)
                   {
-                    v25 = [v5 characterAtIndex:v24 - 1];
+                    v25 = [fromCopy characterAtIndex:v24 - 1];
                     v26 = v42;
                     v27 = v42[3];
                     if (v25 == 34)
@@ -394,12 +394,12 @@ LABEL_22:
                           break;
                         }
 
-                        v29 = [v5 characterAtIndex:v28 - 1];
+                        v29 = [fromCopy characterAtIndex:v28 - 1];
                         v26 = v42;
                         v27 = v42[3];
                         if (v29 == 34)
                         {
-                          if (v27 && [v5 characterAtIndex:v27 - 1] == 34)
+                          if (v27 && [fromCopy characterAtIndex:v27 - 1] == 34)
                           {
                             --v42[3];
                           }
@@ -413,7 +413,7 @@ LABEL_22:
                     {
                       for (; v27; v42[3] = v27)
                       {
-                        v30 = [v5 characterAtIndex:v27 - 1];
+                        v30 = [fromCopy characterAtIndex:v27 - 1];
                         if (v30 <= 0x3F && ((1 << v30) & 0x8400100200000000) != 0)
                         {
                           break;
@@ -444,13 +444,13 @@ LABEL_22:
 
 LABEL_34:
       v31 = objc_autoreleasePoolPush();
-      v32 = [v5 substringWithRange:{v42[3], v38[3] - v42[3]}];
-      v33 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-      v10 = [v32 stringByTrimmingCharactersInSet:v33];
+      v32 = [fromCopy substringWithRange:{v42[3], v38[3] - v42[3]}];
+      whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+      v10 = [v32 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
       objc_autoreleasePoolPop(v31);
-      v34 = [v6 emailToCanonicalEmailCache];
-      [v34 setObject:v10 forKeyedSubscript:v12];
+      emailToCanonicalEmailCache2 = [entityCopy emailToCanonicalEmailCache];
+      [emailToCanonicalEmailCache2 setObject:v10 forKeyedSubscript:v12];
     }
   }
 
@@ -467,21 +467,21 @@ uint64_t __35__SGThreadParser_emailFrom_entity___block_invoke(uint64_t a1, void 
   return 0;
 }
 
-+ (id)stripChevrons:(id)a3
++ (id)stripChevrons:(id)chevrons
 {
   v30 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  chevronsCopy = chevrons;
   context = objc_autoreleasePoolPush();
   v4 = patterns();
   v21 = [v4 regex2ForKey:@"NonQuotedLinePart"];
 
-  v5 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
   v6 = objc_opt_new();
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v7 = [v3 componentsSeparatedByString:@"\n"];
+  v7 = [chevronsCopy componentsSeparatedByString:@"\n"];
   v8 = [v7 countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v8)
   {
@@ -498,7 +498,7 @@ uint64_t __35__SGThreadParser_emailFrom_entity___block_invoke(uint64_t a1, void 
 
         v12 = *(*(&v25 + 1) + 8 * i);
         v13 = objc_autoreleasePoolPush();
-        v14 = [v12 stringByTrimmingCharactersInSet:v5];
+        v14 = [v12 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
         if ([v14 length])
         {
           v15 = objc_autoreleasePoolPush();
@@ -523,7 +523,7 @@ uint64_t __35__SGThreadParser_emailFrom_entity___block_invoke(uint64_t a1, void 
   }
 
   v16 = [v6 _pas_componentsJoinedByString:@"\n"];
-  v17 = [v16 stringByTrimmingCharactersInSet:v5];
+  v17 = [v16 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
   objc_autoreleasePoolPop(context);
   v18 = *MEMORY[0x277D85DE8];

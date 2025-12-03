@@ -1,19 +1,19 @@
 @interface HUAnnouncementGlobeViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)_playAnnouncementWithInfo:(id)a3;
-- (void)_setupSubviewsForAnnouncementInfo:(id)a3;
+- (void)_playAnnouncementWithInfo:(id)info;
+- (void)_setupSubviewsForAnnouncementInfo:(id)info;
 @end
 
 @implementation HUAnnouncementGlobeViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"HUAnnouncementGlobeView" hasInstanceVariable:@"_tappableCoverView" withType:"UIView"];
-  [v3 validateClass:@"HUAnnouncementGlobeView" hasInstanceMethod:@"_setupSubviewsForAnnouncementInfo:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"HUAnnouncementGlobeView" hasInstanceMethod:@"_playAnnouncementWithInfo:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"HUAnnouncementGlobeView" hasInstanceMethod:@"audioPlayer" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"HUAnnouncementGlobeView" hasInstanceVariable:@"_tappableCoverView" withType:"UIView"];
+  [validationsCopy validateClass:@"HUAnnouncementGlobeView" hasInstanceMethod:@"_setupSubviewsForAnnouncementInfo:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"HUAnnouncementGlobeView" hasInstanceMethod:@"_playAnnouncementWithInfo:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"HUAnnouncementGlobeView" hasInstanceMethod:@"audioPlayer" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -60,19 +60,19 @@ id __82__HUAnnouncementGlobeViewAccessibility__accessibilityLoadAccessibilityInf
   return v4;
 }
 
-- (void)_setupSubviewsForAnnouncementInfo:(id)a3
+- (void)_setupSubviewsForAnnouncementInfo:(id)info
 {
   v4.receiver = self;
   v4.super_class = HUAnnouncementGlobeViewAccessibility;
-  [(HUAnnouncementGlobeViewAccessibility *)&v4 _setupSubviewsForAnnouncementInfo:a3];
+  [(HUAnnouncementGlobeViewAccessibility *)&v4 _setupSubviewsForAnnouncementInfo:info];
   [(HUAnnouncementGlobeViewAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
 
-- (void)_playAnnouncementWithInfo:(id)a3
+- (void)_playAnnouncementWithInfo:(id)info
 {
   v3.receiver = self;
   v3.super_class = HUAnnouncementGlobeViewAccessibility;
-  [(HUAnnouncementGlobeViewAccessibility *)&v3 _playAnnouncementWithInfo:a3];
+  [(HUAnnouncementGlobeViewAccessibility *)&v3 _playAnnouncementWithInfo:info];
   UIAccessibilityPostNotification(*MEMORY[0x29EDC7EA8], &stru_2A21C2B40);
 }
 

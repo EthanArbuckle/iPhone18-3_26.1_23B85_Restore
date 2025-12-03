@@ -1,41 +1,41 @@
 @interface HMMTRDeviceReader
-- (HMMTRDeviceReader)initWithClientQueue:(id)a3 distributor:(id)a4 device:(id)a5 endpointID:(id)a6 clusterID:(id)a7 attributeID:(id)a8;
-- (void)_readAttributeAfterAttributeListConfirmationWithCompletionHandler:(id)a3;
-- (void)readAttributeWithCompletion:(id)a3;
+- (HMMTRDeviceReader)initWithClientQueue:(id)queue distributor:(id)distributor device:(id)device endpointID:(id)d clusterID:(id)iD attributeID:(id)attributeID;
+- (void)_readAttributeAfterAttributeListConfirmationWithCompletionHandler:(id)handler;
+- (void)readAttributeWithCompletion:(id)completion;
 @end
 
 @implementation HMMTRDeviceReader
 
-- (void)_readAttributeAfterAttributeListConfirmationWithCompletionHandler:(id)a3
+- (void)_readAttributeAfterAttributeListConfirmationWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(HMMTRDeviceReader *)self device];
-  v6 = [(HMMTRDeviceReader *)self endpointID];
-  v7 = [(HMMTRDeviceReader *)self clusterID];
-  v8 = [(HMMTRDeviceReader *)self attributeID];
+  handlerCopy = handler;
+  device = [(HMMTRDeviceReader *)self device];
+  endpointID = [(HMMTRDeviceReader *)self endpointID];
+  clusterID = [(HMMTRDeviceReader *)self clusterID];
+  attributeID = [(HMMTRDeviceReader *)self attributeID];
   v9 = objc_alloc_init(MEMORY[0x277CD54D8]);
-  v10 = [v5 readAttributeWithEndpointID:v6 clusterID:v7 attributeID:v8 params:v9];
+  v10 = [device readAttributeWithEndpointID:endpointID clusterID:clusterID attributeID:attributeID params:v9];
 
   if (v10)
   {
-    v11 = [(HMMTRDeviceReader *)self clientQueue];
+    clientQueue = [(HMMTRDeviceReader *)self clientQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __87__HMMTRDeviceReader__readAttributeAfterAttributeListConfirmationWithCompletionHandler___block_invoke;
     block[3] = &unk_2786EF5A8;
-    v43 = v4;
+    v43 = handlerCopy;
     v42 = v10;
-    v12 = v4;
-    dispatch_async(v11, block);
+    v12 = handlerCopy;
+    dispatch_async(clientQueue, block);
   }
 
   else
   {
     v13 = MEMORY[0x277CD51C0];
-    v14 = [(HMMTRDeviceReader *)self endpointID];
-    v15 = [(HMMTRDeviceReader *)self clusterID];
-    v16 = [(HMMTRDeviceReader *)self attributeID];
-    v17 = [v13 attributePathWithEndpointID:v14 clusterID:v15 attributeID:v16];
+    endpointID2 = [(HMMTRDeviceReader *)self endpointID];
+    clusterID2 = [(HMMTRDeviceReader *)self clusterID];
+    attributeID2 = [(HMMTRDeviceReader *)self attributeID];
+    v17 = [v13 attributePathWithEndpointID:endpointID2 clusterID:clusterID2 attributeID:attributeID2];
 
     v35 = 0;
     v36 = &v35;
@@ -43,8 +43,8 @@
     v38 = __Block_byref_object_copy__5708;
     v39 = __Block_byref_object_dispose__5709;
     v40 = 0;
-    v18 = [(HMMTRDeviceReader *)self distributor];
-    v19 = [(HMMTRDeviceReader *)self clientQueue];
+    distributor = [(HMMTRDeviceReader *)self distributor];
+    clientQueue2 = [(HMMTRDeviceReader *)self clientQueue];
     v31[0] = MEMORY[0x277D85DD0];
     v31[1] = 3221225472;
     v31[2] = __87__HMMTRDeviceReader__readAttributeAfterAttributeListConfirmationWithCompletionHandler___block_invoke_2;
@@ -53,14 +53,14 @@
     v31[4] = self;
     v20 = v17;
     v32 = v20;
-    v21 = v4;
+    v21 = handlerCopy;
     v33 = v21;
-    v22 = [v18 registerHandlerForAttributePath:v20 queue:v19 handler:v31];
+    v22 = [distributor registerHandlerForAttributePath:v20 queue:clientQueue2 handler:v31];
     v23 = v36[5];
     v36[5] = v22;
 
     v24 = dispatch_time(0, [(HMMTRDeviceReader *)self reportTimeoutNSecs]);
-    v25 = [(HMMTRDeviceReader *)self clientQueue];
+    clientQueue3 = [(HMMTRDeviceReader *)self clientQueue];
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
     v27[2] = __87__HMMTRDeviceReader__readAttributeAfterAttributeListConfirmationWithCompletionHandler___block_invoke_3;
@@ -71,7 +71,7 @@
     v30 = &v35;
     v26 = v21;
     v12 = v20;
-    dispatch_after(v24, v25, v27);
+    dispatch_after(v24, clientQueue3, v27);
 
     _Block_object_dispose(&v35, 8);
   }
@@ -132,37 +132,37 @@ uint64_t __87__HMMTRDeviceReader__readAttributeAfterAttributeListConfirmationWit
   return result;
 }
 
-- (void)readAttributeWithCompletion:(id)a3
+- (void)readAttributeWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(HMMTRDeviceReader *)self device];
-  v6 = [(HMMTRDeviceReader *)self endpointID];
-  v7 = [(HMMTRDeviceReader *)self clusterID];
-  v8 = [(HMMTRDeviceReader *)self attributeID];
+  completionCopy = completion;
+  device = [(HMMTRDeviceReader *)self device];
+  endpointID = [(HMMTRDeviceReader *)self endpointID];
+  clusterID = [(HMMTRDeviceReader *)self clusterID];
+  attributeID = [(HMMTRDeviceReader *)self attributeID];
   v9 = objc_alloc_init(MEMORY[0x277CD54D8]);
-  v10 = [v5 readAttributeWithEndpointID:v6 clusterID:v7 attributeID:v8 params:v9];
+  v10 = [device readAttributeWithEndpointID:endpointID clusterID:clusterID attributeID:attributeID params:v9];
 
   if (v10)
   {
-    v11 = [(HMMTRDeviceReader *)self clientQueue];
+    clientQueue = [(HMMTRDeviceReader *)self clientQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __49__HMMTRDeviceReader_readAttributeWithCompletion___block_invoke;
     block[3] = &unk_2786EF5A8;
-    v57 = v4;
+    v57 = completionCopy;
     v56 = v10;
-    dispatch_async(v11, block);
+    dispatch_async(clientQueue, block);
 
     v12 = v57;
   }
 
   else
   {
-    v13 = [(HMMTRDeviceReader *)self device];
-    v14 = [(HMMTRDeviceReader *)self endpointID];
-    v15 = [(HMMTRDeviceReader *)self clusterID];
+    device2 = [(HMMTRDeviceReader *)self device];
+    endpointID2 = [(HMMTRDeviceReader *)self endpointID];
+    clusterID2 = [(HMMTRDeviceReader *)self clusterID];
     v16 = objc_alloc_init(MEMORY[0x277CD54D8]);
-    v12 = [v13 readAttributeWithEndpointID:v14 clusterID:v15 attributeID:&unk_283EE8148 params:v16];
+    v12 = [device2 readAttributeWithEndpointID:endpointID2 clusterID:clusterID2 attributeID:&unk_283EE8148 params:v16];
 
     if (v12)
     {
@@ -179,10 +179,10 @@ uint64_t __87__HMMTRDeviceReader__readAttributeAfterAttributeListConfirmationWit
       }
 
       v19 = v18;
-      v20 = [(HMMTRDeviceReader *)self attributeID];
-      v21 = [v19 containsObject:v20];
+      attributeID2 = [(HMMTRDeviceReader *)self attributeID];
+      v21 = [v19 containsObject:attributeID2];
 
-      v22 = [(HMMTRDeviceReader *)self clientQueue];
+      clientQueue2 = [(HMMTRDeviceReader *)self clientQueue];
       if (v21)
       {
         v51[0] = MEMORY[0x277D85DD0];
@@ -190,8 +190,8 @@ uint64_t __87__HMMTRDeviceReader__readAttributeAfterAttributeListConfirmationWit
         v51[2] = __49__HMMTRDeviceReader_readAttributeWithCompletion___block_invoke_2;
         v51[3] = &unk_2786EF5A8;
         v51[4] = self;
-        v52 = v4;
-        dispatch_async(v22, v51);
+        v52 = completionCopy;
+        dispatch_async(clientQueue2, v51);
 
         v23 = v52;
       }
@@ -202,8 +202,8 @@ uint64_t __87__HMMTRDeviceReader__readAttributeAfterAttributeListConfirmationWit
         v53[1] = 3221225472;
         v53[2] = __49__HMMTRDeviceReader_readAttributeWithCompletion___block_invoke_5;
         v53[3] = &unk_2786EF878;
-        v54 = v4;
-        dispatch_async(v22, v53);
+        v54 = completionCopy;
+        dispatch_async(clientQueue2, v53);
 
         v23 = v54;
       }
@@ -212,9 +212,9 @@ uint64_t __87__HMMTRDeviceReader__readAttributeAfterAttributeListConfirmationWit
     else
     {
       v24 = MEMORY[0x277CD51C0];
-      v25 = [(HMMTRDeviceReader *)self endpointID];
-      v26 = [(HMMTRDeviceReader *)self clusterID];
-      v27 = [v24 attributePathWithEndpointID:v25 clusterID:v26 attributeID:&unk_283EE8148];
+      endpointID3 = [(HMMTRDeviceReader *)self endpointID];
+      clusterID3 = [(HMMTRDeviceReader *)self clusterID];
+      v27 = [v24 attributePathWithEndpointID:endpointID3 clusterID:clusterID3 attributeID:&unk_283EE8148];
 
       v45 = 0;
       v46 = &v45;
@@ -222,8 +222,8 @@ uint64_t __87__HMMTRDeviceReader__readAttributeAfterAttributeListConfirmationWit
       v48 = __Block_byref_object_copy__5708;
       v49 = __Block_byref_object_dispose__5709;
       v50 = 0;
-      v28 = [(HMMTRDeviceReader *)self distributor];
-      v29 = [(HMMTRDeviceReader *)self clientQueue];
+      distributor = [(HMMTRDeviceReader *)self distributor];
+      clientQueue3 = [(HMMTRDeviceReader *)self clientQueue];
       v41[0] = MEMORY[0x277D85DD0];
       v41[1] = 3221225472;
       v41[2] = __49__HMMTRDeviceReader_readAttributeWithCompletion___block_invoke_7;
@@ -232,14 +232,14 @@ uint64_t __87__HMMTRDeviceReader__readAttributeAfterAttributeListConfirmationWit
       v41[4] = self;
       v30 = v27;
       v42 = v30;
-      v31 = v4;
+      v31 = completionCopy;
       v43 = v31;
-      v32 = [v28 registerHandlerForAttributePath:v30 queue:v29 handler:v41];
+      v32 = [distributor registerHandlerForAttributePath:v30 queue:clientQueue3 handler:v41];
       v33 = v46[5];
       v46[5] = v32;
 
       v34 = dispatch_time(0, [(HMMTRDeviceReader *)self reportTimeoutNSecs]);
-      v35 = [(HMMTRDeviceReader *)self clientQueue];
+      clientQueue4 = [(HMMTRDeviceReader *)self clientQueue];
       v37[0] = MEMORY[0x277D85DD0];
       v37[1] = 3221225472;
       v37[2] = __49__HMMTRDeviceReader_readAttributeWithCompletion___block_invoke_2_9;
@@ -249,7 +249,7 @@ uint64_t __87__HMMTRDeviceReader__readAttributeAfterAttributeListConfirmationWit
       v38 = v30;
       v39 = v31;
       v36 = v30;
-      dispatch_after(v34, v35, v37);
+      dispatch_after(v34, clientQueue4, v37);
 
       _Block_object_dispose(&v45, 8);
       v12 = 0;
@@ -339,26 +339,26 @@ uint64_t __49__HMMTRDeviceReader_readAttributeWithCompletion___block_invoke_2_9(
   return result;
 }
 
-- (HMMTRDeviceReader)initWithClientQueue:(id)a3 distributor:(id)a4 device:(id)a5 endpointID:(id)a6 clusterID:(id)a7 attributeID:(id)a8
+- (HMMTRDeviceReader)initWithClientQueue:(id)queue distributor:(id)distributor device:(id)device endpointID:(id)d clusterID:(id)iD attributeID:(id)attributeID
 {
-  v23 = a3;
-  v22 = a4;
-  v21 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  queueCopy = queue;
+  distributorCopy = distributor;
+  deviceCopy = device;
+  dCopy = d;
+  iDCopy = iD;
+  attributeIDCopy = attributeID;
   v24.receiver = self;
   v24.super_class = HMMTRDeviceReader;
   v18 = [(HMMTRDeviceReader *)&v24 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_clientQueue, a3);
-    objc_storeStrong(&v19->_distributor, a4);
-    objc_storeStrong(&v19->_device, a5);
-    objc_storeStrong(&v19->_endpointID, a6);
-    objc_storeStrong(&v19->_clusterID, a7);
-    objc_storeStrong(&v19->_attributeID, a8);
+    objc_storeStrong(&v18->_clientQueue, queue);
+    objc_storeStrong(&v19->_distributor, distributor);
+    objc_storeStrong(&v19->_device, device);
+    objc_storeStrong(&v19->_endpointID, d);
+    objc_storeStrong(&v19->_clusterID, iD);
+    objc_storeStrong(&v19->_attributeID, attributeID);
     v19->_reportTimeoutNSecs = 60000000000;
   }
 

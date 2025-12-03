@@ -1,17 +1,17 @@
 @interface VCSecureDataChannel
-- (VCSecureDataChannel)initWithLocalCallID:(unsigned int)a3 remoteCallID:(unsigned int)a4 isCaller:(BOOL)a5 sharedSecret:(id)a6 error:(id *)a7;
-- (int)convertData:(id)a3 toEncryptedData:(id *)a4 encrypted:(BOOL)a5;
-- (int)convertEncryptedData:(id)a3 toData:(id *)a4 encrypted:(BOOL)a5;
-- (int)sendData:(id)a3 messageType:(unsigned int)a4 encrypted:(BOOL)a5;
-- (int)setupWithSharedSecret:(id)a3 isCaller:(BOOL)a4 error:(id *)a5;
+- (VCSecureDataChannel)initWithLocalCallID:(unsigned int)d remoteCallID:(unsigned int)iD isCaller:(BOOL)caller sharedSecret:(id)secret error:(id *)error;
+- (int)convertData:(id)data toEncryptedData:(id *)encryptedData encrypted:(BOOL)encrypted;
+- (int)convertEncryptedData:(id)data toData:(id *)toData encrypted:(BOOL)encrypted;
+- (int)sendData:(id)data messageType:(unsigned int)type encrypted:(BOOL)encrypted;
+- (int)setupWithSharedSecret:(id)secret isCaller:(BOOL)caller error:(id *)error;
 - (void)dealloc;
 @end
 
 @implementation VCSecureDataChannel
 
-- (VCSecureDataChannel)initWithLocalCallID:(unsigned int)a3 remoteCallID:(unsigned int)a4 isCaller:(BOOL)a5 sharedSecret:(id)a6 error:(id *)a7
+- (VCSecureDataChannel)initWithLocalCallID:(unsigned int)d remoteCallID:(unsigned int)iD isCaller:(BOOL)caller sharedSecret:(id)secret error:(id *)error
 {
-  v9 = a5;
+  callerCopy = caller;
   v51 = *MEMORY[0x1E69E9840];
   v38.receiver = self;
   v38.super_class = VCSecureDataChannel;
@@ -22,10 +22,10 @@
     return v13;
   }
 
-  v12->_localCallID = a3;
-  v12->_remoteCallID = a4;
+  v12->_localCallID = d;
+  v12->_remoteCallID = iD;
   v12->_maxUDPPayloadSize = VCMaxUDPPayloadSize(1280, 1);
-  if ([(VCSecureDataChannel *)v13 setupWithSharedSecret:a6 isCaller:v9 error:a7]< 0)
+  if ([(VCSecureDataChannel *)v13 setupWithSharedSecret:secret isCaller:callerCopy error:error]< 0)
   {
 
     return 0;
@@ -50,7 +50,7 @@
         v18 = *MEMORY[0x1E6986650];
         if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
         {
-          v19 = [(VCSecureDataChannel *)v13 maxEncryptedDataSize];
+          maxEncryptedDataSize = [(VCSecureDataChannel *)v13 maxEncryptedDataSize];
           *buf = 136315906;
           v40 = v17;
           v41 = 2080;
@@ -58,7 +58,7 @@
           v43 = 1024;
           v44 = 74;
           v45 = 2048;
-          v46 = v19;
+          v46 = maxEncryptedDataSize;
           v20 = " [%s] %s:%d maxEncryptedDataSize = %ld";
           v21 = v18;
           v22 = 38;
@@ -86,7 +86,7 @@ LABEL_15:
         v24 = *MEMORY[0x1E6986650];
         if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
         {
-          v25 = [(VCSecureDataChannel *)v13 maxEncryptedDataSize];
+          maxEncryptedDataSize2 = [(VCSecureDataChannel *)v13 maxEncryptedDataSize];
           *buf = 136316418;
           v40 = v23;
           v41 = 2080;
@@ -98,7 +98,7 @@ LABEL_15:
           v47 = 2048;
           v48 = v13;
           v49 = 2048;
-          v50 = v25;
+          v50 = maxEncryptedDataSize2;
           v20 = " [%s] %s:%d %@(%p) maxEncryptedDataSize = %ld";
           v21 = v24;
           v22 = 58;
@@ -116,7 +116,7 @@ LABEL_15:
       v28 = *MEMORY[0x1E6986650];
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
       {
-        v29 = [(VCSecureDataChannel *)v13 maxUnencryptedDataSize];
+        maxUnencryptedDataSize = [(VCSecureDataChannel *)v13 maxUnencryptedDataSize];
         *buf = 136315906;
         v40 = v27;
         v41 = 2080;
@@ -124,7 +124,7 @@ LABEL_15:
         v43 = 1024;
         v44 = 76;
         v45 = 2048;
-        v46 = v29;
+        v46 = maxUnencryptedDataSize;
         v30 = " [%s] %s:%d maxUnencryptedDataSize = %ld";
         v31 = v28;
         v32 = 38;
@@ -152,7 +152,7 @@ LABEL_26:
       v34 = *MEMORY[0x1E6986650];
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
       {
-        v35 = [(VCSecureDataChannel *)v13 maxUnencryptedDataSize];
+        maxUnencryptedDataSize2 = [(VCSecureDataChannel *)v13 maxUnencryptedDataSize];
         *buf = 136316418;
         v40 = v33;
         v41 = 2080;
@@ -164,7 +164,7 @@ LABEL_26:
         v47 = 2048;
         v48 = v13;
         v49 = 2048;
-        v50 = v35;
+        v50 = maxUnencryptedDataSize2;
         v30 = " [%s] %s:%d %@(%p) maxUnencryptedDataSize = %ld";
         v31 = v34;
         v32 = 58;
@@ -241,11 +241,11 @@ LABEL_11:
   [(VCSecureDataChannel *)&v3 dealloc];
 }
 
-- (int)setupWithSharedSecret:(id)a3 isCaller:(BOOL)a4 error:(id *)a5
+- (int)setupWithSharedSecret:(id)secret isCaller:(BOOL)caller error:(id *)error
 {
-  if (a3)
+  if (secret)
   {
-    if ([a3 length] <= 0x9F)
+    if ([secret length] <= 0x9F)
     {
       v8 = -2144993279;
       if (VRTraceGetErrorLogLevelForModule() >= 3)
@@ -254,7 +254,7 @@ LABEL_11:
         v10 = *MEMORY[0x1E6986650];
         if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_ERROR))
         {
-          [VCSecureDataChannel setupWithSharedSecret:v9 isCaller:a3 error:v10];
+          [VCSecureDataChannel setupWithSharedSecret:v9 isCaller:secret error:v10];
         }
       }
 
@@ -264,8 +264,8 @@ LABEL_11:
     ccDRBGGetRngState();
     self->tlsRecord = tls_record_create();
     tls_record_set_protocol_version();
-    [a3 bytes];
-    [a3 length];
+    [secret bytes];
+    [secret length];
     if (tls_record_init_pending_ciphers())
     {
       if (VRTraceGetErrorLogLevelForModule() >= 3)
@@ -282,7 +282,7 @@ LABEL_19:
       self->tlsRecord = 0;
       v8 = -2144993228;
 LABEL_20:
-      [GKVoiceChatError getNSError:a5 code:32024 detailedCode:800 returnCode:v8 filePath:0 description:@"Could not setup secure data channel" reason:0];
+      [GKVoiceChatError getNSError:error code:32024 detailedCode:800 returnCode:v8 filePath:0 description:@"Could not setup secure data channel" reason:0];
       return v8;
     }
 
@@ -325,43 +325,43 @@ LABEL_20:
   return v8;
 }
 
-- (int)sendData:(id)a3 messageType:(unsigned int)a4 encrypted:(BOOL)a5
+- (int)sendData:(id)data messageType:(unsigned int)type encrypted:(BOOL)encrypted
 {
-  v5 = a5;
+  encryptedCopy = encrypted;
   v23 = *MEMORY[0x1E69E9840];
   v21 = 0;
-  if (a5)
+  if (encrypted)
   {
-    v9 = [(VCSecureDataChannel *)self maxEncryptedDataSize];
+    maxEncryptedDataSize = [(VCSecureDataChannel *)self maxEncryptedDataSize];
   }
 
   else
   {
-    v9 = [(VCSecureDataChannel *)self maxUnencryptedDataSize];
+    maxEncryptedDataSize = [(VCSecureDataChannel *)self maxUnencryptedDataSize];
   }
 
-  if ([a3 length] > v9)
+  if ([data length] > maxEncryptedDataSize)
   {
-    [VCSecureDataChannel sendData:a3 messageType:&v22 encrypted:?];
+    [VCSecureDataChannel sendData:data messageType:&v22 encrypted:?];
 LABEL_19:
     v19 = v22;
     goto LABEL_13;
   }
 
-  v10 = [(VCSecureDataChannel *)self convertData:a3 toEncryptedData:&v21 encrypted:v5];
+  v10 = [(VCSecureDataChannel *)self convertData:data toEncryptedData:&v21 encrypted:encryptedCopy];
   if (v10 < 0)
   {
     [VCSecureDataChannel sendData:v10 messageType:&v22 encrypted:?];
     goto LABEL_19;
   }
 
-  if (a4 == 1)
+  if (type == 1)
   {
     v17 = 2;
     goto LABEL_12;
   }
 
-  if (a4 == 2)
+  if (type == 2)
   {
     v17 = 6;
     goto LABEL_12;
@@ -372,7 +372,7 @@ LABEL_19:
   {
     v17 = 0;
 LABEL_12:
-    v19 = [(VCTransport *)self->_transport sendData:v21 localCallID:self->_localCallID remoteCallID:self->_remoteCallID encrypted:v5 OFTType:v17];
+    v19 = [(VCTransport *)self->_transport sendData:v21 localCallID:self->_localCallID remoteCallID:self->_remoteCallID encrypted:encryptedCopy OFTType:v17];
     if (!v19)
     {
       goto LABEL_16;
@@ -397,11 +397,11 @@ LABEL_16:
   return v19;
 }
 
-- (int)convertEncryptedData:(id)a3 toData:(id *)a4 encrypted:(BOOL)a5
+- (int)convertEncryptedData:(id)data toData:(id *)toData encrypted:(BOOL)encrypted
 {
   v13[1] = *MEMORY[0x1E69E9840];
   memset(v11, 170, 17);
-  if (!a3 || !a4)
+  if (!data || !toData)
   {
     [VCSecureDataChannel convertEncryptedData:toData:encrypted:];
 LABEL_15:
@@ -410,10 +410,10 @@ LABEL_15:
     goto LABEL_8;
   }
 
-  if (!a5)
+  if (!encrypted)
   {
     v9 = 0;
-    *a4 = a3;
+    *toData = data;
     return v9;
   }
 
@@ -423,8 +423,8 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  [a3 length];
-  [a3 bytes];
+  [data length];
+  [data bytes];
   *&v11[1] = tls_record_decrypted_size();
   v7 = [objc_alloc(MEMORY[0x1E695DF88]) initWithLength:*&v11[1]];
   *&v11[9] = [v7 bytes];
@@ -443,28 +443,28 @@ LABEL_15:
 
   [v7 setLength:*&v11[1]];
   v9 = 0;
-  *a4 = v7;
+  *toData = v7;
 LABEL_8:
 
   return v9;
 }
 
-- (int)convertData:(id)a3 toEncryptedData:(id *)a4 encrypted:(BOOL)a5
+- (int)convertData:(id)data toEncryptedData:(id *)encryptedData encrypted:(BOOL)encrypted
 {
-  if (a3 && a4)
+  if (data && encryptedData)
   {
-    if (!a5)
+    if (!encrypted)
     {
       v7 = 0;
-      *a4 = a3;
+      *encryptedData = data;
       return v7;
     }
 
     if (self->tlsRecord)
     {
       v7 = -2144993277;
-      [a3 bytes];
-      [a3 length];
+      [data bytes];
+      [data length];
       v8 = [objc_alloc(MEMORY[0x1E695DF88]) initWithLength:tls_record_encrypted_size()];
       v9 = v8;
       if (v8)
@@ -478,7 +478,7 @@ LABEL_8:
         else
         {
           v7 = 0;
-          *a4 = v9;
+          *encryptedData = v9;
         }
       }
 

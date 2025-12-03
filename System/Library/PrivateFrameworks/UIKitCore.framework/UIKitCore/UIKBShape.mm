@@ -1,28 +1,28 @@
 @interface UIKBShape
 + (id)shape;
-+ (id)shapeByCombining:(id)a3 withShape:(id)a4;
-+ (id)shapeByResizingShape:(id)a3 byAmount:(CGSize)a4;
++ (id)shapeByCombining:(id)combining withShape:(id)shape;
++ (id)shapeByResizingShape:(id)shape byAmount:(CGSize)amount;
 - (BOOL)isEmpty;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)shouldUseGeometry;
-- (CGRect)_scaleRect:(CGRect)a3 inYAxis:(BOOL)a4;
+- (CGRect)_scaleRect:(CGRect)rect inYAxis:(BOOL)axis;
 - (CGRect)frame;
 - (CGRect)paddedFrame;
 - (CGSize)concaveCornerOffset;
 - (UIKBShape)init;
-- (UIKBShape)initWithCoder:(id)a3;
-- (UIKBShape)initWithGeometry:(id)a3 frame:(CGRect)a4 paddedFrame:(CGRect)a5;
-- (UIKBShape)initWithGeometry:(id)a3 frame:(CGRect)a4 paddedFrame:(CGRect)a5 concaveCorner:(unint64_t)a6 concaveCornerOffset:(CGSize)a7;
-- (id)copyWithZone:(_NSZone *)a3;
+- (UIKBShape)initWithCoder:(id)coder;
+- (UIKBShape)initWithGeometry:(id)geometry frame:(CGRect)frame paddedFrame:(CGRect)paddedFrame;
+- (UIKBShape)initWithGeometry:(id)geometry frame:(CGRect)frame paddedFrame:(CGRect)paddedFrame concaveCorner:(unint64_t)corner concaveCornerOffset:(CGSize)offset;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)addRectFrom:(id)a3;
-- (void)addRectFrom:(id)a3 mergeActionFactors:(id)a4 inRightToLeft:(BOOL)a5;
-- (void)addRectFrom:(id)a3 widthFraction:(double)a4 heightFraction:(double)a5 adjustOriginXFactor:(double)a6 adjustOriginYFactor:(double)a7 absoluteOriginFactors:(BOOL)a8;
-- (void)encodeWithCoder:(id)a3;
-- (void)makeLikeOther:(id)a3;
-- (void)scaleIfNeeded:(double)a3 onlyYAxis:(BOOL)a4;
-- (void)scaleWidth:(double)a3;
+- (void)addRectFrom:(id)from;
+- (void)addRectFrom:(id)from mergeActionFactors:(id)factors inRightToLeft:(BOOL)left;
+- (void)addRectFrom:(id)from widthFraction:(double)fraction heightFraction:(double)heightFraction adjustOriginXFactor:(double)factor adjustOriginYFactor:(double)yFactor absoluteOriginFactors:(BOOL)factors;
+- (void)encodeWithCoder:(id)coder;
+- (void)makeLikeOther:(id)other;
+- (void)scaleIfNeeded:(double)needed onlyYAxis:(BOOL)axis;
+- (void)scaleWidth:(double)width;
 @end
 
 @implementation UIKBShape
@@ -96,24 +96,24 @@
   return v3;
 }
 
-- (UIKBShape)initWithGeometry:(id)a3 frame:(CGRect)a4 paddedFrame:(CGRect)a5
+- (UIKBShape)initWithGeometry:(id)geometry frame:(CGRect)frame paddedFrame:(CGRect)paddedFrame
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v9 = a4.size.height;
-  v10 = a4.size.width;
-  v11 = a4.origin.y;
-  v12 = a4.origin.x;
-  v15 = a3;
+  height = paddedFrame.size.height;
+  width = paddedFrame.size.width;
+  y = paddedFrame.origin.y;
+  x = paddedFrame.origin.x;
+  v9 = frame.size.height;
+  v10 = frame.size.width;
+  v11 = frame.origin.y;
+  v12 = frame.origin.x;
+  geometryCopy = geometry;
   v21.receiver = self;
   v21.super_class = UIKBShape;
   v16 = [(UIKBShape *)&v21 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->m_geometry, a3);
+    objc_storeStrong(&v16->m_geometry, geometry);
     v17->m_frame.origin.x = v12;
     v17->m_frame.origin.y = v11;
     v17->m_frame.size.width = v10;
@@ -132,24 +132,24 @@
   return v17;
 }
 
-- (UIKBShape)initWithGeometry:(id)a3 frame:(CGRect)a4 paddedFrame:(CGRect)a5 concaveCorner:(unint64_t)a6 concaveCornerOffset:(CGSize)a7
+- (UIKBShape)initWithGeometry:(id)geometry frame:(CGRect)frame paddedFrame:(CGRect)paddedFrame concaveCorner:(unint64_t)corner concaveCornerOffset:(CGSize)offset
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v12 = a4.size.height;
-  v13 = a4.size.width;
-  v14 = a4.origin.y;
-  v15 = a4.origin.x;
-  v18 = a3;
+  height = paddedFrame.size.height;
+  width = paddedFrame.size.width;
+  y = paddedFrame.origin.y;
+  x = paddedFrame.origin.x;
+  v12 = frame.size.height;
+  v13 = frame.size.width;
+  v14 = frame.origin.y;
+  v15 = frame.origin.x;
+  geometryCopy = geometry;
   v24.receiver = self;
   v24.super_class = UIKBShape;
   v19 = [(UIKBShape *)&v24 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->m_geometry, a3);
+    objc_storeStrong(&v19->m_geometry, geometry);
     v20->m_frame.origin.x = v15;
     v20->m_frame.origin.y = v14;
     v20->m_frame.size.width = v13;
@@ -160,7 +160,7 @@
     v20->m_paddedFrame.size.height = height;
     v21 = UIKBNextUID_counter++;
     v20->m_uid = v21;
-    v20->m_concaveCorner = a6;
+    v20->m_concaveCorner = corner;
     v20->m_concaveCornerOffset.width = v25;
     v20->m_concaveCornerOffset.height = v26;
     v22 = v20;
@@ -169,31 +169,31 @@
   return v20;
 }
 
-- (UIKBShape)initWithCoder:(id)a3
+- (UIKBShape)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectForKey:@"geometry"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectForKey:@"geometry"];
   m_geometry = self->m_geometry;
   self->m_geometry = v5;
 
-  [v4 decodeFloatForKey:@"frame.x"];
+  [coderCopy decodeFloatForKey:@"frame.x"];
   v8 = v7;
-  [v4 decodeFloatForKey:@"frame.y"];
+  [coderCopy decodeFloatForKey:@"frame.y"];
   v10 = v9;
-  [v4 decodeFloatForKey:@"frame.w"];
+  [coderCopy decodeFloatForKey:@"frame.w"];
   v12 = v11;
-  [v4 decodeFloatForKey:@"frame.h"];
+  [coderCopy decodeFloatForKey:@"frame.h"];
   self->m_frame.origin.x = v8;
   self->m_frame.origin.y = v10;
   self->m_frame.size.width = v12;
   self->m_frame.size.height = v13;
-  [v4 decodeFloatForKey:@"paddedFrame.x"];
+  [coderCopy decodeFloatForKey:@"paddedFrame.x"];
   v15 = v14;
-  [v4 decodeFloatForKey:@"paddedFrame.y"];
+  [coderCopy decodeFloatForKey:@"paddedFrame.y"];
   v17 = v16;
-  [v4 decodeFloatForKey:@"paddedFrame.w"];
+  [coderCopy decodeFloatForKey:@"paddedFrame.w"];
   v19 = v18;
-  [v4 decodeFloatForKey:@"paddedFrame.h"];
+  [coderCopy decodeFloatForKey:@"paddedFrame.h"];
   v21 = v20;
 
   self->m_paddedFrame.origin.x = v15;
@@ -207,59 +207,59 @@
   return self;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   m_geometry = self->m_geometry;
-  v13 = a3;
-  [v13 encodeObject:m_geometry forKey:@"geometry"];
+  coderCopy = coder;
+  [coderCopy encodeObject:m_geometry forKey:@"geometry"];
   x = self->m_frame.origin.x;
   *&x = x;
-  [v13 encodeFloat:@"frame.x" forKey:x];
+  [coderCopy encodeFloat:@"frame.x" forKey:x];
   y = self->m_frame.origin.y;
   *&y = y;
-  [v13 encodeFloat:@"frame.y" forKey:y];
+  [coderCopy encodeFloat:@"frame.y" forKey:y];
   width = self->m_frame.size.width;
   *&width = width;
-  [v13 encodeFloat:@"frame.w" forKey:width];
+  [coderCopy encodeFloat:@"frame.w" forKey:width];
   height = self->m_frame.size.height;
   *&height = height;
-  [v13 encodeFloat:@"frame.h" forKey:height];
+  [coderCopy encodeFloat:@"frame.h" forKey:height];
   v9 = self->m_paddedFrame.origin.x;
   *&v9 = v9;
-  [v13 encodeFloat:@"paddedFrame.x" forKey:v9];
+  [coderCopy encodeFloat:@"paddedFrame.x" forKey:v9];
   v10 = self->m_paddedFrame.origin.y;
   *&v10 = v10;
-  [v13 encodeFloat:@"paddedFrame.y" forKey:v10];
+  [coderCopy encodeFloat:@"paddedFrame.y" forKey:v10];
   v11 = self->m_paddedFrame.size.width;
   *&v11 = v11;
-  [v13 encodeFloat:@"paddedFrame.w" forKey:v11];
+  [coderCopy encodeFloat:@"paddedFrame.w" forKey:v11];
   v12 = self->m_paddedFrame.size.height;
   *&v12 = v12;
-  [v13 encodeFloat:@"paddedFrame.h" forKey:v12];
+  [coderCopy encodeFloat:@"paddedFrame.h" forKey:v12];
 }
 
-- (void)makeLikeOther:(id)a3
+- (void)makeLikeOther:(id)other
 {
-  v27 = a3;
+  otherCopy = other;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v5 = v27;
+  v5 = otherCopy;
   if (isKindOfClass)
   {
-    v6 = v27;
-    v7 = [(UIKBShape *)self geometry];
+    v6 = otherCopy;
+    geometry = [(UIKBShape *)self geometry];
 
-    if (!v7)
+    if (!geometry)
     {
-      v8 = [v6 geometry];
-      v9 = [v8 copy];
+      geometry2 = [v6 geometry];
+      v9 = [geometry2 copy];
       [(UIKBShape *)self setGeometry:v9];
 
-      v10 = [v6 geometry];
-      v11 = [v10 name];
-      v12 = [v11 copy];
-      v13 = [(UIKBShape *)self geometry];
-      [v13 setName:v12];
+      geometry3 = [v6 geometry];
+      name = [geometry3 name];
+      v12 = [name copy];
+      geometry4 = [(UIKBShape *)self geometry];
+      [geometry4 setName:v12];
     }
 
     v14 = *MEMORY[0x1E695F058];
@@ -292,10 +292,10 @@
       self->m_paddedFrame.size.height = v25;
     }
 
-    v26 = [v6 originalShape];
-    [(UIKBShape *)self setOriginalShape:v26];
+    originalShape = [v6 originalShape];
+    [(UIKBShape *)self setOriginalShape:originalShape];
 
-    v5 = v27;
+    v5 = otherCopy;
   }
 }
 
@@ -307,13 +307,13 @@
   return v4 ^ (v4 >> 16);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     [(UIKBShape *)self frame];
     v7 = v6;
     v9 = v8;
@@ -344,18 +344,18 @@
     v45.size.width = v24;
     v45.size.height = v26;
     v31 = CGRectEqualToRect(v45, v47);
-    v32 = [(UIKBShape *)self concaveCorner];
-    v33 = [v5 concaveCorner];
+    concaveCorner = [(UIKBShape *)self concaveCorner];
+    concaveCorner2 = [v5 concaveCorner];
     [(UIKBShape *)self concaveCornerOffset];
     v35 = v34;
     v37 = v36;
     [v5 concaveCornerOffset];
     v40 = 0;
-    if (v18 && v31 && v32 == v33 && v35 == v38 && v37 == v39)
+    if (v18 && v31 && concaveCorner == concaveCorner2 && v35 == v38 && v37 == v39)
     {
-      v41 = [(UIKBShape *)self geometry];
-      v42 = [v5 geometry];
-      v40 = [v41 isEqual:v42];
+      geometry = [(UIKBShape *)self geometry];
+      geometry2 = [v5 geometry];
+      v40 = [geometry isEqual:geometry2];
     }
   }
 
@@ -367,19 +367,19 @@
   return v40;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(UIKBShape);
-  v5 = [(UIKBShape *)self geometry];
-  v6 = [v5 copy];
+  geometry = [(UIKBShape *)self geometry];
+  v6 = [geometry copy];
   [(UIKBShape *)v4 setGeometry:v6];
 
   [(UIKBShape *)self frame];
   [(UIKBShape *)v4 setFrame:?];
   [(UIKBShape *)self paddedFrame];
   [(UIKBShape *)v4 setPaddedFrame:?];
-  v7 = [(UIKBShape *)self originalShape];
-  [(UIKBShape *)v4 setOriginalShape:v7];
+  originalShape = [(UIKBShape *)self originalShape];
+  [(UIKBShape *)v4 setOriginalShape:originalShape];
 
   [(UIKBShape *)v4 setConcaveCorner:[(UIKBShape *)self concaveCorner]];
   [(UIKBShape *)self concaveCornerOffset];
@@ -439,12 +439,12 @@
 
 - (id)description
 {
-  v3 = [(UIKBShape *)self geometry];
+  geometry = [(UIKBShape *)self geometry];
 
-  if (v3)
+  if (geometry)
   {
-    v4 = [(UIKBShape *)self geometry];
-    v5 = [v4 shortDescription];
+    geometry2 = [(UIKBShape *)self geometry];
+    shortDescription = [geometry2 shortDescription];
   }
 
   else
@@ -456,34 +456,34 @@
     v7 = NSStringFromCGRect(v16);
     [(UIKBShape *)self paddedFrame];
     v8 = NSStringFromCGRect(v17);
-    v5 = [v6 stringByAppendingFormat:@" - %@_%@", v7, v8];
+    shortDescription = [v6 stringByAppendingFormat:@" - %@_%@", v7, v8];
 
     if ([(UIKBShape *)self concaveCorner])
     {
-      v9 = [(UIKBShape *)self concaveCorner];
+      concaveCorner = [(UIKBShape *)self concaveCorner];
       [(UIKBShape *)self concaveCornerOffset];
       v10 = NSStringFromCGSize(v15);
-      v11 = [v5 stringByAppendingFormat:@"_concaveCorner=%lux_concaveCornerOffset=%@", v9, v10];
+      v11 = [shortDescription stringByAppendingFormat:@"_concaveCorner=%lux_concaveCornerOffset=%@", concaveCorner, v10];
 
-      v5 = v11;
+      shortDescription = v11;
     }
   }
 
-  return v5;
+  return shortDescription;
 }
 
-- (void)addRectFrom:(id)a3
+- (void)addRectFrom:(id)from
 {
-  if (a3)
+  if (from)
   {
-    v4 = a3;
-    [v4 frame];
+    fromCopy = from;
+    [fromCopy frame];
     v17.origin.x = v5;
     v17.origin.y = v6;
     v17.size.width = v7;
     v17.size.height = v8;
     self->m_frame = CGRectUnion(self->m_frame, v17);
-    [v4 paddedFrame];
+    [fromCopy paddedFrame];
     v10 = v9;
     v12 = v11;
     v14 = v13;
@@ -497,67 +497,67 @@
   }
 }
 
-- (void)addRectFrom:(id)a3 widthFraction:(double)a4 heightFraction:(double)a5 adjustOriginXFactor:(double)a6 adjustOriginYFactor:(double)a7 absoluteOriginFactors:(BOOL)a8
+- (void)addRectFrom:(id)from widthFraction:(double)fraction heightFraction:(double)heightFraction adjustOriginXFactor:(double)factor adjustOriginYFactor:(double)yFactor absoluteOriginFactors:(BOOL)factors
 {
-  v8 = a8;
-  v14 = a3;
-  if (v14)
+  factorsCopy = factors;
+  fromCopy = from;
+  if (fromCopy)
   {
-    v25 = v14;
-    [v14 frame];
-    v16 = ceil(v15 * a4);
+    v25 = fromCopy;
+    [fromCopy frame];
+    v16 = ceil(v15 * fraction);
     [v25 frame];
-    v18 = ceil(v17 * a5);
+    v18 = ceil(v17 * heightFraction);
     v19 = self->m_frame.size.height + v18;
     self->m_frame.size.width = self->m_frame.size.width + v16;
     self->m_frame.size.height = v19;
     v20 = v18 + self->m_paddedFrame.size.height;
     self->m_paddedFrame.size.width = v16 + self->m_paddedFrame.size.width;
     self->m_paddedFrame.size.height = v20;
-    if (a6 != 0.0)
+    if (factor != 0.0)
     {
-      if (v8)
+      if (factorsCopy)
       {
         [v25 frame];
         v16 = v21;
       }
 
-      v22 = floor(v16 * a6);
+      v22 = floor(v16 * factor);
       self->m_frame.origin.x = self->m_frame.origin.x + v22;
       self->m_paddedFrame.origin.x = v22 + self->m_paddedFrame.origin.x;
     }
 
-    v14 = v25;
-    if (a7 != 0.0)
+    fromCopy = v25;
+    if (yFactor != 0.0)
     {
-      if (v8)
+      if (factorsCopy)
       {
         [v25 frame];
-        v14 = v25;
+        fromCopy = v25;
         v18 = v23;
       }
 
-      v24 = floor(v18 * a7);
+      v24 = floor(v18 * yFactor);
       self->m_frame.origin.y = self->m_frame.origin.y + v24;
       self->m_paddedFrame.origin.y = v24 + self->m_paddedFrame.origin.y;
     }
   }
 }
 
-- (void)addRectFrom:(id)a3 mergeActionFactors:(id)a4 inRightToLeft:(BOOL)a5
+- (void)addRectFrom:(id)from mergeActionFactors:(id)factors inRightToLeft:(BOOL)left
 {
-  v5 = a5;
-  v50 = a3;
-  v8 = a4;
-  if (self != v50)
+  leftCopy = left;
+  fromCopy = from;
+  factorsCopy = factors;
+  if (self != fromCopy)
   {
     [(UIKBShape *)self frame];
     v11 = v10 + v9 * 0.5;
-    [(UIKBShape *)v50 frame];
+    [(UIKBShape *)fromCopy frame];
     v14 = vabdd_f64(v11, v13 + v12 * 0.5);
     [(UIKBShape *)self frame];
     v17 = v16 + v15 * 0.5;
-    [(UIKBShape *)v50 frame];
+    [(UIKBShape *)fromCopy frame];
     v20 = vabdd_f64(v17, v19 + v18 * 0.5);
     v21 = 0.0;
     v22 = v14 < 1.0;
@@ -565,8 +565,8 @@
     v24 = 0.0;
     if (v22)
     {
-      v25 = COERCE_DOUBLE([v8 w]);
-      [v8 w];
+      v25 = COERCE_DOUBLE([factorsCopy w]);
+      [factorsCopy w];
       if (v26 == 2)
       {
         v24 = v25 * 0.01;
@@ -574,22 +574,22 @@
 
       else
       {
-        [(UIKBShape *)v50 frame];
+        [(UIKBShape *)fromCopy frame];
         v24 = v25 / v27;
       }
 
-      v28 = COERCE_DOUBLE([v8 x]);
-      [v8 x];
+      v28 = COERCE_DOUBLE([factorsCopy x]);
+      [factorsCopy x];
       if (v29 == 2)
       {
         v30 = v28 * 0.01;
-        v31 = v50;
+        v31 = fromCopy;
       }
 
       else
       {
-        [(UIKBShape *)v50 frame];
-        v31 = v50;
+        [(UIKBShape *)fromCopy frame];
+        v31 = fromCopy;
         v30 = v28 / v32;
       }
 
@@ -604,7 +604,7 @@
         v34 = -v30;
       }
 
-      if (v5)
+      if (leftCopy)
       {
         v23 = v34 - v24;
       }
@@ -619,8 +619,8 @@
     v35 = 0.0;
     if (v22)
     {
-      v36 = COERCE_DOUBLE([v8 h]);
-      [v8 h];
+      v36 = COERCE_DOUBLE([factorsCopy h]);
+      [factorsCopy h];
       if (v37 == 2)
       {
         v35 = v36 * 0.01;
@@ -628,22 +628,22 @@
 
       else
       {
-        [(UIKBShape *)v50 frame];
+        [(UIKBShape *)fromCopy frame];
         v35 = v36 / v38;
       }
 
-      v39 = COERCE_DOUBLE([v8 y]);
-      [v8 y];
+      v39 = COERCE_DOUBLE([factorsCopy y]);
+      [factorsCopy y];
       if (v40 == 2)
       {
         v21 = v39 * 0.01;
-        v41 = v50;
+        v41 = fromCopy;
       }
 
       else
       {
-        [(UIKBShape *)v50 frame];
-        v41 = v50;
+        [(UIKBShape *)fromCopy frame];
+        v41 = fromCopy;
         v21 = v39 / v42;
       }
 
@@ -654,83 +654,83 @@
       }
     }
 
-    [(UIKBShape *)self addRectFrom:v50 widthFraction:1 heightFraction:v24 adjustOriginXFactor:v35 adjustOriginYFactor:v23 absoluteOriginFactors:v21];
-    [v8 w];
-    if (v44 == 100 || ([v8 h], v45 == 100))
+    [(UIKBShape *)self addRectFrom:fromCopy widthFraction:1 heightFraction:v24 adjustOriginXFactor:v35 adjustOriginYFactor:v23 absoluteOriginFactors:v21];
+    [factorsCopy w];
+    if (v44 == 100 || ([factorsCopy h], v45 == 100))
     {
-      [(UIKBShape *)v50 frame];
+      [(UIKBShape *)fromCopy frame];
       self->m_frame.size.width = v46;
       self->m_frame.size.height = v47;
-      [(UIKBShape *)v50 paddedFrame];
+      [(UIKBShape *)fromCopy paddedFrame];
       self->m_paddedFrame.size.width = v48;
       self->m_paddedFrame.size.height = v49;
     }
   }
 }
 
-- (void)scaleWidth:(double)a3
+- (void)scaleWidth:(double)width
 {
   width = self->m_paddedFrame.size.width;
-  v4 = width * a3;
+  v4 = width * width;
   self->m_frame.size.width = self->m_frame.size.width - v4;
   self->m_paddedFrame.size.width = width - v4;
 }
 
-- (CGRect)_scaleRect:(CGRect)a3 inYAxis:(BOOL)a4
+- (CGRect)_scaleRect:(CGRect)rect inYAxis:(BOOL)axis
 {
-  v4 = a4;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (a4)
+  axisCopy = axis;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  if (axis)
   {
-    v8 = a3.origin.y;
+    v8 = rect.origin.y;
   }
 
   else
   {
-    v8 = a3.origin.x;
+    v8 = rect.origin.x;
   }
 
-  if (a4)
+  if (axis)
   {
-    v9 = a3.size.height;
+    v9 = rect.size.height;
   }
 
   else
   {
-    v9 = a3.size.width;
+    v9 = rect.size.width;
   }
 
   v10 = +[UIKeyboardPreferencesController sharedPreferencesController];
-  v11 = [v10 preferencesActions];
-  [v11 rivenSizeFactor:v8];
+  preferencesActions = [v10 preferencesActions];
+  [preferencesActions rivenSizeFactor:v8];
   v13 = v12;
 
   v14 = +[UIKeyboardPreferencesController sharedPreferencesController];
-  v15 = [v14 preferencesActions];
-  [v15 rivenSizeFactor:v9];
+  preferencesActions2 = [v14 preferencesActions];
+  [preferencesActions2 rivenSizeFactor:v9];
   v17 = v16;
 
   v18 = +[UIKeyboardPreferencesController sharedPreferencesController];
-  v19 = [v18 preferencesActions];
-  [v19 rivenSizeFactor:1.0];
+  preferencesActions3 = [v18 preferencesActions];
+  [preferencesActions3 rivenSizeFactor:1.0];
   v21 = v20;
 
   v22 = +[UIKeyboardPreferencesController sharedPreferencesController];
-  v23 = [v22 preferencesActions];
-  [v23 rivenSizeFactor:1.0];
+  preferencesActions4 = [v22 preferencesActions];
+  [preferencesActions4 rivenSizeFactor:1.0];
   v25 = v9 * v24;
   v26 = v25 <= 150.0;
   v27 = v8 * v21 - v13 + v25 - v17;
-  if (v4 && v26)
+  if (axisCopy && v26)
   {
     v27 = 0.0;
   }
 
   v28 = v17 + round(v27);
-  if (v4)
+  if (axisCopy)
   {
     v29 = x;
   }
@@ -740,7 +740,7 @@
     v29 = v13;
   }
 
-  if (v4)
+  if (axisCopy)
   {
     y = v13;
   }
@@ -750,7 +750,7 @@
     width = v28;
   }
 
-  if (v4)
+  if (axisCopy)
   {
     v30 = v28;
   }
@@ -771,17 +771,17 @@
   return result;
 }
 
-- (void)scaleIfNeeded:(double)a3 onlyYAxis:(BOOL)a4
+- (void)scaleIfNeeded:(double)needed onlyYAxis:(BOOL)axis
 {
   if (!self->m_scaled)
   {
-    v7 = a3 == 0.0 || a4;
+    v7 = needed == 0.0 || axis;
     x = self->m_frame.origin.x;
     if (!v7)
     {
-      x = x - a3;
+      x = x - needed;
       self->m_frame.origin.x = x;
-      self->m_paddedFrame.origin.x = self->m_paddedFrame.origin.x - a3;
+      self->m_paddedFrame.origin.x = self->m_paddedFrame.origin.x - needed;
     }
 
     [(UIKBShape *)self _scaleRect:1 inYAxis:x, self->m_frame.origin.y, self->m_frame.size.width, self->m_frame.size.height];
@@ -794,7 +794,7 @@
     self->m_paddedFrame.origin.y = v14;
     self->m_paddedFrame.size.width = v15;
     self->m_paddedFrame.size.height = v16;
-    if (!a4)
+    if (!axis)
     {
       [(UIKBShape *)self _scaleRect:0 inYAxis:self->m_frame.origin.x, self->m_frame.origin.y, self->m_frame.size.width, self->m_frame.size.height];
       self->m_frame.origin.x = v17;
@@ -808,8 +808,8 @@
       self->m_paddedFrame.size.height = v24;
       if (!v7)
       {
-        self->m_frame.origin.x = self->m_frame.origin.x + a3;
-        self->m_paddedFrame.origin.x = v21 + a3;
+        self->m_frame.origin.x = self->m_frame.origin.x + needed;
+        self->m_paddedFrame.origin.x = v21 + needed;
       }
     }
 
@@ -817,16 +817,16 @@
   }
 }
 
-+ (id)shapeByCombining:(id)a3 withShape:(id)a4
++ (id)shapeByCombining:(id)combining withShape:(id)shape
 {
-  v5 = a4;
-  v6 = a3;
-  [v6 frame];
+  shapeCopy = shape;
+  combiningCopy = combining;
+  [combiningCopy frame];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  [v5 frame];
+  [shapeCopy frame];
   v46.origin.x = v15;
   v46.origin.y = v16;
   v46.size.width = v17;
@@ -840,13 +840,13 @@
   x = v43.origin.x;
   height = v43.size.height;
   width = v43.size.width;
-  [v6 paddedFrame];
+  [combiningCopy paddedFrame];
   v20 = v19;
   v22 = v21;
   v24 = v23;
   v26 = v25;
 
-  [v5 paddedFrame];
+  [shapeCopy paddedFrame];
   v28 = v27;
   v30 = v29;
   v32 = v31;
@@ -866,29 +866,29 @@
   return v35;
 }
 
-+ (id)shapeByResizingShape:(id)a3 byAmount:(CGSize)a4
++ (id)shapeByResizingShape:(id)shape byAmount:(CGSize)amount
 {
-  height = a4.height;
-  width = a4.width;
-  v6 = a3;
-  [v6 frame];
+  height = amount.height;
+  width = amount.width;
+  shapeCopy = shape;
+  [shapeCopy frame];
   v24 = v7;
   v9 = v8;
-  [v6 frame];
+  [shapeCopy frame];
   v11 = v10 - width;
-  [v6 frame];
+  [shapeCopy frame];
   v13 = v12 - height;
-  [v6 paddedFrame];
+  [shapeCopy paddedFrame];
   v15 = v14;
   v17 = v16;
-  [v6 paddedFrame];
+  [shapeCopy paddedFrame];
   v19 = v18 - width;
-  [v6 paddedFrame];
+  [shapeCopy paddedFrame];
   v21 = v20;
 
-  v22 = [[UIKBShape alloc] initWithGeometry:0 frame:v24 paddedFrame:v9, v11, v13, v15, v17, v19, v21 - height];
+  height = [[UIKBShape alloc] initWithGeometry:0 frame:v24 paddedFrame:v9, v11, v13, v15, v17, v19, v21 - height];
 
-  return v22;
+  return height;
 }
 
 @end

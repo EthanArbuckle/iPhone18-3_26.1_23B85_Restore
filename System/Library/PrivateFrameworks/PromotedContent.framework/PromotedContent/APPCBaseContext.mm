@@ -4,8 +4,8 @@
 - (CGSize)maxSize;
 - (NSString)requestedAd;
 - (NSUUID)identifier;
-- (void)setIdentifier:(id)a3;
-- (void)setRequestedAd:(id)a3;
+- (void)setIdentifier:(id)identifier;
+- (void)setRequestedAd:(id)ad;
 @end
 
 @implementation APPCBaseContext
@@ -45,7 +45,7 @@
   return v4;
 }
 
-- (void)setIdentifier:(id)a3
+- (void)setIdentifier:(id)identifier
 {
   v4 = sub_1C1B945F8();
   v5 = *(v4 - 8);
@@ -56,7 +56,7 @@
   v9 = OBJC_IVAR___APPCBaseContext_identifier;
   swift_beginAccess();
   v10 = *(v5 + 40);
-  v11 = self;
+  selfCopy = self;
   v10(self + v9, v8, v4);
   swift_endAccess();
 }
@@ -78,9 +78,9 @@
   return v3;
 }
 
-- (void)setRequestedAd:(id)a3
+- (void)setRequestedAd:(id)ad
 {
-  if (a3)
+  if (ad)
   {
     v4 = sub_1C1B94D88();
     v6 = v5;

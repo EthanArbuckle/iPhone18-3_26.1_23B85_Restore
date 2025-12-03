@@ -1,78 +1,78 @@
 @interface CPSBannerSource
 - (CPBannerDelegate)delegate;
-- (CPSBannerSource)initWithBundleIdentifier:(id)a3 delegate:(id)a4 applicationStateMonitor:(id)a5;
-- (void)_dismissTimerFired:(id)a3;
-- (void)_enqueueBannerItem:(id)a3;
+- (CPSBannerSource)initWithBundleIdentifier:(id)identifier delegate:(id)delegate applicationStateMonitor:(id)monitor;
+- (void)_dismissTimerFired:(id)fired;
+- (void)_enqueueBannerItem:(id)item;
 - (void)_flushQueue;
-- (void)_postBannerRequestForBannerItem:(id)a3;
+- (void)_postBannerRequestForBannerItem:(id)item;
 - (void)_resetDismissTimer;
 - (void)_resetLastUserDismissedIdentifierTimer;
-- (void)_resetLastUserDismissedIdentifierTimerFired:(id)a3;
-- (void)_revokePresentedBannerWithReason:(id)a3;
-- (void)_setBannerRateLimitEnabled:(BOOL)a3 bundleIdentifier:(id)a4;
-- (void)applicationStateMonitor:(id)a3 didBecomeActive:(BOOL)a4;
-- (void)bannerViewController:(id)a3 requestsDismissalWithReason:(id)a4;
-- (void)bannerViewControllerDidAppearWithIdentifier:(id)a3;
-- (void)bannerViewControllerDidDisappearWithIdentifier:(id)a3;
-- (void)bannerViewControllerTappedWithIdentifier:(id)a3;
+- (void)_resetLastUserDismissedIdentifierTimerFired:(id)fired;
+- (void)_revokePresentedBannerWithReason:(id)reason;
+- (void)_setBannerRateLimitEnabled:(BOOL)enabled bundleIdentifier:(id)identifier;
+- (void)applicationStateMonitor:(id)monitor didBecomeActive:(BOOL)active;
+- (void)bannerViewController:(id)controller requestsDismissalWithReason:(id)reason;
+- (void)bannerViewControllerDidAppearWithIdentifier:(id)identifier;
+- (void)bannerViewControllerDidDisappearWithIdentifier:(id)identifier;
+- (void)bannerViewControllerTappedWithIdentifier:(id)identifier;
 - (void)invalidate;
-- (void)postBannerForManeuver:(id)a3 travelEstimates:(id)a4;
-- (void)postBannerForNavigationAlert:(id)a3;
-- (void)sendSuggestUI:(id)a3;
-- (void)setActive:(BOOL)a3;
+- (void)postBannerForManeuver:(id)maneuver travelEstimates:(id)estimates;
+- (void)postBannerForNavigationAlert:(id)alert;
+- (void)sendSuggestUI:(id)i;
+- (void)setActive:(BOOL)active;
 @end
 
 @implementation CPSBannerSource
 
-- (CPSBannerSource)initWithBundleIdentifier:(id)a3 delegate:(id)a4 applicationStateMonitor:(id)a5
+- (CPSBannerSource)initWithBundleIdentifier:(id)identifier delegate:(id)delegate applicationStateMonitor:(id)monitor
 {
-  v21 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, identifier);
   v19 = 0;
-  objc_storeStrong(&v19, a4);
+  objc_storeStrong(&v19, delegate);
   v18 = 0;
-  objc_storeStrong(&v18, a5);
-  v5 = v21;
-  v21 = 0;
+  objc_storeStrong(&v18, monitor);
+  v5 = selfCopy;
+  selfCopy = 0;
   v17.receiver = v5;
   v17.super_class = CPSBannerSource;
-  v21 = [(CPSBannerSource *)&v17 init];
-  objc_storeStrong(&v21, v21);
-  if (v21)
+  selfCopy = [(CPSBannerSource *)&v17 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
-    objc_storeWeak(&v21->_delegate, v19);
-    objc_storeStrong(&v21->_applicationStateMonitor, v18);
-    [(CPSApplicationStateMonitor *)v21->_applicationStateMonitor addApplicationStateObserver:v21];
+    objc_storeWeak(&selfCopy->_delegate, v19);
+    objc_storeStrong(&selfCopy->_applicationStateMonitor, v18);
+    [(CPSApplicationStateMonitor *)selfCopy->_applicationStateMonitor addApplicationStateObserver:selfCopy];
     v6 = [location[0] copy];
-    bundleIdentifier = v21->_bundleIdentifier;
-    v21->_bundleIdentifier = v6;
+    bundleIdentifier = selfCopy->_bundleIdentifier;
+    selfCopy->_bundleIdentifier = v6;
     MEMORY[0x277D82BD8](bundleIdentifier);
-    v16 = CPSRequesterIdentifierForBundleIdentifier(v21->_bundleIdentifier);
+    v16 = CPSRequesterIdentifierForBundleIdentifier(selfCopy->_bundleIdentifier);
     v8 = [MEMORY[0x277CF0A80] bannerSourceForDestination:1 forRequesterIdentifier:v16];
-    bannerKitSource = v21->_bannerKitSource;
-    v21->_bannerKitSource = v8;
+    bannerKitSource = selfCopy->_bannerKitSource;
+    selfCopy->_bannerKitSource = v8;
     *&v10 = MEMORY[0x277D82BD8](bannerKitSource).n128_u64[0];
-    v11 = [v18 isApplicationActive];
-    v21->_active = v11;
+    isApplicationActive = [v18 isApplicationActive];
+    selfCopy->_active = isApplicationActive;
     objc_storeStrong(&v16, 0);
   }
 
-  v13 = MEMORY[0x277D82BE0](v21);
+  v13 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(&v18, 0);
   objc_storeStrong(&v19, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v21, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v13;
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  if (self->_active != a3)
+  if (self->_active != active)
   {
-    self->_active = a3;
-    if (a3)
+    self->_active = active;
+    if (active)
     {
       [(CPSBannerSource *)self _flushQueue];
     }
@@ -81,18 +81,18 @@
 
 - (void)invalidate
 {
-  v2 = [(CPSBannerSource *)self bannerKitSource];
-  [(BNBannerSource *)v2 invalidate];
-  MEMORY[0x277D82BD8](v2);
+  bannerKitSource = [(CPSBannerSource *)self bannerKitSource];
+  [(BNBannerSource *)bannerKitSource invalidate];
+  MEMORY[0x277D82BD8](bannerKitSource);
 }
 
-- (void)applicationStateMonitor:(id)a3 didBecomeActive:(BOOL)a4
+- (void)applicationStateMonitor:(id)monitor didBecomeActive:(BOOL)active
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v15 = a4;
+  objc_storeStrong(location, monitor);
+  activeCopy = active;
   v6 = MEMORY[0x277D85CD0];
   v4 = MEMORY[0x277D85CD0];
   queue = v6;
@@ -101,22 +101,22 @@
   v10 = 0;
   v11 = __59__CPSBannerSource_applicationStateMonitor_didBecomeActive___block_invoke;
   v12 = &unk_278D91CA8;
-  v13 = MEMORY[0x277D82BE0](v17);
-  v14 = v15;
+  v13 = MEMORY[0x277D82BE0](selfCopy);
+  v14 = activeCopy;
   dispatch_async(queue, &v8);
   MEMORY[0x277D82BD8](queue);
   objc_storeStrong(&v13, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)postBannerForManeuver:(id)a3 travelEstimates:(id)a4
+- (void)postBannerForManeuver:(id)maneuver travelEstimates:(id)estimates
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, maneuver);
   v16 = 0;
-  objc_storeStrong(&v16, a4);
+  objc_storeStrong(&v16, estimates);
   v6 = MEMORY[0x277D85CD0];
   v4 = MEMORY[0x277D85CD0];
   queue = v6;
@@ -125,7 +125,7 @@
   v10 = 0;
   v11 = __57__CPSBannerSource_postBannerForManeuver_travelEstimates___block_invoke;
   v12 = &unk_278D926F0;
-  v13 = MEMORY[0x277D82BE0](v18);
+  v13 = MEMORY[0x277D82BE0](selfCopy);
   v14 = MEMORY[0x277D82BE0](v16);
   v15 = MEMORY[0x277D82BE0](location[0]);
   dispatch_async(queue, &v8);
@@ -279,12 +279,12 @@ void __57__CPSBannerSource_postBannerForManeuver_travelEstimates___block_invoke(
   }
 }
 
-- (void)postBannerForNavigationAlert:(id)a3
+- (void)postBannerForNavigationAlert:(id)alert
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, alert);
   v4 = MEMORY[0x277D85CD0];
   v3 = MEMORY[0x277D85CD0];
   queue = v4;
@@ -294,7 +294,7 @@ void __57__CPSBannerSource_postBannerForManeuver_travelEstimates___block_invoke(
   v9 = __48__CPSBannerSource_postBannerForNavigationAlert___block_invoke;
   v10 = &unk_278D910D8;
   v11 = MEMORY[0x277D82BE0](location[0]);
-  v12 = MEMORY[0x277D82BE0](v14);
+  v12 = MEMORY[0x277D82BE0](selfCopy);
   dispatch_async(queue, &v6);
   MEMORY[0x277D82BD8](queue);
   objc_storeStrong(&v12, 0);
@@ -340,65 +340,65 @@ void __48__CPSBannerSource_postBannerForNavigationAlert___block_invoke(uint64_t 
   objc_storeStrong(v4, 0);
 }
 
-- (void)bannerViewController:(id)a3 requestsDismissalWithReason:(id)a4
+- (void)bannerViewController:(id)controller requestsDismissalWithReason:(id)reason
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   v8 = 0;
-  objc_storeStrong(&v8, a4);
-  v7 = [(CPSBannerSource *)v10 presentedBannerViewController];
+  objc_storeStrong(&v8, reason);
+  presentedBannerViewController = [(CPSBannerSource *)selfCopy presentedBannerViewController];
   v6 = location[0];
-  *&v4 = MEMORY[0x277D82BD8](v7).n128_u64[0];
-  if (v7 == v6)
+  *&v4 = MEMORY[0x277D82BD8](presentedBannerViewController).n128_u64[0];
+  if (presentedBannerViewController == v6)
   {
-    [(CPSBannerSource *)v10 _revokePresentedBannerWithReason:v8, v4];
+    [(CPSBannerSource *)selfCopy _revokePresentedBannerWithReason:v8, v4];
   }
 
   objc_storeStrong(&v8, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)bannerViewControllerTappedWithIdentifier:(id)a3
+- (void)bannerViewControllerTappedWithIdentifier:(id)identifier
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v5 = [(CPSBannerSource *)v8 delegate];
+  objc_storeStrong(location, identifier);
+  delegate = [(CPSBannerSource *)selfCopy delegate];
   v6 = objc_opt_respondsToSelector();
-  *&v3 = MEMORY[0x277D82BD8](v5).n128_u64[0];
+  *&v3 = MEMORY[0x277D82BD8](delegate).n128_u64[0];
   if (v6)
   {
-    v4 = [(CPSBannerSource *)v8 delegate];
-    [(CPBannerDelegate *)v4 bannerTappedWithIdentifier:location[0]];
-    MEMORY[0x277D82BD8](v4);
+    delegate2 = [(CPSBannerSource *)selfCopy delegate];
+    [(CPBannerDelegate *)delegate2 bannerTappedWithIdentifier:location[0]];
+    MEMORY[0x277D82BD8](delegate2);
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)bannerViewControllerDidAppearWithIdentifier:(id)a3
+- (void)bannerViewControllerDidAppearWithIdentifier:(id)identifier
 {
   v18[3] = *MEMORY[0x277D85DE8];
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v14 = [(CPSBannerSource *)v17 delegate];
+  objc_storeStrong(location, identifier);
+  delegate = [(CPSBannerSource *)selfCopy delegate];
   v15 = objc_opt_respondsToSelector();
-  *&v3 = MEMORY[0x277D82BD8](v14).n128_u64[0];
+  *&v3 = MEMORY[0x277D82BD8](delegate).n128_u64[0];
   if (v15)
   {
-    v12 = [(CPSBannerSource *)v17 presentedBannerViewController];
-    v11 = [(CPSBannerViewController *)v12 bannerItem];
-    v13 = [(CPSBannerItem *)v11 isManeuverItem];
-    MEMORY[0x277D82BD8](v11);
-    v4 = MEMORY[0x277D82BD8](v12).n128_u64[0];
-    if (v13)
+    presentedBannerViewController = [(CPSBannerSource *)selfCopy presentedBannerViewController];
+    bannerItem = [(CPSBannerViewController *)presentedBannerViewController bannerItem];
+    isManeuverItem = [(CPSBannerItem *)bannerItem isManeuverItem];
+    MEMORY[0x277D82BD8](bannerItem);
+    v4 = MEMORY[0x277D82BD8](presentedBannerViewController).n128_u64[0];
+    if (isManeuverItem)
     {
-      v6 = v17;
+      v6 = selfCopy;
       v10 = [MEMORY[0x277CBEBC0] URLWithString:{@"maps:/car/instrumentcluster/instructioncard", *&v4}];
       v18[0] = v10;
       v9 = [MEMORY[0x277CBEBC0] URLWithString:@"maps:/car/instrumentcluster/map"];
@@ -413,38 +413,38 @@ void __48__CPSBannerSource_postBannerForNavigationAlert___block_invoke(uint64_t 
       v4 = MEMORY[0x277D82BD8](v10).n128_u64[0];
     }
 
-    v5 = [(CPSBannerSource *)v17 delegate];
-    [(CPBannerDelegate *)v5 bannerDidAppearWithIdentifier:location[0]];
-    MEMORY[0x277D82BD8](v5);
+    delegate2 = [(CPSBannerSource *)selfCopy delegate];
+    [(CPBannerDelegate *)delegate2 bannerDidAppearWithIdentifier:location[0]];
+    MEMORY[0x277D82BD8](delegate2);
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)bannerViewControllerDidDisappearWithIdentifier:(id)a3
+- (void)bannerViewControllerDidDisappearWithIdentifier:(id)identifier
 {
   v27[2] = *MEMORY[0x277D85DE8];
-  v25 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v21 = [(CPSBannerSource *)v25 presentedBannerViewController];
-  v20 = [(CPSBannerViewController *)v21 bannerItem];
-  v19 = [(CPSBannerItem *)v20 identifier];
-  v22 = [(NSUUID *)v19 isEqual:location[0]];
-  MEMORY[0x277D82BD8](v19);
-  MEMORY[0x277D82BD8](v20);
-  *&v3 = MEMORY[0x277D82BD8](v21).n128_u64[0];
+  objc_storeStrong(location, identifier);
+  presentedBannerViewController = [(CPSBannerSource *)selfCopy presentedBannerViewController];
+  bannerItem = [(CPSBannerViewController *)presentedBannerViewController bannerItem];
+  identifier = [(CPSBannerItem *)bannerItem identifier];
+  v22 = [(NSUUID *)identifier isEqual:location[0]];
+  MEMORY[0x277D82BD8](identifier);
+  MEMORY[0x277D82BD8](bannerItem);
+  *&v3 = MEMORY[0x277D82BD8](presentedBannerViewController).n128_u64[0];
   if (v22)
   {
-    v17 = [(CPSBannerSource *)v25 presentedBannerViewController];
-    v16 = [(CPSBannerViewController *)v17 bannerItem];
-    v18 = [(CPSBannerItem *)v16 isManeuverItem];
-    MEMORY[0x277D82BD8](v16);
-    *&v4 = MEMORY[0x277D82BD8](v17).n128_u64[0];
-    if (v18)
+    presentedBannerViewController2 = [(CPSBannerSource *)selfCopy presentedBannerViewController];
+    bannerItem2 = [(CPSBannerViewController *)presentedBannerViewController2 bannerItem];
+    isManeuverItem = [(CPSBannerItem *)bannerItem2 isManeuverItem];
+    MEMORY[0x277D82BD8](bannerItem2);
+    *&v4 = MEMORY[0x277D82BD8](presentedBannerViewController2).n128_u64[0];
+    if (isManeuverItem)
     {
-      v12 = v25;
+      v12 = selfCopy;
       v15 = [MEMORY[0x277CBEBC0] URLWithString:{@"maps:/car/instrumentcluster/map", v4}];
       v27[0] = v15;
       v14 = [MEMORY[0x277CBEBC0] URLWithString:@"maps:/car/instrumentcluster"];
@@ -459,70 +459,70 @@ void __48__CPSBannerSource_postBannerForNavigationAlert___block_invoke(uint64_t 
     v23 = CarPlaySupportGeneralLogging();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [(CPSBannerSource *)v25 presentedBannerViewController];
-      v10 = [(CPSBannerViewController *)v11 bannerItem];
-      v9 = [(CPSBannerItem *)v10 bundleIdentifier];
-      __os_log_helper_16_2_2_8_66_8_66(v26, v9, location[0]);
+      presentedBannerViewController3 = [(CPSBannerSource *)selfCopy presentedBannerViewController];
+      bannerItem3 = [(CPSBannerViewController *)presentedBannerViewController3 bannerItem];
+      bundleIdentifier = [(CPSBannerItem *)bannerItem3 bundleIdentifier];
+      __os_log_helper_16_2_2_8_66_8_66(v26, bundleIdentifier, location[0]);
       _os_log_impl(&dword_242FE8000, v23, OS_LOG_TYPE_DEFAULT, "%{public}@ #banner item (%{public}@) did disappear", v26, 0x16u);
-      MEMORY[0x277D82BD8](v9);
-      MEMORY[0x277D82BD8](v10);
-      MEMORY[0x277D82BD8](v11);
+      MEMORY[0x277D82BD8](bundleIdentifier);
+      MEMORY[0x277D82BD8](bannerItem3);
+      MEMORY[0x277D82BD8](presentedBannerViewController3);
     }
 
     objc_storeStrong(&v23, 0);
-    [(CPSBannerSource *)v25 setPresentedBannerViewController:0];
+    [(CPSBannerSource *)selfCopy setPresentedBannerViewController:0];
   }
 
-  v7 = [(CPSBannerSource *)v25 delegate];
+  delegate = [(CPSBannerSource *)selfCopy delegate];
   v8 = objc_opt_respondsToSelector();
-  *&v5 = MEMORY[0x277D82BD8](v7).n128_u64[0];
+  *&v5 = MEMORY[0x277D82BD8](delegate).n128_u64[0];
   if (v8)
   {
-    v6 = [(CPSBannerSource *)v25 delegate];
-    [(CPBannerDelegate *)v6 bannerDidDisappearWithIdentifier:location[0]];
-    MEMORY[0x277D82BD8](v6);
+    delegate2 = [(CPSBannerSource *)selfCopy delegate];
+    [(CPBannerDelegate *)delegate2 bannerDidDisappearWithIdentifier:location[0]];
+    MEMORY[0x277D82BD8](delegate2);
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)sendSuggestUI:(id)a3
+- (void)sendSuggestUI:(id)i
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v5 = [(CPSBannerSource *)v8 delegate];
+  objc_storeStrong(location, i);
+  delegate = [(CPSBannerSource *)selfCopy delegate];
   v6 = objc_opt_respondsToSelector();
-  *&v3 = MEMORY[0x277D82BD8](v5).n128_u64[0];
+  *&v3 = MEMORY[0x277D82BD8](delegate).n128_u64[0];
   if (v6)
   {
-    v4 = [(CPSBannerSource *)v8 delegate];
-    [(CPBannerDelegate *)v4 sendSuggestUI:location[0]];
-    MEMORY[0x277D82BD8](v4);
+    delegate2 = [(CPSBannerSource *)selfCopy delegate];
+    [(CPBannerDelegate *)delegate2 sendSuggestUI:location[0]];
+    MEMORY[0x277D82BD8](delegate2);
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)_setBannerRateLimitEnabled:(BOOL)a3 bundleIdentifier:(id)a4
+- (void)_setBannerRateLimitEnabled:(BOOL)enabled bundleIdentifier:(id)identifier
 {
   v27 = *MEMORY[0x277D85DE8];
-  v24 = self;
+  selfCopy = self;
   v23 = a2;
-  v22 = a3;
+  enabledCopy = enabled;
   location = 0;
-  objc_storeStrong(&location, a4);
-  v8 = v22;
-  if (v8 == [(CPSBannerSource *)v24 isRateLimited])
+  objc_storeStrong(&location, identifier);
+  v8 = enabledCopy;
+  if (v8 == [(CPSBannerSource *)selfCopy isRateLimited])
   {
     v20 = 1;
   }
 
   else
   {
-    [(CPSBannerSource *)v24 setRateLimited:v22];
-    if (v22)
+    [(CPSBannerSource *)selfCopy setRateLimited:enabledCopy];
+    if (enabledCopy)
     {
       v17 = CarPlaySupportGeneralLogging();
       v16 = OS_LOG_TYPE_DEFAULT;
@@ -542,7 +542,7 @@ void __48__CPSBannerSource_postBannerForNavigationAlert___block_invoke(uint64_t 
       v11 = 0;
       v12 = __63__CPSBannerSource__setBannerRateLimitEnabled_bundleIdentifier___block_invoke;
       v13 = &unk_278D910D8;
-      v14 = MEMORY[0x277D82BE0](v24);
+      v14 = MEMORY[0x277D82BE0](selfCopy);
       v15 = MEMORY[0x277D82BE0](location);
       dispatch_after(when, queue, &v9);
       MEMORY[0x277D82BD8](queue);
@@ -585,28 +585,28 @@ void __63__CPSBannerSource__setBannerRateLimitEnabled_bundleIdentifier___block_i
   objc_storeStrong(oslog, 0);
 }
 
-- (void)_enqueueBannerItem:(id)a3
+- (void)_enqueueBannerItem:(id)item
 {
   v60 = *MEMORY[0x277D85DE8];
-  v53 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v36 = [(CPSBannerSource *)v53 applicationStateMonitor];
-  v37 = [(CPSApplicationStateMonitor *)v36 isApplicationActive];
-  *&v3 = MEMORY[0x277D82BD8](v36).n128_u64[0];
-  if (v37)
+  objc_storeStrong(location, item);
+  applicationStateMonitor = [(CPSBannerSource *)selfCopy applicationStateMonitor];
+  isApplicationActive = [(CPSApplicationStateMonitor *)applicationStateMonitor isApplicationActive];
+  *&v3 = MEMORY[0x277D82BD8](applicationStateMonitor).n128_u64[0];
+  if (isApplicationActive)
   {
     v51 = CarPlaySupportGeneralLogging();
     v50 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(v51, OS_LOG_TYPE_DEFAULT))
     {
-      v35 = [location[0] bundleIdentifier];
-      v34 = [location[0] identifier];
-      __os_log_helper_16_2_2_8_66_8_66(v59, v35, v34);
+      bundleIdentifier = [location[0] bundleIdentifier];
+      identifier = [location[0] identifier];
+      __os_log_helper_16_2_2_8_66_8_66(v59, bundleIdentifier, identifier);
       _os_log_impl(&dword_242FE8000, v51, v50, "%{public}@ is frontmost, not enqueuing #banner item (%{public}@)", v59, 0x16u);
-      MEMORY[0x277D82BD8](v34);
-      MEMORY[0x277D82BD8](v35);
+      MEMORY[0x277D82BD8](identifier);
+      MEMORY[0x277D82BD8](bundleIdentifier);
     }
 
     objc_storeStrong(&v51, 0);
@@ -616,16 +616,16 @@ LABEL_29:
   }
 
   v49 = 1;
-  v33 = [(CPSBannerSource *)v53 presentedBannerViewController];
-  *&v4 = MEMORY[0x277D82BD8](v33).n128_u64[0];
-  if (!v33)
+  presentedBannerViewController = [(CPSBannerSource *)selfCopy presentedBannerViewController];
+  *&v4 = MEMORY[0x277D82BD8](presentedBannerViewController).n128_u64[0];
+  if (!presentedBannerViewController)
   {
 LABEL_19:
-    v16 = [location[0] identifier];
-    v15 = [(CPSBannerSource *)v53 lastUserDismissedIdentifier];
-    v17 = [v16 isEqual:?];
-    MEMORY[0x277D82BD8](v15);
-    *&v8 = MEMORY[0x277D82BD8](v16).n128_u64[0];
+    identifier2 = [location[0] identifier];
+    lastUserDismissedIdentifier = [(CPSBannerSource *)selfCopy lastUserDismissedIdentifier];
+    v17 = [identifier2 isEqual:?];
+    MEMORY[0x277D82BD8](lastUserDismissedIdentifier);
+    *&v8 = MEMORY[0x277D82BD8](identifier2).n128_u64[0];
     if (v17)
     {
       v49 = 0;
@@ -633,18 +633,18 @@ LABEL_19:
 
     if (v49)
     {
-      if ([(CPSBannerSource *)v53 isRateLimited])
+      if ([(CPSBannerSource *)selfCopy isRateLimited])
       {
         v40 = CarPlaySupportGeneralLogging();
         v39 = OS_LOG_TYPE_DEFAULT;
         if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
         {
-          v14 = [location[0] bundleIdentifier];
-          v13 = [location[0] identifier];
-          __os_log_helper_16_2_2_8_66_8_66(v55, v14, v13);
+          bundleIdentifier2 = [location[0] bundleIdentifier];
+          identifier3 = [location[0] identifier];
+          __os_log_helper_16_2_2_8_66_8_66(v55, bundleIdentifier2, identifier3);
           _os_log_impl(&dword_242FE8000, v40, v39, "%{public}@ is background but rate limited, not enqueuing #banner item (%{public}@)", v55, 0x16u);
-          MEMORY[0x277D82BD8](v13);
-          MEMORY[0x277D82BD8](v14);
+          MEMORY[0x277D82BD8](identifier3);
+          MEMORY[0x277D82BD8](bundleIdentifier2);
         }
 
         objc_storeStrong(&v40, 0);
@@ -655,20 +655,20 @@ LABEL_19:
         v38 = CarPlaySupportGeneralLogging();
         if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
         {
-          v12 = [location[0] bundleIdentifier];
-          v11 = [location[0] identifier];
-          __os_log_helper_16_2_2_8_66_8_66(v54, v12, v11);
+          bundleIdentifier3 = [location[0] bundleIdentifier];
+          identifier4 = [location[0] identifier];
+          __os_log_helper_16_2_2_8_66_8_66(v54, bundleIdentifier3, identifier4);
           _os_log_impl(&dword_242FE8000, v38, OS_LOG_TYPE_DEFAULT, "%{public}@ is not frontmost, enqueuing #banner item (%{public}@)", v54, 0x16u);
-          MEMORY[0x277D82BD8](v11);
-          MEMORY[0x277D82BD8](v12);
+          MEMORY[0x277D82BD8](identifier4);
+          MEMORY[0x277D82BD8](bundleIdentifier3);
         }
 
         objc_storeStrong(&v38, 0);
-        [(CPSBannerSource *)v53 _postBannerRequestForBannerItem:location[0]];
-        v9 = v53;
-        v10 = [location[0] bundleIdentifier];
+        [(CPSBannerSource *)selfCopy _postBannerRequestForBannerItem:location[0]];
+        v9 = selfCopy;
+        bundleIdentifier4 = [location[0] bundleIdentifier];
         [(CPSBannerSource *)v9 _setBannerRateLimitEnabled:1 bundleIdentifier:?];
-        MEMORY[0x277D82BD8](v10);
+        MEMORY[0x277D82BD8](bundleIdentifier4);
       }
     }
 
@@ -676,55 +676,55 @@ LABEL_19:
   }
 
   v27 = objc_opt_class();
-  v29 = [(CPSBannerSource *)v53 presentedBannerViewController];
-  v28 = [(CPSBannerViewController *)v29 bannerItem];
-  v48 = CPSSafeCast_23(v27, v28);
-  MEMORY[0x277D82BD8](v28);
-  v31 = [v48 identifier];
-  v30 = [location[0] identifier];
-  v32 = [v31 isEqual:?];
-  MEMORY[0x277D82BD8](v30);
-  *&v5 = MEMORY[0x277D82BD8](v31).n128_u64[0];
+  presentedBannerViewController2 = [(CPSBannerSource *)selfCopy presentedBannerViewController];
+  bannerItem = [(CPSBannerViewController *)presentedBannerViewController2 bannerItem];
+  v48 = CPSSafeCast_23(v27, bannerItem);
+  MEMORY[0x277D82BD8](bannerItem);
+  identifier5 = [v48 identifier];
+  identifier6 = [location[0] identifier];
+  v32 = [identifier5 isEqual:?];
+  MEMORY[0x277D82BD8](identifier6);
+  *&v5 = MEMORY[0x277D82BD8](identifier5).n128_u64[0];
   if ((v32 & 1) == 0)
   {
     v42 = CarPlaySupportGeneralLogging();
     v41 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
     {
-      v19 = [location[0] bundleIdentifier];
-      v18 = [v48 identifier];
-      __os_log_helper_16_2_2_8_66_8_66(v56, v19, v18);
+      bundleIdentifier5 = [location[0] bundleIdentifier];
+      identifier7 = [v48 identifier];
+      __os_log_helper_16_2_2_8_66_8_66(v56, bundleIdentifier5, identifier7);
       _os_log_impl(&dword_242FE8000, v42, v41, "%{public}@ is background, revoking presented #banner (%{public}@)", v56, 0x16u);
-      MEMORY[0x277D82BD8](v18);
-      MEMORY[0x277D82BD8](v19);
+      MEMORY[0x277D82BD8](identifier7);
+      MEMORY[0x277D82BD8](bundleIdentifier5);
     }
 
     objc_storeStrong(&v42, 0);
-    [(CPSBannerSource *)v53 _revokePresentedBannerWithReason:@"BannerReplaced"];
+    [(CPSBannerSource *)selfCopy _revokePresentedBannerWithReason:@"BannerReplaced"];
     goto LABEL_17;
   }
 
-  if (![(CPSBannerSource *)v53 isRateLimited])
+  if (![(CPSBannerSource *)selfCopy isRateLimited])
   {
     v49 = 0;
-    v22 = [(CPSBannerSource *)v53 presentedBannerViewController];
-    [(CPSBannerViewController *)v22 updateBannerWithBannerItem:location[0]];
-    *&v6 = MEMORY[0x277D82BD8](v22).n128_u64[0];
-    v23 = v53;
-    v24 = [location[0] bundleIdentifier];
+    presentedBannerViewController3 = [(CPSBannerSource *)selfCopy presentedBannerViewController];
+    [(CPSBannerViewController *)presentedBannerViewController3 updateBannerWithBannerItem:location[0]];
+    *&v6 = MEMORY[0x277D82BD8](presentedBannerViewController3).n128_u64[0];
+    v23 = selfCopy;
+    bundleIdentifier6 = [location[0] bundleIdentifier];
     [(CPSBannerSource *)v23 _setBannerRateLimitEnabled:1 bundleIdentifier:?];
-    *&v7 = MEMORY[0x277D82BD8](v24).n128_u64[0];
-    [(CPSBannerSource *)v53 _resetDismissTimer];
+    *&v7 = MEMORY[0x277D82BD8](bundleIdentifier6).n128_u64[0];
+    [(CPSBannerSource *)selfCopy _resetDismissTimer];
     v44 = CarPlaySupportGeneralLogging();
     v43 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT))
     {
-      v21 = [location[0] bundleIdentifier];
-      v20 = [location[0] identifier];
-      __os_log_helper_16_2_2_8_66_8_66(v57, v21, v20);
+      bundleIdentifier7 = [location[0] bundleIdentifier];
+      identifier8 = [location[0] identifier];
+      __os_log_helper_16_2_2_8_66_8_66(v57, bundleIdentifier7, identifier8);
       _os_log_impl(&dword_242FE8000, v44, v43, "%{public}@ is background, #banner item (%{public}@)is being updated", v57, 0x16u);
-      MEMORY[0x277D82BD8](v20);
-      MEMORY[0x277D82BD8](v21);
+      MEMORY[0x277D82BD8](identifier8);
+      MEMORY[0x277D82BD8](bundleIdentifier7);
     }
 
     objc_storeStrong(&v44, 0);
@@ -737,12 +737,12 @@ LABEL_17:
   v46 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
-    v26 = [location[0] bundleIdentifier];
-    v25 = [location[0] identifier];
-    __os_log_helper_16_2_2_8_66_8_66(v58, v26, v25);
+    bundleIdentifier8 = [location[0] bundleIdentifier];
+    identifier9 = [location[0] identifier];
+    __os_log_helper_16_2_2_8_66_8_66(v58, bundleIdentifier8, identifier9);
     _os_log_impl(&dword_242FE8000, oslog, v46, "%{public}@ is background but rate limited, not updating #banner item (%{public}@)", v58, 0x16u);
-    MEMORY[0x277D82BD8](v25);
-    MEMORY[0x277D82BD8](v26);
+    MEMORY[0x277D82BD8](identifier9);
+    MEMORY[0x277D82BD8](bundleIdentifier8);
   }
 
   objc_storeStrong(&oslog, 0);
@@ -758,24 +758,24 @@ LABEL_30:
   objc_storeStrong(location, 0);
 }
 
-- (void)_postBannerRequestForBannerItem:(id)a3
+- (void)_postBannerRequestForBannerItem:(id)item
 {
   v35 = *MEMORY[0x277D85DE8];
-  v31 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, item);
   v29 = 0;
-  v14 = [(CPSBannerSource *)v31 bannerKitSource];
+  bannerKitSource = [(CPSBannerSource *)selfCopy bannerKitSource];
   v27 = 0;
-  v13 = [(BNBannerSource *)v14 layoutDescriptionWithError:&v27];
+  v13 = [(BNBannerSource *)bannerKitSource layoutDescriptionWithError:&v27];
   objc_storeStrong(&v29, v27);
   v28 = v13;
-  MEMORY[0x277D82BD8](v14);
+  MEMORY[0x277D82BD8](bannerKitSource);
   if (v28)
   {
     v26 = [[CPSBannerViewController alloc] initWithBannerItem:location[0]];
-    [v26 setDelegate:v31];
+    [v26 setDelegate:selfCopy];
     [v28 presentationSize];
     v22 = v3;
     v23 = v4;
@@ -786,29 +786,29 @@ LABEL_30:
     v24 = v7;
     v25 = v8;
     [v26 setPreferredContentSize:{v7, v8}];
-    [(CPSBannerSource *)v31 setPresentedBannerViewController:v26];
+    [(CPSBannerSource *)selfCopy setPresentedBannerViewController:v26];
     v21[0] = 0;
-    v11 = [(CPSBannerSource *)v31 bannerKitSource];
+    bannerKitSource2 = [(CPSBannerSource *)selfCopy bannerKitSource];
     v20 = 0;
-    v12 = [(BNBannerSource *)v11 postPresentable:v26 options:1 userInfo:0 error:&v20];
+    v12 = [(BNBannerSource *)bannerKitSource2 postPresentable:v26 options:1 userInfo:0 error:&v20];
     objc_storeStrong(v21, v20);
-    MEMORY[0x277D82BD8](v11);
+    MEMORY[0x277D82BD8](bannerKitSource2);
     if (v12)
     {
       v19 = CarPlaySupportGeneralLogging();
       v18 = OS_LOG_TYPE_DEFAULT;
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
-        v10 = [location[0] bundleIdentifier];
-        v9 = [location[0] identifier];
-        __os_log_helper_16_2_2_8_66_8_66(v34, v10, v9);
+        bundleIdentifier = [location[0] bundleIdentifier];
+        identifier = [location[0] identifier];
+        __os_log_helper_16_2_2_8_66_8_66(v34, bundleIdentifier, identifier);
         _os_log_impl(&dword_242FE8000, v19, v18, "%{public}@ Posted request for #banner item (%{public}@)", v34, 0x16u);
-        MEMORY[0x277D82BD8](v9);
-        MEMORY[0x277D82BD8](v10);
+        MEMORY[0x277D82BD8](identifier);
+        MEMORY[0x277D82BD8](bundleIdentifier);
       }
 
       objc_storeStrong(&v19, 0);
-      [(CPSBannerSource *)v31 _resetDismissTimer];
+      [(CPSBannerSource *)selfCopy _resetDismissTimer];
     }
 
     else
@@ -845,55 +845,55 @@ LABEL_30:
   objc_storeStrong(location, 0);
 }
 
-- (void)_revokePresentedBannerWithReason:(id)a3
+- (void)_revokePresentedBannerWithReason:(id)reason
 {
   v26 = *MEMORY[0x277D85DE8];
-  v22 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, reason);
   v20 = 0;
-  v19 = [(CPSBannerSource *)v22 presentedBannerViewController];
+  presentedBannerViewController = [(CPSBannerSource *)selfCopy presentedBannerViewController];
   v18 = CarPlaySupportGeneralLogging();
   v17 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [v19 bannerItem];
-    v12 = [v13 bundleIdentifier];
-    v11 = [v19 bannerItem];
-    v10 = [v11 identifier];
-    __os_log_helper_16_2_3_8_66_8_66_8_66(v25, v12, v10, location[0]);
+    bannerItem = [presentedBannerViewController bannerItem];
+    bundleIdentifier = [bannerItem bundleIdentifier];
+    bannerItem2 = [presentedBannerViewController bannerItem];
+    identifier = [bannerItem2 identifier];
+    __os_log_helper_16_2_3_8_66_8_66_8_66(v25, bundleIdentifier, identifier, location[0]);
     _os_log_impl(&dword_242FE8000, v18, v17, "%{public}@ Revoking presentable for #banner item (%{public}@) with reason: %{public}@", v25, 0x20u);
-    MEMORY[0x277D82BD8](v10);
-    MEMORY[0x277D82BD8](v11);
-    MEMORY[0x277D82BD8](v12);
-    MEMORY[0x277D82BD8](v13);
+    MEMORY[0x277D82BD8](identifier);
+    MEMORY[0x277D82BD8](bannerItem2);
+    MEMORY[0x277D82BD8](bundleIdentifier);
+    MEMORY[0x277D82BD8](bannerItem);
   }
 
   objc_storeStrong(&v18, 0);
-  v8 = [(CPSBannerSource *)v22 bannerKitSource];
-  v7 = [v19 requestIdentifier];
+  bannerKitSource = [(CPSBannerSource *)selfCopy bannerKitSource];
+  requestIdentifier = [presentedBannerViewController requestIdentifier];
   v16[1] = 0;
-  v9 = [BNBannerSource revokePresentableWithRequestIdentifier:v8 animated:"revokePresentableWithRequestIdentifier:animated:reason:userInfo:error:" reason:? userInfo:? error:?];
+  v9 = [BNBannerSource revokePresentableWithRequestIdentifier:bannerKitSource animated:"revokePresentableWithRequestIdentifier:animated:reason:userInfo:error:" reason:? userInfo:? error:?];
   objc_storeStrong(&v20, 0);
-  MEMORY[0x277D82BD8](v7);
-  MEMORY[0x277D82BD8](v8);
+  MEMORY[0x277D82BD8](requestIdentifier);
+  MEMORY[0x277D82BD8](bannerKitSource);
   if (v9)
   {
     v16[0] = CarPlaySupportGeneralLogging();
     v15 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(v16[0], OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [v19 bannerItem];
-      v5 = [v6 bundleIdentifier];
-      v4 = [v19 bannerItem];
-      v3 = [v4 identifier];
-      __os_log_helper_16_2_2_8_66_8_66(v24, v5, v3);
+      bannerItem3 = [presentedBannerViewController bannerItem];
+      bundleIdentifier2 = [bannerItem3 bundleIdentifier];
+      bannerItem4 = [presentedBannerViewController bannerItem];
+      identifier2 = [bannerItem4 identifier];
+      __os_log_helper_16_2_2_8_66_8_66(v24, bundleIdentifier2, identifier2);
       _os_log_impl(&dword_242FE8000, v16[0], v15, "%{public}@ Revoked presentable for #banner item (%{public}@)", v24, 0x16u);
-      MEMORY[0x277D82BD8](v3);
-      MEMORY[0x277D82BD8](v4);
-      MEMORY[0x277D82BD8](v5);
-      MEMORY[0x277D82BD8](v6);
+      MEMORY[0x277D82BD8](identifier2);
+      MEMORY[0x277D82BD8](bannerItem4);
+      MEMORY[0x277D82BD8](bundleIdentifier2);
+      MEMORY[0x277D82BD8](bannerItem3);
     }
 
     objc_storeStrong(v16, 0);
@@ -911,7 +911,7 @@ LABEL_30:
     objc_storeStrong(&oslog, 0);
   }
 
-  objc_storeStrong(&v19, 0);
+  objc_storeStrong(&presentedBannerViewController, 0);
   objc_storeStrong(&v20, 0);
   objc_storeStrong(location, 0);
 }
@@ -919,7 +919,7 @@ LABEL_30:
 - (void)_flushQueue
 {
   v19 = *MEMORY[0x277D85DE8];
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = CarPlaySupportGeneralLogging();
   v15 = 2;
@@ -933,12 +933,12 @@ LABEL_30:
 
   objc_storeStrong(location, 0);
   v13 = 0;
-  v4 = [(CPSBannerSource *)v17 bannerKitSource];
+  bannerKitSource = [(CPSBannerSource *)selfCopy bannerKitSource];
   v12 = 0;
-  v5 = [(BNBannerSource *)v4 revokeAllPresentablesWithReason:@"FlushQueue" userInfo:0 error:&v12];
+  v5 = [(BNBannerSource *)bannerKitSource revokeAllPresentablesWithReason:@"FlushQueue" userInfo:0 error:&v12];
   objc_storeStrong(&v13, v12);
   MEMORY[0x277D82BD8](v5);
-  MEMORY[0x277D82BD8](v4);
+  MEMORY[0x277D82BD8](bannerKitSource);
   if (v5)
   {
     v11 = CarPlaySupportGeneralLogging();
@@ -971,25 +971,25 @@ LABEL_30:
 
 - (void)_resetDismissTimer
 {
-  v2 = [(CPSBannerSource *)self dimissTimer];
-  [(NSTimer *)v2 invalidate];
-  MEMORY[0x277D82BD8](v2);
+  dimissTimer = [(CPSBannerSource *)self dimissTimer];
+  [(NSTimer *)dimissTimer invalidate];
+  MEMORY[0x277D82BD8](dimissTimer);
   v3 = [MEMORY[0x277CBEBB8] scheduledTimerWithTimeInterval:self target:sel__dismissTimerFired_ selector:0 userInfo:0 repeats:10.0];
   [(CPSBannerSource *)self setDimissTimer:?];
   MEMORY[0x277D82BD8](v3);
 }
 
-- (void)_dismissTimerFired:(id)a3
+- (void)_dismissTimerFired:(id)fired
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v4 = [(CPSBannerSource *)v6 presentedBannerViewController];
-  *&v3 = MEMORY[0x277D82BD8](v4).n128_u64[0];
-  if (v4)
+  objc_storeStrong(location, fired);
+  presentedBannerViewController = [(CPSBannerSource *)selfCopy presentedBannerViewController];
+  *&v3 = MEMORY[0x277D82BD8](presentedBannerViewController).n128_u64[0];
+  if (presentedBannerViewController)
   {
-    [(CPSBannerSource *)v6 _revokePresentedBannerWithReason:@"BannerExpired", v3];
+    [(CPSBannerSource *)selfCopy _revokePresentedBannerWithReason:@"BannerExpired", v3];
   }
 
   objc_storeStrong(location, 0);
@@ -997,21 +997,21 @@ LABEL_30:
 
 - (void)_resetLastUserDismissedIdentifierTimer
 {
-  v2 = [(CPSBannerSource *)self lastUserDismissedIdentifierResetTimer];
-  [(NSTimer *)v2 invalidate];
-  MEMORY[0x277D82BD8](v2);
+  lastUserDismissedIdentifierResetTimer = [(CPSBannerSource *)self lastUserDismissedIdentifierResetTimer];
+  [(NSTimer *)lastUserDismissedIdentifierResetTimer invalidate];
+  MEMORY[0x277D82BD8](lastUserDismissedIdentifierResetTimer);
   v3 = [MEMORY[0x277CBEBB8] scheduledTimerWithTimeInterval:self target:sel__resetLastUserDismissedIdentifierTimerFired_ selector:0 userInfo:0 repeats:30.0];
   [(CPSBannerSource *)self setLastUserDismissedIdentifierResetTimer:?];
   MEMORY[0x277D82BD8](v3);
 }
 
-- (void)_resetLastUserDismissedIdentifierTimerFired:(id)a3
+- (void)_resetLastUserDismissedIdentifierTimerFired:(id)fired
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(CPSBannerSource *)v4 setLastUserDismissedIdentifier:0];
+  objc_storeStrong(location, fired);
+  [(CPSBannerSource *)selfCopy setLastUserDismissedIdentifier:0];
   objc_storeStrong(location, 0);
 }
 

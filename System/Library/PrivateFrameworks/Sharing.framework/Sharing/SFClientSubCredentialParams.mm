@@ -1,19 +1,19 @@
 @interface SFClientSubCredentialParams
-- (SFClientSubCredentialParams)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (SFClientSubCredentialParams)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFClientSubCredentialParams
 
-- (SFClientSubCredentialParams)initWithCoder:(id)a3
+- (SFClientSubCredentialParams)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = SFClientSubCredentialParams;
   v5 = [(SFClientSubCredentialParams *)&v12 init];
   if (v5)
   {
-    v6 = v4;
+    v6 = coderCopy;
     objc_opt_class();
     NSDecodeObjectIfPresent();
 
@@ -37,43 +37,43 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   adamID = self->_adamID;
-  v10 = v4;
+  v10 = coderCopy;
   if (adamID)
   {
-    [v4 encodeObject:adamID forKey:@"aID"];
-    v4 = v10;
+    [coderCopy encodeObject:adamID forKey:@"aID"];
+    coderCopy = v10;
   }
 
   adamIDs = self->_adamIDs;
   if (adamIDs)
   {
     [v10 encodeObject:adamIDs forKey:@"aIDs"];
-    v4 = v10;
+    coderCopy = v10;
   }
 
   title = self->_title;
   if (title)
   {
     [v10 encodeObject:title forKey:@"tle"];
-    v4 = v10;
+    coderCopy = v10;
   }
 
   subtitle = self->_subtitle;
   if (subtitle)
   {
     [v10 encodeObject:subtitle forKey:@"subt"];
-    v4 = v10;
+    coderCopy = v10;
   }
 
   issuerID = self->_issuerID;
   if (issuerID)
   {
     [v10 encodeObject:issuerID forKey:@"issID"];
-    v4 = v10;
+    coderCopy = v10;
   }
 }
 

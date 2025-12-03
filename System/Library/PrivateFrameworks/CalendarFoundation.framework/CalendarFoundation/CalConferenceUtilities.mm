@@ -1,42 +1,42 @@
 @interface CalConferenceUtilities
-+ (BOOL)conferenceURLHasAllowedScheme:(id)a3;
++ (BOOL)conferenceURLHasAllowedScheme:(id)scheme;
 + (id)_logHandle;
 @end
 
 @implementation CalConferenceUtilities
 
-+ (BOOL)conferenceURLHasAllowedScheme:(id)a3
++ (BOOL)conferenceURLHasAllowedScheme:(id)scheme
 {
-  v3 = a3;
+  schemeCopy = scheme;
   if (conferenceURLHasAllowedScheme__onceToken != -1)
   {
     +[CalConferenceUtilities conferenceURLHasAllowedScheme:];
   }
 
-  v4 = [v3 scheme];
-  v5 = [v4 lowercaseString];
+  scheme = [schemeCopy scheme];
+  lowercaseString = [scheme lowercaseString];
 
-  if (([conferenceURLHasAllowedScheme__alwaysAllowedSchemes containsObject:v5] & 1) == 0)
+  if (([conferenceURLHasAllowedScheme__alwaysAllowedSchemes containsObject:lowercaseString] & 1) == 0)
   {
-    if ([v5 isEqualToString:@"file"])
+    if ([lowercaseString isEqualToString:@"file"])
     {
       v6 = 0;
       goto LABEL_17;
     }
 
     v12 = 0;
-    v7 = [objc_alloc(MEMORY[0x1E6963630]) initWithURL:v3 error:&v12];
+    v7 = [objc_alloc(MEMORY[0x1E6963630]) initWithURL:schemeCopy error:&v12];
     v8 = v12;
     v9 = v8;
     if (v7)
     {
-      v10 = [v7 bundleRecord];
-      if (v10)
+      bundleRecord = [v7 bundleRecord];
+      if (bundleRecord)
       {
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v6 = [v10 developerType]== 3;
+          v6 = [bundleRecord developerType]== 3;
 LABEL_15:
 
 LABEL_16:
@@ -53,10 +53,10 @@ LABEL_16:
         goto LABEL_16;
       }
 
-      v10 = [objc_opt_class() _logHandle];
-      if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+      bundleRecord = [objc_opt_class() _logHandle];
+      if (os_log_type_enabled(bundleRecord, OS_LOG_TYPE_ERROR))
       {
-        [(CalConferenceUtilities *)v9 conferenceURLHasAllowedScheme:v10];
+        [(CalConferenceUtilities *)v9 conferenceURLHasAllowedScheme:bundleRecord];
       }
     }
 
@@ -83,7 +83,7 @@ uint64_t __56__CalConferenceUtilities_conferenceURLHasAllowedScheme___block_invo
   block[1] = 3221225472;
   block[2] = __36__CalConferenceUtilities__logHandle__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_logHandle_onceToken != -1)
   {
     dispatch_once(&_logHandle_onceToken, block);

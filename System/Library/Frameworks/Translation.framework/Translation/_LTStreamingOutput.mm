@@ -1,40 +1,40 @@
 @interface _LTStreamingOutput
-- (BOOL)isEqual:(id)a3;
-- (_LTStreamingOutput)initWithCoder:(id)a3;
-- (_LTStreamingOutput)initWithText:(id)a3 sourceText:(id)a4 locale:(id)a5 isFinal:(BOOL)a6 sourceIdentifier:(id)a7;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_LTStreamingOutput)initWithCoder:(id)coder;
+- (_LTStreamingOutput)initWithText:(id)text sourceText:(id)sourceText locale:(id)locale isFinal:(BOOL)final sourceIdentifier:(id)identifier;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _LTStreamingOutput
 
-- (_LTStreamingOutput)initWithText:(id)a3 sourceText:(id)a4 locale:(id)a5 isFinal:(BOOL)a6 sourceIdentifier:(id)a7
+- (_LTStreamingOutput)initWithText:(id)text sourceText:(id)sourceText locale:(id)locale isFinal:(BOOL)final sourceIdentifier:(id)identifier
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  textCopy = text;
+  sourceTextCopy = sourceText;
+  localeCopy = locale;
+  identifierCopy = identifier;
   v27.receiver = self;
   v27.super_class = _LTStreamingOutput;
   v16 = [(_LTStreamingOutput *)&v27 init];
   if (v16)
   {
-    v17 = [v12 copy];
+    v17 = [textCopy copy];
     translatedText = v16->_translatedText;
     v16->_translatedText = v17;
 
-    v19 = [v13 copy];
+    v19 = [sourceTextCopy copy];
     sourceText = v16->_sourceText;
     v16->_sourceText = v19;
 
-    v21 = [v14 copy];
+    v21 = [localeCopy copy];
     locale = v16->_locale;
     v16->_locale = v21;
 
-    v16->_isFinal = a6;
-    v23 = [v15 copy];
+    v16->_isFinal = final;
+    v23 = [identifierCopy copy];
     sourceIdentifier = v16->_sourceIdentifier;
     v16->_sourceIdentifier = v23;
 
@@ -59,37 +59,37 @@
     v6 = @"NO";
   }
 
-  v7 = [(NSLocale *)self->_locale _ltLocaleIdentifier];
+  _ltLocaleIdentifier = [(NSLocale *)self->_locale _ltLocaleIdentifier];
   translatedText = self->_translatedText;
   sourceText = self->_sourceText;
-  v10 = [(NSUUID *)self->_sourceIdentifier UUIDString];
-  v11 = [v3 stringWithFormat:@"<%@: %p isFinal: %@; locale: %@; text: %@; sourceText: %@, sourceIdentifier: %@>", v5, self, v6, v7, translatedText, sourceText, v10];;
+  uUIDString = [(NSUUID *)self->_sourceIdentifier UUIDString];
+  v11 = [v3 stringWithFormat:@"<%@: %p isFinal: %@; locale: %@; text: %@; sourceText: %@, sourceIdentifier: %@>", v5, self, v6, _ltLocaleIdentifier, translatedText, sourceText, uUIDString];;
 
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     translatedText = self->_translatedText;
-    v7 = [v5 translatedText];
-    if ([(NSString *)translatedText isEqualToString:v7])
+    translatedText = [v5 translatedText];
+    if ([(NSString *)translatedText isEqualToString:translatedText])
     {
       sourceText = self->_sourceText;
-      v9 = [v5 sourceText];
-      if (-[NSString isEqualToString:](sourceText, "isEqualToString:", v9) && (isFinal = self->_isFinal, isFinal == [v5 isFinal]))
+      sourceText = [v5 sourceText];
+      if (-[NSString isEqualToString:](sourceText, "isEqualToString:", sourceText) && (isFinal = self->_isFinal, isFinal == [v5 isFinal]))
       {
         locale = self->_locale;
-        v12 = [v5 locale];
-        if ([(NSLocale *)locale isEqual:v12])
+        locale = [v5 locale];
+        if ([(NSLocale *)locale isEqual:locale])
         {
           sourceIdentifier = self->_sourceIdentifier;
-          v14 = [v5 sourceIdentifier];
-          if (sourceIdentifier == v14)
+          sourceIdentifier = [v5 sourceIdentifier];
+          if (sourceIdentifier == sourceIdentifier)
           {
             v17 = 1;
           }
@@ -97,8 +97,8 @@
           else
           {
             v15 = self->_sourceIdentifier;
-            v16 = [v5 sourceIdentifier];
-            v17 = [(NSUUID *)v15 isEqual:v16];
+            sourceIdentifier2 = [v5 sourceIdentifier];
+            v17 = [(NSUUID *)v15 isEqual:sourceIdentifier2];
           }
         }
 
@@ -140,28 +140,28 @@
   return v7 ^ v8;
 }
 
-- (_LTStreamingOutput)initWithCoder:(id)a3
+- (_LTStreamingOutput)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = _LTStreamingOutput;
   v5 = [(_LTStreamingOutput *)&v16 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"translatedText"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"translatedText"];
     translatedText = v5->_translatedText;
     v5->_translatedText = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sourceText"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sourceText"];
     sourceText = v5->_sourceText;
     v5->_sourceText = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"locale"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"locale"];
     locale = v5->_locale;
     v5->_locale = v10;
 
-    v5->_isFinal = [v4 decodeBoolForKey:@"isFinal"];
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sourceIdentifier"];
+    v5->_isFinal = [coderCopy decodeBoolForKey:@"isFinal"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sourceIdentifier"];
     sourceIdentifier = v5->_sourceIdentifier;
     v5->_sourceIdentifier = v12;
 
@@ -171,18 +171,18 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   translatedText = self->_translatedText;
-  v5 = a3;
-  [v5 encodeObject:translatedText forKey:@"translatedText"];
-  [v5 encodeObject:self->_sourceText forKey:@"sourceText"];
-  [v5 encodeObject:self->_locale forKey:@"locale"];
-  [v5 encodeBool:self->_isFinal forKey:@"isFinal"];
-  [v5 encodeObject:self->_sourceIdentifier forKey:@"sourceIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:translatedText forKey:@"translatedText"];
+  [coderCopy encodeObject:self->_sourceText forKey:@"sourceText"];
+  [coderCopy encodeObject:self->_locale forKey:@"locale"];
+  [coderCopy encodeBool:self->_isFinal forKey:@"isFinal"];
+  [coderCopy encodeObject:self->_sourceIdentifier forKey:@"sourceIdentifier"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [_LTStreamingOutput alloc];
   locale = self->_locale;

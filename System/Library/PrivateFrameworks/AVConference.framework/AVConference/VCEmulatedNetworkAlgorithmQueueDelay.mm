@@ -1,8 +1,8 @@
 @interface VCEmulatedNetworkAlgorithmQueueDelay
 - (VCEmulatedNetworkAlgorithmQueueDelay)init;
 - (double)computeNetworkDelay;
-- (void)process:(id)a3;
-- (void)updateSettingsAtTime:(double)a3 impairments:(id)a4;
+- (void)process:(id)process;
+- (void)updateSettingsAtTime:(double)time impairments:(id)impairments;
 @end
 
 @implementation VCEmulatedNetworkAlgorithmQueueDelay
@@ -21,25 +21,25 @@
   return result;
 }
 
-- (void)updateSettingsAtTime:(double)a3 impairments:(id)a4
+- (void)updateSettingsAtTime:(double)time impairments:(id)impairments
 {
   v31 = *MEMORY[0x1E69E9840];
-  v7 = [objc_msgSend(a4 objectForKeyedSubscript:{@"FixedDelay", "objectForKeyedSubscript:", @"time"}];
-  v8 = [objc_msgSend(a4 objectForKeyedSubscript:{@"FixedDelay", "objectForKeyedSubscript:", @"value"}];
+  v7 = [objc_msgSend(impairments objectForKeyedSubscript:{@"FixedDelay", "objectForKeyedSubscript:", @"time"}];
+  v8 = [objc_msgSend(impairments objectForKeyedSubscript:{@"FixedDelay", "objectForKeyedSubscript:", @"value"}];
   v9 = [v8 count];
   if (v9 >= 1)
   {
-    VCEmulatedNetworkAlgorithm_UpdateIndexWithIntervalArray(v7, &self->_currentIndexForDelay, &self->_lastNetworkQueueDelayLoadTime, v9, a3);
+    VCEmulatedNetworkAlgorithm_UpdateIndexWithIntervalArray(v7, &self->_currentIndexForDelay, &self->_lastNetworkQueueDelayLoadTime, v9, time);
     self->_networkQueueDelay = [objc_msgSend(v8 objectAtIndexedSubscript:{self->_currentIndexForDelay), "intValue"}];
   }
 
-  v10 = [objc_msgSend(a4 objectForKeyedSubscript:{@"GaussianDelay", "objectForKeyedSubscript:", @"time"}];
-  v11 = [objc_msgSend(a4 objectForKeyedSubscript:{@"GaussianDelay", "objectForKeyedSubscript:", @"mean"}];
-  v12 = [objc_msgSend(a4 objectForKeyedSubscript:{@"GaussianDelay", "objectForKeyedSubscript:", @"stdDev"}];
+  v10 = [objc_msgSend(impairments objectForKeyedSubscript:{@"GaussianDelay", "objectForKeyedSubscript:", @"time"}];
+  v11 = [objc_msgSend(impairments objectForKeyedSubscript:{@"GaussianDelay", "objectForKeyedSubscript:", @"mean"}];
+  v12 = [objc_msgSend(impairments objectForKeyedSubscript:{@"GaussianDelay", "objectForKeyedSubscript:", @"stdDev"}];
   v13 = [v11 count];
   if (v13 >= 1)
   {
-    VCEmulatedNetworkAlgorithm_UpdateIndexWithIntervalArray(v10, &self->_currentIndexForDelayDistribution, &self->_lastNetworkQueueDelayDistributionLoadTime, v13, a3);
+    VCEmulatedNetworkAlgorithm_UpdateIndexWithIntervalArray(v10, &self->_currentIndexForDelayDistribution, &self->_lastNetworkQueueDelayDistributionLoadTime, v13, time);
     self->_networkQueueDelayMean = [objc_msgSend(v11 objectAtIndexedSubscript:{self->_currentIndexForDelayDistribution), "intValue"}];
     self->_networkQueueDelayStdDev = [objc_msgSend(v12 objectAtIndexedSubscript:{self->_currentIndexForDelayDistribution), "intValue"}];
   }
@@ -92,27 +92,27 @@
   return networkQueueDelayMean / 1000.0;
 }
 
-- (void)process:(id)a3
+- (void)process:(id)process
 {
   [(VCEmulatedNetworkAlgorithmQueueDelay *)self computeNetworkDelay];
   v6 = v5;
-  [a3 departureTime];
+  [process departureTime];
   v8 = v7;
-  [a3 arrivalTime];
+  [process arrivalTime];
   v10 = v9;
-  [a3 departureTime];
-  if (v11 == 0.0 || ([a3 arrivalTime], v13 == 0.0) || v8 - v10 > v6)
+  [process departureTime];
+  if (v11 == 0.0 || ([process arrivalTime], v13 == 0.0) || v8 - v10 > v6)
   {
-    [a3 departureTime];
+    [process departureTime];
     self->_expectedProcessEndTime = v12;
   }
 
   else
   {
-    [a3 arrivalTime];
+    [process arrivalTime];
     self->_expectedProcessEndTime = v6 + v14;
 
-    [a3 setDepartureTime:?];
+    [process setDepartureTime:?];
   }
 }
 

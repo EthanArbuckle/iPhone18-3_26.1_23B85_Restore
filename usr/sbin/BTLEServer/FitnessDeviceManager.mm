@@ -1,52 +1,52 @@
 @interface FitnessDeviceManager
 + (BOOL)shouldRestartCollecting;
-+ (id)connectStateStr:(int64_t)a3;
++ (id)connectStateStr:(int64_t)str;
 + (id)instance;
 - (BOOL)isHKHeartRateEnabled;
-- (BOOL)isHKQuantityRequested:(id)a3;
-- (BOOL)isPeripheralConnected:(id)a3;
-- (BOOL)shouldCollectFromDevice:(id)a3;
-- (BOOL)shouldConnectDevice:(id)a3;
-- (BOOL)shouldForwardFitnessService:(id)a3 quantityType:(id)a4;
+- (BOOL)isHKQuantityRequested:(id)requested;
+- (BOOL)isPeripheralConnected:(id)connected;
+- (BOOL)shouldCollectFromDevice:(id)device;
+- (BOOL)shouldConnectDevice:(id)device;
+- (BOOL)shouldForwardFitnessService:(id)service quantityType:(id)type;
 - (FitnessDeviceManager)init;
 - (HKHealthStore)hkHealthStore;
-- (id)createHKDataCollectorForHKQuantityType:(id)a3;
-- (id)findMatchingDistributedFitnessService:(id)a3;
-- (id)getConnectedPeripheralUUIDsCollecting:(BOOL)a3 andIdle:(BOOL)a4;
+- (id)createHKDataCollectorForHKQuantityType:(id)type;
+- (id)findMatchingDistributedFitnessService:(id)service;
+- (id)getConnectedPeripheralUUIDsCollecting:(BOOL)collecting andIdle:(BOOL)idle;
 - (id)getRequestedTags;
-- (id)hkQuantityTypesForService:(id)a3;
-- (id)quantityTypesForIdentifiers:(id)a3;
+- (id)hkQuantityTypesForService:(id)service;
+- (id)quantityTypesForIdentifiers:(id)identifiers;
 - (id)requestedServices;
-- (id)servicesForHKQuantityType:(id)a3;
-- (id)supportedQuantityTypesForServiceUUID:(id)a3;
-- (void)activeDataCollectionObserver:(id)a3 updatedCollectedTypes:(id)a4;
+- (id)servicesForHKQuantityType:(id)type;
+- (id)supportedQuantityTypesForServiceUUID:(id)d;
+- (void)activeDataCollectionObserver:(id)observer updatedCollectedTypes:(id)types;
 - (void)cancelStaleConnectionRequests;
-- (void)centralManager:(id)a3 didDiscoverPeripheral:(id)a4 advertisementData:(id)a5 RSSI:(id)a6;
-- (void)centralManager:(id)a3 didUpdatePeripheralConnectionState:(id)a4;
-- (void)centralManagerDidUpdateState:(id)a3;
-- (void)collectDataForQuantityTypes:(id)a3 isWorkout:(BOOL)a4;
-- (void)connectPeripheral:(id)a3;
+- (void)centralManager:(id)manager didDiscoverPeripheral:(id)peripheral advertisementData:(id)data RSSI:(id)i;
+- (void)centralManager:(id)manager didUpdatePeripheralConnectionState:(id)state;
+- (void)centralManagerDidUpdateState:(id)state;
+- (void)collectDataForQuantityTypes:(id)types isWorkout:(BOOL)workout;
+- (void)connectPeripheral:(id)peripheral;
 - (void)connectTaggedDevices;
-- (void)disconnectDevice:(id)a3;
+- (void)disconnectDevice:(id)device;
 - (void)disconnectDevicesWithoutRunningService;
 - (void)handleDevicePairingChangeCallback;
 - (void)handlePeripheralStatusChangeCallback;
-- (void)heartRateCollectionObserver:(id)a3 didChangeShouldCollectHeartRate:(BOOL)a4;
+- (void)heartRateCollectionObserver:(id)observer didChangeShouldCollectHeartRate:(BOOL)rate;
 - (void)loadCollectionState;
-- (void)markFitnessTaskEnabled:(BOOL)a3;
+- (void)markFitnessTaskEnabled:(BOOL)enabled;
 - (void)migrateHKPairedHealthDevices;
 - (void)notifyHRMSessionStateChanged;
-- (void)registerFitnessService:(id)a3;
-- (void)registerWithHealthKit:(BOOL)a3;
-- (void)removeFitnessServicesForPeripheral:(id)a3;
-- (void)setServiceUUID:(id)a3 forQuantityType:(id)a4;
-- (void)setUnit:(id)a3 forQuantityType:(id)a4;
+- (void)registerFitnessService:(id)service;
+- (void)registerWithHealthKit:(BOOL)kit;
+- (void)removeFitnessServicesForPeripheral:(id)peripheral;
+- (void)setServiceUUID:(id)d forQuantityType:(id)type;
+- (void)setUnit:(id)unit forQuantityType:(id)type;
 - (void)setupAudioRoutingControl;
 - (void)setupKnownQuantityTypes;
 - (void)startHeartRateScanTimer;
 - (void)stopHeartRateScanTimer;
 - (void)storeCollectionState;
-- (void)updatePairedDevices:(id)a3;
+- (void)updatePairedDevices:(id)devices;
 - (void)updateScan;
 @end
 
@@ -56,36 +56,36 @@
 {
   if ([(CBCentralManager *)self->_centralManager state]== 5)
   {
-    v3 = [(FitnessDeviceManager *)self centralManager];
+    centralManager = [(FitnessDeviceManager *)self centralManager];
     v26[0] = _NSConcreteStackBlock;
     v26[1] = 3221225472;
     v26[2] = sub_100002308;
     v26[3] = &unk_1000BE240;
     v26[4] = self;
-    [v3 retrievePeripheralsWithCustomProperties:&off_1000C4168 completion:v26];
+    [centralManager retrievePeripheralsWithCustomProperties:&off_1000C4168 completion:v26];
 
     if (![(FitnessDeviceManager *)self workoutInSession])
     {
       [(FitnessDeviceManager *)self setHeartRateScanDidTimeOut:0];
-      v4 = [(FitnessDeviceManager *)self requestedQuantityTypes];
-      v5 = [v4 count];
+      requestedQuantityTypes = [(FitnessDeviceManager *)self requestedQuantityTypes];
+      v5 = [requestedQuantityTypes count];
 
       if (v5)
       {
-        v6 = [(FitnessDeviceManager *)self centralManager];
-        v7 = [(FitnessDeviceManager *)self requestedServices];
-        v8 = [v6 retrieveConnectedPeripheralsWithServices:v7];
+        centralManager2 = [(FitnessDeviceManager *)self centralManager];
+        requestedServices = [(FitnessDeviceManager *)self requestedServices];
+        v8 = [centralManager2 retrieveConnectedPeripheralsWithServices:requestedServices];
 
         v9 = qword_1000DDBC8;
         if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
         {
           v10 = v9;
           v11 = [v8 count];
-          v12 = [(FitnessDeviceManager *)self requestedServices];
+          requestedServices2 = [(FitnessDeviceManager *)self requestedServices];
           *buf = 67109378;
           v29 = v11;
           v30 = 2112;
-          v31 = v12;
+          v31 = requestedServices2;
           _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Found %d connected peripherals with services: %@", buf, 0x12u);
         }
 
@@ -116,8 +116,8 @@
                 if ([(FitnessDeviceManager *)self shouldConnectDevice:v18])
                 {
                   v20 = +[ConnectionManager instance];
-                  v21 = [v18 identifier];
-                  [v20 connectOnce:v21];
+                  identifier = [v18 identifier];
+                  [v20 connectOnce:identifier];
                 }
               }
             }
@@ -161,8 +161,8 @@
         }
 
         v11 = *(*(&v24 + 1) + 8 * v10);
-        v12 = [p_vtable + 7 instance];
-        v13 = [v12 peripheralForIdentifier:v11];
+        instance = [p_vtable + 7 instance];
+        v13 = [instance peripheralForIdentifier:v11];
 
         if (v13 && ([v13 hasTag:v8] & 1) == 0)
         {
@@ -188,8 +188,8 @@
             v6 = v23;
           }
 
-          v21 = [p_vtable + 7 instance];
-          [v21 cancelPeripheralConnectionForConnectOnceIdentifier:v11];
+          instance2 = [p_vtable + 7 instance];
+          [instance2 cancelPeripheralConnectionForConnectOnceIdentifier:v11];
         }
 
         v10 = v10 + 1;
@@ -212,13 +212,13 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Cleaning up stale connection requests", buf, 2u);
   }
 
-  v4 = [(FitnessDeviceManager *)self centralManager];
+  centralManager = [(FitnessDeviceManager *)self centralManager];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100002878;
   v5[3] = &unk_1000BE240;
   v5[4] = self;
-  [v4 retrievePeripheralsWithCustomProperties:&off_1000C4180 completion:v5];
+  [centralManager retrievePeripheralsWithCustomProperties:&off_1000C4180 completion:v5];
 }
 
 - (void)storeCollectionState
@@ -232,8 +232,8 @@
     v17[0] = @"Timestamp";
     v17[1] = @"Collecting";
     v6 = v4;
-    v7 = [(FitnessDeviceManager *)self getRequestedTags];
-    v18[1] = v7;
+    getRequestedTags = [(FitnessDeviceManager *)self getRequestedTags];
+    v18[1] = getRequestedTags;
     v17[2] = @"WorkoutInSession";
     v8 = [NSNumber numberWithBool:[(FitnessDeviceManager *)self workoutInSession]];
     v18[2] = v8;
@@ -275,14 +275,14 @@
 
 - (void)connectTaggedDevices
 {
-  v3 = [(FitnessDeviceManager *)self centralManager];
-  v4 = [(FitnessDeviceManager *)self getRequestedTags];
+  centralManager = [(FitnessDeviceManager *)self centralManager];
+  getRequestedTags = [(FitnessDeviceManager *)self getRequestedTags];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100002B18;
   v5[3] = &unk_1000BE240;
   v5[4] = self;
-  [v3 retrievePeripheralsWithTags:v4 completion:v5];
+  [centralManager retrievePeripheralsWithTags:getRequestedTags completion:v5];
 }
 
 - (id)getRequestedTags
@@ -292,8 +292,8 @@
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(FitnessDeviceManager *)self requestedQuantityTypes];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  requestedQuantityTypes = [(FitnessDeviceManager *)self requestedQuantityTypes];
+  v5 = [requestedQuantityTypes countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -304,14 +304,14 @@
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(requestedQuantityTypes);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) identifier];
-        [v3 addObject:v9];
+        identifier = [*(*(&v12 + 1) + 8 * i) identifier];
+        [v3 addObject:identifier];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [requestedQuantityTypes countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -473,13 +473,13 @@ LABEL_12:
   return v2;
 }
 
-- (void)registerWithHealthKit:(BOOL)a3
+- (void)registerWithHealthKit:(BOOL)kit
 {
   if (_os_feature_enabled_impl())
   {
-    v5 = [(FitnessDeviceManager *)self heartRateCollectionObserver];
+    heartRateCollectionObserver = [(FitnessDeviceManager *)self heartRateCollectionObserver];
 
-    if (!v5)
+    if (!heartRateCollectionObserver)
     {
       v27 = 0;
       v28 = &v27;
@@ -504,16 +504,16 @@ LABEL_12:
         v12 = objc_alloc_init(v10);
         [(FitnessDeviceManager *)self setHeartRateCollectionObserver:v12];
 
-        v13 = [(FitnessDeviceManager *)self heartRateCollectionObserver];
-        [v13 setDelegate:self];
+        heartRateCollectionObserver2 = [(FitnessDeviceManager *)self heartRateCollectionObserver];
+        [heartRateCollectionObserver2 setDelegate:self];
 
         v14 = qword_1000DDBC8;
         if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
         {
           v15 = v14;
-          v16 = [(FitnessDeviceManager *)self hleHeartRateCollectionObserverKnownQuantityTypes];
+          hleHeartRateCollectionObserverKnownQuantityTypes = [(FitnessDeviceManager *)self hleHeartRateCollectionObserverKnownQuantityTypes];
           LODWORD(buf) = 138412290;
-          *(&buf + 4) = v16;
+          *(&buf + 4) = hleHeartRateCollectionObserverKnownQuantityTypes;
           _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Registered Fitness callback with HeartRateCoordinator for %@", &buf, 0xCu);
         }
       }
@@ -525,7 +525,7 @@ LABEL_12:
     }
   }
 
-  if (!_os_feature_enabled_impl() || a3)
+  if (!_os_feature_enabled_impl() || kit)
   {
     if (self->_dataCollectionObserver)
     {
@@ -534,8 +534,8 @@ LABEL_12:
         sub_100079350();
       }
 
-      v8 = [(FitnessDeviceManager *)self requestedQuantityTypes];
-      v9 = [v8 count] == 0;
+      requestedQuantityTypes = [(FitnessDeviceManager *)self requestedQuantityTypes];
+      v9 = [requestedQuantityTypes count] == 0;
 
       if (!v9)
       {
@@ -570,26 +570,26 @@ LABEL_12:
       {
         [(FitnessDeviceManager *)self markFitnessTaskEnabled:1];
         v20 = [v17 alloc];
-        v21 = [(FitnessDeviceManager *)self hkHealthStore];
-        v22 = [v20 initWithHealthStore:v21];
+        hkHealthStore = [(FitnessDeviceManager *)self hkHealthStore];
+        v22 = [v20 initWithHealthStore:hkHealthStore];
         dataCollectionObserver = self->_dataCollectionObserver;
         self->_dataCollectionObserver = v22;
 
         [(HKActiveDataCollectionObserver *)self->_dataCollectionObserver setDelegate:self];
-        v24 = [(FitnessDeviceManager *)self knownQuantityTypes];
+        knownQuantityTypes = [(FitnessDeviceManager *)self knownQuantityTypes];
         if (_os_feature_enabled_impl())
         {
-          v25 = [(FitnessDeviceManager *)self hkActiveDataCollectionObserverKnownQuantityTypes];
+          hkActiveDataCollectionObserverKnownQuantityTypes = [(FitnessDeviceManager *)self hkActiveDataCollectionObserverKnownQuantityTypes];
 
-          v24 = v25;
+          knownQuantityTypes = hkActiveDataCollectionObserverKnownQuantityTypes;
         }
 
-        [(HKActiveDataCollectionObserver *)self->_dataCollectionObserver subscribeForQuantityTypes:v24];
+        [(HKActiveDataCollectionObserver *)self->_dataCollectionObserver subscribeForQuantityTypes:knownQuantityTypes];
         v26 = qword_1000DDBC8;
         if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
         {
           LODWORD(buf) = 138412290;
-          *(&buf + 4) = v24;
+          *(&buf + 4) = knownQuantityTypes;
           _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "registerWithHealthKit - Registered Fitness callback with HealthKit for %@", &buf, 0xCu);
         }
       }
@@ -665,9 +665,9 @@ LABEL_12:
   return v3;
 }
 
-- (id)createHKDataCollectorForHKQuantityType:(id)a3
+- (id)createHKDataCollectorForHKQuantityType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2050000000;
@@ -686,10 +686,10 @@ LABEL_12:
   if (v5)
   {
     v7 = [v5 alloc];
-    v8 = [(FitnessDeviceManager *)self hkHealthStore];
+    hkHealthStore = [(FitnessDeviceManager *)self hkHealthStore];
     v9 = +[NSBundle mainBundle];
-    v10 = [v9 bundleIdentifier];
-    v11 = [v7 initWithHealthStore:v8 bundleIdentifier:v10 quantityType:v4];
+    bundleIdentifier = [v9 bundleIdentifier];
+    v11 = [v7 initWithHealthStore:hkHealthStore bundleIdentifier:bundleIdentifier quantityType:typeCopy];
   }
 
   else
@@ -700,21 +700,21 @@ LABEL_12:
   return v11;
 }
 
-- (BOOL)isHKQuantityRequested:(id)a3
+- (BOOL)isHKQuantityRequested:(id)requested
 {
-  v4 = a3;
-  v5 = [(FitnessDeviceManager *)self requestedQuantityTypes];
-  v6 = [v5 containsObject:v4];
+  requestedCopy = requested;
+  requestedQuantityTypes = [(FitnessDeviceManager *)self requestedQuantityTypes];
+  v6 = [requestedQuantityTypes containsObject:requestedCopy];
 
   return v6;
 }
 
-- (void)collectDataForQuantityTypes:(id)a3 isWorkout:(BOOL)a4
+- (void)collectDataForQuantityTypes:(id)types isWorkout:(BOOL)workout
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [v6 count];
-  if (!v4)
+  workoutCopy = workout;
+  typesCopy = types;
+  v7 = [typesCopy count];
+  if (!workoutCopy)
   {
     if (v7)
     {
@@ -722,7 +722,7 @@ LABEL_12:
       if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v34 = v6;
+        v34 = typesCopy;
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "STARTING NON-WORKOUT COLLECTION FOR: %@", buf, 0xCu);
       }
 
@@ -732,15 +732,15 @@ LABEL_12:
     if (![(FitnessDeviceManager *)self workoutInSession])
     {
 LABEL_22:
-      v18 = [v6 copy];
+      v18 = [typesCopy copy];
       [(FitnessDeviceManager *)self setRequestedQuantityTypes:v18];
 
       v30 = 0u;
       v31 = 0u;
       v28 = 0u;
       v29 = 0u;
-      v19 = [(FitnessDeviceManager *)self registeredServices];
-      v20 = [v19 countByEnumeratingWithState:&v28 objects:v32 count:16];
+      registeredServices = [(FitnessDeviceManager *)self registeredServices];
+      v20 = [registeredServices countByEnumeratingWithState:&v28 objects:v32 count:16];
       if (v20)
       {
         v21 = v20;
@@ -751,7 +751,7 @@ LABEL_22:
           {
             if (*v29 != v22)
             {
-              objc_enumerationMutation(v19);
+              objc_enumerationMutation(registeredServices);
             }
 
             v24 = *(*(&v28 + 1) + 8 * i);
@@ -759,8 +759,8 @@ LABEL_22:
             {
               if (![(FitnessDeviceManager *)self workoutInSession])
               {
-                v25 = [(FitnessDeviceManager *)self requestedQuantityTypes];
-                v26 = [v25 count];
+                requestedQuantityTypes = [(FitnessDeviceManager *)self requestedQuantityTypes];
+                v26 = [requestedQuantityTypes count];
 
                 if (v26)
                 {
@@ -769,11 +769,11 @@ LABEL_22:
               }
             }
 
-            v27 = [(FitnessDeviceManager *)self requestedQuantityTypes];
-            [v24 updateRequestedQuantityTypes:v27];
+            requestedQuantityTypes2 = [(FitnessDeviceManager *)self requestedQuantityTypes];
+            [v24 updateRequestedQuantityTypes:requestedQuantityTypes2];
           }
 
-          v21 = [v19 countByEnumeratingWithState:&v28 objects:v32 count:16];
+          v21 = [registeredServices countByEnumeratingWithState:&v28 objects:v32 count:16];
         }
 
         while (v21);
@@ -791,8 +791,8 @@ LABEL_22:
 
   if (v7)
   {
-    v8 = [(FitnessDeviceManager *)self requestedQuantityTypes];
-    v9 = [v8 count];
+    requestedQuantityTypes3 = [(FitnessDeviceManager *)self requestedQuantityTypes];
+    v9 = [requestedQuantityTypes3 count];
 
     if (v9)
     {
@@ -801,18 +801,18 @@ LABEL_22:
       if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
       {
         v11 = v10;
-        v12 = [(FitnessDeviceManager *)self requestedQuantityTypes];
+        requestedQuantityTypes4 = [(FitnessDeviceManager *)self requestedQuantityTypes];
         *buf = 138412546;
-        v34 = v12;
+        v34 = requestedQuantityTypes4;
         v35 = 2112;
-        v36 = v6;
+        v36 = typesCopy;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "CHANGING WORKOUT FROM:%@ TO %@", buf, 0x16u);
       }
 
       goto LABEL_22;
     }
 
-    if ([v6 count])
+    if ([typesCopy count])
     {
       goto LABEL_17;
     }
@@ -832,28 +832,28 @@ LABEL_13:
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "ENDING WORKOUT", buf, 2u);
     }
 
-    v15 = self;
+    selfCopy2 = self;
     v16 = 0;
     goto LABEL_21;
   }
 
-  if ([v6 count])
+  if ([typesCopy count])
   {
 LABEL_17:
     v17 = qword_1000DDBC8;
     if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v34 = v6;
+      v34 = typesCopy;
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "STARTING WORKOUT FOR:%@", buf, 0xCu);
     }
 
     [(FitnessDeviceManager *)self setWorkoutInSession:1];
 LABEL_20:
-    v15 = self;
+    selfCopy2 = self;
     v16 = 1;
 LABEL_21:
-    [(FitnessDeviceManager *)v15 markFitnessTaskEnabled:v16];
+    [(FitnessDeviceManager *)selfCopy2 markFitnessTaskEnabled:v16];
     goto LABEL_22;
   }
 
@@ -871,17 +871,17 @@ LABEL_36:
 LABEL_34:
 }
 
-- (id)findMatchingDistributedFitnessService:(id)a3
+- (id)findMatchingDistributedFitnessService:(id)service
 {
-  v4 = a3;
-  if ([v4 isDistributed])
+  serviceCopy = service;
+  if ([serviceCopy isDistributed])
   {
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v5 = [(FitnessDeviceManager *)self registeredServices];
-    v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    registeredServices = [(FitnessDeviceManager *)self registeredServices];
+    v6 = [registeredServices countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v6)
     {
       v7 = *v12;
@@ -891,18 +891,18 @@ LABEL_34:
         {
           if (*v12 != v7)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(registeredServices);
           }
 
           v9 = *(*(&v11 + 1) + 8 * i);
-          if ([v9 matchesDistributedService:v4])
+          if ([v9 matchesDistributedService:serviceCopy])
           {
             v6 = v9;
             goto LABEL_13;
           }
         }
 
-        v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v6 = [registeredServices countByEnumeratingWithState:&v11 objects:v15 count:16];
         if (v6)
         {
           continue;
@@ -923,52 +923,52 @@ LABEL_13:
   return v6;
 }
 
-- (void)registerFitnessService:(id)a3
+- (void)registerFitnessService:(id)service
 {
-  v4 = a3;
+  serviceCopy = service;
   v5 = qword_1000DDBC8;
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [v4 service];
-    v8 = [v7 UUID];
-    v9 = [v4 debugDescription];
-    v10 = [v4 peripheral];
-    v11 = [v10 name];
+    service = [serviceCopy service];
+    uUID = [service UUID];
+    v9 = [serviceCopy debugDescription];
+    peripheral = [serviceCopy peripheral];
+    name = [peripheral name];
     v18 = 138412802;
-    v19 = v8;
+    v19 = uUID;
     v20 = 2112;
     v21 = v9;
     v22 = 2112;
-    v23 = v11;
+    v23 = name;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Registering service %@ (%@) for:“%@”", &v18, 0x20u);
   }
 
-  if ([v4 isFitnessClassicDevice] && !-[FitnessDeviceManager workoutInSession](self, "workoutInSession") && (-[FitnessDeviceManager requestedQuantityTypes](self, "requestedQuantityTypes"), v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "count"), v12, v13))
+  if ([serviceCopy isFitnessClassicDevice] && !-[FitnessDeviceManager workoutInSession](self, "workoutInSession") && (-[FitnessDeviceManager requestedQuantityTypes](self, "requestedQuantityTypes"), v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "count"), v12, v13))
   {
-    [v4 updateRequestedQuantityTypes:&__NSArray0__struct];
+    [serviceCopy updateRequestedQuantityTypes:&__NSArray0__struct];
   }
 
   else
   {
-    v14 = [(FitnessDeviceManager *)self requestedQuantityTypes];
-    [v4 updateRequestedQuantityTypes:v14];
+    requestedQuantityTypes = [(FitnessDeviceManager *)self requestedQuantityTypes];
+    [serviceCopy updateRequestedQuantityTypes:requestedQuantityTypes];
   }
 
-  v15 = [(FitnessDeviceManager *)self registeredServices];
-  v16 = [v15 mutableCopy];
+  registeredServices = [(FitnessDeviceManager *)self registeredServices];
+  v16 = [registeredServices mutableCopy];
 
-  [v16 addObject:v4];
+  [v16 addObject:serviceCopy];
   v17 = [v16 copy];
   [(FitnessDeviceManager *)self setRegisteredServices:v17];
 }
 
-- (void)centralManagerDidUpdateState:(id)a3
+- (void)centralManagerDidUpdateState:(id)state
 {
-  v4 = [(FitnessDeviceManager *)self centralManager];
-  v5 = [v4 state];
+  centralManager = [(FitnessDeviceManager *)self centralManager];
+  state = [centralManager state];
 
-  if (v5 == 5)
+  if (state == 5)
   {
     v6 = qword_1000DDBC8;
     if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
@@ -982,10 +982,10 @@ LABEL_13:
   }
 }
 
-- (void)centralManager:(id)a3 didDiscoverPeripheral:(id)a4 advertisementData:(id)a5 RSSI:(id)a6
+- (void)centralManager:(id)manager didDiscoverPeripheral:(id)peripheral advertisementData:(id)data RSSI:(id)i
 {
-  v7 = a4;
-  v8 = [(FitnessDeviceManager *)self shouldConnectDevice:v7];
+  peripheralCopy = peripheral;
+  v8 = [(FitnessDeviceManager *)self shouldConnectDevice:peripheralCopy];
   v9 = qword_1000DDBC8;
   v10 = os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT);
   if (v8)
@@ -993,39 +993,39 @@ LABEL_13:
     if (v10)
     {
       v11 = v9;
-      v12 = [v7 identifier];
-      v13 = [v7 name];
-      v14 = +[FitnessDeviceManager connectStateStr:](FitnessDeviceManager, "connectStateStr:", [v7 state]);
+      identifier = [peripheralCopy identifier];
+      name = [peripheralCopy name];
+      v14 = +[FitnessDeviceManager connectStateStr:](FitnessDeviceManager, "connectStateStr:", [peripheralCopy state]);
       v19 = 138412802;
-      v20 = v12;
+      v20 = identifier;
       v21 = 2112;
-      v22 = v13;
+      v22 = name;
       v23 = 2112;
       v24 = v14;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "didDiscoverPeripheral %@ “%@” (%@), connecting", &v19, 0x20u);
     }
 
-    v15 = [v7 identifier];
-    [(FitnessDeviceManager *)self connectPeripheral:v15];
+    identifier2 = [peripheralCopy identifier];
+    [(FitnessDeviceManager *)self connectPeripheral:identifier2];
   }
 
   else if (v10)
   {
     v16 = v9;
-    v17 = [v7 identifier];
-    v18 = [v7 name];
+    identifier3 = [peripheralCopy identifier];
+    name2 = [peripheralCopy name];
     v19 = 138412546;
-    v20 = v17;
+    v20 = identifier3;
     v21 = 2112;
-    v22 = v18;
+    v22 = name2;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "didDiscoverPeripheral %@ “%@” -> UNTAGGED, NOT CONNECTING", &v19, 0x16u);
   }
 }
 
-- (void)centralManager:(id)a3 didUpdatePeripheralConnectionState:(id)a4
+- (void)centralManager:(id)manager didUpdatePeripheralConnectionState:(id)state
 {
-  v5 = a4;
-  if ([v5 state])
+  stateCopy = state;
+  if ([stateCopy state])
   {
     goto LABEL_19;
   }
@@ -1034,9 +1034,9 @@ LABEL_13:
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
   {
     v7 = v6;
-    v8 = [v5 name];
+    name = [stateCopy name];
     v16 = 138412290;
-    v17 = v8;
+    v17 = name;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "“%@” disconnected", &v16, 0xCu);
   }
 
@@ -1044,20 +1044,20 @@ LABEL_13:
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
   {
     v16 = 138412290;
-    v17 = v5;
+    v17 = stateCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Removing fitness services for peripheral %@", &v16, 0xCu);
   }
 
-  [(FitnessDeviceManager *)self removeFitnessServicesForPeripheral:v5];
-  v10 = [(FitnessDeviceManager *)self requestedQuantityTypes];
-  if (![v10 count])
+  [(FitnessDeviceManager *)self removeFitnessServicesForPeripheral:stateCopy];
+  requestedQuantityTypes = [(FitnessDeviceManager *)self requestedQuantityTypes];
+  if (![requestedQuantityTypes count])
   {
     v12 = [(FitnessDeviceManager *)self getConnectedPeripheralUUIDsCollecting:1 andIdle:0];
     if ([v12 count])
     {
-      v13 = [(FitnessDeviceManager *)self workoutInSession];
+      workoutInSession = [(FitnessDeviceManager *)self workoutInSession];
 
-      if (v13)
+      if (workoutInSession)
       {
         goto LABEL_11;
       }
@@ -1078,20 +1078,20 @@ LABEL_16:
     goto LABEL_19;
   }
 
-  v11 = [(FitnessDeviceManager *)self workoutInSession];
+  workoutInSession2 = [(FitnessDeviceManager *)self workoutInSession];
 
-  if ((v11 & 1) == 0)
+  if ((workoutInSession2 & 1) == 0)
   {
     goto LABEL_16;
   }
 
 LABEL_11:
-  v14 = [(FitnessDeviceManager *)self requestedQuantityTypes];
-  if ([v14 count])
+  requestedQuantityTypes2 = [(FitnessDeviceManager *)self requestedQuantityTypes];
+  if ([requestedQuantityTypes2 count])
   {
-    v15 = [(FitnessDeviceManager *)self workoutInSession];
+    workoutInSession3 = [(FitnessDeviceManager *)self workoutInSession];
 
-    if (v15)
+    if (workoutInSession3)
     {
       [(FitnessDeviceManager *)self updateScan];
     }
@@ -1104,22 +1104,22 @@ LABEL_11:
 LABEL_19:
 }
 
-- (void)activeDataCollectionObserver:(id)a3 updatedCollectedTypes:(id)a4
+- (void)activeDataCollectionObserver:(id)observer updatedCollectedTypes:(id)types
 {
-  v6 = a3;
-  v7 = a4;
+  observerCopy = observer;
+  typesCopy = types;
   v8 = qword_1000DDBC8;
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 138412290;
-    v15 = v7;
+    v15 = typesCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "FitnessDeviceManager callback from HK - collect %@", &v14, 0xCu);
   }
 
-  v9 = [v7 mutableCopy];
+  v9 = [typesCopy mutableCopy];
   v10 = [HKQuantityType quantityTypeForIdentifier:HKQuantityTypeIdentifierHeartRate];
-  v11 = [(FitnessDeviceManager *)self requestedQuantityTypes];
-  v12 = [v11 containsObject:v10];
+  requestedQuantityTypes = [(FitnessDeviceManager *)self requestedQuantityTypes];
+  v12 = [requestedQuantityTypes containsObject:v10];
 
   if (v12)
   {
@@ -1130,18 +1130,18 @@ LABEL_19:
   [(FitnessDeviceManager *)self collectDataForQuantityTypes:v13 isWorkout:1];
 }
 
-- (void)heartRateCollectionObserver:(id)a3 didChangeShouldCollectHeartRate:(BOOL)a4
+- (void)heartRateCollectionObserver:(id)observer didChangeShouldCollectHeartRate:(BOOL)rate
 {
-  v4 = a4;
+  rateCopy = rate;
   v6 = [HKQuantityType quantityTypeForIdentifier:HKQuantityTypeIdentifierHeartRate];
-  v7 = [(FitnessDeviceManager *)self requestedQuantityTypes];
-  v8 = [v7 indexOfObject:v6];
+  requestedQuantityTypes = [(FitnessDeviceManager *)self requestedQuantityTypes];
+  v8 = [requestedQuantityTypes indexOfObject:v6];
 
   v9 = qword_1000DDBC8;
   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
   {
     v10 = @"No";
-    if (v4)
+    if (rateCopy)
     {
       v11 = @"Yes";
     }
@@ -1163,24 +1163,24 @@ LABEL_19:
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "FitnessDeviceManager should collect heart rate: %@, already collecting: %@", &v17, 0x16u);
   }
 
-  if (v8 == 0x7FFFFFFFFFFFFFFFLL && v4)
+  if (v8 == 0x7FFFFFFFFFFFFFFFLL && rateCopy)
   {
-    v15 = [(FitnessDeviceManager *)self requestedQuantityTypes];
-    v16 = [v15 arrayByAddingObject:v6];
+    requestedQuantityTypes2 = [(FitnessDeviceManager *)self requestedQuantityTypes];
+    v16 = [requestedQuantityTypes2 arrayByAddingObject:v6];
 LABEL_16:
     v14 = v16;
 
     goto LABEL_17;
   }
 
-  v13 = [(FitnessDeviceManager *)self requestedQuantityTypes];
-  v14 = v13;
-  if (v8 != 0x7FFFFFFFFFFFFFFFLL && !v4)
+  requestedQuantityTypes3 = [(FitnessDeviceManager *)self requestedQuantityTypes];
+  v14 = requestedQuantityTypes3;
+  if (v8 != 0x7FFFFFFFFFFFFFFFLL && !rateCopy)
   {
-    v15 = [v13 mutableCopy];
+    requestedQuantityTypes2 = [requestedQuantityTypes3 mutableCopy];
 
-    [v15 removeObjectAtIndex:v8];
-    v16 = [v15 copy];
+    [requestedQuantityTypes2 removeObjectAtIndex:v8];
+    v16 = [requestedQuantityTypes2 copy];
     goto LABEL_16;
   }
 
@@ -1203,39 +1203,39 @@ LABEL_17:
   v6 = [(FitnessDeviceManager *)self quantityTypesForIdentifiers:v5];
   [(FitnessDeviceManager *)self setHleHeartRateCollectionObserverKnownQuantityTypes:v6];
 
-  v7 = [(FitnessDeviceManager *)self hkActiveDataCollectionObserverKnownQuantityTypes];
-  v8 = [(FitnessDeviceManager *)self hleHeartRateCollectionObserverKnownQuantityTypes];
-  v9 = [v7 arrayByAddingObjectsFromArray:v8];
+  hkActiveDataCollectionObserverKnownQuantityTypes = [(FitnessDeviceManager *)self hkActiveDataCollectionObserverKnownQuantityTypes];
+  hleHeartRateCollectionObserverKnownQuantityTypes = [(FitnessDeviceManager *)self hleHeartRateCollectionObserverKnownQuantityTypes];
+  v9 = [hkActiveDataCollectionObserverKnownQuantityTypes arrayByAddingObjectsFromArray:hleHeartRateCollectionObserverKnownQuantityTypes];
   [(FitnessDeviceManager *)self setKnownQuantityTypes:v9];
 }
 
-+ (id)connectStateStr:(int64_t)a3
++ (id)connectStateStr:(int64_t)str
 {
-  if (a3 > 3)
+  if (str > 3)
   {
     return @"Unknown";
   }
 
   else
   {
-    return *(&off_1000BE388 + a3);
+    return *(&off_1000BE388 + str);
   }
 }
 
-- (void)removeFitnessServicesForPeripheral:(id)a3
+- (void)removeFitnessServicesForPeripheral:(id)peripheral
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && ![v4 state])
+  peripheralCopy = peripheral;
+  v5 = peripheralCopy;
+  if (peripheralCopy && ![peripheralCopy state])
   {
-    v24 = self;
+    selfCopy = self;
     v25 = objc_opt_new();
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v6 = [(FitnessDeviceManager *)self registeredServices];
-    v7 = [v6 countByEnumeratingWithState:&v30 objects:v35 count:16];
+    registeredServices = [(FitnessDeviceManager *)self registeredServices];
+    v7 = [registeredServices countByEnumeratingWithState:&v30 objects:v35 count:16];
     if (v7)
     {
       v8 = v7;
@@ -1246,14 +1246,14 @@ LABEL_17:
         {
           if (*v31 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(registeredServices);
           }
 
           v11 = *(*(&v30 + 1) + 8 * i);
-          v12 = [v11 peripheral];
-          v13 = [v12 identifier];
-          v14 = [v5 identifier];
-          v15 = [v13 isEqual:v14];
+          peripheral = [v11 peripheral];
+          identifier = [peripheral identifier];
+          identifier2 = [v5 identifier];
+          v15 = [identifier isEqual:identifier2];
 
           if (v15)
           {
@@ -1261,14 +1261,14 @@ LABEL_17:
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v30 objects:v35 count:16];
+        v8 = [registeredServices countByEnumeratingWithState:&v30 objects:v35 count:16];
       }
 
       while (v8);
     }
 
-    v16 = [(FitnessDeviceManager *)v24 registeredServices];
-    v17 = [v16 mutableCopy];
+    registeredServices2 = [(FitnessDeviceManager *)selfCopy registeredServices];
+    v17 = [registeredServices2 mutableCopy];
 
     v28 = 0u;
     v29 = 0u;
@@ -1299,19 +1299,19 @@ LABEL_17:
     }
 
     v23 = [v17 copy];
-    [(FitnessDeviceManager *)v24 setRegisteredServices:v23];
+    [(FitnessDeviceManager *)selfCopy setRegisteredServices:v23];
   }
 }
 
-- (void)markFitnessTaskEnabled:(BOOL)a3
+- (void)markFitnessTaskEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
-    v4 = [(FitnessDeviceManager *)self persistanceAssertion];
+    persistanceAssertion = [(FitnessDeviceManager *)self persistanceAssertion];
 
     v5 = qword_1000DDBC8;
     v6 = os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT);
-    if (v4)
+    if (persistanceAssertion)
     {
       if (v6)
       {
@@ -1346,22 +1346,22 @@ LABEL_17:
   }
 }
 
-- (void)updatePairedDevices:(id)a3
+- (void)updatePairedDevices:(id)devices
 {
-  v4 = a3;
-  v5 = [(FitnessDeviceManager *)self pairedFitnessDeviceUUIDS];
-  if ([v5 count])
+  devicesCopy = devices;
+  pairedFitnessDeviceUUIDS = [(FitnessDeviceManager *)self pairedFitnessDeviceUUIDS];
+  if ([pairedFitnessDeviceUUIDS count])
   {
-    v6 = [(FitnessDeviceManager *)self pairedFitnessDeviceUUIDS];
-    v7 = [v6 count];
-    v8 = [v4 count];
+    pairedFitnessDeviceUUIDS2 = [(FitnessDeviceManager *)self pairedFitnessDeviceUUIDS];
+    v7 = [pairedFitnessDeviceUUIDS2 count];
+    v8 = [devicesCopy count];
 
     if (v7 > v8)
     {
-      v9 = [(FitnessDeviceManager *)self pairedFitnessDeviceUUIDS];
-      v10 = [NSMutableSet setWithArray:v9];
+      pairedFitnessDeviceUUIDS3 = [(FitnessDeviceManager *)self pairedFitnessDeviceUUIDS];
+      v10 = [NSMutableSet setWithArray:pairedFitnessDeviceUUIDS3];
 
-      v11 = [NSSet setWithArray:v4];
+      v11 = [NSSet setWithArray:devicesCopy];
       [v10 minusSet:v11];
 
       v23 = 0u;
@@ -1388,9 +1388,9 @@ LABEL_17:
             if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
             {
               v19 = v18;
-              v20 = [v17 UUIDString];
+              uUIDString = [v17 UUIDString];
               *buf = 138412290;
-              v26 = v20;
+              v26 = uUIDString;
               _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "Disconnecting unpaired device: %@", buf, 0xCu);
             }
 
@@ -1409,20 +1409,20 @@ LABEL_17:
   {
   }
 
-  [(FitnessDeviceManager *)self setPairedFitnessDeviceUUIDS:v4];
+  [(FitnessDeviceManager *)self setPairedFitnessDeviceUUIDS:devicesCopy];
 }
 
-- (void)disconnectDevice:(id)a3
+- (void)disconnectDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v5 = +[ConnectionManager instance];
-  v6 = [v5 peripheralForIdentifier:v4];
+  v6 = [v5 peripheralForIdentifier:deviceCopy];
 
   if (v6)
   {
-    v32 = v4;
-    v7 = [(FitnessDeviceManager *)self registeredServices];
-    v8 = [v7 copy];
+    v32 = deviceCopy;
+    registeredServices = [(FitnessDeviceManager *)self registeredServices];
+    v8 = [registeredServices copy];
 
     v37 = 0u;
     v38 = 0u;
@@ -1447,18 +1447,18 @@ LABEL_17:
           }
 
           v15 = *(*(&v35 + 1) + 8 * v14);
-          v16 = [v15 peripheral];
-          v17 = [v16 identifier];
-          v18 = [v6 identifier];
+          peripheral = [v15 peripheral];
+          identifier = [peripheral identifier];
+          identifier2 = [v6 identifier];
 
-          if (v17 == v18)
+          if (identifier == identifier2)
           {
             v19 = *v11;
             if (os_log_type_enabled(*v11, OS_LOG_TYPE_DEFAULT))
             {
               v20 = v19;
-              v34 = [v15 service];
-              v21 = [v34 UUID];
+              service = [v15 service];
+              uUID = [service UUID];
               v22 = [v15 debugDescription];
               [v6 name];
               v23 = v13;
@@ -1466,7 +1466,7 @@ LABEL_17:
               v25 = v6;
               v27 = v26 = v9;
               *buf = 138412802;
-              v40 = v21;
+              v40 = uUID;
               v41 = 2112;
               v42 = v22;
               v43 = 2112;
@@ -1494,16 +1494,16 @@ LABEL_17:
       while (v12);
     }
 
-    v4 = v32;
+    deviceCopy = v32;
     if (([v6 hasTag:@"FitnessClassic"] & 1) == 0)
     {
       v28 = *v11;
       if (os_log_type_enabled(*v11, OS_LOG_TYPE_DEFAULT))
       {
         v29 = v28;
-        v30 = [v6 name];
+        name = [v6 name];
         *buf = 138412290;
-        v40 = v30;
+        v40 = name;
         _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEFAULT, "Disconnecting device: %@", buf, 0xCu);
       }
 
@@ -1513,13 +1513,13 @@ LABEL_17:
   }
 }
 
-- (void)connectPeripheral:(id)a3
+- (void)connectPeripheral:(id)peripheral
 {
-  v3 = a3;
-  if (v3)
+  peripheralCopy = peripheral;
+  if (peripheralCopy)
   {
     v4 = +[ConnectionManager instance];
-    v5 = [v4 peripheralForIdentifier:v3];
+    v5 = [v4 peripheralForIdentifier:peripheralCopy];
 
     if (v5 && [v5 state] && objc_msgSend(v5, "state") != 3)
     {
@@ -1530,11 +1530,11 @@ LABEL_17:
       }
 
       v11 = v12;
-      v13 = [v5 name];
+      name = [v5 name];
       v14 = 138412546;
-      v15 = v3;
+      v15 = peripheralCopy;
       v16 = 2112;
-      v17 = v13;
+      v17 = name;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "ALREADY MARKED CONNECTED %@ “%@”", &v14, 0x16u);
     }
 
@@ -1544,23 +1544,23 @@ LABEL_17:
       if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
       {
         v7 = v6;
-        v8 = [v5 name];
-        v9 = v8;
+        name2 = [v5 name];
+        v9 = name2;
         v10 = @"(loading)";
-        if (v8)
+        if (name2)
         {
-          v10 = v8;
+          v10 = name2;
         }
 
         v14 = 138412546;
-        v15 = v3;
+        v15 = peripheralCopy;
         v16 = 2112;
         v17 = v10;
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "CONNECTING %@ “%@”", &v14, 0x16u);
       }
 
       v11 = +[ConnectionManager instance];
-      [v11 connectOnce:v3 connectionTimeoutEnabled:0];
+      [v11 connectOnce:peripheralCopy connectionTimeoutEnabled:0];
     }
 
 LABEL_11:
@@ -1575,11 +1575,11 @@ LABEL_11:
 LABEL_14:
 }
 
-- (BOOL)isPeripheralConnected:(id)a3
+- (BOOL)isPeripheralConnected:(id)connected
 {
-  v3 = a3;
+  connectedCopy = connected;
   v4 = +[ConnectionManager instance];
-  v5 = [v4 peripheralForIdentifier:v3];
+  v5 = [v4 peripheralForIdentifier:connectedCopy];
 
   if (v5)
   {
@@ -1594,18 +1594,18 @@ LABEL_14:
   return v6;
 }
 
-- (BOOL)shouldConnectDevice:(id)a3
+- (BOOL)shouldConnectDevice:(id)device
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  deviceCopy = device;
+  v5 = deviceCopy;
+  if (!deviceCopy)
   {
     goto LABEL_9;
   }
 
-  v6 = [v4 identifier];
+  identifier = [deviceCopy identifier];
 
-  if (!v6 || ([v5 hasTag:@"FitnessClassic"] & 1) != 0 || !-[FitnessDeviceManager shouldCollectFromDevice:](self, "shouldCollectFromDevice:", v5))
+  if (!identifier || ([v5 hasTag:@"FitnessClassic"] & 1) != 0 || !-[FitnessDeviceManager shouldCollectFromDevice:](self, "shouldCollectFromDevice:", v5))
   {
     goto LABEL_9;
   }
@@ -1622,9 +1622,9 @@ LABEL_14:
     goto LABEL_12;
   }
 
-  v8 = [(FitnessDeviceManager *)self heartRateScanDidTimeOut];
+  heartRateScanDidTimeOut = [(FitnessDeviceManager *)self heartRateScanDidTimeOut];
 
-  if ((v8 & 1) == 0)
+  if ((heartRateScanDidTimeOut & 1) == 0)
   {
 LABEL_12:
     v9 = 1;
@@ -1638,15 +1638,15 @@ LABEL_10:
   return v9;
 }
 
-- (BOOL)shouldCollectFromDevice:(id)a3
+- (BOOL)shouldCollectFromDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v5 = [(FitnessDeviceManager *)self requestedQuantityTypes];
-  v6 = [v5 countByEnumeratingWithState:&v20 objects:v26 count:16];
+  requestedQuantityTypes = [(FitnessDeviceManager *)self requestedQuantityTypes];
+  v6 = [requestedQuantityTypes countByEnumeratingWithState:&v20 objects:v26 count:16];
   if (!v6)
   {
     goto LABEL_18;
@@ -1659,21 +1659,21 @@ LABEL_10:
     {
       if (*v21 != v7)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(requestedQuantityTypes);
       }
 
       v9 = *(*(&v20 + 1) + 8 * i);
-      v10 = [v9 identifier];
-      v11 = [v4 hasTag:v10];
+      identifier = [v9 identifier];
+      v11 = [deviceCopy hasTag:identifier];
 
       if (v11)
       {
         if (_os_feature_enabled_impl())
         {
-          v12 = [v9 identifier];
-          if ([v12 isEqualToString:HKQuantityTypeIdentifierHeartRate])
+          identifier2 = [v9 identifier];
+          if ([identifier2 isEqualToString:HKQuantityTypeIdentifierHeartRate])
           {
-            v13 = [v4 customProperty:@"UpdateHealth"];
+            v13 = [deviceCopy customProperty:@"UpdateHealth"];
             v14 = [v13 isEqualToString:@"1"];
 
             if ((v14 & 1) == 0)
@@ -1682,10 +1682,10 @@ LABEL_10:
               if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEFAULT))
               {
                 v16 = v15;
-                v17 = [v4 identifier];
-                v18 = [v17 UUIDString];
+                identifier3 = [deviceCopy identifier];
+                uUIDString = [identifier3 UUIDString];
                 *buf = 138412290;
-                v25 = v18;
+                v25 = uUIDString;
                 _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Skipping connection to peripheral %@. Peripheral disabled in Health Settings", buf, 0xCu);
               }
 
@@ -1704,7 +1704,7 @@ LABEL_10:
       }
     }
 
-    v6 = [v5 countByEnumeratingWithState:&v20 objects:v26 count:16];
+    v6 = [requestedQuantityTypes countByEnumeratingWithState:&v20 objects:v26 count:16];
     if (v6)
     {
       continue;
@@ -1718,14 +1718,14 @@ LABEL_18:
   return v6;
 }
 
-- (BOOL)shouldForwardFitnessService:(id)a3 quantityType:(id)a4
+- (BOOL)shouldForwardFitnessService:(id)service quantityType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(FitnessDeviceManager *)self servicesForHKQuantityType:v7];
+  serviceCopy = service;
+  typeCopy = type;
+  v8 = [(FitnessDeviceManager *)self servicesForHKQuantityType:typeCopy];
   v9 = [v8 mutableCopy];
 
-  [v9 removeObject:v6];
+  [v9 removeObject:serviceCopy];
   if ([v9 count])
   {
     objc_opt_class();
@@ -1751,12 +1751,12 @@ LABEL_18:
           }
 
           v15 = *(*(&v36 + 1) + 8 * i);
-          v16 = [v7 identifier];
-          v17 = [HKQuantityTypeIdentifierCyclingPower isEqualToString:v16];
+          identifier = [typeCopy identifier];
+          v17 = [HKQuantityTypeIdentifierCyclingPower isEqualToString:identifier];
 
           if (v17)
           {
-            if ([v15 wasPairedAfter:v6] && objc_msgSend(v15, "latestSampleTimestampWithinSeconds:", 5.0) && (objc_msgSend(v6, "matchesDistributedService:", v15) & 1) == 0)
+            if ([v15 wasPairedAfter:serviceCopy] && objc_msgSend(v15, "latestSampleTimestampWithinSeconds:", 5.0) && (objc_msgSend(serviceCopy, "matchesDistributedService:", v15) & 1) == 0)
             {
               v20 = qword_1000DDBC8;
               if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEBUG))
@@ -1776,23 +1776,23 @@ LABEL_18:
             {
               if (v18)
               {
-                if ([v15 wasPairedAfter:v6] && objc_msgSend(v15, "latestSampleTimestampWithinSeconds:", 5.0))
+                if ([v15 wasPairedAfter:serviceCopy] && objc_msgSend(v15, "latestSampleTimestampWithinSeconds:", 5.0))
                 {
                   v30 = qword_1000DDBC8;
                   if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEBUG))
                   {
                     v23 = v30;
-                    v24 = [v7 identifier];
-                    v25 = [v6 peripheral];
-                    v26 = [v25 name];
-                    v27 = [v15 peripheral];
-                    v28 = [v27 name];
+                    identifier2 = [typeCopy identifier];
+                    peripheral = [serviceCopy peripheral];
+                    name = [peripheral name];
+                    peripheral2 = [v15 peripheral];
+                    name2 = [peripheral2 name];
                     *buf = 138412802;
-                    v41 = v24;
+                    v41 = identifier2;
                     v42 = 2112;
-                    v43 = v26;
+                    v43 = name;
                     v44 = 2112;
-                    v45 = v28;
+                    v45 = name2;
                     v29 = "Ignoring %@ from power meter “%@” because power meter “%@” started earlier";
                     goto LABEL_35;
                   }
@@ -1807,17 +1807,17 @@ LABEL_18:
                 if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEBUG))
                 {
                   v23 = v22;
-                  v24 = [v7 identifier];
-                  v25 = [v6 peripheral];
-                  v26 = [v25 name];
-                  v27 = [v15 peripheral];
-                  v28 = [v27 name];
+                  identifier2 = [typeCopy identifier];
+                  peripheral = [serviceCopy peripheral];
+                  name = [peripheral name];
+                  peripheral2 = [v15 peripheral];
+                  name2 = [peripheral2 name];
                   *buf = 138412802;
-                  v41 = v24;
+                  v41 = identifier2;
                   v42 = 2112;
-                  v43 = v26;
+                  v43 = name;
                   v44 = 2112;
-                  v45 = v28;
+                  v45 = name2;
                   v29 = "Ignoring %@ from power meter “%@” because “%@” is a dedicated sensor";
                   goto LABEL_35;
                 }
@@ -1826,24 +1826,24 @@ LABEL_18:
               }
             }
 
-            else if ((v18 & 1) == 0 && [v15 wasPairedAfter:v6] && objc_msgSend(v15, "latestSampleTimestampWithinSeconds:", 5.0))
+            else if ((v18 & 1) == 0 && [v15 wasPairedAfter:serviceCopy] && objc_msgSend(v15, "latestSampleTimestampWithinSeconds:", 5.0))
             {
               v20 = qword_1000DDBC8;
               if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_DEBUG))
               {
 LABEL_34:
                 v23 = v20;
-                v24 = [v7 identifier];
-                v25 = [v6 peripheral];
-                v26 = [v25 name];
-                v27 = [v15 peripheral];
-                v28 = [v27 name];
+                identifier2 = [typeCopy identifier];
+                peripheral = [serviceCopy peripheral];
+                name = [peripheral name];
+                peripheral2 = [v15 peripheral];
+                name2 = [peripheral2 name];
                 *buf = 138412802;
-                v41 = v24;
+                v41 = identifier2;
                 v42 = 2112;
-                v43 = v26;
+                v43 = name;
                 v44 = 2112;
-                v45 = v28;
+                v45 = name2;
                 v29 = "Ignoring %@ from “%@” because “%@” started earlier";
 LABEL_35:
                 _os_log_debug_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEBUG, v29, buf, 0x20u);
@@ -1884,57 +1884,57 @@ LABEL_37:
   return v19;
 }
 
-- (id)getConnectedPeripheralUUIDsCollecting:(BOOL)a3 andIdle:(BOOL)a4
+- (id)getConnectedPeripheralUUIDsCollecting:(BOOL)collecting andIdle:(BOOL)idle
 {
   v22 = objc_opt_new();
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v7 = [(FitnessDeviceManager *)self registeredServices];
-  v8 = [v7 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  registeredServices = [(FitnessDeviceManager *)self registeredServices];
+  v8 = [registeredServices countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v8)
   {
     v9 = v8;
     v10 = *v24;
-    v11 = !a4;
+    v11 = !idle;
     do
     {
       for (i = 0; i != v9; i = i + 1)
       {
         if (*v24 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(registeredServices);
         }
 
         v13 = *(*(&v23 + 1) + 8 * i);
-        v14 = [v13 hkQuantityTypesCollecting];
-        if ([v14 count])
+        hkQuantityTypesCollecting = [v13 hkQuantityTypesCollecting];
+        if ([hkQuantityTypesCollecting count])
         {
           v15 = 1;
         }
 
         else
         {
-          v16 = [v13 alwaysCollectQuantityTypes];
-          v15 = [v16 count] != 0;
+          alwaysCollectQuantityTypes = [v13 alwaysCollectQuantityTypes];
+          v15 = [alwaysCollectQuantityTypes count] != 0;
         }
 
-        v17 = a3 && v15;
+        v17 = collecting && v15;
         v18 = v11 || v15;
         if (v17 || !v18)
         {
-          v19 = [v13 peripheral];
-          v20 = [v19 identifier];
+          peripheral = [v13 peripheral];
+          identifier = [peripheral identifier];
 
-          if (v20 && ([v22 containsObject:v20] & 1) == 0 || !v18 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (objc_msgSend(v13, "updateHealthEnabled") & 1) == 0 && (objc_msgSend(v22, "containsObject:", v20) & 1) == 0)
+          if (identifier && ([v22 containsObject:identifier] & 1) == 0 || !v18 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (objc_msgSend(v13, "updateHealthEnabled") & 1) == 0 && (objc_msgSend(v22, "containsObject:", identifier) & 1) == 0)
           {
-            [v22 addObject:v20];
+            [v22 addObject:identifier];
           }
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v9 = [registeredServices countByEnumeratingWithState:&v23 objects:v27 count:16];
     }
 
     while (v9);
@@ -1943,16 +1943,16 @@ LABEL_37:
   return v22;
 }
 
-- (id)supportedQuantityTypesForServiceUUID:(id)a3
+- (id)supportedQuantityTypesForServiceUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = objc_opt_new();
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [(NSMutableDictionary *)self->_serviceUUIDForSupportedHKQuantityType allKeys];
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  allKeys = [(NSMutableDictionary *)self->_serviceUUIDForSupportedHKQuantityType allKeys];
+  v7 = [allKeys countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1963,12 +1963,12 @@ LABEL_37:
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allKeys);
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
         v12 = [(NSMutableDictionary *)self->_serviceUUIDForSupportedHKQuantityType objectForKey:v11];
-        v13 = [v4 isEqual:v12];
+        v13 = [dCopy isEqual:v12];
 
         if (v13)
         {
@@ -1976,7 +1976,7 @@ LABEL_37:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [allKeys countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);
@@ -1992,8 +1992,8 @@ LABEL_37:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(FitnessDeviceManager *)self requestedQuantityTypes];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  requestedQuantityTypes = [(FitnessDeviceManager *)self requestedQuantityTypes];
+  v5 = [requestedQuantityTypes countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -2004,7 +2004,7 @@ LABEL_37:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(requestedQuantityTypes);
         }
 
         v9 = [(NSMutableDictionary *)self->_serviceUUIDForSupportedHKQuantityType objectForKey:*(*(&v11 + 1) + 8 * i)];
@@ -2014,7 +2014,7 @@ LABEL_37:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [requestedQuantityTypes countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -2023,16 +2023,16 @@ LABEL_37:
   return v3;
 }
 
-- (id)servicesForHKQuantityType:(id)a3
+- (id)servicesForHKQuantityType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   v5 = objc_opt_new();
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [(FitnessDeviceManager *)self registeredServices];
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  registeredServices = [(FitnessDeviceManager *)self registeredServices];
+  v7 = [registeredServices countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -2043,17 +2043,17 @@ LABEL_37:
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(registeredServices);
         }
 
         v11 = *(*(&v13 + 1) + 8 * i);
-        if ([v11 supportsHKQuantityType:v4])
+        if ([v11 supportsHKQuantityType:typeCopy])
         {
           [v5 addObject:v11];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v8 = [registeredServices countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v8);
@@ -2062,17 +2062,17 @@ LABEL_37:
   return v5;
 }
 
-- (id)hkQuantityTypesForService:(id)a3
+- (id)hkQuantityTypesForService:(id)service
 {
-  v4 = a3;
+  serviceCopy = service;
   v5 = objc_opt_new();
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v6 = [v4 service];
-  v7 = [v6 UUID];
-  v8 = [(FitnessDeviceManager *)self supportedQuantityTypesForServiceUUID:v7];
+  service = [serviceCopy service];
+  uUID = [service UUID];
+  v8 = [(FitnessDeviceManager *)self supportedQuantityTypesForServiceUUID:uUID];
 
   v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v9)
@@ -2089,9 +2089,9 @@ LABEL_37:
         }
 
         v13 = *(*(&v18 + 1) + 8 * i);
-        v14 = [v4 peripheral];
-        v15 = [v13 identifier];
-        v16 = [v14 hasTag:v15];
+        peripheral = [serviceCopy peripheral];
+        identifier = [v13 identifier];
+        v16 = [peripheral hasTag:identifier];
 
         if (v16)
         {
@@ -2108,15 +2108,15 @@ LABEL_37:
   return v5;
 }
 
-- (id)quantityTypesForIdentifiers:(id)a3
+- (id)quantityTypesForIdentifiers:(id)identifiers
 {
-  v3 = a3;
+  identifiersCopy = identifiers;
   v4 = objc_opt_new();
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = v3;
+  v5 = identifiersCopy;
   v6 = [v5 countByEnumeratingWithState:&v16 objects:v22 count:16];
   if (v6)
   {
@@ -2167,14 +2167,14 @@ LABEL_37:
   return v14;
 }
 
-- (void)setServiceUUID:(id)a3 forQuantityType:(id)a4
+- (void)setServiceUUID:(id)d forQuantityType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  typeCopy = type;
   if (self->_serviceUUIDForSupportedHKQuantityType)
   {
-    v8 = [FitnessService hkQuantityTypeForIdentifier:v7];
-    v9 = [CBUUID UUIDWithString:v6];
+    v8 = [FitnessService hkQuantityTypeForIdentifier:typeCopy];
+    v9 = [CBUUID UUIDWithString:dCopy];
     v10 = v9;
     if (v8)
     {
@@ -2197,10 +2197,10 @@ LABEL_37:
   }
 }
 
-- (void)setUnit:(id)a3 forQuantityType:(id)a4
+- (void)setUnit:(id)unit forQuantityType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
+  unitCopy = unit;
+  typeCopy = type;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2050000000;
@@ -2224,8 +2224,8 @@ LABEL_37:
   _Block_object_dispose(&v15, 8);
   if (self->_unitForSupportedHKQuantityType && v8)
   {
-    v11 = [FitnessService hkQuantityTypeForIdentifier:v7, v15];
-    v12 = [v8 unitFromString:v6];
+    v11 = [FitnessService hkQuantityTypeForIdentifier:typeCopy, v15];
+    v12 = [v8 unitFromString:unitCopy];
     v13 = v12;
     if (v11 && v12)
     {
@@ -2242,11 +2242,11 @@ LABEL_37:
       if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_ERROR))
       {
         *buf = 138413058;
-        *&buf[4] = v6;
+        *&buf[4] = unitCopy;
         *&buf[12] = 2112;
         *&buf[14] = v13;
         *&buf[22] = 2112;
-        v20 = v7;
+        v20 = typeCopy;
         LOWORD(v21[0]) = 2112;
         *(v21 + 2) = v11;
         _os_log_error_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "Could not register unit %@(%@) for qty %@(%@)", buf, 0x2Au);
@@ -2262,12 +2262,12 @@ LABEL_37:
 
 - (void)startHeartRateScanTimer
 {
-  v3 = [(FitnessDeviceManager *)self heartRateScanTimer];
+  heartRateScanTimer = [(FitnessDeviceManager *)self heartRateScanTimer];
 
-  if (v3)
+  if (heartRateScanTimer)
   {
-    v4 = [(FitnessDeviceManager *)self heartRateScanTimer];
-    [v4 invalidate];
+    heartRateScanTimer2 = [(FitnessDeviceManager *)self heartRateScanTimer];
+    [heartRateScanTimer2 invalidate];
   }
 
   [(FitnessDeviceManager *)self setHeartRateScanDidTimeOut:0];
@@ -2286,12 +2286,12 @@ LABEL_37:
 
 - (void)stopHeartRateScanTimer
 {
-  v3 = [(FitnessDeviceManager *)self heartRateScanTimer];
+  heartRateScanTimer = [(FitnessDeviceManager *)self heartRateScanTimer];
 
-  if (v3)
+  if (heartRateScanTimer)
   {
-    v4 = [(FitnessDeviceManager *)self heartRateScanTimer];
-    [v4 invalidate];
+    heartRateScanTimer2 = [(FitnessDeviceManager *)self heartRateScanTimer];
+    [heartRateScanTimer2 invalidate];
 
     [(FitnessDeviceManager *)self setHeartRateScanTimer:0];
   }
@@ -2303,9 +2303,9 @@ LABEL_37:
 
 - (void)setupAudioRoutingControl
 {
-  v3 = [(FitnessDeviceManager *)self audioRoutingControl];
+  audioRoutingControl = [(FitnessDeviceManager *)self audioRoutingControl];
 
-  if (!v3)
+  if (!audioRoutingControl)
   {
     v9 = 0;
     v10 = &v9;
@@ -2330,8 +2330,8 @@ LABEL_37:
       v6 = objc_alloc_init(v4);
       [(FitnessDeviceManager *)self setAudioRoutingControl:v6];
 
-      v7 = [(FitnessDeviceManager *)self audioRoutingControl];
-      [v7 activateWithCompletion:&stru_1000BE288];
+      audioRoutingControl2 = [(FitnessDeviceManager *)self audioRoutingControl];
+      [audioRoutingControl2 activateWithCompletion:&stru_1000BE288];
     }
 
     else if (os_log_type_enabled(qword_1000DDBC8, OS_LOG_TYPE_ERROR))
@@ -2360,8 +2360,8 @@ LABEL_37:
     sub_10007981C(v4, v5);
   }
 
-  v6 = [(FitnessDeviceManager *)self audioRoutingControl];
-  [v6 hrmSessionStateChanged:v4 completion:&stru_1000BE2A8];
+  audioRoutingControl = [(FitnessDeviceManager *)self audioRoutingControl];
+  [audioRoutingControl hrmSessionStateChanged:v4 completion:&stru_1000BE2A8];
 }
 
 - (BOOL)isHKHeartRateEnabled
@@ -2373,15 +2373,15 @@ LABEL_37:
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 BOOLValue];
+    bOOLValue = [v4 BOOLValue];
   }
 
   else
   {
-    v6 = 1;
+    bOOLValue = 1;
   }
 
-  return v6;
+  return bOOLValue;
 }
 
 - (void)handleDevicePairingChangeCallback
@@ -2393,8 +2393,8 @@ LABEL_37:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "A fitness device's pairing state changed", v6, 2u);
   }
 
-  v4 = [(FitnessDeviceManager *)self knownQuantityTypes];
-  v5 = [v4 count];
+  knownQuantityTypes = [(FitnessDeviceManager *)self knownQuantityTypes];
+  v5 = [knownQuantityTypes count];
 
   if (v5)
   {
@@ -2445,8 +2445,8 @@ LABEL_37:
     while (v8);
   }
 
-  v11 = [(FitnessDeviceManager *)self knownQuantityTypes];
-  v12 = [v11 count];
+  knownQuantityTypes = [(FitnessDeviceManager *)self knownQuantityTypes];
+  v12 = [knownQuantityTypes count];
 
   if (v12)
   {
@@ -2467,7 +2467,7 @@ LABEL_37:
       if (+[HKHealthStore isHealthDataAvailable])
       {
         objc_initWeak(&location, self);
-        v6 = [(FitnessDeviceManager *)self hkHealthStore];
+        hkHealthStore = [(FitnessDeviceManager *)self hkHealthStore];
         v7[0] = _NSConcreteStackBlock;
         v7[1] = 3221225472;
         v7[2] = sub_100056180;
@@ -2475,7 +2475,7 @@ LABEL_37:
         objc_copyWeak(&v10, &location);
         v8 = v4;
         v9 = v3;
-        [v6 healthPeripheralsWithFilter:1 handler:v7];
+        [hkHealthStore healthPeripheralsWithFilter:1 handler:v7];
 
         objc_destroyWeak(&v10);
         objc_destroyWeak(&location);

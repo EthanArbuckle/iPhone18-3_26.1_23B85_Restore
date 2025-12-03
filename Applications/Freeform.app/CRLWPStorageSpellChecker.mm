@@ -1,66 +1,66 @@
 @interface CRLWPStorageSpellChecker
-+ (id)conditionalSpellCheckerForStorage:(id)a3;
-+ (id)newSpellCheckerForStorage:(id)a3 selectionPath:(id)a4 orSearchCanvasDelegate:(id)a5;
-+ (void)p_inputLanguageDidChangeNotification:(id)a3;
-- (BOOL)hasValidResultsForRange:(_NSRange)a3;
-- (BOOL)hasValidResultsForWordAtCharIndex:(unint64_t)a3 outRange:(_NSRange *)a4;
-- (BOOL)i_addSpellingAndGrammarMarksInRange:(_NSRange)a3 spellingResults:(id)a4 grammarResults:(id)a5 sync:(BOOL)a6;
-- (BOOL)i_setResults:(id)a3 grammarResults:(id)a4 shouldSync:(BOOL)a5;
-- (BOOL)shouldCheckAtCharIndex:(unint64_t)a3;
++ (id)conditionalSpellCheckerForStorage:(id)storage;
++ (id)newSpellCheckerForStorage:(id)storage selectionPath:(id)path orSearchCanvasDelegate:(id)delegate;
++ (void)p_inputLanguageDidChangeNotification:(id)notification;
+- (BOOL)hasValidResultsForRange:(_NSRange)range;
+- (BOOL)hasValidResultsForWordAtCharIndex:(unint64_t)index outRange:(_NSRange *)range;
+- (BOOL)i_addSpellingAndGrammarMarksInRange:(_NSRange)range spellingResults:(id)results grammarResults:(id)grammarResults sync:(BOOL)sync;
+- (BOOL)i_setResults:(id)results grammarResults:(id)grammarResults shouldSync:(BOOL)sync;
+- (BOOL)shouldCheckAtCharIndex:(unint64_t)index;
 - (CRLWPRangeArray)ungrammaticRanges;
-- (CRLWPStorageSpellChecker)initWithStorage:(id)a3 selectionPath:(id)a4 orSearchCanvasDelegate:(id)a5;
+- (CRLWPStorageSpellChecker)initWithStorage:(id)storage selectionPath:(id)path orSearchCanvasDelegate:(id)delegate;
 - (_NSRange)dirtyRange;
-- (_NSRange)firstErrorInRange:(_NSRange)a3;
-- (_NSRange)p_extendRangeToBeChecked:(_NSRange)a3 delta:(int64_t)a4;
-- (_NSRange)rangeOfMisspelledWordAtCharIndex:(unint64_t)a3;
-- (_NSRange)rangeOfNumericalSuffixPrecedingCharIndex:(unint64_t)a3;
-- (_NSRange)rangeOfNumericalSuffixPrecedingCharIndex:(unint64_t)a3 forLocale:(id)a4;
-- (id)p_textSourceWithoutDeletionsWithSubRange:(_NSRange)a3;
-- (void)checkRange:(_NSRange)a3 synchronously:(BOOL)a4;
+- (_NSRange)firstErrorInRange:(_NSRange)range;
+- (_NSRange)p_extendRangeToBeChecked:(_NSRange)checked delta:(int64_t)delta;
+- (_NSRange)rangeOfMisspelledWordAtCharIndex:(unint64_t)index;
+- (_NSRange)rangeOfNumericalSuffixPrecedingCharIndex:(unint64_t)index;
+- (_NSRange)rangeOfNumericalSuffixPrecedingCharIndex:(unint64_t)index forLocale:(id)locale;
+- (id)p_textSourceWithoutDeletionsWithSubRange:(_NSRange)range;
+- (void)checkRange:(_NSRange)range synchronously:(BOOL)synchronously;
 - (void)dealloc;
-- (void)findErrorsInRange:(_NSRange)a3 onHit:(id)a4 stop:(BOOL *)a5;
-- (void)i_addMisspelledWord:(id)a3 atIndex:(unint64_t)a4 ifValidForRange:(_NSRange)a5 toResults:(id)a6;
-- (void)i_resetSpellCheckingForNotification:(id)a3;
+- (void)findErrorsInRange:(_NSRange)range onHit:(id)hit stop:(BOOL *)stop;
+- (void)i_addMisspelledWord:(id)word atIndex:(unint64_t)index ifValidForRange:(_NSRange)range toResults:(id)results;
+- (void)i_resetSpellCheckingForNotification:(id)notification;
 @end
 
 @implementation CRLWPStorageSpellChecker
 
-+ (id)newSpellCheckerForStorage:(id)a3 selectionPath:(id)a4 orSearchCanvasDelegate:(id)a5
++ (id)newSpellCheckerForStorage:(id)storage selectionPath:(id)path orSearchCanvasDelegate:(id)delegate
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [objc_msgSend(a1 "concreteClass")];
+  storageCopy = storage;
+  pathCopy = path;
+  delegateCopy = delegate;
+  v11 = [objc_msgSend(self "concreteClass")];
 
   return v11;
 }
 
-+ (id)conditionalSpellCheckerForStorage:(id)a3
++ (id)conditionalSpellCheckerForStorage:(id)storage
 {
-  v4 = a3;
-  v5 = [objc_msgSend(a1 "concreteClass")];
+  storageCopy = storage;
+  v5 = [objc_msgSend(self "concreteClass")];
 
   return v5;
 }
 
-+ (void)p_inputLanguageDidChangeNotification:(id)a3
++ (void)p_inputLanguageDidChangeNotification:(id)notification
 {
   v4 = +[NSNotificationCenter defaultCenter];
-  [v4 postNotificationName:@"CRLWPSpellCheckerLanguageDidChangeNotification" object:a1];
+  [v4 postNotificationName:@"CRLWPSpellCheckerLanguageDidChangeNotification" object:self];
 }
 
-- (id)p_textSourceWithoutDeletionsWithSubRange:(_NSRange)a3
+- (id)p_textSourceWithoutDeletionsWithSubRange:(_NSRange)range
 {
   WeakRetained = objc_loadWeakRetained(&self->_storage);
 
   return WeakRetained;
 }
 
-- (_NSRange)p_extendRangeToBeChecked:(_NSRange)a3 delta:(int64_t)a4
+- (_NSRange)p_extendRangeToBeChecked:(_NSRange)checked delta:(int64_t)delta
 {
-  length = a3.length;
-  location = a3.location;
-  if (a4 < 0 && !a3.length)
+  length = checked.length;
+  location = checked.location;
+  if (delta < 0 && !checked.length)
   {
     WeakRetained = objc_loadWeakRetained(&self->_storage);
     length = [WeakRetained length];
@@ -133,10 +133,10 @@
   return result;
 }
 
-- (CRLWPStorageSpellChecker)initWithStorage:(id)a3 selectionPath:(id)a4 orSearchCanvasDelegate:(id)a5
+- (CRLWPStorageSpellChecker)initWithStorage:(id)storage selectionPath:(id)path orSearchCanvasDelegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a5;
+  storageCopy = storage;
+  delegateCopy = delegate;
   v21.receiver = self;
   v21.super_class = CRLWPStorageSpellChecker;
   v9 = [(CRLWPStorageSpellChecker *)&v21 init];
@@ -171,10 +171,10 @@
     [CRLAssertionHandler handleFailureInFunction:v11 file:v12 lineNumber:127 isFatal:0 description:"illegal instantiation of abstract class CRLWPStorageSpellChecker"];
   }
 
-  if (v9 && ((v13 = [(CRLWPStorageSpellChecker *)v9 isMemberOfClass:objc_opt_class()], !v7) ? (v14 = 1) : (v14 = v13), (v14 & 1) == 0))
+  if (v9 && ((v13 = [(CRLWPStorageSpellChecker *)v9 isMemberOfClass:objc_opt_class()], !storageCopy) ? (v14 = 1) : (v14 = v13), (v14 & 1) == 0))
   {
-    objc_storeWeak(&v9->_storage, v7);
-    objc_storeStrong(&v9->_searchCanvasDelegate, a5);
+    objc_storeWeak(&v9->_storage, storageCopy);
+    objc_storeStrong(&v9->_searchCanvasDelegate, delegate);
     v16 = objc_opt_new();
     checkedRanges = v9->_checkedRanges;
     v9->_checkedRanges = v16;
@@ -239,23 +239,23 @@
   grammarResults = self->_grammarResults;
   if (grammarResults)
   {
-    v3 = [(CRLWPCheckingResults *)grammarResults ranges];
+    ranges = [(CRLWPCheckingResults *)grammarResults ranges];
   }
 
   else
   {
-    v3 = objc_opt_new();
+    ranges = objc_opt_new();
   }
 
-  return v3;
+  return ranges;
 }
 
-- (void)checkRange:(_NSRange)a3 synchronously:(BOOL)a4
+- (void)checkRange:(_NSRange)range synchronously:(BOOL)synchronously
 {
-  if (a3.location != 0x7FFFFFFFFFFFFFFFLL)
+  if (range.location != 0x7FFFFFFFFFFFFFFFLL)
   {
-    length = a3.length;
-    location = a3.location;
+    length = range.length;
+    location = range.location;
     WeakRetained = objc_loadWeakRetained(&self->_storage);
     v8 = [WeakRetained length];
     v9 = location + length;
@@ -271,16 +271,16 @@
       {
         v18 = [(CRLWPStorageSpellChecker *)self p_extendRangeToBeChecked:location delta:length, 0];
         v20 = v19;
-        v21 = [(CRLWPStorageSpellChecker *)self dirtyRange];
+        dirtyRange = [(CRLWPStorageSpellChecker *)self dirtyRange];
         v23 = v22;
-        v24 = [(CRLWPDirtyRangeArray *)self->_dirtyRanges delta];
+        delta = [(CRLWPDirtyRangeArray *)self->_dirtyRanges delta];
         if ([(CRLWPRangeArray *)self->_checkedRanges rangeCount])
         {
-          if (v21 != 0x7FFFFFFFFFFFFFFFLL || v24)
+          if (dirtyRange != 0x7FFFFFFFFFFFFFFFLL || delta)
           {
-            v48 = [(CRLWPRangeArray *)self->_checkedRanges superRange];
+            superRange = [(CRLWPRangeArray *)self->_checkedRanges superRange];
             v46 = v27;
-            v29 = [(CRLWPStorageSpellChecker *)self p_extendRangeToBeChecked:v21 delta:v23, v24];
+            v29 = [(CRLWPStorageSpellChecker *)self p_extendRangeToBeChecked:dirtyRange delta:v23, delta];
             v30 = v28;
             if (v28)
             {
@@ -292,7 +292,7 @@
               v47 = [[CRLWPRangeArray alloc] initWithRange:v29, 0];
             }
 
-            v31 = [(CRLWPRangeArray *)v47 superRange];
+            superRange2 = [(CRLWPRangeArray *)v47 superRange];
             if (v32)
             {
               v33 = v32;
@@ -305,7 +305,7 @@
 
             if (v32)
             {
-              v34 = v31;
+              v34 = superRange2;
             }
 
             else
@@ -314,16 +314,16 @@
             }
 
             v45 = objc_opt_new();
-            v35 = &v29[v30] > v48;
+            v35 = &v29[v30] > superRange;
             v26 = v45;
-            if (v35 && v29 <= &v48[v46] && v33)
+            if (v35 && v29 <= &superRange[v46] && v33)
             {
               [(CRLWPMutableRangeArray *)self->_checkedRanges removeRange:v34, v33];
               [(CRLWPMutableRangeArray *)v45 addRange:v34, v33];
             }
 
             [(CRLWPMutableRangeArray *)v45 addRange:v18, v20];
-            if (v48 != 0x7FFFFFFFFFFFFFFFLL || v46)
+            if (superRange != 0x7FFFFFFFFFFFFFFFLL || v46)
             {
               [(CRLWPMutableRangeArray *)v45 subtract:self->_checkedRanges];
             }
@@ -420,12 +420,12 @@
         [v14 clear];
       }
 
-      v37 = [(CRLWPRangeArray *)self->_checkedRanges superRange];
+      superRange3 = [(CRLWPRangeArray *)self->_checkedRanges superRange];
       v39 = v38;
       v40 = objc_loadWeakRetained(&self->_storage);
-      LODWORD(v37) = &v37[v39] > [v40 length];
+      LODWORD(superRange3) = &superRange3[v39] > [v40 length];
 
-      if (v37)
+      if (superRange3)
       {
         +[CRLAssertionHandler _atomicIncrementAssertCount];
         if (qword_101AD5A10 != -1)
@@ -507,28 +507,28 @@
   }
 }
 
-- (BOOL)i_setResults:(id)a3 grammarResults:(id)a4 shouldSync:(BOOL)a5
+- (BOOL)i_setResults:(id)results grammarResults:(id)grammarResults shouldSync:(BOOL)sync
 {
-  v7 = a3;
-  v8 = a4;
+  resultsCopy = results;
+  grammarResultsCopy = grammarResults;
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1005A3CBC;
   v13[3] = &unk_101871920;
   v13[4] = self;
-  v9 = v7;
+  v9 = resultsCopy;
   v14 = v9;
-  v10 = v8;
+  v10 = grammarResultsCopy;
   v15 = v10;
   v11 = objc_retainBlock(v13);
-  LOBYTE(v7) = (v11[2])();
+  LOBYTE(resultsCopy) = (v11[2])();
 
-  return v7;
+  return resultsCopy;
 }
 
-- (BOOL)shouldCheckAtCharIndex:(unint64_t)a3
+- (BOOL)shouldCheckAtCharIndex:(unint64_t)index
 {
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  if (index == 0x7FFFFFFFFFFFFFFFLL)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -564,20 +564,20 @@
     return 0;
   }
 
-  v10 = [(CRLWPStorageSpellChecker *)self dirtyRange];
-  return a3 >= v10 && a3 - v10 < v11;
+  dirtyRange = [(CRLWPStorageSpellChecker *)self dirtyRange];
+  return index >= dirtyRange && index - dirtyRange < v11;
 }
 
-- (BOOL)hasValidResultsForWordAtCharIndex:(unint64_t)a3 outRange:(_NSRange *)a4
+- (BOOL)hasValidResultsForWordAtCharIndex:(unint64_t)index outRange:(_NSRange *)range
 {
   WeakRetained = objc_loadWeakRetained(&self->_storage);
-  v8 = [WeakRetained wordAtCharIndex:a3 includePreviousWord:1];
+  v8 = [WeakRetained wordAtCharIndex:index includePreviousWord:1];
   v10 = v9;
 
   if (v8 == 0x7FFFFFFFFFFFFFFFLL && v10 == 0)
   {
     v12 = 1;
-    if (!a4)
+    if (!range)
     {
       return v12;
     }
@@ -586,7 +586,7 @@
   else
   {
     v12 = [(CRLWPRangeArray *)self->_checkedRanges containsCharacterAtIndex:v8 inclusive:0];
-    if (!a4)
+    if (!range)
     {
       return v12;
     }
@@ -594,43 +594,43 @@
 
   if (v12)
   {
-    a4->location = v8;
-    a4->length = v10;
+    range->location = v8;
+    range->length = v10;
   }
 
   return v12;
 }
 
-- (BOOL)hasValidResultsForRange:(_NSRange)a3
+- (BOOL)hasValidResultsForRange:(_NSRange)range
 {
-  if (a3.length)
+  if (range.length)
   {
-    return [(CRLWPRangeArray *)self->_checkedRanges containsRange:a3.location];
+    return [(CRLWPRangeArray *)self->_checkedRanges containsRange:range.location];
   }
 
   else
   {
-    return [(CRLWPRangeArray *)self->_checkedRanges containsCharacterAtIndex:a3.location inclusive:1];
+    return [(CRLWPRangeArray *)self->_checkedRanges containsCharacterAtIndex:range.location inclusive:1];
   }
 }
 
-- (_NSRange)rangeOfMisspelledWordAtCharIndex:(unint64_t)a3
+- (_NSRange)rangeOfMisspelledWordAtCharIndex:(unint64_t)index
 {
   v6 = 0x7FFFFFFFFFFFFFFFLL;
   v5 = 0;
   WeakRetained = objc_loadWeakRetained(&self->_storage);
   v8 = [WeakRetained length];
 
-  if (v8 >= a3)
+  if (v8 >= index)
   {
     v9 = objc_loadWeakRetained(&self->_storage);
-    v10 = [v9 wordAtCharIndex:a3 includePreviousWord:1];
+    v10 = [v9 wordAtCharIndex:index includePreviousWord:1];
     v12 = v11;
 
     if ([(CRLWPRangeArray *)self->_checkedRanges intersectsRange:v10, v12])
     {
-      v13 = [(CRLWPStorageSpellChecker *)self misspelledRanges];
-      v14 = [v13 rangesIntersecting:{v10, v12}];
+      misspelledRanges = [(CRLWPStorageSpellChecker *)self misspelledRanges];
+      v14 = [misspelledRanges rangesIntersecting:{v10, v12}];
 
       if ([v14 rangeCount])
       {
@@ -652,14 +652,14 @@
   return result;
 }
 
-- (_NSRange)firstErrorInRange:(_NSRange)a3
+- (_NSRange)firstErrorInRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v5 = 0x7FFFFFFFFFFFFFFFLL;
   v6 = 0;
-  v7 = [(CRLWPStorageSpellChecker *)self misspelledRanges];
-  v8 = [v7 rangesIntersecting:{location, length}];
+  misspelledRanges = [(CRLWPStorageSpellChecker *)self misspelledRanges];
+  v8 = [misspelledRanges rangesIntersecting:{location, length}];
 
   if ([v8 rangeCount])
   {
@@ -687,10 +687,10 @@
   return result;
 }
 
-- (BOOL)i_addSpellingAndGrammarMarksInRange:(_NSRange)a3 spellingResults:(id)a4 grammarResults:(id)a5 sync:(BOOL)a6
+- (BOOL)i_addSpellingAndGrammarMarksInRange:(_NSRange)range spellingResults:(id)results grammarResults:(id)grammarResults sync:(BOOL)sync
 {
-  v7 = a4;
-  v8 = a5;
+  resultsCopy = results;
+  grammarResultsCopy = grammarResults;
   v9 = +[CRLAssertionHandler _atomicIncrementAssertCount];
   if (qword_101AD5A10 != -1)
   {
@@ -746,7 +746,7 @@
   objc_exception_throw(v22);
 }
 
-- (void)i_resetSpellCheckingForNotification:(id)a3
+- (void)i_resetSpellCheckingForNotification:(id)notification
 {
   [(CRLWPMutableRangeArray *)self->_checkedRanges clear];
   [(CRLWPCheckingResults *)self->_spellingResults clear];
@@ -756,7 +756,7 @@
   [(CRLWPMutableDirtyRangeArray *)dirtyRanges clear];
 }
 
-- (_NSRange)rangeOfNumericalSuffixPrecedingCharIndex:(unint64_t)a3
+- (_NSRange)rangeOfNumericalSuffixPrecedingCharIndex:(unint64_t)index
 {
   v3 = +[CRLAssertionHandler _atomicIncrementAssertCount];
   if (qword_101AD5A10 != -1)
@@ -813,10 +813,10 @@
   objc_exception_throw(v16);
 }
 
-- (_NSRange)rangeOfNumericalSuffixPrecedingCharIndex:(unint64_t)a3 forLocale:(id)a4
+- (_NSRange)rangeOfNumericalSuffixPrecedingCharIndex:(unint64_t)index forLocale:(id)locale
 {
-  v6 = a4;
-  if ([v6 length] <= 1)
+  localeCopy = locale;
+  if ([localeCopy length] <= 1)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -849,7 +849,7 @@
 
   v10 = 0x7FFFFFFFFFFFFFFFLL;
   v11 = 0;
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  if (index == 0x7FFFFFFFFFFFFFFFLL)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -876,8 +876,8 @@
     }
 
     v13 = [NSString stringWithUTF8String:"[CRLWPStorageSpellChecker rangeOfNumericalSuffixPrecedingCharIndex:forLocale:]"];
-    v14 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLWP/Spelling/CRLWPStorageSpellChecker.mm"];
-    [CRLAssertionHandler handleFailureInFunction:v13 file:v14 lineNumber:471 isFatal:0 description:"Invalid charIndex."];
+    index = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLWP/Spelling/CRLWPStorageSpellChecker.mm"];
+    [CRLAssertionHandler handleFailureInFunction:v13 file:index lineNumber:471 isFatal:0 description:"Invalid charIndex."];
   }
 
   else
@@ -888,21 +888,21 @@
     }
 
     v15 = &qword_101A35528;
-    if (([v6 hasPrefix:@"en"] & 1) == 0)
+    if (([localeCopy hasPrefix:@"en"] & 1) == 0)
     {
-      if ([v6 hasPrefix:@"fr"])
+      if ([localeCopy hasPrefix:@"fr"])
       {
         v15 = &qword_101A35530;
       }
 
-      else if ([v6 hasPrefix:@"it"] & 1) != 0 || (objc_msgSend(v6, "hasPrefix:", @"gl"))
+      else if ([localeCopy hasPrefix:@"it"] & 1) != 0 || (objc_msgSend(localeCopy, "hasPrefix:", @"gl"))
       {
         v15 = &qword_101A35538;
       }
 
-      else if ([v6 hasPrefix:@"pt"])
+      else if ([localeCopy hasPrefix:@"pt"])
       {
-        if ([v6 hasSuffix:@"BR"])
+        if ([localeCopy hasSuffix:@"BR"])
         {
           v15 = &qword_101A35548;
         }
@@ -913,36 +913,36 @@
         }
       }
 
-      else if ([v6 hasPrefix:@"es"])
+      else if ([localeCopy hasPrefix:@"es"])
       {
         v15 = &qword_101A35550;
       }
 
-      else if ([v6 hasPrefix:@"ca"])
+      else if ([localeCopy hasPrefix:@"ca"])
       {
         v15 = &qword_101A35558;
       }
 
-      else if ([v6 hasPrefix:@"el"])
+      else if ([localeCopy hasPrefix:@"el"])
       {
         v15 = &qword_101A35560;
       }
 
-      else if ([v6 hasPrefix:@"nl"])
+      else if ([localeCopy hasPrefix:@"nl"])
       {
         v15 = &qword_101A35568;
       }
 
-      else if ([v6 hasPrefix:@"uk"])
+      else if ([localeCopy hasPrefix:@"uk"])
       {
         v15 = &qword_101A35570;
       }
     }
 
     v13 = *v15;
-    v14 = [(CRLWPStorageSpellChecker *)self p_textSourceWithoutDeletionsWithSubRange:0, a3];
-    v16 = [v14 charIndexMappedFromStorage:a3];
-    v17 = sub_100280AB0(v16, 0, v14);
+    index = [(CRLWPStorageSpellChecker *)self p_textSourceWithoutDeletionsWithSubRange:0, index];
+    v16 = [index charIndexMappedFromStorage:index];
+    v17 = sub_100280AB0(v16, 0, index);
     if (v17 <= v16)
     {
       v18 = v16;
@@ -963,7 +963,7 @@
       v19 = v17;
     }
 
-    v20 = [v14 substringWithRange:{v19, v18 - v19}];
+    v20 = [index substringWithRange:{v19, v18 - v19}];
     v21 = +[NSCharacterSet decimalDigitCharacterSet];
     v22 = [v20 rangeOfCharacterFromSet:v21 options:4];
 
@@ -985,7 +985,7 @@
             v28 = -1;
           }
 
-          v10 = [v14 charRangeMappedToStorage:v16 - &v27[v28]];
+          v10 = [index charRangeMappedToStorage:v16 - &v27[v28]];
           v11 = v29;
         }
 
@@ -1033,17 +1033,17 @@
   return result;
 }
 
-- (void)findErrorsInRange:(_NSRange)a3 onHit:(id)a4 stop:(BOOL *)a5
+- (void)findErrorsInRange:(_NSRange)range onHit:(id)hit stop:(BOOL *)stop
 {
-  length = a3.length;
-  location = a3.location;
-  v48 = a4;
+  length = range.length;
+  location = range.location;
+  hitCopy = hit;
   [(CRLWPStorageSpellChecker *)self checkRange:location synchronously:length, 1];
-  v51 = [(CRLWPStorageSpellChecker *)self misspelledRanges];
-  v50 = [(CRLWPStorageSpellChecker *)self ungrammaticRanges];
-  v8 = [v51 indexForRange:{location, length}];
-  v9 = [v50 indexForRange:{location, length}];
-  if (!*a5)
+  misspelledRanges = [(CRLWPStorageSpellChecker *)self misspelledRanges];
+  ungrammaticRanges = [(CRLWPStorageSpellChecker *)self ungrammaticRanges];
+  v8 = [misspelledRanges indexForRange:{location, length}];
+  v9 = [ungrammaticRanges indexForRange:{location, length}];
+  if (!*stop)
   {
     v11 = v9;
     v47 = location + length;
@@ -1051,7 +1051,7 @@
     v45 = v10;
     do
     {
-      if ((v8 >= [v51 rangeCount] || objc_msgSend(v51, "rangeAtIndex:", v8) >= v47) && (v11 >= objc_msgSend(v50, "rangeCount") || objc_msgSend(v50, "rangeAtIndex:", v11) >= v47))
+      if ((v8 >= [misspelledRanges rangeCount] || objc_msgSend(misspelledRanges, "rangeAtIndex:", v8) >= v47) && (v11 >= objc_msgSend(ungrammaticRanges, "rangeCount") || objc_msgSend(ungrammaticRanges, "rangeAtIndex:", v11) >= v47))
       {
         break;
       }
@@ -1060,22 +1060,22 @@
       v12 = 0;
       v14 = 0x7FFFFFFFFFFFFFFFLL;
       v15 = 0;
-      if (v8 < [v51 rangeCount])
+      if (v8 < [misspelledRanges rangeCount])
       {
-        v14 = [v51 rangeAtIndex:v8];
+        v14 = [misspelledRanges rangeAtIndex:v8];
         v15 = v16;
       }
 
-      if (v11 < [v50 rangeCount])
+      if (v11 < [ungrammaticRanges rangeCount])
       {
-        v13 = [v50 rangeAtIndex:v11];
+        v13 = [ungrammaticRanges rangeAtIndex:v11];
         v12 = v17;
       }
 
       if (v14 <= v13)
       {
-        v28 = [(CRLWPStorageSpellChecker *)self spellingErrors];
-        v49 = [v28 objectAtIndexedSubscript:v8];
+        spellingErrors = [(CRLWPStorageSpellChecker *)self spellingErrors];
+        v49 = [spellingErrors objectAtIndexedSubscript:v8];
 
         v25 = 0;
         v21 = v8 + 1;
@@ -1084,18 +1084,18 @@
       else
       {
         v18 = objc_opt_class();
-        v19 = [(CRLWPStorageSpellChecker *)self grammarResults];
-        v20 = [v19 objectAtIndexedSubscript:v11];
+        grammarResults = [(CRLWPStorageSpellChecker *)self grammarResults];
+        v20 = [grammarResults objectAtIndexedSubscript:v11];
         v21 = v8;
         v22 = sub_100013F00(v18, v20);
 
         v23 = objc_opt_class();
-        v24 = [v22 first];
-        v25 = sub_100013F00(v23, v24);
+        first = [v22 first];
+        v25 = sub_100013F00(v23, first);
 
         v26 = objc_opt_class();
-        v27 = [v22 second];
-        v49 = sub_100013F00(v26, v27);
+        second = [v22 second];
+        v49 = sub_100013F00(v26, second);
 
         ++v11;
         v14 = v13;
@@ -1103,22 +1103,22 @@
       }
 
       v29 = objc_opt_class();
-      v30 = [(CRLWPStorageSpellChecker *)self searchCanvasDelegate];
-      if (v30)
+      searchCanvasDelegate = [(CRLWPStorageSpellChecker *)self searchCanvasDelegate];
+      if (searchCanvasDelegate)
       {
-        v31 = [(CRLWPStorageSpellChecker *)self searchCanvasDelegate];
+        searchCanvasDelegate2 = [(CRLWPStorageSpellChecker *)self searchCanvasDelegate];
         v32 = objc_opt_respondsToSelector();
 
         if (v32)
         {
-          v33 = [(CRLWPStorageSpellChecker *)self searchCanvasDelegate];
+          searchCanvasDelegate3 = [(CRLWPStorageSpellChecker *)self searchCanvasDelegate];
           WeakRetained = objc_loadWeakRetained(&self->_storage);
-          v29 = [v33 wpSelectionClassForStorage:WeakRetained];
+          v29 = [searchCanvasDelegate3 wpSelectionClassForStorage:WeakRetained];
         }
       }
 
-      v35 = [(CRLWPStorageSpellChecker *)self searchCanvasDelegate];
-      v36 = v35 == 0;
+      searchCanvasDelegate4 = [(CRLWPStorageSpellChecker *)self searchCanvasDelegate];
+      v36 = searchCanvasDelegate4 == 0;
 
       if (v36)
       {
@@ -1168,38 +1168,38 @@
       {
         v37 = objc_loadWeakRetained(&self->_storage);
         v38 = [v29 selectionWithRange:{v14, v15}];
-        v39 = [(CRLWPStorageSpellChecker *)self searchCanvasDelegate];
-        v40 = [CRLWPSearchReference searchReferenceWithStorage:v37 selection:v38 searchCanvasDelegate:v39];
+        searchCanvasDelegate5 = [(CRLWPStorageSpellChecker *)self searchCanvasDelegate];
+        v40 = [CRLWPSearchReference searchReferenceWithStorage:v37 selection:v38 searchCanvasDelegate:searchCanvasDelegate5];
       }
 
-      v48[2](v48, v40);
+      hitCopy[2](hitCopy, v40);
       v8 = v21;
     }
 
-    while (!*a5);
+    while (!*stop);
   }
 }
 
 - (_NSRange)dirtyRange
 {
-  v2 = [(CRLWPDirtyRangeArray *)self->_dirtyRanges superRange];
+  superRange = [(CRLWPDirtyRangeArray *)self->_dirtyRanges superRange];
   result.length = v3;
-  result.location = v2;
+  result.location = superRange;
   return result;
 }
 
-- (void)i_addMisspelledWord:(id)a3 atIndex:(unint64_t)a4 ifValidForRange:(_NSRange)a5 toResults:(id)a6
+- (void)i_addMisspelledWord:(id)word atIndex:(unint64_t)index ifValidForRange:(_NSRange)range toResults:(id)results
 {
-  length = a5.length;
-  location = a5.location;
-  v13 = a3;
-  v10 = a6;
+  length = range.length;
+  location = range.location;
+  wordCopy = word;
+  resultsCopy = results;
   WeakRetained = objc_loadWeakRetained(&self->_storage);
   v12 = [WeakRetained smartFieldAtCharIndex:location attributeKind:6 effectiveRange:0];
 
   if (!v12 && location <= 0x7FFFFFFFFFFFFFFELL)
   {
-    [v10 addResult:v13 forRange:{location, length}];
+    [resultsCopy addResult:wordCopy forRange:{location, length}];
   }
 }
 

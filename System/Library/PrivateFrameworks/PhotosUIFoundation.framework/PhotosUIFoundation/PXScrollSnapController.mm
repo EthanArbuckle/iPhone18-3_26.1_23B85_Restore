@@ -1,8 +1,8 @@
 @interface PXScrollSnapController
-- (CGPoint)adjustedTargetVisibleOriginForProposedTargetVisibleOrigin:(CGPoint)a3 scrollingVelocity:(CGPoint)a4 decelerationRate:(int64_t *)a5;
+- (CGPoint)adjustedTargetVisibleOriginForProposedTargetVisibleOrigin:(CGPoint)origin scrollingVelocity:(CGPoint)velocity decelerationRate:(int64_t *)rate;
 - (CGRect)visibleRect;
 - (PXScrollSnapController)init;
-- (PXScrollSnapController)initWithSnapBehavior:(int64_t)a3 scrollAxis:(int64_t)a4 visibleRect:(CGRect)a5 visibilityInsets:(UIEdgeInsets)a6 scrollablePageSource:(id)a7;
+- (PXScrollSnapController)initWithSnapBehavior:(int64_t)behavior scrollAxis:(int64_t)axis visibleRect:(CGRect)rect visibilityInsets:(UIEdgeInsets)insets scrollablePageSource:(id)source;
 - (PXScrollablePageSource)scrollablePageSource;
 - (UIEdgeInsets)visibilityInsets;
 @end
@@ -42,41 +42,41 @@
   return result;
 }
 
-- (CGPoint)adjustedTargetVisibleOriginForProposedTargetVisibleOrigin:(CGPoint)a3 scrollingVelocity:(CGPoint)a4 decelerationRate:(int64_t *)a5
+- (CGPoint)adjustedTargetVisibleOriginForProposedTargetVisibleOrigin:(CGPoint)origin scrollingVelocity:(CGPoint)velocity decelerationRate:(int64_t *)rate
 {
-  y = a4.y;
-  x = a4.x;
-  v8 = a3.y;
-  v43 = a3.x;
+  y = velocity.y;
+  x = velocity.x;
+  v8 = origin.y;
+  v43 = origin.x;
   v66 = *MEMORY[0x1E69E9840];
-  v11 = [(PXScrollSnapController *)self snapBehavior];
-  v12 = [(PXScrollSnapController *)self scrollAxis];
+  snapBehavior = [(PXScrollSnapController *)self snapBehavior];
+  scrollAxis = [(PXScrollSnapController *)self scrollAxis];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
   {
     *buf = 134218240;
     *&buf[4] = v8;
     *&buf[12] = 2048;
-    *&buf[14] = v11;
+    *&buf[14] = snapBehavior;
     _os_log_debug_impl(&dword_1B3F73000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "[ScrollSnap] === adjust %f with behavior %ti", buf, 0x16u);
-    if (!v11)
+    if (!snapBehavior)
     {
       goto LABEL_17;
     }
   }
 
-  else if (!v11)
+  else if (!snapBehavior)
   {
     goto LABEL_17;
   }
 
-  v13 = PXPointValueForAxis(v12, x, y);
+  v13 = PXPointValueForAxis(scrollAxis, x, y);
   [(PXScrollSnapController *)self minimumSpeed];
   if (fabs(v13) >= v14)
   {
-    if (v12 != 1)
+    if (scrollAxis != 1)
     {
-      v37 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v37 handleFailureInMethod:a2 object:self file:@"PXScrollSnapController.m" lineNumber:53 description:{@"Invalid parameter not satisfying: %@", @"scrollAxis == PXAxisVertical"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXScrollSnapController.m" lineNumber:53 description:{@"Invalid parameter not satisfying: %@", @"scrollAxis == PXAxisVertical"}];
     }
 
     [(PXScrollSnapController *)self visibleRect];
@@ -137,8 +137,8 @@
     v47[1] = v47;
     v47[2] = 0x2020000000;
     v48 = 0;
-    v31 = [(PXScrollSnapController *)self scrollablePageSource];
-    v32 = v31;
+    scrollablePageSource = [(PXScrollSnapController *)self scrollablePageSource];
+    v32 = scrollablePageSource;
     v44[0] = MEMORY[0x1E69E9820];
     v44[1] = 3221225472;
     v44[2] = __119__PXScrollSnapController_adjustedTargetVisibleOriginForProposedTargetVisibleOrigin_scrollingVelocity_decelerationRate___block_invoke;
@@ -162,12 +162,12 @@
       v34 = MinY;
     }
 
-    v44[17] = v11;
+    v44[17] = snapBehavior;
     *&v44[18] = v34;
     *&v44[19] = v33;
     v44[20] = v39;
     v44[21] = v38;
-    v44[22] = v11 == 3;
+    v44[22] = snapBehavior == 3;
     *&v44[23] = v8;
     *&v44[24] = MinY;
     v44[8] = v53;
@@ -183,16 +183,16 @@
     *&v44[28] = v41;
     *&v44[29] = v40;
     v46 = y > 0.0;
-    [v31 enumerateScrollablePagesWithOptions:2 * (y < 0.0) usingBlock:v44];
+    [scrollablePageSource enumerateScrollablePagesWithOptions:2 * (y < 0.0) usingBlock:v44];
 
-    if (v11 == 3)
+    if (snapBehavior == 3)
     {
-      v11 = *(v56 + 24);
+      snapBehavior = *(v56 + 24);
     }
 
     else
     {
-      v11 = 0;
+      snapBehavior = 0;
     }
 
     v8 = v60[3];
@@ -208,7 +208,7 @@
 
   else
   {
-    v11 = 0;
+    snapBehavior = 0;
   }
 
 LABEL_17:
@@ -217,7 +217,7 @@ LABEL_17:
     *buf = 134217984;
     *&buf[4] = v8;
     _os_log_debug_impl(&dword_1B3F73000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "[ScrollSnap] ===> adjusted %f", buf, 0xCu);
-    if (!a5)
+    if (!rate)
     {
       goto LABEL_20;
     }
@@ -225,10 +225,10 @@ LABEL_17:
     goto LABEL_19;
   }
 
-  if (a5)
+  if (rate)
   {
 LABEL_19:
-    *a5 = v11;
+    *rate = snapBehavior;
   }
 
 LABEL_20:
@@ -498,25 +498,25 @@ LABEL_33:
   }
 }
 
-- (PXScrollSnapController)initWithSnapBehavior:(int64_t)a3 scrollAxis:(int64_t)a4 visibleRect:(CGRect)a5 visibilityInsets:(UIEdgeInsets)a6 scrollablePageSource:(id)a7
+- (PXScrollSnapController)initWithSnapBehavior:(int64_t)behavior scrollAxis:(int64_t)axis visibleRect:(CGRect)rect visibilityInsets:(UIEdgeInsets)insets scrollablePageSource:(id)source
 {
-  right = a6.right;
-  bottom = a6.bottom;
-  left = a6.left;
-  top = a6.top;
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v18 = a7;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  sourceCopy = source;
   v22.receiver = self;
   v22.super_class = PXScrollSnapController;
   v19 = [(PXScrollSnapController *)&v22 init];
   v20 = v19;
   if (v19)
   {
-    v19->_snapBehavior = a3;
-    v19->_scrollAxis = a4;
+    v19->_snapBehavior = behavior;
+    v19->_scrollAxis = axis;
     v19->_visibleRect.origin.x = x;
     v19->_visibleRect.origin.y = y;
     v19->_visibleRect.size.width = width;
@@ -525,7 +525,7 @@ LABEL_33:
     v19->_visibilityInsets.left = left;
     v19->_visibilityInsets.bottom = bottom;
     v19->_visibilityInsets.right = right;
-    objc_storeWeak(&v19->_scrollablePageSource, v18);
+    objc_storeWeak(&v19->_scrollablePageSource, sourceCopy);
     *&v20->_maximumAccelerationFactor = xmmword_1B4074F30;
     v20->_minimumSpeed = 0.1;
   }
@@ -535,8 +535,8 @@ LABEL_33:
 
 - (PXScrollSnapController)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXScrollSnapController.m" lineNumber:26 description:@"Code which should be unreachable has been reached"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXScrollSnapController.m" lineNumber:26 description:@"Code which should be unreachable has been reached"];
 
   abort();
 }

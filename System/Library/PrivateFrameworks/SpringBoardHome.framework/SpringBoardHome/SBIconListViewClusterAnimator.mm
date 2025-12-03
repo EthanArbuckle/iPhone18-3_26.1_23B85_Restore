@@ -1,8 +1,8 @@
 @interface SBIconListViewClusterAnimator
 - (SBIconListViewClusterAnimator)init;
-- (void)iconListView:(id)a3 wantsAnimatedLayoutForIconView:(id)a4 withParameters:(SBIconListLayoutAnimationParameters *)a5 alongsideAnimationBlock:(id)a6;
-- (void)iconListView:(id)a3 wantsAnimatedRemovalForIconViews:(id)a4 completionHandler:(id)a5;
-- (void)setRemovalDirection:(unint64_t)a3 forIcon:(id)a4;
+- (void)iconListView:(id)view wantsAnimatedLayoutForIconView:(id)iconView withParameters:(SBIconListLayoutAnimationParameters *)parameters alongsideAnimationBlock:(id)block;
+- (void)iconListView:(id)view wantsAnimatedRemovalForIconViews:(id)views completionHandler:(id)handler;
+- (void)setRemovalDirection:(unint64_t)direction forIcon:(id)icon;
 @end
 
 @implementation SBIconListViewClusterAnimator
@@ -15,47 +15,47 @@
   if (v2)
   {
     v3 = +[SBHHomeScreenDomain rootSettings];
-    v4 = [v3 iconEditingSettings];
+    iconEditingSettings = [v3 iconEditingSettings];
     iconEditingSettings = v2->_iconEditingSettings;
-    v2->_iconEditingSettings = v4;
+    v2->_iconEditingSettings = iconEditingSettings;
   }
 
   return v2;
 }
 
-- (void)setRemovalDirection:(unint64_t)a3 forIcon:(id)a4
+- (void)setRemovalDirection:(unint64_t)direction forIcon:(id)icon
 {
-  v11 = a4;
+  iconCopy = icon;
   removalDirectionForIcons = self->_removalDirectionForIcons;
   if (!removalDirectionForIcons)
   {
-    v7 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v8 = self->_removalDirectionForIcons;
-    self->_removalDirectionForIcons = v7;
+    self->_removalDirectionForIcons = dictionary;
 
     removalDirectionForIcons = self->_removalDirectionForIcons;
   }
 
-  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  v10 = [v11 uniqueIdentifier];
-  [(NSMutableDictionary *)removalDirectionForIcons setObject:v9 forKey:v10];
+  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:direction];
+  uniqueIdentifier = [iconCopy uniqueIdentifier];
+  [(NSMutableDictionary *)removalDirectionForIcons setObject:v9 forKey:uniqueIdentifier];
 }
 
-- (void)iconListView:(id)a3 wantsAnimatedLayoutForIconView:(id)a4 withParameters:(SBIconListLayoutAnimationParameters *)a5 alongsideAnimationBlock:(id)a6
+- (void)iconListView:(id)view wantsAnimatedLayoutForIconView:(id)iconView withParameters:(SBIconListLayoutAnimationParameters *)parameters alongsideAnimationBlock:(id)block
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  viewCopy = view;
+  iconViewCopy = iconView;
+  blockCopy = block;
   [(SBHIconEditingSettings *)self->_iconEditingSettings defaultSpringDuration];
   v14 = v13;
   [(SBHIconEditingSettings *)self->_iconEditingSettings defaultSpringDampingRatio];
   v16 = v15;
-  v17 = [v11 icon];
-  v18 = [v17 gridSizeClass];
-  v19 = v18;
-  if (v18 == @"SBHIconGridSizeClassDefault")
+  icon = [iconViewCopy icon];
+  gridSizeClass = [icon gridSizeClass];
+  v19 = gridSizeClass;
+  if (gridSizeClass == @"SBHIconGridSizeClassDefault")
   {
-    var6 = a5->var6;
+    var6 = parameters->var6;
 
     if (!var6)
     {
@@ -65,14 +65,14 @@
 
   else
   {
-    v20 = [v17 gridSizeClass];
-    if (([v20 isEqualToString:@"SBHIconGridSizeClassDefault"] & 1) == 0)
+    gridSizeClass2 = [icon gridSizeClass];
+    if (([gridSizeClass2 isEqualToString:@"SBHIconGridSizeClassDefault"] & 1) == 0)
     {
 
       goto LABEL_12;
     }
 
-    v21 = a5->var6;
+    v21 = parameters->var6;
 
     if (!v21)
     {
@@ -80,11 +80,11 @@
     }
   }
 
-  column = a5->var4.column;
-  row = a5->var4.row;
-  x = a5->var0.x;
-  y = a5->var0.y;
-  [v11 center];
+  column = parameters->var4.column;
+  row = parameters->var4.row;
+  x = parameters->var0.x;
+  y = parameters->var0.y;
+  [iconViewCopy center];
   v28 = v27;
   v30 = v29;
   if ((BSFloatEqualToFloat() & 1) == 0)
@@ -206,9 +206,9 @@ LABEL_54:
 
   if (BSFloatEqualToFloat() && (BSFloatEqualToFloat() & 1) == 0)
   {
-    v31 = [v10 layoutMetrics];
-    v19 = v31;
-    v32 = column == 1 || column == [(__CFString *)v31 columns];
+    layoutMetrics = [viewCopy layoutMetrics];
+    v19 = layoutMetrics;
+    v32 = column == 1 || column == [(__CFString *)layoutMetrics columns];
     if (row >= 0)
     {
       v41 = row & 1;
@@ -284,31 +284,31 @@ LABEL_69:
   }
 
 LABEL_64:
-  v50 = [v10 iconInsertionAnimationOriginatingEdge];
+  iconInsertionAnimationOriginatingEdge = [viewCopy iconInsertionAnimationOriginatingEdge];
   v51 = MEMORY[0x1E69DD250];
-  var7 = a5->var7;
+  var7 = parameters->var7;
   v60[0] = MEMORY[0x1E69E9820];
   v60[1] = 3221225472;
   v60[2] = __116__SBIconListViewClusterAnimator_iconListView_wantsAnimatedLayoutForIconView_withParameters_alongsideAnimationBlock___block_invoke;
   v60[3] = &unk_1E808F628;
-  v53 = *&a5->var2.continuousCornerRadius;
-  v67 = *&a5->var2.size.height;
+  v53 = *&parameters->var2.continuousCornerRadius;
+  v67 = *&parameters->var2.size.height;
   v68 = v53;
-  v54 = *&a5->var5;
-  var4 = a5->var4;
+  v54 = *&parameters->var5;
+  var4 = parameters->var4;
   v70 = v54;
-  v55 = *&a5->var1;
-  var0 = a5->var0;
+  v55 = *&parameters->var1;
+  var0 = parameters->var0;
   v66 = v55;
-  v61 = v11;
-  v62 = v17;
-  v71 = v50 == 1;
-  v63 = v10;
-  v64 = v12;
-  v56 = v12;
-  v57 = v10;
-  v58 = v17;
-  v59 = v11;
+  v61 = iconViewCopy;
+  v62 = icon;
+  v71 = iconInsertionAnimationOriginatingEdge == 1;
+  v63 = viewCopy;
+  v64 = blockCopy;
+  v56 = blockCopy;
+  v57 = viewCopy;
+  v58 = icon;
+  v59 = iconViewCopy;
   [v51 animateWithDuration:var7 delay:v60 usingSpringWithDamping:0 initialSpringVelocity:v14 options:0.0 animations:v16 completion:0.0];
 }
 
@@ -441,33 +441,33 @@ void __116__SBIconListViewClusterAnimator_iconListView_wantsAnimatedLayoutForIco
   }
 }
 
-- (void)iconListView:(id)a3 wantsAnimatedRemovalForIconViews:(id)a4 completionHandler:(id)a5
+- (void)iconListView:(id)view wantsAnimatedRemovalForIconViews:(id)views completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  viewCopy = view;
+  viewsCopy = views;
+  handlerCopy = handler;
   [(SBHIconEditingSettings *)self->_iconEditingSettings defaultSpringDuration];
   v12 = v11;
   [(SBHIconEditingSettings *)self->_iconEditingSettings defaultSpringDampingRatio];
   v14 = v13;
-  v15 = [v8 iconRemovalAnimationDestinationEdge] == 1;
+  v15 = [viewCopy iconRemovalAnimationDestinationEdge] == 1;
   v16 = MEMORY[0x1E69DD250];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __97__SBIconListViewClusterAnimator_iconListView_wantsAnimatedRemovalForIconViews_completionHandler___block_invoke;
   v22[3] = &unk_1E808F650;
-  v23 = v9;
-  v24 = self;
+  v23 = viewsCopy;
+  selfCopy = self;
   v26 = v15;
-  v25 = v8;
+  v25 = viewCopy;
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __97__SBIconListViewClusterAnimator_iconListView_wantsAnimatedRemovalForIconViews_completionHandler___block_invoke_2;
   v20[3] = &unk_1E808A0B8;
-  v21 = v10;
-  v17 = v10;
-  v18 = v8;
-  v19 = v9;
+  v21 = handlerCopy;
+  v17 = handlerCopy;
+  v18 = viewCopy;
+  v19 = viewsCopy;
   [v16 animateWithDuration:4 delay:v22 usingSpringWithDamping:v20 initialSpringVelocity:v12 options:0.0 animations:v14 completion:0.0];
 }
 

@@ -1,31 +1,31 @@
 @interface PhotosDetailsNoLocationWidget
 - (PXPhotosDetailsContext)context;
 - (_TtC12PhotosUICore29PhotosDetailsNoLocationWidget)init;
-- (double)preferredContentWidthForHorizontalLayoutWithAvailableWidth:(double)a3;
+- (double)preferredContentWidthForHorizontalLayoutWithAvailableWidth:(double)width;
 - (int64_t)contentLayoutStyle;
-- (void)setContext:(id)a3;
+- (void)setContext:(id)context;
 @end
 
 @implementation PhotosDetailsNoLocationWidget
 
 - (PXPhotosDetailsContext)context
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1A4110EF8();
 
   return v3;
 }
 
-- (void)setContext:(id)a3
+- (void)setContext:(id)context
 {
-  v4 = a3;
-  v5 = self;
-  sub_1A4172318(v4);
+  contextCopy = context;
+  selfCopy = self;
+  sub_1A4172318(contextCopy);
 }
 
-- (double)preferredContentWidthForHorizontalLayoutWithAvailableWidth:(double)a3
+- (double)preferredContentWidthForHorizontalLayoutWithAvailableWidth:(double)width
 {
-  v3 = self;
+  selfCopy = self;
   sub_1A4172AD8();
   v5 = v4;
 
@@ -36,7 +36,7 @@
 {
   v2 = MEMORY[0x1E69E7D40];
   v3 = *((*MEMORY[0x1E69E7D40] & *self->PXPhotosDetailsWidget_opaque) + 0x168);
-  v4 = self;
+  selfCopy = self;
   if (v3())
   {
 
@@ -45,7 +45,7 @@
 
   else
   {
-    v6 = (*((*v2 & *v4->PXPhotosDetailsWidget_opaque) + 0x108))();
+    v6 = (*((*v2 & *selfCopy->PXPhotosDetailsWidget_opaque) + 0x108))();
     v7 = [v6 sizeClass] != 2;
 
     return 2 * v7;

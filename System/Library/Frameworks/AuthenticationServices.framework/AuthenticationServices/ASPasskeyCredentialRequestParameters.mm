@@ -1,41 +1,41 @@
 @interface ASPasskeyCredentialRequestParameters
-- (ASPasskeyCredentialRequestParameters)initWithCoder:(id)a3;
-- (ASPasskeyCredentialRequestParameters)initWithRelyingPartyIdentifier:(id)a3 clientDataHash:(id)a4 userVerificationPreference:(id)a5 allowedCredentials:(id)a6 extensionInput:(id)a7;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (ASPasskeyCredentialRequestParameters)initWithCoder:(id)coder;
+- (ASPasskeyCredentialRequestParameters)initWithRelyingPartyIdentifier:(id)identifier clientDataHash:(id)hash userVerificationPreference:(id)preference allowedCredentials:(id)credentials extensionInput:(id)input;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ASPasskeyCredentialRequestParameters
 
-- (ASPasskeyCredentialRequestParameters)initWithRelyingPartyIdentifier:(id)a3 clientDataHash:(id)a4 userVerificationPreference:(id)a5 allowedCredentials:(id)a6 extensionInput:(id)a7
+- (ASPasskeyCredentialRequestParameters)initWithRelyingPartyIdentifier:(id)identifier clientDataHash:(id)hash userVerificationPreference:(id)preference allowedCredentials:(id)credentials extensionInput:(id)input
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  identifierCopy = identifier;
+  hashCopy = hash;
+  preferenceCopy = preference;
+  credentialsCopy = credentials;
+  inputCopy = input;
   v30.receiver = self;
   v30.super_class = ASPasskeyCredentialRequestParameters;
   v17 = [(ASPasskeyCredentialRequestParameters *)&v30 init];
   if (v17)
   {
-    v18 = [v12 copy];
+    v18 = [identifierCopy copy];
     relyingPartyIdentifier = v17->_relyingPartyIdentifier;
     v17->_relyingPartyIdentifier = v18;
 
-    v20 = [v13 copy];
+    v20 = [hashCopy copy];
     clientDataHash = v17->_clientDataHash;
     v17->_clientDataHash = v20;
 
-    v22 = [v14 copy];
+    v22 = [preferenceCopy copy];
     userVerificationPreference = v17->_userVerificationPreference;
     v17->_userVerificationPreference = v22;
 
-    v24 = [v15 copy];
+    v24 = [credentialsCopy copy];
     allowedCredentials = v17->_allowedCredentials;
     v17->_allowedCredentials = v24;
 
-    v26 = [v16 copy];
+    v26 = [inputCopy copy];
     extensionInput = v17->_extensionInput;
     v17->_extensionInput = v26;
 
@@ -45,25 +45,25 @@
   return v17;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   relyingPartyIdentifier = self->_relyingPartyIdentifier;
-  v5 = a3;
-  [v5 encodeObject:relyingPartyIdentifier forKey:@"relyingPartyIdentifier"];
-  [v5 encodeObject:self->_clientDataHash forKey:@"clientDataHash"];
-  [v5 encodeObject:self->_userVerificationPreference forKey:@"userVerificationPreference"];
-  [v5 encodeObject:self->_allowedCredentials forKey:@"allowedCredentials"];
-  [v5 encodeObject:self->_extensionInput forKey:@"extensionInput"];
+  coderCopy = coder;
+  [coderCopy encodeObject:relyingPartyIdentifier forKey:@"relyingPartyIdentifier"];
+  [coderCopy encodeObject:self->_clientDataHash forKey:@"clientDataHash"];
+  [coderCopy encodeObject:self->_userVerificationPreference forKey:@"userVerificationPreference"];
+  [coderCopy encodeObject:self->_allowedCredentials forKey:@"allowedCredentials"];
+  [coderCopy encodeObject:self->_extensionInput forKey:@"extensionInput"];
 }
 
-- (ASPasskeyCredentialRequestParameters)initWithCoder:(id)a3
+- (ASPasskeyCredentialRequestParameters)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"relyingPartyIdentifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"clientDataHash"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"userVerificationPreference"];
-  v8 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"allowedCredentials"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"extensionInput"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"relyingPartyIdentifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"clientDataHash"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"userVerificationPreference"];
+  v8 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"allowedCredentials"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"extensionInput"];
 
   v10 = [(ASPasskeyCredentialRequestParameters *)self initWithRelyingPartyIdentifier:v5 clientDataHash:v6 userVerificationPreference:v7 allowedCredentials:v8 extensionInput:v9];
   if (v10)
@@ -78,9 +78,9 @@
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [ASPasskeyCredentialRequestParameters allocWithZone:a3];
+  v4 = [ASPasskeyCredentialRequestParameters allocWithZone:zone];
   relyingPartyIdentifier = self->_relyingPartyIdentifier;
   clientDataHash = self->_clientDataHash;
   userVerificationPreference = self->_userVerificationPreference;

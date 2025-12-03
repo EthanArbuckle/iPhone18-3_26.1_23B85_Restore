@@ -1,51 +1,51 @@
 @interface MBDSMSToSuper_TEXT_Frame
-- (void)parser:(id)a3 context:(id)a4 didStartElement:(id)a5 namespaceURI:(id)a6 qualifiedName:(id)a7 attributes:(id)a8;
-- (void)parser:(id)a3 context:(id)a4 foundCharacters:(id)a5;
+- (void)parser:(id)parser context:(id)context didStartElement:(id)element namespaceURI:(id)i qualifiedName:(id)name attributes:(id)attributes;
+- (void)parser:(id)parser context:(id)context foundCharacters:(id)characters;
 @end
 
 @implementation MBDSMSToSuper_TEXT_Frame
 
-- (void)parser:(id)a3 context:(id)a4 didStartElement:(id)a5 namespaceURI:(id)a6 qualifiedName:(id)a7 attributes:(id)a8
+- (void)parser:(id)parser context:(id)context didStartElement:(id)element namespaceURI:(id)i qualifiedName:(id)name attributes:(id)attributes
 {
-  v15 = a4;
-  v9 = MBDIMCopyNormalizedAttributes(a8, 1, 0);
-  v10 = [v15 orderedParts];
-  v11 = [v10 lastObject];
+  contextCopy = context;
+  v9 = MBDIMCopyNormalizedAttributes(attributes, 1, 0);
+  orderedParts = [contextCopy orderedParts];
+  lastObject = [orderedParts lastObject];
 
-  if (!v11)
+  if (!lastObject)
   {
-    v11 = objc_alloc_init(SMSPart);
-    [v15 _addPart:v11];
+    lastObject = objc_alloc_init(SMSPart);
+    [contextCopy _addPart:lastObject];
   }
 
   v12 = [v9 objectForKey:@"src"];
   v13 = SMSCopySanitizedContentLocation(v12);
 
   v14 = [[SMSTextPart alloc] initWithContentLocation:v13];
-  [(SMSPart *)v11 addTextPart:v14];
+  [(SMSPart *)lastObject addTextPart:v14];
 }
 
-- (void)parser:(id)a3 context:(id)a4 foundCharacters:(id)a5
+- (void)parser:(id)parser context:(id)context foundCharacters:(id)characters
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 orderedParts];
-  v12 = [v11 lastObject];
+  parserCopy = parser;
+  contextCopy = context;
+  charactersCopy = characters;
+  orderedParts = [contextCopy orderedParts];
+  lastObject = [orderedParts lastObject];
 
-  v13 = [v12 textParts];
-  v14 = [v13 lastObject];
+  textParts = [lastObject textParts];
+  lastObject2 = [textParts lastObject];
 
-  if (v14)
+  if (lastObject2)
   {
-    [v14 appendText:v10];
+    [lastObject2 appendText:charactersCopy];
   }
 
   else
   {
     v15.receiver = self;
     v15.super_class = MBDSMSToSuper_TEXT_Frame;
-    [(MBDSMSToSuper_Default_Frame *)&v15 parser:v8 context:v9 foundCharacters:v10];
+    [(MBDSMSToSuper_Default_Frame *)&v15 parser:parserCopy context:contextCopy foundCharacters:charactersCopy];
   }
 }
 

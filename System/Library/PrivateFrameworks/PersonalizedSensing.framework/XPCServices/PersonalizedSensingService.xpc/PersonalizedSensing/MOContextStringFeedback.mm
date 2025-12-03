@@ -1,99 +1,99 @@
 @interface MOContextStringFeedback
-+ (id)describeFeedbackMode:(unint64_t)a3;
-+ (id)describeUsageFeedback:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
-- (MOContextStringFeedback)initWithCoder:(id)a3;
-- (MOContextStringFeedback)initWithContextStringIdentifier:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)describeFeedbackMode:(unint64_t)mode;
++ (id)describeUsageFeedback:(unint64_t)feedback;
+- (BOOL)isEqual:(id)equal;
+- (MOContextStringFeedback)initWithCoder:(id)coder;
+- (MOContextStringFeedback)initWithContextStringIdentifier:(id)identifier;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)describeFeedbackMode;
 - (id)describeUsageFeedback;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MOContextStringFeedback
 
-- (MOContextStringFeedback)initWithContextStringIdentifier:(id)a3
+- (MOContextStringFeedback)initWithContextStringIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = MOContextStringFeedback;
   v6 = [(MOContextStringFeedback *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_stringIdentifier, a3);
+    objc_storeStrong(&v6->_stringIdentifier, identifier);
   }
 
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   stringIdentifier = self->_stringIdentifier;
-  v5 = a3;
-  [v5 encodeObject:stringIdentifier forKey:@"stringIdentifier"];
-  [v5 encodeObject:self->_textString forKey:@"textString"];
-  [v5 encodeInteger:self->_score forKey:@"score"];
-  [v5 encodeObject:self->_timestamp forKey:@"timestamp"];
-  [v5 encodeInteger:self->_mode forKey:@"mode"];
-  [v5 encodeInteger:self->_usage forKey:@"usage"];
+  coderCopy = coder;
+  [coderCopy encodeObject:stringIdentifier forKey:@"stringIdentifier"];
+  [coderCopy encodeObject:self->_textString forKey:@"textString"];
+  [coderCopy encodeInteger:self->_score forKey:@"score"];
+  [coderCopy encodeObject:self->_timestamp forKey:@"timestamp"];
+  [coderCopy encodeInteger:self->_mode forKey:@"mode"];
+  [coderCopy encodeInteger:self->_usage forKey:@"usage"];
 }
 
-- (MOContextStringFeedback)initWithCoder:(id)a3
+- (MOContextStringFeedback)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"stringIdentifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"stringIdentifier"];
   v6 = [(MOContextStringFeedback *)self initWithContextStringIdentifier:v5];
   if (v6)
   {
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"textString"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"textString"];
     textString = v6->_textString;
     v6->_textString = v7;
 
-    v6->_score = [v4 decodeIntegerForKey:@"score"];
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"timestamp"];
+    v6->_score = [coderCopy decodeIntegerForKey:@"score"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"timestamp"];
     timestamp = v6->_timestamp;
     v6->_timestamp = v9;
 
-    v6->_mode = [v4 decodeIntegerForKey:@"mode"];
-    v6->_usage = [v4 decodeIntegerForKey:@"usage"];
+    v6->_mode = [coderCopy decodeIntegerForKey:@"mode"];
+    v6->_usage = [coderCopy decodeIntegerForKey:@"usage"];
   }
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [v4 isMemberOfClass:objc_opt_class()];
+  equalCopy = equal;
+  v5 = [equalCopy isMemberOfClass:objc_opt_class()];
   stringIdentifier = self->_stringIdentifier;
-  v7 = [v4 stringIdentifier];
-  LOBYTE(stringIdentifier) = [(NSUUID *)stringIdentifier isEqual:v7];
+  stringIdentifier = [equalCopy stringIdentifier];
+  LOBYTE(stringIdentifier) = [(NSUUID *)stringIdentifier isEqual:stringIdentifier];
 
   textString = self->_textString;
-  v9 = [v4 textString];
+  textString = [equalCopy textString];
 
-  LOBYTE(textString) = [(NSString *)textString isEqual:v9];
+  LOBYTE(textString) = [(NSString *)textString isEqual:textString];
   return v5 & stringIdentifier & textString;
 }
 
 - (id)describeFeedbackMode
 {
-  v2 = [(MOContextStringFeedback *)self mode];
+  mode = [(MOContextStringFeedback *)self mode];
 
-  return [MOContextStringFeedback describeFeedbackMode:v2];
+  return [MOContextStringFeedback describeFeedbackMode:mode];
 }
 
-+ (id)describeFeedbackMode:(unint64_t)a3
++ (id)describeFeedbackMode:(unint64_t)mode
 {
   v3 = @"Unknown";
-  if (a3 == 1)
+  if (mode == 1)
   {
     v3 = @"System";
   }
 
-  if (a3 == 2)
+  if (mode == 2)
   {
     return @"User";
   }
@@ -106,48 +106,48 @@
 
 - (id)describeUsageFeedback
 {
-  v2 = [(MOContextStringFeedback *)self usage];
+  usage = [(MOContextStringFeedback *)self usage];
 
-  return [MOContextStringFeedback describeUsageFeedback:v2];
+  return [MOContextStringFeedback describeUsageFeedback:usage];
 }
 
-+ (id)describeUsageFeedback:(unint64_t)a3
++ (id)describeUsageFeedback:(unint64_t)feedback
 {
-  if (a3 - 1 > 5)
+  if (feedback - 1 > 5)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_1000B61D8[a3 - 1];
+    return off_1000B61D8[feedback - 1];
   }
 }
 
 - (id)description
 {
-  v3 = [(MOContextStringFeedback *)self stringIdentifier];
-  v4 = [(MOContextStringFeedback *)self textString];
-  v5 = [(MOContextStringFeedback *)self timestamp];
-  v6 = [(MOContextStringFeedback *)self score];
-  v7 = [(MOContextStringFeedback *)self describeFeedbackMode];
-  v8 = [(MOContextStringFeedback *)self describeUsageFeedback];
-  v9 = [NSString stringWithFormat:@"stringIdentifier, %@, string, %@, timestamp, %@, score, %lu, mode, %@, usage, %@", v3, v4, v5, v6, v7, v8];
+  stringIdentifier = [(MOContextStringFeedback *)self stringIdentifier];
+  textString = [(MOContextStringFeedback *)self textString];
+  timestamp = [(MOContextStringFeedback *)self timestamp];
+  score = [(MOContextStringFeedback *)self score];
+  describeFeedbackMode = [(MOContextStringFeedback *)self describeFeedbackMode];
+  describeUsageFeedback = [(MOContextStringFeedback *)self describeUsageFeedback];
+  v9 = [NSString stringWithFormat:@"stringIdentifier, %@, string, %@, timestamp, %@, score, %lu, mode, %@, usage, %@", stringIdentifier, textString, timestamp, score, describeFeedbackMode, describeUsageFeedback];
 
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [MOContextStringFeedback alloc];
-  v5 = [(MOContextStringFeedback *)self stringIdentifier];
-  v6 = [(MOContextStringFeedback *)v4 initWithContextStringIdentifier:v5];
+  stringIdentifier = [(MOContextStringFeedback *)self stringIdentifier];
+  v6 = [(MOContextStringFeedback *)v4 initWithContextStringIdentifier:stringIdentifier];
 
-  v7 = [(MOContextStringFeedback *)self textString];
-  [(MOContextStringFeedback *)v6 setTextString:v7];
+  textString = [(MOContextStringFeedback *)self textString];
+  [(MOContextStringFeedback *)v6 setTextString:textString];
 
-  v8 = [(MOContextStringFeedback *)self timestamp];
-  [(MOContextStringFeedback *)v6 setTimestamp:v8];
+  timestamp = [(MOContextStringFeedback *)self timestamp];
+  [(MOContextStringFeedback *)v6 setTimestamp:timestamp];
 
   [(MOContextStringFeedback *)v6 setScore:[(MOContextStringFeedback *)self score]];
   [(MOContextStringFeedback *)v6 setMode:[(MOContextStringFeedback *)self mode]];

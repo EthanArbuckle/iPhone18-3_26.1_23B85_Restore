@@ -1,8 +1,8 @@
 @interface NTKContainerView
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (NTKContainerViewLayoutDelegate)layoutDelegate;
 - (void)layoutSubviews;
-- (void)setLayoutDelegate:(id)a3;
+- (void)setLayoutDelegate:(id)delegate;
 @end
 
 @implementation NTKContainerView
@@ -19,16 +19,16 @@
   }
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = inside.y;
+  x = inside.x;
+  eventCopy = event;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
   v19 = 0;
-  v8 = [(NTKContainerView *)self subviews];
+  subviews = [(NTKContainerView *)self subviews];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __42__NTKContainerView_pointInside_withEvent___block_invoke;
@@ -36,15 +36,15 @@
   v11[4] = self;
   v14 = x;
   v15 = y;
-  v9 = v7;
+  v9 = eventCopy;
   v12 = v9;
   v13 = &v16;
-  [v8 enumerateObjectsUsingBlock:v11];
+  [subviews enumerateObjectsUsingBlock:v11];
 
-  LOBYTE(v8) = *(v17 + 24);
+  LOBYTE(subviews) = *(v17 + 24);
   _Block_object_dispose(&v16, 8);
 
-  return v8;
+  return subviews;
 }
 
 void __42__NTKContainerView_pointInside_withEvent___block_invoke(double *a1, void *a2, uint64_t a3, _BYTE *a4)
@@ -63,9 +63,9 @@ void __42__NTKContainerView_pointInside_withEvent___block_invoke(double *a1, voi
   }
 }
 
-- (void)setLayoutDelegate:(id)a3
+- (void)setLayoutDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_layoutDelegate);
 
   if (WeakRetained != obj)

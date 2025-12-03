@@ -1,22 +1,22 @@
 @interface SearchUINavigationController
 - (SearchUIFeedbackDelegate)feedbackDelegate;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidDisappear:(BOOL)disappear;
 @end
 
 @implementation SearchUINavigationController
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v7.receiver = self;
   v7.super_class = SearchUINavigationController;
-  [(SearchUINavigationController *)&v7 viewDidDisappear:a3];
-  v4 = [(SearchUINavigationController *)self feedbackDelegate];
+  [(SearchUINavigationController *)&v7 viewDidDisappear:disappear];
+  feedbackDelegate = [(SearchUINavigationController *)self feedbackDelegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(SearchUINavigationController *)self feedbackDelegate];
-    [v6 willDismissViewController:self];
+    feedbackDelegate2 = [(SearchUINavigationController *)self feedbackDelegate];
+    [feedbackDelegate2 willDismissViewController:self];
   }
 }
 

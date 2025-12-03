@@ -4,79 +4,79 @@
 - (UILabel)conversationSubtitleLabel;
 - (UILabel)conversationTitleLabel;
 - (UIStackView)conversationDetailsVStack;
-- (void)setChevronLabel:(id)a3;
-- (void)setConversationDetailsVStack:(id)a3;
-- (void)setConversationSubtitleLabel:(id)a3;
-- (void)setConversationTitleLabel:(id)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setChevronLabel:(id)label;
+- (void)setConversationDetailsVStack:(id)stack;
+- (void)setConversationSubtitleLabel:(id)label;
+- (void)setConversationTitleLabel:(id)label;
+- (void)setFrame:(CGRect)frame;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation ConversationDetailsView
 
 - (UIStackView)conversationDetailsVStack
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ConversationDetailsView.conversationDetailsVStack.getter();
 
   return v3;
 }
 
-- (void)setConversationDetailsVStack:(id)a3
+- (void)setConversationDetailsVStack:(id)stack
 {
-  v4 = a3;
-  v5 = self;
-  ConversationDetailsView.conversationDetailsVStack.setter(v4);
+  stackCopy = stack;
+  selfCopy = self;
+  ConversationDetailsView.conversationDetailsVStack.setter(stackCopy);
 }
 
 - (UILabel)conversationTitleLabel
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ConversationDetailsView.conversationTitleLabel.getter();
 
   return v3;
 }
 
-- (void)setConversationTitleLabel:(id)a3
+- (void)setConversationTitleLabel:(id)label
 {
-  v4 = a3;
-  v5 = self;
-  ConversationDetailsView.conversationTitleLabel.setter(v4);
+  labelCopy = label;
+  selfCopy = self;
+  ConversationDetailsView.conversationTitleLabel.setter(labelCopy);
 }
 
 - (UILabel)conversationSubtitleLabel
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ConversationDetailsView.conversationSubtitleLabel.getter();
 
   return v3;
 }
 
-- (void)setConversationSubtitleLabel:(id)a3
+- (void)setConversationSubtitleLabel:(id)label
 {
-  v4 = a3;
-  v5 = self;
-  ConversationDetailsView.conversationSubtitleLabel.setter(v4);
+  labelCopy = label;
+  selfCopy = self;
+  ConversationDetailsView.conversationSubtitleLabel.setter(labelCopy);
 }
 
 - (UILabel)chevronLabel
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ConversationDetailsView.chevronLabel.getter();
 
   return v3;
 }
 
-- (void)setChevronLabel:(id)a3
+- (void)setChevronLabel:(id)label
 {
-  v4 = a3;
-  v5 = self;
-  ConversationDetailsView.chevronLabel.setter(v4);
+  labelCopy = label;
+  selfCopy = self;
+  ConversationDetailsView.chevronLabel.setter(labelCopy);
 }
 
 - (CGRect)frame
 {
-  v2 = self;
+  selfCopy = self;
   ConversationDetailsView.frame.getter();
   v4 = v3;
   v6 = v5;
@@ -94,19 +94,19 @@
   return result;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  v3 = self;
+  selfCopy = self;
   ConversationDetailsView.frame.setter();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  v9.is_nil = v6;
-  v7 = v6;
-  v9.value.super.isa = a3;
+  changeCopy = change;
+  selfCopy = self;
+  v9.is_nil = selfCopy;
+  v7 = selfCopy;
+  v9.value.super.isa = change;
   ConversationDetailsView.traitCollectionDidChange(_:)(v9);
 }
 

@@ -4,13 +4,13 @@
 - (BOOL)_hasScreenSwitch;
 - (int64_t)currentOrientation;
 - (void)_activateSpeakScreen;
-- (void)_cameraAction:(BOOL)a3;
-- (void)_handleHomeButtonDispatch:(BOOL)a3;
+- (void)_cameraAction:(BOOL)action;
+- (void)_handleHomeButtonDispatch:(BOOL)dispatch;
 - (void)_launchAccessibilityReaderHelper;
-- (void)_openCamera:(BOOL)a3;
-- (void)_sendButtonEvent:(unsigned int)a3 postHIDEventDirectly:(BOOL)a4;
-- (void)_sendDeviceOrientationChange:(int64_t)a3;
-- (void)_sendShakeEvent:(unint64_t)a3;
+- (void)_openCamera:(BOOL)camera;
+- (void)_sendButtonEvent:(unsigned int)event postHIDEventDirectly:(BOOL)directly;
+- (void)_sendDeviceOrientationChange:(int64_t)change;
+- (void)_sendShakeEvent:(unint64_t)event;
 - (void)_showAlertForReboot;
 - (void)_toggleAssistiveTouch;
 - (void)_toggleClassicInvertColors;
@@ -25,19 +25,19 @@
 - (void)activateMagnifierAskQuestion;
 - (void)activateMagnifierFromStaccato;
 - (void)activateSOSMode;
-- (void)activateSiriFromClient:(id)a3;
+- (void)activateSiriFromClient:(id)client;
 - (void)activateTripleClick;
 - (void)activateTypeToSiri;
 - (void)activateVoiceControl;
-- (void)adjustSystemZoom:(int64_t)a3;
+- (void)adjustSystemZoom:(int64_t)zoom;
 - (void)armApplePay;
 - (void)hideSpotlight;
 - (void)launchAccessibilityReader;
-- (void)launchMagnifierWithURL:(id)a3;
+- (void)launchMagnifierWithURL:(id)l;
 - (void)lightPressCameraButton;
 - (void)openVisualIntelligence;
-- (void)performActionForSystemAction:(id)a3 fromClient:(id)a4;
-- (void)performSysdiagnoseWithStatusUpdateHandler:(id)a3;
+- (void)performActionForSystemAction:(id)action fromClient:(id)client;
+- (void)performSysdiagnoseWithStatusUpdateHandler:(id)handler;
 - (void)pressCameraButton;
 - (void)pressStaccato;
 - (void)rebootDevice;
@@ -56,12 +56,12 @@
 - (void)toggleNotificationCenter;
 - (void)toggleQuickNote;
 - (void)toggleReachability;
-- (void)toggleRingerSwitch:(BOOL)a3;
+- (void)toggleRingerSwitch:(BOOL)switch;
 - (void)toggleSpotlight;
 - (void)toggleTorch;
 - (void)toggleWatchRemoteScreen;
-- (void)turnDigitalCrown:(int64_t)a3;
-- (void)turnDigitalCrownFullRevolution:(BOOL)a3;
+- (void)turnDigitalCrown:(int64_t)crown;
+- (void)turnDigitalCrownFullRevolution:(BOOL)revolution;
 - (void)warm;
 @end
 
@@ -104,11 +104,11 @@ uint64_t __40__AXPISystemActionHelper_sharedInstance__block_invoke()
   return v2;
 }
 
-- (void)activateSiriFromClient:(id)a3
+- (void)activateSiriFromClient:(id)client
 {
-  v3 = a3;
+  clientCopy = client;
   v6 = objc_alloc_init(getSiriSimpleActivationSourceClass());
-  v4 = [v3 isEqualToString:@"AXPISystemActionHelperClientBackTap"];
+  v4 = [clientCopy isEqualToString:@"AXPISystemActionHelperClientBackTap"];
 
   if (v4)
   {
@@ -125,22 +125,22 @@ uint64_t __40__AXPISystemActionHelper_sharedInstance__block_invoke()
 
 - (void)activateTypeToSiri
 {
-  v2 = [MEMORY[0x277CE7E48] server];
-  [v2 openTypeToSiri];
+  server = [MEMORY[0x277CE7E48] server];
+  [server openTypeToSiri];
 }
 
 - (void)activateVoiceControl
 {
-  v2 = [MEMORY[0x277CE7E48] server];
-  [v2 openVoiceControl];
+  server = [MEMORY[0x277CE7E48] server];
+  [server openVoiceControl];
 }
 
 - (void)activateHomeButton
 {
   if ([MEMORY[0x277CE7D48] isAvailable])
   {
-    v3 = [MEMORY[0x277CE7D48] server];
-    [v3 goHome];
+    server = [MEMORY[0x277CE7D48] server];
+    [server goHome];
   }
 
   else
@@ -152,8 +152,8 @@ uint64_t __40__AXPISystemActionHelper_sharedInstance__block_invoke()
 
 - (void)toggleReachability
 {
-  v2 = [MEMORY[0x277CE7E48] server];
-  [v2 toggleReachability];
+  server = [MEMORY[0x277CE7E48] server];
+  [server toggleReachability];
 }
 
 - (void)toggleCommandAndControl
@@ -165,49 +165,49 @@ uint64_t __40__AXPISystemActionHelper_sharedInstance__block_invoke()
 
 - (void)armApplePay
 {
-  v2 = [MEMORY[0x277CE7E48] server];
-  [v2 armApplePay];
+  server = [MEMORY[0x277CE7E48] server];
+  [server armApplePay];
 }
 
 - (void)toggleDock
 {
-  v2 = [MEMORY[0x277CE7E48] server];
-  [v2 toggleDock];
+  server = [MEMORY[0x277CE7E48] server];
+  [server toggleDock];
 }
 
 - (void)toggleAppSwitcher
 {
-  v2 = [MEMORY[0x277CE7E48] server];
-  v3 = [v2 isAppSwitcherVisible];
+  server = [MEMORY[0x277CE7E48] server];
+  isAppSwitcherVisible = [server isAppSwitcherVisible];
 
-  v4 = [MEMORY[0x277CE7E48] server];
-  v5 = v4;
-  if (v3)
+  server2 = [MEMORY[0x277CE7E48] server];
+  v5 = server2;
+  if (isAppSwitcherVisible)
   {
-    [v4 dismissAppSwitcher];
+    [server2 dismissAppSwitcher];
   }
 
   else
   {
-    [v4 openAppSwitcher];
+    [server2 openAppSwitcher];
   }
 }
 
 - (void)toggleAppLibrary
 {
-  v2 = [MEMORY[0x277CE7E48] server];
-  [v2 toggleAppLibrary];
+  server = [MEMORY[0x277CE7E48] server];
+  [server toggleAppLibrary];
 }
 
 - (void)toggleQuickNote
 {
-  v2 = [MEMORY[0x277CE7E48] server];
-  [v2 toggleQuickNote];
+  server = [MEMORY[0x277CE7E48] server];
+  [server toggleQuickNote];
 }
 
-- (void)toggleRingerSwitch:(BOOL)a3
+- (void)toggleRingerSwitch:(BOOL)switch
 {
-  if (a3)
+  if (switch)
   {
     v3 = 1013;
   }
@@ -282,39 +282,39 @@ void __39__AXPISystemActionHelper_pressStaccato__block_invoke(uint64_t a1)
 
 - (void)toggleSpotlight
 {
-  v2 = [MEMORY[0x277CE7E48] server];
-  [v2 toggleSpotlight];
+  server = [MEMORY[0x277CE7E48] server];
+  [server toggleSpotlight];
 }
 
 - (void)hideSpotlight
 {
-  v2 = [MEMORY[0x277CE7E48] server];
-  v3 = [v2 isSpotlightVisible];
+  server = [MEMORY[0x277CE7E48] server];
+  isSpotlightVisible = [server isSpotlightVisible];
 
-  if (v3)
+  if (isSpotlightVisible)
   {
-    v4 = [MEMORY[0x277CE7E48] server];
-    [v4 toggleSpotlight];
+    server2 = [MEMORY[0x277CE7E48] server];
+    [server2 toggleSpotlight];
   }
 }
 
 - (void)revealSpotlight
 {
-  v2 = [MEMORY[0x277CE7E48] server];
-  [v2 revealSpotlight];
+  server = [MEMORY[0x277CE7E48] server];
+  [server revealSpotlight];
 }
 
 - (void)toggleBackgroundSounds
 {
-  v2 = [MEMORY[0x277CE7E58] server];
-  [v2 toggleBackgroundSounds];
+  server = [MEMORY[0x277CE7E58] server];
+  [server toggleBackgroundSounds];
 }
 
 - (void)toggleLiveCaptions
 {
   _AXSLiveTranscriptionEnabled();
-  v2 = [MEMORY[0x277CE7E48] server];
-  [v2 toggleLiveTranscription];
+  server = [MEMORY[0x277CE7E48] server];
+  [server toggleLiveTranscription];
 
   AnalyticsSendEventLazy();
 }
@@ -332,16 +332,16 @@ id __44__AXPISystemActionHelper_toggleLiveCaptions__block_invoke(uint64_t a1)
 
 - (void)toggleTorch
 {
-  v2 = [MEMORY[0x277CE7E48] server];
-  [v2 toggleTorch];
+  server = [MEMORY[0x277CE7E48] server];
+  [server toggleTorch];
 }
 
 - (void)_toggleClassicInvertColors
 {
-  v4 = [MEMORY[0x277CE7E18] sharedInstance];
-  v2 = [v4 classicInvertColors];
-  v3 = [MEMORY[0x277CE7E18] sharedInstance];
-  [v3 setClassicInvertColors:v2 ^ 1u];
+  mEMORY[0x277CE7E18] = [MEMORY[0x277CE7E18] sharedInstance];
+  classicInvertColors = [mEMORY[0x277CE7E18] classicInvertColors];
+  mEMORY[0x277CE7E18]2 = [MEMORY[0x277CE7E18] sharedInstance];
+  [mEMORY[0x277CE7E18]2 setClassicInvertColors:classicInvertColors ^ 1u];
 }
 
 - (void)_toggleVoiceOver
@@ -365,10 +365,10 @@ id __44__AXPISystemActionHelper_toggleLiveCaptions__block_invoke(uint64_t a1)
 - (void)_toggleSmartInvert
 {
   v2 = _AXSInvertColorsEnabled();
-  v3 = [MEMORY[0x277CE7E18] sharedInstance];
-  v4 = [v3 classicInvertColors];
+  mEMORY[0x277CE7E18] = [MEMORY[0x277CE7E18] sharedInstance];
+  classicInvertColors = [mEMORY[0x277CE7E18] classicInvertColors];
 
-  if (v4)
+  if (classicInvertColors)
   {
     v5 = v2 == 0;
   }
@@ -380,8 +380,8 @@ id __44__AXPISystemActionHelper_toggleLiveCaptions__block_invoke(uint64_t a1)
 
   if (v5)
   {
-    v6 = [MEMORY[0x277CE7E18] sharedInstance];
-    [v6 setClassicInvertColors:0];
+    mEMORY[0x277CE7E18]2 = [MEMORY[0x277CE7E18] sharedInstance];
+    [mEMORY[0x277CE7E18]2 setClassicInvertColors:0];
 
     _AXSInvertColorsSetEnabled();
   }
@@ -396,8 +396,8 @@ id __44__AXPISystemActionHelper_toggleLiveCaptions__block_invoke(uint64_t a1)
   }
 
   Current = CFAbsoluteTimeGetCurrent();
-  v8 = [MEMORY[0x277CE7E18] sharedInstance];
-  [v8 setLastSmartInvertColorsEnablement:Current];
+  mEMORY[0x277CE7E18]3 = [MEMORY[0x277CE7E18] sharedInstance];
+  [mEMORY[0x277CE7E18]3 setLastSmartInvertColorsEnablement:Current];
 }
 
 - (void)_toggleZoom
@@ -409,22 +409,22 @@ id __44__AXPISystemActionHelper_toggleLiveCaptions__block_invoke(uint64_t a1)
 
 - (void)_toggleZoomController
 {
-  v4 = [MEMORY[0x277CE7E18] sharedInstance];
-  v2 = [v4 zoomShouldShowSlug];
-  v3 = [MEMORY[0x277CE7E18] sharedInstance];
-  [v3 setZoomShouldShowSlug:v2 ^ 1u];
+  mEMORY[0x277CE7E18] = [MEMORY[0x277CE7E18] sharedInstance];
+  zoomShouldShowSlug = [mEMORY[0x277CE7E18] zoomShouldShowSlug];
+  mEMORY[0x277CE7E18]2 = [MEMORY[0x277CE7E18] sharedInstance];
+  [mEMORY[0x277CE7E18]2 setZoomShouldShowSlug:zoomShouldShowSlug ^ 1u];
 }
 
 - (void)startMagnifier
 {
-  v2 = [MEMORY[0x277D7EA30] sharedInstance];
-  [v2 startMagnifierChangeTripleClickMenu:0];
+  mEMORY[0x277D7EA30] = [MEMORY[0x277D7EA30] sharedInstance];
+  [mEMORY[0x277D7EA30] startMagnifierChangeTripleClickMenu:0];
 }
 
 - (BOOL)_hasScreenSwitch
 {
-  v2 = [MEMORY[0x277CE7E18] sharedInstance];
-  v3 = [v2 assistiveTouchSwitches];
+  mEMORY[0x277CE7E18] = [MEMORY[0x277CE7E18] sharedInstance];
+  assistiveTouchSwitches = [mEMORY[0x277CE7E18] assistiveTouchSwitches];
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
@@ -434,7 +434,7 @@ id __44__AXPISystemActionHelper_toggleLiveCaptions__block_invoke(uint64_t a1)
   v6[2] = __42__AXPISystemActionHelper__hasScreenSwitch__block_invoke;
   v6[3] = &unk_278BE63A8;
   v6[4] = &v7;
-  [v3 enumerateObjectsUsingBlock:v6];
+  [assistiveTouchSwitches enumerateObjectsUsingBlock:v6];
   v4 = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
 
@@ -460,13 +460,13 @@ void __42__AXPISystemActionHelper__hasScreenSwitch__block_invoke(uint64_t a1, vo
   {
     if (![(AXPISystemActionHelper *)self _hasScreenSwitch]&& !_AXSClarityBoardEnabled())
     {
-      v6 = [MEMORY[0x277CE7E48] server];
+      server = [MEMORY[0x277CE7E48] server];
       v7[0] = MEMORY[0x277D85DD0];
       v7[1] = 3221225472;
       v7[2] = __46__AXPISystemActionHelper__toggleSwitchControl__block_invoke;
       v7[3] = &__block_descriptor_33_e8_v16__0q8l;
       v8 = v4;
-      [v6 showAlert:9 withHandler:v7];
+      [server showAlert:9 withHandler:v7];
 
       return;
     }
@@ -515,25 +515,25 @@ uint64_t __46__AXPISystemActionHelper__toggleSwitchControl__block_invoke(uint64_
   [(AXPISystemActionHelper *)self launchMagnifierWithURL:v3];
 }
 
-- (void)launchMagnifierWithURL:(id)a3
+- (void)launchMagnifierWithURL:(id)l
 {
   v22[4] = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CCA8D8];
-  v4 = a3;
-  v5 = [v3 mainBundle];
-  v6 = [v5 bundleIdentifier];
+  lCopy = l;
+  mainBundle = [v3 mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
 
-  if (![(__CFString *)v6 length])
+  if (![(__CFString *)bundleIdentifier length])
   {
 
-    v6 = @"com.apple.voiceovertouch";
+    bundleIdentifier = @"com.apple.voiceovertouch";
   }
 
   v7 = MEMORY[0x277D0AD60];
   v8 = *MEMORY[0x277D0AC70];
   v21[0] = *MEMORY[0x277D0AC40];
   v21[1] = v8;
-  v22[0] = v4;
+  v22[0] = lCopy;
   v22[1] = MEMORY[0x277CBEC38];
   v9 = *MEMORY[0x277D0AC58];
   v22[2] = MEMORY[0x277CBEC38];
@@ -541,13 +541,13 @@ uint64_t __46__AXPISystemActionHelper__toggleSwitchControl__block_invoke(uint64_
   v21[2] = v9;
   v21[3] = v10;
   v19 = *MEMORY[0x277D76690];
-  v20 = v6;
+  v20 = bundleIdentifier;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v20 forKeys:&v19 count:1];
   v22[3] = v11;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v22 forKeys:v21 count:4];
   v13 = [v7 optionsWithDictionary:v12];
 
-  v14 = [MEMORY[0x277D0AD78] serviceWithDefaultShellEndpoint];
+  serviceWithDefaultShellEndpoint = [MEMORY[0x277D0AD78] serviceWithDefaultShellEndpoint];
   v15 = *MEMORY[0x277D81C00];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
@@ -555,7 +555,7 @@ uint64_t __46__AXPISystemActionHelper__toggleSwitchControl__block_invoke(uint64_
   v17[3] = &unk_278BE63F0;
   v18 = v13;
   v16 = v13;
-  [v14 openApplication:v15 withOptions:v16 completion:v17];
+  [serviceWithDefaultShellEndpoint openApplication:v15 withOptions:v16 completion:v17];
 }
 
 void __49__AXPISystemActionHelper_launchMagnifierWithURL___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -581,13 +581,13 @@ void __49__AXPISystemActionHelper_launchMagnifierWithURL___block_invoke(uint64_t
 - (void)activateMagnifierFromStaccato
 {
   v20[5] = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CCA8D8] mainBundle];
-  v3 = [v2 bundleIdentifier];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
 
-  if (![(__CFString *)v3 length])
+  if (![(__CFString *)bundleIdentifier length])
   {
 
-    v3 = @"com.apple.voiceovertouch";
+    bundleIdentifier = @"com.apple.voiceovertouch";
   }
 
   v4 = MEMORY[0x277D0AD60];
@@ -602,7 +602,7 @@ void __49__AXPISystemActionHelper_launchMagnifierWithURL___block_invoke(uint64_t
   v20[2] = MEMORY[0x277CBEC38];
   v19[3] = *MEMORY[0x277D0AC38];
   v17 = *MEMORY[0x277D76690];
-  v18 = v3;
+  v18 = bundleIdentifier;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v18 forKeys:&v17 count:1];
   v19[4] = *MEMORY[0x277D0AC28];
   v9 = *MEMORY[0x277D67060];
@@ -611,7 +611,7 @@ void __49__AXPISystemActionHelper_launchMagnifierWithURL___block_invoke(uint64_t
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:v19 count:5];
   v11 = [v4 optionsWithDictionary:v10];
 
-  v12 = [MEMORY[0x277D0AD78] serviceWithDefaultShellEndpoint];
+  serviceWithDefaultShellEndpoint = [MEMORY[0x277D0AD78] serviceWithDefaultShellEndpoint];
   v13 = *MEMORY[0x277D81C00];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
@@ -619,7 +619,7 @@ void __49__AXPISystemActionHelper_launchMagnifierWithURL___block_invoke(uint64_t
   v15[3] = &unk_278BE63F0;
   v16 = v11;
   v14 = v11;
-  [v12 openApplication:v13 withOptions:v14 completion:v15];
+  [serviceWithDefaultShellEndpoint openApplication:v13 withOptions:v14 completion:v15];
 }
 
 void __55__AXPISystemActionHelper_activateMagnifierFromStaccato__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -642,14 +642,14 @@ void __55__AXPISystemActionHelper_activateMagnifierFromStaccato__block_invoke(ui
   }
 }
 
-- (void)_openCamera:(BOOL)a3
+- (void)_openCamera:(BOOL)camera
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277D0AD78] serviceWithDefaultShellEndpoint];
+  cameraCopy = camera;
+  serviceWithDefaultShellEndpoint = [MEMORY[0x277D0AD78] serviceWithDefaultShellEndpoint];
   v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
   [v5 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277D0AC70]];
   v6 = @"back";
-  if (v3)
+  if (cameraCopy)
   {
     v6 = @"front";
   }
@@ -658,17 +658,17 @@ void __55__AXPISystemActionHelper_activateMagnifierFromStaccato__block_invoke(ui
   v8 = [MEMORY[0x277CBEBC0] URLWithString:v7];
   [v5 setObject:v8 forKeyedSubscript:*MEMORY[0x277D0AC40]];
   v9 = [MEMORY[0x277D0AD60] optionsWithDictionary:v5];
-  [v4 openApplication:*MEMORY[0x277CE68D8] withOptions:v9 completion:0];
+  [serviceWithDefaultShellEndpoint openApplication:*MEMORY[0x277CE68D8] withOptions:v9 completion:0];
 }
 
-- (void)_cameraAction:(BOOL)a3
+- (void)_cameraAction:(BOOL)action
 {
-  v3 = a3;
-  v5 = [MEMORY[0x277CE7E48] server];
-  v6 = [v5 focusedApps];
-  v7 = [v6 firstObject];
-  v8 = [v7 bundleIdentifier];
-  v9 = [v8 isEqualToString:*MEMORY[0x277CE68D8]];
+  actionCopy = action;
+  server = [MEMORY[0x277CE7E48] server];
+  focusedApps = [server focusedApps];
+  firstObject = [focusedApps firstObject];
+  bundleIdentifier = [firstObject bundleIdentifier];
+  v9 = [bundleIdentifier isEqualToString:*MEMORY[0x277CE68D8]];
 
   if (v9)
   {
@@ -678,14 +678,14 @@ void __55__AXPISystemActionHelper_activateMagnifierFromStaccato__block_invoke(ui
 
   else
   {
-    [(AXPISystemActionHelper *)self _openCamera:v3];
-    v10 = [MEMORY[0x277CE7E18] sharedInstance];
-    v11 = [v10 assistiveTouchMouseOnDeviceEyeTrackingEnabled];
+    [(AXPISystemActionHelper *)self _openCamera:actionCopy];
+    mEMORY[0x277CE7E18] = [MEMORY[0x277CE7E18] sharedInstance];
+    assistiveTouchMouseOnDeviceEyeTrackingEnabled = [mEMORY[0x277CE7E18] assistiveTouchMouseOnDeviceEyeTrackingEnabled];
 
-    v12 = [MEMORY[0x277CE7E18] sharedInstance];
-    v13 = [v12 assistiveTouchHeadTrackingEnabled];
+    mEMORY[0x277CE7E18]2 = [MEMORY[0x277CE7E18] sharedInstance];
+    assistiveTouchHeadTrackingEnabled = [mEMORY[0x277CE7E18]2 assistiveTouchHeadTrackingEnabled];
 
-    if ((v11 & 1) != 0 || v13)
+    if ((assistiveTouchMouseOnDeviceEyeTrackingEnabled & 1) != 0 || assistiveTouchHeadTrackingEnabled)
     {
       AXPerformBlockOnMainThreadAfterDelay();
     }
@@ -699,24 +699,24 @@ void __55__AXPISystemActionHelper_activateMagnifierFromStaccato__block_invoke(ui
   MEMORY[0x2821238F8](1, v2);
 }
 
-- (void)turnDigitalCrown:(int64_t)a3
+- (void)turnDigitalCrown:(int64_t)crown
 {
   if (turnDigitalCrown__onceToken != -1)
   {
     [AXPISystemActionHelper turnDigitalCrown:];
   }
 
-  if (a3 >= 0)
+  if (crown >= 0)
   {
-    v4 = a3;
+    crownCopy = crown;
   }
 
   else
   {
-    v4 = -a3;
+    crownCopy = -crown;
   }
 
-  if (a3)
+  if (crown)
   {
     v5 = 0;
     v6 = 0;
@@ -724,13 +724,13 @@ void __55__AXPISystemActionHelper_activateMagnifierFromStaccato__block_invoke(ui
     do
     {
       v7 = v7 + 0.01;
-      v8 = v4 - v5;
+      v8 = crownCopy - v5;
       if (v8 >= 10)
       {
         v8 = 10;
       }
 
-      if (a3 >= 0)
+      if (crown >= 0)
       {
         v9 = v8;
       }
@@ -759,7 +759,7 @@ void __55__AXPISystemActionHelper_activateMagnifierFromStaccato__block_invoke(ui
       }
     }
 
-    while (v5 < v4);
+    while (v5 < crownCopy);
   }
 }
 
@@ -785,9 +785,9 @@ void __43__AXPISystemActionHelper_turnDigitalCrown___block_invoke_2()
   }
 }
 
-- (void)turnDigitalCrownFullRevolution:(BOOL)a3
+- (void)turnDigitalCrownFullRevolution:(BOOL)revolution
 {
-  if (a3)
+  if (revolution)
   {
     v3 = -200;
   }
@@ -808,8 +808,8 @@ void __43__AXPISystemActionHelper_turnDigitalCrown___block_invoke_2()
     CFRunLoopRunInMode(*MEMORY[0x277CBF058], 0.5, 0);
   }
 
-  v2 = [MEMORY[0x277D65368] sharedInstance];
-  [v2 speakThisWithOptions:12 errorHandler:&__block_literal_global_389];
+  mEMORY[0x277D65368] = [MEMORY[0x277D65368] sharedInstance];
+  [mEMORY[0x277D65368] speakThisWithOptions:12 errorHandler:&__block_literal_global_389];
 }
 
 uint64_t __46__AXPISystemActionHelper__activateSpeakScreen__block_invoke(uint64_t a1, uint64_t a2)
@@ -824,10 +824,10 @@ uint64_t __46__AXPISystemActionHelper__activateSpeakScreen__block_invoke(uint64_
 
 - (void)activateTripleClick
 {
-  v3 = [MEMORY[0x277CFA5E8] sharedSystemShellSwitcher];
-  v4 = [v3 isClarityBoardEnabled];
+  mEMORY[0x277CFA5E8] = [MEMORY[0x277CFA5E8] sharedSystemShellSwitcher];
+  isClarityBoardEnabled = [mEMORY[0x277CFA5E8] isClarityBoardEnabled];
 
-  if (v4)
+  if (isClarityBoardEnabled)
   {
     if (AXDeviceHasHomeButton())
     {
@@ -869,10 +869,10 @@ uint64_t __31__AXPISystemActionHelper_shake__block_invoke_2(uint64_t result)
   return result;
 }
 
-- (void)_sendShakeEvent:(unint64_t)a3
+- (void)_sendShakeEvent:(unint64_t)event
 {
   v4 = objc_alloc_init(MEMORY[0x277CE7D50]);
-  v5 = (&unk_23D75AD24 + 4 * a3);
+  v5 = (&unk_23D75AD24 + 4 * event);
   LODWORD(v6) = *v5;
   [v4 setX:v6];
   LODWORD(v7) = v5[1];
@@ -885,7 +885,7 @@ uint64_t __31__AXPISystemActionHelper_shake__block_invoke_2(uint64_t result)
   v10 = +[AXPIEventSender sharedInstance];
   [v10 sendEventRepresentation:v9];
 
-  if (a3 + 3 <= 0x20)
+  if (event + 3 <= 0x20)
   {
     AXPerformBlockOnMainThreadAfterDelay();
   }
@@ -893,10 +893,10 @@ uint64_t __31__AXPISystemActionHelper_shake__block_invoke_2(uint64_t result)
 
 - (void)takeScreenshot
 {
-  v2 = [MEMORY[0x277CE7D28] server];
-  v3 = [v2 isGuidedAccessActive];
+  server = [MEMORY[0x277CE7D28] server];
+  isGuidedAccessActive = [server isGuidedAccessActive];
 
-  if ((v3 & 1) == 0)
+  if ((isGuidedAccessActive & 1) == 0)
   {
     if (_AXSCommandAndControlEnabled())
     {
@@ -948,18 +948,18 @@ uint64_t __31__AXPISystemActionHelper_shake__block_invoke_2(uint64_t result)
 LABEL_14:
 
     ct_green_tea_logger_destroy();
-    v10 = [MEMORY[0x277CE7E48] server];
-    [v10 takeScreenshot];
+    server2 = [MEMORY[0x277CE7E48] server];
+    [server2 takeScreenshot];
   }
 }
 
 - (void)toggleControlCenter
 {
-  v2 = [MEMORY[0x277CE7E58] server];
-  v3 = [v2 isControlCenterVisible];
+  server = [MEMORY[0x277CE7E58] server];
+  isControlCenterVisible = [server isControlCenterVisible];
 
-  v4 = [MEMORY[0x277CE7E58] server];
-  [v4 showControlCenter:v3 ^ 1u];
+  server2 = [MEMORY[0x277CE7E58] server];
+  [server2 showControlCenter:isControlCenterVisible ^ 1u];
 }
 
 - (void)toggleWatchRemoteScreen
@@ -985,21 +985,21 @@ LABEL_14:
 - (void)toggleNotificationCenter
 {
   v7 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CE7E48] server];
-  v3 = [v2 isNotificationCenterVisible];
+  server = [MEMORY[0x277CE7E48] server];
+  isNotificationCenterVisible = [server isNotificationCenterVisible];
 
   v4 = AXLogPhysicalInteraction();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     v6[0] = 67109120;
-    v6[1] = v3;
+    v6[1] = isNotificationCenterVisible;
     _os_log_impl(&dword_23D742000, v4, OS_LOG_TYPE_INFO, "NC is visible: %d", v6, 8u);
   }
 
-  if (v3)
+  if (isNotificationCenterVisible)
   {
-    v5 = [MEMORY[0x277CE7E48] server];
-    [v5 showNotificationCenter:0];
+    server2 = [MEMORY[0x277CE7E48] server];
+    [server2 showNotificationCenter:0];
   }
 
   AXPerformBlockOnMainThreadAfterDelay();
@@ -1011,11 +1011,11 @@ void __50__AXPISystemActionHelper_toggleNotificationCenter__block_invoke()
   [v0 toggleNotificationCenter];
 }
 
-- (void)adjustSystemZoom:(int64_t)a3
+- (void)adjustSystemZoom:(int64_t)zoom
 {
-  v4 = [MEMORY[0x277CE7D28] server];
-  v6 = v4;
-  if (a3)
+  server = [MEMORY[0x277CE7D28] server];
+  v6 = server;
+  if (zoom)
   {
     v5 = 2;
   }
@@ -1025,43 +1025,43 @@ void __50__AXPISystemActionHelper_toggleNotificationCenter__block_invoke()
     v5 = 1;
   }
 
-  [v4 adjustSystemZoom:v5];
+  [server adjustSystemZoom:v5];
 }
 
 - (int64_t)currentOrientation
 {
   if ([MEMORY[0x277CE7D48] isAvailable])
   {
-    v2 = [MEMORY[0x277CE7D48] server];
-    v3 = [v2 activeInterfaceOrientation];
+    server = [MEMORY[0x277CE7D48] server];
+    activeInterfaceOrientation = [server activeInterfaceOrientation];
   }
 
   else
   {
-    v2 = [MEMORY[0x277CE7E48] server];
-    v3 = [v2 activeApplicationOrientation];
+    server = [MEMORY[0x277CE7E48] server];
+    activeInterfaceOrientation = [server activeApplicationOrientation];
   }
 
-  v4 = v3;
+  v4 = activeInterfaceOrientation;
 
   return v4;
 }
 
 - (void)activateSOSMode
 {
-  v2 = [MEMORY[0x277CE7E48] server];
-  [v2 activateSOSMode];
+  server = [MEMORY[0x277CE7E48] server];
+  [server activateSOSMode];
 }
 
 - (void)rebootDevice
 {
-  v2 = [MEMORY[0x277CE7E58] server];
-  [v2 rebootDevice];
+  server = [MEMORY[0x277CE7E58] server];
+  [server rebootDevice];
 }
 
-- (void)performSysdiagnoseWithStatusUpdateHandler:(id)a3
+- (void)performSysdiagnoseWithStatusUpdateHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = AXLogPhysicalInteraction();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1075,8 +1075,8 @@ void __50__AXPISystemActionHelper_toggleNotificationCenter__block_invoke()
   v8[2] = __68__AXPISystemActionHelper_performSysdiagnoseWithStatusUpdateHandler___block_invoke;
   v8[3] = &unk_278BE6540;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = handlerCopy;
+  v7 = handlerCopy;
   dispatch_async(v6, v8);
 }
 
@@ -1360,10 +1360,10 @@ void __68__AXPISystemActionHelper_performSysdiagnoseWithStatusUpdateHandler___bl
   v3 = objc_alloc(MEMORY[0x277CBEBD0]);
   v4 = [v3 initWithSuiteName:*MEMORY[0x277CE6930]];
   v5 = [v4 objectForKey:@"SBCaptureButtonClickCount"];
-  v6 = [v5 intValue];
+  intValue = [v5 intValue];
 
   [(AXPISystemActionHelper *)self _sendButtonEvent:1044];
-  if (v6 > 1)
+  if (intValue > 1)
   {
     AXPerformBlockOnMainThreadAfterDelay();
     AXPerformBlockOnMainThreadAfterDelay();
@@ -1398,10 +1398,10 @@ uint64_t __48__AXPISystemActionHelper_lightPressCameraButton__block_invoke(uint6
 
 - (void)launchAccessibilityReader
 {
-  v3 = [MEMORY[0x277CE7E18] sharedInstance];
-  v4 = [v3 accessibilityReaderEnabled];
+  mEMORY[0x277CE7E18] = [MEMORY[0x277CE7E18] sharedInstance];
+  accessibilityReaderEnabled = [mEMORY[0x277CE7E18] accessibilityReaderEnabled];
 
-  if (v4)
+  if (accessibilityReaderEnabled)
   {
 
     [(AXPISystemActionHelper *)self _launchAccessibilityReaderHelper];
@@ -1409,8 +1409,8 @@ uint64_t __48__AXPISystemActionHelper_lightPressCameraButton__block_invoke(uint6
 
   else
   {
-    v5 = [MEMORY[0x277CE7E18] sharedInstance];
-    [v5 setAccessibilityReaderEnabled:1];
+    mEMORY[0x277CE7E18]2 = [MEMORY[0x277CE7E18] sharedInstance];
+    [mEMORY[0x277CE7E18]2 setAccessibilityReaderEnabled:1];
 
     AXPerformBlockOnMainThreadAfterDelay();
   }
@@ -1426,12 +1426,12 @@ uint64_t __48__AXPISystemActionHelper_lightPressCameraButton__block_invoke(uint6
     _os_log_impl(&dword_23D742000, v2, OS_LOG_TYPE_DEFAULT, "Before opening URL : apple-axreader://", buf, 2u);
   }
 
-  v3 = [MEMORY[0x277CE7E48] server];
-  v4 = [v3 focusedApps];
-  v5 = [v4 firstObject];
-  v6 = [v5 bundleIdentifier];
+  server = [MEMORY[0x277CE7E48] server];
+  focusedApps = [server focusedApps];
+  firstObject = [focusedApps firstObject];
+  bundleIdentifier = [firstObject bundleIdentifier];
 
-  if ([v6 isEqual:@"com.apple.accessibility.AccessibilityReader"])
+  if ([bundleIdentifier isEqual:@"com.apple.accessibility.AccessibilityReader"])
   {
     v7 = AXLogCommon();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -1444,12 +1444,12 @@ uint64_t __48__AXPISystemActionHelper_lightPressCameraButton__block_invoke(uint6
   else
   {
     v8 = [MEMORY[0x277CBEBC0] URLWithString:@"apple-axreader://"];
-    if (v6)
+    if (bundleIdentifier)
     {
       v9 = objc_opt_new();
       [v9 setScheme:@"apple-axreader"];
       [v9 setHost:@"new"];
-      v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"bundleID=%@", v6];
+      v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"bundleID=%@", bundleIdentifier];
       [v9 setQuery:v10];
 
       v11 = [v9 URL];
@@ -1498,19 +1498,19 @@ void __58__AXPISystemActionHelper__launchAccessibilityReaderHelper__block_invoke
     *&bytes[9] = *(&xmmword_23D75ADA8 + 9);
     v3 = *MEMORY[0x277CBECE8];
     v4 = CFDataCreate(*MEMORY[0x277CBECE8], bytes, 25);
-    v5 = [MEMORY[0x277CBEB38] dictionary];
-    CFDictionarySetValue(v5, @"ReportDescriptor", v4);
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    CFDictionarySetValue(dictionary, @"ReportDescriptor", v4);
     CFRelease(v4);
-    CFDictionarySetValue(v5, @"PressCountTrackingEnabled", *MEMORY[0x277CBED28]);
+    CFDictionarySetValue(dictionary, @"PressCountTrackingEnabled", *MEMORY[0x277CBED28]);
     _AXSHomeClickSpeed();
     valuePtr = (v6 * 1000000.0);
     v7 = CFNumberCreate(v3, kCFNumberIntType, &valuePtr);
-    CFDictionarySetValue(v5, @"PressCountDoublePressTimeout", v7);
-    CFDictionarySetValue(v5, @"PressCountTriplePressTimeout", v7);
+    CFDictionarySetValue(dictionary, @"PressCountDoublePressTimeout", v7);
+    CFDictionarySetValue(dictionary, @"PressCountTriplePressTimeout", v7);
     CFRelease(v7);
     v11 = 500000;
     v8 = CFNumberCreate(v3, kCFNumberIntType, &v11);
-    CFDictionarySetValue(v5, @"LongPressTimeout", v8);
+    CFDictionarySetValue(dictionary, @"LongPressTimeout", v8);
     CFRelease(v8);
     v9 = IOHIDUserDeviceCreate();
     self->_homeButtonUserDevice = v9;
@@ -1539,7 +1539,7 @@ uint64_t __30__AXPISystemActionHelper_warm__block_invoke(uint64_t a1)
   return MEMORY[0x282121FF0](v1, Main, v3);
 }
 
-- (void)_handleHomeButtonDispatch:(BOOL)a3
+- (void)_handleHomeButtonDispatch:(BOOL)dispatch
 {
   if (self->_homeButtonUserDevice)
   {
@@ -1561,7 +1561,7 @@ LABEL_5:
     v10[1] = 3221225472;
     v10[2] = __52__AXPISystemActionHelper__handleHomeButtonDispatch___block_invoke;
     v10[3] = &unk_278BE6568;
-    v11 = a3;
+    dispatchCopy = dispatch;
     v10[4] = self;
     v8 = CFRunLoopTimerCreateWithHandler(v6, Current, 0.0, 0, 0, v10);
     Main = CFRunLoopGetMain();
@@ -1581,269 +1581,269 @@ uint64_t __52__AXPISystemActionHelper__handleHomeButtonDispatch___block_invoke(u
   return IOHIDUserDeviceHandleReport();
 }
 
-- (void)_sendButtonEvent:(unsigned int)a3 postHIDEventDirectly:(BOOL)a4
+- (void)_sendButtonEvent:(unsigned int)event postHIDEventDirectly:(BOOL)directly
 {
-  v4 = a4;
-  v6 = [MEMORY[0x277CE7D80] buttonRepresentationWithType:*&a3];
+  directlyCopy = directly;
+  v6 = [MEMORY[0x277CE7D80] buttonRepresentationWithType:*&event];
   [v6 setAdditionalFlags:{objc_msgSend(v6, "additionalFlags") | 0x4000}];
-  [v6 setPostHIDEventDirectly:v4];
+  [v6 setPostHIDEventDirectly:directlyCopy];
   v5 = +[AXPIEventSender sharedInstance];
   [v5 sendEventRepresentation:v6];
 }
 
-- (void)_sendDeviceOrientationChange:(int64_t)a3
+- (void)_sendDeviceOrientationChange:(int64_t)change
 {
   v4 = 0x277CE7D48;
   if (([MEMORY[0x277CE7D48] isAvailable] & 1) != 0 || (v4 = 0x277CE7E48, objc_msgSend(MEMORY[0x277CE7E48], "server"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "isControlCenterVisible"), v5, (v6 & 1) == 0))
   {
-    v7 = [*v4 server];
-    [v7 setOrientation:a3];
+    server = [*v4 server];
+    [server setOrientation:change];
   }
 }
 
-- (void)performActionForSystemAction:(id)a3 fromClient:(id)a4
+- (void)performActionForSystemAction:(id)action fromClient:(id)client
 {
-  v6 = a3;
-  v7 = a4;
-  if (![v6 isEqualToString:*MEMORY[0x277CE7B60]])
+  actionCopy = action;
+  clientCopy = client;
+  if (![actionCopy isEqualToString:*MEMORY[0x277CE7B60]])
   {
-    if ([v6 isEqualToString:*MEMORY[0x277CE7A08]])
+    if ([actionCopy isEqualToString:*MEMORY[0x277CE7A08]])
     {
       [(AXPISystemActionHelper *)self toggleAppSwitcher];
       goto LABEL_48;
     }
 
-    if ([v6 isEqualToString:*MEMORY[0x277CE7A70]])
+    if ([actionCopy isEqualToString:*MEMORY[0x277CE7A70]])
     {
       [(AXPISystemActionHelper *)self toggleControlCenter];
       goto LABEL_48;
     }
 
-    if ([v6 isEqualToString:*MEMORY[0x277CE7AA0]])
+    if ([actionCopy isEqualToString:*MEMORY[0x277CE7AA0]])
     {
       [(AXPISystemActionHelper *)self activateHomeButton];
       goto LABEL_48;
     }
 
-    if ([v6 isEqualToString:*MEMORY[0x277CE7AC0]])
+    if ([actionCopy isEqualToString:*MEMORY[0x277CE7AC0]])
     {
       [(AXPISystemActionHelper *)self activateLockButton];
       goto LABEL_48;
     }
 
-    if ([v6 isEqualToString:*MEMORY[0x277CE7AD8]])
+    if ([actionCopy isEqualToString:*MEMORY[0x277CE7AD8]])
     {
       [(AXPISystemActionHelper *)self toggleRingerSwitch:[(AXPISystemActionHelper *)self isRingerSwitchOn]^ 1];
       goto LABEL_48;
     }
 
-    if ([v6 isEqualToString:*MEMORY[0x277CE7AE8]])
+    if ([actionCopy isEqualToString:*MEMORY[0x277CE7AE8]])
     {
       [(AXPISystemActionHelper *)self toggleNotificationCenter];
       goto LABEL_48;
     }
 
-    if ([v6 isEqualToString:*MEMORY[0x277CE7B00]])
+    if ([actionCopy isEqualToString:*MEMORY[0x277CE7B00]])
     {
       [(AXPISystemActionHelper *)self toggleReachability];
       goto LABEL_48;
     }
 
-    if ([v6 isEqualToString:*MEMORY[0x277CE7B10]])
+    if ([actionCopy isEqualToString:*MEMORY[0x277CE7B10]])
     {
       [(AXPISystemActionHelper *)self takeScreenshot];
       goto LABEL_48;
     }
 
-    if ([v6 isEqualToString:*MEMORY[0x277CE7B28]])
+    if ([actionCopy isEqualToString:*MEMORY[0x277CE7B28]])
     {
       [(AXPISystemActionHelper *)self shake];
       goto LABEL_48;
     }
 
-    if ([v6 isEqualToString:*MEMORY[0x277CE7B30]])
+    if ([actionCopy isEqualToString:*MEMORY[0x277CE7B30]])
     {
-      [(AXPISystemActionHelper *)self activateSiriFromClient:v7];
+      [(AXPISystemActionHelper *)self activateSiriFromClient:clientCopy];
       goto LABEL_48;
     }
 
-    if ([v6 isEqualToString:*MEMORY[0x277CE7B68]])
+    if ([actionCopy isEqualToString:*MEMORY[0x277CE7B68]])
     {
       [(AXPISystemActionHelper *)self activateTypeToSiri];
       goto LABEL_48;
     }
 
-    if ([v6 isEqualToString:*MEMORY[0x277CE7B08]])
+    if ([actionCopy isEqualToString:*MEMORY[0x277CE7B08]])
     {
       [(AXPISystemActionHelper *)self activateSOSMode];
       goto LABEL_48;
     }
 
-    if ([v6 isEqualToString:*MEMORY[0x277CE7B48]])
+    if ([actionCopy isEqualToString:*MEMORY[0x277CE7B48]])
     {
       [(AXPISystemActionHelper *)self toggleSpotlight];
       goto LABEL_48;
     }
 
-    if ([v6 isEqualToString:*MEMORY[0x277CE7A60]])
+    if ([actionCopy isEqualToString:*MEMORY[0x277CE7A60]])
     {
       [(AXPISystemActionHelper *)self toggleCommandAndControl];
       goto LABEL_48;
     }
 
-    if ([v6 isEqualToString:*MEMORY[0x277CE7B88]])
+    if ([actionCopy isEqualToString:*MEMORY[0x277CE7B88]])
     {
       [(AXPISystemActionHelper *)self increaseVolume];
       goto LABEL_48;
     }
 
-    if ([v6 isEqualToString:*MEMORY[0x277CE7B80]])
+    if ([actionCopy isEqualToString:*MEMORY[0x277CE7B80]])
     {
       [(AXPISystemActionHelper *)self decreaseVolume];
       goto LABEL_48;
     }
 
-    if ([v6 isEqualToString:*MEMORY[0x277CE7A10]])
+    if ([actionCopy isEqualToString:*MEMORY[0x277CE7A10]])
     {
       [(AXPISystemActionHelper *)self armApplePay];
       goto LABEL_48;
     }
 
-    if ([v6 isEqualToString:*MEMORY[0x277CE7AA8]])
+    if ([actionCopy isEqualToString:*MEMORY[0x277CE7AA8]])
     {
       [(AXPISystemActionHelper *)self _toggleHoverTextTyping];
       goto LABEL_48;
     }
 
-    if ([v6 isEqualToString:*MEMORY[0x277CE7A68]])
+    if ([actionCopy isEqualToString:*MEMORY[0x277CE7A68]])
     {
       [(AXPISystemActionHelper *)self confirmApplePay];
       goto LABEL_48;
     }
 
     v8 = *MEMORY[0x277CE79A8];
-    if ([v6 hasPrefix:*MEMORY[0x277CE79A8]])
+    if ([actionCopy hasPrefix:*MEMORY[0x277CE79A8]])
     {
       v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-", v8];
-      v10 = [v6 rangeOfString:v9];
-      v12 = [v6 substringFromIndex:v10 + v11];
+      v10 = [actionCopy rangeOfString:v9];
+      v12 = [actionCopy substringFromIndex:v10 + v11];
 
-      v13 = [MEMORY[0x277CE7E30] sharedManager];
-      v14 = [v13 shortcutForIdentifier:v12];
+      mEMORY[0x277CE7E30] = [MEMORY[0x277CE7E30] sharedManager];
+      v14 = [mEMORY[0x277CE7E30] shortcutForIdentifier:v12];
 
-      v15 = [MEMORY[0x277CE7E30] sharedManager];
-      [v15 performShortcut:v14];
+      mEMORY[0x277CE7E30]2 = [MEMORY[0x277CE7E30] sharedManager];
+      [mEMORY[0x277CE7E30]2 performShortcut:v14];
 
       goto LABEL_48;
     }
 
-    if ([v6 isEqualToString:*MEMORY[0x277CE7B20]])
+    if ([actionCopy isEqualToString:*MEMORY[0x277CE7B20]])
     {
-      v16 = self;
+      selfCopy2 = self;
       v17 = 0;
 LABEL_47:
-      [(AXPISystemActionHelper *)v16 _performScrollAction:v17];
+      [(AXPISystemActionHelper *)selfCopy2 _performScrollAction:v17];
       goto LABEL_48;
     }
 
-    if ([v6 isEqualToString:*MEMORY[0x277CE7B18]])
+    if ([actionCopy isEqualToString:*MEMORY[0x277CE7B18]])
     {
-      v16 = self;
+      selfCopy2 = self;
       v17 = 1;
       goto LABEL_47;
     }
 
-    if ([v6 isEqualToString:*MEMORY[0x277CE7A20]])
+    if ([actionCopy isEqualToString:*MEMORY[0x277CE7A20]])
     {
       [(AXPISystemActionHelper *)self _toggleAssistiveTouch];
       goto LABEL_48;
     }
 
-    if ([v6 isEqualToString:*MEMORY[0x277CE7B78]])
+    if ([actionCopy isEqualToString:*MEMORY[0x277CE7B78]])
     {
       [(AXPISystemActionHelper *)self _toggleVoiceOver];
       goto LABEL_48;
     }
 
-    if ([v6 isEqualToString:*MEMORY[0x277CE7A50]])
+    if ([actionCopy isEqualToString:*MEMORY[0x277CE7A50]])
     {
       [(AXPISystemActionHelper *)self _toggleClassicInvertColors];
       goto LABEL_48;
     }
 
-    if ([v6 isEqualToString:*MEMORY[0x277CE7A58]])
+    if ([actionCopy isEqualToString:*MEMORY[0x277CE7A58]])
     {
       [(AXPISystemActionHelper *)self _toggleColorFilters];
       goto LABEL_48;
     }
 
-    if ([v6 isEqualToString:*MEMORY[0x277CE7B38]])
+    if ([actionCopy isEqualToString:*MEMORY[0x277CE7B38]])
     {
       [(AXPISystemActionHelper *)self _toggleSmartInvert];
       goto LABEL_48;
     }
 
-    if ([v6 isEqualToString:*MEMORY[0x277CE7B98]])
+    if ([actionCopy isEqualToString:*MEMORY[0x277CE7B98]])
     {
       [(AXPISystemActionHelper *)self _toggleZoom];
       goto LABEL_48;
     }
 
-    if ([v6 isEqualToString:*MEMORY[0x277CE7BA0]])
+    if ([actionCopy isEqualToString:*MEMORY[0x277CE7BA0]])
     {
       [(AXPISystemActionHelper *)self _toggleZoomController];
       goto LABEL_48;
     }
 
-    if ([v6 isEqualToString:*MEMORY[0x277CE7AC8]])
+    if ([actionCopy isEqualToString:*MEMORY[0x277CE7AC8]])
     {
       [(AXPISystemActionHelper *)self startMagnifier];
       goto LABEL_48;
     }
 
-    if ([v6 isEqualToString:*MEMORY[0x277CE7B50]])
+    if ([actionCopy isEqualToString:*MEMORY[0x277CE7B50]])
     {
       [(AXPISystemActionHelper *)self _toggleSwitchControl];
       goto LABEL_48;
     }
 
-    if ([v6 isEqualToString:*MEMORY[0x277CE7A90]])
+    if ([actionCopy isEqualToString:*MEMORY[0x277CE7A90]])
     {
       [(AXPISystemActionHelper *)self _toggleFullKeyboardAccess];
       goto LABEL_48;
     }
 
-    if ([v6 isEqualToString:*MEMORY[0x277CE7B40]])
+    if ([actionCopy isEqualToString:*MEMORY[0x277CE7B40]])
     {
       [(AXPISystemActionHelper *)self _activateSpeakScreen];
       goto LABEL_48;
     }
 
-    if ([v6 isEqualToString:*MEMORY[0x277CE7B58]])
+    if ([actionCopy isEqualToString:*MEMORY[0x277CE7B58]])
     {
       [(AXPISystemActionHelper *)self toggleTorch];
       goto LABEL_48;
     }
 
-    if ([v6 isEqualToString:*MEMORY[0x277CE7A28]])
+    if ([actionCopy isEqualToString:*MEMORY[0x277CE7A28]])
     {
       [(AXPISystemActionHelper *)self toggleBackgroundSounds];
       goto LABEL_48;
     }
 
-    if ([v6 isEqualToString:*MEMORY[0x277CE7AB0]])
+    if ([actionCopy isEqualToString:*MEMORY[0x277CE7AB0]])
     {
       [(AXPISystemActionHelper *)self toggleLiveCaptions];
       goto LABEL_48;
     }
 
-    if ([v6 isEqualToString:*MEMORY[0x277CE7AB8]])
+    if ([actionCopy isEqualToString:*MEMORY[0x277CE7AB8]])
     {
       [(AXPISystemActionHelper *)self toggleLiveSpeech];
       goto LABEL_48;
     }
 
-    if ([v6 isEqualToString:*MEMORY[0x277CE7A80]])
+    if ([actionCopy isEqualToString:*MEMORY[0x277CE7A80]])
     {
       v18 = MEMORY[0x277CE7E68];
       v19 = 35;
@@ -1852,27 +1852,27 @@ LABEL_85:
       goto LABEL_48;
     }
 
-    if ([v6 isEqualToString:*MEMORY[0x277CE7AD0]])
+    if ([actionCopy isEqualToString:*MEMORY[0x277CE7AD0]])
     {
       v18 = MEMORY[0x277CE7E68];
       v19 = 36;
       goto LABEL_85;
     }
 
-    if ([v6 isEqualToString:*MEMORY[0x277CE7A98]])
+    if ([actionCopy isEqualToString:*MEMORY[0x277CE7A98]])
     {
       v18 = MEMORY[0x277CE7E68];
       v19 = 38;
       goto LABEL_85;
     }
 
-    if ([v6 isEqualToString:*MEMORY[0x277CE7AE0]])
+    if ([actionCopy isEqualToString:*MEMORY[0x277CE7AE0]])
     {
       [(AXPISystemActionHelper *)self toggleNearbyDeviceControlPicker];
       goto LABEL_48;
     }
 
-    if ([v6 isEqualToString:*MEMORY[0x277CE7A78]])
+    if ([actionCopy isEqualToString:*MEMORY[0x277CE7A78]])
     {
       if (!_AXSVoiceOverTouchEnabled())
       {
@@ -1880,12 +1880,12 @@ LABEL_85:
         goto LABEL_48;
       }
 
-      v20 = [MEMORY[0x277CE7E18] sharedInstance];
-      v21 = [v20 liveRecognitionActive];
+      mEMORY[0x277CE7E18] = [MEMORY[0x277CE7E18] sharedInstance];
+      liveRecognitionActive = [mEMORY[0x277CE7E18] liveRecognitionActive];
 
-      v22 = [MEMORY[0x277CE7E88] server];
-      v23 = v22;
-      if (v21)
+      server = [MEMORY[0x277CE7E88] server];
+      server2 = server;
+      if (liveRecognitionActive)
       {
         v24 = 51;
       }
@@ -1895,95 +1895,95 @@ LABEL_85:
         v24 = 50;
       }
 
-      [v22 triggerCommand:v24];
+      [server triggerCommand:v24];
 LABEL_102:
 
       goto LABEL_48;
     }
 
-    if (AXDeviceSupportsWatchRemoteScreen() && [v6 isEqualToString:*MEMORY[0x277CE7B90]])
+    if (AXDeviceSupportsWatchRemoteScreen() && [actionCopy isEqualToString:*MEMORY[0x277CE7B90]])
     {
       [(AXPISystemActionHelper *)self toggleWatchRemoteScreen];
       goto LABEL_48;
     }
 
-    if ([v6 isEqualToString:*MEMORY[0x277CE7A18]])
+    if ([actionCopy isEqualToString:*MEMORY[0x277CE7A18]])
     {
       [(AXPISystemActionHelper *)self toggleAssistiveAccess];
       goto LABEL_48;
     }
 
-    if ([v6 isEqualToString:*MEMORY[0x277CE7A30]])
+    if ([actionCopy isEqualToString:*MEMORY[0x277CE7A30]])
     {
-      v25 = self;
+      selfCopy4 = self;
       v26 = 0;
     }
 
     else
     {
-      if (![v6 isEqualToString:*MEMORY[0x277CE7A88]])
+      if (![actionCopy isEqualToString:*MEMORY[0x277CE7A88]])
       {
-        if ([v6 isEqualToString:*MEMORY[0x277CE7AF8]])
+        if ([actionCopy isEqualToString:*MEMORY[0x277CE7AF8]])
         {
-          v23 = [MEMORY[0x277CE7E48] server];
-          [v23 setOrientationLocked:[v23 isOrientationLocked]^ 1];
+          server2 = [MEMORY[0x277CE7E48] server];
+          [server2 setOrientationLocked:[server2 isOrientationLocked]^ 1];
         }
 
         else
         {
-          if ([v6 isEqualToString:*MEMORY[0x277CE7A38]])
+          if ([actionCopy isEqualToString:*MEMORY[0x277CE7A38]])
           {
             [(AXPISystemActionHelper *)self pressCameraButton];
             goto LABEL_48;
           }
 
-          if ([v6 isEqualToString:*MEMORY[0x277CE7A48]])
+          if ([actionCopy isEqualToString:*MEMORY[0x277CE7A48]])
           {
             [(AXPISystemActionHelper *)self lightPressCameraButton];
             goto LABEL_48;
           }
 
-          if ([v6 isEqualToString:*MEMORY[0x277CE7A40]])
+          if ([actionCopy isEqualToString:*MEMORY[0x277CE7A40]])
           {
             [(AXPISystemActionHelper *)self doubleLightPressCameraButton];
             goto LABEL_48;
           }
 
-          if ([v6 isEqualToString:*MEMORY[0x277CE7B70]])
+          if ([actionCopy isEqualToString:*MEMORY[0x277CE7B70]])
           {
             [(AXPISystemActionHelper *)self openVisualIntelligence];
             goto LABEL_48;
           }
 
-          if ([v6 isEqualToString:*MEMORY[0x277CE79F8]])
+          if ([actionCopy isEqualToString:*MEMORY[0x277CE79F8]])
           {
             [(AXPISystemActionHelper *)self launchAccessibilityReader];
             goto LABEL_48;
           }
 
-          if (AXDeviceHasStaccato() && [v6 isEqualToString:*MEMORY[0x277CE7A00]])
+          if (AXDeviceHasStaccato() && [actionCopy isEqualToString:*MEMORY[0x277CE7A00]])
           {
-            v23 = +[AXPISystemActionHelper sharedInstance];
-            [v23 pressStaccato];
+            server2 = +[AXPISystemActionHelper sharedInstance];
+            [server2 pressStaccato];
           }
 
-          else if ([v6 isEqualToString:*MEMORY[0x277CE7AF0]])
+          else if ([actionCopy isEqualToString:*MEMORY[0x277CE7AF0]])
           {
-            v23 = [MEMORY[0x277CE7E18] sharedInstance];
-            v27 = [v23 assistiveTouchMouseOnDeviceEyeTrackingEnabled];
-            v28 = [MEMORY[0x277CE7E18] sharedInstance];
-            [v28 setAssistiveTouchMouseOnDeviceEyeTrackingEnabled:v27 ^ 1u];
+            server2 = [MEMORY[0x277CE7E18] sharedInstance];
+            assistiveTouchMouseOnDeviceEyeTrackingEnabled = [server2 assistiveTouchMouseOnDeviceEyeTrackingEnabled];
+            mEMORY[0x277CE7E18]2 = [MEMORY[0x277CE7E18] sharedInstance];
+            [mEMORY[0x277CE7E18]2 setAssistiveTouchMouseOnDeviceEyeTrackingEnabled:assistiveTouchMouseOnDeviceEyeTrackingEnabled ^ 1u];
           }
 
           else
           {
-            if (!v6)
+            if (!actionCopy)
             {
               goto LABEL_48;
             }
 
-            v23 = AXLogPhysicalInteraction();
-            if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
+            server2 = AXLogPhysicalInteraction();
+            if (os_log_type_enabled(server2, OS_LOG_TYPE_ERROR))
             {
               [AXPISystemActionHelper performActionForSystemAction:fromClient:];
             }
@@ -1993,11 +1993,11 @@ LABEL_102:
         goto LABEL_102;
       }
 
-      v25 = self;
+      selfCopy4 = self;
       v26 = 1;
     }
 
-    [(AXPISystemActionHelper *)v25 _cameraAction:v26];
+    [(AXPISystemActionHelper *)selfCopy4 _cameraAction:v26];
     goto LABEL_48;
   }
 

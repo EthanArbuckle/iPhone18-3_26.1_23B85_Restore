@@ -8,20 +8,20 @@
 + (void)initialize
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
-    v2 = [MEMORY[0x1E695E000] standardUserDefaults];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
     v10 = @"SyncErrorAlert";
     v3 = [MEMORY[0x1E696AD98] numberWithBool:1];
     v11[0] = v3;
     v4 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
-    [v2 registerDefaults:v4];
+    [standardUserDefaults registerDefaults:v4];
 
     v8 = @"Pumbaa";
     v5 = [MEMORY[0x1E696AD98] numberWithBool:0];
     v9 = v5;
     v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v9 forKeys:&v8 count:1];
-    [v2 registerDefaults:v6];
+    [standardUserDefaults registerDefaults:v6];
   }
 
   v7 = *MEMORY[0x1E69E9840];

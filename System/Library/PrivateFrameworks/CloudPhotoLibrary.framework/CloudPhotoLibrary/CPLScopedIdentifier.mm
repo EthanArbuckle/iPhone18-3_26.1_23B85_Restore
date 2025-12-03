@@ -1,29 +1,29 @@
 @interface CPLScopedIdentifier
-+ (CPLScopedIdentifier)scopedIdentifierWithString:(id)a3 includeScopeIndex:(BOOL)a4 defaultScopeIdentifier:(id)a5;
-+ (id)descriptionWithScopeIdentifier:(id)a3 identifier:(id)a4;
-+ (id)scopedIdentifiersFromArrayOfUnknownIdentifiers:(id)a3;
-+ (id)scopedIdentifiersFromDictionaryOfUnknownIdentifiers:(id)a3;
-+ (id)scopedIdentifiersFromSetOfUnknownIdentifiers:(id)a3;
-+ (id)unscopedIdentifiersFromArrayOfScopedIdentifiers:(id)a3;
-+ (id)unscopedIdentifiersFromDictionaryOfScopedIdentifiers:(id)a3;
-+ (id)unscopedIdentifiersFromSetOfScopedIdentifiers:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (CPLScopedIdentifier)scopedIdentifierWithString:(id)string includeScopeIndex:(BOOL)index defaultScopeIdentifier:(id)identifier;
++ (id)descriptionWithScopeIdentifier:(id)identifier identifier:(id)a4;
++ (id)scopedIdentifiersFromArrayOfUnknownIdentifiers:(id)identifiers;
++ (id)scopedIdentifiersFromDictionaryOfUnknownIdentifiers:(id)identifiers;
++ (id)scopedIdentifiersFromSetOfUnknownIdentifiers:(id)identifiers;
++ (id)unscopedIdentifiersFromArrayOfScopedIdentifiers:(id)identifiers;
++ (id)unscopedIdentifiersFromDictionaryOfScopedIdentifiers:(id)identifiers;
++ (id)unscopedIdentifiersFromSetOfScopedIdentifiers:(id)identifiers;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isInACPLShare;
-- (CPLScopedIdentifier)initWithCPLArchiver:(id)a3;
-- (CPLScopedIdentifier)initWithCoder:(id)a3;
-- (CPLScopedIdentifier)initWithScopeIdentifier:(id)a3 identifier:(id)a4;
-- (CPLScopedIdentifier)initWithScopeIdentifier:(id)a3 identifier:(id)a4 scopeIndex:(int64_t)a5;
-- (CPLScopedIdentifier)initWithStringRepresentation:(id)a3 defaultScopeIdentifier:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CPLScopedIdentifier)initWithCPLArchiver:(id)archiver;
+- (CPLScopedIdentifier)initWithCoder:(id)coder;
+- (CPLScopedIdentifier)initWithScopeIdentifier:(id)identifier identifier:(id)a4;
+- (CPLScopedIdentifier)initWithScopeIdentifier:(id)identifier identifier:(id)a4 scopeIndex:(int64_t)index;
+- (CPLScopedIdentifier)initWithStringRepresentation:(id)representation defaultScopeIdentifier:(id)identifier;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)initInMainScopeWithIdentifier:(id)a3;
-- (id)initRelativeToScopedIdentifier:(id)a3 identifier:(id)a4;
-- (id)plistArchiveWithCPLArchiver:(id)a3;
+- (id)initInMainScopeWithIdentifier:(id)identifier;
+- (id)initRelativeToScopedIdentifier:(id)identifier identifier:(id)a4;
+- (id)plistArchiveWithCPLArchiver:(id)archiver;
 - (id)safeFilename;
 - (int64_t)scopeIndex;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setScopeIndex:(int64_t)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setScopeIndex:(int64_t)index;
 @end
 
 @implementation CPLScopedIdentifier
@@ -53,11 +53,11 @@
   }
 }
 
-- (CPLScopedIdentifier)initWithCPLArchiver:(id)a3
+- (CPLScopedIdentifier)initWithCPLArchiver:(id)archiver
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4[2];
+  archiverCopy = archiver;
+  v5 = archiverCopy[2];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -66,12 +66,12 @@
       v9 = __CPLGenericOSLogDomain();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
-        v10 = [v4 archiverContext];
-        v11 = v4[2];
+        archiverContext = [archiverCopy archiverContext];
+        v11 = archiverCopy[2];
         v12 = objc_opt_class();
-        v13 = v4[2];
+        v13 = archiverCopy[2];
         *buf = 138412802;
-        v25 = v10;
+        v25 = archiverContext;
         v26 = 2112;
         v27 = v12;
         v28 = 2112;
@@ -81,47 +81,47 @@
       }
     }
 
-    v15 = v4[2];
+    v15 = archiverCopy[2];
     v16 = objc_opt_class();
-    v23 = v4[2];
-    _CPLArchiverFailure(v4, @"Incorrect class for CPLScopedIdentifier. Found %@: '%@'", v17, v18, v19, v20, v21, v22, v16);
+    v23 = archiverCopy[2];
+    _CPLArchiverFailure(archiverCopy, @"Incorrect class for CPLScopedIdentifier. Found %@: '%@'", v17, v18, v19, v20, v21, v22, v16);
   }
 
-  v6 = [(CPLScopedIdentifier *)self initWithCoder:v4];
+  v6 = [(CPLScopedIdentifier *)self initWithCoder:archiverCopy];
 
   v7 = *MEMORY[0x1E69E9840];
   return v6;
 }
 
-- (id)plistArchiveWithCPLArchiver:(id)a3
+- (id)plistArchiveWithCPLArchiver:(id)archiver
 {
   v4 = MEMORY[0x1E695DF90];
-  v5 = a3;
+  archiverCopy = archiver;
   v6 = objc_alloc_init(v4);
-  v7 = [v5 archiveCursor];
-  [v5 setArchiveCursor:v6];
-  [(CPLScopedIdentifier *)self encodeWithCoder:v5];
-  [v5 setArchiveCursor:v7];
+  archiveCursor = [archiverCopy archiveCursor];
+  [archiverCopy setArchiveCursor:v6];
+  [(CPLScopedIdentifier *)self encodeWithCoder:archiverCopy];
+  [archiverCopy setArchiveCursor:archiveCursor];
 
   return v6;
 }
 
-- (CPLScopedIdentifier)initWithStringRepresentation:(id)a3 defaultScopeIdentifier:(id)a4
+- (CPLScopedIdentifier)initWithStringRepresentation:(id)representation defaultScopeIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 rangeOfString:@"#"];
+  representationCopy = representation;
+  identifierCopy = identifier;
+  v8 = [representationCopy rangeOfString:@"#"];
   if (v8 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v9 = v6;
-    v10 = v7;
+    v9 = representationCopy;
+    v10 = identifierCopy;
   }
 
   else
   {
     v11 = v8;
-    v9 = [v6 substringToIndex:v8];
-    v10 = [v6 substringFromIndex:v11 + 1];
+    v9 = [representationCopy substringToIndex:v8];
+    v10 = [representationCopy substringFromIndex:v11 + 1];
   }
 
   v12 = v10;
@@ -150,7 +150,7 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [CPLScopedIdentifier alloc];
   scopeIdentifier = self->_scopeIdentifier;
@@ -159,10 +159,10 @@
   return [(CPLScopedIdentifier *)v4 initWithScopeIdentifier:scopeIdentifier identifier:identifier];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v9 = 1;
     goto LABEL_10;
@@ -173,7 +173,7 @@
   {
     v5 = self->_scopeIdentifier;
     v6 = v5;
-    scopeIdentifier = v4->_scopeIdentifier;
+    scopeIdentifier = equalCopy->_scopeIdentifier;
     if (v5 && scopeIdentifier)
     {
       v8 = [v5 isEqual:?];
@@ -194,7 +194,7 @@
       }
     }
 
-    v9 = [(NSString *)self->_identifier isEqualToString:v4->_identifier];
+    v9 = [(NSString *)self->_identifier isEqualToString:equalCopy->_identifier];
     goto LABEL_10;
   }
 
@@ -209,60 +209,60 @@ LABEL_10:
 {
   if (self->_scopeIndex <= 0)
   {
-    v5 = [(CPLScopedIdentifier *)self descriptionWithNoScopeIndex];
+    descriptionWithNoScopeIndex = [(CPLScopedIdentifier *)self descriptionWithNoScopeIndex];
   }
 
   else
   {
     v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v4 = [(CPLScopedIdentifier *)self descriptionWithNoScopeIndex];
-    v5 = [v3 initWithFormat:@"%@(%ld)", v4, self->_scopeIndex];
+    descriptionWithNoScopeIndex2 = [(CPLScopedIdentifier *)self descriptionWithNoScopeIndex];
+    descriptionWithNoScopeIndex = [v3 initWithFormat:@"%@(%ld)", descriptionWithNoScopeIndex2, self->_scopeIndex];
   }
 
-  return v5;
+  return descriptionWithNoScopeIndex;
 }
 
-- (CPLScopedIdentifier)initWithScopeIdentifier:(id)a3 identifier:(id)a4 scopeIndex:(int64_t)a5
+- (CPLScopedIdentifier)initWithScopeIdentifier:(id)identifier identifier:(id)a4 scopeIndex:(int64_t)index
 {
-  result = [(CPLScopedIdentifier *)self initWithScopeIdentifier:a3 identifier:a4];
-  if (a5 != 0x7FFFFFFFFFFFFFFFLL)
+  result = [(CPLScopedIdentifier *)self initWithScopeIdentifier:identifier identifier:a4];
+  if (index != 0x7FFFFFFFFFFFFFFFLL)
   {
     if (result)
     {
-      result->_scopeIndex = a5;
+      result->_scopeIndex = index;
     }
   }
 
   return result;
 }
 
-- (id)initInMainScopeWithIdentifier:(id)a3
+- (id)initInMainScopeWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = CPLPrimaryScopeIdentifierForCurrentUniverse();
-  v6 = [(CPLScopedIdentifier *)self initWithScopeIdentifier:v5 identifier:v4];
+  v6 = [(CPLScopedIdentifier *)self initWithScopeIdentifier:v5 identifier:identifierCopy];
 
   return v6;
 }
 
-- (id)initRelativeToScopedIdentifier:(id)a3 identifier:(id)a4
+- (id)initRelativeToScopedIdentifier:(id)identifier identifier:(id)a4
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v7 = a4;
-  v8 = [v6 scopeIdentifier];
-  v9 = [(CPLScopedIdentifier *)self initWithScopeIdentifier:v8 identifier:v7];
+  scopeIdentifier = [identifierCopy scopeIdentifier];
+  v9 = [(CPLScopedIdentifier *)self initWithScopeIdentifier:scopeIdentifier identifier:v7];
 
   if (v9)
   {
-    v9->_scopeIndex = v6[1];
+    v9->_scopeIndex = identifierCopy[1];
   }
 
   return v9;
 }
 
-- (CPLScopedIdentifier)initWithScopeIdentifier:(id)a3 identifier:(id)a4
+- (CPLScopedIdentifier)initWithScopeIdentifier:(id)identifier identifier:(id)a4
 {
-  v7 = a3;
+  identifierCopy = identifier;
   v8 = a4;
   if (!v8)
   {
@@ -276,9 +276,9 @@ LABEL_10:
       }
     }
 
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v18 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Framework/Sources/CPLScopedIdentifier.m"];
-    [v17 handleFailureInMethod:a2 object:self file:v18 lineNumber:235 description:@"nil identifier"];
+    [currentHandler handleFailureInMethod:a2 object:self file:v18 lineNumber:235 description:@"nil identifier"];
 
     abort();
   }
@@ -289,7 +289,7 @@ LABEL_10:
   v10 = [(CPLScopedIdentifier *)&v19 init];
   if (v10)
   {
-    v11 = [v7 copy];
+    v11 = [identifierCopy copy];
     scopeIdentifier = v10->_scopeIdentifier;
     v10->_scopeIdentifier = v11;
 
@@ -301,9 +301,9 @@ LABEL_10:
   return v10;
 }
 
-- (void)setScopeIndex:(int64_t)a3
+- (void)setScopeIndex:(int64_t)index
 {
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  if (index == 0x7FFFFFFFFFFFFFFFLL)
   {
     if ((_CPLSilentLogging & 1) == 0)
     {
@@ -315,19 +315,19 @@ LABEL_10:
       }
     }
 
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Framework/Sources/CPLScopedIdentifier.m"];
-    [v6 handleFailureInMethod:a2 object:self file:v7 lineNumber:144 description:@"invalid scope index"];
+    [currentHandler handleFailureInMethod:a2 object:self file:v7 lineNumber:144 description:@"invalid scope index"];
 
     abort();
   }
 
-  self->_scopeIndex = a3;
+  self->_scopeIndex = index;
 }
 
-- (CPLScopedIdentifier)initWithCoder:(id)a3
+- (CPLScopedIdentifier)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = CPLScopedIdentifier;
   v5 = [(CPLScopedIdentifier *)&v11 init];
@@ -338,15 +338,15 @@ LABEL_10:
       dispatch_once(&initWithCoder__onceToken_10818, &__block_literal_global_59);
     }
 
-    v6 = [v4 decodeObjectOfClass:initWithCoder__stringClass_10819 forKey:@"i"];
+    v6 = [coderCopy decodeObjectOfClass:initWithCoder__stringClass_10819 forKey:@"i"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:initWithCoder__stringClass_10819 forKey:@"s"];
+    v8 = [coderCopy decodeObjectOfClass:initWithCoder__stringClass_10819 forKey:@"s"];
     scopeIdentifier = v5->_scopeIdentifier;
     v5->_scopeIdentifier = v8;
 
-    v5->_scopeIndex = [v4 decodeIntegerForKey:@"#"];
+    v5->_scopeIndex = [coderCopy decodeIntegerForKey:@"#"];
   }
 
   return v5;
@@ -359,53 +359,53 @@ uint64_t __37__CPLScopedIdentifier_initWithCoder___block_invoke()
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeObject:self->_identifier forKey:@"i"];
-  [v4 encodeObject:self->_scopeIdentifier forKey:@"s"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_identifier forKey:@"i"];
+  [coderCopy encodeObject:self->_scopeIdentifier forKey:@"s"];
   if (self->_scopeIndex >= 1)
   {
-    [v4 encodeInteger:? forKey:?];
+    [coderCopy encodeInteger:? forKey:?];
   }
 }
 
-+ (CPLScopedIdentifier)scopedIdentifierWithString:(id)a3 includeScopeIndex:(BOOL)a4 defaultScopeIdentifier:(id)a5
++ (CPLScopedIdentifier)scopedIdentifierWithString:(id)string includeScopeIndex:(BOOL)index defaultScopeIdentifier:(id)identifier
 {
-  v5 = a4;
-  v9 = a5;
-  v10 = a3;
-  v11 = [v10 rangeOfString:@"#"];
+  indexCopy = index;
+  identifierCopy = identifier;
+  stringCopy = string;
+  v11 = [stringCopy rangeOfString:@"#"];
   if (v11 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v12 = [[CPLScopedIdentifier alloc] initWithScopeIdentifier:v9 identifier:v10];
-    v13 = v10;
+    v12 = [[CPLScopedIdentifier alloc] initWithScopeIdentifier:identifierCopy identifier:stringCopy];
+    v13 = stringCopy;
   }
 
   else
   {
     v14 = v11;
-    v13 = [v10 substringToIndex:v11];
-    v15 = [v10 substringFromIndex:v14 + 1];
+    v13 = [stringCopy substringToIndex:v11];
+    v15 = [stringCopy substringFromIndex:v14 + 1];
 
     v27 = MEMORY[0x1E69E9820];
     v28 = 3221225472;
     v29 = __91__CPLScopedIdentifier_scopedIdentifierWithString_includeScopeIndex_defaultScopeIdentifier___block_invoke;
     v30 = &__block_descriptor_48_e5_v8__0l;
     v31 = a2;
-    v32 = a1;
+    selfCopy = self;
     if (scopedIdentifierWithString_includeScopeIndex_defaultScopeIdentifier__onceToken != -1)
     {
       dispatch_once(&scopedIdentifierWithString_includeScopeIndex_defaultScopeIdentifier__onceToken, &v27);
     }
 
-    v16 = [scopedIdentifierWithString_includeScopeIndex_defaultScopeIdentifier__regExp firstMatchInString:v15 options:0 range:{0, objc_msgSend(v15, "length", v27, v28, v29, v30, v31, v32)}];
+    v16 = [scopedIdentifierWithString_includeScopeIndex_defaultScopeIdentifier__regExp firstMatchInString:v15 options:0 range:{0, objc_msgSend(v15, "length", v27, v28, v29, v30, v31, selfCopy)}];
     v17 = v16;
     if (v16)
     {
       v18 = [v16 rangeAtIndex:2];
       v20 = [v15 substringWithRange:{v18, v19}];
-      v21 = [v20 integerValue];
+      integerValue = [v20 integerValue];
 
       v22 = [v17 rangeAtIndex:1];
       v24 = [v15 substringWithRange:{v22, v23}];
@@ -415,14 +415,14 @@ uint64_t __37__CPLScopedIdentifier_initWithCoder___block_invoke()
 
     else
     {
-      v21 = 0;
+      integerValue = 0;
     }
 
     v25 = [[CPLScopedIdentifier alloc] initWithScopeIdentifier:v15 identifier:v13];
     v12 = v25;
-    if (v5 && v21 >= 1)
+    if (indexCopy && integerValue >= 1)
     {
-      [(CPLScopedIdentifier *)v25 setScopeIndex:v21];
+      [(CPLScopedIdentifier *)v25 setScopeIndex:integerValue];
     }
   }
 
@@ -457,35 +457,35 @@ void __91__CPLScopedIdentifier_scopedIdentifierWithString_includeScopeIndex_defa
   }
 }
 
-+ (id)descriptionWithScopeIdentifier:(id)a3 identifier:(id)a4
++ (id)descriptionWithScopeIdentifier:(id)identifier identifier:(id)a4
 {
   v5 = MEMORY[0x1E696AEC0];
   v6 = a4;
-  v7 = a3;
-  v8 = [[v5 alloc] initWithFormat:@"%@#%@", v6, v7];
+  identifierCopy = identifier;
+  identifierCopy = [[v5 alloc] initWithFormat:@"%@#%@", v6, identifierCopy];
 
-  return v8;
+  return identifierCopy;
 }
 
-+ (id)unscopedIdentifiersFromDictionaryOfScopedIdentifiers:(id)a3
++ (id)unscopedIdentifiersFromDictionaryOfScopedIdentifiers:(id)identifiers
 {
-  v3 = a3;
-  if ([v3 count])
+  identifiersCopy = identifiers;
+  if ([identifiersCopy count])
   {
-    v4 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v3, "count")}];
+    v4 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(identifiersCopy, "count")}];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __76__CPLScopedIdentifier_unscopedIdentifiersFromDictionaryOfScopedIdentifiers___block_invoke;
     v8[3] = &unk_1E861D1F0;
     v5 = v4;
     v9 = v5;
-    [v3 enumerateKeysAndObjectsUsingBlock:v8];
+    [identifiersCopy enumerateKeysAndObjectsUsingBlock:v8];
   }
 
   else
   {
     v6 = MEMORY[0x1E695E0F8];
-    if (!v3)
+    if (!identifiersCopy)
     {
       v6 = 0;
     }
@@ -504,18 +504,18 @@ void __76__CPLScopedIdentifier_unscopedIdentifiersFromDictionaryOfScopedIdentifi
   [v4 setObject:v5 forKeyedSubscript:v6];
 }
 
-+ (id)unscopedIdentifiersFromSetOfScopedIdentifiers:(id)a3
++ (id)unscopedIdentifiersFromSetOfScopedIdentifiers:(id)identifiers
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([v3 count])
+  identifiersCopy = identifiers;
+  if ([identifiersCopy count])
   {
-    v4 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(v3, "count")}];
+    v4 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(identifiersCopy, "count")}];
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v5 = v3;
+    v5 = identifiersCopy;
     v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v6)
     {
@@ -530,8 +530,8 @@ void __76__CPLScopedIdentifier_unscopedIdentifiersFromDictionaryOfScopedIdentifi
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v13 + 1) + 8 * i) identifier];
-          [v4 addObject:v10];
+          identifier = [*(*(&v13 + 1) + 8 * i) identifier];
+          [v4 addObject:identifier];
         }
 
         v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -541,7 +541,7 @@ void __76__CPLScopedIdentifier_unscopedIdentifiersFromDictionaryOfScopedIdentifi
     }
   }
 
-  else if (v3)
+  else if (identifiersCopy)
   {
     v4 = [MEMORY[0x1E695DFD8] set];
   }
@@ -556,18 +556,18 @@ void __76__CPLScopedIdentifier_unscopedIdentifiersFromDictionaryOfScopedIdentifi
   return v4;
 }
 
-+ (id)unscopedIdentifiersFromArrayOfScopedIdentifiers:(id)a3
++ (id)unscopedIdentifiersFromArrayOfScopedIdentifiers:(id)identifiers
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([v3 count])
+  identifiersCopy = identifiers;
+  if ([identifiersCopy count])
   {
-    v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v3, "count")}];
+    v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(identifiersCopy, "count")}];
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v5 = v3;
+    v5 = identifiersCopy;
     v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v6)
     {
@@ -582,8 +582,8 @@ void __76__CPLScopedIdentifier_unscopedIdentifiersFromDictionaryOfScopedIdentifi
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v14 + 1) + 8 * i) identifier];
-          [v4 addObject:v10];
+          identifier = [*(*(&v14 + 1) + 8 * i) identifier];
+          [v4 addObject:identifier];
         }
 
         v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -596,7 +596,7 @@ void __76__CPLScopedIdentifier_unscopedIdentifiersFromDictionaryOfScopedIdentifi
   else
   {
     v11 = MEMORY[0x1E695E0F0];
-    if (!v3)
+    if (!identifiersCopy)
     {
       v11 = 0;
     }
@@ -609,14 +609,14 @@ void __76__CPLScopedIdentifier_unscopedIdentifiersFromDictionaryOfScopedIdentifi
   return v4;
 }
 
-+ (id)scopedIdentifiersFromDictionaryOfUnknownIdentifiers:(id)a3
++ (id)scopedIdentifiersFromDictionaryOfUnknownIdentifiers:(id)identifiers
 {
   v13 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([v3 count])
+  identifiersCopy = identifiers;
+  if ([identifiersCopy count])
   {
     memset(v11, 0, sizeof(v11));
-    if ([v3 countByEnumeratingWithState:v11 objects:v12 count:16])
+    if ([identifiersCopy countByEnumeratingWithState:v11 objects:v12 count:16])
     {
       v4 = **(&v11[0] + 1);
     }
@@ -629,25 +629,25 @@ void __76__CPLScopedIdentifier_unscopedIdentifiersFromDictionaryOfScopedIdentifi
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v3, "count")}];
+      v6 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(identifiersCopy, "count")}];
       v9[0] = MEMORY[0x1E69E9820];
       v9[1] = 3221225472;
       v9[2] = __75__CPLScopedIdentifier_scopedIdentifiersFromDictionaryOfUnknownIdentifiers___block_invoke;
       v9[3] = &unk_1E861D1C8;
       v5 = v6;
       v10 = v5;
-      [v3 enumerateKeysAndObjectsUsingBlock:v9];
+      [identifiersCopy enumerateKeysAndObjectsUsingBlock:v9];
     }
 
     else
     {
-      v5 = v3;
+      v5 = identifiersCopy;
     }
   }
 
   else
   {
-    v5 = v3;
+    v5 = identifiersCopy;
   }
 
   v7 = *MEMORY[0x1E69E9840];
@@ -667,18 +667,18 @@ void __75__CPLScopedIdentifier_scopedIdentifiersFromDictionaryOfUnknownIdentifie
   [*(a1 + 32) setObject:v6 forKeyedSubscript:a2];
 }
 
-+ (id)scopedIdentifiersFromSetOfUnknownIdentifiers:(id)a3
++ (id)scopedIdentifiersFromSetOfUnknownIdentifiers:(id)identifiers
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([v3 count] && (objc_msgSend(v3, "anyObject"), v4 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v4, (isKindOfClass & 1) != 0))
+  identifiersCopy = identifiers;
+  if ([identifiersCopy count] && (objc_msgSend(identifiersCopy, "anyObject"), v4 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v4, (isKindOfClass & 1) != 0))
   {
-    v6 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(v3, "count")}];
+    v6 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(identifiersCopy, "count")}];
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v7 = v3;
+    v7 = identifiersCopy;
     v8 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v8)
     {
@@ -718,7 +718,7 @@ void __75__CPLScopedIdentifier_scopedIdentifiersFromDictionaryOfUnknownIdentifie
 
   else
   {
-    v6 = v3;
+    v6 = identifiersCopy;
   }
 
   v16 = *MEMORY[0x1E69E9840];
@@ -726,18 +726,18 @@ void __75__CPLScopedIdentifier_scopedIdentifiersFromDictionaryOfUnknownIdentifie
   return v6;
 }
 
-+ (id)scopedIdentifiersFromArrayOfUnknownIdentifiers:(id)a3
++ (id)scopedIdentifiersFromArrayOfUnknownIdentifiers:(id)identifiers
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([v3 count] && (objc_msgSend(v3, "firstObject"), v4 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v4, (isKindOfClass & 1) != 0))
+  identifiersCopy = identifiers;
+  if ([identifiersCopy count] && (objc_msgSend(identifiersCopy, "firstObject"), v4 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v4, (isKindOfClass & 1) != 0))
   {
-    v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v3, "count")}];
+    v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(identifiersCopy, "count")}];
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v7 = v3;
+    v7 = identifiersCopy;
     v8 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v8)
     {
@@ -777,7 +777,7 @@ void __75__CPLScopedIdentifier_scopedIdentifiersFromDictionaryOfUnknownIdentifie
 
   else
   {
-    v6 = v3;
+    v6 = identifiersCopy;
   }
 
   v16 = *MEMORY[0x1E69E9840];

@@ -1,28 +1,28 @@
 @interface _SFPBFillToolParameterCommand
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBFillToolParameterCommand)initWithDictionary:(id)a3;
-- (_SFPBFillToolParameterCommand)initWithFacade:(id)a3;
-- (_SFPBFillToolParameterCommand)initWithJSON:(id)a3;
+- (_SFPBFillToolParameterCommand)initWithDictionary:(id)dictionary;
+- (_SFPBFillToolParameterCommand)initWithFacade:(id)facade;
+- (_SFPBFillToolParameterCommand)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
-- (void)setEncodedTypedValue:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setEncodedTypedValue:(id)value;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBFillToolParameterCommand
 
-- (_SFPBFillToolParameterCommand)initWithFacade:(id)a3
+- (_SFPBFillToolParameterCommand)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBFillToolParameterCommand *)self init];
   if (v5)
   {
-    v6 = [v4 encodedTypedValue];
+    encodedTypedValue = [facadeCopy encodedTypedValue];
 
-    if (v6)
+    if (encodedTypedValue)
     {
-      v7 = [v4 encodedTypedValue];
-      [(_SFPBFillToolParameterCommand *)v5 setEncodedTypedValue:v7];
+      encodedTypedValue2 = [facadeCopy encodedTypedValue];
+      [(_SFPBFillToolParameterCommand *)v5 setEncodedTypedValue:encodedTypedValue2];
     }
 
     v8 = v5;
@@ -31,15 +31,15 @@
   return v5;
 }
 
-- (_SFPBFillToolParameterCommand)initWithDictionary:(id)a3
+- (_SFPBFillToolParameterCommand)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = _SFPBFillToolParameterCommand;
   v5 = [(_SFPBFillToolParameterCommand *)&v10 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"encodedTypedValue"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"encodedTypedValue"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -53,30 +53,30 @@
   return v5;
 }
 
-- (_SFPBFillToolParameterCommand)initWithJSON:(id)a3
+- (_SFPBFillToolParameterCommand)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBFillToolParameterCommand *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBFillToolParameterCommand *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBFillToolParameterCommand *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -89,38 +89,38 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_encodedTypedValue)
   {
-    v4 = [(_SFPBFillToolParameterCommand *)self encodedTypedValue];
-    v5 = [v4 base64EncodedStringWithOptions:0];
+    encodedTypedValue = [(_SFPBFillToolParameterCommand *)self encodedTypedValue];
+    v5 = [encodedTypedValue base64EncodedStringWithOptions:0];
     if (v5)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"encodedTypedValue"];
+      [dictionary setObject:v5 forKeyedSubscript:@"encodedTypedValue"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"encodedTypedValue"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"encodedTypedValue"];
     }
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(_SFPBFillToolParameterCommand *)self encodedTypedValue];
-    v6 = [v4 encodedTypedValue];
-    v7 = v6;
-    if ((v5 != 0) != (v6 == 0))
+    encodedTypedValue = [(_SFPBFillToolParameterCommand *)self encodedTypedValue];
+    encodedTypedValue2 = [equalCopy encodedTypedValue];
+    v7 = encodedTypedValue2;
+    if ((encodedTypedValue != 0) != (encodedTypedValue2 == 0))
     {
-      v8 = [(_SFPBFillToolParameterCommand *)self encodedTypedValue];
-      if (!v8)
+      encodedTypedValue3 = [(_SFPBFillToolParameterCommand *)self encodedTypedValue];
+      if (!encodedTypedValue3)
       {
 
 LABEL_10:
@@ -128,10 +128,10 @@ LABEL_10:
         goto LABEL_8;
       }
 
-      v9 = v8;
-      v10 = [(_SFPBFillToolParameterCommand *)self encodedTypedValue];
-      v11 = [v4 encodedTypedValue];
-      v12 = [v10 isEqual:v11];
+      v9 = encodedTypedValue3;
+      encodedTypedValue4 = [(_SFPBFillToolParameterCommand *)self encodedTypedValue];
+      encodedTypedValue5 = [equalCopy encodedTypedValue];
+      v12 = [encodedTypedValue4 isEqual:encodedTypedValue5];
 
       if (v12)
       {
@@ -150,19 +150,19 @@ LABEL_8:
   return v13;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
-  v4 = [(_SFPBFillToolParameterCommand *)self encodedTypedValue];
-  if (v4)
+  toCopy = to;
+  encodedTypedValue = [(_SFPBFillToolParameterCommand *)self encodedTypedValue];
+  if (encodedTypedValue)
   {
     PBDataWriterWriteDataField();
   }
 }
 
-- (void)setEncodedTypedValue:(id)a3
+- (void)setEncodedTypedValue:(id)value
 {
-  v4 = [a3 copy];
+  v4 = [value copy];
   encodedTypedValue = self->_encodedTypedValue;
   self->_encodedTypedValue = v4;
 

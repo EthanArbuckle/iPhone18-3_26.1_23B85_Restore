@@ -1,14 +1,14 @@
 @interface SCATSimpleElementManager
-- (BOOL)containsElement:(id)a3;
+- (BOOL)containsElement:(id)element;
 - (NSArray)allElements;
-- (id)elementAfter:(id)a3 didWrap:(BOOL *)a4 options:(int *)a5;
-- (id)elementBefore:(id)a3 didWrap:(BOOL *)a4 options:(int *)a5;
-- (id)elementForIndexInCurrentScanCycle:(int64_t)a3;
-- (id)firstElementWithOptions:(int *)a3;
+- (id)elementAfter:(id)after didWrap:(BOOL *)wrap options:(int *)options;
+- (id)elementBefore:(id)before didWrap:(BOOL *)wrap options:(int *)options;
+- (id)elementForIndexInCurrentScanCycle:(int64_t)cycle;
+- (id)firstElementWithOptions:(int *)options;
 - (id)identifier;
-- (id)lastElementWithOptions:(int *)a3;
+- (id)lastElementWithOptions:(int *)options;
 - (id)numberOfItemsInCurrentScanCycle;
-- (int64_t)indexOfElementInCurrentScanCycle:(id)a3;
+- (int64_t)indexOfElementInCurrentScanCycle:(id)cycle;
 @end
 
 @implementation SCATSimpleElementManager
@@ -22,75 +22,75 @@
 
 - (id)numberOfItemsInCurrentScanCycle
 {
-  v2 = [(SCATSimpleElementManager *)self allElements];
-  v3 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v2 count]);
+  allElements = [(SCATSimpleElementManager *)self allElements];
+  v3 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [allElements count]);
 
   return v3;
 }
 
-- (int64_t)indexOfElementInCurrentScanCycle:(id)a3
+- (int64_t)indexOfElementInCurrentScanCycle:(id)cycle
 {
-  v4 = a3;
-  v5 = [(SCATSimpleElementManager *)self allElements];
-  v6 = [v5 indexOfObject:v4];
+  cycleCopy = cycle;
+  allElements = [(SCATSimpleElementManager *)self allElements];
+  v6 = [allElements indexOfObject:cycleCopy];
 
   return v6;
 }
 
-- (id)elementForIndexInCurrentScanCycle:(int64_t)a3
+- (id)elementForIndexInCurrentScanCycle:(int64_t)cycle
 {
-  if (a3 < 0 || (-[SCATSimpleElementManager allElements](self, "allElements"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 count], v5, v6 <= a3))
+  if (cycle < 0 || (-[SCATSimpleElementManager allElements](self, "allElements"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 count], v5, v6 <= cycle))
   {
     v8 = 0;
   }
 
   else
   {
-    v7 = [(SCATSimpleElementManager *)self allElements];
-    v8 = [v7 objectAtIndexedSubscript:a3];
+    allElements = [(SCATSimpleElementManager *)self allElements];
+    v8 = [allElements objectAtIndexedSubscript:cycle];
   }
 
   return v8;
 }
 
-- (id)firstElementWithOptions:(int *)a3
+- (id)firstElementWithOptions:(int *)options
 {
-  v3 = [(SCATSimpleElementManager *)self allElements];
-  v4 = [v3 firstObject];
+  allElements = [(SCATSimpleElementManager *)self allElements];
+  firstObject = [allElements firstObject];
 
-  return v4;
+  return firstObject;
 }
 
-- (id)lastElementWithOptions:(int *)a3
+- (id)lastElementWithOptions:(int *)options
 {
-  v3 = [(SCATSimpleElementManager *)self allElements];
-  v4 = [v3 lastObject];
+  allElements = [(SCATSimpleElementManager *)self allElements];
+  lastObject = [allElements lastObject];
 
-  return v4;
+  return lastObject;
 }
 
-- (id)elementBefore:(id)a3 didWrap:(BOOL *)a4 options:(int *)a5
+- (id)elementBefore:(id)before didWrap:(BOOL *)wrap options:(int *)options
 {
-  v7 = a3;
-  v8 = [(SCATSimpleElementManager *)self allElements];
-  v9 = [v8 indexOfObject:v7];
+  beforeCopy = before;
+  allElements = [(SCATSimpleElementManager *)self allElements];
+  v9 = [allElements indexOfObject:beforeCopy];
 
   if (v9 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v10 = [(SCATSimpleElementManager *)self allElements];
+    allElements2 = [(SCATSimpleElementManager *)self allElements];
     if (v9)
     {
-      v11 = [v10 objectAtIndex:v9 - 1];
+      lastObject = [allElements2 objectAtIndex:v9 - 1];
       v12 = 0;
     }
 
     else
     {
-      v11 = [v10 lastObject];
+      lastObject = [allElements2 lastObject];
       v12 = 1;
     }
 
-    if (!a4)
+    if (!wrap)
     {
       goto LABEL_9;
     }
@@ -99,31 +99,31 @@
   }
 
   v12 = 0;
-  v11 = 0;
-  if (a4)
+  lastObject = 0;
+  if (wrap)
   {
 LABEL_8:
-    *a4 = v12;
+    *wrap = v12;
   }
 
 LABEL_9:
 
-  return v11;
+  return lastObject;
 }
 
-- (id)elementAfter:(id)a3 didWrap:(BOOL *)a4 options:(int *)a5
+- (id)elementAfter:(id)after didWrap:(BOOL *)wrap options:(int *)options
 {
-  v7 = a3;
-  v8 = [(SCATSimpleElementManager *)self allElements];
-  v9 = [v8 indexOfObject:v7];
+  afterCopy = after;
+  allElements = [(SCATSimpleElementManager *)self allElements];
+  v9 = [allElements indexOfObject:afterCopy];
 
   if (v9 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v12 = [(SCATSimpleElementManager *)self allElements];
-    v13 = [v12 count] - 1;
+    allElements2 = [(SCATSimpleElementManager *)self allElements];
+    v13 = [allElements2 count] - 1;
 
-    v14 = [(SCATSimpleElementManager *)self allElements];
-    v15 = v14;
+    allElements3 = [(SCATSimpleElementManager *)self allElements];
+    v15 = allElements3;
     v10 = v9 == v13;
     if (v10)
     {
@@ -135,9 +135,9 @@ LABEL_9:
       v16 = v9 + 1;
     }
 
-    v11 = [v14 objectAtIndex:v16];
+    v11 = [allElements3 objectAtIndex:v16];
 
-    if (!a4)
+    if (!wrap)
     {
       goto LABEL_9;
     }
@@ -147,10 +147,10 @@ LABEL_9:
 
   v10 = 0;
   v11 = 0;
-  if (a4)
+  if (wrap)
   {
 LABEL_8:
-    *a4 = v10;
+    *wrap = v10;
   }
 
 LABEL_9:
@@ -158,11 +158,11 @@ LABEL_9:
   return v11;
 }
 
-- (BOOL)containsElement:(id)a3
+- (BOOL)containsElement:(id)element
 {
-  v4 = a3;
-  v5 = [(SCATSimpleElementManager *)self allElements];
-  v6 = [v5 containsObject:v4];
+  elementCopy = element;
+  allElements = [(SCATSimpleElementManager *)self allElements];
+  v6 = [allElements containsObject:elementCopy];
 
   return v6;
 }

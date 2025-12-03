@@ -1,40 +1,40 @@
 @interface SBHomeScreenBackdropViewBase
 - (BOOL)isOpaque;
-- (SBHomeScreenBackdropViewBase)initWithFrame:(CGRect)a3;
+- (SBHomeScreenBackdropViewBase)initWithFrame:(CGRect)frame;
 - (SBHomeScreenBackdropViewBaseDelegate)delegate;
-- (void)beginRequiringBackdropViewForReason:(id)a3;
-- (void)beginRequiringLiveBackdropViewForReason:(id)a3;
-- (void)endRequiringBackdropViewForReason:(id)a3;
-- (void)endRequiringLiveBackdropViewForReason:(id)a3;
-- (void)setBlurProgress:(double)a3 behaviorMode:(int64_t)a4 completion:(id)a5;
+- (void)beginRequiringBackdropViewForReason:(id)reason;
+- (void)beginRequiringLiveBackdropViewForReason:(id)reason;
+- (void)endRequiringBackdropViewForReason:(id)reason;
+- (void)endRequiringLiveBackdropViewForReason:(id)reason;
+- (void)setBlurProgress:(double)progress behaviorMode:(int64_t)mode completion:(id)completion;
 @end
 
 @implementation SBHomeScreenBackdropViewBase
 
-- (SBHomeScreenBackdropViewBase)initWithFrame:(CGRect)a3
+- (SBHomeScreenBackdropViewBase)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = SBHomeScreenBackdropViewBase;
-  v3 = [(SBHomeScreenBackdropViewBase *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SBHomeScreenBackdropViewBase *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[SBAppSwitcherDomain rootSettings];
-    v5 = [v4 animationSettings];
+    animationSettings = [v4 animationSettings];
     animationSettings = v3->_animationSettings;
-    v3->_animationSettings = v5;
+    v3->_animationSettings = animationSettings;
   }
 
   return v3;
 }
 
-- (void)beginRequiringBackdropViewForReason:(id)a3
+- (void)beginRequiringBackdropViewForReason:(id)reason
 {
-  v4 = a3;
-  v8 = v4;
-  if (!v4)
+  reasonCopy = reason;
+  v8 = reasonCopy;
+  if (!reasonCopy)
   {
     [SBHomeScreenBackdropViewBase beginRequiringBackdropViewForReason:];
-    v4 = 0;
+    reasonCopy = 0;
   }
 
   backdropViewRequiringReasons = self->_backdropViewRequiringReasons;
@@ -44,21 +44,21 @@
     v7 = self->_backdropViewRequiringReasons;
     self->_backdropViewRequiringReasons = v6;
 
-    v4 = v8;
+    reasonCopy = v8;
     backdropViewRequiringReasons = self->_backdropViewRequiringReasons;
   }
 
-  [(NSMutableSet *)backdropViewRequiringReasons addObject:v4];
+  [(NSMutableSet *)backdropViewRequiringReasons addObject:reasonCopy];
 }
 
-- (void)beginRequiringLiveBackdropViewForReason:(id)a3
+- (void)beginRequiringLiveBackdropViewForReason:(id)reason
 {
-  v4 = a3;
-  v8 = v4;
-  if (!v4)
+  reasonCopy = reason;
+  v8 = reasonCopy;
+  if (!reasonCopy)
   {
     [SBHomeScreenBackdropViewBase beginRequiringLiveBackdropViewForReason:];
-    v4 = 0;
+    reasonCopy = 0;
   }
 
   liveBackdropViewRequiringReasons = self->_liveBackdropViewRequiringReasons;
@@ -68,37 +68,37 @@
     v7 = self->_liveBackdropViewRequiringReasons;
     self->_liveBackdropViewRequiringReasons = v6;
 
-    v4 = v8;
+    reasonCopy = v8;
     liveBackdropViewRequiringReasons = self->_liveBackdropViewRequiringReasons;
   }
 
-  [(NSMutableSet *)liveBackdropViewRequiringReasons addObject:v4];
+  [(NSMutableSet *)liveBackdropViewRequiringReasons addObject:reasonCopy];
 }
 
-- (void)endRequiringBackdropViewForReason:(id)a3
+- (void)endRequiringBackdropViewForReason:(id)reason
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  reasonCopy = reason;
+  v5 = reasonCopy;
+  if (!reasonCopy)
   {
     [SBHomeScreenBackdropViewBase endRequiringBackdropViewForReason:];
-    v4 = 0;
+    reasonCopy = 0;
   }
 
-  [(NSMutableSet *)self->_backdropViewRequiringReasons removeObject:v4];
+  [(NSMutableSet *)self->_backdropViewRequiringReasons removeObject:reasonCopy];
 }
 
-- (void)endRequiringLiveBackdropViewForReason:(id)a3
+- (void)endRequiringLiveBackdropViewForReason:(id)reason
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  reasonCopy = reason;
+  v5 = reasonCopy;
+  if (!reasonCopy)
   {
     [SBHomeScreenBackdropViewBase endRequiringLiveBackdropViewForReason:];
-    v4 = 0;
+    reasonCopy = 0;
   }
 
-  [(NSMutableSet *)self->_liveBackdropViewRequiringReasons removeObject:v4];
+  [(NSMutableSet *)self->_liveBackdropViewRequiringReasons removeObject:reasonCopy];
 }
 
 - (SBHomeScreenBackdropViewBaseDelegate)delegate
@@ -108,7 +108,7 @@
   return WeakRetained;
 }
 
-- (void)setBlurProgress:(double)a3 behaviorMode:(int64_t)a4 completion:(id)a5
+- (void)setBlurProgress:(double)progress behaviorMode:(int64_t)mode completion:(id)completion
 {
   OUTLINED_FUNCTION_1_2();
   objc_opt_class();

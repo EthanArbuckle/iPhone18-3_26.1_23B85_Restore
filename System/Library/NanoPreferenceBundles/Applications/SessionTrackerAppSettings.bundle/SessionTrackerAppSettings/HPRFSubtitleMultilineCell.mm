@@ -1,30 +1,30 @@
 @interface HPRFSubtitleMultilineCell
-- (HPRFSubtitleMultilineCell)initWithCoder:(id)a3;
-- (HPRFSubtitleMultilineCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (HPRFSubtitleMultilineCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (HPRFSubtitleMultilineCell)initWithCoder:(id)coder;
+- (HPRFSubtitleMultilineCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (HPRFSubtitleMultilineCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation HPRFSubtitleMultilineCell
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   v8.receiver = self;
   v8.super_class = type metadata accessor for SubtitleMultilineCell();
   v4 = v8.receiver;
-  v5 = a3;
-  [(HPRFSubtitleMultilineCell *)&v8 refreshCellContentsWithSpecifier:v5];
-  v6 = [v4 detailTextLabel];
-  if (v6)
+  specifierCopy = specifier;
+  [(HPRFSubtitleMultilineCell *)&v8 refreshCellContentsWithSpecifier:specifierCopy];
+  detailTextLabel = [v4 detailTextLabel];
+  if (detailTextLabel)
   {
-    v7 = v6;
-    [v6 setNumberOfLines:0];
+    v7 = detailTextLabel;
+    [detailTextLabel setNumberOfLines:0];
   }
 }
 
-- (HPRFSubtitleMultilineCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (HPRFSubtitleMultilineCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
-  if (a4)
+  if (identifier)
   {
     v7 = sub_22874();
     v9 = v8;
@@ -36,13 +36,13 @@
     v9 = 0;
   }
 
-  v10 = a5;
-  return sub_1D948(a3, v7, v9, a5);
+  specifierCopy = specifier;
+  return sub_1D948(style, v7, v9, specifier);
 }
 
-- (HPRFSubtitleMultilineCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (HPRFSubtitleMultilineCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
     sub_22874();
     v6 = sub_22864();
@@ -55,17 +55,17 @@
 
   v9.receiver = self;
   v9.super_class = type metadata accessor for SubtitleMultilineCell();
-  v7 = [(HPRFSubtitleMultilineCell *)&v9 initWithStyle:a3 reuseIdentifier:v6];
+  v7 = [(HPRFSubtitleMultilineCell *)&v9 initWithStyle:style reuseIdentifier:v6];
 
   return v7;
 }
 
-- (HPRFSubtitleMultilineCell)initWithCoder:(id)a3
+- (HPRFSubtitleMultilineCell)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for SubtitleMultilineCell();
-  v4 = a3;
-  v5 = [(HPRFSubtitleMultilineCell *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(HPRFSubtitleMultilineCell *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

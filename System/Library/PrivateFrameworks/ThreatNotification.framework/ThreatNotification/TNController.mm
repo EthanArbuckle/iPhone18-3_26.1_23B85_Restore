@@ -1,10 +1,10 @@
 @interface TNController
 + (TNController)sharedInstance;
-- (BOOL)clearFollowUpItemWithError:(id *)a3;
+- (BOOL)clearFollowUpItemWithError:(id *)error;
 - (BOOL)isFollowUpItemPending;
 - (BOOL)isOnBoardingFlowRequired;
-- (BOOL)postFollowUpItemWithConfiguration:(id)a3 error:(id *)a4;
-- (BOOL)repostFollowUpItemIfNeededWithError:(id *)a3;
+- (BOOL)postFollowUpItemWithConfiguration:(id)configuration error:(id *)error;
+- (BOOL)repostFollowUpItemIfNeededWithError:(id *)error;
 @end
 
 @implementation TNController
@@ -26,7 +26,7 @@
   v3 = *(&self->super.isa + OBJC_IVAR___TNController_onBoardingController);
   v4 = *&self->followUpController[OBJC_IVAR___TNController_onBoardingController];
   swift_getObjectType();
-  v5 = self;
+  selfCopy = self;
   LOBYTE(v3) = sub_26F0494E0();
 
   return v3 & 1;
@@ -38,7 +38,7 @@
   MEMORY[0x28223BE20]();
   v5 = &v10 - v4;
   v6 = *(&self->super.isa + OBJC_IVAR___TNController_followUpController);
-  v7 = self;
+  selfCopy = self;
   sub_26F049490();
 
   v8 = sub_26F049450();
@@ -47,27 +47,27 @@
   return v6;
 }
 
-- (BOOL)postFollowUpItemWithConfiguration:(id)a3 error:(id *)a4
+- (BOOL)postFollowUpItemWithConfiguration:(id)configuration error:(id *)error
 {
-  v5 = a3;
-  v6 = self;
-  sub_26F04859C(v5);
+  configurationCopy = configuration;
+  selfCopy = self;
+  sub_26F04859C(configurationCopy);
 
   return 1;
 }
 
-- (BOOL)repostFollowUpItemIfNeededWithError:(id *)a3
+- (BOOL)repostFollowUpItemIfNeededWithError:(id *)error
 {
-  v3 = self;
+  selfCopy = self;
   sub_26F048D08();
 
   return 1;
 }
 
-- (BOOL)clearFollowUpItemWithError:(id *)a3
+- (BOOL)clearFollowUpItemWithError:(id *)error
 {
   v3 = *(&self->super.isa + OBJC_IVAR___TNController_followUpController);
-  v4 = self;
+  selfCopy = self;
   sub_26F049470();
 
   return 1;

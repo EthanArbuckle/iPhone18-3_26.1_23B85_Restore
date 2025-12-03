@@ -1,27 +1,27 @@
 @interface CLKUIDisplayLink
-- (CLKUIDisplayLink)initWithTarget:(id)a3 selector:(SEL)a4;
+- (CLKUIDisplayLink)initWithTarget:(id)target selector:(SEL)selector;
 - (void)invalidate;
 - (void)updateCoordinator;
 @end
 
 @implementation CLKUIDisplayLink
 
-- (CLKUIDisplayLink)initWithTarget:(id)a3 selector:(SEL)a4
+- (CLKUIDisplayLink)initWithTarget:(id)target selector:(SEL)selector
 {
-  v6 = a3;
+  targetCopy = target;
   v13.receiver = self;
   v13.super_class = CLKUIDisplayLink;
   v7 = [(CLKUIRenderFrequencyLink *)&v13 init];
   if (v7)
   {
-    v8 = [MEMORY[0x1E6979330] displayLinkWithTarget:v6 selector:a4];
+    v8 = [MEMORY[0x1E6979330] displayLinkWithTarget:targetCopy selector:selector];
     displayLink = v7->_displayLink;
     v7->_displayLink = v8;
 
     [(CADisplayLink *)v7->_displayLink setPaused:1];
     v10 = v7->_displayLink;
-    v11 = [MEMORY[0x1E695DFD0] mainRunLoop];
-    [(CADisplayLink *)v10 addToRunLoop:v11 forMode:*MEMORY[0x1E695DA28]];
+    mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+    [(CADisplayLink *)v10 addToRunLoop:mainRunLoop forMode:*MEMORY[0x1E695DA28]];
   }
 
   return v7;

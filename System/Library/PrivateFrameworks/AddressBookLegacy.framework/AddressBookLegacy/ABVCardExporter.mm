@@ -1,97 +1,97 @@
 @interface ABVCardExporter
-+ (id)_vCard21RepresentationOfRecords:(id)a3;
-+ (id)_vCard30RepresentationOfRecords:(id)a3;
-+ (id)vCardRepresentationOfRecord:(void *)a3 mode:(int)a4;
-+ (id)vCardRepresentationOfRecords:(id)a3 mode:(int)a4;
++ (id)_vCard21RepresentationOfRecords:(id)records;
++ (id)_vCard30RepresentationOfRecords:(id)records;
++ (id)vCardRepresentationOfRecord:(void *)record mode:(int)mode;
++ (id)vCardRepresentationOfRecords:(id)records mode:(int)mode;
 @end
 
 @implementation ABVCardExporter
 
-+ (id)_vCard21RepresentationOfRecords:(id)a3
++ (id)_vCard21RepresentationOfRecords:(id)records
 {
-  v3 = [a3 objectEnumerator];
-  v4 = [MEMORY[0x1E695DF88] data];
-  v5 = [v3 nextObject];
-  if (v5)
+  objectEnumerator = [records objectEnumerator];
+  data = [MEMORY[0x1E695DF88] data];
+  nextObject = [objectEnumerator nextObject];
+  if (nextObject)
   {
-    v6 = v5;
+    nextObject2 = nextObject;
     do
     {
-      v7 = [[ABVCardRecord alloc] initWithRecord:v6];
-      [v4 appendData:{-[ABVCardRecord _21vCardRepresentationAsData](v7, "_21vCardRepresentationAsData")}];
+      v7 = [[ABVCardRecord alloc] initWithRecord:nextObject2];
+      [data appendData:{-[ABVCardRecord _21vCardRepresentationAsData](v7, "_21vCardRepresentationAsData")}];
 
-      v6 = [v3 nextObject];
+      nextObject2 = [objectEnumerator nextObject];
     }
 
-    while (v6);
+    while (nextObject2);
   }
 
-  return v4;
+  return data;
 }
 
-+ (id)_vCard30RepresentationOfRecords:(id)a3
++ (id)_vCard30RepresentationOfRecords:(id)records
 {
-  v3 = [a3 objectEnumerator];
-  v4 = [MEMORY[0x1E696AD60] string];
-  v5 = [v3 nextObject];
-  if (v5)
+  objectEnumerator = [records objectEnumerator];
+  string = [MEMORY[0x1E696AD60] string];
+  nextObject = [objectEnumerator nextObject];
+  if (nextObject)
   {
-    v6 = v5;
+    nextObject2 = nextObject;
     do
     {
-      v7 = [[ABVCardRecord alloc] initWithRecord:v6];
+      v7 = [[ABVCardRecord alloc] initWithRecord:nextObject2];
       v8 = [(ABVCardRecord *)v7 _copyVCardRepresentationAsStringIncludeExternalProperties:0 withPhoto:0 extraPhotoParameters:0 includePrivateData:0 includeWallpaper:0];
-      [v4 appendString:v8];
+      [string appendString:v8];
 
-      v6 = [v3 nextObject];
+      nextObject2 = [objectEnumerator nextObject];
     }
 
-    while (v6);
+    while (nextObject2);
   }
 
-  v9 = [v4 copyABVCardDataRepresentation];
+  copyABVCardDataRepresentation = [string copyABVCardDataRepresentation];
   ABRegulatoryLogReadTransmitContactsData();
 
-  return v9;
+  return copyABVCardDataRepresentation;
 }
 
-+ (id)vCardRepresentationOfRecords:(id)a3 mode:(int)a4
++ (id)vCardRepresentationOfRecords:(id)records mode:(int)mode
 {
-  if (a4 == 1)
+  if (mode == 1)
   {
-    return [ABVCardExporter _vCard30RepresentationOfRecords:a3];
+    return [ABVCardExporter _vCard30RepresentationOfRecords:records];
   }
 
-  if (a4)
+  if (mode)
   {
     return 0;
   }
 
-  return [ABVCardExporter _vCard21RepresentationOfRecords:a3];
+  return [ABVCardExporter _vCard21RepresentationOfRecords:records];
 }
 
-+ (id)vCardRepresentationOfRecord:(void *)a3 mode:(int)a4
++ (id)vCardRepresentationOfRecord:(void *)record mode:(int)mode
 {
-  v5 = [[ABVCardRecord alloc] initWithRecord:a3];
+  v5 = [[ABVCardRecord alloc] initWithRecord:record];
   v6 = v5;
-  if (a4 == 1)
+  if (mode == 1)
   {
     v8 = [(ABVCardRecord *)v5 _copyVCardRepresentationAsStringIncludeExternalProperties:0 withPhoto:0 extraPhotoParameters:0 includePrivateData:0 includeWallpaper:0];
-    v7 = [v8 copyABVCardDataRepresentation];
+    copyABVCardDataRepresentation = [v8 copyABVCardDataRepresentation];
     ABRegulatoryLogReadTransmitContactsData();
   }
 
-  else if (a4)
+  else if (mode)
   {
-    v7 = 0;
+    copyABVCardDataRepresentation = 0;
   }
 
   else
   {
-    v7 = [(ABVCardRecord *)v5 _21vCardRepresentationAsData];
+    copyABVCardDataRepresentation = [(ABVCardRecord *)v5 _21vCardRepresentationAsData];
   }
 
-  return v7;
+  return copyABVCardDataRepresentation;
 }
 
 @end

@@ -1,22 +1,22 @@
 @interface SSBinaryPromise
 + (id)_globalPromiseStorage;
 + (id)_globalPromiseStorageAccessQueue;
-+ (id)promiseWithError:(id)a3;
-+ (id)promiseWithPromise:(id)a3;
++ (id)promiseWithError:(id)error;
++ (id)promiseWithPromise:(id)promise;
 + (id)promiseWithSuccess;
-- (BOOL)finishWithError:(id)a3;
+- (BOOL)finishWithError:(id)error;
 - (BOOL)finishWithSuccess;
-- (BOOL)resultWithError:(id *)a3;
-- (BOOL)resultWithTimeout:(double)a3 error:(id *)a4;
+- (BOOL)resultWithError:(id *)error;
+- (BOOL)resultWithTimeout:(double)timeout error:(id *)error;
 - (SSBinaryPromise)init;
 - (id)completionHandlerAdapter;
 - (id)promiseAdapter;
 - (void)_removeFromGlobalPromiseStorage;
-- (void)addErrorBlock:(id)a3;
-- (void)addFinishBlock:(id)a3;
-- (void)addSuccessBlock:(id)a3;
+- (void)addErrorBlock:(id)block;
+- (void)addFinishBlock:(id)block;
+- (void)addSuccessBlock:(id)block;
 - (void)waitUntilFinished;
-- (void)waitUntilFinishedWithTimeout:(double)a3;
+- (void)waitUntilFinishedWithTimeout:(double)timeout;
 @end
 
 @implementation SSBinaryPromise
@@ -50,18 +50,18 @@ void __23__SSBinaryPromise_init__block_invoke(uint64_t a1)
   [v2 addObject:*(a1 + 32)];
 }
 
-+ (id)promiseWithError:(id)a3
++ (id)promiseWithError:(id)error
 {
-  v3 = a3;
+  errorCopy = error;
   v4 = objc_alloc_init(SSBinaryPromise);
-  [(SSBinaryPromise *)v4 finishWithError:v3];
+  [(SSBinaryPromise *)v4 finishWithError:errorCopy];
 
   return v4;
 }
 
-+ (id)promiseWithPromise:(id)a3
++ (id)promiseWithPromise:(id)promise
 {
-  v3 = a3;
+  promiseCopy = promise;
   v4 = objc_alloc_init(SSBinaryPromise);
   objc_initWeak(&location, v4);
   v8[0] = MEMORY[0x1E69E9820];
@@ -69,13 +69,13 @@ void __23__SSBinaryPromise_init__block_invoke(uint64_t a1)
   v8[2] = __38__SSBinaryPromise_promiseWithPromise___block_invoke;
   v8[3] = &unk_1E84AEFA0;
   objc_copyWeak(&v9, &location);
-  [v3 addSuccessBlock:v8];
+  [promiseCopy addSuccessBlock:v8];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __38__SSBinaryPromise_promiseWithPromise___block_invoke_2;
   v6[3] = &unk_1E84AE400;
   objc_copyWeak(&v7, &location);
-  [v3 addErrorBlock:v6];
+  [promiseCopy addErrorBlock:v6];
   objc_destroyWeak(&v7);
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -104,24 +104,24 @@ void __38__SSBinaryPromise_promiseWithPromise___block_invoke_2(uint64_t a1, void
   return v2;
 }
 
-- (void)addErrorBlock:(id)a3
+- (void)addErrorBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(SSBinaryPromise *)self backingPromise];
-  [v5 addErrorBlock:v4];
+  blockCopy = block;
+  backingPromise = [(SSBinaryPromise *)self backingPromise];
+  [backingPromise addErrorBlock:blockCopy];
 }
 
-- (void)addFinishBlock:(id)a3
+- (void)addFinishBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(SSBinaryPromise *)self backingPromise];
+  blockCopy = block;
+  backingPromise = [(SSBinaryPromise *)self backingPromise];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __34__SSBinaryPromise_addFinishBlock___block_invoke;
   v7[3] = &unk_1E84AE9C8;
-  v8 = v4;
-  v6 = v4;
-  [v5 addFinishBlock:v7];
+  v8 = blockCopy;
+  v6 = blockCopy;
+  [backingPromise addFinishBlock:v7];
 }
 
 void __34__SSBinaryPromise_addFinishBlock___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -131,24 +131,24 @@ void __34__SSBinaryPromise_addFinishBlock___block_invoke(uint64_t a1, void *a2, 
   (*(v4 + 16))(v4, [a2 BOOLValue], v5);
 }
 
-- (void)addSuccessBlock:(id)a3
+- (void)addSuccessBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(SSBinaryPromise *)self backingPromise];
+  blockCopy = block;
+  backingPromise = [(SSBinaryPromise *)self backingPromise];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __35__SSBinaryPromise_addSuccessBlock___block_invoke;
   v7[3] = &unk_1E84AEFC8;
-  v8 = v4;
-  v6 = v4;
-  [v5 addSuccessBlock:v7];
+  v8 = blockCopy;
+  v6 = blockCopy;
+  [backingPromise addSuccessBlock:v7];
 }
 
-- (BOOL)finishWithError:(id)a3
+- (BOOL)finishWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(SSBinaryPromise *)self backingPromise];
-  v6 = [v5 finishWithError:v4];
+  errorCopy = error;
+  backingPromise = [(SSBinaryPromise *)self backingPromise];
+  v6 = [backingPromise finishWithError:errorCopy];
 
   [(SSBinaryPromise *)self _removeFromGlobalPromiseStorage];
   return v6;
@@ -156,41 +156,41 @@ void __34__SSBinaryPromise_addFinishBlock___block_invoke(uint64_t a1, void *a2, 
 
 - (BOOL)finishWithSuccess
 {
-  v3 = [(SSBinaryPromise *)self backingPromise];
-  v4 = [v3 finishWithResult:MEMORY[0x1E695E118]];
+  backingPromise = [(SSBinaryPromise *)self backingPromise];
+  v4 = [backingPromise finishWithResult:MEMORY[0x1E695E118]];
 
   [(SSBinaryPromise *)self _removeFromGlobalPromiseStorage];
   return v4;
 }
 
-- (BOOL)resultWithError:(id *)a3
+- (BOOL)resultWithError:(id *)error
 {
-  v4 = [(SSBinaryPromise *)self backingPromise];
-  v5 = [v4 resultWithError:a3];
-  LOBYTE(a3) = v5 != 0;
+  backingPromise = [(SSBinaryPromise *)self backingPromise];
+  v5 = [backingPromise resultWithError:error];
+  LOBYTE(error) = v5 != 0;
 
-  return a3;
+  return error;
 }
 
-- (BOOL)resultWithTimeout:(double)a3 error:(id *)a4
+- (BOOL)resultWithTimeout:(double)timeout error:(id *)error
 {
-  v6 = [(SSBinaryPromise *)self backingPromise];
-  v7 = [v6 resultWithTimeout:a4 error:a3];
-  LOBYTE(a4) = v7 != 0;
+  backingPromise = [(SSBinaryPromise *)self backingPromise];
+  v7 = [backingPromise resultWithTimeout:error error:timeout];
+  LOBYTE(error) = v7 != 0;
 
-  return a4;
+  return error;
 }
 
 - (void)waitUntilFinished
 {
-  v2 = [(SSBinaryPromise *)self backingPromise];
-  [v2 waitUntilFinished];
+  backingPromise = [(SSBinaryPromise *)self backingPromise];
+  [backingPromise waitUntilFinished];
 }
 
-- (void)waitUntilFinishedWithTimeout:(double)a3
+- (void)waitUntilFinishedWithTimeout:(double)timeout
 {
-  v4 = [(SSBinaryPromise *)self backingPromise];
-  [v4 waitUntilFinishedWithTimeout:a3];
+  backingPromise = [(SSBinaryPromise *)self backingPromise];
+  [backingPromise waitUntilFinishedWithTimeout:timeout];
 }
 
 - (id)completionHandlerAdapter

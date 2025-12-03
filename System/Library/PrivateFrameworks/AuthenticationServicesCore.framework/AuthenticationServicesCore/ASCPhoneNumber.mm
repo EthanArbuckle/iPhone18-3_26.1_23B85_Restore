@@ -1,16 +1,16 @@
 @interface ASCPhoneNumber
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_TtC26AuthenticationServicesCore14ASCPhoneNumber)init;
 - (int64_t)hash;
 @end
 
 @implementation ASCPhoneNumber
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_1C2170E24();
     swift_unknownObjectRelease();
@@ -19,7 +19,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = sub_1C2127ECC(v8);
@@ -31,14 +31,14 @@
 - (int64_t)hash
 {
   v2 = *(&self->super.isa + OBJC_IVAR____TtC26AuthenticationServicesCore14ASCPhoneNumber_cnPhoneNumber);
-  v3 = self;
-  v4 = [v2 unformattedInternationalStringValue];
-  if (!v4)
+  selfCopy = self;
+  unformattedInternationalStringValue = [v2 unformattedInternationalStringValue];
+  if (!unformattedInternationalStringValue)
   {
-    v4 = [v2 stringValue];
+    unformattedInternationalStringValue = [v2 stringValue];
   }
 
-  v5 = v4;
+  v5 = unformattedInternationalStringValue;
   v6 = sub_1C2170914();
   v8 = v7;
 

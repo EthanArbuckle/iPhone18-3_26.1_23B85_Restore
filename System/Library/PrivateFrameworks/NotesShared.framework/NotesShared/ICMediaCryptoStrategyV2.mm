@@ -1,15 +1,15 @@
 @interface ICMediaCryptoStrategyV2
-- (BOOL)encryptFileFromURL:(id)a3 toURL:(id)a4;
+- (BOOL)encryptFileFromURL:(id)l toURL:(id)rL;
 - (id)decryptedData;
 @end
 
 @implementation ICMediaCryptoStrategyV2
 
-- (BOOL)encryptFileFromURL:(id)a3 toURL:(id)a4
+- (BOOL)encryptFileFromURL:(id)l toURL:(id)rL
 {
   v7.receiver = self;
   v7.super_class = ICMediaCryptoStrategyV2;
-  v5 = [(ICCloudSyncingObjectCryptoStrategyV2 *)&v7 encryptFileFromURL:a3 toURL:a4];
+  v5 = [(ICCloudSyncingObjectCryptoStrategyV2 *)&v7 encryptFileFromURL:l toURL:rL];
   [(ICCryptoStrategyBase *)self performBlockIfMediaExists:&__block_literal_global_20];
   return v5;
 }

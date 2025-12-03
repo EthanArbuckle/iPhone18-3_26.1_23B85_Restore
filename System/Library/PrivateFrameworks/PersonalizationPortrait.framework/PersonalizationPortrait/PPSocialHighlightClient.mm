@@ -1,14 +1,14 @@
 @interface PPSocialHighlightClient
 + (id)sharedInstance;
-- (BOOL)rankedCollaborationsWithLimit:(unint64_t)a3 client:(id)a4 variant:(id)a5 error:(id *)a6 handleBatch:(id)a7;
-- (BOOL)rankedHighlightsForSyncedItems:(id)a3 client:(id)a4 variant:(id)a5 error:(id *)a6 handleBatch:(id)a7;
-- (BOOL)rankedHighlightsWithLimit:(unint64_t)a3 client:(id)a4 variant:(id)a5 error:(id *)a6 handleBatch:(id)a7;
+- (BOOL)rankedCollaborationsWithLimit:(unint64_t)limit client:(id)client variant:(id)variant error:(id *)error handleBatch:(id)batch;
+- (BOOL)rankedHighlightsForSyncedItems:(id)items client:(id)client variant:(id)variant error:(id *)error handleBatch:(id)batch;
+- (BOOL)rankedHighlightsWithLimit:(unint64_t)limit client:(id)client variant:(id)variant error:(id *)error handleBatch:(id)batch;
 - (PPSocialHighlightClient)init;
 - (double)decayInterval;
-- (id)attributionForIdentifier:(id)a3 error:(id *)a4;
+- (id)attributionForIdentifier:(id)identifier error:(id *)error;
 - (void)_unblockPendingQueries;
-- (void)feedbackForAttribution:(id)a3 type:(unint64_t)a4 client:(id)a5 variant:(id)a6 completion:(id)a7;
-- (void)feedbackForHighlight:(id)a3 type:(unint64_t)a4 client:(id)a5 variant:(id)a6 completion:(id)a7;
+- (void)feedbackForAttribution:(id)attribution type:(unint64_t)type client:(id)client variant:(id)variant completion:(id)completion;
+- (void)feedbackForHighlight:(id)highlight type:(unint64_t)type client:(id)client variant:(id)variant completion:(id)completion;
 @end
 
 @implementation PPSocialHighlightClient
@@ -19,7 +19,7 @@
   block[1] = 3221225472;
   block[2] = __41__PPSocialHighlightClient_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance__pasOnceToken6 != -1)
   {
     dispatch_once(&sharedInstance__pasOnceToken6, block);
@@ -89,30 +89,30 @@ void __41__PPSocialHighlightClient_sharedInstance__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (void)feedbackForAttribution:(id)a3 type:(unint64_t)a4 client:(id)a5 variant:(id)a6 completion:(id)a7
+- (void)feedbackForAttribution:(id)attribution type:(unint64_t)type client:(id)client variant:(id)variant completion:(id)completion
 {
   v29 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  attributionCopy = attribution;
+  clientCopy = client;
+  variantCopy = variant;
+  completionCopy = completion;
   v16 = pp_social_highlights_log_handle();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
     v21 = 138413058;
-    v22 = v12;
+    v22 = attributionCopy;
     v23 = 2048;
-    v24 = a4;
+    typeCopy = type;
     v25 = 2112;
-    v26 = v13;
+    v26 = clientCopy;
     v27 = 2112;
-    v28 = v14;
+    v28 = variantCopy;
     _os_log_impl(&dword_1A7FD3000, v16, OS_LOG_TYPE_DEFAULT, "Received feedback for attribution: %@ with type: %lu from client: '%@' variant: '%@'", &v21, 0x2Au);
   }
 
-  if (v15)
+  if (completionCopy)
   {
-    v17 = v15;
+    v17 = completionCopy;
   }
 
   else
@@ -122,36 +122,36 @@ void __41__PPSocialHighlightClient_sharedInstance__block_invoke(uint64_t a1)
 
   v18 = MEMORY[0x1AC568040](v17);
 
-  v19 = [(PPSocialHighlightClient *)self _remoteObjectProxy];
-  [v19 feedbackForAttribution:v12 type:a4 client:v13 variant:v14 completion:v18];
+  _remoteObjectProxy = [(PPSocialHighlightClient *)self _remoteObjectProxy];
+  [_remoteObjectProxy feedbackForAttribution:attributionCopy type:type client:clientCopy variant:variantCopy completion:v18];
 
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)feedbackForHighlight:(id)a3 type:(unint64_t)a4 client:(id)a5 variant:(id)a6 completion:(id)a7
+- (void)feedbackForHighlight:(id)highlight type:(unint64_t)type client:(id)client variant:(id)variant completion:(id)completion
 {
   v29 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  highlightCopy = highlight;
+  clientCopy = client;
+  variantCopy = variant;
+  completionCopy = completion;
   v16 = pp_social_highlights_log_handle();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
     v21 = 138413058;
-    v22 = v12;
+    v22 = highlightCopy;
     v23 = 2048;
-    v24 = a4;
+    typeCopy = type;
     v25 = 2112;
-    v26 = v13;
+    v26 = clientCopy;
     v27 = 2112;
-    v28 = v14;
+    v28 = variantCopy;
     _os_log_impl(&dword_1A7FD3000, v16, OS_LOG_TYPE_DEFAULT, "Received feedback for highlight: %@ with type: %lu from client: '%@' variant: '%@'", &v21, 0x2Au);
   }
 
-  if (v15)
+  if (completionCopy)
   {
-    v17 = v15;
+    v17 = completionCopy;
   }
 
   else
@@ -161,15 +161,15 @@ void __41__PPSocialHighlightClient_sharedInstance__block_invoke(uint64_t a1)
 
   v18 = MEMORY[0x1AC568040](v17);
 
-  v19 = [(PPSocialHighlightClient *)self _remoteObjectProxy];
-  [v19 feedbackForHighlight:v12 type:a4 client:v13 variant:v14 completion:v18];
+  _remoteObjectProxy = [(PPSocialHighlightClient *)self _remoteObjectProxy];
+  [_remoteObjectProxy feedbackForHighlight:highlightCopy type:type client:clientCopy variant:variantCopy completion:v18];
 
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (id)attributionForIdentifier:(id)a3 error:(id *)a4
+- (id)attributionForIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -197,11 +197,11 @@ void __41__PPSocialHighlightClient_sharedInstance__block_invoke(uint64_t a1)
   v12[5] = &v14;
   v8 = MEMORY[0x1AC568040](v12);
   v9 = [(PPSocialHighlightClient *)self _synchronousRemoteObjectProxyWithErrorHandler:v7];
-  [v9 attributionForIdentifier:v6 completion:v8];
+  [v9 attributionForIdentifier:identifierCopy completion:v8];
 
-  if (a4)
+  if (error)
   {
-    *a4 = v15[5];
+    *error = v15[5];
   }
 
   v10 = v21[5];
@@ -238,12 +238,12 @@ void __58__PPSocialHighlightClient_attributionForIdentifier_error___block_invoke
   *(v9 + 40) = v6;
 }
 
-- (BOOL)rankedHighlightsForSyncedItems:(id)a3 client:(id)a4 variant:(id)a5 error:(id *)a6 handleBatch:(id)a7
+- (BOOL)rankedHighlightsForSyncedItems:(id)items client:(id)client variant:(id)variant error:(id *)error handleBatch:(id)batch
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  itemsCopy = items;
+  clientCopy = client;
+  variantCopy = variant;
+  batchCopy = batch;
   v16 = pp_social_highlights_log_handle();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
   {
@@ -258,21 +258,21 @@ void __58__PPSocialHighlightClient_attributionForIdentifier_error___block_invoke
   v29[2] = __91__PPSocialHighlightClient_rankedHighlightsForSyncedItems_client_variant_error_handleBatch___block_invoke;
   v29[3] = &unk_1E77F6948;
   v29[4] = self;
-  v30 = v12;
-  v31 = v13;
-  v32 = v14;
+  v30 = itemsCopy;
+  v31 = clientCopy;
+  v32 = variantCopy;
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __91__PPSocialHighlightClient_rankedHighlightsForSyncedItems_client_variant_error_handleBatch___block_invoke_2;
   v25[3] = &unk_1E77F79C0;
-  v27 = v15;
+  v27 = batchCopy;
   v28 = v17;
   v26 = @"rankedHighlightsForSyncedItems";
-  v19 = v15;
-  v20 = v14;
-  v21 = v13;
-  v22 = v12;
-  v23 = [(PPXPCClientPipelinedBatchQueryManager *)queryManager syncExecuteQueryWithName:@"rankedHighlightsForSyncedItems" error:a6 queryInitializer:v29 handleBatch:v25];
+  v19 = batchCopy;
+  v20 = variantCopy;
+  v21 = clientCopy;
+  v22 = itemsCopy;
+  v23 = [(PPXPCClientPipelinedBatchQueryManager *)queryManager syncExecuteQueryWithName:@"rankedHighlightsForSyncedItems" error:error queryInitializer:v29 handleBatch:v25];
 
   return v23;
 }
@@ -292,11 +292,11 @@ void __91__PPSocialHighlightClient_rankedHighlightsForSyncedItems_client_variant
   (*(a1[5] + 16))();
 }
 
-- (BOOL)rankedCollaborationsWithLimit:(unint64_t)a3 client:(id)a4 variant:(id)a5 error:(id *)a6 handleBatch:(id)a7
+- (BOOL)rankedCollaborationsWithLimit:(unint64_t)limit client:(id)client variant:(id)variant error:(id *)error handleBatch:(id)batch
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a7;
+  clientCopy = client;
+  variantCopy = variant;
+  batchCopy = batch;
   v15 = pp_social_highlights_log_handle();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
   {
@@ -311,20 +311,20 @@ void __91__PPSocialHighlightClient_rankedHighlightsForSyncedItems_client_variant
   v27[2] = __90__PPSocialHighlightClient_rankedCollaborationsWithLimit_client_variant_error_handleBatch___block_invoke;
   v27[3] = &unk_1E77F6920;
   v27[4] = self;
-  v28 = v12;
-  v29 = v13;
-  v30 = a3;
+  v28 = clientCopy;
+  v29 = variantCopy;
+  limitCopy = limit;
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __90__PPSocialHighlightClient_rankedCollaborationsWithLimit_client_variant_error_handleBatch___block_invoke_2;
   v23[3] = &unk_1E77F79C0;
-  v25 = v14;
+  v25 = batchCopy;
   v26 = v16;
   v24 = @"rankedCollaborationsWithLimit";
-  v18 = v14;
-  v19 = v13;
-  v20 = v12;
-  v21 = [(PPXPCClientPipelinedBatchQueryManager *)queryManager syncExecuteQueryWithName:@"rankedCollaborationsWithLimit" error:a6 queryInitializer:v27 handleBatch:v23];
+  v18 = batchCopy;
+  v19 = variantCopy;
+  v20 = clientCopy;
+  v21 = [(PPXPCClientPipelinedBatchQueryManager *)queryManager syncExecuteQueryWithName:@"rankedCollaborationsWithLimit" error:error queryInitializer:v27 handleBatch:v23];
 
   return v21;
 }
@@ -344,11 +344,11 @@ void __90__PPSocialHighlightClient_rankedCollaborationsWithLimit_client_variant_
   (*(a1[5] + 16))();
 }
 
-- (BOOL)rankedHighlightsWithLimit:(unint64_t)a3 client:(id)a4 variant:(id)a5 error:(id *)a6 handleBatch:(id)a7
+- (BOOL)rankedHighlightsWithLimit:(unint64_t)limit client:(id)client variant:(id)variant error:(id *)error handleBatch:(id)batch
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a7;
+  clientCopy = client;
+  variantCopy = variant;
+  batchCopy = batch;
   v15 = pp_social_highlights_log_handle();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
   {
@@ -363,20 +363,20 @@ void __90__PPSocialHighlightClient_rankedCollaborationsWithLimit_client_variant_
   v27[2] = __86__PPSocialHighlightClient_rankedHighlightsWithLimit_client_variant_error_handleBatch___block_invoke;
   v27[3] = &unk_1E77F6920;
   v27[4] = self;
-  v28 = v12;
-  v29 = v13;
-  v30 = a3;
+  v28 = clientCopy;
+  v29 = variantCopy;
+  limitCopy = limit;
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __86__PPSocialHighlightClient_rankedHighlightsWithLimit_client_variant_error_handleBatch___block_invoke_2;
   v23[3] = &unk_1E77F79C0;
-  v25 = v14;
+  v25 = batchCopy;
   v26 = v16;
   v24 = @"rankedHighlightsWithLimit";
-  v18 = v14;
-  v19 = v13;
-  v20 = v12;
-  v21 = [(PPXPCClientPipelinedBatchQueryManager *)queryManager syncExecuteQueryWithName:@"rankedHighlightsWithLimit" error:a6 queryInitializer:v27 handleBatch:v23];
+  v18 = batchCopy;
+  v19 = variantCopy;
+  v20 = clientCopy;
+  v21 = [(PPXPCClientPipelinedBatchQueryManager *)queryManager syncExecuteQueryWithName:@"rankedHighlightsWithLimit" error:error queryInitializer:v27 handleBatch:v23];
 
   return v21;
 }

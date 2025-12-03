@@ -1,30 +1,30 @@
 @interface VCStreamOutputManager
 + (id)sharedInstance;
-- (BOOL)sourceExistsForStreamToken:(int64_t)a3;
+- (BOOL)sourceExistsForStreamToken:(int64_t)token;
 - (VCStreamOutputManager)init;
-- (id)allocDispatchedStreamOutputWithStreamToken:(int64_t)a3 clientPid:(int)a4 options:(id)a5 errorCode:(int *)a6;
-- (id)allocStreamOutputWithStreamToken:(int64_t)a3 clientPid:(int)a4 options:(id)a5 errorCode:(int *)a6;
-- (id)serviceHandlerStreamOutputInitializeWithArguments:(id)a3 error:(id *)a4;
-- (id)serviceHandlerStreamOutputNotifyCacheWithArguments:(id)a3 error:(id *)a4;
-- (id)serviceHandlerStreamOutputTerminateWithArguments:(id)a3 error:(id *)a4;
-- (void)cleanupStreamOutput:(id)a3;
+- (id)allocDispatchedStreamOutputWithStreamToken:(int64_t)token clientPid:(int)pid options:(id)options errorCode:(int *)code;
+- (id)allocStreamOutputWithStreamToken:(int64_t)token clientPid:(int)pid options:(id)options errorCode:(int *)code;
+- (id)serviceHandlerStreamOutputInitializeWithArguments:(id)arguments error:(id *)error;
+- (id)serviceHandlerStreamOutputNotifyCacheWithArguments:(id)arguments error:(id *)error;
+- (id)serviceHandlerStreamOutputTerminateWithArguments:(id)arguments error:(id *)error;
+- (void)cleanupStreamOutput:(id)output;
 - (void)dealloc;
 - (void)deregisterBlocksForService;
-- (void)deregisterStreamOutputSourceForStreamToken:(int64_t)a3;
-- (void)dispatchedCleanupStreamOutput:(id)a3;
-- (void)dispatchedDeregisterStreamOutputSourceForStreamToken:(int64_t)a3;
-- (void)dispatchedRegisterStreamOutputSource:(id)a3 forStreamToken:(int64_t)a4;
-- (void)dispatchedRemoteMediaDidStall:(BOOL)a3 streamToken:(int64_t)a4;
-- (void)dispatchedRemoteVideoDidDegrade:(BOOL)a3 streamToken:(int64_t)a4;
-- (void)dispatchedRemoteVideoDidPause:(BOOL)a3 streamToken:(int64_t)a4;
-- (void)dispatchedRemoteVideoDidSuspend:(BOOL)a3 streamToken:(int64_t)a4;
+- (void)deregisterStreamOutputSourceForStreamToken:(int64_t)token;
+- (void)dispatchedCleanupStreamOutput:(id)output;
+- (void)dispatchedDeregisterStreamOutputSourceForStreamToken:(int64_t)token;
+- (void)dispatchedRegisterStreamOutputSource:(id)source forStreamToken:(int64_t)token;
+- (void)dispatchedRemoteMediaDidStall:(BOOL)stall streamToken:(int64_t)token;
+- (void)dispatchedRemoteVideoDidDegrade:(BOOL)degrade streamToken:(int64_t)token;
+- (void)dispatchedRemoteVideoDidPause:(BOOL)pause streamToken:(int64_t)token;
+- (void)dispatchedRemoteVideoDidSuspend:(BOOL)suspend streamToken:(int64_t)token;
 - (void)init;
 - (void)registerBlocksForService;
-- (void)registerStreamOutputSource:(id)a3 forStreamToken:(int64_t)a4;
-- (void)remoteMediaDidStall:(BOOL)a3 streamToken:(int64_t)a4;
-- (void)remoteVideoDidDegrade:(BOOL)a3 streamToken:(int64_t)a4;
-- (void)remoteVideoDidPause:(BOOL)a3 streamToken:(int64_t)a4;
-- (void)remoteVideoDidSuspend:(BOOL)a3 streamToken:(int64_t)a4;
+- (void)registerStreamOutputSource:(id)source forStreamToken:(int64_t)token;
+- (void)remoteMediaDidStall:(BOOL)stall streamToken:(int64_t)token;
+- (void)remoteVideoDidDegrade:(BOOL)degrade streamToken:(int64_t)token;
+- (void)remoteVideoDidPause:(BOOL)pause streamToken:(int64_t)token;
+- (void)remoteVideoDidSuspend:(BOOL)suspend streamToken:(int64_t)token;
 @end
 
 @implementation VCStreamOutputManager
@@ -104,7 +104,7 @@
   [(VCStreamOutputManager *)&v5 dealloc];
 }
 
-- (void)cleanupStreamOutput:(id)a3
+- (void)cleanupStreamOutput:(id)output
 {
   block[6] = *MEMORY[0x1E69E9840];
   stateQueue = self->_stateQueue;
@@ -113,16 +113,16 @@
   block[2] = __45__VCStreamOutputManager_cleanupStreamOutput___block_invoke;
   block[3] = &unk_1E85F37F0;
   block[4] = self;
-  block[5] = a3;
+  block[5] = output;
   dispatch_async(stateQueue, block);
 }
 
-- (void)dispatchedCleanupStreamOutput:(id)a3
+- (void)dispatchedCleanupStreamOutput:(id)output
 {
   dispatch_assert_queue_V2(self->_stateQueue);
-  if (a3)
+  if (output)
   {
-    v5 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:{objc_msgSend(a3, "streamToken")}];
+    v5 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:{objc_msgSend(output, "streamToken")}];
     [(NSMutableDictionary *)self->_streamOutputs setObject:0 forKeyedSubscript:v5];
   }
 }
@@ -144,7 +144,7 @@ VCStreamOutputManager *__39__VCStreamOutputManager_sharedInstance__block_invoke(
   return result;
 }
 
-- (void)registerStreamOutputSource:(id)a3 forStreamToken:(int64_t)a4
+- (void)registerStreamOutputSource:(id)source forStreamToken:(int64_t)token
 {
   v5[7] = *MEMORY[0x1E69E9840];
   stateQueue = self->_stateQueue;
@@ -153,16 +153,16 @@ VCStreamOutputManager *__39__VCStreamOutputManager_sharedInstance__block_invoke(
   v5[2] = __67__VCStreamOutputManager_registerStreamOutputSource_forStreamToken___block_invoke;
   v5[3] = &unk_1E85F50D8;
   v5[4] = self;
-  v5[5] = a3;
-  v5[6] = a4;
+  v5[5] = source;
+  v5[6] = token;
   dispatch_async(stateQueue, v5);
 }
 
-- (void)dispatchedRegisterStreamOutputSource:(id)a3 forStreamToken:(int64_t)a4
+- (void)dispatchedRegisterStreamOutputSource:(id)source forStreamToken:(int64_t)token
 {
-  v4 = a4;
+  tokenCopy = token;
   v41 = *MEMORY[0x1E69E9840];
-  v7 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:a4];
+  v7 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:token];
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
@@ -208,7 +208,7 @@ VCStreamOutputManager *__39__VCStreamOutputManager_sharedInstance__block_invoke(
     }
   }
 
-  [(NSMutableDictionary *)self->_streamOutputSourceForStreamToken setObject:a3 forKeyedSubscript:v7];
+  [(NSMutableDictionary *)self->_streamOutputSourceForStreamToken setObject:source forKeyedSubscript:v7];
   if (objc_opt_class() == self)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -224,9 +224,9 @@ VCStreamOutputManager *__39__VCStreamOutputManager_sharedInstance__block_invoke(
         v26 = 1024;
         v27 = 135;
         v28 = 2048;
-        v29 = a3;
+        sourceCopy = source;
         v30 = 1024;
-        LODWORD(v31) = v4;
+        LODWORD(selfCopy) = tokenCopy;
         v17 = " [%s] %s:%d Source=%p registered for streamToken=%u";
         v18 = v16;
         v19 = 44;
@@ -261,13 +261,13 @@ LABEL_22:
         v26 = 1024;
         v27 = 135;
         v28 = 2112;
-        v29 = v14;
+        sourceCopy = v14;
         v30 = 2048;
-        v31 = self;
+        selfCopy = self;
         v32 = 2048;
-        v33 = a3;
+        sourceCopy2 = source;
         v34 = 1024;
-        v35 = v4;
+        v35 = tokenCopy;
         v17 = " [%s] %s:%d %@(%p) Source=%p registered for streamToken=%u";
         v18 = v21;
         v19 = 64;
@@ -279,7 +279,7 @@ LABEL_22:
 LABEL_23:
 }
 
-- (void)deregisterStreamOutputSourceForStreamToken:(int64_t)a3
+- (void)deregisterStreamOutputSourceForStreamToken:(int64_t)token
 {
   block[6] = *MEMORY[0x1E69E9840];
   stateQueue = self->_stateQueue;
@@ -288,15 +288,15 @@ LABEL_23:
   block[2] = __68__VCStreamOutputManager_deregisterStreamOutputSourceForStreamToken___block_invoke;
   block[3] = &unk_1E85F40E0;
   block[4] = self;
-  block[5] = a3;
+  block[5] = token;
   dispatch_async(stateQueue, block);
 }
 
-- (void)dispatchedDeregisterStreamOutputSourceForStreamToken:(int64_t)a3
+- (void)dispatchedDeregisterStreamOutputSourceForStreamToken:(int64_t)token
 {
-  v3 = a3;
+  tokenCopy = token;
   v34 = *MEMORY[0x1E69E9840];
-  v5 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:a3];
+  v5 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:token];
   if ([(NSMutableDictionary *)self->_streamOutputSourceForStreamToken objectForKeyedSubscript:v5])
   {
     if (objc_opt_class() == self)
@@ -339,7 +339,7 @@ LABEL_16:
       v26 = 2048;
       v27 = v9;
       v28 = 1024;
-      LODWORD(v29) = v3;
+      LODWORD(selfCopy) = tokenCopy;
       v10 = " [%s] %s:%d Source=%p unregistered for streamToken=%u";
       v11 = v8;
       v12 = 44;
@@ -379,11 +379,11 @@ LABEL_16:
       v26 = 2112;
       v27 = v6;
       v28 = 2048;
-      v29 = self;
+      selfCopy = self;
       v30 = 2048;
       v31 = v15;
       v32 = 1024;
-      v33 = v3;
+      v33 = tokenCopy;
       v10 = " [%s] %s:%d %@(%p) Source=%p unregistered for streamToken=%u";
       v11 = v14;
       v12 = 64;
@@ -413,7 +413,7 @@ uint64_t __78__VCStreamOutputManager_dispatchedDeregisterStreamOutputSourceForSt
   return [v2 sendMessageAsync:"streamOutputDidReleaseRemoteVideoQueue" arguments:0 context:v3];
 }
 
-- (id)allocStreamOutputWithStreamToken:(int64_t)a3 clientPid:(int)a4 options:(id)a5 errorCode:(int *)a6
+- (id)allocStreamOutputWithStreamToken:(int64_t)token clientPid:(int)pid options:(id)options errorCode:(int *)code
 {
   v17 = *MEMORY[0x1E69E9840];
   v11 = 0;
@@ -428,11 +428,11 @@ uint64_t __78__VCStreamOutputManager_dispatchedDeregisterStreamOutputSourceForSt
   block[2] = __86__VCStreamOutputManager_allocStreamOutputWithStreamToken_clientPid_options_errorCode___block_invoke;
   block[3] = &unk_1E85F85B0;
   block[6] = &v11;
-  block[7] = a3;
-  v10 = a4;
+  block[7] = token;
+  pidCopy = pid;
   block[4] = self;
-  block[5] = a5;
-  block[8] = a6;
+  block[5] = options;
+  block[8] = code;
   dispatch_sync(stateQueue, block);
   v7 = v12[5];
   _Block_object_dispose(&v11, 8);
@@ -446,11 +446,11 @@ uint64_t __86__VCStreamOutputManager_allocStreamOutputWithStreamToken_clientPid_
   return result;
 }
 
-- (id)allocDispatchedStreamOutputWithStreamToken:(int64_t)a3 clientPid:(int)a4 options:(id)a5 errorCode:(int *)a6
+- (id)allocDispatchedStreamOutputWithStreamToken:(int64_t)token clientPid:(int)pid options:(id)options errorCode:(int *)code
 {
-  v8 = *&a4;
+  v8 = *&pid;
   v19[1] = *MEMORY[0x1E69E9840];
-  v11 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:a3];
+  v11 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:token];
   if ([(NSMutableDictionary *)self->_streamOutputs objectForKeyedSubscript:v11])
   {
     [VCStreamOutputManager allocDispatchedStreamOutputWithStreamToken:v19 clientPid:? options:? errorCode:?];
@@ -465,14 +465,14 @@ uint64_t __86__VCStreamOutputManager_allocStreamOutputWithStreamToken_clientPid_
   }
 
   v13 = v12;
-  v14 = -[VCStreamOutput initWithStreamToken:clientProcessID:delegate:delegateQueue:]([VCStreamOutput alloc], "initWithStreamToken:clientProcessID:delegate:delegateQueue:", a3, v8, [a5 objectForKeyedSubscript:@"vcStreamOutputInProcessDelegate"], objc_msgSend(a5, "objectForKeyedSubscript:", @"vcStreamOutputInProcessDelegateQueue"));
+  v14 = -[VCStreamOutput initWithStreamToken:clientProcessID:delegate:delegateQueue:]([VCStreamOutput alloc], "initWithStreamToken:clientProcessID:delegate:delegateQueue:", token, v8, [options objectForKeyedSubscript:@"vcStreamOutputInProcessDelegate"], objc_msgSend(options, "objectForKeyedSubscript:", @"vcStreamOutputInProcessDelegateQueue"));
   if (!v14)
   {
     [VCStreamOutputManager allocDispatchedStreamOutputWithStreamToken:clientPid:options:errorCode:];
 LABEL_10:
     v16 = v18;
     v15 = v19[0];
-    if (!a6)
+    if (!code)
     {
       goto LABEL_6;
     }
@@ -484,10 +484,10 @@ LABEL_10:
   [v13 setStreamOutput:v14];
   [(NSMutableDictionary *)self->_streamOutputs setObject:v15 forKeyedSubscript:v11];
   v16 = 0;
-  if (a6)
+  if (code)
   {
 LABEL_5:
-    *a6 = v16;
+    *code = v16;
   }
 
 LABEL_6:
@@ -495,7 +495,7 @@ LABEL_6:
   return v15;
 }
 
-- (BOOL)sourceExistsForStreamToken:(int64_t)a3
+- (BOOL)sourceExistsForStreamToken:(int64_t)token
 {
   v11 = *MEMORY[0x1E69E9840];
   v7 = 0;
@@ -508,7 +508,7 @@ LABEL_6:
   v6[2] = __52__VCStreamOutputManager_sourceExistsForStreamToken___block_invoke;
   v6[3] = &unk_1E85F6D88;
   v6[5] = &v7;
-  v6[6] = a3;
+  v6[6] = token;
   v6[4] = self;
   dispatch_sync(stateQueue, v6);
   v4 = *(v8 + 24);
@@ -523,15 +523,15 @@ uint64_t __52__VCStreamOutputManager_sourceExistsForStreamToken___block_invoke(v
   return result;
 }
 
-- (id)serviceHandlerStreamOutputInitializeWithArguments:(id)a3 error:(id *)a4
+- (id)serviceHandlerStreamOutputInitializeWithArguments:(id)arguments error:(id *)error
 {
   v20 = *MEMORY[0x1E69E9840];
   v19 = 0;
-  v7 = [a3 objectForKeyedSubscript:@"conferenceCallID"];
+  v7 = [arguments objectForKeyedSubscript:@"conferenceCallID"];
   if (v7)
   {
     v8 = v7;
-    v9 = [a3 objectForKeyedSubscript:@"CLIENTPID"];
+    v9 = [arguments objectForKeyedSubscript:@"CLIENTPID"];
     if (v9)
     {
       v10 = -[VCStreamOutputManager allocDispatchedStreamOutputWithStreamToken:clientPid:options:errorCode:](self, "allocDispatchedStreamOutputWithStreamToken:clientPid:options:errorCode:", [v8 unsignedIntValue], objc_msgSend(v9, "intValue"), 0, &v19);
@@ -544,11 +544,11 @@ uint64_t __52__VCStreamOutputManager_sourceExistsForStreamToken___block_invoke(v
           v13 = v12;
           if (self->_useFigRemoteQueue)
           {
-            v14 = [v11 copyXpcSenderQueue];
-            if (v14)
+            copyXpcSenderQueue = [v11 copyXpcSenderQueue];
+            if (copyXpcSenderQueue)
             {
-              v15 = v14;
-              [v13 setValue:v14 forKey:@"USERXPCARGUMENTS"];
+              v15 = copyXpcSenderQueue;
+              [v13 setValue:copyXpcSenderQueue forKey:@"USERXPCARGUMENTS"];
               goto LABEL_28;
             }
 
@@ -637,9 +637,9 @@ LABEL_18:
   v15 = 0;
 LABEL_29:
   [(VCStreamOutputManager *)self dispatchedCleanupStreamOutput:v11];
-  if (a4)
+  if (error)
   {
-    *a4 = [MEMORY[0x1E696ABC0] errorWithDomain:@"VCStreamOutputManager" code:v19 userInfo:0];
+    *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"VCStreamOutputManager" code:v19 userInfo:0];
   }
 
 LABEL_31:
@@ -652,10 +652,10 @@ LABEL_31:
   return v13;
 }
 
-- (id)serviceHandlerStreamOutputNotifyCacheWithArguments:(id)a3 error:(id *)a4
+- (id)serviceHandlerStreamOutputNotifyCacheWithArguments:(id)arguments error:(id *)error
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  v5 = [a3 objectForKeyedSubscript:@"CONTEXT"];
+  v5 = [arguments objectForKeyedSubscript:@"CONTEXT"];
   v6 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:{objc_msgSend(v5, "streamToken")}];
   if (v5)
   {
@@ -674,9 +674,9 @@ LABEL_31:
     [VCStreamOutputManager serviceHandlerStreamOutputNotifyCacheWithArguments:v8 error:?];
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = [MEMORY[0x1E696ABC0] errorWithDomain:@"VCStreamOutputManager" code:v8[0] userInfo:0];
+    *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"VCStreamOutputManager" code:v8[0] userInfo:0];
   }
 
 LABEL_4:
@@ -751,20 +751,20 @@ uint64_t __49__VCStreamOutputManager_registerBlocksForService__block_invoke_3(ui
   [v2 deregisterFromService:"streamOutputCachedNotifications"];
 }
 
-- (void)dispatchedRemoteMediaDidStall:(BOOL)a3 streamToken:(int64_t)a4
+- (void)dispatchedRemoteMediaDidStall:(BOOL)stall streamToken:(int64_t)token
 {
-  v4 = a3;
+  stallCopy = stall;
   block[6] = *MEMORY[0x1E69E9840];
-  v6 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:a4];
+  v6 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:token];
   v7 = [(NSMutableDictionary *)self->_streamOutputs objectForKeyedSubscript:v6];
   if ([v7 isClientInProcess])
   {
-    [v7 didStall:v4];
+    [v7 didStall:stallCopy];
   }
 
   else
   {
-    v8 = [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:v4];
+    v8 = [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:stallCopy];
     v9 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{v8, @"conferenceIsRemoteMediaStalled", 0}];
     xpcCallbackQueue = self->_xpcCallbackQueue;
     block[0] = MEMORY[0x1E69E9820];
@@ -792,20 +792,20 @@ uint64_t __67__VCStreamOutputManager_dispatchedRemoteMediaDidStall_streamToken__
   return result;
 }
 
-- (void)dispatchedRemoteVideoDidDegrade:(BOOL)a3 streamToken:(int64_t)a4
+- (void)dispatchedRemoteVideoDidDegrade:(BOOL)degrade streamToken:(int64_t)token
 {
-  v4 = a3;
+  degradeCopy = degrade;
   block[6] = *MEMORY[0x1E69E9840];
-  v6 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:a4];
+  v6 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:token];
   v7 = [(NSMutableDictionary *)self->_streamOutputs objectForKeyedSubscript:v6];
   if ([v7 isClientInProcess])
   {
-    [v7 didDegrade:v4];
+    [v7 didDegrade:degradeCopy];
   }
 
   else
   {
-    v8 = [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:v4];
+    v8 = [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:degradeCopy];
     v9 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{v8, @"conferenceIsVideoDegraded", 0}];
     xpcCallbackQueue = self->_xpcCallbackQueue;
     block[0] = MEMORY[0x1E69E9820];
@@ -833,20 +833,20 @@ uint64_t __69__VCStreamOutputManager_dispatchedRemoteVideoDidDegrade_streamToken
   return result;
 }
 
-- (void)dispatchedRemoteVideoDidPause:(BOOL)a3 streamToken:(int64_t)a4
+- (void)dispatchedRemoteVideoDidPause:(BOOL)pause streamToken:(int64_t)token
 {
-  v4 = a3;
+  pauseCopy = pause;
   block[6] = *MEMORY[0x1E69E9840];
-  v6 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:a4];
+  v6 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:token];
   v7 = [(NSMutableDictionary *)self->_streamOutputs objectForKeyedSubscript:v6];
   if ([v7 isClientInProcess])
   {
-    [v7 didPause:v4];
+    [v7 didPause:pauseCopy];
   }
 
   else
   {
-    v8 = [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:v4];
+    v8 = [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:pauseCopy];
     v9 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{v8, @"conferenceVideoPause", 0}];
     xpcCallbackQueue = self->_xpcCallbackQueue;
     block[0] = MEMORY[0x1E69E9820];
@@ -874,20 +874,20 @@ uint64_t __67__VCStreamOutputManager_dispatchedRemoteVideoDidPause_streamToken__
   return result;
 }
 
-- (void)dispatchedRemoteVideoDidSuspend:(BOOL)a3 streamToken:(int64_t)a4
+- (void)dispatchedRemoteVideoDidSuspend:(BOOL)suspend streamToken:(int64_t)token
 {
-  v4 = a3;
+  suspendCopy = suspend;
   block[6] = *MEMORY[0x1E69E9840];
-  v6 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:a4];
+  v6 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInt:token];
   v7 = [(NSMutableDictionary *)self->_streamOutputs objectForKeyedSubscript:v6];
   if ([v7 isClientInProcess])
   {
-    [v7 didSuspend:v4];
+    [v7 didSuspend:suspendCopy];
   }
 
   else
   {
-    v8 = [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:v4];
+    v8 = [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:suspendCopy];
     v9 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{v8, @"conferenceIsVideoSuspended", 0}];
     xpcCallbackQueue = self->_xpcCallbackQueue;
     block[0] = MEMORY[0x1E69E9820];
@@ -915,7 +915,7 @@ uint64_t __69__VCStreamOutputManager_dispatchedRemoteVideoDidSuspend_streamToken
   return result;
 }
 
-- (void)remoteMediaDidStall:(BOOL)a3 streamToken:(int64_t)a4
+- (void)remoteMediaDidStall:(BOOL)stall streamToken:(int64_t)token
 {
   v7 = *MEMORY[0x1E69E9840];
   stateQueue = self->_stateQueue;
@@ -923,13 +923,13 @@ uint64_t __69__VCStreamOutputManager_dispatchedRemoteVideoDidSuspend_streamToken
   v5[1] = 3221225472;
   v5[2] = __57__VCStreamOutputManager_remoteMediaDidStall_streamToken___block_invoke;
   v5[3] = &unk_1E85F4180;
-  v6 = a3;
+  stallCopy = stall;
   v5[4] = self;
-  v5[5] = a4;
+  v5[5] = token;
   dispatch_async(stateQueue, v5);
 }
 
-- (void)remoteVideoDidPause:(BOOL)a3 streamToken:(int64_t)a4
+- (void)remoteVideoDidPause:(BOOL)pause streamToken:(int64_t)token
 {
   v7 = *MEMORY[0x1E69E9840];
   stateQueue = self->_stateQueue;
@@ -937,13 +937,13 @@ uint64_t __69__VCStreamOutputManager_dispatchedRemoteVideoDidSuspend_streamToken
   v5[1] = 3221225472;
   v5[2] = __57__VCStreamOutputManager_remoteVideoDidPause_streamToken___block_invoke;
   v5[3] = &unk_1E85F4180;
-  v6 = a3;
+  pauseCopy = pause;
   v5[4] = self;
-  v5[5] = a4;
+  v5[5] = token;
   dispatch_async(stateQueue, v5);
 }
 
-- (void)remoteVideoDidSuspend:(BOOL)a3 streamToken:(int64_t)a4
+- (void)remoteVideoDidSuspend:(BOOL)suspend streamToken:(int64_t)token
 {
   v7 = *MEMORY[0x1E69E9840];
   stateQueue = self->_stateQueue;
@@ -951,13 +951,13 @@ uint64_t __69__VCStreamOutputManager_dispatchedRemoteVideoDidSuspend_streamToken
   v5[1] = 3221225472;
   v5[2] = __59__VCStreamOutputManager_remoteVideoDidSuspend_streamToken___block_invoke;
   v5[3] = &unk_1E85F4180;
-  v6 = a3;
+  suspendCopy = suspend;
   v5[4] = self;
-  v5[5] = a4;
+  v5[5] = token;
   dispatch_async(stateQueue, v5);
 }
 
-- (void)remoteVideoDidDegrade:(BOOL)a3 streamToken:(int64_t)a4
+- (void)remoteVideoDidDegrade:(BOOL)degrade streamToken:(int64_t)token
 {
   v7 = *MEMORY[0x1E69E9840];
   stateQueue = self->_stateQueue;
@@ -965,16 +965,16 @@ uint64_t __69__VCStreamOutputManager_dispatchedRemoteVideoDidSuspend_streamToken
   v5[1] = 3221225472;
   v5[2] = __59__VCStreamOutputManager_remoteVideoDidDegrade_streamToken___block_invoke;
   v5[3] = &unk_1E85F4180;
-  v6 = a3;
+  degradeCopy = degrade;
   v5[4] = self;
-  v5[5] = a4;
+  v5[5] = token;
   dispatch_async(stateQueue, v5);
 }
 
-- (id)serviceHandlerStreamOutputTerminateWithArguments:(id)a3 error:(id *)a4
+- (id)serviceHandlerStreamOutputTerminateWithArguments:(id)arguments error:(id *)error
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = [a3 objectForKeyedSubscript:@"CONTEXT"];
+  v6 = [arguments objectForKeyedSubscript:@"CONTEXT"];
   if (!v6)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 3 && (v11 = VRTraceErrorLogLevelToCSTR(), v12 = *MEMORY[0x1E6986650], os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_ERROR)))
@@ -986,20 +986,20 @@ uint64_t __69__VCStreamOutputManager_dispatchedRemoteVideoDidSuspend_streamToken
       v19 = 1024;
       v20 = 277;
       OUTLINED_FUNCTION_26(&dword_1DB56E000, v12, v13, " [%s] %s:%d Failed to get context", &v15);
-      if (!a4)
+      if (!error)
       {
         goto LABEL_10;
       }
     }
 
-    else if (!a4)
+    else if (!error)
     {
       goto LABEL_10;
     }
 
     v14 = [MEMORY[0x1E696ABC0] errorWithDomain:@"VCStreamOutputManager" code:-6 userInfo:0];
     v9 = 0;
-    *a4 = v14;
+    *error = v14;
     return v9;
   }
 

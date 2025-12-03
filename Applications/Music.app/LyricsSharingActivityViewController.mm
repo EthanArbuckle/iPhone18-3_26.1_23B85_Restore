@@ -1,11 +1,11 @@
 @interface LyricsSharingActivityViewController
 - (UIViewControllerTransitioningDelegate)transitioningDelegate;
-- (_TtC5Music35LyricsSharingActivityViewController)initWithActivityItems:(id)a3 applicationActivities:(id)a4;
-- (void)_prepareActivity:(id)a3;
-- (void)setTransitioningDelegate:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (_TtC5Music35LyricsSharingActivityViewController)initWithActivityItems:(id)items applicationActivities:(id)activities;
+- (void)_prepareActivity:(id)activity;
+- (void)setTransitioningDelegate:(id)delegate;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewIsAppearing:(BOOL)a3;
+- (void)viewIsAppearing:(BOOL)appearing;
 @end
 
 @implementation LyricsSharingActivityViewController
@@ -14,16 +14,16 @@
 {
   v4.receiver = self;
   v4.super_class = type metadata accessor for LyricsSharingActivityViewController();
-  v2 = [(LyricsSharingActivityViewController *)&v4 transitioningDelegate];
+  transitioningDelegate = [(LyricsSharingActivityViewController *)&v4 transitioningDelegate];
 
-  return v2;
+  return transitioningDelegate;
 }
 
-- (void)setTransitioningDelegate:(id)a3
+- (void)setTransitioningDelegate:(id)delegate
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_1001E0B14(a3);
+  selfCopy = self;
+  sub_1001E0B14(delegate);
 }
 
 - (void)viewDidLoad
@@ -35,26 +35,26 @@
   [v2 setCustomViewControllerVerticalInset:{0.0, v3.receiver, v3.super_class}];
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
-  v4 = self;
-  sub_1001E1BFC(a3);
+  selfCopy = self;
+  sub_1001E1BFC(appearing);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_1001E2A04(a3);
+  selfCopy = self;
+  sub_1001E2A04(disappear);
 }
 
-- (void)_prepareActivity:(id)a3
+- (void)_prepareActivity:(id)activity
 {
-  v4 = a3;
-  v5 = self;
-  sub_1001E2AFC(v4);
+  activityCopy = activity;
+  selfCopy = self;
+  sub_1001E2AFC(activityCopy);
 }
 
-- (_TtC5Music35LyricsSharingActivityViewController)initWithActivityItems:(id)a3 applicationActivities:(id)a4
+- (_TtC5Music35LyricsSharingActivityViewController)initWithActivityItems:(id)items applicationActivities:(id)activities
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,23 +1,23 @@
 @interface STStorageTipCell
-- (STStorageTipCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
+- (STStorageTipCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
 - (void)_activateOption;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 - (void)updateConstraints;
 @end
 
 @implementation STStorageTipCell
 
-- (STStorageTipCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (STStorageTipCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
   v46[7] = *MEMORY[0x277D85DE8];
-  v8 = a5;
+  specifierCopy = specifier;
   v45.receiver = self;
   v45.super_class = STStorageTipCell;
-  v9 = [(PSTableCell *)&v45 initWithStyle:a3 reuseIdentifier:a4 specifier:v8];
+  v9 = [(PSTableCell *)&v45 initWithStyle:style reuseIdentifier:identifier specifier:specifierCopy];
   v10 = v9;
   if (v9)
   {
-    v11 = [(STStorageTipCell *)v9 contentView];
+    contentView = [(STStorageTipCell *)v9 contentView];
     v12 = objc_alloc(MEMORY[0x277D756B8]);
     v13 = *MEMORY[0x277CBF3A0];
     v14 = *(MEMORY[0x277CBF3A0] + 8);
@@ -33,7 +33,7 @@
     [(UILabel *)v10->_titleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UILabel *)v10->_titleLabel setAccessibilityIdentifier:@"Title"];
     [(UILabel *)v10->_titleLabel setAllowsDefaultTighteningForTruncation:1];
-    [v11 addSubview:v10->_titleLabel];
+    [contentView addSubview:v10->_titleLabel];
     v20 = [objc_alloc(MEMORY[0x277D755E8]) initWithFrame:{v13, v14, v15, v16}];
     appIconView = v10->_appIconView;
     v10->_appIconView = v20;
@@ -41,7 +41,7 @@
     [(UIImageView *)v10->_appIconView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIImageView *)v10->_appIconView setAccessibilityIdentifier:@"Icon"];
     [(UIImageView *)v10->_appIconView setContentMode:1];
-    [v11 addSubview:v10->_appIconView];
+    [contentView addSubview:v10->_appIconView];
     v22 = [MEMORY[0x277D75220] buttonWithType:1];
     enableButton = v10->_enableButton;
     v10->_enableButton = v22;
@@ -49,17 +49,17 @@
     [(UIButton *)v10->_enableButton setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIButton *)v10->_enableButton setAccessibilityIdentifier:@"Switch"];
     v24 = v10->_enableButton;
-    v25 = [MEMORY[0x277D75348] systemBlueColor];
-    [(UIButton *)v24 setTitleColor:v25 forState:0];
+    systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+    [(UIButton *)v24 setTitleColor:systemBlueColor forState:0];
 
     v26 = v10->_enableButton;
-    v27 = [MEMORY[0x277D75348] systemGrayColor];
-    [(UIButton *)v26 setTitleColor:v27 forState:2];
+    systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
+    [(UIButton *)v26 setTitleColor:systemGrayColor forState:2];
 
     [(UIButton *)v10->_enableButton addTarget:v10 action:sel__activateOption forControlEvents:0x2000];
     [(UIButton *)v10->_enableButton setEnabled:1];
     [(UIButton *)v10->_enableButton setHidden:1];
-    [v11 addSubview:v10->_enableButton];
+    [contentView addSubview:v10->_enableButton];
     v28 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:100];
     spinner = v10->_spinner;
     v10->_spinner = v28;
@@ -70,7 +70,7 @@
     [(UIActivityIndicatorView *)v10->_spinner sizeToFit];
     [(UIActivityIndicatorView *)v10->_spinner bounds];
     v10->_nativeSpinnerWidth = v30;
-    [v11 addSubview:v10->_spinner];
+    [contentView addSubview:v10->_spinner];
     v31 = [objc_alloc(MEMORY[0x277D755E8]) initWithFrame:{v13, v14, v15, v16}];
     checkIconView = v10->_checkIconView;
     v10->_checkIconView = v31;
@@ -82,10 +82,10 @@
     v33 = [MEMORY[0x277D755B8] systemImageNamed:@"checkmark.circle.fill"];
     [(UIImageView *)v10->_checkIconView setImage:v33];
 
-    v34 = [MEMORY[0x277D75348] systemGreenColor];
-    [(UIImageView *)v10->_checkIconView setTintColor:v34];
+    systemGreenColor = [MEMORY[0x277D75348] systemGreenColor];
+    [(UIImageView *)v10->_checkIconView setTintColor:systemGreenColor];
 
-    [v11 addSubview:v10->_checkIconView];
+    [contentView addSubview:v10->_checkIconView];
     v35 = [objc_alloc(MEMORY[0x277D756B8]) initWithFrame:{v13, v14, v15, v16}];
     progressLabel = v10->_progressLabel;
     v10->_progressLabel = v35;
@@ -93,15 +93,15 @@
     v37 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D769D0]];
     [(UILabel *)v10->_progressLabel setFont:v37];
 
-    v38 = [MEMORY[0x277D75348] secondaryLabelColor];
-    [(UILabel *)v10->_progressLabel setTextColor:v38];
+    secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+    [(UILabel *)v10->_progressLabel setTextColor:secondaryLabelColor];
 
     [(UILabel *)v10->_progressLabel setHidden:1];
     [(UILabel *)v10->_progressLabel setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UILabel *)v10->_progressLabel setAccessibilityIdentifier:@"Progress"];
     [(UILabel *)v10->_progressLabel setNumberOfLines:1];
     [(UILabel *)v10->_progressLabel setLineBreakMode:4];
-    [v11 addSubview:v10->_progressLabel];
+    [contentView addSubview:v10->_progressLabel];
     v39 = [STStorageProgressView alloc];
     [(UIActivityIndicatorView *)v10->_spinner frame];
     v40 = [(STStorageProgressView *)v39 initWithFrame:?];
@@ -113,7 +113,7 @@
     [(STStorageProgressView *)v10->_progressView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(STStorageProgressView *)v10->_progressView setAccessibilityIdentifier:@"ProgressIndicator"];
     [(STStorageProgressView *)v10->_progressView sizeToFit];
-    [v11 addSubview:v10->_progressView];
+    [contentView addSubview:v10->_progressView];
     v46[0] = v10->_titleLabel;
     v46[1] = v10->_appIconView;
     v46[2] = v10->_enableButton;
@@ -122,10 +122,10 @@
     v46[5] = v10->_progressLabel;
     v46[6] = v10->_progressView;
     v42 = [MEMORY[0x277CBEA60] arrayWithObjects:v46 count:7];
-    [v11 setAccessibilityElements:v42];
+    [contentView setAccessibilityElements:v42];
 
     [(STStorageTipCell *)v10 setSeparatorInset:0.0, 58.0, 0.0, 0.0];
-    [(STStorageTipCell *)v10 refreshCellContentsWithSpecifier:v8];
+    [(STStorageTipCell *)v10 refreshCellContentsWithSpecifier:specifierCopy];
   }
 
   v43 = *MEMORY[0x277D85DE8];
@@ -134,9 +134,9 @@
 
 - (void)updateConstraints
 {
-  v3 = [(STStorageTipCell *)self traitCollection];
-  v4 = [v3 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v4);
+  traitCollection = [(STStorageTipCell *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   v70 = self->_hformat;
   v69 = self->_h2format;
@@ -266,9 +266,9 @@ LABEL_23:
       [MEMORY[0x277CCAAD0] deactivateConstraints:self->_constraints];
     }
 
-    v28 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     constraints = self->_constraints;
-    self->_constraints = v28;
+    self->_constraints = array;
 
     v30 = self->_constraints;
     v31 = [MEMORY[0x277CCAAD0] constraintsWithVisualFormat:self->_hformat options:0 metrics:v27 views:v26];
@@ -385,16 +385,16 @@ LABEL_42:
   [(STStorageTipCell *)&v72 updateConstraints];
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   v30[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  specifierCopy = specifier;
   v28.receiver = self;
   v28.super_class = STStorageTipCell;
-  [(PSTableCell *)&v28 refreshCellContentsWithSpecifier:v4];
-  v5 = [v4 propertyForKey:@"stTitle"];
+  [(PSTableCell *)&v28 refreshCellContentsWithSpecifier:specifierCopy];
+  v5 = [specifierCopy propertyForKey:@"stTitle"];
   [(UILabel *)self->_titleLabel setText:v5];
-  v6 = [v4 propertyForKey:@"stIcon"];
+  v6 = [specifierCopy propertyForKey:@"stIcon"];
   if (v6)
   {
     [(UIImageView *)self->_appIconView setImage:v6];
@@ -402,7 +402,7 @@ LABEL_42:
 
   else
   {
-    v7 = [v4 propertyForKey:@"stRepresentedApp"];
+    v7 = [specifierCopy propertyForKey:@"stRepresentedApp"];
     if ([v7 length])
     {
       v27[0] = MEMORY[0x277D85DD0];
@@ -416,13 +416,13 @@ LABEL_42:
     else
     {
       v8 = MEMORY[0x277D755B8];
-      v9 = [(UIImageView *)self->_appIconView traitCollection];
-      v10 = [v8 systemImageNamed:@"info.circle" compatibleWithTraitCollection:v9];
+      traitCollection = [(UIImageView *)self->_appIconView traitCollection];
+      v10 = [v8 systemImageNamed:@"info.circle" compatibleWithTraitCollection:traitCollection];
       [(UIImageView *)self->_appIconView setImage:v10];
     }
   }
 
-  v11 = [v4 propertyForKey:@"stEnableTitle"];
+  v11 = [specifierCopy propertyForKey:@"stEnableTitle"];
 
   v12 = objc_alloc(MEMORY[0x277CCA898]);
   v13 = v11;
@@ -442,12 +442,12 @@ LABEL_42:
   }
 
   [(UIButton *)self->_enableButton setAttributedTitle:v16 forState:0];
-  v17 = [v4 propertyForKey:@"stTipKind"];
+  v17 = [specifierCopy propertyForKey:@"stTipKind"];
   self->_isOption = [v17 isEqualToString:@"stOptionTip"];
 
   if (self->_isOption)
   {
-    v18 = [v4 propertyForKey:@"stPercent"];
+    v18 = [specifierCopy propertyForKey:@"stPercent"];
     [v18 floatValue];
     self->_percent = *&v19;
     if (*&v19 > 1.0)
@@ -490,11 +490,11 @@ LABEL_42:
     {
       [(STStorageProgressView *)self->_progressView setHidden:1];
       [(UIActivityIndicatorView *)self->_spinner startAnimating];
-      v21 = [v4 propertyForKey:@"stActivating"];
+      v21 = [specifierCopy propertyForKey:@"stActivating"];
       [(UILabel *)self->_progressLabel setText:v21];
 
-      v22 = [(UILabel *)self->_progressLabel text];
-      -[UILabel setHidden:](self->_progressLabel, "setHidden:", [v22 length] == 0);
+      text = [(UILabel *)self->_progressLabel text];
+      -[UILabel setHidden:](self->_progressLabel, "setHidden:", [text length] == 0);
     }
 
     [(UIButton *)self->_enableButton setHidden:self->_percent != 0.0];
@@ -509,9 +509,9 @@ LABEL_42:
 
 - (void)_activateOption
 {
-  v3 = [(PSTableCell *)self specifier];
+  specifier = [(PSTableCell *)self specifier];
   v2 = [MEMORY[0x277CCABB0] numberWithBool:1];
-  [v3 performSetterWithValue:v2];
+  [specifier performSetterWithValue:v2];
 }
 
 @end

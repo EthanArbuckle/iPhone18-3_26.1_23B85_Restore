@@ -1,29 +1,29 @@
 @interface TSDRootLayout
-- (BOOL)isSavedShiftForInfo:(id)a3 equalToOffset:(CGPoint)a4;
-- (CGPoint)adjustMappingPointForInfo:(id)a3 fromPoint:(CGPoint)a4;
-- (CGPoint)applyAdaptiveLayoutTo:(id)a3 info:(id)a4 offset:(CGPoint)a5;
+- (BOOL)isSavedShiftForInfo:(id)info equalToOffset:(CGPoint)offset;
+- (CGPoint)adjustMappingPointForInfo:(id)info fromPoint:(CGPoint)point;
+- (CGPoint)applyAdaptiveLayoutTo:(id)to info:(id)info offset:(CGPoint)offset;
 - (TSDLayoutController)layoutController;
-- (TSDRootLayout)initWithLayoutController:(id)a3;
-- (id)childLayoutsInRect:(CGRect)a3 deep:(BOOL)a4;
+- (TSDRootLayout)initWithLayoutController:(id)controller;
+- (id)childLayoutsInRect:(CGRect)rect deep:(BOOL)deep;
 - (id)p_shiftedObjects;
 - (void)beginDynamicAdaptiveLayout;
 - (void)endDynamicAdaptiveLayout;
-- (void)resetLayout:(id)a3 forInfo:(id)a4;
-- (void)updateRootLayoutShiftFor:(id)a3 offset:(CGPoint)a4;
+- (void)resetLayout:(id)layout forInfo:(id)info;
+- (void)updateRootLayoutShiftFor:(id)for offset:(CGPoint)offset;
 @end
 
 @implementation TSDRootLayout
 
-- (TSDRootLayout)initWithLayoutController:(id)a3
+- (TSDRootLayout)initWithLayoutController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v9.receiver = self;
   v9.super_class = TSDRootLayout;
   v5 = [(TSDAbstractLayout *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_layoutController, v4);
+    objc_storeWeak(&v5->_layoutController, controllerCopy);
     v6->_supportsAdaptiveLayout = 0;
     shiftedObjects = v6->_shiftedObjects;
     v6->_shiftedObjects = 0;
@@ -32,13 +32,13 @@
   return v6;
 }
 
-- (id)childLayoutsInRect:(CGRect)a3 deep:(BOOL)a4
+- (id)childLayoutsInRect:(CGRect)rect deep:(BOOL)deep
 {
-  v4 = a4;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  deepCopy = deep;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v26 = *MEMORY[0x277D85DE8];
   v10 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v21 = 0u;
@@ -60,7 +60,7 @@
           objc_enumerationMutation(v13);
         }
 
-        objc_msgSend_addLayoutsInRect_toArray_deep_(*(*(&v21 + 1) + 8 * i), v16, v10, v4, x, y, width, height);
+        objc_msgSend_addLayoutsInRect_toArray_deep_(*(*(&v21 + 1) + 8 * i), v16, v10, deepCopy, x, y, width, height);
       }
 
       v17 = objc_msgSend_countByEnumeratingWithState_objects_count_(v13, v16, &v21, v25, 16);
@@ -113,9 +113,9 @@
   }
 }
 
-- (BOOL)isSavedShiftForInfo:(id)a3 equalToOffset:(CGPoint)a4
+- (BOOL)isSavedShiftForInfo:(id)info equalToOffset:(CGPoint)offset
 {
-  v6 = a3;
+  infoCopy = info;
   if (!self->_supportsAdaptiveLayout)
   {
     v7 = MEMORY[0x277D81150];
@@ -155,11 +155,11 @@
   return v20;
 }
 
-- (void)updateRootLayoutShiftFor:(id)a3 offset:(CGPoint)a4
+- (void)updateRootLayoutShiftFor:(id)for offset:(CGPoint)offset
 {
-  y = a4.y;
-  x = a4.x;
-  v33 = a3;
+  y = offset.y;
+  x = offset.x;
+  forCopy = for;
   if (!self->_supportsAdaptiveLayout)
   {
     v8 = MEMORY[0x277D81150];
@@ -187,14 +187,14 @@
     }
 
     v31 = objc_msgSend_valueWithCGPoint_(MEMORY[0x277CCAE60], v21, v22, x, y);
-    objc_msgSend_setObject_forUncopiedKey_(v23, v32, v31, v33);
+    objc_msgSend_setObject_forUncopiedKey_(v23, v32, v31, forCopy);
   }
 }
 
-- (void)resetLayout:(id)a3 forInfo:(id)a4
+- (void)resetLayout:(id)layout forInfo:(id)info
 {
-  v54 = a3;
-  v7 = a4;
+  layoutCopy = layout;
+  infoCopy = info;
   if (!self->_supportsAdaptiveLayout)
   {
     v8 = MEMORY[0x277D81150];
@@ -207,9 +207,9 @@
 
   objc_opt_class();
   v17 = TSUDynamicCast();
-  if (v54)
+  if (layoutCopy)
   {
-    v18 = objc_msgSend_parent(v54, v15, v16);
+    v18 = objc_msgSend_parent(layoutCopy, v15, v16);
 
     if (v18 != self)
     {
@@ -221,7 +221,7 @@
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v26, v27);
     }
 
-    v28 = objc_msgSend_info(v54, v19, v20);
+    v28 = objc_msgSend_info(layoutCopy, v19, v20);
 
     if (v28 != v17)
     {
@@ -247,23 +247,23 @@
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v45, v46);
     }
 
-    objc_msgSend_removeObjectForKey_(v39, v38, v7);
-    if (v54)
+    objc_msgSend_removeObjectForKey_(v39, v38, infoCopy);
+    if (layoutCopy)
     {
       v47 = [TSDLayoutGeometry alloc];
       v50 = objc_msgSend_geometry(v17, v48, v49);
       v52 = objc_msgSend_initWithInfoGeometry_(v47, v51, v50);
 
-      objc_msgSend_setGeometry_(v54, v53, v52);
+      objc_msgSend_setGeometry_(layoutCopy, v53, v52);
     }
   }
 }
 
-- (CGPoint)adjustMappingPointForInfo:(id)a3 fromPoint:(CGPoint)a4
+- (CGPoint)adjustMappingPointForInfo:(id)info fromPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
+  y = point.y;
+  x = point.x;
+  infoCopy = info;
   objc_opt_class();
   v8 = TSUDynamicCast();
 
@@ -288,12 +288,12 @@
   return result;
 }
 
-- (CGPoint)applyAdaptiveLayoutTo:(id)a3 info:(id)a4 offset:(CGPoint)a5
+- (CGPoint)applyAdaptiveLayoutTo:(id)to info:(id)info offset:(CGPoint)offset
 {
-  y = a5.y;
-  x = a5.x;
-  v9 = a3;
-  v11 = a4;
+  y = offset.y;
+  x = offset.x;
+  toCopy = to;
+  infoCopy = info;
   if (!self->_supportsAdaptiveLayout)
   {
     v12 = MEMORY[0x277D81150];
@@ -306,9 +306,9 @@
 
   objc_opt_class();
   v21 = TSUDynamicCast();
-  if (v9)
+  if (toCopy)
   {
-    v22 = objc_msgSend_parent(v9, v19, v20);
+    v22 = objc_msgSend_parent(toCopy, v19, v20);
 
     if (v22 != self)
     {
@@ -320,7 +320,7 @@
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v30, v31);
     }
 
-    v32 = objc_msgSend_info(v9, v23, v24);
+    v32 = objc_msgSend_info(toCopy, v23, v24);
 
     if (v32 != v21)
     {
@@ -352,7 +352,7 @@
     v56 = v53;
     v40 = y;
     v41 = x;
-    if (v9)
+    if (toCopy)
     {
       v40 = y;
       v41 = x;
@@ -366,10 +366,10 @@
     }
 
     v59 = objc_msgSend_valueWithCGPoint_(MEMORY[0x277CCAE60], v54, v55, v41, v40);
-    objc_msgSend_setObject_forUncopiedKey_(v45, v60, v59, v11);
-    if (v9)
+    objc_msgSend_setObject_forUncopiedKey_(v45, v60, v59, infoCopy);
+    if (toCopy)
     {
-      objc_msgSend_offsetGeometryBy_(v9, v61, v62, x, y);
+      objc_msgSend_offsetGeometryBy_(toCopy, v61, v62, x, y);
     }
   }
 

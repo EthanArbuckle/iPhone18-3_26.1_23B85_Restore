@@ -1,5 +1,5 @@
 @interface IDSRegistrationOperationRegisterMetric
-- (IDSRegistrationOperationRegisterMetric)initWithGuid:(id)a3 success:(BOOL)a4 connectionType:(unsigned int)a5 resultCode:(unsigned int)a6 registrationType:(unsigned int)a7 isHeartbeatRegister:(BOOL)a8 heartbeatDelay:(id)a9 genericError:(id)a10 URLError:(id)a11 POSIXError:(id)a12;
+- (IDSRegistrationOperationRegisterMetric)initWithGuid:(id)guid success:(BOOL)success connectionType:(unsigned int)type resultCode:(unsigned int)code registrationType:(unsigned int)registrationType isHeartbeatRegister:(BOOL)register heartbeatDelay:(id)delay genericError:(id)self0 URLError:(id)self1 POSIXError:(id)self2;
 - (NSDictionary)dictionaryRepresentation;
 @end
 
@@ -8,10 +8,10 @@
 - (NSDictionary)dictionaryRepresentation
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(IDSRegistrationOperationRegisterMetric *)self guid];
-  if (v4)
+  guid = [(IDSRegistrationOperationRegisterMetric *)self guid];
+  if (guid)
   {
-    CFDictionarySetValue(v3, @"guid", v4);
+    CFDictionarySetValue(v3, @"guid", guid);
   }
 
   v5 = [MEMORY[0x1E696AD98] numberWithBool:{-[IDSRegistrationOperationRegisterMetric success](self, "success")}];
@@ -44,56 +44,56 @@
     CFDictionarySetValue(v3, @"isHeartbeatRegister", v9);
   }
 
-  v10 = [(IDSRegistrationOperationRegisterMetric *)self heartbeatDelay];
-  if (v10)
+  heartbeatDelay = [(IDSRegistrationOperationRegisterMetric *)self heartbeatDelay];
+  if (heartbeatDelay)
   {
-    CFDictionarySetValue(v3, @"heartbeatDelay", v10);
+    CFDictionarySetValue(v3, @"heartbeatDelay", heartbeatDelay);
   }
 
-  v11 = [(IDSRegistrationOperationRegisterMetric *)self genericError];
-  if (v11)
+  genericError = [(IDSRegistrationOperationRegisterMetric *)self genericError];
+  if (genericError)
   {
-    CFDictionarySetValue(v3, @"genericError", v11);
+    CFDictionarySetValue(v3, @"genericError", genericError);
   }
 
-  v12 = [(IDSRegistrationOperationRegisterMetric *)self URLError];
-  if (v12)
+  uRLError = [(IDSRegistrationOperationRegisterMetric *)self URLError];
+  if (uRLError)
   {
-    CFDictionarySetValue(v3, @"URLError", v12);
+    CFDictionarySetValue(v3, @"URLError", uRLError);
   }
 
-  v13 = [(IDSRegistrationOperationRegisterMetric *)self POSIXError];
-  if (v13)
+  pOSIXError = [(IDSRegistrationOperationRegisterMetric *)self POSIXError];
+  if (pOSIXError)
   {
-    CFDictionarySetValue(v3, @"POSIXError", v13);
+    CFDictionarySetValue(v3, @"POSIXError", pOSIXError);
   }
 
   return v3;
 }
 
-- (IDSRegistrationOperationRegisterMetric)initWithGuid:(id)a3 success:(BOOL)a4 connectionType:(unsigned int)a5 resultCode:(unsigned int)a6 registrationType:(unsigned int)a7 isHeartbeatRegister:(BOOL)a8 heartbeatDelay:(id)a9 genericError:(id)a10 URLError:(id)a11 POSIXError:(id)a12
+- (IDSRegistrationOperationRegisterMetric)initWithGuid:(id)guid success:(BOOL)success connectionType:(unsigned int)type resultCode:(unsigned int)code registrationType:(unsigned int)registrationType isHeartbeatRegister:(BOOL)register heartbeatDelay:(id)delay genericError:(id)self0 URLError:(id)self1 POSIXError:(id)self2
 {
-  v26 = a3;
-  v25 = a9;
-  v15 = a10;
-  v16 = a11;
-  v17 = a12;
+  guidCopy = guid;
+  delayCopy = delay;
+  errorCopy = error;
+  lErrorCopy = lError;
+  xErrorCopy = xError;
   v27.receiver = self;
   v27.super_class = IDSRegistrationOperationRegisterMetric;
   v18 = [(IDSRegistrationOperationRegisterMetric *)&v27 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_guid, a3);
-    v19->_success = a4;
-    v19->_connectionType = a5;
-    v19->_resultCode = a6;
-    v19->_registrationError = a7;
-    v19->_isHeartbeatRegister = a8;
-    objc_storeStrong(&v19->_heartbeatDelay, a9);
-    objc_storeStrong(&v19->_genericError, a10);
-    objc_storeStrong(&v19->_URLError, a11);
-    objc_storeStrong(&v19->_POSIXError, a12);
+    objc_storeStrong(&v18->_guid, guid);
+    v19->_success = success;
+    v19->_connectionType = type;
+    v19->_resultCode = code;
+    v19->_registrationError = registrationType;
+    v19->_isHeartbeatRegister = register;
+    objc_storeStrong(&v19->_heartbeatDelay, delay);
+    objc_storeStrong(&v19->_genericError, error);
+    objc_storeStrong(&v19->_URLError, lError);
+    objc_storeStrong(&v19->_POSIXError, xError);
   }
 
   return v19;

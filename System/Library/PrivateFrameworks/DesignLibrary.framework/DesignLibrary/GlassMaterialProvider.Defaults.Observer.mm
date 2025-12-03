@@ -1,6 +1,6 @@
 @interface GlassMaterialProvider.Defaults.Observer
 - (_TtCCV13DesignLibrary21GlassMaterialProvider8DefaultsP33_851D95C8C30DE99D3FEF66B52C2B2CA58Observer)init;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation GlassMaterialProvider.Defaults.Observer
@@ -14,11 +14,11 @@
   return [(GlassMaterialProvider.Defaults.Observer *)&v5 init];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (a4)
+  if (object)
   {
-    v7 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_18AFCE094();
     swift_unknownObjectRelease();
@@ -27,7 +27,7 @@
   else
   {
     memset(v9, 0, sizeof(v9));
-    v8 = self;
+    selfCopy2 = self;
   }
 
   if (swift_weakLoadStrong())

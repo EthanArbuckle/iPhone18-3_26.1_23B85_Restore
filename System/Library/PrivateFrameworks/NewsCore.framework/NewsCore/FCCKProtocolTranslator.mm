@@ -1,14 +1,14 @@
 @interface FCCKProtocolTranslator
 + (id)sharedInstance;
-- (id)fieldValueFromObject:(uint64_t)a1;
-- (id)fieldValueOfType:(void *)a3 withObject:;
-- (id)objectRepresentationFromFieldValue:(void *)a1;
-- (id)pQueryFromQuery:(void *)a3 error:;
-- (id)pRecordIdentifierFromRecordID:(uint64_t)a1;
-- (id)pReferenceFromReference:(uint64_t)a1 error:(void *)a2;
-- (id)recordFromPRecord:(uint64_t)a1;
-- (id)referenceFromPReference:(void *)a1 error:(void *)a2;
-- (uint64_t)fieldValueTypeFromObject:(uint64_t)a1;
+- (id)fieldValueFromObject:(uint64_t)object;
+- (id)fieldValueOfType:(void *)type withObject:;
+- (id)objectRepresentationFromFieldValue:(void *)value;
+- (id)pQueryFromQuery:(void *)query error:;
+- (id)pRecordIdentifierFromRecordID:(uint64_t)d;
+- (id)pReferenceFromReference:(uint64_t)reference error:(void *)error;
+- (id)recordFromPRecord:(uint64_t)record;
+- (id)referenceFromPReference:(void *)reference error:(void *)error;
+- (uint64_t)fieldValueTypeFromObject:(uint64_t)object;
 @end
 
 @implementation FCCKProtocolTranslator
@@ -39,11 +39,11 @@ uint64_t __40__FCCKProtocolTranslator_sharedInstance__block_invoke(uint64_t a1)
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (uint64_t)fieldValueTypeFromObject:(uint64_t)a1
+- (uint64_t)fieldValueTypeFromObject:(uint64_t)object
 {
   v25 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (!a1)
+  if (!object)
   {
     v4 = 0;
     goto LABEL_24;
@@ -197,24 +197,24 @@ LABEL_24:
   return v4;
 }
 
-- (id)fieldValueFromObject:(uint64_t)a1
+- (id)fieldValueFromObject:(uint64_t)object
 {
   v2 = 0;
-  if (a1 && a2)
+  if (object && a2)
   {
     v4 = a2;
-    v5 = [(FCCKProtocolTranslator *)a1 fieldValueTypeFromObject:v4];
-    v2 = [(FCCKProtocolTranslator *)a1 fieldValueOfType:v5 withObject:v4];
+    v5 = [(FCCKProtocolTranslator *)object fieldValueTypeFromObject:v4];
+    v2 = [(FCCKProtocolTranslator *)object fieldValueOfType:v5 withObject:v4];
   }
 
   return v2;
 }
 
-- (id)fieldValueOfType:(void *)a3 withObject:
+- (id)fieldValueOfType:(void *)type withObject:
 {
   v39 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!a1)
+  typeCopy = type;
+  if (!self)
   {
     v6 = 0;
     goto LABEL_16;
@@ -232,8 +232,8 @@ LABEL_24:
         v29 = 0u;
         v26 = 0u;
         v27 = 0u;
-        v25 = v5;
-        v7 = v5;
+        v25 = typeCopy;
+        v7 = typeCopy;
         v8 = [v7 countByEnumeratingWithState:&v26 objects:v38 count:16];
         if (v8)
         {
@@ -266,7 +266,7 @@ LABEL_24:
                 _os_log_error_impl(&dword_1B63EF000, v11, OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
               }
 
-              v14 = [(FCCKProtocolTranslator *)a1 fieldValueFromObject:v13];
+              v14 = [(FCCKProtocolTranslator *)self fieldValueFromObject:v13];
               [v6 addListValue:v14];
 
               ++v12;
@@ -279,19 +279,19 @@ LABEL_24:
           while (v9);
         }
 
-        v5 = v25;
+        typeCopy = v25;
         goto LABEL_16;
       }
 
       if (a2 == 7)
       {
-        [v6 setSignedValue:{objc_msgSend(v5, "longLongValue")}];
+        [v6 setSignedValue:{objc_msgSend(typeCopy, "longLongValue")}];
         goto LABEL_16;
       }
 
       if (a2 == 8)
       {
-        [v5 doubleValue];
+        [typeCopy doubleValue];
         [v6 setDoubleValue:?];
         goto LABEL_16;
       }
@@ -306,8 +306,8 @@ LABEL_24:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v19 = [v5 recordID];
-      v20 = [(FCCKProtocolTranslator *)a1 pRecordIdentifierFromRecordID:v19];
+      recordID = [typeCopy recordID];
+      v20 = [(FCCKProtocolTranslator *)self pRecordIdentifierFromRecordID:recordID];
       [v18 setRecordIdentifier:v20];
     }
 
@@ -316,8 +316,8 @@ LABEL_24:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v19 = [(FCCKProtocolTranslator *)a1 pRecordIdentifierFromRecordID:v5];
-        [v18 setRecordIdentifier:v19];
+        recordID = [(FCCKProtocolTranslator *)self pRecordIdentifierFromRecordID:typeCopy];
+        [v18 setRecordIdentifier:recordID];
       }
 
       else
@@ -331,8 +331,8 @@ LABEL_37:
           goto LABEL_16;
         }
 
-        [FCCKProtocolTranslator pReferenceFromReference:a1 error:v5];
-        v18 = v19 = v18;
+        [FCCKProtocolTranslator pReferenceFromReference:self error:typeCopy];
+        v18 = recordID = v18;
       }
     }
 
@@ -342,20 +342,20 @@ LABEL_37:
   switch(a2)
   {
     case 1:
-      [v6 setBytesValue:v5];
+      [v6 setBytesValue:typeCopy];
       break;
     case 2:
       v21 = objc_alloc_init(MEMORY[0x1E69B6D38]);
       [v6 setDateValue:v21];
 
-      [v5 timeIntervalSinceReferenceDate];
+      [typeCopy timeIntervalSinceReferenceDate];
       v23 = v22;
-      v24 = [v6 dateValue];
-      [v24 setTime:v23];
+      dateValue = [v6 dateValue];
+      [dateValue setTime:v23];
 
       break;
     case 3:
-      [v6 setStringValue:v5];
+      [v6 setStringValue:typeCopy];
       break;
   }
 
@@ -366,28 +366,28 @@ LABEL_16:
   return v6;
 }
 
-- (id)pRecordIdentifierFromRecordID:(uint64_t)a1
+- (id)pRecordIdentifierFromRecordID:(uint64_t)d
 {
   v25 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (d)
   {
     v2 = a2;
     v3 = objc_opt_new();
-    v4 = [v2 recordName];
-    v5 = [(NSString *)v4 _NTPBCKIdentifierWithType:?];
+    recordName = [v2 recordName];
+    v5 = [(NSString *)recordName _NTPBCKIdentifierWithType:?];
     [v3 setValue:v5];
 
-    v6 = [v2 zoneID];
+    zoneID = [v2 zoneID];
 
-    v7 = v6;
+    v7 = zoneID;
     v8 = objc_opt_new();
-    v9 = [v7 zoneName];
-    v10 = [(NSString *)v9 _NTPBCKIdentifierWithType:?];
+    zoneName = [v7 zoneName];
+    v10 = [(NSString *)zoneName _NTPBCKIdentifierWithType:?];
     [v8 setValue:v10];
 
-    v11 = [v7 ownerName];
+    ownerName = [v7 ownerName];
 
-    if (([v11 isEqualToString:*MEMORY[0x1E695B728]] & 1) == 0 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+    if (([ownerName isEqualToString:*MEMORY[0x1E695B728]] & 1) == 0 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       v16 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"unknown owner"];
       v17 = 136315906;
@@ -404,14 +404,14 @@ LABEL_16:
     v12 = [(NSString *)@"_defaultOwner" _NTPBCKIdentifierWithType:?];
     [v8 setOwnerIdentifier:v12];
 
-    v13 = [v8 ownerIdentifier];
+    ownerIdentifier = [v8 ownerIdentifier];
 
-    if (v13)
+    if (ownerIdentifier)
     {
-      v13 = v8;
+      ownerIdentifier = v8;
     }
 
-    [v3 setZoneIdentifier:v13];
+    [v3 setZoneIdentifier:ownerIdentifier];
   }
 
   else
@@ -424,37 +424,37 @@ LABEL_16:
   return v3;
 }
 
-- (id)referenceFromPReference:(void *)a1 error:(void *)a2
+- (id)referenceFromPReference:(void *)reference error:(void *)error
 {
   v30 = *MEMORY[0x1E69E9840];
-  v3 = a1;
-  v4 = [v3 recordIdentifier];
+  referenceCopy = reference;
+  recordIdentifier = [referenceCopy recordIdentifier];
   v5 = MEMORY[0x1E695BA80];
-  v6 = v4;
-  v7 = [v5 defaultRecordZone];
-  v8 = [v7 zoneID];
-  v9 = [v8 copy];
+  v6 = recordIdentifier;
+  defaultRecordZone = [v5 defaultRecordZone];
+  zoneID = [defaultRecordZone zoneID];
+  v9 = [zoneID copy];
 
   v10 = objc_alloc(MEMORY[0x1E695BA70]);
-  v11 = [v6 value];
+  value = [v6 value];
 
-  v12 = [v11 name];
-  v13 = [v10 initWithRecordName:v12 zoneID:v9];
+  name = [value name];
+  v13 = [v10 initWithRecordName:name zoneID:v9];
 
   if (v13)
   {
-    if ([v3 hasType])
+    if ([referenceCopy hasType])
     {
-      v14 = [v3 type];
-      if (v14 == 1)
+      type = [referenceCopy type];
+      if (type == 1)
       {
         v15 = 1;
         goto LABEL_15;
       }
 
-      if (v14 != 2)
+      if (type != 2)
       {
-        if (v14 == 3)
+        if (type == 3)
         {
           v15 = *MEMORY[0x1E695B808];
           goto LABEL_15;
@@ -479,7 +479,7 @@ LABEL_16:
     v15 = 0;
 LABEL_15:
     v16 = [objc_alloc(MEMORY[0x1E695BAB0]) initWithRecordID:v13 action:v15];
-    if (!a2)
+    if (!error)
     {
       goto LABEL_17;
     }
@@ -489,7 +489,7 @@ LABEL_15:
 
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
-    v20 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid record identifier from server %@: %@", v3, 0];
+    v20 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid record identifier from server %@: %@", referenceCopy, 0];
     *buf = 136315906;
     v23 = "[FCCKProtocolTranslator referenceFromPReference:error:]";
     v24 = 2080;
@@ -502,11 +502,11 @@ LABEL_15:
   }
 
   v16 = 0;
-  if (a2)
+  if (error)
   {
 LABEL_16:
     v17 = 0;
-    *a2 = 0;
+    *error = 0;
   }
 
 LABEL_17:
@@ -516,25 +516,25 @@ LABEL_17:
   return v16;
 }
 
-- (id)pReferenceFromReference:(uint64_t)a1 error:(void *)a2
+- (id)pReferenceFromReference:(uint64_t)reference error:(void *)error
 {
-  v3 = a2;
-  if (a1)
+  errorCopy = error;
+  if (reference)
   {
     v4 = objc_opt_new();
-    v5 = [v3 recordID];
-    v6 = [(FCCKProtocolTranslator *)a1 pRecordIdentifierFromRecordID:v5];
+    recordID = [errorCopy recordID];
+    v6 = [(FCCKProtocolTranslator *)reference pRecordIdentifierFromRecordID:recordID];
     [v4 setRecordIdentifier:v6];
 
-    if ([v3 referenceAction] == 1)
+    if ([errorCopy referenceAction] == 1)
     {
       v7 = 1;
     }
 
     else
     {
-      v8 = [v3 referenceAction];
-      if (v8 == *MEMORY[0x1E695B808])
+      referenceAction = [errorCopy referenceAction];
+      if (referenceAction == *MEMORY[0x1E695B808])
       {
         v7 = 3;
       }
@@ -556,44 +556,44 @@ LABEL_17:
   return v4;
 }
 
-- (id)recordFromPRecord:(uint64_t)a1
+- (id)recordFromPRecord:(uint64_t)record
 {
   v53 = *MEMORY[0x1E69E9840];
   v3 = a2;
   v4 = v3;
   v47 = 0;
-  if (a1 && v3)
+  if (record && v3)
   {
-    v5 = [MEMORY[0x1E695BA80] defaultRecordZone];
-    v6 = [v5 zoneID];
-    v7 = [v6 copy];
+    defaultRecordZone = [MEMORY[0x1E695BA80] defaultRecordZone];
+    zoneID = [defaultRecordZone zoneID];
+    v7 = [zoneID copy];
 
     v8 = objc_alloc(MEMORY[0x1E695BA70]);
-    v9 = [v4 recordIdentifier];
-    v10 = [v9 value];
-    v11 = [v10 name];
+    recordIdentifier = [v4 recordIdentifier];
+    value = [recordIdentifier value];
+    name = [value name];
     v45 = v7;
-    v12 = [v8 initWithRecordName:v11 zoneID:v7];
+    v12 = [v8 initWithRecordName:name zoneID:v7];
 
     v13 = objc_alloc(MEMORY[0x1E695BA60]);
-    v14 = [v4 type];
-    v15 = [v14 name];
+    type = [v4 type];
+    name2 = [type name];
     v44 = v12;
-    v16 = [v13 _initSkippingValidationWithRecordType:v15 recordID:v12];
+    v16 = [v13 _initSkippingValidationWithRecordType:name2 recordID:v12];
 
-    v17 = [v4 etag];
+    etag = [v4 etag];
     v47 = v16;
-    [v16 setEtag:v17];
+    [v16 setEtag:etag];
 
     if ([v4 hasTimeStatistics])
     {
-      v18 = [v4 timeStatistics];
-      if ([v18 hasCreation])
+      timeStatistics = [v4 timeStatistics];
+      if ([timeStatistics hasCreation])
       {
         v19 = MEMORY[0x1E695DF00];
-        v20 = [v4 timeStatistics];
-        v21 = [v20 creation];
-        [v21 time];
+        timeStatistics2 = [v4 timeStatistics];
+        creation = [timeStatistics2 creation];
+        [creation time];
         v22 = [v19 dateWithTimeIntervalSinceReferenceDate:?];
         [v16 setCreationDate:v22];
       }
@@ -603,13 +603,13 @@ LABEL_17:
         [v16 setCreationDate:0];
       }
 
-      v23 = [v4 timeStatistics];
-      if ([v23 hasModification])
+      timeStatistics3 = [v4 timeStatistics];
+      if ([timeStatistics3 hasModification])
       {
         v24 = MEMORY[0x1E695DF00];
-        v25 = [v4 timeStatistics];
-        v26 = [v25 modification];
-        [v26 time];
+        timeStatistics4 = [v4 timeStatistics];
+        modification = [timeStatistics4 modification];
+        [modification time];
         v27 = [v24 dateWithTimeIntervalSinceReferenceDate:?];
         [v16 setModificationDate:v27];
       }
@@ -626,8 +626,8 @@ LABEL_17:
     v48 = 0u;
     v49 = 0u;
     v46 = v4;
-    v28 = [v4 fields];
-    v29 = [v28 countByEnumeratingWithState:&v48 objects:v52 count:16];
+    fields = [v4 fields];
+    v29 = [fields countByEnumeratingWithState:&v48 objects:v52 count:16];
     if (v29)
     {
       v30 = v29;
@@ -638,26 +638,26 @@ LABEL_17:
         {
           if (*v49 != v31)
           {
-            objc_enumerationMutation(v28);
+            objc_enumerationMutation(fields);
           }
 
           v33 = *(*(&v48 + 1) + 8 * i);
-          v34 = [v33 identifier];
-          v35 = [v34 name];
-          v36 = [v35 hasPrefix:@"_"];
+          identifier = [v33 identifier];
+          name3 = [identifier name];
+          v36 = [name3 hasPrefix:@"_"];
 
           if ((v36 & 1) == 0)
           {
-            v37 = [v47 valueStore];
-            v38 = [v33 value];
-            v39 = [FCCKProtocolTranslator objectRepresentationFromFieldValue:v38];
-            v40 = [v33 identifier];
-            v41 = [v40 name];
-            [v37 setObjectNoValidate:v39 forKey:v41];
+            valueStore = [v47 valueStore];
+            value2 = [v33 value];
+            v39 = [FCCKProtocolTranslator objectRepresentationFromFieldValue:value2];
+            identifier2 = [v33 identifier];
+            name4 = [identifier2 name];
+            [valueStore setObjectNoValidate:v39 forKey:name4];
           }
         }
 
-        v30 = [v28 countByEnumeratingWithState:&v48 objects:v52 count:16];
+        v30 = [fields countByEnumeratingWithState:&v48 objects:v52 count:16];
       }
 
       while (v30);
@@ -674,30 +674,30 @@ LABEL_17:
   return v47;
 }
 
-- (id)objectRepresentationFromFieldValue:(void *)a1
+- (id)objectRepresentationFromFieldValue:(void *)value
 {
   v36 = *MEMORY[0x1E69E9840];
-  v1 = a1;
-  v2 = [v1 listValues];
-  if (v2 || [v1 type] == 16)
+  valueCopy = value;
+  listValues = [valueCopy listValues];
+  if (listValues || [valueCopy type] == 16)
   {
 
     goto LABEL_4;
   }
 
-  if ([v1 type] == 9)
+  if ([valueCopy type] == 9)
   {
 LABEL_4:
-    v3 = [v1 listValues];
-    v4 = [v3 count];
+    listValues2 = [valueCopy listValues];
+    v4 = [listValues2 count];
 
     v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v4];
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v6 = [v1 listValues];
-    v7 = [v6 countByEnumeratingWithState:&v23 objects:v35 count:16];
+    listValues3 = [valueCopy listValues];
+    v7 = [listValues3 countByEnumeratingWithState:&v23 objects:v35 count:16];
     if (v7)
     {
       v8 = v7;
@@ -708,7 +708,7 @@ LABEL_4:
         {
           if (*v24 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(listValues3);
           }
 
           v11 = [FCCKProtocolTranslator objectRepresentationFromFieldValue:?];
@@ -718,7 +718,7 @@ LABEL_4:
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v23 objects:v35 count:16];
+        v8 = [listValues3 countByEnumeratingWithState:&v23 objects:v35 count:16];
       }
 
       while (v8);
@@ -729,21 +729,21 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v14 = [v1 type];
+  type = [valueCopy type];
   v5 = 0;
-  if (v14 > 4)
+  if (type > 4)
   {
-    switch(v14)
+    switch(type)
     {
       case 5:
-        v17 = [v1 referenceValue];
+        referenceValue = [valueCopy referenceValue];
         v22 = 0;
-        v5 = [FCCKProtocolTranslator referenceFromPReference:v17 error:&v22];
-        v6 = v22;
+        v5 = [FCCKProtocolTranslator referenceFromPReference:referenceValue error:&v22];
+        listValues3 = v22;
 
-        if ((v6 || !v5) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+        if ((listValues3 || !v5) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
         {
-          v18 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid field value (record identifier) from server: %@", v6];
+          v18 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid field value (record identifier) from server: %@", listValues3];
           *buf = 136315906;
           v28 = "[FCCKProtocolTranslator objectRepresentationFromFieldValue:]";
           v29 = 2080;
@@ -757,12 +757,12 @@ LABEL_13:
 
         goto LABEL_13;
       case 7:
-        v15 = [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(v1, "signedValue")}];
+        bytesValue = [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(valueCopy, "signedValue")}];
         break;
       case 8:
         v16 = MEMORY[0x1E696AD98];
-        [v1 doubleValue];
-        v15 = [v16 numberWithDouble:?];
+        [valueCopy doubleValue];
+        bytesValue = [v16 numberWithDouble:?];
         break;
       default:
         goto LABEL_14;
@@ -771,10 +771,10 @@ LABEL_13:
 
   else
   {
-    switch(v14)
+    switch(type)
     {
       case 1:
-        v15 = [v1 bytesValue];
+        bytesValue = [valueCopy bytesValue];
         break;
       case 2:
         if (qword_1EDB27900 != -1)
@@ -782,8 +782,8 @@ LABEL_13:
           dispatch_once(&qword_1EDB27900, &__block_literal_global_158);
         }
 
-        v19 = [v1 dateValue];
-        [v19 time];
+        dateValue = [valueCopy dateValue];
+        [dateValue time];
         v21 = v20;
 
         if (v21 >= *&qword_1EDB278F8)
@@ -795,17 +795,17 @@ LABEL_13:
         {
           [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:v21];
         }
-        v15 = ;
+        bytesValue = ;
         break;
       case 3:
-        v15 = [v1 stringValue];
+        bytesValue = [valueCopy stringValue];
         break;
       default:
         goto LABEL_14;
     }
   }
 
-  v5 = v15;
+  v5 = bytesValue;
 LABEL_14:
 
   v12 = *MEMORY[0x1E69E9840];
@@ -813,16 +813,16 @@ LABEL_14:
   return v5;
 }
 
-- (id)pQueryFromQuery:(void *)a3 error:
+- (id)pQueryFromQuery:(void *)query error:
 {
   v37 = *MEMORY[0x1E69E9840];
   v5 = a2;
-  if (a1)
+  if (self)
   {
     v6 = objc_opt_new();
-    v7 = [v5 predicate];
+    predicate = [v5 predicate];
     v34 = 0;
-    v8 = [v7 fcck_queryFiltersWithTranslator:a1 error:&v34];
+    v8 = [predicate fcck_queryFiltersWithTranslator:self error:&v34];
     v9 = v34;
 
     if (v8)
@@ -859,16 +859,16 @@ LABEL_14:
         }
 
         v17 = objc_alloc_init(MEMORY[0x1E69B6DA8]);
-        v18 = [v5 recordType];
-        [v17 setName:v18];
+        recordType = [v5 recordType];
+        [v17 setName:recordType];
 
         [v6 addTypes:v17];
         v28 = 0u;
         v29 = 0u;
         v26 = 0u;
         v27 = 0u;
-        v19 = [v5 sortDescriptors];
-        v20 = [v19 countByEnumeratingWithState:&v26 objects:v35 count:16];
+        sortDescriptors = [v5 sortDescriptors];
+        v20 = [sortDescriptors countByEnumeratingWithState:&v26 objects:v35 count:16];
         if (v20)
         {
           v21 = *v27;
@@ -878,14 +878,14 @@ LABEL_14:
             {
               if (*v27 != v21)
               {
-                objc_enumerationMutation(v19);
+                objc_enumerationMutation(sortDescriptors);
               }
 
-              v23 = [*(*(&v26 + 1) + 8 * j) fcck_querySort];
-              [v6 addSorts:v23];
+              fcck_querySort = [*(*(&v26 + 1) + 8 * j) fcck_querySort];
+              [v6 addSorts:fcck_querySort];
             }
 
-            v20 = [v19 countByEnumeratingWithState:&v26 objects:v35 count:16];
+            v20 = [sortDescriptors countByEnumeratingWithState:&v26 objects:v35 count:16];
           }
 
           while (v20);
@@ -898,10 +898,10 @@ LABEL_14:
       v9 = v10;
     }
 
-    if (a3)
+    if (query)
     {
       v11 = v9;
-      *a3 = v9;
+      *query = v9;
     }
 
     v12 = 0;

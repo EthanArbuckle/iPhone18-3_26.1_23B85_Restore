@@ -1,5 +1,5 @@
 @interface WFLinkNavigateSequentiallyAction
-- (id)localizedNameWithContext:(id)a3;
+- (id)localizedNameWithContext:(id)context;
 - (id)parameterSummary;
 @end
 
@@ -14,11 +14,11 @@
   return v4;
 }
 
-- (id)localizedNameWithContext:(id)a3
+- (id)localizedNameWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"WFLinkNavigateSequentiallyAction - Action Name", @"Navigate");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }

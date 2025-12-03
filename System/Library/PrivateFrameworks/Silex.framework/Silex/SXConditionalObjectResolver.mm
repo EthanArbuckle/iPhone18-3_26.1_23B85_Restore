@@ -1,39 +1,39 @@
 @interface SXConditionalObjectResolver
-- (SXConditionalObjectResolver)initWithConditionValidator:(id)a3 objectMerger:(id)a4;
-- (id)resolveObjects:(id)a3 context:(id)a4;
+- (SXConditionalObjectResolver)initWithConditionValidator:(id)validator objectMerger:(id)merger;
+- (id)resolveObjects:(id)objects context:(id)context;
 @end
 
 @implementation SXConditionalObjectResolver
 
-- (SXConditionalObjectResolver)initWithConditionValidator:(id)a3 objectMerger:(id)a4
+- (SXConditionalObjectResolver)initWithConditionValidator:(id)validator objectMerger:(id)merger
 {
-  v7 = a3;
-  v8 = a4;
+  validatorCopy = validator;
+  mergerCopy = merger;
   v12.receiver = self;
   v12.super_class = SXConditionalObjectResolver;
   v9 = [(SXConditionalObjectResolver *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_conditionValidator, a3);
-    objc_storeStrong(&v10->_objectMerger, a4);
+    objc_storeStrong(&v9->_conditionValidator, validator);
+    objc_storeStrong(&v10->_objectMerger, merger);
   }
 
   return v10;
 }
 
-- (id)resolveObjects:(id)a3 context:(id)a4
+- (id)resolveObjects:(id)objects context:(id)context
 {
   v47 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v28 = [MEMORY[0x1E695DF70] array];
+  objectsCopy = objects;
+  contextCopy = context;
+  array = [MEMORY[0x1E695DF70] array];
   v8 = [MEMORY[0x1E695DFA8] set];
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  obj = v6;
+  obj = objectsCopy;
   v25 = [obj countByEnumeratingWithState:&v40 objects:v46 count:16];
   if (v25)
   {
@@ -50,13 +50,13 @@
 
         v26 = v9;
         v10 = *(*(&v40 + 1) + 8 * v9);
-        [v28 addObject:v10];
+        [array addObject:v10];
         v38 = 0u;
         v39 = 0u;
         v36 = 0u;
         v37 = 0u;
-        v27 = [v10 conditional];
-        v30 = [v27 countByEnumeratingWithState:&v36 objects:v45 count:16];
+        conditional = [v10 conditional];
+        v30 = [conditional countByEnumeratingWithState:&v36 objects:v45 count:16];
         if (v30)
         {
           v29 = *v37;
@@ -66,7 +66,7 @@
             {
               if (*v37 != v29)
               {
-                objc_enumerationMutation(v27);
+                objc_enumerationMutation(conditional);
               }
 
               v12 = *(*(&v36 + 1) + 8 * i);
@@ -75,8 +75,8 @@
               v34 = 0u;
               v35 = 0u;
               v31 = v12;
-              v13 = [v12 conditions];
-              v14 = [v13 countByEnumeratingWithState:&v32 objects:v44 count:16];
+              conditions = [v12 conditions];
+              v14 = [conditions countByEnumeratingWithState:&v32 objects:v44 count:16];
               if (v14)
               {
                 v15 = v14;
@@ -87,21 +87,21 @@
                   {
                     if (*v33 != v16)
                     {
-                      objc_enumerationMutation(v13);
+                      objc_enumerationMutation(conditions);
                     }
 
                     v18 = *(*(&v32 + 1) + 8 * j);
-                    v19 = [v18 types];
-                    [v8 unionSet:v19];
+                    types = [v18 types];
+                    [v8 unionSet:types];
 
-                    if ([(SXConditionValidating *)self->_conditionValidator validateCondition:v18 context:v7])
+                    if ([(SXConditionValidating *)self->_conditionValidator validateCondition:v18 context:contextCopy])
                     {
-                      [v28 addObject:v31];
+                      [array addObject:v31];
                       goto LABEL_21;
                     }
                   }
 
-                  v15 = [v13 countByEnumeratingWithState:&v32 objects:v44 count:16];
+                  v15 = [conditions countByEnumeratingWithState:&v32 objects:v44 count:16];
                   if (v15)
                   {
                     continue;
@@ -114,7 +114,7 @@
 LABEL_21:
             }
 
-            v30 = [v27 countByEnumeratingWithState:&v36 objects:v45 count:16];
+            v30 = [conditional countByEnumeratingWithState:&v36 objects:v45 count:16];
           }
 
           while (v30);
@@ -130,7 +130,7 @@ LABEL_21:
     while (v25);
   }
 
-  v20 = [(SXJSONObjectMerger *)self->_objectMerger mergeObjects:v28];
+  v20 = [(SXJSONObjectMerger *)self->_objectMerger mergeObjects:array];
   v21 = [[SXResolvedObject alloc] initWitObject:v20 conditionTypes:v8];
 
   return v21;

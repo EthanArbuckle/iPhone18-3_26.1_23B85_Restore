@@ -3,24 +3,24 @@
 + (id)getDefaultQueryCachingPolicy;
 + (id)getDefaultSimilarity;
 + (void)initialize;
-- (OrgApacheLuceneSearchIndexSearcher)initWithOrgApacheLuceneIndexIndexReader:(id)a3;
-- (OrgApacheLuceneSearchIndexSearcher)initWithOrgApacheLuceneIndexIndexReader:(id)a3 withJavaUtilConcurrentExecutorService:(id)a4;
-- (id)collectionStatisticsWithNSString:(id)a3;
-- (id)createWeightWithOrgApacheLuceneSearchQuery:(id)a3 withBoolean:(BOOL)a4;
+- (OrgApacheLuceneSearchIndexSearcher)initWithOrgApacheLuceneIndexIndexReader:(id)reader;
+- (OrgApacheLuceneSearchIndexSearcher)initWithOrgApacheLuceneIndexIndexReader:(id)reader withJavaUtilConcurrentExecutorService:(id)service;
+- (id)collectionStatisticsWithNSString:(id)string;
+- (id)createWeightWithOrgApacheLuceneSearchQuery:(id)query withBoolean:(BOOL)boolean;
 - (id)description;
-- (id)explainWithOrgApacheLuceneSearchWeight:(id)a3 withInt:(int)a4;
-- (id)getSimilarityWithBoolean:(BOOL)a3;
-- (id)rewriteWithOrgApacheLuceneSearchQuery:(id)a3;
-- (id)searchWithOrgApacheLuceneSearchQuery:(id)a3 withOrgApacheLuceneSearchCollectorManager:(id)a4;
-- (id)slicesWithJavaUtilList:(id)a3;
-- (id)termStatisticsWithOrgApacheLuceneIndexTerm:(id)a3 withOrgApacheLuceneIndexTermContext:(id)a4;
-- (id)wrapFilterWithOrgApacheLuceneSearchQuery:(id)a3 withOrgApacheLuceneSearchFilter:(id)a4;
-- (int)countWithOrgApacheLuceneSearchQuery:(id)a3;
+- (id)explainWithOrgApacheLuceneSearchWeight:(id)weight withInt:(int)int;
+- (id)getSimilarityWithBoolean:(BOOL)boolean;
+- (id)rewriteWithOrgApacheLuceneSearchQuery:(id)query;
+- (id)searchWithOrgApacheLuceneSearchQuery:(id)query withOrgApacheLuceneSearchCollectorManager:(id)manager;
+- (id)slicesWithJavaUtilList:(id)list;
+- (id)termStatisticsWithOrgApacheLuceneIndexTerm:(id)term withOrgApacheLuceneIndexTermContext:(id)context;
+- (id)wrapFilterWithOrgApacheLuceneSearchQuery:(id)query withOrgApacheLuceneSearchFilter:(id)filter;
+- (int)countWithOrgApacheLuceneSearchQuery:(id)query;
 - (void)dealloc;
-- (void)searchWithJavaUtilList:(id)a3 withOrgApacheLuceneSearchWeight:(id)a4 withOrgApacheLuceneSearchCollector:(id)a5;
-- (void)searchWithOrgApacheLuceneSearchQuery:(id)a3 withOrgApacheLuceneSearchCollector:(id)a4;
-- (void)searchWithOrgApacheLuceneSearchQuery:(id)a3 withOrgApacheLuceneSearchFilter:(id)a4 withOrgApacheLuceneSearchCollector:(id)a5;
-- (void)setQueryCachingPolicyWithOrgApacheLuceneSearchQueryCachingPolicy:(id)a3;
+- (void)searchWithJavaUtilList:(id)list withOrgApacheLuceneSearchWeight:(id)weight withOrgApacheLuceneSearchCollector:(id)collector;
+- (void)searchWithOrgApacheLuceneSearchQuery:(id)query withOrgApacheLuceneSearchCollector:(id)collector;
+- (void)searchWithOrgApacheLuceneSearchQuery:(id)query withOrgApacheLuceneSearchFilter:(id)filter withOrgApacheLuceneSearchCollector:(id)collector;
+- (void)setQueryCachingPolicyWithOrgApacheLuceneSearchQueryCachingPolicy:(id)policy;
 @end
 
 @implementation OrgApacheLuceneSearchIndexSearcher
@@ -55,43 +55,43 @@
   return qword_100554388;
 }
 
-- (OrgApacheLuceneSearchIndexSearcher)initWithOrgApacheLuceneIndexIndexReader:(id)a3
+- (OrgApacheLuceneSearchIndexSearcher)initWithOrgApacheLuceneIndexIndexReader:(id)reader
 {
-  if (!a3)
+  if (!reader)
   {
     JreThrowNullPointerException();
   }
 
-  OrgApacheLuceneSearchIndexSearcher_initWithOrgApacheLuceneIndexIndexReaderContext_withJavaUtilConcurrentExecutorService_(&self->super.isa, [a3 getContext], 0);
+  OrgApacheLuceneSearchIndexSearcher_initWithOrgApacheLuceneIndexIndexReaderContext_withJavaUtilConcurrentExecutorService_(&self->super.isa, [reader getContext], 0);
   return self;
 }
 
-- (OrgApacheLuceneSearchIndexSearcher)initWithOrgApacheLuceneIndexIndexReader:(id)a3 withJavaUtilConcurrentExecutorService:(id)a4
+- (OrgApacheLuceneSearchIndexSearcher)initWithOrgApacheLuceneIndexIndexReader:(id)reader withJavaUtilConcurrentExecutorService:(id)service
 {
-  if (!a3)
+  if (!reader)
   {
     JreThrowNullPointerException();
   }
 
-  OrgApacheLuceneSearchIndexSearcher_initWithOrgApacheLuceneIndexIndexReaderContext_withJavaUtilConcurrentExecutorService_(&self->super.isa, [a3 getContext], a4);
+  OrgApacheLuceneSearchIndexSearcher_initWithOrgApacheLuceneIndexIndexReaderContext_withJavaUtilConcurrentExecutorService_(&self->super.isa, [reader getContext], service);
   return self;
 }
 
-- (void)setQueryCachingPolicyWithOrgApacheLuceneSearchQueryCachingPolicy:(id)a3
+- (void)setQueryCachingPolicyWithOrgApacheLuceneSearchQueryCachingPolicy:(id)policy
 {
-  v4 = OrgLukhnosPortmobileUtilObjects_requireNonNullWithId_(a3);
+  v4 = OrgLukhnosPortmobileUtilObjects_requireNonNullWithId_(policy);
 
   JreStrongAssign(&self->queryCachingPolicy_, v4);
 }
 
-- (id)slicesWithJavaUtilList:(id)a3
+- (id)slicesWithJavaUtilList:(id)list
 {
-  if (!a3)
+  if (!list)
   {
     JreThrowNullPointerException();
   }
 
-  v4 = [a3 size];
+  v4 = [list size];
   if (qword_1005543A0 != -1)
   {
     sub_1000B0DD0();
@@ -103,7 +103,7 @@
     v6 = 0;
     do
     {
-      v10 = [a3 getWithInt:v6];
+      v10 = [list getWithInt:v6];
       v7 = [IOSObjectArray arrayWithObjects:&v10 count:1 type:OrgApacheLuceneIndexLeafReaderContext_class_()];
       v8 = [OrgApacheLuceneSearchIndexSearcher_LeafSlice alloc];
       JreStrongAssign(&v8->leaves_, v7);
@@ -116,10 +116,10 @@
   return v5;
 }
 
-- (id)getSimilarityWithBoolean:(BOOL)a3
+- (id)getSimilarityWithBoolean:(BOOL)boolean
 {
   p_similarity = &self->similarity_;
-  if (!a3)
+  if (!boolean)
   {
     p_similarity = &unk_100554378;
   }
@@ -127,12 +127,12 @@
   return *p_similarity;
 }
 
-- (id)wrapFilterWithOrgApacheLuceneSearchQuery:(id)a3 withOrgApacheLuceneSearchFilter:(id)a4
+- (id)wrapFilterWithOrgApacheLuceneSearchQuery:(id)query withOrgApacheLuceneSearchFilter:(id)filter
 {
-  result = a3;
-  if (a4)
+  result = query;
+  if (filter)
   {
-    initWithOrgApacheLuceneSearchQuery_withOrgApacheLuceneSearchFilter = new_OrgApacheLuceneSearchFilteredQuery_initWithOrgApacheLuceneSearchQuery_withOrgApacheLuceneSearchFilter_(a3, a4);
+    initWithOrgApacheLuceneSearchQuery_withOrgApacheLuceneSearchFilter = new_OrgApacheLuceneSearchFilteredQuery_initWithOrgApacheLuceneSearchQuery_withOrgApacheLuceneSearchFilter_(query, filter);
 
     return initWithOrgApacheLuceneSearchQuery_withOrgApacheLuceneSearchFilter;
   }
@@ -140,9 +140,9 @@
   return result;
 }
 
-- (int)countWithOrgApacheLuceneSearchQuery:(id)a3
+- (int)countWithOrgApacheLuceneSearchQuery:(id)query
 {
-  v3 = [(OrgApacheLuceneSearchIndexSearcher *)self searchWithOrgApacheLuceneSearchQuery:a3 withOrgApacheLuceneSearchCollectorManager:[OrgApacheLuceneSearchIndexSearcher__2 alloc]];
+  v3 = [(OrgApacheLuceneSearchIndexSearcher *)self searchWithOrgApacheLuceneSearchQuery:query withOrgApacheLuceneSearchCollectorManager:[OrgApacheLuceneSearchIndexSearcher__2 alloc]];
   if (!v3)
   {
     JreThrowNullPointerException();
@@ -151,29 +151,29 @@
   return [v3 intValue];
 }
 
-- (void)searchWithOrgApacheLuceneSearchQuery:(id)a3 withOrgApacheLuceneSearchFilter:(id)a4 withOrgApacheLuceneSearchCollector:(id)a5
+- (void)searchWithOrgApacheLuceneSearchQuery:(id)query withOrgApacheLuceneSearchFilter:(id)filter withOrgApacheLuceneSearchCollector:(id)collector
 {
-  v7 = [(OrgApacheLuceneSearchIndexSearcher *)self wrapFilterWithOrgApacheLuceneSearchQuery:a3 withOrgApacheLuceneSearchFilter:a4];
+  v7 = [(OrgApacheLuceneSearchIndexSearcher *)self wrapFilterWithOrgApacheLuceneSearchQuery:query withOrgApacheLuceneSearchFilter:filter];
 
-  [(OrgApacheLuceneSearchIndexSearcher *)self searchWithOrgApacheLuceneSearchQuery:v7 withOrgApacheLuceneSearchCollector:a5];
+  [(OrgApacheLuceneSearchIndexSearcher *)self searchWithOrgApacheLuceneSearchQuery:v7 withOrgApacheLuceneSearchCollector:collector];
 }
 
-- (void)searchWithOrgApacheLuceneSearchQuery:(id)a3 withOrgApacheLuceneSearchCollector:(id)a4
+- (void)searchWithOrgApacheLuceneSearchQuery:(id)query withOrgApacheLuceneSearchCollector:(id)collector
 {
-  if (!a4)
+  if (!collector)
   {
     JreThrowNullPointerException();
   }
 
   leafContexts = self->leafContexts_;
-  v7 = -[OrgApacheLuceneSearchIndexSearcher createNormalizedWeightWithOrgApacheLuceneSearchQuery:withBoolean:](self, "createNormalizedWeightWithOrgApacheLuceneSearchQuery:withBoolean:", a3, [a4 needsScores]);
+  v7 = -[OrgApacheLuceneSearchIndexSearcher createNormalizedWeightWithOrgApacheLuceneSearchQuery:withBoolean:](self, "createNormalizedWeightWithOrgApacheLuceneSearchQuery:withBoolean:", query, [collector needsScores]);
 
-  [(OrgApacheLuceneSearchIndexSearcher *)self searchWithJavaUtilList:leafContexts withOrgApacheLuceneSearchWeight:v7 withOrgApacheLuceneSearchCollector:a4];
+  [(OrgApacheLuceneSearchIndexSearcher *)self searchWithJavaUtilList:leafContexts withOrgApacheLuceneSearchWeight:v7 withOrgApacheLuceneSearchCollector:collector];
 }
 
-- (id)searchWithOrgApacheLuceneSearchQuery:(id)a3 withOrgApacheLuceneSearchCollectorManager:(id)a4
+- (id)searchWithOrgApacheLuceneSearchQuery:(id)query withOrgApacheLuceneSearchCollectorManager:(id)manager
 {
-  v4 = a4;
+  managerCopy = manager;
   if (self->executor_)
   {
     leafSlices = self->leafSlices_;
@@ -186,20 +186,20 @@
     v9 = new_JavaUtilArrayList_initWithInt_(leafSlices->super.size_);
     if (self->leafSlices_->super.size_ >= 1)
     {
-      if (v4)
+      if (managerCopy)
       {
         v10 = 0;
         v11 = 0;
         while (1)
         {
-          v12 = [v4 newCollector];
-          [(JavaUtilArrayList *)v9 addWithId:v12];
-          if (!v12)
+          newCollector = [managerCopy newCollector];
+          [(JavaUtilArrayList *)v9 addWithId:newCollector];
+          if (!newCollector)
           {
             break;
           }
 
-          v10 |= [v12 needsScores];
+          v10 |= [newCollector needsScores];
           if (++v11 >= self->leafSlices_->super.size_)
           {
             goto LABEL_14;
@@ -213,7 +213,7 @@ LABEL_29:
 
     LOBYTE(v10) = 0;
 LABEL_14:
-    v34 = [(OrgApacheLuceneSearchIndexSearcher *)self createNormalizedWeightWithOrgApacheLuceneSearchQuery:a3 withBoolean:v10 & 1];
+    v34 = [(OrgApacheLuceneSearchIndexSearcher *)self createNormalizedWeightWithOrgApacheLuceneSearchQuery:query withBoolean:v10 & 1];
     v16 = new_JavaUtilArrayList_initWithInt_(self->leafSlices_->super.size_);
     v17 = self->leafSlices_;
     if (v17->super.size_ >= 1)
@@ -231,12 +231,12 @@ LABEL_14:
         v21 = [(JavaUtilArrayList *)v9 getWithInt:v18];
         v22 = v9;
         v23 = v8;
-        v24 = v4;
+        v24 = managerCopy;
         v25 = v21;
         executor = self->executor_;
         v27 = [OrgApacheLuceneSearchIndexSearcher__5 alloc];
         v28 = v25;
-        v4 = v24;
+        managerCopy = v24;
         v8 = v23;
         v9 = v22;
         sub_1000B0CF4(&v27->super.isa, self, isa, v34, v28);
@@ -281,41 +281,41 @@ LABEL_14:
       while (v30);
     }
 
-    if (!v4)
+    if (!managerCopy)
     {
       JreThrowNullPointerException();
     }
 
-    return [v4 reduceWithJavaUtilCollection:v9];
+    return [managerCopy reduceWithJavaUtilCollection:v9];
   }
 
   else
   {
-    if (!a4)
+    if (!manager)
     {
       goto LABEL_29;
     }
 
-    v13 = [a4 newCollector];
-    [(OrgApacheLuceneSearchIndexSearcher *)self searchWithOrgApacheLuceneSearchQuery:a3 withOrgApacheLuceneSearchCollector:v13];
-    v14 = JavaUtilCollections_singletonListWithId_(v13);
+    newCollector2 = [manager newCollector];
+    [(OrgApacheLuceneSearchIndexSearcher *)self searchWithOrgApacheLuceneSearchQuery:query withOrgApacheLuceneSearchCollector:newCollector2];
+    v14 = JavaUtilCollections_singletonListWithId_(newCollector2);
 
-    return [v4 reduceWithJavaUtilCollection:v14];
+    return [managerCopy reduceWithJavaUtilCollection:v14];
   }
 }
 
-- (void)searchWithJavaUtilList:(id)a3 withOrgApacheLuceneSearchWeight:(id)a4 withOrgApacheLuceneSearchCollector:(id)a5
+- (void)searchWithJavaUtilList:(id)list withOrgApacheLuceneSearchWeight:(id)weight withOrgApacheLuceneSearchCollector:(id)collector
 {
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  if (!a3)
+  if (!list)
   {
     JreThrowNullPointerException();
   }
 
-  v8 = [a3 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v8 = [list countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v8)
   {
     v9 = *v18;
@@ -326,23 +326,23 @@ LABEL_14:
       {
         if (*v18 != v9)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(list);
         }
 
-        if (!a5)
+        if (!collector)
         {
           JreThrowNullPointerException();
         }
 
         v11 = *(*(&v17 + 1) + 8 * v10);
-        v12 = [a5 getLeafCollectorWithOrgApacheLuceneIndexLeafReaderContext:{v11, v17}];
-        if (!a4)
+        v12 = [collector getLeafCollectorWithOrgApacheLuceneIndexLeafReaderContext:{v11, v17}];
+        if (!weight)
         {
           JreThrowNullPointerException();
         }
 
         v13 = v12;
-        v14 = [a4 bulkScorerWithOrgApacheLuceneIndexLeafReaderContext:v11];
+        v14 = [weight bulkScorerWithOrgApacheLuceneIndexLeafReaderContext:v11];
         if (v14)
         {
           if (!v11 || (v15 = [v11 reader]) == 0)
@@ -357,7 +357,7 @@ LABEL_14:
       }
 
       while (v8 != v10);
-      v16 = [a3 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v16 = [list countByEnumeratingWithState:&v17 objects:v21 count:16];
       v8 = v16;
     }
 
@@ -365,27 +365,27 @@ LABEL_14:
   }
 }
 
-- (id)rewriteWithOrgApacheLuceneSearchQuery:(id)a3
+- (id)rewriteWithOrgApacheLuceneSearchQuery:(id)query
 {
-  if (!a3)
+  if (!query)
   {
     goto LABEL_8;
   }
 
-  v3 = a3;
-  v5 = [a3 rewriteWithOrgApacheLuceneIndexIndexReader:self->reader_];
-  if (v5 != v3)
+  queryCopy = query;
+  v5 = [query rewriteWithOrgApacheLuceneIndexIndexReader:self->reader_];
+  if (v5 != queryCopy)
   {
     v6 = v5;
     while (v6)
     {
       v7 = [v6 rewriteWithOrgApacheLuceneIndexIndexReader:self->reader_];
-      v3 = v6;
+      queryCopy = v6;
       v8 = v7 == v6;
       v6 = v7;
       if (v8)
       {
-        return v3;
+        return queryCopy;
       }
     }
 
@@ -393,12 +393,12 @@ LABEL_8:
     JreThrowNullPointerException();
   }
 
-  return v3;
+  return queryCopy;
 }
 
-- (id)explainWithOrgApacheLuceneSearchWeight:(id)a3 withInt:(int)a4
+- (id)explainWithOrgApacheLuceneSearchWeight:(id)weight withInt:(int)int
 {
-  v7 = OrgApacheLuceneIndexReaderUtil_subIndexWithInt_withJavaUtilList_(a4, self->leafContexts_);
+  v7 = OrgApacheLuceneIndexReaderUtil_subIndexWithInt_withJavaUtilList_(int, self->leafContexts_);
   leafContexts = self->leafContexts_;
   if (!leafContexts)
   {
@@ -413,20 +413,20 @@ LABEL_8:
 
   v10 = v9;
   v11 = v9[8];
-  v12 = [v9 reader];
-  if (!v12)
+  reader = [v9 reader];
+  if (!reader)
   {
     goto LABEL_13;
   }
 
-  v13 = (a4 - v11);
-  v14 = [v12 getLiveDocs];
-  if (!v14 || ([v14 getWithInt:v13] & 1) != 0)
+  v13 = (int - v11);
+  getLiveDocs = [reader getLiveDocs];
+  if (!getLiveDocs || ([getLiveDocs getWithInt:v13] & 1) != 0)
   {
-    if (a3)
+    if (weight)
     {
 
-      return [a3 explainWithOrgApacheLuceneIndexLeafReaderContext:v10 withInt:v13];
+      return [weight explainWithOrgApacheLuceneIndexLeafReaderContext:v10 withInt:v13];
     }
 
 LABEL_13:
@@ -439,16 +439,16 @@ LABEL_13:
   return OrgApacheLuceneSearchExplanation_noMatchWithNSString_withOrgApacheLuceneSearchExplanationArray_(v23, v24);
 }
 
-- (id)createWeightWithOrgApacheLuceneSearchQuery:(id)a3 withBoolean:(BOOL)a4
+- (id)createWeightWithOrgApacheLuceneSearchQuery:(id)query withBoolean:(BOOL)boolean
 {
-  if (!a3)
+  if (!query)
   {
     JreThrowNullPointerException();
   }
 
   queryCache = self->queryCache_;
-  result = [a3 createWeightWithOrgApacheLuceneSearchIndexSearcher:self withBoolean:?];
-  if (!a4 && queryCache)
+  result = [query createWeightWithOrgApacheLuceneSearchIndexSearcher:self withBoolean:?];
+  if (!boolean && queryCache)
   {
     queryCachingPolicy = self->queryCachingPolicy_;
 
@@ -465,33 +465,33 @@ LABEL_13:
   return JreStrcat("$@$@C", a2, v2, v3, v4, v5, v6, v7, @"IndexSearcher(");
 }
 
-- (id)termStatisticsWithOrgApacheLuceneIndexTerm:(id)a3 withOrgApacheLuceneIndexTermContext:(id)a4
+- (id)termStatisticsWithOrgApacheLuceneIndexTerm:(id)term withOrgApacheLuceneIndexTermContext:(id)context
 {
-  if (!a3 || (v5 = [a3 bytes], !a4))
+  if (!term || (v5 = [term bytes], !context))
   {
     JreThrowNullPointerException();
   }
 
-  v6 = new_OrgApacheLuceneSearchTermStatistics_initWithOrgApacheLuceneUtilBytesRef_withLong_withLong_(v5, [a4 docFreq], objc_msgSend(a4, "totalTermFreq"));
+  v6 = new_OrgApacheLuceneSearchTermStatistics_initWithOrgApacheLuceneUtilBytesRef_withLong_withLong_(v5, [context docFreq], objc_msgSend(context, "totalTermFreq"));
 
   return v6;
 }
 
-- (id)collectionStatisticsWithNSString:(id)a3
+- (id)collectionStatisticsWithNSString:(id)string
 {
-  TermsWithOrgApacheLuceneIndexIndexReader_withNSString = OrgApacheLuceneIndexMultiFields_getTermsWithOrgApacheLuceneIndexIndexReader_withNSString_(self->reader_, a3);
-  v6 = TermsWithOrgApacheLuceneIndexIndexReader_withNSString;
+  TermsWithOrgApacheLuceneIndexIndexReader_withNSString = OrgApacheLuceneIndexMultiFields_getTermsWithOrgApacheLuceneIndexIndexReader_withNSString_(self->reader_, string);
+  getSumDocFreq = TermsWithOrgApacheLuceneIndexIndexReader_withNSString;
   if (TermsWithOrgApacheLuceneIndexIndexReader_withNSString)
   {
     LODWORD(v8) = [TermsWithOrgApacheLuceneIndexIndexReader_withNSString getDocCount];
-    v7 = [v6 getSumTotalTermFreq];
-    v6 = [v6 getSumDocFreq];
+    getSumTotalTermFreq = [getSumDocFreq getSumTotalTermFreq];
+    getSumDocFreq = [getSumDocFreq getSumDocFreq];
     v8 = v8;
   }
 
   else
   {
-    v7 = 0;
+    getSumTotalTermFreq = 0;
     v8 = 0;
   }
 
@@ -501,7 +501,7 @@ LABEL_13:
     JreThrowNullPointerException();
   }
 
-  v10 = new_OrgApacheLuceneSearchCollectionStatistics_initWithNSString_withLong_withLong_withLong_withLong_(a3, [(OrgApacheLuceneIndexIndexReader *)reader maxDoc], v8, v7, v6);
+  v10 = new_OrgApacheLuceneSearchCollectionStatistics_initWithNSString_withLong_withLong_withLong_withLong_(string, [(OrgApacheLuceneIndexIndexReader *)reader maxDoc], v8, getSumTotalTermFreq, getSumDocFreq);
 
   return v10;
 }
@@ -515,7 +515,7 @@ LABEL_13:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = [OrgApacheLuceneSearchIndexSearcher__1 alloc];
     OrgApacheLuceneSearchSimilaritiesSimilarity_init(v2, v3);

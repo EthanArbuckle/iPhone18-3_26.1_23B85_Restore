@@ -1,31 +1,31 @@
 @interface EnterCurrencyAmountView.Coordinator
-- (BOOL)enterCurrencyAmountView:(id)a3 shouldChangeAmountFrom:(id)a4 to:(id)a5;
+- (BOOL)enterCurrencyAmountView:(id)view shouldChangeAmountFrom:(id)from to:(id)to;
 - (_TtCV9PassKitUI23EnterCurrencyAmountView11Coordinator)init;
-- (void)enterCurrencyAmountView:(id)a3 didSelectSuggestion:(id)a4;
-- (void)enterCurrencyAmountViewDidChangeAmount:(id)a3;
+- (void)enterCurrencyAmountView:(id)view didSelectSuggestion:(id)suggestion;
+- (void)enterCurrencyAmountViewDidChangeAmount:(id)amount;
 @end
 
 @implementation EnterCurrencyAmountView.Coordinator
 
-- (BOOL)enterCurrencyAmountView:(id)a3 shouldChangeAmountFrom:(id)a4 to:(id)a5
+- (BOOL)enterCurrencyAmountView:(id)view shouldChangeAmountFrom:(id)from to:(id)to
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = self;
-  LOBYTE(a5) = sub_1BDA3BE9C(a3, a4, a5);
+  viewCopy = view;
+  fromCopy = from;
+  toCopy = to;
+  selfCopy = self;
+  LOBYTE(to) = sub_1BDA3BE9C(view, from, to);
 
-  return a5 & 1;
+  return to & 1;
 }
 
-- (void)enterCurrencyAmountViewDidChangeAmount:(id)a3
+- (void)enterCurrencyAmountViewDidChangeAmount:(id)amount
 {
-  v5 = a3;
-  v6 = self;
-  sub_1BDA3C2CC(a3);
+  amountCopy = amount;
+  selfCopy = self;
+  sub_1BDA3C2CC(amount);
 }
 
-- (void)enterCurrencyAmountView:(id)a3 didSelectSuggestion:(id)a4
+- (void)enterCurrencyAmountView:(id)view didSelectSuggestion:(id)suggestion
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtCV9PassKitUI23EnterCurrencyAmountView11Coordinator_keypadSuggestionSelected);
   if (!v4)
@@ -33,23 +33,23 @@
     return;
   }
 
-  if (!a4)
+  if (!suggestion)
   {
     __break(1u);
     goto LABEL_9;
   }
 
-  v6 = self;
-  v14 = a4;
-  v7 = [v14 value];
-  if (!v7)
+  selfCopy = self;
+  suggestionCopy = suggestion;
+  value = [suggestionCopy value];
+  if (!value)
   {
 LABEL_9:
     __break(1u);
     return;
   }
 
-  v8 = v7;
+  v8 = value;
   v9 = sub_1BE0533F4();
   v11 = v10;
   v13 = v12;

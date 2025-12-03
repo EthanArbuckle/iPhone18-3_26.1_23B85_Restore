@@ -1,7 +1,7 @@
 @interface IMChatTranscriptLayoutSpecification
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)layoutBoundsSize;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 @end
@@ -15,10 +15,10 @@
   return objc_msgSend_stringWithFormat_(v3, v5, @"<%@: %p, layoutBoundsSize: {%.1f, %.1f}", v4, self, *&self->_layoutBoundsSize.width, *&self->_layoutBoundsSize.height);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
@@ -28,7 +28,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = self->_layoutBoundsSize.width == v5[10] && self->_layoutBoundsSize.height == v5[11];
       v7 = v6 && self->_maximumBubbleWidth == v5[1] && self->_topMargin == v5[2] && self->_bottomMargin == v5[3] && self->_leadingMargin == v5[4] && self->_trailingMargin == v5[5] && self->_smallVerticalItemSpacing == v5[7] && self->_mediumVerticalItemSpacing == v5[8] && self->_largeVerticalItemSpacing == v5[9] && self->_zeroVerticalItemSpacing == v5[6];
     }
@@ -56,7 +56,7 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   result = objc_alloc_init(IMChatTranscriptLayoutSpecification);
   *(result + 1) = *&self->_maximumBubbleWidth;

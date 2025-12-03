@@ -1,19 +1,19 @@
 @interface SUCorePolicyExtensionManagedUpdates
-+ (id)nameForMDMSoftwareUpdatePath:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)nameForMDMSoftwareUpdatePath:(unint64_t)path;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isRequestedPMVSupervisedPolicy;
 - (SUCorePolicyExtensionManagedUpdates)init;
-- (SUCorePolicyExtensionManagedUpdates)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SUCorePolicyExtensionManagedUpdates)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)mdmPathName;
 - (id)summary;
 - (int64_t)delayPeriodDays;
-- (void)encodeWithCoder:(id)a3;
-- (void)extendMADocumentationCatalogDownloadOptions:(id)a3 descriptor:(id)a4;
-- (void)extendMASoftwareUpdateAssetDownloadOptions:(id)a3;
-- (void)extendMASoftwareUpdateCatalogDownloadOptions:(id)a3;
-- (void)extendMSUApplyOptions:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)extendMADocumentationCatalogDownloadOptions:(id)options descriptor:(id)descriptor;
+- (void)extendMASoftwareUpdateAssetDownloadOptions:(id)options;
+- (void)extendMASoftwareUpdateCatalogDownloadOptions:(id)options;
+- (void)extendMSUApplyOptions:(id)options;
 @end
 
 @implementation SUCorePolicyExtensionManagedUpdates
@@ -38,16 +38,16 @@
   return v3;
 }
 
-- (void)extendMASoftwareUpdateCatalogDownloadOptions:(id)a3
+- (void)extendMASoftwareUpdateCatalogDownloadOptions:(id)options
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  optionsCopy = options;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(SUCorePolicyExtensionManagedUpdates *)self supervised];
+    supervised = [(SUCorePolicyExtensionManagedUpdates *)self supervised];
     v6 = @"NO";
-    if (v5)
+    if (supervised)
     {
       v6 = @"YES";
     }
@@ -55,16 +55,16 @@
     v7 = [@"|" stringByAppendingFormat:@"supervised:%@|", v6];
     if ([(SUCorePolicyExtensionManagedUpdates *)self supervised])
     {
-      [v4 setSupervised:{-[SUCorePolicyExtensionManagedUpdates supervised](self, "supervised")}];
-      v8 = [(SUCorePolicyExtensionManagedUpdates *)self requestedPMV];
+      [optionsCopy setSupervised:{-[SUCorePolicyExtensionManagedUpdates supervised](self, "supervised")}];
+      requestedPMV = [(SUCorePolicyExtensionManagedUpdates *)self requestedPMV];
 
-      if (v8)
+      if (requestedPMV)
       {
-        v9 = [(SUCorePolicyExtensionManagedUpdates *)self requestedPMV];
-        [v4 setRequestedProductVersion:v9];
+        requestedPMV2 = [(SUCorePolicyExtensionManagedUpdates *)self requestedPMV];
+        [optionsCopy setRequestedProductVersion:requestedPMV2];
 
-        v10 = [v4 requestedProductVersion];
-        v11 = [(__CFString *)v7 stringByAppendingFormat:@"requestedPMV:%@|", v10];
+        requestedProductVersion = [optionsCopy requestedProductVersion];
+        v11 = [(__CFString *)v7 stringByAppendingFormat:@"requestedPMV:%@|", requestedProductVersion];
 
         v7 = v11;
       }
@@ -73,64 +73,64 @@
       {
         if ([(SUCorePolicyExtensionManagedUpdates *)self delayPeriodSecs]< 0)
         {
-          v12 = [MEMORY[0x277D64428] sharedDiag];
+          mEMORY[0x277D64428] = [MEMORY[0x277D64428] sharedDiag];
           v17 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@ with MDMUseDelayPeriod, yet delayPeriodSecs < 0 (ignoring delay period)", self];
-          [v12 trackAnomaly:@"[POLICY] DOWNLOAD_OPTIONS" forReason:v17 withResult:8102 withError:0];
+          [mEMORY[0x277D64428] trackAnomaly:@"[POLICY] DOWNLOAD_OPTIONS" forReason:v17 withResult:8102 withError:0];
         }
 
         else
         {
-          [v4 setDelayPeriod:{-[SUCorePolicyExtensionManagedUpdates delayPeriodSecs](self, "delayPeriodSecs") / 86400}];
-          -[__CFString stringByAppendingFormat:](v7, "stringByAppendingFormat:", @"delayPeriod:%ld|", [v4 delayPeriod]);
-          v7 = v12 = v7;
+          [optionsCopy setDelayPeriod:{-[SUCorePolicyExtensionManagedUpdates delayPeriodSecs](self, "delayPeriodSecs") / 86400}];
+          -[__CFString stringByAppendingFormat:](v7, "stringByAppendingFormat:", @"delayPeriod:%ld|", [optionsCopy delayPeriod]);
+          v7 = mEMORY[0x277D64428] = v7;
         }
       }
 
-      v18 = [v4 additionalServerParams];
+      additionalServerParams = [optionsCopy additionalServerParams];
       v19 = [MEMORY[0x277CCABB0] numberWithInteger:{-[SUCorePolicyExtensionManagedUpdates mdmSoftwareUpdatePath](self, "mdmSoftwareUpdatePath")}];
-      [v18 setSafeObject:v19 forKey:@"MDMSoftwareUpdatePath"];
+      [additionalServerParams setSafeObject:v19 forKey:@"MDMSoftwareUpdatePath"];
 
-      v20 = [v4 additionalServerParams];
+      additionalServerParams2 = [optionsCopy additionalServerParams];
       v21 = [SUCorePolicyExtensionManagedUpdates nameForMDMSoftwareUpdatePath:[(SUCorePolicyExtensionManagedUpdates *)self mdmSoftwareUpdatePath]];
-      [v20 setSafeObject:v21 forKey:@"MDMSoftwareUpdatePathName"];
+      [additionalServerParams2 setSafeObject:v21 forKey:@"MDMSoftwareUpdatePathName"];
 
-      v22 = [v4 additionalServerParams];
-      v23 = -[__CFString stringByAppendingFormat:](v7, "stringByAppendingFormat:", @"%@:%lld|", @"MDMSoftwareUpdatePath", [v22 safeULLForKey:@"MDMSoftwareUpdatePath"]);
+      additionalServerParams3 = [optionsCopy additionalServerParams];
+      v23 = -[__CFString stringByAppendingFormat:](v7, "stringByAppendingFormat:", @"%@:%lld|", @"MDMSoftwareUpdatePath", [additionalServerParams3 safeULLForKey:@"MDMSoftwareUpdatePath"]);
 
-      v15 = [v4 additionalServerParams];
-      v16 = [v15 safeStringForKey:@"MDMSoftwareUpdatePathName"];
+      additionalServerParams4 = [optionsCopy additionalServerParams];
+      v16 = [additionalServerParams4 safeStringForKey:@"MDMSoftwareUpdatePathName"];
       v7 = [v23 stringByAppendingFormat:@"%@:%@|", @"MDMSoftwareUpdatePathName", v16];
     }
 
     else
     {
-      v15 = [MEMORY[0x277D64428] sharedDiag];
+      additionalServerParams4 = [MEMORY[0x277D64428] sharedDiag];
       v16 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@ without supervised = YES, yet calling extendMASoftwareUpdateCatalogDownloadOptions (no extended download options will be added)", self];
-      [v15 trackAnomaly:@"[POLICY] DOWNLOAD_OPTIONS" forReason:v16 withResult:8102 withError:0];
+      [additionalServerParams4 trackAnomaly:@"[POLICY] DOWNLOAD_OPTIONS" forReason:v16 withResult:8102 withError:0];
     }
 
-    v24 = [MEMORY[0x277D64460] sharedLogger];
-    v14 = [v24 oslog];
+    mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+    oslog = [mEMORY[0x277D64460] oslog];
 
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v27 = self;
+      selfCopy = self;
       v28 = 2114;
       v29 = v7;
-      _os_log_impl(&dword_23193C000, v14, OS_LOG_TYPE_DEFAULT, "%{public}@ downloading software update catalog with extended download options: %{public}@", buf, 0x16u);
+      _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "%{public}@ downloading software update catalog with extended download options: %{public}@", buf, 0x16u);
     }
   }
 
   else
   {
-    v13 = [MEMORY[0x277D64460] sharedLogger];
-    v14 = [v13 oslog];
+    mEMORY[0x277D64460]2 = [MEMORY[0x277D64460] sharedLogger];
+    oslog = [mEMORY[0x277D64460]2 oslog];
 
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_23193C000, v14, OS_LOG_TYPE_DEFAULT, "Options class is not MAMsuDownloadOptions, so unable to set managed options.", buf, 2u);
+      _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "Options class is not MAMsuDownloadOptions, so unable to set managed options.", buf, 2u);
     }
 
     v7 = @"|";
@@ -139,44 +139,44 @@
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)extendMADocumentationCatalogDownloadOptions:(id)a3 descriptor:(id)a4
+- (void)extendMADocumentationCatalogDownloadOptions:(id)options descriptor:(id)descriptor
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  descriptorCopy = descriptor;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     if ([(SUCorePolicyExtensionManagedUpdates *)self supervised])
     {
-      [v6 setSupervised:{-[SUCorePolicyExtensionManagedUpdates supervised](self, "supervised")}];
-      v8 = [v6 supervised];
+      [optionsCopy setSupervised:{-[SUCorePolicyExtensionManagedUpdates supervised](self, "supervised")}];
+      supervised = [optionsCopy supervised];
       v9 = @"NO";
-      if (v8)
+      if (supervised)
       {
         v9 = @"YES";
       }
 
       v10 = [@"|" stringByAppendingFormat:@"supervised:%@|", v9];
-      v11 = [v7 productVersion];
-      [v6 setRequestedProductVersion:v11];
+      productVersion = [descriptorCopy productVersion];
+      [optionsCopy setRequestedProductVersion:productVersion];
 
-      v12 = [v6 requestedProductVersion];
-      v13 = [v10 stringByAppendingFormat:@"requestedPMV:%@|", v12];
+      requestedProductVersion = [optionsCopy requestedProductVersion];
+      v13 = [v10 stringByAppendingFormat:@"requestedPMV:%@|", requestedProductVersion];
 
-      v14 = [v6 additionalServerParams];
+      additionalServerParams = [optionsCopy additionalServerParams];
       v15 = [MEMORY[0x277CCABB0] numberWithInteger:{-[SUCorePolicyExtensionManagedUpdates mdmSoftwareUpdatePath](self, "mdmSoftwareUpdatePath")}];
-      [v14 setSafeObject:v15 forKey:@"MDMSoftwareUpdatePath"];
+      [additionalServerParams setSafeObject:v15 forKey:@"MDMSoftwareUpdatePath"];
 
-      v16 = [v6 additionalServerParams];
+      additionalServerParams2 = [optionsCopy additionalServerParams];
       v17 = [SUCorePolicyExtensionManagedUpdates nameForMDMSoftwareUpdatePath:[(SUCorePolicyExtensionManagedUpdates *)self mdmSoftwareUpdatePath]];
-      [v16 setSafeObject:v17 forKey:@"MDMSoftwareUpdatePathName"];
+      [additionalServerParams2 setSafeObject:v17 forKey:@"MDMSoftwareUpdatePathName"];
 
-      v18 = [v6 additionalServerParams];
-      v19 = [v13 stringByAppendingFormat:@"%@:%lld|", @"MDMSoftwareUpdatePath", objc_msgSend(v18, "safeULLForKey:", @"MDMSoftwareUpdatePath"];
+      additionalServerParams3 = [optionsCopy additionalServerParams];
+      v19 = [v13 stringByAppendingFormat:@"%@:%lld|", @"MDMSoftwareUpdatePath", objc_msgSend(additionalServerParams3, "safeULLForKey:", @"MDMSoftwareUpdatePath"];
 
-      v20 = [v6 additionalServerParams];
-      v21 = [v20 safeStringForKey:@"MDMSoftwareUpdatePathName"];
+      additionalServerParams4 = [optionsCopy additionalServerParams];
+      v21 = [additionalServerParams4 safeStringForKey:@"MDMSoftwareUpdatePathName"];
       v22 = [v19 stringByAppendingFormat:@"%@:%@|", @"MDMSoftwareUpdatePathName", v21];
     }
 
@@ -185,28 +185,28 @@
       v22 = @"|";
     }
 
-    v25 = [MEMORY[0x277D64460] sharedLogger];
-    v24 = [v25 oslog];
+    mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+    oslog = [mEMORY[0x277D64460] oslog];
 
-    if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v28 = self;
+      selfCopy = self;
       v29 = 2114;
       v30 = v22;
-      _os_log_impl(&dword_23193C000, v24, OS_LOG_TYPE_DEFAULT, "%{public}@ downloading documentation catalog with extended download options: %{public}@", buf, 0x16u);
+      _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "%{public}@ downloading documentation catalog with extended download options: %{public}@", buf, 0x16u);
     }
   }
 
   else
   {
-    v23 = [MEMORY[0x277D64460] sharedLogger];
-    v24 = [v23 oslog];
+    mEMORY[0x277D64460]2 = [MEMORY[0x277D64460] sharedLogger];
+    oslog = [mEMORY[0x277D64460]2 oslog];
 
-    if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_23193C000, v24, OS_LOG_TYPE_DEFAULT, "Options class is not MAMsuDownloadOptions, so unable to set managed options.", buf, 2u);
+      _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "Options class is not MAMsuDownloadOptions, so unable to set managed options.", buf, 2u);
     }
 
     v22 = @"|";
@@ -215,20 +215,20 @@
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)extendMASoftwareUpdateAssetDownloadOptions:(id)a3
+- (void)extendMASoftwareUpdateAssetDownloadOptions:(id)options
 {
   v42 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SUCorePolicyExtensionManagedUpdates *)self requestedPMV];
+  optionsCopy = options;
+  requestedPMV = [(SUCorePolicyExtensionManagedUpdates *)self requestedPMV];
 
-  if (v5)
+  if (requestedPMV)
   {
-    v6 = [v4 additionalServerParams];
-    v7 = [(SUCorePolicyExtensionManagedUpdates *)self requestedPMV];
-    [v6 setSafeObject:v7 forKey:@"RequestedProductVersion"];
+    additionalServerParams = [optionsCopy additionalServerParams];
+    requestedPMV2 = [(SUCorePolicyExtensionManagedUpdates *)self requestedPMV];
+    [additionalServerParams setSafeObject:requestedPMV2 forKey:@"RequestedProductVersion"];
 
-    v8 = [v4 additionalServerParams];
-    v9 = [v8 safeStringForKey:@"RequestedProductVersion"];
+    additionalServerParams2 = [optionsCopy additionalServerParams];
+    v9 = [additionalServerParams2 safeStringForKey:@"RequestedProductVersion"];
     v10 = [@"|" stringByAppendingFormat:@"%@:%@|", @"RequestedProductVersion", v9];
   }
 
@@ -241,34 +241,34 @@
   {
     if ([(SUCorePolicyExtensionManagedUpdates *)self delayPeriodSecs]< 0)
     {
-      v13 = [MEMORY[0x277D64428] sharedDiag];
+      mEMORY[0x277D64428] = [MEMORY[0x277D64428] sharedDiag];
       v14 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@ with MDMUseDelayPeriod, yet delayPeriodSecs < 0 (ignoring delay period)", self];
-      [v13 trackAnomaly:@"[POLICY] DOWNLOAD_OPTIONS" forReason:v14 withResult:8102 withError:0];
+      [mEMORY[0x277D64428] trackAnomaly:@"[POLICY] DOWNLOAD_OPTIONS" forReason:v14 withResult:8102 withError:0];
     }
 
     else
     {
-      v11 = [v4 additionalServerParams];
+      additionalServerParams3 = [optionsCopy additionalServerParams];
       v12 = [MEMORY[0x277CCABB0] numberWithLong:{-[SUCorePolicyExtensionManagedUpdates delayPeriodSecs](self, "delayPeriodSecs")}];
-      [v11 setSafeObject:v12 forKey:@"DelayPeriod"];
+      [additionalServerParams3 setSafeObject:v12 forKey:@"DelayPeriod"];
 
-      v13 = [v4 additionalServerParams];
-      v14 = [v13 safeObjectForKey:@"DelayPeriod" ofClass:objc_opt_class()];
+      mEMORY[0x277D64428] = [optionsCopy additionalServerParams];
+      v14 = [mEMORY[0x277D64428] safeObjectForKey:@"DelayPeriod" ofClass:objc_opt_class()];
       v15 = [(__CFString *)v10 stringByAppendingFormat:@"%@:%@|", @"DelayPeriod", v14];
 
       v10 = v15;
     }
   }
 
-  v16 = [v4 additionalServerParams];
+  additionalServerParams4 = [optionsCopy additionalServerParams];
   v17 = [MEMORY[0x277CCABB0] numberWithInteger:{-[SUCorePolicyExtensionManagedUpdates mdmSoftwareUpdatePath](self, "mdmSoftwareUpdatePath")}];
-  [v16 setSafeObject:v17 forKey:@"MDMSoftwareUpdatePath"];
+  [additionalServerParams4 setSafeObject:v17 forKey:@"MDMSoftwareUpdatePath"];
 
-  v18 = [v4 additionalServerParams];
+  additionalServerParams5 = [optionsCopy additionalServerParams];
   v19 = [SUCorePolicyExtensionManagedUpdates nameForMDMSoftwareUpdatePath:[(SUCorePolicyExtensionManagedUpdates *)self mdmSoftwareUpdatePath]];
-  [v18 setSafeObject:v19 forKey:@"MDMSoftwareUpdatePathName"];
+  [additionalServerParams5 setSafeObject:v19 forKey:@"MDMSoftwareUpdatePathName"];
 
-  v20 = [v4 additionalServerParams];
+  additionalServerParams6 = [optionsCopy additionalServerParams];
   if ([(SUCorePolicyExtensionManagedUpdates *)self MDMUseDelayPeriod])
   {
     v21 = @"true";
@@ -279,9 +279,9 @@
     v21 = @"false";
   }
 
-  [v20 setSafeObject:v21 forKey:@"DelayRequested"];
+  [additionalServerParams6 setSafeObject:v21 forKey:@"DelayRequested"];
 
-  v22 = [v4 additionalServerParams];
+  additionalServerParams7 = [optionsCopy additionalServerParams];
   if ([(SUCorePolicyExtensionManagedUpdates *)self supervised])
   {
     v23 = @"true";
@@ -292,45 +292,45 @@
     v23 = @"false";
   }
 
-  [v22 setSafeObject:v23 forKey:@"Supervised"];
+  [additionalServerParams7 setSafeObject:v23 forKey:@"Supervised"];
 
-  v24 = [v4 additionalServerParams];
-  v25 = [v24 safeStringForKey:@"DelayRequested"];
+  additionalServerParams8 = [optionsCopy additionalServerParams];
+  v25 = [additionalServerParams8 safeStringForKey:@"DelayRequested"];
   v26 = [(__CFString *)v10 stringByAppendingFormat:@"%@:%@|", @"DelayRequested", v25];
 
-  v27 = [v4 additionalServerParams];
-  v28 = [v27 safeStringForKey:@"Supervised"];
+  additionalServerParams9 = [optionsCopy additionalServerParams];
+  v28 = [additionalServerParams9 safeStringForKey:@"Supervised"];
   v29 = [v26 stringByAppendingFormat:@"%@:%@|", @"Supervised", v28];
 
-  v30 = [v4 additionalServerParams];
-  v31 = [v29 stringByAppendingFormat:@"%@:%lld|", @"MDMSoftwareUpdatePath", objc_msgSend(v30, "safeULLForKey:", @"MDMSoftwareUpdatePath"];
+  additionalServerParams10 = [optionsCopy additionalServerParams];
+  v31 = [v29 stringByAppendingFormat:@"%@:%lld|", @"MDMSoftwareUpdatePath", objc_msgSend(additionalServerParams10, "safeULLForKey:", @"MDMSoftwareUpdatePath"];
 
-  v32 = [v4 additionalServerParams];
-  v33 = [v32 safeStringForKey:@"MDMSoftwareUpdatePathName"];
+  additionalServerParams11 = [optionsCopy additionalServerParams];
+  v33 = [additionalServerParams11 safeStringForKey:@"MDMSoftwareUpdatePathName"];
   v34 = [v31 stringByAppendingFormat:@"%@:%@|", @"MDMSoftwareUpdatePathName", v33];
 
-  v35 = [MEMORY[0x277D64460] sharedLogger];
-  v36 = [v35 oslog];
+  mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+  oslog = [mEMORY[0x277D64460] oslog];
 
-  if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v39 = self;
+    selfCopy = self;
     v40 = 2114;
     v41 = v34;
-    _os_log_impl(&dword_23193C000, v36, OS_LOG_TYPE_DEFAULT, "%{public}@ downloading software update asset with extended download options: %{public}@", buf, 0x16u);
+    _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "%{public}@ downloading software update asset with extended download options: %{public}@", buf, 0x16u);
   }
 
   v37 = *MEMORY[0x277D85DE8];
 }
 
-- (void)extendMSUApplyOptions:(id)a3
+- (void)extendMSUApplyOptions:(id)options
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  optionsCopy = options;
   if ([(SUCorePolicyExtensionManagedUpdates *)self supervised])
   {
-    CFDictionaryAddValue(v4, *MEMORY[0x277D29380], *MEMORY[0x277CBED28]);
+    CFDictionaryAddValue(optionsCopy, *MEMORY[0x277D29380], *MEMORY[0x277CBED28]);
     v5 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"enabledManagedRequest|"];
     v6 = [@"|" stringByAppendingString:v5];
   }
@@ -340,16 +340,16 @@
     v6 = @"|";
   }
 
-  v7 = [MEMORY[0x277D64460] sharedLogger];
-  v8 = [v7 oslog];
+  mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+  oslog = [mEMORY[0x277D64460] oslog];
 
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138543618;
-    v11 = self;
+    selfCopy = self;
     v12 = 2114;
     v13 = v6;
-    _os_log_impl(&dword_23193C000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ MSU apply options with extended options: %{public}@", &v10, 0x16u);
+    _os_log_impl(&dword_23193C000, oslog, OS_LOG_TYPE_DEFAULT, "%{public}@ MSU apply options with extended options: %{public}@", &v10, 0x16u);
   }
 
   v9 = *MEMORY[0x277D85DE8];
@@ -362,8 +362,8 @@
     return 0;
   }
 
-  v3 = [(SUCorePolicyExtensionManagedUpdates *)self requestedPMV];
-  v4 = v3 != 0;
+  requestedPMV = [(SUCorePolicyExtensionManagedUpdates *)self requestedPMV];
+  v4 = requestedPMV != 0;
 
   return v4;
 }
@@ -383,64 +383,64 @@
 
 - (id)mdmPathName
 {
-  v3 = [(SUCorePolicyExtensionManagedUpdates *)self mdmSoftwareUpdatePath];
-  if ((v3 - 1) >= 2)
+  mdmSoftwareUpdatePath = [(SUCorePolicyExtensionManagedUpdates *)self mdmSoftwareUpdatePath];
+  if ((mdmSoftwareUpdatePath - 1) >= 2)
   {
-    if (v3)
+    if (mdmSoftwareUpdatePath)
     {
-      v4 = [MEMORY[0x277D64428] sharedDiag];
+      mEMORY[0x277D64428] = [MEMORY[0x277D64428] sharedDiag];
       v5 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Unknown mdmPath value: %lu", -[SUCorePolicyExtensionManagedUpdates mdmSoftwareUpdatePath](self, "mdmSoftwareUpdatePath")];
-      [v4 trackAnomaly:@"[POLICY] SCAN_OPTIONS" forReason:v5 withResult:8102 withError:0];
+      [mEMORY[0x277D64428] trackAnomaly:@"[POLICY] SCAN_OPTIONS" forReason:v5 withResult:8102 withError:0];
 
-      v3 = 0;
+      mdmSoftwareUpdatePath = 0;
     }
   }
 
   else
   {
-    v3 = [SUCorePolicyExtensionManagedUpdates nameForMDMSoftwareUpdatePath:[(SUCorePolicyExtensionManagedUpdates *)self mdmSoftwareUpdatePath]];
+    mdmSoftwareUpdatePath = [SUCorePolicyExtensionManagedUpdates nameForMDMSoftwareUpdatePath:[(SUCorePolicyExtensionManagedUpdates *)self mdmSoftwareUpdatePath]];
   }
 
-  return v3;
+  return mdmSoftwareUpdatePath;
 }
 
-- (SUCorePolicyExtensionManagedUpdates)initWithCoder:(id)a3
+- (SUCorePolicyExtensionManagedUpdates)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = SUCorePolicyExtensionManagedUpdates;
   v5 = [(SUCorePolicyExtension *)&v9 init];
   if (v5)
   {
-    v5->_supervised = [v4 decodeBoolForKey:@"Supervised"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"RequestedPMV"];
+    v5->_supervised = [coderCopy decodeBoolForKey:@"Supervised"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"RequestedPMV"];
     requestedPMV = v5->_requestedPMV;
     v5->_requestedPMV = v6;
 
-    v5->_MDMUseDelayPeriod = [v4 decodeBoolForKey:@"MDMUseDelayPeriod"];
-    v5->_delayPeriodSecs = [v4 decodeIntegerForKey:@"DelayPeriodSecs"];
-    v5->_mdmSoftwareUpdatePath = [v4 decodeIntegerForKey:@"MDMSoftwareUpdatePath"];
+    v5->_MDMUseDelayPeriod = [coderCopy decodeBoolForKey:@"MDMUseDelayPeriod"];
+    v5->_delayPeriodSecs = [coderCopy decodeIntegerForKey:@"DelayPeriodSecs"];
+    v5->_mdmSoftwareUpdatePath = [coderCopy decodeIntegerForKey:@"MDMSoftwareUpdatePath"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  [v5 encodeBool:-[SUCorePolicyExtensionManagedUpdates supervised](self forKey:{"supervised"), @"Supervised"}];
-  v4 = [(SUCorePolicyExtensionManagedUpdates *)self requestedPMV];
-  [v5 encodeObject:v4 forKey:@"RequestedPMV"];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[SUCorePolicyExtensionManagedUpdates supervised](self forKey:{"supervised"), @"Supervised"}];
+  requestedPMV = [(SUCorePolicyExtensionManagedUpdates *)self requestedPMV];
+  [coderCopy encodeObject:requestedPMV forKey:@"RequestedPMV"];
 
-  [v5 encodeBool:-[SUCorePolicyExtensionManagedUpdates MDMUseDelayPeriod](self forKey:{"MDMUseDelayPeriod"), @"MDMUseDelayPeriod"}];
-  [v5 encodeInteger:-[SUCorePolicyExtensionManagedUpdates delayPeriodSecs](self forKey:{"delayPeriodSecs"), @"DelayPeriodSecs"}];
-  [v5 encodeInteger:-[SUCorePolicyExtensionManagedUpdates mdmSoftwareUpdatePath](self forKey:{"mdmSoftwareUpdatePath"), @"MDMSoftwareUpdatePath"}];
+  [coderCopy encodeBool:-[SUCorePolicyExtensionManagedUpdates MDMUseDelayPeriod](self forKey:{"MDMUseDelayPeriod"), @"MDMUseDelayPeriod"}];
+  [coderCopy encodeInteger:-[SUCorePolicyExtensionManagedUpdates delayPeriodSecs](self forKey:{"delayPeriodSecs"), @"DelayPeriodSecs"}];
+  [coderCopy encodeInteger:-[SUCorePolicyExtensionManagedUpdates mdmSoftwareUpdatePath](self forKey:{"mdmSoftwareUpdatePath"), @"MDMSoftwareUpdatePath"}];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
@@ -450,17 +450,17 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(SUCorePolicyExtensionManagedUpdates *)v5 supervised];
-      if (v6 == [(SUCorePolicyExtensionManagedUpdates *)self supervised])
+      v5 = equalCopy;
+      supervised = [(SUCorePolicyExtensionManagedUpdates *)v5 supervised];
+      if (supervised == [(SUCorePolicyExtensionManagedUpdates *)self supervised])
       {
         v8 = MEMORY[0x277D643F8];
-        v9 = [(SUCorePolicyExtensionManagedUpdates *)v5 requestedPMV];
-        v10 = [(SUCorePolicyExtensionManagedUpdates *)self requestedPMV];
-        if ([v8 stringIsEqual:v9 to:v10] && (v11 = -[SUCorePolicyExtensionManagedUpdates MDMUseDelayPeriod](v5, "MDMUseDelayPeriod"), v11 == -[SUCorePolicyExtensionManagedUpdates MDMUseDelayPeriod](self, "MDMUseDelayPeriod")) && (v12 = -[SUCorePolicyExtensionManagedUpdates delayPeriodSecs](v5, "delayPeriodSecs"), v12 == -[SUCorePolicyExtensionManagedUpdates delayPeriodSecs](self, "delayPeriodSecs")))
+        requestedPMV = [(SUCorePolicyExtensionManagedUpdates *)v5 requestedPMV];
+        requestedPMV2 = [(SUCorePolicyExtensionManagedUpdates *)self requestedPMV];
+        if ([v8 stringIsEqual:requestedPMV to:requestedPMV2] && (v11 = -[SUCorePolicyExtensionManagedUpdates MDMUseDelayPeriod](v5, "MDMUseDelayPeriod"), v11 == -[SUCorePolicyExtensionManagedUpdates MDMUseDelayPeriod](self, "MDMUseDelayPeriod")) && (v12 = -[SUCorePolicyExtensionManagedUpdates delayPeriodSecs](v5, "delayPeriodSecs"), v12 == -[SUCorePolicyExtensionManagedUpdates delayPeriodSecs](self, "delayPeriodSecs")))
         {
-          v13 = [(SUCorePolicyExtensionManagedUpdates *)v5 mdmSoftwareUpdatePath];
-          v7 = v13 == [(SUCorePolicyExtensionManagedUpdates *)self mdmSoftwareUpdatePath];
+          mdmSoftwareUpdatePath = [(SUCorePolicyExtensionManagedUpdates *)v5 mdmSoftwareUpdatePath];
+          v7 = mdmSoftwareUpdatePath == [(SUCorePolicyExtensionManagedUpdates *)self mdmSoftwareUpdatePath];
         }
 
         else
@@ -484,19 +484,19 @@
   return v7;
 }
 
-+ (id)nameForMDMSoftwareUpdatePath:(unint64_t)a3
++ (id)nameForMDMSoftwareUpdatePath:(unint64_t)path
 {
-  if (a3 >= 3)
+  if (path >= 3)
   {
-    v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"SUCoreMDMSoftwareUpdatePathUnknown(%ld)", a3];
+    path = [MEMORY[0x277CCACA8] stringWithFormat:@"SUCoreMDMSoftwareUpdatePathUnknown(%ld)", path];
   }
 
   else
   {
-    v4 = off_27892DF08[a3];
+    path = off_27892DF08[path];
   }
 
-  return v4;
+  return path;
 }
 
 - (id)summary
@@ -511,12 +511,12 @@
     v3 = &stru_28469CC48;
   }
 
-  v4 = [(SUCorePolicyExtensionManagedUpdates *)self requestedPMV];
+  requestedPMV = [(SUCorePolicyExtensionManagedUpdates *)self requestedPMV];
 
-  if (v4)
+  if (requestedPMV)
   {
-    v5 = [(SUCorePolicyExtensionManagedUpdates *)self requestedPMV];
-    v6 = [(__CFString *)v3 stringByAppendingFormat:@"|requestedPMV=%@", v5];
+    requestedPMV2 = [(SUCorePolicyExtensionManagedUpdates *)self requestedPMV];
+    v6 = [(__CFString *)v3 stringByAppendingFormat:@"|requestedPMV=%@", requestedPMV2];
 
     v3 = v6;
   }
@@ -549,7 +549,7 @@
 - (id)description
 {
   v3 = objc_alloc(MEMORY[0x277CCACA8]);
-  v4 = [(SUCorePolicyExtensionManagedUpdates *)self extensionName];
+  extensionName = [(SUCorePolicyExtensionManagedUpdates *)self extensionName];
   if ([(SUCorePolicyExtensionManagedUpdates *)self supervised])
   {
     v5 = @"YES";
@@ -560,7 +560,7 @@
     v5 = @"NO";
   }
 
-  v6 = [(SUCorePolicyExtensionManagedUpdates *)self requestedPMV];
+  requestedPMV = [(SUCorePolicyExtensionManagedUpdates *)self requestedPMV];
   if ([(SUCorePolicyExtensionManagedUpdates *)self MDMUseDelayPeriod])
   {
     v7 = @"YES";
@@ -571,19 +571,19 @@
     v7 = @"NO";
   }
 
-  v8 = [(SUCorePolicyExtensionManagedUpdates *)self delayPeriodSecs];
+  delayPeriodSecs = [(SUCorePolicyExtensionManagedUpdates *)self delayPeriodSecs];
   v9 = [SUCorePolicyExtensionManagedUpdates nameForMDMSoftwareUpdatePath:[(SUCorePolicyExtensionManagedUpdates *)self mdmSoftwareUpdatePath]];
-  v10 = [v3 initWithFormat:@"%@(supervised:%@|requestedPMV:%@|MDMUseDelayPeriod:%@|delayPeriodSecs:%ld|mdmSoftwareUpdatePath:%@)", v4, v5, v6, v7, v8, v9];
+  v10 = [v3 initWithFormat:@"%@(supervised:%@|requestedPMV:%@|MDMUseDelayPeriod:%@|delayPeriodSecs:%ld|mdmSoftwareUpdatePath:%@)", extensionName, v5, requestedPMV, v7, delayPeriodSecs, v9];
 
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_alloc_init(SUCorePolicyExtensionManagedUpdates);
   [(SUCorePolicyExtensionManagedUpdates *)v5 setSupervised:[(SUCorePolicyExtensionManagedUpdates *)self supervised]];
-  v6 = [(SUCorePolicyExtensionManagedUpdates *)self requestedPMV];
-  v7 = [v6 copyWithZone:a3];
+  requestedPMV = [(SUCorePolicyExtensionManagedUpdates *)self requestedPMV];
+  v7 = [requestedPMV copyWithZone:zone];
   [(SUCorePolicyExtensionManagedUpdates *)v5 setRequestedPMV:v7];
 
   [(SUCorePolicyExtensionManagedUpdates *)v5 setMDMUseDelayPeriod:[(SUCorePolicyExtensionManagedUpdates *)self MDMUseDelayPeriod]];

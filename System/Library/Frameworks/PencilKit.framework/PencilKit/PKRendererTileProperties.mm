@@ -1,46 +1,46 @@
 @interface PKRendererTileProperties
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGAffineTransform)drawingTransform;
 - (CGPoint)offset;
-- (PKRendererTileProperties)initWithLevel:(int64_t)a3 offset:(CGPoint)a4 drawingTransform:(CGAffineTransform *)a5 sixChannelMode:(BOOL)a6 transparentBlending:(BOOL)a7 extendedDynamicRange:(BOOL)a8;
+- (PKRendererTileProperties)initWithLevel:(int64_t)level offset:(CGPoint)offset drawingTransform:(CGAffineTransform *)transform sixChannelMode:(BOOL)mode transparentBlending:(BOOL)blending extendedDynamicRange:(BOOL)range;
 @end
 
 @implementation PKRendererTileProperties
 
-- (PKRendererTileProperties)initWithLevel:(int64_t)a3 offset:(CGPoint)a4 drawingTransform:(CGAffineTransform *)a5 sixChannelMode:(BOOL)a6 transparentBlending:(BOOL)a7 extendedDynamicRange:(BOOL)a8
+- (PKRendererTileProperties)initWithLevel:(int64_t)level offset:(CGPoint)offset drawingTransform:(CGAffineTransform *)transform sixChannelMode:(BOOL)mode transparentBlending:(BOOL)blending extendedDynamicRange:(BOOL)range
 {
-  y = a4.y;
-  x = a4.x;
+  y = offset.y;
+  x = offset.x;
   v18.receiver = self;
   v18.super_class = PKRendererTileProperties;
   result = [(PKRendererTileProperties *)&v18 init];
   if (result)
   {
-    result->_level = a3;
+    result->_level = level;
     result->_offset.x = x;
     result->_offset.y = y;
-    result->_sixChannelMode = a6;
-    v16 = *&a5->a;
-    v17 = *&a5->c;
-    *&result->_drawingTransform.tx = *&a5->tx;
+    result->_sixChannelMode = mode;
+    v16 = *&transform->a;
+    v17 = *&transform->c;
+    *&result->_drawingTransform.tx = *&transform->tx;
     *&result->_drawingTransform.c = v17;
     *&result->_drawingTransform.a = v16;
-    result->_extendedDynamicRange = a8;
-    result->_transparentBlending = a7;
+    result->_extendedDynamicRange = range;
+    result->_transparentBlending = blending;
   }
 
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(PKRendererTileProperties *)self level];
-    if (v6 != [v5 level])
+    v5 = equalCopy;
+    level = [(PKRendererTileProperties *)self level];
+    if (level != [v5 level])
     {
       goto LABEL_12;
     }
@@ -55,8 +55,8 @@
       goto LABEL_13;
     }
 
-    v14 = [(PKRendererTileProperties *)self sixChannelMode];
-    if (v14 != [v5 sixChannelMode])
+    sixChannelMode = [(PKRendererTileProperties *)self sixChannelMode];
+    if (sixChannelMode != [v5 sixChannelMode])
     {
       goto LABEL_12;
     }
@@ -74,8 +74,8 @@
 
     if (DKDNearlyEqualTransforms(v19, v18) && (v15 = -[PKRendererTileProperties extendedDynamicRange](self, "extendedDynamicRange"), v15 == [v5 extendedDynamicRange]))
     {
-      v17 = [(PKRendererTileProperties *)self transparentBlending];
-      v12 = v17 ^ [v5 transparentBlending] ^ 1;
+      transparentBlending = [(PKRendererTileProperties *)self transparentBlending];
+      v12 = transparentBlending ^ [v5 transparentBlending] ^ 1;
     }
 
     else

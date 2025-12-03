@@ -1,42 +1,42 @@
 @interface PBSlideMaster
-+ (id)createMasterStyleMap:(id)a3 state:(id)a4;
-+ (id)textBodyForPlaceholderType:(int)a3 slideLayout:(id)a4;
-+ (int)textTypeFor:(int)a3 placeholderType:(int)a4;
-+ (void)flattenBaseMasterStyleType:(int)a3 masterStyleMap:(id)a4;
-+ (void)flattenMasterStyleType:(int)a3 baseType:(int)a4 masterStyleMap:(id)a5;
-+ (void)flattenPlaceholderTextStylesIntoLayout:(id)a3 layoutType:(int)a4 masterStyleMap:(id)a5;
-+ (void)flattenTextStyle:(id)a3 intoTextBox:(id)a4;
-+ (void)padMissingLevels:(id)a3;
-+ (void)readSlideMasterColorScheme:(id)a3 slideHolder:(id)a4 state:(id)a5;
-+ (void)readSlideMasterName:(id)a3 slideHolder:(id)a4 state:(id)a5;
-+ (void)readSlideMasterTextStyles:(id)a3 slideHolder:(id)a4 state:(id)a5;
-+ (void)setCannedOtherTextListStyle:(id)a3;
-+ (void)setFont:(id)a3 fromCharacterProperties:(id)a4;
-+ (void)setSlideMasterTextStyles:(id)a3 state:(id)a4;
++ (id)createMasterStyleMap:(id)map state:(id)state;
++ (id)textBodyForPlaceholderType:(int)type slideLayout:(id)layout;
++ (int)textTypeFor:(int)for placeholderType:(int)type;
++ (void)flattenBaseMasterStyleType:(int)type masterStyleMap:(id)map;
++ (void)flattenMasterStyleType:(int)type baseType:(int)baseType masterStyleMap:(id)map;
++ (void)flattenPlaceholderTextStylesIntoLayout:(id)layout layoutType:(int)type masterStyleMap:(id)map;
++ (void)flattenTextStyle:(id)style intoTextBox:(id)box;
++ (void)padMissingLevels:(id)levels;
++ (void)readSlideMasterColorScheme:(id)scheme slideHolder:(id)holder state:(id)state;
++ (void)readSlideMasterName:(id)name slideHolder:(id)holder state:(id)state;
++ (void)readSlideMasterTextStyles:(id)styles slideHolder:(id)holder state:(id)state;
++ (void)setCannedOtherTextListStyle:(id)style;
++ (void)setFont:(id)font fromCharacterProperties:(id)properties;
++ (void)setSlideMasterTextStyles:(id)styles state:(id)state;
 @end
 
 @implementation PBSlideMaster
 
-+ (void)readSlideMasterName:(id)a3 slideHolder:(id)a4 state:(id)a5
++ (void)readSlideMasterName:(id)name slideHolder:(id)holder state:(id)state
 {
-  v13 = a3;
-  v7 = a4;
-  v8 = a5;
-  v9 = [v7 childOfType:4026 instance:2];
+  nameCopy = name;
+  holderCopy = holder;
+  stateCopy = state;
+  v9 = [holderCopy childOfType:4026 instance:2];
   v10 = v9;
   if (v9)
     v11 = {;
-    v12 = [v13 theme];
-    [v12 setName:v11];
+    theme = [nameCopy theme];
+    [theme setName:v11];
   }
 }
 
-+ (void)flattenBaseMasterStyleType:(int)a3 masterStyleMap:(id)a4
++ (void)flattenBaseMasterStyleType:(int)type masterStyleMap:(id)map
 {
-  v14 = a4;
-  v5 = a3;
-  v6 = [MEMORY[0x277CCABB0] numberWithLong:a3];
-  v7 = [v14 objectForKey:v6];
+  mapCopy = map;
+  typeCopy = type;
+  v6 = [MEMORY[0x277CCABB0] numberWithLong:type];
+  v7 = [mapCopy objectForKey:v6];
 
   v8 = objc_alloc_init(OADTextListStyle);
   for (i = 0; i != 9; ++i)
@@ -49,43 +49,43 @@
     }
   }
 
-  v13 = [MEMORY[0x277CCABB0] numberWithLong:v5];
-  [v14 setObject:v8 forKey:v13];
+  v13 = [MEMORY[0x277CCABB0] numberWithLong:typeCopy];
+  [mapCopy setObject:v8 forKey:v13];
 }
 
-+ (void)flattenMasterStyleType:(int)a3 baseType:(int)a4 masterStyleMap:(id)a5
++ (void)flattenMasterStyleType:(int)type baseType:(int)baseType masterStyleMap:(id)map
 {
-  v14 = a5;
-  v7 = a3;
-  v8 = [MEMORY[0x277CCABB0] numberWithLong:a3];
-  v9 = [v14 objectForKey:v8];
+  mapCopy = map;
+  typeCopy = type;
+  v8 = [MEMORY[0x277CCABB0] numberWithLong:type];
+  v9 = [mapCopy objectForKey:v8];
 
   if (v9)
   {
-    v10 = [MEMORY[0x277CCABB0] numberWithLong:a4];
-    v11 = [v14 objectForKey:v10];
+    v10 = [MEMORY[0x277CCABB0] numberWithLong:baseType];
+    v11 = [mapCopy objectForKey:v10];
 
     v12 = objc_alloc_init(OADTextListStyle);
     [(OADTextListStyle *)v12 overrideWithTextStyle:v11];
     [(OADTextListStyle *)v12 overrideWithTextStyle:v9];
-    v13 = [MEMORY[0x277CCABB0] numberWithLong:v7];
-    [v14 setObject:v12 forKey:v13];
+    v13 = [MEMORY[0x277CCABB0] numberWithLong:typeCopy];
+    [mapCopy setObject:v12 forKey:v13];
   }
 }
 
-+ (id)createMasterStyleMap:(id)a3 state:(id)a4
++ (id)createMasterStyleMap:(id)map state:(id)state
 {
-  v5 = a3;
-  v6 = a4;
+  mapCopy = map;
+  stateCopy = state;
   v19 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v7 = [v5 indexOfFirstChildOfType:4003 afterIndex:-1];
+  v7 = [mapCopy indexOfFirstChildOfType:4003 afterIndex:-1];
   while (v7 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v8 = [v5 childAt:v7];
+    v8 = [mapCopy childAt:v7];
     v9 = v8;
     if (v8)
     {
-      v10 = [v8 eshObject];
+      eshObject = [v8 eshObject];
       {
 
         v18 = [TCMessageException exceptionWithMessage:TCUnknownProblemMessage];
@@ -101,12 +101,12 @@
 
       else
       {
-        *[v6 currentSourceMasterStyleInfoOfType:Instance] = v12;
+        *[stateCopy currentSourceMasterStyleInfoOfType:Instance] = v12;
       }
 
       if (PptTextHeaderAtom::isDerivedType(Instance))
       {
-        v14 = *[v6 currentSourceMasterStyleInfoOfType:PptTextHeaderAtom::getBaseType(Instance)];
+        v14 = *[stateCopy currentSourceMasterStyleInfoOfType:PptTextHeaderAtom::getBaseType(Instance)];
         TCVerifyInputMeetsCondition(v14 != 0);
       }
 
@@ -118,41 +118,41 @@
       if (Instance != -1)
       {
         v15 = objc_alloc_init(OADTextListStyle);
-        +[PBMasterStyle readMasterStyleAtom:baseMasterStyleAtom:masterBulletStyleAtom:textListStyle:state:](PBMasterStyle, "readMasterStyleAtom:baseMasterStyleAtom:masterBulletStyleAtom:textListStyle:state:", *[v6 currentSourceMasterStyleInfoOfType:Instance], v14, *(objc_msgSend(v6, "currentSourceMasterStyleInfoOfType:", Instance) + 8), v15, v6);
+        +[PBMasterStyle readMasterStyleAtom:baseMasterStyleAtom:masterBulletStyleAtom:textListStyle:state:](PBMasterStyle, "readMasterStyleAtom:baseMasterStyleAtom:masterBulletStyleAtom:textListStyle:state:", *[stateCopy currentSourceMasterStyleInfoOfType:Instance], v14, *(objc_msgSend(stateCopy, "currentSourceMasterStyleInfoOfType:", Instance) + 8), v15, stateCopy);
         v16 = [MEMORY[0x277CCABB0] numberWithLong:Instance];
         [v19 setObject:v15 forKey:v16];
       }
     }
 
-    v7 = [v5 indexOfFirstChildOfType:4003 afterIndex:v7];
+    v7 = [mapCopy indexOfFirstChildOfType:4003 afterIndex:v7];
   }
 
   return v19;
 }
 
-+ (void)padMissingLevels:(id)a3
++ (void)padMissingLevels:(id)levels
 {
-  v16 = a3;
-  v3 = [v16 allKeys];
+  levelsCopy = levels;
+  allKeys = [levelsCopy allKeys];
   for (i = 0; ; i = v5 + 1)
   {
     v5 = i;
-    if ([v3 count] <= i)
+    if ([allKeys count] <= i)
     {
       break;
     }
 
-    v6 = [v3 objectAtIndex:i];
-    v7 = [v16 objectForKey:v6];
-    v8 = [v6 longValue];
-    if (v8 <= 7 && ((1 << v8) & 0xA2) != 0)
+    v6 = [allKeys objectAtIndex:i];
+    v7 = [levelsCopy objectForKey:v6];
+    longValue = [v6 longValue];
+    if (longValue <= 7 && ((1 << longValue) & 0xA2) != 0)
     {
       v9 = 4;
     }
 
     else
     {
-      v9 = 4 * (v8 == 8);
+      v9 = 4 * (longValue == 8);
     }
 
     v10 = [v7 propertiesForListLevel:v9];
@@ -178,16 +178,16 @@
   }
 }
 
-+ (void)setCannedOtherTextListStyle:(id)a3
++ (void)setCannedOtherTextListStyle:(id)style
 {
-  v11 = a3;
+  styleCopy = style;
   v3 = [OADSchemeColor schemeColorWithIndex:1];
   v4 = objc_alloc_init(OADSolidFill);
   [(OADSolidFill *)v4 setColor:v3];
   v5 = 0;
   for (i = 0; i != 9; ++i)
   {
-    v7 = [v11 propertiesForListLevel:i];
+    v7 = [styleCopy propertiesForListLevel:i];
     [v7 setLevel:i];
     *&v8 = v5;
     [v7 setLeftMargin:v8];
@@ -207,14 +207,14 @@
   }
 }
 
-+ (void)setFont:(id)a3 fromCharacterProperties:(id)a4
++ (void)setFont:(id)font fromCharacterProperties:(id)properties
 {
-  v17 = a3;
-  v5 = a4;
-  if ([v5 hasLatinFont] && (objc_msgSend(v5, "latinFont"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "length"), v6, v7))
+  fontCopy = font;
+  propertiesCopy = properties;
+  if ([propertiesCopy hasLatinFont] && (objc_msgSend(propertiesCopy, "latinFont"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "length"), v6, v7))
   {
-    v8 = [v5 latinFont];
-    [v17 setLatinFont:v8];
+    latinFont = [propertiesCopy latinFont];
+    [fontCopy setLatinFont:latinFont];
   }
 
   else
@@ -226,109 +226,109 @@
     +[OITSUAssertionHandler logBacktraceThrottled];
   }
 
-  if ([v5 hasEastAsianFont])
+  if ([propertiesCopy hasEastAsianFont])
   {
-    v11 = [v5 eastAsianFont];
-    v12 = [v11 length];
+    eastAsianFont = [propertiesCopy eastAsianFont];
+    v12 = [eastAsianFont length];
 
     if (v12)
     {
-      v13 = [v5 eastAsianFont];
-      [v17 setEastAsianFont:v13];
+      eastAsianFont2 = [propertiesCopy eastAsianFont];
+      [fontCopy setEastAsianFont:eastAsianFont2];
     }
   }
 
-  if ([v5 hasBidiFont])
+  if ([propertiesCopy hasBidiFont])
   {
-    v14 = [v5 bidiFont];
-    v15 = [v14 length];
+    bidiFont = [propertiesCopy bidiFont];
+    v15 = [bidiFont length];
 
     if (v15)
     {
-      v16 = [v5 bidiFont];
-      [v17 setComplexScriptFont:v16];
+      bidiFont2 = [propertiesCopy bidiFont];
+      [fontCopy setComplexScriptFont:bidiFont2];
     }
   }
 }
 
-+ (void)readSlideMasterTextStyles:(id)a3 slideHolder:(id)a4 state:(id)a5
++ (void)readSlideMasterTextStyles:(id)styles slideHolder:(id)holder state:(id)state
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = a5;
-  [PBProgTag readBulletStylesFromMainMaster:v8 state:v9];
-  v10 = [a1 createMasterStyleMap:v8 state:v9];
-  [a1 padMissingLevels:v10];
-  [v9 setMasterStyles:v10 slideMaster:v11];
+  stylesCopy = styles;
+  holderCopy = holder;
+  stateCopy = state;
+  [PBProgTag readBulletStylesFromMainMaster:holderCopy state:stateCopy];
+  v10 = [self createMasterStyleMap:holderCopy state:stateCopy];
+  [self padMissingLevels:v10];
+  [stateCopy setMasterStyles:v10 slideMaster:stylesCopy];
 }
 
-+ (void)readSlideMasterColorScheme:(id)a3 slideHolder:(id)a4 state:(id)a5
++ (void)readSlideMasterColorScheme:(id)scheme slideHolder:(id)holder state:(id)state
 {
-  v14 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v14 theme];
-  v11 = [v10 baseStyles];
-  v12 = [v11 colorScheme];
+  schemeCopy = scheme;
+  holderCopy = holder;
+  stateCopy = state;
+  theme = [schemeCopy theme];
+  baseStyles = [theme baseStyles];
+  colorScheme = [baseStyles colorScheme];
 
-  v13 = [v14 colorMap];
-  [a1 readColorScheme:v8 colorScheme:v12 colorMap:v13 state:v9];
+  colorMap = [schemeCopy colorMap];
+  [self readColorScheme:holderCopy colorScheme:colorScheme colorMap:colorMap state:stateCopy];
 }
 
-+ (void)setSlideMasterTextStyles:(id)a3 state:(id)a4
++ (void)setSlideMasterTextStyles:(id)styles state:(id)state
 {
-  v22 = a3;
-  v6 = [a4 masterStyles:?];
-  v7 = [v22 theme];
-  v8 = [v7 baseStyles];
-  v9 = [v8 fontScheme];
+  stylesCopy = styles;
+  v6 = [state masterStyles:?];
+  theme = [stylesCopy theme];
+  baseStyles = [theme baseStyles];
+  fontScheme = [baseStyles fontScheme];
 
   v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:0];
   v11 = [v6 objectForKey:v10];
 
-  [v22 setTitleTextStyle:v11];
-  v12 = [v9 majorFont];
+  [stylesCopy setTitleTextStyle:v11];
+  majorFont = [fontScheme majorFont];
   v13 = [v11 propertiesForListLevel:0];
-  [a1 setFont:v12 fromCharacterProperties:v13];
+  [self setFont:majorFont fromCharacterProperties:v13];
 
   v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:1];
   v15 = [v6 objectForKey:v14];
 
-  [v22 setBodyTextStyle:v15];
-  v16 = [v9 minorFont];
+  [stylesCopy setBodyTextStyle:v15];
+  minorFont = [fontScheme minorFont];
   v17 = [v15 propertiesForListLevel:0];
-  [a1 setFont:v16 fromCharacterProperties:v17];
+  [self setFont:minorFont fromCharacterProperties:v17];
 
   v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:7];
   v19 = [v6 objectForKey:v18];
 
-  [v22 setOtherTextStyle:v19];
-  v20 = [v9 minorFont];
+  [stylesCopy setOtherTextStyle:v19];
+  minorFont2 = [fontScheme minorFont];
   v21 = [v19 propertiesForListLevel:1];
-  [a1 setFont:v20 fromCharacterProperties:v21];
+  [self setFont:minorFont2 fromCharacterProperties:v21];
 }
 
-+ (void)flattenPlaceholderTextStylesIntoLayout:(id)a3 layoutType:(int)a4 masterStyleMap:(id)a5
++ (void)flattenPlaceholderTextStylesIntoLayout:(id)layout layoutType:(int)type masterStyleMap:(id)map
 {
-  v6 = *&a4;
-  v17 = a3;
-  v8 = a5;
-  v9 = [a1 textBodyForPlaceholderType:0 slideLayout:v17];
-  v10 = [a1 textTypeFor:v6 placeholderType:0];
+  v6 = *&type;
+  layoutCopy = layout;
+  mapCopy = map;
+  v9 = [self textBodyForPlaceholderType:0 slideLayout:layoutCopy];
+  v10 = [self textTypeFor:v6 placeholderType:0];
   v11 = [MEMORY[0x277CCABB0] numberWithLong:v10];
-  v12 = [v8 objectForKey:v11];
-  [a1 flattenTextStyle:v12 intoTextBox:v9];
+  v12 = [mapCopy objectForKey:v11];
+  [self flattenTextStyle:v12 intoTextBox:v9];
 
-  v13 = [a1 textBodyForPlaceholderType:1 slideLayout:v17];
-  v14 = [a1 textTypeFor:v6 placeholderType:1];
+  v13 = [self textBodyForPlaceholderType:1 slideLayout:layoutCopy];
+  v14 = [self textTypeFor:v6 placeholderType:1];
   v15 = [MEMORY[0x277CCABB0] numberWithLong:v14];
-  v16 = [v8 objectForKey:v15];
-  [a1 flattenTextStyle:v16 intoTextBox:v13];
+  v16 = [mapCopy objectForKey:v15];
+  [self flattenTextStyle:v16 intoTextBox:v13];
 }
 
-+ (int)textTypeFor:(int)a3 placeholderType:(int)a4
++ (int)textTypeFor:(int)for placeholderType:(int)type
 {
-  if ((a3 & 0xFFFFFFFD) != 0)
+  if ((for & 0xFFFFFFFD) != 0)
   {
     v4 = 1;
   }
@@ -338,7 +338,7 @@
     v4 = 5;
   }
 
-  if ((a3 & 0xFFFFFFFD) != 0)
+  if ((for & 0xFFFFFFFD) != 0)
   {
     v5 = 0;
   }
@@ -348,7 +348,7 @@
     v5 = 6;
   }
 
-  if (a4)
+  if (type)
   {
     v6 = -1;
   }
@@ -358,7 +358,7 @@
     v6 = v5;
   }
 
-  if (a4 == 1)
+  if (type == 1)
   {
     return v4;
   }
@@ -369,29 +369,29 @@
   }
 }
 
-+ (id)textBodyForPlaceholderType:(int)a3 slideLayout:(id)a4
++ (id)textBodyForPlaceholderType:(int)type slideLayout:(id)layout
 {
-  v4 = *&a3;
-  v5 = a4;
-  v6 = v5;
-  if (v4 != -1 && (([v5 placeholderWithType:v4 placeholderTypeIndex:0 overrideIndex:1], (v7 = objc_claimAutoreleasedReturnValue()) != 0) || (objc_msgSend(v6, "placeholderWithType:placeholderTypeIndex:useBaseTypeMatch:overrideIndex:", v4, 0, 1, 1), (v7 = objc_claimAutoreleasedReturnValue()) != 0)))
+  v4 = *&type;
+  layoutCopy = layout;
+  v6 = layoutCopy;
+  if (v4 != -1 && (([layoutCopy placeholderWithType:v4 placeholderTypeIndex:0 overrideIndex:1], (v7 = objc_claimAutoreleasedReturnValue()) != 0) || (objc_msgSend(v6, "placeholderWithType:placeholderTypeIndex:useBaseTypeMatch:overrideIndex:", v4, 0, 1, 1), (v7 = objc_claimAutoreleasedReturnValue()) != 0)))
   {
-    v8 = [v7 textBody];
+    textBody = [v7 textBody];
   }
 
   else
   {
-    v8 = 0;
+    textBody = 0;
   }
 
-  return v8;
+  return textBody;
 }
 
-+ (void)flattenTextStyle:(id)a3 intoTextBox:(id)a4
++ (void)flattenTextStyle:(id)style intoTextBox:(id)box
 {
-  v6 = a3;
-  v5 = [a4 overrideTextListStyle];
-  [v5 overrideWithTextStyle:v6];
+  styleCopy = style;
+  overrideTextListStyle = [box overrideTextListStyle];
+  [overrideTextListStyle overrideWithTextStyle:styleCopy];
 }
 
 @end

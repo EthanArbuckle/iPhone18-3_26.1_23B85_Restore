@@ -1,5 +1,5 @@
 @interface CHChannelUndoState
-- (CHChannelUndoState)initWithChannel:(id)a3 flagsOnly:(BOOL)a4;
+- (CHChannelUndoState)initWithChannel:(id)channel flagsOnly:(BOOL)only;
 - (void)dealloc;
 @end
 
@@ -13,16 +13,16 @@
   [(CHChannelUndoState *)&v3 dealloc];
 }
 
-- (CHChannelUndoState)initWithChannel:(id)a3 flagsOnly:(BOOL)a4
+- (CHChannelUndoState)initWithChannel:(id)channel flagsOnly:(BOOL)only
 {
-  v4 = a4;
+  onlyCopy = only;
   v8.receiver = self;
   v8.super_class = CHChannelUndoState;
   v6 = [(CHChannelUndoState *)&v8 init];
   if (v6)
   {
-    v6->_pOZChannel = ChannelStateCopy([a3 ozChannel], v4);
-    v6->_flagsOnly = v4;
+    v6->_pOZChannel = ChannelStateCopy([channel ozChannel], onlyCopy);
+    v6->_flagsOnly = onlyCopy;
   }
 
   return v6;

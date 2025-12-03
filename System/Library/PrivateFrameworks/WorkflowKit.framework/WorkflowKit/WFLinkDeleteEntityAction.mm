@@ -14,14 +14,14 @@
 {
   v11.receiver = self;
   v11.super_class = WFLinkDeleteEntityAction;
-  v3 = [(WFAppIntentExecutionAction *)&v11 parameterSummary];
-  v4 = [(WFAppIntentExecutionAction *)self metadata];
-  v5 = [v4 actionConfiguration];
-  v6 = v5 | v3;
+  parameterSummary = [(WFAppIntentExecutionAction *)&v11 parameterSummary];
+  metadata = [(WFAppIntentExecutionAction *)self metadata];
+  actionConfiguration = [metadata actionConfiguration];
+  v6 = actionConfiguration | parameterSummary;
 
   if (v6)
   {
-    v9 = v3;
+    v9 = parameterSummary;
   }
 
   else
@@ -36,9 +36,9 @@
 
 - (id)itemsBeingDeleted
 {
-  v3 = [(WFAction *)self processedParameters];
-  v4 = [(WFLinkDeleteEntityAction *)self entityParameterName];
-  v5 = [v3 objectForKeyedSubscript:v4];
+  processedParameters = [(WFAction *)self processedParameters];
+  entityParameterName = [(WFLinkDeleteEntityAction *)self entityParameterName];
+  v5 = [processedParameters objectForKeyedSubscript:entityParameterName];
 
   if (v5)
   {
@@ -178,8 +178,8 @@ LABEL_23:
 
 - (Class)contentItemClass
 {
-  v2 = [(WFLinkAction *)self inputDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"Types"];
+  inputDictionary = [(WFLinkAction *)self inputDictionary];
+  v3 = [inputDictionary objectForKeyedSubscript:@"Types"];
 
   if (v3)
   {
@@ -202,11 +202,11 @@ LABEL_23:
 
   v5 = v4;
 
-  v6 = [v5 firstObject];
+  firstObject = [v5 firstObject];
 
-  if (v6)
+  if (firstObject)
   {
-    v7 = NSClassFromString(v6);
+    v7 = NSClassFromString(firstObject);
   }
 
   else
@@ -222,24 +222,24 @@ LABEL_23:
 - (id)overrideLabelsByParameter
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v3 = [(WFLinkDeleteEntityAction *)self entityParameterName];
-  if (v3)
+  entityParameterName = [(WFLinkDeleteEntityAction *)self entityParameterName];
+  if (entityParameterName)
   {
-    v4 = v3;
-    v5 = [(WFLinkEntityAction *)self entityName];
-    if (v5)
+    v4 = entityParameterName;
+    entityName = [(WFLinkEntityAction *)self entityName];
+    if (entityName)
     {
-      v6 = v5;
-      v7 = [(WFLinkEntityAction *)self entityName];
-      v8 = [v7 key];
+      v6 = entityName;
+      entityName2 = [(WFLinkEntityAction *)self entityName];
+      v8 = [entityName2 key];
       v9 = [v8 length];
 
       if (v9)
       {
-        v10 = [(WFLinkDeleteEntityAction *)self entityParameterName];
-        v15 = v10;
-        v11 = [(WFLinkEntityAction *)self entityName];
-        v16[0] = v11;
+        entityParameterName2 = [(WFLinkDeleteEntityAction *)self entityParameterName];
+        v15 = entityParameterName2;
+        entityName3 = [(WFLinkEntityAction *)self entityName];
+        v16[0] = entityName3;
         v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:&v15 count:1];
 
         goto LABEL_7;
@@ -260,13 +260,13 @@ LABEL_7:
 
 - (id)overrideEntityName
 {
-  v2 = [(WFLinkEntityAction *)self overrideTypeDescriptions];
-  if (v2)
+  overrideTypeDescriptions = [(WFLinkEntityAction *)self overrideTypeDescriptions];
+  if (overrideTypeDescriptions)
   {
-    v2 = [(objc_class *)v2 pluralTypeDescription];
+    overrideTypeDescriptions = [(objc_class *)overrideTypeDescriptions pluralTypeDescription];
   }
 
-  return v2;
+  return overrideTypeDescriptions;
 }
 
 - (id)entityParameterName

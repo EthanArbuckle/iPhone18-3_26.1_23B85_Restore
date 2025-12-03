@@ -1,6 +1,6 @@
 @interface SPAssetCacheSyncData
-+ (id)fromProto:(id)a3;
-+ (id)toProto:(id)a3;
++ (id)fromProto:(id)proto;
++ (id)toProto:(id)proto;
 - (SPAssetCacheSyncData)init;
 @end
 
@@ -13,39 +13,39 @@
   return [(SPAssetCacheSyncData *)&v3 init];
 }
 
-+ (id)toProto:(id)a3
++ (id)toProto:(id)proto
 {
-  v3 = a3;
+  protoCopy = proto;
   v4 = objc_alloc_init(SPProtoCacheSyncData);
-  v5 = [v3 cacheIdentifier];
-  [(SPProtoCacheSyncData *)v4 setCacheIdentifier:v5];
+  cacheIdentifier = [protoCopy cacheIdentifier];
+  [(SPProtoCacheSyncData *)v4 setCacheIdentifier:cacheIdentifier];
 
-  v6 = [v3 permanentCache];
-  v7 = [SPAssetCacheAssets toProto:v6];
+  permanentCache = [protoCopy permanentCache];
+  v7 = [SPAssetCacheAssets toProto:permanentCache];
   [(SPProtoCacheSyncData *)v4 setPermanentCache:v7];
 
-  v8 = [v3 transientCache];
+  transientCache = [protoCopy transientCache];
 
-  v9 = [SPAssetCacheAssets toProto:v8];
+  v9 = [SPAssetCacheAssets toProto:transientCache];
   [(SPProtoCacheSyncData *)v4 setTransientCache:v9];
 
   return v4;
 }
 
-+ (id)fromProto:(id)a3
++ (id)fromProto:(id)proto
 {
-  v3 = a3;
+  protoCopy = proto;
   v4 = objc_alloc_init(SPAssetCacheSyncData);
-  v5 = [v3 cacheIdentifier];
-  [(SPAssetCacheSyncData *)v4 setCacheIdentifier:v5];
+  cacheIdentifier = [protoCopy cacheIdentifier];
+  [(SPAssetCacheSyncData *)v4 setCacheIdentifier:cacheIdentifier];
 
-  v6 = [v3 permanentCache];
-  v7 = [SPAssetCacheAssets fromProto:v6];
+  permanentCache = [protoCopy permanentCache];
+  v7 = [SPAssetCacheAssets fromProto:permanentCache];
   [(SPAssetCacheSyncData *)v4 setPermanentCache:v7];
 
-  v8 = [v3 transientCache];
+  transientCache = [protoCopy transientCache];
 
-  v9 = [SPAssetCacheAssets fromProto:v8];
+  v9 = [SPAssetCacheAssets fromProto:transientCache];
   [(SPAssetCacheSyncData *)v4 setTransientCache:v9];
 
   return v4;

@@ -1,60 +1,60 @@
 @interface UIInterfaceActionConcreteVisualStyle_GlassAppleTV
-- (id)actionViewStateForAttachingToActionRepresentationView:(id)a3;
-- (id)newActionBackgroundViewForViewState:(id)a3;
+- (id)actionViewStateForAttachingToActionRepresentationView:(id)view;
+- (id)newActionBackgroundViewForViewState:(id)state;
 @end
 
 @implementation UIInterfaceActionConcreteVisualStyle_GlassAppleTV
 
-- (id)actionViewStateForAttachingToActionRepresentationView:(id)a3
+- (id)actionViewStateForAttachingToActionRepresentationView:(id)view
 {
-  v3 = a3;
-  v4 = [[_UIInterfaceActionRepresentationViewContext_GlassAppleTV alloc] initWithHighlightTransformTargetView:v3];
+  viewCopy = view;
+  v4 = [[_UIInterfaceActionRepresentationViewContext_GlassAppleTV alloc] initWithHighlightTransformTargetView:viewCopy];
 
   return v4;
 }
 
-- (id)newActionBackgroundViewForViewState:(id)a3
+- (id)newActionBackgroundViewForViewState:(id)state
 {
-  v4 = a3;
-  v5 = [v4 action];
+  stateCopy = state;
+  action = [stateCopy action];
   v6 = objc_alloc_init(_UIAlertControllerGlassTVActionBackgroundView);
-  if ([v5 type] == 2)
+  if ([action type] == 2)
   {
-    v7 = 1;
+    isPreferred = 1;
   }
 
   else
   {
-    v7 = [v4 isPreferred];
+    isPreferred = [stateCopy isPreferred];
   }
 
-  [(_UIAlertControllerModernTVActionBackgroundView *)v6 setShouldUseTintColorAsHighlightColor:v7];
+  [(_UIAlertControllerModernTVActionBackgroundView *)v6 setShouldUseTintColorAsHighlightColor:isPreferred];
   [(UIInterfaceActionConcreteVisualStyle_GlassAppleTV *)self _actionBackgroundCornerRadius];
   [(_UIAlertControllerTVBackgroundView *)v6 _setContinuousCornerRadius:?];
-  if ([v5 type] == 2)
+  if ([action type] == 2)
   {
-    v8 = +[UIColor systemRedColor];
+    tintColor = +[UIColor systemRedColor];
 LABEL_8:
-    v9 = v8;
-    [(UIView *)v6 setTintColor:v8];
+    v9 = tintColor;
+    [(UIView *)v6 setTintColor:tintColor];
 
     [(_UIAlertControllerTVBackgroundView *)v6 setAlpha:0 forState:0.2];
-    v10 = [(UIView *)v6 layer];
-    [v10 setCompositingFilter:*MEMORY[0x1E6979CC0]];
+    layer = [(UIView *)v6 layer];
+    [layer setCompositingFilter:*MEMORY[0x1E6979CC0]];
 
     goto LABEL_15;
   }
 
-  if ([v4 isPreferred])
+  if ([stateCopy isPreferred])
   {
-    v8 = [v4 tintColor];
+    tintColor = [stateCopy tintColor];
     goto LABEL_8;
   }
 
-  v11 = [v4 traitCollection];
-  v12 = [v11 userInterfaceStyle];
+  traitCollection = [stateCopy traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  if (v12 == 1)
+  if (userInterfaceStyle == 1)
   {
     +[UIColor blackColor];
   }
@@ -66,15 +66,15 @@ LABEL_8:
   v13 = ;
   [(UIView *)v6 setTintColor:v13];
 
-  v14 = [(UIView *)v6 layer];
-  v15 = v14;
+  layer2 = [(UIView *)v6 layer];
+  v15 = layer2;
   v16 = MEMORY[0x1E6979CE8];
-  if (v12 != 1)
+  if (userInterfaceStyle != 1)
   {
     v16 = MEMORY[0x1E6979CF8];
   }
 
-  [v14 setCompositingFilter:*v16];
+  [layer2 setCompositingFilter:*v16];
 
   [(_UIAlertControllerTVBackgroundView *)v6 setAlpha:0 forState:0.1];
   [(_UIAlertControllerTVBackgroundView *)v6 setAlpha:4 forState:0.2];

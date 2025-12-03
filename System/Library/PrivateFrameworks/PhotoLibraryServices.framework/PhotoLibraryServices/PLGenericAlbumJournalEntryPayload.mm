@@ -1,48 +1,48 @@
 @interface PLGenericAlbumJournalEntryPayload
 + (id)modelPropertiesDescription;
 + (id)nonPersistedModelPropertiesDescription;
-- (BOOL)comparePayloadValue:(id)a3 toObjectDictionaryValue:(id)a4 forPayloadProperty:(id)a5;
+- (BOOL)comparePayloadValue:(id)value toObjectDictionaryValue:(id)dictionaryValue forPayloadProperty:(id)property;
 - (BOOL)customSortAscending;
 - (BOOL)isInTrash;
 - (BOOL)isPinned;
 - (BOOL)isPrototype;
-- (BOOL)updatePayloadAttributes:(id)a3 andNilAttributes:(id)a4 withManagedObject:(id)a5 forPayloadProperty:(id)a6;
+- (BOOL)updatePayloadAttributes:(id)attributes andNilAttributes:(id)nilAttributes withManagedObject:(id)object forPayloadProperty:(id)property;
 - (NSString)customKeyAssetUUID;
-- (id)payloadValueFromAttributes:(id)a3 forPayloadProperty:(id)a4;
+- (id)payloadValueFromAttributes:(id)attributes forPayloadProperty:(id)property;
 - (int)customSortKey;
-- (void)appendAttributeKey:(id)a3 value:(id)a4 toDescriptionBuilder:(id)a5;
-- (void)updateAlbum:(id)a3 includePendingChanges:(BOOL)a4;
+- (void)appendAttributeKey:(id)key value:(id)value toDescriptionBuilder:(id)builder;
+- (void)updateAlbum:(id)album includePendingChanges:(BOOL)changes;
 @end
 
 @implementation PLGenericAlbumJournalEntryPayload
 
-- (BOOL)comparePayloadValue:(id)a3 toObjectDictionaryValue:(id)a4 forPayloadProperty:(id)a5
+- (BOOL)comparePayloadValue:(id)value toObjectDictionaryValue:(id)dictionaryValue forPayloadProperty:(id)property
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v10 isEqualToKey:@"customKeyAsset"])
+  valueCopy = value;
+  dictionaryValueCopy = dictionaryValue;
+  propertyCopy = property;
+  if ([propertyCopy isEqualToKey:@"customKeyAsset"])
   {
     goto LABEL_2;
   }
 
-  if ([v10 isEqualToKey:@"inTrash"])
+  if ([propertyCopy isEqualToKey:@"inTrash"])
   {
-    v13 = [v9 integerValue];
-    v12 = [v8 BOOLValue] ^ (v13 == 0);
+    integerValue = [dictionaryValueCopy integerValue];
+    v12 = [valueCopy BOOLValue] ^ (integerValue == 0);
     goto LABEL_12;
   }
 
-  if (![v10 isEqualToKey:@"cloudGUID"])
+  if (![propertyCopy isEqualToKey:@"cloudGUID"])
   {
     v18.receiver = self;
     v18.super_class = PLGenericAlbumJournalEntryPayload;
-    v11 = [(PLManagedObjectJournalEntryPayload *)&v18 comparePayloadValue:v8 toObjectDictionaryValue:v9 forPayloadProperty:v10];
+    v11 = [(PLManagedObjectJournalEntryPayload *)&v18 comparePayloadValue:valueCopy toObjectDictionaryValue:dictionaryValueCopy forPayloadProperty:propertyCopy];
     goto LABEL_3;
   }
 
-  v14 = [(PLGenericAlbumJournalEntryPayload *)self kind];
-  if ([v14 integerValue] == 3999)
+  kind = [(PLGenericAlbumJournalEntryPayload *)self kind];
+  if ([kind integerValue] == 3999)
   {
 
 LABEL_11:
@@ -50,16 +50,16 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v15 = [(PLGenericAlbumJournalEntryPayload *)self kind];
-  v16 = [v15 integerValue];
+  kind2 = [(PLGenericAlbumJournalEntryPayload *)self kind];
+  integerValue2 = [kind2 integerValue];
 
-  if (v16 == 3998)
+  if (integerValue2 == 3998)
   {
     goto LABEL_11;
   }
 
 LABEL_2:
-  v11 = [v9 isEqualToString:v8];
+  v11 = [dictionaryValueCopy isEqualToString:valueCopy];
 LABEL_3:
   LOBYTE(v12) = v11;
 LABEL_12:
@@ -78,130 +78,130 @@ LABEL_12:
 - (int)customSortKey
 {
   v2 = [(NSMutableDictionary *)self->super._payloadAttributes objectForKeyedSubscript:@"customSortKey"];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (BOOL)customSortAscending
 {
   v2 = [(NSMutableDictionary *)self->super._payloadAttributes objectForKeyedSubscript:@"customSortAscending"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)isInTrash
 {
   v2 = [(NSMutableDictionary *)self->super._payloadAttributes objectForKeyedSubscript:@"inTrash"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)isPrototype
 {
   v2 = [(NSMutableDictionary *)self->super._payloadAttributes objectForKeyedSubscript:@"prototype"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)isPinned
 {
   v2 = [(NSMutableDictionary *)self->super._payloadAttributes objectForKeyedSubscript:@"pinned"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (void)updateAlbum:(id)a3 includePendingChanges:(BOOL)a4
+- (void)updateAlbum:(id)album includePendingChanges:(BOOL)changes
 {
-  v21 = a3;
-  v5 = [(PLManagedObjectJournalEntryPayload *)self payloadID];
-  v6 = [v5 payloadIDString];
-  [v21 setUuid:v6];
+  albumCopy = album;
+  payloadID = [(PLManagedObjectJournalEntryPayload *)self payloadID];
+  payloadIDString = [payloadID payloadIDString];
+  [albumCopy setUuid:payloadIDString];
 
-  v7 = [(PLGenericAlbumJournalEntryPayload *)self title];
-  [v21 setTitle:v7];
+  title = [(PLGenericAlbumJournalEntryPayload *)self title];
+  [albumCopy setTitle:title];
 
-  v8 = [(PLGenericAlbumJournalEntryPayload *)self kind];
-  [v21 setKind:v8];
+  kind = [(PLGenericAlbumJournalEntryPayload *)self kind];
+  [albumCopy setKind:kind];
 
-  v9 = [(PLGenericAlbumJournalEntryPayload *)self cloudGUID];
+  cloudGUID = [(PLGenericAlbumJournalEntryPayload *)self cloudGUID];
 
-  if (v9)
+  if (cloudGUID)
   {
-    v10 = [(PLGenericAlbumJournalEntryPayload *)self cloudGUID];
-    [v21 setCloudGUID:v10];
+    cloudGUID2 = [(PLGenericAlbumJournalEntryPayload *)self cloudGUID];
+    [albumCopy setCloudGUID:cloudGUID2];
   }
 
-  if (-[PLGenericAlbumJournalEntryPayload isInTrash](self, "isInTrash") && [v21 canMoveToTrash])
+  if (-[PLGenericAlbumJournalEntryPayload isInTrash](self, "isInTrash") && [albumCopy canMoveToTrash])
   {
-    [v21 applyTrashedState:1 cascade:1];
+    [albumCopy applyTrashedState:1 cascade:1];
   }
 
   if ([(PLGenericAlbumJournalEntryPayload *)self isPinned])
   {
-    [v21 setIsPinned:{-[PLGenericAlbumJournalEntryPayload isPinned](self, "isPinned")}];
+    [albumCopy setIsPinned:{-[PLGenericAlbumJournalEntryPayload isPinned](self, "isPinned")}];
   }
 
   if ([(PLGenericAlbumJournalEntryPayload *)self isPrototype])
   {
-    [v21 setIsPrototype:{-[PLGenericAlbumJournalEntryPayload isPrototype](self, "isPrototype")}];
+    [albumCopy setIsPrototype:{-[PLGenericAlbumJournalEntryPayload isPrototype](self, "isPrototype")}];
   }
 
-  [v21 setCustomSortAscending:{-[PLGenericAlbumJournalEntryPayload customSortAscending](self, "customSortAscending")}];
-  [v21 setCustomSortKey:{-[PLGenericAlbumJournalEntryPayload customSortKey](self, "customSortKey")}];
-  v11 = [(PLGenericAlbumJournalEntryPayload *)self customKeyAssetUUID];
-  if (v11)
+  [albumCopy setCustomSortAscending:{-[PLGenericAlbumJournalEntryPayload customSortAscending](self, "customSortAscending")}];
+  [albumCopy setCustomSortKey:{-[PLGenericAlbumJournalEntryPayload customSortKey](self, "customSortKey")}];
+  customKeyAssetUUID = [(PLGenericAlbumJournalEntryPayload *)self customKeyAssetUUID];
+  if (customKeyAssetUUID)
   {
-    v12 = [v21 managedObjectContext];
-    v13 = [PLManagedAsset assetWithUUID:v11 inManagedObjectContext:v12];
+    managedObjectContext = [albumCopy managedObjectContext];
+    v13 = [PLManagedAsset assetWithUUID:customKeyAssetUUID inManagedObjectContext:managedObjectContext];
 
     if (v13)
     {
-      [v21 setCustomKeyAsset:v13];
+      [albumCopy setCustomKeyAsset:v13];
     }
   }
 
-  v14 = [(PLGenericAlbumJournalEntryPayload *)self userQueryData];
-  [v21 setUserQueryData:v14];
+  userQueryData = [(PLGenericAlbumJournalEntryPayload *)self userQueryData];
+  [albumCopy setUserQueryData:userQueryData];
 
-  v15 = [(PLGenericAlbumJournalEntryPayload *)self creationDate];
+  creationDate = [(PLGenericAlbumJournalEntryPayload *)self creationDate];
 
-  if (v15)
+  if (creationDate)
   {
-    v16 = [(PLGenericAlbumJournalEntryPayload *)self creationDate];
-    [v21 setCreationDate:v16];
+    creationDate2 = [(PLGenericAlbumJournalEntryPayload *)self creationDate];
+    [albumCopy setCreationDate:creationDate2];
   }
 
-  v17 = [(PLGenericAlbumJournalEntryPayload *)self importedByBundleIdentifier];
+  importedByBundleIdentifier = [(PLGenericAlbumJournalEntryPayload *)self importedByBundleIdentifier];
 
-  if (v17)
+  if (importedByBundleIdentifier)
   {
-    v18 = [(PLGenericAlbumJournalEntryPayload *)self importedByBundleIdentifier];
-    [v21 setImportedByBundleIdentifier:v18];
+    importedByBundleIdentifier2 = [(PLGenericAlbumJournalEntryPayload *)self importedByBundleIdentifier];
+    [albumCopy setImportedByBundleIdentifier:importedByBundleIdentifier2];
   }
 
-  v19 = [(PLGenericAlbumJournalEntryPayload *)self lastModifiedDate];
+  lastModifiedDate = [(PLGenericAlbumJournalEntryPayload *)self lastModifiedDate];
 
-  if (v19)
+  if (lastModifiedDate)
   {
-    v20 = [(PLGenericAlbumJournalEntryPayload *)self lastModifiedDate];
-    [v21 setLastModifiedDate:v20];
+    lastModifiedDate2 = [(PLGenericAlbumJournalEntryPayload *)self lastModifiedDate];
+    [albumCopy setLastModifiedDate:lastModifiedDate2];
   }
 }
 
-- (id)payloadValueFromAttributes:(id)a3 forPayloadProperty:(id)a4
+- (id)payloadValueFromAttributes:(id)attributes forPayloadProperty:(id)property
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 isEqualToKey:@"customKeyAsset"])
+  attributesCopy = attributes;
+  propertyCopy = property;
+  if ([propertyCopy isEqualToKey:@"customKeyAsset"])
   {
-    v8 = [v7 key];
+    v8 = [propertyCopy key];
 
-    v9 = [v6 objectForKeyedSubscript:v8];
+    v9 = [attributesCopy objectForKeyedSubscript:v8];
     v10 = [(PLManagedObjectJournalEntryPayload *)self UUIDStringForData:v9];
   }
 
@@ -209,58 +209,58 @@ LABEL_12:
   {
     v12.receiver = self;
     v12.super_class = PLGenericAlbumJournalEntryPayload;
-    v10 = [(PLManagedObjectJournalEntryPayload *)&v12 payloadValueFromAttributes:v6 forPayloadProperty:v7];
+    v10 = [(PLManagedObjectJournalEntryPayload *)&v12 payloadValueFromAttributes:attributesCopy forPayloadProperty:propertyCopy];
   }
 
   return v10;
 }
 
-- (void)appendAttributeKey:(id)a3 value:(id)a4 toDescriptionBuilder:(id)a5
+- (void)appendAttributeKey:(id)key value:(id)value toDescriptionBuilder:(id)builder
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  if ([v8 isEqualToString:@"customKeyAsset"])
+  keyCopy = key;
+  builderCopy = builder;
+  valueCopy = value;
+  if ([keyCopy isEqualToString:@"customKeyAsset"])
   {
-    v11 = [(PLManagedObjectJournalEntryPayload *)self UUIDStringForData:v10];
+    v11 = [(PLManagedObjectJournalEntryPayload *)self UUIDStringForData:valueCopy];
 
-    [v9 appendName:v8 object:v11];
+    [builderCopy appendName:keyCopy object:v11];
   }
 
   else
   {
     v12.receiver = self;
     v12.super_class = PLGenericAlbumJournalEntryPayload;
-    [(PLManagedObjectJournalEntryPayload *)&v12 appendAttributeKey:v8 value:v10 toDescriptionBuilder:v9];
+    [(PLManagedObjectJournalEntryPayload *)&v12 appendAttributeKey:keyCopy value:valueCopy toDescriptionBuilder:builderCopy];
   }
 }
 
-- (BOOL)updatePayloadAttributes:(id)a3 andNilAttributes:(id)a4 withManagedObject:(id)a5 forPayloadProperty:(id)a6
+- (BOOL)updatePayloadAttributes:(id)attributes andNilAttributes:(id)nilAttributes withManagedObject:(id)object forPayloadProperty:(id)property
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
-  v12 = v10;
-  if ([v11 isEqualToKey:@"customKeyAsset"])
+  attributesCopy = attributes;
+  objectCopy = object;
+  propertyCopy = property;
+  v12 = objectCopy;
+  if ([propertyCopy isEqualToKey:@"customKeyAsset"])
   {
-    v13 = [v12 customKeyAsset];
-    v14 = [v13 uuid];
-    v15 = [(PLManagedObjectJournalEntryPayload *)self UUIDDataForString:v14];
-    v16 = [v11 key];
-    [v9 setObject:v15 forKeyedSubscript:v16];
+    customKeyAsset = [v12 customKeyAsset];
+    uuid = [customKeyAsset uuid];
+    v15 = [(PLManagedObjectJournalEntryPayload *)self UUIDDataForString:uuid];
+    v16 = [propertyCopy key];
+    [attributesCopy setObject:v15 forKeyedSubscript:v16];
   }
 
   else
   {
-    if (![v11 isEqualToKey:@"inTrash"])
+    if (![propertyCopy isEqualToKey:@"inTrash"])
     {
       v17 = 0;
       goto LABEL_7;
     }
 
-    v13 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v12, "isInTrash")}];
-    v14 = [v11 key];
-    [v9 setObject:v13 forKeyedSubscript:v14];
+    customKeyAsset = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v12, "isInTrash")}];
+    uuid = [propertyCopy key];
+    [attributesCopy setObject:customKeyAsset forKeyedSubscript:uuid];
   }
 
   v17 = 1;

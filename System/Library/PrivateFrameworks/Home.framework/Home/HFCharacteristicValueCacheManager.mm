@@ -1,20 +1,20 @@
 @interface HFCharacteristicValueCacheManager
-- (BOOL)_transaction:(id)a3 isWritingCharacteristic:(id)a4 allowingActions:(BOOL)a5;
-- (BOOL)containsTransactionsExecutingActionSet:(id)a3;
-- (BOOL)containsTransactionsReadingCharacteristic:(id)a3 filterBlock:(id)a4;
-- (BOOL)containsTransactionsWritingCharacteristic:(id)a3;
+- (BOOL)_transaction:(id)_transaction isWritingCharacteristic:(id)characteristic allowingActions:(BOOL)actions;
+- (BOOL)containsTransactionsExecutingActionSet:(id)set;
+- (BOOL)containsTransactionsReadingCharacteristic:(id)characteristic filterBlock:(id)block;
+- (BOOL)containsTransactionsWritingCharacteristic:(id)characteristic;
 - (HFCharacteristicValueCacheManager)init;
-- (id)_perfomUpdatedCacheRead:(id)a3;
-- (id)_performLock:(os_unfair_lock_s *)a3 block:(id)a4;
-- (id)cachedValueForCharacteristic:(id)a3;
-- (id)transactionsExecutingActionSet:(id)a3;
-- (id)transactionsReadingCharacteristic:(id)a3 filterBlock:(id)a4;
-- (id)transactionsWritingCharacteristic:(id)a3;
-- (void)_enumerateTransactionsRemovingFailingItems:(id)a3 block:(id)a4;
-- (void)_locked_updateWithAddedTransaction:(id)a3;
-- (void)_locked_updateWithRemovedTransaction:(id)a3;
-- (void)transactionAdded:(id)a3;
-- (void)transactionRemoved:(id)a3;
+- (id)_perfomUpdatedCacheRead:(id)read;
+- (id)_performLock:(os_unfair_lock_s *)lock block:(id)block;
+- (id)cachedValueForCharacteristic:(id)characteristic;
+- (id)transactionsExecutingActionSet:(id)set;
+- (id)transactionsReadingCharacteristic:(id)characteristic filterBlock:(id)block;
+- (id)transactionsWritingCharacteristic:(id)characteristic;
+- (void)_enumerateTransactionsRemovingFailingItems:(id)items block:(id)block;
+- (void)_locked_updateWithAddedTransaction:(id)transaction;
+- (void)_locked_updateWithRemovedTransaction:(id)transaction;
+- (void)transactionAdded:(id)added;
+- (void)transactionRemoved:(id)removed;
 @end
 
 @implementation HFCharacteristicValueCacheManager
@@ -37,39 +37,39 @@
     dispatchGroup = v3->_dispatchGroup;
     v3->_dispatchGroup = v7;
 
-    v9 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     transactionsByCharacteristicID = v3->_transactionsByCharacteristicID;
-    v3->_transactionsByCharacteristicID = v9;
+    v3->_transactionsByCharacteristicID = dictionary;
 
-    v11 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     transactionsByActionSetID = v3->_transactionsByActionSetID;
-    v3->_transactionsByActionSetID = v11;
+    v3->_transactionsByActionSetID = dictionary2;
 
-    v13 = [MEMORY[0x277CBEB40] orderedSet];
+    orderedSet = [MEMORY[0x277CBEB40] orderedSet];
     unprocessedAddedTransactions = v3->_unprocessedAddedTransactions;
-    v3->_unprocessedAddedTransactions = v13;
+    v3->_unprocessedAddedTransactions = orderedSet;
 
-    v15 = [MEMORY[0x277CBEB40] orderedSet];
+    orderedSet2 = [MEMORY[0x277CBEB40] orderedSet];
     unprocessedRemovedTransactions = v3->_unprocessedRemovedTransactions;
-    v3->_unprocessedRemovedTransactions = v15;
+    v3->_unprocessedRemovedTransactions = orderedSet2;
   }
 
   return v3;
 }
 
-- (id)transactionsReadingCharacteristic:(id)a3 filterBlock:(id)a4
+- (id)transactionsReadingCharacteristic:(id)characteristic filterBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  characteristicCopy = characteristic;
+  blockCopy = block;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __83__HFCharacteristicValueCacheManager_transactionsReadingCharacteristic_filterBlock___block_invoke;
   v12[3] = &unk_277DFC038;
   v12[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v8 = v7;
-  v9 = v6;
+  v13 = characteristicCopy;
+  v14 = blockCopy;
+  v8 = blockCopy;
+  v9 = characteristicCopy;
   v10 = [(HFCharacteristicValueCacheManager *)self _perfomUpdatedCacheRead:v12];
 
   return v10;
@@ -117,23 +117,23 @@ uint64_t __83__HFCharacteristicValueCacheManager_transactionsReadingCharacterist
   return v5 ^ 1u;
 }
 
-- (BOOL)containsTransactionsReadingCharacteristic:(id)a3 filterBlock:(id)a4
+- (BOOL)containsTransactionsReadingCharacteristic:(id)characteristic filterBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  characteristicCopy = characteristic;
+  blockCopy = block;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __91__HFCharacteristicValueCacheManager_containsTransactionsReadingCharacteristic_filterBlock___block_invoke;
   v13[3] = &unk_277DFC038;
   v13[4] = self;
-  v14 = v6;
-  v15 = v7;
-  v8 = v7;
-  v9 = v6;
+  v14 = characteristicCopy;
+  v15 = blockCopy;
+  v8 = blockCopy;
+  v9 = characteristicCopy;
   v10 = [(HFCharacteristicValueCacheManager *)self _perfomUpdatedCacheRead:v13];
-  v11 = [v10 BOOLValue];
+  bOOLValue = [v10 BOOLValue];
 
-  return v11;
+  return bOOLValue;
 }
 
 id __91__HFCharacteristicValueCacheManager_containsTransactionsReadingCharacteristic_filterBlock___block_invoke(id *a1)
@@ -192,16 +192,16 @@ uint64_t __91__HFCharacteristicValueCacheManager_containsTransactionsReadingChar
   return v7 ^ 1u;
 }
 
-- (id)transactionsWritingCharacteristic:(id)a3
+- (id)transactionsWritingCharacteristic:(id)characteristic
 {
-  v4 = a3;
+  characteristicCopy = characteristic;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __71__HFCharacteristicValueCacheManager_transactionsWritingCharacteristic___block_invoke;
   v8[3] = &unk_277DF78D8;
   v8[4] = self;
-  v9 = v4;
-  v5 = v4;
+  v9 = characteristicCopy;
+  v5 = characteristicCopy;
   v6 = [(HFCharacteristicValueCacheManager *)self _perfomUpdatedCacheRead:v8];
 
   return v6;
@@ -243,20 +243,20 @@ uint64_t __71__HFCharacteristicValueCacheManager_transactionsWritingCharacterist
   return v4 ^ 1u;
 }
 
-- (BOOL)containsTransactionsWritingCharacteristic:(id)a3
+- (BOOL)containsTransactionsWritingCharacteristic:(id)characteristic
 {
-  v4 = a3;
+  characteristicCopy = characteristic;
   v9 = MEMORY[0x277D85DD0];
   v10 = 3221225472;
   v11 = __79__HFCharacteristicValueCacheManager_containsTransactionsWritingCharacteristic___block_invoke;
   v12 = &unk_277DF78D8;
-  v13 = self;
-  v14 = v4;
-  v5 = v4;
+  selfCopy = self;
+  v14 = characteristicCopy;
+  v5 = characteristicCopy;
   v6 = [(HFCharacteristicValueCacheManager *)self _perfomUpdatedCacheRead:&v9];
-  v7 = [v6 BOOLValue];
+  bOOLValue = [v6 BOOLValue];
 
-  return v7;
+  return bOOLValue;
 }
 
 id __79__HFCharacteristicValueCacheManager_containsTransactionsWritingCharacteristic___block_invoke(uint64_t a1)
@@ -294,16 +294,16 @@ uint64_t __79__HFCharacteristicValueCacheManager_containsTransactionsWritingChar
   return v5 ^ 1u;
 }
 
-- (id)transactionsExecutingActionSet:(id)a3
+- (id)transactionsExecutingActionSet:(id)set
 {
-  v4 = a3;
+  setCopy = set;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __68__HFCharacteristicValueCacheManager_transactionsExecutingActionSet___block_invoke;
   v8[3] = &unk_277DF78D8;
   v8[4] = self;
-  v9 = v4;
-  v5 = v4;
+  v9 = setCopy;
+  v5 = setCopy;
   v6 = [(HFCharacteristicValueCacheManager *)self _perfomUpdatedCacheRead:v8];
 
   return v6;
@@ -345,20 +345,20 @@ uint64_t __68__HFCharacteristicValueCacheManager_transactionsExecutingActionSet_
   return v5 ^ 1u;
 }
 
-- (BOOL)containsTransactionsExecutingActionSet:(id)a3
+- (BOOL)containsTransactionsExecutingActionSet:(id)set
 {
-  v4 = a3;
+  setCopy = set;
   v9 = MEMORY[0x277D85DD0];
   v10 = 3221225472;
   v11 = __76__HFCharacteristicValueCacheManager_containsTransactionsExecutingActionSet___block_invoke;
   v12 = &unk_277DF78D8;
-  v13 = self;
-  v14 = v4;
-  v5 = v4;
+  selfCopy = self;
+  v14 = setCopy;
+  v5 = setCopy;
   v6 = [(HFCharacteristicValueCacheManager *)self _perfomUpdatedCacheRead:&v9];
-  v7 = [v6 BOOLValue];
+  bOOLValue = [v6 BOOLValue];
 
-  return v7;
+  return bOOLValue;
 }
 
 id __76__HFCharacteristicValueCacheManager_containsTransactionsExecutingActionSet___block_invoke(uint64_t a1)
@@ -396,16 +396,16 @@ uint64_t __76__HFCharacteristicValueCacheManager_containsTransactionsExecutingAc
   return v6 ^ 1u;
 }
 
-- (id)cachedValueForCharacteristic:(id)a3
+- (id)cachedValueForCharacteristic:(id)characteristic
 {
-  v4 = a3;
+  characteristicCopy = characteristic;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __66__HFCharacteristicValueCacheManager_cachedValueForCharacteristic___block_invoke;
   v8[3] = &unk_277DF78D8;
   v8[4] = self;
-  v9 = v4;
-  v5 = v4;
+  v9 = characteristicCopy;
+  v5 = characteristicCopy;
   v6 = [(HFCharacteristicValueCacheManager *)self _perfomUpdatedCacheRead:v8];
 
   return v6;
@@ -470,15 +470,15 @@ void __66__HFCharacteristicValueCacheManager_cachedValueForCharacteristic___bloc
   }
 }
 
-- (void)transactionAdded:(id)a3
+- (void)transactionAdded:(id)added
 {
-  v4 = a3;
+  addedCopy = added;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __54__HFCharacteristicValueCacheManager_transactionAdded___block_invoke;
   v11[3] = &unk_277DF78D8;
   v11[4] = self;
-  v5 = v4;
+  v5 = addedCopy;
   v12 = v5;
   v6 = [(HFCharacteristicValueCacheManager *)self _performLock:&self->_unprocessedTransctionLock block:v11];
   dispatch_group_enter(self->_dispatchGroup);
@@ -544,15 +544,15 @@ uint64_t __54__HFCharacteristicValueCacheManager_transactionAdded___block_invoke
   return 0;
 }
 
-- (void)transactionRemoved:(id)a3
+- (void)transactionRemoved:(id)removed
 {
-  v4 = a3;
+  removedCopy = removed;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __56__HFCharacteristicValueCacheManager_transactionRemoved___block_invoke;
   v11[3] = &unk_277DF78D8;
   v11[4] = self;
-  v5 = v4;
+  v5 = removedCopy;
   v12 = v5;
   v6 = [(HFCharacteristicValueCacheManager *)self _performLock:&self->_unprocessedTransctionLock block:v11];
   dispatch_group_enter(self->_dispatchGroup);
@@ -618,20 +618,20 @@ uint64_t __56__HFCharacteristicValueCacheManager_transactionRemoved___block_invo
   return 0;
 }
 
-- (void)_locked_updateWithAddedTransaction:(id)a3
+- (void)_locked_updateWithAddedTransaction:(id)transaction
 {
-  v4 = a3;
-  v5 = [v4 characteristicsToRead];
+  transactionCopy = transaction;
+  characteristicsToRead = [transactionCopy characteristicsToRead];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __72__HFCharacteristicValueCacheManager__locked_updateWithAddedTransaction___block_invoke;
   v19[3] = &unk_277DF66F0;
   v19[4] = self;
-  v6 = v4;
+  v6 = transactionCopy;
   v20 = v6;
-  [v5 na_each:v19];
+  [characteristicsToRead na_each:v19];
 
-  v7 = [v6 writeCharacteristicRequests];
+  writeCharacteristicRequests = [v6 writeCharacteristicRequests];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __72__HFCharacteristicValueCacheManager__locked_updateWithAddedTransaction___block_invoke_2;
@@ -639,9 +639,9 @@ uint64_t __56__HFCharacteristicValueCacheManager_transactionRemoved___block_invo
   v17[4] = self;
   v8 = v6;
   v18 = v8;
-  [v7 na_each:v17];
+  [writeCharacteristicRequests na_each:v17];
 
-  v9 = [v8 actionsToExecute];
+  actionsToExecute = [v8 actionsToExecute];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __72__HFCharacteristicValueCacheManager__locked_updateWithAddedTransaction___block_invoke_3;
@@ -649,9 +649,9 @@ uint64_t __56__HFCharacteristicValueCacheManager_transactionRemoved___block_invo
   v15[4] = self;
   v10 = v8;
   v16 = v10;
-  [v9 na_each:v15];
+  [actionsToExecute na_each:v15];
 
-  v11 = [v10 actionSetsToExecute];
+  actionSetsToExecute = [v10 actionSetsToExecute];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __72__HFCharacteristicValueCacheManager__locked_updateWithAddedTransaction___block_invoke_4;
@@ -659,7 +659,7 @@ uint64_t __56__HFCharacteristicValueCacheManager_transactionRemoved___block_invo
   v13[4] = self;
   v14 = v10;
   v12 = v10;
-  [v11 na_each:v13];
+  [actionSetsToExecute na_each:v13];
 }
 
 void __72__HFCharacteristicValueCacheManager__locked_updateWithAddedTransaction___block_invoke(uint64_t a1, void *a2)
@@ -761,28 +761,28 @@ void __72__HFCharacteristicValueCacheManager__locked_updateWithAddedTransaction_
   [v6 setObject:v5 forKeyedSubscript:v7];
 }
 
-- (void)_locked_updateWithRemovedTransaction:(id)a3
+- (void)_locked_updateWithRemovedTransaction:(id)transaction
 {
-  v4 = a3;
-  v5 = [(HFCharacteristicValueCacheManager *)self transactionsByCharacteristicID];
-  v6 = [v5 allValues];
+  transactionCopy = transaction;
+  transactionsByCharacteristicID = [(HFCharacteristicValueCacheManager *)self transactionsByCharacteristicID];
+  allValues = [transactionsByCharacteristicID allValues];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __74__HFCharacteristicValueCacheManager__locked_updateWithRemovedTransaction___block_invoke;
   v13[3] = &unk_277DFC218;
-  v7 = v4;
+  v7 = transactionCopy;
   v14 = v7;
-  [v6 na_each:v13];
+  [allValues na_each:v13];
 
-  v8 = [(HFCharacteristicValueCacheManager *)self transactionsByActionSetID];
-  v9 = [v8 allValues];
+  transactionsByActionSetID = [(HFCharacteristicValueCacheManager *)self transactionsByActionSetID];
+  allValues2 = [transactionsByActionSetID allValues];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __74__HFCharacteristicValueCacheManager__locked_updateWithRemovedTransaction___block_invoke_2;
   v11[3] = &unk_277DFC240;
   v12 = v7;
   v10 = v7;
-  [v9 na_each:v11];
+  [allValues2 na_each:v11];
 }
 
 void __74__HFCharacteristicValueCacheManager__locked_updateWithRemovedTransaction___block_invoke(uint64_t a1, void *a2)
@@ -796,32 +796,32 @@ void __74__HFCharacteristicValueCacheManager__locked_updateWithRemovedTransactio
   [v5 removeObject:*(a1 + 32)];
 }
 
-- (id)_performLock:(os_unfair_lock_s *)a3 block:(id)a4
+- (id)_performLock:(os_unfair_lock_s *)lock block:(id)block
 {
-  v5 = a4;
-  os_unfair_lock_lock(a3);
-  v6 = v5[2](v5);
+  blockCopy = block;
+  os_unfair_lock_lock(lock);
+  v6 = blockCopy[2](blockCopy);
 
-  os_unfair_lock_unlock(a3);
+  os_unfair_lock_unlock(lock);
 
   return v6;
 }
 
-- (id)_perfomUpdatedCacheRead:(id)a3
+- (id)_perfomUpdatedCacheRead:(id)read
 {
-  v4 = a3;
+  readCopy = read;
   if (dispatch_group_wait(self->_dispatchGroup, 0))
   {
-    v5 = [MEMORY[0x277CBEB40] orderedSet];
-    v6 = [MEMORY[0x277CBEB40] orderedSet];
+    orderedSet = [MEMORY[0x277CBEB40] orderedSet];
+    orderedSet2 = [MEMORY[0x277CBEB40] orderedSet];
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __61__HFCharacteristicValueCacheManager__perfomUpdatedCacheRead___block_invoke;
     v19[3] = &unk_277DFC268;
-    v7 = v5;
+    v7 = orderedSet;
     v20 = v7;
-    v21 = self;
-    v8 = v6;
+    selfCopy = self;
+    v8 = orderedSet2;
     v22 = v8;
     v9 = [(HFCharacteristicValueCacheManager *)self _performLock:&self->_unprocessedTransctionLock block:v19];
     v14[0] = MEMORY[0x277D85DD0];
@@ -829,9 +829,9 @@ void __74__HFCharacteristicValueCacheManager__locked_updateWithRemovedTransactio
     v14[2] = __61__HFCharacteristicValueCacheManager__perfomUpdatedCacheRead___block_invoke_2;
     v14[3] = &unk_277DFC2B8;
     v15 = v7;
-    v16 = self;
+    selfCopy2 = self;
     v17 = v8;
-    v18 = v4;
+    v18 = readCopy;
     v10 = v8;
     v11 = v7;
     v12 = [(HFCharacteristicValueCacheManager *)self _performLock:&self->_cacheLock block:v14];
@@ -839,7 +839,7 @@ void __74__HFCharacteristicValueCacheManager__locked_updateWithRemovedTransactio
 
   else
   {
-    v12 = [(HFCharacteristicValueCacheManager *)self _performLock:&self->_cacheLock block:v4];
+    v12 = [(HFCharacteristicValueCacheManager *)self _performLock:&self->_cacheLock block:readCopy];
   }
 
   return v12;
@@ -885,29 +885,29 @@ id __61__HFCharacteristicValueCacheManager__perfomUpdatedCacheRead___block_invok
   return v4;
 }
 
-- (BOOL)_transaction:(id)a3 isWritingCharacteristic:(id)a4 allowingActions:(BOOL)a5
+- (BOOL)_transaction:(id)_transaction isWritingCharacteristic:(id)characteristic allowingActions:(BOOL)actions
 {
-  v5 = a5;
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 writeCharacteristicRequests];
+  actionsCopy = actions;
+  _transactionCopy = _transaction;
+  characteristicCopy = characteristic;
+  writeCharacteristicRequests = [_transactionCopy writeCharacteristicRequests];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __90__HFCharacteristicValueCacheManager__transaction_isWritingCharacteristic_allowingActions___block_invoke;
   v16[3] = &unk_277DF62E0;
-  v10 = v8;
+  v10 = characteristicCopy;
   v17 = v10;
-  v11 = [v9 na_any:v16];
+  v11 = [writeCharacteristicRequests na_any:v16];
 
-  if ((v11 & 1) == 0 && v5)
+  if ((v11 & 1) == 0 && actionsCopy)
   {
-    v12 = [v7 actionsToExecute];
+    actionsToExecute = [_transactionCopy actionsToExecute];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __90__HFCharacteristicValueCacheManager__transaction_isWritingCharacteristic_allowingActions___block_invoke_2;
     v14[3] = &unk_277DF6308;
     v15 = v10;
-    v11 = [v12 na_any:v14];
+    v11 = [actionsToExecute na_any:v14];
   }
 
   return v11;
@@ -944,22 +944,22 @@ BOOL __90__HFCharacteristicValueCacheManager__transaction_isWritingCharacteristi
   return v8;
 }
 
-- (void)_enumerateTransactionsRemovingFailingItems:(id)a3 block:(id)a4
+- (void)_enumerateTransactionsRemovingFailingItems:(id)items block:(id)block
 {
-  v5 = a4;
+  blockCopy = block;
   v6 = MEMORY[0x277CCAB58];
-  v7 = a3;
-  v8 = [v6 indexSet];
+  itemsCopy = items;
+  indexSet = [v6 indexSet];
   v11 = MEMORY[0x277D85DD0];
   v12 = 3221225472;
   v13 = __86__HFCharacteristicValueCacheManager__enumerateTransactionsRemovingFailingItems_block___block_invoke;
   v14 = &unk_277DFC2E0;
-  v15 = v8;
-  v16 = v5;
-  v9 = v8;
-  v10 = v5;
-  [v7 enumerateObjectsUsingBlock:&v11];
-  [v7 removeObjectsAtIndexes:{v9, v11, v12, v13, v14}];
+  v15 = indexSet;
+  v16 = blockCopy;
+  v9 = indexSet;
+  v10 = blockCopy;
+  [itemsCopy enumerateObjectsUsingBlock:&v11];
+  [itemsCopy removeObjectsAtIndexes:{v9, v11, v12, v13, v14}];
 }
 
 uint64_t __86__HFCharacteristicValueCacheManager__enumerateTransactionsRemovingFailingItems_block___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)

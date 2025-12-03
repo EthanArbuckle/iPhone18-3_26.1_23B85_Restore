@@ -6,8 +6,8 @@
 
 - (BOOL)isInstalled
 {
-  v2 = [(MCNewPayloadHandler *)self payload];
-  v3 = [MCRestrictionManagerWriter restrictionsAlreadyInstalledFromPayload:v2];
+  payload = [(MCNewPayloadHandler *)self payload];
+  v3 = [MCRestrictionManagerWriter restrictionsAlreadyInstalledFromPayload:payload];
 
   return v3;
 }

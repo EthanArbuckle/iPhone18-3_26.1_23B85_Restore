@@ -11,25 +11,25 @@
   v10.receiver = self;
   v10.super_class = MBCKFileChange;
   v4 = [(MBCKFileChange *)&v10 description];
-  v5 = [(MBCKFileChange *)self domain];
-  v6 = [v5 name];
-  v7 = [(MBCKFileChange *)self relativePath];
-  v8 = [v3 initWithFormat:@"%@ <%@:%@>", v4, v6, v7];
+  domain = [(MBCKFileChange *)self domain];
+  name = [domain name];
+  relativePath = [(MBCKFileChange *)self relativePath];
+  v8 = [v3 initWithFormat:@"%@ <%@:%@>", v4, name, relativePath];
 
   return v8;
 }
 
 - (NSString)changeTypeString
 {
-  v2 = [(MBCKFileChange *)self changeType];
-  if (v2 > 3)
+  changeType = [(MBCKFileChange *)self changeType];
+  if (changeType > 3)
   {
     return @"added";
   }
 
   else
   {
-    return &off_1003BEA18[v2]->isa;
+    return &off_1003BEA18[changeType]->isa;
   }
 }
 

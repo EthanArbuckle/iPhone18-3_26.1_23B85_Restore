@@ -1,39 +1,39 @@
 @interface CABTMIDILocalPeripheralViewController
-- (BOOL)advertiseServiceWithName:(id)a3 completionBlock:(id)a4 error:(id *)a5;
-- (BOOL)changeServiceNameTo:(id)a3 completionBlock:(id)a4 error:(id *)a5;
+- (BOOL)advertiseServiceWithName:(id)name completionBlock:(id)block error:(id *)error;
+- (BOOL)changeServiceNameTo:(id)to completionBlock:(id)block error:(id *)error;
 - (BOOL)disconnectLocalPeripheral;
-- (BOOL)stopAdvertisingServiceWithCompletionBlock:(id)a3 error:(id *)a4;
-- (CABTMIDILocalPeripheralViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (BOOL)stopAdvertisingServiceWithCompletionBlock:(id)block error:(id *)error;
+- (CABTMIDILocalPeripheralViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)advertisedServiceName;
 - (id)statusString;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)activateController:(id)a3;
-- (void)advertiseServiceSwitchToggled:(id)a3;
-- (void)advertiseTimerFired:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)activateController:(id)controller;
+- (void)advertiseServiceSwitchToggled:(id)toggled;
+- (void)advertiseTimerFired:(id)fired;
 - (void)cleanup;
-- (void)deactivateController:(id)a3;
+- (void)deactivateController:(id)controller;
 - (void)dealloc;
 - (void)didReceiveMemoryWarning;
 - (void)loadView;
-- (void)messageTimerFired:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setStatusString:(id)a3 animateIndicator:(BOOL)a4 isError:(BOOL)a5;
+- (void)messageTimerFired:(id)fired;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setStatusString:(id)string animateIndicator:(BOOL)indicator isError:(BOOL)error;
 - (void)stopTimers;
-- (void)textFieldDone:(id)a3;
+- (void)textFieldDone:(id)done;
 - (void)updateAdvertiseUI;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
 @end
 
 @implementation CABTMIDILocalPeripheralViewController
 
-- (CABTMIDILocalPeripheralViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (CABTMIDILocalPeripheralViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v7.receiver = self;
   v7.super_class = CABTMIDILocalPeripheralViewController;
-  v4 = [(CABTMIDILocalPeripheralViewController *)&v7 initWithNibName:a3 bundle:a4];
+  v4 = [(CABTMIDILocalPeripheralViewController *)&v7 initWithNibName:name bundle:bundle];
   if (v4)
   {
     v5 = gPeripheralNotificationClient == 0;
@@ -65,15 +65,15 @@
   v7.receiver = self;
   v7.super_class = CABTMIDILocalPeripheralViewController;
   [(CABTMIDILocalPeripheralViewController *)&v7 viewDidLoad];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v4 = *MEMORY[0x277D76810];
-  v5 = [MEMORY[0x277CCABD8] mainQueue];
+  mainQueue = [MEMORY[0x277CCABD8] mainQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __52__CABTMIDILocalPeripheralViewController_viewDidLoad__block_invoke;
   v6[3] = &unk_278A25570;
   v6[4] = self;
-  [v3 addObserverForName:v4 object:self queue:v5 usingBlock:v6];
+  [defaultCenter addObserverForName:v4 object:self queue:mainQueue usingBlock:v6];
 }
 
 uint64_t __52__CABTMIDILocalPeripheralViewController_viewDidLoad__block_invoke(uint64_t a1)
@@ -102,16 +102,16 @@ uint64_t __52__CABTMIDILocalPeripheralViewController_viewDidLoad__block_invoke(u
   v5 = [MEMORY[0x277CBEBB8] timerWithTimeInterval:+[CATimerManager getWeakReferenceOfObject:](CATimerManager target:"getWeakReferenceOfObject:" selector:self) userInfo:sel_advertiseTimerFired_ repeats:{0, 1, 1.0}];
   self->advertiseTimer = v5;
   [(NSTimer *)v5 setTolerance:0.150000006];
-  v6 = [MEMORY[0x277CBEB88] currentRunLoop];
-  [v6 addTimer:self->advertiseTimer forMode:*MEMORY[0x277CBE738]];
+  currentRunLoop = [MEMORY[0x277CBEB88] currentRunLoop];
+  [currentRunLoop addTimer:self->advertiseTimer forMode:*MEMORY[0x277CBE738]];
   [(CABTMIDILocalPeripheralViewController *)self addObserver:self forKeyPath:@"parentViewController" options:0 context:0];
   self->advertising = [(AMSBTLEAdvertisementManager *)self->advertisingManager isAdvertising];
   [(CABTMIDILocalPeripheralViewController *)self updateAdvertiseUI];
   [v4 reloadData];
-  v7 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v7 addObserver:self selector:sel_activateController_ name:*MEMORY[0x277D76648] object:0];
-  v8 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v8 addObserver:self selector:sel_deactivateController_ name:*MEMORY[0x277D76768] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_activateController_ name:*MEMORY[0x277D76648] object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel_deactivateController_ name:*MEMORY[0x277D76768] object:0];
   self->didCleanup = 0;
 }
 
@@ -152,69 +152,69 @@ uint64_t __52__CABTMIDILocalPeripheralViewController_viewDidLoad__block_invoke(u
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v8 = [@"parentViewController" isEqualToString:{a3, a4, a5, a6}];
-  if (a4 == self && v8 && ![(CABTMIDILocalPeripheralViewController *)self parentViewController])
+  v8 = [@"parentViewController" isEqualToString:{path, object, change, context}];
+  if (object == self && v8 && ![(CABTMIDILocalPeripheralViewController *)self parentViewController])
   {
 
     [(CABTMIDILocalPeripheralViewController *)self cleanup];
   }
 }
 
-- (void)activateController:(id)a3
+- (void)activateController:(id)controller
 {
   self->advertiseTimeout = 10;
   v4 = [MEMORY[0x277CBEBB8] timerWithTimeInterval:+[CATimerManager getWeakReferenceOfObject:](CATimerManager target:"getWeakReferenceOfObject:" selector:self) userInfo:sel_advertiseTimerFired_ repeats:{0, 1, 1.0}];
   self->advertiseTimer = v4;
   [(NSTimer *)v4 setTolerance:0.150000006];
-  v5 = [MEMORY[0x277CBEB88] currentRunLoop];
-  [v5 addTimer:self->advertiseTimer forMode:*MEMORY[0x277CBE738]];
+  currentRunLoop = [MEMORY[0x277CBEB88] currentRunLoop];
+  [currentRunLoop addTimer:self->advertiseTimer forMode:*MEMORY[0x277CBE738]];
   if (self->advertising)
   {
-    v6 = [(CABTMIDILocalPeripheralViewController *)self advertisedServiceName];
+    advertisedServiceName = [(CABTMIDILocalPeripheralViewController *)self advertisedServiceName];
 
-    [(CABTMIDILocalPeripheralViewController *)self advertiseServiceWithName:v6 completionBlock:&__block_literal_global error:0];
+    [(CABTMIDILocalPeripheralViewController *)self advertiseServiceWithName:advertisedServiceName completionBlock:&__block_literal_global error:0];
   }
 }
 
-- (void)deactivateController:(id)a3
+- (void)deactivateController:(id)controller
 {
   [(CABTMIDILocalPeripheralViewController *)self stopTimers];
 
   [(CABTMIDILocalPeripheralViewController *)self stopAdvertisingServiceWithCompletionBlock:&__block_literal_global_38 error:0];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   [(CABTMIDILocalPeripheralViewController *)self cleanup];
   v5.receiver = self;
   v5.super_class = CABTMIDILocalPeripheralViewController;
-  [(CABTMIDILocalPeripheralViewController *)&v5 viewDidDisappear:v3];
+  [(CABTMIDILocalPeripheralViewController *)&v5 viewDidDisappear:disappearCopy];
 }
 
 - (void)updateAdvertiseUI
 {
-  v3 = [MEMORY[0x277CBFD00] localPeripheral];
-  v4 = [(AMSBTLEAdvertisementManager *)self->advertisingManager isAdvertising];
-  self->advertising = v4;
-  if (v3)
+  localPeripheral = [MEMORY[0x277CBFD00] localPeripheral];
+  isAdvertising = [(AMSBTLEAdvertisementManager *)self->advertisingManager isAdvertising];
+  self->advertising = isAdvertising;
+  if (localPeripheral)
   {
-    if (v4)
+    if (isAdvertising)
     {
       [(CABTMIDILocalPeripheralViewController *)self stopAdvertisingServiceWithCompletionBlock:&__block_literal_global_56 error:0];
     }
 
     v5 = MEMORY[0x277CCACA8];
     BTLELocalizedString = priv_getBTLELocalizedString(@"Connected to %@", @"Connected to %@. Advertising disabled.");
-    v7 = [MEMORY[0x277CBFD00] localPeripheralName];
+    localPeripheralName = [MEMORY[0x277CBFD00] localPeripheralName];
   }
 
   else
   {
     v5 = MEMORY[0x277CCACA8];
-    if (v4)
+    if (isAdvertising)
     {
       v8 = @"Serv Reg as %@";
       v9 = @"Now discoverable as %@";
@@ -227,19 +227,19 @@ uint64_t __52__CABTMIDILocalPeripheralViewController_viewDidLoad__block_invoke(u
     }
 
     BTLELocalizedString = priv_getBTLELocalizedString(v8, v9);
-    v7 = [(CABTMIDILocalPeripheralViewController *)self advertisedServiceName];
+    localPeripheralName = [(CABTMIDILocalPeripheralViewController *)self advertisedServiceName];
   }
 
-  v10 = [v5 stringWithFormat:BTLELocalizedString, v7];
+  v10 = [v5 stringWithFormat:BTLELocalizedString, localPeripheralName];
 
   [(CABTMIDILocalPeripheralViewController *)self setStatusString:v10 animateIndicator:0 isError:0];
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  if (a4)
+  if (section)
   {
-    return a4 == 1;
+    return section == 1;
   }
 
   else
@@ -248,14 +248,14 @@ uint64_t __52__CABTMIDILocalPeripheralViewController_viewDidLoad__block_invoke(u
   }
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  if (a4 == 1)
+  if (section == 1)
   {
     return priv_getBTLELocalizedString(@"stat", @"Status");
   }
 
-  if (a4)
+  if (section)
   {
     return 0;
   }
@@ -263,16 +263,16 @@ uint64_t __52__CABTMIDILocalPeripheralViewController_viewDidLoad__block_invoke(u
   return priv_getBTLELocalizedString(@"Settings", @"Peripheral Settings");
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v34[2] = *MEMORY[0x277D85DE8];
-  v6 = [a3 dequeueReusableCellWithIdentifier:@"Cell"];
+  v6 = [view dequeueReusableCellWithIdentifier:@"Cell"];
   if (v6)
   {
     v7 = v6;
-    if (![a4 section])
+    if (![path section])
     {
-      if ([a4 row])
+      if ([path row])
       {
         if (self->advertiseTimeout == -1)
         {
@@ -288,7 +288,7 @@ uint64_t __52__CABTMIDILocalPeripheralViewController_viewDidLoad__block_invoke(u
       }
     }
 
-    if ([a4 section] == 1)
+    if ([path section] == 1)
     {
       [objc_msgSend(objc_msgSend(v7 "contentView")];
     }
@@ -297,7 +297,7 @@ uint64_t __52__CABTMIDILocalPeripheralViewController_viewDidLoad__block_invoke(u
   else
   {
     v7 = [objc_alloc(MEMORY[0x277D75B48]) initWithStyle:0 reuseIdentifier:@"Cell"];
-    if ([a4 section])
+    if ([path section])
     {
       v8 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:2];
       self->indicator = v8;
@@ -333,7 +333,7 @@ uint64_t __52__CABTMIDILocalPeripheralViewController_viewDidLoad__block_invoke(u
 
     else
     {
-      if ([a4 row])
+      if ([path row])
       {
         [objc_msgSend(v7 "textLabel")];
         v22 = objc_alloc(MEMORY[0x277D75AE8]);
@@ -382,42 +382,42 @@ uint64_t __52__CABTMIDILocalPeripheralViewController_viewDidLoad__block_invoke(u
     [v16 setTranslatesAutoresizingMaskIntoConstraints:0];
     [objc_msgSend(v7 "contentView")];
     v19 = _NSDictionaryOfVariableBindings(&cfstr_Stack.isa, v16, 0);
-    v20 = [v7 contentView];
-    [v20 addConstraints:{objc_msgSend(MEMORY[0x277CCAAD0], "constraintsWithVisualFormat:options:metrics:views:", @"H:|-[stack]-|", 0, 0, v19)}];
-    v21 = [v7 contentView];
-    [v21 addConstraints:{objc_msgSend(MEMORY[0x277CCAAD0], "constraintsWithVisualFormat:options:metrics:views:", @"V:|-[stack]-|", 0, 0, v19)}];
+    contentView = [v7 contentView];
+    [contentView addConstraints:{objc_msgSend(MEMORY[0x277CCAAD0], "constraintsWithVisualFormat:options:metrics:views:", @"H:|-[stack]-|", 0, 0, v19)}];
+    contentView2 = [v7 contentView];
+    [contentView2 addConstraints:{objc_msgSend(MEMORY[0x277CCAAD0], "constraintsWithVisualFormat:options:metrics:views:", @"V:|-[stack]-|", 0, 0, v19)}];
   }
 
   return v7;
 }
 
-- (void)textFieldDone:(id)a3
+- (void)textFieldDone:(id)done
 {
-  [a3 resignFirstResponder];
+  [done resignFirstResponder];
   if ([(NSString *)[(UITextField *)self->serviceNameField text] isEqualToString:&stru_284A3B338])
   {
-    v4 = [(CABTMIDILocalPeripheralViewController *)self advertisedServiceName];
+    advertisedServiceName = [(CABTMIDILocalPeripheralViewController *)self advertisedServiceName];
     serviceNameField = self->serviceNameField;
 
-    [(UITextField *)serviceNameField setText:v4];
+    [(UITextField *)serviceNameField setText:advertisedServiceName];
   }
 
   else
   {
-    v6 = [(UITextField *)self->serviceNameField text];
-    self->theServiceName = v6;
+    text = [(UITextField *)self->serviceNameField text];
+    self->theServiceName = text;
 
-    [(CABTMIDILocalPeripheralViewController *)self changeServiceNameTo:v6 completionBlock:&__block_literal_global_122 error:0];
+    [(CABTMIDILocalPeripheralViewController *)self changeServiceNameTo:text completionBlock:&__block_literal_global_122 error:0];
   }
 }
 
-- (void)setStatusString:(id)a3 animateIndicator:(BOOL)a4 isError:(BOOL)a5
+- (void)setStatusString:(id)string animateIndicator:(BOOL)indicator isError:(BOOL)error
 {
-  v5 = a5;
+  errorCopy = error;
 
-  self->statusString = a3;
-  self->isErrorMessage = v5;
-  if (v5)
+  self->statusString = string;
+  self->isErrorMessage = errorCopy;
+  if (errorCopy)
   {
     messageTimer = self->messageTimer;
     if (messageTimer)
@@ -431,8 +431,8 @@ uint64_t __52__CABTMIDILocalPeripheralViewController_viewDidLoad__block_invoke(u
       self->messageTimer = v10;
       [(NSTimer *)v10 setTolerance:0.5];
       v11 = self->messageTimer;
-      v12 = [MEMORY[0x277CBEB88] currentRunLoop];
-      [v12 addTimer:self->messageTimer forMode:*MEMORY[0x277CBE738]];
+      currentRunLoop = [MEMORY[0x277CBEB88] currentRunLoop];
+      [currentRunLoop addTimer:self->messageTimer forMode:*MEMORY[0x277CBE738]];
     }
   }
 
@@ -440,7 +440,7 @@ uint64_t __52__CABTMIDILocalPeripheralViewController_viewDidLoad__block_invoke(u
   v13[1] = 3221225472;
   v13[2] = __82__CABTMIDILocalPeripheralViewController_setStatusString_animateIndicator_isError___block_invoke;
   v13[3] = &unk_278A255B8;
-  v14 = a4;
+  indicatorCopy = indicator;
   v13[4] = self;
   dispatch_async(MEMORY[0x277D85CD0], v13);
 }
@@ -478,11 +478,11 @@ uint64_t __82__CABTMIDILocalPeripheralViewController_setStatusString_animateIndi
   return result;
 }
 
-- (void)advertiseServiceSwitchToggled:(id)a3
+- (void)advertiseServiceSwitchToggled:(id)toggled
 {
   v7 = 0;
   self->advertiseTimeout = 10;
-  [a3 setEnabled:0];
+  [toggled setEnabled:0];
   self->advertising = [(AMSBTLEAdvertisementManager *)self->advertisingManager isAdvertising];
   if ([MEMORY[0x277CBFD00] localPeripheral])
   {
@@ -497,13 +497,13 @@ uint64_t __82__CABTMIDILocalPeripheralViewController_setStatusString_animateIndi
 
   if (!self->advertising)
   {
-    v4 = [(CABTMIDILocalPeripheralViewController *)self advertisedServiceName];
+    advertisedServiceName = [(CABTMIDILocalPeripheralViewController *)self advertisedServiceName];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __71__CABTMIDILocalPeripheralViewController_advertiseServiceSwitchToggled___block_invoke;
     v6[3] = &unk_278A255E0;
     v6[4] = self;
-    if ([(CABTMIDILocalPeripheralViewController *)self advertiseServiceWithName:v4 completionBlock:v6 error:&v7])
+    if ([(CABTMIDILocalPeripheralViewController *)self advertiseServiceWithName:advertisedServiceName completionBlock:v6 error:&v7])
     {
       return;
     }
@@ -541,11 +541,11 @@ uint64_t __71__CABTMIDILocalPeripheralViewController_advertiseServiceSwitchToggl
 
 - (id)advertisedServiceName
 {
-  v2 = [MEMORY[0x277CBFD00] nullDevice];
+  nullDevice = [MEMORY[0x277CBFD00] nullDevice];
   str = 0;
-  if (v2)
+  if (nullDevice)
   {
-    MIDIObjectGetStringProperty(v2, @"Bluetooth Advertising Name", &str);
+    MIDIObjectGetStringProperty(nullDevice, @"Bluetooth Advertising Name", &str);
     if (str)
     {
       v3 = objc_alloc(MEMORY[0x277CCACA8]);
@@ -567,29 +567,29 @@ uint64_t __71__CABTMIDILocalPeripheralViewController_advertiseServiceSwitchToggl
   }
 }
 
-- (BOOL)advertiseServiceWithName:(id)a3 completionBlock:(id)a4 error:(id *)a5
+- (BOOL)advertiseServiceWithName:(id)name completionBlock:(id)block error:(id *)error
 {
-  [(CABTMIDILocalPeripheralViewController *)self changeServiceNameTo:a3 completionBlock:&__block_literal_global_160 error:a5];
+  [(CABTMIDILocalPeripheralViewController *)self changeServiceNameTo:name completionBlock:&__block_literal_global_160 error:error];
   [(AMSBTLEAdvertisementManager *)self->advertisingManager advertiseMIDIService];
-  (*(a4 + 2))(a4);
+  (*(block + 2))(block);
   return 1;
 }
 
-- (BOOL)stopAdvertisingServiceWithCompletionBlock:(id)a3 error:(id *)a4
+- (BOOL)stopAdvertisingServiceWithCompletionBlock:(id)block error:(id *)error
 {
-  [(AMSBTLEAdvertisementManager *)self->advertisingManager stopAdvertisingMIDIService:a3];
-  (*(a3 + 2))(a3);
+  [(AMSBTLEAdvertisementManager *)self->advertisingManager stopAdvertisingMIDIService:block];
+  (*(block + 2))(block);
   return 1;
 }
 
-- (BOOL)changeServiceNameTo:(id)a3 completionBlock:(id)a4 error:(id *)a5
+- (BOOL)changeServiceNameTo:(id)to completionBlock:(id)block error:(id *)error
 {
-  v9 = [MEMORY[0x277CBFD00] nullDevice];
-  if (!v9)
+  nullDevice = [MEMORY[0x277CBFD00] nullDevice];
+  if (!nullDevice)
   {
-    if (a5)
+    if (error)
     {
-      *a5 = [MEMORY[0x277CCA9B8] errorWithDomain:@"CoreMIDI" code:-10842 userInfo:0];
+      *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"CoreMIDI" code:-10842 userInfo:0];
     }
 
     goto LABEL_7;
@@ -597,27 +597,27 @@ uint64_t __71__CABTMIDILocalPeripheralViewController_advertiseServiceSwitchToggl
 
   if (![(AMSBTLEAdvertisementManager *)self->advertisingManager isAdvertising])
   {
-    MIDIObjectSetStringProperty(v9, @"Bluetooth Advertising Name", a3);
+    MIDIObjectSetStringProperty(nullDevice, @"Bluetooth Advertising Name", to);
 LABEL_7:
-    (*(a4 + 2))(a4);
-    return v9 != 0;
+    (*(block + 2))(block);
+    return nullDevice != 0;
   }
 
   [(AMSBTLEAdvertisementManager *)self->advertisingManager stopAdvertisingMIDIService];
-  MIDIObjectSetStringProperty(v9, @"Bluetooth Advertising Name", a3);
-  (*(a4 + 2))(a4);
+  MIDIObjectSetStringProperty(nullDevice, @"Bluetooth Advertising Name", to);
+  (*(block + 2))(block);
   [(AMSBTLEAdvertisementManager *)self->advertisingManager advertiseMIDIService];
-  return v9 != 0;
+  return nullDevice != 0;
 }
 
 - (BOOL)disconnectLocalPeripheral
 {
-  v2 = [MEMORY[0x277CBFD00] nullDevice];
-  v3 = [MEMORY[0x277CBFD00] localPeripheral];
+  nullDevice = [MEMORY[0x277CBFD00] nullDevice];
+  localPeripheral = [MEMORY[0x277CBFD00] localPeripheral];
   str = 0;
-  if (v2)
+  if (nullDevice)
   {
-    v4 = v3 == 0;
+    v4 = localPeripheral == 0;
   }
 
   else
@@ -627,15 +627,15 @@ LABEL_7:
 
   if (!v4)
   {
-    MIDIObjectGetStringProperty(v3, @"BLE MIDI Device UUID", &str);
+    MIDIObjectGetStringProperty(localPeripheral, @"BLE MIDI Device UUID", &str);
     if (str)
     {
-      MIDIObjectSetStringProperty(v2, @"disconnect device", str);
+      MIDIObjectSetStringProperty(nullDevice, @"disconnect device", str);
       CFRelease(str);
     }
   }
 
-  return v2 != 0;
+  return nullDevice != 0;
 }
 
 - (void)didReceiveMemoryWarning
@@ -645,7 +645,7 @@ LABEL_7:
   [(CABTMIDILocalPeripheralViewController *)&v2 didReceiveMemoryWarning];
 }
 
-- (void)advertiseTimerFired:(id)a3
+- (void)advertiseTimerFired:(id)fired
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -731,7 +731,7 @@ LABEL_13:
   return result;
 }
 
-- (void)messageTimerFired:(id)a3
+- (void)messageTimerFired:(id)fired
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;

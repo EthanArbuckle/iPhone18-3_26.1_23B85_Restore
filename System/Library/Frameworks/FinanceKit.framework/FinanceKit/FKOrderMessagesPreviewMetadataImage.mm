@@ -1,22 +1,22 @@
 @interface FKOrderMessagesPreviewMetadataImage
-- (id)_initWithImage:(id)a3;
+- (id)_initWithImage:(id)image;
 @end
 
 @implementation FKOrderMessagesPreviewMetadataImage
 
-- (id)_initWithImage:(id)a3
+- (id)_initWithImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   v9.receiver = self;
   v9.super_class = FKOrderMessagesPreviewMetadataImage;
   v5 = [(FKOrderMessagesPreviewMetadataImage *)&v9 init];
   if (v5)
   {
-    v6 = [v4 data];
+    data = [imageCopy data];
     data = v5->_data;
-    v5->_data = v6;
+    v5->_data = data;
 
-    v5->_kind = [v4 kind];
+    v5->_kind = [imageCopy kind];
   }
 
   return v5;

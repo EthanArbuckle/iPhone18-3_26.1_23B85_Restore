@@ -1,8 +1,8 @@
 @interface ArticleSharingViewController
 - (NAArticleFooterDelegate)footerDelegate;
-- (_TtC12NewsArticles28ArticleSharingViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)scrollViewController:(id)a3 didApplyDocumentStyle:(id)a4;
-- (void)traitCollectionDidChange:(id)a3;
+- (_TtC12NewsArticles28ArticleSharingViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)scrollViewController:(id)controller didApplyDocumentStyle:(id)style;
+- (void)traitCollectionDidChange:(id)change;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
@@ -16,7 +16,7 @@
   return Strong;
 }
 
-- (_TtC12NewsArticles28ArticleSharingViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC12NewsArticles28ArticleSharingViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -25,22 +25,22 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D7D0B014();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v9.receiver = self;
   v9.super_class = swift_getObjectType();
   v4 = v9.receiver;
-  v5 = a3;
-  [(ArticleSharingViewController *)&v9 traitCollectionDidChange:v5];
-  v6 = [v4 traitCollection];
-  v7 = [v4 view];
-  if (v7)
+  changeCopy = change;
+  [(ArticleSharingViewController *)&v9 traitCollectionDidChange:changeCopy];
+  traitCollection = [v4 traitCollection];
+  view = [v4 view];
+  if (view)
   {
-    v8 = v7;
+    v8 = view;
 
     sub_1D7CCEFA8(*&v4[OBJC_IVAR____TtC12NewsArticles28ArticleSharingViewController_shareButton]);
   }
@@ -53,16 +53,16 @@
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D7D0B2F0();
 }
 
-- (void)scrollViewController:(id)a3 didApplyDocumentStyle:(id)a4
+- (void)scrollViewController:(id)controller didApplyDocumentStyle:(id)style
 {
-  v6 = a3;
+  controllerCopy = controller;
   swift_unknownObjectRetain();
-  v7 = self;
-  sub_1D7D0B5F0(a4);
+  selfCopy = self;
+  sub_1D7D0B5F0(style);
 
   swift_unknownObjectRelease();
 }

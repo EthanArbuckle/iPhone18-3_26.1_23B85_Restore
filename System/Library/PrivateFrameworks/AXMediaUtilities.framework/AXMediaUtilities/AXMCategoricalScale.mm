@@ -1,24 +1,24 @@
 @interface AXMCategoricalScale
-- (AXMCategoricalScale)initWithDomain:(id)a3;
+- (AXMCategoricalScale)initWithDomain:(id)domain;
 @end
 
 @implementation AXMCategoricalScale
 
-- (AXMCategoricalScale)initWithDomain:(id)a3
+- (AXMCategoricalScale)initWithDomain:(id)domain
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  domainCopy = domain;
   v19.receiver = self;
   v19.super_class = AXMCategoricalScale;
   v5 = [(AXMCategoricalScale *)&v19 init];
   if (v5)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v7 = v4;
+    v7 = domainCopy;
     v8 = [v7 countByEnumeratingWithState:&v15 objects:v20 count:16];
     if (v8)
     {
@@ -35,7 +35,7 @@
           }
 
           v12 = [AXMDataPointValue valueWithCategory:*(*(&v15 + 1) + 8 * v11), v15];
-          [v6 addObject:v12];
+          [array addObject:v12];
 
           ++v11;
         }
@@ -47,7 +47,7 @@
       while (v9);
     }
 
-    v13 = [v6 copy];
+    v13 = [array copy];
     [(AXMScale *)v5 setDomain:v13];
   }
 

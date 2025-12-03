@@ -2,38 +2,38 @@
 + (void)load;
 - (CAFBooleanSettingNotificationEntryList)BOOLeanSettingNotificationEntryListValue;
 - (id)formattedValue;
-- (void)setBooleanSettingNotificationEntryListValue:(id)a3;
+- (void)setBooleanSettingNotificationEntryListValue:(id)value;
 @end
 
 @implementation CAFBooleanSettingNotificationEntryListCharacteristic
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___CAFBooleanSettingNotificationEntryListCharacteristic;
   objc_msgSendSuper2(&v2, sel_load);
 }
 
 - (CAFBooleanSettingNotificationEntryList)BOOLeanSettingNotificationEntryListValue
 {
-  v2 = [(CAFArrayCharacteristic *)self arrayValue];
-  v3 = [CAFBooleanSettingNotificationEntryList BOOLeanSettingNotificationEntryListWithArray:v2];
+  arrayValue = [(CAFArrayCharacteristic *)self arrayValue];
+  v3 = [CAFBooleanSettingNotificationEntryList BOOLeanSettingNotificationEntryListWithArray:arrayValue];
 
   return v3;
 }
 
-- (void)setBooleanSettingNotificationEntryListValue:(id)a3
+- (void)setBooleanSettingNotificationEntryListValue:(id)value
 {
-  v4 = [a3 arrayRepresentation];
-  [(CAFArrayCharacteristic *)self setArrayValue:v4];
+  arrayRepresentation = [value arrayRepresentation];
+  [(CAFArrayCharacteristic *)self setArrayValue:arrayRepresentation];
 }
 
 - (id)formattedValue
 {
-  v2 = [(CAFBooleanSettingNotificationEntryListCharacteristic *)self BOOLeanSettingNotificationEntryListValue];
-  v3 = [v2 formattedValue];
+  bOOLeanSettingNotificationEntryListValue = [(CAFBooleanSettingNotificationEntryListCharacteristic *)self BOOLeanSettingNotificationEntryListValue];
+  formattedValue = [bOOLeanSettingNotificationEntryListValue formattedValue];
 
-  return v3;
+  return formattedValue;
 }
 
 @end

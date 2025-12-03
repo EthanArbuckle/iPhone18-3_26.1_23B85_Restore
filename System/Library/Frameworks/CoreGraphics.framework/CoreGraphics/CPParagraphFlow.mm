@@ -1,29 +1,29 @@
 @interface CPParagraphFlow
-- (BOOL)intervalOverlapLeft:(double)a3 right:(double)a4 paragraphs:(id)a5;
-- (BOOL)intervalOverlapLeft:(double)a3 right:(double)a4 rects:(id)a5;
-- (BOOL)intervalOverlapTop:(double)a3 bottom:(double)a4 paragraphs:(id)a5;
+- (BOOL)intervalOverlapLeft:(double)left right:(double)right paragraphs:(id)paragraphs;
+- (BOOL)intervalOverlapLeft:(double)left right:(double)right rects:(id)rects;
+- (BOOL)intervalOverlapTop:(double)top bottom:(double)bottom paragraphs:(id)paragraphs;
 - (CGRect)belowBounds;
-- (CPParagraphFlow)initWithParagraph:(id)a3;
+- (CPParagraphFlow)initWithParagraph:(id)paragraph;
 - (double)area;
 - (double)dAbove;
 - (double)dBelow;
-- (id)ignoreCallouts:(unsigned int)a3;
-- (id)nextParagraphInColumn:(id)a3;
-- (id)simpleRule:(unsigned int)a3;
-- (id)twoSides:(unsigned int)a3;
+- (id)ignoreCallouts:(unsigned int)callouts;
+- (id)nextParagraphInColumn:(id)column;
+- (id)simpleRule:(unsigned int)rule;
+- (id)twoSides:(unsigned int)sides;
 - (int)inOrder;
-- (int)inOrder:(BOOL)a3;
+- (int)inOrder:(BOOL)order;
 - (int)leftOrder;
 - (int)outOrder;
 - (int)rightOrder;
-- (int64_t)topDescending:(id)a3;
+- (int64_t)topDescending:(id)descending;
 - (void)dealloc;
-- (void)replaceAbove:(id)a3 withOneOf:(id)a4;
-- (void)replaceBelow:(id)a3 withOneOf:(id)a4;
-- (void)setParagraphsAboveIn:(id)a3;
-- (void)setParagraphsBelowIn:(id)a3;
-- (void)setParagraphsLeftIn:(id)a3;
-- (void)setParagraphsRightIn:(id)a3;
+- (void)replaceAbove:(id)above withOneOf:(id)of;
+- (void)replaceBelow:(id)below withOneOf:(id)of;
+- (void)setParagraphsAboveIn:(id)in;
+- (void)setParagraphsBelowIn:(id)in;
+- (void)setParagraphsLeftIn:(id)in;
+- (void)setParagraphsRightIn:(id)in;
 @end
 
 @implementation CPParagraphFlow
@@ -61,9 +61,9 @@
   return paragraphsBelow;
 }
 
-- (int)inOrder:(BOOL)a3
+- (int)inOrder:(BOOL)order
 {
-  if (a3)
+  if (order)
   {
     v4 = [(NSMutableArray *)self->paragraphsAbove count];
     v5 = v4;
@@ -233,15 +233,15 @@
   return result;
 }
 
-- (void)replaceAbove:(id)a3 withOneOf:(id)a4
+- (void)replaceAbove:(id)above withOneOf:(id)of
 {
-  [(NSMutableArray *)self->paragraphsAbove removeObject:a3];
+  [(NSMutableArray *)self->paragraphsAbove removeObject:above];
   [(CPRotatedRegion *)self->paragraph normalizedBounds];
   v7 = v6;
   v40 = v8;
   v41 = v9;
   v11 = v10;
-  v12 = [a4 count];
+  v12 = [of count];
   v13 = v12;
   if (v12)
   {
@@ -249,7 +249,7 @@
     v15 = fmin(v11, v41) < 0.0;
     do
     {
-      v16 = [a4 objectAtIndex:v14];
+      v16 = [of objectAtIndex:v14];
       [v16 normalizedBounds];
       v21 = v20;
       v22 = v17;
@@ -332,15 +332,15 @@
   }
 }
 
-- (void)replaceBelow:(id)a3 withOneOf:(id)a4
+- (void)replaceBelow:(id)below withOneOf:(id)of
 {
-  [(NSMutableArray *)self->paragraphsBelow removeObject:a3];
+  [(NSMutableArray *)self->paragraphsBelow removeObject:below];
   [(CPRotatedRegion *)self->paragraph normalizedBounds];
   v7 = v6;
   v40 = v8;
   v41 = v9;
   v11 = v10;
-  v12 = [a4 count];
+  v12 = [of count];
   v13 = v12;
   if (v12)
   {
@@ -348,7 +348,7 @@
     v15 = fmin(v11, v41) < 0.0;
     do
     {
-      v16 = [a4 objectAtIndex:v14];
+      v16 = [of objectAtIndex:v14];
       [v16 normalizedBounds];
       v21 = v20;
       v22 = v17;
@@ -431,7 +431,7 @@
   }
 }
 
-- (id)nextParagraphInColumn:(id)a3
+- (id)nextParagraphInColumn:(id)column
 {
   paragraphsBelow = self->paragraphsBelow;
   if (!paragraphsBelow)
@@ -540,7 +540,7 @@ LABEL_23:
     {
       if (v7 == ++v32)
       {
-        [a3 normalizedBounds];
+        [column normalizedBounds];
         v34 = v33;
         v36 = v35;
         v38 = v37;
@@ -592,9 +592,9 @@ LABEL_23:
   return nextInColumn;
 }
 
-- (id)twoSides:(unsigned int)a3
+- (id)twoSides:(unsigned int)sides
 {
-  if (a3 != 2)
+  if (sides != 2)
   {
     return 0;
   }
@@ -622,16 +622,16 @@ LABEL_23:
     v5 = v4;
   }
 
-  v13 = [(CPParagraph *)v5 flowProperties];
-  v14 = [(CPParagraph *)v9 flowProperties];
-  if ([v13 inOrder] == 1 && objc_msgSend(v14, "inOrder") == 1 && objc_msgSend(v13, "outOrder") == 1 && objc_msgSend(v14, "outOrder") == 1)
+  flowProperties = [(CPParagraph *)v5 flowProperties];
+  flowProperties2 = [(CPParagraph *)v9 flowProperties];
+  if ([flowProperties inOrder] == 1 && objc_msgSend(flowProperties2, "inOrder") == 1 && objc_msgSend(flowProperties, "outOrder") == 1 && objc_msgSend(flowProperties2, "outOrder") == 1)
   {
-    v15 = [objc_msgSend(v13 "paragraphsBelow")];
-    if (v15 == [objc_msgSend(v14 "paragraphsBelow")])
+    v15 = [objc_msgSend(flowProperties "paragraphsBelow")];
+    if (v15 == [objc_msgSend(flowProperties2 "paragraphsBelow")])
     {
       self->nextInColumn = v5;
-      [v13 setNextInColumn:v9];
-      [v14 setNextInColumn:{objc_msgSend(objc_msgSend(v14, "paragraphsBelow"), "objectAtIndex:", 0)}];
+      [flowProperties setNextInColumn:v9];
+      [flowProperties2 setNextInColumn:{objc_msgSend(objc_msgSend(flowProperties2, "paragraphsBelow"), "objectAtIndex:", 0)}];
       return v5;
     }
   }
@@ -639,9 +639,9 @@ LABEL_23:
   return 0;
 }
 
-- (id)ignoreCallouts:(unsigned int)a3
+- (id)ignoreCallouts:(unsigned int)callouts
 {
-  if (a3)
+  if (callouts)
   {
     v5 = 0;
     v6 = 0;
@@ -649,16 +649,16 @@ LABEL_23:
     while (1)
     {
       v8 = [(NSMutableArray *)self->paragraphsBelow objectAtIndex:v5];
-      v9 = [v8 flowProperties];
-      if ([v9 calloutType])
+      flowProperties = [v8 flowProperties];
+      if ([flowProperties calloutType])
       {
-        v10 = [v9 outOrder];
-        if (v10 < 2)
+        outOrder = [flowProperties outOrder];
+        if (outOrder < 2)
         {
           ++v6;
         }
 
-        if (v10 > 1)
+        if (outOrder > 1)
         {
           return 0;
         }
@@ -669,7 +669,7 @@ LABEL_23:
         v7 = v8;
       }
 
-      if (a3 == ++v5)
+      if (callouts == ++v5)
       {
         goto LABEL_12;
       }
@@ -679,13 +679,13 @@ LABEL_23:
   v7 = 0;
   v6 = 0;
 LABEL_12:
-  if (v6 != a3 - 1)
+  if (v6 != callouts - 1)
   {
     return 0;
   }
 
-  v11 = [v7 flowProperties];
-  if ([v11 inOrder:1] != 1)
+  flowProperties2 = [v7 flowProperties];
+  if ([flowProperties2 inOrder:1] != 1)
   {
     [(CPRotatedRegion *)self->paragraph normalizedBounds];
     v16 = v13;
@@ -697,8 +697,8 @@ LABEL_12:
       v17 = v19;
     }
 
-    v20 = [v11 paragraphsAbove];
-    v21 = [v20 count];
+    paragraphsAbove = [flowProperties2 paragraphsAbove];
+    v21 = [paragraphsAbove count];
     v22 = v21;
     if (v21)
     {
@@ -706,7 +706,7 @@ LABEL_12:
       v24 = v16 + v17;
       while (1)
       {
-        v25 = [v20 objectAtIndex:v23];
+        v25 = [paragraphsAbove objectAtIndex:v23];
         if (v25 != self->paragraph)
         {
           v26 = v25;
@@ -735,9 +735,9 @@ LABEL_12:
   return v7;
 }
 
-- (id)simpleRule:(unsigned int)a3
+- (id)simpleRule:(unsigned int)rule
 {
-  if (a3 != 1)
+  if (rule != 1)
   {
     return 0;
   }
@@ -754,19 +754,19 @@ LABEL_12:
   }
 }
 
-- (void)setParagraphsRightIn:(id)a3
+- (void)setParagraphsRightIn:(id)in
 {
-  v5 = [a3 count];
+  v5 = [in count];
   if (v5)
   {
-    v6 = [a3 indexOfObject:self->paragraph];
+    v6 = [in indexOfObject:self->paragraph];
     v24 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:1];
     if (v6 + 1 < v5)
     {
       v7 = v6 + 1;
       while (1)
       {
-        v8 = [a3 objectAtIndex:v7];
+        v8 = [in objectAtIndex:v7];
         [v8 normalizedBounds];
         y = v10;
         if (v11 < 0.0 || v12 < 0.0)
@@ -832,18 +832,18 @@ LABEL_23:
   }
 }
 
-- (void)setParagraphsLeftIn:(id)a3
+- (void)setParagraphsLeftIn:(id)in
 {
-  if ([a3 count])
+  if ([in count])
   {
-    v5 = [a3 indexOfObject:self->paragraph];
+    v5 = [in indexOfObject:self->paragraph];
     v23 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:1];
     if (v5 >= 1)
     {
       v6 = (v5 & 0x7FFFFFFF) + 1;
       while (1)
       {
-        v7 = [a3 objectAtIndex:v6 - 2];
+        v7 = [in objectAtIndex:v6 - 2];
         [v7 normalizedBounds];
         y = v9;
         if (v10 < 0.0 || v11 < 0.0)
@@ -909,30 +909,30 @@ LABEL_23:
   }
 }
 
-- (void)setParagraphsBelowIn:(id)a3
+- (void)setParagraphsBelowIn:(id)in
 {
-  v5 = [a3 count];
+  v5 = [in count];
   v6 = v5;
   if (v5)
   {
     [(CPRotatedRegion *)self->paragraph top];
     v8 = v7;
     v9 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:1];
-    v10 = [(CPObject *)self->paragraph lastChild];
-    [v10 baseline];
+    lastChild = [(CPObject *)self->paragraph lastChild];
+    [lastChild baseline];
     v12 = v11;
-    v13 = [v10 leftSpacerIndex];
-    v14 = [v10 rightSpacerIndex];
+    leftSpacerIndex = [lastChild leftSpacerIndex];
+    rightSpacerIndex = [lastChild rightSpacerIndex];
     v15 = 0;
     while (1)
     {
-      v16 = [a3 objectAtIndex:{v15, v34, v35}];
+      v16 = [in objectAtIndex:{v15, v34, v35}];
       if (v16 != self->paragraph)
       {
         v17 = v16;
         v34 = 0u;
         v35 = 0u;
-        v18 = boundsForOverlap(v16, v13, v14);
+        v18 = boundsForOverlap(v16, leftSpacerIndex, rightSpacerIndex);
         v22 = v18;
         v23 = v19;
         v24 = v20;
@@ -1005,25 +1005,25 @@ LABEL_24:
   }
 }
 
-- (void)setParagraphsAboveIn:(id)a3
+- (void)setParagraphsAboveIn:(id)in
 {
-  v5 = [a3 count];
+  v5 = [in count];
   if (v5)
   {
-    v6 = [a3 indexOfObject:self->paragraph];
+    v6 = [in indexOfObject:self->paragraph];
     v7 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:1];
-    v8 = [(CPObject *)self->paragraph firstChild];
-    v9 = [v8 leftSpacerIndex];
-    v10 = [v8 rightSpacerIndex];
+    firstChild = [(CPObject *)self->paragraph firstChild];
+    leftSpacerIndex = [firstChild leftSpacerIndex];
+    rightSpacerIndex = [firstChild rightSpacerIndex];
     if (v6 + 1 < v5)
     {
-      v11 = v10;
+      v11 = rightSpacerIndex;
       for (i = v6 + 1; i < v5; ++i)
       {
-        v13 = [a3 objectAtIndex:{i, v27, v28}];
+        v13 = [in objectAtIndex:{i, v27, v28}];
         v27 = 0u;
         v28 = 0u;
-        v14 = boundsForOverlap(v13, v9, v11);
+        v14 = boundsForOverlap(v13, leftSpacerIndex, v11);
         v18 = v14;
         v19 = v15;
         v20 = v16;
@@ -1082,9 +1082,9 @@ LABEL_15:
   }
 }
 
-- (BOOL)intervalOverlapTop:(double)a3 bottom:(double)a4 paragraphs:(id)a5
+- (BOOL)intervalOverlapTop:(double)top bottom:(double)bottom paragraphs:(id)paragraphs
 {
-  v8 = [a5 count];
+  v8 = [paragraphs count];
   v9 = v8;
   if (v8)
   {
@@ -1092,7 +1092,7 @@ LABEL_15:
     v11 = 1;
     do
     {
-      [objc_msgSend(a5 objectAtIndex:{v10), "normalizedBounds"}];
+      [objc_msgSend(paragraphs objectAtIndex:{v10), "normalizedBounds"}];
       v16 = v12;
       y = v13;
       v18 = v14;
@@ -1114,7 +1114,7 @@ LABEL_15:
         v20 = v13 + v15;
       }
 
-      if (v20 > a4 && y < a3)
+      if (v20 > bottom && y < top)
       {
         break;
       }
@@ -1133,9 +1133,9 @@ LABEL_15:
   return v11;
 }
 
-- (BOOL)intervalOverlapLeft:(double)a3 right:(double)a4 paragraphs:(id)a5
+- (BOOL)intervalOverlapLeft:(double)left right:(double)right paragraphs:(id)paragraphs
 {
-  v8 = [a5 count];
+  v8 = [paragraphs count];
   v9 = v8;
   if (v8)
   {
@@ -1143,7 +1143,7 @@ LABEL_15:
     v11 = 1;
     do
     {
-      [objc_msgSend(a5 objectAtIndex:{v10), "normalizedBounds"}];
+      [objc_msgSend(paragraphs objectAtIndex:{v10), "normalizedBounds"}];
       x = v12;
       v17 = v13;
       width = v14;
@@ -1165,7 +1165,7 @@ LABEL_15:
         v20 = v12;
       }
 
-      if (x + width > a3 && v20 < a4)
+      if (x + width > left && v20 < right)
       {
         break;
       }
@@ -1184,10 +1184,10 @@ LABEL_15:
   return v11;
 }
 
-- (BOOL)intervalOverlapLeft:(double)a3 right:(double)a4 rects:(id)a5
+- (BOOL)intervalOverlapLeft:(double)left right:(double)right rects:(id)rects
 {
   rect = CGRectNull;
-  v8 = [a5 count];
+  v8 = [rects count];
   v9 = v8;
   if (v8)
   {
@@ -1195,7 +1195,7 @@ LABEL_15:
     v11 = 1;
     do
     {
-      [objc_msgSend(a5 objectAtIndex:{v10), "getValue:", &rect}];
+      [objc_msgSend(rects objectAtIndex:{v10), "getValue:", &rect}];
       x = rect.origin.x;
       height = rect.size.height;
       width = rect.size.width;
@@ -1216,7 +1216,7 @@ LABEL_15:
         v15 = rect.origin.x;
       }
 
-      if (v15 + width > a3 && x < a4)
+      if (v15 + width > left && x < right)
       {
         break;
       }
@@ -1235,11 +1235,11 @@ LABEL_15:
   return v11;
 }
 
-- (int64_t)topDescending:(id)a3
+- (int64_t)topDescending:(id)descending
 {
   [(CPRotatedRegion *)[(CPParagraphFlow *)self paragraph] top];
   v5 = v4;
-  [objc_msgSend(a3 "paragraph")];
+  [objc_msgSend(descending "paragraph")];
   if (v5 <= v6)
   {
     v7 = 0;
@@ -1270,15 +1270,15 @@ LABEL_15:
   [(CPParagraphFlow *)&v3 dealloc];
 }
 
-- (CPParagraphFlow)initWithParagraph:(id)a3
+- (CPParagraphFlow)initWithParagraph:(id)paragraph
 {
   v15.receiver = self;
   v15.super_class = CPParagraphFlow;
   v4 = [(CPParagraphFlow *)&v15 init];
   if (v4)
   {
-    v4->paragraph = a3;
-    [a3 setFlowProperties:v4];
+    v4->paragraph = paragraph;
+    [paragraph setFlowProperties:v4];
     [(CPRotatedRegion *)v4->paragraph normalizedBounds];
     v9 = v5;
     y = v6;

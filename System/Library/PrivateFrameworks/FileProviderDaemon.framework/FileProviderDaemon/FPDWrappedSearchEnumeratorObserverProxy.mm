@@ -1,34 +1,34 @@
 @interface FPDWrappedSearchEnumeratorObserverProxy
-- (FPDWrappedSearchEnumeratorObserverProxy)initWithTarget:(id)a3 maximumNumberOfResultsPerPage:(int64_t)a4;
-- (void)didEnumerateSearchResults:(id)a3;
-- (void)finishEnumeratingUpToPage:(id)a3;
-- (void)finishEnumeratingWithError:(id)a3;
+- (FPDWrappedSearchEnumeratorObserverProxy)initWithTarget:(id)target maximumNumberOfResultsPerPage:(int64_t)page;
+- (void)didEnumerateSearchResults:(id)results;
+- (void)finishEnumeratingUpToPage:(id)page;
+- (void)finishEnumeratingWithError:(id)error;
 @end
 
 @implementation FPDWrappedSearchEnumeratorObserverProxy
 
-- (FPDWrappedSearchEnumeratorObserverProxy)initWithTarget:(id)a3 maximumNumberOfResultsPerPage:(int64_t)a4
+- (FPDWrappedSearchEnumeratorObserverProxy)initWithTarget:(id)target maximumNumberOfResultsPerPage:(int64_t)page
 {
-  v7 = a3;
+  targetCopy = target;
   v11.receiver = self;
   v11.super_class = FPDWrappedSearchEnumeratorObserverProxy;
   v8 = [(FPDWrappedSearchEnumeratorObserverProxy *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_target, a3);
-    v9->_maximumNumberOfResultsPerPage = a4;
+    objc_storeStrong(&v8->_target, target);
+    v9->_maximumNumberOfResultsPerPage = page;
   }
 
   return v9;
 }
 
-- (void)didEnumerateSearchResults:(id)a3
+- (void)didEnumerateSearchResults:(id)results
 {
   target = self->_target;
-  v4 = a3;
+  resultsCopy = results;
   v5 = [(NSFileProviderSearchEnumerationObserver *)target remoteObjectProxyWithErrorHandler:&__block_literal_global_1];
-  [v5 didEnumerateSearchResults:v4];
+  [v5 didEnumerateSearchResults:resultsCopy];
 }
 
 void __69__FPDWrappedSearchEnumeratorObserverProxy_didEnumerateSearchResults___block_invoke(uint64_t a1, void *a2)
@@ -41,12 +41,12 @@ void __69__FPDWrappedSearchEnumeratorObserverProxy_didEnumerateSearchResults___b
   }
 }
 
-- (void)finishEnumeratingUpToPage:(id)a3
+- (void)finishEnumeratingUpToPage:(id)page
 {
   target = self->_target;
-  v4 = a3;
+  pageCopy = page;
   v5 = [(NSFileProviderSearchEnumerationObserver *)target remoteObjectProxyWithErrorHandler:&__block_literal_global_2];
-  [v5 finishEnumeratingUpToPage:v4];
+  [v5 finishEnumeratingUpToPage:pageCopy];
 }
 
 void __69__FPDWrappedSearchEnumeratorObserverProxy_finishEnumeratingUpToPage___block_invoke(uint64_t a1, void *a2)
@@ -59,16 +59,16 @@ void __69__FPDWrappedSearchEnumeratorObserverProxy_finishEnumeratingUpToPage___b
   }
 }
 
-- (void)finishEnumeratingWithError:(id)a3
+- (void)finishEnumeratingWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   target = self->_target;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __70__FPDWrappedSearchEnumeratorObserverProxy_finishEnumeratingWithError___block_invoke;
   v8[3] = &unk_1E83BDFC8;
-  v9 = v4;
-  v6 = v4;
+  v9 = errorCopy;
+  v6 = errorCopy;
   v7 = [(NSFileProviderSearchEnumerationObserver *)target remoteObjectProxyWithErrorHandler:v8];
   [v7 finishEnumeratingWithError:v6];
 }

@@ -1,22 +1,22 @@
 @interface _UIStatusBarVPNDisconnectView
 - (CGSize)intrinsicContentSize;
 - (UIEdgeInsets)alignmentRectInsets;
-- (void)_setupForStyleAttributes:(id)a3;
-- (void)animateSlashForUpdate:(id)a3;
-- (void)applyStyleAttributes:(id)a3;
-- (void)resetSlashForUpdate:(id)a3;
-- (void)updateFramesForStyleAttributes:(id)a3;
+- (void)_setupForStyleAttributes:(id)attributes;
+- (void)animateSlashForUpdate:(id)update;
+- (void)applyStyleAttributes:(id)attributes;
+- (void)resetSlashForUpdate:(id)update;
+- (void)updateFramesForStyleAttributes:(id)attributes;
 @end
 
 @implementation _UIStatusBarVPNDisconnectView
 
-- (void)_setupForStyleAttributes:(id)a3
+- (void)_setupForStyleAttributes:(id)attributes
 {
   if (!self->_iconView)
   {
-    v4 = a3;
+    attributesCopy = attributes;
     v5 = +[_UIStatusBarImageProvider sharedProvider];
-    v6 = [v5 imageNamed:@"VPN" styleAttributes:v4];
+    v6 = [v5 imageNamed:@"VPN" styleAttributes:attributesCopy];
 
     v32 = [v6 imageWithRenderingMode:2];
 
@@ -29,13 +29,13 @@
     [(UIView *)self->_iconView frame];
     v10 = [(UIView *)v9 initWithFrame:?];
     v11 = +[UIColor blackColor];
-    v12 = [v11 CGColor];
-    v13 = [(UIView *)v10 layer];
-    [v13 setBackgroundColor:v12];
+    cGColor = [v11 CGColor];
+    layer = [(UIView *)v10 layer];
+    [layer setBackgroundColor:cGColor];
 
-    v14 = [MEMORY[0x1E69794A0] layer];
+    layer2 = [MEMORY[0x1E69794A0] layer];
     iconSlashMaskShapeLayer = self->_iconSlashMaskShapeLayer;
-    self->_iconSlashMaskShapeLayer = v14;
+    self->_iconSlashMaskShapeLayer = layer2;
 
     v16 = +[UIColor blackColor];
     -[CAShapeLayer setStrokeColor:](self->_iconSlashMaskShapeLayer, "setStrokeColor:", [v16 CGColor]);
@@ -75,8 +75,8 @@
     v24 = [MEMORY[0x1E6979378] filterWithType:*MEMORY[0x1E6979D98]];
     [(CAShapeLayer *)self->_iconSlashMaskShapeLayer setCompositingFilter:v24];
 
-    v25 = [(UIView *)v10 layer];
-    [v25 addSublayer:self->_iconSlashMaskShapeLayer];
+    layer3 = [(UIView *)v10 layer];
+    [layer3 addSublayer:self->_iconSlashMaskShapeLayer];
 
     [(UIView *)self->_iconView setMaskView:v10];
     v26 = [[UIView alloc] initWithFrame:5.0, -3.0, 19.0, 19.0];
@@ -84,9 +84,9 @@
     self->_slashView = v26;
 
     [(UIView *)self addSubview:self->_slashView];
-    v28 = [MEMORY[0x1E69794A0] layer];
+    layer4 = [MEMORY[0x1E69794A0] layer];
     slashShapeLayer = self->_slashShapeLayer;
-    self->_slashShapeLayer = v28;
+    self->_slashShapeLayer = layer4;
 
     v30 = CGPathCreateMutable();
     CGPathMoveToPoint(v30, 0, 0.0, 0.0);
@@ -96,21 +96,21 @@
     [(CAShapeLayer *)self->_slashShapeLayer setLineWidth:1.0];
     [(CAShapeLayer *)self->_slashShapeLayer setLineCap:v22];
     [(CAShapeLayer *)self->_slashShapeLayer setStrokeEnd:0.0];
-    v31 = [(UIView *)self->_slashView layer];
-    [v31 addSublayer:self->_slashShapeLayer];
+    layer5 = [(UIView *)self->_slashView layer];
+    [layer5 addSublayer:self->_slashShapeLayer];
 
     [(UIImageView *)self->_iconView setImage:v32];
   }
 }
 
-- (void)updateFramesForStyleAttributes:(id)a3
+- (void)updateFramesForStyleAttributes:(id)attributes
 {
   [(_UIStatusBarImageView *)self->_iconView intrinsicContentSize];
   v5 = v4;
   v7 = v6;
-  v8 = [(UIView *)self window];
-  v9 = [v8 screen];
-  [v9 scale];
+  window = [(UIView *)self window];
+  screen = [window screen];
+  [screen scale];
   v11 = UIRectIntegralWithScale(0.0, 0.0, v5, v7, v10);
   v13 = v12;
   v15 = v14;
@@ -128,29 +128,29 @@
   if (!CGRectEqualToRect(v24, v25))
   {
     [(UIImageView *)self->_iconView setFrame:v11, v13, v15, v17];
-    v22 = [(UIView *)self->_iconView maskView];
-    [v22 setFrame:{v11, v13, v15, v17}];
+    maskView = [(UIView *)self->_iconView maskView];
+    [maskView setFrame:{v11, v13, v15, v17}];
 
     [(UIView *)self invalidateIntrinsicContentSize];
   }
 }
 
-- (void)applyStyleAttributes:(id)a3
+- (void)applyStyleAttributes:(id)attributes
 {
-  v4 = a3;
-  [(_UIStatusBarVPNDisconnectView *)self _setupForStyleAttributes:v4];
-  [(_UIStatusBarImageView *)self->_iconView applyStyleAttributes:v4];
-  [(_UIStatusBarVPNDisconnectView *)self updateFramesForStyleAttributes:v4];
-  v6 = [v4 imageTintColor];
+  attributesCopy = attributes;
+  [(_UIStatusBarVPNDisconnectView *)self _setupForStyleAttributes:attributesCopy];
+  [(_UIStatusBarImageView *)self->_iconView applyStyleAttributes:attributesCopy];
+  [(_UIStatusBarVPNDisconnectView *)self updateFramesForStyleAttributes:attributesCopy];
+  imageTintColor = [attributesCopy imageTintColor];
 
-  v5 = v6;
-  -[CAShapeLayer setStrokeColor:](self->_slashShapeLayer, "setStrokeColor:", [v6 CGColor]);
+  v5 = imageTintColor;
+  -[CAShapeLayer setStrokeColor:](self->_slashShapeLayer, "setStrokeColor:", [imageTintColor CGColor]);
 }
 
-- (void)resetSlashForUpdate:(id)a3
+- (void)resetSlashForUpdate:(id)update
 {
-  v4 = [a3 styleAttributes];
-  [(_UIStatusBarVPNDisconnectView *)self _setupForStyleAttributes:v4];
+  styleAttributes = [update styleAttributes];
+  [(_UIStatusBarVPNDisconnectView *)self _setupForStyleAttributes:styleAttributes];
 
   [MEMORY[0x1E6979518] begin];
   [MEMORY[0x1E6979518] disableActions];
@@ -161,14 +161,14 @@
   [v5 commit];
 }
 
-- (void)animateSlashForUpdate:(id)a3
+- (void)animateSlashForUpdate:(id)update
 {
-  v4 = [a3 styleAttributes];
-  [(_UIStatusBarVPNDisconnectView *)self _setupForStyleAttributes:v4];
+  styleAttributes = [update styleAttributes];
+  [(_UIStatusBarVPNDisconnectView *)self _setupForStyleAttributes:styleAttributes];
 
   v8 = [MEMORY[0x1E6979318] animationWithKeyPath:@"strokeEnd"];
-  v5 = [(UIView *)self layer];
-  [v5 convertTime:0 toLayer:CACurrentMediaTime()];
+  layer = [(UIView *)self layer];
+  [layer convertTime:0 toLayer:CACurrentMediaTime()];
   [v8 setBeginTime:v6 + 0.75];
 
   [v8 setFromValue:&unk_1EFE2E528];

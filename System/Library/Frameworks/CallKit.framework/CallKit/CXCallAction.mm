@@ -1,11 +1,11 @@
 @interface CXCallAction
 - (CXCallAction)initWithCallUUID:(NSUUID *)callUUID;
 - (CXCallAction)initWithCoder:(NSCoder *)aDecoder;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)customDescription;
-- (id)sanitizedCopyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)updateSanitizedCopy:(id)a3 withZone:(_NSZone *)a4;
+- (id)sanitizedCopyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
+- (void)updateSanitizedCopy:(id)copy withZone:(_NSZone *)zone;
 @end
 
 @implementation CXCallAction
@@ -14,12 +14,12 @@
 {
   v7.receiver = self;
   v7.super_class = CXCallAction;
-  v3 = [(CXAction *)&v7 customDescription];
-  v4 = [(CXCallAction *)self callUUID];
-  v5 = [v4 UUIDString];
-  [v3 appendFormat:@" callUUID=%@", v5];
+  customDescription = [(CXAction *)&v7 customDescription];
+  callUUID = [(CXCallAction *)self callUUID];
+  uUIDString = [callUUID UUIDString];
+  [customDescription appendFormat:@" callUUID=%@", uUIDString];
 
-  return v3;
+  return customDescription;
 }
 
 - (CXCallAction)initWithCallUUID:(NSUUID *)callUUID
@@ -41,34 +41,34 @@
   return v6;
 }
 
-- (void)updateSanitizedCopy:(id)a3 withZone:(_NSZone *)a4
+- (void)updateSanitizedCopy:(id)copy withZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = CXCallAction;
-  v6 = a3;
-  [(CXAction *)&v8 updateSanitizedCopy:v6 withZone:a4];
+  copyCopy = copy;
+  [(CXAction *)&v8 updateSanitizedCopy:copyCopy withZone:zone];
   v7 = [(CXCallAction *)self callUUID:v8.receiver];
-  [v6 setCallUUID:v7];
+  [copyCopy setCallUUID:v7];
 }
 
-- (id)sanitizedCopyWithZone:(_NSZone *)a3
+- (id)sanitizedCopyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_opt_class() allocWithZone:a3];
-  v6 = [(CXCallAction *)self callUUID];
-  v7 = [v5 initWithCallUUID:v6];
+  v5 = [objc_opt_class() allocWithZone:zone];
+  callUUID = [(CXCallAction *)self callUUID];
+  v7 = [v5 initWithCallUUID:callUUID];
 
-  [(CXCallAction *)self updateSanitizedCopy:v7 withZone:a3];
+  [(CXCallAction *)self updateSanitizedCopy:v7 withZone:zone];
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_opt_class() allocWithZone:a3];
-  v6 = [(CXCallAction *)self callUUID];
-  v7 = [v5 initWithCallUUID:v6];
+  v5 = [objc_opt_class() allocWithZone:zone];
+  callUUID = [(CXCallAction *)self callUUID];
+  v7 = [v5 initWithCallUUID:callUUID];
 
-  [(CXAction *)self updateCopy:v7 withZone:a3];
+  [(CXAction *)self updateCopy:v7 withZone:zone];
   return v7;
 }
 
@@ -90,15 +90,15 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = CXCallAction;
-  v4 = a3;
-  [(CXAction *)&v7 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(CXAction *)&v7 encodeWithCoder:coderCopy];
   v5 = [(CXCallAction *)self callUUID:v7.receiver];
   v6 = NSStringFromSelector(sel_callUUID);
-  [v4 encodeObject:v5 forKey:v6];
+  [coderCopy encodeObject:v5 forKey:v6];
 }
 
 @end

@@ -2,22 +2,22 @@
 + (id)bundle;
 - (AssistantActivationDelegate)delegate;
 - (BOOL)_isVoiceTriggerEnabled;
-- (id)_localizeTriggerString:(id)a3;
+- (id)_localizeTriggerString:(id)string;
 - (id)_updateAndGetCheckedSpecifier;
 - (id)footerVariant;
-- (id)hardwareButtonTrigger:(id)a3;
+- (id)hardwareButtonTrigger:(id)trigger;
 - (id)specifiers;
-- (id)typeToSiriTrigger:(id)a3;
-- (id)voiceActivation:(id)a3;
+- (id)typeToSiriTrigger:(id)trigger;
+- (id)voiceActivation:(id)activation;
 - (void)_refreshFootersForSpecifiers;
 - (void)_updateAndGetCheckedSpecifier;
 - (void)_updateSelectedPhrase;
 - (void)_updateSpecifiersFromPreferences;
-- (void)preferencesDidChange:(id)a3;
-- (void)setHardwareButtonTrigger:(id)a3 forSpecifier:(id)a4;
-- (void)setTypeToSiriTrigger:(id)a3 forSpecifier:(id)a4;
-- (void)setVoiceActivation:(id)a3 forSpecifier:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)preferencesDidChange:(id)change;
+- (void)setHardwareButtonTrigger:(id)trigger forSpecifier:(id)specifier;
+- (void)setTypeToSiriTrigger:(id)trigger forSpecifier:(id)specifier;
+- (void)setVoiceActivation:(id)activation forSpecifier:(id)specifier;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation AssistantActivationController
@@ -37,7 +37,7 @@
   return v2;
 }
 
-- (void)preferencesDidChange:(id)a3
+- (void)preferencesDidChange:(id)change
 {
   [(AssistantActivationController *)self reloadSpecifierID:@"ACTIVATION_COMPACT_ID"];
   [(AssistantActivationController *)self reloadSpecifier:self->_groupSpecifier];
@@ -100,13 +100,13 @@
     [v24 setProperty:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277D3FD80]];
     if (MGGetSInt32Answer() == 2)
     {
-      v25 = [MEMORY[0x277D75418] currentDevice];
-      v26 = [v25 sf_isiPad];
+      currentDevice = [MEMORY[0x277D75418] currentDevice];
+      sf_isiPad = [currentDevice sf_isiPad];
 
       v27 = +[AssistantController bundle];
       v28 = v27;
       v29 = @"ASSISTANT_HARDWARE_BUTTON_SLEEPWAKE";
-      if (v26)
+      if (sf_isiPad)
       {
         v30 = @"AssistantSettings-j3xx";
       }
@@ -137,9 +137,9 @@
     self->_typeToSiriSpecifier = v34;
 
     v36 = +[_TtC24AssistantSettingsSupport21GMEligibilityProvider shared];
-    v37 = [v36 activeEnabled];
+    activeEnabled = [v36 activeEnabled];
 
-    if (+[AssistantUtilities deviceIsVision]|| !v37)
+    if (+[AssistantUtilities deviceIsVision]|| !activeEnabled)
     {
       v38 = +[AssistantActivationController bundle];
       v39 = [v38 localizedStringForKey:@"ACTIVATION_COMPACT_TITLE_ALT" value:&stru_285317CF0 table:@"AssistantActivation"];
@@ -176,7 +176,7 @@
   v3 = 136315394;
   v4 = "[AssistantActivationController _updateSelectedPhrase]";
   v5 = 2112;
-  v6 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_2413B9000, a2, OS_LOG_TYPE_ERROR, "%s Error updating preferred voice trigger phrase: %@", &v3, 0x16u);
   v2 = *MEMORY[0x277D85DE8];
 }
@@ -215,8 +215,8 @@ LABEL_9:
 
 - (void)_updateSpecifiersFromPreferences
 {
-  v3 = [(AssistantActivationController *)self _updateAndGetCheckedSpecifier];
-  [(PSSpecifier *)self->_groupSpecifier setProperty:v3 forKey:*MEMORY[0x277D40090]];
+  _updateAndGetCheckedSpecifier = [(AssistantActivationController *)self _updateAndGetCheckedSpecifier];
+  [(PSSpecifier *)self->_groupSpecifier setProperty:_updateAndGetCheckedSpecifier forKey:*MEMORY[0x277D40090]];
   [(AssistantActivationController *)self _refreshFootersForSpecifiers];
 }
 
@@ -237,43 +237,43 @@ LABEL_9:
 
 - (void)_refreshFootersForSpecifiers
 {
-  v21 = [(AssistantActivationController *)self _updateAndGetCheckedSpecifier];
+  _updateAndGetCheckedSpecifier = [(AssistantActivationController *)self _updateAndGetCheckedSpecifier];
   if (![(AssistantActivationController *)self _isVoiceTriggerEnabled])
   {
-    v4 = [(AssistantActivationController *)self footerVariant];
+    footerVariant = [(AssistantActivationController *)self footerVariant];
     v5 = @"ACTIVATION_PHRASE_COMPACT_OFF_FOOTER_TEXT_";
 LABEL_6:
-    v6 = [(__CFString *)v5 stringByAppendingString:v4];
+    v6 = [(__CFString *)v5 stringByAppendingString:footerVariant];
     v7 = [(AssistantActivationController *)self _localizeTriggerString:v6];
     goto LABEL_7;
   }
 
-  if (v21 != self->_voiceActivationHSAndCompactSpecifier)
+  if (_updateAndGetCheckedSpecifier != self->_voiceActivationHSAndCompactSpecifier)
   {
-    if (v21 != self->_voiceActivationHSSpecifier)
+    if (_updateAndGetCheckedSpecifier != self->_voiceActivationHSSpecifier)
     {
       v3 = 0;
       goto LABEL_9;
     }
 
-    v4 = [(AssistantActivationController *)self footerVariant];
+    footerVariant = [(AssistantActivationController *)self footerVariant];
     v5 = @"ACTIVATION_PHRASE_HS_FOOTER_TEXT_";
     goto LABEL_6;
   }
 
-  v19 = [(AssistantActivationController *)self footerVariant];
-  v20 = [@"ACTIVATION_PHRASE_COMPACT_FOOTER_TEXT_" stringByAppendingString:v19];
-  v4 = [(AssistantActivationController *)self _localizeTriggerString:v20];
+  footerVariant2 = [(AssistantActivationController *)self footerVariant];
+  v20 = [@"ACTIVATION_PHRASE_COMPACT_FOOTER_TEXT_" stringByAppendingString:footerVariant2];
+  footerVariant = [(AssistantActivationController *)self _localizeTriggerString:v20];
 
   if (+[AssistantUtilities deviceIsVision])
   {
-    v4 = v4;
-    v3 = v4;
+    footerVariant = footerVariant;
+    v3 = footerVariant;
     goto LABEL_8;
   }
 
   v6 = [(AssistantActivationController *)self _localizeTriggerString:@"ACTIVATION_PHRASE_COMPACT_FOOTER_TEXT_HEADPHONES"];
-  v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %@", v4, v6];
+  v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %@", footerVariant, v6];
 LABEL_7:
   v3 = v7;
 
@@ -283,20 +283,20 @@ LABEL_9:
   [(PSSpecifier *)self->_groupSpecifier setProperty:v3 forKey:*MEMORY[0x277D3FF88]];
   [(AssistantActivationController *)self reloadSpecifier:self->_groupSpecifier];
   v9 = +[_TtC24AssistantSettingsSupport21GMEligibilityProvider shared];
-  v10 = [v9 activeEnabled];
+  activeEnabled = [v9 activeEnabled];
 
-  if (v10)
+  if (activeEnabled)
   {
     v11 = +[AssistantActivationController bundle];
-    v12 = [(AssistantActivationController *)self footerVariant];
-    v13 = [@"ACTIVATION_LONG_PRESS_FOOTER_" stringByAppendingString:v12];
+    footerVariant3 = [(AssistantActivationController *)self footerVariant];
+    v13 = [@"ACTIVATION_LONG_PRESS_FOOTER_" stringByAppendingString:footerVariant3];
     v14 = [v11 localizedStringForKey:v13 value:&stru_285317CF0 table:@"AssistantActivation"];
 
     [(PSSpecifier *)self->_talkToSiriGroup setProperty:v14 forKey:v8];
     [(AssistantActivationController *)self reloadSpecifier:self->_talkToSiriGroup];
     v15 = +[AssistantActivationController bundle];
-    v16 = [(AssistantActivationController *)self footerVariant];
-    v17 = [@"ACTIVATION_DOUBLE_TAP_FOOTER_" stringByAppendingString:v16];
+    footerVariant4 = [(AssistantActivationController *)self footerVariant];
+    v17 = [@"ACTIVATION_DOUBLE_TAP_FOOTER_" stringByAppendingString:footerVariant4];
     v18 = [v15 localizedStringForKey:v17 value:&stru_285317CF0 table:@"AssistantActivation"];
 
     [(PSSpecifier *)self->_typeToSiriGroup setProperty:v18 forKey:v8];
@@ -304,14 +304,14 @@ LABEL_9:
   }
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v22 = *MEMORY[0x277D85DE8];
   v17.receiver = self;
   v17.super_class = AssistantActivationController;
-  v6 = a4;
-  [(AssistantActivationController *)&v17 tableView:a3 didSelectRowAtIndexPath:v6];
-  v7 = [(AssistantActivationController *)self indexForIndexPath:v6, v17.receiver, v17.super_class];
+  pathCopy = path;
+  [(AssistantActivationController *)&v17 tableView:view didSelectRowAtIndexPath:pathCopy];
+  v7 = [(AssistantActivationController *)self indexForIndexPath:pathCopy, v17.receiver, v17.super_class];
 
   v8 = [(AssistantActivationController *)self specifierAtIndex:v7];
   v9 = v8;
@@ -329,8 +329,8 @@ LABEL_7:
       _os_log_impl(&dword_2413B9000, v12, OS_LOG_TYPE_DEFAULT, "%s Setting preferred voice trigger phrase: %lu", buf, 0x16u);
     }
 
-    v13 = [MEMORY[0x277D7A8D0] sharedPreferences];
-    v14 = [v13 setUserPreferredVoiceTriggerPhraseType:v11 sender:self deviceType:0 endpointId:0];
+    mEMORY[0x277D7A8D0] = [MEMORY[0x277D7A8D0] sharedPreferences];
+    v14 = [mEMORY[0x277D7A8D0] setUserPreferredVoiceTriggerPhraseType:v11 sender:self deviceType:0 endpointId:0];
 
     v10 = 1;
     goto LABEL_10;
@@ -356,45 +356,45 @@ LABEL_10:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_localizeTriggerString:(id)a3
+- (id)_localizeTriggerString:(id)string
 {
   v3 = MEMORY[0x277D7A8D0];
-  v4 = a3;
-  v5 = [v3 sharedPreferences];
-  v6 = [MEMORY[0x277CEF368] sharedPreferences];
-  v7 = [v6 languageCode];
-  v8 = [v5 localizedTriggerPhraseForLanguageCode:v7];
+  stringCopy = string;
+  sharedPreferences = [v3 sharedPreferences];
+  mEMORY[0x277CEF368] = [MEMORY[0x277CEF368] sharedPreferences];
+  languageCode = [mEMORY[0x277CEF368] languageCode];
+  v8 = [sharedPreferences localizedTriggerPhraseForLanguageCode:languageCode];
 
   v9 = [v8 stringByReplacingOccurrencesOfString:@" " withString:@" "];
   v10 = MEMORY[0x277CCACA8];
   v11 = +[AssistantActivationController bundle];
-  v12 = [v11 localizedStringForKey:v4 value:&stru_285317CF0 table:@"AssistantActivation"];
+  v12 = [v11 localizedStringForKey:stringCopy value:&stru_285317CF0 table:@"AssistantActivation"];
 
   v13 = [v10 stringWithFormat:v12, v9];
 
   return v13;
 }
 
-- (id)voiceActivation:(id)a3
+- (id)voiceActivation:(id)activation
 {
   v3 = MEMORY[0x277CCABB0];
-  v4 = [(AssistantActivationController *)self _isVoiceTriggerEnabled];
+  _isVoiceTriggerEnabled = [(AssistantActivationController *)self _isVoiceTriggerEnabled];
 
-  return [v3 numberWithBool:v4];
+  return [v3 numberWithBool:_isVoiceTriggerEnabled];
 }
 
-- (void)setVoiceActivation:(id)a3 forSpecifier:(id)a4
+- (void)setVoiceActivation:(id)activation forSpecifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
+  activationCopy = activation;
+  specifierCopy = specifier;
   objc_initWeak(&location, self);
-  v8 = [(AssistantActivationController *)self delegate];
+  delegate = [(AssistantActivationController *)self delegate];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __65__AssistantActivationController_setVoiceActivation_forSpecifier___block_invoke;
   v9[3] = &unk_278CD1520;
   objc_copyWeak(&v10, &location);
-  [v8 setVoiceActivation:v6 forSpecifier:v7 withTrainingCompletionIfNecessary:v9];
+  [delegate setVoiceActivation:activationCopy forSpecifier:specifierCopy withTrainingCompletionIfNecessary:v9];
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(&location);
@@ -413,44 +413,44 @@ void __65__AssistantActivationController_setVoiceActivation_forSpecifier___block
 
 - (BOOL)_isVoiceTriggerEnabled
 {
-  v2 = [MEMORY[0x277D7A8D0] sharedPreferences];
-  v3 = [v2 voiceTriggerEnabled];
+  mEMORY[0x277D7A8D0] = [MEMORY[0x277D7A8D0] sharedPreferences];
+  voiceTriggerEnabled = [mEMORY[0x277D7A8D0] voiceTriggerEnabled];
 
-  return v3;
+  return voiceTriggerEnabled;
 }
 
-- (id)hardwareButtonTrigger:(id)a3
+- (id)hardwareButtonTrigger:(id)trigger
 {
-  v4 = a3;
-  v5 = [(AssistantActivationController *)self delegate];
-  v6 = [v5 hardwareButtonTrigger:v4];
+  triggerCopy = trigger;
+  delegate = [(AssistantActivationController *)self delegate];
+  v6 = [delegate hardwareButtonTrigger:triggerCopy];
 
   return v6;
 }
 
-- (void)setHardwareButtonTrigger:(id)a3 forSpecifier:(id)a4
+- (void)setHardwareButtonTrigger:(id)trigger forSpecifier:(id)specifier
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(AssistantActivationController *)self delegate];
-  [v8 setHardwareButtonTrigger:v7 forSpecifier:v6];
+  specifierCopy = specifier;
+  triggerCopy = trigger;
+  delegate = [(AssistantActivationController *)self delegate];
+  [delegate setHardwareButtonTrigger:triggerCopy forSpecifier:specifierCopy];
 }
 
-- (id)typeToSiriTrigger:(id)a3
+- (id)typeToSiriTrigger:(id)trigger
 {
-  v4 = a3;
-  v5 = [(AssistantActivationController *)self delegate];
-  v6 = [v5 typeToSiriTrigger:v4];
+  triggerCopy = trigger;
+  delegate = [(AssistantActivationController *)self delegate];
+  v6 = [delegate typeToSiriTrigger:triggerCopy];
 
   return v6;
 }
 
-- (void)setTypeToSiriTrigger:(id)a3 forSpecifier:(id)a4
+- (void)setTypeToSiriTrigger:(id)trigger forSpecifier:(id)specifier
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(AssistantActivationController *)self delegate];
-  [v8 setTypeToSiriTrigger:v7 forSpecifier:v6];
+  specifierCopy = specifier;
+  triggerCopy = trigger;
+  delegate = [(AssistantActivationController *)self delegate];
+  [delegate setTypeToSiriTrigger:triggerCopy forSpecifier:specifierCopy];
 }
 
 - (AssistantActivationDelegate)delegate
@@ -463,7 +463,7 @@ void __65__AssistantActivationController_setVoiceActivation_forSpecifier___block
 - (void)_updateAndGetCheckedSpecifier
 {
   v8 = *MEMORY[0x277D85DE8];
-  v2 = *a1;
+  v2 = *self;
   v4 = 136315394;
   v5 = "[AssistantActivationController _updateAndGetCheckedSpecifier]";
   v6 = 2048;

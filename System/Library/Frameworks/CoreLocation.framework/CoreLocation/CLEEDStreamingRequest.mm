@@ -1,18 +1,18 @@
 @interface CLEEDStreamingRequest
-- (CLEEDStreamingRequest)initWithCoder:(id)a3;
-- (CLEEDStreamingRequest)initWithDictionary:(id)a3 decryptedRequestData:(id)a4 baseURL:(id)a5 error:(int64_t *)a6;
-- (CLEEDStreamingRequest)initWithDictionary:(id)a3 error:(int64_t *)a4;
-- (CLEEDStreamingRequest)initWithID:(id)a3 psapID:(id)a4 partnerID:(id)a5 geofenceID:(id)a6 requestDate:(id)a7 state:(int64_t)a8 baseURL:(id)a9 relativePath:(id)a10 token:(id)a11;
+- (CLEEDStreamingRequest)initWithCoder:(id)coder;
+- (CLEEDStreamingRequest)initWithDictionary:(id)dictionary decryptedRequestData:(id)data baseURL:(id)l error:(int64_t *)error;
+- (CLEEDStreamingRequest)initWithDictionary:(id)dictionary error:(int64_t *)error;
+- (CLEEDStreamingRequest)initWithID:(id)d psapID:(id)iD partnerID:(id)partnerID geofenceID:(id)geofenceID requestDate:(id)date state:(int64_t)state baseURL:(id)l relativePath:(id)self0 token:(id)self1;
 - (id)description;
 - (id)getRequestDict;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)setStreamingURL:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setStreamingURL:(id)l;
 @end
 
 @implementation CLEEDStreamingRequest
 
-- (CLEEDStreamingRequest)initWithID:(id)a3 psapID:(id)a4 partnerID:(id)a5 geofenceID:(id)a6 requestDate:(id)a7 state:(int64_t)a8 baseURL:(id)a9 relativePath:(id)a10 token:(id)a11
+- (CLEEDStreamingRequest)initWithID:(id)d psapID:(id)iD partnerID:(id)partnerID geofenceID:(id)geofenceID requestDate:(id)date state:(int64_t)state baseURL:(id)l relativePath:(id)self0 token:(id)self1
 {
   v68 = *MEMORY[0x1E69E9840];
   if (qword_1EAFE46E0 != -1)
@@ -20,31 +20,31 @@
     dispatch_once(&qword_1EAFE46E0, &unk_1F0E6B7E0);
   }
 
-  v17 = a10;
-  v18 = a9;
+  pathCopy4 = path;
+  lCopy4 = l;
   v19 = qword_1EAFE4718;
   if (os_log_type_enabled(qword_1EAFE4718, OS_LOG_TYPE_DEBUG))
   {
     *buf = 136448515;
     v49 = "[CLEEDStreamingRequest initWithID:psapID:partnerID:geofenceID:requestDate:state:baseURL:relativePath:token:]";
     v50 = 2114;
-    v51 = a3;
+    dCopy = d;
     v52 = 2114;
-    v53 = a4;
+    iDCopy = iD;
     v54 = 2114;
-    v55 = a5;
+    partnerIDCopy = partnerID;
     v56 = 2114;
-    v57 = a6;
+    geofenceIDCopy = geofenceID;
     v58 = 2114;
-    v59 = a7;
+    dateCopy = date;
     v60 = 2050;
-    v61 = a8;
+    stateCopy = state;
     v62 = 2114;
-    v63 = a9;
+    lCopy2 = l;
     v64 = 2114;
-    v65 = a10;
+    pathCopy2 = path;
     v66 = 2113;
-    v67 = a11;
+    tokenCopy = token;
     _os_log_impl(&dword_19B873000, v19, OS_LOG_TYPE_DEBUG, "#EED2FWK,%{public}s[ID:%{public}@,psapID:%{public}@,partnerID:%{public}@,geofenceID:%{public}@,requestDate:%{public}@,state:%{public}lu,baseURL:%{public}@,relativePath:%{public}@,token:%{private}@]", buf, 0x66u);
   }
 
@@ -60,23 +60,23 @@
     v28 = 136448515;
     v29 = "[CLEEDStreamingRequest initWithID:psapID:partnerID:geofenceID:requestDate:state:baseURL:relativePath:token:]";
     v30 = 2114;
-    v31 = a3;
+    dCopy2 = d;
     v32 = 2114;
-    v33 = a4;
+    iDCopy2 = iD;
     v34 = 2114;
-    v35 = a5;
+    partnerIDCopy2 = partnerID;
     v36 = 2114;
-    v37 = a6;
+    geofenceIDCopy2 = geofenceID;
     v38 = 2114;
-    v39 = a7;
+    dateCopy2 = date;
     v40 = 2050;
-    v41 = a8;
+    stateCopy2 = state;
     v42 = 2114;
-    v43 = a9;
+    lCopy3 = l;
     v44 = 2114;
-    v45 = a10;
+    pathCopy3 = path;
     v46 = 2113;
-    v47 = a11;
+    tokenCopy2 = token;
     v25 = 102;
     v21 = _os_log_send_and_compose_impl();
     sub_19B885924("Generic", 1, 0, 2, "[CLEEDStreamingRequest initWithID:psapID:partnerID:geofenceID:requestDate:state:baseURL:relativePath:token:]", "CoreLocation: %s\n", v21);
@@ -85,33 +85,33 @@
       free(v21);
     }
 
-    v17 = a10;
-    v18 = a9;
+    pathCopy4 = path;
+    lCopy4 = l;
   }
 
   v27.receiver = self;
   v27.super_class = CLEEDStreamingRequest;
-  v22 = [(CLEEDRequest *)&v27 initWithID:a3 psapID:a4 partnerID:a5 geofenceID:a6 requestDate:a7 requestType:1 state:a8, v25];
+  v22 = [(CLEEDRequest *)&v27 initWithID:d psapID:iD partnerID:partnerID geofenceID:geofenceID requestDate:date requestType:1 state:state, v25];
   if (v22)
   {
-    v22->_baseURL = v18;
-    v22->_relativePath = v17;
-    v22->_token = a11;
+    v22->_baseURL = lCopy4;
+    v22->_relativePath = pathCopy4;
+    v22->_token = token;
   }
 
   v23 = *MEMORY[0x1E69E9840];
   return v22;
 }
 
-- (CLEEDStreamingRequest)initWithDictionary:(id)a3 decryptedRequestData:(id)a4 baseURL:(id)a5 error:(int64_t *)a6
+- (CLEEDStreamingRequest)initWithDictionary:(id)dictionary decryptedRequestData:(id)data baseURL:(id)l error:(int64_t *)error
 {
   v56 = *MEMORY[0x1E69E9840];
-  *a6 = 0;
-  v9 = [a3 objectForKey:@"request_ID"];
-  v10 = [a3 objectForKey:@"partner_ID"];
-  v11 = [a3 objectForKey:@"psap_ID"];
-  v12 = [a3 objectForKey:@"geofence_ID"];
-  v13 = [a3 valueForKey:@"timestamp"];
+  *error = 0;
+  v9 = [dictionary objectForKey:@"request_ID"];
+  v10 = [dictionary objectForKey:@"partner_ID"];
+  v11 = [dictionary objectForKey:@"psap_ID"];
+  v12 = [dictionary objectForKey:@"geofence_ID"];
+  v13 = [dictionary valueForKey:@"timestamp"];
   if (qword_1EAFE46E0 != -1)
   {
     dispatch_once(&qword_1EAFE46E0, &unk_1F0E6B7E0);
@@ -131,7 +131,7 @@
     v52 = 2114;
     v53 = v12;
     v54 = 2050;
-    v55 = [v13 integerValue];
+    integerValue = [v13 integerValue];
     _os_log_impl(&dword_19B873000, v14, OS_LOG_TYPE_DEFAULT, "#EED2FWK,%{public}s,requestID:%{public}@, partnerID:%{public}@, psapID:%{public}@, geofenceID:%{public}@, timestamp:%{public}ld", buf, 0x3Eu);
   }
 
@@ -154,10 +154,10 @@
   }
 
   v17 = v12;
-  v18 = [a4 objectForKey:@"request_type"];
+  v18 = [data objectForKey:@"request_type"];
   v19 = [CLEEDRequest toCLEEDRequestType:v18];
-  v43 = [a4 objectForKey:@"whip_endpoint_path"];
-  v20 = [a4 objectForKey:@"authentication_token"];
+  v43 = [data objectForKey:@"whip_endpoint_path"];
+  v20 = [data objectForKey:@"authentication_token"];
   if (qword_1EAFE46E0 != -1)
   {
     dispatch_once(&qword_1EAFE46E0, &unk_1F0E6B7E0);
@@ -228,31 +228,31 @@
       }
     }
 
-    *a6 = 1;
+    *error = 1;
   }
 
   if (v9)
   {
-    v27 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:v9];
+    uUID = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:v9];
   }
 
   else
   {
-    v27 = [MEMORY[0x1E696AFB0] UUID];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
   }
 
-  v28 = v27;
+  v28 = uUID;
   if (v13)
   {
-    v29 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSince1970:{objc_msgSend(v13, "integerValue")}];
+    date = [MEMORY[0x1E695DF00] dateWithTimeIntervalSince1970:{objc_msgSend(v13, "integerValue")}];
   }
 
   else
   {
-    v29 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
   }
 
-  v30 = v29;
+  v30 = date;
   if (qword_1EAFE46E0 != -1)
   {
     dispatch_once(&qword_1EAFE46E0, &unk_1F0E6B7E0);
@@ -317,7 +317,7 @@
     v36 = @"UnknownGeofenceID";
   }
 
-  if (*a6)
+  if (*error)
   {
     v37 = 7;
   }
@@ -337,7 +337,7 @@
     v38 = @"AuthenticationToken";
   }
 
-  result = [(CLEEDStreamingRequest *)self initWithID:v28 psapID:v34 partnerID:v35 geofenceID:v36 requestDate:v30 state:v37 baseURL:a5 relativePath:v43 token:v38];
+  result = [(CLEEDStreamingRequest *)self initWithID:v28 psapID:v34 partnerID:v35 geofenceID:v36 requestDate:v30 state:v37 baseURL:l relativePath:v43 token:v38];
   v40 = *MEMORY[0x1E69E9840];
   return result;
 }
@@ -356,33 +356,33 @@
   return [MEMORY[0x1E696AEC0] stringWithFormat:@"%@\n <CLEEDStreamingRequest: streamingURL, %@, token, %@>", -[CLEEDRequest description](&v3, sel_description), -[CLEEDStreamingRequest streamingURL](self, "streamingURL"), -[CLEEDStreamingRequest token](self, "token")];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeObject:-[CLEEDStreamingRequest streamingURL](self forKey:{"streamingURL"), @"streamingURL"}];
-  [a3 encodeObject:self->_token forKey:@"token"];
+  [coder encodeObject:-[CLEEDStreamingRequest streamingURL](self forKey:{"streamingURL"), @"streamingURL"}];
+  [coder encodeObject:self->_token forKey:@"token"];
   v5.receiver = self;
   v5.super_class = CLEEDStreamingRequest;
-  [(CLEEDRequest *)&v5 encodeWithCoder:a3];
+  [(CLEEDRequest *)&v5 encodeWithCoder:coder];
 }
 
-- (CLEEDStreamingRequest)initWithCoder:(id)a3
+- (CLEEDStreamingRequest)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = CLEEDStreamingRequest;
   v4 = [(CLEEDRequest *)&v6 initWithCoder:?];
   if (v4)
   {
-    -[CLEEDStreamingRequest setStreamingURL:](v4, "setStreamingURL:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"streamingURL"]);
-    v4->_token = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"token"];
+    -[CLEEDStreamingRequest setStreamingURL:](v4, "setStreamingURL:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"streamingURL"]);
+    v4->_token = [coder decodeObjectOfClass:objc_opt_class() forKey:@"token"];
   }
 
   return v4;
 }
 
-- (void)setStreamingURL:(id)a3
+- (void)setStreamingURL:(id)l
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = [MEMORY[0x1E695DFF8] URLWithString:a3];
+  v4 = [MEMORY[0x1E695DFF8] URLWithString:l];
   -[CLEEDStreamingRequest setBaseURL:](self, "setBaseURL:", [v4 host]);
   -[CLEEDStreamingRequest setRelativePath:](self, "setRelativePath:", [v4 relativePath]);
   if ([(NSString *)[(CLEEDStreamingRequest *)self baseURL] hasSuffix:@"/"])
@@ -406,9 +406,9 @@
     *buf = 136446722;
     v10 = "[CLEEDStreamingRequest setStreamingURL:]";
     v11 = 2114;
-    v12 = [(CLEEDStreamingRequest *)self baseURL];
+    baseURL = [(CLEEDStreamingRequest *)self baseURL];
     v13 = 2114;
-    v14 = [(CLEEDStreamingRequest *)self relativePath];
+    relativePath = [(CLEEDStreamingRequest *)self relativePath];
     _os_log_impl(&dword_19B873000, v5, OS_LOG_TYPE_DEBUG, "#EED2FWK,%{public}s,baseURL:%{public}@,relativePath:%{public}@", buf, 0x20u);
   }
 
@@ -439,12 +439,12 @@
   v14 = *MEMORY[0x1E69E9840];
   v9.receiver = self;
   v9.super_class = CLEEDStreamingRequest;
-  v3 = [(CLEEDRequest *)&v9 getRequestDict];
-  if (v3)
+  getRequestDict = [(CLEEDRequest *)&v9 getRequestDict];
+  if (getRequestDict)
   {
-    [v3 setObject:-[CLEEDStreamingRequest relativePath](self forKey:{"relativePath"), @"whip_endpoint_path"}];
-    [v3 setObject:-[CLEEDStreamingRequest token](self forKey:{"token"), @"authentication_token"}];
-    [v3 setObject:-[CLEEDStreamingRequest baseURL](self forKey:{"baseURL"), @"EEDRequestBaseURL"}];
+    [getRequestDict setObject:-[CLEEDStreamingRequest relativePath](self forKey:{"relativePath"), @"whip_endpoint_path"}];
+    [getRequestDict setObject:-[CLEEDStreamingRequest token](self forKey:{"token"), @"authentication_token"}];
+    [getRequestDict setObject:-[CLEEDStreamingRequest baseURL](self forKey:{"baseURL"), @"EEDRequestBaseURL"}];
   }
 
   else
@@ -483,14 +483,14 @@
   }
 
   v7 = *MEMORY[0x1E69E9840];
-  return v3;
+  return getRequestDict;
 }
 
-- (CLEEDStreamingRequest)initWithDictionary:(id)a3 error:(int64_t *)a4
+- (CLEEDStreamingRequest)initWithDictionary:(id)dictionary error:(int64_t *)error
 {
-  v4 = a4;
+  errorCopy3 = error;
   v63 = *MEMORY[0x1E69E9840];
-  if (!a3 || !a4)
+  if (!dictionary || !error)
   {
     if (qword_1EAFE46E0 != -1)
     {
@@ -528,12 +528,12 @@
     goto LABEL_91;
   }
 
-  v7 = [a3 objectForKey:@"request_ID"];
-  v8 = [a3 objectForKey:@"partner_ID"];
-  v9 = [a3 objectForKey:@"psap_ID"];
-  v49 = [a3 objectForKey:@"geofence_ID"];
-  v10 = [a3 valueForKey:@"timestamp"];
-  v45 = self;
+  v7 = [dictionary objectForKey:@"request_ID"];
+  v8 = [dictionary objectForKey:@"partner_ID"];
+  v9 = [dictionary objectForKey:@"psap_ID"];
+  v49 = [dictionary objectForKey:@"geofence_ID"];
+  v10 = [dictionary valueForKey:@"timestamp"];
+  selfCopy = self;
   if (qword_1EAFE46E0 != -1)
   {
     dispatch_once(&qword_1EAFE46E0, &unk_1F0E6B7E0);
@@ -553,7 +553,7 @@
     v59 = 2114;
     v60 = v49;
     v61 = 2050;
-    v62 = [v10 integerValue];
+    integerValue = [v10 integerValue];
     _os_log_impl(&dword_19B873000, v11, OS_LOG_TYPE_DEFAULT, "#EED2FWK,%{public}s,requestID:%{public}@, partnerID:%{public}@, psapID:%{public}@, geofenceID:%{public}@, timestamp:%{public}ld", buf, 0x3Eu);
   }
 
@@ -577,11 +577,11 @@
 
   v47 = v9;
   v48 = v8;
-  v14 = [a3 objectForKey:@"request_type"];
+  v14 = [dictionary objectForKey:@"request_type"];
   v15 = [CLEEDRequest toCLEEDRequestType:v14];
-  v16 = [a3 objectForKey:@"whip_endpoint_path"];
-  v17 = [a3 objectForKey:@"authentication_token"];
-  v18 = [a3 valueForKey:@"EEDRequestBaseURL"];
+  v16 = [dictionary objectForKey:@"whip_endpoint_path"];
+  v17 = [dictionary objectForKey:@"authentication_token"];
+  v18 = [dictionary valueForKey:@"EEDRequestBaseURL"];
   if (qword_1EAFE46E0 != -1)
   {
     dispatch_once(&qword_1EAFE46E0, &unk_1F0E6B7E0);
@@ -601,7 +601,7 @@
     v59 = 2113;
     v60 = v17;
     v61 = 2113;
-    v62 = v18;
+    integerValue = v18;
     _os_log_impl(&dword_19B873000, v19, OS_LOG_TYPE_DEFAULT, "#EED2FWK,%{public}s,requestTypeString:%{public}@, requestType:%{public}ld, relativePath:%{private}@, authenticationToken:%{private}@, baseURL:%{private}@", buf, 0x3Eu);
   }
 
@@ -629,7 +629,7 @@
       dispatch_once(&qword_1EAFE46E0, &unk_1F0E6B7E0);
     }
 
-    v4 = a4;
+    errorCopy3 = error;
     v38 = qword_1EAFE4718;
     if (os_log_type_enabled(qword_1EAFE4718, OS_LOG_TYPE_ERROR))
     {
@@ -689,10 +689,10 @@
     }
   }
 
-  v27 = -[CLEEDStreamingRequest initWithID:psapID:partnerID:geofenceID:requestDate:state:baseURL:relativePath:token:](v45, "initWithID:psapID:partnerID:geofenceID:requestDate:state:baseURL:relativePath:token:", v22, v47, v48, v49, v23, [objc_msgSend(a3 valueForKey:{@"EEDRequestState", "intValue"}], v18, v16, v17);
+  v27 = -[CLEEDStreamingRequest initWithID:psapID:partnerID:geofenceID:requestDate:state:baseURL:relativePath:token:](selfCopy, "initWithID:psapID:partnerID:geofenceID:requestDate:state:baseURL:relativePath:token:", v22, v47, v48, v49, v23, [objc_msgSend(dictionary valueForKey:{@"EEDRequestState", "intValue"}], v18, v16, v17);
   if (!v27)
   {
-    v4 = a4;
+    errorCopy3 = error;
     if (qword_1EAFE46E0 != -1)
     {
       dispatch_once(&qword_1EAFE46E0, &unk_1F0E6B7E0);
@@ -727,7 +727,7 @@ LABEL_89:
     {
 LABEL_92:
       v28 = 0;
-      *v4 = 1;
+      *errorCopy3 = 1;
       goto LABEL_93;
     }
 
@@ -738,16 +738,16 @@ LABEL_91:
   }
 
   v28 = v27;
-  -[CLEEDRequest setRequestStatusAtFirstUserResponse:](v27, "setRequestStatusAtFirstUserResponse:", [objc_msgSend(a3 objectForKey:{@"EEDRequestStatusAtFirstUserResponse", "integerValue"}]);
-  -[CLEEDRequest setRequestTransmissionTime:](v28, "setRequestTransmissionTime:", [objc_msgSend(a3 objectForKey:{@"EEDRequestTransmissionTime", "integerValue"}]);
-  [objc_msgSend(a3 valueForKey:{@"EEDRequestReceivedTime", "doubleValue"}];
+  -[CLEEDRequest setRequestStatusAtFirstUserResponse:](v27, "setRequestStatusAtFirstUserResponse:", [objc_msgSend(dictionary objectForKey:{@"EEDRequestStatusAtFirstUserResponse", "integerValue"}]);
+  -[CLEEDRequest setRequestTransmissionTime:](v28, "setRequestTransmissionTime:", [objc_msgSend(dictionary objectForKey:{@"EEDRequestTransmissionTime", "integerValue"}]);
+  [objc_msgSend(dictionary valueForKey:{@"EEDRequestReceivedTime", "doubleValue"}];
   [(CLEEDRequest *)v28 setRequestReceivedTime:?];
-  [objc_msgSend(a3 valueForKey:{@"EEDReceivedTimeToFirstUserResponse", "doubleValue"}];
+  [objc_msgSend(dictionary valueForKey:{@"EEDReceivedTimeToFirstUserResponse", "doubleValue"}];
   [(CLEEDRequest *)v28 setReceivedTimeToFirstUserResponse:?];
-  [objc_msgSend(a3 valueForKey:{@"EEDReceivedTimeToAcceptTime", "doubleValue"}];
+  [objc_msgSend(dictionary valueForKey:{@"EEDReceivedTimeToAcceptTime", "doubleValue"}];
   [(CLEEDRequest *)v28 setReceivedTimeToAcceptTime:?];
-  -[CLEEDRequest setNumMediaSelectIterations:](v28, "setNumMediaSelectIterations:", [objc_msgSend(a3 objectForKey:{@"EEDNumMediaSelectIterations", "integerValue"}]);
-  -[CLEEDRequest setMetricSubmitted:](v28, "setMetricSubmitted:", [objc_msgSend(a3 objectForKey:{@"EEDRequestMetricSubmitted", "BOOLValue"}]);
+  -[CLEEDRequest setNumMediaSelectIterations:](v28, "setNumMediaSelectIterations:", [objc_msgSend(dictionary objectForKey:{@"EEDNumMediaSelectIterations", "integerValue"}]);
+  -[CLEEDRequest setMetricSubmitted:](v28, "setMetricSubmitted:", [objc_msgSend(dictionary objectForKey:{@"EEDRequestMetricSubmitted", "BOOLValue"}]);
   if (qword_1EAFE46E0 != -1)
   {
     dispatch_once(&qword_1EAFE46E0, &unk_1F0E6B7E0);
@@ -756,14 +756,14 @@ LABEL_91:
   v29 = qword_1EAFE4718;
   if (os_log_type_enabled(qword_1EAFE4718, OS_LOG_TYPE_DEFAULT))
   {
-    v30 = [(CLEEDRequest *)v28 state];
-    v31 = *a4;
+    state = [(CLEEDRequest *)v28 state];
+    v31 = *error;
     *buf = 136446979;
     v52 = "[CLEEDStreamingRequest initWithDictionary:error:]";
     v53 = 2113;
     v54 = v28;
     v55 = 2050;
-    v56 = v30;
+    v56 = state;
     v57 = 2050;
     v58 = v31;
     _os_log_impl(&dword_19B873000, v29, OS_LOG_TYPE_DEFAULT, "#EED2FWK,%{public}s, constructed CLEEDStreamingRequest:%{private}@, state:%{public}ld, error:%{public}ld", buf, 0x2Au);
@@ -779,7 +779,7 @@ LABEL_91:
     }
 
     [(CLEEDRequest *)v28 state];
-    v50 = *a4;
+    v50 = *error;
     v33 = _os_log_send_and_compose_impl();
     sub_19B885924("Generic", 1, 0, 2, "[CLEEDStreamingRequest initWithDictionary:error:]", "CoreLocation: %s\n", v33);
     if (v33 != buf)

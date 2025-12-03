@@ -1,35 +1,35 @@
 @interface TCCDSQLDatabase
-- (TCCDSQLDatabase)initWithPathToDatabase:(id)a3 initialSetup:(id)a4 migration:(id)a5;
+- (TCCDSQLDatabase)initWithPathToDatabase:(id)database initialSetup:(id)setup migration:(id)migration;
 - (int)_createDatabase;
-- (int)_doEval:(const char *)a3 bind:(id)a4 step:(id)a5 lock:(BOOL)a6 line:(int)a7;
+- (int)_doEval:(const char *)eval bind:(id)bind step:(id)step lock:(BOOL)lock line:(int)line;
 - (int)commit;
 - (int)openDatabase;
 - (int)removeDatabase;
-- (int)transaction:(id)a3;
+- (int)transaction:(id)transaction;
 - (void)closeDatabase;
 @end
 
 @implementation TCCDSQLDatabase
 
-- (TCCDSQLDatabase)initWithPathToDatabase:(id)a3 initialSetup:(id)a4 migration:(id)a5
+- (TCCDSQLDatabase)initWithPathToDatabase:(id)database initialSetup:(id)setup migration:(id)migration
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  databaseCopy = database;
+  setupCopy = setup;
+  migrationCopy = migration;
   v33.receiver = self;
   v33.super_class = TCCDSQLDatabase;
   v12 = [(TCCDSQLDatabase *)&v33 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_pathToDatabase, a3);
-    objc_storeStrong(&v13->_initialSetup, a4);
-    v14 = objc_retainBlock(v11);
+    objc_storeStrong(&v12->_pathToDatabase, database);
+    objc_storeStrong(&v13->_initialSetup, setup);
+    v14 = objc_retainBlock(migrationCopy);
     migration = v13->_migration;
     v13->_migration = v14;
 
-    v16 = [(NSString *)v13->_pathToDatabase lastPathComponent];
-    v17 = [@"com.apple.tcc.db_queue_" stringByAppendingString:v16];
+    lastPathComponent = [(NSString *)v13->_pathToDatabase lastPathComponent];
+    v17 = [@"com.apple.tcc.db_queue_" stringByAppendingString:lastPathComponent];
     v18 = dispatch_queue_create([v17 UTF8String], 0);
     queue = v13->_queue;
     v13->_queue = v18;
@@ -56,10 +56,10 @@
     if ([(TCCDSQLDatabase *)v13 openDatabase])
     {
       v24 = +[TCCDPlatform currentPlatform];
-      v25 = [v24 server];
-      v26 = [v25 logHandle];
+      server = [v24 server];
+      logHandle = [server logHandle];
 
-      if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(logHandle, OS_LOG_TYPE_ERROR))
       {
         sub_100033FD8();
       }
@@ -75,22 +75,22 @@
 
 - (int)openDatabase
 {
-  v3 = [(TCCDSQLDatabase *)self pathToDatabase];
+  pathToDatabase = [(TCCDSQLDatabase *)self pathToDatabase];
   if ([(TCCDSQLDatabase *)self unavailable])
   {
-    LODWORD(v4) = 1;
+    LODWORD(migration) = 1;
     goto LABEL_13;
   }
 
-  v5 = [(TCCDSQLDatabase *)self _createDatabase];
-  if (v5)
+  _createDatabase = [(TCCDSQLDatabase *)self _createDatabase];
+  if (_createDatabase)
   {
-    LODWORD(v4) = v5;
+    LODWORD(migration) = _createDatabase;
     v6 = +[TCCDPlatform currentPlatform];
-    v7 = [v6 server];
-    v8 = [v7 logHandle];
+    server = [v6 server];
+    logHandle = [server logHandle];
 
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_ERROR))
     {
       sub_100034040();
     }
@@ -98,12 +98,12 @@
     goto LABEL_8;
   }
 
-  v4 = [(TCCDSQLDatabase *)self migration];
+  migration = [(TCCDSQLDatabase *)self migration];
 
-  if (v4)
+  if (migration)
   {
-    v8 = [(TCCDSQLDatabase *)self migration];
-    LODWORD(v4) = (*(v8 + 16))(v8, self);
+    logHandle = [(TCCDSQLDatabase *)self migration];
+    LODWORD(migration) = (*(logHandle + 16))(logHandle, self);
 LABEL_8:
   }
 
@@ -112,7 +112,7 @@ LABEL_8:
     _generic_db_error(0, v9, self);
   }
 
-  if (v4)
+  if (migration)
   {
     [(TCCDSQLDatabase *)self setUnavailable:1];
     [(TCCDSQLDatabase *)self setExtendedErrorCode:sqlite3_extended_errcode([(TCCDSQLDatabase *)self db])];
@@ -121,104 +121,104 @@ LABEL_8:
 
 LABEL_13:
 
-  return v4;
+  return migration;
 }
 
 - (void)closeDatabase
 {
   v3 = +[TCCDPlatform currentPlatform];
-  v4 = [v3 server];
-  v5 = [v4 logHandle];
+  server = [v3 server];
+  logHandle = [server logHandle];
 
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(TCCDSQLDatabase *)self pathToDatabase];
+    pathToDatabase = [(TCCDSQLDatabase *)self pathToDatabase];
     *buf = 138412290;
-    v10 = v6;
-    _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "TCCDSQLDatabase db close for path:%@", buf, 0xCu);
+    v10 = pathToDatabase;
+    _os_log_impl(&_mh_execute_header, logHandle, OS_LOG_TYPE_DEFAULT, "TCCDSQLDatabase db close for path:%@", buf, 0xCu);
   }
 
-  v7 = [(TCCDSQLDatabase *)self queue];
+  queue = [(TCCDSQLDatabase *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10002ECD4;
   block[3] = &unk_1000A4F58;
   block[4] = self;
-  dispatch_sync(v7, block);
+  dispatch_sync(queue, block);
 }
 
 - (int)_createDatabase
 {
   ppDb = 0;
-  v3 = [(TCCDSQLDatabase *)self pathToDatabase];
-  v4 = [(TCCDSQLDatabase *)self initialSetup];
-  v5 = [v3 stringByDeletingLastPathComponent];
-  v6 = mkpath_np([v5 UTF8String], 0x1C0u);
+  pathToDatabase = [(TCCDSQLDatabase *)self pathToDatabase];
+  initialSetup = [(TCCDSQLDatabase *)self initialSetup];
+  stringByDeletingLastPathComponent = [pathToDatabase stringByDeletingLastPathComponent];
+  v6 = mkpath_np([stringByDeletingLastPathComponent UTF8String], 0x1C0u);
   if (v6 && (v7 = v6, v6 != 17))
   {
     v21 = +[TCCDPlatform currentPlatform];
-    v22 = [v21 server];
-    v23 = [v22 logHandle];
+    server = [v21 server];
+    logHandle = [server logHandle];
 
-    if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_ERROR))
     {
-      sub_1000341C8(v5);
+      sub_1000341C8(stringByDeletingLastPathComponent);
     }
   }
 
   else
   {
-    [v3 UTF8String];
+    [pathToDatabase UTF8String];
     v7 = _sqlite3_integrity_check();
     v8 = +[TCCDPlatform currentPlatform];
-    v9 = [v8 server];
-    v10 = [v9 logHandle];
+    server2 = [v8 server];
+    logHandle2 = [server2 logHandle];
 
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(logHandle2, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 136315394;
-      v32 = [v5 UTF8String];
+      uTF8String = [stringByDeletingLastPathComponent UTF8String];
       v33 = 1024;
       v34 = v7;
-      _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "_sqlite3_integrity_check for %s returned (%d)", buf, 0x12u);
+      _os_log_impl(&_mh_execute_header, logHandle2, OS_LOG_TYPE_DEFAULT, "_sqlite3_integrity_check for %s returned (%d)", buf, 0x12u);
     }
 
     if (v7 == 11)
     {
       v11 = +[TCCDPlatform currentPlatform];
-      v12 = [v11 server];
-      v13 = [v12 logHandle];
+      server3 = [v11 server];
+      logHandle3 = [server3 logHandle];
 
-      if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(logHandle3, OS_LOG_TYPE_DEFAULT))
       {
-        v14 = [v3 UTF8String];
+        uTF8String2 = [pathToDatabase UTF8String];
         *buf = 136315138;
-        v32 = v14;
-        _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "database is corrupt: %s", buf, 0xCu);
+        uTF8String = uTF8String2;
+        _os_log_impl(&_mh_execute_header, logHandle3, OS_LOG_TYPE_DEFAULT, "database is corrupt: %s", buf, 0xCu);
       }
 
-      if (!removefile([v5 UTF8String], 0, 3u))
+      if (!removefile([stringByDeletingLastPathComponent UTF8String], 0, 3u))
       {
         sub_1000341AC();
       }
 
       v15 = +[TCCDPlatform currentPlatform];
-      v16 = [v15 server];
-      v17 = [v16 logHandle];
+      server4 = [v15 server];
+      logHandle4 = [server4 logHandle];
 
-      if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(logHandle4, OS_LOG_TYPE_ERROR))
       {
         sub_1000340E4();
       }
     }
 
-    if (sqlite3_open_v2([v3 UTF8String], &ppDb, 4227078, 0))
+    if (sqlite3_open_v2([pathToDatabase UTF8String], &ppDb, 4227078, 0))
     {
       v18 = +[TCCDPlatform currentPlatform];
-      v19 = [v18 server];
-      v20 = [v19 logHandle];
+      server5 = [v18 server];
+      logHandle5 = [server5 logHandle];
 
-      if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(logHandle5, OS_LOG_TYPE_ERROR))
       {
         sub_100034118(&ppDb);
       }
@@ -234,7 +234,7 @@ LABEL_13:
       }
     }
 
-    else if (sqlite3_exec(ppDb, "PRAGMA journal_mode=WAL;PRAGMA foreign_keys=ON;", 0, 0, 0) || sqlite3_exec(ppDb, "BEGIN", 0, 0, 0) || sqlite3_exec(ppDb, [v4 UTF8String], 0, 0, 0))
+    else if (sqlite3_exec(ppDb, "PRAGMA journal_mode=WAL;PRAGMA foreign_keys=ON;", 0, 0, 0) || sqlite3_exec(ppDb, "BEGIN", 0, 0, 0) || sqlite3_exec(ppDb, [initialSetup UTF8String], 0, 0, 0))
     {
       [(TCCDSQLDatabase *)self setDb:ppDb];
       _generic_db_error(0, v24, self);
@@ -243,15 +243,15 @@ LABEL_13:
     else
     {
       v26 = +[TCCDPlatform currentPlatform];
-      v27 = [v26 server];
-      v28 = [v27 logHandle];
+      server6 = [v26 server];
+      logHandle6 = [server6 logHandle];
 
-      if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(logHandle6, OS_LOG_TYPE_DEFAULT))
       {
-        v29 = [v3 UTF8String];
+        uTF8String3 = [pathToDatabase UTF8String];
         *buf = 136446210;
-        v32 = v29;
-        _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "using database: %{public}s", buf, 0xCu);
+        uTF8String = uTF8String3;
+        _os_log_impl(&_mh_execute_header, logHandle6, OS_LOG_TYPE_DEFAULT, "using database: %{public}s", buf, 0xCu);
       }
 
       v7 = 0;
@@ -263,36 +263,36 @@ LABEL_13:
   return v7;
 }
 
-- (int)_doEval:(const char *)a3 bind:(id)a4 step:(id)a5 lock:(BOOL)a6 line:(int)a7
+- (int)_doEval:(const char *)eval bind:(id)bind step:(id)step lock:(BOOL)lock line:(int)line
 {
-  v8 = a6;
-  v12 = a4;
-  v13 = a5;
+  lockCopy = lock;
+  bindCopy = bind;
+  stepCopy = step;
   v32 = 0;
   v33 = &v32;
   v34 = 0x2020000000;
   v35 = 0;
-  if (!a3)
+  if (!eval)
   {
     __assert_rtn("[TCCDSQLDatabase _doEval:bind:step:lock:line:]", "TCCDDatabase.m", 320, "sql != NULL");
   }
 
-  v14 = v13;
+  v14 = stepCopy;
   v22 = _NSConcreteStackBlock;
   v23 = 3221225472;
   v24 = sub_10002F380;
   v25 = &unk_1000A5DC8;
-  v26 = self;
+  selfCopy = self;
   v29 = &v32;
-  v30 = a3;
-  v31 = a7;
-  v15 = v12;
+  evalCopy = eval;
+  lineCopy = line;
+  v15 = bindCopy;
   v27 = v15;
   v16 = v14;
   v28 = v16;
   v17 = objc_retainBlock(&v22);
   v18 = v17;
-  if (v8)
+  if (lockCopy)
   {
     (v17[2])(v17);
   }
@@ -309,24 +309,24 @@ LABEL_13:
   return v20;
 }
 
-- (int)transaction:(id)a3
+- (int)transaction:(id)transaction
 {
-  v4 = a3;
+  transactionCopy = transaction;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  if (v4)
+  if (transactionCopy)
   {
-    v5 = [(TCCDSQLDatabase *)self queue];
+    queue = [(TCCDSQLDatabase *)self queue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10002F678;
     block[3] = &unk_1000A5340;
     block[4] = self;
-    v9 = v4;
+    v9 = transactionCopy;
     v10 = &v11;
-    dispatch_sync(v5, block);
+    dispatch_sync(queue, block);
 
     v6 = *(v12 + 6);
   }
@@ -343,8 +343,8 @@ LABEL_13:
 
 - (int)removeDatabase
 {
-  v3 = [(TCCDSQLDatabase *)self pathToDatabase];
-  v4 = removefile([v3 UTF8String], 0, 3u);
+  pathToDatabase = [(TCCDSQLDatabase *)self pathToDatabase];
+  v4 = removefile([pathToDatabase UTF8String], 0, 3u);
 
   if (!v4)
   {
@@ -352,10 +352,10 @@ LABEL_13:
   }
 
   v5 = +[TCCDPlatform currentPlatform];
-  v6 = [v5 server];
-  v7 = [v6 logHandle];
+  server = [v5 server];
+  logHandle = [server logHandle];
 
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+  if (os_log_type_enabled(logHandle, OS_LOG_TYPE_ERROR))
   {
     sub_100034324(self);
   }

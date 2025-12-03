@@ -1,38 +1,38 @@
 @interface TSCH3DChartMeshResources
-+ (TSCH3DChartMeshResources)resourcesWithSeries:(id)a3 creator:(id)a4;
-- (TSCH3DChartMeshResources)initWithSeries:(id)a3 creator:(id)a4;
++ (TSCH3DChartMeshResources)resourcesWithSeries:(id)series creator:(id)creator;
+- (TSCH3DChartMeshResources)initWithSeries:(id)series creator:(id)creator;
 - (TSCH3DResource)bounds;
-- (id)geometryResourceWithPrimitiveType:(int)a3;
+- (id)geometryResourceWithPrimitiveType:(int)type;
 - (void)dealloc;
 - (void)regenerate;
 - (void)regenerateBounds;
-- (void)regenerateForChild:(id)a3;
+- (void)regenerateForChild:(id)child;
 @end
 
 @implementation TSCH3DChartMeshResources
 
-+ (TSCH3DChartMeshResources)resourcesWithSeries:(id)a3 creator:(id)a4
++ (TSCH3DChartMeshResources)resourcesWithSeries:(id)series creator:(id)creator
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 alloc];
-  v13 = objc_msgSend_initWithSeries_creator_(v8, v9, v10, v11, v12, v6, v7);
+  seriesCopy = series;
+  creatorCopy = creator;
+  v8 = [self alloc];
+  v13 = objc_msgSend_initWithSeries_creator_(v8, v9, v10, v11, v12, seriesCopy, creatorCopy);
 
   return v13;
 }
 
-- (TSCH3DChartMeshResources)initWithSeries:(id)a3 creator:(id)a4
+- (TSCH3DChartMeshResources)initWithSeries:(id)series creator:(id)creator
 {
-  v6 = a3;
-  v7 = a4;
+  seriesCopy = series;
+  creatorCopy = creator;
   v59.receiver = self;
   v59.super_class = TSCH3DChartMeshResources;
   v8 = [(TSCH3DChartMeshResources *)&v59 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_series, v6);
-    objc_storeStrong(&v9->_creator, a4);
+    objc_storeWeak(&v8->_series, seriesCopy);
+    objc_storeStrong(&v9->_creator, creator);
     v10 = [TSCH3DChartMeshSharedResource alloc];
     v15 = objc_msgSend_initWithParent_(v10, v11, v12, v13, v14, v9);
     vertex = v9->_vertex;
@@ -185,16 +185,16 @@ LABEL_10:
   objc_autoreleasePoolPop(context);
 }
 
-- (id)geometryResourceWithPrimitiveType:(int)a3
+- (id)geometryResourceWithPrimitiveType:(int)type
 {
-  v3 = *&a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v9 = objc_msgSend_vertex(v4, v5, v6, v7, v8);
+  v3 = *&type;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v9 = objc_msgSend_vertex(selfCopy, v5, v6, v7, v8);
   objc_msgSend_bufferInfo(v9, v10, v11, v12, v13);
-  v18 = objc_msgSend_resourceWithType_resource_arrays_geometry_(TSCH3DGeometryResource, v14, v15, v16, v17, v3, v9, v4->_arrays, v4->_geometry);
+  v18 = objc_msgSend_resourceWithType_resource_arrays_geometry_(TSCH3DGeometryResource, v14, v15, v16, v17, v3, v9, selfCopy->_arrays, selfCopy->_geometry);
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
   return v18;
 }
@@ -238,16 +238,16 @@ LABEL_10:
   objc_autoreleasePoolPop(v4);
 }
 
-- (void)regenerateForChild:(id)a3
+- (void)regenerateForChild:(id)child
 {
-  v13 = a3;
-  if (self->_bounds == v13)
+  childCopy = child;
+  if (self->_bounds == childCopy)
   {
     if (byte_280A46430)
     {
       v11 = objc_opt_class();
       v12 = NSStringFromSelector(a2);
-      NSLog(&cfstr_PRegenerateBou.isa, v11, self, v12, v13);
+      NSLog(&cfstr_PRegenerateBou.isa, v11, self, v12, childCopy);
     }
 
     objc_msgSend_regenerateBounds(self, v5, v6, v7, v8);
@@ -259,7 +259,7 @@ LABEL_10:
     {
       v9 = objc_opt_class();
       v10 = NSStringFromSelector(a2);
-      NSLog(&cfstr_PRegenerateChi.isa, v9, self, v10, v13);
+      NSLog(&cfstr_PRegenerateChi.isa, v9, self, v10, childCopy);
     }
 
     objc_msgSend_regenerate(self, v5, v6, v7, v8);

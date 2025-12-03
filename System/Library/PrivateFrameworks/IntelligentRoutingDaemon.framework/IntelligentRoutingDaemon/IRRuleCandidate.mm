@@ -1,47 +1,47 @@
 @interface IRRuleCandidate
-- (BOOL)_isCandidateIdentifier:(id)a3 inHistory:(id)a4;
-- (BOOL)_isLastEventForCandidate:(id)a3 inPrerequisite:(id)a4 isOneOf:(id)a5;
-- (BOOL)_proximityBLEValueForCandidate:(id)a3 withNearbyDeviceContainer:(id)a4 date:(id)a5;
-- (BOOL)_proximityDecisionForCandidate:(id)a3 withNearbyDeviceContainer:(id)a4 date:(id)a5;
-- (id)_activeRouteForCandidate:(id)a3 systemState:(id)a4;
-- (id)_appleTVControlUserRejectedInLastDayWithoutPickerChoiceForCandidate:(id)a3 prerequisite:(id)a4;
-- (id)_attributeValueForAttributeKey:(id)a3 prerequisite:(id)a4 withCandidate:(id)a5 nearbyDeviceContainer:(id)a6 systemState:(id)a7 date:(id)a8;
-- (id)_matchedDevicefromNode:(id)a3 withNearbyDeviceContainer:(id)a4 measurementExpiry:(id)a5 isUwb:(BOOL)a6;
-- (id)_mediaUserRejectedInLastDayWithoutPickerChoiceForCandidate:(id)a3 prerequisite:(id)a4;
-- (id)_prerequisiteValueForAttributeKey:(id)a3 withCandidatesContainer:(id)a4 nearbyDeviceContainer:(id)a5 systemState:(id)a6 historyContainer:(id)a7 date:(id)a8;
-- (id)_proximityLowestUwbRangeForCandidate:(id)a3 withNearbyDeviceContainer:(id)a4 date:(id)a5;
-- (id)_proximityPrerequisiteValueForCandidatesContainer:(id)a3 withNearbyDeviceContainer:(id)a4 date:(id)a5;
-- (id)_proximityShortestRangeInHistoryOrSameICloudValueForCandidate:(id)a3 withNearbyDeviceContainer:(id)a4 prerequisite:(id)a5 date:(id)a6;
-- (id)_proximityShortestRangeValueForCandidate:(id)a3 withNearbyDeviceContainer:(id)a4 prerequisite:(id)a5 date:(id)a6;
-- (id)_proximityValueForCandidate:(id)a3 withNearbyDeviceContainer:(id)a4 prerequisite:(id)a5 date:(id)a6;
-- (id)_sameIcloudForCandidate:(id)a3 systemState:(id)a4;
-- (id)_sameWiFiForCandidate:(id)a3 systemState:(id)a4;
-- (id)_shortestRangeProximityPrerequisiteValueForCandidatesContainer:(id)a3 withNearbyDeviceContainer:(id)a4 date:(id)a5;
-- (id)_shortestRangeWithHistoryOrSameICloudProximityPrerequisiteValueForCandidatesContainer:(id)a3 withNearbyDeviceContainer:(id)a4 historyContainer:(id)a5 systemState:(id)a6 date:(id)a7;
-- (id)_userRejectedInLastDayWithoutPickerChoicePrerequisiteValueForHistoryContainer:(id)a3 systemState:(id)a4 date:(id)a5;
-- (id)_valueFromValues:(id)a3;
-- (id)executeRuleWithCandiatesContainer:(id)a3 systemStatus:(id)a4 historyContainer:(id)a5 miloPrediction:(id)a6 nearbyDeviceContainer:(id)a7 date:(id)a8;
+- (BOOL)_isCandidateIdentifier:(id)identifier inHistory:(id)history;
+- (BOOL)_isLastEventForCandidate:(id)candidate inPrerequisite:(id)prerequisite isOneOf:(id)of;
+- (BOOL)_proximityBLEValueForCandidate:(id)candidate withNearbyDeviceContainer:(id)container date:(id)date;
+- (BOOL)_proximityDecisionForCandidate:(id)candidate withNearbyDeviceContainer:(id)container date:(id)date;
+- (id)_activeRouteForCandidate:(id)candidate systemState:(id)state;
+- (id)_appleTVControlUserRejectedInLastDayWithoutPickerChoiceForCandidate:(id)candidate prerequisite:(id)prerequisite;
+- (id)_attributeValueForAttributeKey:(id)key prerequisite:(id)prerequisite withCandidate:(id)candidate nearbyDeviceContainer:(id)container systemState:(id)state date:(id)date;
+- (id)_matchedDevicefromNode:(id)node withNearbyDeviceContainer:(id)container measurementExpiry:(id)expiry isUwb:(BOOL)uwb;
+- (id)_mediaUserRejectedInLastDayWithoutPickerChoiceForCandidate:(id)candidate prerequisite:(id)prerequisite;
+- (id)_prerequisiteValueForAttributeKey:(id)key withCandidatesContainer:(id)container nearbyDeviceContainer:(id)deviceContainer systemState:(id)state historyContainer:(id)historyContainer date:(id)date;
+- (id)_proximityLowestUwbRangeForCandidate:(id)candidate withNearbyDeviceContainer:(id)container date:(id)date;
+- (id)_proximityPrerequisiteValueForCandidatesContainer:(id)container withNearbyDeviceContainer:(id)deviceContainer date:(id)date;
+- (id)_proximityShortestRangeInHistoryOrSameICloudValueForCandidate:(id)candidate withNearbyDeviceContainer:(id)container prerequisite:(id)prerequisite date:(id)date;
+- (id)_proximityShortestRangeValueForCandidate:(id)candidate withNearbyDeviceContainer:(id)container prerequisite:(id)prerequisite date:(id)date;
+- (id)_proximityValueForCandidate:(id)candidate withNearbyDeviceContainer:(id)container prerequisite:(id)prerequisite date:(id)date;
+- (id)_sameIcloudForCandidate:(id)candidate systemState:(id)state;
+- (id)_sameWiFiForCandidate:(id)candidate systemState:(id)state;
+- (id)_shortestRangeProximityPrerequisiteValueForCandidatesContainer:(id)container withNearbyDeviceContainer:(id)deviceContainer date:(id)date;
+- (id)_shortestRangeWithHistoryOrSameICloudProximityPrerequisiteValueForCandidatesContainer:(id)container withNearbyDeviceContainer:(id)deviceContainer historyContainer:(id)historyContainer systemState:(id)state date:(id)date;
+- (id)_userRejectedInLastDayWithoutPickerChoicePrerequisiteValueForHistoryContainer:(id)container systemState:(id)state date:(id)date;
+- (id)_valueFromValues:(id)values;
+- (id)executeRuleWithCandiatesContainer:(id)container systemStatus:(id)status historyContainer:(id)historyContainer miloPrediction:(id)prediction nearbyDeviceContainer:(id)deviceContainer date:(id)date;
 @end
 
 @implementation IRRuleCandidate
 
-- (id)executeRuleWithCandiatesContainer:(id)a3 systemStatus:(id)a4 historyContainer:(id)a5 miloPrediction:(id)a6 nearbyDeviceContainer:(id)a7 date:(id)a8
+- (id)executeRuleWithCandiatesContainer:(id)container systemStatus:(id)status historyContainer:(id)historyContainer miloPrediction:(id)prediction nearbyDeviceContainer:(id)deviceContainer date:(id)date
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v31 = a6;
-  v17 = a7;
-  v18 = a8;
+  containerCopy = container;
+  statusCopy = status;
+  historyContainerCopy = historyContainer;
+  predictionCopy = prediction;
+  deviceContainerCopy = deviceContainer;
+  dateCopy = date;
   v19 = objc_opt_new();
-  v20 = [(IRRuleCandidate *)self attributeKey];
-  v21 = [(IRRuleCandidate *)self _prerequisiteValueForAttributeKey:v20 withCandidatesContainer:v14 nearbyDeviceContainer:v17 systemState:v15 historyContainer:v16 date:v18];
+  attributeKey = [(IRRuleCandidate *)self attributeKey];
+  v21 = [(IRRuleCandidate *)self _prerequisiteValueForAttributeKey:attributeKey withCandidatesContainer:containerCopy nearbyDeviceContainer:deviceContainerCopy systemState:statusCopy historyContainer:historyContainerCopy date:dateCopy];
 
   v39 = 0;
   v40 = &v39;
   v41 = 0x2020000000;
   v42 = 0;
-  v22 = [v14 candidates];
+  candidates = [containerCopy candidates];
   v32[0] = MEMORY[0x277D85DD0];
   v32[1] = 3221225472;
   v32[2] = __125__IRRuleCandidate_executeRuleWithCandiatesContainer_systemStatus_historyContainer_miloPrediction_nearbyDeviceContainer_date___block_invoke;
@@ -49,16 +49,16 @@
   v32[4] = self;
   v23 = v21;
   v33 = v23;
-  v24 = v17;
+  v24 = deviceContainerCopy;
   v34 = v24;
-  v25 = v15;
+  v25 = statusCopy;
   v35 = v25;
-  v26 = v18;
+  v26 = dateCopy;
   v36 = v26;
   v38 = &v39;
   v27 = v19;
   v37 = v27;
-  [v22 enumerateObjectsUsingBlock:v32];
+  [candidates enumerateObjectsUsingBlock:v32];
 
   v28 = [[IRRuleOutputCandidate alloc] initWithRule:self];
   v29 = [v27 copy];
@@ -87,76 +87,76 @@ void __125__IRRuleCandidate_executeRuleWithCandiatesContainer_systemStatus_histo
   [v6 setObject:v5 forKeyedSubscript:v7];
 }
 
-- (id)_proximityValueForCandidate:(id)a3 withNearbyDeviceContainer:(id)a4 prerequisite:(id)a5 date:(id)a6
+- (id)_proximityValueForCandidate:(id)candidate withNearbyDeviceContainer:(id)container prerequisite:(id)prerequisite date:(id)date
 {
-  v7 = a5;
-  v8 = a3;
+  prerequisiteCopy = prerequisite;
+  candidateCopy = candidate;
   v9 = objc_opt_new();
-  v10 = [v7 proximityPerCandiate];
-  v11 = [v8 candidateIdentifier];
+  proximityPerCandiate = [prerequisiteCopy proximityPerCandiate];
+  candidateIdentifier = [candidateCopy candidateIdentifier];
 
-  v12 = [v10 objectForKeyedSubscript:v11];
+  v12 = [proximityPerCandiate objectForKeyedSubscript:candidateIdentifier];
   [v9 setBoolean:{objc_msgSend(v12, "BOOLValue")}];
 
-  [v9 setHasBoolean:{objc_msgSend(v7, "anyCandidateInProximity")}];
+  [v9 setHasBoolean:{objc_msgSend(prerequisiteCopy, "anyCandidateInProximity")}];
 
   return v9;
 }
 
-- (id)_proximityShortestRangeValueForCandidate:(id)a3 withNearbyDeviceContainer:(id)a4 prerequisite:(id)a5 date:(id)a6
+- (id)_proximityShortestRangeValueForCandidate:(id)candidate withNearbyDeviceContainer:(id)container prerequisite:(id)prerequisite date:(id)date
 {
-  v7 = a5;
-  v8 = a3;
+  prerequisiteCopy = prerequisite;
+  candidateCopy = candidate;
   v9 = objc_opt_new();
-  v10 = [v8 candidateIdentifier];
+  candidateIdentifier = [candidateCopy candidateIdentifier];
 
-  v11 = [v7 shortestRangeCandidateIdentifier];
-  [v9 setBoolean:{objc_msgSend(v10, "isEqual:", v11)}];
+  shortestRangeCandidateIdentifier = [prerequisiteCopy shortestRangeCandidateIdentifier];
+  [v9 setBoolean:{objc_msgSend(candidateIdentifier, "isEqual:", shortestRangeCandidateIdentifier)}];
 
-  [v9 setHasBoolean:{objc_msgSend(v7, "anyCandidateMeetsCondition")}];
+  [v9 setHasBoolean:{objc_msgSend(prerequisiteCopy, "anyCandidateMeetsCondition")}];
 
   return v9;
 }
 
-- (id)_proximityShortestRangeInHistoryOrSameICloudValueForCandidate:(id)a3 withNearbyDeviceContainer:(id)a4 prerequisite:(id)a5 date:(id)a6
+- (id)_proximityShortestRangeInHistoryOrSameICloudValueForCandidate:(id)candidate withNearbyDeviceContainer:(id)container prerequisite:(id)prerequisite date:(id)date
 {
-  v7 = a5;
-  v8 = a3;
+  prerequisiteCopy = prerequisite;
+  candidateCopy = candidate;
   v9 = objc_opt_new();
-  v10 = [v8 candidateIdentifier];
+  candidateIdentifier = [candidateCopy candidateIdentifier];
 
-  v11 = [v7 shortestRangeCandidateIdentifier];
-  [v9 setBoolean:{objc_msgSend(v10, "isEqual:", v11)}];
+  shortestRangeCandidateIdentifier = [prerequisiteCopy shortestRangeCandidateIdentifier];
+  [v9 setBoolean:{objc_msgSend(candidateIdentifier, "isEqual:", shortestRangeCandidateIdentifier)}];
 
-  [v9 setHasBoolean:{objc_msgSend(v7, "anyCandidateMeetsCondition")}];
+  [v9 setHasBoolean:{objc_msgSend(prerequisiteCopy, "anyCandidateMeetsCondition")}];
 
   return v9;
 }
 
-- (BOOL)_proximityDecisionForCandidate:(id)a3 withNearbyDeviceContainer:(id)a4 date:(id)a5
+- (BOOL)_proximityDecisionForCandidate:(id)candidate withNearbyDeviceContainer:(id)container date:(id)date
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(IRRuleCandidate *)self _proximityLowestUwbRangeForCandidate:v8 withNearbyDeviceContainer:v9 date:v10];
-  v15 = v11 && (+[IRPreferences shared](IRPreferences, "shared"), v12 = objc_claimAutoreleasedReturnValue(), [v12 deviceRangeProximityThreshold], v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v11, "isLessThanOrEqualTo:", v13), v13, v12, (v14 & 1) != 0) || -[IRRuleCandidate _proximityBLEValueForCandidate:withNearbyDeviceContainer:date:](self, "_proximityBLEValueForCandidate:withNearbyDeviceContainer:date:", v8, v9, v10);
+  candidateCopy = candidate;
+  containerCopy = container;
+  dateCopy = date;
+  v11 = [(IRRuleCandidate *)self _proximityLowestUwbRangeForCandidate:candidateCopy withNearbyDeviceContainer:containerCopy date:dateCopy];
+  v15 = v11 && (+[IRPreferences shared](IRPreferences, "shared"), v12 = objc_claimAutoreleasedReturnValue(), [v12 deviceRangeProximityThreshold], v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v11, "isLessThanOrEqualTo:", v13), v13, v12, (v14 & 1) != 0) || -[IRRuleCandidate _proximityBLEValueForCandidate:withNearbyDeviceContainer:date:](self, "_proximityBLEValueForCandidate:withNearbyDeviceContainer:date:", candidateCopy, containerCopy, dateCopy);
 
   return v15;
 }
 
-- (id)_proximityPrerequisiteValueForCandidatesContainer:(id)a3 withNearbyDeviceContainer:(id)a4 date:(id)a5
+- (id)_proximityPrerequisiteValueForCandidatesContainer:(id)container withNearbyDeviceContainer:(id)deviceContainer date:(id)date
 {
   v31 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  containerCopy = container;
+  deviceContainerCopy = deviceContainer;
+  dateCopy = date;
   v11 = objc_opt_new();
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v24 = v8;
-  obj = [v8 candidates];
+  v24 = containerCopy;
+  obj = [containerCopy candidates];
   v12 = [obj countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v12)
   {
@@ -173,11 +173,11 @@ void __125__IRRuleCandidate_executeRuleWithCandiatesContainer_systemStatus_histo
         }
 
         v17 = *(*(&v26 + 1) + 8 * i);
-        v18 = [(IRRuleCandidate *)self _proximityDecisionForCandidate:v17 withNearbyDeviceContainer:v9 date:v10];
+        v18 = [(IRRuleCandidate *)self _proximityDecisionForCandidate:v17 withNearbyDeviceContainer:deviceContainerCopy date:dateCopy];
         v14 |= v18;
         v19 = [MEMORY[0x277CCABB0] numberWithBool:v18];
-        v20 = [v17 candidateIdentifier];
-        [v11 setObject:v19 forKeyedSubscript:v20];
+        candidateIdentifier = [v17 candidateIdentifier];
+        [v11 setObject:v19 forKeyedSubscript:candidateIdentifier];
       }
 
       v13 = [obj countByEnumeratingWithState:&v26 objects:v30 count:16];
@@ -200,11 +200,11 @@ void __125__IRRuleCandidate_executeRuleWithCandiatesContainer_systemStatus_histo
   return v21;
 }
 
-- (id)_shortestRangeProximityPrerequisiteValueForCandidatesContainer:(id)a3 withNearbyDeviceContainer:(id)a4 date:(id)a5
+- (id)_shortestRangeProximityPrerequisiteValueForCandidatesContainer:(id)container withNearbyDeviceContainer:(id)deviceContainer date:(id)date
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  containerCopy = container;
+  deviceContainerCopy = deviceContainer;
+  dateCopy = date;
   v36 = 0;
   v37 = &v36;
   v38 = 0x3032000000;
@@ -221,23 +221,23 @@ void __125__IRRuleCandidate_executeRuleWithCandiatesContainer_systemStatus_histo
   v27 = &v26;
   v28 = 0x2020000000;
   v29 = 0;
-  v11 = [v8 candidates];
+  candidates = [containerCopy candidates];
   v16 = MEMORY[0x277D85DD0];
   v17 = 3221225472;
   v18 = __113__IRRuleCandidate__shortestRangeProximityPrerequisiteValueForCandidatesContainer_withNearbyDeviceContainer_date___block_invoke;
   v19 = &unk_2797E17F0;
-  v20 = self;
-  v12 = v9;
+  selfCopy = self;
+  v12 = deviceContainerCopy;
   v21 = v12;
-  v13 = v10;
+  v13 = dateCopy;
   v22 = v13;
   v23 = &v26;
   v24 = &v36;
   v25 = &v30;
-  [v11 enumerateObjectsUsingBlock:&v16];
+  [candidates enumerateObjectsUsingBlock:&v16];
 
   v14 = objc_opt_new();
-  [v14 setShortestRange:{v37[5], v16, v17, v18, v19, v20}];
+  [v14 setShortestRange:{v37[5], v16, v17, v18, v19, selfCopy}];
   [v14 setShortestRangeCandidateIdentifier:v31[5]];
   [v14 setAnyCandidateMeetsCondition:*(v27 + 24)];
 
@@ -278,13 +278,13 @@ void __113__IRRuleCandidate__shortestRangeProximityPrerequisiteValueForCandidate
   }
 }
 
-- (id)_shortestRangeWithHistoryOrSameICloudProximityPrerequisiteValueForCandidatesContainer:(id)a3 withNearbyDeviceContainer:(id)a4 historyContainer:(id)a5 systemState:(id)a6 date:(id)a7
+- (id)_shortestRangeWithHistoryOrSameICloudProximityPrerequisiteValueForCandidatesContainer:(id)container withNearbyDeviceContainer:(id)deviceContainer historyContainer:(id)historyContainer systemState:(id)state date:(id)date
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  containerCopy = container;
+  deviceContainerCopy = deviceContainer;
+  historyContainerCopy = historyContainer;
+  stateCopy = state;
+  dateCopy = date;
   v42 = 0;
   v43 = &v42;
   v44 = 0x3032000000;
@@ -301,24 +301,24 @@ void __113__IRRuleCandidate__shortestRangeProximityPrerequisiteValueForCandidate
   v33 = &v32;
   v34 = 0x2020000000;
   v35 = 0;
-  v17 = [v12 candidates];
+  candidates = [containerCopy candidates];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __165__IRRuleCandidate__shortestRangeWithHistoryOrSameICloudProximityPrerequisiteValueForCandidatesContainer_withNearbyDeviceContainer_historyContainer_systemState_date___block_invoke;
   v24[3] = &unk_2797E1818;
   v24[4] = self;
-  v18 = v13;
+  v18 = deviceContainerCopy;
   v25 = v18;
-  v19 = v16;
+  v19 = dateCopy;
   v26 = v19;
-  v20 = v14;
+  v20 = historyContainerCopy;
   v27 = v20;
-  v21 = v15;
+  v21 = stateCopy;
   v28 = v21;
   v29 = &v32;
   v30 = &v42;
   v31 = &v36;
-  [v17 enumerateObjectsUsingBlock:v24];
+  [candidates enumerateObjectsUsingBlock:v24];
 
   v22 = objc_opt_new();
   [v22 setShortestRange:v43[5]];
@@ -381,31 +381,31 @@ void __165__IRRuleCandidate__shortestRangeWithHistoryOrSameICloudProximityPrereq
   }
 }
 
-- (id)_userRejectedInLastDayWithoutPickerChoicePrerequisiteValueForHistoryContainer:(id)a3 systemState:(id)a4 date:(id)a5
+- (id)_userRejectedInLastDayWithoutPickerChoicePrerequisiteValueForHistoryContainer:(id)container systemState:(id)state date:(id)date
 {
-  v7 = a4;
-  v8 = a5;
+  stateCopy = state;
+  dateCopy = date;
   v9 = MEMORY[0x277CBEB18];
-  v10 = a3;
-  v11 = [v9 array];
-  v12 = [v10 historyEvents];
+  containerCopy = container;
+  array = [v9 array];
+  historyEvents = [containerCopy historyEvents];
 
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __114__IRRuleCandidate__userRejectedInLastDayWithoutPickerChoicePrerequisiteValueForHistoryContainer_systemState_date___block_invoke;
   v20[3] = &unk_2797E1840;
-  v21 = v8;
-  v22 = v7;
-  v23 = v11;
-  v13 = v11;
-  v14 = v7;
-  v15 = v8;
-  [v12 enumerateObjectsWithOptions:2 usingBlock:v20];
+  v21 = dateCopy;
+  v22 = stateCopy;
+  v23 = array;
+  v13 = array;
+  v14 = stateCopy;
+  v15 = dateCopy;
+  [historyEvents enumerateObjectsWithOptions:2 usingBlock:v20];
 
   v16 = objc_opt_new();
-  v17 = [v13 reverseObjectEnumerator];
-  v18 = [v17 allObjects];
-  [v16 setFilteredHistoryEvents:v18];
+  reverseObjectEnumerator = [v13 reverseObjectEnumerator];
+  allObjects = [reverseObjectEnumerator allObjects];
+  [v16 setFilteredHistoryEvents:allObjects];
 
   return v16;
 }
@@ -476,17 +476,17 @@ LABEL_7:
 LABEL_13:
 }
 
-- (BOOL)_isCandidateIdentifier:(id)a3 inHistory:(id)a4
+- (BOOL)_isCandidateIdentifier:(id)identifier inHistory:(id)history
 {
-  v5 = a3;
-  v6 = [a4 historyEvents];
+  identifierCopy = identifier;
+  historyEvents = [history historyEvents];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __52__IRRuleCandidate__isCandidateIdentifier_inHistory___block_invoke;
   v11[3] = &unk_2797E1868;
-  v12 = v5;
-  v7 = v5;
-  v8 = [v6 firstWhere:v11];
+  v12 = identifierCopy;
+  v7 = identifierCopy;
+  v8 = [historyEvents firstWhere:v11];
   v9 = v8 != 0;
 
   return v9;
@@ -500,26 +500,26 @@ uint64_t __52__IRRuleCandidate__isCandidateIdentifier_inHistory___block_invoke(u
   return v4;
 }
 
-- (id)_proximityLowestUwbRangeForCandidate:(id)a3 withNearbyDeviceContainer:(id)a4 date:(id)a5
+- (id)_proximityLowestUwbRangeForCandidate:(id)candidate withNearbyDeviceContainer:(id)container date:(id)date
 {
   v38 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  candidateCopy = candidate;
+  containerCopy = container;
+  dateCopy = date;
   v11 = MEMORY[0x277CBEAA8];
   v12 = +[IRPreferences shared];
-  v13 = [v12 nearbyDeviceMeasurmentExpityTimeSeconds];
-  [v13 doubleValue];
-  v31 = v10;
-  v15 = [v11 dateWithTimeInterval:v10 sinceDate:-v14];
+  nearbyDeviceMeasurmentExpityTimeSeconds = [v12 nearbyDeviceMeasurmentExpityTimeSeconds];
+  [nearbyDeviceMeasurmentExpityTimeSeconds doubleValue];
+  v31 = dateCopy;
+  v15 = [v11 dateWithTimeInterval:dateCopy sinceDate:-v14];
 
   v35 = 0u;
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v32 = v8;
-  v16 = [v8 nodes];
-  v17 = [v16 countByEnumeratingWithState:&v33 objects:v37 count:16];
+  v32 = candidateCopy;
+  nodes = [candidateCopy nodes];
+  v17 = [nodes countByEnumeratingWithState:&v33 objects:v37 count:16];
   if (v17)
   {
     v18 = v17;
@@ -531,10 +531,10 @@ uint64_t __52__IRRuleCandidate__isCandidateIdentifier_inHistory___block_invoke(u
       {
         if (*v34 != v20)
         {
-          objc_enumerationMutation(v16);
+          objc_enumerationMutation(nodes);
         }
 
-        v22 = [(IRRuleCandidate *)self _matchedDevicefromNode:*(*(&v33 + 1) + 8 * i) withNearbyDeviceContainer:v9 measurementExpiry:v15 isUwb:1];
+        v22 = [(IRRuleCandidate *)self _matchedDevicefromNode:*(*(&v33 + 1) + 8 * i) withNearbyDeviceContainer:containerCopy measurementExpiry:v15 isUwb:1];
         v23 = v22;
         if (v22)
         {
@@ -561,7 +561,7 @@ uint64_t __52__IRRuleCandidate__isCandidateIdentifier_inHistory___block_invoke(u
         }
       }
 
-      v18 = [v16 countByEnumeratingWithState:&v33 objects:v37 count:16];
+      v18 = [nodes countByEnumeratingWithState:&v33 objects:v37 count:16];
     }
 
     while (v18);
@@ -577,22 +577,22 @@ uint64_t __52__IRRuleCandidate__isCandidateIdentifier_inHistory___block_invoke(u
   return v19;
 }
 
-- (id)_matchedDevicefromNode:(id)a3 withNearbyDeviceContainer:(id)a4 measurementExpiry:(id)a5 isUwb:(BOOL)a6
+- (id)_matchedDevicefromNode:(id)node withNearbyDeviceContainer:(id)container measurementExpiry:(id)expiry isUwb:(BOOL)uwb
 {
-  v6 = a6;
-  v9 = a4;
-  v10 = a5;
-  v11 = a3;
-  v12 = [v11 computedIdsIdentifier];
-  v13 = [v11 computedMediaRemoteIdenfifier];
-  v14 = [v11 computedMediaRouteIdentifier];
+  uwbCopy = uwb;
+  containerCopy = container;
+  expiryCopy = expiry;
+  nodeCopy = node;
+  computedIdsIdentifier = [nodeCopy computedIdsIdentifier];
+  computedMediaRemoteIdenfifier = [nodeCopy computedMediaRemoteIdenfifier];
+  computedMediaRouteIdentifier = [nodeCopy computedMediaRouteIdentifier];
 
-  if (v12 || v13 || v14)
+  if (computedIdsIdentifier || computedMediaRemoteIdenfifier || computedMediaRouteIdentifier)
   {
     v16 = @"identifier-doesn't-match";
-    if (v12)
+    if (computedIdsIdentifier)
     {
-      v17 = v12;
+      v17 = computedIdsIdentifier;
     }
 
     else
@@ -600,9 +600,9 @@ uint64_t __52__IRRuleCandidate__isCandidateIdentifier_inHistory___block_invoke(u
       v17 = @"identifier-doesn't-match";
     }
 
-    if (v13)
+    if (computedMediaRemoteIdenfifier)
     {
-      v18 = v13;
+      v18 = computedMediaRemoteIdenfifier;
     }
 
     else
@@ -610,16 +610,16 @@ uint64_t __52__IRRuleCandidate__isCandidateIdentifier_inHistory___block_invoke(u
       v18 = @"identifier-doesn't-match";
     }
 
-    if (v14)
+    if (computedMediaRouteIdentifier)
     {
-      v16 = v14;
+      v16 = computedMediaRouteIdentifier;
     }
 
-    v19 = [MEMORY[0x277CCAC30] predicateWithFormat:@"(%K = %@ OR %K = %@ OR %K = %@) AND (%K >= %@) ", @"idsIdentifier", v17, @"mediaRemoteIdentifier", v18, @"mediaRemoteIdentifier", v16, @"measurementDate", v10];
-    v20 = [v9 nearbyDevices];
-    v21 = [v20 filteredSetUsingPredicate:v19];
+    expiryCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"(%K = %@ OR %K = %@ OR %K = %@) AND (%K >= %@) ", @"idsIdentifier", v17, @"mediaRemoteIdentifier", v18, @"mediaRemoteIdentifier", v16, @"measurementDate", expiryCopy];
+    nearbyDevices = [containerCopy nearbyDevices];
+    v21 = [nearbyDevices filteredSetUsingPredicate:expiryCopy];
 
-    if (v6)
+    if (uwbCopy)
     {
       v22 = [v21 firstWhere:&__block_literal_global_9];
       v23 = v22;
@@ -674,16 +674,16 @@ BOOL __92__IRRuleCandidate__matchedDevicefromNode_withNearbyDeviceContainer_meas
   return v3;
 }
 
-- (BOOL)_proximityBLEValueForCandidate:(id)a3 withNearbyDeviceContainer:(id)a4 date:(id)a5
+- (BOOL)_proximityBLEValueForCandidate:(id)candidate withNearbyDeviceContainer:(id)container date:(id)date
 {
   v24 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  containerCopy = container;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v8 = [a3 nodes];
-  v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  nodes = [candidate nodes];
+  v9 = [nodes countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v9)
   {
     v10 = v9;
@@ -694,12 +694,12 @@ BOOL __92__IRRuleCandidate__matchedDevicefromNode_withNearbyDeviceContainer_meas
       {
         if (*v20 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(nodes);
         }
 
         v13 = *(*(&v19 + 1) + 8 * i);
-        v14 = [MEMORY[0x277CBEAA8] distantPast];
-        v15 = [(IRRuleCandidate *)self _matchedDevicefromNode:v13 withNearbyDeviceContainer:v7 measurementExpiry:v14 isUwb:0];
+        distantPast = [MEMORY[0x277CBEAA8] distantPast];
+        v15 = [(IRRuleCandidate *)self _matchedDevicefromNode:v13 withNearbyDeviceContainer:containerCopy measurementExpiry:distantPast isUwb:0];
 
         if (v15)
         {
@@ -708,7 +708,7 @@ BOOL __92__IRRuleCandidate__matchedDevicefromNode_withNearbyDeviceContainer_meas
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v10 = [nodes countByEnumeratingWithState:&v19 objects:v23 count:16];
       if (v10)
       {
         continue;
@@ -725,26 +725,26 @@ LABEL_11:
   return v16;
 }
 
-- (id)_sameIcloudForCandidate:(id)a3 systemState:(id)a4
+- (id)_sameIcloudForCandidate:(id)candidate systemState:(id)state
 {
-  v6 = a4;
-  v7 = a3;
+  stateCopy = state;
+  candidateCopy = candidate;
   v8 = objc_alloc_init(IRRuleOutputEvaluation);
   v9 = objc_opt_new();
-  v10 = [v7 nodes];
+  nodes = [candidateCopy nodes];
   v17 = MEMORY[0x277D85DD0];
   v18 = 3221225472;
   v19 = __55__IRRuleCandidate__sameIcloudForCandidate_systemState___block_invoke;
   v20 = &unk_2797E13D0;
-  v21 = v6;
+  v21 = stateCopy;
   v11 = v9;
   v22 = v11;
-  v12 = v6;
-  [v10 enumerateObjectsUsingBlock:&v17];
+  v12 = stateCopy;
+  [nodes enumerateObjectsUsingBlock:&v17];
 
-  v13 = [v7 nodes];
+  nodes2 = [candidateCopy nodes];
 
-  v14 = [v13 count];
+  v14 = [nodes2 count];
   if (v14)
   {
     v15 = [(IRRuleCandidate *)self _valueFromValues:v11];
@@ -773,23 +773,23 @@ void __55__IRRuleCandidate__sameIcloudForCandidate_systemState___block_invoke(ui
   [*(a1 + 40) addObject:v3];
 }
 
-- (id)_sameWiFiForCandidate:(id)a3 systemState:(id)a4
+- (id)_sameWiFiForCandidate:(id)candidate systemState:(id)state
 {
-  v5 = a3;
+  candidateCopy = candidate;
   v6 = objc_alloc_init(IRRuleOutputEvaluation);
   v7 = objc_opt_new();
-  v8 = [v5 nodes];
+  nodes = [candidateCopy nodes];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __53__IRRuleCandidate__sameWiFiForCandidate_systemState___block_invoke;
   v14[3] = &unk_2797E0CA8;
   v9 = v7;
   v15 = v9;
-  [v8 enumerateObjectsUsingBlock:v14];
+  [nodes enumerateObjectsUsingBlock:v14];
 
-  v10 = [v5 nodes];
+  nodes2 = [candidateCopy nodes];
 
-  v11 = [v10 count];
+  v11 = [nodes2 count];
   if (v11)
   {
     v12 = [(IRRuleCandidate *)self _valueFromValues:v9];
@@ -832,26 +832,26 @@ void __53__IRRuleCandidate__sameWiFiForCandidate_systemState___block_invoke(uint
   [*(a1 + 32) addObject:v3];
 }
 
-- (id)_activeRouteForCandidate:(id)a3 systemState:(id)a4
+- (id)_activeRouteForCandidate:(id)candidate systemState:(id)state
 {
-  v6 = a4;
-  v7 = a3;
+  stateCopy = state;
+  candidateCopy = candidate;
   v8 = objc_alloc_init(IRRuleOutputEvaluation);
   v9 = objc_opt_new();
-  v10 = [v7 nodes];
+  nodes = [candidateCopy nodes];
   v17 = MEMORY[0x277D85DD0];
   v18 = 3221225472;
   v19 = __56__IRRuleCandidate__activeRouteForCandidate_systemState___block_invoke;
   v20 = &unk_2797E13D0;
-  v21 = v6;
+  v21 = stateCopy;
   v11 = v9;
   v22 = v11;
-  v12 = v6;
-  [v10 enumerateObjectsUsingBlock:&v17];
+  v12 = stateCopy;
+  [nodes enumerateObjectsUsingBlock:&v17];
 
-  v13 = [v7 nodes];
+  nodes2 = [candidateCopy nodes];
 
-  v14 = [v13 count];
+  v14 = [nodes2 count];
   if (v14)
   {
     v15 = [(IRRuleCandidate *)self _valueFromValues:v11];
@@ -880,53 +880,53 @@ void __56__IRRuleCandidate__activeRouteForCandidate_systemState___block_invoke(u
   [*(a1 + 40) addObject:v3];
 }
 
-- (id)_mediaUserRejectedInLastDayWithoutPickerChoiceForCandidate:(id)a3 prerequisite:(id)a4
+- (id)_mediaUserRejectedInLastDayWithoutPickerChoiceForCandidate:(id)candidate prerequisite:(id)prerequisite
 {
-  v6 = a4;
-  v7 = a3;
+  prerequisiteCopy = prerequisite;
+  candidateCopy = candidate;
   v8 = objc_alloc_init(IRRuleOutputEvaluation);
   [(IRRuleOutputEvaluation *)v8 setHasBoolean:1];
-  v9 = [(IRRuleCandidate *)self _isLastEventForCandidate:v7 inPrerequisite:v6 isOneOf:&unk_286768EF0];
+  v9 = [(IRRuleCandidate *)self _isLastEventForCandidate:candidateCopy inPrerequisite:prerequisiteCopy isOneOf:&unk_286768EF0];
 
   [(IRRuleOutputEvaluation *)v8 setBoolean:v9];
 
   return v8;
 }
 
-- (id)_appleTVControlUserRejectedInLastDayWithoutPickerChoiceForCandidate:(id)a3 prerequisite:(id)a4
+- (id)_appleTVControlUserRejectedInLastDayWithoutPickerChoiceForCandidate:(id)candidate prerequisite:(id)prerequisite
 {
-  v6 = a4;
-  v7 = a3;
+  prerequisiteCopy = prerequisite;
+  candidateCopy = candidate;
   v8 = objc_alloc_init(IRRuleOutputEvaluation);
   [(IRRuleOutputEvaluation *)v8 setHasBoolean:1];
-  v9 = [(IRRuleCandidate *)self _isLastEventForCandidate:v7 inPrerequisite:v6 isOneOf:&unk_286768F08];
+  v9 = [(IRRuleCandidate *)self _isLastEventForCandidate:candidateCopy inPrerequisite:prerequisiteCopy isOneOf:&unk_286768F08];
 
   [(IRRuleOutputEvaluation *)v8 setBoolean:v9];
 
   return v8;
 }
 
-- (BOOL)_isLastEventForCandidate:(id)a3 inPrerequisite:(id)a4 isOneOf:(id)a5
+- (BOOL)_isLastEventForCandidate:(id)candidate inPrerequisite:(id)prerequisite isOneOf:(id)of
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = v8;
+  candidateCopy = candidate;
+  prerequisiteCopy = prerequisite;
+  ofCopy = of;
+  v10 = prerequisiteCopy;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
   v23 = __Block_byref_object_copy__6;
   v24 = __Block_byref_object_dispose__6;
   v25 = 0;
-  v11 = [v10 filteredHistoryEvents];
+  filteredHistoryEvents = [v10 filteredHistoryEvents];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __67__IRRuleCandidate__isLastEventForCandidate_inPrerequisite_isOneOf___block_invoke;
   v17[3] = &unk_2797E18B0;
-  v12 = v7;
+  v12 = candidateCopy;
   v18 = v12;
   v19 = &v20;
-  [v11 enumerateObjectsWithOptions:2 usingBlock:v17];
+  [filteredHistoryEvents enumerateObjectsWithOptions:2 usingBlock:v17];
 
   if (v21[5])
   {
@@ -935,7 +935,7 @@ void __56__IRRuleCandidate__activeRouteForCandidate_systemState___block_invoke(u
     v16[2] = __67__IRRuleCandidate__isLastEventForCandidate_inPrerequisite_isOneOf___block_invoke_2;
     v16[3] = &unk_2797E18D8;
     v16[4] = &v20;
-    v13 = [v9 firstWhere:v16];
+    v13 = [ofCopy firstWhere:v16];
     v14 = v13 != 0;
   }
 
@@ -968,20 +968,20 @@ void __67__IRRuleCandidate__isLastEventForCandidate_inPrerequisite_isOneOf___blo
   }
 }
 
-- (id)_valueFromValues:(id)a3
+- (id)_valueFromValues:(id)values
 {
-  v4 = a3;
+  valuesCopy = values;
   v5 = objc_alloc_init(IRRuleOutputEvaluation);
-  v6 = [v4 count];
+  v6 = [valuesCopy count];
   if (v6)
   {
     v7 = v6;
     v8 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K = YES", @"hasBoolean"];
     v9 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K = YES", @"BOOLean"];
-    v10 = [v4 filteredSetUsingPredicate:v8];
+    v10 = [valuesCopy filteredSetUsingPredicate:v8];
     v11 = [v10 count];
 
-    v12 = [v4 filteredSetUsingPredicate:v9];
+    v12 = [valuesCopy filteredSetUsingPredicate:v9];
     v13 = [v12 count];
 
     if ([(IRRuleCandidate *)self requireAllNodes])
@@ -1011,58 +1011,58 @@ void __67__IRRuleCandidate__isLastEventForCandidate_inPrerequisite_isOneOf___blo
   return v5;
 }
 
-- (id)_attributeValueForAttributeKey:(id)a3 prerequisite:(id)a4 withCandidate:(id)a5 nearbyDeviceContainer:(id)a6 systemState:(id)a7 date:(id)a8
+- (id)_attributeValueForAttributeKey:(id)key prerequisite:(id)prerequisite withCandidate:(id)candidate nearbyDeviceContainer:(id)container systemState:(id)state date:(id)date
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  keyCopy = key;
+  prerequisiteCopy = prerequisite;
+  candidateCopy = candidate;
+  containerCopy = container;
+  stateCopy = state;
+  dateCopy = date;
   v20 = objc_alloc_init(IRRuleOutputEvaluation);
-  if ([v14 isEqual:@"kIRRuleCandidateSameWiFiKey"])
+  if ([keyCopy isEqual:@"kIRRuleCandidateSameWiFiKey"])
   {
-    v21 = [(IRRuleCandidate *)self _sameWiFiForCandidate:v16 systemState:v18];
+    v21 = [(IRRuleCandidate *)self _sameWiFiForCandidate:candidateCopy systemState:stateCopy];
   }
 
-  else if ([v14 isEqual:@"kIRRuleCandidateSameiCloudKey"])
+  else if ([keyCopy isEqual:@"kIRRuleCandidateSameiCloudKey"])
   {
-    v21 = [(IRRuleCandidate *)self _sameIcloudForCandidate:v16 systemState:v18];
+    v21 = [(IRRuleCandidate *)self _sameIcloudForCandidate:candidateCopy systemState:stateCopy];
   }
 
-  else if ([v14 isEqual:@"kIRRuleCandidateProximityKey"])
+  else if ([keyCopy isEqual:@"kIRRuleCandidateProximityKey"])
   {
-    v21 = [(IRRuleCandidate *)self _proximityValueForCandidate:v16 withNearbyDeviceContainer:v17 prerequisite:v15 date:v19];
+    v21 = [(IRRuleCandidate *)self _proximityValueForCandidate:candidateCopy withNearbyDeviceContainer:containerCopy prerequisite:prerequisiteCopy date:dateCopy];
   }
 
-  else if ([v14 isEqual:@"kIRRuleCandidateProximityShortestRangeKey"])
+  else if ([keyCopy isEqual:@"kIRRuleCandidateProximityShortestRangeKey"])
   {
-    v21 = [(IRRuleCandidate *)self _proximityShortestRangeValueForCandidate:v16 withNearbyDeviceContainer:v17 prerequisite:v15 date:v19];
+    v21 = [(IRRuleCandidate *)self _proximityShortestRangeValueForCandidate:candidateCopy withNearbyDeviceContainer:containerCopy prerequisite:prerequisiteCopy date:dateCopy];
   }
 
-  else if ([v14 isEqual:@"kIRRuleCandidateProximityShortestRangeInHistoryOrSameICloudKey"])
+  else if ([keyCopy isEqual:@"kIRRuleCandidateProximityShortestRangeInHistoryOrSameICloudKey"])
   {
-    v21 = [(IRRuleCandidate *)self _proximityShortestRangeInHistoryOrSameICloudValueForCandidate:v16 withNearbyDeviceContainer:v17 prerequisite:v15 date:v19];
+    v21 = [(IRRuleCandidate *)self _proximityShortestRangeInHistoryOrSameICloudValueForCandidate:candidateCopy withNearbyDeviceContainer:containerCopy prerequisite:prerequisiteCopy date:dateCopy];
   }
 
-  else if ([v14 isEqual:@"kIRRuleCandidateActiveRouteKey"])
+  else if ([keyCopy isEqual:@"kIRRuleCandidateActiveRouteKey"])
   {
-    v21 = [(IRRuleCandidate *)self _activeRouteForCandidate:v16 systemState:v18];
+    v21 = [(IRRuleCandidate *)self _activeRouteForCandidate:candidateCopy systemState:stateCopy];
   }
 
-  else if ([v14 isEqual:@"kIRRuleCandidateMediaUserRejectedInLastDayWithoutPickerChoiceKey"])
+  else if ([keyCopy isEqual:@"kIRRuleCandidateMediaUserRejectedInLastDayWithoutPickerChoiceKey"])
   {
-    v21 = [(IRRuleCandidate *)self _mediaUserRejectedInLastDayWithoutPickerChoiceForCandidate:v16 prerequisite:v15];
+    v21 = [(IRRuleCandidate *)self _mediaUserRejectedInLastDayWithoutPickerChoiceForCandidate:candidateCopy prerequisite:prerequisiteCopy];
   }
 
   else
   {
-    if (![v14 isEqual:@"kIRRuleCandidateAppleTVControlUserRejectedInLastDayWithoutPickerChoiceKey"])
+    if (![keyCopy isEqual:@"kIRRuleCandidateAppleTVControlUserRejectedInLastDayWithoutPickerChoiceKey"])
     {
       goto LABEL_18;
     }
 
-    v21 = [(IRRuleCandidate *)self _appleTVControlUserRejectedInLastDayWithoutPickerChoiceForCandidate:v16 prerequisite:v15];
+    v21 = [(IRRuleCandidate *)self _appleTVControlUserRejectedInLastDayWithoutPickerChoiceForCandidate:candidateCopy prerequisite:prerequisiteCopy];
   }
 
   v22 = v21;
@@ -1073,37 +1073,37 @@ LABEL_18:
   return v20;
 }
 
-- (id)_prerequisiteValueForAttributeKey:(id)a3 withCandidatesContainer:(id)a4 nearbyDeviceContainer:(id)a5 systemState:(id)a6 historyContainer:(id)a7 date:(id)a8
+- (id)_prerequisiteValueForAttributeKey:(id)key withCandidatesContainer:(id)container nearbyDeviceContainer:(id)deviceContainer systemState:(id)state historyContainer:(id)historyContainer date:(id)date
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  if ([v14 isEqual:@"kIRRuleCandidateProximityKey"])
+  keyCopy = key;
+  containerCopy = container;
+  deviceContainerCopy = deviceContainer;
+  stateCopy = state;
+  historyContainerCopy = historyContainer;
+  dateCopy = date;
+  if ([keyCopy isEqual:@"kIRRuleCandidateProximityKey"])
   {
-    v20 = [(IRRuleCandidate *)self _proximityPrerequisiteValueForCandidatesContainer:v15 withNearbyDeviceContainer:v16 date:v19];
+    v20 = [(IRRuleCandidate *)self _proximityPrerequisiteValueForCandidatesContainer:containerCopy withNearbyDeviceContainer:deviceContainerCopy date:dateCopy];
 LABEL_10:
     v21 = v20;
     goto LABEL_11;
   }
 
-  if ([v14 isEqual:@"kIRRuleCandidateProximityShortestRangeKey"])
+  if ([keyCopy isEqual:@"kIRRuleCandidateProximityShortestRangeKey"])
   {
-    v20 = [(IRRuleCandidate *)self _shortestRangeProximityPrerequisiteValueForCandidatesContainer:v15 withNearbyDeviceContainer:v16 date:v19];
+    v20 = [(IRRuleCandidate *)self _shortestRangeProximityPrerequisiteValueForCandidatesContainer:containerCopy withNearbyDeviceContainer:deviceContainerCopy date:dateCopy];
     goto LABEL_10;
   }
 
-  if ([v14 isEqual:@"kIRRuleCandidateProximityShortestRangeInHistoryOrSameICloudKey"])
+  if ([keyCopy isEqual:@"kIRRuleCandidateProximityShortestRangeInHistoryOrSameICloudKey"])
   {
-    v20 = [(IRRuleCandidate *)self _shortestRangeWithHistoryOrSameICloudProximityPrerequisiteValueForCandidatesContainer:v15 withNearbyDeviceContainer:v16 historyContainer:v18 systemState:v17 date:v19];
+    v20 = [(IRRuleCandidate *)self _shortestRangeWithHistoryOrSameICloudProximityPrerequisiteValueForCandidatesContainer:containerCopy withNearbyDeviceContainer:deviceContainerCopy historyContainer:historyContainerCopy systemState:stateCopy date:dateCopy];
     goto LABEL_10;
   }
 
-  if (([v14 isEqual:@"kIRRuleCandidateMediaUserRejectedInLastDayWithoutPickerChoiceKey"] & 1) != 0 || objc_msgSend(v14, "isEqual:", @"kIRRuleCandidateAppleTVControlUserRejectedInLastDayWithoutPickerChoiceKey"))
+  if (([keyCopy isEqual:@"kIRRuleCandidateMediaUserRejectedInLastDayWithoutPickerChoiceKey"] & 1) != 0 || objc_msgSend(keyCopy, "isEqual:", @"kIRRuleCandidateAppleTVControlUserRejectedInLastDayWithoutPickerChoiceKey"))
   {
-    v20 = [(IRRuleCandidate *)self _userRejectedInLastDayWithoutPickerChoicePrerequisiteValueForHistoryContainer:v18 systemState:v17 date:v19];
+    v20 = [(IRRuleCandidate *)self _userRejectedInLastDayWithoutPickerChoicePrerequisiteValueForHistoryContainer:historyContainerCopy systemState:stateCopy date:dateCopy];
     goto LABEL_10;
   }
 

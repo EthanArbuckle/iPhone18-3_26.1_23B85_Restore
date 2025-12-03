@@ -2,23 +2,23 @@
 - (void)_updateHighlightsView;
 - (void)_updateHighlightsViewCurrentTime;
 - (void)becomeReusable;
-- (void)setAssetViewModel:(id)a3;
-- (void)setCurrentTime:(id *)a3;
-- (void)setHighlightColor:(id)a3;
-- (void)setVideoPlayer:(id)a3;
-- (void)videoPlayer:(id)a3 currentTimeDidChange:(id *)a4;
-- (void)videoPlayer:(id)a3 desiredSeekTimeDidChange:(id *)a4;
+- (void)setAssetViewModel:(id)model;
+- (void)setCurrentTime:(id *)time;
+- (void)setHighlightColor:(id)color;
+- (void)setVideoPlayer:(id)player;
+- (void)videoPlayer:(id)player currentTimeDidChange:(id *)change;
+- (void)videoPlayer:(id)player desiredSeekTimeDidChange:(id *)change;
 - (void)viewDidLoad;
-- (void)viewModel:(id)a3 didChange:(id)a4;
+- (void)viewModel:(id)model didChange:(id)change;
 @end
 
 @implementation PUVideoHighlightStripTileViewController
 
-- (void)videoPlayer:(id)a3 desiredSeekTimeDidChange:(id *)a4
+- (void)videoPlayer:(id)player desiredSeekTimeDidChange:(id *)change
 {
-  if (a3)
+  if (player)
   {
-    [a3 desiredSeekTime];
+    [player desiredSeekTime];
   }
 
   else
@@ -32,11 +32,11 @@
   [(PUVideoHighlightStripTileViewController *)self setCurrentTime:&v5];
 }
 
-- (void)videoPlayer:(id)a3 currentTimeDidChange:(id *)a4
+- (void)videoPlayer:(id)player currentTimeDidChange:(id *)change
 {
-  if (a3)
+  if (player)
   {
-    [a3 currentTime];
+    [player currentTime];
   }
 
   else
@@ -50,15 +50,15 @@
   [(PUVideoHighlightStripTileViewController *)self setCurrentTime:&v5];
 }
 
-- (void)viewModel:(id)a3 didChange:(id)a4
+- (void)viewModel:(id)model didChange:(id)change
 {
-  v9 = a4;
-  v6 = a3;
-  v7 = [(PUVideoHighlightStripTileViewController *)self assetViewModel];
+  changeCopy = change;
+  modelCopy = model;
+  assetViewModel = [(PUVideoHighlightStripTileViewController *)self assetViewModel];
 
-  if (v7 == v6)
+  if (assetViewModel == modelCopy)
   {
-    if (([v9 highlightTimeRangesChanged] & 1) != 0 || (objc_msgSend(v9, "videoPlayerDidChange") & 1) != 0 || (objc_msgSend(v9, "videoPlayerChange"), v8 = objc_claimAutoreleasedReturnValue(), v8, v8))
+    if (([changeCopy highlightTimeRangesChanged] & 1) != 0 || (objc_msgSend(changeCopy, "videoPlayerDidChange") & 1) != 0 || (objc_msgSend(changeCopy, "videoPlayerChange"), v8 = objc_claimAutoreleasedReturnValue(), v8, v8))
     {
       [(PUVideoHighlightStripTileViewController *)self _updateHighlightsView];
     }
@@ -76,79 +76,79 @@
 - (void)_updateHighlightsViewCurrentTime
 {
   [(PUVideoHighlightStripTileViewController *)self currentTime];
-  v3 = [(PUVideoHighlightStripTileViewController *)self highlightsView];
+  highlightsView = [(PUVideoHighlightStripTileViewController *)self highlightsView];
   v4 = v6;
   v5 = v7;
-  [v3 setCurrentTime:&v4];
+  [highlightsView setCurrentTime:&v4];
 }
 
-- (void)setCurrentTime:(id *)a3
+- (void)setCurrentTime:(id *)time
 {
   p_currentTime = &self->_currentTime;
-  time1 = *a3;
+  time1 = *time;
   currentTime = self->_currentTime;
   if (CMTimeCompare(&time1, &currentTime))
   {
-    v6 = *&a3->var0;
-    p_currentTime->epoch = a3->var3;
+    v6 = *&time->var0;
+    p_currentTime->epoch = time->var3;
     *&p_currentTime->value = v6;
     [(PUVideoHighlightStripTileViewController *)self _updateHighlightsViewCurrentTime];
   }
 }
 
-- (void)setHighlightColor:(id)a3
+- (void)setHighlightColor:(id)color
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_highlightColor != v5)
+  colorCopy = color;
+  v6 = colorCopy;
+  if (self->_highlightColor != colorCopy)
   {
-    v8 = v5;
-    v5 = [(UIColor *)v5 isEqual:?];
+    v8 = colorCopy;
+    colorCopy = [(UIColor *)colorCopy isEqual:?];
     v6 = v8;
-    if ((v5 & 1) == 0)
+    if ((colorCopy & 1) == 0)
     {
-      objc_storeStrong(&self->_highlightColor, a3);
-      v7 = [(PUVideoHighlightStripTileViewController *)self highlightsView];
-      [v7 setHighlightColor:v8];
+      objc_storeStrong(&self->_highlightColor, color);
+      highlightsView = [(PUVideoHighlightStripTileViewController *)self highlightsView];
+      [highlightsView setHighlightColor:v8];
 
       v6 = v8;
     }
   }
 
-  MEMORY[0x1EEE66BB8](v5, v6);
+  MEMORY[0x1EEE66BB8](colorCopy, v6);
 }
 
 - (void)_updateHighlightsView
 {
-  v3 = [(PUVideoHighlightStripTileViewController *)self assetViewModel];
-  v4 = [v3 highlightTimeRanges];
-  v5 = [v3 videoPlayer];
-  v6 = [v5 timeRangeMapper];
+  assetViewModel = [(PUVideoHighlightStripTileViewController *)self assetViewModel];
+  highlightTimeRanges = [assetViewModel highlightTimeRanges];
+  videoPlayer = [assetViewModel videoPlayer];
+  timeRangeMapper = [videoPlayer timeRangeMapper];
 
-  if (v6)
+  if (timeRangeMapper)
   {
     v21 = MEMORY[0x1E69E9820];
     v22 = 3221225472;
     v23 = __64__PUVideoHighlightStripTileViewController__updateHighlightsView__block_invoke;
     v24 = &unk_1E7B7E548;
-    v25 = v6;
+    v25 = timeRangeMapper;
     v7 = PXMap();
 
-    v4 = v7;
+    highlightTimeRanges = v7;
   }
 
-  v8 = [v3 shouldShowHighlightTimeRanges];
-  v9 = [(PUVideoHighlightStripTileViewController *)self highlightsView];
-  [v9 setHidden:v8 ^ 1u];
+  shouldShowHighlightTimeRanges = [assetViewModel shouldShowHighlightTimeRanges];
+  highlightsView = [(PUVideoHighlightStripTileViewController *)self highlightsView];
+  [highlightsView setHidden:shouldShowHighlightTimeRanges ^ 1u];
 
-  v10 = [(PUVideoHighlightStripTileViewController *)self highlightsView];
-  [v10 setHighlightTimeRanges:v4];
+  highlightsView2 = [(PUVideoHighlightStripTileViewController *)self highlightsView];
+  [highlightsView2 setHighlightTimeRanges:highlightTimeRanges];
 
-  v11 = [v3 videoPlayer];
-  v12 = v11;
-  if (v11)
+  videoPlayer2 = [assetViewModel videoPlayer];
+  v12 = videoPlayer2;
+  if (videoPlayer2)
   {
-    [v11 duration];
+    [videoPlayer2 duration];
   }
 
   else
@@ -157,15 +157,15 @@
     v20 = 0;
   }
 
-  v13 = [(PUVideoHighlightStripTileViewController *)self highlightsView];
+  highlightsView3 = [(PUVideoHighlightStripTileViewController *)self highlightsView];
   v17 = v19;
   v18 = v20;
-  [v13 setVideoDuration:&v17];
+  [highlightsView3 setVideoDuration:&v17];
 
-  v14 = [v3 videoPlayer];
-  v15 = [v14 isPlaybackDesired];
-  v16 = [(PUVideoHighlightStripTileViewController *)self highlightsView];
-  [v16 setIsPlaying:v15];
+  videoPlayer3 = [assetViewModel videoPlayer];
+  isPlaybackDesired = [videoPlayer3 isPlaybackDesired];
+  highlightsView4 = [(PUVideoHighlightStripTileViewController *)self highlightsView];
+  [highlightsView4 setIsPlaying:isPlaybackDesired];
 
   [(PUVideoHighlightStripTileViewController *)self _updateHighlightsViewCurrentTime];
 }
@@ -210,17 +210,17 @@ LABEL_6:
   return v6;
 }
 
-- (void)setVideoPlayer:(id)a3
+- (void)setVideoPlayer:(id)player
 {
-  v5 = a3;
+  playerCopy = player;
   videoPlayer = self->_videoPlayer;
-  if (videoPlayer != v5)
+  if (videoPlayer != playerCopy)
   {
     [(PUBrowsingVideoPlayer *)videoPlayer unregisterTimeObserver:self];
-    objc_storeStrong(&self->_videoPlayer, a3);
-    if (v5)
+    objc_storeStrong(&self->_videoPlayer, player);
+    if (playerCopy)
     {
-      [(PUBrowsingVideoPlayer *)v5 currentTime];
+      [(PUBrowsingVideoPlayer *)playerCopy currentTime];
     }
 
     else
@@ -232,28 +232,28 @@ LABEL_6:
     v7 = v9;
     v8 = v10;
     [(PUVideoHighlightStripTileViewController *)self setCurrentTime:&v7];
-    [(PUBrowsingVideoPlayer *)v5 registerTimeObserver:self];
+    [(PUBrowsingVideoPlayer *)playerCopy registerTimeObserver:self];
   }
 }
 
-- (void)setAssetViewModel:(id)a3
+- (void)setAssetViewModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   assetViewModel = self->_assetViewModel;
-  if (assetViewModel != v5)
+  if (assetViewModel != modelCopy)
   {
-    v8 = v5;
+    v8 = modelCopy;
     [(PUAssetViewModel *)assetViewModel unregisterChangeObserver:self];
-    objc_storeStrong(&self->_assetViewModel, a3);
-    v7 = [(PUAssetViewModel *)v8 videoPlayer];
-    [(PUVideoHighlightStripTileViewController *)self setVideoPlayer:v7];
+    objc_storeStrong(&self->_assetViewModel, model);
+    videoPlayer = [(PUAssetViewModel *)v8 videoPlayer];
+    [(PUVideoHighlightStripTileViewController *)self setVideoPlayer:videoPlayer];
 
     [(PUAssetViewModel *)v8 registerChangeObserver:self];
     assetViewModel = [(PUVideoHighlightStripTileViewController *)self _updateHighlightsView];
-    v5 = v8;
+    modelCopy = v8;
   }
 
-  MEMORY[0x1EEE66BB8](assetViewModel, v5);
+  MEMORY[0x1EEE66BB8](assetViewModel, modelCopy);
 }
 
 - (void)viewDidLoad
@@ -261,13 +261,13 @@ LABEL_6:
   v11.receiver = self;
   v11.super_class = PUVideoHighlightStripTileViewController;
   [(PUTileViewController *)&v11 viewDidLoad];
-  v3 = [(PUTileViewController *)self view];
-  [v3 bounds];
+  view = [(PUTileViewController *)self view];
+  [view bounds];
   v8 = [[_PUVideoHighlightStripView alloc] initWithFrame:v4, v5, v6, v7];
   [(_PUVideoHighlightStripView *)v8 setAutoresizingMask:18];
-  [v3 addSubview:v8];
-  v9 = [(PUVideoHighlightStripTileViewController *)self highlightColor];
-  [(_PUVideoHighlightStripView *)v8 setHighlightColor:v9];
+  [view addSubview:v8];
+  highlightColor = [(PUVideoHighlightStripTileViewController *)self highlightColor];
+  [(_PUVideoHighlightStripView *)v8 setHighlightColor:highlightColor];
 
   highlightsView = self->_highlightsView;
   self->_highlightsView = v8;

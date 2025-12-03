@@ -1,52 +1,52 @@
 @interface CHDChartTypesCollection
-- (CHDChartTypesCollection)initWithChart:(id)a3;
-- (unint64_t)addObject:(id)a3;
+- (CHDChartTypesCollection)initWithChart:(id)chart;
+- (unint64_t)addObject:(id)object;
 - (void)resetSeriesOrder;
 @end
 
 @implementation CHDChartTypesCollection
 
-- (CHDChartTypesCollection)initWithChart:(id)a3
+- (CHDChartTypesCollection)initWithChart:(id)chart
 {
-  v4 = a3;
+  chartCopy = chart;
   v8.receiver = self;
   v8.super_class = CHDChartTypesCollection;
   v5 = [(EDCollection *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->mChart, v4);
+    objc_storeWeak(&v5->mChart, chartCopy);
   }
 
   return v6;
 }
 
-- (unint64_t)addObject:(id)a3
+- (unint64_t)addObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v15.receiver = self;
   v15.super_class = CHDChartTypesCollection;
-  v5 = [(EDCollection *)&v15 addObject:v4];
+  v5 = [(EDCollection *)&v15 addObject:objectCopy];
   if (v5 != -1)
   {
     WeakRetained = objc_loadWeakRetained(&self->mChart);
-    v7 = [WeakRetained processors];
-    [v7 markObject:v4 processor:objc_opt_class()];
+    processors = [WeakRetained processors];
+    [processors markObject:objectCopy processor:objc_opt_class()];
 
     if ([(EDCollection *)self count]== 1)
     {
       v8 = objc_loadWeakRetained(&self->mChart);
-      v9 = [v8 processors];
-      [v9 markObject:v4 processor:objc_opt_class()];
+      processors2 = [v8 processors];
+      [processors2 markObject:objectCopy processor:objc_opt_class()];
     }
 
     v10 = objc_loadWeakRetained(&self->mChart);
-    v11 = [v10 processors];
-    [v11 markObject:v4 processor:objc_opt_class()];
+    processors3 = [v10 processors];
+    [processors3 markObject:objectCopy processor:objc_opt_class()];
 
     v12 = objc_loadWeakRetained(&self->mChart);
-    v13 = [v12 processors];
-    [v13 markObject:v4 processor:objc_opt_class()];
+    processors4 = [v12 processors];
+    [processors4 markObject:objectCopy processor:objc_opt_class()];
   }
 
   return v5;
@@ -67,14 +67,14 @@
         v8 = v7;
         if (v7)
         {
-          v9 = [v7 seriesCollection];
-          v10 = [v9 count];
+          seriesCollection = [v7 seriesCollection];
+          v10 = [seriesCollection count];
           if (v10)
           {
             v11 = 0;
             do
             {
-              v12 = [v9 objectAtIndex:v11];
+              v12 = [seriesCollection objectAtIndex:v11];
               v13 = v12;
               if (v12)
               {

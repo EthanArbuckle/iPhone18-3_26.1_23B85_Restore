@@ -1,14 +1,14 @@
 @interface SNNetworkManager
 + (id)sharedInstance;
 - (id)_init;
-- (void)acquireWiFiAssertion:(int64_t)a3;
-- (void)addObserver:(id)a3;
-- (void)networkManagerLostNonWWANConnectivity:(id)a3;
-- (void)networkManagerNetworkUnreachable:(id)a3;
-- (void)networkManagerNonWWANDidBecomeAvailable:(id)a3;
+- (void)acquireWiFiAssertion:(int64_t)assertion;
+- (void)addObserver:(id)observer;
+- (void)networkManagerLostNonWWANConnectivity:(id)connectivity;
+- (void)networkManagerNetworkUnreachable:(id)unreachable;
+- (void)networkManagerNonWWANDidBecomeAvailable:(id)available;
 - (void)releaseWiFiAssertion;
-- (void)removeObserver:(id)a3;
-- (void)startMonitoringNetworkForHost:(id)a3;
+- (void)removeObserver:(id)observer;
+- (void)startMonitoringNetworkForHost:(id)host;
 - (void)stopMonitoringNetwork;
 @end
 
@@ -76,9 +76,9 @@ void __34__SNNetworkManager_sharedInstance__block_invoke()
   return v2;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   objc_initWeak(&location, self);
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -86,8 +86,8 @@ void __34__SNNetworkManager_sharedInstance__block_invoke()
   block[2] = __32__SNNetworkManager_addObserver___block_invoke;
   block[3] = &unk_2784DD0F0;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(queue, block);
 
   objc_destroyWeak(&v9);
@@ -101,9 +101,9 @@ void __32__SNNetworkManager_addObserver___block_invoke(uint64_t a1)
   [WeakRetained[3] addObserver:?];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   objc_initWeak(&location, self);
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -111,8 +111,8 @@ void __32__SNNetworkManager_addObserver___block_invoke(uint64_t a1)
   block[2] = __35__SNNetworkManager_removeObserver___block_invoke;
   block[3] = &unk_2784DD0F0;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(queue, block);
 
   objc_destroyWeak(&v9);
@@ -129,9 +129,9 @@ void __35__SNNetworkManager_removeObserver___block_invoke(uint64_t a1)
   }
 }
 
-- (void)startMonitoringNetworkForHost:(id)a3
+- (void)startMonitoringNetworkForHost:(id)host
 {
-  v4 = a3;
+  hostCopy = host;
   objc_initWeak(&location, self);
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -139,8 +139,8 @@ void __35__SNNetworkManager_removeObserver___block_invoke(uint64_t a1)
   block[2] = __50__SNNetworkManager_startMonitoringNetworkForHost___block_invoke;
   block[3] = &unk_2784DD0F0;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = hostCopy;
+  v6 = hostCopy;
   dispatch_async(queue, block);
 
   objc_destroyWeak(&v9);
@@ -173,7 +173,7 @@ void __41__SNNetworkManager_stopMonitoringNetwork__block_invoke(uint64_t a1)
   [WeakRetained[3] stopMonitoringNetwork];
 }
 
-- (void)acquireWiFiAssertion:(int64_t)a3
+- (void)acquireWiFiAssertion:(int64_t)assertion
 {
   objc_initWeak(&location, self);
   queue = self->_queue;
@@ -182,7 +182,7 @@ void __41__SNNetworkManager_stopMonitoringNetwork__block_invoke(uint64_t a1)
   block[2] = __41__SNNetworkManager_acquireWiFiAssertion___block_invoke;
   block[3] = &unk_2784DD140;
   objc_copyWeak(v7, &location);
-  v7[1] = a3;
+  v7[1] = assertion;
   dispatch_async(queue, block);
   objc_destroyWeak(v7);
   objc_destroyWeak(&location);
@@ -194,7 +194,7 @@ void __41__SNNetworkManager_acquireWiFiAssertion___block_invoke(uint64_t a1)
   [WeakRetained[3] acquireWiFiAssertionWithWifiAssertionTypeRawValue:*(a1 + 40)];
 }
 
-- (void)networkManagerLostNonWWANConnectivity:(id)a3
+- (void)networkManagerLostNonWWANConnectivity:(id)connectivity
 {
   objc_initWeak(&location, self);
   queue = self->_queue;
@@ -246,7 +246,7 @@ void __58__SNNetworkManager_networkManagerLostNonWWANConnectivity___block_invoke
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)networkManagerNetworkUnreachable:(id)a3
+- (void)networkManagerNetworkUnreachable:(id)unreachable
 {
   objc_initWeak(&location, self);
   queue = self->_queue;
@@ -298,7 +298,7 @@ void __53__SNNetworkManager_networkManagerNetworkUnreachable___block_invoke(uint
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)networkManagerNonWWANDidBecomeAvailable:(id)a3
+- (void)networkManagerNonWWANDidBecomeAvailable:(id)available
 {
   objc_initWeak(&location, self);
   queue = self->_queue;

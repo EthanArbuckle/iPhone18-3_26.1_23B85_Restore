@@ -1,104 +1,104 @@
 @interface SKDistanceConstraint
-+ (id)constraintWithNode:(id)a3 distanceRange:(id)a4;
-+ (id)constraintWithPoint:(CGPoint)a3 distanceRange:(id)a4;
-+ (id)constraintWithPoint:(CGPoint)a3 inNode:(id)a4 distanceRange:(id)a5;
-- (BOOL)isEqualToDistanceConstraint:(id)a3;
++ (id)constraintWithNode:(id)node distanceRange:(id)range;
++ (id)constraintWithPoint:(CGPoint)point distanceRange:(id)range;
++ (id)constraintWithPoint:(CGPoint)point inNode:(id)node distanceRange:(id)range;
+- (BOOL)isEqualToDistanceConstraint:(id)constraint;
 - (CGPoint)point;
-- (SKDistanceConstraint)initWithCoder:(id)a3;
-- (SKDistanceConstraint)initWithPoint:(CGPoint)a3 inNode:(id)a4 distanceRange:(id)a5;
+- (SKDistanceConstraint)initWithCoder:(id)coder;
+- (SKDistanceConstraint)initWithPoint:(CGPoint)point inNode:(id)node distanceRange:(id)range;
 - (SKNode)node;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SKDistanceConstraint
 
-- (SKDistanceConstraint)initWithPoint:(CGPoint)a3 inNode:(id)a4 distanceRange:(id)a5
+- (SKDistanceConstraint)initWithPoint:(CGPoint)point inNode:(id)node distanceRange:(id)range
 {
-  y = a3.y;
-  x = a3.x;
-  v9 = a4;
-  v10 = a5;
+  y = point.y;
+  x = point.x;
+  nodeCopy = node;
+  rangeCopy = range;
   v14.receiver = self;
   v14.super_class = SKDistanceConstraint;
   v11 = [(SKConstraint *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    [(SKDistanceConstraint *)v11 setNode:v9];
-    [(SKDistanceConstraint *)v12 setDistanceRange:v10];
+    [(SKDistanceConstraint *)v11 setNode:nodeCopy];
+    [(SKDistanceConstraint *)v12 setDistanceRange:rangeCopy];
     [(SKDistanceConstraint *)v12 setPoint:x, y];
   }
 
   return v12;
 }
 
-- (SKDistanceConstraint)initWithCoder:(id)a3
+- (SKDistanceConstraint)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = SKDistanceConstraint;
-  v5 = [(SKConstraint *)&v9 initWithCoder:v4];
+  v5 = [(SKConstraint *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_node"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_node"];
     [(SKDistanceConstraint *)v5 setNode:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_distanceRange"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_distanceRange"];
     [(SKDistanceConstraint *)v5 setDistanceRange:v7];
 
-    [v4 decodeCGPointForKey:@"_point"];
+    [coderCopy decodeCGPointForKey:@"_point"];
     [(SKDistanceConstraint *)v5 setPoint:?];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = SKDistanceConstraint;
-  [(SKConstraint *)&v7 encodeWithCoder:v4];
-  v5 = [(SKDistanceConstraint *)self node];
-  [v4 encodeObject:v5 forKey:@"_node"];
+  [(SKConstraint *)&v7 encodeWithCoder:coderCopy];
+  node = [(SKDistanceConstraint *)self node];
+  [coderCopy encodeObject:node forKey:@"_node"];
 
-  v6 = [(SKDistanceConstraint *)self distanceRange];
-  [v4 encodeObject:v6 forKey:@"_distanceRange"];
+  distanceRange = [(SKDistanceConstraint *)self distanceRange];
+  [coderCopy encodeObject:distanceRange forKey:@"_distanceRange"];
 
   [(SKDistanceConstraint *)self point];
-  [v4 encodeCGPoint:@"_point" forKey:?];
+  [coderCopy encodeCGPoint:@"_point" forKey:?];
 }
 
-- (BOOL)isEqualToDistanceConstraint:(id)a3
+- (BOOL)isEqualToDistanceConstraint:(id)constraint
 {
-  v4 = a3;
-  if (self != v4)
+  constraintCopy = constraint;
+  if (self != constraintCopy)
   {
-    v5 = [(SKDistanceConstraint *)self distanceRange];
-    v6 = [(SKDistanceConstraint *)v4 distanceRange];
-    v7 = [v5 isEqualToRange:v6];
+    distanceRange = [(SKDistanceConstraint *)self distanceRange];
+    distanceRange2 = [(SKDistanceConstraint *)constraintCopy distanceRange];
+    v7 = [distanceRange isEqualToRange:distanceRange2];
 
     if (v7)
     {
-      v8 = [(SKDistanceConstraint *)self node];
-      if (v8)
+      node = [(SKDistanceConstraint *)self node];
+      if (node)
       {
       }
 
       else
       {
-        v10 = [(SKDistanceConstraint *)v4 node];
+        node2 = [(SKDistanceConstraint *)constraintCopy node];
 
-        if (!v10)
+        if (!node2)
         {
           goto LABEL_8;
         }
       }
 
-      v11 = [(SKDistanceConstraint *)self node];
-      v12 = [(SKDistanceConstraint *)v4 node];
-      v13 = [v11 isEqualToNode:v12];
+      node3 = [(SKDistanceConstraint *)self node];
+      node4 = [(SKDistanceConstraint *)constraintCopy node];
+      v13 = [node3 isEqualToNode:node4];
 
       if (v13)
       {
@@ -131,48 +131,48 @@ LABEL_10:
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = SKDistanceConstraint;
-  v4 = [(SKConstraint *)&v8 copyWithZone:a3];
-  v5 = [(SKDistanceConstraint *)self node];
-  [v4 setNode:v5];
+  v4 = [(SKConstraint *)&v8 copyWithZone:zone];
+  node = [(SKDistanceConstraint *)self node];
+  [v4 setNode:node];
 
-  v6 = [(SKDistanceConstraint *)self distanceRange];
-  [v4 setDistanceRange:v6];
+  distanceRange = [(SKDistanceConstraint *)self distanceRange];
+  [v4 setDistanceRange:distanceRange];
 
   [(SKDistanceConstraint *)self point];
   [v4 setPoint:?];
   return v4;
 }
 
-+ (id)constraintWithNode:(id)a3 distanceRange:(id)a4
++ (id)constraintWithNode:(id)node distanceRange:(id)range
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [objc_alloc(objc_opt_class()) initWithPoint:v5 inNode:v6 distanceRange:{*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)}];
+  nodeCopy = node;
+  rangeCopy = range;
+  v7 = [objc_alloc(objc_opt_class()) initWithPoint:nodeCopy inNode:rangeCopy distanceRange:{*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)}];
 
   return v7;
 }
 
-+ (id)constraintWithPoint:(CGPoint)a3 distanceRange:(id)a4
++ (id)constraintWithPoint:(CGPoint)point distanceRange:(id)range
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = a4;
-  v7 = [objc_alloc(objc_opt_class()) initWithPoint:0 inNode:v6 distanceRange:{x, y}];
+  y = point.y;
+  x = point.x;
+  rangeCopy = range;
+  v7 = [objc_alloc(objc_opt_class()) initWithPoint:0 inNode:rangeCopy distanceRange:{x, y}];
 
   return v7;
 }
 
-+ (id)constraintWithPoint:(CGPoint)a3 inNode:(id)a4 distanceRange:(id)a5
++ (id)constraintWithPoint:(CGPoint)point inNode:(id)node distanceRange:(id)range
 {
-  y = a3.y;
-  x = a3.x;
-  v8 = a4;
-  v9 = a5;
-  v10 = [objc_alloc(objc_opt_class()) initWithPoint:v8 inNode:v9 distanceRange:{x, y}];
+  y = point.y;
+  x = point.x;
+  nodeCopy = node;
+  rangeCopy = range;
+  v10 = [objc_alloc(objc_opt_class()) initWithPoint:nodeCopy inNode:rangeCopy distanceRange:{x, y}];
 
   return v10;
 }

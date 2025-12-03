@@ -1,15 +1,15 @@
 @interface NDOIntervalCallActivity
 + (BOOL)isDeviceCountryEligibleForIntervalEvent;
-+ (void)performScheduleIntervalActivityIfPossibleWithCompletion:(id)a3;
-- (void)performActivityForScheduler:(id)a3 withCompletionHandler:(id)a4;
++ (void)performScheduleIntervalActivityIfPossibleWithCompletion:(id)completion;
+- (void)performActivityForScheduler:(id)scheduler withCompletionHandler:(id)handler;
 @end
 
 @implementation NDOIntervalCallActivity
 
-- (void)performActivityForScheduler:(id)a3 withCompletionHandler:(id)a4
+- (void)performActivityForScheduler:(id)scheduler withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  schedulerCopy = scheduler;
+  handlerCopy = handler;
   [(NDOIntervalCallActivity *)self setOutreachInProgress:1];
   objc_initWeak(&location, self);
   v17[0] = _NSConcreteStackBlock;
@@ -17,16 +17,16 @@
   v17[2] = sub_10000C9D0;
   v17[3] = &unk_10009A978;
   objc_copyWeak(&v20, &location);
-  v8 = v6;
+  v8 = schedulerCopy;
   v18 = v8;
-  v9 = v7;
+  v9 = handlerCopy;
   v19 = v9;
   v10 = [NSTimer timerWithTimeInterval:1 repeats:v17 block:2000000000.0];
   [(NDOIntervalCallActivity *)self setOutReachTimer:v10];
 
   v11 = +[NSRunLoop mainRunLoop];
-  v12 = [(NDOIntervalCallActivity *)self outReachTimer];
-  [v11 addTimer:v12 forMode:NSDefaultRunLoopMode];
+  outReachTimer = [(NDOIntervalCallActivity *)self outReachTimer];
+  [v11 addTimer:outReachTimer forMode:NSDefaultRunLoopMode];
 
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
@@ -43,14 +43,14 @@
   objc_destroyWeak(&location);
 }
 
-+ (void)performScheduleIntervalActivityIfPossibleWithCompletion:(id)a3
++ (void)performScheduleIntervalActivityIfPossibleWithCompletion:(id)completion
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10000D548;
   v4[3] = &unk_10009AA40;
-  v5 = a3;
-  v3 = v5;
+  completionCopy = completion;
+  v3 = completionCopy;
   [NDOServerVersionUtilities serverVersionSupported:v4];
 }
 

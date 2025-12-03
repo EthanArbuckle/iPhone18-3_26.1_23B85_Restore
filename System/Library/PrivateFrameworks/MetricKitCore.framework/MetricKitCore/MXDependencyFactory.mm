@@ -1,8 +1,8 @@
 @interface MXDependencyFactory
 + (id)shared;
 - (MXDependencyFactory)init;
-- (id)handlerForMXCoreWithDelegate:(id)a3;
-- (id)handlerForMXSourceWithDelegate:(id)a3;
+- (id)handlerForMXCoreWithDelegate:(id)delegate;
+- (id)handlerForMXSourceWithDelegate:(id)delegate;
 - (void)_initIvar;
 @end
 
@@ -14,7 +14,7 @@
   block[1] = 3221225472;
   block[2] = __29__MXDependencyFactory_shared__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (shared_onceToken != -1)
   {
     dispatch_once(&shared_onceToken, block);
@@ -99,18 +99,18 @@ uint64_t __29__MXDependencyFactory_shared__block_invoke(uint64_t a1)
   MEMORY[0x2821F96F8]();
 }
 
-- (id)handlerForMXCoreWithDelegate:(id)a3
+- (id)handlerForMXCoreWithDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [[MXCoreHandler alloc] initWithClientUtil:self->_clientUtil andDeliveryDataCacher:self->_deliveryDataCacher andDeliveryPathUtil:self->_deliveryPathUtil andMetricServices:self->_metricServices andDelegate:v4];
+  delegateCopy = delegate;
+  v5 = [[MXCoreHandler alloc] initWithClientUtil:self->_clientUtil andDeliveryDataCacher:self->_deliveryDataCacher andDeliveryPathUtil:self->_deliveryPathUtil andMetricServices:self->_metricServices andDelegate:delegateCopy];
 
   return v5;
 }
 
-- (id)handlerForMXSourceWithDelegate:(id)a3
+- (id)handlerForMXSourceWithDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [[MXSourceHandler alloc] initWithSourceDataCacher:self->_sourceDataCacher andDeliveryDataCacher:self->_deliveryDataCacher andSourcePathUtil:self->_sourcePathUtil andBundleUtil:self->_bundleUtil andDiagnosticServices:self->_diagnosticServices andDelegate:v4];
+  delegateCopy = delegate;
+  v5 = [[MXSourceHandler alloc] initWithSourceDataCacher:self->_sourceDataCacher andDeliveryDataCacher:self->_deliveryDataCacher andSourcePathUtil:self->_sourcePathUtil andBundleUtil:self->_bundleUtil andDiagnosticServices:self->_diagnosticServices andDelegate:delegateCopy];
 
   return v5;
 }

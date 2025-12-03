@@ -1,14 +1,14 @@
 @interface CSAudioSessionInfoProvidingProxy
 - (CSAudioSessionInfoProviding)audioSessionInfoProvider;
-- (CSAudioSessionInfoProvidingProxy)initWithXPCConnection:(id)a3;
+- (CSAudioSessionInfoProvidingProxy)initWithXPCConnection:(id)connection;
 - (CSClientXPCConnection)xpcConnection;
-- (void)_handleSessionIDRequestMessage:(id)a3 messageBody:(id)a4 client:(id)a5;
-- (void)_sendDelegateMessageToClient:(id)a3;
-- (void)audioSessionInfoProvider:(id)a3 didReceiveAudioSessionInterruptionNotificationWithUserInfo:(id)a4;
-- (void)audioSessionInfoProvider:(id)a3 didReceiveAudioSessionMediaServicesWereLostNotificationWithUserInfo:(id)a4;
-- (void)audioSessionInfoProvider:(id)a3 didReceiveAudioSessionMediaServicesWereResetNotificationWithUserInfo:(id)a4;
-- (void)audioSessionInfoProvider:(id)a3 didReceiveAudioSessionRouteChangeNotificationWithUserInfo:(id)a4;
-- (void)handleXPCMessage:(id)a3 messageBody:(id)a4 client:(id)a5;
+- (void)_handleSessionIDRequestMessage:(id)message messageBody:(id)body client:(id)client;
+- (void)_sendDelegateMessageToClient:(id)client;
+- (void)audioSessionInfoProvider:(id)provider didReceiveAudioSessionInterruptionNotificationWithUserInfo:(id)info;
+- (void)audioSessionInfoProvider:(id)provider didReceiveAudioSessionMediaServicesWereLostNotificationWithUserInfo:(id)info;
+- (void)audioSessionInfoProvider:(id)provider didReceiveAudioSessionMediaServicesWereResetNotificationWithUserInfo:(id)info;
+- (void)audioSessionInfoProvider:(id)provider didReceiveAudioSessionRouteChangeNotificationWithUserInfo:(id)info;
+- (void)handleXPCMessage:(id)message messageBody:(id)body client:(id)client;
 @end
 
 @implementation CSAudioSessionInfoProvidingProxy
@@ -27,80 +27,80 @@
   return WeakRetained;
 }
 
-- (void)_sendDelegateMessageToClient:(id)a3
+- (void)_sendDelegateMessageToClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   *keys = *off_100252E40;
   v9[0] = xpc_int64_create(11);
-  v5 = v4;
+  v5 = clientCopy;
   v9[1] = v5;
   v6 = xpc_dictionary_create(keys, v9, 2uLL);
-  v7 = [(CSAudioSessionInfoProvidingProxy *)self xpcConnection];
-  [v7 sendMessageToClient:v6];
+  xpcConnection = [(CSAudioSessionInfoProvidingProxy *)self xpcConnection];
+  [xpcConnection sendMessageToClient:v6];
 
   for (i = 1; i != -1; --i)
   {
   }
 }
 
-- (void)audioSessionInfoProvider:(id)a3 didReceiveAudioSessionMediaServicesWereResetNotificationWithUserInfo:(id)a4
+- (void)audioSessionInfoProvider:(id)provider didReceiveAudioSessionMediaServicesWereResetNotificationWithUserInfo:(id)info
 {
   keys = "type";
-  v5 = a4;
+  infoCopy = info;
   values = xpc_int64_create(4);
   v6 = xpc_dictionary_create(&keys, &values, 1uLL);
-  v7 = [v5 _cs_xpcObject];
+  _cs_xpcObject = [infoCopy _cs_xpcObject];
 
-  xpc_dictionary_set_value(v6, "notificationInfo", v7);
+  xpc_dictionary_set_value(v6, "notificationInfo", _cs_xpcObject);
   [(CSAudioSessionInfoProvidingProxy *)self _sendDelegateMessageToClient:v6];
 }
 
-- (void)audioSessionInfoProvider:(id)a3 didReceiveAudioSessionMediaServicesWereLostNotificationWithUserInfo:(id)a4
+- (void)audioSessionInfoProvider:(id)provider didReceiveAudioSessionMediaServicesWereLostNotificationWithUserInfo:(id)info
 {
   keys = "type";
-  v5 = a4;
+  infoCopy = info;
   values = xpc_int64_create(3);
   v6 = xpc_dictionary_create(&keys, &values, 1uLL);
-  v7 = [v5 _cs_xpcObject];
+  _cs_xpcObject = [infoCopy _cs_xpcObject];
 
-  xpc_dictionary_set_value(v6, "notificationInfo", v7);
+  xpc_dictionary_set_value(v6, "notificationInfo", _cs_xpcObject);
   [(CSAudioSessionInfoProvidingProxy *)self _sendDelegateMessageToClient:v6];
 }
 
-- (void)audioSessionInfoProvider:(id)a3 didReceiveAudioSessionRouteChangeNotificationWithUserInfo:(id)a4
+- (void)audioSessionInfoProvider:(id)provider didReceiveAudioSessionRouteChangeNotificationWithUserInfo:(id)info
 {
   keys = "type";
-  v5 = a4;
+  infoCopy = info;
   values = xpc_int64_create(2);
   v6 = xpc_dictionary_create(&keys, &values, 1uLL);
-  v7 = [v5 _cs_xpcObject];
+  _cs_xpcObject = [infoCopy _cs_xpcObject];
 
-  xpc_dictionary_set_value(v6, "notificationInfo", v7);
+  xpc_dictionary_set_value(v6, "notificationInfo", _cs_xpcObject);
   [(CSAudioSessionInfoProvidingProxy *)self _sendDelegateMessageToClient:v6];
 }
 
-- (void)audioSessionInfoProvider:(id)a3 didReceiveAudioSessionInterruptionNotificationWithUserInfo:(id)a4
+- (void)audioSessionInfoProvider:(id)provider didReceiveAudioSessionInterruptionNotificationWithUserInfo:(id)info
 {
   keys = "type";
-  v5 = a4;
+  infoCopy = info;
   values = xpc_int64_create(1);
   v6 = xpc_dictionary_create(&keys, &values, 1uLL);
-  v7 = [v5 _cs_xpcObject];
+  _cs_xpcObject = [infoCopy _cs_xpcObject];
 
-  xpc_dictionary_set_value(v6, "notificationInfo", v7);
+  xpc_dictionary_set_value(v6, "notificationInfo", _cs_xpcObject);
   [(CSAudioSessionInfoProvidingProxy *)self _sendDelegateMessageToClient:v6];
 }
 
-- (void)_handleSessionIDRequestMessage:(id)a3 messageBody:(id)a4 client:(id)a5
+- (void)_handleSessionIDRequestMessage:(id)message messageBody:(id)body client:(id)client
 {
-  v8 = a4;
-  v9 = a5;
-  reply = xpc_dictionary_create_reply(a3);
+  bodyCopy = body;
+  clientCopy = client;
+  reply = xpc_dictionary_create_reply(message);
   WeakRetained = objc_loadWeakRetained(&self->_audioSessionInfoProvider);
 
   if (WeakRetained)
   {
-    string = xpc_dictionary_get_string(v8, "deviceID");
+    string = xpc_dictionary_get_string(bodyCopy, "deviceID");
     if (string)
     {
       v13 = [NSString stringWithUTF8String:string];
@@ -143,18 +143,18 @@
     xpc_dictionary_set_BOOL(reply, "result", 0);
   }
 
-  xpc_connection_send_message(v9, reply);
+  xpc_connection_send_message(clientCopy, reply);
 }
 
-- (void)handleXPCMessage:(id)a3 messageBody:(id)a4 client:(id)a5
+- (void)handleXPCMessage:(id)message messageBody:(id)body client:(id)client
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  int64 = xpc_dictionary_get_int64(v9, "type");
+  messageCopy = message;
+  bodyCopy = body;
+  clientCopy = client;
+  int64 = xpc_dictionary_get_int64(bodyCopy, "type");
   if (int64 == 1)
   {
-    [(CSAudioSessionInfoProvidingProxy *)self _handleSessionIDRequestMessage:v8 messageBody:v9 client:v10];
+    [(CSAudioSessionInfoProvidingProxy *)self _handleSessionIDRequestMessage:messageCopy messageBody:bodyCopy client:clientCopy];
   }
 
   else
@@ -172,16 +172,16 @@
   }
 }
 
-- (CSAudioSessionInfoProvidingProxy)initWithXPCConnection:(id)a3
+- (CSAudioSessionInfoProvidingProxy)initWithXPCConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v8.receiver = self;
   v8.super_class = CSAudioSessionInfoProvidingProxy;
   v5 = [(CSAudioSessionInfoProvidingProxy *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(CSAudioSessionInfoProvidingProxy *)v5 setXpcConnection:v4];
+    [(CSAudioSessionInfoProvidingProxy *)v5 setXpcConnection:connectionCopy];
   }
 
   return v6;

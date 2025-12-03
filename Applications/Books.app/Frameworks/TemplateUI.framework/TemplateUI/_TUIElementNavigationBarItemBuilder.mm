@@ -1,20 +1,20 @@
 @interface _TUIElementNavigationBarItemBuilder
-- (void)addAttributedString:(id)a3 forRole:(id)a4;
-- (void)addImageModel:(id)a3 forRole:(id)a4;
+- (void)addAttributedString:(id)string forRole:(id)role;
+- (void)addImageModel:(id)model forRole:(id)role;
 @end
 
 @implementation _TUIElementNavigationBarItemBuilder
 
-- (void)addAttributedString:(id)a3 forRole:(id)a4
+- (void)addAttributedString:(id)string forRole:(id)role
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (!v6 || ([v6 isEqualToString:@"title"] & 1) != 0)
+  stringCopy = string;
+  roleCopy = role;
+  v7 = roleCopy;
+  if (!roleCopy || ([roleCopy isEqualToString:@"title"] & 1) != 0)
   {
     v8 = &OBJC_IVAR____TUIElementNavigationBarItemBuilder__attributedTitle;
 LABEL_4:
-    v9 = [v12 copy];
+    v9 = [stringCopy copy];
     v10 = *v8;
     v11 = *(&self->super.super.super.isa + v10);
     *(&self->super.super.super.isa + v10) = v9;
@@ -31,16 +31,16 @@ LABEL_4:
 LABEL_5:
 }
 
-- (void)addImageModel:(id)a3 forRole:(id)a4
+- (void)addImageModel:(id)model forRole:(id)role
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (!v6 || [v6 isEqualToString:@"image"])
+  modelCopy = model;
+  roleCopy = role;
+  v7 = roleCopy;
+  if (!roleCopy || [roleCopy isEqualToString:@"image"])
   {
-    v8 = [v10 image];
+    image = [modelCopy image];
     image = self->_image;
-    self->_image = v8;
+    self->_image = image;
   }
 }
 

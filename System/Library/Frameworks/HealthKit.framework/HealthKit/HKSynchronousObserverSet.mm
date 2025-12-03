@@ -1,31 +1,31 @@
 @interface HKSynchronousObserverSet
-- (HKSynchronousObserverSet)initWithName:(id)a3 loggingCategory:(id)a4;
+- (HKSynchronousObserverSet)initWithName:(id)name loggingCategory:(id)category;
 - (NSArray)allObservers;
 - (unint64_t)count;
-- (void)notifyObservers:(id)a3;
-- (void)registerObserver:(id)a3;
-- (void)unregisterObserver:(id)a3;
+- (void)notifyObservers:(id)observers;
+- (void)registerObserver:(id)observer;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation HKSynchronousObserverSet
 
-- (HKSynchronousObserverSet)initWithName:(id)a3 loggingCategory:(id)a4
+- (HKSynchronousObserverSet)initWithName:(id)name loggingCategory:(id)category
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  categoryCopy = category;
   v14.receiver = self;
   v14.super_class = HKSynchronousObserverSet;
   v8 = [(HKSynchronousObserverSet *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [nameCopy copy];
     name = v8->_name;
     v8->_name = v9;
 
-    objc_storeStrong(&v8->_category, a4);
-    v11 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    objc_storeStrong(&v8->_category, category);
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     observerTable = v8->_observerTable;
-    v8->_observerTable = v11;
+    v8->_observerTable = weakObjectsHashTable;
 
     v8->_lock._os_unfair_lock_opaque = 0;
   }
@@ -33,42 +33,42 @@
   return v8;
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_lock);
-  if (![(NSHashTable *)self->_observerTable containsObject:v4])
+  if (![(NSHashTable *)self->_observerTable containsObject:observerCopy])
   {
-    [(NSHashTable *)self->_observerTable addObject:v4];
+    [(NSHashTable *)self->_observerTable addObject:observerCopy];
   }
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_lock);
-  if ([(NSHashTable *)self->_observerTable containsObject:v4])
+  if ([(NSHashTable *)self->_observerTable containsObject:observerCopy])
   {
-    [(NSHashTable *)self->_observerTable removeObject:v4];
+    [(NSHashTable *)self->_observerTable removeObject:observerCopy];
   }
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)notifyObservers:(id)a3
+- (void)notifyObservers:(id)observers
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  observersCopy = observers;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(NSHashTable *)self->_observerTable allObjects];
+  allObjects = [(NSHashTable *)self->_observerTable allObjects];
   os_unfair_lock_unlock(&self->_lock);
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = v5;
+  v6 = allObjects;
   v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
@@ -84,7 +84,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v4[2](v4, *(*(&v12 + 1) + 8 * v10++));
+        observersCopy[2](observersCopy, *(*(&v12 + 1) + 8 * v10++));
       }
 
       while (v8 != v10);
@@ -108,10 +108,10 @@
 - (NSArray)allObservers
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(NSHashTable *)self->_observerTable allObjects];
+  allObjects = [(NSHashTable *)self->_observerTable allObjects];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v3;
+  return allObjects;
 }
 
 @end

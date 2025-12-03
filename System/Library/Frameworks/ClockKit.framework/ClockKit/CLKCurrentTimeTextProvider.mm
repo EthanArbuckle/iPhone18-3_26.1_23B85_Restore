@@ -1,17 +1,17 @@
 @interface CLKCurrentTimeTextProvider
-+ (id)textProviderWithTimeZone:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)textProviderWithTimeZone:(id)zone;
+- (BOOL)isEqual:(id)equal;
 - (CLKCurrentTimeTextProvider)init;
-- (CLKCurrentTimeTextProvider)initWithCoder:(id)a3;
+- (CLKCurrentTimeTextProvider)initWithCoder:(id)coder;
 - (id)JSONObjectRepresentation;
-- (id)_initWithJSONObjectRepresentation:(id)a3;
-- (id)_sessionAttributedTextForIndex:(unint64_t)a3 withStyle:(id)a4;
+- (id)_initWithJSONObjectRepresentation:(id)representation;
+- (id)_sessionAttributedTextForIndex:(unint64_t)index withStyle:(id)style;
 - (id)_sessionCacheKey;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 - (void)_endSession;
-- (void)_startSessionWithDate:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_startSessionWithDate:(id)date;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CLKCurrentTimeTextProvider
@@ -23,11 +23,11 @@
   return [(CLKTextProvider *)&v3 initPrivate];
 }
 
-+ (id)textProviderWithTimeZone:(id)a3
++ (id)textProviderWithTimeZone:(id)zone
 {
-  v3 = a3;
+  zoneCopy = zone;
   v4 = objc_alloc_init(CLKCurrentTimeTextProvider);
-  [(CLKTimeTextProvider *)v4 setTimeZone:v3];
+  [(CLKTimeTextProvider *)v4 setTimeZone:zoneCopy];
 
   [(CLKTextProvider *)v4 setTimeTravelUpdateFrequency:2];
   v4->_calendarUnits = 96;
@@ -35,14 +35,14 @@
   return v4;
 }
 
-- (void)_startSessionWithDate:(id)a3
+- (void)_startSessionWithDate:(id)date
 {
-  v4 = a3;
-  v5 = v4;
+  dateCopy = date;
+  v5 = dateCopy;
   overrideDate = self->_overrideDate;
   if (overrideDate)
   {
-    v11 = v4;
+    v11 = dateCopy;
     v7 = overrideDate;
 
     v5 = v7;
@@ -50,19 +50,19 @@
 
   v12 = v5;
   [(CLKTimeTextProvider *)self setDate:v5];
-  v8 = [MEMORY[0x277CBEA80] currentCalendar];
-  v9 = [v8 components:self->_calendarUnits fromDate:v12];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  v9 = [currentCalendar components:self->_calendarUnits fromDate:v12];
   sessionComponents = self->_sessionComponents;
   self->_sessionComponents = v9;
 
   self->_sessionInProgress = 1;
 }
 
-- (id)_sessionAttributedTextForIndex:(unint64_t)a3 withStyle:(id)a4
+- (id)_sessionAttributedTextForIndex:(unint64_t)index withStyle:(id)style
 {
   v6.receiver = self;
   v6.super_class = CLKCurrentTimeTextProvider;
-  v4 = [(CLKTimeTextProvider *)&v6 _sessionAttributedTextForIndex:a3 withStyle:a4];
+  v4 = [(CLKTimeTextProvider *)&v6 _sessionAttributedTextForIndex:index withStyle:style];
 
   return v4;
 }
@@ -72,12 +72,12 @@
   sessionCacheKey = self->_sessionCacheKey;
   if (!sessionCacheKey)
   {
-    v4 = [MEMORY[0x277CCAB68] string];
+    string = [MEMORY[0x277CCAB68] string];
     v5 = [MEMORY[0x277CCABB0] numberWithInteger:{-[NSDateComponents valueForComponent:](self->_sessionComponents, "valueForComponent:", 32)}];
-    [v4 appendFormat:@"%@%@", @"hr", v5];
+    [string appendFormat:@"%@%@", @"hr", v5];
 
     v6 = [MEMORY[0x277CCABB0] numberWithInteger:{-[NSDateComponents valueForComponent:](self->_sessionComponents, "valueForComponent:", 64)}];
-    [v4 appendFormat:@"%@%@", @"min", v6];
+    [string appendFormat:@"%@%@", @"min", v6];
 
     if (self->_overrideDate)
     {
@@ -89,9 +89,9 @@
       v7 = @"no_override";
     }
 
-    [v4 appendFormat:@"%@", v7];
+    [string appendFormat:@"%@", v7];
     v8 = self->_sessionCacheKey;
-    self->_sessionCacheKey = v4;
+    self->_sessionCacheKey = string;
 
     sessionCacheKey = self->_sessionCacheKey;
   }
@@ -110,11 +110,11 @@
   self->_sessionInProgress = 0;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = CLKCurrentTimeTextProvider;
-  v4 = [(CLKTimeTextProvider *)&v7 copyWithZone:a3];
+  v4 = [(CLKTimeTextProvider *)&v7 copyWithZone:zone];
   v5 = v4;
   if (v4 != self)
   {
@@ -125,14 +125,14 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v7.receiver = self;
   v7.super_class = CLKCurrentTimeTextProvider;
-  if ([(CLKTimeTextProvider *)&v7 isEqual:v4]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && self->_calendarUnits == v4[21])
+  if ([(CLKTimeTextProvider *)&v7 isEqual:equalCopy]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && self->_calendarUnits == equalCopy[21])
   {
-    v5 = CLKEqualObjects(self->_overrideDate, v4[25]);
+    v5 = CLKEqualObjects(self->_overrideDate, equalCopy[25]);
   }
 
   else
@@ -151,16 +151,16 @@
   return &v3[16 * [(NSDate *)self->_overrideDate hash]];
 }
 
-- (CLKCurrentTimeTextProvider)initWithCoder:(id)a3
+- (CLKCurrentTimeTextProvider)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = CLKCurrentTimeTextProvider;
-  v5 = [(CLKTimeTextProvider *)&v9 initWithCoder:v4];
+  v5 = [(CLKTimeTextProvider *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_calendarUnits = [v4 decodeIntegerForKey:@"_units"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_overrideDate"];
+    v5->_calendarUnits = [coderCopy decodeIntegerForKey:@"_units"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_overrideDate"];
     overrideDate = v5->_overrideDate;
     v5->_overrideDate = v6;
   }
@@ -168,25 +168,25 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = CLKCurrentTimeTextProvider;
-  v4 = a3;
-  [(CLKTimeTextProvider *)&v5 encodeWithCoder:v4];
-  [v4 encodeInteger:self->_calendarUnits forKey:{@"_units", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_overrideDate forKey:@"_overrideDate"];
+  coderCopy = coder;
+  [(CLKTimeTextProvider *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:self->_calendarUnits forKey:{@"_units", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_overrideDate forKey:@"_overrideDate"];
 }
 
-- (id)_initWithJSONObjectRepresentation:(id)a3
+- (id)_initWithJSONObjectRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v8.receiver = self;
   v8.super_class = CLKCurrentTimeTextProvider;
-  v5 = [(CLKTimeTextProvider *)&v8 _initWithJSONObjectRepresentation:v4];
+  v5 = [(CLKTimeTextProvider *)&v8 _initWithJSONObjectRepresentation:representationCopy];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"calendarUnits"];
+    v6 = [representationCopy objectForKeyedSubscript:@"calendarUnits"];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -204,11 +204,11 @@
 {
   v6.receiver = self;
   v6.super_class = CLKCurrentTimeTextProvider;
-  v3 = [(CLKTimeTextProvider *)&v6 JSONObjectRepresentation];
+  jSONObjectRepresentation = [(CLKTimeTextProvider *)&v6 JSONObjectRepresentation];
   v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_calendarUnits];
-  [v3 setObject:v4 forKeyedSubscript:@"calendarUnits"];
+  [jSONObjectRepresentation setObject:v4 forKeyedSubscript:@"calendarUnits"];
 
-  return v3;
+  return jSONObjectRepresentation;
 }
 
 @end

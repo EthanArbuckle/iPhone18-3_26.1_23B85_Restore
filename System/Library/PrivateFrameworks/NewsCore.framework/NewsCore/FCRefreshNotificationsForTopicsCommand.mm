@@ -1,24 +1,24 @@
 @interface FCRefreshNotificationsForTopicsCommand
-- (FCRefreshNotificationsForTopicsCommand)initWithCoder:(id)a3;
-- (FCRefreshNotificationsForTopicsCommand)initWithTopicsIDs:(id)a3 withTopicGroupingID:(id)a4 fromChannelID:(id)a5 userID:(id)a6 deviceToken:(id)a7 storefrontID:(id)a8 deviceDigestMode:(int)a9;
-- (void)encodeWithCoder:(id)a3;
-- (void)executeWithContext:(id)a3 delegate:(id)a4 qualityOfService:(int64_t)a5;
+- (FCRefreshNotificationsForTopicsCommand)initWithCoder:(id)coder;
+- (FCRefreshNotificationsForTopicsCommand)initWithTopicsIDs:(id)ds withTopicGroupingID:(id)d fromChannelID:(id)iD userID:(id)userID deviceToken:(id)token storefrontID:(id)storefrontID deviceDigestMode:(int)mode;
+- (void)encodeWithCoder:(id)coder;
+- (void)executeWithContext:(id)context delegate:(id)delegate qualityOfService:(int64_t)service;
 @end
 
 @implementation FCRefreshNotificationsForTopicsCommand
 
-- (FCRefreshNotificationsForTopicsCommand)initWithTopicsIDs:(id)a3 withTopicGroupingID:(id)a4 fromChannelID:(id)a5 userID:(id)a6 deviceToken:(id)a7 storefrontID:(id)a8 deviceDigestMode:(int)a9
+- (FCRefreshNotificationsForTopicsCommand)initWithTopicsIDs:(id)ds withTopicGroupingID:(id)d fromChannelID:(id)iD userID:(id)userID deviceToken:(id)token storefrontID:(id)storefrontID deviceDigestMode:(int)mode
 {
-  v27 = a3;
-  v26 = a4;
-  v25 = a5;
-  v16 = a6;
-  v17 = a7;
-  obj = a8;
-  v18 = a8;
-  v19 = v18;
-  v20 = 0;
-  if (v16 && v17 && v18)
+  dsCopy = ds;
+  dCopy = d;
+  iDCopy = iD;
+  userIDCopy = userID;
+  tokenCopy = token;
+  obj = storefrontID;
+  storefrontIDCopy = storefrontID;
+  v19 = storefrontIDCopy;
+  selfCopy = 0;
+  if (userIDCopy && tokenCopy && storefrontIDCopy)
   {
     v28.receiver = self;
     v28.super_class = FCRefreshNotificationsForTopicsCommand;
@@ -26,35 +26,35 @@
     v22 = v21;
     if (v21)
     {
-      objc_storeStrong(&v21->_topicIDs, a3);
-      objc_storeStrong(&v22->_topicGroupingID, a4);
-      objc_storeStrong(&v22->_channelID, a5);
-      objc_storeStrong(&v22->_userID, a6);
-      objc_storeStrong(&v22->_deviceToken, a7);
+      objc_storeStrong(&v21->_topicIDs, ds);
+      objc_storeStrong(&v22->_topicGroupingID, d);
+      objc_storeStrong(&v22->_channelID, iD);
+      objc_storeStrong(&v22->_userID, userID);
+      objc_storeStrong(&v22->_deviceToken, token);
       objc_storeStrong(&v22->_storefrontID, obj);
-      v22->_deviceDigestMode = a9;
+      v22->_deviceDigestMode = mode;
     }
 
     self = v22;
-    v20 = self;
+    selfCopy = self;
   }
 
-  return v20;
+  return selfCopy;
 }
 
-- (FCRefreshNotificationsForTopicsCommand)initWithCoder:(id)a3
+- (FCRefreshNotificationsForTopicsCommand)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
+  coderCopy = coder;
   v6 = objc_opt_class();
   v7 = [v4 setWithObjects:{v6, objc_opt_class(), 0}];
-  v8 = [v5 decodeObjectOfClasses:v7 forKey:@"TopicIDsKey"];
-  v9 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"TopicGroupingID"];
-  v10 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"FromChannelIDKey"];
-  v11 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"UserIDKey"];
-  v12 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"DeviceTokenKey"];
-  v13 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"StorefrontIDKey"];
-  v14 = [v5 decodeIntForKey:@"DigestModeKey"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"TopicIDsKey"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"TopicGroupingID"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"FromChannelIDKey"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UserIDKey"];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"DeviceTokenKey"];
+  v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"StorefrontIDKey"];
+  v14 = [coderCopy decodeIntForKey:@"DigestModeKey"];
 
   LODWORD(v17) = v14;
   v15 = [(FCRefreshNotificationsForTopicsCommand *)self initWithTopicsIDs:v8 withTopicGroupingID:v9 fromChannelID:v10 userID:v11 deviceToken:v12 storefrontID:v13 deviceDigestMode:v17];
@@ -62,67 +62,67 @@
   return v15;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v10 = a3;
-  v4 = [(FCRefreshNotificationsForTopicsCommand *)self topicIDs];
-  [v10 encodeObject:v4 forKey:@"TopicIDsKey"];
+  coderCopy = coder;
+  topicIDs = [(FCRefreshNotificationsForTopicsCommand *)self topicIDs];
+  [coderCopy encodeObject:topicIDs forKey:@"TopicIDsKey"];
 
-  v5 = [(FCRefreshNotificationsForTopicsCommand *)self topicGroupingID];
-  [v10 encodeObject:v5 forKey:@"TopicGroupingID"];
+  topicGroupingID = [(FCRefreshNotificationsForTopicsCommand *)self topicGroupingID];
+  [coderCopy encodeObject:topicGroupingID forKey:@"TopicGroupingID"];
 
-  v6 = [(FCRefreshNotificationsForTopicsCommand *)self channelID];
-  [v10 encodeObject:v6 forKey:@"FromChannelIDKey"];
+  channelID = [(FCRefreshNotificationsForTopicsCommand *)self channelID];
+  [coderCopy encodeObject:channelID forKey:@"FromChannelIDKey"];
 
-  v7 = [(FCRefreshNotificationsForTopicsCommand *)self userID];
-  [v10 encodeObject:v7 forKey:@"UserIDKey"];
+  userID = [(FCRefreshNotificationsForTopicsCommand *)self userID];
+  [coderCopy encodeObject:userID forKey:@"UserIDKey"];
 
-  v8 = [(FCRefreshNotificationsForTopicsCommand *)self deviceToken];
-  [v10 encodeObject:v8 forKey:@"DeviceTokenKey"];
+  deviceToken = [(FCRefreshNotificationsForTopicsCommand *)self deviceToken];
+  [coderCopy encodeObject:deviceToken forKey:@"DeviceTokenKey"];
 
-  v9 = [(FCRefreshNotificationsForTopicsCommand *)self storefrontID];
-  [v10 encodeObject:v9 forKey:@"StorefrontIDKey"];
+  storefrontID = [(FCRefreshNotificationsForTopicsCommand *)self storefrontID];
+  [coderCopy encodeObject:storefrontID forKey:@"StorefrontIDKey"];
 
-  [v10 encodeInt:-[FCRefreshNotificationsForTopicsCommand deviceDigestMode](self forKey:{"deviceDigestMode"), @"DigestModeKey"}];
+  [coderCopy encodeInt:-[FCRefreshNotificationsForTopicsCommand deviceDigestMode](self forKey:{"deviceDigestMode"), @"DigestModeKey"}];
 }
 
-- (void)executeWithContext:(id)a3 delegate:(id)a4 qualityOfService:(int64_t)a5
+- (void)executeWithContext:(id)context delegate:(id)delegate qualityOfService:(int64_t)service
 {
   v32 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v25 = a4;
+  contextCopy = context;
+  delegateCopy = delegate;
   v8 = FCPushNotificationsLog;
   if (os_log_type_enabled(FCPushNotificationsLog, OS_LOG_TYPE_DEFAULT))
   {
     v9 = v8;
-    v10 = [(FCRefreshNotificationsForTopicsCommand *)self topicIDs];
-    v11 = [(FCRefreshNotificationsForTopicsCommand *)self topicGroupingID];
+    topicIDs = [(FCRefreshNotificationsForTopicsCommand *)self topicIDs];
+    topicGroupingID = [(FCRefreshNotificationsForTopicsCommand *)self topicGroupingID];
     *buf = 138543618;
-    v29 = v10;
+    v29 = topicIDs;
     v30 = 2114;
-    v31 = v11;
+    v31 = topicGroupingID;
     _os_log_impl(&dword_1B63EF000, v9, OS_LOG_TYPE_DEFAULT, "refreshNotificationsCommand: executing command topicIDs: %{public}@ groupingID: %{public}@", buf, 0x16u);
   }
 
-  v23 = [v7 notificationsEndpointConnection];
-  v12 = [(FCRefreshNotificationsForTopicsCommand *)self topicIDs];
-  v13 = [(FCRefreshNotificationsForTopicsCommand *)self topicGroupingID];
-  v14 = [(FCRefreshNotificationsForTopicsCommand *)self channelID];
-  v15 = [(FCRefreshNotificationsForTopicsCommand *)self userID];
-  v16 = [(FCRefreshNotificationsForTopicsCommand *)self deviceToken];
-  v17 = [(FCRefreshNotificationsForTopicsCommand *)self storefrontID];
-  v24 = v7;
-  v18 = [(FCRefreshNotificationsForTopicsCommand *)self deviceDigestMode];
+  notificationsEndpointConnection = [contextCopy notificationsEndpointConnection];
+  topicIDs2 = [(FCRefreshNotificationsForTopicsCommand *)self topicIDs];
+  topicGroupingID2 = [(FCRefreshNotificationsForTopicsCommand *)self topicGroupingID];
+  channelID = [(FCRefreshNotificationsForTopicsCommand *)self channelID];
+  userID = [(FCRefreshNotificationsForTopicsCommand *)self userID];
+  deviceToken = [(FCRefreshNotificationsForTopicsCommand *)self deviceToken];
+  storefrontID = [(FCRefreshNotificationsForTopicsCommand *)self storefrontID];
+  v24 = contextCopy;
+  deviceDigestMode = [(FCRefreshNotificationsForTopicsCommand *)self deviceDigestMode];
   v19 = dispatch_get_global_queue(-2, 0);
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __87__FCRefreshNotificationsForTopicsCommand_executeWithContext_delegate_qualityOfService___block_invoke;
   v26[3] = &unk_1E7C38080;
   v26[4] = self;
-  v27 = v25;
-  v20 = v25;
-  LODWORD(v22) = v18;
-  [v23 refreshNotificationsForTopicIDs:v12 withTopicGroupingID:v13 fromChannelID:v14 userID:v15 deviceToken:v16 storefrontID:v17 deviceDigestMode:v22 callbackQueue:v19 completion:v26];
+  v27 = delegateCopy;
+  v20 = delegateCopy;
+  LODWORD(v22) = deviceDigestMode;
+  [notificationsEndpointConnection refreshNotificationsForTopicIDs:topicIDs2 withTopicGroupingID:topicGroupingID2 fromChannelID:channelID userID:userID deviceToken:deviceToken storefrontID:storefrontID deviceDigestMode:v22 callbackQueue:v19 completion:v26];
 
   v21 = *MEMORY[0x1E69E9840];
 }

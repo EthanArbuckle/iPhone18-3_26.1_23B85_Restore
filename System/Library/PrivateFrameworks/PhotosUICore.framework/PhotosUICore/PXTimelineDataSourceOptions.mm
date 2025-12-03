@@ -1,7 +1,7 @@
 @interface PXTimelineDataSourceOptions
 - (CGSize)widgetSize;
 - (PXTimelineDataSourceOptions)initWithMemoriesOnly;
-- (id)initForWidgetWithSize:(CGSize)a3;
+- (id)initForWidgetWithSize:(CGSize)size;
 @end
 
 @implementation PXTimelineDataSourceOptions
@@ -29,10 +29,10 @@
   return result;
 }
 
-- (id)initForWidgetWithSize:(CGSize)a3
+- (id)initForWidgetWithSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v6.receiver = self;
   v6.super_class = PXTimelineDataSourceOptions;
   result = [(PXTimelineDataSourceOptions *)&v6 init];

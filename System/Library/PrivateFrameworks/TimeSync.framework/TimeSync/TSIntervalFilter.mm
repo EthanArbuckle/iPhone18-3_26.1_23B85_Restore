@@ -1,17 +1,17 @@
 @interface TSIntervalFilter
-- (TSIntervalFilter)initWithExpectedInterval:(unint64_t)a3 multiIntervalCount:(unsigned int)a4 filterSize:(unsigned __int8)a5;
+- (TSIntervalFilter)initWithExpectedInterval:(unint64_t)interval multiIntervalCount:(unsigned int)count filterSize:(unsigned __int8)size;
 - (id).cxx_construct;
-- (unint64_t)addTimestamp:(unint64_t)a3 entry:(int64_t *)a4;
+- (unint64_t)addTimestamp:(unint64_t)timestamp entry:(int64_t *)entry;
 - (unint64_t)filterCountForEntry:(int64_t)validEntry;
 - (unint64_t)multiIntervalTimeForEntry:(int64_t)validEntry;
 - (void)dealloc;
 - (void)resetFilter;
-- (void)resetFilterWithNewExpectedInterval:(unint64_t)a3 multiIntervalCount:(unsigned int)a4;
+- (void)resetFilterWithNewExpectedInterval:(unint64_t)interval multiIntervalCount:(unsigned int)count;
 @end
 
 @implementation TSIntervalFilter
 
-- (TSIntervalFilter)initWithExpectedInterval:(unint64_t)a3 multiIntervalCount:(unsigned int)a4 filterSize:(unsigned __int8)a5
+- (TSIntervalFilter)initWithExpectedInterval:(unint64_t)interval multiIntervalCount:(unsigned int)count filterSize:(unsigned __int8)size
 {
   v13.receiver = self;
   v13.super_class = TSIntervalFilter;
@@ -19,14 +19,14 @@
   v9 = v8;
   if (v8)
   {
-    v8->_expectedInterval = a3;
-    v8->_multiIntervalCount = a4;
+    v8->_expectedInterval = interval;
+    v8->_multiIntervalCount = count;
     v8->_filterCount = 0;
     v8->_timestampIndex = 0;
     v8->_validEntry = -1;
-    v8->_filterSize = a5;
-    v8->_filterOffset = a3 << a5;
-    v8->_filteredTimestamps = malloc_type_calloc(a4 + 1, 8uLL, 0x100004000313F17uLL);
+    v8->_filterSize = size;
+    v8->_filterOffset = interval << size;
+    v8->_filteredTimestamps = malloc_type_calloc(count + 1, 8uLL, 0x100004000313F17uLL);
     v10 = dispatch_queue_create("com.apple.TimeSync.TSIntervalFilter", 0);
     syncQueue = v9->_syncQueue;
     v9->_syncQueue = v10;
@@ -41,7 +41,7 @@
   return v9;
 }
 
-- (unint64_t)addTimestamp:(unint64_t)a3 entry:(int64_t *)a4
+- (unint64_t)addTimestamp:(unint64_t)timestamp entry:(int64_t *)entry
 {
   v8 = 0;
   v9 = &v8;
@@ -54,8 +54,8 @@
   v7[3] = &unk_279DBDF28;
   v7[4] = self;
   v7[5] = &v8;
-  v7[6] = a3;
-  v7[7] = a4;
+  v7[6] = timestamp;
+  v7[7] = entry;
   dispatch_sync(syncQueue, v7);
   v5 = v9[3];
   _Block_object_dispose(&v8, 8);
@@ -150,30 +150,30 @@ uint64_t __39__TSIntervalFilter_addTimestamp_entry___block_invoke(void *a1)
 
 - (void)resetFilter
 {
-  v3 = [(TSIntervalFilter *)self multiIntervalTime];
-  if (v3 == -1)
+  multiIntervalTime = [(TSIntervalFilter *)self multiIntervalTime];
+  if (multiIntervalTime == -1)
   {
     expectedInterval = self->_expectedInterval;
   }
 
   else
   {
-    expectedInterval = v3 / self->_multiIntervalCount;
+    expectedInterval = multiIntervalTime / self->_multiIntervalCount;
   }
 
   [(TSIntervalFilter *)self resetFilterWithNewExpectedInterval:expectedInterval];
 }
 
-- (void)resetFilterWithNewExpectedInterval:(unint64_t)a3 multiIntervalCount:(unsigned int)a4
+- (void)resetFilterWithNewExpectedInterval:(unint64_t)interval multiIntervalCount:(unsigned int)count
 {
   syncQueue = self->_syncQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __74__TSIntervalFilter_resetFilterWithNewExpectedInterval_multiIntervalCount___block_invoke;
   block[3] = &unk_279DBDF50;
-  v6 = a4;
+  countCopy = count;
   block[4] = self;
-  block[5] = a3;
+  block[5] = interval;
   dispatch_sync(syncQueue, block);
 }
 

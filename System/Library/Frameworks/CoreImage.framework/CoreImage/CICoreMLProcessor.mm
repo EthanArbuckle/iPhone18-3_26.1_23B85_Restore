@@ -1,16 +1,16 @@
 @interface CICoreMLProcessor
-+ (BOOL)processWithInputs:(id)a3 arguments:(id)a4 output:(id)a5 error:(id *)a6;
-+ (CGRect)roiForInput:(int)a3 arguments:(id)a4 outputRect:(CGRect)a5;
-+ (id)logDescription:(id)a3;
-+ (int)formatForInputAtIndex:(int)a3 arguments:(id)a4;
-+ (int)outputFormatWithArguments:(id)a3;
++ (BOOL)processWithInputs:(id)inputs arguments:(id)arguments output:(id)output error:(id *)error;
++ (CGRect)roiForInput:(int)input arguments:(id)arguments outputRect:(CGRect)rect;
++ (id)logDescription:(id)description;
++ (int)formatForInputAtIndex:(int)index arguments:(id)arguments;
++ (int)outputFormatWithArguments:(id)arguments;
 @end
 
 @implementation CICoreMLProcessor
 
-+ (id)logDescription:(id)a3
++ (id)logDescription:(id)description
 {
-  v3 = [a3 objectForKeyedSubscript:@"logName"];
+  v3 = [description objectForKeyedSubscript:@"logName"];
   if (v3)
   {
     v4 = v3;
@@ -29,17 +29,17 @@
   return [v6 stringWithFormat:@"CICoreMLProcessor"];
 }
 
-+ (CGRect)roiForInput:(int)a3 arguments:(id)a4 outputRect:(CGRect)a5
++ (CGRect)roiForInput:(int)input arguments:(id)arguments outputRect:(CGRect)rect
 {
-  v7 = [objc_msgSend(a4 objectForKeyedSubscript:{@"inputWidths", a5.origin.x, a5.origin.y, a5.size.width, a5.size.height), "objectAtIndex:", a3}];
-  v8 = [objc_msgSend(a4 objectForKeyedSubscript:{@"inputHeights", "objectAtIndex:", a3}];
-  v9 = [objc_msgSend(a4 objectForKeyedSubscript:{@"inputChans", "objectAtIndex:", a3}];
-  v10 = [v7 intValue];
-  v11 = [v8 intValue];
-  v12 = ([v9 intValue] * v11);
+  v7 = [objc_msgSend(arguments objectForKeyedSubscript:{@"inputWidths", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height), "objectAtIndex:", input}];
+  v8 = [objc_msgSend(arguments objectForKeyedSubscript:{@"inputHeights", "objectAtIndex:", input}];
+  v9 = [objc_msgSend(arguments objectForKeyedSubscript:{@"inputChans", "objectAtIndex:", input}];
+  intValue = [v7 intValue];
+  intValue2 = [v8 intValue];
+  v12 = ([v9 intValue] * intValue2);
   v13 = 0.0;
   v14 = 0.0;
-  v15 = v10;
+  v15 = intValue;
   result.size.height = v12;
   result.size.width = v15;
   result.origin.y = v14;
@@ -47,20 +47,20 @@
   return result;
 }
 
-+ (BOOL)processWithInputs:(id)a3 arguments:(id)a4 output:(id)a5 error:(id *)a6
++ (BOOL)processWithInputs:(id)inputs arguments:(id)arguments output:(id)output error:(id *)error
 {
   v161 = *MEMORY[0x1E69E9840];
   v148 = 0;
-  v141 = [a4 objectForKeyedSubscript:@"model"];
-  v122 = [a4 objectForKeyedSubscript:@"headName"];
+  v141 = [arguments objectForKeyedSubscript:@"model"];
+  v122 = [arguments objectForKeyedSubscript:@"headName"];
   v120 = [objc_msgSend(objc_msgSend(objc_msgSend(v141 "modelDescription")];
-  v118 = [objc_msgSend(a4 objectForKeyedSubscript:{@"softmax", "BOOLValue"}];
+  v118 = [objc_msgSend(arguments objectForKeyedSubscript:{@"softmax", "BOOLValue"}];
   v126 = objc_alloc_init(CIMLFeatureProvider);
-  v136 = [a4 objectForKeyedSubscript:@"inputWidths"];
-  v134 = [a4 objectForKeyedSubscript:@"inputHeights"];
-  v132 = [a4 objectForKeyedSubscript:@"inputChans"];
-  v130 = [a4 objectForKeyedSubscript:@"inputFormats"];
-  v7 = [a4 objectForKeyedSubscript:@"inputNames"];
+  v136 = [arguments objectForKeyedSubscript:@"inputWidths"];
+  v134 = [arguments objectForKeyedSubscript:@"inputHeights"];
+  v132 = [arguments objectForKeyedSubscript:@"inputChans"];
+  v130 = [arguments objectForKeyedSubscript:@"inputFormats"];
+  v7 = [arguments objectForKeyedSubscript:@"inputNames"];
   v144 = 0u;
   v145 = 0u;
   v146 = 0u;
@@ -83,7 +83,7 @@
         v11 = [objc_msgSend(objc_msgSend(v141 "modelDescription")];
         v13 = v11 && (v12 = [objc_msgSend(v11 "multiArrayConstraint")], objc_msgSend(v12, "type") == 2) && objc_msgSend(objc_msgSend(objc_msgSend(v12, "enumeratedShapes"), "objectAtIndexedSubscript:", 0), "count") == 3;
         v14 = [v7 indexOfObject:v9];
-        v15 = [a3 objectAtIndexedSubscript:v14];
+        v15 = [inputs objectAtIndexedSubscript:v14];
         v16 = [objc_msgSend(v136 objectAtIndexedSubscript:{v14), "unsignedLongValue"}];
         v17 = [objc_msgSend(v134 objectAtIndexedSubscript:{v14), "unsignedLongValue"}];
         v18 = [objc_msgSend(v132 objectAtIndexedSubscript:{v14), "intValue"}];
@@ -127,7 +127,7 @@
     while (v140);
   }
 
-  if (v120 == 4 && (shapeForLayer(v141, v122, 1), v25 = v24, v27 = v26, [a5 region], v163.origin.x = 0.0, v163.origin.y = 0.0, v163.size.width = v25, v163.size.height = v27, CGRectEqualToRect(v162, v163)) && ((v28 = objc_msgSend(objc_msgSend(objc_msgSend(v141, "modelDescription"), "outputDescriptionsByName"), "objectForKey:", v122)) == 0 ? (v29 = 0) : (v29 = objc_msgSend(objc_msgSend(v28, "imageConstraint"), "pixelFormatType")), (v30 = objc_msgSend(a5, "pixelBuffer"), (v31 = v30) != 0) && CVPixelBufferGetPixelFormatType(v30) == v29))
+  if (v120 == 4 && (shapeForLayer(v141, v122, 1), v25 = v24, v27 = v26, [output region], v163.origin.x = 0.0, v163.origin.y = 0.0, v163.size.width = v25, v163.size.height = v27, CGRectEqualToRect(v162, v163)) && ((v28 = objc_msgSend(objc_msgSend(objc_msgSend(v141, "modelDescription"), "outputDescriptionsByName"), "objectForKey:", v122)) == 0 ? (v29 = 0) : (v29 = objc_msgSend(objc_msgSend(v28, "imageConstraint"), "pixelFormatType")), (v30 = objc_msgSend(output, "pixelBuffer"), (v31 = v30) != 0) && CVPixelBufferGetPixelFormatType(v30) == v29))
   {
     v150 = 0;
     v151 = &v150;
@@ -174,9 +174,9 @@
   v36 = !_ZF;
   if (_ZF)
   {
-    if (a6 && v148)
+    if (error && v148)
     {
-      *a6 = v148;
+      *error = v148;
     }
 
     v38 = ci_logger_api();
@@ -196,30 +196,30 @@
 
     else if ([v37 type] == 5)
     {
-      v39 = [v37 multiArrayValue];
-      if ((([v39 dataType] == 65600) & v118) == 1)
+      multiArrayValue = [v37 multiArrayValue];
+      if ((([multiArrayValue dataType] == 65600) & v118) == 1)
       {
-        v129 = [v39 dataPointer];
-        v40 = [v39 shape];
-        v41 = [v40 count];
-        v142 = [objc_msgSend(v40 objectAtIndexedSubscript:{v41 - 3), "intValue"}];
-        v131 = [objc_msgSend(v40 objectAtIndexedSubscript:{v41 - 2), "intValue"}];
-        v42 = [objc_msgSend(v40 objectAtIndexedSubscript:{v41 - 1), "intValue"}];
-        v123 = [a5 baseAddress];
-        v43 = [a5 bytesPerRow];
-        [a5 region];
+        dataPointer = [multiArrayValue dataPointer];
+        shape = [multiArrayValue shape];
+        v41 = [shape count];
+        v142 = [objc_msgSend(shape objectAtIndexedSubscript:{v41 - 3), "intValue"}];
+        v131 = [objc_msgSend(shape objectAtIndexedSubscript:{v41 - 2), "intValue"}];
+        v42 = [objc_msgSend(shape objectAtIndexedSubscript:{v41 - 1), "intValue"}];
+        baseAddress = [output baseAddress];
+        bytesPerRow = [output bytesPerRow];
+        [output region];
         v45 = v44;
         v47 = v46;
         v49 = v48;
         v51 = v50;
-        v52 = [objc_msgSend(objc_msgSend(v39 "strides")];
-        v53 = [objc_msgSend(objc_msgSend(v39 "strides")];
-        v54 = [objc_msgSend(objc_msgSend(v39 "strides")];
-        [a5 region];
+        v52 = [objc_msgSend(objc_msgSend(multiArrayValue "strides")];
+        v53 = [objc_msgSend(objc_msgSend(multiArrayValue "strides")];
+        v54 = [objc_msgSend(objc_msgSend(multiArrayValue "strides")];
+        [output region];
         v56 = v55;
-        v57 = [a5 bytesPerRow];
-        [a5 region];
-        bzero([a5 baseAddress], v57 * (v56 - 1) + 2 * v58);
+        bytesPerRow2 = [output bytesPerRow];
+        [output region];
+        bzero([output baseAddress], bytesPerRow2 * (v56 - 1) + 2 * v58);
         v133 = malloc_type_calloc(v42 * v131, 4uLL, 0x100004052888210uLL);
         v127 = v36;
         v137 = 8 * v53;
@@ -228,10 +228,10 @@
         if (v131 >= 1)
         {
           v121 = v54;
-          v125 = v43;
+          v125 = bytesPerRow;
           v61 = 0;
           v62 = v42;
-          v139 = v129;
+          v139 = dataPointer;
           v135 = v42;
           do
           {
@@ -274,7 +274,7 @@
           while (v61 != v131);
           v70 = 0;
           v71 = v133;
-          v43 = v125;
+          bytesPerRow = v125;
           v54 = v121;
           do
           {
@@ -304,10 +304,10 @@
           v74 = 0;
           v143 = v47;
           v75 = v45;
-          v76 = 2 * (v43 >> 1);
+          v76 = 2 * (bytesPerRow >> 1);
           v77 = &v133[v75];
-          v78 = v129 + 8 * v54 * v75;
-          v79 = v123;
+          v78 = dataPointer + 8 * v54 * v75;
+          v79 = baseAddress;
           do
           {
             if (v49 > 0.0)
@@ -342,27 +342,27 @@
         return v127;
       }
 
-      else if ([v39 dataType] == 65600)
+      else if ([multiArrayValue dataType] == 65600)
       {
-        v90 = [v39 dataPointer];
-        v91 = [v39 shape];
-        v92 = [v91 count];
-        v93 = [objc_msgSend(v91 objectAtIndexedSubscript:{v92 - 2), "intValue"}];
-        v94 = [a5 baseAddress];
-        v95 = [a5 bytesPerRow];
-        [a5 region];
+        dataPointer2 = [multiArrayValue dataPointer];
+        shape2 = [multiArrayValue shape];
+        v92 = [shape2 count];
+        v93 = [objc_msgSend(shape2 objectAtIndexedSubscript:{v92 - 2), "intValue"}];
+        baseAddress2 = [output baseAddress];
+        bytesPerRow3 = [output bytesPerRow];
+        [output region];
         v97 = v96;
         v99 = v98;
         v101 = v100;
         v103 = v102;
-        v104 = [objc_msgSend(objc_msgSend(v39 "strides")];
-        v105 = [objc_msgSend(objc_msgSend(v39 "strides")];
-        v106 = [objc_msgSend(objc_msgSend(v39 "strides")];
-        [a5 region];
+        v104 = [objc_msgSend(objc_msgSend(multiArrayValue "strides")];
+        v105 = [objc_msgSend(objc_msgSend(multiArrayValue "strides")];
+        v106 = [objc_msgSend(objc_msgSend(multiArrayValue "strides")];
+        [output region];
         v108 = v107;
-        v109 = [a5 bytesPerRow];
-        [a5 region];
-        bzero([a5 baseAddress], v109 * (v108 - 1) + 2 * v110);
+        bytesPerRow4 = [output bytesPerRow];
+        [output region];
+        bzero([output baseAddress], bytesPerRow4 * (v108 - 1) + 2 * v110);
         if (v103 > 0.0)
         {
           v111 = 0;
@@ -370,9 +370,9 @@
           {
             if (v101 > 0.0)
             {
-              v112 = (v90 + 8 * v106 * v97 + 8 * v105 * ((v111 + v99) % v93) + 8 * v104 * ((v111 + v99) / v93));
+              v112 = (dataPointer2 + 8 * v106 * v97 + 8 * v105 * ((v111 + v99) % v93) + 8 * v104 * ((v111 + v99) / v93));
               v113 = 1;
-              v114 = v94;
+              v114 = baseAddress2;
               do
               {
                 _D0 = *v112;
@@ -387,21 +387,21 @@
             }
 
             ++v111;
-            v94 += 2 * (v95 >> 1);
+            baseAddress2 += 2 * (bytesPerRow3 >> 1);
           }
 
           while (v103 > v111);
         }
       }
 
-      else if ([v39 dataType] == 65568)
+      else if ([multiArrayValue dataType] == 65568)
       {
-        fillMultiArrayFloatToRh<float>(a5, v39);
+        fillMultiArrayFloatToRh<float>(output, multiArrayValue);
       }
 
-      else if ([v39 dataType] == 65552)
+      else if ([multiArrayValue dataType] == 65552)
       {
-        _ZL23fillMultiArrayFloatToRhIDF16_EvPU33objcproto22CIImageProcessorOutput11objc_objectP12MLMultiArray(a5, v39);
+        _ZL23fillMultiArrayFloatToRhIDF16_EvPU33objcproto22CIImageProcessorOutput11objc_objectP12MLMultiArray(output, multiArrayValue);
       }
     }
   }
@@ -409,16 +409,16 @@
   return v36;
 }
 
-+ (int)formatForInputAtIndex:(int)a3 arguments:(id)a4
++ (int)formatForInputAtIndex:(int)index arguments:(id)arguments
 {
-  v4 = [a4 objectForKeyedSubscript:@"inputCIFormat"];
+  v4 = [arguments objectForKeyedSubscript:@"inputCIFormat"];
 
   return [v4 intValue];
 }
 
-+ (int)outputFormatWithArguments:(id)a3
++ (int)outputFormatWithArguments:(id)arguments
 {
-  v3 = [a3 objectForKeyedSubscript:@"outputCIFormat"];
+  v3 = [arguments objectForKeyedSubscript:@"outputCIFormat"];
 
   return [v3 intValue];
 }

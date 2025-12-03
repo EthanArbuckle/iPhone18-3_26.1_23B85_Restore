@@ -1,90 +1,90 @@
 @interface ADDeviceCircleManager
 + (ADDeviceCircleManager)sharedInstance;
-+ (id)_rapportLinkWithQueue:(id)a3;
++ (id)_rapportLinkWithQueue:(id)queue;
 - (BOOL)_isLocalDeviceCollectorCandidate;
-- (BOOL)_isRemoteDeviceCollectorCandidate:(id)a3;
+- (BOOL)_isRemoteDeviceCollectorCandidate:(id)candidate;
 - (id)_collectorDeviceIdentifiersWithFlags;
-- (id)_handleDeviceCapabilitiesFetch:(id)a3 fromPeer:(id)a4;
-- (id)_handlePeersAndSVDCapabilitiesFetch:(id)a3 fromPeer:(id)a4;
-- (id)_handleSVDCapabilitiesFetch:(id)a3 fromPeer:(id)a4;
-- (id)_initWithQueue:(id)a3 rapportLink:(id)a4;
-- (id)_keepAliveLinkToDevice:(id)a3;
+- (id)_handleDeviceCapabilitiesFetch:(id)fetch fromPeer:(id)peer;
+- (id)_handlePeersAndSVDCapabilitiesFetch:(id)fetch fromPeer:(id)peer;
+- (id)_handleSVDCapabilitiesFetch:(id)fetch fromPeer:(id)peer;
+- (id)_initWithQueue:(id)queue rapportLink:(id)link;
+- (id)_keepAliveLinkToDevice:(id)device;
 - (id)_localPeerData;
 - (id)_localPeerInfo;
-- (id)_managedPeerInfoForAssistantIdentifier:(id)a3;
-- (id)_managedPeerInfoForHomeKitAccessoryIdentifier:(id)a3;
-- (id)_managedPeerInfoForIDSDeviceUniqueIdentifier:(id)a3;
-- (id)_managedPeerInfoForRapportEffectiveIdentifier:(id)a3;
-- (id)_managedPeerInfoMatchingPeerInfo:(id)a3;
+- (id)_managedPeerInfoForAssistantIdentifier:(id)identifier;
+- (id)_managedPeerInfoForHomeKitAccessoryIdentifier:(id)identifier;
+- (id)_managedPeerInfoForIDSDeviceUniqueIdentifier:(id)identifier;
+- (id)_managedPeerInfoForRapportEffectiveIdentifier:(id)identifier;
+- (id)_managedPeerInfoMatchingPeerInfo:(id)info;
 - (id)_rapportLinkMessageOptions;
-- (id)_remotePeerInfoForAssistantIdentifier:(id)a3;
-- (id)_remotePeerInfoForHomeKitAccessoryIdentifier:(id)a3;
-- (id)_remotePeerInfoForIDSDeviceUniqueIdentifier:(id)a3;
-- (id)_remotePeerInfoForRapportEffectiveIdentifier:(id)a3;
-- (id)_rpDeviceMatchingPeerInfo:(id)a3;
+- (id)_remotePeerInfoForAssistantIdentifier:(id)identifier;
+- (id)_remotePeerInfoForHomeKitAccessoryIdentifier:(id)identifier;
+- (id)_remotePeerInfoForIDSDeviceUniqueIdentifier:(id)identifier;
+- (id)_remotePeerInfoForRapportEffectiveIdentifier:(id)identifier;
+- (id)_rpDeviceMatchingPeerInfo:(id)info;
 - (id)_setUpOnDemandClientLinkToContextCollector;
 - (id)_syncCompanionLinkDeviceLocalPeerData;
-- (id)assistantIdForDeviceWithIdsDeviceUniqueIdentifier:(id)a3;
-- (id)idsDeviceUniqueIdentifierForDeviceWithAssistantId:(id)a3;
+- (id)assistantIdForDeviceWithIdsDeviceUniqueIdentifier:(id)identifier;
+- (id)idsDeviceUniqueIdentifierForDeviceWithAssistantId:(id)id;
 - (id)localPeerInfo;
 - (id)locationSharingDevice;
-- (id)managedPeerInfoMatchingPeerInfo:(id)a3;
-- (void)_activateOnDemandClientLinkToContextCollector:(id)a3 completion:(id)a4;
-- (void)_cleanupOnDemandClientLinkToContextCollector:(id)a3;
-- (void)_executeCommand:(id)a3 onPeer:(id)a4 executionContext:(id)a5 throughOnDemandConnectionToContextCollector:(BOOL)a6 completion:(id)a7;
-- (void)_executeCommandThroughOnDemandClientLinkToContextCollector:(id)a3 onPeer:(id)a4 debugID:(id)a5 completion:(id)a6;
-- (void)_fetchDeviceCapabilitiesForDevices:(id)a3 completion:(id)a4;
-- (void)_fetchDeviceCapabilitiesForDevices:(id)a3 fromCollectorWithIndex:(unint64_t)a4 existingCapabilities:(id)a5 completion:(id)a6;
-- (void)_forwardExecuteCommandToDevice:(id)a3 message:(id)a4 from:(id)a5 completion:(id)a6;
-- (void)_handleExecuteCommand:(id)a3 fromPeer:(id)a4 completion:(id)a5;
-- (void)_reelectCollectorDeviceForReason:(int64_t)a3 completion:(id)a4;
+- (id)managedPeerInfoMatchingPeerInfo:(id)info;
+- (void)_activateOnDemandClientLinkToContextCollector:(id)collector completion:(id)completion;
+- (void)_cleanupOnDemandClientLinkToContextCollector:(id)collector;
+- (void)_executeCommand:(id)command onPeer:(id)peer executionContext:(id)context throughOnDemandConnectionToContextCollector:(BOOL)collector completion:(id)completion;
+- (void)_executeCommandThroughOnDemandClientLinkToContextCollector:(id)collector onPeer:(id)peer debugID:(id)d completion:(id)completion;
+- (void)_fetchDeviceCapabilitiesForDevices:(id)devices completion:(id)completion;
+- (void)_fetchDeviceCapabilitiesForDevices:(id)devices fromCollectorWithIndex:(unint64_t)index existingCapabilities:(id)capabilities completion:(id)completion;
+- (void)_forwardExecuteCommandToDevice:(id)device message:(id)message from:(id)from completion:(id)completion;
+- (void)_handleExecuteCommand:(id)command fromPeer:(id)peer completion:(id)completion;
+- (void)_reelectCollectorDeviceForReason:(int64_t)reason completion:(id)completion;
 - (void)_reelectCollectorIfNecessary;
-- (void)_registerRequestHandlerForRequestId:(id)a3 messageType:(id)a4 handler:(id)a5;
-- (void)_removeRemotePeerInfoWithRapportEffectiveIdentifier:(id)a3;
-- (void)_resetRapportLinkAndReconnectNow:(BOOL)a3;
-- (void)_setAssistantId:(id)a3 forDeviceWithIdsDeviceUniqueIdentifier:(id)a4;
+- (void)_registerRequestHandlerForRequestId:(id)id messageType:(id)type handler:(id)handler;
+- (void)_removeRemotePeerInfoWithRapportEffectiveIdentifier:(id)identifier;
+- (void)_resetRapportLinkAndReconnectNow:(BOOL)now;
+- (void)_setAssistantId:(id)id forDeviceWithIdsDeviceUniqueIdentifier:(id)identifier;
 - (void)_setupClientLink;
 - (void)_startStationaryScoreTimer;
 - (void)_stopStationaryScoreTimer;
 - (void)_updateAssistantIdentifierAndSharedUserIdentifier;
 - (void)_updateClientLinkSiriInfo;
 - (void)_updateCollectorElectionVersion;
-- (void)_updateContextCollectorStatusToRapport:(BOOL)a3;
-- (void)_updateCurrentAccessoryInfo:(id)a3;
+- (void)_updateContextCollectorStatusToRapport:(BOOL)rapport;
+- (void)_updateCurrentAccessoryInfo:(id)info;
 - (void)_updateDeviceCountTrend;
-- (void)_updateLocalPeerInfo:(id)a3;
-- (void)_updateRemotePeerInfo:(id)a3;
+- (void)_updateLocalPeerInfo:(id)info;
+- (void)_updateRemotePeerInfo:(id)info;
 - (void)_updateSiriInfoWithDeviceCapabilities;
-- (void)_updateSiriInfoWithLocalPeerData:(id)a3;
+- (void)_updateSiriInfoWithLocalPeerData:(id)data;
 - (void)_updateStationaryScore;
 - (void)_updateStationaryScoreAndResetTimer;
 - (void)_updateStationaryScoreBroadcasting;
-- (void)activeAccountIdentifierDidChange:(id)a3;
-- (void)addListener:(id)a3;
-- (void)dumpAssistantStateChunk:(id)a3;
-- (void)executeCommand:(id)a3 onPeer:(id)a4 executionContext:(id)a5 throughOnDemandRapportConnection:(id)a6;
-- (void)getCapabilitiesAndPeersFromContextCollectorThroughOnDemandRapportConnection:(id)a3;
-- (void)getCapabilitiesForDevice:(id)a3 completion:(id)a4;
-- (void)getCapabilitiesForReachableDevicesWithCompletion:(id)a3;
-- (void)getContextCollectorDeviceIdentifiersWithCompletion:(id)a3;
-- (void)getManagedLocalAndRemotePeerInfoWithCompletion:(id)a3;
-- (void)homeInfoManager:(id)a3 didUpdateCurrentAccessoryInfo:(id)a4;
-- (void)isMeDeviceDidChange:(id)a3;
-- (void)myriadTrialBoostsUpdated:(id)a3;
-- (void)preferencesEnabledBitsDidChange:(id)a3;
-- (void)preferencesSharedUserIdentifierDidChange:(id)a3;
-- (void)rapportLink:(id)a3 didFindDevice:(id)a4;
-- (void)rapportLink:(id)a3 didLoseDevice:(id)a4;
-- (void)rapportLink:(id)a3 didReceiveMessage:(id)a4 ofType:(id)a5 fromPeer:(id)a6 completion:(id)a7;
-- (void)rapportLink:(id)a3 didUpdateDevice:(id)a4 changes:(unsigned int)a5;
-- (void)rapportLink:(id)a3 didUpdateLocalDevice:(id)a4;
-- (void)rapportLinkDidInterrupt:(id)a3;
-- (void)rapportLinkDidInvalidate:(id)a3;
-- (void)reelectCollectorDeviceForReason:(int64_t)a3 completion:(id)a4;
+- (void)activeAccountIdentifierDidChange:(id)change;
+- (void)addListener:(id)listener;
+- (void)dumpAssistantStateChunk:(id)chunk;
+- (void)executeCommand:(id)command onPeer:(id)peer executionContext:(id)context throughOnDemandRapportConnection:(id)connection;
+- (void)getCapabilitiesAndPeersFromContextCollectorThroughOnDemandRapportConnection:(id)connection;
+- (void)getCapabilitiesForDevice:(id)device completion:(id)completion;
+- (void)getCapabilitiesForReachableDevicesWithCompletion:(id)completion;
+- (void)getContextCollectorDeviceIdentifiersWithCompletion:(id)completion;
+- (void)getManagedLocalAndRemotePeerInfoWithCompletion:(id)completion;
+- (void)homeInfoManager:(id)manager didUpdateCurrentAccessoryInfo:(id)info;
+- (void)isMeDeviceDidChange:(id)change;
+- (void)myriadTrialBoostsUpdated:(id)updated;
+- (void)preferencesEnabledBitsDidChange:(id)change;
+- (void)preferencesSharedUserIdentifierDidChange:(id)change;
+- (void)rapportLink:(id)link didFindDevice:(id)device;
+- (void)rapportLink:(id)link didLoseDevice:(id)device;
+- (void)rapportLink:(id)link didReceiveMessage:(id)message ofType:(id)type fromPeer:(id)peer completion:(id)completion;
+- (void)rapportLink:(id)link didUpdateDevice:(id)device changes:(unsigned int)changes;
+- (void)rapportLink:(id)link didUpdateLocalDevice:(id)device;
+- (void)rapportLinkDidInterrupt:(id)interrupt;
+- (void)rapportLinkDidInvalidate:(id)invalidate;
+- (void)reelectCollectorDeviceForReason:(int64_t)reason completion:(id)completion;
 - (void)reelectContextCollectorWithBestScore;
-- (void)removeListener:(id)a3;
-- (void)sendRequestType:(id)a3 data:(id)a4 toDeviceWithAssistantIdentifier:(id)a5 onQueue:(id)a6 completion:(id)a7;
-- (void)sharedDataDidChange:(id)a3;
+- (void)removeListener:(id)listener;
+- (void)sendRequestType:(id)type data:(id)data toDeviceWithAssistantIdentifier:(id)identifier onQueue:(id)queue completion:(id)completion;
+- (void)sharedDataDidChange:(id)change;
 - (void)wakeUpNearbyDevices;
 @end
 
@@ -96,7 +96,7 @@
   block[1] = 3221225472;
   block[2] = sub_100191ADC;
   block[3] = &unk_10051E200;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100590408 != -1)
   {
     dispatch_once(&qword_100590408, block);
@@ -110,10 +110,10 @@
 - (id)localPeerInfo
 {
   os_unfair_lock_lock(&self->_peerInfoLock);
-  v3 = [(ADDeviceCircleManager *)self _localPeerInfo];
+  _localPeerInfo = [(ADDeviceCircleManager *)self _localPeerInfo];
   os_unfair_lock_unlock(&self->_peerInfoLock);
 
-  return v3;
+  return _localPeerInfo;
 }
 
 - (id)_localPeerInfo
@@ -121,8 +121,8 @@
   localPeerInfo = self->_localPeerInfo;
   if (!localPeerInfo)
   {
-    v4 = [(ADDeviceCircleManager *)self _localPeerData];
-    v5 = sub_100184DB0(v4);
+    _localPeerData = [(ADDeviceCircleManager *)self _localPeerData];
+    v5 = sub_100184DB0(_localPeerData);
 
     [(ADDeviceCircleManager *)self _updateLocalPeerInfo:v5];
     localPeerInfo = self->_localPeerInfo;
@@ -140,9 +140,9 @@
   v9[4] = self;
   v3 = objc_retainBlock(v9);
   v4 = +[AFPreferences sharedPreferences];
-  v5 = [v4 assistantIsEnabled];
+  assistantIsEnabled = [v4 assistantIsEnabled];
 
-  if (v5)
+  if (assistantIsEnabled)
   {
     v6 = +[ADCommandCenter sharedCommandCenter];
     v7[0] = _NSConcreteStackBlock;
@@ -166,8 +166,8 @@
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v2 = [(ADRapportLink *)self->_clientLink activeDevices];
-  v3 = [v2 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  activeDevices = [(ADRapportLink *)self->_clientLink activeDevices];
+  v3 = [activeDevices countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v3)
   {
     v4 = v3;
@@ -178,20 +178,20 @@ LABEL_3:
     {
       if (*v20 != v5)
       {
-        objc_enumerationMutation(v2);
+        objc_enumerationMutation(activeDevices);
       }
 
       v7 = *(*(&v19 + 1) + 8 * v6);
-      v8 = [v7 siriInfo];
-      v9 = [v8 objectForKeyedSubscript:@"peerData"];
+      siriInfo = [v7 siriInfo];
+      v9 = [siriInfo objectForKeyedSubscript:@"peerData"];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         v10 = [v9 objectForKeyedSubscript:@"isLocationSharingDevice"];
-        v11 = [v10 BOOLValue];
+        bOOLValue = [v10 BOOLValue];
 
-        if (v11)
+        if (bOOLValue)
         {
           break;
         }
@@ -199,7 +199,7 @@ LABEL_3:
 
       if (v4 == ++v6)
       {
-        v4 = [v2 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v4 = [activeDevices countByEnumeratingWithState:&v19 objects:v23 count:16];
         if (v4)
         {
           goto LABEL_3;
@@ -209,8 +209,8 @@ LABEL_3:
       }
     }
 
-    v12 = [v7 effectiveIdentifier];
-    v13 = [(NSMutableDictionary *)self->_remotePeerInfoByRapportEffectiveIdentifier objectForKey:v12];
+    effectiveIdentifier = [v7 effectiveIdentifier];
+    v13 = [(NSMutableDictionary *)self->_remotePeerInfoByRapportEffectiveIdentifier objectForKey:effectiveIdentifier];
 
     if (v13)
     {
@@ -224,10 +224,10 @@ LABEL_10:
   }
 
   v14 = +[ADMultiUserMeDevice sharedInstance];
-  v15 = [v14 isMeDevice];
-  v16 = [v15 BOOLValue];
+  isMeDevice = [v14 isMeDevice];
+  bOOLValue2 = [isMeDevice BOOLValue];
 
-  if (v16)
+  if (bOOLValue2)
   {
     v13 = self->_localPeerInfo;
   }
@@ -242,29 +242,29 @@ LABEL_15:
   return v13;
 }
 
-- (void)reelectCollectorDeviceForReason:(int64_t)a3 completion:(id)a4
+- (void)reelectCollectorDeviceForReason:(int64_t)reason completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100184194;
   block[3] = &unk_10051BFA8;
-  v10 = v6;
-  v11 = a3;
+  v10 = completionCopy;
+  reasonCopy = reason;
   block[4] = self;
-  v8 = v6;
+  v8 = completionCopy;
   dispatch_async(queue, block);
 }
 
-- (void)dumpAssistantStateChunk:(id)a3
+- (void)dumpAssistantStateChunk:(id)chunk
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1001842A4;
   v8[3] = &unk_10051CF08;
-  v9 = a3;
-  v4 = v9;
+  chunkCopy = chunk;
+  v4 = chunkCopy;
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1001842BC;
@@ -274,12 +274,12 @@ LABEL_15:
   [(ADDeviceCircleManager *)self getManagedLocalAndRemotePeerInfoWithCompletion:v6];
 }
 
-- (id)_remotePeerInfoForRapportEffectiveIdentifier:(id)a3
+- (id)_remotePeerInfoForRapportEffectiveIdentifier:(id)identifier
 {
-  v4 = a3;
-  if ([v4 length])
+  identifierCopy = identifier;
+  if ([identifierCopy length])
   {
-    v5 = [(NSMutableDictionary *)self->_remotePeerInfoByRapportEffectiveIdentifier objectForKey:v4];
+    v5 = [(NSMutableDictionary *)self->_remotePeerInfoByRapportEffectiveIdentifier objectForKey:identifierCopy];
   }
 
   else
@@ -290,12 +290,12 @@ LABEL_15:
   return v5;
 }
 
-- (id)_remotePeerInfoForHomeKitAccessoryIdentifier:(id)a3
+- (id)_remotePeerInfoForHomeKitAccessoryIdentifier:(id)identifier
 {
-  v4 = a3;
-  if ([v4 length])
+  identifierCopy = identifier;
+  if ([identifierCopy length])
   {
-    v5 = [(NSMutableDictionary *)self->_rapportEffectiveIdentifiersByHomeKitAccessoryIdentifier objectForKey:v4];
+    v5 = [(NSMutableDictionary *)self->_rapportEffectiveIdentifiersByHomeKitAccessoryIdentifier objectForKey:identifierCopy];
     v6 = [(ADDeviceCircleManager *)self _remotePeerInfoForRapportEffectiveIdentifier:v5];
   }
 
@@ -307,12 +307,12 @@ LABEL_15:
   return v6;
 }
 
-- (id)_remotePeerInfoForIDSDeviceUniqueIdentifier:(id)a3
+- (id)_remotePeerInfoForIDSDeviceUniqueIdentifier:(id)identifier
 {
-  v4 = a3;
-  if ([v4 length])
+  identifierCopy = identifier;
+  if ([identifierCopy length])
   {
-    v5 = [(NSMutableDictionary *)self->_rapportEffectiveIdentifiersByIDSDeviceUniqueIdentifier objectForKey:v4];
+    v5 = [(NSMutableDictionary *)self->_rapportEffectiveIdentifiersByIDSDeviceUniqueIdentifier objectForKey:identifierCopy];
     v6 = [(ADDeviceCircleManager *)self _remotePeerInfoForRapportEffectiveIdentifier:v5];
   }
 
@@ -324,12 +324,12 @@ LABEL_15:
   return v6;
 }
 
-- (id)_remotePeerInfoForAssistantIdentifier:(id)a3
+- (id)_remotePeerInfoForAssistantIdentifier:(id)identifier
 {
-  v4 = a3;
-  if ([v4 length])
+  identifierCopy = identifier;
+  if ([identifierCopy length])
   {
-    v5 = [(NSMutableDictionary *)self->_rapportEffectiveIdentifiersByAssistantIdentifier objectForKey:v4];
+    v5 = [(NSMutableDictionary *)self->_rapportEffectiveIdentifiersByAssistantIdentifier objectForKey:identifierCopy];
     v6 = [(ADDeviceCircleManager *)self _remotePeerInfoForRapportEffectiveIdentifier:v5];
   }
 
@@ -341,50 +341,50 @@ LABEL_15:
   return v6;
 }
 
-- (void)_removeRemotePeerInfoWithRapportEffectiveIdentifier:(id)a3
+- (void)_removeRemotePeerInfoWithRapportEffectiveIdentifier:(id)identifier
 {
-  v11 = a3;
-  v4 = [v11 length];
-  v5 = v11;
+  identifierCopy = identifier;
+  v4 = [identifierCopy length];
+  v5 = identifierCopy;
   if (v4)
   {
-    v6 = [(NSMutableDictionary *)self->_remotePeerInfoByRapportEffectiveIdentifier objectForKey:v11];
+    v6 = [(NSMutableDictionary *)self->_remotePeerInfoByRapportEffectiveIdentifier objectForKey:identifierCopy];
     v7 = v6;
     if (v6)
     {
-      v8 = [v6 idsDeviceUniqueIdentifier];
-      if ([v8 length])
+      idsDeviceUniqueIdentifier = [v6 idsDeviceUniqueIdentifier];
+      if ([idsDeviceUniqueIdentifier length])
       {
-        [(NSMutableDictionary *)self->_rapportEffectiveIdentifiersByIDSDeviceUniqueIdentifier removeObjectForKey:v8];
+        [(NSMutableDictionary *)self->_rapportEffectiveIdentifiersByIDSDeviceUniqueIdentifier removeObjectForKey:idsDeviceUniqueIdentifier];
       }
 
-      v9 = [v7 assistantIdentifier];
-      if ([v9 length])
+      assistantIdentifier = [v7 assistantIdentifier];
+      if ([assistantIdentifier length])
       {
-        [(NSMutableDictionary *)self->_rapportEffectiveIdentifiersByAssistantIdentifier removeObjectForKey:v9];
+        [(NSMutableDictionary *)self->_rapportEffectiveIdentifiersByAssistantIdentifier removeObjectForKey:assistantIdentifier];
       }
 
-      v10 = [v7 homeKitAccessoryIdentifier];
-      if ([v10 length])
+      homeKitAccessoryIdentifier = [v7 homeKitAccessoryIdentifier];
+      if ([homeKitAccessoryIdentifier length])
       {
-        [(NSMutableDictionary *)self->_rapportEffectiveIdentifiersByHomeKitAccessoryIdentifier removeObjectForKey:v10];
+        [(NSMutableDictionary *)self->_rapportEffectiveIdentifiersByHomeKitAccessoryIdentifier removeObjectForKey:homeKitAccessoryIdentifier];
       }
 
-      [(NSMutableDictionary *)self->_remotePeerInfoByRapportEffectiveIdentifier removeObjectForKey:v11];
+      [(NSMutableDictionary *)self->_remotePeerInfoByRapportEffectiveIdentifier removeObjectForKey:identifierCopy];
     }
 
-    v5 = v11;
+    v5 = identifierCopy;
   }
 }
 
-- (void)_updateRemotePeerInfo:(id)a3
+- (void)_updateRemotePeerInfo:(id)info
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  infoCopy = info;
+  v5 = infoCopy;
+  if (infoCopy)
   {
-    v6 = [v4 rapportEffectiveIdentifier];
-    if (![v6 length])
+    rapportEffectiveIdentifier = [infoCopy rapportEffectiveIdentifier];
+    if (![rapportEffectiveIdentifier length])
     {
       v24 = AFSiriLogContextDaemon;
       if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_ERROR))
@@ -394,14 +394,14 @@ LABEL_15:
         v27 = 2112;
         v28 = v5;
         v29 = 2112;
-        v30 = v6;
+        v30 = rapportEffectiveIdentifier;
         _os_log_error_impl(&_mh_execute_header, v24, OS_LOG_TYPE_ERROR, "%s Unable to add or update remote peer info %@ because its rapportEffectiveIdentifier is %@.", &v25, 0x20u);
       }
 
       goto LABEL_24;
     }
 
-    v7 = [(NSMutableDictionary *)self->_remotePeerInfoByRapportEffectiveIdentifier objectForKey:v6];
+    v7 = [(NSMutableDictionary *)self->_remotePeerInfoByRapportEffectiveIdentifier objectForKey:rapportEffectiveIdentifier];
     v8 = v7;
     if (v7)
     {
@@ -413,7 +413,7 @@ LABEL_24:
         goto LABEL_25;
       }
 
-      [(ADDeviceCircleManager *)self _removeRemotePeerInfoWithRapportEffectiveIdentifier:v6];
+      [(ADDeviceCircleManager *)self _removeRemotePeerInfoWithRapportEffectiveIdentifier:rapportEffectiveIdentifier];
     }
 
     remotePeerInfoByRapportEffectiveIdentifier = self->_remotePeerInfoByRapportEffectiveIdentifier;
@@ -426,9 +426,9 @@ LABEL_24:
       remotePeerInfoByRapportEffectiveIdentifier = self->_remotePeerInfoByRapportEffectiveIdentifier;
     }
 
-    [(NSMutableDictionary *)remotePeerInfoByRapportEffectiveIdentifier setObject:v5 forKey:v6];
-    v12 = [v5 idsDeviceUniqueIdentifier];
-    if ([v12 length])
+    [(NSMutableDictionary *)remotePeerInfoByRapportEffectiveIdentifier setObject:v5 forKey:rapportEffectiveIdentifier];
+    idsDeviceUniqueIdentifier = [v5 idsDeviceUniqueIdentifier];
+    if ([idsDeviceUniqueIdentifier length])
     {
       rapportEffectiveIdentifiersByIDSDeviceUniqueIdentifier = self->_rapportEffectiveIdentifiersByIDSDeviceUniqueIdentifier;
       if (!rapportEffectiveIdentifiersByIDSDeviceUniqueIdentifier)
@@ -440,11 +440,11 @@ LABEL_24:
         rapportEffectiveIdentifiersByIDSDeviceUniqueIdentifier = self->_rapportEffectiveIdentifiersByIDSDeviceUniqueIdentifier;
       }
 
-      [(NSMutableDictionary *)rapportEffectiveIdentifiersByIDSDeviceUniqueIdentifier setObject:v6 forKey:v12];
+      [(NSMutableDictionary *)rapportEffectiveIdentifiersByIDSDeviceUniqueIdentifier setObject:rapportEffectiveIdentifier forKey:idsDeviceUniqueIdentifier];
     }
 
-    v16 = [v5 assistantIdentifier];
-    if ([v16 length])
+    assistantIdentifier = [v5 assistantIdentifier];
+    if ([assistantIdentifier length])
     {
       rapportEffectiveIdentifiersByAssistantIdentifier = self->_rapportEffectiveIdentifiersByAssistantIdentifier;
       if (!rapportEffectiveIdentifiersByAssistantIdentifier)
@@ -456,11 +456,11 @@ LABEL_24:
         rapportEffectiveIdentifiersByAssistantIdentifier = self->_rapportEffectiveIdentifiersByAssistantIdentifier;
       }
 
-      [(NSMutableDictionary *)rapportEffectiveIdentifiersByAssistantIdentifier setObject:v6 forKey:v16];
+      [(NSMutableDictionary *)rapportEffectiveIdentifiersByAssistantIdentifier setObject:rapportEffectiveIdentifier forKey:assistantIdentifier];
     }
 
-    v20 = [v5 homeKitAccessoryIdentifier];
-    if ([v20 length])
+    homeKitAccessoryIdentifier = [v5 homeKitAccessoryIdentifier];
+    if ([homeKitAccessoryIdentifier length])
     {
       rapportEffectiveIdentifiersByHomeKitAccessoryIdentifier = self->_rapportEffectiveIdentifiersByHomeKitAccessoryIdentifier;
       if (!rapportEffectiveIdentifiersByHomeKitAccessoryIdentifier)
@@ -472,7 +472,7 @@ LABEL_24:
         rapportEffectiveIdentifiersByHomeKitAccessoryIdentifier = self->_rapportEffectiveIdentifiersByHomeKitAccessoryIdentifier;
       }
 
-      [(NSMutableDictionary *)rapportEffectiveIdentifiersByHomeKitAccessoryIdentifier setObject:v6 forKey:v20];
+      [(NSMutableDictionary *)rapportEffectiveIdentifiersByHomeKitAccessoryIdentifier setObject:rapportEffectiveIdentifier forKey:homeKitAccessoryIdentifier];
     }
 
     goto LABEL_21;
@@ -481,14 +481,14 @@ LABEL_24:
 LABEL_25:
 }
 
-- (void)_updateLocalPeerInfo:(id)a3
+- (void)_updateLocalPeerInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   localPeerInfo = self->_localPeerInfo;
-  if (localPeerInfo != v4 && ([(AFPeerInfo *)localPeerInfo isEqual:v4]& 1) == 0)
+  if (localPeerInfo != infoCopy && ([(AFPeerInfo *)localPeerInfo isEqual:infoCopy]& 1) == 0)
   {
     v6 = self->_localPeerInfo;
-    v7 = v4;
+    v7 = infoCopy;
     v8 = AFSiriLogContextDaemon;
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
     {
@@ -519,20 +519,20 @@ LABEL_25:
   }
 }
 
-- (void)_updateSiriInfoWithLocalPeerData:(id)a3
+- (void)_updateSiriInfoWithLocalPeerData:(id)data
 {
-  v3 = [a3 buildDictionaryRepresentation];
+  buildDictionaryRepresentation = [data buildDictionaryRepresentation];
   v4 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     v5 = 136315394;
     v6 = "[ADDeviceCircleManager _updateSiriInfoWithLocalPeerData:]";
     v7 = 2112;
-    v8 = v3;
+    v8 = buildDictionaryRepresentation;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "%s Publish peer data %@ to others...", &v5, 0x16u);
   }
 
-  [ADRapportLink updateSiriInfoWithObject:v3 forKey:@"peerData"];
+  [ADRapportLink updateSiriInfoWithObject:buildDictionaryRepresentation forKey:@"peerData"];
 }
 
 - (id)_localPeerData
@@ -547,19 +547,19 @@ LABEL_25:
   return v2;
 }
 
-- (id)_managedPeerInfoMatchingPeerInfo:(id)a3
+- (id)_managedPeerInfoMatchingPeerInfo:(id)info
 {
-  v5 = a3;
-  if (!v5)
+  infoCopy = info;
+  if (!infoCopy)
   {
     v12 = +[NSAssertionHandler currentHandler];
     [v12 handleFailureInMethod:a2 object:self file:@"ADDeviceCircleManager.m" lineNumber:2189 description:{@"Invalid parameter not satisfying: %@", @"peerInfoToMatch != nil"}];
   }
 
-  v6 = [v5 assistantIdentifier];
-  if ([v6 length])
+  assistantIdentifier = [infoCopy assistantIdentifier];
+  if ([assistantIdentifier length])
   {
-    v7 = [(ADDeviceCircleManager *)self _managedPeerInfoForAssistantIdentifier:v6];
+    v7 = [(ADDeviceCircleManager *)self _managedPeerInfoForAssistantIdentifier:assistantIdentifier];
 
     if (v7)
     {
@@ -571,10 +571,10 @@ LABEL_25:
   {
   }
 
-  v8 = [v5 rapportEffectiveIdentifier];
-  if ([v8 length])
+  rapportEffectiveIdentifier = [infoCopy rapportEffectiveIdentifier];
+  if ([rapportEffectiveIdentifier length])
   {
-    v7 = [(ADDeviceCircleManager *)self _managedPeerInfoForRapportEffectiveIdentifier:v8];
+    v7 = [(ADDeviceCircleManager *)self _managedPeerInfoForRapportEffectiveIdentifier:rapportEffectiveIdentifier];
 
     if (v7)
     {
@@ -586,15 +586,15 @@ LABEL_25:
   {
   }
 
-  v9 = [v5 idsDeviceUniqueIdentifier];
-  if (![v9 length])
+  idsDeviceUniqueIdentifier = [infoCopy idsDeviceUniqueIdentifier];
+  if (![idsDeviceUniqueIdentifier length])
   {
 
 LABEL_15:
-    v10 = [v5 homeKitAccessoryIdentifier];
-    if ([v10 length])
+    homeKitAccessoryIdentifier = [infoCopy homeKitAccessoryIdentifier];
+    if ([homeKitAccessoryIdentifier length])
     {
-      v7 = [(ADDeviceCircleManager *)self _managedPeerInfoForHomeKitAccessoryIdentifier:v10];
+      v7 = [(ADDeviceCircleManager *)self _managedPeerInfoForHomeKitAccessoryIdentifier:homeKitAccessoryIdentifier];
     }
 
     else
@@ -605,7 +605,7 @@ LABEL_15:
     goto LABEL_19;
   }
 
-  v7 = [(ADDeviceCircleManager *)self _managedPeerInfoForIDSDeviceUniqueIdentifier:v9];
+  v7 = [(ADDeviceCircleManager *)self _managedPeerInfoForIDSDeviceUniqueIdentifier:idsDeviceUniqueIdentifier];
 
   if (!v7)
   {
@@ -617,25 +617,25 @@ LABEL_19:
   return v7;
 }
 
-- (id)_managedPeerInfoForRapportEffectiveIdentifier:(id)a3
+- (id)_managedPeerInfoForRapportEffectiveIdentifier:(id)identifier
 {
-  v5 = a3;
-  if (![v5 length])
+  identifierCopy = identifier;
+  if (![identifierCopy length])
   {
     v11 = +[NSAssertionHandler currentHandler];
     [v11 handleFailureInMethod:a2 object:self file:@"ADDeviceCircleManager.m" lineNumber:2177 description:{@"Invalid parameter not satisfying: %@", @"[rapportEffectiveIdentifier length] > 0"}];
   }
 
-  v6 = [(ADDeviceCircleManager *)self _remotePeerInfoForRapportEffectiveIdentifier:v5];
+  v6 = [(ADDeviceCircleManager *)self _remotePeerInfoForRapportEffectiveIdentifier:identifierCopy];
   if (!v6)
   {
-    v7 = [(ADDeviceCircleManager *)self _localPeerInfo];
-    v8 = [v7 rapportEffectiveIdentifier];
-    v9 = [v8 isEqualToString:v5];
+    _localPeerInfo = [(ADDeviceCircleManager *)self _localPeerInfo];
+    rapportEffectiveIdentifier = [_localPeerInfo rapportEffectiveIdentifier];
+    v9 = [rapportEffectiveIdentifier isEqualToString:identifierCopy];
 
     if (v9)
     {
-      v6 = v7;
+      v6 = _localPeerInfo;
     }
 
     else
@@ -647,25 +647,25 @@ LABEL_19:
   return v6;
 }
 
-- (id)_managedPeerInfoForHomeKitAccessoryIdentifier:(id)a3
+- (id)_managedPeerInfoForHomeKitAccessoryIdentifier:(id)identifier
 {
-  v5 = a3;
-  if (![v5 length])
+  identifierCopy = identifier;
+  if (![identifierCopy length])
   {
     v11 = +[NSAssertionHandler currentHandler];
     [v11 handleFailureInMethod:a2 object:self file:@"ADDeviceCircleManager.m" lineNumber:2165 description:{@"Invalid parameter not satisfying: %@", @"[homeKitAccessoryIdentifier length] > 0"}];
   }
 
-  v6 = [(ADDeviceCircleManager *)self _remotePeerInfoForHomeKitAccessoryIdentifier:v5];
+  v6 = [(ADDeviceCircleManager *)self _remotePeerInfoForHomeKitAccessoryIdentifier:identifierCopy];
   if (!v6)
   {
-    v7 = [(ADDeviceCircleManager *)self _localPeerInfo];
-    v8 = [v7 homeKitAccessoryIdentifier];
-    v9 = [v8 isEqualToString:v5];
+    _localPeerInfo = [(ADDeviceCircleManager *)self _localPeerInfo];
+    homeKitAccessoryIdentifier = [_localPeerInfo homeKitAccessoryIdentifier];
+    v9 = [homeKitAccessoryIdentifier isEqualToString:identifierCopy];
 
     if (v9)
     {
-      v6 = v7;
+      v6 = _localPeerInfo;
     }
 
     else
@@ -677,25 +677,25 @@ LABEL_19:
   return v6;
 }
 
-- (id)_managedPeerInfoForIDSDeviceUniqueIdentifier:(id)a3
+- (id)_managedPeerInfoForIDSDeviceUniqueIdentifier:(id)identifier
 {
-  v5 = a3;
-  if (![v5 length])
+  identifierCopy = identifier;
+  if (![identifierCopy length])
   {
     v11 = +[NSAssertionHandler currentHandler];
     [v11 handleFailureInMethod:a2 object:self file:@"ADDeviceCircleManager.m" lineNumber:2153 description:{@"Invalid parameter not satisfying: %@", @"[idsDeviceUniqueIdentifier length] > 0"}];
   }
 
-  v6 = [(ADDeviceCircleManager *)self _remotePeerInfoForIDSDeviceUniqueIdentifier:v5];
+  v6 = [(ADDeviceCircleManager *)self _remotePeerInfoForIDSDeviceUniqueIdentifier:identifierCopy];
   if (!v6)
   {
-    v7 = [(ADDeviceCircleManager *)self _localPeerInfo];
-    v8 = [v7 idsDeviceUniqueIdentifier];
-    v9 = [v8 isEqualToString:v5];
+    _localPeerInfo = [(ADDeviceCircleManager *)self _localPeerInfo];
+    idsDeviceUniqueIdentifier = [_localPeerInfo idsDeviceUniqueIdentifier];
+    v9 = [idsDeviceUniqueIdentifier isEqualToString:identifierCopy];
 
     if (v9)
     {
-      v6 = v7;
+      v6 = _localPeerInfo;
     }
 
     else
@@ -707,26 +707,26 @@ LABEL_19:
   return v6;
 }
 
-- (id)_managedPeerInfoForAssistantIdentifier:(id)a3
+- (id)_managedPeerInfoForAssistantIdentifier:(id)identifier
 {
-  v5 = a3;
-  if (![v5 length])
+  identifierCopy = identifier;
+  if (![identifierCopy length])
   {
     v12 = +[NSAssertionHandler currentHandler];
     [v12 handleFailureInMethod:a2 object:self file:@"ADDeviceCircleManager.m" lineNumber:2140 description:{@"Invalid parameter not satisfying: %@", @"[assistantIdentifier length] > 0"}];
   }
 
-  v6 = [v5 uppercaseString];
-  v7 = [(ADDeviceCircleManager *)self _remotePeerInfoForAssistantIdentifier:v6];
+  uppercaseString = [identifierCopy uppercaseString];
+  v7 = [(ADDeviceCircleManager *)self _remotePeerInfoForAssistantIdentifier:uppercaseString];
   if (!v7)
   {
-    v8 = [(ADDeviceCircleManager *)self _localPeerInfo];
-    v9 = [v8 assistantIdentifier];
-    v10 = [v9 isEqualToString:v6];
+    _localPeerInfo = [(ADDeviceCircleManager *)self _localPeerInfo];
+    assistantIdentifier = [_localPeerInfo assistantIdentifier];
+    v10 = [assistantIdentifier isEqualToString:uppercaseString];
 
     if (v10)
     {
-      v7 = v8;
+      v7 = _localPeerInfo;
     }
 
     else
@@ -738,19 +738,19 @@ LABEL_19:
   return v7;
 }
 
-- (id)_keepAliveLinkToDevice:(id)a3
+- (id)_keepAliveLinkToDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v5 = [ADRapportLinkConfiguration newWithBuilder:&stru_100514460];
   v6 = [[ADRapportLink alloc] initWithQueue:self->_queue configuration:v5];
   [(ADRapportLink *)v6 setServiceType:@"com.apple.siri.wakeup"];
-  [(ADRapportLink *)v6 setDestinationDevice:v4];
+  [(ADRapportLink *)v6 setDestinationDevice:deviceCopy];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100185A48;
   v9[3] = &unk_10051C498;
-  v10 = v4;
-  v7 = v4;
+  v10 = deviceCopy;
+  v7 = deviceCopy;
   [(ADRapportLink *)v6 activateWithCompletion:v9];
 
   return v6;
@@ -758,8 +758,8 @@ LABEL_19:
 
 - (void)_updateDeviceCountTrend
 {
-  v3 = [(ADRapportLink *)self->_clientLink activeDevices];
-  v4 = [v3 count];
+  activeDevices = [(ADRapportLink *)self->_clientLink activeDevices];
+  v4 = [activeDevices count];
 
   v5 = +[NSDate date];
   v6 = objc_alloc_init(ADDeviceCountAndTimestamp);
@@ -769,14 +769,14 @@ LABEL_19:
   deviceCountTrend = self->_deviceCountTrend;
   if (v7)
   {
-    v9 = [(NSMutableArray *)deviceCountTrend lastObject];
-    v10 = [v9 deviceCount];
-    v11 = [v9 timestamp];
-    [v5 timeIntervalSinceDate:v11];
+    lastObject = [(NSMutableArray *)deviceCountTrend lastObject];
+    deviceCount = [lastObject deviceCount];
+    timestamp = [lastObject timestamp];
+    [v5 timeIntervalSinceDate:timestamp];
     v13 = v12;
     if ([(NSMutableArray *)self->_deviceCountTrend indexOfObjectPassingTest:&stru_100514440]== 0x7FFFFFFFFFFFFFFFLL)
     {
-      if (v4 > v10 || v13 > 60.0)
+      if (v4 > deviceCount || v13 > 60.0)
       {
         [(NSMutableArray *)self->_deviceCountTrend removeAllObjects];
       }
@@ -785,22 +785,22 @@ LABEL_19:
       goto LABEL_23;
     }
 
-    if (v4 < v10)
+    if (v4 < deviceCount)
     {
 LABEL_23:
 
       goto LABEL_24;
     }
 
-    v14 = [(NSMutableArray *)self->_deviceCountTrend firstObject];
-    v15 = [v14 deviceCount];
-    v16 = v4 - v15;
-    if (v4 - v15 < 0)
+    firstObject = [(NSMutableArray *)self->_deviceCountTrend firstObject];
+    deviceCount2 = [firstObject deviceCount];
+    v16 = v4 - deviceCount2;
+    if (v4 - deviceCount2 < 0)
     {
-      v16 = v15 - v4;
+      v16 = deviceCount2 - v4;
     }
 
-    if (v16 <= 1 && v4 > 2 || v4 == 2 && v15 == 2)
+    if (v16 <= 1 && v4 > 2 || v4 == 2 && deviceCount2 == 2)
     {
       if (v13 <= 60.0)
       {
@@ -816,7 +816,7 @@ LABEL_23:
       }
     }
 
-    else if (!v10 || v13 <= 60.0)
+    else if (!deviceCount || v13 <= 60.0)
     {
       goto LABEL_22;
     }
@@ -851,8 +851,8 @@ LABEL_24:
   v9 = v8 / 3600.0;
 
   v10 = log(((v9 * 2.0) + 1.0));
-  v11 = [(ADRapportLink *)self->_clientLink activeDevices];
-  v12 = [v11 count];
+  activeDevices = [(ADRapportLink *)self->_clientLink activeDevices];
+  v12 = [activeDevices count];
 
   if (AFIsHorseman())
   {
@@ -952,7 +952,7 @@ LABEL_24:
   }
 }
 
-- (void)isMeDeviceDidChange:(id)a3
+- (void)isMeDeviceDidChange:(id)change
 {
   v4 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
@@ -974,9 +974,9 @@ LABEL_24:
   objc_destroyWeak(buf);
 }
 
-- (void)sharedDataDidChange:(id)a3
+- (void)sharedDataDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v5 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
@@ -1001,42 +1001,42 @@ LABEL_24:
   }
 }
 
-- (void)myriadTrialBoostsUpdated:(id)a3
+- (void)myriadTrialBoostsUpdated:(id)updated
 {
   v4 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     v5 = v4;
     v6 = +[ADMyriadSettingsManager sharedSettingsManager];
-    v7 = [v6 treatmentId];
+    treatmentId = [v6 treatmentId];
     v10 = 136315394;
     v11 = "[ADDeviceCircleManager myriadTrialBoostsUpdated:]";
     v12 = 2112;
-    v13 = v7;
+    v13 = treatmentId;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%s Trial Boost Notification Received For TreatmentID: %@", &v10, 0x16u);
   }
 
-  v8 = [(ADDeviceCircleManager *)self _syncCompanionLinkDeviceLocalPeerData];
-  v9 = [(ADDeviceCircleManager *)self _localPeerData];
-  [(ADDeviceCircleManager *)self _updateSiriInfoWithLocalPeerData:v9];
+  _syncCompanionLinkDeviceLocalPeerData = [(ADDeviceCircleManager *)self _syncCompanionLinkDeviceLocalPeerData];
+  _localPeerData = [(ADDeviceCircleManager *)self _localPeerData];
+  [(ADDeviceCircleManager *)self _updateSiriInfoWithLocalPeerData:_localPeerData];
 }
 
-- (void)_updateCurrentAccessoryInfo:(id)a3
+- (void)_updateCurrentAccessoryInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v5 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     v14 = 136315394;
     v15 = "[ADDeviceCircleManager _updateCurrentAccessoryInfo:]";
     v16 = 2112;
-    v17 = v4;
+    v17 = infoCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%s currentAccessoryInfo = %@", &v14, 0x16u);
   }
 
-  v6 = [(ADRapportLink *)self->_clientLink localDevice];
+  localDevice = [(ADRapportLink *)self->_clientLink localDevice];
   v7 = self->_currentAccessoryInfo;
-  v8 = v4;
+  v8 = infoCopy;
   v9 = v8;
   if (v7 == v8)
   {
@@ -1062,13 +1062,13 @@ LABEL_24:
     currentAccessoryInfo = self->_currentAccessoryInfo;
     self->_currentAccessoryInfo = v11;
 
-    v13 = [(ADDeviceCircleManager *)self _syncCompanionLinkDeviceLocalPeerData];
+    _syncCompanionLinkDeviceLocalPeerData = [(ADDeviceCircleManager *)self _syncCompanionLinkDeviceLocalPeerData];
   }
 
 LABEL_11:
 }
 
-- (void)preferencesSharedUserIdentifierDidChange:(id)a3
+- (void)preferencesSharedUserIdentifierDidChange:(id)change
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -1079,7 +1079,7 @@ LABEL_11:
   dispatch_async(queue, block);
 }
 
-- (void)activeAccountIdentifierDidChange:(id)a3
+- (void)activeAccountIdentifierDidChange:(id)change
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -1090,7 +1090,7 @@ LABEL_11:
   dispatch_async(queue, block);
 }
 
-- (void)preferencesEnabledBitsDidChange:(id)a3
+- (void)preferencesEnabledBitsDidChange:(id)change
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -1101,65 +1101,65 @@ LABEL_11:
   dispatch_async(queue, block);
 }
 
-- (void)homeInfoManager:(id)a3 didUpdateCurrentAccessoryInfo:(id)a4
+- (void)homeInfoManager:(id)manager didUpdateCurrentAccessoryInfo:(id)info
 {
-  v5 = a4;
+  infoCopy = info;
   queue = self->_queue;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100186D88;
   v8[3] = &unk_10051E010;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = infoCopy;
+  v7 = infoCopy;
   dispatch_async(queue, v8);
 }
 
-- (void)rapportLink:(id)a3 didReceiveMessage:(id)a4 ofType:(id)a5 fromPeer:(id)a6 completion:(id)a7
+- (void)rapportLink:(id)link didReceiveMessage:(id)message ofType:(id)type fromPeer:(id)peer completion:(id)completion
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
+  messageCopy = message;
+  typeCopy = type;
+  peerCopy = peer;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_queue);
-  if ([v12 isEqualToString:@"svdCapabilities_fetch"] && self->_isCollector)
+  if ([typeCopy isEqualToString:@"svdCapabilities_fetch"] && self->_isCollector)
   {
-    v15 = [(ADDeviceCircleManager *)self _handleSVDCapabilitiesFetch:v11 fromPeer:v13];
+    v15 = [(ADDeviceCircleManager *)self _handleSVDCapabilitiesFetch:messageCopy fromPeer:peerCopy];
 LABEL_9:
     v16 = v15;
-    v14[2](v14, v15, 0);
+    completionCopy[2](completionCopy, v15, 0);
 
     goto LABEL_10;
   }
 
-  if ([v12 isEqualToString:@"device_capabilities_fetch"] && self->_isCollector)
+  if ([typeCopy isEqualToString:@"device_capabilities_fetch"] && self->_isCollector)
   {
-    v15 = [(ADDeviceCircleManager *)self _handleDeviceCapabilitiesFetch:v11 fromPeer:v13];
+    v15 = [(ADDeviceCircleManager *)self _handleDeviceCapabilitiesFetch:messageCopy fromPeer:peerCopy];
     goto LABEL_9;
   }
 
-  if ([v12 isEqualToString:@"peers_svdCapabilities_fetch"])
+  if ([typeCopy isEqualToString:@"peers_svdCapabilities_fetch"])
   {
-    v15 = [(ADDeviceCircleManager *)self _handlePeersAndSVDCapabilitiesFetch:v11 fromPeer:v13];
+    v15 = [(ADDeviceCircleManager *)self _handlePeersAndSVDCapabilitiesFetch:messageCopy fromPeer:peerCopy];
     goto LABEL_9;
   }
 
-  if ([v12 isEqualToString:@"execute_command_request"])
+  if ([typeCopy isEqualToString:@"execute_command_request"])
   {
-    [(ADDeviceCircleManager *)self _handleExecuteCommand:v11 fromPeer:v13 completion:v14];
+    [(ADDeviceCircleManager *)self _handleExecuteCommand:messageCopy fromPeer:peerCopy completion:completionCopy];
   }
 
   else
   {
-    v17 = [(NSMapTable *)self->_requestHandlers keyEnumerator];
-    v18 = [v17 allObjects];
+    keyEnumerator = [(NSMapTable *)self->_requestHandlers keyEnumerator];
+    allObjects = [keyEnumerator allObjects];
     v25[0] = _NSConcreteStackBlock;
     v25[1] = 3221225472;
     v25[2] = sub_100187120;
     v25[3] = &unk_1005143B0;
-    v19 = v12;
+    v19 = typeCopy;
     v26 = v19;
-    v20 = [v18 af_firstObjectPassingTest:v25];
+    v20 = [allObjects af_firstObjectPassingTest:v25];
 
     v21 = [(NSMapTable *)self->_requestHandlers objectForKey:v20];
     v22 = AFSiriLogContextDaemon;
@@ -1177,7 +1177,7 @@ LABEL_9:
       v23 = v21;
       if (objc_opt_respondsToSelector())
       {
-        [v23 handle:v11 fromPeer:v13 completion:v14];
+        [v23 handle:messageCopy fromPeer:peerCopy completion:completionCopy];
       }
     }
 
@@ -1194,18 +1194,18 @@ LABEL_9:
       }
 
       v23 = [AFError errorWithCode:1014];
-      (v14)[2](v14, 0, v23);
+      (completionCopy)[2](completionCopy, 0, v23);
     }
   }
 
 LABEL_10:
 }
 
-- (void)_handleExecuteCommand:(id)a3 fromPeer:(id)a4 completion:(id)a5
+- (void)_handleExecuteCommand:(id)command fromPeer:(id)peer completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  commandCopy = command;
+  peerCopy = peer;
+  completionCopy = completion;
   v11 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
   {
@@ -1215,18 +1215,18 @@ LABEL_10:
   }
 
   v12 = +[ADFMDMonitor sharedManager];
-  v13 = [v12 isLostModeActive];
+  isLostModeActive = [v12 isLostModeActive];
 
-  if (!v13)
+  if (!isLostModeActive)
   {
     if (+[AFFeatureFlags isCrossDeviceTVControlFromWatchEnabled])
     {
-      v15 = [v8 objectForKeyedSubscript:@"recipient_assistant_identifier"];
+      v15 = [commandCopy objectForKeyedSubscript:@"recipient_assistant_identifier"];
       if ([v15 length])
       {
-        v16 = [(ADDeviceCircleManager *)self _localPeerData];
-        v17 = [v16 assistantIdentifier];
-        v18 = [v15 isEqualToString:v17];
+        _localPeerData = [(ADDeviceCircleManager *)self _localPeerData];
+        assistantIdentifier = [_localPeerData assistantIdentifier];
+        v18 = [v15 isEqualToString:assistantIdentifier];
 
         if ((v18 & 1) == 0)
         {
@@ -1248,8 +1248,8 @@ LABEL_10:
             v38[2] = sub_1001879A4;
             v38[3] = &unk_100514DE0;
             v39 = v15;
-            v40 = v10;
-            [(ADDeviceCircleManager *)self _forwardExecuteCommandToDevice:v39 message:v8 from:v9 completion:v38];
+            v40 = completionCopy;
+            [(ADDeviceCircleManager *)self _forwardExecuteCommandToDevice:v39 message:commandCopy from:peerCopy completion:v38];
 
             v30 = v39;
           }
@@ -1267,7 +1267,7 @@ LABEL_10:
             }
 
             v30 = [AFError errorWithCode:1017];
-            (*(v10 + 2))(v10, 0, v30);
+            (*(completionCopy + 2))(completionCopy, 0, v30);
           }
 
           goto LABEL_45;
@@ -1275,11 +1275,11 @@ LABEL_10:
       }
     }
 
-    v15 = [v8 objectForKeyedSubscript:@"serialized_command"];
+    v15 = [commandCopy objectForKeyedSubscript:@"serialized_command"];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v20 = 0;
+      dictionary = 0;
       goto LABEL_16;
     }
 
@@ -1287,7 +1287,7 @@ LABEL_10:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v20 = [v19 dictionary];
+      dictionary = [v19 dictionary];
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
@@ -1301,20 +1301,20 @@ LABEL_10:
 
         v41 = @"execute_command_response";
         v32 = objc_alloc_init(SACommandIgnored);
-        v33 = [v32 dictionary];
-        v42 = v33;
+        dictionary2 = [v32 dictionary];
+        v42 = dictionary2;
         v26 = [NSDictionary dictionaryWithObjects:&v42 forKeys:&v41 count:1];
 
-        if (v10)
+        if (completionCopy)
         {
-          (*(v10 + 2))(v10, v26, 0);
+          (*(completionCopy + 2))(completionCopy, v26, 0);
         }
 
         goto LABEL_43;
       }
 
 LABEL_16:
-      v19 = [v8 objectForKeyedSubscript:@"execution_context"];
+      v19 = [commandCopy objectForKeyedSubscript:@"execution_context"];
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
@@ -1346,8 +1346,8 @@ LABEL_16:
 LABEL_22:
         v23 = [[AFCommandExecutionInfo alloc] initWithDictionaryRepresentation:v19];
         v24 = [ADPeerInfo alloc];
-        v25 = [v23 originPeerInfo];
-        v26 = [(ADPeerInfo *)v24 initWithAFPeerInfo:v25];
+        originPeerInfo = [v23 originPeerInfo];
+        v26 = [(ADPeerInfo *)v24 initWithAFPeerInfo:originPeerInfo];
 
 LABEL_42:
         v35 = +[ADCommandCenter sharedCommandCenter];
@@ -1356,8 +1356,8 @@ LABEL_42:
         v36[2] = sub_100187AAC;
         v36[3] = &unk_100514DE0;
         v36[4] = self;
-        v37 = v10;
-        [v35 executeCommand:v20 fromPeer:v26 remoteExecutionInfo:v19 reply:v36];
+        v37 = completionCopy;
+        [v35 executeCommand:dictionary fromPeer:v26 remoteExecutionInfo:v19 reply:v36];
 
         goto LABEL_43;
       }
@@ -1372,25 +1372,25 @@ LABEL_42:
       *buf = 136315138;
       v44 = "[ADDeviceCircleManager _handleExecuteCommand:fromPeer:completion:]";
       _os_log_error_impl(&_mh_execute_header, v27, OS_LOG_TYPE_ERROR, "%s Invalid command received. Ignoring.", buf, 0xCu);
-      if (v10)
+      if (completionCopy)
       {
         goto LABEL_25;
       }
     }
 
-    else if (v10)
+    else if (completionCopy)
     {
 LABEL_25:
       v26 = [AFError errorWithCode:1015];
-      (*(v10 + 2))(v10, 0, v26);
-      v20 = 0;
+      (*(completionCopy + 2))(completionCopy, 0, v26);
+      dictionary = 0;
 LABEL_43:
 
 LABEL_44:
       goto LABEL_45;
     }
 
-    v20 = 0;
+    dictionary = 0;
     goto LABEL_44;
   }
 
@@ -1400,7 +1400,7 @@ LABEL_44:
     *buf = 136315138;
     v44 = "[ADDeviceCircleManager _handleExecuteCommand:fromPeer:completion:]";
     _os_log_error_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "%s Lost mode is active, rejecting incoming request", buf, 0xCu);
-    if (!v10)
+    if (!completionCopy)
     {
       goto LABEL_46;
     }
@@ -1408,41 +1408,41 @@ LABEL_44:
     goto LABEL_6;
   }
 
-  if (v10)
+  if (completionCopy)
   {
 LABEL_6:
     v15 = [AFError errorWithCode:1003];
-    (*(v10 + 2))(v10, 0, v15);
+    (*(completionCopy + 2))(completionCopy, 0, v15);
 LABEL_45:
   }
 
 LABEL_46:
 }
 
-- (id)_handleDeviceCapabilitiesFetch:(id)a3 fromPeer:(id)a4
+- (id)_handleDeviceCapabilitiesFetch:(id)fetch fromPeer:(id)peer
 {
-  v6 = a4;
-  v7 = [a3 objectForKey:@"get_capabilities_for_devices"];
+  peerCopy = peer;
+  v7 = [fetch objectForKey:@"get_capabilities_for_devices"];
   v8 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
   {
     *buf = 136315650;
     v28 = "[ADDeviceCircleManager _handleDeviceCapabilitiesFetch:fromPeer:]";
     v29 = 2112;
-    v30 = v6;
+    v30 = peerCopy;
     v31 = 2112;
     v32 = v7;
     _os_log_debug_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "%s #hal capabilities fetch request from %@: %@", buf, 0x20u);
   }
 
-  v20 = v6;
+  v20 = peerCopy;
   v21 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(v7, "count")}];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v9 = [(ADRapportLink *)self->_clientLink activeDevices];
-  v10 = [v9 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  activeDevices = [(ADRapportLink *)self->_clientLink activeDevices];
+  v10 = [activeDevices countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v10)
   {
     v11 = v10;
@@ -1453,25 +1453,25 @@ LABEL_46:
       {
         if (*v23 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(activeDevices);
         }
 
         v14 = *(*(&v22 + 1) + 8 * i);
-        v15 = [v14 idsDeviceIdentifier];
-        if ([v7 containsObject:v15])
+        idsDeviceIdentifier = [v14 idsDeviceIdentifier];
+        if ([v7 containsObject:idsDeviceIdentifier])
         {
-          v16 = [v14 siriInfo];
-          v17 = [v16 objectForKey:@"deviceCapabilities"];
+          siriInfo = [v14 siriInfo];
+          v17 = [siriInfo objectForKey:@"deviceCapabilities"];
 
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            [v21 setObject:v17 forKey:v15];
+            [v21 setObject:v17 forKey:idsDeviceIdentifier];
           }
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v11 = [activeDevices countByEnumeratingWithState:&v22 objects:v26 count:16];
     }
 
     while (v11);
@@ -1482,9 +1482,9 @@ LABEL_46:
   return v18;
 }
 
-- (id)_handlePeersAndSVDCapabilitiesFetch:(id)a3 fromPeer:(id)a4
+- (id)_handlePeersAndSVDCapabilitiesFetch:(id)fetch fromPeer:(id)peer
 {
-  v5 = a4;
+  peerCopy = peer;
   v6 = +[AFFeatureFlags isCrossDeviceTVControlFromWatchEnabled];
   v7 = AFSiriLogContextDaemon;
   if (v6)
@@ -1494,19 +1494,19 @@ LABEL_46:
       *buf = 136315394;
       v46 = "[ADDeviceCircleManager _handlePeersAndSVDCapabilitiesFetch:fromPeer:]";
       v47 = 2112;
-      v48 = v5;
+      v48 = peerCopy;
       _os_log_debug_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "%s #hal Peers and SVD capabilities fetch request from %@: ", buf, 0x16u);
     }
 
-    v34 = v5;
+    v34 = peerCopy;
     v35 = objc_opt_new();
     v36 = 0u;
     v37 = 0u;
     v38 = 0u;
     v39 = 0u;
-    v33 = self;
-    v8 = [(ADRapportLink *)self->_clientLink activeDevices];
-    v9 = [v8 countByEnumeratingWithState:&v36 objects:v44 count:16];
+    selfCopy = self;
+    activeDevices = [(ADRapportLink *)self->_clientLink activeDevices];
+    v9 = [activeDevices countByEnumeratingWithState:&v36 objects:v44 count:16];
     if (v9)
     {
       v10 = v9;
@@ -1517,70 +1517,70 @@ LABEL_46:
         {
           if (*v37 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(activeDevices);
           }
 
           v13 = *(*(&v36 + 1) + 8 * i);
-          v14 = [v13 idsDeviceIdentifier];
-          v15 = sub_100188240(v14);
+          idsDeviceIdentifier = [v13 idsDeviceIdentifier];
+          v15 = sub_100188240(idsDeviceIdentifier);
 
-          v16 = [v15 assistantIdentifier];
-          v17 = [v16 length];
+          assistantIdentifier = [v15 assistantIdentifier];
+          v17 = [assistantIdentifier length];
 
           if (v17)
           {
-            v18 = [v13 siriInfo];
-            v19 = [v18 objectForKey:@"deviceCapabilitiesV2"];
+            siriInfo = [v13 siriInfo];
+            v19 = [siriInfo objectForKey:@"deviceCapabilitiesV2"];
 
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
               v42[0] = @"peerData";
-              v20 = [v15 buildDictionaryRepresentation];
+              buildDictionaryRepresentation = [v15 buildDictionaryRepresentation];
               v42[1] = @"deviceCapabilitiesV2";
-              v43[0] = v20;
+              v43[0] = buildDictionaryRepresentation;
               v43[1] = v19;
               v21 = [NSDictionary dictionaryWithObjects:v43 forKeys:v42 count:2];
 
-              v22 = [v15 assistantIdentifier];
-              [v35 setObject:v21 forKey:v22];
+              assistantIdentifier2 = [v15 assistantIdentifier];
+              [v35 setObject:v21 forKey:assistantIdentifier2];
             }
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v36 objects:v44 count:16];
+        v10 = [activeDevices countByEnumeratingWithState:&v36 objects:v44 count:16];
       }
 
       while (v10);
     }
 
-    v23 = [(ADRapportLink *)v33->_clientLink localDevice];
+    localDevice = [(ADRapportLink *)selfCopy->_clientLink localDevice];
 
-    if (v23)
+    if (localDevice)
     {
-      v24 = [(ADDeviceCircleManager *)v33 localPeerInfo];
-      v25 = [(ADRapportLink *)v33->_clientLink localDevice];
-      v26 = [v25 siriInfo];
-      v27 = [v26 objectForKey:@"deviceCapabilitiesV2"];
+      localPeerInfo = [(ADDeviceCircleManager *)selfCopy localPeerInfo];
+      localDevice2 = [(ADRapportLink *)selfCopy->_clientLink localDevice];
+      siriInfo2 = [localDevice2 siriInfo];
+      v27 = [siriInfo2 objectForKey:@"deviceCapabilitiesV2"];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         v40[0] = @"peerData";
-        v28 = [v24 buildDictionaryRepresentation];
+        buildDictionaryRepresentation2 = [localPeerInfo buildDictionaryRepresentation];
         v40[1] = @"deviceCapabilitiesV2";
-        v41[0] = v28;
+        v41[0] = buildDictionaryRepresentation2;
         v41[1] = v27;
         v29 = [NSDictionary dictionaryWithObjects:v41 forKeys:v40 count:2];
 
-        v30 = [v24 assistantIdentifier];
-        [v35 setObject:v29 forKey:v30];
+        assistantIdentifier3 = [localPeerInfo assistantIdentifier];
+        [v35 setObject:v29 forKey:assistantIdentifier3];
       }
     }
 
     v31 = [v35 copy];
 
-    v5 = v34;
+    peerCopy = v34;
   }
 
   else
@@ -1598,30 +1598,30 @@ LABEL_46:
   return v31;
 }
 
-- (id)_handleSVDCapabilitiesFetch:(id)a3 fromPeer:(id)a4
+- (id)_handleSVDCapabilitiesFetch:(id)fetch fromPeer:(id)peer
 {
-  v6 = a4;
-  v7 = [a3 objectForKey:@"get_capabilities_for_assistant_identifiers"];
+  peerCopy = peer;
+  v7 = [fetch objectForKey:@"get_capabilities_for_assistant_identifiers"];
   v8 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
   {
     *buf = 136315650;
     v30 = "[ADDeviceCircleManager _handleSVDCapabilitiesFetch:fromPeer:]";
     v31 = 2112;
-    v32 = v6;
+    v32 = peerCopy;
     v33 = 2112;
     v34 = v7;
     _os_log_debug_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "%s #hal SVD capabilities fetch request from %@: %@", buf, 0x20u);
   }
 
-  v22 = v6;
+  v22 = peerCopy;
   v23 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(v7, "count")}];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v9 = [(ADRapportLink *)self->_clientLink activeDevices];
-  v10 = [v9 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  activeDevices = [(ADRapportLink *)self->_clientLink activeDevices];
+  v10 = [activeDevices countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v10)
   {
     v11 = v10;
@@ -1632,28 +1632,28 @@ LABEL_46:
       {
         if (*v25 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(activeDevices);
         }
 
         v14 = *(*(&v24 + 1) + 8 * i);
-        v15 = [v14 effectiveIdentifier];
-        v16 = [(ADDeviceCircleManager *)self _managedPeerInfoForRapportEffectiveIdentifier:v15];
-        v17 = [v16 assistantIdentifier];
+        effectiveIdentifier = [v14 effectiveIdentifier];
+        v16 = [(ADDeviceCircleManager *)self _managedPeerInfoForRapportEffectiveIdentifier:effectiveIdentifier];
+        assistantIdentifier = [v16 assistantIdentifier];
 
-        if ([v7 containsObject:v17])
+        if ([v7 containsObject:assistantIdentifier])
         {
-          v18 = [v14 siriInfo];
-          v19 = [v18 objectForKey:@"deviceCapabilitiesV2"];
+          siriInfo = [v14 siriInfo];
+          v19 = [siriInfo objectForKey:@"deviceCapabilitiesV2"];
 
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            [v23 setObject:v19 forKey:v17];
+            [v23 setObject:v19 forKey:assistantIdentifier];
           }
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v24 objects:v28 count:16];
+      v11 = [activeDevices countByEnumeratingWithState:&v24 objects:v28 count:16];
     }
 
     while (v11);
@@ -1664,7 +1664,7 @@ LABEL_46:
   return v20;
 }
 
-- (void)rapportLinkDidInvalidate:(id)a3
+- (void)rapportLinkDidInvalidate:(id)invalidate
 {
   v4 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_ERROR))
@@ -1677,7 +1677,7 @@ LABEL_46:
   [(ADDeviceCircleManager *)self _resetRapportLinkAndReconnectNow:0];
 }
 
-- (void)rapportLinkDidInterrupt:(id)a3
+- (void)rapportLinkDidInterrupt:(id)interrupt
 {
   v4 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_ERROR))
@@ -1690,9 +1690,9 @@ LABEL_46:
   [(ADDeviceCircleManager *)self _resetRapportLinkAndReconnectNow:1];
 }
 
-- (void)_resetRapportLinkAndReconnectNow:(BOOL)a3
+- (void)_resetRapportLinkAndReconnectNow:(BOOL)now
 {
-  v3 = a3;
+  nowCopy = now;
   currentCollectorIDs = self->_currentCollectorIDs;
   self->_currentCollectorIDs = 0;
 
@@ -1710,7 +1710,7 @@ LABEL_46:
   v13[4] = self;
   v7 = objc_retainBlock(v13);
   v8 = v7;
-  if (v3)
+  if (nowCopy)
   {
     (v7[2])(v7);
   }
@@ -1729,71 +1729,71 @@ LABEL_46:
   }
 }
 
-- (void)rapportLink:(id)a3 didUpdateLocalDevice:(id)a4
+- (void)rapportLink:(id)link didUpdateLocalDevice:(id)device
 {
-  v5 = a4;
+  deviceCopy = device;
   v6 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     v8 = 136315394;
     v9 = "[ADDeviceCircleManager rapportLink:didUpdateLocalDevice:]";
     v10 = 2112;
-    v11 = v5;
+    v11 = deviceCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "%s #hal %@", &v8, 0x16u);
   }
 
   [(ADDeviceCircleManager *)self _updateStationaryScoreBroadcasting];
   [(ADDeviceCircleManager *)self _reelectCollectorIfNecessary];
-  v7 = [(ADDeviceCircleManager *)self _syncCompanionLinkDeviceLocalPeerData];
+  _syncCompanionLinkDeviceLocalPeerData = [(ADDeviceCircleManager *)self _syncCompanionLinkDeviceLocalPeerData];
 }
 
-- (void)rapportLink:(id)a3 didUpdateDevice:(id)a4 changes:(unsigned int)a5
+- (void)rapportLink:(id)link didUpdateDevice:(id)device changes:(unsigned int)changes
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  changesCopy = changes;
+  linkCopy = link;
+  deviceCopy = device;
   v10 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
   {
     v15 = 136315394;
     v16 = "[ADDeviceCircleManager rapportLink:didUpdateDevice:changes:]";
     v17 = 2112;
-    v18 = v9;
+    v18 = deviceCopy;
     _os_log_debug_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEBUG, "%s #hal %@", &v15, 0x16u);
   }
 
-  v11 = [(ADDeviceCircleManager *)self _isRemoteDeviceCollectorCandidate:v9];
-  if ((v5 & 2) != 0 && v11)
+  v11 = [(ADDeviceCircleManager *)self _isRemoteDeviceCollectorCandidate:deviceCopy];
+  if ((changesCopy & 2) != 0 && v11)
   {
     [(ADDeviceCircleManager *)self _reelectCollectorIfNecessary];
   }
 
-  v12 = sub_100188B7C(v9, 0);
+  v12 = sub_100188B7C(deviceCopy, 0);
   os_unfair_lock_lock(&self->_peerInfoLock);
   [(ADDeviceCircleManager *)self _updateRemotePeerInfo:v12];
   os_unfair_lock_unlock(&self->_peerInfoLock);
-  v13 = [v12 assistantIdentifier];
-  v14 = [v12 idsDeviceUniqueIdentifier];
-  [(ADDeviceCircleManager *)self _setAssistantId:v13 forDeviceWithIdsDeviceUniqueIdentifier:v14];
+  assistantIdentifier = [v12 assistantIdentifier];
+  idsDeviceUniqueIdentifier = [v12 idsDeviceUniqueIdentifier];
+  [(ADDeviceCircleManager *)self _setAssistantId:assistantIdentifier forDeviceWithIdsDeviceUniqueIdentifier:idsDeviceUniqueIdentifier];
 }
 
-- (void)rapportLink:(id)a3 didLoseDevice:(id)a4
+- (void)rapportLink:(id)link didLoseDevice:(id)device
 {
-  v6 = a3;
-  v7 = a4;
+  linkCopy = link;
+  deviceCopy = device;
   v8 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     v12 = 136315394;
     v13 = "[ADDeviceCircleManager rapportLink:didLoseDevice:]";
     v14 = 2112;
-    v15 = v7;
+    v15 = deviceCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%s #hal %@", &v12, 0x16u);
   }
 
   currentCollectorIDs = self->_currentCollectorIDs;
-  v10 = [v7 idsDeviceIdentifier];
-  LODWORD(currentCollectorIDs) = [(NSArray *)currentCollectorIDs containsObject:v10];
+  idsDeviceIdentifier = [deviceCopy idsDeviceIdentifier];
+  LODWORD(currentCollectorIDs) = [(NSArray *)currentCollectorIDs containsObject:idsDeviceIdentifier];
 
   if (currentCollectorIDs)
   {
@@ -1807,71 +1807,71 @@ LABEL_46:
 
   [(ADDeviceCircleManager *)self _updateDeviceCountTrend];
   os_unfair_lock_lock(&self->_peerInfoLock);
-  v11 = [v7 effectiveIdentifier];
-  [(ADDeviceCircleManager *)self _removeRemotePeerInfoWithRapportEffectiveIdentifier:v11];
+  effectiveIdentifier = [deviceCopy effectiveIdentifier];
+  [(ADDeviceCircleManager *)self _removeRemotePeerInfoWithRapportEffectiveIdentifier:effectiveIdentifier];
 
   os_unfair_lock_unlock(&self->_peerInfoLock);
 }
 
-- (void)rapportLink:(id)a3 didFindDevice:(id)a4
+- (void)rapportLink:(id)link didFindDevice:(id)device
 {
-  v5 = a4;
+  deviceCopy = device;
   v6 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     v10 = 136315394;
     v11 = "[ADDeviceCircleManager rapportLink:didFindDevice:]";
     v12 = 2112;
-    v13 = v5;
+    v13 = deviceCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "%s #hal %@", &v10, 0x16u);
   }
 
   [(ADDeviceCircleManager *)self _updateStationaryScoreBroadcasting];
   [(ADDeviceCircleManager *)self _reelectCollectorIfNecessary];
   [(ADDeviceCircleManager *)self _updateDeviceCountTrend];
-  v7 = sub_100188B7C(v5, 0);
+  v7 = sub_100188B7C(deviceCopy, 0);
   os_unfair_lock_lock(&self->_peerInfoLock);
   [(ADDeviceCircleManager *)self _updateRemotePeerInfo:v7];
   os_unfair_lock_unlock(&self->_peerInfoLock);
-  v8 = [v7 assistantIdentifier];
-  v9 = [v7 idsDeviceUniqueIdentifier];
-  [(ADDeviceCircleManager *)self _setAssistantId:v8 forDeviceWithIdsDeviceUniqueIdentifier:v9];
+  assistantIdentifier = [v7 assistantIdentifier];
+  idsDeviceUniqueIdentifier = [v7 idsDeviceUniqueIdentifier];
+  [(ADDeviceCircleManager *)self _setAssistantId:assistantIdentifier forDeviceWithIdsDeviceUniqueIdentifier:idsDeviceUniqueIdentifier];
 }
 
-- (void)_fetchDeviceCapabilitiesForDevices:(id)a3 fromCollectorWithIndex:(unint64_t)a4 existingCapabilities:(id)a5 completion:(id)a6
+- (void)_fetchDeviceCapabilitiesForDevices:(id)devices fromCollectorWithIndex:(unint64_t)index existingCapabilities:(id)capabilities completion:(id)completion
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  if ([(NSArray *)self->_currentCollectorIDs count]<= a4)
+  devicesCopy = devices;
+  capabilitiesCopy = capabilities;
+  completionCopy = completion;
+  if ([(NSArray *)self->_currentCollectorIDs count]<= index)
   {
-    v12[2](v12, v11);
+    completionCopy[2](completionCopy, capabilitiesCopy);
   }
 
-  else if ([v10 count])
+  else if ([devicesCopy count])
   {
-    v24 = [(NSArray *)self->_currentCollectorIDs objectAtIndex:a4];
+    v24 = [(NSArray *)self->_currentCollectorIDs objectAtIndex:index];
     v13 = objc_alloc_init(NSMutableSet);
     v33[0] = _NSConcreteStackBlock;
     v33[1] = 3221225472;
     v33[2] = sub_100189C68;
     v33[3] = &unk_1005146D8;
-    v14 = v10;
+    v14 = devicesCopy;
     v34 = v14;
     v15 = v13;
     v35 = v15;
-    v36 = self;
-    v39 = a4;
-    v16 = v11;
+    selfCopy = self;
+    indexCopy = index;
+    v16 = capabilitiesCopy;
     v37 = v16;
-    v38 = v12;
+    v38 = completionCopy;
     v17 = objc_retainBlock(v33);
     v25 = [v14 af_lenientMappedArray:&stru_100514318];
     clientLink = self->_clientLink;
     v40 = @"get_capabilities_for_assistant_identifiers";
     v41 = v25;
     v18 = [NSDictionary dictionaryWithObjects:&v41 forKeys:&v40 count:1];
-    v19 = [(ADDeviceCircleManager *)self _rapportLinkMessageOptions];
+    _rapportLinkMessageOptions = [(ADDeviceCircleManager *)self _rapportLinkMessageOptions];
     v26[0] = _NSConcreteStackBlock;
     v26[1] = 3221225472;
     v26[2] = sub_100189D58;
@@ -1879,39 +1879,39 @@ LABEL_46:
     v27 = v14;
     v28 = v16;
     v29 = v15;
-    v30 = self;
+    selfCopy2 = self;
     v31 = v24;
     v32 = v17;
     v20 = v24;
     v21 = v17;
     v22 = v15;
-    [(ADRapportLink *)clientLink sendRequestID:@"com.apple.siri.rapport-link.request.device-circle-manager" messageType:@"svdCapabilities_fetch" messagePayload:v18 toDeviceWithIDSDeviceID:v20 options:v19 completion:v26];
+    [(ADRapportLink *)clientLink sendRequestID:@"com.apple.siri.rapport-link.request.device-circle-manager" messageType:@"svdCapabilities_fetch" messagePayload:v18 toDeviceWithIDSDeviceID:v20 options:_rapportLinkMessageOptions completion:v26];
   }
 
   else
   {
-    v12[2](v12, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 
-- (void)_fetchDeviceCapabilitiesForDevices:(id)a3 completion:(id)a4
+- (void)_fetchDeviceCapabilitiesForDevices:(id)devices completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  devicesCopy = devices;
+  completionCopy = completion;
+  if ([devicesCopy count])
   {
     v8 = objc_alloc_init(NSMutableDictionary);
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_10018A564;
     v9[3] = &unk_10051CF08;
-    v10 = v7;
-    [(ADDeviceCircleManager *)self _fetchDeviceCapabilitiesForDevices:v6 fromCollectorWithIndex:0 existingCapabilities:v8 completion:v9];
+    v10 = completionCopy;
+    [(ADDeviceCircleManager *)self _fetchDeviceCapabilitiesForDevices:devicesCopy fromCollectorWithIndex:0 existingCapabilities:v8 completion:v9];
   }
 
   else
   {
-    (*(v7 + 2))(v7, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
@@ -1990,24 +1990,24 @@ LABEL_16:
   }
 }
 
-- (void)_executeCommandThroughOnDemandClientLinkToContextCollector:(id)a3 onPeer:(id)a4 debugID:(id)a5 completion:(id)a6
+- (void)_executeCommandThroughOnDemandClientLinkToContextCollector:(id)collector onPeer:(id)peer debugID:(id)d completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  collectorCopy = collector;
+  peerCopy = peer;
+  dCopy = d;
+  completionCopy = completion;
   if (AFSupportsHALOnDemandRapportConnection())
   {
     obj = [(ADDeviceCircleManager *)self _setUpOnDemandClientLinkToContextCollector];
     [(ADRapportLink *)self->_onDemandClientLinkToContextCollector invalidate];
     objc_storeStrong(&self->_onDemandClientLinkToContextCollector, obj);
-    v14 = [NSMutableDictionary dictionaryWithDictionary:v10];
-    v15 = [v11 assistantIdentifier];
+    v14 = [NSMutableDictionary dictionaryWithDictionary:collectorCopy];
+    assistantIdentifier = [peerCopy assistantIdentifier];
 
-    if (v15)
+    if (assistantIdentifier)
     {
-      v16 = [v11 assistantIdentifier];
-      [v14 setObject:v16 forKeyedSubscript:@"recipient_assistant_identifier"];
+      assistantIdentifier2 = [peerCopy assistantIdentifier];
+      [v14 setObject:assistantIdentifier2 forKeyedSubscript:@"recipient_assistant_identifier"];
     }
 
     v47[0] = 0;
@@ -2027,11 +2027,11 @@ LABEL_16:
     v38[1] = 3221225472;
     v38[2] = sub_10018ACBC;
     v38[3] = &unk_100514260;
-    v18 = v12;
+    v18 = dCopy;
     v39 = v18;
     v40 = 0;
-    v41 = self;
-    v42 = v13;
+    selfCopy = self;
+    v42 = completionCopy;
     v43 = v47;
     v44 = v45;
     v19 = [v17 initWithBlock:v38];
@@ -2075,16 +2075,16 @@ LABEL_16:
   else
   {
     v28 = [AFError errorWithCode:13];
-    (*(v13 + 2))(v13, 0, v28);
+    (*(completionCopy + 2))(completionCopy, 0, v28);
   }
 }
 
-- (void)_executeCommand:(id)a3 onPeer:(id)a4 executionContext:(id)a5 throughOnDemandConnectionToContextCollector:(BOOL)a6 completion:(id)a7
+- (void)_executeCommand:(id)command onPeer:(id)peer executionContext:(id)context throughOnDemandConnectionToContextCollector:(BOOL)collector completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  commandCopy = command;
+  peerCopy = peer;
+  contextCopy = context;
+  completionCopy = completion;
   v16 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
@@ -2093,19 +2093,19 @@ LABEL_16:
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "%s ", buf, 0xCu);
   }
 
-  if (v12 && v13)
+  if (commandCopy && peerCopy)
   {
     queue = self->_queue;
     v19[0] = _NSConcreteStackBlock;
     v19[1] = 3221225472;
     v19[2] = sub_10018B4B4;
     v19[3] = &unk_1005167F0;
-    v20 = v14;
-    v21 = self;
-    v22 = v12;
-    v23 = v13;
-    v25 = a6;
-    v24 = v15;
+    v20 = contextCopy;
+    selfCopy = self;
+    v22 = commandCopy;
+    v23 = peerCopy;
+    collectorCopy = collector;
+    v24 = completionCopy;
     dispatch_async(queue, v19);
 
     v18 = v20;
@@ -2114,51 +2114,51 @@ LABEL_16:
   else
   {
     v18 = [NSError errorWithDomain:kAFAssistantErrorDomain code:31 userInfo:0];
-    if (v15)
+    if (completionCopy)
     {
-      (*(v15 + 2))(v15, &__NSDictionary0__struct, v18);
+      (*(completionCopy + 2))(completionCopy, &__NSDictionary0__struct, v18);
     }
   }
 }
 
-- (void)executeCommand:(id)a3 onPeer:(id)a4 executionContext:(id)a5 throughOnDemandRapportConnection:(id)a6
+- (void)executeCommand:(id)command onPeer:(id)peer executionContext:(id)context throughOnDemandRapportConnection:(id)connection
 {
-  v14 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  commandCopy = command;
+  peerCopy = peer;
+  contextCopy = context;
+  connectionCopy = connection;
   if (AFSupportsHALOnDemandRapportConnection())
   {
-    [(ADDeviceCircleManager *)self _executeCommand:v14 onPeer:v10 executionContext:v11 throughOnDemandConnectionToContextCollector:1 completion:v12];
+    [(ADDeviceCircleManager *)self _executeCommand:commandCopy onPeer:peerCopy executionContext:contextCopy throughOnDemandConnectionToContextCollector:1 completion:connectionCopy];
   }
 
-  else if (v12)
+  else if (connectionCopy)
   {
     v13 = [AFError errorWithCode:13];
-    v12[2](v12, 0, v13);
+    connectionCopy[2](connectionCopy, 0, v13);
   }
 }
 
-- (void)_reelectCollectorDeviceForReason:(int64_t)a3 completion:(id)a4
+- (void)_reelectCollectorDeviceForReason:(int64_t)reason completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   if (AFSupportsHALContextCollectorElection())
   {
-    v7 = [(ADRapportLink *)self->_clientLink localDevice];
-    v8 = [v7 idsDeviceIdentifier];
-    v91 = self;
-    v9 = [(ADDeviceCircleManager *)self _isLocalDeviceCollectorCandidate];
+    localDevice = [(ADRapportLink *)self->_clientLink localDevice];
+    idsDeviceIdentifier = [localDevice idsDeviceIdentifier];
+    selfCopy = self;
+    _isLocalDeviceCollectorCandidate = [(ADDeviceCircleManager *)self _isLocalDeviceCollectorCandidate];
     v10 = AFSiriLogContextDaemon;
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
     {
-      if (a3 > 5)
+      if (reason > 5)
       {
         v11 = 0;
       }
 
       else
       {
-        v11 = off_100514518[a3];
+        v11 = off_100514518[reason];
       }
 
       *buf = 136315394;
@@ -2169,9 +2169,9 @@ LABEL_16:
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "%s #hal Re-election reason: %@", buf, 0x16u);
     }
 
-    v13 = [(ADRapportLink *)v91->_clientLink activeDevices];
+    activeDevices = [(ADRapportLink *)selfCopy->_clientLink activeDevices];
 
-    if (!v13)
+    if (!activeDevices)
     {
       v20 = AFSiriLogContextDaemon;
       if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
@@ -2181,23 +2181,23 @@ LABEL_16:
         _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_INFO, "%s #hal No other devices nearby", buf, 0xCu);
       }
 
-      if (v91->_isCollector)
+      if (selfCopy->_isCollector)
       {
         LOBYTE(currentCollectorIDs) = 1;
       }
 
       else
       {
-        currentCollectorIDs = v91->_currentCollectorIDs;
+        currentCollectorIDs = selfCopy->_currentCollectorIDs;
         if (currentCollectorIDs)
         {
-          v91->_currentCollectorIDs = 0;
+          selfCopy->_currentCollectorIDs = 0;
 
           v116 = 0u;
           v117 = 0u;
           v114 = 0u;
           v115 = 0u;
-          v22 = v91->_listeners;
+          v22 = selfCopy->_listeners;
           v23 = [(NSHashTable *)v22 countByEnumeratingWithState:&v114 objects:v128 count:16];
           if (v23)
           {
@@ -2212,7 +2212,7 @@ LABEL_16:
                   objc_enumerationMutation(v22);
                 }
 
-                [*(*(&v114 + 1) + 8 * i) contextCollectorChangedToDevicesWithIdentifiers:v91->_currentCollectorIDs localDeviceIsCollector:v91->_isCollector];
+                [*(*(&v114 + 1) + 8 * i) contextCollectorChangedToDevicesWithIdentifiers:selfCopy->_currentCollectorIDs localDeviceIsCollector:selfCopy->_isCollector];
               }
 
               v24 = [(NSHashTable *)v22 countByEnumeratingWithState:&v114 objects:v128 count:16];
@@ -2221,26 +2221,26 @@ LABEL_16:
             while (v24);
           }
 
-          LOBYTE(currentCollectorIDs) = v91->_isCollector;
+          LOBYTE(currentCollectorIDs) = selfCopy->_isCollector;
         }
       }
 
-      [(ADDeviceCircleManager *)v91 _updateContextCollectorStatusToRapport:currentCollectorIDs & 1];
-      if (v6)
+      [(ADDeviceCircleManager *)selfCopy _updateContextCollectorStatusToRapport:currentCollectorIDs & 1];
+      if (completionCopy)
       {
-        v6[2](v6);
+        completionCopy[2](completionCopy);
       }
 
       goto LABEL_72;
     }
 
-    v14 = v6;
+    v14 = completionCopy;
     v89 = objc_alloc_init(NSMutableArray);
     v90 = objc_alloc_init(NSMutableDictionary);
     v15 = 0;
-    if (v9 && v8)
+    if (_isLocalDeviceCollectorCandidate && idsDeviceIdentifier)
     {
-      [v90 setObject:v7 forKey:v8];
+      [v90 setObject:localDevice forKey:idsDeviceIdentifier];
       v16 = +[ADRapportLink siriInfoToBeBroadcasted];
       v17 = [v16 mutableCopy];
       v18 = v17;
@@ -2256,21 +2256,21 @@ LABEL_16:
 
       v27 = v19;
 
-      [v27 setObject:v8 forKey:@"idsDeviceIdentifier"];
+      [v27 setObject:idsDeviceIdentifier forKey:@"idsDeviceIdentifier"];
       v28 = [v16 objectForKey:@"stationaryScore"];
       if (!v28)
       {
-        [(ADDeviceCircleManager *)v91 _updateStationaryScore];
-        *&v29 = v91->_currentStationaryScore;
+        [(ADDeviceCircleManager *)selfCopy _updateStationaryScore];
+        *&v29 = selfCopy->_currentStationaryScore;
         v30 = [NSNumber numberWithFloat:v29];
         [v27 setObject:v30 forKey:@"stationaryScore"];
       }
 
       v31 = [v27 objectForKey:@"isCollector"];
-      v32 = [v31 BOOLValue];
+      bOOLValue = [v31 BOOLValue];
 
       [v89 addObject:v27];
-      v15 = v32;
+      v15 = bOOLValue;
       v33 = AFSiriLogContextDaemon;
       if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
       {
@@ -2280,7 +2280,7 @@ LABEL_16:
         *buf = 136315906;
         v121 = "[ADDeviceCircleManager _reelectCollectorDeviceForReason:completion:]";
         v122 = 2112;
-        v123 = v8;
+        v123 = idsDeviceIdentifier;
         v124 = 2048;
         v125 = v78;
         v126 = 1024;
@@ -2289,35 +2289,35 @@ LABEL_16:
       }
     }
 
-    v82 = v9;
+    v82 = _isLocalDeviceCollectorCandidate;
     v112 = 0u;
     v113 = 0u;
     v110 = 0u;
     v111 = 0u;
-    v34 = [(ADRapportLink *)v91->_clientLink activeDevices];
-    v35 = [v34 countByEnumeratingWithState:&v110 objects:v119 count:16];
+    activeDevices2 = [(ADRapportLink *)selfCopy->_clientLink activeDevices];
+    v35 = [activeDevices2 countByEnumeratingWithState:&v110 objects:v119 count:16];
     v83 = v14;
-    v80 = v8;
-    v81 = v7;
+    v80 = idsDeviceIdentifier;
+    v81 = localDevice;
     if (v35)
     {
       v36 = *v111;
-      v37 = v91;
+      v37 = selfCopy;
       do
       {
         for (j = 0; j != v35; j = j + 1)
         {
           if (*v111 != v36)
           {
-            objc_enumerationMutation(v34);
+            objc_enumerationMutation(activeDevices2);
           }
 
           v39 = *(*(&v110 + 1) + 8 * j);
-          v40 = [v39 siriInfo];
-          v41 = [v39 idsDeviceIdentifier];
+          siriInfo = [v39 siriInfo];
+          idsDeviceIdentifier2 = [v39 idsDeviceIdentifier];
           if ([(ADDeviceCircleManager *)v37 _isRemoteDeviceCollectorCandidate:v39])
           {
-            v42 = v41 == 0;
+            v42 = idsDeviceIdentifier2 == 0;
           }
 
           else
@@ -2327,16 +2327,16 @@ LABEL_16:
 
           if (!v42)
           {
-            v43 = [v40 objectForKey:@"stationaryScore"];
+            v43 = [siriInfo objectForKey:@"stationaryScore"];
 
             if (v43)
             {
-              [v90 setObject:v39 forKey:v41];
-              v44 = [v40 mutableCopy];
-              [v44 setObject:v41 forKey:@"idsDeviceIdentifier"];
+              [v90 setObject:v39 forKey:idsDeviceIdentifier2];
+              v44 = [siriInfo mutableCopy];
+              [v44 setObject:idsDeviceIdentifier2 forKey:@"idsDeviceIdentifier"];
               [v89 addObject:v44];
               v45 = [v44 objectForKey:@"isCollector"];
-              v46 = [v45 BOOLValue];
+              bOOLValue2 = [v45 BOOLValue];
 
               v47 = AFSiriLogContextDaemon;
               if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
@@ -2347,34 +2347,34 @@ LABEL_16:
                 *buf = 136315906;
                 v121 = "[ADDeviceCircleManager _reelectCollectorDeviceForReason:completion:]";
                 v122 = 2112;
-                v123 = v41;
+                v123 = idsDeviceIdentifier2;
                 v124 = 2048;
                 v125 = v49;
                 v126 = 1024;
-                v127 = v46;
+                v127 = bOOLValue2;
                 _os_log_debug_impl(&_mh_execute_header, v48, OS_LOG_TYPE_DEBUG, "%s #hal Collector candidate %@: score %.2f, isCollector %d", buf, 0x26u);
               }
 
-              v15 += v46;
+              v15 += bOOLValue2;
 
-              v37 = v91;
+              v37 = selfCopy;
             }
           }
         }
 
-        v35 = [v34 countByEnumeratingWithState:&v110 objects:v119 count:16];
+        v35 = [activeDevices2 countByEnumeratingWithState:&v110 objects:v119 count:16];
       }
 
       while (v35);
       LODWORD(v35) = v15 > 1;
-      v6 = v83;
-      v8 = v80;
-      v7 = v81;
+      completionCopy = v83;
+      idsDeviceIdentifier = v80;
+      localDevice = v81;
     }
 
     else
     {
-      v6 = v14;
+      completionCopy = v14;
     }
 
     v50 = v89;
@@ -2386,7 +2386,7 @@ LABEL_16:
     v53 = &qword_1003F0000;
     if (v35)
     {
-      v54 = +[ADHomeInfoManager sharedInfoManager];
+      firstObject2 = +[ADHomeInfoManager sharedInfoManager];
       v106 = 0u;
       v107 = 0u;
       v108 = 0u;
@@ -2398,10 +2398,10 @@ LABEL_16:
         v58 = v56;
         obj = v55;
         v59 = *v107;
-        v85 = v54;
+        v85 = firstObject2;
         *&v57 = 136315394;
         v79 = v57;
-        v60 = v91;
+        v60 = selfCopy;
 LABEL_55:
         v61 = 0;
         while (1)
@@ -2413,20 +2413,20 @@ LABEL_55:
 
           v62 = *(*(&v106 + 1) + 8 * v61);
           v63 = [v62 objectForKey:{@"isCollector", v79}];
-          v64 = [v63 BOOLValue];
+          bOOLValue3 = [v63 BOOLValue];
 
-          if (!v64)
+          if (!bOOLValue3)
           {
             break;
           }
 
           v65 = [v62 objectForKey:@"idsDeviceIdentifier"];
           v66 = [v90 objectForKey:v65];
-          v67 = [(__CFString *)v66 homeKitIdentifier];
-          if (v67)
+          homeKitIdentifier = [(__CFString *)v66 homeKitIdentifier];
+          if (homeKitIdentifier)
           {
             dispatch_group_enter(v52);
-            v68 = [(__CFString *)v66 homeKitIdentifier];
+            homeKitIdentifier2 = [(__CFString *)v66 homeKitIdentifier];
             v98[0] = _NSConcreteStackBlock;
             v98[1] = 3221225472;
             v98[2] = sub_10018C7B4;
@@ -2441,8 +2441,8 @@ LABEL_55:
             v104 = v86;
             v105 = v52;
             v70 = v69;
-            v60 = v91;
-            [v70 getHomeIdForAccessoryId:v68 completion:v98];
+            v60 = selfCopy;
+            [v70 getHomeIdForAccessoryId:homeKitIdentifier2 completion:v98];
           }
 
           else
@@ -2472,40 +2472,40 @@ LABEL_55:
           }
         }
 
-        v8 = v80;
-        v7 = v81;
+        idsDeviceIdentifier = v80;
+        localDevice = v81;
         v50 = v89;
-        v6 = v83;
+        completionCopy = v83;
         v55 = obj;
         v53 = &qword_1003F0000;
-        v54 = v85;
+        firstObject2 = v85;
       }
 
       else
       {
         v50 = v89;
-        v6 = v83;
+        completionCopy = v83;
       }
     }
 
     else
     {
-      v72 = [v89 firstObject];
+      firstObject = [v89 firstObject];
 
-      if (!v72)
+      if (!firstObject)
       {
 LABEL_71:
-        queue = v91->_queue;
+        queue = selfCopy->_queue;
         block[0] = _NSConcreteStackBlock;
         block[1] = v53[1];
         block[2] = sub_10018C904;
         block[3] = &unk_1005167F0;
-        block[4] = v91;
+        block[4] = selfCopy;
         v93 = v51;
         v94 = v86;
         v97 = v82;
-        v95 = v8;
-        v96 = v6;
+        v95 = idsDeviceIdentifier;
+        v96 = completionCopy;
         v74 = v86;
         v75 = v51;
         dispatch_group_notify(v52, queue, block);
@@ -2514,17 +2514,17 @@ LABEL_72:
         goto LABEL_73;
       }
 
-      v54 = [v89 firstObject];
-      v55 = [v54 objectForKey:@"idsDeviceIdentifier"];
+      firstObject2 = [v89 firstObject];
+      v55 = [firstObject2 objectForKey:@"idsDeviceIdentifier"];
       [v51 addObject:v55];
     }
 
     goto LABEL_71;
   }
 
-  if (v6)
+  if (completionCopy)
   {
-    v6[2](v6);
+    completionCopy[2](completionCopy);
   }
 
 LABEL_73:
@@ -2532,8 +2532,8 @@ LABEL_73:
 
 - (void)_reelectCollectorIfNecessary
 {
-  v9 = [(ADDeviceCircleManager *)self _collectorDeviceIdentifiersWithFlags];
-  v3 = [v9 count];
+  _collectorDeviceIdentifiersWithFlags = [(ADDeviceCircleManager *)self _collectorDeviceIdentifiersWithFlags];
+  v3 = [_collectorDeviceIdentifiersWithFlags count];
   if ([(NSArray *)self->_currentCollectorIDs count])
   {
     v4 = v3 == 0;
@@ -2551,7 +2551,7 @@ LABEL_73:
 
   else
   {
-    v6 = [NSSet setWithArray:v9];
+    v6 = [NSSet setWithArray:_collectorDeviceIdentifiersWithFlags];
     v7 = [NSSet setWithArray:self->_currentCollectorIDs];
     v8 = [v6 isEqualToSet:v7];
 
@@ -2580,9 +2580,9 @@ LABEL_12:
   if (AFSupportsHALContextCollectorElection())
   {
     v2 = +[AFPreferences sharedPreferences];
-    v3 = [v2 assistantIsEnabled];
+    assistantIsEnabled = [v2 assistantIsEnabled];
 
-    if (v3)
+    if (assistantIsEnabled)
     {
 
       [ADRapportLink updateSiriInfoWithObject:&off_1005343E0 forKey:@"collectorElectionVersion"];
@@ -2603,19 +2603,19 @@ LABEL_12:
   }
 }
 
-- (BOOL)_isRemoteDeviceCollectorCandidate:(id)a3
+- (BOOL)_isRemoteDeviceCollectorCandidate:(id)candidate
 {
-  v3 = a3;
-  v4 = [v3 siriInfo];
-  v5 = [v4 objectForKey:@"collectorElectionVersion"];
+  candidateCopy = candidate;
+  siriInfo = [candidateCopy siriInfo];
+  v5 = [siriInfo objectForKey:@"collectorElectionVersion"];
   [v5 floatValue];
   v7 = v6;
 
-  v8 = [v3 homeKitIdentifier];
-  if (v8)
+  homeKitIdentifier = [candidateCopy homeKitIdentifier];
+  if (homeKitIdentifier)
   {
-    v9 = [v3 idsDeviceIdentifier];
-    v11 = v7 >= 1.0 && v9 != 0;
+    idsDeviceIdentifier = [candidateCopy idsDeviceIdentifier];
+    v11 = v7 >= 1.0 && idsDeviceIdentifier != 0;
   }
 
   else
@@ -2628,37 +2628,37 @@ LABEL_12:
 
 - (BOOL)_isLocalDeviceCollectorCandidate
 {
-  v2 = [(ADRapportLink *)self->_clientLink localDevice];
+  localDevice = [(ADRapportLink *)self->_clientLink localDevice];
   if (AFSupportsHALContextCollecting())
   {
-    v3 = [v2 homeKitIdentifier];
-    if (v3)
+    homeKitIdentifier = [localDevice homeKitIdentifier];
+    if (homeKitIdentifier)
     {
-      v4 = [v2 idsDeviceIdentifier];
-      if (v4)
+      idsDeviceIdentifier = [localDevice idsDeviceIdentifier];
+      if (idsDeviceIdentifier)
       {
         v5 = +[AFPreferences sharedPreferences];
-        v6 = [v5 assistantIsEnabled];
+        assistantIsEnabled = [v5 assistantIsEnabled];
       }
 
       else
       {
-        v6 = 0;
+        assistantIsEnabled = 0;
       }
     }
 
     else
     {
-      v6 = 0;
+      assistantIsEnabled = 0;
     }
   }
 
   else
   {
-    v6 = 0;
+    assistantIsEnabled = 0;
   }
 
-  return v6;
+  return assistantIsEnabled;
 }
 
 - (id)_collectorDeviceIdentifiersWithFlags
@@ -2666,16 +2666,16 @@ LABEL_12:
   v3 = objc_alloc_init(NSMutableArray);
   v4 = +[ADRapportLink siriInfoToBeBroadcasted];
   v5 = [v4 objectForKey:@"isCollector"];
-  v6 = [v5 BOOLValue];
+  bOOLValue = [v5 BOOLValue];
 
-  if (v6)
+  if (bOOLValue)
   {
-    v7 = [(ADRapportLink *)self->_clientLink localDevice];
-    v8 = [v7 idsDeviceIdentifier];
+    localDevice = [(ADRapportLink *)self->_clientLink localDevice];
+    idsDeviceIdentifier = [localDevice idsDeviceIdentifier];
 
-    if (v8)
+    if (idsDeviceIdentifier)
     {
-      [v3 addObject:v8];
+      [v3 addObject:idsDeviceIdentifier];
     }
   }
 
@@ -2683,8 +2683,8 @@ LABEL_12:
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v9 = [(ADRapportLink *)self->_clientLink activeDevices];
-  v10 = [v9 countByEnumeratingWithState:&v24 objects:v30 count:16];
+  activeDevices = [(ADRapportLink *)self->_clientLink activeDevices];
+  v10 = [activeDevices countByEnumeratingWithState:&v24 objects:v30 count:16];
   if (v10)
   {
     v12 = v10;
@@ -2697,22 +2697,22 @@ LABEL_12:
       {
         if (*v25 != v13)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(activeDevices);
         }
 
         v15 = *(*(&v24 + 1) + 8 * i);
-        v16 = [v15 siriInfo];
-        v17 = [v16 objectForKey:@"isCollector"];
-        v18 = [v17 BOOLValue];
+        siriInfo = [v15 siriInfo];
+        v17 = [siriInfo objectForKey:@"isCollector"];
+        bOOLValue2 = [v17 BOOLValue];
 
-        if (v18)
+        if (bOOLValue2)
         {
-          v19 = [v15 idsDeviceIdentifier];
+          idsDeviceIdentifier2 = [v15 idsDeviceIdentifier];
 
-          if (v19)
+          if (idsDeviceIdentifier2)
           {
-            v20 = [v15 idsDeviceIdentifier];
-            [v3 addObject:v20];
+            idsDeviceIdentifier3 = [v15 idsDeviceIdentifier];
+            [v3 addObject:idsDeviceIdentifier3];
           }
 
           else
@@ -2728,7 +2728,7 @@ LABEL_12:
         }
       }
 
-      v12 = [v9 countByEnumeratingWithState:&v24 objects:v30 count:16];
+      v12 = [activeDevices countByEnumeratingWithState:&v24 objects:v30 count:16];
     }
 
     while (v12);
@@ -2764,9 +2764,9 @@ LABEL_12:
   }
 }
 
-- (void)_updateContextCollectorStatusToRapport:(BOOL)a3
+- (void)_updateContextCollectorStatusToRapport:(BOOL)rapport
 {
-  v3 = a3;
+  rapportCopy = rapport;
   if (+[AFFeatureFlags isCrossDeviceTVControlFromWatchEnabled])
   {
     v5 = AFSiriLogContextDaemon;
@@ -2777,24 +2777,24 @@ LABEL_12:
       _os_log_debug_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "%s #hal", &v6, 0xCu);
     }
 
-    [(ADRapportLink *)self->_clientLink updateLocalDeviceIsContextCollector:v3];
+    [(ADRapportLink *)self->_clientLink updateLocalDeviceIsContextCollector:rapportCopy];
   }
 }
 
 - (id)_syncCompanionLinkDeviceLocalPeerData
 {
-  v3 = [(ADRapportLink *)self->_clientLink localDevice];
+  localDevice = [(ADRapportLink *)self->_clientLink localDevice];
   os_unfair_lock_lock(&self->_peerInfoLock);
-  v4 = [(ADDeviceCircleManager *)self _localPeerData];
-  v5 = v4;
-  if (v3)
+  _localPeerData = [(ADDeviceCircleManager *)self _localPeerData];
+  v5 = _localPeerData;
+  if (localDevice)
   {
-    sub_100188B7C(v3, v4);
+    sub_100188B7C(localDevice, _localPeerData);
   }
 
   else
   {
-    sub_100184DB0(v4);
+    sub_100184DB0(_localPeerData);
   }
   v6 = ;
   [(ADDeviceCircleManager *)self _updateLocalPeerInfo:v6];
@@ -2803,13 +2803,13 @@ LABEL_12:
   return v5;
 }
 
-- (id)managedPeerInfoMatchingPeerInfo:(id)a3
+- (id)managedPeerInfoMatchingPeerInfo:(id)info
 {
-  if (a3)
+  if (info)
   {
-    v4 = a3;
+    infoCopy = info;
     os_unfair_lock_lock(&self->_peerInfoLock);
-    v5 = [(ADDeviceCircleManager *)self _managedPeerInfoMatchingPeerInfo:v4];
+    v5 = [(ADDeviceCircleManager *)self _managedPeerInfoMatchingPeerInfo:infoCopy];
 
     os_unfair_lock_unlock(&self->_peerInfoLock);
   }
@@ -2822,36 +2822,36 @@ LABEL_12:
   return v5;
 }
 
-- (void)sendRequestType:(id)a3 data:(id)a4 toDeviceWithAssistantIdentifier:(id)a5 onQueue:(id)a6 completion:(id)a7
+- (void)sendRequestType:(id)type data:(id)data toDeviceWithAssistantIdentifier:(id)identifier onQueue:(id)queue completion:(id)completion
 {
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
+  identifierCopy = identifier;
+  queueCopy = queue;
+  completionCopy = completion;
   clientLink = self->_clientLink;
-  v16 = a4;
-  v17 = a3;
-  v18 = [(ADDeviceCircleManager *)self _rapportLinkMessageOptions];
+  dataCopy = data;
+  typeCopy = type;
+  _rapportLinkMessageOptions = [(ADDeviceCircleManager *)self _rapportLinkMessageOptions];
   v22[0] = _NSConcreteStackBlock;
   v22[1] = 3221225472;
   v22[2] = sub_10018D9D8;
   v22[3] = &unk_1005173D8;
-  v24 = v13;
-  v25 = v14;
-  v23 = v12;
-  v19 = v13;
-  v20 = v14;
-  v21 = v12;
-  [(ADRapportLink *)clientLink sendRequestID:@"com.apple.siri.rapport-link.request.device-circle-manager" messageType:v17 messagePayload:v16 toDeviceWithAssistantIdentifier:v21 options:v18 completion:v22];
+  v24 = queueCopy;
+  v25 = completionCopy;
+  v23 = identifierCopy;
+  v19 = queueCopy;
+  v20 = completionCopy;
+  v21 = identifierCopy;
+  [(ADRapportLink *)clientLink sendRequestID:@"com.apple.siri.rapport-link.request.device-circle-manager" messageType:typeCopy messagePayload:dataCopy toDeviceWithAssistantIdentifier:v21 options:_rapportLinkMessageOptions completion:v22];
 }
 
-- (void)_forwardExecuteCommandToDevice:(id)a3 message:(id)a4 from:(id)a5 completion:(id)a6
+- (void)_forwardExecuteCommandToDevice:(id)device message:(id)message from:(id)from completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
+  deviceCopy = device;
+  messageCopy = message;
+  completionCopy = completion;
   if ((+[AFFeatureFlags isCrossDeviceTVControlFromWatchEnabled]& 1) != 0)
   {
-    v12 = [v10 objectForKeyedSubscript:@"type"];
+    v12 = [messageCopy objectForKeyedSubscript:@"type"];
     v13 = AFSiriLogContextDaemon;
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
     {
@@ -2860,7 +2860,7 @@ LABEL_12:
       v21 = 2112;
       v22 = v12;
       v23 = 2112;
-      v24 = v9;
+      v24 = deviceCopy;
       _os_log_debug_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEBUG, "%s #hal Forward executeCommand of type: %@ to device: %@", buf, 0x20u);
     }
 
@@ -2869,37 +2869,37 @@ LABEL_12:
     v16[1] = 3221225472;
     v16[2] = sub_10018DDAC;
     v16[3] = &unk_100514DE0;
-    v17 = v9;
-    v18 = v11;
-    [(ADDeviceCircleManager *)self sendRequestType:v12 data:v10 toDeviceWithAssistantIdentifier:v17 onQueue:queue completion:v16];
+    v17 = deviceCopy;
+    v18 = completionCopy;
+    [(ADDeviceCircleManager *)self sendRequestType:v12 data:messageCopy toDeviceWithAssistantIdentifier:v17 onQueue:queue completion:v16];
   }
 
   else
   {
     v15 = [AFError errorWithCode:13];
-    (*(v11 + 2))(v11, 0, v15);
+    (*(completionCopy + 2))(completionCopy, 0, v15);
   }
 }
 
-- (void)_registerRequestHandlerForRequestId:(id)a3 messageType:(id)a4 handler:(id)a5
+- (void)_registerRequestHandlerForRequestId:(id)id messageType:(id)type handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 length] && objc_msgSend(v9, "length"))
+  idCopy = id;
+  typeCopy = type;
+  handlerCopy = handler;
+  if ([idCopy length] && objc_msgSend(typeCopy, "length"))
   {
-    v11 = [NSString stringWithFormat:@"%@/%@", v8, v9];
+    typeCopy = [NSString stringWithFormat:@"%@/%@", idCopy, typeCopy];
     v12 = AFSiriLogContextDaemon;
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
     {
       *buf = 136315394;
       v16 = "[ADDeviceCircleManager _registerRequestHandlerForRequestId:messageType:handler:]";
       v17 = 2112;
-      v18 = v11;
+      v18 = typeCopy;
       _os_log_debug_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEBUG, "%s #hal combinedKey: %@", buf, 0x16u);
     }
 
-    [(NSMapTable *)self->_requestHandlers setObject:v10 forKey:v11];
+    [(NSMapTable *)self->_requestHandlers setObject:handlerCopy forKey:typeCopy];
     v13 = AFSiriLogContextDaemon;
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
     {
@@ -2927,11 +2927,11 @@ LABEL_12:
   }
 }
 
-- (void)getManagedLocalAndRemotePeerInfoWithCompletion:(id)a3
+- (void)getManagedLocalAndRemotePeerInfoWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  completionCopy = completion;
+  v5 = completionCopy;
+  if (completionCopy)
   {
     queue = self->_queue;
     v7[0] = _NSConcreteStackBlock;
@@ -2939,40 +2939,40 @@ LABEL_12:
     v7[2] = sub_10018E3B8;
     v7[3] = &unk_10051E038;
     v7[4] = self;
-    v8 = v4;
+    v8 = completionCopy;
     dispatch_async(queue, v7);
   }
 }
 
-- (void)getCapabilitiesAndPeersFromContextCollectorThroughOnDemandRapportConnection:(id)a3
+- (void)getCapabilitiesAndPeersFromContextCollectorThroughOnDemandRapportConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v5 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
   {
     *buf = 136315138;
     v16 = "[ADDeviceCircleManager getCapabilitiesAndPeersFromContextCollectorThroughOnDemandRapportConnection:]";
     _os_log_debug_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "%s #hal", buf, 0xCu);
-    if (!v4)
+    if (!connectionCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (!v4)
+  else if (!connectionCopy)
   {
     goto LABEL_6;
   }
 
   if ((AFSupportsHALOnDemandRapportConnection() & 1) == 0)
   {
-    v4[2](v4, 0);
+    connectionCopy[2](connectionCopy, 0);
   }
 
   v6 = +[NSUUID UUID];
-  v7 = [v6 UUIDString];
-  v8 = [v7 componentsSeparatedByString:@"-"];
-  v9 = [v8 firstObject];
+  uUIDString = [v6 UUIDString];
+  v8 = [uUIDString componentsSeparatedByString:@"-"];
+  firstObject = [v8 firstObject];
 
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -2980,19 +2980,19 @@ LABEL_12:
   block[2] = sub_10018E604;
   block[3] = &unk_10051E088;
   block[4] = self;
-  v13 = v9;
-  v14 = v4;
-  v11 = v9;
+  v13 = firstObject;
+  v14 = connectionCopy;
+  v11 = firstObject;
   dispatch_async(queue, block);
 
 LABEL_6:
 }
 
-- (void)getCapabilitiesForReachableDevicesWithCompletion:(id)a3
+- (void)getCapabilitiesForReachableDevicesWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  completionCopy = completion;
+  v5 = completionCopy;
+  if (completionCopy)
   {
     queue = self->_queue;
     v7[0] = _NSConcreteStackBlock;
@@ -3000,19 +3000,19 @@ LABEL_6:
     v7[2] = sub_10018F27C;
     v7[3] = &unk_10051E038;
     v7[4] = self;
-    v8 = v4;
+    v8 = completionCopy;
     dispatch_async(queue, v7);
   }
 }
 
-- (void)getCapabilitiesForDevice:(id)a3 completion:(id)a4
+- (void)getCapabilitiesForDevice:(id)device completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  deviceCopy = device;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (completionCopy)
   {
-    if (v6)
+    if (deviceCopy)
     {
       queue = self->_queue;
       block[0] = _NSConcreteStackBlock;
@@ -3020,27 +3020,27 @@ LABEL_6:
       block[2] = sub_10018F5D4;
       block[3] = &unk_10051E088;
       block[4] = self;
-      v11 = v6;
+      v11 = deviceCopy;
       v12 = v8;
       dispatch_async(queue, block);
     }
 
     else
     {
-      (*(v7 + 2))(v7, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 }
 
-- (id)_rpDeviceMatchingPeerInfo:(id)a3
+- (id)_rpDeviceMatchingPeerInfo:(id)info
 {
-  v4 = [(ADDeviceCircleManager *)self _managedPeerInfoMatchingPeerInfo:a3];
+  v4 = [(ADDeviceCircleManager *)self _managedPeerInfoMatchingPeerInfo:info];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(ADRapportLink *)self->_clientLink activeDevices];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  activeDevices = [(ADRapportLink *)self->_clientLink activeDevices];
+  v6 = [activeDevices countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = *v15;
@@ -3050,13 +3050,13 @@ LABEL_6:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(activeDevices);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 effectiveIdentifier];
-        v11 = [v4 rapportEffectiveIdentifier];
-        v12 = [v10 isEqualToString:v11];
+        effectiveIdentifier = [v9 effectiveIdentifier];
+        rapportEffectiveIdentifier = [v4 rapportEffectiveIdentifier];
+        v12 = [effectiveIdentifier isEqualToString:rapportEffectiveIdentifier];
 
         if (v12)
         {
@@ -3065,7 +3065,7 @@ LABEL_6:
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [activeDevices countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v6)
       {
         continue;
@@ -3094,38 +3094,38 @@ LABEL_11:
   }
 }
 
-- (void)removeListener:(id)a3
+- (void)removeListener:(id)listener
 {
-  v4 = a3;
+  listenerCopy = listener;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10018FDD0;
   v7[3] = &unk_10051E010;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = listenerCopy;
+  v6 = listenerCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)addListener:(id)a3
+- (void)addListener:(id)listener
 {
-  v4 = a3;
+  listenerCopy = listener;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10018FE74;
   v7[3] = &unk_10051E010;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = listenerCopy;
+  v6 = listenerCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)getContextCollectorDeviceIdentifiersWithCompletion:(id)a3
+- (void)getContextCollectorDeviceIdentifiersWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
     if (AFSupportsHALContextCollectorElection())
     {
@@ -3135,23 +3135,23 @@ LABEL_11:
       v6[2] = sub_10018FF4C;
       v6[3] = &unk_10051E038;
       v6[4] = self;
-      v7 = v4;
+      v7 = completionCopy;
       dispatch_async(queue, v6);
     }
 
     else
     {
-      (*(v4 + 2))(v4, 0, 0);
+      (*(completionCopy + 2))(completionCopy, 0, 0);
     }
   }
 }
 
-- (id)idsDeviceUniqueIdentifierForDeviceWithAssistantId:(id)a3
+- (id)idsDeviceUniqueIdentifierForDeviceWithAssistantId:(id)id
 {
-  v4 = a3;
-  if ([v4 length])
+  idCopy = id;
+  if ([idCopy length])
   {
-    v5 = [v4 uppercaseString];
+    uppercaseString = [idCopy uppercaseString];
     v13 = 0;
     v14 = &v13;
     v15 = 0x3032000000;
@@ -3164,7 +3164,7 @@ LABEL_11:
     v10[1] = 3221225472;
     v10[2] = sub_100190484;
     v10[3] = &unk_100514130;
-    v7 = v5;
+    v7 = uppercaseString;
     v11 = v7;
     v12 = &v13;
     [(NSMutableDictionary *)assistantIdsByDeviceIDSID enumerateKeysAndObjectsUsingBlock:v10];
@@ -3182,13 +3182,13 @@ LABEL_11:
   return v8;
 }
 
-- (void)_setAssistantId:(id)a3 forDeviceWithIdsDeviceUniqueIdentifier:(id)a4
+- (void)_setAssistantId:(id)id forDeviceWithIdsDeviceUniqueIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 length] && objc_msgSend(v7, "length"))
+  idCopy = id;
+  identifierCopy = identifier;
+  if ([idCopy length] && objc_msgSend(identifierCopy, "length"))
   {
-    v8 = [v6 uppercaseString];
+    uppercaseString = [idCopy uppercaseString];
     os_unfair_lock_lock(&self->_assistantIdMapLock);
     assistantIdsByDeviceIDSID = self->_assistantIdsByDeviceIDSID;
     if (!assistantIdsByDeviceIDSID)
@@ -3200,7 +3200,7 @@ LABEL_11:
       assistantIdsByDeviceIDSID = self->_assistantIdsByDeviceIDSID;
     }
 
-    [(NSMutableDictionary *)assistantIdsByDeviceIDSID setObject:v8 forKey:v7];
+    [(NSMutableDictionary *)assistantIdsByDeviceIDSID setObject:uppercaseString forKey:identifierCopy];
     os_unfair_lock_unlock(&self->_assistantIdMapLock);
     v12 = AFSiriLogContextDaemon;
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
@@ -3208,21 +3208,21 @@ LABEL_11:
       v13 = 136315650;
       v14 = "[ADDeviceCircleManager _setAssistantId:forDeviceWithIdsDeviceUniqueIdentifier:]";
       v15 = 2112;
-      v16 = v8;
+      v16 = uppercaseString;
       v17 = 2112;
-      v18 = v7;
+      v18 = identifierCopy;
       _os_log_debug_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEBUG, "%s #hal Updated assistantId %@ for device %@", &v13, 0x20u);
     }
   }
 }
 
-- (id)assistantIdForDeviceWithIdsDeviceUniqueIdentifier:(id)a3
+- (id)assistantIdForDeviceWithIdsDeviceUniqueIdentifier:(id)identifier
 {
-  v4 = a3;
-  if ([v4 length])
+  identifierCopy = identifier;
+  if ([identifierCopy length])
   {
     os_unfair_lock_lock(&self->_assistantIdMapLock);
-    v5 = [(NSMutableDictionary *)self->_assistantIdsByDeviceIDSID objectForKey:v4];
+    v5 = [(NSMutableDictionary *)self->_assistantIdsByDeviceIDSID objectForKey:identifierCopy];
     os_unfair_lock_unlock(&self->_assistantIdMapLock);
   }
 
@@ -3243,35 +3243,35 @@ LABEL_11:
   return v2;
 }
 
-- (void)_cleanupOnDemandClientLinkToContextCollector:(id)a3
+- (void)_cleanupOnDemandClientLinkToContextCollector:(id)collector
 {
-  v4 = a3;
+  collectorCopy = collector;
   v5 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
   {
     v7 = 136315394;
     v8 = "[ADDeviceCircleManager _cleanupOnDemandClientLinkToContextCollector:]";
     v9 = 2112;
-    v10 = v4;
+    v10 = collectorCopy;
     _os_log_debug_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "%s #hal #on-demand clean up #on-demand connection: %@", &v7, 0x16u);
   }
 
-  [v4 invalidate];
+  [collectorCopy invalidate];
   onDemandClientLinkToContextCollector = self->_onDemandClientLinkToContextCollector;
   self->_onDemandClientLinkToContextCollector = 0;
 }
 
-- (void)_activateOnDemandClientLinkToContextCollector:(id)a3 completion:(id)a4
+- (void)_activateOnDemandClientLinkToContextCollector:(id)collector completion:(id)completion
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100190904;
   v7[3] = &unk_10051DDE8;
   v7[4] = self;
-  v8 = a3;
-  v9 = a4;
-  v5 = v9;
-  v6 = v8;
+  collectorCopy = collector;
+  completionCopy = completion;
+  v5 = completionCopy;
+  v6 = collectorCopy;
   [v6 activateWithCompletion:v7];
 }
 
@@ -3280,8 +3280,8 @@ LABEL_11:
   v3 = [ADRapportLinkConfiguration newWithBuilder:&stru_1005140C8];
   v4 = [[ADRapportLink alloc] initWithQueue:self->_queue configuration:v3];
   [(ADRapportLink *)v4 addListener:self];
-  v5 = [(ADDeviceCircleManager *)self _rapportLinkMessageOptions];
-  [(ADRapportLink *)v4 registerRequestID:@"com.apple.siri.rapport-link.request.device-circle-manager" options:v5];
+  _rapportLinkMessageOptions = [(ADDeviceCircleManager *)self _rapportLinkMessageOptions];
+  [(ADRapportLink *)v4 registerRequestID:@"com.apple.siri.rapport-link.request.device-circle-manager" options:_rapportLinkMessageOptions];
 
   return v4;
 }
@@ -3297,17 +3297,17 @@ LABEL_11:
   dispatch_async(queue, block);
 }
 
-- (id)_initWithQueue:(id)a3 rapportLink:(id)a4
+- (id)_initWithQueue:(id)queue rapportLink:(id)link
 {
-  v7 = a3;
-  v8 = a4;
+  queueCopy = queue;
+  linkCopy = link;
   v43.receiver = self;
   v43.super_class = ADDeviceCircleManager;
   v9 = [(ADDeviceCircleManager *)&v43 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_queue, a3);
+    objc_storeStrong(&v9->_queue, queue);
     v11 = +[NSHashTable weakObjectsHashTable];
     listeners = v10->_listeners;
     v10->_listeners = v11;
@@ -3332,7 +3332,7 @@ LABEL_11:
     onDemandClientLinkToContextCollector = v10->_onDemandClientLinkToContextCollector;
     v10->_onDemandClientLinkToContextCollector = 0;
 
-    objc_storeStrong(&v10->_clientLink, a4);
+    objc_storeStrong(&v10->_clientLink, link);
     [(ADDeviceCircleManager *)v10 _setupClientLink];
     v20 = +[NSNotificationCenter defaultCenter];
     [v20 addObserver:v10 selector:"preferencesEnabledBitsDidChange:" name:@"ADPreferencesEnabledBitsDidChangeNotification" object:0];
@@ -3388,12 +3388,12 @@ LABEL_11:
   return v10;
 }
 
-+ (id)_rapportLinkWithQueue:(id)a3
++ (id)_rapportLinkWithQueue:(id)queue
 {
-  v3 = a3;
+  queueCopy = queue;
   v4 = [ADRapportLink alloc];
   v5 = [ADRapportLinkConfiguration newWithBuilder:&stru_100514068];
-  v6 = [(ADRapportLink *)v4 initWithQueue:v3 configuration:v5];
+  v6 = [(ADRapportLink *)v4 initWithQueue:queueCopy configuration:v5];
 
   return v6;
 }

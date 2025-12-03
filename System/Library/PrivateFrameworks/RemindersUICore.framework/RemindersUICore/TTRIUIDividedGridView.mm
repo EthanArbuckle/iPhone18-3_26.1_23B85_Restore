@@ -8,8 +8,8 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = [(TTRIUIDividedGridView *)self viewController];
-  [v2 intrinsicContentSize];
+  viewController = [(TTRIUIDividedGridView *)self viewController];
+  [viewController intrinsicContentSize];
   v4 = v3;
   v6 = v5;
 
@@ -22,10 +22,10 @@
 
 - (id)accessibilityElements
 {
-  v2 = [(TTRIUIDividedGridView *)self viewController];
-  v3 = [v2 allCells];
+  viewController = [(TTRIUIDividedGridView *)self viewController];
+  allCells = [viewController allCells];
 
-  return v3;
+  return allCells;
 }
 
 - (TTRIDividedGridViewController)viewController

@@ -7,27 +7,27 @@
 
 - (uint64_t)hksp_shouldSubmitAnalytics
 {
-  v2 = [a1 content];
-  v3 = [v2 categoryIdentifier];
-  if ([v3 isEqualToString:*MEMORY[0x277D62010]])
+  content = [self content];
+  categoryIdentifier = [content categoryIdentifier];
+  if ([categoryIdentifier isEqualToString:*MEMORY[0x277D62010]])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [a1 content];
-    v6 = [v5 categoryIdentifier];
-    if ([v6 isEqualToString:*MEMORY[0x277D623F0]])
+    content2 = [self content];
+    categoryIdentifier2 = [content2 categoryIdentifier];
+    if ([categoryIdentifier2 isEqualToString:*MEMORY[0x277D623F0]])
     {
       v4 = 1;
     }
 
     else
     {
-      v7 = [a1 content];
-      v8 = [v7 categoryIdentifier];
-      v4 = [v8 isEqualToString:*MEMORY[0x277D62080]];
+      content3 = [self content];
+      categoryIdentifier3 = [content3 categoryIdentifier];
+      v4 = [categoryIdentifier3 isEqualToString:*MEMORY[0x277D62080]];
     }
   }
 
@@ -36,9 +36,9 @@
 
 - (uint64_t)hksp_analyticsSleepNotificationType
 {
-  v1 = [a1 content];
-  v2 = [v1 categoryIdentifier];
-  v3 = [v2 isEqualToString:*MEMORY[0x277D62080]];
+  content = [self content];
+  categoryIdentifier = [content categoryIdentifier];
+  v3 = [categoryIdentifier isEqualToString:*MEMORY[0x277D62080]];
 
   return v3;
 }

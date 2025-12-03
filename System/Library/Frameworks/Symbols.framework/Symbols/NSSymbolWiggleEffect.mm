@@ -4,7 +4,7 @@
 + (id)wiggleBackwardEffect;
 + (id)wiggleClockwiseEffect;
 + (id)wiggleCounterClockwiseEffect;
-+ (id)wiggleCustomAngleEffect:(double)a3;
++ (id)wiggleCustomAngleEffect:(double)effect;
 + (id)wiggleDownEffect;
 + (id)wiggleForwardEffect;
 + (id)wiggleLeftEffect;
@@ -13,22 +13,22 @@
 - (NSSymbolWiggleEffect)effectWithByLayer;
 - (NSSymbolWiggleEffect)effectWithWholeSymbol;
 - (id)_rbOptionsMutable;
-- (id)_withStyle:(int64_t)a3 angle:(double)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_withStyle:(int64_t)style angle:(double)angle;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation NSSymbolWiggleEffect
 
-- (id)_withStyle:(int64_t)a3 angle:(double)a4
+- (id)_withStyle:(int64_t)style angle:(double)angle
 {
-  *(self + 3) = a3;
-  *(self + 4) = a4;
+  *(self + 3) = style;
+  *(self + 4) = angle;
   return self;
 }
 
 + (id)effect
 {
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS___NSSymbolWiggleEffect;
   v2 = objc_msgSendSuper2(&v4, sel__effectWithType_, 9);
   v2[2] = 0;
@@ -40,72 +40,72 @@
 
 + (id)wiggleClockwiseEffect
 {
-  v2 = [a1 effect];
-  v3 = [v2 _withStyle:1 angle:0.0];
+  effect = [self effect];
+  v3 = [effect _withStyle:1 angle:0.0];
 
   return v3;
 }
 
 + (id)wiggleCounterClockwiseEffect
 {
-  v2 = [a1 effect];
-  v3 = [v2 _withStyle:2 angle:0.0];
+  effect = [self effect];
+  v3 = [effect _withStyle:2 angle:0.0];
 
   return v3;
 }
 
 + (id)wiggleLeftEffect
 {
-  v2 = [a1 effect];
-  v3 = [v2 _withStyle:3 angle:180.0];
+  effect = [self effect];
+  v3 = [effect _withStyle:3 angle:180.0];
 
   return v3;
 }
 
 + (id)wiggleRightEffect
 {
-  v2 = [a1 effect];
-  v3 = [v2 _withStyle:3 angle:0.0];
+  effect = [self effect];
+  v3 = [effect _withStyle:3 angle:0.0];
 
   return v3;
 }
 
 + (id)wiggleUpEffect
 {
-  v2 = [a1 effect];
-  v3 = [v2 _withStyle:3 angle:-90.0];
+  effect = [self effect];
+  v3 = [effect _withStyle:3 angle:-90.0];
 
   return v3;
 }
 
 + (id)wiggleDownEffect
 {
-  v2 = [a1 effect];
-  v3 = [v2 _withStyle:3 angle:90.0];
+  effect = [self effect];
+  v3 = [effect _withStyle:3 angle:90.0];
 
   return v3;
 }
 
 + (id)wiggleForwardEffect
 {
-  v2 = [a1 effect];
-  v3 = [v2 _withStyle:4 angle:0.0];
+  effect = [self effect];
+  v3 = [effect _withStyle:4 angle:0.0];
 
   return v3;
 }
 
 + (id)wiggleBackwardEffect
 {
-  v2 = [a1 effect];
-  v3 = [v2 _withStyle:5 angle:0.0];
+  effect = [self effect];
+  v3 = [effect _withStyle:5 angle:0.0];
 
   return v3;
 }
 
-+ (id)wiggleCustomAngleEffect:(double)a3
++ (id)wiggleCustomAngleEffect:(double)effect
 {
-  v4 = [a1 effect];
-  v5 = [v4 _withStyle:3 angle:a3];
+  effect = [self effect];
+  v5 = [effect _withStyle:3 angle:effect];
 
   return v5;
 }
@@ -126,11 +126,11 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5.receiver = self;
   v5.super_class = NSSymbolWiggleEffect;
-  result = [(NSSymbolEffect *)&v5 copyWithZone:a3];
+  result = [(NSSymbolEffect *)&v5 copyWithZone:zone];
   *(result + 2) = self->_layerBehavior;
   *(result + 3) = self->_style;
   *(result + 4) = *&self->_angle;
@@ -154,8 +154,8 @@
 
 - (id)_rbOptionsMutable
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  [objc_opt_class() _addLayerBehavior:self->_layerBehavior ToOptions:v3];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [objc_opt_class() _addLayerBehavior:self->_layerBehavior ToOptions:dictionary];
   style = self->_style;
   switch(style)
   {
@@ -194,7 +194,7 @@
       v7 = v5 * 0.0174532925;
       *&v7 = v7;
       v8 = [MEMORY[0x1E696AD98] numberWithFloat:v7];
-      [v3 setObject:v8 forKeyedSubscript:@"wiggleAngle"];
+      [dictionary setObject:v8 forKeyedSubscript:@"wiggleAngle"];
 
       break;
   }
@@ -202,9 +202,9 @@
   v6 = 0;
 LABEL_16:
   v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v6];
-  [v3 setObject:v9 forKeyedSubscript:*MEMORY[0x1E69C7280]];
+  [dictionary setObject:v9 forKeyedSubscript:*MEMORY[0x1E69C7280]];
 
-  return v3;
+  return dictionary;
 }
 
 @end

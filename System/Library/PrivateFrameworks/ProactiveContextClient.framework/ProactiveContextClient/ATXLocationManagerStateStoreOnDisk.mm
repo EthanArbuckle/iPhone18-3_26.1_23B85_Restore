@@ -1,24 +1,24 @@
 @interface ATXLocationManagerStateStoreOnDisk
-- (ATXLocationManagerStateStoreOnDisk)initWithLocationParameters:(id)a3;
-- (ATXLocationManagerStateStoreOnDisk)initWithPath:(id)a3 environment:(id)a4 locationParameters:(id)a5;
+- (ATXLocationManagerStateStoreOnDisk)initWithLocationParameters:(id)parameters;
+- (ATXLocationManagerStateStoreOnDisk)initWithPath:(id)path environment:(id)environment locationParameters:(id)parameters;
 - (BOOL)_tryToOpen;
-- (id)loadNowOrCallLater:(id)a3;
+- (id)loadNowOrCallLater:(id)later;
 - (void)_deviceDidUnlock;
 - (void)clear;
 - (void)dealloc;
-- (void)write:(id)a3;
+- (void)write:(id)write;
 @end
 
 @implementation ATXLocationManagerStateStoreOnDisk
 
 - (BOOL)_tryToOpen
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2->_fd < 0)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_fd < 0)
   {
-    v4 = [(ATXLocationManagerStateStoreOnDiskEnv *)v2->_env openFileAtPath:v2->_path dataProtectionClass:3];
-    v2->_fd = v4;
+    v4 = [(ATXLocationManagerStateStoreOnDiskEnv *)selfCopy->_env openFileAtPath:selfCopy->_path dataProtectionClass:3];
+    selfCopy->_fd = v4;
     v3 = v4 >= 0;
   }
 
@@ -27,19 +27,19 @@
     v3 = 1;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (ATXLocationManagerStateStoreOnDisk)initWithPath:(id)a3 environment:(id)a4 locationParameters:(id)a5
+- (ATXLocationManagerStateStoreOnDisk)initWithPath:(id)path environment:(id)environment locationParameters:(id)parameters
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9)
+  pathCopy = path;
+  environmentCopy = environment;
+  parametersCopy = parameters;
+  if (pathCopy)
   {
-    if (v10)
+    if (environmentCopy)
     {
       goto LABEL_3;
     }
@@ -48,7 +48,7 @@
   else
   {
     [ATXLocationManagerStateStoreOnDisk initWithPath:environment:locationParameters:];
-    if (v10)
+    if (environmentCopy)
     {
       goto LABEL_3;
     }
@@ -62,29 +62,29 @@ LABEL_3:
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_path, a3);
-    objc_storeStrong(&v13->_env, a4);
+    objc_storeStrong(&v12->_path, path);
+    objc_storeStrong(&v13->_env, environment);
     v13->_fd = -1;
-    v13->_cacheExpirationInterval = [v11 previousLOIExpirationTime];
+    v13->_cacheExpirationInterval = [parametersCopy previousLOIExpirationTime];
   }
 
   return v13;
 }
 
-- (ATXLocationManagerStateStoreOnDisk)initWithLocationParameters:(id)a3
+- (ATXLocationManagerStateStoreOnDisk)initWithLocationParameters:(id)parameters
 {
   v4 = MEMORY[0x277CEBCB0];
-  v5 = a3;
+  parametersCopy = parameters;
   v6 = [v4 appPredictionDirectoryFile:@"ATXLocationManagerState"];
-  v7 = [MEMORY[0x277CCAC38] processInfo];
-  v8 = [v7 processName];
-  v9 = [v8 lowercaseString];
-  v10 = [v9 isEqualToString:@"contextstored"];
+  processInfo = [MEMORY[0x277CCAC38] processInfo];
+  processName = [processInfo processName];
+  lowercaseString = [processName lowercaseString];
+  v10 = [lowercaseString isEqualToString:@"contextstored"];
 
   if (v10)
   {
-    v11 = [MEMORY[0x277CFE0D8] knowledgeDirectory];
-    v12 = [v11 stringByAppendingPathComponent:@"ATXLocationManagerState"];
+    knowledgeDirectory = [MEMORY[0x277CFE0D8] knowledgeDirectory];
+    v12 = [knowledgeDirectory stringByAppendingPathComponent:@"ATXLocationManagerState"];
 
     v6 = v12;
   }
@@ -92,7 +92,7 @@ LABEL_3:
   v13 = [v6 stringByAppendingString:@"-unrestricted"];
 
   v14 = objc_opt_new();
-  v15 = [(ATXLocationManagerStateStoreOnDisk *)self initWithPath:v13 environment:v14 locationParameters:v5];
+  v15 = [(ATXLocationManagerStateStoreOnDisk *)self initWithPath:v13 environment:v14 locationParameters:parametersCopy];
 
   return v15;
 }
@@ -110,17 +110,17 @@ LABEL_3:
   [(ATXLocationManagerStateStoreOnDisk *)&v4 dealloc];
 }
 
-- (id)loadNowOrCallLater:(id)a3
+- (id)loadNowOrCallLater:(id)later
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if ([(ATXLocationManagerStateStoreOnDisk *)v5 _tryToOpen])
+  laterCopy = later;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([(ATXLocationManagerStateStoreOnDisk *)selfCopy _tryToOpen])
   {
     v6 = objc_autoreleasePoolPush();
     location = 0;
-    fd = v5->_fd;
-    [(ATXLocationManagerStateStoreOnDisk *)v5 cacheExpirationInterval];
+    fd = selfCopy->_fd;
+    [(ATXLocationManagerStateStoreOnDisk *)selfCopy cacheExpirationInterval];
     ATXCacheFileRead();
 
     objc_autoreleasePoolPop(v6);
@@ -128,25 +128,25 @@ LABEL_3:
 
   else
   {
-    v8 = ![(ATXLocationManagerStateStoreOnDiskEnv *)v5->_env isLocked];
-    if (!v4)
+    v8 = ![(ATXLocationManagerStateStoreOnDiskEnv *)selfCopy->_env isLocked];
+    if (!laterCopy)
     {
       LOBYTE(v8) = 1;
     }
 
-    if ((v8 & 1) == 0 && !v5->_deferredLoadCallback)
+    if ((v8 & 1) == 0 && !selfCopy->_deferredLoadCallback)
     {
-      v9 = [MEMORY[0x277CCAA00] defaultManager];
-      v10 = [v9 fileExistsAtPath:v5->_path];
+      defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+      v10 = [defaultManager fileExistsAtPath:selfCopy->_path];
 
       if (v10)
       {
-        objc_initWeak(&location, v5);
-        v11 = MEMORY[0x2666EC640](v4);
-        deferredLoadCallback = v5->_deferredLoadCallback;
-        v5->_deferredLoadCallback = v11;
+        objc_initWeak(&location, selfCopy);
+        v11 = MEMORY[0x2666EC640](laterCopy);
+        deferredLoadCallback = selfCopy->_deferredLoadCallback;
+        selfCopy->_deferredLoadCallback = v11;
 
-        env = v5->_env;
+        env = selfCopy->_env;
         v15[0] = MEMORY[0x277D85DD0];
         v15[1] = 3221225472;
         v15[2] = __57__ATXLocationManagerStateStoreOnDisk_loadNowOrCallLater___block_invoke;
@@ -159,7 +159,7 @@ LABEL_3:
     }
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return 0;
 }
@@ -172,35 +172,35 @@ void __57__ATXLocationManagerStateStoreOnDisk_loadNowOrCallLater___block_invoke(
 
 - (void)_deviceDidUnlock
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v5 = [(ATXLocationManagerStateStoreOnDisk *)v2 loadNowOrCallLater:0];
-  v3 = MEMORY[0x2666EC640](v2->_deferredLoadCallback);
-  deferredLoadCallback = v2->_deferredLoadCallback;
-  v2->_deferredLoadCallback = 0;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = [(ATXLocationManagerStateStoreOnDisk *)selfCopy loadNowOrCallLater:0];
+  v3 = MEMORY[0x2666EC640](selfCopy->_deferredLoadCallback);
+  deferredLoadCallback = selfCopy->_deferredLoadCallback;
+  selfCopy->_deferredLoadCallback = 0;
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   if (v3)
   {
     (v3)[2](v3, v5);
   }
 }
 
-- (void)write:(id)a3
+- (void)write:(id)write
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if ([(ATXLocationManagerStateStoreOnDisk *)v5 _tryToOpen])
+  writeCopy = write;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([(ATXLocationManagerStateStoreOnDisk *)selfCopy _tryToOpen])
   {
     v6 = objc_autoreleasePoolPush();
     v13 = 0;
-    v7 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v4 requiringSecureCoding:1 error:&v13];
+    v7 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:writeCopy requiringSecureCoding:1 error:&v13];
     v8 = v13;
     if (v7)
     {
-      fd = v5->_fd;
+      fd = selfCopy->_fd;
       v14[0] = v7;
       v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:1];
       LOBYTE(fd) = ATXCacheFileWriteChunks();
@@ -233,7 +233,7 @@ LABEL_9:
   }
 
 LABEL_10:
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   v12 = *MEMORY[0x277D85DE8];
 }
@@ -242,8 +242,8 @@ LABEL_10:
 {
   obj = self;
   objc_sync_enter(obj);
-  v2 = [MEMORY[0x277CCAA00] defaultManager];
-  [v2 removeItemAtPath:obj->_path error:0];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  [defaultManager removeItemAtPath:obj->_path error:0];
 
   fd = obj->_fd;
   if ((fd & 0x80000000) == 0)

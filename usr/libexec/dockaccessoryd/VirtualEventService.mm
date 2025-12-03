@@ -1,10 +1,10 @@
 @interface VirtualEventService
-- (BOOL)setOutputEvent:(id)a3 forService:(id)a4;
-- (BOOL)setProperty:(id)a3 forKey:(id)a4 forService:(id)a5;
-- (id)copyEventMatching:(id)a3 forService:(id)a4;
-- (id)propertyForKey:(id)a3 forService:(id)a4;
+- (BOOL)setOutputEvent:(id)event forService:(id)service;
+- (BOOL)setProperty:(id)property forKey:(id)key forService:(id)service;
+- (id)copyEventMatching:(id)matching forService:(id)service;
+- (id)propertyForKey:(id)key forService:(id)service;
 - (void)dealloc;
-- (void)notification:(int64_t)a3 withProperty:(id)a4 forService:(id)a5;
+- (void)notification:(int64_t)notification withProperty:(id)property forService:(id)service;
 @end
 
 @implementation VirtualEventService
@@ -13,16 +13,16 @@
 {
   v2 = *(&self->super.isa + OBJC_IVAR____TtC14dockaccessoryd19VirtualEventService_eventService);
   *(&self->super.isa + OBJC_IVAR____TtC14dockaccessoryd19VirtualEventService_eventService) = 0;
-  v3 = self;
+  selfCopy = self;
 
-  v4.receiver = v3;
+  v4.receiver = selfCopy;
   v4.super_class = type metadata accessor for VirtualEventService();
   [(VirtualEventService *)&v4 dealloc];
 }
 
-- (BOOL)setProperty:(id)a3 forKey:(id)a4 forService:(id)a5
+- (BOOL)setProperty:(id)property forKey:(id)key forService:(id)service
 {
-  if (a3)
+  if (property)
   {
     swift_unknownObjectRetain();
     swift_unknownObjectRetain();
@@ -43,12 +43,12 @@
   return 0;
 }
 
-- (id)propertyForKey:(id)a3 forService:(id)a4
+- (id)propertyForKey:(id)key forService:(id)service
 {
   v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v7 = v6;
   swift_unknownObjectRetain();
-  v8 = self;
+  selfCopy = self;
   _bridgeAnyObjectToAny(_:)();
   swift_unknownObjectRelease();
   sub_1001D46A4(v5, v7, v18);
@@ -76,7 +76,7 @@
   return v15;
 }
 
-- (id)copyEventMatching:(id)a3 forService:(id)a4
+- (id)copyEventMatching:(id)matching forService:(id)service
 {
   swift_unknownObjectRetain();
   _bridgeAnyObjectToAny(_:)();
@@ -85,7 +85,7 @@
   return 0;
 }
 
-- (BOOL)setOutputEvent:(id)a3 forService:(id)a4
+- (BOOL)setOutputEvent:(id)event forService:(id)service
 {
   swift_unknownObjectRetain();
   _bridgeAnyObjectToAny(_:)();
@@ -94,18 +94,18 @@
   return 0;
 }
 
-- (void)notification:(int64_t)a3 withProperty:(id)a4 forService:(id)a5
+- (void)notification:(int64_t)notification withProperty:(id)property forService:(id)service
 {
-  if (a4)
+  if (property)
   {
     static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
   swift_unknownObjectRetain();
-  v7 = self;
+  selfCopy = self;
   _bridgeAnyObjectToAny(_:)();
   swift_unknownObjectRelease();
-  sub_1001D4AD8(a3);
+  sub_1001D4AD8(notification);
 
   sub_100095808(v8);
 }

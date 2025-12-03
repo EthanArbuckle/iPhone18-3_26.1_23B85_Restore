@@ -1,19 +1,19 @@
 @interface AMSUIWebApplicationLookupAction
-- (AMSUIWebApplicationLookupAction)initWithJSObject:(id)a3 context:(id)a4;
+- (AMSUIWebApplicationLookupAction)initWithJSObject:(id)object context:(id)context;
 - (id)runAction;
 @end
 
 @implementation AMSUIWebApplicationLookupAction
 
-- (AMSUIWebApplicationLookupAction)initWithJSObject:(id)a3 context:(id)a4
+- (AMSUIWebApplicationLookupAction)initWithJSObject:(id)object context:(id)context
 {
-  v6 = a3;
+  objectCopy = object;
   v12.receiver = self;
   v12.super_class = AMSUIWebApplicationLookupAction;
-  v7 = [(AMSUIWebAction *)&v12 initWithJSObject:v6 context:a4];
+  v7 = [(AMSUIWebAction *)&v12 initWithJSObject:objectCopy context:context];
   if (v7)
   {
-    v8 = [v6 objectForKeyedSubscript:@"bundleIdentifier"];
+    v8 = [objectCopy objectForKeyedSubscript:@"bundleIdentifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -36,9 +36,9 @@
 {
   v19.receiver = self;
   v19.super_class = AMSUIWebApplicationLookupAction;
-  v3 = [(AMSUIWebAction *)&v19 runAction];
-  v4 = [(AMSUIWebApplicationLookupAction *)self bundleIdentifier];
-  v5 = [v4 length];
+  runAction = [(AMSUIWebAction *)&v19 runAction];
+  bundleIdentifier = [(AMSUIWebApplicationLookupAction *)self bundleIdentifier];
+  v5 = [bundleIdentifier length];
 
   v6 = MEMORY[0x1E698CAD0];
   if (v5)

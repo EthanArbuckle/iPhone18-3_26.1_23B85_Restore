@@ -1,6 +1,6 @@
 @interface PencilData
-- (PencilData)initWithQueue:(id)a3;
-- (void)connectedDevicesDidChange:(id)a3;
+- (PencilData)initWithQueue:(id)queue;
+- (void)connectedDevicesDidChange:(id)change;
 - (void)dealloc;
 - (void)handleAuthPassed;
 - (void)logAttachSoC;
@@ -8,9 +8,9 @@
 
 @implementation PencilData
 
-- (PencilData)initWithQueue:(id)a3
+- (PencilData)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v6 = LoggingAWCSF();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -57,7 +57,7 @@ LABEL_18:
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_batteryQueue, a3);
+    objc_storeStrong(&v11->_batteryQueue, queue);
     v13 = objc_alloc_init(v10);
     batteryController = v12->_batteryController;
     v12->_batteryController = v13;
@@ -114,9 +114,9 @@ LABEL_19:
   [(PencilData *)&v6 dealloc];
 }
 
-- (void)connectedDevicesDidChange:(id)a3
+- (void)connectedDevicesDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   dispatch_assert_queue_V2(self->_batteryQueue);
   v5 = LoggingAWCSF();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -132,7 +132,7 @@ LABEL_19:
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = changeCopy;
   v7 = [v6 countByEnumeratingWithState:&v16 objects:v26 count:16];
   if (v7)
   {
@@ -152,8 +152,8 @@ LABEL_19:
         v12 = *(*(&v16 + 1) + 8 * i);
         if ([v12 vendor] == &dword_0 + 1 && (objc_msgSend(v12, "productIdentifier") == &stru_108.reserved1 || objc_msgSend(v12, "productIdentifier") == &stru_420.offset + 2) && objc_msgSend(v12, "accessoryCategory") == &dword_4 + 3)
         {
-          v13 = [v12 percentCharge];
-          if (self->_batteryPercentage != v13)
+          percentCharge = [v12 percentCharge];
+          if (self->_batteryPercentage != percentCharge)
           {
             v14 = LoggingAWCSF();
             if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -163,12 +163,12 @@ LABEL_19:
               v22 = 1024;
               v23 = 139;
               v24 = 2048;
-              v25 = v13;
+              v25 = percentCharge;
               _os_log_impl(&dword_0, v14, OS_LOG_TYPE_DEFAULT, "%s line %d [percentCharge = %ld]", buf, 0x1Cu);
             }
           }
 
-          self->_batteryPercentage = v13;
+          self->_batteryPercentage = percentCharge;
           if (!self->_batteryPercentageInitialized)
           {
             self->_batteryPercentageInitialized = 1;

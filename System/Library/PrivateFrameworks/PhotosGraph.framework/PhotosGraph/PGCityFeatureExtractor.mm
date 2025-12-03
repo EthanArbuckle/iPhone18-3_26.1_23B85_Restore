@@ -1,14 +1,14 @@
 @interface PGCityFeatureExtractor
-+ (id)unlocalizedCityNameFromCityName:(id)a3 countryCode:(id)a4 fromCityManager:(id)a5;
-- (PGCityFeatureExtractor)initWithVersion:(int64_t)a3 error:(id *)a4;
-- (id)labelsForVersion:(int64_t)a3;
++ (id)unlocalizedCityNameFromCityName:(id)name countryCode:(id)code fromCityManager:(id)manager;
+- (PGCityFeatureExtractor)initWithVersion:(int64_t)version error:(id *)error;
+- (id)labelsForVersion:(int64_t)version;
 @end
 
 @implementation PGCityFeatureExtractor
 
-- (id)labelsForVersion:(int64_t)a3
+- (id)labelsForVersion:(int64_t)version
 {
-  if (a3 == 1)
+  if (version == 1)
   {
     return &unk_284485C28;
   }
@@ -19,11 +19,11 @@
   }
 }
 
-- (PGCityFeatureExtractor)initWithVersion:(int64_t)a3 error:(id *)a4
+- (PGCityFeatureExtractor)initWithVersion:(int64_t)version error:(id *)error
 {
   v20[2] = *MEMORY[0x277D85DE8];
-  v6 = [MEMORY[0x277CEC588] sharedManager];
-  v7 = [(PGCityFeatureExtractor *)self labelsForVersion:a3];
+  mEMORY[0x277CEC588] = [MEMORY[0x277CEC588] sharedManager];
+  v7 = [(PGCityFeatureExtractor *)self labelsForVersion:version];
   v8 = MEMORY[0x277D22C90];
   v9 = +[PGGraphMomentNode addressOfMoment];
   v20[0] = v9;
@@ -36,10 +36,10 @@
   v18[1] = 3221225472;
   v18[2] = __48__PGCityFeatureExtractor_initWithVersion_error___block_invoke;
   v18[3] = &unk_278883F18;
-  v19 = v6;
+  v19 = mEMORY[0x277CEC588];
   v17.receiver = self;
   v17.super_class = PGCityFeatureExtractor;
-  v13 = v6;
+  v13 = mEMORY[0x277CEC588];
   v14 = [(MARelationCollectionFeatureExtractor *)&v17 initWithName:@"City" featureNames:v7 relation:v12 labelForTargetBlock:v18];
 
   v15 = *MEMORY[0x277D85DE8];
@@ -61,35 +61,35 @@ id __48__PGCityFeatureExtractor_initWithVersion_error___block_invoke(uint64_t a1
   return v9;
 }
 
-+ (id)unlocalizedCityNameFromCityName:(id)a3 countryCode:(id)a4 fromCityManager:(id)a5
++ (id)unlocalizedCityNameFromCityName:(id)name countryCode:(id)code fromCityManager:(id)manager
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v7 length] && objc_msgSend(v8, "length"))
+  nameCopy = name;
+  codeCopy = code;
+  managerCopy = manager;
+  if ([nameCopy length] && objc_msgSend(codeCopy, "length"))
   {
-    v10 = [v9 citiesMatchingName:v7];
-    v11 = [v10 firstObject];
+    v10 = [managerCopy citiesMatchingName:nameCopy];
+    firstObject = [v10 firstObject];
 
-    if (v11 && ([v11 unlocalizedName], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "length"), v12, v13))
+    if (firstObject && ([firstObject unlocalizedName], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "length"), v12, v13))
     {
       v14 = MEMORY[0x277CCACA8];
-      v15 = [v11 unlocalizedName];
-      v16 = [v14 stringWithFormat:@"%@_%@", v15, v8];
+      unlocalizedName = [firstObject unlocalizedName];
+      codeCopy = [v14 stringWithFormat:@"%@_%@", unlocalizedName, codeCopy];
     }
 
     else
     {
-      v16 = &stru_2843F5C58;
+      codeCopy = &stru_2843F5C58;
     }
   }
 
   else
   {
-    v16 = &stru_2843F5C58;
+    codeCopy = &stru_2843F5C58;
   }
 
-  return v16;
+  return codeCopy;
 }
 
 @end

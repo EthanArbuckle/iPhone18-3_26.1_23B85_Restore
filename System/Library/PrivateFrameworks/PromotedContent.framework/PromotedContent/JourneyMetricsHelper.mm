@@ -12,70 +12,70 @@
 - (double)impressionDuration;
 - (double)impressionThresholdDuration;
 - (id)debugging;
-- (id)registerForPCUsedEventWithAction:(id)a3;
+- (id)registerForPCUsedEventWithAction:(id)action;
 - (void)adMarkerInteracted;
-- (void)addUnfilledReason:(int64_t)a3;
+- (void)addUnfilledReason:(int64_t)reason;
 - (void)contentLoadFailure;
-- (void)createdWithAdType:(int64_t)a3;
-- (void)createdWithAdType:(int64_t)a3 container:(int64_t)a4;
-- (void)createdWithAdType:(int64_t)a3 container:(int64_t)a4 format:(int64_t)a5;
+- (void)createdWithAdType:(int64_t)type;
+- (void)createdWithAdType:(int64_t)type container:(int64_t)container;
+- (void)createdWithAdType:(int64_t)type container:(int64_t)container format:(int64_t)format;
 - (void)dealloc;
-- (void)discardedWithCode:(int64_t)a3;
-- (void)getAppWithButtonState:(int64_t)a3 timeToPreviousInstall:(int64_t)a4;
+- (void)discardedWithCode:(int64_t)code;
+- (void)getAppWithButtonState:(int64_t)state timeToPreviousInstall:(int64_t)install;
 - (void)interacted;
-- (void)interactedAtXPos:(float)a3 yPos:(float)a4;
-- (void)interactedWithElementID:(unsigned __int8)a3 atXPos:(float)a4 yPos:(float)a5;
-- (void)interactedWithType:(int64_t)a3;
-- (void)interstitialOnScreenWithCollapsed:(BOOL)a3;
+- (void)interactedAtXPos:(float)pos yPos:(float)yPos;
+- (void)interactedWithElementID:(unsigned __int8)d atXPos:(float)pos yPos:(float)yPos;
+- (void)interactedWithType:(int64_t)type;
+- (void)interstitialOnScreenWithCollapsed:(BOOL)collapsed;
 - (void)loaded;
-- (void)notConsumedWithCode:(int64_t)a3 placeholder:(BOOL)a4;
+- (void)notConsumedWithCode:(int64_t)code placeholder:(BOOL)placeholder;
 - (void)notifyListenersPCUsed;
-- (void)offScreenWithCollapsed:(BOOL)a3;
-- (void)onScreenWithCollapsed:(BOOL)a3;
-- (void)placedWithPlacementType:(int64_t)a3 placement:(int64_t)a4;
-- (void)placedWithPlacementType:(int64_t)a3 placement:(int64_t)a4 position:(int64_t)a5;
-- (void)placedWithPlacementType:(int64_t)a3 placement:(int64_t)a4 unfilledReason:(int64_t)a5;
-- (void)placedWithPlacementType:(int64_t)a3 placement:(int64_t)a4 wasNativeSlot:(BOOL)a5;
+- (void)offScreenWithCollapsed:(BOOL)collapsed;
+- (void)onScreenWithCollapsed:(BOOL)collapsed;
+- (void)placedWithPlacementType:(int64_t)type placement:(int64_t)placement;
+- (void)placedWithPlacementType:(int64_t)type placement:(int64_t)placement position:(int64_t)position;
+- (void)placedWithPlacementType:(int64_t)type placement:(int64_t)placement unfilledReason:(int64_t)reason;
+- (void)placedWithPlacementType:(int64_t)type placement:(int64_t)placement wasNativeSlot:(BOOL)slot;
 - (void)ready;
-- (void)registerHandlerForAllMetricsWithClosure:(id)a3;
+- (void)registerHandlerForAllMetricsWithClosure:(id)closure;
 - (void)removeHandler;
-- (void)replacedWithHelper:(id)a3;
-- (void)setDiagnostics:(id)a3;
-- (void)setDidImpress:(BOOL)a3;
-- (void)setDidUnload:(BOOL)a3;
-- (void)setHasBeenOnScreen:(BOOL)a3;
-- (void)setImpressionDuration:(double)a3;
-- (void)setImpressionStartDate:(id)a3;
-- (void)setImpressionThresholdDuration:(double)a3;
-- (void)setIsClickImpression:(BOOL)a3;
-- (void)setIsCurrentlyOnScreen:(BOOL)a3;
-- (void)setPrimitiveCreator:(id)a3;
+- (void)replacedWithHelper:(id)helper;
+- (void)setDiagnostics:(id)diagnostics;
+- (void)setDidImpress:(BOOL)impress;
+- (void)setDidUnload:(BOOL)unload;
+- (void)setHasBeenOnScreen:(BOOL)screen;
+- (void)setImpressionDuration:(double)duration;
+- (void)setImpressionStartDate:(id)date;
+- (void)setImpressionThresholdDuration:(double)duration;
+- (void)setIsClickImpression:(BOOL)impression;
+- (void)setIsCurrentlyOnScreen:(BOOL)screen;
+- (void)setPrimitiveCreator:(id)creator;
 - (void)trackTimeSpent;
-- (void)unloadedWithReason:(int64_t)a3;
-- (void)unregisterForPCUsedEventWithListenerID:(id)a3;
-- (void)updateElementsShownWithShown:(id)a3 partiallyShown:(id)a4;
-- (void)userReturnedFromInteractionWithIsVoiceOverEnabled:(BOOL)a3;
-- (void)userReturnedFromInteractionWithIsVoiceOverEnabled:(BOOL)a3 ignoreVisibilityState:(BOOL)a4;
-- (void)visibleWithPercent:(int64_t)a3 starting:(id)a4 duration:(double)a5 collapsed:(BOOL)a6;
-- (void)visibleWithPercent:(int64_t)a3 starting:(id)a4 duration:(double)a5 scrollVelocity:(float)a6 collapsed:(BOOL)a7;
+- (void)unloadedWithReason:(int64_t)reason;
+- (void)unregisterForPCUsedEventWithListenerID:(id)d;
+- (void)updateElementsShownWithShown:(id)shown partiallyShown:(id)partiallyShown;
+- (void)userReturnedFromInteractionWithIsVoiceOverEnabled:(BOOL)enabled;
+- (void)userReturnedFromInteractionWithIsVoiceOverEnabled:(BOOL)enabled ignoreVisibilityState:(BOOL)state;
+- (void)visibleWithPercent:(int64_t)percent starting:(id)starting duration:(double)duration collapsed:(BOOL)collapsed;
+- (void)visibleWithPercent:(int64_t)percent starting:(id)starting duration:(double)duration scrollVelocity:(float)velocity collapsed:(BOOL)collapsed;
 - (void)webAdRemoved;
 @end
 
 @implementation JourneyMetricsHelper
 
-- (void)setImpressionThresholdDuration:(double)a3
+- (void)setImpressionThresholdDuration:(double)duration
 {
   v5 = OBJC_IVAR____TtC15PromotedContent20JourneyMetricsHelper_impressionThresholdDuration;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = duration;
 }
 
-- (id)registerForPCUsedEventWithAction:(id)a3
+- (id)registerForPCUsedEventWithAction:(id)action
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(action);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
-  v6 = self;
+  selfCopy = self;
   JourneyMetricsHelper.registerForPCUsedEvent(action:)(sub_1C1B4AD80, v5);
 
   v7 = sub_1C1B94D78();
@@ -83,28 +83,28 @@
   return v7;
 }
 
-- (void)createdWithAdType:(int64_t)a3 container:(int64_t)a4
+- (void)createdWithAdType:(int64_t)type container:(int64_t)container
 {
   *(self + OBJC_IVAR____TtC15PromotedContent20JourneyMetricsHelper_wasCreated) = 1;
   swift_beginAccess();
   Strong = swift_unknownObjectWeakLoadStrong();
-  v8 = self;
-  v9 = sub_1C1AB2B4C(Strong, a3, a4, 0, 0);
+  selfCopy = self;
+  v9 = sub_1C1AB2B4C(Strong, type, container, 0, 0);
   swift_unknownObjectRelease();
   v10 = sub_1C1AB35FC();
   sub_1C1AB3CFC(1400, v9, v10);
 }
 
-- (void)addUnfilledReason:(int64_t)a3
+- (void)addUnfilledReason:(int64_t)reason
 {
-  v4 = self;
-  sub_1C1AB6130(a3);
+  selfCopy = self;
+  sub_1C1AB6130(reason);
 }
 
-- (void)userReturnedFromInteractionWithIsVoiceOverEnabled:(BOOL)a3
+- (void)userReturnedFromInteractionWithIsVoiceOverEnabled:(BOOL)enabled
 {
-  v4 = self;
-  sub_1C1AB86CC(a3, 0);
+  selfCopy = self;
+  sub_1C1AB86CC(enabled, 0);
 }
 
 - (BOOL)hasBeenOnScreen
@@ -114,29 +114,29 @@
   return *(self + v3);
 }
 
-- (void)interstitialOnScreenWithCollapsed:(BOOL)a3
+- (void)interstitialOnScreenWithCollapsed:(BOOL)collapsed
 {
-  v4 = self;
-  sub_1C1AB8B34(a3);
+  selfCopy = self;
+  sub_1C1AB8B34(collapsed);
 }
 
-- (void)placedWithPlacementType:(int64_t)a3 placement:(int64_t)a4 wasNativeSlot:(BOOL)a5
+- (void)placedWithPlacementType:(int64_t)type placement:(int64_t)placement wasNativeSlot:(BOOL)slot
 {
-  v7 = self;
-  sub_1C1AB8C60(a3, a4, 0, 1, 200, 0);
+  selfCopy = self;
+  sub_1C1AB8C60(type, placement, 0, 1, 200, 0);
 }
 
 - (void)notifyListenersPCUsed
 {
-  v2 = self;
+  selfCopy = self;
   JourneyMetricsHelper.notifyListenersPCUsed()();
 }
 
-- (void)unregisterForPCUsedEventWithListenerID:(id)a3
+- (void)unregisterForPCUsedEventWithListenerID:(id)d
 {
   v4 = sub_1C1B94D88();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   v8._countAndFlagsBits = v4;
   v8._object = v6;
   JourneyMetricsHelper.unregisterForPCUsedEvent(listenerID:)(v8);
@@ -160,21 +160,21 @@
   return v5;
 }
 
-- (void)setPrimitiveCreator:(id)a3
+- (void)setPrimitiveCreator:(id)creator
 {
   v5 = OBJC_IVAR____TtC15PromotedContent20JourneyMetricsHelper_primitiveCreator;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
+  *(self + v5) = creator;
   swift_unknownObjectRetain();
   swift_unknownObjectRelease();
 }
 
-- (void)setHasBeenOnScreen:(BOOL)a3
+- (void)setHasBeenOnScreen:(BOOL)screen
 {
   v5 = OBJC_IVAR____TtC15PromotedContent20JourneyMetricsHelper_hasBeenOnScreen;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = screen;
 }
 
 - (BOOL)isCurrentlyOnScreen
@@ -184,11 +184,11 @@
   return *(self + v3);
 }
 
-- (void)setIsCurrentlyOnScreen:(BOOL)a3
+- (void)setIsCurrentlyOnScreen:(BOOL)screen
 {
   v5 = OBJC_IVAR____TtC15PromotedContent20JourneyMetricsHelper_isCurrentlyOnScreen;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = screen;
 }
 
 - (BOOL)didUnload
@@ -198,11 +198,11 @@
   return *(self + v3);
 }
 
-- (void)setDidUnload:(BOOL)a3
+- (void)setDidUnload:(BOOL)unload
 {
   v5 = OBJC_IVAR____TtC15PromotedContent20JourneyMetricsHelper_didUnload;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = unload;
 }
 
 - (BOOL)didImpress
@@ -212,11 +212,11 @@
   return *(self + v3);
 }
 
-- (void)setDidImpress:(BOOL)a3
+- (void)setDidImpress:(BOOL)impress
 {
   v5 = OBJC_IVAR____TtC15PromotedContent20JourneyMetricsHelper_didImpress;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = impress;
 }
 
 - (NSDate)impressionStartDate
@@ -242,13 +242,13 @@
   return v11;
 }
 
-- (void)setImpressionStartDate:(id)a3
+- (void)setImpressionStartDate:(id)date
 {
   v5 = sub_1C1AC1F08(&qword_1EBF07F50, &qword_1C1B9A590);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x1EEE9AC00](v5 - 8);
   v8 = &v13 - v7;
-  if (a3)
+  if (date)
   {
     sub_1C1B94558();
     v9 = sub_1C1B94588();
@@ -263,7 +263,7 @@
 
   v11 = OBJC_IVAR____TtC15PromotedContent20JourneyMetricsHelper_impressionStartDate;
   swift_beginAccess();
-  v12 = self;
+  selfCopy = self;
   sub_1C1AABE90(v8, self + v11);
   swift_endAccess();
 }
@@ -275,11 +275,11 @@
   return *(self + v3);
 }
 
-- (void)setImpressionDuration:(double)a3
+- (void)setImpressionDuration:(double)duration
 {
   v5 = OBJC_IVAR____TtC15PromotedContent20JourneyMetricsHelper_impressionDuration;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = duration;
 }
 
 - (BOOL)isClickImpression
@@ -289,11 +289,11 @@
   return *(self + v3);
 }
 
-- (void)setIsClickImpression:(BOOL)a3
+- (void)setIsClickImpression:(BOOL)impression
 {
   v5 = OBJC_IVAR____TtC15PromotedContent20JourneyMetricsHelper_isClickImpression;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = impression;
 }
 
 - (_TtC15PromotedContent31JourneyMetricsHelperDiagnostics)diagnostics
@@ -303,13 +303,13 @@
   return *(self + v3);
 }
 
-- (void)setDiagnostics:(id)a3
+- (void)setDiagnostics:(id)diagnostics
 {
   v5 = OBJC_IVAR____TtC15PromotedContent20JourneyMetricsHelper_diagnostics;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
-  v7 = a3;
+  *(self + v5) = diagnostics;
+  diagnosticsCopy = diagnostics;
 }
 
 - (double)impressionThresholdDuration
@@ -321,76 +321,76 @@
 
 - (void)dealloc
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C1B7D0A4();
   sub_1C1B7EF7C(9102);
-  v3.receiver = v2;
+  v3.receiver = selfCopy;
   v3.super_class = type metadata accessor for JourneyMetricsHelper();
   [(JourneyMetricsHelper *)&v3 dealloc];
 }
 
-- (void)registerHandlerForAllMetricsWithClosure:(id)a3
+- (void)registerHandlerForAllMetricsWithClosure:(id)closure
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(closure);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
-  v6 = self;
+  selfCopy = self;
   sub_1C1B7DB78(sub_1C1AFB3A0, v5);
 }
 
 - (void)removeHandler
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C1B7DD6C();
 }
 
-- (void)discardedWithCode:(int64_t)a3
+- (void)discardedWithCode:(int64_t)code
 {
-  v4 = self;
-  sub_1C1B7DEDC(a3);
+  selfCopy = self;
+  sub_1C1B7DEDC(code);
 }
 
-- (void)notConsumedWithCode:(int64_t)a3 placeholder:(BOOL)a4
+- (void)notConsumedWithCode:(int64_t)code placeholder:(BOOL)placeholder
 {
-  v5 = self;
-  sub_1C1B85A58(a3);
+  selfCopy = self;
+  sub_1C1B85A58(code);
 }
 
 - (void)trackTimeSpent
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C1B7E168();
 }
 
-- (void)createdWithAdType:(int64_t)a3
+- (void)createdWithAdType:(int64_t)type
 {
-  v4 = self;
-  sub_1C1B7E3B4(a3);
+  selfCopy = self;
+  sub_1C1B7E3B4(type);
 }
 
-- (void)createdWithAdType:(int64_t)a3 container:(int64_t)a4 format:(int64_t)a5
+- (void)createdWithAdType:(int64_t)type container:(int64_t)container format:(int64_t)format
 {
   *(self + OBJC_IVAR____TtC15PromotedContent20JourneyMetricsHelper_wasCreated) = 1;
   swift_beginAccess();
   Strong = swift_unknownObjectWeakLoadStrong();
-  v9 = self;
-  v10 = sub_1C1AB2B4C(Strong, a3, a4, 0, 0);
+  selfCopy = self;
+  v10 = sub_1C1AB2B4C(Strong, type, container, 0, 0);
   swift_unknownObjectRelease();
   v11 = sub_1C1AB35FC();
   sub_1C1AB3CFC(1400, v10, v11);
 }
 
-- (void)replacedWithHelper:(id)a3
+- (void)replacedWithHelper:(id)helper
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_1C1B7E648(a3);
+  selfCopy = self;
+  sub_1C1B7E648(helper);
   swift_unknownObjectRelease();
 }
 
 - (void)loaded
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C1B7EE58();
 }
 
@@ -401,130 +401,130 @@
   v2[8] = 0;
 }
 
-- (void)unloadedWithReason:(int64_t)a3
+- (void)unloadedWithReason:(int64_t)reason
 {
-  v4 = self;
-  sub_1C1B7EF7C(a3);
+  selfCopy = self;
+  sub_1C1B7EF7C(reason);
 }
 
-- (void)placedWithPlacementType:(int64_t)a3 placement:(int64_t)a4
+- (void)placedWithPlacementType:(int64_t)type placement:(int64_t)placement
 {
-  v6 = self;
-  sub_1C1AB8C60(a3, a4, 0, 0, 200, 0);
+  selfCopy = self;
+  sub_1C1AB8C60(type, placement, 0, 0, 200, 0);
 }
 
-- (void)placedWithPlacementType:(int64_t)a3 placement:(int64_t)a4 unfilledReason:(int64_t)a5
+- (void)placedWithPlacementType:(int64_t)type placement:(int64_t)placement unfilledReason:(int64_t)reason
 {
-  v8 = self;
-  sub_1C1AB8C60(a3, a4, 0, 0, a5, 0);
+  selfCopy = self;
+  sub_1C1AB8C60(type, placement, 0, 0, reason, 0);
 }
 
-- (void)placedWithPlacementType:(int64_t)a3 placement:(int64_t)a4 position:(int64_t)a5
+- (void)placedWithPlacementType:(int64_t)type placement:(int64_t)placement position:(int64_t)position
 {
-  v8 = self;
-  sub_1C1AB8C60(a3, a4, a5, 0, 200, 0);
+  selfCopy = self;
+  sub_1C1AB8C60(type, placement, position, 0, 200, 0);
 }
 
 - (void)ready
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C1B7F484();
 }
 
-- (void)onScreenWithCollapsed:(BOOL)a3
+- (void)onScreenWithCollapsed:(BOOL)collapsed
 {
-  v4 = self;
-  sub_1C1B7F588(a3);
+  selfCopy = self;
+  sub_1C1B7F588(collapsed);
 }
 
-- (void)visibleWithPercent:(int64_t)a3 starting:(id)a4 duration:(double)a5 collapsed:(BOOL)a6
+- (void)visibleWithPercent:(int64_t)percent starting:(id)starting duration:(double)duration collapsed:(BOOL)collapsed
 {
-  v6 = a6;
+  collapsedCopy = collapsed;
   v10 = sub_1C1B94588();
   v11 = *(v10 - 8);
   v12 = *(v11 + 64);
   MEMORY[0x1EEE9AC00](v10);
   v14 = &v16[-((v13 + 15) & 0xFFFFFFFFFFFFFFF0)];
   sub_1C1B94558();
-  v15 = self;
+  selfCopy = self;
   v16[12] = 1;
-  sub_1C1B7FF1C(a3, v14, 0x100000000, v6, a5);
+  sub_1C1B7FF1C(percent, v14, 0x100000000, collapsedCopy, duration);
 
   (*(v11 + 8))(v14, v10);
 }
 
-- (void)visibleWithPercent:(int64_t)a3 starting:(id)a4 duration:(double)a5 scrollVelocity:(float)a6 collapsed:(BOOL)a7
+- (void)visibleWithPercent:(int64_t)percent starting:(id)starting duration:(double)duration scrollVelocity:(float)velocity collapsed:(BOOL)collapsed
 {
-  v7 = a7;
+  collapsedCopy = collapsed;
   v12 = sub_1C1B94588();
   v13 = *(v12 - 8);
   v14 = *(v13 + 64);
   MEMORY[0x1EEE9AC00](v12);
   v16 = &v18[-((v15 + 15) & 0xFFFFFFFFFFFFFFF0)];
   sub_1C1B94558();
-  v17 = self;
+  selfCopy = self;
   v18[12] = 0;
-  sub_1C1B7FF1C(a3, v16, LODWORD(a6), v7, a5);
+  sub_1C1B7FF1C(percent, v16, LODWORD(velocity), collapsedCopy, duration);
 
   (*(v13 + 8))(v16, v12);
 }
 
-- (void)offScreenWithCollapsed:(BOOL)a3
+- (void)offScreenWithCollapsed:(BOOL)collapsed
 {
-  v4 = self;
-  sub_1C1B80E54(a3);
+  selfCopy = self;
+  sub_1C1B80E54(collapsed);
 }
 
 - (void)interacted
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C1B81934();
 }
 
-- (void)interactedAtXPos:(float)a3 yPos:(float)a4
+- (void)interactedAtXPos:(float)pos yPos:(float)yPos
 {
-  v4 = LODWORD(a3);
-  v5 = LODWORD(a4);
-  v6 = self;
+  v4 = LODWORD(pos);
+  v5 = LODWORD(yPos);
+  selfCopy = self;
   sub_1C1B8119C(256, v4, v5, 7300, 0);
 }
 
-- (void)interactedWithElementID:(unsigned __int8)a3 atXPos:(float)a4 yPos:(float)a5
+- (void)interactedWithElementID:(unsigned __int8)d atXPos:(float)pos yPos:(float)yPos
 {
-  v5 = a3;
-  v6 = LODWORD(a4);
-  v7 = LODWORD(a5);
-  v8 = self;
-  sub_1C1B8119C(v5, v6, v7, 7300, 0);
+  dCopy = d;
+  v6 = LODWORD(pos);
+  v7 = LODWORD(yPos);
+  selfCopy = self;
+  sub_1C1B8119C(dCopy, v6, v7, 7300, 0);
 }
 
-- (void)interactedWithType:(int64_t)a3
+- (void)interactedWithType:(int64_t)type
 {
-  v4 = self;
-  sub_1C1B81AF0(a3);
+  selfCopy = self;
+  sub_1C1B81AF0(type);
 }
 
-- (void)userReturnedFromInteractionWithIsVoiceOverEnabled:(BOOL)a3 ignoreVisibilityState:(BOOL)a4
+- (void)userReturnedFromInteractionWithIsVoiceOverEnabled:(BOOL)enabled ignoreVisibilityState:(BOOL)state
 {
-  v6 = self;
-  sub_1C1AB86CC(a3, a4);
+  selfCopy = self;
+  sub_1C1AB86CC(enabled, state);
 }
 
 - (void)adMarkerInteracted
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C1B821DC();
 }
 
-- (void)getAppWithButtonState:(int64_t)a3 timeToPreviousInstall:(int64_t)a4
+- (void)getAppWithButtonState:(int64_t)state timeToPreviousInstall:(int64_t)install
 {
-  v5 = self;
-  sub_1C1B85ECC(a3);
+  selfCopy = self;
+  sub_1C1B85ECC(state);
 }
 
 - (void)contentLoadFailure
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C1B824F8();
 }
 
@@ -535,18 +535,18 @@
   return result;
 }
 
-- (void)updateElementsShownWithShown:(id)a3 partiallyShown:(id)a4
+- (void)updateElementsShownWithShown:(id)shown partiallyShown:(id)partiallyShown
 {
   v5 = sub_1C1B94EC8();
   v6 = sub_1C1B94EC8();
-  v7 = self;
+  selfCopy = self;
   JourneyMetricsHelper.updateElementsShown(shown:partiallyShown:)(v5, v6);
 }
 
 - (id)debugging
 {
-  v2 = self;
-  v3 = [(JourneyMetricsHelper *)v2 debugDescription];
+  selfCopy = self;
+  v3 = [(JourneyMetricsHelper *)selfCopy debugDescription];
   if (!v3)
   {
     sub_1C1B94D88();

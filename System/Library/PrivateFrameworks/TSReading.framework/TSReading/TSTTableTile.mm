@@ -1,19 +1,19 @@
 @interface TSTTableTile
-- (TSTTableTile)initWithRows:(id)a3 context:(id)a4;
+- (TSTTableTile)initWithRows:(id)rows context:(id)context;
 - (id)description;
 - (unint64_t)flushableSize;
 - (void)dealloc;
-- (void)i_upgradeTileRowInfosWithDataStore:(id)a3;
+- (void)i_upgradeTileRowInfosWithDataStore:(id)store;
 @end
 
 @implementation TSTTableTile
 
-- (TSTTableTile)initWithRows:(id)a3 context:(id)a4
+- (TSTTableTile)initWithRows:(id)rows context:(id)context
 {
   v35 = *MEMORY[0x277D85DE8];
   v29.receiver = self;
   v29.super_class = TSTTableTile;
-  v5 = [(TSPObject *)&v29 initWithContext:a4];
+  v5 = [(TSPObject *)&v29 initWithContext:context];
   v6 = v5;
   if (v5)
   {
@@ -21,12 +21,12 @@
     v5->mMaxRow = 0;
     v5->mNumCells = 0;
     v7 = objc_alloc(MEMORY[0x277CBEB18]);
-    if (a3)
+    if (rows)
     {
-      v8 = [v7 initWithArray:a3];
+      v8 = [v7 initWithArray:rows];
       v6->mRowInfos = v8;
       [(NSMutableArray *)v8 makeObjectsPerformSelector:sel_setOwner_ withObject:v6];
-      v6->mNumRows = [a3 count];
+      v6->mNumRows = [rows count];
       v6->mMaxRow = 0;
       v32 = 0u;
       v33 = 0u;
@@ -192,7 +192,7 @@
   return [v3 stringWithFormat:@"<%@:%p %hu rows / %hu cells>", NSStringFromClass(v4), self, self->mNumRows, self->mNumCells];
 }
 
-- (void)i_upgradeTileRowInfosWithDataStore:(id)a3
+- (void)i_upgradeTileRowInfosWithDataStore:(id)store
 {
   v15 = *MEMORY[0x277D85DE8];
   [(TSPObject *)self willModifyForUpgrade];
@@ -216,7 +216,7 @@
           objc_enumerationMutation(mRowInfos);
         }
 
-        [*(*(&v10 + 1) + 8 * v9++) i_upgradeWithDataStore:a3];
+        [*(*(&v10 + 1) + 8 * v9++) i_upgradeWithDataStore:store];
       }
 
       while (v7 != v9);

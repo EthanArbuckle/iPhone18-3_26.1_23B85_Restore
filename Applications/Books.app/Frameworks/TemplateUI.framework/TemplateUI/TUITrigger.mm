@@ -1,40 +1,40 @@
 @interface TUITrigger
-- (BOOL)isEqual:(id)a3;
-- (TUITrigger)initWithName:(id)a3 observationMode:(unint64_t)a4;
+- (BOOL)isEqual:(id)equal;
+- (TUITrigger)initWithName:(id)name observationMode:(unint64_t)mode;
 @end
 
 @implementation TUITrigger
 
-- (TUITrigger)initWithName:(id)a3 observationMode:(unint64_t)a4
+- (TUITrigger)initWithName:(id)name observationMode:(unint64_t)mode
 {
-  v7 = a3;
+  nameCopy = name;
   v11.receiver = self;
   v11.super_class = TUITrigger;
   v8 = [(TUITrigger *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_name, a3);
-    v9->_observationMode = a4;
+    objc_storeStrong(&v8->_name, name);
+    v9->_observationMode = mode;
   }
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  v6 = TUIDynamicCast(v5, v4);
+  v6 = TUIDynamicCast(v5, equalCopy);
 
   if (v6)
   {
-    v7 = [(TUITrigger *)self name];
-    v8 = [v6 name];
-    if ([v7 isEqual:v8])
+    name = [(TUITrigger *)self name];
+    name2 = [v6 name];
+    if ([name isEqual:name2])
     {
-      v9 = [(TUITrigger *)self observationMode];
-      v10 = v9 == [v6 observationMode];
+      observationMode = [(TUITrigger *)self observationMode];
+      v10 = observationMode == [v6 observationMode];
     }
 
     else

@@ -1,28 +1,28 @@
 @interface SBLoginAppContainerPluginWrapperView
-- (SBLoginAppContainerPluginWrapperView)initWithFrame:(CGRect)a3 overlayWrapperView:(id)a4 pluginView:(id)a5;
+- (SBLoginAppContainerPluginWrapperView)initWithFrame:(CGRect)frame overlayWrapperView:(id)view pluginView:(id)pluginView;
 - (void)layoutSubviews;
 @end
 
 @implementation SBLoginAppContainerPluginWrapperView
 
-- (SBLoginAppContainerPluginWrapperView)initWithFrame:(CGRect)a3 overlayWrapperView:(id)a4 pluginView:(id)a5
+- (SBLoginAppContainerPluginWrapperView)initWithFrame:(CGRect)frame overlayWrapperView:(id)view pluginView:(id)pluginView
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v12 = a4;
-  v13 = a5;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  viewCopy = view;
+  pluginViewCopy = pluginView;
   v17.receiver = self;
   v17.super_class = SBLoginAppContainerPluginWrapperView;
-  v14 = [(SBLoginAppContainerPluginWrapperView *)&v17 initWithFrame:x, y, width, height];
-  v15 = v14;
-  if (v14)
+  height = [(SBLoginAppContainerPluginWrapperView *)&v17 initWithFrame:x, y, width, height];
+  v15 = height;
+  if (height)
   {
-    objc_storeStrong(&v14->_overlayWrapperView, a4);
-    objc_storeStrong(&v15->_pluginView, a5);
-    [(SBLoginAppContainerPluginWrapperView *)v15 addSubview:v12];
-    [(SBLoginAppContainerPluginWrapperView *)v15 addSubview:v13];
+    objc_storeStrong(&height->_overlayWrapperView, view);
+    objc_storeStrong(&v15->_pluginView, pluginView);
+    [(SBLoginAppContainerPluginWrapperView *)v15 addSubview:viewCopy];
+    [(SBLoginAppContainerPluginWrapperView *)v15 addSubview:pluginViewCopy];
   }
 
   return v15;

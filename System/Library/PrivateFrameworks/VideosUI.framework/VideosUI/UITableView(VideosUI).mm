@@ -19,7 +19,7 @@
   v23[2] = __107__UITableView_VideosUI__vui_applyChangeSet_inSection_rowAnimation_updateDataSourceBlock_completionHandler___block_invoke;
   v23[3] = &unk_1E8731C20;
   v25 = v13;
-  v23[4] = a1;
+  v23[4] = self;
   v24 = v12;
   v26 = a4;
   v27 = a5;
@@ -27,7 +27,7 @@
   v18[1] = 3221225472;
   v18[2] = __107__UITableView_VideosUI__vui_applyChangeSet_inSection_rowAnimation_updateDataSourceBlock_completionHandler___block_invoke_2;
   v18[3] = &unk_1E8731C48;
-  v18[4] = a1;
+  v18[4] = self;
   v19 = v24;
   v21 = a4;
   v22 = a5;
@@ -35,7 +35,7 @@
   v15 = v14;
   v16 = v24;
   v17 = v13;
-  [a1 performBatchUpdates:v23 completion:v18];
+  [self performBatchUpdates:v23 completion:v18];
 }
 
 - (void)_vui_applyDeleteChange:()VideosUI inSection:rowAnimation:
@@ -43,23 +43,23 @@
   v14 = *MEMORY[0x1E69E9840];
   if (a3)
   {
-    v8 = [a3 sourceIndexes];
+    sourceIndexes = [a3 sourceIndexes];
     if (a4 == -1)
     {
       v11 = VUIDefaultLogObject();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
       {
         v12 = 138412290;
-        v13 = v8;
+        v13 = sourceIndexes;
         _os_log_impl(&dword_1E323F000, v11, OS_LOG_TYPE_INFO, "Applying Delete Change: Deleting Sections At: %@", &v12, 0xCu);
       }
 
-      [a1 deleteSections:v8 withRowAnimation:100];
+      [self deleteSections:sourceIndexes withRowAnimation:100];
     }
 
     else
     {
-      v9 = [objc_opt_class() _vui_indexPathsWithIndexSet:v8 andSection:a4];
+      v9 = [objc_opt_class() _vui_indexPathsWithIndexSet:sourceIndexes andSection:a4];
       v10 = VUIDefaultLogObject();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
@@ -68,7 +68,7 @@
         _os_log_impl(&dword_1E323F000, v10, OS_LOG_TYPE_INFO, "Applying Delete Change. Deleting Rows At: %@", &v12, 0xCu);
       }
 
-      [a1 deleteRowsAtIndexPaths:v9 withRowAnimation:a5];
+      [self deleteRowsAtIndexPaths:v9 withRowAnimation:a5];
     }
   }
 }
@@ -78,8 +78,8 @@
   v13 = *MEMORY[0x1E69E9840];
   if (a3)
   {
-    v8 = [a3 destinationIndexes];
-    v9 = [objc_opt_class() _vui_indexPathsWithIndexSet:v8 andSection:a4];
+    destinationIndexes = [a3 destinationIndexes];
+    v9 = [objc_opt_class() _vui_indexPathsWithIndexSet:destinationIndexes andSection:a4];
     v10 = VUIDefaultLogObject();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
@@ -88,7 +88,7 @@
       _os_log_impl(&dword_1E323F000, v10, OS_LOG_TYPE_INFO, "Applying Insert Change. Inserting Rows At: %@", &v11, 0xCu);
     }
 
-    [a1 insertRowsAtIndexPaths:v9 withRowAnimation:a5];
+    [self insertRowsAtIndexPaths:v9 withRowAnimation:a5];
   }
 }
 
@@ -117,12 +117,12 @@
         }
 
         v10 = *(*(&v21 + 1) + 8 * i);
-        v11 = [v10 sourceIndexes];
-        v12 = [v10 destinationIndexes];
-        v13 = [v11 firstIndex];
-        v14 = [v12 firstIndex];
-        v15 = [MEMORY[0x1E696AC88] indexPathForRow:v13 inSection:a4];
-        v16 = [MEMORY[0x1E696AC88] indexPathForRow:v14 inSection:a4];
+        sourceIndexes = [v10 sourceIndexes];
+        destinationIndexes = [v10 destinationIndexes];
+        firstIndex = [sourceIndexes firstIndex];
+        firstIndex2 = [destinationIndexes firstIndex];
+        v15 = [MEMORY[0x1E696AC88] indexPathForRow:firstIndex inSection:a4];
+        v16 = [MEMORY[0x1E696AC88] indexPathForRow:firstIndex2 inSection:a4];
         v17 = VUIDefaultLogObject();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
         {
@@ -133,7 +133,7 @@
           _os_log_impl(&dword_1E323F000, v17, OS_LOG_TYPE_INFO, "Applying Move Change To Row %@ to %@", buf, 0x16u);
         }
 
-        [a1 moveRowAtIndexPath:v15 toIndexPath:v16];
+        [self moveRowAtIndexPath:v15 toIndexPath:v16];
       }
 
       v7 = [obj countByEnumeratingWithState:&v21 objects:v29 count:16];
@@ -168,9 +168,9 @@
           objc_enumerationMutation(v9);
         }
 
-        v14 = [*(*(&v20 + 1) + 8 * v13) destinationIndexes];
-        v15 = [v14 firstIndex];
-        v16 = [MEMORY[0x1E696AC88] indexPathForRow:v15 inSection:a4];
+        destinationIndexes = [*(*(&v20 + 1) + 8 * v13) destinationIndexes];
+        firstIndex = [destinationIndexes firstIndex];
+        v16 = [MEMORY[0x1E696AC88] indexPathForRow:firstIndex inSection:a4];
         [v8 addObject:v16];
 
         ++v13;
@@ -196,7 +196,7 @@
       _os_log_impl(&dword_1E323F000, v17, OS_LOG_TYPE_INFO, "Applying Update Change To Section: %@. Reloading Rows At: %@", buf, 0x16u);
     }
 
-    [a1 reloadRowsAtIndexPaths:v8 withRowAnimation:a5];
+    [self reloadRowsAtIndexPaths:v8 withRowAnimation:a5];
   }
 }
 

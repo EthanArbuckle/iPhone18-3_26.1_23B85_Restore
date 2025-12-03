@@ -1,22 +1,22 @@
 @interface GQDTSpiceCell
-- (GQDTSpiceCell)initWithStyle:(id)a3 rowIndex:(unsigned __int16)a4 columnIndex:(unsigned __int16)a5 rowSpan:(unsigned __int16)a6 columnSpan:(unsigned __int16)a7 storage:(id)a8;
+- (GQDTSpiceCell)initWithStyle:(id)style rowIndex:(unsigned __int16)index columnIndex:(unsigned __int16)columnIndex rowSpan:(unsigned __int16)span columnSpan:(unsigned __int16)columnSpan storage:(id)storage;
 @end
 
 @implementation GQDTSpiceCell
 
-- (GQDTSpiceCell)initWithStyle:(id)a3 rowIndex:(unsigned __int16)a4 columnIndex:(unsigned __int16)a5 rowSpan:(unsigned __int16)a6 columnSpan:(unsigned __int16)a7 storage:(id)a8
+- (GQDTSpiceCell)initWithStyle:(id)style rowIndex:(unsigned __int16)index columnIndex:(unsigned __int16)columnIndex rowSpan:(unsigned __int16)span columnSpan:(unsigned __int16)columnSpan storage:(id)storage
 {
   v16.receiver = self;
   v16.super_class = GQDTSpiceCell;
   v14 = [(GQDTSpiceCell *)&v16 init];
   if (v14)
   {
-    v14->super.super.mStyle = a3;
-    v14->super.super.mRowIndex = a4;
-    v14->super.super.mColumnIndex = a5;
-    v14->super.super.mRowSpan = a6;
-    v14->super.super.mColumnSpan = a7;
-    v14->super.mLayoutStorage = a8;
+    v14->super.super.mStyle = style;
+    v14->super.super.mRowIndex = index;
+    v14->super.super.mColumnIndex = columnIndex;
+    v14->super.super.mRowSpan = span;
+    v14->super.super.mColumnSpan = columnSpan;
+    v14->super.mLayoutStorage = storage;
   }
 
   return v14;

@@ -1,30 +1,30 @@
 @interface _UISceneConfigurationActionHandler
-- (id)_launchOptionsFromActions:(id)a3 forFBSScene:(id)a4 uiSceneSession:(id)a5 transitionContext:(id)a6;
-- (id)_respondToActions:(id)a3 forFBSScene:(id)a4 inUIScene:(id)a5 fromTransitionContext:(id)a6;
+- (id)_launchOptionsFromActions:(id)actions forFBSScene:(id)scene uiSceneSession:(id)session transitionContext:(id)context;
+- (id)_respondToActions:(id)actions forFBSScene:(id)scene inUIScene:(id)iScene fromTransitionContext:(id)context;
 @end
 
 @implementation _UISceneConfigurationActionHandler
 
-- (id)_respondToActions:(id)a3 forFBSScene:(id)a4 inUIScene:(id)a5 fromTransitionContext:(id)a6
+- (id)_respondToActions:(id)actions forFBSScene:(id)scene inUIScene:(id)iScene fromTransitionContext:(id)context
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  actionsCopy = actions;
+  sceneCopy = scene;
+  iSceneCopy = iScene;
+  contextCopy = context;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
   v25 = __Block_byref_object_copy__177;
   v26 = __Block_byref_object_dispose__177;
-  v27 = [v9 mutableCopy];
+  v27 = [actionsCopy mutableCopy];
   v16 = MEMORY[0x1E69E9820];
   v17 = 3221225472;
   v18 = __100___UISceneConfigurationActionHandler__respondToActions_forFBSScene_inUIScene_fromTransitionContext___block_invoke;
   v19 = &unk_1E711FE78;
   v21 = &v22;
-  v13 = v11;
+  v13 = iSceneCopy;
   v20 = v13;
-  [v9 enumerateObjectsUsingBlock:&v16];
+  [actionsCopy enumerateObjectsUsingBlock:&v16];
   v14 = [v23[5] copy];
 
   _Block_object_dispose(&v22, 8);
@@ -32,14 +32,14 @@
   return v14;
 }
 
-- (id)_launchOptionsFromActions:(id)a3 forFBSScene:(id)a4 uiSceneSession:(id)a5 transitionContext:(id)a6
+- (id)_launchOptionsFromActions:(id)actions forFBSScene:(id)scene uiSceneSession:(id)session transitionContext:(id)context
 {
   v39 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v24 = a4;
-  v26 = a5;
-  v10 = a6;
-  v11 = v9;
+  actionsCopy = actions;
+  sceneCopy = scene;
+  sessionCopy = session;
+  contextCopy = context;
+  v11 = actionsCopy;
   v12 = objc_opt_new();
   v32 = 0;
   v33 = &v32;
@@ -78,10 +78,10 @@
 
           v20 = *(*(&v27 + 1) + 8 * i);
           [v14 removeObject:v20];
-          v21 = [v20 loadSceneConfiguration];
-          if (v21)
+          loadSceneConfiguration = [v20 loadSceneConfiguration];
+          if (loadSceneConfiguration)
           {
-            [v15 addObject:v21];
+            [v15 addObject:loadSceneConfiguration];
           }
         }
 
@@ -96,7 +96,7 @@
     [v12 setRequestedSceneConfigurations:v22];
   }
 
-  [v12 setUnprocessedActions:{v13, v24}];
+  [v12 setUnprocessedActions:{v13, sceneCopy}];
   _Block_object_dispose(&v32, 8);
 
   return v12;

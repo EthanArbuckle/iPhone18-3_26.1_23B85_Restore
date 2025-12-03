@@ -1,10 +1,10 @@
 @interface EMThreadCollectionItemID
-- (BOOL)isEqual:(id)a3;
-- (EMThreadCollectionItemID)initWithCoder:(id)a3;
-- (EMThreadCollectionItemID)initWithConversationID:(int64_t)a3;
+- (BOOL)isEqual:(id)equal;
+- (EMThreadCollectionItemID)initWithCoder:(id)coder;
+- (EMThreadCollectionItemID)initWithConversationID:(int64_t)d;
 - (NSString)description;
 - (id)cachedSelf;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation EMThreadCollectionItemID
@@ -41,7 +41,7 @@ void __51__EMThreadCollectionItemID_EFCacheable__cachedSelf__block_invoke()
   return v5;
 }
 
-- (EMThreadCollectionItemID)initWithConversationID:(int64_t)a3
+- (EMThreadCollectionItemID)initWithConversationID:(int64_t)d
 {
   v8.receiver = self;
   v8.super_class = EMThreadCollectionItemID;
@@ -49,27 +49,27 @@ void __51__EMThreadCollectionItemID_EFCacheable__cachedSelf__block_invoke()
   v5 = v4;
   if (v4)
   {
-    v4->_conversationID = a3;
+    v4->_conversationID = d;
   }
 
-  v6 = [(EMThreadCollectionItemID *)v4 cachedSelf];
+  cachedSelf = [(EMThreadCollectionItemID *)v4 cachedSelf];
 
-  return v6;
+  return cachedSelf;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
 
-  else if (([(EMThreadCollectionItemID *)v4 isMemberOfClass:objc_opt_class()]& 1) != 0)
+  else if (([(EMThreadCollectionItemID *)equalCopy isMemberOfClass:objc_opt_class()]& 1) != 0)
   {
-    v5 = v4;
-    v6 = [(EMThreadCollectionItemID *)self conversationID];
-    v7 = v6 == [(EMThreadCollectionItemID *)v5 conversationID];
+    v5 = equalCopy;
+    conversationID = [(EMThreadCollectionItemID *)self conversationID];
+    v7 = conversationID == [(EMThreadCollectionItemID *)v5 conversationID];
   }
 
   else
@@ -80,11 +80,11 @@ void __51__EMThreadCollectionItemID_EFCacheable__cachedSelf__block_invoke()
   return v7;
 }
 
-- (EMThreadCollectionItemID)initWithCoder:(id)a3
+- (EMThreadCollectionItemID)initWithCoder:(id)coder
 {
-  v8 = a3;
-  v3 = v8;
-  v4 = self;
+  coderCopy = coder;
+  v3 = coderCopy;
+  selfCopy = self;
   v5 = EFDecodeCacheableInstance();
 
   return v5;
@@ -103,10 +103,10 @@ id __42__EMThreadCollectionItemID_initWithCoder___block_invoke(uint64_t a1)
   return v2;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v3 = v4;
+  coderCopy = coder;
+  v3 = coderCopy;
   EFEncodeCacheableInstance();
 }
 

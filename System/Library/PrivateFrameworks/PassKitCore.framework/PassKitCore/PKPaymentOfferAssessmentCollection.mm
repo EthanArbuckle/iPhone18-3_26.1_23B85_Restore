@@ -1,31 +1,31 @@
 @interface PKPaymentOfferAssessmentCollection
-- (BOOL)isEqual:(id)a3;
-- (PKPaymentOfferAssessmentCollection)initWithCoder:(id)a3;
-- (PKPaymentOfferAssessmentCollection)initWithDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (PKPaymentOfferAssessmentCollection)initWithCoder:(id)coder;
+- (PKPaymentOfferAssessmentCollection)initWithDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)selectedPaymentOfferWithCriteria:(id)a3 passDetails:(id)a4 sessionIdentifier:(id)a5 previousSelectedOfferIdentifier:(id)a6 preconfiguredOfferState:(unint64_t)a7 updateReason:(unint64_t)a8;
+- (id)selectedPaymentOfferWithCriteria:(id)criteria passDetails:(id)details sessionIdentifier:(id)identifier previousSelectedOfferIdentifier:(id)offerIdentifier preconfiguredOfferState:(unint64_t)state updateReason:(unint64_t)reason;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)populateChallenge:(id)a3 verifier:(id)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)populateChallenge:(id)challenge verifier:(id)verifier;
 @end
 
 @implementation PKPaymentOfferAssessmentCollection
 
-- (PKPaymentOfferAssessmentCollection)initWithDictionary:(id)a3
+- (PKPaymentOfferAssessmentCollection)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = PKPaymentOfferAssessmentCollection;
   v5 = [(PKPaymentOfferAssessmentCollection *)&v12 init];
   if (v5)
   {
-    v6 = [v4 PKStringForKey:@"sessionIdentifier"];
+    v6 = [dictionaryCopy PKStringForKey:@"sessionIdentifier"];
     sessionIdentifier = v5->_sessionIdentifier;
     v5->_sessionIdentifier = v6;
 
-    v8 = [v4 PKDictionaryForKey:@"installmentAssessment"];
+    v8 = [dictionaryCopy PKDictionaryForKey:@"installmentAssessment"];
     if ([v8 count])
     {
       v9 = [[PKPaymentOfferInstallmentAssessment alloc] initWithDictionary:v8 sessionIdentifier:v5->_sessionIdentifier];
@@ -41,38 +41,38 @@
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
   [v3 setObject:self->_sessionIdentifier forKeyedSubscript:@"sessionIdentifier"];
-  v4 = [(PKPaymentOfferInstallmentAssessment *)self->_installmentAssessment dictionaryRepresentation];
-  [v3 setObject:v4 forKeyedSubscript:@"installmentAssessment"];
+  dictionaryRepresentation = [(PKPaymentOfferInstallmentAssessment *)self->_installmentAssessment dictionaryRepresentation];
+  [v3 setObject:dictionaryRepresentation forKeyedSubscript:@"installmentAssessment"];
 
   v5 = [v3 copy];
 
   return v5;
 }
 
-- (id)selectedPaymentOfferWithCriteria:(id)a3 passDetails:(id)a4 sessionIdentifier:(id)a5 previousSelectedOfferIdentifier:(id)a6 preconfiguredOfferState:(unint64_t)a7 updateReason:(unint64_t)a8
+- (id)selectedPaymentOfferWithCriteria:(id)criteria passDetails:(id)details sessionIdentifier:(id)identifier previousSelectedOfferIdentifier:(id)offerIdentifier preconfiguredOfferState:(unint64_t)state updateReason:(unint64_t)reason
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
+  criteriaCopy = criteria;
+  detailsCopy = details;
+  identifierCopy = identifier;
+  offerIdentifierCopy = offerIdentifier;
   v18 = 0;
-  if (v15)
+  if (detailsCopy)
   {
     installmentAssessment = self->_installmentAssessment;
     if (installmentAssessment)
     {
-      v20 = [(PKPaymentOfferInstallmentAssessment *)installmentAssessment selectedOfferIdentifier];
-      v21 = v20;
-      if (a8 != 4 && a7 == 9 && v20)
+      selectedOfferIdentifier = [(PKPaymentOfferInstallmentAssessment *)installmentAssessment selectedOfferIdentifier];
+      v21 = selectedOfferIdentifier;
+      if (reason != 4 && state == 9 && selectedOfferIdentifier)
       {
 
         v21 = 0;
       }
 
-      else if (v20)
+      else if (selectedOfferIdentifier)
       {
-        v22 = [(PKPaymentOfferInstallmentAssessment *)self->_installmentAssessment installmentOfferWithIdentifier:v20];
-        if (!v17)
+        v22 = [(PKPaymentOfferInstallmentAssessment *)self->_installmentAssessment installmentOfferWithIdentifier:selectedOfferIdentifier];
+        if (!offerIdentifierCopy)
         {
           goto LABEL_14;
         }
@@ -81,7 +81,7 @@
       }
 
       v22 = 0;
-      if (!v17)
+      if (!offerIdentifierCopy)
       {
         goto LABEL_14;
       }
@@ -89,19 +89,19 @@
 LABEL_11:
       if (!v22)
       {
-        v22 = [(PKPaymentOfferInstallmentAssessment *)self->_installmentAssessment installmentOfferWithIdentifier:v17];
+        v22 = [(PKPaymentOfferInstallmentAssessment *)self->_installmentAssessment installmentOfferWithIdentifier:offerIdentifierCopy];
         if (!v22)
         {
           goto LABEL_17;
         }
 
-        v23 = v17;
+        v23 = offerIdentifierCopy;
 
         v21 = v23;
 LABEL_15:
-        if ([v14 type] == 1)
+        if ([criteriaCopy type] == 1)
         {
-          v18 = [PKSelectedPaymentOfferInstallment selectedOfferWithInstallmentAssessment:self->_installmentAssessment selectedOfferIdentifier:v21 criteria:v14 passDetails:v15 sessionIdentifier:v16];
+          v18 = [PKSelectedPaymentOfferInstallment selectedOfferWithInstallmentAssessment:self->_installmentAssessment selectedOfferIdentifier:v21 criteria:criteriaCopy passDetails:detailsCopy sessionIdentifier:identifierCopy];
 LABEL_18:
 
           goto LABEL_19;
@@ -127,27 +127,27 @@ LABEL_19:
   return v18;
 }
 
-- (void)populateChallenge:(id)a3 verifier:(id)a4
+- (void)populateChallenge:(id)challenge verifier:(id)verifier
 {
   installmentAssessment = self->_installmentAssessment;
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PKPaymentOfferInstallmentAssessment *)installmentAssessment action];
-  [v8 populateChallenge:v7 verifier:v6];
+  verifierCopy = verifier;
+  challengeCopy = challenge;
+  action = [(PKPaymentOfferInstallmentAssessment *)installmentAssessment action];
+  [action populateChallenge:challengeCopy verifier:verifierCopy];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
 
   else
   {
-    if (v4)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -227,19 +227,19 @@ LABEL_19:
   return v4;
 }
 
-- (PKPaymentOfferAssessmentCollection)initWithCoder:(id)a3
+- (PKPaymentOfferAssessmentCollection)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = PKPaymentOfferAssessmentCollection;
   v5 = [(PKPaymentOfferAssessmentCollection *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sessionIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sessionIdentifier"];
     sessionIdentifier = v5->_sessionIdentifier;
     v5->_sessionIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"installmentAssessment"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"installmentAssessment"];
     installmentAssessment = v5->_installmentAssessment;
     v5->_installmentAssessment = v8;
   }
@@ -247,22 +247,22 @@ LABEL_19:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   sessionIdentifier = self->_sessionIdentifier;
-  v5 = a3;
-  [v5 encodeObject:sessionIdentifier forKey:@"sessionIdentifier"];
-  [v5 encodeObject:self->_installmentAssessment forKey:@"installmentAssessment"];
+  coderCopy = coder;
+  [coderCopy encodeObject:sessionIdentifier forKey:@"sessionIdentifier"];
+  [coderCopy encodeObject:self->_installmentAssessment forKey:@"installmentAssessment"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[PKPaymentOfferAssessmentCollection allocWithZone:](PKPaymentOfferAssessmentCollection init];
-  v6 = [(NSString *)self->_sessionIdentifier copyWithZone:a3];
+  v6 = [(NSString *)self->_sessionIdentifier copyWithZone:zone];
   sessionIdentifier = v5->_sessionIdentifier;
   v5->_sessionIdentifier = v6;
 
-  v8 = [(PKPaymentOfferInstallmentAssessment *)self->_installmentAssessment copyWithZone:a3];
+  v8 = [(PKPaymentOfferInstallmentAssessment *)self->_installmentAssessment copyWithZone:zone];
   installmentAssessment = v5->_installmentAssessment;
   v5->_installmentAssessment = v8;
 

@@ -1,12 +1,12 @@
 @interface WeatherPrecipitationFormatter
 + (id)convenienceFormatter;
 - (WeatherPrecipitationFormatter)init;
-- (double)convertDistanceInImperial:(double)result to:(int64_t)a4;
-- (double)convertDistanceInMetric:(double)result to:(int64_t)a4;
-- (id)stringForObjectValue:(id)a3;
-- (id)stringFromDistance:(double)a3 isDataMetric:(BOOL)a4;
+- (double)convertDistanceInImperial:(double)result to:(int64_t)to;
+- (double)convertDistanceInMetric:(double)result to:(int64_t)to;
+- (id)stringForObjectValue:(id)value;
+- (id)stringFromDistance:(double)distance isDataMetric:(BOOL)metric;
 - (int64_t)precipitationUnit;
-- (void)setLocale:(id)a3;
+- (void)setLocale:(id)locale;
 @end
 
 @implementation WeatherPrecipitationFormatter
@@ -42,43 +42,43 @@ void __53__WeatherPrecipitationFormatter_convenienceFormatter__block_invoke()
   v2 = [(NSLengthFormatter *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEAF8] autoupdatingCurrentLocale];
+    autoupdatingCurrentLocale = [MEMORY[0x277CBEAF8] autoupdatingCurrentLocale];
     locale = v2->_locale;
-    v2->_locale = v3;
+    v2->_locale = autoupdatingCurrentLocale;
 
-    v5 = [(NSLengthFormatter *)v2 numberFormatter];
-    [v5 setMaximumFractionDigits:1];
+    numberFormatter = [(NSLengthFormatter *)v2 numberFormatter];
+    [numberFormatter setMaximumFractionDigits:1];
   }
 
   return v2;
 }
 
-- (void)setLocale:(id)a3
+- (void)setLocale:(id)locale
 {
-  objc_storeStrong(&self->_locale, a3);
-  v5 = a3;
-  v6 = [(NSLengthFormatter *)self numberFormatter];
-  [v6 setLocale:v5];
+  objc_storeStrong(&self->_locale, locale);
+  localeCopy = locale;
+  numberFormatter = [(NSLengthFormatter *)self numberFormatter];
+  [numberFormatter setLocale:localeCopy];
 }
 
-- (id)stringFromDistance:(double)a3 isDataMetric:(BOOL)a4
+- (id)stringFromDistance:(double)distance isDataMetric:(BOOL)metric
 {
-  v4 = a4;
+  metricCopy = metric;
   v7 = @"--";
-  if (1.1755e-38 != a3)
+  if (1.1755e-38 != distance)
   {
-    v8 = [(WeatherPrecipitationFormatter *)self precipitationUnit];
-    if (v4)
+    precipitationUnit = [(WeatherPrecipitationFormatter *)self precipitationUnit];
+    if (metricCopy)
     {
-      [(WeatherPrecipitationFormatter *)self convertDistanceInMetric:v8 to:a3];
+      [(WeatherPrecipitationFormatter *)self convertDistanceInMetric:precipitationUnit to:distance];
     }
 
     else
     {
-      [(WeatherPrecipitationFormatter *)self convertDistanceInImperial:v8 to:a3];
+      [(WeatherPrecipitationFormatter *)self convertDistanceInImperial:precipitationUnit to:distance];
     }
 
-    v9 = [(NSLengthFormatter *)self stringFromValue:v8 unit:?];
+    v9 = [(NSLengthFormatter *)self stringFromValue:precipitationUnit unit:?];
 
     v7 = v9;
   }
@@ -86,12 +86,12 @@ void __53__WeatherPrecipitationFormatter_convenienceFormatter__block_invoke()
   return v7;
 }
 
-- (double)convertDistanceInImperial:(double)result to:(int64_t)a4
+- (double)convertDistanceInImperial:(double)result to:(int64_t)to
 {
-  if (a4 != 1281)
+  if (to != 1281)
   {
     result = result * 2.54;
-    if (a4 == 8)
+    if (to == 8)
     {
       return result * 10.0;
     }
@@ -100,14 +100,14 @@ void __53__WeatherPrecipitationFormatter_convenienceFormatter__block_invoke()
   return result;
 }
 
-- (double)convertDistanceInMetric:(double)result to:(int64_t)a4
+- (double)convertDistanceInMetric:(double)result to:(int64_t)to
 {
-  if (a4 == 8)
+  if (to == 8)
   {
     return result * 10.0;
   }
 
-  if (a4 == 1281)
+  if (to == 1281)
   {
     return result / 2.54;
   }
@@ -117,21 +117,21 @@ void __53__WeatherPrecipitationFormatter_convenienceFormatter__block_invoke()
 
 - (int64_t)precipitationUnit
 {
-  v3 = [(WeatherPrecipitationFormatter *)self locale];
+  locale = [(WeatherPrecipitationFormatter *)self locale];
 
-  if (!v3)
+  if (!locale)
   {
     return 9;
   }
 
-  v4 = [(WeatherPrecipitationFormatter *)self locale];
-  v5 = [v4 objectForKey:*MEMORY[0x277CBE690]];
+  locale2 = [(WeatherPrecipitationFormatter *)self locale];
+  v5 = [locale2 objectForKey:*MEMORY[0x277CBE690]];
 
-  v6 = [(WeatherPrecipitationFormatter *)self locale];
-  v7 = [v6 objectForKey:*MEMORY[0x277CBE718]];
-  v8 = [v7 BOOLValue];
+  locale3 = [(WeatherPrecipitationFormatter *)self locale];
+  v7 = [locale3 objectForKey:*MEMORY[0x277CBE718]];
+  bOOLValue = [v7 BOOLValue];
 
-  if (v8)
+  if (bOOLValue)
   {
     if ([&unk_288235208 containsObject:v5])
     {
@@ -152,13 +152,13 @@ void __53__WeatherPrecipitationFormatter_convenienceFormatter__block_invoke()
   return v9;
 }
 
-- (id)stringForObjectValue:(id)a3
+- (id)stringForObjectValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    [v4 doubleValue];
+    [valueCopy doubleValue];
     v5 = [(WeatherPrecipitationFormatter *)self stringFromCentimeters:?];
   }
 

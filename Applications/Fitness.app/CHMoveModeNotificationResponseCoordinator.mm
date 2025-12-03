@@ -1,15 +1,15 @@
 @interface CHMoveModeNotificationResponseCoordinator
-+ (BOOL)shouldHandleNotificationCategoryIdentifier:(id)a3;
-+ (void)handleNotificationResponse:(id)a3 presentingNavigationController:(id)a4 healthStore:(id)a5 formattingManager:(id)a6;
++ (BOOL)shouldHandleNotificationCategoryIdentifier:(id)identifier;
++ (void)handleNotificationResponse:(id)response presentingNavigationController:(id)controller healthStore:(id)store formattingManager:(id)manager;
 @end
 
 @implementation CHMoveModeNotificationResponseCoordinator
 
-+ (BOOL)shouldHandleNotificationCategoryIdentifier:(id)a3
++ (BOOL)shouldHandleNotificationCategoryIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = +[FCNotificationRequestConstants moveModeNotificationCategory];
-  if ([v3 isEqualToString:v4])
+  if ([identifierCopy isEqualToString:v4])
   {
     v5 = 1;
   }
@@ -17,7 +17,7 @@
   else
   {
     v6 = +[FCNotificationRequestConstants moveModeChangeModeNotificationCategory];
-    if ([v3 isEqualToString:v6])
+    if ([identifierCopy isEqualToString:v6])
     {
       v5 = 1;
     }
@@ -25,29 +25,29 @@
     else
     {
       v7 = +[FCNotificationRequestConstants moveModeChangeGoalsNotificationCategory];
-      v5 = [v3 isEqualToString:v7];
+      v5 = [identifierCopy isEqualToString:v7];
     }
   }
 
   return v5;
 }
 
-+ (void)handleNotificationResponse:(id)a3 presentingNavigationController:(id)a4 healthStore:(id)a5 formattingManager:(id)a6
++ (void)handleNotificationResponse:(id)response presentingNavigationController:(id)controller healthStore:(id)store formattingManager:(id)manager
 {
-  v9 = a3;
-  v10 = a4;
+  responseCopy = response;
+  controllerCopy = controller;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_10013AE3C;
   v15[3] = &unk_10083C7A8;
-  v16 = v9;
-  v17 = a5;
-  v18 = a6;
-  v19 = v10;
-  v11 = v10;
-  v12 = v18;
-  v13 = v17;
-  v14 = v9;
+  v16 = responseCopy;
+  storeCopy = store;
+  managerCopy = manager;
+  v19 = controllerCopy;
+  v11 = controllerCopy;
+  v12 = managerCopy;
+  v13 = storeCopy;
+  v14 = responseCopy;
   [v11 dismissViewControllerAnimated:0 completion:v15];
 }
 

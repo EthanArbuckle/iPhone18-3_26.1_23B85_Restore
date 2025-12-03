@@ -3,55 +3,55 @@
 - ($5F31EEEF43F9D35F5EF7F84C27E8E4C6)firstFeatures;
 - ($E5C4B62B72694C91D3AF528F66444F85)warpedBackwardFeatures;
 - ($E5C4B62B72694C91D3AF528F66444F85)warpedForwardFeatures;
-- ($F99D9A4FB75BC57F3386B8DC8EE08D7A)synthesisTensorSizeForLevel:(SEL)a3;
+- ($F99D9A4FB75BC57F3386B8DC8EE08D7A)synthesisTensorSizeForLevel:(SEL)level;
 - (BOOL)createModules;
-- (BOOL)switchUsageTo:(int64_t)a3;
-- (Synthesis)initWithMode:(int64_t)a3;
+- (BOOL)switchUsageTo:(int64_t)to;
+- (Synthesis)initWithMode:(int64_t)mode;
 - (id)firstForwarpInput;
 - (id)secondForwarpInput;
-- (int)twoLayerFlowSplattingFeatureLevelForLevel:(int)a3;
-- (int64_t)usageForTiling:(int64_t)a3;
+- (int)twoLayerFlowSplattingFeatureLevelForLevel:(int)level;
+- (int64_t)usageForTiling:(int64_t)tiling;
 - (void)allocateFeatures;
 - (void)allocateFlowAndLossTextures;
-- (void)allocateForwardWarpBuffersForLevel:(int)a3;
+- (void)allocateForwardWarpBuffersForLevel:(int)level;
 - (void)allocateForwardWarpInternalBuffers;
 - (void)allocateResources;
 - (void)allocateSplattingTextures;
 - (void)allocateWarpedFeatures;
-- (void)calcBackwarpLossFirst:(id)a3 second:(id)a4 timeScale:(float)a5;
-- (void)createConsistencyMapFormFirstImage:(__CVBuffer *)a3 secondImage:(__CVBuffer *)a4 flowForward:(__CVBuffer *)a5 flowBackward:(__CVBuffer *)a6;
-- (void)createFeaturePyramid:(__CVBuffer *)a3 second:(__CVBuffer *)a4;
-- (void)createFeaturesFromFirstImage:(__CVBuffer *)a3 secondImage:(__CVBuffer *)a4 flowForward:(__CVBuffer *)a5 flowBackward:(__CVBuffer *)a6;
-- (void)createSubsampledInputsFromFirstFrame:(__CVBuffer *)a3 secondImage:(__CVBuffer *)a4;
-- (void)createTilesFromFirstImage:(__CVBuffer *)a3 secondImage:(__CVBuffer *)a4 flowForward:(__CVBuffer *)a5 flowBackward:(__CVBuffer *)a6;
+- (void)calcBackwarpLossFirst:(id)first second:(id)second timeScale:(float)scale;
+- (void)createConsistencyMapFormFirstImage:(__CVBuffer *)image secondImage:(__CVBuffer *)secondImage flowForward:(__CVBuffer *)forward flowBackward:(__CVBuffer *)backward;
+- (void)createFeaturePyramid:(__CVBuffer *)pyramid second:(__CVBuffer *)second;
+- (void)createFeaturesFromFirstImage:(__CVBuffer *)image secondImage:(__CVBuffer *)secondImage flowForward:(__CVBuffer *)forward flowBackward:(__CVBuffer *)backward;
+- (void)createSubsampledInputsFromFirstFrame:(__CVBuffer *)frame secondImage:(__CVBuffer *)image;
+- (void)createTilesFromFirstImage:(__CVBuffer *)image secondImage:(__CVBuffer *)secondImage flowForward:(__CVBuffer *)forward flowBackward:(__CVBuffer *)backward;
 - (void)dealloc;
-- (void)encodeConsistencyMapCreationWithFlowToCommandBuffer:(id)a3 firstSource:(id)a4 secondSource:(id)a5 forwardFlow:(id)a6 backwardFlow:(id)a7 firstForwarpInput:(id)a8 secondForwarpInput:(id)a9;
-- (void)encodeForwarpInputsForBlendToCommandBuffer:(id)a3 timeScale:(float)a4;
-- (void)encodeForwarpToCommandBuffer:(id)a3 level:(int)a4 firstTexture:(id)a5 secondTexture:(id)a6 firstWarpedTexture:(id)a7 secondWarpedTexture:(id)a8 timeScale:(float)a9 useFlowMagnitude:(BOOL)a10;
-- (void)encodeSubsampleToCommandBuffer:(id)a3 flow:(id *)a4 loss:(id *)a5;
-- (void)encodeWarpPyramidToCommandBuffer:(id)a3 forwardFlow:(id)a4 backwardFlow:(id)a5 forwarpConsistency:(id)a6 backwardConsistency:(id)a7 timeScale:(float)a8 destination:(id)a9;
-- (void)filterGridNetOutput:(__CVBuffer *)a3 timeScale:(float)a4 destination:(__CVBuffer *)a5;
-- (void)getWarpedFeatureSizeForLevel:(int)a3 tensorSize:(id *)a4;
+- (void)encodeConsistencyMapCreationWithFlowToCommandBuffer:(id)buffer firstSource:(id)source secondSource:(id)secondSource forwardFlow:(id)flow backwardFlow:(id)backwardFlow firstForwarpInput:(id)input secondForwarpInput:(id)forwarpInput;
+- (void)encodeForwarpInputsForBlendToCommandBuffer:(id)buffer timeScale:(float)scale;
+- (void)encodeForwarpToCommandBuffer:(id)buffer level:(int)level firstTexture:(id)texture secondTexture:(id)secondTexture firstWarpedTexture:(id)warpedTexture secondWarpedTexture:(id)secondWarpedTexture timeScale:(float)scale useFlowMagnitude:(BOOL)self0;
+- (void)encodeSubsampleToCommandBuffer:(id)buffer flow:(id *)flow loss:(id *)loss;
+- (void)encodeWarpPyramidToCommandBuffer:(id)buffer forwardFlow:(id)flow backwardFlow:(id)backwardFlow forwarpConsistency:(id)consistency backwardConsistency:(id)backwardConsistency timeScale:(float)scale destination:(id)destination;
+- (void)filterGridNetOutput:(__CVBuffer *)output timeScale:(float)scale destination:(__CVBuffer *)destination;
+- (void)getWarpedFeatureSizeForLevel:(int)level tensorSize:(id *)size;
 - (void)releaseFeatures;
-- (void)releaseFeaturesForLevel:(int)a3;
+- (void)releaseFeaturesForLevel:(int)level;
 - (void)releaseForwardWarpInternalTextures;
 - (void)releaseForwardWarpInternalTexturesAndBuffers;
-- (void)releaseForwardWarpLinearBuffersForLevel:(int)a3;
-- (void)releaseForwardWarpTexturesForLevel:(int)a3;
+- (void)releaseForwardWarpLinearBuffersForLevel:(int)level;
+- (void)releaseForwardWarpTexturesForLevel:(int)level;
 - (void)releaseResources;
 - (void)releaseSplattingTextures;
 - (void)releaseTiles;
-- (void)releaseWarpedFeaturesForIndex:(unint64_t)a3;
-- (void)setTilingEnabled:(BOOL)a3;
-- (void)synthesizeImageWithForwarpOnlyFromFirstImage:(__CVBuffer *)a3 secondImage:(__CVBuffer *)a4 flowForward:(__CVBuffer *)a5 flowBackward:(__CVBuffer *)a6 timeScale:(float)a7 destination:(__CVBuffer *)a8;
-- (void)upscaleFlowsForward:(__CVBuffer *)a3 backward:(__CVBuffer *)a4;
-- (void)upscaleForwardFlow:(__CVBuffer *)a3 backwardFlow:(__CVBuffer *)a4 upscaledForwardFlow:(__CVBuffer *)a5 upscaledBackwardFlow:(__CVBuffer *)a6;
-- (void)warpFeaturesPerLayerWithFlowForward:(__CVBuffer *)a3 flowBackward:(__CVBuffer *)a4 timeScale:(float)a5;
+- (void)releaseWarpedFeaturesForIndex:(unint64_t)index;
+- (void)setTilingEnabled:(BOOL)enabled;
+- (void)synthesizeImageWithForwarpOnlyFromFirstImage:(__CVBuffer *)image secondImage:(__CVBuffer *)secondImage flowForward:(__CVBuffer *)forward flowBackward:(__CVBuffer *)backward timeScale:(float)scale destination:(__CVBuffer *)destination;
+- (void)upscaleFlowsForward:(__CVBuffer *)forward backward:(__CVBuffer *)backward;
+- (void)upscaleForwardFlow:(__CVBuffer *)flow backwardFlow:(__CVBuffer *)backwardFlow upscaledForwardFlow:(__CVBuffer *)forwardFlow upscaledBackwardFlow:(__CVBuffer *)upscaledBackwardFlow;
+- (void)warpFeaturesPerLayerWithFlowForward:(__CVBuffer *)forward flowBackward:(__CVBuffer *)backward timeScale:(float)scale;
 @end
 
 @implementation Synthesis
 
-- (Synthesis)initWithMode:(int64_t)a3
+- (Synthesis)initWithMode:(int64_t)mode
 {
   v10.receiver = self;
   v10.super_class = Synthesis;
@@ -59,7 +59,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_usage = a3;
+    v4->_usage = mode;
     if (![(Synthesis *)v4 createModules])
     {
       NSLog(&cfstr_FailedToCreate_2.isa);
@@ -88,7 +88,7 @@ LABEL_6:
   return v8;
 }
 
-- ($F99D9A4FB75BC57F3386B8DC8EE08D7A)synthesisTensorSizeForLevel:(SEL)a3
+- ($F99D9A4FB75BC57F3386B8DC8EE08D7A)synthesisTensorSizeForLevel:(SEL)level
 {
   v11 = 0;
   v12 = 0;
@@ -133,10 +133,10 @@ LABEL_6:
     synthesisMode = self->_synthesisMode;
     if (synthesisMode == 1 || !synthesisMode && self->_temporalFiltering)
     {
-      v4 = [(EspressoModel *)self->_gridNet usage];
+      usage = [(EspressoModel *)self->_gridNet usage];
       v7 = 0;
       v8 = 0;
-      FRCGetAlignedInputFrameSizeForUsage(v4, &v8, &v7);
+      FRCGetAlignedInputFrameSizeForUsage(usage, &v8, &v7);
       self->_dcBufferPool = createPixelBufferPool(v8, 3 * v7, 1278226536, 0);
     }
 
@@ -283,9 +283,9 @@ LABEL_6:
   device = self->_device;
   self->_device = v3;
 
-  v5 = [(MTLDeviceSPI *)self->_device newCommandQueue];
+  newCommandQueue = [(MTLDeviceSPI *)self->_device newCommandQueue];
   commandQueue = self->_commandQueue;
-  self->_commandQueue = v5;
+  self->_commandQueue = newCommandQueue;
 
   v7 = [[Backwarp alloc] initWithDevice:self->_device interleaved:0];
   backwarp = self->_backwarp;
@@ -399,7 +399,7 @@ LABEL_6:
   }
 }
 
-- (void)allocateForwardWarpBuffersForLevel:(int)a3
+- (void)allocateForwardWarpBuffersForLevel:(int)level
 {
   if (self->_synthesisMode != 3)
   {
@@ -411,7 +411,7 @@ LABEL_6:
   {
     v5 = 2;
 LABEL_5:
-    flowLevel = a3;
+    flowLevel = level;
     goto LABEL_7;
   }
 
@@ -424,7 +424,7 @@ LABEL_7:
   getSynthesisTensorSize(self->_usage, flowLevel, &v18);
   v7 = v18;
   v8 = v19;
-  if (a3 <= 0 && (synthesisMode = self->_synthesisMode, synthesisMode - 2 >= 2) && (synthesisMode || !self->_temporalFiltering) || self->_linearSplatting)
+  if (level <= 0 && (synthesisMode = self->_synthesisMode, synthesisMode - 2 >= 2) && (synthesisMode || !self->_temporalFiltering) || self->_linearSplatting)
   {
     forwarp = self->_forwarp;
     v11 = 32;
@@ -439,7 +439,7 @@ LABEL_7:
   }
 
   v13 = [(Forwarp *)forwarp createBestBufferWidth:v11 height:v12];
-  v14 = &self->super.isa + a3;
+  v14 = &self->super.isa + level;
   v15 = v14[31];
   v14[31] = v13;
 
@@ -562,13 +562,13 @@ LABEL_8:
 
   if (self->_twoLayerFlowSplatting)
   {
-    v16 = [(MTLTexture *)self->_firstFeatures.features[3] width];
-    v17 = [(MTLTexture *)self->_firstFeatures.features[3] height];
-    v18 = createTextures(self->_device, v16, v17, 1, 3uLL);
+    width = [(MTLTexture *)self->_firstFeatures.features[3] width];
+    height = [(MTLTexture *)self->_firstFeatures.features[3] height];
+    v18 = createTextures(self->_device, width, height, 1, 3uLL);
     blendedDCTexture = self->_blendedDCTexture;
     self->_blendedDCTexture = v18;
 
-    v20 = createTextures(self->_device, v16, v17, 1, 3uLL);
+    v20 = createTextures(self->_device, width, height, 1, 3uLL);
     v21 = 928;
 LABEL_23:
     v32 = *(&self->super.isa + v21);
@@ -603,9 +603,9 @@ LABEL_23:
   self->_filteredDCTexture = 0;
 }
 
-- (void)releaseForwardWarpTexturesForLevel:(int)a3
+- (void)releaseForwardWarpTexturesForLevel:(int)level
 {
-  v3 = &self->super.isa + a3;
+  v3 = &self->super.isa + level;
   v4 = v3[11];
   v3[11] = 0;
 
@@ -619,9 +619,9 @@ LABEL_23:
   v3[26] = 0;
 }
 
-- (void)releaseForwardWarpLinearBuffersForLevel:(int)a3
+- (void)releaseForwardWarpLinearBuffersForLevel:(int)level
 {
-  v3 = &self->super.isa + a3;
+  v3 = &self->super.isa + level;
   v4 = v3[31];
   v3[31] = 0;
 
@@ -664,16 +664,16 @@ LABEL_23:
   }
 }
 
-- (void)encodeSubsampleToCommandBuffer:(id)a3 flow:(id *)a4 loss:(id *)a5
+- (void)encodeSubsampleToCommandBuffer:(id)buffer flow:(id *)flow loss:(id *)loss
 {
   backwarp = self->_backwarp;
-  v9 = *a4;
-  v10 = a4[1];
-  v11 = a3;
-  [(Backwarp *)backwarp encodeSubsampleFlowToCommandBuffer:v11 source:v9 destination:v10];
-  [(Backwarp *)self->_backwarp encodeSubsampleFlowToCommandBuffer:v11 source:a4[1] destination:a4[2]];
-  [(Backwarp *)self->_backwarp encodeSubsampleErrorToCommandBuffer:v11 source:*a5 destination:a5[1]];
-  [(Backwarp *)self->_backwarp encodeSubsampleErrorToCommandBuffer:v11 source:a5[1] destination:a5[2]];
+  v9 = *flow;
+  v10 = flow[1];
+  bufferCopy = buffer;
+  [(Backwarp *)backwarp encodeSubsampleFlowToCommandBuffer:bufferCopy source:v9 destination:v10];
+  [(Backwarp *)self->_backwarp encodeSubsampleFlowToCommandBuffer:bufferCopy source:flow[1] destination:flow[2]];
+  [(Backwarp *)self->_backwarp encodeSubsampleErrorToCommandBuffer:bufferCopy source:*loss destination:loss[1]];
+  [(Backwarp *)self->_backwarp encodeSubsampleErrorToCommandBuffer:bufferCopy source:loss[1] destination:loss[2]];
 }
 
 void __40__Synthesis_warpFeatureLevel_timeScale___block_invoke(uint64_t a1)
@@ -696,20 +696,20 @@ void __40__Synthesis_warpFeatureLevel_timeScale___block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)warpFeaturesPerLayerWithFlowForward:(__CVBuffer *)a3 flowBackward:(__CVBuffer *)a4 timeScale:(float)a5
+- (void)warpFeaturesPerLayerWithFlowForward:(__CVBuffer *)forward flowBackward:(__CVBuffer *)backward timeScale:(float)scale
 {
-  v8 = createTexturesFromCVPixelBuffer(a3, self->_device, 1, 2uLL);
+  v8 = createTexturesFromCVPixelBuffer(forward, self->_device, 1, 2uLL);
   v9 = self->_forwardFlowTexture[1];
   self->_forwardFlowTexture[1] = v8;
 
-  v10 = createTexturesFromCVPixelBuffer(a4, self->_device, 1, 2uLL);
+  v10 = createTexturesFromCVPixelBuffer(backward, self->_device, 1, 2uLL);
   v11 = self->_backwardFlowTexture[1];
   self->_backwardFlowTexture[1] = v10;
 
   v18 = self->_firstFeatures.features[self->_pyramidLevels];
   v12 = self->_secondFeatures.features[self->_pyramidLevels];
   v13 = objc_autoreleasePoolPush();
-  *&v14 = a5;
+  *&v14 = scale;
   [(Synthesis *)self calcBackwarpLossFirst:v18 second:v12 timeScale:v14];
   objc_autoreleasePoolPop(v13);
   v16 = self->_synthesisMode == 1;
@@ -725,7 +725,7 @@ void __40__Synthesis_warpFeatureLevel_timeScale___block_invoke_2(uint64_t a1)
 
   do
   {
-    *&v15 = a5;
+    *&v15 = scale;
     [(Synthesis *)self warpFeatureLevel:v16 timeScale:v15];
     v16 = (v16 + 1);
   }
@@ -733,24 +733,24 @@ void __40__Synthesis_warpFeatureLevel_timeScale___block_invoke_2(uint64_t a1)
   while (v16 < v17);
 }
 
-- (void)calcBackwarpLossFirst:(id)a3 second:(id)a4 timeScale:(float)a5
+- (void)calcBackwarpLossFirst:(id)first second:(id)second timeScale:(float)scale
 {
-  v16 = a3;
-  v8 = a4;
-  v9 = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
-  [v9 enqueue];
-  *&v10 = a5;
-  [(Backwarp *)self->_backwarp encodeBackwarpLossToCommandBuffer:v9 first:v16 second:v8 flow:self->_forwardFlowTexture[1] timeScale:self->_forwardLossTexture[1] destination:v10];
-  *&v11 = 1.0 - a5;
-  [(Backwarp *)self->_backwarp encodeBackwarpLossToCommandBuffer:v9 first:v8 second:v16 flow:self->_backwardFlowTexture[1] timeScale:self->_backwardLossTexture[1] destination:v11];
+  firstCopy = first;
+  secondCopy = second;
+  commandBuffer = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
+  [commandBuffer enqueue];
+  *&v10 = scale;
+  [(Backwarp *)self->_backwarp encodeBackwarpLossToCommandBuffer:commandBuffer first:firstCopy second:secondCopy flow:self->_forwardFlowTexture[1] timeScale:self->_forwardLossTexture[1] destination:v10];
+  *&v11 = 1.0 - scale;
+  [(Backwarp *)self->_backwarp encodeBackwarpLossToCommandBuffer:commandBuffer first:secondCopy second:firstCopy flow:self->_backwardFlowTexture[1] timeScale:self->_backwardLossTexture[1] destination:v11];
   if (self->_pyramidLevels >= 3)
   {
     v12 = &self->_backwardLossTexture[2];
     v13 = 2;
     do
     {
-      [(Backwarp *)self->_backwarp encodeSubsampleErrorToCommandBuffer:v9 source:*(v12 - 6) destination:*(v12 - 5)];
-      [(Backwarp *)self->_backwarp encodeSubsampleErrorToCommandBuffer:v9 source:*(v12 - 1) destination:*v12];
+      [(Backwarp *)self->_backwarp encodeSubsampleErrorToCommandBuffer:commandBuffer source:*(v12 - 6) destination:*(v12 - 5)];
+      [(Backwarp *)self->_backwarp encodeSubsampleErrorToCommandBuffer:commandBuffer source:*(v12 - 1) destination:*v12];
       ++v13;
       ++v12;
     }
@@ -760,20 +760,20 @@ void __40__Synthesis_warpFeatureLevel_timeScale___block_invoke_2(uint64_t a1)
 
   if (self->_synthesisMode == 1)
   {
-    [(Backwarp *)self->_backwarp encodeUpscaleErrorToCommandBuffer:v9 source:self->_forwardLossTexture[1] destination:self->_forwardLossTexture[0]];
-    [(Backwarp *)self->_backwarp encodeUpscaleErrorToCommandBuffer:v9 source:self->_backwardLossTexture[1] destination:self->_backwardLossTexture[0]];
+    [(Backwarp *)self->_backwarp encodeUpscaleErrorToCommandBuffer:commandBuffer source:self->_forwardLossTexture[1] destination:self->_forwardLossTexture[0]];
+    [(Backwarp *)self->_backwarp encodeUpscaleErrorToCommandBuffer:commandBuffer source:self->_backwardLossTexture[1] destination:self->_backwardLossTexture[0]];
   }
 
-  [(Backwarp *)self->_backwarp encodeUpscaleFlowToCommandBuffer:v9 source:self->_forwardFlowTexture[1] destination:self->_forwardFlowTexture[0]];
-  [(Backwarp *)self->_backwarp encodeUpscaleFlowToCommandBuffer:v9 source:self->_backwardFlowTexture[1] destination:self->_backwardFlowTexture[0]];
+  [(Backwarp *)self->_backwarp encodeUpscaleFlowToCommandBuffer:commandBuffer source:self->_forwardFlowTexture[1] destination:self->_forwardFlowTexture[0]];
+  [(Backwarp *)self->_backwarp encodeUpscaleFlowToCommandBuffer:commandBuffer source:self->_backwardFlowTexture[1] destination:self->_backwardFlowTexture[0]];
   if (self->_pyramidLevels >= 3)
   {
     v14 = &self->_backwardFlowTexture[2];
     v15 = 2;
     do
     {
-      [(Backwarp *)self->_backwarp encodeSubsampleFlowToCommandBuffer:v9 source:*(v14 - 6) destination:*(v14 - 5)];
-      [(Backwarp *)self->_backwarp encodeSubsampleFlowToCommandBuffer:v9 source:*(v14 - 1) destination:*v14];
+      [(Backwarp *)self->_backwarp encodeSubsampleFlowToCommandBuffer:commandBuffer source:*(v14 - 6) destination:*(v14 - 5)];
+      [(Backwarp *)self->_backwarp encodeSubsampleFlowToCommandBuffer:commandBuffer source:*(v14 - 1) destination:*v14];
       ++v15;
       ++v14;
     }
@@ -782,8 +782,8 @@ void __40__Synthesis_warpFeatureLevel_timeScale___block_invoke_2(uint64_t a1)
   }
 
   kdebug_trace();
-  [v9 addCompletedHandler:&__block_literal_global_1];
-  [v9 commit];
+  [commandBuffer addCompletedHandler:&__block_literal_global_1];
+  [commandBuffer commit];
 }
 
 - (void)allocateFeatures
@@ -808,14 +808,14 @@ void __40__Synthesis_warpFeatureLevel_timeScale___block_invoke_2(uint64_t a1)
   }
 }
 
-- (int)twoLayerFlowSplattingFeatureLevelForLevel:(int)a3
+- (int)twoLayerFlowSplattingFeatureLevelForLevel:(int)level
 {
-  if (!a3)
+  if (!level)
   {
     return 1;
   }
 
-  if (a3 == 1)
+  if (level == 1)
   {
     return 0;
   }
@@ -833,9 +833,9 @@ void __40__Synthesis_warpFeatureLevel_timeScale___block_invoke_2(uint64_t a1)
   return 1;
 }
 
-- (void)releaseFeaturesForLevel:(int)a3
+- (void)releaseFeaturesForLevel:(int)level
 {
-  v3 = &self->super.isa + a3;
+  v3 = &self->super.isa + level;
   v4 = v3[46];
   v3[46] = 0;
 
@@ -843,21 +843,21 @@ void __40__Synthesis_warpFeatureLevel_timeScale___block_invoke_2(uint64_t a1)
   v3[51] = 0;
 }
 
-- (void)getWarpedFeatureSizeForLevel:(int)a3 tensorSize:(id *)a4
+- (void)getWarpedFeatureSizeForLevel:(int)level tensorSize:(id *)size
 {
-  v5 = a3 - 1;
-  if (a3 >= 1 && self->_synthesisMode == 1)
+  v5 = level - 1;
+  if (level >= 1 && self->_synthesisMode == 1)
   {
     QuarterSizeUsage = getQuarterSizeUsage(self->_usage);
 
-    getSynthesisTensorSize(QuarterSizeUsage, v5, &a4->var0);
+    getSynthesisTensorSize(QuarterSizeUsage, v5, &size->var0);
   }
 
   else
   {
     [(Synthesis *)self synthesisTensorSizeForLevel:?];
-    *&a4->var0 = v7;
-    a4->var2 = v8;
+    *&size->var0 = v7;
+    size->var2 = v8;
   }
 }
 
@@ -931,12 +931,12 @@ void __40__Synthesis_warpFeatureLevel_timeScale___block_invoke_2(uint64_t a1)
   while (numTiles > v4);
 }
 
-- (void)releaseWarpedFeaturesForIndex:(unint64_t)a3
+- (void)releaseWarpedFeaturesForIndex:(unint64_t)index
 {
   if (self->_pyramidLevels)
   {
     v4 = 0;
-    v5 = &self->_warpedBackwardFeatures[a3];
+    v5 = &self->_warpedBackwardFeatures[index];
     do
     {
       CVPixelBufferRelease(v5[-3].features[0]);
@@ -950,45 +950,45 @@ void __40__Synthesis_warpFeatureLevel_timeScale___block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)createFeaturesFromFirstImage:(__CVBuffer *)a3 secondImage:(__CVBuffer *)a4 flowForward:(__CVBuffer *)a5 flowBackward:(__CVBuffer *)a6
+- (void)createFeaturesFromFirstImage:(__CVBuffer *)image secondImage:(__CVBuffer *)secondImage flowForward:(__CVBuffer *)forward flowBackward:(__CVBuffer *)backward
 {
-  self->_forwardFlow = CVPixelBufferRetain(a5);
-  self->_backwardFlow = CVPixelBufferRetain(a6);
-  self->_normalizedFirst = CVPixelBufferRetain(a3);
-  self->_normalizedSecond = CVPixelBufferRetain(a4);
+  self->_forwardFlow = CVPixelBufferRetain(forward);
+  self->_backwardFlow = CVPixelBufferRetain(backward);
+  self->_normalizedFirst = CVPixelBufferRetain(image);
+  self->_normalizedSecond = CVPixelBufferRetain(secondImage);
   if (self->_synthesisMode == 3)
   {
     if (!self->_fullSizeSplatting)
     {
-      [(Synthesis *)self createSubsampledInputsFromFirstFrame:a3 secondImage:a4];
+      [(Synthesis *)self createSubsampledInputsFromFirstFrame:image secondImage:secondImage];
     }
 
-    Width = CVPixelBufferGetWidth(a5);
+    Width = CVPixelBufferGetWidth(forward);
     if (Width != [(MTLTexture *)self->_forwardLossTexture[0] width])
     {
-      [(Synthesis *)self upscaleFlowsForward:a5 backward:a6];
+      [(Synthesis *)self upscaleFlowsForward:forward backward:backward];
     }
   }
 
   if (self->_useFlowConsistencyMap)
   {
-    [(Synthesis *)self createConsistencyMapFormFirstImage:a3 secondImage:a4 flowForward:a5 flowBackward:a6];
+    [(Synthesis *)self createConsistencyMapFormFirstImage:image secondImage:secondImage flowForward:forward flowBackward:backward];
   }
 
   if (self->_pyramidLevels != 1)
   {
     if (self->_tilingEnabled)
     {
-      [(Synthesis *)self createTilesFromFirstImage:a3 secondImage:a4 flowForward:a5 flowBackward:a6];
-      CVPixelBufferRelease(a3);
+      [(Synthesis *)self createTilesFromFirstImage:image secondImage:secondImage flowForward:forward flowBackward:backward];
+      CVPixelBufferRelease(image);
 
-      CVPixelBufferRelease(a4);
+      CVPixelBufferRelease(secondImage);
     }
 
     else
     {
 
-      [(Synthesis *)self createFeaturePyramid:a3 second:a4];
+      [(Synthesis *)self createFeaturePyramid:image second:secondImage];
     }
   }
 }
@@ -1012,25 +1012,25 @@ void __40__Synthesis_warpFeatureLevel_timeScale___block_invoke_2(uint64_t a1)
   *&self->_normalizedFirst = 0u;
 }
 
-- (void)createFeaturePyramid:(__CVBuffer *)a3 second:(__CVBuffer *)a4
+- (void)createFeaturePyramid:(__CVBuffer *)pyramid second:(__CVBuffer *)second
 {
   kdebug_trace();
-  v7 = createTexturesFromCVPixelBuffer(a3, self->_device, 1, 3uLL);
-  v8 = createTexturesFromCVPixelBuffer(a4, self->_device, 1, 3uLL);
-  v9 = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
-  [v9 enqueue];
-  [(Pyramid *)self->_pyramid encodeResiduePyramidToCommandBuffer:v9 fromTexture:v7 toTexture:&self->_firstFeatures levels:self->_pyramidLevels];
-  [(Pyramid *)self->_pyramid encodeResiduePyramidToCommandBuffer:v9 fromTexture:v8 toTexture:&self->_secondFeatures levels:self->_pyramidLevels];
+  v7 = createTexturesFromCVPixelBuffer(pyramid, self->_device, 1, 3uLL);
+  v8 = createTexturesFromCVPixelBuffer(second, self->_device, 1, 3uLL);
+  commandBuffer = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
+  [commandBuffer enqueue];
+  [(Pyramid *)self->_pyramid encodeResiduePyramidToCommandBuffer:commandBuffer fromTexture:v7 toTexture:&self->_firstFeatures levels:self->_pyramidLevels];
+  [(Pyramid *)self->_pyramid encodeResiduePyramidToCommandBuffer:commandBuffer fromTexture:v8 toTexture:&self->_secondFeatures levels:self->_pyramidLevels];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __41__Synthesis_createFeaturePyramid_second___block_invoke;
   v10[3] = &unk_278FEA8D0;
   v10[4] = self;
-  v10[5] = a3;
-  v10[6] = a4;
-  [v9 addCompletedHandler:v10];
-  [v9 commit];
-  [v9 waitUntilScheduled];
+  v10[5] = pyramid;
+  v10[6] = second;
+  [commandBuffer addCompletedHandler:v10];
+  [commandBuffer commit];
+  [commandBuffer waitUntilScheduled];
 }
 
 uint64_t __41__Synthesis_createFeaturePyramid_second___block_invoke(uint64_t a1)
@@ -1053,13 +1053,13 @@ void __102__Synthesis_synthesizeImageFromFirstImage_secondImage_flowForward_flow
   CVPixelBufferRelease(v2);
 }
 
-- (BOOL)switchUsageTo:(int64_t)a3
+- (BOOL)switchUsageTo:(int64_t)to
 {
-  QuarterSizeUsage = a3;
-  self->_originalUsage = a3;
+  QuarterSizeUsage = to;
+  self->_originalUsage = to;
   if (self->_tilingEnabled)
   {
-    QuarterSizeUsage = [(Synthesis *)self usageForTiling:a3];
+    QuarterSizeUsage = [(Synthesis *)self usageForTiling:to];
   }
 
   self->_usage = QuarterSizeUsage;
@@ -1164,10 +1164,10 @@ LABEL_17:
   return 0;
 }
 
-- (void)setTilingEnabled:(BOOL)a3
+- (void)setTilingEnabled:(BOOL)enabled
 {
-  self->_tilingEnabled = a3;
-  if (a3)
+  self->_tilingEnabled = enabled;
+  if (enabled)
   {
     v4 = [[Tiling alloc] initWithDevice:self->_device commmandQueue:self->_commandQueue];
   }
@@ -1183,26 +1183,26 @@ LABEL_17:
   MEMORY[0x2821F96F8]();
 }
 
-- (int64_t)usageForTiling:(int64_t)a3
+- (int64_t)usageForTiling:(int64_t)tiling
 {
-  if (a3 > 2)
+  if (tiling > 2)
   {
     return -1;
   }
 
-  v3 = a3 | 0x64;
-  self->_numTiles = dword_24A8FF48C[a3];
+  v3 = tiling | 0x64;
+  self->_numTiles = dword_24A8FF48C[tiling];
   return v3;
 }
 
-- (void)createTilesFromFirstImage:(__CVBuffer *)a3 secondImage:(__CVBuffer *)a4 flowForward:(__CVBuffer *)a5 flowBackward:(__CVBuffer *)a6
+- (void)createTilesFromFirstImage:(__CVBuffer *)image secondImage:(__CVBuffer *)secondImage flowForward:(__CVBuffer *)forward flowBackward:(__CVBuffer *)backward
 {
-  v26 = a6;
+  backwardCopy = backward;
   v28 = *MEMORY[0x277D85DE8];
   v27 = objc_autoreleasePoolPush();
   tiling = self->_tiling;
-  Width = CVPixelBufferGetWidth(a3);
-  v12 = [(Tiling *)tiling createTileInfoArrayForFrameWithWidth:Width height:CVPixelBufferGetHeight(a3) / 3 numTiles:self->_numTiles];
+  Width = CVPixelBufferGetWidth(image);
+  v12 = [(Tiling *)tiling createTileInfoArrayForFrameWithWidth:Width height:CVPixelBufferGetHeight(image) / 3 numTiles:self->_numTiles];
   v25 = &v25;
   self->_imageTileInfo = v12;
   v13 = &v25 - ((24 * self->_numTiles + 15) & 0x3FFFFFFFF0);
@@ -1243,14 +1243,14 @@ LABEL_17:
   }
 
   kdebug_trace();
-  v23 = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
-  [v23 enqueue];
-  [(Tiling *)self->_tiling encodeTileBufferToCommandBuffer:v23 from:a3 to:self->_firstImageTiles channels:3 tileInfo:self->_imageTileInfo numTiles:self->_numTiles];
-  [(Tiling *)self->_tiling encodeTileBufferToCommandBuffer:v23 from:a4 to:self->_secondImageTiles channels:3 tileInfo:self->_imageTileInfo numTiles:self->_numTiles];
-  [(Tiling *)self->_tiling encodeTileBufferToCommandBuffer:v23 from:a5 to:self->_forwardFlowTiles channels:2 tileInfo:v13 numTiles:self->_numTiles];
-  [(Tiling *)self->_tiling encodeTileBufferToCommandBuffer:v23 from:v26 to:self->_backwardFlowTiles channels:2 tileInfo:v13 numTiles:self->_numTiles];
-  [v23 addCompletedHandler:&__block_literal_global_53];
-  [v23 commit];
+  commandBuffer = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
+  [commandBuffer enqueue];
+  [(Tiling *)self->_tiling encodeTileBufferToCommandBuffer:commandBuffer from:image to:self->_firstImageTiles channels:3 tileInfo:self->_imageTileInfo numTiles:self->_numTiles];
+  [(Tiling *)self->_tiling encodeTileBufferToCommandBuffer:commandBuffer from:secondImage to:self->_secondImageTiles channels:3 tileInfo:self->_imageTileInfo numTiles:self->_numTiles];
+  [(Tiling *)self->_tiling encodeTileBufferToCommandBuffer:commandBuffer from:forward to:self->_forwardFlowTiles channels:2 tileInfo:v13 numTiles:self->_numTiles];
+  [(Tiling *)self->_tiling encodeTileBufferToCommandBuffer:commandBuffer from:backwardCopy to:self->_backwardFlowTiles channels:2 tileInfo:v13 numTiles:self->_numTiles];
+  [commandBuffer addCompletedHandler:&__block_literal_global_53];
+  [commandBuffer commit];
 
   objc_autoreleasePoolPop(v27);
   v24 = *MEMORY[0x277D85DE8];
@@ -1280,16 +1280,16 @@ LABEL_17:
   self->_imageTileInfo = 0;
 }
 
-- (void)encodeForwarpToCommandBuffer:(id)a3 level:(int)a4 firstTexture:(id)a5 secondTexture:(id)a6 firstWarpedTexture:(id)a7 secondWarpedTexture:(id)a8 timeScale:(float)a9 useFlowMagnitude:(BOOL)a10
+- (void)encodeForwarpToCommandBuffer:(id)buffer level:(int)level firstTexture:(id)texture secondTexture:(id)secondTexture firstWarpedTexture:(id)warpedTexture secondWarpedTexture:(id)secondWarpedTexture timeScale:(float)scale useFlowMagnitude:(BOOL)self0
 {
-  v48 = a3;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v47 = a8;
+  bufferCopy = buffer;
+  textureCopy = texture;
+  secondTextureCopy = secondTexture;
+  warpedTextureCopy = warpedTexture;
+  secondWarpedTextureCopy = secondWarpedTexture;
   linearSplatting = self->_linearSplatting;
   forwarp = self->_forwarp;
-  if (a10)
+  if (magnitude)
   {
     LODWORD(v20) = 1051931443;
     [(Forwarp *)forwarp setErrorTolerance:v20];
@@ -1304,8 +1304,8 @@ LABEL_17:
       v26 = 3.4028e38;
     }
 
-    v27 = a4;
-    v28 = &self->super.isa + a4;
+    levelCopy2 = level;
+    v28 = &self->super.isa + level;
     if (linearSplatting)
     {
       *&v23 = 1.0;
@@ -1313,7 +1313,7 @@ LABEL_17:
 
     else
     {
-      *&v23 = a9;
+      *&v23 = scale;
     }
 
     if (linearSplatting)
@@ -1323,16 +1323,16 @@ LABEL_17:
 
     else
     {
-      v29 = 1.0 - a9;
+      v29 = 1.0 - scale;
     }
 
     LODWORD(v24) = 1050253722;
     *&v25 = v26;
-    [(Backwarp *)self->_backwarp encodeBackwarpLossWithFlowMagnitudeToCommandBuffer:v48 first:v17 second:v18 flow:v28[21] timeScale:v28[11] gamma:v23 protectionThreshold:v24 destination:v25];
+    [(Backwarp *)self->_backwarp encodeBackwarpLossWithFlowMagnitudeToCommandBuffer:bufferCopy first:textureCopy second:secondTextureCopy flow:v28[21] timeScale:v28[11] gamma:v23 protectionThreshold:v24 destination:v25];
     *&v30 = v29;
     LODWORD(v31) = 1050253722;
     *&v32 = v26;
-    [(Backwarp *)self->_backwarp encodeBackwarpLossWithFlowMagnitudeToCommandBuffer:v48 first:v18 second:v17 flow:v28[26] timeScale:v28[16] gamma:v30 protectionThreshold:v31 destination:v32];
+    [(Backwarp *)self->_backwarp encodeBackwarpLossWithFlowMagnitudeToCommandBuffer:bufferCopy first:secondTextureCopy second:textureCopy flow:v28[26] timeScale:v28[16] gamma:v30 protectionThreshold:v31 destination:v32];
   }
 
   else
@@ -1340,8 +1340,8 @@ LABEL_17:
     LODWORD(v20) = 1028443341;
     [(Forwarp *)forwarp setErrorTolerance:v20];
     [(Forwarp *)self->_forwarp setLimitBilinearInterpolation:0];
-    v27 = a4;
-    v34 = &self->super.isa + a4;
+    levelCopy2 = level;
+    v34 = &self->super.isa + level;
     if (linearSplatting)
     {
       *&v33 = 1.0;
@@ -1349,7 +1349,7 @@ LABEL_17:
 
     else
     {
-      *&v33 = a9;
+      *&v33 = scale;
     }
 
     if (linearSplatting)
@@ -1359,53 +1359,53 @@ LABEL_17:
 
     else
     {
-      v35 = 1.0 - a9;
+      v35 = 1.0 - scale;
     }
 
-    [(Backwarp *)self->_backwarp encodeBackwarpLossToCommandBuffer:v48 first:v17 second:v18 flow:v34[21] timeScale:v34[11] destination:v33];
+    [(Backwarp *)self->_backwarp encodeBackwarpLossToCommandBuffer:bufferCopy first:textureCopy second:secondTextureCopy flow:v34[21] timeScale:v34[11] destination:v33];
     *&v36 = v35;
-    [(Backwarp *)self->_backwarp encodeBackwarpLossToCommandBuffer:v48 first:v18 second:v17 flow:v34[26] timeScale:v34[16] destination:v36];
+    [(Backwarp *)self->_backwarp encodeBackwarpLossToCommandBuffer:bufferCopy first:secondTextureCopy second:textureCopy flow:v34[26] timeScale:v34[16] destination:v36];
   }
 
-  v37 = self->_forwardLossTexture[v27];
-  v38 = self->_backwardLossTexture[v27];
+  v37 = self->_forwardLossTexture[levelCopy2];
+  v38 = self->_backwardLossTexture[levelCopy2];
   if (self->_filterErrorMap)
   {
     v40 = self->_filteredForwardLossTexture;
 
-    v46 = v18;
-    v41 = v17;
-    v42 = v19;
+    v46 = secondTextureCopy;
+    v41 = textureCopy;
+    v42 = warpedTextureCopy;
     v43 = self->_filteredBackwarLossTexture;
 
-    [(Forwarp *)self->_forwarp encodeErrorMapFilteringToCommandBuffer:v48 source:self->_forwardLossTexture[v27] destination:v40];
-    [(Forwarp *)self->_forwarp encodeErrorMapFilteringToCommandBuffer:v48 source:self->_backwardLossTexture[v27] destination:v43];
+    [(Forwarp *)self->_forwarp encodeErrorMapFilteringToCommandBuffer:bufferCopy source:self->_forwardLossTexture[levelCopy2] destination:v40];
+    [(Forwarp *)self->_forwarp encodeErrorMapFilteringToCommandBuffer:bufferCopy source:self->_backwardLossTexture[levelCopy2] destination:v43];
     v37 = v40;
     v38 = v43;
-    v19 = v42;
-    v17 = v41;
-    v18 = v46;
+    warpedTextureCopy = v42;
+    textureCopy = v41;
+    secondTextureCopy = v46;
   }
 
-  v44 = &self->super.isa + v27;
-  *&v39 = a9;
-  [(Forwarp *)self->_forwarp encodeToCommandBuffer:v48 input:v17 flow:v44[21] error:v37 timeScale:1 fullWarp:v44[31] bestError:v39 output:v44[36] destination:v19];
-  *&v45 = 1.0 - a9;
-  [(Forwarp *)self->_forwarp encodeToCommandBuffer:v48 input:v18 flow:v44[26] error:v38 timeScale:1 fullWarp:v44[31] bestError:v45 output:v44[36] destination:v47];
+  v44 = &self->super.isa + levelCopy2;
+  *&v39 = scale;
+  [(Forwarp *)self->_forwarp encodeToCommandBuffer:bufferCopy input:textureCopy flow:v44[21] error:v37 timeScale:1 fullWarp:v44[31] bestError:v39 output:v44[36] destination:warpedTextureCopy];
+  *&v45 = 1.0 - scale;
+  [(Forwarp *)self->_forwarp encodeToCommandBuffer:bufferCopy input:secondTextureCopy flow:v44[26] error:v38 timeScale:1 fullWarp:v44[31] bestError:v45 output:v44[36] destination:secondWarpedTextureCopy];
 }
 
-- (void)synthesizeImageWithForwarpOnlyFromFirstImage:(__CVBuffer *)a3 secondImage:(__CVBuffer *)a4 flowForward:(__CVBuffer *)a5 flowBackward:(__CVBuffer *)a6 timeScale:(float)a7 destination:(__CVBuffer *)a8
+- (void)synthesizeImageWithForwarpOnlyFromFirstImage:(__CVBuffer *)image secondImage:(__CVBuffer *)secondImage flowForward:(__CVBuffer *)forward flowBackward:(__CVBuffer *)backward timeScale:(float)scale destination:(__CVBuffer *)destination
 {
-  v30 = createTexturesFromCVPixelBuffer(a3, self->_device, 1, 3uLL);
-  secondForwarpInputWithConsistencyMap = createTexturesFromCVPixelBuffer(a4, self->_device, 1, 3uLL);
-  v15 = createTexturesFromCVPixelBuffer(a5, self->_device, 1, 2uLL);
-  v16 = createTexturesFromCVPixelBuffer(a6, self->_device, 1, 2uLL);
-  v17 = createTexturesFromCVPixelBuffer(a8, self->_device, 1, 3uLL);
-  v18 = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
-  [v18 enqueue];
+  v30 = createTexturesFromCVPixelBuffer(image, self->_device, 1, 3uLL);
+  secondForwarpInputWithConsistencyMap = createTexturesFromCVPixelBuffer(secondImage, self->_device, 1, 3uLL);
+  v15 = createTexturesFromCVPixelBuffer(forward, self->_device, 1, 2uLL);
+  v16 = createTexturesFromCVPixelBuffer(backward, self->_device, 1, 2uLL);
+  v17 = createTexturesFromCVPixelBuffer(destination, self->_device, 1, 3uLL);
+  commandBuffer = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
+  [commandBuffer enqueue];
   v28 = v15;
-  [(Backwarp *)self->_backwarp encodeUpscaleFlowToCommandBuffer:v18 source:v15 destination:self->_forwardFlowTexture[0]];
-  [(Backwarp *)self->_backwarp encodeUpscaleFlowToCommandBuffer:v18 source:v16 destination:self->_backwardFlowTexture[0]];
+  [(Backwarp *)self->_backwarp encodeUpscaleFlowToCommandBuffer:commandBuffer source:v15 destination:self->_forwardFlowTexture[0]];
+  [(Backwarp *)self->_backwarp encodeUpscaleFlowToCommandBuffer:commandBuffer source:v16 destination:self->_backwardFlowTexture[0]];
   v19 = createTexturesFromCVPixelBuffer(self->_warpedForwardFeatures[self->_bufferIndex].features[0], self->_device, 1, self->_warpedFeatureChannels);
   v20 = createTexturesFromCVPixelBuffer(self->_warpedBackwardFeatures[self->_bufferIndex].features[0], self->_device, 1, self->_warpedFeatureChannels);
   v29 = secondForwarpInputWithConsistencyMap;
@@ -1423,9 +1423,9 @@ LABEL_17:
   v22 = secondForwarpInputWithConsistencyMap;
   [(Forwarp *)self->_forwarp setCreateOcclusionMask:1];
   LOBYTE(v27) = !self->_useFlowConsistencyMap;
-  *&v23 = a7;
-  [(Synthesis *)self encodeForwarpToCommandBuffer:v18 level:0 firstTexture:v21 secondTexture:v22 firstWarpedTexture:v19 secondWarpedTexture:v20 timeScale:v23 useFlowMagnitude:v27];
-  [(Forwarp *)self->_forwarp encodeErrorMapDilationToCommandBuffer:v18 forwardSource:v19 backwardSource:v20 forwardDestination:self->_dilatedForwardMask backwardDestination:self->_dilatedBackwardMask minimumAdjacentHoleCount:3 maximumHoleValue:0.0];
+  *&v23 = scale;
+  [(Synthesis *)self encodeForwarpToCommandBuffer:commandBuffer level:0 firstTexture:v21 secondTexture:v22 firstWarpedTexture:v19 secondWarpedTexture:v20 timeScale:v23 useFlowMagnitude:v27];
+  [(Forwarp *)self->_forwarp encodeErrorMapDilationToCommandBuffer:commandBuffer forwardSource:v19 backwardSource:v20 forwardDestination:self->_dilatedForwardMask backwardDestination:self->_dilatedBackwardMask minimumAdjacentHoleCount:3 maximumHoleValue:0.0];
   if (self->_useFlowConsistencyMap)
   {
     v25 = [v19 newTextureViewWithPixelFormat:25 textureType:2 levels:0 slices:1, 3, 1];
@@ -1438,42 +1438,42 @@ LABEL_17:
     v25 = 0;
   }
 
-  *&v24 = a7;
-  [(Forwarp *)self->_forwarp encodeBlendWarpedFeaturesWithErrorMaskToCommandBuffer:v18 first:v19 second:v20 forwardErrorMap:self->_dilatedForwardMask backwardErrorMap:self->_dilatedBackwardMask forwarpConsistency:v25 backwardConsistency:v24 timeScale:v26 destination:v17];
-  [v18 commit];
-  [v18 waitUntilScheduled];
+  *&v24 = scale;
+  [(Forwarp *)self->_forwarp encodeBlendWarpedFeaturesWithErrorMaskToCommandBuffer:commandBuffer first:v19 second:v20 forwardErrorMap:self->_dilatedForwardMask backwardErrorMap:self->_dilatedBackwardMask forwarpConsistency:v25 backwardConsistency:v24 timeScale:v26 destination:v17];
+  [commandBuffer commit];
+  [commandBuffer waitUntilScheduled];
 }
 
-- (void)createSubsampledInputsFromFirstFrame:(__CVBuffer *)a3 secondImage:(__CVBuffer *)a4
+- (void)createSubsampledInputsFromFirstFrame:(__CVBuffer *)frame secondImage:(__CVBuffer *)image
 {
-  v12 = createTexturesFromCVPixelBuffer(a3, self->_device, 1, 3uLL);
-  v6 = createTexturesFromCVPixelBuffer(a4, self->_device, 1, 3uLL);
+  v12 = createTexturesFromCVPixelBuffer(frame, self->_device, 1, 3uLL);
+  v6 = createTexturesFromCVPixelBuffer(image, self->_device, 1, 3uLL);
   v7 = self->_firstFeatures.features[0];
   commandQueue = self->_commandQueue;
   v9 = self->_secondFeatures.features[0];
   v10 = v7;
-  v11 = [(MTLCommandQueue *)commandQueue commandBuffer];
-  [v11 enqueue];
-  [(Backwarp *)self->_backwarp encodeSubsampleInputToCommandBufferr:v11 source:v12 destination:v10];
-  [(Backwarp *)self->_backwarp encodeSubsampleInputToCommandBufferr:v11 source:v6 destination:v9];
+  commandBuffer = [(MTLCommandQueue *)commandQueue commandBuffer];
+  [commandBuffer enqueue];
+  [(Backwarp *)self->_backwarp encodeSubsampleInputToCommandBufferr:commandBuffer source:v12 destination:v10];
+  [(Backwarp *)self->_backwarp encodeSubsampleInputToCommandBufferr:commandBuffer source:v6 destination:v9];
 
-  [v11 commit];
+  [commandBuffer commit];
 }
 
-- (void)upscaleFlowsForward:(__CVBuffer *)a3 backward:(__CVBuffer *)a4
+- (void)upscaleFlowsForward:(__CVBuffer *)forward backward:(__CVBuffer *)backward
 {
-  v8 = createTexturesFromCVPixelBuffer(a3, self->_device, 1, 2uLL);
-  v6 = createTexturesFromCVPixelBuffer(a4, self->_device, 1, 2uLL);
-  v7 = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
-  [v7 enqueue];
-  [(Backwarp *)self->_backwarp encodeUpscaleFlowToCommandBuffer:v7 source:v8 destination:self->_forwardFlowTexture[0]];
-  [(Backwarp *)self->_backwarp encodeUpscaleFlowToCommandBuffer:v7 source:v6 destination:self->_backwardFlowTexture[0]];
-  [v7 commit];
+  v8 = createTexturesFromCVPixelBuffer(forward, self->_device, 1, 2uLL);
+  v6 = createTexturesFromCVPixelBuffer(backward, self->_device, 1, 2uLL);
+  commandBuffer = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
+  [commandBuffer enqueue];
+  [(Backwarp *)self->_backwarp encodeUpscaleFlowToCommandBuffer:commandBuffer source:v8 destination:self->_forwardFlowTexture[0]];
+  [(Backwarp *)self->_backwarp encodeUpscaleFlowToCommandBuffer:commandBuffer source:v6 destination:self->_backwardFlowTexture[0]];
+  [commandBuffer commit];
 }
 
-- (void)encodeForwarpInputsForBlendToCommandBuffer:(id)a3 timeScale:(float)a4
+- (void)encodeForwarpInputsForBlendToCommandBuffer:(id)buffer timeScale:(float)scale
 {
-  v11 = a3;
+  bufferCopy = buffer;
   if (self->_synthesisMode == 1)
   {
     v6 = self->_firstFeatures.features[4];
@@ -1490,34 +1490,34 @@ LABEL_17:
 
   [(Forwarp *)self->_forwarp setCreateOcclusionMask:1];
   LOBYTE(v10) = 0;
-  *&v9 = a4;
-  [(Synthesis *)self encodeForwarpToCommandBuffer:v11 level:v8 firstTexture:v6 secondTexture:v7 firstWarpedTexture:self->_firstWarpedTexture secondWarpedTexture:self->_secondWarpedTexture timeScale:v9 useFlowMagnitude:v10];
-  [(Forwarp *)self->_forwarp encodeErrorMapDilationToCommandBuffer:v11 forwardSource:self->_firstWarpedTexture backwardSource:self->_secondWarpedTexture forwardDestination:self->_dilatedForwardMask backwardDestination:self->_dilatedBackwardMask minimumAdjacentHoleCount:3 maximumHoleValue:0.0];
+  *&v9 = scale;
+  [(Synthesis *)self encodeForwarpToCommandBuffer:bufferCopy level:v8 firstTexture:v6 secondTexture:v7 firstWarpedTexture:self->_firstWarpedTexture secondWarpedTexture:self->_secondWarpedTexture timeScale:v9 useFlowMagnitude:v10];
+  [(Forwarp *)self->_forwarp encodeErrorMapDilationToCommandBuffer:bufferCopy forwardSource:self->_firstWarpedTexture backwardSource:self->_secondWarpedTexture forwardDestination:self->_dilatedForwardMask backwardDestination:self->_dilatedBackwardMask minimumAdjacentHoleCount:3 maximumHoleValue:0.0];
   [(Forwarp *)self->_forwarp setCreateOcclusionMask:0];
 }
 
-- (void)filterGridNetOutput:(__CVBuffer *)a3 timeScale:(float)a4 destination:(__CVBuffer *)a5
+- (void)filterGridNetOutput:(__CVBuffer *)output timeScale:(float)scale destination:(__CVBuffer *)destination
 {
-  v13 = createTexturesFromCVPixelBuffer(a3, self->_device, 1, 3uLL);
-  v8 = createTexturesFromCVPixelBuffer(a5, self->_device, 1, 3uLL);
-  v9 = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
-  [v9 enqueue];
-  *&v10 = a4;
-  [(Synthesis *)self encodeForwarpInputsForBlendToCommandBuffer:v9 timeScale:v10];
+  v13 = createTexturesFromCVPixelBuffer(output, self->_device, 1, 3uLL);
+  v8 = createTexturesFromCVPixelBuffer(destination, self->_device, 1, 3uLL);
+  commandBuffer = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
+  [commandBuffer enqueue];
+  *&v10 = scale;
+  [(Synthesis *)self encodeForwarpInputsForBlendToCommandBuffer:commandBuffer timeScale:v10];
   LODWORD(v11) = 1045220557;
-  *&v12 = a4;
-  [(Forwarp *)self->_forwarp encodeBlendTexturesToCommandBuffer:v9 firstWarpedTexture:self->_firstWarpedTexture secondWarpedTexture:self->_secondWarpedTexture forwardErrorMap:self->_dilatedForwardMask backwardErrorMap:self->_dilatedBackwardMask synthesizedTexture:v13 timeScale:v12 synthesizedImageWeight:v11 destination:v8];
-  [v9 commit];
-  [v9 waitUntilScheduled];
+  *&v12 = scale;
+  [(Forwarp *)self->_forwarp encodeBlendTexturesToCommandBuffer:commandBuffer firstWarpedTexture:self->_firstWarpedTexture secondWarpedTexture:self->_secondWarpedTexture forwardErrorMap:self->_dilatedForwardMask backwardErrorMap:self->_dilatedBackwardMask synthesizedTexture:v13 timeScale:v12 synthesizedImageWeight:v11 destination:v8];
+  [commandBuffer commit];
+  [commandBuffer waitUntilScheduled];
 }
 
-- (void)createConsistencyMapFormFirstImage:(__CVBuffer *)a3 secondImage:(__CVBuffer *)a4 flowForward:(__CVBuffer *)a5 flowBackward:(__CVBuffer *)a6
+- (void)createConsistencyMapFormFirstImage:(__CVBuffer *)image secondImage:(__CVBuffer *)secondImage flowForward:(__CVBuffer *)forward flowBackward:(__CVBuffer *)backward
 {
-  v11 = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
-  v12 = createTexturesFromCVPixelBuffer(a3, self->_device, 1, 3uLL);
-  v13 = createTexturesFromCVPixelBuffer(a4, self->_device, 1, 3uLL);
-  v14 = createTexturesFromCVPixelBuffer(a5, self->_device, 1, 2uLL);
-  v15 = createTexturesFromCVPixelBuffer(a6, self->_device, 1, 2uLL);
+  commandBuffer = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
+  v12 = createTexturesFromCVPixelBuffer(image, self->_device, 1, 3uLL);
+  v13 = createTexturesFromCVPixelBuffer(secondImage, self->_device, 1, 3uLL);
+  v14 = createTexturesFromCVPixelBuffer(forward, self->_device, 1, 2uLL);
+  v15 = createTexturesFromCVPixelBuffer(backward, self->_device, 1, 2uLL);
   v28 = v12;
   if (self->_synthesisMode == 3)
   {
@@ -1541,12 +1541,12 @@ LABEL_17:
   }
 
   v19 = v18;
-  v20 = [v17 width];
-  v21 = [v17 height];
-  v22 = [v17 arrayLength];
+  width = [v17 width];
+  height = [v17 height];
+  arrayLength = [v17 arrayLength];
   if (!self->_firstForwarpInputWithConsistencyMap)
   {
-    v23 = createTextures(self->_device, v20, v21, 1, v22 + 1);
+    v23 = createTextures(self->_device, width, height, 1, arrayLength + 1);
     firstForwarpInputWithConsistencyMap = self->_firstForwarpInputWithConsistencyMap;
     self->_firstForwarpInputWithConsistencyMap = v23;
   }
@@ -1554,22 +1554,22 @@ LABEL_17:
   secondForwarpInputWithConsistencyMap = self->_secondForwarpInputWithConsistencyMap;
   if (!secondForwarpInputWithConsistencyMap)
   {
-    v26 = createTextures(self->_device, v20, v21, 1, v22 + 1);
+    v26 = createTextures(self->_device, width, height, 1, arrayLength + 1);
     v27 = self->_secondForwarpInputWithConsistencyMap;
     self->_secondForwarpInputWithConsistencyMap = v26;
 
     secondForwarpInputWithConsistencyMap = self->_secondForwarpInputWithConsistencyMap;
   }
 
-  [(Synthesis *)self encodeConsistencyMapCreationWithFlowToCommandBuffer:v11 firstSource:v17 secondSource:v19 forwardFlow:v14 backwardFlow:v15 firstForwarpInput:self->_firstForwarpInputWithConsistencyMap secondForwarpInput:secondForwarpInputWithConsistencyMap];
+  [(Synthesis *)self encodeConsistencyMapCreationWithFlowToCommandBuffer:commandBuffer firstSource:v17 secondSource:v19 forwardFlow:v14 backwardFlow:v15 firstForwarpInput:self->_firstForwarpInputWithConsistencyMap secondForwarpInput:secondForwarpInputWithConsistencyMap];
   v29[0] = MEMORY[0x277D85DD0];
   v29[1] = 3221225472;
   v29[2] = __85__Synthesis_createConsistencyMapFormFirstImage_secondImage_flowForward_flowBackward___block_invoke;
   v29[3] = &unk_278FEA810;
   v29[4] = self;
-  [v11 addCompletedHandler:v29];
-  [v11 commit];
-  [v11 waitUntilScheduled];
+  [commandBuffer addCompletedHandler:v29];
+  [commandBuffer commit];
+  [commandBuffer waitUntilScheduled];
 }
 
 void __85__Synthesis_createConsistencyMapFormFirstImage_secondImage_flowForward_flowBackward___block_invoke(uint64_t a1)
@@ -1582,101 +1582,101 @@ void __85__Synthesis_createConsistencyMapFormFirstImage_secondImage_flowForward_
   }
 }
 
-- (void)encodeConsistencyMapCreationWithFlowToCommandBuffer:(id)a3 firstSource:(id)a4 secondSource:(id)a5 forwardFlow:(id)a6 backwardFlow:(id)a7 firstForwarpInput:(id)a8 secondForwarpInput:(id)a9
+- (void)encodeConsistencyMapCreationWithFlowToCommandBuffer:(id)buffer firstSource:(id)source secondSource:(id)secondSource forwardFlow:(id)flow backwardFlow:(id)backwardFlow firstForwarpInput:(id)input secondForwarpInput:(id)forwarpInput
 {
-  v30 = a3;
-  v15 = a4;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = a9;
-  v28 = a5;
-  v20 = [v18 arrayLength] - 1;
-  v21 = [v15 width];
-  v22 = [v16 width];
-  v29 = [v18 newTextureViewWithPixelFormat:objc_msgSend(v18 textureType:"pixelFormat") levels:2 slices:0, 1, v20, 1];
-  v23 = [v19 newTextureViewWithPixelFormat:objc_msgSend(v18 textureType:"pixelFormat") levels:2 slices:0, 1, v20, 1];
-  if (v21 == v22)
+  bufferCopy = buffer;
+  sourceCopy = source;
+  flowCopy = flow;
+  backwardFlowCopy = backwardFlow;
+  inputCopy = input;
+  forwarpInputCopy = forwarpInput;
+  secondSourceCopy = secondSource;
+  v20 = [inputCopy arrayLength] - 1;
+  width = [sourceCopy width];
+  width2 = [flowCopy width];
+  v29 = [inputCopy newTextureViewWithPixelFormat:objc_msgSend(inputCopy textureType:"pixelFormat") levels:2 slices:0, 1, v20, 1];
+  v23 = [forwarpInputCopy newTextureViewWithPixelFormat:objc_msgSend(inputCopy textureType:"pixelFormat") levels:2 slices:0, 1, v20, 1];
+  if (width == width2)
   {
     v24 = v29;
     v25 = v23;
-    [(FlowConsistencyMap *)self->_flowConsisteny encodeToCommandBuffer:v30 forwardFlow:v16 backwardFlow:v17 forwardConsistencyMap:v24 backwardConsistencyMap:v25];
+    [(FlowConsistencyMap *)self->_flowConsisteny encodeToCommandBuffer:bufferCopy forwardFlow:flowCopy backwardFlow:backwardFlowCopy forwardConsistencyMap:v24 backwardConsistencyMap:v25];
   }
 
   else
   {
-    v24 = createTextures(self->_device, [v16 width], objc_msgSend(v16, "height"), 1, 1uLL);
-    v25 = createTextures(self->_device, [v16 width], objc_msgSend(v16, "height"), 1, 1uLL);
-    [(FlowConsistencyMap *)self->_flowConsisteny encodeToCommandBuffer:v30 forwardFlow:v16 backwardFlow:v17 forwardConsistencyMap:v24 backwardConsistencyMap:v25];
-    [(FlowConsistencyMap *)self->_flowConsisteny encodeMapUpscalingToCommandBuffer:v30 source:v24 detination:v29];
-    [(FlowConsistencyMap *)self->_flowConsisteny encodeMapUpscalingToCommandBuffer:v30 source:v25 detination:v23];
+    v24 = createTextures(self->_device, [flowCopy width], objc_msgSend(flowCopy, "height"), 1, 1uLL);
+    v25 = createTextures(self->_device, [flowCopy width], objc_msgSend(flowCopy, "height"), 1, 1uLL);
+    [(FlowConsistencyMap *)self->_flowConsisteny encodeToCommandBuffer:bufferCopy forwardFlow:flowCopy backwardFlow:backwardFlowCopy forwardConsistencyMap:v24 backwardConsistencyMap:v25];
+    [(FlowConsistencyMap *)self->_flowConsisteny encodeMapUpscalingToCommandBuffer:bufferCopy source:v24 detination:v29];
+    [(FlowConsistencyMap *)self->_flowConsisteny encodeMapUpscalingToCommandBuffer:bufferCopy source:v25 detination:v23];
   }
 
-  v26 = [v15 arrayLength];
-  v27 = [v30 blitCommandEncoder];
-  [v27 copyFromTexture:v15 sourceSlice:0 sourceLevel:0 toTexture:v18 destinationSlice:0 destinationLevel:0 sliceCount:v26 levelCount:1];
-  [v27 copyFromTexture:v28 sourceSlice:0 sourceLevel:0 toTexture:v19 destinationSlice:0 destinationLevel:0 sliceCount:v26 levelCount:1];
+  arrayLength = [sourceCopy arrayLength];
+  blitCommandEncoder = [bufferCopy blitCommandEncoder];
+  [blitCommandEncoder copyFromTexture:sourceCopy sourceSlice:0 sourceLevel:0 toTexture:inputCopy destinationSlice:0 destinationLevel:0 sliceCount:arrayLength levelCount:1];
+  [blitCommandEncoder copyFromTexture:secondSourceCopy sourceSlice:0 sourceLevel:0 toTexture:forwarpInputCopy destinationSlice:0 destinationLevel:0 sliceCount:arrayLength levelCount:1];
 
-  [v27 endEncoding];
+  [blitCommandEncoder endEncoding];
 }
 
-- (void)encodeWarpPyramidToCommandBuffer:(id)a3 forwardFlow:(id)a4 backwardFlow:(id)a5 forwarpConsistency:(id)a6 backwardConsistency:(id)a7 timeScale:(float)a8 destination:(id)a9
+- (void)encodeWarpPyramidToCommandBuffer:(id)buffer forwardFlow:(id)flow backwardFlow:(id)backwardFlow forwarpConsistency:(id)consistency backwardConsistency:(id)backwardConsistency timeScale:(float)scale destination:(id)destination
 {
-  v31 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a9;
+  bufferCopy = buffer;
+  flowCopy = flow;
+  backwardFlowCopy = backwardFlow;
+  consistencyCopy = consistency;
+  backwardConsistencyCopy = backwardConsistency;
+  destinationCopy = destination;
   v21 = self->_firstFeatures.features[3];
   v22 = self->_secondFeatures.features[3];
   v23 = self->_firstFeatures.features[2];
-  *&v24 = a8;
+  *&v24 = scale;
   if (self->_useFusedKernel)
   {
-    [(Forwarp *)self->_forwarp encodeWarpAndBlendFeaturesWithErrorMaskToCommandBuffer:v31 first:v23 second:self->_secondFeatures.features[2] forwardFlow:v16 backwardFlow:v17 forwardErrorMap:self->_dilatedForwardMask backwardErrorMap:v24 forwarpConsistency:self->_dilatedBackwardMask backwardConsistency:v18 timeScale:v19 destination:self->_blendedDCTexture];
+    [(Forwarp *)self->_forwarp encodeWarpAndBlendFeaturesWithErrorMaskToCommandBuffer:bufferCopy first:v23 second:self->_secondFeatures.features[2] forwardFlow:flowCopy backwardFlow:backwardFlowCopy forwardErrorMap:self->_dilatedForwardMask backwardErrorMap:v24 forwarpConsistency:self->_dilatedBackwardMask backwardConsistency:consistencyCopy timeScale:backwardConsistencyCopy destination:self->_blendedDCTexture];
   }
 
   else
   {
-    [(Backwarp *)self->_backwarp encodeFlowSplattingWarpToCommandBuffer:v31 source:v23 flow:v16 timeScale:v21 destination:v24];
-    *&v25 = 1.0 - a8;
-    [(Backwarp *)self->_backwarp encodeFlowSplattingWarpToCommandBuffer:v31 source:self->_secondFeatures.features[2] flow:v17 timeScale:v22 destination:v25];
-    *&v26 = a8;
-    [(Forwarp *)self->_forwarp encodeBlendWarpedFeaturesWithErrorMaskToCommandBuffer:v31 first:v21 second:v22 forwardErrorMap:self->_dilatedForwardMask backwardErrorMap:self->_dilatedBackwardMask forwarpConsistency:v18 backwardConsistency:v26 timeScale:v19 destination:self->_blendedDCTexture];
+    [(Backwarp *)self->_backwarp encodeFlowSplattingWarpToCommandBuffer:bufferCopy source:v23 flow:flowCopy timeScale:v21 destination:v24];
+    *&v25 = 1.0 - scale;
+    [(Backwarp *)self->_backwarp encodeFlowSplattingWarpToCommandBuffer:bufferCopy source:self->_secondFeatures.features[2] flow:backwardFlowCopy timeScale:v22 destination:v25];
+    *&v26 = scale;
+    [(Forwarp *)self->_forwarp encodeBlendWarpedFeaturesWithErrorMaskToCommandBuffer:bufferCopy first:v21 second:v22 forwardErrorMap:self->_dilatedForwardMask backwardErrorMap:self->_dilatedBackwardMask forwarpConsistency:consistencyCopy backwardConsistency:v26 timeScale:backwardConsistencyCopy destination:self->_blendedDCTexture];
   }
 
-  [(Pyramid *)self->_pyramid encode3x3GaussianFilterToCommandBuffer:v31 source:self->_blendedDCTexture destination:self->_filteredDCTexture];
+  [(Pyramid *)self->_pyramid encode3x3GaussianFilterToCommandBuffer:bufferCopy source:self->_blendedDCTexture destination:self->_filteredDCTexture];
   v27 = self->_firstFeatures.features[1];
-  *&v28 = a8;
+  *&v28 = scale;
   if (self->_useFusedKernel)
   {
-    [(Forwarp *)self->_forwarp encodeWarpAndBlendFeaturesWithErrorMaskToCommandBuffer:v31 first:v27 second:self->_secondFeatures.features[1] forwardFlow:v16 backwardFlow:v17 forwardErrorMap:self->_dilatedForwardMask backwardErrorMap:v28 forwarpConsistency:self->_dilatedBackwardMask backwardConsistency:v18 timeScale:v19 destination:v20];
+    [(Forwarp *)self->_forwarp encodeWarpAndBlendFeaturesWithErrorMaskToCommandBuffer:bufferCopy first:v27 second:self->_secondFeatures.features[1] forwardFlow:flowCopy backwardFlow:backwardFlowCopy forwardErrorMap:self->_dilatedForwardMask backwardErrorMap:v28 forwarpConsistency:self->_dilatedBackwardMask backwardConsistency:consistencyCopy timeScale:backwardConsistencyCopy destination:destinationCopy];
   }
 
   else
   {
-    [(Backwarp *)self->_backwarp encodeFlowSplattingWarpToCommandBuffer:v31 source:v27 flow:v16 timeScale:self->_firstWarpedTexture destination:v28];
-    *&v29 = 1.0 - a8;
-    [(Backwarp *)self->_backwarp encodeFlowSplattingWarpToCommandBuffer:v31 source:self->_secondFeatures.features[1] flow:v17 timeScale:self->_secondWarpedTexture destination:v29];
-    *&v30 = a8;
-    [(Forwarp *)self->_forwarp encodeBlendWarpedFeaturesWithErrorMaskToCommandBuffer:v31 first:self->_firstWarpedTexture second:self->_secondWarpedTexture forwardErrorMap:self->_dilatedForwardMask backwardErrorMap:self->_dilatedBackwardMask forwarpConsistency:v18 backwardConsistency:v30 timeScale:v19 destination:v20];
+    [(Backwarp *)self->_backwarp encodeFlowSplattingWarpToCommandBuffer:bufferCopy source:v27 flow:flowCopy timeScale:self->_firstWarpedTexture destination:v28];
+    *&v29 = 1.0 - scale;
+    [(Backwarp *)self->_backwarp encodeFlowSplattingWarpToCommandBuffer:bufferCopy source:self->_secondFeatures.features[1] flow:backwardFlowCopy timeScale:self->_secondWarpedTexture destination:v29];
+    *&v30 = scale;
+    [(Forwarp *)self->_forwarp encodeBlendWarpedFeaturesWithErrorMaskToCommandBuffer:bufferCopy first:self->_firstWarpedTexture second:self->_secondWarpedTexture forwardErrorMap:self->_dilatedForwardMask backwardErrorMap:self->_dilatedBackwardMask forwarpConsistency:consistencyCopy backwardConsistency:v30 timeScale:backwardConsistencyCopy destination:destinationCopy];
   }
 
-  [(Pyramid *)self->_pyramid encodeLayerBlendToCommandBuffer:v31 baseLayer:self->_filteredDCTexture toDestination:v20];
+  [(Pyramid *)self->_pyramid encodeLayerBlendToCommandBuffer:bufferCopy baseLayer:self->_filteredDCTexture toDestination:destinationCopy];
 }
 
-- (void)upscaleForwardFlow:(__CVBuffer *)a3 backwardFlow:(__CVBuffer *)a4 upscaledForwardFlow:(__CVBuffer *)a5 upscaledBackwardFlow:(__CVBuffer *)a6
+- (void)upscaleForwardFlow:(__CVBuffer *)flow backwardFlow:(__CVBuffer *)backwardFlow upscaledForwardFlow:(__CVBuffer *)forwardFlow upscaledBackwardFlow:(__CVBuffer *)upscaledBackwardFlow
 {
-  v15 = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
-  v11 = createTexturesFromCVPixelBuffer(a3, self->_device, 1, 2uLL);
-  v12 = createTexturesFromCVPixelBuffer(a4, self->_device, 1, 2uLL);
-  v13 = createTexturesFromCVPixelBuffer(a5, self->_device, 1, 2uLL);
-  v14 = createTexturesFromCVPixelBuffer(a6, self->_device, 1, 2uLL);
-  [(Backwarp *)self->_backwarp encodeUpscaleFlowToCommandBuffer:v15 source:v11 destination:v13];
-  [(Backwarp *)self->_backwarp encodeUpscaleFlowToCommandBuffer:v15 source:v12 destination:v14];
-  [v15 commit];
-  [v15 waitUntilScheduled];
+  commandBuffer = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
+  v11 = createTexturesFromCVPixelBuffer(flow, self->_device, 1, 2uLL);
+  v12 = createTexturesFromCVPixelBuffer(backwardFlow, self->_device, 1, 2uLL);
+  v13 = createTexturesFromCVPixelBuffer(forwardFlow, self->_device, 1, 2uLL);
+  v14 = createTexturesFromCVPixelBuffer(upscaledBackwardFlow, self->_device, 1, 2uLL);
+  [(Backwarp *)self->_backwarp encodeUpscaleFlowToCommandBuffer:commandBuffer source:v11 destination:v13];
+  [(Backwarp *)self->_backwarp encodeUpscaleFlowToCommandBuffer:commandBuffer source:v12 destination:v14];
+  [commandBuffer commit];
+  [commandBuffer waitUntilScheduled];
 }
 
 @end

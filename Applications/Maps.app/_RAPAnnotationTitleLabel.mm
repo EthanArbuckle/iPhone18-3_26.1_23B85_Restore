@@ -1,19 +1,19 @@
 @interface _RAPAnnotationTitleLabel
-- (void)drawTextInRect:(CGRect)a3;
+- (void)drawTextInRect:(CGRect)rect;
 @end
 
 @implementation _RAPAnnotationTitleLabel
 
-- (void)drawTextInRect:(CGRect)a3
+- (void)drawTextInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   [(_RAPAnnotationTitleLabel *)self shadowOffset];
   v9 = v8;
   v11 = v10;
-  v12 = [(_RAPAnnotationTitleLabel *)self textColor];
+  textColor = [(_RAPAnnotationTitleLabel *)self textColor];
   CurrentContext = UIGraphicsGetCurrentContext();
   CGContextSetLineWidth(CurrentContext, 3.0);
   CGContextSetLineJoin(CurrentContext, kCGLineJoinRound);
@@ -25,7 +25,7 @@
   v16.super_class = _RAPAnnotationTitleLabel;
   [(_RAPAnnotationTitleLabel *)&v16 drawTextInRect:x, y, width, height];
   CGContextSetTextDrawingMode(CurrentContext, kCGTextFill);
-  [(_RAPAnnotationTitleLabel *)self setTextColor:v12];
+  [(_RAPAnnotationTitleLabel *)self setTextColor:textColor];
   [(_RAPAnnotationTitleLabel *)self setShadowOffset:0.0, 0.0];
   v15.receiver = self;
   v15.super_class = _RAPAnnotationTitleLabel;

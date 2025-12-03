@@ -1,6 +1,6 @@
 @interface AKEllipseLayer
 - (AKEllipseLayer)init;
-- (void)setBounds:(CGRect)a3;
+- (void)setBounds:(CGRect)bounds;
 @end
 
 @implementation AKEllipseLayer
@@ -28,12 +28,12 @@
   return v3;
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v9.receiver = self;
   v9.super_class = AKEllipseLayer;
   [(AKEllipseLayer *)&v9 setBounds:?];

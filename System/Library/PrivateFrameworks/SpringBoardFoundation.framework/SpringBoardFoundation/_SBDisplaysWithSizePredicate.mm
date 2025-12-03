@@ -1,20 +1,20 @@
 @interface _SBDisplaysWithSizePredicate
-+ (id)fromDefaultsKey:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)matchesDisplay:(id)a3;
-- (_SBDisplaysWithSizePredicate)initWithDiagonal:(unint64_t)a3 pixelSize:(CGSize)a4;
-- (_SBDisplaysWithSizePredicate)initWithDisplay:(id)a3;
++ (id)fromDefaultsKey:(id)key;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)matchesDisplay:(id)display;
+- (_SBDisplaysWithSizePredicate)initWithDiagonal:(unint64_t)diagonal pixelSize:(CGSize)size;
+- (_SBDisplaysWithSizePredicate)initWithDisplay:(id)display;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation _SBDisplaysWithSizePredicate
 
-- (_SBDisplaysWithSizePredicate)initWithDiagonal:(unint64_t)a3 pixelSize:(CGSize)a4
+- (_SBDisplaysWithSizePredicate)initWithDiagonal:(unint64_t)diagonal pixelSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  if (a4.width == *MEMORY[0x1E695F060] && a4.height == *(MEMORY[0x1E695F060] + 8))
+  height = size.height;
+  width = size.width;
+  if (size.width == *MEMORY[0x1E695F060] && size.height == *(MEMORY[0x1E695F060] + 8))
   {
     [_SBDisplaysWithSizePredicate initWithDiagonal:pixelSize:];
   }
@@ -24,7 +24,7 @@
   result = [(SBDisplayModePredicate *)&v10 _init];
   if (result)
   {
-    result->_diagonal = a3;
+    result->_diagonal = diagonal;
     result->_nativePixelSize.width = width;
     result->_nativePixelSize.height = height;
   }
@@ -32,33 +32,33 @@
   return result;
 }
 
-- (_SBDisplaysWithSizePredicate)initWithDisplay:(id)a3
+- (_SBDisplaysWithSizePredicate)initWithDisplay:(id)display
 {
-  v4 = a3;
-  if (!v4)
+  displayCopy = display;
+  if (!displayCopy)
   {
     [_SBDisplaysWithSizePredicate initWithDisplay:];
   }
 
-  v5 = [v4 CADisplay];
-  v6 = [v5 immutableCopy];
+  cADisplay = [displayCopy CADisplay];
+  immutableCopy = [cADisplay immutableCopy];
 
-  [v6 physicalSize];
+  [immutableCopy physicalSize];
   v9 = vcvtad_u64_f64(hypot(v7, v8));
   v10 = objc_alloc_init(MEMORY[0x1E6979340]);
-  [v6 nativeSize];
+  [immutableCopy nativeSize];
   [v10 setResolution:?];
-  v11 = [v6 preferredModeWithCriteria:v10];
+  v11 = [immutableCopy preferredModeWithCriteria:v10];
   v12 = -[_SBDisplaysWithSizePredicate initWithDiagonal:pixelSize:](self, "initWithDiagonal:pixelSize:", v9, [v11 width], objc_msgSend(v11, "height"));
 
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  v6 = v4;
+  v6 = equalCopy;
   if (v5)
   {
     if (objc_opt_isKindOfClass())
@@ -85,38 +85,38 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E698E6B8] builder];
-  v4 = [v3 appendUnsignedInteger:self->_diagonal];
-  v5 = [v3 appendCGSize:{self->_nativePixelSize.width, self->_nativePixelSize.height}];
-  v6 = [v3 hash];
+  builder = [MEMORY[0x1E698E6B8] builder];
+  v4 = [builder appendUnsignedInteger:self->_diagonal];
+  v5 = [builder appendCGSize:{self->_nativePixelSize.width, self->_nativePixelSize.height}];
+  v6 = [builder hash];
 
   return v6;
 }
 
-- (BOOL)matchesDisplay:(id)a3
+- (BOOL)matchesDisplay:(id)display
 {
-  v3 = a3;
-  if (!v3)
+  displayCopy = display;
+  if (!displayCopy)
   {
     [_SBDisplaysWithSizePredicate matchesDisplay:];
   }
 
-  v4 = [v3 CADisplay];
-  v5 = [v4 uniqueId];
+  cADisplay = [displayCopy CADisplay];
+  uniqueId = [cADisplay uniqueId];
 
-  if (v5)
+  if (uniqueId)
   {
-    v6 = [v3 CADisplay];
-    v7 = [v6 immutableCopy];
+    cADisplay2 = [displayCopy CADisplay];
+    immutableCopy = [cADisplay2 immutableCopy];
 
     v8 = objc_alloc_init(MEMORY[0x1E6979340]);
-    v9 = [v7 preferredModeWithCriteria:v8];
+    v9 = [immutableCopy preferredModeWithCriteria:v8];
 
     [v9 width];
     [v9 height];
     if (BSFloatEqualToFloat() && BSFloatEqualToFloat())
     {
-      [v7 physicalSize];
+      [immutableCopy physicalSize];
       hypot(v10, v11);
       v12 = BSFloatEqualToFloat();
     }
@@ -135,21 +135,21 @@
   return v12;
 }
 
-+ (id)fromDefaultsKey:(id)a3
++ (id)fromDefaultsKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"^\\(\\.%@ \\[(\\d+)\\] \\[(\\d+)\\s+(\\d+)\\]\\)$", @"matchingDisplays"];
   v6 = [MEMORY[0x1E696AE70] regularExpressionWithPattern:v5 options:0 error:0];
-  v7 = [v6 firstMatchInString:v4 options:0 range:{0, objc_msgSend(v4, "length")}];
+  v7 = [v6 firstMatchInString:keyCopy options:0 range:{0, objc_msgSend(keyCopy, "length")}];
   v8 = v7;
   if (v7)
   {
     v9 = [v7 rangeAtIndex:1];
-    v11 = [v4 substringWithRange:{v9, v10}];
+    v11 = [keyCopy substringWithRange:{v9, v10}];
     v12 = [v8 rangeAtIndex:2];
-    v14 = [v4 substringWithRange:{v12, v13}];
+    v14 = [keyCopy substringWithRange:{v12, v13}];
     v15 = [v8 rangeAtIndex:3];
-    v17 = [v4 substringWithRange:{v15, v16}];
+    v17 = [keyCopy substringWithRange:{v15, v16}];
     v18 = v17;
     if (v11)
     {
@@ -170,7 +170,7 @@
     else
     {
       v23 = *MEMORY[0x1E695F060];
-      v26 = [[a1 alloc] initWithDiagonal:objc_msgSend(v11 pixelSize:{"integerValue", v23, v24), v21, v22}];
+      v26 = [[self alloc] initWithDiagonal:objc_msgSend(v11 pixelSize:{"integerValue", v23, v24), v21, v22}];
     }
   }
 

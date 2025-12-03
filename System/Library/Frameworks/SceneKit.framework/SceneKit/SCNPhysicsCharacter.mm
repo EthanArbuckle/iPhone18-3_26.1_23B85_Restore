@@ -1,25 +1,25 @@
 @interface SCNPhysicsCharacter
-- (SCNPhysicsCharacter)initWithCharacter:(id)a3;
-- (void)_addToPhysicsWorld:(id)a3 definition:(id *)a4;
-- (void)_handleCreateIfNeeded:(BOOL)a3;
+- (SCNPhysicsCharacter)initWithCharacter:(id)character;
+- (void)_addToPhysicsWorld:(id)world definition:(id *)definition;
+- (void)_handleCreateIfNeeded:(BOOL)needed;
 - (void)_update;
 - (void)dealloc;
 - (void)jump;
-- (void)setJumpSpeed:(double)a3;
-- (void)setVelocity:(double)a3;
-- (void)setWalkingDirection:(SCNVector3)a3;
+- (void)setJumpSpeed:(double)speed;
+- (void)setVelocity:(double)velocity;
+- (void)setWalkingDirection:(SCNVector3)direction;
 @end
 
 @implementation SCNPhysicsCharacter
 
-- (SCNPhysicsCharacter)initWithCharacter:(id)a3
+- (SCNPhysicsCharacter)initWithCharacter:(id)character
 {
   v6.receiver = self;
   v6.super_class = SCNPhysicsCharacter;
   v4 = [(SCNPhysicsCharacter *)&v6 init];
   if (v4)
   {
-    v4->_definition.characterBody = a3;
+    v4->_definition.characterBody = character;
     v4->_definition.velocity = 0.0;
   }
 
@@ -57,20 +57,20 @@
   [(SCNPhysicsCharacter *)&v7 dealloc];
 }
 
-- (void)setWalkingDirection:(SCNVector3)a3
+- (void)setWalkingDirection:(SCNVector3)direction
 {
-  self->_definition.direction = a3;
+  self->_definition.direction = direction;
   velocity = self->_definition.velocity;
-  y = a3.y;
-  *&v5 = vcvt_f32_f64(vmulq_n_f64(vcvtq_f64_f32(*&a3.x), velocity));
-  *&v6 = velocity * a3.z;
+  y = direction.y;
+  *&v5 = vcvt_f32_f64(vmulq_n_f64(vcvtq_f64_f32(*&direction.x), velocity));
+  *&v6 = velocity * direction.z;
   *(&v5 + 1) = v6;
   world = self->_world;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3321888768;
   v8[2] = __43__SCNPhysicsCharacter_setWalkingDirection___block_invoke;
   v8[3] = &unk_282DC3938;
-  v10 = self;
+  selfCopy = self;
   v9 = v5;
   [(SCNPhysicsWorld *)world _postCommandWithBlock:v8];
 }
@@ -108,18 +108,18 @@ uint64_t __27__SCNPhysicsCharacter_jump__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setVelocity:(double)a3
+- (void)setVelocity:(double)velocity
 {
-  self->_definition.velocity = a3;
-  *&v3 = vcvt_f32_f64(vmulq_n_f64(vcvtq_f64_f32(*&self->_definition.direction.x), a3));
-  *&v4 = self->_definition.direction.z * a3;
+  self->_definition.velocity = velocity;
+  *&v3 = vcvt_f32_f64(vmulq_n_f64(vcvtq_f64_f32(*&self->_definition.direction.x), velocity));
+  *&v4 = self->_definition.direction.z * velocity;
   *(&v3 + 1) = v4;
   world = self->_world;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3321888768;
   v6[2] = __35__SCNPhysicsCharacter_setVelocity___block_invoke;
   v6[3] = &unk_282DC3938;
-  v8 = self;
+  selfCopy = self;
   v7 = v3;
   [(SCNPhysicsWorld *)world _postCommandWithBlock:v6];
 }
@@ -135,9 +135,9 @@ uint64_t __35__SCNPhysicsCharacter_setVelocity___block_invoke(uint64_t result)
   return result;
 }
 
-- (void)setJumpSpeed:(double)a3
+- (void)setJumpSpeed:(double)speed
 {
-  self->_definition.jumpSpeed = a3;
+  self->_definition.jumpSpeed = speed;
   world = self->_world;
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
@@ -149,7 +149,7 @@ uint64_t __35__SCNPhysicsCharacter_setVelocity___block_invoke(uint64_t result)
 
 - (void)_update
 {
-  v3 = [(SCNPhysicsBody *)self->_definition.characterBody _owner];
+  _owner = [(SCNPhysicsBody *)self->_definition.characterBody _owner];
   ghostObject = self->_ghostObject;
   v5 = ghostObject[1];
   v6 = ghostObject[2];
@@ -169,15 +169,15 @@ uint64_t __35__SCNPhysicsCharacter_setVelocity___block_invoke(uint64_t result)
   v18 = v8.i64[0];
   v19 = v8.i32[2];
   v20 = 1065353216;
-  [v3 setWorldTransform:&v11];
+  [_owner setWorldTransform:&v11];
 }
 
-- (void)_addToPhysicsWorld:(id)a3 definition:(id *)a4
+- (void)_addToPhysicsWorld:(id)world definition:(id *)definition
 {
   world = self->_world;
   if (world)
   {
-    v7 = world == a3;
+    v7 = world == world;
   }
 
   else
@@ -194,12 +194,12 @@ uint64_t __35__SCNPhysicsCharacter_setVelocity___block_invoke(uint64_t result)
     }
   }
 
-  self->_world = a3;
+  self->_world = world;
   [(SCNPhysicsCharacter *)self _handleCreateIfNeeded:1];
-  v9 = [(SCNPhysicsWorld *)self->_world _handle];
+  _handle = [(SCNPhysicsWorld *)self->_world _handle];
   if (self->_characterController)
   {
-    v10 = v9 == 0;
+    v10 = _handle == 0;
   }
 
   else
@@ -209,8 +209,8 @@ uint64_t __35__SCNPhysicsCharacter_setVelocity___block_invoke(uint64_t result)
 
   if (!v10)
   {
-    v11 = v9;
-    (*(*v9 + 264))(v9);
+    v11 = _handle;
+    (*(*_handle + 264))(_handle);
     if (self->_ghostObject)
     {
       [(SCNPhysicsWorld *)self->_world _allowGhostObjects];
@@ -219,15 +219,15 @@ uint64_t __35__SCNPhysicsCharacter_setVelocity___block_invoke(uint64_t result)
   }
 }
 
-- (void)_handleCreateIfNeeded:(BOOL)a3
+- (void)_handleCreateIfNeeded:(BOOL)needed
 {
-  if (a3 && !self->_characterController)
+  if (needed && !self->_characterController)
   {
-    v4 = [(SCNPhysicsBody *)self->_definition.characterBody _handle];
-    if (v4)
+    _handle = [(SCNPhysicsBody *)self->_definition.characterBody _handle];
+    if (_handle)
     {
-      v5 = v4;
-      btCollisionObject::setActivationState(v4, 4);
+      v5 = _handle;
+      btCollisionObject::setActivationState(_handle, 4);
       if ((*(v5 + 232) & 2) == 0)
       {
         operator new();

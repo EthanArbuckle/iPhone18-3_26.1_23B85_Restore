@@ -1,13 +1,13 @@
 @interface VRXFeedbackConverter
-+ (id)convertFeedbackToVRX:(id)a3;
++ (id)convertFeedbackToVRX:(id)x;
 - (VRXFeedbackConverter)init;
 @end
 
 @implementation VRXFeedbackConverter
 
-+ (id)convertFeedbackToVRX:(id)a3
++ (id)convertFeedbackToVRX:(id)x
 {
-  v3 = a3;
+  xCopy = x;
   v4 = _sSo27SFCommandEngagementFeedbackC16SiriUIFoundationE10asVRXEventSo23VRXInstrumentationEventCyF_0();
 
   return v4;

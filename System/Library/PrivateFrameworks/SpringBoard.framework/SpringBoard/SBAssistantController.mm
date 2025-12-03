@@ -1,93 +1,93 @@
 @interface SBAssistantController
 + (BOOL)isVisible;
-+ (BOOL)shouldBreadcrumbLaunchedApplicationWithBundleIdentifier:(id)a3;
++ (BOOL)shouldBreadcrumbLaunchedApplicationWithBundleIdentifier:(id)identifier;
 + (SBAssistantController)sharedInstance;
-+ (id)_activationSettingsWithPunchoutStyle:(int64_t)a3;
++ (id)_activationSettingsWithPunchoutStyle:(int64_t)style;
 + (id)defaultActivationSettings;
 + (id)sharedInstanceIfExists;
 + (void)bootstrapServices;
 + (void)sharedInstance;
 + (void)sharedInstanceIfExists;
-- (BOOL)_isLocationTCCAlert:(id)a3;
-- (BOOL)commandeerCaptureDropletPreludeForVisionInvocation:(id)a3 windowScene:(id)a4;
+- (BOOL)_isLocationTCCAlert:(id)alert;
+- (BOOL)commandeerCaptureDropletPreludeForVisionInvocation:(id)invocation windowScene:(id)scene;
 - (BOOL)contentObscuresEmbeddedDisplayScreen;
 - (BOOL)isAmbientActive;
-- (BOOL)isVisibleInWindowScene:(id)a3;
-- (BOOL)requestPasscodeUnlockWithCompletion:(id)a3;
-- (BOOL)shouldDismissSiriForRemoteTransientOverlayFromBundleIdentifier:(id)a3;
-- (BOOL)shouldShowSystemVolumeHUDForCategory:(id)a3;
-- (BOOL)siriPresentation:(id)a3 requestsDeviceUnlockWithPassword:(id)a4;
+- (BOOL)isVisibleInWindowScene:(id)scene;
+- (BOOL)requestPasscodeUnlockWithCompletion:(id)completion;
+- (BOOL)shouldDismissSiriForRemoteTransientOverlayFromBundleIdentifier:(id)identifier;
+- (BOOL)shouldShowSystemVolumeHUDForCategory:(id)category;
+- (BOOL)siriPresentation:(id)presentation requestsDeviceUnlockWithPassword:(id)password;
 - (SBAssistantController)init;
 - (SBIdleTimerCoordinating)_idleTimerCoordinator;
-- (id)_currentSessionCreatingIfNeededWithFailureExplanation:(id *)a3;
+- (id)_currentSessionCreatingIfNeededWithFailureExplanation:(id *)explanation;
 - (id)_init;
 - (id)_uiSceneTracker;
 - (id)alwaysOnLiveRenderingAssertionRequested;
-- (id)sessionForWindowScene:(id)a3;
+- (id)sessionForWindowScene:(id)scene;
 - (id)systemApertureFramesIncludingBanners;
 - (int64_t)idleTimerDuration;
-- (void)_bioAuthenticated:(id)a3;
-- (void)_deviceBlocked:(id)a3;
-- (void)_dismissAssistantViewIfNecessaryWithAnimation:(int64_t)a3 factory:(id)a4 dismissalOptions:(id)a5 completion:(id)a6;
-- (void)_dismissAssistantViewIfNecessaryWithAnimation:(int64_t)a3 factory:(id)a4 dismissalOptions:(id)a5 windowScene:(id)a6 completion:(id)a7;
+- (void)_bioAuthenticated:(id)authenticated;
+- (void)_deviceBlocked:(id)blocked;
+- (void)_dismissAssistantViewIfNecessaryWithAnimation:(int64_t)animation factory:(id)factory dismissalOptions:(id)options completion:(id)completion;
+- (void)_dismissAssistantViewIfNecessaryWithAnimation:(int64_t)animation factory:(id)factory dismissalOptions:(id)options windowScene:(id)scene completion:(id)completion;
 - (void)_noteDeviceLockedOrBlocked;
-- (void)_remoteLocked:(id)a3;
-- (void)_setUnlockedDevice:(BOOL)a3;
-- (void)_setVisible:(BOOL)a3;
-- (void)_systemApertureFrameDidChange:(id)a3;
+- (void)_remoteLocked:(id)locked;
+- (void)_setUnlockedDevice:(BOOL)device;
+- (void)_setVisible:(BOOL)visible;
+- (void)_systemApertureFrameDidChange:(id)change;
 - (void)_systemAssistantExperienceAvailabilityDidChange;
 - (void)_systemAssistantExperienceAvailabilityNotificationReceived;
-- (void)_turnScreenOffWithCompletion:(id)a3;
-- (void)_uiLocked:(id)a3;
+- (void)_turnScreenOffWithCompletion:(id)completion;
+- (void)_uiLocked:(id)locked;
 - (void)_updateControlWidgetEligibility;
 - (void)_updateHomeAffordanceDoubleTapGestureEnabled;
 - (void)_updateSystemAssistantExperienceEnabled;
 - (void)_updateSystemAssistantExperiencePersistentSiriEnabled;
 - (void)_updateVisualIntelligenceControlEnabled;
 - (void)_updateVisualSearchEnabled;
-- (void)_updateWindowLevelForScene:(id)a3;
+- (void)_updateWindowLevelForScene:(id)scene;
 - (void)activationEligibilityDidChange;
-- (void)addObserver:(id)a3;
-- (void)alertItemsController:(id)a3 didActivateAlertItem:(id)a4;
-- (void)alertItemsController:(id)a3 didDeactivateAlertItem:(id)a4 forReason:(int)a5;
-- (void)applicationProcessDidChangeState:(id)a3;
-- (void)assistantSession:(id)a3 didChangePresentationInWindowScene:(id)a4;
-- (void)assistantSession:(id)a3 requestsDismissalWithDismissalOptions:(id)a4;
-- (void)assistantSession:(id)a3 viewDidAppearInWindowScene:(id)a4;
-- (void)assistantSession:(id)a3 viewDidDisappearInWindowScene:(id)a4;
-- (void)assistantSession:(id)a3 viewWillAppearInWindowScene:(id)a4;
-- (void)assistantSession:(id)a3 viewWillDisappearInWindowScene:(id)a4;
-- (void)bannerManager:(id)a3 containerWillTransitionToSize:(CGSize)a4 withTransitionCoordinator:(id)a5;
-- (void)bannerManager:(id)a3 presentable:(id)a4 willTransitionToSize:(CGSize)a5 withTransitionCoordinator:(id)a6;
-- (void)bannerManager:(id)a3 willDismissPresentable:(id)a4 withTransitionCoordinator:(id)a5 userInfo:(id)a6;
-- (void)bannerManager:(id)a3 willPresentPresentable:(id)a4 withTransitionCoordinator:(id)a5 userInfo:(id)a6;
+- (void)addObserver:(id)observer;
+- (void)alertItemsController:(id)controller didActivateAlertItem:(id)item;
+- (void)alertItemsController:(id)controller didDeactivateAlertItem:(id)item forReason:(int)reason;
+- (void)applicationProcessDidChangeState:(id)state;
+- (void)assistantSession:(id)session didChangePresentationInWindowScene:(id)scene;
+- (void)assistantSession:(id)session requestsDismissalWithDismissalOptions:(id)options;
+- (void)assistantSession:(id)session viewDidAppearInWindowScene:(id)scene;
+- (void)assistantSession:(id)session viewDidDisappearInWindowScene:(id)scene;
+- (void)assistantSession:(id)session viewWillAppearInWindowScene:(id)scene;
+- (void)assistantSession:(id)session viewWillDisappearInWindowScene:(id)scene;
+- (void)bannerManager:(id)manager containerWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)bannerManager:(id)manager presentable:(id)presentable willTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)bannerManager:(id)manager willDismissPresentable:(id)presentable withTransitionCoordinator:(id)coordinator userInfo:(id)info;
+- (void)bannerManager:(id)manager willPresentPresentable:(id)presentable withTransitionCoordinator:(id)coordinator userInfo:(id)info;
 - (void)dealloc;
-- (void)deviceUnlockRequestedWithPassword:(id)a3;
-- (void)dismissAssistantViewIfNecessaryForGestureTranslation:(CGPoint)a3 velocity:(CGPoint)a4 windowScene:(id)a5;
-- (void)dismissAssistantViewInEverySceneIfNecessaryForGestureTranslation:(CGPoint)a3 velocity:(CGPoint)a4;
-- (void)invalidateSystemApertureAssertionWithReason:(id)a3;
+- (void)deviceUnlockRequestedWithPassword:(id)password;
+- (void)dismissAssistantViewIfNecessaryForGestureTranslation:(CGPoint)translation velocity:(CGPoint)velocity windowScene:(id)scene;
+- (void)dismissAssistantViewInEverySceneIfNecessaryForGestureTranslation:(CGPoint)translation velocity:(CGPoint)velocity;
+- (void)invalidateSystemApertureAssertionWithReason:(id)reason;
 - (void)notifyAssistantOfApplicationTransition;
-- (void)removeObserver:(id)a3;
-- (void)requestTamaleLaunchAnimationLayerProviderWithCompletion:(id)a3;
-- (void)restrictSystemApertureToDefaultLayoutWithReason:(id)a3;
-- (void)setHomeAffordanceDoubleTapGestureEnabled:(BOOL)a3;
-- (void)setSystemAssistantExperienceEnabled:(BOOL)a3;
-- (void)setSystemAssistantExperiencePersistentSiriEnabled:(BOOL)a3;
-- (void)setUISceneTracker:(id)a3;
-- (void)setVisualIntelligenceControlEnabled:(BOOL)a3;
-- (void)setVisualSearchEnabled:(BOOL)a3;
-- (void)settings:(id)a3 changedValueForKey:(id)a4;
-- (void)siriPresentation:(id)a3 acquireElevatedEffectsViewControllerAssertionWithReason:(id)a4 handler:(id)a5;
-- (void)siriPresentation:(id)a3 didUpdateAudioCategoriesDisablingVolumeHUD:(id)a4;
-- (void)siriPresentation:(id)a3 didUpdatePresentationOptions:(id)a4;
-- (void)siriPresentation:(id)a3 isEnabledDidChange:(BOOL)a4;
-- (void)siriPresentation:(id)a3 requestsDismissalOfEffectsViewControllerWithHandler:(id)a4;
-- (void)siriPresentation:(id)a3 requestsDismissalWithOptions:(id)a4 withHandler:(id)a5;
-- (void)siriPresentation:(id)a3 requestsPresentationOfEffectsViewController:(id)a4 withHandler:(id)a5;
-- (void)siriPresentation:(id)a3 requestsPresentationWithOptions:(id)a4 withHandler:(id)a5;
-- (void)siriPresentation:(id)a3 requestsPunchout:(id)a4 withHandler:(id)a5;
-- (void)siriPresentation:(id)a3 willStartHostingSceneWithIdentifier:(id)a4 bundleIdentifier:(id)a5;
-- (void)siriPresentation:(id)a3 willStopHostingSceneWithIdentifier:(id)a4 bundleIdentifier:(id)a5;
+- (void)removeObserver:(id)observer;
+- (void)requestTamaleLaunchAnimationLayerProviderWithCompletion:(id)completion;
+- (void)restrictSystemApertureToDefaultLayoutWithReason:(id)reason;
+- (void)setHomeAffordanceDoubleTapGestureEnabled:(BOOL)enabled;
+- (void)setSystemAssistantExperienceEnabled:(BOOL)enabled;
+- (void)setSystemAssistantExperiencePersistentSiriEnabled:(BOOL)enabled;
+- (void)setUISceneTracker:(id)tracker;
+- (void)setVisualIntelligenceControlEnabled:(BOOL)enabled;
+- (void)setVisualSearchEnabled:(BOOL)enabled;
+- (void)settings:(id)settings changedValueForKey:(id)key;
+- (void)siriPresentation:(id)presentation acquireElevatedEffectsViewControllerAssertionWithReason:(id)reason handler:(id)handler;
+- (void)siriPresentation:(id)presentation didUpdateAudioCategoriesDisablingVolumeHUD:(id)d;
+- (void)siriPresentation:(id)presentation didUpdatePresentationOptions:(id)options;
+- (void)siriPresentation:(id)presentation isEnabledDidChange:(BOOL)change;
+- (void)siriPresentation:(id)presentation requestsDismissalOfEffectsViewControllerWithHandler:(id)handler;
+- (void)siriPresentation:(id)presentation requestsDismissalWithOptions:(id)options withHandler:(id)handler;
+- (void)siriPresentation:(id)presentation requestsPresentationOfEffectsViewController:(id)controller withHandler:(id)handler;
+- (void)siriPresentation:(id)presentation requestsPresentationWithOptions:(id)options withHandler:(id)handler;
+- (void)siriPresentation:(id)presentation requestsPunchout:(id)punchout withHandler:(id)handler;
+- (void)siriPresentation:(id)presentation willStartHostingSceneWithIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier;
+- (void)siriPresentation:(id)presentation willStopHostingSceneWithIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier;
 @end
 
 @implementation SBAssistantController
@@ -95,9 +95,9 @@
 + (BOOL)isVisible
 {
   v2 = +[SBAssistantController sharedInstanceIfExists];
-  v3 = [v2 isVisible];
+  isVisible = [v2 isVisible];
 
-  return v3;
+  return isVisible;
 }
 
 + (id)sharedInstanceIfExists
@@ -123,9 +123,9 @@
   if (!__shared)
   {
     kdebug_trace();
-    v3 = [[SBAssistantController alloc] _init];
+    _init = [[SBAssistantController alloc] _init];
     v4 = __shared;
-    __shared = v3;
+    __shared = _init;
 
     kdebug_trace();
     v2 = __shared;
@@ -136,8 +136,8 @@
 
 - (SBAssistantController)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"SBAssistantController.m" lineNumber:186 description:@"-init is not allowed on SBAssistantController"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SBAssistantController.m" lineNumber:186 description:@"-init is not allowed on SBAssistantController"];
 
   return 0;
 }
@@ -176,8 +176,8 @@
       gestureConfiguration = v2->_gestureConfiguration;
       v2->_gestureConfiguration = v12;
 
-      v14 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v14 addObserver:v2 selector:sel__systemAssistantExperienceAvailabilityNotificationReceived name:*MEMORY[0x277CEF110] object:0];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter addObserver:v2 selector:sel__systemAssistantExperienceAvailabilityNotificationReceived name:*MEMORY[0x277CEF110] object:0];
 
       DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
       CFNotificationCenterAddObserver(DarwinNotifyCenter, v2, _SBAssistantControllerPreferencesDidChange, *MEMORY[0x277CEF5B0], 0, 0);
@@ -190,31 +190,31 @@
 
     [(PTSettings *)v2->_settings addKeyObserver:v2];
     [(SBAssistantController *)v2 _prototypeSettingsChanged];
-    v18 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v18 addObserver:v2 selector:sel__systemApertureFrameDidChange_ name:@"SBSystemApertureLayoutDidChangeNotification" object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v2 selector:sel__systemApertureFrameDidChange_ name:@"SBSystemApertureLayoutDidChangeNotification" object:0];
 
     v19 = +[SBAlertItemsController sharedInstance];
     [v19 addObserver:v2];
 
-    v20 = [SBApp bannerManager];
-    [v20 addTransitionObserver:v2];
+    bannerManager = [SBApp bannerManager];
+    [bannerManager addTransitionObserver:v2];
 
     v2->_shouldDismissForWorkspaceTransitions = 1;
     v21 = SBLogSiri();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
-      v22 = [(SBAssistantController *)v2 isSystemAssistantExperienceEnabled];
-      v23 = [(SBAssistantController *)v2 isSystemAssistantExperiencePersistentSiriEnabled];
-      v24 = [(SBAssistantController *)v2 isHomeAffordanceDoubleTapGestureEnabled];
-      v25 = [(SBAssistantController *)v2 isVisualSearchEnabled];
+      isSystemAssistantExperienceEnabled = [(SBAssistantController *)v2 isSystemAssistantExperienceEnabled];
+      isSystemAssistantExperiencePersistentSiriEnabled = [(SBAssistantController *)v2 isSystemAssistantExperiencePersistentSiriEnabled];
+      isHomeAffordanceDoubleTapGestureEnabled = [(SBAssistantController *)v2 isHomeAffordanceDoubleTapGestureEnabled];
+      isVisualSearchEnabled = [(SBAssistantController *)v2 isVisualSearchEnabled];
       *buf = 67109888;
-      v29 = v22;
+      v29 = isSystemAssistantExperienceEnabled;
       v30 = 1024;
-      v31 = v23;
+      v31 = isSystemAssistantExperiencePersistentSiriEnabled;
       v32 = 1024;
-      v33 = v24;
+      v33 = isHomeAffordanceDoubleTapGestureEnabled;
       v34 = 1024;
-      v35 = v25;
+      v35 = isVisualSearchEnabled;
       _os_log_impl(&dword_21ED4E000, v21, OS_LOG_TYPE_DEFAULT, "Initializing with isSystemAssistantExperienceEnabled: %{BOOL}u; isSystemAssistantExperiencePersistentSiriEnabled: %{BOOL}u; isHomeAffordanceDoubleTapGestureEnabled: %{BOOL}u; isVisualSearchEnabled: %{BOOL}u", buf, 0x1Au);
     }
   }
@@ -226,38 +226,38 @@
 {
   if (MGGetBoolAnswer())
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 removeObserver:self];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self];
 
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
     CFNotificationCenterRemoveObserver(DarwinNotifyCenter, self, *MEMORY[0x277CEF5B0], 0);
   }
 
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 removeObserver:self];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 removeObserver:self];
 
   v6 = +[SBAlertItemsController sharedInstance];
   [v6 removeObserver:self];
 
-  v7 = [SBApp bannerManager];
-  [v7 removeTransitionObserver:self];
+  bannerManager = [SBApp bannerManager];
+  [bannerManager removeTransitionObserver:self];
 
   v8.receiver = self;
   v8.super_class = SBAssistantController;
   [(SBAssistantController *)&v8 dealloc];
 }
 
-+ (BOOL)shouldBreadcrumbLaunchedApplicationWithBundleIdentifier:(id)a3
++ (BOOL)shouldBreadcrumbLaunchedApplicationWithBundleIdentifier:(id)identifier
 {
-  v3 = [a1 sharedInstanceIfExists];
-  v4 = v3;
-  if (v3)
+  sharedInstanceIfExists = [self sharedInstanceIfExists];
+  v4 = sharedInstanceIfExists;
+  if (sharedInstanceIfExists)
   {
-    v5 = [v3 currentSession];
-    v6 = [v5 presentationContext];
-    v7 = [v6 hasVisionModality];
+    currentSession = [sharedInstanceIfExists currentSession];
+    presentationContext = [currentSession presentationContext];
+    hasVisionModality = [presentationContext hasVisionModality];
 
-    v8 = v7 ^ 1;
+    v8 = hasVisionModality ^ 1;
   }
 
   else
@@ -276,10 +276,10 @@
   return v2;
 }
 
-- (BOOL)requestPasscodeUnlockWithCompletion:(id)a3
+- (BOOL)requestPasscodeUnlockWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
+  completionCopy = completion;
+  v5 = completionCopy;
   currentSession = self->_currentSession;
   if (currentSession)
   {
@@ -288,7 +288,7 @@
     v9[1] = 3221225472;
     v9[2] = __61__SBAssistantController_requestPasscodeUnlockWithCompletion___block_invoke;
     v9[3] = &unk_2783BA3F8;
-    v10 = v4;
+    v10 = completionCopy;
     [(SiriPresentationSpringBoardMainScreenViewController *)mainScreenSiriPresentation requestPasscodeUnlockWithCompletion:v9];
   }
 
@@ -306,21 +306,21 @@ uint64_t __61__SBAssistantController_requestPasscodeUnlockWithCompletion___block
   return result;
 }
 
-- (void)setSystemAssistantExperienceEnabled:(BOOL)a3
+- (void)setSystemAssistantExperienceEnabled:(BOOL)enabled
 {
   v19 = *MEMORY[0x277D85DE8];
-  if (self->_systemAssistantExperienceEnabled != a3)
+  if (self->_systemAssistantExperienceEnabled != enabled)
   {
-    v3 = a3;
+    enabledCopy = enabled;
     v5 = SBLogSiri();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109120;
-      v18 = v3;
+      v18 = enabledCopy;
       _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "Updating isSystemAssistantExperienceEnabled to %{BOOL}u", buf, 8u);
     }
 
-    self->_systemAssistantExperienceEnabled = v3;
+    self->_systemAssistantExperienceEnabled = enabledCopy;
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
@@ -359,12 +359,12 @@ uint64_t __61__SBAssistantController_requestPasscodeUnlockWithCompletion___block
   }
 }
 
-- (void)setSystemAssistantExperiencePersistentSiriEnabled:(BOOL)a3
+- (void)setSystemAssistantExperiencePersistentSiriEnabled:(BOOL)enabled
 {
   v15 = *MEMORY[0x277D85DE8];
-  if (self->_systemAssistantExperiencePersistentSiriEnabled != a3)
+  if (self->_systemAssistantExperiencePersistentSiriEnabled != enabled)
   {
-    self->_systemAssistantExperiencePersistentSiriEnabled = a3;
+    self->_systemAssistantExperiencePersistentSiriEnabled = enabled;
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
@@ -403,21 +403,21 @@ uint64_t __61__SBAssistantController_requestPasscodeUnlockWithCompletion___block
   }
 }
 
-- (void)setHomeAffordanceDoubleTapGestureEnabled:(BOOL)a3
+- (void)setHomeAffordanceDoubleTapGestureEnabled:(BOOL)enabled
 {
   v19 = *MEMORY[0x277D85DE8];
-  if (self->_homeAffordanceDoubleTapGestureEnabled != a3)
+  if (self->_homeAffordanceDoubleTapGestureEnabled != enabled)
   {
-    v3 = a3;
+    enabledCopy = enabled;
     v5 = SBLogSiri();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109120;
-      v18 = v3;
+      v18 = enabledCopy;
       _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "Updating isHomeAffordanceDoubleTapGestureEnabled to %{BOOL}u", buf, 8u);
     }
 
-    self->_homeAffordanceDoubleTapGestureEnabled = v3;
+    self->_homeAffordanceDoubleTapGestureEnabled = enabledCopy;
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
@@ -456,51 +456,51 @@ uint64_t __61__SBAssistantController_requestPasscodeUnlockWithCompletion___block
   }
 }
 
-- (void)setVisualSearchEnabled:(BOOL)a3
+- (void)setVisualSearchEnabled:(BOOL)enabled
 {
   v7 = *MEMORY[0x277D85DE8];
-  if (self->_visualSearchEnabled != a3)
+  if (self->_visualSearchEnabled != enabled)
   {
-    v3 = a3;
+    enabledCopy = enabled;
     v5 = SBLogSiri();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6[0] = 67109120;
-      v6[1] = v3;
+      v6[1] = enabledCopy;
       _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "Updating isVisualSearchEnabled to %{BOOL}u", v6, 8u);
     }
 
-    self->_visualSearchEnabled = v3;
+    self->_visualSearchEnabled = enabledCopy;
     [(SBAssistantController *)self _updateControlWidgetEligibility];
   }
 }
 
-- (void)setVisualIntelligenceControlEnabled:(BOOL)a3
+- (void)setVisualIntelligenceControlEnabled:(BOOL)enabled
 {
   v7 = *MEMORY[0x277D85DE8];
-  if (self->_visualIntelligenceControlEnabled != a3)
+  if (self->_visualIntelligenceControlEnabled != enabled)
   {
-    v3 = a3;
+    enabledCopy = enabled;
     v5 = SBLogSiri();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6[0] = 67109120;
-      v6[1] = v3;
+      v6[1] = enabledCopy;
       _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "Updating isVisualIntelligenceControlEnabled to %{BOOL}u", v6, 8u);
     }
 
-    self->_visualIntelligenceControlEnabled = v3;
+    self->_visualIntelligenceControlEnabled = enabledCopy;
     [(SBAssistantController *)self _updateControlWidgetEligibility];
   }
 }
 
-- (BOOL)isVisibleInWindowScene:(id)a3
+- (BOOL)isVisibleInWindowScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   if ([(SBAssistantController *)self isVisible])
   {
-    v5 = [(SBAssistantSession *)self->_currentSession windowScene];
-    v6 = v5 == v4;
+    windowScene = [(SBAssistantSession *)self->_currentSession windowScene];
+    v6 = windowScene == sceneCopy;
   }
 
   else
@@ -511,30 +511,30 @@ uint64_t __61__SBAssistantController_requestPasscodeUnlockWithCompletion___block
   return v6;
 }
 
-- (void)dismissAssistantViewInEverySceneIfNecessaryForGestureTranslation:(CGPoint)a3 velocity:(CGPoint)a4
+- (void)dismissAssistantViewInEverySceneIfNecessaryForGestureTranslation:(CGPoint)translation velocity:(CGPoint)velocity
 {
-  if ([objc_opt_class() shouldDismissSiriForGestureTranslation:a3.x velocity:{a3.y, a4.x, a4.y}])
+  if ([objc_opt_class() shouldDismissSiriForGestureTranslation:translation.x velocity:{translation.y, velocity.x, velocity.y}])
   {
 
     [(SBAssistantController *)self dismissAssistantViewInEverySceneIfNecessary];
   }
 }
 
-- (void)_dismissAssistantViewIfNecessaryWithAnimation:(int64_t)a3 factory:(id)a4 dismissalOptions:(id)a5 completion:(id)a6
+- (void)_dismissAssistantViewIfNecessaryWithAnimation:(int64_t)animation factory:(id)factory dismissalOptions:(id)options completion:(id)completion
 {
   v33 = *MEMORY[0x277D85DE8];
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  factoryCopy = factory;
+  optionsCopy = options;
+  completionCopy = completion;
   if (self->_currentSession && !self->_dismissing)
   {
     self->_dismissing = 1;
     v18 = [MEMORY[0x277CF0D38] factoryWithDuration:0.0];
-    if (a3)
+    if (animation)
     {
-      if (v11)
+      if (factoryCopy)
       {
-        v19 = v11;
+        v19 = factoryCopy;
       }
 
       else
@@ -565,8 +565,8 @@ uint64_t __61__SBAssistantController_requestPasscodeUnlockWithCompletion___block
     v24[3] = &unk_2783AB990;
     v24[4] = self;
     v26 = a2;
-    v25 = v13;
-    [(SBAssistantSession *)currentSession endWithAnimationFactory:v18 siriDismissalOptions:v12 completion:v24];
+    v25 = completionCopy;
+    [(SBAssistantSession *)currentSession endWithAnimationFactory:v18 siriDismissalOptions:optionsCopy completion:v24];
   }
 
   else
@@ -586,9 +586,9 @@ uint64_t __61__SBAssistantController_requestPasscodeUnlockWithCompletion___block
       _os_log_impl(&dword_21ED4E000, v14, OS_LOG_TYPE_DEFAULT, "%{public}@ - asked to dismiss siri but it isn't necessary because currentSession: %@ _dismissing: %{public}@", buf, 0x20u);
     }
 
-    if (v13)
+    if (completionCopy)
     {
-      v13[2](v13);
+      completionCopy[2](completionCopy);
     }
   }
 }
@@ -619,54 +619,54 @@ uint64_t __107__SBAssistantController__dismissAssistantViewIfNecessaryWithAnimat
   return result;
 }
 
-- (void)dismissAssistantViewIfNecessaryForGestureTranslation:(CGPoint)a3 velocity:(CGPoint)a4 windowScene:(id)a5
+- (void)dismissAssistantViewIfNecessaryForGestureTranslation:(CGPoint)translation velocity:(CGPoint)velocity windowScene:(id)scene
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3.y;
-  v8 = a3.x;
-  v10 = a5;
+  y = velocity.y;
+  x = velocity.x;
+  v7 = translation.y;
+  v8 = translation.x;
+  sceneCopy = scene;
   if ([objc_opt_class() shouldDismissSiriForGestureTranslation:v8 velocity:{v7, x, y}])
   {
-    [(SBAssistantController *)self dismissAssistantViewIfNecessaryInWindowScene:v10];
+    [(SBAssistantController *)self dismissAssistantViewIfNecessaryInWindowScene:sceneCopy];
   }
 }
 
-- (void)_dismissAssistantViewIfNecessaryWithAnimation:(int64_t)a3 factory:(id)a4 dismissalOptions:(id)a5 windowScene:(id)a6 completion:(id)a7
+- (void)_dismissAssistantViewIfNecessaryWithAnimation:(int64_t)animation factory:(id)factory dismissalOptions:(id)options windowScene:(id)scene completion:(id)completion
 {
-  v17 = a4;
-  v12 = a5;
-  v13 = a7;
+  factoryCopy = factory;
+  optionsCopy = options;
+  completionCopy = completion;
   currentSession = self->_currentSession;
-  v15 = a6;
-  v16 = [(SBAssistantSession *)currentSession windowScene];
+  sceneCopy = scene;
+  windowScene = [(SBAssistantSession *)currentSession windowScene];
 
-  if (v16 == v15)
+  if (windowScene == sceneCopy)
   {
-    [(SBAssistantController *)self _dismissAssistantViewIfNecessaryWithAnimation:a3 factory:v17 dismissalOptions:v12 completion:v13];
+    [(SBAssistantController *)self _dismissAssistantViewIfNecessaryWithAnimation:animation factory:factoryCopy dismissalOptions:optionsCopy completion:completionCopy];
   }
 }
 
-- (BOOL)commandeerCaptureDropletPreludeForVisionInvocation:(id)a3 windowScene:(id)a4
+- (BOOL)commandeerCaptureDropletPreludeForVisionInvocation:(id)invocation windowScene:(id)scene
 {
-  v6 = a3;
+  invocationCopy = invocation;
   currentSession = self->_currentSession;
-  v8 = a4;
-  v9 = [(SBAssistantSession *)currentSession windowScene];
+  sceneCopy = scene;
+  windowScene = [(SBAssistantSession *)currentSession windowScene];
 
-  v10 = v9 == v8 && [(SBAssistantSession *)self->_currentSession commandeerCaptureDropletPreludeForVisionInvocation:v6];
+  v10 = windowScene == sceneCopy && [(SBAssistantSession *)self->_currentSession commandeerCaptureDropletPreludeForVisionInvocation:invocationCopy];
   return v10;
 }
 
-- (BOOL)shouldShowSystemVolumeHUDForCategory:(id)a3
+- (BOOL)shouldShowSystemVolumeHUDForCategory:(id)category
 {
-  v4 = a3;
+  categoryCopy = category;
   audioCategoriesDisablingVolumeHUD = self->_audioCategoriesDisablingVolumeHUD;
   if (audioCategoriesDisablingVolumeHUD)
   {
     if ([(NSSet *)audioCategoriesDisablingVolumeHUD count])
     {
-      v6 = ![(NSSet *)self->_audioCategoriesDisablingVolumeHUD containsObject:v4];
+      v6 = ![(NSSet *)self->_audioCategoriesDisablingVolumeHUD containsObject:categoryCopy];
     }
 
     else
@@ -683,14 +683,14 @@ uint64_t __107__SBAssistantController__dismissAssistantViewIfNecessaryWithAnimat
   return v6;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
-    v9 = v4;
-    v5 = [(NSHashTable *)self->_observers containsObject:v4];
-    v4 = v9;
+    v9 = observerCopy;
+    v5 = [(NSHashTable *)self->_observers containsObject:observerCopy];
+    observerCopy = v9;
     if (!v5)
     {
       observers = self->_observers;
@@ -704,14 +704,14 @@ uint64_t __107__SBAssistantController__dismissAssistantViewIfNecessaryWithAnimat
       }
 
       [(NSHashTable *)observers addObject:v9];
-      v4 = v9;
+      observerCopy = v9;
     }
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
     [(NSHashTable *)self->_observers removeObject:?];
   }
@@ -719,10 +719,10 @@ uint64_t __107__SBAssistantController__dismissAssistantViewIfNecessaryWithAnimat
 
 - (BOOL)contentObscuresEmbeddedDisplayScreen
 {
-  v3 = [(SBAssistantSession *)self->_currentSession windowScene];
-  v4 = [v3 isMainDisplayWindowScene];
+  windowScene = [(SBAssistantSession *)self->_currentSession windowScene];
+  isMainDisplayWindowScene = [windowScene isMainDisplayWindowScene];
 
-  if (!v4)
+  if (!isMainDisplayWindowScene)
   {
     return 0;
   }
@@ -732,12 +732,12 @@ uint64_t __107__SBAssistantController__dismissAssistantViewIfNecessaryWithAnimat
   return [(SBAssistantSession *)currentSession contentObscuresScreen];
 }
 
-- (BOOL)shouldDismissSiriForRemoteTransientOverlayFromBundleIdentifier:(id)a3
+- (BOOL)shouldDismissSiriForRemoteTransientOverlayFromBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   if (objc_opt_respondsToSelector())
   {
-    v5 = [(SiriPresentationSpringBoardMainScreenViewController *)self->_mainScreenSiriPresentation shouldDismissForTransientOverlayForBundleIdentifier:v4];
+    v5 = [(SiriPresentationSpringBoardMainScreenViewController *)self->_mainScreenSiriPresentation shouldDismissForTransientOverlayForBundleIdentifier:identifierCopy];
   }
 
   else
@@ -767,13 +767,13 @@ void __42__SBAssistantController_bootstrapServices__block_invoke()
   bootstrapServices___signalService = v2;
 }
 
-- (id)sessionForWindowScene:(id)a3
+- (id)sessionForWindowScene:(id)scene
 {
   currentSession = self->_currentSession;
-  v5 = a3;
-  v6 = [(SBAssistantSession *)currentSession windowScene];
+  sceneCopy = scene;
+  windowScene = [(SBAssistantSession *)currentSession windowScene];
 
-  if (v6 == v5)
+  if (windowScene == sceneCopy)
   {
     v7 = self->_currentSession;
   }
@@ -786,18 +786,18 @@ void __42__SBAssistantController_bootstrapServices__block_invoke()
   return v7;
 }
 
-+ (id)_activationSettingsWithPunchoutStyle:(int64_t)a3
++ (id)_activationSettingsWithPunchoutStyle:(int64_t)style
 {
   v4 = +[SBAssistantController defaultActivationSettings];
   v5 = v4;
-  if (a3 == 2)
+  if (style == 2)
   {
     v6 = 0;
   }
 
   else
   {
-    if (a3 != 1)
+    if (style != 1)
     {
       goto LABEL_6;
     }
@@ -811,16 +811,16 @@ LABEL_6:
   return v5;
 }
 
-- (void)setUISceneTracker:(id)a3
+- (void)setUISceneTracker:(id)tracker
 {
-  v5 = a3;
+  trackerCopy = tracker;
   uiSceneTracker = self->_uiSceneTracker;
   p_uiSceneTracker = &self->_uiSceneTracker;
-  if (uiSceneTracker != v5)
+  if (uiSceneTracker != trackerCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_uiSceneTracker, a3);
-    v5 = v8;
+    v8 = trackerCopy;
+    objc_storeStrong(p_uiSceneTracker, tracker);
+    trackerCopy = v8;
   }
 }
 
@@ -837,16 +837,16 @@ LABEL_6:
   }
 }
 
-- (void)_setUnlockedDevice:(BOOL)a3
+- (void)_setUnlockedDevice:(BOOL)device
 {
   disableAssertion = self->_disableAssertion;
-  if (a3)
+  if (device)
   {
     if (!disableAssertion)
     {
       v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"Siri unlock SBAssistantController"];
-      v7 = [SBApp authenticationController];
-      v8 = [v7 createKeybagUnlockAssertionWithReason:v6];
+      authenticationController = [SBApp authenticationController];
+      v8 = [authenticationController createKeybagUnlockAssertionWithReason:v6];
       v9 = self->_disableAssertion;
       self->_disableAssertion = v8;
 
@@ -863,43 +863,43 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  self->_unlockedDevice = a3;
+  self->_unlockedDevice = device;
 }
 
-- (void)_setVisible:(BOOL)a3
+- (void)_setVisible:(BOOL)visible
 {
-  if (self->_visible != a3)
+  if (self->_visible != visible)
   {
-    self->_visible = a3;
-    v12 = [MEMORY[0x277CCAB98] defaultCenter];
+    self->_visible = visible;
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     if (self->_visible)
     {
-      [v12 addObserver:self selector:sel__uiLocked_ name:*MEMORY[0x277D67A48] object:0];
-      [v12 addObserver:self selector:sel__deviceBlocked_ name:*MEMORY[0x277D66030] object:0];
-      [v12 addObserver:self selector:sel__remoteLocked_ name:*MEMORY[0x277D67A50] object:0];
-      [v12 addObserver:self selector:sel__uiLocked_ name:@"SBLockScreenUIRelockedNotification" object:0];
-      [v12 addObserver:self selector:sel__uiLocked_ name:@"SBLockScreenUIDidLockNotification" object:0];
-      v5 = [(SBAssistantController *)self _idleTimerCoordinator];
-      v6 = [(SBAssistantController *)self _idleTimerBehavior];
-      v7 = [v5 idleTimerProvider:self didProposeBehavior:v6 forReason:@"SBAssistantControllerVisible"];
+      [defaultCenter addObserver:self selector:sel__uiLocked_ name:*MEMORY[0x277D67A48] object:0];
+      [defaultCenter addObserver:self selector:sel__deviceBlocked_ name:*MEMORY[0x277D66030] object:0];
+      [defaultCenter addObserver:self selector:sel__remoteLocked_ name:*MEMORY[0x277D67A50] object:0];
+      [defaultCenter addObserver:self selector:sel__uiLocked_ name:@"SBLockScreenUIRelockedNotification" object:0];
+      [defaultCenter addObserver:self selector:sel__uiLocked_ name:@"SBLockScreenUIDidLockNotification" object:0];
+      _idleTimerCoordinator = [(SBAssistantController *)self _idleTimerCoordinator];
+      _idleTimerBehavior = [(SBAssistantController *)self _idleTimerBehavior];
+      v7 = [_idleTimerCoordinator idleTimerProvider:self didProposeBehavior:_idleTimerBehavior forReason:@"SBAssistantControllerVisible"];
       idleTimer = self->_idleTimer;
       self->_idleTimer = v7;
     }
 
     else
     {
-      [v12 removeObserver:self name:*MEMORY[0x277D67A48] object:0];
-      [v12 removeObserver:self name:*MEMORY[0x277D66030] object:0];
-      [v12 removeObserver:self name:*MEMORY[0x277D67A50] object:0];
-      [v12 removeObserver:self name:@"SBLockScreenUIRelockedNotification" object:0];
+      [defaultCenter removeObserver:self name:*MEMORY[0x277D67A48] object:0];
+      [defaultCenter removeObserver:self name:*MEMORY[0x277D66030] object:0];
+      [defaultCenter removeObserver:self name:*MEMORY[0x277D67A50] object:0];
+      [defaultCenter removeObserver:self name:@"SBLockScreenUIRelockedNotification" object:0];
       self->_dismissing = 0;
     }
 
-    [v12 postNotificationName:@"SBAssistantVisibilityDidChangeNotification" object:0];
+    [defaultCenter postNotificationName:@"SBAssistantVisibilityDidChangeNotification" object:0];
     v9 = +[SBKeyboardFocusCoordinator sharedInstance];
-    v10 = [(SBAssistantSession *)self->_currentSession windowScene];
+    windowScene = [(SBAssistantSession *)self->_currentSession windowScene];
     v11 = +[SBKeyboardFocusArbitrationReason assistantControllerVisibility];
-    [v9 requestArbitrationForSBWindowScene:v10 forReason:v11];
+    [v9 requestArbitrationForSBWindowScene:windowScene forReason:v11];
   }
 }
 
@@ -919,19 +919,19 @@ LABEL_6:
   [(SBAssistantController *)self _dismissAssistantViewIfNecessaryWithAnimation:0 factory:0 dismissalOptions:v4 completion:0];
 }
 
-- (void)_bioAuthenticated:(id)a3
+- (void)_bioAuthenticated:(id)authenticated
 {
   [(SBAssistantController *)self deviceUnlockRequestedWithPassword:0];
 
   [(SBAssistantController *)self _setUnlockedDevice:1];
 }
 
-- (void)_uiLocked:(id)a3
+- (void)_uiLocked:(id)locked
 {
   v4 = +[SBLockScreenManager sharedInstance];
-  v5 = [v4 isUILocked];
+  isUILocked = [v4 isUILocked];
 
-  if (v5)
+  if (isUILocked)
   {
 
     [(SBAssistantController *)self _noteDeviceLockedOrBlocked];
@@ -940,45 +940,45 @@ LABEL_6:
 
 - (BOOL)isAmbientActive
 {
-  v2 = [SBApp windowSceneManager];
-  v3 = [v2 activeDisplayWindowScene];
-  v4 = [v3 ambientPresentationController];
+  windowSceneManager = [SBApp windowSceneManager];
+  activeDisplayWindowScene = [windowSceneManager activeDisplayWindowScene];
+  ambientPresentationController = [activeDisplayWindowScene ambientPresentationController];
 
-  LOBYTE(v2) = [v4 isPresented];
-  return v2;
+  LOBYTE(windowSceneManager) = [ambientPresentationController isPresented];
+  return windowSceneManager;
 }
 
-- (void)_deviceBlocked:(id)a3
+- (void)_deviceBlocked:(id)blocked
 {
-  v4 = [SBApp lockOutController];
-  v5 = [v4 isBlocked];
+  lockOutController = [SBApp lockOutController];
+  isBlocked = [lockOutController isBlocked];
 
-  if (v5)
+  if (isBlocked)
   {
 
     [(SBAssistantController *)self _noteDeviceLockedOrBlocked];
   }
 }
 
-- (void)_remoteLocked:(id)a3
+- (void)_remoteLocked:(id)locked
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:*MEMORY[0x277D67B30]];
-  v6 = [v5 BOOLValue];
+  userInfo = [locked userInfo];
+  v5 = [userInfo objectForKey:*MEMORY[0x277D67B30]];
+  bOOLValue = [v5 BOOLValue];
 
-  if (v6)
+  if (bOOLValue)
   {
 
     [(SBAssistantController *)self _noteDeviceLockedOrBlocked];
   }
 }
 
-- (void)_updateWindowLevelForScene:(id)a3
+- (void)_updateWindowLevelForScene:(id)scene
 {
-  v9 = a3;
-  v4 = [(SBAssistantSession *)self->_currentSession windowScene];
+  sceneCopy = scene;
+  windowScene = [(SBAssistantSession *)self->_currentSession windowScene];
 
-  if (v4 == v9)
+  if (windowScene == sceneCopy)
   {
     v5 = [(SBWindowLevelAssertionManager *)self->_windowLevelAssertionManager highestPriorityWindowLevelAssertionForWindowScene:?];
     v6 = v5;
@@ -999,11 +999,11 @@ LABEL_6:
   MEMORY[0x2821F9730]();
 }
 
-- (void)applicationProcessDidChangeState:(id)a3
+- (void)applicationProcessDidChangeState:(id)state
 {
-  v4 = [a3 object];
+  object = [state object];
   v5 = objc_opt_class();
-  v6 = v4;
+  v6 = object;
   if (v5)
   {
     if (objc_opt_isKindOfClass())
@@ -1024,20 +1024,20 @@ LABEL_6:
 
   v11 = v7;
 
-  v8 = [v11 bundleIdentifier];
-  v9 = [v8 isEqualToString:@"com.apple.ScreenshotServicesService"];
+  bundleIdentifier = [v11 bundleIdentifier];
+  v9 = [bundleIdentifier isEqualToString:@"com.apple.ScreenshotServicesService"];
 
   if (v9)
   {
-    v10 = [v11 processState];
-    self->_screenShotServicesIsRunning = [v10 taskState] == 2;
+    processState = [v11 processState];
+    self->_screenShotServicesIsRunning = [processState taskState] == 2;
   }
 }
 
-- (void)_turnScreenOffWithCompletion:(id)a3
+- (void)_turnScreenOffWithCompletion:(id)completion
 {
-  v4 = a3;
-  v3 = v4;
+  completionCopy = completion;
+  v3 = completionCopy;
   BSDispatchMain();
 }
 
@@ -1047,10 +1047,10 @@ void __54__SBAssistantController__turnScreenOffWithCompletion___block_invoke(uin
   [v2 sleepAndLockUIFromSource:12 completion:*(a1 + 32)];
 }
 
-- (void)_systemApertureFrameDidChange:(id)a3
+- (void)_systemApertureFrameDidChange:(id)change
 {
-  v4 = [a3 userInfo];
-  v9 = [v4 objectForKey:@"SBSystemApertureFrames"];
+  userInfo = [change userInfo];
+  v9 = [userInfo objectForKey:@"SBSystemApertureFrames"];
 
   if ([v9 count])
   {
@@ -1061,8 +1061,8 @@ void __54__SBAssistantController__turnScreenOffWithCompletion___block_invoke(uin
     if (self->_currentSession)
     {
       mainScreenSiriPresentation = self->_mainScreenSiriPresentation;
-      v8 = [(SBAssistantController *)self systemApertureFramesIncludingBanners];
-      [(SiriPresentationSpringBoardMainScreenViewController *)mainScreenSiriPresentation setSystemApertureFrames:v8];
+      systemApertureFramesIncludingBanners = [(SBAssistantController *)self systemApertureFramesIncludingBanners];
+      [(SiriPresentationSpringBoardMainScreenViewController *)mainScreenSiriPresentation setSystemApertureFrames:systemApertureFramesIncludingBanners];
     }
   }
 }
@@ -1082,22 +1082,22 @@ void __83__SBAssistantController__systemAssistantExperienceAvailabilityNotificat
   [WeakRetained _systemAssistantExperienceAvailabilityDidChange];
 }
 
-- (id)_currentSessionCreatingIfNeededWithFailureExplanation:(id *)a3
+- (id)_currentSessionCreatingIfNeededWithFailureExplanation:(id *)explanation
 {
   currentSession = self->_currentSession;
   if (!currentSession)
   {
-    v6 = [(SBAssistantController *)self _uiSceneTracker];
-    v7 = [v6 activeDisplayWindowScene];
+    _uiSceneTracker = [(SBAssistantController *)self _uiSceneTracker];
+    activeDisplayWindowScene = [_uiSceneTracker activeDisplayWindowScene];
 
-    v8 = [v7 sceneManager];
-    v9 = [v8 policyAggregator];
+    sceneManager = [activeDisplayWindowScene sceneManager];
+    policyAggregator = [sceneManager policyAggregator];
 
-    if ([v9 allowsCapability:5 explanation:a3])
+    if ([policyAggregator allowsCapability:5 explanation:explanation])
     {
-      v10 = [[SBAssistantSession alloc] initWithWindowScene:v7 operationQueue:self->_operationQueue gestureConfiguration:self->_gestureConfiguration];
+      v10 = [[SBAssistantSession alloc] initWithWindowScene:activeDisplayWindowScene operationQueue:self->_operationQueue gestureConfiguration:self->_gestureConfiguration];
       [(SBAssistantSession *)v10 setDelegate:self];
-      [(SBAssistantController *)self _updateWindowLevelForScene:v7];
+      [(SBAssistantController *)self _updateWindowLevelForScene:activeDisplayWindowScene];
       v11 = self->_currentSession;
       self->_currentSession = v10;
     }
@@ -1118,9 +1118,9 @@ void __83__SBAssistantController__systemAssistantExperienceAvailabilityNotificat
 
 - (void)_updateSystemAssistantExperienceEnabled
 {
-  v3 = [MEMORY[0x277CEF4D0] saeAvailable];
+  saeAvailable = [MEMORY[0x277CEF4D0] saeAvailable];
 
-  [(SBAssistantController *)self setSystemAssistantExperienceEnabled:v3];
+  [(SBAssistantController *)self setSystemAssistantExperienceEnabled:saeAvailable];
 }
 
 - (void)_updateSystemAssistantExperiencePersistentSiriEnabled
@@ -1175,19 +1175,19 @@ void __83__SBAssistantController__systemAssistantExperienceAvailabilityNotificat
   [(SBAssistantController *)self setVisualIntelligenceControlEnabled:v3];
 }
 
-- (void)assistantSession:(id)a3 viewWillAppearInWindowScene:(id)a4
+- (void)assistantSession:(id)session viewWillAppearInWindowScene:(id)scene
 {
   v30 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  sceneCopy = scene;
   v6 = SBLogSiri();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     v19 = _SBFLoggingMethodProem();
-    v20 = [v5 _sceneIdentifier];
+    _sceneIdentifier = [sceneCopy _sceneIdentifier];
     *buf = 138543618;
     v27 = v19;
     v28 = 2114;
-    v29 = v20;
+    v29 = _sceneIdentifier;
     _os_log_debug_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_DEBUG, "%{public}@: %{public}@", buf, 0x16u);
   }
 
@@ -1214,7 +1214,7 @@ void __83__SBAssistantController__systemAssistantExperienceAvailabilityNotificat
         v12 = *(*(&v21 + 1) + 8 * v11);
         if (objc_opt_respondsToSelector())
         {
-          [v12 assistantWillAppear:self windowScene:v5];
+          [v12 assistantWillAppear:self windowScene:sceneCopy];
         }
 
         ++v11;
@@ -1227,44 +1227,44 @@ void __83__SBAssistantController__systemAssistantExperienceAvailabilityNotificat
     while (v9);
   }
 
-  v13 = [SBApp bannerManager];
-  [v13 dismissAllBannersInWindowScene:v5 animated:1 reason:@"assistantWillAppear"];
+  bannerManager = [SBApp bannerManager];
+  [bannerManager dismissAllBannersInWindowScene:sceneCopy animated:1 reason:@"assistantWillAppear"];
 
   [(SBAssistantController *)self _setVisible:1];
-  v14 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v14 addObserver:self selector:sel__bioAuthenticated_ name:*MEMORY[0x277D67E88] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__bioAuthenticated_ name:*MEMORY[0x277D67E88] object:0];
 
   v15 = +[SBLockScreenManager sharedInstance];
-  v16 = [v15 bioAuthenticatedWhileMenuButtonDown];
+  bioAuthenticatedWhileMenuButtonDown = [v15 bioAuthenticatedWhileMenuButtonDown];
 
-  if (v16)
+  if (bioAuthenticatedWhileMenuButtonDown)
   {
     [(SBAssistantController *)self _bioAuthenticated:0];
   }
 
   mainScreenSiriPresentation = self->_mainScreenSiriPresentation;
-  v18 = [(SBAssistantController *)self systemApertureFramesIncludingBanners];
-  [(SiriPresentationSpringBoardMainScreenViewController *)mainScreenSiriPresentation setSystemApertureFrames:v18];
+  systemApertureFramesIncludingBanners = [(SBAssistantController *)self systemApertureFramesIncludingBanners];
+  [(SiriPresentationSpringBoardMainScreenViewController *)mainScreenSiriPresentation setSystemApertureFrames:systemApertureFramesIncludingBanners];
 }
 
-- (void)assistantSession:(id)a3 viewDidAppearInWindowScene:(id)a4
+- (void)assistantSession:(id)session viewDidAppearInWindowScene:(id)scene
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  sceneCopy = scene;
   v8 = SBLogSiri();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     v16 = _SBFLoggingMethodProem();
-    v17 = [v7 _sceneIdentifier];
+    _sceneIdentifier = [sceneCopy _sceneIdentifier];
     *buf = 138543618;
     v24 = v16;
     v25 = 2114;
-    v26 = v17;
+    v26 = _sceneIdentifier;
     _os_log_debug_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEBUG, "%{public}@: %{public}@", buf, 0x16u);
   }
 
-  if (([v6 shouldAllowBiometricAutoUnlock] & 1) == 0)
+  if (([sessionCopy shouldAllowBiometricAutoUnlock] & 1) == 0)
   {
     v9 = +[SBLockScreenManager sharedInstance];
     [v9 setBiometricAutoUnlockingDisabled:1 forReason:@"Siri"];
@@ -1293,7 +1293,7 @@ void __83__SBAssistantController__systemAssistantExperienceAvailabilityNotificat
         v15 = *(*(&v18 + 1) + 8 * v14);
         if (objc_opt_respondsToSelector())
         {
-          [v15 assistantDidAppear:self windowScene:v7];
+          [v15 assistantDidAppear:self windowScene:sceneCopy];
         }
 
         ++v14;
@@ -1307,19 +1307,19 @@ void __83__SBAssistantController__systemAssistantExperienceAvailabilityNotificat
   }
 }
 
-- (void)assistantSession:(id)a3 viewWillDisappearInWindowScene:(id)a4
+- (void)assistantSession:(id)session viewWillDisappearInWindowScene:(id)scene
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  sceneCopy = scene;
   v6 = SBLogSiri();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     v14 = _SBFLoggingMethodProem();
-    v15 = [v5 _sceneIdentifier];
+    _sceneIdentifier = [sceneCopy _sceneIdentifier];
     *buf = 138543618;
     v22 = v14;
     v23 = 2114;
-    v24 = v15;
+    v24 = _sceneIdentifier;
     _os_log_debug_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_DEBUG, "%{public}@: %{public}@", buf, 0x16u);
   }
 
@@ -1346,7 +1346,7 @@ void __83__SBAssistantController__systemAssistantExperienceAvailabilityNotificat
         v12 = *(*(&v16 + 1) + 8 * v11);
         if (objc_opt_respondsToSelector())
         {
-          [v12 assistantWillDisappear:self windowScene:v5];
+          [v12 assistantWillDisappear:self windowScene:sceneCopy];
         }
 
         ++v11;
@@ -1360,28 +1360,28 @@ void __83__SBAssistantController__systemAssistantExperienceAvailabilityNotificat
   }
 
   [(SBAssistantController *)self _setVisible:0];
-  v13 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v13 removeObserver:self name:*MEMORY[0x277D67E88] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D67E88] object:0];
 }
 
-- (void)assistantSession:(id)a3 viewDidDisappearInWindowScene:(id)a4
+- (void)assistantSession:(id)session viewDidDisappearInWindowScene:(id)scene
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  sceneCopy = scene;
   v8 = SBLogSiri();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     v16 = _SBFLoggingMethodProem();
-    v17 = [v7 _sceneIdentifier];
+    _sceneIdentifier = [sceneCopy _sceneIdentifier];
     *buf = 138543618;
     v24 = v16;
     v25 = 2114;
-    v26 = v17;
+    v26 = _sceneIdentifier;
     _os_log_debug_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEBUG, "%{public}@: %{public}@", buf, 0x16u);
   }
 
-  if (([v6 shouldAllowBiometricAutoUnlock] & 1) == 0)
+  if (([sessionCopy shouldAllowBiometricAutoUnlock] & 1) == 0)
   {
     v9 = +[SBLockScreenManager sharedInstance];
     [v9 setBiometricAutoUnlockingDisabled:0 forReason:@"Siri"];
@@ -1411,7 +1411,7 @@ void __83__SBAssistantController__systemAssistantExperienceAvailabilityNotificat
         v15 = *(*(&v18 + 1) + 8 * v14);
         if (objc_opt_respondsToSelector())
         {
-          [v15 assistantDidDisappear:self windowScene:v7];
+          [v15 assistantDidDisappear:self windowScene:sceneCopy];
         }
 
         ++v14;
@@ -1425,19 +1425,19 @@ void __83__SBAssistantController__systemAssistantExperienceAvailabilityNotificat
   }
 }
 
-- (void)assistantSession:(id)a3 didChangePresentationInWindowScene:(id)a4
+- (void)assistantSession:(id)session didChangePresentationInWindowScene:(id)scene
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  sceneCopy = scene;
   v6 = SBLogSiri();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     v13 = _SBFLoggingMethodProem();
-    v14 = [v5 _sceneIdentifier];
+    _sceneIdentifier = [sceneCopy _sceneIdentifier];
     *buf = 138543618;
     v21 = v13;
     v22 = 2114;
-    v23 = v14;
+    v23 = _sceneIdentifier;
     _os_log_debug_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_DEBUG, "%{public}@: %{public}@", buf, 0x16u);
   }
 
@@ -1464,7 +1464,7 @@ void __83__SBAssistantController__systemAssistantExperienceAvailabilityNotificat
         v12 = *(*(&v15 + 1) + 8 * v11);
         if (objc_opt_respondsToSelector())
         {
-          [v12 assistantDidChangePresentation:self windowScene:v5];
+          [v12 assistantDidChangePresentation:self windowScene:sceneCopy];
         }
 
         ++v11;
@@ -1478,12 +1478,12 @@ void __83__SBAssistantController__systemAssistantExperienceAvailabilityNotificat
   }
 }
 
-- (void)assistantSession:(id)a3 requestsDismissalWithDismissalOptions:(id)a4
+- (void)assistantSession:(id)session requestsDismissalWithDismissalOptions:(id)options
 {
-  if (self->_currentSession == a3)
+  if (self->_currentSession == session)
   {
 
-    [(SBAssistantController *)self _dismissAssistantViewIfNecessaryWithAnimation:1 factory:0 dismissalOptions:a4 completion:0];
+    [(SBAssistantController *)self _dismissAssistantViewIfNecessaryWithAnimation:1 factory:0 dismissalOptions:options completion:0];
   }
 
   else
@@ -1496,10 +1496,10 @@ void __83__SBAssistantController__systemAssistantExperienceAvailabilityNotificat
   }
 }
 
-- (void)settings:(id)a3 changedValueForKey:(id)a4
+- (void)settings:(id)settings changedValueForKey:(id)key
 {
-  v5 = a4;
-  if (([v5 isEqualToString:@"assistantAnimationDuration"] & 1) != 0 || objc_msgSend(v5, "isEqualToString:", @"assistantDismissAnimationDurationOverApp"))
+  keyCopy = key;
+  if (([keyCopy isEqualToString:@"assistantAnimationDuration"] & 1) != 0 || objc_msgSend(keyCopy, "isEqualToString:", @"assistantDismissAnimationDurationOverApp"))
   {
     [(SBAssistantController *)self _prototypeSettingsChanged];
   }
@@ -1645,10 +1645,10 @@ void __58__SBAssistantController_screenWakeIdleTimerResetRequested__block_invoke
   }
 }
 
-- (void)deviceUnlockRequestedWithPassword:(id)a3
+- (void)deviceUnlockRequestedWithPassword:(id)password
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  passwordCopy = password;
   v5 = SBLogSiri();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1658,7 +1658,7 @@ void __58__SBAssistantController_screenWakeIdleTimerResetRequested__block_invoke
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@", &v7, 0xCu);
   }
 
-  [(SBAssistantController *)self siriPresentation:self->_mainScreenSiriPresentation requestsDeviceUnlockWithPassword:v4];
+  [(SBAssistantController *)self siriPresentation:self->_mainScreenSiriPresentation requestsDeviceUnlockWithPassword:passwordCopy];
 }
 
 void __69__SBAssistantController_siriRequestDidReactivateForSiriPresentation___block_invoke(uint64_t a1)
@@ -1676,10 +1676,10 @@ void __69__SBAssistantController_siriRequestDidReactivateForSiriPresentation___b
   }
 }
 
-- (BOOL)siriPresentation:(id)a3 requestsDeviceUnlockWithPassword:(id)a4
+- (BOOL)siriPresentation:(id)presentation requestsDeviceUnlockWithPassword:(id)password
 {
-  v7 = a3;
-  v8 = a4;
+  presentationCopy = presentation;
+  passwordCopy = password;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
@@ -1688,9 +1688,9 @@ void __69__SBAssistantController_siriRequestDidReactivateForSiriPresentation___b
   v14 = 3221225472;
   v15 = __75__SBAssistantController_siriPresentation_requestsDeviceUnlockWithPassword___block_invoke;
   v16 = &unk_2783BA448;
-  v17 = self;
+  selfCopy = self;
   v20 = a2;
-  v9 = v8;
+  v9 = passwordCopy;
   v18 = v9;
   v19 = &v21;
   v10 = MEMORY[0x223D6F7F0](&v13);
@@ -1744,10 +1744,10 @@ void __75__SBAssistantController_siriPresentation_requestsDeviceUnlockWithPasswo
   [v5 invalidate];
 }
 
-- (void)siriPresentation:(id)a3 didUpdateAudioCategoriesDisablingVolumeHUD:(id)a4
+- (void)siriPresentation:(id)presentation didUpdateAudioCategoriesDisablingVolumeHUD:(id)d
 {
-  v5 = a4;
-  v4 = v5;
+  dCopy = d;
+  v4 = dCopy;
   BSDispatchMain();
 }
 
@@ -1804,12 +1804,12 @@ uint64_t __71__SBAssistantController_siriPresentation_willChangeKeyboardVisibili
   }
 }
 
-- (void)siriPresentation:(id)a3 requestsPresentationOfEffectsViewController:(id)a4 withHandler:(id)a5
+- (void)siriPresentation:(id)presentation requestsPresentationOfEffectsViewController:(id)controller withHandler:(id)handler
 {
-  v6 = a4;
-  v9 = a5;
-  v7 = v9;
-  v8 = v6;
+  controllerCopy = controller;
+  handlerCopy = handler;
+  v7 = handlerCopy;
+  v8 = controllerCopy;
   BSDispatchMain();
 }
 
@@ -1867,10 +1867,10 @@ void __98__SBAssistantController_siriPresentation_requestsPresentationOfEffectsV
   }
 }
 
-- (void)siriPresentation:(id)a3 requestsDismissalOfEffectsViewControllerWithHandler:(id)a4
+- (void)siriPresentation:(id)presentation requestsDismissalOfEffectsViewControllerWithHandler:(id)handler
 {
-  v5 = a4;
-  v4 = v5;
+  handlerCopy = handler;
+  v4 = handlerCopy;
   BSDispatchMain();
 }
 
@@ -1912,12 +1912,12 @@ uint64_t __94__SBAssistantController_siriPresentation_requestsDismissalOfEffects
   return v4();
 }
 
-- (void)siriPresentation:(id)a3 acquireElevatedEffectsViewControllerAssertionWithReason:(id)a4 handler:(id)a5
+- (void)siriPresentation:(id)presentation acquireElevatedEffectsViewControllerAssertionWithReason:(id)reason handler:(id)handler
 {
-  v6 = a4;
-  v9 = a5;
-  v7 = v9;
-  v8 = v6;
+  reasonCopy = reason;
+  handlerCopy = handler;
+  v7 = handlerCopy;
+  v8 = reasonCopy;
   BSDispatchMain();
 }
 
@@ -1927,13 +1927,13 @@ void __106__SBAssistantController_siriPresentation_acquireElevatedEffectsViewCon
   (*(a1[6] + 16))();
 }
 
-- (void)siriPresentation:(id)a3 willStartHostingSceneWithIdentifier:(id)a4 bundleIdentifier:(id)a5
+- (void)siriPresentation:(id)presentation willStartHostingSceneWithIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier
 {
   currentSession = self->_currentSession;
   if (currentSession)
   {
 
-    [(SBAssistantSession *)currentSession siriStartedHostingSceneWithIdentifier:a4 bundleIdentifier:a5];
+    [(SBAssistantSession *)currentSession siriStartedHostingSceneWithIdentifier:identifier bundleIdentifier:bundleIdentifier];
   }
 
   else
@@ -1946,13 +1946,13 @@ void __106__SBAssistantController_siriPresentation_acquireElevatedEffectsViewCon
   }
 }
 
-- (void)siriPresentation:(id)a3 willStopHostingSceneWithIdentifier:(id)a4 bundleIdentifier:(id)a5
+- (void)siriPresentation:(id)presentation willStopHostingSceneWithIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier
 {
   currentSession = self->_currentSession;
   if (currentSession)
   {
 
-    [(SBAssistantSession *)currentSession siriStoppedHostingSceneWithIdentifier:a4 bundleIdentifier:a5];
+    [(SBAssistantSession *)currentSession siriStoppedHostingSceneWithIdentifier:identifier bundleIdentifier:bundleIdentifier];
   }
 
   else
@@ -1965,10 +1965,10 @@ void __106__SBAssistantController_siriPresentation_acquireElevatedEffectsViewCon
   }
 }
 
-- (void)requestTamaleLaunchAnimationLayerProviderWithCompletion:(id)a3
+- (void)requestTamaleLaunchAnimationLayerProviderWithCompletion:(id)completion
 {
-  v4 = a3;
-  v3 = v4;
+  completionCopy = completion;
+  v3 = completionCopy;
   BSDispatchMain();
 }
 
@@ -1994,12 +1994,12 @@ uint64_t __81__SBAssistantController_requestTamaleLaunchAnimationLayerProviderWi
   }
 }
 
-- (void)siriPresentation:(id)a3 requestsPresentationWithOptions:(id)a4 withHandler:(id)a5
+- (void)siriPresentation:(id)presentation requestsPresentationWithOptions:(id)options withHandler:(id)handler
 {
-  v6 = a4;
-  v9 = a5;
-  v7 = v9;
-  v8 = v6;
+  optionsCopy = options;
+  handlerCopy = handler;
+  v7 = handlerCopy;
+  v8 = optionsCopy;
   BSDispatchMain();
 }
 
@@ -2062,12 +2062,12 @@ void __86__SBAssistantController_siriPresentation_requestsPresentationWithOption
   }
 }
 
-- (void)siriPresentation:(id)a3 requestsDismissalWithOptions:(id)a4 withHandler:(id)a5
+- (void)siriPresentation:(id)presentation requestsDismissalWithOptions:(id)options withHandler:(id)handler
 {
-  v6 = a4;
-  v9 = a5;
-  v7 = v9;
-  v8 = v6;
+  optionsCopy = options;
+  handlerCopy = handler;
+  v7 = handlerCopy;
+  v8 = optionsCopy;
   BSDispatchMain();
 }
 
@@ -2132,7 +2132,7 @@ uint64_t __83__SBAssistantController_siriPresentation_requestsDismissalWithOptio
   return result;
 }
 
-- (void)siriPresentation:(id)a3 isEnabledDidChange:(BOOL)a4
+- (void)siriPresentation:(id)presentation isEnabledDidChange:(BOOL)change
 {
   v8 = *MEMORY[0x277D85DE8];
   v4 = SBLogSiri();
@@ -2145,12 +2145,12 @@ uint64_t __83__SBAssistantController_siriPresentation_requestsDismissalWithOptio
   }
 }
 
-- (void)siriPresentation:(id)a3 requestsPunchout:(id)a4 withHandler:(id)a5
+- (void)siriPresentation:(id)presentation requestsPunchout:(id)punchout withHandler:(id)handler
 {
-  v6 = a4;
-  v9 = a5;
-  v7 = v9;
-  v8 = v6;
+  punchoutCopy = punchout;
+  handlerCopy = handler;
+  v7 = handlerCopy;
+  v8 = punchoutCopy;
   BSDispatchMain();
 }
 
@@ -2314,10 +2314,10 @@ void __61__SBAssistantController_siriPresentation_didUpdateInputType___block_inv
   }
 }
 
-- (void)siriPresentation:(id)a3 didUpdatePresentationOptions:(id)a4
+- (void)siriPresentation:(id)presentation didUpdatePresentationOptions:(id)options
 {
-  v5 = a4;
-  v4 = v5;
+  optionsCopy = options;
+  v4 = optionsCopy;
   BSDispatchMain();
 }
 
@@ -2333,13 +2333,13 @@ void __71__SBAssistantController_siriPresentation_didUpdatePresentationOptions__
   }
 }
 
-- (void)restrictSystemApertureToDefaultLayoutWithReason:(id)a3
+- (void)restrictSystemApertureToDefaultLayoutWithReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   if (!self->_systemApertureAssertion)
   {
-    v5 = [SBApp systemApertureControllerForMainDisplay];
-    v6 = [v5 restrictSystemApertureToDefaultLayoutWithReason:v4];
+    systemApertureControllerForMainDisplay = [SBApp systemApertureControllerForMainDisplay];
+    v6 = [systemApertureControllerForMainDisplay restrictSystemApertureToDefaultLayoutWithReason:reasonCopy];
 
     objc_initWeak(&location, self);
     v8[0] = MEMORY[0x277D85DD0];
@@ -2362,20 +2362,20 @@ void __73__SBAssistantController_restrictSystemApertureToDefaultLayoutWithReason
   [WeakRetained setSystemApertureAssertion:0];
 }
 
-- (void)invalidateSystemApertureAssertionWithReason:(id)a3
+- (void)invalidateSystemApertureAssertionWithReason:(id)reason
 {
   systemApertureAssertion = self->_systemApertureAssertion;
   if (systemApertureAssertion)
   {
-    [(SAInvalidatable *)systemApertureAssertion invalidateWithReason:a3];
+    [(SAInvalidatable *)systemApertureAssertion invalidateWithReason:reason];
   }
 }
 
-- (void)alertItemsController:(id)a3 didActivateAlertItem:(id)a4
+- (void)alertItemsController:(id)controller didActivateAlertItem:(id)item
 {
   v12 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  if ([(SBAssistantController *)self _isLocationTCCAlert:v5])
+  itemCopy = item;
+  if ([(SBAssistantController *)self _isLocationTCCAlert:itemCopy])
   {
     v6 = SBLogSiri();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -2384,22 +2384,22 @@ void __73__SBAssistantController_restrictSystemApertureToDefaultLayoutWithReason
       v8 = 138543618;
       v9 = v7;
       v10 = 2114;
-      v11 = v5;
+      v11 = itemCopy;
       _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ - observed did activate alert item: %{public}@, notifying siri location tcc presented.", &v8, 0x16u);
     }
 
     if (objc_opt_respondsToSelector())
     {
-      [(SiriPresentationSpringBoardMainScreenViewController *)self->_mainScreenSiriPresentation didPresentLocationTCC:v5];
+      [(SiriPresentationSpringBoardMainScreenViewController *)self->_mainScreenSiriPresentation didPresentLocationTCC:itemCopy];
     }
   }
 }
 
-- (void)alertItemsController:(id)a3 didDeactivateAlertItem:(id)a4 forReason:(int)a5
+- (void)alertItemsController:(id)controller didDeactivateAlertItem:(id)item forReason:(int)reason
 {
   v13 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  if ([(SBAssistantController *)self _isLocationTCCAlert:v6])
+  itemCopy = item;
+  if ([(SBAssistantController *)self _isLocationTCCAlert:itemCopy])
   {
     v7 = SBLogSiri();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -2408,22 +2408,22 @@ void __73__SBAssistantController_restrictSystemApertureToDefaultLayoutWithReason
       v9 = 138543618;
       v10 = v8;
       v11 = 2114;
-      v12 = v6;
+      v12 = itemCopy;
       _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ - observed did deactivate alert item: %{public}@, notifying siri location tcc dismissed.", &v9, 0x16u);
     }
 
     if (objc_opt_respondsToSelector())
     {
-      [(SiriPresentationSpringBoardMainScreenViewController *)self->_mainScreenSiriPresentation didDismissLocationTCC:v6];
+      [(SiriPresentationSpringBoardMainScreenViewController *)self->_mainScreenSiriPresentation didDismissLocationTCC:itemCopy];
     }
   }
 }
 
-- (BOOL)_isLocationTCCAlert:(id)a3
+- (BOOL)_isLocationTCCAlert:(id)alert
 {
-  v3 = a3;
+  alertCopy = alert;
   v4 = objc_opt_class();
-  v5 = v3;
+  v5 = alertCopy;
   if (v4)
   {
     if (objc_opt_isKindOfClass())
@@ -2446,15 +2446,15 @@ void __73__SBAssistantController_restrictSystemApertureToDefaultLayoutWithReason
 
   if (v7)
   {
-    v8 = [v7 extensionIdentifier];
-    if ([v8 isEqual:@"com.apple.corelocation.CoreLocationVanillaWhenInUseAuthPromptPlugin"] & 1) != 0 || (objc_msgSend(v8, "isEqual:", @"com.apple.corelocation.CoreLocationRepromptAlwaysAuthPromptPlugin"))
+    extensionIdentifier = [v7 extensionIdentifier];
+    if ([extensionIdentifier isEqual:@"com.apple.corelocation.CoreLocationVanillaWhenInUseAuthPromptPlugin"] & 1) != 0 || (objc_msgSend(extensionIdentifier, "isEqual:", @"com.apple.corelocation.CoreLocationRepromptAlwaysAuthPromptPlugin"))
     {
       v9 = 1;
     }
 
     else
     {
-      v9 = [v8 isEqual:@"com.apple.corelocation.CoreLocationTemporaryPreciseAuthPromptPlugin"];
+      v9 = [extensionIdentifier isEqual:@"com.apple.corelocation.CoreLocationTemporaryPreciseAuthPromptPlugin"];
     }
   }
 
@@ -2505,8 +2505,8 @@ void __73__SBAssistantController_restrictSystemApertureToDefaultLayoutWithReason
   if (!self->_visualIntelligenceControlEnabled)
   {
     v6 = [objc_alloc(MEMORY[0x277CFC850]) initWithIntent:1 controlKind:@"com.apple.siri.VisualIntelligenceWidget" controlType:2 extensionBundleIdentifier:@"com.apple.siri.TypeToSiriWidget" containerBundleIdentifier:@"com.apple.siri" size:0];
-    v7 = [MEMORY[0x277CFC830] sharedInstance];
-    [v7 handleIconElementRequest:v6 completionHandler:&__block_literal_global_273];
+    mEMORY[0x277CFC830] = [MEMORY[0x277CFC830] sharedInstance];
+    [mEMORY[0x277CFC830] handleIconElementRequest:v6 completionHandler:&__block_literal_global_273];
   }
 }
 
@@ -2576,11 +2576,11 @@ LABEL_6:
   }
 }
 
-- (void)bannerManager:(id)a3 willPresentPresentable:(id)a4 withTransitionCoordinator:(id)a5 userInfo:(id)a6
+- (void)bannerManager:(id)manager willPresentPresentable:(id)presentable withTransitionCoordinator:(id)coordinator userInfo:(id)info
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = [a6 objectForKey:*MEMORY[0x277D68078]];
+  presentableCopy = presentable;
+  coordinatorCopy = coordinator;
+  v11 = [info objectForKey:*MEMORY[0x277D68078]];
   v12 = objc_opt_class();
   v13 = v11;
   if (v12)
@@ -2603,8 +2603,8 @@ LABEL_6:
 
   v15 = v14;
 
-  v16 = [v15 BOOLValue];
-  if (v16)
+  bOOLValue = [v15 BOOLValue];
+  if (bOOLValue)
   {
     presentedDodgingBanners = self->_presentedDodgingBanners;
     if (!presentedDodgingBanners)
@@ -2616,7 +2616,7 @@ LABEL_6:
       presentedDodgingBanners = self->_presentedDodgingBanners;
     }
 
-    [(NSMutableSet *)presentedDodgingBanners addObject:v9];
+    [(NSMutableSet *)presentedDodgingBanners addObject:presentableCopy];
   }
 
   if (self->_currentSession)
@@ -2631,8 +2631,8 @@ LABEL_6:
     v20[2] = __97__SBAssistantController_bannerManager_willPresentPresentable_withTransitionCoordinator_userInfo___block_invoke_2;
     v20[3] = &unk_2783B6F60;
     v20[4] = self;
-    v21 = v9;
-    [v10 animateAlongsideTransition:v22 completion:v20];
+    v21 = presentableCopy;
+    [coordinatorCopy animateAlongsideTransition:v22 completion:v20];
   }
 }
 
@@ -2656,11 +2656,11 @@ void __97__SBAssistantController_bannerManager_willPresentPresentable_withTransi
   }
 }
 
-- (void)bannerManager:(id)a3 willDismissPresentable:(id)a4 withTransitionCoordinator:(id)a5 userInfo:(id)a6
+- (void)bannerManager:(id)manager willDismissPresentable:(id)presentable withTransitionCoordinator:(id)coordinator userInfo:(id)info
 {
-  v8 = a4;
-  v9 = a5;
-  [(NSMutableSet *)self->_presentedDodgingBanners removeObject:v8];
+  presentableCopy = presentable;
+  coordinatorCopy = coordinator;
+  [(NSMutableSet *)self->_presentedDodgingBanners removeObject:presentableCopy];
   if (![(NSMutableSet *)self->_presentedDodgingBanners count])
   {
     presentedDodgingBanners = self->_presentedDodgingBanners;
@@ -2679,8 +2679,8 @@ void __97__SBAssistantController_bannerManager_willPresentPresentable_withTransi
     v11[2] = __97__SBAssistantController_bannerManager_willDismissPresentable_withTransitionCoordinator_userInfo___block_invoke_2;
     v11[3] = &unk_2783B6F60;
     v11[4] = self;
-    v12 = v8;
-    [v9 animateAlongsideTransition:v13 completion:v11];
+    v12 = presentableCopy;
+    [coordinatorCopy animateAlongsideTransition:v13 completion:v11];
   }
 }
 
@@ -2715,7 +2715,7 @@ void __97__SBAssistantController_bannerManager_willDismissPresentable_withTransi
   }
 }
 
-- (void)bannerManager:(id)a3 presentable:(id)a4 willTransitionToSize:(CGSize)a5 withTransitionCoordinator:(id)a6
+- (void)bannerManager:(id)manager presentable:(id)presentable willTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
   if (self->_currentSession)
   {
@@ -2729,7 +2729,7 @@ void __97__SBAssistantController_bannerManager_willDismissPresentable_withTransi
     v6[1] = 3221225472;
     v6[2] = __98__SBAssistantController_bannerManager_presentable_willTransitionToSize_withTransitionCoordinator___block_invoke_2;
     v6[3] = &unk_2783A9488;
-    [a6 animateAlongsideTransition:v7 completion:v6];
+    [coordinator animateAlongsideTransition:v7 completion:v6];
   }
 }
 
@@ -2752,7 +2752,7 @@ void __98__SBAssistantController_bannerManager_presentable_willTransitionToSize_
   }
 }
 
-- (void)bannerManager:(id)a3 containerWillTransitionToSize:(CGSize)a4 withTransitionCoordinator:(id)a5
+- (void)bannerManager:(id)manager containerWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
   if (self->_currentSession)
   {
@@ -2766,7 +2766,7 @@ void __98__SBAssistantController_bannerManager_presentable_willTransitionToSize_
     v5[1] = 3221225472;
     v5[2] = __95__SBAssistantController_bannerManager_containerWillTransitionToSize_withTransitionCoordinator___block_invoke_2;
     v5[3] = &unk_2783A9488;
-    [a5 animateAlongsideTransition:v6 completion:v5];
+    [coordinator animateAlongsideTransition:v6 completion:v5];
   }
 }
 
@@ -2796,8 +2796,8 @@ void __95__SBAssistantController_bannerManager_containerWillTransitionToSize_wit
   currentSession = self->_currentSession;
   if (currentSession)
   {
-    v5 = [(SBAssistantSession *)currentSession windowScene];
-    v6 = [SBApp bannerManager];
+    windowScene = [(SBAssistantSession *)currentSession windowScene];
+    bannerManager = [SBApp bannerManager];
     v7 = *MEMORY[0x277CBF398];
     v8 = *(MEMORY[0x277CBF398] + 8);
     v9 = *(MEMORY[0x277CBF398] + 16);
@@ -2823,21 +2823,21 @@ void __95__SBAssistantController_bannerManager_containerWillTransitionToSize_wit
           }
 
           v15 = *(*(&v76 + 1) + 8 * i);
-          v16 = [v6 windowSceneForPresentable:{v15, *&v70}];
-          v17 = [v16 isEqual:v5];
+          v16 = [bannerManager windowSceneForPresentable:{v15, *&v70}];
+          v17 = [v16 isEqual:windowScene];
 
           if (v17)
           {
-            v18 = [v15 viewController];
-            v19 = [v18 view];
+            viewController = [v15 viewController];
+            view = [viewController view];
 
-            [v19 bounds];
+            [view bounds];
             v21 = v20;
             v23 = v22;
             v25 = v24;
             v27 = v26;
-            v28 = [v15 viewController];
-            [v28 bannerContentOutsets];
+            viewController2 = [v15 viewController];
+            [viewController2 bannerContentOutsets];
             v30 = v29;
             v32 = v31;
             v70 = v8;
@@ -2849,17 +2849,17 @@ void __95__SBAssistantController_bannerManager_containerWillTransitionToSize_wit
             v38 = v23 + v30;
             v39 = v25 - (v32 + v36);
             v40 = v27 - (v30 + v34);
-            v41 = [v19 window];
-            [v41 bounds];
+            window = [view window];
+            [window bounds];
             v43 = v42;
             v45 = v44;
             v47 = v46;
             v49 = v48;
 
-            v50 = [v19 window];
+            window2 = [view window];
             v51 = v40;
             v9 = v71;
-            [v50 convertRect:v19 fromView:{v37, v38, v39, v51}];
+            [window2 convertRect:view fromView:{v37, v38, v39, v51}];
             v91.origin.x = v43;
             v8 = v70;
             v91.origin.y = v45;
@@ -2964,16 +2964,16 @@ void __95__SBAssistantController_bannerManager_containerWillTransitionToSize_wit
 
 + (void)sharedInstance
 {
-  v1 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v0 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[SBAssistantController sharedInstance]"];
-  [v1 handleFailureInFunction:v0 file:@"SBAssistantController.m" lineNumber:264 description:@"this call must be made on the main thread"];
+  [currentHandler handleFailureInFunction:v0 file:@"SBAssistantController.m" lineNumber:264 description:@"this call must be made on the main thread"];
 }
 
 + (void)sharedInstanceIfExists
 {
-  v1 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v0 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[SBAssistantController sharedInstanceIfExists]"];
-  [v1 handleFailureInFunction:v0 file:@"SBAssistantController.m" lineNumber:274 description:@"this call must be made on the main thread"];
+  [currentHandler handleFailureInFunction:v0 file:@"SBAssistantController.m" lineNumber:274 description:@"this call must be made on the main thread"];
 }
 
 - (void)assistantSession:(NSObject *)a3 requestsDismissalWithDismissalOptions:.cold.1(uint64_t a1, uint64_t a2, NSObject *a3)

@@ -1,30 +1,30 @@
 @interface _RERelevanceEngineObserverWrapper
-- (BOOL)relevanceEngine:(id)a3 isElementAtPathVisible:(id)a4;
+- (BOOL)relevanceEngine:(id)engine isElementAtPathVisible:(id)visible;
 - (RERelevanceEngineObserver)observer;
-- (_RERelevanceEngineObserverWrapper)initWithObserver:(id)a3;
-- (void)relevanceEngine:(id)a3 didInsertElement:(id)a4 atPath:(id)a5;
-- (void)relevanceEngine:(id)a3 didMoveElement:(id)a4 fromPath:(id)a5 toPath:(id)a6;
-- (void)relevanceEngine:(id)a3 didReloadElement:(id)a4 atPath:(id)a5;
-- (void)relevanceEngine:(id)a3 didRemoveElement:(id)a4 atPath:(id)a5;
-- (void)relevanceEngine:(id)a3 didUpdateRelevanceForElement:(id)a4;
-- (void)relevanceEngine:(id)a3 performBatchUpdateBlock:(id)a4 completion:(id)a5;
-- (void)relevanceEngineDidBeginUpdatingRelevance:(id)a3;
-- (void)relevanceEngineDidFinishUpdatingRelevance:(id)a3;
-- (void)relevanceEngineDidUpdateElementRankings:(id)a3;
+- (_RERelevanceEngineObserverWrapper)initWithObserver:(id)observer;
+- (void)relevanceEngine:(id)engine didInsertElement:(id)element atPath:(id)path;
+- (void)relevanceEngine:(id)engine didMoveElement:(id)element fromPath:(id)path toPath:(id)toPath;
+- (void)relevanceEngine:(id)engine didReloadElement:(id)element atPath:(id)path;
+- (void)relevanceEngine:(id)engine didRemoveElement:(id)element atPath:(id)path;
+- (void)relevanceEngine:(id)engine didUpdateRelevanceForElement:(id)element;
+- (void)relevanceEngine:(id)engine performBatchUpdateBlock:(id)block completion:(id)completion;
+- (void)relevanceEngineDidBeginUpdatingRelevance:(id)relevance;
+- (void)relevanceEngineDidFinishUpdatingRelevance:(id)relevance;
+- (void)relevanceEngineDidUpdateElementRankings:(id)rankings;
 @end
 
 @implementation _RERelevanceEngineObserverWrapper
 
-- (_RERelevanceEngineObserverWrapper)initWithObserver:(id)a3
+- (_RERelevanceEngineObserverWrapper)initWithObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v17.receiver = self;
   v17.super_class = _RERelevanceEngineObserverWrapper;
   v5 = [(_RERelevanceEngineObserverWrapper *)&v17 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_observer, v4);
+    objc_storeWeak(&v5->_observer, observerCopy);
     *&v6->_observerCallbacks = *&v6->_observerCallbacks & 0xFFFE | objc_opt_respondsToSelector() & 1;
     if (objc_opt_respondsToSelector())
     {
@@ -130,90 +130,90 @@
   return v6;
 }
 
-- (void)relevanceEngine:(id)a3 performBatchUpdateBlock:(id)a4 completion:(id)a5
+- (void)relevanceEngine:(id)engine performBatchUpdateBlock:(id)block completion:(id)completion
 {
-  v12 = a3;
-  v8 = a4;
-  v9 = a5;
+  engineCopy = engine;
+  blockCopy = block;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_observer);
   v11 = WeakRetained;
   if (WeakRetained && (*&self->_observerCallbacks & 1) != 0)
   {
-    [WeakRetained relevanceEngine:v12 performBatchUpdateBlock:v8 completion:v9];
+    [WeakRetained relevanceEngine:engineCopy performBatchUpdateBlock:blockCopy completion:completionCopy];
   }
 
   else
   {
-    if (v8)
+    if (blockCopy)
     {
-      v8[2](v8);
+      blockCopy[2](blockCopy);
     }
 
-    if (v9)
+    if (completionCopy)
     {
-      v9[2](v9);
+      completionCopy[2](completionCopy);
     }
   }
 }
 
-- (void)relevanceEngine:(id)a3 didReloadElement:(id)a4 atPath:(id)a5
+- (void)relevanceEngine:(id)engine didReloadElement:(id)element atPath:(id)path
 {
   if ((*&self->_observerCallbacks & 2) != 0)
   {
-    v9 = a5;
-    v10 = a4;
-    v11 = a3;
+    pathCopy = path;
+    elementCopy = element;
+    engineCopy = engine;
     WeakRetained = objc_loadWeakRetained(&self->_observer);
-    [WeakRetained relevanceEngine:v11 didReloadElement:v10 atPath:v9];
+    [WeakRetained relevanceEngine:engineCopy didReloadElement:elementCopy atPath:pathCopy];
   }
 }
 
-- (void)relevanceEngine:(id)a3 didRemoveElement:(id)a4 atPath:(id)a5
+- (void)relevanceEngine:(id)engine didRemoveElement:(id)element atPath:(id)path
 {
   if ((*&self->_observerCallbacks & 4) != 0)
   {
-    v9 = a5;
-    v10 = a4;
-    v11 = a3;
+    pathCopy = path;
+    elementCopy = element;
+    engineCopy = engine;
     WeakRetained = objc_loadWeakRetained(&self->_observer);
-    [WeakRetained relevanceEngine:v11 didRemoveElement:v10 atPath:v9];
+    [WeakRetained relevanceEngine:engineCopy didRemoveElement:elementCopy atPath:pathCopy];
   }
 }
 
-- (void)relevanceEngine:(id)a3 didInsertElement:(id)a4 atPath:(id)a5
+- (void)relevanceEngine:(id)engine didInsertElement:(id)element atPath:(id)path
 {
   if ((*&self->_observerCallbacks & 8) != 0)
   {
-    v9 = a5;
-    v10 = a4;
-    v11 = a3;
+    pathCopy = path;
+    elementCopy = element;
+    engineCopy = engine;
     WeakRetained = objc_loadWeakRetained(&self->_observer);
-    [WeakRetained relevanceEngine:v11 didInsertElement:v10 atPath:v9];
+    [WeakRetained relevanceEngine:engineCopy didInsertElement:elementCopy atPath:pathCopy];
   }
 }
 
-- (void)relevanceEngine:(id)a3 didMoveElement:(id)a4 fromPath:(id)a5 toPath:(id)a6
+- (void)relevanceEngine:(id)engine didMoveElement:(id)element fromPath:(id)path toPath:(id)toPath
 {
   if ((*&self->_observerCallbacks & 0x10) != 0)
   {
-    v11 = a6;
-    v12 = a5;
-    v13 = a4;
-    v14 = a3;
+    toPathCopy = toPath;
+    pathCopy = path;
+    elementCopy = element;
+    engineCopy = engine;
     WeakRetained = objc_loadWeakRetained(&self->_observer);
-    [WeakRetained relevanceEngine:v14 didMoveElement:v13 fromPath:v12 toPath:v11];
+    [WeakRetained relevanceEngine:engineCopy didMoveElement:elementCopy fromPath:pathCopy toPath:toPathCopy];
   }
 }
 
-- (BOOL)relevanceEngine:(id)a3 isElementAtPathVisible:(id)a4
+- (BOOL)relevanceEngine:(id)engine isElementAtPathVisible:(id)visible
 {
-  v6 = a3;
-  v7 = a4;
+  engineCopy = engine;
+  visibleCopy = visible;
   WeakRetained = objc_loadWeakRetained(&self->_observer);
   v9 = WeakRetained;
   if (WeakRetained && (*&self->_observerCallbacks & 0x20) != 0)
   {
-    v10 = [WeakRetained relevanceEngine:v6 isElementAtPathVisible:v7];
+    v10 = [WeakRetained relevanceEngine:engineCopy isElementAtPathVisible:visibleCopy];
   }
 
   else
@@ -224,44 +224,44 @@
   return v10;
 }
 
-- (void)relevanceEngine:(id)a3 didUpdateRelevanceForElement:(id)a4
+- (void)relevanceEngine:(id)engine didUpdateRelevanceForElement:(id)element
 {
   if ((*&self->_observerCallbacks & 0x40) != 0)
   {
-    v7 = a4;
-    v8 = a3;
+    elementCopy = element;
+    engineCopy = engine;
     WeakRetained = objc_loadWeakRetained(&self->_observer);
-    [WeakRetained relevanceEngine:v8 didUpdateRelevanceForElement:v7];
+    [WeakRetained relevanceEngine:engineCopy didUpdateRelevanceForElement:elementCopy];
   }
 }
 
-- (void)relevanceEngineDidBeginUpdatingRelevance:(id)a3
+- (void)relevanceEngineDidBeginUpdatingRelevance:(id)relevance
 {
   if ((*&self->_observerCallbacks & 0x80) != 0)
   {
-    v5 = a3;
+    relevanceCopy = relevance;
     WeakRetained = objc_loadWeakRetained(&self->_observer);
-    [WeakRetained relevanceEngineDidBeginUpdatingRelevance:v5];
+    [WeakRetained relevanceEngineDidBeginUpdatingRelevance:relevanceCopy];
   }
 }
 
-- (void)relevanceEngineDidFinishUpdatingRelevance:(id)a3
+- (void)relevanceEngineDidFinishUpdatingRelevance:(id)relevance
 {
   if ((*&self->_observerCallbacks & 0x100) != 0)
   {
-    v5 = a3;
+    relevanceCopy = relevance;
     WeakRetained = objc_loadWeakRetained(&self->_observer);
-    [WeakRetained relevanceEngineDidFinishUpdatingRelevance:v5];
+    [WeakRetained relevanceEngineDidFinishUpdatingRelevance:relevanceCopy];
   }
 }
 
-- (void)relevanceEngineDidUpdateElementRankings:(id)a3
+- (void)relevanceEngineDidUpdateElementRankings:(id)rankings
 {
   if ((*&self->_observerCallbacks & 0x200) != 0)
   {
-    v5 = a3;
+    rankingsCopy = rankings;
     WeakRetained = objc_loadWeakRetained(&self->_observer);
-    [WeakRetained relevanceEngineDidUpdateElementRankings:v5];
+    [WeakRetained relevanceEngineDidUpdateElementRankings:rankingsCopy];
   }
 }
 

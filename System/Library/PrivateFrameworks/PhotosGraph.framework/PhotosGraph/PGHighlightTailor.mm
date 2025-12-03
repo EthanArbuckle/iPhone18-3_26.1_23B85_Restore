@@ -1,27 +1,27 @@
 @interface PGHighlightTailor
-- (BOOL)enrichAllHighlightsWithOptions:(unint64_t)a3 progressBlock:(id)a4;
-- (BOOL)enrichDayHighlights:(id)a3 dayGroupHighlights:(id)a4 withOptions:(unint64_t)a5 progressBlock:(id)a6;
-- (BOOL)enrichHighlights:(id)a3 options:(unint64_t)a4 progressBlock:(id)a5;
-- (BOOL)shouldEnrichHighlight:(id)a3 withEnrichmentProfile:(id)a4 options:(unint64_t)a5;
-- (PGHighlightTailor)initWithWorkingContext:(id)a3;
-- (double)highlightVisibilityWeightForItem:(id)a3;
-- (id)allHighlightModelsNeedingEnrichmentForHighlightSubtype:(int64_t)a3 options:(unint64_t)a4;
-- (id)allHighlightsNeedingEnrichmentWithOptions:(unint64_t)a3;
+- (BOOL)enrichAllHighlightsWithOptions:(unint64_t)options progressBlock:(id)block;
+- (BOOL)enrichDayHighlights:(id)highlights dayGroupHighlights:(id)groupHighlights withOptions:(unint64_t)options progressBlock:(id)block;
+- (BOOL)enrichHighlights:(id)highlights options:(unint64_t)options progressBlock:(id)block;
+- (BOOL)shouldEnrichHighlight:(id)highlight withEnrichmentProfile:(id)profile options:(unint64_t)options;
+- (PGHighlightTailor)initWithWorkingContext:(id)context;
+- (double)highlightVisibilityWeightForItem:(id)item;
+- (id)allHighlightModelsNeedingEnrichmentForHighlightSubtype:(int64_t)subtype options:(unint64_t)options;
+- (id)allHighlightsNeedingEnrichmentWithOptions:(unint64_t)options;
 - (id)assetSortDescriptors;
-- (id)bestEnrichmentProfileForHighlight:(id)a3 options:(unint64_t)a4;
-- (id)computeChangedVisibilityScoresForItems:(id)a3;
-- (id)enrichmentValuesForHighlight:(id)a3 usingEnrichmentProfile:(id)a4 graph:(id)a5 options:(unint64_t)a6 reportChangedValuesOnly:(BOOL)a7 highlightTailorContext:(id)a8 progressBlock:(id)a9;
+- (id)bestEnrichmentProfileForHighlight:(id)highlight options:(unint64_t)options;
+- (id)computeChangedVisibilityScoresForItems:(id)items;
+- (id)enrichmentValuesForHighlight:(id)highlight usingEnrichmentProfile:(id)profile graph:(id)graph options:(unint64_t)options reportChangedValuesOnly:(BOOL)only highlightTailorContext:(id)context progressBlock:(id)block;
 - (id)initForTesting;
-- (unint64_t)tailorOptionsAllowedForHighlight:(id)a3 originalOptions:(unint64_t)a4;
-- (void)writeHighlightEnrichmentValues:(id)a3 toChangeRequest:(id)a4 highlight:(id)a5 options:(unint64_t)a6;
+- (unint64_t)tailorOptionsAllowedForHighlight:(id)highlight originalOptions:(unint64_t)options;
+- (void)writeHighlightEnrichmentValues:(id)values toChangeRequest:(id)request highlight:(id)highlight options:(unint64_t)options;
 @end
 
 @implementation PGHighlightTailor
 
-- (id)bestEnrichmentProfileForHighlight:(id)a3 options:(unint64_t)a4
+- (id)bestEnrichmentProfileForHighlight:(id)highlight options:(unint64_t)options
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  highlightCopy = highlight;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -42,7 +42,7 @@
         }
 
         v12 = *(*(&v16 + 1) + 8 * i);
-        if ([v12 canEnrichHighlight:v6 withOptions:{a4, v16}])
+        if ([v12 canEnrichHighlight:highlightCopy withOptions:{options, v16}])
         {
           v13 = v12;
           goto LABEL_11;
@@ -67,13 +67,13 @@ LABEL_11:
   return v13;
 }
 
-- (BOOL)enrichDayHighlights:(id)a3 dayGroupHighlights:(id)a4 withOptions:(unint64_t)a5 progressBlock:(id)a6
+- (BOOL)enrichDayHighlights:(id)highlights dayGroupHighlights:(id)groupHighlights withOptions:(unint64_t)options progressBlock:(id)block
 {
   v72 = *MEMORY[0x277D85DE8];
-  v48 = a3;
-  v47 = a4;
-  v46 = a6;
-  v9 = _Block_copy(v46);
+  highlightsCopy = highlights;
+  groupHighlightsCopy = groupHighlights;
+  blockCopy = block;
+  v9 = _Block_copy(blockCopy);
   v64 = 0;
   v65 = &v64;
   v66 = 0x2020000000;
@@ -111,7 +111,7 @@ LABEL_37:
     }
   }
 
-  v13 = [v48 count];
+  v13 = [highlightsCopy count];
   if (v13)
   {
     context = objc_autoreleasePoolPush();
@@ -136,7 +136,7 @@ LABEL_37:
     v56 = &v60;
     v57 = &v64;
     v58 = 0x3F847AE147AE147BLL;
-    v19 = [(PGHighlightTailor *)self enrichHighlights:v48 options:a5 progressBlock:v54];
+    v19 = [(PGHighlightTailor *)self enrichHighlights:highlightsCopy options:options progressBlock:v54];
     v20 = *(v65 + 24);
     if (v20 == 1)
     {
@@ -190,7 +190,7 @@ LABEL_37:
     v19 = 1;
   }
 
-  if ([v47 count])
+  if ([groupHighlightsCopy count])
   {
     v27 = v19;
   }
@@ -224,14 +224,14 @@ LABEL_37:
     v51 = &v60;
     v52 = &v64;
     v53 = 0x3F847AE147AE147BLL;
-    LOBYTE(v19) = [(PGHighlightTailor *)self enrichHighlights:v47 options:a5 progressBlock:v49];
+    LOBYTE(v19) = [(PGHighlightTailor *)self enrichHighlights:groupHighlightsCopy options:options progressBlock:v49];
     v34 = mach_absolute_time();
     v35 = info;
     v36 = v32;
     v37 = v36;
     if (v30 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v36))
     {
-      v38 = [v47 count];
+      v38 = [groupHighlightsCopy count];
       *buf = 134217984;
       *v69 = v38;
       _os_signpost_emit_with_name_impl(&dword_22F0FC000, v37, OS_SIGNPOST_INTERVAL_END, v30, "EnrichDayGroupHighlights", "Day Group Highlight count (%ld)", buf, 0xCu);
@@ -240,7 +240,7 @@ LABEL_37:
     v39 = v37;
     if (os_log_type_enabled(v39, OS_LOG_TYPE_INFO))
     {
-      v40 = [MEMORY[0x277CCACA8] stringWithFormat:@"Day Group Highlight count (%ld)", objc_msgSend(v47, "count")];
+      v40 = [MEMORY[0x277CCACA8] stringWithFormat:@"Day Group Highlight count (%ld)", objc_msgSend(groupHighlightsCopy, "count")];
       *buf = 136315650;
       *v69 = "EnrichDayGroupHighlights";
       *&v69[8] = 2112;
@@ -314,13 +314,13 @@ void __86__PGHighlightTailor_enrichDayHighlights_dayGroupHighlights_withOptions_
   }
 }
 
-- (id)allHighlightsNeedingEnrichmentWithOptions:(unint64_t)a3
+- (id)allHighlightsNeedingEnrichmentWithOptions:(unint64_t)options
 {
   v22[3] = *MEMORY[0x277D85DE8];
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v6 = [(PGHighlightTailor *)self allHighlightModelsNeedingEnrichmentForHighlightSubtype:1000000301 options:a3];
+  v6 = [(PGHighlightTailor *)self allHighlightModelsNeedingEnrichmentForHighlightSubtype:1000000301 options:options];
   [v5 addObjectsFromArray:v6];
-  v7 = [(PGHighlightTailor *)self allHighlightModelsNeedingEnrichmentForHighlightSubtype:1000000304 options:a3];
+  v7 = [(PGHighlightTailor *)self allHighlightModelsNeedingEnrichmentForHighlightSubtype:1000000304 options:options];
   [v5 addObjectsFromArray:v7];
   v8 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"startDate" ascending:0];
   v22[0] = v8;
@@ -349,11 +349,11 @@ void __86__PGHighlightTailor_enrichDayHighlights_dayGroupHighlights_withOptions_
   return v5;
 }
 
-- (BOOL)enrichAllHighlightsWithOptions:(unint64_t)a3 progressBlock:(id)a4
+- (BOOL)enrichAllHighlightsWithOptions:(unint64_t)options progressBlock:(id)block
 {
   v48 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = _Block_copy(v6);
+  blockCopy = block;
+  v7 = _Block_copy(blockCopy);
   v40 = 0;
   v41 = &v40;
   v42 = 0x2020000000;
@@ -378,7 +378,7 @@ void __86__PGHighlightTailor_enrichDayHighlights_dayGroupHighlights_withOptions_
 
   else
   {
-    v11 = [(PGHighlightTailor *)self allHighlightsNeedingEnrichmentWithOptions:a3];
+    v11 = [(PGHighlightTailor *)self allHighlightsNeedingEnrichmentWithOptions:options];
     v12 = [v11 count];
     if (v12)
     {
@@ -404,7 +404,7 @@ void __86__PGHighlightTailor_enrichDayHighlights_dayGroupHighlights_withOptions_
       v32 = &v36;
       v33 = &v40;
       v34 = 0x3F847AE147AE147BLL;
-      v10 = [(PGHighlightTailor *)self enrichHighlights:v11 options:a3 progressBlock:v30];
+      v10 = [(PGHighlightTailor *)self enrichHighlights:v11 options:options progressBlock:v30];
       v18 = *(v41 + 24);
       if (v18 == 1)
       {
@@ -486,12 +486,12 @@ void __66__PGHighlightTailor_enrichAllHighlightsWithOptions_progressBlock___bloc
   }
 }
 
-- (BOOL)enrichHighlights:(id)a3 options:(unint64_t)a4 progressBlock:(id)a5
+- (BOOL)enrichHighlights:(id)highlights options:(unint64_t)options progressBlock:(id)block
 {
   v56 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v34 = a5;
-  v9 = [v8 count];
+  highlightsCopy = highlights;
+  blockCopy = block;
+  v9 = [highlightsCopy count];
   if (v9)
   {
     v10 = v9;
@@ -513,26 +513,26 @@ void __66__PGHighlightTailor_enrichAllHighlightsWithOptions_progressBlock___bloc
     v46 = buf;
     v47 = 0x2020000000;
     v48 = 0;
-    v16 = [(PGManagerWorkingContext *)self->_workingContext photoLibrary];
+    photoLibrary = [(PGManagerWorkingContext *)self->_workingContext photoLibrary];
     spid = v12;
-    v17 = [(PGManagerWorkingContext *)self->_workingContext serviceManager];
+    serviceManager = [(PGManagerWorkingContext *)self->_workingContext serviceManager];
     v18 = self->_loggingConnection;
     workingContext = self->_workingContext;
     v35[0] = MEMORY[0x277D85DD0];
     v35[1] = 3221225472;
     v35[2] = __60__PGHighlightTailor_enrichHighlights_options_progressBlock___block_invoke;
     v35[3] = &unk_2788841A0;
-    v41 = v34;
+    v41 = blockCopy;
     v43 = v10;
     v20 = v18;
     v36 = v20;
-    v37 = self;
-    v21 = v16;
+    selfCopy = self;
+    v21 = photoLibrary;
     v38 = v21;
-    v44 = a4;
-    v22 = v17;
+    optionsCopy = options;
+    v22 = serviceManager;
     v39 = v22;
-    v40 = v8;
+    v40 = highlightsCopy;
     v42 = buf;
     [(PGManagerWorkingContext *)workingContext performSynchronousConcurrentGraphReadUsingBlock:v35];
     v23 = mach_absolute_time();
@@ -1113,15 +1113,15 @@ void __60__PGHighlightTailor_enrichHighlights_options_progressBlock___block_invo
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)shouldEnrichHighlight:(id)a3 withEnrichmentProfile:(id)a4 options:(unint64_t)a5
+- (BOOL)shouldEnrichHighlight:(id)highlight withEnrichmentProfile:(id)profile options:(unint64_t)options
 {
-  v5 = a5;
-  v7 = a3;
-  v8 = a4;
-  if ((v5 & 0x40000000) == 0 && (objc_opt_respondsToSelector() & 1) != 0 && [v7 isUpToDate])
+  optionsCopy = options;
+  highlightCopy = highlight;
+  profileCopy = profile;
+  if ((optionsCopy & 0x40000000) == 0 && (objc_opt_respondsToSelector() & 1) != 0 && [highlightCopy isUpToDate])
   {
-    v9 = [v7 enrichmentState];
-    v10 = v9 < [v8 targetEnrichmentState];
+    enrichmentState = [highlightCopy enrichmentState];
+    v10 = enrichmentState < [profileCopy targetEnrichmentState];
   }
 
   else
@@ -1132,61 +1132,61 @@ void __60__PGHighlightTailor_enrichHighlights_options_progressBlock___block_invo
   return v10;
 }
 
-- (id)allHighlightModelsNeedingEnrichmentForHighlightSubtype:(int64_t)a3 options:(unint64_t)a4
+- (id)allHighlightModelsNeedingEnrichmentForHighlightSubtype:(int64_t)subtype options:(unint64_t)options
 {
-  v4 = a4;
+  optionsCopy = options;
   v15[1] = *MEMORY[0x277D85DE8];
-  v6 = [(PGManagerWorkingContext *)self->_workingContext photoLibrary];
-  v7 = [v6 librarySpecificFetchOptions];
+  photoLibrary = [(PGManagerWorkingContext *)self->_workingContext photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
   v8 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"startDate" ascending:0];
   v15[0] = v8;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:1];
-  [v7 setSortDescriptors:v9];
+  [librarySpecificFetchOptions setSortDescriptors:v9];
 
-  if ((v4 & 0x40000000) == 0)
+  if ((optionsCopy & 0x40000000) == 0)
   {
     v10 = [MEMORY[0x277CCAC30] predicateWithFormat:@"(enrichmentVersion != highlightVersion) || (enrichmentState != %ld)", 4];
-    [v7 setInternalPredicate:v10];
+    [librarySpecificFetchOptions setInternalPredicate:v10];
   }
 
-  v11 = [MEMORY[0x277CD97B8] fetchAssetCollectionsWithType:6 subtype:a3 options:v7];
+  v11 = [MEMORY[0x277CD97B8] fetchAssetCollectionsWithType:6 subtype:subtype options:librarySpecificFetchOptions];
   if ([v11 count])
   {
-    v12 = [v11 fetchedObjects];
+    fetchedObjects = [v11 fetchedObjects];
   }
 
   else
   {
-    v12 = MEMORY[0x277CBEBF8];
+    fetchedObjects = MEMORY[0x277CBEBF8];
   }
 
   v13 = *MEMORY[0x277D85DE8];
 
-  return v12;
+  return fetchedObjects;
 }
 
-- (void)writeHighlightEnrichmentValues:(id)a3 toChangeRequest:(id)a4 highlight:(id)a5 options:(unint64_t)a6
+- (void)writeHighlightEnrichmentValues:(id)values toChangeRequest:(id)request highlight:(id)highlight options:(unint64_t)options
 {
-  v6 = a6;
+  optionsCopy = options;
   v70 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if ([v10 clearCurations])
+  valuesCopy = values;
+  requestCopy = request;
+  highlightCopy = highlight;
+  if ([valuesCopy clearCurations])
   {
-    [v11 setEnrichmentState:0];
-    [v11 clearCurations];
+    [requestCopy setEnrichmentState:0];
+    [requestCopy clearCurations];
     goto LABEL_49;
   }
 
-  v13 = [(PGManagerWorkingContext *)self->_workingContext photoLibrary];
-  if (v6 == -1)
+  photoLibrary = [(PGManagerWorkingContext *)self->_workingContext photoLibrary];
+  if (optionsCopy == -1)
   {
-    v14 = [v10 enrichmentState];
-    if (v14 == 0xFFFF)
+    enrichmentState = [valuesCopy enrichmentState];
+    if (enrichmentState == 0xFFFF)
     {
-      if (![v12 enrichmentState])
+      if (![highlightCopy enrichmentState])
       {
         goto LABEL_7;
       }
@@ -1194,151 +1194,151 @@ void __60__PGHighlightTailor_enrichHighlights_options_progressBlock___block_invo
       goto LABEL_6;
     }
 
-    v15 = v14;
-    [v11 setEnrichmentState:v14];
+    v15 = enrichmentState;
+    [requestCopy setEnrichmentState:enrichmentState];
     if (v15)
     {
 LABEL_6:
-      v16 = [MEMORY[0x277CBEAA8] date];
-      [v11 setLastEnrichmentDate:v16];
+      date = [MEMORY[0x277CBEAA8] date];
+      [requestCopy setLastEnrichmentDate:date];
 
-      [v11 didEnrichHighlight];
+      [requestCopy didEnrichHighlight];
     }
   }
 
 LABEL_7:
-  [v10 promotionScore];
+  [valuesCopy promotionScore];
   if (v17 != -1.0)
   {
-    [v11 setPromotionScore:?];
+    [requestCopy setPromotionScore:?];
   }
 
-  if ([v10 smartDescriptionPrivateUpdated])
+  if ([valuesCopy smartDescriptionPrivateUpdated])
   {
-    v18 = [v10 smartDescriptionPrivate];
-    [v11 setSmartDescription:v18];
+    smartDescriptionPrivate = [valuesCopy smartDescriptionPrivate];
+    [requestCopy setSmartDescription:smartDescriptionPrivate];
   }
 
-  if ([v10 verboseSmartDescriptionPrivateUpdated])
+  if ([valuesCopy verboseSmartDescriptionPrivateUpdated])
   {
-    v19 = [v10 verboseSmartDescriptionPrivate];
-    [v11 setVerboseSmartDescription:v19];
+    verboseSmartDescriptionPrivate = [valuesCopy verboseSmartDescriptionPrivate];
+    [requestCopy setVerboseSmartDescription:verboseSmartDescriptionPrivate];
   }
 
-  if ([v10 smartDescriptionSharedUpdated])
+  if ([valuesCopy smartDescriptionSharedUpdated])
   {
-    v20 = [v10 smartDescriptionShared];
-    [v11 setSmartDescriptionShared:v20];
+    smartDescriptionShared = [valuesCopy smartDescriptionShared];
+    [requestCopy setSmartDescriptionShared:smartDescriptionShared];
   }
 
-  if ([v10 verboseSmartDescriptionSharedUpdated])
+  if ([valuesCopy verboseSmartDescriptionSharedUpdated])
   {
-    v21 = [v10 verboseSmartDescriptionShared];
-    [v11 setVerboseSmartDescriptionShared:v21];
+    verboseSmartDescriptionShared = [valuesCopy verboseSmartDescriptionShared];
+    [requestCopy setVerboseSmartDescriptionShared:verboseSmartDescriptionShared];
   }
 
-  if ([v10 smartDescriptionMixedUpdated])
+  if ([valuesCopy smartDescriptionMixedUpdated])
   {
-    v22 = [v10 smartDescriptionMixed];
-    [v11 setSmartDescriptionMixed:v22];
+    smartDescriptionMixed = [valuesCopy smartDescriptionMixed];
+    [requestCopy setSmartDescriptionMixed:smartDescriptionMixed];
   }
 
-  v60 = v12;
-  if ([v10 verboseSmartDescriptionMixedUpdated])
+  v60 = highlightCopy;
+  if ([valuesCopy verboseSmartDescriptionMixedUpdated])
   {
-    v23 = [v10 verboseSmartDescriptionMixed];
-    [v11 setVerboseSmartDescriptionMixed:v23];
+    verboseSmartDescriptionMixed = [valuesCopy verboseSmartDescriptionMixed];
+    [requestCopy setVerboseSmartDescriptionMixed:verboseSmartDescriptionMixed];
   }
 
-  v24 = [v10 momentTitleByMomentUUID];
-  v25 = v24;
-  if (v24)
+  momentTitleByMomentUUID = [valuesCopy momentTitleByMomentUUID];
+  v25 = momentTitleByMomentUUID;
+  if (momentTitleByMomentUUID)
   {
-    v26 = [v24 allKeys];
+    allKeys = [momentTitleByMomentUUID allKeys];
     v67[0] = MEMORY[0x277D85DD0];
     v67[1] = 3221225472;
     v67[2] = __86__PGHighlightTailor_writeHighlightEnrichmentValues_toChangeRequest_highlight_options___block_invoke;
     v67[3] = &unk_278884128;
     v68 = v25;
-    [v11 enumerateMomentChangeRequestsForUUIDs:v26 inPhotoLibrary:v13 usingBlock:v67];
+    [requestCopy enumerateMomentChangeRequestsForUUIDs:allKeys inPhotoLibrary:photoLibrary usingBlock:v67];
   }
 
-  v27 = [v10 momentProcessedLocationByMomentUUID];
-  v28 = v27;
-  if (v27)
+  momentProcessedLocationByMomentUUID = [valuesCopy momentProcessedLocationByMomentUUID];
+  v28 = momentProcessedLocationByMomentUUID;
+  if (momentProcessedLocationByMomentUUID)
   {
-    v29 = [v27 allKeys];
+    allKeys2 = [momentProcessedLocationByMomentUUID allKeys];
     v65[0] = MEMORY[0x277D85DD0];
     v65[1] = 3221225472;
     v65[2] = __86__PGHighlightTailor_writeHighlightEnrichmentValues_toChangeRequest_highlight_options___block_invoke_2;
     v65[3] = &unk_278884128;
     v66 = v28;
-    [v11 enumerateMomentChangeRequestsForUUIDs:v29 inPhotoLibrary:v13 usingBlock:v65];
+    [requestCopy enumerateMomentChangeRequestsForUUIDs:allKeys2 inPhotoLibrary:photoLibrary usingBlock:v65];
   }
 
-  v30 = [v10 keyAssetPrivate];
-  if (v30)
+  keyAssetPrivate = [valuesCopy keyAssetPrivate];
+  if (keyAssetPrivate)
   {
-    [v11 setKeyAssetPrivate:v30];
+    [requestCopy setKeyAssetPrivate:keyAssetPrivate];
   }
 
-  v31 = [v10 keyAssetShared];
-  if (v31)
+  keyAssetShared = [valuesCopy keyAssetShared];
+  if (keyAssetShared)
   {
-    [v11 setKeyAssetShared:v31];
+    [requestCopy setKeyAssetShared:keyAssetShared];
   }
 
-  v32 = [v10 mixedSharingCompositionKeyAssetRelationshipValue];
-  v33 = v32;
-  if (v32)
+  mixedSharingCompositionKeyAssetRelationshipValue = [valuesCopy mixedSharingCompositionKeyAssetRelationshipValue];
+  v33 = mixedSharingCompositionKeyAssetRelationshipValue;
+  if (mixedSharingCompositionKeyAssetRelationshipValue)
   {
-    [v11 setMixedSharingCompositionKeyAssetRelationship:{objc_msgSend(v32, "unsignedShortValue")}];
+    [requestCopy setMixedSharingCompositionKeyAssetRelationship:{objc_msgSend(mixedSharingCompositionKeyAssetRelationshipValue, "unsignedShortValue")}];
   }
 
-  v34 = [v10 extendedCuration];
-  if (v34)
+  extendedCuration = [valuesCopy extendedCuration];
+  if (extendedCuration)
   {
-    [v11 setAssets:v34 forCurationType:2];
+    [requestCopy setAssets:extendedCuration forCurationType:2];
   }
 
-  v55 = v31;
-  v35 = [v10 summaryCuration];
-  v36 = v35;
-  if (v35)
+  v55 = keyAssetShared;
+  summaryCuration = [valuesCopy summaryCuration];
+  v36 = summaryCuration;
+  if (summaryCuration)
   {
-    if ([v35 count])
+    if ([summaryCuration count])
     {
-      [v11 setAssets:v36 forCurationType:1];
+      [requestCopy setAssets:v36 forCurationType:1];
     }
 
     else
     {
-      [v11 clearCurationWithType:1];
+      [requestCopy clearCurationWithType:1];
     }
   }
 
   v52 = v36;
-  v53 = v34;
+  v53 = extendedCuration;
   v54 = v33;
-  v56 = v30;
+  v56 = keyAssetPrivate;
   v57 = v28;
   v58 = v25;
-  v59 = v13;
-  v37 = [v10 mood];
-  if (v37 != -1)
+  v59 = photoLibrary;
+  mood = [valuesCopy mood];
+  if (mood != -1)
   {
-    [v11 setMood:v37];
+    [requestCopy setMood:mood];
   }
 
-  v38 = [v10 visibilityScoreByAsset];
+  visibilityScoreByAsset = [valuesCopy visibilityScoreByAsset];
   v61 = 0u;
   v62 = 0u;
   v63 = 0u;
   v64 = 0u;
-  v39 = [v10 visibilityScoreByAsset];
-  v40 = [v39 keyEnumerator];
+  visibilityScoreByAsset2 = [valuesCopy visibilityScoreByAsset];
+  keyEnumerator = [visibilityScoreByAsset2 keyEnumerator];
 
-  v41 = [v40 countByEnumeratingWithState:&v61 objects:v69 count:16];
+  v41 = [keyEnumerator countByEnumeratingWithState:&v61 objects:v69 count:16];
   if (v41)
   {
     v42 = v41;
@@ -1349,11 +1349,11 @@ LABEL_7:
       {
         if (*v62 != v43)
         {
-          objc_enumerationMutation(v40);
+          objc_enumerationMutation(keyEnumerator);
         }
 
         v45 = *(*(&v61 + 1) + 8 * i);
-        v46 = [v38 objectForKey:v45];
+        v46 = [visibilityScoreByAsset objectForKey:v45];
         [v46 doubleValue];
         v48 = v47;
         [v45 highlightVisibilityScore];
@@ -1365,13 +1365,13 @@ LABEL_7:
         }
       }
 
-      v42 = [v40 countByEnumeratingWithState:&v61 objects:v69 count:16];
+      v42 = [keyEnumerator countByEnumeratingWithState:&v61 objects:v69 count:16];
     }
 
     while (v42);
   }
 
-  v12 = v60;
+  highlightCopy = v60;
 LABEL_49:
 
   v51 = *MEMORY[0x277D85DE8];
@@ -1407,15 +1407,15 @@ void __86__PGHighlightTailor_writeHighlightEnrichmentValues_toChangeRequest_high
   [v7 setProcessedLocation:v6];
 }
 
-- (id)enrichmentValuesForHighlight:(id)a3 usingEnrichmentProfile:(id)a4 graph:(id)a5 options:(unint64_t)a6 reportChangedValuesOnly:(BOOL)a7 highlightTailorContext:(id)a8 progressBlock:(id)a9
+- (id)enrichmentValuesForHighlight:(id)highlight usingEnrichmentProfile:(id)profile graph:(id)graph options:(unint64_t)options reportChangedValuesOnly:(BOOL)only highlightTailorContext:(id)context progressBlock:(id)block
 {
-  v10 = a7;
+  onlyCopy = only;
   v380 = *MEMORY[0x277D85DE8];
-  v304 = a3;
-  v308 = a4;
-  v303 = a5;
-  v306 = a8;
-  v293 = a9;
+  highlightCopy = highlight;
+  profileCopy = profile;
+  graphCopy = graph;
+  contextCopy = context;
+  blockCopy = block;
   v368 = 0;
   v369 = &v368;
   v370 = 0x2020000000;
@@ -1424,10 +1424,10 @@ void __86__PGHighlightTailor_writeHighlightEnrichmentValues_toChangeRequest_high
   v365 = &v364;
   v366 = 0x2020000000;
   v367 = 0;
-  v307 = _Block_copy(v293);
+  v307 = _Block_copy(blockCopy);
   if (!v307 || (v13 = CFAbsoluteTimeGetCurrent(), v13 - v365[3] < 0.01) || (v365[3] = v13, info[0] = 0, v307[2](v307, info, 0.0), v14 = *(v369 + 24) | info[0], *(v369 + 24) = v14, (v14 & 1) == 0))
   {
-    v305 = [v308 highlightInfoWithHighlight:v304 graph:v303 highlightTailorContext:v306];
+    v305 = [profileCopy highlightInfoWithHighlight:highlightCopy graph:graphCopy highlightTailorContext:contextCopy];
     if (!v305)
     {
       v15 = 0;
@@ -1436,23 +1436,23 @@ LABEL_247:
       goto LABEL_248;
     }
 
-    v292 = [[PGHighlightEnrichmentValues alloc] initWithHighlight:v304];
-    v16 = [v304 assetCollection];
-    v289 = [(PGHighlightTailor *)self tailorOptionsAllowedForHighlight:v16 originalOptions:a6];
-    v17 = [v304 isUpToDate];
-    v288 = [v308 enrichmentStateWithHighlightInfo:v305 highlightTailorContext:v306];
-    v18 = [v304 enrichmentState];
-    v291 = v16;
-    if ((a6 & 0x40000000) == 0 && ((v17 ^ 1) & 1) == 0 && v288 == v18)
+    v292 = [[PGHighlightEnrichmentValues alloc] initWithHighlight:highlightCopy];
+    assetCollection = [highlightCopy assetCollection];
+    v289 = [(PGHighlightTailor *)self tailorOptionsAllowedForHighlight:assetCollection originalOptions:options];
+    isUpToDate = [highlightCopy isUpToDate];
+    v288 = [profileCopy enrichmentStateWithHighlightInfo:v305 highlightTailorContext:contextCopy];
+    enrichmentState = [highlightCopy enrichmentState];
+    v291 = assetCollection;
+    if ((options & 0x40000000) == 0 && ((isUpToDate ^ 1) & 1) == 0 && v288 == enrichmentState)
     {
       goto LABEL_11;
     }
 
-    v23 = [v16 sharingComposition];
-    v285 = v10;
-    if (v23)
+    sharingComposition = [assetCollection sharingComposition];
+    v285 = onlyCopy;
+    if (sharingComposition)
     {
-      if (v23 == 1)
+      if (sharingComposition == 1)
       {
         v25 = objc_autoreleasePoolPush();
         v26 = 0;
@@ -1461,7 +1461,7 @@ LABEL_247:
         goto LABEL_26;
       }
 
-      if (v23 != 2)
+      if (sharingComposition != 2)
       {
         v25 = objc_autoreleasePoolPush();
         v29 = 0;
@@ -1480,8 +1480,8 @@ LABEL_247:
     }
 
     v25 = objc_autoreleasePoolPush();
-    v28 = v16;
-    v26 = [(PGHighlightTailor *)self keyAssetFromHighlight:v16 sharingFilter:0];
+    v28 = assetCollection;
+    v26 = [(PGHighlightTailor *)self keyAssetFromHighlight:assetCollection sharingFilter:0];
     v27 = 1;
     if (v24)
     {
@@ -1509,11 +1509,11 @@ LABEL_32:
         v284 = v30;
 LABEL_69:
         v286 = v31;
-        v52 = [v31 uuid];
-        [v305 setKeyAssetPrivateUUID:v52];
+        uuid = [v31 uuid];
+        [v305 setKeyAssetPrivateUUID:uuid];
 
-        v35 = [v287 uuid];
-        [v305 setKeyAssetSharedUUID:v35];
+        uuid2 = [v287 uuid];
+        [v305 setKeyAssetSharedUUID:uuid2];
         v43 = 1;
 LABEL_70:
 
@@ -1551,7 +1551,7 @@ LABEL_76:
           }
         }
 
-        v280 = [(PGHighlightTailor *)self assetSortDescriptors];
+        assetSortDescriptors = [(PGHighlightTailor *)self assetSortDescriptors];
         v55 = objc_autoreleasePoolPush();
         v56 = [(PGHighlightTailor *)self sortedCurationOfType:2 fromHighlight:v291];
         v57 = v56;
@@ -1606,7 +1606,7 @@ LABEL_147:
 
           if (v289)
           {
-            [v308 promotionScoreWithHighlightInfo:v305];
+            [profileCopy promotionScoreWithHighlightInfo:v305];
             v102 = v101;
             [v291 promotionScore];
             if (!v285 || v102 != v103)
@@ -1718,7 +1718,7 @@ LABEL_238:
               v327 = v285;
               v326 = buf;
               aBlock[4] = self;
-              spidb = v304;
+              spidb = highlightCopy;
               v325 = spidb;
               v302 = _Block_copy(aBlock);
               if ((v289 & 2) != 0)
@@ -1740,15 +1740,15 @@ LABEL_238:
                 {
                   v170 = objc_autoreleasePoolPush();
                   v322 = 0;
-                  v171 = [v308 titleWithHighlightInfo:v305 sharingFilter:0 curatedAssets:v278 keyAsset:v286 createVerboseTitle:0 error:&v322];
+                  v171 = [profileCopy titleWithHighlightInfo:v305 sharingFilter:0 curatedAssets:v278 keyAsset:v286 createVerboseTitle:0 error:&v322];
                   v172 = v322;
-                  v173 = [v171 title];
-                  v174 = [v173 stringValue];
+                  title = [v171 title];
+                  stringValue = [title stringValue];
 
-                  v175 = [v291 smartDescriptionPrivate];
-                  if (v302[2](v302, v174, v175, v172))
+                  smartDescriptionPrivate = [v291 smartDescriptionPrivate];
+                  if (v302[2](v302, stringValue, smartDescriptionPrivate, v172))
                   {
-                    [(PGHighlightEnrichmentValues *)v292 setSmartDescriptionPrivate:v174];
+                    [(PGHighlightEnrichmentValues *)v292 setSmartDescriptionPrivate:stringValue];
                   }
 
                   objc_autoreleasePoolPop(v170);
@@ -1758,15 +1758,15 @@ LABEL_238:
                 {
                   v176 = objc_autoreleasePoolPush();
                   v321 = 0;
-                  v177 = [v308 titleWithHighlightInfo:v305 sharingFilter:1 curatedAssets:v278 keyAsset:v287 createVerboseTitle:0 error:&v321];
+                  v177 = [profileCopy titleWithHighlightInfo:v305 sharingFilter:1 curatedAssets:v278 keyAsset:v287 createVerboseTitle:0 error:&v321];
                   v178 = v321;
-                  v179 = [v177 title];
-                  v180 = [v179 stringValue];
+                  title2 = [v177 title];
+                  stringValue2 = [title2 stringValue];
 
-                  v181 = [v291 smartDescriptionShared];
-                  if (v302[2](v302, v180, v181, v178))
+                  smartDescriptionShared = [v291 smartDescriptionShared];
+                  if (v302[2](v302, stringValue2, smartDescriptionShared, v178))
                   {
-                    [(PGHighlightEnrichmentValues *)v292 setSmartDescriptionShared:v180];
+                    [(PGHighlightEnrichmentValues *)v292 setSmartDescriptionShared:stringValue2];
                   }
 
                   objc_autoreleasePoolPop(v176);
@@ -1776,15 +1776,15 @@ LABEL_238:
                 {
                   v182 = objc_autoreleasePoolPush();
                   v320 = 0;
-                  v183 = [v308 titleWithHighlightInfo:v305 sharingFilter:2 curatedAssets:v278 keyAsset:v284 createVerboseTitle:0 error:&v320];
+                  v183 = [profileCopy titleWithHighlightInfo:v305 sharingFilter:2 curatedAssets:v278 keyAsset:v284 createVerboseTitle:0 error:&v320];
                   v184 = v320;
-                  v185 = [v183 title];
-                  v186 = [v185 stringValue];
+                  title3 = [v183 title];
+                  stringValue3 = [title3 stringValue];
 
-                  v187 = [v291 smartDescriptionMixed];
-                  if (v302[2](v302, v186, v187, v184))
+                  smartDescriptionMixed = [v291 smartDescriptionMixed];
+                  if (v302[2](v302, stringValue3, smartDescriptionMixed, v184))
                   {
-                    [(PGHighlightEnrichmentValues *)v292 setSmartDescriptionMixed:v186];
+                    [(PGHighlightEnrichmentValues *)v292 setSmartDescriptionMixed:stringValue3];
                   }
 
                   objc_autoreleasePoolPop(v182);
@@ -1859,15 +1859,15 @@ LABEL_238:
                 {
                   v203 = objc_autoreleasePoolPush();
                   v319 = 0;
-                  v204 = [v308 titleWithHighlightInfo:v305 sharingFilter:0 curatedAssets:0 keyAsset:0 createVerboseTitle:1 error:&v319];
+                  v204 = [profileCopy titleWithHighlightInfo:v305 sharingFilter:0 curatedAssets:0 keyAsset:0 createVerboseTitle:1 error:&v319];
                   v205 = v319;
-                  v206 = [v204 title];
-                  v207 = [v206 stringValue];
+                  title4 = [v204 title];
+                  stringValue4 = [title4 stringValue];
 
-                  v208 = [v291 verboseSmartDescriptionPrivate];
-                  if (v302[2](v302, v207, v208, v205))
+                  verboseSmartDescriptionPrivate = [v291 verboseSmartDescriptionPrivate];
+                  if (v302[2](v302, stringValue4, verboseSmartDescriptionPrivate, v205))
                   {
-                    [(PGHighlightEnrichmentValues *)v292 setVerboseSmartDescriptionPrivate:v207];
+                    [(PGHighlightEnrichmentValues *)v292 setVerboseSmartDescriptionPrivate:stringValue4];
                   }
 
                   objc_autoreleasePoolPop(v203);
@@ -1877,15 +1877,15 @@ LABEL_238:
                 {
                   v209 = objc_autoreleasePoolPush();
                   v318 = 0;
-                  v210 = [v308 titleWithHighlightInfo:v305 sharingFilter:1 curatedAssets:0 keyAsset:0 createVerboseTitle:1 error:&v318];
+                  v210 = [profileCopy titleWithHighlightInfo:v305 sharingFilter:1 curatedAssets:0 keyAsset:0 createVerboseTitle:1 error:&v318];
                   v211 = v318;
-                  v212 = [v210 title];
-                  v213 = [v212 stringValue];
+                  title5 = [v210 title];
+                  stringValue5 = [title5 stringValue];
 
-                  v214 = [v291 verboseSmartDescriptionShared];
-                  if (v302[2](v302, v213, v214, v211))
+                  verboseSmartDescriptionShared = [v291 verboseSmartDescriptionShared];
+                  if (v302[2](v302, stringValue5, verboseSmartDescriptionShared, v211))
                   {
-                    [(PGHighlightEnrichmentValues *)v292 setVerboseSmartDescriptionShared:v213];
+                    [(PGHighlightEnrichmentValues *)v292 setVerboseSmartDescriptionShared:stringValue5];
                   }
 
                   objc_autoreleasePoolPop(v209);
@@ -1895,15 +1895,15 @@ LABEL_238:
                 {
                   v215 = objc_autoreleasePoolPush();
                   v317 = 0;
-                  v216 = [v308 titleWithHighlightInfo:v305 sharingFilter:2 curatedAssets:0 keyAsset:0 createVerboseTitle:1 error:&v317];
+                  v216 = [profileCopy titleWithHighlightInfo:v305 sharingFilter:2 curatedAssets:0 keyAsset:0 createVerboseTitle:1 error:&v317];
                   v217 = v317;
-                  v218 = [v216 title];
-                  v219 = [v218 stringValue];
+                  title6 = [v216 title];
+                  stringValue6 = [title6 stringValue];
 
-                  v220 = [v291 verboseSmartDescriptionMixed];
-                  if (v302[2](v302, v219, v220, v217))
+                  verboseSmartDescriptionMixed = [v291 verboseSmartDescriptionMixed];
+                  if (v302[2](v302, stringValue6, verboseSmartDescriptionMixed, v217))
                   {
-                    [(PGHighlightEnrichmentValues *)v292 setVerboseSmartDescriptionMixed:v219];
+                    [(PGHighlightEnrichmentValues *)v292 setVerboseSmartDescriptionMixed:stringValue6];
                   }
 
                   objc_autoreleasePoolPop(v215);
@@ -1962,19 +1962,19 @@ LABEL_238:
               if ((v289 & 0x40) != 0)
               {
                 v283 = objc_autoreleasePoolPush();
-                v231 = [v305 feeder];
-                v232 = [v231 allItems];
-                v233 = [(PGHighlightTailor *)self computeChangedVisibilityScoresForItems:v232];
+                feeder = [v305 feeder];
+                allItems = [feeder allItems];
+                v233 = [(PGHighlightTailor *)self computeChangedVisibilityScoresForItems:allItems];
                 v234 = v233;
                 if (v285)
                 {
-                  v235 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+                  strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
                   v315 = 0u;
                   v316 = 0u;
                   v313 = 0u;
                   v314 = 0u;
-                  v236 = [v234 keyEnumerator];
-                  v237 = [v236 countByEnumeratingWithState:&v313 objects:v373 count:16];
+                  keyEnumerator = [v234 keyEnumerator];
+                  v237 = [keyEnumerator countByEnumeratingWithState:&v313 objects:v373 count:16];
                   if (v237)
                   {
                     v238 = *v314;
@@ -1984,7 +1984,7 @@ LABEL_238:
                       {
                         if (*v314 != v238)
                         {
-                          objc_enumerationMutation(v236);
+                          objc_enumerationMutation(keyEnumerator);
                         }
 
                         v240 = *(*(&v313 + 1) + 8 * i);
@@ -1994,17 +1994,17 @@ LABEL_238:
                         [v241 doubleValue];
                         if (v244 != v243)
                         {
-                          [v235 setObject:v241 forKey:v240];
+                          [strongToStrongObjectsMapTable setObject:v241 forKey:v240];
                         }
                       }
 
-                      v237 = [v236 countByEnumeratingWithState:&v313 objects:v373 count:16];
+                      v237 = [keyEnumerator countByEnumeratingWithState:&v313 objects:v373 count:16];
                     }
 
                     while (v237);
                   }
 
-                  v245 = v235;
+                  v245 = strongToStrongObjectsMapTable;
                 }
 
                 else
@@ -2053,9 +2053,9 @@ LABEL_238:
 LABEL_347:
                 if (!v307 || (v263 = CFAbsoluteTimeGetCurrent(), v263 - v365[3] < 0.01) || (v365[3] = v263, LOBYTE(v323.numer) = 0, (v307)[2](v307, &v323, 0.95), v264 = *(v369 + 24) | LOBYTE(v323.numer), *(v369 + 24) = v264, (v264 & 1) == 0))
                 {
-                  if (a6 == 0xFF)
+                  if (options == 0xFF)
                   {
-                    v267 = [v308 canUseLocationInformationWithHighlightInfo:v305 graph:v303];
+                    v267 = [profileCopy canUseLocationInformationWithHighlightInfo:v305 graph:graphCopy];
                     v268 = *(*&buf[8] + 24);
                     if (v288 >= 2)
                     {
@@ -2112,7 +2112,7 @@ LABEL_347:
                   }
 
                   _Block_object_dispose(buf, 8);
-                  v16 = v291;
+                  assetCollection = v291;
 LABEL_11:
                   if (!v307 || (v19 = CFAbsoluteTimeGetCurrent(), v19 - v365[3] < 0.01) || (v365[3] = v19, info[0] = 0, v307[2](v307, info, 1.0), v20 = *(v369 + 24) | info[0], *(v369 + 24) = v20, (v20 & 1) == 0))
                   {
@@ -2135,7 +2135,7 @@ LABEL_246:
 
 LABEL_245:
                   v15 = 0;
-                  v16 = v291;
+                  assetCollection = v291;
                   goto LABEL_246;
                 }
 
@@ -2157,7 +2157,7 @@ LABEL_353:
               }
 
               v290 = objc_autoreleasePoolPush();
-              v250 = [v308 momentProcessedLocationByMomentUUIDWithHighlightInfo:v305 graph:v303];
+              v250 = [profileCopy momentProcessedLocationByMomentUUIDWithHighlightInfo:v305 graph:graphCopy];
               v251 = v250;
               if (v285)
               {
@@ -2183,14 +2183,14 @@ LABEL_353:
                         }
 
                         v257 = *(*(&v309 + 1) + 8 * j);
-                        v258 = [v257 uuid];
-                        v259 = [v251 objectForKeyedSubscript:v258];
-                        v260 = [v259 unsignedShortValue];
+                        uuid3 = [v257 uuid];
+                        v259 = [v251 objectForKeyedSubscript:uuid3];
+                        unsignedShortValue = [v259 unsignedShortValue];
 
-                        if ([v257 processedLocation] != v260)
+                        if ([v257 processedLocation] != unsignedShortValue)
                         {
-                          v261 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:v260];
-                          [v252 setObject:v261 forKeyedSubscript:v258];
+                          v261 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:unsignedShortValue];
+                          [v252 setObject:v261 forKeyedSubscript:uuid3];
                         }
                       }
 
@@ -2251,7 +2251,7 @@ LABEL_346:
               v335 = &v364;
               v337 = 0x3F847AE147AE147BLL;
               v336 = &v368;
-              v144 = [v308 summaryCurationWithHighlightInfo:v305 sharingFilter:0 progressBlock:v333];
+              v144 = [profileCopy summaryCurationWithHighlightInfo:v305 sharingFilter:0 progressBlock:v333];
             }
 
             else
@@ -2269,7 +2269,7 @@ LABEL_346:
               v330 = &v364;
               v332 = 0x3F847AE147AE147BLL;
               v331 = &v368;
-              v145 = [v308 summaryCurationWithHighlightInfo:v305 sharingFilter:1 progressBlock:v328];
+              v145 = [profileCopy summaryCurationWithHighlightInfo:v305 sharingFilter:1 progressBlock:v328];
 
               v146 = v144 != 0;
               v147 = v281;
@@ -2283,7 +2283,7 @@ LABEL_346:
                 v148 = [v144 arrayByAddingObjectsFromArray:v145];
 LABEL_226:
                 v150 = v148;
-                v151 = [v148 sortedArrayUsingDescriptors:v280];
+                v151 = [v148 sortedArrayUsingDescriptors:assetSortDescriptors];
 
                 if (!v285 || ([v151 isEqualToArray:v143] & 1) == 0)
                 {
@@ -2364,7 +2364,7 @@ LABEL_226:
           *info = 0;
           mach_timebase_info(info);
           v274 = mach_absolute_time();
-          v112 = [v308 momentTitleByMomentUUIDWithHighlightInfo:v305];
+          v112 = [profileCopy momentTitleByMomentUUIDWithHighlightInfo:v305];
           v113 = v112;
           if (v285)
           {
@@ -2393,23 +2393,23 @@ LABEL_226:
                   }
 
                   v117 = *(*(&v338 + 1) + 8 * k);
-                  v118 = [v117 uuid];
-                  v119 = [v113 objectForKeyedSubscript:v118];
+                  uuid4 = [v117 uuid];
+                  v119 = [v113 objectForKeyedSubscript:uuid4];
 
-                  v120 = [v119 title];
-                  v121 = [v120 stringValue];
+                  title7 = [v119 title];
+                  stringValue7 = [title7 stringValue];
 
-                  v122 = [v117 title];
-                  if ([v121 length] || !objc_msgSend(v122, "length"))
+                  title8 = [v117 title];
+                  if ([stringValue7 length] || !objc_msgSend(title8, "length"))
                   {
-                    v123 = ![v121 length] || v121 == v122;
-                    if (v123 || ([v121 isEqualToString:v122] & 1) != 0)
+                    v123 = ![stringValue7 length] || stringValue7 == title8;
+                    if (v123 || ([stringValue7 isEqualToString:title8] & 1) != 0)
                     {
-                      v124 = [v119 subtitle];
-                      v125 = [v124 stringValue];
+                      subtitle = [v119 subtitle];
+                      stringValue8 = [subtitle stringValue];
 
-                      v126 = [v117 localizedSubtitle];
-                      if ([v125 length] || !objc_msgSend(v126, "length")) && (!objc_msgSend(v125, "length") || v125 == v126 || (objc_msgSend(v125, "isEqualToString:", v126)))
+                      localizedSubtitle = [v117 localizedSubtitle];
+                      if ([stringValue8 length] || !objc_msgSend(localizedSubtitle, "length")) && (!objc_msgSend(stringValue8, "length") || stringValue8 == localizedSubtitle || (objc_msgSend(stringValue8, "isEqualToString:", localizedSubtitle)))
                       {
 
                         goto LABEL_186;
@@ -2417,8 +2417,8 @@ LABEL_226:
                     }
                   }
 
-                  v125 = [v117 uuid];
-                  [v300 setObject:v119 forKeyedSubscript:v125];
+                  stringValue8 = [v117 uuid];
+                  [v300 setObject:v119 forKeyedSubscript:stringValue8];
 LABEL_186:
                 }
 
@@ -2499,7 +2499,7 @@ LABEL_196:
           v357 = &v364;
           v359 = 0x3F847AE147AE147BLL;
           v358 = &v368;
-          v64 = [v308 extendedCurationWithHighlightInfo:v305 sharingFilter:0 progressBlock:v355];
+          v64 = [profileCopy extendedCurationWithHighlightInfo:v305 sharingFilter:0 progressBlock:v355];
           if (*(v369 + 24) == 1)
           {
             v65 = MEMORY[0x277D86220];
@@ -2535,7 +2535,7 @@ LABEL_94:
           v352 = &v364;
           v354 = 0x3F847AE147AE147BLL;
           v353 = &v368;
-          v67 = [v308 extendedCurationWithHighlightInfo:v305 sharingFilter:1 progressBlock:v350];
+          v67 = [profileCopy extendedCurationWithHighlightInfo:v305 sharingFilter:1 progressBlock:v350];
           if (*(v369 + 24) == 1)
           {
             v68 = MEMORY[0x277D86220];
@@ -2671,7 +2671,7 @@ LABEL_190:
                 v87 = [v64 arrayByAddingObjectsFromArray:v67];
 LABEL_128:
                 v88 = v87;
-                v89 = [v87 sortedArrayUsingDescriptors:v280];
+                v89 = [v87 sortedArrayUsingDescriptors:assetSortDescriptors];
 
                 if (!v285 || ([v89 isEqualToArray:v57] & 1) == 0)
                 {
@@ -2740,17 +2740,17 @@ LABEL_124:
       v32 = self->_loggingConnection;
       v33 = os_signpost_id_generate(v32);
       v34 = v32;
-      v35 = v34;
+      uuid2 = v34;
       if (v33 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v34))
       {
         *buf = 0;
-        _os_signpost_emit_with_name_impl(&dword_22F0FC000, v35, OS_SIGNPOST_INTERVAL_BEGIN, v33, "PGHighlightTailorGenerateKeyAsset", "", buf, 2u);
+        _os_signpost_emit_with_name_impl(&dword_22F0FC000, uuid2, OS_SIGNPOST_INTERVAL_BEGIN, v33, "PGHighlightTailorGenerateKeyAsset", "", buf, 2u);
       }
 
       *info = 0;
       mach_timebase_info(info);
       v36 = mach_absolute_time();
-      v37 = v304;
+      v37 = highlightCopy;
       if (v282)
       {
         v362[0] = MEMORY[0x277D85DD0];
@@ -2761,7 +2761,7 @@ LABEL_124:
         v363[1] = &v364;
         v363[3] = 0x3F847AE147AE147BLL;
         v363[2] = &v368;
-        v286 = [v308 keyAssetWithHighlightInfo:v305 sharingFilter:0 graph:v303 progressBlock:v362];
+        v286 = [profileCopy keyAssetWithHighlightInfo:v305 sharingFilter:0 graph:graphCopy progressBlock:v362];
         if (*(v369 + 24) == 1)
         {
           v38 = v363;
@@ -2789,7 +2789,7 @@ LABEL_51:
           [(PGHighlightEnrichmentValues *)v292 setKeyAssetPrivate:v286];
         }
 
-        v37 = v304;
+        v37 = highlightCopy;
       }
 
       else
@@ -2807,7 +2807,7 @@ LABEL_51:
         v361[1] = &v364;
         v361[3] = 0x3F847AE147AE147BLL;
         v361[2] = &v368;
-        v287 = [v308 keyAssetWithHighlightInfo:v305 sharingFilter:1 graph:v303 progressBlock:v360];
+        v287 = [profileCopy keyAssetWithHighlightInfo:v305 sharingFilter:1 graph:graphCopy progressBlock:v360];
         if (*(v369 + 24) == 1)
         {
           v38 = v361;
@@ -2830,7 +2830,7 @@ LABEL_51:
           [(PGHighlightEnrichmentValues *)v292 setKeyAssetShared:v287];
         }
 
-        v37 = v304;
+        v37 = highlightCopy;
       }
 
       else
@@ -2859,7 +2859,7 @@ LABEL_51:
       v46 = mach_absolute_time();
       v47 = *info;
       v48 = *&info[4];
-      v49 = v35;
+      v49 = uuid2;
       v50 = v49;
       if (v33 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v49))
       {
@@ -3082,33 +3082,33 @@ LABEL_10:
   return v17;
 }
 
-- (unint64_t)tailorOptionsAllowedForHighlight:(id)a3 originalOptions:(unint64_t)a4
+- (unint64_t)tailorOptionsAllowedForHighlight:(id)highlight originalOptions:(unint64_t)options
 {
-  v5 = [a3 kind];
+  kind = [highlight kind];
   v6 = -1073741824;
-  if (v5 == 3)
+  if (kind == 3)
   {
     v6 = -1073741793;
   }
 
-  if (!v5)
+  if (!kind)
   {
     v6 = -1073741569;
   }
 
-  return v6 & a4;
+  return v6 & options;
 }
 
-- (id)computeChangedVisibilityScoresForItems:(id)a3
+- (id)computeChangedVisibilityScoresForItems:(id)items
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+  itemsCopy = items;
+  strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v6 = v4;
+  v6 = itemsCopy;
   v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v7)
   {
@@ -3131,7 +3131,7 @@ LABEL_10:
         if (([v14 isScore:? closeToValue:?] & 1) == 0)
         {
           v15 = [MEMORY[0x277CCABB0] numberWithDouble:v13];
-          [v5 setObject:v15 forKey:v11];
+          [strongToStrongObjectsMapTable setObject:v15 forKey:v11];
         }
       }
 
@@ -3143,43 +3143,43 @@ LABEL_10:
 
   v16 = *MEMORY[0x277D85DE8];
 
-  return v5;
+  return strongToStrongObjectsMapTable;
 }
 
-- (double)highlightVisibilityWeightForItem:(id)a3
+- (double)highlightVisibilityWeightForItem:(id)item
 {
-  v3 = a3;
-  [v3 clsContentScore];
+  itemCopy = item;
+  [itemCopy clsContentScore];
   v5 = v4;
-  [v3 clsAutoplaySuggestionScore];
+  [itemCopy clsAutoplaySuggestionScore];
   v7 = v6;
-  if ([v3 isVideo])
+  if ([itemCopy isVideo])
   {
-    [v3 clsDuration];
-    if (v8 >= 2.0 && ([v3 clsHasPoorResolution] & 1) == 0)
+    [itemCopy clsDuration];
+    if (v8 >= 2.0 && ([itemCopy clsHasPoorResolution] & 1) == 0)
     {
-      v10 = [v3 clsIsLongExposure];
-      v9 = 1;
+      clsIsLongExposure = [itemCopy clsIsLongExposure];
+      clsIsLoopOrBounce = 1;
       goto LABEL_7;
     }
   }
 
-  v9 = [v3 clsIsLoopOrBounce];
-  v10 = [v3 clsIsLongExposure];
+  clsIsLoopOrBounce = [itemCopy clsIsLoopOrBounce];
+  clsIsLongExposure = [itemCopy clsIsLongExposure];
   v11 = 0.0;
-  if (v9)
+  if (clsIsLoopOrBounce)
   {
 LABEL_7:
     v11 = 20.0;
   }
 
   v12 = 100.0;
-  if (v10)
+  if (clsIsLongExposure)
   {
     v12 = 0.0;
   }
 
-  if (!((v7 > 0.5) | v9 & 1))
+  if (!((v7 > 0.5) | clsIsLoopOrBounce & 1))
   {
     v12 = 0.0;
   }
@@ -3210,34 +3210,34 @@ LABEL_7:
   return [(PGHighlightTailor *)&v3 init];
 }
 
-- (PGHighlightTailor)initWithWorkingContext:(id)a3
+- (PGHighlightTailor)initWithWorkingContext:(id)context
 {
   v27[6] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  contextCopy = context;
   v26.receiver = self;
   v26.super_class = PGHighlightTailor;
   v6 = [(PGHighlightTailor *)&v26 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_workingContext, a3);
-    v8 = [v5 curationManager];
-    v9 = [v5 loggingConnection];
+    objc_storeStrong(&v6->_workingContext, context);
+    curationManager = [contextCopy curationManager];
+    loggingConnection = [contextCopy loggingConnection];
     loggingConnection = v7->_loggingConnection;
-    v7->_loggingConnection = v9;
-    v11 = v9;
+    v7->_loggingConnection = loggingConnection;
+    v11 = loggingConnection;
 
-    v12 = [[PGAggregationEnrichmentProfile alloc] initWithCurationManager:v8 loggingConnection:v11];
+    v12 = [[PGAggregationEnrichmentProfile alloc] initWithCurationManager:curationManager loggingConnection:v11];
     v27[0] = v12;
-    v13 = [(PGDayGroupAbstractEnrichmentProfile *)[PGTripEnrichmentProfile alloc] initWithCurationManager:v8 loggingConnection:v11];
+    v13 = [(PGDayGroupAbstractEnrichmentProfile *)[PGTripEnrichmentProfile alloc] initWithCurationManager:curationManager loggingConnection:v11];
     v27[1] = v13;
-    v14 = [(PGDefaultEnrichmentProfile *)[PGCompleteEnrichmentProfile alloc] initWithCurationManager:v8 loggingConnection:v11];
+    v14 = [(PGDefaultEnrichmentProfile *)[PGCompleteEnrichmentProfile alloc] initWithCurationManager:curationManager loggingConnection:v11];
     v27[2] = v14;
-    v15 = [(PGDefaultEnrichmentProfile *)[PGSceneCompleteEnrichmentProfile alloc] initWithCurationManager:v8 loggingConnection:v11];
+    v15 = [(PGDefaultEnrichmentProfile *)[PGSceneCompleteEnrichmentProfile alloc] initWithCurationManager:curationManager loggingConnection:v11];
     v27[3] = v15;
-    v16 = [(PGDefaultEnrichmentProfile *)[PGPartialEnrichmentProfile alloc] initWithCurationManager:v8 loggingConnection:v11];
+    v16 = [(PGDefaultEnrichmentProfile *)[PGPartialEnrichmentProfile alloc] initWithCurationManager:curationManager loggingConnection:v11];
     v27[4] = v16;
-    v17 = [[PGDefaultEnrichmentProfile alloc] initWithCurationManager:v8 loggingConnection:v11];
+    v17 = [[PGDefaultEnrichmentProfile alloc] initWithCurationManager:curationManager loggingConnection:v11];
     v27[5] = v17;
     v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v27 count:6];
     enrichmentProfiles = v7->_enrichmentProfiles;

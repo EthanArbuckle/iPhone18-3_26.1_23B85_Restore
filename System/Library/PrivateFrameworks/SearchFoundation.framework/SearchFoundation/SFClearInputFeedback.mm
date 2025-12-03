@@ -1,42 +1,42 @@
 @interface SFClearInputFeedback
-- (SFClearInputFeedback)initWithCoder:(id)a3;
-- (SFClearInputFeedback)initWithEvent:(unint64_t)a3;
-- (void)encodeWithCoder:(id)a3;
+- (SFClearInputFeedback)initWithCoder:(id)coder;
+- (SFClearInputFeedback)initWithEvent:(unint64_t)event;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFClearInputFeedback
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = SFClearInputFeedback;
-  v4 = a3;
-  [(SFFeedback *)&v5 encodeWithCoder:v4];
-  [v4 encodeInteger:self->_triggerEvent forKey:{@"_triggerEvent", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(SFFeedback *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:self->_triggerEvent forKey:{@"_triggerEvent", v5.receiver, v5.super_class}];
 }
 
-- (SFClearInputFeedback)initWithCoder:(id)a3
+- (SFClearInputFeedback)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = SFClearInputFeedback;
-  v5 = [(SFFeedback *)&v7 initWithCoder:v4];
+  v5 = [(SFFeedback *)&v7 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_triggerEvent = [v4 decodeIntegerForKey:@"_triggerEvent"];
+    v5->_triggerEvent = [coderCopy decodeIntegerForKey:@"_triggerEvent"];
   }
 
   return v5;
 }
 
-- (SFClearInputFeedback)initWithEvent:(unint64_t)a3
+- (SFClearInputFeedback)initWithEvent:(unint64_t)event
 {
   v5.receiver = self;
   v5.super_class = SFClearInputFeedback;
   result = [(SFFeedback *)&v5 init];
   if (result)
   {
-    result->_triggerEvent = a3;
+    result->_triggerEvent = event;
   }
 
   return result;

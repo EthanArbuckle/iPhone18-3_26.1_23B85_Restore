@@ -15,8 +15,8 @@
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v6 = [(UICGPDFListContainerAccessibilityElement *)self accessibilityElements];
-  v7 = [v6 countByEnumeratingWithState:&v29 objects:v33 count:16];
+  accessibilityElements = [(UICGPDFListContainerAccessibilityElement *)self accessibilityElements];
+  v7 = [accessibilityElements countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v7)
   {
     v8 = v7;
@@ -31,7 +31,7 @@
       {
         if (*v30 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(accessibilityElements);
         }
 
         v15 = *(*(&v29 + 1) + 8 * i);
@@ -64,7 +64,7 @@
         v10 = v20;
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v29 objects:v33 count:16];
+      v8 = [accessibilityElements countByEnumeratingWithState:&v29 objects:v33 count:16];
     }
 
     while (v8);

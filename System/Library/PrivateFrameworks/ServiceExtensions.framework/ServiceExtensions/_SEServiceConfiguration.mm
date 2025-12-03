@@ -1,10 +1,10 @@
 @interface _SEServiceConfiguration
 - (NSString)serviceIdentifier;
 - (_SEServiceConfiguration)init;
-- (_SEServiceConfiguration)initWithServiceIdentifier:(id)a3;
+- (_SEServiceConfiguration)initWithServiceIdentifier:(id)identifier;
 - (id)interruptionHandler;
-- (void)setInterruptionHandler:(id)a3;
-- (void)setServiceIdentifier:(id)a3;
+- (void)setInterruptionHandler:(id)handler;
+- (void)setServiceIdentifier:(id)identifier;
 @end
 
 @implementation _SEServiceConfiguration
@@ -19,7 +19,7 @@
   return v4;
 }
 
-- (void)setServiceIdentifier:(id)a3
+- (void)setServiceIdentifier:(id)identifier
 {
   v4 = sub_2657501C8();
   v5 = (self + OBJC_IVAR____SEServiceConfiguration_serviceIdentifier);
@@ -42,9 +42,9 @@
   return v3;
 }
 
-- (void)setInterruptionHandler:(id)a3
+- (void)setInterruptionHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   v6 = (self + OBJC_IVAR____SEServiceConfiguration_interruptionHandler);
@@ -53,7 +53,7 @@
   v6[1] = v5;
 }
 
-- (_SEServiceConfiguration)initWithServiceIdentifier:(id)a3
+- (_SEServiceConfiguration)initWithServiceIdentifier:(id)identifier
 {
   v4 = sub_2657501C8();
   v5 = (self + OBJC_IVAR____SEServiceConfiguration_interruptionHandler);

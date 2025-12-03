@@ -1,9 +1,9 @@
 @interface ISInvocationRecorder
 - (ISInvocationRecorder)init;
-- (ISInvocationRecorder)initWithTarget:(id)a3;
-- (id)methodSignatureForSelector:(SEL)a3;
+- (ISInvocationRecorder)initWithTarget:(id)target;
+- (id)methodSignatureForSelector:(SEL)selector;
 - (void)dealloc;
-- (void)forwardInvocation:(id)a3;
+- (void)forwardInvocation:(id)invocation;
 @end
 
 @implementation ISInvocationRecorder
@@ -16,12 +16,12 @@
   return [(ISInvocationRecorder *)&v4 init];
 }
 
-- (ISInvocationRecorder)initWithTarget:(id)a3
+- (ISInvocationRecorder)initWithTarget:(id)target
 {
   v4 = [(ISInvocationRecorder *)self init];
   if (v4)
   {
-    v4->_target = a3;
+    v4->_target = target;
   }
 
   return v4;
@@ -35,21 +35,21 @@
   [(ISInvocationRecorder *)&v3 dealloc];
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
-  [a3 setTarget:{-[ISInvocationRecorder adjustedTargetForSelector:](self, "adjustedTargetForSelector:", objc_msgSend(a3, "selector"))}];
+  [invocation setTarget:{-[ISInvocationRecorder adjustedTargetForSelector:](self, "adjustedTargetForSelector:", objc_msgSend(invocation, "selector"))}];
 
-  [(ISInvocationRecorder *)self invokeInvocation:a3];
+  [(ISInvocationRecorder *)self invokeInvocation:invocation];
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
   v6.receiver = self;
   v6.super_class = ISInvocationRecorder;
   result = [(ISInvocationRecorder *)&v6 methodSignatureForSelector:?];
   if (!result)
   {
-    return [-[ISInvocationRecorder adjustedTargetForSelector:](self adjustedTargetForSelector:{a3), "methodSignatureForSelector:", a3}];
+    return [-[ISInvocationRecorder adjustedTargetForSelector:](self adjustedTargetForSelector:{selector), "methodSignatureForSelector:", selector}];
   }
 
   return result;

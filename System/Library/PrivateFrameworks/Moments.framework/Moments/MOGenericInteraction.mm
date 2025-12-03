@@ -1,7 +1,7 @@
 @interface MOGenericInteraction
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (MOGenericInteraction)init;
-- (MOGenericInteraction)initWithParticipants:(id)a3;
+- (MOGenericInteraction)initWithParticipants:(id)participants;
 @end
 
 @implementation MOGenericInteraction
@@ -13,15 +13,15 @@
   return [(MOGenericInteraction *)&v3 init];
 }
 
-- (MOGenericInteraction)initWithParticipants:(id)a3
+- (MOGenericInteraction)initWithParticipants:(id)participants
 {
-  v4 = a3;
+  participantsCopy = participants;
   v11.receiver = self;
   v11.super_class = MOGenericInteraction;
   v5 = [(MOGenericInteraction *)&v11 init];
   if (v5)
   {
-    v6 = [v4 sortedArrayUsingSelector:sel_compare_];
+    v6 = [participantsCopy sortedArrayUsingSelector:sel_compare_];
     participants = v5->_participants;
     v5->_participants = v6;
 
@@ -33,10 +33,10 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v18 = 1;
   }
@@ -46,37 +46,37 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(MOGenericInteraction *)self participants];
-      if (v6)
+      v5 = equalCopy;
+      participants = [(MOGenericInteraction *)self participants];
+      if (participants)
       {
-        v7 = v6;
-        v8 = [(MOGenericInteraction *)v5 participants];
-        if (!v8)
+        interactionKey3 = participants;
+        participants2 = [(MOGenericInteraction *)v5 participants];
+        if (!participants2)
         {
           v18 = 0;
           goto LABEL_13;
         }
 
-        v9 = v8;
-        v10 = [(MOGenericInteraction *)self participants];
-        v11 = [v10 count];
-        v12 = [(MOGenericInteraction *)v5 participants];
-        v13 = [v12 count];
+        v9 = participants2;
+        participants3 = [(MOGenericInteraction *)self participants];
+        v11 = [participants3 count];
+        participants4 = [(MOGenericInteraction *)v5 participants];
+        v13 = [participants4 count];
 
         if (v11 == v13)
         {
-          v14 = [(MOGenericInteraction *)self interactionKey];
-          if (v14)
+          interactionKey = [(MOGenericInteraction *)self interactionKey];
+          if (interactionKey)
           {
-            v15 = v14;
-            v16 = [(MOGenericInteraction *)v5 interactionKey];
+            v15 = interactionKey;
+            interactionKey2 = [(MOGenericInteraction *)v5 interactionKey];
 
-            if (v16)
+            if (interactionKey2)
             {
-              v7 = [(MOGenericInteraction *)self interactionKey];
-              v17 = [(MOGenericInteraction *)v5 interactionKey];
-              v18 = [v7 isEqualToString:v17];
+              interactionKey3 = [(MOGenericInteraction *)self interactionKey];
+              interactionKey4 = [(MOGenericInteraction *)v5 interactionKey];
+              v18 = [interactionKey3 isEqualToString:interactionKey4];
 
 LABEL_13:
               goto LABEL_14;

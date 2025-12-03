@@ -1,14 +1,14 @@
 @interface VCCaptionsClientContext
-- (BOOL)isEqual:(id)a3;
-- (VCCaptionsClientContext)initWithStreamToken:(int64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (VCCaptionsClientContext)initWithStreamToken:(int64_t)token;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 - (void)dealloc;
 @end
 
 @implementation VCCaptionsClientContext
 
-- (VCCaptionsClientContext)initWithStreamToken:(int64_t)a3
+- (VCCaptionsClientContext)initWithStreamToken:(int64_t)token
 {
   v8 = *MEMORY[0x1E69E9840];
   v7.receiver = self;
@@ -17,16 +17,16 @@
   v5 = v4;
   if (v4)
   {
-    v4->_streamToken = a3;
+    v4->_streamToken = token;
     v4->_uniqueIdentifier = arc4random_uniform(0x7FFFFFFFu);
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "initWithStreamToken:", -[VCCaptionsClientContext streamToken](self, "streamToken")}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "initWithStreamToken:", -[VCCaptionsClientContext streamToken](self, "streamToken")}];
   v5 = v4;
   if (v4)
   {
@@ -42,9 +42,9 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
@@ -53,7 +53,7 @@
   v16 = v5;
   v17 = v4;
   v18 = v3;
-  if (!a3)
+  if (!equal)
   {
     return 0;
   }
@@ -69,7 +69,7 @@
     goto LABEL_5;
   }
 
-  if ([a3 localeIdentifier])
+  if ([equal localeIdentifier])
   {
     if (!self->_localeIdentifier)
     {
@@ -79,9 +79,9 @@ LABEL_10:
     }
 
 LABEL_5:
-    if ([a3 localeIdentifier])
+    if ([equal localeIdentifier])
     {
-      v11 = -[NSString isEqual:](self->_localeIdentifier, "isEqual:", [a3 localeIdentifier]);
+      v11 = -[NSString isEqual:](self->_localeIdentifier, "isEqual:", [equal localeIdentifier]);
       goto LABEL_12;
     }
 
@@ -91,10 +91,10 @@ LABEL_5:
   v11 = 1;
 LABEL_12:
   v13 = [(VCCaptionsClientContext *)self streamToken:v15];
-  if (v13 == [a3 streamToken])
+  if (v13 == [equal streamToken])
   {
-    v14 = [(VCCaptionsClientContext *)self uniqueIdentifier];
-    return (v14 == [a3 uniqueIdentifier]) & v11;
+    uniqueIdentifier = [(VCCaptionsClientContext *)self uniqueIdentifier];
+    return (uniqueIdentifier == [equal uniqueIdentifier]) & v11;
   }
 
   return 0;
@@ -103,8 +103,8 @@ LABEL_12:
 - (unint64_t)hash
 {
   v3 = [(VCCaptionsClientContext *)self streamToken]+ 527;
-  v4 = [(VCCaptionsClientContext *)self uniqueIdentifier];
-  return v3 ^ [(NSString *)[(VCCaptionsClientContext *)self localeIdentifier] hash]^ v4;
+  uniqueIdentifier = [(VCCaptionsClientContext *)self uniqueIdentifier];
+  return v3 ^ [(NSString *)[(VCCaptionsClientContext *)self localeIdentifier] hash]^ uniqueIdentifier;
 }
 
 - (void)dealloc

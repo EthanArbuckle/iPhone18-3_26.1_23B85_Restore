@@ -1,5 +1,5 @@
 @interface MFModernComposeRecipientAtomAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_axMFAddressIsSafeDomain;
 - (id)accessibilityHint;
 - (id)accessibilityLabel;
@@ -7,15 +7,15 @@
 
 @implementation MFModernComposeRecipientAtomAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MFModernComposeRecipientAtom" isKindOfClass:@"MFModernAtomView"];
-  [v3 validateClass:@"MFModernAtomView" hasInstanceMethod:@"presentationOptions" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"MFComposeRecipient" hasInstanceMethod:@"normalizedAddress" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MFModernComposeRecipientAtom" hasInstanceVariable:@"_recipient" withType:"MFComposeRecipient"];
-  [v3 validateClass:@"MFComposeRecipient" hasInstanceMethod:@"address" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NSString" hasInstanceMethod:@"mf_addressDomain" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MFModernComposeRecipientAtom" isKindOfClass:@"MFModernAtomView"];
+  [validationsCopy validateClass:@"MFModernAtomView" hasInstanceMethod:@"presentationOptions" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"MFComposeRecipient" hasInstanceMethod:@"normalizedAddress" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MFModernComposeRecipientAtom" hasInstanceVariable:@"_recipient" withType:"MFComposeRecipient"];
+  [validationsCopy validateClass:@"MFComposeRecipient" hasInstanceMethod:@"address" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NSString" hasInstanceMethod:@"mf_addressDomain" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityHint
@@ -37,12 +37,12 @@
 - (id)accessibilityLabel
 {
   v3 = [(MFModernComposeRecipientAtomAccessibility *)self safeValueForKey:@"recipient"];
-  v4 = [v3 accessibilityLabel];
+  accessibilityLabel = [v3 accessibilityLabel];
 
   v5 = [(MFModernComposeRecipientAtomAccessibility *)self safeValueForKey:@"recipient"];
   v6 = [v5 safeValueForKey:@"normalizedAddress"];
 
-  if ([v4 isEqualToString:v6])
+  if ([accessibilityLabel isEqualToString:v6])
   {
 
     v6 = 0;
@@ -51,12 +51,12 @@
   v7 = __UIAXStringForVariables();
 
   v8 = [(MFModernComposeRecipientAtomAccessibility *)self safeValueForKey:@"presentationOptions", v6, @"__AXStringForVariablesSentinel"];
-  v9 = [v8 intValue];
+  intValue = [v8 intValue];
 
   v10 = @"address.madrid.failure";
-  if (v9 != 1 && v9 != 64)
+  if (intValue != 1 && intValue != 64)
   {
-    if (v9 != 4)
+    if (intValue != 4)
     {
       goto LABEL_8;
     }
@@ -87,12 +87,12 @@ LABEL_8:
   v3 = [v2 safeValueForKey:@"address"];
   v4 = [v3 safeValueForKey:@"mf_addressDomain"];
 
-  v5 = [MEMORY[0x29EDC58E0] sharedConnection];
-  v6 = [v5 managedEmailDomains];
+  mEMORY[0x29EDC58E0] = [MEMORY[0x29EDC58E0] sharedConnection];
+  managedEmailDomains = [mEMORY[0x29EDC58E0] managedEmailDomains];
 
-  if (v6)
+  if (managedEmailDomains)
   {
-    v7 = [v6 containsObject:v4];
+    v7 = [managedEmailDomains containsObject:v4];
   }
 
   else

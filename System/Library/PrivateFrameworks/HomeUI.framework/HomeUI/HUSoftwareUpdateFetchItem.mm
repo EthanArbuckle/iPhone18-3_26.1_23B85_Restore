@@ -1,8 +1,8 @@
 @interface HUSoftwareUpdateFetchItem
 + (id)_dateFormatter;
 - (HUSoftwareUpdateFetchItem)init;
-- (HUSoftwareUpdateFetchItem)initWithHome:(id)a3 softwareUpdateFetchFuture:(id)a4;
-- (id)_subclass_updateWithOptions:(id)a3;
+- (HUSoftwareUpdateFetchItem)initWithHome:(id)home softwareUpdateFetchFuture:(id)future;
+- (id)_subclass_updateWithOptions:(id)options;
 - (id)description;
 @end
 
@@ -30,31 +30,31 @@ void __43__HUSoftwareUpdateFetchItem__dateFormatter__block_invoke()
 
 - (HUSoftwareUpdateFetchItem)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithHome_softwareUpdateFetchFuture_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HUSoftwareUpdateFetchItem.m" lineNumber:39 description:{@"%s is unavailable; use %@ instead", "-[HUSoftwareUpdateFetchItem init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUSoftwareUpdateFetchItem.m" lineNumber:39 description:{@"%s is unavailable; use %@ instead", "-[HUSoftwareUpdateFetchItem init]", v5}];
 
   return 0;
 }
 
-- (HUSoftwareUpdateFetchItem)initWithHome:(id)a3 softwareUpdateFetchFuture:(id)a4
+- (HUSoftwareUpdateFetchItem)initWithHome:(id)home softwareUpdateFetchFuture:(id)future
 {
-  v7 = a3;
-  v8 = a4;
+  homeCopy = home;
+  futureCopy = future;
   v12.receiver = self;
   v12.super_class = HUSoftwareUpdateFetchItem;
   v9 = [(HUSoftwareUpdateFetchItem *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_home, a3);
-    objc_storeStrong(&v10->_softwareUpdateFetchFuture, a4);
+    objc_storeStrong(&v9->_home, home);
+    objc_storeStrong(&v10->_softwareUpdateFetchFuture, future);
   }
 
   return v10;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
   v4 = objc_alloc_init(MEMORY[0x277D14858]);
   v5 = MEMORY[0x277CBEB98];
@@ -65,9 +65,9 @@ void __43__HUSoftwareUpdateFetchItem__dateFormatter__block_invoke()
 
   [v4 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277D13FA8]];
   v9 = objc_alloc(MEMORY[0x277D14B28]);
-  v10 = [(HUSoftwareUpdateFetchItem *)self home];
-  v11 = [v10 accessories];
-  v12 = [v9 initWithAccessories:v11];
+  home = [(HUSoftwareUpdateFetchItem *)self home];
+  accessories = [home accessories];
+  v12 = [v9 initWithAccessories:accessories];
 
   if ([v12 softwareUpdatesRequested])
   {
@@ -75,10 +75,10 @@ void __43__HUSoftwareUpdateFetchItem__dateFormatter__block_invoke()
     v14 = [objc_alloc(MEMORY[0x277D14728]) initWithSystemImageNamed:@"clock" configuration:v13];
     [v4 setObject:v14 forKeyedSubscript:*MEMORY[0x277D13E88]];
 
-    v15 = [v12 accessoriesWithRequestedSoftwareUpdates];
-    v16 = [v15 count];
-    v17 = [v12 accessoriesDownloadingSoftwareUpdates];
-    if ([v17 count] + v16 == 1)
+    accessoriesWithRequestedSoftwareUpdates = [v12 accessoriesWithRequestedSoftwareUpdates];
+    v16 = [accessoriesWithRequestedSoftwareUpdates count];
+    accessoriesDownloadingSoftwareUpdates = [v12 accessoriesDownloadingSoftwareUpdates];
+    if ([accessoriesDownloadingSoftwareUpdates count] + v16 == 1)
     {
       v18 = @"HUSoftwareUpdateFetchMessageRequested_One";
     }
@@ -102,25 +102,25 @@ void __43__HUSoftwareUpdateFetchItem__dateFormatter__block_invoke()
 
     else
     {
-      v26 = [(HUSoftwareUpdateFetchItem *)self softwareUpdateFetchFuture];
-      v27 = [v26 isFinished];
+      softwareUpdateFetchFuture = [(HUSoftwareUpdateFetchItem *)self softwareUpdateFetchFuture];
+      isFinished = [softwareUpdateFetchFuture isFinished];
 
-      if (v27)
+      if (isFinished)
       {
         v28 = [MEMORY[0x277D755D0] configurationWithPointSize:22.0];
         v29 = [objc_alloc(MEMORY[0x277D14728]) initWithSystemImageNamed:@"checkmark.circle" configuration:v28];
         [v4 setObject:v29 forKeyedSubscript:*MEMORY[0x277D13E88]];
 
         v30 = _HULocalizedStringWithDefaultValue(@"HUSoftwareUpdateFetchMessageUpToDate", @"HUSoftwareUpdateFetchMessageUpToDate", 1);
-        v31 = [MEMORY[0x277D146E8] sharedDispatcher];
-        v32 = [v31 homeManager];
-        if ([v32 hasOptedToHH2])
+        mEMORY[0x277D146E8] = [MEMORY[0x277D146E8] sharedDispatcher];
+        homeManager = [mEMORY[0x277D146E8] homeManager];
+        if ([homeManager hasOptedToHH2])
         {
-          v33 = [(HUSoftwareUpdateFetchItem *)self home];
-          v34 = [v33 hf_displayName];
-          v41 = HULocalizedStringWithFormat(@"HUSoftwareUpdateFetchMessageUpToDateWithHH2", @"%@", v35, v36, v37, v38, v39, v40, v34);
+          home2 = [(HUSoftwareUpdateFetchItem *)self home];
+          hf_displayName = [home2 hf_displayName];
+          v41 = HULocalizedStringWithFormat(@"HUSoftwareUpdateFetchMessageUpToDateWithHH2", @"%@", v35, v36, v37, v38, v39, v40, hf_displayName);
 
-          v30 = v33;
+          v30 = home2;
         }
 
         else
@@ -129,9 +129,9 @@ void __43__HUSoftwareUpdateFetchItem__dateFormatter__block_invoke()
         }
 
         [v4 setObject:v41 forKeyedSubscript:*MEMORY[0x277D13F60]];
-        v43 = [objc_opt_class() _dateFormatter];
-        v44 = [MEMORY[0x277CBEAA8] date];
-        v45 = [v43 stringFromDate:v44];
+        _dateFormatter = [objc_opt_class() _dateFormatter];
+        date = [MEMORY[0x277CBEAA8] date];
+        v45 = [_dateFormatter stringFromDate:date];
         v52 = HULocalizedStringWithFormat(@"HUSoftwareUpdateFetchLastChecked", @"%@", v46, v47, v48, v49, v50, v51, v45);
         [v4 setObject:v52 forKeyedSubscript:*MEMORY[0x277D13E20]];
 
@@ -158,17 +158,17 @@ LABEL_11:
 - (id)description
 {
   v3 = [MEMORY[0x277D2C8F8] builderWithObject:self];
-  v4 = [(HUSoftwareUpdateFetchItem *)self latestResults];
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277D13FB8]];
+  latestResults = [(HUSoftwareUpdateFetchItem *)self latestResults];
+  v5 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13FB8]];
   v6 = [v3 appendBool:objc_msgSend(v5 withName:"BOOLValue") ifEqualTo:{@"hidden", 1}];
 
-  v7 = [(HUSoftwareUpdateFetchItem *)self latestResults];
-  v8 = [v7 objectForKeyedSubscript:*MEMORY[0x277D13F60]];
+  latestResults2 = [(HUSoftwareUpdateFetchItem *)self latestResults];
+  v8 = [latestResults2 objectForKeyedSubscript:*MEMORY[0x277D13F60]];
   v9 = [v3 appendObject:v8 withName:@"title" skipIfNil:1];
 
-  v10 = [v3 build];
+  build = [v3 build];
 
-  return v10;
+  return build;
 }
 
 @end

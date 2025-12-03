@@ -1,19 +1,19 @@
 @interface NLWeatherSummaryManager
 - (NLWeatherSummaryManager)init;
-- (NLWeatherSummaryManager)initWithLocation:(id)a3 delegate:(id)a4;
+- (NLWeatherSummaryManager)initWithLocation:(id)location delegate:(id)delegate;
 - (void)fetchSummary;
 @end
 
 @implementation NLWeatherSummaryManager
 
-- (NLWeatherSummaryManager)initWithLocation:(id)a3 delegate:(id)a4
+- (NLWeatherSummaryManager)initWithLocation:(id)location delegate:(id)delegate
 {
   swift_unknownObjectWeakInit();
-  *(&self->super.isa + OBJC_IVAR___NLWeatherSummaryManager_location) = a3;
+  *(&self->super.isa + OBJC_IVAR___NLWeatherSummaryManager_location) = location;
   swift_unknownObjectWeakAssign();
   v8.receiver = self;
   v8.super_class = type metadata accessor for WeatherSummaryManager();
-  v6 = a3;
+  locationCopy = location;
   return [(NLWeatherSummaryManager *)&v8 init];
 }
 
@@ -29,7 +29,7 @@
   v8[2] = 0;
   v8[3] = 0;
   v8[4] = self;
-  v9 = self;
+  selfCopy = self;
   _sScTss5NeverORs_rlE4name8priority9operationScTyxABGSSSg_ScPSgxyYaYAcntcfCyt_Tt2g5(0, 0, v6, &closure #1 in WeatherSummaryManager.fetchSummary()partial apply, v8);
 }
 

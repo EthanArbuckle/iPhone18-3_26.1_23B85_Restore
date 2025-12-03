@@ -1,39 +1,39 @@
 @interface ATXCandidateRelevanceLogisticRegressionModel
-- (ATXCandidateRelevanceLogisticRegressionModel)initWithCoder:(id)a3;
-- (ATXCandidateRelevanceLogisticRegressionModel)initWithModel:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToATXCandidateRelevanceLogisticRegressionModel:(id)a3;
-- (float)predictForContext:(id)a3 candidate:(id)a4 featurizationManager:(id)a5;
+- (ATXCandidateRelevanceLogisticRegressionModel)initWithCoder:(id)coder;
+- (ATXCandidateRelevanceLogisticRegressionModel)initWithModel:(id)model;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToATXCandidateRelevanceLogisticRegressionModel:(id)model;
+- (float)predictForContext:(id)context candidate:(id)candidate featurizationManager:(id)manager;
 - (id)description;
-- (id)featureContributionsDuringInferenceDescriptionForContext:(id)a3 candidate:(id)a4 featurizationManager:(id)a5;
-- (id)featureContributionsDuringInferenceForContext:(id)a3 candidate:(id)a4 featurizationManager:(id)a5;
-- (id)featureImportanceDescriptionForFeaturizationManager:(id)a3;
-- (id)featureImportancesForFeaturizationManager:(id)a3;
+- (id)featureContributionsDuringInferenceDescriptionForContext:(id)context candidate:(id)candidate featurizationManager:(id)manager;
+- (id)featureContributionsDuringInferenceForContext:(id)context candidate:(id)candidate featurizationManager:(id)manager;
+- (id)featureImportanceDescriptionForFeaturizationManager:(id)manager;
+- (id)featureImportancesForFeaturizationManager:(id)manager;
 - (unint64_t)numberOfModelWeights;
 - (unint64_t)numberOfNonZeroModelWeights;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXCandidateRelevanceLogisticRegressionModel
 
-- (ATXCandidateRelevanceLogisticRegressionModel)initWithModel:(id)a3
+- (ATXCandidateRelevanceLogisticRegressionModel)initWithModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v9.receiver = self;
   v9.super_class = ATXCandidateRelevanceLogisticRegressionModel;
   v6 = [(ATXCandidateRelevanceLogisticRegressionModel *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_model, a3);
+    objc_storeStrong(&v6->_model, model);
   }
 
   return v7;
 }
 
-- (float)predictForContext:(id)a3 candidate:(id)a4 featurizationManager:(id)a5
+- (float)predictForContext:(id)context candidate:(id)candidate featurizationManager:(id)manager
 {
-  v6 = [a5 sparseFeatureVectorForContext:a3 candidate:a4];
+  v6 = [manager sparseFeatureVectorForContext:context candidate:candidate];
   v7 = [(PMLLogisticRegressionModel *)self->_model predict:v6];
   v8 = [v7 objectAtIndexedSubscript:0];
   [v8 floatValue];
@@ -42,10 +42,10 @@
   return v10;
 }
 
-- (id)featureContributionsDuringInferenceDescriptionForContext:(id)a3 candidate:(id)a4 featurizationManager:(id)a5
+- (id)featureContributionsDuringInferenceDescriptionForContext:(id)context candidate:(id)candidate featurizationManager:(id)manager
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = [(ATXCandidateRelevanceLogisticRegressionModel *)self featureContributionsDuringInferenceForContext:a3 candidate:a4 featurizationManager:a5];
+  v5 = [(ATXCandidateRelevanceLogisticRegressionModel *)self featureContributionsDuringInferenceForContext:context candidate:candidate featurizationManager:manager];
   v6 = [v5 keysSortedByValueUsingComparator:&__block_literal_global_176];
   v7 = objc_opt_new();
   v19 = 0u;
@@ -90,28 +90,28 @@
   return v7;
 }
 
-- (id)featureContributionsDuringInferenceForContext:(id)a3 candidate:(id)a4 featurizationManager:(id)a5
+- (id)featureContributionsDuringInferenceForContext:(id)context candidate:(id)candidate featurizationManager:(id)manager
 {
   v53 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  contextCopy = context;
+  candidateCopy = candidate;
+  managerCopy = manager;
   v41 = objc_opt_new();
   v11 = objc_alloc(MEMORY[0x277D41F20]);
-  v35 = v9;
-  v36 = v8;
-  v12 = [v10 featuresForContext:v8 candidate:v9];
+  v35 = candidateCopy;
+  v36 = contextCopy;
+  v12 = [managerCopy featuresForContext:contextCopy candidate:candidateCopy];
   v42 = [v11 initWithNumbers:v12];
 
-  v13 = [(PMLLogisticRegressionModel *)self->_model weights];
-  v14 = [v13 asMutableDenseVector];
+  weights = [(PMLLogisticRegressionModel *)self->_model weights];
+  asMutableDenseVector = [weights asMutableDenseVector];
 
   v49 = 0u;
   v50 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v34 = v10;
-  obj = [v10 featurizers];
+  v34 = managerCopy;
+  obj = [managerCopy featurizers];
   v39 = [obj countByEnumeratingWithState:&v47 objects:v52 count:16];
   v15 = 0;
   if (v39)
@@ -128,12 +128,12 @@
         }
 
         v40 = v16;
-        v17 = [*(*(&v47 + 1) + 8 * v16) featureValueNames];
+        featureValueNames = [*(*(&v47 + 1) + 8 * v16) featureValueNames];
         v43 = 0u;
         v44 = 0u;
         v45 = 0u;
         v46 = 0u;
-        v18 = [v17 countByEnumeratingWithState:&v43 objects:v51 count:16];
+        v18 = [featureValueNames countByEnumeratingWithState:&v43 objects:v51 count:16];
         if (v18)
         {
           v19 = v18;
@@ -144,7 +144,7 @@
             {
               if (*v44 != v20)
               {
-                objc_enumerationMutation(v17);
+                objc_enumerationMutation(featureValueNames);
               }
 
               v22 = *(*(&v43 + 1) + 8 * i);
@@ -153,7 +153,7 @@
               v25 = NSStringFromClass(v24);
               v26 = [v23 stringWithFormat:@"%@ (%@)", v25, v22];
 
-              [v14 valueAt:v15];
+              [asMutableDenseVector valueAt:v15];
               v28 = v27;
               [v42 valueAt:v15];
               if ((v28 * v29) != 0.0)
@@ -165,7 +165,7 @@
               ++v15;
             }
 
-            v19 = [v17 countByEnumeratingWithState:&v43 objects:v51 count:16];
+            v19 = [featureValueNames countByEnumeratingWithState:&v43 objects:v51 count:16];
           }
 
           while (v19);
@@ -181,9 +181,9 @@
     while (v39);
   }
 
-  if (v15 < [v14 count])
+  if (v15 < [asMutableDenseVector count])
   {
-    [v14 valueAt:v15];
+    [asMutableDenseVector valueAt:v15];
     v31 = [MEMORY[0x277CCABB0] numberWithFloat:?];
     [v41 setObject:v31 forKeyedSubscript:@"Bias"];
   }
@@ -197,8 +197,8 @@
 {
   v3 = objc_opt_new();
   [v3 appendFormat:@"Model Type: PMLLogisticRegressionModel \n"];
-  v4 = [(PMLLogisticRegressionModel *)self->_model weights];
-  [v3 appendFormat:@"# Model Weights: %d\n", objc_msgSend(v4, "length")];
+  weights = [(PMLLogisticRegressionModel *)self->_model weights];
+  [v3 appendFormat:@"# Model Weights: %d\n", objc_msgSend(weights, "length")];
 
   [v3 appendFormat:@"# Non-Zero Model Weights: %lu", -[ATXCandidateRelevanceLogisticRegressionModel numberOfNonZeroModelWeights](self, "numberOfNonZeroModelWeights")];
   v5 = [v3 copy];
@@ -208,19 +208,19 @@
 
 - (unint64_t)numberOfModelWeights
 {
-  v2 = [(PMLLogisticRegressionModel *)self->_model weights];
-  v3 = [v2 length];
+  weights = [(PMLLogisticRegressionModel *)self->_model weights];
+  v3 = [weights length];
 
   return v3;
 }
 
 - (unint64_t)numberOfNonZeroModelWeights
 {
-  v3 = [(PMLLogisticRegressionModel *)self->_model weights];
-  v4 = [v3 values];
+  weights = [(PMLLogisticRegressionModel *)self->_model weights];
+  values = [weights values];
 
-  v5 = [(PMLLogisticRegressionModel *)self->_model weights];
-  v6 = [v5 length];
+  weights2 = [(PMLLogisticRegressionModel *)self->_model weights];
+  v6 = [weights2 length];
 
   if (v6 < 1)
   {
@@ -231,32 +231,32 @@
   v8 = 0;
   do
   {
-    v9 = *(v4 + 4 * v7);
+    v9 = *(values + 4 * v7);
     v10 = v9 > 0.0 || v9 < 0.0;
     v8 += v10;
     ++v7;
-    v11 = [(PMLLogisticRegressionModel *)self->_model weights];
-    v12 = [v11 length];
+    weights3 = [(PMLLogisticRegressionModel *)self->_model weights];
+    v12 = [weights3 length];
   }
 
   while (v7 < v12);
   return v8;
 }
 
-- (id)featureImportancesForFeaturizationManager:(id)a3
+- (id)featureImportancesForFeaturizationManager:(id)manager
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  managerCopy = manager;
   v28 = objc_opt_new();
-  v5 = [(PMLLogisticRegressionModel *)self->_model weights];
-  v6 = [v5 asMutableDenseVector];
+  weights = [(PMLLogisticRegressionModel *)self->_model weights];
+  asMutableDenseVector = [weights asMutableDenseVector];
 
   v35 = 0u;
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v23 = v4;
-  obj = [v4 featurizers];
+  v23 = managerCopy;
+  obj = [managerCopy featurizers];
   v26 = [obj countByEnumeratingWithState:&v33 objects:v38 count:16];
   v7 = 0;
   if (v26)
@@ -273,12 +273,12 @@
         }
 
         v27 = v8;
-        v9 = [*(*(&v33 + 1) + 8 * v8) featureValueNames];
+        featureValueNames = [*(*(&v33 + 1) + 8 * v8) featureValueNames];
         v29 = 0u;
         v30 = 0u;
         v31 = 0u;
         v32 = 0u;
-        v10 = [v9 countByEnumeratingWithState:&v29 objects:v37 count:16];
+        v10 = [featureValueNames countByEnumeratingWithState:&v29 objects:v37 count:16];
         if (v10)
         {
           v11 = v10;
@@ -289,7 +289,7 @@
             {
               if (*v30 != v12)
               {
-                objc_enumerationMutation(v9);
+                objc_enumerationMutation(featureValueNames);
               }
 
               v14 = *(*(&v29 + 1) + 8 * i);
@@ -298,14 +298,14 @@
               v17 = NSStringFromClass(v16);
               v18 = [v15 stringWithFormat:@"%@ (%@)", v17, v14];
 
-              [v6 valueAt:v7];
+              [asMutableDenseVector valueAt:v7];
               v19 = [MEMORY[0x277CCABB0] numberWithFloat:?];
               [v28 setObject:v19 forKeyedSubscript:v18];
 
               ++v7;
             }
 
-            v11 = [v9 countByEnumeratingWithState:&v29 objects:v37 count:16];
+            v11 = [featureValueNames countByEnumeratingWithState:&v29 objects:v37 count:16];
           }
 
           while (v11);
@@ -321,9 +321,9 @@
     while (v26);
   }
 
-  if (v7 < [v6 count])
+  if (v7 < [asMutableDenseVector count])
   {
-    [v6 valueAt:v7];
+    [asMutableDenseVector valueAt:v7];
     v20 = [MEMORY[0x277CCABB0] numberWithFloat:?];
     [v28 setObject:v20 forKeyedSubscript:@"Bias"];
   }
@@ -333,10 +333,10 @@
   return v28;
 }
 
-- (id)featureImportanceDescriptionForFeaturizationManager:(id)a3
+- (id)featureImportanceDescriptionForFeaturizationManager:(id)manager
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = [(ATXCandidateRelevanceLogisticRegressionModel *)self featureImportancesForFeaturizationManager:a3];
+  v3 = [(ATXCandidateRelevanceLogisticRegressionModel *)self featureImportancesForFeaturizationManager:manager];
   v4 = [v3 keysSortedByValueUsingComparator:&__block_literal_global_58];
   v5 = objc_opt_new();
   v18 = 0u;
@@ -385,28 +385,28 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXCandidateRelevanceLogisticRegressionModel *)self isEqualToATXCandidateRelevanceLogisticRegressionModel:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXCandidateRelevanceLogisticRegressionModel *)self isEqualToATXCandidateRelevanceLogisticRegressionModel:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToATXCandidateRelevanceLogisticRegressionModel:(id)a3
+- (BOOL)isEqualToATXCandidateRelevanceLogisticRegressionModel:(id)model
 {
   v4 = self->_model;
   v5 = v4;
-  if (v4 == *(a3 + 1))
+  if (v4 == *(model + 1))
   {
     v6 = 1;
   }
@@ -419,21 +419,21 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   model = self->_model;
-  v4 = a3;
+  coderCopy = coder;
   v5 = PMLBuildChunkFile();
-  [v4 encodeObject:v5 forKey:@"logisticRegressionModelData"];
+  [coderCopy encodeObject:v5 forKey:@"logisticRegressionModelData"];
 }
 
-- (ATXCandidateRelevanceLogisticRegressionModel)initWithCoder:(id)a3
+- (ATXCandidateRelevanceLogisticRegressionModel)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x277D42620];
-  v5 = a3;
+  coderCopy = coder;
   v6 = objc_opt_class();
   v7 = __atxlog_handle_relevance_model();
-  v8 = [v4 robustDecodeObjectOfClass:v6 forKey:@"logisticRegressionModelData" withCoder:v5 expectNonNull:1 errorDomain:@"com.apple.duetexpertd.ATXCandidateRelevanceLogisticRegressionModel" errorCode:-1 logHandle:v7];
+  v8 = [v4 robustDecodeObjectOfClass:v6 forKey:@"logisticRegressionModelData" withCoder:coderCopy expectNonNull:1 errorDomain:@"com.apple.duetexpertd.ATXCandidateRelevanceLogisticRegressionModel" errorCode:-1 logHandle:v7];
 
   if (v8)
   {
@@ -442,21 +442,21 @@
     if (v9)
     {
       self = [(ATXCandidateRelevanceLogisticRegressionModel *)self initWithModel:v9];
-      v10 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v10 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 @end

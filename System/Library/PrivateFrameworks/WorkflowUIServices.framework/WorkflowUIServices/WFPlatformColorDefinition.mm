@@ -1,10 +1,10 @@
 @interface WFPlatformColorDefinition
-- (WFPlatformColorDefinition)initWithDarkMode:(BOOL)a3 highContrast:(BOOL)a4 red:(double)a5 green:(double)a6 blue:(double)a7 alpha:(double)a8;
+- (WFPlatformColorDefinition)initWithDarkMode:(BOOL)mode highContrast:(BOOL)contrast red:(double)red green:(double)green blue:(double)blue alpha:(double)alpha;
 @end
 
 @implementation WFPlatformColorDefinition
 
-- (WFPlatformColorDefinition)initWithDarkMode:(BOOL)a3 highContrast:(BOOL)a4 red:(double)a5 green:(double)a6 blue:(double)a7 alpha:(double)a8
+- (WFPlatformColorDefinition)initWithDarkMode:(BOOL)mode highContrast:(BOOL)contrast red:(double)red green:(double)green blue:(double)blue alpha:(double)alpha
 {
   v18.receiver = self;
   v18.super_class = WFPlatformColorDefinition;
@@ -12,12 +12,12 @@
   v15 = v14;
   if (v14)
   {
-    v14->_isDarkMode = a3;
-    v14->_isHighContrast = a4;
-    v14->_red = a5;
-    v14->_green = a6;
-    v14->_blue = a7;
-    v14->_alpha = a8;
+    v14->_isDarkMode = mode;
+    v14->_isHighContrast = contrast;
+    v14->_red = red;
+    v14->_green = green;
+    v14->_blue = blue;
+    v14->_alpha = alpha;
     v16 = v14;
   }
 

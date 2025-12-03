@@ -6,14 +6,14 @@
 
 - (uint64_t)aggregateMediaType
 {
-  v2 = [a1 estimatedPhotosCount];
-  v3 = [a1 estimatedVideosCount];
-  result = [a1 estimatedAssetCount];
+  estimatedPhotosCount = [self estimatedPhotosCount];
+  estimatedVideosCount = [self estimatedVideosCount];
+  result = [self estimatedAssetCount];
   if (result)
   {
-    if (v3 || v2 != result)
+    if (estimatedVideosCount || estimatedPhotosCount != result)
     {
-      if (v3 == result && v2 == 0)
+      if (estimatedVideosCount == result && estimatedPhotosCount == 0)
       {
         return 2;
       }

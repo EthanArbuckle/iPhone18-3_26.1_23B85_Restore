@@ -1,40 +1,40 @@
 @interface EKDayGridView
-+ (void)cacheBackgroundImage:(id)a3 forKey:(id)a4;
-- (CGRect)rectForStartSeconds:(int64_t)a3 endSeconds:(int64_t)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (EKDayGridView)initWithFrame:(CGRect)a3;
-- (EKDayGridView)initWithFrame:(CGRect)a3 sizeClass:(int64_t)a4 backgroundColor:(id)a5 opaque:(BOOL)a6 numberOfDaysToDisplay:(unint64_t)a7;
++ (void)cacheBackgroundImage:(id)image forKey:(id)key;
+- (CGRect)rectForStartSeconds:(int64_t)seconds endSeconds:(int64_t)endSeconds;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (EKDayGridView)initWithFrame:(CGRect)frame;
+- (EKDayGridView)initWithFrame:(CGRect)frame sizeClass:(int64_t)class backgroundColor:(id)color opaque:(BOOL)opaque numberOfDaysToDisplay:(unint64_t)display;
 - (UIColor)lineColor;
 - (double)_dayWidth;
 - (double)_timeMarkerAlpha;
-- (double)positionOfSecond:(int64_t)a3;
+- (double)positionOfSecond:(int64_t)second;
 - (double)widthForOccurrences;
 - (id)_generateGridImage;
 - (id)_timeDotImage;
-- (int)secondAtPosition:(double)a3;
+- (int)secondAtPosition:(double)position;
 - (int64_t)_sizeClass;
 - (void)_layoutHighlight;
 - (void)_updateMarkerAlpha;
 - (void)_updateTimeMarker;
 - (void)didMoveToWindow;
-- (void)hideNowDot:(BOOL)a3;
+- (void)hideNowDot:(BOOL)dot;
 - (void)layoutSubviews;
-- (void)setBounds:(CGRect)a3;
-- (void)setCurtainHeight:(double)a3;
-- (void)setFixedDayWidth:(double)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setGridHeightScale:(double)a3;
-- (void)setGridVisualEffect:(id)a3;
-- (void)setHighlightedDayIndex:(int64_t)a3;
-- (void)setLineColor:(id)a3;
-- (void)setOrientation:(int64_t)a3;
-- (void)setSelected:(BOOL)a3;
-- (void)setShowsLeftBorder:(BOOL)a3;
-- (void)setShowsRightBorder:(BOOL)a3;
-- (void)setShowsTimeLine:(BOOL)a3;
-- (void)setShowsTimeMarker:(BOOL)a3;
-- (void)setTimeMarkerTodayDay:(int64_t)a3;
-- (void)setUseMultiDayStyle:(BOOL)a3;
+- (void)setBounds:(CGRect)bounds;
+- (void)setCurtainHeight:(double)height;
+- (void)setFixedDayWidth:(double)width;
+- (void)setFrame:(CGRect)frame;
+- (void)setGridHeightScale:(double)scale;
+- (void)setGridVisualEffect:(id)effect;
+- (void)setHighlightedDayIndex:(int64_t)index;
+- (void)setLineColor:(id)color;
+- (void)setOrientation:(int64_t)orientation;
+- (void)setSelected:(BOOL)selected;
+- (void)setShowsLeftBorder:(BOOL)border;
+- (void)setShowsRightBorder:(BOOL)border;
+- (void)setShowsTimeLine:(BOOL)line;
+- (void)setShowsTimeMarker:(BOOL)marker;
+- (void)setTimeMarkerTodayDay:(int64_t)day;
+- (void)setUseMultiDayStyle:(BOOL)style;
 - (void)tintColorDidChange;
 - (void)updateMarkerPosition;
 @end
@@ -127,9 +127,9 @@
     }
   }
 
-  v20 = [(EKDayGridView *)self _showsTimeDot];
+  _showsTimeDot = [(EKDayGridView *)self _showsTimeDot];
   timeDot = self->_timeDot;
-  if (v20)
+  if (_showsTimeDot)
   {
     if (timeDot)
     {
@@ -138,8 +138,8 @@
 
     else
     {
-      v28 = [(EKDayGridView *)self _timeDotImage];
-      v29 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v28];
+      _timeDotImage = [(EKDayGridView *)self _timeDotImage];
+      v29 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:_timeDotImage];
       v30 = self->_timeDot;
       self->_timeDot = v29;
 
@@ -288,9 +288,9 @@ uint64_t __34__EKDayGridView__updateTimeMarker__block_invoke(uint64_t a1)
 
 - (int64_t)_sizeClass
 {
-  v3 = [(EKDayGridView *)self window];
+  window = [(EKDayGridView *)self window];
 
-  if (!v3)
+  if (!window)
   {
     return self->_sizeClass;
   }
@@ -301,9 +301,9 @@ uint64_t __34__EKDayGridView__updateTimeMarker__block_invoke(uint64_t a1)
 - (void)layoutSubviews
 {
   v97 = *MEMORY[0x1E69E9840];
-  v3 = [(EKDayGridView *)self window];
+  window = [(EKDayGridView *)self window];
 
-  if (v3)
+  if (window)
   {
     [(EKCurrentTimeMarkerView *)self->_timeMarker setNeedsDisplay];
     v81 = EKUISeparatorLineThickness();
@@ -329,13 +329,13 @@ uint64_t __34__EKDayGridView__updateTimeMarker__block_invoke(uint64_t a1)
           [(EKUIVisualEffectView *)v14 setTintColorDelegate:self];
           [(UIView *)self->_gridContainerView addSubview:v14];
           [(UIView *)self->_gridContainerView sendSubviewToBack:v14];
-          v15 = [(EKDayGridView *)self gridVisualEffect];
-          [(EKUIVisualEffectView *)v14 setEffect:v15];
+          gridVisualEffect = [(EKDayGridView *)self gridVisualEffect];
+          [(EKUIVisualEffectView *)v14 setEffect:gridVisualEffect];
 
           v16 = objc_alloc_init(MEMORY[0x1E69DD250]);
           [v16 setAutoresizingMask:18];
-          v17 = [(EKUIVisualEffectView *)v14 contentView];
-          [v17 addSubview:v16];
+          contentView = [(EKUIVisualEffectView *)v14 contentView];
+          [contentView addSubview:v16];
 
           [(NSMutableArray *)self->_gridPatternViews addObject:v16];
           gridParentViews = self->_gridParentViews;
@@ -370,8 +370,8 @@ uint64_t __34__EKDayGridView__updateTimeMarker__block_invoke(uint64_t a1)
 
           v25 = *(*(&v90 + 1) + 8 * i);
           v26 = MEMORY[0x1E69DC888];
-          v27 = [(EKDayGridView *)self _generateGridImage];
-          v28 = [v26 colorWithPatternImage:v27];
+          _generateGridImage = [(EKDayGridView *)self _generateGridImage];
+          v28 = [v26 colorWithPatternImage:_generateGridImage];
           [v25 setBackgroundColor:v28];
         }
 
@@ -436,9 +436,9 @@ uint64_t __34__EKDayGridView__updateTimeMarker__block_invoke(uint64_t a1)
 
           else
           {
-            v53 = [v52 superview];
+            superview = [v52 superview];
 
-            if (!v53)
+            if (!superview)
             {
               [(UIView *)self->_gridContainerView addSubview:v52];
               [(UIView *)self->_gridContainerView sendSubviewToBack:v52];
@@ -551,8 +551,8 @@ uint64_t __34__EKDayGridView__updateTimeMarker__block_invoke(uint64_t a1)
   v4.super_class = EKDayGridView;
   [(EKDayGridView *)&v4 tintColorDidChange];
   [__cachedTimeDotImages removeAllObjects];
-  v3 = [(EKDayGridView *)self _timeDotImage];
-  [(UIImageView *)self->_timeDot setImage:v3];
+  _timeDotImage = [(EKDayGridView *)self _timeDotImage];
+  [(UIImageView *)self->_timeDot setImage:_timeDotImage];
 }
 
 - (id)_timeDotImage
@@ -564,10 +564,10 @@ uint64_t __34__EKDayGridView__updateTimeMarker__block_invoke(uint64_t a1)
     __cachedTimeDotImages = v3;
   }
 
-  v5 = [(EKDayGridView *)self traitCollection];
-  v6 = [v5 userInterfaceStyle];
+  traitCollection = [(EKDayGridView *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
   v7 = @"dark";
-  if (v6 == 1)
+  if (userInterfaceStyle == 1)
   {
     v7 = @"light";
   }
@@ -640,17 +640,17 @@ void __30__EKDayGridView__timeDotImage__block_invoke(uint64_t a1, void *a2)
   [(EKDayGridView *)self bounds];
   v4 = v3;
   v6 = v5;
-  v7 = [(EKDayGridView *)self lineColor];
-  v8 = [(EKDayGridView *)self traitCollection];
-  v9 = [v8 userInterfaceLevel];
+  lineColor = [(EKDayGridView *)self lineColor];
+  traitCollection = [(EKDayGridView *)self traitCollection];
+  userInterfaceLevel = [traitCollection userInterfaceLevel];
 
   v10 = MEMORY[0x1E696AEC0];
   hourHeight = self->_hourHeight;
   selected = self->_selected;
-  v13 = [(EKDayGridView *)self isOpaque];
-  v14 = [v7 styleString];
-  v15 = [(EKDayGridView *)self traitCollection];
-  v16 = [v10 stringWithFormat:@"grid:%d:%f:%d:%@:%zd:%zd", selected, *&hourHeight, v13, v14, objc_msgSend(v15, "userInterfaceStyle"), v9];
+  isOpaque = [(EKDayGridView *)self isOpaque];
+  styleString = [lineColor styleString];
+  traitCollection2 = [(EKDayGridView *)self traitCollection];
+  v16 = [v10 stringWithFormat:@"grid:%d:%f:%d:%@:%zd:%zd", selected, *&hourHeight, isOpaque, styleString, objc_msgSend(traitCollection2, "userInterfaceStyle"), userInterfaceLevel];
 
   v17 = [EKDayGridView cachedBackgroundImageForKey:v16];
   v18 = v17;
@@ -686,7 +686,7 @@ LABEL_7:
   }
 
 LABEL_8:
-  [v7 CGColor];
+  [lineColor CGColor];
   v54.size.height = 1024.0;
   v54.size.width = 2.0;
   v54.origin.x = v4;
@@ -701,7 +701,7 @@ LABEL_8:
 
   v25 = v24;
   v26 = fmax(floor(v6 / v23), 0.0);
-  v49 = v7;
+  v49 = lineColor;
   if (MEMORY[0x1D38B98D0]())
   {
     v27 = EKUISeparatorLineThickness();
@@ -709,8 +709,8 @@ LABEL_8:
 
   else
   {
-    v28 = [(EKDayGridView *)self traitCollection];
-    v29 = EKUIUsesLargeTextLayout(v28);
+    traitCollection3 = [(EKDayGridView *)self traitCollection];
+    v29 = EKUIUsesLargeTextLayout(traitCollection3);
     v30 = 1.0;
     if (!v29)
     {
@@ -779,7 +779,7 @@ LABEL_8:
 
   UIGraphicsEndImageContext();
   [EKDayGridView cacheBackgroundImage:v19 forKey:v16];
-  v7 = v49;
+  lineColor = v49;
 LABEL_34:
 
   return v19;
@@ -822,10 +822,10 @@ LABEL_34:
   return result;
 }
 
-+ (void)cacheBackgroundImage:(id)a3 forKey:(id)a4
++ (void)cacheBackgroundImage:(id)image forKey:(id)key
 {
-  v8 = a3;
-  v5 = a4;
+  imageCopy = image;
+  keyCopy = key;
   if (!__DayViewGridBackgroundCache)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -833,58 +833,58 @@ LABEL_34:
     __DayViewGridBackgroundCache = v6;
   }
 
-  if (v8)
+  if (imageCopy)
   {
-    [__DayViewGridBackgroundCache setObject:v8 forKey:v5];
+    [__DayViewGridBackgroundCache setObject:imageCopy forKey:keyCopy];
   }
 
   else
   {
-    [__DayViewGridBackgroundCache removeObjectForKey:v5];
+    [__DayViewGridBackgroundCache removeObjectForKey:keyCopy];
   }
 }
 
-- (EKDayGridView)initWithFrame:(CGRect)a3
+- (EKDayGridView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [MEMORY[0x1E69DC888] whiteColor];
-  v9 = [(EKDayGridView *)self initWithFrame:1 sizeClass:v8 backgroundColor:1 opaque:1 numberOfDaysToDisplay:x, y, width, height];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  height = [(EKDayGridView *)self initWithFrame:1 sizeClass:whiteColor backgroundColor:1 opaque:1 numberOfDaysToDisplay:x, y, width, height];
 
-  return v9;
+  return height;
 }
 
-- (EKDayGridView)initWithFrame:(CGRect)a3 sizeClass:(int64_t)a4 backgroundColor:(id)a5 opaque:(BOOL)a6 numberOfDaysToDisplay:(unint64_t)a7
+- (EKDayGridView)initWithFrame:(CGRect)frame sizeClass:(int64_t)class backgroundColor:(id)color opaque:(BOOL)opaque numberOfDaysToDisplay:(unint64_t)display
 {
-  v8 = a6;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  opaqueCopy = opaque;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v54[4] = *MEMORY[0x1E69E9840];
-  v16 = a5;
+  colorCopy = color;
   v53.receiver = self;
   v53.super_class = EKDayGridView;
-  v17 = [(EKDayGridView *)&v53 initWithFrame:x, y, width, height];
-  v18 = v17;
-  if (v17)
+  height = [(EKDayGridView *)&v53 initWithFrame:x, y, width, height];
+  v18 = height;
+  if (height)
   {
-    v52 = v16;
-    [(EKDayGridView *)v17 setOpaque:v8];
+    v52 = colorCopy;
+    [(EKDayGridView *)height setOpaque:opaqueCopy];
     v18->_selected = -1;
     [(EKDayGridView *)v18 setShowsLeftBorder:0];
     [(EKDayGridView *)v18 setSelected:0];
     v18->_rightBorderInsetsOccurrences = 1;
-    objc_storeStrong(&v18->_backgroundColor, a5);
-    v18->_daysToDisplay = a7;
+    objc_storeStrong(&v18->_backgroundColor, color);
+    v18->_daysToDisplay = display;
     v18->_animatesTimeMarker = 1;
     v18->_orientation = 1;
-    [EKDayTimeView timeInsetForSizeClass:a4 orientation:1];
+    [EKDayTimeView timeInsetForSizeClass:class orientation:1];
     v18->_timeInset = -v19;
-    v51 = a4;
-    [EKDayTimeView hourHeightForSizeClass:a4 orientation:v18->_orientation];
+    classCopy = class;
+    [EKDayTimeView hourHeightForSizeClass:class orientation:v18->_orientation];
     v18->_hourHeight = v20;
     v18->_gridHeightScale = 1.0;
     v21 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{x, y, width, height}];
@@ -904,8 +904,8 @@ LABEL_34:
       {
         v26 = objc_alloc_init(MEMORY[0x1E69DD250]);
         [v26 setAutoresizingMask:5];
-        v27 = [MEMORY[0x1E69DC888] separatorColor];
-        [v26 setBackgroundColor:v27];
+        separatorColor = [MEMORY[0x1E69DC888] separatorColor];
+        [v26 setBackgroundColor:separatorColor];
 
         [(UIView *)v18->_gridContainerView addSubview:v26];
         [(NSMutableArray *)v18->_middleBorderViews addObject:v26];
@@ -921,33 +921,33 @@ LABEL_34:
     v18->_gridPatternViews = v28;
 
     v18->_highlightedDayIndex = -1;
-    v30 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     gridParentViews = v18->_gridParentViews;
-    v18->_gridParentViews = v30;
+    v18->_gridParentViews = dictionary;
 
     if (CalCanvasPocketEnabled())
     {
       v32 = objc_opt_new();
-      [v32 setBackgroundColor:v16];
+      [v32 setBackgroundColor:colorCopy];
       [v32 setTranslatesAutoresizingMaskIntoConstraints:0];
       [(EKDayGridView *)v18 addSubview:v32];
-      v33 = [v32 heightAnchor];
-      v34 = [v33 constraintEqualToConstant:0.0];
+      heightAnchor = [v32 heightAnchor];
+      v34 = [heightAnchor constraintEqualToConstant:0.0];
       curtainHeightConstraint = v18->_curtainHeightConstraint;
       v18->_curtainHeightConstraint = v34;
 
       v47 = MEMORY[0x1E696ACD8];
-      v50 = [v32 leadingAnchor];
-      v49 = [(EKDayGridView *)v18 leadingAnchor];
-      v48 = [v50 constraintEqualToAnchor:v49];
+      leadingAnchor = [v32 leadingAnchor];
+      leadingAnchor2 = [(EKDayGridView *)v18 leadingAnchor];
+      v48 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
       v54[0] = v48;
-      v36 = [v32 trailingAnchor];
-      v37 = [(EKDayGridView *)v18 trailingAnchor];
-      v38 = [v36 constraintEqualToAnchor:v37];
+      trailingAnchor = [v32 trailingAnchor];
+      trailingAnchor2 = [(EKDayGridView *)v18 trailingAnchor];
+      v38 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
       v54[1] = v38;
-      v39 = [v32 topAnchor];
-      v40 = [(EKDayGridView *)v18 topAnchor];
-      v41 = [v39 constraintEqualToAnchor:v40];
+      topAnchor = [v32 topAnchor];
+      topAnchor2 = [(EKDayGridView *)v18 topAnchor];
+      v41 = [topAnchor constraintEqualToAnchor:topAnchor2];
       v54[2] = v41;
       v54[3] = v18->_curtainHeightConstraint;
       v42 = [MEMORY[0x1E695DEC8] arrayWithObjects:v54 count:4];
@@ -962,18 +962,18 @@ LABEL_34:
     [(EKDayGridView *)v18 addSubview:v18->_occurrenceContainerView];
     [(EKDayGridView *)v18 bounds];
     v18->_cachedWidthForOffMainThreadWork = v45;
-    v16 = v52;
-    v18->_sizeClass = v51;
+    colorCopy = v52;
+    v18->_sizeClass = classCopy;
   }
 
   return v18;
 }
 
-- (void)setUseMultiDayStyle:(BOOL)a3
+- (void)setUseMultiDayStyle:(BOOL)style
 {
   v15 = *MEMORY[0x1E69E9840];
-  self->_useMultiDayStyle = a3;
-  if (a3)
+  self->_useMultiDayStyle = style;
+  if (style)
   {
     EKUIVerticalGridLineColor();
   }
@@ -1014,30 +1014,30 @@ LABEL_34:
   }
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
   v5.receiver = self;
   v5.super_class = EKDayGridView;
-  [(EKDayGridView *)&v5 setBounds:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(EKDayGridView *)&v5 setBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   [(EKDayGridView *)self bounds];
   self->_cachedWidthForOffMainThreadWork = v4;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v5.receiver = self;
   v5.super_class = EKDayGridView;
-  [(EKDayGridView *)&v5 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(EKDayGridView *)&v5 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(EKDayGridView *)self bounds];
   self->_cachedWidthForOffMainThreadWork = v4;
 }
 
-- (void)setOrientation:(int64_t)a3
+- (void)setOrientation:(int64_t)orientation
 {
-  if (self->_orientation != a3)
+  if (self->_orientation != orientation)
   {
-    self->_orientation = a3;
-    [EKDayTimeView timeInsetForSizeClass:[(EKDayGridView *)self _sizeClass] orientation:a3];
+    self->_orientation = orientation;
+    [EKDayTimeView timeInsetForSizeClass:[(EKDayGridView *)self _sizeClass] orientation:orientation];
     self->_timeInset = v5;
     [(EKDayGridView *)self updateHourHeight];
     [(EKDayGridView *)self frame];
@@ -1049,9 +1049,9 @@ LABEL_34:
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
+  width = fits.width;
   fixedDayWidth = self->_fixedDayWidth;
   if (fixedDayWidth > 0.0)
   {
@@ -1071,9 +1071,9 @@ LABEL_34:
   return result;
 }
 
-- (void)setGridHeightScale:(double)a3
+- (void)setGridHeightScale:(double)scale
 {
-  self->_gridHeightScale = a3;
+  self->_gridHeightScale = scale;
   [(EKDayGridView *)self updateHourHeight];
 
   [(EKDayGridView *)self setNeedsLayout];
@@ -1088,50 +1088,50 @@ uint64_t __34__EKDayGridView__updateTimeMarker__block_invoke_4(uint64_t a1)
   return [v2 setAlpha:?];
 }
 
-- (void)hideNowDot:(BOOL)a3
+- (void)hideNowDot:(BOOL)dot
 {
-  if (self->_hideTimeDot != a3)
+  if (self->_hideTimeDot != dot)
   {
-    self->_hideTimeDot = a3;
+    self->_hideTimeDot = dot;
     [(EKDayGridView *)self _updateTimeMarker];
   }
 }
 
-- (void)setShowsTimeLine:(BOOL)a3
+- (void)setShowsTimeLine:(BOOL)line
 {
-  if (self->_showsTimeLine != a3)
+  if (self->_showsTimeLine != line)
   {
-    self->_showsTimeLine = a3;
+    self->_showsTimeLine = line;
     [(EKDayGridView *)self _updateTimeMarker];
   }
 }
 
-- (void)setShowsTimeMarker:(BOOL)a3
+- (void)setShowsTimeMarker:(BOOL)marker
 {
-  if (self->_showsTimeMarker != a3)
+  if (self->_showsTimeMarker != marker)
   {
-    self->_showsTimeMarker = a3;
+    self->_showsTimeMarker = marker;
     [(EKDayGridView *)self _updateTimeMarker];
   }
 }
 
-- (void)setTimeMarkerTodayDay:(int64_t)a3
+- (void)setTimeMarkerTodayDay:(int64_t)day
 {
-  if (self->_timeMarkerTodayDay != a3)
+  if (self->_timeMarkerTodayDay != day)
   {
-    self->_timeMarkerTodayDay = a3;
+    self->_timeMarkerTodayDay = day;
     [(EKDayGridView *)self _updateTimeMarker];
   }
 }
 
-- (void)setShowsLeftBorder:(BOOL)a3
+- (void)setShowsLeftBorder:(BOOL)border
 {
   v3 = *(self + 424);
-  if ((v3 & 1) != a3)
+  if ((v3 & 1) != border)
   {
-    *(self + 424) = v3 & 0xFE | a3;
+    *(self + 424) = v3 & 0xFE | border;
     leftBorderView = self->_leftBorderView;
-    if (a3)
+    if (border)
     {
       if (!leftBorderView)
       {
@@ -1141,8 +1141,8 @@ uint64_t __34__EKDayGridView__updateTimeMarker__block_invoke_4(uint64_t a1)
 
         [(UIView *)self->_leftBorderView setAutoresizingMask:5];
         v9 = self->_leftBorderView;
-        v10 = [MEMORY[0x1E69DC888] separatorColor];
-        [(UIView *)v9 setBackgroundColor:v10];
+        separatorColor = [MEMORY[0x1E69DC888] separatorColor];
+        [(UIView *)v9 setBackgroundColor:separatorColor];
 
         gridContainerView = self->_gridContainerView;
         v12 = self->_leftBorderView;
@@ -1160,12 +1160,12 @@ uint64_t __34__EKDayGridView__updateTimeMarker__block_invoke_4(uint64_t a1)
   }
 }
 
-- (void)setShowsRightBorder:(BOOL)a3
+- (void)setShowsRightBorder:(BOOL)border
 {
   v3 = *(self + 424);
-  if (((((v3 & 2) == 0) ^ a3) & 1) == 0)
+  if (((((v3 & 2) == 0) ^ border) & 1) == 0)
   {
-    if (a3)
+    if (border)
     {
       v5 = 2;
     }
@@ -1177,7 +1177,7 @@ uint64_t __34__EKDayGridView__updateTimeMarker__block_invoke_4(uint64_t a1)
 
     *(self + 424) = v3 & 0xFD | v5;
     rightBorderView = self->_rightBorderView;
-    if (a3)
+    if (border)
     {
       if (!rightBorderView)
       {
@@ -1186,8 +1186,8 @@ uint64_t __34__EKDayGridView__updateTimeMarker__block_invoke_4(uint64_t a1)
         self->_rightBorderView = v8;
 
         v10 = self->_rightBorderView;
-        v11 = [MEMORY[0x1E69DC888] separatorColor];
-        [(UIView *)v10 setBackgroundColor:v11];
+        separatorColor = [MEMORY[0x1E69DC888] separatorColor];
+        [(UIView *)v10 setBackgroundColor:separatorColor];
 
         gridContainerView = self->_gridContainerView;
         v13 = self->_rightBorderView;
@@ -1205,13 +1205,13 @@ uint64_t __34__EKDayGridView__updateTimeMarker__block_invoke_4(uint64_t a1)
   }
 }
 
-- (CGRect)rectForStartSeconds:(int64_t)a3 endSeconds:(int64_t)a4
+- (CGRect)rectForStartSeconds:(int64_t)seconds endSeconds:(int64_t)endSeconds
 {
   v6 = MEMORY[0x1E695F058];
-  v7 = a4 - a3 - 1679;
-  if (a3 / 86400.0 >= 0.0)
+  v7 = endSeconds - seconds - 1679;
+  if (seconds / 86400.0 >= 0.0)
   {
-    v8 = a3 / 86400.0;
+    v8 = seconds / 86400.0;
   }
 
   else
@@ -1219,9 +1219,9 @@ uint64_t __34__EKDayGridView__updateTimeMarker__block_invoke_4(uint64_t a1)
     v8 = 0.0;
   }
 
-  if (a4 / 86400.0 <= 1.0)
+  if (endSeconds / 86400.0 <= 1.0)
   {
-    v9 = a4 / 86400.0;
+    v9 = endSeconds / 86400.0;
   }
 
   else
@@ -1253,7 +1253,7 @@ uint64_t __34__EKDayGridView__updateTimeMarker__block_invoke_4(uint64_t a1)
   if (v7 <= 0xF2)
   {
     v18 = v18 - EKUISeparatorLineThickness();
-    if ((a4 + 100) % 3600 <= 199)
+    if ((endSeconds + 100) % 3600 <= 199)
     {
       v18 = v18 - EKUISeparatorLineThickness();
     }
@@ -1270,81 +1270,81 @@ uint64_t __34__EKDayGridView__updateTimeMarker__block_invoke_4(uint64_t a1)
   return result;
 }
 
-- (double)positionOfSecond:(int64_t)a3
+- (double)positionOfSecond:(int64_t)second
 {
   [(EKDayGridView *)self hourHeight];
   v6 = v5;
   [(EKDayGridView *)self topPadding];
 
-  [EKDayTimeView positionOfSecond:a3 hourHeight:0 topPadding:v6 clampToBounds:v7];
+  [EKDayTimeView positionOfSecond:second hourHeight:0 topPadding:v6 clampToBounds:v7];
   return result;
 }
 
-- (int)secondAtPosition:(double)a3
+- (int)secondAtPosition:(double)position
 {
   [(EKDayGridView *)self topPadding];
   v6 = v5;
-  if (v5 < a3 || (result = CalCanvasPocketEnabled()) != 0)
+  if (v5 < position || (result = CalCanvasPocketEnabled()) != 0)
   {
     [(EKDayGridView *)self hourHeight];
-    return llround((a3 - v6) / (v8 * 24.0) * 86400.0);
+    return llround((position - v6) / (v8 * 24.0) * 86400.0);
   }
 
   return result;
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  if (self->_selected != a3)
+  if (self->_selected != selected)
   {
-    self->_selected = a3;
+    self->_selected = selected;
     [(EKDayGridView *)self setNeedsDisplay];
   }
 }
 
-- (void)setHighlightedDayIndex:(int64_t)a3
+- (void)setHighlightedDayIndex:(int64_t)index
 {
-  if (self->_highlightedDayIndex != a3)
+  if (self->_highlightedDayIndex != index)
   {
-    self->_highlightedDayIndex = a3;
+    self->_highlightedDayIndex = index;
     [(EKDayGridView *)self _layoutHighlight];
   }
 }
 
-- (void)setFixedDayWidth:(double)a3
+- (void)setFixedDayWidth:(double)width
 {
-  if (self->_fixedDayWidth != a3)
+  if (self->_fixedDayWidth != width)
   {
-    self->_fixedDayWidth = a3;
+    self->_fixedDayWidth = width;
     [(EKDayGridView *)self setNeedsLayout];
 
     [(EKDayGridView *)self _updateTimeMarker];
   }
 }
 
-- (void)setLineColor:(id)a3
+- (void)setLineColor:(id)color
 {
-  v5 = a3;
-  if (self->_lineColor != v5)
+  colorCopy = color;
+  if (self->_lineColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_lineColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_lineColor, color);
     [(EKDayGridView *)self setNeedsLayout];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
-- (void)setGridVisualEffect:(id)a3
+- (void)setGridVisualEffect:(id)effect
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  objc_storeStrong(&self->_gridVisualEffect, a3);
+  effectCopy = effect;
+  objc_storeStrong(&self->_gridVisualEffect, effect);
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v6 = [(NSMutableDictionary *)self->_gridParentViews allValues];
-  v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  allValues = [(NSMutableDictionary *)self->_gridParentViews allValues];
+  v7 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1356,14 +1356,14 @@ uint64_t __34__EKDayGridView__updateTimeMarker__block_invoke_4(uint64_t a1)
       {
         if (*v12 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allValues);
         }
 
-        [*(*(&v11 + 1) + 8 * v10++) setEffect:v5];
+        [*(*(&v11 + 1) + 8 * v10++) setEffect:effectCopy];
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v8 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v8);
@@ -1409,8 +1409,8 @@ uint64_t __34__EKDayGridView__updateTimeMarker__block_invoke_4(uint64_t a1)
       v11 = self->_highlightedDayBackground;
       self->_highlightedDayBackground = v10;
 
-      v12 = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
-      [(UIView *)self->_highlightedDayBackground setBackgroundColor:v12];
+      secondarySystemBackgroundColor = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
+      [(UIView *)self->_highlightedDayBackground setBackgroundColor:secondarySystemBackgroundColor];
 
       [(UIView *)self->_gridContainerView addSubview:self->_highlightedDayBackground];
       [(UIView *)self->_gridContainerView sendSubviewToBack:self->_highlightedDayBackground];
@@ -1435,9 +1435,9 @@ uint64_t __34__EKDayGridView__updateTimeMarker__block_invoke_4(uint64_t a1)
   }
 }
 
-- (void)setCurtainHeight:(double)a3
+- (void)setCurtainHeight:(double)height
 {
-  [(NSLayoutConstraint *)self->_curtainHeightConstraint setConstant:fmax(a3, 0.0)];
+  [(NSLayoutConstraint *)self->_curtainHeightConstraint setConstant:fmax(height, 0.0)];
 
   [(EKDayGridView *)self _updateMarkerAlpha];
 }

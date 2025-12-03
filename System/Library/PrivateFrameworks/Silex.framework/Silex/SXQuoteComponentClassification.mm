@@ -1,5 +1,5 @@
 @interface SXQuoteComponentClassification
-- (BOOL)hasAffiliationWithClassification:(id)a3 forDirection:(int64_t)a4;
+- (BOOL)hasAffiliationWithClassification:(id)classification forDirection:(int64_t)direction;
 - (id)accessibilityContextualLabel;
 @end
 
@@ -13,9 +13,9 @@
   return v3;
 }
 
-- (BOOL)hasAffiliationWithClassification:(id)a3 forDirection:(int64_t)a4
+- (BOOL)hasAffiliationWithClassification:(id)classification forDirection:(int64_t)direction
 {
-  v6 = a3;
+  classificationCopy = classification;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -26,7 +26,7 @@
   {
     v9.receiver = self;
     v9.super_class = SXQuoteComponentClassification;
-    v7 = [(SXComponentClassification *)&v9 hasAffiliationWithClassification:v6 forDirection:a4];
+    v7 = [(SXComponentClassification *)&v9 hasAffiliationWithClassification:classificationCopy forDirection:direction];
   }
 
   return v7;

@@ -3,22 +3,22 @@
 - (id)appJSURL;
 - (id)appLaunchParams;
 - (id)userDefaultsStorage;
-- (void)appContext:(id)a3 didFailWithError:(id)a4;
-- (void)appContext:(id)a3 evaluateAppJavaScriptInContext:(id)a4;
-- (void)appContext:(id)a3 scriptForURL:(id)a4 cachePolicy:(unint64_t)a5 completion:(id)a6;
+- (void)appContext:(id)context didFailWithError:(id)error;
+- (void)appContext:(id)context evaluateAppJavaScriptInContext:(id)inContext;
+- (void)appContext:(id)context scriptForURL:(id)l cachePolicy:(unint64_t)policy completion:(id)completion;
 @end
 
 @implementation TVExtension
 
 - (id)appLaunchParams
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E3ABE5AC();
 
   sub_1E4205C44();
   OUTLINED_FUNCTION_50();
 
-  return v2;
+  return selfCopy;
 }
 
 - (id)appJSURL
@@ -38,7 +38,7 @@
 
 - (id)userDefaultsStorage
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1E3ABEB9C();
 
   return v3;
@@ -46,7 +46,7 @@
 
 - (id)appIdentifier
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1E3ABEC20();
   v5 = v4;
 
@@ -64,7 +64,7 @@
   return v3;
 }
 
-- (void)appContext:(id)a3 scriptForURL:(id)a4 cachePolicy:(unint64_t)a5 completion:(id)a6
+- (void)appContext:(id)context scriptForURL:(id)l cachePolicy:(unint64_t)policy completion:(id)completion
 {
   v10 = sub_1E41FE414();
   OUTLINED_FUNCTION_0_10();
@@ -72,32 +72,32 @@
   MEMORY[0x1EEE9AC00](v13);
   OUTLINED_FUNCTION_5();
   v16 = v15 - v14;
-  v17 = _Block_copy(a6);
+  v17 = _Block_copy(completion);
   sub_1E41FE3C4();
   OUTLINED_FUNCTION_4_0();
   v18 = swift_allocObject();
   *(v18 + 16) = v17;
-  v19 = a3;
-  v20 = self;
-  sub_1E3ABECDC(v20, v16, a5, sub_1E3ABF568, v18);
+  contextCopy = context;
+  selfCopy = self;
+  sub_1E3ABECDC(selfCopy, v16, policy, sub_1E3ABF568, v18);
 
   (*(v12 + 8))(v16, v10);
 }
 
-- (void)appContext:(id)a3 evaluateAppJavaScriptInContext:(id)a4
+- (void)appContext:(id)context evaluateAppJavaScriptInContext:(id)inContext
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  contextCopy = context;
+  inContextCopy = inContext;
+  selfCopy = self;
   sub_1E3ABF0B8();
 }
 
-- (void)appContext:(id)a3 didFailWithError:(id)a4
+- (void)appContext:(id)context didFailWithError:(id)error
 {
-  v6 = a3;
-  v8 = a4;
-  v7 = self;
-  sub_1E3ABF158(v7, v8);
+  contextCopy = context;
+  errorCopy = error;
+  selfCopy = self;
+  sub_1E3ABF158(selfCopy, errorCopy);
 }
 
 @end

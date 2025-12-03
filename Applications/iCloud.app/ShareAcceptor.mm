@@ -1,80 +1,80 @@
 @interface ShareAcceptor
 + (id)primaryAppleAccount;
-- (BOOL)_authenticateUsers:(id *)a3;
+- (BOOL)_authenticateUsers:(id *)users;
 - (BOOL)_checkDataclassEnabled;
 - (BOOL)_checkDataclassProvisioned;
-- (BOOL)_fallbackFlowDownloadApp:(id *)a3;
-- (BOOL)_fallbackFlowDownloadAppUpdate:(id *)a3;
-- (BOOL)_fallbackFlowShareAccessRequest:(id *)a3;
-- (BOOL)_fallbackFlowWarnNetworkUnavailable:(id *)a3;
-- (BOOL)_fallbackFlowWarnServiceUnavailable:(id *)a3;
-- (BOOL)_fallbackFlowWarnShareUnavailable:(id *)a3;
-- (BOOL)_fallbackFlowWarnUnprovisionedDataclass:(id *)a3;
-- (BOOL)_fallbackFlowWebRedirect:(id *)a3;
-- (BOOL)_fetchMetadata:(id *)a3;
+- (BOOL)_fallbackFlowDownloadApp:(id *)app;
+- (BOOL)_fallbackFlowDownloadAppUpdate:(id *)update;
+- (BOOL)_fallbackFlowShareAccessRequest:(id *)request;
+- (BOOL)_fallbackFlowWarnNetworkUnavailable:(id *)unavailable;
+- (BOOL)_fallbackFlowWarnServiceUnavailable:(id *)unavailable;
+- (BOOL)_fallbackFlowWarnShareUnavailable:(id *)unavailable;
+- (BOOL)_fallbackFlowWarnUnprovisionedDataclass:(id *)dataclass;
+- (BOOL)_fallbackFlowWebRedirect:(id *)redirect;
+- (BOOL)_fetchMetadata:(id *)metadata;
 - (BOOL)_getShareName;
-- (BOOL)_handleAppleInternalDaemon:(id)a3 response:(id)a4 error:(id *)a5;
-- (BOOL)_handlePotentialAppleInternalDaemon:(id *)a3;
-- (BOOL)_initiateVettingOfSingleOONMatch:(id *)a3;
-- (BOOL)_launchApp:(id *)a3;
-- (BOOL)_lookUpRegisteredBundleIDs:(id *)a3;
-- (BOOL)_notifyBladeRunner:(id *)a3;
-- (BOOL)_promptAppSelection:(id *)a3;
-- (BOOL)_promptToOpenAppStoreLink:(id *)a3 alertOptions:(id)a4 appURL:(id)a5;
-- (BOOL)_requestSelectionFromMultipleOONMatches:(id *)a3;
+- (BOOL)_handleAppleInternalDaemon:(id)daemon response:(id)response error:(id *)error;
+- (BOOL)_handlePotentialAppleInternalDaemon:(id *)daemon;
+- (BOOL)_initiateVettingOfSingleOONMatch:(id *)match;
+- (BOOL)_launchApp:(id *)app;
+- (BOOL)_lookUpRegisteredBundleIDs:(id *)ds;
+- (BOOL)_notifyBladeRunner:(id *)runner;
+- (BOOL)_promptAppSelection:(id *)selection;
+- (BOOL)_promptToOpenAppStoreLink:(id *)link alertOptions:(id)options appURL:(id)l;
+- (BOOL)_requestSelectionFromMultipleOONMatches:(id *)matches;
 - (BOOL)_shouldRedirectToWebForUninstalledApp;
-- (BOOL)_shouldSendURLToBladeRunner:(id)a3;
-- (BOOL)_shouldSendURLToPhotos:(id)a3;
-- (BOOL)_shouldShowICloudLoginPrompt:(id)a3;
-- (BOOL)_urlHasALongToken:(id)a3;
-- (BOOL)_urlIsALegacyiWorkShareURL:(id)a3;
-- (BOOL)_urlIsAniWorkShareURL:(id)a3;
-- (BOOL)_validateShareURL:(id *)a3;
-- (BOOL)_verifySelectedApp:(id *)a3;
-- (BOOL)makeStateTransition:(id *)a3;
+- (BOOL)_shouldSendURLToBladeRunner:(id)runner;
+- (BOOL)_shouldSendURLToPhotos:(id)photos;
+- (BOOL)_shouldShowICloudLoginPrompt:(id)prompt;
+- (BOOL)_urlHasALongToken:(id)token;
+- (BOOL)_urlIsALegacyiWorkShareURL:(id)l;
+- (BOOL)_urlIsAniWorkShareURL:(id)l;
+- (BOOL)_validateShareURL:(id *)l;
+- (BOOL)_verifySelectedApp:(id *)app;
+- (BOOL)makeStateTransition:(id *)transition;
 - (BOOL)retrievingDialogShouldDisplay;
 - (BOOL)shareNeedsAcceptance;
 - (BOOL)shouldShowRequestAccess;
 - (CKContainer)metadataIndicatedContainer;
-- (ShareAcceptor)initWithCloudKitURL:(id)a3;
-- (ShareAcceptor)initWithCloudKitURL:(id)a3 invitationToken:(id)a4 isSourceICS:(BOOL)a5 unitTestOverrides:(id)a6;
-- (ShareAcceptor)initWithShareMetadata:(id)a3 shareURL:(id)a4;
-- (id)_deduplicateBundleToNamesMapping:(id)a3;
+- (ShareAcceptor)initWithCloudKitURL:(id)l;
+- (ShareAcceptor)initWithCloudKitURL:(id)l invitationToken:(id)token isSourceICS:(BOOL)s unitTestOverrides:(id)overrides;
+- (ShareAcceptor)initWithShareMetadata:(id)metadata shareURL:(id)l;
+- (id)_deduplicateBundleToNamesMapping:(id)mapping;
 - (id)_fetchCurrentUserNameComponents;
-- (id)_fetchShareMetadataForAccountID:(id)a3 error:(id *)a4;
-- (id)_findStoreDataForBundleIDs:(id)a3 error:(id *)a4;
-- (id)_getContainerForAccountID:(id)a3;
-- (id)_iOSwatchOSHandleMultipleAppStoreCandidates:(id)a3 error:(id *)a4;
-- (id)_iosShowAppSelectionDialogWithTitlesDictionary:(id)a3;
+- (id)_fetchShareMetadataForAccountID:(id)d error:(id *)error;
+- (id)_findStoreDataForBundleIDs:(id)ds error:(id *)error;
+- (id)_getContainerForAccountID:(id)d;
+- (id)_iOSwatchOSHandleMultipleAppStoreCandidates:(id)candidates error:(id *)error;
+- (id)_iosShowAppSelectionDialogWithTitlesDictionary:(id)dictionary;
 - (id)_iosShowVettingAlert;
-- (id)_promptForAccountIDChoiceWithAccountIDsByUsername:(id)a3 error:(id *)a4;
+- (id)_promptForAccountIDChoiceWithAccountIDsByUsername:(id)username error:(id *)error;
 - (id)_trySelectingOONParticipant;
 - (id)chooseFromMultipleBundleIDs;
 - (id)fetchMetadata;
 - (id)promptForSingleBundleID;
-- (int64_t)_checkRepresentativeDataclassEnabled:(BOOL)a3;
-- (int64_t)_fallbackFlowICloudAccountSettings:(id *)a3 success:(BOOL *)a4;
+- (int64_t)_checkRepresentativeDataclassEnabled:(BOOL)enabled;
+- (int64_t)_fallbackFlowICloudAccountSettings:(id *)settings success:(BOOL *)success;
 - (int64_t)_handlePotentialOONMatches;
-- (int64_t)_lookUpLocalBundleIDs:(id *)a3 success:(BOOL *)a4;
+- (int64_t)_lookUpLocalBundleIDs:(id *)ds success:(BOOL *)success;
 - (int64_t)initiateVetting;
-- (void)_actuallyRequestAccessWithCompletion:(id)a3;
-- (void)_extractEmailAddressesFromProperties:(id)a3 into:(id)a4;
-- (void)_initiateVettingForParticipantID:(id)a3 address:(id)a4 andThen:(id)a5;
-- (void)acceptShareWithCompletionHandler:(id)a3;
-- (void)setState:(int64_t)a3;
+- (void)_actuallyRequestAccessWithCompletion:(id)completion;
+- (void)_extractEmailAddressesFromProperties:(id)properties into:(id)into;
+- (void)_initiateVettingForParticipantID:(id)d address:(id)address andThen:(id)then;
+- (void)acceptShareWithCompletionHandler:(id)handler;
+- (void)setState:(int64_t)state;
 @end
 
 @implementation ShareAcceptor
 
-- (ShareAcceptor)initWithCloudKitURL:(id)a3
+- (ShareAcceptor)initWithCloudKitURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v13.receiver = self;
   v13.super_class = ShareAcceptor;
   v5 = [(ShareAcceptor *)&v13 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [lCopy copy];
     url = v5->_url;
     v5->_url = v6;
 
@@ -94,65 +94,65 @@
   return v5;
 }
 
-- (ShareAcceptor)initWithCloudKitURL:(id)a3 invitationToken:(id)a4 isSourceICS:(BOOL)a5 unitTestOverrides:(id)a6
+- (ShareAcceptor)initWithCloudKitURL:(id)l invitationToken:(id)token isSourceICS:(BOOL)s unitTestOverrides:(id)overrides
 {
-  v10 = a4;
-  v11 = a6;
-  v12 = [(ShareAcceptor *)self initWithCloudKitURL:a3];
+  tokenCopy = token;
+  overridesCopy = overrides;
+  v12 = [(ShareAcceptor *)self initWithCloudKitURL:l];
   if (v12)
   {
-    v13 = [v10 copy];
+    v13 = [tokenCopy copy];
     invitationToken = v12->_invitationToken;
     v12->_invitationToken = v13;
 
-    v12->_isSourceICS = a5;
+    v12->_isSourceICS = s;
     if (__sTestOverridesAvailable == 1)
     {
-      objc_storeStrong(&v12->_unitTestOverrides, a6);
+      objc_storeStrong(&v12->_unitTestOverrides, overrides);
     }
   }
 
   return v12;
 }
 
-- (ShareAcceptor)initWithShareMetadata:(id)a3 shareURL:(id)a4
+- (ShareAcceptor)initWithShareMetadata:(id)metadata shareURL:(id)l
 {
-  v7 = a3;
-  v8 = [(ShareAcceptor *)self initWithCloudKitURL:a4];
+  metadataCopy = metadata;
+  v8 = [(ShareAcceptor *)self initWithCloudKitURL:l];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_shareMetadata, a3);
+    objc_storeStrong(&v8->_shareMetadata, metadata);
   }
 
   return v9;
 }
 
-- (BOOL)_shouldShowICloudLoginPrompt:(id)a3
+- (BOOL)_shouldShowICloudLoginPrompt:(id)prompt
 {
   v3 = qword_10002E380;
-  v4 = a3;
+  promptCopy = prompt;
   if (v3 != -1)
   {
     dispatch_once(&qword_10002E380, &stru_100028898);
   }
 
   v5 = qword_10002E388;
-  v6 = [v4 CKURLSlug];
+  cKURLSlug = [promptCopy CKURLSlug];
 
-  v7 = [v6 lowercaseString];
-  LOBYTE(v5) = [v5 containsObject:v7];
+  lowercaseString = [cKURLSlug lowercaseString];
+  LOBYTE(v5) = [v5 containsObject:lowercaseString];
 
   return v5 ^ 1;
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
-  v4 = self;
-  objc_sync_enter(v4);
-  state = v4->_state;
-  v4->_state = a3;
-  objc_sync_exit(v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  state = selfCopy->_state;
+  selfCopy->_state = state;
+  objc_sync_exit(selfCopy);
 
   if (ck_log_initialization_predicate != -1)
   {
@@ -163,18 +163,18 @@
   if (os_log_type_enabled(ck_log_facility_ck, OS_LOG_TYPE_INFO))
   {
     v7 = v6;
-    v8 = [(ShareAcceptor *)v4 url];
-    v9 = [v8 CKURLThroughSlug];
-    v10 = [(ShareAcceptor *)v4 url];
-    v11 = [v10 CKPathAfterSlug];
+    v8 = [(ShareAcceptor *)selfCopy url];
+    cKURLThroughSlug = [v8 CKURLThroughSlug];
+    v10 = [(ShareAcceptor *)selfCopy url];
+    cKPathAfterSlug = [v10 CKPathAfterSlug];
     v12 = off_100028BE0[state];
-    v13 = off_100028BE0[a3];
+    v13 = off_100028BE0[state];
     v15 = 138544386;
-    v16 = v9;
+    v16 = cKURLThroughSlug;
     v17 = 2160;
     v18 = 1752392040;
     v19 = 2112;
-    v20 = v11;
+    v20 = cKPathAfterSlug;
     v21 = 2080;
     v22 = v12;
     v23 = 2080;
@@ -182,78 +182,78 @@
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "Share acceptance for URL: %{public}@%{mask.hash}@, state change [%s] -> [%s]", &v15, 0x34u);
   }
 
-  if (![(ShareAcceptor *)v4 shouldShowRetrievingDialogForState:a3])
+  if (![(ShareAcceptor *)selfCopy shouldShowRetrievingDialogForState:state])
   {
-    v14 = [(ShareAcceptor *)v4 retrievingDialog];
-    [v14 abort];
+    retrievingDialog = [(ShareAcceptor *)selfCopy retrievingDialog];
+    [retrievingDialog abort];
   }
 }
 
 - (BOOL)retrievingDialogShouldDisplay
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(ShareAcceptor *)v2 state];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  state = [(ShareAcceptor *)selfCopy state];
+  objc_sync_exit(selfCopy);
 
-  return [(ShareAcceptor *)v2 shouldShowRetrievingDialogForState:v3];
+  return [(ShareAcceptor *)selfCopy shouldShowRetrievingDialogForState:state];
 }
 
-- (BOOL)_urlIsAniWorkShareURL:(id)a3
+- (BOOL)_urlIsAniWorkShareURL:(id)l
 {
   v3 = qword_10002E390;
-  v4 = a3;
+  lCopy = l;
   if (v3 != -1)
   {
     dispatch_once(&qword_10002E390, &stru_1000288B8);
   }
 
   v5 = qword_10002E398;
-  v6 = [v4 CKURLSlug];
+  cKURLSlug = [lCopy CKURLSlug];
 
-  v7 = [v6 lowercaseString];
-  LOBYTE(v5) = [v5 containsObject:v7];
+  lowercaseString = [cKURLSlug lowercaseString];
+  LOBYTE(v5) = [v5 containsObject:lowercaseString];
 
   return v5;
 }
 
-- (BOOL)_shouldSendURLToBladeRunner:(id)a3
+- (BOOL)_shouldSendURLToBladeRunner:(id)runner
 {
   v3 = qword_10002E3A0;
-  v4 = a3;
+  runnerCopy = runner;
   if (v3 != -1)
   {
     dispatch_once(&qword_10002E3A0, &stru_1000288D8);
   }
 
   v5 = qword_10002E3A8;
-  v6 = [v4 CKURLSlug];
+  cKURLSlug = [runnerCopy CKURLSlug];
 
-  v7 = [v6 lowercaseString];
-  LOBYTE(v5) = [v5 containsObject:v7];
+  lowercaseString = [cKURLSlug lowercaseString];
+  LOBYTE(v5) = [v5 containsObject:lowercaseString];
 
   return v5;
 }
 
-- (BOOL)_shouldSendURLToPhotos:(id)a3
+- (BOOL)_shouldSendURLToPhotos:(id)photos
 {
   v3 = qword_10002E3B0;
-  v4 = a3;
+  photosCopy = photos;
   if (v3 != -1)
   {
     dispatch_once(&qword_10002E3B0, &stru_1000288F8);
   }
 
   v5 = qword_10002E3B8;
-  v6 = [v4 CKURLSlug];
+  cKURLSlug = [photosCopy CKURLSlug];
 
-  v7 = [v6 lowercaseString];
-  LOBYTE(v5) = [v5 containsObject:v7];
+  lowercaseString = [cKURLSlug lowercaseString];
+  LOBYTE(v5) = [v5 containsObject:lowercaseString];
 
   return v5;
 }
 
-- (int64_t)_fallbackFlowICloudAccountSettings:(id *)a3 success:(BOOL *)a4
+- (int64_t)_fallbackFlowICloudAccountSettings:(id *)settings success:(BOOL *)success
 {
   if (ck_log_initialization_predicate != -1)
   {
@@ -264,20 +264,20 @@
   if (os_log_type_enabled(ck_log_facility_ck, OS_LOG_TYPE_INFO))
   {
     v8 = v7;
-    v9 = [(ShareAcceptor *)self fallbackFlowCause];
+    fallbackFlowCause = [(ShareAcceptor *)self fallbackFlowCause];
     *buf = 138543362;
-    v26 = v9;
+    v26 = fallbackFlowCause;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Fallback flow: User either not logged into iCloud or need to update Apple ID settings, error: %{public}@", buf, 0xCu);
   }
 
-  v10 = [(ShareAcceptor *)self fallbackFlowCause];
-  v11 = [(ShareAcceptor *)self shareMetadata];
+  fallbackFlowCause2 = [(ShareAcceptor *)self fallbackFlowCause];
+  shareMetadata = [(ShareAcceptor *)self shareMetadata];
   v12 = [(ShareAcceptor *)self url];
-  v13 = [CKVettingAlerts alertContentForICloudAccountError:v10 shareMetadata:v11 shareURL:v12];
+  v13 = [CKVettingAlerts alertContentForICloudAccountError:fallbackFlowCause2 shareMetadata:shareMetadata shareURL:v12];
 
   buf[0] = 0;
-  v14 = [(ShareAcceptor *)self selectedAccount];
-  v15 = [v14 aa_isManagedAppleID];
+  selectedAccount = [(ShareAcceptor *)self selectedAccount];
+  aa_isManagedAppleID = [selectedAccount aa_isManagedAppleID];
 
   v16 = [(ShareAcceptor *)self url];
   LODWORD(v12) = [(ShareAcceptor *)self _shouldSendURLToBladeRunner:v16];
@@ -285,33 +285,33 @@
   if (v12)
   {
     v17 = [(ShareAcceptor *)self url];
-    v18 = [v17 CKShareURLSlugBasedApplicationName];
-    v19 = [v18 lowercaseString];
+    cKShareURLSlugBasedApplicationName = [v17 CKShareURLSlugBasedApplicationName];
+    lowercaseString = [cKShareURLSlugBasedApplicationName lowercaseString];
 
-    [CKVettingAlerts showICloudAccountSettingAlert:v13 appName:v19 previewRequested:buf isSourceICS:[(ShareAcceptor *)self isSourceICS] maid:v15];
+    [CKVettingAlerts showICloudAccountSettingAlert:v13 appName:lowercaseString previewRequested:buf isSourceICS:[(ShareAcceptor *)self isSourceICS] maid:aa_isManagedAppleID];
   }
 
   else
   {
-    [CKVettingAlerts showICloudAccountSettingAlert:v13 appName:0 previewRequested:buf isSourceICS:[(ShareAcceptor *)self isSourceICS] maid:v15];
+    [CKVettingAlerts showICloudAccountSettingAlert:v13 appName:0 previewRequested:buf isSourceICS:[(ShareAcceptor *)self isSourceICS] maid:aa_isManagedAppleID];
   }
 
   if (buf[0] == 1)
   {
-    *a4 = buf[0];
+    *success = buf[0];
     [(ShareAcceptor *)self setWebFlowReason:@"notSignedIn"];
     v20 = 23;
   }
 
   else
   {
-    *a4 = 0;
-    if (a3)
+    *success = 0;
+    if (settings)
     {
       v21 = CKUnderlyingErrorDomain;
-      v22 = [(ShareAcceptor *)self fallbackFlowCause];
+      fallbackFlowCause3 = [(ShareAcceptor *)self fallbackFlowCause];
       v23 = [(ShareAcceptor *)self url];
-      *a3 = [CKPrettyError errorWithDomain:v21 code:9 error:v22 format:@"Sign-in or change in iCloud Settings required before sharing URL can be processed: %@", v23];
+      *settings = [CKPrettyError errorWithDomain:v21 code:9 error:fallbackFlowCause3 format:@"Sign-in or change in iCloud Settings required before sharing URL can be processed: %@", v23];
     }
 
     v20 = 26;
@@ -320,7 +320,7 @@
   return v20;
 }
 
-- (BOOL)_fallbackFlowWarnNetworkUnavailable:(id *)a3
+- (BOOL)_fallbackFlowWarnNetworkUnavailable:(id *)unavailable
 {
   if (ck_log_initialization_predicate != -1)
   {
@@ -335,14 +335,14 @@
   }
 
   v5 = [(ShareAcceptor *)self url];
-  v6 = [v5 CKURLSlug];
-  v7 = [CKVettingAlerts alertContentDictionaryForDeviceOfflineErrorWithURLSlug:v6];
+  cKURLSlug = [v5 CKURLSlug];
+  v7 = [CKVettingAlerts alertContentDictionaryForDeviceOfflineErrorWithURLSlug:cKURLSlug];
   [CKVettingAlerts showFailureAlert:v7 isSourceICS:[(ShareAcceptor *)self isSourceICS]];
 
   return 0;
 }
 
-- (BOOL)_fallbackFlowWarnServiceUnavailable:(id *)a3
+- (BOOL)_fallbackFlowWarnServiceUnavailable:(id *)unavailable
 {
   if (ck_log_initialization_predicate != -1)
   {
@@ -357,14 +357,14 @@
   }
 
   v5 = [(ShareAcceptor *)self url];
-  v6 = [v5 CKURLSlug];
-  v7 = [CKVettingAlerts alertContentDictionaryForServiceUnavailableErrorWithURLSlug:v6];
+  cKURLSlug = [v5 CKURLSlug];
+  v7 = [CKVettingAlerts alertContentDictionaryForServiceUnavailableErrorWithURLSlug:cKURLSlug];
   [CKVettingAlerts showFailureAlert:v7 isSourceICS:[(ShareAcceptor *)self isSourceICS]];
 
   return 0;
 }
 
-- (BOOL)_fallbackFlowWarnShareUnavailable:(id *)a3
+- (BOOL)_fallbackFlowWarnShareUnavailable:(id *)unavailable
 {
   if (ck_log_initialization_predicate != -1)
   {
@@ -375,27 +375,27 @@
   if (os_log_type_enabled(ck_log_facility_ck, OS_LOG_TYPE_INFO))
   {
     v6 = v5;
-    v7 = [(ShareAcceptor *)self fallbackFlowCause];
+    fallbackFlowCause = [(ShareAcceptor *)self fallbackFlowCause];
     *buf = 138412290;
-    v14 = v7;
+    v14 = fallbackFlowCause;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Fallback flow: Share does not exist or user does not have access, due to: %@", buf, 0xCu);
   }
 
   v8 = [(ShareAcceptor *)self url];
-  v9 = [(ShareAcceptor *)self failedAccountEmail];
-  v10 = [CKVettingAlerts alertContentForShareMetadataErrorWithURL:v8 email:v9];
+  failedAccountEmail = [(ShareAcceptor *)self failedAccountEmail];
+  v10 = [CKVettingAlerts alertContentForShareMetadataErrorWithURL:v8 email:failedAccountEmail];
   [CKVettingAlerts showFailureAlert:v10 isSourceICS:[(ShareAcceptor *)self isSourceICS]];
 
-  if (a3)
+  if (unavailable)
   {
     v11 = [(ShareAcceptor *)self url];
-    *a3 = [CKPrettyError errorWithDomain:CKErrorDomain code:1000 format:@"Share not available for sharing URL: %@", v11];
+    *unavailable = [CKPrettyError errorWithDomain:CKErrorDomain code:1000 format:@"Share not available for sharing URL: %@", v11];
   }
 
   return 0;
 }
 
-- (BOOL)_fallbackFlowWarnUnprovisionedDataclass:(id *)a3
+- (BOOL)_fallbackFlowWarnUnprovisionedDataclass:(id *)dataclass
 {
   if (ck_log_initialization_predicate != -1)
   {
@@ -406,22 +406,22 @@
   if (os_log_type_enabled(ck_log_facility_ck, OS_LOG_TYPE_INFO))
   {
     v6 = v5;
-    v7 = [(ShareAcceptor *)self fallbackFlowCause];
+    fallbackFlowCause = [(ShareAcceptor *)self fallbackFlowCause];
     *buf = 138412290;
-    v15 = v7;
+    v15 = fallbackFlowCause;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Fallback flow: Share cannot be accepted by the account, due to: %@", buf, 0xCu);
   }
 
   v8 = [(ShareAcceptor *)self url];
-  v9 = [(ShareAcceptor *)self selectedAccount];
-  v10 = [v9 aa_primaryEmail];
-  v11 = [CKVettingAlerts alertContentForUnprovisionedDataclassWithURL:v8 email:v10];
+  selectedAccount = [(ShareAcceptor *)self selectedAccount];
+  aa_primaryEmail = [selectedAccount aa_primaryEmail];
+  v11 = [CKVettingAlerts alertContentForUnprovisionedDataclassWithURL:v8 email:aa_primaryEmail];
   [CKVettingAlerts showFailureAlert:v11 isSourceICS:[(ShareAcceptor *)self isSourceICS]];
 
-  if (a3)
+  if (dataclass)
   {
     v12 = [(ShareAcceptor *)self url];
-    *a3 = [CKPrettyError errorWithDomain:CKErrorDomain code:1000 format:@"Share cannot be accepted by the selected account with unprovisioned dataclass for sharing URL: %@", v12];
+    *dataclass = [CKPrettyError errorWithDomain:CKErrorDomain code:1000 format:@"Share cannot be accepted by the selected account with unprovisioned dataclass for sharing URL: %@", v12];
   }
 
   return 0;
@@ -430,12 +430,12 @@
 + (id)primaryAppleAccount
 {
   v2 = objc_opt_new();
-  v3 = [v2 aa_primaryAppleAccount];
+  aa_primaryAppleAccount = [v2 aa_primaryAppleAccount];
 
-  return v3;
+  return aa_primaryAppleAccount;
 }
 
-- (BOOL)_fallbackFlowShareAccessRequest:(id *)a3
+- (BOOL)_fallbackFlowShareAccessRequest:(id *)request
 {
   if (ck_log_initialization_predicate != -1)
   {
@@ -446,9 +446,9 @@
   if (os_log_type_enabled(ck_log_facility_ck, OS_LOG_TYPE_INFO))
   {
     v6 = v5;
-    v7 = [(ShareAcceptor *)self fallbackFlowCause];
+    fallbackFlowCause = [(ShareAcceptor *)self fallbackFlowCause];
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v7;
+    *(&buf + 4) = fallbackFlowCause;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Fallback flow: Share does not exist or user does not have access, due to: %@", &buf, 0xCu);
   }
 
@@ -456,8 +456,8 @@
   v9 = v8;
   if (v8)
   {
-    v10 = [v8 aa_formattedUsername];
-    v11 = [CKVettingAlerts alertContentForRequestAccessWithHandle:v10];
+    aa_formattedUsername = [v8 aa_formattedUsername];
+    v11 = [CKVettingAlerts alertContentForRequestAccessWithHandle:aa_formattedUsername];
     v12 = dispatch_semaphore_create(0);
     *&buf = 0;
     *(&buf + 1) = &buf;
@@ -466,7 +466,7 @@
     v30 = sub_10000AA0C;
     v31 = 0;
     objc_initWeak(&location, self);
-    v13 = [(ShareAcceptor *)self isSourceICS];
+    isSourceICS = [(ShareAcceptor *)self isSourceICS];
     v22[0] = _NSConcreteStackBlock;
     v22[1] = 3221225472;
     v22[2] = sub_10000AA14;
@@ -482,11 +482,11 @@
     v21 = &buf;
     v14 = v23;
     v20 = v14;
-    [CKVettingAlerts showRequestAccessAlert:v11 isSourceICS:v13 requestAccessHandler:v22 cancelHandler:v19];
+    [CKVettingAlerts showRequestAccessAlert:v11 isSourceICS:isSourceICS requestAccessHandler:v22 cancelHandler:v19];
     dispatch_semaphore_wait(v14, 0xFFFFFFFFFFFFFFFFLL);
-    if (a3)
+    if (request)
     {
-      *a3 = *(*(&buf + 1) + 40);
+      *request = *(*(&buf + 1) + 40);
     }
 
     objc_destroyWeak(&v25);
@@ -511,24 +511,24 @@
       _os_log_error_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "Unable to request access to share %@ because the device has no primary Apple account.", &buf, 0xCu);
     }
 
-    if (a3)
+    if (request)
     {
-      *a3 = [CKPrettyError errorWithDomain:CKErrorDomain code:9 userInfo:0 format:@"No primary iCloud account is signed in."];
+      *request = [CKPrettyError errorWithDomain:CKErrorDomain code:9 userInfo:0 format:@"No primary iCloud account is signed in."];
     }
   }
 
   return 0;
 }
 
-- (void)_actuallyRequestAccessWithCompletion:(id)a3
+- (void)_actuallyRequestAccessWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = +[ShareAcceptor primaryAppleAccount];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 identifier];
-    v8 = [(ShareAcceptor *)self _getContainerForAccountID:v7];
+    identifier = [v5 identifier];
+    v8 = [(ShareAcceptor *)self _getContainerForAccountID:identifier];
 
     v9 = [(ShareAcceptor *)self url];
     v16 = v9;
@@ -538,7 +538,7 @@
     v14[2] = sub_10000AF10;
     v14[3] = &unk_1000289C0;
     v14[4] = self;
-    v15 = v4;
+    v15 = completionCopy;
     [v8 requestAccessToShareURLs:v10 completionHandler:v14];
   }
 
@@ -560,11 +560,11 @@
     }
 
     v8 = [CKPrettyError errorWithDomain:CKErrorDomain code:9 format:@"No primary iCloud account is signed in."];
-    (*(v4 + 2))(v4, v8);
+    (*(completionCopy + 2))(completionCopy, v8);
   }
 }
 
-- (BOOL)_fallbackFlowWebRedirect:(id *)a3
+- (BOOL)_fallbackFlowWebRedirect:(id *)redirect
 {
   v4 = [(ShareAcceptor *)self url];
   if (ck_log_initialization_predicate != -1)
@@ -576,39 +576,39 @@
   if (os_log_type_enabled(ck_log_facility_ck, OS_LOG_TYPE_INFO))
   {
     v6 = v5;
-    v7 = [v4 CKURLThroughSlug];
-    v8 = [v4 CKPathAfterSlug];
+    cKURLThroughSlug = [v4 CKURLThroughSlug];
+    cKPathAfterSlug = [v4 CKPathAfterSlug];
     *buf = 138543874;
-    v32 = v7;
+    v32 = cKURLThroughSlug;
     v33 = 2160;
     v34 = 1752392040;
     v35 = 2112;
-    v36 = v8;
+    v36 = cKPathAfterSlug;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Opening the share URL %{public}@%{mask.hash}@ explicilty", buf, 0x20u);
   }
 
   v9 = [NSURLComponents componentsWithURL:v4 resolvingAgainstBaseURL:0];
   [v9 setScheme:kCKURLComponentsScheme];
-  v10 = [v9 query];
-  v11 = [(ShareAcceptor *)self webFlowReason];
+  query = [v9 query];
+  webFlowReason = [(ShareAcceptor *)self webFlowReason];
 
-  if (v11)
+  if (webFlowReason)
   {
-    if (v10)
+    if (query)
     {
-      if ([v10 rangeOfString:@"redirectReason"] != 0x7FFFFFFFFFFFFFFFLL)
+      if ([query rangeOfString:@"redirectReason"] != 0x7FFFFFFFFFFFFFFFLL)
       {
         goto LABEL_16;
       }
 
-      v12 = [(ShareAcceptor *)self webFlowReason];
-      v13 = [v10 stringByAppendingFormat:@"&%@=%@", @"redirectReason", v12];
+      webFlowReason2 = [(ShareAcceptor *)self webFlowReason];
+      v13 = [query stringByAppendingFormat:@"&%@=%@", @"redirectReason", webFlowReason2];
     }
 
     else
     {
-      v12 = [(ShareAcceptor *)self webFlowReason];
-      v13 = [NSString stringWithFormat:@"%@=%@", @"redirectReason", v12];
+      webFlowReason2 = [(ShareAcceptor *)self webFlowReason];
+      v13 = [NSString stringWithFormat:@"%@=%@", @"redirectReason", webFlowReason2];
     }
 
     v15 = v13;
@@ -625,16 +625,16 @@
   if (os_log_type_enabled(ck_log_facility_ck, OS_LOG_TYPE_INFO))
   {
     v15 = v14;
-    v12 = [(ShareAcceptor *)self url];
-    v16 = [v12 CKURLThroughSlug];
+    webFlowReason2 = [(ShareAcceptor *)self url];
+    cKURLThroughSlug2 = [webFlowReason2 CKURLThroughSlug];
     v17 = [(ShareAcceptor *)self url];
-    v18 = [v17 CKPathAfterSlug];
+    cKPathAfterSlug2 = [v17 CKPathAfterSlug];
     *buf = 138543874;
-    v32 = v16;
+    v32 = cKURLThroughSlug2;
     v33 = 2160;
     v34 = 1752392040;
     v35 = 2112;
-    v36 = v18;
+    v36 = cKPathAfterSlug2;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "Web flow invoked for: %{public}@%{mask.hash}@, but reason not set", buf, 0x20u);
 
 LABEL_15:
@@ -657,14 +657,14 @@ LABEL_16:
   if (os_log_type_enabled(ck_log_facility_ck, OS_LOG_TYPE_INFO))
   {
     v23 = v22;
-    v24 = [v19 CKURLThroughSlug];
-    v25 = [v19 CKPathAfterSlug];
+    cKURLThroughSlug3 = [v19 CKURLThroughSlug];
+    cKPathAfterSlug3 = [v19 CKPathAfterSlug];
     *buf = 138544130;
-    v32 = v24;
+    v32 = cKURLThroughSlug3;
     v33 = 2160;
     v34 = 1752392040;
     v35 = 2112;
-    v36 = v25;
+    v36 = cKPathAfterSlug3;
     v37 = 2112;
     v38 = v20;
     _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_INFO, "Sending URL to LaunchServices: %{public}@%{mask.hash}@with config: %@", buf, 0x2Au);
@@ -682,18 +682,18 @@ LABEL_16:
   return 0;
 }
 
-- (id)_iOSwatchOSHandleMultipleAppStoreCandidates:(id)a3 error:(id *)a4
+- (id)_iOSwatchOSHandleMultipleAppStoreCandidates:(id)candidates error:(id *)error
 {
-  v6 = [a3 allValues];
-  v7 = [v6 firstObject];
+  allValues = [candidates allValues];
+  firstObject = [allValues firstObject];
 
-  v8 = [v7 objectForKeyedSubscript:@"URL"];
-  v9 = [v7 objectForKeyedSubscript:@"Name"];
+  v8 = [firstObject objectForKeyedSubscript:@"URL"];
+  v9 = [firstObject objectForKeyedSubscript:@"Name"];
   if (v8)
   {
-    v10 = [(ShareAcceptor *)self shareMetadata];
-    v11 = [CKVettingAlerts alertContentForAppDownload:v9 shareMetadata:v10 isSourceICS:[(ShareAcceptor *)self isSourceICS]];
-    [(ShareAcceptor *)self _promptToOpenAppStoreLink:a4 alertOptions:v11 appURL:v8];
+    shareMetadata = [(ShareAcceptor *)self shareMetadata];
+    v11 = [CKVettingAlerts alertContentForAppDownload:v9 shareMetadata:shareMetadata isSourceICS:[(ShareAcceptor *)self isSourceICS]];
+    [(ShareAcceptor *)self _promptToOpenAppStoreLink:error alertOptions:v11 appURL:v8];
 
     v12 = 0;
   }
@@ -706,7 +706,7 @@ LABEL_16:
   return v12;
 }
 
-- (BOOL)_fallbackFlowDownloadApp:(id *)a3
+- (BOOL)_fallbackFlowDownloadApp:(id *)app
 {
   if (ck_log_initialization_predicate != -1)
   {
@@ -717,15 +717,15 @@ LABEL_16:
   if (os_log_type_enabled(ck_log_facility_ck, OS_LOG_TYPE_INFO))
   {
     v7 = v6;
-    v8 = [(ShareAcceptor *)self registeredAppBundleIDs];
+    registeredAppBundleIDs = [(ShareAcceptor *)self registeredAppBundleIDs];
     *buf = 138412290;
-    v24 = v8;
+    v24 = registeredAppBundleIDs;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "Fallback flow: none of the registered apps installed: %@. Prompting to opening the AppStore link for one of them", buf, 0xCu);
   }
 
-  v9 = [(ShareAcceptor *)self registeredAppBundleIDs];
+  registeredAppBundleIDs2 = [(ShareAcceptor *)self registeredAppBundleIDs];
   v22 = 0;
-  v10 = [(ShareAcceptor *)self _findStoreDataForBundleIDs:v9 error:&v22];
+  v10 = [(ShareAcceptor *)self _findStoreDataForBundleIDs:registeredAppBundleIDs2 error:&v22];
   v11 = v22;
 
   if (v10)
@@ -738,19 +738,19 @@ LABEL_16:
 
     if ([v10 count] < 2)
     {
-      v16 = [v10 allValues];
-      v13 = [v16 firstObject];
+      allValues = [v10 allValues];
+      firstObject = [allValues firstObject];
 
-      v14 = [v13 objectForKeyedSubscript:@"Name"];
-      v17 = [(ShareAcceptor *)self shareMetadata];
-      v18 = [CKVettingAlerts alertContentForAppDownload:v14 shareMetadata:v17 isSourceICS:[(ShareAcceptor *)self isSourceICS]];
-      v19 = [v13 objectForKeyedSubscript:@"URL"];
-      v15 = [(ShareAcceptor *)self _promptToOpenAppStoreLink:a3 alertOptions:v18 appURL:v19];
+      v14 = [firstObject objectForKeyedSubscript:@"Name"];
+      shareMetadata = [(ShareAcceptor *)self shareMetadata];
+      v18 = [CKVettingAlerts alertContentForAppDownload:v14 shareMetadata:shareMetadata isSourceICS:[(ShareAcceptor *)self isSourceICS]];
+      v19 = [firstObject objectForKeyedSubscript:@"URL"];
+      v15 = [(ShareAcceptor *)self _promptToOpenAppStoreLink:app alertOptions:v18 appURL:v19];
     }
 
     else
     {
-      v12 = [(ShareAcceptor *)self _iOSwatchOSHandleMultipleAppStoreCandidates:v10 error:a3];
+      v12 = [(ShareAcceptor *)self _iOSwatchOSHandleMultipleAppStoreCandidates:v10 error:app];
 
       if (!v12)
       {
@@ -758,8 +758,8 @@ LABEL_16:
         goto LABEL_14;
       }
 
-      v13 = [(ShareAcceptor *)self shareName];
-      v14 = [CKVettingAlerts alertContentForAppStoreAppLookupFailureWithShareName:v13 error:v12];
+      firstObject = [(ShareAcceptor *)self shareName];
+      v14 = [CKVettingAlerts alertContentForAppStoreAppLookupFailureWithShareName:firstObject error:v12];
       [CKVettingAlerts showFailureAlert:v14 isSourceICS:[(ShareAcceptor *)self isSourceICS]];
       v15 = 0;
       v11 = v12;
@@ -768,8 +768,8 @@ LABEL_16:
 
   else
   {
-    v13 = [(ShareAcceptor *)self shareName];
-    v14 = [CKVettingAlerts alertContentForAppStoreAppLookupFailureWithShareName:v13 error:v11];
+    firstObject = [(ShareAcceptor *)self shareName];
+    v14 = [CKVettingAlerts alertContentForAppStoreAppLookupFailureWithShareName:firstObject error:v11];
     [CKVettingAlerts showFailureAlert:v14 isSourceICS:[(ShareAcceptor *)self isSourceICS]];
     v15 = 0;
   }
@@ -778,12 +778,12 @@ LABEL_14:
   return v15;
 }
 
-- (BOOL)_fallbackFlowDownloadAppUpdate:(id *)a3
+- (BOOL)_fallbackFlowDownloadAppUpdate:(id *)update
 {
-  v6 = [(ShareAcceptor *)self chosenAppBundleID];
-  v7 = [(ShareAcceptor *)self localBundleIDsToDisplayNames];
-  v8 = [(ShareAcceptor *)self chosenAppBundleID];
-  v9 = [v7 objectForKeyedSubscript:v8];
+  chosenAppBundleID = [(ShareAcceptor *)self chosenAppBundleID];
+  localBundleIDsToDisplayNames = [(ShareAcceptor *)self localBundleIDsToDisplayNames];
+  chosenAppBundleID2 = [(ShareAcceptor *)self chosenAppBundleID];
+  v9 = [localBundleIDsToDisplayNames objectForKeyedSubscript:chosenAppBundleID2];
 
   if (ck_log_initialization_predicate != -1)
   {
@@ -794,15 +794,15 @@ LABEL_14:
   if (os_log_type_enabled(ck_log_facility_ck, OS_LOG_TYPE_INFO))
   {
     v11 = v10;
-    v12 = [(ShareAcceptor *)self registeredAppBundleIDs];
+    registeredAppBundleIDs = [(ShareAcceptor *)self registeredAppBundleIDs];
     *buf = 138412546;
-    v27 = v12;
+    v27 = registeredAppBundleIDs;
     v28 = 2114;
-    v29 = v6;
+    v29 = chosenAppBundleID;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "Fallback flow: one of the registered apps needs an update: %@. Opening the AppStore link for bundle ID %{public}@", buf, 0x16u);
   }
 
-  v25 = v6;
+  v25 = chosenAppBundleID;
   v13 = [NSArray arrayWithObjects:&v25 count:1];
   v24 = 0;
   v14 = [(ShareAcceptor *)self _findStoreDataForBundleIDs:v13 error:&v24];
@@ -816,36 +816,36 @@ LABEL_14:
       [v23 handleFailureInMethod:a2 object:self file:@"ShareAcceptor.m" lineNumber:651 description:@"Expected to get non-empty result from _findStoreDataForBundleIDs"];
     }
 
-    v16 = [v14 allValues];
-    v17 = [v16 firstObject];
+    allValues = [v14 allValues];
+    firstObject = [allValues firstObject];
 
-    v18 = [(ShareAcceptor *)self shareMetadata];
-    v19 = [CKVettingAlerts alertContentForAppUpdate:v9 shareMetadata:v18 isSourceICS:[(ShareAcceptor *)self isSourceICS]];
-    v20 = [v17 objectForKeyedSubscript:@"URL"];
-    v21 = [(ShareAcceptor *)self _promptToOpenAppStoreLink:a3 alertOptions:v19 appURL:v20];
+    shareMetadata = [(ShareAcceptor *)self shareMetadata];
+    v19 = [CKVettingAlerts alertContentForAppUpdate:v9 shareMetadata:shareMetadata isSourceICS:[(ShareAcceptor *)self isSourceICS]];
+    v20 = [firstObject objectForKeyedSubscript:@"URL"];
+    v21 = [(ShareAcceptor *)self _promptToOpenAppStoreLink:update alertOptions:v19 appURL:v20];
   }
 
   else
   {
-    v17 = [(ShareAcceptor *)self shareName];
-    v18 = [CKVettingAlerts alertContentForAppStoreUpdateLookupFailureWithShareName:v17 appName:v9 error:v15];
-    [CKVettingAlerts showFailureAlert:v18 isSourceICS:[(ShareAcceptor *)self isSourceICS]];
+    firstObject = [(ShareAcceptor *)self shareName];
+    shareMetadata = [CKVettingAlerts alertContentForAppStoreUpdateLookupFailureWithShareName:firstObject appName:v9 error:v15];
+    [CKVettingAlerts showFailureAlert:shareMetadata isSourceICS:[(ShareAcceptor *)self isSourceICS]];
     v21 = 1;
   }
 
   return v21;
 }
 
-- (id)_findStoreDataForBundleIDs:(id)a3 error:(id *)a4
+- (id)_findStoreDataForBundleIDs:(id)ds error:(id *)error
 {
-  v7 = a3;
-  if (![v7 count])
+  dsCopy = ds;
+  if (![dsCopy count])
   {
     v21 = +[NSAssertionHandler currentHandler];
     [v21 handleFailureInMethod:a2 object:self file:@"ShareAcceptor.m" lineNumber:664 description:@"Expected at least one bundle ID when querying App Store data"];
   }
 
-  v8 = [v7 componentsJoinedByString:{@", "}];
+  v8 = [dsCopy componentsJoinedByString:{@", "}];
   v9 = [NSString stringWithFormat:@"https://itunes.apple.com/lookup?bundleId=%@", v8];
 
   v10 = [NSURL URLWithString:v9];
@@ -880,17 +880,17 @@ LABEL_14:
   v18 = v28[5];
   if (v18)
   {
-    if (a4)
+    if (error)
     {
       v19 = v18;
 LABEL_10:
       v17 = 0;
-      *a4 = v19;
+      *error = v19;
       goto LABEL_12;
     }
   }
 
-  else if (a4)
+  else if (error)
   {
     v19 = [CKPrettyError errorWithDomain:CKUnderlyingErrorDomain code:1024 userInfo:0];
     goto LABEL_10;
@@ -904,10 +904,10 @@ LABEL_12:
   return v17;
 }
 
-- (BOOL)_promptToOpenAppStoreLink:(id *)a3 alertOptions:(id)a4 appURL:(id)a5
+- (BOOL)_promptToOpenAppStoreLink:(id *)link alertOptions:(id)options appURL:(id)l
 {
-  v8 = a4;
-  v9 = a5;
+  optionsCopy = options;
+  lCopy = l;
   if (ck_log_initialization_predicate != -1)
   {
     dispatch_once(&ck_log_initialization_predicate, ck_log_initialization_block);
@@ -917,20 +917,20 @@ LABEL_12:
   if (os_log_type_enabled(ck_log_facility_ck, OS_LOG_TYPE_INFO))
   {
     v11 = v10;
-    v12 = [(ShareAcceptor *)self registeredAppBundleIDs];
+    registeredAppBundleIDs = [(ShareAcceptor *)self registeredAppBundleIDs];
     *buf = 138412290;
-    v28 = v12;
+    v28 = registeredAppBundleIDs;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "Fallback flow: prompting the user to go to the app store and obtain/update one of the registered apps %@", buf, 0xCu);
   }
 
-  v13 = CFUserNotificationCreate(0, 0.0, 3uLL, 0, v8);
+  v13 = CFUserNotificationCreate(0, 0.0, 3uLL, 0, optionsCopy);
   responseFlags = 0;
   CFUserNotificationReceiveResponse(v13, 604800.0, &responseFlags);
   if ((responseFlags & 3) != 0)
   {
     CFRelease(v13);
     v14 = 1;
-    if (!a3)
+    if (!link)
     {
 LABEL_8:
       v16 = 0;
@@ -938,8 +938,8 @@ LABEL_8:
     }
 
 LABEL_7:
-    v15 = [(ShareAcceptor *)self fallbackFlowCause];
-    *a3 = v15;
+    fallbackFlowCause = [(ShareAcceptor *)self fallbackFlowCause];
+    *link = fallbackFlowCause;
 
     goto LABEL_8;
   }
@@ -953,14 +953,14 @@ LABEL_7:
   if (os_log_type_enabled(ck_log_facility_ck, OS_LOG_TYPE_INFO))
   {
     *buf = 138543362;
-    v28 = v9;
+    v28 = lCopy;
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_INFO, "Redirecting user to the app store with URL %{public}@", buf, 0xCu);
   }
 
   v19 = [CKVettingAlerts getLaunchingOptionsFromOptions:0 isSourceICS:[(ShareAcceptor *)self isSourceICS]];
   v20 = +[LSApplicationWorkspace defaultWorkspace];
   v25 = 0;
-  v14 = [v20 openURL:v9 withOptions:v19 error:&v25];
+  v14 = [v20 openURL:lCopy withOptions:v19 error:&v25];
   v16 = v25;
 
   if ((v14 & 1) == 0)
@@ -974,9 +974,9 @@ LABEL_7:
     if (os_log_type_enabled(ck_log_facility_ck, OS_LOG_TYPE_ERROR))
     {
       v23 = v21;
-      v24 = [v9 absoluteString];
+      absoluteString = [lCopy absoluteString];
       *buf = 138543618;
-      v28 = v24;
+      v28 = absoluteString;
       v29 = 2112;
       v30 = v16;
       _os_log_error_impl(&_mh_execute_header, v23, OS_LOG_TYPE_ERROR, "Failed to open store URL %{public}@ with error %@", buf, 0x16u);
@@ -984,12 +984,12 @@ LABEL_7:
   }
 
   CFRelease(v13);
-  if (a3)
+  if (link)
   {
     if (v16)
     {
       v22 = v16;
-      *a3 = v16;
+      *link = v16;
       goto LABEL_9;
     }
 
@@ -1007,9 +1007,9 @@ LABEL_9:
   if ([(ShareAcceptor *)self _shouldSendURLToPhotos:v3])
   {
     v4 = [(ShareAcceptor *)self url];
-    v5 = [v4 CKURLSlug];
-    v6 = [v5 lowercaseString];
-    v7 = [v6 isEqualToString:kCKPhotosSharedLibraryShareURLSlug] ^ 1;
+    cKURLSlug = [v4 CKURLSlug];
+    lowercaseString = [cKURLSlug lowercaseString];
+    v7 = [lowercaseString isEqualToString:kCKPhotosSharedLibraryShareURLSlug] ^ 1;
   }
 
   else
@@ -1020,18 +1020,18 @@ LABEL_9:
   return v7;
 }
 
-- (int64_t)_checkRepresentativeDataclassEnabled:(BOOL)a3
+- (int64_t)_checkRepresentativeDataclassEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
-    v4 = [(ShareAcceptor *)self _checkDataclassProvisioned];
-    v5 = [(ShareAcceptor *)self _checkDataclassEnabled];
-    if (v4)
+    _checkDataclassProvisioned = [(ShareAcceptor *)self _checkDataclassProvisioned];
+    _checkDataclassEnabled = [(ShareAcceptor *)self _checkDataclassEnabled];
+    if (_checkDataclassProvisioned)
     {
-      if (v5)
+      if (_checkDataclassEnabled)
       {
-        v6 = [(ShareAcceptor *)self localBundleIDsToDisplayNames];
-        v7 = [v6 mutableCopy];
+        localBundleIDsToDisplayNames = [(ShareAcceptor *)self localBundleIDsToDisplayNames];
+        localBundleIDsToDisplayNames4 = [localBundleIDsToDisplayNames mutableCopy];
 
         v41 = 0u;
         v42 = 0u;
@@ -1052,7 +1052,7 @@ LABEL_9:
                 objc_enumerationMutation(v8);
               }
 
-              [v7 removeObjectForKey:*(*(&v41 + 1) + 8 * i)];
+              [localBundleIDsToDisplayNames4 removeObjectForKey:*(*(&v41 + 1) + 8 * i)];
             }
 
             v10 = [v8 countByEnumeratingWithState:&v41 objects:v49 count:16];
@@ -1070,11 +1070,11 @@ LABEL_9:
         if (os_log_type_enabled(ck_log_facility_ck, OS_LOG_TYPE_INFO))
         {
           *buf = 138543362;
-          v48 = v7;
+          v48 = localBundleIDsToDisplayNames4;
           _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "After filtering out the apps disabled for kTCCServiceLiverpool, new local apps list is %{public}@", buf, 0xCu);
         }
 
-        if ([v7 count])
+        if ([localBundleIDsToDisplayNames4 count])
         {
           v14 = 3;
         }
@@ -1083,11 +1083,11 @@ LABEL_9:
         {
           v32 = CKUnderlyingErrorDomain;
           v45 = CKErrorDisabledAppLocalizedName;
-          v33 = [(ShareAcceptor *)self localBundleIDsToDisplayNames];
-          v34 = [(ShareAcceptor *)self localBundleIDsToDisplayNames];
-          v35 = [v34 allKeys];
-          v36 = [v35 firstObject];
-          v37 = [v33 objectForKeyedSubscript:v36];
+          localBundleIDsToDisplayNames2 = [(ShareAcceptor *)self localBundleIDsToDisplayNames];
+          localBundleIDsToDisplayNames3 = [(ShareAcceptor *)self localBundleIDsToDisplayNames];
+          allKeys = [localBundleIDsToDisplayNames3 allKeys];
+          firstObject = [allKeys firstObject];
+          v37 = [localBundleIDsToDisplayNames2 objectForKeyedSubscript:firstObject];
           v46 = v37;
           v38 = [NSDictionary dictionaryWithObjects:&v46 forKeys:&v45 count:1];
           v39 = [CKPrettyError errorWithDomain:v32 code:1023 userInfo:v38 format:@"Could not open an app which is disabled in iCloud settings"];
@@ -1096,18 +1096,18 @@ LABEL_9:
           v14 = 22;
         }
 
-        [(ShareAcceptor *)self setLocalBundleIDsToDisplayNames:v7];
+        [(ShareAcceptor *)self setLocalBundleIDsToDisplayNames:localBundleIDsToDisplayNames4];
       }
 
       else
       {
         v25 = CKUnderlyingErrorDomain;
         v50 = CKErrorDisabledAppLocalizedName;
-        v7 = [(ShareAcceptor *)self localBundleIDsToDisplayNames];
-        v26 = [(ShareAcceptor *)self localBundleIDsToDisplayNames];
-        v27 = [v26 allKeys];
-        v28 = [v27 firstObject];
-        v29 = [v7 objectForKeyedSubscript:v28];
+        localBundleIDsToDisplayNames4 = [(ShareAcceptor *)self localBundleIDsToDisplayNames];
+        localBundleIDsToDisplayNames5 = [(ShareAcceptor *)self localBundleIDsToDisplayNames];
+        allKeys2 = [localBundleIDsToDisplayNames5 allKeys];
+        firstObject2 = [allKeys2 firstObject];
+        v29 = [localBundleIDsToDisplayNames4 objectForKeyedSubscript:firstObject2];
         v51 = v29;
         v30 = [NSDictionary dictionaryWithObjects:&v51 forKeys:&v50 count:1];
         v31 = [CKPrettyError errorWithDomain:v25 code:1023 userInfo:v30 format:@"Could not open an app which is disabled in iCloud settings"];
@@ -1121,16 +1121,16 @@ LABEL_9:
     {
       v16 = CKUnderlyingErrorDomain;
       v52[0] = CKErrorDisabledAppLocalizedName;
-      v7 = [(ShareAcceptor *)self localBundleIDsToDisplayNames];
-      v17 = [(ShareAcceptor *)self localBundleIDsToDisplayNames];
-      v18 = [v17 allKeys];
-      v19 = [v18 firstObject];
-      v20 = [v7 objectForKeyedSubscript:v19];
+      localBundleIDsToDisplayNames4 = [(ShareAcceptor *)self localBundleIDsToDisplayNames];
+      localBundleIDsToDisplayNames6 = [(ShareAcceptor *)self localBundleIDsToDisplayNames];
+      allKeys3 = [localBundleIDsToDisplayNames6 allKeys];
+      firstObject3 = [allKeys3 firstObject];
+      v20 = [localBundleIDsToDisplayNames4 objectForKeyedSubscript:firstObject3];
       v53[0] = v20;
       v52[1] = CKErrorAccountPrimaryEmailKey;
-      v21 = [(ShareAcceptor *)self selectedAccount];
-      v22 = [v21 aa_primaryEmail];
-      v53[1] = v22;
+      selectedAccount = [(ShareAcceptor *)self selectedAccount];
+      aa_primaryEmail = [selectedAccount aa_primaryEmail];
+      v53[1] = aa_primaryEmail;
       v23 = [NSDictionary dictionaryWithObjects:v53 forKeys:v52 count:2];
       v24 = [CKPrettyError errorWithDomain:v16 code:1000 userInfo:v23 format:@"Selected account is not provisioned for the underlying dataclass."];
       [(ShareAcceptor *)self setFallbackFlowCause:v24];
@@ -1157,8 +1157,8 @@ LABEL_28:
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "Asked to redirect share with no installed app candidates to the web.", buf, 2u);
     }
 
-    v7 = [CKPrettyError errorWithDomain:CKErrorDomain code:1 format:@"No app candidates installed, redirecting to the web."];
-    [(ShareAcceptor *)self setFallbackFlowCause:v7];
+    localBundleIDsToDisplayNames4 = [CKPrettyError errorWithDomain:CKErrorDomain code:1 format:@"No app candidates installed, redirecting to the web."];
+    [(ShareAcceptor *)self setFallbackFlowCause:localBundleIDsToDisplayNames4];
     v14 = 23;
     goto LABEL_28;
   }
@@ -1168,24 +1168,24 @@ LABEL_28:
 
 - (id)fetchMetadata
 {
-  v2 = self;
+  selfCopy = self;
   if (__sTestOverridesAvailable == 1)
   {
-    v3 = [(ShareAcceptor *)self testTargetContainer];
+    testTargetContainer = [(ShareAcceptor *)self testTargetContainer];
 
-    if (v3)
+    if (testTargetContainer)
     {
       v93 = 0;
-      v4 = [(ShareAcceptor *)v2 _fetchShareMetadataForAccountID:0 error:&v93];
-      v5 = v93;
-      [(ShareAcceptor *)v2 setShareMetadata:v4];
+      v4 = [(ShareAcceptor *)selfCopy _fetchShareMetadataForAccountID:0 error:&v93];
+      cKClientSuitableError = v93;
+      [(ShareAcceptor *)selfCopy setShareMetadata:v4];
       goto LABEL_74;
     }
   }
 
   v6 = objc_opt_new();
-  v7 = [v6 aa_appleAccounts];
-  if ([v7 count])
+  aa_appleAccounts = [v6 aa_appleAccounts];
+  if ([aa_appleAccounts count])
   {
     v8 = objc_alloc_init(NSMutableDictionary);
     v80 = objc_alloc_init(NSMutableDictionary);
@@ -1194,8 +1194,8 @@ LABEL_28:
     v90 = 0u;
     v91 = 0u;
     v92 = 0u;
-    v78 = v7;
-    obj = v7;
+    v78 = aa_appleAccounts;
+    obj = aa_appleAccounts;
     v9 = [obj countByEnumeratingWithState:&v89 objects:v98 count:16];
     v81 = v8;
     if (v9)
@@ -1220,23 +1220,23 @@ LABEL_28:
           v15 = *(*(&v89 + 1) + 8 * v13);
           if ([v15 isProvisionedForDataclass:{v12, v77}])
           {
-            v16 = [v15 identifier];
+            identifier = [v15 identifier];
             v10 = v15;
 
             v88 = 0;
-            v17 = v2;
-            v18 = [(ShareAcceptor *)v2 _fetchShareMetadataForAccountID:v16 error:&v88];
+            v17 = selfCopy;
+            v18 = [(ShareAcceptor *)selfCopy _fetchShareMetadataForAccountID:identifier error:&v88];
             v19 = v88;
             v20 = v19;
             if (v18)
             {
-              [v82 setObject:v10 forKeyedSubscript:v16];
-              [v81 setObject:v18 forKeyedSubscript:v16];
-              v21 = [v10 username];
-              v22 = v21;
-              if (v21)
+              [v82 setObject:v10 forKeyedSubscript:identifier];
+              [v81 setObject:v18 forKeyedSubscript:identifier];
+              username = [v10 username];
+              v22 = username;
+              if (username)
               {
-                v23 = v21;
+                v23 = username;
               }
 
               else
@@ -1244,7 +1244,7 @@ LABEL_28:
                 v23 = @"Unknown User";
               }
 
-              [v80 setObject:v16 forKeyedSubscript:v23];
+              [v80 setObject:identifier forKeyedSubscript:v23];
             }
 
             else if (v19 && !v79)
@@ -1255,7 +1255,7 @@ LABEL_28:
             ++v84;
 
             v14 = v10;
-            v2 = v17;
+            selfCopy = v17;
           }
 
           else
@@ -1284,13 +1284,13 @@ LABEL_28:
 
     if ([v8 count] == 1)
     {
-      v25 = [v8 allKeys];
-      v26 = [v25 firstObject];
-      [(ShareAcceptor *)v2 setSelectedAccountID:v26];
+      allKeys = [v8 allKeys];
+      firstObject = [allKeys firstObject];
+      [(ShareAcceptor *)selfCopy setSelectedAccountID:firstObject];
 
-      v27 = [v8 allValues];
-      v28 = [v27 firstObject];
-      [(ShareAcceptor *)v2 setShareMetadata:v28];
+      allValues = [v8 allValues];
+      firstObject2 = [allValues firstObject];
+      [(ShareAcceptor *)selfCopy setShareMetadata:firstObject2];
 
       v29 = 0;
       goto LABEL_46;
@@ -1307,32 +1307,32 @@ LABEL_28:
     if ([v31 isAppleInternalInstall])
     {
       v32 = +[CKBehaviorOptions sharedOptions];
-      v33 = [v32 shareURLToAccountIDSystemAcceptationOverrides];
-      v34 = [v33 count];
+      shareURLToAccountIDSystemAcceptationOverrides = [v32 shareURLToAccountIDSystemAcceptationOverrides];
+      v34 = [shareURLToAccountIDSystemAcceptationOverrides count];
 
       v8 = v81;
       if (v34)
       {
         v35 = +[CKBehaviorOptions sharedOptions];
-        v36 = [v35 shareURLToAccountIDSystemAcceptationOverrides];
-        v37 = v2;
-        v38 = [(ShareAcceptor *)v2 url];
-        v39 = [v38 absoluteString];
-        v40 = [v36 objectForKey:v39];
+        shareURLToAccountIDSystemAcceptationOverrides2 = [v35 shareURLToAccountIDSystemAcceptationOverrides];
+        v37 = selfCopy;
+        v38 = [(ShareAcceptor *)selfCopy url];
+        absoluteString = [v38 absoluteString];
+        v40 = [shareURLToAccountIDSystemAcceptationOverrides2 objectForKey:absoluteString];
 
         if (![v40 length] || (objc_msgSend(v81, "allKeys"), v41 = objc_claimAutoreleasedReturnValue(), v42 = objc_msgSend(v41, "containsObject:", v40), v41, !v42))
         {
           v66 = [CKPrettyError errorWithDomain:CKUnderlyingErrorDomain code:1002 format:@"Cannot fetch share metadata with the provided override iCloud accountID"];
-          v5 = [v66 CKClientSuitableError];
+          cKClientSuitableError = [v66 CKClientSuitableError];
 
           v4 = 0;
-          v7 = v78;
+          aa_appleAccounts = v78;
           v8 = v81;
           v10 = v30;
           goto LABEL_72;
         }
 
-        v2 = v37;
+        selfCopy = v37;
         [(ShareAcceptor *)v37 setSelectedAccountID:v40];
         v8 = v81;
         v43 = [v81 objectForKey:v40];
@@ -1341,50 +1341,50 @@ LABEL_28:
         v29 = 0;
         v10 = v30;
 LABEL_46:
-        v51 = [(ShareAcceptor *)v2 selectedAccountID];
+        selectedAccountID = [(ShareAcceptor *)selfCopy selectedAccountID];
 
-        if (v51)
+        if (selectedAccountID)
         {
           if (ck_log_initialization_predicate != -1)
           {
             dispatch_once(&ck_log_initialization_predicate, ck_log_initialization_block);
           }
 
-          v7 = v78;
+          aa_appleAccounts = v78;
           v52 = ck_log_facility_ck;
           if (os_log_type_enabled(ck_log_facility_ck, OS_LOG_TYPE_DEBUG))
           {
             v67 = v52;
-            v68 = [(ShareAcceptor *)v2 selectedAccountID];
+            selectedAccountID2 = [(ShareAcceptor *)selfCopy selectedAccountID];
             *buf = 138412290;
-            v95 = v68;
+            v95 = selectedAccountID2;
             _os_log_debug_impl(&_mh_execute_header, v67, OS_LOG_TYPE_DEBUG, "Selected account ID is %@", buf, 0xCu);
           }
 
-          v53 = [(ShareAcceptor *)v2 selectedAccountID];
-          v54 = [(ShareAcceptor *)v2 shareMetadata];
-          [v54 setSelectedAccountID:v53];
+          selectedAccountID3 = [(ShareAcceptor *)selfCopy selectedAccountID];
+          shareMetadata = [(ShareAcceptor *)selfCopy shareMetadata];
+          [shareMetadata setSelectedAccountID:selectedAccountID3];
 
-          [(ShareAcceptor *)v2 setFailedAccountEmail:0];
-          v55 = [(ShareAcceptor *)v2 selectedAccountID];
-          v56 = [v82 objectForKeyedSubscript:v55];
-          [(ShareAcceptor *)v2 setSelectedAccount:v56];
+          [(ShareAcceptor *)selfCopy setFailedAccountEmail:0];
+          selectedAccountID4 = [(ShareAcceptor *)selfCopy selectedAccountID];
+          v56 = [v82 objectForKeyedSubscript:selectedAccountID4];
+          [(ShareAcceptor *)selfCopy setSelectedAccount:v56];
 
           if (!+[CKPersona isSupported])
           {
             goto LABEL_71;
           }
 
-          v57 = [(ShareAcceptor *)v2 selectedAccount];
+          selectedAccount = [(ShareAcceptor *)selfCopy selectedAccount];
           v86 = 0;
-          v58 = [v57 ck_getPersona:&v86 error:0];
-          v59 = v86;
+          v58 = [selectedAccount ck_getPersona:&v86 error:0];
+          aa_primaryEmail = v86;
 
-          if (v58 && v59)
+          if (v58 && aa_primaryEmail)
           {
             v60 = v6;
             v85 = 0;
-            v61 = [v59 adopt:&v85];
+            v61 = [aa_primaryEmail adopt:&v85];
             v62 = v85;
 
             v8 = v81;
@@ -1402,9 +1402,9 @@ LABEL_46:
             if (os_log_type_enabled(ck_log_facility_ck, OS_LOG_TYPE_ERROR))
             {
               v75 = v64;
-              v76 = [v59 ckShortDescription];
+              ckShortDescription = [aa_primaryEmail ckShortDescription];
               *buf = 138412546;
-              v95 = v76;
+              v95 = ckShortDescription;
               v96 = 2112;
               v97 = v62;
               _os_log_error_impl(&_mh_execute_header, v75, OS_LOG_TYPE_ERROR, "Failed to adopt persona %@ with error: %@", buf, 0x16u);
@@ -1445,18 +1445,18 @@ LABEL_69:
 
           if (v63 != 1)
           {
-            v7 = v78;
+            aa_appleAccounts = v78;
 LABEL_71:
             v4 = v29;
-            v5 = v4;
+            cKClientSuitableError = v4;
 LABEL_72:
 
             goto LABEL_73;
           }
 
-          v59 = [v10 aa_primaryEmail];
-          [(ShareAcceptor *)v2 setFailedAccountEmail:v59];
-          v7 = v78;
+          aa_primaryEmail = [v10 aa_primaryEmail];
+          [(ShareAcceptor *)selfCopy setFailedAccountEmail:aa_primaryEmail];
+          aa_appleAccounts = v78;
         }
 
 LABEL_70:
@@ -1479,11 +1479,11 @@ LABEL_70:
     if (os_log_type_enabled(ck_log_facility_ck, OS_LOG_TYPE_DEBUG))
     {
       v69 = v44;
-      v70 = [v8 allValues];
-      v71 = [v70 firstObject];
-      v72 = [v71 share];
-      [v72 recordID];
-      v74 = v73 = v2;
+      allValues2 = [v8 allValues];
+      firstObject3 = [allValues2 firstObject];
+      share = [firstObject3 share];
+      [share recordID];
+      v74 = v73 = selfCopy;
       *buf = 138543362;
       v95 = v74;
       _os_log_debug_impl(&_mh_execute_header, v69, OS_LOG_TYPE_DEBUG, "Multiple logged-in accounts are invited on share %{public}@. Dismissing the retrieving diaglog and prompting the user to choose.", buf, 0xCu);
@@ -1491,21 +1491,21 @@ LABEL_70:
       v10 = v30;
       v8 = v81;
 
-      v2 = v73;
+      selfCopy = v73;
     }
 
-    v45 = [(ShareAcceptor *)v2 retrievingDialog];
-    [v45 abort];
+    retrievingDialog = [(ShareAcceptor *)selfCopy retrievingDialog];
+    [retrievingDialog abort];
 
     v87 = 0;
-    v46 = [(ShareAcceptor *)v2 _promptForAccountIDChoiceWithAccountIDsByUsername:v80 error:&v87];
+    v46 = [(ShareAcceptor *)selfCopy _promptForAccountIDChoiceWithAccountIDsByUsername:v80 error:&v87];
     v47 = v87;
-    v48 = v47;
+    cKClientSuitableError2 = v47;
     if (v46)
     {
-      [(ShareAcceptor *)v2 setSelectedAccountID:v46];
+      [(ShareAcceptor *)selfCopy setSelectedAccountID:v46];
       v49 = [v8 objectForKeyedSubscript:v46];
-      [(ShareAcceptor *)v2 setShareMetadata:v49];
+      [(ShareAcceptor *)selfCopy setShareMetadata:v49];
 
       v8 = v81;
       v29 = 0;
@@ -1516,33 +1516,33 @@ LABEL_70:
       if (!v47)
       {
         v50 = [CKPrettyError errorWithDomain:CKUnderlyingErrorDomain code:1002 format:@"Cannot fetch share metadata without any chosen iCloud account"];
-        v48 = [v50 CKClientSuitableError];
+        cKClientSuitableError2 = [v50 CKClientSuitableError];
 
         v8 = v81;
       }
 
-      v48 = v48;
-      v29 = v48;
+      cKClientSuitableError2 = cKClientSuitableError2;
+      v29 = cKClientSuitableError2;
     }
 
     goto LABEL_46;
   }
 
   v24 = [CKPrettyError errorWithDomain:CKUnderlyingErrorDomain code:1002 format:@"Cannot fetch share metadata without any iCloud account logged in"];
-  v5 = [v24 CKClientSuitableError];
+  cKClientSuitableError = [v24 CKClientSuitableError];
 
   v4 = 0;
 LABEL_73:
 
 LABEL_74:
 
-  return v5;
+  return cKClientSuitableError;
 }
 
-- (id)_promptForAccountIDChoiceWithAccountIDsByUsername:(id)a3 error:(id *)a4
+- (id)_promptForAccountIDChoiceWithAccountIDsByUsername:(id)username error:(id *)error
 {
-  v27 = a3;
-  v5 = [v27 allKeys];
+  usernameCopy = username;
+  allKeys = [usernameCopy allKeys];
   v29[0] = kCFUserNotificationAlertHeaderKey;
   v6 = CKLocalizedString();
   v30[0] = v6;
@@ -1550,11 +1550,11 @@ LABEL_74:
   v7 = CKLocalizedString();
   v30[1] = v7;
   v29[2] = kCFUserNotificationAlternateButtonTitleKey;
-  v8 = [v5 firstObject];
-  v30[2] = v8;
+  firstObject = [allKeys firstObject];
+  v30[2] = firstObject;
   v29[3] = kCFUserNotificationOtherButtonTitleKey;
-  v9 = [v5 lastObject];
-  v30[3] = v9;
+  lastObject = [allKeys lastObject];
+  v30[3] = lastObject;
   v29[4] = kCFUserNotificationDefaultButtonTitleKey;
   v10 = CKLocalizedString();
   v30[4] = v10;
@@ -1576,7 +1576,7 @@ LABEL_74:
       goto LABEL_9;
     }
 
-    v18 = [v5 lastObject];
+    lastObject2 = [allKeys lastObject];
   }
 
   else
@@ -1587,37 +1587,37 @@ LABEL_74:
       v16 = @"User cancelled account selection prompt";
       v17 = 20;
 LABEL_9:
-      v22 = [CKPrettyError errorWithDomain:v15 code:v17 format:v16, a4];
+      error = [CKPrettyError errorWithDomain:v15 code:v17 format:v16, error];
       v21 = 0;
-      v20 = v27;
+      v20 = usernameCopy;
       goto LABEL_10;
     }
 
-    v18 = [v5 firstObject];
+    lastObject2 = [allKeys firstObject];
   }
 
-  v19 = v18;
-  v20 = v27;
-  v21 = [v27 objectForKeyedSubscript:{v18, a4}];
+  v19 = lastObject2;
+  v20 = usernameCopy;
+  v21 = [usernameCopy objectForKeyedSubscript:{lastObject2, error}];
 
-  v22 = 0;
+  error = 0;
 LABEL_10:
   CFRelease(v14);
-  if (v26 && v22)
+  if (v26 && error)
   {
-    v23 = v22;
-    *v26 = v22;
+    v23 = error;
+    *v26 = error;
   }
 
   return v21;
 }
 
-- (id)_getContainerForAccountID:(id)a3
+- (id)_getContainerForAccountID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   if (__sTestOverridesAvailable == 1 && ([(ShareAcceptor *)self testTargetContainer], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
-    v6 = [(ShareAcceptor *)self testTargetContainer];
+    testTargetContainer = [(ShareAcceptor *)self testTargetContainer];
   }
 
   else
@@ -1638,7 +1638,7 @@ LABEL_10:
 
     v11 = [v9 initWithContainerIdentifier:v10 environment:1];
     v12 = objc_alloc_init(CKContainerOptions);
-    v13 = [[CKAccountOverrideInfo alloc] initWithAccountID:v4];
+    v13 = [[CKAccountOverrideInfo alloc] initWithAccountID:dCopy];
     [v12 setAccountOverrideInfo:v13];
     if (__sTestOverridesAvailable == 1)
     {
@@ -1648,15 +1648,15 @@ LABEL_10:
       [v12 setFakeEntitlements:v14];
     }
 
-    v6 = [[CKContainer alloc] initWithContainerID:v11 options:v12];
+    testTargetContainer = [[CKContainer alloc] initWithContainerID:v11 options:v12];
   }
 
-  return v6;
+  return testTargetContainer;
 }
 
-- (id)_fetchShareMetadataForAccountID:(id)a3 error:(id *)a4
+- (id)_fetchShareMetadataForAccountID:(id)d error:(id *)error
 {
-  v6 = a3;
+  dCopy = d;
   v35 = 0;
   v36 = &v35;
   v37 = 0x3032000000;
@@ -1676,32 +1676,32 @@ LABEL_10:
   v10 = [NSArray arrayWithObjects:&v43 count:1];
   v11 = [v8 initWithShareURLs:v10];
 
-  v12 = [(ShareAcceptor *)self invitationToken];
+  invitationToken = [(ShareAcceptor *)self invitationToken];
 
-  if (v12)
+  if (invitationToken)
   {
     v13 = [(ShareAcceptor *)self url];
     v41 = v13;
-    v14 = [(ShareAcceptor *)self invitationToken];
-    v42 = v14;
+    invitationToken2 = [(ShareAcceptor *)self invitationToken];
+    v42 = invitationToken2;
     v15 = [NSDictionary dictionaryWithObjects:&v42 forKeys:&v41 count:1];
     [v11 setShareInvitationTokensByShareURL:v15];
   }
 
   [v11 setOverwriteContainerPCSServiceIfManatee:1];
-  v16 = [v11 resolvedConfiguration];
-  [v16 setRequestOriginator:2];
+  resolvedConfiguration = [v11 resolvedConfiguration];
+  [resolvedConfiguration setRequestOriginator:2];
 
   [v11 setShouldFetchRootRecord:0];
   if (__sTestOverridesAvailable == 1)
   {
-    v17 = [(ShareAcceptor *)self unitTestOverrides];
-    v18 = v17 == 0;
+    unitTestOverrides = [(ShareAcceptor *)self unitTestOverrides];
+    v18 = unitTestOverrides == 0;
 
     if (!v18)
     {
-      v19 = [(ShareAcceptor *)self unitTestOverrides];
-      [v11 addUnitTestOverrides:v19];
+      unitTestOverrides2 = [(ShareAcceptor *)self unitTestOverrides];
+      [v11 addUnitTestOverrides:unitTestOverrides2];
     }
   }
 
@@ -1719,15 +1719,15 @@ LABEL_10:
   v20 = v7;
   v26 = v20;
   [v11 setFetchShareMetadataCompletionBlock:v25];
-  v21 = [(ShareAcceptor *)self _getContainerForAccountID:v6];
+  v21 = [(ShareAcceptor *)self _getContainerForAccountID:dCopy];
   [v21 addOperation:v11];
   dispatch_semaphore_wait(v20, 0xFFFFFFFFFFFFFFFFLL);
-  if (a4)
+  if (error)
   {
     v22 = v36[5];
     if (v22)
     {
-      *a4 = v22;
+      *error = v22;
     }
   }
 
@@ -1744,22 +1744,22 @@ LABEL_10:
   metadataIndicatedContainer = self->_metadataIndicatedContainer;
   if (!metadataIndicatedContainer)
   {
-    v4 = [(ShareAcceptor *)self selectedAccountID];
+    selectedAccountID = [(ShareAcceptor *)self selectedAccountID];
 
-    if (v4)
+    if (selectedAccountID)
     {
-      v4 = objc_alloc_init(CKContainerOptions);
+      selectedAccountID = objc_alloc_init(CKContainerOptions);
       v5 = [CKAccountOverrideInfo alloc];
-      v6 = [(ShareAcceptor *)self selectedAccountID];
-      v7 = [v5 initWithAccountID:v6];
+      selectedAccountID2 = [(ShareAcceptor *)self selectedAccountID];
+      v7 = [v5 initWithAccountID:selectedAccountID2];
 
-      [v4 setAccountOverrideInfo:v7];
+      [selectedAccountID setAccountOverrideInfo:v7];
     }
 
     v8 = [CKContainer alloc];
-    v9 = [(ShareAcceptor *)self shareMetadata];
-    v10 = [v9 containerID];
-    v11 = [v8 initWithContainerID:v10 options:v4];
+    shareMetadata = [(ShareAcceptor *)self shareMetadata];
+    containerID = [shareMetadata containerID];
+    v11 = [v8 initWithContainerID:containerID options:selectedAccountID];
     v12 = self->_metadataIndicatedContainer;
     self->_metadataIndicatedContainer = v11;
 
@@ -1771,16 +1771,16 @@ LABEL_10:
 
 - (BOOL)shareNeedsAcceptance
 {
-  v3 = [(ShareAcceptor *)self shareMetadata];
-  if ([v3 participantRole] == 1)
+  shareMetadata = [(ShareAcceptor *)self shareMetadata];
+  if ([shareMetadata participantRole] == 1)
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = [(ShareAcceptor *)self shareMetadata];
-    v4 = [v5 participantStatus] != 2;
+    shareMetadata2 = [(ShareAcceptor *)self shareMetadata];
+    v4 = [shareMetadata2 participantStatus] != 2;
   }
 
   return v4;
@@ -1795,7 +1795,7 @@ LABEL_10:
   v15 = sub_10000AA0C;
   v16 = 0;
   v3 = dispatch_semaphore_create(0);
-  v4 = [(ShareAcceptor *)self metadataIndicatedContainer];
+  metadataIndicatedContainer = [(ShareAcceptor *)self metadataIndicatedContainer];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10000E5F8;
@@ -1804,7 +1804,7 @@ LABEL_10:
   v8[4] = self;
   v5 = v3;
   v9 = v5;
-  [v4 fetchFullNameAndFormattedUsernameOfAccountWithCompletionHandler:v8];
+  [metadataIndicatedContainer fetchFullNameAndFormattedUsernameOfAccountWithCompletionHandler:v8];
 
   dispatch_semaphore_wait(v5, 0xFFFFFFFFFFFFFFFFLL);
   v6 = v12[5];
@@ -1816,64 +1816,64 @@ LABEL_10:
 
 - (id)promptForSingleBundleID
 {
-  v4 = [(ShareAcceptor *)self localBundleIDsToDisplayNames];
-  v5 = [v4 count];
+  localBundleIDsToDisplayNames = [(ShareAcceptor *)self localBundleIDsToDisplayNames];
+  v5 = [localBundleIDsToDisplayNames count];
 
   if (v5 != 1)
   {
     v51 = +[NSAssertionHandler currentHandler];
-    v52 = [(ShareAcceptor *)self localBundleIDsToDisplayNames];
-    [v51 handleFailureInMethod:a2 object:self file:@"ShareAcceptor.m" lineNumber:1072 description:{@"Expected a list with one bundle mapping in it, got this: %@", v52}];
+    localBundleIDsToDisplayNames2 = [(ShareAcceptor *)self localBundleIDsToDisplayNames];
+    [v51 handleFailureInMethod:a2 object:self file:@"ShareAcceptor.m" lineNumber:1072 description:{@"Expected a list with one bundle mapping in it, got this: %@", localBundleIDsToDisplayNames2}];
   }
 
-  v6 = [(ShareAcceptor *)self shareMetadata];
-  v7 = [v6 outOfNetworkMatches];
-  v8 = [v7 count];
+  shareMetadata = [(ShareAcceptor *)self shareMetadata];
+  outOfNetworkMatches = [shareMetadata outOfNetworkMatches];
+  v8 = [outOfNetworkMatches count];
 
   if (v8)
   {
-    v9 = [(ShareAcceptor *)self localBundleIDsToDisplayNames];
-    v10 = [v9 allKeys];
-    v11 = [v10 firstObject];
-    [(ShareAcceptor *)self setChosenAppBundleID:v11];
+    localBundleIDsToDisplayNames3 = [(ShareAcceptor *)self localBundleIDsToDisplayNames];
+    allKeys = [localBundleIDsToDisplayNames3 allKeys];
+    firstObject = [allKeys firstObject];
+    [(ShareAcceptor *)self setChosenAppBundleID:firstObject];
 
 LABEL_5:
     v12 = 0;
     goto LABEL_22;
   }
 
-  v13 = [(ShareAcceptor *)self currentUserNameComponents];
+  currentUserNameComponents = [(ShareAcceptor *)self currentUserNameComponents];
 
-  if (!v13)
+  if (!currentUserNameComponents)
   {
-    v46 = [(ShareAcceptor *)self _fetchCurrentUserNameComponents];
-    if (v46)
+    _fetchCurrentUserNameComponents = [(ShareAcceptor *)self _fetchCurrentUserNameComponents];
+    if (_fetchCurrentUserNameComponents)
     {
-      v12 = v46;
+      v12 = _fetchCurrentUserNameComponents;
       v47 = [(ShareAcceptor *)self url];
-      v48 = [v47 CKURLSlug];
-      v49 = [CKVettingAlerts alertContentForGenericErrorWithURLSlug:v48];
+      cKURLSlug = [v47 CKURLSlug];
+      v49 = [CKVettingAlerts alertContentForGenericErrorWithURLSlug:cKURLSlug];
       [CKVettingAlerts showFailureAlert:v49 isSourceICS:[(ShareAcceptor *)self isSourceICS]];
 
       goto LABEL_22;
     }
   }
 
-  v14 = [(ShareAcceptor *)self shareMetadata];
-  v15 = [v14 containerID];
-  if ([v15 specialContainerType] == 5)
+  shareMetadata2 = [(ShareAcceptor *)self shareMetadata];
+  containerID = [shareMetadata2 containerID];
+  if ([containerID specialContainerType] == 5)
   {
-    v16 = [(ShareAcceptor *)self shareMetadata];
-    v17 = [v16 share];
-    v18 = [v17 objectForKeyedSubscript:CKShareTypeKey];
+    shareMetadata3 = [(ShareAcceptor *)self shareMetadata];
+    share = [shareMetadata3 share];
+    v18 = [share objectForKeyedSubscript:CKShareTypeKey];
     v19 = [v18 isEqualToString:CKPhotosSharedLibraryShareType];
 
     if (v19)
     {
-      v20 = [(ShareAcceptor *)self localBundleIDsToDisplayNames];
-      v21 = [v20 allKeys];
-      v22 = [v21 firstObject];
-      [(ShareAcceptor *)self setChosenAppBundleID:v22];
+      localBundleIDsToDisplayNames4 = [(ShareAcceptor *)self localBundleIDsToDisplayNames];
+      allKeys2 = [localBundleIDsToDisplayNames4 allKeys];
+      firstObject2 = [allKeys2 firstObject];
+      [(ShareAcceptor *)self setChosenAppBundleID:firstObject2];
 
       if (ck_log_initialization_predicate != -1)
       {
@@ -1895,18 +1895,18 @@ LABEL_5:
   {
   }
 
-  v24 = [(ShareAcceptor *)self localBundleIDsToDisplayNames];
-  v25 = [v24 allKeys];
-  v26 = [v25 firstObject];
+  localBundleIDsToDisplayNames5 = [(ShareAcceptor *)self localBundleIDsToDisplayNames];
+  allKeys3 = [localBundleIDsToDisplayNames5 allKeys];
+  firstObject3 = [allKeys3 firstObject];
 
-  v27 = [(ShareAcceptor *)self shareName];
-  v28 = [(ShareAcceptor *)self localBundleIDsToDisplayNames];
-  v29 = [v28 allValues];
-  v30 = [v29 firstObject];
-  v31 = [(ShareAcceptor *)self shareMetadata];
-  v32 = [(ShareAcceptor *)self currentUserNameComponents];
-  v33 = [(ShareAcceptor *)self currentUserFormattedUsername];
-  v34 = [CKVettingAlerts alertContentForFirstJoinAlertWithRecordName:v27 appName:v30 bundleID:v26 shareMetadata:v31 currentUserName:v32 currentUserFormattedUsername:v33];
+  shareName = [(ShareAcceptor *)self shareName];
+  localBundleIDsToDisplayNames6 = [(ShareAcceptor *)self localBundleIDsToDisplayNames];
+  allValues = [localBundleIDsToDisplayNames6 allValues];
+  firstObject4 = [allValues firstObject];
+  shareMetadata4 = [(ShareAcceptor *)self shareMetadata];
+  currentUserNameComponents2 = [(ShareAcceptor *)self currentUserNameComponents];
+  currentUserFormattedUsername = [(ShareAcceptor *)self currentUserFormattedUsername];
+  v34 = [CKVettingAlerts alertContentForFirstJoinAlertWithRecordName:shareName appName:firstObject4 bundleID:firstObject3 shareMetadata:shareMetadata4 currentUserName:currentUserNameComponents2 currentUserFormattedUsername:currentUserFormattedUsername];
 
   v54[0] = kCFUserNotificationAlertHeaderKey;
   v35 = [v34 objectForKeyedSubscript:@"ckVettingAlertTitle"];
@@ -1921,7 +1921,7 @@ LABEL_5:
   v38 = CKLocalizedString();
   v55[3] = v38;
   v39 = [NSDictionary dictionaryWithObjects:v55 forKeys:v54 count:4];
-  v40 = [CKVettingAlerts platformSpecificAlertOptionsWithOptions:v39 bundleIdentifier:v26];
+  v40 = [CKVettingAlerts platformSpecificAlertOptionsWithOptions:v39 bundleIdentifier:firstObject3];
 
   v41 = [CKVettingAlerts getAlertOptionsFromOptions:v40 isSourceICS:[(ShareAcceptor *)self isSourceICS]];
 
@@ -1936,10 +1936,10 @@ LABEL_5:
       goto LABEL_21;
     }
 
-    v43 = [(ShareAcceptor *)self localBundleIDsToDisplayNames];
-    v44 = [v43 allKeys];
-    v45 = [v44 firstObject];
-    [(ShareAcceptor *)self setChosenAppBundleID:v45];
+    localBundleIDsToDisplayNames7 = [(ShareAcceptor *)self localBundleIDsToDisplayNames];
+    allKeys4 = [localBundleIDsToDisplayNames7 allKeys];
+    firstObject5 = [allKeys4 firstObject];
+    [(ShareAcceptor *)self setChosenAppBundleID:firstObject5];
   }
 
   v12 = 0;
@@ -1953,54 +1953,54 @@ LABEL_22:
 
 - (BOOL)_getShareName
 {
-  v3 = [(ShareAcceptor *)self shareMetadata];
-  v4 = [v3 share];
-  v5 = [v4 objectForKeyedSubscript:CKShareTitleKey];
+  shareMetadata = [(ShareAcceptor *)self shareMetadata];
+  share = [shareMetadata share];
+  v5 = [share objectForKeyedSubscript:CKShareTitleKey];
 
-  v6 = [(ShareAcceptor *)self shareMetadata];
-  v7 = v6;
+  shareMetadata2 = [(ShareAcceptor *)self shareMetadata];
+  v7 = shareMetadata2;
   if (v5)
   {
-    v8 = [v6 share];
+    share2 = [shareMetadata2 share];
   }
 
   else
   {
-    v9 = [v6 rootRecord];
-    v10 = [v9 objectForKeyedSubscript:CKShareTitleKey];
+    rootRecord = [shareMetadata2 rootRecord];
+    v10 = [rootRecord objectForKeyedSubscript:CKShareTitleKey];
 
-    v11 = [(ShareAcceptor *)self shareMetadata];
-    v7 = v11;
+    shareMetadata3 = [(ShareAcceptor *)self shareMetadata];
+    v7 = shareMetadata3;
     if (!v10)
     {
-      v12 = [v11 share];
-      v13 = [v12 recordID];
-      v17 = [v13 recordName];
-      [(ShareAcceptor *)self setShareName:v17];
+      share3 = [shareMetadata3 share];
+      recordID = [share3 recordID];
+      recordName = [recordID recordName];
+      [(ShareAcceptor *)self setShareName:recordName];
 
       goto LABEL_6;
     }
 
-    v8 = [v11 rootRecord];
+    share2 = [shareMetadata3 rootRecord];
   }
 
-  v12 = v8;
-  v13 = [v8 objectForKeyedSubscript:CKShareTitleKey];
-  [(ShareAcceptor *)self setShareName:v13];
+  share3 = share2;
+  recordID = [share2 objectForKeyedSubscript:CKShareTitleKey];
+  [(ShareAcceptor *)self setShareName:recordID];
 LABEL_6:
 
-  v14 = [(ShareAcceptor *)self shareName];
-  v15 = [v14 stringByReplacingOccurrencesOfString:@"\uFFFC" withString:@"\uFFFD"];
+  shareName = [(ShareAcceptor *)self shareName];
+  v15 = [shareName stringByReplacingOccurrencesOfString:@"\uFFFC" withString:@"\uFFFD"];
   [(ShareAcceptor *)self setShareName:v15];
 
   return 1;
 }
 
-- (void)_extractEmailAddressesFromProperties:(id)a3 into:(id)a4
+- (void)_extractEmailAddressesFromProperties:(id)properties into:(id)into
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 objectForKeyedSubscript:@"EmailAddresses"];
+  propertiesCopy = properties;
+  intoCopy = into;
+  v8 = [propertiesCopy objectForKeyedSubscript:@"EmailAddresses"];
 
   if (v8)
   {
@@ -2008,7 +2008,7 @@ LABEL_6:
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v9 = [v6 objectForKeyedSubscript:@"EmailAddresses"];
+    v9 = [propertiesCopy objectForKeyedSubscript:@"EmailAddresses"];
     v10 = [v9 countByEnumeratingWithState:&v29 objects:v34 count:16];
     if (v10)
     {
@@ -2028,7 +2028,7 @@ LABEL_6:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            [v7 addObject:v14];
+            [intoCopy addObject:v14];
           }
 
           else
@@ -2036,7 +2036,7 @@ LABEL_6:
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              [(ShareAcceptor *)self _extractEmailAddressesFromProperties:v14 into:v7];
+              [(ShareAcceptor *)self _extractEmailAddressesFromProperties:v14 into:intoCopy];
             }
           }
 
@@ -2051,15 +2051,15 @@ LABEL_6:
     }
   }
 
-  v15 = [v6 objectForKeyedSubscript:@"EmailAddress"];
+  v15 = [propertiesCopy objectForKeyedSubscript:@"EmailAddress"];
 
   if (v15)
   {
-    v16 = [v6 objectForKeyedSubscript:@"EmailAddress"];
-    [v7 addObject:v16];
+    v16 = [propertiesCopy objectForKeyedSubscript:@"EmailAddress"];
+    [intoCopy addObject:v16];
   }
 
-  v17 = [v6 objectForKeyedSubscript:@"EmailAliases"];
+  v17 = [propertiesCopy objectForKeyedSubscript:@"EmailAliases"];
 
   if (v17)
   {
@@ -2067,7 +2067,7 @@ LABEL_6:
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v18 = [v6 objectForKeyedSubscript:{@"EmailAliases", 0}];
+    v18 = [propertiesCopy objectForKeyedSubscript:{@"EmailAliases", 0}];
     v19 = [v18 countByEnumeratingWithState:&v25 objects:v33 count:16];
     if (v19)
     {
@@ -2083,7 +2083,7 @@ LABEL_6:
             objc_enumerationMutation(v18);
           }
 
-          [(ShareAcceptor *)self _extractEmailAddressesFromProperties:*(*(&v25 + 1) + 8 * v22) into:v7];
+          [(ShareAcceptor *)self _extractEmailAddressesFromProperties:*(*(&v25 + 1) + 8 * v22) into:intoCopy];
           v22 = v22 + 1;
         }
 
@@ -2095,29 +2095,29 @@ LABEL_6:
     }
   }
 
-  v23 = [v6 objectForKeyedSubscript:@"DAAccountEmailAddress"];
+  v23 = [propertiesCopy objectForKeyedSubscript:@"DAAccountEmailAddress"];
 
   if (v23)
   {
-    v24 = [v6 objectForKeyedSubscript:@"DAAccountEmailAddress"];
-    [v7 addObject:v24];
+    v24 = [propertiesCopy objectForKeyedSubscript:@"DAAccountEmailAddress"];
+    [intoCopy addObject:v24];
   }
 }
 
 - (id)_trySelectingOONParticipant
 {
   v3 = [ACAccountStore alloc];
-  v4 = [(ShareAcceptor *)self chosenAppBundleID];
-  v5 = [v3 initWithEffectiveBundleID:v4];
+  chosenAppBundleID = [(ShareAcceptor *)self chosenAppBundleID];
+  v5 = [v3 initWithEffectiveBundleID:chosenAppBundleID];
 
-  v6 = [v5 allAccountTypes];
+  allAccountTypes = [v5 allAccountTypes];
   v55[0] = _NSConcreteStackBlock;
   v55[1] = 3221225472;
   v55[2] = sub_10000F850;
   v55[3] = &unk_100028AB0;
   v35 = v5;
   v56 = v35;
-  v36 = [v6 CKFlatMap:v55];
+  v36 = [allAccountTypes CKFlatMap:v55];
 
   if ([v36 count])
   {
@@ -2154,12 +2154,12 @@ LABEL_6:
           v12 = *(*(&v41 + 1) + 8 * v11);
           if ([v12 isEnabledForDataclass:@"com.apple.Dataclass.Mail"])
           {
-            v13 = [v12 username];
+            username = [v12 username];
 
-            if (v13)
+            if (username)
             {
-              v14 = [v12 username];
-              [v7 addObject:v14];
+              username2 = [v12 username];
+              [v7 addObject:username2];
 
               if (ck_log_initialization_predicate != -1)
               {
@@ -2169,19 +2169,19 @@ LABEL_6:
               v15 = ck_log_facility_ck;
               if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
               {
-                v24 = [v12 username];
+                username3 = [v12 username];
                 *buf = 138412290;
-                v58 = v24;
+                v58 = username3;
                 _os_log_debug_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEBUG, "Considering username %@ as a vetting candidate", buf, 0xCu);
               }
             }
 
-            v16 = [v12 ck_accountProperties];
+            ck_accountProperties = [v12 ck_accountProperties];
 
-            if (v16)
+            if (ck_accountProperties)
             {
-              v17 = [v12 accountProperties];
-              [(ShareAcceptor *)self _extractEmailAddressesFromProperties:v17 into:v7];
+              accountProperties = [v12 accountProperties];
+              [(ShareAcceptor *)self _extractEmailAddressesFromProperties:accountProperties into:v7];
 
               if (ck_log_initialization_predicate != -1)
               {
@@ -2191,22 +2191,22 @@ LABEL_6:
               v18 = ck_log_facility_ck;
               if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
               {
-                v25 = [v12 ck_accountProperties];
+                ck_accountProperties2 = [v12 ck_accountProperties];
                 *buf = 138412546;
-                v58 = v25;
+                v58 = ck_accountProperties2;
                 v59 = 2112;
                 v60 = v7;
                 _os_log_debug_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEBUG, "After extracting emails from account properties %@ got %@", buf, 0x16u);
               }
             }
 
-            v19 = [v12 ck_dataclassProperties];
-            v20 = [v19 objectForKeyedSubscript:@"com.apple.Dataclass.Mail"];
+            ck_dataclassProperties = [v12 ck_dataclassProperties];
+            v20 = [ck_dataclassProperties objectForKeyedSubscript:@"com.apple.Dataclass.Mail"];
 
             if (v20)
             {
-              v21 = [v12 ck_dataclassProperties];
-              v22 = [v21 objectForKeyedSubscript:@"com.apple.Dataclass.Mail"];
+              ck_dataclassProperties2 = [v12 ck_dataclassProperties];
+              v22 = [ck_dataclassProperties2 objectForKeyedSubscript:@"com.apple.Dataclass.Mail"];
               [(ShareAcceptor *)self _extractEmailAddressesFromProperties:v22 into:v7];
 
               if (ck_log_initialization_predicate != -1)
@@ -2217,8 +2217,8 @@ LABEL_6:
               v23 = ck_log_facility_ck;
               if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
               {
-                v26 = [v12 ck_dataclassProperties];
-                v27 = [v26 objectForKeyedSubscript:@"com.apple.Dataclass.Mail"];
+                ck_dataclassProperties3 = [v12 ck_dataclassProperties];
+                v27 = [ck_dataclassProperties3 objectForKeyedSubscript:@"com.apple.Dataclass.Mail"];
                 *buf = 138412546;
                 v58 = v27;
                 v59 = 2112;
@@ -2238,8 +2238,8 @@ LABEL_6:
       while (v9);
     }
 
-    v28 = [(ShareAcceptor *)self shareMetadata];
-    v29 = [v28 outOfNetworkMatches];
+    shareMetadata = [(ShareAcceptor *)self shareMetadata];
+    outOfNetworkMatches = [shareMetadata outOfNetworkMatches];
     v37[0] = _NSConcreteStackBlock;
     v37[1] = 3221225472;
     v37[2] = sub_10000F8E0;
@@ -2248,7 +2248,7 @@ LABEL_6:
     v38 = v30;
     v39 = &v51;
     v40 = &v45;
-    [v29 enumerateObjectsUsingBlock:v37];
+    [outOfNetworkMatches enumerateObjectsUsingBlock:v37];
 
     if (*(v52 + 6) == 1)
     {
@@ -2288,11 +2288,11 @@ LABEL_6:
 
 - (int64_t)initiateVetting
 {
-  v3 = [(ShareAcceptor *)self _trySelectingOONParticipant];
-  [(ShareAcceptor *)self setSingleOONMatch:v3];
+  _trySelectingOONParticipant = [(ShareAcceptor *)self _trySelectingOONParticipant];
+  [(ShareAcceptor *)self setSingleOONMatch:_trySelectingOONParticipant];
 
-  v4 = [(ShareAcceptor *)self singleOONMatch];
-  if (v4)
+  singleOONMatch = [(ShareAcceptor *)self singleOONMatch];
+  if (singleOONMatch)
   {
     v5 = 13;
   }
@@ -2305,39 +2305,39 @@ LABEL_6:
   return v5;
 }
 
-- (BOOL)_initiateVettingOfSingleOONMatch:(id *)a3
+- (BOOL)_initiateVettingOfSingleOONMatch:(id *)match
 {
-  v5 = [(ShareAcceptor *)self singleOONMatch];
+  singleOONMatch = [(ShareAcceptor *)self singleOONMatch];
 
-  if (!v5)
+  if (!singleOONMatch)
   {
     v32 = +[NSAssertionHandler currentHandler];
     [v32 handleFailureInMethod:a2 object:self file:@"ShareAcceptor.m" lineNumber:1247 description:@"singleOONMatch field is not set"];
   }
 
-  v6 = [(ShareAcceptor *)self localBundleIDsToDisplayNames];
-  if ([v6 count])
+  localBundleIDsToDisplayNames = [(ShareAcceptor *)self localBundleIDsToDisplayNames];
+  if ([localBundleIDsToDisplayNames count])
   {
-    v7 = [(ShareAcceptor *)self localBundleIDsToDisplayNames];
-    v8 = [v7 allKeys];
-    v36 = [v8 firstObject];
+    localBundleIDsToDisplayNames2 = [(ShareAcceptor *)self localBundleIDsToDisplayNames];
+    allKeys = [localBundleIDsToDisplayNames2 allKeys];
+    firstObject = [allKeys firstObject];
   }
 
   else
   {
-    v7 = [(ShareAcceptor *)self registeredAppBundleIDs];
-    v36 = [v7 firstObject];
+    localBundleIDsToDisplayNames2 = [(ShareAcceptor *)self registeredAppBundleIDs];
+    firstObject = [localBundleIDsToDisplayNames2 firstObject];
   }
 
-  v9 = [(ShareAcceptor *)self shareName];
-  v10 = [(ShareAcceptor *)self shareMetadata];
-  v11 = [v10 ownerIdentity];
-  v12 = [v11 nameComponents];
-  v13 = [(ShareAcceptor *)self shareMetadata];
-  v14 = [v13 share];
-  v15 = [v14 objectForKeyedSubscript:CKShareTypeKey];
-  v16 = v36;
-  v17 = [CKVettingAlerts alertContentForShortcutVettingBindingPromptWithBundleID:v36 shareName:v9 ownerName:v12 shareType:v15 isSourceICS:[(ShareAcceptor *)self isSourceICS]];
+  shareName = [(ShareAcceptor *)self shareName];
+  shareMetadata = [(ShareAcceptor *)self shareMetadata];
+  ownerIdentity = [shareMetadata ownerIdentity];
+  nameComponents = [ownerIdentity nameComponents];
+  shareMetadata2 = [(ShareAcceptor *)self shareMetadata];
+  share = [shareMetadata2 share];
+  v15 = [share objectForKeyedSubscript:CKShareTypeKey];
+  v16 = firstObject;
+  v17 = [CKVettingAlerts alertContentForShortcutVettingBindingPromptWithBundleID:firstObject shareName:shareName ownerName:nameComponents shareType:v15 isSourceICS:[(ShareAcceptor *)self isSourceICS]];
 
   v18 = CFUserNotificationCreate(0, 0.0, 3uLL, 0, v17);
   responseFlags[0] = 0;
@@ -2346,31 +2346,31 @@ LABEL_6:
   {
     if ((responseFlags[0] & 3) != 0)
     {
-      if (a3)
+      if (match)
       {
-        *a3 = [CKPrettyError errorWithDomain:CKErrorDomain code:1 format:@"Could not create a user notification"];
+        *match = [CKPrettyError errorWithDomain:CKErrorDomain code:1 format:@"Could not create a user notification"];
       }
     }
 
     else
     {
       v34 = dispatch_semaphore_create(0);
-      v19 = [(ShareAcceptor *)self singleOONMatch];
-      v20 = [v19 userIdentity];
-      v21 = [v20 lookupInfo];
-      v22 = [v21 emailAddress];
-      v23 = [(ShareAcceptor *)self singleOONMatch];
-      v24 = [v23 userIdentity];
-      v25 = [v24 lookupInfo];
-      v26 = v25;
-      if (v22)
+      singleOONMatch2 = [(ShareAcceptor *)self singleOONMatch];
+      userIdentity = [singleOONMatch2 userIdentity];
+      lookupInfo = [userIdentity lookupInfo];
+      emailAddress = [lookupInfo emailAddress];
+      singleOONMatch3 = [(ShareAcceptor *)self singleOONMatch];
+      userIdentity2 = [singleOONMatch3 userIdentity];
+      lookupInfo2 = [userIdentity2 lookupInfo];
+      v26 = lookupInfo2;
+      if (emailAddress)
       {
-        [v25 emailAddress];
+        [lookupInfo2 emailAddress];
       }
 
       else
       {
-        [v25 phoneNumber];
+        [lookupInfo2 phoneNumber];
       }
       v33 = ;
 
@@ -2380,8 +2380,8 @@ LABEL_6:
       v44 = sub_10000A9FC;
       v45 = sub_10000AA0C;
       v46 = 0;
-      v27 = [(ShareAcceptor *)self singleOONMatch];
-      v28 = [v27 participantID];
+      singleOONMatch4 = [(ShareAcceptor *)self singleOONMatch];
+      participantID = [singleOONMatch4 participantID];
       v37[0] = _NSConcreteStackBlock;
       v37[1] = 3221225472;
       v37[2] = sub_10000FED4;
@@ -2392,16 +2392,16 @@ LABEL_6:
       v40 = &v41;
       v30 = v34;
       v39 = v30;
-      [(ShareAcceptor *)self _initiateVettingForParticipantID:v28 address:v29 andThen:v37];
+      [(ShareAcceptor *)self _initiateVettingForParticipantID:participantID address:v29 andThen:v37];
 
       dispatch_semaphore_wait(v30, 0xFFFFFFFFFFFFFFFFLL);
-      if (a3)
+      if (match)
       {
-        *a3 = v42[5];
+        *match = v42[5];
       }
 
       _Block_object_dispose(&v41, 8);
-      v16 = v36;
+      v16 = firstObject;
     }
   }
 
@@ -2410,20 +2410,20 @@ LABEL_6:
   return 0;
 }
 
-- (BOOL)_requestSelectionFromMultipleOONMatches:(id *)a3
+- (BOOL)_requestSelectionFromMultipleOONMatches:(id *)matches
 {
-  v5 = [(ShareAcceptor *)self _showVettingAlert];
-  v6 = v5;
-  if (v5 && [v5 code] != 1)
+  _showVettingAlert = [(ShareAcceptor *)self _showVettingAlert];
+  v6 = _showVettingAlert;
+  if (_showVettingAlert && [_showVettingAlert code] != 1)
   {
     v7 = +[CKVettingAlerts alertContentForGenericInitiateVettingError];
     [CKVettingAlerts showFailureAlert:v7 isSourceICS:[(ShareAcceptor *)self isSourceICS]];
   }
 
-  if (a3)
+  if (matches)
   {
     v8 = v6;
-    *a3 = v6;
+    *matches = v6;
   }
 
   return 0;
@@ -2431,9 +2431,9 @@ LABEL_6:
 
 - (id)_iosShowVettingAlert
 {
-  v3 = [(ShareAcceptor *)self shareMetadata];
-  v4 = [v3 outOfNetworkMatches];
-  v5 = [v4 count];
+  shareMetadata = [(ShareAcceptor *)self shareMetadata];
+  outOfNetworkMatches = [shareMetadata outOfNetworkMatches];
+  v5 = [outOfNetworkMatches count];
 
   if (!v5)
   {
@@ -2447,12 +2447,12 @@ LABEL_6:
   v81 = 0u;
   v82 = 0u;
   v83 = 0u;
-  v63 = self;
-  v6 = [(ShareAcceptor *)self shareMetadata];
-  v7 = [v6 outOfNetworkMatches];
+  selfCopy = self;
+  shareMetadata2 = [(ShareAcceptor *)self shareMetadata];
+  outOfNetworkMatches2 = [shareMetadata2 outOfNetworkMatches];
 
-  obj = v7;
-  v67 = [v7 countByEnumeratingWithState:&v80 objects:v86 count:16];
+  obj = outOfNetworkMatches2;
+  v67 = [outOfNetworkMatches2 countByEnumeratingWithState:&v80 objects:v86 count:16];
   if (v67)
   {
     v65 = *v81;
@@ -2466,55 +2466,55 @@ LABEL_6:
         }
 
         v9 = *(*(&v80 + 1) + 8 * i);
-        v10 = [v9 userIdentity];
-        v11 = [v10 lookupInfo];
-        v12 = [v11 emailAddress];
-        if (v12)
+        userIdentity = [v9 userIdentity];
+        lookupInfo = [userIdentity lookupInfo];
+        emailAddress = [lookupInfo emailAddress];
+        if (emailAddress)
         {
         }
 
         else
         {
-          v13 = [v9 userIdentity];
-          v14 = [v13 lookupInfo];
-          v15 = [v14 phoneNumber];
+          userIdentity2 = [v9 userIdentity];
+          lookupInfo2 = [userIdentity2 lookupInfo];
+          phoneNumber = [lookupInfo2 phoneNumber];
 
-          if (!v15)
+          if (!phoneNumber)
           {
             v41 = CKUnderlyingErrorDomain;
-            v42 = [v9 userIdentity];
-            v40 = [v42 lookupInfo];
-            v43 = [CKPrettyError errorWithDomain:v41 code:8001 format:@"Got OON participant's lookup info without an email address or phone number: %@", v40];
+            userIdentity3 = [v9 userIdentity];
+            lookupInfo3 = [userIdentity3 lookupInfo];
+            v43 = [CKPrettyError errorWithDomain:v41 code:8001 format:@"Got OON participant's lookup info without an email address or phone number: %@", lookupInfo3];
             goto LABEL_41;
           }
         }
 
-        v16 = [v9 participantID];
-        v17 = [v9 userIdentity];
-        v18 = [v17 lookupInfo];
-        v19 = [v18 emailAddress];
-        if (v19)
+        participantID = [v9 participantID];
+        userIdentity4 = [v9 userIdentity];
+        lookupInfo4 = [userIdentity4 lookupInfo];
+        emailAddress2 = [lookupInfo4 emailAddress];
+        if (emailAddress2)
         {
-          v73 = [v9 userIdentity];
-          v70 = [v73 lookupInfo];
-          v20 = [v70 emailAddress];
-          v69 = v20;
+          userIdentity5 = [v9 userIdentity];
+          lookupInfo5 = [userIdentity5 lookupInfo];
+          emailAddress3 = [lookupInfo5 emailAddress];
+          v69 = emailAddress3;
         }
 
         else
         {
-          v20 = &stru_1000291A0;
+          emailAddress3 = &stru_1000291A0;
         }
 
-        v21 = [v9 userIdentity];
-        v22 = [v21 lookupInfo];
-        v23 = [v22 phoneNumber];
-        if (v23)
+        userIdentity6 = [v9 userIdentity];
+        lookupInfo6 = [userIdentity6 lookupInfo];
+        phoneNumber2 = [lookupInfo6 phoneNumber];
+        if (phoneNumber2)
         {
-          v75 = [v9 userIdentity];
-          v72 = [v75 lookupInfo];
-          v68 = [v72 phoneNumber];
-          v24 = v68;
+          userIdentity7 = [v9 userIdentity];
+          lookupInfo7 = [userIdentity7 lookupInfo];
+          phoneNumber3 = [lookupInfo7 phoneNumber];
+          v24 = phoneNumber3;
         }
 
         else
@@ -2522,14 +2522,14 @@ LABEL_6:
           v24 = &stru_1000291A0;
         }
 
-        v25 = [NSString stringWithFormat:@"%@:%@:%@", v16, v20, v24];
+        v25 = [NSString stringWithFormat:@"%@:%@:%@", participantID, emailAddress3, v24];
         [v66 addObject:v25];
 
-        if (v23)
+        if (phoneNumber2)
         {
         }
 
-        if (v19)
+        if (emailAddress2)
         {
         }
       }
@@ -2548,42 +2548,42 @@ LABEL_6:
   v76 = +[NSCharacterSet URLQueryAllowedCharacterSet];
   obj = v26;
   v71 = [v26 stringByAddingPercentEncodingWithAllowedCharacters:v76];
-  v74 = [(ShareAcceptor *)v63 shareName];
+  shareName = [(ShareAcceptor *)selfCopy shareName];
   v27 = +[NSCharacterSet URLQueryAllowedCharacterSet];
-  v28 = [v74 stringByAddingPercentEncodingWithAllowedCharacters:v27];
-  v29 = [(ShareAcceptor *)v63 shareMetadata];
-  v30 = [v29 share];
-  v31 = [v30 URL];
-  v32 = [v31 absoluteString];
+  v28 = [shareName stringByAddingPercentEncodingWithAllowedCharacters:v27];
+  shareMetadata3 = [(ShareAcceptor *)selfCopy shareMetadata];
+  share = [shareMetadata3 share];
+  v31 = [share URL];
+  absoluteString = [v31 absoluteString];
   v33 = +[NSCharacterSet URLQueryAllowedCharacterSet];
-  v34 = [v32 stringByAddingPercentEncodingWithAllowedCharacters:v33];
+  v34 = [absoluteString stringByAddingPercentEncodingWithAllowedCharacters:v33];
   v35 = [NSString stringWithFormat:@"prefs:root=APPLE_ACCOUNT&aaaction=oonAddressVetting&potentialMatches=%@&sharedItem=%@&shareURL=%@", v71, v28, v34];
   v77 = [NSURL URLWithString:v35];
 
-  v36 = [(ShareAcceptor *)v63 localBundleIDsToDisplayNames];
-  if ([v36 count])
+  localBundleIDsToDisplayNames = [(ShareAcceptor *)selfCopy localBundleIDsToDisplayNames];
+  if ([localBundleIDsToDisplayNames count])
   {
-    [(ShareAcceptor *)v63 localBundleIDsToDisplayNames];
-    v38 = v37 = v63;
-    v39 = [v38 allKeys];
-    v40 = [v39 firstObject];
+    [(ShareAcceptor *)selfCopy localBundleIDsToDisplayNames];
+    v38 = v37 = selfCopy;
+    allKeys = [v38 allKeys];
+    lookupInfo3 = [allKeys firstObject];
   }
 
   else
   {
-    [(ShareAcceptor *)v63 registeredAppBundleIDs];
-    v38 = v37 = v63;
-    v40 = [v38 firstObject];
+    [(ShareAcceptor *)selfCopy registeredAppBundleIDs];
+    v38 = v37 = selfCopy;
+    lookupInfo3 = [v38 firstObject];
   }
 
-  v44 = [(ShareAcceptor *)v37 shareName];
-  v45 = [(ShareAcceptor *)v37 shareMetadata];
-  v46 = [v45 ownerIdentity];
-  v47 = [v46 nameComponents];
-  v48 = [(ShareAcceptor *)v37 shareMetadata];
-  v49 = [v48 share];
-  v50 = [v49 objectForKeyedSubscript:CKShareTypeKey];
-  v51 = [CKVettingAlerts alertContentForFullVettingBindingPromptWithBundleID:v40 shareName:v44 ownerName:v47 shareType:v50 isSourceICS:[(ShareAcceptor *)v37 isSourceICS]];
+  shareName2 = [(ShareAcceptor *)v37 shareName];
+  shareMetadata4 = [(ShareAcceptor *)v37 shareMetadata];
+  ownerIdentity = [shareMetadata4 ownerIdentity];
+  nameComponents = [ownerIdentity nameComponents];
+  shareMetadata5 = [(ShareAcceptor *)v37 shareMetadata];
+  share2 = [shareMetadata5 share];
+  v50 = [share2 objectForKeyedSubscript:CKShareTypeKey];
+  v51 = [CKVettingAlerts alertContentForFullVettingBindingPromptWithBundleID:lookupInfo3 shareName:shareName2 ownerName:nameComponents shareType:v50 isSourceICS:[(ShareAcceptor *)v37 isSourceICS]];
 
   v52 = CFUserNotificationCreate(0, 0.0, 3uLL, 0, v51);
   responseFlags = 0;
@@ -2592,7 +2592,7 @@ LABEL_6:
   {
     v53 = [(ShareAcceptor *)v37 url];
     v43 = [CKPrettyError errorWithDomain:CKErrorDomain code:1 format:@"Share (%@) acceptance cancelled by the user. Email/phone number vetting cancelled.", v53];
-    v42 = v77;
+    userIdentity3 = v77;
   }
 
   else
@@ -2602,7 +2602,7 @@ LABEL_6:
       dispatch_once(&ck_log_initialization_predicate, ck_log_initialization_block);
     }
 
-    v42 = v77;
+    userIdentity3 = v77;
     v54 = ck_log_facility_ck;
     if (os_log_type_enabled(ck_log_facility_ck, OS_LOG_TYPE_INFO))
     {
@@ -2611,7 +2611,7 @@ LABEL_6:
       _os_log_impl(&_mh_execute_header, v54, OS_LOG_TYPE_INFO, "Redirecting user to iCloud preferences using URL: %{public}@", buf, 0xCu);
     }
 
-    v53 = [CKVettingAlerts getLaunchingOptionsFromOptions:0 isSourceICS:[(ShareAcceptor *)v63 isSourceICS]];
+    v53 = [CKVettingAlerts getLaunchingOptionsFromOptions:0 isSourceICS:[(ShareAcceptor *)selfCopy isSourceICS]];
     v55 = +[LSApplicationWorkspace defaultWorkspace];
     v78 = 0;
     v56 = [v55 openSensitiveURL:v77 withOptions:v53 error:&v78];
@@ -2622,7 +2622,7 @@ LABEL_6:
       if (!v43)
       {
         v61 = +[NSAssertionHandler currentHandler];
-        [v61 handleFailureInMethod:a2 object:v63 file:@"ShareAcceptor.m" lineNumber:1370 description:@"openSensitiveURL failed without error"];
+        [v61 handleFailureInMethod:a2 object:selfCopy file:@"ShareAcceptor.m" lineNumber:1370 description:@"openSensitiveURL failed without error"];
       }
 
       if (ck_log_initialization_predicate != -1)
@@ -2646,17 +2646,17 @@ LABEL_41:
   return v43;
 }
 
-- (void)_initiateVettingForParticipantID:(id)a3 address:(id)a4 andThen:(id)a5
+- (void)_initiateVettingForParticipantID:(id)d address:(id)address andThen:(id)then
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  addressCopy = address;
+  thenCopy = then;
   v11 = [CKInitiateParticipantVettingOperation alloc];
-  v12 = [(ShareAcceptor *)self shareMetadata];
-  v13 = [v11 initWithShareMetadata:v12 participantID:v8 address:v9];
+  shareMetadata = [(ShareAcceptor *)self shareMetadata];
+  v13 = [v11 initWithShareMetadata:shareMetadata participantID:dCopy address:addressCopy];
 
-  v14 = [v13 resolvedConfiguration];
-  [v14 setRequestOriginator:2];
+  resolvedConfiguration = [v13 resolvedConfiguration];
+  [resolvedConfiguration setRequestOriginator:2];
 
   v23[0] = 0;
   v23[1] = v23;
@@ -2675,49 +2675,49 @@ LABEL_41:
   v19[2] = sub_100010C18;
   v19[3] = &unk_100028B28;
   v21 = v23;
-  v16 = v10;
+  v16 = thenCopy;
   v20 = v16;
   v17 = objc_retainBlock(v19);
-  v18 = [(ShareAcceptor *)self metadataIndicatedContainer];
-  [v13 retryTimes:2 container:v18 participantVettingInitiatedBlock:v15 participantVettingInitiationCompletionBlock:v17];
+  metadataIndicatedContainer = [(ShareAcceptor *)self metadataIndicatedContainer];
+  [v13 retryTimes:2 container:metadataIndicatedContainer participantVettingInitiatedBlock:v15 participantVettingInitiationCompletionBlock:v17];
 
   _Block_object_dispose(v23, 8);
 }
 
-- (id)_deduplicateBundleToNamesMapping:(id)a3
+- (id)_deduplicateBundleToNamesMapping:(id)mapping
 {
-  v3 = a3;
-  v4 = [v3 allValues];
-  v5 = [NSSet setWithArray:v4];
+  mappingCopy = mapping;
+  allValues = [mappingCopy allValues];
+  v5 = [NSSet setWithArray:allValues];
   v6 = [v5 count];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100010D7C;
   v9[3] = &unk_100028B48;
-  v10 = v6 < [v4 count];
-  v7 = [v3 CKMapKeysAndValues:v9];
+  v10 = v6 < [allValues count];
+  v7 = [mappingCopy CKMapKeysAndValues:v9];
 
   return v7;
 }
 
 - (id)chooseFromMultipleBundleIDs
 {
-  v3 = [(ShareAcceptor *)self localBundleIDsToDisplayNames];
-  v4 = [(ShareAcceptor *)self _deduplicateBundleToNamesMapping:v3];
+  localBundleIDsToDisplayNames = [(ShareAcceptor *)self localBundleIDsToDisplayNames];
+  v4 = [(ShareAcceptor *)self _deduplicateBundleToNamesMapping:localBundleIDsToDisplayNames];
 
   v5 = [(ShareAcceptor *)self _iosShowAppSelectionDialogWithTitlesDictionary:v4];
 
   return v5;
 }
 
-- (id)_iosShowAppSelectionDialogWithTitlesDictionary:(id)a3
+- (id)_iosShowAppSelectionDialogWithTitlesDictionary:(id)dictionary
 {
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v20 = a3;
-  obj = [v20 allValues];
+  dictionaryCopy = dictionary;
+  obj = [dictionaryCopy allValues];
   v3 = [obj countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v3)
   {
@@ -2746,9 +2746,9 @@ LABEL_41:
           {
             v16 = v9;
 
-            v17 = [v11 registrationDate];
+            registrationDate = [v11 registrationDate];
 
-            v22 = v17;
+            v22 = registrationDate;
             v5 = v16;
           }
         }
@@ -2770,7 +2770,7 @@ LABEL_41:
   return 0;
 }
 
-- (BOOL)_validateShareURL:(id *)a3
+- (BOOL)_validateShareURL:(id *)l
 {
   v4 = [(ShareAcceptor *)self url];
 
@@ -2785,8 +2785,8 @@ LABEL_41:
   if ((_os_feature_enabled_impl() & 1) == 0)
   {
     v6 = [(ShareAcceptor *)self url];
-    v7 = [v6 CKURLSlug];
-    if ([v7 isEqual:kCKPhotosEPPMomentShareURLSlug])
+    cKURLSlug = [v6 CKURLSlug];
+    if ([cKURLSlug isEqual:kCKPhotosEPPMomentShareURLSlug])
     {
       v8 = __sTestOverridesAvailable;
 
@@ -2807,8 +2807,8 @@ LABEL_41:
   if ((_os_feature_enabled_impl() & 1) == 0)
   {
     v10 = [(ShareAcceptor *)self url];
-    v11 = [v10 CKURLSlug];
-    if ([v11 isEqual:kCKPhotosSharedCollectionsShareURLSlug])
+    cKURLSlug2 = [v10 CKURLSlug];
+    if ([cKURLSlug2 isEqual:kCKPhotosSharedCollectionsShareURLSlug])
     {
       v12 = __sTestOverridesAvailable;
 
@@ -2829,7 +2829,7 @@ LABEL_41:
   return 1;
 }
 
-- (BOOL)_notifyBladeRunner:(id *)a3
+- (BOOL)_notifyBladeRunner:(id *)runner
 {
   v4 = [(ShareAcceptor *)self url];
   v5 = [(ShareAcceptor *)self _shouldSendURLToBladeRunner:v4];
@@ -2841,9 +2841,9 @@ LABEL_41:
     [v6 setRemoteObjectInterface:v7];
 
     [v6 resume];
-    v8 = [v6 remoteObjectProxy];
+    remoteObjectProxy = [v6 remoteObjectProxy];
     v9 = [(ShareAcceptor *)self url];
-    [v8 willAcceptShareAtURL:v9];
+    [remoteObjectProxy willAcceptShareAtURL:v9];
   }
 
   return 1;
@@ -2863,12 +2863,12 @@ LABEL_41:
     v5 = 0;
   }
 
-  v6 = [(ShareAcceptor *)self shareMetadata];
-  if (v6)
+  shareMetadata = [(ShareAcceptor *)self shareMetadata];
+  if (shareMetadata)
   {
-    v7 = [(ShareAcceptor *)self shareMetadata];
-    v8 = [v7 outOfNetworkMatches];
-    v9 = [v8 count] != 0;
+    shareMetadata2 = [(ShareAcceptor *)self shareMetadata];
+    outOfNetworkMatches = [shareMetadata2 outOfNetworkMatches];
+    v9 = [outOfNetworkMatches count] != 0;
   }
 
   else
@@ -2876,17 +2876,17 @@ LABEL_41:
     v9 = 0;
   }
 
-  v10 = [(ShareAcceptor *)self shareMetadata];
-  v11 = [v10 callingParticipant];
-  if (v11)
+  shareMetadata3 = [(ShareAcceptor *)self shareMetadata];
+  callingParticipant = [shareMetadata3 callingParticipant];
+  if (callingParticipant)
   {
     LOBYTE(v12) = 0;
   }
 
   else
   {
-    v13 = [(ShareAcceptor *)self shareMetadata];
-    v12 = [v13 accessRequestsEnabled] & !v9 & v5;
+    shareMetadata4 = [(ShareAcceptor *)self shareMetadata];
+    v12 = [shareMetadata4 accessRequestsEnabled] & !v9 & v5;
   }
 
   v14 = +[CKBehaviorOptions sharedOptions];
@@ -2921,10 +2921,10 @@ LABEL_41:
     }
 
     log = v18;
-    v30 = [(ShareAcceptor *)self shareMetadata];
-    v20 = [v30 callingParticipant];
+    shareMetadata5 = [(ShareAcceptor *)self shareMetadata];
+    callingParticipant2 = [shareMetadata5 callingParticipant];
     v21 = v4;
-    if (v20)
+    if (callingParticipant2)
     {
       v22 = @"YES";
     }
@@ -2934,9 +2934,9 @@ LABEL_41:
       v22 = @"NO";
     }
 
-    v23 = [(ShareAcceptor *)self shareMetadata];
+    shareMetadata6 = [(ShareAcceptor *)self shareMetadata];
     *buf = 138413570;
-    if ([v23 accessRequestsEnabled])
+    if ([shareMetadata6 accessRequestsEnabled])
     {
       v24 = @"YES";
     }
@@ -2994,14 +2994,14 @@ LABEL_41:
   return v17 & 1;
 }
 
-- (BOOL)_fetchMetadata:(id *)a3
+- (BOOL)_fetchMetadata:(id *)metadata
 {
-  v4 = [(ShareAcceptor *)self shareMetadata];
+  shareMetadata = [(ShareAcceptor *)self shareMetadata];
 
-  if (!v4)
+  if (!shareMetadata)
   {
-    v5 = [(ShareAcceptor *)self fetchMetadata];
-    if (v5)
+    fetchMetadata = [(ShareAcceptor *)self fetchMetadata];
+    if (fetchMetadata)
     {
       if (ck_log_initialization_predicate != -1)
       {
@@ -3012,11 +3012,11 @@ LABEL_41:
       if (os_log_type_enabled(ck_log_facility_ck, OS_LOG_TYPE_INFO))
       {
         v7 = v6;
-        v8 = [(ShareAcceptor *)self shareMetadata];
+        shareMetadata2 = [(ShareAcceptor *)self shareMetadata];
         *v55 = 138412546;
-        *&v55[4] = v8;
+        *&v55[4] = shareMetadata2;
         *&v55[12] = 2112;
-        *&v55[14] = v5;
+        *&v55[14] = fetchMetadata;
         v9 = "Received share metadata %@, error %@";
         v10 = v7;
         v11 = 22;
@@ -3036,9 +3036,9 @@ LABEL_11:
       if (os_log_type_enabled(ck_log_facility_ck, OS_LOG_TYPE_INFO))
       {
         v7 = v12;
-        v8 = [(ShareAcceptor *)self shareMetadata];
+        shareMetadata2 = [(ShareAcceptor *)self shareMetadata];
         *v55 = 138412290;
-        *&v55[4] = v8;
+        *&v55[4] = shareMetadata2;
         v9 = "Received share metadata %@";
         v10 = v7;
         v11 = 12;
@@ -3048,21 +3048,21 @@ LABEL_11:
 
     if ([(ShareAcceptor *)self shouldShowRequestAccess:*v55])
     {
-      v13 = [v5 domain];
-      if ([v13 isEqualToString:CKErrorDomain])
+      domain = [fetchMetadata domain];
+      if ([domain isEqualToString:CKErrorDomain])
       {
-        v14 = [v5 code];
+        code = [fetchMetadata code];
 
-        if (v14 == 2)
+        if (code == 2)
         {
-          v15 = [v5 userInfo];
-          v16 = [v15 objectForKeyedSubscript:CKPartialErrorsByItemIDKey];
+          userInfo = [fetchMetadata userInfo];
+          v16 = [userInfo objectForKeyedSubscript:CKPartialErrorsByItemIDKey];
           v17 = [(ShareAcceptor *)self url];
           v18 = [v16 objectForKeyedSubscript:v17];
 
           [(ShareAcceptor *)self setFallbackFlowCause:v18];
           v19 = 19;
-          v5 = v18;
+          fetchMetadata = v18;
           goto LABEL_67;
         }
       }
@@ -3075,9 +3075,9 @@ LABEL_11:
       goto LABEL_67;
     }
 
-    v20 = [(ShareAcceptor *)self shareMetadata];
+    shareMetadata3 = [(ShareAcceptor *)self shareMetadata];
 
-    if (v20)
+    if (shareMetadata3)
     {
 LABEL_64:
       if (__sTestOverridesAvailable != 1 || ![(ShareAcceptor *)self shouldTerminateAfterFetchingMetadata])
@@ -3093,29 +3093,29 @@ LABEL_68:
       return 1;
     }
 
-    v21 = [v5 domain];
-    if ([v21 isEqualToString:CKErrorDomain])
+    domain2 = [fetchMetadata domain];
+    if ([domain2 isEqualToString:CKErrorDomain])
     {
-      v22 = [v5 code];
+      code2 = [fetchMetadata code];
 
-      if (v22 != 2)
+      if (code2 != 2)
       {
         goto LABEL_21;
       }
 
-      v21 = [v5 userInfo];
-      v23 = [v21 objectForKeyedSubscript:CKPartialErrorsByItemIDKey];
+      domain2 = [fetchMetadata userInfo];
+      v23 = [domain2 objectForKeyedSubscript:CKPartialErrorsByItemIDKey];
       v24 = [(ShareAcceptor *)self url];
       v25 = [v23 objectForKeyedSubscript:v24];
 
-      v5 = v25;
+      fetchMetadata = v25;
     }
 
 LABEL_21:
-    v26 = [v5 domain];
-    if ([v26 isEqualToString:CKErrorDomain])
+    domain3 = [fetchMetadata domain];
+    if ([domain3 isEqualToString:CKErrorDomain])
     {
-      if ([v5 code] == 9)
+      if ([fetchMetadata code] == 9)
       {
 
 LABEL_35:
@@ -3134,15 +3134,15 @@ LABEL_35:
           {
             v35 = v34;
             v36 = [(ShareAcceptor *)self url];
-            v37 = [v36 CKURLThroughSlug];
+            cKURLThroughSlug = [v36 CKURLThroughSlug];
             v38 = [(ShareAcceptor *)self url];
-            v39 = [v38 CKPathAfterSlug];
+            cKPathAfterSlug = [v38 CKPathAfterSlug];
             *v55 = 138543874;
-            *&v55[4] = v37;
+            *&v55[4] = cKURLThroughSlug;
             *&v55[12] = 2160;
             *&v55[14] = 1752392040;
             *&v55[22] = 2112;
-            v56 = v39;
+            v56 = cKPathAfterSlug;
             _os_log_impl(&_mh_execute_header, v35, OS_LOG_TYPE_INFO, "Got unauthenticated response when fetching share metadata for URL %{public}@%{mask.hash}@, showing login prompt", v55, 0x20u);
           }
 
@@ -3159,26 +3159,26 @@ LABEL_35:
         {
           v46 = v45;
           v47 = [(ShareAcceptor *)self url];
-          v48 = [v47 CKURLThroughSlug];
+          cKURLThroughSlug2 = [v47 CKURLThroughSlug];
           v49 = [(ShareAcceptor *)self url];
-          v50 = [v49 CKPathAfterSlug];
+          cKPathAfterSlug2 = [v49 CKPathAfterSlug];
           *v55 = 138543874;
-          *&v55[4] = v48;
+          *&v55[4] = cKURLThroughSlug2;
           *&v55[12] = 2160;
           *&v55[14] = 1752392040;
           *&v55[22] = 2112;
-          v56 = v50;
+          v56 = cKPathAfterSlug2;
           _os_log_impl(&_mh_execute_header, v46, OS_LOG_TYPE_INFO, "Got unauthenticated response when fetching share metadata for URL %{public}@%{mask.hash}@, forwarding to web", v55, 0x20u);
         }
 
-        [(ShareAcceptor *)self setFallbackFlowCause:v5];
+        [(ShareAcceptor *)self setFallbackFlowCause:fetchMetadata];
         [(ShareAcceptor *)self setWebFlowReason:@"notSignedIn"];
         goto LABEL_54;
       }
 
-      v31 = [v5 code];
+      code3 = [fetchMetadata code];
 
-      if (v31 == 115)
+      if (code3 == 115)
       {
         goto LABEL_35;
       }
@@ -3188,14 +3188,14 @@ LABEL_35:
     {
     }
 
-    v27 = [v5 domain];
-    if ([v27 isEqualToString:CKErrorDomain])
+    domain4 = [fetchMetadata domain];
+    if ([domain4 isEqualToString:CKErrorDomain])
     {
-      v28 = [v5 code];
+      code4 = [fetchMetadata code];
 
-      if (v28 == 6)
+      if (code4 == 6)
       {
-        [(ShareAcceptor *)self setFallbackFlowCause:v5];
+        [(ShareAcceptor *)self setFallbackFlowCause:fetchMetadata];
         v29 = 21;
 LABEL_63:
         [(ShareAcceptor *)self setState:v29];
@@ -3207,21 +3207,21 @@ LABEL_63:
     {
     }
 
-    v30 = [v5 domain];
-    if ([v30 isEqualToString:CKErrorDomain])
+    domain5 = [fetchMetadata domain];
+    if ([domain5 isEqualToString:CKErrorDomain])
     {
-      if ([v5 code] == 3)
+      if ([fetchMetadata code] == 3)
       {
 
 LABEL_60:
-        [(ShareAcceptor *)self setFallbackFlowCause:v5];
+        [(ShareAcceptor *)self setFallbackFlowCause:fetchMetadata];
         v29 = 20;
         goto LABEL_63;
       }
 
-      v53 = [v5 code];
+      code5 = [fetchMetadata code];
 
-      if (v53 == 4)
+      if (code5 == 4)
       {
         goto LABEL_60;
       }
@@ -3231,15 +3231,15 @@ LABEL_60:
     {
     }
 
-    v40 = [v5 domain];
-    if ([v40 isEqualToString:CKErrorDomain] && objc_msgSend(v5, "code") == 12)
+    domain6 = [fetchMetadata domain];
+    if ([domain6 isEqualToString:CKErrorDomain] && objc_msgSend(fetchMetadata, "code") == 12)
     {
       v41 = [(ShareAcceptor *)self url];
       v42 = [(ShareAcceptor *)self _urlIsALegacyiWorkShareURL:v41];
 
       if (v42)
       {
-        [(ShareAcceptor *)self setFallbackFlowCause:v5];
+        [(ShareAcceptor *)self setFallbackFlowCause:fetchMetadata];
 LABEL_54:
         v29 = 23;
         goto LABEL_63;
@@ -3250,12 +3250,12 @@ LABEL_54:
     {
     }
 
-    v43 = [v5 domain];
-    if ([v43 isEqualToString:CKErrorDomain])
+    domain7 = [fetchMetadata domain];
+    if ([domain7 isEqualToString:CKErrorDomain])
     {
-      v44 = [v5 code];
+      code6 = [fetchMetadata code];
 
-      if (v44 == 20)
+      if (code6 == 20)
       {
         [(ShareAcceptor *)self setFallbackFlowCause:0];
         v29 = 26;
@@ -3267,15 +3267,15 @@ LABEL_54:
     {
     }
 
-    v51 = [v5 domain];
-    if ([v51 isEqualToString:CKErrorDomain])
+    domain8 = [fetchMetadata domain];
+    if ([domain8 isEqualToString:CKErrorDomain])
     {
-      v52 = [v5 code];
+      code7 = [fetchMetadata code];
 
-      if (v52 == 110)
+      if (code7 == 110)
       {
 LABEL_58:
-        [(ShareAcceptor *)self setFallbackFlowCause:v5];
+        [(ShareAcceptor *)self setFallbackFlowCause:fetchMetadata];
         v29 = 22;
         goto LABEL_63;
       }
@@ -3285,7 +3285,7 @@ LABEL_58:
     {
     }
 
-    [(ShareAcceptor *)self setFallbackFlowCause:v5];
+    [(ShareAcceptor *)self setFallbackFlowCause:fetchMetadata];
     v29 = 17;
     goto LABEL_63;
   }
@@ -3293,12 +3293,12 @@ LABEL_58:
   return 1;
 }
 
-- (BOOL)_urlIsALegacyiWorkShareURL:(id)a3
+- (BOOL)_urlIsALegacyiWorkShareURL:(id)l
 {
-  v4 = a3;
-  if ([(ShareAcceptor *)self _urlIsAniWorkShareURL:v4])
+  lCopy = l;
+  if ([(ShareAcceptor *)self _urlIsAniWorkShareURL:lCopy])
   {
-    v5 = [(ShareAcceptor *)self _urlHasALongToken:v4];
+    v5 = [(ShareAcceptor *)self _urlHasALongToken:lCopy];
   }
 
   else
@@ -3309,9 +3309,9 @@ LABEL_58:
   return v5;
 }
 
-- (BOOL)_urlHasALongToken:(id)a3
+- (BOOL)_urlHasALongToken:(id)token
 {
-  v3 = a3;
+  tokenCopy = token;
   if (ck_log_initialization_predicate != -1)
   {
     dispatch_once(&ck_log_initialization_predicate, ck_log_initialization_block);
@@ -3321,24 +3321,24 @@ LABEL_58:
   if (os_log_type_enabled(ck_log_facility_ck, OS_LOG_TYPE_INFO))
   {
     v5 = v4;
-    v6 = [v3 CKURLThroughSlug];
-    v7 = [v3 CKPathAfterSlug];
+    cKURLThroughSlug = [tokenCopy CKURLThroughSlug];
+    cKPathAfterSlug = [tokenCopy CKPathAfterSlug];
     v25 = 138543874;
-    v26 = v6;
+    v26 = cKURLThroughSlug;
     v27 = 2160;
     v28 = 1752392040;
     v29 = 2112;
-    v30 = v7;
+    v30 = cKPathAfterSlug;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Verifying token length for URL %{public}@%{mask.hash}@", &v25, 0x20u);
   }
 
-  v8 = [[NSURLComponents alloc] initWithURL:v3 resolvingAgainstBaseURL:0];
-  v9 = [v8 path];
-  v10 = [v9 lastPathComponent];
+  v8 = [[NSURLComponents alloc] initWithURL:tokenCopy resolvingAgainstBaseURL:0];
+  path = [v8 path];
+  lastPathComponent = [path lastPathComponent];
 
-  if ([v10 length] > 3)
+  if ([lastPathComponent length] > 3)
   {
-    v16 = [v10 substringFromIndex:3];
+    v16 = [lastPathComponent substringFromIndex:3];
     v17 = [NSData CKDataFromBase64URLSafeString:v16];
     v18 = [v17 length];
     v15 = v18 > 0x10;
@@ -3354,16 +3354,16 @@ LABEL_58:
       {
         v21 = v19;
         v22 = [v17 length];
-        v23 = [v3 CKURLThroughSlug];
-        v24 = [v3 CKPathAfterSlug];
+        cKURLThroughSlug2 = [tokenCopy CKURLThroughSlug];
+        cKPathAfterSlug2 = [tokenCopy CKPathAfterSlug];
         v25 = 134218754;
         v26 = v22;
         v27 = 2114;
-        v28 = v23;
+        v28 = cKURLThroughSlug2;
         v29 = 2160;
         v30 = 1752392040;
         v31 = 2112;
-        v32 = v24;
+        v32 = cKPathAfterSlug2;
         _os_log_debug_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEBUG, "Found shortSharingTokenData of length (%lu) for the URL %{public}@%{mask.hash}@. Forwarding to the web", &v25, 0x2Au);
       }
     }
@@ -3380,14 +3380,14 @@ LABEL_58:
     if (os_log_type_enabled(ck_log_facility_ck, OS_LOG_TYPE_INFO))
     {
       v12 = v11;
-      v13 = [v3 CKURLThroughSlug];
-      v14 = [v3 CKPathAfterSlug];
+      cKURLThroughSlug3 = [tokenCopy CKURLThroughSlug];
+      cKPathAfterSlug3 = [tokenCopy CKPathAfterSlug];
       v25 = 138543874;
-      v26 = v13;
+      v26 = cKURLThroughSlug3;
       v27 = 2160;
       v28 = 1752392040;
       v29 = 2112;
-      v30 = v14;
+      v30 = cKPathAfterSlug3;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "Warn: Couldn't get a short token for the URL %{public}@%{mask.hash}@", &v25, 0x20u);
     }
 
@@ -3397,30 +3397,30 @@ LABEL_58:
   return v15;
 }
 
-- (BOOL)_lookUpRegisteredBundleIDs:(id *)a3
+- (BOOL)_lookUpRegisteredBundleIDs:(id *)ds
 {
   v6 = [(ShareAcceptor *)self url];
   v7 = [(ShareAcceptor *)self _shouldSendURLToBladeRunner:v6];
 
   if (v7)
   {
-    v8 = [(ShareAcceptor *)self shareMetadata];
-    v9 = [v8 outOfNetworkMatches];
-    v10 = [v9 count];
+    shareMetadata = [(ShareAcceptor *)self shareMetadata];
+    outOfNetworkMatches = [shareMetadata outOfNetworkMatches];
+    v10 = [outOfNetworkMatches count];
 
     if (v10)
     {
       v11 = [(ShareAcceptor *)self url];
-      v12 = [v11 CKBladerunnerShareURLSlugBasedVettingKeySuffix];
+      cKBladerunnerShareURLSlugBasedVettingKeySuffix = [v11 CKBladerunnerShareURLSlugBasedVettingKeySuffix];
 
-      if (!v12)
+      if (!cKBladerunnerShareURLSlugBasedVettingKeySuffix)
       {
         v30 = +[NSAssertionHandler currentHandler];
         v31 = [(ShareAcceptor *)self url];
         [v30 handleFailureInMethod:a2 object:self file:@"ShareAcceptor.m" lineNumber:1761 description:{@"Got a nil vettingKeySuffix for URL: %@", v31}];
       }
 
-      v44 = v12;
+      v44 = cKBladerunnerShareURLSlugBasedVettingKeySuffix;
       v13 = [NSArray arrayWithObjects:&v44 count:1];
       [(ShareAcceptor *)self setRegisteredAppBundleIDs:v13];
     }
@@ -3428,8 +3428,8 @@ LABEL_58:
     else
     {
       v45 = @"com.apple.bird";
-      v12 = [NSArray arrayWithObjects:&v45 count:1];
-      [(ShareAcceptor *)self setRegisteredDaemonBundleIDs:v12];
+      cKBladerunnerShareURLSlugBasedVettingKeySuffix = [NSArray arrayWithObjects:&v45 count:1];
+      [(ShareAcceptor *)self setRegisteredDaemonBundleIDs:cKBladerunnerShareURLSlugBasedVettingKeySuffix];
     }
 
     v24 = [(ShareAcceptor *)self url];
@@ -3438,9 +3438,9 @@ LABEL_58:
     if (v25)
     {
       v26 = [(ShareAcceptor *)self url];
-      v27 = [(ShareAcceptor *)self shareMetadata];
-      v28 = [v27 share];
-      [v28 setMutableURL:v26];
+      shareMetadata2 = [(ShareAcceptor *)self shareMetadata];
+      share = [shareMetadata2 share];
+      [share setMutableURL:v26];
     }
 
     return 1;
@@ -3467,8 +3467,8 @@ LABEL_58:
   objc_initWeak(&location, self);
   v17 = dispatch_semaphore_create(0);
   v18 = objc_opt_new();
-  v19 = [v18 resolvedConfiguration];
-  [v19 setRequestOriginator:2];
+  resolvedConfiguration = [v18 resolvedConfiguration];
+  [resolvedConfiguration setRequestOriginator:2];
 
   v32[0] = _NSConcreteStackBlock;
   v32[1] = 3221225472;
@@ -3479,15 +3479,15 @@ LABEL_58:
   v20 = v17;
   v33 = v20;
   [v18 setFetchRegisteredBundleIDsCompletionBlock:v32];
-  v21 = [(ShareAcceptor *)self metadataIndicatedContainer];
-  [v21 addOperation:v18];
+  metadataIndicatedContainer = [(ShareAcceptor *)self metadataIndicatedContainer];
+  [metadataIndicatedContainer addOperation:v18];
 
   dispatch_semaphore_wait(v20, 0xFFFFFFFFFFFFFFFFLL);
   v22 = v38[5];
   v23 = v22 == 0;
-  if (a3 && v22)
+  if (ds && v22)
   {
-    *a3 = v22;
+    *ds = v22;
   }
 
   objc_destroyWeak(&v35);
@@ -3497,17 +3497,17 @@ LABEL_58:
   return v23;
 }
 
-- (BOOL)_handleAppleInternalDaemon:(id)a3 response:(id)a4 error:(id *)a5
+- (BOOL)_handleAppleInternalDaemon:(id)daemon response:(id)response error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  daemonCopy = daemon;
+  responseCopy = response;
   [(ShareAcceptor *)self setState:26];
-  if (v9)
+  if (responseCopy)
   {
-    if (a5)
+    if (error)
     {
-      v10 = v9;
-      *a5 = v9;
+      v10 = responseCopy;
+      *error = responseCopy;
     }
   }
 
@@ -3522,19 +3522,19 @@ LABEL_58:
     if (os_log_type_enabled(ck_log_facility_ck, OS_LOG_TYPE_INFO))
     {
       v13 = 138543362;
-      v14 = v8;
+      v14 = daemonCopy;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "Daemon %{public}@ handled the share successfully, terminating", &v13, 0xCu);
     }
   }
 
-  return v9 == 0;
+  return responseCopy == 0;
 }
 
-- (BOOL)_handlePotentialAppleInternalDaemon:(id *)a3
+- (BOOL)_handlePotentialAppleInternalDaemon:(id *)daemon
 {
-  v4 = [(ShareAcceptor *)self registeredDaemonBundleIDs];
+  registeredDaemonBundleIDs = [(ShareAcceptor *)self registeredDaemonBundleIDs];
 
-  if (v4)
+  if (registeredDaemonBundleIDs)
   {
     v46 = 0u;
     v47 = 0u;
@@ -3568,17 +3568,17 @@ LABEL_58:
           {
             v9 = v8;
             v10 = [(ShareAcceptor *)self url];
-            v11 = [v10 CKURLThroughSlug];
+            cKURLThroughSlug = [v10 CKURLThroughSlug];
             v12 = [(ShareAcceptor *)self url];
-            v13 = [v12 CKPathAfterSlug];
+            cKPathAfterSlug = [v12 CKPathAfterSlug];
             *buf = v30;
             *&buf[4] = v7;
             *&buf[12] = 2114;
-            *&buf[14] = v11;
+            *&buf[14] = cKURLThroughSlug;
             *&buf[22] = 2160;
             v51 = 1752392040;
             LOWORD(v52) = 2112;
-            *(&v52 + 2) = v13;
+            *(&v52 + 2) = cKPathAfterSlug;
             _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Trying to call daemon %{public}@ for sharing URL %{public}@%{mask.hash}@", buf, 0x2Au);
           }
 
@@ -3633,7 +3633,7 @@ LABEL_58:
           v18 = v16;
           v40 = v18;
           v19 = [v14 remoteObjectProxyWithErrorHandler:v39];
-          v20 = [(ShareAcceptor *)self shareMetadata];
+          shareMetadata = [(ShareAcceptor *)self shareMetadata];
           v36[0] = _NSConcreteStackBlock;
           v36[1] = 3221225472;
           v36[2] = sub_1000132E0;
@@ -3643,7 +3643,7 @@ LABEL_58:
           v36[5] = self;
           v21 = v18;
           v37 = v21;
-          [v19 handleCloudKitShareMetadata:v20 completionHandler:v36];
+          [v19 handleCloudKitShareMetadata:shareMetadata completionHandler:v36];
 
           v22 = dispatch_time(0, 200000000);
           v23 = dispatch_semaphore_wait(v21, v22);
@@ -3676,7 +3676,7 @@ LABEL_58:
           {
             v24 = *(*&buf[8] + 40);
 LABEL_31:
-            v33 = [(ShareAcceptor *)self _handleAppleInternalDaemon:v7 response:v24 error:a3, v30];
+            v33 = [(ShareAcceptor *)self _handleAppleInternalDaemon:v7 response:v24 error:daemon, v30];
             v28 = 0;
             goto LABEL_32;
           }
@@ -3725,39 +3725,39 @@ LABEL_36:
   return v33 & 1;
 }
 
-- (int64_t)_lookUpLocalBundleIDs:(id *)a3 success:(BOOL *)a4
+- (int64_t)_lookUpLocalBundleIDs:(id *)ds success:(BOOL *)success
 {
-  v7 = [(ShareAcceptor *)self registeredAppBundleIDs];
+  registeredAppBundleIDs = [(ShareAcceptor *)self registeredAppBundleIDs];
 
-  if (v7)
+  if (registeredAppBundleIDs)
   {
-    v8 = [(ShareAcceptor *)self registeredAppBundleIDs];
+    registeredAppBundleIDs2 = [(ShareAcceptor *)self registeredAppBundleIDs];
     v9 = CKSelectLocalAppNamesByBundleIDs();
 
     [(ShareAcceptor *)self setLocalBundleIDsToDisplayNames:v9];
-    *a4 = 1;
+    *success = 1;
 
     return 10;
   }
 
   else
   {
-    if (a3)
+    if (ds)
     {
       v11 = CKUnderlyingErrorDomain;
       v12 = [(ShareAcceptor *)self url];
-      *a3 = [CKPrettyError errorWithDomain:v11 code:1000 format:@"No registered bundle IDs exist for share URL: %@", v12];
+      *ds = [CKPrettyError errorWithDomain:v11 code:1000 format:@"No registered bundle IDs exist for share URL: %@", v12];
     }
 
-    *a4 = 0;
+    *success = 0;
     return 26;
   }
 }
 
-- (BOOL)_promptAppSelection:(id *)a3
+- (BOOL)_promptAppSelection:(id *)selection
 {
-  v6 = [(ShareAcceptor *)self localBundleIDsToDisplayNames];
-  v7 = [v6 count];
+  localBundleIDsToDisplayNames = [(ShareAcceptor *)self localBundleIDsToDisplayNames];
+  v7 = [localBundleIDsToDisplayNames count];
 
   if (!v7)
   {
@@ -3768,8 +3768,8 @@ LABEL_36:
 
   if (-[ShareAcceptor shareNeedsAcceptance](self, "shareNeedsAcceptance") || (-[ShareAcceptor localBundleIDsToDisplayNames](self, "localBundleIDsToDisplayNames"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 count], v8, v9 >= 2))
   {
-    v10 = [(ShareAcceptor *)self localBundleIDsToDisplayNames];
-    v11 = [v10 count];
+    localBundleIDsToDisplayNames2 = [(ShareAcceptor *)self localBundleIDsToDisplayNames];
+    v11 = [localBundleIDsToDisplayNames2 count];
 
     if (v11 == 1)
     {
@@ -3785,17 +3785,17 @@ LABEL_36:
 
   else
   {
-    v13 = [(ShareAcceptor *)self localBundleIDsToDisplayNames];
-    v14 = [v13 allKeys];
-    v15 = [v14 firstObject];
-    [(ShareAcceptor *)self setChosenAppBundleID:v15];
+    localBundleIDsToDisplayNames3 = [(ShareAcceptor *)self localBundleIDsToDisplayNames];
+    allKeys = [localBundleIDsToDisplayNames3 allKeys];
+    firstObject = [allKeys firstObject];
+    [(ShareAcceptor *)self setChosenAppBundleID:firstObject];
 
     v12 = 0;
   }
 
-  v16 = [(ShareAcceptor *)self chosenAppBundleID];
+  chosenAppBundleID = [(ShareAcceptor *)self chosenAppBundleID];
 
-  if (!v16)
+  if (!chosenAppBundleID)
   {
     if (!v12)
     {
@@ -3804,28 +3804,28 @@ LABEL_36:
       v12 = [CKPrettyError errorWithDomain:v17 code:1000 format:@"No app selected (likely cancellation). While handling sharing URL: %@", v18];
     }
 
-    if (a3)
+    if (selection)
     {
       v19 = v12;
-      *a3 = v12;
+      *selection = v12;
     }
   }
 
-  return v16 != 0;
+  return chosenAppBundleID != 0;
 }
 
-- (BOOL)_authenticateUsers:(id *)a3
+- (BOOL)_authenticateUsers:(id *)users
 {
-  v5 = [(ShareAcceptor *)self chosenAppBundleID];
-  if (v5)
+  chosenAppBundleID = [(ShareAcceptor *)self chosenAppBundleID];
+  if (chosenAppBundleID)
   {
-    v6 = v5;
-    v7 = [(ShareAcceptor *)self shareNeedsAcceptance];
+    v6 = chosenAppBundleID;
+    shareNeedsAcceptance = [(ShareAcceptor *)self shareNeedsAcceptance];
 
-    if (v7)
+    if (shareNeedsAcceptance)
     {
-      v8 = [(ShareAcceptor *)self chosenAppBundleID];
-      v9 = [APApplication applicationWithBundleIdentifier:v8];
+      chosenAppBundleID2 = [(ShareAcceptor *)self chosenAppBundleID];
+      v9 = [APApplication applicationWithBundleIdentifier:chosenAppBundleID2];
 
       if (!v9)
       {
@@ -3864,14 +3864,14 @@ LABEL_36:
       if (os_log_type_enabled(ck_log_facility_ck, OS_LOG_TYPE_DEBUG))
       {
         v17 = v13;
-        v18 = [(ShareAcceptor *)self chosenAppBundleID];
+        chosenAppBundleID3 = [(ShareAcceptor *)self chosenAppBundleID];
         *buf = 138412546;
-        v21 = v18;
+        v21 = chosenAppBundleID3;
         v22 = 2112;
         v23 = v12;
         _os_log_debug_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEBUG, "Failed to authenticate user for bundle %@. Error: %@", buf, 0x16u);
 
-        if (!a3)
+        if (!users)
         {
           goto LABEL_11;
         }
@@ -3880,7 +3880,7 @@ LABEL_36:
       else
       {
 LABEL_9:
-        if (!a3)
+        if (!users)
         {
 LABEL_11:
 
@@ -3890,7 +3890,7 @@ LABEL_18:
       }
 
       v14 = v12;
-      *a3 = v12;
+      *users = v12;
       goto LABEL_11;
     }
   }
@@ -3899,11 +3899,11 @@ LABEL_18:
   return v11;
 }
 
-- (BOOL)_verifySelectedApp:(id *)a3
+- (BOOL)_verifySelectedApp:(id *)app
 {
-  v4 = [(ShareAcceptor *)self chosenAppBundleID];
+  chosenAppBundleID = [(ShareAcceptor *)self chosenAppBundleID];
   v20 = 0;
-  v5 = [[LSApplicationRecord alloc] initWithBundleIdentifier:v4 allowPlaceholder:0 error:&v20];
+  v5 = [[LSApplicationRecord alloc] initWithBundleIdentifier:chosenAppBundleID allowPlaceholder:0 error:&v20];
   v6 = v20;
   if (v6)
   {
@@ -3919,7 +3919,7 @@ LABEL_18:
     }
 
     *buf = 138412290;
-    v22 = v4;
+    v22 = chosenAppBundleID;
     v8 = "Failed to initialize LSApplicationRecord for selected app verification with bundle id %@.";
   }
 
@@ -3927,15 +3927,15 @@ LABEL_18:
   {
     if (v5)
     {
-      v9 = [v5 infoDictionary];
+      infoDictionary = [v5 infoDictionary];
 
-      if (v9)
+      if (infoDictionary)
       {
-        v10 = [v5 infoDictionary];
-        v11 = [v10 objectForKey:@"CKSharingSupported" ofClass:objc_opt_class()];
-        v12 = [v11 BOOLValue];
+        infoDictionary2 = [v5 infoDictionary];
+        v11 = [infoDictionary2 objectForKey:@"CKSharingSupported" ofClass:objc_opt_class()];
+        bOOLValue = [v11 BOOLValue];
 
-        if (v12)
+        if (bOOLValue)
         {
           goto LABEL_20;
         }
@@ -3956,7 +3956,7 @@ LABEL_18:
     }
 
     *buf = 138412290;
-    v22 = v4;
+    v22 = chosenAppBundleID;
     v8 = "LSApplicationRecord with bundle id %@ is nil or has no infoDictionary.";
   }
 
@@ -3972,16 +3972,16 @@ LABEL_17:
   if (os_log_type_enabled(ck_log_facility_ck, OS_LOG_TYPE_INFO))
   {
     v14 = v13;
-    v15 = [(ShareAcceptor *)self chosenAppBundleID];
+    chosenAppBundleID2 = [(ShareAcceptor *)self chosenAppBundleID];
     *buf = 138543362;
-    v22 = v15;
+    v22 = chosenAppBundleID2;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "User needs to update app %{public}@ to a version that supports sharing", buf, 0xCu);
   }
 
   [(ShareAcceptor *)self setState:25];
   v16 = CKUnderlyingErrorDomain;
   v17 = [(ShareAcceptor *)self url];
-  v18 = [CKPrettyError errorWithDomain:v16 code:1000 format:@"Selected app doesn't support sharing: %@. Share URL %@", v4, v17];
+  v18 = [CKPrettyError errorWithDomain:v16 code:1000 format:@"Selected app doesn't support sharing: %@. Share URL %@", chosenAppBundleID, v17];
   [(ShareAcceptor *)self setFallbackFlowCause:v18];
 
 LABEL_20:
@@ -3990,26 +3990,26 @@ LABEL_20:
 
 - (BOOL)_checkDataclassProvisioned
 {
-  v3 = [(ShareAcceptor *)self metadataIndicatedContainer];
-  v4 = [v3 containerID];
-  v5 = [v4 specialContainerType];
+  metadataIndicatedContainer = [(ShareAcceptor *)self metadataIndicatedContainer];
+  containerID = [metadataIndicatedContainer containerID];
+  specialContainerType = [containerID specialContainerType];
 
-  if (v5 == 5)
+  if (specialContainerType == 5)
   {
     return 1;
   }
 
-  v7 = [(ShareAcceptor *)self selectedAccount];
-  v8 = [(ShareAcceptor *)self metadataIndicatedContainer];
-  v9 = [v8 containerID];
+  selectedAccount = [(ShareAcceptor *)self selectedAccount];
+  metadataIndicatedContainer2 = [(ShareAcceptor *)self metadataIndicatedContainer];
+  containerID2 = [metadataIndicatedContainer2 containerID];
 
   v6 = 0;
-  if (v7 && v9)
+  if (selectedAccount && containerID2)
   {
-    v10 = [v9 representativeDataclass];
-    if (v10)
+    representativeDataclass = [containerID2 representativeDataclass];
+    if (representativeDataclass)
     {
-      v6 = [v7 isProvisionedForDataclass:v10];
+      v6 = [selectedAccount isProvisionedForDataclass:representativeDataclass];
     }
 
     else
@@ -4023,27 +4023,27 @@ LABEL_20:
 
 - (BOOL)_checkDataclassEnabled
 {
-  v3 = [(ShareAcceptor *)self metadataIndicatedContainer];
-  v4 = [v3 containerID];
-  v5 = [v4 specialContainerType];
+  metadataIndicatedContainer = [(ShareAcceptor *)self metadataIndicatedContainer];
+  containerID = [metadataIndicatedContainer containerID];
+  specialContainerType = [containerID specialContainerType];
 
-  if (v5 == 5)
+  if (specialContainerType == 5)
   {
     return 1;
   }
 
-  v7 = [(ShareAcceptor *)self selectedAccount];
-  v8 = [(ShareAcceptor *)self metadataIndicatedContainer];
-  v9 = [v8 containerID];
+  selectedAccount = [(ShareAcceptor *)self selectedAccount];
+  metadataIndicatedContainer2 = [(ShareAcceptor *)self metadataIndicatedContainer];
+  containerID2 = [metadataIndicatedContainer2 containerID];
 
   v6 = 0;
-  if (v7 && v9)
+  if (selectedAccount && containerID2)
   {
-    v10 = [v9 representativeDataclass];
-    if (v10)
+    representativeDataclass = [containerID2 representativeDataclass];
+    if (representativeDataclass)
     {
-      v11 = [v9 representativeDataclass];
-      v6 = [v7 isEnabledForDataclass:v11];
+      representativeDataclass2 = [containerID2 representativeDataclass];
+      v6 = [selectedAccount isEnabledForDataclass:representativeDataclass2];
     }
 
     else
@@ -4057,9 +4057,9 @@ LABEL_20:
 
 - (int64_t)_handlePotentialOONMatches
 {
-  v3 = [(ShareAcceptor *)self shareMetadata];
-  v4 = [v3 outOfNetworkMatches];
-  v5 = [v4 count];
+  shareMetadata = [(ShareAcceptor *)self shareMetadata];
+  outOfNetworkMatches = [shareMetadata outOfNetworkMatches];
+  v5 = [outOfNetworkMatches count];
 
   if (!v5)
   {
@@ -4069,7 +4069,7 @@ LABEL_20:
   return [(ShareAcceptor *)self initiateVetting];
 }
 
-- (BOOL)_launchApp:(id *)a3
+- (BOOL)_launchApp:(id *)app
 {
   v21 = 0;
   v22 = &v21;
@@ -4077,8 +4077,8 @@ LABEL_20:
   v24 = sub_10000A9FC;
   v25 = sub_10000AA0C;
   v26 = 0;
-  v5 = [(ShareAcceptor *)self shareMetadata];
-  v6 = [UIHandleCloudKitShareAction cloudKitShareActionWithShareMetadata:v5];
+  shareMetadata = [(ShareAcceptor *)self shareMetadata];
+  v6 = [UIHandleCloudKitShareAction cloudKitShareActionWithShareMetadata:shareMetadata];
 
   v28 = FBSOpenApplicationOptionKeyActions;
   v27 = v6;
@@ -4091,7 +4091,7 @@ LABEL_20:
   v10 = [FBSOpenApplicationOptions optionsWithDictionary:v9];
   v11 = dispatch_semaphore_create(0);
   v12 = +[FBSOpenApplicationService serviceWithDefaultShellEndpoint];
-  v13 = [(ShareAcceptor *)self chosenAppBundleID];
+  chosenAppBundleID = [(ShareAcceptor *)self chosenAppBundleID];
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_1000142A8;
@@ -4099,14 +4099,14 @@ LABEL_20:
   v20 = &v21;
   v14 = v11;
   v19 = v14;
-  [v12 openApplication:v13 withOptions:v10 completion:v18];
+  [v12 openApplication:chosenAppBundleID withOptions:v10 completion:v18];
 
   dispatch_semaphore_wait(v14, 0xFFFFFFFFFFFFFFFFLL);
   v15 = v22[5];
-  if (a3 && v15)
+  if (app && v15)
   {
     v15 = v15;
-    *a3 = v15;
+    *app = v15;
   }
 
   v16 = v15 == 0;
@@ -4115,20 +4115,20 @@ LABEL_20:
   return v16;
 }
 
-- (BOOL)makeStateTransition:(id *)a3
+- (BOOL)makeStateTransition:(id *)transition
 {
-  v27 = 1;
+  _getShareName = 1;
   switch([(ShareAcceptor *)self state])
   {
     case 0:
       [(ShareAcceptor *)self setState:1];
-      return [(ShareAcceptor *)self _validateShareURL:a3];
+      return [(ShareAcceptor *)self _validateShareURL:transition];
     case 1:
       [(ShareAcceptor *)self setState:2];
-      return [(ShareAcceptor *)self _notifyBladeRunner:a3];
+      return [(ShareAcceptor *)self _notifyBladeRunner:transition];
     case 2:
       [(ShareAcceptor *)self setState:4];
-      v27 = [(ShareAcceptor *)self _fetchMetadata:a3];
+      _getShareName = [(ShareAcceptor *)self _fetchMetadata:transition];
       if (ck_log_initialization_predicate != -1)
       {
         dispatch_once(&ck_log_initialization_predicate, ck_log_initialization_block);
@@ -4137,28 +4137,28 @@ LABEL_20:
       v10 = ck_log_facility_ck;
       if (!os_log_type_enabled(ck_log_facility_ck, OS_LOG_TYPE_INFO))
       {
-        return v27;
+        return _getShareName;
       }
 
       v8 = v10;
-      v11 = [(ShareAcceptor *)self shareMetadata];
-      v12 = [(ShareAcceptor *)self url];
-      v13 = [v12 CKURLThroughSlug];
+      shareMetadata = [(ShareAcceptor *)self shareMetadata];
+      registeredDaemonBundleIDs = [(ShareAcceptor *)self url];
+      cKURLThroughSlug = [registeredDaemonBundleIDs CKURLThroughSlug];
       v14 = [(ShareAcceptor *)self url];
-      v15 = [v14 CKPathAfterSlug];
+      cKPathAfterSlug = [v14 CKPathAfterSlug];
       *buf = 138413058;
-      v29 = v11;
+      v29 = shareMetadata;
       v30 = 2114;
-      v31 = v13;
+      v31 = cKURLThroughSlug;
       v32 = 2160;
       v33 = 1752392040;
       v34 = 2112;
-      v35 = v15;
+      v35 = cKPathAfterSlug;
       v16 = "Share metadata %@ ready, for sharing URL: %{public}@%{mask.hash}@";
       goto LABEL_38;
     case 3:
       [(ShareAcceptor *)self setState:11];
-      v27 = [(ShareAcceptor *)self _promptAppSelection:a3];
+      _getShareName = [(ShareAcceptor *)self _promptAppSelection:transition];
       if (ck_log_initialization_predicate != -1)
       {
         dispatch_once(&ck_log_initialization_predicate, ck_log_initialization_block);
@@ -4167,28 +4167,28 @@ LABEL_20:
       v18 = ck_log_facility_ck;
       if (!os_log_type_enabled(ck_log_facility_ck, OS_LOG_TYPE_INFO))
       {
-        return v27;
+        return _getShareName;
       }
 
       v8 = v18;
-      v11 = [(ShareAcceptor *)self chosenAppBundleID];
-      v12 = [(ShareAcceptor *)self url];
-      v13 = [v12 CKURLThroughSlug];
+      shareMetadata = [(ShareAcceptor *)self chosenAppBundleID];
+      registeredDaemonBundleIDs = [(ShareAcceptor *)self url];
+      cKURLThroughSlug = [registeredDaemonBundleIDs CKURLThroughSlug];
       v14 = [(ShareAcceptor *)self url];
-      v15 = [v14 CKPathAfterSlug];
+      cKPathAfterSlug = [v14 CKPathAfterSlug];
       *buf = 138544130;
-      v29 = v11;
+      v29 = shareMetadata;
       v30 = 2114;
-      v31 = v13;
+      v31 = cKURLThroughSlug;
       v32 = 2160;
       v33 = 1752392040;
       v34 = 2112;
-      v35 = v15;
+      v35 = cKPathAfterSlug;
       v16 = "User wants to open share in app %{public}@, for sharing URL: %{public}@%{mask.hash}@";
       goto LABEL_38;
     case 4:
       [(ShareAcceptor *)self setState:5];
-      v27 = [(ShareAcceptor *)self _getShareName];
+      _getShareName = [(ShareAcceptor *)self _getShareName];
       if (ck_log_initialization_predicate != -1)
       {
         dispatch_once(&ck_log_initialization_predicate, ck_log_initialization_block);
@@ -4197,19 +4197,19 @@ LABEL_20:
       v7 = ck_log_facility_ck;
       if (!os_log_type_enabled(ck_log_facility_ck, OS_LOG_TYPE_INFO))
       {
-        return v27;
+        return _getShareName;
       }
 
       v8 = v7;
-      v9 = [(ShareAcceptor *)self shareName];
+      shareName = [(ShareAcceptor *)self shareName];
       *buf = 138412290;
-      v29 = v9;
+      v29 = shareName;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Share name: %@", buf, 0xCu);
 
       goto LABEL_40;
     case 5:
       [(ShareAcceptor *)self setState:6];
-      v27 = [(ShareAcceptor *)self _lookUpRegisteredBundleIDs:a3];
+      _getShareName = [(ShareAcceptor *)self _lookUpRegisteredBundleIDs:transition];
       if (ck_log_initialization_predicate != -1)
       {
         dispatch_once(&ck_log_initialization_predicate, ck_log_initialization_block);
@@ -4218,37 +4218,37 @@ LABEL_20:
       v19 = ck_log_facility_ck;
       if (!os_log_type_enabled(ck_log_facility_ck, OS_LOG_TYPE_INFO))
       {
-        return v27;
+        return _getShareName;
       }
 
       v8 = v19;
-      v11 = [(ShareAcceptor *)self registeredAppBundleIDs];
-      v12 = [(ShareAcceptor *)self registeredDaemonBundleIDs];
-      v13 = [(ShareAcceptor *)self url];
-      v20 = [v13 CKURLThroughSlug];
+      shareMetadata = [(ShareAcceptor *)self registeredAppBundleIDs];
+      registeredDaemonBundleIDs = [(ShareAcceptor *)self registeredDaemonBundleIDs];
+      cKURLThroughSlug = [(ShareAcceptor *)self url];
+      v13CKURLThroughSlug = [cKURLThroughSlug CKURLThroughSlug];
       v21 = [(ShareAcceptor *)self url];
-      v22 = [v21 CKPathAfterSlug];
+      cKPathAfterSlug2 = [v21 CKPathAfterSlug];
       *buf = 138413314;
-      v29 = v11;
+      v29 = shareMetadata;
       v30 = 2114;
-      v31 = v12;
+      v31 = registeredDaemonBundleIDs;
       v32 = 2114;
-      v33 = v20;
+      v33 = v13CKURLThroughSlug;
       v34 = 2160;
       v35 = 1752392040;
       v36 = 2112;
-      v37 = v22;
+      v37 = cKPathAfterSlug2;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Registered bundle IDs fetched: apps: %@ / daemons: %{public}@, for sharing URL: %{public}@%{mask.hash}@", buf, 0x34u);
 
       goto LABEL_39;
     case 6:
       [(ShareAcceptor *)self setState:8];
-      return [(ShareAcceptor *)self _handlePotentialAppleInternalDaemon:a3];
+      return [(ShareAcceptor *)self _handlePotentialAppleInternalDaemon:transition];
     case 7:
       [(ShareAcceptor *)self setState:16];
-      return [(ShareAcceptor *)self _launchApp:a3];
+      return [(ShareAcceptor *)self _launchApp:transition];
     case 8:
-      [(ShareAcceptor *)self setState:[(ShareAcceptor *)self _lookUpLocalBundleIDs:a3 success:&v27]];
+      [(ShareAcceptor *)self setState:[(ShareAcceptor *)self _lookUpLocalBundleIDs:transition success:&_getShareName]];
       if (ck_log_initialization_predicate != -1)
       {
         dispatch_once(&ck_log_initialization_predicate, ck_log_initialization_block);
@@ -4257,23 +4257,23 @@ LABEL_20:
       v23 = ck_log_facility_ck;
       if (!os_log_type_enabled(ck_log_facility_ck, OS_LOG_TYPE_INFO))
       {
-        return v27;
+        return _getShareName;
       }
 
       v8 = v23;
-      v11 = [(ShareAcceptor *)self localBundleIDsToDisplayNames];
-      v12 = [(ShareAcceptor *)self url];
-      v13 = [v12 CKURLThroughSlug];
+      shareMetadata = [(ShareAcceptor *)self localBundleIDsToDisplayNames];
+      registeredDaemonBundleIDs = [(ShareAcceptor *)self url];
+      cKURLThroughSlug = [registeredDaemonBundleIDs CKURLThroughSlug];
       v14 = [(ShareAcceptor *)self url];
-      v15 = [v14 CKPathAfterSlug];
+      cKPathAfterSlug = [v14 CKPathAfterSlug];
       *buf = 138544130;
-      v29 = v11;
+      v29 = shareMetadata;
       v30 = 2114;
-      v31 = v13;
+      v31 = cKURLThroughSlug;
       v32 = 2160;
       v33 = 1752392040;
       v34 = 2112;
-      v35 = v15;
+      v35 = cKPathAfterSlug;
       v16 = "Local bundle IDs found: %{public}@, for sharing URL: %{public}@%{mask.hash}@";
 LABEL_38:
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, v16, buf, 0x2Au);
@@ -4281,7 +4281,7 @@ LABEL_38:
 LABEL_39:
 LABEL_40:
 
-      return v27;
+      return _getShareName;
     case 9:
     case 0x10:
       goto LABEL_47;
@@ -4290,76 +4290,76 @@ LABEL_40:
       return 1;
     case 0xBLL:
       [(ShareAcceptor *)self setState:12];
-      return [(ShareAcceptor *)self _verifySelectedApp:a3];
+      return [(ShareAcceptor *)self _verifySelectedApp:transition];
     case 0xCLL:
       [(ShareAcceptor *)self setState:7];
-      return [(ShareAcceptor *)self _authenticateUsers:a3];
+      return [(ShareAcceptor *)self _authenticateUsers:transition];
     case 0xDLL:
       [(ShareAcceptor *)self setState:26];
-      return [(ShareAcceptor *)self _initiateVettingOfSingleOONMatch:a3];
+      return [(ShareAcceptor *)self _initiateVettingOfSingleOONMatch:transition];
     case 0xELL:
       [(ShareAcceptor *)self setState:26];
-      return [(ShareAcceptor *)self _requestSelectionFromMultipleOONMatches:a3];
+      return [(ShareAcceptor *)self _requestSelectionFromMultipleOONMatches:transition];
     case 0xFLL:
-      v6 = [(ShareAcceptor *)self localBundleIDsToDisplayNames];
-      -[ShareAcceptor setState:](self, "setState:", -[ShareAcceptor _checkRepresentativeDataclassEnabled:](self, "_checkRepresentativeDataclassEnabled:", [v6 count] != 0));
+      localBundleIDsToDisplayNames = [(ShareAcceptor *)self localBundleIDsToDisplayNames];
+      -[ShareAcceptor setState:](self, "setState:", -[ShareAcceptor _checkRepresentativeDataclassEnabled:](self, "_checkRepresentativeDataclassEnabled:", [localBundleIDsToDisplayNames count] != 0));
 
       return 1;
     case 0x11:
-      v17 = [(ShareAcceptor *)self _fallbackFlowWarnShareUnavailable:a3];
+      v17 = [(ShareAcceptor *)self _fallbackFlowWarnShareUnavailable:transition];
       goto LABEL_46;
     case 0x12:
-      v17 = [(ShareAcceptor *)self _fallbackFlowWarnUnprovisionedDataclass:a3];
+      v17 = [(ShareAcceptor *)self _fallbackFlowWarnUnprovisionedDataclass:transition];
       goto LABEL_46;
     case 0x13:
-      v17 = [(ShareAcceptor *)self _fallbackFlowShareAccessRequest:a3];
+      v17 = [(ShareAcceptor *)self _fallbackFlowShareAccessRequest:transition];
       goto LABEL_46;
     case 0x14:
-      v17 = [(ShareAcceptor *)self _fallbackFlowWarnNetworkUnavailable:a3];
+      v17 = [(ShareAcceptor *)self _fallbackFlowWarnNetworkUnavailable:transition];
       goto LABEL_46;
     case 0x15:
-      v17 = [(ShareAcceptor *)self _fallbackFlowWarnServiceUnavailable:a3];
+      v17 = [(ShareAcceptor *)self _fallbackFlowWarnServiceUnavailable:transition];
       goto LABEL_46;
     case 0x16:
-      v24 = [(ShareAcceptor *)self _fallbackFlowICloudAccountSettings:a3 success:&v27];
-      v25 = self;
+      v24 = [(ShareAcceptor *)self _fallbackFlowICloudAccountSettings:transition success:&_getShareName];
+      selfCopy2 = self;
       goto LABEL_48;
     case 0x17:
-      v17 = [(ShareAcceptor *)self _fallbackFlowWebRedirect:a3];
+      v17 = [(ShareAcceptor *)self _fallbackFlowWebRedirect:transition];
       goto LABEL_46;
     case 0x18:
-      v17 = [(ShareAcceptor *)self _fallbackFlowDownloadApp:a3];
+      v17 = [(ShareAcceptor *)self _fallbackFlowDownloadApp:transition];
       goto LABEL_46;
     case 0x19:
-      v17 = [(ShareAcceptor *)self _fallbackFlowDownloadAppUpdate:a3];
+      v17 = [(ShareAcceptor *)self _fallbackFlowDownloadAppUpdate:transition];
 LABEL_46:
-      v27 = v17;
+      _getShareName = v17;
 LABEL_47:
-      v25 = self;
+      selfCopy2 = self;
       v24 = 26;
 LABEL_48:
-      [(ShareAcceptor *)v25 setState:v24];
+      [(ShareAcceptor *)selfCopy2 setState:v24];
       break;
     default:
-      return v27;
+      return _getShareName;
   }
 
-  return v27;
+  return _getShareName;
 }
 
-- (void)acceptShareWithCompletionHandler:(id)a3
+- (void)acceptShareWithCompletionHandler:(id)handler
 {
-  v32 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  if ([(ShareAcceptor *)v4 accepting])
+  handlerCopy = handler;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([(ShareAcceptor *)selfCopy accepting])
   {
     v30 = +[NSAssertionHandler currentHandler];
-    [v30 handleFailureInMethod:a2 object:v4 file:@"ShareAcceptor.m" lineNumber:2276 description:@"ShareAcceptor isn't meant to be used for multiple accepts."];
+    [v30 handleFailureInMethod:a2 object:selfCopy file:@"ShareAcceptor.m" lineNumber:2276 description:@"ShareAcceptor isn't meant to be used for multiple accepts."];
   }
 
-  [(ShareAcceptor *)v4 setAccepting:1];
-  objc_sync_exit(v4);
+  [(ShareAcceptor *)selfCopy setAccepting:1];
+  objc_sync_exit(selfCopy);
 
   if (ck_log_initialization_predicate != -1)
   {
@@ -4370,31 +4370,31 @@ LABEL_48:
   if (os_log_type_enabled(ck_log_facility_ck, OS_LOG_TYPE_INFO))
   {
     v6 = v5;
-    v7 = [(ShareAcceptor *)v4 url];
-    v8 = [v7 CKURLThroughSlug];
-    v9 = [(ShareAcceptor *)v4 url];
-    v10 = [v9 CKPathAfterSlug];
+    v7 = [(ShareAcceptor *)selfCopy url];
+    cKURLThroughSlug = [v7 CKURLThroughSlug];
+    v9 = [(ShareAcceptor *)selfCopy url];
+    cKPathAfterSlug = [v9 CKPathAfterSlug];
     *buf = 138543874;
-    v35 = v8;
+    v35 = cKURLThroughSlug;
     v36 = 2160;
     v37 = 1752392040;
     v38 = 2112;
-    v39 = v10;
+    v39 = cKPathAfterSlug;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Accepting share for url %{public}@%{mask.hash}@", buf, 0x20u);
   }
 
-  v11 = [(ShareAcceptor *)v4 retrievingDialog];
-  [v11 schedule];
+  retrievingDialog = [(ShareAcceptor *)selfCopy retrievingDialog];
+  [retrievingDialog schedule];
 
   v12 = 0;
   while (1)
   {
-    v13 = [(ShareAcceptor *)v4 state];
+    state = [(ShareAcceptor *)selfCopy state];
     v33 = v12;
-    v14 = [(ShareAcceptor *)v4 makeStateTransition:&v33];
+    v14 = [(ShareAcceptor *)selfCopy makeStateTransition:&v33];
     v15 = v33;
 
-    v16 = [(ShareAcceptor *)v4 cancelled];
+    cancelled = [(ShareAcceptor *)selfCopy cancelled];
     if (ck_log_initialization_predicate != -1)
     {
       dispatch_once(&ck_log_initialization_predicate, ck_log_initialization_block);
@@ -4404,11 +4404,11 @@ LABEL_48:
     if (os_log_type_enabled(ck_log_facility_ck, OS_LOG_TYPE_INFO))
     {
       v18 = v17;
-      v19 = [(ShareAcceptor *)v4 url];
-      v20 = [v19 CKURLThroughSlug];
-      v21 = [(ShareAcceptor *)v4 url];
-      v22 = [v21 CKPathAfterSlug];
-      v23 = off_100028BE0[[(ShareAcceptor *)v4 state]];
+      v19 = [(ShareAcceptor *)selfCopy url];
+      cKURLThroughSlug2 = [v19 CKURLThroughSlug];
+      v21 = [(ShareAcceptor *)selfCopy url];
+      cKPathAfterSlug2 = [v21 CKPathAfterSlug];
+      v23 = off_100028BE0[[(ShareAcceptor *)selfCopy state]];
       v24 = @"false";
       if (v14)
       {
@@ -4421,16 +4421,16 @@ LABEL_48:
       }
 
       *buf = 138544898;
-      if (v16)
+      if (cancelled)
       {
         v24 = @"true";
       }
 
-      v35 = v20;
+      v35 = cKURLThroughSlug2;
       v36 = 2160;
       v37 = 1752392040;
       v38 = 2112;
-      v39 = v22;
+      v39 = cKPathAfterSlug2;
       v40 = 2080;
       v41 = v23;
       v42 = 2114;
@@ -4442,26 +4442,26 @@ LABEL_48:
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_INFO, "Share acceptance for URL: %{public}@%{mask.hash}@, completed [%s]. Success=%{public}@, cancelled: %{public}@, error: %@", buf, 0x48u);
     }
 
-    if (v16 & 1 | ((v14 & 1) == 0))
+    if (cancelled & 1 | ((v14 & 1) == 0))
     {
       break;
     }
 
-    if ([(ShareAcceptor *)v4 state]== v13)
+    if ([(ShareAcceptor *)selfCopy state]== state)
     {
       v26 = +[NSAssertionHandler currentHandler];
-      [v26 handleFailureInMethod:a2 object:v4 file:@"ShareAcceptor.m" lineNumber:2299 description:{@"State %s hasn't been advanced", off_100028BE0[v13]}];
+      [v26 handleFailureInMethod:a2 object:selfCopy file:@"ShareAcceptor.m" lineNumber:2299 description:{@"State %s hasn't been advanced", off_100028BE0[state]}];
     }
 
     v12 = v15;
-    if ([(ShareAcceptor *)v4 state]== 26)
+    if ([(ShareAcceptor *)selfCopy state]== 26)
     {
-      v16 = 0;
+      cancelled = 0;
       break;
     }
   }
 
-  [(ShareAcceptor *)v4 setState:26];
+  [(ShareAcceptor *)selfCopy setState:26];
   if (v15)
   {
     v27 = 1;
@@ -4474,8 +4474,8 @@ LABEL_48:
 
   if ((v27 & 1) == 0)
   {
-    v28 = [(ShareAcceptor *)v4 state];
-    v15 = [CKPrettyError errorWithDomain:CKUnderlyingErrorDomain code:1000 format:@"Failure accepting share while in [%s]", off_100028BE0[v28]];
+    state2 = [(ShareAcceptor *)selfCopy state];
+    v15 = [CKPrettyError errorWithDomain:CKUnderlyingErrorDomain code:1000 format:@"Failure accepting share while in [%s]", off_100028BE0[state2]];
   }
 
   if (v15)
@@ -4485,7 +4485,7 @@ LABEL_48:
 
   else
   {
-    v29 = v16;
+    v29 = cancelled;
   }
 
   if (v29 == 1)
@@ -4493,7 +4493,7 @@ LABEL_48:
     v15 = [CKPrettyError errorWithDomain:CKUnderlyingErrorDomain code:1000 format:@"Acceptance cancelled by the user"];
   }
 
-  v32[2](v32, v15);
+  handlerCopy[2](handlerCopy, v15);
 }
 
 @end

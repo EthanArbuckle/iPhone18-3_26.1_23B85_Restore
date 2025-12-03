@@ -1,27 +1,27 @@
 @interface TSTTableHeaderStorageBucket
-- (TSTTableHeaderStorageBucket)initWithContext:(id)a3;
-- (id)headerForKey:(unsigned int)a3 willModify:(BOOL)a4;
-- (id)headerForKey:(unsigned int)a3 willModify:(BOOL)a4 createIfNotThere:(BOOL)a5;
-- (unsigned)lowerBound:(unsigned int)a3;
+- (TSTTableHeaderStorageBucket)initWithContext:(id)context;
+- (id)headerForKey:(unsigned int)key willModify:(BOOL)modify;
+- (id)headerForKey:(unsigned int)key willModify:(BOOL)modify createIfNotThere:(BOOL)there;
+- (unsigned)lowerBound:(unsigned int)bound;
 - (unsigned)maxKey;
 - (unsigned)minKey;
-- (unsigned)upperBound:(unsigned int)a3;
-- (void)applyFunction:(void *)a3 withState:(void *)a4 willModify:(BOOL)a5;
+- (unsigned)upperBound:(unsigned int)bound;
+- (void)applyFunction:(void *)function withState:(void *)state willModify:(BOOL)modify;
 - (void)dealloc;
-- (void)makeHeadersPerformSelector:(SEL)a3 willModify:(BOOL)a4;
+- (void)makeHeadersPerformSelector:(SEL)selector willModify:(BOOL)modify;
 - (void)removeAllHeaders;
-- (void)removeHeaderForKey:(unsigned int)a3;
-- (void)setHeader:(id)a3 forKey:(unsigned int)a4;
-- (void)shiftKeysAtIndex:(unsigned int)a3 amount:(int)a4;
+- (void)removeHeaderForKey:(unsigned int)key;
+- (void)setHeader:(id)header forKey:(unsigned int)key;
+- (void)shiftKeysAtIndex:(unsigned int)index amount:(int)amount;
 @end
 
 @implementation TSTTableHeaderStorageBucket
 
-- (TSTTableHeaderStorageBucket)initWithContext:(id)a3
+- (TSTTableHeaderStorageBucket)initWithContext:(id)context
 {
   v4.receiver = self;
   v4.super_class = TSTTableHeaderStorageBucket;
-  if ([(TSPObject *)&v4 initWithContext:a3])
+  if ([(TSPObject *)&v4 initWithContext:context])
   {
     operator new();
   }
@@ -43,9 +43,9 @@
   [(TSTTableHeaderStorageBucket *)&v4 dealloc];
 }
 
-- (id)headerForKey:(unsigned int)a3 willModify:(BOOL)a4
+- (id)headerForKey:(unsigned int)key willModify:(BOOL)modify
 {
-  if (a4)
+  if (modify)
   {
     [(TSPObject *)self willModify];
   }
@@ -63,8 +63,8 @@
   do
   {
     v11 = *(v8 + 8);
-    v12 = v11 >= a3;
-    v13 = v11 < a3;
+    v12 = v11 >= key;
+    v13 = v11 < key;
     if (v12)
     {
       v10 = v8;
@@ -74,7 +74,7 @@
   }
 
   while (v8);
-  if (v10 != v7 && *(v10 + 8) <= a3)
+  if (v10 != v7 && *(v10 + 8) <= key)
   {
     return *(v10 + 5);
   }
@@ -85,10 +85,10 @@
   }
 }
 
-- (id)headerForKey:(unsigned int)a3 willModify:(BOOL)a4 createIfNotThere:(BOOL)a5
+- (id)headerForKey:(unsigned int)key willModify:(BOOL)modify createIfNotThere:(BOOL)there
 {
-  v5 = a5;
-  if (a4)
+  thereCopy = there;
+  if (modify)
   {
     [(TSPObject *)self willModify];
   }
@@ -106,8 +106,8 @@
   do
   {
     v13 = *(v10 + 8);
-    v14 = v13 >= a3;
-    v15 = v13 < a3;
+    v14 = v13 >= key;
+    v15 = v13 < key;
     if (v14)
     {
       v12 = v10;
@@ -117,7 +117,7 @@
   }
 
   while (v10);
-  if (v12 != v9 && *(v12 + 8) <= a3)
+  if (v12 != v9 && *(v12 + 8) <= key)
   {
     v16 = *(v12 + 5);
     if (v16)
@@ -132,43 +132,43 @@ LABEL_11:
     v16 = 0;
   }
 
-  if (v5)
+  if (thereCopy)
   {
     v16 = objc_alloc_init(TSTTableHeaderInfo);
     v17 = self->mMap;
     v18 = v16;
-    v21 = a3;
+    keyCopy = key;
     v22 = v16;
     v19 = v16;
-    std::__tree<std::__value_type<unsigned int,SFUtility::ObjcSharedPtr<NSObject>>,std::__map_value_compare<unsigned int,std::__value_type<unsigned int,SFUtility::ObjcSharedPtr<NSObject>>,std::less<unsigned int>,true>,std::allocator<std::__value_type<unsigned int,SFUtility::ObjcSharedPtr<NSObject>>>>::__emplace_unique_key_args<unsigned int,std::pair<unsigned int const,SFUtility::ObjcSharedPtr<NSObject>>>(v17, &v21);
+    std::__tree<std::__value_type<unsigned int,SFUtility::ObjcSharedPtr<NSObject>>,std::__map_value_compare<unsigned int,std::__value_type<unsigned int,SFUtility::ObjcSharedPtr<NSObject>>,std::less<unsigned int>,true>,std::allocator<std::__value_type<unsigned int,SFUtility::ObjcSharedPtr<NSObject>>>>::__emplace_unique_key_args<unsigned int,std::pair<unsigned int const,SFUtility::ObjcSharedPtr<NSObject>>>(v17, &keyCopy);
   }
 
   return v16;
 }
 
-- (void)setHeader:(id)a3 forKey:(unsigned int)a4
+- (void)setHeader:(id)header forKey:(unsigned int)key
 {
   [(TSPObject *)self willModify];
   mMap = self->mMap;
-  if (!a3)
+  if (!header)
   {
-    v8 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"void p_SetHeaderForKey(TSTSortedIntKeyMap *, UInt32, TSTTableHeaderInfo *)"}];
-    [v8 handleFailureInFunction:v9 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/tables/TSTTableHeaderStorageBucket.mm"), 186, @"Tried to set nil header for key."}];
+    [currentHandler handleFailureInFunction:v9 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/tables/TSTTableHeaderStorageBucket.mm"), 186, @"Tried to set nil header for key."}];
   }
 
-  v10 = a3;
-  v12 = a4;
-  v13 = a3;
-  v11 = a3;
-  std::__tree<std::__value_type<unsigned int,SFUtility::ObjcSharedPtr<NSObject>>,std::__map_value_compare<unsigned int,std::__value_type<unsigned int,SFUtility::ObjcSharedPtr<NSObject>>,std::less<unsigned int>,true>,std::allocator<std::__value_type<unsigned int,SFUtility::ObjcSharedPtr<NSObject>>>>::__emplace_unique_key_args<unsigned int,std::pair<unsigned int const,SFUtility::ObjcSharedPtr<NSObject>>>(mMap, &v12);
+  headerCopy = header;
+  keyCopy = key;
+  headerCopy2 = header;
+  headerCopy3 = header;
+  std::__tree<std::__value_type<unsigned int,SFUtility::ObjcSharedPtr<NSObject>>,std::__map_value_compare<unsigned int,std::__value_type<unsigned int,SFUtility::ObjcSharedPtr<NSObject>>,std::less<unsigned int>,true>,std::allocator<std::__value_type<unsigned int,SFUtility::ObjcSharedPtr<NSObject>>>>::__emplace_unique_key_args<unsigned int,std::pair<unsigned int const,SFUtility::ObjcSharedPtr<NSObject>>>(mMap, &keyCopy);
 }
 
-- (void)removeHeaderForKey:(unsigned int)a3
+- (void)removeHeaderForKey:(unsigned int)key
 {
-  v4 = a3;
+  keyCopy = key;
   [(TSPObject *)self willModify];
-  std::__tree<std::__value_type<unsigned int,SFUtility::ObjcSharedPtr<NSObject>>,std::__map_value_compare<unsigned int,std::__value_type<unsigned int,SFUtility::ObjcSharedPtr<NSObject>>,std::less<unsigned int>,true>,std::allocator<std::__value_type<unsigned int,SFUtility::ObjcSharedPtr<NSObject>>>>::__erase_unique<unsigned int>(self->mMap, &v4);
+  std::__tree<std::__value_type<unsigned int,SFUtility::ObjcSharedPtr<NSObject>>,std::__map_value_compare<unsigned int,std::__value_type<unsigned int,SFUtility::ObjcSharedPtr<NSObject>>,std::less<unsigned int>,true>,std::allocator<std::__value_type<unsigned int,SFUtility::ObjcSharedPtr<NSObject>>>>::__erase_unique<unsigned int>(self->mMap, &keyCopy);
 }
 
 - (void)removeAllHeaders
@@ -181,9 +181,9 @@ LABEL_11:
   *(mMap + 1) = 0;
 }
 
-- (void)makeHeadersPerformSelector:(SEL)a3 willModify:(BOOL)a4
+- (void)makeHeadersPerformSelector:(SEL)selector willModify:(BOOL)modify
 {
-  if (a4)
+  if (modify)
   {
     [(TSPObject *)self willModify];
   }
@@ -194,7 +194,7 @@ LABEL_11:
   {
     do
     {
-      [v7[5] performSelector:a3];
+      [v7[5] performSelector:selector];
       v8 = v7[1];
       if (v8)
       {
@@ -226,9 +226,9 @@ LABEL_11:
   }
 }
 
-- (void)applyFunction:(void *)a3 withState:(void *)a4 willModify:(BOOL)a5
+- (void)applyFunction:(void *)function withState:(void *)state willModify:(BOOL)modify
 {
-  if (a5)
+  if (modify)
   {
     [(TSPObject *)self willModify];
   }
@@ -239,7 +239,7 @@ LABEL_11:
   {
     do
     {
-      (a3)(*(v9 + 8), v9[5], a4);
+      (function)(*(v9 + 8), v9[5], state);
       v10 = v9[1];
       if (v10)
       {
@@ -271,28 +271,28 @@ LABEL_11:
   }
 }
 
-- (void)shiftKeysAtIndex:(unsigned int)a3 amount:(int)a4
+- (void)shiftKeysAtIndex:(unsigned int)index amount:(int)amount
 {
-  v5 = a3;
-  if ((a4 + a3) < 0)
+  indexCopy = index;
+  if ((amount + index) < 0)
   {
-    v7 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSTTableHeaderStorageBucket shiftKeysAtIndex:amount:]"];
-    [v7 handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/tables/TSTTableHeaderStorageBucket.mm"), 266, @"Can't shift indexes below zero!"}];
+    [currentHandler handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/tables/TSTTableHeaderStorageBucket.mm"), 266, @"Can't shift indexes below zero!"}];
   }
 
   [(TSPObject *)self willModify];
-  v9 = [(TSTTableHeaderStorageBucket *)self maxKey];
-  v10 = v9;
-  if (a4 < 0)
+  maxKey = [(TSTTableHeaderStorageBucket *)self maxKey];
+  v10 = maxKey;
+  if (amount < 0)
   {
-    v35 = v5;
-    if (v9 >= v5)
+    v35 = indexCopy;
+    if (maxKey >= indexCopy)
     {
       do
       {
-        v23 = v5 + a4;
-        v34 = v5 + a4;
+        v23 = indexCopy + amount;
+        v34 = indexCopy + amount;
         mMap = self->mMap;
         v25 = mMap[1];
         if (!v25)
@@ -304,8 +304,8 @@ LABEL_11:
         do
         {
           v27 = *(v25 + 8);
-          v15 = v27 >= v5;
-          v28 = v27 < v5;
+          v15 = v27 >= indexCopy;
+          v28 = v27 < indexCopy;
           if (v15)
           {
             v26 = v25;
@@ -315,7 +315,7 @@ LABEL_11:
         }
 
         while (v25);
-        if (v26 != (mMap + 1) && *(v26 + 8) <= v5 && (v29 = *(v26 + 5)) != 0)
+        if (v26 != (mMap + 1) && *(v26 + 8) <= indexCopy && (v29 = *(v26 + 5)) != 0)
         {
           v30 = v29;
           v36 = v23;
@@ -335,19 +335,19 @@ LABEL_30:
         }
 
         std::__tree<std::__value_type<unsigned int,SFUtility::ObjcSharedPtr<NSObject>>,std::__map_value_compare<unsigned int,std::__value_type<unsigned int,SFUtility::ObjcSharedPtr<NSObject>>,std::less<unsigned int>,true>,std::allocator<std::__value_type<unsigned int,SFUtility::ObjcSharedPtr<NSObject>>>>::__erase_unique<unsigned int>(v32, v33);
-        v5 = v35 + 1;
-        v35 = v5;
+        indexCopy = v35 + 1;
+        v35 = indexCopy;
       }
 
-      while (v5 <= v10);
+      while (indexCopy <= v10);
     }
   }
 
-  else if (v9 >= v5)
+  else if (maxKey >= indexCopy)
   {
     do
     {
-      v35 = v10 + a4;
+      v35 = v10 + amount;
       v11 = self->mMap;
       v12 = v11[1];
       if (!v12)
@@ -373,7 +373,7 @@ LABEL_30:
       if (v13 != (v11 + 1) && *(v13 + 8) <= v10 && (v17 = *(v13 + 5)) != 0)
       {
         v18 = v17;
-        v36 = v10 + a4;
+        v36 = v10 + amount;
         v37 = v17;
         v19 = v17;
         std::__tree<std::__value_type<unsigned int,SFUtility::ObjcSharedPtr<NSObject>>,std::__map_value_compare<unsigned int,std::__value_type<unsigned int,SFUtility::ObjcSharedPtr<NSObject>>,std::less<unsigned int>,true>,std::allocator<std::__value_type<unsigned int,SFUtility::ObjcSharedPtr<NSObject>>>>::__emplace_unique_key_args<unsigned int,std::pair<unsigned int const,SFUtility::ObjcSharedPtr<NSObject>>>(v11, &v36);
@@ -393,7 +393,7 @@ LABEL_15:
       std::__tree<std::__value_type<unsigned int,SFUtility::ObjcSharedPtr<NSObject>>,std::__map_value_compare<unsigned int,std::__value_type<unsigned int,SFUtility::ObjcSharedPtr<NSObject>>,std::less<unsigned int>,true>,std::allocator<std::__value_type<unsigned int,SFUtility::ObjcSharedPtr<NSObject>>>>::__erase_unique<unsigned int>(v20, v21);
     }
 
-    while (v10-- > v5);
+    while (v10-- > indexCopy);
   }
 }
 
@@ -497,7 +497,7 @@ LABEL_15:
   return result;
 }
 
-- (unsigned)upperBound:(unsigned int)a3
+- (unsigned)upperBound:(unsigned int)bound
 {
   mMap = self->mMap;
   v6 = mMap[1];
@@ -505,8 +505,8 @@ LABEL_15:
   for (i = v6; i; i = *&i[8 * v9])
   {
     v7 = *(i + 8);
-    v8 = v7 > a3;
-    v9 = v7 <= a3;
+    v8 = v7 > bound;
+    v9 = v7 <= bound;
     if (v8)
     {
       v4 = i;
@@ -516,7 +516,7 @@ LABEL_15:
   return *(v4 + 8);
 }
 
-- (unsigned)lowerBound:(unsigned int)a3
+- (unsigned)lowerBound:(unsigned int)bound
 {
   mMap = self->mMap;
   v6 = mMap[1];
@@ -524,8 +524,8 @@ LABEL_15:
   for (i = v6; i; i = *&i[8 * v9])
   {
     v7 = *(i + 8);
-    v8 = v7 >= a3;
-    v9 = v7 < a3;
+    v8 = v7 >= bound;
+    v9 = v7 < bound;
     if (v8)
     {
       v4 = i;

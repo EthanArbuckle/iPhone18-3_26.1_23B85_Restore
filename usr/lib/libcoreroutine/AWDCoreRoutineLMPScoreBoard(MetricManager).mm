@@ -8,7 +8,7 @@
 
 - (id)_init
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &off_2846267E8;
   return objc_msgSendSuper2(&v2, sel_init);
 }
@@ -16,7 +16,7 @@
 - (BOOL)valid:()MetricManager
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  if ([a1 conformsToProtocol:&unk_284624910])
+  if ([self conformsToProtocol:&unk_284624910])
   {
     if (objc_opt_respondsToSelector())
     {
@@ -62,10 +62,10 @@ LABEL_9:
   v2 = MEMORY[0x277CCACA8];
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [a1 instances];
-  v6 = [v5 count];
-  v7 = [a1 instances];
-  v8 = [v7 valueForKey:@"description"];
+  instances = [self instances];
+  v6 = [instances count];
+  instances2 = [self instances];
+  v8 = [instances2 valueForKey:@"description"];
   v9 = [v8 componentsJoinedByString:@"|"];
   v10 = [v2 stringWithFormat:@"%@, count %lu {%@}", v4, v6, v9];
 

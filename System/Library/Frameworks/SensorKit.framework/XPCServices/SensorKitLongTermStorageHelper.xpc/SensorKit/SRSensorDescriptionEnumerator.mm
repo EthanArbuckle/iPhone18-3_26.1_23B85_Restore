@@ -60,12 +60,12 @@
 
   while (1)
   {
-    v12 = [(NSDirectoryEnumerator *)self->_descriptionFileEnumerator nextObject];
+    nextObject = [(NSDirectoryEnumerator *)self->_descriptionFileEnumerator nextObject];
     v22[0] = 0;
-    [v12 getResourceValue:v22 forKey:v6 error:0];
-    v14 = [v22[0] BOOLValue];
+    [nextObject getResourceValue:v22 forKey:v6 error:0];
+    bOOLValue = [v22[0] BOOLValue];
     result = 0;
-    if ((v14 & 1) == 0)
+    if ((bOOLValue & 1) == 0)
     {
       break;
     }
@@ -77,7 +77,7 @@ LABEL_20:
     }
   }
 
-  if (v12)
+  if (nextObject)
   {
     goto LABEL_19;
   }
@@ -100,11 +100,11 @@ LABEL_20:
 
     v20 = -[NSFileManager enumeratorAtURL:includingPropertiesForKeys:options:errorHandler:](+[NSFileManager defaultManager](NSFileManager, "defaultManager"), "enumeratorAtURL:includingPropertiesForKeys:options:errorHandler:", [v19 objectAtIndexedSubscript:self->_currentSensorDirectoryIndex], 0, 4, 0);
     objc_setProperty_atomic(self, v21, v20, 24);
-    v12 = [(NSDirectoryEnumerator *)self->_descriptionFileEnumerator nextObject];
-    if (v12)
+    nextObject = [(NSDirectoryEnumerator *)self->_descriptionFileEnumerator nextObject];
+    if (nextObject)
     {
 LABEL_19:
-      result = sub_100004F0C(self->_sensorsCache, [objc_msgSend(v12 "URLByDeletingPathExtension")]);
+      result = sub_100004F0C(self->_sensorsCache, [objc_msgSend(nextObject "URLByDeletingPathExtension")]);
       goto LABEL_20;
     }
   }

@@ -1,197 +1,197 @@
 @interface FMCoreData
-+ (BOOL)isFMCellMapCongestionMetricCongested:(id)a3;
-+ (BOOL)isFMCellMapNodeCongested:(id)a3;
-- (BOOL)backgroundContextPerformBlockAndWait:(id)a3;
-- (BOOL)deleteCongestionAreas:(id)a3 andAssociatedEntitiesWithContext:(id)a4;
-- (BOOL)deleteOutOfServiceAreas:(id)a3 AndAssociatedEntitiesWithContext:(id)a4;
-- (BOOL)deleteTSAnomalies:(id)a3 andAssociatedEntitiesWithContext:(id)a4;
-- (BOOL)generateChildEntitiesForEventsWithContext:(id)a3;
-- (BOOL)isFMCongestionCell:(id)a3 equalToCongestionCell:(id)a4;
-- (BOOL)resetAndPopulateCellMapDatabaseWithJSON:(id)a3;
-- (BOOL)shouldConsiderAnomaly:(id)a3 atTime:(id)a4;
-- (BOOL)updateCellMapEdge:(id)a3 withContext:(id)a4 atTime:(id)a5;
-- (BOOL)updateCellMapNode:(id)a3 withMetric:(id)a4 updateConnDuration:(BOOL)a5 andContext:(id)a6 atTime:(id)a7;
-- (BOOL)updateStoredConfigurationFrom:(id)a3 to:(id)a4;
++ (BOOL)isFMCellMapCongestionMetricCongested:(id)congested;
++ (BOOL)isFMCellMapNodeCongested:(id)congested;
+- (BOOL)backgroundContextPerformBlockAndWait:(id)wait;
+- (BOOL)deleteCongestionAreas:(id)areas andAssociatedEntitiesWithContext:(id)context;
+- (BOOL)deleteOutOfServiceAreas:(id)areas AndAssociatedEntitiesWithContext:(id)context;
+- (BOOL)deleteTSAnomalies:(id)anomalies andAssociatedEntitiesWithContext:(id)context;
+- (BOOL)generateChildEntitiesForEventsWithContext:(id)context;
+- (BOOL)isFMCongestionCell:(id)cell equalToCongestionCell:(id)congestionCell;
+- (BOOL)resetAndPopulateCellMapDatabaseWithJSON:(id)n;
+- (BOOL)shouldConsiderAnomaly:(id)anomaly atTime:(id)time;
+- (BOOL)updateCellMapEdge:(id)edge withContext:(id)context atTime:(id)time;
+- (BOOL)updateCellMapNode:(id)node withMetric:(id)metric updateConnDuration:(BOOL)duration andContext:(id)context atTime:(id)time;
+- (BOOL)updateStoredConfigurationFrom:(id)from to:(id)to;
 - (FMCoreData)init;
-- (FMCoreData)initWithStoreURL:(id)a3 WithModelURL:(id)a4;
-- (double)compareFMTSEventTimestamp:(id)a3 withTSEventTimeUntilAnomaly:(int)a4 usingBaseTimestamp:(unint64_t)a5 withTimeDistanceMaxTime:(int)a6 withPredictionAdvanceTime:(int)a7 withContext:(id)a8;
-- (id)cellMapPredictionForGCI:(id)a3;
-- (id)congestionAreaID:(id)a3 congestionAreaSeenCount:(int)a4 toFMCongestionPredictionWithContext:(id)a5;
-- (id)congestionCell:(id)a3 toFMCongestionCellWithContext:(id)a4;
-- (id)congestionCells:(id)a3 toFMCongestionCellsWithContext:(id)a4;
-- (id)convertFMCongestionCells:(id)a3 toUpdatedCongestionPrevCellsWithContext:(id)a4;
-- (id)createCellMapEdgeWithContext:(id)a3 sourceNode:(id)a4 destinationNode:(id)a5;
-- (id)createCellMapNodeWithContext:(id)a3 andCellMapCongestionMetric:(id)a4;
-- (id)createChildTSEventOfType:(signed __int16)a3 withDetails:(id)a4 withContext:(id)a5;
-- (id)createCongestionAreaWithContext:(id)a3 subscriptionID:(id)a4 prevCells:(id)a5 startTime:(id)a6;
-- (id)createCongestionCellWithContext:(id)a3 subscriptionID:(id)a4 gci:(id)a5 mcc:(id)a6 mnc:(id)a7 rat:(id)a8 arfcnOrUarfcn:(id)a9 congestionMetric:(id)a10 timestamp:(id)a11;
-- (id)createCongestionPrevCellWithContext:(id)a3 subscriptionID:(id)a4 gci:(id)a5 mcc:(id)a6 mnc:(id)a7 rat:(id)a8 arfcnOrUarfcn:(id)a9 timestamp:(id)a10;
-- (id)createLocationOfInterestAt:(id)a3 WithContext:(id)a4;
-- (id)createOutOfServiceAreaWithContext:(id)a3 prevVisit:(id)a4 curVisit:(id)a5 nextVisit:(id)a6 subscriptionID:(id)a7 prevCells:(id)a8 entryLocation:(id)a9 exitLocation:(id)a10 startTime:(id)a11;
-- (id)createServingCellWithContext:(id)a3 subscriptionID:(id)a4 radioAccessTechnology:(id)a5 cellID:(id)a6 mnc:(id)a7 mcc:(id)a8 bandInfo:(id)a9 tacOrLac:(id)a10 arfcnOrUarfcn:(id)a11 bandwidth:(id)a12 pci:(id)a13 deploymentType:(id)a14 timestamp:(id)a15;
-- (id)createTSAnomalyWithContext:(id)a3 anomaly:(id)a4 homePLMN:(id)a5;
-- (id)createTSEventFrom:(id)a3 withContext:(id)a4;
-- (id)createTSPredictionWithContext:(id)a3 prediction:(id)a4;
-- (id)deleteCongestionAreasOverThresholdCount:(unint64_t)a3 withContext:(id)a4;
-- (id)deleteOutOfServiceAreasOverThresholdCount:(unint64_t)a3 WithContext:(id)a4;
-- (id)deleteTSAnomaliesOverThresholdCount:(unint64_t)a3 withContext:(id)a4;
-- (id)fetchCellMapEdgeWithContext:(id)a3 sourceNode:(id)a4 destinationNode:(id)a5;
-- (id)fetchCellMapEdgesOfCellMapNode:(id)a3 maxCount:(unint64_t)a4 withContext:(id)a5;
-- (id)fetchCellMapNodeWithGCI:(id)a3 andContext:(id)a4;
-- (id)filterCongestionAreasWithContext:(id)a3 unfilteredCongestionAreas:(id)a4 withExactPrevCells:(id)a5;
-- (id)filterOutOfServiceAreasWithContext:(id)a3 unfilteredOutOfServiceAreas:(id)a4 WithExactPrevCells:(id)a5;
-- (id)fmCellMapNodeFromCellMapNode:(id)a3 edgeSeenCount:(signed __int16)a4;
-- (id)fmCongestionCellsToExistingCongestionPrevCellsWithContext:(id)a3 cells:(id)a4;
-- (id)fmServingCellsToExistingServingCellsWithContext:(id)a3 cells:(id)a4;
-- (id)fmServingCellsToServingCellsWithContext:(id)a3 cells:(id)a4;
-- (id)getAnomalyPredictionsForHomePLMN:(id)a3 andEvents:(id)a4 atCurrentTimestamp:(unint64_t)a5 atCurrentTime:(id)a6 timeSinceLastFetch:(unint64_t)a7;
-- (id)getCongestionCellWithContext:(id)a3 subscriptionID:(id)a4 gci:(id)a5 mcc:(id)a6 mnc:(id)a7 rat:(id)a8 arfcnOrUarfcn:(id)a9 atTime:(id)a10;
-- (id)getCongestionPredictionsForSubscriptionID:(id)a3 andPrevCells:(id)a4 atTime:(id)a5;
-- (id)getCongestionPrevCellWithContext:(id)a3 subscriptionID:(id)a4 gci:(id)a5 mcc:(id)a6 mnc:(id)a7 rat:(id)a8 arfcnOrUarfcn:(id)a9;
-- (id)getFMTSPredictionsFromRelevantTSAnomalies:(id)a3 atCurrentTimestamp:(unint64_t)a4 withContext:(id)a5;
+- (FMCoreData)initWithStoreURL:(id)l WithModelURL:(id)rL;
+- (double)compareFMTSEventTimestamp:(id)timestamp withTSEventTimeUntilAnomaly:(int)anomaly usingBaseTimestamp:(unint64_t)baseTimestamp withTimeDistanceMaxTime:(int)time withPredictionAdvanceTime:(int)advanceTime withContext:(id)context;
+- (id)cellMapPredictionForGCI:(id)i;
+- (id)congestionAreaID:(id)d congestionAreaSeenCount:(int)count toFMCongestionPredictionWithContext:(id)context;
+- (id)congestionCell:(id)cell toFMCongestionCellWithContext:(id)context;
+- (id)congestionCells:(id)cells toFMCongestionCellsWithContext:(id)context;
+- (id)convertFMCongestionCells:(id)cells toUpdatedCongestionPrevCellsWithContext:(id)context;
+- (id)createCellMapEdgeWithContext:(id)context sourceNode:(id)node destinationNode:(id)destinationNode;
+- (id)createCellMapNodeWithContext:(id)context andCellMapCongestionMetric:(id)metric;
+- (id)createChildTSEventOfType:(signed __int16)type withDetails:(id)details withContext:(id)context;
+- (id)createCongestionAreaWithContext:(id)context subscriptionID:(id)d prevCells:(id)cells startTime:(id)time;
+- (id)createCongestionCellWithContext:(id)context subscriptionID:(id)d gci:(id)gci mcc:(id)mcc mnc:(id)mnc rat:(id)rat arfcnOrUarfcn:(id)uarfcn congestionMetric:(id)self0 timestamp:(id)self1;
+- (id)createCongestionPrevCellWithContext:(id)context subscriptionID:(id)d gci:(id)gci mcc:(id)mcc mnc:(id)mnc rat:(id)rat arfcnOrUarfcn:(id)uarfcn timestamp:(id)self0;
+- (id)createLocationOfInterestAt:(id)at WithContext:(id)context;
+- (id)createOutOfServiceAreaWithContext:(id)context prevVisit:(id)visit curVisit:(id)curVisit nextVisit:(id)nextVisit subscriptionID:(id)d prevCells:(id)cells entryLocation:(id)location exitLocation:(id)self0 startTime:(id)self1;
+- (id)createServingCellWithContext:(id)context subscriptionID:(id)d radioAccessTechnology:(id)technology cellID:(id)iD mnc:(id)mnc mcc:(id)mcc bandInfo:(id)info tacOrLac:(id)self0 arfcnOrUarfcn:(id)self1 bandwidth:(id)self2 pci:(id)self3 deploymentType:(id)self4 timestamp:(id)self5;
+- (id)createTSAnomalyWithContext:(id)context anomaly:(id)anomaly homePLMN:(id)n;
+- (id)createTSEventFrom:(id)from withContext:(id)context;
+- (id)createTSPredictionWithContext:(id)context prediction:(id)prediction;
+- (id)deleteCongestionAreasOverThresholdCount:(unint64_t)count withContext:(id)context;
+- (id)deleteOutOfServiceAreasOverThresholdCount:(unint64_t)count WithContext:(id)context;
+- (id)deleteTSAnomaliesOverThresholdCount:(unint64_t)count withContext:(id)context;
+- (id)fetchCellMapEdgeWithContext:(id)context sourceNode:(id)node destinationNode:(id)destinationNode;
+- (id)fetchCellMapEdgesOfCellMapNode:(id)node maxCount:(unint64_t)count withContext:(id)context;
+- (id)fetchCellMapNodeWithGCI:(id)i andContext:(id)context;
+- (id)filterCongestionAreasWithContext:(id)context unfilteredCongestionAreas:(id)areas withExactPrevCells:(id)cells;
+- (id)filterOutOfServiceAreasWithContext:(id)context unfilteredOutOfServiceAreas:(id)areas WithExactPrevCells:(id)cells;
+- (id)fmCellMapNodeFromCellMapNode:(id)node edgeSeenCount:(signed __int16)count;
+- (id)fmCongestionCellsToExistingCongestionPrevCellsWithContext:(id)context cells:(id)cells;
+- (id)fmServingCellsToExistingServingCellsWithContext:(id)context cells:(id)cells;
+- (id)fmServingCellsToServingCellsWithContext:(id)context cells:(id)cells;
+- (id)getAnomalyPredictionsForHomePLMN:(id)n andEvents:(id)events atCurrentTimestamp:(unint64_t)timestamp atCurrentTime:(id)time timeSinceLastFetch:(unint64_t)fetch;
+- (id)getCongestionCellWithContext:(id)context subscriptionID:(id)d gci:(id)gci mcc:(id)mcc mnc:(id)mnc rat:(id)rat arfcnOrUarfcn:(id)uarfcn atTime:(id)self0;
+- (id)getCongestionPredictionsForSubscriptionID:(id)d andPrevCells:(id)cells atTime:(id)time;
+- (id)getCongestionPrevCellWithContext:(id)context subscriptionID:(id)d gci:(id)gci mcc:(id)mcc mnc:(id)mnc rat:(id)rat arfcnOrUarfcn:(id)uarfcn;
+- (id)getFMTSPredictionsFromRelevantTSAnomalies:(id)anomalies atCurrentTimestamp:(unint64_t)timestamp withContext:(id)context;
 - (id)getLatestStoredConfiguration;
-- (id)getLocationOfInterestAt:(id)a3 WithContext:(id)a4;
-- (id)getOrCreateAndUpdateCongestionPrevCellWithContext:(id)a3 subscriptionID:(id)a4 gci:(id)a5 mcc:(id)a6 mnc:(id)a7 rat:(id)a8 arfcnOrUarfcn:(id)a9 timestamp:(id)a10;
-- (id)getOrCreateCellMapEdgeWithContext:(id)a3 sourceNode:(id)a4 destinationNode:(id)a5;
-- (id)getOrCreateCellMapNodeWithContext:(id)a3 andCellMapCongestionMetric:(id)a4;
-- (id)getOrCreateLocationOfInterestAt:(id)a3 WithContext:(id)a4;
-- (id)getOrCreateServingCellWithContext:(id)a3 subscriptionID:(id)a4 radioAccessTechnology:(id)a5 cellID:(id)a6 mnc:(id)a7 mcc:(id)a8 bandInfo:(id)a9 tacOrLac:(id)a10 arfcnOrUarfcn:(id)a11 bandwidth:(id)a12 pci:(id)a13 deploymentType:(id)a14 timestamp:(id)a15;
-- (id)getOutOfServiceAreaWithContext:(id)a3 prevVisit:(id)a4 curVisit:(id)a5 nextVisit:(id)a6 subscriptionID:(id)a7 prevCells:(id)a8 timeOfDay:(signed __int16)a9;
-- (id)getOutOfServiceAreasWithoutNextVisitWithContext:(id)a3 After:(id)a4;
-- (id)getPreviouslyStoredMatchingFMCongestionCell:(id)a3;
-- (id)getRushHourPredicateForDayOfWeek:(signed __int16)a3 andTimeOfDay:(signed __int16)a4;
-- (id)getServingCellWithContext:(id)a3 subscriptionID:(id)a4 radioAccessTechnology:(id)a5 cellID:(id)a6 mnc:(id)a7 mcc:(id)a8 bandInfo:(id)a9 tacOrLac:(id)a10 arfcnOrUarfcn:(id)a11 bandwidth:(id)a12 pci:(id)a13 deploymentType:(id)a14;
-- (id)handleCongestionAreaWithContext:(id)a3 subscriptionID:(id)a4 prevCells:(id)a5 startTime:(id)a6;
-- (id)handleOutOfServiceAreaWithContext:(id)a3 prevVisit:(id)a4 curVisit:(id)a5 nextVisit:(id)a6 subscriptionID:(id)a7 prevCells:(id)a8 startTime:(id)a9 entryLocation:(id)a10 exitLocation:(id)a11;
-- (id)sortObjects:(id)a3 byKey:(id)a4;
-- (id)tagsForEvents:(id)a3 withContext:(id)a4;
-- (id)updateMapWithCellMapCongestionMetric:(id)a3 andPreviousNodeObjectID:(id)a4;
-- (int64_t)getDifferenceBetweenMinutesSinceMidnight:(int64_t)a3 b:(int64_t)a4;
-- (int64_t)getMinutesSinceMidnightFrom:(int64_t)a3 addingOffset:(int64_t)a4;
-- (int64_t)tagContentForCellChangedEvent:(id)a3;
-- (signed)NSDateToTimeOfDay:(id)a3;
-- (unint64_t)deleteOutOfServiceAreasOlderThan:(id)a3 WithContext:(id)a4;
+- (id)getLocationOfInterestAt:(id)at WithContext:(id)context;
+- (id)getOrCreateAndUpdateCongestionPrevCellWithContext:(id)context subscriptionID:(id)d gci:(id)gci mcc:(id)mcc mnc:(id)mnc rat:(id)rat arfcnOrUarfcn:(id)uarfcn timestamp:(id)self0;
+- (id)getOrCreateCellMapEdgeWithContext:(id)context sourceNode:(id)node destinationNode:(id)destinationNode;
+- (id)getOrCreateCellMapNodeWithContext:(id)context andCellMapCongestionMetric:(id)metric;
+- (id)getOrCreateLocationOfInterestAt:(id)at WithContext:(id)context;
+- (id)getOrCreateServingCellWithContext:(id)context subscriptionID:(id)d radioAccessTechnology:(id)technology cellID:(id)iD mnc:(id)mnc mcc:(id)mcc bandInfo:(id)info tacOrLac:(id)self0 arfcnOrUarfcn:(id)self1 bandwidth:(id)self2 pci:(id)self3 deploymentType:(id)self4 timestamp:(id)self5;
+- (id)getOutOfServiceAreaWithContext:(id)context prevVisit:(id)visit curVisit:(id)curVisit nextVisit:(id)nextVisit subscriptionID:(id)d prevCells:(id)cells timeOfDay:(signed __int16)day;
+- (id)getOutOfServiceAreasWithoutNextVisitWithContext:(id)context After:(id)after;
+- (id)getPreviouslyStoredMatchingFMCongestionCell:(id)cell;
+- (id)getRushHourPredicateForDayOfWeek:(signed __int16)week andTimeOfDay:(signed __int16)day;
+- (id)getServingCellWithContext:(id)context subscriptionID:(id)d radioAccessTechnology:(id)technology cellID:(id)iD mnc:(id)mnc mcc:(id)mcc bandInfo:(id)info tacOrLac:(id)self0 arfcnOrUarfcn:(id)self1 bandwidth:(id)self2 pci:(id)self3 deploymentType:(id)self4;
+- (id)handleCongestionAreaWithContext:(id)context subscriptionID:(id)d prevCells:(id)cells startTime:(id)time;
+- (id)handleOutOfServiceAreaWithContext:(id)context prevVisit:(id)visit curVisit:(id)curVisit nextVisit:(id)nextVisit subscriptionID:(id)d prevCells:(id)cells startTime:(id)time entryLocation:(id)self0 exitLocation:(id)self1;
+- (id)sortObjects:(id)objects byKey:(id)key;
+- (id)tagsForEvents:(id)events withContext:(id)context;
+- (id)updateMapWithCellMapCongestionMetric:(id)metric andPreviousNodeObjectID:(id)d;
+- (int64_t)getDifferenceBetweenMinutesSinceMidnight:(int64_t)midnight b:(int64_t)b;
+- (int64_t)getMinutesSinceMidnightFrom:(int64_t)from addingOffset:(int64_t)offset;
+- (int64_t)tagContentForCellChangedEvent:(id)event;
+- (signed)NSDateToTimeOfDay:(id)day;
+- (unint64_t)deleteOutOfServiceAreasOlderThan:(id)than WithContext:(id)context;
 - (void)clearDatabase;
 - (void)dealloc;
-- (void)deleteCellMapEntitiesWithFetchRequest:(id)a3 andContext:(id)a4;
-- (void)deleteCellMapNodesAndEdgesOlderThan:(id)a3 withContext:(id)a4;
-- (void)deleteCongestionAreasOlderThan:(id)a3 withContext:(id)a4;
-- (void)deleteCongestionOccurrencesOlderThan:(id)a3 withContext:(id)a4;
-- (void)deleteOldestCellMapNodesAndEdgesOverThreshold:(unint64_t)a3 withContext:(id)a4;
-- (void)deleteOrphanedCongestionCellsWithContext:(id)a3;
-- (void)deleteOrphanedCongestionPrevCellsWithContext:(id)a3;
-- (void)deleteOrphanedTSPredictionsWithContext:(id)a3;
-- (void)deleteOutOfServiceDurationsOlderThan:(id)a3 WithContext:(id)a4;
-- (void)deleteTSAnomaliesWithContext:(id)a3 olderThan:(id)a4;
-- (void)deletedOrphanedLocationsOfInterestWithContext:(id)a3;
-- (void)deletedOrphanedServingCellsWithContext:(id)a3;
-- (void)deletedOrphanedTSAnomalyTagsWithContext:(id)a3;
-- (void)finalizedCongestionArea:(id)a3 withSubscriptionID:(id)a4;
-- (void)generateTagsForAnomaly:(id)a3 withContext:(id)a4;
-- (void)generateTagsForUntaggedAnomaliesWithContext:(id)a3;
-- (void)leftOutOfServiceArea:(double)a3 startTime:(id)a4 prevVisit:(id)a5 curVisit:(id)a6 subscriptionID:(id)a7 prevCells:(id)a8 nextCell:(id)a9 entryLocation:(id)a10 exitLocation:(id)a11;
+- (void)deleteCellMapEntitiesWithFetchRequest:(id)request andContext:(id)context;
+- (void)deleteCellMapNodesAndEdgesOlderThan:(id)than withContext:(id)context;
+- (void)deleteCongestionAreasOlderThan:(id)than withContext:(id)context;
+- (void)deleteCongestionOccurrencesOlderThan:(id)than withContext:(id)context;
+- (void)deleteOldestCellMapNodesAndEdgesOverThreshold:(unint64_t)threshold withContext:(id)context;
+- (void)deleteOrphanedCongestionCellsWithContext:(id)context;
+- (void)deleteOrphanedCongestionPrevCellsWithContext:(id)context;
+- (void)deleteOrphanedTSPredictionsWithContext:(id)context;
+- (void)deleteOutOfServiceDurationsOlderThan:(id)than WithContext:(id)context;
+- (void)deleteTSAnomaliesWithContext:(id)context olderThan:(id)than;
+- (void)deletedOrphanedLocationsOfInterestWithContext:(id)context;
+- (void)deletedOrphanedServingCellsWithContext:(id)context;
+- (void)deletedOrphanedTSAnomalyTagsWithContext:(id)context;
+- (void)finalizedCongestionArea:(id)area withSubscriptionID:(id)d;
+- (void)generateTagsForAnomaly:(id)anomaly withContext:(id)context;
+- (void)generateTagsForUntaggedAnomaliesWithContext:(id)context;
+- (void)leftOutOfServiceArea:(double)area startTime:(id)time prevVisit:(id)visit curVisit:(id)curVisit subscriptionID:(id)d prevCells:(id)cells nextCell:(id)cell entryLocation:(id)self0 exitLocation:(id)self1;
 - (void)performDatabaseMaintenance;
-- (void)sendOnDeviceDBTelemetryEventWithContext:(id)a3 andNumberOfDeletedOOSAreasStale:(unint64_t)a4;
-- (void)storeAnomaly:(id)a3 forHomePLMN:(id)a4;
-- (void)storePrediction:(id)a3;
-- (void)updateCongestionAreaAfterLeavingWithContext:(id)a3 congestionArea:(id)a4 startTime:(id)a5 goodCells:(id)a6 badCells:(id)a7 secondsUntilCongestion:(double)a8 secondsCongestionDuration:(double)a9;
-- (void)updateCongestionCellSeenWithContext:(id)a3 cell:(id)a4 atTimestamp:(id)a5 congestionMetric:(id)a6;
-- (void)updateCongestionPrevCellSeenWithContext:(id)a3 cell:(id)a4 atTimestamp:(id)a5;
-- (void)updateOutOfServiceAreaAfterLeavingWithContext:(id)a3 outOfServiceArea:(id)a4 startTime:(id)a5 nextCell:(id)a6 duration:(double)a7 entryLocation:(id)a8 exitLocation:(id)a9;
-- (void)updateOutOfServiceAreasWithNextVisit:(id)a3;
-- (void)updateServingCellSeenWithContext:(id)a3 cell:(id)a4 atTimestamp:(id)a5;
+- (void)sendOnDeviceDBTelemetryEventWithContext:(id)context andNumberOfDeletedOOSAreasStale:(unint64_t)stale;
+- (void)storeAnomaly:(id)anomaly forHomePLMN:(id)n;
+- (void)storePrediction:(id)prediction;
+- (void)updateCongestionAreaAfterLeavingWithContext:(id)context congestionArea:(id)area startTime:(id)time goodCells:(id)cells badCells:(id)badCells secondsUntilCongestion:(double)congestion secondsCongestionDuration:(double)duration;
+- (void)updateCongestionCellSeenWithContext:(id)context cell:(id)cell atTimestamp:(id)timestamp congestionMetric:(id)metric;
+- (void)updateCongestionPrevCellSeenWithContext:(id)context cell:(id)cell atTimestamp:(id)timestamp;
+- (void)updateOutOfServiceAreaAfterLeavingWithContext:(id)context outOfServiceArea:(id)area startTime:(id)time nextCell:(id)cell duration:(double)duration entryLocation:(id)location exitLocation:(id)exitLocation;
+- (void)updateOutOfServiceAreasWithNextVisit:(id)visit;
+- (void)updateServingCellSeenWithContext:(id)context cell:(id)cell atTimestamp:(id)timestamp;
 - (void)waitForDeviceUnlockAndLoadDataStore;
 @end
 
 @implementation FMCoreData
 
-- (void)leftOutOfServiceArea:(double)a3 startTime:(id)a4 prevVisit:(id)a5 curVisit:(id)a6 subscriptionID:(id)a7 prevCells:(id)a8 nextCell:(id)a9 entryLocation:(id)a10 exitLocation:(id)a11
+- (void)leftOutOfServiceArea:(double)area startTime:(id)time prevVisit:(id)visit curVisit:(id)curVisit subscriptionID:(id)d prevCells:(id)cells nextCell:(id)cell entryLocation:(id)self0 exitLocation:(id)self1
 {
-  v18 = a4;
-  v19 = a5;
-  v20 = a6;
-  v21 = a7;
-  v22 = a8;
-  v23 = a9;
+  timeCopy = time;
+  visitCopy = visit;
+  curVisitCopy = curVisit;
+  dCopy = d;
+  cellsCopy = cells;
+  cellCopy = cell;
   v32[0] = _NSConcreteStackBlock;
   v32[1] = 3221225472;
   v32[2] = sub_10003B964;
   v32[3] = &unk_1002ABDB0;
   v32[4] = self;
-  v33 = v22;
-  v34 = v19;
-  v35 = v20;
-  v36 = v21;
-  v37 = v18;
-  v38 = a10;
-  v39 = a11;
-  v40 = v23;
-  v41 = a3;
-  v24 = v23;
-  v25 = v39;
-  v26 = v38;
-  v27 = v18;
-  v28 = v21;
-  v29 = v20;
-  v30 = v19;
-  v31 = v22;
+  v33 = cellsCopy;
+  v34 = visitCopy;
+  v35 = curVisitCopy;
+  v36 = dCopy;
+  v37 = timeCopy;
+  locationCopy = location;
+  exitLocationCopy = exitLocation;
+  v40 = cellCopy;
+  areaCopy = area;
+  v24 = cellCopy;
+  v25 = exitLocationCopy;
+  v26 = locationCopy;
+  v27 = timeCopy;
+  v28 = dCopy;
+  v29 = curVisitCopy;
+  v30 = visitCopy;
+  v31 = cellsCopy;
   [(FMCoreData *)self backgroundContextPerformBlockAndWait:v32];
 }
 
-- (void)updateOutOfServiceAreasWithNextVisit:(id)a3
+- (void)updateOutOfServiceAreasWithNextVisit:(id)visit
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  visitCopy = visit;
+  v5 = visitCopy;
+  if (visitCopy)
   {
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_10003BE84;
     v6[3] = &unk_1002ABDD8;
     v6[4] = self;
-    v7 = v4;
+    v7 = visitCopy;
     [(FMCoreData *)self backgroundContextPerformBlockAndWait:v6];
   }
 }
 
-- (void)finalizedCongestionArea:(id)a3 withSubscriptionID:(id)a4
+- (void)finalizedCongestionArea:(id)area withSubscriptionID:(id)d
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10004C0D0;
   v7[3] = &unk_1002ABF20;
-  v8 = self;
-  v9 = a3;
-  v10 = a4;
-  v5 = v10;
-  v6 = v9;
-  [(FMCoreData *)v8 backgroundContextPerformBlockAndWait:v7];
+  selfCopy = self;
+  areaCopy = area;
+  dCopy = d;
+  v5 = dCopy;
+  v6 = areaCopy;
+  [(FMCoreData *)selfCopy backgroundContextPerformBlockAndWait:v7];
 }
 
-- (id)getCongestionPredictionsForSubscriptionID:(id)a3 andPrevCells:(id)a4 atTime:(id)a5
+- (id)getCongestionPredictionsForSubscriptionID:(id)d andPrevCells:(id)cells atTime:(id)time
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  cellsCopy = cells;
+  timeCopy = time;
   v11 = +[FMConfiguration sharedInstance];
-  v12 = [v11 congestionPrevCellsInDatabase];
+  congestionPrevCellsInDatabase = [v11 congestionPrevCellsInDatabase];
 
-  if ([v9 count] <= v12)
+  if ([cellsCopy count] <= congestionPrevCellsInDatabase)
   {
     v13 = 0;
   }
 
   else
   {
-    v13 = ([v9 count] - v12);
+    v13 = ([cellsCopy count] - congestionPrevCellsInDatabase);
   }
 
-  if ([v9 count] < v12)
+  if ([cellsCopy count] < congestionPrevCellsInDatabase)
   {
-    v12 = [v9 count];
+    congestionPrevCellsInDatabase = [cellsCopy count];
   }
 
-  v14 = [v9 subarrayWithRange:{v13, v12}];
+  v14 = [cellsCopy subarrayWithRange:{v13, congestionPrevCellsInDatabase}];
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
@@ -207,13 +207,13 @@
   v21[1] = 3221225472;
   v21[2] = sub_10004C678;
   v21[3] = &unk_1002ABF88;
-  v15 = v10;
+  v15 = timeCopy;
   v22 = v15;
-  v23 = self;
+  selfCopy = self;
   v16 = v14;
   v24 = v16;
   v26 = &v27;
-  v17 = v8;
+  v17 = dCopy;
   v25 = v17;
   if ([(FMCoreData *)self backgroundContextPerformBlockAndWait:v21])
   {
@@ -238,18 +238,18 @@ LABEL_14:
   return v19;
 }
 
-- (id)congestionAreaID:(id)a3 congestionAreaSeenCount:(int)a4 toFMCongestionPredictionWithContext:(id)a5
+- (id)congestionAreaID:(id)d congestionAreaSeenCount:(int)count toFMCongestionPredictionWithContext:(id)context
 {
-  v8 = a3;
-  v36 = a5;
-  v34 = v8;
+  dCopy = d;
+  contextCopy = context;
+  v34 = dCopy;
   v9 = [NSFetchRequest fetchRequestWithEntityName:@"CongestionOccurrence"];
-  v10 = [NSPredicate predicateWithFormat:@"congestionOccurrenceOf == %@", v8];
-  [v9 setPredicate:v10];
+  dCopy = [NSPredicate predicateWithFormat:@"congestionOccurrenceOf == %@", dCopy];
+  [v9 setPredicate:dCopy];
 
   [v9 setReturnsObjectsAsFaults:0];
   v43 = 0;
-  v35 = [v36 executeFetchRequest:v9 error:&v43];
+  v35 = [contextCopy executeFetchRequest:v9 error:&v43];
   v11 = v43;
   if (v11 || ![v35 count])
   {
@@ -270,8 +270,8 @@ LABEL_14:
   v40 = 0u;
   v15 = v35;
   v16 = [v15 countByEnumeratingWithState:&v39 objects:v44 count:16];
-  v32 = self;
-  v31 = a4;
+  selfCopy = self;
+  countCopy = count;
   v17 = 0;
   v18 = 0;
   if (v16)
@@ -324,7 +324,7 @@ LABEL_4:
 
   [v22 setReturnsObjectsAsFaults:0];
   v38 = 0;
-  v33 = [v36 executeFetchRequest:v22 error:&v38];
+  v33 = [contextCopy executeFetchRequest:v22 error:&v38];
   v24 = v38;
   if (v24)
   {
@@ -347,7 +347,7 @@ LABEL_4:
 
     [v30 setReturnsObjectsAsFaults:0];
     v37 = 0;
-    v26 = [v36 executeFetchRequest:v30 error:&v37];
+    v26 = [contextCopy executeFetchRequest:v30 error:&v37];
     v11 = v37;
     if (v11)
     {
@@ -364,9 +364,9 @@ LABEL_4:
     else
     {
       v27 = [FMCongestionPrediction alloc];
-      v29 = [(FMCoreData *)v32 congestionCells:v33 toFMCongestionCellsWithContext:v36];
-      v28 = [(FMCoreData *)v32 congestionCells:v26 toFMCongestionCellsWithContext:v36];
-      v12 = [(FMCongestionPrediction *)v27 initWithSeenCount:v31 predictedBadCells:v29 predictedGoodCells:v28 predictedTimeUntilCongestion:v18 / v14 predictedTimeInCongestion:v17 / v14];
+      v29 = [(FMCoreData *)selfCopy congestionCells:v33 toFMCongestionCellsWithContext:contextCopy];
+      v28 = [(FMCoreData *)selfCopy congestionCells:v26 toFMCongestionCellsWithContext:contextCopy];
+      v12 = [(FMCongestionPrediction *)v27 initWithSeenCount:countCopy predictedBadCells:v29 predictedGoodCells:v28 predictedTimeUntilCongestion:v18 / v14 predictedTimeInCongestion:v17 / v14];
     }
   }
 
@@ -375,16 +375,16 @@ LABEL_5:
   return v12;
 }
 
-- (id)congestionCells:(id)a3 toFMCongestionCellsWithContext:(id)a4
+- (id)congestionCells:(id)cells toFMCongestionCellsWithContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  cellsCopy = cells;
+  contextCopy = context;
   v8 = objc_alloc_init(NSMutableArray);
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v9 = v6;
+  v9 = cellsCopy;
   v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v10)
   {
@@ -398,7 +398,7 @@ LABEL_5:
           objc_enumerationMutation(v9);
         }
 
-        v13 = [(FMCoreData *)self congestionCell:*(*(&v16 + 1) + 8 * i) toFMCongestionCellWithContext:v7, v16];
+        v13 = [(FMCoreData *)self congestionCell:*(*(&v16 + 1) + 8 * i) toFMCongestionCellWithContext:contextCopy, v16];
         if (v13)
         {
           [v8 addObject:v13];
@@ -416,50 +416,50 @@ LABEL_5:
   return v14;
 }
 
-- (id)congestionCell:(id)a3 toFMCongestionCellWithContext:(id)a4
+- (id)congestionCell:(id)cell toFMCongestionCellWithContext:(id)context
 {
-  v4 = a3;
+  cellCopy = cell;
   v5 = [FMCongestionCell alloc];
-  v6 = [v4 lastSeen];
-  v7 = [v4 subscriptionID];
-  v8 = [v4 mcc];
-  v9 = [v4 mnc];
-  v10 = [v4 gci];
-  v11 = [v4 radioAccessTechnology];
-  v12 = [v4 arfcnOrUarfcn];
-  v13 = [(FMCongestionCell *)v5 init:v6 subscriptionID:v7 mcc:v8 mnc:v9 gci:v10 rat:v11 arfcnOrUarfcn:v12];
+  lastSeen = [cellCopy lastSeen];
+  subscriptionID = [cellCopy subscriptionID];
+  v8 = [cellCopy mcc];
+  v9 = [cellCopy mnc];
+  v10 = [cellCopy gci];
+  radioAccessTechnology = [cellCopy radioAccessTechnology];
+  arfcnOrUarfcn = [cellCopy arfcnOrUarfcn];
+  v13 = [(FMCongestionCell *)v5 init:lastSeen subscriptionID:subscriptionID mcc:v8 mnc:v9 gci:v10 rat:radioAccessTechnology arfcnOrUarfcn:arfcnOrUarfcn];
 
   if (v13)
   {
     v40 = [FMCongestionMetric alloc];
-    v44 = [v4 lastSeen];
-    [v44 timeIntervalSince1970];
+    lastSeen2 = [cellCopy lastSeen];
+    [lastSeen2 timeIntervalSince1970];
     v15 = v14;
-    v43 = [v4 gci];
-    v42 = [v4 arfcnOrUarfcn];
-    v39 = [v42 intValue];
-    v41 = [v4 ratType];
-    v38 = [v4 rsrp];
-    v37 = [v4 rsrq];
-    v36 = [v4 sinr];
-    v35 = [v4 dlBottleneckScoreInvalid];
-    v34 = [v4 dlBottleneckScoreNo];
-    v33 = [v4 dlBottleneckScoreLow];
-    v32 = [v4 dlBottleneckScoreMedium];
-    v31 = [v4 dlBottleneckScoreHigh];
-    v30 = [v4 ulBottleneckScoreInvalid];
-    v29 = [v4 ulBottleneckScoreNo];
-    v28 = [v4 ulBottleneckScoreLow];
-    v27 = [v4 ulBottleneckScoreMedium];
-    v26 = [v4 ulBottleneckScoreHigh];
-    v25 = [v4 dataStallIndicatorAVS];
-    v16 = [v4 dataStallIndicatorUL];
-    v17 = [v4 isSubway];
-    v18 = [v4 qoeScore];
-    v19 = [v4 qoeDuration];
-    v20 = [v4 psPref];
-    v21 = [v4 subscriptionID];
-    v22 = -[FMCongestionMetric init:gci:arfnc:ratType:rsrp:rsrq:sinr:dlBottleneckScoreInvalid:dlBottleneckScoreNo:dlBottleneckScoreLow:dlBottleneckScoreMedium:dlBottleneckScoreHigh:ulBottleneckScoreInvalid:ulBottleneckScoreNo:ulBottleneckScoreLow:ulBottleneckScoreMedium:ulBottleneckScoreHigh:dataStallIndicatorAVS:dataStallIndicatorUL:isSubway:qoeScore:qoeDuration:psPref:subsId:](v40, "init:gci:arfnc:ratType:rsrp:rsrq:sinr:dlBottleneckScoreInvalid:dlBottleneckScoreNo:dlBottleneckScoreLow:dlBottleneckScoreMedium:dlBottleneckScoreHigh:ulBottleneckScoreInvalid:ulBottleneckScoreNo:ulBottleneckScoreLow:ulBottleneckScoreMedium:ulBottleneckScoreHigh:dataStallIndicatorAVS:dataStallIndicatorUL:isSubway:qoeScore:qoeDuration:psPref:subsId:", llround(v15), v43, v39, v41, v38, v37, __PAIR64__(v35, v36), __PAIR64__(v33, v34), __PAIR64__(v31, v32), __PAIR64__(v29, v30), __PAIR64__(v27, v28), __PAIR64__(v25, v26), __PAIR64__(v17, v16), __PAIR64__(v19, v18), __PAIR64__([v21 intValue], v20));
+    v43 = [cellCopy gci];
+    arfcnOrUarfcn2 = [cellCopy arfcnOrUarfcn];
+    intValue = [arfcnOrUarfcn2 intValue];
+    ratType = [cellCopy ratType];
+    rsrp = [cellCopy rsrp];
+    rsrq = [cellCopy rsrq];
+    sinr = [cellCopy sinr];
+    dlBottleneckScoreInvalid = [cellCopy dlBottleneckScoreInvalid];
+    dlBottleneckScoreNo = [cellCopy dlBottleneckScoreNo];
+    dlBottleneckScoreLow = [cellCopy dlBottleneckScoreLow];
+    dlBottleneckScoreMedium = [cellCopy dlBottleneckScoreMedium];
+    dlBottleneckScoreHigh = [cellCopy dlBottleneckScoreHigh];
+    ulBottleneckScoreInvalid = [cellCopy ulBottleneckScoreInvalid];
+    ulBottleneckScoreNo = [cellCopy ulBottleneckScoreNo];
+    ulBottleneckScoreLow = [cellCopy ulBottleneckScoreLow];
+    ulBottleneckScoreMedium = [cellCopy ulBottleneckScoreMedium];
+    ulBottleneckScoreHigh = [cellCopy ulBottleneckScoreHigh];
+    dataStallIndicatorAVS = [cellCopy dataStallIndicatorAVS];
+    dataStallIndicatorUL = [cellCopy dataStallIndicatorUL];
+    isSubway = [cellCopy isSubway];
+    qoeScore = [cellCopy qoeScore];
+    qoeDuration = [cellCopy qoeDuration];
+    psPref = [cellCopy psPref];
+    subscriptionID2 = [cellCopy subscriptionID];
+    v22 = -[FMCongestionMetric init:gci:arfnc:ratType:rsrp:rsrq:sinr:dlBottleneckScoreInvalid:dlBottleneckScoreNo:dlBottleneckScoreLow:dlBottleneckScoreMedium:dlBottleneckScoreHigh:ulBottleneckScoreInvalid:ulBottleneckScoreNo:ulBottleneckScoreLow:ulBottleneckScoreMedium:ulBottleneckScoreHigh:dataStallIndicatorAVS:dataStallIndicatorUL:isSubway:qoeScore:qoeDuration:psPref:subsId:](v40, "init:gci:arfnc:ratType:rsrp:rsrq:sinr:dlBottleneckScoreInvalid:dlBottleneckScoreNo:dlBottleneckScoreLow:dlBottleneckScoreMedium:dlBottleneckScoreHigh:ulBottleneckScoreInvalid:ulBottleneckScoreNo:ulBottleneckScoreLow:ulBottleneckScoreMedium:ulBottleneckScoreHigh:dataStallIndicatorAVS:dataStallIndicatorUL:isSubway:qoeScore:qoeDuration:psPref:subsId:", llround(v15), v43, intValue, ratType, rsrp, rsrq, __PAIR64__(dlBottleneckScoreInvalid, sinr), __PAIR64__(dlBottleneckScoreLow, dlBottleneckScoreNo), __PAIR64__(dlBottleneckScoreHigh, dlBottleneckScoreMedium), __PAIR64__(ulBottleneckScoreNo, ulBottleneckScoreInvalid), __PAIR64__(ulBottleneckScoreMedium, ulBottleneckScoreLow), __PAIR64__(dataStallIndicatorAVS, ulBottleneckScoreHigh), __PAIR64__(isSubway, dataStallIndicatorUL), __PAIR64__(qoeDuration, qoeScore), __PAIR64__([subscriptionID2 intValue], psPref));
 
     [v13 setCongestionMetric:v22];
     v23 = v13;
@@ -468,7 +468,7 @@ LABEL_5:
   return v13;
 }
 
-- (id)getPreviouslyStoredMatchingFMCongestionCell:(id)a3
+- (id)getPreviouslyStoredMatchingFMCongestionCell:(id)cell
 {
   v10 = 0;
   v11 = &v10;
@@ -480,11 +480,11 @@ LABEL_5:
   v6[1] = 3221225472;
   v6[2] = sub_10004DAF0;
   v6[3] = &unk_1002ABFB0;
-  v7 = self;
-  v3 = a3;
-  v8 = v3;
+  selfCopy = self;
+  cellCopy = cell;
+  v8 = cellCopy;
   v9 = &v10;
-  if ([(FMCoreData *)v7 backgroundContextPerformBlockAndWait:v6])
+  if ([(FMCoreData *)selfCopy backgroundContextPerformBlockAndWait:v6])
   {
     v4 = v11[5];
   }
@@ -504,24 +504,24 @@ LABEL_5:
   return v4;
 }
 
-- (void)storeAnomaly:(id)a3 forHomePLMN:(id)a4
+- (void)storeAnomaly:(id)anomaly forHomePLMN:(id)n
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 events];
-  v9 = [v8 count];
+  anomalyCopy = anomaly;
+  nCopy = n;
+  events = [anomalyCopy events];
+  v9 = [events count];
   v10 = +[FMConfiguration sharedInstance];
-  v11 = [v10 FMTSAnomalyStoringMinNumObservedEvents];
+  fMTSAnomalyStoringMinNumObservedEvents = [v10 FMTSAnomalyStoringMinNumObservedEvents];
 
-  if (v9 >= v11)
+  if (v9 >= fMTSAnomalyStoringMinNumObservedEvents)
   {
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_10006B38C;
     v12[3] = &unk_1002ABF20;
     v12[4] = self;
-    v13 = v6;
-    v14 = v7;
+    v13 = anomalyCopy;
+    v14 = nCopy;
     [(FMCoreData *)self backgroundContextPerformBlockAndWait:v12];
   }
 
@@ -531,16 +531,16 @@ LABEL_5:
   }
 }
 
-- (id)sortObjects:(id)a3 byKey:(id)a4
+- (id)sortObjects:(id)objects byKey:(id)key
 {
-  v5 = a3;
-  v6 = a4;
+  objectsCopy = objects;
+  keyCopy = key;
   v7 = objc_alloc_init(NSMutableDictionary);
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v8 = v5;
+  v8 = objectsCopy;
   v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v9)
   {
@@ -555,7 +555,7 @@ LABEL_5:
         }
 
         v12 = *(*(&v16 + 1) + 8 * i);
-        v13 = v6[2](v6, v12);
+        v13 = keyCopy[2](keyCopy, v12);
         v14 = [v7 objectForKey:v13];
         if (!v14)
         {
@@ -575,38 +575,38 @@ LABEL_5:
   return v7;
 }
 
-- (id)getFMTSPredictionsFromRelevantTSAnomalies:(id)a3 atCurrentTimestamp:(unint64_t)a4 withContext:(id)a5
+- (id)getFMTSPredictionsFromRelevantTSAnomalies:(id)anomalies atCurrentTimestamp:(unint64_t)timestamp withContext:(id)context
 {
-  v8 = a3;
-  v26 = a5;
+  anomaliesCopy = anomalies;
+  contextCopy = context;
   v25 = objc_alloc_init(NSMutableArray);
   v24 = +[NSDate now];
-  v9 = [(FMCoreData *)self sortObjects:v8 byKey:&stru_1002ACF60];
+  v9 = [(FMCoreData *)self sortObjects:anomaliesCopy byKey:&stru_1002ACF60];
   v10 = +[FMConfiguration sharedInstance];
-  v11 = [v10 FMTSAnomalyPredictionTimeToAnomalyConfidenceRangeSeconds];
-  v12 = [v10 FMTSAnomalyPredictionDurationConfidenceRangeSeconds];
+  fMTSAnomalyPredictionTimeToAnomalyConfidenceRangeSeconds = [v10 FMTSAnomalyPredictionTimeToAnomalyConfidenceRangeSeconds];
+  fMTSAnomalyPredictionDurationConfidenceRangeSeconds = [v10 FMTSAnomalyPredictionDurationConfidenceRangeSeconds];
   [v10 FMTSAnomalyBaseConfidence];
   v14 = v13;
-  v15 = [v10 FMTSAnomalyConfidenceMinPredictionCount];
-  v16 = [v10 FMTSMaxTimeUntilAnomalyPredictionErrorConsideredCorrect];
-  v17 = [v10 FMTSMaxDurationPredictionErrorConsideredCorrect];
+  fMTSAnomalyConfidenceMinPredictionCount = [v10 FMTSAnomalyConfidenceMinPredictionCount];
+  fMTSMaxTimeUntilAnomalyPredictionErrorConsideredCorrect = [v10 FMTSMaxTimeUntilAnomalyPredictionErrorConsideredCorrect];
+  fMTSMaxDurationPredictionErrorConsideredCorrect = [v10 FMTSMaxDurationPredictionErrorConsideredCorrect];
   v27[0] = _NSConcreteStackBlock;
   v27[1] = 3221225472;
   v27[2] = sub_10006B8AC;
   v27[3] = &unk_1002ACF88;
-  v18 = v8;
+  v18 = anomaliesCopy;
   v28 = v18;
-  v32 = v16;
-  v33 = v17;
-  v19 = v26;
+  v32 = fMTSMaxTimeUntilAnomalyPredictionErrorConsideredCorrect;
+  v33 = fMTSMaxDurationPredictionErrorConsideredCorrect;
+  v19 = contextCopy;
   v29 = v19;
-  v34 = v11;
-  v35 = v12;
+  v34 = fMTSAnomalyPredictionTimeToAnomalyConfidenceRangeSeconds;
+  v35 = fMTSAnomalyPredictionDurationConfidenceRangeSeconds;
   v36 = v14;
-  v37 = v15;
+  v37 = fMTSAnomalyConfidenceMinPredictionCount;
   v20 = v24;
   v30 = v20;
-  v38 = a4;
+  timestampCopy = timestamp;
   v21 = v25;
   v31 = v21;
   [v9 enumerateKeysAndObjectsUsingBlock:v27];
@@ -615,23 +615,23 @@ LABEL_5:
   return v22;
 }
 
-- (id)getAnomalyPredictionsForHomePLMN:(id)a3 andEvents:(id)a4 atCurrentTimestamp:(unint64_t)a5 atCurrentTime:(id)a6 timeSinceLastFetch:(unint64_t)a7
+- (id)getAnomalyPredictionsForHomePLMN:(id)n andEvents:(id)events atCurrentTimestamp:(unint64_t)timestamp atCurrentTime:(id)time timeSinceLastFetch:(unint64_t)fetch
 {
-  v41 = a3;
-  v12 = a4;
-  v42 = a6;
-  v13 = [v12 count];
+  nCopy = n;
+  eventsCopy = events;
+  timeCopy = time;
+  v13 = [eventsCopy count];
   v14 = +[FMConfiguration sharedInstance];
-  v15 = [v14 FMTSAnomalyPredictionMinNumObservedEvents];
+  fMTSAnomalyPredictionMinNumObservedEvents = [v14 FMTSAnomalyPredictionMinNumObservedEvents];
 
-  if (v13 >= v15)
+  if (v13 >= fMTSAnomalyPredictionMinNumObservedEvents)
   {
-    v17 = [(FMCoreData *)self sortObjects:v12 byKey:&stru_1002ACFC8];
+    v17 = [(FMCoreData *)self sortObjects:eventsCopy byKey:&stru_1002ACFC8];
     v70[0] = _NSConcreteStackBlock;
     v70[1] = 3221225472;
     v70[2] = sub_10006C6E0;
     v70[3] = &unk_1002ACFF0;
-    v18 = v12;
+    v18 = eventsCopy;
     v71 = v18;
     v40 = v17;
     [v17 enumerateKeysAndObjectsUsingBlock:v70];
@@ -640,10 +640,10 @@ LABEL_5:
     v21 = v20;
 
     v22 = +[FMConfiguration sharedInstance];
-    v23 = [v22 FMTSAnomalyPredictionAdvanceTimeSeconds];
+    fMTSAnomalyPredictionAdvanceTimeSeconds = [v22 FMTSAnomalyPredictionAdvanceTimeSeconds];
 
     v24 = +[FMConfiguration sharedInstance];
-    v25 = [v24 FMTSAnomalyUseLastEventForPredictionAdvanceTime];
+    fMTSAnomalyUseLastEventForPredictionAdvanceTime = [v24 FMTSAnomalyUseLastEventForPredictionAdvanceTime];
 
     v64 = 0;
     v65 = &v64;
@@ -672,21 +672,21 @@ LABEL_5:
     v45[4] = self;
     v39 = v40;
     v46 = v39;
-    v47 = v41;
+    v47 = nCopy;
     v49 = &v60;
     v50 = &v56;
-    v54 = v23;
-    v55 = v25;
+    v54 = fMTSAnomalyPredictionAdvanceTimeSeconds;
+    v55 = fMTSAnomalyUseLastEventForPredictionAdvanceTime;
     v53 = v21;
-    v48 = v42;
+    v48 = timeCopy;
     v51 = &v64;
-    v52 = a5;
+    timestampCopy = timestamp;
     if ([(FMCoreData *)self backgroundContextPerformBlockAndWait:v45])
     {
       v27 = clock_gettime_nsec_np(_CLOCK_MONOTONIC_RAW);
       v72[0] = @"fetch_duration";
-      v28 = [NSNumber numberWithUnsignedLongLong:(v27 - v26) / 0xF4240];
-      v73[0] = v28;
+      0xF4240 = [NSNumber numberWithUnsignedLongLong:(v27 - v26) / 0xF4240];
+      v73[0] = 0xF4240;
       v72[1] = @"fetch_successful";
       v29 = [NSNumber numberWithBool:*(v57 + 24)];
       v73[1] = v29;
@@ -711,7 +711,7 @@ LABEL_5:
       v34 = [NSNumber numberWithUnsignedInteger:v33];
       v73[4] = v34;
       v72[5] = @"time_since_last_fetch";
-      v35 = [NSNumber numberWithUnsignedLongLong:a7];
+      v35 = [NSNumber numberWithUnsignedLongLong:fetch];
       v73[5] = v35;
       v36 = [NSDictionary dictionaryWithObjects:v73 forKeys:v72 count:6];
 
@@ -753,21 +753,21 @@ LABEL_5:
   return v16;
 }
 
-- (BOOL)shouldConsiderAnomaly:(id)a3 atTime:(id)a4
+- (BOOL)shouldConsiderAnomaly:(id)anomaly atTime:(id)time
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 type] == 2)
+  anomalyCopy = anomaly;
+  timeCopy = time;
+  if ([anomalyCopy type] == 2)
   {
-    v8 = [v6 startTime];
-    v9 = [FMUtil getTimeOfDayFromDate:v8];
+    startTime = [anomalyCopy startTime];
+    v9 = [FMUtil getTimeOfDayFromDate:startTime];
 
-    v10 = [v6 startTime];
-    v11 = [FMUtil getDayOfWeekFromDate:v10];
+    startTime2 = [anomalyCopy startTime];
+    v11 = [FMUtil getDayOfWeekFromDate:startTime2];
 
     v13 = v11 == 1 || v11 == 7;
-    v14 = [FMUtil getTimeOfDayFromDate:v7];
-    v15 = [FMUtil getDayOfWeekFromDate:v7];
+    v14 = [FMUtil getTimeOfDayFromDate:timeCopy];
+    v15 = [FMUtil getDayOfWeekFromDate:timeCopy];
     v17 = v15 != 1 && v15 != 7;
     if (v13 == v17)
     {
@@ -790,18 +790,18 @@ LABEL_5:
   return v20;
 }
 
-- (double)compareFMTSEventTimestamp:(id)a3 withTSEventTimeUntilAnomaly:(int)a4 usingBaseTimestamp:(unint64_t)a5 withTimeDistanceMaxTime:(int)a6 withPredictionAdvanceTime:(int)a7 withContext:(id)a8
+- (double)compareFMTSEventTimestamp:(id)timestamp withTSEventTimeUntilAnomaly:(int)anomaly usingBaseTimestamp:(unint64_t)baseTimestamp withTimeDistanceMaxTime:(int)time withPredictionAdvanceTime:(int)advanceTime withContext:(id)context
 {
-  v12 = [a3 timestamp];
-  if (a5 >= v12)
+  timestamp = [timestamp timestamp];
+  if (baseTimestamp >= timestamp)
   {
-    v14 = a7 - a4 + (a5 - v12) / 0x3B9ACA00;
+    v14 = advanceTime - anomaly + (baseTimestamp - timestamp) / 0x3B9ACA00;
     if (v14 < 0)
     {
       v14 = -v14;
     }
 
-    return fmin(v14 / a6, 1.0);
+    return fmin(v14 / time, 1.0);
   }
 
   else
@@ -816,27 +816,27 @@ LABEL_5:
   return v13;
 }
 
-- (void)storePrediction:(id)a3
+- (void)storePrediction:(id)prediction
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10006E77C;
   v4[3] = &unk_1002ABDD8;
-  v5 = self;
-  v6 = a3;
-  v3 = v6;
-  [(FMCoreData *)v5 backgroundContextPerformBlockAndWait:v4];
+  selfCopy = self;
+  predictionCopy = prediction;
+  v3 = predictionCopy;
+  [(FMCoreData *)selfCopy backgroundContextPerformBlockAndWait:v4];
 }
 
-- (void)generateTagsForUntaggedAnomaliesWithContext:(id)a3
+- (void)generateTagsForUntaggedAnomaliesWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = [NSFetchRequest fetchRequestWithEntityName:@"TSAnomaly"];
   v6 = [NSPredicate predicateWithFormat:@"taggedBy.@count == 0 and events.@count > 0"];
   [v5 setPredicate:v6];
 
   v20 = 0;
-  v15 = [v4 executeFetchRequest:v5 error:&v20];
+  v15 = [contextCopy executeFetchRequest:v5 error:&v20];
   v7 = v20;
   v8 = *(qword_1002DBE98 + 136);
   if (v7)
@@ -876,7 +876,7 @@ LABEL_5:
 
           v13 = *(*(&v16 + 1) + 8 * i);
           v14 = objc_autoreleasePoolPush();
-          [(FMCoreData *)self generateTagsForAnomaly:v13 withContext:v4];
+          [(FMCoreData *)self generateTagsForAnomaly:v13 withContext:contextCopy];
           objc_autoreleasePoolPop(v14);
         }
 
@@ -888,17 +888,17 @@ LABEL_5:
   }
 }
 
-- (void)generateTagsForAnomaly:(id)a3 withContext:(id)a4
+- (void)generateTagsForAnomaly:(id)anomaly withContext:(id)context
 {
-  v26 = a3;
-  v27 = a4;
+  anomalyCopy = anomaly;
+  contextCopy = context;
   v24 = [NSFetchRequest fetchRequestWithEntityName:@"TSEvent"];
-  v5 = [NSPredicate predicateWithFormat:@"eventOf == %@ and type == %d", v26, 1];
+  v5 = [NSPredicate predicateWithFormat:@"eventOf == %@ and type == %d", anomalyCopy, 1];
   [v24 setPredicate:v5];
 
   [v24 setReturnsObjectsAsFaults:0];
   v33 = 0;
-  v23 = [v27 executeFetchRequest:v24 error:&v33];
+  v23 = [contextCopy executeFetchRequest:v24 error:&v33];
   v6 = v33;
   v7 = *(qword_1002DBE98 + 136);
   if (v6)
@@ -917,7 +917,7 @@ LABEL_5:
     if (os_log_type_enabled(*(qword_1002DBE98 + 136), OS_LOG_TYPE_DEBUG))
     {
       [v23 count];
-      sub_100200008(v26, v37);
+      sub_100200008(anomalyCopy, v37);
     }
 
     v31 = 0u;
@@ -943,16 +943,16 @@ LABEL_5:
           {
             v14 = v13;
             v15 = [FMTSEventCellChanged alloc];
-            v16 = [v14 fromCellGCI];
-            v17 = [v14 toCellGCI];
-            v18 = [(FMTSEventCellChanged *)v15 initWithTimestamp:0 fromCellGCI:v16 toCellGCI:v17];
+            fromCellGCI = [v14 fromCellGCI];
+            toCellGCI = [v14 toCellGCI];
+            v18 = [(FMTSEventCellChanged *)v15 initWithTimestamp:0 fromCellGCI:fromCellGCI toCellGCI:toCellGCI];
 
             v19 = [(FMCoreData *)self tagContentForCellChangedEvent:v18];
-            v20 = [NSEntityDescription insertNewObjectForEntityForName:@"TSAnomalyTag" inManagedObjectContext:v27];
+            v20 = [NSEntityDescription insertNewObjectForEntityForName:@"TSAnomalyTag" inManagedObjectContext:contextCopy];
             [v20 setType:1];
             [v20 setContent:v19];
-            [v20 setAnomaly:v26];
-            [v27 refreshObject:v14 mergeChanges:0];
+            [v20 setAnomaly:anomalyCopy];
+            [contextCopy refreshObject:v14 mergeChanges:0];
           }
 
           else
@@ -974,29 +974,29 @@ LABEL_5:
     }
 
     v28 = 0;
-    [v27 save:&v28];
+    [contextCopy save:&v28];
     v8 = v28;
     if (v8 && os_log_type_enabled(*(qword_1002DBE98 + 136), OS_LOG_TYPE_ERROR))
     {
-      v22 = [v8 localizedDescription];
-      sub_10020005C(v26, v22, buf);
+      localizedDescription = [v8 localizedDescription];
+      sub_10020005C(anomalyCopy, localizedDescription, buf);
     }
   }
 }
 
-- (int64_t)tagContentForCellChangedEvent:(id)a3
+- (int64_t)tagContentForCellChangedEvent:(id)event
 {
-  v3 = [a3 toCellGCI];
-  v4 = [FMUtil int64SHA256HashFor:v3];
+  toCellGCI = [event toCellGCI];
+  v4 = [FMUtil int64SHA256HashFor:toCellGCI];
 
   return v4;
 }
 
-- (id)tagsForEvents:(id)a3 withContext:(id)a4
+- (id)tagsForEvents:(id)events withContext:(id)context
 {
-  v21 = a3;
-  v22 = a4;
-  v6 = [v21 objectForKey:&off_1002BEF88];
+  eventsCopy = events;
+  contextCopy = context;
+  v6 = [eventsCopy objectForKey:&off_1002BEF88];
   v7 = v6;
   if (v6 && [v6 count])
   {
@@ -1038,14 +1038,14 @@ LABEL_5:
     }
 
     v23 = 0;
-    v16 = [v22 executeFetchRequest:v14 error:&v23];
+    v16 = [contextCopy executeFetchRequest:v14 error:&v23];
     v17 = v23;
     if (v17)
     {
       if (os_log_type_enabled(*(qword_1002DBE98 + 136), OS_LOG_TYPE_ERROR))
       {
-        v18 = [v17 localizedDescription];
-        sub_100200124(v9, v18, v28);
+        localizedDescription = [v17 localizedDescription];
+        sub_100200124(v9, localizedDescription, v28);
       }
 
       v19 = 0;
@@ -1070,9 +1070,9 @@ LABEL_5:
   return v19;
 }
 
-- (BOOL)generateChildEntitiesForEventsWithContext:(id)a3
+- (BOOL)generateChildEntitiesForEventsWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   if (os_log_type_enabled(*(qword_1002DBE98 + 136), OS_LOG_TYPE_DEBUG))
   {
     sub_1002001B4();
@@ -1100,7 +1100,7 @@ LABEL_5:
     [v29 setReturnsObjectsAsFaults:0];
     [v29 setFetchLimit:50];
     v40 = 0;
-    v7 = [v3 executeFetchRequest:v29 error:&v40];
+    v7 = [contextCopy executeFetchRequest:v29 error:&v40];
     v8 = v40;
     v9 = v8;
     v28 = v7;
@@ -1144,16 +1144,16 @@ LABEL_5:
             }
 
             v14 = *(*(&v36 + 1) + 8 * i);
-            v15 = [v14 details];
-            if (v15 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+            details = [v14 details];
+            if (details && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
             {
-              v16 = -[FMCoreData createChildTSEventOfType:withDetails:withContext:](self, "createChildTSEventOfType:withDetails:withContext:", [v14 type], v15, v3);
+              v16 = -[FMCoreData createChildTSEventOfType:withDetails:withContext:](self, "createChildTSEventOfType:withDetails:withContext:", [v14 type], details, contextCopy);
               if (v16)
               {
                 [v16 setTimeUntilAnomaly:{objc_msgSend(v14, "timeUntilAnomaly")}];
                 [v16 setType:{objc_msgSend(v14, "type")}];
-                v17 = [v14 eventOf];
-                [v16 setEventOf:v17];
+                eventOf = [v14 eventOf];
+                [v16 setEventOf:eventOf];
               }
 
               else if (os_log_type_enabled(*(qword_1002DBE98 + 136), OS_LOG_TYPE_ERROR))
@@ -1167,8 +1167,8 @@ LABEL_5:
               sub_100200224(&v32, v33);
             }
 
-            [v3 refreshObject:v14 mergeChanges:0];
-            [v3 deleteObject:v14];
+            [contextCopy refreshObject:v14 mergeChanges:0];
+            [contextCopy deleteObject:v14];
           }
 
           v11 = [v10 countByEnumeratingWithState:&v36 objects:v41 count:16];
@@ -1178,7 +1178,7 @@ LABEL_5:
       }
 
       v31 = 0;
-      v18 = [v3 save:&v31];
+      v18 = [contextCopy save:&v31];
       v19 = v31;
       if (v19)
       {
@@ -1251,25 +1251,25 @@ LABEL_44:
   return v5;
 }
 
-- (FMCoreData)initWithStoreURL:(id)a3 WithModelURL:(id)a4
+- (FMCoreData)initWithStoreURL:(id)l WithModelURL:(id)rL
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  rLCopy = rL;
   v33.receiver = self;
   v33.super_class = FMCoreData;
   v8 = [(FMCoreData *)&v33 init];
   if (v8)
   {
-    if (v6)
+    if (lCopy)
     {
-      if (v7)
+      if (rLCopy)
       {
         if (os_log_type_enabled(*(qword_1002DBE98 + 136), OS_LOG_TYPE_DEBUG))
         {
           sub_1002006C4();
         }
 
-        v9 = [[NSManagedObjectModel alloc] initWithContentsOfURL:v7];
+        v9 = [[NSManagedObjectModel alloc] initWithContentsOfURL:rLCopy];
         v10 = [NSString stringWithUTF8String:"WISFederatedMobility"];
         v11 = [NSPersistentContainer persistentContainerWithName:v10 managedObjectModel:v9];
         [(FMCoreData *)v8 setContainer:v11];
@@ -1282,22 +1282,22 @@ LABEL_44:
         [(FMCoreData *)v8 setContainer:v10];
       }
 
-      v12 = [(FMCoreData *)v8 container];
-      v13 = v12 == 0;
+      container = [(FMCoreData *)v8 container];
+      v13 = container == 0;
 
       if (!v13)
       {
-        v14 = [NSPersistentStoreDescription persistentStoreDescriptionWithURL:v6];
+        v14 = [NSPersistentStoreDescription persistentStoreDescriptionWithURL:lCopy];
         [v14 setOption:NSFileProtectionCompleteUnlessOpen forKey:NSPersistentStoreFileProtectionKey];
         if (os_log_type_enabled(*(qword_1002DBE98 + 136), OS_LOG_TYPE_DEBUG))
         {
           sub_100200734();
         }
 
-        v15 = [(FMCoreData *)v8 container];
+        container2 = [(FMCoreData *)v8 container];
         v34 = v14;
         v16 = [NSArray arrayWithObjects:&v34 count:1];
-        [v15 setPersistentStoreDescriptions:v16];
+        [container2 setPersistentStoreDescriptions:v16];
 
         [(FMCoreData *)v8 setQueue:dispatch_queue_create("com.apple.wirelessinsightsd.FederatedMobility.FMCoreData", 0)];
         if (![(FMCoreData *)v8 queue])
@@ -1312,10 +1312,10 @@ LABEL_44:
         }
 
         [(FMCoreData *)v8 waitForDeviceUnlockAndLoadDataStore];
-        v17 = [(FMCoreData *)v8 getLatestStoredConfiguration];
+        getLatestStoredConfiguration = [(FMCoreData *)v8 getLatestStoredConfiguration];
         v18 = +[FMConfiguration sharedInstance];
-        v19 = [v17 values];
-        v20 = [v18 isCompatibleToConfig:v19];
+        values = [getLatestStoredConfiguration values];
+        v20 = [v18 isCompatibleToConfig:values];
 
         if ((v20 & 1) == 0)
         {
@@ -1330,26 +1330,26 @@ LABEL_44:
         }
 
         v22 = +[FMConfiguration sharedInstance];
-        v23 = [v22 configAsDict];
-        v24 = [(FMCoreData *)v8 updateStoredConfigurationFrom:v17 to:v23];
+        configAsDict = [v22 configAsDict];
+        v24 = [(FMCoreData *)v8 updateStoredConfigurationFrom:getLatestStoredConfiguration to:configAsDict];
 
         if (v24)
         {
           [(FMCoreData *)v8 setDatabaseMaintenanceTimer:dispatch_source_create(&_dispatch_source_type_timer, 0, 0, [(FMCoreData *)v8 queue])];
           if ([(FMCoreData *)v8 databaseMaintenanceTimer])
           {
-            v25 = [(FMCoreData *)v8 databaseMaintenanceTimer];
+            databaseMaintenanceTimer = [(FMCoreData *)v8 databaseMaintenanceTimer];
             v26 = +[FMConfiguration sharedInstance];
-            dispatch_source_set_timer(v25, 0, 1000000000 * [v26 OOSTimeBetweenDatabaseMaintenance], 0xDF8475800uLL);
+            dispatch_source_set_timer(databaseMaintenanceTimer, 0, 1000000000 * [v26 OOSTimeBetweenDatabaseMaintenance], 0xDF8475800uLL);
 
             objc_initWeak(buf, v8);
-            v27 = [(FMCoreData *)v8 databaseMaintenanceTimer];
+            databaseMaintenanceTimer2 = [(FMCoreData *)v8 databaseMaintenanceTimer];
             handler[0] = _NSConcreteStackBlock;
             handler[1] = 3221225472;
             handler[2] = sub_100075E1C;
             handler[3] = &unk_1002AC020;
             objc_copyWeak(&v31, buf);
-            dispatch_source_set_event_handler(v27, handler);
+            dispatch_source_set_event_handler(databaseMaintenanceTimer2, handler);
             dispatch_resume([(FMCoreData *)v8 databaseMaintenanceTimer]);
             if (os_log_type_enabled(*(qword_1002DBE98 + 136), OS_LOG_TYPE_DEBUG))
             {
@@ -1437,39 +1437,39 @@ LABEL_36:
     sub_1002009E0();
   }
 
-  v3 = [(FMCoreData *)self container];
-  v4 = [v3 persistentStoreCoordinator];
+  container = [(FMCoreData *)self container];
+  persistentStoreCoordinator = [container persistentStoreCoordinator];
 
-  v5 = [v4 persistentStores];
-  v6 = [v5 count] > 1;
+  persistentStores = [persistentStoreCoordinator persistentStores];
+  v6 = [persistentStores count] > 1;
 
   if (v6)
   {
     v7 = *(qword_1002DBE98 + 136);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      v12 = [v4 persistentStores];
+      persistentStores2 = [persistentStoreCoordinator persistentStores];
       *buf = 134217984;
-      v18 = [v12 count];
+      v18 = [persistentStores2 count];
       _os_log_error_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "FederatedMobility[FMCoreData]:Unexpected number of stores in the coordinator: %lu", buf, 0xCu);
     }
   }
 
-  v8 = [v4 persistentStores];
-  v9 = [v8 firstObject];
+  persistentStores3 = [persistentStoreCoordinator persistentStores];
+  firstObject = [persistentStores3 firstObject];
 
-  v10 = [v9 URL];
-  v11 = [v9 type];
+  v10 = [firstObject URL];
+  type = [firstObject type];
 
-  if (v10 && v11)
+  if (v10 && type)
   {
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_1000764D0;
     v13[3] = &unk_1002AD538;
     v14 = v10;
-    v15 = v11;
-    v16 = v4;
+    v15 = type;
+    v16 = persistentStoreCoordinator;
     [FMUtil waitForDeviceUnlockAndRunBlock:v13];
     [(FMCoreData *)self waitForDeviceUnlockAndLoadDataStore];
   }
@@ -1508,10 +1508,10 @@ LABEL_36:
   return v2;
 }
 
-- (BOOL)updateStoredConfigurationFrom:(id)a3 to:(id)a4
+- (BOOL)updateStoredConfigurationFrom:(id)from to:(id)to
 {
-  v6 = a3;
-  v7 = a4;
+  fromCopy = from;
+  toCopy = to;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
@@ -1520,9 +1520,9 @@ LABEL_36:
   v12[1] = 3221225472;
   v12[2] = sub_100076BFC;
   v12[3] = &unk_1002ABFB0;
-  v8 = v6;
+  v8 = fromCopy;
   v13 = v8;
-  v9 = v7;
+  v9 = toCopy;
   v14 = v9;
   v15 = &v16;
   if ([(FMCoreData *)self backgroundContextPerformBlockAndWait:v12])
@@ -1539,15 +1539,15 @@ LABEL_36:
   return v10 & 1;
 }
 
-- (void)updateServingCellSeenWithContext:(id)a3 cell:(id)a4 atTimestamp:(id)a5
+- (void)updateServingCellSeenWithContext:(id)context cell:(id)cell atTimestamp:(id)timestamp
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  [v8 setLastSeen:v9];
-  [v8 setSeenCount:{objc_msgSend(v8, "seenCount") + 1}];
+  contextCopy = context;
+  cellCopy = cell;
+  timestampCopy = timestamp;
+  [cellCopy setLastSeen:timestampCopy];
+  [cellCopy setSeenCount:{objc_msgSend(cellCopy, "seenCount") + 1}];
   v11 = 0;
-  [v7 save:&v11];
+  [contextCopy save:&v11];
   v10 = v11;
   if (v10 && os_log_type_enabled(*(qword_1002DBE98 + 136), OS_LOG_TYPE_ERROR))
   {
@@ -1557,16 +1557,16 @@ LABEL_36:
   }
 }
 
-- (id)fmServingCellsToExistingServingCellsWithContext:(id)a3 cells:(id)a4
+- (id)fmServingCellsToExistingServingCellsWithContext:(id)context cells:(id)cells
 {
-  v25 = a3;
-  v19 = a4;
+  contextCopy = context;
+  cellsCopy = cells;
   v24 = objc_alloc_init(NSMutableOrderedSet);
   v31 = 0u;
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  obj = v19;
+  obj = cellsCopy;
   v5 = [obj countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v5)
   {
@@ -1582,27 +1582,27 @@ LABEL_36:
         }
 
         v7 = *(*(&v29 + 1) + 8 * i);
-        v28 = [v7 subscriptionID];
-        v27 = [v7 radioAccessTechnology];
-        v26 = [v7 cellID];
+        subscriptionID = [v7 subscriptionID];
+        radioAccessTechnology = [v7 radioAccessTechnology];
+        cellID = [v7 cellID];
         v8 = [v7 mnc];
         v9 = [v7 mcc];
-        v10 = [v7 bandInfo];
-        v11 = [v7 tacOrLac];
-        v12 = [v7 arfcnOrUarfcn];
-        v13 = [v7 bandwidth];
+        bandInfo = [v7 bandInfo];
+        tacOrLac = [v7 tacOrLac];
+        arfcnOrUarfcn = [v7 arfcnOrUarfcn];
+        bandwidth = [v7 bandwidth];
         v14 = [v7 pci];
-        v15 = [v7 deploymentType];
-        v16 = [(FMCoreData *)self getServingCellWithContext:v25 subscriptionID:v28 radioAccessTechnology:v27 cellID:v26 mnc:v8 mcc:v9 bandInfo:v10 tacOrLac:v11 arfcnOrUarfcn:v12 bandwidth:v13 pci:v14 deploymentType:v15, v19];
+        deploymentType = [v7 deploymentType];
+        cellsCopy = [(FMCoreData *)self getServingCellWithContext:contextCopy subscriptionID:subscriptionID radioAccessTechnology:radioAccessTechnology cellID:cellID mnc:v8 mcc:v9 bandInfo:bandInfo tacOrLac:tacOrLac arfcnOrUarfcn:arfcnOrUarfcn bandwidth:bandwidth pci:v14 deploymentType:deploymentType, cellsCopy];
 
-        if (!v16)
+        if (!cellsCopy)
         {
 
           v17 = 0;
           goto LABEL_11;
         }
 
-        [v24 addObject:v16];
+        [v24 addObject:cellsCopy];
       }
 
       v5 = [obj countByEnumeratingWithState:&v29 objects:v33 count:16];
@@ -1621,16 +1621,16 @@ LABEL_11:
   return v17;
 }
 
-- (id)fmServingCellsToServingCellsWithContext:(id)a3 cells:(id)a4
+- (id)fmServingCellsToServingCellsWithContext:(id)context cells:(id)cells
 {
-  v24 = a3;
-  v19 = a4;
+  contextCopy = context;
+  cellsCopy = cells;
   v21 = objc_alloc_init(NSMutableOrderedSet);
   v32 = 0u;
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  obj = v19;
+  obj = cellsCopy;
   v5 = [obj countByEnumeratingWithState:&v30 objects:v34 count:16];
   if (v5)
   {
@@ -1646,23 +1646,23 @@ LABEL_11:
         }
 
         v7 = *(*(&v30 + 1) + 8 * i);
-        v29 = [v7 subscriptionID];
-        v26 = [v7 radioAccessTechnology];
-        v28 = [v7 cellID];
+        subscriptionID = [v7 subscriptionID];
+        radioAccessTechnology = [v7 radioAccessTechnology];
+        cellID = [v7 cellID];
         v27 = [v7 mnc];
         v8 = [v7 mcc];
-        v9 = [v7 bandInfo];
-        v10 = [v7 tacOrLac];
-        v11 = [v7 arfcnOrUarfcn];
-        v12 = [v7 bandwidth];
+        bandInfo = [v7 bandInfo];
+        tacOrLac = [v7 tacOrLac];
+        arfcnOrUarfcn = [v7 arfcnOrUarfcn];
+        bandwidth = [v7 bandwidth];
         v13 = [v7 pci];
-        v14 = [v7 deploymentType];
-        v15 = [v7 timestamp];
-        v16 = [(FMCoreData *)self getOrCreateServingCellWithContext:v24 subscriptionID:v29 radioAccessTechnology:v26 cellID:v28 mnc:v27 mcc:v8 bandInfo:v9 tacOrLac:v10 arfcnOrUarfcn:v11 bandwidth:v12 pci:v13 deploymentType:v14 timestamp:v15, v19];
+        deploymentType = [v7 deploymentType];
+        timestamp = [v7 timestamp];
+        cellsCopy = [(FMCoreData *)self getOrCreateServingCellWithContext:contextCopy subscriptionID:subscriptionID radioAccessTechnology:radioAccessTechnology cellID:cellID mnc:v27 mcc:v8 bandInfo:bandInfo tacOrLac:tacOrLac arfcnOrUarfcn:arfcnOrUarfcn bandwidth:bandwidth pci:v13 deploymentType:deploymentType timestamp:timestamp, cellsCopy];
 
-        if (v16)
+        if (cellsCopy)
         {
-          [v21 addObject:v16];
+          [v21 addObject:cellsCopy];
         }
       }
 
@@ -1677,36 +1677,36 @@ LABEL_11:
   return v17;
 }
 
-- (id)getOrCreateServingCellWithContext:(id)a3 subscriptionID:(id)a4 radioAccessTechnology:(id)a5 cellID:(id)a6 mnc:(id)a7 mcc:(id)a8 bandInfo:(id)a9 tacOrLac:(id)a10 arfcnOrUarfcn:(id)a11 bandwidth:(id)a12 pci:(id)a13 deploymentType:(id)a14 timestamp:(id)a15
+- (id)getOrCreateServingCellWithContext:(id)context subscriptionID:(id)d radioAccessTechnology:(id)technology cellID:(id)iD mnc:(id)mnc mcc:(id)mcc bandInfo:(id)info tacOrLac:(id)self0 arfcnOrUarfcn:(id)self1 bandwidth:(id)self2 pci:(id)self3 deploymentType:(id)self4 timestamp:(id)self5
 {
-  v20 = a3;
-  v21 = a4;
-  v50 = a5;
-  v22 = a6;
-  v23 = a7;
-  v41 = a8;
-  v24 = a9;
-  v25 = a10;
-  v26 = a11;
-  v27 = a12;
-  v28 = a13;
-  v29 = a14;
-  v46 = v25;
-  v47 = a15;
-  v43 = v29;
-  v44 = v27;
-  v45 = v26;
-  v40 = v24;
-  v48 = v24;
-  v30 = v20;
-  v31 = v21;
-  v49 = v23;
-  v32 = [(FMCoreData *)self getServingCellWithContext:v30 subscriptionID:v21 radioAccessTechnology:v50 cellID:v22 mnc:v23 mcc:v41 bandInfo:v40 tacOrLac:v25 arfcnOrUarfcn:v26 bandwidth:v27 pci:v28 deploymentType:v29];
+  contextCopy = context;
+  dCopy = d;
+  technologyCopy = technology;
+  iDCopy = iD;
+  mncCopy = mnc;
+  mccCopy = mcc;
+  infoCopy = info;
+  lacCopy = lac;
+  uarfcnCopy = uarfcn;
+  bandwidthCopy = bandwidth;
+  pciCopy = pci;
+  typeCopy = type;
+  v46 = lacCopy;
+  timestampCopy = timestamp;
+  v43 = typeCopy;
+  v44 = bandwidthCopy;
+  v45 = uarfcnCopy;
+  v40 = infoCopy;
+  v48 = infoCopy;
+  v30 = contextCopy;
+  v31 = dCopy;
+  v49 = mncCopy;
+  v32 = [(FMCoreData *)self getServingCellWithContext:v30 subscriptionID:dCopy radioAccessTechnology:technologyCopy cellID:iDCopy mnc:mncCopy mcc:mccCopy bandInfo:v40 tacOrLac:lacCopy arfcnOrUarfcn:uarfcnCopy bandwidth:bandwidthCopy pci:pciCopy deploymentType:typeCopy];
   v33 = v32;
   if (v32)
   {
     v34 = v32;
-    v36 = v26;
+    v36 = uarfcnCopy;
     v35 = v46;
     v37 = v44;
     v38 = v43;
@@ -1714,53 +1714,53 @@ LABEL_11:
 
   else
   {
-    v35 = v25;
+    v35 = lacCopy;
     v38 = v43;
     v37 = v44;
     v36 = v45;
-    v34 = [(FMCoreData *)self createServingCellWithContext:v30 subscriptionID:v31 radioAccessTechnology:v50 cellID:v22 mnc:v49 mcc:v41 bandInfo:v48 tacOrLac:v25 arfcnOrUarfcn:v45 bandwidth:v44 pci:v28 deploymentType:v43 timestamp:v47];
+    v34 = [(FMCoreData *)self createServingCellWithContext:v30 subscriptionID:v31 radioAccessTechnology:technologyCopy cellID:iDCopy mnc:v49 mcc:mccCopy bandInfo:v48 tacOrLac:lacCopy arfcnOrUarfcn:v45 bandwidth:v44 pci:pciCopy deploymentType:v43 timestamp:timestampCopy];
   }
 
   return v34;
 }
 
-- (id)createServingCellWithContext:(id)a3 subscriptionID:(id)a4 radioAccessTechnology:(id)a5 cellID:(id)a6 mnc:(id)a7 mcc:(id)a8 bandInfo:(id)a9 tacOrLac:(id)a10 arfcnOrUarfcn:(id)a11 bandwidth:(id)a12 pci:(id)a13 deploymentType:(id)a14 timestamp:(id)a15
+- (id)createServingCellWithContext:(id)context subscriptionID:(id)d radioAccessTechnology:(id)technology cellID:(id)iD mnc:(id)mnc mcc:(id)mcc bandInfo:(id)info tacOrLac:(id)self0 arfcnOrUarfcn:(id)self1 bandwidth:(id)self2 pci:(id)self3 deploymentType:(id)self4 timestamp:(id)self5
 {
-  v20 = a3;
-  v21 = a4;
-  v35 = a5;
-  v34 = a6;
-  v33 = a7;
-  v32 = a8;
-  v22 = v21;
-  v37 = a9;
-  v36 = a10;
-  v23 = a11;
-  v24 = a12;
-  v25 = a13;
-  v26 = a14;
-  v27 = a15;
+  contextCopy = context;
+  dCopy = d;
+  technologyCopy = technology;
+  iDCopy = iD;
+  mncCopy = mnc;
+  mccCopy = mcc;
+  v22 = dCopy;
+  infoCopy = info;
+  lacCopy = lac;
+  uarfcnCopy = uarfcn;
+  bandwidthCopy = bandwidth;
+  pciCopy = pci;
+  typeCopy = type;
+  timestampCopy = timestamp;
   if (os_log_type_enabled(*(qword_1002DBE98 + 136), OS_LOG_TYPE_DEBUG))
   {
     sub_100200D94();
   }
 
-  v28 = [NSEntityDescription insertNewObjectForEntityForName:@"ServingCell" inManagedObjectContext:v20, a13];
-  [v28 setLastSeen:v27];
+  v28 = [NSEntityDescription insertNewObjectForEntityForName:@"ServingCell" inManagedObjectContext:contextCopy, pci];
+  [v28 setLastSeen:timestampCopy];
   [v28 setSeenCount:0];
-  [v28 setSubscriptionID:v21];
-  [v28 setRadioAccessTechnology:v35];
-  [v28 setCellID:v34];
-  [v28 setMnc:v33];
-  [v28 setMcc:v32];
-  [v28 setBandInfo:v37];
-  [v28 setTacOrLac:v36];
-  [v28 setArfcnOrUarfcn:v23];
-  [v28 setBandwidth:v24];
-  [v28 setPci:v25];
-  [v28 setDeploymentType:v26];
+  [v28 setSubscriptionID:dCopy];
+  [v28 setRadioAccessTechnology:technologyCopy];
+  [v28 setCellID:iDCopy];
+  [v28 setMnc:mncCopy];
+  [v28 setMcc:mccCopy];
+  [v28 setBandInfo:infoCopy];
+  [v28 setTacOrLac:lacCopy];
+  [v28 setArfcnOrUarfcn:uarfcnCopy];
+  [v28 setBandwidth:bandwidthCopy];
+  [v28 setPci:pciCopy];
+  [v28 setDeploymentType:typeCopy];
   v38 = 0;
-  [v20 save:&v38];
+  [contextCopy save:&v38];
   v29 = v38;
   if (v29)
   {
@@ -1782,35 +1782,35 @@ LABEL_11:
   return v30;
 }
 
-- (id)getServingCellWithContext:(id)a3 subscriptionID:(id)a4 radioAccessTechnology:(id)a5 cellID:(id)a6 mnc:(id)a7 mcc:(id)a8 bandInfo:(id)a9 tacOrLac:(id)a10 arfcnOrUarfcn:(id)a11 bandwidth:(id)a12 pci:(id)a13 deploymentType:(id)a14
+- (id)getServingCellWithContext:(id)context subscriptionID:(id)d radioAccessTechnology:(id)technology cellID:(id)iD mnc:(id)mnc mcc:(id)mcc bandInfo:(id)info tacOrLac:(id)self0 arfcnOrUarfcn:(id)self1 bandwidth:(id)self2 pci:(id)self3 deploymentType:(id)self4
 {
-  v37 = a3;
-  v38 = a4;
-  v19 = a5;
-  v20 = a6;
-  v21 = a7;
-  v22 = a8;
-  v23 = a9;
-  v24 = a10;
-  v25 = a11;
-  v26 = a12;
-  v27 = a13;
-  v33 = v19;
-  v34 = v23;
-  v35 = v24;
-  v36 = a14;
+  contextCopy = context;
+  dCopy = d;
+  technologyCopy = technology;
+  iDCopy = iD;
+  mncCopy = mnc;
+  mccCopy = mcc;
+  infoCopy = info;
+  lacCopy = lac;
+  uarfcnCopy = uarfcn;
+  bandwidthCopy = bandwidth;
+  pciCopy = pci;
+  v33 = technologyCopy;
+  v34 = infoCopy;
+  v35 = lacCopy;
+  typeCopy = type;
   v39 = [NSFetchRequest fetchRequestWithEntityName:@"ServingCell"];
-  v28 = [NSPredicate predicateWithFormat:@"(subscriptionID == %@) AND (radioAccessTechnology == %@) AND (cellID == %@) AND (mnc == %@) AND (mcc == %@) AND (bandInfo == %@) AND (tacOrLac == %@) AND (arfcnOrUarfcn == %@) AND (bandwidth == %@) AND (pci == %@) AND (deploymentType == %@)", v38, v19, v20, v21, v22, v23, v24, v25, v26, v27, v36];
-  [v39 setPredicate:v28];
+  typeCopy = [NSPredicate predicateWithFormat:@"(subscriptionID == %@) AND (radioAccessTechnology == %@) AND (cellID == %@) AND (mnc == %@) AND (mcc == %@) AND (bandInfo == %@) AND (tacOrLac == %@) AND (arfcnOrUarfcn == %@) AND (bandwidth == %@) AND (pci == %@) AND (deploymentType == %@)", dCopy, technologyCopy, iDCopy, mncCopy, mccCopy, infoCopy, lacCopy, uarfcnCopy, bandwidthCopy, pciCopy, typeCopy];
+  [v39 setPredicate:typeCopy];
   if (os_log_type_enabled(*(qword_1002DBE98 + 136), OS_LOG_TYPE_DEBUG))
   {
-    [v28 description];
+    [typeCopy description];
     objc_claimAutoreleasedReturnValue();
     sub_100200E0C();
   }
 
   v40 = 0;
-  v29 = [v37 executeFetchRequest:v39 error:&v40];
+  v29 = [contextCopy executeFetchRequest:v39 error:&v40];
   v30 = v40;
   if (v30)
   {
@@ -1822,7 +1822,7 @@ LABEL_11:
     }
 
 LABEL_6:
-    v31 = 0;
+    firstObject = 0;
     goto LABEL_12;
   }
 
@@ -1841,22 +1841,22 @@ LABEL_6:
     sub_100200E94();
   }
 
-  v31 = [v29 firstObject];
+  firstObject = [v29 firstObject];
 LABEL_12:
 
-  return v31;
+  return firstObject;
 }
 
-- (id)filterOutOfServiceAreasWithContext:(id)a3 unfilteredOutOfServiceAreas:(id)a4 WithExactPrevCells:(id)a5
+- (id)filterOutOfServiceAreasWithContext:(id)context unfilteredOutOfServiceAreas:(id)areas WithExactPrevCells:(id)cells
 {
-  v6 = a4;
-  v7 = a5;
+  areasCopy = areas;
+  cellsCopy = cells;
   v8 = objc_alloc_init(NSMutableArray);
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v9 = v6;
+  v9 = areasCopy;
   v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v10)
   {
@@ -1871,9 +1871,9 @@ LABEL_12:
         }
 
         v13 = *(*(&v18 + 1) + 8 * i);
-        v14 = [v13 prevCells];
-        v15 = [v14 count];
-        LOBYTE(v15) = v15 == [v7 count];
+        prevCells = [v13 prevCells];
+        v15 = [prevCells count];
+        LOBYTE(v15) = v15 == [cellsCopy count];
 
         if (v15)
         {
@@ -1892,24 +1892,24 @@ LABEL_12:
   return v16;
 }
 
-- (id)getOutOfServiceAreasWithoutNextVisitWithContext:(id)a3 After:(id)a4
+- (id)getOutOfServiceAreasWithoutNextVisitWithContext:(id)context After:(id)after
 {
-  v5 = a3;
-  v6 = a4;
+  contextCopy = context;
+  afterCopy = after;
   v7 = [NSFetchRequest fetchRequestWithEntityName:@"OutOfServiceArea"];
-  v8 = [NSPredicate predicateWithFormat:@"(nextVisit == nil) AND (lastSeen >= %@)", v6];
-  [v7 setPredicate:v8];
+  afterCopy = [NSPredicate predicateWithFormat:@"(nextVisit == nil) AND (lastSeen >= %@)", afterCopy];
+  [v7 setPredicate:afterCopy];
   v9 = *(qword_1002DBE98 + 136);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
-    v10 = [v8 description];
+    v10 = [afterCopy description];
     *buf = 138412290;
     v17 = v10;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "FederatedMobility[FMCoreData]:#I Fetching OutOfServiceArea with predicate %@", buf, 0xCu);
   }
 
   v15 = 0;
-  v11 = [v5 executeFetchRequest:v7 error:&v15];
+  v11 = [contextCopy executeFetchRequest:v7 error:&v15];
   v12 = v15;
   if (v12)
   {
@@ -1931,34 +1931,34 @@ LABEL_12:
   return v13;
 }
 
-- (void)updateOutOfServiceAreaAfterLeavingWithContext:(id)a3 outOfServiceArea:(id)a4 startTime:(id)a5 nextCell:(id)a6 duration:(double)a7 entryLocation:(id)a8 exitLocation:(id)a9
+- (void)updateOutOfServiceAreaAfterLeavingWithContext:(id)context outOfServiceArea:(id)area startTime:(id)time nextCell:(id)cell duration:(double)duration entryLocation:(id)location exitLocation:(id)exitLocation
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v52 = a6;
-  v53 = a8;
-  v18 = a9;
-  v51 = v17;
-  if (v16)
+  contextCopy = context;
+  areaCopy = area;
+  timeCopy = time;
+  cellCopy = cell;
+  locationCopy = location;
+  exitLocationCopy = exitLocation;
+  v51 = timeCopy;
+  if (areaCopy)
   {
-    [v16 setLastSeen:v17];
-    [v16 setSeenCount:{objc_msgSend(v16, "seenCount") + 1}];
-    v50 = [NSEntityDescription insertNewObjectForEntityForName:@"OutOfServiceDuration" inManagedObjectContext:v15];
-    [v50 setSeconds:llround(a7)];
-    [v50 setTimestamp:v17];
-    [v16 addDurationsObject:v50];
-    v19 = [v16 durations];
-    v20 = [v19 count];
+    [areaCopy setLastSeen:timeCopy];
+    [areaCopy setSeenCount:{objc_msgSend(areaCopy, "seenCount") + 1}];
+    v50 = [NSEntityDescription insertNewObjectForEntityForName:@"OutOfServiceDuration" inManagedObjectContext:contextCopy];
+    [v50 setSeconds:llround(duration)];
+    [v50 setTimestamp:timeCopy];
+    [areaCopy addDurationsObject:v50];
+    durations = [areaCopy durations];
+    v20 = [durations count];
     v21 = +[FMConfiguration sharedInstance];
-    v22 = [v21 OOSDurationsInDatabase];
+    oOSDurationsInDatabase = [v21 OOSDurationsInDatabase];
 
-    if (v20 > v22)
+    if (v20 > oOSDurationsInDatabase)
     {
-      v23 = [v16 durations];
-      v24 = [v23 copy];
-      v25 = [v16 durations];
-      v26 = [v25 count];
+      durations2 = [areaCopy durations];
+      v24 = [durations2 copy];
+      durations3 = [areaCopy durations];
+      v26 = [durations3 count];
       v27 = +[FMConfiguration sharedInstance];
       v28 = +[NSIndexSet indexSetWithIndexesInRange:](NSIndexSet, "indexSetWithIndexesInRange:", 0, v26 - [v27 OOSDurationsInDatabase]);
       v29 = [v24 objectsAtIndexes:v28];
@@ -1982,8 +1982,8 @@ LABEL_12:
             }
 
             v34 = *(*(&v55 + 1) + 8 * i);
-            [v16 removeDurationsObject:v34];
-            [v15 deleteObject:v34];
+            [areaCopy removeDurationsObject:v34];
+            [contextCopy deleteObject:v34];
           }
 
           v31 = [v30 countByEnumeratingWithState:&v55 objects:v59 count:16];
@@ -1993,73 +1993,73 @@ LABEL_12:
       }
     }
 
-    if (v52)
+    if (cellCopy)
     {
-      [v16 addNextCellsObject:v52];
+      [areaCopy addNextCellsObject:cellCopy];
     }
 
-    if (v53)
+    if (locationCopy)
     {
-      v35 = [v16 entryAccuracy];
-      if (!v35)
+      entryAccuracy = [areaCopy entryAccuracy];
+      if (!entryAccuracy)
       {
         goto LABEL_16;
       }
 
-      v36 = [v16 entryAccuracy];
-      [v53 accuracy];
+      entryAccuracy2 = [areaCopy entryAccuracy];
+      [locationCopy accuracy];
       v37 = [NSNumber numberWithDouble:?];
-      v38 = [v36 compare:v37] == 1;
+      v38 = [entryAccuracy2 compare:v37] == 1;
 
       if (v38)
       {
 LABEL_16:
-        [v53 latitude];
+        [locationCopy latitude];
         v39 = [NSNumber numberWithDouble:?];
-        [v16 setEntryLatitude:v39];
+        [areaCopy setEntryLatitude:v39];
 
-        [v53 longitude];
+        [locationCopy longitude];
         v40 = [NSNumber numberWithDouble:?];
-        [v16 setEntryLongitude:v40];
+        [areaCopy setEntryLongitude:v40];
 
-        [v53 accuracy];
+        [locationCopy accuracy];
         v41 = [NSNumber numberWithDouble:?];
-        [v16 setEntryAccuracy:v41];
+        [areaCopy setEntryAccuracy:v41];
       }
     }
 
-    if (v18)
+    if (exitLocationCopy)
     {
-      v42 = [v16 exitAccuracy];
-      if (!v42)
+      exitAccuracy = [areaCopy exitAccuracy];
+      if (!exitAccuracy)
       {
         goto LABEL_20;
       }
 
-      v43 = [v16 exitAccuracy];
-      [v18 accuracy];
+      exitAccuracy2 = [areaCopy exitAccuracy];
+      [exitLocationCopy accuracy];
       v44 = [NSNumber numberWithDouble:?];
-      v45 = [v43 compare:v44] == 1;
+      v45 = [exitAccuracy2 compare:v44] == 1;
 
       if (v45)
       {
 LABEL_20:
-        [v18 latitude];
+        [exitLocationCopy latitude];
         v46 = [NSNumber numberWithDouble:?];
-        [v16 setExitLatitude:v46];
+        [areaCopy setExitLatitude:v46];
 
-        [v18 longitude];
+        [exitLocationCopy longitude];
         v47 = [NSNumber numberWithDouble:?];
-        [v16 setExitLongitude:v47];
+        [areaCopy setExitLongitude:v47];
 
-        [v18 accuracy];
+        [exitLocationCopy accuracy];
         v48 = [NSNumber numberWithDouble:?];
-        [v16 setExitAccuracy:v48];
+        [areaCopy setExitAccuracy:v48];
       }
     }
 
     v54 = 0;
-    [v15 save:&v54];
+    [contextCopy save:&v54];
     v49 = v54;
     if (v49 && os_log_type_enabled(*(qword_1002DBE98 + 136), OS_LOG_TYPE_ERROR))
     {
@@ -2075,20 +2075,20 @@ LABEL_20:
   }
 }
 
-- (id)handleOutOfServiceAreaWithContext:(id)a3 prevVisit:(id)a4 curVisit:(id)a5 nextVisit:(id)a6 subscriptionID:(id)a7 prevCells:(id)a8 startTime:(id)a9 entryLocation:(id)a10 exitLocation:(id)a11
+- (id)handleOutOfServiceAreaWithContext:(id)context prevVisit:(id)visit curVisit:(id)curVisit nextVisit:(id)nextVisit subscriptionID:(id)d prevCells:(id)cells startTime:(id)time entryLocation:(id)self0 exitLocation:(id)self1
 {
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a6;
-  v21 = a7;
-  v22 = a8;
-  v23 = a9;
-  v41 = a10;
-  v24 = a11;
-  v40 = v24;
-  LOWORD(v37) = [(FMCoreData *)self NSDateToTimeOfDay:v23];
-  v25 = [(FMCoreData *)self getOutOfServiceAreaWithContext:v17 prevVisit:v18 curVisit:v19 nextVisit:v20 subscriptionID:v21 prevCells:v22 timeOfDay:v37];
+  contextCopy = context;
+  visitCopy = visit;
+  curVisitCopy = curVisit;
+  nextVisitCopy = nextVisit;
+  dCopy = d;
+  cellsCopy = cells;
+  timeCopy = time;
+  locationCopy = location;
+  exitLocationCopy = exitLocation;
+  v40 = exitLocationCopy;
+  LOWORD(v37) = [(FMCoreData *)self NSDateToTimeOfDay:timeCopy];
+  v25 = [(FMCoreData *)self getOutOfServiceAreaWithContext:contextCopy prevVisit:visitCopy curVisit:curVisitCopy nextVisit:nextVisitCopy subscriptionID:dCopy prevCells:cellsCopy timeOfDay:v37];
   v26 = v25;
   if (v25)
   {
@@ -2096,11 +2096,11 @@ LABEL_20:
     goto LABEL_11;
   }
 
-  v39 = [(FMCoreData *)self createOutOfServiceAreaWithContext:v17 prevVisit:v18 curVisit:v19 nextVisit:v20 subscriptionID:v21 prevCells:v22 entryLocation:v41 exitLocation:v24 startTime:v23];
+  v39 = [(FMCoreData *)self createOutOfServiceAreaWithContext:contextCopy prevVisit:visitCopy curVisit:curVisitCopy nextVisit:nextVisitCopy subscriptionID:dCopy prevCells:cellsCopy entryLocation:locationCopy exitLocation:exitLocationCopy startTime:timeCopy];
   v28 = +[FMConfiguration sharedInstance];
-  v29 = -[FMCoreData deleteOutOfServiceAreasOverThresholdCount:WithContext:](self, "deleteOutOfServiceAreasOverThresholdCount:WithContext:", [v28 OOSMaxOOSAreasInDatabase], v17);
+  v29 = -[FMCoreData deleteOutOfServiceAreasOverThresholdCount:WithContext:](self, "deleteOutOfServiceAreasOverThresholdCount:WithContext:", [v28 OOSMaxOOSAreasInDatabase], contextCopy);
 
-  v38 = v22;
+  v38 = cellsCopy;
   if (v29)
   {
     v42[0] = _NSConcreteStackBlock;
@@ -2110,11 +2110,11 @@ LABEL_20:
     v43 = v39;
     if ([v29 indexOfObjectPassingTest:v42] != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v30 = v21;
-      v31 = v20;
-      v32 = v17;
-      v33 = v19;
-      v34 = v18;
+      v30 = dCopy;
+      v31 = nextVisitCopy;
+      v32 = contextCopy;
+      v33 = curVisitCopy;
+      v34 = visitCopy;
       if (os_log_type_enabled(*(qword_1002DBE98 + 136), OS_LOG_TYPE_DEBUG))
       {
         sub_100200FB8();
@@ -2126,37 +2126,37 @@ LABEL_20:
     }
   }
 
-  v30 = v21;
-  v31 = v20;
-  v32 = v17;
-  v33 = v19;
-  v34 = v18;
+  v30 = dCopy;
+  v31 = nextVisitCopy;
+  v32 = contextCopy;
+  v33 = curVisitCopy;
+  v34 = visitCopy;
   v35 = v39;
   v27 = v39;
 LABEL_10:
 
-  v18 = v34;
-  v19 = v33;
-  v17 = v32;
-  v20 = v31;
-  v21 = v30;
-  v22 = v38;
+  visitCopy = v34;
+  curVisitCopy = v33;
+  contextCopy = v32;
+  nextVisitCopy = v31;
+  dCopy = v30;
+  cellsCopy = v38;
 LABEL_11:
 
   return v27;
 }
 
-- (id)createOutOfServiceAreaWithContext:(id)a3 prevVisit:(id)a4 curVisit:(id)a5 nextVisit:(id)a6 subscriptionID:(id)a7 prevCells:(id)a8 entryLocation:(id)a9 exitLocation:(id)a10 startTime:(id)a11
+- (id)createOutOfServiceAreaWithContext:(id)context prevVisit:(id)visit curVisit:(id)curVisit nextVisit:(id)nextVisit subscriptionID:(id)d prevCells:(id)cells entryLocation:(id)location exitLocation:(id)self0 startTime:(id)self1
 {
-  v52 = a3;
-  v48 = a4;
-  v49 = a5;
-  v50 = a6;
-  v51 = a7;
-  v54 = a8;
-  v16 = a9;
-  v17 = a10;
-  v53 = a11;
+  contextCopy = context;
+  visitCopy = visit;
+  curVisitCopy = curVisit;
+  nextVisitCopy = nextVisit;
+  dCopy = d;
+  cellsCopy = cells;
+  locationCopy = location;
+  exitLocationCopy = exitLocation;
+  timeCopy = time;
   v18 = *(qword_1002DBE98 + 136);
   if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
   {
@@ -2164,14 +2164,14 @@ LABEL_11:
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_INFO, "FederatedMobility[FMCoreData]:#I Creating new OutOfServiceArea", buf, 2u);
   }
 
-  v19 = [NSEntityDescription insertNewObjectForEntityForName:@"OutOfServiceArea" inManagedObjectContext:v52];
-  [v19 setLastSeen:v53];
+  v19 = [NSEntityDescription insertNewObjectForEntityForName:@"OutOfServiceArea" inManagedObjectContext:contextCopy];
+  [v19 setLastSeen:timeCopy];
   [v19 setSeenCount:0];
-  [v19 setPrevVisit:v48];
-  [v19 setCurVisit:v49];
-  [v19 setNextVisit:v50];
-  [v19 setSubscriptionID:v51];
-  v20 = [v54 count];
+  [v19 setPrevVisit:visitCopy];
+  [v19 setCurVisit:curVisitCopy];
+  [v19 setNextVisit:nextVisitCopy];
+  [v19 setSubscriptionID:dCopy];
+  v20 = [cellsCopy count];
   v21 = +[FMConfiguration sharedInstance];
   LODWORD(v20) = v20 > [v21 OOSPrevCellsInDatabase];
 
@@ -2180,29 +2180,29 @@ LABEL_11:
     v22 = *(qword_1002DBE98 + 136);
     if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
     {
-      v23 = [v54 count];
+      v23 = [cellsCopy count];
       v24 = +[FMConfiguration sharedInstance];
-      v25 = [v24 OOSPrevCellsInDatabase];
+      oOSPrevCellsInDatabase = [v24 OOSPrevCellsInDatabase];
       *buf = 134218240;
       v62 = v23;
       v63 = 2048;
-      v64 = v25;
+      v64 = oOSPrevCellsInDatabase;
       _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_INFO, "FederatedMobility[FMCoreData]:#I Received more prevCells for database than expected: %lu > %lu", buf, 0x16u);
     }
 
     v26 = [NSOrderedSet alloc];
-    v27 = [v54 count];
+    v27 = [cellsCopy count];
     v28 = +[FMConfiguration sharedInstance];
-    v29 = [v28 OOSPrevCellsInDatabase];
+    oOSPrevCellsInDatabase2 = [v28 OOSPrevCellsInDatabase];
     v30 = +[FMConfiguration sharedInstance];
-    v31 = +[NSIndexSet indexSetWithIndexesInRange:](NSIndexSet, "indexSetWithIndexesInRange:", v27 - v29, [v30 OOSPrevCellsInDatabase]);
-    v32 = [v54 objectsAtIndexes:v31];
+    v31 = +[NSIndexSet indexSetWithIndexesInRange:](NSIndexSet, "indexSetWithIndexesInRange:", v27 - oOSPrevCellsInDatabase2, [v30 OOSPrevCellsInDatabase]);
+    v32 = [cellsCopy objectsAtIndexes:v31];
     v33 = [v26 initWithArray:v32];
   }
 
   else
   {
-    v33 = [v54 copy];
+    v33 = [cellsCopy copy];
   }
 
   v58 = 0u;
@@ -2232,39 +2232,39 @@ LABEL_11:
     while (v35);
   }
 
-  if (v16)
+  if (locationCopy)
   {
-    [v16 latitude];
+    [locationCopy latitude];
     v38 = [NSNumber numberWithDouble:?];
     [v19 setEntryLatitude:v38];
 
-    [v16 longitude];
+    [locationCopy longitude];
     v39 = [NSNumber numberWithDouble:?];
     [v19 setEntryLongitude:v39];
 
-    [v16 accuracy];
+    [locationCopy accuracy];
     v40 = [NSNumber numberWithDouble:?];
     [v19 setEntryAccuracy:v40];
   }
 
-  if (v17)
+  if (exitLocationCopy)
   {
-    [v17 latitude];
+    [exitLocationCopy latitude];
     v41 = [NSNumber numberWithDouble:?];
     [v19 setExitLatitude:v41];
 
-    [v17 longitude];
+    [exitLocationCopy longitude];
     v42 = [NSNumber numberWithDouble:?];
     [v19 setExitLongitude:v42];
 
-    [v17 accuracy];
+    [exitLocationCopy accuracy];
     v43 = [NSNumber numberWithDouble:?];
     [v19 setExitAccuracy:v43];
   }
 
-  [v19 setTimeOfDay:{-[FMCoreData NSDateToTimeOfDay:](self, "NSDateToTimeOfDay:", v53)}];
+  [v19 setTimeOfDay:{-[FMCoreData NSDateToTimeOfDay:](self, "NSDateToTimeOfDay:", timeCopy)}];
   v55 = 0;
-  [v52 save:&v55];
+  [contextCopy save:&v55];
   v44 = v55;
   if (v44)
   {
@@ -2286,85 +2286,85 @@ LABEL_11:
   return v45;
 }
 
-- (id)getOutOfServiceAreaWithContext:(id)a3 prevVisit:(id)a4 curVisit:(id)a5 nextVisit:(id)a6 subscriptionID:(id)a7 prevCells:(id)a8 timeOfDay:(signed __int16)a9
+- (id)getOutOfServiceAreaWithContext:(id)context prevVisit:(id)visit curVisit:(id)curVisit nextVisit:(id)nextVisit subscriptionID:(id)d prevCells:(id)cells timeOfDay:(signed __int16)day
 {
-  v51 = a3;
-  v15 = a4;
-  v53 = a5;
-  v54 = a6;
-  v49 = a7;
-  v50 = a8;
-  v47 = v15;
+  contextCopy = context;
+  visitCopy = visit;
+  curVisitCopy = curVisit;
+  nextVisitCopy = nextVisit;
+  dCopy = d;
+  cellsCopy = cells;
+  v47 = visitCopy;
   v16 = +[FMConfiguration sharedInstance];
-  v17 = -[FMCoreData getMinutesSinceMidnightFrom:addingOffset:](self, "getMinutesSinceMidnightFrom:addingOffset:", a9, -[v16 OOSTimeOfDayWindowBackMinutes]);
+  v17 = -[FMCoreData getMinutesSinceMidnightFrom:addingOffset:](self, "getMinutesSinceMidnightFrom:addingOffset:", day, -[v16 OOSTimeOfDayWindowBackMinutes]);
 
   v18 = +[FMConfiguration sharedInstance];
-  v19 = -[FMCoreData getMinutesSinceMidnightFrom:addingOffset:](self, "getMinutesSinceMidnightFrom:addingOffset:", a9, [v18 OOSTimeOfDayWindowForwardMinutes]);
+  v19 = -[FMCoreData getMinutesSinceMidnightFrom:addingOffset:](self, "getMinutesSinceMidnightFrom:addingOffset:", day, [v18 OOSTimeOfDayWindowForwardMinutes]);
 
   v52 = [NSFetchRequest fetchRequestWithEntityName:@"OutOfServiceArea"];
-  v20 = v15;
+  v20 = visitCopy;
   if (v17 >= v19)
   {
-    if (!v15)
+    if (!visitCopy)
     {
       v20 = +[NSNull null];
     }
 
-    v21 = v53;
-    if (!v53)
+    v21 = curVisitCopy;
+    if (!curVisitCopy)
     {
       v21 = +[NSNull null];
     }
 
-    v22 = v54;
-    if (!v54)
+    v22 = nextVisitCopy;
+    if (!nextVisitCopy)
     {
       v22 = +[NSNull null];
     }
 
-    v23 = +[NSPredicate predicateWithFormat:](NSPredicate, "predicateWithFormat:", @"(prevVisit == %@) AND (curVisit == %@) AND (nextVisit == %@) AND (subscriptionID == %@) AND (SUBQUERY(prevCells, $prevCell, $prevCell IN %@).@count == %d) AND ((timeOfDay >= %d) OR (timeOfDay <= %d))", v20, v21, v22, v49, v50, [v50 count], v17, v19);
+    v23 = +[NSPredicate predicateWithFormat:](NSPredicate, "predicateWithFormat:", @"(prevVisit == %@) AND (curVisit == %@) AND (nextVisit == %@) AND (subscriptionID == %@) AND (SUBQUERY(prevCells, $prevCell, $prevCell IN %@).@count == %d) AND ((timeOfDay >= %d) OR (timeOfDay <= %d))", v20, v21, v22, dCopy, cellsCopy, [cellsCopy count], v17, v19);
   }
 
   else
   {
-    if (!v15)
+    if (!visitCopy)
     {
       v20 = +[NSNull null];
     }
 
-    v21 = v53;
-    if (!v53)
+    v21 = curVisitCopy;
+    if (!curVisitCopy)
     {
       v21 = +[NSNull null];
     }
 
-    v22 = v54;
-    if (!v54)
+    v22 = nextVisitCopy;
+    if (!nextVisitCopy)
     {
       v22 = +[NSNull null];
     }
 
-    v23 = +[NSPredicate predicateWithFormat:](NSPredicate, "predicateWithFormat:", @"(prevVisit == %@) AND (curVisit == %@) AND (nextVisit == %@) AND (subscriptionID == %@) AND (SUBQUERY(prevCells, $prevCell, $prevCell IN %@).@count == %d) AND (timeOfDay >= %d) AND (timeOfDay <= %d)", v20, v21, v22, v49, v50, [v50 count], v17, v19);
+    v23 = +[NSPredicate predicateWithFormat:](NSPredicate, "predicateWithFormat:", @"(prevVisit == %@) AND (curVisit == %@) AND (nextVisit == %@) AND (subscriptionID == %@) AND (SUBQUERY(prevCells, $prevCell, $prevCell IN %@).@count == %d) AND (timeOfDay >= %d) AND (timeOfDay <= %d)", v20, v21, v22, dCopy, cellsCopy, [cellsCopy count], v17, v19);
   }
 
   v24 = v23;
-  if (!v54)
+  if (!nextVisitCopy)
   {
   }
 
-  if (!v53)
+  if (!curVisitCopy)
   {
   }
 
   v25 = v52;
-  if (!v15)
+  if (!visitCopy)
   {
   }
 
   [v52 setPredicate:v24];
   [v52 setReturnsObjectsAsFaults:0];
   v26 = *(qword_1002DBE98 + 136);
-  v27 = v51;
+  v27 = contextCopy;
   if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
   {
     v28 = [v24 description];
@@ -2372,7 +2372,7 @@ LABEL_11:
     v62 = v28;
     _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_INFO, "FederatedMobility[FMCoreData]:#I Fetching OutOfServiceArea with predicate %@", buf, 0xCu);
 
-    v27 = v51;
+    v27 = contextCopy;
     v25 = v52;
   }
 
@@ -2394,7 +2394,7 @@ LABEL_11:
   {
     if (!os_log_type_enabled(*(qword_1002DBE98 + 136), OS_LOG_TYPE_ERROR))
     {
-      v33 = 0;
+      firstObject = 0;
       goto LABEL_50;
     }
 
@@ -2402,18 +2402,18 @@ LABEL_11:
     [v30 localizedDescription];
     objc_claimAutoreleasedReturnValue();
     sub_100201030();
-    v33 = 0;
+    firstObject = 0;
   }
 
   else
   {
     v45 = v29;
-    v34 = [(FMCoreData *)self filterOutOfServiceAreasWithContext:v27 unfilteredOutOfServiceAreas:v29 WithExactPrevCells:v50];
+    v34 = [(FMCoreData *)self filterOutOfServiceAreasWithContext:v27 unfilteredOutOfServiceAreas:v29 WithExactPrevCells:cellsCopy];
     if ([v34 count])
     {
       if ([v34 count] == 1)
       {
-        v33 = [v34 firstObject];
+        firstObject = [v34 firstObject];
       }
 
       else
@@ -2429,7 +2429,7 @@ LABEL_11:
         v56 = 0u;
         v35 = v34;
         v44 = v34;
-        v33 = 0;
+        firstObject = 0;
         v36 = [v35 countByEnumeratingWithState:&v55 objects:v60 count:16];
         if (v36)
         {
@@ -2445,12 +2445,12 @@ LABEL_11:
               }
 
               v40 = *(*(&v55 + 1) + 8 * i);
-              v41 = -[FMCoreData getDifferenceBetweenMinutesSinceMidnight:b:](self, "getDifferenceBetweenMinutesSinceMidnight:b:", [v40 timeOfDay], a9);
+              v41 = -[FMCoreData getDifferenceBetweenMinutesSinceMidnight:b:](self, "getDifferenceBetweenMinutesSinceMidnight:b:", [v40 timeOfDay], day);
               if (v41 < v38)
               {
                 v42 = v40;
 
-                v33 = v42;
+                firstObject = v42;
                 v38 = v41;
               }
             }
@@ -2472,21 +2472,21 @@ LABEL_11:
         sub_1002010A8();
       }
 
-      v33 = 0;
+      firstObject = 0;
     }
   }
 
   v29 = v45;
 LABEL_50:
 
-  return v33;
+  return firstObject;
 }
 
-- (id)getOrCreateLocationOfInterestAt:(id)a3 WithContext:(id)a4
+- (id)getOrCreateLocationOfInterestAt:(id)at WithContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(FMCoreData *)self getLocationOfInterestAt:v6 WithContext:v7];
+  atCopy = at;
+  contextCopy = context;
+  v8 = [(FMCoreData *)self getLocationOfInterestAt:atCopy WithContext:contextCopy];
   v9 = v8;
   if (v8)
   {
@@ -2495,7 +2495,7 @@ LABEL_50:
 
   else
   {
-    v10 = [(FMCoreData *)self createLocationOfInterestAt:v6 WithContext:v7];
+    v10 = [(FMCoreData *)self createLocationOfInterestAt:atCopy WithContext:contextCopy];
   }
 
   v11 = v10;
@@ -2503,28 +2503,28 @@ LABEL_50:
   return v11;
 }
 
-- (id)createLocationOfInterestAt:(id)a3 WithContext:(id)a4
+- (id)createLocationOfInterestAt:(id)at WithContext:(id)context
 {
-  v5 = a3;
-  v6 = a4;
+  atCopy = at;
+  contextCopy = context;
   if (os_log_type_enabled(*(qword_1002DBE98 + 136), OS_LOG_TYPE_DEBUG))
   {
     sub_1002010DC();
   }
 
-  v7 = [NSEntityDescription insertNewObjectForEntityForName:@"LocationOfInterest" inManagedObjectContext:v6];
-  v8 = [v5 timestamp];
-  [v7 setLastSeen:v8];
+  v7 = [NSEntityDescription insertNewObjectForEntityForName:@"LocationOfInterest" inManagedObjectContext:contextCopy];
+  timestamp = [atCopy timestamp];
+  [v7 setLastSeen:timestamp];
 
   [v7 setSeenCount:0];
-  [v5 latitude];
+  [atCopy latitude];
   [v7 setLatitude:?];
-  [v5 longitude];
+  [atCopy longitude];
   [v7 setLongitude:?];
-  [v5 accuracy];
+  [atCopy accuracy];
   [v7 setAccuracy:?];
   v12 = 0;
-  [v6 save:&v12];
+  [contextCopy save:&v12];
   v9 = v12;
   if (v9)
   {
@@ -2546,22 +2546,22 @@ LABEL_50:
   return v10;
 }
 
-- (id)getLocationOfInterestAt:(id)a3 WithContext:(id)a4
+- (id)getLocationOfInterestAt:(id)at WithContext:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  v56 = v6;
-  [v5 accuracy];
+  atCopy = at;
+  contextCopy = context;
+  v56 = contextCopy;
+  [atCopy accuracy];
   v8 = v7;
-  [v5 latitude];
+  [atCopy latitude];
   v10 = cos(v9 * 3.14159265 / 180.0);
-  [v5 latitude];
+  [atCopy latitude];
   v12 = v11;
-  [v5 latitude];
+  [atCopy latitude];
   v14 = v13;
-  [v5 longitude];
+  [atCopy longitude];
   v16 = v15;
-  [v5 longitude];
+  [atCopy longitude];
   v18 = v17;
   v19 = [NSFetchRequest fetchRequestWithEntityName:@"LocationOfInterest"];
   v20 = v8 * 1.1 / (v10 * 6371009.0) * 180.0 / 3.14159265;
@@ -2576,7 +2576,7 @@ LABEL_50:
   }
 
   v61 = 0;
-  v22 = [v6 executeFetchRequest:v19 error:&v61];
+  v22 = [contextCopy executeFetchRequest:v19 error:&v61];
   v23 = v61;
   if (v23)
   {
@@ -2613,7 +2613,7 @@ LABEL_12:
 
   if ([v22 count] == 1)
   {
-    v25 = [v22 firstObject];
+    firstObject = [v22 firstObject];
   }
 
   else
@@ -2629,7 +2629,7 @@ LABEL_12:
     v58 = 0u;
     v26 = v22;
     v54 = v22;
-    v25 = 0;
+    firstObject = 0;
     v27 = [v26 countByEnumeratingWithState:&v57 objects:v62 count:16];
     if (v27)
     {
@@ -2645,9 +2645,9 @@ LABEL_12:
           }
 
           v31 = *(*(&v57 + 1) + 8 * i);
-          [v5 latitude];
+          [atCopy latitude];
           v33 = v32;
-          [v5 longitude];
+          [atCopy longitude];
           v35 = v34;
           [v31 latitude];
           v37 = v36;
@@ -2658,7 +2658,7 @@ LABEL_12:
           {
             v41 = v31;
 
-            v25 = v41;
+            firstObject = v41;
             v29 = v40;
           }
         }
@@ -2672,19 +2672,19 @@ LABEL_12:
     v22 = v54;
   }
 
-  [v5 latitude];
+  [atCopy latitude];
   v43 = v42;
-  [v5 longitude];
+  [atCopy longitude];
   v45 = v44;
-  [v25 latitude];
+  [firstObject latitude];
   v47 = v46;
-  [v25 longitude];
+  [firstObject longitude];
   [FMCoreLocationController distanceBetween:v43 srcLongitude:v45 destLatitude:v47 destLongitude:v48];
   v50 = v49;
-  [v5 accuracy];
+  [atCopy accuracy];
   if (v50 <= v51)
   {
-    v24 = v25;
+    v24 = firstObject;
   }
 
   else
@@ -2702,12 +2702,12 @@ LABEL_31:
   return v24;
 }
 
-- (id)deleteOutOfServiceAreasOverThresholdCount:(unint64_t)a3 WithContext:(id)a4
+- (id)deleteOutOfServiceAreasOverThresholdCount:(unint64_t)count WithContext:(id)context
 {
-  v6 = a4;
+  contextCopy = context;
   v7 = [NSFetchRequest fetchRequestWithEntityName:@"OutOfServiceArea"];
   v19 = 0;
-  v8 = [v6 countForFetchRequest:v7 error:&v19];
+  v8 = [contextCopy countForFetchRequest:v7 error:&v19];
   v9 = v19;
   if (v9)
   {
@@ -2724,8 +2724,8 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v11 = &v8[-a3];
-  if (v8 <= a3)
+  v11 = &v8[-count];
+  if (v8 <= count)
   {
     if (os_log_type_enabled(*(qword_1002DBE98 + 136), OS_LOG_TYPE_DEBUG))
     {
@@ -2744,7 +2744,7 @@ LABEL_11:
 
   [v12 setFetchLimit:v11];
   v18 = 0;
-  v15 = [v6 executeFetchRequest:v12 error:&v18];
+  v15 = [contextCopy executeFetchRequest:v12 error:&v18];
   v10 = v18;
   if (v10)
   {
@@ -2760,7 +2760,7 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  if (![(FMCoreData *)self deleteOutOfServiceAreas:v15 AndAssociatedEntitiesWithContext:v6])
+  if (![(FMCoreData *)self deleteOutOfServiceAreas:v15 AndAssociatedEntitiesWithContext:contextCopy])
   {
     if (os_log_type_enabled(*(qword_1002DBE98 + 136), OS_LOG_TYPE_ERROR))
     {
@@ -2778,15 +2778,15 @@ LABEL_12:
   return v16;
 }
 
-- (void)deletedOrphanedServingCellsWithContext:(id)a3
+- (void)deletedOrphanedServingCellsWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v16 = [NSFetchRequest fetchRequestWithEntityName:@"ServingCell"];
   v4 = [NSPredicate predicateWithFormat:@"prevCellOf.@count == 0 AND nextCellOf.@count == 0"];
   [v16 setPredicate:v4];
 
   v22 = 0;
-  v15 = [v3 executeFetchRequest:v16 error:&v22];
+  v15 = [contextCopy executeFetchRequest:v16 error:&v22];
   v5 = v22;
   if (v5)
   {
@@ -2823,18 +2823,18 @@ LABEL_12:
           v12 = *(qword_1002DBE98 + 136);
           if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
           {
-            v13 = [v11 prevCellOf];
-            v14 = [v11 nextCellOf];
+            prevCellOf = [v11 prevCellOf];
+            nextCellOf = [v11 nextCellOf];
             *buf = 138412802;
             v24 = v11;
             v25 = 2112;
-            v26 = v13;
+            v26 = prevCellOf;
             v27 = 2112;
-            v28 = v14;
+            v28 = nextCellOf;
             _os_log_debug_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEBUG, "FederatedMobility[FMCoreData]:#D Deleting serving cell: %@ (prevCellOf: %@, nextCellOf: %@)", buf, 0x20u);
           }
 
-          [v3 deleteObject:{v11, v15}];
+          [contextCopy deleteObject:{v11, v15}];
         }
 
         v8 = [v7 countByEnumeratingWithState:&v18 objects:v29 count:16];
@@ -2844,7 +2844,7 @@ LABEL_12:
     }
 
     v17 = 0;
-    [v3 save:&v17];
+    [contextCopy save:&v17];
     v6 = v17;
     if (v6 && os_log_type_enabled(*(qword_1002DBE98 + 136), OS_LOG_TYPE_ERROR))
     {
@@ -2865,15 +2865,15 @@ LABEL_12:
   }
 }
 
-- (void)deletedOrphanedLocationsOfInterestWithContext:(id)a3
+- (void)deletedOrphanedLocationsOfInterestWithContext:(id)context
 {
-  v17 = a3;
+  contextCopy = context;
   v16 = [NSFetchRequest fetchRequestWithEntityName:@"LocationOfInterest"];
   v3 = [NSPredicate predicateWithFormat:@"prevVisitOf.@count == 0 AND curVisitOf.@count == 0 AND nextVisitOf.@count == 0"];
   [v16 setPredicate:v3];
 
   v23 = 0;
-  v15 = [v17 executeFetchRequest:v16 error:&v23];
+  v15 = [contextCopy executeFetchRequest:v16 error:&v23];
   v4 = v23;
   if (v4)
   {
@@ -2910,21 +2910,21 @@ LABEL_12:
           v11 = *(qword_1002DBE98 + 136);
           if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
           {
-            v12 = [v10 prevVisitOf];
-            v13 = [v10 curVisitOf];
-            v14 = [v10 nextVisitOf];
+            prevVisitOf = [v10 prevVisitOf];
+            curVisitOf = [v10 curVisitOf];
+            nextVisitOf = [v10 nextVisitOf];
             *buf = 138413058;
             v25 = v10;
             v26 = 2112;
-            v27 = v12;
+            v27 = prevVisitOf;
             v28 = 2112;
-            v29 = v13;
+            v29 = curVisitOf;
             v30 = 2112;
-            v31 = v14;
+            v31 = nextVisitOf;
             _os_log_debug_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEBUG, "FederatedMobility[FMCoreData]:#D Deleting location of interest: %@ (prevVisitOf: %@, curVisitOf: %@, nextVisitOf: %@)", buf, 0x2Au);
           }
 
-          [v17 deleteObject:{v10, v15}];
+          [contextCopy deleteObject:{v10, v15}];
         }
 
         v7 = [v6 countByEnumeratingWithState:&v19 objects:v32 count:16];
@@ -2934,7 +2934,7 @@ LABEL_12:
     }
 
     v18 = 0;
-    [v17 save:&v18];
+    [contextCopy save:&v18];
     v5 = v18;
     if (v5 && os_log_type_enabled(*(qword_1002DBE98 + 136), OS_LOG_TYPE_ERROR))
     {
@@ -2955,22 +2955,22 @@ LABEL_12:
   }
 }
 
-- (unint64_t)deleteOutOfServiceAreasOlderThan:(id)a3 WithContext:(id)a4
+- (unint64_t)deleteOutOfServiceAreasOlderThan:(id)than WithContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  thanCopy = than;
+  contextCopy = context;
   v8 = [NSFetchRequest fetchRequestWithEntityName:@"OutOfServiceArea"];
-  v9 = [NSPredicate predicateWithFormat:@"lastSeen < %@", v6];
-  [v8 setPredicate:v9];
+  thanCopy = [NSPredicate predicateWithFormat:@"lastSeen < %@", thanCopy];
+  [v8 setPredicate:thanCopy];
   if (os_log_type_enabled(*(qword_1002DBE98 + 136), OS_LOG_TYPE_DEBUG))
   {
-    [v9 description];
+    [thanCopy description];
     objc_claimAutoreleasedReturnValue();
     sub_100201540();
   }
 
   v14 = 0;
-  v10 = [v7 executeFetchRequest:v8 error:&v14];
+  v10 = [contextCopy executeFetchRequest:v8 error:&v14];
   v11 = v14;
   if (v11)
   {
@@ -2986,7 +2986,7 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if (![(FMCoreData *)self deleteOutOfServiceAreas:v10 AndAssociatedEntitiesWithContext:v7])
+  if (![(FMCoreData *)self deleteOutOfServiceAreas:v10 AndAssociatedEntitiesWithContext:contextCopy])
   {
     if (os_log_type_enabled(*(qword_1002DBE98 + 136), OS_LOG_TYPE_ERROR))
     {
@@ -3002,25 +3002,25 @@ LABEL_11:
   return v12;
 }
 
-- (void)deleteOutOfServiceDurationsOlderThan:(id)a3 WithContext:(id)a4
+- (void)deleteOutOfServiceDurationsOlderThan:(id)than WithContext:(id)context
 {
-  v5 = a3;
-  v22 = a4;
-  v19 = v5;
+  thanCopy = than;
+  contextCopy = context;
+  v19 = thanCopy;
   v6 = [NSFetchRequest fetchRequestWithEntityName:@"OutOfServiceDuration"];
   v21 = v6;
-  v7 = [NSPredicate predicateWithFormat:@"timestamp < %@", v5];
-  v20 = v7;
-  [v6 setPredicate:v7];
+  thanCopy = [NSPredicate predicateWithFormat:@"timestamp < %@", thanCopy];
+  v20 = thanCopy;
+  [v6 setPredicate:thanCopy];
   if (os_log_type_enabled(*(qword_1002DBE98 + 136), OS_LOG_TYPE_DEBUG))
   {
-    [v7 description];
+    [thanCopy description];
     objc_claimAutoreleasedReturnValue();
     sub_100201584();
   }
 
   v28 = 0;
-  v8 = [v22 executeFetchRequest:v6 error:&v28];
+  v8 = [contextCopy executeFetchRequest:v6 error:&v28];
   v9 = v28;
   if (v9)
   {
@@ -3061,15 +3061,15 @@ LABEL_18:
           v16 = *(qword_1002DBE98 + 136);
           if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
           {
-            v17 = [v15 timestamp];
+            timestamp = [v15 timestamp];
             *buf = 138412546;
             v30 = v15;
             v31 = 2112;
-            v32 = v17;
+            v32 = timestamp;
             _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "FederatedMobility[FMCoreData]:#I Deleting OOS duration: %@ (timestamp: %@)", buf, 0x16u);
           }
 
-          [v22 deleteObject:v15];
+          [contextCopy deleteObject:v15];
         }
 
         v12 = [v11 countByEnumeratingWithState:&v24 objects:v33 count:16];
@@ -3079,7 +3079,7 @@ LABEL_18:
     }
 
     v23 = 0;
-    [v22 save:&v23];
+    [contextCopy save:&v23];
     v10 = v23;
     v8 = v18;
     if (v10 && os_log_type_enabled(*(qword_1002DBE98 + 136), OS_LOG_TYPE_ERROR))
@@ -3120,12 +3120,12 @@ LABEL_18:
   }
 }
 
-- (void)sendOnDeviceDBTelemetryEventWithContext:(id)a3 andNumberOfDeletedOOSAreasStale:(unint64_t)a4
+- (void)sendOnDeviceDBTelemetryEventWithContext:(id)context andNumberOfDeletedOOSAreasStale:(unint64_t)stale
 {
-  v5 = a3;
+  contextCopy = context;
   v6 = [NSFetchRequest fetchRequestWithEntityName:@"OutOfServiceArea"];
   v27 = 0;
-  v7 = [v5 countForFetchRequest:v6 error:&v27];
+  v7 = [contextCopy countForFetchRequest:v6 error:&v27];
   v8 = v27;
   if (v8)
   {
@@ -3142,7 +3142,7 @@ LABEL_18:
   {
     v10 = [NSFetchRequest fetchRequestWithEntityName:@"OutOfServiceDuration"];
     v26 = 0;
-    v11 = [v5 countForFetchRequest:v10 error:&v26];
+    v11 = [contextCopy countForFetchRequest:v10 error:&v26];
     v12 = v26;
     if (v12)
     {
@@ -3166,7 +3166,7 @@ LABEL_18:
       [v13 setFetchLimit:1];
       [v13 setReturnsObjectsAsFaults:0];
       v25 = 0;
-      v19 = [v5 executeFetchRequest:v13 error:&v25];
+      v19 = [contextCopy executeFetchRequest:v13 error:&v25];
       v9 = v25;
       if (v9)
       {
@@ -3180,15 +3180,15 @@ LABEL_18:
 
       else
       {
-        v16 = [v19 firstObject];
+        firstObject = [v19 firstObject];
         v17 = [NSString stringWithUTF8String:"com.apple.Telephony.fedMobilityOnDeviceLearningsDB"];
         v20[0] = _NSConcreteStackBlock;
         v20[1] = 3221225472;
         v20[2] = sub_10007BD48;
         v20[3] = &unk_1002ABEF8;
-        v18 = v16;
+        v18 = firstObject;
         v21 = v18;
-        v22 = a4;
+        staleCopy = stale;
         v23 = v7;
         v24 = v11;
         sub_1000158DC(v17, v20);
@@ -3197,13 +3197,13 @@ LABEL_18:
   }
 }
 
-- (BOOL)backgroundContextPerformBlockAndWait:(id)a3
+- (BOOL)backgroundContextPerformBlockAndWait:(id)wait
 {
-  v4 = a3;
-  v5 = [(FMCoreData *)self container];
-  v6 = [v5 newBackgroundContext];
+  waitCopy = wait;
+  container = [(FMCoreData *)self container];
+  newBackgroundContext = [container newBackgroundContext];
 
-  if (!v6)
+  if (!newBackgroundContext)
   {
     v12 = *(qword_1002DBE98 + 136);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
@@ -3219,10 +3219,10 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v7 = [(FMCoreData *)self container];
-  v8 = [v7 persistentStoreCoordinator];
-  v9 = [v8 persistentStores];
-  v10 = [v9 count];
+  container2 = [(FMCoreData *)self container];
+  persistentStoreCoordinator = [container2 persistentStoreCoordinator];
+  persistentStores = [persistentStoreCoordinator persistentStores];
+  v10 = [persistentStores count];
 
   if (!v10)
   {
@@ -3245,8 +3245,8 @@ LABEL_9:
   v15[1] = 3221225472;
   v15[2] = sub_10007C208;
   v15[3] = &unk_1002AD5D8;
-  v17 = v4;
-  v16 = v6;
+  v17 = waitCopy;
+  v16 = newBackgroundContext;
   v18 = buf;
   [v16 performBlockAndWait:v15];
   v11 = v20[24];
@@ -3257,13 +3257,13 @@ LABEL_10:
   return v11 & 1;
 }
 
-- (signed)NSDateToTimeOfDay:(id)a3
+- (signed)NSDateToTimeOfDay:(id)day
 {
-  v3 = a3;
+  dayCopy = day;
   v4 = [NSTimeZone timeZoneWithName:@"UTC"];
   if (v4)
   {
-    v5 = [FMUtil NSDate:v3 toTimeOfDayInTimeZone:v4];
+    v5 = [FMUtil NSDate:dayCopy toTimeOfDayInTimeZone:v4];
   }
 
   else
@@ -3279,12 +3279,12 @@ LABEL_10:
   return v5;
 }
 
-- (int64_t)getMinutesSinceMidnightFrom:(int64_t)a3 addingOffset:(int64_t)a4
+- (int64_t)getMinutesSinceMidnightFrom:(int64_t)from addingOffset:(int64_t)offset
 {
-  v4 = (a4 + a3) % 1440;
+  v4 = (offset + from) % 1440;
   if (v4 >= 0)
   {
-    return (a4 + a3) % 1440;
+    return (offset + from) % 1440;
   }
 
   else
@@ -3293,12 +3293,12 @@ LABEL_10:
   }
 }
 
-- (int64_t)getDifferenceBetweenMinutesSinceMidnight:(int64_t)a3 b:(int64_t)a4
+- (int64_t)getDifferenceBetweenMinutesSinceMidnight:(int64_t)midnight b:(int64_t)b
 {
-  v4 = a3 - a4;
-  if (a3 - a4 < 0)
+  v4 = midnight - b;
+  if (midnight - b < 0)
   {
-    v4 = a4 - a3;
+    v4 = b - midnight;
   }
 
   if (v4 >= 1440 - v4)
@@ -3312,15 +3312,15 @@ LABEL_10:
   }
 }
 
-- (BOOL)deleteOutOfServiceAreas:(id)a3 AndAssociatedEntitiesWithContext:(id)a4
+- (BOOL)deleteOutOfServiceAreas:(id)areas AndAssociatedEntitiesWithContext:(id)context
 {
-  v5 = a3;
-  v6 = a4;
+  areasCopy = areas;
+  contextCopy = context;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  obj = v5;
+  obj = areasCopy;
   v7 = [obj countByEnumeratingWithState:&v28 objects:v37 count:16];
   if (v7)
   {
@@ -3338,11 +3338,11 @@ LABEL_10:
         v11 = *(qword_1002DBE98 + 136);
         if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
         {
-          v12 = [v10 lastSeen];
+          lastSeen = [v10 lastSeen];
           *buf = 138412546;
           v34 = v10;
           v35 = 2112;
-          v36 = v12;
+          v36 = lastSeen;
           _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "FederatedMobility[FMCoreData]:#I Deleting OOS area: %@ (last seen: %@)", buf, 0x16u);
         }
 
@@ -3350,8 +3350,8 @@ LABEL_10:
         v27 = 0u;
         v24 = 0u;
         v25 = 0u;
-        v13 = [v10 durations];
-        v14 = [v13 copy];
+        durations = [v10 durations];
+        v14 = [durations copy];
 
         v15 = [v14 countByEnumeratingWithState:&v24 objects:v32 count:16];
         if (v15)
@@ -3368,7 +3368,7 @@ LABEL_10:
 
               v18 = *(*(&v24 + 1) + 8 * j);
               [v10 removeDurationsObject:v18];
-              [v6 deleteObject:v18];
+              [contextCopy deleteObject:v18];
             }
 
             v15 = [v14 countByEnumeratingWithState:&v24 objects:v32 count:16];
@@ -3377,7 +3377,7 @@ LABEL_10:
           while (v15);
         }
 
-        [v6 deleteObject:v10];
+        [contextCopy deleteObject:v10];
       }
 
       v7 = [obj countByEnumeratingWithState:&v28 objects:v37 count:16];
@@ -3387,7 +3387,7 @@ LABEL_10:
   }
 
   v23 = 0;
-  [v6 save:&v23];
+  [contextCopy save:&v23];
   v19 = v23;
   if (v19)
   {
@@ -3401,19 +3401,19 @@ LABEL_10:
 
   else
   {
-    [(FMCoreData *)self deletedOrphanedServingCellsWithContext:v6];
-    [(FMCoreData *)self deletedOrphanedLocationsOfInterestWithContext:v6];
+    [(FMCoreData *)self deletedOrphanedServingCellsWithContext:contextCopy];
+    [(FMCoreData *)self deletedOrphanedLocationsOfInterestWithContext:contextCopy];
   }
 
   return v19 == 0;
 }
 
-- (id)getOrCreateCellMapNodeWithContext:(id)a3 andCellMapCongestionMetric:(id)a4
+- (id)getOrCreateCellMapNodeWithContext:(id)context andCellMapCongestionMetric:(id)metric
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 gci];
-  v9 = [(FMCoreData *)self fetchCellMapNodeWithGCI:v8 andContext:v6];
+  contextCopy = context;
+  metricCopy = metric;
+  v8 = [metricCopy gci];
+  v9 = [(FMCoreData *)self fetchCellMapNodeWithGCI:v8 andContext:contextCopy];
 
   if (v9)
   {
@@ -3422,7 +3422,7 @@ LABEL_10:
 
   else
   {
-    v10 = [(FMCoreData *)self createCellMapNodeWithContext:v6 andCellMapCongestionMetric:v7];
+    v10 = [(FMCoreData *)self createCellMapNodeWithContext:contextCopy andCellMapCongestionMetric:metricCopy];
   }
 
   v11 = v10;
@@ -3430,23 +3430,23 @@ LABEL_10:
   return v11;
 }
 
-- (id)fetchCellMapNodeWithGCI:(id)a3 andContext:(id)a4
+- (id)fetchCellMapNodeWithGCI:(id)i andContext:(id)context
 {
-  v5 = a3;
-  v6 = a4;
+  iCopy = i;
+  contextCopy = context;
   v7 = [NSFetchRequest fetchRequestWithEntityName:@"CellMapNode"];
-  v8 = [NSPredicate predicateWithFormat:@"gci == %@", v5];
-  [v7 setPredicate:v8];
+  iCopy = [NSPredicate predicateWithFormat:@"gci == %@", iCopy];
+  [v7 setPredicate:iCopy];
   if (os_log_type_enabled(*(qword_1002DBE98 + 136), OS_LOG_TYPE_DEBUG))
   {
-    [v8 description];
+    [iCopy description];
     objc_claimAutoreleasedReturnValue();
     sub_1002020E0();
   }
 
   [v7 setReturnsObjectsAsFaults:0];
   v14 = 0;
-  v9 = [v6 executeFetchRequest:v7 error:&v14];
+  v9 = [contextCopy executeFetchRequest:v7 error:&v14];
   v10 = v14;
   v11 = v10;
   if (!v9 || v10)
@@ -3469,7 +3469,7 @@ LABEL_10:
     }
 
 LABEL_14:
-    v12 = 0;
+    firstObject = 0;
     goto LABEL_15;
   }
 
@@ -3478,67 +3478,67 @@ LABEL_14:
     sub_100202124();
   }
 
-  v12 = [v9 firstObject];
+  firstObject = [v9 firstObject];
 LABEL_15:
 
-  return v12;
+  return firstObject;
 }
 
-- (BOOL)updateCellMapNode:(id)a3 withMetric:(id)a4 updateConnDuration:(BOOL)a5 andContext:(id)a6 atTime:(id)a7
+- (BOOL)updateCellMapNode:(id)node withMetric:(id)metric updateConnDuration:(BOOL)duration andContext:(id)context atTime:(id)time
 {
-  v9 = a5;
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  v14 = a7;
-  v15 = [v11 gci];
-  v16 = [v12 gci];
+  durationCopy = duration;
+  nodeCopy = node;
+  metricCopy = metric;
+  contextCopy = context;
+  timeCopy = time;
+  v15 = [nodeCopy gci];
+  v16 = [metricCopy gci];
   v17 = [v15 isEqualToString:v16];
 
   if (v17)
   {
-    v18 = [v12 band];
-    [v11 setBand:{objc_msgSend(v18, "shortValue")}];
+    band = [metricCopy band];
+    [nodeCopy setBand:{objc_msgSend(band, "shortValue")}];
 
-    v19 = [v12 frequency];
-    [v11 setFrequency:{objc_msgSend(v19, "intValue")}];
+    frequency = [metricCopy frequency];
+    [nodeCopy setFrequency:{objc_msgSend(frequency, "intValue")}];
 
-    [v11 setLastSeen:v14];
-    v20 = [v12 pci];
-    [v11 setPci:{objc_msgSend(v20, "shortValue")}];
+    [nodeCopy setLastSeen:timeCopy];
+    v20 = [metricCopy pci];
+    [nodeCopy setPci:{objc_msgSend(v20, "shortValue")}];
 
-    v21 = [v12 rat];
-    [v11 setRat:{objc_msgSend(v21, "shortValue")}];
+    v21 = [metricCopy rat];
+    [nodeCopy setRat:{objc_msgSend(v21, "shortValue")}];
 
-    v22 = [v12 scs];
-    [v11 setScs:v22];
+    v22 = [metricCopy scs];
+    [nodeCopy setScs:v22];
 
-    [v11 setSeenCount:{(objc_msgSend(v11, "seenCount") + 1)}];
-    if (v9)
+    [nodeCopy setSeenCount:{(objc_msgSend(nodeCopy, "seenCount") + 1)}];
+    if (durationCopy)
     {
-      v23 = [v12 connDuration];
-      [v11 setSumConnDuration:{objc_msgSend(v23, "longLongValue") + objc_msgSend(v11, "sumConnDuration")}];
+      connDuration = [metricCopy connDuration];
+      [nodeCopy setSumConnDuration:{objc_msgSend(connDuration, "longLongValue") + objc_msgSend(nodeCopy, "sumConnDuration")}];
     }
 
-    v24 = [v12 dlCongestionCount];
-    if (!v24)
+    dlCongestionCount = [metricCopy dlCongestionCount];
+    if (!dlCongestionCount)
     {
       goto LABEL_9;
     }
 
-    v25 = [v12 ulCongestionCount];
-    if (v25)
+    ulCongestionCount = [metricCopy ulCongestionCount];
+    if (ulCongestionCount)
     {
-      v26 = [v12 l1MitigationCount];
+      l1MitigationCount = [metricCopy l1MitigationCount];
 
-      if (!v26)
+      if (!l1MitigationCount)
       {
 LABEL_9:
-        v29 = [v12 totalDuration];
-        [v11 setSumTotalDuration:{objc_msgSend(v29, "longLongValue") + objc_msgSend(v11, "sumTotalDuration")}];
+        totalDuration = [metricCopy totalDuration];
+        [nodeCopy setSumTotalDuration:{objc_msgSend(totalDuration, "longLongValue") + objc_msgSend(nodeCopy, "sumTotalDuration")}];
 
         v33 = 0;
-        v30 = [v13 save:&v33];
+        v30 = [contextCopy save:&v33];
         v31 = v33;
         if (v31)
         {
@@ -3555,14 +3555,14 @@ LABEL_9:
         goto LABEL_18;
       }
 
-      v27 = [v12 dlCongestionCount];
-      [v11 setSumDlCongestionCount:{objc_msgSend(v11, "sumDlCongestionCount") + objc_msgSend(v27, "intValue")}];
+      dlCongestionCount2 = [metricCopy dlCongestionCount];
+      [nodeCopy setSumDlCongestionCount:{objc_msgSend(nodeCopy, "sumDlCongestionCount") + objc_msgSend(dlCongestionCount2, "intValue")}];
 
-      v28 = [v12 ulCongestionCount];
-      [v11 setSumUlCongestionCount:{objc_msgSend(v11, "sumUlCongestionCount") + objc_msgSend(v28, "intValue")}];
+      ulCongestionCount2 = [metricCopy ulCongestionCount];
+      [nodeCopy setSumUlCongestionCount:{objc_msgSend(nodeCopy, "sumUlCongestionCount") + objc_msgSend(ulCongestionCount2, "intValue")}];
 
-      v24 = [v12 l1MitigationCount];
-      [v11 setSumL1MitigationCount:{objc_msgSend(v11, "sumL1MitigationCount") + objc_msgSend(v24, "intValue")}];
+      dlCongestionCount = [metricCopy l1MitigationCount];
+      [nodeCopy setSumL1MitigationCount:{objc_msgSend(nodeCopy, "sumL1MitigationCount") + objc_msgSend(dlCongestionCount, "intValue")}];
     }
 
     goto LABEL_9;
@@ -3579,12 +3579,12 @@ LABEL_18:
   return v30;
 }
 
-- (id)getOrCreateCellMapEdgeWithContext:(id)a3 sourceNode:(id)a4 destinationNode:(id)a5
+- (id)getOrCreateCellMapEdgeWithContext:(id)context sourceNode:(id)node destinationNode:(id)destinationNode
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(FMCoreData *)self fetchCellMapEdgeWithContext:v8 sourceNode:v9 destinationNode:v10];
+  contextCopy = context;
+  nodeCopy = node;
+  destinationNodeCopy = destinationNode;
+  v11 = [(FMCoreData *)self fetchCellMapEdgeWithContext:contextCopy sourceNode:nodeCopy destinationNode:destinationNodeCopy];
   v12 = v11;
   if (v11)
   {
@@ -3593,7 +3593,7 @@ LABEL_18:
 
   else
   {
-    v13 = [(FMCoreData *)self createCellMapEdgeWithContext:v8 sourceNode:v9 destinationNode:v10];
+    v13 = [(FMCoreData *)self createCellMapEdgeWithContext:contextCopy sourceNode:nodeCopy destinationNode:destinationNodeCopy];
   }
 
   v14 = v13;
@@ -3601,15 +3601,15 @@ LABEL_18:
   return v14;
 }
 
-- (BOOL)updateCellMapEdge:(id)a3 withContext:(id)a4 atTime:(id)a5
+- (BOOL)updateCellMapEdge:(id)edge withContext:(id)context atTime:(id)time
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  [v7 setLastSeen:v9];
-  [v7 setSeenCount:{(objc_msgSend(v7, "seenCount") + 1)}];
+  edgeCopy = edge;
+  contextCopy = context;
+  timeCopy = time;
+  [edgeCopy setLastSeen:timeCopy];
+  [edgeCopy setSeenCount:{(objc_msgSend(edgeCopy, "seenCount") + 1)}];
   v13 = 0;
-  v10 = [v8 save:&v13];
+  v10 = [contextCopy save:&v13];
   v11 = v13;
   if (v11)
   {
@@ -3626,26 +3626,26 @@ LABEL_18:
   return v10;
 }
 
-- (id)fetchCellMapEdgesOfCellMapNode:(id)a3 maxCount:(unint64_t)a4 withContext:(id)a5
+- (id)fetchCellMapEdgesOfCellMapNode:(id)node maxCount:(unint64_t)count withContext:(id)context
 {
-  v7 = a3;
-  v8 = a5;
+  nodeCopy = node;
+  contextCopy = context;
   v9 = [NSFetchRequest fetchRequestWithEntityName:@"CellMapEdge"];
-  v10 = [NSPredicate predicateWithFormat:@"source == %@", v7];
+  nodeCopy = [NSPredicate predicateWithFormat:@"source == %@", nodeCopy];
   v11 = [[NSSortDescriptor alloc] initWithKey:@"seenCount" ascending:0];
   v19 = v11;
   v12 = [NSArray arrayWithObjects:&v19 count:1];
   [v9 setSortDescriptors:v12];
 
-  if (a4)
+  if (count)
   {
-    [v9 setFetchLimit:a4];
+    [v9 setFetchLimit:count];
   }
 
-  [v9 setPredicate:v10];
+  [v9 setPredicate:nodeCopy];
   if (os_log_type_enabled(*(qword_1002DBE98 + 136), OS_LOG_TYPE_DEBUG))
   {
-    [v10 description];
+    [nodeCopy description];
     objc_claimAutoreleasedReturnValue();
     sub_1002022E4();
   }
@@ -3653,7 +3653,7 @@ LABEL_18:
   [v9 setReturnsObjectsAsFaults:0];
   [v9 setRelationshipKeyPathsForPrefetching:&off_1002BF8C0];
   v18 = 0;
-  v13 = [v8 executeFetchRequest:v9 error:&v18];
+  v13 = [contextCopy executeFetchRequest:v9 error:&v18];
   v14 = v18;
   v15 = v14;
   if (!v13 || v14)
@@ -3674,12 +3674,12 @@ LABEL_18:
   return v16;
 }
 
-- (void)deleteOldestCellMapNodesAndEdgesOverThreshold:(unint64_t)a3 withContext:(id)a4
+- (void)deleteOldestCellMapNodesAndEdgesOverThreshold:(unint64_t)threshold withContext:(id)context
 {
-  v6 = a4;
+  contextCopy = context;
   v7 = [NSFetchRequest fetchRequestWithEntityName:@"CellMapNode"];
   v14 = 0;
-  v8 = [v6 countForFetchRequest:v7 error:&v14];
+  v8 = [contextCopy countForFetchRequest:v7 error:&v14];
   v9 = v14;
   if (v9)
   {
@@ -3691,8 +3691,8 @@ LABEL_18:
 
   else
   {
-    v10 = &v8[-a3];
-    if (v8 <= a3)
+    v10 = &v8[-threshold];
+    if (v8 <= threshold)
     {
       if (os_log_type_enabled(*(qword_1002DBE98 + 136), OS_LOG_TYPE_DEBUG))
       {
@@ -3714,61 +3714,61 @@ LABEL_18:
         sub_10020247C();
       }
 
-      [(FMCoreData *)self deleteCellMapEntitiesWithFetchRequest:v11 andContext:v6];
+      [(FMCoreData *)self deleteCellMapEntitiesWithFetchRequest:v11 andContext:contextCopy];
     }
   }
 }
 
-- (void)deleteCellMapNodesAndEdgesOlderThan:(id)a3 withContext:(id)a4
+- (void)deleteCellMapNodesAndEdgesOlderThan:(id)than withContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  thanCopy = than;
+  contextCopy = context;
   v8 = [NSFetchRequest fetchRequestWithEntityName:@"CellMapNode"];
-  v9 = [NSPredicate predicateWithFormat:@"lastSeen < %@", v6];
-  [v8 setPredicate:v9];
+  thanCopy = [NSPredicate predicateWithFormat:@"lastSeen < %@", thanCopy];
+  [v8 setPredicate:thanCopy];
   if (os_log_type_enabled(*(qword_1002DBE98 + 136), OS_LOG_TYPE_DEBUG))
   {
-    [v9 description];
+    [thanCopy description];
     objc_claimAutoreleasedReturnValue();
     sub_1002024F0();
   }
 
-  [(FMCoreData *)self deleteCellMapEntitiesWithFetchRequest:v8 andContext:v7];
+  [(FMCoreData *)self deleteCellMapEntitiesWithFetchRequest:v8 andContext:contextCopy];
   v10 = [NSFetchRequest fetchRequestWithEntityName:@"CellMapEdge"];
-  v11 = [NSPredicate predicateWithFormat:@"lastSeen < %@", v6];
-  [v10 setPredicate:v11];
+  thanCopy2 = [NSPredicate predicateWithFormat:@"lastSeen < %@", thanCopy];
+  [v10 setPredicate:thanCopy2];
   if (os_log_type_enabled(*(qword_1002DBE98 + 136), OS_LOG_TYPE_DEBUG))
   {
-    [v11 description];
+    [thanCopy2 description];
     objc_claimAutoreleasedReturnValue();
     sub_100202534();
   }
 
-  [(FMCoreData *)self deleteCellMapEntitiesWithFetchRequest:v10 andContext:v7];
+  [(FMCoreData *)self deleteCellMapEntitiesWithFetchRequest:v10 andContext:contextCopy];
 }
 
-- (void)deleteCellMapEntitiesWithFetchRequest:(id)a3 andContext:(id)a4
+- (void)deleteCellMapEntitiesWithFetchRequest:(id)request andContext:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [[NSBatchDeleteRequest alloc] initWithFetchRequest:v5];
+  requestCopy = request;
+  contextCopy = context;
+  v7 = [[NSBatchDeleteRequest alloc] initWithFetchRequest:requestCopy];
   v17 = 0;
-  v8 = [v6 executeRequest:v7 error:&v17];
+  v8 = [contextCopy executeRequest:v7 error:&v17];
   v9 = v17;
   if (v9)
   {
     v10 = v9;
     if (os_log_type_enabled(*(qword_1002DBE98 + 136), OS_LOG_TYPE_ERROR))
     {
-      v11 = [v5 entityName];
-      sub_100202578(v11, v10, v18);
+      entityName = [requestCopy entityName];
+      sub_100202578(entityName, v10, v18);
     }
   }
 
   else
   {
     v16 = 0;
-    v12 = [v6 save:&v16];
+    v12 = [contextCopy save:&v16];
     v13 = v16;
     if (v13)
     {
@@ -3790,40 +3790,40 @@ LABEL_18:
       v10 = v13;
       if (os_log_type_enabled(*(qword_1002DBE98 + 136), OS_LOG_TYPE_ERROR))
       {
-        v15 = [v5 entityName];
-        sub_1002025D0(v15, v10, v18);
+        entityName2 = [requestCopy entityName];
+        sub_1002025D0(entityName2, v10, v18);
       }
     }
   }
 }
 
-- (id)createCellMapNodeWithContext:(id)a3 andCellMapCongestionMetric:(id)a4
+- (id)createCellMapNodeWithContext:(id)context andCellMapCongestionMetric:(id)metric
 {
-  v5 = a3;
-  v6 = a4;
+  contextCopy = context;
+  metricCopy = metric;
   if (os_log_type_enabled(*(qword_1002DBE98 + 136), OS_LOG_TYPE_DEBUG))
   {
     sub_100202628();
   }
 
-  v7 = [NSEntityDescription insertNewObjectForEntityForName:@"CellMapNode" inManagedObjectContext:v5];
-  v8 = [v6 band];
-  [v7 setBand:{objc_msgSend(v8, "shortValue")}];
+  v7 = [NSEntityDescription insertNewObjectForEntityForName:@"CellMapNode" inManagedObjectContext:contextCopy];
+  band = [metricCopy band];
+  [v7 setBand:{objc_msgSend(band, "shortValue")}];
 
-  v9 = [v6 frequency];
-  [v7 setFrequency:{objc_msgSend(v9, "intValue")}];
+  frequency = [metricCopy frequency];
+  [v7 setFrequency:{objc_msgSend(frequency, "intValue")}];
 
-  v10 = [v6 gci];
+  v10 = [metricCopy gci];
   [v7 setGci:v10];
 
   [v7 setLastSeen:0];
-  v11 = [v6 pci];
+  v11 = [metricCopy pci];
   [v7 setPci:{objc_msgSend(v11, "shortValue")}];
 
-  v12 = [v6 rat];
+  v12 = [metricCopy rat];
   [v7 setRat:{objc_msgSend(v12, "shortValue")}];
 
-  v13 = [v6 scs];
+  v13 = [metricCopy scs];
   [v7 setScs:v13];
 
   [v7 setSeenCount:0];
@@ -3833,7 +3833,7 @@ LABEL_18:
   [v7 setSumTotalDuration:0];
   [v7 setSumUlCongestionCount:0];
   v19 = 0;
-  v14 = [v5 save:&v19];
+  v14 = [contextCopy save:&v19];
   v15 = v19;
   if (v15)
   {
@@ -3865,23 +3865,23 @@ LABEL_18:
   return v17;
 }
 
-- (id)createCellMapEdgeWithContext:(id)a3 sourceNode:(id)a4 destinationNode:(id)a5
+- (id)createCellMapEdgeWithContext:(id)context sourceNode:(id)node destinationNode:(id)destinationNode
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  contextCopy = context;
+  nodeCopy = node;
+  destinationNodeCopy = destinationNode;
   if (os_log_type_enabled(*(qword_1002DBE98 + 136), OS_LOG_TYPE_DEBUG))
   {
     sub_1002026A0();
   }
 
-  v10 = [NSEntityDescription insertNewObjectForEntityForName:@"CellMapEdge" inManagedObjectContext:v7];
+  v10 = [NSEntityDescription insertNewObjectForEntityForName:@"CellMapEdge" inManagedObjectContext:contextCopy];
   [v10 setLastSeen:0];
   [v10 setSeenCount:0];
-  [v10 setSource:v8];
-  [v10 setDestination:v9];
+  [v10 setSource:nodeCopy];
+  [v10 setDestination:destinationNodeCopy];
   v16 = 0;
-  v11 = [v7 save:&v16];
+  v11 = [contextCopy save:&v16];
   v12 = v16;
   if (v12)
   {
@@ -3913,24 +3913,24 @@ LABEL_18:
   return v14;
 }
 
-- (id)fetchCellMapEdgeWithContext:(id)a3 sourceNode:(id)a4 destinationNode:(id)a5
+- (id)fetchCellMapEdgeWithContext:(id)context sourceNode:(id)node destinationNode:(id)destinationNode
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  contextCopy = context;
+  nodeCopy = node;
+  destinationNodeCopy = destinationNode;
   v10 = [NSFetchRequest fetchRequestWithEntityName:@"CellMapEdge"];
-  v11 = [NSPredicate predicateWithFormat:@"source == %@ AND destination == %@", v8, v9];
-  [v10 setPredicate:v11];
+  destinationNodeCopy = [NSPredicate predicateWithFormat:@"source == %@ AND destination == %@", nodeCopy, destinationNodeCopy];
+  [v10 setPredicate:destinationNodeCopy];
   if (os_log_type_enabled(*(qword_1002DBE98 + 136), OS_LOG_TYPE_DEBUG))
   {
-    [v11 description];
+    [destinationNodeCopy description];
     objc_claimAutoreleasedReturnValue();
     sub_100202718();
   }
 
   [v10 setReturnsObjectsAsFaults:0];
   v17 = 0;
-  v12 = [v7 executeFetchRequest:v10 error:&v17];
+  v12 = [contextCopy executeFetchRequest:v10 error:&v17];
   v13 = v17;
   v14 = v13;
   if (!v12 || v13)
@@ -3953,7 +3953,7 @@ LABEL_18:
     }
 
 LABEL_14:
-    v15 = 0;
+    firstObject = 0;
     goto LABEL_15;
   }
 
@@ -3962,26 +3962,26 @@ LABEL_14:
     sub_10020275C();
   }
 
-  v15 = [v12 firstObject];
+  firstObject = [v12 firstObject];
 LABEL_15:
 
-  return v15;
+  return firstObject;
 }
 
-- (BOOL)resetAndPopulateCellMapDatabaseWithJSON:(id)a3
+- (BOOL)resetAndPopulateCellMapDatabaseWithJSON:(id)n
 {
-  v4 = a3;
+  nCopy = n;
   v5 = *(qword_1002DBE98 + 136);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v4;
+    *(&buf + 4) = nCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "FederatedMobility[FMCoreData+CellMap]:#I Received request to populate CellMap database: %@", &buf, 0xCu);
   }
 
-  if (v4 && [v4 length])
+  if (nCopy && [nCopy length])
   {
-    v6 = [v4 dataUsingEncoding:4];
+    v6 = [nCopy dataUsingEncoding:4];
     v18 = 0;
     v7 = [NSJSONSerialization JSONObjectWithData:v6 options:0 error:&v18];
     v8 = v18;
@@ -4047,10 +4047,10 @@ LABEL_15:
   return v12 & 1;
 }
 
-- (id)updateMapWithCellMapCongestionMetric:(id)a3 andPreviousNodeObjectID:(id)a4
+- (id)updateMapWithCellMapCongestionMetric:(id)metric andPreviousNodeObjectID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  metricCopy = metric;
+  dCopy = d;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -4062,10 +4062,10 @@ LABEL_15:
   v13[2] = sub_1000ABD90;
   v13[3] = &unk_1002ADE60;
   v13[4] = self;
-  v8 = v6;
+  v8 = metricCopy;
   v14 = v8;
   v16 = &v17;
-  v9 = v7;
+  v9 = dCopy;
   v15 = v9;
   if ([(FMCoreData *)self backgroundContextPerformBlockAndWait:v13])
   {
@@ -4093,7 +4093,7 @@ LABEL_15:
   return v10;
 }
 
-- (id)cellMapPredictionForGCI:(id)a3
+- (id)cellMapPredictionForGCI:(id)i
 {
   v10 = 0;
   v11 = &v10;
@@ -4105,11 +4105,11 @@ LABEL_15:
   v6[1] = 3221225472;
   v6[2] = sub_1000AC230;
   v6[3] = &unk_1002ABFB0;
-  v7 = self;
-  v3 = a3;
-  v8 = v3;
+  selfCopy = self;
+  iCopy = i;
+  v8 = iCopy;
   v9 = &v10;
-  if ([(FMCoreData *)v7 backgroundContextPerformBlockAndWait:v6])
+  if ([(FMCoreData *)selfCopy backgroundContextPerformBlockAndWait:v6])
   {
     v4 = v11[5];
   }
@@ -4129,37 +4129,37 @@ LABEL_15:
   return v4;
 }
 
-+ (BOOL)isFMCellMapNodeCongested:(id)a3
++ (BOOL)isFMCellMapNodeCongested:(id)congested
 {
-  v3 = a3;
-  v4 = +[FMCoreData isCongestedWithDLCongestionCount:ulCongestionCount:l1MitigationCount:](FMCoreData, "isCongestedWithDLCongestionCount:ulCongestionCount:l1MitigationCount:", [v3 dlCongestionCount], objc_msgSend(v3, "ulCongestionCount"), objc_msgSend(v3, "l1MitigationCount"));
+  congestedCopy = congested;
+  v4 = +[FMCoreData isCongestedWithDLCongestionCount:ulCongestionCount:l1MitigationCount:](FMCoreData, "isCongestedWithDLCongestionCount:ulCongestionCount:l1MitigationCount:", [congestedCopy dlCongestionCount], objc_msgSend(congestedCopy, "ulCongestionCount"), objc_msgSend(congestedCopy, "l1MitigationCount"));
 
   return v4;
 }
 
-+ (BOOL)isFMCellMapCongestionMetricCongested:(id)a3
++ (BOOL)isFMCellMapCongestionMetricCongested:(id)congested
 {
-  v3 = a3;
-  v4 = [v3 dlCongestionCount];
-  if (v4)
+  congestedCopy = congested;
+  dlCongestionCount = [congestedCopy dlCongestionCount];
+  if (dlCongestionCount)
   {
-    v5 = [v3 ulCongestionCount];
-    if (!v5)
+    ulCongestionCount = [congestedCopy ulCongestionCount];
+    if (!ulCongestionCount)
     {
-      LOBYTE(v6) = 0;
+      LOBYTE(l1MitigationCount) = 0;
       goto LABEL_7;
     }
 
-    v6 = [v3 l1MitigationCount];
+    l1MitigationCount = [congestedCopy l1MitigationCount];
 
-    if (v6)
+    if (l1MitigationCount)
     {
-      v4 = [v3 dlCongestionCount];
-      v7 = [v4 unsignedIntValue];
-      v8 = [v3 ulCongestionCount];
-      v9 = [v8 unsignedIntValue];
-      v10 = [v3 l1MitigationCount];
-      LOBYTE(v6) = +[FMCoreData isCongestedWithDLCongestionCount:ulCongestionCount:l1MitigationCount:](FMCoreData, "isCongestedWithDLCongestionCount:ulCongestionCount:l1MitigationCount:", v7, v9, [v10 unsignedIntValue]);
+      dlCongestionCount = [congestedCopy dlCongestionCount];
+      unsignedIntValue = [dlCongestionCount unsignedIntValue];
+      ulCongestionCount2 = [congestedCopy ulCongestionCount];
+      unsignedIntValue2 = [ulCongestionCount2 unsignedIntValue];
+      l1MitigationCount2 = [congestedCopy l1MitigationCount];
+      LOBYTE(l1MitigationCount) = +[FMCoreData isCongestedWithDLCongestionCount:ulCongestionCount:l1MitigationCount:](FMCoreData, "isCongestedWithDLCongestionCount:ulCongestionCount:l1MitigationCount:", unsignedIntValue, unsignedIntValue2, [l1MitigationCount2 unsignedIntValue]);
 
 LABEL_7:
     }
@@ -4167,53 +4167,53 @@ LABEL_7:
 
   else
   {
-    LOBYTE(v6) = 0;
+    LOBYTE(l1MitigationCount) = 0;
   }
 
-  return v6;
+  return l1MitigationCount;
 }
 
-- (id)fmCellMapNodeFromCellMapNode:(id)a3 edgeSeenCount:(signed __int16)a4
+- (id)fmCellMapNodeFromCellMapNode:(id)node edgeSeenCount:(signed __int16)count
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = [v5 gci];
+  countCopy = count;
+  nodeCopy = node;
+  v6 = [nodeCopy gci];
   v7 = [v6 componentsSeparatedByString:@"."];
 
   if ([v7 count] == 4)
   {
     v8 = [FMCellMapNode alloc];
-    v39 = [v5 gci];
-    v9 = [v5 rat];
-    v10 = [v5 frequency];
+    v39 = [nodeCopy gci];
+    v9 = [nodeCopy rat];
+    frequency = [nodeCopy frequency];
     v38 = [v7 objectAtIndexedSubscript:3];
-    v11 = [v38 longLongValue];
+    longLongValue = [v38 longLongValue];
     v37 = [v7 objectAtIndexedSubscript:2];
-    v12 = [v37 intValue];
+    intValue = [v37 intValue];
     [v7 objectAtIndexedSubscript:0];
-    v30 = v12;
-    v31 = v11;
-    v32 = v10;
+    v30 = intValue;
+    v31 = longLongValue;
+    v32 = frequency;
     v33 = v9;
     v34 = v8;
-    v36 = v35 = v4;
-    v29 = [v36 intValue];
+    v36 = v35 = countCopy;
+    intValue2 = [v36 intValue];
     v13 = [v7 objectAtIndexedSubscript:1];
-    v28 = [v13 intValue];
-    v27 = [v5 band];
-    LODWORD(v8) = [v5 pci];
-    v14 = [v5 sumConnDuration];
-    v15 = [v5 sumTotalDuration];
-    v16 = [v5 sumDlCongestionCount];
-    v17 = [v5 sumUlCongestionCount];
-    v18 = [v5 sumL1MitigationCount];
-    v19 = [v5 scs];
+    intValue3 = [v13 intValue];
+    band = [nodeCopy band];
+    LODWORD(v8) = [nodeCopy pci];
+    sumConnDuration = [nodeCopy sumConnDuration];
+    sumTotalDuration = [nodeCopy sumTotalDuration];
+    sumDlCongestionCount = [nodeCopy sumDlCongestionCount];
+    sumUlCongestionCount = [nodeCopy sumUlCongestionCount];
+    sumL1MitigationCount = [nodeCopy sumL1MitigationCount];
+    v19 = [nodeCopy scs];
     LODWORD(v26) = v35;
-    HIDWORD(v25) = v16;
-    HIDWORD(v24) = v14 / 1000;
-    LODWORD(v25) = v15 / 1000;
+    HIDWORD(v25) = sumDlCongestionCount;
+    HIDWORD(v24) = sumConnDuration / 1000;
+    LODWORD(v25) = sumTotalDuration / 1000;
     LODWORD(v24) = v8;
-    v20 = [FMCellMapNode initWithGCI:v34 rat:"initWithGCI:rat:frequency:cellIdentity:tac:mcc:mnc:band:pci:dsDuration:totalDuration:dlCongestionCount:ulCongestionCount:l1MitigationCount:weight:scs:" frequency:v39 cellIdentity:v33 tac:v32 mcc:v31 mnc:v30 band:v29 pci:__PAIR64__(v27 dsDuration:v28) totalDuration:v24 dlCongestionCount:v25 ulCongestionCount:__PAIR64__(v18 l1MitigationCount:v17) weight:v26 scs:v19];
+    v20 = [FMCellMapNode initWithGCI:v34 rat:"initWithGCI:rat:frequency:cellIdentity:tac:mcc:mnc:band:pci:dsDuration:totalDuration:dlCongestionCount:ulCongestionCount:l1MitigationCount:weight:scs:" frequency:v39 cellIdentity:v33 tac:v32 mcc:v31 mnc:v30 band:intValue2 pci:__PAIR64__(band dsDuration:intValue3) totalDuration:v24 dlCongestionCount:v25 ulCongestionCount:__PAIR64__(sumL1MitigationCount l1MitigationCount:sumUlCongestionCount) weight:v26 scs:v19];
   }
 
   else
@@ -4221,7 +4221,7 @@ LABEL_7:
     v21 = *(qword_1002DBE98 + 136);
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
-      v22 = [v5 gci];
+      v22 = [nodeCopy gci];
       sub_1002051F4(v22, buf, v21);
     }
 
@@ -4231,18 +4231,18 @@ LABEL_7:
   return v20;
 }
 
-- (id)createChildTSEventOfType:(signed __int16)a3 withDetails:(id)a4 withContext:(id)a5
+- (id)createChildTSEventOfType:(signed __int16)type withDetails:(id)details withContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = a5;
-  if (v6 > 2)
+  typeCopy = type;
+  detailsCopy = details;
+  contextCopy = context;
+  if (typeCopy > 2)
   {
-    if (v6 == 3)
+    if (typeCopy == 3)
     {
-      v9 = [v7 valueForKey:@"latitude"];
-      v11 = [v7 valueForKey:@"longitude"];
-      v17 = [v7 valueForKey:@"accuracy"];
+      v9 = [detailsCopy valueForKey:@"latitude"];
+      v11 = [detailsCopy valueForKey:@"longitude"];
+      v17 = [detailsCopy valueForKey:@"accuracy"];
       v14 = v17;
       if (v9)
       {
@@ -4259,7 +4259,7 @@ LABEL_7:
                 objc_opt_class();
                 if (objc_opt_isKindOfClass())
                 {
-                  v12 = [NSEntityDescription insertNewObjectForEntityForName:@"TSEventVisitStarted" inManagedObjectContext:v8];
+                  v12 = [NSEntityDescription insertNewObjectForEntityForName:@"TSEventVisitStarted" inManagedObjectContext:contextCopy];
                   [v9 doubleValue];
                   [v12 setLatitude:?];
                   [v11 doubleValue];
@@ -4282,14 +4282,14 @@ LABEL_7:
 
     else
     {
-      if (v6 != 4)
+      if (typeCopy != 4)
       {
         goto LABEL_18;
       }
 
-      v9 = [v7 valueForKey:@"latitude"];
-      v11 = [v7 valueForKey:@"longitude"];
-      v13 = [v7 valueForKey:@"accuracy"];
+      v9 = [detailsCopy valueForKey:@"latitude"];
+      v11 = [detailsCopy valueForKey:@"longitude"];
+      v13 = [detailsCopy valueForKey:@"accuracy"];
       v14 = v13;
       if (v9)
       {
@@ -4306,7 +4306,7 @@ LABEL_7:
                 objc_opt_class();
                 if (objc_opt_isKindOfClass())
                 {
-                  v12 = [NSEntityDescription insertNewObjectForEntityForName:@"TSEventVisitEnded" inManagedObjectContext:v8];
+                  v12 = [NSEntityDescription insertNewObjectForEntityForName:@"TSEventVisitEnded" inManagedObjectContext:contextCopy];
                   [v9 doubleValue];
                   [v12 setLatitude:?];
                   [v11 doubleValue];
@@ -4333,10 +4333,10 @@ LABEL_38:
     goto LABEL_38;
   }
 
-  if (v6 == 1)
+  if (typeCopy == 1)
   {
-    v9 = [v7 valueForKey:@"from"];
-    v16 = [v7 valueForKey:@"to"];
+    v9 = [detailsCopy valueForKey:@"from"];
+    v16 = [detailsCopy valueForKey:@"to"];
     v11 = v16;
     if (v9)
     {
@@ -4348,7 +4348,7 @@ LABEL_38:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v12 = [NSEntityDescription insertNewObjectForEntityForName:@"TSEventCellChanged" inManagedObjectContext:v8];
+            v12 = [NSEntityDescription insertNewObjectForEntityForName:@"TSEventCellChanged" inManagedObjectContext:contextCopy];
             [v12 setFromCellGCI:v9];
             [v12 setToCellGCI:v11];
             goto LABEL_44;
@@ -4367,10 +4367,10 @@ LABEL_43:
     goto LABEL_44;
   }
 
-  if (v6 == 2)
+  if (typeCopy == 2)
   {
-    v9 = [v7 valueForKey:@"from"];
-    v10 = [v7 valueForKey:@"to"];
+    v9 = [detailsCopy valueForKey:@"from"];
+    v10 = [detailsCopy valueForKey:@"to"];
     v11 = v10;
     if (v9)
     {
@@ -4382,7 +4382,7 @@ LABEL_43:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v12 = [NSEntityDescription insertNewObjectForEntityForName:@"TSEventSignalStrengthChanged" inManagedObjectContext:v8];
+            v12 = [NSEntityDescription insertNewObjectForEntityForName:@"TSEventSignalStrengthChanged" inManagedObjectContext:contextCopy];
             [v12 setFromBars:{objc_msgSend(v9, "shortValue")}];
             [v12 setToBars:{objc_msgSend(v11, "shortValue")}];
 LABEL_44:
@@ -4405,7 +4405,7 @@ LABEL_18:
   v15 = *(qword_1002DBE98 + 136);
   if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
   {
-    sub_100205360(v6, v15);
+    sub_100205360(typeCopy, v15);
   }
 
   v12 = 0;
@@ -4414,17 +4414,17 @@ LABEL_45:
   return v12;
 }
 
-- (id)createTSEventFrom:(id)a3 withContext:(id)a4
+- (id)createTSEventFrom:(id)from withContext:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 type];
-  if (v7 > 2)
+  fromCopy = from;
+  contextCopy = context;
+  type = [fromCopy type];
+  if (type > 2)
   {
-    if (v7 == 3)
+    if (type == 3)
     {
-      v8 = v5;
-      v9 = [NSEntityDescription insertNewObjectForEntityForName:@"TSEventVisitStarted" inManagedObjectContext:v6];
+      v8 = fromCopy;
+      v9 = [NSEntityDescription insertNewObjectForEntityForName:@"TSEventVisitStarted" inManagedObjectContext:contextCopy];
       [v8 latitude];
       [v9 setLatitude:?];
       [v8 longitude];
@@ -4434,10 +4434,10 @@ LABEL_45:
       goto LABEL_14;
     }
 
-    if (v7 == 4)
+    if (type == 4)
     {
-      v8 = v5;
-      v9 = [NSEntityDescription insertNewObjectForEntityForName:@"TSEventVisitEnded" inManagedObjectContext:v6];
+      v8 = fromCopy;
+      v9 = [NSEntityDescription insertNewObjectForEntityForName:@"TSEventVisitEnded" inManagedObjectContext:contextCopy];
       [v8 latitude];
       [v9 setLatitude:?];
       [v8 longitude];
@@ -4452,27 +4452,27 @@ LABEL_14:
 
   else
   {
-    if (v7 == 1)
+    if (type == 1)
     {
-      v8 = v5;
-      v9 = [NSEntityDescription insertNewObjectForEntityForName:@"TSEventCellChanged" inManagedObjectContext:v6];
-      v13 = [v8 fromCellGCI];
-      [v9 setFromCellGCI:v13];
+      v8 = fromCopy;
+      v9 = [NSEntityDescription insertNewObjectForEntityForName:@"TSEventCellChanged" inManagedObjectContext:contextCopy];
+      fromCellGCI = [v8 fromCellGCI];
+      [v9 setFromCellGCI:fromCellGCI];
 
-      v11 = [v8 toCellGCI];
-      [v9 setToCellGCI:v11];
+      toCellGCI = [v8 toCellGCI];
+      [v9 setToCellGCI:toCellGCI];
       goto LABEL_12;
     }
 
-    if (v7 == 2)
+    if (type == 2)
     {
-      v8 = v5;
-      v9 = [NSEntityDescription insertNewObjectForEntityForName:@"TSEventSignalStrengthChanged" inManagedObjectContext:v6];
-      v10 = [v8 fromBars];
-      [v9 setFromBars:{objc_msgSend(v10, "shortValue")}];
+      v8 = fromCopy;
+      v9 = [NSEntityDescription insertNewObjectForEntityForName:@"TSEventSignalStrengthChanged" inManagedObjectContext:contextCopy];
+      fromBars = [v8 fromBars];
+      [v9 setFromBars:{objc_msgSend(fromBars, "shortValue")}];
 
-      v11 = [v8 toBars];
-      [v9 setToBars:{objc_msgSend(v11, "shortValue")}];
+      toCellGCI = [v8 toBars];
+      [v9 setToBars:{objc_msgSend(toCellGCI, "shortValue")}];
 LABEL_12:
 
       goto LABEL_14;
@@ -4482,7 +4482,7 @@ LABEL_12:
   v12 = *(qword_1002DBE98 + 136);
   if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
   {
-    sub_1002053D8([v5 type], v15, v12);
+    sub_1002053D8([fromCopy type], v15, v12);
   }
 
   v9 = 0;
@@ -4491,27 +4491,27 @@ LABEL_15:
   return v9;
 }
 
-- (id)createTSAnomalyWithContext:(id)a3 anomaly:(id)a4 homePLMN:(id)a5
+- (id)createTSAnomalyWithContext:(id)context anomaly:(id)anomaly homePLMN:(id)n
 {
-  v28 = a3;
-  v8 = a4;
-  v27 = a5;
-  v9 = [v8 startTimestamp];
-  if (v9 <= [v8 endTimestamp])
+  contextCopy = context;
+  anomalyCopy = anomaly;
+  nCopy = n;
+  startTimestamp = [anomalyCopy startTimestamp];
+  if (startTimestamp <= [anomalyCopy endTimestamp])
   {
-    v11 = [NSEntityDescription insertNewObjectForEntityForName:@"TSAnomaly" inManagedObjectContext:v28];
-    [v11 setDuration:{(objc_msgSend(v8, "endTimestamp") - objc_msgSend(v8, "startTimestamp")) / 0x3B9ACA00uLL}];
-    [v11 setHomePLMN:v27];
-    v12 = [v8 startTime];
-    [v11 setStartTime:v12];
+    v11 = [NSEntityDescription insertNewObjectForEntityForName:@"TSAnomaly" inManagedObjectContext:contextCopy];
+    [v11 setDuration:{(objc_msgSend(anomalyCopy, "endTimestamp") - objc_msgSend(anomalyCopy, "startTimestamp")) / 0x3B9ACA00uLL}];
+    [v11 setHomePLMN:nCopy];
+    startTime = [anomalyCopy startTime];
+    [v11 setStartTime:startTime];
 
-    [v11 setType:{objc_msgSend(v8, "type")}];
+    [v11 setType:{objc_msgSend(anomalyCopy, "type")}];
     v36 = 0u;
     v37 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v13 = [v8 events];
-    v14 = [v13 countByEnumeratingWithState:&v34 objects:v38 count:16];
+    events = [anomalyCopy events];
+    v14 = [events countByEnumeratingWithState:&v34 objects:v38 count:16];
     if (v14)
     {
       v15 = *v35;
@@ -4521,14 +4521,14 @@ LABEL_15:
         {
           if (*v35 != v15)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(events);
           }
 
           v17 = *(*(&v34 + 1) + 8 * i);
-          v18 = [v17 timestamp];
-          if (v18 <= [v8 startTimestamp])
+          timestamp = [v17 timestamp];
+          if (timestamp <= [anomalyCopy startTimestamp])
           {
-            v20 = -[FMCoreData createTSEventFrom:withContext:timeUntilAnomaly:eventOf:](self, "createTSEventFrom:withContext:timeUntilAnomaly:eventOf:", v17, v28, ([v8 startTimestamp] - objc_msgSend(v17, "timestamp")) / 0x3B9ACA00uLL, v11);
+            v20 = -[FMCoreData createTSEventFrom:withContext:timeUntilAnomaly:eventOf:](self, "createTSEventFrom:withContext:timeUntilAnomaly:eventOf:", v17, contextCopy, ([anomalyCopy startTimestamp] - objc_msgSend(v17, "timestamp")) / 0x3B9ACA00uLL, v11);
             if (!v20)
             {
               v21 = *(qword_1002DBE98 + 136);
@@ -4549,14 +4549,14 @@ LABEL_15:
           }
         }
 
-        v14 = [v13 countByEnumeratingWithState:&v34 objects:v38 count:16];
+        v14 = [events countByEnumeratingWithState:&v34 objects:v38 count:16];
       }
 
       while (v14);
     }
 
     v29 = 0;
-    [v28 save:&v29];
+    [contextCopy save:&v29];
     v22 = v29;
     v23 = *(qword_1002DBE98 + 136);
     if (v22)
@@ -4579,7 +4579,7 @@ LABEL_15:
       }
 
       v24 = +[FMConfiguration sharedInstance];
-      v25 = -[FMCoreData deleteTSAnomaliesOverThresholdCount:withContext:](self, "deleteTSAnomaliesOverThresholdCount:withContext:", [v24 FMTSAnomaliesInDatabase], v28);
+      v25 = -[FMCoreData deleteTSAnomaliesOverThresholdCount:withContext:](self, "deleteTSAnomaliesOverThresholdCount:withContext:", [v24 FMTSAnomaliesInDatabase], contextCopy);
 
       v10 = v11;
     }
@@ -4598,14 +4598,14 @@ LABEL_15:
   return v10;
 }
 
-- (id)createTSPredictionWithContext:(id)a3 prediction:(id)a4
+- (id)createTSPredictionWithContext:(id)context prediction:(id)prediction
 {
-  v29 = a3;
-  v27 = a4;
-  if ([v27 didAnomalyHappen])
+  contextCopy = context;
+  predictionCopy = prediction;
+  if ([predictionCopy didAnomalyHappen])
   {
-    v5 = [v27 actualStartTimestamp];
-    if (v5 > [v27 actualEndTimestamp])
+    actualStartTimestamp = [predictionCopy actualStartTimestamp];
+    if (actualStartTimestamp > [predictionCopy actualEndTimestamp])
     {
       if (os_log_type_enabled(*(qword_1002DBE98 + 136), OS_LOG_TYPE_ERROR))
       {
@@ -4617,8 +4617,8 @@ LABEL_8:
       goto LABEL_32;
     }
 
-    v6 = [v27 predictionTimestamp];
-    if (v6 > [v27 actualStartTimestamp])
+    predictionTimestamp = [predictionCopy predictionTimestamp];
+    if (predictionTimestamp > [predictionCopy actualStartTimestamp])
     {
       if (os_log_type_enabled(*(qword_1002DBE98 + 136), OS_LOG_TYPE_ERROR))
       {
@@ -4629,40 +4629,40 @@ LABEL_8:
     }
   }
 
-  v8 = [NSEntityDescription insertNewObjectForEntityForName:@"TSPrediction" inManagedObjectContext:v29];
+  v8 = [NSEntityDescription insertNewObjectForEntityForName:@"TSPrediction" inManagedObjectContext:contextCopy];
   v28 = v8;
   [v8 setActualDuration:0];
   [v8 setActualTimeUntilAnomaly:0];
   [v8 setDidAnomalyHappen:0];
-  if ([v27 didAnomalyHappen])
+  if ([predictionCopy didAnomalyHappen])
   {
-    v9 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v27 actualDuration]);
+    v9 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [predictionCopy actualDuration]);
     [v8 setActualDuration:v9];
 
-    v10 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v27 actualTimeUntilAnomaly]);
+    v10 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [predictionCopy actualTimeUntilAnomaly]);
     [v8 setActualTimeUntilAnomaly:v10];
 
     [v8 setDidAnomalyHappen:1];
   }
 
-  [v27 confidenceAnomaly];
+  [predictionCopy confidenceAnomaly];
   [v8 setConfidenceAnomaly:?];
-  [v27 confidenceDuration];
+  [predictionCopy confidenceDuration];
   [v8 setConfidenceDuration:?];
-  [v27 confidenceTimeUntilAnomaly];
+  [predictionCopy confidenceTimeUntilAnomaly];
   [v8 setConfidenceTimeUntilAnomaly:?];
-  [v8 setPredictedDuration:{objc_msgSend(v27, "predictedDuration")}];
-  [v8 setPredictedTimeUntilAnomaly:{objc_msgSend(v27, "predictedTimeUntilAnomaly")}];
-  v11 = [v27 predictionTime];
-  [v8 setTime:v11];
+  [v8 setPredictedDuration:{objc_msgSend(predictionCopy, "predictedDuration")}];
+  [v8 setPredictedTimeUntilAnomaly:{objc_msgSend(predictionCopy, "predictedTimeUntilAnomaly")}];
+  predictionTime = [predictionCopy predictionTime];
+  [v8 setTime:predictionTime];
 
-  [v8 setType:{objc_msgSend(v27, "predictedAnomalyType")}];
+  [v8 setType:{objc_msgSend(predictionCopy, "predictedAnomalyType")}];
   v34 = 0u;
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v12 = [v27 predictionSources];
-  v13 = [v12 countByEnumeratingWithState:&v32 objects:v40 count:16];
+  predictionSources = [predictionCopy predictionSources];
+  v13 = [predictionSources countByEnumeratingWithState:&v32 objects:v40 count:16];
   if (v13)
   {
     v14 = *v33;
@@ -4672,13 +4672,13 @@ LABEL_8:
       {
         if (*v33 != v14)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(predictionSources);
         }
 
         v16 = *(*(&v32 + 1) + 8 * i);
         v17 = objc_autoreleasePoolPush();
         v31 = 0;
-        v18 = [v29 existingObjectWithID:v16 error:&v31];
+        v18 = [contextCopy existingObjectWithID:v16 error:&v31];
         v19 = v31;
         if (!v19 && v18 && ([v18 entity], v20 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v20, "name"), v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(v21, "isEqualToString:", @"TSAnomaly"), v21, v20, (v22 & 1) != 0))
         {
@@ -4701,14 +4701,14 @@ LABEL_8:
         objc_autoreleasePoolPop(v17);
       }
 
-      v13 = [v12 countByEnumeratingWithState:&v32 objects:v40 count:16];
+      v13 = [predictionSources countByEnumeratingWithState:&v32 objects:v40 count:16];
     }
 
     while (v13);
   }
 
   v30 = 0;
-  [v29 save:&v30];
+  [contextCopy save:&v30];
   v24 = v30;
   v25 = *(qword_1002DBE98 + 136);
   if (v24)
@@ -4738,12 +4738,12 @@ LABEL_32:
   return v7;
 }
 
-- (id)deleteTSAnomaliesOverThresholdCount:(unint64_t)a3 withContext:(id)a4
+- (id)deleteTSAnomaliesOverThresholdCount:(unint64_t)count withContext:(id)context
 {
-  v6 = a4;
+  contextCopy = context;
   v7 = [NSFetchRequest fetchRequestWithEntityName:@"TSAnomaly"];
   v19 = 0;
-  v8 = [v6 countForFetchRequest:v7 error:&v19];
+  v8 = [contextCopy countForFetchRequest:v7 error:&v19];
   v9 = v19;
   if (v9)
   {
@@ -4759,8 +4759,8 @@ LABEL_32:
     goto LABEL_18;
   }
 
-  v12 = &v8[-a3];
-  if (v8 > a3)
+  v12 = &v8[-count];
+  if (v8 > count)
   {
     v13 = [NSFetchRequest fetchRequestWithEntityName:@"TSAnomaly"];
     v14 = [[NSSortDescriptor alloc] initWithKey:@"startTime" ascending:1];
@@ -4770,7 +4770,7 @@ LABEL_32:
 
     [v13 setFetchLimit:v12];
     v18 = 0;
-    v16 = [v6 executeFetchRequest:v13 error:&v18];
+    v16 = [contextCopy executeFetchRequest:v13 error:&v18];
     v10 = v18;
     if (v10)
     {
@@ -4784,7 +4784,7 @@ LABEL_32:
 
     else
     {
-      if ([(FMCoreData *)self deleteTSAnomalies:v16 andAssociatedEntitiesWithContext:v6])
+      if ([(FMCoreData *)self deleteTSAnomalies:v16 andAssociatedEntitiesWithContext:contextCopy])
       {
         v11 = v16;
 LABEL_17:
@@ -4814,15 +4814,15 @@ LABEL_18:
   return v11;
 }
 
-- (BOOL)deleteTSAnomalies:(id)a3 andAssociatedEntitiesWithContext:(id)a4
+- (BOOL)deleteTSAnomalies:(id)anomalies andAssociatedEntitiesWithContext:(id)context
 {
-  v5 = a3;
-  v6 = a4;
+  anomaliesCopy = anomalies;
+  contextCopy = context;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  obj = v5;
+  obj = anomaliesCopy;
   v7 = [obj countByEnumeratingWithState:&v28 objects:v37 count:16];
   if (v7)
   {
@@ -4840,11 +4840,11 @@ LABEL_18:
         v11 = *(qword_1002DBE98 + 136);
         if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
         {
-          v12 = [v10 startTime];
+          startTime = [v10 startTime];
           *buf = 138412546;
           v34 = v10;
           v35 = 2112;
-          v36 = v12;
+          v36 = startTime;
           _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "FederatedMobility[FMCoreData+TimeSeries]:#I Deleting TSAnomaly: %@ (startTime: %@)", buf, 0x16u);
         }
 
@@ -4852,8 +4852,8 @@ LABEL_18:
         v27 = 0u;
         v24 = 0u;
         v25 = 0u;
-        v13 = [v10 events];
-        v14 = [v13 copy];
+        events = [v10 events];
+        v14 = [events copy];
 
         v15 = [v14 countByEnumeratingWithState:&v24 objects:v32 count:16];
         if (v15)
@@ -4870,7 +4870,7 @@ LABEL_18:
 
               v18 = *(*(&v24 + 1) + 8 * j);
               [v10 removeEventsObject:v18];
-              [v6 deleteObject:v18];
+              [contextCopy deleteObject:v18];
             }
 
             v15 = [v14 countByEnumeratingWithState:&v24 objects:v32 count:16];
@@ -4879,7 +4879,7 @@ LABEL_18:
           while (v15);
         }
 
-        [v6 deleteObject:v10];
+        [contextCopy deleteObject:v10];
       }
 
       v7 = [obj countByEnumeratingWithState:&v28 objects:v37 count:16];
@@ -4889,7 +4889,7 @@ LABEL_18:
   }
 
   v23 = 0;
-  [v6 save:&v23];
+  [contextCopy save:&v23];
   v19 = v23;
   if (v19)
   {
@@ -4903,22 +4903,22 @@ LABEL_18:
 
   else
   {
-    [(FMCoreData *)self deleteOrphanedTSPredictionsWithContext:v6];
-    [(FMCoreData *)self deletedOrphanedTSAnomalyTagsWithContext:v6];
+    [(FMCoreData *)self deleteOrphanedTSPredictionsWithContext:contextCopy];
+    [(FMCoreData *)self deletedOrphanedTSAnomalyTagsWithContext:contextCopy];
   }
 
   return v19 == 0;
 }
 
-- (void)deleteOrphanedTSPredictionsWithContext:(id)a3
+- (void)deleteOrphanedTSPredictionsWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v16 = [NSFetchRequest fetchRequestWithEntityName:@"TSPrediction"];
   v4 = [NSPredicate predicateWithFormat:@"predictionSources.@count == 0"];
   [v16 setPredicate:v4];
 
   v22 = 0;
-  v5 = [v3 executeFetchRequest:v16 error:&v22];
+  v5 = [contextCopy executeFetchRequest:v16 error:&v22];
   v6 = v22;
   if (v6)
   {
@@ -4959,15 +4959,15 @@ LABEL_4:
           v13 = *(qword_1002DBE98 + 136);
           if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
           {
-            v14 = [v12 predictionSources];
+            predictionSources = [v12 predictionSources];
             *buf = 138412546;
             v24 = v12;
             v25 = 2112;
-            v26 = v14;
+            v26 = predictionSources;
             _os_log_debug_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEBUG, "FederatedMobility[FMCoreData+TimeSeries]:#D Deleting TSPrediction: %@ (predictionSources: %@)", buf, 0x16u);
           }
 
-          [v3 deleteObject:{v12, v15}];
+          [contextCopy deleteObject:{v12, v15}];
         }
 
         v9 = [v8 countByEnumeratingWithState:&v18 objects:v27 count:16];
@@ -4978,7 +4978,7 @@ LABEL_4:
 
     v17 = 0;
     v5 = v15;
-    [v3 save:&v17];
+    [contextCopy save:&v17];
     v7 = v17;
     if (v7 && os_log_type_enabled(*(qword_1002DBE98 + 136), OS_LOG_TYPE_ERROR))
     {
@@ -5000,15 +5000,15 @@ LABEL_4:
   }
 }
 
-- (void)deletedOrphanedTSAnomalyTagsWithContext:(id)a3
+- (void)deletedOrphanedTSAnomalyTagsWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v16 = [NSFetchRequest fetchRequestWithEntityName:@"TSAnomalyTag"];
   v4 = [NSPredicate predicateWithFormat:@"anomaly == nil"];
   [v16 setPredicate:v4];
 
   v22 = 0;
-  v5 = [v3 executeFetchRequest:v16 error:&v22];
+  v5 = [contextCopy executeFetchRequest:v16 error:&v22];
   v6 = v22;
   if (v6)
   {
@@ -5049,15 +5049,15 @@ LABEL_4:
           v13 = *(qword_1002DBE98 + 136);
           if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
           {
-            v14 = [v12 anomaly];
+            anomaly = [v12 anomaly];
             *buf = 138412546;
             v24 = v12;
             v25 = 2112;
-            v26 = v14;
+            v26 = anomaly;
             _os_log_debug_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEBUG, "FederatedMobility[FMCoreData+TimeSeries]:#D Deleting TSAnomalyTag: %@ (anomaly: %@)", buf, 0x16u);
           }
 
-          [v3 deleteObject:{v12, v15}];
+          [contextCopy deleteObject:{v12, v15}];
         }
 
         v9 = [v8 countByEnumeratingWithState:&v18 objects:v27 count:16];
@@ -5068,7 +5068,7 @@ LABEL_4:
 
     v17 = 0;
     v5 = v15;
-    [v3 save:&v17];
+    [contextCopy save:&v17];
     v7 = v17;
     if (v7 && os_log_type_enabled(*(qword_1002DBE98 + 136), OS_LOG_TYPE_ERROR))
     {
@@ -5090,22 +5090,22 @@ LABEL_4:
   }
 }
 
-- (void)deleteTSAnomaliesWithContext:(id)a3 olderThan:(id)a4
+- (void)deleteTSAnomaliesWithContext:(id)context olderThan:(id)than
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  thanCopy = than;
   v8 = [NSFetchRequest fetchRequestWithEntityName:@"TSAnomaly"];
-  v9 = [NSPredicate predicateWithFormat:@"startTime < %@", v7];
-  [v8 setPredicate:v9];
+  thanCopy = [NSPredicate predicateWithFormat:@"startTime < %@", thanCopy];
+  [v8 setPredicate:thanCopy];
   if (os_log_type_enabled(*(qword_1002DBE98 + 136), OS_LOG_TYPE_DEBUG))
   {
-    [v9 description];
+    [thanCopy description];
     objc_claimAutoreleasedReturnValue();
     sub_100205AB8();
   }
 
   v12 = 0;
-  v10 = [v6 executeFetchRequest:v8 error:&v12];
+  v10 = [contextCopy executeFetchRequest:v8 error:&v12];
   v11 = v12;
   if (v11)
   {
@@ -5117,73 +5117,73 @@ LABEL_4:
     }
   }
 
-  else if (![(FMCoreData *)self deleteTSAnomalies:v10 andAssociatedEntitiesWithContext:v6]&& os_log_type_enabled(*(qword_1002DBE98 + 136), OS_LOG_TYPE_ERROR))
+  else if (![(FMCoreData *)self deleteTSAnomalies:v10 andAssociatedEntitiesWithContext:contextCopy]&& os_log_type_enabled(*(qword_1002DBE98 + 136), OS_LOG_TYPE_ERROR))
   {
     sub_100205B4C();
   }
 }
 
-- (void)updateCongestionCellSeenWithContext:(id)a3 cell:(id)a4 atTimestamp:(id)a5 congestionMetric:(id)a6
+- (void)updateCongestionCellSeenWithContext:(id)context cell:(id)cell atTimestamp:(id)timestamp congestionMetric:(id)metric
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [v10 ratType];
-  v14 = [v12 ratType];
-  v15 = [v13 isEqualToString:v14];
+  contextCopy = context;
+  cellCopy = cell;
+  timestampCopy = timestamp;
+  metricCopy = metric;
+  ratType = [cellCopy ratType];
+  ratType2 = [metricCopy ratType];
+  v15 = [ratType isEqualToString:ratType2];
 
   if ((v15 & 1) == 0)
   {
     v16 = *(qword_1002DBE98 + 136);
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
-      v17 = [v12 ratType];
-      v18 = [v10 ratType];
-      sub_10020B418(v17, v18, buf, v16);
+      ratType3 = [metricCopy ratType];
+      ratType4 = [cellCopy ratType];
+      sub_10020B418(ratType3, ratType4, buf, v16);
     }
 
-    v19 = [v12 ratType];
-    [v10 setRatType:v19];
+    ratType5 = [metricCopy ratType];
+    [cellCopy setRatType:ratType5];
   }
 
-  [v10 setRsrp:{objc_msgSend(v12, "rsrp")}];
-  [v10 setRsrq:{objc_msgSend(v12, "rsrq")}];
-  [v10 setSinr:{objc_msgSend(v12, "sinr")}];
-  [v10 setDlBottleneckScoreInvalid:{objc_msgSend(v12, "dlBottleneckScoreInvalid")}];
-  [v10 setDlBottleneckScoreNo:{objc_msgSend(v12, "dlBottleneckScoreNo")}];
-  [v10 setDlBottleneckScoreLow:{objc_msgSend(v12, "dlBottleneckScoreLow")}];
-  [v10 setDlBottleneckScoreMedium:{objc_msgSend(v12, "dlBottleneckScoreMedium")}];
-  [v10 setDlBottleneckScoreHigh:{objc_msgSend(v12, "dlBottleneckScoreHigh")}];
-  [v10 setUlBottleneckScoreInvalid:{objc_msgSend(v12, "ulBottleneckScoreInvalid")}];
-  [v10 setUlBottleneckScoreNo:{objc_msgSend(v12, "ulBottleneckScoreNo")}];
-  [v10 setUlBottleneckScoreLow:{objc_msgSend(v12, "ulBottleneckScoreLow")}];
-  [v10 setUlBottleneckScoreMedium:{objc_msgSend(v12, "ulBottleneckScoreMedium")}];
-  [v10 setUlBottleneckScoreHigh:{objc_msgSend(v12, "ulBottleneckScoreHigh")}];
-  [v10 setDataStallIndicatorAVS:{objc_msgSend(v12, "dataStallIndicatorAVS")}];
-  [v10 setDataStallIndicatorUL:{objc_msgSend(v12, "dataStallIndicatorUL")}];
-  if ([v12 isQoEScoreValid])
+  [cellCopy setRsrp:{objc_msgSend(metricCopy, "rsrp")}];
+  [cellCopy setRsrq:{objc_msgSend(metricCopy, "rsrq")}];
+  [cellCopy setSinr:{objc_msgSend(metricCopy, "sinr")}];
+  [cellCopy setDlBottleneckScoreInvalid:{objc_msgSend(metricCopy, "dlBottleneckScoreInvalid")}];
+  [cellCopy setDlBottleneckScoreNo:{objc_msgSend(metricCopy, "dlBottleneckScoreNo")}];
+  [cellCopy setDlBottleneckScoreLow:{objc_msgSend(metricCopy, "dlBottleneckScoreLow")}];
+  [cellCopy setDlBottleneckScoreMedium:{objc_msgSend(metricCopy, "dlBottleneckScoreMedium")}];
+  [cellCopy setDlBottleneckScoreHigh:{objc_msgSend(metricCopy, "dlBottleneckScoreHigh")}];
+  [cellCopy setUlBottleneckScoreInvalid:{objc_msgSend(metricCopy, "ulBottleneckScoreInvalid")}];
+  [cellCopy setUlBottleneckScoreNo:{objc_msgSend(metricCopy, "ulBottleneckScoreNo")}];
+  [cellCopy setUlBottleneckScoreLow:{objc_msgSend(metricCopy, "ulBottleneckScoreLow")}];
+  [cellCopy setUlBottleneckScoreMedium:{objc_msgSend(metricCopy, "ulBottleneckScoreMedium")}];
+  [cellCopy setUlBottleneckScoreHigh:{objc_msgSend(metricCopy, "ulBottleneckScoreHigh")}];
+  [cellCopy setDataStallIndicatorAVS:{objc_msgSend(metricCopy, "dataStallIndicatorAVS")}];
+  [cellCopy setDataStallIndicatorUL:{objc_msgSend(metricCopy, "dataStallIndicatorUL")}];
+  if ([metricCopy isQoEScoreValid])
   {
-    if ([v10 qoeScore])
+    if ([cellCopy qoeScore])
     {
-      v20 = llround(vcvtd_n_f64_u32([v12 qoeScore], 1uLL) + objc_msgSend(v10, "qoeScore") * 0.5);
+      qoeScore = llround(vcvtd_n_f64_u32([metricCopy qoeScore], 1uLL) + objc_msgSend(cellCopy, "qoeScore") * 0.5);
     }
 
     else
     {
-      v20 = [v12 qoeScore];
+      qoeScore = [metricCopy qoeScore];
     }
 
-    [v10 setQoeScore:v20];
-    [v10 setQoeDuration:{objc_msgSend(v10, "qoeDuration") + objc_msgSend(v12, "qoeDuration")}];
+    [cellCopy setQoeScore:qoeScore];
+    [cellCopy setQoeDuration:{objc_msgSend(cellCopy, "qoeDuration") + objc_msgSend(metricCopy, "qoeDuration")}];
   }
 
-  [v10 setIsSubway:{objc_msgSend(v12, "isSubway")}];
-  [v10 setPsPref:{objc_msgSend(v12, "psPref")}];
-  [v10 setLastSeen:v11];
-  [v10 setSeenCount:{objc_msgSend(v10, "seenCount") + 1}];
+  [cellCopy setIsSubway:{objc_msgSend(metricCopy, "isSubway")}];
+  [cellCopy setPsPref:{objc_msgSend(metricCopy, "psPref")}];
+  [cellCopy setLastSeen:timestampCopy];
+  [cellCopy setSeenCount:{objc_msgSend(cellCopy, "seenCount") + 1}];
   v22 = 0;
-  [v9 save:&v22];
+  [contextCopy save:&v22];
   v21 = v22;
   if (v21 && os_log_type_enabled(*(qword_1002DBE98 + 136), OS_LOG_TYPE_ERROR))
   {
@@ -5193,55 +5193,55 @@ LABEL_4:
   }
 }
 
-- (id)createCongestionCellWithContext:(id)a3 subscriptionID:(id)a4 gci:(id)a5 mcc:(id)a6 mnc:(id)a7 rat:(id)a8 arfcnOrUarfcn:(id)a9 congestionMetric:(id)a10 timestamp:(id)a11
+- (id)createCongestionCellWithContext:(id)context subscriptionID:(id)d gci:(id)gci mcc:(id)mcc mnc:(id)mnc rat:(id)rat arfcnOrUarfcn:(id)uarfcn congestionMetric:(id)self0 timestamp:(id)self1
 {
-  v16 = a3;
-  v28 = a4;
-  v29 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
-  v21 = a10;
-  v22 = a11;
+  contextCopy = context;
+  dCopy = d;
+  gciCopy = gci;
+  mccCopy = mcc;
+  mncCopy = mnc;
+  ratCopy = rat;
+  uarfcnCopy = uarfcn;
+  metricCopy = metric;
+  timestampCopy = timestamp;
   if (os_log_type_enabled(*(qword_1002DBE98 + 136), OS_LOG_TYPE_DEBUG))
   {
     sub_10020B4CC();
   }
 
-  v23 = [NSEntityDescription insertNewObjectForEntityForName:@"CongestionCell" inManagedObjectContext:v16];
-  [v23 setLastSeen:v22];
+  v23 = [NSEntityDescription insertNewObjectForEntityForName:@"CongestionCell" inManagedObjectContext:contextCopy];
+  [v23 setLastSeen:timestampCopy];
   [v23 setSeenCount:0];
-  [v23 setSubscriptionID:v28];
-  [v23 setGci:v29];
-  [v23 setMcc:v17];
-  [v23 setMnc:v18];
-  [v23 setRadioAccessTechnology:v19];
-  [v23 setArfcnOrUarfcn:v20];
-  v24 = [v21 ratType];
-  [v23 setRatType:v24];
+  [v23 setSubscriptionID:dCopy];
+  [v23 setGci:gciCopy];
+  [v23 setMcc:mccCopy];
+  [v23 setMnc:mncCopy];
+  [v23 setRadioAccessTechnology:ratCopy];
+  [v23 setArfcnOrUarfcn:uarfcnCopy];
+  ratType = [metricCopy ratType];
+  [v23 setRatType:ratType];
 
-  [v23 setRsrp:{objc_msgSend(v21, "rsrp")}];
-  [v23 setRsrq:{objc_msgSend(v21, "rsrq")}];
-  [v23 setSinr:{objc_msgSend(v21, "sinr")}];
-  [v23 setDlBottleneckScoreInvalid:{objc_msgSend(v21, "dlBottleneckScoreInvalid")}];
-  [v23 setDlBottleneckScoreNo:{objc_msgSend(v21, "dlBottleneckScoreNo")}];
-  [v23 setDlBottleneckScoreLow:{objc_msgSend(v21, "dlBottleneckScoreLow")}];
-  [v23 setDlBottleneckScoreMedium:{objc_msgSend(v21, "dlBottleneckScoreMedium")}];
-  [v23 setDlBottleneckScoreHigh:{objc_msgSend(v21, "dlBottleneckScoreHigh")}];
-  [v23 setUlBottleneckScoreInvalid:{objc_msgSend(v21, "ulBottleneckScoreInvalid")}];
-  [v23 setUlBottleneckScoreNo:{objc_msgSend(v21, "ulBottleneckScoreNo")}];
-  [v23 setUlBottleneckScoreLow:{objc_msgSend(v21, "ulBottleneckScoreLow")}];
-  [v23 setUlBottleneckScoreMedium:{objc_msgSend(v21, "ulBottleneckScoreMedium")}];
-  [v23 setUlBottleneckScoreHigh:{objc_msgSend(v21, "ulBottleneckScoreHigh")}];
-  [v23 setDataStallIndicatorAVS:{objc_msgSend(v21, "dataStallIndicatorAVS")}];
-  [v23 setDataStallIndicatorUL:{objc_msgSend(v21, "dataStallIndicatorUL")}];
-  [v23 setQoeScore:{objc_msgSend(v21, "qoeScore")}];
-  [v23 setQoeDuration:{objc_msgSend(v21, "qoeDuration")}];
-  [v23 setIsSubway:{objc_msgSend(v21, "isSubway")}];
-  [v23 setPsPref:{objc_msgSend(v21, "psPref")}];
+  [v23 setRsrp:{objc_msgSend(metricCopy, "rsrp")}];
+  [v23 setRsrq:{objc_msgSend(metricCopy, "rsrq")}];
+  [v23 setSinr:{objc_msgSend(metricCopy, "sinr")}];
+  [v23 setDlBottleneckScoreInvalid:{objc_msgSend(metricCopy, "dlBottleneckScoreInvalid")}];
+  [v23 setDlBottleneckScoreNo:{objc_msgSend(metricCopy, "dlBottleneckScoreNo")}];
+  [v23 setDlBottleneckScoreLow:{objc_msgSend(metricCopy, "dlBottleneckScoreLow")}];
+  [v23 setDlBottleneckScoreMedium:{objc_msgSend(metricCopy, "dlBottleneckScoreMedium")}];
+  [v23 setDlBottleneckScoreHigh:{objc_msgSend(metricCopy, "dlBottleneckScoreHigh")}];
+  [v23 setUlBottleneckScoreInvalid:{objc_msgSend(metricCopy, "ulBottleneckScoreInvalid")}];
+  [v23 setUlBottleneckScoreNo:{objc_msgSend(metricCopy, "ulBottleneckScoreNo")}];
+  [v23 setUlBottleneckScoreLow:{objc_msgSend(metricCopy, "ulBottleneckScoreLow")}];
+  [v23 setUlBottleneckScoreMedium:{objc_msgSend(metricCopy, "ulBottleneckScoreMedium")}];
+  [v23 setUlBottleneckScoreHigh:{objc_msgSend(metricCopy, "ulBottleneckScoreHigh")}];
+  [v23 setDataStallIndicatorAVS:{objc_msgSend(metricCopy, "dataStallIndicatorAVS")}];
+  [v23 setDataStallIndicatorUL:{objc_msgSend(metricCopy, "dataStallIndicatorUL")}];
+  [v23 setQoeScore:{objc_msgSend(metricCopy, "qoeScore")}];
+  [v23 setQoeDuration:{objc_msgSend(metricCopy, "qoeDuration")}];
+  [v23 setIsSubway:{objc_msgSend(metricCopy, "isSubway")}];
+  [v23 setPsPref:{objc_msgSend(metricCopy, "psPref")}];
   v30 = 0;
-  [v16 save:&v30];
+  [contextCopy save:&v30];
   v25 = v30;
   if (v25)
   {
@@ -5263,20 +5263,20 @@ LABEL_4:
   return v26;
 }
 
-- (id)getCongestionCellWithContext:(id)a3 subscriptionID:(id)a4 gci:(id)a5 mcc:(id)a6 mnc:(id)a7 rat:(id)a8 arfcnOrUarfcn:(id)a9 atTime:(id)a10
+- (id)getCongestionCellWithContext:(id)context subscriptionID:(id)d gci:(id)gci mcc:(id)mcc mnc:(id)mnc rat:(id)rat arfcnOrUarfcn:(id)uarfcn atTime:(id)self0
 {
-  v40 = a3;
-  v41 = a4;
-  v42 = a5;
-  v43 = a6;
-  v44 = a7;
-  v45 = a8;
-  v46 = a9;
-  v36 = a10;
-  v16 = [FMUtil getTimeOfDayFromDate:v36];
-  v17 = [FMUtil getDayOfWeekFromDate:v36];
+  contextCopy = context;
+  dCopy = d;
+  gciCopy = gci;
+  mccCopy = mcc;
+  mncCopy = mnc;
+  ratCopy = rat;
+  uarfcnCopy = uarfcn;
+  timeCopy = time;
+  v16 = [FMUtil getTimeOfDayFromDate:timeCopy];
+  v17 = [FMUtil getDayOfWeekFromDate:timeCopy];
   v48 = [NSFetchRequest fetchRequestWithEntityName:@"CongestionCell"];
-  v38 = [NSPredicate predicateWithFormat:@"(subscriptionID == %@) AND (gci == %@) AND (mcc == %@) AND (mnc == %@) AND (radioAccessTechnology == %@) AND (arfcnOrUarfcn == %@)", v41, v42, v43, v44, v45, v46];
+  uarfcnCopy = [NSPredicate predicateWithFormat:@"(subscriptionID == %@) AND (gci == %@) AND (mcc == %@) AND (mnc == %@) AND (radioAccessTechnology == %@) AND (arfcnOrUarfcn == %@)", dCopy, gciCopy, mccCopy, mncCopy, ratCopy, uarfcnCopy];
   [v48 setPredicate:?];
   v18 = [[NSSortDescriptor alloc] initWithKey:@"lastSeen" ascending:0];
   v57 = v18;
@@ -5285,13 +5285,13 @@ LABEL_4:
 
   if (os_log_type_enabled(*(qword_1002DBE98 + 136), OS_LOG_TYPE_DEBUG))
   {
-    [v38 description];
+    [uarfcnCopy description];
     objc_claimAutoreleasedReturnValue();
     sub_10020B544();
   }
 
   v53 = 0;
-  v39 = [v40 executeFetchRequest:v48 error:&v53];
+  v39 = [contextCopy executeFetchRequest:v48 error:&v53];
   v37 = v53;
   if (v37)
   {
@@ -5338,15 +5338,15 @@ LABEL_4:
       }
 
       v23 = *(*(&v49 + 1) + 8 * v22);
-      v24 = [v23 goodCellOf];
-      if (v24)
+      goodCellOf = [v23 goodCellOf];
+      if (goodCellOf)
       {
       }
 
       else
       {
-        v25 = [v23 badCellOf];
-        v26 = v25 == 0;
+        badCellOf = [v23 badCellOf];
+        v26 = badCellOf == 0;
 
         if (v26)
         {
@@ -5359,19 +5359,19 @@ LABEL_4:
         }
       }
 
-      v27 = [v23 goodCellOf];
-      v28 = v27;
-      if (v27)
+      goodCellOf2 = [v23 goodCellOf];
+      v28 = goodCellOf2;
+      if (goodCellOf2)
       {
-        v29 = v27;
+        badCellOf2 = goodCellOf2;
       }
 
       else
       {
-        v29 = [v23 badCellOf];
+        badCellOf2 = [v23 badCellOf];
       }
 
-      v30 = v29;
+      v30 = badCellOf2;
 
       v31 = [(FMCoreData *)self getRushHourPredicateForDayOfWeek:v17 andTimeOfDay:v16];
       v32 = [v31 evaluateWithObject:v30];
@@ -5402,15 +5402,15 @@ LABEL_30:
   return v34;
 }
 
-- (void)updateCongestionPrevCellSeenWithContext:(id)a3 cell:(id)a4 atTimestamp:(id)a5
+- (void)updateCongestionPrevCellSeenWithContext:(id)context cell:(id)cell atTimestamp:(id)timestamp
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  [v8 setLastSeen:v9];
-  [v8 setSeenCount:{objc_msgSend(v8, "seenCount") + 1}];
+  contextCopy = context;
+  cellCopy = cell;
+  timestampCopy = timestamp;
+  [cellCopy setLastSeen:timestampCopy];
+  [cellCopy setSeenCount:{objc_msgSend(cellCopy, "seenCount") + 1}];
   v11 = 0;
-  [v7 save:&v11];
+  [contextCopy save:&v11];
   v10 = v11;
   if (v10 && os_log_type_enabled(*(qword_1002DBE98 + 136), OS_LOG_TYPE_ERROR))
   {
@@ -5420,16 +5420,16 @@ LABEL_30:
   }
 }
 
-- (id)fmCongestionCellsToExistingCongestionPrevCellsWithContext:(id)a3 cells:(id)a4
+- (id)fmCongestionCellsToExistingCongestionPrevCellsWithContext:(id)context cells:(id)cells
 {
-  v22 = a3;
-  v18 = a4;
+  contextCopy = context;
+  cellsCopy = cells;
   v21 = objc_alloc_init(NSMutableOrderedSet);
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  obj = v18;
+  obj = cellsCopy;
   v5 = [obj countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v5)
   {
@@ -5444,22 +5444,22 @@ LABEL_30:
         }
 
         v8 = *(*(&v23 + 1) + 8 * i);
-        v9 = [v8 subscriptionID];
+        subscriptionID = [v8 subscriptionID];
         v10 = [v8 gci];
         v11 = [v8 mcc];
         v12 = [v8 mnc];
         v13 = [v8 rat];
-        v14 = [v8 arfcnOrUarfcn];
-        v15 = [(FMCoreData *)self getCongestionPrevCellWithContext:v22 subscriptionID:v9 gci:v10 mcc:v11 mnc:v12 rat:v13 arfcnOrUarfcn:v14, v18];
+        arfcnOrUarfcn = [v8 arfcnOrUarfcn];
+        cellsCopy = [(FMCoreData *)self getCongestionPrevCellWithContext:contextCopy subscriptionID:subscriptionID gci:v10 mcc:v11 mnc:v12 rat:v13 arfcnOrUarfcn:arfcnOrUarfcn, cellsCopy];
 
-        if (!v15)
+        if (!cellsCopy)
         {
 
           v16 = 0;
           goto LABEL_11;
         }
 
-        [v21 addObject:v15];
+        [v21 addObject:cellsCopy];
       }
 
       v5 = [obj countByEnumeratingWithState:&v23 objects:v27 count:16];
@@ -5478,17 +5478,17 @@ LABEL_11:
   return v16;
 }
 
-- (id)convertFMCongestionCells:(id)a3 toUpdatedCongestionPrevCellsWithContext:(id)a4
+- (id)convertFMCongestionCells:(id)cells toUpdatedCongestionPrevCellsWithContext:(id)context
 {
-  v5 = a3;
-  v24 = a4;
-  v19 = v5;
+  cellsCopy = cells;
+  contextCopy = context;
+  v19 = cellsCopy;
   v21 = objc_alloc_init(NSMutableOrderedSet);
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  obj = v5;
+  obj = cellsCopy;
   v6 = [obj countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v6)
   {
@@ -5503,14 +5503,14 @@ LABEL_11:
         }
 
         v8 = *(*(&v25 + 1) + 8 * i);
-        v9 = [v8 subscriptionID];
+        subscriptionID = [v8 subscriptionID];
         v10 = [v8 gci];
         v11 = [v8 mcc];
         v12 = [v8 mnc];
         v13 = [v8 rat];
-        v14 = [v8 arfcnOrUarfcn];
-        v15 = [v8 timestamp];
-        v16 = [(FMCoreData *)self getOrCreateAndUpdateCongestionPrevCellWithContext:v24 subscriptionID:v9 gci:v10 mcc:v11 mnc:v12 rat:v13 arfcnOrUarfcn:v14 timestamp:v15, v19];
+        arfcnOrUarfcn = [v8 arfcnOrUarfcn];
+        timestamp = [v8 timestamp];
+        v16 = [(FMCoreData *)self getOrCreateAndUpdateCongestionPrevCellWithContext:contextCopy subscriptionID:subscriptionID gci:v10 mcc:v11 mnc:v12 rat:v13 arfcnOrUarfcn:arfcnOrUarfcn timestamp:timestamp, v19];
 
         if (v16)
         {
@@ -5529,26 +5529,26 @@ LABEL_11:
   return v17;
 }
 
-- (id)getOrCreateAndUpdateCongestionPrevCellWithContext:(id)a3 subscriptionID:(id)a4 gci:(id)a5 mcc:(id)a6 mnc:(id)a7 rat:(id)a8 arfcnOrUarfcn:(id)a9 timestamp:(id)a10
+- (id)getOrCreateAndUpdateCongestionPrevCellWithContext:(id)context subscriptionID:(id)d gci:(id)gci mcc:(id)mcc mnc:(id)mnc rat:(id)rat arfcnOrUarfcn:(id)uarfcn timestamp:(id)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = a9;
-  v23 = a10;
-  v24 = [(FMCoreData *)self getCongestionPrevCellWithContext:v16 subscriptionID:v17 gci:v18 mcc:v19 mnc:v20 rat:v21 arfcnOrUarfcn:v22];
+  contextCopy = context;
+  dCopy = d;
+  gciCopy = gci;
+  mccCopy = mcc;
+  mncCopy = mnc;
+  ratCopy = rat;
+  uarfcnCopy = uarfcn;
+  timestampCopy = timestamp;
+  v24 = [(FMCoreData *)self getCongestionPrevCellWithContext:contextCopy subscriptionID:dCopy gci:gciCopy mcc:mccCopy mnc:mncCopy rat:ratCopy arfcnOrUarfcn:uarfcnCopy];
   if (v24)
   {
-    [(FMCoreData *)self updateCongestionPrevCellSeenWithContext:v16 cell:v24 atTimestamp:v23];
+    [(FMCoreData *)self updateCongestionPrevCellSeenWithContext:contextCopy cell:v24 atTimestamp:timestampCopy];
     v25 = v24;
   }
 
   else
   {
-    v25 = [(FMCoreData *)self createCongestionPrevCellWithContext:v16 subscriptionID:v17 gci:v18 mcc:v19 mnc:v20 rat:v21 arfcnOrUarfcn:v22 timestamp:v23];
+    v25 = [(FMCoreData *)self createCongestionPrevCellWithContext:contextCopy subscriptionID:dCopy gci:gciCopy mcc:mccCopy mnc:mncCopy rat:ratCopy arfcnOrUarfcn:uarfcnCopy timestamp:timestampCopy];
   }
 
   v26 = v25;
@@ -5556,32 +5556,32 @@ LABEL_11:
   return v26;
 }
 
-- (id)createCongestionPrevCellWithContext:(id)a3 subscriptionID:(id)a4 gci:(id)a5 mcc:(id)a6 mnc:(id)a7 rat:(id)a8 arfcnOrUarfcn:(id)a9 timestamp:(id)a10
+- (id)createCongestionPrevCellWithContext:(id)context subscriptionID:(id)d gci:(id)gci mcc:(id)mcc mnc:(id)mnc rat:(id)rat arfcnOrUarfcn:(id)uarfcn timestamp:(id)self0
 {
-  v15 = a3;
-  v26 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
-  v21 = a10;
+  contextCopy = context;
+  dCopy = d;
+  gciCopy = gci;
+  mccCopy = mcc;
+  mncCopy = mnc;
+  ratCopy = rat;
+  uarfcnCopy = uarfcn;
+  timestampCopy = timestamp;
   if (os_log_type_enabled(*(qword_1002DBE98 + 136), OS_LOG_TYPE_DEBUG))
   {
     sub_10020B670();
   }
 
-  v22 = [NSEntityDescription insertNewObjectForEntityForName:@"CongestionPrevCell" inManagedObjectContext:v15, v26];
-  [v22 setLastSeen:v21];
-  [v22 setSeenCount:0];
-  [v22 setSubscriptionID:v27];
-  [v22 setGci:v16];
-  [v22 setMcc:v17];
-  [v22 setMnc:v18];
-  [v22 setRadioAccessTechnology:v19];
-  [v22 setArfcnOrUarfcn:v20];
+  dCopy = [NSEntityDescription insertNewObjectForEntityForName:@"CongestionPrevCell" inManagedObjectContext:contextCopy, dCopy];
+  [dCopy setLastSeen:timestampCopy];
+  [dCopy setSeenCount:0];
+  [dCopy setSubscriptionID:v27];
+  [dCopy setGci:gciCopy];
+  [dCopy setMcc:mccCopy];
+  [dCopy setMnc:mncCopy];
+  [dCopy setRadioAccessTechnology:ratCopy];
+  [dCopy setArfcnOrUarfcn:uarfcnCopy];
   v28 = 0;
-  [v15 save:&v28];
+  [contextCopy save:&v28];
   v23 = v28;
   if (v23)
   {
@@ -5597,34 +5597,34 @@ LABEL_11:
 
   else
   {
-    v24 = v22;
+    v24 = dCopy;
   }
 
   return v24;
 }
 
-- (id)getCongestionPrevCellWithContext:(id)a3 subscriptionID:(id)a4 gci:(id)a5 mcc:(id)a6 mnc:(id)a7 rat:(id)a8 arfcnOrUarfcn:(id)a9
+- (id)getCongestionPrevCellWithContext:(id)context subscriptionID:(id)d gci:(id)gci mcc:(id)mcc mnc:(id)mnc rat:(id)rat arfcnOrUarfcn:(id)uarfcn
 {
-  v27 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = a9;
-  v26 = v14;
+  contextCopy = context;
+  dCopy = d;
+  gciCopy = gci;
+  mccCopy = mcc;
+  mncCopy = mnc;
+  ratCopy = rat;
+  uarfcnCopy = uarfcn;
+  v26 = dCopy;
   v20 = [NSFetchRequest fetchRequestWithEntityName:@"CongestionPrevCell"];
-  v21 = [NSPredicate predicateWithFormat:@"(subscriptionID == %@) AND (gci == %@) AND (mcc == %@) AND (mnc == %@) AND (radioAccessTechnology == %@) AND (arfcnOrUarfcn == %@)", v14, v15, v16, v17, v18, v19];
-  [v20 setPredicate:v21];
+  uarfcnCopy = [NSPredicate predicateWithFormat:@"(subscriptionID == %@) AND (gci == %@) AND (mcc == %@) AND (mnc == %@) AND (radioAccessTechnology == %@) AND (arfcnOrUarfcn == %@)", dCopy, gciCopy, mccCopy, mncCopy, ratCopy, uarfcnCopy];
+  [v20 setPredicate:uarfcnCopy];
   if (os_log_type_enabled(*(qword_1002DBE98 + 136), OS_LOG_TYPE_DEBUG))
   {
-    [v21 description];
+    [uarfcnCopy description];
     objc_claimAutoreleasedReturnValue();
     sub_10020B6A4();
   }
 
   v28 = 0;
-  v22 = [v27 executeFetchRequest:v20 error:&v28];
+  v22 = [contextCopy executeFetchRequest:v20 error:&v28];
   v23 = v28;
   if (v23)
   {
@@ -5636,7 +5636,7 @@ LABEL_11:
     }
 
 LABEL_6:
-    v24 = 0;
+    firstObject = 0;
     goto LABEL_12;
   }
 
@@ -5655,22 +5655,22 @@ LABEL_6:
     sub_10020B72C();
   }
 
-  v24 = [v22 firstObject];
+  firstObject = [v22 firstObject];
 LABEL_12:
 
-  return v24;
+  return firstObject;
 }
 
-- (id)filterCongestionAreasWithContext:(id)a3 unfilteredCongestionAreas:(id)a4 withExactPrevCells:(id)a5
+- (id)filterCongestionAreasWithContext:(id)context unfilteredCongestionAreas:(id)areas withExactPrevCells:(id)cells
 {
-  v6 = a4;
-  v7 = a5;
+  areasCopy = areas;
+  cellsCopy = cells;
   v8 = objc_alloc_init(NSMutableArray);
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v9 = v6;
+  v9 = areasCopy;
   v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v10)
   {
@@ -5685,9 +5685,9 @@ LABEL_12:
         }
 
         v13 = *(*(&v18 + 1) + 8 * i);
-        v14 = [v13 prevCells];
-        v15 = [v14 count];
-        LOBYTE(v15) = v15 == [v7 count];
+        prevCells = [v13 prevCells];
+        v15 = [prevCells count];
+        LOBYTE(v15) = v15 == [cellsCopy count];
 
         if (v15)
         {
@@ -5706,36 +5706,36 @@ LABEL_12:
   return v16;
 }
 
-- (void)updateCongestionAreaAfterLeavingWithContext:(id)a3 congestionArea:(id)a4 startTime:(id)a5 goodCells:(id)a6 badCells:(id)a7 secondsUntilCongestion:(double)a8 secondsCongestionDuration:(double)a9
+- (void)updateCongestionAreaAfterLeavingWithContext:(id)context congestionArea:(id)area startTime:(id)time goodCells:(id)cells badCells:(id)badCells secondsUntilCongestion:(double)congestion secondsCongestionDuration:(double)duration
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v93 = a6;
-  v94 = a7;
-  v109 = v17;
-  v92 = v18;
-  if (v17)
+  contextCopy = context;
+  areaCopy = area;
+  timeCopy = time;
+  cellsCopy = cells;
+  badCellsCopy = badCells;
+  v109 = areaCopy;
+  v92 = timeCopy;
+  if (areaCopy)
   {
-    [v17 setLastSeen:v18];
-    [v17 setSeenCount:{objc_msgSend(v17, "seenCount") + 1}];
-    v91 = [NSEntityDescription insertNewObjectForEntityForName:@"CongestionOccurrence" inManagedObjectContext:v16];
-    [v91 setSecondsUntilCongestion:llround(a8)];
-    [v91 setSecondsCongestionDuration:llround(a9)];
-    [v91 setTimestamp:v18];
-    [v17 addCongestionOccurrencesObject:v91];
-    v19 = [v17 congestionOccurrences];
-    v20 = [v19 count];
+    [areaCopy setLastSeen:timeCopy];
+    [areaCopy setSeenCount:{objc_msgSend(areaCopy, "seenCount") + 1}];
+    v91 = [NSEntityDescription insertNewObjectForEntityForName:@"CongestionOccurrence" inManagedObjectContext:contextCopy];
+    [v91 setSecondsUntilCongestion:llround(congestion)];
+    [v91 setSecondsCongestionDuration:llround(duration)];
+    [v91 setTimestamp:timeCopy];
+    [areaCopy addCongestionOccurrencesObject:v91];
+    congestionOccurrences = [areaCopy congestionOccurrences];
+    v20 = [congestionOccurrences count];
 
     v21 = +[FMConfiguration sharedInstance];
-    v22 = [v21 congestionOccurrencesInDatabase];
+    congestionOccurrencesInDatabase = [v21 congestionOccurrencesInDatabase];
 
-    v23 = v20 >= v22;
-    v24 = v20 - v22;
+    v23 = v20 >= congestionOccurrencesInDatabase;
+    v24 = v20 - congestionOccurrencesInDatabase;
     if (v24 != 0 && v23)
     {
-      v25 = [v17 congestionOccurrences];
-      v26 = [v25 copy];
+      congestionOccurrences2 = [areaCopy congestionOccurrences];
+      v26 = [congestionOccurrences2 copy];
       v27 = [NSIndexSet indexSetWithIndexesInRange:0, v24];
       v28 = [v26 objectsAtIndexes:v27];
 
@@ -5758,8 +5758,8 @@ LABEL_12:
             }
 
             v33 = *(*(&v143 + 1) + 8 * i);
-            [v17 removeCongestionOccurrencesObject:v33];
-            [v16 deleteObject:v33];
+            [areaCopy removeCongestionOccurrencesObject:v33];
+            [contextCopy deleteObject:v33];
           }
 
           v30 = [v29 countByEnumeratingWithState:&v143 objects:v153 count:16];
@@ -5769,13 +5769,13 @@ LABEL_12:
       }
     }
 
-    if (v94)
+    if (badCellsCopy)
     {
       v141 = 0u;
       v142 = 0u;
       v139 = 0u;
       v140 = 0u;
-      obj = v94;
+      obj = badCellsCopy;
       v103 = [obj countByEnumeratingWithState:&v139 objects:v152 count:16];
       if (v103)
       {
@@ -5791,9 +5791,9 @@ LABEL_12:
             }
 
             v35 = *(*(&v139 + 1) + 8 * v34);
-            v36 = [v35 congestionMetric];
+            congestionMetric = [v35 congestionMetric];
             v105 = v34;
-            v37 = v36 == 0;
+            v37 = congestionMetric == 0;
 
             if (v37)
             {
@@ -5805,14 +5805,14 @@ LABEL_12:
 
             else
             {
-              v38 = [v109 badCells];
+              badCells = [v109 badCells];
               v136[0] = _NSConcreteStackBlock;
               v136[1] = 3221225472;
               v136[2] = sub_10013BA18;
               v136[3] = &unk_1002B3910;
               v136[4] = self;
               v136[5] = v35;
-              v107 = [v38 objectsPassingTest:v136];
+              v107 = [badCells objectsPassingTest:v136];
 
               if ([v107 count])
               {
@@ -5835,9 +5835,9 @@ LABEL_12:
                       }
 
                       v43 = *(*(&v132 + 1) + 8 * j);
-                      v44 = [v35 timestamp];
-                      v45 = [v35 congestionMetric];
-                      [(FMCoreData *)self updateCongestionCellSeenWithContext:v16 cell:v43 atTimestamp:v44 congestionMetric:v45];
+                      timestamp = [v35 timestamp];
+                      congestionMetric2 = [v35 congestionMetric];
+                      [(FMCoreData *)self updateCongestionCellSeenWithContext:contextCopy cell:v43 atTimestamp:timestamp congestionMetric:congestionMetric2];
                     }
 
                     v40 = [v39 countByEnumeratingWithState:&v132 objects:v151 count:16];
@@ -5849,14 +5849,14 @@ LABEL_12:
 
               else
               {
-                v46 = [v109 goodCells];
+                goodCells = [v109 goodCells];
                 v131[0] = _NSConcreteStackBlock;
                 v131[1] = 3221225472;
                 v131[2] = sub_10013BA28;
                 v131[3] = &unk_1002B3910;
                 v131[4] = self;
                 v131[5] = v35;
-                v99 = [v46 objectsPassingTest:v131];
+                v99 = [goodCells objectsPassingTest:v131];
 
                 if ([v99 count])
                 {
@@ -5879,9 +5879,9 @@ LABEL_12:
                         }
 
                         v51 = *(*(&v127 + 1) + 8 * k);
-                        v52 = [v35 timestamp];
-                        v53 = [v35 congestionMetric];
-                        [(FMCoreData *)self updateCongestionCellSeenWithContext:v16 cell:v51 atTimestamp:v52 congestionMetric:v53];
+                        timestamp2 = [v35 timestamp];
+                        congestionMetric3 = [v35 congestionMetric];
+                        [(FMCoreData *)self updateCongestionCellSeenWithContext:contextCopy cell:v51 atTimestamp:timestamp2 congestionMetric:congestionMetric3];
 
                         [v109 removeGoodCellsObject:v51];
                         [v109 addBadCellsObject:v51];
@@ -5896,16 +5896,16 @@ LABEL_12:
 
                 else
                 {
-                  v95 = [v35 subscriptionID];
+                  subscriptionID = [v35 subscriptionID];
                   v54 = [v35 gci];
                   v55 = [v35 mcc];
                   v56 = [v35 mnc];
                   v57 = [v35 rat];
-                  v58 = [v35 arfcnOrUarfcn];
-                  v59 = [v35 congestionMetric];
-                  v60 = [v35 timestamp];
+                  arfcnOrUarfcn = [v35 arfcnOrUarfcn];
+                  congestionMetric4 = [v35 congestionMetric];
+                  timestamp3 = [v35 timestamp];
                   v61 = v55;
-                  v47 = [(FMCoreData *)self createCongestionCellWithContext:v16 subscriptionID:v95 gci:v54 mcc:v55 mnc:v56 rat:v57 arfcnOrUarfcn:v58 congestionMetric:v59 timestamp:v60];
+                  v47 = [(FMCoreData *)self createCongestionCellWithContext:contextCopy subscriptionID:subscriptionID gci:v54 mcc:v55 mnc:v56 rat:v57 arfcnOrUarfcn:arfcnOrUarfcn congestionMetric:congestionMetric4 timestamp:timestamp3];
 
                   if (v47)
                   {
@@ -5926,13 +5926,13 @@ LABEL_12:
       }
     }
 
-    if (v93)
+    if (cellsCopy)
     {
       v125 = 0u;
       v126 = 0u;
       v123 = 0u;
       v124 = 0u;
-      obja = v93;
+      obja = cellsCopy;
       v104 = [obja countByEnumeratingWithState:&v123 objects:v149 count:16];
       if (v104)
       {
@@ -5948,9 +5948,9 @@ LABEL_12:
             }
 
             v63 = *(*(&v123 + 1) + 8 * v62);
-            v64 = [v63 congestionMetric];
+            congestionMetric5 = [v63 congestionMetric];
             v106 = v62;
-            v65 = v64 == 0;
+            v65 = congestionMetric5 == 0;
 
             if (v65)
             {
@@ -5962,14 +5962,14 @@ LABEL_12:
 
             else
             {
-              v66 = [v109 goodCells];
+              goodCells2 = [v109 goodCells];
               v120[0] = _NSConcreteStackBlock;
               v120[1] = 3221225472;
               v120[2] = sub_10013BA38;
               v120[3] = &unk_1002B3910;
               v120[4] = self;
               v120[5] = v63;
-              v108 = [v66 objectsPassingTest:v120];
+              v108 = [goodCells2 objectsPassingTest:v120];
 
               if ([v108 count])
               {
@@ -5992,9 +5992,9 @@ LABEL_12:
                       }
 
                       v71 = *(*(&v116 + 1) + 8 * m);
-                      v72 = [v63 timestamp];
-                      v73 = [v63 congestionMetric];
-                      [(FMCoreData *)self updateCongestionCellSeenWithContext:v16 cell:v71 atTimestamp:v72 congestionMetric:v73];
+                      timestamp4 = [v63 timestamp];
+                      congestionMetric6 = [v63 congestionMetric];
+                      [(FMCoreData *)self updateCongestionCellSeenWithContext:contextCopy cell:v71 atTimestamp:timestamp4 congestionMetric:congestionMetric6];
                     }
 
                     v68 = [v67 countByEnumeratingWithState:&v116 objects:v148 count:16];
@@ -6006,14 +6006,14 @@ LABEL_12:
 
               else
               {
-                v74 = [v109 badCells];
+                badCells2 = [v109 badCells];
                 v115[0] = _NSConcreteStackBlock;
                 v115[1] = 3221225472;
                 v115[2] = sub_10013BA48;
                 v115[3] = &unk_1002B3910;
                 v115[4] = self;
                 v115[5] = v63;
-                v100 = [v74 objectsPassingTest:v115];
+                v100 = [badCells2 objectsPassingTest:v115];
 
                 if ([v100 count])
                 {
@@ -6036,9 +6036,9 @@ LABEL_12:
                         }
 
                         v79 = *(*(&v111 + 1) + 8 * n);
-                        v80 = [v63 timestamp];
-                        v81 = [v63 congestionMetric];
-                        [(FMCoreData *)self updateCongestionCellSeenWithContext:v16 cell:v79 atTimestamp:v80 congestionMetric:v81];
+                        timestamp5 = [v63 timestamp];
+                        congestionMetric7 = [v63 congestionMetric];
+                        [(FMCoreData *)self updateCongestionCellSeenWithContext:contextCopy cell:v79 atTimestamp:timestamp5 congestionMetric:congestionMetric7];
 
                         [v109 removeBadCellsObject:v79];
                         [v109 addGoodCellsObject:v79];
@@ -6053,16 +6053,16 @@ LABEL_12:
 
                 else
                 {
-                  v96 = [v63 subscriptionID];
+                  subscriptionID2 = [v63 subscriptionID];
                   v82 = [v63 gci];
                   v83 = [v63 mcc];
                   v84 = [v63 mnc];
                   v85 = [v63 rat];
-                  v86 = [v63 arfcnOrUarfcn];
-                  v87 = [v63 congestionMetric];
-                  v88 = [v63 timestamp];
+                  arfcnOrUarfcn2 = [v63 arfcnOrUarfcn];
+                  congestionMetric8 = [v63 congestionMetric];
+                  timestamp6 = [v63 timestamp];
                   v89 = v83;
-                  v75 = [(FMCoreData *)self createCongestionCellWithContext:v16 subscriptionID:v96 gci:v82 mcc:v83 mnc:v84 rat:v85 arfcnOrUarfcn:v86 congestionMetric:v87 timestamp:v88];
+                  v75 = [(FMCoreData *)self createCongestionCellWithContext:contextCopy subscriptionID:subscriptionID2 gci:v82 mcc:v83 mnc:v84 rat:v85 arfcnOrUarfcn:arfcnOrUarfcn2 congestionMetric:congestionMetric8 timestamp:timestamp6];
 
                   if (v75)
                   {
@@ -6084,7 +6084,7 @@ LABEL_12:
     }
 
     v110 = 0;
-    [v16 save:&v110];
+    [contextCopy save:&v110];
     v90 = v110;
     if (v90 && os_log_type_enabled(*(qword_1002DBE98 + 136), OS_LOG_TYPE_ERROR))
     {
@@ -6100,13 +6100,13 @@ LABEL_12:
   }
 }
 
-- (id)handleCongestionAreaWithContext:(id)a3 subscriptionID:(id)a4 prevCells:(id)a5 startTime:(id)a6
+- (id)handleCongestionAreaWithContext:(id)context subscriptionID:(id)d prevCells:(id)cells startTime:(id)time
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(FMCoreData *)self getCongestionAreaWithContext:v10 subscriptionID:v11 prevCells:v12 timeOfDay:[FMUtil dayOfWeek:"getTimeOfDayFromDate:" getTimeOfDayFromDate:v13], [FMUtil getDayOfWeekFromDate:v13]];
+  contextCopy = context;
+  dCopy = d;
+  cellsCopy = cells;
+  timeCopy = time;
+  v14 = [(FMCoreData *)self getCongestionAreaWithContext:contextCopy subscriptionID:dCopy prevCells:cellsCopy timeOfDay:[FMUtil dayOfWeek:"getTimeOfDayFromDate:" getTimeOfDayFromDate:timeCopy], [FMUtil getDayOfWeekFromDate:timeCopy]];
   v15 = v14;
   if (v14)
   {
@@ -6114,9 +6114,9 @@ LABEL_12:
     goto LABEL_11;
   }
 
-  v17 = [(FMCoreData *)self createCongestionAreaWithContext:v10 subscriptionID:v11 prevCells:v12 startTime:v13];
+  v17 = [(FMCoreData *)self createCongestionAreaWithContext:contextCopy subscriptionID:dCopy prevCells:cellsCopy startTime:timeCopy];
   v18 = +[FMConfiguration sharedInstance];
-  v19 = -[FMCoreData deleteCongestionAreasOverThresholdCount:withContext:](self, "deleteCongestionAreasOverThresholdCount:withContext:", [v18 congestionMaxAreasInDatabase], v10);
+  v19 = -[FMCoreData deleteCongestionAreasOverThresholdCount:withContext:](self, "deleteCongestionAreasOverThresholdCount:withContext:", [v18 congestionMaxAreasInDatabase], contextCopy);
 
   if (v19)
   {
@@ -6145,12 +6145,12 @@ LABEL_11:
   return v16;
 }
 
-- (id)createCongestionAreaWithContext:(id)a3 subscriptionID:(id)a4 prevCells:(id)a5 startTime:(id)a6
+- (id)createCongestionAreaWithContext:(id)context subscriptionID:(id)d prevCells:(id)cells startTime:(id)time
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  contextCopy = context;
+  dCopy = d;
+  cellsCopy = cells;
+  timeCopy = time;
   v13 = *(qword_1002DBE98 + 136);
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
@@ -6158,16 +6158,16 @@ LABEL_11:
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "FederatedMobility[FMCoreData+Congestion]:#I Creating new CongestionArea", buf, 2u);
   }
 
-  v14 = [NSEntityDescription insertNewObjectForEntityForName:@"CongestionArea" inManagedObjectContext:v9];
-  [v14 setLastSeen:v12];
+  v14 = [NSEntityDescription insertNewObjectForEntityForName:@"CongestionArea" inManagedObjectContext:contextCopy];
+  [v14 setLastSeen:timeCopy];
   [v14 setSeenCount:0];
-  [v14 setSubscriptionID:v10];
+  [v14 setSubscriptionID:dCopy];
   v15 = +[FMConfiguration sharedInstance];
-  v16 = [v15 congestionPrevCellsInDatabase];
+  congestionPrevCellsInDatabase = [v15 congestionPrevCellsInDatabase];
 
-  if ([v11 count] <= v16)
+  if ([cellsCopy count] <= congestionPrevCellsInDatabase)
   {
-    v22 = [v11 copy];
+    v22 = [cellsCopy copy];
   }
 
   else
@@ -6175,17 +6175,17 @@ LABEL_11:
     v17 = *(qword_1002DBE98 + 136);
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
-      v18 = [v11 count];
+      v18 = [cellsCopy count];
       *buf = 134218240;
       v37 = v18;
       v38 = 2048;
-      v39 = v16;
+      v39 = congestionPrevCellsInDatabase;
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "FederatedMobility[FMCoreData+Congestion]:#I Received more prevCells for database than expected: %lu > %lu", buf, 0x16u);
     }
 
     v19 = [NSOrderedSet alloc];
-    v20 = +[NSIndexSet indexSetWithIndexesInRange:](NSIndexSet, "indexSetWithIndexesInRange:", [v11 count] - v16, v16);
-    v21 = [v11 objectsAtIndexes:v20];
+    v20 = +[NSIndexSet indexSetWithIndexesInRange:](NSIndexSet, "indexSetWithIndexesInRange:", [cellsCopy count] - congestionPrevCellsInDatabase, congestionPrevCellsInDatabase);
+    v21 = [cellsCopy objectsAtIndexes:v20];
     v22 = [v19 initWithArray:v21];
   }
 
@@ -6216,10 +6216,10 @@ LABEL_11:
     while (v24);
   }
 
-  [v14 setTimeOfDay:{+[FMUtil getTimeOfDayFromDate:](FMUtil, "getTimeOfDayFromDate:", v12)}];
-  [v14 setDayOfWeek:{+[FMUtil getDayOfWeekFromDate:](FMUtil, "getDayOfWeekFromDate:", v12)}];
+  [v14 setTimeOfDay:{+[FMUtil getTimeOfDayFromDate:](FMUtil, "getTimeOfDayFromDate:", timeCopy)}];
+  [v14 setDayOfWeek:{+[FMUtil getDayOfWeekFromDate:](FMUtil, "getDayOfWeekFromDate:", timeCopy)}];
   v30 = 0;
-  [v9 save:&v30];
+  [contextCopy save:&v30];
   v27 = v30;
   if (v27)
   {
@@ -6241,22 +6241,22 @@ LABEL_11:
   return v28;
 }
 
-- (void)deleteCongestionAreasOlderThan:(id)a3 withContext:(id)a4
+- (void)deleteCongestionAreasOlderThan:(id)than withContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  thanCopy = than;
+  contextCopy = context;
   v8 = [NSFetchRequest fetchRequestWithEntityName:@"CongestionArea"];
-  v9 = [NSPredicate predicateWithFormat:@"lastSeen < %@", v6];
-  [v8 setPredicate:v9];
+  thanCopy = [NSPredicate predicateWithFormat:@"lastSeen < %@", thanCopy];
+  [v8 setPredicate:thanCopy];
   if (os_log_type_enabled(*(qword_1002DBE98 + 136), OS_LOG_TYPE_DEBUG))
   {
-    [v9 description];
+    [thanCopy description];
     objc_claimAutoreleasedReturnValue();
     sub_10020B988();
   }
 
   v12 = 0;
-  v10 = [v7 executeFetchRequest:v8 error:&v12];
+  v10 = [contextCopy executeFetchRequest:v8 error:&v12];
   v11 = v12;
   if (v11)
   {
@@ -6268,31 +6268,31 @@ LABEL_11:
     }
   }
 
-  else if (![(FMCoreData *)self deleteCongestionAreas:v10 andAssociatedEntitiesWithContext:v7]&& os_log_type_enabled(*(qword_1002DBE98 + 136), OS_LOG_TYPE_ERROR))
+  else if (![(FMCoreData *)self deleteCongestionAreas:v10 andAssociatedEntitiesWithContext:contextCopy]&& os_log_type_enabled(*(qword_1002DBE98 + 136), OS_LOG_TYPE_ERROR))
   {
     sub_10020BA10();
   }
 }
 
-- (void)deleteCongestionOccurrencesOlderThan:(id)a3 withContext:(id)a4
+- (void)deleteCongestionOccurrencesOlderThan:(id)than withContext:(id)context
 {
-  v5 = a3;
-  v22 = a4;
-  v19 = v5;
+  thanCopy = than;
+  contextCopy = context;
+  v19 = thanCopy;
   v6 = [NSFetchRequest fetchRequestWithEntityName:@"CongestionOccurrence"];
   v21 = v6;
-  v7 = [NSPredicate predicateWithFormat:@"timestamp < %@", v5];
-  v20 = v7;
-  [v6 setPredicate:v7];
+  thanCopy = [NSPredicate predicateWithFormat:@"timestamp < %@", thanCopy];
+  v20 = thanCopy;
+  [v6 setPredicate:thanCopy];
   if (os_log_type_enabled(*(qword_1002DBE98 + 136), OS_LOG_TYPE_DEBUG))
   {
-    [v7 description];
+    [thanCopy description];
     objc_claimAutoreleasedReturnValue();
     sub_10020BA44();
   }
 
   v28 = 0;
-  v8 = [v22 executeFetchRequest:v6 error:&v28];
+  v8 = [contextCopy executeFetchRequest:v6 error:&v28];
   v9 = v28;
   if (v9)
   {
@@ -6333,15 +6333,15 @@ LABEL_18:
           v16 = *(qword_1002DBE98 + 136);
           if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
           {
-            v17 = [v15 timestamp];
+            timestamp = [v15 timestamp];
             *buf = 138412546;
             v30 = v15;
             v31 = 2112;
-            v32 = v17;
+            v32 = timestamp;
             _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "FederatedMobility[FMCoreData+Congestion]:#I Deleting congestion occurrence: %@ (timestamp: %@)", buf, 0x16u);
           }
 
-          [v22 deleteObject:v15];
+          [contextCopy deleteObject:v15];
         }
 
         v12 = [v11 countByEnumeratingWithState:&v24 objects:v33 count:16];
@@ -6351,7 +6351,7 @@ LABEL_18:
     }
 
     v23 = 0;
-    [v22 save:&v23];
+    [contextCopy save:&v23];
     v10 = v23;
     v8 = v18;
     if (v10 && os_log_type_enabled(*(qword_1002DBE98 + 136), OS_LOG_TYPE_ERROR))
@@ -6364,12 +6364,12 @@ LABEL_18:
   }
 }
 
-- (id)deleteCongestionAreasOverThresholdCount:(unint64_t)a3 withContext:(id)a4
+- (id)deleteCongestionAreasOverThresholdCount:(unint64_t)count withContext:(id)context
 {
-  v6 = a4;
+  contextCopy = context;
   v7 = [NSFetchRequest fetchRequestWithEntityName:@"CongestionArea"];
   v20 = 0;
-  v8 = [v6 countForFetchRequest:v7 error:&v20];
+  v8 = [contextCopy countForFetchRequest:v7 error:&v20];
   v9 = v20;
   if (v9)
   {
@@ -6385,8 +6385,8 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  v12 = &v8[-a3];
-  if (v8 > a3)
+  v12 = &v8[-count];
+  if (v8 > count)
   {
     v13 = [NSFetchRequest fetchRequestWithEntityName:@"CongestionArea"];
     v14 = [[NSSortDescriptor alloc] initWithKey:@"lastSeen" ascending:1];
@@ -6396,7 +6396,7 @@ LABEL_18:
 
     [v13 setFetchLimit:v12];
     v19 = 0;
-    v16 = [v6 executeFetchRequest:v13 error:&v19];
+    v16 = [contextCopy executeFetchRequest:v13 error:&v19];
     v10 = v19;
     if (v10)
     {
@@ -6410,7 +6410,7 @@ LABEL_18:
 
     else
     {
-      if ([(FMCoreData *)self deleteCongestionAreas:v16 andAssociatedEntitiesWithContext:v6])
+      if ([(FMCoreData *)self deleteCongestionAreas:v16 andAssociatedEntitiesWithContext:contextCopy])
       {
         v11 = v16;
 LABEL_17:
@@ -6431,7 +6431,7 @@ LABEL_17:
   v17 = *(qword_1002DBE98 + 136);
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
   {
-    sub_10020BB54(v8, a3, v17);
+    sub_10020BB54(v8, count, v17);
   }
 
   v10 = 0;
@@ -6441,15 +6441,15 @@ LABEL_18:
   return v11;
 }
 
-- (BOOL)deleteCongestionAreas:(id)a3 andAssociatedEntitiesWithContext:(id)a4
+- (BOOL)deleteCongestionAreas:(id)areas andAssociatedEntitiesWithContext:(id)context
 {
-  v5 = a3;
-  v6 = a4;
+  areasCopy = areas;
+  contextCopy = context;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  obj = v5;
+  obj = areasCopy;
   v7 = [obj countByEnumeratingWithState:&v28 objects:v37 count:16];
   if (v7)
   {
@@ -6467,11 +6467,11 @@ LABEL_18:
         v11 = *(qword_1002DBE98 + 136);
         if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
         {
-          v12 = [v10 lastSeen];
+          lastSeen = [v10 lastSeen];
           *buf = 138412546;
           v34 = v10;
           v35 = 2112;
-          v36 = v12;
+          v36 = lastSeen;
           _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "FederatedMobility[FMCoreData+Congestion]:#I Deleting congestion area: %@ (last seen: %@)", buf, 0x16u);
         }
 
@@ -6479,8 +6479,8 @@ LABEL_18:
         v27 = 0u;
         v24 = 0u;
         v25 = 0u;
-        v13 = [v10 congestionOccurrences];
-        v14 = [v13 copy];
+        congestionOccurrences = [v10 congestionOccurrences];
+        v14 = [congestionOccurrences copy];
 
         v15 = [v14 countByEnumeratingWithState:&v24 objects:v32 count:16];
         if (v15)
@@ -6497,7 +6497,7 @@ LABEL_18:
 
               v18 = *(*(&v24 + 1) + 8 * j);
               [v10 removeCongestionOccurrencesObject:v18];
-              [v6 deleteObject:v18];
+              [contextCopy deleteObject:v18];
             }
 
             v15 = [v14 countByEnumeratingWithState:&v24 objects:v32 count:16];
@@ -6506,7 +6506,7 @@ LABEL_18:
           while (v15);
         }
 
-        [v6 deleteObject:v10];
+        [contextCopy deleteObject:v10];
       }
 
       v7 = [obj countByEnumeratingWithState:&v28 objects:v37 count:16];
@@ -6516,7 +6516,7 @@ LABEL_18:
   }
 
   v23 = 0;
-  [v6 save:&v23];
+  [contextCopy save:&v23];
   v19 = v23;
   if (v19)
   {
@@ -6530,22 +6530,22 @@ LABEL_18:
 
   else
   {
-    [(FMCoreData *)self deleteOrphanedCongestionCellsWithContext:v6];
-    [(FMCoreData *)self deleteOrphanedCongestionPrevCellsWithContext:v6];
+    [(FMCoreData *)self deleteOrphanedCongestionCellsWithContext:contextCopy];
+    [(FMCoreData *)self deleteOrphanedCongestionPrevCellsWithContext:contextCopy];
   }
 
   return v19 == 0;
 }
 
-- (void)deleteOrphanedCongestionCellsWithContext:(id)a3
+- (void)deleteOrphanedCongestionCellsWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v16 = [NSFetchRequest fetchRequestWithEntityName:@"CongestionCell"];
   v4 = [NSPredicate predicateWithFormat:@"badCellOf.@count == 0 AND goodCellOf.@count == 0"];
   [v16 setPredicate:v4];
 
   v22 = 0;
-  v15 = [v3 executeFetchRequest:v16 error:&v22];
+  v15 = [contextCopy executeFetchRequest:v16 error:&v22];
   v5 = v22;
   if (v5)
   {
@@ -6582,18 +6582,18 @@ LABEL_18:
           v12 = *(qword_1002DBE98 + 136);
           if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
           {
-            v13 = [v11 badCellOf];
-            v14 = [v11 goodCellOf];
+            badCellOf = [v11 badCellOf];
+            goodCellOf = [v11 goodCellOf];
             *buf = 138412802;
             v24 = v11;
             v25 = 2112;
-            v26 = v13;
+            v26 = badCellOf;
             v27 = 2112;
-            v28 = v14;
+            v28 = goodCellOf;
             _os_log_debug_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEBUG, "FederatedMobility[FMCoreData+Congestion]:#D Deleting congestion cell: %@ (badCellOf: %@, goodCellOf: %@)", buf, 0x20u);
           }
 
-          [v3 deleteObject:{v11, v15}];
+          [contextCopy deleteObject:{v11, v15}];
         }
 
         v8 = [v7 countByEnumeratingWithState:&v18 objects:v29 count:16];
@@ -6603,7 +6603,7 @@ LABEL_18:
     }
 
     v17 = 0;
-    [v3 save:&v17];
+    [contextCopy save:&v17];
     v6 = v17;
     if (v6 && os_log_type_enabled(*(qword_1002DBE98 + 136), OS_LOG_TYPE_ERROR))
     {
@@ -6624,15 +6624,15 @@ LABEL_18:
   }
 }
 
-- (void)deleteOrphanedCongestionPrevCellsWithContext:(id)a3
+- (void)deleteOrphanedCongestionPrevCellsWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v16 = [NSFetchRequest fetchRequestWithEntityName:@"CongestionPrevCell"];
   v4 = [NSPredicate predicateWithFormat:@"prevCellOf.@count == 0"];
   [v16 setPredicate:v4];
 
   v22 = 0;
-  v5 = [v3 executeFetchRequest:v16 error:&v22];
+  v5 = [contextCopy executeFetchRequest:v16 error:&v22];
   v6 = v22;
   if (v6)
   {
@@ -6673,15 +6673,15 @@ LABEL_4:
           v13 = *(qword_1002DBE98 + 136);
           if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
           {
-            v14 = [v12 prevCellOf];
+            prevCellOf = [v12 prevCellOf];
             *buf = 138412546;
             v24 = v12;
             v25 = 2112;
-            v26 = v14;
+            v26 = prevCellOf;
             _os_log_debug_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEBUG, "FederatedMobility[FMCoreData+Congestion]:#D Deleting congestion prev cell: %@ (prevCellOf: %@)", buf, 0x16u);
           }
 
-          [v3 deleteObject:{v12, v15}];
+          [contextCopy deleteObject:{v12, v15}];
         }
 
         v9 = [v8 countByEnumeratingWithState:&v18 objects:v27 count:16];
@@ -6692,7 +6692,7 @@ LABEL_4:
 
     v17 = 0;
     v5 = v15;
-    [v3 save:&v17];
+    [contextCopy save:&v17];
     v7 = v17;
     if (v7 && os_log_type_enabled(*(qword_1002DBE98 + 136), OS_LOG_TYPE_ERROR))
     {
@@ -6714,16 +6714,16 @@ LABEL_4:
   }
 }
 
-- (BOOL)isFMCongestionCell:(id)a3 equalToCongestionCell:(id)a4
+- (BOOL)isFMCongestionCell:(id)cell equalToCongestionCell:(id)congestionCell
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 mcc];
-  v8 = [v6 mcc];
+  cellCopy = cell;
+  congestionCellCopy = congestionCell;
+  v7 = [cellCopy mcc];
+  v8 = [congestionCellCopy mcc];
   if ([v7 isEqualToNumber:v8])
   {
-    v9 = [v5 mnc];
-    v10 = [v6 mnc];
+    v9 = [cellCopy mnc];
+    v10 = [congestionCellCopy mnc];
     if (![v9 isEqualToNumber:v10])
     {
       v14 = 0;
@@ -6732,8 +6732,8 @@ LABEL_15:
       goto LABEL_16;
     }
 
-    v18 = [v5 gci];
-    v17 = [v6 gci];
+    v18 = [cellCopy gci];
+    v17 = [congestionCellCopy gci];
     if (![v18 isEqualToString:?])
     {
       v14 = 0;
@@ -6742,14 +6742,14 @@ LABEL_14:
       goto LABEL_15;
     }
 
-    v11 = [v5 arfcnOrUarfcn];
-    if (v11 || ([v6 arfcnOrUarfcn], (v16 = objc_claimAutoreleasedReturnValue()) != 0))
+    arfcnOrUarfcn = [cellCopy arfcnOrUarfcn];
+    if (arfcnOrUarfcn || ([congestionCellCopy arfcnOrUarfcn], (v16 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v12 = [v5 arfcnOrUarfcn];
-      v13 = [v6 arfcnOrUarfcn];
-      v14 = [v12 isEqualToNumber:v13];
+      arfcnOrUarfcn2 = [cellCopy arfcnOrUarfcn];
+      arfcnOrUarfcn3 = [congestionCellCopy arfcnOrUarfcn];
+      v14 = [arfcnOrUarfcn2 isEqualToNumber:arfcnOrUarfcn3];
 
-      if (v11)
+      if (arfcnOrUarfcn)
       {
 LABEL_13:
 
@@ -6763,7 +6763,7 @@ LABEL_13:
       v14 = 1;
     }
 
-    v11 = v16;
+    arfcnOrUarfcn = v16;
     goto LABEL_13;
   }
 
@@ -6773,12 +6773,12 @@ LABEL_16:
   return v14;
 }
 
-- (id)getRushHourPredicateForDayOfWeek:(signed __int16)a3 andTimeOfDay:(signed __int16)a4
+- (id)getRushHourPredicateForDayOfWeek:(signed __int16)week andTimeOfDay:(signed __int16)day
 {
-  v4 = a3 - 2;
-  if (v4 > 4 || a4 - 420 > 0x77)
+  v4 = week - 2;
+  if (v4 > 4 || day - 420 > 0x77)
   {
-    if (v4 > 4 || a4 - 1020 > 0x77)
+    if (v4 > 4 || day - 1020 > 0x77)
     {
       v5 = @"NOT ((dayOfWeek >= 2 AND dayOfWeek <= 6) AND ((timeOfDay >= 420 AND timeOfDay < 540) OR (timeOfDay >= 1020 AND timeOfDay < 1140)))";
     }

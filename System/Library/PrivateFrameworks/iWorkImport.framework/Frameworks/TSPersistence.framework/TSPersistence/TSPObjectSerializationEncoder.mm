@@ -2,8 +2,8 @@
 - (TSPObjectSerializationEncoder)init;
 - (id)newMetadataComponentWriteChannel;
 - (id)newRootObjectComponentWriteChannel;
-- (void)appendData:(id)a3 completion:(id)a4;
-- (void)finishEncodingWithCompletion:(id)a3;
+- (void)appendData:(id)data completion:(id)completion;
+- (void)finishEncodingWithCompletion:(id)completion;
 @end
 
 @implementation TSPObjectSerializationEncoder
@@ -26,26 +26,26 @@
   return v2;
 }
 
-- (void)finishEncodingWithCompletion:(id)a3
+- (void)finishEncodingWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = sub_276ADB90C;
   v7[3] = &unk_27A6E4C58;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(accessQueue, v7);
 }
 
-- (void)appendData:(id)a3 completion:(id)a4
+- (void)appendData:(id)data completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  dataCopy = data;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (dataCopy)
   {
     accessQueue = self->_accessQueue;
     block[0] = MEMORY[0x277D85DD0];
@@ -53,14 +53,14 @@
     block[2] = sub_276ADBFDC;
     block[3] = &unk_27A6E6F30;
     block[4] = self;
-    v12 = v7;
-    v11 = v6;
+    v12 = completionCopy;
+    v11 = dataCopy;
     dispatch_async(accessQueue, block);
   }
 
-  else if (v7)
+  else if (completionCopy)
   {
-    (*(v7 + 2))(v7, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 

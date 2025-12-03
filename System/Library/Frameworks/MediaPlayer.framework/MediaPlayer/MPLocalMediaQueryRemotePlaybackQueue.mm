@@ -1,16 +1,16 @@
 @interface MPLocalMediaQueryRemotePlaybackQueue
-- (BOOL)verifyWithError:(id *)a3;
-- (MPLocalMediaQueryRemotePlaybackQueue)initWithMediaRemotePlaybackQueue:(_MRSystemAppPlaybackQueue *)a3 options:(id)a4;
+- (BOOL)verifyWithError:(id *)error;
+- (MPLocalMediaQueryRemotePlaybackQueue)initWithMediaRemotePlaybackQueue:(_MRSystemAppPlaybackQueue *)queue options:(id)options;
 - (id)description;
 @end
 
 @implementation MPLocalMediaQueryRemotePlaybackQueue
 
-- (BOOL)verifyWithError:(id *)a3
+- (BOOL)verifyWithError:(id *)error
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v4 = [(MPLocalMediaQueryRemotePlaybackQueue *)self mediaQuery];
-  if ([v4 _countOfItems] || objc_msgSend(v4, "_countOfCollections"))
+  mediaQuery = [(MPLocalMediaQueryRemotePlaybackQueue *)self mediaQuery];
+  if ([mediaQuery _countOfItems] || objc_msgSend(mediaQuery, "_countOfCollections"))
   {
 
     return 1;
@@ -19,13 +19,13 @@
   else
   {
 
-    if (a3)
+    if (error)
     {
       v8 = *MEMORY[0x1E696A578];
       v9[0] = @"The provided queue has no items or collections.";
       v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:&v8 count:1];
       v7 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"MPErrorDomain" code:100 userInfo:v6];
-      *a3 = v7;
+      *error = v7;
     }
 
     return 0;
@@ -45,7 +45,7 @@
   return v9;
 }
 
-- (MPLocalMediaQueryRemotePlaybackQueue)initWithMediaRemotePlaybackQueue:(_MRSystemAppPlaybackQueue *)a3 options:(id)a4
+- (MPLocalMediaQueryRemotePlaybackQueue)initWithMediaRemotePlaybackQueue:(_MRSystemAppPlaybackQueue *)queue options:(id)options
 {
   v64 = *MEMORY[0x1E69E9840];
   v59.receiver = self;
@@ -57,8 +57,8 @@
     return v5;
   }
 
-  v6 = [(MPRemotePlaybackQueue *)v4 userIdentity];
-  v7 = [MPMediaLibrary deviceMediaLibraryWithUserIdentity:v6];
+  userIdentity = [(MPRemotePlaybackQueue *)v4 userIdentity];
+  v7 = [MPMediaLibrary deviceMediaLibraryWithUserIdentity:userIdentity];
 
   v8 = os_log_create("com.apple.amp.mediaplayer", "RemoteControl");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -203,10 +203,10 @@ LABEL_35:
     v25 = [(MPMediaQuery *)v37 initWithFilterPredicates:v41 library:v7];
 
     [(MPMediaQuery *)v25 setShouldIncludeNonLibraryEntities:1];
-    v42 = [(MPMediaQuery *)v25 items];
-    v43 = [v42 firstObject];
+    items = [(MPMediaQuery *)v25 items];
+    firstObject = [items firstObject];
     v44 = v5->_firstItem;
-    v5->_firstItem = v43;
+    v5->_firstItem = firstObject;
 
     v45 = v5->_firstItem;
     v46 = os_log_create("com.apple.amp.mediaplayer", "RemoteControl");

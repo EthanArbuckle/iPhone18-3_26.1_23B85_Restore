@@ -1,28 +1,28 @@
 @interface EPSagaTransactionNotification
-- (BOOL)_shouldWaitForCurrentNotification:(id)a3;
+- (BOOL)_shouldWaitForCurrentNotification:(id)notification;
 - (EPTransactionDelegate)delegate;
-- (int)registerNotifyTokenWithName:(id)a3 withQueue:(id)a4 withBlock:(id)a5;
-- (void)beginTransactionWithRoutingSlipEntry:(id)a3 serviceRegistry:(id)a4;
+- (int)registerNotifyTokenWithName:(id)name withQueue:(id)queue withBlock:(id)block;
+- (void)beginTransactionWithRoutingSlipEntry:(id)entry serviceRegistry:(id)registry;
 - (void)cancel;
-- (void)notification:(id)a3;
+- (void)notification:(id)notification;
 - (void)timeout;
 - (void)transactionDidComplete;
 @end
 
 @implementation EPSagaTransactionNotification
 
-- (void)beginTransactionWithRoutingSlipEntry:(id)a3 serviceRegistry:(id)a4
+- (void)beginTransactionWithRoutingSlipEntry:(id)entry serviceRegistry:(id)registry
 {
-  v7 = a3;
-  v8 = a4;
-  objc_storeStrong(&self->_routingSlipEntry, a3);
-  v9 = [v7 objectForKeyedSubscript:@"notificationName"];
+  entryCopy = entry;
+  registryCopy = registry;
+  objc_storeStrong(&self->_routingSlipEntry, entry);
+  v9 = [entryCopy objectForKeyedSubscript:@"notificationName"];
   notificationName = self->_notificationName;
   self->_notificationName = v9;
 
-  v11 = [v7 objectForKeyedSubscript:@"notificationTimeoutSeconds"];
-  v12 = [v7 objectForKeyedSubscript:@"shouldPostNotification"];
-  v13 = [v7 objectForKeyedSubscript:@"isDarwinNotification"];
+  v11 = [entryCopy objectForKeyedSubscript:@"notificationTimeoutSeconds"];
+  v12 = [entryCopy objectForKeyedSubscript:@"shouldPostNotification"];
+  v13 = [entryCopy objectForKeyedSubscript:@"isDarwinNotification"];
   self->_isDarwinNotification = [v13 BOOLValue];
   self->_notifyToken = -1;
   if ([v12 BOOLValue])
@@ -48,13 +48,13 @@ LABEL_9:
     v15 = [@"com.apple.nanoregistry.EPSagaTransactionDarwinNotification." stringByAppendingString:self->_notificationName];
     [v11 doubleValue];
     v17 = v16;
-    v18 = [v7 queue];
+    queue = [entryCopy queue];
     v29[0] = _NSConcreteStackBlock;
     v29[1] = 3221225472;
     v29[2] = sub_100075364;
     v29[3] = &unk_100175660;
     v29[4] = self;
-    v19 = [TimerFactory timerWithIdentifier:v15 delay:1 gracePeriod:v18 waking:v29 handlerQueue:v17 handlerBlock:0.0];
+    v19 = [TimerFactory timerWithIdentifier:v15 delay:1 gracePeriod:queue waking:v29 handlerQueue:v17 handlerBlock:0.0];
     timer = self->_timer;
     self->_timer = v19;
   }
@@ -64,7 +64,7 @@ LABEL_9:
     v24 = +[NSNotificationCenter defaultCenter];
     [v24 addObserver:self selector:"notification:" name:self->_notificationName object:0];
 
-    if ([(EPSagaTransactionNotification *)self _shouldWaitForCurrentNotification:v8])
+    if ([(EPSagaTransactionNotification *)self _shouldWaitForCurrentNotification:registryCopy])
     {
       goto LABEL_11;
     }
@@ -90,20 +90,20 @@ LABEL_9:
   }
 
   v21 = self->_notificationName;
-  v22 = [v8 queue];
+  queue2 = [registryCopy queue];
   v28[0] = _NSConcreteStackBlock;
   v28[1] = 3221225472;
   v28[2] = sub_10007536C;
   v28[3] = &unk_1001759E8;
   v28[4] = self;
-  self->_notifyToken = [(EPSagaTransactionNotification *)self registerNotifyTokenWithName:v21 withQueue:v22 withBlock:v28];
+  self->_notifyToken = [(EPSagaTransactionNotification *)self registerNotifyTokenWithName:v21 withQueue:queue2 withBlock:v28];
 
 LABEL_11:
 }
 
 - (void)timeout
 {
-  v3 = [(EPRoutingSlipEntry *)self->_routingSlipEntry errors];
+  errors = [(EPRoutingSlipEntry *)self->_routingSlipEntry errors];
   v12 = NSLocalizedDescriptionKey;
   v4 = "Foundation";
   if (self->_isDarwinNotification)
@@ -115,7 +115,7 @@ LABEL_11:
   v13 = v5;
   v6 = [NSDictionary dictionaryWithObjects:&v13 forKeys:&v12 count:1];
   v7 = [NSError errorWithDomain:@"com.apple.NanoRegistry.EPSagaTransactionNotification" code:0 userInfo:v6];
-  [v3 addObject:v7];
+  [errors addObject:v7];
 
   if (_NRIsInternalInstall() && [(NSString *)self->_notificationName isEqualToString:@"EPSagaTransactionMigrationCompletionRequestNotification"])
   {
@@ -134,22 +134,22 @@ LABEL_11:
   [(EPSagaTransactionNotification *)self transactionDidComplete];
 }
 
-- (int)registerNotifyTokenWithName:(id)a3 withQueue:(id)a4 withBlock:(id)a5
+- (int)registerNotifyTokenWithName:(id)name withQueue:(id)queue withBlock:(id)block
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  nameCopy = name;
+  queueCopy = queue;
+  blockCopy = block;
   out_token = -1;
-  v10 = [v7 UTF8String];
-  if (v9)
+  uTF8String = [nameCopy UTF8String];
+  if (blockCopy)
   {
-    if (!notify_register_dispatch(v10, &out_token, v8, v9))
+    if (!notify_register_dispatch(uTF8String, &out_token, queueCopy, blockCopy))
     {
       goto LABEL_9;
     }
   }
 
-  else if (!notify_register_check(v10, &out_token))
+  else if (!notify_register_check(uTF8String, &out_token))
   {
     goto LABEL_9;
   }
@@ -163,7 +163,7 @@ LABEL_11:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v18 = v7;
+      v18 = nameCopy;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Failed to register block and get notify token for %@", buf, 0xCu);
     }
   }
@@ -176,12 +176,12 @@ LABEL_9:
 
 - (void)cancel
 {
-  v3 = [(EPRoutingSlipEntry *)self->_routingSlipEntry errors];
-  v4 = [v3 count];
+  errors = [(EPRoutingSlipEntry *)self->_routingSlipEntry errors];
+  v4 = [errors count];
 
   if (!v4)
   {
-    v5 = [(EPRoutingSlipEntry *)self->_routingSlipEntry errors];
+    errors2 = [(EPRoutingSlipEntry *)self->_routingSlipEntry errors];
     v10 = NSLocalizedDescriptionKey;
     v6 = "Foundation";
     if (self->_isDarwinNotification)
@@ -193,15 +193,15 @@ LABEL_9:
     v11 = v7;
     v8 = [NSDictionary dictionaryWithObjects:&v11 forKeys:&v10 count:1];
     v9 = [NSError errorWithDomain:@"com.apple.NanoRegistry.EPSagaTransactionNotification" code:1 userInfo:v8];
-    [v5 addObject:v9];
+    [errors2 addObject:v9];
   }
 
   [(EPSagaTransactionNotification *)self transactionDidComplete];
 }
 
-- (void)notification:(id)a3
+- (void)notification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = nr_daemon_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -211,18 +211,18 @@ LABEL_9:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v11 = v4;
+      v11 = notificationCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "EPSagaTransactionNotification received: %@", buf, 0xCu);
     }
   }
 
-  v8 = [(EPRoutingSlipEntry *)self->_routingSlipEntry queue];
+  queue = [(EPRoutingSlipEntry *)self->_routingSlipEntry queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100075914;
   block[3] = &unk_100175660;
   block[4] = self;
-  dispatch_async(v8, block);
+  dispatch_async(queue, block);
 }
 
 - (void)transactionDidComplete
@@ -244,33 +244,33 @@ LABEL_9:
   if (!self->_transactionComplete)
   {
     self->_transactionComplete = 1;
-    v6 = [(EPSagaTransactionNotification *)self delegate];
-    [v6 transactionDidComplete:self];
+    delegate = [(EPSagaTransactionNotification *)self delegate];
+    [delegate transactionDidComplete:self];
   }
 }
 
-- (BOOL)_shouldWaitForCurrentNotification:(id)a3
+- (BOOL)_shouldWaitForCurrentNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v23 = 0;
   v24 = &v23;
   v25 = 0x2020000000;
   v26 = 1;
   if ([(NSString *)self->_notificationName isEqualToString:@"NRNotificationWaitForBridgeComplete"])
   {
-    v5 = [v4 serviceFromClass:objc_opt_class()];
+    v5 = [notificationCopy serviceFromClass:objc_opt_class()];
     v20[0] = _NSConcreteStackBlock;
     v20[1] = 3221225472;
     v20[2] = sub_100075C70;
     v20[3] = &unk_100177830;
-    v21 = v4;
+    v21 = notificationCopy;
     v22 = &v23;
     [v5 deasyncGrabRegistryWithReadBlock:v20];
   }
 
   if ([(NSString *)self->_notificationName isEqualToString:@"EPSagaTransactionMigrationCompletionRequestNotification"])
   {
-    v6 = [v4 serviceFromProtocol:&OBJC_PROTOCOL___EPSagaTransactionWaitForWatchCompletionService];
+    v6 = [notificationCopy serviceFromProtocol:&OBJC_PROTOCOL___EPSagaTransactionWaitForWatchCompletionService];
     v7 = nr_daemon_log();
     v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
 
@@ -304,8 +304,8 @@ LABEL_9:
 
       if (v11)
       {
-        v15 = [(EPRoutingSlipEntry *)self->_routingSlipEntry errors];
-        [v15 addObject:v11];
+        errors = [(EPRoutingSlipEntry *)self->_routingSlipEntry errors];
+        [errors addObject:v11];
       }
 
       *(v24 + 24) = 0;

@@ -1,6 +1,6 @@
 @interface MTREnergyEVSEClusterEnergyTransferStoppedEvent
 - (MTREnergyEVSEClusterEnergyTransferStoppedEvent)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -33,23 +33,23 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTREnergyEVSEClusterEnergyTransferStoppedEvent);
-  v5 = [(MTREnergyEVSEClusterEnergyTransferStoppedEvent *)self sessionID];
-  [(MTREnergyEVSEClusterEnergyTransferStoppedEvent *)v4 setSessionID:v5];
+  sessionID = [(MTREnergyEVSEClusterEnergyTransferStoppedEvent *)self sessionID];
+  [(MTREnergyEVSEClusterEnergyTransferStoppedEvent *)v4 setSessionID:sessionID];
 
-  v6 = [(MTREnergyEVSEClusterEnergyTransferStoppedEvent *)self state];
-  [(MTREnergyEVSEClusterEnergyTransferStoppedEvent *)v4 setState:v6];
+  state = [(MTREnergyEVSEClusterEnergyTransferStoppedEvent *)self state];
+  [(MTREnergyEVSEClusterEnergyTransferStoppedEvent *)v4 setState:state];
 
-  v7 = [(MTREnergyEVSEClusterEnergyTransferStoppedEvent *)self reason];
-  [(MTREnergyEVSEClusterEnergyTransferStoppedEvent *)v4 setReason:v7];
+  reason = [(MTREnergyEVSEClusterEnergyTransferStoppedEvent *)self reason];
+  [(MTREnergyEVSEClusterEnergyTransferStoppedEvent *)v4 setReason:reason];
 
-  v8 = [(MTREnergyEVSEClusterEnergyTransferStoppedEvent *)self energyTransferred];
-  [(MTREnergyEVSEClusterEnergyTransferStoppedEvent *)v4 setEnergyTransferred:v8];
+  energyTransferred = [(MTREnergyEVSEClusterEnergyTransferStoppedEvent *)self energyTransferred];
+  [(MTREnergyEVSEClusterEnergyTransferStoppedEvent *)v4 setEnergyTransferred:energyTransferred];
 
-  v9 = [(MTREnergyEVSEClusterEnergyTransferStoppedEvent *)self energyDischarged];
-  [(MTREnergyEVSEClusterEnergyTransferStoppedEvent *)v4 setEnergyDischarged:v9];
+  energyDischarged = [(MTREnergyEVSEClusterEnergyTransferStoppedEvent *)self energyDischarged];
+  [(MTREnergyEVSEClusterEnergyTransferStoppedEvent *)v4 setEnergyDischarged:energyDischarged];
 
   return v4;
 }

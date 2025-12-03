@@ -1,16 +1,16 @@
 @interface DataStallHandler
 + (DataStallHandler)sharedInstance;
-+ (id)configureClass:(id)a3;
-+ (unint64_t)uniqForegroundCountForInterfaceType:(int64_t)a3 stallType:(unint64_t)a4;
-- (BOOL)noteSymptom:(id)a3;
++ (id)configureClass:(id)class;
++ (unint64_t)uniqForegroundCountForInterfaceType:(int64_t)type stallType:(unint64_t)stallType;
+- (BOOL)noteSymptom:(id)symptom;
 - (DataStallHandler)init;
-- (int)read:(id)a3 returnedValues:(id)a4;
-- (unint64_t)uniqStallCountForInterfaceType:(int64_t)a3 stallType:(unint64_t)a4 foregroundOnly:(BOOL)a5 since:(id)a6;
-- (void)_pruneStaleEndpointsFor:(id)a3 onInterfaceType:(int64_t)a4 stallType:(unint64_t)a5;
-- (void)_resetInterfaceType:(int64_t)a3 stallType:(unint64_t)a4;
-- (void)addDelegate:(id)a3;
+- (int)read:(id)read returnedValues:(id)values;
+- (unint64_t)uniqStallCountForInterfaceType:(int64_t)type stallType:(unint64_t)stallType foregroundOnly:(BOOL)only since:(id)since;
+- (void)_pruneStaleEndpointsFor:(id)for onInterfaceType:(int64_t)type stallType:(unint64_t)stallType;
+- (void)_resetInterfaceType:(int64_t)type stallType:(unint64_t)stallType;
+- (void)addDelegate:(id)delegate;
 - (void)dealloc;
-- (void)removeDelegate:(id)a3;
+- (void)removeDelegate:(id)delegate;
 @end
 
 @implementation DataStallHandler
@@ -30,14 +30,14 @@
     delegates = v2->_delegates;
     v2->_delegates = v5;
 
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __24__DataStallHandler_init__block_invoke;
     v12[3] = &unk_27898A690;
     v8 = v2;
     v13 = v8;
-    v9 = [v7 addObserverForName:@"kNotificationNewConnectivityEpochWiFi" object:0 queue:0 usingBlock:v12];
+    v9 = [defaultCenter addObserverForName:@"kNotificationNewConnectivityEpochWiFi" object:0 queue:0 usingBlock:v12];
     wifiEpochObserver = v8->_wifiEpochObserver;
     v8->_wifiEpochObserver = v9;
   }
@@ -65,9 +65,9 @@ uint64_t __24__DataStallHandler_init__block_invoke_2(uint64_t a1)
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self->_triggerDisconnectObserver];
-  [v3 removeObserver:self->_primaryObserver];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self->_triggerDisconnectObserver];
+  [defaultCenter removeObserver:self->_primaryObserver];
 
   v4.receiver = self;
   v4.super_class = DataStallHandler;
@@ -80,7 +80,7 @@ uint64_t __24__DataStallHandler_init__block_invoke_2(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __34__DataStallHandler_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_pred_51 != -1)
   {
     dispatch_once(&sharedInstance_pred_51, block);
@@ -103,22 +103,22 @@ void __34__DataStallHandler_sharedInstance__block_invoke(uint64_t a1)
   [ConfigurationHandler setConfigurationObject:v3 forName:v5];
 }
 
-+ (id)configureClass:(id)a3
++ (id)configureClass:(id)class
 {
-  v3 = a3;
+  classCopy = class;
   v4 = +[DataStallHandler sharedInstance];
-  [v4 configureInstance:v3];
+  [v4 configureInstance:classCopy];
 
   return v4;
 }
 
-+ (unint64_t)uniqForegroundCountForInterfaceType:(int64_t)a3 stallType:(unint64_t)a4
++ (unint64_t)uniqForegroundCountForInterfaceType:(int64_t)type stallType:(unint64_t)stallType
 {
   v6 = +[DataStallHandler sharedInstance];
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 uniqStallCountForInterfaceType:a3 stallType:a4 foregroundOnly:1 since:0];
+    v8 = [v6 uniqStallCountForInterfaceType:type stallType:stallType foregroundOnly:1 since:0];
   }
 
   else
@@ -129,16 +129,16 @@ void __34__DataStallHandler_sharedInstance__block_invoke(uint64_t a1)
   return v8;
 }
 
-- (unint64_t)uniqStallCountForInterfaceType:(int64_t)a3 stallType:(unint64_t)a4 foregroundOnly:(BOOL)a5 since:(id)a6
+- (unint64_t)uniqStallCountForInterfaceType:(int64_t)type stallType:(unint64_t)stallType foregroundOnly:(BOOL)only since:(id)since
 {
-  v6 = a5;
+  onlyCopy = only;
   v61 = *MEMORY[0x277D85DE8];
-  v10 = a6;
+  sinceCopy = since;
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
-  v37 = self;
+  selfCopy = self;
   obj = self->_store;
   v38 = [(NSMutableDictionary *)obj countByEnumeratingWithState:&v47 objects:v60 count:16];
   if (v38)
@@ -148,7 +148,7 @@ void __34__DataStallHandler_sharedInstance__block_invoke(uint64_t a1)
     v36 = *v48;
     *&v11 = 134218755;
     v33 = v11;
-    v35 = a4;
+    stallTypeCopy = stallType;
     do
     {
       v14 = 0;
@@ -163,8 +163,8 @@ void __34__DataStallHandler_sharedInstance__block_invoke(uint64_t a1)
         v41 = v14;
         v12 = *(*(&v47 + 1) + 8 * v14);
 
-        [(DataStallHandler *)v37 _pruneStaleEndpointsFor:v12 onInterfaceType:a3 stallType:a4];
-        v16 = [(NSMutableDictionary *)v37->_store objectForKeyedSubscript:v12];
+        [(DataStallHandler *)selfCopy _pruneStaleEndpointsFor:v12 onInterfaceType:type stallType:stallType];
+        v16 = [(NSMutableDictionary *)selfCopy->_store objectForKeyedSubscript:v12];
         v42 = [MEMORY[0x277CBEB58] set];
         v43 = 0u;
         v44 = 0u;
@@ -192,12 +192,12 @@ void __34__DataStallHandler_sharedInstance__block_invoke(uint64_t a1)
 
               v20 = *(*(&v43 + 1) + 8 * i);
 
-              if ([v20 interfaceType] == a3 && (!v6 || objc_msgSend(v20, "foreground")))
+              if ([v20 interfaceType] == type && (!onlyCopy || objc_msgSend(v20, "foreground")))
               {
-                if (!v10 || ([v20 time], v25 = objc_claimAutoreleasedReturnValue(), v26 = objc_msgSend(v25, "compare:", v10), v25, v27 = v26 == 1, v22 = v42, v27))
+                if (!sinceCopy || ([v20 time], v25 = objc_claimAutoreleasedReturnValue(), v26 = objc_msgSend(v25, "compare:", sinceCopy), v25, v27 = v26 == 1, v22 = v42, v27))
                 {
-                  v28 = [v20 name];
-                  [v22 addObject:v28];
+                  name = [v20 name];
+                  [v22 addObject:name];
                 }
               }
             }
@@ -207,7 +207,7 @@ void __34__DataStallHandler_sharedInstance__block_invoke(uint64_t a1)
 
           while (v19);
 
-          a4 = v35;
+          stallType = stallTypeCopy;
           v12 = v39;
           v13 = v40;
         }
@@ -218,9 +218,9 @@ void __34__DataStallHandler_sharedInstance__block_invoke(uint64_t a1)
           if (os_log_type_enabled(rnfLogHandle, OS_LOG_TYPE_INFO))
           {
             *buf = v33;
-            v52 = a4;
+            stallTypeCopy2 = stallType;
             v53 = 2048;
-            v54 = a3;
+            typeCopy = type;
             v55 = 2112;
             v56 = v12;
             v57 = 2113;
@@ -257,13 +257,13 @@ void __34__DataStallHandler_sharedInstance__block_invoke(uint64_t a1)
   return v13;
 }
 
-- (void)_pruneStaleEndpointsFor:(id)a3 onInterfaceType:(int64_t)a4 stallType:(unint64_t)a5
+- (void)_pruneStaleEndpointsFor:(id)for onInterfaceType:(int64_t)type stallType:(unint64_t)stallType
 {
   v41 = *MEMORY[0x277D85DE8];
-  v27 = a3;
+  forCopy = for;
   v8 = [(NSMutableDictionary *)self->_store objectForKeyedSubscript:?];
   v9 = [MEMORY[0x277CBEB58] set];
-  v10 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
@@ -287,8 +287,8 @@ void __34__DataStallHandler_sharedInstance__block_invoke(uint64_t a1)
 
         v14 = *(*(&v28 + 1) + 8 * i);
 
-        v18 = [v14 time];
-        [v18 timeIntervalSinceDate:v10];
+        time = [v14 time];
+        [time timeIntervalSinceDate:date];
         v20 = v19;
 
         v21 = -v20;
@@ -297,18 +297,18 @@ void __34__DataStallHandler_sharedInstance__block_invoke(uint64_t a1)
           v21 = v20;
         }
 
-        if (v21 >= 120.0 && [v14 interfaceType] == a4 && objc_msgSend(v14, "stallType") == a5)
+        if (v21 >= 120.0 && [v14 interfaceType] == type && objc_msgSend(v14, "stallType") == stallType)
         {
           [v9 addObject:v14];
           v22 = rnfLogHandle;
           if (os_log_type_enabled(rnfLogHandle, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138413059;
-            v33 = v27;
+            v33 = forCopy;
             v34 = 2048;
-            v35 = a5;
+            stallTypeCopy2 = stallType;
             v36 = 2048;
-            v37 = a4;
+            typeCopy2 = type;
             v38 = 2113;
             v39 = v14;
             _os_log_impl(&dword_23255B000, v22, OS_LOG_TYPE_DEFAULT, "Stall symptom: %@ has stale endpoint for stall type (%lu) on interface type (%ld), removing it: %{private}@", buf, 0x2Au);
@@ -331,11 +331,11 @@ void __34__DataStallHandler_sharedInstance__block_invoke(uint64_t a1)
       v24 = v23;
       v25 = [v9 count];
       *buf = 138413058;
-      v33 = v27;
+      v33 = forCopy;
       v34 = 2048;
-      v35 = a5;
+      stallTypeCopy2 = stallType;
       v36 = 2048;
-      v37 = a4;
+      typeCopy2 = type;
       v38 = 2048;
       v39 = v25;
       _os_log_impl(&dword_23255B000, v24, OS_LOG_TYPE_DEFAULT, "Stall symptom: %@ has %lu stale endpoints total for stall type (%lu) on interface type (%ld), removed them", buf, 0x2Au);
@@ -345,17 +345,17 @@ void __34__DataStallHandler_sharedInstance__block_invoke(uint64_t a1)
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_resetInterfaceType:(int64_t)a3 stallType:(unint64_t)a4
+- (void)_resetInterfaceType:(int64_t)type stallType:(unint64_t)stallType
 {
   v41 = *MEMORY[0x277D85DE8];
-  v7 = [MEMORY[0x277CBEAA8] date];
-  v24 = [MEMORY[0x277CBEB18] array];
+  date = [MEMORY[0x277CBEAA8] date];
+  array = [MEMORY[0x277CBEB18] array];
   v8 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v27 = self;
+  selfCopy = self;
   obj = self->_store;
   v28 = [(NSMutableDictionary *)obj countByEnumeratingWithState:&v35 objects:v40 count:16];
   if (v28)
@@ -375,7 +375,7 @@ void __34__DataStallHandler_sharedInstance__block_invoke(uint64_t a1)
 
         v9 = *(*(&v35 + 1) + 8 * v10);
 
-        v12 = [(NSMutableDictionary *)v27->_store objectForKeyedSubscript:v9];
+        v12 = [(NSMutableDictionary *)selfCopy->_store objectForKeyedSubscript:v9];
         v31 = 0u;
         v32 = 0u;
         v33 = 0u;
@@ -401,13 +401,13 @@ void __34__DataStallHandler_sharedInstance__block_invoke(uint64_t a1)
 
               v15 = *(*(&v31 + 1) + 8 * v17);
 
-              if ([v15 interfaceType] == a3 && objc_msgSend(v15, "stallType") == a4)
+              if ([v15 interfaceType] == type && objc_msgSend(v15, "stallType") == stallType)
               {
                 goto LABEL_16;
               }
 
-              v19 = [v15 time];
-              [v19 timeIntervalSinceDate:v7];
+              time = [v15 time];
+              [time timeIntervalSinceDate:date];
               v21 = v20;
 
               v22 = -v21;
@@ -440,7 +440,7 @@ LABEL_16:
         [v8 removeAllObjects];
         if (![v12 count])
         {
-          [v24 addObject:v9];
+          [array addObject:v9];
         }
 
         ++v10;
@@ -454,49 +454,49 @@ LABEL_16:
     while (v28);
   }
 
-  [(NSMutableDictionary *)v27->_store removeObjectsForKeys:v24];
+  [(NSMutableDictionary *)selfCopy->_store removeObjectsForKeys:array];
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addDelegate:(id)a3
+- (void)addDelegate:(id)delegate
 {
-  v5 = a3;
+  delegateCopy = delegate;
   v4 = self->_delegates;
   objc_sync_enter(v4);
-  if (v5)
+  if (delegateCopy)
   {
-    [(NSMutableSet *)self->_delegates addObject:v5];
+    [(NSMutableSet *)self->_delegates addObject:delegateCopy];
   }
 
   objc_sync_exit(v4);
 }
 
-- (void)removeDelegate:(id)a3
+- (void)removeDelegate:(id)delegate
 {
-  v5 = a3;
+  delegateCopy = delegate;
   v4 = self->_delegates;
   objc_sync_enter(v4);
-  if (v5)
+  if (delegateCopy)
   {
-    [(NSMutableSet *)self->_delegates removeObject:v5];
+    [(NSMutableSet *)self->_delegates removeObject:delegateCopy];
   }
 
   objc_sync_exit(v4);
 }
 
-- (BOOL)noteSymptom:(id)a3
+- (BOOL)noteSymptom:(id)symptom
 {
   v51 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 eventKey];
+  symptomCopy = symptom;
+  eventKey = [symptomCopy eventKey];
   v6 = [SymptomStore keyFromSymptomName:@"SYMPTOM_LIBNETCORE_DATA_STALL"];
-  if ([v5 isEqualToString:v6])
+  if ([eventKey isEqualToString:v6])
   {
     goto LABEL_4;
   }
 
   v7 = [SymptomStore keyFromSymptomName:@"SYMPTOM_LIBNETCORE_ADAPTIVE_WRITE_TIMEOUT"];
-  if ([v5 isEqualToString:v7])
+  if ([eventKey isEqualToString:v7])
   {
 
 LABEL_4:
@@ -504,7 +504,7 @@ LABEL_4:
   }
 
   v12 = [SymptomStore keyFromSymptomName:@"SYMPTOM_LIBNETCORE_DNS_FAILED"];
-  v13 = [v5 isEqualToString:v12];
+  v13 = [eventKey isEqualToString:v12];
 
   if (v13)
   {
@@ -513,9 +513,9 @@ LABEL_5:
     v36[1] = 3221225472;
     v36[2] = __32__DataStallHandler_noteSymptom___block_invoke;
     v36[3] = &unk_27898BE68;
-    v37 = v5;
-    v38 = self;
-    v8 = libnetcoreSymptomTrampoline(v4, 0, 1, 0, MEMORY[0x277D85CD0], v36);
+    v37 = eventKey;
+    selfCopy = self;
+    v8 = libnetcoreSymptomTrampoline(symptomCopy, 0, 1, 0, MEMORY[0x277D85CD0], v36);
     if ((v8 & 1) == 0)
     {
       v9 = rnfLogHandle;
@@ -530,7 +530,7 @@ LABEL_5:
   }
 
   v14 = [SymptomStore keyFromSymptomName:@"SYMPTOM_LIBTRACE_OS_LOG"];
-  v15 = [v5 isEqualToString:v14];
+  v15 = [eventKey isEqualToString:v14];
 
   if (v15)
   {
@@ -538,7 +538,7 @@ LABEL_5:
     v35 = 0;
     v32 = 0;
     v33 = 0;
-    v16 = extractLibtraceSymptomElements(v4, &v35, &v34, &v33, &v32);
+    v16 = extractLibtraceSymptomElements(symptomCopy, &v35, &v34, &v33, &v32);
     v17 = v35;
     v18 = v34;
     v19 = v33;
@@ -718,12 +718,12 @@ void __32__DataStallHandler_noteSymptom___block_invoke(uint64_t a1, void *a2, vo
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (int)read:(id)a3 returnedValues:(id)a4
+- (int)read:(id)read returnedValues:(id)values
 {
-  v4 = a4;
+  valuesCopy = values;
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v4 setObject:v6 forKey:@"GENERIC_CONFIG_TARGET"];
+  [valuesCopy setObject:v6 forKey:@"GENERIC_CONFIG_TARGET"];
 
   return 0;
 }

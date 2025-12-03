@@ -1,14 +1,14 @@
 @interface TPSPreferredLanguageValidation
-- (void)validateWithCompletion:(id)a3;
+- (void)validateWithCompletion:(id)completion;
 @end
 
 @implementation TPSPreferredLanguageValidation
 
-- (void)validateWithCompletion:(id)a3
+- (void)validateWithCompletion:(id)completion
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(TPSTargetingValidation *)self stringValue];
+  completionCopy = completion;
+  stringValue = [(TPSTargetingValidation *)self stringValue];
   [MEMORY[0x277CBEAF8] preferredLanguages];
   v12 = 0u;
   v13 = 0u;
@@ -27,7 +27,7 @@
           objc_enumerationMutation(v6);
         }
 
-        if ([*(*(&v12 + 1) + 8 * i) hasPrefix:{v5, v12}])
+        if ([*(*(&v12 + 1) + 8 * i) hasPrefix:{stringValue, v12}])
         {
           v7 = 1;
           goto LABEL_11;
@@ -46,13 +46,13 @@
 
 LABEL_11:
 
-  v10 = [MEMORY[0x277D71778] targeting];
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
+  targeting = [MEMORY[0x277D71778] targeting];
+  if (os_log_type_enabled(targeting, OS_LOG_TYPE_DEBUG))
   {
-    [(TPSDictationLanguageValidation *)self validateWithCompletion:v7, v10];
+    [(TPSDictationLanguageValidation *)self validateWithCompletion:v7, targeting];
   }
 
-  v4[2](v4, v7, 0);
+  completionCopy[2](completionCopy, v7, 0);
   v11 = *MEMORY[0x277D85DE8];
 }
 

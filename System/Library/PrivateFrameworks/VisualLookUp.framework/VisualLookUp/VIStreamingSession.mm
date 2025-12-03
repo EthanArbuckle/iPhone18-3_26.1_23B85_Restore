@@ -1,8 +1,8 @@
 @interface VIStreamingSession
 - (VIStreamingSession)init;
-- (VIStreamingSession)initWithCompatService:(id)a3;
-- (id)extractSignalsWithRequest:(id)a3 error:(id *)a4;
-- (id)parseWithRequest:(id)a3 error:(id *)a4;
+- (VIStreamingSession)initWithCompatService:(id)service;
+- (id)extractSignalsWithRequest:(id)request error:(id *)error;
+- (id)parseWithRequest:(id)request error:(id *)error;
 @end
 
 @implementation VIStreamingSession
@@ -22,31 +22,31 @@
   return v2;
 }
 
-- (VIStreamingSession)initWithCompatService:(id)a3
+- (VIStreamingSession)initWithCompatService:(id)service
 {
-  v5 = a3;
+  serviceCopy = service;
   v9.receiver = self;
   v9.super_class = VIStreamingSession;
   v6 = [(VIStreamingSession *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_compatService, a3);
+    objc_storeStrong(&v6->_compatService, service);
   }
 
   return v7;
 }
 
-- (id)parseWithRequest:(id)a3 error:(id *)a4
+- (id)parseWithRequest:(id)request error:(id *)error
 {
   compatService = self->_compatService;
-  v6 = a3;
-  v7 = [v6 frame];
-  v8 = [v7 imageContent];
-  v9 = [v6 frame];
+  requestCopy = request;
+  frame = [requestCopy frame];
+  imageContent = [frame imageContent];
+  frame2 = [requestCopy frame];
 
-  [v9 normalizedRegionOfInterest];
-  v10 = [(VisualIntelligenceServiceCompatible *)compatService detectWithImage:v8 regionOfInterest:a4 error:?];
+  [frame2 normalizedRegionOfInterest];
+  v10 = [(VisualIntelligenceServiceCompatible *)compatService detectWithImage:imageContent regionOfInterest:error error:?];
 
   v11 = VICompactMapArray(v10, &__block_literal_global_0);
   v12 = [[VIStreamingParseResult alloc] initWithDetectedObjects:v11];
@@ -70,11 +70,11 @@ VIStreamingDetectedObject *__45__VIStreamingSession_parseWithRequest_error___blo
   return v13;
 }
 
-- (id)extractSignalsWithRequest:(id)a3 error:(id *)a4
+- (id)extractSignalsWithRequest:(id)request error:(id *)error
 {
   v4 = [VIImageRegion alloc];
-  v5 = [(VIImageRegion *)v4 initWithRegionOfInterest:MEMORY[0x1E695E0F0] domainInfo:*&VIIdentityRect, unk_1ECB50860, *&qword_1ECB50868, unk_1ECB50870];
-  v6 = [[VIStreamingSignalExtractionResult alloc] initWithImageRegion:v5 payload:0];
+  unk_1ECB50870 = [(VIImageRegion *)v4 initWithRegionOfInterest:MEMORY[0x1E695E0F0] domainInfo:*&VIIdentityRect, unk_1ECB50860, *&qword_1ECB50868, unk_1ECB50870];
+  v6 = [[VIStreamingSignalExtractionResult alloc] initWithImageRegion:unk_1ECB50870 payload:0];
 
   return v6;
 }

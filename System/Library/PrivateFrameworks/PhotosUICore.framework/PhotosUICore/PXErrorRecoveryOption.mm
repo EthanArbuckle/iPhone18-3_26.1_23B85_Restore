@@ -1,49 +1,49 @@
 @interface PXErrorRecoveryOption
-+ (id)recoveryOptionWithTitle:(id)a3 style:(int64_t)a4 handler:(id)a5;
-- (PXErrorRecoveryOption)initWithTitle:(id)a3 style:(int64_t)a4 handler:(id)a5;
-- (void)_attemptRecoveryFromError:(id)a3 completionHandler:(id)a4;
++ (id)recoveryOptionWithTitle:(id)title style:(int64_t)style handler:(id)handler;
+- (PXErrorRecoveryOption)initWithTitle:(id)title style:(int64_t)style handler:(id)handler;
+- (void)_attemptRecoveryFromError:(id)error completionHandler:(id)handler;
 @end
 
 @implementation PXErrorRecoveryOption
 
-- (void)_attemptRecoveryFromError:(id)a3 completionHandler:(id)a4
+- (void)_attemptRecoveryFromError:(id)error completionHandler:(id)handler
 {
-  v11 = a3;
-  v7 = a4;
-  if (!v7)
+  errorCopy = error;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXErrorRecovery.m" lineNumber:40 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXErrorRecovery.m" lineNumber:40 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
   }
 
-  v8 = [(PXErrorRecoveryOption *)self handler];
-  v9 = v8;
-  if (v8)
+  handler = [(PXErrorRecoveryOption *)self handler];
+  v9 = handler;
+  if (handler)
   {
-    (*(v8 + 16))(v8, v11, v7);
+    (*(handler + 16))(handler, errorCopy, handlerCopy);
   }
 
   else
   {
-    v7[2](v7, 1);
+    handlerCopy[2](handlerCopy, 1);
   }
 }
 
-- (PXErrorRecoveryOption)initWithTitle:(id)a3 style:(int64_t)a4 handler:(id)a5
+- (PXErrorRecoveryOption)initWithTitle:(id)title style:(int64_t)style handler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  titleCopy = title;
+  handlerCopy = handler;
   v16.receiver = self;
   v16.super_class = PXErrorRecoveryOption;
   v10 = [(PXErrorRecoveryOption *)&v16 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [titleCopy copy];
     title = v10->_title;
     v10->_title = v11;
 
-    v10->_style = a4;
-    v13 = [v9 copy];
+    v10->_style = style;
+    v13 = [handlerCopy copy];
     handler = v10->_handler;
     v10->_handler = v13;
   }
@@ -51,11 +51,11 @@
   return v10;
 }
 
-+ (id)recoveryOptionWithTitle:(id)a3 style:(int64_t)a4 handler:(id)a5
++ (id)recoveryOptionWithTitle:(id)title style:(int64_t)style handler:(id)handler
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [[a1 alloc] initWithTitle:v9 style:a4 handler:v8];
+  handlerCopy = handler;
+  titleCopy = title;
+  v10 = [[self alloc] initWithTitle:titleCopy style:style handler:handlerCopy];
 
   return v10;
 }

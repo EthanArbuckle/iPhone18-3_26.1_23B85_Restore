@@ -44,9 +44,9 @@
 
 - (CGRect)frame
 {
-  v3 = [(CRLCanvasHostedAccessibilityElement *)self parentCanvas];
+  parentCanvas = [(CRLCanvasHostedAccessibilityElement *)self parentCanvas];
   [(CRLCanvasHostedAccessibilityElement *)self frameInUnscaledCanvas];
-  [v3 crlaxScreenFrameFromUnscaledCanvas:?];
+  [parentCanvas crlaxScreenFrameFromUnscaledCanvas:?];
   v5 = v4;
   v7 = v6;
   v9 = v8;

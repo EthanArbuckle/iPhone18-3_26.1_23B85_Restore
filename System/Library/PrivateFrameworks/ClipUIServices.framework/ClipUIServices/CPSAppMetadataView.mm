@@ -1,21 +1,21 @@
 @interface CPSAppMetadataView
 - (CGSize)intrinsicContentSize;
-- (CPSAppMetadataView)initWithCoder:(id)a3;
-- (CPSAppMetadataView)initWithFrame:(CGRect)a3;
+- (CPSAppMetadataView)initWithCoder:(id)coder;
+- (CPSAppMetadataView)initWithFrame:(CGRect)frame;
 - (void)_setUpSubviews;
 - (void)_updateAppStoreButtonConstraints;
-- (void)setAppIcon:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)updateWithMetadata:(id)a3;
+- (void)setAppIcon:(id)icon;
+- (void)traitCollectionDidChange:(id)change;
+- (void)updateWithMetadata:(id)metadata;
 @end
 
 @implementation CPSAppMetadataView
 
-- (CPSAppMetadataView)initWithFrame:(CGRect)a3
+- (CPSAppMetadataView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = CPSAppMetadataView;
-  v3 = [(CPSAppMetadataView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CPSAppMetadataView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -27,9 +27,9 @@
   return v4;
 }
 
-- (CPSAppMetadataView)initWithCoder:(id)a3
+- (CPSAppMetadataView)initWithCoder:(id)coder
 {
-  v3 = a3;
+  coderCopy = coder;
   v4 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE648] reason:@"-initWithCoder: is not supported." userInfo:0];
   objc_exception_throw(v4);
 }
@@ -47,8 +47,8 @@
 {
   v90[12] = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277D755E8];
-  v4 = [MEMORY[0x277D75348] systemFillColor];
-  v5 = [v3 cps_viewWithBackgroundColor:v4 cornerRadius:5.0];
+  systemFillColor = [MEMORY[0x277D75348] systemFillColor];
+  v5 = [v3 cps_viewWithBackgroundColor:systemFillColor cornerRadius:5.0];
   appIconView = self->_appIconView;
   self->_appIconView = v5;
 
@@ -94,95 +94,95 @@
   [(CPSAppStoreButton *)self->_appStoreButton setHidden:1];
   [(CPSAppMetadataView *)self addSubview:self->_appStoreButton];
   v63 = MEMORY[0x277CCAAD0];
-  v84 = [(UIImageView *)self->_appIconView centerYAnchor];
-  v81 = [(CPSAppMetadataView *)self centerYAnchor];
-  v78 = [v84 constraintEqualToAnchor:v81];
+  centerYAnchor = [(UIImageView *)self->_appIconView centerYAnchor];
+  centerYAnchor2 = [(CPSAppMetadataView *)self centerYAnchor];
+  v78 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v90[0] = v78;
-  v75 = [(UIImageView *)self->_appIconView leadingAnchor];
-  v73 = [(CPSAppMetadataView *)self leadingAnchor];
-  v72 = [v75 constraintEqualToAnchor:v73];
+  leadingAnchor = [(UIImageView *)self->_appIconView leadingAnchor];
+  leadingAnchor2 = [(CPSAppMetadataView *)self leadingAnchor];
+  v72 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v90[1] = v72;
-  v71 = [(UIImageView *)self->_appIconView heightAnchor];
-  v70 = [v71 constraintEqualToConstant:28.0];
+  heightAnchor = [(UIImageView *)self->_appIconView heightAnchor];
+  v70 = [heightAnchor constraintEqualToConstant:28.0];
   v90[2] = v70;
-  v69 = [(UIImageView *)self->_appIconView widthAnchor];
-  v68 = [(UIImageView *)self->_appIconView heightAnchor];
-  v67 = [v69 constraintEqualToAnchor:v68];
+  widthAnchor = [(UIImageView *)self->_appIconView widthAnchor];
+  heightAnchor2 = [(UIImageView *)self->_appIconView heightAnchor];
+  v67 = [widthAnchor constraintEqualToAnchor:heightAnchor2];
   v90[3] = v67;
-  v66 = [(CPSVibrantLabel *)self->_poweredByVibrantLabel topAnchor];
-  v65 = [(CPSAppMetadataView *)self topAnchor];
-  v64 = [v66 constraintEqualToAnchor:v65];
+  topAnchor = [(CPSVibrantLabel *)self->_poweredByVibrantLabel topAnchor];
+  topAnchor2 = [(CPSAppMetadataView *)self topAnchor];
+  v64 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v90[4] = v64;
-  v62 = [(CPSVibrantLabel *)self->_poweredByVibrantLabel leadingAnchor];
-  v61 = [(UIImageView *)self->_appIconView trailingAnchor];
-  v60 = [v62 constraintEqualToAnchor:v61 constant:8.0];
+  leadingAnchor3 = [(CPSVibrantLabel *)self->_poweredByVibrantLabel leadingAnchor];
+  trailingAnchor = [(UIImageView *)self->_appIconView trailingAnchor];
+  v60 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor constant:8.0];
   v90[5] = v60;
-  v59 = [(CPSVibrantLabel *)self->_poweredByVibrantLabel bottomAnchor];
-  v58 = [(CPSVibrantLabel *)self->_appNameVibrantLabel topAnchor];
-  v57 = [v59 constraintEqualToAnchor:v58 constant:-1.0];
+  bottomAnchor = [(CPSVibrantLabel *)self->_poweredByVibrantLabel bottomAnchor];
+  topAnchor3 = [(CPSVibrantLabel *)self->_appNameVibrantLabel topAnchor];
+  v57 = [bottomAnchor constraintEqualToAnchor:topAnchor3 constant:-1.0];
   v90[6] = v57;
-  v56 = [(CPSVibrantLabel *)self->_poweredByVibrantLabel trailingAnchor];
-  v55 = [(CPSAppMetadataView *)self trailingAnchor];
-  v54 = [v56 constraintLessThanOrEqualToAnchor:v55];
+  trailingAnchor2 = [(CPSVibrantLabel *)self->_poweredByVibrantLabel trailingAnchor];
+  trailingAnchor3 = [(CPSAppMetadataView *)self trailingAnchor];
+  v54 = [trailingAnchor2 constraintLessThanOrEqualToAnchor:trailingAnchor3];
   v90[7] = v54;
-  v53 = [(CPSVibrantLabel *)self->_appNameVibrantLabel leadingAnchor];
-  v52 = [(CPSVibrantLabel *)self->_poweredByVibrantLabel leadingAnchor];
-  v51 = [v53 constraintEqualToAnchor:v52];
+  leadingAnchor4 = [(CPSVibrantLabel *)self->_appNameVibrantLabel leadingAnchor];
+  leadingAnchor5 = [(CPSVibrantLabel *)self->_poweredByVibrantLabel leadingAnchor];
+  v51 = [leadingAnchor4 constraintEqualToAnchor:leadingAnchor5];
   v90[8] = v51;
-  v50 = [(CPSContentRatingContainerView *)self->_contentRatingContainerView leadingAnchor];
-  v20 = [(CPSVibrantLabel *)self->_appNameVibrantLabel trailingAnchor];
-  v21 = [v50 constraintEqualToAnchor:v20 constant:4.0];
+  leadingAnchor6 = [(CPSContentRatingContainerView *)self->_contentRatingContainerView leadingAnchor];
+  trailingAnchor4 = [(CPSVibrantLabel *)self->_appNameVibrantLabel trailingAnchor];
+  v21 = [leadingAnchor6 constraintEqualToAnchor:trailingAnchor4 constant:4.0];
   v90[9] = v21;
-  v22 = [(CPSContentRatingContainerView *)self->_contentRatingContainerView bottomAnchor];
-  v23 = [(CPSVibrantLabel *)self->_appNameVibrantLabel firstBaselineAnchor];
-  v24 = [v22 constraintEqualToAnchor:v23 constant:1.0];
+  bottomAnchor2 = [(CPSContentRatingContainerView *)self->_contentRatingContainerView bottomAnchor];
+  firstBaselineAnchor = [(CPSVibrantLabel *)self->_appNameVibrantLabel firstBaselineAnchor];
+  v24 = [bottomAnchor2 constraintEqualToAnchor:firstBaselineAnchor constant:1.0];
   v90[10] = v24;
-  v25 = [(CPSContentRatingContainerView *)self->_contentRatingContainerView trailingAnchor];
-  v26 = [(CPSAppMetadataView *)self trailingAnchor];
-  v27 = [v25 constraintLessThanOrEqualToAnchor:v26];
+  trailingAnchor5 = [(CPSContentRatingContainerView *)self->_contentRatingContainerView trailingAnchor];
+  trailingAnchor6 = [(CPSAppMetadataView *)self trailingAnchor];
+  v27 = [trailingAnchor5 constraintLessThanOrEqualToAnchor:trailingAnchor6];
   v90[11] = v27;
   v28 = [MEMORY[0x277CBEA60] arrayWithObjects:v90 count:12];
   [v63 activateConstraints:v28];
 
-  v85 = [(CPSAppStoreButton *)self->_appStoreButton leadingAnchor];
-  v82 = [(CPSVibrantLabel *)self->_poweredByVibrantLabel leadingAnchor];
-  v79 = [v85 constraintEqualToAnchor:v82 constant:-2.0];
+  leadingAnchor7 = [(CPSAppStoreButton *)self->_appStoreButton leadingAnchor];
+  leadingAnchor8 = [(CPSVibrantLabel *)self->_poweredByVibrantLabel leadingAnchor];
+  v79 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8 constant:-2.0];
   v89[0] = v79;
-  v76 = [(CPSAppStoreButton *)self->_appStoreButton topAnchor];
-  v29 = [(CPSVibrantLabel *)self->_appNameVibrantLabel bottomAnchor];
-  v30 = [v76 constraintEqualToAnchor:v29 constant:1.0];
+  topAnchor4 = [(CPSAppStoreButton *)self->_appStoreButton topAnchor];
+  bottomAnchor3 = [(CPSVibrantLabel *)self->_appNameVibrantLabel bottomAnchor];
+  v30 = [topAnchor4 constraintEqualToAnchor:bottomAnchor3 constant:1.0];
   v89[1] = v30;
-  v31 = [(CPSAppStoreButton *)self->_appStoreButton trailingAnchor];
-  v32 = [(CPSAppMetadataView *)self trailingAnchor];
-  v33 = [v31 constraintLessThanOrEqualToAnchor:v32];
+  trailingAnchor7 = [(CPSAppStoreButton *)self->_appStoreButton trailingAnchor];
+  trailingAnchor8 = [(CPSAppMetadataView *)self trailingAnchor];
+  v33 = [trailingAnchor7 constraintLessThanOrEqualToAnchor:trailingAnchor8];
   v89[2] = v33;
-  v34 = [(CPSAppStoreButton *)self->_appStoreButton bottomAnchor];
-  v35 = [(CPSAppMetadataView *)self bottomAnchor];
-  v36 = [v34 constraintEqualToAnchor:v35];
+  bottomAnchor4 = [(CPSAppStoreButton *)self->_appStoreButton bottomAnchor];
+  bottomAnchor5 = [(CPSAppMetadataView *)self bottomAnchor];
+  v36 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5];
   v89[3] = v36;
   v37 = [MEMORY[0x277CBEA60] arrayWithObjects:v89 count:4];
   leadingAppStoreButtonConstraints = self->_leadingAppStoreButtonConstraints;
   self->_leadingAppStoreButtonConstraints = v37;
 
-  v86 = [(CPSAppStoreButton *)self->_appStoreButton leadingAnchor];
-  v83 = [(CPSContentRatingContainerView *)self->_contentRatingContainerView trailingAnchor];
-  v80 = [v86 constraintGreaterThanOrEqualToSystemSpacingAfterAnchor:v83 multiplier:1.0];
+  leadingAnchor9 = [(CPSAppStoreButton *)self->_appStoreButton leadingAnchor];
+  trailingAnchor9 = [(CPSContentRatingContainerView *)self->_contentRatingContainerView trailingAnchor];
+  v80 = [leadingAnchor9 constraintGreaterThanOrEqualToSystemSpacingAfterAnchor:trailingAnchor9 multiplier:1.0];
   v88[0] = v80;
-  v77 = [(CPSAppStoreButton *)self->_appStoreButton leadingAnchor];
-  v87 = [(CPSVibrantLabel *)self->_poweredByVibrantLabel trailingAnchor];
-  v74 = [v77 constraintGreaterThanOrEqualToSystemSpacingAfterAnchor:v87 multiplier:1.0];
+  leadingAnchor10 = [(CPSAppStoreButton *)self->_appStoreButton leadingAnchor];
+  trailingAnchor10 = [(CPSVibrantLabel *)self->_poweredByVibrantLabel trailingAnchor];
+  v74 = [leadingAnchor10 constraintGreaterThanOrEqualToSystemSpacingAfterAnchor:trailingAnchor10 multiplier:1.0];
   v88[1] = v74;
-  v39 = [(CPSAppStoreButton *)self->_appStoreButton trailingAnchor];
-  v40 = [(CPSAppMetadataView *)self trailingAnchor];
-  v41 = [v39 constraintEqualToAnchor:v40];
+  trailingAnchor11 = [(CPSAppStoreButton *)self->_appStoreButton trailingAnchor];
+  trailingAnchor12 = [(CPSAppMetadataView *)self trailingAnchor];
+  v41 = [trailingAnchor11 constraintEqualToAnchor:trailingAnchor12];
   v88[2] = v41;
-  v42 = [(CPSAppStoreButton *)self->_appStoreButton centerYAnchor];
-  v43 = [(CPSAppMetadataView *)self centerYAnchor];
-  v44 = [v42 constraintEqualToAnchor:v43];
+  centerYAnchor3 = [(CPSAppStoreButton *)self->_appStoreButton centerYAnchor];
+  centerYAnchor4 = [(CPSAppMetadataView *)self centerYAnchor];
+  v44 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
   v88[3] = v44;
-  v45 = [(CPSVibrantLabel *)self->_appNameVibrantLabel bottomAnchor];
-  v46 = [(CPSAppMetadataView *)self bottomAnchor];
-  v47 = [v45 constraintEqualToAnchor:v46];
+  bottomAnchor6 = [(CPSVibrantLabel *)self->_appNameVibrantLabel bottomAnchor];
+  bottomAnchor7 = [(CPSAppMetadataView *)self bottomAnchor];
+  v47 = [bottomAnchor6 constraintEqualToAnchor:bottomAnchor7];
   v88[4] = v47;
   v48 = [MEMORY[0x277CBEA60] arrayWithObjects:v88 count:5];
   trailingAppStoreButtonConstraints = self->_trailingAppStoreButtonConstraints;
@@ -191,20 +191,20 @@
   [(CPSAppMetadataView *)self _updateAppStoreButtonConstraints];
 }
 
-- (void)updateWithMetadata:(id)a3
+- (void)updateWithMetadata:(id)metadata
 {
-  v18 = a3;
-  v4 = [v18 fullAppName];
-  if (!v4)
+  metadataCopy = metadata;
+  fullAppName = [metadataCopy fullAppName];
+  if (!fullAppName)
   {
     goto LABEL_11;
   }
 
   [(CPSVibrantLabel *)self->_poweredByVibrantLabel setAlpha:1.0];
-  [(CPSVibrantLabel *)self->_appNameVibrantLabel setText:v4];
-  if ([v18 hasAppMetadata])
+  [(CPSVibrantLabel *)self->_appNameVibrantLabel setText:fullAppName];
+  if ([metadataCopy hasAppMetadata])
   {
-    if ([v18 fullAppOnly])
+    if ([metadataCopy fullAppOnly])
     {
       goto LABEL_8;
     }
@@ -212,16 +212,16 @@
 
   else
   {
-    v5 = [v18 fullAppStoreURL];
-    if (!v5)
+    fullAppStoreURL = [metadataCopy fullAppStoreURL];
+    if (!fullAppStoreURL)
     {
       goto LABEL_8;
     }
 
-    v6 = v5;
-    v7 = [v18 fullAppOnly];
+    v6 = fullAppStoreURL;
+    fullAppOnly = [metadataCopy fullAppOnly];
 
-    if (v7)
+    if (fullAppOnly)
     {
       goto LABEL_8;
     }
@@ -229,17 +229,17 @@
 
   [(CPSAppStoreButton *)self->_appStoreButton setHidden:0];
 LABEL_8:
-  -[CPSAppStoreButton setShowsArcadeAttribution:](self->_appStoreButton, "setShowsArcadeAttribution:", [v18 supportsArcade]);
-  v8 = [v18 fullAppContentRating];
-  v9 = [MEMORY[0x277D755B8] cps_imageNamed:v8];
-  v10 = [v8 hasSuffix:@"-Brazil"];
+  -[CPSAppStoreButton setShowsArcadeAttribution:](self->_appStoreButton, "setShowsArcadeAttribution:", [metadataCopy supportsArcade]);
+  fullAppContentRating = [metadataCopy fullAppContentRating];
+  v9 = [MEMORY[0x277D755B8] cps_imageNamed:fullAppContentRating];
+  v10 = [fullAppContentRating hasSuffix:@"-Brazil"];
   if (v10)
   {
     v11 = [MEMORY[0x277D755B8] cps_imageNamed:@"4+"];
     [v11 size];
 
-    v12 = [(CPSAppMetadataView *)self traitCollection];
-    [v12 displayScale];
+    traitCollection = [(CPSAppMetadataView *)self traitCollection];
+    [traitCollection displayScale];
     UISizeRoundToScale();
     v14 = v13;
     v16 = v15;
@@ -254,54 +254,54 @@ LABEL_8:
 LABEL_11:
 }
 
-- (void)setAppIcon:(id)a3
+- (void)setAppIcon:(id)icon
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  iconCopy = icon;
+  if (iconCopy)
   {
     v5 = objc_alloc(MEMORY[0x277D1B1A8]);
     v6 = objc_alloc(MEMORY[0x277D1B160]);
-    v7 = [v4 CGImage];
-    [v4 scale];
-    v8 = [v6 initWithCGImage:v7 scale:?];
+    cGImage = [iconCopy CGImage];
+    [iconCopy scale];
+    v8 = [v6 initWithCGImage:cGImage scale:?];
     v17[0] = v8;
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:1];
-    v10 = [v5 initWithImages:v9];
+    genericApplicationIcon = [v5 initWithImages:v9];
   }
 
   else
   {
-    v10 = [MEMORY[0x277D1B1A8] genericApplicationIcon];
+    genericApplicationIcon = [MEMORY[0x277D1B1A8] genericApplicationIcon];
   }
 
   v11 = [MEMORY[0x277D1B1C8] imageDescriptorNamed:*MEMORY[0x277D1B240]];
-  v12 = [v10 imageForImageDescriptor:v11];
+  v12 = [genericApplicationIcon imageForImageDescriptor:v11];
 
   v13 = MEMORY[0x277D755B8];
-  v14 = [v12 CGImage];
+  cGImage2 = [v12 CGImage];
   [v12 scale];
-  v15 = [v13 imageWithCGImage:v14 scale:0 orientation:?];
+  v15 = [v13 imageWithCGImage:cGImage2 scale:0 orientation:?];
   [(UIImageView *)self->_appIconView setImage:v15];
 
   [(UIImageView *)self->_appIconView _setContinuousCornerRadius:0.0];
-  v16 = [MEMORY[0x277D75348] clearColor];
-  [(UIImageView *)self->_appIconView setBackgroundColor:v16];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [(UIImageView *)self->_appIconView setBackgroundColor:clearColor];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v8.receiver = self;
   v8.super_class = CPSAppMetadataView;
-  v4 = a3;
-  [(CPSAppMetadataView *)&v8 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(CPSAppMetadataView *)&v8 traitCollectionDidChange:changeCopy];
   v5 = [(CPSAppMetadataView *)self traitCollection:v8.receiver];
-  v6 = [v5 preferredContentSizeCategory];
+  preferredContentSizeCategory = [v5 preferredContentSizeCategory];
 
-  v7 = [v4 preferredContentSizeCategory];
+  preferredContentSizeCategory2 = [changeCopy preferredContentSizeCategory];
 
-  LOBYTE(v4) = [v6 isEqualToString:v7];
-  if ((v4 & 1) == 0)
+  LOBYTE(changeCopy) = [preferredContentSizeCategory isEqualToString:preferredContentSizeCategory2];
+  if ((changeCopy & 1) == 0)
   {
     [(CPSAppMetadataView *)self _updateAppStoreButtonConstraints];
   }
@@ -309,9 +309,9 @@ LABEL_11:
 
 - (void)_updateAppStoreButtonConstraints
 {
-  v3 = [(CPSAppMetadataView *)self traitCollection];
-  v4 = [v3 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v4);
+  traitCollection = [(CPSAppMetadataView *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   v6 = MEMORY[0x277CCAAD0];
   leadingAppStoreButtonConstraints = self->_leadingAppStoreButtonConstraints;

@@ -1,51 +1,51 @@
 @interface PLPhotoDerivativeUtilities
-+ (id)generateDerivativeForMSAsset:(id)a3 derivativeType:(int)a4 withSpecificationInfo:(id)a5 collectionGUID:(id)a6;
++ (id)generateDerivativeForMSAsset:(id)asset derivativeType:(int)type withSpecificationInfo:(id)info collectionGUID:(id)d;
 @end
 
 @implementation PLPhotoDerivativeUtilities
 
-+ (id)generateDerivativeForMSAsset:(id)a3 derivativeType:(int)a4 withSpecificationInfo:(id)a5 collectionGUID:(id)a6
++ (id)generateDerivativeForMSAsset:(id)asset derivativeType:(int)type withSpecificationInfo:(id)info collectionGUID:(id)d
 {
-  v8 = *&a4;
+  v8 = *&type;
   v90 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a5;
-  v73 = a6;
+  assetCopy = asset;
+  infoCopy = info;
+  dCopy = d;
   if ((*MEMORY[0x1E6994D48] & 1) == 0)
   {
     v11 = __CPLAssetsdOSLogDomain();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138413058;
-      *&buf[4] = v9;
+      *&buf[4] = assetCopy;
       *&buf[12] = 1024;
       *&buf[14] = v8;
       *&buf[18] = 2112;
-      *&buf[20] = v10;
+      *&buf[20] = infoCopy;
       v88 = 2112;
-      v89 = v73;
+      v89 = dCopy;
       _os_log_impl(&dword_19BF1F000, v11, OS_LOG_TYPE_DEBUG, "generateDerivativeForMSAsset %@ type %i specificationInfo %@ collectionGUID %@", buf, 0x26u);
     }
   }
 
-  v74 = [v9 path];
-  v76 = [v9 metadata];
+  path = [assetCopy path];
+  metadata = [assetCopy metadata];
   v69 = *MEMORY[0x1E6998080];
-  v12 = [v76 objectForKey:?];
+  v12 = [metadata objectForKey:?];
   [v12 doubleValue];
   v14 = v13;
 
   v68 = *MEMORY[0x1E6998078];
-  v15 = [v76 objectForKey:?];
+  v15 = [metadata objectForKey:?];
   [v15 doubleValue];
   v17 = v16;
 
-  v75 = [v9 type];
-  v18 = [MEMORY[0x1E69C08F0] typeWithIdentifier:v75];
+  type = [assetCopy type];
+  v18 = [MEMORY[0x1E69C08F0] typeWithIdentifier:type];
   v19 = *MEMORY[0x1E6982E58];
   [v18 isEqual:*MEMORY[0x1E6982E58]];
   v20 = [v18 isEqual:*MEMORY[0x1E6982DE8]];
-  v72 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   if (v8)
   {
     v21 = 0;
@@ -68,7 +68,7 @@
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      *&buf[4] = v74;
+      *&buf[4] = path;
       v24 = "no width or height to generate derived asset for %@";
       v25 = v23;
       v26 = OS_LOG_TYPE_ERROR;
@@ -84,27 +84,27 @@ LABEL_24:
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      *&buf[4] = v74;
+      *&buf[4] = path;
       _os_log_impl(&dword_19BF1F000, v22, OS_LOG_TYPE_DEBUG, "derivedAssetForMasterAsset for master image at path %@", buf, 0xCu);
     }
 
     if (v8 == 1)
     {
-      if (v73)
+      if (dCopy)
       {
         v71 = [PLPhotoSharingHelper temporaryThumbnailPathForCollectionGUID:?];
         goto LABEL_29;
       }
 
-      v29 = [v9 GUID];
-      v71 = [PLPhotoSharingHelper temporaryThumbnailPathForCollectionGUID:v29];
+      gUID = [assetCopy GUID];
+      v71 = [PLPhotoSharingHelper temporaryThumbnailPathForCollectionGUID:gUID];
 LABEL_28:
 
 LABEL_29:
       if (v71)
       {
-        [v72 removeItemAtPath:v71 error:0];
-        [PLPhotoSharingHelper derivedAssetSizeForMasterSizeWidth:v8 height:v10 derivativeType:v14 withSpecificationInfo:v17];
+        [defaultManager removeItemAtPath:v71 error:0];
+        [PLPhotoSharingHelper derivedAssetSizeForMasterSizeWidth:v8 height:infoCopy derivativeType:v14 withSpecificationInfo:v17];
         v31 = v30;
         v33 = v32;
         *buf = 0;
@@ -113,9 +113,9 @@ LABEL_29:
         buf[24] = 0;
         if (v70)
         {
-          v34 = [MEMORY[0x1E695DFF8] fileURLWithPath:v74 isDirectory:0];
+          v34 = [MEMORY[0x1E695DFF8] fileURLWithPath:path isDirectory:0];
           v35 = [MEMORY[0x1E695DFF8] fileURLWithPath:v71 isDirectory:0];
-          v36 = [v72 copyItemAtURL:v34 toURL:v35 error:0];
+          v36 = [defaultManager copyItemAtURL:v34 toURL:v35 error:0];
           *(*&buf[8] + 24) = v36;
 
           if (*(*&buf[8] + 24) == 1)
@@ -166,13 +166,13 @@ LABEL_39:
 LABEL_41:
         v41 = dispatch_semaphore_create(0);
         v42 = MEMORY[0x1E6994D60];
-        v43 = [MEMORY[0x1E695DFF8] fileURLWithPath:v74 isDirectory:0];
+        v43 = [MEMORY[0x1E695DFF8] fileURLWithPath:path isDirectory:0];
         v44 = [MEMORY[0x1E695DFF8] fileURLWithPath:v71 isDirectory:0];
         v78[0] = MEMORY[0x1E69E9820];
         v78[1] = 3221225472;
         v78[2] = __111__PLPhotoDerivativeUtilities_generateDerivativeForMSAsset_derivativeType_withSpecificationInfo_collectionGUID___block_invoke;
         v78[3] = &unk_1E7571B80;
-        v79 = v74;
+        v79 = path;
         v80 = v71;
         v82 = buf;
         v45 = v41;
@@ -193,7 +193,7 @@ LABEL_79:
 
 LABEL_42:
         v77 = 0;
-        v46 = [v72 attributesOfItemAtPath:v71 error:&v77];
+        v46 = [defaultManager attributesOfItemAtPath:v71 error:&v77];
         v67 = v77;
         if (!v46)
         {
@@ -242,17 +242,17 @@ LABEL_74:
 
         v47 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(v46, "fileSize")}];
         v48 = objc_alloc_init(MEMORY[0x1E6997FA8]);
-        v49 = [v9 fileHash];
-        [v48 setMasterAssetHash:v49];
+        fileHash = [assetCopy fileHash];
+        [v48 setMasterAssetHash:fileHash];
 
         [v48 setPath:v71];
-        v50 = v75;
+        identifier = type;
         if ((v70 & 1) == 0)
         {
-          v50 = [v19 identifier];
+          identifier = [v19 identifier];
         }
 
-        [v48 setType:v50];
+        [v48 setType:identifier];
         if ((v70 & 1) == 0)
         {
         }
@@ -266,7 +266,7 @@ LABEL_74:
         [v51 setObject:v53 forKey:v68];
 
         [v48 setMetadata:v51];
-        if (!v10)
+        if (!infoCopy)
         {
           if (v8)
           {
@@ -285,14 +285,14 @@ LABEL_74:
         }
 
         v54 = *MEMORY[0x1E6998058];
-        v55 = [v10 objectForKey:*MEMORY[0x1E6998058]];
+        v55 = [infoCopy objectForKey:*MEMORY[0x1E6998058]];
         v56 = v55;
         if (!v55)
         {
 LABEL_63:
           v60 = v48;
           v61 = *MEMORY[0x1E6998050];
-          v62 = [v10 objectForKey:*MEMORY[0x1E6998050]];
+          v62 = [infoCopy objectForKey:*MEMORY[0x1E6998050]];
           v63 = v62;
           if (!v62)
           {
@@ -353,14 +353,14 @@ LABEL_35:
 
     if (!v8)
     {
-      if (v73)
+      if (dCopy)
       {
-        v71 = [PLPhotoSharingHelper temporaryDerivativePathForCollectionGUID:v73 uti:v75];
+        v71 = [PLPhotoSharingHelper temporaryDerivativePathForCollectionGUID:dCopy uti:type];
         goto LABEL_29;
       }
 
-      v29 = [v9 GUID];
-      v71 = [PLPhotoSharingHelper temporaryDerivativePathForCollectionGUID:v29 uti:v75];
+      gUID = [assetCopy GUID];
+      v71 = [PLPhotoSharingHelper temporaryDerivativePathForCollectionGUID:gUID uti:type];
       goto LABEL_28;
     }
 

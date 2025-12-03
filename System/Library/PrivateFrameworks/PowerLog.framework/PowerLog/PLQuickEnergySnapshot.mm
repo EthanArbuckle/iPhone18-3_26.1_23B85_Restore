@@ -1,13 +1,13 @@
 @interface PLQuickEnergySnapshot
-- (PLQuickEnergySnapshot)initWithEnergies:(double)a3 andNetworkEnergy:(double)a4;
-- (double)computeEnergyDiff:(id)a3;
+- (PLQuickEnergySnapshot)initWithEnergies:(double)energies andNetworkEnergy:(double)energy;
+- (double)computeEnergyDiff:(id)diff;
 - (double)getTotalEnergy;
 - (id)description;
 @end
 
 @implementation PLQuickEnergySnapshot
 
-- (PLQuickEnergySnapshot)initWithEnergies:(double)a3 andNetworkEnergy:(double)a4
+- (PLQuickEnergySnapshot)initWithEnergies:(double)energies andNetworkEnergy:(double)energy
 {
   v10.receiver = self;
   v10.super_class = PLQuickEnergySnapshot;
@@ -15,25 +15,25 @@
   v7 = v6;
   if (v6)
   {
-    [(PLQuickEnergySnapshot *)v6 setCpuEnergy:a3];
-    [(PLQuickEnergySnapshot *)v7 setNetworkEnergy:a4];
-    v8 = [MEMORY[0x1E695DF00] date];
-    [(PLQuickEnergySnapshot *)v7 setTimestamp:v8];
+    [(PLQuickEnergySnapshot *)v6 setCpuEnergy:energies];
+    [(PLQuickEnergySnapshot *)v7 setNetworkEnergy:energy];
+    date = [MEMORY[0x1E695DF00] date];
+    [(PLQuickEnergySnapshot *)v7 setTimestamp:date];
   }
 
   return v7;
 }
 
-- (double)computeEnergyDiff:(id)a3
+- (double)computeEnergyDiff:(id)diff
 {
-  v4 = a3;
+  diffCopy = diff;
   [(PLQuickEnergySnapshot *)self cpuEnergy];
   v6 = v5;
-  [v4 cpuEnergy];
+  [diffCopy cpuEnergy];
   v8 = v6 - v7;
   [(PLQuickEnergySnapshot *)self networkEnergy];
   v10 = v8 + v9;
-  [v4 networkEnergy];
+  [diffCopy networkEnergy];
   v12 = v11;
 
   return v10 - v12;
@@ -50,11 +50,11 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(PLQuickEnergySnapshot *)self timestamp];
+  timestamp = [(PLQuickEnergySnapshot *)self timestamp];
   [(PLQuickEnergySnapshot *)self cpuEnergy];
   v6 = v5;
   [(PLQuickEnergySnapshot *)self networkEnergy];
-  v8 = [v3 stringWithFormat:@"timestamp=%@, cpuEnergy=%f, networkEnergy=%f", v4, v6, v7];
+  v8 = [v3 stringWithFormat:@"timestamp=%@, cpuEnergy=%f, networkEnergy=%f", timestamp, v6, v7];
 
   return v8;
 }

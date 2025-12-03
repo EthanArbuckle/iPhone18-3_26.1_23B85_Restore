@@ -1,6 +1,6 @@
 @interface AXTwiceWatchCrownButton
-- (_TtC21AXWatchRemoteScreenUI23AXTwiceWatchCrownButton)initWithCoder:(id)a3;
-- (_TtC21AXWatchRemoteScreenUI23AXTwiceWatchCrownButton)initWithFrame:(CGRect)a3;
+- (_TtC21AXWatchRemoteScreenUI23AXTwiceWatchCrownButton)initWithCoder:(id)coder;
+- (_TtC21AXWatchRemoteScreenUI23AXTwiceWatchCrownButton)initWithFrame:(CGRect)frame;
 - (void)accessibilityElementDidLoseFocus;
 @end
 
@@ -8,16 +8,16 @@
 
 - (void)accessibilityElementDidLoseFocus
 {
-  v2 = self;
+  selfCopy = self;
   sub_23D6D4CA0();
 }
 
-- (_TtC21AXWatchRemoteScreenUI23AXTwiceWatchCrownButton)initWithFrame:(CGRect)a3
+- (_TtC21AXWatchRemoteScreenUI23AXTwiceWatchCrownButton)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC21AXWatchRemoteScreenUI23AXTwiceWatchCrownButton_watchCrownDirectTouchTimer) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC21AXWatchRemoteScreenUI23AXTwiceWatchCrownButton_watchCrownDirectTouchInterval) = 0x3FF0000000000000;
   v8.receiver = self;
@@ -25,14 +25,14 @@
   return [(AXTwiceWatchCrownButton *)&v8 initWithFrame:x, y, width, height];
 }
 
-- (_TtC21AXWatchRemoteScreenUI23AXTwiceWatchCrownButton)initWithCoder:(id)a3
+- (_TtC21AXWatchRemoteScreenUI23AXTwiceWatchCrownButton)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC21AXWatchRemoteScreenUI23AXTwiceWatchCrownButton_watchCrownDirectTouchTimer) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC21AXWatchRemoteScreenUI23AXTwiceWatchCrownButton_watchCrownDirectTouchInterval) = 0x3FF0000000000000;
   v7.receiver = self;
   v7.super_class = type metadata accessor for AXTwiceWatchCrownButton();
-  v4 = a3;
-  v5 = [(AXTwiceWatchCrownButton *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(AXTwiceWatchCrownButton *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

@@ -6,7 +6,7 @@
 
 + (id)XPCInterface
 {
-  v15 = a1;
+  selfCopy = self;
   v14 = a2;
   v17 = &XPCInterface_onceToken_0;
   location = 0;

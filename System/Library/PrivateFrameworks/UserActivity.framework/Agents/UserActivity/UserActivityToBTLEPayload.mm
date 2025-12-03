@@ -1,41 +1,41 @@
 @interface UserActivityToBTLEPayload
 - (NSDictionary)additionalItems;
-- (UserActivityToBTLEPayload)initWithData:(id)a3;
-- (UserActivityToBTLEPayload)initWithNSError:(id)a3;
+- (UserActivityToBTLEPayload)initWithData:(id)data;
+- (UserActivityToBTLEPayload)initWithNSError:(id)error;
 - (id)description;
 - (id)encodeAsData;
-- (id)init:(id)a3 title:(id)a4 date:(id)a5 userInfoPayload:(id)a6 teamID:(id)a7 activityType:(id)a8;
-- (void)addAdditionalItem:(id)a3 forKey:(id)a4;
+- (id)init:(id)init title:(id)title date:(id)date userInfoPayload:(id)payload teamID:(id)d activityType:(id)type;
+- (void)addAdditionalItem:(id)item forKey:(id)key;
 @end
 
 @implementation UserActivityToBTLEPayload
 
-- (id)init:(id)a3 title:(id)a4 date:(id)a5 userInfoPayload:(id)a6 teamID:(id)a7 activityType:(id)a8
+- (id)init:(id)init title:(id)title date:(id)date userInfoPayload:(id)payload teamID:(id)d activityType:(id)type
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  initCopy = init;
+  titleCopy = title;
+  dateCopy = date;
+  payloadCopy = payload;
+  dCopy = d;
+  typeCopy = type;
   v36.receiver = self;
   v36.super_class = UserActivityToBTLEPayload;
   v20 = [(UserActivityToBTLEPayload *)&v36 init];
   if (v20)
   {
-    v21 = [v15 copy];
+    v21 = [titleCopy copy];
     title = v20->_title;
     v20->_title = v21;
 
-    v23 = [v14 copy];
+    v23 = [initCopy copy];
     uniqueIdentifier = v20->_uniqueIdentifier;
     v20->_uniqueIdentifier = v23;
 
-    v25 = [v16 copy];
+    v25 = [dateCopy copy];
     when = v20->_when;
     v20->_when = v25;
 
-    v27 = [v17 copy];
+    v27 = [payloadCopy copy];
     userInfoPayload = v20->_userInfoPayload;
     v20->_userInfoPayload = v27;
 
@@ -45,17 +45,17 @@
     streamsData = v20->_streamsData;
     v20->_streamsData = 0;
 
-    if (v18 && [(__CFString *)v18 isEqual:@"0000000000"])
+    if (dCopy && [(__CFString *)dCopy isEqual:@"0000000000"])
     {
 
-      v18 = &stru_1000C67D0;
+      dCopy = &stru_1000C67D0;
     }
 
-    v31 = [(__CFString *)v18 copy];
+    v31 = [(__CFString *)dCopy copy];
     teamID = v20->_teamID;
     v20->_teamID = v31;
 
-    v33 = [v19 copy];
+    v33 = [typeCopy copy];
     activityType = v20->_activityType;
     v20->_activityType = v33;
   }
@@ -63,16 +63,16 @@
   return v20;
 }
 
-- (UserActivityToBTLEPayload)initWithNSError:(id)a3
+- (UserActivityToBTLEPayload)initWithNSError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v8.receiver = self;
   v8.super_class = UserActivityToBTLEPayload;
   v5 = [(UserActivityToBTLEPayload *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(UserActivityToBTLEPayload *)v5 setError:v4];
+    [(UserActivityToBTLEPayload *)v5 setError:errorCopy];
   }
 
   return v6;
@@ -85,18 +85,18 @@
   return v2;
 }
 
-- (void)addAdditionalItem:(id)a3 forKey:(id)a4
+- (void)addAdditionalItem:(id)item forKey:(id)key
 {
-  v6 = a3;
-  v15 = v6;
-  v7 = a4;
-  v14 = v7;
-  if (v7)
+  itemCopy = item;
+  v15 = itemCopy;
+  keyCopy = key;
+  v14 = keyCopy;
+  if (keyCopy)
   {
-    v8 = v7;
-    v9 = self;
-    objc_sync_enter(v9);
-    additionalItems = v9->_additionalItems;
+    v8 = keyCopy;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    additionalItems = selfCopy->_additionalItems;
     if (additionalItems)
     {
       v11 = 1;
@@ -104,14 +104,14 @@
 
     else
     {
-      v11 = v6 == 0;
+      v11 = itemCopy == 0;
     }
 
     if (v11)
     {
-      if (v6)
+      if (itemCopy)
       {
-        [(NSMutableDictionary *)additionalItems setValue:v6 forKey:v8, v14, v15];
+        [(NSMutableDictionary *)additionalItems setValue:itemCopy forKey:v8, v14, v15];
       }
 
       else
@@ -123,19 +123,19 @@
     else
     {
       v12 = [[NSMutableDictionary alloc] initWithObjects:&v15 forKeys:&v14 count:1];
-      v13 = v9->_additionalItems;
-      v9->_additionalItems = v12;
+      v13 = selfCopy->_additionalItems;
+      selfCopy->_additionalItems = v12;
     }
 
-    objc_sync_exit(v9);
+    objc_sync_exit(selfCopy);
   }
 }
 
-- (UserActivityToBTLEPayload)initWithData:(id)a3
+- (UserActivityToBTLEPayload)initWithData:(id)data
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 length] >= 4)
+  dataCopy = data;
+  v5 = dataCopy;
+  if (dataCopy && [dataCopy length] >= 4)
   {
     v6 = *[v5 bytes];
     v43 = 4;
@@ -157,11 +157,11 @@
 
         v5 = 0;
         v12 = 0;
-        v11 = self;
+        selfCopy2 = self;
         goto LABEL_43;
       }
 
-      v11 = 0;
+      selfCopy2 = 0;
       v39 = 0;
       obj = 0;
       v16 = 0;
@@ -186,7 +186,7 @@
 
         v12 = 0;
         v13 = v5;
-        v11 = self;
+        selfCopy2 = self;
         v5 = 0;
         goto LABEL_43;
       }
@@ -207,12 +207,12 @@
       v10 = v9;
       if (v9 && [v9 length])
       {
-        v11 = [[NSString alloc] initWithData:v10 encoding:4];
+        selfCopy2 = [[NSString alloc] initWithData:v10 encoding:4];
       }
 
       else
       {
-        v11 = 0;
+        selfCopy2 = 0;
       }
 
       v13 = sub_10004841C(v5, &v43);
@@ -278,7 +278,7 @@
     v12 = v25;
     if (v25)
     {
-      objc_storeStrong(&v25->_title, v11);
+      objc_storeStrong(&v25->_title, selfCopy2);
       uniqueIdentifier = v12->_uniqueIdentifier;
       v12->_uniqueIdentifier = 0;
 
@@ -291,14 +291,14 @@
       v38 = v13;
       if (v16 && [(__CFString *)v16 isEqual:@"0000000000"])
       {
-        v28 = v11;
+        v28 = selfCopy2;
 
         v16 = &stru_1000C67D0;
       }
 
       else
       {
-        v28 = v11;
+        v28 = selfCopy2;
       }
 
       teamID = v12->_teamID;
@@ -317,7 +317,7 @@
       v12->_error = v15;
       v36 = v15;
 
-      v11 = v28;
+      selfCopy2 = v28;
       v13 = v38;
     }
 
@@ -327,7 +327,7 @@
 
 LABEL_43:
 
-    self = v11;
+    self = selfCopy2;
 LABEL_44:
 
     goto LABEL_45;
@@ -342,16 +342,16 @@ LABEL_45:
 - (id)encodeAsData
 {
   v3 = +[NSMutableData data];
-  v4 = [(UserActivityToBTLEPayload *)self error];
+  error = [(UserActivityToBTLEPayload *)self error];
 
-  if (v4)
+  if (error)
   {
     v23 = 15;
     [v3 appendBytes:&v23 length:4];
-    v5 = [(UserActivityToBTLEPayload *)self error];
-    v6 = [NSKeyedArchiver archivedDataWithRootObject:v5 requiringSecureCoding:1 error:0];
+    error2 = [(UserActivityToBTLEPayload *)self error];
+    additionalItems = [NSKeyedArchiver archivedDataWithRootObject:error2 requiringSecureCoding:1 error:0];
 
-    sub_1000487E0(v3, v6);
+    sub_1000487E0(v3, additionalItems);
     goto LABEL_27;
   }
 
@@ -361,10 +361,10 @@ LABEL_45:
   sub_1000487E0(v3, v7);
 
   sub_1000487E0(v3, self->_userInfoPayload);
-  v6 = [(UserActivityToBTLEPayload *)self additionalItems];
-  if (v6)
+  additionalItems = [(UserActivityToBTLEPayload *)self additionalItems];
+  if (additionalItems)
   {
-    [NSMutableDictionary dictionaryWithDictionary:v6];
+    [NSMutableDictionary dictionaryWithDictionary:additionalItems];
   }
 
   else
@@ -372,20 +372,20 @@ LABEL_45:
     +[NSMutableDictionary dictionary];
   }
   v8 = ;
-  v9 = [(UserActivityToBTLEPayload *)self teamID];
+  teamID = [(UserActivityToBTLEPayload *)self teamID];
 
-  if (v9)
+  if (teamID)
   {
-    v10 = [(UserActivityToBTLEPayload *)self teamID];
-    [v8 setObject:v10 forKey:@"teamID"];
+    teamID2 = [(UserActivityToBTLEPayload *)self teamID];
+    [v8 setObject:teamID2 forKey:@"teamID"];
   }
 
-  v11 = [(UserActivityToBTLEPayload *)self activityType];
+  activityType = [(UserActivityToBTLEPayload *)self activityType];
 
-  if (v11)
+  if (activityType)
   {
-    v12 = [(UserActivityToBTLEPayload *)self activityType];
-    [v8 setObject:v12 forKey:@"type"];
+    activityType2 = [(UserActivityToBTLEPayload *)self activityType];
+    [v8 setObject:activityType2 forKey:@"type"];
   }
 
   if ([v8 count])
@@ -402,9 +402,9 @@ LABEL_45:
   webpageURL = self->_webpageURL;
   if (webpageURL)
   {
-    v15 = [(NSURL *)webpageURL absoluteString];
-    v16 = v15;
-    if (v15 && [v15 length])
+    absoluteString = [(NSURL *)webpageURL absoluteString];
+    v16 = absoluteString;
+    if (absoluteString && [absoluteString length])
     {
       v17 = [v16 dataUsingEncoding:4];
     }
@@ -455,14 +455,14 @@ LABEL_27:
 
 - (id)description
 {
-  v24 = [(UserActivityToBTLEPayload *)self userInfoPayload];
-  v5 = sub_1000021AC(v24, 0x20uLL);
-  v22 = [(UserActivityToBTLEPayload *)self streamsData];
+  userInfoPayload = [(UserActivityToBTLEPayload *)self userInfoPayload];
+  v5 = sub_1000021AC(userInfoPayload, 0x20uLL);
+  streamsData = [(UserActivityToBTLEPayload *)self streamsData];
   v23 = v5;
-  if (v22)
+  if (streamsData)
   {
-    v20 = [(UserActivityToBTLEPayload *)self streamsData];
-    v19 = sub_1000021AC(v20, 0x20uLL);
+    streamsData2 = [(UserActivityToBTLEPayload *)self streamsData];
+    v19 = sub_1000021AC(streamsData2, 0x20uLL);
     v25 = [NSString stringWithFormat:@"stream=%@", v19];
   }
 
@@ -471,8 +471,8 @@ LABEL_27:
     v25 = &stru_1000C67D0;
   }
 
-  v21 = [(UserActivityToBTLEPayload *)self webpageURL];
-  if (v21)
+  webpageURL = [(UserActivityToBTLEPayload *)self webpageURL];
+  if (webpageURL)
   {
     v6 = @"webPageURL=<private>";
   }
@@ -482,12 +482,12 @@ LABEL_27:
     v6 = &stru_1000C67D0;
   }
 
-  v7 = [(UserActivityToBTLEPayload *)self teamID];
-  if (v7 || ([(UserActivityToBTLEPayload *)self activityType], (v18 = objc_claimAutoreleasedReturnValue()) != 0))
+  teamID = [(UserActivityToBTLEPayload *)self teamID];
+  if (teamID || ([(UserActivityToBTLEPayload *)self activityType], (v18 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v2 = [(UserActivityToBTLEPayload *)self teamID];
-    v3 = [(UserActivityToBTLEPayload *)self activityType];
-    v8 = [NSString stringWithFormat:@" {teamID=%@ activityType=%@}", v2, v3];
+    teamID2 = [(UserActivityToBTLEPayload *)self teamID];
+    activityType = [(UserActivityToBTLEPayload *)self activityType];
+    v8 = [NSString stringWithFormat:@" {teamID=%@ activityType=%@}", teamID2, activityType];
     v9 = 1;
   }
 
@@ -498,11 +498,11 @@ LABEL_27:
     v8 = &stru_1000C67D0;
   }
 
-  v10 = [(UserActivityToBTLEPayload *)self additionalItems];
-  if (v10)
+  additionalItems = [(UserActivityToBTLEPayload *)self additionalItems];
+  if (additionalItems)
   {
-    v11 = [(UserActivityToBTLEPayload *)self additionalItems];
-    v12 = [NSString stringWithFormat:@"additional=%@", v11];
+    additionalItems2 = [(UserActivityToBTLEPayload *)self additionalItems];
+    v12 = [NSString stringWithFormat:@"additional=%@", additionalItems2];
     v16 = v6;
     v13 = v23;
     v14 = [NSString stringWithFormat:@"BTLEUserActivityDataEncoding: userInfo=%@ %@%@%@%@", v23, v25, v16, v8, v12];
@@ -519,11 +519,11 @@ LABEL_27:
   {
   }
 
-  if (!v7)
+  if (!teamID)
   {
   }
 
-  if (v22)
+  if (streamsData)
   {
   }
 

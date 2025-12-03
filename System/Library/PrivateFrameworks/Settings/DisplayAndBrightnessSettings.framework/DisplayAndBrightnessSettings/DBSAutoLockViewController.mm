@@ -1,12 +1,12 @@
 @interface DBSAutoLockViewController
-- (id)_autoLockTimeSelected:(id)a3;
-- (id)_autoLockTimeSelectedString:(id)a3;
-- (id)footerTextForAutoLockTime:(id)a3 autoLockTimeString:(id)a4;
+- (id)_autoLockTimeSelected:(id)selected;
+- (id)_autoLockTimeSelectedString:(id)string;
+- (id)footerTextForAutoLockTime:(id)time autoLockTimeString:(id)string;
 - (void)_initializeFooter;
-- (void)_updateFooter:(id)a3 selectedCellSpecifier:(id)a4;
+- (void)_updateFooter:(id)footer selectedCellSpecifier:(id)specifier;
 - (void)loadView;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)viewDidAppear:(BOOL)appear;
 @end
 
 @implementation DBSAutoLockViewController
@@ -19,26 +19,26 @@
   [(DBSAutoLockViewController *)self _initializeFooter];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v17[1] = *MEMORY[0x277D85DE8];
   v16.receiver = self;
   v16.super_class = DBSAutoLockViewController;
-  [(DBSAutoLockViewController *)&v16 viewDidAppear:a3];
+  [(DBSAutoLockViewController *)&v16 viewDidAppear:appear];
   v4 = [MEMORY[0x277CBEBC0] URLWithString:@"settings-navigation://com.apple.Settings.Display/AUTOLOCK"];
   if (v4)
   {
     v5 = objc_alloc(MEMORY[0x277CCAEB8]);
-    v6 = [MEMORY[0x277CBEAF8] currentLocale];
+    currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
     v7 = DBS_BundleForDisplayAndBrightnessSettingsFramework();
-    v8 = [v7 bundleURL];
-    v9 = [v5 initWithKey:@"DISPLAY_AND_BRIGHTNESS" defaultValue:0 table:@"Display" locale:v6 bundleURL:v8];
+    bundleURL = [v7 bundleURL];
+    v9 = [v5 initWithKey:@"DISPLAY_AND_BRIGHTNESS" defaultValue:0 table:@"Display" locale:currentLocale bundleURL:bundleURL];
 
     v10 = objc_alloc(MEMORY[0x277CCAEB8]);
-    v11 = [MEMORY[0x277CBEAF8] currentLocale];
+    currentLocale2 = [MEMORY[0x277CBEAF8] currentLocale];
     v12 = DBS_BundleForDisplayAndBrightnessSettingsFramework();
-    v13 = [v12 bundleURL];
-    v14 = [v10 initWithKey:@"AUTOLOCK" defaultValue:0 table:@"Display" locale:v11 bundleURL:v13];
+    bundleURL2 = [v12 bundleURL];
+    v14 = [v10 initWithKey:@"AUTOLOCK" defaultValue:0 table:@"Display" locale:currentLocale2 bundleURL:bundleURL2];
 
     v17[0] = v9;
     v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:1];
@@ -46,50 +46,50 @@
   }
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v10.receiver = self;
   v10.super_class = DBSAutoLockViewController;
-  v6 = a4;
-  [(PSListItemsController *)&v10 tableView:a3 didSelectRowAtIndexPath:v6];
+  pathCopy = path;
+  [(PSListItemsController *)&v10 tableView:view didSelectRowAtIndexPath:pathCopy];
   v7 = [*(&self->super.super.super.super.super.super.isa + *MEMORY[0x277D3FC48]) specifierForID:{@"LIST_ITEMS_GROUP_SPECIFIER", v10.receiver, v10.super_class}];
-  v8 = [*(&self->super.super.super.super.super.super.isa + *MEMORY[0x277D3FC60]) cellForRowAtIndexPath:v6];
+  v8 = [*(&self->super.super.super.super.super.super.isa + *MEMORY[0x277D3FC60]) cellForRowAtIndexPath:pathCopy];
 
-  v9 = [v8 specifier];
-  [(DBSAutoLockViewController *)self _updateFooter:v7 selectedCellSpecifier:v9];
+  specifier = [v8 specifier];
+  [(DBSAutoLockViewController *)self _updateFooter:v7 selectedCellSpecifier:specifier];
   [(DBSAutoLockViewController *)self reloadSpecifier:v7];
 }
 
-- (id)_autoLockTimeSelected:(id)a3
+- (id)_autoLockTimeSelected:(id)selected
 {
-  v3 = [a3 identifier];
-  v4 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v3, "integerValue")}];
+  identifier = [selected identifier];
+  v4 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(identifier, "integerValue")}];
 
   return v4;
 }
 
-- (id)_autoLockTimeSelectedString:(id)a3
+- (id)_autoLockTimeSelectedString:(id)string
 {
   v8 = *MEMORY[0x277D85DE8];
-  v3 = [a3 name];
+  name = [string name];
   v4 = DBSLogForCategory(0);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v3;
+    v7 = name;
     _os_log_impl(&dword_22102E000, v4, OS_LOG_TYPE_DEFAULT, "Selected Auto-Lock: %@", &v6, 0xCu);
   }
 
-  return v3;
+  return name;
 }
 
-- (id)footerTextForAutoLockTime:(id)a3 autoLockTimeString:(id)a4
+- (id)footerTextForAutoLockTime:(id)time autoLockTimeString:(id)string
 {
-  v5 = a4;
-  v6 = a3;
+  stringCopy = string;
+  timeCopy = time;
   v7 = _AXSAttentionAwarenessFeaturesEnabled();
-  v8 = [MEMORY[0x277D262A0] sharedConnection];
-  v9 = [v8 isAutoLockOn:v6];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  v9 = [mEMORY[0x277D262A0] isAutoLockOn:timeCopy];
 
   if (v9)
   {
@@ -115,7 +115,7 @@ LABEL_11:
     v12 = @"DNB_AUTOLOCK_ENABLED_ATTENTION_AWARENESS_ENABLED";
 LABEL_8:
     v13 = DBS_LocalizedStringForDisplays(v12);
-    [v11 stringWithFormat:v13, v5, v18];
+    [v11 stringWithFormat:v13, stringCopy, v18];
     v14 = LABEL_9:;
 
     goto LABEL_12;
@@ -160,14 +160,14 @@ LABEL_12:
 - (void)_initializeFooter
 {
   v12 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D262A0] sharedConnection];
-  v4 = [v3 autoLockTime];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  autoLockTime = [mEMORY[0x277D262A0] autoLockTime];
 
   v5 = *MEMORY[0x277D3FD20];
-  v6 = [*(&self->super.super.super.super.super.super.isa + v5) titleDictionary];
-  v7 = [v6 objectForKey:v4];
+  titleDictionary = [*(&self->super.super.super.super.super.super.isa + v5) titleDictionary];
+  v7 = [titleDictionary objectForKey:autoLockTime];
 
-  v8 = [(DBSAutoLockViewController *)self footerTextForAutoLockTime:v4 autoLockTimeString:v7];
+  v8 = [(DBSAutoLockViewController *)self footerTextForAutoLockTime:autoLockTime autoLockTimeString:v7];
   if (v8)
   {
     [*(&self->super.super.super.super.super.super.isa + v5) setProperty:v8 forKey:*MEMORY[0x277D40118]];
@@ -181,20 +181,20 @@ LABEL_12:
   }
 }
 
-- (void)_updateFooter:(id)a3 selectedCellSpecifier:(id)a4
+- (void)_updateFooter:(id)footer selectedCellSpecifier:(id)specifier
 {
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (a4)
+  footerCopy = footer;
+  if (specifier)
   {
-    v7 = a4;
-    v8 = [(DBSAutoLockViewController *)self _autoLockTimeSelected:v7];
-    v9 = [(DBSAutoLockViewController *)self _autoLockTimeSelectedString:v7];
+    specifierCopy = specifier;
+    v8 = [(DBSAutoLockViewController *)self _autoLockTimeSelected:specifierCopy];
+    v9 = [(DBSAutoLockViewController *)self _autoLockTimeSelectedString:specifierCopy];
 
     v10 = [(DBSAutoLockViewController *)self footerTextForAutoLockTime:v8 autoLockTimeString:v9];
     if (v10)
     {
-      [v6 setProperty:v10 forKey:*MEMORY[0x277D3FF88]];
+      [footerCopy setProperty:v10 forKey:*MEMORY[0x277D3FF88]];
       v11 = DBSLogForCategory(0);
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
@@ -206,7 +206,7 @@ LABEL_12:
 
     else
     {
-      [v6 removePropertyForKey:*MEMORY[0x277D3FF88]];
+      [footerCopy removePropertyForKey:*MEMORY[0x277D3FF88]];
     }
   }
 }

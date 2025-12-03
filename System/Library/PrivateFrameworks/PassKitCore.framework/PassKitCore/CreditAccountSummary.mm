@@ -1,15 +1,15 @@
 @interface CreditAccountSummary
-+ (id)_predicateForCreditAccountDetailsPID:(int64_t)a3;
++ (id)_predicateForCreditAccountDetailsPID:(int64_t)d;
 + (id)_propertySettersForCreditAccountSummary;
-+ (id)associationPropertyForEntityClass:(Class)a3;
-+ (id)creditAccountSummaryForCreditAccountDetailsPID:(int64_t)a3 inDatabase:(id)a4;
-+ (id)insertAccountSummary:(id)a3 forCreditAccountDetailsPID:(int64_t)a4 inDatabase:(id)a5;
-+ (void)deleteCreditAccountSummaryForCreditAccountDetailsPID:(int64_t)a3 inDatabase:(id)a4;
-+ (void)updateCreditAccountSummary:(id)a3 forCreditAccountDetailsPID:(int64_t)a4 inDatabase:(id)a5;
++ (id)associationPropertyForEntityClass:(Class)class;
++ (id)creditAccountSummaryForCreditAccountDetailsPID:(int64_t)d inDatabase:(id)database;
++ (id)insertAccountSummary:(id)summary forCreditAccountDetailsPID:(int64_t)d inDatabase:(id)database;
++ (void)deleteCreditAccountSummaryForCreditAccountDetailsPID:(int64_t)d inDatabase:(id)database;
++ (void)updateCreditAccountSummary:(id)summary forCreditAccountDetailsPID:(int64_t)d inDatabase:(id)database;
 - (BOOL)deleteFromDatabase;
-- (CreditAccountSummary)initWithCreditAccountSummary:(id)a3 forCreditAccountDetailsPID:(int64_t)a4 inDatabase:(id)a5;
+- (CreditAccountSummary)initWithCreditAccountSummary:(id)summary forCreditAccountDetailsPID:(int64_t)d inDatabase:(id)database;
 - (id)creditAccountSummary;
-- (void)updateWithCreditAccountSummary:(id)a3;
+- (void)updateWithCreditAccountSummary:(id)summary;
 @end
 
 @implementation CreditAccountSummary
@@ -17,33 +17,33 @@
 - (id)creditAccountSummary
 {
   v3 = objc_alloc_init(PKCreditAccountSummary);
-  v4 = [objc_opt_class() _propertySettersForCreditAccountSummary];
-  v5 = [v4 allKeys];
+  _propertySettersForCreditAccountSummary = [objc_opt_class() _propertySettersForCreditAccountSummary];
+  allKeys = [_propertySettersForCreditAccountSummary allKeys];
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_100009074;
   v18[3] = &unk_10083BEE0;
   v18[4] = self;
-  v19 = v4;
+  v19 = _propertySettersForCreditAccountSummary;
   v6 = v3;
   v20 = v6;
-  v7 = v4;
-  [(SQLiteEntity *)self getValuesForProperties:v5 withApplier:v18];
+  v7 = _propertySettersForCreditAccountSummary;
+  [(SQLiteEntity *)self getValuesForProperties:allKeys withApplier:v18];
 
-  v8 = [(SQLiteEntity *)self persistentID];
-  v9 = [(SQLiteEntity *)self database];
-  v10 = [CreditAccountBalanceSummary creditAccountBalanceSummaryForCreditAccountSummaryPID:v8 inDatabase:v9];
+  persistentID = [(SQLiteEntity *)self persistentID];
+  database = [(SQLiteEntity *)self database];
+  v10 = [CreditAccountBalanceSummary creditAccountBalanceSummaryForCreditAccountSummaryPID:persistentID inDatabase:database];
   [v6 setBalanceSummary:v10];
 
-  v11 = [CreditAccountStatement creditAccountStatementForCreditAccountSummaryPID:v8 inDatabase:v9];
+  v11 = [CreditAccountStatement creditAccountStatementForCreditAccountSummaryPID:persistentID inDatabase:database];
   [v6 setCurrentStatement:v11];
 
-  v12 = [NSNumber numberWithUnsignedLongLong:v8];
-  v13 = [CreditAccountUserActivity creditAccountUserActivityForCreditAccountSummaryPID:v12 inDatabase:v9];
+  v12 = [NSNumber numberWithUnsignedLongLong:persistentID];
+  v13 = [CreditAccountUserActivity creditAccountUserActivityForCreditAccountSummaryPID:v12 inDatabase:database];
   [v6 setAccountUserActivity:v13];
 
-  v14 = [NSNumber numberWithUnsignedLongLong:v8];
-  v15 = [CreditAccountMergeSummary creditAccountMergeSummaryForCreditAccountSummaryPID:v14 inDatabase:v9];
+  v14 = [NSNumber numberWithUnsignedLongLong:persistentID];
+  v15 = [CreditAccountMergeSummary creditAccountMergeSummaryForCreditAccountSummaryPID:v14 inDatabase:database];
   [v6 setMergeSummary:v15];
 
   v16 = v6;
@@ -103,9 +103,9 @@
   return v2;
 }
 
-+ (id)associationPropertyForEntityClass:(Class)a3
++ (id)associationPropertyForEntityClass:(Class)class
 {
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == class)
   {
     return @"a";
   }
@@ -116,275 +116,275 @@
   }
 }
 
-- (CreditAccountSummary)initWithCreditAccountSummary:(id)a3 forCreditAccountDetailsPID:(int64_t)a4 inDatabase:(id)a5
+- (CreditAccountSummary)initWithCreditAccountSummary:(id)summary forCreditAccountDetailsPID:(int64_t)d inDatabase:(id)database
 {
-  v8 = a5;
-  v9 = a3;
+  databaseCopy = database;
+  summaryCopy = summary;
   v10 = +[NSMutableDictionary dictionary];
-  v11 = [NSNumber numberWithLongLong:a4];
+  v11 = [NSNumber numberWithLongLong:d];
   [v10 setObjectOrNull:v11 forKey:@"a"];
 
-  v12 = [v9 creditLimit];
+  creditLimit = [summaryCopy creditLimit];
   v13 = PKCurrencyDecimalToStorageNumber();
   [v10 setObjectOrNull:v13 forKey:@"b"];
 
-  v14 = [v9 availableCredit];
+  availableCredit = [summaryCopy availableCredit];
   v15 = PKCurrencyDecimalToStorageNumber();
   [v10 setObjectOrNull:v15 forKey:@"c"];
 
-  v16 = [v9 currentBalance];
+  currentBalance = [summaryCopy currentBalance];
   v17 = PKCurrencyDecimalToStorageNumber();
   [v10 setObjectOrNull:v17 forKey:@"d"];
 
-  v18 = [v9 adjustedBalance];
+  adjustedBalance = [summaryCopy adjustedBalance];
   v19 = PKCurrencyDecimalToStorageNumber();
   [v10 setObjectOrNull:v19 forKey:@"t"];
 
-  v20 = [v9 rewardsBalance];
+  rewardsBalance = [summaryCopy rewardsBalance];
   v21 = PKCurrencyDecimalToStorageNumber();
   [v10 setObjectOrNull:v21 forKey:@"e"];
 
-  v22 = [v9 remainingMinimumPayment];
+  remainingMinimumPayment = [summaryCopy remainingMinimumPayment];
   v23 = PKCurrencyDecimalToStorageNumber();
   [v10 setObjectOrNull:v23 forKey:@"j"];
 
-  v24 = [v9 remainingStatementBalance];
+  remainingStatementBalance = [summaryCopy remainingStatementBalance];
   v25 = PKCurrencyDecimalToStorageNumber();
   [v10 setObjectOrNull:v25 forKey:@"k"];
 
-  v26 = [v9 remainingStatementBalanceForInterestCalculation];
+  remainingStatementBalanceForInterestCalculation = [summaryCopy remainingStatementBalanceForInterestCalculation];
   v27 = PKCurrencyDecimalToStorageNumber();
   [v10 setObjectOrNull:v27 forKey:@"remaining_statement_balance_for_interest_calculation"];
 
-  v28 = [v9 pastDueAmount];
+  pastDueAmount = [summaryCopy pastDueAmount];
   v29 = PKCurrencyDecimalToStorageNumber();
   [v10 setObjectOrNull:v29 forKey:@"p"];
 
-  [v10 setBool:objc_msgSend(v9 forKey:{"autoPayEnabled"), @"f"}];
-  [v10 setBool:objc_msgSend(v9 forKey:{"requiresDebtCollectionNotices"), @"l"}];
-  [v10 setBool:objc_msgSend(v9 forKey:{"inGrace"), @"o"}];
-  [v10 setInteger:objc_msgSend(v9 forKey:{"balanceStatus"), @"g"}];
-  [v10 setInteger:objc_msgSend(v9 forKey:{"cyclesPastDue"), @"h"}];
-  v30 = [v9 lastPaymentDate];
+  [v10 setBool:objc_msgSend(summaryCopy forKey:{"autoPayEnabled"), @"f"}];
+  [v10 setBool:objc_msgSend(summaryCopy forKey:{"requiresDebtCollectionNotices"), @"l"}];
+  [v10 setBool:objc_msgSend(summaryCopy forKey:{"inGrace"), @"o"}];
+  [v10 setInteger:objc_msgSend(summaryCopy forKey:{"balanceStatus"), @"g"}];
+  [v10 setInteger:objc_msgSend(summaryCopy forKey:{"cyclesPastDue"), @"h"}];
+  lastPaymentDate = [summaryCopy lastPaymentDate];
   v31 = _SQLValueForDate();
   [v10 setObjectOrNull:v31 forKey:@"i"];
 
-  v32 = [v9 paymentDueDate];
+  paymentDueDate = [summaryCopy paymentDueDate];
   v33 = _SQLValueForDate();
   [v10 setObjectOrNull:v33 forKey:@"q"];
 
-  v34 = [v9 unpostedInterest];
+  unpostedInterest = [summaryCopy unpostedInterest];
   v35 = PKCurrencyDecimalToStorageNumber();
   [v10 setObjectOrNull:v35 forKey:@"m"];
 
-  v36 = [v9 unpostedInterestTimestamp];
+  unpostedInterestTimestamp = [summaryCopy unpostedInterestTimestamp];
   v37 = _SQLValueForDate();
   [v10 setObjectOrNull:v37 forKey:@"n"];
 
-  v38 = [v9 chargeOffPreventionAmount];
+  chargeOffPreventionAmount = [summaryCopy chargeOffPreventionAmount];
   v39 = PKCurrencyDecimalToStorageNumber();
   [v10 setObjectOrNull:v39 forKey:@"r"];
 
-  v40 = [v9 pastDueAmount];
+  pastDueAmount2 = [summaryCopy pastDueAmount];
   v41 = PKCurrencyDecimalToStorageNumber();
   [v10 setObjectOrNull:v41 forKey:@"p"];
 
-  v42 = [v9 installmentBalance];
+  installmentBalance = [summaryCopy installmentBalance];
   v43 = PKCurrencyDecimalToStorageNumber();
   [v10 setObjectOrNull:v43 forKey:@"s"];
 
-  v44 = [v9 remainingMinimumPaymentExcludedFromInterestCalculation];
+  remainingMinimumPaymentExcludedFromInterestCalculation = [summaryCopy remainingMinimumPaymentExcludedFromInterestCalculation];
   v45 = PKCurrencyDecimalToStorageNumber();
   [v10 setObjectOrNull:v45 forKey:@"u"];
 
-  [v10 setBool:objc_msgSend(v9 forKey:{"recoveryPaymentPlansSupported"), @"recovery_payment_plans_supported"}];
-  v46 = [(SQLiteEntity *)self initWithPropertyValues:v10 inDatabase:v8];
-  v47 = [(SQLiteEntity *)v46 persistentID];
-  v48 = [v9 balanceSummary];
-  v49 = [CreditAccountBalanceSummary insertAccountBalanceSummary:v48 forCreditAccountSummaryPID:v47 inDatabase:v8];
+  [v10 setBool:objc_msgSend(summaryCopy forKey:{"recoveryPaymentPlansSupported"), @"recovery_payment_plans_supported"}];
+  v46 = [(SQLiteEntity *)self initWithPropertyValues:v10 inDatabase:databaseCopy];
+  persistentID = [(SQLiteEntity *)v46 persistentID];
+  balanceSummary = [summaryCopy balanceSummary];
+  v49 = [CreditAccountBalanceSummary insertAccountBalanceSummary:balanceSummary forCreditAccountSummaryPID:persistentID inDatabase:databaseCopy];
 
-  v50 = [v9 currentStatement];
-  v51 = [CreditAccountStatement insertCreditAccountStatement:v50 forCreditAccountSummaryPID:v47 inDatabase:v8];
+  currentStatement = [summaryCopy currentStatement];
+  v51 = [CreditAccountStatement insertCreditAccountStatement:currentStatement forCreditAccountSummaryPID:persistentID inDatabase:databaseCopy];
 
-  v52 = [v9 accountUserActivity];
-  v53 = [NSNumber numberWithUnsignedLongLong:v47];
-  v54 = [CreditAccountUserActivity insertOrUpdateCreditAccountUserActivity:v52 forCreditAccountSummaryPID:v53 inDatabase:v8];
+  accountUserActivity = [summaryCopy accountUserActivity];
+  v53 = [NSNumber numberWithUnsignedLongLong:persistentID];
+  v54 = [CreditAccountUserActivity insertOrUpdateCreditAccountUserActivity:accountUserActivity forCreditAccountSummaryPID:v53 inDatabase:databaseCopy];
 
-  v55 = [v9 mergeSummary];
+  mergeSummary = [summaryCopy mergeSummary];
 
-  v56 = [NSNumber numberWithUnsignedLongLong:v47];
-  v57 = [CreditAccountMergeSummary insertOrUpdateCreditAccountMergeSummary:v55 forCreditAccountSummaryPID:v56 inDatabase:v8];
+  v56 = [NSNumber numberWithUnsignedLongLong:persistentID];
+  v57 = [CreditAccountMergeSummary insertOrUpdateCreditAccountMergeSummary:mergeSummary forCreditAccountSummaryPID:v56 inDatabase:databaseCopy];
 
   return v46;
 }
 
-+ (id)insertAccountSummary:(id)a3 forCreditAccountDetailsPID:(int64_t)a4 inDatabase:(id)a5
++ (id)insertAccountSummary:(id)summary forCreditAccountDetailsPID:(int64_t)d inDatabase:(id)database
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [[a1 alloc] initWithCreditAccountSummary:v9 forCreditAccountDetailsPID:a4 inDatabase:v8];
+  databaseCopy = database;
+  summaryCopy = summary;
+  v10 = [[self alloc] initWithCreditAccountSummary:summaryCopy forCreditAccountDetailsPID:d inDatabase:databaseCopy];
 
   return v10;
 }
 
-+ (void)deleteCreditAccountSummaryForCreditAccountDetailsPID:(int64_t)a3 inDatabase:(id)a4
++ (void)deleteCreditAccountSummaryForCreditAccountDetailsPID:(int64_t)d inDatabase:(id)database
 {
-  v6 = a4;
-  v7 = [a1 _predicateForCreditAccountDetailsPID:a3];
-  v8 = [a1 anyInDatabase:v6 predicate:v7];
+  databaseCopy = database;
+  v7 = [self _predicateForCreditAccountDetailsPID:d];
+  v8 = [self anyInDatabase:databaseCopy predicate:v7];
 
   [v8 deleteFromDatabase];
 }
 
 - (BOOL)deleteFromDatabase
 {
-  v2 = self;
-  v3 = [(SQLiteEntity *)self persistentID];
-  v4 = [(SQLiteEntity *)v2 database];
-  [CreditAccountBalanceSummary deleteCreditAccountBalanceSummaryForCreditAccountSummaryPID:v3 inDatabase:v4];
-  [CreditAccountStatement deleteCreditAccountStatementForCreditAccountSummaryPID:v3 inDatabase:v4];
-  v5 = [NSNumber numberWithUnsignedLongLong:v3];
-  [CreditAccountUserActivity deleteCreditAccountUserActivityForCreditAccountSummaryPID:v5 inDatabase:v4];
+  selfCopy = self;
+  persistentID = [(SQLiteEntity *)self persistentID];
+  database = [(SQLiteEntity *)selfCopy database];
+  [CreditAccountBalanceSummary deleteCreditAccountBalanceSummaryForCreditAccountSummaryPID:persistentID inDatabase:database];
+  [CreditAccountStatement deleteCreditAccountStatementForCreditAccountSummaryPID:persistentID inDatabase:database];
+  v5 = [NSNumber numberWithUnsignedLongLong:persistentID];
+  [CreditAccountUserActivity deleteCreditAccountUserActivityForCreditAccountSummaryPID:v5 inDatabase:database];
 
-  v6 = [NSNumber numberWithUnsignedLongLong:v3];
-  [CreditAccountMergeSummary deleteCreditAccountMergeSummaryForCreditAccountSummaryPID:v6 inDatabase:v4];
+  v6 = [NSNumber numberWithUnsignedLongLong:persistentID];
+  [CreditAccountMergeSummary deleteCreditAccountMergeSummaryForCreditAccountSummaryPID:v6 inDatabase:database];
 
-  v8.receiver = v2;
+  v8.receiver = selfCopy;
   v8.super_class = CreditAccountSummary;
-  LOBYTE(v2) = [(SQLiteEntity *)&v8 deleteFromDatabase];
+  LOBYTE(selfCopy) = [(SQLiteEntity *)&v8 deleteFromDatabase];
 
-  return v2;
+  return selfCopy;
 }
 
-+ (id)creditAccountSummaryForCreditAccountDetailsPID:(int64_t)a3 inDatabase:(id)a4
++ (id)creditAccountSummaryForCreditAccountDetailsPID:(int64_t)d inDatabase:(id)database
 {
-  v6 = a4;
-  v7 = [a1 _predicateForCreditAccountDetailsPID:a3];
-  v8 = [a1 anyInDatabase:v6 predicate:v7];
+  databaseCopy = database;
+  v7 = [self _predicateForCreditAccountDetailsPID:d];
+  v8 = [self anyInDatabase:databaseCopy predicate:v7];
 
-  v9 = [v8 creditAccountSummary];
+  creditAccountSummary = [v8 creditAccountSummary];
 
-  return v9;
+  return creditAccountSummary;
 }
 
-+ (void)updateCreditAccountSummary:(id)a3 forCreditAccountDetailsPID:(int64_t)a4 inDatabase:(id)a5
++ (void)updateCreditAccountSummary:(id)summary forCreditAccountDetailsPID:(int64_t)d inDatabase:(id)database
 {
-  v12 = a3;
-  v8 = a5;
-  v9 = [a1 _predicateForCreditAccountDetailsPID:a4];
-  v10 = [a1 anyInDatabase:v8 predicate:v9];
+  summaryCopy = summary;
+  databaseCopy = database;
+  v9 = [self _predicateForCreditAccountDetailsPID:d];
+  v10 = [self anyInDatabase:databaseCopy predicate:v9];
 
   if (v10)
   {
-    [v10 updateWithCreditAccountSummary:v12];
+    [v10 updateWithCreditAccountSummary:summaryCopy];
   }
 
   else
   {
-    v11 = [CreditAccountSummary insertAccountSummary:v12 forCreditAccountDetailsPID:a4 inDatabase:v8];
+    v11 = [CreditAccountSummary insertAccountSummary:summaryCopy forCreditAccountDetailsPID:d inDatabase:databaseCopy];
   }
 }
 
-- (void)updateWithCreditAccountSummary:(id)a3
+- (void)updateWithCreditAccountSummary:(id)summary
 {
-  v4 = a3;
+  summaryCopy = summary;
   v49 = +[NSMutableDictionary dictionary];
-  v5 = [v4 creditLimit];
+  creditLimit = [summaryCopy creditLimit];
   v6 = PKCurrencyDecimalToStorageNumber();
   [v49 setObjectOrNull:v6 forKey:@"b"];
 
-  v7 = [v4 availableCredit];
+  availableCredit = [summaryCopy availableCredit];
   v8 = PKCurrencyDecimalToStorageNumber();
   [v49 setObjectOrNull:v8 forKey:@"c"];
 
-  v9 = [v4 currentBalance];
+  currentBalance = [summaryCopy currentBalance];
   v10 = PKCurrencyDecimalToStorageNumber();
   [v49 setObjectOrNull:v10 forKey:@"d"];
 
-  v11 = [v4 adjustedBalance];
+  adjustedBalance = [summaryCopy adjustedBalance];
   v12 = PKCurrencyDecimalToStorageNumber();
   [v49 setObjectOrNull:v12 forKey:@"t"];
 
-  v13 = [v4 rewardsBalance];
+  rewardsBalance = [summaryCopy rewardsBalance];
   v14 = PKCurrencyDecimalToStorageNumber();
   [v49 setObjectOrNull:v14 forKey:@"e"];
 
-  v15 = [v4 remainingMinimumPayment];
+  remainingMinimumPayment = [summaryCopy remainingMinimumPayment];
   v16 = PKCurrencyDecimalToStorageNumber();
   [v49 setObjectOrNull:v16 forKey:@"j"];
 
-  v17 = [v4 remainingStatementBalance];
+  remainingStatementBalance = [summaryCopy remainingStatementBalance];
   v18 = PKCurrencyDecimalToStorageNumber();
   [v49 setObjectOrNull:v18 forKey:@"k"];
 
-  v19 = [v4 remainingStatementBalanceForInterestCalculation];
+  remainingStatementBalanceForInterestCalculation = [summaryCopy remainingStatementBalanceForInterestCalculation];
   v20 = PKCurrencyDecimalToStorageNumber();
   [v49 setObjectOrNull:v20 forKey:@"remaining_statement_balance_for_interest_calculation"];
 
-  v21 = [v4 pastDueAmount];
+  pastDueAmount = [summaryCopy pastDueAmount];
   v22 = PKCurrencyDecimalToStorageNumber();
   [v49 setObjectOrNull:v22 forKey:@"p"];
 
-  [v49 setBool:objc_msgSend(v4 forKey:{"autoPayEnabled"), @"f"}];
-  [v49 setBool:objc_msgSend(v4 forKey:{"requiresDebtCollectionNotices"), @"l"}];
-  [v49 setBool:objc_msgSend(v4 forKey:{"inGrace"), @"o"}];
-  [v49 setInteger:objc_msgSend(v4 forKey:{"balanceStatus"), @"g"}];
-  [v49 setInteger:objc_msgSend(v4 forKey:{"cyclesPastDue"), @"h"}];
-  v23 = [v4 lastPaymentDate];
+  [v49 setBool:objc_msgSend(summaryCopy forKey:{"autoPayEnabled"), @"f"}];
+  [v49 setBool:objc_msgSend(summaryCopy forKey:{"requiresDebtCollectionNotices"), @"l"}];
+  [v49 setBool:objc_msgSend(summaryCopy forKey:{"inGrace"), @"o"}];
+  [v49 setInteger:objc_msgSend(summaryCopy forKey:{"balanceStatus"), @"g"}];
+  [v49 setInteger:objc_msgSend(summaryCopy forKey:{"cyclesPastDue"), @"h"}];
+  lastPaymentDate = [summaryCopy lastPaymentDate];
   v24 = _SQLValueForDate();
   [v49 setObjectOrNull:v24 forKey:@"i"];
 
-  v25 = [v4 paymentDueDate];
+  paymentDueDate = [summaryCopy paymentDueDate];
   v26 = _SQLValueForDate();
   [v49 setObjectOrNull:v26 forKey:@"q"];
 
-  v27 = [v4 unpostedInterest];
+  unpostedInterest = [summaryCopy unpostedInterest];
   v28 = PKCurrencyDecimalToStorageNumber();
   [v49 setObjectOrNull:v28 forKey:@"m"];
 
-  v29 = [v4 unpostedInterestTimestamp];
+  unpostedInterestTimestamp = [summaryCopy unpostedInterestTimestamp];
   v30 = _SQLValueForDate();
   [v49 setObjectOrNull:v30 forKey:@"n"];
 
-  v31 = [v4 chargeOffPreventionAmount];
+  chargeOffPreventionAmount = [summaryCopy chargeOffPreventionAmount];
   v32 = PKCurrencyDecimalToStorageNumber();
   [v49 setObjectOrNull:v32 forKey:@"r"];
 
-  v33 = [v4 pastDueAmount];
+  pastDueAmount2 = [summaryCopy pastDueAmount];
   v34 = PKCurrencyDecimalToStorageNumber();
   [v49 setObjectOrNull:v34 forKey:@"p"];
 
-  v35 = [v4 installmentBalance];
+  installmentBalance = [summaryCopy installmentBalance];
   v36 = PKCurrencyDecimalToStorageNumber();
   [v49 setObjectOrNull:v36 forKey:@"s"];
 
-  v37 = [v4 remainingMinimumPaymentExcludedFromInterestCalculation];
+  remainingMinimumPaymentExcludedFromInterestCalculation = [summaryCopy remainingMinimumPaymentExcludedFromInterestCalculation];
   v38 = PKCurrencyDecimalToStorageNumber();
   [v49 setObjectOrNull:v38 forKey:@"u"];
 
-  [v49 setBool:objc_msgSend(v4 forKey:{"recoveryPaymentPlansSupported"), @"recovery_payment_plans_supported"}];
+  [v49 setBool:objc_msgSend(summaryCopy forKey:{"recoveryPaymentPlansSupported"), @"recovery_payment_plans_supported"}];
   [(SQLiteEntity *)self setValuesWithDictionary:v49];
-  v39 = [(SQLiteEntity *)self persistentID];
-  v40 = [(SQLiteEntity *)self database];
-  v41 = [v4 balanceSummary];
-  [CreditAccountBalanceSummary updateCreditAccountBalanceSummary:v41 forCreditAccountSummaryPID:v39 inDatabase:v40];
+  persistentID = [(SQLiteEntity *)self persistentID];
+  database = [(SQLiteEntity *)self database];
+  balanceSummary = [summaryCopy balanceSummary];
+  [CreditAccountBalanceSummary updateCreditAccountBalanceSummary:balanceSummary forCreditAccountSummaryPID:persistentID inDatabase:database];
 
-  v42 = [v4 currentStatement];
-  [CreditAccountStatement updateCreditAccountStatement:v42 forCreditAccountSummaryPID:v39 inDatabase:v40];
+  currentStatement = [summaryCopy currentStatement];
+  [CreditAccountStatement updateCreditAccountStatement:currentStatement forCreditAccountSummaryPID:persistentID inDatabase:database];
 
-  v43 = [v4 accountUserActivity];
-  v44 = [NSNumber numberWithUnsignedLongLong:v39];
-  v45 = [CreditAccountUserActivity insertOrUpdateCreditAccountUserActivity:v43 forCreditAccountSummaryPID:v44 inDatabase:v40];
+  accountUserActivity = [summaryCopy accountUserActivity];
+  v44 = [NSNumber numberWithUnsignedLongLong:persistentID];
+  v45 = [CreditAccountUserActivity insertOrUpdateCreditAccountUserActivity:accountUserActivity forCreditAccountSummaryPID:v44 inDatabase:database];
 
-  v46 = [v4 mergeSummary];
+  mergeSummary = [summaryCopy mergeSummary];
 
-  v47 = [NSNumber numberWithUnsignedLongLong:v39];
-  v48 = [CreditAccountMergeSummary insertOrUpdateCreditAccountMergeSummary:v46 forCreditAccountSummaryPID:v47 inDatabase:v40];
+  v47 = [NSNumber numberWithUnsignedLongLong:persistentID];
+  v48 = [CreditAccountMergeSummary insertOrUpdateCreditAccountMergeSummary:mergeSummary forCreditAccountSummaryPID:v47 inDatabase:database];
 }
 
-+ (id)_predicateForCreditAccountDetailsPID:(int64_t)a3
++ (id)_predicateForCreditAccountDetailsPID:(int64_t)d
 {
-  v3 = [NSNumber numberWithLongLong:a3];
+  v3 = [NSNumber numberWithLongLong:d];
   v4 = [SQLiteComparisonPredicate predicateWithProperty:@"a" equalToValue:v3];
 
   return v4;

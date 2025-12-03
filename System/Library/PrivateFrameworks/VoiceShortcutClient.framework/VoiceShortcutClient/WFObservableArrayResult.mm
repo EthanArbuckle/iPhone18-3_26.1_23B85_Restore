@@ -1,10 +1,10 @@
 @interface WFObservableArrayResult
-+ (id)getEmptyResultWithQuery:(id)a3 valueType:(Class)a4 glyphSize:(CGSize)a5;
-+ (id)getResultWithQuery:(id)a3 valueType:(Class)a4 glyphSize:(CGSize)a5 error:(id *)a6;
-+ (void)getResultWithQuery:(id)a3 valueType:(Class)a4 glyphSize:(CGSize)a5 roundedIcon:(BOOL)a6 completionHandler:(id)a7;
-- (WFObservableArrayResult)initWithValueType:(Class)a3 glyphSize:(CGSize)a4 initialValues:(id)a5 query:(id)a6 resultState:(id)a7;
++ (id)getEmptyResultWithQuery:(id)query valueType:(Class)type glyphSize:(CGSize)size;
++ (id)getResultWithQuery:(id)query valueType:(Class)type glyphSize:(CGSize)size error:(id *)error;
++ (void)getResultWithQuery:(id)query valueType:(Class)type glyphSize:(CGSize)size roundedIcon:(BOOL)icon completionHandler:(id)handler;
+- (WFObservableArrayResult)initWithValueType:(Class)type glyphSize:(CGSize)size initialValues:(id)values query:(id)query resultState:(id)state;
 - (id)description;
-- (void)handleChangeNotification:(id)a3;
+- (void)handleChangeNotification:(id)notification;
 @end
 
 @implementation WFObservableArrayResult
@@ -15,27 +15,27 @@
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
   v6 = NSStringFromClass([(WFObservableResult *)self valueType]);
-  v7 = [(WFObservableArrayResult *)self values];
-  v8 = [v7 count];
-  v9 = [(WFObservableArrayResult *)self query];
-  v10 = [(WFObservableArrayResult *)self values];
-  v11 = [v3 stringWithFormat:@"<%@: %p, valueType: %@, values count: %lu, query: %@, values: %@>", v5, self, v6, v8, v9, v10];
+  values = [(WFObservableArrayResult *)self values];
+  v8 = [values count];
+  query = [(WFObservableArrayResult *)self query];
+  values2 = [(WFObservableArrayResult *)self values];
+  v11 = [v3 stringWithFormat:@"<%@: %p, valueType: %@, values count: %lu, query: %@, values: %@>", v5, self, v6, v8, query, values2];
 
   return v11;
 }
 
-- (void)handleChangeNotification:(id)a3
+- (void)handleChangeNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(WFObservableResult *)self serialQueue];
+  notificationCopy = notification;
+  serialQueue = [(WFObservableResult *)self serialQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __52__WFObservableArrayResult_handleChangeNotification___block_invoke;
   v7[3] = &unk_1E7B02180;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = notificationCopy;
+  v6 = notificationCopy;
+  dispatch_sync(serialQueue, v7);
 }
 
 void __52__WFObservableArrayResult_handleChangeNotification___block_invoke(uint64_t a1)
@@ -173,98 +173,98 @@ LABEL_20:
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (WFObservableArrayResult)initWithValueType:(Class)a3 glyphSize:(CGSize)a4 initialValues:(id)a5 query:(id)a6 resultState:(id)a7
+- (WFObservableArrayResult)initWithValueType:(Class)type glyphSize:(CGSize)size initialValues:(id)values query:(id)query resultState:(id)state
 {
-  height = a4.height;
-  width = a4.width;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  height = size.height;
+  width = size.width;
+  valuesCopy = values;
+  queryCopy = query;
+  stateCopy = state;
   v21.receiver = self;
   v21.super_class = WFObservableArrayResult;
-  v16 = [(WFObservableResult *)&v21 initWithValueType:a3 glyphSize:width, height];
-  if (v16)
+  height = [(WFObservableResult *)&v21 initWithValueType:type glyphSize:width, height];
+  if (height)
   {
-    v17 = [v13 copy];
-    values = v16->_values;
-    v16->_values = v17;
+    v17 = [valuesCopy copy];
+    values = height->_values;
+    height->_values = v17;
 
-    objc_storeStrong(&v16->_query, a6);
-    objc_storeStrong(&v16->_resultState, a7);
-    v19 = v16;
+    objc_storeStrong(&height->_query, query);
+    objc_storeStrong(&height->_resultState, state);
+    v19 = height;
   }
 
-  return v16;
+  return height;
 }
 
-+ (id)getEmptyResultWithQuery:(id)a3 valueType:(Class)a4 glyphSize:(CGSize)a5
++ (id)getEmptyResultWithQuery:(id)query valueType:(Class)type glyphSize:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
-  v8 = a3;
+  height = size.height;
+  width = size.width;
+  queryCopy = query;
   v9 = [WFObservableArrayResult alloc];
-  v10 = [(WFObservableArrayResult *)v9 initWithValueType:a4 glyphSize:MEMORY[0x1E695E0F0] initialValues:v8 query:0 resultState:width, height];
+  height = [(WFObservableArrayResult *)v9 initWithValueType:type glyphSize:MEMORY[0x1E695E0F0] initialValues:queryCopy query:0 resultState:width, height];
 
-  return v10;
+  return height;
 }
 
-+ (id)getResultWithQuery:(id)a3 valueType:(Class)a4 glyphSize:(CGSize)a5 error:(id *)a6
++ (id)getResultWithQuery:(id)query valueType:(Class)type glyphSize:(CGSize)size error:(id *)error
 {
-  height = a5.height;
-  width = a5.width;
-  v11 = a3;
+  height = size.height;
+  width = size.width;
+  queryCopy = query;
   v12 = +[VCVoiceShortcutClient standardClient];
   v19 = 0;
   v20 = 0;
-  v13 = [v12 getResultsForQuery:v11 resultClass:a4 resultState:&v20 error:&v19];
+  v13 = [v12 getResultsForQuery:queryCopy resultClass:type resultState:&v20 error:&v19];
   v14 = v20;
   v15 = v19;
 
   if (v15)
   {
-    if (a6)
+    if (error)
     {
       v16 = v15;
-      v17 = 0;
-      *a6 = v15;
+      height = 0;
+      *error = v15;
     }
 
     else
     {
-      v17 = 0;
+      height = 0;
     }
   }
 
   else
   {
-    [a1 drawGlyphsIntoWorkflowsIfNecessary:v13 glyphSize:{width, height}];
-    v17 = [[WFObservableArrayResult alloc] initWithValueType:a4 glyphSize:v13 initialValues:v11 query:v14 resultState:width, height];
+    [self drawGlyphsIntoWorkflowsIfNecessary:v13 glyphSize:{width, height}];
+    height = [[WFObservableArrayResult alloc] initWithValueType:type glyphSize:v13 initialValues:queryCopy query:v14 resultState:width, height];
   }
 
-  return v17;
+  return height;
 }
 
-+ (void)getResultWithQuery:(id)a3 valueType:(Class)a4 glyphSize:(CGSize)a5 roundedIcon:(BOOL)a6 completionHandler:(id)a7
++ (void)getResultWithQuery:(id)query valueType:(Class)type glyphSize:(CGSize)size roundedIcon:(BOOL)icon completionHandler:(id)handler
 {
-  height = a5.height;
-  width = a5.width;
-  v13 = a3;
-  v14 = a7;
+  height = size.height;
+  width = size.width;
+  queryCopy = query;
+  handlerCopy = handler;
   v15 = +[VCVoiceShortcutClient standardClient];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __96__WFObservableArrayResult_getResultWithQuery_valueType_glyphSize_roundedIcon_completionHandler___block_invoke;
   v18[3] = &unk_1E7B01880;
-  v20 = v14;
-  v21 = a1;
+  v20 = handlerCopy;
+  selfCopy = self;
   v22 = width;
   v23 = height;
-  v25 = a6;
-  v24 = a4;
-  v19 = v13;
-  v16 = v13;
-  v17 = v14;
-  [v15 getResultsForQuery:v16 resultClass:a4 completion:v18];
+  iconCopy = icon;
+  typeCopy = type;
+  v19 = queryCopy;
+  v16 = queryCopy;
+  v17 = handlerCopy;
+  [v15 getResultsForQuery:v16 resultClass:type completion:v18];
 }
 
 void __96__WFObservableArrayResult_getResultWithQuery_valueType_glyphSize_roundedIcon_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3)

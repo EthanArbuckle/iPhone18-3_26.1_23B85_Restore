@@ -1,38 +1,38 @@
 @interface WKInspectorNodeSearchGestureRecognizer
-- (CGPoint)locationInView:(id)a3;
-- (void)_processTouches:(id)a3 state:(int64_t)a4;
+- (CGPoint)locationInView:(id)view;
+- (void)_processTouches:(id)touches state:(int64_t)state;
 - (void)reset;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
 @end
 
 @implementation WKInspectorNodeSearchGestureRecognizer
 
-- (CGPoint)locationInView:(id)a3
+- (CGPoint)locationInView:(id)view
 {
-  [(UITouch *)self->_touch.m_ptr locationInView:a3];
+  [(UITouch *)self->_touch.m_ptr locationInView:view];
   result.y = v4;
   result.x = v3;
   return result;
 }
 
-- (void)_processTouches:(id)a3 state:(int64_t)a4
+- (void)_processTouches:(id)touches state:(int64_t)state
 {
-  if ([a3 containsObject:self->_touch.m_ptr])
+  if ([touches containsObject:self->_touch.m_ptr])
   {
 
-    [(WKInspectorNodeSearchGestureRecognizer *)self setState:a4];
+    [(WKInspectorNodeSearchGestureRecognizer *)self setState:state];
   }
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  if (![(WKInspectorNodeSearchGestureRecognizer *)self state:a3])
+  if (![(WKInspectorNodeSearchGestureRecognizer *)self state:began])
   {
-    v6 = [a3 anyObject];
-    v7 = v6;
-    if (v6)
+    anyObject = [began anyObject];
+    v7 = anyObject;
+    if (anyObject)
     {
-      v8 = v6;
+      v8 = anyObject;
     }
 
     m_ptr = self->_touch.m_ptr;
@@ -41,7 +41,7 @@
     {
     }
 
-    [(WKInspectorNodeSearchGestureRecognizer *)self _processTouches:a3 state:1];
+    [(WKInspectorNodeSearchGestureRecognizer *)self _processTouches:began state:1];
   }
 }
 

@@ -1,32 +1,32 @@
 @interface AXSiriShortcutsManager
-+ (id)shortcutsManagerForSource:(unint64_t)a3;
-- (AXSiriShortcutsManager)initWithSource:(unint64_t)a3;
++ (id)shortcutsManagerForSource:(unint64_t)source;
+- (AXSiriShortcutsManager)initWithSource:(unint64_t)source;
 - (NSArray)shortcuts;
-- (id)registerShortcutsDidChangeBlock:(id)a3;
-- (id)shortcutForIdentifier:(id)a3;
+- (id)registerShortcutsDidChangeBlock:(id)block;
+- (id)shortcutForIdentifier:(id)identifier;
 - (void)_loadShortcuts;
 - (void)_queue_loadShortcuts;
-- (void)observableResultDidChange:(id)a3;
-- (void)performShortcut:(id)a3;
-- (void)unregisterShortcutsDidChangeBlock:(id)a3;
-- (void)workflowRunnerClient:(id)a3 didFinishRunningWorkflowWithOutput:(id)a4 error:(id)a5 cancelled:(BOOL)a6;
-- (void)workflowRunnerClient:(id)a3 didStartRunningWorkflowWithProgress:(id)a4;
+- (void)observableResultDidChange:(id)change;
+- (void)performShortcut:(id)shortcut;
+- (void)unregisterShortcutsDidChangeBlock:(id)block;
+- (void)workflowRunnerClient:(id)client didFinishRunningWorkflowWithOutput:(id)output error:(id)error cancelled:(BOOL)cancelled;
+- (void)workflowRunnerClient:(id)client didStartRunningWorkflowWithProgress:(id)progress;
 @end
 
 @implementation AXSiriShortcutsManager
 
-+ (id)shortcutsManagerForSource:(unint64_t)a3
++ (id)shortcutsManagerForSource:(unint64_t)source
 {
   if (shortcutsManagerForSource__onceToken != -1)
   {
     +[AXSiriShortcutsManager shortcutsManagerForSource:];
   }
 
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:source];
   v5 = [shortcutsManagerForSource__ShortcutManagers objectForKeyedSubscript:v4];
   if (!v5)
   {
-    v5 = [[AXSiriShortcutsManager alloc] initWithSource:a3];
+    v5 = [[AXSiriShortcutsManager alloc] initWithSource:source];
     [shortcutsManagerForSource__ShortcutManagers setObject:v5 forKeyedSubscript:v4];
   }
 
@@ -42,7 +42,7 @@ uint64_t __52__AXSiriShortcutsManager_shortcutsManagerForSource___block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-- (AXSiriShortcutsManager)initWithSource:(unint64_t)a3
+- (AXSiriShortcutsManager)initWithSource:(unint64_t)source
 {
   v19.receiver = self;
   v19.super_class = AXSiriShortcutsManager;
@@ -50,7 +50,7 @@ uint64_t __52__AXSiriShortcutsManager_shortcutsManagerForSource___block_invoke()
   v5 = v4;
   if (v4)
   {
-    v4->_source = a3;
+    v4->_source = source;
     v6 = dispatch_queue_create("AXSiriShortcutsUpdateQueue", 0);
     queue = v5->_queue;
     v5->_queue = v6;
@@ -77,8 +77,8 @@ uint64_t __52__AXSiriShortcutsManager_shortcutsManagerForSource___block_invoke()
 
     v11 = v10;
     _Block_object_dispose(&v21, 8);
-    v12 = [v10 standardClient];
-    [(AXSiriShortcutsManager *)v5 setShortcutClient:v12];
+    standardClient = [v10 standardClient];
+    [(AXSiriShortcutsManager *)v5 setShortcutClient:standardClient];
 
     [(AXSiriShortcutsManager *)v5 _loadShortcuts];
     if (MKBDeviceFormattedForContentProtection())
@@ -158,7 +158,7 @@ uint64_t __35__AXSiriShortcutsManager_shortcuts__block_invoke(uint64_t a1)
   return MEMORY[0x1EEE66BB8](v2, v4);
 }
 
-- (void)observableResultDidChange:(id)a3
+- (void)observableResultDidChange:(id)change
 {
   v4 = AXLogSiriShortcuts();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -170,26 +170,26 @@ uint64_t __35__AXSiriShortcutsManager_shortcuts__block_invoke(uint64_t a1)
   [(AXSiriShortcutsManager *)self _loadShortcuts];
 }
 
-- (id)registerShortcutsDidChangeBlock:(id)a3
+- (id)registerShortcutsDidChangeBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = __Block_byref_object_copy__14;
   v17 = __Block_byref_object_dispose__14;
-  v5 = [MEMORY[0x1E696AFB0] UUID];
-  v18 = [v5 UUIDString];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
 
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __58__AXSiriShortcutsManager_registerShortcutsDidChangeBlock___block_invoke;
   block[3] = &unk_1E71ECB78;
-  v11 = v4;
+  v11 = blockCopy;
   v12 = &v13;
   block[4] = self;
-  v7 = v4;
+  v7 = blockCopy;
   dispatch_async(queue, block);
   v8 = v14[5];
 
@@ -205,11 +205,11 @@ void __58__AXSiriShortcutsManager_registerShortcutsDidChangeBlock___block_invoke
   [*(*(a1 + 32) + 32) setObject:v2 forKeyedSubscript:*(*(*(a1 + 48) + 8) + 40)];
 }
 
-- (void)unregisterShortcutsDidChangeBlock:(id)a3
+- (void)unregisterShortcutsDidChangeBlock:(id)block
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  blockCopy = block;
+  v5 = blockCopy;
+  if (blockCopy)
   {
     queue = self->_queue;
     v7[0] = MEMORY[0x1E69E9820];
@@ -217,21 +217,21 @@ void __58__AXSiriShortcutsManager_registerShortcutsDidChangeBlock___block_invoke
     v7[2] = __60__AXSiriShortcutsManager_unregisterShortcutsDidChangeBlock___block_invoke;
     v7[3] = &unk_1E71EA128;
     v7[4] = self;
-    v8 = v4;
+    v8 = blockCopy;
     dispatch_async(queue, v7);
   }
 }
 
-- (id)shortcutForIdentifier:(id)a3
+- (id)shortcutForIdentifier:(id)identifier
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v5 = [(AXSiriShortcutsManager *)self shortcuts];
-  v6 = [v5 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  shortcuts = [(AXSiriShortcutsManager *)self shortcuts];
+  v6 = [shortcuts countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v6)
   {
     v7 = v6;
@@ -242,12 +242,12 @@ void __58__AXSiriShortcutsManager_registerShortcutsDidChangeBlock___block_invoke
       {
         if (*v21 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(shortcuts);
         }
 
         v10 = *(*(&v20 + 1) + 8 * i);
-        v11 = [v10 identifier];
-        v12 = [v11 isEqualToString:v4];
+        identifier = [v10 identifier];
+        v12 = [identifier isEqualToString:identifierCopy];
 
         if (v12)
         {
@@ -256,7 +256,7 @@ void __58__AXSiriShortcutsManager_registerShortcutsDidChangeBlock___block_invoke
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v7 = [shortcuts countByEnumeratingWithState:&v20 objects:v24 count:16];
       if (v7)
       {
         continue;
@@ -266,17 +266,17 @@ void __58__AXSiriShortcutsManager_registerShortcutsDidChangeBlock___block_invoke
     }
   }
 
-  v13 = [(AXSiriShortcutsManager *)self shortcutClient];
+  shortcutClient = [(AXSiriShortcutsManager *)self shortcutClient];
   v19 = 0;
-  v14 = [v13 accessibilityWorkflowForIdentifier:v4 error:&v19];
-  v5 = v19;
+  v14 = [shortcutClient accessibilityWorkflowForIdentifier:identifierCopy error:&v19];
+  shortcuts = v19;
 
-  if (v5)
+  if (shortcuts)
   {
-    v15 = AXLogSiriShortcuts();
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+    value = AXLogSiriShortcuts();
+    if (os_log_type_enabled(value, OS_LOG_TYPE_ERROR))
     {
-      [(AXSiriShortcutsManager *)v4 shortcutForIdentifier:v5, v15];
+      [(AXSiriShortcutsManager *)identifierCopy shortcutForIdentifier:shortcuts, value];
     }
 
     v16 = 0;
@@ -285,8 +285,8 @@ void __58__AXSiriShortcutsManager_registerShortcutsDidChangeBlock___block_invoke
   else
   {
     v17 = [AXSiriShortcut alloc];
-    v15 = [v14 value];
-    v16 = [(AXSiriShortcut *)v17 initWithAccessibilityWorkflow:v15];
+    value = [v14 value];
+    v16 = [(AXSiriShortcut *)v17 initWithAccessibilityWorkflow:value];
   }
 
 LABEL_16:
@@ -316,7 +316,7 @@ LABEL_16:
 {
   v4 = *MEMORY[0x1E69E9840];
   v2 = 138412290;
-  v3 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_18B15E000, a2, OS_LOG_TYPE_ERROR, "Could not fetch siri shortcuts: %@", &v2, 0xCu);
 }
 
@@ -328,17 +328,17 @@ AXSiriShortcut *__46__AXSiriShortcutsManager__queue_loadShortcuts__block_invoke(
   return v3;
 }
 
-- (void)performShortcut:(id)a3
+- (void)performShortcut:(id)shortcut
 {
-  v4 = a3;
-  v5 = [v4 identifier];
+  shortcutCopy = shortcut;
+  identifier = [shortcutCopy identifier];
 
-  if (v5)
+  if (identifier)
   {
     v6 = +[AXBackBoardServer server];
-    v7 = [v6 isRestrictedForAAC];
+    isRestrictedForAAC = [v6 isRestrictedForAAC];
 
-    if (v7)
+    if (isRestrictedForAAC)
     {
       v8 = AXLogSiriShortcuts();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -376,8 +376,8 @@ AXSiriShortcut *__46__AXSiriShortcutsManager__queue_loadShortcuts__block_invoke(
       v11 = v10;
       _Block_object_dispose(&v15, 8);
       v12 = [v10 alloc];
-      v13 = [v4 identifier];
-      v9 = [v12 initWithWorkflowIdentifier:v13];
+      identifier2 = [shortcutCopy identifier];
+      v9 = [v12 initWithWorkflowIdentifier:identifier2];
 
       [v9 setDelegate:self];
       [v9 start];
@@ -389,43 +389,43 @@ AXSiriShortcut *__46__AXSiriShortcutsManager__queue_loadShortcuts__block_invoke(
     v9 = AXLogSiriShortcuts();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      [(AXSiriShortcutsManager *)v4 performShortcut:v9];
+      [(AXSiriShortcutsManager *)shortcutCopy performShortcut:v9];
     }
   }
 }
 
-- (void)workflowRunnerClient:(id)a3 didStartRunningWorkflowWithProgress:(id)a4
+- (void)workflowRunnerClient:(id)client didStartRunningWorkflowWithProgress:(id)progress
 {
   v12 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  clientCopy = client;
+  progressCopy = progress;
   v7 = AXLogSiriShortcuts();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v8 = 138412546;
-    v9 = v5;
+    v9 = clientCopy;
     v10 = 2112;
-    v11 = v6;
+    v11 = progressCopy;
     _os_log_impl(&dword_18B15E000, v7, OS_LOG_TYPE_INFO, "did start workflow: %@, with progress: %@", &v8, 0x16u);
   }
 }
 
-- (void)workflowRunnerClient:(id)a3 didFinishRunningWorkflowWithOutput:(id)a4 error:(id)a5 cancelled:(BOOL)a6
+- (void)workflowRunnerClient:(id)client didFinishRunningWorkflowWithOutput:(id)output error:(id)error cancelled:(BOOL)cancelled
 {
   v21 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  clientCopy = client;
+  outputCopy = output;
+  errorCopy = error;
   v11 = AXLogSiriShortcuts();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     v12 = NSStringFromBOOL();
     v13 = 138413058;
-    v14 = v8;
+    v14 = clientCopy;
     v15 = 2112;
-    v16 = v9;
+    v16 = outputCopy;
     v17 = 2112;
-    v18 = v10;
+    v18 = errorCopy;
     v19 = 2112;
     v20 = v12;
     _os_log_impl(&dword_18B15E000, v11, OS_LOG_TYPE_INFO, "did finish running workflow: %@, with output: %@, error: %@, cancelled: %@", &v13, 0x2Au);

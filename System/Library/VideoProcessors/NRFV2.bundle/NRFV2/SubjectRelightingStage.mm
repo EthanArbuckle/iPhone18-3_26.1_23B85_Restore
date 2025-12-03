@@ -1,17 +1,17 @@
 @interface SubjectRelightingStage
-+ (int)prewarmShaders:(id)a3;
-- (SubjectRelightingStage)initWithMetalContext:(id)a3;
-- (id)newBufferWithLength:(unint64_t)a3 options:(unint64_t)a4 label:(id)a5;
++ (int)prewarmShaders:(id)shaders;
+- (SubjectRelightingStage)initWithMetalContext:(id)context;
+- (id)newBufferWithLength:(unint64_t)length options:(unint64_t)options label:(id)label;
 - (unsigned)getSRLStatus;
 - (void)reset;
 @end
 
 @implementation SubjectRelightingStage
 
-- (SubjectRelightingStage)initWithMetalContext:(id)a3
+- (SubjectRelightingStage)initWithMetalContext:(id)context
 {
-  v5 = a3;
-  if (!v5)
+  contextCopy = context;
+  if (!contextCopy)
   {
     sub_295876644(self);
 LABEL_15:
@@ -29,7 +29,7 @@ LABEL_15:
     goto LABEL_8;
   }
 
-  objc_storeStrong(&v6->_metalContext, a3);
+  objc_storeStrong(&v6->_metalContext, context);
   v9 = objc_msgSend_newBufferWithLength_options_label_(v7, v8, 8460, 0, @"srlV2_Global_Stats");
   srlV2GlobalStatsBuffer = v7->_srlV2GlobalStatsBuffer;
   v7->_srlV2GlobalStatsBuffer = v9;
@@ -83,13 +83,13 @@ LABEL_8:
   return v7;
 }
 
-+ (int)prewarmShaders:(id)a3
++ (int)prewarmShaders:(id)shaders
 {
-  v3 = a3;
-  if (v3)
+  shadersCopy = shaders;
+  if (shadersCopy)
   {
     v4 = [SubjectRelightingShaders alloc];
-    v7 = objc_msgSend_initWithMetalContext_(v4, v5, v3, v6);
+    v7 = objc_msgSend_initWithMetalContext_(v4, v5, shadersCopy, v6);
     if (v7)
     {
       v8 = 0;
@@ -113,10 +113,10 @@ LABEL_8:
   return v8;
 }
 
-- (id)newBufferWithLength:(unint64_t)a3 options:(unint64_t)a4 label:(id)a5
+- (id)newBufferWithLength:(unint64_t)length options:(unint64_t)options label:(id)label
 {
-  v7 = objc_msgSend_device(self->_metalContext, a2, a3, a4, a5);
-  v9 = objc_msgSend_newBufferWithLength_options_(v7, v8, a3, a4);
+  v7 = objc_msgSend_device(self->_metalContext, a2, length, options, label);
+  v9 = objc_msgSend_newBufferWithLength_options_(v7, v8, length, options);
 
   objc_msgSend_setLabel_(v9, v10, 0, v11);
   return v9;

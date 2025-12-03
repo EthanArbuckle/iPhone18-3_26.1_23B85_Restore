@@ -3,15 +3,15 @@
 + (MPSMatrixRandomDistributionDescriptor)normalDistributionDescriptorWithMean:(float)mean standardDeviation:(float)standardDeviation;
 + (MPSMatrixRandomDistributionDescriptor)normalDistributionDescriptorWithMean:(float)mean standardDeviation:(float)standardDeviation minimum:(float)minimum maximum:(float)maximum;
 + (MPSMatrixRandomDistributionDescriptor)uniformDistributionDescriptorWithMinimum:(float)minimum maximum:(float)maximum;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation MPSMatrixRandomDistributionDescriptor
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  result = objc_msgSend_allocWithZone_(v5, v6, a3, v7, v8, v9, v10, v11);
+  result = objc_msgSend_allocWithZone_(v5, v6, zone, v7, v8, v9, v10, v11);
   if (result)
   {
     *(result + 3) = self->_distributionType;

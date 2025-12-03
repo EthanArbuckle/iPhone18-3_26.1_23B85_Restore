@@ -1,32 +1,32 @@
 @interface HUISoundMeterViewInterface
 - (BOOL)shouldShow;
-- (HUISoundMeterViewInterface)initWithConfigurationType:(unint64_t)a3 delegate:(id)a4 source:(unint64_t)a5;
+- (HUISoundMeterViewInterface)initWithConfigurationType:(unint64_t)type delegate:(id)delegate source:(unint64_t)source;
 - (HUISoundMeterViewInterfaceDelegate)delegate;
 - (id)soundMeterView;
 - (id)soundMeterViewController;
-- (void)liveLevelMeteringDisplayStateChanged:(BOOL)a3;
-- (void)localSourceAvailableDidUpdate:(BOOL)a3;
-- (void)remoteSourceAvailableDidUpdate:(BOOL)a3;
+- (void)liveLevelMeteringDisplayStateChanged:(BOOL)changed;
+- (void)localSourceAvailableDidUpdate:(BOOL)update;
+- (void)remoteSourceAvailableDidUpdate:(BOOL)update;
 - (void)start;
 - (void)stop;
-- (void)updateViewsWith:(double)a3 fastLeq:(double)a4 thresholdLevel:(unint64_t)a5;
+- (void)updateViewsWith:(double)with fastLeq:(double)leq thresholdLevel:(unint64_t)level;
 @end
 
 @implementation HUISoundMeterViewInterface
 
-- (HUISoundMeterViewInterface)initWithConfigurationType:(unint64_t)a3 delegate:(id)a4 source:(unint64_t)a5
+- (HUISoundMeterViewInterface)initWithConfigurationType:(unint64_t)type delegate:(id)delegate source:(unint64_t)source
 {
-  v8 = a4;
+  delegateCopy = delegate;
   v13.receiver = self;
   v13.super_class = HUISoundMeterViewInterface;
   v9 = [(HUISoundMeterViewInterface *)&v13 init];
   if (v9)
   {
-    v10 = [[HUISoundMeterViewInterfaceInternal alloc] initWithConfigurationType:a3];
+    v10 = [[HUISoundMeterViewInterfaceInternal alloc] initWithConfigurationType:type];
     [(HUISoundMeterViewInterface *)v9 setSoundMeterViewInterfaceInternal:v10];
 
-    [(HUISoundMeterViewInterface *)v9 setDelegate:v8];
-    v11 = [[HUISoundMeterListener alloc] initWithDelgate:v9 source:a5];
+    [(HUISoundMeterViewInterface *)v9 setDelegate:delegateCopy];
+    v11 = [[HUISoundMeterListener alloc] initWithDelgate:v9 source:source];
     [(HUISoundMeterViewInterface *)v9 setMeteringListener:v11];
   }
 
@@ -35,44 +35,44 @@
 
 - (id)soundMeterViewController
 {
-  v2 = [(HUISoundMeterViewInterface *)self soundMeterViewInterfaceInternal];
-  v3 = [v2 soundMeterViewController];
+  soundMeterViewInterfaceInternal = [(HUISoundMeterViewInterface *)self soundMeterViewInterfaceInternal];
+  soundMeterViewController = [soundMeterViewInterfaceInternal soundMeterViewController];
 
-  return v3;
+  return soundMeterViewController;
 }
 
 - (id)soundMeterView
 {
-  v2 = [(HUISoundMeterViewInterface *)self soundMeterViewInterfaceInternal];
-  v3 = [v2 soundMeterViewController];
-  v4 = [v3 view];
+  soundMeterViewInterfaceInternal = [(HUISoundMeterViewInterface *)self soundMeterViewInterfaceInternal];
+  soundMeterViewController = [soundMeterViewInterfaceInternal soundMeterViewController];
+  view = [soundMeterViewController view];
 
-  return v4;
+  return view;
 }
 
 - (void)start
 {
-  v2 = [(HUISoundMeterViewInterface *)self meteringListener];
-  [v2 start];
+  meteringListener = [(HUISoundMeterViewInterface *)self meteringListener];
+  [meteringListener start];
 }
 
 - (void)stop
 {
-  v2 = [(HUISoundMeterViewInterface *)self meteringListener];
-  [v2 stop];
+  meteringListener = [(HUISoundMeterViewInterface *)self meteringListener];
+  [meteringListener stop];
 }
 
 - (BOOL)shouldShow
 {
-  v2 = [(HUISoundMeterViewInterface *)self meteringListener];
-  v3 = [v2 shouldShow];
+  meteringListener = [(HUISoundMeterViewInterface *)self meteringListener];
+  shouldShow = [meteringListener shouldShow];
 
-  return v3;
+  return shouldShow;
 }
 
-- (void)liveLevelMeteringDisplayStateChanged:(BOOL)a3
+- (void)liveLevelMeteringDisplayStateChanged:(BOOL)changed
 {
-  v3 = [(HUISoundMeterViewInterface *)self delegate];
+  delegate = [(HUISoundMeterViewInterface *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
@@ -87,15 +87,15 @@ void __67__HUISoundMeterViewInterface_liveLevelMeteringDisplayStateChanged___blo
   [v2 soundMeterViewInterfaceDisplayStateChanged:*(a1 + 40)];
 }
 
-- (void)updateViewsWith:(double)a3 fastLeq:(double)a4 thresholdLevel:(unint64_t)a5
+- (void)updateViewsWith:(double)with fastLeq:(double)leq thresholdLevel:(unint64_t)level
 {
-  v8 = [(HUISoundMeterViewInterface *)self soundMeterViewInterfaceInternal];
-  [v8 updateViewsWithSlowLeq:a5 fastLeq:a3 thresholdLevel:a4];
+  soundMeterViewInterfaceInternal = [(HUISoundMeterViewInterface *)self soundMeterViewInterfaceInternal];
+  [soundMeterViewInterfaceInternal updateViewsWithSlowLeq:level fastLeq:with thresholdLevel:leq];
 }
 
-- (void)localSourceAvailableDidUpdate:(BOOL)a3
+- (void)localSourceAvailableDidUpdate:(BOOL)update
 {
-  v3 = [(HUISoundMeterViewInterface *)self delegate];
+  delegate = [(HUISoundMeterViewInterface *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
@@ -110,9 +110,9 @@ void __60__HUISoundMeterViewInterface_localSourceAvailableDidUpdate___block_invo
   [v2 localSourceAvailableDidUpdate:*(a1 + 40)];
 }
 
-- (void)remoteSourceAvailableDidUpdate:(BOOL)a3
+- (void)remoteSourceAvailableDidUpdate:(BOOL)update
 {
-  v3 = [(HUISoundMeterViewInterface *)self delegate];
+  delegate = [(HUISoundMeterViewInterface *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)

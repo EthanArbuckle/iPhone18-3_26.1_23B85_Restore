@@ -1,61 +1,61 @@
 @interface TRIFBCloudKitAssetRecordAsset
-- (BOOL)isEqual:(id)a3;
-- (TRIFBCloudKitAssetRecordAsset)initWithBufRef:(id)a3 cppPointer:(const CloudKitAssetRecordAsset *)a4;
-- (id)deepCopyUsingBufferBuilder:(id)a3;
-- (id)deepCopyUsingBufferBuilder:(id)a3 changes:(id)a4;
-- (id)initVerifiedRootObjectFromData:(id)a3 requireUTF8:(BOOL)a4 maxDepth:(unsigned int)a5 maxTables:(unsigned int)a6;
+- (BOOL)isEqual:(id)equal;
+- (TRIFBCloudKitAssetRecordAsset)initWithBufRef:(id)ref cppPointer:(const CloudKitAssetRecordAsset *)pointer;
+- (id)deepCopyUsingBufferBuilder:(id)builder;
+- (id)deepCopyUsingBufferBuilder:(id)builder changes:(id)changes;
+- (id)initVerifiedRootObjectFromData:(id)data requireUTF8:(BOOL)f8 maxDepth:(unsigned int)depth maxTables:(unsigned int)tables;
 @end
 
 @implementation TRIFBCloudKitAssetRecordAsset
 
-- (id)deepCopyUsingBufferBuilder:(id)a3
+- (id)deepCopyUsingBufferBuilder:(id)builder
 {
-  v3 = [(TRIFBCloudKitAssetRecordAsset *)self deepCopyUsingBufferBuilder:a3 changes:0];
+  v3 = [(TRIFBCloudKitAssetRecordAsset *)self deepCopyUsingBufferBuilder:builder changes:0];
 
   return v3;
 }
 
-- (id)deepCopyUsingBufferBuilder:(id)a3 changes:(id)a4
+- (id)deepCopyUsingBufferBuilder:(id)builder changes:(id)changes
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  builderCopy = builder;
+  changesCopy = changes;
+  if (!builderCopy)
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:853 description:{@"Invalid parameter not satisfying: %@", @"bufferBuilder"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:853 description:{@"Invalid parameter not satisfying: %@", @"bufferBuilder"}];
   }
 
   v9 = objc_autoreleasePoolPush();
-  v10 = [v7 trifbCreateCloudKitAssetRecordAssetUsingBlock:&__block_literal_global_7];
+  v10 = [builderCopy trifbCreateCloudKitAssetRecordAssetUsingBlock:&__block_literal_global_7];
   objc_autoreleasePoolPop(v9);
 
   return v10;
 }
 
-- (TRIFBCloudKitAssetRecordAsset)initWithBufRef:(id)a3 cppPointer:(const CloudKitAssetRecordAsset *)a4
+- (TRIFBCloudKitAssetRecordAsset)initWithBufRef:(id)ref cppPointer:(const CloudKitAssetRecordAsset *)pointer
 {
-  v7 = a3;
+  refCopy = ref;
   v11.receiver = self;
   v11.super_class = TRIFBCloudKitAssetRecordAsset;
   v8 = [(TRIFBCloudKitAssetRecordAsset *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_br, a3);
-    v9->_ptr = a4;
+    objc_storeStrong(&v8->_br, ref);
+    v9->_ptr = pointer;
   }
 
   return v9;
 }
 
-- (id)initVerifiedRootObjectFromData:(id)a3 requireUTF8:(BOOL)a4 maxDepth:(unsigned int)a5 maxTables:(unsigned int)a6
+- (id)initVerifiedRootObjectFromData:(id)data requireUTF8:(BOOL)f8 maxDepth:(unsigned int)depth maxTables:(unsigned int)tables
 {
-  v10 = a3;
+  dataCopy = data;
   v11 = objc_autoreleasePoolPush();
-  v12 = [v10 bytes];
-  if (v12)
+  bytes = [dataCopy bytes];
+  if (bytes)
   {
-    v13 = v12;
+    v13 = bytes;
   }
 
   else
@@ -63,13 +63,13 @@
     v13 = &emptyCArrayStorage;
   }
 
-  v14 = [v10 length];
+  v14 = [dataCopy length];
   v23 = v13;
   v24 = v14;
   v25 = 0;
-  v26 = a5;
+  depthCopy = depth;
   v27 = 0;
-  v28 = a6;
+  tablesCopy = tables;
   v29 = 0;
   v30 = 1;
   if (v14 >= 0x7FFFFFFF)
@@ -82,24 +82,24 @@
     --v25;
     v17 = *v13;
     v18 = objc_alloc(MEMORY[0x277CED178]);
-    v19 = [v18 initWithData:{v10, v23, v24}];
+    v19 = [v18 initWithData:{dataCopy, v23, v24}];
     self = [(TRIFBCloudKitAssetRecordAsset *)self initWithBufRef:v19 cppPointer:&v13[v17]];
 
-    v20 = self;
-    if (a4)
+    selfCopy2 = self;
+    if (f8)
     {
       if ([(TRIFBCloudKitAssetRecordAsset *)self verifyUTF8Fields])
       {
-        v20 = self;
+        selfCopy2 = self;
       }
 
       else
       {
-        v20 = 0;
+        selfCopy2 = 0;
       }
     }
 
-    v21 = v20;
+    v21 = selfCopy2;
   }
 
   else
@@ -112,13 +112,13 @@
   return v21;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  equalCopy = equal;
+  v4 = equalCopy;
+  if (equalCopy)
   {
-    v5 = v3;
+    v5 = equalCopy;
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
     if (isKindOfClass)

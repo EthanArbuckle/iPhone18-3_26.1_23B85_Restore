@@ -1,8 +1,8 @@
 @interface CWFKernelEventMonitor
-+ (id)descriptionForKernelEventCode:(unint64_t)a3;
++ (id)descriptionForKernelEventCode:(unint64_t)code;
 - (BOOL)isMonitoringEvents;
 - (CWFKernelEventMonitor)init;
-- (unint64_t)interfaceFlagsWithInterfaceName:(id)a3;
+- (unint64_t)interfaceFlagsWithInterfaceName:(id)name;
 - (void)dealloc;
 - (void)startEventMonitoring;
 - (void)stopEventMonitoring;
@@ -29,19 +29,19 @@
   return v3;
 }
 
-+ (id)descriptionForKernelEventCode:(unint64_t)a3
++ (id)descriptionForKernelEventCode:(unint64_t)code
 {
-  if (a3 - 1 >= 0x1E)
+  if (code - 1 >= 0x1E)
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"? (%lu)", a3];
+    code = [MEMORY[0x1E696AEC0] stringWithFormat:@"? (%lu)", code];
   }
 
   else
   {
-    v4 = off_1E86E6798[a3 - 1];
+    code = off_1E86E6798[code - 1];
   }
 
-  return v4;
+  return code;
 }
 
 - (CWFKernelEventMonitor)init
@@ -253,14 +253,14 @@ LABEL_8:
   dispatch_sync(mutexQueue, block);
 }
 
-- (unint64_t)interfaceFlagsWithInterfaceName:(id)a3
+- (unint64_t)interfaceFlagsWithInterfaceName:(id)name
 {
   v12 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = v3;
+  nameCopy = name;
+  v4 = nameCopy;
   v10 = 0u;
   v11 = 0u;
-  if (v3 && [v3 length] && objc_msgSend(v4, "length") <= 0x10 && (v5 = socket(30, 2, 0), v5 != -1))
+  if (nameCopy && [nameCopy length] && objc_msgSend(v4, "length") <= 0x10 && (v5 = socket(30, 2, 0), v5 != -1))
   {
     v6 = v5;
     if ([v4 getCString:&v10 maxLength:16 encoding:4])

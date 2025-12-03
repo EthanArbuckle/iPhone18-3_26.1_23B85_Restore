@@ -1,18 +1,18 @@
 @interface UITriggerTableViewController
 - (BOOL)requestPluginList;
-- (BOOL)triggerUIProvider:(id)a3;
-- (id)sectionStringForIndexPath:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (id)tailStringForIndexPath:(id)a3;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)_extractSections:(id)a3;
+- (BOOL)triggerUIProvider:(id)provider;
+- (id)sectionStringForIndexPath:(id)path;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (id)tailStringForIndexPath:(id)path;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)_extractSections:(id)sections;
 - (void)dealloc;
 - (void)didReceiveMemoryWarning;
-- (void)idsRequestUITriggerResponse:(id)a3;
-- (void)idsUIProvidersResponse:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)idsRequestUITriggerResponse:(id)response;
+- (void)idsUIProvidersResponse:(id)response;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
@@ -35,14 +35,14 @@
   v6 = [v5 initWithFrame:0 style:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
   [(UITriggerTableViewController *)self setTableView:v6];
 
-  v7 = [(UITriggerTableViewController *)self tableView];
-  [v7 setDelegate:self];
+  tableView = [(UITriggerTableViewController *)self tableView];
+  [tableView setDelegate:self];
 
-  v8 = [(UITriggerTableViewController *)self tableView];
-  [v8 setDataSource:self];
+  tableView2 = [(UITriggerTableViewController *)self tableView];
+  [tableView2 setDataSource:self];
 
-  v9 = [(UITriggerTableViewController *)self tableView];
-  [(UITriggerTableViewController *)self setView:v9];
+  tableView3 = [(UITriggerTableViewController *)self tableView];
+  [(UITriggerTableViewController *)self setView:tableView3];
 
   [(UITriggerTableViewController *)self setLoading:1];
   v10 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -56,22 +56,22 @@
 
 - (void)dealloc
 {
-  v3 = [(UITriggerTableViewController *)self tableView];
-  v4 = [v3 delegate];
+  tableView = [(UITriggerTableViewController *)self tableView];
+  delegate = [tableView delegate];
 
-  if (v4 == self)
+  if (delegate == self)
   {
-    v5 = [(UITriggerTableViewController *)self tableView];
-    [v5 setDelegate:0];
+    tableView2 = [(UITriggerTableViewController *)self tableView];
+    [tableView2 setDelegate:0];
   }
 
-  v6 = [(UITriggerTableViewController *)self tableView];
-  v7 = [v6 dataSource];
+  tableView3 = [(UITriggerTableViewController *)self tableView];
+  dataSource = [tableView3 dataSource];
 
-  if (v7 == self)
+  if (dataSource == self)
   {
-    v8 = [(UITriggerTableViewController *)self tableView];
-    [v8 setDataSource:0];
+    tableView4 = [(UITriggerTableViewController *)self tableView];
+    [tableView4 setDataSource:0];
   }
 
   v9.receiver = self;
@@ -88,55 +88,55 @@
 
 - (void)viewWillLayoutSubviews
 {
-  v3 = [MEMORY[0x277D759A0] mainScreen];
-  [v3 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
-  v12 = [MEMORY[0x277D75128] sharedApplication];
-  [v12 statusBarFrame];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  [mEMORY[0x277D75128] statusBarFrame];
   v14 = v13;
 
-  v15 = [(UITriggerTableViewController *)self tableView];
-  [v15 setFrame:{v5, v7 + v14, v9, v11 - v14}];
+  tableView = [(UITriggerTableViewController *)self tableView];
+  [tableView setFrame:{v5, v7 + v14, v9, v11 - v14}];
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
   if ([(UITriggerTableViewController *)self loading])
   {
     return 1;
   }
 
-  v5 = [(UITriggerTableViewController *)self sectionList];
-  v6 = [v5 count];
+  sectionList = [(UITriggerTableViewController *)self sectionList];
+  v6 = [sectionList count];
 
   return v6;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
   if ([(UITriggerTableViewController *)self loading])
   {
     return 1;
   }
 
-  v7 = [(UITriggerTableViewController *)self sectionList];
-  v8 = [v7 objectAtIndexedSubscript:a4];
+  sectionList = [(UITriggerTableViewController *)self sectionList];
+  v8 = [sectionList objectAtIndexedSubscript:section];
 
-  v9 = [(UITriggerTableViewController *)self sectionContents];
-  v10 = [v9 objectForKeyedSubscript:v8];
+  sectionContents = [(UITriggerTableViewController *)self sectionContents];
+  v10 = [sectionContents objectForKeyedSubscript:v8];
   v11 = [v10 count];
 
   return v11;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"MyReuseIdentifier"];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"MyReuseIdentifier"];
   if (!v7)
   {
     v7 = [objc_alloc(MEMORY[0x277D75B48]) initWithStyle:0 reuseIdentifier:@"MyReuseIdentifier"];
@@ -144,26 +144,26 @@
 
   if ([(UITriggerTableViewController *)self loading])
   {
-    v8 = [v7 textLabel];
-    [v8 setText:@"Loading..."];
+    textLabel = [v7 textLabel];
+    [textLabel setText:@"Loading..."];
   }
 
   else
   {
-    v9 = [(UITriggerTableViewController *)self sectionList];
-    v8 = [v9 objectAtIndexedSubscript:{objc_msgSend(v6, "section")}];
+    sectionList = [(UITriggerTableViewController *)self sectionList];
+    textLabel = [sectionList objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
 
-    v10 = [(UITriggerTableViewController *)self sectionContents];
-    v11 = [v10 objectForKeyedSubscript:v8];
-    v12 = [v11 objectAtIndexedSubscript:{objc_msgSend(v6, "row")}];
-    v13 = [v7 textLabel];
-    [v13 setText:v12];
+    sectionContents = [(UITriggerTableViewController *)self sectionContents];
+    v11 = [sectionContents objectForKeyedSubscript:textLabel];
+    v12 = [v11 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
+    textLabel2 = [v7 textLabel];
+    [textLabel2 setText:v12];
   }
 
   return v7;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
   if ([(UITriggerTableViewController *)self loading])
   {
@@ -172,16 +172,16 @@
 
   else
   {
-    v7 = [(UITriggerTableViewController *)self sectionList];
-    v6 = [v7 objectAtIndexedSubscript:a4];
+    sectionList = [(UITriggerTableViewController *)self sectionList];
+    v6 = [sectionList objectAtIndexedSubscript:section];
   }
 
   return v6;
 }
 
-- (id)sectionStringForIndexPath:(id)a3
+- (id)sectionStringForIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   if ([(UITriggerTableViewController *)self loading])
   {
     v5 = 0;
@@ -189,17 +189,17 @@
 
   else
   {
-    v6 = [v4 section];
-    v7 = [(UITriggerTableViewController *)self sectionList];
-    v5 = [v7 objectAtIndexedSubscript:v6];
+    section = [pathCopy section];
+    sectionList = [(UITriggerTableViewController *)self sectionList];
+    v5 = [sectionList objectAtIndexedSubscript:section];
   }
 
   return v5;
 }
 
-- (id)tailStringForIndexPath:(id)a3
+- (id)tailStringForIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   if ([(UITriggerTableViewController *)self loading])
   {
     v5 = 0;
@@ -207,23 +207,23 @@
 
   else
   {
-    v6 = [(UITriggerTableViewController *)self sectionStringForIndexPath:v4];
-    v7 = [(UITriggerTableViewController *)self sectionContents];
-    v8 = [v7 objectForKeyedSubscript:v6];
-    v5 = [v8 objectAtIndexedSubscript:{objc_msgSend(v4, "row")}];
+    v6 = [(UITriggerTableViewController *)self sectionStringForIndexPath:pathCopy];
+    sectionContents = [(UITriggerTableViewController *)self sectionContents];
+    v8 = [sectionContents objectForKeyedSubscript:v6];
+    v5 = [v8 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
   }
 
   return v5;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7 && ![(UITriggerTableViewController *)self loading])
+  viewCopy = view;
+  pathCopy = path;
+  if (pathCopy && ![(UITriggerTableViewController *)self loading])
   {
-    v8 = [(UITriggerTableViewController *)self sectionStringForIndexPath:v7];
-    v9 = [(UITriggerTableViewController *)self tailStringForIndexPath:v7];
+    v8 = [(UITriggerTableViewController *)self sectionStringForIndexPath:pathCopy];
+    v9 = [(UITriggerTableViewController *)self tailStringForIndexPath:pathCopy];
     v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", v8, v9];
     NSLog(&cfstr_TriggeringUiPr.isa, v10);
     [(UITriggerTableViewController *)self triggerUIProvider:v10];
@@ -232,28 +232,28 @@
     block[1] = 3221225472;
     block[2] = __66__UITriggerTableViewController_tableView_didSelectRowAtIndexPath___block_invoke;
     block[3] = &unk_279DFEC78;
-    v13 = v6;
-    v14 = v7;
+    v13 = viewCopy;
+    v14 = pathCopy;
     dispatch_after(v11, MEMORY[0x277D85CD0], block);
   }
 }
 
-- (void)_extractSections:(id)a3
+- (void)_extractSections:(id)sections
 {
   v34 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  sectionsCopy = sections;
   v26 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v4 = v3;
+  v4 = sectionsCopy;
   v5 = [v4 countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (!v5)
   {
     v7 = 0;
     v8 = @"XXX";
-    v23 = v4;
+    sectionContents2 = v4;
     goto LABEL_21;
   }
 
@@ -278,8 +278,8 @@
       {
         if (v7)
         {
-          v12 = [(UITriggerTableViewController *)self sectionContents];
-          [v12 setObject:v7 forKey:v8];
+          sectionContents = [(UITriggerTableViewController *)self sectionContents];
+          [sectionContents setObject:v7 forKey:v8];
         }
 
         v13 = [v11 componentsSeparatedByString:@"."];
@@ -330,8 +330,8 @@
 
   if (v7)
   {
-    v23 = [(UITriggerTableViewController *)self sectionContents];
-    [v23 setObject:v7 forKey:v8];
+    sectionContents2 = [(UITriggerTableViewController *)self sectionContents];
+    [sectionContents2 setObject:v7 forKey:v8];
 LABEL_21:
   }
 
@@ -340,38 +340,38 @@ LABEL_21:
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)idsUIProvidersResponse:(id)a3
+- (void)idsUIProvidersResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   v5 = [CSLUIPBUIPluginListResponse alloc];
-  v6 = [v4 data];
+  data = [responseCopy data];
 
-  v11 = [(CSLUIPBUIPluginListResponse *)v5 initWithData:v6];
-  v7 = [(CSLUIPBUIPluginListResponse *)v11 names];
-  NSLog(&cfstr_Providers.isa, v7);
+  v11 = [(CSLUIPBUIPluginListResponse *)v5 initWithData:data];
+  names = [(CSLUIPBUIPluginListResponse *)v11 names];
+  NSLog(&cfstr_Providers.isa, names);
 
-  v8 = [(CSLUIPBUIPluginListResponse *)v11 names];
-  v9 = [v8 sortedArrayUsingComparator:&__block_literal_global];
+  names2 = [(CSLUIPBUIPluginListResponse *)v11 names];
+  v9 = [names2 sortedArrayUsingComparator:&__block_literal_global];
 
   [(UITriggerTableViewController *)self _extractSections:v9];
   [(UITriggerTableViewController *)self setLoading:0];
-  v10 = [(UITriggerTableViewController *)self tableView];
-  [v10 reloadData];
+  tableView = [(UITriggerTableViewController *)self tableView];
+  [tableView reloadData];
 }
 
-- (void)idsRequestUITriggerResponse:(id)a3
+- (void)idsRequestUITriggerResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   v5 = [CSLUIPBUIPluginTriggerResponse alloc];
-  v6 = [v4 data];
+  data = [responseCopy data];
 
-  v13 = [(CSLUIPBUIPluginTriggerResponse *)v5 initWithData:v6];
+  v13 = [(CSLUIPBUIPluginTriggerResponse *)v5 initWithData:data];
   if (![(CSLUIPBUIPluginTriggerResponse *)v13 success])
   {
     v7 = MEMORY[0x277D75110];
     v8 = MEMORY[0x277CCACA8];
-    v9 = [(CSLUIPBUIPluginTriggerResponse *)v13 errorString];
-    v10 = [v8 stringWithFormat:@"Failed to trigger UI provider because %@", v9];
+    errorString = [(CSLUIPBUIPluginTriggerResponse *)v13 errorString];
+    v10 = [v8 stringWithFormat:@"Failed to trigger UI provider because %@", errorString];
     v11 = [v7 alertControllerWithTitle:@"UITrigger Failure" message:v10 preferredStyle:1];
 
     v12 = [MEMORY[0x277D750F8] actionWithTitle:@"OK" style:1 handler:0];
@@ -389,11 +389,11 @@ LABEL_21:
   return v4 != 0;
 }
 
-- (BOOL)triggerUIProvider:(id)a3
+- (BOOL)triggerUIProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v5 = objc_alloc_init(CSLUIPBUIPluginTriggerRequest);
-  [(CSLUIPBUIPluginTriggerRequest *)v5 setName:v4];
+  [(CSLUIPBUIPluginTriggerRequest *)v5 setName:providerCopy];
 
   v6 = [(UITriggerTableViewController *)self sendProtobufRequest:v5 type:2 priority:300 expectsResponse:1 errorHandler:&__block_literal_global_80 withTimeout:30.0];
 

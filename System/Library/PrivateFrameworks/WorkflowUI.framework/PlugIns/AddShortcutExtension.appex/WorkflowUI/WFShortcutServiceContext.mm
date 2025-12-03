@@ -1,7 +1,7 @@
 @interface WFShortcutServiceContext
 - (INUIVoiceShortcutRemoteServingInterface)delegate;
-- (void)buildForAddingShortcut:(id)a3;
-- (void)buildForEditingVoiceShortcut:(id)a3;
+- (void)buildForAddingShortcut:(id)shortcut;
+- (void)buildForEditingVoiceShortcut:(id)shortcut;
 @end
 
 @implementation WFShortcutServiceContext
@@ -13,18 +13,18 @@
   return WeakRetained;
 }
 
-- (void)buildForEditingVoiceShortcut:(id)a3
+- (void)buildForEditingVoiceShortcut:(id)shortcut
 {
-  v4 = a3;
-  v5 = [(WFShortcutServiceContext *)self delegate];
-  [v5 buildForEditingVoiceShortcut:v4];
+  shortcutCopy = shortcut;
+  delegate = [(WFShortcutServiceContext *)self delegate];
+  [delegate buildForEditingVoiceShortcut:shortcutCopy];
 }
 
-- (void)buildForAddingShortcut:(id)a3
+- (void)buildForAddingShortcut:(id)shortcut
 {
-  v4 = a3;
-  v5 = [(WFShortcutServiceContext *)self delegate];
-  [v5 buildForAddingShortcut:v4];
+  shortcutCopy = shortcut;
+  delegate = [(WFShortcutServiceContext *)self delegate];
+  [delegate buildForAddingShortcut:shortcutCopy];
 }
 
 @end

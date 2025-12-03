@@ -1,14 +1,14 @@
 @interface AirDropHeaderView
-- (AirDropHeaderView)initWithFrame:(CGRect)a3;
+- (AirDropHeaderView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation AirDropHeaderView
 
-- (AirDropHeaderView)initWithFrame:(CGRect)a3
+- (AirDropHeaderView)initWithFrame:(CGRect)frame
 {
   v34.receiver = self;
   v34.super_class = AirDropHeaderView;
-  v3 = [(AirDropHeaderView *)&v34 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(AirDropHeaderView *)&v34 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(UILabel);
@@ -16,9 +16,9 @@
     [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
     [v4 setAdjustsFontForContentSizeCategory:1];
     v5 = +[UIDevice currentDevice];
-    v6 = [v5 userInterfaceIdiom];
+    userInterfaceIdiom = [v5 userInterfaceIdiom];
 
-    if (v6 == 6)
+    if (userInterfaceIdiom == 6)
     {
       v7 = +[UIColor systemWhiteColor];
       [v4 setTextColor:v7];
@@ -40,10 +40,10 @@
 
     [(AirDropHeaderView *)v3 setTitleLabel:v4];
     v10 = v3;
-    v11 = [(AirDropHeaderView *)v10 titleLabel];
-    [(AirDropHeaderView *)v10 addSubview:v11];
+    titleLabel = [(AirDropHeaderView *)v10 titleLabel];
+    [(AirDropHeaderView *)v10 addSubview:titleLabel];
 
-    if (v6 == 6)
+    if (userInterfaceIdiom == 6)
     {
       [(AirDropHeaderView *)v10 directionalLayoutMargins];
       v12 = 0.0;
@@ -58,30 +58,30 @@
     }
 
     v14 = +[NSMutableArray array];
-    v15 = [(AirDropHeaderView *)v10 titleLabel];
-    v16 = [v15 leadingAnchor];
-    v17 = [(AirDropHeaderView *)v10 layoutMarginsGuide];
-    v18 = [v17 leadingAnchor];
-    v19 = [v16 constraintEqualToAnchor:v18];
+    titleLabel2 = [(AirDropHeaderView *)v10 titleLabel];
+    leadingAnchor = [titleLabel2 leadingAnchor];
+    layoutMarginsGuide = [(AirDropHeaderView *)v10 layoutMarginsGuide];
+    leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+    v19 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     [v14 addObject:v19];
 
-    v20 = [(AirDropHeaderView *)v10 titleLabel];
-    v21 = [v20 trailingAnchor];
-    v22 = [(AirDropHeaderView *)v10 layoutMarginsGuide];
-    v23 = [v22 trailingAnchor];
-    v24 = [v21 constraintEqualToAnchor:v23];
+    titleLabel3 = [(AirDropHeaderView *)v10 titleLabel];
+    trailingAnchor = [titleLabel3 trailingAnchor];
+    layoutMarginsGuide2 = [(AirDropHeaderView *)v10 layoutMarginsGuide];
+    trailingAnchor2 = [layoutMarginsGuide2 trailingAnchor];
+    v24 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     [v14 addObject:v24];
 
-    v25 = [(AirDropHeaderView *)v10 titleLabel];
-    v26 = [v25 topAnchor];
-    v27 = [(AirDropHeaderView *)v10 topAnchor];
-    v28 = [v26 constraintEqualToAnchor:v27 constant:v13];
+    titleLabel4 = [(AirDropHeaderView *)v10 titleLabel];
+    topAnchor = [titleLabel4 topAnchor];
+    topAnchor2 = [(AirDropHeaderView *)v10 topAnchor];
+    v28 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:v13];
     [v14 addObject:v28];
 
-    v29 = [(AirDropHeaderView *)v10 titleLabel];
-    v30 = [v29 bottomAnchor];
-    v31 = [(AirDropHeaderView *)v10 bottomAnchor];
-    v32 = [v30 constraintEqualToAnchor:v31 constant:v12];
+    titleLabel5 = [(AirDropHeaderView *)v10 titleLabel];
+    bottomAnchor = [titleLabel5 bottomAnchor];
+    bottomAnchor2 = [(AirDropHeaderView *)v10 bottomAnchor];
+    v32 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:v12];
     [v14 addObject:v32];
 
     [NSLayoutConstraint activateConstraints:v14];

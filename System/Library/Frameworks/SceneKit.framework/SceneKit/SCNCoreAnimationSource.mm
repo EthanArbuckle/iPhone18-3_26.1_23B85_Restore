@@ -2,7 +2,7 @@
 - (BOOL)isOpaque;
 - (id)textureSource;
 - (void)dealloc;
-- (void)setLayer:(id)a3;
+- (void)setLayer:(id)layer;
 @end
 
 @implementation SCNCoreAnimationSource
@@ -16,9 +16,9 @@
 
 - (BOOL)isOpaque
 {
-  v2 = [(SCNCoreAnimationSource *)self layer];
+  layer = [(SCNCoreAnimationSource *)self layer];
 
-  return [(CALayer *)v2 isOpaque];
+  return [(CALayer *)layer isOpaque];
 }
 
 - (void)dealloc
@@ -28,13 +28,13 @@
   [(SCNCoreAnimationSource *)&v3 dealloc];
 }
 
-- (void)setLayer:(id)a3
+- (void)setLayer:(id)layer
 {
   layer = self->_layer;
-  if (layer != a3)
+  if (layer != layer)
   {
 
-    self->_layer = a3;
+    self->_layer = layer;
   }
 }
 

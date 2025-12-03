@@ -16,7 +16,7 @@
     if (os_log_type_enabled(analyticsLogHandle, OS_LOG_TYPE_DEBUG))
     {
       v8 = 134217984;
-      v9 = self;
+      selfCopy = self;
       _os_log_impl(&dword_23255B000, v3, OS_LOG_TYPE_DEBUG, "netanalyticsdebug: %p stopwatch has double activation?!", &v8, 0xCu);
     }
 
@@ -25,12 +25,12 @@
 
   else
   {
-    v5 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     start = self->start;
-    self->start = v5;
+    self->start = date;
     v7 = *MEMORY[0x277D85DE8];
 
-    MEMORY[0x2821F96F8](v5, start);
+    MEMORY[0x2821F96F8](date, start);
   }
 }
 
@@ -38,8 +38,8 @@
 {
   if (self->start)
   {
-    v3 = [MEMORY[0x277CBEAA8] date];
-    [v3 timeIntervalSinceDate:self->start];
+    date = [MEMORY[0x277CBEAA8] date];
+    [date timeIntervalSinceDate:self->start];
     self->cumul = v4 + self->cumul;
     start = self->start;
     self->start = 0;
@@ -55,8 +55,8 @@
     return 0.0;
   }
 
-  v3 = [MEMORY[0x277CBEAA8] date];
-  [v3 timeIntervalSinceDate:self->start];
+  date = [MEMORY[0x277CBEAA8] date];
+  [date timeIntervalSinceDate:self->start];
   v5 = v4;
 
   return v5;

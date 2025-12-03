@@ -1,17 +1,17 @@
 @interface LKLogEventController
 + (id)loginDetailsPredicate;
-- (BOOL)_isKeychainLog:(id)a3;
+- (BOOL)_isKeychainLog:(id)log;
 - (BOOL)_needToParseSecurityLogs;
 - (LKLogEventController)init;
 - (id)logEventHandler;
-- (id)loginDetailsWithStartDate:(id)a3 logArchivePath:(id)a4;
-- (void)_handleKeychainItemEventFromLogEvent:(id)a3;
-- (void)_parseBuddLog:(id)a3;
-- (void)_parseKeychainLog:(id)a3;
-- (void)_parseSpringBoardLog:(id)a3;
-- (void)_parseUserManagementFrameworkLog:(id)a3;
-- (void)enumurateLogEventsSynchronouslyFromDate:(id)a3 predicate:(id)a4 logEventHandler:(id)a5;
-- (void)enumuratePersistentLogsSynchronouslyFromDate:(id)a3 logArchivePath:(id)a4 predicate:(id)a5 logEventHandler:(id)a6;
+- (id)loginDetailsWithStartDate:(id)date logArchivePath:(id)path;
+- (void)_handleKeychainItemEventFromLogEvent:(id)event;
+- (void)_parseBuddLog:(id)log;
+- (void)_parseKeychainLog:(id)log;
+- (void)_parseSpringBoardLog:(id)log;
+- (void)_parseUserManagementFrameworkLog:(id)log;
+- (void)enumurateLogEventsSynchronouslyFromDate:(id)date predicate:(id)predicate logEventHandler:(id)handler;
+- (void)enumuratePersistentLogsSynchronouslyFromDate:(id)date logArchivePath:(id)path predicate:(id)predicate logEventHandler:(id)handler;
 @end
 
 @implementation LKLogEventController
@@ -150,10 +150,10 @@ void __39__LKLogEventController_logEventHandler__block_invoke(uint64_t a1, void 
   }
 }
 
-- (void)_parseBuddLog:(id)a3
+- (void)_parseBuddLog:(id)log
 {
-  v4 = a3;
-  if ([v4 containsMessage:@"Buddy: Starting EMCS Recovery..."])
+  logCopy = log;
+  if ([logCopy containsMessage:@"Buddy: Starting EMCS Recovery..."])
   {
     v5 = LKLogDefault;
     if (os_log_type_enabled(LKLogDefault, OS_LOG_TYPE_DEFAULT))
@@ -162,23 +162,23 @@ void __39__LKLogEventController_logEventHandler__block_invoke(uint64_t a1, void 
       _os_log_impl(&dword_25618F000, v5, OS_LOG_TYPE_DEFAULT, "LoginDetails: EMCS Recovery started", buf, 2u);
     }
 
-    v6 = objc_opt_new();
-    v7 = [v4 date];
-    [v6 setStartTime:v7];
+    recoverEMCSOperation = objc_opt_new();
+    date = [logCopy date];
+    [recoverEMCSOperation setStartTime:date];
 
-    v8 = [(LKLogEventController *)self switchOperation];
-    [v8 setRecoverEMCSOperation:v6];
+    switchOperation = [(LKLogEventController *)self switchOperation];
+    [switchOperation setRecoverEMCSOperation:recoverEMCSOperation];
     goto LABEL_10;
   }
 
-  if ([v4 containsMessage:@"Buddy: EMCS recovery completed"])
+  if ([logCopy containsMessage:@"Buddy: EMCS recovery completed"])
   {
-    v9 = [(LKLogEventController *)self switchOperation];
-    v6 = [v9 recoverEMCSOperation];
+    switchOperation2 = [(LKLogEventController *)self switchOperation];
+    recoverEMCSOperation = [switchOperation2 recoverEMCSOperation];
 
     v10 = LKLogDefault;
     v11 = os_log_type_enabled(LKLogDefault, OS_LOG_TYPE_DEFAULT);
-    if (!v6)
+    if (!recoverEMCSOperation)
     {
       if (v11)
       {
@@ -195,65 +195,65 @@ void __39__LKLogEventController_logEventHandler__block_invoke(uint64_t a1, void 
       _os_log_impl(&dword_25618F000, v10, OS_LOG_TYPE_DEFAULT, "LoginDetails: EMCS Recovery ended", v15, 2u);
     }
 
-    v12 = [v4 date];
-    [v6 setEndTime:v12];
+    date2 = [logCopy date];
+    [recoverEMCSOperation setEndTime:date2];
 
-    v8 = [v6 endTime];
-    v13 = [v6 startTime];
-    [v8 timeIntervalSinceDate:v13];
-    [v6 setDuration:?];
+    switchOperation = [recoverEMCSOperation endTime];
+    startTime = [recoverEMCSOperation startTime];
+    [switchOperation timeIntervalSinceDate:startTime];
+    [recoverEMCSOperation setDuration:?];
 
 LABEL_10:
 LABEL_11:
   }
 }
 
-- (void)_parseSpringBoardLog:(id)a3
+- (void)_parseSpringBoardLog:(id)log
 {
-  v23 = a3;
-  if (![v23 containsMessage:@"Startup transition completed."])
+  logCopy = log;
+  if (![logCopy containsMessage:@"Startup transition completed."])
   {
     goto LABEL_9;
   }
 
-  v4 = [v23 date];
-  v5 = [(LKLogEventController *)self switchOperation];
-  [v5 setEndTime:v4];
+  date = [logCopy date];
+  switchOperation = [(LKLogEventController *)self switchOperation];
+  [switchOperation setEndTime:date];
 
-  v6 = [(LKLogEventController *)self switchOperation];
-  v7 = [v6 endTime];
-  if (!v7)
+  switchOperation2 = [(LKLogEventController *)self switchOperation];
+  endTime = [switchOperation2 endTime];
+  if (!endTime)
   {
     goto LABEL_5;
   }
 
-  v8 = v7;
-  v9 = [(LKLogEventController *)self switchOperation];
-  v10 = [v9 startTime];
+  v8 = endTime;
+  switchOperation3 = [(LKLogEventController *)self switchOperation];
+  startTime = [switchOperation3 startTime];
 
-  if (v10)
+  if (startTime)
   {
-    v6 = [(LKLogEventController *)self switchOperation];
-    v11 = [v6 endTime];
-    v12 = [(LKLogEventController *)self switchOperation];
-    v13 = [v12 startTime];
-    [v11 timeIntervalSinceDate:v13];
+    switchOperation2 = [(LKLogEventController *)self switchOperation];
+    endTime2 = [switchOperation2 endTime];
+    switchOperation4 = [(LKLogEventController *)self switchOperation];
+    startTime2 = [switchOperation4 startTime];
+    [endTime2 timeIntervalSinceDate:startTime2];
     v15 = v14;
-    v16 = [(LKLogEventController *)self switchOperation];
-    [v16 setDuration:v15];
+    switchOperation5 = [(LKLogEventController *)self switchOperation];
+    [switchOperation5 setDuration:v15];
 
 LABEL_5:
   }
 
-  v17 = [(LKLogEventController *)self switchOperation];
-  v18 = [v17 switchType];
+  switchOperation6 = [(LKLogEventController *)self switchOperation];
+  switchType = [switchOperation6 switchType];
 
-  if (v18)
+  if (switchType)
   {
-    v19 = [(LKLogEventController *)self switchOperationsMutableArray];
-    v20 = [(LKLogEventController *)self switchOperation];
-    v21 = [v20 dictionary];
-    [v19 addObject:v21];
+    switchOperationsMutableArray = [(LKLogEventController *)self switchOperationsMutableArray];
+    switchOperation7 = [(LKLogEventController *)self switchOperation];
+    dictionary = [switchOperation7 dictionary];
+    [switchOperationsMutableArray addObject:dictionary];
   }
 
   v22 = objc_opt_new();
@@ -264,62 +264,62 @@ LABEL_9:
   MEMORY[0x2821F96F8]();
 }
 
-- (void)_parseUserManagementFrameworkLog:(id)a3
+- (void)_parseUserManagementFrameworkLog:(id)log
 {
-  v9 = a3;
-  if ([v9 containsMessage:@"switch to user"])
+  logCopy = log;
+  if ([logCopy containsMessage:@"switch to user"])
   {
-    v4 = v9;
+    v4 = logCopy;
     v5 = 1;
   }
 
-  else if ([v9 containsMessage:@"direct switch to User"])
+  else if ([logCopy containsMessage:@"direct switch to User"])
   {
-    v4 = v9;
+    v4 = logCopy;
     v5 = 3;
   }
 
-  else if ([v9 containsMessage:@"Logout to LoginSession Screen"])
+  else if ([logCopy containsMessage:@"Logout to LoginSession Screen"])
   {
-    v4 = v9;
+    v4 = logCopy;
     v5 = 2;
   }
 
   else
   {
-    if (![v9 containsMessage:@"switch to login screen"])
+    if (![logCopy containsMessage:@"switch to login screen"])
     {
       goto LABEL_10;
     }
 
-    v4 = v9;
+    v4 = logCopy;
     v5 = 4;
   }
 
-  v6 = [v4 date];
-  v7 = [(LKLogEventController *)self switchOperation];
-  [v7 setStartTime:v6];
+  date = [v4 date];
+  switchOperation = [(LKLogEventController *)self switchOperation];
+  [switchOperation setStartTime:date];
 
-  v8 = [(LKLogEventController *)self switchOperation];
-  [v8 setSwitchType:v5];
+  switchOperation2 = [(LKLogEventController *)self switchOperation];
+  [switchOperation2 setSwitchType:v5];
 
 LABEL_10:
 }
 
-- (void)_parseKeychainLog:(id)a3
+- (void)_parseKeychainLog:(id)log
 {
-  v12 = a3;
-  if ([v12 containsMessage:@"SecItemAdd_ios"])
+  logCopy = log;
+  if ([logCopy containsMessage:@"SecItemAdd_ios"])
   {
-    [(LKLogEventController *)self _handleKeychainItemEventFromLogEvent:v12];
+    [(LKLogEventController *)self _handleKeychainItemEventFromLogEvent:logCopy];
     goto LABEL_11;
   }
 
-  if ([v12 containsMessage:@"inserted <"])
+  if ([logCopy containsMessage:@"inserted <"])
   {
-    v4 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v12, "activityIdentifier")}];
-    v5 = [(LKLogEventController *)self mutableKeychainItemsAddedByActivityID];
-    v6 = [v5 objectForKeyedSubscript:v4];
+    v4 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(logCopy, "activityIdentifier")}];
+    mutableKeychainItemsAddedByActivityID = [(LKLogEventController *)self mutableKeychainItemsAddedByActivityID];
+    v6 = [mutableKeychainItemsAddedByActivityID objectForKeyedSubscript:v4];
 
     if (!v6)
     {
@@ -328,26 +328,26 @@ LABEL_10:
       goto LABEL_11;
     }
 
-    v7 = [v12 composedMessage];
-    if (([v7 containsString:@"vwht=null"] & 1) == 0)
+    composedMessage = [logCopy composedMessage];
+    if (([composedMessage containsString:@"vwht=null"] & 1) == 0)
     {
-      v8 = [v12 composedMessage];
-      v9 = [v8 containsString:@"sysb=null"];
+      composedMessage2 = [logCopy composedMessage];
+      v9 = [composedMessage2 containsString:@"sysb=null"];
 
       if (!v9)
       {
 LABEL_9:
-        v11 = [(LKLogEventController *)self mutableKeychainItemsAddedByActivityID];
-        [v11 setObject:0 forKeyedSubscript:v4];
+        mutableKeychainItemsAddedByActivityID2 = [(LKLogEventController *)self mutableKeychainItemsAddedByActivityID];
+        [mutableKeychainItemsAddedByActivityID2 setObject:0 forKeyedSubscript:v4];
 
         goto LABEL_10;
       }
 
-      v10 = [v12 composedMessage];
-      [v6 setKeychainItemAdded:v10];
+      composedMessage3 = [logCopy composedMessage];
+      [v6 setKeychainItemAdded:composedMessage3];
 
-      v7 = [(LKLogEventController *)self switchOperation];
-      [v7 addKeychainItemAdditionEvent:v6];
+      composedMessage = [(LKLogEventController *)self switchOperation];
+      [composedMessage addKeychainItemAdditionEvent:v6];
     }
 
     goto LABEL_9;
@@ -356,17 +356,17 @@ LABEL_9:
 LABEL_11:
 }
 
-- (BOOL)_isKeychainLog:(id)a3
+- (BOOL)_isKeychainLog:(id)log
 {
-  v3 = a3;
-  if ([v3 loggedByProcess:@"securityd"])
+  logCopy = log;
+  if ([logCopy loggedByProcess:@"securityd"])
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 loggedByFramework:@"Security"];
+    v4 = [logCopy loggedByFramework:@"Security"];
   }
 
   return v4;
@@ -374,14 +374,14 @@ LABEL_11:
 
 - (BOOL)_needToParseSecurityLogs
 {
-  v5 = [(LKLogEventController *)self switchOperation];
-  v6 = [v5 recoverEMCSOperation];
-  if (v6)
+  switchOperation = [(LKLogEventController *)self switchOperation];
+  recoverEMCSOperation = [switchOperation recoverEMCSOperation];
+  if (recoverEMCSOperation)
   {
-    v2 = [(LKLogEventController *)self switchOperation];
-    v3 = [v2 recoverEMCSOperation];
-    v7 = [v3 endTime];
-    if (v7)
+    switchOperation2 = [(LKLogEventController *)self switchOperation];
+    recoverEMCSOperation2 = [switchOperation2 recoverEMCSOperation];
+    endTime = [recoverEMCSOperation2 endTime];
+    if (endTime)
     {
       v8 = 1;
 LABEL_9:
@@ -390,21 +390,21 @@ LABEL_9:
     }
   }
 
-  v9 = [(LKLogEventController *)self switchOperation];
-  if ([v9 switchType] == 2)
+  switchOperation3 = [(LKLogEventController *)self switchOperation];
+  if ([switchOperation3 switchType] == 2)
   {
     v8 = 1;
   }
 
   else
   {
-    v10 = [(LKLogEventController *)self switchOperation];
-    v8 = [v10 switchType] == 3;
+    switchOperation4 = [(LKLogEventController *)self switchOperation];
+    v8 = [switchOperation4 switchType] == 3;
   }
 
-  if (v6)
+  if (recoverEMCSOperation)
   {
-    v7 = 0;
+    endTime = 0;
     goto LABEL_9;
   }
 
@@ -413,43 +413,43 @@ LABEL_10:
   return v8;
 }
 
-- (void)_handleKeychainItemEventFromLogEvent:(id)a3
+- (void)_handleKeychainItemEventFromLogEvent:(id)event
 {
-  v4 = a3;
-  v15 = [LKLogKeychainItemAdditionEvent eventFromLKLogEvent:v4];
-  v5 = [(LKLogEventController *)self mutableKeychainItemsAddedByActivityID];
+  eventCopy = event;
+  v15 = [LKLogKeychainItemAdditionEvent eventFromLKLogEvent:eventCopy];
+  mutableKeychainItemsAddedByActivityID = [(LKLogEventController *)self mutableKeychainItemsAddedByActivityID];
   v6 = MEMORY[0x277CCABB0];
-  v7 = [v4 activityIdentifier];
+  activityIdentifier = [eventCopy activityIdentifier];
 
-  *&v8 = v7;
+  *&v8 = activityIdentifier;
   v9 = [v6 numberWithFloat:v8];
-  [v5 setObject:v15 forKeyedSubscript:v9];
+  [mutableKeychainItemsAddedByActivityID setObject:v15 forKeyedSubscript:v9];
 
-  v10 = [(LKLogEventController *)self switchOperation];
-  v11 = [v10 recoverEMCSOperation];
+  switchOperation = [(LKLogEventController *)self switchOperation];
+  recoverEMCSOperation = [switchOperation recoverEMCSOperation];
 
-  if (v11)
+  if (recoverEMCSOperation)
   {
-    v12 = [v11 startTime];
-    if (v12)
+    startTime = [recoverEMCSOperation startTime];
+    if (startTime)
     {
-      v13 = v12;
-      v14 = [v11 endTime];
+      v13 = startTime;
+      endTime = [recoverEMCSOperation endTime];
 
-      if (!v14)
+      if (!endTime)
       {
-        [v11 setRecoveredKeychainItemCount:{objc_msgSend(v11, "recoveredKeychainItemCount") + 1}];
+        [recoverEMCSOperation setRecoveredKeychainItemCount:{objc_msgSend(recoverEMCSOperation, "recoveredKeychainItemCount") + 1}];
       }
     }
   }
 }
 
-- (void)enumurateLogEventsSynchronouslyFromDate:(id)a3 predicate:(id)a4 logEventHandler:(id)a5
+- (void)enumurateLogEventsSynchronouslyFromDate:(id)date predicate:(id)predicate logEventHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [MEMORY[0x277D24438] localStore];
+  dateCopy = date;
+  predicateCopy = predicate;
+  handlerCopy = handler;
+  localStore = [MEMORY[0x277D24438] localStore];
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -461,7 +461,7 @@ LABEL_10:
   v22[2] = __90__LKLogEventController_enumurateLogEventsSynchronouslyFromDate_predicate_logEventHandler___block_invoke;
   v22[3] = &unk_279826218;
   v22[4] = &v23;
-  [v11 prepareWithCompletionHandler:v22];
+  [localStore prepareWithCompletionHandler:v22];
   v12 = dispatch_semaphore_create(0);
   [(LKLogEventController *)self setDynamicdsema:v12];
 
@@ -472,13 +472,13 @@ LABEL_10:
   enumurateLogEventsSynchronouslyFromDate_predicate_logEventHandler__stream = v14;
 
   [enumurateLogEventsSynchronouslyFromDate_predicate_logEventHandler__stream setFlags:21];
-  [enumurateLogEventsSynchronouslyFromDate_predicate_logEventHandler__stream setFilterPredicate:v9];
+  [enumurateLogEventsSynchronouslyFromDate_predicate_logEventHandler__stream setFilterPredicate:predicateCopy];
   v16 = enumurateLogEventsSynchronouslyFromDate_predicate_logEventHandler__stream;
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __90__LKLogEventController_enumurateLogEventsSynchronouslyFromDate_predicate_logEventHandler___block_invoke_2;
   v20[3] = &unk_279826240;
-  v17 = v10;
+  v17 = handlerCopy;
   v21 = v17;
   [v16 setEventHandler:v20];
   v19[0] = MEMORY[0x277D85DD0];
@@ -487,9 +487,9 @@ LABEL_10:
   v19[3] = &unk_279826268;
   v19[4] = self;
   [enumurateLogEventsSynchronouslyFromDate_predicate_logEventHandler__stream setInvalidationHandler:v19];
-  [enumurateLogEventsSynchronouslyFromDate_predicate_logEventHandler__stream activateStreamFromDate:v8];
-  v18 = [(LKLogEventController *)self dynamicdsema];
-  dispatch_semaphore_wait(v18, 0xFFFFFFFFFFFFFFFFLL);
+  [enumurateLogEventsSynchronouslyFromDate_predicate_logEventHandler__stream activateStreamFromDate:dateCopy];
+  dynamicdsema = [(LKLogEventController *)self dynamicdsema];
+  dispatch_semaphore_wait(dynamicdsema, 0xFFFFFFFFFFFFFFFFLL);
 
   _Block_object_dispose(&v23, 8);
 }
@@ -524,18 +524,18 @@ void __90__LKLogEventController_enumurateLogEventsSynchronouslyFromDate_predicat
   dispatch_semaphore_signal(v1);
 }
 
-- (void)enumuratePersistentLogsSynchronouslyFromDate:(id)a3 logArchivePath:(id)a4 predicate:(id)a5 logEventHandler:(id)a6
+- (void)enumuratePersistentLogsSynchronouslyFromDate:(id)date logArchivePath:(id)path predicate:(id)predicate logEventHandler:(id)handler
 {
   v21[1] = *MEMORY[0x277D85DE8];
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  handlerCopy = handler;
+  predicateCopy = predicate;
+  pathCopy = path;
+  dateCopy = date;
   v13 = objc_opt_new();
-  [v13 setLogArchive:v11];
+  [v13 setLogArchive:pathCopy];
 
   v14 = objc_alloc(MEMORY[0x277CCA920]);
-  v21[0] = v10;
+  v21[0] = predicateCopy;
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:1];
   v16 = [v14 initWithType:1 subpredicates:v15];
   [v13 setPredicate:v16];
@@ -545,9 +545,9 @@ void __90__LKLogEventController_enumurateLogEventsSynchronouslyFromDate_predicat
   v19[1] = 3221225472;
   v19[2] = __110__LKLogEventController_enumuratePersistentLogsSynchronouslyFromDate_logArchivePath_predicate_logEventHandler___block_invoke;
   v19[3] = &unk_279826290;
-  v20 = v9;
-  v17 = v9;
-  [v13 enumerateFromStartDate:v12 toEndDate:0 withBlock:v19];
+  v20 = handlerCopy;
+  v17 = handlerCopy;
+  [v13 enumerateFromStartDate:dateCopy toEndDate:0 withBlock:v19];
 
   v18 = *MEMORY[0x277D85DE8];
 }
@@ -578,15 +578,15 @@ uint64_t __110__LKLogEventController_enumuratePersistentLogsSynchronouslyFromDat
   return 1;
 }
 
-- (id)loginDetailsWithStartDate:(id)a3 logArchivePath:(id)a4
+- (id)loginDetailsWithStartDate:(id)date logArchivePath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  if (v6)
+  pathCopy = path;
+  dateCopy = date;
+  if (pathCopy)
   {
-    v8 = [objc_opt_class() loginDetailsPredicate];
-    v9 = [(LKLogEventController *)self logEventHandler];
-    [(LKLogEventController *)self enumuratePersistentLogsSynchronouslyFromDate:v7 logArchivePath:v6 predicate:v8 logEventHandler:v9];
+    loginDetailsPredicate = [objc_opt_class() loginDetailsPredicate];
+    logEventHandler = [(LKLogEventController *)self logEventHandler];
+    [(LKLogEventController *)self enumuratePersistentLogsSynchronouslyFromDate:dateCopy logArchivePath:pathCopy predicate:loginDetailsPredicate logEventHandler:logEventHandler];
   }
 
   else
@@ -594,13 +594,13 @@ uint64_t __110__LKLogEventController_enumuratePersistentLogsSynchronouslyFromDat
     v10 = objc_opt_new();
     [(LKLogEventController *)self setLogEnumarationEndTime:v10];
 
-    v8 = [objc_opt_class() loginDetailsPredicate];
-    v9 = [(LKLogEventController *)self logEventHandler];
-    [(LKLogEventController *)self enumurateLogEventsSynchronouslyFromDate:v7 predicate:v8 logEventHandler:v9];
+    loginDetailsPredicate = [objc_opt_class() loginDetailsPredicate];
+    logEventHandler = [(LKLogEventController *)self logEventHandler];
+    [(LKLogEventController *)self enumurateLogEventsSynchronouslyFromDate:dateCopy predicate:loginDetailsPredicate logEventHandler:logEventHandler];
   }
 
-  v11 = [(LKLogEventController *)self switchOperationsMutableArray];
-  v12 = [v11 copy];
+  switchOperationsMutableArray = [(LKLogEventController *)self switchOperationsMutableArray];
+  v12 = [switchOperationsMutableArray copy];
 
   return v12;
 }

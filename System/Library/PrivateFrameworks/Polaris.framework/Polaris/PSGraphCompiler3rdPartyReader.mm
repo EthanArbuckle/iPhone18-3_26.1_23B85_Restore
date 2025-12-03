@@ -1,18 +1,18 @@
 @interface PSGraphCompiler3rdPartyReader
-- (PSGraphCompiler3rdPartyReader)initWithTransitionManager:(id)a3 withContext:(id)a4;
+- (PSGraphCompiler3rdPartyReader)initWithTransitionManager:(id)manager withContext:(id)context;
 - (PSTransitionManager3rdPartyReader)transitionManager;
-- (void)createReadersForTransitionBlock:(id)a3;
+- (void)createReadersForTransitionBlock:(id)block;
 - (void)dealloc;
-- (void)destroyReadersForTransitionBlock:(id)a3;
-- (void)populateReaderOpts:(PSResourceManagerOptions *)a3 forKey:(id)a4 forGraph:(id)a5 withCapacity:(unint64_t)a6;
+- (void)destroyReadersForTransitionBlock:(id)block;
+- (void)populateReaderOpts:(PSResourceManagerOptions *)opts forKey:(id)key forGraph:(id)graph withCapacity:(unint64_t)capacity;
 @end
 
 @implementation PSGraphCompiler3rdPartyReader
 
-- (PSGraphCompiler3rdPartyReader)initWithTransitionManager:(id)a3 withContext:(id)a4
+- (PSGraphCompiler3rdPartyReader)initWithTransitionManager:(id)manager withContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  contextCopy = context;
   v12.receiver = self;
   v12.super_class = PSGraphCompiler3rdPartyReader;
   v8 = [(PSGraphCompiler3rdPartyReader *)&v12 init];
@@ -22,8 +22,8 @@
     retainedReaderBlocks = v8->_retainedReaderBlocks;
     v8->_retainedReaderBlocks = v9;
 
-    objc_storeWeak(&v8->_transitionManager, v6);
-    objc_storeStrong(&v8->_context, a4);
+    objc_storeWeak(&v8->_transitionManager, managerCopy);
+    objc_storeStrong(&v8->_context, context);
     ps_prm_create_manager_for_3rdParty_session();
   }
 
@@ -38,15 +38,15 @@
   [(PSGraphCompiler3rdPartyReader *)&v3 dealloc];
 }
 
-- (void)createReadersForTransitionBlock:(id)a3
+- (void)createReadersForTransitionBlock:(id)block
 {
   v62 = *MEMORY[0x277D85DE8];
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
-  v38 = a3;
-  obj = [v38 addedGraphs];
+  blockCopy = block;
+  obj = [blockCopy addedGraphs];
   v41 = [obj countByEnumeratingWithState:&v50 objects:v61 count:16];
   if (v41)
   {
@@ -68,8 +68,8 @@
         v47 = 0u;
         v48 = 0u;
         v49 = 0u;
-        v44 = [v6 readers];
-        v7 = [v44 countByEnumeratingWithState:&v46 objects:v60 count:16];
+        readers = [v6 readers];
+        v7 = [readers countByEnumeratingWithState:&v46 objects:v60 count:16];
         if (v7)
         {
           v8 = v7;
@@ -82,66 +82,66 @@
             {
               if (*v47 != v9)
               {
-                objc_enumerationMutation(v44);
+                objc_enumerationMutation(readers);
               }
 
               v11 = *(*(&v46 + 1) + 8 * v10);
               v12 = __PLSLogSharedInstance();
               if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
               {
-                v13 = [v11 name];
-                v14 = [v13 UTF8String];
-                v15 = [v11 input];
-                [v15 resourceKey];
-                v16 = self;
+                name = [v11 name];
+                uTF8String = [name UTF8String];
+                input = [v11 input];
+                [input resourceKey];
+                selfCopy = self;
                 v17 = v6;
                 v19 = v18 = v9;
-                v20 = [v19 UTF8String];
+                uTF8String2 = [v19 UTF8String];
                 *buf = 136315394;
-                v55 = v14;
+                v55 = uTF8String;
                 v56 = 2080;
-                *v57 = v20;
+                *v57 = uTF8String2;
                 _os_log_impl(&dword_25EA3A000, v12, OS_LOG_TYPE_DEFAULT, "Creating PSReader (%s) for resource key %s.", buf, 0x16u);
 
                 v9 = v18;
                 v6 = v17;
-                self = v16;
+                self = selfCopy;
                 v8 = v43;
 
                 v4 = 0x281E7A000uLL;
               }
 
-              v21 = ps_prm_opts_create();
-              v22 = [v11 input];
-              v23 = [v22 resolvedResourceKey];
+              context = ps_prm_opts_create();
+              input2 = [v11 input];
+              resolvedResourceKey = [input2 resolvedResourceKey];
 
-              v24 = [v11 input];
-              -[PSGraphCompiler3rdPartyReader populateReaderOpts:forKey:forGraph:withCapacity:](self, "populateReaderOpts:forKey:forGraph:withCapacity:", v21, v23, v6, [v24 capacity]);
+              input3 = [v11 input];
+              -[PSGraphCompiler3rdPartyReader populateReaderOpts:forKey:forGraph:withCapacity:](self, "populateReaderOpts:forKey:forGraph:withCapacity:", context, resolvedResourceKey, v6, [input3 capacity]);
 
-              v25 = [objc_alloc((v4 + 2896)) init3rdPartyReader:v11 graph:v6 readerOptions:v21 withPRMManager:self->_prm_mgr];
+              v25 = [objc_alloc((v4 + 2896)) init3rdPartyReader:v11 graph:v6 readerOptions:context withPRMManager:self->_prm_mgr];
               if (*(*[v11 getContext] + 8) != 1)
               {
                 [PSGraphCompiler3rdPartyReader createReadersForTransitionBlock:buf];
 LABEL_21:
                 v45 = 0;
-                v27 = [v11 name];
-                v28 = [v27 UTF8String];
-                v29 = v21 + 6;
+                name2 = [v11 name];
+                uTF8String3 = [name2 UTF8String];
+                v29 = context + 6;
                 v30 = atomic_load(v29);
-                asprintf(&v45, "Unable to set reader (%s) state to _READY. Current state %d", v28, v30);
+                asprintf(&v45, "Unable to set reader (%s) state to _READY. Current state %d", uTF8String3, v30);
 
                 v31 = __PLSLogSharedInstance();
                 if (os_log_type_enabled(v31, OS_LOG_TYPE_FAULT))
                 {
-                  v32 = [v11 name];
-                  v33 = [v32 UTF8String];
+                  name3 = [v11 name];
+                  uTF8String4 = [name3 UTF8String];
                   v34 = atomic_load(v29);
                   *buf = 136315906;
                   v55 = "[PSGraphCompiler3rdPartyReader createReadersForTransitionBlock:]";
                   v56 = 1024;
                   *v57 = 87;
                   *&v57[4] = 2080;
-                  *&v57[6] = v33;
+                  *&v57[6] = uTF8String4;
                   v58 = 1024;
                   v59 = v34;
                   _os_log_impl(&dword_25EA3A000, v31, OS_LOG_TYPE_FAULT, "%s:%d Unable to set reader (%s) state to _READY. Current state %d", buf, 0x22u);
@@ -171,8 +171,8 @@ LABEL_21:
               }
 
               [(NSMapTable *)self->_retainedReaderBlocks setObject:v25 forKey:v11];
-              ps_prm_opts_destroy(v21);
-              v21 = [v11 context];
+              ps_prm_opts_destroy(context);
+              context = [v11 context];
               if (ps_reader_state_update())
               {
                 goto LABEL_21;
@@ -182,7 +182,7 @@ LABEL_21:
             }
 
             while (v8 != v10);
-            v8 = [v44 countByEnumeratingWithState:&v46 objects:v60 count:16];
+            v8 = [readers countByEnumeratingWithState:&v46 objects:v60 count:16];
           }
 
           while (v8);
@@ -201,10 +201,10 @@ LABEL_21:
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)destroyReadersForTransitionBlock:(id)a3
+- (void)destroyReadersForTransitionBlock:(id)block
 {
   v79 = *MEMORY[0x277D85DE8];
-  v48 = a3;
+  blockCopy = block;
   v4 = __PLSLogSharedInstance();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -216,12 +216,12 @@ LABEL_21:
   v68 = 0u;
   v65 = 0u;
   v66 = 0u;
-  obj = [v48 removedGraphs];
+  obj = [blockCopy removedGraphs];
   v44 = [obj countByEnumeratingWithState:&v65 objects:v78 count:16];
   if (v44)
   {
     v43 = *v66;
-    v46 = self;
+    selfCopy = self;
     do
     {
       v5 = 0;
@@ -238,8 +238,8 @@ LABEL_21:
         v62 = 0u;
         v63 = 0u;
         v64 = 0u;
-        v47 = [v6 readers];
-        v51 = [v47 countByEnumeratingWithState:&v61 objects:v77 count:16];
+        readers = [v6 readers];
+        v51 = [readers countByEnumeratingWithState:&v61 objects:v77 count:16];
         if (v51)
         {
           v50 = *v62;
@@ -249,7 +249,7 @@ LABEL_21:
             {
               if (*v62 != v50)
               {
-                objc_enumerationMutation(v47);
+                objc_enumerationMutation(readers);
               }
 
               v8 = *(*(&v61 + 1) + 8 * i);
@@ -260,8 +260,8 @@ LABEL_21:
                 v60 = 0u;
                 v57 = 0u;
                 v58 = 0u;
-                v10 = [v48 addedGraphs];
-                v11 = [v10 countByEnumeratingWithState:&v57 objects:v76 count:16];
+                addedGraphs = [blockCopy addedGraphs];
+                v11 = [addedGraphs countByEnumeratingWithState:&v57 objects:v76 count:16];
                 if (v11)
                 {
                   v12 = v11;
@@ -273,7 +273,7 @@ LABEL_21:
                     {
                       if (*v58 != v13)
                       {
-                        objc_enumerationMutation(v10);
+                        objc_enumerationMutation(addedGraphs);
                       }
 
                       v15 = *(*(&v57 + 1) + 8 * j);
@@ -281,8 +281,8 @@ LABEL_21:
                       v54 = 0u;
                       v55 = 0u;
                       v56 = 0u;
-                      v16 = [v15 readers];
-                      v17 = [v16 countByEnumeratingWithState:&v53 objects:v75 count:16];
+                      readers2 = [v15 readers];
+                      v17 = [readers2 countByEnumeratingWithState:&v53 objects:v75 count:16];
                       if (v17)
                       {
                         v18 = v17;
@@ -293,7 +293,7 @@ LABEL_21:
                           {
                             if (*v54 != v19)
                             {
-                              objc_enumerationMutation(v16);
+                              objc_enumerationMutation(readers2);
                             }
 
                             if (v8 == *(*(&v53 + 1) + 8 * k))
@@ -302,19 +302,19 @@ LABEL_21:
                               v28 = __PLSLogSharedInstance();
                               if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
                               {
-                                v29 = [v8 name];
-                                v30 = [v29 UTF8String];
+                                name = [v8 name];
+                                uTF8String = [name UTF8String];
                                 *buf = 136380675;
-                                v70 = v30;
+                                v70 = uTF8String;
                                 _os_log_impl(&dword_25EA3A000, v28, OS_LOG_TYPE_DEFAULT, "Added PSReader already found for %{private}s. Continuing without deleting the current reader.", buf, 0xCu);
                               }
 
-                              self = v46;
+                              self = selfCopy;
                               goto LABEL_36;
                             }
                           }
 
-                          v18 = [v16 countByEnumeratingWithState:&v53 objects:v75 count:16];
+                          v18 = [readers2 countByEnumeratingWithState:&v53 objects:v75 count:16];
                           if (v18)
                           {
                             continue;
@@ -327,34 +327,34 @@ LABEL_21:
                       v13 = v49;
                     }
 
-                    v12 = [v10 countByEnumeratingWithState:&v57 objects:v76 count:16];
-                    self = v46;
+                    v12 = [addedGraphs countByEnumeratingWithState:&v57 objects:v76 count:16];
+                    self = selfCopy;
                   }
 
                   while (v12);
                 }
 
-                v21 = [v8 context];
+                context = [v8 context];
                 if (ps_reader_state_update())
                 {
                   v52 = 0;
-                  v32 = [v8 name];
-                  v33 = [v32 UTF8String];
-                  v34 = atomic_load((v21 + 24));
-                  asprintf(&v52, "Unable to set reader (%s) state to _UNAVAILABLE. Current state %d. Maybe a read is in progress?", v33, v34);
+                  name2 = [v8 name];
+                  uTF8String2 = [name2 UTF8String];
+                  v34 = atomic_load((context + 24));
+                  asprintf(&v52, "Unable to set reader (%s) state to _UNAVAILABLE. Current state %d. Maybe a read is in progress?", uTF8String2, v34);
 
                   v35 = __PLSLogSharedInstance();
                   if (os_log_type_enabled(v35, OS_LOG_TYPE_FAULT))
                   {
-                    v36 = [v8 name];
-                    v37 = [v36 UTF8String];
-                    v38 = atomic_load((v21 + 24));
+                    name3 = [v8 name];
+                    uTF8String3 = [name3 UTF8String];
+                    v38 = atomic_load((context + 24));
                     *buf = 136315906;
                     v70 = "[PSGraphCompiler3rdPartyReader destroyReadersForTransitionBlock:]";
                     v71 = 1024;
                     *v72 = 128;
                     *&v72[4] = 2080;
-                    *&v72[6] = v37;
+                    *&v72[6] = uTF8String3;
                     v73 = 1024;
                     v74 = v38;
                     _os_log_impl(&dword_25EA3A000, v35, OS_LOG_TYPE_FAULT, "%s:%d Unable to set reader (%s) state to _UNAVAILABLE. Current state %d. Maybe a read is in progress?", buf, 0x22u);
@@ -386,15 +386,15 @@ LABEL_21:
                 v22 = __PLSLogSharedInstance();
                 if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
                 {
-                  v23 = [v8 name];
-                  v24 = [v23 UTF8String];
-                  v25 = [v8 input];
-                  v26 = [v25 resourceKey];
-                  v27 = [v26 UTF8String];
+                  name4 = [v8 name];
+                  uTF8String4 = [name4 UTF8String];
+                  input = [v8 input];
+                  resourceKey = [input resourceKey];
+                  uTF8String5 = [resourceKey UTF8String];
                   *buf = 136380931;
-                  v70 = v24;
+                  v70 = uTF8String4;
                   v71 = 2081;
-                  *v72 = v27;
+                  *v72 = uTF8String5;
                   _os_log_impl(&dword_25EA3A000, v22, OS_LOG_TYPE_DEFAULT, "Deleting PSReader (%{private}s) for resource key %{private}s.", buf, 0x16u);
                 }
 
@@ -404,7 +404,7 @@ LABEL_21:
 LABEL_36:
             }
 
-            v51 = [v47 countByEnumeratingWithState:&v61 objects:v77 count:16];
+            v51 = [readers countByEnumeratingWithState:&v61 objects:v77 count:16];
           }
 
           while (v51);
@@ -423,14 +423,14 @@ LABEL_36:
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (void)populateReaderOpts:(PSResourceManagerOptions *)a3 forKey:(id)a4 forGraph:(id)a5 withCapacity:(unint64_t)a6
+- (void)populateReaderOpts:(PSResourceManagerOptions *)opts forKey:(id)key forGraph:(id)graph withCapacity:(unint64_t)capacity
 {
-  v16 = a4;
-  v10 = a5;
-  v11 = [(PSContext *)self->_context resourceStreamForKey:v16];
+  keyCopy = key;
+  graphCopy = graph;
+  v11 = [(PSContext *)self->_context resourceStreamForKey:keyCopy];
   if (!v11)
   {
-    [PSGraphCompiler3rdPartyReader populateReaderOpts:v16 forKey:? forGraph:? withCapacity:?];
+    [PSGraphCompiler3rdPartyReader populateReaderOpts:keyCopy forKey:? forGraph:? withCapacity:?];
     goto LABEL_8;
   }
 
@@ -438,25 +438,25 @@ LABEL_36:
   if (![v11 resourceClass])
   {
 LABEL_8:
-    [PSGraphCompiler3rdPartyReader populateReaderOpts:v16 forKey:? forGraph:? withCapacity:?];
+    [PSGraphCompiler3rdPartyReader populateReaderOpts:keyCopy forKey:? forGraph:? withCapacity:?];
     goto LABEL_9;
   }
 
   if (![v12 options])
   {
 LABEL_9:
-    v14 = [PSGraphCompiler3rdPartyReader populateReaderOpts:v16 forKey:? forGraph:? withCapacity:?];
+    v14 = [PSGraphCompiler3rdPartyReader populateReaderOpts:keyCopy forKey:? forGraph:? withCapacity:?];
     [(PSGraphCompiler3rdPartyReader *)v14 transitionManager];
     return;
   }
 
-  ps_prm_opts_set_return_capacity(a3, a6);
-  v13 = v16;
-  ps_prm_opts_set_resource_key(a3, [v16 UTF8String]);
-  ps_prm_opts_set_graph(a3, v10);
-  ps_prm_opts_set_resource_class(a3, [v12 resourceClass]);
-  ps_prm_opts_set_storage_mode(a3, [v12 options]);
-  ps_prm_opts_set_resource_metadata_type(a3, 2);
+  ps_prm_opts_set_return_capacity(opts, capacity);
+  v13 = keyCopy;
+  ps_prm_opts_set_resource_key(opts, [keyCopy UTF8String]);
+  ps_prm_opts_set_graph(opts, graphCopy);
+  ps_prm_opts_set_resource_class(opts, [v12 resourceClass]);
+  ps_prm_opts_set_storage_mode(opts, [v12 options]);
+  ps_prm_opts_set_resource_metadata_type(opts, 2);
 }
 
 - (PSTransitionManager3rdPartyReader)transitionManager

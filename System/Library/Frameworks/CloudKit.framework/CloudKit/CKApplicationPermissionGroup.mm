@@ -1,8 +1,8 @@
 @interface CKApplicationPermissionGroup
 - (CKApplicationPermissionGroup)init;
-- (CKApplicationPermissionGroup)initWithCoder:(id)a3;
+- (CKApplicationPermissionGroup)initWithCoder:(id)coder;
 - (id)CKPropertiesDescription;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CKApplicationPermissionGroup
@@ -26,9 +26,9 @@
   return v3;
 }
 
-- (CKApplicationPermissionGroup)initWithCoder:(id)a3
+- (CKApplicationPermissionGroup)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v27.receiver = self;
   v27.super_class = CKApplicationPermissionGroup;
   v5 = [(CKApplicationPermissionGroup *)&v27 init];
@@ -39,17 +39,17 @@
     v8 = objc_opt_class();
     v9 = objc_opt_class();
     v11 = objc_msgSend_setWithObjects_(v7, v10, v8, v9, 0);
-    v13 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v12, v11, @"containerIDs");
+    v13 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v12, v11, @"containerIDs");
     objc_msgSend_setContainerIDs_(v5, v14, v13);
 
     v15 = MEMORY[0x1E695DFD8];
     v16 = objc_opt_class();
     v17 = objc_opt_class();
     v19 = objc_msgSend_setWithObjects_(v15, v18, v16, v17, 0);
-    v21 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v20, v19, @"applicationBundleIDs");
+    v21 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v20, v19, @"applicationBundleIDs");
     objc_msgSend_setApplicationBundleIDs_(v5, v22, v21);
 
-    v24 = objc_msgSend_decodeInt64ForKey_(v4, v23, @"enabledPermissions");
+    v24 = objc_msgSend_decodeInt64ForKey_(coderCopy, v23, @"enabledPermissions");
     objc_msgSend_setEnabledPermissions_(v5, v25, v24);
     objc_autoreleasePoolPop(v6);
   }
@@ -57,18 +57,18 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v17 = a3;
+  coderCopy = coder;
   v4 = objc_autoreleasePoolPush();
   v7 = objc_msgSend_containerIDs(self, v5, v6);
-  objc_msgSend_encodeObject_forKey_(v17, v8, v7, @"containerIDs");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v8, v7, @"containerIDs");
 
   v11 = objc_msgSend_applicationBundleIDs(self, v9, v10);
-  objc_msgSend_encodeObject_forKey_(v17, v12, v11, @"applicationBundleIDs");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v12, v11, @"applicationBundleIDs");
 
   v15 = objc_msgSend_enabledPermissions(self, v13, v14);
-  objc_msgSend_encodeInt64_forKey_(v17, v16, v15, @"enabledPermissions");
+  objc_msgSend_encodeInt64_forKey_(coderCopy, v16, v15, @"enabledPermissions");
   objc_autoreleasePoolPop(v4);
 }
 

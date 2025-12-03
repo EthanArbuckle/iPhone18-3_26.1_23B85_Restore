@@ -1,8 +1,8 @@
 @interface PLManagedObjectContextList
 - (PLManagedObjectContextList)init;
 - (id)allContexts;
-- (id)allContextsNotIdenticalTo:(id)a3;
-- (void)addContext:(id)a3;
+- (id)allContextsNotIdenticalTo:(id)to;
+- (void)addContext:(id)context;
 @end
 
 @implementation PLManagedObjectContextList
@@ -16,9 +16,9 @@
   if (v2)
   {
     v2->_lock._os_unfair_lock_opaque = 0;
-    v4 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     contexts = v3->_contexts;
-    v3->_contexts = v4;
+    v3->_contexts = weakObjectsHashTable;
 
     v6 = v3;
   }
@@ -42,12 +42,12 @@ id __41__PLManagedObjectContextList_allContexts__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (id)allContextsNotIdenticalTo:(id)a3
+- (id)allContextsNotIdenticalTo:(id)to
 {
-  v3 = a3;
+  toCopy = to;
   [MEMORY[0x1E695DF70] array];
-  v8 = v7 = v3;
-  v4 = v3;
+  v8 = v7 = toCopy;
+  v4 = toCopy;
   PLRunWithUnfairLock();
   v5 = v8;
 
@@ -97,10 +97,10 @@ void __56__PLManagedObjectContextList_allContextsNotIdenticalTo___block_invoke(u
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)addContext:(id)a3
+- (void)addContext:(id)context
 {
-  v4 = a3;
-  v3 = v4;
+  contextCopy = context;
+  v3 = contextCopy;
   PLRunWithUnfairLock();
 }
 

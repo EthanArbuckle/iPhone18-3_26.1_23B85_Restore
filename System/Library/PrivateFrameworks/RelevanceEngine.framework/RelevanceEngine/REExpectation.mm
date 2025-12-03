@@ -1,6 +1,6 @@
 @interface REExpectation
 - (REExpectation)init;
-- (void)notifyOperationsCompleteOrPerformUsingQueue:(id)a3 block:(id)a4;
+- (void)notifyOperationsCompleteOrPerformUsingQueue:(id)queue block:(id)block;
 @end
 
 @implementation REExpectation
@@ -20,18 +20,18 @@
   return v2;
 }
 
-- (void)notifyOperationsCompleteOrPerformUsingQueue:(id)a3 block:(id)a4
+- (void)notifyOperationsCompleteOrPerformUsingQueue:(id)queue block:(id)block
 {
-  v7 = a3;
-  v6 = a4;
+  queueCopy = queue;
+  blockCopy = block;
   if ([(REExpectation *)self outstandingOperations])
   {
-    [(REExpectation *)self notifyOperationsCompleteOnQueue:v7 block:v6];
+    [(REExpectation *)self notifyOperationsCompleteOnQueue:queueCopy block:blockCopy];
   }
 
   else
   {
-    v6[2](v6);
+    blockCopy[2](blockCopy);
   }
 }
 

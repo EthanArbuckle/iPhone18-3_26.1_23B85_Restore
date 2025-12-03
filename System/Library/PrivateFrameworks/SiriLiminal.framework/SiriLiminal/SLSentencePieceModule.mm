@@ -1,9 +1,9 @@
 @interface SLSentencePieceModule
-- (SLSentencePieceModule)initWithConfigFile:(id)a3;
-- (SLSentencePieceModule)initWithConfigFile:(id)a3 isModelMmap:(BOOL)a4;
+- (SLSentencePieceModule)initWithConfigFile:(id)file;
+- (SLSentencePieceModule)initWithConfigFile:(id)file isModelMmap:(BOOL)mmap;
 - (id).cxx_construct;
-- (id)encodeUtterance:(id)a3;
-- (int64_t)setSPMEncoderOptions:(id)a3;
+- (id)encodeUtterance:(id)utterance;
+- (int64_t)setSPMEncoderOptions:(id)options;
 - (void)dealloc;
 @end
 
@@ -16,10 +16,10 @@
   return self;
 }
 
-- (int64_t)setSPMEncoderOptions:(id)a3
+- (int64_t)setSPMEncoderOptions:(id)options
 {
-  v4 = a3;
-  std::string::basic_string[abi:ne200100]<0>(&__p, [v4 UTF8String]);
+  optionsCopy = options;
+  std::string::basic_string[abi:ne200100]<0>(&__p, [optionsCopy UTF8String]);
   (*(*self->_processor.__ptr_ + 96))(&v7);
   v5 = sentencepiece::util::Status::code(&v7);
   sentencepiece::util::Status::~Status(&v7);
@@ -31,16 +31,16 @@
   return v5;
 }
 
-- (id)encodeUtterance:(id)a3
+- (id)encodeUtterance:(id)utterance
 {
-  v4 = a3;
-  std::string::basic_string[abi:ne200100]<0>(&__p, [v4 UTF8String]);
+  utteranceCopy = utterance;
+  std::string::basic_string[abi:ne200100]<0>(&__p, [utteranceCopy UTF8String]);
   v11 = 0;
   v12 = 0;
   v13 = 0;
   (*(*self->_processor.__ptr_ + 144))(&v10);
   sentencepiece::util::Status::~Status(&v10);
-  v5 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v6 = v11;
   v7 = v12;
   if (v11 != v12)
@@ -48,7 +48,7 @@
     do
     {
       v8 = [MEMORY[0x277CCABB0] numberWithInt:*v6];
-      [v5 addObject:v8];
+      [array addObject:v8];
 
       ++v6;
     }
@@ -68,7 +68,7 @@
     operator delete(__p);
   }
 
-  return v5;
+  return array;
 }
 
 - (void)dealloc
@@ -99,10 +99,10 @@
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (SLSentencePieceModule)initWithConfigFile:(id)a3 isModelMmap:(BOOL)a4
+- (SLSentencePieceModule)initWithConfigFile:(id)file isModelMmap:(BOOL)mmap
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  fileCopy = file;
   v11.receiver = self;
   v11.super_class = SLSentencePieceModule;
   if ([(SLSentencePieceModule *)&v11 init])
@@ -113,7 +113,7 @@
       *buf = 136315394;
       v13 = "[SLSentencePieceModule initWithConfigFile:isModelMmap:]";
       v14 = 2112;
-      v15 = v5;
+      v15 = fileCopy;
       _os_log_impl(&dword_26754E000, v6, OS_LOG_TYPE_DEFAULT, "%s path: %@", buf, 0x16u);
     }
 
@@ -134,21 +134,21 @@
   return v8;
 }
 
-- (SLSentencePieceModule)initWithConfigFile:(id)a3
+- (SLSentencePieceModule)initWithConfigFile:(id)file
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fileCopy = file;
   v5 = SLLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(SLLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 136315394;
     v10 = "[SLSentencePieceModule initWithConfigFile:]";
     v11 = 2112;
-    v12 = v4;
+    v12 = fileCopy;
     _os_log_impl(&dword_26754E000, v5, OS_LOG_TYPE_DEFAULT, "%s path: %@", &v9, 0x16u);
   }
 
-  v6 = [(SLSentencePieceModule *)self initWithConfigFile:v4 isModelMmap:0];
+  v6 = [(SLSentencePieceModule *)self initWithConfigFile:fileCopy isModelMmap:0];
 
   v7 = *MEMORY[0x277D85DE8];
   return v6;

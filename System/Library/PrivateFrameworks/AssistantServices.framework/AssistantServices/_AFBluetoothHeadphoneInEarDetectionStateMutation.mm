@@ -1,6 +1,6 @@
 @interface _AFBluetoothHeadphoneInEarDetectionStateMutation
 - (BOOL)getIsEnabled;
-- (_AFBluetoothHeadphoneInEarDetectionStateMutation)initWithBase:(id)a3;
+- (_AFBluetoothHeadphoneInEarDetectionStateMutation)initWithBase:(id)base;
 - (int64_t)getPrimaryEarbudSide;
 - (int64_t)getPrimaryInEarStatus;
 - (int64_t)getSecondaryInEarStatus;
@@ -60,16 +60,16 @@
   }
 }
 
-- (_AFBluetoothHeadphoneInEarDetectionStateMutation)initWithBase:(id)a3
+- (_AFBluetoothHeadphoneInEarDetectionStateMutation)initWithBase:(id)base
 {
-  v5 = a3;
+  baseCopy = base;
   v9.receiver = self;
   v9.super_class = _AFBluetoothHeadphoneInEarDetectionStateMutation;
   v6 = [(_AFBluetoothHeadphoneInEarDetectionStateMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_base, a3);
+    objc_storeStrong(&v6->_base, base);
   }
 
   return v7;

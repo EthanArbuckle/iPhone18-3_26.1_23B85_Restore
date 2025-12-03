@@ -2,12 +2,12 @@
 - (BOOL)flushFormattedFieldValues;
 - (BOOL)flushPassStateFieldValues;
 - (id)_footerImageGlyphIfExists;
-- (id)_transitGlyphForTransitType:(int64_t)a3;
+- (id)_transitGlyphForTransitType:(int64_t)type;
 - (id)fetchRelevantBuckets;
 - (void)createBodyContentViews;
 - (void)createHeaderContentViews;
 - (void)layoutSubviews;
-- (void)setShowsBarcodeView:(BOOL)a3 animated:(BOOL)a4;
+- (void)setShowsBarcodeView:(BOOL)view animated:(BOOL)animated;
 @end
 
 @implementation PKPassSemanticBoardingPassFaceView
@@ -15,17 +15,17 @@
 - (id)fetchRelevantBuckets
 {
   v12[4] = *MEMORY[0x1E69E9840];
-  v3 = [(PKPassFaceView *)self pass];
-  v4 = [(PKPassFaceView *)self passState];
-  v5 = [[PKBoardingPassFaceBucketsFactory alloc] initWithPass:v3 state:v4];
-  v6 = [(PKBoardingPassFaceBucketsFactory *)v5 headerFields];
-  v12[0] = v6;
-  v7 = [(PKBoardingPassFaceBucketsFactory *)v5 primaryFields];
-  v12[1] = v7;
-  v8 = [(PKBoardingPassFaceBucketsFactory *)v5 secondaryFields];
-  v12[2] = v8;
-  v9 = [(PKBoardingPassFaceBucketsFactory *)v5 auxiliaryFields];
-  v12[3] = v9;
+  pass = [(PKPassFaceView *)self pass];
+  passState = [(PKPassFaceView *)self passState];
+  v5 = [[PKBoardingPassFaceBucketsFactory alloc] initWithPass:pass state:passState];
+  headerFields = [(PKBoardingPassFaceBucketsFactory *)v5 headerFields];
+  v12[0] = headerFields;
+  primaryFields = [(PKBoardingPassFaceBucketsFactory *)v5 primaryFields];
+  v12[1] = primaryFields;
+  secondaryFields = [(PKBoardingPassFaceBucketsFactory *)v5 secondaryFields];
+  v12[2] = secondaryFields;
+  auxiliaryFields = [(PKBoardingPassFaceBucketsFactory *)v5 auxiliaryFields];
+  v12[3] = auxiliaryFields;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:4];
 
   return v10;
@@ -43,31 +43,31 @@
   aBlock[3] = &unk_1E80190C0;
   aBlock[4] = &v25;
   v3 = _Block_copy(aBlock);
-  v4 = [(PKPassFaceView *)self pass];
-  v5 = [(PKPassFaceView *)self passState];
-  v6 = [[PKBoardingPassFaceBucketsFactory alloc] initWithPass:v4 state:v5];
-  v7 = [(PKBoardingPassFaceBucketsFactory *)v6 headerFields];
-  v8 = [(PKPassFaceView *)self buckets];
-  v9 = [v8 objectAtIndexedSubscript:0];
+  pass = [(PKPassFaceView *)self pass];
+  passState = [(PKPassFaceView *)self passState];
+  v6 = [[PKBoardingPassFaceBucketsFactory alloc] initWithPass:pass state:passState];
+  headerFields = [(PKBoardingPassFaceBucketsFactory *)v6 headerFields];
+  buckets = [(PKPassFaceView *)self buckets];
+  v9 = [buckets objectAtIndexedSubscript:0];
 
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __63__PKPassSemanticBoardingPassFaceView_flushFormattedFieldValues__block_invoke_2;
   v21[3] = &unk_1E80190E8;
-  v10 = v7;
+  v10 = headerFields;
   v22 = v10;
   v11 = v3;
   v23 = v11;
   [v9 enumerateObjectsUsingBlock:v21];
-  v12 = [(PKBoardingPassFaceBucketsFactory *)v6 auxiliaryFields];
-  v13 = [(PKPassFaceView *)self buckets];
-  v14 = [v13 objectAtIndexedSubscript:3];
+  auxiliaryFields = [(PKBoardingPassFaceBucketsFactory *)v6 auxiliaryFields];
+  buckets2 = [(PKPassFaceView *)self buckets];
+  v14 = [buckets2 objectAtIndexedSubscript:3];
 
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __63__PKPassSemanticBoardingPassFaceView_flushFormattedFieldValues__block_invoke_3;
   v18[3] = &unk_1E80190E8;
-  v15 = v12;
+  v15 = auxiliaryFields;
   v19 = v15;
   v16 = v11;
   v20 = v16;
@@ -170,46 +170,46 @@ void __63__PKPassSemanticBoardingPassFaceView_flushFormattedFieldValues__block_i
   aBlock[3] = &unk_1E80190C0;
   aBlock[4] = &v35;
   v3 = _Block_copy(aBlock);
-  v4 = [(PKPassFaceView *)self pass];
-  v24 = [(PKPassFaceView *)self passState];
-  v5 = [[PKBoardingPassFaceBucketsFactory alloc] initWithPass:v4 state:v24];
-  v6 = [(PKBoardingPassFaceBucketsFactory *)v5 headerFields];
-  v7 = [(PKPassFaceView *)self buckets];
-  v8 = [v7 objectAtIndexedSubscript:0];
+  pass = [(PKPassFaceView *)self pass];
+  passState = [(PKPassFaceView *)self passState];
+  v5 = [[PKBoardingPassFaceBucketsFactory alloc] initWithPass:pass state:passState];
+  headerFields = [(PKBoardingPassFaceBucketsFactory *)v5 headerFields];
+  buckets = [(PKPassFaceView *)self buckets];
+  v8 = [buckets objectAtIndexedSubscript:0];
 
   v31[0] = MEMORY[0x1E69E9820];
   v31[1] = 3221225472;
   v31[2] = __63__PKPassSemanticBoardingPassFaceView_flushPassStateFieldValues__block_invoke_2;
   v31[3] = &unk_1E80190E8;
-  v9 = v6;
+  v9 = headerFields;
   v32 = v9;
   v10 = v3;
   v33 = v10;
   [v8 enumerateObjectsUsingBlock:v31];
   v23 = v8;
-  v11 = [(PKBoardingPassFaceBucketsFactory *)v5 primaryFields];
-  v12 = [(PKPassFaceView *)self buckets];
-  v13 = [v12 objectAtIndexedSubscript:1];
+  primaryFields = [(PKBoardingPassFaceBucketsFactory *)v5 primaryFields];
+  buckets2 = [(PKPassFaceView *)self buckets];
+  v13 = [buckets2 objectAtIndexedSubscript:1];
 
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
   v28[2] = __63__PKPassSemanticBoardingPassFaceView_flushPassStateFieldValues__block_invoke_3;
   v28[3] = &unk_1E80190E8;
-  v14 = v11;
+  v14 = primaryFields;
   v29 = v14;
   v15 = v10;
   v30 = v15;
   [v13 enumerateObjectsUsingBlock:v28];
-  v16 = v4;
-  v17 = [(PKBoardingPassFaceBucketsFactory *)v5 auxiliaryFields];
-  v18 = [(PKPassFaceView *)self buckets];
-  v19 = [v18 objectAtIndexedSubscript:3];
+  v16 = pass;
+  auxiliaryFields = [(PKBoardingPassFaceBucketsFactory *)v5 auxiliaryFields];
+  buckets3 = [(PKPassFaceView *)self buckets];
+  v19 = [buckets3 objectAtIndexedSubscript:3];
 
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __63__PKPassSemanticBoardingPassFaceView_flushPassStateFieldValues__block_invoke_4;
   v25[3] = &unk_1E80190E8;
-  v20 = v17;
+  v20 = auxiliaryFields;
   v26 = v20;
   v21 = v15;
   v27 = v21;
@@ -313,24 +313,24 @@ void __63__PKPassSemanticBoardingPassFaceView_flushPassStateFieldValues__block_i
   v36.receiver = self;
   v36.super_class = PKPassSemanticBoardingPassFaceView;
   [(PKPassFrontFaceView *)&v36 createHeaderContentViews];
-  v3 = [(PKPassFaceView *)self style];
-  v4 = [(PKPassFaceView *)self pass];
-  v5 = [(PKPassFaceView *)self colorProfile];
+  style = [(PKPassFaceView *)self style];
+  pass = [(PKPassFaceView *)self pass];
+  colorProfile = [(PKPassFaceView *)self colorProfile];
   v6 = [MEMORY[0x1E69DD1B8] traitCollectionWithPreferredContentSizeCategory:*MEMORY[0x1E69DDC70]];
-  v35 = v4;
-  v7 = [v4 logoText];
+  v35 = pass;
+  logoText = [pass logoText];
   PKPassFaceLogoRect();
   IsEmpty = CGRectIsEmpty(v37);
   v9 = MEMORY[0x1E69DB958];
-  if (!IsEmpty && (v3 - 9) <= 1 && v7)
+  if (!IsEmpty && (style - 9) <= 1 && logoText)
   {
     v10 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     logoLabel = self->_logoLabel;
     self->_logoLabel = v10;
 
     v12 = self->_logoLabel;
-    v13 = [MEMORY[0x1E69DC888] clearColor];
-    [(UILabel *)v12 setBackgroundColor:v13];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(UILabel *)v12 setBackgroundColor:clearColor];
 
     [(UILabel *)self->_logoLabel setLineBreakMode:4];
     [(UILabel *)self->_logoLabel setNumberOfLines:1];
@@ -340,20 +340,20 @@ void __63__PKPassSemanticBoardingPassFaceView_flushPassStateFieldValues__block_i
     [(UILabel *)v14 setFont:v15];
 
     v16 = self->_logoLabel;
-    v17 = [v5 foregroundColor];
-    [(UILabel *)v16 setTextColor:v17];
+    foregroundColor = [colorProfile foregroundColor];
+    [(UILabel *)v16 setTextColor:foregroundColor];
 
-    [(UILabel *)self->_logoLabel setText:v7];
+    [(UILabel *)self->_logoLabel setText:logoText];
     [(PKPassFrontFaceView *)self insertContentView:self->_logoLabel ofType:0];
   }
 
-  v34 = [(PKPassFaceView *)self buckets];
-  v18 = [v34 firstObject];
-  v19 = [v18 firstObject];
+  buckets = [(PKPassFaceView *)self buckets];
+  firstObject = [buckets firstObject];
+  v18FirstObject = [firstObject firstObject];
 
-  if (v19)
+  if (v18FirstObject)
   {
-    v20 = [v19 label];
+    label = [v18FirstObject label];
     v21 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     flightCodeLabel = self->_flightCodeLabel;
     self->_flightCodeLabel = v21;
@@ -366,12 +366,12 @@ void __63__PKPassSemanticBoardingPassFaceView_flushPassStateFieldValues__block_i
     [(UILabel *)v23 setFont:v24];
 
     v25 = self->_flightCodeLabel;
-    v26 = [v5 foregroundColor];
-    [(UILabel *)v25 setTextColor:v26];
+    foregroundColor2 = [colorProfile foregroundColor];
+    [(UILabel *)v25 setTextColor:foregroundColor2];
 
-    [(UILabel *)self->_flightCodeLabel setText:v20];
+    [(UILabel *)self->_flightCodeLabel setText:label];
     [(PKPassFrontFaceView *)self insertContentView:self->_flightCodeLabel ofType:0];
-    v27 = [v19 value];
+    value = [v18FirstObject value];
     v28 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     dateLabel = self->_dateLabel;
     self->_dateLabel = v28;
@@ -384,10 +384,10 @@ void __63__PKPassSemanticBoardingPassFaceView_flushPassStateFieldValues__block_i
     [(UILabel *)v30 setFont:v31];
 
     v32 = self->_dateLabel;
-    v33 = [v5 labelColor];
-    [(UILabel *)v32 setTextColor:v33];
+    labelColor = [colorProfile labelColor];
+    [(UILabel *)v32 setTextColor:labelColor];
 
-    [(UILabel *)self->_dateLabel setText:v27];
+    [(UILabel *)self->_dateLabel setText:value];
     [(PKPassFrontFaceView *)self insertContentView:self->_dateLabel ofType:0];
   }
 
@@ -402,20 +402,20 @@ void __63__PKPassSemanticBoardingPassFaceView_flushPassStateFieldValues__block_i
   v99.receiver = self;
   v99.super_class = PKPassSemanticBoardingPassFaceView;
   [(PKPassFrontFaceView *)&v99 createBodyContentViews];
-  v96 = [(PKPassFaceView *)self pass];
-  v3 = [v96 style];
-  v4 = [(PKPassFaceView *)self colorProfile];
+  pass = [(PKPassFaceView *)self pass];
+  style = [pass style];
+  colorProfile = [(PKPassFaceView *)self colorProfile];
   v98 = [MEMORY[0x1E69DD1B8] traitCollectionWithPreferredContentSizeCategory:*MEMORY[0x1E69DDC70]];
-  v5 = [(PKPassFaceView *)self buckets];
-  if ([v5 count] != 4)
+  buckets = [(PKPassFaceView *)self buckets];
+  if ([buckets count] != 4)
   {
     __break(1u);
     goto LABEL_17;
   }
 
-  v6 = [v5 objectAtIndexedSubscript:1];
-  v93 = [v5 objectAtIndexedSubscript:2];
-  v95 = [v5 objectAtIndexedSubscript:3];
+  v6 = [buckets objectAtIndexedSubscript:1];
+  v93 = [buckets objectAtIndexedSubscript:2];
+  v95 = [buckets objectAtIndexedSubscript:3];
   if ([v6 count] <= 3)
   {
 LABEL_17:
@@ -426,7 +426,7 @@ LABEL_17:
   v85 = *MEMORY[0x1E69DB8C8];
   v7 = _PKFontForDesign(v98, *MEMORY[0x1E69DB8C8], *MEMORY[0x1E69DDD28], 0x8000, 0, 0);
   v97 = v7;
-  v80 = v3;
+  v80 = style;
   PKPassFrontFaceContentSize();
   if (v8 >= 343.0)
   {
@@ -442,7 +442,7 @@ LABEL_17:
   v94 = [v10 fontWithSize:v9];
 
   v11 = [v6 objectAtIndexedSubscript:0];
-  v12 = [v11 label];
+  label = [v11 label];
   v13 = objc_alloc_init(MEMORY[0x1E69DCC10]);
   departureCityLabel = self->_departureCityLabel;
   self->_departureCityLabel = v13;
@@ -452,14 +452,14 @@ LABEL_17:
   [(UILabel *)self->_departureCityLabel setTextAlignment:0];
   [(UILabel *)self->_departureCityLabel setFont:v7];
   v15 = self->_departureCityLabel;
-  v16 = [v4 labelColor];
-  [(UILabel *)v15 setTextColor:v16];
+  labelColor = [colorProfile labelColor];
+  [(UILabel *)v15 setTextColor:labelColor];
 
-  v90 = v12;
-  [(UILabel *)self->_departureCityLabel setText:v12];
+  v90 = label;
+  [(UILabel *)self->_departureCityLabel setText:label];
   [(PKPassFrontFaceView *)self insertContentView:self->_departureCityLabel ofType:2];
   v91 = v11;
-  v17 = [v11 value];
+  value = [v11 value];
   v18 = objc_alloc_init(MEMORY[0x1E69DCC10]);
   departureAirportLabel = self->_departureAirportLabel;
   self->_departureAirportLabel = v18;
@@ -469,14 +469,14 @@ LABEL_17:
   [(UILabel *)self->_departureAirportLabel setTextAlignment:0];
   [(UILabel *)self->_departureAirportLabel setFont:v94];
   v20 = self->_departureAirportLabel;
-  v21 = [v4 foregroundColor];
-  [(UILabel *)v20 setTextColor:v21];
+  foregroundColor = [colorProfile foregroundColor];
+  [(UILabel *)v20 setTextColor:foregroundColor];
 
-  v89 = v17;
-  [(UILabel *)self->_departureAirportLabel setText:v17];
+  v89 = value;
+  [(UILabel *)self->_departureAirportLabel setText:value];
   [(PKPassFrontFaceView *)self insertContentView:self->_departureAirportLabel ofType:2];
   v88 = [v6 objectAtIndexedSubscript:1];
-  v22 = [v88 value];
+  value2 = [v88 value];
   v23 = objc_alloc_init(MEMORY[0x1E69DCC10]);
   departureDateLabel = self->_departureDateLabel;
   self->_departureDateLabel = v23;
@@ -486,14 +486,14 @@ LABEL_17:
   [(UILabel *)self->_departureDateLabel setTextAlignment:0];
   [(UILabel *)self->_departureDateLabel setFont:v97];
   v25 = self->_departureDateLabel;
-  v26 = [v4 labelColor];
-  [(UILabel *)v25 setTextColor:v26];
+  labelColor2 = [colorProfile labelColor];
+  [(UILabel *)v25 setTextColor:labelColor2];
 
-  v87 = v22;
-  [(UILabel *)self->_departureDateLabel setText:v22];
+  v87 = value2;
+  [(UILabel *)self->_departureDateLabel setText:value2];
   [(PKPassFrontFaceView *)self insertContentView:self->_departureDateLabel ofType:2];
   v27 = [v6 objectAtIndexedSubscript:2];
-  v28 = [v27 label];
+  label2 = [v27 label];
   v29 = objc_alloc_init(MEMORY[0x1E69DCC10]);
   destinationCityLabel = self->_destinationCityLabel;
   self->_destinationCityLabel = v29;
@@ -503,14 +503,14 @@ LABEL_17:
   [(UILabel *)self->_destinationCityLabel setTextAlignment:2];
   [(UILabel *)self->_destinationCityLabel setFont:v97];
   v31 = self->_destinationCityLabel;
-  v32 = [v4 labelColor];
-  [(UILabel *)v31 setTextColor:v32];
+  labelColor3 = [colorProfile labelColor];
+  [(UILabel *)v31 setTextColor:labelColor3];
 
-  v84 = v28;
-  [(UILabel *)self->_destinationCityLabel setText:v28];
+  v84 = label2;
+  [(UILabel *)self->_destinationCityLabel setText:label2];
   [(PKPassFrontFaceView *)self insertContentView:self->_destinationCityLabel ofType:2];
   v86 = v27;
-  v33 = [v27 value];
+  value3 = [v27 value];
   v34 = objc_alloc_init(MEMORY[0x1E69DCC10]);
   destinationAirportLabel = self->_destinationAirportLabel;
   self->_destinationAirportLabel = v34;
@@ -520,14 +520,14 @@ LABEL_17:
   [(UILabel *)self->_destinationAirportLabel setTextAlignment:2];
   [(UILabel *)self->_destinationAirportLabel setFont:v94];
   v36 = self->_destinationAirportLabel;
-  v37 = [v4 foregroundColor];
-  [(UILabel *)v36 setTextColor:v37];
+  foregroundColor2 = [colorProfile foregroundColor];
+  [(UILabel *)v36 setTextColor:foregroundColor2];
 
-  [(UILabel *)self->_destinationAirportLabel setText:v33];
+  [(UILabel *)self->_destinationAirportLabel setText:value3];
   [(PKPassFrontFaceView *)self insertContentView:self->_destinationAirportLabel ofType:2];
   v92 = v6;
   v83 = [v6 objectAtIndexedSubscript:3];
-  v38 = [v83 value];
+  value4 = [v83 value];
   v39 = objc_alloc_init(MEMORY[0x1E69DCC10]);
   arrivalDateLabel = self->_arrivalDateLabel;
   self->_arrivalDateLabel = v39;
@@ -537,14 +537,14 @@ LABEL_17:
   [(UILabel *)self->_arrivalDateLabel setTextAlignment:2];
   [(UILabel *)self->_arrivalDateLabel setFont:v97];
   v41 = self->_arrivalDateLabel;
-  v42 = [v4 labelColor];
-  [(UILabel *)v41 setTextColor:v42];
+  labelColor4 = [colorProfile labelColor];
+  [(UILabel *)v41 setTextColor:labelColor4];
 
-  [(UILabel *)self->_arrivalDateLabel setText:v38];
+  [(UILabel *)self->_arrivalDateLabel setText:value4];
   [(PKPassFrontFaceView *)self insertContentView:self->_arrivalDateLabel ofType:2];
   v43 = PKFontForDefaultDesign(v98, *MEMORY[0x1E69DDD80], *MEMORY[0x1E69DB958]);
-  v44 = [v93 firstObject];
-  v45 = [v44 value];
+  firstObject = [v93 firstObject];
+  value5 = [firstObject value];
 
   v46 = objc_alloc_init(MEMORY[0x1E69DCC10]);
   passengerNameLabel = self->_passengerNameLabel;
@@ -556,11 +556,11 @@ LABEL_17:
   v82 = v43;
   [(UILabel *)self->_passengerNameLabel setFont:v43];
   v48 = self->_passengerNameLabel;
-  v49 = [v4 foregroundColor];
-  [(UILabel *)v48 setTextColor:v49];
+  foregroundColor3 = [colorProfile foregroundColor];
+  [(UILabel *)v48 setTextColor:foregroundColor3];
 
-  v81 = v45;
-  [(UILabel *)self->_passengerNameLabel setText:v45];
+  v81 = value5;
+  [(UILabel *)self->_passengerNameLabel setText:value5];
   [(UILabel *)self->_passengerNameLabel setAdjustsFontSizeToFitWidth:1];
   [(UILabel *)self->_passengerNameLabel setMinimumScaleFactor:0.8];
   [(PKPassFrontFaceView *)self insertContentView:self->_passengerNameLabel ofType:2];
@@ -582,12 +582,12 @@ LABEL_17:
   }
 
   v53 = self->_badgesCollectionView;
-  v54 = [v4 foregroundColor];
-  [(PKPassFaceBadgesCollectionView *)v53 setBadgesBackgroundColor:v54];
+  foregroundColor4 = [colorProfile foregroundColor];
+  [(PKPassFaceBadgesCollectionView *)v53 setBadgesBackgroundColor:foregroundColor4];
 
   v55 = self->_badgesCollectionView;
-  v56 = [v4 backgroundColor];
-  [(PKPassFaceBadgesCollectionView *)v55 setBadgesTextColor:v56];
+  backgroundColor = [colorProfile backgroundColor];
+  [(PKPassFaceBadgesCollectionView *)v55 setBadgesTextColor:backgroundColor];
 
   v57 = self->_badgesCollectionView;
   v58 = PKFontForDefaultDesign(v98, *MEMORY[0x1E69DDD10], *MEMORY[0x1E69DB980]);
@@ -609,33 +609,33 @@ LABEL_17:
   [(PKDynamicPassBucketView *)self->_auxiliaryBucketView setMinResizeScale:0.6];
   [(PKDynamicPassBucketView *)self->_auxiliaryBucketView setLabelFont:v97];
   v62 = self->_auxiliaryBucketView;
-  v63 = [v4 labelColor];
-  [(PKDynamicPassBucketView *)v62 setLabelTextColor:v63];
+  labelColor5 = [colorProfile labelColor];
+  [(PKDynamicPassBucketView *)v62 setLabelTextColor:labelColor5];
 
   v64 = self->_auxiliaryBucketView;
   v65 = _PKFontForDesign(v98, v85, *MEMORY[0x1E69DDD40], 0, 0, 0);
   [(PKDynamicPassBucketView *)v64 setValueFont:v65];
 
   v66 = self->_auxiliaryBucketView;
-  v67 = [v4 foregroundColor];
-  [(PKDynamicPassBucketView *)v66 setValueTextColor:v67];
+  foregroundColor5 = [colorProfile foregroundColor];
+  [(PKDynamicPassBucketView *)v66 setValueTextColor:foregroundColor5];
 
   [(PKPassFrontFaceView *)self insertContentView:self->_auxiliaryBucketView ofType:2];
-  v68 = [(PKPassFaceView *)self pass];
-  v69 = -[PKPassSemanticBoardingPassFaceView _transitGlyphForTransitType:](self, "_transitGlyphForTransitType:", [v68 transitType]);
+  pass2 = [(PKPassFaceView *)self pass];
+  v69 = -[PKPassSemanticBoardingPassFaceView _transitGlyphForTransitType:](self, "_transitGlyphForTransitType:", [pass2 transitType]);
 
-  v70 = [(PKPassFaceView *)self colorProfile];
-  v71 = [v70 labelImageForGlyph:v69];
+  colorProfile2 = [(PKPassFaceView *)self colorProfile];
+  v71 = [colorProfile2 labelImageForGlyph:v69];
 
   v72 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v71];
   transitImageView = self->_transitImageView;
   self->_transitImageView = v72;
 
   [(PKPassFrontFaceView *)self insertContentView:self->_transitImageView ofType:2];
-  v74 = [v96 barcode];
-  if (v74)
+  barcode = [pass barcode];
+  if (barcode)
   {
-    v75 = [[PKBarcodeStickerView alloc] initWithBarcode:v74 validityState:[PKBarcodeStickerView passStyle:"validityStateForPass:" validityStateForPass:v96], v80];
+    v75 = [[PKBarcodeStickerView alloc] initWithBarcode:barcode validityState:[PKBarcodeStickerView passStyle:"validityStateForPass:" validityStateForPass:pass], v80];
     customBarcodeView = self->_customBarcodeView;
     self->_customBarcodeView = v75;
 
@@ -649,10 +649,10 @@ LABEL_17:
     }
   }
 
-  v77 = [(PKPassSemanticBoardingPassFaceView *)self _footerImageGlyphIfExists];
-  if (v77)
+  _footerImageGlyphIfExists = [(PKPassSemanticBoardingPassFaceView *)self _footerImageGlyphIfExists];
+  if (_footerImageGlyphIfExists)
   {
-    v78 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v77];
+    v78 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:_footerImageGlyphIfExists];
     footerImageView = self->_footerImageView;
     self->_footerImageView = v78;
 
@@ -668,7 +668,7 @@ LABEL_17:
   v165.receiver = self;
   v165.super_class = PKPassSemanticBoardingPassFaceView;
   [(PKPassFrontFaceView *)&v165 layoutSubviews];
-  v3 = [(PKPassFaceView *)self style];
+  style = [(PKPassFaceView *)self style];
   PKPassFrontFaceContentSize();
   v5 = v4;
   PKPassFaceLogoRect();
@@ -691,8 +691,8 @@ LABEL_17:
     {
       v12 = x;
       v160 = height;
-      v13 = [(PKPassFaceView *)self pass];
-      [v13 logoRect];
+      pass = [(PKPassFaceView *)self pass];
+      [pass logoRect];
       v15 = v14;
       v17 = v16;
       v19 = v18;
@@ -884,8 +884,8 @@ LABEL_17:
   customBarcodeView = self->_customBarcodeView;
   if (customBarcodeView)
   {
-    v115 = [(PKBarcodeStickerView *)customBarcodeView barcode];
-    [v115 sizeForPassStyle:v3];
+    barcode = [(PKBarcodeStickerView *)customBarcodeView barcode];
+    [barcode sizeForPassStyle:style];
     [(PKBarcodeStickerView *)self->_customBarcodeView sizeThatFits:?];
     PKContentAlignmentMake();
     PKSizeAlignedInRect();
@@ -958,16 +958,16 @@ LABEL_17:
   }
 }
 
-- (id)_transitGlyphForTransitType:(int64_t)a3
+- (id)_transitGlyphForTransitType:(int64_t)type
 {
-  if (a3 > 4)
+  if (type > 4)
   {
     v5 = 0;
   }
 
   else
   {
-    v3 = off_1E8019108[a3];
+    v3 = off_1E8019108[type];
     v4 = [MEMORY[0x1E69DCAD8] configurationWithTextStyle:*MEMORY[0x1E69DDDB8] scale:1];
     v5 = [MEMORY[0x1E69DCAB8] systemImageNamed:v3 withConfiguration:v4];
   }
@@ -977,11 +977,11 @@ LABEL_17:
 
 - (id)_footerImageGlyphIfExists
 {
-  v3 = [(PKPassFaceView *)self pass];
-  v4 = [v3 stringsForSemanticKey:*MEMORY[0x1E69BBF48]];
+  pass = [(PKPassFaceView *)self pass];
+  v4 = [pass stringsForSemanticKey:*MEMORY[0x1E69BBF48]];
   if ([v4 count])
   {
-    v5 = [v3 stringsForSemanticKey:*MEMORY[0x1E69BBF28]];
+    v5 = [pass stringsForSemanticKey:*MEMORY[0x1E69BBF28]];
     v6 = PKTransitSecurityProgramsFromStrings();
     v7 = PKTransitSecurityProgramsFromStrings();
     if ((v7 & v6 & 2) != 0)
@@ -991,9 +991,9 @@ LABEL_17:
 
     else if (v7 & v6)
     {
-      v10 = [(PKPassFaceView *)self colorProfile];
-      v11 = [v10 backgroundColor];
-      [v11 CGColor];
+      colorProfile = [(PKPassFaceView *)self colorProfile];
+      backgroundColor = [colorProfile backgroundColor];
+      [backgroundColor CGColor];
       PKColorGetLightness();
       v13 = v12;
 
@@ -1026,24 +1026,24 @@ LABEL_17:
   return v9;
 }
 
-- (void)setShowsBarcodeView:(BOOL)a3 animated:(BOOL)a4
+- (void)setShowsBarcodeView:(BOOL)view animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [(PKPassFrontFaceView *)self showsBarcodeView];
+  animatedCopy = animated;
+  viewCopy = view;
+  showsBarcodeView = [(PKPassFrontFaceView *)self showsBarcodeView];
   v13.receiver = self;
   v13.super_class = PKPassSemanticBoardingPassFaceView;
-  [(PKPassFrontFaceView *)&v13 setShowsBarcodeView:v5 animated:v4];
-  if (v7 != v5 && self->_customBarcodeView)
+  [(PKPassFrontFaceView *)&v13 setShowsBarcodeView:viewCopy animated:animatedCopy];
+  if (showsBarcodeView != viewCopy && self->_customBarcodeView)
   {
-    if (v5)
+    if (viewCopy)
     {
       [PKPassFrontFaceView insertContentView:"insertContentView:ofType:" ofType:?];
       [(PKPassFrontFaceView *)self insertContentView:self->_footerImageView ofType:2];
     }
 
     v8 = 0.2;
-    if (!v4)
+    if (!animatedCopy)
     {
       v8 = 0.0;
     }
@@ -1053,12 +1053,12 @@ LABEL_17:
     v11[2] = __67__PKPassSemanticBoardingPassFaceView_setShowsBarcodeView_animated___block_invoke;
     v11[3] = &unk_1E8013F80;
     v11[4] = self;
-    v12 = v5;
+    v12 = viewCopy;
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __67__PKPassSemanticBoardingPassFaceView_setShowsBarcodeView_animated___block_invoke_2;
     v9[3] = &unk_1E8013E98;
-    v10 = v5;
+    v10 = viewCopy;
     v9[4] = self;
     [MEMORY[0x1E69DD250] animateWithDuration:v11 animations:v9 completion:v8];
   }

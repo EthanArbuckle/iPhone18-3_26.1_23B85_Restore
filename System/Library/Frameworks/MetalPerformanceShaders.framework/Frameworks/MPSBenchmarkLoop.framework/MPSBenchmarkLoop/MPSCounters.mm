@@ -1,25 +1,25 @@
 @interface MPSCounters
-- (MPSCounters)initWithCommandQueue:(id)a3 addQeueuPerfSampleHandler:(BOOL)a4;
-- (int)requestCountersWithExtraRequestedCounter:(id)a3;
-- (int)requestCountersWithExtraRequestedCounter:(id)a3 fillStats:(id)a4;
+- (MPSCounters)initWithCommandQueue:(id)queue addQeueuPerfSampleHandler:(BOOL)handler;
+- (int)requestCountersWithExtraRequestedCounter:(id)counter;
+- (int)requestCountersWithExtraRequestedCounter:(id)counter fillStats:(id)stats;
 - (void)dealloc;
-- (void)perfSampleHandlerWithCommandBuffer:(id)a3 data:(id)a4 numberOfSamples:(unint64_t)a5;
+- (void)perfSampleHandlerWithCommandBuffer:(id)buffer data:(id)data numberOfSamples:(unint64_t)samples;
 - (void)printAllAvailableCounters;
 @end
 
 @implementation MPSCounters
 
-- (MPSCounters)initWithCommandQueue:(id)a3 addQeueuPerfSampleHandler:(BOOL)a4
+- (MPSCounters)initWithCommandQueue:(id)queue addQeueuPerfSampleHandler:(BOOL)handler
 {
-  v4 = a4;
+  handlerCopy = handler;
   v86.receiver = self;
   v86.super_class = MPSCounters;
   v10 = [(MPSCounters *)&v86 init];
   if (v10)
   {
-    v10->_device = objc_msgSend_device(a3, v6, v7, v8, v9);
-    v10->_commandQueue = a3;
-    v10->_commandQueueSPI = a3;
+    v10->_device = objc_msgSend_device(queue, v6, v7, v8, v9);
+    v10->_commandQueue = queue;
+    v10->_commandQueueSPI = queue;
     *&v10->_encoderCoalescing = 256;
     v10->_logEncoderInfo = 1;
     v11 = off_2814650F0();
@@ -47,7 +47,7 @@
     v27 = off_2814650F0();
     if (!v27 || strcmp(v27, "presilicon"))
     {
-      if (v4)
+      if (handlerCopy)
       {
         commandQueueSPI = v10->_commandQueueSPI;
         v85[0] = MEMORY[0x277D85DD0];
@@ -161,25 +161,25 @@ LABEL_42:
   return v10;
 }
 
-- (int)requestCountersWithExtraRequestedCounter:(id)a3 fillStats:(id)a4
+- (int)requestCountersWithExtraRequestedCounter:(id)counter fillStats:(id)stats
 {
   counterStatistics = self->_counterStatistics;
-  if (counterStatistics != a4)
+  if (counterStatistics != stats)
   {
-    v7 = a3;
-    self->_counterStatistics = a4;
+    counterCopy = counter;
+    self->_counterStatistics = stats;
 
-    a3 = v7;
+    counter = counterCopy;
   }
 
-  return objc_msgSend_requestCountersWithExtraRequestedCounter_(self, a2, a3, a4, v4);
+  return objc_msgSend_requestCountersWithExtraRequestedCounter_(self, a2, counter, stats, v4);
 }
 
-- (int)requestCountersWithExtraRequestedCounter:(id)a3
+- (int)requestCountersWithExtraRequestedCounter:(id)counter
 {
   v5 = objc_alloc(MEMORY[0x277CBEB18]);
   v12 = objc_msgSend_initWithCapacity_(v5, v6, 6, v7, v8);
-  if (a3)
+  if (counter)
   {
     if (!self->_nAvailableCounters)
     {
@@ -191,7 +191,7 @@ LABEL_42:
     do
     {
       v15 = objc_msgSend_objectAtIndexedSubscript_(self->_allCounters, v9, v14, v10, v11);
-      v13 |= objc_msgSend_isEqualToString_(v15, v16, a3, v17, v18);
+      v13 |= objc_msgSend_isEqualToString_(v15, v16, counter, v17, v18);
       ++v14;
     }
 
@@ -204,15 +204,15 @@ LABEL_7:
       return -1;
     }
 
-    v19 = a3;
+    counterCopy = counter;
   }
 
   else
   {
-    v19 = @"MTLStatVertexCost";
+    counterCopy = @"MTLStatVertexCost";
   }
 
-  self->_extraCounterRequested = &v19->isa;
+  self->_extraCounterRequested = &counterCopy->isa;
   objc_msgSend_addObject_(v12, v9, @"MTLStat_nSec", v10, v11);
   objc_msgSend_addObject_(v12, v21, @"MTLStatCommandBufferIndex", v22, v23);
   objc_msgSend_addObject_(v12, v24, @"MTLStatEncoderIndex", v25, v26);
@@ -335,16 +335,16 @@ LABEL_32:
   return result;
 }
 
-- (void)perfSampleHandlerWithCommandBuffer:(id)a3 data:(id)a4 numberOfSamples:(unint64_t)a5
+- (void)perfSampleHandlerWithCommandBuffer:(id)buffer data:(id)data numberOfSamples:(unint64_t)samples
 {
-  if (!a5)
+  if (!samples)
   {
-    NSLog(&cfstr_NoCounterSampl.isa, a2, a3, a4);
+    NSLog(&cfstr_NoCounterSampl.isa, a2, buffer, data);
     return;
   }
 
   v8 = [MPSCounterData alloc];
-  v12 = objc_msgSend_initWithData_numberOfSamples_(v8, v9, a4, a5, v10);
+  v12 = objc_msgSend_initWithData_numberOfSamples_(v8, v9, data, samples, v10);
   if (self->_countingEncoders)
   {
     objc_msgSend_addObject_(self->_whileCountingData, v11, v12, v13, v14);
@@ -369,11 +369,11 @@ LABEL_32:
     NSLog(&stru_284C655A8.isa, self->_passList);
   }
 
-  v23 = objc_msgSend_bytes(a4, v19, v20, v21, v22);
+  v23 = objc_msgSend_bytes(data, v19, v20, v21, v22);
   v28 = objc_msgSend_count(self->_passList, v24, v25, v26, v27);
   if (self->_countingEncoders)
   {
-    v29 = v23 + (8 * a5 - 8) * v28;
+    v29 = v23 + (8 * samples - 8) * v28;
     v30 = *(v29 + 8 * self->_encoderOffset);
     timeOffset = self->_timeOffset;
     v32 = *(v29 + 8 * timeOffset);

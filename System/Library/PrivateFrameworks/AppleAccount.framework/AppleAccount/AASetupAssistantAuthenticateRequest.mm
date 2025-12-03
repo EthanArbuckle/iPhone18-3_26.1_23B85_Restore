@@ -7,9 +7,9 @@
 - (id)urlString
 {
   v2 = +[AASetupAssistantService urlConfiguration];
-  v3 = [v2 authenticateURL];
+  authenticateURL = [v2 authenticateURL];
 
-  return v3;
+  return authenticateURL;
 }
 
 @end

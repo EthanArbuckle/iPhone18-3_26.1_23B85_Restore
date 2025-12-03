@@ -1,17 +1,17 @@
 @interface PXStoryMultipartPanoramaCropFinder
-- (PXStoryMultipartPanoramaCropFinder)initWithSaliencyAreas:(id)a3;
-- (double)_scoreContentsRects:(const CGRect *)a3 count:(int64_t)a4;
-- (id)bestCropContentsRectsWithAspectRatio:(double)a3 axis:(int64_t)a4;
-- (int64_t)_findBestRectsWithMaximumCount:(int64_t)a3 aspectRatio:(double)a4;
-- (void)_enumeratePossibleContentsRects:(CGRect *)a3 count:(int64_t)a4 usingBlock:(id)a5;
+- (PXStoryMultipartPanoramaCropFinder)initWithSaliencyAreas:(id)areas;
+- (double)_scoreContentsRects:(const CGRect *)rects count:(int64_t)count;
+- (id)bestCropContentsRectsWithAspectRatio:(double)ratio axis:(int64_t)axis;
+- (int64_t)_findBestRectsWithMaximumCount:(int64_t)count aspectRatio:(double)ratio;
+- (void)_enumeratePossibleContentsRects:(CGRect *)rects count:(int64_t)count usingBlock:(id)block;
 - (void)dealloc;
 @end
 
 @implementation PXStoryMultipartPanoramaCropFinder
 
-- (double)_scoreContentsRects:(const CGRect *)a3 count:(int64_t)a4
+- (double)_scoreContentsRects:(const CGRect *)rects count:(int64_t)count
 {
-  if (a4 >= 1)
+  if (count >= 1)
   {
     PXRectGetMinForAxis();
   }
@@ -19,14 +19,14 @@
   return 0.0;
 }
 
-- (void)_enumeratePossibleContentsRects:(CGRect *)a3 count:(int64_t)a4 usingBlock:(id)a5
+- (void)_enumeratePossibleContentsRects:(CGRect *)rects count:(int64_t)count usingBlock:(id)block
 {
   v13 = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  if (a4 <= 0)
+  blockCopy = block;
+  if (count <= 0)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXStoryMultipartPanoramaCropFinder.m" lineNumber:91 description:{@"Invalid parameter not satisfying: %@", @"count > 0"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryMultipartPanoramaCropFinder.m" lineNumber:91 description:{@"Invalid parameter not satisfying: %@", @"count > 0"}];
   }
 
   size = self->_referenceContentsRect.size;
@@ -35,20 +35,20 @@
   PXSizeValueForAxis();
 }
 
-- (int64_t)_findBestRectsWithMaximumCount:(int64_t)a3 aspectRatio:(double)a4
+- (int64_t)_findBestRectsWithMaximumCount:(int64_t)count aspectRatio:(double)ratio
 {
-  v4 = a3;
+  countCopy = count;
   v6 = *(off_1E77221F8 + 1);
   self->_referenceContentsRect.origin = *off_1E77221F8;
   self->_referenceContentsRect.size = v6;
   if (self->_axis == 2)
   {
-    self->_referenceContentsRect.size.width = self->_referenceContentsRect.size.height * a4;
+    self->_referenceContentsRect.size.width = self->_referenceContentsRect.size.height * ratio;
   }
 
   else
   {
-    self->_referenceContentsRect.size.height = self->_referenceContentsRect.size.width / a4;
+    self->_referenceContentsRect.size.height = self->_referenceContentsRect.size.width / ratio;
   }
 
   v17[0] = 0;
@@ -59,7 +59,7 @@
   v14 = &v13;
   v15 = 0x2020000000;
   v16 = 0;
-  if (a3 < 1)
+  if (count < 1)
   {
     v10 = 0;
   }
@@ -80,10 +80,10 @@
       v12[6] = &v13;
       v12[7] = v8;
       [(PXStoryMultipartPanoramaCropFinder *)self _enumeratePossibleContentsRects:possibleRects count:v8++ usingBlock:v12];
-      --v4;
+      --countCopy;
     }
 
-    while (v4);
+    while (countCopy);
     v10 = v14[3];
   }
 
@@ -106,7 +106,7 @@ void *__81__PXStoryMultipartPanoramaCropFinder__findBestRectsWithMaximumCount_as
   return result;
 }
 
-- (id)bestCropContentsRectsWithAspectRatio:(double)a3 axis:(int64_t)a4
+- (id)bestCropContentsRectsWithAspectRatio:(double)ratio axis:(int64_t)axis
 {
   v4 = +[PXStoryMultipartPanoramaSettings sharedInstance];
   [v4 maximumNumberOfParts];
@@ -123,15 +123,15 @@ void *__81__PXStoryMultipartPanoramaCropFinder__findBestRectsWithMaximumCount_as
   [(PXStoryMultipartPanoramaCropFinder *)&v3 dealloc];
 }
 
-- (PXStoryMultipartPanoramaCropFinder)initWithSaliencyAreas:(id)a3
+- (PXStoryMultipartPanoramaCropFinder)initWithSaliencyAreas:(id)areas
 {
-  v4 = a3;
+  areasCopy = areas;
   v9.receiver = self;
   v9.super_class = PXStoryMultipartPanoramaCropFinder;
   v5 = [(PXStoryMultipartPanoramaCropFinder *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [areasCopy copy];
     saliencyAreas = v5->_saliencyAreas;
     v5->_saliencyAreas = v6;
   }

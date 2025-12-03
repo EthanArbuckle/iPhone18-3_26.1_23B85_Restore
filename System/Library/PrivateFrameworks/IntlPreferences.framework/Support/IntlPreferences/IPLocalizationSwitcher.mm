@@ -1,73 +1,73 @@
 @interface IPLocalizationSwitcher
-- (void)checkForDiscoveredLanguages:(id)a3;
-- (void)notifyPreferredLanguageChangedForBundleID:(id)a3;
-- (void)preferredLanguagesForBundleID:(id)a3 reply:(id)a4;
-- (void)preferredLanguagesForBundleIDs:(id)a3 reply:(id)a4;
-- (void)setPreferredLanguage:(id)a3 forBundleID:(id)a4 andRelaunchWithReply:(id)a5;
+- (void)checkForDiscoveredLanguages:(id)languages;
+- (void)notifyPreferredLanguageChangedForBundleID:(id)d;
+- (void)preferredLanguagesForBundleID:(id)d reply:(id)reply;
+- (void)preferredLanguagesForBundleIDs:(id)ds reply:(id)reply;
+- (void)setPreferredLanguage:(id)language forBundleID:(id)d andRelaunchWithReply:(id)reply;
 @end
 
 @implementation IPLocalizationSwitcher
 
-- (void)setPreferredLanguage:(id)a3 forBundleID:(id)a4 andRelaunchWithReply:(id)a5
+- (void)setPreferredLanguage:(id)language forBundleID:(id)d andRelaunchWithReply:(id)reply
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
-  [(IPLocalizationSwitcher *)self notifyPreferredLanguageChangedForBundleID:v8];
-  v11 = [LSApplicationProxy applicationProxyForIdentifier:v8];
+  dCopy = d;
+  replyCopy = reply;
+  languageCopy = language;
+  [(IPLocalizationSwitcher *)self notifyPreferredLanguageChangedForBundleID:dCopy];
+  v11 = [LSApplicationProxy applicationProxyForIdentifier:dCopy];
   v12 = sub_100002938();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v25 = v8;
+    v25 = dCopy;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Initialized app proxy for [%{public}@]", buf, 0xCu);
   }
 
   v13 = +[FBSSystemService sharedService];
-  v14 = [v11 bundleIdentifier];
-  v15 = [NSString stringWithFormat:@"localizationswitcherd is about to switch language to [%@] for application with bundle identifier: [%@]", v10, v8];
+  bundleIdentifier = [v11 bundleIdentifier];
+  dCopy = [NSString stringWithFormat:@"localizationswitcherd is about to switch language to [%@] for application with bundle identifier: [%@]", languageCopy, dCopy];
 
-  v16 = [NSString stringWithFormat:@"%@", v15];
+  v16 = [NSString stringWithFormat:@"%@", dCopy];
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_1000023B8;
   v20[3] = &unk_1000085C8;
   v22 = v11;
-  v23 = v9;
-  v21 = v8;
+  v23 = replyCopy;
+  v21 = dCopy;
   v17 = v11;
-  v18 = v8;
-  v19 = v9;
-  [v13 terminateApplication:v14 forReason:3 andReport:0 withDescription:v16 completion:v20];
+  v18 = dCopy;
+  v19 = replyCopy;
+  [v13 terminateApplication:bundleIdentifier forReason:3 andReport:0 withDescription:v16 completion:v20];
 }
 
-- (void)notifyPreferredLanguageChangedForBundleID:(id)a3
+- (void)notifyPreferredLanguageChangedForBundleID:(id)d
 {
-  v4 = a3;
-  v5 = [(IPLocalizationSwitcher *)self delegate];
-  [v5 preferredLanguageChangedForBundleID:v4];
+  dCopy = d;
+  delegate = [(IPLocalizationSwitcher *)self delegate];
+  [delegate preferredLanguageChangedForBundleID:dCopy];
 }
 
-- (void)preferredLanguagesForBundleID:(id)a3 reply:(id)a4
+- (void)preferredLanguagesForBundleID:(id)d reply:(id)reply
 {
-  v6 = a4;
-  v7 = [IntlUtility _preferredLanguagesForBundleID:a3];
-  (*(a4 + 2))(v6, v7);
+  replyCopy = reply;
+  v7 = [IntlUtility _preferredLanguagesForBundleID:d];
+  (*(reply + 2))(replyCopy, v7);
 }
 
-- (void)preferredLanguagesForBundleIDs:(id)a3 reply:(id)a4
+- (void)preferredLanguagesForBundleIDs:(id)ds reply:(id)reply
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 count])
+  dsCopy = ds;
+  replyCopy = reply;
+  if ([dsCopy count])
   {
-    v18 = v6;
+    v18 = replyCopy;
     v7 = +[NSMutableDictionary dictionary];
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v8 = v5;
+    v8 = dsCopy;
     v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v9)
     {
@@ -107,21 +107,21 @@
       while (v10);
     }
 
-    v6 = v18;
+    replyCopy = v18;
     (v18)[2](v18, v7);
   }
 
   else
   {
-    v6[2](v6, 0);
+    replyCopy[2](replyCopy, 0);
   }
 }
 
-- (void)checkForDiscoveredLanguages:(id)a3
+- (void)checkForDiscoveredLanguages:(id)languages
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(languages);
   _Block_copy(v4);
-  v5 = self;
+  selfCopy = self;
   sub_100003BC4(v4);
   _Block_release(v4);
   _Block_release(v4);

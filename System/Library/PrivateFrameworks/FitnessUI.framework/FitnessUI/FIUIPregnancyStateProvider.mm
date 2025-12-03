@@ -2,8 +2,8 @@
 - (BOOL)isPregnant;
 - (FIUIPregnancyStateProvider)init;
 - (void)activate;
-- (void)notifyObservers:(id)a3;
-- (void)pregnancyModelDidChangeWithModel:(id)a3;
+- (void)notifyObservers:(id)observers;
+- (void)pregnancyModelDidChangeWithModel:(id)model;
 - (void)stopQuery;
 @end
 
@@ -20,30 +20,30 @@
   return v2;
 }
 
-- (void)notifyObservers:(id)a3
+- (void)notifyObservers:(id)observers
 {
-  v4 = a3;
-  v5 = self;
-  sub_1E5D6A450(v4);
+  observersCopy = observers;
+  selfCopy = self;
+  sub_1E5D6A450(observersCopy);
 }
 
 - (void)activate
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E5D6A630();
 }
 
 - (void)stopQuery
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E5D6A8B4();
 }
 
-- (void)pregnancyModelDidChangeWithModel:(id)a3
+- (void)pregnancyModelDidChangeWithModel:(id)model
 {
-  v4 = a3;
-  v5 = self;
-  sub_1E5D6AA7C(v4);
+  modelCopy = model;
+  selfCopy = self;
+  sub_1E5D6AA7C(modelCopy);
 }
 
 - (FIUIPregnancyStateProvider)init

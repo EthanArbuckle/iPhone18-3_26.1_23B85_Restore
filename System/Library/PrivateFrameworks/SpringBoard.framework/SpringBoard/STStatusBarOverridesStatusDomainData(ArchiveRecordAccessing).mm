@@ -6,9 +6,9 @@
 
 - (_SBSystemStatusStatusBarOverridesArchiveRecord)_sbSystemStatusStatusBarOverridesArchiveRecord
 {
-  v2 = [a1 customOverrides];
-  v3 = [a1 suppressedBackgroundActivityIdentifiers];
-  v4 = [[_SBSystemStatusStatusBarOverridesArchiveRecord alloc] initWithStatusBarData:v2 andSuppressedBackgroundActivityIdentifiers:v3];
+  customOverrides = [self customOverrides];
+  suppressedBackgroundActivityIdentifiers = [self suppressedBackgroundActivityIdentifiers];
+  v4 = [[_SBSystemStatusStatusBarOverridesArchiveRecord alloc] initWithStatusBarData:customOverrides andSuppressedBackgroundActivityIdentifiers:suppressedBackgroundActivityIdentifiers];
 
   return v4;
 }

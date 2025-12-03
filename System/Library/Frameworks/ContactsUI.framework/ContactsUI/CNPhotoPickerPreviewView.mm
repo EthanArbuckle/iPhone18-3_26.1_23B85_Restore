@@ -1,25 +1,25 @@
 @interface CNPhotoPickerPreviewView
-+ (id)pickerPreviewWithFrame:(CGRect)a3 forItem:(id)a4;
-- (CNPhotoPickerPreviewView)initWithFrame:(CGRect)a3;
++ (id)pickerPreviewWithFrame:(CGRect)frame forItem:(id)item;
+- (CNPhotoPickerPreviewView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 - (void)setupPreview;
-- (void)updatePreviewWithItem:(id)a3;
+- (void)updatePreviewWithItem:(id)item;
 @end
 
 @implementation CNPhotoPickerPreviewView
 
-- (void)updatePreviewWithItem:(id)a3
+- (void)updatePreviewWithItem:(id)item
 {
-  v4 = a3;
-  v5 = [(CNPhotoPickerPreviewView *)self thumbnailContentView];
-  [v5 removeFromSuperview];
+  itemCopy = item;
+  thumbnailContentView = [(CNPhotoPickerPreviewView *)self thumbnailContentView];
+  [thumbnailContentView removeFromSuperview];
 
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __50__CNPhotoPickerPreviewView_updatePreviewWithItem___block_invoke;
   v6[3] = &unk_1E74E73E8;
   v6[4] = self;
-  [v4 thumbnailViewWithCompletion:v6];
+  [itemCopy thumbnailViewWithCompletion:v6];
 }
 
 void __50__CNPhotoPickerPreviewView_updatePreviewWithItem___block_invoke(uint64_t a1, void *a2)
@@ -54,8 +54,8 @@ void __50__CNPhotoPickerPreviewView_updatePreviewWithItem___block_invoke(uint64_
   self->_clippingLayer = v9;
 
   v11 = self->_clippingLayer;
-  v12 = [(UIView *)self->_previewView layer];
-  [v12 setMask:v11];
+  layer = [(UIView *)self->_previewView layer];
+  [layer setMask:v11];
 }
 
 - (void)layoutSubviews
@@ -64,19 +64,19 @@ void __50__CNPhotoPickerPreviewView_updatePreviewWithItem___block_invoke(uint64_
   v8.super_class = CNPhotoPickerPreviewView;
   [(CNPhotoPickerPreviewView *)&v8 layoutSubviews];
   v3 = MEMORY[0x1E69DC728];
-  v4 = [(CNPhotoPickerPreviewView *)self previewView];
-  [v4 bounds];
+  previewView = [(CNPhotoPickerPreviewView *)self previewView];
+  [previewView bounds];
   v5 = [v3 bezierPathWithOvalInRect:?];
-  v6 = [v5 CGPath];
-  v7 = [(CNPhotoPickerPreviewView *)self clippingLayer];
-  [v7 setPath:v6];
+  cGPath = [v5 CGPath];
+  clippingLayer = [(CNPhotoPickerPreviewView *)self clippingLayer];
+  [clippingLayer setPath:cGPath];
 }
 
-- (CNPhotoPickerPreviewView)initWithFrame:(CGRect)a3
+- (CNPhotoPickerPreviewView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = CNPhotoPickerPreviewView;
-  v3 = [(CNPhotoPickerPreviewView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CNPhotoPickerPreviewView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -87,13 +87,13 @@ void __50__CNPhotoPickerPreviewView_updatePreviewWithItem___block_invoke(uint64_
   return v4;
 }
 
-+ (id)pickerPreviewWithFrame:(CGRect)a3 forItem:(id)a4
++ (id)pickerPreviewWithFrame:(CGRect)frame forItem:(id)item
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  itemCopy = item;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 

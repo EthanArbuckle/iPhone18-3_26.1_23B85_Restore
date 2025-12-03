@@ -8,10 +8,10 @@
 
 + (void)simulateFakeImportSource
 {
-  v9 = [MEMORY[0x1E69DC668] sharedApplication];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
   if (objc_opt_respondsToSelector())
   {
-    [v9 _runImportTestCommonInit:&unk_1F190F738 navigateToImportTab:0 completionHandler:0];
+    [mEMORY[0x1E69DC668] _runImportTestCommonInit:&unk_1F190F738 navigateToImportTab:0 completionHandler:0];
   }
 
   else
@@ -24,9 +24,9 @@
     v6 = [MEMORY[0x1E69DC648] actionWithTitle:@"OK" style:0 handler:&__block_literal_global_207552];
     [v5 addAction:v6];
 
-    v7 = [v9 px_firstKeyWindow];
-    v8 = [v7 rootViewController];
-    [v8 px_presentOverTopmostPresentedViewController:v5 animated:1 completion:0];
+    px_firstKeyWindow = [mEMORY[0x1E69DC668] px_firstKeyWindow];
+    rootViewController = [px_firstKeyWindow rootViewController];
+    [rootViewController px_presentOverTopmostPresentedViewController:v5 animated:1 completion:0];
   }
 }
 
@@ -40,9 +40,9 @@
 - (BOOL)canPerformAction
 {
   v2 = +[PXImportSettings sharedInstance];
-  v3 = [v2 importSourceSimulationViaDiagnosticsEnabled];
+  importSourceSimulationViaDiagnosticsEnabled = [v2 importSourceSimulationViaDiagnosticsEnabled];
 
-  return v3;
+  return importSourceSimulationViaDiagnosticsEnabled;
 }
 
 @end

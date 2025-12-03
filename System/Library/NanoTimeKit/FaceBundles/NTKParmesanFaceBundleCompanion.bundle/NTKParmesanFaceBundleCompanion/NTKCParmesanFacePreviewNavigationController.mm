@@ -1,8 +1,8 @@
 @interface NTKCParmesanFacePreviewNavigationController
-- (NTKCParmesanFacePreviewNavigationController)initWithCoder:(id)a3;
-- (NTKCParmesanFacePreviewNavigationController)initWithNavigationBarClass:(Class)a3 toolbarClass:(Class)a4;
-- (NTKCParmesanFacePreviewNavigationController)initWithNibName:(id)a3 bundle:(id)a4;
-- (NTKCParmesanFacePreviewNavigationController)initWithRootViewController:(id)a3;
+- (NTKCParmesanFacePreviewNavigationController)initWithCoder:(id)coder;
+- (NTKCParmesanFacePreviewNavigationController)initWithNavigationBarClass:(Class)class toolbarClass:(Class)toolbarClass;
+- (NTKCParmesanFacePreviewNavigationController)initWithNibName:(id)name bundle:(id)bundle;
+- (NTKCParmesanFacePreviewNavigationController)initWithRootViewController:(id)controller;
 - (NTKParmesanFacePreviewDelegate)previewDelegate;
 @end
 
@@ -15,28 +15,28 @@
   return Strong;
 }
 
-- (NTKCParmesanFacePreviewNavigationController)initWithCoder:(id)a3
+- (NTKCParmesanFacePreviewNavigationController)initWithCoder:(id)coder
 {
   result = sub_23BFFAB00();
   __break(1u);
   return result;
 }
 
-- (NTKCParmesanFacePreviewNavigationController)initWithNavigationBarClass:(Class)a3 toolbarClass:(Class)a4
+- (NTKCParmesanFacePreviewNavigationController)initWithNavigationBarClass:(Class)class toolbarClass:(Class)toolbarClass
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (NTKCParmesanFacePreviewNavigationController)initWithRootViewController:(id)a3
+- (NTKCParmesanFacePreviewNavigationController)initWithRootViewController:(id)controller
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (NTKCParmesanFacePreviewNavigationController)initWithNibName:(id)a3 bundle:(id)a4
+- (NTKCParmesanFacePreviewNavigationController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

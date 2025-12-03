@@ -1,5 +1,5 @@
 @interface BCCardViewControllerViewState
-- (BCCardViewControllerViewState)initWithContentOffset:(CGPoint)a3 contentScrollViewContentOffset:(CGPoint)a4 viewSize:(CGSize)a5;
+- (BCCardViewControllerViewState)initWithContentOffset:(CGPoint)offset contentScrollViewContentOffset:(CGPoint)contentOffset viewSize:(CGSize)size;
 - (CGPoint)cardScrollViewContentOffset;
 - (CGPoint)contentScrollViewContentOffset;
 - (CGSize)viewSize;
@@ -8,14 +8,14 @@
 
 @implementation BCCardViewControllerViewState
 
-- (BCCardViewControllerViewState)initWithContentOffset:(CGPoint)a3 contentScrollViewContentOffset:(CGPoint)a4 viewSize:(CGSize)a5
+- (BCCardViewControllerViewState)initWithContentOffset:(CGPoint)offset contentScrollViewContentOffset:(CGPoint)contentOffset viewSize:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
-  y = a4.y;
-  x = a4.x;
-  v9 = a3.y;
-  v10 = a3.x;
+  height = size.height;
+  width = size.width;
+  y = contentOffset.y;
+  x = contentOffset.x;
+  v9 = offset.y;
+  v10 = offset.x;
   v12.receiver = self;
   v12.super_class = BCCardViewControllerViewState;
   result = [(BCCardViewControllerViewState *)&v12 init];

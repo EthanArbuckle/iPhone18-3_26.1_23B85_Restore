@@ -1,20 +1,20 @@
 @interface LPRCustomizeInterstitialViewController
-- (LPRCustomizeInterstitialViewController)initWithVehicle:(id)a3 delegate:(id)a4;
+- (LPRCustomizeInterstitialViewController)initWithVehicle:(id)vehicle delegate:(id)delegate;
 - (void)_didFinishCreatingVehicle;
 - (void)continuePressed;
-- (void)editVehicleViewController:(id)a3 didSelectColor:(id)a4 nickname:(id)a5 removedNetworks:(id)a6;
+- (void)editVehicleViewController:(id)controller didSelectColor:(id)color nickname:(id)nickname removedNetworks:(id)networks;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation LPRCustomizeInterstitialViewController
 
-- (void)editVehicleViewController:(id)a3 didSelectColor:(id)a4 nickname:(id)a5 removedNetworks:(id)a6
+- (void)editVehicleViewController:(id)controller didSelectColor:(id)color nickname:(id)nickname removedNetworks:(id)networks
 {
-  v9 = a4;
-  v10 = a5;
-  if ([a6 count])
+  colorCopy = color;
+  nicknameCopy = nickname;
+  if ([networks count])
   {
     v13 = sub_10006D178();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -43,12 +43,12 @@
     }
   }
 
-  v11 = [v9 _maps_hexRepresentation];
-  [(VGVehicle *)self->_vehicle setColorHex:v11];
+  _maps_hexRepresentation = [colorCopy _maps_hexRepresentation];
+  [(VGVehicle *)self->_vehicle setColorHex:_maps_hexRepresentation];
 
-  if ([v10 length])
+  if ([nicknameCopy length])
   {
-    [(VGVehicle *)self->_vehicle setDisplayName:v10];
+    [(VGVehicle *)self->_vehicle setDisplayName:nicknameCopy];
   }
 
   v12 = +[VGVirtualGarageService sharedService];
@@ -58,13 +58,13 @@
 - (void)continuePressed
 {
   v8 = [NSBundle bundleForClass:objc_opt_class()];
-  v3 = [(LPRCustomizeInterstitialViewController *)self traitCollection];
+  traitCollection = [(LPRCustomizeInterstitialViewController *)self traitCollection];
   v4 = [EditVehicleViewController alloc];
-  v5 = sub_1006D447C(v8, v3);
+  v5 = sub_1006D447C(v8, traitCollection);
   v6 = [(EditVehicleViewController *)v4 initWithColors:v5 vehicle:self->_vehicle delegate:self];
 
-  v7 = [(LPRCustomizeInterstitialViewController *)self navigationController];
-  [v7 pushViewController:v6 animated:1];
+  navigationController = [(LPRCustomizeInterstitialViewController *)self navigationController];
+  [navigationController pushViewController:v6 animated:1];
 }
 
 - (void)_didFinishCreatingVehicle
@@ -79,37 +79,37 @@
   [v5 virtualGarageSelectVehicle:self->_vehicle];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v7.receiver = self;
   v7.super_class = LPRCustomizeInterstitialViewController;
-  [(LPRCustomizeInterstitialViewController *)&v7 viewWillDisappear:a3];
-  v4 = [(LPRCustomizeInterstitialViewController *)self traitCollection];
-  v5 = [v4 userInterfaceIdiom];
+  [(LPRCustomizeInterstitialViewController *)&v7 viewWillDisappear:disappear];
+  traitCollection = [(LPRCustomizeInterstitialViewController *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (!v5)
+  if (!userInterfaceIdiom)
   {
     v6 = +[UIApplication sharedMapsDelegate];
     [v6 setLockedOrientations:0];
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v9.receiver = self;
   v9.super_class = LPRCustomizeInterstitialViewController;
   [(LPRCustomizeInterstitialViewController *)&v9 viewWillAppear:?];
-  v5 = [(LPRCustomizeInterstitialViewController *)self traitCollection];
-  v6 = [v5 userInterfaceIdiom];
+  traitCollection = [(LPRCustomizeInterstitialViewController *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (!v6)
+  if (!userInterfaceIdiom)
   {
     v7 = +[UIApplication sharedMapsDelegate];
     [v7 setLockedOrientations:2];
 
     v8 = +[UIDevice currentDevice];
-    [v8 setOrientation:1 animated:v3];
+    [v8 setOrientation:1 animated:appearCopy];
   }
 }
 
@@ -131,16 +131,16 @@
   v10 = [v9 imageWithRenderingMode:1];
 
   v11 = [[OBWelcomeController alloc] initWithTitle:v4 detailText:v6 icon:v10];
-  v12 = [v11 view];
-  [v12 setAccessibilityIdentifier:@"OBWelcomeView"];
+  view = [v11 view];
+  [view setAccessibilityIdentifier:@"OBWelcomeView"];
 
   [v11 setModalPresentationStyle:2];
-  v13 = [v11 headerView];
-  [v13 setIconInheritsTint:1];
+  headerView = [v11 headerView];
+  [headerView setIconInheritsTint:1];
 
   v14 = +[UIColor systemBlueColor];
-  v15 = [v11 headerView];
-  [v15 setTintColor:v14];
+  headerView2 = [v11 headerView];
+  [headerView2 setTintColor:v14];
 
   v16 = +[OBBoldTrayButton boldButton];
   v17 = +[NSBundle mainBundle];
@@ -149,8 +149,8 @@
 
   [v16 addTarget:self action:"continuePressed" forControlEvents:64];
   [v16 setAccessibilityIdentifier:@"CustomizeButton"];
-  v19 = [v11 buttonTray];
-  [v19 addButton:v16];
+  buttonTray = [v11 buttonTray];
+  [buttonTray addButton:v16];
 
   v20 = +[OBLinkTrayButton linkButton];
   v21 = +[NSBundle mainBundle];
@@ -159,36 +159,36 @@
 
   [v20 addTarget:self action:"setupLaterPressed" forControlEvents:64];
   [v20 setAccessibilityIdentifier:@"SetupLaterButton"];
-  v23 = [v11 buttonTray];
-  [v23 addButton:v20];
+  buttonTray2 = [v11 buttonTray];
+  [buttonTray2 addButton:v20];
 
   [(LPRCustomizeInterstitialViewController *)self addChildViewController:v11];
-  v24 = [(LPRCustomizeInterstitialViewController *)self view];
-  v25 = [v11 view];
-  [v24 addSubview:v25];
+  view2 = [(LPRCustomizeInterstitialViewController *)self view];
+  view3 = [v11 view];
+  [view2 addSubview:view3];
 
   [v11 didMoveToParentViewController:self];
-  v26 = [v11 view];
-  [v26 setTranslatesAutoresizingMaskIntoConstraints:0];
+  view4 = [v11 view];
+  [view4 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v27 = [v11 view];
-  v28 = [(LPRCustomizeInterstitialViewController *)self view];
-  v29 = [v27 _maps_constraintsForCenteringInView:v28];
+  view5 = [v11 view];
+  view6 = [(LPRCustomizeInterstitialViewController *)self view];
+  v29 = [view5 _maps_constraintsForCenteringInView:view6];
   [NSLayoutConstraint activateConstraints:v29];
 }
 
-- (LPRCustomizeInterstitialViewController)initWithVehicle:(id)a3 delegate:(id)a4
+- (LPRCustomizeInterstitialViewController)initWithVehicle:(id)vehicle delegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  vehicleCopy = vehicle;
+  delegateCopy = delegate;
   v12.receiver = self;
   v12.super_class = LPRCustomizeInterstitialViewController;
   v9 = [(LPRCustomizeInterstitialViewController *)&v12 initWithNibName:0 bundle:0];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_vehicle, a3);
-    objc_storeWeak(&v10->_delegate, v8);
+    objc_storeStrong(&v9->_vehicle, vehicle);
+    objc_storeWeak(&v10->_delegate, delegateCopy);
   }
 
   return v10;

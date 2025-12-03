@@ -1,10 +1,10 @@
 @interface PVInstructionGraphSourceNode
 - (BOOL)isPortrait;
 - (CGAffineTransform)transform;
-- (HGRef<HGNode>)applyWrapModeToInput:(HGRef<HGNode>)a3;
+- (HGRef<HGNode>)applyWrapModeToInput:(HGRef<HGNode>)input;
 - (PVInstructionGraphSourceNode)init;
 - (id)instructionGraphNodeDescription;
-- (void)setTransform:(CGAffineTransform *)a3;
+- (void)setTransform:(CGAffineTransform *)transform;
 @end
 
 @implementation PVInstructionGraphSourceNode
@@ -40,11 +40,11 @@
   return fabsf(fabsf(v2) + -3.1416) >= 0.00001 && v2 != 0.0;
 }
 
-- (HGRef<HGNode>)applyWrapModeToInput:(HGRef<HGNode>)a3
+- (HGRef<HGNode>)applyWrapModeToInput:(HGRef<HGNode>)input
 {
   v6 = v3;
-  v7 = *a3.var0;
-  *v3 = *a3.var0;
+  v7 = *input.var0;
+  *v3 = *input.var0;
   if (v7)
   {
     (*(*v7 + 16))(v7, a2);
@@ -55,7 +55,7 @@
   {
     v9 = HGObject::operator new(0x1D0uLL);
     HGTextureWrap::HGTextureWrap(v9);
-    (*(*v9 + 120))(v9, 0, *a3.var0);
+    (*(*v9 + 120))(v9, 0, *input.var0);
     HGTextureWrap::SetTextureWrapMode(v9, 1, v10);
     if (v7 != v9)
     {
@@ -105,11 +105,11 @@
   return self;
 }
 
-- (void)setTransform:(CGAffineTransform *)a3
+- (void)setTransform:(CGAffineTransform *)transform
 {
-  v4 = *&a3->c;
-  v3 = *&a3->tx;
-  *&self->_timedMetadataGroup = *&a3->a;
+  v4 = *&transform->c;
+  v3 = *&transform->tx;
+  *&self->_timedMetadataGroup = *&transform->a;
   *&self->_transform.b = v4;
   *&self->_transform.d = v3;
 }

@@ -6,7 +6,7 @@
 
 - (_BYTE)hk_hasFloatingPointValue
 {
-  result = [a1 objCType];
+  result = [self objCType];
   if (result)
   {
     return ((*result & 0xFD) == 100);

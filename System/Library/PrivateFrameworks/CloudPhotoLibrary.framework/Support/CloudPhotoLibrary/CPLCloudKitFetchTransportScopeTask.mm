@@ -1,31 +1,31 @@
 @interface CPLCloudKitFetchTransportScopeTask
-- (CPLCloudKitFetchTransportScopeTask)initWithController:(id)a3 scope:(id)a4 cloudKitScope:(id)a5 completionHandler:(id)a6;
-- (void)_callCompletionWithZone:(id)a3;
-- (void)_updateCloudKitScopeWithZone:(id)a3;
-- (void)createRecordZoneWithID:(id)a3;
+- (CPLCloudKitFetchTransportScopeTask)initWithController:(id)controller scope:(id)scope cloudKitScope:(id)kitScope completionHandler:(id)handler;
+- (void)_callCompletionWithZone:(id)zone;
+- (void)_updateCloudKitScopeWithZone:(id)zone;
+- (void)createRecordZoneWithID:(id)d;
 - (void)runOperations;
 @end
 
 @implementation CPLCloudKitFetchTransportScopeTask
 
-- (CPLCloudKitFetchTransportScopeTask)initWithController:(id)a3 scope:(id)a4 cloudKitScope:(id)a5 completionHandler:(id)a6
+- (CPLCloudKitFetchTransportScopeTask)initWithController:(id)controller scope:(id)scope cloudKitScope:(id)kitScope completionHandler:(id)handler
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  scopeCopy = scope;
+  kitScopeCopy = kitScope;
+  handlerCopy = handler;
   v21.receiver = self;
   v21.super_class = CPLCloudKitFetchTransportScopeTask;
-  v14 = [(CPLCloudKitTransportTask *)&v21 initWithController:a3];
+  v14 = [(CPLCloudKitTransportTask *)&v21 initWithController:controller];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_scope, a4);
-    objc_storeStrong(&v15->_cloudKitScope, a5);
+    objc_storeStrong(&v14->_scope, scope);
+    objc_storeStrong(&v15->_cloudKitScope, kitScope);
     v16 = objc_alloc_init(CPLEngineScopeFlagsUpdate);
     fetchedFlags = v15->_fetchedFlags;
     v15->_fetchedFlags = v16;
 
-    v18 = objc_retainBlock(v13);
+    v18 = objc_retainBlock(handlerCopy);
     completionHandler = v15->_completionHandler;
     v15->_completionHandler = v18;
 
@@ -35,10 +35,10 @@
   return v15;
 }
 
-- (void)_updateCloudKitScopeWithZone:(id)a3
+- (void)_updateCloudKitScopeWithZone:(id)zone
 {
   cloudKitScope = self->_cloudKitScope;
-  v5 = a3;
+  zoneCopy = zone;
   v6 = [CPLCloudKitScope alloc];
   if (cloudKitScope)
   {
@@ -50,19 +50,19 @@
     options = self->_options;
   }
 
-  v12 = [(CPLCloudKitScope *)v6 initWithZone:v5 options:options];
+  v12 = [(CPLCloudKitScope *)v6 initWithZone:zoneCopy options:options];
 
-  v8 = [(CPLCloudKitTransportTask *)self controller];
-  v9 = [v8 zoneIdentificationForCloudKitScope:v12 engineScope:self->_scope];
+  controller = [(CPLCloudKitTransportTask *)self controller];
+  v9 = [controller zoneIdentificationForCloudKitScope:v12 engineScope:self->_scope];
 
-  v10 = [v9 cloudKitScope];
+  cloudKitScope = [v9 cloudKitScope];
   v11 = self->_cloudKitScope;
-  self->_cloudKitScope = v10;
+  self->_cloudKitScope = cloudKitScope;
 }
 
-- (void)createRecordZoneWithID:(id)a3
+- (void)createRecordZoneWithID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v17 = 0;
   v6 = [(CPLCloudKitTransportTask *)self shouldRunOperationsWithError:&v17];
   v7 = v17;
@@ -73,14 +73,14 @@
       v8 = sub_100003568();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
-        v9 = [v5 cpl_zoneName];
+        cpl_zoneName = [dCopy cpl_zoneName];
         *buf = 138543362;
-        v20 = v9;
+        v20 = cpl_zoneName;
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Creating primary zone with zoneID %{public}@", buf, 0xCu);
       }
     }
 
-    v10 = [[CKRecordZone alloc] initWithZoneID:v5];
+    v10 = [[CKRecordZone alloc] initWithZoneID:dCopy];
     [(CPLCloudKitFetchTransportScopeTask *)self _updateCloudKitScopeWithZone:v10];
     v11 = [CKModifyRecordZonesOperation alloc];
     v18 = v10;
@@ -92,7 +92,7 @@
     v14[2] = sub_10002FB5C;
     v14[3] = &unk_100273760;
     v14[4] = self;
-    v15 = v5;
+    v15 = dCopy;
     v16 = a2;
     [v13 setModifyRecordZonesCompletionBlock:v14];
     [(CPLCloudKitTransportTask *)self launchOperation:v13 type:CPLCloudKitOperationTypeForScope(self->_cloudKitScope) withContext:0];
@@ -122,13 +122,13 @@
     v62 = 0x3032000000;
     v63 = sub_1000043B0;
     v64 = sub_1000052BC;
-    v65 = [v67[5] zoneID];
+    zoneID = [v67[5] zoneID];
     if (v61[5])
     {
       v6 = [CKRecordZoneID alloc];
-      v7 = [v61[5] zoneName];
-      v8 = [v61[5] ownerName];
-      v9 = [v6 initWithZoneName:v7 ownerName:v8];
+      zoneName = [v61[5] zoneName];
+      ownerName = [v61[5] ownerName];
+      v9 = [v6 initWithZoneName:zoneName ownerName:ownerName];
       v10 = v61[5];
       v61[5] = v9;
 
@@ -137,12 +137,12 @@
 
     else
     {
-      v12 = [(CPLEngineScope *)self->_scope scopeType];
+      scopeType = [(CPLEngineScope *)self->_scope scopeType];
       scope = self->_scope;
-      if (v12 == 1)
+      if (scopeType == 1)
       {
-        v14 = [(CPLEngineScope *)scope scopeIdentifier];
-        v15 = [v14 isEqualToString:CPLPrimaryScopeIdentifier];
+        scopeIdentifier = [(CPLEngineScope *)scope scopeIdentifier];
+        v15 = [scopeIdentifier isEqualToString:CPLPrimaryScopeIdentifier];
 
         v16 = [CKRecordZoneID alloc];
         [(CPLEngineScope *)self->_scope scopeIdentifier];
@@ -179,16 +179,16 @@
         goto LABEL_19;
       }
 
-      v7 = [(CPLEngineScope *)scope scopeIdentifier];
-      sub_100193BC0(v7, &self->_scope);
-      v21 = [(CPLCloudKitTransportTask *)self zoneIDFromScopeIdentifier:v7];
+      zoneName = [(CPLEngineScope *)scope scopeIdentifier];
+      sub_100193BC0(zoneName, &self->_scope);
+      v21 = [(CPLCloudKitTransportTask *)self zoneIDFromScopeIdentifier:zoneName];
       v22 = v61[5];
       v61[5] = v21;
 
       v23 = v61;
       v11 = v61[5];
-      v24 = [v23[5] ownerName];
-      v25 = [v24 isEqualToString:CKCurrentUserDefaultName];
+      ownerName2 = [v23[5] ownerName];
+      v25 = [ownerName2 isEqualToString:CKCurrentUserDefaultName];
 
       if (v25)
       {
@@ -212,7 +212,7 @@
       self->_cloudKitScope = v31;
 
       v33 = [(CPLCloudKitScope *)self->_cloudKitScope zone];
-      v8 = v67[5];
+      ownerName = v67[5];
       v67[5] = v33;
     }
 
@@ -262,8 +262,8 @@ LABEL_21:
         v40 = sub_100003568();
         if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
         {
-          v41 = [v11 cpl_zoneName];
-          sub_100193C6C(v41, self, buf, v40);
+          cpl_zoneName = [v11 cpl_zoneName];
+          sub_100193C6C(cpl_zoneName, self, buf, v40);
         }
 
 LABEL_31:
@@ -288,7 +288,7 @@ LABEL_31:
       }
     }
 
-    v43 = [v39 operationID];
+    operationID = [v39 operationID];
     v49[0] = _NSConcreteStackBlock;
     v49[1] = 3221225472;
     v49[2] = sub_100030630;
@@ -298,7 +298,7 @@ LABEL_31:
     v44 = v19;
     v52 = v44;
     v55 = &v66;
-    v45 = v43;
+    v45 = operationID;
     v56 = a2;
     v50 = v45;
     v53 = v20;
@@ -317,28 +317,28 @@ LABEL_31:
 LABEL_33:
 }
 
-- (void)_callCompletionWithZone:(id)a3
+- (void)_callCompletionWithZone:(id)zone
 {
-  [(CPLCloudKitFetchTransportScopeTask *)self _updateCloudKitScopeWithZone:a3];
+  [(CPLCloudKitFetchTransportScopeTask *)self _updateCloudKitScopeWithZone:zone];
   if ((_CPLSilentLogging & 1) == 0)
   {
     v4 = sub_100003568();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
-      v5 = [(CPLCloudKitScope *)self->_cloudKitScope zoneID];
-      v6 = [v5 cpl_zoneName];
-      v7 = [(CPLCloudKitScope *)self->_cloudKitScope options];
+      zoneID = [(CPLCloudKitScope *)self->_cloudKitScope zoneID];
+      cpl_zoneName = [zoneID cpl_zoneName];
+      options = [(CPLCloudKitScope *)self->_cloudKitScope options];
       v10 = 138543618;
-      v11 = v6;
+      v11 = cpl_zoneName;
       v12 = 2048;
-      v13 = v7;
+      v13 = options;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Fetched zone %{public}@ with options 0x%lx", &v10, 0x16u);
     }
   }
 
   completionHandler = self->_completionHandler;
-  v9 = [(CPLCloudKitScope *)self->_cloudKitScope transportScope];
-  completionHandler[2](completionHandler, v9, self->_fetchedFlags, 0);
+  transportScope = [(CPLCloudKitScope *)self->_cloudKitScope transportScope];
+  completionHandler[2](completionHandler, transportScope, self->_fetchedFlags, 0);
 }
 
 @end

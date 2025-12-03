@@ -1,60 +1,60 @@
 @interface DTActivityTraceTapLocalShuttle
-- (void)addPidToExecEntriesFromMapping:(id)a3;
-- (void)executeStopOnItinerary:(id)a3;
+- (void)addPidToExecEntriesFromMapping:(id)mapping;
+- (void)executeStopOnItinerary:(id)itinerary;
 @end
 
 @implementation DTActivityTraceTapLocalShuttle
 
-- (void)executeStopOnItinerary:(id)a3
+- (void)executeStopOnItinerary:(id)itinerary
 {
-  v4 = a3;
-  v5 = [(XRMobileAgent *)self mode];
-  v6 = v5;
-  if (v5 == *MEMORY[0x277D036C8])
+  itineraryCopy = itinerary;
+  mode = [(XRMobileAgent *)self mode];
+  v6 = mode;
+  if (mode == *MEMORY[0x277D036C8])
   {
     v17.receiver = self;
     v17.super_class = DTActivityTraceTapLocalShuttle;
-    [(XRMobileAgent *)&v17 executeStopOnItinerary:v4];
+    [(XRMobileAgent *)&v17 executeStopOnItinerary:itineraryCopy];
     self->_didPrepare = 0;
     loaderStop = self->_loaderStop;
-    v8 = [(DTActivityTraceTapLocalShuttle *)self configuration];
-    v9 = [(DTOSLogLoader *)loaderStop ticketToPrepare:self configuration:v8];
+    configuration = [(DTActivityTraceTapLocalShuttle *)self configuration];
+    v9 = [(DTOSLogLoader *)loaderStop ticketToPrepare:self configuration:configuration];
 
     v10 = self->_loaderStop;
     v11 = @"Preparing Stream";
 LABEL_9:
-    [v4 setNextStop:v10 mode:v11 ticket:v9];
+    [itineraryCopy setNextStop:v10 mode:v11 ticket:v9];
 
     goto LABEL_23;
   }
 
-  if (v5 == @"Preparing Stream")
+  if (mode == @"Preparing Stream")
   {
     self->_didPrepare = 1;
     self->_didStart = 0;
     goto LABEL_22;
   }
 
-  if (v5 == @"Starting Stream")
+  if (mode == @"Starting Stream")
   {
     v12 = 52;
     goto LABEL_21;
   }
 
-  if (v5 != @"Waiting")
+  if (mode != @"Waiting")
   {
-    if (v5 != @"Stopping Stream")
+    if (mode != @"Stopping Stream")
     {
-      if (v5 != @"Fetching")
+      if (mode != @"Fetching")
       {
         v16.receiver = self;
         v16.super_class = DTActivityTraceTapLocalShuttle;
-        [(XRMobileAgent *)&v16 executeStopOnItinerary:v4];
+        [(XRMobileAgent *)&v16 executeStopOnItinerary:itineraryCopy];
         goto LABEL_23;
       }
 
 LABEL_22:
-      [v4 setNextStop:self->_ownersDock mode:@"Waiting"];
+      [itineraryCopy setNextStop:self->_ownersDock mode:@"Waiting"];
       goto LABEL_23;
     }
 
@@ -92,18 +92,18 @@ LABEL_21:
       commonFetchTicket = self->_commonFetchTicket;
     }
 
-    [v4 setNextStop:self->_loaderStop mode:@"Fetching" ticket:commonFetchTicket];
+    [itineraryCopy setNextStop:self->_loaderStop mode:@"Fetching" ticket:commonFetchTicket];
   }
 
   else
   {
-    [v4 revisit];
+    [itineraryCopy revisit];
   }
 
 LABEL_23:
 }
 
-- (void)addPidToExecEntriesFromMapping:(id)a3
+- (void)addPidToExecEntriesFromMapping:(id)mapping
 {
   if (self->_processDetectionCallback)
   {
@@ -112,7 +112,7 @@ LABEL_23:
     v3[2] = sub_247FB980C;
     v3[3] = &unk_278EF2F48;
     v3[4] = self;
-    [a3 enumerateObjectsAndIntegerKeys:v3];
+    [mapping enumerateObjectsAndIntegerKeys:v3];
   }
 }
 

@@ -1,14 +1,14 @@
 @interface OrgApacheLuceneStoreDirectory
 - (NSString)description;
-- (id)openChecksumInputWithNSString:(id)a3 withOrgApacheLuceneStoreIOContext:(id)a4;
-- (void)copyFromWithOrgApacheLuceneStoreDirectory:(id)a3 withNSString:(id)a4 withNSString:(id)a5 withOrgApacheLuceneStoreIOContext:(id)a6;
+- (id)openChecksumInputWithNSString:(id)string withOrgApacheLuceneStoreIOContext:(id)context;
+- (void)copyFromWithOrgApacheLuceneStoreDirectory:(id)directory withNSString:(id)string withNSString:(id)sString withOrgApacheLuceneStoreIOContext:(id)context;
 @end
 
 @implementation OrgApacheLuceneStoreDirectory
 
-- (id)openChecksumInputWithNSString:(id)a3 withOrgApacheLuceneStoreIOContext:(id)a4
+- (id)openChecksumInputWithNSString:(id)string withOrgApacheLuceneStoreIOContext:(id)context
 {
-  v4 = new_OrgApacheLuceneStoreBufferedChecksumIndexInput_initWithOrgApacheLuceneStoreIndexInput_([(OrgApacheLuceneStoreDirectory *)self openInputWithNSString:a3 withOrgApacheLuceneStoreIOContext:a4]);
+  v4 = new_OrgApacheLuceneStoreBufferedChecksumIndexInput_initWithOrgApacheLuceneStoreIndexInput_([(OrgApacheLuceneStoreDirectory *)self openInputWithNSString:string withOrgApacheLuceneStoreIOContext:context]);
 
   return v4;
 }
@@ -20,15 +20,15 @@
   return JreStrcat("$C$", v4, v5, v6, v7, v8, v9, v10, v3);
 }
 
-- (void)copyFromWithOrgApacheLuceneStoreDirectory:(id)a3 withNSString:(id)a4 withNSString:(id)a5 withOrgApacheLuceneStoreIOContext:(id)a6
+- (void)copyFromWithOrgApacheLuceneStoreDirectory:(id)directory withNSString:(id)string withNSString:(id)sString withOrgApacheLuceneStoreIOContext:(id)context
 {
-  if (!a3)
+  if (!directory)
   {
     JreThrowNullPointerException();
   }
 
-  v9 = [a3 openInputWithNSString:a4 withOrgApacheLuceneStoreIOContext:a6];
-  v10 = [(OrgApacheLuceneStoreDirectory *)self createOutputWithNSString:a5 withOrgApacheLuceneStoreIOContext:a6];
+  v9 = [directory openInputWithNSString:string withOrgApacheLuceneStoreIOContext:context];
+  v10 = [(OrgApacheLuceneStoreDirectory *)self createOutputWithNSString:sString withOrgApacheLuceneStoreIOContext:context];
   if (!v10 || !v9)
   {
     JreThrowNullPointerException();

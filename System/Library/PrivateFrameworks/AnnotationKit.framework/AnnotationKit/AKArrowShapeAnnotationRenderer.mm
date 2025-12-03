@@ -1,21 +1,21 @@
 @interface AKArrowShapeAnnotationRenderer
-+ (BOOL)_concretePointIsOnBorder:(CGPoint)a3 ofAnnotation:(id)a4 minimumBorderThickness:(double)a5;
-+ (BOOL)_concretePointIsOnInside:(CGPoint)a3 ofAnnotation:(id)a4;
-+ (CGPath)_newConcreteTextExclusionPathForAnnotation:(id)a3 withOptionalAnnotationRect:(CGRect)a4;
-+ (CGRect)_concreteDrawingBoundsOfAnnotation:(id)a3;
-+ (CGSize)_concreteDraggingBoundsInsetsForAnnotation:(id)a3;
-+ (void)_concreteRenderAnnotation:(id)a3 intoContext:(CGContext *)a4 options:(id)a5 pageControllerOrNil:(id)a6;
-+ (void)_drawPathForArrowShape:(id)a3 inContext:(CGContext *)a4 options:(id)a5 inPath:(CGPath *)Mutable;
++ (BOOL)_concretePointIsOnBorder:(CGPoint)border ofAnnotation:(id)annotation minimumBorderThickness:(double)thickness;
++ (BOOL)_concretePointIsOnInside:(CGPoint)inside ofAnnotation:(id)annotation;
++ (CGPath)_newConcreteTextExclusionPathForAnnotation:(id)annotation withOptionalAnnotationRect:(CGRect)rect;
++ (CGRect)_concreteDrawingBoundsOfAnnotation:(id)annotation;
++ (CGSize)_concreteDraggingBoundsInsetsForAnnotation:(id)annotation;
++ (void)_concreteRenderAnnotation:(id)annotation intoContext:(CGContext *)context options:(id)options pageControllerOrNil:(id)nil;
++ (void)_drawPathForArrowShape:(id)shape inContext:(CGContext *)context options:(id)options inPath:(CGPath *)Mutable;
 @end
 
 @implementation AKArrowShapeAnnotationRenderer
 
-+ (CGRect)_concreteDrawingBoundsOfAnnotation:(id)a3
++ (CGRect)_concreteDrawingBoundsOfAnnotation:(id)annotation
 {
-  v4 = a3;
+  annotationCopy = annotation;
   Mutable = CGPathCreateMutable();
   v6 = +[AKAnnotationRendererOptions defaultOptions];
-  [a1 _drawPathForArrowShape:v4 inContext:0 options:v6 inPath:Mutable];
+  [self _drawPathForArrowShape:annotationCopy inContext:0 options:v6 inPath:Mutable];
 
   BoundingBox = CGPathGetBoundingBox(Mutable);
   x = BoundingBox.origin.x;
@@ -23,7 +23,7 @@
   width = BoundingBox.size.width;
   height = BoundingBox.size.height;
   CGPathRelease(Mutable);
-  [v4 strokeWidth];
+  [annotationCopy strokeWidth];
   v12 = v11 * -4.0;
   v30.origin.x = x;
   v30.origin.y = y;
@@ -34,9 +34,9 @@
   v14 = v31.origin.y;
   v15 = v31.size.width;
   v16 = v31.size.height;
-  if ([v4 hasShadow])
+  if ([annotationCopy hasShadow])
   {
-    [AKAnnotationRendererUtilities outsetRectForShadow:v4 onAnnotation:v13, v14, v15, v16];
+    [AKAnnotationRendererUtilities outsetRectForShadow:annotationCopy onAnnotation:v13, v14, v15, v16];
     v13 = v17;
     v14 = v18;
     v15 = v19;
@@ -64,7 +64,7 @@
   return result;
 }
 
-+ (CGSize)_concreteDraggingBoundsInsetsForAnnotation:(id)a3
++ (CGSize)_concreteDraggingBoundsInsetsForAnnotation:(id)annotation
 {
   v3 = *MEMORY[0x277CBF3A8];
   v4 = *(MEMORY[0x277CBF3A8] + 8);
@@ -73,12 +73,12 @@
   return result;
 }
 
-+ (CGPath)_newConcreteTextExclusionPathForAnnotation:(id)a3 withOptionalAnnotationRect:(CGRect)a4
++ (CGPath)_newConcreteTextExclusionPathForAnnotation:(id)annotation withOptionalAnnotationRect:(CGRect)rect
 {
-  v5 = a3;
+  annotationCopy = annotation;
   Mutable = CGPathCreateMutable();
   v7 = +[AKAnnotationRendererOptions defaultOptions];
-  [a1 _drawPathForArrowShape:v5 inContext:0 options:v7 inPath:Mutable];
+  [self _drawPathForArrowShape:annotationCopy inContext:0 options:v7 inPath:Mutable];
 
   v8 = CGPathCreateMutable();
   CGPathAddPath(v8, 0, Mutable);
@@ -88,110 +88,110 @@
   return MutableCopy;
 }
 
-+ (void)_concreteRenderAnnotation:(id)a3 intoContext:(CGContext *)a4 options:(id)a5 pageControllerOrNil:(id)a6
++ (void)_concreteRenderAnnotation:(id)annotation intoContext:(CGContext *)context options:(id)options pageControllerOrNil:(id)nil
 {
-  v26 = a3;
-  v10 = a5;
-  v11 = a6;
-  CGContextSaveGState(a4);
-  [v10 allowHDR];
-  [a1 _transformContextToModelCoordinates:a4 forAnnotation:v26 forDisplay:objc_msgSend(v10 pageControllerOrNil:{"forDisplay"), v11}];
-  v12 = [v26 hasShadow];
-  if (v12)
+  annotationCopy = annotation;
+  optionsCopy = options;
+  nilCopy = nil;
+  CGContextSaveGState(context);
+  [optionsCopy allowHDR];
+  [self _transformContextToModelCoordinates:context forAnnotation:annotationCopy forDisplay:objc_msgSend(optionsCopy pageControllerOrNil:{"forDisplay"), nilCopy}];
+  hasShadow = [annotationCopy hasShadow];
+  if (hasShadow)
   {
-    [AKAnnotationRendererUtilities beginShadowInContext:a4 forAnnotation:v26];
+    [AKAnnotationRendererUtilities beginShadowInContext:context forAnnotation:annotationCopy];
   }
 
-  CGContextSaveGState(a4);
+  CGContextSaveGState(context);
   Mutable = CGPathCreateMutable();
-  [a1 _drawPathForArrowShape:v26 inContext:0 options:v10 inPath:Mutable];
-  v14 = [v26 fillColor];
-  if (v14)
+  [self _drawPathForArrowShape:annotationCopy inContext:0 options:optionsCopy inPath:Mutable];
+  fillColor = [annotationCopy fillColor];
+  if (fillColor)
   {
-    v15 = v14;
-    v16 = [v26 fillColor];
-    Alpha = CGColorGetAlpha([v16 CGColor]);
+    v15 = fillColor;
+    fillColor2 = [annotationCopy fillColor];
+    Alpha = CGColorGetAlpha([fillColor2 CGColor]);
 
     if (Alpha != 0.0)
     {
-      v18 = [v26 fillColorForOptions:v10];
-      CGContextSetFillColorWithColor(a4, [v18 CGColor]);
+      v18 = [annotationCopy fillColorForOptions:optionsCopy];
+      CGContextSetFillColorWithColor(context, [v18 CGColor]);
 
-      CGContextAddPath(a4, Mutable);
-      CGContextFillPath(a4);
+      CGContextAddPath(context, Mutable);
+      CGContextFillPath(context);
     }
   }
 
-  v19 = [v26 strokeColor];
+  strokeColor = [annotationCopy strokeColor];
 
-  if (v19)
+  if (strokeColor)
   {
-    if ([v26 brushStyle])
+    if ([annotationCopy brushStyle])
     {
-      v20 = [v26 brushStyle];
-      v21 = [v26 strokeColor];
-      [v26 strokeWidth];
-      v22 = [AKTSDBrushStroke strokeWithType:v20 color:v21 width:?];
+      brushStyle = [annotationCopy brushStyle];
+      strokeColor2 = [annotationCopy strokeColor];
+      [annotationCopy strokeWidth];
+      v22 = [AKTSDBrushStroke strokeWithType:brushStyle color:strokeColor2 width:?];
 
       v23 = [AKTSDBezierPath bezierPathWithCGPath:Mutable];
       v24 = objc_alloc_init(AKTSDShape);
       [(AKTSDShape *)v24 setStroke:v22];
       [(AKTSDShape *)v24 setPath:v23];
-      [(AKTSDShape *)v24 drawInContext:a4];
+      [(AKTSDShape *)v24 drawInContext:context];
     }
 
     else
     {
-      v25 = [v26 strokeColorForOptions:v10];
-      CGContextSetStrokeColorWithColor(a4, [v25 CGColor]);
+      v25 = [annotationCopy strokeColorForOptions:optionsCopy];
+      CGContextSetStrokeColorWithColor(context, [v25 CGColor]);
 
-      [v26 strokeWidth];
-      [AKAnnotationRendererUtilities setStandardLineStateInContext:a4 forLineWidth:?];
-      if ([v26 isDashed])
+      [annotationCopy strokeWidth];
+      [AKAnnotationRendererUtilities setStandardLineStateInContext:context forLineWidth:?];
+      if ([annotationCopy isDashed])
       {
-        [v26 strokeWidth];
-        [AKAnnotationRendererUtilities setStandardLineDashInContext:a4 forLineWidth:?];
+        [annotationCopy strokeWidth];
+        [AKAnnotationRendererUtilities setStandardLineDashInContext:context forLineWidth:?];
       }
 
-      CGContextAddPath(a4, Mutable);
-      CGContextStrokePath(a4);
+      CGContextAddPath(context, Mutable);
+      CGContextStrokePath(context);
     }
   }
 
   CGPathRelease(Mutable);
-  CGContextRestoreGState(a4);
-  [AKTextAnnotationRenderHelper renderAnnotationText:v26 intoContext:a4 options:v10 pageControllerOrNil:v11];
-  if (v12)
+  CGContextRestoreGState(context);
+  [AKTextAnnotationRenderHelper renderAnnotationText:annotationCopy intoContext:context options:optionsCopy pageControllerOrNil:nilCopy];
+  if (hasShadow)
   {
-    [AKAnnotationRendererUtilities endShadowInContext:a4];
+    [AKAnnotationRendererUtilities endShadowInContext:context];
   }
 
-  CGContextRestoreGState(a4);
+  CGContextRestoreGState(context);
 }
 
-+ (BOOL)_concretePointIsOnBorder:(CGPoint)a3 ofAnnotation:(id)a4 minimumBorderThickness:(double)a5
++ (BOOL)_concretePointIsOnBorder:(CGPoint)border ofAnnotation:(id)annotation minimumBorderThickness:(double)thickness
 {
-  y = a3.y;
-  x = a3.x;
-  v9 = a4;
+  y = border.y;
+  x = border.x;
+  annotationCopy = annotation;
   Mutable = CGPathCreateMutable();
   v11 = +[AKAnnotationRendererOptions defaultOptions];
-  [a1 _drawPathForArrowShape:v9 inContext:0 options:v11 inPath:Mutable];
+  [self _drawPathForArrowShape:annotationCopy inContext:0 options:v11 inPath:Mutable];
 
-  [v9 strokeWidth];
+  [annotationCopy strokeWidth];
   v13 = v12;
 
-  if (v13 <= a5)
+  if (v13 <= thickness)
   {
-    v14 = a5;
+    thicknessCopy = thickness;
   }
 
   else
   {
-    v14 = v13;
+    thicknessCopy = v13;
   }
 
-  v15 = [AKAnnotationRendererUtilities newStandardStrokedBorderPathWithPath:Mutable withStrokeWidth:v14];
+  v15 = [AKAnnotationRendererUtilities newStandardStrokedBorderPathWithPath:Mutable withStrokeWidth:thicknessCopy];
   v18.x = x;
   v18.y = y;
   v16 = CGPathContainsPoint(v15, 0, v18, 0);
@@ -200,36 +200,36 @@
   return v16;
 }
 
-+ (BOOL)_concretePointIsOnInside:(CGPoint)a3 ofAnnotation:(id)a4
++ (BOOL)_concretePointIsOnInside:(CGPoint)inside ofAnnotation:(id)annotation
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = inside.y;
+  x = inside.x;
+  annotationCopy = annotation;
   Mutable = CGPathCreateMutable();
   v9 = +[AKAnnotationRendererOptions defaultOptions];
-  [a1 _drawPathForArrowShape:v7 inContext:0 options:v9 inPath:Mutable];
+  [self _drawPathForArrowShape:annotationCopy inContext:0 options:v9 inPath:Mutable];
 
   v11.x = x;
   v11.y = y;
-  LOBYTE(a1) = CGPathContainsPoint(Mutable, 0, v11, 0);
+  LOBYTE(self) = CGPathContainsPoint(Mutable, 0, v11, 0);
   CGPathRelease(Mutable);
-  return a1;
+  return self;
 }
 
-+ (void)_drawPathForArrowShape:(id)a3 inContext:(CGContext *)a4 options:(id)a5 inPath:(CGPath *)Mutable
++ (void)_drawPathForArrowShape:(id)shape inContext:(CGContext *)context options:(id)options inPath:(CGPath *)Mutable
 {
-  v40 = a3;
-  [v40 startPoint];
+  shapeCopy = shape;
+  [shapeCopy startPoint];
   v9 = v8;
   v11 = v10;
-  [v40 endPoint];
+  [shapeCopy endPoint];
   v13 = v12;
   v15 = v14;
-  [v40 arrowHeadLength];
+  [shapeCopy arrowHeadLength];
   v17 = v16;
-  [v40 arrowHeadWidth];
+  [shapeCopy arrowHeadWidth];
   v38 = v18;
-  [v40 arrowLineWidth];
+  [shapeCopy arrowLineWidth];
   v20 = v19;
   if (Mutable)
   {
@@ -248,7 +248,7 @@
   if (v23 > 0.0)
   {
     v24 = v23;
-    if (([v40 arrowHeadStyle] & 2) != 0)
+    if (([shapeCopy arrowHeadStyle] & 2) != 0)
     {
       v25 = v24 + -0.1;
       if (v24 >= v17)
@@ -271,28 +271,28 @@
       CGPathAddLineToPoint(Mutable, 0, v37 + v36, v39 - v28);
       CGPathAddLineToPoint(Mutable, 0, v37 - v36, v39 + v28);
       CGPathAddLineToPoint(Mutable, 0, v26 - v36, v28 + v27);
-      if (a4)
+      if (context)
       {
-        v31 = [v40 fillColor];
-        if (v31)
+        fillColor = [shapeCopy fillColor];
+        if (fillColor)
         {
-          v32 = v31;
-          v33 = [v40 fillColor];
-          Alpha = CGColorGetAlpha([v33 CGColor]);
+          v32 = fillColor;
+          fillColor2 = [shapeCopy fillColor];
+          Alpha = CGColorGetAlpha([fillColor2 CGColor]);
 
           if (Alpha != 0.0)
           {
-            CGContextAddPath(a4, Mutable);
-            CGContextFillPath(a4);
+            CGContextAddPath(context, Mutable);
+            CGContextFillPath(context);
           }
         }
 
-        v35 = [v40 strokeColor];
+        strokeColor = [shapeCopy strokeColor];
 
-        if (v35)
+        if (strokeColor)
         {
-          CGContextAddPath(a4, Mutable);
-          CGContextStrokePath(a4);
+          CGContextAddPath(context, Mutable);
+          CGContextStrokePath(context);
         }
       }
     }

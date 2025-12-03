@@ -1,37 +1,37 @@
 @interface WFWorkflowFolderPickerParameter
-- (id)accessoryIconForPossibleState:(id)a3;
-- (id)accessoryImageForPossibleState:(id)a3;
+- (id)accessoryIconForPossibleState:(id)state;
+- (id)accessoryImageForPossibleState:(id)state;
 - (id)defaultSerializedRepresentation;
-- (id)localizedLabelForPossibleState:(id)a3;
+- (id)localizedLabelForPossibleState:(id)state;
 - (id)possibleStates;
 @end
 
 @implementation WFWorkflowFolderPickerParameter
 
-- (id)accessoryIconForPossibleState:(id)a3
+- (id)accessoryIconForPossibleState:(id)state
 {
-  v3 = [a3 value];
-  v4 = [v3 identifier];
+  value = [state value];
+  identifier = [value identifier];
 
-  if ([v4 isEqualToString:@"AllShortcuts"])
+  if ([identifier isEqualToString:@"AllShortcuts"])
   {
     v5 = objc_alloc(MEMORY[0x1E69E0D70]);
-    v6 = [MEMORY[0x1E69E0B48] clearBackground];
-    v7 = [v5 initWithSymbolName:@"app.2.stack.3d" background:v6];
+    clearBackground = [MEMORY[0x1E69E0B48] clearBackground];
+    v7 = [v5 initWithSymbolName:@"app.2.stack.3d" background:clearBackground];
   }
 
   else
   {
     v8 = +[WFDatabase defaultDatabase];
-    v6 = [v8 collectionWithIdentifier:v4];
+    clearBackground = [v8 collectionWithIdentifier:identifier];
 
-    [v6 glyphCharacter];
+    [clearBackground glyphCharacter];
     v9 = WFSystemImageNameForOutlineGlyphCharacter();
     if (v9)
     {
       v10 = objc_alloc(MEMORY[0x1E69E0D70]);
-      v11 = [MEMORY[0x1E69E0B48] clearBackground];
-      v7 = [v10 initWithSymbolName:v9 background:v11];
+      clearBackground2 = [MEMORY[0x1E69E0B48] clearBackground];
+      v7 = [v10 initWithSymbolName:v9 background:clearBackground2];
     }
 
     else
@@ -43,14 +43,14 @@
   return v7;
 }
 
-- (id)accessoryImageForPossibleState:(id)a3
+- (id)accessoryImageForPossibleState:(id)state
 {
-  v3 = [(WFWorkflowFolderPickerParameter *)self accessoryIconForPossibleState:a3];
+  v3 = [(WFWorkflowFolderPickerParameter *)self accessoryIconForPossibleState:state];
   if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v4 = MEMORY[0x1E69E0B58];
-    v5 = [v3 symbolName];
-    v6 = [v4 glyphNamed:v5 pointSize:25.0];
+    symbolName = [v3 symbolName];
+    v6 = [v4 glyphNamed:symbolName pointSize:25.0];
     v7 = [v6 imageWithRenderingMode:2];
   }
 
@@ -62,20 +62,20 @@
   return v7;
 }
 
-- (id)localizedLabelForPossibleState:(id)a3
+- (id)localizedLabelForPossibleState:(id)state
 {
-  v3 = [a3 value];
-  v4 = [v3 displayString];
+  value = [state value];
+  displayString = [value displayString];
 
-  return v4;
+  return displayString;
 }
 
 - (id)defaultSerializedRepresentation
 {
   v2 = WFAllShortcutsParameterState();
-  v3 = [v2 serializedRepresentation];
+  serializedRepresentation = [v2 serializedRepresentation];
 
-  return v3;
+  return serializedRepresentation;
 }
 
 - (id)possibleStates

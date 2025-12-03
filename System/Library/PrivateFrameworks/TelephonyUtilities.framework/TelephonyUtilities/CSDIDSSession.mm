@@ -3,15 +3,15 @@
 - (BOOL)isCellularDataPreferred;
 - (BOOL)isWiFiAllowed;
 - (CSDIDSSession)init;
-- (CSDIDSSession)initWithSessionProvider:(id)a3;
+- (CSDIDSSession)initWithSessionProvider:(id)provider;
 - (NSString)UUID;
 - (NSString)propertiesDescription;
 - (NSUUID)clientUUID;
 - (id)description;
 - (void)_updateSessionPreferences;
-- (void)setCellularDataAllowed:(BOOL)a3;
-- (void)setClientUUID:(id)a3;
-- (void)setWiFiAllowed:(BOOL)a3;
+- (void)setCellularDataAllowed:(BOOL)allowed;
+- (void)setClientUUID:(id)d;
+- (void)setWiFiAllowed:(BOOL)allowed;
 @end
 
 @implementation CSDIDSSession
@@ -24,16 +24,16 @@
   return 0;
 }
 
-- (CSDIDSSession)initWithSessionProvider:(id)a3
+- (CSDIDSSession)initWithSessionProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v11.receiver = self;
   v11.super_class = CSDIDSSession;
   v6 = [(CSDIDSSession *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_sessionProvider, a3);
+    objc_storeStrong(&v6->_sessionProvider, provider);
     v8 = +[NSMutableDictionary dictionary];
     preferences = v7->_preferences;
     v7->_preferences = v8;
@@ -45,112 +45,112 @@
 - (id)description
 {
   v3 = objc_opt_class();
-  v4 = [(CSDIDSSession *)self propertiesDescription];
-  v5 = [NSString stringWithFormat:@"<%@ %p %@>", v3, self, v4];
+  propertiesDescription = [(CSDIDSSession *)self propertiesDescription];
+  v5 = [NSString stringWithFormat:@"<%@ %p %@>", v3, self, propertiesDescription];
 
   return v5;
 }
 
 - (NSString)propertiesDescription
 {
-  v2 = [(CSDIDSSession *)self UUID];
-  v3 = [NSString stringWithFormat:@"UUID=%@", v2];
+  uUID = [(CSDIDSSession *)self UUID];
+  v3 = [NSString stringWithFormat:@"UUID=%@", uUID];
 
   return v3;
 }
 
 - (NSString)UUID
 {
-  v2 = [(CSDIDSSession *)self sessionProvider];
-  v3 = [v2 UUID];
+  sessionProvider = [(CSDIDSSession *)self sessionProvider];
+  uUID = [sessionProvider UUID];
 
-  return v3;
+  return uUID;
 }
 
 - (void)_updateSessionPreferences
 {
-  v4 = [(CSDIDSSession *)self sessionProvider];
-  v3 = [(CSDIDSSession *)self preferences];
-  [v4 setPreferences:v3];
+  sessionProvider = [(CSDIDSSession *)self sessionProvider];
+  preferences = [(CSDIDSSession *)self preferences];
+  [sessionProvider setPreferences:preferences];
 }
 
 - (BOOL)isWiFiAllowed
 {
-  v2 = [(CSDIDSSession *)self preferences];
-  v3 = [v2 objectForKeyedSubscript:IDSSessionDisallowWifiInterfaceKey];
-  v4 = [v3 BOOLValue];
+  preferences = [(CSDIDSSession *)self preferences];
+  v3 = [preferences objectForKeyedSubscript:IDSSessionDisallowWifiInterfaceKey];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4 ^ 1;
+  return bOOLValue ^ 1;
 }
 
-- (void)setWiFiAllowed:(BOOL)a3
+- (void)setWiFiAllowed:(BOOL)allowed
 {
-  v3 = a3;
+  allowedCopy = allowed;
   v5 = sub_100004778();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412546;
-    v9 = self;
+    selfCopy = self;
     v10 = 1024;
-    v11 = v3;
+    v11 = allowedCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "self: %@ wiFiAllowed: %d", &v8, 0x12u);
   }
 
-  v6 = [NSNumber numberWithInt:!v3];
-  v7 = [(CSDIDSSession *)self preferences];
-  [v7 setObject:v6 forKeyedSubscript:IDSSessionDisallowWifiInterfaceKey];
+  v6 = [NSNumber numberWithInt:!allowedCopy];
+  preferences = [(CSDIDSSession *)self preferences];
+  [preferences setObject:v6 forKeyedSubscript:IDSSessionDisallowWifiInterfaceKey];
 
   [(CSDIDSSession *)self _updateSessionPreferences];
 }
 
 - (BOOL)isCellularDataAllowed
 {
-  v2 = [(CSDIDSSession *)self preferences];
-  v3 = [v2 objectForKeyedSubscript:IDSSessionDisallowCellularInterfaceKey];
-  v4 = [v3 BOOLValue];
+  preferences = [(CSDIDSSession *)self preferences];
+  v3 = [preferences objectForKeyedSubscript:IDSSessionDisallowCellularInterfaceKey];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4 ^ 1;
+  return bOOLValue ^ 1;
 }
 
-- (void)setCellularDataAllowed:(BOOL)a3
+- (void)setCellularDataAllowed:(BOOL)allowed
 {
-  v3 = a3;
+  allowedCopy = allowed;
   v5 = sub_100004778();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412546;
-    v9 = self;
+    selfCopy = self;
     v10 = 1024;
-    v11 = v3;
+    v11 = allowedCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "self: %@ cellularDataAllowed: %d", &v8, 0x12u);
   }
 
-  v6 = [NSNumber numberWithInt:!v3];
-  v7 = [(CSDIDSSession *)self preferences];
-  [v7 setObject:v6 forKeyedSubscript:IDSSessionDisallowCellularInterfaceKey];
+  v6 = [NSNumber numberWithInt:!allowedCopy];
+  preferences = [(CSDIDSSession *)self preferences];
+  [preferences setObject:v6 forKeyedSubscript:IDSSessionDisallowCellularInterfaceKey];
 
   [(CSDIDSSession *)self _updateSessionPreferences];
 }
 
 - (BOOL)isCellularDataPreferred
 {
-  v2 = [(CSDIDSSession *)self preferences];
-  v3 = [v2 objectForKeyedSubscript:IDSSessionPreferCellularForCallSetupKey];
-  v4 = [v3 BOOLValue];
+  preferences = [(CSDIDSSession *)self preferences];
+  v3 = [preferences objectForKeyedSubscript:IDSSessionPreferCellularForCallSetupKey];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (NSUUID)clientUUID
 {
-  v3 = [(CSDIDSSession *)self preferences];
+  preferences = [(CSDIDSSession *)self preferences];
   v4 = IDSSessionClientUUIDKey;
-  v5 = [v3 objectForKeyedSubscript:IDSSessionClientUUIDKey];
+  v5 = [preferences objectForKeyedSubscript:IDSSessionClientUUIDKey];
   if (v5)
   {
     v6 = [NSUUID alloc];
-    v7 = [(CSDIDSSession *)self preferences];
-    v8 = [v7 objectForKeyedSubscript:v4];
+    preferences2 = [(CSDIDSSession *)self preferences];
+    v8 = [preferences2 objectForKeyedSubscript:v4];
     v9 = [v6 initWithUUIDString:v8];
   }
 
@@ -162,23 +162,23 @@
   return v9;
 }
 
-- (void)setClientUUID:(id)a3
+- (void)setClientUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = sub_100004778();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 UUIDString];
+    uUIDString = [dCopy UUIDString];
     v9 = 138412546;
-    v10 = self;
+    selfCopy = self;
     v11 = 2112;
-    v12 = v6;
+    v12 = uUIDString;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "self: %@ clientUUID: %@", &v9, 0x16u);
   }
 
-  v7 = [v4 UUIDString];
-  v8 = [(CSDIDSSession *)self preferences];
-  [v8 setObject:v7 forKeyedSubscript:IDSSessionClientUUIDKey];
+  uUIDString2 = [dCopy UUIDString];
+  preferences = [(CSDIDSSession *)self preferences];
+  [preferences setObject:uUIDString2 forKeyedSubscript:IDSSessionClientUUIDKey];
 
   [(CSDIDSSession *)self _updateSessionPreferences];
 }

@@ -8,16 +8,16 @@
 
 - (int64_t)integerValue
 {
-  v2 = [(HPSNumberSetting *)self numberValue];
-  v3 = [v2 integerValue];
+  numberValue = [(HPSNumberSetting *)self numberValue];
+  integerValue = [numberValue integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (float)floatValue
 {
-  v2 = [(HPSNumberSetting *)self numberValue];
-  [v2 floatValue];
+  numberValue = [(HPSNumberSetting *)self numberValue];
+  [numberValue floatValue];
   v4 = v3;
 
   return v4;
@@ -25,8 +25,8 @@
 
 - (double)doubleValue
 {
-  v2 = [(HPSNumberSetting *)self numberValue];
-  [v2 doubleValue];
+  numberValue = [(HPSNumberSetting *)self numberValue];
+  [numberValue doubleValue];
   v4 = v3;
 
   return v4;

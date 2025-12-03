@@ -1,19 +1,19 @@
 @interface FMTextFieldUtil
-+ (BOOL)updateTextField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5;
-+ (BOOL)updateTextView:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5;
++ (BOOL)updateTextField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string;
++ (BOOL)updateTextView:(id)view shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string;
 @end
 
 @implementation FMTextFieldUtil
 
-+ (BOOL)updateTextView:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5
++ (BOOL)updateTextView:(id)view shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string
 {
-  length = a4.length;
-  location = a4.location;
-  v8 = a3;
-  v9 = a5;
-  v10 = [v8 text];
-  v11 = [v8 text];
-  v12 = [_TtC6FindMy17FMPhoneNumberUtil unformatWithPhoneNumber:v11];
+  length = range.length;
+  location = range.location;
+  viewCopy = view;
+  stringCopy = string;
+  text = [viewCopy text];
+  text2 = [viewCopy text];
+  v12 = [_TtC6FindMy17FMPhoneNumberUtil unformatWithPhoneNumber:text2];
 
   if (!qword_1006C4080)
   {
@@ -23,39 +23,39 @@
     qword_1006C4080 = v13;
   }
 
-  v15 = [v9 stringByTrimmingCharactersInSet:?];
+  v15 = [stringCopy stringByTrimmingCharactersInSet:?];
   v16 = [v15 length];
 
-  if (v16 || [v9 isEqualToString:@"+"] && objc_msgSend(v12, "length"))
+  if (v16 || [stringCopy isEqualToString:@"+"] && objc_msgSend(v12, "length"))
   {
     goto LABEL_4;
   }
 
-  if ([v9 length])
+  if ([stringCopy length])
   {
-    v21 = [v10 length];
-    v19 = [v10 stringByReplacingCharactersInRange:location withString:{length, v9}];
+    v21 = [text length];
+    v19 = [text stringByReplacingCharactersInRange:location withString:{length, stringCopy}];
     v22 = [_TtC6FindMy17FMPhoneNumberUtil unformatWithPhoneNumber:v19];
 
     v23 = [_TtC6FindMy17FMPhoneNumberUtil formatWithPhoneNumber:v22];
-    [v8 setText:v23];
+    [viewCopy setText:v23];
 
-    v24 = [v8 beginningOfDocument];
+    beginningOfDocument = [viewCopy beginningOfDocument];
     if (v21 == location)
     {
-      v25 = [v8 text];
-      v18 = [v8 positionFromPosition:v24 offset:{objc_msgSend(v25, "length")}];
+      text3 = [viewCopy text];
+      v18 = [viewCopy positionFromPosition:beginningOfDocument offset:{objc_msgSend(text3, "length")}];
     }
 
     else
     {
-      v18 = [v8 positionFromPosition:v24 offset:location + 1];
+      v18 = [viewCopy positionFromPosition:beginningOfDocument offset:location + 1];
     }
 
     goto LABEL_17;
   }
 
-  if (length != 1 || [v9 length])
+  if (length != 1 || [stringCopy length])
   {
 LABEL_4:
     v17 = 0;
@@ -64,7 +64,7 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  if (location == [v10 length] - 1)
+  if (location == [text length] - 1)
   {
     if ([v12 length])
     {
@@ -78,7 +78,7 @@ LABEL_4:
 
     v19 = v26;
     v28 = [_TtC6FindMy17FMPhoneNumberUtil formatWithPhoneNumber:v26];
-    [v8 setText:v28];
+    [viewCopy setText:v28];
     v17 = 0;
     v18 = 0;
     goto LABEL_21;
@@ -90,7 +90,7 @@ LABEL_4:
     v29 = location;
     while (1)
     {
-      v30 = [v10 substringWithRange:{v29, 1}];
+      v30 = [text substringWithRange:{v29, 1}];
       v31 = [v30 rangeOfCharacterFromSet:qword_1006C4080];
 
       if (v31 != 0x7FFFFFFFFFFFFFFFLL)
@@ -106,32 +106,32 @@ LABEL_4:
     }
   }
 
-  v19 = [v10 stringByReplacingCharactersInRange:v29 withString:{1, &stru_100645910}];
+  v19 = [text stringByReplacingCharactersInRange:v29 withString:{1, &stru_100645910}];
   v22 = [_TtC6FindMy17FMPhoneNumberUtil unformatWithPhoneNumber:v19];
 
   v33 = [_TtC6FindMy17FMPhoneNumberUtil formatWithPhoneNumber:v22];
-  [v8 setText:v33];
+  [viewCopy setText:v33];
 
-  v34 = [v8 beginningOfDocument];
-  v18 = [v8 positionFromPosition:v34 offset:location];
+  beginningOfDocument2 = [viewCopy beginningOfDocument];
+  v18 = [viewCopy positionFromPosition:beginningOfDocument2 offset:location];
 
   if (v18)
   {
     goto LABEL_18;
   }
 
-  sub_10053D0C4(a2, a1, &v37);
-  v24 = v37;
+  sub_10053D0C4(a2, self, &v37);
+  beginningOfDocument = v37;
 LABEL_17:
 
 LABEL_18:
   v12 = v22;
-  v27 = [v8 positionFromPosition:v18 offset:0];
+  v27 = [viewCopy positionFromPosition:v18 offset:0];
   v17 = v27;
   if (v18 && v27)
   {
-    v28 = [v8 textRangeFromPosition:v18 toPosition:v27];
-    [v8 setSelectedTextRange:v28];
+    v28 = [viewCopy textRangeFromPosition:v18 toPosition:v27];
+    [viewCopy setSelectedTextRange:v28];
 LABEL_21:
   }
 
@@ -140,15 +140,15 @@ LABEL_5:
   return 0;
 }
 
-+ (BOOL)updateTextField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5
++ (BOOL)updateTextField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string
 {
-  length = a4.length;
-  location = a4.location;
-  v8 = a3;
-  v9 = a5;
-  v10 = [v8 text];
-  v11 = [v8 text];
-  v12 = [_TtC6FindMy17FMPhoneNumberUtil unformatWithPhoneNumber:v11];
+  length = range.length;
+  location = range.location;
+  fieldCopy = field;
+  stringCopy = string;
+  text = [fieldCopy text];
+  text2 = [fieldCopy text];
+  v12 = [_TtC6FindMy17FMPhoneNumberUtil unformatWithPhoneNumber:text2];
 
   if (!qword_1006C4088)
   {
@@ -158,39 +158,39 @@ LABEL_5:
     qword_1006C4088 = v13;
   }
 
-  v15 = [v9 stringByTrimmingCharactersInSet:?];
+  v15 = [stringCopy stringByTrimmingCharactersInSet:?];
   v16 = [v15 length];
 
-  if (v16 || [v9 isEqualToString:@"+"] && objc_msgSend(v12, "length"))
+  if (v16 || [stringCopy isEqualToString:@"+"] && objc_msgSend(v12, "length"))
   {
     goto LABEL_4;
   }
 
-  if ([v9 length])
+  if ([stringCopy length])
   {
-    v21 = [v10 length];
-    v19 = [v10 stringByReplacingCharactersInRange:location withString:{length, v9}];
+    v21 = [text length];
+    v19 = [text stringByReplacingCharactersInRange:location withString:{length, stringCopy}];
     v22 = [_TtC6FindMy17FMPhoneNumberUtil unformatWithPhoneNumber:v19];
 
     v23 = [_TtC6FindMy17FMPhoneNumberUtil formatWithPhoneNumber:v22];
-    [v8 setText:v23];
+    [fieldCopy setText:v23];
 
-    v24 = [v8 beginningOfDocument];
+    beginningOfDocument = [fieldCopy beginningOfDocument];
     if (v21 == location)
     {
-      v25 = [v8 text];
-      v18 = [v8 positionFromPosition:v24 offset:{objc_msgSend(v25, "length")}];
+      text3 = [fieldCopy text];
+      v18 = [fieldCopy positionFromPosition:beginningOfDocument offset:{objc_msgSend(text3, "length")}];
     }
 
     else
     {
-      v18 = [v8 positionFromPosition:v24 offset:location + 1];
+      v18 = [fieldCopy positionFromPosition:beginningOfDocument offset:location + 1];
     }
 
     goto LABEL_17;
   }
 
-  if (length != 1 || [v9 length])
+  if (length != 1 || [stringCopy length])
   {
 LABEL_4:
     v17 = 0;
@@ -199,7 +199,7 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  if (location == [v10 length] - 1)
+  if (location == [text length] - 1)
   {
     if ([v12 length])
     {
@@ -213,7 +213,7 @@ LABEL_4:
 
     v19 = v26;
     v28 = [_TtC6FindMy17FMPhoneNumberUtil formatWithPhoneNumber:v26];
-    [v8 setText:v28];
+    [fieldCopy setText:v28];
     v17 = 0;
     v18 = 0;
     goto LABEL_21;
@@ -225,7 +225,7 @@ LABEL_4:
     v29 = location;
     while (1)
     {
-      v30 = [v10 substringWithRange:{v29, 1}];
+      v30 = [text substringWithRange:{v29, 1}];
       v31 = [v30 rangeOfCharacterFromSet:qword_1006C4088];
 
       if (v31 != 0x7FFFFFFFFFFFFFFFLL)
@@ -241,32 +241,32 @@ LABEL_4:
     }
   }
 
-  v19 = [v10 stringByReplacingCharactersInRange:v29 withString:{1, &stru_100645910}];
+  v19 = [text stringByReplacingCharactersInRange:v29 withString:{1, &stru_100645910}];
   v22 = [_TtC6FindMy17FMPhoneNumberUtil unformatWithPhoneNumber:v19];
 
   v33 = [_TtC6FindMy17FMPhoneNumberUtil formatWithPhoneNumber:v22];
-  [v8 setText:v33];
+  [fieldCopy setText:v33];
 
-  v34 = [v8 beginningOfDocument];
-  v18 = [v8 positionFromPosition:v34 offset:location];
+  beginningOfDocument2 = [fieldCopy beginningOfDocument];
+  v18 = [fieldCopy positionFromPosition:beginningOfDocument2 offset:location];
 
   if (v18)
   {
     goto LABEL_18;
   }
 
-  sub_10053D13C(a2, a1, &v37);
-  v24 = v37;
+  sub_10053D13C(a2, self, &v37);
+  beginningOfDocument = v37;
 LABEL_17:
 
 LABEL_18:
   v12 = v22;
-  v27 = [v8 positionFromPosition:v18 offset:0];
+  v27 = [fieldCopy positionFromPosition:v18 offset:0];
   v17 = v27;
   if (v18 && v27)
   {
-    v28 = [v8 textRangeFromPosition:v18 toPosition:v27];
-    [v8 setSelectedTextRange:v28];
+    v28 = [fieldCopy textRangeFromPosition:v18 toPosition:v27];
+    [fieldCopy setSelectedTextRange:v28];
 LABEL_21:
   }
 

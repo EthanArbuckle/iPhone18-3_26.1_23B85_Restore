@@ -1,22 +1,22 @@
 @interface DNDModeAssertionExplicitRegionLifetime
-- (BOOL)isEqual:(id)a3;
-- (DNDModeAssertionExplicitRegionLifetime)initWithCoder:(id)a3;
-- (DNDModeAssertionExplicitRegionLifetime)initWithRegion:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (DNDModeAssertionExplicitRegionLifetime)initWithCoder:(id)coder;
+- (DNDModeAssertionExplicitRegionLifetime)initWithRegion:(id)region;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DNDModeAssertionExplicitRegionLifetime
 
-- (DNDModeAssertionExplicitRegionLifetime)initWithRegion:(id)a3
+- (DNDModeAssertionExplicitRegionLifetime)initWithRegion:(id)region
 {
-  v5 = a3;
-  v6 = [(DNDModeAssertionLifetime *)self _init];
-  v7 = v6;
-  if (v6)
+  regionCopy = region;
+  _init = [(DNDModeAssertionLifetime *)self _init];
+  v7 = _init;
+  if (_init)
   {
-    objc_storeStrong(v6 + 1, a3);
+    objc_storeStrong(_init + 1, region);
   }
 
   return v7;
@@ -24,16 +24,16 @@
 
 - (unint64_t)hash
 {
-  v2 = [(DNDModeAssertionExplicitRegionLifetime *)self region];
-  v3 = [v2 hash];
+  region = [(DNDModeAssertionExplicitRegionLifetime *)self region];
+  v3 = [region hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
@@ -43,25 +43,25 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(DNDModeAssertionExplicitRegionLifetime *)self region];
-      v7 = [(DNDModeAssertionExplicitRegionLifetime *)v5 region];
-      if (v6 == v7)
+      v5 = equalCopy;
+      region = [(DNDModeAssertionExplicitRegionLifetime *)self region];
+      region2 = [(DNDModeAssertionExplicitRegionLifetime *)v5 region];
+      if (region == region2)
       {
         v12 = 1;
       }
 
       else
       {
-        v8 = [(DNDModeAssertionExplicitRegionLifetime *)self region];
-        if (v8)
+        region3 = [(DNDModeAssertionExplicitRegionLifetime *)self region];
+        if (region3)
         {
-          v9 = [(DNDModeAssertionExplicitRegionLifetime *)v5 region];
-          if (v9)
+          region4 = [(DNDModeAssertionExplicitRegionLifetime *)v5 region];
+          if (region4)
           {
-            v10 = [(DNDModeAssertionExplicitRegionLifetime *)self region];
-            v11 = [(DNDModeAssertionExplicitRegionLifetime *)v5 region];
-            v12 = [v10 isEqual:v11];
+            region5 = [(DNDModeAssertionExplicitRegionLifetime *)self region];
+            region6 = [(DNDModeAssertionExplicitRegionLifetime *)v5 region];
+            v12 = [region5 isEqual:region6];
           }
 
           else
@@ -90,26 +90,26 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(DNDModeAssertionExplicitRegionLifetime *)self region];
-  v6 = [v3 stringWithFormat:@"<%@: %p region: '%@'>", v4, self, v5];;
+  region = [(DNDModeAssertionExplicitRegionLifetime *)self region];
+  v6 = [v3 stringWithFormat:@"<%@: %p region: '%@'>", v4, self, region];;
 
   return v6;
 }
 
-- (DNDModeAssertionExplicitRegionLifetime)initWithCoder:(id)a3
+- (DNDModeAssertionExplicitRegionLifetime)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"region"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"region"];
 
   v6 = [(DNDModeAssertionExplicitRegionLifetime *)self initWithRegion:v5];
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(DNDModeAssertionExplicitRegionLifetime *)self region];
-  [v4 encodeObject:v5 forKey:@"region"];
+  coderCopy = coder;
+  region = [(DNDModeAssertionExplicitRegionLifetime *)self region];
+  [coderCopy encodeObject:region forKey:@"region"];
 }
 
 @end

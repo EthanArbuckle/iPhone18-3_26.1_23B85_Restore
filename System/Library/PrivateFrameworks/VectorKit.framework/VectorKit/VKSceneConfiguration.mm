@@ -1,5 +1,5 @@
 @interface VKSceneConfiguration
-- (VKSceneConfiguration)initWithTaskContext:(const void *)a3;
+- (VKSceneConfiguration)initWithTaskContext:(const void *)context;
 - (id).cxx_construct;
 - (id)setStyleManager:;
 - (shared_ptr<gss::ClientStyleState<gss::ScenePropertyID>>)sceneClientStyleState;
@@ -7,36 +7,36 @@
 - (unint64_t)navCameraMode;
 - (unint64_t)navigationDestination;
 - (void)_updateStyleManager;
-- (void)applyStyleAttributeKeyValue:(unsigned int)a3 withValue:(unsigned int)a4 withCoordinateRange:(GEOPolylineCoordinateRange)a5;
-- (void)removeStyleAttributeKey:(unsigned int)a3;
+- (void)applyStyleAttributeKeyValue:(unsigned int)value withValue:(unsigned int)withValue withCoordinateRange:(GEOPolylineCoordinateRange)range;
+- (void)removeStyleAttributeKey:(unsigned int)key;
 - (void)resetState;
-- (void)setCurrentGroupedManeuverCount:(unint64_t)a3;
-- (void)setCurrentIncidentType:(unint64_t)a3;
-- (void)setCurrentManeuverJunctionsCount:(unint64_t)a3;
-- (void)setCurrentManeuverType:(int)a3;
-- (void)setCurrentRoadComplexity:(unsigned int)a3;
-- (void)setCurrentStepLength:(double)a3;
-- (void)setCurrentTransitManeuverType:(int)a3;
-- (void)setCurrentTransportationType:(int)a3;
-- (void)setDistanceToCurrentManeuver:(double)a3;
-- (void)setDistanceToCurrentTrafficSection:(double)a3;
-- (void)setLaneCount:(unsigned int)a3;
-- (void)setLineType:(unsigned int)a3;
-- (void)setNavCameraMode:(unint64_t)a3;
-- (void)setNavigationDestination:(unint64_t)a3;
-- (void)setNavigationState:(int)a3;
-- (void)setNextManeuverRampType:(int)a3;
-- (void)setNextRoadComplexity:(unsigned int)a3;
-- (void)setNextStepLength:(double)a3;
-- (void)setRampType:(int)a3;
-- (void)setRoadSpeed:(double)a3;
-- (void)setSceneClientStyleState:(shared_ptr<gss::ClientStyleState<gss::ScenePropertyID>>)a3;
-- (void)setSearchAlongTheRoute:(BOOL)a3;
-- (void)setSinuosity:(double)a3;
+- (void)setCurrentGroupedManeuverCount:(unint64_t)count;
+- (void)setCurrentIncidentType:(unint64_t)type;
+- (void)setCurrentManeuverJunctionsCount:(unint64_t)count;
+- (void)setCurrentManeuverType:(int)type;
+- (void)setCurrentRoadComplexity:(unsigned int)complexity;
+- (void)setCurrentStepLength:(double)length;
+- (void)setCurrentTransitManeuverType:(int)type;
+- (void)setCurrentTransportationType:(int)type;
+- (void)setDistanceToCurrentManeuver:(double)maneuver;
+- (void)setDistanceToCurrentTrafficSection:(double)section;
+- (void)setLaneCount:(unsigned int)count;
+- (void)setLineType:(unsigned int)type;
+- (void)setNavCameraMode:(unint64_t)mode;
+- (void)setNavigationDestination:(unint64_t)destination;
+- (void)setNavigationState:(int)state;
+- (void)setNextManeuverRampType:(int)type;
+- (void)setNextRoadComplexity:(unsigned int)complexity;
+- (void)setNextStepLength:(double)length;
+- (void)setRampType:(int)type;
+- (void)setRoadSpeed:(double)speed;
+- (void)setSceneClientStyleState:(shared_ptr<gss::ClientStyleState<gss::ScenePropertyID>>)state;
+- (void)setSearchAlongTheRoute:(BOOL)route;
+- (void)setSinuosity:(double)sinuosity;
 - (void)setStyleManager:;
-- (void)setStyleManager:(shared_ptr<gss::StylesheetManager<gss::PropertyID>>)a3;
-- (void)setTrafficColor:(unint64_t)a3;
-- (void)setVehicleSpeed:(double)a3;
+- (void)setStyleManager:(shared_ptr<gss::StylesheetManager<gss::PropertyID>>)manager;
+- (void)setTrafficColor:(unint64_t)color;
+- (void)setVehicleSpeed:(double)speed;
 @end
 
 @implementation VKSceneConfiguration
@@ -193,12 +193,12 @@
   return result;
 }
 
-- (void)removeStyleAttributeKey:(unsigned int)a3
+- (void)removeStyleAttributeKey:(unsigned int)key
 {
   ptr = self->_sceneClientStyleState.__ptr_;
   if (ptr)
   {
-    gss::ClientStyleState<gss::ScenePropertyID>::removeClientStyleAttribute(ptr, a3);
+    gss::ClientStyleState<gss::ScenePropertyID>::removeClientStyleAttribute(ptr, key);
   }
 
   size = self->_styleAttributeCoordinateRanges.__table_.__bucket_list_.__deleter_.__size_;
@@ -208,20 +208,20 @@
     v7.i16[0] = vaddlv_u8(v7);
     if (v7.u32[0] > 1uLL)
     {
-      v8 = a3;
-      if (size <= a3)
+      keyCopy = key;
+      if (size <= key)
       {
-        v8 = a3 % size;
+        keyCopy = key % size;
       }
     }
 
     else
     {
-      v8 = (size - 1) & a3;
+      keyCopy = (size - 1) & key;
     }
 
     v9 = self->_styleAttributeCoordinateRanges.__table_.__bucket_list_.__ptr_;
-    v10 = v9[v8];
+    v10 = v9[keyCopy];
     if (v10)
     {
       v11 = *v10;
@@ -231,9 +231,9 @@
         do
         {
           v13 = v11->_sceneClientStyleState.__ptr_;
-          if (v13 == a3)
+          if (v13 == key)
           {
-            if (LODWORD(v11->_sceneClientStyleState.__cntrl_) == a3)
+            if (LODWORD(v11->_sceneClientStyleState.__cntrl_) == key)
             {
               v14 = v11->_sceneClientStyleState.__ptr_;
               if (v7.u32[0] > 1uLL)
@@ -353,7 +353,7 @@ LABEL_39:
               v13 &= v12;
             }
 
-            if (v13 != v8)
+            if (v13 != keyCopy)
             {
               return;
             }
@@ -368,14 +368,14 @@ LABEL_39:
   }
 }
 
-- (void)applyStyleAttributeKeyValue:(unsigned int)a3 withValue:(unsigned int)a4 withCoordinateRange:(GEOPolylineCoordinateRange)a5
+- (void)applyStyleAttributeKeyValue:(unsigned int)value withValue:(unsigned int)withValue withCoordinateRange:(GEOPolylineCoordinateRange)range
 {
-  end = a5.end;
-  start = a5.start;
+  end = range.end;
+  start = range.start;
   ptr = self->_sceneClientStyleState.__ptr_;
   if (ptr)
   {
-    gss::ClientStyleState<gss::ScenePropertyID>::setClientStyleAttribute(ptr, a3, a4);
+    gss::ClientStyleState<gss::ScenePropertyID>::setClientStyleAttribute(ptr, value, withValue);
   }
 
   size = self->_styleAttributeCoordinateRanges.__table_.__bucket_list_.__deleter_.__size_;
@@ -388,19 +388,19 @@ LABEL_39:
   v11.i16[0] = vaddlv_u8(v11);
   if (v11.u32[0] > 1uLL)
   {
-    v12 = a3;
-    if (size <= a3)
+    valueCopy = value;
+    if (size <= value)
     {
-      v12 = a3 % size;
+      valueCopy = value % size;
     }
   }
 
   else
   {
-    v12 = (size - 1) & a3;
+    valueCopy = (size - 1) & value;
   }
 
-  v13 = self->_styleAttributeCoordinateRanges.__table_.__bucket_list_.__ptr_[v12];
+  v13 = self->_styleAttributeCoordinateRanges.__table_.__bucket_list_.__ptr_[valueCopy];
   if (!v13 || (v14 = *v13) == 0)
   {
 LABEL_20:
@@ -410,7 +410,7 @@ LABEL_20:
   while (1)
   {
     v15 = v14[1];
-    if (v15 == a3)
+    if (v15 == value)
     {
       break;
     }
@@ -428,7 +428,7 @@ LABEL_20:
       v15 &= size - 1;
     }
 
-    if (v15 != v12)
+    if (v15 != valueCopy)
     {
       goto LABEL_20;
     }
@@ -441,7 +441,7 @@ LABEL_19:
     }
   }
 
-  if (*(v14 + 4) != a3)
+  if (*(v14 + 4) != value)
   {
     goto LABEL_19;
   }
@@ -450,37 +450,37 @@ LABEL_19:
   *(v14 + 28) = end;
 }
 
-- (void)setLaneCount:(unsigned int)a3
+- (void)setLaneCount:(unsigned int)count
 {
-  if (self->_laneCount != a3)
+  if (self->_laneCount != count)
   {
-    self->_laneCount = a3;
+    self->_laneCount = count;
     ptr = self->_sceneClientStyleState.__ptr_;
     if (ptr)
     {
-      gss::ClientStyleState<gss::ScenePropertyID>::setClientStyleAttribute(ptr, 0x1006Bu, a3);
+      gss::ClientStyleState<gss::ScenePropertyID>::setClientStyleAttribute(ptr, 0x1006Bu, count);
     }
   }
 }
 
-- (void)setSinuosity:(double)a3
+- (void)setSinuosity:(double)sinuosity
 {
-  if (self->_sinuosityLevels._straight >= a3)
+  if (self->_sinuosityLevels._straight >= sinuosity)
   {
     v3 = 0;
   }
 
-  else if (self->_sinuosityLevels._low >= a3)
+  else if (self->_sinuosityLevels._low >= sinuosity)
   {
     v3 = 1;
   }
 
-  else if (self->_sinuosityLevels._medium >= a3)
+  else if (self->_sinuosityLevels._medium >= sinuosity)
   {
     v3 = 2;
   }
 
-  else if (self->_sinuosityLevels._high >= a3)
+  else if (self->_sinuosityLevels._high >= sinuosity)
   {
     v3 = 3;
   }
@@ -501,82 +501,82 @@ LABEL_19:
   }
 }
 
-- (void)setCurrentTransitManeuverType:(int)a3
+- (void)setCurrentTransitManeuverType:(int)type
 {
-  if ((a3 - 1) > 9)
+  if ((type - 1) > 9)
   {
     v3 = 0;
   }
 
   else
   {
-    v3 = byte_1B33B2AE2[a3 - 1];
+    v3 = byte_1B33B2AE2[type - 1];
   }
 
   self->_currentTransitManeuver = v3;
   ptr = self->_sceneClientStyleState.__ptr_;
   if (ptr)
   {
-    gss::ClientStyleState<gss::ScenePropertyID>::setClientStyleAttribute(ptr, 0x10062u, a3);
+    gss::ClientStyleState<gss::ScenePropertyID>::setClientStyleAttribute(ptr, 0x10062u, type);
   }
 }
 
-- (void)setTrafficColor:(unint64_t)a3
+- (void)setTrafficColor:(unint64_t)color
 {
-  if (a3 >= 5)
+  if (color >= 5)
   {
-    v3 = 0;
+    colorCopy = 0;
   }
 
   else
   {
-    v3 = a3;
+    colorCopy = color;
   }
 
-  if (self->_currentTrafficState != v3)
+  if (self->_currentTrafficState != colorCopy)
   {
-    self->_currentTrafficState = v3;
+    self->_currentTrafficState = colorCopy;
     ptr = self->_sceneClientStyleState.__ptr_;
     if (ptr)
     {
-      gss::ClientStyleState<gss::ScenePropertyID>::setClientStyleAttribute(ptr, 0x1005Eu, v3);
+      gss::ClientStyleState<gss::ScenePropertyID>::setClientStyleAttribute(ptr, 0x1005Eu, colorCopy);
     }
   }
 }
 
-- (void)setDistanceToCurrentTrafficSection:(double)a3
+- (void)setDistanceToCurrentTrafficSection:(double)section
 {
-  if (self->_distanceRanges._immediate >= a3)
+  if (self->_distanceRanges._immediate >= section)
   {
     v3 = 1;
   }
 
-  else if (self->_distanceRanges._extremlyNear >= a3)
+  else if (self->_distanceRanges._extremlyNear >= section)
   {
     v3 = 2;
   }
 
-  else if (self->_distanceRanges._veryNear >= a3)
+  else if (self->_distanceRanges._veryNear >= section)
   {
     v3 = 3;
   }
 
-  else if (self->_distanceRanges._near >= a3)
+  else if (self->_distanceRanges._near >= section)
   {
     v3 = 4;
   }
 
-  else if (self->_distanceRanges._medium >= a3)
+  else if (self->_distanceRanges._medium >= section)
   {
     v3 = 5;
   }
 
-  else if (self->_distanceRanges._far >= a3)
+  else if (self->_distanceRanges._far >= section)
   {
     v3 = 6;
   }
 
-  else if (self->_distanceRanges._veryFar >= a3)
+  else if (self->_distanceRanges._veryFar >= section)
   {
     v3 = 7;
   }
@@ -597,28 +597,28 @@ LABEL_19:
   }
 }
 
-- (void)setNextRoadComplexity:(unsigned int)a3
+- (void)setNextRoadComplexity:(unsigned int)complexity
 {
-  if (self->_nextRoadComplexity != a3)
+  if (self->_nextRoadComplexity != complexity)
   {
-    self->_nextRoadComplexity = a3;
+    self->_nextRoadComplexity = complexity;
     ptr = self->_sceneClientStyleState.__ptr_;
     if (ptr)
     {
-      gss::ClientStyleState<gss::ScenePropertyID>::setClientStyleAttribute(ptr, 0x10061u, a3);
+      gss::ClientStyleState<gss::ScenePropertyID>::setClientStyleAttribute(ptr, 0x10061u, complexity);
     }
   }
 }
 
-- (void)setCurrentRoadComplexity:(unsigned int)a3
+- (void)setCurrentRoadComplexity:(unsigned int)complexity
 {
-  if (self->_roadComplexity != a3)
+  if (self->_roadComplexity != complexity)
   {
-    self->_roadComplexity = a3;
+    self->_roadComplexity = complexity;
     ptr = self->_sceneClientStyleState.__ptr_;
     if (ptr)
     {
-      gss::ClientStyleState<gss::ScenePropertyID>::setClientStyleAttribute(ptr, 0x10055u, a3);
+      gss::ClientStyleState<gss::ScenePropertyID>::setClientStyleAttribute(ptr, 0x10055u, complexity);
     }
   }
 }
@@ -637,16 +637,16 @@ LABEL_19:
   }
 }
 
-- (void)setNavigationDestination:(unint64_t)a3
+- (void)setNavigationDestination:(unint64_t)destination
 {
-  if (a3 == 2)
+  if (destination == 2)
   {
     v3 = 2;
   }
 
   else
   {
-    v3 = a3 == 1;
+    v3 = destination == 1;
   }
 
   self->_navigationDestination = v3;
@@ -657,29 +657,29 @@ LABEL_19:
   }
 }
 
-- (void)setNavCameraMode:(unint64_t)a3
+- (void)setNavCameraMode:(unint64_t)mode
 {
-  if (a3 >= 4)
+  if (mode >= 4)
   {
-    v3 = 0;
+    modeCopy = 0;
   }
 
   else
   {
-    v3 = a3;
+    modeCopy = mode;
   }
 
-  self->_cameraMode = v3;
+  self->_cameraMode = modeCopy;
   ptr = self->_sceneClientStyleState.__ptr_;
   if (ptr)
   {
-    gss::ClientStyleState<gss::ScenePropertyID>::setClientStyleAttribute(ptr, 0x10034u, v3);
+    gss::ClientStyleState<gss::ScenePropertyID>::setClientStyleAttribute(ptr, 0x10034u, modeCopy);
   }
 }
 
-- (void)setRoadSpeed:(double)a3
+- (void)setRoadSpeed:(double)speed
 {
-  if (self->_roadSpeed && a3 == 0.0)
+  if (self->_roadSpeed && speed == 0.0)
   {
     roadSpeedZeroes = self->_roadSpeedZeroes;
     if (roadSpeedZeroes <= 9)
@@ -691,50 +691,50 @@ LABEL_19:
     self->_roadSpeedZeroes = 0;
   }
 
-  if (a3 > 0.0 && self->_roadSpeedZeroes)
+  if (speed > 0.0 && self->_roadSpeedZeroes)
   {
     self->_roadSpeedZeroes = 0;
   }
 
-  if (a3 >= 10.0)
+  if (speed >= 10.0)
   {
-    if (a3 < 20.0)
+    if (speed < 20.0)
     {
       v4 = 1;
     }
 
-    else if (a3 < 30.0)
+    else if (speed < 30.0)
     {
       v4 = 2;
     }
 
-    else if (a3 >= 40.0)
+    else if (speed >= 40.0)
     {
-      if (a3 >= 50.0)
+      if (speed >= 50.0)
       {
-        if (a3 >= 60.0)
+        if (speed >= 60.0)
         {
-          if (a3 >= 70.0)
+          if (speed >= 70.0)
           {
-            if (a3 >= 80.0)
+            if (speed >= 80.0)
             {
-              if (a3 >= 90.0)
+              if (speed >= 90.0)
               {
-                if (a3 >= 100.0)
+                if (speed >= 100.0)
                 {
-                  if (a3 >= 110.0)
+                  if (speed >= 110.0)
                   {
-                    if (a3 >= 120.0)
+                    if (speed >= 120.0)
                     {
-                      if (a3 >= 130.0)
+                      if (speed >= 130.0)
                       {
-                        if (a3 >= 140.0)
+                        if (speed >= 140.0)
                         {
-                          if (a3 >= 150.0)
+                          if (speed >= 150.0)
                           {
-                            if (a3 >= 160.0)
+                            if (speed >= 160.0)
                             {
-                              v4 = 16 * (a3 >= 160.0);
+                              v4 = 16 * (speed >= 160.0);
                             }
 
                             else
@@ -828,28 +828,28 @@ LABEL_19:
   }
 }
 
-- (void)setVehicleSpeed:(double)a3
+- (void)setVehicleSpeed:(double)speed
 {
-  if (a3 >= 0.0)
+  if (speed >= 0.0)
   {
-    if (a3 >= 20.0)
+    if (speed >= 20.0)
     {
-      if (a3 < 40.0)
+      if (speed < 40.0)
       {
         v3 = 2;
       }
 
-      else if (a3 >= 60.0)
+      else if (speed >= 60.0)
       {
-        if (a3 >= 80.0)
+        if (speed >= 80.0)
         {
-          if (a3 >= 100.0)
+          if (speed >= 100.0)
           {
-            if (a3 >= 120.0)
+            if (speed >= 120.0)
             {
-              if (a3 >= 140.0)
+              if (speed >= 140.0)
               {
-                if (a3 >= 160.0)
+                if (speed >= 160.0)
                 {
                   v3 = 9;
                 }
@@ -909,20 +909,20 @@ LABEL_19:
   }
 }
 
-- (void)setSearchAlongTheRoute:(BOOL)a3
+- (void)setSearchAlongTheRoute:(BOOL)route
 {
-  self->_searchAlongTheRoute = a3;
+  self->_searchAlongTheRoute = route;
   ptr = self->_sceneClientStyleState.__ptr_;
   if (ptr)
   {
-    gss::ClientStyleState<gss::ScenePropertyID>::setClientStyleAttribute(ptr, 0x10031u, a3);
+    gss::ClientStyleState<gss::ScenePropertyID>::setClientStyleAttribute(ptr, 0x10031u, route);
   }
 }
 
-- (void)setCurrentTransportationType:(int)a3
+- (void)setCurrentTransportationType:(int)type
 {
-  v3 = 0x50403020100uLL >> (8 * a3);
-  if (a3 >= 7)
+  v3 = 0x50403020100uLL >> (8 * type);
+  if (type >= 7)
   {
     LOBYTE(v3) = 4;
   }
@@ -935,123 +935,123 @@ LABEL_19:
   }
 }
 
-- (void)setNextManeuverRampType:(int)a3
+- (void)setNextManeuverRampType:(int)type
 {
-  self->_nextManeuverRampType = a3;
+  self->_nextManeuverRampType = type;
   ptr = self->_sceneClientStyleState.__ptr_;
   if (ptr)
   {
-    gss::ClientStyleState<gss::ScenePropertyID>::setClientStyleAttribute(ptr, 0x1003Bu, a3);
+    gss::ClientStyleState<gss::ScenePropertyID>::setClientStyleAttribute(ptr, 0x1003Bu, type);
   }
 }
 
-- (void)setRampType:(int)a3
+- (void)setRampType:(int)type
 {
-  self->_rampType = a3;
+  self->_rampType = type;
   ptr = self->_sceneClientStyleState.__ptr_;
   if (ptr)
   {
-    gss::ClientStyleState<gss::ScenePropertyID>::setClientStyleAttribute(ptr, 0x15u, a3);
+    gss::ClientStyleState<gss::ScenePropertyID>::setClientStyleAttribute(ptr, 0x15u, type);
   }
 }
 
-- (void)setLineType:(unsigned int)a3
+- (void)setLineType:(unsigned int)type
 {
-  if (a3)
+  if (type)
   {
-    self->_lineType = a3;
+    self->_lineType = type;
     ptr = self->_sceneClientStyleState.__ptr_;
     if (ptr)
     {
-      gss::ClientStyleState<gss::ScenePropertyID>::setClientStyleAttribute(ptr, 1u, a3);
+      gss::ClientStyleState<gss::ScenePropertyID>::setClientStyleAttribute(ptr, 1u, type);
     }
   }
 }
 
-- (void)setCurrentGroupedManeuverCount:(unint64_t)a3
+- (void)setCurrentGroupedManeuverCount:(unint64_t)count
 {
-  self->_currentGroupedManeuverCount = a3;
+  self->_currentGroupedManeuverCount = count;
   ptr = self->_sceneClientStyleState.__ptr_;
   if (ptr)
   {
-    if (a3 >= 5)
+    if (count >= 5)
     {
-      LODWORD(a3) = 5;
+      LODWORD(count) = 5;
     }
 
-    gss::ClientStyleState<gss::ScenePropertyID>::setClientStyleAttribute(ptr, 0x1002Au, a3);
+    gss::ClientStyleState<gss::ScenePropertyID>::setClientStyleAttribute(ptr, 0x1002Au, count);
   }
 }
 
-- (void)setCurrentManeuverJunctionsCount:(unint64_t)a3
+- (void)setCurrentManeuverJunctionsCount:(unint64_t)count
 {
   {
     gssCurrentManeuverComplexityFromNumberOfJunctions(long)::$_0::operator() const(void)::cached_result = GEOConfigGetInteger();
   }
 
   v5 = gssCurrentManeuverComplexityFromNumberOfJunctions(long)::$_0::operator() const(void)::cached_result;
-  self->_currentManeuverComplexity = gssCurrentManeuverComplexityFromNumberOfJunctions(long)::$_0::operator() const(void)::cached_result <= a3;
+  self->_currentManeuverComplexity = gssCurrentManeuverComplexityFromNumberOfJunctions(long)::$_0::operator() const(void)::cached_result <= count;
   ptr = self->_sceneClientStyleState.__ptr_;
   if (ptr)
   {
 
-    gss::ClientStyleState<gss::ScenePropertyID>::setClientStyleAttribute(ptr, 0x10029u, v5 <= a3);
+    gss::ClientStyleState<gss::ScenePropertyID>::setClientStyleAttribute(ptr, 0x10029u, v5 <= count);
   }
 }
 
-- (void)setCurrentIncidentType:(unint64_t)a3
+- (void)setCurrentIncidentType:(unint64_t)type
 {
-  if (a3 >= 5)
+  if (type >= 5)
   {
-    v3 = 0;
+    typeCopy = 0;
   }
 
   else
   {
-    v3 = a3;
+    typeCopy = type;
   }
 
-  self->_currentIncidentType = v3;
+  self->_currentIncidentType = typeCopy;
   ptr = self->_sceneClientStyleState.__ptr_;
   if (ptr)
   {
-    gss::ClientStyleState<gss::ScenePropertyID>::setClientStyleAttribute(ptr, 0x10028u, v3);
+    gss::ClientStyleState<gss::ScenePropertyID>::setClientStyleAttribute(ptr, 0x10028u, typeCopy);
   }
 }
 
-- (void)setNextStepLength:(double)a3
+- (void)setNextStepLength:(double)length
 {
-  if (self->_distanceRanges._immediate >= a3)
+  if (self->_distanceRanges._immediate >= length)
   {
     v3 = 1;
   }
 
-  else if (self->_distanceRanges._extremlyNear >= a3)
+  else if (self->_distanceRanges._extremlyNear >= length)
   {
     v3 = 2;
   }
 
-  else if (self->_distanceRanges._veryNear >= a3)
+  else if (self->_distanceRanges._veryNear >= length)
   {
     v3 = 3;
   }
 
-  else if (self->_distanceRanges._near >= a3)
+  else if (self->_distanceRanges._near >= length)
   {
     v3 = 4;
   }
 
-  else if (self->_distanceRanges._medium >= a3)
+  else if (self->_distanceRanges._medium >= length)
   {
     v3 = 5;
   }
 
-  else if (self->_distanceRanges._far >= a3)
+  else if (self->_distanceRanges._far >= length)
   {
     v3 = 6;
   }
 
-  else if (self->_distanceRanges._veryFar >= a3)
+  else if (self->_distanceRanges._veryFar >= length)
   {
     v3 = 7;
   }
@@ -1069,39 +1069,39 @@ LABEL_19:
   }
 }
 
-- (void)setCurrentStepLength:(double)a3
+- (void)setCurrentStepLength:(double)length
 {
-  if (self->_distanceRanges._immediate >= a3)
+  if (self->_distanceRanges._immediate >= length)
   {
     v3 = 1;
   }
 
-  else if (self->_distanceRanges._extremlyNear >= a3)
+  else if (self->_distanceRanges._extremlyNear >= length)
   {
     v3 = 2;
   }
 
-  else if (self->_distanceRanges._veryNear >= a3)
+  else if (self->_distanceRanges._veryNear >= length)
   {
     v3 = 3;
   }
 
-  else if (self->_distanceRanges._near >= a3)
+  else if (self->_distanceRanges._near >= length)
   {
     v3 = 4;
   }
 
-  else if (self->_distanceRanges._medium >= a3)
+  else if (self->_distanceRanges._medium >= length)
   {
     v3 = 5;
   }
 
-  else if (self->_distanceRanges._far >= a3)
+  else if (self->_distanceRanges._far >= length)
   {
     v3 = 6;
   }
 
-  else if (self->_distanceRanges._veryFar >= a3)
+  else if (self->_distanceRanges._veryFar >= length)
   {
     v3 = 7;
   }
@@ -1119,27 +1119,27 @@ LABEL_19:
   }
 }
 
-- (void)setCurrentManeuverType:(int)a3
+- (void)setCurrentManeuverType:(int)type
 {
-  self->_currentManeuverType = a3;
+  self->_currentManeuverType = type;
   ptr = self->_sceneClientStyleState.__ptr_;
   if (ptr)
   {
-    if ((a3 - 1) > 0x57)
+    if ((type - 1) > 0x57)
     {
       v4 = 0;
     }
 
     else
     {
-      v4 = byte_1B33B2A8A[a3 - 1];
+      v4 = byte_1B33B2A8A[type - 1];
     }
 
     gss::ClientStyleState<gss::ScenePropertyID>::setClientStyleAttribute(ptr, 0x10026u, v4);
   }
 }
 
-- (void)setDistanceToCurrentManeuver:(double)a3
+- (void)setDistanceToCurrentManeuver:(double)maneuver
 {
   distanceToCurrentManeuver = self->_distanceToCurrentManeuver;
   {
@@ -1147,23 +1147,23 @@ LABEL_19:
     gssDistanceToCurrentManeuverFromDistance(double,DistancesRange const&,gss::DistanceToCurrentManeuver)::$_0::operator() const(void)::cached_result = v14;
   }
 
-  if (self->_distanceRanges._immediate >= a3)
+  if (self->_distanceRanges._immediate >= maneuver)
   {
     v12 = 1;
     goto LABEL_16;
   }
 
   extremlyNear = self->_distanceRanges._extremlyNear;
-  if (extremlyNear >= a3)
+  if (extremlyNear >= maneuver)
   {
     goto LABEL_15;
   }
 
   veryNear = self->_distanceRanges._veryNear;
-  if (veryNear >= a3)
+  if (veryNear >= maneuver)
   {
     v12 = 3;
-    if (distanceToCurrentManeuver != 2 || extremlyNear + *&gssDistanceToCurrentManeuverFromDistance(double,DistancesRange const&,gss::DistanceToCurrentManeuver)::$_0::operator() const(void)::cached_result >= a3)
+    if (distanceToCurrentManeuver != 2 || extremlyNear + *&gssDistanceToCurrentManeuverFromDistance(double,DistancesRange const&,gss::DistanceToCurrentManeuver)::$_0::operator() const(void)::cached_result >= maneuver)
     {
       goto LABEL_16;
     }
@@ -1174,10 +1174,10 @@ LABEL_15:
   }
 
   near = self->_distanceRanges._near;
-  if (near >= a3)
+  if (near >= maneuver)
   {
     v12 = 4;
-    if (distanceToCurrentManeuver == 3 && veryNear + *&gssDistanceToCurrentManeuverFromDistance(double,DistancesRange const&,gss::DistanceToCurrentManeuver)::$_0::operator() const(void)::cached_result < a3)
+    if (distanceToCurrentManeuver == 3 && veryNear + *&gssDistanceToCurrentManeuverFromDistance(double,DistancesRange const&,gss::DistanceToCurrentManeuver)::$_0::operator() const(void)::cached_result < maneuver)
     {
       v12 = 3;
     }
@@ -1186,10 +1186,10 @@ LABEL_15:
   else
   {
     medium = self->_distanceRanges._medium;
-    if (medium >= a3)
+    if (medium >= maneuver)
     {
       v12 = 5;
-      if (distanceToCurrentManeuver == 4 && near + *&gssDistanceToCurrentManeuverFromDistance(double,DistancesRange const&,gss::DistanceToCurrentManeuver)::$_0::operator() const(void)::cached_result < a3)
+      if (distanceToCurrentManeuver == 4 && near + *&gssDistanceToCurrentManeuverFromDistance(double,DistancesRange const&,gss::DistanceToCurrentManeuver)::$_0::operator() const(void)::cached_result < maneuver)
       {
         v12 = 4;
       }
@@ -1198,10 +1198,10 @@ LABEL_15:
     else
     {
       far = self->_distanceRanges._far;
-      if (far >= a3)
+      if (far >= maneuver)
       {
         v12 = 6;
-        if (distanceToCurrentManeuver == 5 && medium + *&gssDistanceToCurrentManeuverFromDistance(double,DistancesRange const&,gss::DistanceToCurrentManeuver)::$_0::operator() const(void)::cached_result < a3)
+        if (distanceToCurrentManeuver == 5 && medium + *&gssDistanceToCurrentManeuverFromDistance(double,DistancesRange const&,gss::DistanceToCurrentManeuver)::$_0::operator() const(void)::cached_result < maneuver)
         {
           v12 = 5;
         }
@@ -1210,16 +1210,16 @@ LABEL_15:
       else
       {
         veryFar = self->_distanceRanges._veryFar;
-        if (veryFar >= a3)
+        if (veryFar >= maneuver)
         {
           v12 = 7;
-          if (distanceToCurrentManeuver == 6 && far + *&gssDistanceToCurrentManeuverFromDistance(double,DistancesRange const&,gss::DistanceToCurrentManeuver)::$_0::operator() const(void)::cached_result < a3)
+          if (distanceToCurrentManeuver == 6 && far + *&gssDistanceToCurrentManeuverFromDistance(double,DistancesRange const&,gss::DistanceToCurrentManeuver)::$_0::operator() const(void)::cached_result < maneuver)
           {
             v12 = 6;
           }
         }
 
-        else if (distanceToCurrentManeuver == 7 && veryFar + *&gssDistanceToCurrentManeuverFromDistance(double,DistancesRange const&,gss::DistanceToCurrentManeuver)::$_0::operator() const(void)::cached_result < a3)
+        else if (distanceToCurrentManeuver == 7 && veryFar + *&gssDistanceToCurrentManeuverFromDistance(double,DistancesRange const&,gss::DistanceToCurrentManeuver)::$_0::operator() const(void)::cached_result < maneuver)
         {
           v12 = 7;
         }
@@ -1242,16 +1242,16 @@ LABEL_16:
   }
 }
 
-- (void)setNavigationState:(int)a3
+- (void)setNavigationState:(int)state
 {
-  if ((a3 - 1) >= 8)
+  if ((state - 1) >= 8)
   {
     v3 = 0;
   }
 
   else
   {
-    v3 = 0x107060504030201uLL >> (8 * (a3 - 1));
+    v3 = 0x107060504030201uLL >> (8 * (state - 1));
   }
 
   self->_navState = v3;
@@ -1262,11 +1262,11 @@ LABEL_16:
   }
 }
 
-- (void)setStyleManager:(shared_ptr<gss::StylesheetManager<gss::PropertyID>>)a3
+- (void)setStyleManager:(shared_ptr<gss::StylesheetManager<gss::PropertyID>>)manager
 {
   v9[4] = *MEMORY[0x1E69E9840];
-  ptr = *a3.__ptr_;
-  v5 = *(a3.__ptr_ + 1);
+  ptr = *manager.__ptr_;
+  v5 = *(manager.__ptr_ + 1);
   if (v5)
   {
     atomic_fetch_add_explicit((v5 + 8), 1uLL, memory_order_relaxed);
@@ -1283,10 +1283,10 @@ LABEL_16:
 
   if (ptr)
   {
-    v7 = self;
+    selfCopy = self;
     v8 = self->_styleManager.__ptr_;
     v9[0] = &unk_1F29E3978;
-    v9[1] = v7;
+    v9[1] = selfCopy;
     v9[3] = v9;
     gss::StylesheetManager<gss::PropertyID>::addFinishedDecodingGlobalPropertiesCallback(v8, v9);
     std::__function::__value_func<void ()(std::shared_ptr<gss::StylesheetManager<gss::PropertyID>>,BOOL)>::~__value_func[abi:nn200100](v9);
@@ -1302,7 +1302,7 @@ LABEL_16:
 - (id)setStyleManager:
 {
   *a2 = &unk_1F29E3978;
-  result = *(a1 + 8);
+  result = *(self + 8);
   a2[1] = result;
   return result;
 }
@@ -1322,10 +1322,10 @@ LABEL_16:
   return result;
 }
 
-- (void)setSceneClientStyleState:(shared_ptr<gss::ClientStyleState<gss::ScenePropertyID>>)a3
+- (void)setSceneClientStyleState:(shared_ptr<gss::ClientStyleState<gss::ScenePropertyID>>)state
 {
-  v5 = *a3.__ptr_;
-  v4 = *(a3.__ptr_ + 1);
+  v5 = *state.__ptr_;
+  v4 = *(state.__ptr_ + 1);
   if (v4)
   {
     atomic_fetch_add_explicit((v4 + 8), 1uLL, memory_order_relaxed);
@@ -1342,7 +1342,7 @@ LABEL_16:
   [(VKSceneConfiguration *)self _updateStyleManager];
 }
 
-- (VKSceneConfiguration)initWithTaskContext:(const void *)a3
+- (VKSceneConfiguration)initWithTaskContext:(const void *)context
 {
   v10.receiver = self;
   v10.super_class = VKSceneConfiguration;
@@ -1350,8 +1350,8 @@ LABEL_16:
   v5 = v4;
   if (v4)
   {
-    v7 = *a3;
-    v6 = *(a3 + 1);
+    v7 = *context;
+    v6 = *(context + 1);
     if (v6)
     {
       atomic_fetch_add_explicit((v6 + 8), 1uLL, memory_order_relaxed);

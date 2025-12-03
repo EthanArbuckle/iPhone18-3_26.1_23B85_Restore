@@ -1,26 +1,26 @@
 @interface VUIJSSettingsInterface
 - (BOOL)sportsScoreSpoilersAllowed;
-- (VUIJSSettingsInterface)initWithAppContext:(id)a3;
+- (VUIJSSettingsInterface)initWithAppContext:(id)context;
 - (id)userPreferences;
-- (void)_handleSettingsDidChange:(id)a3;
+- (void)_handleSettingsDidChange:(id)change;
 - (void)dealloc;
-- (void)updateFeaturesConfiguration:(id)a3;
+- (void)updateFeaturesConfiguration:(id)configuration;
 @end
 
 @implementation VUIJSSettingsInterface
 
-- (VUIJSSettingsInterface)initWithAppContext:(id)a3
+- (VUIJSSettingsInterface)initWithAppContext:(id)context
 {
   v7.receiver = self;
   v7.super_class = VUIJSSettingsInterface;
-  v3 = [(VUIJSObject *)&v7 initWithAppContext:a3];
+  v3 = [(VUIJSObject *)&v7 initWithAppContext:context];
   if (v3)
   {
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 addObserver:v3 selector:sel__handleSettingsDidChange_ name:*MEMORY[0x1E69E1728] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel__handleSettingsDidChange_ name:*MEMORY[0x1E69E1728] object:0];
 
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 addObserver:v3 selector:sel__handleSettingsDidChange_ name:*MEMORY[0x1E69E16C8] object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v3 selector:sel__handleSettingsDidChange_ name:*MEMORY[0x1E69E16C8] object:0];
   }
 
   return v3;
@@ -28,8 +28,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = VUIJSSettingsInterface;
@@ -38,31 +38,31 @@
 
 - (BOOL)sportsScoreSpoilersAllowed
 {
-  v2 = [MEMORY[0x1E69E15F0] sharedPreferences];
-  v3 = [v2 sportsScoreSpoilersAllowed];
+  mEMORY[0x1E69E15F0] = [MEMORY[0x1E69E15F0] sharedPreferences];
+  sportsScoreSpoilersAllowed = [mEMORY[0x1E69E15F0] sportsScoreSpoilersAllowed];
 
-  return v3;
+  return sportsScoreSpoilersAllowed;
 }
 
 - (id)userPreferences
 {
   v2 = +[VUISettingsManager sharedInstance];
-  v3 = [v2 preferencesJSONData];
+  preferencesJSONData = [v2 preferencesJSONData];
 
-  return v3;
+  return preferencesJSONData;
 }
 
-- (void)updateFeaturesConfiguration:(id)a3
+- (void)updateFeaturesConfiguration:(id)configuration
 {
-  v3 = a3;
+  configurationCopy = configuration;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [v3 count])
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [configurationCopy count])
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     v5 = __54__VUIJSSettingsInterface_updateFeaturesConfiguration___block_invoke;
     v6 = &unk_1E872D768;
-    v7 = v3;
+    v7 = configurationCopy;
     if ([MEMORY[0x1E696AF00] isMainThread])
     {
       v5(block);
@@ -95,12 +95,12 @@ void __54__VUIJSSettingsInterface_updateFeaturesConfiguration___block_invoke(uin
   }
 }
 
-- (void)_handleSettingsDidChange:(id)a3
+- (void)_handleSettingsDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   NSLog(&cfstr_Vuijssettingsi.isa);
-  v5 = [(VUIJSObject *)self appContext];
-  objc_initWeak(&location, v5);
+  appContext = [(VUIJSObject *)self appContext];
+  objc_initWeak(&location, appContext);
 
   objc_initWeak(&from, self);
   v6 = objc_loadWeakRetained(&location);

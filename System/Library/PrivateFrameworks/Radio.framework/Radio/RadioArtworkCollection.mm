@@ -1,9 +1,9 @@
 @interface RadioArtworkCollection
-- (BOOL)isEqual:(id)a3;
-- (RadioArtworkCollection)initWithArtworkVariants:(id)a3;
-- (RadioArtworkCollection)initWithArtworks:(id)a3;
-- (id)bestArtworkForPixelSize:(CGSize)a3;
-- (id)bestArtworkForPointSize:(CGSize)a3;
+- (BOOL)isEqual:(id)equal;
+- (RadioArtworkCollection)initWithArtworkVariants:(id)variants;
+- (RadioArtworkCollection)initWithArtworks:(id)artworks;
+- (id)bestArtworkForPixelSize:(CGSize)size;
+- (id)bestArtworkForPointSize:(CGSize)size;
 @end
 
 @implementation RadioArtworkCollection
@@ -31,10 +31,10 @@ uint64_t __53__RadioArtworkCollection__artworksBySortingArtworks___block_invoke(
   return v14;
 }
 
-- (id)bestArtworkForPointSize:(CGSize)a3
+- (id)bestArtworkForPointSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   GSMainScreenScaleFactor();
   v7 = v6;
   v8 = width * v6;
@@ -43,10 +43,10 @@ uint64_t __53__RadioArtworkCollection__artworksBySortingArtworks___block_invoke(
   return [(RadioArtworkCollection *)self bestArtworkForPixelSize:v8, v9];
 }
 
-- (id)bestArtworkForPixelSize:(CGSize)a3
+- (id)bestArtworkForPixelSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v23 = *MEMORY[0x277D85DE8];
   v18 = 0u;
   v19 = 0u;
@@ -86,9 +86,9 @@ LABEL_3:
       }
     }
 
-    v15 = v11;
+    lastObject = v11;
 
-    if (v15)
+    if (lastObject)
     {
       goto LABEL_16;
     }
@@ -99,17 +99,17 @@ LABEL_3:
 LABEL_13:
   }
 
-  v15 = [(NSArray *)self->_artworks lastObject];
+  lastObject = [(NSArray *)self->_artworks lastObject];
 LABEL_16:
   v16 = *MEMORY[0x277D85DE8];
 
-  return v15;
+  return lastObject;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self != v4)
+  equalCopy = equal;
+  if (self != equalCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -119,7 +119,7 @@ LABEL_16:
     }
 
     artworks = self->_artworks;
-    if (artworks | v4->_artworks)
+    if (artworks | equalCopy->_artworks)
     {
       v6 = [(NSArray *)artworks isEqual:?];
       goto LABEL_7;
@@ -132,16 +132,16 @@ LABEL_7:
   return v6;
 }
 
-- (RadioArtworkCollection)initWithArtworkVariants:(id)a3
+- (RadioArtworkCollection)initWithArtworkVariants:(id)variants
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v4, "count")}];
+  variantsCopy = variants;
+  v5 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(variantsCopy, "count")}];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v6 = v4;
+  v6 = variantsCopy;
   v7 = [v6 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v7)
   {
@@ -192,28 +192,28 @@ LABEL_7:
     }
 
     self = v14;
-    v17 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v17 = 0;
+    selfCopy = 0;
   }
 
   v18 = *MEMORY[0x277D85DE8];
-  return v17;
+  return selfCopy;
 }
 
-- (RadioArtworkCollection)initWithArtworks:(id)a3
+- (RadioArtworkCollection)initWithArtworks:(id)artworks
 {
-  v4 = a3;
+  artworksCopy = artworks;
   v11.receiver = self;
   v11.super_class = RadioArtworkCollection;
   v5 = [(RadioArtworkCollection *)&v11 init];
   v6 = v5;
   if (v5)
   {
-    v7 = [(RadioArtworkCollection *)v5 _artworksBySortingArtworks:v4];
+    v7 = [(RadioArtworkCollection *)v5 _artworksBySortingArtworks:artworksCopy];
     v8 = [v7 copy];
     artworks = v6->_artworks;
     v6->_artworks = v8;

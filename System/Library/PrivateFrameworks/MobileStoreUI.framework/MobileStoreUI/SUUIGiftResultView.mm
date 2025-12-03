@@ -1,18 +1,18 @@
 @interface SUUIGiftResultView
-- (SUUIGiftResultView)initWithFrame:(CGRect)a3;
+- (SUUIGiftResultView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setImage:(id)a3;
-- (void)setItemView:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)setImage:(id)image;
+- (void)setItemView:(id)view;
+- (void)setTitle:(id)title;
 @end
 
 @implementation SUUIGiftResultView
 
-- (SUUIGiftResultView)initWithFrame:(CGRect)a3
+- (SUUIGiftResultView)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = SUUIGiftResultView;
-  v3 = [(SUUIGiftResultView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SUUIGiftResultView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [MEMORY[0x277D75220] buttonWithType:1];
@@ -20,9 +20,9 @@
     v3->_giftAgainButton = v4;
 
     [(UIButton *)v3->_giftAgainButton setAutoresizingMask:5];
-    v6 = [(UIButton *)v3->_giftAgainButton titleLabel];
+    titleLabel = [(UIButton *)v3->_giftAgainButton titleLabel];
     v7 = [MEMORY[0x277D74300] systemFontOfSize:18.0];
-    [v6 setFont:v7];
+    [titleLabel setFont:v7];
 
     [(SUUIGiftResultView *)v3 addSubview:v3->_giftAgainButton];
   }
@@ -30,15 +30,15 @@
   return v3;
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v12 = a3;
-  v4 = [(UIImageView *)self->_imageView image];
+  imageCopy = image;
+  image = [(UIImageView *)self->_imageView image];
 
-  if (v4 != v12)
+  if (image != imageCopy)
   {
     imageView = self->_imageView;
-    if (v12)
+    if (imageCopy)
     {
       if (!imageView)
       {
@@ -47,8 +47,8 @@
         self->_imageView = v7;
 
         v9 = self->_imageView;
-        v10 = [(SUUIGiftResultView *)self backgroundColor];
-        [(UIImageView *)v9 setBackgroundColor:v10];
+        backgroundColor = [(SUUIGiftResultView *)self backgroundColor];
+        [(UIImageView *)v9 setBackgroundColor:backgroundColor];
 
         [(SUUIGiftResultView *)self addSubview:self->_imageView];
         imageView = self->_imageView;
@@ -65,28 +65,28 @@
       self->_imageView = 0;
     }
 
-    v5 = [(SUUIGiftResultView *)self setNeedsLayout];
+    setNeedsLayout = [(SUUIGiftResultView *)self setNeedsLayout];
   }
 
-  MEMORY[0x2821F9730](v5);
+  MEMORY[0x2821F9730](setNeedsLayout);
 }
 
-- (void)setItemView:(id)a3
+- (void)setItemView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   itemView = self->_itemView;
-  if (itemView != v5)
+  if (itemView != viewCopy)
   {
-    v9 = v5;
+    v9 = viewCopy;
     if (itemView)
     {
       [(SUUIGiftItemView *)itemView removeFromSuperview];
     }
 
-    objc_storeStrong(&self->_itemView, a3);
+    objc_storeStrong(&self->_itemView, view);
     v7 = self->_itemView;
-    v8 = [(SUUIGiftResultView *)self backgroundColor];
-    [(SUUIGiftItemView *)v7 setBackgroundColor:v8];
+    backgroundColor = [(SUUIGiftResultView *)self backgroundColor];
+    [(SUUIGiftItemView *)v7 setBackgroundColor:backgroundColor];
 
     if (self->_itemView)
     {
@@ -94,20 +94,20 @@
     }
 
     itemView = [(SUUIGiftResultView *)self setNeedsLayout];
-    v5 = v9;
+    viewCopy = v9;
   }
 
-  MEMORY[0x2821F96F8](itemView, v5);
+  MEMORY[0x2821F96F8](itemView, viewCopy);
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v15 = a3;
-  v4 = [(SUUIGiftResultView *)self title];
-  if (v4 != v15 && ([v15 isEqualToString:v4] & 1) == 0)
+  titleCopy = title;
+  title = [(SUUIGiftResultView *)self title];
+  if (title != titleCopy && ([titleCopy isEqualToString:title] & 1) == 0)
   {
     titleLabel = self->_titleLabel;
-    if (v15)
+    if (titleCopy)
     {
       if (!titleLabel)
       {
@@ -116,8 +116,8 @@
         self->_titleLabel = v6;
 
         v8 = self->_titleLabel;
-        v9 = [(SUUIGiftResultView *)self backgroundColor];
-        [(UILabel *)v8 setBackgroundColor:v9];
+        backgroundColor = [(SUUIGiftResultView *)self backgroundColor];
+        [(UILabel *)v8 setBackgroundColor:backgroundColor];
 
         v10 = self->_titleLabel;
         v11 = [MEMORY[0x277D74300] boldSystemFontOfSize:16.0];
@@ -126,8 +126,8 @@
         [(UILabel *)self->_titleLabel setNumberOfLines:0];
         [(UILabel *)self->_titleLabel setTextAlignment:1];
         v12 = self->_titleLabel;
-        v13 = [MEMORY[0x277D75348] labelColor];
-        [(UILabel *)v12 setTextColor:v13];
+        labelColor = [MEMORY[0x277D75348] labelColor];
+        [(UILabel *)v12 setTextColor:labelColor];
 
         [(SUUIGiftResultView *)self addSubview:self->_titleLabel];
         titleLabel = self->_titleLabel;
@@ -149,8 +149,8 @@
 
 - (void)layoutSubviews
 {
-  v3 = [MEMORY[0x277D75128] sharedApplication];
-  v4 = [v3 userInterfaceLayoutDirection];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  userInterfaceLayoutDirection = [mEMORY[0x277D75128] userInterfaceLayoutDirection];
 
   [(SUUIGiftResultView *)self bounds];
   v6 = v5;
@@ -192,7 +192,7 @@
     v30 = floorf(v29);
     v31 = v30;
     v32 = self->_imageView;
-    if (v4)
+    if (userInterfaceLayoutDirection)
     {
       [SUUICGRectHelpers rect:v30 withFlippedOriginXRelativeTo:v23, v25, v26, v55, v57, v9, v11];
     }
@@ -221,7 +221,7 @@
     v28 = v36;
     v37 = self->_itemView;
     v55 = v6;
-    if (v4)
+    if (userInterfaceLayoutDirection)
     {
       v31 = 15.0;
       [SUUICGRectHelpers rect:15.0 withFlippedOriginXRelativeTo:v23, v12, v36, v6, v57, v9, v11];
@@ -255,7 +255,7 @@ LABEL_16:
   v44 = v23;
   v45 = v12;
   v46 = v18;
-  if (v4)
+  if (userInterfaceLayoutDirection)
   {
     [SUUICGRectHelpers rect:15.0 withFlippedOriginXRelativeTo:v23, v12, v18, v6, v57, v9, v56];
   }
@@ -269,7 +269,7 @@ LABEL_16:
   v48 = (v9 - v14) * 0.5;
   v49 = floorf(v48);
   giftAgainButton = self->_giftAgainButton;
-  if (v4)
+  if (userInterfaceLayoutDirection)
   {
     [SUUICGRectHelpers rect:v49 withFlippedOriginXRelativeTo:v47, v14, v16, v6, v57, v9, v56];
     v14 = v51;

@@ -8,8 +8,8 @@
 
 - (void)_webClipsAnalyticsLogger_updatePeriodicCoreAnalyticsLastReportTime
 {
-  v0 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v0 setDouble:@"LastWebAppReportTime" forKey:CFAbsoluteTimeGetCurrent()];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults setDouble:@"LastWebAppReportTime" forKey:CFAbsoluteTimeGetCurrent()];
 }
 
 - (void)_performWebClipsBehaviorReport
@@ -36,9 +36,9 @@
         }
 
         v6 = *(*(&v10 + 1) + 8 * i);
-        v7 = [v6 applicationBundleIdentifier];
+        applicationBundleIdentifier = [v6 applicationBundleIdentifier];
 
-        if (!v7)
+        if (!applicationBundleIdentifier)
         {
           if ([v6 fullScreen])
           {
@@ -65,8 +65,8 @@
     v8 = 0;
   }
 
-  v9 = [MEMORY[0x1E69C8810] sharedLogger];
-  [v9 reportNumberOfWebApps:v1 andBookmarks:v8];
+  mEMORY[0x1E69C8810] = [MEMORY[0x1E69C8810] sharedLogger];
+  [mEMORY[0x1E69C8810] reportNumberOfWebApps:v1 andBookmarks:v8];
 }
 
 - (void)schedulePeriodicWebClipsReport
@@ -76,7 +76,7 @@
   block[1] = 3221225472;
   block[2] = __80__WBSAnalyticsLogger__SFWebClipsAnalyticsLogger__schedulePeriodicWebClipsReport__block_invoke;
   block[3] = &unk_1E848F810;
-  block[4] = a1;
+  block[4] = self;
   dispatch_after(WeeklyAnalyticsReportForKey, MEMORY[0x1E69E96A0], block);
 }
 

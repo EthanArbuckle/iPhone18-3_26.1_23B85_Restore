@@ -1,6 +1,6 @@
 @interface UITableViewController
 + (id)fallback_debugHierarchyPropertyDescriptions;
-+ (id)fallback_debugHierarchyValueForPropertyWithName:(id)a3 onObject:(id)a4 outOptions:(id *)a5 outError:(id *)a6;
++ (id)fallback_debugHierarchyValueForPropertyWithName:(id)name onObject:(id)object outOptions:(id *)options outError:(id *)error;
 @end
 
 @implementation UITableViewController
@@ -28,40 +28,40 @@
   return v5;
 }
 
-+ (id)fallback_debugHierarchyValueForPropertyWithName:(id)a3 onObject:(id)a4 outOptions:(id *)a5 outError:(id *)a6
++ (id)fallback_debugHierarchyValueForPropertyWithName:(id)name onObject:(id)object outOptions:(id *)options outError:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if ([v8 isEqualToString:@"tableView"])
+  nameCopy = name;
+  objectCopy = object;
+  if ([nameCopy isEqualToString:@"tableView"])
   {
-    a6 = [v9 viewIfLoaded];
+    error = [objectCopy viewIfLoaded];
 
-    if (!a6)
+    if (!error)
     {
       goto LABEL_29;
     }
 
-    v10 = [v9 tableView];
+    tableView = [objectCopy tableView];
 LABEL_7:
-    a6 = v10;
+    error = tableView;
     goto LABEL_29;
   }
 
-  if ([v8 isEqualToString:@"refreshControl"])
+  if ([nameCopy isEqualToString:@"refreshControl"])
   {
-    a6 = [v9 viewIfLoaded];
+    error = [objectCopy viewIfLoaded];
 
-    if (!a6)
+    if (!error)
     {
       goto LABEL_29;
     }
 
-    v10 = [v9 refreshControl];
+    tableView = [objectCopy refreshControl];
     goto LABEL_7;
   }
 
-  v11 = v9;
-  v12 = v8;
+  v11 = objectCopy;
+  v12 = nameCopy;
   if (![v12 length])
   {
     goto LABEL_19;
@@ -72,18 +72,18 @@ LABEL_7:
   {
     if ([v12 length] < 2)
     {
-      v17 = [v12 uppercaseString];
+      uppercaseString = [v12 uppercaseString];
     }
 
     else
     {
       v14 = [v12 substringToIndex:1];
-      v15 = [v14 uppercaseString];
+      uppercaseString2 = [v14 uppercaseString];
       v16 = [v12 substringFromIndex:1];
-      v17 = [v15 stringByAppendingString:v16];
+      uppercaseString = [uppercaseString2 stringByAppendingString:v16];
     }
 
-    v18 = [@"is" stringByAppendingString:v17];
+    v18 = [@"is" stringByAppendingString:uppercaseString];
     NSSelectorFromString(v18);
     if (objc_opt_respondsToSelector())
     {
@@ -101,7 +101,7 @@ LABEL_7:
     }
 
 LABEL_19:
-    if (a6)
+    if (error)
     {
       v19 = v12;
       if (v11)
@@ -135,10 +135,10 @@ LABEL_19:
       v24 = [NSError errorWithDomain:@"DebugHierarchyErrorDomain" code:100 userInfo:v23];
 
       v25 = v24;
-      *a6 = v24;
+      *error = v24;
 
       v13 = 0;
-      a6 = 0;
+      error = 0;
     }
 
     else
@@ -156,12 +156,12 @@ LABEL_19:
   }
 
 LABEL_11:
-  a6 = [v11 valueForKey:v13];
+  error = [v11 valueForKey:v13];
 LABEL_28:
 
 LABEL_29:
 
-  return a6;
+  return error;
 }
 
 @end

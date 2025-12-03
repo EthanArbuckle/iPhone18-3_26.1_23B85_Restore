@@ -10,11 +10,11 @@
 - (id)_defaultMessage
 {
   v2 = +[UserProfileReportHistoryManager sharedInstance];
-  v3 = [v2 inChina];
+  inChina = [v2 inChina];
 
   v4 = +[NSBundle mainBundle];
   v5 = v4;
-  if (v3)
+  if (inChina)
   {
     v6 = @"You’re making Maps better for everyone!";
   }
@@ -32,15 +32,15 @@
 - (id)_defaultTitle
 {
   v2 = +[UserInformationManager sharedInstance];
-  v3 = [v2 loggedIn];
+  loggedIn = [v2 loggedIn];
 
   v4 = +[NSBundle mainBundle];
-  if (v3)
+  if (loggedIn)
   {
     v5 = [v4 localizedStringForKey:@"[RAP] Title for the Thank You screen value:logged in" table:{@"localized string not found", 0}];
     v6 = +[UserInformationManager sharedInstance];
-    v7 = [v6 userGivenName];
-    v8 = [NSString stringWithFormat:v5, v7];
+    userGivenName = [v6 userGivenName];
+    v8 = [NSString stringWithFormat:v5, userGivenName];
   }
 
   else
@@ -59,13 +59,13 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [(RAPAcknowledgementOptions *)v2 _defaultTitle];
+    _defaultTitle = [(RAPAcknowledgementOptions *)v2 _defaultTitle];
     title = v3->_title;
-    v3->_title = v4;
+    v3->_title = _defaultTitle;
 
-    v6 = [(RAPAcknowledgementOptions *)v3 _defaultMessage];
+    _defaultMessage = [(RAPAcknowledgementOptions *)v3 _defaultMessage];
     message = v3->_message;
-    v3->_message = v6;
+    v3->_message = _defaultMessage;
 
     primaryButtonTitle = v3->_primaryButtonTitle;
     v3->_primaryButtonTitle = &stru_1016631F0;

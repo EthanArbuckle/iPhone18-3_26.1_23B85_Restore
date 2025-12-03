@@ -1,18 +1,18 @@
 @interface _SFToolbarAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityHitTestShouldFallbackToNearestChild;
 - (BOOL)shouldGroupAccessibilityChildren;
 - (unint64_t)accessibilityTraits;
-- (void)setItems:(id)a3 animated:(BOOL)a4;
+- (void)setItems:(id)items animated:(BOOL)animated;
 @end
 
 @implementation _SFToolbarAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"_SFNavigationBar"];
-  [v3 validateClass:@"_SFToolbar" hasInstanceMethod:@"setItems:animated:" withFullSignature:{"v", "@", "B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"_SFNavigationBar"];
+  [validationsCopy validateClass:@"_SFToolbar" hasInstanceMethod:@"setItems:animated:" withFullSignature:{"v", "@", "B", 0}];
 }
 
 - (BOOL)shouldGroupAccessibilityChildren
@@ -57,11 +57,11 @@
   return [(_SFToolbarAccessibility *)&v5 accessibilityTraits];
 }
 
-- (void)setItems:(id)a3 animated:(BOOL)a4
+- (void)setItems:(id)items animated:(BOOL)animated
 {
   v5.receiver = self;
   v5.super_class = _SFToolbarAccessibility;
-  [(_SFToolbarAccessibility *)&v5 setItems:a3 animated:a4];
+  [(_SFToolbarAccessibility *)&v5 setItems:items animated:animated];
   [(_SFToolbarAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
 

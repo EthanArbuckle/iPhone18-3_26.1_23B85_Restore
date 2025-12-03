@@ -1,17 +1,17 @@
 @interface OKWidgetViewProxy
 + (id)supportedSettings;
-+ (void)setupJavascriptContext:(id)a3;
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3;
-- (BOOL)canPerformAction:(id)a3;
++ (void)setupJavascriptContext:(id)context;
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key;
+- (BOOL)canPerformAction:(id)action;
 - (BOOL)interactivityEnabled;
 - (BOOL)isFocused;
-- (BOOL)isReady:(BOOL)a3;
+- (BOOL)isReady:(BOOL)ready;
 - (BOOL)needsAntialiasing;
-- (BOOL)performActionScript:(id)a3 withAction:(id)a4;
-- (BOOL)prepareForDisplay:(BOOL)a3;
-- (BOOL)prepareForUnload:(BOOL)a3;
-- (BOOL)prepareForWarmup:(BOOL)a3;
-- (BOOL)sendAction:(id)a3 toTarget:(id)a4;
+- (BOOL)performActionScript:(id)script withAction:(id)action;
+- (BOOL)prepareForDisplay:(BOOL)display;
+- (BOOL)prepareForUnload:(BOOL)unload;
+- (BOOL)prepareForWarmup:(BOOL)warmup;
+- (BOOL)sendAction:(id)action toTarget:(id)target;
 - (BOOL)settingDynamicsBodyAllowsRotation;
 - (CATransform3D)_jsOriginalTransform;
 - (CATransform3D)_jsTransform;
@@ -24,7 +24,7 @@
 - (CGPoint)settingXyTranslation;
 - (CGPoint)settingZRotationAnchorPoint;
 - (CGRect)borderRect;
-- (CGRect)calculateFrame:(CGRect)a3;
+- (CGRect)calculateFrame:(CGRect)frame;
 - (CGRect)originalFrame;
 - (CGRect)settingFrame;
 - (CGSize)_focusSize;
@@ -39,12 +39,12 @@
 - (OKPresentationPage)page;
 - (OKPresentationViewController)presentationViewController;
 - (OKWidgetViewDelegate)delegate;
-- (OKWidgetViewProxy)initWithWidget:(id)a3;
+- (OKWidgetViewProxy)initWithWidget:(id)widget;
 - (UIEdgeInsets)settingBorderEdgeOutsets;
 - (UIEdgeInsets)settingBorderImageCapEdgeInsets;
 - (UIEdgeInsets)settingEventsInset;
 - (double)_localReadyProgress;
-- (double)readyProgress:(BOOL)a3;
+- (double)readyProgress:(BOOL)progress;
 - (double)remainingPlayDuration;
 - (double)settingBorderWidth;
 - (double)settingCornerRadius;
@@ -56,138 +56,138 @@
 - (double)settingShadowRadius;
 - (double)settingZPosition;
 - (float)contentAspectRatio;
-- (id)_preparseLayoutString:(id)a3 targetView:(id *)a4 anchorView:(id *)a5;
-- (id)actionBindingForAction:(id)a3 isTouchCountAgnostic:(BOOL)a4;
-- (id)addSubWidgetViewWithTemplateName:(id)a3 name:(id)a4 andSettings:(id)a5;
+- (id)_preparseLayoutString:(id)string targetView:(id *)view anchorView:(id *)anchorView;
+- (id)actionBindingForAction:(id)action isTouchCountAgnostic:(BOOL)agnostic;
+- (id)addSubWidgetViewWithTemplateName:(id)name name:(id)a4 andSettings:(id)settings;
 - (id)allActionBindings;
-- (id)allKeysForDictionaryProxy:(id)a3;
-- (id)dictionaryProxy:(id)a3 objectAtIndexPath:(id)a4;
-- (id)dictionaryProxy:(id)a3 objectForKey:(id)a4;
+- (id)allKeysForDictionaryProxy:(id)proxy;
+- (id)dictionaryProxy:(id)proxy objectAtIndexPath:(id)path;
+- (id)dictionaryProxy:(id)proxy objectForKey:(id)key;
 - (id)pageViewController;
 - (id)settingActionBindings;
 - (id)settingBorderColor;
 - (id)settingContentFilters;
-- (id)settingObjectForKey:(id)a3;
+- (id)settingObjectForKey:(id)key;
 - (id)settingShadowColor;
 - (id)subDynamicProxies;
-- (id)subWidgetViewForName:(id)a3 recursively:(BOOL)a4;
-- (id)subWidgetViewsInRect:(CGRect)a3;
-- (id)valueForUndefinedKey:(id)a3;
-- (unint64_t)countOfDictionaryProxy:(id)a3;
-- (void)_animateToFocus:(double)a3 completion:(id)a4;
-- (void)_animateToUnfocus:(double)a3 completion:(id)a4;
+- (id)subWidgetViewForName:(id)name recursively:(BOOL)recursively;
+- (id)subWidgetViewsInRect:(CGRect)rect;
+- (id)valueForUndefinedKey:(id)key;
+- (unint64_t)countOfDictionaryProxy:(id)proxy;
+- (void)_animateToFocus:(double)focus completion:(id)completion;
+- (void)_animateToUnfocus:(double)unfocus completion:(id)completion;
 - (void)_animationToFocus;
 - (void)_animationToUnfocus;
 - (void)_cancelAllOperations;
 - (void)_cancelBorderOperations;
-- (void)_completionToFocus:(BOOL)a3;
-- (void)_completionToUnfocus:(BOOL)a3;
+- (void)_completionToFocus:(BOOL)focus;
+- (void)_completionToUnfocus:(BOOL)unfocus;
 - (void)_prepareToFocus;
 - (void)_prepareToUnfocus;
 - (void)_reloadBorderContent;
-- (void)_reloadBorderContentInHighQuality:(BOOL)a3;
-- (void)addActionBinding:(id)a3 scope:(unint64_t)a4;
+- (void)_reloadBorderContentInHighQuality:(BOOL)quality;
+- (void)addActionBinding:(id)binding scope:(unint64_t)scope;
 - (void)applyLayoutSettings;
 - (void)applySettings;
 - (void)applySettingsIfNeeded;
 - (void)becomeReady;
-- (void)beganCollisionWithWidgetView:(id)a3 fromGroup:(id)a4;
+- (void)beganCollisionWithWidgetView:(id)view fromGroup:(id)group;
 - (void)commonInit;
 - (void)dealloc;
 - (void)dynamicsRemoveSnapping;
-- (void)dynamicsSnapToPoint:(CGPoint)a3 withDamping:(double)a4;
-- (void)focus:(id)a3;
-- (void)focus:(unint64_t)a3 duration:(double)a4 completion:(id)a5;
+- (void)dynamicsSnapToPoint:(CGPoint)point withDamping:(double)damping;
+- (void)focus:(id)focus;
+- (void)focus:(unint64_t)focus duration:(double)duration completion:(id)completion;
 - (void)instantPause;
 - (void)instantResume;
 - (void)layoutSubviews;
-- (void)networkStatusDidChange:(int64_t)a3;
-- (void)notifyWhenBecomesReady:(id)a3;
+- (void)networkStatusDidChange:(int64_t)change;
+- (void)notifyWhenBecomesReady:(id)ready;
 - (void)pauseContentEffects;
-- (void)prefetchMediaURL:(id)a3 identifier:(id)a4;
+- (void)prefetchMediaURL:(id)l identifier:(id)identifier;
 - (void)prepareContentEffects;
-- (void)prepareForMode:(unint64_t)a3 force:(BOOL)a4;
+- (void)prepareForMode:(unint64_t)mode force:(BOOL)force;
 - (void)prepareForRefresh;
 - (void)prepareForReload;
-- (void)prepareIfNeeded:(BOOL)a3;
-- (void)readinessDidChange:(BOOL)a3;
-- (void)reloadMediaURL:(id)a3 size:(CGSize)a4 mode:(int64_t)a5 lowQuality:(BOOL)a6 highQuality:(BOOL)a7 identifier:(id)a8 progressHandler:(id)a9 completionHandler:(id)a10;
-- (void)removeActionBinding:(id)a3;
+- (void)prepareIfNeeded:(BOOL)needed;
+- (void)readinessDidChange:(BOOL)change;
+- (void)reloadMediaURL:(id)l size:(CGSize)size mode:(int64_t)mode lowQuality:(BOOL)quality highQuality:(BOOL)highQuality identifier:(id)identifier progressHandler:(id)handler completionHandler:(id)self0;
+- (void)removeActionBinding:(id)binding;
 - (void)removeAllActionBindings;
 - (void)removeAllReadyNotifications;
 - (void)resignReady;
 - (void)restartContentEffects;
-- (void)resumeContentEffects:(BOOL)a3;
-- (void)setAntialiasing:(BOOL)a3;
-- (void)setBounds:(CGRect)a3;
-- (void)setCenterX:(double)a3;
-- (void)setCenterY:(double)a3;
-- (void)setDynamicsTransform:(CGAffineTransform *)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setSettingActionBindings:(id)a3;
-- (void)setSettingAlpha:(double)a3;
-- (void)setSettingAntialiasing:(BOOL)a3;
-- (void)setSettingBorderColor:(id)a3;
-- (void)setSettingBorderEdgeOutsets:(UIEdgeInsets)a3;
-- (void)setSettingBorderImageCapEdgeInsets:(UIEdgeInsets)a3;
-- (void)setSettingBorderImageURL:(id)a3;
-- (void)setSettingBorderWidth:(double)a3;
-- (void)setSettingCanPerformActionScript:(id)a3;
-- (void)setSettingCenter:(CGPoint)a3;
-- (void)setSettingContentEffects:(id)a3;
-- (void)setSettingContentFilters:(id)a3;
-- (void)setSettingCornerRadius:(double)a3;
-- (void)setSettingDynamicsAttachments:(id)a3;
-- (void)setSettingDynamicsBodyAllowsRotation:(BOOL)a3;
-- (void)setSettingDynamicsBodyAngularResistance:(double)a3;
-- (void)setSettingDynamicsBodyDensity:(double)a3;
-- (void)setSettingDynamicsBodyElasticity:(double)a3;
-- (void)setSettingDynamicsBodyFriction:(double)a3;
-- (void)setSettingDynamicsBodyResistance:(double)a3;
-- (void)setSettingDynamicsCollisionActionScript:(id)a3;
-- (void)setSettingDynamicsCollisionGroups:(id)a3;
-- (void)setSettingDynamicsEnabled:(BOOL)a3;
-- (void)setSettingDynamicsGravityDisabled:(BOOL)a3;
-- (void)setSettingDynamicsPushGroups:(id)a3;
-- (void)setSettingEventsInset:(UIEdgeInsets)a3;
-- (void)setSettingFrame:(CGRect)a3;
-- (void)setSettingLayoutSteps:(id)a3;
-- (void)setSettingMotionEnabled:(BOOL)a3;
-- (void)setSettingMotionTiltXEnabled:(BOOL)a3;
-- (void)setSettingMotionTiltYEnabled:(BOOL)a3;
-- (void)setSettingMotionTiltZEnabled:(BOOL)a3;
-- (void)setSettingMotionXMinMax:(CGSize)a3;
-- (void)setSettingMotionXTiltAnchorPoint:(CGPoint)a3;
-- (void)setSettingMotionXTiltReversed:(BOOL)a3;
-- (void)setSettingMotionYMinMax:(CGSize)a3;
-- (void)setSettingMotionYTiltAnchorPoint:(CGPoint)a3;
-- (void)setSettingMotionYTiltReversed:(BOOL)a3;
-- (void)setSettingMotionZMinMax:(CGSize)a3;
-- (void)setSettingMotionZTiltAnchorPoint:(CGPoint)a3;
-- (void)setSettingMotionZTiltReversed:(BOOL)a3;
-- (void)setSettingParallaxEnabled:(BOOL)a3;
-- (void)setSettingPosition:(CGPoint)a3;
-- (void)setSettingPrepareActionScript:(id)a3;
-- (void)setSettingShadowColor:(id)a3;
-- (void)setSettingShadowOffset:(CGSize)a3;
-- (void)setSettingShadowOpacity:(double)a3;
-- (void)setSettingShadowOptimization:(BOOL)a3;
-- (void)setSettingShadowRadius:(double)a3;
-- (void)setSettingSize:(CGSize)a3;
-- (void)setSettingXFlipped:(BOOL)a3;
-- (void)setSettingXyScale:(CGSize)a3;
-- (void)setSettingXyTranslation:(CGPoint)a3;
-- (void)setSettingYFlipped:(BOOL)a3;
-- (void)setSettingZPosition:(double)a3;
-- (void)setSettingZRotation:(double)a3;
-- (void)setSettingZRotationAnchorPoint:(CGPoint)a3;
-- (void)setUserSettingObject:(id)a3 forKey:(id)a4;
+- (void)resumeContentEffects:(BOOL)effects;
+- (void)setAntialiasing:(BOOL)antialiasing;
+- (void)setBounds:(CGRect)bounds;
+- (void)setCenterX:(double)x;
+- (void)setCenterY:(double)y;
+- (void)setDynamicsTransform:(CGAffineTransform *)transform;
+- (void)setFrame:(CGRect)frame;
+- (void)setSettingActionBindings:(id)bindings;
+- (void)setSettingAlpha:(double)alpha;
+- (void)setSettingAntialiasing:(BOOL)antialiasing;
+- (void)setSettingBorderColor:(id)color;
+- (void)setSettingBorderEdgeOutsets:(UIEdgeInsets)outsets;
+- (void)setSettingBorderImageCapEdgeInsets:(UIEdgeInsets)insets;
+- (void)setSettingBorderImageURL:(id)l;
+- (void)setSettingBorderWidth:(double)width;
+- (void)setSettingCanPerformActionScript:(id)script;
+- (void)setSettingCenter:(CGPoint)center;
+- (void)setSettingContentEffects:(id)effects;
+- (void)setSettingContentFilters:(id)filters;
+- (void)setSettingCornerRadius:(double)radius;
+- (void)setSettingDynamicsAttachments:(id)attachments;
+- (void)setSettingDynamicsBodyAllowsRotation:(BOOL)rotation;
+- (void)setSettingDynamicsBodyAngularResistance:(double)resistance;
+- (void)setSettingDynamicsBodyDensity:(double)density;
+- (void)setSettingDynamicsBodyElasticity:(double)elasticity;
+- (void)setSettingDynamicsBodyFriction:(double)friction;
+- (void)setSettingDynamicsBodyResistance:(double)resistance;
+- (void)setSettingDynamicsCollisionActionScript:(id)script;
+- (void)setSettingDynamicsCollisionGroups:(id)groups;
+- (void)setSettingDynamicsEnabled:(BOOL)enabled;
+- (void)setSettingDynamicsGravityDisabled:(BOOL)disabled;
+- (void)setSettingDynamicsPushGroups:(id)groups;
+- (void)setSettingEventsInset:(UIEdgeInsets)inset;
+- (void)setSettingFrame:(CGRect)frame;
+- (void)setSettingLayoutSteps:(id)steps;
+- (void)setSettingMotionEnabled:(BOOL)enabled;
+- (void)setSettingMotionTiltXEnabled:(BOOL)enabled;
+- (void)setSettingMotionTiltYEnabled:(BOOL)enabled;
+- (void)setSettingMotionTiltZEnabled:(BOOL)enabled;
+- (void)setSettingMotionXMinMax:(CGSize)max;
+- (void)setSettingMotionXTiltAnchorPoint:(CGPoint)point;
+- (void)setSettingMotionXTiltReversed:(BOOL)reversed;
+- (void)setSettingMotionYMinMax:(CGSize)max;
+- (void)setSettingMotionYTiltAnchorPoint:(CGPoint)point;
+- (void)setSettingMotionYTiltReversed:(BOOL)reversed;
+- (void)setSettingMotionZMinMax:(CGSize)max;
+- (void)setSettingMotionZTiltAnchorPoint:(CGPoint)point;
+- (void)setSettingMotionZTiltReversed:(BOOL)reversed;
+- (void)setSettingParallaxEnabled:(BOOL)enabled;
+- (void)setSettingPosition:(CGPoint)position;
+- (void)setSettingPrepareActionScript:(id)script;
+- (void)setSettingShadowColor:(id)color;
+- (void)setSettingShadowOffset:(CGSize)offset;
+- (void)setSettingShadowOpacity:(double)opacity;
+- (void)setSettingShadowOptimization:(BOOL)optimization;
+- (void)setSettingShadowRadius:(double)radius;
+- (void)setSettingSize:(CGSize)size;
+- (void)setSettingXFlipped:(BOOL)flipped;
+- (void)setSettingXyScale:(CGSize)scale;
+- (void)setSettingXyTranslation:(CGPoint)translation;
+- (void)setSettingYFlipped:(BOOL)flipped;
+- (void)setSettingZPosition:(double)position;
+- (void)setSettingZRotation:(double)rotation;
+- (void)setSettingZRotationAnchorPoint:(CGPoint)point;
+- (void)setUserSettingObject:(id)object forKey:(id)key;
 - (void)sizeToFit;
 - (void)startContentEffects;
 - (void)startShowingProgressIndicator;
 - (void)stopContentEffects;
 - (void)stopShowingProgressIndicator;
-- (void)unfocus:(double)a3 completion:(id)a4;
+- (void)unfocus:(double)unfocus completion:(id)completion;
 - (void)updateAntialiasing;
 - (void)updateContentEffects;
 - (void)updateDynamics;
@@ -197,8 +197,8 @@
 - (void)updateShadowPath;
 - (void)updateTransforms;
 - (void)updateWidgetTransforms;
-- (void)updateWithMotionTiltRotationX:(double)a3 tiltRotationY:(double)a4 tiltRotationZ:(double)a5;
-- (void)updateWithParallaxTranslationX:(double)a3 translationY:(double)a4;
+- (void)updateWithMotionTiltRotationX:(double)x tiltRotationY:(double)y tiltRotationZ:(double)z;
+- (void)updateWithParallaxTranslationX:(double)x translationY:(double)y;
 - (void)wobble;
 @end
 
@@ -285,17 +285,17 @@
   [objc_msgSend(+[OKProducerManager defaultManager](OKProducerManager "defaultManager")];
 }
 
-- (OKWidgetViewProxy)initWithWidget:(id)a3
+- (OKWidgetViewProxy)initWithWidget:(id)widget
 {
   v4 = [(OFViewProxy *)self initWithFrame:0.0, 0.0, 256.0, 256.0];
   if (v4)
   {
-    v4->_widget = a3;
-    [a3 parent];
+    v4->_widget = widget;
+    [widget parent];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4->_page = [a3 parent];
+      v4->_page = [widget parent];
     }
 
     [-[OKWidgetViewProxy layer](v4 "layer")];
@@ -338,24 +338,24 @@
     {
       [-[OKWidgetViewProxy layer](v4 "layer")];
       [-[OKWidgetViewProxy layer](v4 "layer")];
-      v15 = [(OKWidgetViewProxy *)v4 layer];
+      layer = [(OKWidgetViewProxy *)v4 layer];
       LODWORD(v16) = *"33s?";
-      [v15 setOpacity:v16];
+      [layer setOpacity:v16];
       [-[OKWidgetContainerView layer](v4->_contentContainerView "layer")];
       [-[OKWidgetContainerView layer](v4->_contentContainerView "layer")];
-      v17 = [(OKWidgetContainerView *)v4->_contentContainerView layer];
+      layer2 = [(OKWidgetContainerView *)v4->_contentContainerView layer];
       LODWORD(v18) = *"33s?";
-      [v17 setOpacity:v18];
+      [layer2 setOpacity:v18];
       [-[OKWidgetContainerView layer](v4->_contentView "layer")];
       [-[OKWidgetContainerView layer](v4->_contentView "layer")];
-      v19 = [(OKWidgetContainerView *)v4->_contentView layer];
+      layer3 = [(OKWidgetContainerView *)v4->_contentView layer];
       LODWORD(v20) = *"33s?";
-      [v19 setOpacity:v20];
+      [layer3 setOpacity:v20];
       [-[UIImageView layer](v4->_borderView "layer")];
       [-[UIImageView layer](v4->_borderView "layer")];
-      v21 = [(UIImageView *)v4->_borderView layer];
+      layer4 = [(UIImageView *)v4->_borderView layer];
       LODWORD(v22) = *"33s?";
-      [v21 setOpacity:v22];
+      [layer4 setOpacity:v22];
     }
   }
 
@@ -527,9 +527,9 @@
 {
   if ([(OKWidgetViewProxy *)self parentWidgetView])
   {
-    v3 = [(OKWidgetViewProxy *)self parentWidgetView];
+    parentWidgetView = [(OKWidgetViewProxy *)self parentWidgetView];
 
-    return [(OKWidgetViewProxy *)v3 delegate];
+    return [(OKWidgetViewProxy *)parentWidgetView delegate];
   }
 
   else
@@ -546,9 +546,9 @@
     return self->_page;
   }
 
-  v3 = [(OKWidgetViewProxy *)self parentWidgetView];
+  parentWidgetView = [(OKWidgetViewProxy *)self parentWidgetView];
 
-  return [(OKWidgetViewProxy *)v3 page];
+  return [(OKWidgetViewProxy *)parentWidgetView page];
 }
 
 - (NSString)description
@@ -556,10 +556,10 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(OKPresentationCanvas *)self->_widget name];
+  name = [(OKPresentationCanvas *)self->_widget name];
   v8.receiver = self;
   v8.super_class = OKWidgetViewProxy;
-  return [v3 stringWithFormat:@"WIDGET VIEW %@ %@: %@", v5, v6, -[OKWidgetViewProxy description](&v8, sel_description)];
+  return [v3 stringWithFormat:@"WIDGET VIEW %@ %@: %@", v5, name, -[OKWidgetViewProxy description](&v8, sel_description)];
 }
 
 - (OKPresentationViewController)presentationViewController
@@ -576,9 +576,9 @@
   return [v2 pageViewController];
 }
 
-- (id)subWidgetViewForName:(id)a3 recursively:(BOOL)a4
+- (id)subWidgetViewForName:(id)name recursively:(BOOL)recursively
 {
-  v4 = a4;
+  recursivelyCopy = recursively;
   v17 = *MEMORY[0x277D85DE8];
   v12 = 0u;
   v13 = 0u;
@@ -606,9 +606,9 @@
           return v11;
         }
 
-        if (v4)
+        if (recursivelyCopy)
         {
-          result = [v11 subWidgetViewForName:a3 recursively:1];
+          result = [v11 subWidgetViewForName:name recursively:1];
           if (result)
           {
             return result;
@@ -633,12 +633,12 @@
   return result;
 }
 
-- (id)subWidgetViewsInRect:(CGRect)a3
+- (id)subWidgetViewsInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v21 = *MEMORY[0x277D85DE8];
   v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v16 = 0u;
@@ -681,12 +681,12 @@
   return v8;
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(OKWidgetViewProxy *)self bounds];
   v9 = v8;
   v11 = v10;
@@ -699,12 +699,12 @@
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(OKWidgetViewProxy *)self frame];
   v9 = v8;
   v11 = v10;
@@ -807,44 +807,44 @@
 {
   if ([(OKWidgetViewProxy *)self parentWidgetView])
   {
-    v3 = [(OKWidgetViewProxy *)self parentWidgetView];
+    parentWidgetView = [(OKWidgetViewProxy *)self parentWidgetView];
   }
 
   else
   {
-    v3 = [(OKWidgetViewProxy *)self pageViewController];
+    parentWidgetView = [(OKWidgetViewProxy *)self pageViewController];
   }
 
-  [(OKWidgetViewProxy *)v3 layoutFactor];
+  [(OKWidgetViewProxy *)parentWidgetView layoutFactor];
   result.height = v5;
   result.width = v4;
   return result;
 }
 
-- (void)setCenterX:(double)a3
+- (void)setCenterX:(double)x
 {
   [(OKWidgetViewProxy *)self center];
 
-  [(OKWidgetViewProxy *)self setCenter:a3];
+  [(OKWidgetViewProxy *)self setCenter:x];
 }
 
-- (void)setCenterY:(double)a3
+- (void)setCenterY:(double)y
 {
   [(OKWidgetViewProxy *)self center];
 
   [(OKWidgetViewProxy *)self setCenter:?];
 }
 
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key
 {
-  if ([a3 isEqualToString:@"shadowPath"] & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"shadowOffset") & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"shadowRadius") & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"shadowOpacity") & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"shadowColor"))
+  if ([key isEqualToString:@"shadowPath"] & 1) != 0 || (objc_msgSend(key, "isEqualToString:", @"shadowOffset") & 1) != 0 || (objc_msgSend(key, "isEqualToString:", @"shadowRadius") & 1) != 0 || (objc_msgSend(key, "isEqualToString:", @"shadowOpacity") & 1) != 0 || (objc_msgSend(key, "isEqualToString:", @"shadowColor"))
   {
     return 1;
   }
 
   v6.receiver = self;
   v6.super_class = OKWidgetViewProxy;
-  return [(OKWidgetViewProxy *)&v6 _shouldAnimatePropertyWithKey:a3];
+  return [(OKWidgetViewProxy *)&v6 _shouldAnimatePropertyWithKey:key];
 }
 
 - (void)applySettingsIfNeeded
@@ -870,7 +870,7 @@
 - (void)applyLayoutSettings
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -892,8 +892,8 @@
         }
 
         v8 = *(*(&v16 + 1) + 8 * v7);
-        v9 = [(OKPresentationCanvas *)self->_widget mergedSettings];
-        v10 = [v9 objectForKey:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"@%@", v8)}];
+        mergedSettings = [(OKPresentationCanvas *)self->_widget mergedSettings];
+        v10 = [mergedSettings objectForKey:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"@%@", v8)}];
         if (v10)
         {
           v11 = v10;
@@ -902,8 +902,8 @@
 
         else
         {
-          v13 = [(OKPresentationCanvas *)self->_widget mergedSettings];
-          v14 = [v13 objectForKey:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"%@", v8)}];
+          mergedSettings2 = [(OKPresentationCanvas *)self->_widget mergedSettings];
+          v14 = [mergedSettings2 objectForKey:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"%@", v8)}];
           if (!v14)
           {
             goto LABEL_11;
@@ -913,7 +913,7 @@
           v12 = @"%@";
         }
 
-        [v3 setObject:v11 forKey:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", v12, v8)}];
+        [dictionary setObject:v11 forKey:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", v12, v8)}];
 LABEL_11:
         ++v7;
       }
@@ -926,14 +926,14 @@ LABEL_11:
   }
 
   +[OKSettings beginApplyingSettings];
-  [OKSettings applySettings:v3 toObject:self withResolution:[(OKWidgetViewDelegate *)[(OKWidgetViewProxy *)self delegate] widgetViewResolution:self]];
+  [OKSettings applySettings:dictionary toObject:self withResolution:[(OKWidgetViewDelegate *)[(OKWidgetViewProxy *)self delegate] widgetViewResolution:self]];
   +[OKSettings commitApplyingSettings];
 }
 
 + (id)supportedSettings
 {
   v139[63] = *MEMORY[0x277D85DE8];
-  v11 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v138[0] = @"frame";
   v136[0] = @"type";
   v136[1] = @"priority";
@@ -1366,20 +1366,20 @@ LABEL_11:
   v12[0] = @"type";
   v13[1] = [MEMORY[0x277CBEB68] null];
   v139[62] = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:v12 count:2];
-  [v11 addEntriesFromDictionary:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v139, v138, 63)}];
-  return v11;
+  [dictionary addEntriesFromDictionary:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v139, v138, 63)}];
+  return dictionary;
 }
 
-- (id)settingObjectForKey:(id)a3
+- (id)settingObjectForKey:(id)key
 {
-  result = [(OKWidgetViewProxy *)self subWidgetViewForName:a3 recursively:0];
+  result = [(OKWidgetViewProxy *)self subWidgetViewForName:key recursively:0];
   if (!result)
   {
     v6 = objc_opt_class();
     if (class_conformsToProtocol(v6, &unk_287B3DF80))
     {
 
-      return [(OKWidgetViewProxy *)self collectionItemForName:a3];
+      return [(OKWidgetViewProxy *)self collectionItemForName:key];
     }
 
     else
@@ -1391,16 +1391,16 @@ LABEL_11:
   return result;
 }
 
-- (void)setUserSettingObject:(id)a3 forKey:(id)a4
+- (void)setUserSettingObject:(id)object forKey:(id)key
 {
-  v6 = [(OKPresentationCanvas *)self->_widget userSettings];
+  userSettings = [(OKPresentationCanvas *)self->_widget userSettings];
 
-  [(NSMutableDictionary *)v6 setObject:a3 forKey:a4];
+  [(NSMutableDictionary *)userSettings setObject:object forKey:key];
 }
 
-- (id)valueForUndefinedKey:(id)a3
+- (id)valueForUndefinedKey:(id)key
 {
-  if ([a3 isEqualToString:@"widgets"])
+  if ([key isEqualToString:@"widgets"])
   {
     v5 = objc_opt_new();
     v6 = v5;
@@ -1412,7 +1412,7 @@ LABEL_7:
     return v6;
   }
 
-  if ([a3 isEqualToString:@"items"])
+  if ([key isEqualToString:@"items"])
   {
     v5 = objc_opt_new();
     v6 = v5;
@@ -1420,7 +1420,7 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  if ([a3 isEqualToString:@"userData"])
+  if ([key isEqualToString:@"userData"])
   {
     v5 = objc_opt_new();
     v6 = v5;
@@ -1428,13 +1428,13 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  if ([a3 isEqualToString:@"parentPage"])
+  if ([key isEqualToString:@"parentPage"])
   {
 
     return [(OKWidgetViewProxy *)self pageViewController];
   }
 
-  else if ([a3 isEqualToString:@"parentWidget"])
+  else if ([key isEqualToString:@"parentWidget"])
   {
 
     return [(OKWidgetViewProxy *)self parentWidgetView];
@@ -1444,7 +1444,7 @@ LABEL_7:
   {
     v9.receiver = self;
     v9.super_class = OKWidgetViewProxy;
-    return [(OKWidgetViewProxy *)&v9 valueForUndefinedKey:a3];
+    return [(OKWidgetViewProxy *)&v9 valueForUndefinedKey:key];
   }
 }
 
@@ -1484,12 +1484,12 @@ LABEL_7:
   return result;
 }
 
-- (CGRect)calculateFrame:(CGRect)a3
+- (CGRect)calculateFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(OKWidgetViewProxy *)self layoutFactor];
   v9 = x * v8;
   v11 = y * v10;
@@ -1520,13 +1520,13 @@ LABEL_7:
   return result;
 }
 
-- (void)setSettingFrame:(CGRect)a3
+- (void)setSettingFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(OKWidgetViewProxy *)self layer];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  layer = [(OKWidgetViewProxy *)self layer];
   v9 = *(MEMORY[0x277CD9DE8] + 80);
   v18[4] = *(MEMORY[0x277CD9DE8] + 64);
   v18[5] = v9;
@@ -1539,7 +1539,7 @@ LABEL_7:
   v12 = *(MEMORY[0x277CD9DE8] + 48);
   v18[2] = *(MEMORY[0x277CD9DE8] + 32);
   v18[3] = v12;
-  [v8 setTransform:v18];
+  [layer setTransform:v18];
   [(OKWidgetViewProxy *)self calculateFrame:x, y, width, height];
   [(OKWidgetViewProxy *)self setFrame:?];
   [(OKWidgetViewProxy *)self frame];
@@ -1575,10 +1575,10 @@ LABEL_7:
   return result;
 }
 
-- (void)setSettingCenter:(CGPoint)a3
+- (void)setSettingCenter:(CGPoint)center
 {
-  x = a3.x;
-  y = a3.y;
+  x = center.x;
+  y = center.y;
   [(OKWidgetViewProxy *)self layoutFactor];
   v4.f64[0] = x;
   v4.f64[1] = y;
@@ -1616,10 +1616,10 @@ LABEL_7:
   return result;
 }
 
-- (void)setSettingSize:(CGSize)a3
+- (void)setSettingSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(OKWidgetViewProxy *)self layoutFactor];
   v7 = v6;
   v9 = v8;
@@ -1659,10 +1659,10 @@ LABEL_7:
   return result;
 }
 
-- (void)setSettingPosition:(CGPoint)a3
+- (void)setSettingPosition:(CGPoint)position
 {
-  y = a3.y;
-  x = a3.x;
+  y = position.y;
+  x = position.x;
   [(OKWidgetViewProxy *)self layoutFactor];
   v7 = floor(x * v6);
   v9 = floor(y * v8);
@@ -1693,16 +1693,16 @@ LABEL_7:
 
 - (double)settingZPosition
 {
-  v2 = [(OKWidgetViewProxy *)self layer];
+  layer = [(OKWidgetViewProxy *)self layer];
 
-  [v2 zPosition];
+  [layer zPosition];
   return result;
 }
 
-- (void)setSettingZPosition:(double)a3
+- (void)setSettingZPosition:(double)position
 {
   [-[OKWidgetViewProxy layer](self "layer")];
-  if (v5 != a3)
+  if (v5 != position)
   {
     [-[OKWidgetViewProxy layer](self "layer")];
     v6[0] = MEMORY[0x277D85DD0];
@@ -1724,13 +1724,13 @@ LABEL_7:
   }
 }
 
-- (void)setSettingAlpha:(double)a3
+- (void)setSettingAlpha:(double)alpha
 {
-  v3 = a3;
-  v4 = [(OKWidgetViewProxy *)self layer];
-  *&v5 = v3;
+  alphaCopy = alpha;
+  layer = [(OKWidgetViewProxy *)self layer];
+  *&v5 = alphaCopy;
 
-  [v4 setOpacity:v5];
+  [layer setOpacity:v5];
 }
 
 - (double)settingCornerRadius
@@ -1752,7 +1752,7 @@ LABEL_7:
   return v7 / v8;
 }
 
-- (void)setSettingCornerRadius:(double)a3
+- (void)setSettingCornerRadius:(double)radius
 {
   [(OKWidgetViewProxy *)self layoutFactor];
   if (v5 >= v6)
@@ -1760,21 +1760,21 @@ LABEL_7:
     v5 = v6;
   }
 
-  v7 = v5 * a3;
+  v7 = v5 * radius;
   [-[OKWidgetContainerView layer](self->_contentContainerView "layer")];
   [-[OKWidgetContainerView layer](self->_contentView "layer")];
-  v8 = [(UIImageView *)self->_borderView layer];
+  layer = [(UIImageView *)self->_borderView layer];
 
-  [v8 setCornerRadius:v7];
+  [layer setCornerRadius:v7];
 }
 
-- (void)setSettingAntialiasing:(BOOL)a3
+- (void)setSettingAntialiasing:(BOOL)antialiasing
 {
-  if (self->_antialiasing != a3)
+  if (self->_antialiasing != antialiasing)
   {
     v5[5] = v3;
     v5[6] = v4;
-    self->_antialiasing = a3;
+    self->_antialiasing = antialiasing;
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __44__OKWidgetViewProxy_setSettingAntialiasing___block_invoke;
@@ -1784,7 +1784,7 @@ LABEL_7:
   }
 }
 
-- (void)setSettingPrepareActionScript:(id)a3
+- (void)setSettingPrepareActionScript:(id)script
 {
   prepareActionScript = self->_prepareActionScript;
   if (prepareActionScript)
@@ -1793,10 +1793,10 @@ LABEL_7:
     self->_prepareActionScript = 0;
   }
 
-  self->_prepareActionScript = [a3 copy];
+  self->_prepareActionScript = [script copy];
 }
 
-- (void)setSettingCanPerformActionScript:(id)a3
+- (void)setSettingCanPerformActionScript:(id)script
 {
   canPerformActionScript = self->_canPerformActionScript;
   if (canPerformActionScript)
@@ -1805,7 +1805,7 @@ LABEL_7:
     self->_canPerformActionScript = 0;
   }
 
-  self->_canPerformActionScript = [a3 copy];
+  self->_canPerformActionScript = [script copy];
 }
 
 - (UIEdgeInsets)settingEventsInset
@@ -1823,12 +1823,12 @@ LABEL_7:
   return result;
 }
 
-- (void)setSettingEventsInset:(UIEdgeInsets)a3
+- (void)setSettingEventsInset:(UIEdgeInsets)inset
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = inset.right;
+  bottom = inset.bottom;
+  left = inset.left;
+  top = inset.top;
   [(OKWidgetViewProxy *)self layoutFactor];
   self->_eventsInset.top = top * v8;
   self->_eventsInset.left = left * v9;
@@ -1839,13 +1839,13 @@ LABEL_7:
 - (id)settingActionBindings
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(NSMutableDictionary *)self->_actionBindings allKeys];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  allKeys = [(NSMutableDictionary *)self->_actionBindings allKeys];
+  v5 = [allKeys countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1856,27 +1856,27 @@ LABEL_7:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allKeys);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
         v10 = [(NSMutableDictionary *)self->_actionBindings objectForKey:v9];
         if ([v10 tag] == 1)
         {
-          [v3 setObject:v10 forKey:v9];
+          [dictionary setObject:v10 forKey:v9];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [allKeys countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)setSettingActionBindings:(id)a3
+- (void)setSettingActionBindings:(id)bindings
 {
   v27 = *MEMORY[0x277D85DE8];
   v21 = 0u;
@@ -1911,8 +1911,8 @@ LABEL_7:
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v10 = [a3 allKeys];
-  v11 = [v10 countByEnumeratingWithState:&v17 objects:v25 count:16];
+  allKeys = [bindings allKeys];
+  v11 = [allKeys countByEnumeratingWithState:&v17 objects:v25 count:16];
   if (v11)
   {
     v12 = v11;
@@ -1923,11 +1923,11 @@ LABEL_7:
       {
         if (*v18 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(allKeys);
         }
 
         v15 = *(*(&v17 + 1) + 8 * j);
-        v16 = [a3 objectForKey:v15];
+        v16 = [bindings objectForKey:v15];
         if (-[OKPresentationViewControllerProxy interactivityEnabled](-[OKWidgetViewProxy presentationViewController](self, "presentationViewController"), "interactivityEnabled") || [v16 canBeTriggeredWithoutInteractivity])
         {
           [v16 setName:v15];
@@ -1936,7 +1936,7 @@ LABEL_7:
         }
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v17 objects:v25 count:16];
+      v12 = [allKeys countByEnumeratingWithState:&v17 objects:v25 count:16];
     }
 
     while (v12);
@@ -1951,64 +1951,64 @@ LABEL_7:
   return [v2 colorWithCGColor:v3];
 }
 
-- (void)setSettingShadowColor:(id)a3
+- (void)setSettingShadowColor:(id)color
 {
-  v4 = [a3 CGColor];
-  v5 = [(OKWidgetViewProxy *)self layer];
+  cGColor = [color CGColor];
+  layer = [(OKWidgetViewProxy *)self layer];
 
-  [v5 setShadowColor:v4];
+  [layer setShadowColor:cGColor];
 }
 
 - (double)settingShadowRadius
 {
-  v2 = [(OKWidgetViewProxy *)self layer];
+  layer = [(OKWidgetViewProxy *)self layer];
 
-  [v2 shadowRadius];
+  [layer shadowRadius];
   return result;
 }
 
-- (void)setSettingShadowRadius:(double)a3
+- (void)setSettingShadowRadius:(double)radius
 {
-  v4 = [(OKWidgetViewProxy *)self layer];
+  layer = [(OKWidgetViewProxy *)self layer];
 
-  [v4 setShadowRadius:a3];
+  [layer setShadowRadius:radius];
 }
 
-- (void)setSettingShadowOpacity:(double)a3
+- (void)setSettingShadowOpacity:(double)opacity
 {
-  v3 = a3;
-  v4 = [(OKWidgetViewProxy *)self layer];
-  *&v5 = v3;
+  opacityCopy = opacity;
+  layer = [(OKWidgetViewProxy *)self layer];
+  *&v5 = opacityCopy;
 
-  [v4 setShadowOpacity:v5];
+  [layer setShadowOpacity:v5];
 }
 
 - (CGSize)settingShadowOffset
 {
-  v2 = [(OKWidgetViewProxy *)self layer];
+  layer = [(OKWidgetViewProxy *)self layer];
 
-  [v2 shadowOffset];
+  [layer shadowOffset];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (void)setSettingShadowOffset:(CGSize)a3
+- (void)setSettingShadowOffset:(CGSize)offset
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(OKWidgetViewProxy *)self layer];
+  height = offset.height;
+  width = offset.width;
+  layer = [(OKWidgetViewProxy *)self layer];
 
-  [v5 setShadowOffset:{width, height}];
+  [layer setShadowOffset:{width, height}];
 }
 
-- (void)setSettingShadowOptimization:(BOOL)a3
+- (void)setSettingShadowOptimization:(BOOL)optimization
 {
-  if (self->_shadowOptimization != a3)
+  if (self->_shadowOptimization != optimization)
   {
     v5[5] = v3;
     v5[6] = v4;
-    self->_shadowOptimization = a3;
+    self->_shadowOptimization = optimization;
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __50__OKWidgetViewProxy_setSettingShadowOptimization___block_invoke;
@@ -2026,12 +2026,12 @@ LABEL_7:
   return [v2 colorWithCGColor:v3];
 }
 
-- (void)setSettingBorderColor:(id)a3
+- (void)setSettingBorderColor:(id)color
 {
-  v4 = [a3 CGColor];
-  v5 = [(UIImageView *)self->_borderView layer];
+  cGColor = [color CGColor];
+  layer = [(UIImageView *)self->_borderView layer];
 
-  [v5 setBorderColor:v4];
+  [layer setBorderColor:cGColor];
 }
 
 - (double)settingBorderWidth
@@ -2053,7 +2053,7 @@ LABEL_7:
   return v7 / v8;
 }
 
-- (void)setSettingBorderWidth:(double)a3
+- (void)setSettingBorderWidth:(double)width
 {
   [(OKWidgetViewProxy *)self layoutFactor];
   if (v5 >= v6)
@@ -2061,10 +2061,10 @@ LABEL_7:
     v5 = v6;
   }
 
-  v7 = v5 * a3;
-  v8 = [(UIImageView *)self->_borderView layer];
+  v7 = v5 * width;
+  layer = [(UIImageView *)self->_borderView layer];
 
-  [v8 setBorderWidth:v7];
+  [layer setBorderWidth:v7];
 }
 
 - (UIEdgeInsets)settingBorderEdgeOutsets
@@ -2080,15 +2080,15 @@ LABEL_7:
   return result;
 }
 
-- (void)setSettingBorderEdgeOutsets:(UIEdgeInsets)a3
+- (void)setSettingBorderEdgeOutsets:(UIEdgeInsets)outsets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = outsets.top;
+  v3.f64[1] = outsets.left;
+  v4.f64[0] = outsets.bottom;
+  v4.f64[1] = outsets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_borderEdgeOutsets.top, v3), vceqq_f64(*&self->_borderEdgeOutsets.bottom, v4)))) & 1) == 0)
   {
-    self->_borderEdgeOutsets = a3;
+    self->_borderEdgeOutsets = outsets;
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __49__OKWidgetViewProxy_setSettingBorderEdgeOutsets___block_invoke;
@@ -2098,7 +2098,7 @@ LABEL_7:
   }
 }
 
-- (void)setSettingBorderImageURL:(id)a3
+- (void)setSettingBorderImageURL:(id)l
 {
   if (([(NSURL *)self->_borderImageURL isEqual:?]& 1) == 0)
   {
@@ -2109,7 +2109,7 @@ LABEL_7:
       self->_borderImageURL = 0;
     }
 
-    self->_borderImageURL = [a3 copy];
+    self->_borderImageURL = [l copy];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __46__OKWidgetViewProxy_setSettingBorderImageURL___block_invoke;
@@ -2132,15 +2132,15 @@ LABEL_7:
   return result;
 }
 
-- (void)setSettingBorderImageCapEdgeInsets:(UIEdgeInsets)a3
+- (void)setSettingBorderImageCapEdgeInsets:(UIEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.left;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_borderImageCapEdgeInsets.top, v3), vceqq_f64(*&self->_borderImageCapEdgeInsets.bottom, v4)))) & 1) == 0)
   {
-    self->_borderImageCapEdgeInsets = a3;
+    self->_borderImageCapEdgeInsets = insets;
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __56__OKWidgetViewProxy_setSettingBorderImageCapEdgeInsets___block_invoke;
@@ -2152,12 +2152,12 @@ LABEL_7:
 
 - (id)settingContentFilters
 {
-  v2 = [(OFUIView *)[(OKWidgetViewProxy *)self contentView] layer];
+  layer = [(OFUIView *)[(OKWidgetViewProxy *)self contentView] layer];
 
-  return [v2 filters];
+  return [layer filters];
 }
 
-- (void)setSettingContentFilters:(id)a3
+- (void)setSettingContentFilters:(id)filters
 {
   if (([objc_msgSend(-[OFUIView layer](-[OKWidgetViewProxy contentView](self "contentView")] & 1) == 0)
   {
@@ -2170,7 +2170,7 @@ LABEL_7:
   }
 }
 
-- (void)setSettingContentEffects:(id)a3
+- (void)setSettingContentEffects:(id)effects
 {
   if (![(NSArray *)self->_contentEffects isEqualToArray:?])
   {
@@ -2182,7 +2182,7 @@ LABEL_7:
       self->_contentEffects = 0;
     }
 
-    self->_contentEffects = a3;
+    self->_contentEffects = effects;
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __46__OKWidgetViewProxy_setSettingContentEffects___block_invoke;
@@ -2192,9 +2192,9 @@ LABEL_7:
   }
 }
 
-- (void)setSettingZRotation:(double)a3
+- (void)setSettingZRotation:(double)rotation
 {
-  v5 = a3 * 3.14159265 / 180.0;
+  v5 = rotation * 3.14159265 / 180.0;
   if (self->_zRotation != v5)
   {
     v6[5] = v3;
@@ -2218,13 +2218,13 @@ LABEL_7:
   return result;
 }
 
-- (void)setSettingZRotationAnchorPoint:(CGPoint)a3
+- (void)setSettingZRotationAnchorPoint:(CGPoint)point
 {
-  if (self->_zRotationAnchorPoint.x != a3.x || self->_zRotationAnchorPoint.y != a3.y)
+  if (self->_zRotationAnchorPoint.x != point.x || self->_zRotationAnchorPoint.y != point.y)
   {
     v6[5] = v3;
     v6[6] = v4;
-    self->_zRotationAnchorPoint = a3;
+    self->_zRotationAnchorPoint = point;
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __52__OKWidgetViewProxy_setSettingZRotationAnchorPoint___block_invoke;
@@ -2234,13 +2234,13 @@ LABEL_7:
   }
 }
 
-- (void)setSettingXFlipped:(BOOL)a3
+- (void)setSettingXFlipped:(BOOL)flipped
 {
-  if (self->_xFlipped != a3)
+  if (self->_xFlipped != flipped)
   {
     v5[5] = v3;
     v5[6] = v4;
-    self->_xFlipped = a3;
+    self->_xFlipped = flipped;
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __40__OKWidgetViewProxy_setSettingXFlipped___block_invoke;
@@ -2250,13 +2250,13 @@ LABEL_7:
   }
 }
 
-- (void)setSettingYFlipped:(BOOL)a3
+- (void)setSettingYFlipped:(BOOL)flipped
 {
-  if (self->_yFlipped != a3)
+  if (self->_yFlipped != flipped)
   {
     v5[5] = v3;
     v5[6] = v4;
-    self->_yFlipped = a3;
+    self->_yFlipped = flipped;
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __40__OKWidgetViewProxy_setSettingYFlipped___block_invoke;
@@ -2275,13 +2275,13 @@ LABEL_7:
   return result;
 }
 
-- (void)setSettingXyScale:(CGSize)a3
+- (void)setSettingXyScale:(CGSize)scale
 {
-  if (self->_xyScale.width != a3.width || self->_xyScale.height != a3.height)
+  if (self->_xyScale.width != scale.width || self->_xyScale.height != scale.height)
   {
     v6[5] = v3;
     v6[6] = v4;
-    self->_xyScale = a3;
+    self->_xyScale = scale;
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __39__OKWidgetViewProxy_setSettingXyScale___block_invoke;
@@ -2300,13 +2300,13 @@ LABEL_7:
   return result;
 }
 
-- (void)setSettingXyTranslation:(CGPoint)a3
+- (void)setSettingXyTranslation:(CGPoint)translation
 {
-  if (self->_xyTranslation.x != a3.x || self->_xyTranslation.y != a3.y)
+  if (self->_xyTranslation.x != translation.x || self->_xyTranslation.y != translation.y)
   {
     v6[5] = v3;
     v6[6] = v4;
-    self->_xyTranslation = a3;
+    self->_xyTranslation = translation;
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __45__OKWidgetViewProxy_setSettingXyTranslation___block_invoke;
@@ -2316,13 +2316,13 @@ LABEL_7:
   }
 }
 
-- (void)setSettingMotionEnabled:(BOOL)a3
+- (void)setSettingMotionEnabled:(BOOL)enabled
 {
-  if (self->_motionEnabled != a3)
+  if (self->_motionEnabled != enabled)
   {
     v5[5] = v3;
     v5[6] = v4;
-    self->_motionEnabled = a3;
+    self->_motionEnabled = enabled;
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __45__OKWidgetViewProxy_setSettingMotionEnabled___block_invoke;
@@ -2332,13 +2332,13 @@ LABEL_7:
   }
 }
 
-- (void)setSettingMotionTiltXEnabled:(BOOL)a3
+- (void)setSettingMotionTiltXEnabled:(BOOL)enabled
 {
-  if (self->_motionTiltXEnabled != a3)
+  if (self->_motionTiltXEnabled != enabled)
   {
     v5[5] = v3;
     v5[6] = v4;
-    self->_motionTiltXEnabled = a3;
+    self->_motionTiltXEnabled = enabled;
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __50__OKWidgetViewProxy_setSettingMotionTiltXEnabled___block_invoke;
@@ -2348,13 +2348,13 @@ LABEL_7:
   }
 }
 
-- (void)setSettingMotionTiltYEnabled:(BOOL)a3
+- (void)setSettingMotionTiltYEnabled:(BOOL)enabled
 {
-  if (self->_motionTiltYEnabled != a3)
+  if (self->_motionTiltYEnabled != enabled)
   {
     v5[5] = v3;
     v5[6] = v4;
-    self->_motionTiltYEnabled = a3;
+    self->_motionTiltYEnabled = enabled;
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __50__OKWidgetViewProxy_setSettingMotionTiltYEnabled___block_invoke;
@@ -2364,13 +2364,13 @@ LABEL_7:
   }
 }
 
-- (void)setSettingMotionTiltZEnabled:(BOOL)a3
+- (void)setSettingMotionTiltZEnabled:(BOOL)enabled
 {
-  if (self->_motionTiltZEnabled != a3)
+  if (self->_motionTiltZEnabled != enabled)
   {
     v5[5] = v3;
     v5[6] = v4;
-    self->_motionTiltZEnabled = a3;
+    self->_motionTiltZEnabled = enabled;
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __50__OKWidgetViewProxy_setSettingMotionTiltZEnabled___block_invoke;
@@ -2389,13 +2389,13 @@ LABEL_7:
   return result;
 }
 
-- (void)setSettingMotionXMinMax:(CGSize)a3
+- (void)setSettingMotionXMinMax:(CGSize)max
 {
-  if (self->_motionXMinMax.width != a3.width || self->_motionXMinMax.height != a3.height)
+  if (self->_motionXMinMax.width != max.width || self->_motionXMinMax.height != max.height)
   {
     v6[5] = v3;
     v6[6] = v4;
-    self->_motionXMinMax = a3;
+    self->_motionXMinMax = max;
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __45__OKWidgetViewProxy_setSettingMotionXMinMax___block_invoke;
@@ -2414,13 +2414,13 @@ LABEL_7:
   return result;
 }
 
-- (void)setSettingMotionYMinMax:(CGSize)a3
+- (void)setSettingMotionYMinMax:(CGSize)max
 {
-  if (self->_motionYMinMax.width != a3.width || self->_motionYMinMax.height != a3.height)
+  if (self->_motionYMinMax.width != max.width || self->_motionYMinMax.height != max.height)
   {
     v6[5] = v3;
     v6[6] = v4;
-    self->_motionYMinMax = a3;
+    self->_motionYMinMax = max;
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __45__OKWidgetViewProxy_setSettingMotionYMinMax___block_invoke;
@@ -2439,13 +2439,13 @@ LABEL_7:
   return result;
 }
 
-- (void)setSettingMotionZMinMax:(CGSize)a3
+- (void)setSettingMotionZMinMax:(CGSize)max
 {
-  if (self->_motionZMinMax.width != a3.width || self->_motionZMinMax.height != a3.height)
+  if (self->_motionZMinMax.width != max.width || self->_motionZMinMax.height != max.height)
   {
     v6[5] = v3;
     v6[6] = v4;
-    self->_motionZMinMax = a3;
+    self->_motionZMinMax = max;
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __45__OKWidgetViewProxy_setSettingMotionZMinMax___block_invoke;
@@ -2464,13 +2464,13 @@ LABEL_7:
   return result;
 }
 
-- (void)setSettingMotionXTiltAnchorPoint:(CGPoint)a3
+- (void)setSettingMotionXTiltAnchorPoint:(CGPoint)point
 {
-  if (self->_motionXTiltAnchorPoint.x != a3.x || self->_motionXTiltAnchorPoint.y != a3.y)
+  if (self->_motionXTiltAnchorPoint.x != point.x || self->_motionXTiltAnchorPoint.y != point.y)
   {
     v6[5] = v3;
     v6[6] = v4;
-    self->_motionXTiltAnchorPoint = a3;
+    self->_motionXTiltAnchorPoint = point;
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __54__OKWidgetViewProxy_setSettingMotionXTiltAnchorPoint___block_invoke;
@@ -2489,13 +2489,13 @@ LABEL_7:
   return result;
 }
 
-- (void)setSettingMotionYTiltAnchorPoint:(CGPoint)a3
+- (void)setSettingMotionYTiltAnchorPoint:(CGPoint)point
 {
-  if (self->_motionYTiltAnchorPoint.x != a3.x || self->_motionYTiltAnchorPoint.y != a3.y)
+  if (self->_motionYTiltAnchorPoint.x != point.x || self->_motionYTiltAnchorPoint.y != point.y)
   {
     v6[5] = v3;
     v6[6] = v4;
-    self->_motionYTiltAnchorPoint = a3;
+    self->_motionYTiltAnchorPoint = point;
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __54__OKWidgetViewProxy_setSettingMotionYTiltAnchorPoint___block_invoke;
@@ -2514,13 +2514,13 @@ LABEL_7:
   return result;
 }
 
-- (void)setSettingMotionZTiltAnchorPoint:(CGPoint)a3
+- (void)setSettingMotionZTiltAnchorPoint:(CGPoint)point
 {
-  if (self->_motionZTiltAnchorPoint.x != a3.x || self->_motionZTiltAnchorPoint.y != a3.y)
+  if (self->_motionZTiltAnchorPoint.x != point.x || self->_motionZTiltAnchorPoint.y != point.y)
   {
     v6[5] = v3;
     v6[6] = v4;
-    self->_motionZTiltAnchorPoint = a3;
+    self->_motionZTiltAnchorPoint = point;
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __54__OKWidgetViewProxy_setSettingMotionZTiltAnchorPoint___block_invoke;
@@ -2530,13 +2530,13 @@ LABEL_7:
   }
 }
 
-- (void)setSettingMotionXTiltReversed:(BOOL)a3
+- (void)setSettingMotionXTiltReversed:(BOOL)reversed
 {
-  if (self->_motionXTiltReversed != a3)
+  if (self->_motionXTiltReversed != reversed)
   {
     v5[5] = v3;
     v5[6] = v4;
-    self->_motionXTiltReversed = a3;
+    self->_motionXTiltReversed = reversed;
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __51__OKWidgetViewProxy_setSettingMotionXTiltReversed___block_invoke;
@@ -2546,13 +2546,13 @@ LABEL_7:
   }
 }
 
-- (void)setSettingMotionYTiltReversed:(BOOL)a3
+- (void)setSettingMotionYTiltReversed:(BOOL)reversed
 {
-  if (self->_motionYTiltReversed != a3)
+  if (self->_motionYTiltReversed != reversed)
   {
     v5[5] = v3;
     v5[6] = v4;
-    self->_motionYTiltReversed = a3;
+    self->_motionYTiltReversed = reversed;
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __51__OKWidgetViewProxy_setSettingMotionYTiltReversed___block_invoke;
@@ -2562,13 +2562,13 @@ LABEL_7:
   }
 }
 
-- (void)setSettingMotionZTiltReversed:(BOOL)a3
+- (void)setSettingMotionZTiltReversed:(BOOL)reversed
 {
-  if (self->_motionZTiltReversed != a3)
+  if (self->_motionZTiltReversed != reversed)
   {
     v5[5] = v3;
     v5[6] = v4;
-    self->_motionZTiltReversed = a3;
+    self->_motionZTiltReversed = reversed;
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __51__OKWidgetViewProxy_setSettingMotionZTiltReversed___block_invoke;
@@ -2578,13 +2578,13 @@ LABEL_7:
   }
 }
 
-- (void)setSettingParallaxEnabled:(BOOL)a3
+- (void)setSettingParallaxEnabled:(BOOL)enabled
 {
-  if (self->_parallaxEnabled != a3)
+  if (self->_parallaxEnabled != enabled)
   {
     v5[5] = v3;
     v5[6] = v4;
-    self->_parallaxEnabled = a3;
+    self->_parallaxEnabled = enabled;
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __47__OKWidgetViewProxy_setSettingParallaxEnabled___block_invoke;
@@ -2594,12 +2594,12 @@ LABEL_7:
   }
 }
 
-- (void)setSettingDynamicsEnabled:(BOOL)a3
+- (void)setSettingDynamicsEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  if ([(OKDynamicItemProxy *)self->_dynamicProxy enabled]!= a3)
+  enabledCopy = enabled;
+  if ([(OKDynamicItemProxy *)self->_dynamicProxy enabled]!= enabled)
   {
-    [(OKDynamicItemProxy *)self->_dynamicProxy setEnabled:v3];
+    [(OKDynamicItemProxy *)self->_dynamicProxy setEnabled:enabledCopy];
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __47__OKWidgetViewProxy_setSettingDynamicsEnabled___block_invoke;
@@ -2609,12 +2609,12 @@ LABEL_7:
   }
 }
 
-- (void)setSettingDynamicsGravityDisabled:(BOOL)a3
+- (void)setSettingDynamicsGravityDisabled:(BOOL)disabled
 {
-  v3 = a3;
-  if ([(OKDynamicItemProxy *)self->_dynamicProxy gravityDisabled]!= a3)
+  disabledCopy = disabled;
+  if ([(OKDynamicItemProxy *)self->_dynamicProxy gravityDisabled]!= disabled)
   {
-    [(OKDynamicItemProxy *)self->_dynamicProxy setGravityDisabled:v3];
+    [(OKDynamicItemProxy *)self->_dynamicProxy setGravityDisabled:disabledCopy];
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __55__OKWidgetViewProxy_setSettingDynamicsGravityDisabled___block_invoke;
@@ -2626,18 +2626,18 @@ LABEL_7:
 
 - (double)settingDynamicsBodyElasticity
 {
-  v2 = [(OKDynamicItemProxy *)self->_dynamicProxy bodyBehavior];
+  bodyBehavior = [(OKDynamicItemProxy *)self->_dynamicProxy bodyBehavior];
 
-  [(UIDynamicItemBehavior *)v2 elasticity];
+  [(UIDynamicItemBehavior *)bodyBehavior elasticity];
   return result;
 }
 
-- (void)setSettingDynamicsBodyElasticity:(double)a3
+- (void)setSettingDynamicsBodyElasticity:(double)elasticity
 {
   [(UIDynamicItemBehavior *)[(OKDynamicItemProxy *)self->_dynamicProxy bodyBehavior] elasticity];
-  if (v5 != a3)
+  if (v5 != elasticity)
   {
-    [(UIDynamicItemBehavior *)[(OKDynamicItemProxy *)self->_dynamicProxy bodyBehavior] setElasticity:a3];
+    [(UIDynamicItemBehavior *)[(OKDynamicItemProxy *)self->_dynamicProxy bodyBehavior] setElasticity:elasticity];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __54__OKWidgetViewProxy_setSettingDynamicsBodyElasticity___block_invoke;
@@ -2649,18 +2649,18 @@ LABEL_7:
 
 - (double)settingDynamicsBodyFriction
 {
-  v2 = [(OKDynamicItemProxy *)self->_dynamicProxy bodyBehavior];
+  bodyBehavior = [(OKDynamicItemProxy *)self->_dynamicProxy bodyBehavior];
 
-  [(UIDynamicItemBehavior *)v2 friction];
+  [(UIDynamicItemBehavior *)bodyBehavior friction];
   return result;
 }
 
-- (void)setSettingDynamicsBodyFriction:(double)a3
+- (void)setSettingDynamicsBodyFriction:(double)friction
 {
   [(UIDynamicItemBehavior *)[(OKDynamicItemProxy *)self->_dynamicProxy bodyBehavior] friction];
-  if (v5 != a3)
+  if (v5 != friction)
   {
-    [(UIDynamicItemBehavior *)[(OKDynamicItemProxy *)self->_dynamicProxy bodyBehavior] setFriction:a3];
+    [(UIDynamicItemBehavior *)[(OKDynamicItemProxy *)self->_dynamicProxy bodyBehavior] setFriction:friction];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __52__OKWidgetViewProxy_setSettingDynamicsBodyFriction___block_invoke;
@@ -2672,18 +2672,18 @@ LABEL_7:
 
 - (double)settingDynamicsBodyDensity
 {
-  v2 = [(OKDynamicItemProxy *)self->_dynamicProxy bodyBehavior];
+  bodyBehavior = [(OKDynamicItemProxy *)self->_dynamicProxy bodyBehavior];
 
-  [(UIDynamicItemBehavior *)v2 density];
+  [(UIDynamicItemBehavior *)bodyBehavior density];
   return result;
 }
 
-- (void)setSettingDynamicsBodyDensity:(double)a3
+- (void)setSettingDynamicsBodyDensity:(double)density
 {
   [(UIDynamicItemBehavior *)[(OKDynamicItemProxy *)self->_dynamicProxy bodyBehavior] density];
-  if (v5 != a3)
+  if (v5 != density)
   {
-    [(UIDynamicItemBehavior *)[(OKDynamicItemProxy *)self->_dynamicProxy bodyBehavior] setDensity:a3];
+    [(UIDynamicItemBehavior *)[(OKDynamicItemProxy *)self->_dynamicProxy bodyBehavior] setDensity:density];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __51__OKWidgetViewProxy_setSettingDynamicsBodyDensity___block_invoke;
@@ -2695,18 +2695,18 @@ LABEL_7:
 
 - (double)settingDynamicsBodyResistance
 {
-  v2 = [(OKDynamicItemProxy *)self->_dynamicProxy bodyBehavior];
+  bodyBehavior = [(OKDynamicItemProxy *)self->_dynamicProxy bodyBehavior];
 
-  [(UIDynamicItemBehavior *)v2 resistance];
+  [(UIDynamicItemBehavior *)bodyBehavior resistance];
   return result;
 }
 
-- (void)setSettingDynamicsBodyResistance:(double)a3
+- (void)setSettingDynamicsBodyResistance:(double)resistance
 {
   [(UIDynamicItemBehavior *)[(OKDynamicItemProxy *)self->_dynamicProxy bodyBehavior] resistance];
-  if (v5 != a3)
+  if (v5 != resistance)
   {
-    [(UIDynamicItemBehavior *)[(OKDynamicItemProxy *)self->_dynamicProxy bodyBehavior] setResistance:a3];
+    [(UIDynamicItemBehavior *)[(OKDynamicItemProxy *)self->_dynamicProxy bodyBehavior] setResistance:resistance];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __54__OKWidgetViewProxy_setSettingDynamicsBodyResistance___block_invoke;
@@ -2718,18 +2718,18 @@ LABEL_7:
 
 - (double)settingDynamicsBodyAngularResistance
 {
-  v2 = [(OKDynamicItemProxy *)self->_dynamicProxy bodyBehavior];
+  bodyBehavior = [(OKDynamicItemProxy *)self->_dynamicProxy bodyBehavior];
 
-  [(UIDynamicItemBehavior *)v2 angularResistance];
+  [(UIDynamicItemBehavior *)bodyBehavior angularResistance];
   return result;
 }
 
-- (void)setSettingDynamicsBodyAngularResistance:(double)a3
+- (void)setSettingDynamicsBodyAngularResistance:(double)resistance
 {
   [(UIDynamicItemBehavior *)[(OKDynamicItemProxy *)self->_dynamicProxy bodyBehavior] angularResistance];
-  if (v5 != a3)
+  if (v5 != resistance)
   {
-    [(UIDynamicItemBehavior *)[(OKDynamicItemProxy *)self->_dynamicProxy bodyBehavior] setAngularResistance:a3];
+    [(UIDynamicItemBehavior *)[(OKDynamicItemProxy *)self->_dynamicProxy bodyBehavior] setAngularResistance:resistance];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __61__OKWidgetViewProxy_setSettingDynamicsBodyAngularResistance___block_invoke;
@@ -2741,17 +2741,17 @@ LABEL_7:
 
 - (BOOL)settingDynamicsBodyAllowsRotation
 {
-  v2 = [(OKDynamicItemProxy *)self->_dynamicProxy bodyBehavior];
+  bodyBehavior = [(OKDynamicItemProxy *)self->_dynamicProxy bodyBehavior];
 
-  return [(UIDynamicItemBehavior *)v2 allowsRotation];
+  return [(UIDynamicItemBehavior *)bodyBehavior allowsRotation];
 }
 
-- (void)setSettingDynamicsBodyAllowsRotation:(BOOL)a3
+- (void)setSettingDynamicsBodyAllowsRotation:(BOOL)rotation
 {
-  v3 = a3;
-  if ([(UIDynamicItemBehavior *)[(OKDynamicItemProxy *)self->_dynamicProxy bodyBehavior] allowsRotation]!= a3)
+  rotationCopy = rotation;
+  if ([(UIDynamicItemBehavior *)[(OKDynamicItemProxy *)self->_dynamicProxy bodyBehavior] allowsRotation]!= rotation)
   {
-    [(UIDynamicItemBehavior *)[(OKDynamicItemProxy *)self->_dynamicProxy bodyBehavior] setAllowsRotation:v3];
+    [(UIDynamicItemBehavior *)[(OKDynamicItemProxy *)self->_dynamicProxy bodyBehavior] setAllowsRotation:rotationCopy];
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __58__OKWidgetViewProxy_setSettingDynamicsBodyAllowsRotation___block_invoke;
@@ -2761,11 +2761,11 @@ LABEL_7:
   }
 }
 
-- (void)setSettingDynamicsCollisionGroups:(id)a3
+- (void)setSettingDynamicsCollisionGroups:(id)groups
 {
-  if ([(OKDynamicItemProxy *)self->_dynamicProxy collisionGroups]!= a3 && ![(NSArray *)[(OKDynamicItemProxy *)self->_dynamicProxy collisionGroups] isEqualToArray:a3])
+  if ([(OKDynamicItemProxy *)self->_dynamicProxy collisionGroups]!= groups && ![(NSArray *)[(OKDynamicItemProxy *)self->_dynamicProxy collisionGroups] isEqualToArray:groups])
   {
-    [(OKDynamicItemProxy *)self->_dynamicProxy setCollisionGroups:a3];
+    [(OKDynamicItemProxy *)self->_dynamicProxy setCollisionGroups:groups];
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __55__OKWidgetViewProxy_setSettingDynamicsCollisionGroups___block_invoke;
@@ -2775,7 +2775,7 @@ LABEL_7:
   }
 }
 
-- (void)setSettingDynamicsCollisionActionScript:(id)a3
+- (void)setSettingDynamicsCollisionActionScript:(id)script
 {
   dynamicsCollisionActionScript = self->_dynamicsCollisionActionScript;
   if (dynamicsCollisionActionScript)
@@ -2784,14 +2784,14 @@ LABEL_7:
     self->_dynamicsCollisionActionScript = 0;
   }
 
-  self->_dynamicsCollisionActionScript = [a3 copy];
+  self->_dynamicsCollisionActionScript = [script copy];
 }
 
-- (void)setSettingDynamicsAttachments:(id)a3
+- (void)setSettingDynamicsAttachments:(id)attachments
 {
-  if ([(OKDynamicItemProxy *)self->_dynamicProxy attachmentBehaviors]!= a3 && ![(NSArray *)[(OKDynamicItemProxy *)self->_dynamicProxy attachmentBehaviors] isEqualToArray:a3])
+  if ([(OKDynamicItemProxy *)self->_dynamicProxy attachmentBehaviors]!= attachments && ![(NSArray *)[(OKDynamicItemProxy *)self->_dynamicProxy attachmentBehaviors] isEqualToArray:attachments])
   {
-    [(OKDynamicItemProxy *)self->_dynamicProxy setAttachmentBehaviors:a3];
+    [(OKDynamicItemProxy *)self->_dynamicProxy setAttachmentBehaviors:attachments];
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __51__OKWidgetViewProxy_setSettingDynamicsAttachments___block_invoke;
@@ -2801,11 +2801,11 @@ LABEL_7:
   }
 }
 
-- (void)setSettingDynamicsPushGroups:(id)a3
+- (void)setSettingDynamicsPushGroups:(id)groups
 {
-  if ([(OKDynamicItemProxy *)self->_dynamicProxy pushGroups]!= a3 && ![(NSArray *)[(OKDynamicItemProxy *)self->_dynamicProxy pushGroups] isEqualToArray:a3])
+  if ([(OKDynamicItemProxy *)self->_dynamicProxy pushGroups]!= groups && ![(NSArray *)[(OKDynamicItemProxy *)self->_dynamicProxy pushGroups] isEqualToArray:groups])
   {
-    [(OKDynamicItemProxy *)self->_dynamicProxy setPushGroups:a3];
+    [(OKDynamicItemProxy *)self->_dynamicProxy setPushGroups:groups];
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __50__OKWidgetViewProxy_setSettingDynamicsPushGroups___block_invoke;
@@ -2815,7 +2815,7 @@ LABEL_7:
   }
 }
 
-- (void)setSettingLayoutSteps:(id)a3
+- (void)setSettingLayoutSteps:(id)steps
 {
   if (![(NSArray *)self->_layoutSteps isEqualToArray:?])
   {
@@ -2826,7 +2826,7 @@ LABEL_7:
       self->_layoutSteps = 0;
     }
 
-    self->_layoutSteps = [objc_alloc(MEMORY[0x277CBEA60]) initWithArray:a3 copyItems:1];
+    self->_layoutSteps = [objc_alloc(MEMORY[0x277CBEA60]) initWithArray:steps copyItems:1];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __43__OKWidgetViewProxy_setSettingLayoutSteps___block_invoke;
@@ -2836,73 +2836,73 @@ LABEL_7:
   }
 }
 
-- (BOOL)sendAction:(id)a3 toTarget:(id)a4
+- (BOOL)sendAction:(id)action toTarget:(id)target
 {
-  [(OKPresentationViewControllerProxy *)[(OKWidgetViewProxy *)self presentationViewController] cancelCouchPotatoIfNeededWithAction:a3];
-  if (!a4 || (v7 = [(OKWidgetViewProxy *)self valueForKeyPath:a4]) == 0)
+  [(OKPresentationViewControllerProxy *)[(OKWidgetViewProxy *)self presentationViewController] cancelCouchPotatoIfNeededWithAction:action];
+  if (!target || (v7 = [(OKWidgetViewProxy *)self valueForKeyPath:target]) == 0)
   {
-    v10 = [(OKWidgetViewProxy *)self actionBindingForAction:a3 isTouchCountAgnostic:0];
+    v10 = [(OKWidgetViewProxy *)self actionBindingForAction:action isTouchCountAgnostic:0];
     if (v10)
     {
       v11 = v10;
-      [a3 shouldPropagate];
+      [action shouldPropagate];
     }
 
     else
     {
-      v11 = [(OKWidgetViewProxy *)self actionBindingForAction:a3 isTouchCountAgnostic:1];
-      v12 = [a3 shouldPropagate];
+      v11 = [(OKWidgetViewProxy *)self actionBindingForAction:action isTouchCountAgnostic:1];
+      shouldPropagate = [action shouldPropagate];
       if (!v11)
       {
-        if (!v12)
+        if (!shouldPropagate)
         {
-          return v12;
+          return shouldPropagate;
         }
 
 LABEL_12:
-        [a3 setShouldPropagate:1];
+        [action setShouldPropagate:1];
         if ([(OKWidgetViewProxy *)self parentWidgetView])
         {
-          [a3 convertFromResponder:self toResponder:{-[OKWidgetViewProxy parentWidgetView](self, "parentWidgetView")}];
-          v9 = [(OKWidgetViewProxy *)self parentWidgetView];
+          [action convertFromResponder:self toResponder:{-[OKWidgetViewProxy parentWidgetView](self, "parentWidgetView")}];
+          parentWidgetView = [(OKWidgetViewProxy *)self parentWidgetView];
         }
 
         else
         {
-          [a3 convertFromResponder:self toResponder:{-[OKWidgetViewProxy pageViewController](self, "pageViewController")}];
-          v9 = [(OKWidgetViewProxy *)self pageViewController];
+          [action convertFromResponder:self toResponder:{-[OKWidgetViewProxy pageViewController](self, "pageViewController")}];
+          parentWidgetView = [(OKWidgetViewProxy *)self pageViewController];
         }
 
         goto LABEL_16;
       }
     }
 
-    if ([v11 performAction:a3])
+    if ([v11 performAction:action])
     {
-      [a3 setShouldPropagate:0];
-      LOBYTE(v12) = 1;
-      return v12;
+      [action setShouldPropagate:0];
+      LOBYTE(shouldPropagate) = 1;
+      return shouldPropagate;
     }
 
-    if (([a3 shouldPropagate] & 1) == 0)
+    if (([action shouldPropagate] & 1) == 0)
     {
-      LOBYTE(v12) = 0;
-      return v12;
+      LOBYTE(shouldPropagate) = 0;
+      return shouldPropagate;
     }
 
     goto LABEL_12;
   }
 
   v8 = v7;
-  [a3 convertFromResponder:self toResponder:v7];
-  v9 = v8;
+  [action convertFromResponder:self toResponder:v7];
+  parentWidgetView = v8;
 LABEL_16:
 
-  LOBYTE(v12) = [(OKWidgetViewProxy *)v9 sendAction:a3 toTarget:0];
-  return v12;
+  LOBYTE(shouldPropagate) = [(OKWidgetViewProxy *)parentWidgetView sendAction:action toTarget:0];
+  return shouldPropagate;
 }
 
-- (BOOL)canPerformAction:(id)a3
+- (BOOL)canPerformAction:(id)action
 {
   v16[1] = *MEMORY[0x277D85DE8];
   v3 = 1;
@@ -2912,17 +2912,17 @@ LABEL_16:
     v12 = &v11;
     v13 = 0x2020000000;
     v14 = 1;
-    v6 = [(OKWidgetViewProxy *)self delegate];
+    delegate = [(OKWidgetViewProxy *)self delegate];
     canPerformActionScript = self->_canPerformActionScript;
     v15 = @"action";
-    v16[0] = a3;
+    v16[0] = action;
     v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:&v15 count:1];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __38__OKWidgetViewProxy_canPerformAction___block_invoke;
     v10[3] = &unk_279C90818;
     v10[4] = &v11;
-    [(OKWidgetViewDelegate *)v6 evaluateScript:canPerformActionScript withInfoDictionary:v8 andCompletionBlock:v10 forWidgetView:self];
+    [(OKWidgetViewDelegate *)delegate evaluateScript:canPerformActionScript withInfoDictionary:v8 andCompletionBlock:v10 forWidgetView:self];
     v3 = *(v12 + 24);
     _Block_object_dispose(&v11, 8);
   }
@@ -2939,48 +2939,48 @@ uint64_t __38__OKWidgetViewProxy_canPerformAction___block_invoke(uint64_t a1, vo
 
 - (BOOL)interactivityEnabled
 {
-  v2 = [(OKWidgetViewProxy *)self presentationViewController];
+  presentationViewController = [(OKWidgetViewProxy *)self presentationViewController];
 
-  return [(OKPresentationViewControllerProxy *)v2 interactivityEnabled];
+  return [(OKPresentationViewControllerProxy *)presentationViewController interactivityEnabled];
 }
 
-- (BOOL)performActionScript:(id)a3 withAction:(id)a4
+- (BOOL)performActionScript:(id)script withAction:(id)action
 {
   v10[1] = *MEMORY[0x277D85DE8];
-  v7 = [(OKWidgetViewProxy *)self delegate];
+  delegate = [(OKWidgetViewProxy *)self delegate];
   v9 = @"action";
-  v10[0] = a4;
-  -[OKWidgetViewDelegate evaluateScript:withInfoDictionary:andCompletionBlock:forWidgetView:](v7, "evaluateScript:withInfoDictionary:andCompletionBlock:forWidgetView:", a3, [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:&v9 count:1], 0, self);
+  v10[0] = action;
+  -[OKWidgetViewDelegate evaluateScript:withInfoDictionary:andCompletionBlock:forWidgetView:](delegate, "evaluateScript:withInfoDictionary:andCompletionBlock:forWidgetView:", script, [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:&v9 count:1], 0, self);
   return 1;
 }
 
-- (void)addActionBinding:(id)a3 scope:(unint64_t)a4
+- (void)addActionBinding:(id)binding scope:(unint64_t)scope
 {
-  [a3 loadForResponder:self scope:a4];
+  [binding loadForResponder:self scope:scope];
   actionBindings = self->_actionBindings;
-  v7 = [a3 name];
+  name = [binding name];
 
-  [(NSMutableDictionary *)actionBindings setObject:a3 forKey:v7];
+  [(NSMutableDictionary *)actionBindings setObject:binding forKey:name];
 }
 
-- (void)removeActionBinding:(id)a3
+- (void)removeActionBinding:(id)binding
 {
-  [a3 unload];
+  [binding unload];
   actionBindings = self->_actionBindings;
-  v6 = [a3 name];
+  name = [binding name];
 
-  [(NSMutableDictionary *)actionBindings removeObjectForKey:v6];
+  [(NSMutableDictionary *)actionBindings removeObjectForKey:name];
 }
 
 - (void)removeAllActionBindings
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = [(OKWidgetViewProxy *)self allActionBindings];
+  allActionBindings = [(OKWidgetViewProxy *)self allActionBindings];
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  v4 = [allActionBindings countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -2992,14 +2992,14 @@ uint64_t __38__OKWidgetViewProxy_canPerformAction___block_invoke(uint64_t a1, vo
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allActionBindings);
         }
 
         [(OKWidgetViewProxy *)self removeActionBinding:*(*(&v8 + 1) + 8 * v7++)];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [allActionBindings countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
@@ -3009,21 +3009,21 @@ uint64_t __38__OKWidgetViewProxy_canPerformAction___block_invoke(uint64_t a1, vo
 - (id)allActionBindings
 {
   v2 = MEMORY[0x277CBEB98];
-  v3 = [(NSMutableDictionary *)self->_actionBindings allValues];
+  allValues = [(NSMutableDictionary *)self->_actionBindings allValues];
 
-  return [v2 setWithArray:v3];
+  return [v2 setWithArray:allValues];
 }
 
-- (id)actionBindingForAction:(id)a3 isTouchCountAgnostic:(BOOL)a4
+- (id)actionBindingForAction:(id)action isTouchCountAgnostic:(BOOL)agnostic
 {
-  v4 = a4;
+  agnosticCopy = agnostic;
   v17 = *MEMORY[0x277D85DE8];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [(NSMutableDictionary *)self->_actionBindings allValues];
-  result = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  allValues = [(NSMutableDictionary *)self->_actionBindings allValues];
+  result = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (result)
   {
     v8 = result;
@@ -3035,11 +3035,11 @@ uint64_t __38__OKWidgetViewProxy_canPerformAction___block_invoke(uint64_t a1, vo
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allValues);
         }
 
         v11 = *(*(&v12 + 1) + 8 * v10);
-        if ([v11 respondsToAction:a3 isTouchCountAgnostic:v4])
+        if ([v11 respondsToAction:action isTouchCountAgnostic:agnosticCopy])
         {
           return v11;
         }
@@ -3048,7 +3048,7 @@ uint64_t __38__OKWidgetViewProxy_canPerformAction___block_invoke(uint64_t a1, vo
       }
 
       while (v8 != v10);
-      result = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      result = [allValues countByEnumeratingWithState:&v12 objects:v16 count:16];
       v8 = result;
       if (result)
       {
@@ -3170,9 +3170,9 @@ uint64_t __38__OKWidgetViewProxy_canPerformAction___block_invoke(uint64_t a1, vo
   *&a.m23 = v14;
   CATransform3DConcat(&v20, &v19, &a);
   v16 = v20;
-  v15 = [(OKWidgetViewProxy *)self layer];
+  layer = [(OKWidgetViewProxy *)self layer];
   v19 = v16;
-  [v15 setTransform:&v19];
+  [layer setTransform:&v19];
 }
 
 - (BOOL)needsAntialiasing
@@ -3194,14 +3194,14 @@ uint64_t __38__OKWidgetViewProxy_canPerformAction___block_invoke(uint64_t a1, vo
     return 1;
   }
 
-  v6 = [v4 pageViewController];
+  pageViewController = [v4 pageViewController];
 
-  return [v6 dynamicsEnabled];
+  return [pageViewController dynamicsEnabled];
 }
 
-- (void)setAntialiasing:(BOOL)a3
+- (void)setAntialiasing:(BOOL)antialiasing
 {
-  if (a3)
+  if (antialiasing)
   {
     v4 = 15;
   }
@@ -3214,16 +3214,16 @@ uint64_t __38__OKWidgetViewProxy_canPerformAction___block_invoke(uint64_t a1, vo
   [-[OKWidgetViewProxy layer](self "layer")];
   [-[OKWidgetContainerView layer](self->_contentContainerView "layer")];
   [-[OKWidgetContainerView layer](self->_contentView "layer")];
-  v5 = [(UIImageView *)self->_borderView layer];
+  layer = [(UIImageView *)self->_borderView layer];
 
-  [v5 setEdgeAntialiasingMask:v4];
+  [layer setEdgeAntialiasingMask:v4];
 }
 
 - (void)updateAntialiasing
 {
-  v3 = [(OKWidgetViewProxy *)self needsAntialiasing];
+  needsAntialiasing = [(OKWidgetViewProxy *)self needsAntialiasing];
 
-  [(OKWidgetViewProxy *)self setAntialiasing:v3];
+  [(OKWidgetViewProxy *)self setAntialiasing:needsAntialiasing];
 }
 
 - (void)updateShadowPath
@@ -3239,9 +3239,9 @@ uint64_t __38__OKWidgetViewProxy_canPerformAction___block_invoke(uint64_t a1, vo
 
   else
   {
-    v4 = [(OKWidgetViewProxy *)self layer];
+    layer = [(OKWidgetViewProxy *)self layer];
 
-    [v4 setShadowPath:0];
+    [layer setShadowPath:0];
   }
 }
 
@@ -3454,14 +3454,14 @@ uint64_t __40__OKWidgetViewProxy_pauseContentEffects__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)resumeContentEffects:(BOOL)a3
+- (void)resumeContentEffects:(BOOL)effects
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __42__OKWidgetViewProxy_resumeContentEffects___block_invoke;
   v3[3] = &unk_279C90868;
   v3[4] = self;
-  v4 = a3;
+  effectsCopy = effects;
   [(OKWidgetViewProxy *)self notifyWhenBecomesReady:v3];
 }
 
@@ -3599,7 +3599,7 @@ uint64_t __42__OKWidgetViewProxy_resumeContentEffects___block_invoke(uint64_t a1
   [(OKWidgetViewProxy *)self updateTransforms];
 }
 
-- (void)updateWithMotionTiltRotationX:(double)a3 tiltRotationY:(double)a4 tiltRotationZ:(double)a5
+- (void)updateWithMotionTiltRotationX:(double)x tiltRotationY:(double)y tiltRotationZ:(double)z
 {
   if (self->_motionEnabled)
   {
@@ -3638,10 +3638,10 @@ uint64_t __42__OKWidgetViewProxy_resumeContentEffects___block_invoke(uint64_t a1
       *&v49.m21 = v40;
       *&v49.m23 = v39;
       CATransform3DTranslate(&v50, &v49, v14 - v10, v16 - v12, 0.0);
-      height = -a3;
+      height = -x;
       if (!self->_motionXTiltReversed)
       {
-        height = a3;
+        height = x;
       }
 
       if (height >= self->_motionXMinMax.height)
@@ -3671,10 +3671,10 @@ uint64_t __42__OKWidgetViewProxy_resumeContentEffects___block_invoke(uint64_t a1
       v48 = v50;
       CATransform3DTranslate(&v49, &v48, v19 - v10, v21 - v12, 0.0);
       v50 = v49;
-      width = -a4;
+      width = -y;
       if (!self->_motionYTiltReversed)
       {
-        width = a4;
+        width = y;
       }
 
       if (width >= self->_motionYMinMax.height)
@@ -3704,24 +3704,24 @@ uint64_t __42__OKWidgetViewProxy_resumeContentEffects___block_invoke(uint64_t a1
       v48 = v50;
       CATransform3DTranslate(&v49, &v48, v24 - v10, v26 - v12, 0.0);
       v50 = v49;
-      v27 = -a5;
+      zCopy = -z;
       if (!self->_motionZTiltReversed)
       {
-        v27 = a5;
+        zCopy = z;
       }
 
-      if (v27 >= self->_motionZMinMax.height)
+      if (zCopy >= self->_motionZMinMax.height)
       {
-        v27 = self->_motionZMinMax.height;
+        zCopy = self->_motionZMinMax.height;
       }
 
-      if (v27 <= self->_motionZMinMax.width)
+      if (zCopy <= self->_motionZMinMax.width)
       {
-        v27 = self->_motionZMinMax.width;
+        zCopy = self->_motionZMinMax.width;
       }
 
       v48 = v50;
-      CATransform3DRotate(&v49, &v48, v27, 0.0, 0.0, 1.0);
+      CATransform3DRotate(&v49, &v48, zCopy, 0.0, 0.0, 1.0);
       v50 = v49;
       v48 = v49;
       CATransform3DTranslate(&v49, &v48, v10 - v24, v12 - v26, 0.0);
@@ -3767,9 +3767,9 @@ uint64_t __42__OKWidgetViewProxy_resumeContentEffects___block_invoke(uint64_t a1
   v47[1] = 3221225472;
   v47[2] = __79__OKWidgetViewProxy_updateWithMotionTiltRotationX_tiltRotationY_tiltRotationZ___block_invoke;
   v47[3] = &__block_descriptor_56_e29_v32__0__OKWidgetView_8Q16_B24l;
-  *&v47[4] = a3;
-  *&v47[5] = a4;
-  *&v47[6] = a5;
+  *&v47[4] = x;
+  *&v47[5] = y;
+  *&v47[6] = z;
   [(NSMutableArray *)subWidgetViews enumerateObjectsUsingBlock:v47];
 }
 
@@ -3780,12 +3780,12 @@ uint64_t __42__OKWidgetViewProxy_resumeContentEffects___block_invoke(uint64_t a1
   [v3 updateMotionForWidgetView:self];
 }
 
-- (void)updateWithParallaxTranslationX:(double)a3 translationY:(double)a4
+- (void)updateWithParallaxTranslationX:(double)x translationY:(double)y
 {
   p_parallaxTransform = &self->_parallaxTransform;
   if (self->_parallaxEnabled)
   {
-    CATransform3DMakeTranslation(&v15, a3, a4, 0.0);
+    CATransform3DMakeTranslation(&v15, x, y, 0.0);
     v6 = *&v15.m33;
     *&p_parallaxTransform->m31 = *&v15.m31;
     *&p_parallaxTransform->m33 = v6;
@@ -3843,11 +3843,11 @@ uint64_t __42__OKWidgetViewProxy_resumeContentEffects___block_invoke(uint64_t a1
   return self;
 }
 
-- (void)setDynamicsTransform:(CGAffineTransform *)a3
+- (void)setDynamicsTransform:(CGAffineTransform *)transform
 {
-  v4 = *&a3->c;
-  v3 = *&a3->tx;
-  *&self->_dynamicsTransform.a = *&a3->a;
+  v4 = *&transform->c;
+  v3 = *&transform->tx;
+  *&self->_dynamicsTransform.a = *&transform->a;
   *&self->_dynamicsTransform.c = v4;
   *&self->_dynamicsTransform.tx = v3;
   [(OKWidgetViewProxy *)self updateWidgetTransforms];
@@ -3901,46 +3901,46 @@ uint64_t __42__OKWidgetViewProxy_resumeContentEffects___block_invoke(uint64_t a1
   }
 }
 
-- (id)_preparseLayoutString:(id)a3 targetView:(id *)a4 anchorView:(id *)a5
+- (id)_preparseLayoutString:(id)string targetView:(id *)view anchorView:(id *)anchorView
 {
-  *a4 = 0;
-  *a5 = 0;
+  *view = 0;
+  *anchorView = 0;
   v9 = [MEMORY[0x277CCAC80] scannerWithString:?];
   v17 = 0;
   if (([v9 scanUpToString:@"." intoString:&v17] & 1) == 0)
   {
-    NSLog(&cfstr_CouldnTReadTar.isa, a3);
+    NSLog(&cfstr_CouldnTReadTar.isa, string);
     return 0;
   }
 
   if (([v9 scanUpToString:@"=" intoString:0] & 1) == 0)
   {
-    NSLog(&cfstr_ExpectedInLayo.isa, a3);
+    NSLog(&cfstr_ExpectedInLayo.isa, string);
     return 0;
   }
 
   [v9 scanString:@"=" intoString:0];
   v16 = 0;
-  v10 = [v9 scanLocation];
+  scanLocation = [v9 scanLocation];
   [v9 scanUpToString:@"." intoString:&v16];
   if ([v9 isAtEnd])
   {
-    [v9 setScanLocation:v10];
+    [v9 setScanLocation:scanLocation];
     v16 = 0;
   }
 
   else if ([v16 isEqualToString:@"superview"])
   {
-    *a5 = self;
+    *anchorView = self;
   }
 
   else
   {
-    *a5 = [(OKWidgetViewProxy *)self subWidgetViewForName:v16 recursively:0];
+    *anchorView = [(OKWidgetViewProxy *)self subWidgetViewForName:v16 recursively:0];
   }
 
-  *a4 = [(OKWidgetViewProxy *)self subWidgetViewForName:v17 recursively:0];
-  v12 = [a3 stringByReplacingCharactersInRange:0 withString:{objc_msgSend(v17, "length"), @"t"}];
+  *view = [(OKWidgetViewProxy *)self subWidgetViewForName:v17 recursively:0];
+  v12 = [string stringByReplacingCharactersInRange:0 withString:{objc_msgSend(v17, "length"), @"t"}];
   v13 = v12;
   if (v16)
   {
@@ -3953,24 +3953,24 @@ uint64_t __42__OKWidgetViewProxy_resumeContentEffects___block_invoke(uint64_t a1
 
 - (void)_cancelBorderOperations
 {
-  v3 = [(OKWidgetViewProxy *)self delegate];
+  delegate = [(OKWidgetViewProxy *)self delegate];
 
-  [(OKWidgetViewDelegate *)v3 widgetViewCancelAllOperations:self withIdentifier:@"border"];
+  [(OKWidgetViewDelegate *)delegate widgetViewCancelAllOperations:self withIdentifier:@"border"];
 }
 
 - (void)_cancelAllOperations
 {
-  v3 = [(OKWidgetViewProxy *)self delegate];
+  delegate = [(OKWidgetViewProxy *)self delegate];
 
-  [(OKWidgetViewDelegate *)v3 widgetViewCancelAllOperations:self];
+  [(OKWidgetViewDelegate *)delegate widgetViewCancelAllOperations:self];
 }
 
-- (void)_reloadBorderContentInHighQuality:(BOOL)a3
+- (void)_reloadBorderContentInHighQuality:(BOOL)quality
 {
   if (self->_borderImageURL)
   {
-    v3 = a3;
-    v5 = !a3 || [(UIImageView *)self->_borderView image]== 0;
+    qualityCopy = quality;
+    v5 = !quality || [(UIImageView *)self->_borderView image]== 0;
     [(OKWidgetViewProxy *)self borderRect];
     v7 = v6;
     v9 = v8;
@@ -3982,7 +3982,7 @@ uint64_t __42__OKWidgetViewProxy_resumeContentEffects___block_invoke(uint64_t a1
     v12[3] = &unk_279C908D0;
     v12[4] = self;
     v12[5] = v10;
-    [(OKWidgetViewProxy *)self reloadMediaURL:borderImageURL size:0 mode:v5 lowQuality:v3 highQuality:@"border" identifier:&__block_literal_global_22 progressHandler:v7 completionHandler:v9, v12];
+    [(OKWidgetViewProxy *)self reloadMediaURL:borderImageURL size:0 mode:v5 lowQuality:qualityCopy highQuality:@"border" identifier:&__block_literal_global_22 progressHandler:v7 completionHandler:v9, v12];
   }
 }
 
@@ -4039,17 +4039,17 @@ uint64_t __55__OKWidgetViewProxy__reloadBorderContentInHighQuality___block_invok
 {
   if ([(OKWidgetViewProxy *)self prepareMode]== 1)
   {
-    v3 = self;
+    selfCopy2 = self;
     v4 = 1;
 LABEL_5:
 
-    [(OKWidgetViewProxy *)v3 _reloadBorderContentInHighQuality:v4];
+    [(OKWidgetViewProxy *)selfCopy2 _reloadBorderContentInHighQuality:v4];
     return;
   }
 
   if ([(OKWidgetViewProxy *)self prepareMode]== 2)
   {
-    v3 = self;
+    selfCopy2 = self;
     v4 = 0;
     goto LABEL_5;
   }
@@ -4113,16 +4113,16 @@ LABEL_5:
     [v3 setFillMode:*MEMORY[0x277CDA238]];
     [v3 setTimingFunction:{objc_msgSend(MEMORY[0x277CD9EF8], "functionWithName:", *MEMORY[0x277CDA7B0])}];
     [v3 setRemovedOnCompletion:1];
-    v22 = [(OKWidgetViewProxy *)self layer];
+    layer = [(OKWidgetViewProxy *)self layer];
 
-    [v22 addAnimation:v3 forKey:@"wobble"];
+    [layer addAnimation:v3 forKey:@"wobble"];
   }
 }
 
 - (id)subDynamicProxies
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -4143,18 +4143,18 @@ LABEL_5:
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 dynamicProxy];
-        if (v10)
+        dynamicProxy = [v9 dynamicProxy];
+        if (dynamicProxy)
         {
-          v11 = v10;
-          if ([v10 enabled])
+          v11 = dynamicProxy;
+          if ([dynamicProxy enabled])
           {
             [v11 resetInitialValues];
-            [v3 addObject:v11];
+            [array addObject:v11];
           }
         }
 
-        [v3 addObjectsFromArray:{objc_msgSend(v9, "subDynamicProxies")}];
+        [array addObjectsFromArray:{objc_msgSend(v9, "subDynamicProxies")}];
       }
 
       v6 = [(NSMutableArray *)subWidgetViews countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -4163,36 +4163,36 @@ LABEL_5:
     while (v6);
   }
 
-  return v3;
+  return array;
 }
 
-- (void)beganCollisionWithWidgetView:(id)a3 fromGroup:(id)a4
+- (void)beganCollisionWithWidgetView:(id)view fromGroup:(id)group
 {
   v10[2] = *MEMORY[0x277D85DE8];
   if (self->_dynamicsCollisionActionScript)
   {
-    v7 = [(OKWidgetViewProxy *)self delegate];
+    delegate = [(OKWidgetViewProxy *)self delegate];
     dynamicsCollisionActionScript = self->_dynamicsCollisionActionScript;
     v9[0] = @"collisionGroup";
     v9[1] = @"collisionWidget";
-    v10[0] = a4;
-    v10[1] = a3;
-    -[OKWidgetViewDelegate evaluateScript:withInfoDictionary:andCompletionBlock:forWidgetView:](v7, "evaluateScript:withInfoDictionary:andCompletionBlock:forWidgetView:", dynamicsCollisionActionScript, [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:v9 count:2], 0, self);
+    v10[0] = group;
+    v10[1] = view;
+    -[OKWidgetViewDelegate evaluateScript:withInfoDictionary:andCompletionBlock:forWidgetView:](delegate, "evaluateScript:withInfoDictionary:andCompletionBlock:forWidgetView:", dynamicsCollisionActionScript, [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:v9 count:2], 0, self);
   }
 }
 
-- (BOOL)prepareForDisplay:(BOOL)a3
+- (BOOL)prepareForDisplay:(BOOL)display
 {
-  v3 = a3;
+  displayCopy = display;
   v13[1] = *MEMORY[0x277D85DE8];
-  v5 = [(OKWidgetViewProxy *)self prepareMode]!= 1 || v3;
+  v5 = [(OKWidgetViewProxy *)self prepareMode]!= 1 || displayCopy;
   if (v5)
   {
     [(OKWidgetViewProxy *)self setPrepareMode:1];
     [(OKWidgetViewProxy *)self setHidden:0];
     [(OKWidgetViewProxy *)self setAntialiasing:[(OKWidgetViewProxy *)self needsAntialiasing]];
     [(OKWidgetViewProxy *)self _cancelAllOperations];
-    if (v3)
+    if (displayCopy)
     {
       [(OKWidgetViewProxy *)self resignReady];
     }
@@ -4206,35 +4206,35 @@ LABEL_5:
       v10[1] = 3221225472;
       v10[2] = __39__OKWidgetViewProxy_prepareForDisplay___block_invoke;
       v10[3] = &__block_descriptor_33_e15_v32__0_8Q16_B24l;
-      v11 = v3;
+      v11 = displayCopy;
       [(NSMutableArray *)subWidgetViews enumerateObjectsUsingBlock:v10];
     }
 
     if (self->_prepareActionScript)
     {
-      v7 = [(OKWidgetViewProxy *)self delegate];
+      delegate = [(OKWidgetViewProxy *)self delegate];
       prepareActionScript = self->_prepareActionScript;
       v12 = @"prepareMode";
       v13[0] = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:1];
-      -[OKWidgetViewDelegate evaluateScript:withInfoDictionary:andCompletionBlock:forWidgetView:](v7, "evaluateScript:withInfoDictionary:andCompletionBlock:forWidgetView:", prepareActionScript, [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:&v12 count:1], 0, self);
+      -[OKWidgetViewDelegate evaluateScript:withInfoDictionary:andCompletionBlock:forWidgetView:](delegate, "evaluateScript:withInfoDictionary:andCompletionBlock:forWidgetView:", prepareActionScript, [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:&v12 count:1], 0, self);
     }
   }
 
   return v5;
 }
 
-- (BOOL)prepareForWarmup:(BOOL)a3
+- (BOOL)prepareForWarmup:(BOOL)warmup
 {
-  v3 = a3;
+  warmupCopy = warmup;
   v13[1] = *MEMORY[0x277D85DE8];
-  v5 = [(OKWidgetViewProxy *)self prepareMode]!= 2 || v3;
+  v5 = [(OKWidgetViewProxy *)self prepareMode]!= 2 || warmupCopy;
   if (v5)
   {
     [(OKWidgetViewProxy *)self setPrepareMode:2];
     [(OKWidgetViewProxy *)self setHidden:0];
     [(OKWidgetViewProxy *)self setAntialiasing:0];
     [(OKWidgetViewProxy *)self _cancelAllOperations];
-    if (v3)
+    if (warmupCopy)
     {
       [(OKWidgetViewProxy *)self resignReady];
     }
@@ -4249,28 +4249,28 @@ LABEL_5:
       v10[1] = 3221225472;
       v10[2] = __38__OKWidgetViewProxy_prepareForWarmup___block_invoke;
       v10[3] = &__block_descriptor_33_e15_v32__0_8Q16_B24l;
-      v11 = v3;
+      v11 = warmupCopy;
       [(NSMutableArray *)subWidgetViews enumerateObjectsUsingBlock:v10];
     }
 
     if (self->_prepareActionScript)
     {
-      v7 = [(OKWidgetViewProxy *)self delegate];
+      delegate = [(OKWidgetViewProxy *)self delegate];
       prepareActionScript = self->_prepareActionScript;
       v12 = @"prepareMode";
       v13[0] = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:2];
-      -[OKWidgetViewDelegate evaluateScript:withInfoDictionary:andCompletionBlock:forWidgetView:](v7, "evaluateScript:withInfoDictionary:andCompletionBlock:forWidgetView:", prepareActionScript, [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:&v12 count:1], 0, self);
+      -[OKWidgetViewDelegate evaluateScript:withInfoDictionary:andCompletionBlock:forWidgetView:](delegate, "evaluateScript:withInfoDictionary:andCompletionBlock:forWidgetView:", prepareActionScript, [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:&v12 count:1], 0, self);
     }
   }
 
   return v5;
 }
 
-- (BOOL)prepareForUnload:(BOOL)a3
+- (BOOL)prepareForUnload:(BOOL)unload
 {
-  v3 = a3;
+  unloadCopy = unload;
   v13[1] = *MEMORY[0x277D85DE8];
-  v5 = [(OKWidgetViewProxy *)self prepareMode]!= 3 || v3;
+  v5 = [(OKWidgetViewProxy *)self prepareMode]!= 3 || unloadCopy;
   if (v5)
   {
     [(OKWidgetViewProxy *)self setPrepareMode:3];
@@ -4285,15 +4285,15 @@ LABEL_5:
     v10[1] = 3221225472;
     v10[2] = __38__OKWidgetViewProxy_prepareForUnload___block_invoke;
     v10[3] = &__block_descriptor_33_e15_v32__0_8Q16_B24l;
-    v11 = v3;
+    v11 = unloadCopy;
     [(NSMutableArray *)subWidgetViews enumerateObjectsUsingBlock:v10];
     if (self->_prepareActionScript)
     {
-      v7 = [(OKWidgetViewProxy *)self delegate];
+      delegate = [(OKWidgetViewProxy *)self delegate];
       prepareActionScript = self->_prepareActionScript;
       v12 = @"prepareMode";
       v13[0] = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:3];
-      -[OKWidgetViewDelegate evaluateScript:withInfoDictionary:andCompletionBlock:forWidgetView:](v7, "evaluateScript:withInfoDictionary:andCompletionBlock:forWidgetView:", prepareActionScript, [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:&v12 count:1], 0, self);
+      -[OKWidgetViewDelegate evaluateScript:withInfoDictionary:andCompletionBlock:forWidgetView:](delegate, "evaluateScript:withInfoDictionary:andCompletionBlock:forWidgetView:", prepareActionScript, [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:&v12 count:1], 0, self);
     }
   }
 
@@ -4320,28 +4320,28 @@ LABEL_5:
   [(NSMutableArray *)subWidgetViews enumerateObjectsUsingBlock:&__block_literal_global_469];
 }
 
-- (void)prepareForMode:(unint64_t)a3 force:(BOOL)a4
+- (void)prepareForMode:(unint64_t)mode force:(BOOL)force
 {
-  switch(a3)
+  switch(mode)
   {
     case 3uLL:
-      [(OKWidgetViewProxy *)self prepareForUnload:a4];
+      [(OKWidgetViewProxy *)self prepareForUnload:force];
       break;
     case 2uLL:
-      [(OKWidgetViewProxy *)self prepareForWarmup:a4];
+      [(OKWidgetViewProxy *)self prepareForWarmup:force];
       break;
     case 1uLL:
-      [(OKWidgetViewProxy *)self prepareForDisplay:a4];
+      [(OKWidgetViewProxy *)self prepareForDisplay:force];
       break;
   }
 }
 
-- (void)prepareIfNeeded:(BOOL)a3
+- (void)prepareIfNeeded:(BOOL)needed
 {
-  v3 = a3;
-  v5 = [(OKWidgetViewProxy *)self prepareMode];
+  neededCopy = needed;
+  prepareMode = [(OKWidgetViewProxy *)self prepareMode];
 
-  [(OKWidgetViewProxy *)self prepareForMode:v5 force:v3];
+  [(OKWidgetViewProxy *)self prepareForMode:prepareMode force:neededCopy];
 }
 
 - (void)startShowingProgressIndicator
@@ -4364,64 +4364,64 @@ LABEL_5:
   }
 }
 
-- (void)reloadMediaURL:(id)a3 size:(CGSize)a4 mode:(int64_t)a5 lowQuality:(BOOL)a6 highQuality:(BOOL)a7 identifier:(id)a8 progressHandler:(id)a9 completionHandler:(id)a10
+- (void)reloadMediaURL:(id)l size:(CGSize)size mode:(int64_t)mode lowQuality:(BOOL)quality highQuality:(BOOL)highQuality identifier:(id)identifier progressHandler:(id)handler completionHandler:(id)self0
 {
-  v12 = a7;
-  v13 = a6;
-  height = a4.height;
-  width = a4.width;
-  v39 = [MEMORY[0x277CBEB18] array];
-  v19 = [MEMORY[0x277CBEB18] array];
-  v20 = [[(OKPresentationViewControllerProxy *)[(OKWidgetViewProxy *)self presentationViewController] presentation] mediaItemForURL:a3];
-  [(OKWidgetViewDelegate *)[(OKWidgetViewProxy *)self delegate] widgetViewCancelAllOperations:self withIdentifier:a8];
+  highQualityCopy = highQuality;
+  qualityCopy = quality;
+  height = size.height;
+  width = size.width;
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
+  v20 = [[(OKPresentationViewControllerProxy *)[(OKWidgetViewProxy *)self presentationViewController] presentation] mediaItemForURL:l];
+  [(OKWidgetViewDelegate *)[(OKWidgetViewProxy *)self delegate] widgetViewCancelAllOperations:self withIdentifier:identifier];
   if (v20)
   {
     v47 = 0;
     v48 = &v47;
     v49 = 0x2020000000;
     v50 = 0;
-    if (a9)
+    if (handler)
     {
-      (*(a9 + 2))(a9, 0.0);
+      (*(handler + 2))(handler, 0.0);
     }
 
-    v21 = v19;
-    if (v13)
+    v21 = array2;
+    if (qualityCopy)
     {
       v22 = [v20 memoryCachedThumbnailImageForResolution:1];
       if (!v22)
       {
-        v29 = [(OKPresentationViewController *)[(OKWidgetViewProxy *)self presentationViewController] colorSpace];
+        colorSpace = [(OKPresentationViewController *)[(OKWidgetViewProxy *)self presentationViewController] colorSpace];
         v45[0] = MEMORY[0x277D85DD0];
         v45[1] = 3221225472;
         v45[2] = __114__OKWidgetViewProxy_reloadMediaURL_size_mode_lowQuality_highQuality_identifier_progressHandler_completionHandler___block_invoke;
         v45[3] = &unk_279C90938;
         v45[4] = v20;
-        v45[5] = a10;
-        v46 = v12;
-        v24 = [v20 thumbnailImageForResolution:1 aspectRatio:v29 scale:v45 quality:0 colorSpace:1 completionHandler:1.0 force:1.0 cache:1.0];
+        v45[5] = completionHandler;
+        v46 = highQualityCopy;
+        v24 = [v20 thumbnailImageForResolution:1 aspectRatio:colorSpace scale:v45 quality:0 colorSpace:1 completionHandler:1.0 force:1.0 cache:1.0];
         v43[0] = MEMORY[0x277D85DD0];
         v43[1] = 3221225472;
         v43[2] = __114__OKWidgetViewProxy_reloadMediaURL_size_mode_lowQuality_highQuality_identifier_progressHandler_completionHandler___block_invoke_2;
         v43[3] = &unk_279C90960;
-        v43[4] = a9;
+        v43[4] = handler;
         v43[5] = &v47;
-        v44 = v12;
+        v44 = highQualityCopy;
         [v24 setProgressBlock:v43];
-        v30 = [(OKWidgetViewProxy *)self prepareMode];
+        prepareMode = [(OKWidgetViewProxy *)self prepareMode];
         v31 = -4;
-        if (v12)
+        if (highQualityCopy)
         {
           v31 = 0;
         }
 
         v32 = 4;
-        if (v12)
+        if (highQualityCopy)
         {
           v32 = 8;
         }
 
-        if (v30 == 1)
+        if (prepareMode == 1)
         {
           v33 = v32;
         }
@@ -4432,15 +4432,15 @@ LABEL_5:
         }
 
         [v24 setQueuePriority:v33];
-        [v24 setIdentifier:a8];
+        [v24 setIdentifier:identifier];
 LABEL_12:
-        if (!v12)
+        if (!highQualityCopy)
         {
           v28 = 0;
 LABEL_41:
           if (v24)
           {
-            [v39 addObject:v24];
+            [array addObject:v24];
           }
 
           if (v28)
@@ -4448,16 +4448,16 @@ LABEL_41:
             [v21 addObject:v28];
           }
 
-          [(OKWidgetViewDelegate *)[(OKWidgetViewProxy *)self delegate] widgetView:self addHighSpeedOperations:v39 andConsumingOperations:v21];
+          [(OKWidgetViewDelegate *)[(OKWidgetViewProxy *)self delegate] widgetView:self addHighSpeedOperations:array andConsumingOperations:v21];
           _Block_object_dispose(&v47, 8);
           return;
         }
 
         [objc_msgSend(v20 "metadata")];
         v26 = v25;
-        if (a5)
+        if (mode)
         {
-          if (a5 == 1)
+          if (mode == 1)
           {
             v27 = height * v25;
             if (width > height * v26)
@@ -4475,21 +4475,21 @@ LABEL_32:
 
               [(OKPresentationViewControllerProxy *)[(OKWidgetViewProxy *)self presentationViewController] presentationViewScale];
               v36 = v35;
-              v37 = [(OKPresentationViewController *)[(OKWidgetViewProxy *)self presentationViewController] colorSpace];
+              colorSpace2 = [(OKPresentationViewController *)[(OKWidgetViewProxy *)self presentationViewController] colorSpace];
               v42[0] = MEMORY[0x277D85DD0];
               v42[1] = 3221225472;
               v42[2] = __114__OKWidgetViewProxy_reloadMediaURL_size_mode_lowQuality_highQuality_identifier_progressHandler_completionHandler___block_invoke_3;
               v42[3] = &unk_279C90988;
               v42[4] = v20;
-              v42[5] = a10;
-              v28 = [v20 thumbnailImageForResolution:v34 aspectRatio:v37 scale:v42 quality:0 colorSpace:1 completionHandler:v26 force:v36 cache:0.850000024];
+              v42[5] = completionHandler;
+              v28 = [v20 thumbnailImageForResolution:v34 aspectRatio:colorSpace2 scale:v42 quality:0 colorSpace:1 completionHandler:v26 force:v36 cache:0.850000024];
               v40[0] = MEMORY[0x277D85DD0];
               v40[1] = 3221225472;
               v40[2] = __114__OKWidgetViewProxy_reloadMediaURL_size_mode_lowQuality_highQuality_identifier_progressHandler_completionHandler___block_invoke_4;
               v40[3] = &unk_279C909B0;
-              v40[4] = a9;
+              v40[4] = handler;
               v40[5] = &v47;
-              v41 = v13;
+              v41 = qualityCopy;
               [v28 setProgressBlock:v40];
               if (v24)
               {
@@ -4507,7 +4507,7 @@ LABEL_32:
               }
 
               [v28 setQueuePriority:v38];
-              [v28 setIdentifier:a8];
+              [v28 setIdentifier:identifier];
               goto LABEL_41;
             }
 
@@ -4517,7 +4517,7 @@ LABEL_30:
             goto LABEL_32;
           }
 
-          if (a5 != 2)
+          if (mode != 2)
           {
             v27 = width;
             goto LABEL_32;
@@ -4534,18 +4534,18 @@ LABEL_30:
       }
 
       v48[3] = 0x3FF0000000000000;
-      if (a9)
+      if (handler)
       {
         v23.n128_u32[0] = 1.0;
-        if (v12)
+        if (highQualityCopy)
         {
           v23.n128_f32[0] = 0.5;
         }
 
-        (*(a9 + 2))(a9, v23);
+        (*(handler + 2))(handler, v23);
       }
 
-      (*(a10 + 2))(a10, v20, [MEMORY[0x277D755B8] imageWithCGImage:v22], 0, !v12, 0);
+      (*(completionHandler + 2))(completionHandler, v20, [MEMORY[0x277D755B8] imageWithCGImage:v22], 0, !highQualityCopy, 0);
     }
 
     v24 = 0;
@@ -4554,7 +4554,7 @@ LABEL_30:
 
   if (*MEMORY[0x277D62808] >= 4)
   {
-    [MEMORY[0x277D627B8] logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Widgets/OKWidgetView.m" line:3497 andFormat:@"Failed to get media item for media url %@", a3];
+    [MEMORY[0x277D627B8] logMessageWithLevel:4 file:"/Library/Caches/com.apple.xbs/Sources/SlideshowKit/OpusKit/Framework/Widgets/OKWidgetView.m" line:3497 andFormat:@"Failed to get media item for media url %@", l];
   }
 }
 
@@ -4633,18 +4633,18 @@ uint64_t __114__OKWidgetViewProxy_reloadMediaURL_size_mode_lowQuality_highQualit
   return result;
 }
 
-- (void)prefetchMediaURL:(id)a3 identifier:(id)a4
+- (void)prefetchMediaURL:(id)l identifier:(id)identifier
 {
   v9[1] = *MEMORY[0x277D85DE8];
-  v6 = [[(OKPresentationCanvas *)[(OKWidgetViewProxy *)self page] presentation] mediaItemForURL:a3];
+  v6 = [[(OKPresentationCanvas *)[(OKWidgetViewProxy *)self page] presentation] mediaItemForURL:l];
   if (v6)
   {
     v7 = [v6 thumbnailImageForResolution:1 aspectRatio:-[OKPresentationViewController colorSpace](-[OKWidgetViewProxy presentationViewController](self scale:"presentationViewController") quality:"colorSpace") colorSpace:0 completionHandler:0 force:1 cache:{1.0, 1.0, 1.0}];
     [v7 setQueuePriority:-8];
-    [v7 setIdentifier:a4];
-    v8 = [(OKWidgetViewProxy *)self delegate];
+    [v7 setIdentifier:identifier];
+    delegate = [(OKWidgetViewProxy *)self delegate];
     v9[0] = v7;
-    -[OKWidgetViewDelegate widgetView:addHighSpeedOperations:andConsumingOperations:](v8, "widgetView:addHighSpeedOperations:andConsumingOperations:", self, [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1], 0);
+    -[OKWidgetViewDelegate widgetView:addHighSpeedOperations:andConsumingOperations:](delegate, "widgetView:addHighSpeedOperations:andConsumingOperations:", self, [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1], 0);
   }
 }
 
@@ -4657,19 +4657,19 @@ uint64_t __114__OKWidgetViewProxy_reloadMediaURL_size_mode_lowQuality_highQualit
   [(NSRecursiveLock *)readyRecursiveLock unlock];
 }
 
-- (void)notifyWhenBecomesReady:(id)a3
+- (void)notifyWhenBecomesReady:(id)ready
 {
-  if (a3)
+  if (ready)
   {
     [(NSRecursiveLock *)self->_readyRecursiveLock lock];
     if ([(OKWidgetViewProxy *)self isReady:1])
     {
-      (*(a3 + 2))(a3);
+      (*(ready + 2))(ready);
     }
 
     else
     {
-      -[NSMutableArray addObject:](self->_readyNotificationBlocks, "addObject:", [a3 copy]);
+      -[NSMutableArray addObject:](self->_readyNotificationBlocks, "addObject:", [ready copy]);
     }
 
     readyRecursiveLock = self->_readyRecursiveLock;
@@ -4678,14 +4678,14 @@ uint64_t __114__OKWidgetViewProxy_reloadMediaURL_size_mode_lowQuality_highQualit
   }
 }
 
-- (BOOL)isReady:(BOOL)a3
+- (BOOL)isReady:(BOOL)ready
 {
-  v3 = a3;
+  readyCopy = ready;
   v16 = *MEMORY[0x277D85DE8];
   [(NSRecursiveLock *)self->_readyRecursiveLock lock];
   if (self->_isReady || ![(OKWidgetViewProxy *)self supportsReadiness]|| [(OKWidgetViewProxy *)self needsZoning]|| [(OKWidgetViewProxy *)self isHidden])
   {
-    if (!v3 || ([(OKWidgetViewProxy *)self isHidden]& 1) != 0 || (v13 = 0u, v14 = 0u, v11 = 0u, v12 = 0u, v5 = [(OKWidgetViewProxy *)self subWidgetViews], (v6 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v11 objects:v15 count:16]) == 0))
+    if (!readyCopy || ([(OKWidgetViewProxy *)self isHidden]& 1) != 0 || (v13 = 0u, v14 = 0u, v11 = 0u, v12 = 0u, v5 = [(OKWidgetViewProxy *)self subWidgetViews], (v6 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v11 objects:v15 count:16]) == 0))
     {
 LABEL_15:
       [(NSRecursiveLock *)self->_readyRecursiveLock unlock];
@@ -4730,9 +4730,9 @@ LABEL_9:
   result = 1.0;
   if (!self->_isReady)
   {
-    v3 = [(OKWidgetViewProxy *)self supportsReadiness];
+    supportsReadiness = [(OKWidgetViewProxy *)self supportsReadiness];
     result = 1.0;
-    if (v3)
+    if (supportsReadiness)
     {
       return 0.0;
     }
@@ -4741,17 +4741,17 @@ LABEL_9:
   return result;
 }
 
-- (double)readyProgress:(BOOL)a3
+- (double)readyProgress:(BOOL)progress
 {
   v23 = *MEMORY[0x277D85DE8];
   v5 = 1.0;
   if (([(OKWidgetViewProxy *)self isHidden]& 1) == 0)
   {
     [(NSRecursiveLock *)self->_readyRecursiveLock lock];
-    if (a3)
+    if (progress)
     {
-      v6 = [(OKWidgetViewProxy *)self supportsReadiness];
-      v7 = [(NSMutableArray *)[(OKWidgetViewProxy *)self subWidgetViews] count]+ v6;
+      supportsReadiness = [(OKWidgetViewProxy *)self supportsReadiness];
+      v7 = [(NSMutableArray *)[(OKWidgetViewProxy *)self subWidgetViews] count]+ supportsReadiness;
       if (v7)
       {
         v8 = v7;
@@ -4766,8 +4766,8 @@ LABEL_9:
         v21 = 0u;
         v18 = 0u;
         v19 = 0u;
-        v10 = [(OKWidgetViewProxy *)self subWidgetViews];
-        v11 = [(NSMutableArray *)v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        subWidgetViews = [(OKWidgetViewProxy *)self subWidgetViews];
+        v11 = [(NSMutableArray *)subWidgetViews countByEnumeratingWithState:&v18 objects:v22 count:16];
         if (v11)
         {
           v12 = v11;
@@ -4778,14 +4778,14 @@ LABEL_9:
             {
               if (*v19 != v13)
               {
-                objc_enumerationMutation(v10);
+                objc_enumerationMutation(subWidgetViews);
               }
 
               [*(*(&v18 + 1) + 8 * i) readyProgress:1];
               v5 = v5 + v15 / v8;
             }
 
-            v12 = [(NSMutableArray *)v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
+            v12 = [(NSMutableArray *)subWidgetViews countByEnumeratingWithState:&v18 objects:v22 count:16];
           }
 
           while (v12);
@@ -4833,12 +4833,12 @@ LABEL_9:
   [(NSRecursiveLock *)readyRecursiveLock unlock];
 }
 
-- (void)readinessDidChange:(BOOL)a3
+- (void)readinessDidChange:(BOOL)change
 {
-  v3 = a3;
+  changeCopy = change;
   v16 = *MEMORY[0x277D85DE8];
   [(NSRecursiveLock *)self->_readyRecursiveLock lock];
-  if ([(OKWidgetViewProxy *)self isReady:1]== v3)
+  if ([(OKWidgetViewProxy *)self isReady:1]== changeCopy)
   {
     v13 = 0u;
     v14 = 0u;
@@ -4871,21 +4871,21 @@ LABEL_9:
     [(NSMutableArray *)self->_readyNotificationBlocks removeAllObjects];
     if ([(OKWidgetViewProxy *)self parentWidgetView])
     {
-      v10 = [(OKWidgetViewProxy *)self parentWidgetView];
+      parentWidgetView = [(OKWidgetViewProxy *)self parentWidgetView];
     }
 
     else
     {
-      v10 = [(OKWidgetViewProxy *)self pageViewController];
+      parentWidgetView = [(OKWidgetViewProxy *)self pageViewController];
     }
 
-    [(OKWidgetViewProxy *)v10 readinessDidChange:v3];
+    [(OKWidgetViewProxy *)parentWidgetView readinessDidChange:changeCopy];
   }
 
   [(NSRecursiveLock *)self->_readyRecursiveLock unlock];
 }
 
-- (void)networkStatusDidChange:(int64_t)a3
+- (void)networkStatusDidChange:(int64_t)change
 {
   if (*MEMORY[0x277D62808] >= 4)
   {
@@ -5006,7 +5006,7 @@ LABEL_9:
 {
   v41 = *MEMORY[0x277D85DE8];
   self->_presentationMode = 0;
-  v3 = [(OKPresentationViewControllerProxy *)[(OKWidgetViewProxy *)self presentationViewController] presentationView];
+  presentationView = [(OKPresentationViewControllerProxy *)[(OKWidgetViewProxy *)self presentationViewController] presentationView];
   [(OKWidgetViewProxy *)self setAntialiasing:1];
   [-[OKWidgetViewProxy superview](self "superview")];
   focusGestureHelper = self->_focusGestureHelper;
@@ -5107,34 +5107,34 @@ LABEL_5:
     self->_focusGestureHelper->var0 = 0;
   }
 
-  v26 = [(OKWidgetViewProxy *)self superview];
+  superview = [(OKWidgetViewProxy *)self superview];
   v27 = self->_focusGestureHelper;
-  v27->var0 = v26;
+  v27->var0 = superview;
   [(OKWidgetViewProxy *)self transform];
   *&v27->var6.a = v33;
   *&v27->var6.c = v34;
   *&v27->var6.tx = v35;
   [(OKWidgetViewProxy *)self center];
-  [(OKPresentationView *)v3 convertPoint:[(OKWidgetViewProxy *)self superview] fromView:v28, v29];
+  [(OKPresentationView *)presentationView convertPoint:[(OKWidgetViewProxy *)self superview] fromView:v28, v29];
   [(OKWidgetViewProxy *)self setCenter:?];
-  [(OKPresentationView *)v3 addSubview:self];
+  [(OKPresentationView *)presentationView addSubview:self];
   [-[OKWidgetViewProxy layer](self "layer")];
   self->_focusGestureHelper->var2 = v30;
   [-[OKWidgetViewProxy layer](self "layer")];
   if (!self->_dimmerView)
   {
     v31 = [OKDimmerView alloc];
-    [(OKPresentationView *)v3 bounds];
+    [(OKPresentationView *)presentationView bounds];
     v32 = [(OKDimmerView *)v31 initWithFrame:?];
     self->_dimmerView = v32;
     [-[OFUIView layer](v32 "layer")];
     [(OFUIView *)self->_dimmerView setAlpha:0.0];
-    [(OKPresentationView *)v3 addSubview:self->_dimmerView];
-    [(OKPresentationView *)v3 bringSubviewToFront:self];
+    [(OKPresentationView *)presentationView addSubview:self->_dimmerView];
+    [(OKPresentationView *)presentationView bringSubviewToFront:self];
   }
 }
 
-- (void)_animateToFocus:(double)a3 completion:(id)a4
+- (void)_animateToFocus:(double)focus completion:(id)completion
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
@@ -5146,8 +5146,8 @@ LABEL_5:
   v4[2] = __48__OKWidgetViewProxy__animateToFocus_completion___block_invoke_2;
   v4[3] = &unk_279C8E798;
   v4[4] = self;
-  v4[5] = a4;
-  [MEMORY[0x277D627F8] animateWithDuration:v5 animations:v4 completion:a3];
+  v4[5] = completion;
+  [MEMORY[0x277D627F8] animateWithDuration:v5 animations:v4 completion:focus];
 }
 
 uint64_t __48__OKWidgetViewProxy__animateToFocus_completion___block_invoke_2(uint64_t a1, uint64_t a2)
@@ -5166,19 +5166,19 @@ uint64_t __48__OKWidgetViewProxy__animateToFocus_completion___block_invoke_2(uin
 
 - (CGSize)_focusSize
 {
-  v3 = [(OKPresentationViewControllerProxy *)[(OKWidgetViewProxy *)self presentationViewController] presentationView];
-  v4 = self;
+  presentationView = [(OKPresentationViewControllerProxy *)[(OKWidgetViewProxy *)self presentationViewController] presentationView];
+  selfCopy = self;
   if (self->_focusGestureMode != 1)
   {
-    v4 = [(OKWidgetViewProxy *)self _contentViewToFocus];
+    selfCopy = [(OKWidgetViewProxy *)self _contentViewToFocus];
   }
 
-  [(OKWidgetViewProxy *)v4 bounds];
+  [(OKWidgetViewProxy *)selfCopy bounds];
   v6 = v5;
   v8 = v7;
-  [(OKPresentationView *)v3 bounds];
+  [(OKPresentationView *)presentationView bounds];
   v10 = v9 - (self->_focusGestureInsets.left + self->_focusGestureInsets.right);
-  [(OKPresentationView *)v3 bounds];
+  [(OKPresentationView *)presentationView bounds];
   v12 = v11 - (self->_focusGestureInsets.top + self->_focusGestureInsets.bottom);
   focusGestureMode = self->_focusGestureMode;
   if (focusGestureMode == 1)
@@ -5215,11 +5215,11 @@ uint64_t __48__OKWidgetViewProxy__animateToFocus_completion___block_invoke_2(uin
 
 - (void)_animationToFocus
 {
-  v3 = [(OKPresentationViewControllerProxy *)[(OKWidgetViewProxy *)self presentationViewController] presentationView];
-  v4 = self;
+  presentationView = [(OKPresentationViewControllerProxy *)[(OKWidgetViewProxy *)self presentationViewController] presentationView];
+  selfCopy = self;
   if (self->_focusGestureMode != 1)
   {
-    v4 = [(OKWidgetViewProxy *)self _contentViewToFocus];
+    selfCopy = [(OKWidgetViewProxy *)self _contentViewToFocus];
   }
 
   [(OKWidgetViewProxy *)self _focusSize];
@@ -5227,10 +5227,10 @@ uint64_t __48__OKWidgetViewProxy__animateToFocus_completion___block_invoke_2(uin
   v8 = v7;
   if (self->_focusGestureMode == 1)
   {
-    [(OKPresentationView *)v3 center];
+    [(OKPresentationView *)presentationView center];
     p_focusGestureInsets = &self->_focusGestureInsets;
     v11 = v10 + self->_focusGestureInsets.left - self->_focusGestureInsets.right;
-    [(OKPresentationView *)v3 center];
+    [(OKPresentationView *)presentationView center];
   }
 
   else
@@ -5239,14 +5239,14 @@ uint64_t __48__OKWidgetViewProxy__animateToFocus_completion___block_invoke_2(uin
     [(OKWidgetViewProxy *)self convertPoint:[(OKWidgetContainerView *)self->_contentView superview] fromView:v13, v14];
     v16 = v15;
     v18 = v17;
-    [(OKWidgetViewProxy *)v4 center];
-    [(OKWidgetViewProxy *)self convertPoint:[(OKWidgetViewProxy *)v4 superview] fromView:v19, v20];
+    [(OKWidgetViewProxy *)selfCopy center];
+    [(OKWidgetViewProxy *)self convertPoint:[(OKWidgetViewProxy *)selfCopy superview] fromView:v19, v20];
     v22 = v21;
     v24 = v23;
-    [(OKPresentationView *)v3 center];
+    [(OKPresentationView *)presentationView center];
     p_focusGestureInsets = &self->_focusGestureInsets;
     v11 = v25 + v16 - v22 + self->_focusGestureInsets.left - self->_focusGestureInsets.right;
-    [(OKPresentationView *)v3 center];
+    [(OKPresentationView *)presentationView center];
     v12 = v18 - v24 + v26;
   }
 
@@ -5266,7 +5266,7 @@ uint64_t __48__OKWidgetViewProxy__animateToFocus_completion___block_invoke_2(uin
   }
 }
 
-- (void)_completionToFocus:(BOOL)a3
+- (void)_completionToFocus:(BOOL)focus
 {
   self->_presentationMode = 2;
   [(OKWidgetViewProxy *)self setAntialiasing:[(OKWidgetViewProxy *)self needsAntialiasing]];
@@ -5284,7 +5284,7 @@ uint64_t __48__OKWidgetViewProxy__animateToFocus_completion___block_invoke_2(uin
   focusGestureHelper->var10.height = v5;
 }
 
-- (void)_animateToUnfocus:(double)a3 completion:(id)a4
+- (void)_animateToUnfocus:(double)unfocus completion:(id)completion
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
@@ -5296,8 +5296,8 @@ uint64_t __48__OKWidgetViewProxy__animateToFocus_completion___block_invoke_2(uin
   v4[2] = __50__OKWidgetViewProxy__animateToUnfocus_completion___block_invoke_2;
   v4[3] = &unk_279C8E798;
   v4[4] = self;
-  v4[5] = a4;
-  [MEMORY[0x277D627F8] animateWithDuration:v5 animations:v4 completion:a3];
+  v4[5] = completion;
+  [MEMORY[0x277D627F8] animateWithDuration:v5 animations:v4 completion:unfocus];
 }
 
 uint64_t __50__OKWidgetViewProxy__animateToUnfocus_completion___block_invoke_2(uint64_t a1, uint64_t a2)
@@ -5316,7 +5316,7 @@ uint64_t __50__OKWidgetViewProxy__animateToUnfocus_completion___block_invoke_2(u
 
 - (void)_animationToUnfocus
 {
-  v3 = [(OKPresentationViewControllerProxy *)[(OKWidgetViewProxy *)self presentationViewController] presentationView];
+  presentationView = [(OKPresentationViewControllerProxy *)[(OKWidgetViewProxy *)self presentationViewController] presentationView];
   focusGestureHelper = self->_focusGestureHelper;
   x = focusGestureHelper->var3.x;
   y = focusGestureHelper->var3.y;
@@ -5324,7 +5324,7 @@ uint64_t __50__OKWidgetViewProxy__animateToUnfocus_completion___block_invoke_2(u
   height = focusGestureHelper->var4.height;
   if (focusGestureHelper->var0)
   {
-    [(OKPresentationView *)v3 convertPoint:focusGestureHelper->var3.x fromView:focusGestureHelper->var3.y];
+    [(OKPresentationView *)presentationView convertPoint:focusGestureHelper->var3.x fromView:focusGestureHelper->var3.y];
     x = v9;
     y = v10;
     focusGestureHelper = self->_focusGestureHelper;
@@ -5338,16 +5338,16 @@ uint64_t __50__OKWidgetViewProxy__animateToUnfocus_completion___block_invoke_2(u
   [(OKWidgetViewProxy *)self setCenter:x, y];
   [(OKWidgetViewProxy *)self setBounds:0.0, 0.0, width, height];
   var5 = self->_focusGestureHelper->var5;
-  v13 = [(OKWidgetViewProxy *)self layer];
+  layer = [(OKWidgetViewProxy *)self layer];
   *&v14 = var5;
-  [v13 setShadowOpacity:v14];
+  [layer setShadowOpacity:v14];
   [(UIImageView *)self->_borderView setAlpha:1.0];
   [(OFUIView *)self->_dimmerView setAlpha:0.0];
 }
 
-- (void)_completionToUnfocus:(BOOL)a3
+- (void)_completionToUnfocus:(BOOL)unfocus
 {
-  [(UIImageView *)self->_borderView setAlpha:a3, 1.0];
+  [(UIImageView *)self->_borderView setAlpha:unfocus, 1.0];
   [(OFUIView *)self->_dimmerView setAlpha:0.0];
   [(OFUIView *)self->_dimmerView removeFromSuperview];
   dimmerView = self->_dimmerView;
@@ -5411,19 +5411,19 @@ uint64_t __50__OKWidgetViewProxy__animateToUnfocus_completion___block_invoke_2(u
   [v17 prepareCouchPotatoPlayback];
 }
 
-- (void)focus:(unint64_t)a3 duration:(double)a4 completion:(id)a5
+- (void)focus:(unint64_t)focus duration:(double)duration completion:(id)completion
 {
   if (self->_presentationMode == 1)
   {
-    self->_focusGestureMode = a3;
+    self->_focusGestureMode = focus;
     [objc_msgSend(-[OKWidgetViewProxy pageViewController](self "pageViewController")];
     [(OKWidgetViewProxy *)self _prepareToFocus];
 
-    [(OKWidgetViewProxy *)self _animateToFocus:a5 completion:a4];
+    [(OKWidgetViewProxy *)self _animateToFocus:completion completion:duration];
   }
 }
 
-- (void)focus:(id)a3
+- (void)focus:(id)focus
 {
   presentationMode = self->_presentationMode;
   if (presentationMode == 2)
@@ -5437,13 +5437,13 @@ uint64_t __50__OKWidgetViewProxy__animateToUnfocus_completion___block_invoke_2(u
   }
 }
 
-- (void)unfocus:(double)a3 completion:(id)a4
+- (void)unfocus:(double)unfocus completion:(id)completion
 {
   if (self->_presentationMode == 2)
   {
     [(OKWidgetViewProxy *)self _prepareToUnfocus];
 
-    [(OKWidgetViewProxy *)self _animateToUnfocus:a4 completion:a3];
+    [(OKWidgetViewProxy *)self _animateToUnfocus:completion completion:unfocus];
   }
 }
 
@@ -5458,10 +5458,10 @@ uint64_t __50__OKWidgetViewProxy__animateToUnfocus_completion___block_invoke_2(u
   }
 }
 
-- (void)dynamicsSnapToPoint:(CGPoint)a3 withDamping:(double)a4
+- (void)dynamicsSnapToPoint:(CGPoint)point withDamping:(double)damping
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   dynamicSnapBehavior = self->_dynamicSnapBehavior;
   if (dynamicSnapBehavior)
   {
@@ -5472,19 +5472,19 @@ uint64_t __50__OKWidgetViewProxy__animateToUnfocus_completion___block_invoke_2(u
 
   v9 = [objc_alloc(MEMORY[0x277D75A40]) initWithItem:self->_dynamicProxy snapToPoint:{x, y}];
   self->_dynamicSnapBehavior = v9;
-  [(UISnapBehavior *)v9 setDamping:a4];
+  [(UISnapBehavior *)v9 setDamping:damping];
   v10 = [-[OKWidgetViewProxy pageViewController](self "pageViewController")];
   v11 = self->_dynamicSnapBehavior;
 
   [v10 addBehavior:v11];
 }
 
-+ (void)setupJavascriptContext:(id)a3
++ (void)setupJavascriptContext:(id)context
 {
   v80[3] = *MEMORY[0x277D85DE8];
-  [a3 setObject:objc_opt_class() forKeyedSubscript:@"OKWidgetView"];
-  [OKSettings exportClassSettings:objc_opt_class() toJavaScriptContext:a3];
-  v4 = [objc_msgSend(a3 objectForKeyedSubscript:{@"OKWidgetView", "objectForKeyedSubscript:", @"prototype"}];
+  [context setObject:objc_opt_class() forKeyedSubscript:@"OKWidgetView"];
+  [OKSettings exportClassSettings:objc_opt_class() toJavaScriptContext:context];
+  v4 = [objc_msgSend(context objectForKeyedSubscript:{@"OKWidgetView", "objectForKeyedSubscript:", @"prototype"}];
   v5 = *MEMORY[0x277CD4618];
   v78[0] = *MEMORY[0x277CD4620];
   v78[1] = v5;
@@ -5497,7 +5497,7 @@ uint64_t __50__OKWidgetViewProxy__animateToUnfocus_completion___block_invoke_2(u
   v9 = MEMORY[0x277CBEC38];
   v80[2] = MEMORY[0x277CBEC38];
   [v4 defineProperty:@"name" descriptor:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v80, v78, 3)}];
-  v10 = [objc_msgSend(a3 objectForKeyedSubscript:{@"OKWidgetView", "objectForKeyedSubscript:", @"prototype"}];
+  v10 = [objc_msgSend(context objectForKeyedSubscript:{@"OKWidgetView", "objectForKeyedSubscript:", @"prototype"}];
   v76[0] = v6;
   v76[1] = v5;
   v77[0] = &__block_literal_global_506;
@@ -5505,7 +5505,7 @@ uint64_t __50__OKWidgetViewProxy__animateToUnfocus_completion___block_invoke_2(u
   v76[2] = v8;
   v77[2] = v9;
   [v10 defineProperty:@"widgets" descriptor:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v77, v76, 3)}];
-  v11 = [objc_msgSend(a3 objectForKeyedSubscript:{@"OKWidgetView", "objectForKeyedSubscript:", @"prototype"}];
+  v11 = [objc_msgSend(context objectForKeyedSubscript:{@"OKWidgetView", "objectForKeyedSubscript:", @"prototype"}];
   v74[0] = v6;
   v74[1] = v5;
   v75[0] = &__block_literal_global_508;
@@ -5513,7 +5513,7 @@ uint64_t __50__OKWidgetViewProxy__animateToUnfocus_completion___block_invoke_2(u
   v74[2] = v8;
   v75[2] = v9;
   [v11 defineProperty:@"items" descriptor:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v75, v74, 3)}];
-  v12 = [objc_msgSend(a3 objectForKeyedSubscript:{@"OKWidgetView", "objectForKeyedSubscript:", @"prototype"}];
+  v12 = [objc_msgSend(context objectForKeyedSubscript:{@"OKWidgetView", "objectForKeyedSubscript:", @"prototype"}];
   v72[0] = v6;
   v72[1] = v5;
   v73[0] = &__block_literal_global_510;
@@ -5521,7 +5521,7 @@ uint64_t __50__OKWidgetViewProxy__animateToUnfocus_completion___block_invoke_2(u
   v72[2] = v8;
   v73[2] = v9;
   [v12 defineProperty:@"userData" descriptor:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v73, v72, 3)}];
-  v13 = [objc_msgSend(a3 objectForKeyedSubscript:{@"OKWidgetView", "objectForKeyedSubscript:", @"prototype"}];
+  v13 = [objc_msgSend(context objectForKeyedSubscript:{@"OKWidgetView", "objectForKeyedSubscript:", @"prototype"}];
   v70[0] = v6;
   v70[1] = v5;
   v71[0] = &__block_literal_global_513;
@@ -5529,7 +5529,7 @@ uint64_t __50__OKWidgetViewProxy__animateToUnfocus_completion___block_invoke_2(u
   v70[2] = v8;
   v71[2] = v9;
   [v13 defineProperty:@"parentPage" descriptor:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v71, v70, 3)}];
-  v14 = [objc_msgSend(a3 objectForKeyedSubscript:{@"OKWidgetView", "objectForKeyedSubscript:", @"prototype"}];
+  v14 = [objc_msgSend(context objectForKeyedSubscript:{@"OKWidgetView", "objectForKeyedSubscript:", @"prototype"}];
   v68[0] = v6;
   v68[1] = v5;
   v69[0] = &__block_literal_global_516;
@@ -5537,7 +5537,7 @@ uint64_t __50__OKWidgetViewProxy__animateToUnfocus_completion___block_invoke_2(u
   v68[2] = v8;
   v69[2] = v9;
   [v14 defineProperty:@"parentWidget" descriptor:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v69, v68, 3)}];
-  v15 = [objc_msgSend(a3 objectForKeyedSubscript:{@"OKWidgetView", "objectForKeyedSubscript:", @"prototype"}];
+  v15 = [objc_msgSend(context objectForKeyedSubscript:{@"OKWidgetView", "objectForKeyedSubscript:", @"prototype"}];
   v66[0] = v6;
   v38 = v6;
   v66[1] = v5;
@@ -5546,7 +5546,7 @@ uint64_t __50__OKWidgetViewProxy__animateToUnfocus_completion___block_invoke_2(u
   v66[2] = v8;
   v67[2] = v9;
   [v15 defineProperty:@"prepareMode" descriptor:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v67, v66, 3)}];
-  v16 = [objc_msgSend(a3 objectForKeyedSubscript:{@"OKWidgetView", "objectForKeyedSubscript:", @"prototype"}];
+  v16 = [objc_msgSend(context objectForKeyedSubscript:{@"OKWidgetView", "objectForKeyedSubscript:", @"prototype"}];
   v64[0] = v6;
   v64[1] = v5;
   v65[0] = &__block_literal_global_528;
@@ -5554,7 +5554,7 @@ uint64_t __50__OKWidgetViewProxy__animateToUnfocus_completion___block_invoke_2(u
   v64[2] = v8;
   v65[2] = v9;
   [v16 defineProperty:@"layoutFactor" descriptor:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v65, v64, 3)}];
-  v17 = [a3 objectForKeyedSubscript:@"OKWidgetView"];
+  v17 = [context objectForKeyedSubscript:@"OKWidgetView"];
   v19 = *MEMORY[0x277CD4638];
   v62[0] = *MEMORY[0x277CD4630];
   v18 = v62[0];
@@ -5568,7 +5568,7 @@ uint64_t __50__OKWidgetViewProxy__animateToUnfocus_completion___block_invoke_2(u
   v63[2] = MEMORY[0x277CBEC28];
   v63[3] = v9;
   [v17 defineProperty:@"animate" descriptor:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v63, v62, 4)}];
-  v22 = [objc_msgSend(a3 objectForKeyedSubscript:{@"OKWidgetView", "objectForKeyedSubscript:", @"prototype"}];
+  v22 = [objc_msgSend(context objectForKeyedSubscript:{@"OKWidgetView", "objectForKeyedSubscript:", @"prototype"}];
   v60[0] = v18;
   v39 = v18;
   v60[1] = v20;
@@ -5579,7 +5579,7 @@ uint64_t __50__OKWidgetViewProxy__animateToUnfocus_completion___block_invoke_2(u
   v61[2] = v21;
   v61[3] = v9;
   [v22 defineProperty:@"focus" descriptor:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v61, v60, 4)}];
-  v23 = [objc_msgSend(a3 objectForKeyedSubscript:{@"OKWidgetView", "objectForKeyedSubscript:", @"prototype"}];
+  v23 = [objc_msgSend(context objectForKeyedSubscript:{@"OKWidgetView", "objectForKeyedSubscript:", @"prototype"}];
   v58[0] = v18;
   v58[1] = v20;
   v59[0] = &__block_literal_global_547;
@@ -5590,10 +5590,10 @@ uint64_t __50__OKWidgetViewProxy__animateToUnfocus_completion___block_invoke_2(u
   v59[3] = v9;
   v24 = v9;
   [v23 defineProperty:@"unfocus" descriptor:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v59, v58, 4)}];
-  [a3 setObject:&unk_287AF0AD0 forKeyedSubscript:@"kOKGestureFocusModeObject"];
-  [a3 setObject:&unk_287AF0AE8 forKeyedSubscript:@"kOKGestureFocusModeContent"];
-  [a3 setObject:&unk_287AF0B00 forKeyedSubscript:@"kOKGestureFocusModeContentAll"];
-  v25 = [objc_msgSend(a3 objectForKeyedSubscript:{@"OKWidgetView", "objectForKeyedSubscript:", @"prototype"}];
+  [context setObject:&unk_287AF0AD0 forKeyedSubscript:@"kOKGestureFocusModeObject"];
+  [context setObject:&unk_287AF0AE8 forKeyedSubscript:@"kOKGestureFocusModeContent"];
+  [context setObject:&unk_287AF0B00 forKeyedSubscript:@"kOKGestureFocusModeContentAll"];
+  v25 = [objc_msgSend(context objectForKeyedSubscript:{@"OKWidgetView", "objectForKeyedSubscript:", @"prototype"}];
   v56[0] = v38;
   v56[1] = v5;
   v57[0] = &__block_literal_global_568;
@@ -5602,9 +5602,9 @@ uint64_t __50__OKWidgetViewProxy__animateToUnfocus_completion___block_invoke_2(u
   v56[2] = v8;
   v57[2] = v24;
   [v25 defineProperty:@"presentationMode" descriptor:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v57, v56, 3)}];
-  [a3 setObject:&unk_287AF0AD0 forKeyedSubscript:@"kOKPresentationModeNormal"];
-  [a3 setObject:&unk_287AF0AE8 forKeyedSubscript:@"kOKPresentationModeFocus"];
-  v27 = [objc_msgSend(a3 objectForKeyedSubscript:{@"OKWidgetView", "objectForKeyedSubscript:", @"prototype"}];
+  [context setObject:&unk_287AF0AD0 forKeyedSubscript:@"kOKPresentationModeNormal"];
+  [context setObject:&unk_287AF0AE8 forKeyedSubscript:@"kOKPresentationModeFocus"];
+  v27 = [objc_msgSend(context objectForKeyedSubscript:{@"OKWidgetView", "objectForKeyedSubscript:", @"prototype"}];
   v54[0] = v38;
   v54[1] = v5;
   v55[0] = &__block_literal_global_581;
@@ -5612,7 +5612,7 @@ uint64_t __50__OKWidgetViewProxy__animateToUnfocus_completion___block_invoke_2(u
   v54[2] = v8;
   v55[2] = MEMORY[0x277CBEC38];
   [v27 defineProperty:@"originalTransform" descriptor:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v55, v54, 3)}];
-  v28 = [objc_msgSend(a3 objectForKeyedSubscript:{@"OKWidgetView", "objectForKeyedSubscript:", @"prototype"}];
+  v28 = [objc_msgSend(context objectForKeyedSubscript:{@"OKWidgetView", "objectForKeyedSubscript:", @"prototype"}];
   v29 = *MEMORY[0x277CD4628];
   v52[0] = v38;
   v52[1] = v29;
@@ -5624,7 +5624,7 @@ uint64_t __50__OKWidgetViewProxy__animateToUnfocus_completion___block_invoke_2(u
   v30 = MEMORY[0x277CBEC38];
   v53[3] = MEMORY[0x277CBEC38];
   [v28 defineProperty:@"transform" descriptor:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v53, v52, 4)}];
-  v31 = [objc_msgSend(a3 objectForKeyedSubscript:{@"OKWidgetView", "objectForKeyedSubscript:", @"prototype"}];
+  v31 = [objc_msgSend(context objectForKeyedSubscript:{@"OKWidgetView", "objectForKeyedSubscript:", @"prototype"}];
   v50[0] = v39;
   v50[1] = v5;
   v51[0] = &__block_literal_global_597;
@@ -5632,7 +5632,7 @@ uint64_t __50__OKWidgetViewProxy__animateToUnfocus_completion___block_invoke_2(u
   v50[2] = v8;
   v51[2] = v30;
   [v31 defineProperty:@"pauseContentEffects" descriptor:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v51, v50, 3)}];
-  v32 = [objc_msgSend(a3 objectForKeyedSubscript:{@"OKWidgetView", "objectForKeyedSubscript:", @"prototype"}];
+  v32 = [objc_msgSend(context objectForKeyedSubscript:{@"OKWidgetView", "objectForKeyedSubscript:", @"prototype"}];
   v48[0] = v39;
   v48[1] = v5;
   v49[0] = &__block_literal_global_603;
@@ -5640,7 +5640,7 @@ uint64_t __50__OKWidgetViewProxy__animateToUnfocus_completion___block_invoke_2(u
   v48[2] = v8;
   v49[2] = v30;
   [v32 defineProperty:@"resumeContentEffects" descriptor:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v49, v48, 3)}];
-  v33 = [objc_msgSend(a3 objectForKeyedSubscript:{@"OKWidgetView", "objectForKeyedSubscript:", @"prototype"}];
+  v33 = [objc_msgSend(context objectForKeyedSubscript:{@"OKWidgetView", "objectForKeyedSubscript:", @"prototype"}];
   v46[0] = v39;
   v46[1] = v5;
   v47[0] = &__block_literal_global_609;
@@ -5648,7 +5648,7 @@ uint64_t __50__OKWidgetViewProxy__animateToUnfocus_completion___block_invoke_2(u
   v46[2] = v8;
   v47[2] = v30;
   [v33 defineProperty:@"restartContentEffects" descriptor:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v47, v46, 3)}];
-  v34 = [objc_msgSend(a3 objectForKeyedSubscript:{@"OKWidgetView", "objectForKeyedSubscript:", @"prototype"}];
+  v34 = [objc_msgSend(context objectForKeyedSubscript:{@"OKWidgetView", "objectForKeyedSubscript:", @"prototype"}];
   v44[0] = v39;
   v44[1] = v20;
   v45[0] = &__block_literal_global_616;
@@ -5659,7 +5659,7 @@ uint64_t __50__OKWidgetViewProxy__animateToUnfocus_completion___block_invoke_2(u
   v45[2] = MEMORY[0x277CBEC28];
   v45[3] = v30;
   [v34 defineProperty:@"animateWithKeyPath" descriptor:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v45, v44, 4)}];
-  v36 = [objc_msgSend(a3 objectForKeyedSubscript:{@"OKWidgetView", "objectForKeyedSubscript:", @"prototype"}];
+  v36 = [objc_msgSend(context objectForKeyedSubscript:{@"OKWidgetView", "objectForKeyedSubscript:", @"prototype"}];
   v42[0] = v39;
   v42[1] = v20;
   v43[0] = &__block_literal_global_624;
@@ -5669,7 +5669,7 @@ uint64_t __50__OKWidgetViewProxy__animateToUnfocus_completion___block_invoke_2(u
   v43[2] = v35;
   v43[3] = v30;
   [v36 defineProperty:@"removeAnimationWithKey" descriptor:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v43, v42, 4)}];
-  v37 = [objc_msgSend(a3 objectForKeyedSubscript:{@"OKWidgetView", "objectForKeyedSubscript:", @"prototype"}];
+  v37 = [objc_msgSend(context objectForKeyedSubscript:{@"OKWidgetView", "objectForKeyedSubscript:", @"prototype"}];
   v40[0] = v39;
   v40[1] = v20;
   v41[0] = &__block_literal_global_631;
@@ -5962,7 +5962,7 @@ uint64_t __44__OKWidgetViewProxy_setupJavascriptContext___block_invoke_10_628(ui
   return [v3 convertPoint:0 fromView:?];
 }
 
-- (id)addSubWidgetViewWithTemplateName:(id)a3 name:(id)a4 andSettings:(id)a5
+- (id)addSubWidgetViewWithTemplateName:(id)name name:(id)a4 andSettings:(id)settings
 {
   v6 = [-[OKWidgetViewProxy pageViewController](self "pageViewController")];
   [v6 setParentWidgetView:self];
@@ -5974,21 +5974,21 @@ uint64_t __44__OKWidgetViewProxy_setupJavascriptContext___block_invoke_10_628(ui
   return v6;
 }
 
-- (unint64_t)countOfDictionaryProxy:(id)a3
+- (unint64_t)countOfDictionaryProxy:(id)proxy
 {
-  if ([a3 tag] == 1)
+  if ([proxy tag] == 1)
   {
-    v5 = [(OKWidgetViewProxy *)self subWidgetViews];
+    subWidgetViews = [(OKWidgetViewProxy *)self subWidgetViews];
 LABEL_3:
 
-    return [(NSMutableArray *)v5 count];
+    return [(NSMutableArray *)subWidgetViews count];
   }
 
-  if ([a3 tag] != 2)
+  if ([proxy tag] != 2)
   {
-    if ([a3 tag] == 3)
+    if ([proxy tag] == 3)
     {
-      v5 = [(OKPresentationCanvas *)[(OKWidgetViewProxy *)self widget] userData];
+      subWidgetViews = [(OKPresentationCanvas *)[(OKWidgetViewProxy *)self widget] userData];
       goto LABEL_3;
     }
 
@@ -6004,16 +6004,16 @@ LABEL_3:
   return [(OKWidgetViewProxy *)self collectionItemsCount];
 }
 
-- (id)allKeysForDictionaryProxy:(id)a3
+- (id)allKeysForDictionaryProxy:(id)proxy
 {
-  if ([a3 tag] == 1)
+  if ([proxy tag] == 1)
   {
-    v5 = [(OKWidgetViewProxy *)self subWidgetViews];
+    subWidgetViews = [(OKWidgetViewProxy *)self subWidgetViews];
 
-    return [(NSMutableArray *)v5 valueForKeyPath:@"widget.name"];
+    return [(NSMutableArray *)subWidgetViews valueForKeyPath:@"widget.name"];
   }
 
-  if ([a3 tag] == 2)
+  if ([proxy tag] == 2)
   {
     v7 = objc_opt_class();
     if (class_conformsToProtocol(v7, &unk_287B3DF80))
@@ -6025,27 +6025,27 @@ LABEL_3:
     return 0;
   }
 
-  if ([a3 tag] != 3)
+  if ([proxy tag] != 3)
   {
     return 0;
   }
 
-  v8 = [(OKPresentationCanvas *)[(OKWidgetViewProxy *)self widget] userData];
+  userData = [(OKPresentationCanvas *)[(OKWidgetViewProxy *)self widget] userData];
 
-  return [(NSMutableDictionary *)v8 allKeys];
+  return [(NSMutableDictionary *)userData allKeys];
 }
 
-- (id)dictionaryProxy:(id)a3 objectForKey:(id)a4
+- (id)dictionaryProxy:(id)proxy objectForKey:(id)key
 {
   v21 = *MEMORY[0x277D85DE8];
-  if ([a3 tag] == 1)
+  if ([proxy tag] == 1)
   {
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v7 = [(OKWidgetViewProxy *)self subWidgetViews];
-    v8 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    subWidgetViews = [(OKWidgetViewProxy *)self subWidgetViews];
+    v8 = [(NSMutableArray *)subWidgetViews countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v8)
     {
       v9 = v8;
@@ -6056,7 +6056,7 @@ LABEL_4:
       {
         if (*v17 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(subWidgetViews);
         }
 
         v12 = *(*(&v16 + 1) + 8 * v11);
@@ -6067,7 +6067,7 @@ LABEL_4:
 
         if (v9 == ++v11)
         {
-          v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+          v9 = [(NSMutableArray *)subWidgetViews countByEnumeratingWithState:&v16 objects:v20 count:16];
           v12 = 0;
           if (v9)
           {
@@ -6082,7 +6082,7 @@ LABEL_4:
     return 0;
   }
 
-  if ([a3 tag] == 2)
+  if ([proxy tag] == 2)
   {
     v13 = objc_opt_class();
     if (!class_conformsToProtocol(v13, &unk_287B3DF80))
@@ -6090,25 +6090,25 @@ LABEL_4:
       return 0;
     }
 
-    return [(OKWidgetViewProxy *)self collectionItemForName:a4];
+    return [(OKWidgetViewProxy *)self collectionItemForName:key];
   }
 
   else
   {
-    if ([a3 tag] != 3)
+    if ([proxy tag] != 3)
     {
       return 0;
     }
 
-    v15 = [(OKPresentationCanvas *)[(OKWidgetViewProxy *)self widget] userData];
+    userData = [(OKPresentationCanvas *)[(OKWidgetViewProxy *)self widget] userData];
 
-    return [(NSMutableDictionary *)v15 objectForKey:a4];
+    return [(NSMutableDictionary *)userData objectForKey:key];
   }
 }
 
-- (id)dictionaryProxy:(id)a3 objectAtIndexPath:(id)a4
+- (id)dictionaryProxy:(id)proxy objectAtIndexPath:(id)path
 {
-  if ([a3 tag] != 2)
+  if ([proxy tag] != 2)
   {
     return 0;
   }
@@ -6119,7 +6119,7 @@ LABEL_4:
     return 0;
   }
 
-  return [(OKWidgetViewProxy *)self collectionItemAtIndexPath:a4];
+  return [(OKWidgetViewProxy *)self collectionItemAtIndexPath:path];
 }
 
 - (BOOL)isFocused

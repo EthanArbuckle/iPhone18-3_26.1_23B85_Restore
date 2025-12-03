@@ -1,26 +1,26 @@
 @interface EQKitOverlayBox
-- (BOOL)isEqual:(id)a3;
-- (BOOL)p_getTransform:(CGAffineTransform *)a3 fromDescendant:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)p_getTransform:(CGAffineTransform *)transform fromDescendant:(id)descendant;
 - (CGRect)erasableBounds;
-- (EQKitOverlayBox)initWithBox:(id)a3 overlayBox:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (EQKitOverlayBox)initWithBox:(id)box overlayBox:(id)overlayBox;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)renderIntoContext:(CGContext *)a3 offset:(CGPoint)a4;
+- (void)renderIntoContext:(CGContext *)context offset:(CGPoint)offset;
 @end
 
 @implementation EQKitOverlayBox
 
-- (EQKitOverlayBox)initWithBox:(id)a3 overlayBox:(id)a4
+- (EQKitOverlayBox)initWithBox:(id)box overlayBox:(id)overlayBox
 {
   v8.receiver = self;
   v8.super_class = EQKitOverlayBox;
   v6 = [(EQKitOverlayBox *)&v8 init];
   if (v6)
   {
-    v6->mBox = a3;
-    v6->mOverlayBox = a4;
+    v6->mBox = box;
+    v6->mOverlayBox = overlayBox;
   }
 
   return v6;
@@ -53,59 +53,59 @@
   return CGRectUnion(*&v24, *&v17);
 }
 
-- (void)renderIntoContext:(CGContext *)a3 offset:(CGPoint)a4
+- (void)renderIntoContext:(CGContext *)context offset:(CGPoint)offset
 {
-  y = a4.y;
-  x = a4.x;
+  y = offset.y;
+  x = offset.x;
   v12.receiver = self;
   v12.super_class = EQKitOverlayBox;
   [EQKitBox renderIntoContext:sel_renderIntoContext_offset_ offset:?];
-  objc_msgSend_renderIntoContext_offset_(self->mBox, v8, a3, v9, x, y);
-  objc_msgSend_renderIntoContext_offset_(self->mOverlayBox, v10, a3, v11, x, y);
+  objc_msgSend_renderIntoContext_offset_(self->mBox, v8, context, v9, x, y);
+  objc_msgSend_renderIntoContext_offset_(self->mOverlayBox, v10, context, v11, x, y);
 }
 
-- (BOOL)p_getTransform:(CGAffineTransform *)a3 fromDescendant:(id)a4
+- (BOOL)p_getTransform:(CGAffineTransform *)transform fromDescendant:(id)descendant
 {
-  if (a4 == self)
+  if (descendant == self)
   {
     return 1;
   }
 
   else
   {
-    return objc_msgSend_p_getTransform_fromDescendant_(self->mBox, a2, a3, a4);
+    return objc_msgSend_p_getTransform_fromDescendant_(self->mBox, a2, transform, descendant);
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v8 = objc_msgSend_allocWithZone_(v5, v6, a3, v7);
+  v8 = objc_msgSend_allocWithZone_(v5, v6, zone, v7);
   v12 = objc_msgSend_box(self, v9, v10, v11);
   v17 = objc_msgSend_overlayBox(self, v13, v14, v15);
 
   return objc_msgSend_initWithBox_overlayBox_(v8, v16, v12, v17);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v3 = self;
-  v4 = self == a3;
-  LOBYTE(self) = self == a3;
-  if (a3)
+  selfCopy = self;
+  v4 = self == equal;
+  LOBYTE(self) = self == equal;
+  if (equal)
   {
     if (!v4)
     {
       v6 = objc_opt_class();
-      LODWORD(self) = objc_msgSend_isMemberOfClass_(a3, v7, v6, v8);
+      LODWORD(self) = objc_msgSend_isMemberOfClass_(equal, v7, v6, v8);
       if (self)
       {
-        v12 = objc_msgSend_box(v3, v9, v10, v11);
-        self = objc_msgSend_box(a3, v13, v14, v15);
+        v12 = objc_msgSend_box(selfCopy, v9, v10, v11);
+        self = objc_msgSend_box(equal, v13, v14, v15);
         if (v12 == self || (v19 = self, LOBYTE(self) = 0, v12) && v19 && (LODWORD(self) = objc_msgSend_isEqual_(v12, v16, v19, v18), self))
         {
-          v20 = objc_msgSend_overlayBox(v3, v16, v17, v18);
-          self = objc_msgSend_overlayBox(a3, v21, v22, v23);
+          v20 = objc_msgSend_overlayBox(selfCopy, v16, v17, v18);
+          self = objc_msgSend_overlayBox(equal, v21, v22, v23);
           if (v20 == self)
           {
             LOBYTE(self) = 1;
@@ -113,12 +113,12 @@
 
           else
           {
-            v26 = self;
+            selfCopy2 = self;
             LOBYTE(self) = 0;
-            if (v20 && v26)
+            if (v20 && selfCopy2)
             {
 
-              LOBYTE(self) = objc_msgSend_isEqual_(v20, v24, v26, v25);
+              LOBYTE(self) = objc_msgSend_isEqual_(v20, v24, selfCopy2, v25);
             }
           }
         }

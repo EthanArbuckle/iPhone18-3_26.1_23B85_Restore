@@ -1,12 +1,12 @@
 @interface PKSelectedPaymentOfferRewards
-- (BOOL)isEqual:(id)a3;
-- (PKSelectedPaymentOfferRewards)initWithCoder:(id)a3;
-- (PKSelectedPaymentOfferRewards)initWithRewardsRedemptionIntent:(id)a3 criteria:(id)a4 passDetails:(id)a5 sessionIdentifier:(id)a6;
+- (BOOL)isEqual:(id)equal;
+- (PKSelectedPaymentOfferRewards)initWithCoder:(id)coder;
+- (PKSelectedPaymentOfferRewards)initWithRewardsRedemptionIntent:(id)intent criteria:(id)criteria passDetails:(id)details sessionIdentifier:(id)identifier;
 - (id)_init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKSelectedPaymentOfferRewards
@@ -18,42 +18,42 @@
   return [(PKSelectedPaymentOffer *)&v3 _init];
 }
 
-- (PKSelectedPaymentOfferRewards)initWithRewardsRedemptionIntent:(id)a3 criteria:(id)a4 passDetails:(id)a5 sessionIdentifier:(id)a6
+- (PKSelectedPaymentOfferRewards)initWithRewardsRedemptionIntent:(id)intent criteria:(id)criteria passDetails:(id)details sessionIdentifier:(id)identifier
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  v14 = a5;
-  v15 = [v11 balanceIdentifier];
-  v16 = [v12 identifier];
+  intentCopy = intent;
+  criteriaCopy = criteria;
+  identifierCopy = identifier;
+  detailsCopy = details;
+  balanceIdentifier = [intentCopy balanceIdentifier];
+  identifier = [criteriaCopy identifier];
   v21.receiver = self;
   v21.super_class = PKSelectedPaymentOfferRewards;
-  v17 = [(PKSelectedPaymentOffer *)&v21 initWithType:2 selectedOfferIdentifier:v15 passDetails:v14 criteriaIdentifier:v16 sessionIdentifier:v13 serviceProviderData:MEMORY[0x1E695E0F8] storageType:0];
+  v17 = [(PKSelectedPaymentOffer *)&v21 initWithType:2 selectedOfferIdentifier:balanceIdentifier passDetails:detailsCopy criteriaIdentifier:identifier sessionIdentifier:identifierCopy serviceProviderData:MEMORY[0x1E695E0F8] storageType:0];
 
   if (v17)
   {
-    objc_storeStrong(&v17->_rewardsRedemptionIntent, a3);
-    [v12 selectedOfferStickyDuration];
+    objc_storeStrong(&v17->_rewardsRedemptionIntent, intent);
+    [criteriaCopy selectedOfferStickyDuration];
     v17->_stickyDuration = v18;
-    [v12 selectedOfferActiveDuration];
+    [criteriaCopy selectedOfferActiveDuration];
     v17->_activeDuration = v19;
   }
 
   return v17;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
 
   else
   {
-    if (v4)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -129,37 +129,37 @@ LABEL_19:
 {
   v3 = objc_alloc_init(MEMORY[0x1E696AD60]);
   [v3 appendFormat:@"<%@: %p; ", objc_opt_class(), self];
-  v4 = [(PKSelectedPaymentOffer *)self type];
+  type = [(PKSelectedPaymentOffer *)self type];
   v5 = @"unknown";
-  if (v4 == 1)
+  if (type == 1)
   {
     v5 = @"installment";
   }
 
-  if (v4 == 2)
+  if (type == 2)
   {
     v5 = @"rewards";
   }
 
   [v3 appendFormat:@"type: '%@'; ", v5];
-  v6 = [(PKSelectedPaymentOffer *)self selectedOfferIdentifier];
-  [v3 appendFormat:@"selectedOfferIdentifier: '%@'; ", v6];
+  selectedOfferIdentifier = [(PKSelectedPaymentOffer *)self selectedOfferIdentifier];
+  [v3 appendFormat:@"selectedOfferIdentifier: '%@'; ", selectedOfferIdentifier];
 
   [v3 appendFormat:@"rewardsRedemptionIntent: '%@'; ", self->_rewardsRedemptionIntent];
-  v7 = [(PKSelectedPaymentOffer *)self criteriaIdentifier];
-  [v3 appendFormat:@"criteriaIdentifier: '%@'; ", v7];
+  criteriaIdentifier = [(PKSelectedPaymentOffer *)self criteriaIdentifier];
+  [v3 appendFormat:@"criteriaIdentifier: '%@'; ", criteriaIdentifier];
 
-  v8 = [(PKSelectedPaymentOffer *)self passUniqueID];
-  [v3 appendFormat:@"passUniqueID: '%@'; ", v8];
+  passUniqueID = [(PKSelectedPaymentOffer *)self passUniqueID];
+  [v3 appendFormat:@"passUniqueID: '%@'; ", passUniqueID];
 
-  v9 = [(PKSelectedPaymentOffer *)self sessionIdentifier];
-  [v3 appendFormat:@"sessionIdentifier: '%@'; ", v9];
+  sessionIdentifier = [(PKSelectedPaymentOffer *)self sessionIdentifier];
+  [v3 appendFormat:@"sessionIdentifier: '%@'; ", sessionIdentifier];
 
-  v10 = [(PKSelectedPaymentOffer *)self userSelectionDate];
-  [v3 appendFormat:@"userSelectionDate: '%@'; ", v10];
+  userSelectionDate = [(PKSelectedPaymentOffer *)self userSelectionDate];
+  [v3 appendFormat:@"userSelectionDate: '%@'; ", userSelectionDate];
 
-  v11 = [(PKSelectedPaymentOffer *)self createdDate];
-  [v3 appendFormat:@"createdDate: '%@'; ", v11];
+  createdDate = [(PKSelectedPaymentOffer *)self createdDate];
+  [v3 appendFormat:@"createdDate: '%@'; ", createdDate];
 
   [v3 appendFormat:@"stickyDuration: %ld; ", self->_stickyDuration];
   [v3 appendFormat:@"activeDuration: %ld; ", self->_activeDuration];
@@ -168,40 +168,40 @@ LABEL_19:
   return v3;
 }
 
-- (PKSelectedPaymentOfferRewards)initWithCoder:(id)a3
+- (PKSelectedPaymentOfferRewards)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = PKSelectedPaymentOfferRewards;
-  v5 = [(PKSelectedPaymentOffer *)&v9 initWithCoder:v4];
+  v5 = [(PKSelectedPaymentOffer *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"rewardsRedemptionIntent"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rewardsRedemptionIntent"];
     rewardsRedemptionIntent = v5->_rewardsRedemptionIntent;
     v5->_rewardsRedemptionIntent = v6;
 
-    v5->_stickyDuration = [v4 decodeIntegerForKey:@"stickyDuration"];
-    v5->_activeDuration = [v4 decodeIntegerForKey:@"activeDuration"];
+    v5->_stickyDuration = [coderCopy decodeIntegerForKey:@"stickyDuration"];
+    v5->_activeDuration = [coderCopy decodeIntegerForKey:@"activeDuration"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = PKSelectedPaymentOfferRewards;
-  v4 = a3;
-  [(PKSelectedPaymentOffer *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_rewardsRedemptionIntent forKey:{@"rewardsRedemptionIntent", v5.receiver, v5.super_class}];
-  [v4 encodeInteger:self->_stickyDuration forKey:@"stickyDuration"];
-  [v4 encodeInteger:self->_activeDuration forKey:@"activeDuration"];
+  coderCopy = coder;
+  [(PKSelectedPaymentOffer *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_rewardsRedemptionIntent forKey:{@"rewardsRedemptionIntent", v5.receiver, v5.super_class}];
+  [coderCopy encodeInteger:self->_stickyDuration forKey:@"stickyDuration"];
+  [coderCopy encodeInteger:self->_activeDuration forKey:@"activeDuration"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(PKPaymentOfferRewardsRedemptionIntent *)self->_rewardsRedemptionIntent copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(PKPaymentOfferRewardsRedemptionIntent *)self->_rewardsRedemptionIntent copyWithZone:zone];
   v7 = *(v5 + 80);
   *(v5 + 80) = v6;
 

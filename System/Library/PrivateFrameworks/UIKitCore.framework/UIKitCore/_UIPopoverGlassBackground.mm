@@ -1,36 +1,36 @@
 @interface _UIPopoverGlassBackground
 - (UIPopoverPresentationController)presentationController;
 - (UITraitCollection)traitCollectionForGlassContent;
-- (_UIPopoverGlassBackground)initWithCoder:(id)a3;
-- (void)setGlassContentTraitCollection:(id)a3;
-- (void)setShapePath:(id)a3;
-- (void)set_traitCollectionForGlassContent:(id)a3;
+- (_UIPopoverGlassBackground)initWithCoder:(id)coder;
+- (void)setGlassContentTraitCollection:(id)collection;
+- (void)setShapePath:(id)path;
+- (void)set_traitCollectionForGlassContent:(id)content;
 @end
 
 @implementation _UIPopoverGlassBackground
 
-- (void)setShapePath:(id)a3
+- (void)setShapePath:(id)path
 {
   v4 = *(self + OBJC_IVAR____UIPopoverGlassBackground_shapePath);
-  *(self + OBJC_IVAR____UIPopoverGlassBackground_shapePath) = a3;
-  v5 = a3;
-  v6 = self;
+  *(self + OBJC_IVAR____UIPopoverGlassBackground_shapePath) = path;
+  pathCopy = path;
+  selfCopy = self;
 
   sub_188F8F55C();
 }
 
-- (void)set_traitCollectionForGlassContent:(id)a3
+- (void)set_traitCollectionForGlassContent:(id)content
 {
   v4 = *(self + OBJC_IVAR____UIPopoverGlassBackground__traitCollectionForGlassContent);
-  *(self + OBJC_IVAR____UIPopoverGlassBackground__traitCollectionForGlassContent) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____UIPopoverGlassBackground__traitCollectionForGlassContent) = content;
+  contentCopy = content;
 }
 
 - (UITraitCollection)traitCollectionForGlassContent
 {
-  v2 = [(_UIPopoverGlassBackground *)self _traitCollectionForGlassContent];
+  _traitCollectionForGlassContent = [(_UIPopoverGlassBackground *)self _traitCollectionForGlassContent];
 
-  return v2;
+  return _traitCollectionForGlassContent;
 }
 
 - (UIPopoverPresentationController)presentationController
@@ -40,7 +40,7 @@
   return Strong;
 }
 
-- (_UIPopoverGlassBackground)initWithCoder:(id)a3
+- (_UIPopoverGlassBackground)initWithCoder:(id)coder
 {
   *(self + OBJC_IVAR____UIPopoverGlassBackground____lazy_storage___hostingView) = 0;
   v4 = OBJC_IVAR____UIPopoverGlassBackground_shapePath;
@@ -52,13 +52,13 @@
   return result;
 }
 
-- (void)setGlassContentTraitCollection:(id)a3
+- (void)setGlassContentTraitCollection:(id)collection
 {
-  v4 = a3;
-  v6 = self;
-  [(_UIPopoverGlassBackground *)v6 set_traitCollectionForGlassContent:v4];
-  v5 = [(_UIPopoverGlassBackground *)v6 presentationController];
-  [(UIPopoverPresentationController *)v5 _traitCollectionForGlassContentDidChange];
+  collectionCopy = collection;
+  selfCopy = self;
+  [(_UIPopoverGlassBackground *)selfCopy set_traitCollectionForGlassContent:collectionCopy];
+  presentationController = [(_UIPopoverGlassBackground *)selfCopy presentationController];
+  [(UIPopoverPresentationController *)presentationController _traitCollectionForGlassContentDidChange];
 }
 
 @end

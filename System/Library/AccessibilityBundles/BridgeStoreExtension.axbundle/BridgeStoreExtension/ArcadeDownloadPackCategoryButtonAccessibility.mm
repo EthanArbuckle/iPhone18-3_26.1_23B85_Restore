@@ -1,16 +1,16 @@
 @interface ArcadeDownloadPackCategoryButtonAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation ArcadeDownloadPackCategoryButtonAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"BridgeStoreExtension.ArcadeDownloadPackCategoryButton" hasSwiftField:@"titleLabel" withSwiftType:"DynamicTypeLabel"];
-  [v3 validateClass:@"BridgeStoreExtension.ArcadeDownloadPackCategoryButton" isKindOfClass:@"UIControl"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"BridgeStoreExtension.ArcadeDownloadPackCategoryButton" hasSwiftField:@"titleLabel" withSwiftType:"DynamicTypeLabel"];
+  [validationsCopy validateClass:@"BridgeStoreExtension.ArcadeDownloadPackCategoryButton" isKindOfClass:@"UIControl"];
 }
 
 - (id)accessibilityLabel

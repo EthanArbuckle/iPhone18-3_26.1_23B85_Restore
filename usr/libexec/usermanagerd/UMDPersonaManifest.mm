@@ -1,10 +1,10 @@
 @interface UMDPersonaManifest
-+ (id)dataForPersonaSet:(id)a3;
-+ (id)dictForUserSet:(id)a3;
++ (id)dataForPersonaSet:(id)set;
++ (id)dictForUserSet:(id)set;
 + (id)manifest;
-+ (id)manifestFromData:(id)a3;
-+ (id)personaSetFromData:(id)a3;
-+ (id)userSetFromDict:(id)a3;
++ (id)manifestFromData:(id)data;
++ (id)personaSetFromData:(id)data;
++ (id)userSetFromDict:(id)dict;
 + (unsigned)currentVersion;
 - (NSData)dataValue;
 - (UMDPersonaManifest)init;
@@ -14,22 +14,22 @@
 
 + (unsigned)currentVersion
 {
-  v2 = [a1 platformClass];
+  platformClass = [self platformClass];
 
-  return [v2 currentVersion];
+  return [platformClass currentVersion];
 }
 
 + (id)manifest
 {
-  v2 = [a1 platformClass];
+  platformClass = [self platformClass];
 
-  return [v2 manifest];
+  return [platformClass manifest];
 }
 
-+ (id)manifestFromData:(id)a3
++ (id)manifestFromData:(id)data
 {
-  v4 = a3;
-  v5 = [objc_msgSend(a1 "platformClass")];
+  dataCopy = data;
+  v5 = [objc_msgSend(self "platformClass")];
 
   return v5;
 }
@@ -94,9 +94,9 @@
   return 0;
 }
 
-+ (id)personaSetFromData:(id)a3
++ (id)personaSetFromData:(id)data
 {
-  v3 = sub_10009950C(a3);
+  v3 = sub_10009950C(data);
   v4 = v3;
   if (!v3)
   {
@@ -306,7 +306,7 @@ LABEL_81:
       *v51 = 134218240;
       *&v51[4] = [v8 count];
       v52 = 2048;
-      v53 = [v5 unsignedLongValue];
+      unsignedLongValue = [v5 unsignedLongValue];
       v34 = _os_log_send_and_compose_impl();
 
       if (!v34)
@@ -461,16 +461,16 @@ LABEL_98:
   return v19;
 }
 
-+ (id)dataForPersonaSet:(id)a3
++ (id)dataForPersonaSet:(id)set
 {
-  v3 = a3;
+  setCopy = set;
   v4 = +[NSMutableDictionary dictionary];
   v5 = +[NSMutableArray array];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = v3;
+  v6 = setCopy;
   v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
@@ -506,15 +506,15 @@ LABEL_98:
   return v14;
 }
 
-+ (id)userSetFromDict:(id)a3
++ (id)userSetFromDict:(id)dict
 {
-  v4 = a3;
+  dictCopy = dict;
   v5 = +[NSMutableSet set];
   v63 = 0u;
   v64 = 0u;
   v65 = 0u;
   v66 = 0u;
-  v6 = v4;
+  v6 = dictCopy;
   v7 = [v6 countByEnumeratingWithState:&v63 objects:v71 count:16];
   if (v7)
   {
@@ -586,7 +586,7 @@ LABEL_3:
         goto LABEL_37;
       }
 
-      v18 = [a1 personaSetFromData:v16];
+      v18 = [self personaSetFromData:v16];
       v19 = v18;
       if (!v18)
       {
@@ -640,7 +640,7 @@ LABEL_38:
 
       v52 = v12;
       v53 = v9;
-      v54 = a1;
+      selfCopy = self;
       v55 = v16;
       v56 = v6;
       v57 = v5;
@@ -750,7 +750,7 @@ LABEL_38:
       v9 = v53;
       v12 = v52 + 1;
       v6 = v56;
-      a1 = v54;
+      self = selfCopy;
       v10 = &MGCopyAnswer_ptr;
       v11 = &MGCopyAnswer_ptr;
       if ((v52 + 1) == v8)
@@ -816,15 +816,15 @@ LABEL_39:
   return v31;
 }
 
-+ (id)dictForUserSet:(id)a3
++ (id)dictForUserSet:(id)set
 {
-  v3 = a3;
+  setCopy = set;
   v4 = +[NSMutableDictionary dictionary];
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v5 = v3;
+  v5 = setCopy;
   v6 = [v5 countByEnumeratingWithState:&v44 objects:v52 count:16];
   if (v6)
   {
@@ -983,8 +983,8 @@ LABEL_34:
         v4 = v39;
         v20 = *(v9 + 16);
         v21 = [UMDPersonaManifest dataForPersonaSet:v20];
-        v22 = [*(v9 + 24) UUIDString];
-        [v39 setObject:v21 forKeyedSubscript:v22];
+        uUIDString = [*(v9 + 24) UUIDString];
+        [v39 setObject:v21 forKeyedSubscript:uUIDString];
 
         v7 = v36;
       }

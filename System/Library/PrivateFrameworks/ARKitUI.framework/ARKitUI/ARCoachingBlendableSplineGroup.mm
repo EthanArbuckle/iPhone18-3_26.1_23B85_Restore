@@ -1,6 +1,6 @@
 @interface ARCoachingBlendableSplineGroup
 - ($8EF4127CF77ECA3DDB612FCF233DC3A8)patchData;
-- (ARCoachingBlendableSplineGroup)initWithSplineGroups:(id)a3;
+- (ARCoachingBlendableSplineGroup)initWithSplineGroups:(id)groups;
 - (id).cxx_construct;
 - (unsigned)indices;
 @end
@@ -33,24 +33,24 @@
   }
 }
 
-- (ARCoachingBlendableSplineGroup)initWithSplineGroups:(id)a3
+- (ARCoachingBlendableSplineGroup)initWithSplineGroups:(id)groups
 {
   v44 = *MEMORY[0x277D85DE8];
-  v35 = a3;
+  groupsCopy = groups;
   v42.receiver = self;
   v42.super_class = ARCoachingBlendableSplineGroup;
   v4 = [(ARCoachingBlendableSplineGroup *)&v42 init];
   if (v4)
   {
-    v5 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     controlPoints = v4->_controlPoints;
-    v4->_controlPoints = v5;
+    v4->_controlPoints = array;
 
     v40 = 0u;
     v41 = 0u;
     v38 = 0u;
     v39 = 0u;
-    v7 = v35;
+    v7 = groupsCopy;
     v8 = [v7 countByEnumeratingWithState:&v38 objects:v43 count:16];
     if (v8)
     {
@@ -67,22 +67,22 @@
 
           v11 = *(*(&v38 + 1) + 8 * v10);
           v12 = [v7 objectAtIndexedSubscript:0];
-          v13 = [v12 numControlPoints];
-          if (v13 != [v11 numControlPoints])
+          numControlPoints = [v12 numControlPoints];
+          if (numControlPoints != [v11 numControlPoints])
           {
             __assert_rtn("[ARCoachingBlendableSplineGroup initWithSplineGroups:]", "ARCoachingSpline.mm", 447, "splineGroups[0].numControlPoints == splineGroup.numControlPoints");
           }
 
           v14 = [v7 objectAtIndexedSubscript:0];
-          v15 = [v14 numIndices];
-          if (v15 != [v11 numIndices])
+          numIndices = [v14 numIndices];
+          if (numIndices != [v11 numIndices])
           {
             __assert_rtn("[ARCoachingBlendableSplineGroup initWithSplineGroups:]", "ARCoachingSpline.mm", 448, "splineGroups[0].numIndices == splineGroup.numIndices");
           }
 
           v16 = [v7 objectAtIndexedSubscript:0];
-          v17 = [v16 patchDataLength];
-          if (v17 != [v11 patchDataLength])
+          patchDataLength = [v16 patchDataLength];
+          if (patchDataLength != [v11 patchDataLength])
           {
             __assert_rtn("[ARCoachingBlendableSplineGroup initWithSplineGroups:]", "ARCoachingSpline.mm", 449, "splineGroups[0].patchDataLength == splineGroup.patchDataLength");
           }

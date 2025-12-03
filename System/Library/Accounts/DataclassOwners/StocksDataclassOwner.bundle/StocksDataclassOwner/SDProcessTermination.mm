@@ -1,21 +1,21 @@
 @interface SDProcessTermination
-+ (void)killProcess:(int64_t)a3;
++ (void)killProcess:(int64_t)process;
 @end
 
 @implementation SDProcessTermination
 
-+ (void)killProcess:(int64_t)a3
++ (void)killProcess:(int64_t)process
 {
-  if (a3 == 1)
+  if (process == 1)
   {
-    [a1 _killProcessNamed:@"StocksToday" bundleID:@"com.apple.stocks.widget"];
+    [self _killProcessNamed:@"StocksToday" bundleID:@"com.apple.stocks.widget"];
     v4 = @"StocksWidget";
     v5 = @"com.apple.stocks.widget2";
   }
 
   else
   {
-    if (a3)
+    if (process)
     {
       return;
     }
@@ -24,7 +24,7 @@
     v5 = @"com.apple.stocks";
   }
 
-  [a1 _killProcessNamed:v4 bundleID:v5];
+  [self _killProcessNamed:v4 bundleID:v5];
 }
 
 @end

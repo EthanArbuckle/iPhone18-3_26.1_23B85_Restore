@@ -1,40 +1,40 @@
 @interface HKOnboardingCompletion
-- (BOOL)isEqual:(id)a3;
-- (HKOnboardingCompletion)initWithCoder:(id)a3;
-- (HKOnboardingCompletion)initWithFeatureIdentifier:(id)a3 version:(int64_t)a4 completionDate:(id)a5 countryCode:(id)a6 countryCodeProvenance:(int64_t)a7;
-- (HKOnboardingCompletion)initWithFeatureIdentifier:(id)a3 version:(int64_t)a4 completionDate:(id)a5 countryCode:(id)a6 countryCodeProvenance:(int64_t)a7 UUID:(id)a8;
+- (BOOL)isEqual:(id)equal;
+- (HKOnboardingCompletion)initWithCoder:(id)coder;
+- (HKOnboardingCompletion)initWithFeatureIdentifier:(id)identifier version:(int64_t)version completionDate:(id)date countryCode:(id)code countryCodeProvenance:(int64_t)provenance;
+- (HKOnboardingCompletion)initWithFeatureIdentifier:(id)identifier version:(int64_t)version completionDate:(id)date countryCode:(id)code countryCodeProvenance:(int64_t)provenance UUID:(id)d;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKOnboardingCompletion
 
-- (HKOnboardingCompletion)initWithFeatureIdentifier:(id)a3 version:(int64_t)a4 completionDate:(id)a5 countryCode:(id)a6 countryCodeProvenance:(int64_t)a7 UUID:(id)a8
+- (HKOnboardingCompletion)initWithFeatureIdentifier:(id)identifier version:(int64_t)version completionDate:(id)date countryCode:(id)code countryCodeProvenance:(int64_t)provenance UUID:(id)d
 {
-  v14 = a3;
-  v15 = a5;
-  v16 = a6;
-  v17 = a8;
+  identifierCopy = identifier;
+  dateCopy = date;
+  codeCopy = code;
+  dCopy = d;
   v28.receiver = self;
   v28.super_class = HKOnboardingCompletion;
   v18 = [(HKOnboardingCompletion *)&v28 init];
   if (v18)
   {
-    v19 = [v14 copy];
+    v19 = [identifierCopy copy];
     featureIdentifier = v18->_featureIdentifier;
     v18->_featureIdentifier = v19;
 
-    v18->_version = a4;
-    v21 = [v15 copy];
+    v18->_version = version;
+    v21 = [dateCopy copy];
     completionDate = v18->_completionDate;
     v18->_completionDate = v21;
 
-    v23 = [v16 uppercaseString];
+    uppercaseString = [codeCopy uppercaseString];
     countryCode = v18->_countryCode;
-    v18->_countryCode = v23;
+    v18->_countryCode = uppercaseString;
 
-    v18->_countryCodeProvenance = a7;
-    v25 = [v17 copy];
+    v18->_countryCodeProvenance = provenance;
+    v25 = [dCopy copy];
     UUID = v18->_UUID;
     v18->_UUID = v25;
   }
@@ -42,25 +42,25 @@
   return v18;
 }
 
-- (HKOnboardingCompletion)initWithFeatureIdentifier:(id)a3 version:(int64_t)a4 completionDate:(id)a5 countryCode:(id)a6 countryCodeProvenance:(int64_t)a7
+- (HKOnboardingCompletion)initWithFeatureIdentifier:(id)identifier version:(int64_t)version completionDate:(id)date countryCode:(id)code countryCodeProvenance:(int64_t)provenance
 {
   v12 = MEMORY[0x1E696AFB0];
-  v13 = a6;
-  v14 = a5;
-  v15 = a3;
-  v16 = [v12 UUID];
-  v17 = [(HKOnboardingCompletion *)self initWithFeatureIdentifier:v15 version:a4 completionDate:v14 countryCode:v13 countryCodeProvenance:a7 UUID:v16];
+  codeCopy = code;
+  dateCopy = date;
+  identifierCopy = identifier;
+  uUID = [v12 UUID];
+  v17 = [(HKOnboardingCompletion *)self initWithFeatureIdentifier:identifierCopy version:version completionDate:dateCopy countryCode:codeCopy countryCodeProvenance:provenance UUID:uUID];
 
   return v17;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     featureIdentifier = self->_featureIdentifier;
     v7 = v5[1];
     v12 = (featureIdentifier == v7 || v7 && [(NSString *)featureIdentifier isEqualToString:?]) && self->_version == v5[2] && ((completionDate = self->_completionDate, v9 = v5[3], completionDate == v9) || v9 && [(NSDate *)completionDate isEqualToDate:?]) && ((countryCode = self->_countryCode, v11 = v5[4], countryCode == v11) || v11 && [(NSString *)countryCode isEqualToString:?]) && self->_countryCodeProvenance == v5[5];
@@ -88,41 +88,41 @@
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   featureIdentifier = self->_featureIdentifier;
-  v5 = a3;
-  [v5 encodeObject:featureIdentifier forKey:@"FeatureIdentifier"];
-  [v5 encodeInteger:self->_version forKey:@"Version"];
-  [v5 encodeObject:self->_completionDate forKey:@"CompletionDate"];
-  [v5 encodeObject:self->_countryCode forKey:@"CountryCode"];
-  [v5 encodeInteger:self->_countryCodeProvenance forKey:@"CountryCodeProvenance"];
-  [v5 encodeObject:self->_UUID forKey:@"UUID"];
+  coderCopy = coder;
+  [coderCopy encodeObject:featureIdentifier forKey:@"FeatureIdentifier"];
+  [coderCopy encodeInteger:self->_version forKey:@"Version"];
+  [coderCopy encodeObject:self->_completionDate forKey:@"CompletionDate"];
+  [coderCopy encodeObject:self->_countryCode forKey:@"CountryCode"];
+  [coderCopy encodeInteger:self->_countryCodeProvenance forKey:@"CountryCodeProvenance"];
+  [coderCopy encodeObject:self->_UUID forKey:@"UUID"];
 }
 
-- (HKOnboardingCompletion)initWithCoder:(id)a3
+- (HKOnboardingCompletion)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = HKOnboardingCompletion;
   v5 = [(HKOnboardingCompletion *)&v15 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"FeatureIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"FeatureIdentifier"];
     featureIdentifier = v5->_featureIdentifier;
     v5->_featureIdentifier = v6;
 
-    v5->_version = [v4 decodeIntegerForKey:@"Version"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CompletionDate"];
+    v5->_version = [coderCopy decodeIntegerForKey:@"Version"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CompletionDate"];
     completionDate = v5->_completionDate;
     v5->_completionDate = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CountryCode"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CountryCode"];
     countryCode = v5->_countryCode;
     v5->_countryCode = v10;
 
-    v5->_countryCodeProvenance = [v4 decodeIntegerForKey:@"CountryCodeProvenance"];
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UUID"];
+    v5->_countryCodeProvenance = [coderCopy decodeIntegerForKey:@"CountryCodeProvenance"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UUID"];
     UUID = v5->_UUID;
     v5->_UUID = v12;
   }

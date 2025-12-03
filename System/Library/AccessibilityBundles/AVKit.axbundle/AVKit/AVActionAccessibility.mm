@@ -9,17 +9,17 @@
   v3 = [(AVActionAccessibility *)self safeStringForKey:@"title"];
   if ([v3 length])
   {
-    v4 = v3;
+    accessibilityLabel = v3;
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = AVActionAccessibility;
-    v4 = [(AVActionAccessibility *)&v7 accessibilityLabel];
+    accessibilityLabel = [(AVActionAccessibility *)&v7 accessibilityLabel];
   }
 
-  v5 = v4;
+  v5 = accessibilityLabel;
 
   return v5;
 }

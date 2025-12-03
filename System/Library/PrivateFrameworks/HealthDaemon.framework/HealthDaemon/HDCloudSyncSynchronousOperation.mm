@@ -1,5 +1,5 @@
 @interface HDCloudSyncSynchronousOperation
-- (BOOL)performWithError:(id *)a3;
+- (BOOL)performWithError:(id *)error;
 - (void)main;
 @end
 
@@ -13,7 +13,7 @@
   [(HDCloudSyncOperation *)self finishWithSuccess:v3 error:v4];
 }
 
-- (BOOL)performWithError:(id *)a3
+- (BOOL)performWithError:(id *)error
 {
   objc_opt_class();
   NSRequestConcreteImplementation();

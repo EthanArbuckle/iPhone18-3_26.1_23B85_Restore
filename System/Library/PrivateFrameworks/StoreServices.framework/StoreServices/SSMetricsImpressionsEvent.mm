@@ -25,8 +25,8 @@
   v8.receiver = self;
   v8.super_class = SSMetricsImpressionsEvent;
   v4 = [(SSMetricsBaseEvent *)&v8 description];
-  v5 = [(SSMetricsImpressionsEvent *)self impressionIdentifiers];
-  v6 = [v3 stringWithFormat:@"%@: Count: %ld", v4, objc_msgSend(v5, "count")];
+  impressionIdentifiers = [(SSMetricsImpressionsEvent *)self impressionIdentifiers];
+  v6 = [v3 stringWithFormat:@"%@: Count: %ld", v4, objc_msgSend(impressionIdentifiers, "count")];
 
   return v6;
 }

@@ -1,7 +1,7 @@
 @interface NSDictionary
 - (BOOL)areRequirementsMetByBrain;
-- (BOOL)areRequirementsMetByBrain:(id *)a3 error:(id *)a4;
-- (BOOL)areRequirementsMetByBrainFeatures:(id)a3 missingRequirements:(id *)a4 error:(id *)a5;
+- (BOOL)areRequirementsMetByBrain:(id *)brain error:(id *)error;
+- (BOOL)areRequirementsMetByBrainFeatures:(id)features missingRequirements:(id *)requirements error:(id *)error;
 @end
 
 @implementation NSDictionary
@@ -19,7 +19,7 @@
   return [(NSDictionary *)self areRequirementsMetByBrainFeatures:_brainSupportedFeatures];
 }
 
-- (BOOL)areRequirementsMetByBrain:(id *)a3 error:(id *)a4
+- (BOOL)areRequirementsMetByBrain:(id *)brain error:(id *)error
 {
   v7 = _MADLog(@"Brain");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -29,15 +29,15 @@
     _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "[MAB] Brain features: %@", &v9, 0xCu);
   }
 
-  return [(NSDictionary *)self areRequirementsMetByBrainFeatures:_brainSupportedFeatures missingRequirements:a3 error:a4];
+  return [(NSDictionary *)self areRequirementsMetByBrainFeatures:_brainSupportedFeatures missingRequirements:brain error:error];
 }
 
-- (BOOL)areRequirementsMetByBrainFeatures:(id)a3 missingRequirements:(id *)a4 error:(id *)a5
+- (BOOL)areRequirementsMetByBrainFeatures:(id)features missingRequirements:(id *)requirements error:(id *)error
 {
-  v8 = a3;
-  if (v8)
+  featuresCopy = features;
+  if (featuresCopy)
   {
-    v9 = v8;
+    v9 = featuresCopy;
   }
 
   else
@@ -49,8 +49,8 @@
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v10 = self;
-  v11 = [(NSDictionary *)v10 countByEnumeratingWithState:&v45 objects:v59 count:16];
+  selfCopy = self;
+  v11 = [(NSDictionary *)selfCopy countByEnumeratingWithState:&v45 objects:v59 count:16];
   if (!v11)
   {
 
@@ -58,7 +58,7 @@
 LABEL_24:
     v29 = 0;
     v28 = 1;
-    if (a4)
+    if (requirements)
     {
       goto LABEL_37;
     }
@@ -67,8 +67,8 @@ LABEL_24:
   }
 
   v12 = v11;
-  v40 = a5;
-  v41 = a4;
+  errorCopy = error;
+  requirementsCopy = requirements;
   v43 = v9;
   v44 = 0;
   v13 = *v46;
@@ -82,11 +82,11 @@ LABEL_24:
     {
       if (*v46 != v13)
       {
-        objc_enumerationMutation(v10);
+        objc_enumerationMutation(selfCopy);
       }
 
       v17 = *(*(&v45 + 1) + 8 * v16);
-      v18 = [(NSDictionary *)v10 objectForKey:v17];
+      v18 = [(NSDictionary *)selfCopy objectForKey:v17];
       if (!v18)
       {
         v30 = _MADLog(@"Brain");
@@ -134,20 +134,20 @@ LABEL_24:
 LABEL_32:
 
         v28 = 0;
-        if (v40)
+        if (errorCopy)
         {
-          a4 = v41;
+          requirements = requirementsCopy;
           if (v29)
           {
             v38 = v29;
             v28 = 0;
-            *v40 = v29;
+            *errorCopy = v29;
           }
         }
 
         else
         {
-          a4 = v41;
+          requirements = requirementsCopy;
         }
 
         goto LABEL_36;
@@ -167,7 +167,7 @@ LABEL_32:
       if ([v20 compare:v18] == -1)
       {
         v21 = v13;
-        v22 = v10;
+        v22 = selfCopy;
         v23 = p_weak_ivar_lyt;
         v24 = v15;
         v25 = v44;
@@ -182,7 +182,7 @@ LABEL_32:
 
         v15 = v24;
         p_weak_ivar_lyt = v23;
-        v10 = v22;
+        selfCopy = v22;
         v13 = v21;
         v12 = v42;
         v9 = v43;
@@ -192,7 +192,7 @@ LABEL_32:
     }
 
     while (v12 != v16);
-    v12 = [(NSDictionary *)v10 countByEnumeratingWithState:&v45 objects:v59 count:16];
+    v12 = [(NSDictionary *)selfCopy countByEnumeratingWithState:&v45 objects:v59 count:16];
     if (v12)
     {
       continue;
@@ -204,11 +204,11 @@ LABEL_32:
   v27 = v44;
   if (!v44)
   {
-    a4 = v41;
+    requirements = requirementsCopy;
     goto LABEL_24;
   }
 
-  a4 = v41;
+  requirements = requirementsCopy;
   if (![v44 count])
   {
     v27 = v44;
@@ -219,7 +219,7 @@ LABEL_32:
   v29 = 0;
 LABEL_36:
   v27 = v44;
-  if (!a4)
+  if (!requirements)
   {
     goto LABEL_39;
   }
@@ -228,7 +228,7 @@ LABEL_37:
   if (v27)
   {
     v27 = v27;
-    *a4 = v27;
+    *requirements = v27;
   }
 
 LABEL_39:

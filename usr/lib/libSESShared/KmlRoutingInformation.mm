@@ -1,20 +1,20 @@
 @interface KmlRoutingInformation
-- (KmlRoutingInformation)initWithInformation:(id)a3 readerIdentifier:(id)a4;
+- (KmlRoutingInformation)initWithInformation:(id)information readerIdentifier:(id)identifier;
 - (id)getReaderInformation;
 @end
 
 @implementation KmlRoutingInformation
 
-- (KmlRoutingInformation)initWithInformation:(id)a3 readerIdentifier:(id)a4
+- (KmlRoutingInformation)initWithInformation:(id)information readerIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  informationCopy = information;
+  identifierCopy = identifier;
   v33.receiver = self;
   v33.super_class = KmlRoutingInformation;
   v8 = [(KmlRoutingInformation *)&v33 init];
   if (v8)
   {
-    v9 = [v6 componentsSeparatedByString:@"."];
+    v9 = [informationCopy componentsSeparatedByString:@"."];
     if ([v9 count] == 3)
     {
       v10 = [v9 objectAtIndexedSubscript:0];
@@ -29,9 +29,9 @@
       brand = v8->_brand;
       v8->_brand = v14;
 
-      if (v7)
+      if (identifierCopy)
       {
-        v16 = v7;
+        v16 = identifierCopy;
 LABEL_10:
         readerIdentifier = v8->_readerIdentifier;
         v8->_readerIdentifier = v16;
@@ -100,15 +100,15 @@ LABEL_14:
 {
   if ([(NSData *)self->_readerIdentifier length])
   {
-    v3 = [(NSData *)self->_readerIdentifier asHexString];
+    asHexString = [(NSData *)self->_readerIdentifier asHexString];
   }
 
   else
   {
-    v3 = @"Unknown";
+    asHexString = @"Unknown";
   }
 
-  v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"V.%@.%@.%@.%@", self->_manufacturer, self->_regionString, self->_brand, v3];
+  v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"V.%@.%@.%@.%@", self->_manufacturer, self->_regionString, self->_brand, asHexString];
 
   return v4;
 }

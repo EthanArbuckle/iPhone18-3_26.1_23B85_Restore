@@ -1,21 +1,21 @@
 @interface _PXConcatenatingAudioAssetFetchResult
-- (BOOL)containsObject:(id)a3;
+- (BOOL)containsObject:(id)object;
 - (NSString)description;
 - (PXAudioAsset)firstObject;
 - (PXAudioAsset)lastObject;
-- (_PXConcatenatingAudioAssetFetchResult)initWithFetchResults:(id)a3;
-- (id)_subFetchResultForIndex:(int64_t)a3 localIndex:(int64_t *)a4;
-- (id)objectAtIndex:(unint64_t)a3;
-- (id)objectsAtIndexes:(id)a3;
+- (_PXConcatenatingAudioAssetFetchResult)initWithFetchResults:(id)results;
+- (id)_subFetchResultForIndex:(int64_t)index localIndex:(int64_t *)localIndex;
+- (id)objectAtIndex:(unint64_t)index;
+- (id)objectsAtIndexes:(id)indexes;
 - (void)dealloc;
-- (void)enumerateObjectsUsingBlock:(id)a3;
+- (void)enumerateObjectsUsingBlock:(id)block;
 @end
 
 @implementation _PXConcatenatingAudioAssetFetchResult
 
-- (void)enumerateObjectsUsingBlock:(id)a3
+- (void)enumerateObjectsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v10[0] = 0;
   v10[1] = v10;
   v10[2] = 0x2020000000;
@@ -25,7 +25,7 @@
   v7[1] = 3221225472;
   v7[2] = __68___PXConcatenatingAudioAssetFetchResult_enumerateObjectsUsingBlock___block_invoke;
   v7[3] = &unk_1E7740FB8;
-  v6 = v4;
+  v6 = blockCopy;
   v8 = v6;
   v9 = v10;
   [(NSArray *)fetchResults enumerateObjectsUsingBlock:v7];
@@ -33,10 +33,10 @@
   _Block_object_dispose(v10, 8);
 }
 
-- (BOOL)containsObject:(id)a3
+- (BOOL)containsObject:(id)object
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  objectCopy = object;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -55,7 +55,7 @@
           objc_enumerationMutation(v5);
         }
 
-        if ([*(*(&v10 + 1) + 8 * i) containsObject:{v4, v10}])
+        if ([*(*(&v10 + 1) + 8 * i) containsObject:{objectCopy, v10}])
         {
           LOBYTE(v6) = 1;
           goto LABEL_11;
@@ -79,43 +79,43 @@ LABEL_11:
 
 - (PXAudioAsset)lastObject
 {
-  v2 = [(NSArray *)self->_fetchResults lastObject];
-  v3 = [v2 lastObject];
+  lastObject = [(NSArray *)self->_fetchResults lastObject];
+  v2LastObject = [lastObject lastObject];
 
-  return v3;
+  return v2LastObject;
 }
 
 - (PXAudioAsset)firstObject
 {
-  v2 = [(NSArray *)self->_fetchResults firstObject];
-  v3 = [v2 firstObject];
+  firstObject = [(NSArray *)self->_fetchResults firstObject];
+  v2FirstObject = [firstObject firstObject];
 
-  return v3;
+  return v2FirstObject;
 }
 
-- (id)objectsAtIndexes:(id)a3
+- (id)objectsAtIndexes:(id)indexes
 {
   v4 = MEMORY[0x1E695DF70];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithCapacity:{objc_msgSend(v5, "count")}];
+  indexesCopy = indexes;
+  v6 = [[v4 alloc] initWithCapacity:{objc_msgSend(indexesCopy, "count")}];
   v10 = MEMORY[0x1E69E9820];
   v11 = 3221225472;
   v12 = __58___PXConcatenatingAudioAssetFetchResult_objectsAtIndexes___block_invoke;
   v13 = &unk_1E774A7B8;
   v14 = v6;
-  v15 = self;
+  selfCopy = self;
   v7 = v6;
-  [v5 enumerateIndexesUsingBlock:&v10];
+  [indexesCopy enumerateIndexesUsingBlock:&v10];
 
   v8 = [v7 copy];
 
   return v8;
 }
 
-- (id)objectAtIndex:(unint64_t)a3
+- (id)objectAtIndex:(unint64_t)index
 {
   v6 = 0;
-  v3 = [(_PXConcatenatingAudioAssetFetchResult *)self _subFetchResultForIndex:a3 localIndex:&v6];
+  v3 = [(_PXConcatenatingAudioAssetFetchResult *)self _subFetchResultForIndex:index localIndex:&v6];
   v4 = [v3 objectAtIndex:v6];
 
   return v4;
@@ -131,7 +131,7 @@ LABEL_11:
   return v6;
 }
 
-- (id)_subFetchResultForIndex:(int64_t)a3 localIndex:(int64_t *)a4
+- (id)_subFetchResultForIndex:(int64_t)index localIndex:(int64_t *)localIndex
 {
   startIndexes = self->_startIndexes;
   subFetchResultsCount = self->_subFetchResultsCount;
@@ -147,7 +147,7 @@ LABEL_11:
     do
     {
       v10 = v8 + (v9 - v8) / 2;
-      if (startIndexes[v10] < a3)
+      if (startIndexes[v10] < index)
       {
         v8 = v10 + 1;
       }
@@ -161,11 +161,11 @@ LABEL_11:
     while (v8 < v9);
   }
 
-  v11 = startIndexes[v8 - (startIndexes[v8] > a3)];
+  v11 = startIndexes[v8 - (startIndexes[v8] > index)];
   result = [(NSArray *)self->_fetchResults objectAtIndexedSubscript:?];
-  if (a4)
+  if (localIndex)
   {
-    *a4 = a3 - v11;
+    *localIndex = index - v11;
   }
 
   return result;
@@ -179,9 +179,9 @@ LABEL_11:
   [(_PXConcatenatingAudioAssetFetchResult *)&v3 dealloc];
 }
 
-- (_PXConcatenatingAudioAssetFetchResult)initWithFetchResults:(id)a3
+- (_PXConcatenatingAudioAssetFetchResult)initWithFetchResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   v6.receiver = self;
   v6.super_class = _PXConcatenatingAudioAssetFetchResult;
   if ([(_PXConcatenatingAudioAssetFetchResult *)&v6 init])

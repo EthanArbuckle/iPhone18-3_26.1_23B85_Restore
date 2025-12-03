@@ -1,25 +1,25 @@
 @interface NSSQLiteIndexStatisticsResult
-- (NSSQLiteIndexStatisticsResult)initWithResult:(id)a3;
-- (NSSQLiteIndexStatisticsResult)initWithSubresults:(id)a3;
+- (NSSQLiteIndexStatisticsResult)initWithResult:(id)result;
+- (NSSQLiteIndexStatisticsResult)initWithSubresults:(id)subresults;
 - (void)dealloc;
 @end
 
 @implementation NSSQLiteIndexStatisticsResult
 
-- (NSSQLiteIndexStatisticsResult)initWithResult:(id)a3
+- (NSSQLiteIndexStatisticsResult)initWithResult:(id)result
 {
   v6.receiver = self;
   v6.super_class = NSSQLiteIndexStatisticsResult;
   v4 = [(NSSQLiteIndexStatisticsResult *)&v6 init];
   if (v4)
   {
-    v4->_result = a3;
+    v4->_result = result;
   }
 
   return v4;
 }
 
-- (NSSQLiteIndexStatisticsResult)initWithSubresults:(id)a3
+- (NSSQLiteIndexStatisticsResult)initWithSubresults:(id)subresults
 {
   v18 = *MEMORY[0x1E69E9840];
   v16.receiver = self;
@@ -32,7 +32,7 @@
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v6 = [a3 countByEnumeratingWithState:&v12 objects:v17 count:16];
+    v6 = [subresults countByEnumeratingWithState:&v12 objects:v17 count:16];
     if (v6)
     {
       v7 = v6;
@@ -44,14 +44,14 @@
         {
           if (*v13 != v8)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(subresults);
           }
 
           [v5 addObjectsFromArray:{objc_msgSend(*(*(&v12 + 1) + 8 * v9++), "result")}];
         }
 
         while (v7 != v9);
-        v7 = [a3 countByEnumeratingWithState:&v12 objects:v17 count:16];
+        v7 = [subresults countByEnumeratingWithState:&v12 objects:v17 count:16];
       }
 
       while (v7);

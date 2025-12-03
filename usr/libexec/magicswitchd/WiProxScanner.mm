@@ -2,24 +2,24 @@
 - (BOOL)highDutyCycle;
 - (NSArray)filteredPeers;
 - (NSData)filteringBlob;
-- (WiProxScanner)initWithDelegate:(id)a3;
+- (WiProxScanner)initWithDelegate:(id)delegate;
 - (WiProxScannerDelegate)delegate;
 - (void)dealloc;
 - (void)invalidate;
-- (void)magicSwitch:(id)a3 failedToStartScanningWithError:(id)a4;
-- (void)magicSwitch:(id)a3 foundDevice:(id)a4 withData:(id)a5;
-- (void)magicSwitchDidUpdateState:(id)a3;
-- (void)magicSwitchStartedScanning:(id)a3;
-- (void)magicSwitchStoppedScanning:(id)a3;
-- (void)startScanningWithHighDutyCycle:(BOOL)a3 filteredPeers:(id)a4 filteringBlob:(id)a5 filteringMask:(id)a6;
+- (void)magicSwitch:(id)switch failedToStartScanningWithError:(id)error;
+- (void)magicSwitch:(id)switch foundDevice:(id)device withData:(id)data;
+- (void)magicSwitchDidUpdateState:(id)state;
+- (void)magicSwitchStartedScanning:(id)scanning;
+- (void)magicSwitchStoppedScanning:(id)scanning;
+- (void)startScanningWithHighDutyCycle:(BOOL)cycle filteredPeers:(id)peers filteringBlob:(id)blob filteringMask:(id)mask;
 - (void)stopScanning;
 @end
 
 @implementation WiProxScanner
 
-- (WiProxScanner)initWithDelegate:(id)a3
+- (WiProxScanner)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v13.receiver = self;
   v13.super_class = WiProxScanner;
   v5 = [(WiProxScanner *)&v13 init];
@@ -33,11 +33,11 @@
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "WiProxScanner --- Initializing (%p)", buf, 0xCu);
     }
 
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v7 = [WPMagicSwitch alloc];
     v8 = +[MagicSwitchEnabler sharedInstance];
-    v9 = [v8 workQueue];
-    v10 = [v7 initWithDelegate:v5 queue:v9];
+    workQueue = [v8 workQueue];
+    v10 = [v7 initWithDelegate:v5 queue:workQueue];
     wirelessProximityManager = v5->_wirelessProximityManager;
     v5->_wirelessProximityManager = v10;
   }
@@ -65,7 +65,7 @@
     if (os_log_type_enabled(qword_100021420, OS_LOG_TYPE_DEFAULT))
     {
       v5 = 134217984;
-      v6 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "WiProxScanner --- Invalidating (%p)", &v5, 0xCu);
     }
 
@@ -83,12 +83,12 @@
   }
 }
 
-- (void)startScanningWithHighDutyCycle:(BOOL)a3 filteredPeers:(id)a4 filteringBlob:(id)a5 filteringMask:(id)a6
+- (void)startScanningWithHighDutyCycle:(BOOL)cycle filteredPeers:(id)peers filteringBlob:(id)blob filteringMask:(id)mask
 {
-  v9 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  cycleCopy = cycle;
+  peersCopy = peers;
+  blobCopy = blob;
+  maskCopy = mask;
   if (self->_isScanning)
   {
     v14 = qword_100021420;
@@ -99,7 +99,7 @@
     }
   }
 
-  if (![v11 count])
+  if (![peersCopy count])
   {
     v15 = qword_100021420;
     if (os_log_type_enabled(qword_100021420, OS_LOG_TYPE_DEFAULT))
@@ -109,7 +109,7 @@
     }
   }
 
-  if ([v12 length] >= 0x17)
+  if ([blobCopy length] >= 0x17)
   {
     v16 = qword_100021420;
     if (os_log_type_enabled(qword_100021420, OS_LOG_TYPE_DEFAULT))
@@ -119,7 +119,7 @@
     }
   }
 
-  if ([v13 length] >= 0x17)
+  if ([maskCopy length] >= 0x17)
   {
     v17 = qword_100021420;
     if (os_log_type_enabled(qword_100021420, OS_LOG_TYPE_DEFAULT))
@@ -132,11 +132,11 @@
   if (!self->_isScanning)
   {
     self->_isScanning = 1;
-    self->_highDutyCycle = v9;
-    objc_storeStrong(&self->_filteredPeers, a4);
-    objc_storeStrong(&self->_filteringBlob, a5);
-    objc_storeStrong(&self->_filteringMask, a6);
-    if (v9)
+    self->_highDutyCycle = cycleCopy;
+    objc_storeStrong(&self->_filteredPeers, peers);
+    objc_storeStrong(&self->_filteringBlob, blob);
+    objc_storeStrong(&self->_filteringMask, mask);
+    if (cycleCopy)
     {
       v18 = 2;
     }
@@ -148,13 +148,13 @@
 
     v24[0] = WPMagicSwitchScanBlobData;
     v24[1] = WPMagicSwitchScanMaskData;
-    v25[0] = v12;
-    v25[1] = v13;
+    v25[0] = blobCopy;
+    v25[1] = maskCopy;
     v24[2] = WPMagicSwitchScanDutyCycle;
     v19 = [NSNumber numberWithInteger:v18];
     v24[3] = WPMagicSwitchScanPeers;
     v25[2] = v19;
-    v25[3] = v11;
+    v25[3] = peersCopy;
     v20 = [NSDictionary dictionaryWithObjects:v25 forKeys:v24 count:4];
 
     v21 = qword_100021420;
@@ -247,11 +247,11 @@ LABEL_5:
   return filteringBlob;
 }
 
-- (void)magicSwitchDidUpdateState:(id)a3
+- (void)magicSwitchDidUpdateState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   wirelessProximityManager = self->_wirelessProximityManager;
-  if (wirelessProximityManager != v4)
+  if (wirelessProximityManager != stateCopy)
   {
     v6 = qword_100021420;
     if (os_log_type_enabled(qword_100021420, OS_LOG_TYPE_DEFAULT))
@@ -263,20 +263,20 @@ LABEL_5:
     wirelessProximityManager = self->_wirelessProximityManager;
   }
 
-  v7 = [(WPMagicSwitch *)wirelessProximityManager state];
+  state = [(WPMagicSwitch *)wirelessProximityManager state];
   v8 = qword_100021420;
   if (os_log_type_enabled(qword_100021420, OS_LOG_TYPE_DEFAULT))
   {
     v9 = v8;
-    v10 = [WPClient stateAsString:v7];
+    v10 = [WPClient stateAsString:state];
     v12 = 138412290;
     v13 = v10;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "WiProxScanner --- WPMagicSwitch did update state (%@)", &v12, 0xCu);
   }
 
-  if (v7 <= 2)
+  if (state <= 2)
   {
-    if (v7 == 2)
+    if (state == 2)
     {
       if (self->_isScanning)
       {
@@ -294,10 +294,10 @@ LABEL_5:
   [WeakRetained wiProxScannerChangedState];
 }
 
-- (void)magicSwitchStartedScanning:(id)a3
+- (void)magicSwitchStartedScanning:(id)scanning
 {
-  v4 = a3;
-  if (self->_wirelessProximityManager != v4)
+  scanningCopy = scanning;
+  if (self->_wirelessProximityManager != scanningCopy)
   {
     v5 = qword_100021420;
     if (os_log_type_enabled(qword_100021420, OS_LOG_TYPE_DEFAULT))
@@ -315,10 +315,10 @@ LABEL_5:
   }
 }
 
-- (void)magicSwitchStoppedScanning:(id)a3
+- (void)magicSwitchStoppedScanning:(id)scanning
 {
-  v4 = a3;
-  if (self->_wirelessProximityManager != v4)
+  scanningCopy = scanning;
+  if (self->_wirelessProximityManager != scanningCopy)
   {
     v5 = qword_100021420;
     if (os_log_type_enabled(qword_100021420, OS_LOG_TYPE_DEFAULT))
@@ -336,11 +336,11 @@ LABEL_5:
   }
 }
 
-- (void)magicSwitch:(id)a3 failedToStartScanningWithError:(id)a4
+- (void)magicSwitch:(id)switch failedToStartScanningWithError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  if (self->_wirelessProximityManager != v6)
+  switchCopy = switch;
+  errorCopy = error;
+  if (self->_wirelessProximityManager != switchCopy)
   {
     v8 = qword_100021420;
     if (os_log_type_enabled(qword_100021420, OS_LOG_TYPE_DEFAULT))
@@ -354,17 +354,17 @@ LABEL_5:
   if (os_log_type_enabled(qword_100021420, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412290;
-    v11 = v7;
+    v11 = errorCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "WiProxScanner --- WPMagicSwitch failed to start scanning with error: (%@)", &v10, 0xCu);
   }
 }
 
-- (void)magicSwitch:(id)a3 foundDevice:(id)a4 withData:(id)a5
+- (void)magicSwitch:(id)switch foundDevice:(id)device withData:(id)data
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (self->_wirelessProximityManager != v8)
+  switchCopy = switch;
+  deviceCopy = device;
+  dataCopy = data;
+  if (self->_wirelessProximityManager != switchCopy)
   {
     v11 = qword_100021420;
     if (os_log_type_enabled(qword_100021420, OS_LOG_TYPE_DEFAULT))
@@ -378,21 +378,21 @@ LABEL_5:
   if (os_log_type_enabled(qword_100021420, OS_LOG_TYPE_DEFAULT))
   {
     v13 = v12;
-    v14 = [v9 UUIDString];
+    uUIDString = [deviceCopy UUIDString];
     v18 = 138412546;
-    v19 = v14;
+    v19 = uUIDString;
     v20 = 2112;
-    v21 = v10;
+    v21 = dataCopy;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "WiProxScanner --- WPMagicSwitch discovered peripheral (%@); data: (%@)", &v18, 0x16u);
   }
 
   if (self->_isScanning)
   {
-    v15 = [v10 objectForKey:WPMagicSwitchAdvertisingData];
+    v15 = [dataCopy objectForKey:WPMagicSwitchAdvertisingData];
     if (v15)
     {
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
-      [WeakRetained wiProxScannerFoundDevice:v9 withData:v15];
+      [WeakRetained wiProxScannerFoundDevice:deviceCopy withData:v15];
     }
   }
 

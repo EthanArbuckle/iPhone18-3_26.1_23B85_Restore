@@ -1,10 +1,10 @@
 @interface CNSensitiveContentUIEntitlementVerifierTestDouble
-- (CNSensitiveContentUIEntitlementVerifierTestDouble)initWithCanShowSensitiveUI:(BOOL)a3 processHasCommunicationFilterEntitlements:(BOOL)a4;
+- (CNSensitiveContentUIEntitlementVerifierTestDouble)initWithCanShowSensitiveUI:(BOOL)i processHasCommunicationFilterEntitlements:(BOOL)entitlements;
 @end
 
 @implementation CNSensitiveContentUIEntitlementVerifierTestDouble
 
-- (CNSensitiveContentUIEntitlementVerifierTestDouble)initWithCanShowSensitiveUI:(BOOL)a3 processHasCommunicationFilterEntitlements:(BOOL)a4
+- (CNSensitiveContentUIEntitlementVerifierTestDouble)initWithCanShowSensitiveUI:(BOOL)i processHasCommunicationFilterEntitlements:(BOOL)entitlements
 {
   v10.receiver = self;
   v10.super_class = CNSensitiveContentUIEntitlementVerifierTestDouble;
@@ -12,8 +12,8 @@
   v7 = v6;
   if (v6)
   {
-    v6->_canShowSensitiveUI = a3;
-    v6->_hasCommunicationFilterEntitlements = a4;
+    v6->_canShowSensitiveUI = i;
+    v6->_hasCommunicationFilterEntitlements = entitlements;
     v8 = v6;
   }
 

@@ -1,35 +1,35 @@
 @interface PKMiniDiscoveryCard
-- (BOOL)isEqual:(id)a3;
-- (PKMiniDiscoveryCard)initWithCoder:(id)a3;
-- (PKMiniDiscoveryCard)initWithDictionary:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (PKMiniDiscoveryCard)initWithCoder:(id)coder;
+- (PKMiniDiscoveryCard)initWithDictionary:(id)dictionary;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKMiniDiscoveryCard
 
-- (PKMiniDiscoveryCard)initWithDictionary:(id)a3
+- (PKMiniDiscoveryCard)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v8.receiver = self;
   v8.super_class = PKMiniDiscoveryCard;
-  v5 = [(PKDiscoveryCard *)&v8 initWithDictionary:v4];
+  v5 = [(PKDiscoveryCard *)&v8 initWithDictionary:dictionaryCopy];
   if (v5)
   {
-    v6 = [v4 PKStringForKey:@"miniCardTemplateType"];
+    v6 = [dictionaryCopy PKStringForKey:@"miniCardTemplateType"];
     v5->_miniCardTemplateType = PKDiscoveryMiniCardTemplateTypeFromString(v6);
   }
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v7.receiver = self;
   v7.super_class = PKMiniDiscoveryCard;
-  v5 = [(PKDiscoveryCard *)&v7 isEqual:v4]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && self->_miniCardTemplateType == v4[14];
+  v5 = [(PKDiscoveryCard *)&v7 isEqual:equalCopy]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && self->_miniCardTemplateType == equalCopy[14];
 
   return v5;
 }
@@ -57,24 +57,24 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = PKMiniDiscoveryCard;
-  v4 = a3;
-  [(PKDiscoveryCard *)&v5 encodeWithCoder:v4];
-  [v4 encodeInteger:self->_miniCardTemplateType forKey:{@"miniCardTemplateType", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(PKDiscoveryCard *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:self->_miniCardTemplateType forKey:{@"miniCardTemplateType", v5.receiver, v5.super_class}];
 }
 
-- (PKMiniDiscoveryCard)initWithCoder:(id)a3
+- (PKMiniDiscoveryCard)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = PKMiniDiscoveryCard;
-  v5 = [(PKDiscoveryCard *)&v7 initWithCoder:v4];
+  v5 = [(PKDiscoveryCard *)&v7 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_miniCardTemplateType = [v4 decodeIntegerForKey:@"miniCardTemplateType"];
+    v5->_miniCardTemplateType = [coderCopy decodeIntegerForKey:@"miniCardTemplateType"];
   }
 
   return v5;

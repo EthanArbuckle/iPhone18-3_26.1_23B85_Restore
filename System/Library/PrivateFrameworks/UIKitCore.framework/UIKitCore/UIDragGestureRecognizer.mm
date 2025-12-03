@@ -1,21 +1,21 @@
 @interface UIDragGestureRecognizer
-- (BOOL)canBePreventedByGestureRecognizer:(id)a3;
-- (BOOL)canPreventGestureRecognizer:(id)a3;
-- (BOOL)shouldReceiveEvent:(id)a3;
-- (CGPoint)locationInView:(id)a3;
+- (BOOL)canBePreventedByGestureRecognizer:(id)recognizer;
+- (BOOL)canPreventGestureRecognizer:(id)recognizer;
+- (BOOL)shouldReceiveEvent:(id)event;
+- (CGPoint)locationInView:(id)view;
 - (UIDragEvent)_dragEvent;
-- (UIDragGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
+- (UIDragGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
 - (_UIDropSessionImpl)dropSession;
 - (_UIInternalDraggingSessionDestination)sessionDestination;
 @end
 
 @implementation UIDragGestureRecognizer
 
-- (UIDragGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (UIDragGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
   v8.receiver = self;
   v8.super_class = UIDragGestureRecognizer;
-  v4 = [(UIGestureRecognizer *)&v8 initWithTarget:a3 action:a4];
+  v4 = [(UIGestureRecognizer *)&v8 initWithTarget:target action:action];
   v5 = v4;
   if (v4)
   {
@@ -35,31 +35,31 @@
 - (_UIInternalDraggingSessionDestination)sessionDestination
 {
   WeakRetained = objc_loadWeakRetained(&self->_dragEvent);
-  v3 = [WeakRetained _sessionDestination];
+  _sessionDestination = [WeakRetained _sessionDestination];
 
-  return v3;
+  return _sessionDestination;
 }
 
 - (_UIDropSessionImpl)dropSession
 {
   WeakRetained = objc_loadWeakRetained(&self->_dragEvent);
-  v3 = [WeakRetained _dropSession];
+  _dropSession = [WeakRetained _dropSession];
 
-  return v3;
+  return _dropSession;
 }
 
-- (BOOL)shouldReceiveEvent:(id)a3
+- (BOOL)shouldReceiveEvent:(id)event
 {
-  v4 = a3;
-  if ([v4 type] == 9)
+  eventCopy = event;
+  if ([eventCopy type] == 9)
   {
-    v5 = v4;
+    v5 = eventCopy;
     WeakRetained = objc_loadWeakRetained(&self->_dragEvent);
     v7 = WeakRetained;
     if (self && WeakRetained != v5 && (*(&self->super._gestureFlags + 5) & 0x80) != 0)
     {
-      v10 = [v5 _dynamicGestureRecognizers];
-      v11 = [v10 containsObject:self];
+      _dynamicGestureRecognizers = [v5 _dynamicGestureRecognizers];
+      v11 = [_dynamicGestureRecognizers containsObject:self];
 
       if (!v11)
       {
@@ -74,8 +74,8 @@ LABEL_14:
     {
     }
 
-    v8 = [(UIGestureRecognizer *)self delegate];
-    if ((objc_opt_respondsToSelector() & 1) != 0 && ![v8 _gestureRecognizer:self shouldReceiveDragEvent:v5])
+    delegate = [(UIGestureRecognizer *)self delegate];
+    if ((objc_opt_respondsToSelector() & 1) != 0 && ![delegate _gestureRecognizer:self shouldReceiveDragEvent:v5])
     {
       v9 = 0;
     }
@@ -95,15 +95,15 @@ LABEL_15:
   return v9;
 }
 
-- (BOOL)canPreventGestureRecognizer:(id)a3
+- (BOOL)canPreventGestureRecognizer:(id)recognizer
 {
-  v4 = a3;
+  recognizerCopy = recognizer;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 _dragEvent];
-    v6 = [(UIDragGestureRecognizer *)self _dragEvent];
-    v7 = v5 == v6;
+    _dragEvent = [recognizerCopy _dragEvent];
+    _dragEvent2 = [(UIDragGestureRecognizer *)self _dragEvent];
+    v7 = _dragEvent == _dragEvent2;
   }
 
   else
@@ -114,15 +114,15 @@ LABEL_15:
   return v7;
 }
 
-- (BOOL)canBePreventedByGestureRecognizer:(id)a3
+- (BOOL)canBePreventedByGestureRecognizer:(id)recognizer
 {
-  v4 = a3;
+  recognizerCopy = recognizer;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 _dragEvent];
-    v6 = [(UIDragGestureRecognizer *)self _dragEvent];
-    v7 = v5 == v6;
+    _dragEvent = [recognizerCopy _dragEvent];
+    _dragEvent2 = [(UIDragGestureRecognizer *)self _dragEvent];
+    v7 = _dragEvent == _dragEvent2;
   }
 
   else
@@ -133,11 +133,11 @@ LABEL_15:
   return v7;
 }
 
-- (CGPoint)locationInView:(id)a3
+- (CGPoint)locationInView:(id)view
 {
-  v4 = a3;
-  v5 = [(UIDragGestureRecognizer *)self _dragEvent];
-  [v5 locationInView:v4];
+  viewCopy = view;
+  _dragEvent = [(UIDragGestureRecognizer *)self _dragEvent];
+  [_dragEvent locationInView:viewCopy];
   v7 = v6;
   v9 = v8;
 

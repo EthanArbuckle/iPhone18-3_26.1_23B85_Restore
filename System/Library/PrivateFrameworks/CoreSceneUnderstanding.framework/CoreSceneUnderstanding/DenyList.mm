@@ -1,19 +1,19 @@
 @interface DenyList
-- (BOOL)checkIfCaptionInDenylist:(id)a3;
+- (BOOL)checkIfCaptionInDenylist:(id)denylist;
 @end
 
 @implementation DenyList
 
-- (BOOL)checkIfCaptionInDenylist:(id)a3
+- (BOOL)checkIfCaptionInDenylist:(id)denylist
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  denylistCopy = denylist;
   v9 = objc_msgSend_denyListRules(self, v5, v6, v7, v8);
   v14 = objc_msgSend_count(v9, v10, v11, v12, v13);
 
   if (v14)
   {
-    v19 = objc_msgSend_length(v4, v15, v16, v17, v18);
+    v19 = objc_msgSend_length(denylistCopy, v15, v16, v17, v18);
     v34 = 0u;
     v35 = 0u;
     v32 = 0u;
@@ -32,7 +32,7 @@
             objc_enumerationMutation(v24);
           }
 
-          if (objc_msgSend_rangeOfFirstMatchInString_options_range_(*(*(&v32 + 1) + 8 * i), v26, v4, 0, 0, v19) != 0x7FFFFFFFFFFFFFFFLL)
+          if (objc_msgSend_rangeOfFirstMatchInString_options_range_(*(*(&v32 + 1) + 8 * i), v26, denylistCopy, 0, 0, v19) != 0x7FFFFFFFFFFFFFFFLL)
           {
             LOBYTE(v14) = 1;
             goto LABEL_12;

@@ -1,6 +1,6 @@
 @interface UIMainMenuSystem
 + (UIMainMenuSystem)sharedSystem;
-- (BOOL)_buildMenuWithBuilder:(id)a3 fromResponderChain:(id)a4 atLocation:(CGPoint)a5 inCoordinateSpace:(id)a6;
+- (BOOL)_buildMenuWithBuilder:(id)builder fromResponderChain:(id)chain atLocation:(CGPoint)location inCoordinateSpace:(id)space;
 - (NSArray)_keyCommands;
 - (UIMenu)_rootMenu;
 - (id)_additionalKeyCommands;
@@ -9,11 +9,11 @@
 - (id)_effectiveConfiguration;
 - (id)_init;
 - (void)_automaticallyRebuildIfNeeded;
-- (void)_setInitialBuildingResponder:(id)a3;
-- (void)_setOverrideApplicationName:(id)a3;
-- (void)_setOverrideBuildConfiguration:(id)a3 overrideBuildHandler:(id)a4;
+- (void)_setInitialBuildingResponder:(id)responder;
+- (void)_setOverrideApplicationName:(id)name;
+- (void)_setOverrideBuildConfiguration:(id)configuration overrideBuildHandler:(id)handler;
 - (void)dealloc;
-- (void)setBuildConfiguration:(id)a3 buildHandler:(id)a4;
+- (void)setBuildConfiguration:(id)configuration buildHandler:(id)handler;
 - (void)setNeedsRebuild;
 @end
 
@@ -25,7 +25,7 @@
   block[1] = 3221225472;
   block[2] = __32__UIMainMenuSystem_sharedSystem__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1ED49A500 != -1)
   {
     dispatch_once(&qword_1ED49A500, block);
@@ -59,11 +59,11 @@ void __32__UIMainMenuSystem_sharedSystem__block_invoke(uint64_t a1)
     goto LABEL_67;
   }
 
-  v3 = [(UIMainMenuSystem *)self _effectiveConfiguration];
-  v4 = v3;
-  if (v3)
+  _effectiveConfiguration = [(UIMainMenuSystem *)self _effectiveConfiguration];
+  v4 = _effectiveConfiguration;
+  if (_effectiveConfiguration)
   {
-    v5 = v3;
+    v5 = _effectiveConfiguration;
   }
 
   else
@@ -74,26 +74,26 @@ void __32__UIMainMenuSystem_sharedSystem__block_invoke(uint64_t a1)
   v7 = v5;
 
   v153 = dyld_program_sdk_at_least();
-  v8 = [v7 newScenePreference];
-  v156 = [v7 documentPreference];
-  v9 = [UIApp _supportsOpenMainMenuCommands];
+  newScenePreference = [v7 newScenePreference];
+  documentPreference = [v7 documentPreference];
+  _supportsOpenMainMenuCommands = [UIApp _supportsOpenMainMenuCommands];
   v10 = ([UIApp _supportsPrintCommand] & 1) != 0 || objc_msgSend(v7, "printingPreference") != 1;
   v155 = v10;
-  v11 = [v7 findingPreference];
-  v151 = [v7 toolbarPreference];
-  v131 = [v7 sidebarPreference];
-  v134 = [v7 inspectorPreference];
-  v152 = [v7 textFormattingPreference];
-  v150 = v8;
-  v157 = v9;
-  if (v11 != 1)
+  findingPreference = [v7 findingPreference];
+  toolbarPreference = [v7 toolbarPreference];
+  sidebarPreference = [v7 sidebarPreference];
+  inspectorPreference = [v7 inspectorPreference];
+  textFormattingPreference = [v7 textFormattingPreference];
+  v150 = newScenePreference;
+  v157 = _supportsOpenMainMenuCommands;
+  if (findingPreference != 1)
   {
-    v13 = [v7 findingConfiguration];
-    v14 = [v13 style];
+    findingConfiguration = [v7 findingConfiguration];
+    style = [findingConfiguration style];
 
     v15 = [UICommand _defaultCommandForAction:sel_find_];
     v16 = v15;
-    if (v14 == 2)
+    if (style == 2)
     {
       v187[0] = v15;
       v20 = [UICommand _defaultCommandForAction:sel_findNext_];
@@ -105,7 +105,7 @@ void __32__UIMainMenuSystem_sharedSystem__block_invoke(uint64_t a1)
 
     else
     {
-      if (v14 == 1)
+      if (style == 1)
       {
         v17 = _UINSLocalizedStringWithDefaultValue(@"Search", @"Search");
         [v16 setTitle:v17];
@@ -117,7 +117,7 @@ void __32__UIMainMenuSystem_sharedSystem__block_invoke(uint64_t a1)
         v154 = [MEMORY[0x1E695DEC8] arrayWithObjects:v188 count:1];
         v19 = v16;
 LABEL_22:
-        v12 = v8;
+        v12 = newScenePreference;
 
         goto LABEL_23;
       }
@@ -131,7 +131,7 @@ LABEL_22:
       v186[3] = v22;
       v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v186 count:4];
 
-      v8 = v150;
+      newScenePreference = v150;
     }
 
     v23 = [UICommand _defaultCommandForAction:sel_useSelectionForFind_];
@@ -160,7 +160,7 @@ LABEL_22:
     goto LABEL_22;
   }
 
-  v12 = v8;
+  v12 = newScenePreference;
   v154 = MEMORY[0x1E695E0F0];
 LABEL_23:
   v129 = MEMORY[0x1E695DEC8];
@@ -218,7 +218,7 @@ LABEL_23:
   v136 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v177 count:1];
   v133 = [UIMenu _defaultInlineMenuWithIdentifier:@"com.apple.menu.close" children:?];
   v180[2] = v133;
-  if (v156 == 1)
+  if (documentPreference == 1)
   {
     v31 = MEMORY[0x1E695E0F0];
   }
@@ -304,11 +304,11 @@ LABEL_23:
   v102 = [MEMORY[0x1E695DEC8] arrayWithObjects:v174 count:7];
   v101 = [UIMenu _defaultMenuWithIdentifier:@"com.apple.menu.edit" children:?];
   v183[2] = v101;
-  if (v152 == 1)
+  if (textFormattingPreference == 1)
   {
-    v34 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
     v153 = 0;
-    v100 = v34;
+    v100 = null;
   }
 
   else
@@ -372,12 +372,12 @@ LABEL_23:
     v58 = [UIMenu _defaultMenuWithIdentifier:@"com.apple.menu.text" children:?];
     v169[1] = v58;
     v57 = [MEMORY[0x1E695DEC8] arrayWithObjects:v169 count:2];
-    v34 = [UIMenu _defaultMenuWithIdentifier:@"com.apple.menu.format" children:?];
+    null = [UIMenu _defaultMenuWithIdentifier:@"com.apple.menu.format" children:?];
   }
 
-  v183[3] = v34;
-  v88 = v34;
-  if (v151 == 1)
+  v183[3] = null;
+  v88 = null;
+  if (toolbarPreference == 1)
   {
     v38 = MEMORY[0x1E695E0F0];
   }
@@ -393,7 +393,7 @@ LABEL_23:
   v99 = [UIMenu _defaultInlineMenuWithIdentifier:@"com.apple.menu.toolbar" children:v38];
   v162[0] = v99;
   v39 = MEMORY[0x1E695DEC8];
-  if (v131 == 1)
+  if (sidebarPreference == 1)
   {
     [MEMORY[0x1E695DFB0] null];
   }
@@ -404,7 +404,7 @@ LABEL_23:
   }
   v132 = ;
   v160[0] = v132;
-  if (v134 == 1)
+  if (inspectorPreference == 1)
   {
     [MEMORY[0x1E695DFB0] null];
   }
@@ -442,11 +442,11 @@ LABEL_23:
   v50 = [MEMORY[0x1E695DEC8] arrayWithObjects:v183 count:7];
   v6 = [v129 ui_arrayByCompactingArray:v50];
 
-  if (v151 != 1)
+  if (toolbarPreference != 1)
   {
   }
 
-  if (v152 != 1)
+  if (textFormattingPreference != 1)
   {
   }
 
@@ -454,7 +454,7 @@ LABEL_23:
   {
   }
 
-  if (v152 != 1)
+  if (textFormattingPreference != 1)
   {
   }
 
@@ -462,7 +462,7 @@ LABEL_23:
   {
   }
 
-  if (v156 != 1)
+  if (documentPreference != 1)
   {
   }
 
@@ -548,9 +548,9 @@ void __44__UIMainMenuSystem__defaultRootMenuChildren__block_invoke()
 - (NSArray)_keyCommands
 {
   [(UIMainMenuSystem *)self _automaticallyRebuildIfNeeded];
-  v3 = [(_UIMenuBuilder *)self->_automaticallyRebuildingBuilder _keyCommands];
-  v4 = [(UIMainMenuSystem *)self _additionalKeyCommands];
-  v5 = [v3 arrayByAddingObjectsFromArray:v4];
+  _keyCommands = [(_UIMenuBuilder *)self->_automaticallyRebuildingBuilder _keyCommands];
+  _additionalKeyCommands = [(UIMainMenuSystem *)self _additionalKeyCommands];
+  v5 = [_keyCommands arrayByAddingObjectsFromArray:_additionalKeyCommands];
 
   return v5;
 }
@@ -622,9 +622,9 @@ void __42__UIMainMenuSystem__additionalKeyCommands__block_invoke()
   return [(_UIMenuBuilder *)automaticallyRebuildingBuilder menuForIdentifier:@"com.apple.menu.root"];
 }
 
-- (void)_setInitialBuildingResponder:(id)a3
+- (void)_setInitialBuildingResponder:(id)responder
 {
-  objc_storeWeak(&self->_initialBuildingResponderOverride, a3);
+  objc_storeWeak(&self->_initialBuildingResponderOverride, responder);
 
   [(UIMainMenuSystem *)self setNeedsRebuild];
 }
@@ -737,19 +737,19 @@ id __91__UIMainMenuSystem__mergeSidebarAndFullscreenMenusIfNeededWithBuilder_app
   return v5;
 }
 
-- (BOOL)_buildMenuWithBuilder:(id)a3 fromResponderChain:(id)a4 atLocation:(CGPoint)a5 inCoordinateSpace:(id)a6
+- (BOOL)_buildMenuWithBuilder:(id)builder fromResponderChain:(id)chain atLocation:(CGPoint)location inCoordinateSpace:(id)space
 {
-  y = a5.y;
-  x = a5.x;
+  y = location.y;
+  x = location.x;
   v153[1] = *MEMORY[0x1E69E9840];
-  v137 = a3;
-  v133 = a4;
-  v134 = a6;
-  v11 = [(UIMainMenuSystem *)self _effectiveBuildHandler];
-  v135 = v11;
-  if (v11)
+  builderCopy = builder;
+  chainCopy = chain;
+  spaceCopy = space;
+  _effectiveBuildHandler = [(UIMainMenuSystem *)self _effectiveBuildHandler];
+  v135 = _effectiveBuildHandler;
+  if (_effectiveBuildHandler)
   {
-    (*(v11 + 16))(v11, v137);
+    (*(_effectiveBuildHandler + 16))(_effectiveBuildHandler, builderCopy);
     v136 = 1;
   }
 
@@ -757,12 +757,12 @@ id __91__UIMainMenuSystem__mergeSidebarAndFullscreenMenusIfNeededWithBuilder_app
   {
     v142.receiver = self;
     v142.super_class = UIMainMenuSystem;
-    v136 = [(UIMenuSystem *)&v142 _buildMenuWithBuilder:v137 fromResponderChain:v133 atLocation:v134 inCoordinateSpace:x, y];
+    v136 = [(UIMenuSystem *)&v142 _buildMenuWithBuilder:builderCopy fromResponderChain:chainCopy atLocation:spaceCopy inCoordinateSpace:x, y];
   }
 
   if ([UIApp _supportsMenuActions])
   {
-    v12 = v137;
+    v12 = builderCopy;
     v13 = !v136;
     if (!self)
     {
@@ -797,20 +797,20 @@ LABEL_61:
       if ([v55 isEqualToString:@"com.apple.menu.root"])
       {
         v56 = MEMORY[0x1E695DFD8];
-        v57 = [v138 _keyCommands];
-        v58 = [v56 setWithArray:v57];
+        _keyCommands = [v138 _keyCommands];
+        v58 = [v56 setWithArray:_keyCommands];
 
-        v59 = [MEMORY[0x1E695DF70] array];
+        array = [MEMORY[0x1E695DF70] array];
         v60 = [UICommand _defaultCommandForAction:sel_startDictation_];
         v61 = [UICommand _defaultCommandForAction:sel_orderFrontCharacterPalette_];
         v139 = [UICommand _defaultCommandForAction:sel__handleLegacyEmojiKeyboardShortcut_];
         v62 = [UICommand _defaultCommandForAction:sel__toggleSoftwareKeyboard_];
         v63 = [UIDeferredMenuElement elementWithUncachedProvider:&__block_literal_global_115];
-        [v59 addObject:v63];
+        [array addObject:v63];
 
-        v64 = [v60 action];
-        v65 = [v60 propertyList];
-        v66 = [v138 commandForAction:v64 propertyList:v65];
+        action = [v60 action];
+        propertyList = [v60 propertyList];
+        v66 = [v138 commandForAction:action propertyList:propertyList];
         if (v66)
         {
         }
@@ -821,22 +821,22 @@ LABEL_61:
 
           if ((v67 & 1) == 0)
           {
-            [v59 addObject:v60];
+            [array addObject:v60];
           }
         }
 
-        v68 = [v61 action];
-        v69 = [v61 propertyList];
-        v70 = [v138 commandForAction:v68 propertyList:v69];
+        action2 = [v61 action];
+        propertyList2 = [v61 propertyList];
+        v70 = [v138 commandForAction:action2 propertyList:propertyList2];
         if (v70)
         {
         }
 
         else
         {
-          v71 = [v139 action];
-          v72 = [v139 propertyList];
-          v73 = [v138 commandForAction:v71 propertyList:v72];
+          action3 = [v139 action];
+          propertyList3 = [v139 propertyList];
+          v73 = [v138 commandForAction:action3 propertyList:propertyList3];
           if (v73 || ([v58 containsObject:v61] & 1) != 0)
           {
           }
@@ -847,15 +847,15 @@ LABEL_61:
 
             if ((v125 & 1) == 0)
             {
-              [v59 addObject:v61];
-              [v59 addObject:v139];
+              [array addObject:v61];
+              [array addObject:v139];
             }
           }
         }
 
-        v74 = [v62 action];
-        v75 = [v62 propertyList];
-        v76 = [v138 commandForAction:v74 propertyList:v75];
+        action4 = [v62 action];
+        propertyList4 = [v62 propertyList];
+        v76 = [v138 commandForAction:action4 propertyList:propertyList4];
         if (v76)
         {
         }
@@ -866,11 +866,11 @@ LABEL_61:
 
           if ((v77 & 1) == 0)
           {
-            [v59 addObject:v62];
+            [array addObject:v62];
           }
         }
 
-        v78 = [UIMenu _defaultInlineMenuWithIdentifier:@"com.apple.menu.text-input" children:v59];
+        v78 = [UIMenu _defaultInlineMenuWithIdentifier:@"com.apple.menu.text-input" children:array];
         [v138 insertChildMenu:v78 atEndOfMenuForIdentifier:@"com.apple.menu.edit"];
       }
 
@@ -931,24 +931,24 @@ LABEL_91:
           {
             if (v99)
             {
-              v101 = [v98 children];
-              v102 = [v101 count] > 1;
+              children = [v98 children];
+              v102 = [children count] > 1;
 
               if (!v102)
               {
-                v103 = [v98 children];
-                if ([v103 count] == 1)
+                children2 = [v98 children];
+                if ([children2 count] == 1)
                 {
                   v104 = [v97 _parentOfMenuForIdentifier:@"com.apple.menu.find-panel" commandForIdentifier:0];
                   v105 = [v104 isEqualToString:@"com.apple.menu.find"];
 
                   if (v105)
                   {
-                    v106 = [v98 children];
-                    v107 = [v106 firstObject];
+                    children3 = [v98 children];
+                    firstObject = [children3 firstObject];
 
-                    v108 = [v107 children];
-                    v109 = [v108 count] < 2;
+                    children4 = [firstObject children];
+                    v109 = [children4 count] < 2;
 
                     if (!v109)
                     {
@@ -975,17 +975,17 @@ LABEL_100:
           {
             if (v111)
             {
-              v113 = [v111 children];
-              if ([v113 count] == 1)
+              children5 = [v111 children];
+              if ([children5 count] == 1)
               {
-                v141 = [v111 children];
-                v114 = [v141 firstObject];
+                children6 = [v111 children];
+                firstObject2 = [children6 firstObject];
                 v115 = objc_opt_self();
                 if (objc_opt_isKindOfClass())
                 {
-                  v132 = [v111 children];
-                  v116 = [v132 firstObject];
-                  v117 = [v116 action] == sel_toggleSidebar_;
+                  children7 = [v111 children];
+                  firstObject3 = [children7 firstObject];
+                  v117 = [firstObject3 action] == sel_toggleSidebar_;
                 }
 
                 else
@@ -1007,8 +1007,8 @@ LABEL_100:
 
             if (v112)
             {
-              v118 = [v112 children];
-              v119 = [v118 count] == 0;
+              children8 = [v112 children];
+              v119 = [children8 count] == 0;
             }
 
             else
@@ -1050,14 +1050,14 @@ LABEL_117:
         }
 
         v92 = [v85 menuForIdentifier:v89];
-        v93 = [v92 children];
-        v94 = [v93 indexOfObject:v86];
+        children9 = [v92 children];
+        v94 = [children9 indexOfObject:v86];
 
-        v95 = [v92 children];
-        if (v94 < [v95 count] - 1)
+        children10 = [v92 children];
+        if (v94 < [children10 count] - 1)
         {
-          v140 = [v92 children];
-          v96 = [v140 objectAtIndexedSubscript:v94 + 1];
+          children11 = [v92 children];
+          v96 = [children11 objectAtIndexedSubscript:v94 + 1];
           [v88 isEqual:v96];
         }
       }
@@ -1078,8 +1078,8 @@ LABEL_117:
     v146 = 0u;
     v143 = 0u;
     v144 = 0u;
-    v19 = [v131 children];
-    v20 = [v19 countByEnumeratingWithState:&v143 objects:&v148 count:16];
+    children12 = [v131 children];
+    v20 = [children12 countByEnumeratingWithState:&v143 objects:&v148 count:16];
     if (v20)
     {
       v21 = 0;
@@ -1091,7 +1091,7 @@ LABEL_117:
         {
           if (*v144 != v22)
           {
-            objc_enumerationMutation(v19);
+            objc_enumerationMutation(children12);
           }
 
           v24 = *(*(&v143 + 1) + 8 * v23);
@@ -1120,15 +1120,15 @@ LABEL_117:
         }
 
         while (v20 != v23);
-        v20 = [v19 countByEnumeratingWithState:&v143 objects:&v148 count:16];
+        v20 = [children12 countByEnumeratingWithState:&v143 objects:&v148 count:16];
       }
 
       while (v20);
 
       if (v21)
       {
-        v28 = [v131 children];
-        v29 = [v28 bs_filter:&__block_literal_global_107];
+        children13 = [v131 children];
+        v29 = [children13 bs_filter:&__block_literal_global_107];
         v30 = [v131 menuByReplacingChildren:v29];
 
         [v138 replaceMenuForIdentifier:@"com.apple.menu.root" withMenu:v30];
@@ -1149,19 +1149,19 @@ LABEL_117:
     v33 = [v31 menuForIdentifier:@"com.apple.menu.application"];
     if (v33)
     {
-      v34 = [v32 children];
-      v35 = [v34 firstObject];
+      children14 = [v32 children];
+      firstObject4 = [children14 firstObject];
       v36 = v33;
       v37 = v36;
-      if (v35 == v36)
+      if (firstObject4 == v36)
       {
 
         goto LABEL_38;
       }
 
-      if (v35)
+      if (firstObject4)
       {
-        v38 = [v35 isEqual:v36];
+        v38 = [firstObject4 isEqual:v36];
 
         if (v38)
         {
@@ -1173,19 +1173,19 @@ LABEL_38:
           v42 = v41;
           if (v40)
           {
-            v43 = [v41 children];
-            v44 = [v43 lastObject];
+            children15 = [v41 children];
+            lastObject = [children15 lastObject];
             v45 = v40;
             v46 = v45;
-            if (v44 == v45)
+            if (lastObject == v45)
             {
 
               goto LABEL_48;
             }
 
-            if (v44)
+            if (lastObject)
             {
-              v47 = [v44 isEqual:v45];
+              v47 = [lastObject isEqual:v45];
 
               if (v47)
               {
@@ -1277,32 +1277,32 @@ LABEL_120:
   return v136;
 }
 
-- (void)setBuildConfiguration:(id)a3 buildHandler:(id)a4
+- (void)setBuildConfiguration:(id)configuration buildHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  configurationCopy = configuration;
+  handlerCopy = handler;
   if ([(UIMenuSystem *)self _isBuilding])
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"UIMainMenuSystem.m" lineNumber:1342 description:@"Cannot set a main menu system configuration while the main menu system is building."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIMainMenuSystem.m" lineNumber:1342 description:@"Cannot set a main menu system configuration while the main menu system is building."];
 
-    if (v7)
+    if (configurationCopy)
     {
       goto LABEL_3;
     }
   }
 
-  else if (v7)
+  else if (configurationCopy)
   {
     goto LABEL_3;
   }
 
-  v17 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v17 handleFailureInMethod:a2 object:self file:@"UIMainMenuSystem.m" lineNumber:1343 description:{@"Invalid parameter not satisfying: %@", @"configuration"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"UIMainMenuSystem.m" lineNumber:1343 description:{@"Invalid parameter not satisfying: %@", @"configuration"}];
 
 LABEL_3:
   v9 = self->_configuration;
-  v10 = v7;
+  v10 = configurationCopy;
   v18 = v10;
   if (v9 == v10)
   {
@@ -1328,7 +1328,7 @@ LABEL_3:
   configuration = self->_configuration;
   self->_configuration = v12;
 
-  v14 = _Block_copy(v8);
+  v14 = _Block_copy(handlerCopy);
   buildHandler = self->_buildHandler;
   self->_buildHandler = v14;
 
@@ -1341,18 +1341,18 @@ LABEL_3:
 LABEL_12:
 }
 
-- (void)_setOverrideBuildConfiguration:(id)a3 overrideBuildHandler:(id)a4
+- (void)_setOverrideBuildConfiguration:(id)configuration overrideBuildHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  configurationCopy = configuration;
+  handlerCopy = handler;
   if ([(UIMenuSystem *)self _isBuilding])
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"UIMainMenuSystem.m" lineNumber:1355 description:@"Cannot set an override main menu system configuration while the main menu system is building."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIMainMenuSystem.m" lineNumber:1355 description:@"Cannot set an override main menu system configuration while the main menu system is building."];
   }
 
   v9 = self->_overrideConfiguration;
-  v10 = v7;
+  v10 = configurationCopy;
   v17 = v10;
   if (v9 == v10)
   {
@@ -1375,7 +1375,7 @@ LABEL_10:
     overrideConfiguration = self->_overrideConfiguration;
     self->_overrideConfiguration = v12;
 
-    v14 = _Block_copy(v8);
+    v14 = _Block_copy(handlerCopy);
     overrideBuildHandler = self->_overrideBuildHandler;
     self->_overrideBuildHandler = v14;
 
@@ -1410,9 +1410,9 @@ LABEL_11:
   return v3;
 }
 
-- (void)_setOverrideApplicationName:(id)a3
+- (void)_setOverrideApplicationName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   if (qword_1ED49A528 != -1)
   {
     dispatch_once(&qword_1ED49A528, &__block_literal_global_147);
@@ -1420,18 +1420,18 @@ LABEL_11:
 
   if ((byte_1ED49A4F9 & 1) == 0)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"UIMainMenuSystem.m" lineNumber:1378 description:@"Process is not approved to use -[UIMenuSystem _setOverrideApplicationName]"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIMainMenuSystem.m" lineNumber:1378 description:@"Process is not approved to use -[UIMenuSystem _setOverrideApplicationName]"];
   }
 
   if ([(UIMenuSystem *)self _isBuilding])
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"UIMainMenuSystem.m" lineNumber:1379 description:@"Cannot set an override application name while the main menu system is building."];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"UIMainMenuSystem.m" lineNumber:1379 description:@"Cannot set an override application name while the main menu system is building."];
   }
 
   v6 = self->_overrideApplicationName;
-  v7 = v5;
+  v7 = nameCopy;
   v17 = v7;
   if (v6 == v7)
   {

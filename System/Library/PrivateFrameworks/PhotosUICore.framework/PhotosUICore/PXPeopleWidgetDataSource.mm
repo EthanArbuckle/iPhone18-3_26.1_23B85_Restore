@@ -1,24 +1,24 @@
 @interface PXPeopleWidgetDataSource
-- (PXPeopleWidgetDataSource)initWithPhotoLibrary:(id)a3 name:(id)a4 objectsReloadBlock:(id)a5;
-- (id)titleAtIndex:(unint64_t)a3;
+- (PXPeopleWidgetDataSource)initWithPhotoLibrary:(id)library name:(id)name objectsReloadBlock:(id)block;
+- (id)titleAtIndex:(unint64_t)index;
 - (void)dealloc;
-- (void)imageCacheDidChanged:(id)a3;
-- (void)loadMembersWithCompletionBlock:(id)a3;
-- (void)photoLibraryDidChange:(id)a3;
-- (void)prefetchThumbnailsForTargetSize:(CGSize)a3 displayScale:(double)a4 maxFetchCount:(unint64_t)a5;
+- (void)imageCacheDidChanged:(id)changed;
+- (void)loadMembersWithCompletionBlock:(id)block;
+- (void)photoLibraryDidChange:(id)change;
+- (void)prefetchThumbnailsForTargetSize:(CGSize)size displayScale:(double)scale maxFetchCount:(unint64_t)count;
 - (void)startListeningForChanges;
 - (void)stopListeningForChanges;
 @end
 
 @implementation PXPeopleWidgetDataSource
 
-- (void)loadMembersWithCompletionBlock:(id)a3
+- (void)loadMembersWithCompletionBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(PXPeopleDataSource *)self objects];
-  v6 = [v5 fetchedObjects];
+  blockCopy = block;
+  objects = [(PXPeopleDataSource *)self objects];
+  fetchedObjects = [objects fetchedObjects];
 
-  if ([v6 count])
+  if ([fetchedObjects count])
   {
     fetchQueue = self->_fetchQueue;
     v10[0] = MEMORY[0x1E69E9820];
@@ -26,8 +26,8 @@
     v10[2] = __59__PXPeopleWidgetDataSource_loadMembersWithCompletionBlock___block_invoke_2;
     v10[3] = &unk_1E774A0E0;
     v10[4] = self;
-    v11 = v6;
-    v12 = v4;
+    v11 = fetchedObjects;
+    v12 = blockCopy;
     dispatch_async(fetchQueue, v10);
 
     v8 = v11;
@@ -36,15 +36,15 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if (v4)
+  if (blockCopy)
   {
-    v9 = [off_1E7721878 sharedScheduler];
+    sharedScheduler = [off_1E7721878 sharedScheduler];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __59__PXPeopleWidgetDataSource_loadMembersWithCompletionBlock___block_invoke;
     v13[3] = &unk_1E774C250;
-    v14 = v4;
-    [v9 dispatchInMainTransaction:v13];
+    v14 = blockCopy;
+    [sharedScheduler dispatchInMainTransaction:v13];
 
     v8 = v14;
     goto LABEL_5;
@@ -183,10 +183,10 @@ LABEL_7:
   return v10;
 }
 
-- (void)prefetchThumbnailsForTargetSize:(CGSize)a3 displayScale:(double)a4 maxFetchCount:(unint64_t)a5
+- (void)prefetchThumbnailsForTargetSize:(CGSize)size displayScale:(double)scale maxFetchCount:(unint64_t)count
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   if (![(PXPeopleWidgetDataSource *)self prefetchingStarted])
   {
     [(PXPeopleWidgetDataSource *)self setPrefetchingStarted:1];
@@ -196,10 +196,10 @@ LABEL_7:
     block[2] = __87__PXPeopleWidgetDataSource_prefetchThumbnailsForTargetSize_displayScale_maxFetchCount___block_invoke;
     block[3] = &unk_1E7747168;
     block[4] = self;
-    *&block[5] = a4;
+    *&block[5] = scale;
     *&block[6] = width;
     *&block[7] = height;
-    block[8] = a5;
+    block[8] = count;
     dispatch_async(fetchQueue, block);
   }
 }
@@ -263,9 +263,9 @@ LABEL_5:
   }
 }
 
-- (id)titleAtIndex:(unint64_t)a3
+- (id)titleAtIndex:(unint64_t)index
 {
-  v5 = [(PXPeopleDataSource *)self memberAtIndex:a3];
+  v5 = [(PXPeopleDataSource *)self memberAtIndex:index];
   if (v5)
   {
     objc_opt_class();
@@ -274,27 +274,27 @@ LABEL_5:
       goto LABEL_3;
     }
 
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v14 = objc_opt_class();
     v13 = NSStringFromClass(v14);
-    v15 = [v5 px_descriptionForAssertionMessage];
-    [v11 handleFailureInMethod:a2 object:self file:@"PXPeopleWidgetDataSource.m" lineNumber:97 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"[self memberAtIndex:index]", v13, v15}];
+    px_descriptionForAssertionMessage = [v5 px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPeopleWidgetDataSource.m" lineNumber:97 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"[self memberAtIndex:index]", v13, px_descriptionForAssertionMessage}];
   }
 
   else
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v12 = objc_opt_class();
     v13 = NSStringFromClass(v12);
-    [v11 handleFailureInMethod:a2 object:self file:@"PXPeopleWidgetDataSource.m" lineNumber:97 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"[self memberAtIndex:index]", v13}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPeopleWidgetDataSource.m" lineNumber:97 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"[self memberAtIndex:index]", v13}];
   }
 
 LABEL_3:
-  v6 = [v5 name];
-  v7 = v6;
-  if (v6)
+  name = [v5 name];
+  v7 = name;
+  if (name)
   {
-    v8 = v6;
+    v8 = name;
   }
 
   else
@@ -307,12 +307,12 @@ LABEL_3:
   return v8;
 }
 
-- (void)imageCacheDidChanged:(id)a3
+- (void)imageCacheDidChanged:(id)changed
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKey:@"PXPeopleFaceCropManagerInvalidatedPersonLocalIdentifiersKey"];
+  changedCopy = changed;
+  userInfo = [changedCopy userInfo];
+  v6 = [userInfo objectForKey:@"PXPeopleFaceCropManagerInvalidatedPersonLocalIdentifiersKey"];
 
   v22 = 0;
   v23 = &v22;
@@ -330,8 +330,8 @@ LABEL_3:
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v9 = [(PXPeopleDataSource *)self members];
-  v10 = [v9 countByEnumeratingWithState:&v15 objects:v26 count:16];
+  members = [(PXPeopleDataSource *)self members];
+  v10 = [members countByEnumeratingWithState:&v15 objects:v26 count:16];
   if (v10)
   {
     v11 = *v16;
@@ -341,7 +341,7 @@ LABEL_3:
     {
       if (*v16 != v11)
       {
-        objc_enumerationMutation(v9);
+        objc_enumerationMutation(members);
       }
 
       v8[2](v8, *(*(&v15 + 1) + 8 * v12));
@@ -352,7 +352,7 @@ LABEL_3:
 
       if (v10 == ++v12)
       {
-        v10 = [v9 countByEnumeratingWithState:&v15 objects:v26 count:16];
+        v10 = [members countByEnumeratingWithState:&v15 objects:v26 count:16];
         if (v10)
         {
           goto LABEL_3;
@@ -365,8 +365,8 @@ LABEL_3:
 
   if (*(v23 + 24) == 1)
   {
-    v13 = [(PXPeopleDataSource *)self reloadBlock];
-    v14 = v13[2]();
+    reloadBlock = [(PXPeopleDataSource *)self reloadBlock];
+    v14 = reloadBlock[2]();
     [(PXPeopleDataSource *)self setObjects:v14];
 
     [(PXPeopleWidgetDataSource *)self loadMembersWithCompletionBlock:0];
@@ -387,37 +387,37 @@ void __49__PXPeopleWidgetDataSource_imageCacheDidChanged___block_invoke(uint64_t
   }
 }
 
-- (void)photoLibraryDidChange:(id)a3
+- (void)photoLibraryDidChange:(id)change
 {
-  v4 = a3;
-  v7 = [(PXPeopleDataSource *)self objects];
-  v5 = [v4 changeDetailsForFetchResult:?];
+  changeCopy = change;
+  objects = [(PXPeopleDataSource *)self objects];
+  v5 = [changeCopy changeDetailsForFetchResult:?];
 
   if (v5)
   {
-    v6 = [v5 fetchResultAfterChanges];
-    [(PXPeopleDataSource *)self setObjects:v6];
+    fetchResultAfterChanges = [v5 fetchResultAfterChanges];
+    [(PXPeopleDataSource *)self setObjects:fetchResultAfterChanges];
     [(PXPeopleWidgetDataSource *)self loadMembersWithCompletionBlock:0];
   }
 }
 
 - (void)stopListeningForChanges
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
-  v4 = [(PXPeopleWidgetDataSource *)self photoLibrary];
-  [v4 unregisterChangeObserver:self];
+  photoLibrary = [(PXPeopleWidgetDataSource *)self photoLibrary];
+  [photoLibrary unregisterChangeObserver:self];
 }
 
 - (void)startListeningForChanges
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v4 = +[PXPeopleFaceCropManager sharedManager];
-  [v3 addObserver:self selector:sel_imageCacheDidChanged_ name:@"PXPeopleFaceCropManagerDidInvalidateCacheNotification" object:v4];
+  [defaultCenter addObserver:self selector:sel_imageCacheDidChanged_ name:@"PXPeopleFaceCropManagerDidInvalidateCacheNotification" object:v4];
 
-  v5 = [(PXPeopleWidgetDataSource *)self photoLibrary];
-  [v5 registerChangeObserver:self];
+  photoLibrary = [(PXPeopleWidgetDataSource *)self photoLibrary];
+  [photoLibrary registerChangeObserver:self];
 }
 
 - (void)dealloc
@@ -428,16 +428,16 @@ void __49__PXPeopleWidgetDataSource_imageCacheDidChanged___block_invoke(uint64_t
   [(PXPeopleDataSource *)&v3 dealloc];
 }
 
-- (PXPeopleWidgetDataSource)initWithPhotoLibrary:(id)a3 name:(id)a4 objectsReloadBlock:(id)a5
+- (PXPeopleWidgetDataSource)initWithPhotoLibrary:(id)library name:(id)name objectsReloadBlock:(id)block
 {
-  v9 = a3;
+  libraryCopy = library;
   v16.receiver = self;
   v16.super_class = PXPeopleWidgetDataSource;
-  v10 = [(PXPeopleDataSource *)&v16 initWithName:a4 objectsReloadBlock:a5 asynchronousLoad:1 callbackDelegate:0];
+  v10 = [(PXPeopleDataSource *)&v16 initWithName:name objectsReloadBlock:block asynchronousLoad:1 callbackDelegate:0];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_photoLibrary, a3);
+    objc_storeStrong(&v10->_photoLibrary, library);
     v12 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_USER_INITIATED, 0);
     v13 = dispatch_queue_create("com.apple.photos.peopleWidgetFetchQueue", v12);
     fetchQueue = v11->_fetchQueue;

@@ -1,34 +1,34 @@
 @interface HULocationDevice
 + (NAIdentity)na_identity;
-- (BOOL)isEqual:(id)a3;
-- (HULocationDevice)initWithHMDevice:(id)a3;
-- (HULocationDevice)initWithIdentifier:(id)a3 name:(id)a4 currentDevice:(BOOL)a5;
+- (BOOL)isEqual:(id)equal;
+- (HULocationDevice)initWithHMDevice:(id)device;
+- (HULocationDevice)initWithIdentifier:(id)identifier name:(id)name currentDevice:(BOOL)device;
 - (NSString)description;
 - (unint64_t)hash;
 @end
 
 @implementation HULocationDevice
 
-- (HULocationDevice)initWithHMDevice:(id)a3
+- (HULocationDevice)initWithHMDevice:(id)device
 {
-  v4 = a3;
-  v5 = [v4 uniqueIdentifier];
-  v6 = [v5 UUIDString];
-  v7 = [v4 name];
-  v8 = [v4 isCurrentDevice];
+  deviceCopy = device;
+  uniqueIdentifier = [deviceCopy uniqueIdentifier];
+  uUIDString = [uniqueIdentifier UUIDString];
+  name = [deviceCopy name];
+  isCurrentDevice = [deviceCopy isCurrentDevice];
 
-  v9 = [(HULocationDevice *)self initWithIdentifier:v6 name:v7 currentDevice:v8];
+  v9 = [(HULocationDevice *)self initWithIdentifier:uUIDString name:name currentDevice:isCurrentDevice];
   return v9;
 }
 
-- (HULocationDevice)initWithIdentifier:(id)a3 name:(id)a4 currentDevice:(BOOL)a5
+- (HULocationDevice)initWithIdentifier:(id)identifier name:(id)name currentDevice:(BOOL)device
 {
-  v10 = a3;
-  v11 = a4;
-  if (![v10 length])
+  identifierCopy = identifier;
+  nameCopy = name;
+  if (![identifierCopy length])
   {
-    v15 = [MEMORY[0x277CCA890] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"HULocationDeviceManager.m" lineNumber:31 description:{@"Invalid parameter not satisfying: %@", @"identifier.length"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HULocationDeviceManager.m" lineNumber:31 description:{@"Invalid parameter not satisfying: %@", @"identifier.length"}];
   }
 
   v16.receiver = self;
@@ -37,9 +37,9 @@
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_identifier, a3);
-    objc_storeStrong(&v13->_name, a4);
-    v13->_currentDevice = a5;
+    objc_storeStrong(&v12->_identifier, identifier);
+    objc_storeStrong(&v13->_name, name);
+    v13->_currentDevice = device;
   }
 
   return v13;
@@ -77,19 +77,19 @@ uint64_t __31__HULocationDevice_na_identity__block_invoke_6(uint64_t a1, void *a
   return [v2 numberWithBool:v3];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [objc_opt_class() na_identity];
-  LOBYTE(self) = [v5 isObject:self equalToObject:v4];
+  equalCopy = equal;
+  na_identity = [objc_opt_class() na_identity];
+  LOBYTE(self) = [na_identity isObject:self equalToObject:equalCopy];
 
   return self;
 }
 
 - (unint64_t)hash
 {
-  v3 = [objc_opt_class() na_identity];
-  v4 = [v3 hashOfObject:self];
+  na_identity = [objc_opt_class() na_identity];
+  v4 = [na_identity hashOfObject:self];
 
   return v4;
 }
@@ -97,16 +97,16 @@ uint64_t __31__HULocationDevice_na_identity__block_invoke_6(uint64_t a1, void *a
 - (NSString)description
 {
   v3 = [MEMORY[0x277D2C8F8] builderWithObject:self];
-  v4 = [(HULocationDevice *)self identifier];
-  [v3 appendString:v4 withName:@"ID"];
+  identifier = [(HULocationDevice *)self identifier];
+  [v3 appendString:identifier withName:@"ID"];
 
-  v5 = [(HULocationDevice *)self name];
-  [v3 appendString:v5 withName:@"name"];
+  name = [(HULocationDevice *)self name];
+  [v3 appendString:name withName:@"name"];
 
   v6 = [v3 appendBool:-[HULocationDevice isCurrentDevice](self withName:{"isCurrentDevice"), @"currentDevice"}];
-  v7 = [v3 build];
+  build = [v3 build];
 
-  return v7;
+  return build;
 }
 
 @end

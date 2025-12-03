@@ -1,21 +1,21 @@
 @interface _MDPlistBytes
-+ (__MDPlistBytes)createArrayPlistBytesUsingBlock:(id)a3;
-+ (__MDPlistBytes)createDictionaryPlistBytesUsingBlock:(id)a3;
-+ (__MDPlistBytes)createPlistBytes:(id)a3;
++ (__MDPlistBytes)createArrayPlistBytesUsingBlock:(id)block;
++ (__MDPlistBytes)createDictionaryPlistBytesUsingBlock:(id)block;
++ (__MDPlistBytes)createPlistBytes:(id)bytes;
 + (__MDPlistBytes)emptyArrayPlistBytes;
 + (__MDPlistBytes)emptyDictionaryPlistBytes;
 + (__MDPlistBytes)nullObjectPlistBytes;
-- (BOOL)enumerateQueryResults:(unint64_t)a3 attributeSize:(unint64_t)a4 stringCache:(id *)a5 usingBlock:(id)a6;
-- (BOOL)isEqual:(id)a3;
-- (_MDPlistBytes)initWithByteVector:(char *)a3 count:(unsigned int)a4 trusted:(unsigned __int8)a5 deallocator:(id)a6;
+- (BOOL)enumerateQueryResults:(unint64_t)results attributeSize:(unint64_t)size stringCache:(id *)cache usingBlock:(id)block;
+- (BOOL)isEqual:(id)equal;
+- (_MDPlistBytes)initWithByteVector:(char *)vector count:(unsigned int)count trusted:(unsigned __int8)trusted deallocator:(id)deallocator;
 - (__CFData)copyData;
 - (__CFData)copyDataWithBytesNoCopy;
 - (id)description;
 - (unint64_t)_cfTypeID;
 - (void)dealloc;
 - (void)dumpUIDs;
-- (void)enumerateObjectsUsingBlock:(id)a3;
-- (void)enumerateQueryResults:(unint64_t)a3 stringCache:(id *)a4 usingBlock:(id)a5;
+- (void)enumerateObjectsUsingBlock:(id)block;
+- (void)enumerateQueryResults:(unint64_t)results stringCache:(id *)cache usingBlock:(id)block;
 @end
 
 @implementation _MDPlistBytes
@@ -55,10 +55,10 @@
   v5 = *MEMORY[0x1E69E9840];
 }
 
-+ (__MDPlistBytes)createArrayPlistBytesUsingBlock:(id)a3
++ (__MDPlistBytes)createArrayPlistBytesUsingBlock:(id)block
 {
   v5 = *MEMORY[0x1E69E9840];
-  result = [_MDMutablePlistBytes createArrayPlistBytesUsingBlock:a3];
+  result = [_MDMutablePlistBytes createArrayPlistBytesUsingBlock:block];
   if (result)
   {
     *(result + 34) &= ~1u;
@@ -68,10 +68,10 @@
   return result;
 }
 
-+ (__MDPlistBytes)createDictionaryPlistBytesUsingBlock:(id)a3
++ (__MDPlistBytes)createDictionaryPlistBytesUsingBlock:(id)block
 {
   v5 = *MEMORY[0x1E69E9840];
-  result = [_MDMutablePlistBytes createDictionaryPlistBytesUsingBlock:a3];
+  result = [_MDMutablePlistBytes createDictionaryPlistBytesUsingBlock:block];
   if (result)
   {
     *(result + 34) &= ~1u;
@@ -81,7 +81,7 @@
   return result;
 }
 
-+ (__MDPlistBytes)createPlistBytes:(id)a3
++ (__MDPlistBytes)createPlistBytes:(id)bytes
 {
   v8 = *MEMORY[0x1E69E9840];
   v4 = [[_MDMutablePlistBytes alloc] initWithCapacity:0 useMalloc:0];
@@ -93,7 +93,7 @@
   v5 = v4;
   CFRetain(v4);
 
-  if (_MDPlistBytesBeginPlist(v5) && __MDPlistBytesAddObject(v5, a3))
+  if (_MDPlistBytesBeginPlist(v5) && __MDPlistBytesAddObject(v5, bytes))
   {
     _MDPlistBytesEndPlist(v5);
   }
@@ -142,20 +142,20 @@
   return result;
 }
 
-- (BOOL)enumerateQueryResults:(unint64_t)a3 attributeSize:(unint64_t)a4 stringCache:(id *)a5 usingBlock:(id)a6
+- (BOOL)enumerateQueryResults:(unint64_t)results attributeSize:(unint64_t)size stringCache:(id *)cache usingBlock:(id)block
 {
   v20 = *MEMORY[0x1E69E9840];
   v17[0] = 0;
   v19 = 0;
-  v17[1] = a6;
-  v17[2] = a4;
-  v18 = malloc_type_calloc(a4, 8uLL, 0x80040B8603338uLL);
+  v17[1] = block;
+  v17[2] = size;
+  v18 = malloc_type_calloc(size, 8uLL, 0x80040B8603338uLL);
   memset(v12, 0, sizeof(v12));
   v13 = _QueryResultsBeginArray;
   v14 = _QueryResultsValue;
   v15 = _QueryResultsEndArray;
-  v16 = a5;
-  v9 = _MDPlistBytesCopyPlistAtIndexWithCallbacksAndAllocator(*MEMORY[0x1E695E480], self, a3, v12, v17);
+  cacheCopy = cache;
+  v9 = _MDPlistBytesCopyPlistAtIndexWithCallbacksAndAllocator(*MEMORY[0x1E695E480], self, results, v12, v17);
   if (v9)
   {
     CFRelease(v9);
@@ -166,7 +166,7 @@
   return BYTE1(v19) & ~v19 & 1;
 }
 
-- (void)enumerateQueryResults:(unint64_t)a3 stringCache:(id *)a4 usingBlock:(id)a5
+- (void)enumerateQueryResults:(unint64_t)results stringCache:(id *)cache usingBlock:(id)block
 {
   v6 = 0;
   v10 = *MEMORY[0x1E69E9840];
@@ -181,31 +181,31 @@
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (_MDPlistBytes)initWithByteVector:(char *)a3 count:(unsigned int)a4 trusted:(unsigned __int8)a5 deallocator:(id)a6
+- (_MDPlistBytes)initWithByteVector:(char *)vector count:(unsigned int)count trusted:(unsigned __int8)trusted deallocator:(id)deallocator
 {
-  v7 = a5;
+  trustedCopy = trusted;
   v18 = *MEMORY[0x1E69E9840];
   v17.receiver = self;
   v17.super_class = _MDPlistBytes;
   result = [(_MDPlistBytes *)&v17 init];
   if (result)
   {
-    if (a3)
+    if (vector)
     {
-      if (a4 - 16 > 0x6FFFFFF0)
+      if (count - 16 > 0x6FFFFFF0)
       {
         *(result + 16) = 619;
       }
 
       else
       {
-        result->_byteVector = a3;
-        result->_byteVectorCnt = a4;
-        result->_byteVectorCapacity = a4;
-        if (a6)
+        result->_byteVector = vector;
+        result->_byteVectorCnt = count;
+        result->_byteVectorCapacity = count;
+        if (deallocator)
         {
           v11 = result;
-          v12 = _Block_copy(a6);
+          v12 = _Block_copy(deallocator);
           result = v11;
         }
 
@@ -215,7 +215,7 @@
         }
 
         result->_deallocator = v12;
-        v14 = v7 != 0;
+        v14 = trustedCopy != 0;
         v15 = result;
         _maybeSwapPlistBytes(result, v14);
         result = v15;
@@ -262,13 +262,13 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v12 = *MEMORY[0x1E69E9840];
-  v5 = [a3 _cfTypeID];
+  _cfTypeID = [equal _cfTypeID];
   if (qword_1ED6F3F50 == -1)
   {
-    if (v5 != qword_1ED6F3F58)
+    if (_cfTypeID != qword_1ED6F3F58)
     {
 LABEL_6:
       result = 0;
@@ -279,7 +279,7 @@ LABEL_6:
 
   else
   {
-    v11 = v5;
+    v11 = _cfTypeID;
     _MDPlistBytesGetTypeID_cold_1();
     if (v11 != qword_1ED6F3F58)
     {
@@ -288,14 +288,14 @@ LABEL_6:
   }
 
   byteVectorCnt = self->_byteVectorCnt;
-  if (a3 && !*(a3 + 16))
+  if (equal && !*(equal + 16))
   {
-    if (byteVectorCnt != *(a3 + 4))
+    if (byteVectorCnt != *(equal + 4))
     {
       goto LABEL_6;
     }
 
-    v9 = *(a3 + 1);
+    v9 = *(equal + 1);
   }
 
   else
@@ -384,7 +384,7 @@ LABEL_6:
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)enumerateObjectsUsingBlock:(id)a3
+- (void)enumerateObjectsUsingBlock:(id)block
 {
   v5 = 0;
   v11 = *MEMORY[0x1E69E9840];
@@ -399,7 +399,7 @@ LABEL_6:
     }
 
     v8 = v7;
-    (*(a3 + 2))(a3, v7, v5, &v10);
+    (*(block + 2))(block, v7, v5, &v10);
     CFRelease(v8);
     ++v5;
   }

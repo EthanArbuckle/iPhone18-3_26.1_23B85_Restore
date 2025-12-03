@@ -1,26 +1,26 @@
 @interface SGMSelfIdPatternMatched
 - (SGMSelfIdPatternMatched)init;
-- (void)trackEventWithScalar:(unint64_t)a3 patternType:(SGMSIPatternType_)a4 patternHash:(id)a5 nameTokens:(unint64_t)a6 nameClass:(SGMSINameClassification_)a7 messageIndex:(unint64_t)a8;
+- (void)trackEventWithScalar:(unint64_t)scalar patternType:(SGMSIPatternType_)type patternHash:(id)hash nameTokens:(unint64_t)tokens nameClass:(SGMSINameClassification_)class messageIndex:(unint64_t)index;
 @end
 
 @implementation SGMSelfIdPatternMatched
 
-- (void)trackEventWithScalar:(unint64_t)a3 patternType:(SGMSIPatternType_)a4 patternHash:(id)a5 nameTokens:(unint64_t)a6 nameClass:(SGMSINameClassification_)a7 messageIndex:(unint64_t)a8
+- (void)trackEventWithScalar:(unint64_t)scalar patternType:(SGMSIPatternType_)type patternHash:(id)hash nameTokens:(unint64_t)tokens nameClass:(SGMSINameClassification_)class messageIndex:(unint64_t)index
 {
   v27[5] = *MEMORY[0x1E69E9840];
-  v14 = a5;
-  if (a4.var0)
+  hashCopy = hash;
+  if (type.var0)
   {
-    if (a4.var0 == 1)
+    if (type.var0 == 1)
     {
       v15 = @"SelfIdRequest";
     }
 
     else
     {
-      v16 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v17 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString * _Nonnull SGMSIPatternType_toString(SGMSIPatternType)"];
-      [v16 handleFailureInFunction:v17 file:@"SGMetricsDefines.h" lineNumber:524 description:{@"unrecognized tag %lu on SGMSIPatternType", a4.var0}];
+      [currentHandler handleFailureInFunction:v17 file:@"SGMetricsDefines.h" lineNumber:524 description:{@"unrecognized tag %lu on SGMSIPatternType", type.var0}];
 
       v15 = @"ERR_UNMATCHED_TAG";
     }
@@ -31,31 +31,31 @@
     v15 = @"SelfId";
   }
 
-  v18 = v14;
-  if (a7.var0 >= 3)
+  v18 = hashCopy;
+  if (class.var0 >= 3)
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
     v21 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString * _Nonnull SGMSINameClassification_toString(SGMSINameClassification)"];
-    [v20 handleFailureInFunction:v21 file:@"SGMetricsDefines.h" lineNumber:511 description:{@"unrecognized tag %lu on SGMSINameClassification", a7.var0}];
+    [currentHandler2 handleFailureInFunction:v21 file:@"SGMetricsDefines.h" lineNumber:511 description:{@"unrecognized tag %lu on SGMSINameClassification", class.var0}];
 
     v19 = @"ERR_UNMATCHED_TAG";
   }
 
   else
   {
-    v19 = off_1E7EFC1D0[a7.var0];
+    v19 = off_1E7EFC1D0[class.var0];
   }
 
   tracker = self->_tracker;
   v27[0] = v15;
   v27[1] = v18;
-  v23 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a6];
+  v23 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:tokens];
   v27[2] = v23;
   v27[3] = v19;
-  v24 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a8];
+  v24 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:index];
   v27[4] = v24;
   v25 = [MEMORY[0x1E695DEC8] arrayWithObjects:v27 count:5];
-  [(PETScalarEventTracker *)tracker trackEventWithPropertyValues:v25 value:a3];
+  [(PETScalarEventTracker *)tracker trackEventWithPropertyValues:v25 value:scalar];
 
   v26 = *MEMORY[0x1E69E9840];
 }

@@ -1,27 +1,27 @@
 @interface TUIPressAndHoldGrid
-- (BOOL)handleNumberKey:(unint64_t)a3;
+- (BOOL)handleNumberKey:(unint64_t)key;
 - (BOOL)handleSelection;
-- (BOOL)hasAccentVariantInForwardDirection:(BOOL)a3;
-- (BOOL)indexPathIsValid:(id)a3;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
+- (BOOL)hasAccentVariantInForwardDirection:(BOOL)direction;
+- (BOOL)indexPathIsValid:(id)valid;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
 - (CGSize)contentSize;
 - (NSIndexPath)firstIndexPath;
 - (NSIndexPath)lastIndexPath;
-- (TUIPressAndHoldGrid)initWithFrame:(CGRect)a3 accentVariants:(id)a4;
+- (TUIPressAndHoldGrid)initWithFrame:(CGRect)frame accentVariants:(id)variants;
 - (TUIPressAndHoldGridDelegate)delegate;
-- (id)accentAtIndexPath:(id)a3;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)indexPathForAccentVariantNumber:(unint64_t)a3;
-- (id)indexPathInForwardDirection:(BOOL)a3;
-- (id)showAccentVariantInForwardDirection:(BOOL)a3;
+- (id)accentAtIndexPath:(id)path;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)indexPathForAccentVariantNumber:(unint64_t)number;
+- (id)indexPathInForwardDirection:(BOOL)direction;
+- (id)showAccentVariantInForwardDirection:(BOOL)direction;
 - (id)visibleAttributes;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
-- (unint64_t)accentVariantNumberForIndexPath:(id)a3;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
+- (unint64_t)accentVariantNumberForIndexPath:(id)path;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path;
 - (void)forceUpdateVisibleCells;
 - (void)layoutSubviews;
-- (void)setSelectedIndexPath:(id)a3 animated:(BOOL)a4 scrollPosition:(unint64_t)a5;
+- (void)setSelectedIndexPath:(id)path animated:(BOOL)animated scrollPosition:(unint64_t)position;
 @end
 
 @implementation TUIPressAndHoldGrid
@@ -42,63 +42,63 @@
   return result;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(TUIPressAndHoldGrid *)self accentAtIndexPath:v6];
+  pathCopy = path;
+  viewCopy = view;
+  v8 = [(TUIPressAndHoldGrid *)self accentAtIndexPath:pathCopy];
   v9 = +[TUIPressAndHoldViewCell reuseIdentifier];
-  v10 = [v7 dequeueReusableCellWithReuseIdentifier:v9 forIndexPath:v6];
+  v10 = [viewCopy dequeueReusableCellWithReuseIdentifier:v9 forIndexPath:pathCopy];
 
   [v10 setAccentVariant:v8];
-  v11 = [(TUIPressAndHoldGrid *)self selectedIndexPath];
-  v12 = [v6 isEqual:v11];
+  selectedIndexPath = [(TUIPressAndHoldGrid *)self selectedIndexPath];
+  v12 = [pathCopy isEqual:selectedIndexPath];
 
   [v10 setSelected:v12];
 
   return v10;
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v4 = [(TUIPressAndHoldGrid *)self accentVariants:a3];
+  v4 = [(TUIPressAndHoldGrid *)self accentVariants:view];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path
 {
-  v13 = a3;
-  v8 = a4;
-  v9 = a5;
+  viewCopy = view;
+  cellCopy = cell;
+  pathCopy = path;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = v8;
-    v11 = [v13 layoutAttributesForItemAtIndexPath:v9];
-    v12 = [(TUIPressAndHoldGrid *)self selectedIndexPath];
-    [v10 setSelected:{objc_msgSend(v12, "isEqual:", v9)}];
+    v10 = cellCopy;
+    v11 = [viewCopy layoutAttributesForItemAtIndexPath:pathCopy];
+    selectedIndexPath = [(TUIPressAndHoldGrid *)self selectedIndexPath];
+    [v10 setSelected:{objc_msgSend(selectedIndexPath, "isEqual:", pathCopy)}];
 
-    [v10 setAccentVariantNumber:{-[TUIPressAndHoldGrid accentVariantNumberForIndexPath:](self, "accentVariantNumberForIndexPath:", v9)}];
+    [v10 setAccentVariantNumber:{-[TUIPressAndHoldGrid accentVariantNumberForIndexPath:](self, "accentVariantNumberForIndexPath:", pathCopy)}];
   }
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v9 = a4;
-  v5 = [(TUIPressAndHoldGrid *)self delegate];
+  pathCopy = path;
+  delegate = [(TUIPressAndHoldGrid *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(TUIPressAndHoldGrid *)self delegate];
-    v8 = [(TUIPressAndHoldGrid *)self accentAtIndexPath:v9];
-    [v7 pressAndHoldGridDidAcceptAccentVariant:v8 atIndexPath:v9];
+    delegate2 = [(TUIPressAndHoldGrid *)self delegate];
+    v8 = [(TUIPressAndHoldGrid *)self accentAtIndexPath:pathCopy];
+    [delegate2 pressAndHoldGridDidAcceptAccentVariant:v8 atIndexPath:pathCopy];
   }
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
   v5 = 46.0;
   v6 = 30.0;
@@ -114,10 +114,10 @@
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = [(TUIPressAndHoldGrid *)self collectionView];
-  v4 = [v3 indexPathsForVisibleItems];
+  collectionView = [(TUIPressAndHoldGrid *)self collectionView];
+  indexPathsForVisibleItems = [collectionView indexPathsForVisibleItems];
 
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v5 = [indexPathsForVisibleItems countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -129,21 +129,21 @@
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(indexPathsForVisibleItems);
         }
 
         v9 = *(*(&v13 + 1) + 8 * v8);
-        v10 = [(TUIPressAndHoldGrid *)self collectionView];
-        v11 = [v10 cellForItemAtIndexPath:v9];
+        collectionView2 = [(TUIPressAndHoldGrid *)self collectionView];
+        v11 = [collectionView2 cellForItemAtIndexPath:v9];
 
-        v12 = [(TUIPressAndHoldGrid *)self collectionView];
-        [(TUIPressAndHoldGrid *)self collectionView:v12 willDisplayCell:v11 forItemAtIndexPath:v9];
+        collectionView3 = [(TUIPressAndHoldGrid *)self collectionView];
+        [(TUIPressAndHoldGrid *)self collectionView:collectionView3 willDisplayCell:v11 forItemAtIndexPath:v9];
 
         ++v8;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [indexPathsForVisibleItems countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
@@ -155,45 +155,45 @@
   v3 = [(TUIPressAndHoldGrid *)self indexPathIsValid:self->_selectedIndexPath];
   if (v3)
   {
-    v4 = [(TUIPressAndHoldGrid *)self delegate];
+    delegate = [(TUIPressAndHoldGrid *)self delegate];
     v5 = objc_opt_respondsToSelector();
 
     if (v5)
     {
-      v6 = [(TUIPressAndHoldGrid *)self delegate];
+      delegate2 = [(TUIPressAndHoldGrid *)self delegate];
       v7 = [(TUIPressAndHoldGrid *)self accentAtIndexPath:self->_selectedIndexPath];
-      [v6 pressAndHoldGridDidAcceptAccentVariant:v7 atIndexPath:self->_selectedIndexPath];
+      [delegate2 pressAndHoldGridDidAcceptAccentVariant:v7 atIndexPath:self->_selectedIndexPath];
     }
   }
 
   return v3;
 }
 
-- (BOOL)handleNumberKey:(unint64_t)a3
+- (BOOL)handleNumberKey:(unint64_t)key
 {
-  v4 = [(TUIPressAndHoldGrid *)self indexPathForAccentVariantNumber:a3];
+  v4 = [(TUIPressAndHoldGrid *)self indexPathForAccentVariantNumber:key];
   v5 = [(TUIPressAndHoldGrid *)self indexPathIsValid:v4];
   if (v5)
   {
     v6 = [(TUIPressAndHoldGrid *)self accentAtIndexPath:v4];
     [(TUIPressAndHoldGrid *)self setSelectedIndexPath:v4];
-    v7 = [(TUIPressAndHoldGrid *)self delegate];
+    delegate = [(TUIPressAndHoldGrid *)self delegate];
     v8 = objc_opt_respondsToSelector();
 
     if (v8)
     {
-      v9 = [(TUIPressAndHoldGrid *)self delegate];
-      [v9 pressAndHoldGridDidAcceptAccentVariant:v6 atIndexPath:v4];
+      delegate2 = [(TUIPressAndHoldGrid *)self delegate];
+      [delegate2 pressAndHoldGridDidAcceptAccentVariant:v6 atIndexPath:v4];
     }
   }
 
   return v5;
 }
 
-- (id)indexPathForAccentVariantNumber:(unint64_t)a3
+- (id)indexPathForAccentVariantNumber:(unint64_t)number
 {
   v19 = *MEMORY[0x1E69E9840];
-  if (a3 - 1 > 8)
+  if (number - 1 > 8)
   {
     v12 = 0;
   }
@@ -204,10 +204,10 @@
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v5 = [(TUIPressAndHoldGrid *)self collectionView];
-    v6 = [v5 visibleCells];
+    collectionView = [(TUIPressAndHoldGrid *)self collectionView];
+    visibleCells = [collectionView visibleCells];
 
-    v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    v7 = [visibleCells countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v7)
     {
       v8 = v7;
@@ -218,18 +218,18 @@
         {
           if (*v15 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(visibleCells);
           }
 
           v11 = *(*(&v14 + 1) + 8 * i);
-          if ([v11 accentVariantNumber] == a3)
+          if ([v11 accentVariantNumber] == number)
           {
             v12 = [(UICollectionView *)self->_collectionView indexPathForCell:v11];
             goto LABEL_13;
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v8 = [visibleCells countByEnumeratingWithState:&v14 objects:v18 count:16];
         if (v8)
         {
           continue;
@@ -248,16 +248,16 @@ LABEL_13:
 
 - (id)visibleAttributes
 {
-  v3 = [(TUIPressAndHoldGrid *)self collectionView];
-  [v3 visibleBounds];
+  collectionView = [(TUIPressAndHoldGrid *)self collectionView];
+  [collectionView visibleBounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
-  v12 = [(TUIPressAndHoldGrid *)self collectionView];
-  v13 = [v12 collectionViewLayout];
-  v14 = [v13 layoutAttributesForElementsInRect:{v5, v7, v9, v11}];
+  collectionView2 = [(TUIPressAndHoldGrid *)self collectionView];
+  collectionViewLayout = [collectionView2 collectionViewLayout];
+  v14 = [collectionViewLayout layoutAttributesForElementsInRect:{v5, v7, v9, v11}];
 
   v15 = [MEMORY[0x1E696AE18] predicateWithBlock:&__block_literal_global_8732];
   v16 = [v14 filteredArrayUsingPredicate:v15];
@@ -277,10 +277,10 @@ uint64_t __40__TUIPressAndHoldGrid_visibleAttributes__block_invoke_2(uint64_t a1
   return v7;
 }
 
-- (unint64_t)accentVariantNumberForIndexPath:(id)a3
+- (unint64_t)accentVariantNumberForIndexPath:(id)path
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  pathCopy = path;
   [(TUIPressAndHoldGrid *)self visibleAttributes];
   v15 = 0u;
   v16 = 0u;
@@ -304,8 +304,8 @@ uint64_t __40__TUIPressAndHoldGrid_visibleAttributes__block_invoke_2(uint64_t a1
           objc_enumerationMutation(v5);
         }
 
-        v12 = [*(*(&v15 + 1) + 8 * v10) indexPath];
-        v13 = [v12 isEqual:v4];
+        indexPath = [*(*(&v15 + 1) + 8 * v10) indexPath];
+        v13 = [indexPath isEqual:pathCopy];
 
         if (v13)
         {
@@ -338,9 +338,9 @@ LABEL_12:
   return v8 + 1;
 }
 
-- (id)showAccentVariantInForwardDirection:(BOOL)a3
+- (id)showAccentVariantInForwardDirection:(BOOL)direction
 {
-  v3 = a3;
+  directionCopy = direction;
   v5 = [(TUIPressAndHoldGrid *)self indexPathInForwardDirection:?];
   if (v5)
   {
@@ -349,11 +349,11 @@ LABEL_2:
     goto LABEL_5;
   }
 
-  v6 = [(TUIPressAndHoldGrid *)self selectedIndexPath];
+  selectedIndexPath = [(TUIPressAndHoldGrid *)self selectedIndexPath];
 
-  if (!v6)
+  if (!selectedIndexPath)
   {
-    if (v3)
+    if (directionCopy)
     {
       [(TUIPressAndHoldGrid *)self firstIndexPath];
     }
@@ -378,23 +378,23 @@ LABEL_5:
   return v7;
 }
 
-- (BOOL)hasAccentVariantInForwardDirection:(BOOL)a3
+- (BOOL)hasAccentVariantInForwardDirection:(BOOL)direction
 {
-  v3 = [(TUIPressAndHoldGrid *)self accentVariants];
-  v4 = [v3 count] != 0;
+  accentVariants = [(TUIPressAndHoldGrid *)self accentVariants];
+  v4 = [accentVariants count] != 0;
 
   return v4;
 }
 
-- (id)indexPathInForwardDirection:(BOOL)a3
+- (id)indexPathInForwardDirection:(BOOL)direction
 {
-  v3 = a3;
-  v5 = [(TUIPressAndHoldGrid *)self selectedIndexPath];
-  if ([(TUIPressAndHoldGrid *)self indexPathIsValid:v5])
+  directionCopy = direction;
+  selectedIndexPath = [(TUIPressAndHoldGrid *)self selectedIndexPath];
+  if ([(TUIPressAndHoldGrid *)self indexPathIsValid:selectedIndexPath])
   {
-    v6 = [v5 section];
-    v7 = [v5 row];
-    if (v3)
+    section = [selectedIndexPath section];
+    v7 = [selectedIndexPath row];
+    if (directionCopy)
     {
       v8 = v7 + 1;
     }
@@ -406,12 +406,12 @@ LABEL_5:
 
     if ((v8 & 0x8000000000000000) == 0)
     {
-      v9 = [(TUIPressAndHoldGrid *)self accentVariants];
-      v10 = [v9 count];
+      accentVariants = [(TUIPressAndHoldGrid *)self accentVariants];
+      v10 = [accentVariants count];
 
       if (v8 < v10)
       {
-        v11 = [MEMORY[0x1E696AC88] indexPathForRow:v8 inSection:v6];
+        v11 = [MEMORY[0x1E696AC88] indexPathForRow:v8 inSection:section];
         goto LABEL_10;
       }
     }
@@ -425,49 +425,49 @@ LABEL_10:
   return v11;
 }
 
-- (BOOL)indexPathIsValid:(id)a3
+- (BOOL)indexPathIsValid:(id)valid
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4 || [v4 section] || objc_msgSend(v5, "row") < 0)
+  validCopy = valid;
+  v5 = validCopy;
+  if (!validCopy || [validCopy section] || objc_msgSend(v5, "row") < 0)
   {
     v6 = 0;
   }
 
   else
   {
-    v8 = [(TUIPressAndHoldGrid *)self accentVariants];
-    v9 = [v8 count];
+    accentVariants = [(TUIPressAndHoldGrid *)self accentVariants];
+    v9 = [accentVariants count];
     v6 = v9 > [v5 row];
   }
 
   return v6;
 }
 
-- (void)setSelectedIndexPath:(id)a3 animated:(BOOL)a4 scrollPosition:(unint64_t)a5
+- (void)setSelectedIndexPath:(id)path animated:(BOOL)animated scrollPosition:(unint64_t)position
 {
-  v6 = a4;
-  v9 = a3;
+  animatedCopy = animated;
+  pathCopy = path;
   selectedIndexPath = self->_selectedIndexPath;
-  if (selectedIndexPath != v9 || [(NSIndexPath *)selectedIndexPath isEqual:v9])
+  if (selectedIndexPath != pathCopy || [(NSIndexPath *)selectedIndexPath isEqual:pathCopy])
   {
-    objc_storeStrong(&self->_selectedIndexPath, a3);
-    if (v9 && [(TUIPressAndHoldGrid *)self indexPathIsValid:v9])
+    objc_storeStrong(&self->_selectedIndexPath, path);
+    if (pathCopy && [(TUIPressAndHoldGrid *)self indexPathIsValid:pathCopy])
     {
-      v11 = [(TUIPressAndHoldGrid *)self collectionView];
-      [v11 selectItemAtIndexPath:v9 animated:v6 scrollPosition:a5];
+      collectionView = [(TUIPressAndHoldGrid *)self collectionView];
+      [collectionView selectItemAtIndexPath:pathCopy animated:animatedCopy scrollPosition:position];
 
-      v12 = [(TUIPressAndHoldGrid *)self collectionView];
-      v13 = [v12 layoutAttributesForItemAtIndexPath:v9];
+      collectionView2 = [(TUIPressAndHoldGrid *)self collectionView];
+      firstObject = [collectionView2 layoutAttributesForItemAtIndexPath:pathCopy];
     }
 
     else
     {
-      v14 = [(TUIPressAndHoldGrid *)self collectionView];
-      v15 = [v14 indexPathsForSelectedItems];
-      v13 = [v15 firstObject];
+      collectionView3 = [(TUIPressAndHoldGrid *)self collectionView];
+      indexPathsForSelectedItems = [collectionView3 indexPathsForSelectedItems];
+      firstObject = [indexPathsForSelectedItems firstObject];
 
-      if (!v13)
+      if (!firstObject)
       {
 LABEL_9:
 
@@ -480,8 +480,8 @@ LABEL_9:
         goto LABEL_10;
       }
 
-      v12 = [(TUIPressAndHoldGrid *)self collectionView];
-      [v12 deselectItemAtIndexPath:v13 animated:0];
+      collectionView2 = [(TUIPressAndHoldGrid *)self collectionView];
+      [collectionView2 deselectItemAtIndexPath:firstObject animated:0];
     }
 
     goto LABEL_9;
@@ -492,14 +492,14 @@ LABEL_10:
 
 - (NSIndexPath)lastIndexPath
 {
-  v3 = [(TUIPressAndHoldGrid *)self accentVariants];
-  v4 = [v3 count];
+  accentVariants = [(TUIPressAndHoldGrid *)self accentVariants];
+  v4 = [accentVariants count];
 
   if (v4)
   {
     v5 = MEMORY[0x1E696AC88];
-    v6 = [(TUIPressAndHoldGrid *)self accentVariants];
-    v7 = [v5 indexPathForRow:objc_msgSend(v6 inSection:{"count") - 1, 0}];
+    accentVariants2 = [(TUIPressAndHoldGrid *)self accentVariants];
+    v7 = [v5 indexPathForRow:objc_msgSend(accentVariants2 inSection:{"count") - 1, 0}];
   }
 
   else
@@ -512,8 +512,8 @@ LABEL_10:
 
 - (NSIndexPath)firstIndexPath
 {
-  v2 = [(TUIPressAndHoldGrid *)self accentVariants];
-  v3 = [v2 count];
+  accentVariants = [(TUIPressAndHoldGrid *)self accentVariants];
+  v3 = [accentVariants count];
 
   if (v3)
   {
@@ -528,13 +528,13 @@ LABEL_10:
   return v4;
 }
 
-- (id)accentAtIndexPath:(id)a3
+- (id)accentAtIndexPath:(id)path
 {
-  v4 = a3;
-  if ([(TUIPressAndHoldGrid *)self indexPathIsValid:v4])
+  pathCopy = path;
+  if ([(TUIPressAndHoldGrid *)self indexPathIsValid:pathCopy])
   {
-    v5 = [(TUIPressAndHoldGrid *)self accentVariants];
-    v6 = [v5 objectAtIndexedSubscript:{objc_msgSend(v4, "row")}];
+    accentVariants = [(TUIPressAndHoldGrid *)self accentVariants];
+    v6 = [accentVariants objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
   }
 
   else
@@ -555,24 +555,24 @@ LABEL_10:
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(TUIPressAndHoldGrid *)self collectionView];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  collectionView = [(TUIPressAndHoldGrid *)self collectionView];
+  [collectionView setFrame:{v4, v6, v8, v10}];
 }
 
-- (TUIPressAndHoldGrid)initWithFrame:(CGRect)a3 accentVariants:(id)a4
+- (TUIPressAndHoldGrid)initWithFrame:(CGRect)frame accentVariants:(id)variants
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  variantsCopy = variants;
   v22.receiver = self;
   v22.super_class = TUIPressAndHoldGrid;
-  v11 = [(TUIPressAndHoldGrid *)&v22 initWithFrame:x, y, width, height];
-  v12 = v11;
-  if (v11)
+  height = [(TUIPressAndHoldGrid *)&v22 initWithFrame:x, y, width, height];
+  v12 = height;
+  if (height)
   {
-    objc_storeStrong(&v11->_accentVariants, a4);
+    objc_storeStrong(&height->_accentVariants, variants);
     v13 = objc_alloc_init(MEMORY[0x1E69DC840]);
     [v13 setMinimumInteritemSpacing:0.0];
     [v13 setSectionInset:{5.0, 5.0, 5.0, 5.0}];
@@ -584,8 +584,8 @@ LABEL_10:
 
     [(UICollectionView *)v12->_collectionView setDelegate:v12];
     [(UICollectionView *)v12->_collectionView setDataSource:v12];
-    v17 = [MEMORY[0x1E69DC888] clearColor];
-    [(UICollectionView *)v12->_collectionView setBackgroundColor:v17];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(UICollectionView *)v12->_collectionView setBackgroundColor:clearColor];
 
     v18 = v12->_collectionView;
     v19 = objc_opt_class();

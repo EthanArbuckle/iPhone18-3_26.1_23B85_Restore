@@ -1,24 +1,24 @@
 @interface LPAudioPlayButtonTheme
-- (LPAudioPlayButtonTheme)initWithKeyColor:(id)a3 secondaryColor:(id)a4 outerBorderColor:(id)a5 useInvertedInactiveState:(BOOL)a6;
+- (LPAudioPlayButtonTheme)initWithKeyColor:(id)color secondaryColor:(id)secondaryColor outerBorderColor:(id)borderColor useInvertedInactiveState:(BOOL)state;
 @end
 
 @implementation LPAudioPlayButtonTheme
 
-- (LPAudioPlayButtonTheme)initWithKeyColor:(id)a3 secondaryColor:(id)a4 outerBorderColor:(id)a5 useInvertedInactiveState:(BOOL)a6
+- (LPAudioPlayButtonTheme)initWithKeyColor:(id)color secondaryColor:(id)secondaryColor outerBorderColor:(id)borderColor useInvertedInactiveState:(BOOL)state
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  colorCopy = color;
+  secondaryColorCopy = secondaryColor;
+  borderColorCopy = borderColor;
   v18.receiver = self;
   v18.super_class = LPAudioPlayButtonTheme;
   v14 = [(LPAudioPlayButtonTheme *)&v18 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_keyColor, a3);
-    objc_storeStrong(&v15->_secondaryColor, a4);
-    objc_storeStrong(&v15->_outerBorderColor, a5);
-    v15->_useInvertedInactiveState = a6;
+    objc_storeStrong(&v14->_keyColor, color);
+    objc_storeStrong(&v15->_secondaryColor, secondaryColor);
+    objc_storeStrong(&v15->_outerBorderColor, borderColor);
+    v15->_useInvertedInactiveState = state;
     v16 = v15;
   }
 

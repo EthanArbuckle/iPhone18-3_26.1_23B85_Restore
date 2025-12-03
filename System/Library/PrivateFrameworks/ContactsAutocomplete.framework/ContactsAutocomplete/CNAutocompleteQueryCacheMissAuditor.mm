@@ -1,8 +1,8 @@
 @interface CNAutocompleteQueryCacheMissAuditor
 - (CNAutocompleteQueryCacheMissAuditor)init;
-- (CNAutocompleteQueryCacheMissAuditor)initWithLogger:(id)a3;
+- (CNAutocompleteQueryCacheMissAuditor)initWithLogger:(id)logger;
 - (id)description;
-- (void)didReturnLiveResults:(id)a3;
+- (void)didReturnLiveResults:(id)results;
 @end
 
 @implementation CNAutocompleteQueryCacheMissAuditor
@@ -15,16 +15,16 @@
   return v4;
 }
 
-- (CNAutocompleteQueryCacheMissAuditor)initWithLogger:(id)a3
+- (CNAutocompleteQueryCacheMissAuditor)initWithLogger:(id)logger
 {
-  v5 = a3;
+  loggerCopy = logger;
   v10.receiver = self;
   v10.super_class = CNAutocompleteQueryCacheMissAuditor;
   v6 = [(CNAutocompleteQueryCacheMissAuditor *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_logger, a3);
+    objc_storeStrong(&v6->_logger, logger);
     v8 = v7;
   }
 
@@ -34,22 +34,22 @@
 - (id)description
 {
   v3 = [MEMORY[0x277CFBDF0] descriptionBuilderWithObject:self];
-  v4 = [(CNAutocompleteQueryCacheMissAuditor *)self cachedResults];
-  v5 = [v3 appendName:@"cached" object:v4];
+  cachedResults = [(CNAutocompleteQueryCacheMissAuditor *)self cachedResults];
+  v5 = [v3 appendName:@"cached" object:cachedResults];
 
-  v6 = [v3 build];
+  build = [v3 build];
 
-  return v6;
+  return build;
 }
 
-- (void)didReturnLiveResults:(id)a3
+- (void)didReturnLiveResults:(id)results
 {
-  v14 = a3;
+  resultsCopy = results;
   v4 = MEMORY[0x277CBEB98];
   if (self->_cachedResults)
   {
-    v5 = [(CNAutocompleteQueryCacheMissAuditor *)self cachedResults];
-    v6 = [v4 setWithArray:v5];
+    cachedResults = [(CNAutocompleteQueryCacheMissAuditor *)self cachedResults];
+    v6 = [v4 setWithArray:cachedResults];
   }
 
   else
@@ -57,23 +57,23 @@
     v6 = [MEMORY[0x277CBEB98] set];
   }
 
-  v7 = [MEMORY[0x277CBEB98] setWithArray:v14];
+  v7 = [MEMORY[0x277CBEB98] setWithArray:resultsCopy];
   v8 = [v7 mutableCopy];
   [v8 minusSet:v6];
   if ([v8 count])
   {
-    v9 = [(CNAutocompleteQueryCacheMissAuditor *)self logger];
-    v10 = [v8 allObjects];
-    [v9 didReturnCacheFalseNegatives:v10];
+    logger = [(CNAutocompleteQueryCacheMissAuditor *)self logger];
+    allObjects = [v8 allObjects];
+    [logger didReturnCacheFalseNegatives:allObjects];
   }
 
   v11 = [v6 mutableCopy];
   [v11 minusSet:v7];
   if ([v11 count])
   {
-    v12 = [(CNAutocompleteQueryCacheMissAuditor *)self logger];
-    v13 = [v11 allObjects];
-    [v12 didReturnCacheFalsePositives:v13];
+    logger2 = [(CNAutocompleteQueryCacheMissAuditor *)self logger];
+    allObjects2 = [v11 allObjects];
+    [logger2 didReturnCacheFalsePositives:allObjects2];
   }
 }
 

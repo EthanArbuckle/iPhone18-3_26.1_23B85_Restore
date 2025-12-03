@@ -6,15 +6,15 @@
 
 - (id)lightweightDescription
 {
-  v2 = [MEMORY[0x277CCAB68] stringWithFormat:@"<%@: %p", objc_opt_class(), a1];
+  v2 = [MEMORY[0x277CCAB68] stringWithFormat:@"<%@: %p", objc_opt_class(), self];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = a1;
-    v4 = [v3 operationID];
-    [v2 appendFormat:@" %@", v4];
+    selfCopy = self;
+    operationID = [selfCopy operationID];
+    [v2 appendFormat:@" %@", operationID];
 
-    v5 = [v3 lastErrorDescription];
+    lastErrorDescription = [selfCopy lastErrorDescription];
 LABEL_5:
 
     goto LABEL_7;
@@ -23,26 +23,26 @@ LABEL_5:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = a1;
-    v7 = [v6 operationID];
-    [v2 appendFormat:@" %@", v7];
+    selfCopy2 = self;
+    operationID2 = [selfCopy2 operationID];
+    [v2 appendFormat:@" %@", operationID2];
 
     v8 = MEMORY[0x277CCACA8];
-    v3 = [v6 error];
-    v9 = [v3 domain];
-    v10 = [v6 error];
+    selfCopy = [selfCopy2 error];
+    domain = [selfCopy domain];
+    error = [selfCopy2 error];
 
-    v5 = [v8 stringWithFormat:@"%@:%ld", v9, objc_msgSend(v10, "code")];
+    lastErrorDescription = [v8 stringWithFormat:@"%@:%ld", domain, objc_msgSend(error, "code")];
 
     goto LABEL_5;
   }
 
-  v5 = 0;
+  lastErrorDescription = 0;
 LABEL_7:
-  if ([a1 isFinished])
+  if ([self isFinished])
   {
     v11 = "finished";
-    if (!v5)
+    if (!lastErrorDescription)
     {
       goto LABEL_21;
     }
@@ -50,10 +50,10 @@ LABEL_7:
     goto LABEL_20;
   }
 
-  if ([a1 isCancelled])
+  if ([self isCancelled])
   {
     v11 = "cancelled";
-    if (v5)
+    if (lastErrorDescription)
     {
       goto LABEL_20;
     }
@@ -61,9 +61,9 @@ LABEL_7:
 
   else
   {
-    if (([a1 isExecuting] & 1) == 0)
+    if (([self isExecuting] & 1) == 0)
     {
-      if ([a1 isReady])
+      if ([self isReady])
       {
         v11 = "ready";
       }
@@ -73,7 +73,7 @@ LABEL_7:
         v11 = "waiting";
       }
 
-      if (!v5)
+      if (!lastErrorDescription)
       {
         goto LABEL_21;
       }
@@ -82,10 +82,10 @@ LABEL_7:
     }
 
     v11 = "executing";
-    if (v5)
+    if (lastErrorDescription)
     {
 LABEL_20:
-      [v2 appendFormat:@" last-error: %@", v5];
+      [v2 appendFormat:@" last-error: %@", lastErrorDescription];
     }
   }
 

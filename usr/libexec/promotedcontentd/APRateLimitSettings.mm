@@ -1,25 +1,25 @@
 @interface APRateLimitSettings
-+ (id)storageWithDefaultValues:(id)a3;
++ (id)storageWithDefaultValues:(id)values;
 - (APRateLimits)rateLimitsObject;
-- (void)setRateLimitsObject:(id)a3;
+- (void)setRateLimitsObject:(id)object;
 @end
 
 @implementation APRateLimitSettings
 
-+ (id)storageWithDefaultValues:(id)a3
++ (id)storageWithDefaultValues:(id)values
 {
-  v3 = a3;
-  v4 = [[APSettingsStorageKeychain alloc] initWithDefaultValues:v3];
+  valuesCopy = values;
+  v4 = [[APSettingsStorageKeychain alloc] initWithDefaultValues:valuesCopy];
 
   return v4;
 }
 
 - (APRateLimits)rateLimitsObject
 {
-  v2 = [(APRateLimitSettings *)self rateLimits];
-  if (v2)
+  rateLimits = [(APRateLimitSettings *)self rateLimits];
+  if (rateLimits)
   {
-    v3 = sub_100393D18([APRateLimits alloc], v2);
+    v3 = sub_100393D18([APRateLimits alloc], rateLimits);
   }
 
   else
@@ -30,9 +30,9 @@
   return v3;
 }
 
-- (void)setRateLimitsObject:(id)a3
+- (void)setRateLimitsObject:(id)object
 {
-  v4 = sub_100393D90(a3);
+  v4 = sub_100393D90(object);
   [(APRateLimitSettings *)self setRateLimits:v4];
 }
 

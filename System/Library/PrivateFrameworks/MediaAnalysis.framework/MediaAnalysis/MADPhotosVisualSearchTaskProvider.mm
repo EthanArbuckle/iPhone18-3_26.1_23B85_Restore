@@ -1,14 +1,14 @@
 @interface MADPhotosVisualSearchTaskProvider
-- (MADPhotosVisualSearchTaskProvider)initWithPhotoLibrary:(id)a3 cancelBlock:(id)a4;
+- (MADPhotosVisualSearchTaskProvider)initWithPhotoLibrary:(id)library cancelBlock:(id)block;
 @end
 
 @implementation MADPhotosVisualSearchTaskProvider
 
-- (MADPhotosVisualSearchTaskProvider)initWithPhotoLibrary:(id)a3 cancelBlock:(id)a4
+- (MADPhotosVisualSearchTaskProvider)initWithPhotoLibrary:(id)library cancelBlock:(id)block
 {
   v10.receiver = self;
   v10.super_class = MADPhotosVisualSearchTaskProvider;
-  v4 = [(MADPhotosTaskProvider *)&v10 initWithPhotoLibrary:a3 cancelBlock:a4];
+  v4 = [(MADPhotosTaskProvider *)&v10 initWithPhotoLibrary:library cancelBlock:block];
   if (v4)
   {
     v5 = [VCPObjectPool objectPoolWithAllocator:&stru_100282978];

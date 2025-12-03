@@ -1,39 +1,39 @@
 @interface TSDDropShadow
-- (BOOL)isEqual:(id)a3;
-- (CGImage)newShadowImageForRep:(id)a3 withSize:(CGSize)a4 drawSelector:(SEL)a5 unflipped:(BOOL)a6;
-- (CGRect)boundsForRep:(id)a3;
-- (CGRect)boundsInNaturalSpaceForRep:(id)a3;
-- (TSDDropShadow)initWithAngle:(double)a3 offset:(double)a4 radius:(double)a5 opacity:(double)a6 color:(CGColor *)a7 enabled:(BOOL)a8;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)mixedObjectWithFraction:(double)a3 ofObject:(id)a4;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (CGImage)newShadowImageForRep:(id)rep withSize:(CGSize)size drawSelector:(SEL)selector unflipped:(BOOL)unflipped;
+- (CGRect)boundsForRep:(id)rep;
+- (CGRect)boundsInNaturalSpaceForRep:(id)rep;
+- (TSDDropShadow)initWithAngle:(double)angle offset:(double)offset radius:(double)radius opacity:(double)opacity color:(CGColor *)color enabled:(BOOL)enabled;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)mixedObjectWithFraction:(double)fraction ofObject:(id)object;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)newShadowClampedForSwatches;
-- (int64_t)mixingTypeWithObject:(id)a3;
+- (int64_t)mixingTypeWithObject:(id)object;
 @end
 
 @implementation TSDDropShadow
 
-- (TSDDropShadow)initWithAngle:(double)a3 offset:(double)a4 radius:(double)a5 opacity:(double)a6 color:(CGColor *)a7 enabled:(BOOL)a8
+- (TSDDropShadow)initWithAngle:(double)angle offset:(double)offset radius:(double)radius opacity:(double)opacity color:(CGColor *)color enabled:(BOOL)enabled
 {
   v16.receiver = self;
   v16.super_class = TSDDropShadow;
-  v11 = [(TSDShadow *)&v16 i_initWithOpacity:a7 color:a8 enabled:a6];
+  v11 = [(TSDShadow *)&v16 i_initWithOpacity:color color:enabled enabled:opacity];
   if (v11)
   {
-    TSDNormalizeAngleInDegrees(a3);
+    TSDNormalizeAngleInDegrees(angle);
     v11->super.mAngle = v12;
-    [(TSDShadow *)v11 clampOffset:a4];
+    [(TSDShadow *)v11 clampOffset:offset];
     v11->super.mOffset = v13;
-    [(TSDShadow *)v11 clampRadius:a5];
+    [(TSDShadow *)v11 clampRadius:radius];
     v11->super.mRadius = v14;
   }
 
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
@@ -48,12 +48,12 @@
 
   v8.receiver = self;
   v8.super_class = TSDDropShadow;
-  return [(TSDShadow *)&v8 isEqual:a3];
+  return [(TSDShadow *)&v8 isEqual:equal];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [TSDDropShadow allocWithZone:a3];
+  v4 = [TSDDropShadow allocWithZone:zone];
   [(TSDShadow *)self angle];
   v6 = v5;
   [(TSDShadow *)self offset];
@@ -62,15 +62,15 @@
   v10 = v9;
   [(TSDShadow *)self opacity];
   v12 = v11;
-  v13 = [(TSDShadow *)self color];
-  v14 = [(TSDShadow *)self isEnabled];
+  color = [(TSDShadow *)self color];
+  isEnabled = [(TSDShadow *)self isEnabled];
 
-  return [(TSDDropShadow *)v4 initWithAngle:v13 offset:v14 radius:v6 opacity:v8 color:v10 enabled:v12];
+  return [(TSDDropShadow *)v4 initWithAngle:color offset:isEnabled radius:v6 opacity:v8 color:v10 enabled:v12];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [TSDMutableDropShadow allocWithZone:a3];
+  v4 = [TSDMutableDropShadow allocWithZone:zone];
   [(TSDShadow *)self angle];
   v6 = v5;
   [(TSDShadow *)self offset];
@@ -79,10 +79,10 @@
   v10 = v9;
   [(TSDShadow *)self opacity];
   v12 = v11;
-  v13 = [(TSDShadow *)self color];
-  v14 = [(TSDShadow *)self isEnabled];
+  color = [(TSDShadow *)self color];
+  isEnabled = [(TSDShadow *)self isEnabled];
 
-  return [(TSDDropShadow *)v4 initWithAngle:v13 offset:v14 radius:v6 opacity:v8 color:v10 enabled:v12];
+  return [(TSDDropShadow *)v4 initWithAngle:color offset:isEnabled radius:v6 opacity:v8 color:v10 enabled:v12];
 }
 
 - (id)newShadowClampedForSwatches
@@ -106,17 +106,17 @@
   v13 = v12;
   [(TSDShadow *)self opacity];
   v15 = v14;
-  v16 = [(TSDShadow *)self color];
-  v17 = [(TSDShadow *)self isEnabled];
+  color = [(TSDShadow *)self color];
+  isEnabled = [(TSDShadow *)self isEnabled];
 
-  return [(TSDDropShadow *)v11 initWithAngle:v16 offset:v17 radius:v13 opacity:v10 color:v8 enabled:v15];
+  return [(TSDDropShadow *)v11 initWithAngle:color offset:isEnabled radius:v13 opacity:v10 color:v8 enabled:v15];
 }
 
-- (CGRect)boundsInNaturalSpaceForRep:(id)a3
+- (CGRect)boundsInNaturalSpaceForRep:(id)rep
 {
-  v3 = [a3 styledLayout];
+  styledLayout = [rep styledLayout];
 
-  [v3 shadowedNaturalBoundsWithoutOffset];
+  [styledLayout shadowedNaturalBoundsWithoutOffset];
   result.size.height = v7;
   result.size.width = v6;
   result.origin.y = v5;
@@ -124,11 +124,11 @@
   return result;
 }
 
-- (CGRect)boundsForRep:(id)a3
+- (CGRect)boundsForRep:(id)rep
 {
-  v3 = [a3 styledLayout];
+  styledLayout = [rep styledLayout];
 
-  [v3 shadowedNaturalBoundsWithoutOffset];
+  [styledLayout shadowedNaturalBoundsWithoutOffset];
   result.size.height = v7;
   result.size.width = v6;
   result.origin.y = v5;
@@ -136,9 +136,9 @@
   return result;
 }
 
-- (CGImage)newShadowImageForRep:(id)a3 withSize:(CGSize)a4 drawSelector:(SEL)a5 unflipped:(BOOL)a6
+- (CGImage)newShadowImageForRep:(id)rep withSize:(CGSize)size drawSelector:(SEL)selector unflipped:(BOOL)unflipped
 {
-  v6 = a6;
+  unflippedCopy = unflipped;
   v10 = TSDRoundedSize();
   v12 = v11;
   v13 = TSDRectWithSize();
@@ -166,7 +166,7 @@
     }
 
     v27 = v18;
-    v28 = [(TSDShadow *)self color];
+    color = [(TSDShadow *)self color];
     v29 = TSDBitmapContextCreate(11, v23);
     if (!v29)
     {
@@ -176,10 +176,10 @@
     else
     {
       v30 = v29;
-      v31 = [a3 layout];
-      if (v31)
+      layout = [rep layout];
+      if (layout)
       {
-        [v31 transformInRoot];
+        [layout transformInRoot];
       }
 
       else
@@ -195,12 +195,12 @@
       v34 = v33;
       CGContextTranslateCTM(v30, -v22, -v27);
       CGContextTranslateCTM(v30, -(v24 + 10.0), -0.0);
-      if (v6)
+      if (unflippedCopy)
       {
         v59 = 0u;
         v60 = 0u;
         v58 = 0u;
-        v35 = [objc_msgSend(a3 "layout")];
+        v35 = [objc_msgSend(rep "layout")];
         if (v35)
         {
           [v35 transform];
@@ -242,16 +242,16 @@
 
       v61.height = 0.0;
       v61.width = (v24 + 10.0);
-      CGContextSetShadowWithColor(v30, v61, v34, v28);
+      CGContextSetShadowWithColor(v30, v61, v34, color);
       CGContextTranslateCTM(v30, v34, v34);
-      if ([a3 canDrawShadowInOneStepWithChildren:1])
+      if ([rep canDrawShadowInOneStepWithChildren:1])
       {
-        [a3 performSelector:a5 withObject:v30];
+        [rep performSelector:selector withObject:v30];
       }
 
       else
       {
-        [a3 naturalBounds];
+        [rep naturalBounds];
         v41 = v40;
         v43 = v42;
         TSDRectWithSize();
@@ -264,10 +264,10 @@
           v51 = v49 / v47;
           v52 = CGLayerCreateWithContext(v30, *&v48, 0);
           Context = CGLayerGetContext(v52);
-          v54 = [a3 layout];
-          if (v54)
+          layout2 = [rep layout];
+          if (layout2)
           {
-            [v54 transformInRoot];
+            [layout2 transformInRoot];
           }
 
           else
@@ -280,7 +280,7 @@
           v55 = TSDTransformAngle(&v58);
           TSDSetCGContextInfoForShadowContext(Context, v55);
           CGContextScaleCTM(Context, v50, v51);
-          [a3 performSelector:a5 withObject:Context];
+          [rep performSelector:selector withObject:Context];
           TSDClearCGContextInfo(Context);
           v62.origin.x = TSDRectWithSize();
           CGContextDrawLayerInRect(v30, v62, v52);
@@ -297,15 +297,15 @@
   return Image;
 }
 
-- (int64_t)mixingTypeWithObject:(id)a3
+- (int64_t)mixingTypeWithObject:(id)object
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __38__TSDDropShadow_mixingTypeWithObject___block_invoke;
   v4[3] = &unk_279D48738;
-  v4[4] = a3;
+  v4[4] = object;
   v4[5] = self;
-  return TSDMixingTypeWithObject(self, a3, v4);
+  return TSDMixingTypeWithObject(self, object, v4);
 }
 
 uint64_t __38__TSDDropShadow_mixingTypeWithObject___block_invoke(uint64_t a1)
@@ -350,16 +350,16 @@ uint64_t __38__TSDDropShadow_mixingTypeWithObject___block_invoke(uint64_t a1)
   }
 }
 
-- (id)mixedObjectWithFraction:(double)a3 ofObject:(id)a4
+- (id)mixedObjectWithFraction:(double)fraction ofObject:(id)object
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __50__TSDDropShadow_mixedObjectWithFraction_ofObject___block_invoke;
   v5[3] = &unk_279D48760;
-  v5[4] = a4;
+  v5[4] = object;
   v5[5] = self;
-  *&v5[6] = a3;
-  return TSDMixingMixedObjectWithFraction(self, a4, v5);
+  *&v5[6] = fraction;
+  return TSDMixingMixedObjectWithFraction(self, object, v5);
 }
 
 TSDDropShadow *__50__TSDDropShadow_mixedObjectWithFraction_ofObject___block_invoke(uint64_t a1)

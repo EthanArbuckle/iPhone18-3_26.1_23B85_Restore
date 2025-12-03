@@ -1,9 +1,9 @@
 @interface VFXMTLShadable
-- (id)bufferAtIndices:(id)a3;
-- (id)samplerAtIndices:(id)a3;
-- (id)textureAtIndices:(id)a3;
+- (id)bufferAtIndices:(id)indices;
+- (id)samplerAtIndices:(id)indices;
+- (id)textureAtIndices:(id)indices;
 - (void)dealloc;
-- (void)setResource:(id)a3 ofType:(int64_t)a4 atIndices:(id)a5;
+- (void)setResource:(id)resource ofType:(int64_t)type atIndices:(id)indices;
 @end
 
 @implementation VFXMTLShadable
@@ -27,50 +27,50 @@
   [(VFXMTLShadable *)&v6 dealloc];
 }
 
-- (void)setResource:(id)a3 ofType:(int64_t)a4 atIndices:(id)a5
+- (void)setResource:(id)resource ofType:(int64_t)type atIndices:(id)indices
 {
-  var0 = a5.var0;
-  v8 = *&a5.var0 >> 8;
-  var1 = a5.var1;
-  if (a4 == 3)
+  var0 = indices.var0;
+  v8 = *&indices.var0 >> 8;
+  var1 = indices.var1;
+  if (type == 3)
   {
-    if (a5.var0 != 255)
+    if (indices.var0 != 255)
     {
-      v18 = a3;
+      resourceCopy = resource;
       v19 = (&self->super.isa + var0);
 
-      v19[125] = a3;
+      v19[125] = resource;
     }
 
     if (var1 != 255)
     {
-      v20 = a3;
+      resourceCopy2 = resource;
       v21 = (&self->super.isa + v8);
 
-      v21[141] = a3;
+      v21[141] = resource;
     }
   }
 
-  else if (a4 == 2)
+  else if (type == 2)
   {
-    if (a5.var0 != 255)
+    if (indices.var0 != 255)
     {
-      v14 = a3;
+      resourceCopy3 = resource;
       v15 = (&self->super.isa + var0);
 
-      v15[63] = a3;
+      v15[63] = resource;
     }
 
     if (var1 != 255)
     {
-      v16 = a3;
+      resourceCopy4 = resource;
       v17 = (&self->super.isa + v8);
 
-      v17[94] = a3;
+      v17[94] = resource;
     }
   }
 
-  else if (a4)
+  else if (type)
   {
     v22 = sub_1AF0D5194();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -81,34 +81,34 @@
 
   else
   {
-    if (a5.var0 != 255)
+    if (indices.var0 != 255)
     {
-      v10 = a3;
+      resourceCopy5 = resource;
       v11 = (&self->super.isa + var0);
 
-      v11[1] = a3;
+      v11[1] = resource;
     }
 
     if (var1 != 255)
     {
-      v12 = a3;
+      resourceCopy6 = resource;
       v13 = (&self->super.isa + v8);
 
-      v13[32] = a3;
+      v13[32] = resource;
     }
   }
 }
 
-- (id)bufferAtIndices:(id)a3
+- (id)bufferAtIndices:(id)indices
 {
-  if (a3.var0 != -1)
+  if (indices.var0 != -1)
   {
-    return self->_vertexBuffers[a3.var0];
+    return self->_vertexBuffers[indices.var0];
   }
 
-  if ((~*&a3 & 0xFF00) != 0)
+  if ((~*&indices & 0xFF00) != 0)
   {
-    return self->_fragmentBuffers[a3.var1];
+    return self->_fragmentBuffers[indices.var1];
   }
 
   v3 = sub_1AF0D5194();
@@ -120,16 +120,16 @@
   return 0;
 }
 
-- (id)textureAtIndices:(id)a3
+- (id)textureAtIndices:(id)indices
 {
-  if (a3.var0 != -1)
+  if (indices.var0 != -1)
   {
-    return self->_vertexTextures[a3.var0];
+    return self->_vertexTextures[indices.var0];
   }
 
-  if ((~*&a3 & 0xFF00) != 0)
+  if ((~*&indices & 0xFF00) != 0)
   {
-    return self->_fragmentTextures[a3.var1];
+    return self->_fragmentTextures[indices.var1];
   }
 
   v3 = sub_1AF0D5194();
@@ -141,16 +141,16 @@
   return 0;
 }
 
-- (id)samplerAtIndices:(id)a3
+- (id)samplerAtIndices:(id)indices
 {
-  if (a3.var0 != -1)
+  if (indices.var0 != -1)
   {
-    return self->_vertexSamplers[a3.var0];
+    return self->_vertexSamplers[indices.var0];
   }
 
-  if ((~*&a3 & 0xFF00) != 0)
+  if ((~*&indices & 0xFF00) != 0)
   {
-    return self->_fragmentSamplers[a3.var1];
+    return self->_fragmentSamplers[indices.var1];
   }
 
   v3 = sub_1AF0D5194();

@@ -1,27 +1,27 @@
 @interface HMDThreadNetworkStatusReport
-- (HMDThreadNetworkStatusReport)initWithNumAdvertisedBRs:(unint64_t)a3 numAppleBRs:(unint64_t)a4 numThirdPartyBRs:(unint64_t)a5 numThreadNetworks:(unint64_t)a6 maxSimuIPPrefixesDetected:(unint64_t)a7 txTotal:(unint64_t)a8 txSuccess:(unint64_t)a9 txDelayAvg:(unint64_t)a10 rxTotal:(unint64_t)a11 rxSuccess:(unint64_t)a12 reportDuration:(unint64_t)a13;
+- (HMDThreadNetworkStatusReport)initWithNumAdvertisedBRs:(unint64_t)rs numAppleBRs:(unint64_t)bRs numThirdPartyBRs:(unint64_t)partyBRs numThreadNetworks:(unint64_t)networks maxSimuIPPrefixesDetected:(unint64_t)detected txTotal:(unint64_t)total txSuccess:(unint64_t)success txDelayAvg:(unint64_t)self0 rxTotal:(unint64_t)self1 rxSuccess:(unint64_t)self2 reportDuration:(unint64_t)self3;
 @end
 
 @implementation HMDThreadNetworkStatusReport
 
-- (HMDThreadNetworkStatusReport)initWithNumAdvertisedBRs:(unint64_t)a3 numAppleBRs:(unint64_t)a4 numThirdPartyBRs:(unint64_t)a5 numThreadNetworks:(unint64_t)a6 maxSimuIPPrefixesDetected:(unint64_t)a7 txTotal:(unint64_t)a8 txSuccess:(unint64_t)a9 txDelayAvg:(unint64_t)a10 rxTotal:(unint64_t)a11 rxSuccess:(unint64_t)a12 reportDuration:(unint64_t)a13
+- (HMDThreadNetworkStatusReport)initWithNumAdvertisedBRs:(unint64_t)rs numAppleBRs:(unint64_t)bRs numThirdPartyBRs:(unint64_t)partyBRs numThreadNetworks:(unint64_t)networks maxSimuIPPrefixesDetected:(unint64_t)detected txTotal:(unint64_t)total txSuccess:(unint64_t)success txDelayAvg:(unint64_t)self0 rxTotal:(unint64_t)self1 rxSuccess:(unint64_t)self2 reportDuration:(unint64_t)self3
 {
   v20.receiver = self;
   v20.super_class = HMDThreadNetworkStatusReport;
   result = [(HMDThreadNetworkStatusReport *)&v20 init];
   if (result)
   {
-    result->_numAdvertisedBRs = a3;
-    result->_numAppleBRs = a4;
-    result->_numThirdPartyBRs = a5;
-    result->_numThreadNetworks = a6;
-    result->_maxSimuIPPrefixesDetected = a7;
-    result->_txTotal = a8;
-    result->_txSuccess = a9;
-    result->_txDelayAvg = a10;
-    result->_rxTotal = a11;
-    result->_rxSuccess = a12;
-    result->_reportDuration = a13;
+    result->_numAdvertisedBRs = rs;
+    result->_numAppleBRs = bRs;
+    result->_numThirdPartyBRs = partyBRs;
+    result->_numThreadNetworks = networks;
+    result->_maxSimuIPPrefixesDetected = detected;
+    result->_txTotal = total;
+    result->_txSuccess = success;
+    result->_txDelayAvg = avg;
+    result->_rxTotal = rxTotal;
+    result->_rxSuccess = rxSuccess;
+    result->_reportDuration = duration;
   }
 
   return result;

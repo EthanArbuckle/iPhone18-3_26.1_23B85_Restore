@@ -1,17 +1,17 @@
 @interface TSPKnownFieldToRemove
-- (void)mergeToMessage:(Message *)a3 reflection:(const Reflection *)a4;
+- (void)mergeToMessage:(Message *)message reflection:(const Reflection *)reflection;
 @end
 
 @implementation TSPKnownFieldToRemove
 
-- (void)mergeToMessage:(Message *)a3 reflection:(const Reflection *)a4
+- (void)mergeToMessage:(Message *)message reflection:(const Reflection *)reflection
 {
-  v7 = (*(a3->var0 + 19))(a3, a2);
+  v7 = (*(message->var0 + 19))(message, a2);
   FieldByNumber = google::protobuf::Descriptor::FindFieldByNumber(v7, self->super._number);
-  if (FieldByNumber || (FieldByNumber = google::protobuf::Reflection::FindKnownExtensionByNumber(a4, self->super._number)) != 0)
+  if (FieldByNumber || (FieldByNumber = google::protobuf::Reflection::FindKnownExtensionByNumber(reflection, self->super._number)) != 0)
   {
 
-    google::protobuf::Reflection::ClearField(a4, a3, FieldByNumber);
+    google::protobuf::Reflection::ClearField(reflection, message, FieldByNumber);
   }
 
   else

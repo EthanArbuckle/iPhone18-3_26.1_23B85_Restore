@@ -1,12 +1,12 @@
 @interface BWMultiCamConfiguration
-+ (id)configurationWithCurrentStateFromCaptureDevice:(id)a3;
-+ (id)configurationWithUnsynchronizedActiveStreamsPortTypes:(id)a3 synchronizedActiveStreamsGroupsPortTypes:(id)a4 stereoVideoCaptureEnabled:(BOOL)a5;
-- (BOOL)isEqual:(id)a3;
-- (id)copyActiveSynchronizedStreamsGroupsForDevice:(id)a3 errorOut:(int *)a4;
-- (id)multiCamConfigurationForDevice:(id)a3 errorOut:(int *)a4;
-- (void)_initWithUnsynchronizedActiveStreamsPortTypes:(void *)a3 synchronizedActiveStreamsGroupsPortTypes:(void *)a4 withCaptureDevice:(int)a5 readCurrentStateFromCaptureDevice:(char)a6 stereoVideoCaptureEnabled:;
++ (id)configurationWithCurrentStateFromCaptureDevice:(id)device;
++ (id)configurationWithUnsynchronizedActiveStreamsPortTypes:(id)types synchronizedActiveStreamsGroupsPortTypes:(id)portTypes stereoVideoCaptureEnabled:(BOOL)enabled;
+- (BOOL)isEqual:(id)equal;
+- (id)copyActiveSynchronizedStreamsGroupsForDevice:(id)device errorOut:(int *)out;
+- (id)multiCamConfigurationForDevice:(id)device errorOut:(int *)out;
+- (void)_initWithUnsynchronizedActiveStreamsPortTypes:(void *)types synchronizedActiveStreamsGroupsPortTypes:(void *)portTypes withCaptureDevice:(int)device readCurrentStateFromCaptureDevice:(char)captureDevice stereoVideoCaptureEnabled:;
 - (void)dealloc;
-- (void)sortedStreamsForTNRFeatureBasedRegistration:(char)a3 prioritizePrimaryStream:;
+- (void)sortedStreamsForTNRFeatureBasedRegistration:(char)registration prioritizePrimaryStream:;
 @end
 
 @implementation BWMultiCamConfiguration
@@ -18,21 +18,21 @@
   [(BWMultiCamConfiguration *)&v3 dealloc];
 }
 
-+ (id)configurationWithUnsynchronizedActiveStreamsPortTypes:(id)a3 synchronizedActiveStreamsGroupsPortTypes:(id)a4 stereoVideoCaptureEnabled:(BOOL)a5
++ (id)configurationWithUnsynchronizedActiveStreamsPortTypes:(id)types synchronizedActiveStreamsGroupsPortTypes:(id)portTypes stereoVideoCaptureEnabled:(BOOL)enabled
 {
-  v5 = [[BWMultiCamConfiguration alloc] _initWithUnsynchronizedActiveStreamsPortTypes:a3 synchronizedActiveStreamsGroupsPortTypes:a4 withCaptureDevice:0 readCurrentStateFromCaptureDevice:0 stereoVideoCaptureEnabled:a5];
+  v5 = [[BWMultiCamConfiguration alloc] _initWithUnsynchronizedActiveStreamsPortTypes:types synchronizedActiveStreamsGroupsPortTypes:portTypes withCaptureDevice:0 readCurrentStateFromCaptureDevice:0 stereoVideoCaptureEnabled:enabled];
 
   return v5;
 }
 
-- (void)_initWithUnsynchronizedActiveStreamsPortTypes:(void *)a3 synchronizedActiveStreamsGroupsPortTypes:(void *)a4 withCaptureDevice:(int)a5 readCurrentStateFromCaptureDevice:(char)a6 stereoVideoCaptureEnabled:
+- (void)_initWithUnsynchronizedActiveStreamsPortTypes:(void *)types synchronizedActiveStreamsGroupsPortTypes:(void *)portTypes withCaptureDevice:(int)device readCurrentStateFromCaptureDevice:(char)captureDevice stereoVideoCaptureEnabled:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v39.receiver = a1;
+  v39.receiver = self;
   v39.super_class = BWMultiCamConfiguration;
   v11 = objc_msgSendSuper2(&v39, sel_init);
   if (v11)
@@ -45,23 +45,23 @@
     v38[3] = v13;
     v38[4] = *off_1E798A0F8;
     v11[1] = [MEMORY[0x1E695DEC8] arrayWithObjects:v38 count:5];
-    *(v11 + 32) = a6;
-    if (!a5)
+    *(v11 + 32) = captureDevice;
+    if (!device)
     {
       v11[2] = [a2 copy];
-      v11[3] = [a3 copy];
+      v11[3] = [types copy];
       return v11;
     }
 
-    if (!a4)
+    if (!portTypes)
     {
       objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"device must not be NULL" userInfo:0]);
     }
 
     v55[0] = 0;
-    v14 = [MEMORY[0x1E695DF70] array];
-    v15 = [MEMORY[0x1E695DF70] array];
-    v16 = [a4 getProperty:*off_1E798A018 error:v55];
+    array = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
+    v16 = [portTypes getProperty:*off_1E798A018 error:v55];
     if (v55[0])
     {
       [BWMultiCamConfiguration _initWithUnsynchronizedActiveStreamsPortTypes:synchronizedActiveStreamsGroupsPortTypes:withCaptureDevice:readCurrentStateFromCaptureDevice:stereoVideoCaptureEnabled:];
@@ -69,7 +69,7 @@
 
     else
     {
-      v35 = v14;
+      v35 = array;
       v36 = v11;
       v53 = 0u;
       v54 = 0u;
@@ -91,13 +91,13 @@
               objc_enumerationMutation(obj);
             }
 
-            v21 = [*(*(&v51 + 1) + 8 * i) activeStreams];
-            v22 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v21, "count")}];
+            activeStreams = [*(*(&v51 + 1) + 8 * i) activeStreams];
+            v22 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(activeStreams, "count")}];
             v46 = 0u;
             v47 = 0u;
             v48 = 0u;
             v49 = 0u;
-            v23 = [v21 countByEnumeratingWithState:&v46 objects:v45 count:16];
+            v23 = [activeStreams countByEnumeratingWithState:&v46 objects:v45 count:16];
             if (v23)
             {
               v24 = v23;
@@ -108,19 +108,19 @@
                 {
                   if (*v47 != v25)
                   {
-                    objc_enumerationMutation(v21);
+                    objc_enumerationMutation(activeStreams);
                   }
 
                   [v22 addObject:{objc_msgSend(*(*(&v46 + 1) + 8 * j), "portType")}];
                 }
 
-                v24 = [v21 countByEnumeratingWithState:&v46 objects:v45 count:16];
+                v24 = [activeStreams countByEnumeratingWithState:&v46 objects:v45 count:16];
               }
 
               while (v24);
             }
 
-            [v15 addObject:v22];
+            [array2 addObject:v22];
           }
 
           v18 = [obj countByEnumeratingWithState:&v51 objects:v50 count:16];
@@ -135,7 +135,7 @@
       v42 = 0u;
       v27 = [v34 objectForKeyedSubscript:*off_1E7989F50];
       v28 = [v27 countByEnumeratingWithState:&v41 objects:v40 count:16];
-      v14 = v35;
+      array = v35;
       v11 = v36;
       if (v28)
       {
@@ -161,7 +161,7 @@
     }
 
     v32 = v55[0];
-    if (v55[0] || (v11[2] = [v14 copy], v11[3] = objc_msgSend(v15, "copy"), (v32 = v55[0]) != 0))
+    if (v55[0] || (v11[2] = [array copy], v11[3] = objc_msgSend(array2, "copy"), (v32 = v55[0]) != 0))
     {
       [BWMultiCamConfiguration _initWithUnsynchronizedActiveStreamsPortTypes:v32 synchronizedActiveStreamsGroupsPortTypes:v11 withCaptureDevice:? readCurrentStateFromCaptureDevice:? stereoVideoCaptureEnabled:?];
       return 0;
@@ -171,16 +171,16 @@
   return v11;
 }
 
-+ (id)configurationWithCurrentStateFromCaptureDevice:(id)a3
++ (id)configurationWithCurrentStateFromCaptureDevice:(id)device
 {
-  v3 = [[BWMultiCamConfiguration alloc] _initWithUnsynchronizedActiveStreamsPortTypes:0 synchronizedActiveStreamsGroupsPortTypes:a3 withCaptureDevice:1 readCurrentStateFromCaptureDevice:0 stereoVideoCaptureEnabled:?];
+  v3 = [[BWMultiCamConfiguration alloc] _initWithUnsynchronizedActiveStreamsPortTypes:0 synchronizedActiveStreamsGroupsPortTypes:device withCaptureDevice:1 readCurrentStateFromCaptureDevice:0 stereoVideoCaptureEnabled:?];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v10) = 1;
   }
@@ -190,10 +190,10 @@
     v35 = v3;
     v36 = v4;
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && (v7 = -[NSArray count](self->_unsynchronizedActiveStreamsPortTypes, "count"), v7 == [*(a3 + 2) count]) && (v8 = -[NSArray count](self->_synchronizedActiveStreamsGroupsPortTypes, "count"), v8 == objc_msgSend(*(a3 + 3), "count")))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && (v7 = -[NSArray count](self->_unsynchronizedActiveStreamsPortTypes, "count"), v7 == [*(equal + 2) count]) && (v8 = -[NSArray count](self->_synchronizedActiveStreamsGroupsPortTypes, "count"), v8 == objc_msgSend(*(equal + 3), "count")))
     {
       v9 = [MEMORY[0x1E695DFD8] setWithArray:self->_unsynchronizedActiveStreamsPortTypes];
-      v10 = [v9 isEqual:{objc_msgSend(MEMORY[0x1E695DFD8], "setWithArray:", *(a3 + 2))}];
+      v10 = [v9 isEqual:{objc_msgSend(MEMORY[0x1E695DFD8], "setWithArray:", *(equal + 2))}];
       if (v10)
       {
         v33 = 0u;
@@ -220,7 +220,7 @@ LABEL_8:
             v27 = 0u;
             v28 = 0u;
             v29 = 0u;
-            v15 = *(a3 + 3);
+            v15 = *(equal + 3);
             v16 = [v15 countByEnumeratingWithState:&v26 objects:v25 count:16];
             if (v16)
             {
@@ -283,7 +283,7 @@ LABEL_19:
         else
         {
 LABEL_23:
-          LOBYTE(v10) = self->_stereoVideoCaptureEnabled == *(a3 + 32);
+          LOBYTE(v10) = self->_stereoVideoCaptureEnabled == *(equal + 32);
         }
       }
     }
@@ -348,29 +348,29 @@ uint64_t __95__BWMultiCamConfiguration_sortedStreamsForTNRFeatureBasedRegistrati
   }
 }
 
-- (id)multiCamConfigurationForDevice:(id)a3 errorOut:(int *)a4
+- (id)multiCamConfigurationForDevice:(id)device errorOut:(int *)out
 {
   v30[0] = 0;
-  v7 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v8 = [MEMORY[0x1E695DF70] arrayWithCapacity:{-[NSArray count](self->_synchronizedActiveStreamsGroupsPortTypes, "count")}];
-  v9 = [MEMORY[0x1E695DF70] array];
-  v23 = a4;
+  array = [MEMORY[0x1E695DF70] array];
+  outCopy = out;
   if ([(NSArray *)self->_unsynchronizedActiveStreamsPortTypes count])
   {
-    v10 = [a3 copyStreamsWithPortTypes:self->_unsynchronizedActiveStreamsPortTypes error:v30];
+    v10 = [device copyStreamsWithPortTypes:self->_unsynchronizedActiveStreamsPortTypes error:v30];
     if (v30[0])
     {
       [BWMultiCamConfiguration multiCamConfigurationForDevice:errorOut:];
-      if (a4)
+      if (out)
       {
         goto LABEL_26;
       }
 
-      return v7;
+      return dictionary;
     }
 
     v22 = v10;
-    [v9 addObjectsFromArray:v10];
+    [array addObjectsFromArray:v10];
   }
 
   else
@@ -387,7 +387,7 @@ uint64_t __95__BWMultiCamConfiguration_sortedStreamsForTNRFeatureBasedRegistrati
   if (!v12)
   {
 LABEL_17:
-    v19 = [MEMORY[0x1E695DF70] arrayWithArray:v9];
+    v19 = [MEMORY[0x1E695DF70] arrayWithArray:array];
     v24[0] = MEMORY[0x1E69E9820];
     v24[1] = 3221225472;
     v24[2] = __67__BWMultiCamConfiguration_multiCamConfigurationForDevice_errorOut___block_invoke;
@@ -396,7 +396,7 @@ LABEL_17:
     [v19 sortUsingComparator:v24];
     if (self->_stereoVideoCaptureEnabled)
     {
-      a4 = v23;
+      out = outCopy;
       if ([v8 count])
       {
         v20 = [(BWMultiCamConfiguration *)self sortedStreamsForTNRFeatureBasedRegistration:v8 prioritizePrimaryStream:0];
@@ -411,19 +411,19 @@ LABEL_17:
     else
     {
       v20 = 0;
-      a4 = v23;
+      out = outCopy;
     }
 
-    [v7 setObject:v22 forKeyedSubscript:*off_1E7989F50];
-    [v7 setObject:v8 forKeyedSubscript:*off_1E7989F48];
-    [v7 setObject:v19 forKeyedSubscript:*off_1E7989F58];
-    [v7 setObject:v20 forKeyedSubscript:*off_1E7989F60];
-    if (a4)
+    [dictionary setObject:v22 forKeyedSubscript:*off_1E7989F50];
+    [dictionary setObject:v8 forKeyedSubscript:*off_1E7989F48];
+    [dictionary setObject:v19 forKeyedSubscript:*off_1E7989F58];
+    [dictionary setObject:v20 forKeyedSubscript:*off_1E7989F60];
+    if (out)
     {
       goto LABEL_26;
     }
 
-    return v7;
+    return dictionary;
   }
 
   v13 = v12;
@@ -443,14 +443,14 @@ LABEL_7:
       goto LABEL_15;
     }
 
-    v17 = [a3 copyStreamsWithPortTypes:v16 error:v30];
+    v17 = [device copyStreamsWithPortTypes:v16 error:v30];
     if (v30[0])
     {
       [BWMultiCamConfiguration multiCamConfigurationForDevice:errorOut:];
       goto LABEL_25;
     }
 
-    v18 = [a3 copySynchronizedStreamsGroupForStreams:v17 error:v30];
+    v18 = [device copySynchronizedStreamsGroupForStreams:v17 error:v30];
     if (v30[0])
     {
       break;
@@ -459,7 +459,7 @@ LABEL_7:
     if (v18)
     {
       [v8 addObject:?];
-      [v9 addObjectsFromArray:v17];
+      [array addObjectsFromArray:v17];
     }
 
 LABEL_15:
@@ -477,15 +477,15 @@ LABEL_15:
 
   [BWMultiCamConfiguration multiCamConfigurationForDevice:errorOut:];
 LABEL_25:
-  a4 = v23;
-  if (!v23)
+  out = outCopy;
+  if (!outCopy)
   {
-    return v7;
+    return dictionary;
   }
 
 LABEL_26:
-  *a4 = v30[0];
-  return v7;
+  *out = v30[0];
+  return dictionary;
 }
 
 uint64_t __67__BWMultiCamConfiguration_multiCamConfigurationForDevice_errorOut___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -513,7 +513,7 @@ uint64_t __67__BWMultiCamConfiguration_multiCamConfigurationForDevice_errorOut__
   }
 }
 
-- (id)copyActiveSynchronizedStreamsGroupsForDevice:(id)a3 errorOut:(int *)a4
+- (id)copyActiveSynchronizedStreamsGroupsForDevice:(id)device errorOut:(int *)out
 {
   v23 = 0;
   v7 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{-[NSArray count](self->_synchronizedActiveStreamsGroupsPortTypes, "count")}];
@@ -536,7 +536,7 @@ uint64_t __67__BWMultiCamConfiguration_multiCamConfigurationForDevice_errorOut__
           objc_enumerationMutation(synchronizedActiveStreamsGroupsPortTypes);
         }
 
-        v13 = [a3 copyStreamsWithPortTypes:*(*(&v19 + 1) + 8 * i) error:&v23];
+        v13 = [device copyStreamsWithPortTypes:*(*(&v19 + 1) + 8 * i) error:&v23];
         if (v23)
         {
           [BWMultiCamConfiguration copyActiveSynchronizedStreamsGroupsForDevice:errorOut:];
@@ -544,7 +544,7 @@ uint64_t __67__BWMultiCamConfiguration_multiCamConfigurationForDevice_errorOut__
           goto LABEL_11;
         }
 
-        v14 = [a3 copySynchronizedStreamsGroupForStreams:v13 error:&v23];
+        v14 = [device copySynchronizedStreamsGroupForStreams:v13 error:&v23];
         if (v23)
         {
           [BWMultiCamConfiguration copyActiveSynchronizedStreamsGroupsForDevice:errorOut:];
@@ -568,9 +568,9 @@ uint64_t __67__BWMultiCamConfiguration_multiCamConfigurationForDevice_errorOut__
   v13 = 0;
 LABEL_11:
   v15 = v23;
-  if (a4)
+  if (out)
   {
-    *a4 = v23;
+    *out = v23;
   }
 
   if (v15 || ![v7 count])
@@ -586,20 +586,20 @@ LABEL_11:
   return v16;
 }
 
-- (void)sortedStreamsForTNRFeatureBasedRegistration:(char)a3 prioritizePrimaryStream:
+- (void)sortedStreamsForTNRFeatureBasedRegistration:(char)registration prioritizePrimaryStream:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
   v6 = [MEMORY[0x1E695DFA8] set];
-  v7 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v15 = OUTLINED_FUNCTION_1_66(v7, v8, v9, v10, v11, v12, v13, v14);
+  v15 = OUTLINED_FUNCTION_1_66(array, v8, v9, v10, v11, v12, v13, v14);
   if (v15)
   {
     v16 = v15;
@@ -615,7 +615,7 @@ LABEL_11:
 
         v19 = *(*(&v31 + 1) + 8 * i);
         [v6 addObject:{objc_msgSend(objc_msgSend(v19, "synchronizationMaster"), "portType")}];
-        v20 = [v7 addObjectsFromArray:{objc_msgSend(v19, "activeStreams")}];
+        v20 = [array addObjectsFromArray:{objc_msgSend(v19, "activeStreams")}];
       }
 
       v16 = OUTLINED_FUNCTION_1_66(v20, v21, v22, v23, v24, v25, v26, v27);
@@ -628,11 +628,11 @@ LABEL_11:
   v29[1] = 3221225472;
   v29[2] = __95__BWMultiCamConfiguration_sortedStreamsForTNRFeatureBasedRegistration_prioritizePrimaryStream___block_invoke;
   v29[3] = &unk_1E79977B0;
-  v29[4] = a1;
+  v29[4] = self;
   v29[5] = v6;
-  v30 = a3;
-  [v7 sortUsingComparator:v29];
-  return v7;
+  registrationCopy = registration;
+  [array sortUsingComparator:v29];
+  return array;
 }
 
 - (uint64_t)_initWithUnsynchronizedActiveStreamsPortTypes:synchronizedActiveStreamsGroupsPortTypes:withCaptureDevice:readCurrentStateFromCaptureDevice:stereoVideoCaptureEnabled:.cold.1()

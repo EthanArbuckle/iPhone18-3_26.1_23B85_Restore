@@ -1,8 +1,8 @@
 @interface AudioRemixSubscriber
-- (AudioRemixSubscriber)initWithSession:(id)a3 andNodeMetadataOutput:(id)a4 usePIPAIngestSignalingDomain:(BOOL)a5 completionHandler:(id)a6;
-- (int)finishAndGetResultsBlockingWithStartingPTS:(id *)a3 andEndingPTS:(id *)a4;
-- (int)handleReceiveCompletion:(id)a3;
-- (int)handleReceiveResult:(id)a3;
+- (AudioRemixSubscriber)initWithSession:(id)session andNodeMetadataOutput:(id)output usePIPAIngestSignalingDomain:(BOOL)domain completionHandler:(id)handler;
+- (int)finishAndGetResultsBlockingWithStartingPTS:(id *)s andEndingPTS:(id *)tS;
+- (int)handleReceiveCompletion:(id)completion;
+- (int)handleReceiveResult:(id)result;
 - (void)activate;
 - (void)cancelSubscription;
 - (void)dealloc;
@@ -10,7 +10,7 @@
 
 @implementation AudioRemixSubscriber
 
-- (AudioRemixSubscriber)initWithSession:(id)a3 andNodeMetadataOutput:(id)a4 usePIPAIngestSignalingDomain:(BOOL)a5 completionHandler:(id)a6
+- (AudioRemixSubscriber)initWithSession:(id)session andNodeMetadataOutput:(id)output usePIPAIngestSignalingDomain:(BOOL)domain completionHandler:(id)handler
 {
   v19.receiver = self;
   v19.super_class = AudioRemixSubscriber;
@@ -22,10 +22,10 @@
     v10[24] = 0;
     *(v10 + 1) = 0;
     *(v10 + 2) = v12;
-    *(v10 + 5) = a3;
-    if (a4)
+    *(v10 + 5) = session;
+    if (output)
     {
-      v13 = CFRetain(a4);
+      v13 = CFRetain(output);
     }
 
     else
@@ -34,8 +34,8 @@
     }
 
     *(v10 + 6) = v13;
-    v10[56] = a5;
-    *(v10 + 4) = _Block_copy(a6);
+    v10[56] = domain;
+    *(v10 + 4) = _Block_copy(handler);
     *(v10 + 8) = 0;
     *(v10 + 9) = 0;
     v14 = [objc_msgSend(*(v10 + 6) "format")];
@@ -86,9 +86,9 @@
   [(AudioRemixSubscriber *)&v5 dealloc];
 }
 
-- (int)handleReceiveResult:(id)a3
+- (int)handleReceiveResult:(id)result
 {
-  if (!a3 || (self->_startingPTS.flags & 1) == 0)
+  if (!result || (self->_startingPTS.flags & 1) == 0)
   {
     return -1;
   }
@@ -108,7 +108,7 @@
   block[2] = __44__AudioRemixSubscriber_handleReceiveResult___block_invoke;
   block[3] = &unk_1E79906C0;
   block[4] = self;
-  block[5] = a3;
+  block[5] = result;
   block[6] = &v9;
   dispatch_sync(workQueue, block);
   v4 = *(v10 + 6);
@@ -280,7 +280,7 @@ LABEL_23:
   }
 }
 
-- (int)handleReceiveCompletion:(id)a3
+- (int)handleReceiveCompletion:(id)completion
 {
   v13 = 0;
   v14 = &v13;
@@ -301,7 +301,7 @@ LABEL_23:
   block[2] = __48__AudioRemixSubscriber_handleReceiveCompletion___block_invoke;
   block[3] = &unk_1E79906E8;
   block[4] = self;
-  block[5] = a3;
+  block[5] = completion;
   block[6] = &v9;
   block[7] = &v13;
   dispatch_sync(workQueue, block);
@@ -470,7 +470,7 @@ NSObject *__32__AudioRemixSubscriber_activate__block_invoke_3(uint64_t a1, uint6
   return result;
 }
 
-- (int)finishAndGetResultsBlockingWithStartingPTS:(id *)a3 andEndingPTS:(id *)a4
+- (int)finishAndGetResultsBlockingWithStartingPTS:(id *)s andEndingPTS:(id *)tS
 {
   if (self->_resultHandlerSemaphore || self->_completionHandlerSemaphore)
   {
@@ -479,13 +479,13 @@ NSObject *__32__AudioRemixSubscriber_activate__block_invoke_3(uint64_t a1, uint6
     return FigSignalErrorAtGM();
   }
 
-  else if ((a3->var2 & 1) != 0 && (a4->var2 & 1) != 0 && (time1 = *a3, v16 = *a4, CMTimeCompare(&time1, &v16) < 0))
+  else if ((s->var2 & 1) != 0 && (tS->var2 & 1) != 0 && (time1 = *s, v16 = *tS, CMTimeCompare(&time1, &v16) < 0))
   {
-    v7 = *&a3->var0;
-    self->_startingPTS.epoch = a3->var3;
+    v7 = *&s->var0;
+    self->_startingPTS.epoch = s->var3;
     *&self->_startingPTS.value = v7;
-    v8 = *&a4->var0;
-    self->_endingPTS.epoch = a4->var3;
+    v8 = *&tS->var0;
+    self->_endingPTS.epoch = tS->var3;
     *&self->_endingPTS.value = v8;
     self->_resultHandlerSemaphore = dispatch_semaphore_create(0);
     self->_completionHandlerSemaphore = dispatch_semaphore_create(0);

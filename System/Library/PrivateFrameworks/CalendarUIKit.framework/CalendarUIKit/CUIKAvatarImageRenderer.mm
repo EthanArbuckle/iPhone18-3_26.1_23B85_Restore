@@ -1,6 +1,6 @@
 @interface CUIKAvatarImageRenderer
 - (CUIKAvatarImageRenderer)init;
-- (id)imageForContact:(id)a3 size:(CGSize)a4;
+- (id)imageForContact:(id)contact size:(CGSize)size;
 @end
 
 @implementation CUIKAvatarImageRenderer
@@ -20,16 +20,16 @@
   return v2;
 }
 
-- (id)imageForContact:(id)a3 size:(CGSize)a4
+- (id)imageForContact:(id)contact size:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v12[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  contactCopy = contact;
   v8 = [MEMORY[0x1E695D0B8] scopeWithPointSize:0 scale:0 rightToLeft:width style:{height, 3.0}];
-  if (v7)
+  if (contactCopy)
   {
-    v12[0] = v7;
+    v12[0] = contactCopy;
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
   }
 

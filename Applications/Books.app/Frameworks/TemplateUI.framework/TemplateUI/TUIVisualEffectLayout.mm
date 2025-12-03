@@ -1,15 +1,15 @@
 @interface TUIVisualEffectLayout
-- (TUIVisualEffectLayout)initWithModel:(id)a3 parent:(id)a4 controller:(id)a5;
-- (id)newRenderModelCompatibleWithKind:(unint64_t)a3 context:(id)a4;
+- (TUIVisualEffectLayout)initWithModel:(id)model parent:(id)parent controller:(id)controller;
+- (id)newRenderModelCompatibleWithKind:(unint64_t)kind context:(id)context;
 @end
 
 @implementation TUIVisualEffectLayout
 
-- (TUIVisualEffectLayout)initWithModel:(id)a3 parent:(id)a4 controller:(id)a5
+- (TUIVisualEffectLayout)initWithModel:(id)model parent:(id)parent controller:(id)controller
 {
   v8.receiver = self;
   v8.super_class = TUIVisualEffectLayout;
-  v5 = [(TUILayout *)&v8 initWithModel:a3 parent:a4 controller:a5];
+  v5 = [(TUILayout *)&v8 initWithModel:model parent:parent controller:controller];
   v6 = v5;
   if (v5)
   {
@@ -20,21 +20,21 @@
   return v6;
 }
 
-- (id)newRenderModelCompatibleWithKind:(unint64_t)a3 context:(id)a4
+- (id)newRenderModelCompatibleWithKind:(unint64_t)kind context:(id)context
 {
-  if (a3 < 4)
+  if (kind < 4)
   {
     return 0;
   }
 
-  v5 = a4;
+  contextCopy = context;
   v6 = [(TUILayout *)self box];
   v7 = -[_TUIVisualEffectBoxStyler initWithBlurStyle:]([_TUIVisualEffectBoxStyler alloc], "initWithBlurStyle:", [v6 blurStyle]);
   v8 = [(TUILayout *)self box];
-  v9 = [v8 identifier];
-  v10 = [TUIStyledView renderModelWithStyle:v7 identifier:v9];
+  identifier = [v8 identifier];
+  v10 = [TUIStyledView renderModelWithStyle:v7 identifier:identifier];
 
-  [(TUILayout *)self renderModelSizeWithContext:v5];
+  [(TUILayout *)self renderModelSizeWithContext:contextCopy];
   v12 = v11;
   v14 = v13;
 

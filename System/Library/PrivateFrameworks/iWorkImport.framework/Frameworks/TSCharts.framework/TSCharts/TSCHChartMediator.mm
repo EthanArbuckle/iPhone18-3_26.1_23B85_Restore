@@ -2,21 +2,21 @@
 + (id)propertiesThatInvalidateMediator;
 - (BOOL)preferSeriesToValues;
 - (TSCHChartInfo)chartInfo;
-- (TSCHChartMediator)initWithChartInfo:(id)a3;
+- (TSCHChartMediator)initWithChartInfo:(id)info;
 - (TSCHNotifyOnModify)objectToNotify;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)p_errorBarDataForSeries:(unint64_t)a3 withSpec:(id *)a4 updateType:(int)a5;
-- (unint64_t)p_gridSeriesIndexForRemoteSeriesIndex:(unint64_t)a3;
-- (unint64_t)p_remoteSeriesIndexForGridSeriesIndex:(unint64_t)a3;
-- (void)loadFromArchive:(const void *)a3;
-- (void)saveToArchive:(void *)a3;
-- (void)updateGridWithSpec:(id *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)p_errorBarDataForSeries:(unint64_t)series withSpec:(id *)spec updateType:(int)type;
+- (unint64_t)p_gridSeriesIndexForRemoteSeriesIndex:(unint64_t)index;
+- (unint64_t)p_remoteSeriesIndexForGridSeriesIndex:(unint64_t)index;
+- (void)loadFromArchive:(const void *)archive;
+- (void)saveToArchive:(void *)archive;
+- (void)updateGridWithSpec:(id *)spec;
 - (void)willModify;
 @end
 
 @implementation TSCHChartMediator
 
-- (void)loadFromArchive:(const void *)a3
+- (void)loadFromArchive:(const void *)archive
 {
   remoteSeriesIndexForGridSeriesIndex = self->_remoteSeriesIndexForGridSeriesIndex;
   if (remoteSeriesIndexForGridSeriesIndex)
@@ -46,8 +46,8 @@
   v10 = self->_gridSeriesIndexForRemoteSeriesIndex;
   self->_gridSeriesIndexForRemoteSeriesIndex = v9;
 
-  v15 = *(a3 + 6);
-  if (v15 != *(a3 + 10))
+  v15 = *(archive + 6);
+  if (v15 != *(archive + 10))
   {
     v16 = MEMORY[0x277D81150];
     v17 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v11, v12, v13, v14, "[TSCHChartMediator(Archiving) loadFromArchive:]");
@@ -55,7 +55,7 @@
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v16, v23, v24, v25, v26, v17, v22, 37, 0, "Different number of indexes in the different arrays.");
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v27, v28, v29, v30);
-    v15 = *(a3 + 6);
+    v15 = *(archive + 6);
   }
 
   if ((v15 & 0x80000000) != 0)
@@ -83,14 +83,14 @@
       goto LABEL_15;
     }
 
-    if (**(a3 + 4) != -1)
+    if (**(archive + 4) != -1)
     {
       v31 = 1;
 LABEL_15:
       for (i = 0; i != v31; ++i)
       {
-        v33 = *(*(a3 + 6) + 4 * i);
-        v34 = *(*(a3 + 4) + 4 * i);
+        v33 = *(*(archive + 6) + 4 * i);
+        v34 = *(*(archive + 4) + 4 * i);
         objc_msgSend_setInt_forKey_(self->_remoteSeriesIndexForGridSeriesIndex, v11, v12, v13, v14, v33, v34);
         objc_msgSend_setInt_forKey_(self->_gridSeriesIndexForRemoteSeriesIndex, v35, v36, v37, v38, v34, v33);
       }
@@ -98,7 +98,7 @@ LABEL_15:
       return;
     }
 
-    v39 = **(a3 + 6);
+    v39 = **(archive + 6);
     if (v39)
     {
       for (j = 0; j != v39; ++j)
@@ -110,7 +110,7 @@ LABEL_15:
   }
 }
 
-- (void)saveToArchive:(void *)a3
+- (void)saveToArchive:(void *)archive
 {
   v9 = objc_msgSend_keyEnumerator(self->_remoteSeriesIndexForGridSeriesIndex, a2, v3, v4, v5);
   if (v9)
@@ -125,15 +125,15 @@ LABEL_15:
 
       if (Key != objc_msgSend_intForKey_(self->_remoteSeriesIndexForGridSeriesIndex, v8, v10, v11, v12, Key))
       {
-        *(a3 + 6) = 0;
-        *(a3 + 10) = 0;
+        *(archive + 6) = 0;
+        *(archive + 10) = 0;
         goto LABEL_10;
       }
     }
   }
 
-  *(a3 + 6) = 0;
-  *(a3 + 10) = 0;
+  *(archive + 6) = 0;
+  *(archive + 10) = 0;
   v14 = objc_msgSend_chartInfo(self, v8, v10, v11, v12);
   v19 = objc_msgSend_model(v14, v15, v16, v17, v18);
 
@@ -152,36 +152,36 @@ LABEL_15:
       v25 = -1;
     }
 
-    v26 = *(a3 + 6);
-    if (v26 == *(a3 + 7))
+    v26 = *(archive + 6);
+    if (v26 == *(archive + 7))
     {
       v27 = v26 + 1;
-      sub_2762E9624(a3 + 6, v26 + 1);
-      *(*(a3 + 4) + 4 * v26) = -1;
+      sub_2762E9624(archive + 6, v26 + 1);
+      *(*(archive + 4) + 4 * v26) = -1;
     }
 
     else
     {
-      *(*(a3 + 4) + 4 * v26) = -1;
+      *(*(archive + 4) + 4 * v26) = -1;
       v27 = v26 + 1;
     }
 
-    *(a3 + 6) = v27;
-    v32 = *(a3 + 10);
-    if (v32 == *(a3 + 11))
+    *(archive + 6) = v27;
+    v32 = *(archive + 10);
+    if (v32 == *(archive + 11))
     {
       v33 = v32 + 1;
-      sub_2762E9624(a3 + 10, v32 + 1);
-      *(*(a3 + 6) + 4 * v32) = v25;
+      sub_2762E9624(archive + 10, v32 + 1);
+      *(*(archive + 6) + 4 * v32) = v25;
     }
 
     else
     {
-      *(*(a3 + 6) + 4 * v32) = v25;
+      *(*(archive + 6) + 4 * v32) = v25;
       v33 = v32 + 1;
     }
 
-    *(a3 + 10) = v33;
+    *(archive + 10) = v33;
   }
 
   else
@@ -193,21 +193,21 @@ LABEL_10:
     v49[2] = sub_2762E9348;
     v49[3] = &unk_27A6B9588;
     v49[4] = self;
-    v49[5] = a3;
+    v49[5] = archive;
     objc_msgSend_enumerateIndexesUsingBlock_(v28, v29, COERCE_DOUBLE(3221225472), v30, v31, v49);
   }
 }
 
-- (TSCHChartMediator)initWithChartInfo:(id)a3
+- (TSCHChartMediator)initWithChartInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v12.receiver = self;
   v12.super_class = TSCHChartMediator;
   v5 = [(TSCHChartMediator *)&v12 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_chartInfo, v4);
+    objc_storeWeak(&v5->_chartInfo, infoCopy);
     v7 = objc_alloc_init(MEMORY[0x277D81208]);
     remoteSeriesIndexForGridSeriesIndex = v6->_remoteSeriesIndexForGridSeriesIndex;
     v6->_remoteSeriesIndexForGridSeriesIndex = v7;
@@ -220,7 +220,7 @@ LABEL_10:
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_alloc_init(objc_opt_class());
   if (v5)
@@ -252,14 +252,14 @@ LABEL_10:
   objc_msgSend_willModify(v19, v15, v16, v17, v18);
 }
 
-- (id)p_errorBarDataForSeries:(unint64_t)a3 withSpec:(id *)a4 updateType:(int)a5
+- (id)p_errorBarDataForSeries:(unint64_t)series withSpec:(id *)spec updateType:(int)type
 {
-  v8 = *&a5;
+  v8 = *&type;
   v11 = objc_msgSend_array(MEMORY[0x277CBEB18], a2, v5, v6, v7);
   v32 = 0;
   v30 = 0;
-  v31 = a3;
-  v12 = (a4->var1)(a4->var2, v8, &v31, &v32, &v30, 0);
+  seriesCopy = series;
+  v12 = (spec->var1)(spec->var2, v8, &seriesCopy, &v32, &v30, 0);
   v13 = v30;
   v18 = v13;
   if (v12)
@@ -277,10 +277,10 @@ LABEL_10:
         objc_msgSend_addObject_(v11, v14, v15, v16, v17, v18);
       }
 
-      var1 = a4->var1;
-      var2 = a4->var2;
+      var1 = spec->var1;
+      var2 = spec->var2;
       v30 = v18;
-      v27 = var1(var2, v8, &v31, &v32, &v30, 0);
+      v27 = var1(var2, v8, &seriesCopy, &v32, &v30, 0);
       v28 = v30;
 
       v18 = v28;
@@ -297,7 +297,7 @@ LABEL_10:
   return v11;
 }
 
-- (void)updateGridWithSpec:(id *)a3
+- (void)updateGridWithSpec:(id *)spec
 {
   v8 = objc_msgSend_chartInfo(self, a2, v3, v4, v5);
   if ((objc_msgSend_isPhantom(self, v9, v10, v11, v12) & 1) != 0 || !v8)
@@ -308,9 +308,9 @@ LABEL_10:
   objc_msgSend_willModify(self, v13, v14, v15, v16);
   objc_msgSend_removeAllInts(self->_remoteSeriesIndexForGridSeriesIndex, v17, v18, v19, v20);
   objc_msgSend_removeAllInts(self->_gridSeriesIndexForRemoteSeriesIndex, v21, v22, v23, v24);
-  var0 = a3->var0;
-  var1 = a3->var1;
-  var2 = a3->var2;
+  var0 = spec->var0;
+  var1 = spec->var1;
+  var2 = spec->var2;
   v32 = objc_msgSend_model(v8, v28, v29, v30, v31);
   v37 = objc_msgSend_grid(v32, v33, v34, v35, v36);
   v38 = objc_alloc_init(TSCHChartGrid);
@@ -325,7 +325,7 @@ LABEL_10:
 
   v249 = v37;
   v238 = v8;
-  v239 = self;
+  selfCopy = self;
   while (objc_msgSend_numberOfRows(v38, v55, v56, v57, v58, v238))
   {
     objc_msgSend_removeRow_(v38, v59, v60, v61, v62, 0);
@@ -532,8 +532,8 @@ LABEL_47:
     if (v241)
     {
       v152 = v243;
-      objc_msgSend_setInt_forKey_(v239->_remoteSeriesIndexForGridSeriesIndex, v102, v103, v104, v105, v243, v91);
-      objc_msgSend_setInt_forKey_(v239->_gridSeriesIndexForRemoteSeriesIndex, v153, v154, v155, v156, v91++, v243);
+      objc_msgSend_setInt_forKey_(selfCopy->_remoteSeriesIndexForGridSeriesIndex, v102, v103, v104, v105, v243, v91);
+      objc_msgSend_setInt_forKey_(selfCopy->_gridSeriesIndexForRemoteSeriesIndex, v153, v154, v155, v156, v91++, v243);
       v93 = v249;
       goto LABEL_56;
     }
@@ -571,7 +571,7 @@ LABEL_59:
     v187 = v89;
   }
 
-  v188 = v239;
+  v188 = selfCopy;
   v189 = v250;
   v190 = v251;
   if (v187)
@@ -640,10 +640,10 @@ LABEL_68:
   return v3;
 }
 
-- (unint64_t)p_remoteSeriesIndexForGridSeriesIndex:(unint64_t)a3
+- (unint64_t)p_remoteSeriesIndexForGridSeriesIndex:(unint64_t)index
 {
   v7 = 0x7FFFFFFFFFFFFFFFLL;
-  if (objc_msgSend_intIsPresentForKey_outValue_(self->_remoteSeriesIndexForGridSeriesIndex, a2, v3, v4, v5, a3, &v7))
+  if (objc_msgSend_intIsPresentForKey_outValue_(self->_remoteSeriesIndexForGridSeriesIndex, a2, v3, v4, v5, index, &v7))
   {
     return v7;
   }
@@ -654,10 +654,10 @@ LABEL_68:
   }
 }
 
-- (unint64_t)p_gridSeriesIndexForRemoteSeriesIndex:(unint64_t)a3
+- (unint64_t)p_gridSeriesIndexForRemoteSeriesIndex:(unint64_t)index
 {
   v7 = 0x7FFFFFFFFFFFFFFFLL;
-  if (objc_msgSend_intIsPresentForKey_outValue_(self->_gridSeriesIndexForRemoteSeriesIndex, a2, v3, v4, v5, a3, &v7))
+  if (objc_msgSend_intIsPresentForKey_outValue_(self->_gridSeriesIndexForRemoteSeriesIndex, a2, v3, v4, v5, index, &v7))
   {
     return v7;
   }

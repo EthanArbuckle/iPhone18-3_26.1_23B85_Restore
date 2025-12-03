@@ -1,8 +1,8 @@
 @interface CTServiceDisconnectionStatus
-- (CTServiceDisconnectionStatus)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CTServiceDisconnectionStatus)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CTServiceDisconnectionStatus
@@ -11,16 +11,16 @@
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];
   [v3 appendFormat:@", contextType=%d", -[CTServiceDisconnectionStatus contextType](self, "contextType")];
-  v4 = [(CTServiceDisconnectionStatus *)self apnName];
-  [v3 appendFormat:@", apnName=%@", v4];
+  apnName = [(CTServiceDisconnectionStatus *)self apnName];
+  [v3 appendFormat:@", apnName=%@", apnName];
 
   [v3 appendFormat:@", activationFailure=%d", -[CTServiceDisconnectionStatus activationFailure](self, "activationFailure")];
-  v5 = [(CTServiceDisconnectionStatus *)self connectionMask];
-  [v3 appendFormat:@", connectionMask=%@", v5];
+  connectionMask = [(CTServiceDisconnectionStatus *)self connectionMask];
+  [v3 appendFormat:@", connectionMask=%@", connectionMask];
 
   [v3 appendFormat:@", error=%d", -[CTServiceDisconnectionStatus error](self, "error")];
-  v6 = [(CTServiceDisconnectionStatus *)self rawCauseCode];
-  [v3 appendFormat:@", rawCauseCode=%@", v6];
+  rawCauseCode = [(CTServiceDisconnectionStatus *)self rawCauseCode];
+  [v3 appendFormat:@", rawCauseCode=%@", rawCauseCode];
 
   v7 = [(CTServiceDisconnectionStatus *)self pdp];
   [v3 appendFormat:@", pdp=%@", v7];
@@ -30,22 +30,22 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setContextType:{-[CTServiceDisconnectionStatus contextType](self, "contextType")}];
-  v5 = [(CTServiceDisconnectionStatus *)self apnName];
-  v6 = [v5 copy];
+  apnName = [(CTServiceDisconnectionStatus *)self apnName];
+  v6 = [apnName copy];
   [v4 setApnName:v6];
 
   [v4 setActivationFailure:{-[CTServiceDisconnectionStatus activationFailure](self, "activationFailure")}];
-  v7 = [(CTServiceDisconnectionStatus *)self connectionMask];
-  v8 = [v7 copy];
+  connectionMask = [(CTServiceDisconnectionStatus *)self connectionMask];
+  v8 = [connectionMask copy];
   [v4 setConnectionMask:v8];
 
   [v4 setError:{-[CTServiceDisconnectionStatus error](self, "error")}];
-  v9 = [(CTServiceDisconnectionStatus *)self rawCauseCode];
-  v10 = [v9 copy];
+  rawCauseCode = [(CTServiceDisconnectionStatus *)self rawCauseCode];
+  v10 = [rawCauseCode copy];
   [v4 setRawCauseCode:v10];
 
   v11 = [(CTServiceDisconnectionStatus *)self pdp];
@@ -55,49 +55,49 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInt:-[CTServiceDisconnectionStatus contextType](self forKey:{"contextType"), @"contextType"}];
-  v5 = [(CTServiceDisconnectionStatus *)self apnName];
-  [v4 encodeObject:v5 forKey:@"apnName"];
+  coderCopy = coder;
+  [coderCopy encodeInt:-[CTServiceDisconnectionStatus contextType](self forKey:{"contextType"), @"contextType"}];
+  apnName = [(CTServiceDisconnectionStatus *)self apnName];
+  [coderCopy encodeObject:apnName forKey:@"apnName"];
 
-  [v4 encodeBool:-[CTServiceDisconnectionStatus activationFailure](self forKey:{"activationFailure"), @"activationFailure"}];
-  v6 = [(CTServiceDisconnectionStatus *)self connectionMask];
-  [v4 encodeObject:v6 forKey:@"connectionMask"];
+  [coderCopy encodeBool:-[CTServiceDisconnectionStatus activationFailure](self forKey:{"activationFailure"), @"activationFailure"}];
+  connectionMask = [(CTServiceDisconnectionStatus *)self connectionMask];
+  [coderCopy encodeObject:connectionMask forKey:@"connectionMask"];
 
-  [v4 encodeInt:-[CTServiceDisconnectionStatus error](self forKey:{"error"), @"error"}];
-  v7 = [(CTServiceDisconnectionStatus *)self rawCauseCode];
-  [v4 encodeObject:v7 forKey:@"rawCauseCode"];
+  [coderCopy encodeInt:-[CTServiceDisconnectionStatus error](self forKey:{"error"), @"error"}];
+  rawCauseCode = [(CTServiceDisconnectionStatus *)self rawCauseCode];
+  [coderCopy encodeObject:rawCauseCode forKey:@"rawCauseCode"];
 
   v8 = [(CTServiceDisconnectionStatus *)self pdp];
-  [v4 encodeObject:v8 forKey:@"pdp"];
+  [coderCopy encodeObject:v8 forKey:@"pdp"];
 }
 
-- (CTServiceDisconnectionStatus)initWithCoder:(id)a3
+- (CTServiceDisconnectionStatus)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = CTServiceDisconnectionStatus;
   v5 = [(CTServiceDisconnectionStatus *)&v15 init];
   if (v5)
   {
-    v5->_contextType = [v4 decodeIntForKey:@"contextType"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"apnName"];
+    v5->_contextType = [coderCopy decodeIntForKey:@"contextType"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"apnName"];
     apnName = v5->_apnName;
     v5->_apnName = v6;
 
-    v5->_activationFailure = [v4 decodeBoolForKey:@"activationFailure"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"connectionMask"];
+    v5->_activationFailure = [coderCopy decodeBoolForKey:@"activationFailure"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"connectionMask"];
     connectionMask = v5->_connectionMask;
     v5->_connectionMask = v8;
 
-    v5->_error = [v4 decodeIntForKey:@"error"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"rawCauseCode"];
+    v5->_error = [coderCopy decodeIntForKey:@"error"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rawCauseCode"];
     rawCauseCode = v5->_rawCauseCode;
     v5->_rawCauseCode = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pdp"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pdp"];
     pdp = v5->_pdp;
     v5->_pdp = v12;
   }

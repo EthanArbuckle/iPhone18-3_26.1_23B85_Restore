@@ -1,10 +1,10 @@
 @interface HardwareManager
-- (void)processCarriersWithNotification:(id)a3;
+- (void)processCarriersWithNotification:(id)notification;
 @end
 
 @implementation HardwareManager
 
-- (void)processCarriersWithNotification:(id)a3
+- (void)processCarriersWithNotification:(id)notification
 {
   v3 = type metadata accessor for Notification();
   v4 = *(v3 - 8);

@@ -1,19 +1,19 @@
 @interface ICSTimeZoneTranslator
-+ (id)timeZoneNameForNonstandardTimeZone:(id)a3;
++ (id)timeZoneNameForNonstandardTimeZone:(id)zone;
 @end
 
 @implementation ICSTimeZoneTranslator
 
-+ (id)timeZoneNameForNonstandardTimeZone:(id)a3
++ (id)timeZoneNameForNonstandardTimeZone:(id)zone
 {
   v3 = timeZoneNameForNonstandardTimeZone__onceToken;
-  v4 = a3;
+  zoneCopy = zone;
   if (v3 != -1)
   {
     +[ICSTimeZoneTranslator timeZoneNameForNonstandardTimeZone:];
   }
 
-  v5 = [timeZoneNameForNonstandardTimeZone__nonstandardTimeZones objectForKeyedSubscript:v4];
+  v5 = [timeZoneNameForNonstandardTimeZone__nonstandardTimeZones objectForKeyedSubscript:zoneCopy];
 
   return v5;
 }

@@ -4,11 +4,11 @@
 - (NSSet)allowedModeClasses;
 - (NSString)debugDescription;
 - (PlatformController)platformController;
-- (VLFSessionChromeStackMonitor)initWithObserver:(id)a3 platformController:(id)a4;
-- (void)_updateStateForTopMode:(id)a3;
-- (void)chromeViewController:(id)a3 didMoveFromContextStack:(id)a4 toContextStack:(id)a5;
+- (VLFSessionChromeStackMonitor)initWithObserver:(id)observer platformController:(id)controller;
+- (void)_updateStateForTopMode:(id)mode;
+- (void)chromeViewController:(id)controller didMoveFromContextStack:(id)stack toContextStack:(id)contextStack;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation VLFSessionChromeStackMonitor
@@ -20,32 +20,32 @@
   return WeakRetained;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
   WeakRetained = objc_loadWeakRetained(&self->_platformController);
   v14 = WeakRetained;
-  if (WeakRetained != v11)
+  if (WeakRetained != objectCopy)
   {
 
 LABEL_15:
     v26.receiver = self;
     v26.super_class = VLFSessionChromeStackMonitor;
-    [(VLFSessionChromeStackMonitor *)&v26 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(VLFSessionChromeStackMonitor *)&v26 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
     goto LABEL_16;
   }
 
   v15 = NSStringFromSelector("chromeViewController");
-  v16 = [v10 isEqualToString:v15];
+  v16 = [pathCopy isEqualToString:v15];
 
   if (!v16)
   {
     goto LABEL_15;
   }
 
-  v17 = [v12 objectForKeyedSubscript:NSKeyValueChangeOldKey];
+  v17 = [changeCopy objectForKeyedSubscript:NSKeyValueChangeOldKey];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -59,7 +59,7 @@ LABEL_15:
 
   v19 = v18;
 
-  v20 = [v12 objectForKeyedSubscript:NSKeyValueChangeNewKey];
+  v20 = [changeCopy objectForKeyedSubscript:NSKeyValueChangeNewKey];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -91,30 +91,30 @@ LABEL_15:
   }
 
   [v22 addContextStackObserver:self];
-  v25 = [v22 topContext];
-  [(VLFSessionChromeStackMonitor *)self _updateStateForTopMode:v25];
+  topContext = [v22 topContext];
+  [(VLFSessionChromeStackMonitor *)self _updateStateForTopMode:topContext];
 
 LABEL_16:
 }
 
-- (void)chromeViewController:(id)a3 didMoveFromContextStack:(id)a4 toContextStack:(id)a5
+- (void)chromeViewController:(id)controller didMoveFromContextStack:(id)stack toContextStack:(id)contextStack
 {
-  v7 = a4;
-  v8 = a5;
+  stackCopy = stack;
+  contextStackCopy = contextStack;
   v9 = sub_10098CB2C();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
-    v10 = [v7 lastObject];
-    v11 = [v8 lastObject];
+    lastObject = [stackCopy lastObject];
+    lastObject2 = [contextStackCopy lastObject];
     v13 = 138412546;
-    v14 = v10;
+    v14 = lastObject;
     v15 = 2112;
-    v16 = v11;
+    v16 = lastObject2;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEBUG, "Top mode changed from %@ to %@", &v13, 0x16u);
   }
 
-  v12 = [v8 lastObject];
-  [(VLFSessionChromeStackMonitor *)self _updateStateForTopMode:v12];
+  lastObject3 = [contextStackCopy lastObject];
+  [(VLFSessionChromeStackMonitor *)self _updateStateForTopMode:lastObject3];
 }
 
 - (NSString)debugDescription
@@ -153,14 +153,14 @@ LABEL_16:
   }
 
   v7 = v6;
-  v8 = [(VLFSessionMonitor *)self state];
+  state = [(VLFSessionMonitor *)self state];
   v9 = @"Hide";
-  if (v8 == 1)
+  if (state == 1)
   {
     v9 = @"EnablePuck";
   }
 
-  if (v8 == 2)
+  if (state == 2)
   {
     v10 = @"EnablePuckAndBanner";
   }
@@ -170,13 +170,13 @@ LABEL_16:
     v10 = v9;
   }
 
-  v21 = [(VLFSessionChromeStackMonitor *)self platformController];
-  v11 = [v21 chromeViewController];
+  platformController = [(VLFSessionChromeStackMonitor *)self platformController];
+  chromeViewController = [platformController chromeViewController];
   v12 = objc_opt_class();
   v13 = NSStringFromClass(v12);
-  v14 = [(VLFSessionChromeStackMonitor *)self platformController];
-  v15 = [v14 chromeViewController];
-  v16 = [v15 topContext];
+  platformController2 = [(VLFSessionChromeStackMonitor *)self platformController];
+  chromeViewController2 = [platformController2 chromeViewController];
+  topContext = [chromeViewController2 topContext];
   v17 = objc_opt_class();
   v18 = NSStringFromClass(v17);
   v19 = [NSString stringWithFormat:@"<%@: isEnabled: %@, affectsPuckVisibility: %@, affectsBannerVisibility: %@, currentState: %@, currentChromeVC: %@, currentMode: %@", v23, v22, v5, v7, v10, v13, v18];
@@ -201,13 +201,13 @@ LABEL_16:
   return allowedModeClasses;
 }
 
-- (void)_updateStateForTopMode:(id)a3
+- (void)_updateStateForTopMode:(id)mode
 {
-  v4 = a3;
-  if (v4)
+  modeCopy = mode;
+  if (modeCopy)
   {
-    v5 = [(VLFSessionChromeStackMonitor *)self allowedModeClasses];
-    v6 = [v5 containsObject:objc_opt_class()];
+    allowedModeClasses = [(VLFSessionChromeStackMonitor *)self allowedModeClasses];
+    v6 = [allowedModeClasses containsObject:objc_opt_class()];
 
     v7 = sub_10098CB2C();
     v8 = os_log_type_enabled(v7, OS_LOG_TYPE_INFO);
@@ -217,11 +217,11 @@ LABEL_16:
       {
         v9 = objc_opt_class();
         v10 = NSStringFromClass(v9);
-        v11 = [(VLFSessionChromeStackMonitor *)self allowedModeClasses];
+        allowedModeClasses2 = [(VLFSessionChromeStackMonitor *)self allowedModeClasses];
         v16 = 138412546;
         v17 = v10;
         v18 = 2112;
-        v19 = v11;
+        v19 = allowedModeClasses2;
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "Top mode (%@) is in the allowed set (%@); updating state", &v16, 0x16u);
       }
 
@@ -234,11 +234,11 @@ LABEL_16:
       {
         v13 = objc_opt_class();
         v14 = NSStringFromClass(v13);
-        v15 = [(VLFSessionChromeStackMonitor *)self allowedModeClasses];
+        allowedModeClasses3 = [(VLFSessionChromeStackMonitor *)self allowedModeClasses];
         v16 = 138412546;
         v17 = v14;
         v18 = 2112;
-        v19 = v15;
+        v19 = allowedModeClasses3;
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "Top mode (%@) is NOT in the allowed set (%@); updating state", &v16, 0x16u);
       }
 
@@ -256,19 +256,19 @@ LABEL_16:
   [WeakRetained removeObserver:self forKeyPath:v4];
 
   v5 = objc_loadWeakRetained(&self->_platformController);
-  v6 = [v5 chromeViewController];
-  [v6 removeContextStackObserver:self];
+  chromeViewController = [v5 chromeViewController];
+  [chromeViewController removeContextStackObserver:self];
 
   v7.receiver = self;
   v7.super_class = VLFSessionChromeStackMonitor;
   [(VLFSessionChromeStackMonitor *)&v7 dealloc];
 }
 
-- (VLFSessionChromeStackMonitor)initWithObserver:(id)a3 platformController:(id)a4
+- (VLFSessionChromeStackMonitor)initWithObserver:(id)observer platformController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  observerCopy = observer;
+  controllerCopy = controller;
+  if (!observerCopy)
   {
     v21 = sub_10006D178();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -297,7 +297,7 @@ LABEL_16:
     }
   }
 
-  if (!v7)
+  if (!controllerCopy)
   {
     v24 = sub_10006D178();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -328,33 +328,33 @@ LABEL_16:
 
   v27.receiver = self;
   v27.super_class = VLFSessionChromeStackMonitor;
-  v8 = [(VLFSessionMonitor *)&v27 initWithObserver:v6];
+  v8 = [(VLFSessionMonitor *)&v27 initWithObserver:observerCopy];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_platformController, v7);
+    objc_storeWeak(&v8->_platformController, controllerCopy);
     v10 = sub_10098CB2C();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       WeakRetained = objc_loadWeakRetained(&v9->_platformController);
-      v12 = [WeakRetained chromeViewController];
+      chromeViewController = [WeakRetained chromeViewController];
       *buf = 138412290;
-      v29 = v12;
+      v29 = chromeViewController;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "Registering for chrome VC stack changes: %@", buf, 0xCu);
     }
 
     v13 = objc_loadWeakRetained(&v9->_platformController);
-    v14 = [v13 chromeViewController];
-    [v14 addContextStackObserver:v9];
+    chromeViewController2 = [v13 chromeViewController];
+    [chromeViewController2 addContextStackObserver:v9];
 
     v15 = objc_loadWeakRetained(&v9->_platformController);
     v16 = NSStringFromSelector("chromeViewController");
     [v15 addObserver:v9 forKeyPath:v16 options:3 context:0];
 
     v17 = objc_loadWeakRetained(&v9->_platformController);
-    v18 = [v17 chromeViewController];
-    v19 = [v18 topContext];
-    [(VLFSessionChromeStackMonitor *)v9 _updateStateForTopMode:v19];
+    chromeViewController3 = [v17 chromeViewController];
+    topContext = [chromeViewController3 topContext];
+    [(VLFSessionChromeStackMonitor *)v9 _updateStateForTopMode:topContext];
   }
 
   return v9;

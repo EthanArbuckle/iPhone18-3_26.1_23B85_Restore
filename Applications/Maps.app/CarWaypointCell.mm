@@ -1,18 +1,18 @@
 @interface CarWaypointCell
-- (CarWaypointCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (CarWaypointCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)_setupConstraints;
 - (void)_setupStyles;
 - (void)_setupSubviews;
-- (void)_updateLabelColors:(BOOL)a3;
-- (void)setHighlighted:(BOOL)a3 animated:(BOOL)a4;
-- (void)setupWithWaypoint:(id)a3 etaInfo:(id)a4 isRemovable:(BOOL)a5;
+- (void)_updateLabelColors:(BOOL)colors;
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated;
+- (void)setupWithWaypoint:(id)waypoint etaInfo:(id)info isRemovable:(BOOL)removable;
 @end
 
 @implementation CarWaypointCell
 
-- (void)_updateLabelColors:(BOOL)a3
+- (void)_updateLabelColors:(BOOL)colors
 {
-  if (a3)
+  if (colors)
   {
     v4 = +[UIColor _carSystemFocusLabelColor];
     [(UILabel *)self->_titleLabel setTextColor:v4];
@@ -31,44 +31,44 @@
   [(UILabel *)self->_arrivalLabel setTextColor:v6];
 }
 
-- (void)setHighlighted:(BOOL)a3 animated:(BOOL)a4
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated
 {
-  v4 = a3;
+  highlightedCopy = highlighted;
   v6.receiver = self;
   v6.super_class = CarWaypointCell;
-  [(CarWaypointCell *)&v6 setHighlighted:a3 animated:a4];
-  [(CarWaypointCell *)self _updateLabelColors:v4];
+  [(CarWaypointCell *)&v6 setHighlighted:highlighted animated:animated];
+  [(CarWaypointCell *)self _updateLabelColors:highlightedCopy];
 }
 
-- (void)setupWithWaypoint:(id)a3 etaInfo:(id)a4 isRemovable:(BOOL)a5
+- (void)setupWithWaypoint:(id)waypoint etaInfo:(id)info isRemovable:(BOOL)removable
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 name];
-  [(UILabel *)self->_titleLabel setText:v10];
+  removableCopy = removable;
+  waypointCopy = waypoint;
+  infoCopy = info;
+  name = [waypointCopy name];
+  [(UILabel *)self->_titleLabel setText:name];
 
-  if (!v5)
+  if (!removableCopy)
   {
     [(UILabel *)self->_tapToRemoveLabel setText:0];
-    if (!v9)
+    if (!infoCopy)
     {
       goto LABEL_8;
     }
 
 LABEL_18:
-    v28 = [GuidanceETA etaStringFromEtaLegInfo:v9 includingAMPMSymbols:0];
+    v28 = [GuidanceETA etaStringFromEtaLegInfo:infoCopy includingAMPMSymbols:0];
     [(UILabel *)self->_arrivalLabel setText:v28];
 
     goto LABEL_22;
   }
 
   v11 = +[CarDisplayController sharedInstance];
-  v12 = [v11 supportsTouchInteractionModel];
+  supportsTouchInteractionModel = [v11 supportsTouchInteractionModel];
 
   v13 = +[NSBundle mainBundle];
   v14 = v13;
-  if (v12)
+  if (supportsTouchInteractionModel)
   {
     v15 = @"Car_Waypoint_TapToRemove";
   }
@@ -81,7 +81,7 @@ LABEL_18:
   v16 = [v13 localizedStringForKey:v15 value:@"localized string not found" table:0];
   [(UILabel *)self->_tapToRemoveLabel setText:v16];
 
-  if (v9)
+  if (infoCopy)
   {
     goto LABEL_18;
   }
@@ -92,10 +92,10 @@ LABEL_8:
   v31 = 0u;
   v32 = 0u;
   v17 = +[MNNavigationService sharedService];
-  v18 = [v17 displayEtaInfo];
-  v19 = [v18 legInfos];
+  displayEtaInfo = [v17 displayEtaInfo];
+  legInfos = [displayEtaInfo legInfos];
 
-  v20 = [v19 countByEnumeratingWithState:&v31 objects:v37 count:16];
+  v20 = [legInfos countByEnumeratingWithState:&v31 objects:v37 count:16];
   if (v20)
   {
     v21 = v20;
@@ -106,13 +106,13 @@ LABEL_10:
     {
       if (*v32 != v22)
       {
-        objc_enumerationMutation(v19);
+        objc_enumerationMutation(legInfos);
       }
 
       v24 = *(*(&v31 + 1) + 8 * v23);
-      v25 = [v24 waypointID];
-      v26 = [v8 uniqueID];
-      v27 = [v25 isEqual:v26];
+      waypointID = [v24 waypointID];
+      uniqueID = [waypointCopy uniqueID];
+      v27 = [waypointID isEqual:uniqueID];
 
       if (v27)
       {
@@ -121,7 +121,7 @@ LABEL_10:
 
       if (v21 == ++v23)
       {
-        v21 = [v19 countByEnumeratingWithState:&v31 objects:v37 count:16];
+        v21 = [legInfos countByEnumeratingWithState:&v31 objects:v37 count:16];
         if (v21)
         {
           goto LABEL_10;
@@ -131,9 +131,9 @@ LABEL_10:
       }
     }
 
-    v9 = v24;
+    infoCopy = v24;
 
-    if (!v9)
+    if (!infoCopy)
     {
       goto LABEL_19;
     }
@@ -147,9 +147,9 @@ LABEL_19:
   v29 = sub_100006E1C();
   if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
   {
-    v30 = [v8 shortDescription];
+    shortDescription = [waypointCopy shortDescription];
     *buf = 138412290;
-    v36 = v30;
+    v36 = shortDescription;
     _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_ERROR, "Failed to get etaInfo for waypoint: %@", buf, 0xCu);
   }
 
@@ -181,48 +181,48 @@ LABEL_22:
 
 - (void)_setupConstraints
 {
-  v36 = [(UILabel *)self->_titleLabel firstBaselineAnchor];
-  v37 = [(CarWaypointCell *)self contentView];
-  v35 = [v37 topAnchor];
-  v34 = [v36 constraintEqualToAnchor:v35 constant:20.0];
+  firstBaselineAnchor = [(UILabel *)self->_titleLabel firstBaselineAnchor];
+  contentView = [(CarWaypointCell *)self contentView];
+  topAnchor = [contentView topAnchor];
+  v34 = [firstBaselineAnchor constraintEqualToAnchor:topAnchor constant:20.0];
   v38[0] = v34;
-  v32 = [(UILabel *)self->_titleLabel trailingAnchor];
-  v33 = [(CarWaypointCell *)self contentView];
-  v31 = [v33 trailingAnchor];
-  v30 = [v32 constraintEqualToAnchor:v31 constant:-6.0];
+  trailingAnchor = [(UILabel *)self->_titleLabel trailingAnchor];
+  contentView2 = [(CarWaypointCell *)self contentView];
+  trailingAnchor2 = [contentView2 trailingAnchor];
+  v30 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-6.0];
   v38[1] = v30;
-  v28 = [(UILabel *)self->_titleLabel leadingAnchor];
-  v29 = [(CarWaypointCell *)self contentView];
-  v27 = [v29 leadingAnchor];
-  v26 = [v28 constraintEqualToAnchor:v27 constant:6.0];
+  leadingAnchor = [(UILabel *)self->_titleLabel leadingAnchor];
+  contentView3 = [(CarWaypointCell *)self contentView];
+  leadingAnchor2 = [contentView3 leadingAnchor];
+  v26 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:6.0];
   v38[2] = v26;
-  v25 = [(UILabel *)self->_arrivalLabel firstBaselineAnchor];
-  v24 = [(UILabel *)self->_titleLabel lastBaselineAnchor];
-  v23 = [v25 constraintEqualToAnchor:v24 constant:14.0];
+  firstBaselineAnchor2 = [(UILabel *)self->_arrivalLabel firstBaselineAnchor];
+  lastBaselineAnchor = [(UILabel *)self->_titleLabel lastBaselineAnchor];
+  v23 = [firstBaselineAnchor2 constraintEqualToAnchor:lastBaselineAnchor constant:14.0];
   v38[3] = v23;
-  v21 = [(UILabel *)self->_arrivalLabel trailingAnchor];
-  v22 = [(CarWaypointCell *)self contentView];
-  v20 = [v22 trailingAnchor];
-  v19 = [v21 constraintEqualToAnchor:v20 constant:-6.0];
+  trailingAnchor3 = [(UILabel *)self->_arrivalLabel trailingAnchor];
+  contentView4 = [(CarWaypointCell *)self contentView];
+  trailingAnchor4 = [contentView4 trailingAnchor];
+  v19 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:-6.0];
   v38[4] = v19;
-  v17 = [(UILabel *)self->_arrivalLabel leadingAnchor];
-  v18 = [(CarWaypointCell *)self contentView];
-  v16 = [v18 leadingAnchor];
-  v15 = [v17 constraintEqualToAnchor:v16 constant:6.0];
+  leadingAnchor3 = [(UILabel *)self->_arrivalLabel leadingAnchor];
+  contentView5 = [(CarWaypointCell *)self contentView];
+  leadingAnchor4 = [contentView5 leadingAnchor];
+  v15 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:6.0];
   v38[5] = v15;
-  v14 = [(UILabel *)self->_tapToRemoveLabel firstBaselineAnchor];
-  v13 = [(UILabel *)self->_arrivalLabel lastBaselineAnchor];
-  v3 = [v14 constraintEqualToAnchor:v13 constant:14.0];
+  firstBaselineAnchor3 = [(UILabel *)self->_tapToRemoveLabel firstBaselineAnchor];
+  lastBaselineAnchor2 = [(UILabel *)self->_arrivalLabel lastBaselineAnchor];
+  v3 = [firstBaselineAnchor3 constraintEqualToAnchor:lastBaselineAnchor2 constant:14.0];
   v38[6] = v3;
-  v4 = [(UILabel *)self->_tapToRemoveLabel trailingAnchor];
-  v5 = [(CarWaypointCell *)self contentView];
-  v6 = [v5 trailingAnchor];
-  v7 = [v4 constraintEqualToAnchor:v6 constant:-6.0];
+  trailingAnchor5 = [(UILabel *)self->_tapToRemoveLabel trailingAnchor];
+  contentView6 = [(CarWaypointCell *)self contentView];
+  trailingAnchor6 = [contentView6 trailingAnchor];
+  v7 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6 constant:-6.0];
   v38[7] = v7;
-  v8 = [(UILabel *)self->_tapToRemoveLabel leadingAnchor];
-  v9 = [(CarWaypointCell *)self contentView];
-  v10 = [v9 leadingAnchor];
-  v11 = [v8 constraintEqualToAnchor:v10 constant:6.0];
+  leadingAnchor5 = [(UILabel *)self->_tapToRemoveLabel leadingAnchor];
+  contentView7 = [(CarWaypointCell *)self contentView];
+  leadingAnchor6 = [contentView7 leadingAnchor];
+  v11 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6 constant:6.0];
   v38[8] = v11;
   v12 = [NSArray arrayWithObjects:v38 count:9];
   [NSLayoutConstraint activateConstraints:v12];
@@ -239,36 +239,36 @@ LABEL_22:
   self->_titleLabel = v7;
 
   [(UILabel *)self->_titleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-  v9 = [(CarWaypointCell *)self contentView];
-  [v9 addSubview:self->_titleLabel];
+  contentView = [(CarWaypointCell *)self contentView];
+  [contentView addSubview:self->_titleLabel];
 
   v10 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
   arrivalLabel = self->_arrivalLabel;
   self->_arrivalLabel = v10;
 
   [(UILabel *)self->_arrivalLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-  v12 = [(CarWaypointCell *)self contentView];
-  [v12 addSubview:self->_arrivalLabel];
+  contentView2 = [(CarWaypointCell *)self contentView];
+  [contentView2 addSubview:self->_arrivalLabel];
 
   v13 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
   tapToRemoveLabel = self->_tapToRemoveLabel;
   self->_tapToRemoveLabel = v13;
 
   [(UILabel *)self->_tapToRemoveLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-  v15 = [(CarWaypointCell *)self contentView];
-  [v15 addSubview:self->_tapToRemoveLabel];
+  contentView3 = [(CarWaypointCell *)self contentView];
+  [contentView3 addSubview:self->_tapToRemoveLabel];
 }
 
-- (CarWaypointCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (CarWaypointCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v8.receiver = self;
   v8.super_class = CarWaypointCell;
-  v4 = [(CarWaypointCell *)&v8 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(CarWaypointCell *)&v8 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
-    v6 = [(CarWaypointCell *)v4 contentView];
-    [v6 setClipsToBounds:1];
+    contentView = [(CarWaypointCell *)v4 contentView];
+    [contentView setClipsToBounds:1];
 
     [(CarWaypointCell *)v5 _setupSubviews];
     [(CarWaypointCell *)v5 _setupConstraints];

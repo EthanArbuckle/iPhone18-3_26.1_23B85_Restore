@@ -1,15 +1,15 @@
 @interface _WTTextRangeChunk
 - (_NSRange)range;
-- (_WTTextRangeChunk)initWithRange:(_NSRange)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (_WTTextRangeChunk)initWithRange:(_NSRange)range;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation _WTTextRangeChunk
 
-- (_WTTextRangeChunk)initWithRange:(_NSRange)a3
+- (_WTTextRangeChunk)initWithRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v9.receiver = self;
   v9.super_class = _WTTextRangeChunk;
   v5 = [(_WTTextChunk *)&v9 init];
@@ -23,11 +23,11 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_new();
-  v5 = [(_WTTextRangeChunk *)self range];
-  [v4 setRange:{v5, v6}];
+  range = [(_WTTextRangeChunk *)self range];
+  [v4 setRange:{range, v6}];
   return v4;
 }
 

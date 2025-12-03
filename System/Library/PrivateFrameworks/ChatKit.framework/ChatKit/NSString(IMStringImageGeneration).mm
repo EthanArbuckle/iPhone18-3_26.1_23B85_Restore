@@ -8,7 +8,7 @@
 - (id)__ck_generateImageForFontSize:()IMStringImageGeneration imageGenerationScale:
 {
   v5 = [MEMORY[0x1E69DB878] systemFontOfSize:a2 / a3];
-  v6 = [a1 __ck_generateImageForFont:v5 imageGenerationScale:a3];
+  v6 = [self __ck_generateImageForFont:v5 imageGenerationScale:a3];
 
   return v6;
 }
@@ -22,16 +22,16 @@
   v7 = a4;
   v8 = [v6 dictionaryWithObjects:v15 forKeys:&v14 count:1];
 
-  [a1 sizeWithAttributes:v8];
+  [self sizeWithAttributes:v8];
   v17.width = v9 * a2;
   v17.height = v10 * a2;
   UIGraphicsBeginImageContextWithOptions(v17, 0, 0.0);
-  [a1 drawAtPoint:v8 withAttributes:{0.0, 0.0}];
+  [self drawAtPoint:v8 withAttributes:{0.0, 0.0}];
   v11 = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
-  v12 = [v11 __ck_imageWithTrimmedTransparency];
+  __ck_imageWithTrimmedTransparency = [v11 __ck_imageWithTrimmedTransparency];
 
-  return v12;
+  return __ck_imageWithTrimmedTransparency;
 }
 
 @end

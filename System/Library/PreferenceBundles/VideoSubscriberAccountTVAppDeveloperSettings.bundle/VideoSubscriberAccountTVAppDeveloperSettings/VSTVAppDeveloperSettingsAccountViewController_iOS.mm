@@ -1,21 +1,21 @@
 @interface VSTVAppDeveloperSettingsAccountViewController_iOS
-- (VSTVAppDeveloperSettingsAccountViewController_iOS)initWithNibName:(id)a3 bundle:(id)a4;
+- (VSTVAppDeveloperSettingsAccountViewController_iOS)initWithNibName:(id)name bundle:(id)bundle;
 - (id)billingGroupSpecifiers;
 - (id)dateGroupSpecifiers;
 - (id)deviceGroupSpecifiers;
-- (id)groupWithSpecifiers:(id)a3;
+- (id)groupWithSpecifiers:(id)specifiers;
 - (id)infoGroupSpecifiers;
 - (id)refreshGroupSpecifiers;
 - (id)sourceIdentifierGroupSpecifiers;
 - (id)specifiers;
 - (void)refreshAccount;
-- (void)remoteNotifier:(id)a3 didReceiveRemoteNotificationWithUserInfo:(id)a4;
+- (void)remoteNotifier:(id)notifier didReceiveRemoteNotificationWithUserInfo:(id)info;
 - (void)viewDidLoad;
 @end
 
 @implementation VSTVAppDeveloperSettingsAccountViewController_iOS
 
-- (VSTVAppDeveloperSettingsAccountViewController_iOS)initWithNibName:(id)a3 bundle:(id)a4
+- (VSTVAppDeveloperSettingsAccountViewController_iOS)initWithNibName:(id)name bundle:(id)bundle
 {
   v9.receiver = self;
   v9.super_class = VSTVAppDeveloperSettingsAccountViewController_iOS;
@@ -38,8 +38,8 @@
   v5.receiver = self;
   v5.super_class = VSTVAppDeveloperSettingsAccountViewController_iOS;
   [(VSTVAppDeveloperSettingsAccountViewController_iOS *)&v5 viewDidLoad];
-  v3 = [(VSTVAppDeveloperSettingsAccountViewController_iOS *)self specifier];
-  v4 = [v3 propertyForKey:@"VSTVAppDeveloperSettingsUserAccountKey"];
+  specifier = [(VSTVAppDeveloperSettingsAccountViewController_iOS *)self specifier];
+  v4 = [specifier propertyForKey:@"VSTVAppDeveloperSettingsUserAccountKey"];
   [(VSTVAppDeveloperSettingsAccountViewController_iOS *)self setAccount:v4];
 
   [(VSTVAppDeveloperSettingsAccountViewController_iOS *)self reloadSpecifiers];
@@ -47,8 +47,8 @@
 
 - (id)specifiers
 {
-  v3 = [(VSTVAppDeveloperSettingsAccountViewController_iOS *)self account];
-  v4 = v3;
+  account = [(VSTVAppDeveloperSettingsAccountViewController_iOS *)self account];
+  v4 = account;
   v5 = OBJC_IVAR___PSListController__specifiers;
   v6 = *&self->PSListController_opaque[OBJC_IVAR___PSListController__specifiers];
   if (v6)
@@ -58,63 +58,63 @@
 
   else
   {
-    v7 = v3 == 0;
+    v7 = account == 0;
   }
 
   if (!v7)
   {
-    v8 = [[VSUserAccountFacade alloc] initWithAccount:v3];
+    v8 = [[VSUserAccountFacade alloc] initWithAccount:account];
     [(VSTVAppDeveloperSettingsAccountViewController_iOS *)self setFacade:v8];
 
     v9 = objc_alloc_init(NSMutableArray);
-    v10 = [(VSTVAppDeveloperSettingsAccountViewController_iOS *)self sourceIdentifierGroupSpecifiers];
+    sourceIdentifierGroupSpecifiers = [(VSTVAppDeveloperSettingsAccountViewController_iOS *)self sourceIdentifierGroupSpecifiers];
 
-    if (v10)
+    if (sourceIdentifierGroupSpecifiers)
     {
-      v11 = [(VSTVAppDeveloperSettingsAccountViewController_iOS *)self sourceIdentifierGroupSpecifiers];
-      [v9 addObjectsFromArray:v11];
+      sourceIdentifierGroupSpecifiers2 = [(VSTVAppDeveloperSettingsAccountViewController_iOS *)self sourceIdentifierGroupSpecifiers];
+      [v9 addObjectsFromArray:sourceIdentifierGroupSpecifiers2];
     }
 
-    v12 = [(VSTVAppDeveloperSettingsAccountViewController_iOS *)self dateGroupSpecifiers];
+    dateGroupSpecifiers = [(VSTVAppDeveloperSettingsAccountViewController_iOS *)self dateGroupSpecifiers];
 
-    if (v12)
+    if (dateGroupSpecifiers)
     {
-      v13 = [(VSTVAppDeveloperSettingsAccountViewController_iOS *)self dateGroupSpecifiers];
-      [v9 addObjectsFromArray:v13];
+      dateGroupSpecifiers2 = [(VSTVAppDeveloperSettingsAccountViewController_iOS *)self dateGroupSpecifiers];
+      [v9 addObjectsFromArray:dateGroupSpecifiers2];
     }
 
-    v14 = [(VSTVAppDeveloperSettingsAccountViewController_iOS *)self deviceGroupSpecifiers];
+    deviceGroupSpecifiers = [(VSTVAppDeveloperSettingsAccountViewController_iOS *)self deviceGroupSpecifiers];
 
-    if (v14)
+    if (deviceGroupSpecifiers)
     {
-      v15 = [(VSTVAppDeveloperSettingsAccountViewController_iOS *)self deviceGroupSpecifiers];
-      [v9 addObjectsFromArray:v15];
+      deviceGroupSpecifiers2 = [(VSTVAppDeveloperSettingsAccountViewController_iOS *)self deviceGroupSpecifiers];
+      [v9 addObjectsFromArray:deviceGroupSpecifiers2];
     }
 
-    v16 = [(VSTVAppDeveloperSettingsAccountViewController_iOS *)self infoGroupSpecifiers];
+    infoGroupSpecifiers = [(VSTVAppDeveloperSettingsAccountViewController_iOS *)self infoGroupSpecifiers];
 
-    if (v16)
+    if (infoGroupSpecifiers)
     {
-      v17 = [(VSTVAppDeveloperSettingsAccountViewController_iOS *)self infoGroupSpecifiers];
-      [v9 addObjectsFromArray:v17];
+      infoGroupSpecifiers2 = [(VSTVAppDeveloperSettingsAccountViewController_iOS *)self infoGroupSpecifiers];
+      [v9 addObjectsFromArray:infoGroupSpecifiers2];
     }
 
-    v18 = [(VSTVAppDeveloperSettingsAccountViewController_iOS *)self billingGroupSpecifiers];
+    billingGroupSpecifiers = [(VSTVAppDeveloperSettingsAccountViewController_iOS *)self billingGroupSpecifiers];
 
-    if (v18)
+    if (billingGroupSpecifiers)
     {
-      v19 = [(VSTVAppDeveloperSettingsAccountViewController_iOS *)self billingGroupSpecifiers];
-      [v9 addObjectsFromArray:v19];
+      billingGroupSpecifiers2 = [(VSTVAppDeveloperSettingsAccountViewController_iOS *)self billingGroupSpecifiers];
+      [v9 addObjectsFromArray:billingGroupSpecifiers2];
     }
 
     if ([v4 isFromCurrentDevice])
     {
-      v20 = [v4 updateURL];
+      updateURL = [v4 updateURL];
 
-      if (v20)
+      if (updateURL)
       {
-        v21 = [(VSTVAppDeveloperSettingsAccountViewController_iOS *)self refreshGroupSpecifiers];
-        [v9 addObjectsFromArray:v21];
+        refreshGroupSpecifiers = [(VSTVAppDeveloperSettingsAccountViewController_iOS *)self refreshGroupSpecifiers];
+        [v9 addObjectsFromArray:refreshGroupSpecifiers];
       }
     }
 
@@ -130,22 +130,22 @@
   return v6;
 }
 
-- (void)remoteNotifier:(id)a3 didReceiveRemoteNotificationWithUserInfo:(id)a4
+- (void)remoteNotifier:(id)notifier didReceiveRemoteNotificationWithUserInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  notifierCopy = notifier;
+  infoCopy = info;
   objc_initWeak(&location, self);
   v8 = +[VSUserAccountManager sharedUserAccountManager];
-  v9 = [(VSTVAppDeveloperSettingsAccountViewController_iOS *)self account];
-  v10 = [v9 sourceIdentifier];
-  v11 = [v9 sourceType];
-  v12 = [v9 deviceIdentifier];
+  account = [(VSTVAppDeveloperSettingsAccountViewController_iOS *)self account];
+  sourceIdentifier = [account sourceIdentifier];
+  sourceType = [account sourceType];
+  deviceIdentifier = [account deviceIdentifier];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_2C68;
   v13[3] = &unk_82C0;
   objc_copyWeak(&v14, &location);
-  [v8 fetchUserAccountWithSourceIdentifier:v10 sourceType:v11 deviceIdentifier:v12 withCompletion:v13];
+  [v8 fetchUserAccountWithSourceIdentifier:sourceIdentifier sourceType:sourceType deviceIdentifier:deviceIdentifier withCompletion:v13];
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
@@ -154,19 +154,19 @@
 - (void)refreshAccount
 {
   v4 = +[VSUserAccountManager sharedUserAccountManager];
-  v3 = [(VSTVAppDeveloperSettingsAccountViewController_iOS *)self account];
-  [v4 forceRefreshUserAccount:v3 withCompletion:&stru_8300];
+  account = [(VSTVAppDeveloperSettingsAccountViewController_iOS *)self account];
+  [v4 forceRefreshUserAccount:account withCompletion:&stru_8300];
 }
 
-- (id)groupWithSpecifiers:(id)a3
+- (id)groupWithSpecifiers:(id)specifiers
 {
-  v3 = a3;
-  if ([v3 count])
+  specifiersCopy = specifiers;
+  if ([specifiersCopy count])
   {
     v4 = objc_alloc_init(NSMutableArray);
     v5 = [PSSpecifier groupSpecifierWithName:0];
     [v4 addObject:v5];
-    [v4 addObjectsFromArray:v3];
+    [v4 addObjectsFromArray:specifiersCopy];
     v6 = [v4 copy];
   }
 
@@ -183,9 +183,9 @@
   v3 = +[NSBundle vs_frameworkBundle];
   v4 = [v3 localizedStringForKey:@"TV_APP_DEVELOPER_SOURCE_IDENTIFIER" value:0 table:0];
 
-  v5 = [(VSTVAppDeveloperSettingsAccountViewController_iOS *)self facade];
-  v6 = [v5 sourceIdentifier];
-  v7 = [(VSTVAppDeveloperSettingsAccountViewController_iOS *)self specifierWithTitle:v4 value:v6 details:0 copyable:1];
+  facade = [(VSTVAppDeveloperSettingsAccountViewController_iOS *)self facade];
+  sourceIdentifier = [facade sourceIdentifier];
+  v7 = [(VSTVAppDeveloperSettingsAccountViewController_iOS *)self specifierWithTitle:v4 value:sourceIdentifier details:0 copyable:1];
 
   v11 = v7;
   v8 = [NSArray arrayWithObjects:&v11 count:1];
@@ -199,16 +199,16 @@
   v3 = +[NSBundle vs_frameworkBundle];
   v4 = [v3 localizedStringForKey:@"TV_APP_DEVELOPER_CREATED_ON" value:0 table:0];
 
-  v5 = [(VSTVAppDeveloperSettingsAccountViewController_iOS *)self facade];
-  v6 = [v5 created];
-  v7 = [(VSTVAppDeveloperSettingsAccountViewController_iOS *)self specifierWithTitle:v4 value:v6 details:0 copyable:1];
+  facade = [(VSTVAppDeveloperSettingsAccountViewController_iOS *)self facade];
+  created = [facade created];
+  v7 = [(VSTVAppDeveloperSettingsAccountViewController_iOS *)self specifierWithTitle:v4 value:created details:0 copyable:1];
 
   v8 = +[NSBundle vs_frameworkBundle];
   v9 = [v8 localizedStringForKey:@"TV_APP_DEVELOPER_LAST_MODIFIED" value:0 table:0];
 
-  v10 = [(VSTVAppDeveloperSettingsAccountViewController_iOS *)self facade];
-  v11 = [v10 lastModified];
-  v12 = [(VSTVAppDeveloperSettingsAccountViewController_iOS *)self specifierWithTitle:v9 value:v11 details:0 copyable:1];
+  facade2 = [(VSTVAppDeveloperSettingsAccountViewController_iOS *)self facade];
+  lastModified = [facade2 lastModified];
+  v12 = [(VSTVAppDeveloperSettingsAccountViewController_iOS *)self specifierWithTitle:v9 value:lastModified details:0 copyable:1];
 
   v16[0] = v7;
   v16[1] = v12;
@@ -223,13 +223,13 @@
   v3 = +[NSBundle vs_frameworkBundle];
   v4 = [v3 localizedStringForKey:@"TV_APP_DEVELOPER_FROM_THIS_DEVICE" value:0 table:0];
 
-  v5 = [(VSTVAppDeveloperSettingsAccountViewController_iOS *)self facade];
-  v6 = [v5 fromThisDevice];
-  v7 = [(VSTVAppDeveloperSettingsAccountViewController_iOS *)self specifierWithTitle:v4 value:v6 details:0 copyable:0];
+  facade = [(VSTVAppDeveloperSettingsAccountViewController_iOS *)self facade];
+  fromThisDevice = [facade fromThisDevice];
+  v7 = [(VSTVAppDeveloperSettingsAccountViewController_iOS *)self specifierWithTitle:v4 value:fromThisDevice details:0 copyable:0];
 
-  v8 = [(VSTVAppDeveloperSettingsAccountViewController_iOS *)self facade];
-  v9 = [v8 deviceCategory];
-  v10 = [(VSTVAppDeveloperSettingsAccountViewController_iOS *)self specifierWithTitle:@"Device Genre" value:v9 details:0 copyable:0];
+  facade2 = [(VSTVAppDeveloperSettingsAccountViewController_iOS *)self facade];
+  deviceCategory = [facade2 deviceCategory];
+  v10 = [(VSTVAppDeveloperSettingsAccountViewController_iOS *)self specifierWithTitle:@"Device Genre" value:deviceCategory details:0 copyable:0];
 
   v14[0] = v7;
   v14[1] = v10;
@@ -242,68 +242,68 @@
 - (id)infoGroupSpecifiers
 {
   v3 = objc_alloc_init(NSMutableArray);
-  v4 = [(VSTVAppDeveloperSettingsAccountViewController_iOS *)self facade];
-  v5 = [v4 identifier];
-  v6 = [v5 length];
+  facade = [(VSTVAppDeveloperSettingsAccountViewController_iOS *)self facade];
+  identifier = [facade identifier];
+  v6 = [identifier length];
 
   if (v6)
   {
     v7 = +[NSBundle vs_frameworkBundle];
     v8 = [v7 localizedStringForKey:@"TV_APP_DEVELOPER_IDENTIFIER" value:0 table:0];
 
-    v9 = [(VSTVAppDeveloperSettingsAccountViewController_iOS *)self facade];
-    v10 = [v9 identifier];
-    v11 = [(VSTVAppDeveloperSettingsAccountViewController_iOS *)self specifierWithTitle:v8 value:v10 details:0 copyable:1];
+    facade2 = [(VSTVAppDeveloperSettingsAccountViewController_iOS *)self facade];
+    identifier2 = [facade2 identifier];
+    v11 = [(VSTVAppDeveloperSettingsAccountViewController_iOS *)self specifierWithTitle:v8 value:identifier2 details:0 copyable:1];
 
     [v3 addObject:v11];
   }
 
-  v12 = [(VSTVAppDeveloperSettingsAccountViewController_iOS *)self facade];
-  v13 = [v12 tvProviderIdentifier];
-  v14 = [v13 length];
+  facade3 = [(VSTVAppDeveloperSettingsAccountViewController_iOS *)self facade];
+  tvProviderIdentifier = [facade3 tvProviderIdentifier];
+  v14 = [tvProviderIdentifier length];
 
   if (v14)
   {
     v15 = +[NSBundle vs_frameworkBundle];
     v16 = [v15 localizedStringForKey:@"TV_APP_DEVELOPER_TV_PROVIDER_IDENTIFIER" value:0 table:0];
 
-    v17 = [(VSTVAppDeveloperSettingsAccountViewController_iOS *)self facade];
-    v18 = [v17 tvProviderIdentifier];
-    v19 = [(VSTVAppDeveloperSettingsAccountViewController_iOS *)self specifierWithTitle:v16 value:v18 details:0 copyable:1];
+    facade4 = [(VSTVAppDeveloperSettingsAccountViewController_iOS *)self facade];
+    tvProviderIdentifier2 = [facade4 tvProviderIdentifier];
+    v19 = [(VSTVAppDeveloperSettingsAccountViewController_iOS *)self specifierWithTitle:v16 value:tvProviderIdentifier2 details:0 copyable:1];
 
     [v3 addObject:v19];
   }
 
-  v20 = [(VSTVAppDeveloperSettingsAccountViewController_iOS *)self facade];
-  v21 = [v20 updateURLString];
-  v22 = [v21 length];
+  facade5 = [(VSTVAppDeveloperSettingsAccountViewController_iOS *)self facade];
+  updateURLString = [facade5 updateURLString];
+  v22 = [updateURLString length];
 
   if (v22)
   {
     v23 = +[NSBundle vs_frameworkBundle];
     v24 = [v23 localizedStringForKey:@"TV_APP_DEVELOPER_UPDATE_URL" value:0 table:0];
 
-    v25 = [(VSTVAppDeveloperSettingsAccountViewController_iOS *)self facade];
-    v26 = [v25 updateURLString];
-    v46 = v26;
+    facade6 = [(VSTVAppDeveloperSettingsAccountViewController_iOS *)self facade];
+    updateURLString2 = [facade6 updateURLString];
+    v46 = updateURLString2;
     v27 = [NSArray arrayWithObjects:&v46 count:1];
 
     v28 = [(VSTVAppDeveloperSettingsAccountViewController_iOS *)self specifierWithTitle:v24 value:0 details:v27 copyable:0];
     [v3 addObject:v28];
   }
 
-  v29 = [(VSTVAppDeveloperSettingsAccountViewController_iOS *)self facade];
-  v30 = [v29 authenticationDataString];
-  v31 = [v30 length];
+  facade7 = [(VSTVAppDeveloperSettingsAccountViewController_iOS *)self facade];
+  authenticationDataString = [facade7 authenticationDataString];
+  v31 = [authenticationDataString length];
 
   if (v31)
   {
     v32 = +[NSBundle vs_frameworkBundle];
     v33 = [v32 localizedStringForKey:@"TV_APP_DEVELOPER_AUTH_DATA" value:0 table:0];
 
-    v34 = [(VSTVAppDeveloperSettingsAccountViewController_iOS *)self facade];
-    v35 = [v34 authenticationDataString];
-    v45 = v35;
+    facade8 = [(VSTVAppDeveloperSettingsAccountViewController_iOS *)self facade];
+    authenticationDataString2 = [facade8 authenticationDataString];
+    v45 = authenticationDataString2;
     v36 = [NSArray arrayWithObjects:&v45 count:1];
 
     v37 = [(VSTVAppDeveloperSettingsAccountViewController_iOS *)self specifierWithTitle:v33 value:0 details:v36 copyable:0];
@@ -313,9 +313,9 @@
   v38 = +[NSBundle vs_frameworkBundle];
   v39 = [v38 localizedStringForKey:@"TV_APP_DEVELOPER_SYSTEM_TRUST" value:0 table:0];
 
-  v40 = [(VSTVAppDeveloperSettingsAccountViewController_iOS *)self facade];
-  v41 = [v40 requiresSystemTrust];
-  v42 = [(VSTVAppDeveloperSettingsAccountViewController_iOS *)self specifierWithTitle:v39 value:v41 details:0 copyable:0];
+  facade9 = [(VSTVAppDeveloperSettingsAccountViewController_iOS *)self facade];
+  requiresSystemTrust = [facade9 requiresSystemTrust];
+  v42 = [(VSTVAppDeveloperSettingsAccountViewController_iOS *)self specifierWithTitle:v39 value:requiresSystemTrust details:0 copyable:0];
 
   [v3 addObject:v42];
   v43 = [(VSTVAppDeveloperSettingsAccountViewController_iOS *)self groupWithSpecifiers:v3];
@@ -329,55 +329,55 @@
   v4 = +[NSBundle vs_frameworkBundle];
   v5 = [v4 localizedStringForKey:@"TV_APP_DEVELOPER_ACCOUNT_TYPE" value:0 table:0];
 
-  v6 = [(VSTVAppDeveloperSettingsAccountViewController_iOS *)self facade];
-  v7 = [v6 accountType];
-  v8 = [(VSTVAppDeveloperSettingsAccountViewController_iOS *)self specifierWithTitle:v5 value:v7 details:0 copyable:1];
+  facade = [(VSTVAppDeveloperSettingsAccountViewController_iOS *)self facade];
+  accountType = [facade accountType];
+  v8 = [(VSTVAppDeveloperSettingsAccountViewController_iOS *)self specifierWithTitle:v5 value:accountType details:0 copyable:1];
 
   [v3 addObject:v8];
-  v9 = [(VSTVAppDeveloperSettingsAccountViewController_iOS *)self facade];
-  v10 = [v9 billingIdentifier];
-  v11 = [v10 length];
+  facade2 = [(VSTVAppDeveloperSettingsAccountViewController_iOS *)self facade];
+  billingIdentifier = [facade2 billingIdentifier];
+  v11 = [billingIdentifier length];
 
   if (v11)
   {
     v12 = +[NSBundle vs_frameworkBundle];
     v13 = [v12 localizedStringForKey:@"TV_APP_DEVELOPER_BILLING_ID" value:0 table:0];
 
-    v14 = [(VSTVAppDeveloperSettingsAccountViewController_iOS *)self facade];
-    v15 = [v14 billingIdentifier];
-    v16 = [(VSTVAppDeveloperSettingsAccountViewController_iOS *)self specifierWithTitle:v13 value:v15 details:0 copyable:1];
+    facade3 = [(VSTVAppDeveloperSettingsAccountViewController_iOS *)self facade];
+    billingIdentifier2 = [facade3 billingIdentifier];
+    v16 = [(VSTVAppDeveloperSettingsAccountViewController_iOS *)self specifierWithTitle:v13 value:billingIdentifier2 details:0 copyable:1];
 
     [v3 addObject:v16];
   }
 
-  v17 = [(VSTVAppDeveloperSettingsAccountViewController_iOS *)self facade];
-  v18 = [v17 billingCycleEndDate];
-  v19 = [v18 length];
+  facade4 = [(VSTVAppDeveloperSettingsAccountViewController_iOS *)self facade];
+  billingCycleEndDate = [facade4 billingCycleEndDate];
+  v19 = [billingCycleEndDate length];
 
   if (v19)
   {
     v20 = +[NSBundle vs_frameworkBundle];
     v21 = [v20 localizedStringForKey:@"TV_APP_DEVELOPER_BILLING_CYCLE_END_DATE" value:0 table:0];
 
-    v22 = [(VSTVAppDeveloperSettingsAccountViewController_iOS *)self facade];
-    v23 = [v22 billingCycleEndDate];
-    v24 = [(VSTVAppDeveloperSettingsAccountViewController_iOS *)self specifierWithTitle:v21 value:v23 details:0 copyable:1];
+    facade5 = [(VSTVAppDeveloperSettingsAccountViewController_iOS *)self facade];
+    billingCycleEndDate2 = [facade5 billingCycleEndDate];
+    v24 = [(VSTVAppDeveloperSettingsAccountViewController_iOS *)self specifierWithTitle:v21 value:billingCycleEndDate2 details:0 copyable:1];
 
     [v3 addObject:v24];
   }
 
-  v25 = [(VSTVAppDeveloperSettingsAccountViewController_iOS *)self facade];
-  v26 = [v25 tierIdentifiers];
-  v27 = [v26 count];
+  facade6 = [(VSTVAppDeveloperSettingsAccountViewController_iOS *)self facade];
+  tierIdentifiers = [facade6 tierIdentifiers];
+  v27 = [tierIdentifiers count];
 
   if (v27)
   {
     v28 = +[NSBundle vs_frameworkBundle];
     v29 = [v28 localizedStringForKey:@"TV_APP_DEVELOPER_TIERS" value:0 table:0];
 
-    v30 = [(VSTVAppDeveloperSettingsAccountViewController_iOS *)self facade];
-    v31 = [v30 tierIdentifiers];
-    v32 = [(VSTVAppDeveloperSettingsAccountViewController_iOS *)self specifierWithTitle:v29 value:0 details:v31 copyable:0];
+    facade7 = [(VSTVAppDeveloperSettingsAccountViewController_iOS *)self facade];
+    tierIdentifiers2 = [facade7 tierIdentifiers];
+    v32 = [(VSTVAppDeveloperSettingsAccountViewController_iOS *)self specifierWithTitle:v29 value:0 details:tierIdentifiers2 copyable:0];
 
     [v3 addObject:v32];
   }

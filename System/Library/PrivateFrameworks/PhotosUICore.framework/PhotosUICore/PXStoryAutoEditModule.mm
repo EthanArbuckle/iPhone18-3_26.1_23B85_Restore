@@ -1,5 +1,5 @@
 @interface PXStoryAutoEditModule
-- (PXStoryAutoEditModule)initWithModuleType:(int64_t)a3 range:(_NSRange)a4;
+- (PXStoryAutoEditModule)initWithModuleType:(int64_t)type range:(_NSRange)range;
 - (_NSRange)range;
 - (id)debugDescription;
 @end
@@ -36,16 +36,16 @@
   return v8;
 }
 
-- (PXStoryAutoEditModule)initWithModuleType:(int64_t)a3 range:(_NSRange)a4
+- (PXStoryAutoEditModule)initWithModuleType:(int64_t)type range:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v8.receiver = self;
   v8.super_class = PXStoryAutoEditModule;
   result = [(PXStoryAutoEditModule *)&v8 init];
   if (result)
   {
-    result->_moduleType = a3;
+    result->_moduleType = type;
     result->_range.location = location;
     result->_range.length = length;
   }

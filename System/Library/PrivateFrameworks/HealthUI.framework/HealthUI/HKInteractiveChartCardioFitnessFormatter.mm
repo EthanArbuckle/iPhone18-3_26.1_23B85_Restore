@@ -1,25 +1,25 @@
 @interface HKInteractiveChartCardioFitnessFormatter
-- (id)_attributedCurrentCardioFitnessClassificationForChartData:(id)a3;
-- (id)_formattedCurrentValueForChartData:(id)a3 context:(int64_t)a4;
-- (id)formattedSelectedRangeLabelDataWithChartData:(id)a3 context:(int64_t)a4;
+- (id)_attributedCurrentCardioFitnessClassificationForChartData:(id)data;
+- (id)_formattedCurrentValueForChartData:(id)data context:(int64_t)context;
+- (id)formattedSelectedRangeLabelDataWithChartData:(id)data context:(int64_t)context;
 @end
 
 @implementation HKInteractiveChartCardioFitnessFormatter
 
-- (id)formattedSelectedRangeLabelDataWithChartData:(id)a3 context:(int64_t)a4
+- (id)formattedSelectedRangeLabelDataWithChartData:(id)data context:(int64_t)context
 {
-  v7 = a3;
-  v8 = v7;
-  if (v7 && [v7 count])
+  dataCopy = data;
+  v8 = dataCopy;
+  if (dataCopy && [dataCopy count])
   {
-    if (a4 == 1)
+    if (context == 1)
     {
       v9 = [(HKInteractiveChartCardioFitnessFormatter *)self _formattedCurrentValueForChartData:v8 context:1];
     }
 
     else
     {
-      if (a4)
+      if (context)
       {
         goto LABEL_9;
       }
@@ -42,15 +42,15 @@ LABEL_9:
   return v4;
 }
 
-- (id)_formattedCurrentValueForChartData:(id)a3 context:(int64_t)a4
+- (id)_formattedCurrentValueForChartData:(id)data context:(int64_t)context
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 firstObject];
+  dataCopy = data;
+  firstObject = [dataCopy firstObject];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v6;
+    v8 = dataCopy;
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
@@ -106,30 +106,30 @@ LABEL_9:
   {
     v23.receiver = self;
     v23.super_class = HKInteractiveChartCardioFitnessFormatter;
-    v15 = [(HKInteractiveChartGenericStatFormatter *)&v23 formattedSelectedRangeLabelDataWithChartData:v6 context:a4];
+    v15 = [(HKInteractiveChartGenericStatFormatter *)&v23 formattedSelectedRangeLabelDataWithChartData:dataCopy context:context];
   }
 
   return v15;
 }
 
-- (id)_attributedCurrentCardioFitnessClassificationForChartData:(id)a3
+- (id)_attributedCurrentCardioFitnessClassificationForChartData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = [HKDateCache alloc];
-  v6 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v7 = [(HKDateCache *)v5 initWithCalendar:v6];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  v7 = [(HKDateCache *)v5 initWithCalendar:currentCalendar];
 
-  v8 = [(HKInteractiveChartGenericStatFormatter *)self chartRangeProvider];
-  v9 = [v8 effectiveVisibleRangeActive];
-  v10 = [v9 endDate];
+  chartRangeProvider = [(HKInteractiveChartGenericStatFormatter *)self chartRangeProvider];
+  effectiveVisibleRangeActive = [chartRangeProvider effectiveVisibleRangeActive];
+  endDate = [effectiveVisibleRangeActive endDate];
 
-  v11 = [HKCardioFitnessUtilities cardioFitnessLookupPropertiesForChartData:v4];
+  v11 = [HKCardioFitnessUtilities cardioFitnessLookupPropertiesForChartData:dataCopy];
 
   if (v11)
   {
     v12 = [HKCardioFitnessDataProviderCurrentValue alloc];
-    v13 = [v11 vo2MaxQuantity];
-    v14 = -[HKCardioFitnessDataProviderCurrentValue initWithVO2MaxQuantity:biologicalSex:age:date:](v12, "initWithVO2MaxQuantity:biologicalSex:age:date:", v13, [v11 biologicalSex], objc_msgSend(v11, "age"), v10);
+    vo2MaxQuantity = [v11 vo2MaxQuantity];
+    v14 = -[HKCardioFitnessDataProviderCurrentValue initWithVO2MaxQuantity:biologicalSex:age:date:](v12, "initWithVO2MaxQuantity:biologicalSex:age:date:", vo2MaxQuantity, [v11 biologicalSex], objc_msgSend(v11, "age"), endDate);
   }
 
   else
@@ -137,10 +137,10 @@ LABEL_9:
     v14 = objc_alloc_init(HKDataProviderNoDataCurrentValue);
   }
 
-  v15 = [(HKInteractiveChartDataFormatter *)self displayType];
-  v16 = [(HKInteractiveChartDataFormatter *)self unitController];
-  v17 = [(HKInteractiveChartDataFormatter *)self majorFont];
-  v18 = [(HKDataProviderNoDataCurrentValue *)v14 attributedStringWithDisplayType:v15 unitController:v16 valueFont:v17 unitFont:0 dateCache:v7];
+  displayType = [(HKInteractiveChartDataFormatter *)self displayType];
+  unitController = [(HKInteractiveChartDataFormatter *)self unitController];
+  majorFont = [(HKInteractiveChartDataFormatter *)self majorFont];
+  v18 = [(HKDataProviderNoDataCurrentValue *)v14 attributedStringWithDisplayType:displayType unitController:unitController valueFont:majorFont unitFont:0 dateCache:v7];
 
   return v18;
 }

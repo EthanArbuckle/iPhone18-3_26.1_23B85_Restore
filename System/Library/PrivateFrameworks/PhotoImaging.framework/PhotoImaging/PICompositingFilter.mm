@@ -1,6 +1,6 @@
 @interface PICompositingFilter
 + (id)availableBlendModes;
-+ (id)blendKernelForBlendMode:(id)a3;
++ (id)blendKernelForBlendMode:(id)mode;
 + (id)customAttributes;
 - (id)outputImage;
 @end
@@ -33,9 +33,9 @@
   v21[1] = v7;
   v20[2] = @"inputBlendMode";
   v13[0] = @"PIAttributeTypeMode";
-  v8 = [objc_opt_class() availableBlendModes];
+  availableBlendModes = [objc_opt_class() availableBlendModes];
   v12[2] = v4;
-  v13[1] = v8;
+  v13[1] = availableBlendModes;
   v13[2] = @"sourceOver";
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:v12 count:3];
   v21[2] = v9;
@@ -44,10 +44,10 @@
   return v10;
 }
 
-+ (id)blendKernelForBlendMode:(id)a3
++ (id)blendKernelForBlendMode:(id)mode
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E695F608] valueForKey:v3];
+  modeCopy = mode;
+  v4 = [MEMORY[0x1E695F608] valueForKey:modeCopy];
 
   return v4;
 }
@@ -73,71 +73,71 @@ void __42__PICompositingFilter_availableBlendModes__block_invoke()
 - (id)outputImage
 {
   v25[2] = *MEMORY[0x1E69E9840];
-  v3 = [(PICompositingFilter *)self inputImage];
+  inputImage = [(PICompositingFilter *)self inputImage];
 
-  v4 = [(PICompositingFilter *)self inputBackgroundImage];
-  v5 = v4;
-  if (v3)
+  inputBackgroundImage = [(PICompositingFilter *)self inputBackgroundImage];
+  inputImage4 = inputBackgroundImage;
+  if (inputImage)
   {
 
-    if (v5)
+    if (inputImage4)
     {
-      v6 = [(PICompositingFilter *)self inputBlendMode];
-      v7 = v6;
+      inputBlendMode = [(PICompositingFilter *)self inputBlendMode];
+      v7 = inputBlendMode;
       v8 = @"sourceOver";
-      if (v6)
+      if (inputBlendMode)
       {
-        v8 = v6;
+        v8 = inputBlendMode;
       }
 
       v9 = v8;
 
       v10 = [objc_opt_class() blendKernelForBlendMode:v9];
-      v11 = [(PICompositingFilter *)self inputImage];
-      v12 = [(PICompositingFilter *)self inputBackgroundImage];
-      v13 = [v10 applyWithForeground:v11 background:v12];
+      inputImage2 = [(PICompositingFilter *)self inputImage];
+      inputBackgroundImage2 = [(PICompositingFilter *)self inputBackgroundImage];
+      v13 = [v10 applyWithForeground:inputImage2 background:inputBackgroundImage2];
       v14 = v13;
       if (v13)
       {
-        v15 = v13;
+        inputImage3 = v13;
       }
 
       else
       {
-        v15 = [(PICompositingFilter *)self inputImage];
+        inputImage3 = [(PICompositingFilter *)self inputImage];
       }
 
-      v5 = v15;
+      inputImage4 = inputImage3;
 
-      if (v5)
+      if (inputImage4)
       {
-        v16 = [(PICompositingFilter *)self inputIntensity];
+        inputIntensity = [(PICompositingFilter *)self inputIntensity];
 
-        if (v16)
+        if (inputIntensity)
         {
-          v17 = [(PICompositingFilter *)self inputBackgroundImage];
+          inputBackgroundImage3 = [(PICompositingFilter *)self inputBackgroundImage];
           v18 = *MEMORY[0x1E695FB28];
-          v25[0] = v5;
+          v25[0] = inputImage4;
           v19 = *MEMORY[0x1E695FB30];
           v24[0] = v18;
           v24[1] = v19;
-          v20 = [(PICompositingFilter *)self inputIntensity];
-          v25[1] = v20;
+          inputIntensity2 = [(PICompositingFilter *)self inputIntensity];
+          v25[1] = inputIntensity2;
           v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v25 forKeys:v24 count:2];
-          v22 = [v17 imageByApplyingFilter:@"CIDissolveTransition" withInputParameters:v21];
+          v22 = [inputBackgroundImage3 imageByApplyingFilter:@"CIDissolveTransition" withInputParameters:v21];
 
-          v5 = v22;
+          inputImage4 = v22;
         }
       }
     }
 
     else
     {
-      v5 = [(PICompositingFilter *)self inputImage];
+      inputImage4 = [(PICompositingFilter *)self inputImage];
     }
   }
 
-  return v5;
+  return inputImage4;
 }
 
 @end

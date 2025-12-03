@@ -3,7 +3,7 @@
 - (BOOL)terminalPointPlacedCarefully;
 - (CGPoint)offset;
 - (UITextMagnifierCaret)initWithFrame;
-- (void)beginMagnifyingTarget:(id)a3 text:(id)a4 magnificationPoint:(CGPoint)a5 offset:(CGPoint)a6 animated:(BOOL)a7;
+- (void)beginMagnifyingTarget:(id)target text:(id)text magnificationPoint:(CGPoint)point offset:(CGPoint)offset animated:(BOOL)animated;
 - (void)remove;
 - (void)updateFrameAndOffset;
 - (void)zoomDownAnimation;
@@ -15,8 +15,8 @@
 + (id)sharedCaretMagnifier
 {
   v2 = +[UIKeyboardPreferencesController sharedPreferencesController];
-  v3 = [v2 preferencesActions];
-  v4 = [v3 BOOLForPreferenceKey:@"YukonMagnifiersDisabled"];
+  preferencesActions = [v2 preferencesActions];
+  v4 = [preferencesActions BOOLForPreferenceKey:@"YukonMagnifiersDisabled"];
 
   if (v4)
   {
@@ -26,20 +26,20 @@
   else
   {
     v6 = +[UIKeyboardImpl activeInstance];
-    v7 = [v6 textInputTraits];
-    v8 = [v7 textLoupeVisibility];
+    textInputTraits = [v6 textInputTraits];
+    textLoupeVisibility = [textInputTraits textLoupeVisibility];
 
     v9 = SharedInstance;
-    if (!SharedInstance && v8 != 1)
+    if (!SharedInstance && textLoupeVisibility != 1)
     {
-      v10 = [[UITextMagnifierCaret alloc] initWithFrame];
+      initWithFrame = [[UITextMagnifierCaret alloc] initWithFrame];
       v11 = SharedInstance;
-      SharedInstance = v10;
+      SharedInstance = initWithFrame;
 
       v9 = SharedInstance;
     }
 
-    if (v8 == 1)
+    if (textLoupeVisibility == 1)
     {
       v9 = 0;
     }
@@ -148,9 +148,9 @@ void __41__UITextMagnifierCaret_zoomDownAnimation__block_invoke(uint64_t a1)
 
 - (void)updateFrameAndOffset
 {
-  v3 = [(UIView *)self superview];
+  superview = [(UIView *)self superview];
   [(UITextMagnifier *)self magnificationPoint];
-  [v3 convertPoint:self->super._target fromView:?];
+  [superview convertPoint:self->super._target fromView:?];
   v5 = v4;
   v7 = v6;
 
@@ -163,8 +163,8 @@ void __41__UITextMagnifierCaret_zoomDownAnimation__block_invoke(uint64_t a1)
   v14 = v13;
   v16 = v15 * 0.5;
   v17 = v12 + v15 * 0.5;
-  v18 = [(UIView *)self window];
-  [v18 safeAreaInsets];
+  window = [(UIView *)self window];
+  [window safeAreaInsets];
   v20 = v19;
 
   if (v17 + -60.0 >= v20 + 75.0)
@@ -203,22 +203,22 @@ void __41__UITextMagnifierCaret_zoomDownAnimation__block_invoke(uint64_t a1)
   [(UIView *)self setCenter:v27, v28];
 }
 
-- (void)beginMagnifyingTarget:(id)a3 text:(id)a4 magnificationPoint:(CGPoint)a5 offset:(CGPoint)a6 animated:(BOOL)a7
+- (void)beginMagnifyingTarget:(id)target text:(id)text magnificationPoint:(CGPoint)point offset:(CGPoint)offset animated:(BOOL)animated
 {
-  v7 = a7;
-  y = a6.y;
-  x = a6.x;
-  v10 = a5.y;
-  v11 = a5.x;
-  v14 = a4;
-  v15 = a3;
+  animatedCopy = animated;
+  y = offset.y;
+  x = offset.x;
+  v10 = point.y;
+  v11 = point.x;
+  textCopy = text;
+  targetCopy = target;
   v16 = +[UITextMagnifierRanged sharedRangedMagnifier];
   [v16 stopMagnifying:0];
 
   [(UITextMagnifierCaret *)self setOffset:x, y];
   v17.receiver = self;
   v17.super_class = UITextMagnifierCaret;
-  [(UITextMagnifier *)&v17 beginMagnifyingTarget:v15 text:v14 magnificationPoint:v7 offset:v11 animated:v10, x, y];
+  [(UITextMagnifier *)&v17 beginMagnifyingTarget:targetCopy text:textCopy magnificationPoint:animatedCopy offset:v11 animated:v10, x, y];
 }
 
 - (CGPoint)offset

@@ -1,25 +1,25 @@
 @interface FBSystemAppProxyServiceServer
 + (id)sharedInstance;
 + (id)targetQueue;
-- (id)_initWithQueue:(id)a3;
-- (void)_handleActions:(id)a3 forClient:(id)a4;
-- (void)_handleGetPasscodeLockedOrBlockedStatus:(id)a3 forClient:(id)a4;
-- (void)_handleGetProcessHandle:(id)a3 forClient:(id)a4;
-- (void)_handleShutdown:(id)a3 forClient:(id)a4;
-- (void)_handleTerminateApplication:(id)a3 forClient:(id)a4;
-- (void)_handleTerminateApplicationGroup:(id)a3 forClient:(id)a4;
-- (void)noteClientDidConnect:(id)a3 withMessage:(id)a4;
-- (void)noteDidReceiveMessage:(id)a3 withType:(int64_t)a4 fromClient:(id)a5;
+- (id)_initWithQueue:(id)queue;
+- (void)_handleActions:(id)actions forClient:(id)client;
+- (void)_handleGetPasscodeLockedOrBlockedStatus:(id)status forClient:(id)client;
+- (void)_handleGetProcessHandle:(id)handle forClient:(id)client;
+- (void)_handleShutdown:(id)shutdown forClient:(id)client;
+- (void)_handleTerminateApplication:(id)application forClient:(id)client;
+- (void)_handleTerminateApplicationGroup:(id)group forClient:(id)client;
+- (void)noteClientDidConnect:(id)connect withMessage:(id)message;
+- (void)noteDidReceiveMessage:(id)message withType:(int64_t)type fromClient:(id)client;
 @end
 
 @implementation FBSystemAppProxyServiceServer
 
 + (id)targetQueue
 {
-  v2 = [a1 sharedInstance];
-  v3 = [v2 queue];
+  sharedInstance = [self sharedInstance];
+  queue = [sharedInstance queue];
 
-  return v3;
+  return queue;
 }
 
 + (id)sharedInstance
@@ -46,12 +46,12 @@ void __47__FBSystemAppProxyServiceServer_sharedInstance__block_invoke()
   sharedInstance___SharedInstance = v3;
 }
 
-- (id)_initWithQueue:(id)a3
+- (id)_initWithQueue:(id)queue
 {
   v4 = *MEMORY[0x1E699FA18];
   v9.receiver = self;
   v9.super_class = FBSystemAppProxyServiceServer;
-  v5 = [(FBSServiceFacility *)&v9 initWithIdentifier:v4 queue:a3];
+  v5 = [(FBSServiceFacility *)&v9 initWithIdentifier:v4 queue:queue];
   if (v5)
   {
     v6 = [[FBServiceClientAuthenticator alloc] initWithEntitlement:@"com.apple.frontboard.shutdown"];
@@ -71,20 +71,20 @@ void __84__FBSystemAppProxyServiceServer__handleSystemApplicationBundleIdentifie
   xpc_dictionary_set_string(v3, v2, [v5 UTF8String]);
 }
 
-- (void)_handleGetPasscodeLockedOrBlockedStatus:(id)a3 forClient:(id)a4
+- (void)_handleGetPasscodeLockedOrBlockedStatus:(id)status forClient:(id)client
 {
-  v4 = a3;
+  statusCopy = status;
   v5 = +[FBSystemService sharedInstance];
-  v6 = [v5 queue];
+  queue = [v5 queue];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __83__FBSystemAppProxyServiceServer__handleGetPasscodeLockedOrBlockedStatus_forClient___block_invoke;
   v9[3] = &unk_1E783B240;
   v10 = v5;
-  v11 = v4;
-  v7 = v4;
+  v11 = statusCopy;
+  v7 = statusCopy;
   v8 = v5;
-  [v6 performAsync:v9];
+  [queue performAsync:v9];
 }
 
 void __83__FBSystemAppProxyServiceServer__handleGetPasscodeLockedOrBlockedStatus_forClient___block_invoke(uint64_t a1)
@@ -109,17 +109,17 @@ uint64_t __83__FBSystemAppProxyServiceServer__handleGetPasscodeLockedOrBlockedSt
   return [v2 sendReplyMessageWithPacker:v4];
 }
 
-- (void)_handleGetProcessHandle:(id)a3 forClient:(id)a4
+- (void)_handleGetProcessHandle:(id)handle forClient:(id)client
 {
   v27 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 processHandle];
-  v8 = [v7 hasEntitlement:@"com.apple.frontboard.application-process-handle"];
+  handleCopy = handle;
+  clientCopy = client;
+  processHandle = [clientCopy processHandle];
+  v8 = [processHandle hasEntitlement:@"com.apple.frontboard.application-process-handle"];
 
   if (v8)
   {
-    v9 = [v5 payload];
+    payload = [handleCopy payload];
     v10 = *MEMORY[0x1E699FA30];
     v11 = BSDeserializeStringFromXPCDictionaryWithKey();
 
@@ -127,9 +127,9 @@ uint64_t __83__FBSystemAppProxyServiceServer__handleGetPasscodeLockedOrBlockedSt
     {
       v12 = +[FBProcessManager sharedInstance];
       v13 = [v12 processesForBundleIdentifier:v11];
-      v14 = [v13 firstObject];
+      firstObject = [v13 firstObject];
 
-      if (!v14)
+      if (!firstObject)
       {
         v15 = MEMORY[0x1E69C75D0];
         v16 = [MEMORY[0x1E69C7610] predicateMatchingBundleIdentifier:v11];
@@ -139,28 +139,28 @@ uint64_t __83__FBSystemAppProxyServiceServer__handleGetPasscodeLockedOrBlockedSt
         {
           v18 = +[FBProcessManager sharedInstance];
           [v17 auditToken];
-          v14 = [v18 registerProcessForAuditToken:buf];
+          firstObject = [v18 registerProcessForAuditToken:buf];
         }
 
         else
         {
-          v14 = 0;
+          firstObject = 0;
         }
       }
     }
 
     else
     {
-      v14 = 0;
+      firstObject = 0;
     }
 
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __67__FBSystemAppProxyServiceServer__handleGetProcessHandle_forClient___block_invoke;
     v23[3] = &unk_1E783B268;
-    v24 = v14;
-    v21 = v14;
-    [v5 sendReplyMessageWithPacker:v23];
+    v24 = firstObject;
+    v21 = firstObject;
+    [handleCopy sendReplyMessageWithPacker:v23];
   }
 
   else
@@ -168,7 +168,7 @@ uint64_t __83__FBSystemAppProxyServiceServer__handleGetPasscodeLockedOrBlockedSt
     v11 = FBLogCommon();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v19 = [v6 processHandle];
+      processHandle2 = [clientCopy processHandle];
       v20 = FBSProcessPrettyDescription();
       *buf = 138543362;
       v26 = v20;
@@ -188,32 +188,32 @@ void __67__FBSystemAppProxyServiceServer__handleGetProcessHandle_forClient___blo
   BSSerializeBSXPCEncodableObjectToXPCDictionaryWithKey();
 }
 
-- (void)_handleActions:(id)a3 forClient:(id)a4
+- (void)_handleActions:(id)actions forClient:(id)client
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 payload];
+  actionsCopy = actions;
+  clientCopy = client;
+  payload = [actionsCopy payload];
   v8 = *MEMORY[0x1E699FA20];
   v9 = BSDeserializeArrayOfBSXPCEncodableObjectsFromXPCDictionaryWithKey();
-  v10 = [v6 processHandle];
+  processHandle = [clientCopy processHandle];
 
-  v11 = [v10 auditToken];
+  auditToken = [processHandle auditToken];
 
   v12 = +[FBSystemService sharedInstance];
-  v13 = [v12 queue];
+  queue = [v12 queue];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __58__FBSystemAppProxyServiceServer__handleActions_forClient___block_invoke;
   v18[3] = &unk_1E783B2D8;
   v19 = v12;
   v20 = v9;
-  v21 = v11;
-  v22 = v5;
-  v14 = v5;
-  v15 = v11;
+  v21 = auditToken;
+  v22 = actionsCopy;
+  v14 = actionsCopy;
+  v15 = auditToken;
   v16 = v9;
   v17 = v12;
-  [v13 performAsync:v18];
+  [queue performAsync:v18];
 }
 
 void __58__FBSystemAppProxyServiceServer__handleActions_forClient___block_invoke(uint64_t a1)
@@ -249,28 +249,28 @@ void __58__FBSystemAppProxyServiceServer__handleActions_forClient___block_invoke
   }
 }
 
-- (void)_handleTerminateApplication:(id)a3 forClient:(id)a4
+- (void)_handleTerminateApplication:(id)application forClient:(id)client
 {
   v28 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [a4 processHandle];
-  v7 = [v6 auditToken];
+  applicationCopy = application;
+  processHandle = [client processHandle];
+  auditToken = [processHandle auditToken];
 
-  if ([v7 hasEntitlement:@"com.apple.multitasking.termination"])
+  if ([auditToken hasEntitlement:@"com.apple.multitasking.termination"])
   {
-    v8 = [v5 payload];
+    payload = [applicationCopy payload];
     v9 = *MEMORY[0x1E699FA30];
     v10 = BSDeserializeStringFromXPCDictionaryWithKey();
     if (v10)
     {
-      int64 = xpc_dictionary_get_int64(v8, *MEMORY[0x1E699FA68]);
-      v12 = xpc_dictionary_get_BOOL(v8, *MEMORY[0x1E699FA70]);
+      int64 = xpc_dictionary_get_int64(payload, *MEMORY[0x1E699FA68]);
+      v12 = xpc_dictionary_get_BOOL(payload, *MEMORY[0x1E699FA70]);
       v13 = *MEMORY[0x1E699FA58];
       v14 = BSDeserializeStringFromXPCDictionaryWithKey();
       v15 = FBLogCommon();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
-        [v7 pid];
+        [auditToken pid];
         v16 = BSProcessDescriptionForPID();
         *buf = 138543874;
         v23 = v16;
@@ -286,13 +286,13 @@ void __58__FBSystemAppProxyServiceServer__handleActions_forClient___block_invoke
       v20[1] = 3221225472;
       v20[2] = __71__FBSystemAppProxyServiceServer__handleTerminateApplication_forClient___block_invoke_21;
       v20[3] = &unk_1E783B218;
-      v21 = v5;
+      v21 = applicationCopy;
       [v17 terminateApplication:v10 forReason:int64 andReport:v12 withDescription:v14 completion:v20];
     }
 
     else
     {
-      [v5 sendReplyMessageWithPacker:&__block_literal_global_19];
+      [applicationCopy sendReplyMessageWithPacker:&__block_literal_global_19];
     }
   }
 
@@ -306,7 +306,7 @@ void __58__FBSystemAppProxyServiceServer__handleActions_forClient___block_invoke
       _os_log_impl(&dword_1A89DD000, v18, OS_LOG_TYPE_DEFAULT, "Entitlement %@ required to kill applications.", buf, 0xCu);
     }
 
-    [v5 sendReplyMessageWithPacker:&__block_literal_global_16];
+    [applicationCopy sendReplyMessageWithPacker:&__block_literal_global_16];
   }
 
   v19 = *MEMORY[0x1E69E9840];
@@ -360,25 +360,25 @@ void __71__FBSystemAppProxyServiceServer__handleTerminateApplication_forClient__
   }
 }
 
-- (void)_handleTerminateApplicationGroup:(id)a3 forClient:(id)a4
+- (void)_handleTerminateApplicationGroup:(id)group forClient:(id)client
 {
   v28 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [a4 processHandle];
-  v7 = [v6 auditToken];
+  groupCopy = group;
+  processHandle = [client processHandle];
+  auditToken = [processHandle auditToken];
 
-  if ([v7 hasEntitlement:@"com.apple.multitasking.termination"])
+  if ([auditToken hasEntitlement:@"com.apple.multitasking.termination"])
   {
-    v8 = [v5 payload];
-    LODWORD(v9) = xpc_dictionary_get_int64(v8, *MEMORY[0x1E699FA60]);
-    int64 = xpc_dictionary_get_int64(v8, *MEMORY[0x1E699FA68]);
-    v11 = xpc_dictionary_get_BOOL(v8, *MEMORY[0x1E699FA70]);
+    payload = [groupCopy payload];
+    LODWORD(v9) = xpc_dictionary_get_int64(payload, *MEMORY[0x1E699FA60]);
+    int64 = xpc_dictionary_get_int64(payload, *MEMORY[0x1E699FA68]);
+    v11 = xpc_dictionary_get_BOOL(payload, *MEMORY[0x1E699FA70]);
     v12 = *MEMORY[0x1E699FA58];
     v13 = BSDeserializeStringFromXPCDictionaryWithKey();
     v14 = FBLogCommon();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      [v7 pid];
+      [auditToken pid];
       v15 = BSProcessDescriptionForPID();
       v9 = v9;
       v16 = FBSApplicationTerminationGroupDescription();
@@ -401,7 +401,7 @@ void __71__FBSystemAppProxyServiceServer__handleTerminateApplication_forClient__
     v20[1] = 3221225472;
     v20[2] = __76__FBSystemAppProxyServiceServer__handleTerminateApplicationGroup_forClient___block_invoke_26;
     v20[3] = &unk_1E783B218;
-    v21 = v5;
+    v21 = groupCopy;
     [v18 terminateApplicationGroup:v9 forReason:int64 andReport:v11 withDescription:v13 completion:v20];
   }
 
@@ -415,7 +415,7 @@ void __71__FBSystemAppProxyServiceServer__handleTerminateApplication_forClient__
       _os_log_impl(&dword_1A89DD000, v17, OS_LOG_TYPE_DEFAULT, "Entitlement %@ required to kill applications.", buf, 0xCu);
     }
 
-    [v5 sendReplyMessageWithPacker:&__block_literal_global_25];
+    [groupCopy sendReplyMessageWithPacker:&__block_literal_global_25];
   }
 
   v19 = *MEMORY[0x1E69E9840];
@@ -461,28 +461,28 @@ void __76__FBSystemAppProxyServiceServer__handleTerminateApplicationGroup_forCli
   }
 }
 
-- (void)_handleShutdown:(id)a3 forClient:(id)a4
+- (void)_handleShutdown:(id)shutdown forClient:(id)client
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  shutdownCopy = shutdown;
+  clientCopy = client;
   shutdownAuthenticator = self->_shutdownAuthenticator;
   v23 = 0;
-  v9 = [(FBServiceClientAuthenticator *)shutdownAuthenticator authenticateClient:v7 error:&v23];
+  v9 = [(FBServiceClientAuthenticator *)shutdownAuthenticator authenticateClient:clientCopy error:&v23];
   v10 = v23;
   if (v9)
   {
     v11 = +[FBSystemService sharedInstance];
-    v12 = [v11 queue];
+    queue = [v11 queue];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __59__FBSystemAppProxyServiceServer__handleShutdown_forClient___block_invoke;
     v19[3] = &unk_1E783B300;
-    v20 = v6;
-    v21 = v7;
+    v20 = shutdownCopy;
+    v21 = clientCopy;
     v22 = v11;
     v13 = v11;
-    [v12 performAsync:v19];
+    [queue performAsync:v19];
   }
 
   else
@@ -490,10 +490,10 @@ void __76__FBSystemAppProxyServiceServer__handleTerminateApplicationGroup_forCli
     v13 = FBLogCommon();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [v7 processHandle];
+      processHandle = [clientCopy processHandle];
       v15 = FBSProcessPrettyDescription();
-      v16 = [v10 userInfo];
-      v17 = [v16 objectForKey:*MEMORY[0x1E696A588]];
+      userInfo = [v10 userInfo];
+      v17 = [userInfo objectForKey:*MEMORY[0x1E696A588]];
       *buf = 138543618;
       v25 = v15;
       v26 = 2114;
@@ -529,12 +529,12 @@ void __59__FBSystemAppProxyServiceServer__handleShutdown_forClient___block_invok
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)noteClientDidConnect:(id)a3 withMessage:(id)a4
+- (void)noteClientDidConnect:(id)connect withMessage:(id)message
 {
   v5 = MEMORY[0x1E699FCF8];
-  v6 = a3;
+  connectCopy = connect;
   v8 = [v5 messageWithPacker:&__block_literal_global_29];
-  v7 = [MEMORY[0x1E695DFD8] setWithObject:v6];
+  v7 = [MEMORY[0x1E695DFD8] setWithObject:connectCopy];
 
   [(FBSServiceFacility *)self sendMessage:v8 withType:0 toClients:v7];
 }
@@ -548,58 +548,58 @@ void __66__FBSystemAppProxyServiceServer_noteClientDidConnect_withMessage___bloc
   BSSerializeBSXPCEncodableObjectToXPCDictionaryWithKey();
 }
 
-- (void)noteDidReceiveMessage:(id)a3 withType:(int64_t)a4 fromClient:(id)a5
+- (void)noteDidReceiveMessage:(id)message withType:(int64_t)type fromClient:(id)client
 {
-  v11 = a3;
-  v9 = a5;
-  if (!v9)
+  messageCopy = message;
+  clientCopy = client;
+  if (!clientCopy)
   {
     [FBSystemAppProxyServiceServer noteDidReceiveMessage:a2 withType:self fromClient:?];
   }
 
-  v10 = v9;
-  if (a4 <= 2)
+  v10 = clientCopy;
+  if (type <= 2)
   {
-    if (a4)
+    if (type)
     {
-      if (a4 == 1)
+      if (type == 1)
       {
-        [(FBSystemAppProxyServiceServer *)self _handleGetPasscodeLockedOrBlockedStatus:v11 forClient:v9];
+        [(FBSystemAppProxyServiceServer *)self _handleGetPasscodeLockedOrBlockedStatus:messageCopy forClient:clientCopy];
       }
 
-      else if (a4 == 2)
+      else if (type == 2)
       {
-        [(FBSystemAppProxyServiceServer *)self _handleGetProcessHandle:v11 forClient:v9];
+        [(FBSystemAppProxyServiceServer *)self _handleGetProcessHandle:messageCopy forClient:clientCopy];
       }
     }
 
     else
     {
-      [(FBSystemAppProxyServiceServer *)self _handleSystemApplicationBundleIdentifier:v11 forClient:v9];
+      [(FBSystemAppProxyServiceServer *)self _handleSystemApplicationBundleIdentifier:messageCopy forClient:clientCopy];
     }
   }
 
-  else if (a4 > 4)
+  else if (type > 4)
   {
-    if (a4 == 5)
+    if (type == 5)
     {
-      [(FBSystemAppProxyServiceServer *)self _handleTerminateApplicationGroup:v11 forClient:v9];
+      [(FBSystemAppProxyServiceServer *)self _handleTerminateApplicationGroup:messageCopy forClient:clientCopy];
     }
 
-    else if (a4 == 6)
+    else if (type == 6)
     {
-      [(FBSystemAppProxyServiceServer *)self _handleShutdown:v11 forClient:v9];
+      [(FBSystemAppProxyServiceServer *)self _handleShutdown:messageCopy forClient:clientCopy];
     }
   }
 
-  else if (a4 == 3)
+  else if (type == 3)
   {
-    [(FBSystemAppProxyServiceServer *)self _handleActions:v11 forClient:v9];
+    [(FBSystemAppProxyServiceServer *)self _handleActions:messageCopy forClient:clientCopy];
   }
 
   else
   {
-    [(FBSystemAppProxyServiceServer *)self _handleTerminateApplication:v11 forClient:v9];
+    [(FBSystemAppProxyServiceServer *)self _handleTerminateApplication:messageCopy forClient:clientCopy];
   }
 }
 

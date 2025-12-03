@@ -1,17 +1,17 @@
 @interface MessageIndicatorViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation MessageIndicatorViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"TelephonyUI.MessageIndicatorView" hasSwiftField:@"recordImageView" withSwiftType:"UIImageView"];
-  [v3 validateClass:@"TelephonyUI.MessageIndicatorView" hasSwiftField:@"viewModel" withSwiftType:"TPMessageIndicatorViewModel"];
-  [v3 validateClass:@"TPMessageIndicatorViewModel" hasProperty:@"isSensitive" withType:"B"];
-  [v3 validateClass:@"TPMessageIndicatorViewModel" hasProperty:@"isRead" withType:"B"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"TelephonyUI.MessageIndicatorView" hasSwiftField:@"recordImageView" withSwiftType:"UIImageView"];
+  [validationsCopy validateClass:@"TelephonyUI.MessageIndicatorView" hasSwiftField:@"viewModel" withSwiftType:"TPMessageIndicatorViewModel"];
+  [validationsCopy validateClass:@"TPMessageIndicatorViewModel" hasProperty:@"isSensitive" withType:"B"];
+  [validationsCopy validateClass:@"TPMessageIndicatorViewModel" hasProperty:@"isRead" withType:"B"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

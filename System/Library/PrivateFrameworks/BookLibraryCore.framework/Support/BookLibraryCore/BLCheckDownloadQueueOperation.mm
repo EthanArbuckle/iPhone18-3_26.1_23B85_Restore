@@ -1,22 +1,22 @@
 @interface BLCheckDownloadQueueOperation
-- (BLCheckDownloadQueueOperation)initWithDownloadQueueRequest:(id)a3;
+- (BLCheckDownloadQueueOperation)initWithDownloadQueueRequest:(id)request;
 - (id)_account;
-- (id)_newURLRequestWithError:(id *)a3;
+- (id)_newURLRequestWithError:(id *)error;
 - (int64_t)numberOfAvailableDownloads;
 - (void)run;
 @end
 
 @implementation BLCheckDownloadQueueOperation
 
-- (BLCheckDownloadQueueOperation)initWithDownloadQueueRequest:(id)a3
+- (BLCheckDownloadQueueOperation)initWithDownloadQueueRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v9.receiver = self;
   v9.super_class = BLCheckDownloadQueueOperation;
   v5 = [(BLOperation *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [requestCopy copy];
     request = v5->_request;
     v5->_request = v6;
   }
@@ -38,11 +38,11 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     request = self->_request;
-    v5 = [(BLStoreDownloadQueueRequest *)request queueCountURLBagKey];
+    queueCountURLBagKey = [(BLStoreDownloadQueueRequest *)request queueCountURLBagKey];
     *buf = 138412546;
     v24 = request;
     v25 = 2114;
-    v26 = v5;
+    v26 = queueCountURLBagKey;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Running check download queue - request: %@, bagKey: %{public}@", buf, 0x16u);
   }
 
@@ -93,7 +93,7 @@
     else
     {
       objc_opt_class();
-      v16 = [v13 object];
+      object = [v13 object];
       v17 = BUDynamicCast();
 
       v18 = BLServiceLog();
@@ -107,16 +107,16 @@
       v19 = [(BLStoreDownloadQueueRequest *)v17 objectForKey:@"download-queue-item-count"];
       if (objc_opt_respondsToSelector())
       {
-        v20 = [v19 intValue];
+        intValue = [v19 intValue];
       }
 
       else
       {
-        v20 = 0;
+        intValue = 0;
       }
 
       [(BLOperation *)self lock];
-      self->_numberOfAvailableDownloads = v20;
+      self->_numberOfAvailableDownloads = intValue;
       [(BLOperation *)self unlock];
       [(BLOperation *)self setSuccess:1];
     }
@@ -125,19 +125,19 @@
 
 - (id)_account
 {
-  v2 = [(BLStoreDownloadQueueRequest *)self->_request accountIdentifier];
-  if (!v2 || ([ACAccount bu_storeAccountWithDSID:v2], (v3 = objc_claimAutoreleasedReturnValue()) == 0))
+  accountIdentifier = [(BLStoreDownloadQueueRequest *)self->_request accountIdentifier];
+  if (!accountIdentifier || ([ACAccount bu_storeAccountWithDSID:accountIdentifier], (activeStoreAccount = objc_claimAutoreleasedReturnValue()) == 0))
   {
     v4 = +[BUAccountsProvider sharedProvider];
-    v3 = [v4 activeStoreAccount];
+    activeStoreAccount = [v4 activeStoreAccount];
   }
 
-  return v3;
+  return activeStoreAccount;
 }
 
-- (id)_newURLRequestWithError:(id *)a3
+- (id)_newURLRequestWithError:(id *)error
 {
-  v5 = [(BLCheckDownloadQueueOperation *)self _account];
+  _account = [(BLCheckDownloadQueueOperation *)self _account];
   v6 = +[BUBag defaultBag];
   if (!self->_requestEncoder)
   {
@@ -145,16 +145,16 @@
     requestEncoder = self->_requestEncoder;
     self->_requestEncoder = v7;
 
-    [(AMSURLRequestEncoder *)self->_requestEncoder setAccount:v5];
+    [(AMSURLRequestEncoder *)self->_requestEncoder setAccount:_account];
     [(AMSURLRequestEncoder *)self->_requestEncoder setRequestEncoding:2];
   }
 
   v9 = +[NSMutableDictionary dictionary];
-  v10 = [(BLStoreDownloadQueueRequest *)self->_request queueCountURLBagKey];
-  v11 = [v6 URLForKey:v10];
+  queueCountURLBagKey = [(BLStoreDownloadQueueRequest *)self->_request queueCountURLBagKey];
+  v11 = [v6 URLForKey:queueCountURLBagKey];
 
   v12 = [(AMSURLRequestEncoder *)self->_requestEncoder requestWithMethod:4 bagURL:v11 parameters:v9];
-  v13 = [v12 resultWithError:a3];
+  v13 = [v12 resultWithError:error];
 
   return v13;
 }

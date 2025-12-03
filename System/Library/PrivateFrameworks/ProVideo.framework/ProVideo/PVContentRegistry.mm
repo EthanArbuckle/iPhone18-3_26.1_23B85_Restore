@@ -1,33 +1,33 @@
 @interface PVContentRegistry
 + (id)sharedInstance;
-+ (void)initSharedContentRegistryWithHostDelegate:(id)a3;
-+ (void)willTerminate:(id)a3;
-- (BOOL)hasStyleTransfer:(id)a3;
-- (BOOL)isContentIDRegistered:(id)a3;
-- (BOOL)isSelfie:(id)a3;
-- (BOOL)isSingleWordTranscription:(id)a3;
-- (BOOL)isSketch:(id)a3;
-- (BOOL)isTranscription:(id)a3;
-- (BOOL)registerContentBundle:(id)a3;
-- (BOOL)registerContentClass:(Class)a3 forID:(id)a4 type:(id)a5 withProperties:(id)a6;
-- (BOOL)registerContentDictionary:(id)a3 withBaseDir:(id)a4;
-- (BOOL)registerContentFile:(id)a3 forID:(id)a4 properties:(id)a5;
-- (BOOL)unregisterContentID:(id)a3;
++ (void)initSharedContentRegistryWithHostDelegate:(id)delegate;
++ (void)willTerminate:(id)terminate;
+- (BOOL)hasStyleTransfer:(id)transfer;
+- (BOOL)isContentIDRegistered:(id)registered;
+- (BOOL)isSelfie:(id)selfie;
+- (BOOL)isSingleWordTranscription:(id)transcription;
+- (BOOL)isSketch:(id)sketch;
+- (BOOL)isTranscription:(id)transcription;
+- (BOOL)registerContentBundle:(id)bundle;
+- (BOOL)registerContentClass:(Class)class forID:(id)d type:(id)type withProperties:(id)properties;
+- (BOOL)registerContentDictionary:(id)dictionary withBaseDir:(id)dir;
+- (BOOL)registerContentFile:(id)file forID:(id)d properties:(id)properties;
+- (BOOL)unregisterContentID:(id)d;
 - (PVContentRegistry)init;
-- (id)bundleForID:(id)a3;
-- (id)contentGroupForID:(id)a3;
-- (id)contentPathForID:(id)a3;
-- (id)contentPropertiesForID:(id)a3;
-- (id)createContentInstance:(id)a3;
+- (id)bundleForID:(id)d;
+- (id)contentGroupForID:(id)d;
+- (id)contentPathForID:(id)d;
+- (id)contentPropertiesForID:(id)d;
+- (id)createContentInstance:(id)instance;
 - (id)listAllContentGroups;
 - (id)listAllContentIDs;
-- (id)listIDsForContentGroup:(id)a3;
-- (id)listIDsForContentGroups:(id)a3;
-- (id)listIDsForContentType:(id)a3;
-- (id)listIDsForContentTypes:(id)a3;
-- (id)lookupPropertyForID:(id)a3 property:(id)a4;
+- (id)listIDsForContentGroup:(id)group;
+- (id)listIDsForContentGroups:(id)groups;
+- (id)listIDsForContentType:(id)type;
+- (id)listIDsForContentTypes:(id)types;
+- (id)lookupPropertyForID:(id)d property:(id)property;
 - (void)dealloc;
-- (void)initContentRegistryWithHostDelegate:(id)a3;
+- (void)initContentRegistryWithHostDelegate:(id)delegate;
 - (void)registerBuiltIns;
 @end
 
@@ -39,7 +39,7 @@
   block[1] = *"";
   block[2] = __35__PVContentRegistry_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (+[PVContentRegistry sharedInstance]::onceToken != -1)
   {
     dispatch_once(&+[PVContentRegistry sharedInstance]::onceToken, block);
@@ -57,18 +57,18 @@ void __35__PVContentRegistry_sharedInstance__block_invoke(uint64_t a1)
   _sContentRegistry = v1;
 }
 
-+ (void)initSharedContentRegistryWithHostDelegate:(id)a3
++ (void)initSharedContentRegistryWithHostDelegate:(id)delegate
 {
-  v5 = a3;
+  delegateCopy = delegate;
   v3 = +[PVContentRegistry sharedInstance];
   v4 = v3;
   if (v3)
   {
-    [v3 initContentRegistryWithHostDelegate:v5];
+    [v3 initContentRegistryWithHostDelegate:delegateCopy];
   }
 }
 
-+ (void)willTerminate:(id)a3
++ (void)willTerminate:(id)terminate
 {
   +[PVEffect handleApplicationWillTerminate];
 
@@ -101,16 +101,16 @@ void __35__PVContentRegistry_sharedInstance__block_invoke(uint64_t a1)
   [(PVContentRegistry *)&v4 dealloc];
 }
 
-- (void)initContentRegistryWithHostDelegate:(id)a3
+- (void)initContentRegistryWithHostDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = *"";
   v10[2] = __57__PVContentRegistry_initContentRegistryWithHostDelegate___block_invoke;
   v10[3] = &unk_279AA4E00;
-  v11 = v4;
-  v12 = self;
-  v5 = v4;
+  v11 = delegateCopy;
+  selfCopy = self;
+  v5 = delegateCopy;
   v6 = MEMORY[0x2666EAFC0](v10);
   v6[2](v6, v7, v8, v9);
 }
@@ -133,25 +133,25 @@ void __57__PVContentRegistry_initContentRegistryWithHostDelegate___block_invoke(
   +[PVCompositeDelegateEffect registerEffects];
 }
 
-- (BOOL)registerContentBundle:(id)a3
+- (BOOL)registerContentBundle:(id)bundle
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  bundleCopy = bundle;
+  v5 = bundleCopy;
+  if (bundleCopy)
   {
-    v6 = [v4 infoDictionary];
-    if (!v6)
+    infoDictionary = [bundleCopy infoDictionary];
+    if (!infoDictionary)
     {
-      v7 = [v5 bundlePath];
-      NSLog(&cfstr_FailedToLoadBu.isa, v7);
+      bundlePath = [v5 bundlePath];
+      NSLog(&cfstr_FailedToLoadBu.isa, bundlePath);
     }
 
-    v8 = [v6 mutableCopy];
-    v9 = [v5 bundleIdentifier];
-    [v8 setObject:v9 forKey:@"_contentBundleID"];
+    v8 = [infoDictionary mutableCopy];
+    bundleIdentifier = [v5 bundleIdentifier];
+    [v8 setObject:bundleIdentifier forKey:@"_contentBundleID"];
 
-    v10 = [v5 resourcePath];
-    v11 = [(PVContentRegistry *)self registerContentDictionary:v8 withBaseDir:v10];
+    resourcePath = [v5 resourcePath];
+    v11 = [(PVContentRegistry *)self registerContentDictionary:v8 withBaseDir:resourcePath];
   }
 
   else
@@ -162,16 +162,16 @@ void __57__PVContentRegistry_initContentRegistryWithHostDelegate___block_invoke(
   return v11;
 }
 
-- (BOOL)registerContentDictionary:(id)a3 withBaseDir:(id)a4
+- (BOOL)registerContentDictionary:(id)dictionary withBaseDir:(id)dir
 {
   v32 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v26 = a4;
-  v23 = v5;
-  if (v5)
+  dictionaryCopy = dictionary;
+  dirCopy = dir;
+  v23 = dictionaryCopy;
+  if (dictionaryCopy)
   {
-    v6 = [v5 valueForKey:@"ProVideoContent"];
-    v7 = [v5 valueForKey:@"_contentBundleID"];
+    v6 = [dictionaryCopy valueForKey:@"ProVideoContent"];
+    v7 = [dictionaryCopy valueForKey:@"_contentBundleID"];
     v29 = 0u;
     v30 = 0u;
     v27 = 0u;
@@ -197,7 +197,7 @@ void __57__PVContentRegistry_initContentRegistryWithHostDelegate___block_invoke(
           v14 = [v12 valueForKey:@"contentURL"];
           if ([v14 hasPrefix:@"..."])
           {
-            if (!v26)
+            if (!dirCopy)
             {
               NSLog(&cfstr_FailedToRegist_0.isa);
 
@@ -206,7 +206,7 @@ void __57__PVContentRegistry_initContentRegistryWithHostDelegate___block_invoke(
             }
 
             v15 = [v14 substringFromIndex:3];
-            v16 = [v26 stringByAppendingString:v15];
+            v16 = [dirCopy stringByAppendingString:v15];
 
             v14 = v16;
           }
@@ -272,38 +272,38 @@ LABEL_25:
   return v9;
 }
 
-- (BOOL)registerContentFile:(id)a3 forID:(id)a4 properties:(id)a5
+- (BOOL)registerContentFile:(id)file forID:(id)d properties:(id)properties
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  fileCopy = file;
+  dCopy = d;
+  propertiesCopy = properties;
   if (HGLogger::getLevel("PVSignPost", v11) >= 1)
   {
     kdebug_trace();
   }
 
   [(NSLock *)self->_dictionaryLock lock];
-  v12 = [(NSMutableDictionary *)self->_contentDictionary objectForKey:v9];
+  v12 = [(NSMutableDictionary *)self->_contentDictionary objectForKey:dCopy];
 
   if (v12)
   {
-    NSLog(&cfstr_AttemptedToReg.isa, v9);
+    NSLog(&cfstr_AttemptedToReg.isa, dCopy);
     goto LABEL_15;
   }
 
-  if ([v8 hasSuffix:@".moef"])
+  if ([fileCopy hasSuffix:@".moef"])
   {
     v13 = kFFEffectType_VideoFilter;
   }
 
-  else if ([v8 hasSuffix:@".motr"])
+  else if ([fileCopy hasSuffix:@".motr"])
   {
     v13 = kFFEffectType_VideoTransition;
   }
 
   else
   {
-    if (![v8 hasSuffix:@".moti"])
+    if (![fileCopy hasSuffix:@".moti"])
     {
       v14 = 0;
       goto LABEL_12;
@@ -315,15 +315,15 @@ LABEL_25:
   v14 = *v13;
 LABEL_12:
   v15 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  [v15 setObject:v8 forKeyedSubscript:@"contentPath"];
+  [v15 setObject:fileCopy forKeyedSubscript:@"contentPath"];
   [v15 setObject:objc_opt_class() forKeyedSubscript:@"contentClass"];
   [v15 setObject:v14 forKeyedSubscript:@"contentType"];
-  if (v10)
+  if (propertiesCopy)
   {
-    [v15 setObject:v10 forKeyedSubscript:@"contentProperties"];
+    [v15 setObject:propertiesCopy forKeyedSubscript:@"contentProperties"];
   }
 
-  [(NSMutableDictionary *)self->_contentDictionary setObject:v15 forKey:v9];
+  [(NSMutableDictionary *)self->_contentDictionary setObject:v15 forKey:dCopy];
 
 LABEL_15:
   [(NSLock *)self->_dictionaryLock unlock];
@@ -335,23 +335,23 @@ LABEL_15:
   return v12 == 0;
 }
 
-- (BOOL)registerContentClass:(Class)a3 forID:(id)a4 type:(id)a5 withProperties:(id)a6
+- (BOOL)registerContentClass:(Class)class forID:(id)d type:(id)type withProperties:(id)properties
 {
   v19[4] = *MEMORY[0x277D85DE8];
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  dCopy = d;
+  typeCopy = type;
+  propertiesCopy = properties;
   if (HGLogger::getLevel("PVSignPost", v13) >= 1)
   {
     kdebug_trace();
   }
 
   [(NSLock *)self->_dictionaryLock lock];
-  v14 = [(NSMutableDictionary *)self->_contentDictionary objectForKey:v10];
+  v14 = [(NSMutableDictionary *)self->_contentDictionary objectForKey:dCopy];
 
   if (v14)
   {
-    NSLog(&cfstr_AttemptedToReg_0.isa, v10);
+    NSLog(&cfstr_AttemptedToReg_0.isa, dCopy);
   }
 
   else
@@ -359,13 +359,13 @@ LABEL_15:
     v18[0] = @"contentPath";
     v18[1] = @"contentClass";
     v19[0] = &stru_2872E16E0;
-    v19[1] = a3;
+    v19[1] = class;
     v18[2] = @"contentProperties";
     v18[3] = @"contentType";
-    v19[2] = v12;
-    v19[3] = v11;
+    v19[2] = propertiesCopy;
+    v19[3] = typeCopy;
     v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:v18 count:4];
-    [(NSMutableDictionary *)self->_contentDictionary setObject:v15 forKey:v10];
+    [(NSMutableDictionary *)self->_contentDictionary setObject:v15 forKey:dCopy];
   }
 
   [(NSLock *)self->_dictionaryLock unlock];
@@ -377,20 +377,20 @@ LABEL_15:
   return v14 == 0;
 }
 
-- (BOOL)unregisterContentID:(id)a3
+- (BOOL)unregisterContentID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   [(NSLock *)self->_dictionaryLock lock];
-  v5 = [(NSMutableDictionary *)self->_contentDictionary objectForKey:v4];
+  v5 = [(NSMutableDictionary *)self->_contentDictionary objectForKey:dCopy];
 
   if (v5)
   {
-    [(NSMutableDictionary *)self->_contentDictionary removeObjectForKey:v4];
+    [(NSMutableDictionary *)self->_contentDictionary removeObjectForKey:dCopy];
   }
 
   else
   {
-    NSLog(&cfstr_AttemptedToUnr.isa, v4);
+    NSLog(&cfstr_AttemptedToUnr.isa, dCopy);
   }
 
   [(NSLock *)self->_dictionaryLock unlock];
@@ -495,10 +495,10 @@ LABEL_13:
   return v3;
 }
 
-- (id)listIDsForContentGroup:(id)a3
+- (id)listIDsForContentGroup:(id)group
 {
   v22 = *MEMORY[0x277D85DE8];
-  v15 = a3;
+  groupCopy = group;
   v14 = objc_alloc_init(MEMORY[0x277CBEB18]);
   [(NSLock *)self->_dictionaryLock lock];
   v19 = 0u;
@@ -529,7 +529,7 @@ LABEL_13:
           if (v10)
           {
             v12 = [v10 objectForKey:@"contentGroup"];
-            if (v12 && [v15 isEqualToString:v12])
+            if (v12 && [groupCopy isEqualToString:v12])
             {
               [v14 addObject:v7];
             }
@@ -559,20 +559,20 @@ LABEL_13:
   return v14;
 }
 
-- (BOOL)isContentIDRegistered:(id)a3
+- (BOOL)isContentIDRegistered:(id)registered
 {
-  v4 = a3;
+  registeredCopy = registered;
   [(NSLock *)self->_dictionaryLock lock];
-  v5 = [(NSMutableDictionary *)self->_contentDictionary objectForKey:v4];
+  v5 = [(NSMutableDictionary *)self->_contentDictionary objectForKey:registeredCopy];
 
   [(NSLock *)self->_dictionaryLock unlock];
   return v5 != 0;
 }
 
-- (id)listIDsForContentGroups:(id)a3
+- (id)listIDsForContentGroups:(id)groups
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  groupsCopy = groups;
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
   [(NSLock *)self->_dictionaryLock lock];
   v15 = 0u;
@@ -595,7 +595,7 @@ LABEL_13:
 
         v10 = *(*(&v13 + 1) + 8 * i);
         v11 = [(PVContentRegistry *)self lookupPropertyForID:v10 property:@"contentGroup", v13];
-        if ([v4 containsObject:v11])
+        if ([groupsCopy containsObject:v11])
         {
           [v5 addObject:v10];
         }
@@ -612,10 +612,10 @@ LABEL_13:
   return v5;
 }
 
-- (id)listIDsForContentType:(id)a3
+- (id)listIDsForContentType:(id)type
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  typeCopy = type;
   v13 = objc_alloc_init(MEMORY[0x277CBEB18]);
   [(NSLock *)self->_dictionaryLock lock];
   v17 = 0u;
@@ -639,7 +639,7 @@ LABEL_13:
         v8 = *(*(&v15 + 1) + 8 * i);
         v9 = [(NSMutableDictionary *)self->_contentDictionary objectForKey:v8];
         v10 = [v9 valueForKey:@"contentType"];
-        v11 = [v4 isEqualToString:v10];
+        v11 = [typeCopy isEqualToString:v10];
 
         if (v11)
         {
@@ -658,10 +658,10 @@ LABEL_13:
   return v13;
 }
 
-- (id)listIDsForContentTypes:(id)a3
+- (id)listIDsForContentTypes:(id)types
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  typesCopy = types;
   v14 = objc_alloc_init(MEMORY[0x277CBEB18]);
   [(NSLock *)self->_dictionaryLock lock];
   v17 = 0u;
@@ -688,7 +688,7 @@ LABEL_13:
         if (v10)
         {
           v12 = [v10 valueForKey:@"contentType"];
-          if ([v4 containsObject:v12])
+          if ([typesCopy containsObject:v12])
           {
             [v14 addObject:v9];
           }
@@ -706,18 +706,18 @@ LABEL_13:
   return v14;
 }
 
-- (id)contentGroupForID:(id)a3
+- (id)contentGroupForID:(id)d
 {
-  v3 = [(PVContentRegistry *)self lookupPropertyForID:a3 property:@"contentGroup"];
+  v3 = [(PVContentRegistry *)self lookupPropertyForID:d property:@"contentGroup"];
 
   return v3;
 }
 
-- (id)contentPathForID:(id)a3
+- (id)contentPathForID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   [(NSLock *)self->_dictionaryLock lock];
-  v5 = [(NSMutableDictionary *)self->_contentDictionary objectForKeyedSubscript:v4];
+  v5 = [(NSMutableDictionary *)self->_contentDictionary objectForKeyedSubscript:dCopy];
   v6 = v5;
   if (v5)
   {
@@ -734,11 +734,11 @@ LABEL_13:
   return v7;
 }
 
-- (id)contentPropertiesForID:(id)a3
+- (id)contentPropertiesForID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   [(NSLock *)self->_dictionaryLock lock];
-  v5 = [(NSMutableDictionary *)self->_contentDictionary objectForKey:v4];
+  v5 = [(NSMutableDictionary *)self->_contentDictionary objectForKey:dCopy];
   v6 = v5;
   if (v5)
   {
@@ -755,14 +755,14 @@ LABEL_13:
   return v7;
 }
 
-- (id)lookupPropertyForID:(id)a3 property:(id)a4
+- (id)lookupPropertyForID:(id)d property:(id)property
 {
-  v6 = a4;
-  v7 = [(PVContentRegistry *)self contentPropertiesForID:a3];
+  propertyCopy = property;
+  v7 = [(PVContentRegistry *)self contentPropertiesForID:d];
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 objectForKey:v6];
+    v9 = [v7 objectForKey:propertyCopy];
   }
 
   else
@@ -773,9 +773,9 @@ LABEL_13:
   return v9;
 }
 
-- (id)bundleForID:(id)a3
+- (id)bundleForID:(id)d
 {
-  v3 = [(PVContentRegistry *)self contentPropertiesForID:a3];
+  v3 = [(PVContentRegistry *)self contentPropertiesForID:d];
   v4 = v3;
   if (v3)
   {
@@ -799,15 +799,15 @@ LABEL_13:
   return v6;
 }
 
-- (id)createContentInstance:(id)a3
+- (id)createContentInstance:(id)instance
 {
-  v4 = a3;
+  instanceCopy = instance;
   [(NSLock *)self->_dictionaryLock lock];
-  v5 = [(NSMutableDictionary *)self->_contentDictionary objectForKeyedSubscript:v4];
+  v5 = [(NSMutableDictionary *)self->_contentDictionary objectForKeyedSubscript:instanceCopy];
   [(NSLock *)self->_dictionaryLock unlock];
   if (v5 && (v6 = [v5 valueForKey:@"contentClass"]) != 0)
   {
-    v7 = [[v6 alloc] initWithContentID:v4 andDictionary:v5];
+    v7 = [[v6 alloc] initWithContentID:instanceCopy andDictionary:v5];
   }
 
   else
@@ -818,44 +818,44 @@ LABEL_13:
   return v7;
 }
 
-- (BOOL)isTranscription:(id)a3
+- (BOOL)isTranscription:(id)transcription
 {
-  v3 = [(PVContentRegistry *)self lookupPropertyForID:a3 property:@"PV_CONTENT_IS_TRANSCRIPTION"];
-  v4 = [v3 BOOLValue];
+  v3 = [(PVContentRegistry *)self lookupPropertyForID:transcription property:@"PV_CONTENT_IS_TRANSCRIPTION"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-- (BOOL)isSingleWordTranscription:(id)a3
+- (BOOL)isSingleWordTranscription:(id)transcription
 {
-  v3 = [(PVContentRegistry *)self lookupPropertyForID:a3 property:@"PV_CONTENT_IS_SINGLE_WORD_TRANSCRIPTION"];
-  v4 = [v3 BOOLValue];
+  v3 = [(PVContentRegistry *)self lookupPropertyForID:transcription property:@"PV_CONTENT_IS_SINGLE_WORD_TRANSCRIPTION"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-- (BOOL)isSketch:(id)a3
+- (BOOL)isSketch:(id)sketch
 {
-  v3 = [(PVContentRegistry *)self lookupPropertyForID:a3 property:@"PV_CONTENT_IS_SKETCH"];
-  v4 = [v3 BOOLValue];
+  v3 = [(PVContentRegistry *)self lookupPropertyForID:sketch property:@"PV_CONTENT_IS_SKETCH"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-- (BOOL)isSelfie:(id)a3
+- (BOOL)isSelfie:(id)selfie
 {
-  v3 = [(PVContentRegistry *)self lookupPropertyForID:a3 property:@"PV_CONTENT_IS_SELFIE"];
-  v4 = [v3 BOOLValue];
+  v3 = [(PVContentRegistry *)self lookupPropertyForID:selfie property:@"PV_CONTENT_IS_SELFIE"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-- (BOOL)hasStyleTransfer:(id)a3
+- (BOOL)hasStyleTransfer:(id)transfer
 {
-  v3 = [(PVContentRegistry *)self lookupPropertyForID:a3 property:@"PV_CONTENT_HAS_STYLE_TRANSFER"];
-  v4 = [v3 BOOLValue];
+  v3 = [(PVContentRegistry *)self lookupPropertyForID:transfer property:@"PV_CONTENT_HAS_STYLE_TRANSFER"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 @end

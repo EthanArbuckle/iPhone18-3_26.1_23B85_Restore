@@ -1,20 +1,20 @@
 @interface PXCuratedLibraryActionManager
 + (id)actionsWithActionPerformers;
-- (BOOL)canPerformActionType:(id)a3;
+- (BOOL)canPerformActionType:(id)type;
 - (PXCuratedLibraryActionManager)init;
-- (PXCuratedLibraryActionManager)initWithViewModel:(id)a3;
+- (PXCuratedLibraryActionManager)initWithViewModel:(id)model;
 - (PXCuratedLibraryViewModel)viewModel;
-- (id)actionPerformerForActionType:(id)a3;
-- (id)actionPerformerForActionType:(id)a3 withAssetCollectionReference:(id)a4;
-- (id)actionPerformerForHitTestResult:(id)a3;
-- (id)actionPerformerForNavigatingToNextZoomLevelInLayout:(id)a3;
-- (id)barButtonItemForActionType:(id)a3;
-- (id)curationDebugPerformerAssetCollectionReference:(id)a3 diagnosticLayout:(id)a4;
-- (id)ellipsisButtonActionPerformerWithAssetCollectionReference:(id)a3;
-- (id)ellipsisButtonActionPerformerWithAssetCollectionReferenceProvider:(id)a3;
-- (id)localizedTitleForActionType:(id)a3 useCase:(unint64_t)a4;
-- (id)showAllActionPerformerWithAssetCollectionReference:(id)a3;
-- (id)tapToRadarPerformerAssetCollectionReference:(id)a3 diagnosticLayout:(id)a4;
+- (id)actionPerformerForActionType:(id)type;
+- (id)actionPerformerForActionType:(id)type withAssetCollectionReference:(id)reference;
+- (id)actionPerformerForHitTestResult:(id)result;
+- (id)actionPerformerForNavigatingToNextZoomLevelInLayout:(id)layout;
+- (id)barButtonItemForActionType:(id)type;
+- (id)curationDebugPerformerAssetCollectionReference:(id)reference diagnosticLayout:(id)layout;
+- (id)ellipsisButtonActionPerformerWithAssetCollectionReference:(id)reference;
+- (id)ellipsisButtonActionPerformerWithAssetCollectionReferenceProvider:(id)provider;
+- (id)localizedTitleForActionType:(id)type useCase:(unint64_t)case;
+- (id)showAllActionPerformerWithAssetCollectionReference:(id)reference;
+- (id)tapToRadarPerformerAssetCollectionReference:(id)reference diagnosticLayout:(id)layout;
 @end
 
 @implementation PXCuratedLibraryActionManager
@@ -26,16 +26,16 @@
   return WeakRetained;
 }
 
-- (id)barButtonItemForActionType:(id)a3
+- (id)barButtonItemForActionType:(id)type
 {
-  v3 = [(PXCuratedLibraryActionManager *)self actionPerformerForActionType:a3];
+  v3 = [(PXCuratedLibraryActionManager *)self actionPerformerForActionType:type];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 activitySystemImageName];
-    if (v5)
+    activitySystemImageName = [v3 activitySystemImageName];
+    if (activitySystemImageName)
     {
-      v6 = [MEMORY[0x1E69DCAB8] systemImageNamed:v5];
+      v6 = [MEMORY[0x1E69DCAB8] systemImageNamed:activitySystemImageName];
     }
 
     else
@@ -74,18 +74,18 @@
   return v7;
 }
 
-- (id)actionPerformerForNavigatingToNextZoomLevelInLayout:(id)a3
+- (id)actionPerformerForNavigatingToNextZoomLevelInLayout:(id)layout
 {
-  v4 = a3;
-  v5 = [(PXCuratedLibraryActionManager *)self viewModel];
-  v6 = [v5 zoomLevel];
+  layoutCopy = layout;
+  viewModel = [(PXCuratedLibraryActionManager *)self viewModel];
+  zoomLevel = [viewModel zoomLevel];
   v17 = 0u;
   v18 = 0u;
-  v7 = [v5 selectionSnapshot];
-  v8 = v7;
-  if (v7)
+  selectionSnapshot = [viewModel selectionSnapshot];
+  v8 = selectionSnapshot;
+  if (selectionSnapshot)
   {
-    [v7 firstSelectedIndexPath];
+    [selectionSnapshot firstSelectedIndexPath];
   }
 
   else
@@ -94,20 +94,20 @@
     v18 = 0u;
   }
 
-  if ((v6 - 1) > 1 || v17 == *off_1E7721F68)
+  if ((zoomLevel - 1) > 1 || v17 == *off_1E7721F68)
   {
     v9 = 0;
   }
 
   else
   {
-    v10 = [v5 currentDataSource];
+    currentDataSource = [viewModel currentDataSource];
     v16[0] = v17;
     v16[1] = v18;
-    v11 = [v10 assetCollectionReferenceAtSectionIndexPath:v16];
+    v11 = [currentDataSource assetCollectionReferenceAtSectionIndexPath:v16];
 
-    v12 = [v4 spriteReferenceForObjectReference:v11];
-    if (v6 == 1)
+    v12 = [layoutCopy spriteReferenceForObjectReference:v11];
+    if (zoomLevel == 1)
     {
       v13 = 2;
     }
@@ -117,23 +117,23 @@
       v13 = 3;
     }
 
-    v14 = [[off_1E7721520 alloc] initWithControl:v13 spriteReference:v12 layout:v4 assetCollectionReference:v11];
+    v14 = [[off_1E7721520 alloc] initWithControl:v13 spriteReference:v12 layout:layoutCopy assetCollectionReference:v11];
     v9 = [(PXCuratedLibraryActionManager *)self actionPerformerForHitTestResult:v14];
   }
 
   return v9;
 }
 
-- (id)actionPerformerForHitTestResult:(id)a3
+- (id)actionPerformerForHitTestResult:(id)result
 {
-  v4 = a3;
-  if (([v4 control] - 2) <= 2 && -[PXCuratedLibraryActionManager canPerformActionType:](self, "canPerformActionType:", @"PXCuratedLibraryActionNavigateToNextZoomLevel"))
+  resultCopy = result;
+  if (([resultCopy control] - 2) <= 2 && -[PXCuratedLibraryActionManager canPerformActionType:](self, "canPerformActionType:", @"PXCuratedLibraryActionNavigateToNextZoomLevel"))
   {
     v5 = [_PXCuratedLibraryNavigateToNextZoomLevelActionPerformer alloc];
-    v6 = [(PXCuratedLibraryActionManager *)self viewModel];
-    v7 = [v4 layout];
-    v8 = [v4 spriteReference];
-    v9 = [(_PXCuratedLibraryNavigateToNextZoomLevelActionPerformer *)v5 initWithActionType:@"PXCuratedLibraryActionNavigateToNextZoomLevel" viewModel:v6 layout:v7 hitSpriteReference:v8];
+    viewModel = [(PXCuratedLibraryActionManager *)self viewModel];
+    layout = [resultCopy layout];
+    spriteReference = [resultCopy spriteReference];
+    v9 = [(_PXCuratedLibraryNavigateToNextZoomLevelActionPerformer *)v5 initWithActionType:@"PXCuratedLibraryActionNavigateToNextZoomLevel" viewModel:viewModel layout:layout hitSpriteReference:spriteReference];
   }
 
   else
@@ -144,18 +144,18 @@
   return v9;
 }
 
-- (id)curationDebugPerformerAssetCollectionReference:(id)a3 diagnosticLayout:(id)a4
+- (id)curationDebugPerformerAssetCollectionReference:(id)reference diagnosticLayout:(id)layout
 {
-  v6 = a3;
-  v7 = a4;
+  referenceCopy = reference;
+  layoutCopy = layout;
   if ([(PXCuratedLibraryActionManager *)self canPerformActionType:@"PXCuratedLibraryActionCurationDebug"])
   {
     v8 = [PXCuratedLibraryCurationDebugActionPerformer alloc];
-    v9 = [(PXCuratedLibraryActionManager *)self viewModel];
-    v10 = [(PXCuratedLibraryCurationDebugActionPerformer *)v8 initWithViewModel:v9 assetCollectionReference:v6 diagnosticLayout:v7];
+    viewModel = [(PXCuratedLibraryActionManager *)self viewModel];
+    v10 = [(PXCuratedLibraryCurationDebugActionPerformer *)v8 initWithViewModel:viewModel assetCollectionReference:referenceCopy diagnosticLayout:layoutCopy];
 
-    v11 = [(PXActionManager *)self performerDelegate];
-    [(PXActionPerformer *)v10 setDelegate:v11];
+    performerDelegate = [(PXActionManager *)self performerDelegate];
+    [(PXActionPerformer *)v10 setDelegate:performerDelegate];
   }
 
   else
@@ -166,18 +166,18 @@
   return v10;
 }
 
-- (id)tapToRadarPerformerAssetCollectionReference:(id)a3 diagnosticLayout:(id)a4
+- (id)tapToRadarPerformerAssetCollectionReference:(id)reference diagnosticLayout:(id)layout
 {
-  v6 = a3;
-  v7 = a4;
+  referenceCopy = reference;
+  layoutCopy = layout;
   if ([(PXCuratedLibraryActionManager *)self canPerformActionType:@"PXCuratedLibraryActionTapToRadar"])
   {
     v8 = [PXCuratedLibraryTapToRadarActionPerformer alloc];
-    v9 = [(PXCuratedLibraryActionManager *)self viewModel];
-    v10 = [(PXCuratedLibraryTapToRadarActionPerformer *)v8 initWithViewModel:v9 assetCollectionReference:v6 diagnosticLayout:v7];
+    viewModel = [(PXCuratedLibraryActionManager *)self viewModel];
+    v10 = [(PXCuratedLibraryTapToRadarActionPerformer *)v8 initWithViewModel:viewModel assetCollectionReference:referenceCopy diagnosticLayout:layoutCopy];
 
-    v11 = [(PXActionManager *)self performerDelegate];
-    [(PXActionPerformer *)v10 setDelegate:v11];
+    performerDelegate = [(PXActionManager *)self performerDelegate];
+    [(PXActionPerformer *)v10 setDelegate:performerDelegate];
   }
 
   else
@@ -188,17 +188,17 @@
   return v10;
 }
 
-- (id)showAllActionPerformerWithAssetCollectionReference:(id)a3
+- (id)showAllActionPerformerWithAssetCollectionReference:(id)reference
 {
-  v4 = a3;
+  referenceCopy = reference;
   if ([(PXCuratedLibraryActionManager *)self canPerformActionType:@"PXCuratedLibraryActionShowAll"])
   {
     v5 = [PXCuratedLibraryShowAllActionPerformer alloc];
-    v6 = [(PXCuratedLibraryActionManager *)self viewModel];
-    v7 = [(PXCuratedLibraryAssetCollectionActionPerformer *)v5 initWithActionType:@"PXCuratedLibraryActionShowAll" viewModel:v6 assetCollectionReference:v4];
+    viewModel = [(PXCuratedLibraryActionManager *)self viewModel];
+    v7 = [(PXCuratedLibraryAssetCollectionActionPerformer *)v5 initWithActionType:@"PXCuratedLibraryActionShowAll" viewModel:viewModel assetCollectionReference:referenceCopy];
 
-    v8 = [(PXActionManager *)self performerDelegate];
-    [(PXActionPerformer *)v7 setDelegate:v8];
+    performerDelegate = [(PXActionManager *)self performerDelegate];
+    [(PXActionPerformer *)v7 setDelegate:performerDelegate];
   }
 
   else
@@ -209,17 +209,17 @@
   return v7;
 }
 
-- (id)ellipsisButtonActionPerformerWithAssetCollectionReferenceProvider:(id)a3
+- (id)ellipsisButtonActionPerformerWithAssetCollectionReferenceProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   if ([(PXCuratedLibraryActionManager *)self canPerformActionType:@"PXCuratedLibraryActionEllipsisButton"])
   {
     v5 = [PXCuratedLibraryEllipsisButtonActionPerformer alloc];
-    v6 = [(PXCuratedLibraryActionManager *)self viewModel];
-    v7 = [(PXCuratedLibraryEllipsisButtonActionPerformer *)v5 initWithViewModel:v6 assetCollectionReferenceProvider:v4 actionManager:self];
+    viewModel = [(PXCuratedLibraryActionManager *)self viewModel];
+    v7 = [(PXCuratedLibraryEllipsisButtonActionPerformer *)v5 initWithViewModel:viewModel assetCollectionReferenceProvider:providerCopy actionManager:self];
 
-    v8 = [(PXActionManager *)self performerDelegate];
-    [(PXActionPerformer *)v7 setDelegate:v8];
+    performerDelegate = [(PXActionManager *)self performerDelegate];
+    [(PXActionPerformer *)v7 setDelegate:performerDelegate];
   }
 
   else
@@ -230,17 +230,17 @@
   return v7;
 }
 
-- (id)ellipsisButtonActionPerformerWithAssetCollectionReference:(id)a3
+- (id)ellipsisButtonActionPerformerWithAssetCollectionReference:(id)reference
 {
-  v4 = a3;
+  referenceCopy = reference;
   if ([(PXCuratedLibraryActionManager *)self canPerformActionType:@"PXCuratedLibraryActionEllipsisButton"])
   {
     v5 = [PXCuratedLibraryEllipsisButtonActionPerformer alloc];
-    v6 = [(PXCuratedLibraryActionManager *)self viewModel];
-    v7 = [(PXCuratedLibraryEllipsisButtonActionPerformer *)v5 initWithViewModel:v6 assetCollectionReference:v4 actionManager:self];
+    viewModel = [(PXCuratedLibraryActionManager *)self viewModel];
+    v7 = [(PXCuratedLibraryEllipsisButtonActionPerformer *)v5 initWithViewModel:viewModel assetCollectionReference:referenceCopy actionManager:self];
 
-    v8 = [(PXActionManager *)self performerDelegate];
-    [(PXActionPerformer *)v7 setDelegate:v8];
+    performerDelegate = [(PXActionManager *)self performerDelegate];
+    [(PXActionPerformer *)v7 setDelegate:performerDelegate];
   }
 
   else
@@ -251,64 +251,64 @@
   return v7;
 }
 
-- (id)actionPerformerForActionType:(id)a3 withAssetCollectionReference:(id)a4
+- (id)actionPerformerForActionType:(id)type withAssetCollectionReference:(id)reference
 {
-  v7 = a3;
-  v8 = a4;
-  if ([(PXCuratedLibraryActionManager *)self canPerformActionType:v7])
+  typeCopy = type;
+  referenceCopy = reference;
+  if ([(PXCuratedLibraryActionManager *)self canPerformActionType:typeCopy])
   {
-    v9 = [(PXCuratedLibraryActionManager *)self assetCollectionActionPerformersByType];
-    v10 = [v9 objectForKeyedSubscript:v7];
+    assetCollectionActionPerformersByType = [(PXCuratedLibraryActionManager *)self assetCollectionActionPerformersByType];
+    v10 = [assetCollectionActionPerformersByType objectForKeyedSubscript:typeCopy];
 
     if (!v10)
     {
-      v16 = [(PXCuratedLibraryActionManager *)self actionPerformersByType];
-      v17 = [v16 objectForKeyedSubscript:v7];
+      actionPerformersByType = [(PXCuratedLibraryActionManager *)self actionPerformersByType];
+      v17 = [actionPerformersByType objectForKeyedSubscript:typeCopy];
 
       if (!v17)
       {
-        v18 = [(PXCuratedLibraryActionManager *)self constructorSpecificActionPerformersByType];
-        v19 = [v18 objectForKeyedSubscript:v7];
+        constructorSpecificActionPerformersByType = [(PXCuratedLibraryActionManager *)self constructorSpecificActionPerformersByType];
+        v19 = [constructorSpecificActionPerformersByType objectForKeyedSubscript:typeCopy];
 
         if (v19)
         {
-          v23 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v23 handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryActionManager.m" lineNumber:338 description:{@"You must use the specific action performer constructor for %@ Action type.", v7}];
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryActionManager.m" lineNumber:338 description:{@"You must use the specific action performer constructor for %@ Action type.", typeCopy}];
         }
 
         else
         {
           v20 = +[PXCuratedLibraryActionManager actionsWithActionPerformers];
-          v21 = [v20 containsObject:v7];
+          v21 = [v20 containsObject:typeCopy];
 
-          v22 = [MEMORY[0x1E696AAA8] currentHandler];
-          v23 = v22;
+          currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+          currentHandler = currentHandler2;
           if (v21)
           {
-            [v22 handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryActionManager.m" lineNumber:342 description:{@"Unknown action type %@", v7}];
+            [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryActionManager.m" lineNumber:342 description:{@"Unknown action type %@", typeCopy}];
           }
 
           else
           {
-            [v22 handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryActionManager.m" lineNumber:340 description:{@"The %@ action isn't currently handled by a PXCuratedLibraryActionPerformer.", v7}];
+            [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryActionManager.m" lineNumber:340 description:{@"The %@ action isn't currently handled by a PXCuratedLibraryActionPerformer.", typeCopy}];
           }
         }
 
         abort();
       }
 
-      v24 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v24 handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryActionManager.m" lineNumber:336 description:@"You must use the -[PXCuratedLibraryActionManager actionPerformerForActionType:] constructor method for this type of action."];
+      currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler3 handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryActionManager.m" lineNumber:336 description:@"You must use the -[PXCuratedLibraryActionManager actionPerformerForActionType:] constructor method for this type of action."];
 
       abort();
     }
 
     v11 = [v10 alloc];
-    v12 = [(PXCuratedLibraryActionManager *)self viewModel];
-    v13 = [v11 initWithActionType:v7 viewModel:v12 assetCollectionReference:v8];
+    viewModel = [(PXCuratedLibraryActionManager *)self viewModel];
+    v13 = [v11 initWithActionType:typeCopy viewModel:viewModel assetCollectionReference:referenceCopy];
 
-    v14 = [(PXActionManager *)self performerDelegate];
-    [v13 setDelegate:v14];
+    performerDelegate = [(PXActionManager *)self performerDelegate];
+    [v13 setDelegate:performerDelegate];
   }
 
   else
@@ -319,53 +319,53 @@
   return v13;
 }
 
-- (id)actionPerformerForActionType:(id)a3
+- (id)actionPerformerForActionType:(id)type
 {
-  v5 = a3;
-  if ([(PXCuratedLibraryActionManager *)self canPerformActionType:v5])
+  typeCopy = type;
+  if ([(PXCuratedLibraryActionManager *)self canPerformActionType:typeCopy])
   {
-    v6 = [(PXCuratedLibraryActionManager *)self actionPerformersByType];
-    v7 = [v6 objectForKeyedSubscript:v5];
+    actionPerformersByType = [(PXCuratedLibraryActionManager *)self actionPerformersByType];
+    v7 = [actionPerformersByType objectForKeyedSubscript:typeCopy];
 
     if (!v7)
     {
-      v15 = [(PXCuratedLibraryActionManager *)self assetCollectionActionPerformersByType];
-      v16 = [v15 objectForKeyedSubscript:v5];
+      assetCollectionActionPerformersByType = [(PXCuratedLibraryActionManager *)self assetCollectionActionPerformersByType];
+      v16 = [assetCollectionActionPerformersByType objectForKeyedSubscript:typeCopy];
 
       if (!v16)
       {
-        v17 = [(PXCuratedLibraryActionManager *)self constructorSpecificActionPerformersByType];
-        v18 = [v17 objectForKeyedSubscript:v5];
+        constructorSpecificActionPerformersByType = [(PXCuratedLibraryActionManager *)self constructorSpecificActionPerformersByType];
+        v18 = [constructorSpecificActionPerformersByType objectForKeyedSubscript:typeCopy];
 
         if (v18)
         {
-          v22 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v22 handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryActionManager.m" lineNumber:317 description:{@"You must use the specific action performer constructor for %@ Action type.", v5}];
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryActionManager.m" lineNumber:317 description:{@"You must use the specific action performer constructor for %@ Action type.", typeCopy}];
         }
 
         else
         {
           v19 = +[PXCuratedLibraryActionManager actionsWithActionPerformers];
-          v20 = [v19 containsObject:v5];
+          v20 = [v19 containsObject:typeCopy];
 
-          v21 = [MEMORY[0x1E696AAA8] currentHandler];
-          v22 = v21;
+          currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+          currentHandler = currentHandler2;
           if (v20)
           {
-            [v21 handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryActionManager.m" lineNumber:321 description:{@"Unknown action type %@", v5}];
+            [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryActionManager.m" lineNumber:321 description:{@"Unknown action type %@", typeCopy}];
           }
 
           else
           {
-            [v21 handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryActionManager.m" lineNumber:319 description:{@"The %@ action isn't currently handled by a PXCuratedLibraryActionPerformer.", v5}];
+            [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryActionManager.m" lineNumber:319 description:{@"The %@ action isn't currently handled by a PXCuratedLibraryActionPerformer.", typeCopy}];
           }
         }
 
         abort();
       }
 
-      v23 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v23 handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryActionManager.m" lineNumber:315 description:@"You must use the PXCuratedLibraryAssetCollectionActionPerformer constructor method for this type of action."];
+      currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler3 handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryActionManager.m" lineNumber:315 description:@"You must use the PXCuratedLibraryAssetCollectionActionPerformer constructor method for this type of action."];
 
       abort();
     }
@@ -375,17 +375,17 @@
     v10 = v9;
     if (v8)
     {
-      v11 = [(PXCuratedLibraryActionManager *)self viewModel];
-      v12 = [v10 initWithActionType:v5 viewModel:v11];
+      viewModel = [(PXCuratedLibraryActionManager *)self viewModel];
+      v12 = [v10 initWithActionType:typeCopy viewModel:viewModel];
     }
 
     else
     {
-      v12 = [v9 initWithActionType:v5];
+      v12 = [v9 initWithActionType:typeCopy];
     }
 
-    v13 = [(PXActionManager *)self performerDelegate];
-    [v12 setDelegate:v13];
+    performerDelegate = [(PXActionManager *)self performerDelegate];
+    [v12 setDelegate:performerDelegate];
   }
 
   else
@@ -396,36 +396,36 @@
   return v12;
 }
 
-- (BOOL)canPerformActionType:(id)a3
+- (BOOL)canPerformActionType:(id)type
 {
-  v4 = a3;
-  v5 = [(PXCuratedLibraryActionManager *)self viewModel];
-  v6 = [v5 allowedActions];
-  v7 = [v6 containsObject:v4];
+  typeCopy = type;
+  viewModel = [(PXCuratedLibraryActionManager *)self viewModel];
+  allowedActions = [viewModel allowedActions];
+  v7 = [allowedActions containsObject:typeCopy];
 
   return v7;
 }
 
-- (id)localizedTitleForActionType:(id)a3 useCase:(unint64_t)a4
+- (id)localizedTitleForActionType:(id)type useCase:(unint64_t)case
 {
-  v5 = a3;
-  v6 = [(PXCuratedLibraryActionManager *)self viewModel];
-  v8 = _PXCuratedLibraryActionTitle(v5, v7, v6, 0);
+  typeCopy = type;
+  viewModel = [(PXCuratedLibraryActionManager *)self viewModel];
+  v8 = _PXCuratedLibraryActionTitle(typeCopy, v7, viewModel, 0);
 
   return v8;
 }
 
-- (PXCuratedLibraryActionManager)initWithViewModel:(id)a3
+- (PXCuratedLibraryActionManager)initWithViewModel:(id)model
 {
   v20[28] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  modelCopy = model;
   v14.receiver = self;
   v14.super_class = PXCuratedLibraryActionManager;
   v5 = [(PXCuratedLibraryActionManager *)&v14 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_viewModel, v4);
+    objc_storeWeak(&v5->_viewModel, modelCopy);
     v19[0] = @"PXCuratedLibraryActionEnterSelectMode";
     v20[0] = objc_opt_class();
     v19[1] = @"PXCuratedLibraryActionCancelSelectMode";
@@ -514,8 +514,8 @@
 
 - (PXCuratedLibraryActionManager)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryActionManager.m" lineNumber:231 description:{@"%s is not available as initializer", "-[PXCuratedLibraryActionManager init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryActionManager.m" lineNumber:231 description:{@"%s is not available as initializer", "-[PXCuratedLibraryActionManager init]"}];
 
   abort();
 }

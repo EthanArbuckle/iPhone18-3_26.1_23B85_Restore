@@ -1,15 +1,15 @@
 @interface UIViewController
-- (void)compositeComponentDidMoveToParentViewController:(id)a3;
-- (void)compositeComponentWillMoveToParentViewController:(id)a3;
+- (void)compositeComponentDidMoveToParentViewController:(id)controller;
+- (void)compositeComponentWillMoveToParentViewController:(id)controller;
 @end
 
 @implementation UIViewController
 
-- (void)compositeComponentWillMoveToParentViewController:(id)a3
+- (void)compositeComponentWillMoveToParentViewController:(id)controller
 {
-  if (a3)
+  if (controller)
   {
-    [a3 addChildViewController:self];
+    [controller addChildViewController:self];
   }
 
   else
@@ -18,9 +18,9 @@
   }
 }
 
-- (void)compositeComponentDidMoveToParentViewController:(id)a3
+- (void)compositeComponentDidMoveToParentViewController:(id)controller
 {
-  if (a3)
+  if (controller)
   {
     [(UIViewController *)self didMoveToParentViewController:?];
   }

@@ -14,13 +14,13 @@
   {
     [(BlurInWindowSplitViewController *)self primaryColumnWidth];
     self->_cachedPrimaryColumnWidth = v4;
-    v5 = [(BlurInWindowSplitViewController *)self delegate];
+    delegate = [(BlurInWindowSplitViewController *)self delegate];
     v6 = objc_opt_respondsToSelector();
 
     if (v6)
     {
-      v7 = [(BlurInWindowSplitViewController *)self delegate];
-      [v7 _maps_splitViewControllerDidChangePrimaryColumnWidth:self];
+      delegate2 = [(BlurInWindowSplitViewController *)self delegate];
+      [delegate2 _maps_splitViewControllerDidChangePrimaryColumnWidth:self];
     }
   }
 }

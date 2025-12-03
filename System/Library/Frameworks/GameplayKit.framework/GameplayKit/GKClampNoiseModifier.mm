@@ -1,20 +1,20 @@
 @interface GKClampNoiseModifier
-- (GKClampNoiseModifier)initWithLowerBound:(double)a3 upperBound:(double)a4;
+- (GKClampNoiseModifier)initWithLowerBound:(double)bound upperBound:(double)upperBound;
 - (double)valueAt:(GKClampNoiseModifier *)self;
 - (id)cloneModule;
 @end
 
 @implementation GKClampNoiseModifier
 
-- (GKClampNoiseModifier)initWithLowerBound:(double)a3 upperBound:(double)a4
+- (GKClampNoiseModifier)initWithLowerBound:(double)bound upperBound:(double)upperBound
 {
   v7.receiver = self;
   v7.super_class = GKClampNoiseModifier;
   result = [(GKNoiseModifier *)&v7 initWithInputModuleCount:1];
   if (result)
   {
-    result->_lowerBound = a3;
-    result->_upperBound = a4;
+    result->_lowerBound = bound;
+    result->_upperBound = upperBound;
   }
 
   return result;

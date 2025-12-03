@@ -1,12 +1,12 @@
 @interface CWFRequestParameters
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToRequestParameters:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToRequestParameters:(id)parameters;
 - (CWFRequestParameters)init;
-- (CWFRequestParameters)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CWFRequestParameters)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CWFRequestParameters
@@ -18,9 +18,9 @@
   v2 = [(CWFRequestParameters *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AFB0] UUID];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
     UUID = v2->_UUID;
-    v2->_UUID = v3;
+    v2->_UUID = uUID;
   }
 
   return v2;
@@ -31,21 +31,21 @@
   v3 = MEMORY[0x1E696AEC0];
   interfaceName = self->_interfaceName;
   timeout = self->_timeout;
-  v6 = [(NSUUID *)self->_UUID UUIDString];
-  v7 = [v6 substringToIndex:5];
+  uUIDString = [(NSUUID *)self->_UUID UUIDString];
+  v7 = [uUIDString substringToIndex:5];
   v8 = [v3 stringWithFormat:@"intf=%@, timeout=%lluns, uuid=%@, priority=%ld, qos=%ld, wifiNetworkSharing=[bundleIDOverride=%@, accessoryID=%@, hasPredicateData=%d]", interfaceName, timeout, v7, self->_queuePriority, self->_qualityOfService, self->_wifiNetworkSharingBundleIDOverride, self->_wifiNetworkSharingAccessoryID, self->_wifiNetworkSharingNetworkListUpdateEventPredicateData != 0];
 
   return v8;
 }
 
-- (BOOL)isEqualToRequestParameters:(id)a3
+- (BOOL)isEqualToRequestParameters:(id)parameters
 {
-  v6 = a3;
-  v7 = v6;
+  parametersCopy = parameters;
+  v7 = parametersCopy;
   if (self->_UUID)
   {
-    v8 = [v6 UUID];
-    if (!v8)
+    uUID = [parametersCopy UUID];
+    if (!uUID)
     {
       v15 = 0;
 LABEL_43:
@@ -54,8 +54,8 @@ LABEL_43:
     }
 
     UUID = self->_UUID;
-    v10 = [v7 UUID];
-    if (![(NSUUID *)UUID isEqual:v10])
+    uUID2 = [v7 UUID];
+    if (![(NSUUID *)UUID isEqual:uUID2])
     {
       v15 = 0;
 LABEL_42:
@@ -64,8 +64,8 @@ LABEL_42:
     }
 
     interfaceName = self->_interfaceName;
-    v12 = [v7 interfaceName];
-    if (interfaceName != v12)
+    interfaceName = [v7 interfaceName];
+    if (interfaceName != interfaceName)
     {
       if (!self->_interfaceName || ([v7 interfaceName], (v13 = objc_claimAutoreleasedReturnValue()) == 0))
       {
@@ -75,8 +75,8 @@ LABEL_42:
 
       v3 = v13;
       v14 = self->_interfaceName;
-      v4 = [v7 interfaceName];
-      if (![(NSString *)v14 isEqual:v4])
+      interfaceName2 = [v7 interfaceName];
+      if (![(NSString *)v14 isEqual:interfaceName2])
       {
         v15 = 0;
 LABEL_40:
@@ -98,15 +98,15 @@ LABEL_40:
           if (queuePriority == [v7 queuePriority])
           {
             wifiNetworkSharingAccessoryID = self->_wifiNetworkSharingAccessoryID;
-            v47 = [v7 wifiNetworkSharingAccessoryID];
-            if (wifiNetworkSharingAccessoryID == v47)
+            wifiNetworkSharingAccessoryID = [v7 wifiNetworkSharingAccessoryID];
+            if (wifiNetworkSharingAccessoryID == wifiNetworkSharingAccessoryID)
             {
               v46 = wifiNetworkSharingAccessoryID;
 LABEL_24:
               wifiNetworkSharingNetworkListUpdateEventPredicateData = self->_wifiNetworkSharingNetworkListUpdateEventPredicateData;
-              v26 = [v7 wifiNetworkSharingNetworkListUpdateEventPredicateData];
-              v45 = v26;
-              if (wifiNetworkSharingNetworkListUpdateEventPredicateData != v26)
+              wifiNetworkSharingNetworkListUpdateEventPredicateData = [v7 wifiNetworkSharingNetworkListUpdateEventPredicateData];
+              v45 = wifiNetworkSharingNetworkListUpdateEventPredicateData;
+              if (wifiNetworkSharingNetworkListUpdateEventPredicateData != wifiNetworkSharingNetworkListUpdateEventPredicateData)
               {
                 if (!self->_wifiNetworkSharingNetworkListUpdateEventPredicateData)
                 {
@@ -115,19 +115,19 @@ LABEL_49:
                   goto LABEL_50;
                 }
 
-                v27 = [v7 wifiNetworkSharingNetworkListUpdateEventPredicateData];
-                if (!v27)
+                wifiNetworkSharingNetworkListUpdateEventPredicateData2 = [v7 wifiNetworkSharingNetworkListUpdateEventPredicateData];
+                if (!wifiNetworkSharingNetworkListUpdateEventPredicateData2)
                 {
                   v15 = 0;
                   goto LABEL_46;
                 }
 
-                v42 = v27;
+                v42 = wifiNetworkSharingNetworkListUpdateEventPredicateData2;
                 v28 = self->_wifiNetworkSharingNetworkListUpdateEventPredicateData;
-                v29 = [v7 wifiNetworkSharingNetworkListUpdateEventPredicateData];
+                wifiNetworkSharingNetworkListUpdateEventPredicateData3 = [v7 wifiNetworkSharingNetworkListUpdateEventPredicateData];
                 v30 = v28;
-                v31 = v29;
-                if (([(NSData *)v30 isEqual:v29]& 1) == 0)
+                v31 = wifiNetworkSharingNetworkListUpdateEventPredicateData3;
+                if (([(NSData *)v30 isEqual:wifiNetworkSharingNetworkListUpdateEventPredicateData3]& 1) == 0)
                 {
 
                   v15 = 0;
@@ -138,17 +138,17 @@ LABEL_49:
               }
 
               wifiNetworkSharingBundleIDOverride = self->_wifiNetworkSharingBundleIDOverride;
-              v33 = [v7 wifiNetworkSharingBundleIDOverride];
-              v15 = wifiNetworkSharingBundleIDOverride == v33;
+              wifiNetworkSharingBundleIDOverride = [v7 wifiNetworkSharingBundleIDOverride];
+              v15 = wifiNetworkSharingBundleIDOverride == wifiNetworkSharingBundleIDOverride;
               if (v15 || !self->_wifiNetworkSharingBundleIDOverride)
               {
 
-                v26 = v45;
+                wifiNetworkSharingNetworkListUpdateEventPredicateData = v45;
                 if (wifiNetworkSharingNetworkListUpdateEventPredicateData == v45)
                 {
 LABEL_50:
                   v38 = v43;
-                  v24 = v47;
+                  v24 = wifiNetworkSharingAccessoryID;
 
 LABEL_51:
                   if (v46 != v24)
@@ -160,7 +160,7 @@ LABEL_56:
 LABEL_57:
 
 LABEL_39:
-                  if (interfaceName != v12)
+                  if (interfaceName != interfaceName)
                   {
                     goto LABEL_40;
                   }
@@ -173,22 +173,22 @@ LABEL_41:
 
               else
               {
-                v40 = v33;
-                v34 = [v7 wifiNetworkSharingBundleIDOverride];
-                if (v34)
+                v40 = wifiNetworkSharingBundleIDOverride;
+                wifiNetworkSharingBundleIDOverride2 = [v7 wifiNetworkSharingBundleIDOverride];
+                if (wifiNetworkSharingBundleIDOverride2)
                 {
                   v35 = self->_wifiNetworkSharingBundleIDOverride;
-                  v39 = v34;
-                  v36 = [v7 wifiNetworkSharingBundleIDOverride];
-                  v15 = [(NSString *)v35 isEqual:v36];
+                  v39 = wifiNetworkSharingBundleIDOverride2;
+                  wifiNetworkSharingBundleIDOverride3 = [v7 wifiNetworkSharingBundleIDOverride];
+                  v15 = [(NSString *)v35 isEqual:wifiNetworkSharingBundleIDOverride3];
 
                   if (wifiNetworkSharingNetworkListUpdateEventPredicateData != v45)
                   {
                   }
 
 LABEL_54:
-                  v24 = v47;
-                  if (v46 != v47)
+                  v24 = wifiNetworkSharingAccessoryID;
+                  if (v46 != wifiNetworkSharingAccessoryID)
                   {
 
                     goto LABEL_56;
@@ -197,7 +197,7 @@ LABEL_54:
                   goto LABEL_57;
                 }
 
-                v26 = v45;
+                wifiNetworkSharingNetworkListUpdateEventPredicateData = v45;
                 if (wifiNetworkSharingNetworkListUpdateEventPredicateData == v45)
                 {
                   goto LABEL_49;
@@ -206,7 +206,7 @@ LABEL_54:
 
 LABEL_46:
               v38 = v43;
-              v24 = v47;
+              v24 = wifiNetworkSharingAccessoryID;
 
               goto LABEL_51;
             }
@@ -214,17 +214,17 @@ LABEL_46:
             if (!self->_wifiNetworkSharingAccessoryID || ([v7 wifiNetworkSharingAccessoryID], (v21 = objc_claimAutoreleasedReturnValue()) == 0))
             {
               v15 = 0;
-              v24 = v47;
+              v24 = wifiNetworkSharingAccessoryID;
               goto LABEL_57;
             }
 
             v46 = wifiNetworkSharingAccessoryID;
             v44 = v21;
             v22 = self->_wifiNetworkSharingAccessoryID;
-            v23 = [v7 wifiNetworkSharingAccessoryID];
-            if (([(NSString *)v22 isEqual:v23]& 1) != 0)
+            wifiNetworkSharingAccessoryID2 = [v7 wifiNetworkSharingAccessoryID];
+            if (([(NSString *)v22 isEqual:wifiNetworkSharingAccessoryID2]& 1) != 0)
             {
-              v43 = v23;
+              v43 = wifiNetworkSharingAccessoryID2;
               goto LABEL_24;
             }
           }
@@ -242,18 +242,18 @@ LABEL_44:
   return v15;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CWFRequestParameters *)self isEqualToRequestParameters:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CWFRequestParameters *)self isEqualToRequestParameters:v5];
   }
 
   return v6;
@@ -269,7 +269,7 @@ LABEL_44:
   return v7 ^ [(NSString *)self->_wifiNetworkSharingBundleIDOverride hash];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[CWFRequestParameters allocWithZone:?]];
   [(CWFRequestParameters *)v4 setUUID:self->_UUID];
@@ -284,54 +284,54 @@ LABEL_44:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   UUID = self->_UUID;
-  v6 = a3;
-  [v6 encodeObject:UUID forKey:@"_UUID"];
-  [v6 encodeObject:self->_interfaceName forKey:@"_interfaceName"];
+  coderCopy = coder;
+  [coderCopy encodeObject:UUID forKey:@"_UUID"];
+  [coderCopy encodeObject:self->_interfaceName forKey:@"_interfaceName"];
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_timeout];
-  [v6 encodeObject:v5 forKey:@"_timeout"];
+  [coderCopy encodeObject:v5 forKey:@"_timeout"];
 
-  [v6 encodeInteger:self->_qualityOfService forKey:@"_qualityOfService"];
-  [v6 encodeInteger:self->_queuePriority forKey:@"_queuePriority"];
-  [v6 encodeInteger:self->_virtualInterfaceRole forKey:@"_virtualInterfaceRole"];
-  [v6 encodeObject:self->_wifiNetworkSharingAccessoryID forKey:@"_wifiNetworkSharingAccessoryID"];
-  [v6 encodeObject:self->_wifiNetworkSharingNetworkListUpdateEventPredicateData forKey:@"_wifiNetworkSharingNetworkListUpdateEventPredicateData"];
-  [v6 encodeObject:self->_wifiNetworkSharingBundleIDOverride forKey:@"_wifiNetworkSharingBundleIDOverride"];
+  [coderCopy encodeInteger:self->_qualityOfService forKey:@"_qualityOfService"];
+  [coderCopy encodeInteger:self->_queuePriority forKey:@"_queuePriority"];
+  [coderCopy encodeInteger:self->_virtualInterfaceRole forKey:@"_virtualInterfaceRole"];
+  [coderCopy encodeObject:self->_wifiNetworkSharingAccessoryID forKey:@"_wifiNetworkSharingAccessoryID"];
+  [coderCopy encodeObject:self->_wifiNetworkSharingNetworkListUpdateEventPredicateData forKey:@"_wifiNetworkSharingNetworkListUpdateEventPredicateData"];
+  [coderCopy encodeObject:self->_wifiNetworkSharingBundleIDOverride forKey:@"_wifiNetworkSharingBundleIDOverride"];
 }
 
-- (CWFRequestParameters)initWithCoder:(id)a3
+- (CWFRequestParameters)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v18.receiver = self;
   v18.super_class = CWFRequestParameters;
   v5 = [(CWFRequestParameters *)&v18 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_UUID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_UUID"];
     UUID = v5->_UUID;
     v5->_UUID = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_interfaceName"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_interfaceName"];
     interfaceName = v5->_interfaceName;
     v5->_interfaceName = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_timeout"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_timeout"];
     v5->_timeout = [v10 unsignedLongLongValue];
 
-    v5->_qualityOfService = [v4 decodeIntegerForKey:@"_qualityOfService"];
-    v5->_queuePriority = [v4 decodeIntegerForKey:@"_queuePriority"];
-    v5->_virtualInterfaceRole = [v4 decodeIntegerForKey:@"_virtualInterfaceRole"];
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_wifiNetworkSharingAccessoryID"];
+    v5->_qualityOfService = [coderCopy decodeIntegerForKey:@"_qualityOfService"];
+    v5->_queuePriority = [coderCopy decodeIntegerForKey:@"_queuePriority"];
+    v5->_virtualInterfaceRole = [coderCopy decodeIntegerForKey:@"_virtualInterfaceRole"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_wifiNetworkSharingAccessoryID"];
     wifiNetworkSharingAccessoryID = v5->_wifiNetworkSharingAccessoryID;
     v5->_wifiNetworkSharingAccessoryID = v11;
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_wifiNetworkSharingNetworkListUpdateEventPredicateData"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_wifiNetworkSharingNetworkListUpdateEventPredicateData"];
     wifiNetworkSharingNetworkListUpdateEventPredicateData = v5->_wifiNetworkSharingNetworkListUpdateEventPredicateData;
     v5->_wifiNetworkSharingNetworkListUpdateEventPredicateData = v13;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_wifiNetworkSharingBundleIDOverride"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_wifiNetworkSharingBundleIDOverride"];
     wifiNetworkSharingBundleIDOverride = v5->_wifiNetworkSharingBundleIDOverride;
     v5->_wifiNetworkSharingBundleIDOverride = v15;
   }

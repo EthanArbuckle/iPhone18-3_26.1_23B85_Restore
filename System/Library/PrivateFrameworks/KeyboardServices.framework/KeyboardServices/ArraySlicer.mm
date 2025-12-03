@@ -1,5 +1,5 @@
 @interface ArraySlicer
-- (ArraySlicer)initWithArray:(id)a3 sliceSize:(unint64_t)a4;
+- (ArraySlicer)initWithArray:(id)array sliceSize:(unint64_t)size;
 - (id)consumed;
 - (id)nextSlice;
 - (id)unconsumed;
@@ -7,18 +7,18 @@
 
 @implementation ArraySlicer
 
-- (ArraySlicer)initWithArray:(id)a3 sliceSize:(unint64_t)a4
+- (ArraySlicer)initWithArray:(id)array sliceSize:(unint64_t)size
 {
-  v7 = a3;
+  arrayCopy = array;
   v12.receiver = self;
   v12.super_class = ArraySlicer;
   v8 = [(ArraySlicer *)&v12 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_array, a3);
-    v10 = [v7 count];
-    v9->_sliceSize = a4;
+    objc_storeStrong(&v8->_array, array);
+    v10 = [arrayCopy count];
+    v9->_sliceSize = size;
     v9->_count = v10;
   }
 
@@ -76,15 +76,15 @@
   offset = self->_offset;
   if (count <= offset)
   {
-    v4 = 0;
+    offset = 0;
   }
 
   else
   {
-    v4 = [[ArraySlice alloc] initWithArray:self->_array offset:self->_offset count:count - offset];
+    offset = [[ArraySlice alloc] initWithArray:self->_array offset:self->_offset count:count - offset];
   }
 
-  return v4;
+  return offset;
 }
 
 @end

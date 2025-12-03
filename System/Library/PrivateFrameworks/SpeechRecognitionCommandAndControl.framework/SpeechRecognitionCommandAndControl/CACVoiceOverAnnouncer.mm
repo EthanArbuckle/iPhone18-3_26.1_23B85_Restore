@@ -1,8 +1,8 @@
 @interface CACVoiceOverAnnouncer
 - (CACVoiceOverAnnouncer)init;
 - (void)_dequeueNextAnnouncement;
-- (void)_didFinishAnnouncement:(id)a3;
-- (void)announceMessage:(id)a3 type:(int64_t)a4 completion:(id)a5;
+- (void)_didFinishAnnouncement:(id)announcement;
+- (void)announceMessage:(id)message type:(int64_t)type completion:(id)completion;
 - (void)prepareForImmediateAnnouncement;
 @end
 
@@ -15,36 +15,36 @@
   v2 = [(CACVoiceOverAnnouncer *)&v9 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     voiceOverAnnouncementQueue = v2->_voiceOverAnnouncementQueue;
-    v2->_voiceOverAnnouncementQueue = v3;
+    v2->_voiceOverAnnouncementQueue = array;
 
     v5 = dispatch_queue_create("CACVoiceOverAnnouncer", 0);
     announcerQueue = v2->_announcerQueue;
     v2->_announcerQueue = v5;
 
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v7 addObserver:v2 selector:sel__didFinishAnnouncement_ name:*MEMORY[0x277D76420] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__didFinishAnnouncement_ name:*MEMORY[0x277D76420] object:0];
   }
 
   return v2;
 }
 
-- (void)announceMessage:(id)a3 type:(int64_t)a4 completion:(id)a5
+- (void)announceMessage:(id)message type:(int64_t)type completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  messageCopy = message;
+  completionCopy = completion;
   announcerQueue = self->_announcerQueue;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __57__CACVoiceOverAnnouncer_announceMessage_type_completion___block_invoke;
   v13[3] = &unk_279CEC1D0;
-  v16 = v9;
-  v17 = a4;
-  v14 = v8;
-  v15 = self;
-  v11 = v9;
-  v12 = v8;
+  v16 = completionCopy;
+  typeCopy = type;
+  v14 = messageCopy;
+  selfCopy = self;
+  v11 = completionCopy;
+  v12 = messageCopy;
   dispatch_async(announcerQueue, v13);
 }
 
@@ -83,36 +83,36 @@ void __56__CACVoiceOverAnnouncer_prepareForImmediateAnnouncement__block_invoke(u
 {
   [(CACVoiceOverAnnouncer *)self setCurrentAnnouncement:0];
   [(CACVoiceOverAnnouncer *)self setShouldInterruptCurrentAnnouncement:0];
-  v3 = [(CACVoiceOverAnnouncer *)self voiceOverAnnouncementQueue];
-  v4 = [v3 count];
+  voiceOverAnnouncementQueue = [(CACVoiceOverAnnouncer *)self voiceOverAnnouncementQueue];
+  v4 = [voiceOverAnnouncementQueue count];
 
   if (v4)
   {
-    v5 = [(CACVoiceOverAnnouncer *)self voiceOverAnnouncementQueue];
-    v8 = [v5 firstObject];
+    voiceOverAnnouncementQueue2 = [(CACVoiceOverAnnouncer *)self voiceOverAnnouncementQueue];
+    firstObject = [voiceOverAnnouncementQueue2 firstObject];
 
-    v6 = [(CACVoiceOverAnnouncer *)self voiceOverAnnouncementQueue];
-    [v6 removeObjectAtIndex:0];
+    voiceOverAnnouncementQueue3 = [(CACVoiceOverAnnouncer *)self voiceOverAnnouncementQueue];
+    [voiceOverAnnouncementQueue3 removeObjectAtIndex:0];
 
-    LODWORD(v6) = *MEMORY[0x277D76438];
-    v7 = [v8 message];
-    UIAccessibilityPostNotification(v6, v7);
+    LODWORD(voiceOverAnnouncementQueue3) = *MEMORY[0x277D76438];
+    message = [firstObject message];
+    UIAccessibilityPostNotification(voiceOverAnnouncementQueue3, message);
 
-    [(CACVoiceOverAnnouncer *)self setCurrentAnnouncement:v8];
+    [(CACVoiceOverAnnouncer *)self setCurrentAnnouncement:firstObject];
   }
 }
 
-- (void)_didFinishAnnouncement:(id)a3
+- (void)_didFinishAnnouncement:(id)announcement
 {
-  v4 = a3;
+  announcementCopy = announcement;
   announcerQueue = self->_announcerQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __48__CACVoiceOverAnnouncer__didFinishAnnouncement___block_invoke;
   v7[3] = &unk_279CEB4C0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = announcementCopy;
+  selfCopy = self;
+  v6 = announcementCopy;
   dispatch_async(announcerQueue, v7);
 }
 

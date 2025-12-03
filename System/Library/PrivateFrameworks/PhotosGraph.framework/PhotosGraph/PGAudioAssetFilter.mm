@@ -1,18 +1,18 @@
 @interface PGAudioAssetFilter
-- (BOOL)isEqual:(id)a3;
-- (BOOL)passesWithAsset:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)passesWithAsset:(id)asset;
 - (NSString)description;
-- (PGAudioAssetFilter)initWithAudioClassifications:(id)a3;
-- (PGAudioAssetFilter)initWithCoder:(id)a3;
-- (id)filteredAssetsFromAssets:(id)a3;
+- (PGAudioAssetFilter)initWithAudioClassifications:(id)classifications;
+- (PGAudioAssetFilter)initWithCoder:(id)coder;
+- (id)filteredAssetsFromAssets:(id)assets;
 @end
 
 @implementation PGAudioAssetFilter
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -23,8 +23,8 @@
     if (objc_opt_isKindOfClass())
     {
       audioClassifications = self->_audioClassifications;
-      v6 = [(PGAudioAssetFilter *)v4 audioClassifications];
-      v7 = [(NSIndexSet *)audioClassifications isEqualToIndexSet:v6];
+      audioClassifications = [(PGAudioAssetFilter *)equalCopy audioClassifications];
+      v7 = [(NSIndexSet *)audioClassifications isEqualToIndexSet:audioClassifications];
     }
 
     else
@@ -49,22 +49,22 @@
   return v5;
 }
 
-- (PGAudioAssetFilter)initWithCoder:(id)a3
+- (PGAudioAssetFilter)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"audioClassifications"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"audioClassifications"];
 
   v6 = [(PGAudioAssetFilter *)self initWithAudioClassifications:v5];
   return v6;
 }
 
-- (BOOL)passesWithAsset:(id)a3
+- (BOOL)passesWithAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   if ([(NSIndexSet *)self->_audioClassifications count])
   {
-    v5 = [v4 clsInterestingAudioClassifications];
-    if (v5)
+    clsInterestingAudioClassifications = [assetCopy clsInterestingAudioClassifications];
+    if (clsInterestingAudioClassifications)
     {
       v11 = 0;
       v12 = &v11;
@@ -75,7 +75,7 @@
       v9[1] = 3221225472;
       v9[2] = __38__PGAudioAssetFilter_passesWithAsset___block_invoke;
       v9[3] = &unk_2788824E0;
-      v10 = v5;
+      v10 = clsInterestingAudioClassifications;
       v9[4] = &v11;
       [(NSIndexSet *)audioClassifications enumerateIndexesUsingBlock:v9];
       v7 = *(v12 + 24);
@@ -107,16 +107,16 @@ uint64_t __38__PGAudioAssetFilter_passesWithAsset___block_invoke(uint64_t result
   return result;
 }
 
-- (id)filteredAssetsFromAssets:(id)a3
+- (id)filteredAssetsFromAssets:(id)assets
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  assetsCopy = assets;
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = assetsCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -149,16 +149,16 @@ uint64_t __38__PGAudioAssetFilter_passesWithAsset___block_invoke(uint64_t result
   return v5;
 }
 
-- (PGAudioAssetFilter)initWithAudioClassifications:(id)a3
+- (PGAudioAssetFilter)initWithAudioClassifications:(id)classifications
 {
-  v5 = a3;
+  classificationsCopy = classifications;
   v9.receiver = self;
   v9.super_class = PGAudioAssetFilter;
   v6 = [(PGAudioAssetFilter *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_audioClassifications, a3);
+    objc_storeStrong(&v6->_audioClassifications, classifications);
   }
 
   return v7;

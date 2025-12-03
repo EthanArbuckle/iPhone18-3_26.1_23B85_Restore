@@ -1,9 +1,9 @@
 @interface KNAnimParameterGroup
-+ (id)parameterGroupForFile:(id)a3;
-- (KNAnimParameterGroup)initWithFileName:(id)a3;
-- (double)valueForAnimationCurve:(id)a3 atPercent:(double)a4;
-- (double)valueForConstant:(id)a3;
-- (id)mediaTimingFunctionForAnimationCurve:(id)a3;
++ (id)parameterGroupForFile:(id)file;
+- (KNAnimParameterGroup)initWithFileName:(id)name;
+- (double)valueForAnimationCurve:(id)curve atPercent:(double)percent;
+- (double)valueForConstant:(id)constant;
+- (id)mediaTimingFunctionForAnimationCurve:(id)curve;
 - (void)dealloc;
 - (void)readAnimationCurvesFromFile;
 - (void)resetAnimationCurvesFromBundle;
@@ -12,7 +12,7 @@
 
 @implementation KNAnimParameterGroup
 
-+ (id)parameterGroupForFile:(id)a3
++ (id)parameterGroupForFile:(id)file
 {
   v4 = qword_567928;
   if (!qword_567928)
@@ -21,17 +21,17 @@
     qword_567928 = v4;
   }
 
-  v5 = [v4 objectForKey:a3];
+  v5 = [v4 objectForKey:file];
   if (!v5)
   {
-    v5 = [[KNAnimParameterGroup alloc] initWithFileName:a3];
-    [qword_567928 setObject:v5 forKey:a3];
+    v5 = [[KNAnimParameterGroup alloc] initWithFileName:file];
+    [qword_567928 setObject:v5 forKey:file];
   }
 
   return v5;
 }
 
-- (double)valueForConstant:(id)a3
+- (double)valueForConstant:(id)constant
 {
   v4 = [(NSMutableDictionary *)self->_parametersDict objectForKeyedSubscript:?];
   if (!v4)
@@ -58,19 +58,19 @@
   return result;
 }
 
-- (double)valueForAnimationCurve:(id)a3 atPercent:(double)a4
+- (double)valueForAnimationCurve:(id)curve atPercent:(double)percent
 {
-  if (a4 < 0.0)
+  if (percent < 0.0)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  if (a4 > 1.0)
+  if (percent > 1.0)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  v7 = [(NSMutableDictionary *)self->_parametersDict objectForKeyedSubscript:a3];
+  v7 = [(NSMutableDictionary *)self->_parametersDict objectForKeyedSubscript:curve];
   if (!v7)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
@@ -84,11 +84,11 @@
     return 0.0;
   }
 
-  [v8 yValueFromXValue:a4];
+  [v8 yValueFromXValue:percent];
   return result;
 }
 
-- (id)mediaTimingFunctionForAnimationCurve:(id)a3
+- (id)mediaTimingFunctionForAnimationCurve:(id)curve
 {
   v4 = [(NSMutableDictionary *)self->_parametersDict objectForKeyedSubscript:?];
   if (!v4)
@@ -148,21 +148,21 @@
   return [CAMediaTimingFunction functionWithControlPoints:v10];
 }
 
-- (KNAnimParameterGroup)initWithFileName:(id)a3
+- (KNAnimParameterGroup)initWithFileName:(id)name
 {
   v6.receiver = self;
   v6.super_class = KNAnimParameterGroup;
   v4 = [(KNAnimParameterGroup *)&v6 init];
   if (v4)
   {
-    if (!a3)
+    if (!name)
     {
       [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
     }
 
-    v4->_fileName = a3;
-    v4->_originalFileName = a3;
-    v4->_name = [objc_msgSend(a3 "lastPathComponent")];
+    v4->_fileName = name;
+    v4->_originalFileName = name;
+    v4->_name = [objc_msgSend(name "lastPathComponent")];
     [(KNAnimParameterGroup *)v4 readAnimationCurvesFromFile];
   }
 

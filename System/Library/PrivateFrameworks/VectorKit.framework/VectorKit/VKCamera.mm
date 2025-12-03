@@ -1,10 +1,10 @@
 @interface VKCamera
 - ($7C969B71DD53AF2675E9F7E8E727D903)frustum;
-- (CGPoint)screenPointFromGroundPoint:(const void *)a3;
+- (CGPoint)screenPointFromGroundPoint:(const void *)point;
 - (CameraFrame<geo::Radians,)cameraFrame:(VKCamera *)self;
 - (Matrix<double,)forwardVector;
 - (Matrix<double,)groundPlaneIntersectionPoint;
-- (Matrix<double,)groundPlaneIntersectionPoint:(const void *)a3 transform:(const void *)a4;
+- (Matrix<double,)groundPlaneIntersectionPoint:(const void *)point transform:(const void *)transform;
 - (Matrix<double,)groundPoint;
 - (Matrix<double,)rightVector;
 - (Matrix<double,)upVector;
@@ -12,34 +12,34 @@
 - (NSString)description;
 - (Unit<geo::RadianUnitDescription,)horizontalFieldOfView;
 - (Unit<geo::RadianUnitDescription,)verticalFieldOfView;
-- (VKCamera)initWithRunLoopController:(RunLoopController *)a3;
+- (VKCamera)initWithRunLoopController:(RunLoopController *)controller;
 - (VKCameraState)cameraState;
 - (VKFootprint)footprint;
 - (VKViewVolume)viewVolume;
-- (View<double>)view:(SEL)a3;
+- (View<double>)view:(SEL)view;
 - (double)displayZoomLevel;
 - (double)pitch;
 - (double)yaw;
-- (float)zoomAtPoint:(CGPoint)a3;
+- (float)zoomAtPoint:(CGPoint)point;
 - (id).cxx_construct;
 - (id)descriptionDictionaryRepresentation;
 - (optional<double>)maxDistanceToGroundRestriction;
 - (optional<double>)minDistanceToGroundRestriction;
 - (optional<gm::Matrix<double,)groundPointFromScreenPoint:(1>> *__return_ptr)retstr atGroundLevel:(VKCamera *)self;
-- (void)_setPosition:(const void *)a3;
+- (void)_setPosition:(const void *)position;
 - (void)adjustClipPlanes;
-- (void)setAspectRatio:(double)a3;
-- (void)setCameraState:(VKCameraState *)a3;
-- (void)setFarClipDistance:(double)a3;
-- (void)setHorizontalOffset:(double)a3;
-- (void)setMercatorPosition:(const void *)a3;
-- (void)setNearClipDistance:(double)a3;
+- (void)setAspectRatio:(double)ratio;
+- (void)setCameraState:(VKCameraState *)state;
+- (void)setFarClipDistance:(double)distance;
+- (void)setHorizontalOffset:(double)offset;
+- (void)setMercatorPosition:(const void *)position;
+- (void)setNearClipDistance:(double)distance;
 - (void)setNeedsUpdate;
-- (void)setOrientation:(const void *)a3;
-- (void)setPosition:(const void *)a3;
-- (void)setTransform:(const void *)a3;
-- (void)setVerticalFieldOfView:()Unit<geo:(double>)a3 :RadianUnitDescription;
-- (void)updateCamera:(shared_ptr<gdc:()CameraFrame<geo:(double> *)a4 :(function<BOOL)(std:()geo:(double>)& :()geo:(double>)& :Unit<geo::MeterUnitDescription Unit<geo::MeterUnitDescription :shared_ptr<gdc::Camera> Radians :Camera>)a3 cameraFrame:withAdjustment:;
+- (void)setOrientation:(const void *)orientation;
+- (void)setPosition:(const void *)position;
+- (void)setTransform:(const void *)transform;
+- (void)setVerticalFieldOfView:()Unit<geo:(double>)geo :RadianUnitDescription;
+- (void)updateCamera:(shared_ptr<gdc:()CameraFrame<geo:(double> *)geo :(function<BOOL)(std:()geo:(double>)& :()geo:(double>)& :Unit<geo::MeterUnitDescription Unit<geo::MeterUnitDescription :shared_ptr<gdc::Camera> Radians :Camera>)a3 cameraFrame:withAdjustment:;
 - (void)updateCamera:(shared_ptr<gdc:(function<BOOL)(std:()geo:(double>)& :()geo:(double>)& :Unit<geo::MeterUnitDescription Unit<geo::MeterUnitDescription :shared_ptr<gdc::Camera> :Camera>)a3 withAdjustment:;
 - (void)updateIfNeeded;
 @end
@@ -689,7 +689,7 @@
   }
 }
 
-- (void)updateCamera:(shared_ptr<gdc:()CameraFrame<geo:(double> *)a4 :(function<BOOL)(std:()geo:(double>)& :()geo:(double>)& :Unit<geo::MeterUnitDescription Unit<geo::MeterUnitDescription :shared_ptr<gdc::Camera> Radians :Camera>)a3 cameraFrame:withAdjustment:
+- (void)updateCamera:(shared_ptr<gdc:()CameraFrame<geo:(double> *)geo :(function<BOOL)(std:()geo:(double>)& :()geo:(double>)& :Unit<geo::MeterUnitDescription Unit<geo::MeterUnitDescription :shared_ptr<gdc::Camera> Radians :Camera>)a3 cameraFrame:withAdjustment:
 {
   cntrl = a3.__cntrl_;
   ptr = a3.__ptr_;
@@ -707,9 +707,9 @@
   [(VKCamera *)self verticalFieldOfView];
   gdc::Camera::setVerticalFieldOfView(v19, &v37);
   v20 = +[VKDebugSettings sharedSettings];
-  v21 = [v20 shouldFreezeLayoutCamera];
+  shouldFreezeLayoutCamera = [v20 shouldFreezeLayoutCamera];
 
-  if (v21)
+  if (shouldFreezeLayoutCamera)
   {
     [(VKCamera *)self setNearClipDistance:0.000000124766011];
     [(VKCamera *)self maxHeight];
@@ -718,7 +718,7 @@
 
   else
   {
-    value = a4->_distanceFromTarget._value;
+    value = geo->_distanceFromTarget._value;
     if (value != 0.0)
     {
       v23 = *ptr;
@@ -730,7 +730,7 @@
       if (v24)
       {
         atomic_fetch_add_explicit(&v24->__shared_owners_, 1uLL, memory_order_relaxed);
-        value = a4->_distanceFromTarget._value;
+        value = geo->_distanceFromTarget._value;
         if (value == 0.0)
         {
           v33 = std::__throw_bad_function_call[abi:nn200100]();
@@ -812,7 +812,7 @@
   return result;
 }
 
-- (View<double>)view:(SEL)a3
+- (View<double>)view:(SEL)view
 {
   v12 = a4;
   near = self->_near;
@@ -824,12 +824,12 @@
   return memcpy(&retstr->var1, v11, 0x198uLL);
 }
 
-- (float)zoomAtPoint:(CGPoint)a3
+- (float)zoomAtPoint:(CGPoint)point
 {
   v16 = self->_transform._translation._e[2];
   v15 = *self->_transform._translation._e;
   forward = self->_forward;
-  [(VKCamera *)self groundPointFromScreenPoint:a3.x, a3.y];
+  [(VKCamera *)self groundPointFromScreenPoint:point.x, point.y];
   if (v13[24])
   {
     for (i = 0; i != 24; i += 8)
@@ -860,9 +860,9 @@
   return *&v8;
 }
 
-- (CGPoint)screenPointFromGroundPoint:(const void *)a3
+- (CGPoint)screenPointFromGroundPoint:(const void *)point
 {
-  v14 = *a3;
+  v14 = *point;
   v4 = *&v14;
   v5 = *&v14 + -1.0;
   v6 = *&v14 + 1.0;
@@ -960,12 +960,12 @@
   return result;
 }
 
-- (Matrix<double,)groundPlaneIntersectionPoint:(const void *)a3 transform:(const void *)a4
+- (Matrix<double,)groundPlaneIntersectionPoint:(const void *)point transform:(const void *)transform
 {
   v21[0] = 0;
   v21[1] = 0;
   v21[2] = 0x3FF0000000000000;
-  v5 = gm::Matrix<double,3,1>::normalized<int,void>(a3);
+  v5 = gm::Matrix<double,3,1>::normalized<int,void>(point);
   v6 = 0;
   *v20 = v5;
   v20[1] = v7;
@@ -987,7 +987,7 @@
   v11 = 0.0;
   do
   {
-    v11 = v11 + *(a4 + v10 * 8) * *&v21[v10];
+    v11 = v11 + *(transform + v10 * 8) * *&v21[v10];
     ++v10;
   }
 
@@ -1005,7 +1005,7 @@
     v19 = v23;
     do
     {
-      *(&v22 + v17) = *(&v18 + v17) + *(a4 + v17);
+      *(&v22 + v17) = *(&v18 + v17) + *(transform + v17);
       v17 += 8;
     }
 
@@ -1029,9 +1029,9 @@ LABEL_7:
   return result;
 }
 
-- (void)setCameraState:(VKCameraState *)a3
+- (void)setCameraState:(VKCameraState *)state
 {
-  p_rotation = &a3->var0._rotation;
+  p_rotation = &state->var0._rotation;
   for (i = 42; i != 45; ++i)
   {
     v5 = p_rotation->_imaginary._e[0];
@@ -1039,20 +1039,20 @@ LABEL_7:
     *(&self->super.isa + i) = v5;
   }
 
-  self->_transform._rotation._scalar = a3->var0._rotation._scalar;
+  self->_transform._rotation._scalar = state->var0._rotation._scalar;
   v6 = 39;
-  v7 = a3;
+  stateCopy = state;
   do
   {
-    v8 = v7->var0._translation._e[0];
-    v7 = (v7 + 8);
+    v8 = stateCopy->var0._translation._e[0];
+    stateCopy = (stateCopy + 8);
     *(&self->super.isa + v6++) = v8;
   }
 
   while (v6 != 42);
-  self->_aspectRatio = a3->var1;
-  self->_verticalFieldOfView._value = a3->var2._value;
-  self->_horizontalOffset = a3->var3;
+  self->_aspectRatio = state->var1;
+  self->_verticalFieldOfView._value = state->var2._value;
+  self->_horizontalOffset = state->var3;
   [(VKCamera *)self setNeedsUpdate];
 }
 
@@ -1068,21 +1068,21 @@ LABEL_7:
   return result;
 }
 
-- (void)setNearClipDistance:(double)a3
+- (void)setNearClipDistance:(double)distance
 {
   self->_needsUpdate = 1;
   self->_nearFarReset = 0;
-  self->_near = a3;
+  self->_near = distance;
 }
 
-- (void)setFarClipDistance:(double)a3
+- (void)setFarClipDistance:(double)distance
 {
   self->_needsUpdate = 1;
   self->_nearFarReset = 0;
-  self->_far = a3;
+  self->_far = distance;
 }
 
-- (void)setVerticalFieldOfView:()Unit<geo:(double>)a3 :RadianUnitDescription
+- (void)setVerticalFieldOfView:()Unit<geo:(double>)geo :RadianUnitDescription
 {
   v5 = *v3;
   if (*v3 != self->_verticalFieldOfView._value)
@@ -1094,30 +1094,30 @@ LABEL_7:
   }
 }
 
-- (void)setAspectRatio:(double)a3
+- (void)setAspectRatio:(double)ratio
 {
-  if (self->_aspectRatio != a3)
+  if (self->_aspectRatio != ratio)
   {
-    self->_aspectRatio = a3;
+    self->_aspectRatio = ratio;
     [(VKCamera *)self setNeedsUpdate];
   }
 }
 
-- (void)setOrientation:(const void *)a3
+- (void)setOrientation:(const void *)orientation
 {
-  v4 = *&self->_transform._rotation._imaginary._e[0] == *a3 && *&self->_transform._rotation._imaginary._e[1] == *(a3 + 1) && *&self->_transform._rotation._imaginary._e[2] == *(a3 + 2);
-  if (!v4 || self->_transform._rotation._scalar != *(a3 + 3))
+  v4 = *&self->_transform._rotation._imaginary._e[0] == *orientation && *&self->_transform._rotation._imaginary._e[1] == *(orientation + 1) && *&self->_transform._rotation._imaginary._e[2] == *(orientation + 2);
+  if (!v4 || self->_transform._rotation._scalar != *(orientation + 3))
   {
     v5 = 42;
-    v6 = a3;
+    orientationCopy = orientation;
     do
     {
-      v7 = *v6++;
+      v7 = *orientationCopy++;
       *(&self->super.isa + v5++) = v7;
     }
 
     while (v5 != 45);
-    self->_transform._rotation._scalar = *(a3 + 3);
+    self->_transform._rotation._scalar = *(orientation + 3);
     [(VKCamera *)self setNeedsUpdate];
   }
 }
@@ -1132,11 +1132,11 @@ LABEL_7:
   return result;
 }
 
-- (void)setTransform:(const void *)a3
+- (void)setTransform:(const void *)transform
 {
-  v3 = (a3 + 24);
-  v5 = *(a3 + 3) == *&self->_transform._rotation._imaginary._e[0] && *(a3 + 4) == *&self->_transform._rotation._imaginary._e[1] && *(a3 + 5) == *&self->_transform._rotation._imaginary._e[2];
-  if (!v5 || *(a3 + 6) != self->_transform._rotation._scalar || (*a3 == *&self->_transform._translation._e[0] ? (v6 = *(a3 + 1) == *&self->_transform._translation._e[1]) : (v6 = 0), v6 ? (v7 = *(a3 + 2) == *&self->_transform._translation._e[2]) : (v7 = 0), !v7))
+  v3 = (transform + 24);
+  v5 = *(transform + 3) == *&self->_transform._rotation._imaginary._e[0] && *(transform + 4) == *&self->_transform._rotation._imaginary._e[1] && *(transform + 5) == *&self->_transform._rotation._imaginary._e[2];
+  if (!v5 || *(transform + 6) != self->_transform._rotation._scalar || (*transform == *&self->_transform._translation._e[0] ? (v6 = *(transform + 1) == *&self->_transform._translation._e[1]) : (v6 = 0), v6 ? (v7 = *(transform + 2) == *&self->_transform._translation._e[2]) : (v7 = 0), !v7))
   {
     for (i = 42; i != 45; ++i)
     {
@@ -1144,11 +1144,11 @@ LABEL_7:
       *(&self->super.isa + i) = v9;
     }
 
-    self->_transform._rotation._scalar = *(a3 + 6);
+    self->_transform._rotation._scalar = *(transform + 6);
     for (j = 39; j != 42; ++j)
     {
-      v11 = *a3;
-      a3 = a3 + 8;
+      v11 = *transform;
+      transform = transform + 8;
       *(&self->super.isa + j) = v11;
     }
 
@@ -1156,17 +1156,17 @@ LABEL_7:
   }
 }
 
-- (void)setPosition:(const void *)a3
+- (void)setPosition:(const void *)position
 {
-  v13 = *a3;
-  v15 = *(a3 + 2);
+  v13 = *position;
+  v15 = *(position + 2);
   v3 = vdupq_n_s64(0x7FF8000000000000uLL);
-  if (*a3 == v3.i64[0] && *(a3 + 1) == v3.i64[1] && *(a3 + 2) == 0x7FF8000000000000)
+  if (*position == v3.i64[0] && *(position + 1) == v3.i64[1] && *(position + 2) == 0x7FF8000000000000)
   {
-    v11 = [MEMORY[0x1E69A2398] sharedPlatform];
-    v12 = [v11 isInternalInstall];
+    mEMORY[0x1E69A2398] = [MEMORY[0x1E69A2398] sharedPlatform];
+    isInternalInstall = [mEMORY[0x1E69A2398] isInternalInstall];
 
-    if (v12)
+    if (isInternalInstall)
     {
       NSLog(@"Attempt to set camera position set to NANs (%f, %f, %f)! Bailing", v13, *&v15);
     }
@@ -1218,9 +1218,9 @@ LABEL_7:
   return result;
 }
 
-- (void)setMercatorPosition:(const void *)a3
+- (void)setMercatorPosition:(const void *)position
 {
-  v5 = exp(*(a3 + 1) * 6.28318531 + -3.14159265);
+  v5 = exp(*(position + 1) * 6.28318531 + -3.14159265);
   v6 = atan(v5) * 2.0 + -1.57079633;
   v7 = cos(v6 + v6) * -559.82 + 111132.92;
   v8 = v7 + cos(v6 * 4.0) * 1.175;
@@ -1230,19 +1230,19 @@ LABEL_7:
   v12 = log(v11);
   v13 = tan(v10 + 0.789761487);
   v14 = log(v13);
-  v16 = *(a3 + 2);
-  v15 = *a3;
+  v16 = *(position + 2);
+  v15 = *position;
   v16 = fabs((v14 - v12) * 0.159154943) * v16 / v9;
   [(VKCamera *)self setPosition:&v15];
   [(VKCamera *)self setNeedsUpdate];
 }
 
-- (void)_setPosition:(const void *)a3
+- (void)_setPosition:(const void *)position
 {
   for (i = 39; i != 42; ++i)
   {
-    v4 = *a3;
-    a3 = a3 + 8;
+    v4 = *position;
+    position = position + 8;
     *(&self->super.isa + i) = v4;
   }
 
@@ -1355,7 +1355,7 @@ LABEL_7:
   return v5;
 }
 
-- (VKCamera)initWithRunLoopController:(RunLoopController *)a3
+- (VKCamera)initWithRunLoopController:(RunLoopController *)controller
 {
   v19.receiver = self;
   v19.super_class = VKCamera;
@@ -1363,7 +1363,7 @@ LABEL_7:
   v5 = v4;
   if (v4)
   {
-    v4->_runLoopController = a3;
+    v4->_runLoopController = controller;
     v6 = objc_alloc_init(VKViewVolume);
     viewVolume = v5->_viewVolume;
     v5->_viewVolume = v6;
@@ -1403,11 +1403,11 @@ LABEL_7:
   return v5;
 }
 
-- (void)setHorizontalOffset:(double)a3
+- (void)setHorizontalOffset:(double)offset
 {
-  if (self->_horizontalOffset != a3)
+  if (self->_horizontalOffset != offset)
   {
-    self->_horizontalOffset = a3;
+    self->_horizontalOffset = offset;
     [(VKCamera *)self setNeedsUpdate];
   }
 }

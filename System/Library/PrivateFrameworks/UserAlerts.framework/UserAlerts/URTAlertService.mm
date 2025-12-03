@@ -1,29 +1,29 @@
 @interface URTAlertService
-- (URTAlertService)initWithDomain:(id)a3;
+- (URTAlertService)initWithDomain:(id)domain;
 - (URTAlertServiceDelegate)delegate;
-- (id)_connectionQueue_alertConnectionForConnection:(id)a3;
-- (void)_connectionQueue_addConnection:(id)a3;
-- (void)_connectionQueue_dismissAlert:(id)a3 forConnection:(id)a4;
-- (void)_connectionQueue_presentAlert:(id)a3 preferringPresentationStyle:(int64_t)a4 forConnection:(id)a5;
-- (void)_connectionQueue_removeConnection:(id)a3;
-- (void)_performClientActionForAlert:(id)a3 clientAction:(id)a4;
+- (id)_connectionQueue_alertConnectionForConnection:(id)connection;
+- (void)_connectionQueue_addConnection:(id)connection;
+- (void)_connectionQueue_dismissAlert:(id)alert forConnection:(id)connection;
+- (void)_connectionQueue_presentAlert:(id)alert preferringPresentationStyle:(int64_t)style forConnection:(id)connection;
+- (void)_connectionQueue_removeConnection:(id)connection;
+- (void)_performClientActionForAlert:(id)alert clientAction:(id)action;
 - (void)invalidate;
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5;
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context;
 @end
 
 @implementation URTAlertService
 
-- (URTAlertService)initWithDomain:(id)a3
+- (URTAlertService)initWithDomain:(id)domain
 {
   v35 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  domainCopy = domain;
   v32.receiver = self;
   v32.super_class = URTAlertService;
   v6 = [(URTAlertService *)&v32 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_domain, a3);
+    objc_storeStrong(&v6->_domain, domain);
     v8 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:1];
     connections = v7->_connections;
     v7->_connections = v8;
@@ -32,7 +32,7 @@
     delegateProxy = v7->_delegateProxy;
     v7->_delegateProxy = v10;
 
-    v12 = [MEMORY[0x277CF0C18] serial];
+    serial = [MEMORY[0x277CF0C18] serial];
     v13 = BSDispatchQueueCreate();
     connectionQueue = v7->_connectionQueue;
     v7->_connectionQueue = v13;
@@ -42,7 +42,7 @@
     v27 = 3221225472;
     v28 = __34__URTAlertService_initWithDomain___block_invoke;
     v29 = &unk_279E0BD88;
-    v16 = v5;
+    v16 = domainCopy;
     v30 = v16;
     v17 = v7;
     v31 = v17;
@@ -82,31 +82,31 @@ void __34__URTAlertService_initWithDomain___block_invoke(uint64_t a1, void *a2)
 
 - (void)invalidate
 {
-  v3 = [(URTAlertService *)self domainActivationToken];
-  [v3 invalidate];
+  domainActivationToken = [(URTAlertService *)self domainActivationToken];
+  [domainActivationToken invalidate];
 
-  v4 = [(URTAlertService *)self listener];
-  [v4 invalidate];
+  listener = [(URTAlertService *)self listener];
+  [listener invalidate];
 }
 
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  connectionCopy = connection;
   v7 = URTLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
-    v8 = [v6 instance];
+    instance = [connectionCopy instance];
     *buf = 138412546;
-    v23 = v6;
+    v23 = connectionCopy;
     v24 = 2112;
-    v25 = v8;
+    v25 = instance;
     _os_log_impl(&dword_270835000, v7, OS_LOG_TYPE_INFO, "Received connection! %@, reason: %@", buf, 0x16u);
   }
 
-  v9 = [v6 remoteProcess];
+  remoteProcess = [connectionCopy remoteProcess];
   v10 = +[URTAlertServiceSpecification entitlementName];
-  v11 = [v9 valueForEntitlement:v10];
+  v11 = [remoteProcess valueForEntitlement:v10];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 && (-[URTAlertService domain](self, "domain"), v12 = objc_claimAutoreleasedReturnValue(), v13 = [v11 containsObject:v12], v12, (v13))
@@ -116,24 +116,24 @@ void __34__URTAlertService_initWithDomain___block_invoke(uint64_t a1, void *a2)
     v21[2] = __61__URTAlertService_listener_didReceiveConnection_withContext___block_invoke;
     v21[3] = &unk_279E0BDD8;
     v21[4] = self;
-    [v6 configureConnection:v21];
+    [connectionCopy configureConnection:v21];
     v14 = URTLog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v23 = v6;
+      v23 = connectionCopy;
       _os_log_impl(&dword_270835000, v14, OS_LOG_TYPE_INFO, "Activating connection... %@", buf, 0xCu);
     }
 
-    v15 = [(URTAlertService *)self connectionQueue];
+    connectionQueue = [(URTAlertService *)self connectionQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __61__URTAlertService_listener_didReceiveConnection_withContext___block_invoke_90;
     block[3] = &unk_279E0BE00;
     block[4] = self;
-    v16 = v6;
+    v16 = connectionCopy;
     v20 = v16;
-    dispatch_async(v15, block);
+    dispatch_async(connectionQueue, block);
 
     [v16 activate];
   }
@@ -143,10 +143,10 @@ void __34__URTAlertService_initWithDomain___block_invoke(uint64_t a1, void *a2)
     v17 = URTLog();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
-      [URTAlertService listener:v6 didReceiveConnection:self withContext:v17];
+      [URTAlertService listener:connectionCopy didReceiveConnection:self withContext:v17];
     }
 
-    [v6 invalidate];
+    [connectionCopy invalidate];
   }
 
   v18 = *MEMORY[0x277D85DE8];
@@ -196,45 +196,45 @@ void __61__URTAlertService_listener_didReceiveConnection_withContext___block_inv
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_connectionQueue_addConnection:(id)a3
+- (void)_connectionQueue_addConnection:(id)connection
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(URTAlertService *)self connectionQueue];
+  connectionCopy = connection;
+  connectionQueue = [(URTAlertService *)self connectionQueue];
   BSDispatchQueueAssert();
 
-  v6 = [[URTAlertConnection alloc] initWithConnection:v4];
-  v7 = [(URTAlertService *)self connections];
-  [v7 addObject:v6];
+  v6 = [[URTAlertConnection alloc] initWithConnection:connectionCopy];
+  connections = [(URTAlertService *)self connections];
+  [connections addObject:v6];
 
   v8 = URTLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
-    v9 = [(URTAlertService *)self connections];
+    connections2 = [(URTAlertService *)self connections];
     v11 = 138412546;
-    v12 = v4;
+    v12 = connectionCopy;
     v13 = 2048;
-    v14 = [v9 count];
+    v14 = [connections2 count];
     _os_log_impl(&dword_270835000, v8, OS_LOG_TYPE_INFO, "Added connection %@, connection count: %ld", &v11, 0x16u);
   }
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_connectionQueue_alertConnectionForConnection:(id)a3
+- (id)_connectionQueue_alertConnectionForConnection:(id)connection
 {
-  v4 = a3;
-  v5 = [(URTAlertService *)self connectionQueue];
+  connectionCopy = connection;
+  connectionQueue = [(URTAlertService *)self connectionQueue];
   BSDispatchQueueAssert();
 
-  v6 = [(URTAlertService *)self connections];
+  connections = [(URTAlertService *)self connections];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __65__URTAlertService__connectionQueue_alertConnectionForConnection___block_invoke;
   v10[3] = &unk_279E0BE28;
-  v11 = v4;
-  v7 = v4;
-  v8 = [v6 bs_firstObjectPassingTest:v10];
+  v11 = connectionCopy;
+  v7 = connectionCopy;
+  v8 = [connections bs_firstObjectPassingTest:v10];
 
   return v8;
 }
@@ -247,83 +247,83 @@ uint64_t __65__URTAlertService__connectionQueue_alertConnectionForConnection___b
   return v4;
 }
 
-- (void)_connectionQueue_presentAlert:(id)a3 preferringPresentationStyle:(int64_t)a4 forConnection:(id)a5
+- (void)_connectionQueue_presentAlert:(id)alert preferringPresentationStyle:(int64_t)style forConnection:(id)connection
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [(URTAlertService *)self connectionQueue];
+  alertCopy = alert;
+  connectionCopy = connection;
+  connectionQueue = [(URTAlertService *)self connectionQueue];
   BSDispatchQueueAssert();
 
-  v10 = [(URTAlertService *)self _connectionQueue_alertConnectionForConnection:v8];
+  v10 = [(URTAlertService *)self _connectionQueue_alertConnectionForConnection:connectionCopy];
   v11 = v10;
   if (v10)
   {
-    [v10 setAlert:v7];
+    [v10 setAlert:alertCopy];
   }
 
   objc_initWeak(location, self);
-  objc_initWeak(&from, v7);
-  v12 = [v7 defaultAction];
+  objc_initWeak(&from, alertCopy);
+  defaultAction = [alertCopy defaultAction];
 
-  if (v12)
+  if (defaultAction)
   {
-    v13 = [v7 defaultAction];
-    v14 = [v13 title];
+    defaultAction2 = [alertCopy defaultAction];
+    title = [defaultAction2 title];
     v33[0] = MEMORY[0x277D85DD0];
     v33[1] = 3221225472;
     v33[2] = __91__URTAlertService__connectionQueue_presentAlert_preferringPresentationStyle_forConnection___block_invoke;
     v33[3] = &unk_279E0BE70;
     objc_copyWeak(&v34, location);
     objc_copyWeak(&v35, &from);
-    v15 = [URTAlertAction actionWithTitle:v14 handler:v33];
-    [v7 setDefaultAction:v15];
+    v15 = [URTAlertAction actionWithTitle:title handler:v33];
+    [alertCopy setDefaultAction:v15];
 
     objc_destroyWeak(&v35);
     objc_destroyWeak(&v34);
   }
 
-  v16 = [v7 otherAction];
+  otherAction = [alertCopy otherAction];
 
-  if (v16)
+  if (otherAction)
   {
-    v17 = [v7 otherAction];
-    v18 = [v17 title];
+    otherAction2 = [alertCopy otherAction];
+    title2 = [otherAction2 title];
     v30[0] = MEMORY[0x277D85DD0];
     v30[1] = 3221225472;
     v30[2] = __91__URTAlertService__connectionQueue_presentAlert_preferringPresentationStyle_forConnection___block_invoke_2;
     v30[3] = &unk_279E0BE70;
     objc_copyWeak(&v31, location);
     objc_copyWeak(&v32, &from);
-    v19 = [URTAlertAction actionWithTitle:v18 handler:v30];
-    [v7 setOtherAction:v19];
+    v19 = [URTAlertAction actionWithTitle:title2 handler:v30];
+    [alertCopy setOtherAction:v19];
 
     objc_destroyWeak(&v32);
     objc_destroyWeak(&v31);
   }
 
-  v20 = [v7 cancelAction];
+  cancelAction = [alertCopy cancelAction];
 
-  if (v20)
+  if (cancelAction)
   {
-    v21 = [v7 cancelAction];
-    v22 = [v21 title];
+    cancelAction2 = [alertCopy cancelAction];
+    title3 = [cancelAction2 title];
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
     v27[2] = __91__URTAlertService__connectionQueue_presentAlert_preferringPresentationStyle_forConnection___block_invoke_2_101;
     v27[3] = &unk_279E0BE70;
     objc_copyWeak(&v28, location);
     objc_copyWeak(&v29, &from);
-    v23 = [URTAlertAction actionWithTitle:v22 handler:v27];
-    [v7 setCancelAction:v23];
+    v23 = [URTAlertAction actionWithTitle:title3 handler:v27];
+    [alertCopy setCancelAction:v23];
 
     objc_destroyWeak(&v29);
     objc_destroyWeak(&v28);
   }
 
-  v24 = [(URTAlertService *)self delegate];
+  delegate = [(URTAlertService *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v24 alertService:self wantsPresentationForAlert:v7 preferredPresentationStyle:v26];
+    [delegate alertService:self wantsPresentationForAlert:alertCopy preferredPresentationStyle:v26];
   }
 
   objc_destroyWeak(&from);
@@ -390,21 +390,21 @@ void __91__URTAlertService__connectionQueue_presentAlert_preferringPresentationS
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_performClientActionForAlert:(id)a3 clientAction:(id)a4
+- (void)_performClientActionForAlert:(id)alert clientAction:(id)action
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(URTAlertService *)self connectionQueue];
+  alertCopy = alert;
+  actionCopy = action;
+  connectionQueue = [(URTAlertService *)self connectionQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __61__URTAlertService__performClientActionForAlert_clientAction___block_invoke;
   block[3] = &unk_279E0BE98;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = alertCopy;
+  v13 = actionCopy;
+  v9 = actionCopy;
+  v10 = alertCopy;
+  dispatch_async(connectionQueue, block);
 }
 
 void __61__URTAlertService__performClientActionForAlert_clientAction___block_invoke(uint64_t a1)
@@ -442,20 +442,20 @@ uint64_t __61__URTAlertService__performClientActionForAlert_clientAction___block
   return v4;
 }
 
-- (void)_connectionQueue_dismissAlert:(id)a3 forConnection:(id)a4
+- (void)_connectionQueue_dismissAlert:(id)alert forConnection:(id)connection
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [(URTAlertService *)self connectionQueue];
+  alertCopy = alert;
+  connectionCopy = connection;
+  connectionQueue = [(URTAlertService *)self connectionQueue];
   BSDispatchQueueAssert();
 
-  v8 = [(URTAlertService *)self delegate];
+  delegate = [(URTAlertService *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v8 alertService:self wantsDismissalForAlert:v11];
+    [delegate alertService:self wantsDismissalForAlert:alertCopy];
   }
 
-  v9 = [(URTAlertService *)self _connectionQueue_alertConnectionForConnection:v6];
+  v9 = [(URTAlertService *)self _connectionQueue_alertConnectionForConnection:connectionCopy];
   v10 = v9;
   if (v9)
   {
@@ -463,19 +463,19 @@ uint64_t __61__URTAlertService__performClientActionForAlert_clientAction___block
   }
 }
 
-- (void)_connectionQueue_removeConnection:(id)a3
+- (void)_connectionQueue_removeConnection:(id)connection
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(URTAlertService *)self connectionQueue];
+  connectionCopy = connection;
+  connectionQueue = [(URTAlertService *)self connectionQueue];
   BSDispatchQueueAssert();
 
-  v6 = [(URTAlertService *)self _connectionQueue_alertConnectionForConnection:v4];
+  v6 = [(URTAlertService *)self _connectionQueue_alertConnectionForConnection:connectionCopy];
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 alert];
-    if (v8)
+    alert = [v6 alert];
+    if (alert)
     {
       v9 = URTLog();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
@@ -484,20 +484,20 @@ uint64_t __61__URTAlertService__performClientActionForAlert_clientAction___block
         _os_log_impl(&dword_270835000, v9, OS_LOG_TYPE_INFO, "Dismissing alert due to client disconnection", &v16, 2u);
       }
 
-      v10 = [(URTAlertService *)self delegateProxy];
-      [v10 dismissAlert:v8];
+      delegateProxy = [(URTAlertService *)self delegateProxy];
+      [delegateProxy dismissAlert:alert];
     }
 
-    v11 = [(URTAlertService *)self connections];
-    [v11 removeObject:v7];
+    connections = [(URTAlertService *)self connections];
+    [connections removeObject:v7];
 
     v12 = URTLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
-      v13 = [(URTAlertService *)self connections];
-      v14 = [v13 count];
+      connections2 = [(URTAlertService *)self connections];
+      v14 = [connections2 count];
       v16 = 138412546;
-      v17 = v4;
+      v17 = connectionCopy;
       v18 = 2048;
       v19 = v14;
       _os_log_impl(&dword_270835000, v12, OS_LOG_TYPE_INFO, "Removed connection %@, connection count: %ld", &v16, 0x16u);

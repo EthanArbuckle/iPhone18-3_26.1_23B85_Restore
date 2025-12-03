@@ -1,9 +1,9 @@
 @interface AVCapturePhoto
-+ (id)AVFileTypeFromFigCaptureStillImageSettingsFileType:(int)a3 codec:(unsigned int)a4 unresolvedSettings:(id)a5;
++ (id)AVFileTypeFromFigCaptureStillImageSettingsFileType:(int)type codec:(unsigned int)codec unresolvedSettings:(id)settings;
 - (AVCameraCalibrationData)cameraCalibrationData;
 - (AVCaptureDeviceType)sourceDeviceType;
 - (AVCaptureLensStabilizationStatus)lensStabilizationStatus;
-- (AVCapturePhoto)initWithTimestamp:(id *)a3 photoSurface:(__IOSurface *)a4 photoSurfaceSize:(unint64_t)a5 processedFileType:(id)a6 previewPhotoSurface:(__IOSurface *)a7 embeddedThumbnailSourceSurface:(__IOSurface *)a8 photoLibraryThumbnails:(id)a9 metadata:(id)a10 depthDataSurface:(__IOSurface *)a11 depthMetadataDictionary:(id)a12 portraitEffectsMatteSurface:(__IOSurface *)a13 portraitEffectsMatteMetadataDictionary:(id)a14 hairSegmentationMatteSurface:(__IOSurface *)a15 hairSegmentationMatteMetadataDictionary:(id)a16 skinSegmentationMatteSurface:(__IOSurface *)a17 skinSegmentationMatteMetadataDictionary:(id)a18 teethSegmentationMatteSurface:(__IOSurface *)a19 teethSegmentationMatteMetadataDictionary:(id)a20 glassesSegmentationMatteSurface:(__IOSurface *)a21 glassesSegmentationMatteMetadataDictionary:(id)a22 constantColorConfidenceMapSurface:(__IOSurface *)a23 constantColorMetadataDictionary:(id)a24 captureRequest:(id)a25 bracketSettings:(id)a26 sequenceCount:(unint64_t)a27 photoCount:(unint64_t)a28 expectedPhotoProcessingFlags:(unsigned int)a29 sourceDeviceType:(id)a30;
+- (AVCapturePhoto)initWithTimestamp:(id *)timestamp photoSurface:(__IOSurface *)surface photoSurfaceSize:(unint64_t)size processedFileType:(id)type previewPhotoSurface:(__IOSurface *)photoSurface embeddedThumbnailSourceSurface:(__IOSurface *)sourceSurface photoLibraryThumbnails:(id)thumbnails metadata:(id)self0 depthDataSurface:(__IOSurface *)self1 depthMetadataDictionary:(id)self2 portraitEffectsMatteSurface:(__IOSurface *)self3 portraitEffectsMatteMetadataDictionary:(id)self4 hairSegmentationMatteSurface:(__IOSurface *)self5 hairSegmentationMatteMetadataDictionary:(id)self6 skinSegmentationMatteSurface:(__IOSurface *)self7 skinSegmentationMatteMetadataDictionary:(id)self8 teethSegmentationMatteSurface:(__IOSurface *)self9 teethSegmentationMatteMetadataDictionary:(id)teethSegmentationMatteMetadataDictionary glassesSegmentationMatteSurface:(__IOSurface *)glassesSegmentationMatteSurface glassesSegmentationMatteMetadataDictionary:(id)glassesSegmentationMatteMetadataDictionary constantColorConfidenceMapSurface:(__IOSurface *)mapSurface constantColorMetadataDictionary:(id)colorMetadataDictionary captureRequest:(id)request bracketSettings:(id)settings sequenceCount:(unint64_t)count photoCount:(unint64_t)photoCount expectedPhotoProcessingFlags:(unsigned int)flags sourceDeviceType:(id)timestamp0;
 - (AVCaptureResolvedPhotoSettings)resolvedSettings;
 - (AVDepthData)depthData;
 - (AVPortraitEffectsMatte)portraitEffectsMatte;
@@ -22,7 +22,7 @@
 - (NSDictionary)metadata;
 - (__CVBuffer)_embeddedThumbnailSourcePixelBuffer;
 - (float)focusPixelBlurScore;
-- (id)_fileDataRepresentationWithReplacementMetadata:(id)a3 replacementEmbeddedThumbnailPhotoFormat:(id)a4 replacementEmbeddedThumbnailPixelBuffer:(__CVBuffer *)a5 replacementDepthData:(id)a6 replacementPortraitEffectsMatte:(id)a7 replacementHairSegmentationMatte:(id)a8 replacementSkinSegmentationMatte:(id)a9 replacementTeethSegmentationMatte:(id)a10 replacementGlassesSegmentationMatte:(id)a11 replacementRawCompressionSettings:(id)a12 exceptionReason:(id *)a13;
+- (id)_fileDataRepresentationWithReplacementMetadata:(id)metadata replacementEmbeddedThumbnailPhotoFormat:(id)format replacementEmbeddedThumbnailPixelBuffer:(__CVBuffer *)buffer replacementDepthData:(id)data replacementPortraitEffectsMatte:(id)matte replacementHairSegmentationMatte:(id)segmentationMatte replacementSkinSegmentationMatte:(id)skinSegmentationMatte replacementTeethSegmentationMatte:(id)self0 replacementGlassesSegmentationMatte:(id)self1 replacementRawCompressionSettings:(id)self2 exceptionReason:(id *)self3;
 - (id)debugDescription;
 - (id)description;
 - (id)livePhotoMovieFileURL;
@@ -35,7 +35,7 @@
 
 @implementation AVCapturePhoto
 
-- (AVCapturePhoto)initWithTimestamp:(id *)a3 photoSurface:(__IOSurface *)a4 photoSurfaceSize:(unint64_t)a5 processedFileType:(id)a6 previewPhotoSurface:(__IOSurface *)a7 embeddedThumbnailSourceSurface:(__IOSurface *)a8 photoLibraryThumbnails:(id)a9 metadata:(id)a10 depthDataSurface:(__IOSurface *)a11 depthMetadataDictionary:(id)a12 portraitEffectsMatteSurface:(__IOSurface *)a13 portraitEffectsMatteMetadataDictionary:(id)a14 hairSegmentationMatteSurface:(__IOSurface *)a15 hairSegmentationMatteMetadataDictionary:(id)a16 skinSegmentationMatteSurface:(__IOSurface *)a17 skinSegmentationMatteMetadataDictionary:(id)a18 teethSegmentationMatteSurface:(__IOSurface *)a19 teethSegmentationMatteMetadataDictionary:(id)a20 glassesSegmentationMatteSurface:(__IOSurface *)a21 glassesSegmentationMatteMetadataDictionary:(id)a22 constantColorConfidenceMapSurface:(__IOSurface *)a23 constantColorMetadataDictionary:(id)a24 captureRequest:(id)a25 bracketSettings:(id)a26 sequenceCount:(unint64_t)a27 photoCount:(unint64_t)a28 expectedPhotoProcessingFlags:(unsigned int)a29 sourceDeviceType:(id)a30
+- (AVCapturePhoto)initWithTimestamp:(id *)timestamp photoSurface:(__IOSurface *)surface photoSurfaceSize:(unint64_t)size processedFileType:(id)type previewPhotoSurface:(__IOSurface *)photoSurface embeddedThumbnailSourceSurface:(__IOSurface *)sourceSurface photoLibraryThumbnails:(id)thumbnails metadata:(id)self0 depthDataSurface:(__IOSurface *)self1 depthMetadataDictionary:(id)self2 portraitEffectsMatteSurface:(__IOSurface *)self3 portraitEffectsMatteMetadataDictionary:(id)self4 hairSegmentationMatteSurface:(__IOSurface *)self5 hairSegmentationMatteMetadataDictionary:(id)self6 skinSegmentationMatteSurface:(__IOSurface *)self7 skinSegmentationMatteMetadataDictionary:(id)self8 teethSegmentationMatteSurface:(__IOSurface *)self9 teethSegmentationMatteMetadataDictionary:(id)teethSegmentationMatteMetadataDictionary glassesSegmentationMatteSurface:(__IOSurface *)glassesSegmentationMatteSurface glassesSegmentationMatteMetadataDictionary:(id)glassesSegmentationMatteMetadataDictionary constantColorConfidenceMapSurface:(__IOSurface *)mapSurface constantColorMetadataDictionary:(id)colorMetadataDictionary captureRequest:(id)request bracketSettings:(id)settings sequenceCount:(unint64_t)count photoCount:(unint64_t)photoCount expectedPhotoProcessingFlags:(unsigned int)flags sourceDeviceType:(id)timestamp0
 {
   v69.receiver = self;
   v69.super_class = AVCapturePhoto;
@@ -45,7 +45,7 @@
     return v36;
   }
 
-  [MEMORY[0x1E696AEC0] stringWithFormat:@" constantColorConfidence:%p", a23];
+  [MEMORY[0x1E696AEC0] stringWithFormat:@" constantColorConfidence:%p", mapSurface];
   v37 = objc_alloc_init(AVCapturePhotoInternal);
   v36->_internal = v37;
   if (!v37)
@@ -54,13 +54,13 @@
     return 0;
   }
 
-  surface = a7;
-  v38 = *&a3->var0;
-  v37->timestamp.epoch = a3->var3;
+  surface = photoSurface;
+  v38 = *&timestamp->var0;
+  v37->timestamp.epoch = timestamp->var3;
   *&v37->timestamp.value = v38;
-  if (a4)
+  if (surface)
   {
-    v39 = CFRetain(a4);
+    v39 = CFRetain(surface);
   }
 
   else
@@ -69,20 +69,20 @@
   }
 
   v36->_internal->photoSurface = v39;
-  v36->_internal->photoSurfaceSize = a5;
-  if (!a6)
+  v36->_internal->photoSurfaceSize = size;
+  if (!type)
   {
-    a6 = [objc_msgSend(a25 "unresolvedSettings")];
+    type = [objc_msgSend(request "unresolvedSettings")];
   }
 
-  v36->_internal->processedFileType = a6;
-  v36->_internal->photoLibraryThumbnails = a9;
-  if (a10)
+  v36->_internal->processedFileType = type;
+  v36->_internal->photoLibraryThumbnails = thumbnails;
+  if (metadata)
   {
-    v36->_internal->privateClientMetadata = [[AVCapturePhotoPrivateClientMetadata alloc] initWithMetadataDictionary:a10];
+    v36->_internal->privateClientMetadata = [[AVCapturePhotoPrivateClientMetadata alloc] initWithMetadataDictionary:metadata];
     if (v36->_internal->privateClientMetadata)
     {
-      v40 = [a10 mutableCopy];
+      v40 = [metadata mutableCopy];
       [v40 setObject:0 forKeyedSubscript:*MEMORY[0x1E6990CB0]];
     }
 
@@ -91,13 +91,13 @@
       v40 = 0;
     }
 
-    v42 = [a10 objectForKeyedSubscript:0x1F1CCCB68];
+    v42 = [metadata objectForKeyedSubscript:0x1F1CCCB68];
     if (v42)
     {
       v36->_internal->portraitMetadata = [[AVApplePortraitMetadata alloc] initWithPortraitMetadataDictionary:v42];
       if (!v40)
       {
-        v40 = [a10 mutableCopy];
+        v40 = [metadata mutableCopy];
       }
 
       [v40 setObject:0 forKeyedSubscript:0x1F1CCCB68];
@@ -110,53 +110,53 @@
       goto LABEL_21;
     }
 
-    v41 = a10;
+    metadataCopy = metadata;
   }
 
   else
   {
-    v41 = objc_alloc_init(MEMORY[0x1E695DF20]);
+    metadataCopy = objc_alloc_init(MEMORY[0x1E695DF20]);
   }
 
-  v36->_internal->metadata = v41;
+  v36->_internal->metadata = metadataCopy;
 LABEL_21:
-  v36->_internal->resolvedSettings = [a25 resolvedSettings];
-  v36->_internal->unresolvedSettings = [a25 unresolvedSettings];
-  v36->_internal->bracketSettings = a26;
-  v36->_internal->sequenceCount = a27;
-  v36->_internal->photoCount = a28;
-  v36->_internal->sourceDeviceType = a30;
-  v43 = [a10 objectForKeyedSubscript:*MEMORY[0x1E696DE30]];
-  v36->_internal->expectedPhotoProcessingFlags = a29;
+  v36->_internal->resolvedSettings = [request resolvedSettings];
+  v36->_internal->unresolvedSettings = [request unresolvedSettings];
+  v36->_internal->bracketSettings = settings;
+  v36->_internal->sequenceCount = count;
+  v36->_internal->photoCount = photoCount;
+  v36->_internal->sourceDeviceType = deviceType;
+  v43 = [metadata objectForKeyedSubscript:*MEMORY[0x1E696DE30]];
+  v36->_internal->expectedPhotoProcessingFlags = flags;
   v36->_internal->actualPhotoProcessingFlags = [objc_msgSend(v43 objectForKeyedSubscript:{@"25", "unsignedIntValue"}];
-  v44 = [(AVCapturePhoto *)v36 _isSushiRAWPhoto];
-  v45 = [(AVCapturePhoto *)v36 _isProRAWPhoto];
-  v36->_internal->lensStabilizationSupported = [a25 lensStabilizationSupported];
+  _isSushiRAWPhoto = [(AVCapturePhoto *)v36 _isSushiRAWPhoto];
+  _isProRAWPhoto = [(AVCapturePhoto *)v36 _isProRAWPhoto];
+  v36->_internal->lensStabilizationSupported = [request lensStabilizationSupported];
   resolvedSettings = v36->_internal->resolvedSettings;
-  if (v44 || v45)
+  if (_isSushiRAWPhoto || _isProRAWPhoto)
   {
-    v47 = [(AVCaptureResolvedPhotoSettings *)resolvedSettings rawEmbeddedThumbnailDimensions];
-    v48 = [(AVCapturePhotoSettings *)v36->_internal->unresolvedSettings rawEmbeddedThumbnailPhotoFormat];
+    rawEmbeddedThumbnailDimensions = [(AVCaptureResolvedPhotoSettings *)resolvedSettings rawEmbeddedThumbnailDimensions];
+    rawEmbeddedThumbnailPhotoFormat = [(AVCapturePhotoSettings *)v36->_internal->unresolvedSettings rawEmbeddedThumbnailPhotoFormat];
   }
 
   else
   {
-    v47 = [(AVCaptureResolvedPhotoSettings *)resolvedSettings embeddedThumbnailDimensions];
-    v48 = [(AVCapturePhotoSettings *)v36->_internal->unresolvedSettings embeddedThumbnailPhotoFormat];
+    rawEmbeddedThumbnailDimensions = [(AVCaptureResolvedPhotoSettings *)resolvedSettings embeddedThumbnailDimensions];
+    rawEmbeddedThumbnailPhotoFormat = [(AVCapturePhotoSettings *)v36->_internal->unresolvedSettings embeddedThumbnailPhotoFormat];
   }
 
   v49 = *MEMORY[0x1E6987CB0];
-  v50 = [(NSDictionary *)v48 objectForKeyedSubscript:*MEMORY[0x1E6987CB0]];
-  v51 = HIDWORD(v47);
-  if (HIDWORD(v47))
+  v50 = [(NSDictionary *)rawEmbeddedThumbnailPhotoFormat objectForKeyedSubscript:*MEMORY[0x1E6987CB0]];
+  v51 = HIDWORD(rawEmbeddedThumbnailDimensions);
+  if (HIDWORD(rawEmbeddedThumbnailDimensions))
   {
-    if (v47)
+    if (rawEmbeddedThumbnailDimensions)
     {
       v52 = v50;
       if (v50)
       {
         v53 = objc_alloc(MEMORY[0x1E695DF20]);
-        v54 = [MEMORY[0x1E696AD98] numberWithInt:v47];
+        v54 = [MEMORY[0x1E696AD98] numberWithInt:rawEmbeddedThumbnailDimensions];
         v55 = *MEMORY[0x1E6987E08];
         v56 = [MEMORY[0x1E696AD98] numberWithInt:v51];
         v36->_internal->embeddedThumbnailPhotoFormat = [v53 initWithObjectsAndKeys:{v52, v49, v54, v55, v56, *MEMORY[0x1E6987D70], 0}];
@@ -165,9 +165,9 @@ LABEL_21:
   }
 
   v57 = MEMORY[0x1E695E480];
-  if (a4 && (v44 || [(AVCapturePhoto *)v36 _isUncompressedYUVOrRGBPhoto]))
+  if (surface && (_isSushiRAWPhoto || [(AVCapturePhoto *)v36 _isUncompressedYUVOrRGBPhoto]))
   {
-    CVPixelBufferCreateWithIOSurface(*v57, a4, 0, &v36->_internal->photoPixelBuffer);
+    CVPixelBufferCreateWithIOSurface(*v57, surface, 0, &v36->_internal->photoPixelBuffer);
   }
 
   if (surface)
@@ -175,99 +175,99 @@ LABEL_21:
     CVPixelBufferCreateWithIOSurface(*v57, surface, 0, &v36->_internal->previewPixelBuffer);
   }
 
-  if (a8)
+  if (sourceSurface)
   {
-    CVPixelBufferCreateWithIOSurface(*v57, a8, 0, &v36->_internal->embeddedThumbnailSourcePixelBuffer);
+    CVPixelBufferCreateWithIOSurface(*v57, sourceSurface, 0, &v36->_internal->embeddedThumbnailSourcePixelBuffer);
   }
 
-  if (a11)
+  if (dataSurface)
   {
     pixelBufferOut = 0;
-    CVPixelBufferCreateWithIOSurface(*v57, a11, 0, &pixelBufferOut);
+    CVPixelBufferCreateWithIOSurface(*v57, dataSurface, 0, &pixelBufferOut);
     v58 = [AVDepthData alloc];
-    v36->_internal->depthData = [(AVDepthData *)v58 initWithPixelBuffer:pixelBufferOut depthMetadataDictionary:a12];
+    v36->_internal->depthData = [(AVDepthData *)v58 initWithPixelBuffer:pixelBufferOut depthMetadataDictionary:dictionary];
     if (pixelBufferOut)
     {
       CFRelease(pixelBufferOut);
     }
   }
 
-  if (a13)
+  if (matteSurface)
   {
     pixelBufferOut = 0;
-    CVPixelBufferCreateWithIOSurface(*v57, a13, 0, &pixelBufferOut);
+    CVPixelBufferCreateWithIOSurface(*v57, matteSurface, 0, &pixelBufferOut);
     v59 = [AVPortraitEffectsMatte alloc];
-    v36->_internal->portraitEffectsMatte = [(AVPortraitEffectsMatte *)v59 initWithPixelBuffer:pixelBufferOut portraitEffectsMatteMetadataDictionary:a14];
+    v36->_internal->portraitEffectsMatte = [(AVPortraitEffectsMatte *)v59 initWithPixelBuffer:pixelBufferOut portraitEffectsMatteMetadataDictionary:metadataDictionary];
     if (pixelBufferOut)
     {
       CFRelease(pixelBufferOut);
     }
   }
 
-  if (a15)
+  if (segmentationMatteSurface)
   {
     pixelBufferOut = 0;
-    CVPixelBufferCreateWithIOSurface(*v57, a15, 0, &pixelBufferOut);
+    CVPixelBufferCreateWithIOSurface(*v57, segmentationMatteSurface, 0, &pixelBufferOut);
     v60 = [AVSemanticSegmentationMatte alloc];
-    v36->_internal->hairSegmentationMatte = [(AVSemanticSegmentationMatte *)v60 initWithType:@"AVSemanticSegmentationMatteTypeHair" pixelBuffer:pixelBufferOut semanticSegmentationMatteMetadataDictionary:a16];
+    v36->_internal->hairSegmentationMatte = [(AVSemanticSegmentationMatte *)v60 initWithType:@"AVSemanticSegmentationMatteTypeHair" pixelBuffer:pixelBufferOut semanticSegmentationMatteMetadataDictionary:matteMetadataDictionary];
     if (pixelBufferOut)
     {
       CFRelease(pixelBufferOut);
     }
   }
 
-  if (a17)
+  if (skinSegmentationMatteSurface)
   {
     pixelBufferOut = 0;
-    CVPixelBufferCreateWithIOSurface(*v57, a17, 0, &pixelBufferOut);
+    CVPixelBufferCreateWithIOSurface(*v57, skinSegmentationMatteSurface, 0, &pixelBufferOut);
     v61 = [AVSemanticSegmentationMatte alloc];
-    v36->_internal->skinSegmentationMatte = [(AVSemanticSegmentationMatte *)v61 initWithType:@"AVSemanticSegmentationMatteTypeSkin" pixelBuffer:pixelBufferOut semanticSegmentationMatteMetadataDictionary:a18];
+    v36->_internal->skinSegmentationMatte = [(AVSemanticSegmentationMatte *)v61 initWithType:@"AVSemanticSegmentationMatteTypeSkin" pixelBuffer:pixelBufferOut semanticSegmentationMatteMetadataDictionary:segmentationMatteMetadataDictionary];
     if (pixelBufferOut)
     {
       CFRelease(pixelBufferOut);
     }
   }
 
-  if (a19)
+  if (teethSegmentationMatteSurface)
   {
     pixelBufferOut = 0;
-    CVPixelBufferCreateWithIOSurface(*v57, a19, 0, &pixelBufferOut);
+    CVPixelBufferCreateWithIOSurface(*v57, teethSegmentationMatteSurface, 0, &pixelBufferOut);
     v62 = [AVSemanticSegmentationMatte alloc];
-    v36->_internal->teethSegmentationMatte = [(AVSemanticSegmentationMatte *)v62 initWithType:@"AVSemanticSegmentationMatteTypeTeeth" pixelBuffer:pixelBufferOut semanticSegmentationMatteMetadataDictionary:a20];
+    v36->_internal->teethSegmentationMatte = [(AVSemanticSegmentationMatte *)v62 initWithType:@"AVSemanticSegmentationMatteTypeTeeth" pixelBuffer:pixelBufferOut semanticSegmentationMatteMetadataDictionary:teethSegmentationMatteMetadataDictionary];
     if (pixelBufferOut)
     {
       CFRelease(pixelBufferOut);
     }
   }
 
-  if (a21)
+  if (glassesSegmentationMatteSurface)
   {
     pixelBufferOut = 0;
-    CVPixelBufferCreateWithIOSurface(*v57, a21, 0, &pixelBufferOut);
+    CVPixelBufferCreateWithIOSurface(*v57, glassesSegmentationMatteSurface, 0, &pixelBufferOut);
     v63 = [AVSemanticSegmentationMatte alloc];
-    v36->_internal->glassesSegmentationMatte = [(AVSemanticSegmentationMatte *)v63 initWithType:@"AVSemanticSegmentationMatteTypeGlasses" pixelBuffer:pixelBufferOut semanticSegmentationMatteMetadataDictionary:a22];
+    v36->_internal->glassesSegmentationMatte = [(AVSemanticSegmentationMatte *)v63 initWithType:@"AVSemanticSegmentationMatteTypeGlasses" pixelBuffer:pixelBufferOut semanticSegmentationMatteMetadataDictionary:glassesSegmentationMatteMetadataDictionary];
     if (pixelBufferOut)
     {
       CFRelease(pixelBufferOut);
     }
   }
 
-  if (a23)
+  if (mapSurface)
   {
     pixelBufferOut = 0;
-    CVPixelBufferCreateWithIOSurface(*v57, a23, 0, &pixelBufferOut);
+    CVPixelBufferCreateWithIOSurface(*v57, mapSurface, 0, &pixelBufferOut);
     v36->_internal->constantColorConfidenceMap = pixelBufferOut;
-    if (a24)
+    if (colorMetadataDictionary)
     {
-      [objc_msgSend(a24 objectForKeyedSubscript:{*MEMORY[0x1E6991300]), "floatValue"}];
+      [objc_msgSend(colorMetadataDictionary objectForKeyedSubscript:{*MEMORY[0x1E6991300]), "floatValue"}];
       v36->_internal->constantColorCenterWeightedMeanConfidenceLevel = v64;
     }
   }
 
-  v65 = [(AVCapturePhotoSettings *)v36->_internal->unresolvedSettings isCameraCalibrationDataDeliveryEnabled];
-  if (a12 && v65)
+  isCameraCalibrationDataDeliveryEnabled = [(AVCapturePhotoSettings *)v36->_internal->unresolvedSettings isCameraCalibrationDataDeliveryEnabled];
+  if (dictionary && isCameraCalibrationDataDeliveryEnabled)
   {
-    v36->_internal->cameraCalibrationData = [[AVCameraCalibrationData alloc] initWithDepthMetadataDictionary:a12];
+    v36->_internal->cameraCalibrationData = [[AVCameraCalibrationData alloc] initWithDepthMetadataDictionary:dictionary];
   }
 
   return v36;
@@ -334,7 +334,7 @@ LABEL_21:
     v3 = 0;
   }
 
-  v4 = [(AVCapturePhoto *)self isRawPhoto];
+  isRawPhoto = [(AVCapturePhoto *)self isRawPhoto];
   internal = self->_internal;
   if (internal->bracketSettings)
   {
@@ -347,7 +347,7 @@ LABEL_21:
     v6 = &stru_1F1CBCFE8;
   }
 
-  if (v4)
+  if (isRawPhoto)
   {
     v7 = @" (raw)";
   }
@@ -559,8 +559,8 @@ LABEL_21:
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v6 = [(AVCapturePhotoSettings *)self->_internal->unresolvedSettings virtualDeviceConstituentPhotoDeliveryEnabledDevices];
-    v7 = [(NSArray *)v6 countByEnumeratingWithState:&v15 objects:v14 count:16];
+    virtualDeviceConstituentPhotoDeliveryEnabledDevices = [(AVCapturePhotoSettings *)self->_internal->unresolvedSettings virtualDeviceConstituentPhotoDeliveryEnabledDevices];
+    v7 = [(NSArray *)virtualDeviceConstituentPhotoDeliveryEnabledDevices countByEnumeratingWithState:&v15 objects:v14 count:16];
     if (v7)
     {
       v8 = v7;
@@ -571,7 +571,7 @@ LABEL_21:
         {
           if (*v16 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(virtualDeviceConstituentPhotoDeliveryEnabledDevices);
           }
 
           v11 = *(*(&v15 + 1) + 8 * i);
@@ -582,7 +582,7 @@ LABEL_21:
           }
         }
 
-        v8 = [(NSArray *)v6 countByEnumeratingWithState:&v15 objects:v14 count:16];
+        v8 = [(NSArray *)virtualDeviceConstituentPhotoDeliveryEnabledDevices countByEnumeratingWithState:&v15 objects:v14 count:16];
         if (v8)
         {
           continue;
@@ -615,8 +615,8 @@ LABEL_21:
 
     if ([(AVCapturePhoto *)self _isUncompressedYUVOrRGBPhoto])
     {
-      v9 = [(AVCapturePhoto *)self embeddedThumbnailPhotoFormat];
-      v10 = [(NSDictionary *)v9 objectForKeyedSubscript:*MEMORY[0x1E6987CB0]];
+      embeddedThumbnailPhotoFormat = [(AVCapturePhoto *)self embeddedThumbnailPhotoFormat];
+      v10 = [(NSDictionary *)embeddedThumbnailPhotoFormat objectForKeyedSubscript:*MEMORY[0x1E6987CB0]];
       v11 = avcp_copyCGImageForUncompressedBuffer(self->_internal->photoPixelBuffer);
       v5 = avcp_copyTIFFFileDataRepresentationForImage(v11, [(AVCapturePhoto *)self metadata], v10);
       if (v11)
@@ -631,8 +631,8 @@ LABEL_21:
     return 0;
   }
 
-  v3 = [(AVCapturePhoto *)self embeddedThumbnailPhotoFormat];
-  v4 = avcp_copyDNGFileDataRepresentationForSushiRawBuffer([(AVCapturePhoto *)self pixelBuffer], [(AVCapturePhoto *)self _embeddedThumbnailSourcePixelBuffer], [(AVCapturePhoto *)self metadata], [(AVCapturePhoto *)self depthData], [(NSDictionary *)v3 objectForKeyedSubscript:*MEMORY[0x1E6987CB0]], [(AVCaptureResolvedPhotoSettings *)self->_internal->resolvedSettings rawEmbeddedThumbnailDimensions]);
+  embeddedThumbnailPhotoFormat2 = [(AVCapturePhoto *)self embeddedThumbnailPhotoFormat];
+  v4 = avcp_copyDNGFileDataRepresentationForSushiRawBuffer([(AVCapturePhoto *)self pixelBuffer], [(AVCapturePhoto *)self _embeddedThumbnailSourcePixelBuffer], [(AVCapturePhoto *)self metadata], [(AVCapturePhoto *)self depthData], [(NSDictionary *)embeddedThumbnailPhotoFormat2 objectForKeyedSubscript:*MEMORY[0x1E6987CB0]], [(AVCaptureResolvedPhotoSettings *)self->_internal->resolvedSettings rawEmbeddedThumbnailDimensions]);
   v5 = v4;
 LABEL_4:
   v6 = v4;
@@ -642,13 +642,13 @@ LABEL_4:
 - (NSData)fileDataRepresentationWithReplacementMetadata:(NSDictionary *)replacementMetadata replacementEmbeddedThumbnailPhotoFormat:(NSDictionary *)replacementEmbeddedThumbnailPhotoFormat replacementEmbeddedThumbnailPixelBuffer:(CVPixelBufferRef)replacementEmbeddedThumbnailPixelBuffer replacementDepthData:(AVDepthData *)replacementDepthData
 {
   v15 = 0;
-  v11 = 0;
+  portraitEffectsMatte = 0;
   if ([(AVCapturePhoto *)self depthData]== replacementDepthData)
   {
-    v11 = [(AVCapturePhoto *)self portraitEffectsMatte];
+    portraitEffectsMatte = [(AVCapturePhoto *)self portraitEffectsMatte];
   }
 
-  v12 = [(AVCapturePhoto *)self _fileDataRepresentationWithReplacementMetadata:replacementMetadata replacementEmbeddedThumbnailPhotoFormat:replacementEmbeddedThumbnailPhotoFormat replacementEmbeddedThumbnailPixelBuffer:replacementEmbeddedThumbnailPixelBuffer replacementDepthData:replacementDepthData replacementPortraitEffectsMatte:v11 replacementHairSegmentationMatte:[(AVCapturePhoto *)self semanticSegmentationMatteForType:@"AVSemanticSegmentationMatteTypeHair"] replacementSkinSegmentationMatte:[(AVCapturePhoto *)self semanticSegmentationMatteForType:@"AVSemanticSegmentationMatteTypeSkin"] replacementTeethSegmentationMatte:[(AVCapturePhoto *)self semanticSegmentationMatteForType:@"AVSemanticSegmentationMatteTypeTeeth"] replacementGlassesSegmentationMatte:[(AVCapturePhoto *)self semanticSegmentationMatteForType:@"AVSemanticSegmentationMatteTypeGlasses"] replacementRawCompressionSettings:0 exceptionReason:&v15];
+  v12 = [(AVCapturePhoto *)self _fileDataRepresentationWithReplacementMetadata:replacementMetadata replacementEmbeddedThumbnailPhotoFormat:replacementEmbeddedThumbnailPhotoFormat replacementEmbeddedThumbnailPixelBuffer:replacementEmbeddedThumbnailPixelBuffer replacementDepthData:replacementDepthData replacementPortraitEffectsMatte:portraitEffectsMatte replacementHairSegmentationMatte:[(AVCapturePhoto *)self semanticSegmentationMatteForType:@"AVSemanticSegmentationMatteTypeHair"] replacementSkinSegmentationMatte:[(AVCapturePhoto *)self semanticSegmentationMatteForType:@"AVSemanticSegmentationMatteTypeSkin"] replacementTeethSegmentationMatte:[(AVCapturePhoto *)self semanticSegmentationMatteForType:@"AVSemanticSegmentationMatteTypeTeeth"] replacementGlassesSegmentationMatte:[(AVCapturePhoto *)self semanticSegmentationMatteForType:@"AVSemanticSegmentationMatteTypeGlasses"] replacementRawCompressionSettings:0 exceptionReason:&v15];
   if (v15)
   {
     v13 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector() userInfo:0];
@@ -665,10 +665,10 @@ LABEL_4:
 
 - (NSData)fileDataRepresentationWithCustomizer:(id)customizer
 {
-  v19 = [(AVCapturePhoto *)self metadata];
-  v21 = [(AVCapturePhoto *)self embeddedThumbnailPhotoFormat];
-  v18 = [(AVCapturePhoto *)self depthData];
-  v17 = [(AVCapturePhoto *)self portraitEffectsMatte];
+  metadata = [(AVCapturePhoto *)self metadata];
+  embeddedThumbnailPhotoFormat = [(AVCapturePhoto *)self embeddedThumbnailPhotoFormat];
+  depthData = [(AVCapturePhoto *)self depthData];
+  portraitEffectsMatte = [(AVCapturePhoto *)self portraitEffectsMatte];
   v16 = [(AVCapturePhoto *)self semanticSegmentationMatteForType:@"AVSemanticSegmentationMatteTypeHair"];
   v5 = [(AVCapturePhoto *)self semanticSegmentationMatteForType:@"AVSemanticSegmentationMatteTypeSkin"];
   v6 = [(AVCapturePhoto *)self semanticSegmentationMatteForType:@"AVSemanticSegmentationMatteTypeTeeth"];
@@ -678,12 +678,12 @@ LABEL_4:
     v8 = v7;
     if (objc_opt_respondsToSelector())
     {
-      v19 = [customizer replacementMetadataForPhoto:self];
+      metadata = [customizer replacementMetadataForPhoto:self];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v15 = [customizer replacementEmbeddedThumbnailPixelBufferWithPhotoFormat:&v21 forPhoto:self];
+      v15 = [customizer replacementEmbeddedThumbnailPixelBufferWithPhotoFormat:&embeddedThumbnailPhotoFormat forPhoto:self];
     }
 
     else
@@ -700,7 +700,7 @@ LABEL_19:
         v12 = v16;
 LABEL_20:
         v20 = 0;
-        v10 = [(AVCapturePhoto *)self _fileDataRepresentationWithReplacementMetadata:v19 replacementEmbeddedThumbnailPhotoFormat:v21 replacementEmbeddedThumbnailPixelBuffer:v15 replacementDepthData:v18 replacementPortraitEffectsMatte:v17 replacementHairSegmentationMatte:v12 replacementSkinSegmentationMatte:v5 replacementTeethSegmentationMatte:v6 replacementGlassesSegmentationMatte:v8 replacementRawCompressionSettings:v11 exceptionReason:&v20];
+        v10 = [(AVCapturePhoto *)self _fileDataRepresentationWithReplacementMetadata:metadata replacementEmbeddedThumbnailPhotoFormat:embeddedThumbnailPhotoFormat replacementEmbeddedThumbnailPixelBuffer:v15 replacementDepthData:depthData replacementPortraitEffectsMatte:portraitEffectsMatte replacementHairSegmentationMatte:v12 replacementSkinSegmentationMatte:v5 replacementTeethSegmentationMatte:v6 replacementGlassesSegmentationMatte:v8 replacementRawCompressionSettings:v11 exceptionReason:&v20];
         if (v20)
         {
           v13 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector() userInfo:0];
@@ -720,12 +720,12 @@ LABEL_20:
     {
       if (objc_opt_respondsToSelector())
       {
-        v18 = [customizer replacementDepthDataForPhoto:self];
+        depthData = [customizer replacementDepthDataForPhoto:self];
       }
 
       if (objc_opt_respondsToSelector())
       {
-        v17 = [customizer replacementPortraitEffectsMatteForPhoto:self];
+        portraitEffectsMatte = [customizer replacementPortraitEffectsMatteForPhoto:self];
       }
 
       if (objc_opt_respondsToSelector())
@@ -787,15 +787,15 @@ LABEL_20:
   }
 
   v10 = v9;
-  v11 = [v7 intValue];
+  intValue = [v7 intValue];
   if (([v10 intValue] & 6) != 0)
   {
     return 3;
   }
 
-  if ((v11 - 1) <= 4)
+  if ((intValue - 1) <= 4)
   {
-    return qword_1A92AB0E0[v11 - 1];
+    return qword_1A92AB0E0[intValue - 1];
   }
 
   else
@@ -834,20 +834,20 @@ LABEL_20:
 
 - (BOOL)isConstantColorFallbackPhoto
 {
-  v3 = [(AVCapturePhotoSettings *)self->_internal->unresolvedSettings isConstantColorEnabled];
-  if (v3)
+  isConstantColorEnabled = [(AVCapturePhotoSettings *)self->_internal->unresolvedSettings isConstantColorEnabled];
+  if (isConstantColorEnabled)
   {
-    LOBYTE(v3) = self->_internal->constantColorConfidenceMap == 0;
+    LOBYTE(isConstantColorEnabled) = self->_internal->constantColorConfidenceMap == 0;
   }
 
-  return v3;
+  return isConstantColorEnabled;
 }
 
-+ (id)AVFileTypeFromFigCaptureStillImageSettingsFileType:(int)a3 codec:(unsigned int)a4 unresolvedSettings:(id)a5
++ (id)AVFileTypeFromFigCaptureStillImageSettingsFileType:(int)type codec:(unsigned int)codec unresolvedSettings:(id)settings
 {
-  if (a3 > 1751476581)
+  if (type > 1751476581)
   {
-    switch(a3)
+    switch(type)
     {
       case 1953064550:
         v5 = MEMORY[0x1E69874C8];
@@ -865,7 +865,7 @@ LABEL_20:
 
   else
   {
-    switch(a3)
+    switch(type)
     {
       case 1684628333:
         v5 = MEMORY[0x1E6987490];
@@ -888,9 +888,9 @@ LABEL_20:
   }
 
 LABEL_15:
-  if (a4 > 1635148592)
+  if (codec > 1635148592)
   {
-    switch(a4)
+    switch(codec)
     {
       case 0x61766331u:
         v7 = MEMORY[0x1E6987470];
@@ -902,15 +902,15 @@ LABEL_15:
         v7 = MEMORY[0x1E69874A0];
         break;
       default:
-        return [a5 processedFileType];
+        return [settings processedFileType];
     }
   }
 
   else
   {
-    if (a4 != 875704422 && a4 != 875704438 && a4 != 1111970369)
+    if (codec != 875704422 && codec != 875704438 && codec != 1111970369)
     {
-      return [a5 processedFileType];
+      return [settings processedFileType];
     }
 
     v7 = MEMORY[0x1E69874C8];
@@ -919,7 +919,7 @@ LABEL_15:
   result = *v7;
   if (!*v7)
   {
-    return [a5 processedFileType];
+    return [settings processedFileType];
   }
 
   return result;
@@ -944,8 +944,8 @@ LABEL_15:
     internal = self->_internal;
   }
 
-  v6 = [(AVCapturePhotoSettings *)internal->unresolvedSettings format];
-  if ([(NSDictionary *)v6 objectForKeyedSubscript:*MEMORY[0x1E6987CB0]])
+  format = [(AVCapturePhotoSettings *)internal->unresolvedSettings format];
+  if ([(NSDictionary *)format objectForKeyedSubscript:*MEMORY[0x1E6987CB0]])
   {
     return 1;
   }
@@ -964,8 +964,8 @@ LABEL_15:
 
 - (BOOL)_isUncompressedYUVOrRGBPhoto
 {
-  v3 = [(AVCapturePhotoSettings *)self->_internal->unresolvedSettings format];
-  v4 = [(NSDictionary *)v3 objectForKeyedSubscript:*MEMORY[0x1E6966130]];
+  format = [(AVCapturePhotoSettings *)self->_internal->unresolvedSettings format];
+  v4 = [(NSDictionary *)format objectForKeyedSubscript:*MEMORY[0x1E6966130]];
   if (v4)
   {
     if ([(AVCapturePhoto *)self _isCompressedPhoto])
@@ -996,8 +996,8 @@ LABEL_15:
 
 - (unsigned)_orientation
 {
-  v2 = [(AVCapturePhoto *)self metadata];
-  v3 = [(NSDictionary *)v2 objectForKeyedSubscript:*MEMORY[0x1E696DE78]];
+  metadata = [(AVCapturePhoto *)self metadata];
+  v3 = [(NSDictionary *)metadata objectForKeyedSubscript:*MEMORY[0x1E696DE78]];
   if (!v3)
   {
     return 1;
@@ -1061,16 +1061,16 @@ LABEL_16:
   return v6;
 }
 
-- (id)_fileDataRepresentationWithReplacementMetadata:(id)a3 replacementEmbeddedThumbnailPhotoFormat:(id)a4 replacementEmbeddedThumbnailPixelBuffer:(__CVBuffer *)a5 replacementDepthData:(id)a6 replacementPortraitEffectsMatte:(id)a7 replacementHairSegmentationMatte:(id)a8 replacementSkinSegmentationMatte:(id)a9 replacementTeethSegmentationMatte:(id)a10 replacementGlassesSegmentationMatte:(id)a11 replacementRawCompressionSettings:(id)a12 exceptionReason:(id *)a13
+- (id)_fileDataRepresentationWithReplacementMetadata:(id)metadata replacementEmbeddedThumbnailPhotoFormat:(id)format replacementEmbeddedThumbnailPixelBuffer:(__CVBuffer *)buffer replacementDepthData:(id)data replacementPortraitEffectsMatte:(id)matte replacementHairSegmentationMatte:(id)segmentationMatte replacementSkinSegmentationMatte:(id)skinSegmentationMatte replacementTeethSegmentationMatte:(id)self0 replacementGlassesSegmentationMatte:(id)self1 replacementRawCompressionSettings:(id)self2 exceptionReason:(id *)self3
 {
   v125 = 0;
   v19 = [MEMORY[0x1E695DFD8] setWithArray:{+[AVCapturePhotoOutput validMetadataTopLevelCGImagePropertiesKeys](AVCapturePhotoOutput, "validMetadataTopLevelCGImagePropertiesKeys")}];
-  v20 = [MEMORY[0x1E695DFA8] setWithArray:{objc_msgSend(a3, "allKeys")}];
+  v20 = [MEMORY[0x1E695DFA8] setWithArray:{objc_msgSend(metadata, "allKeys")}];
   [v20 minusSet:v19];
   if ([v20 count])
   {
     v74 = [MEMORY[0x1E696AEC0] stringWithFormat:@"replacementMetadata contains invalid keys: %@", v20];
-    v24 = 0;
+    dataCopy = 0;
     v73 = 0;
     v40 = 0;
     v125 = v74;
@@ -1082,8 +1082,8 @@ LABEL_16:
     goto LABEL_113;
   }
 
-  v120 = a8;
-  if (a4)
+  segmentationMatteCopy = segmentationMatte;
+  if (format)
   {
     v21 = *MEMORY[0x1E6987E08];
     v124[0] = *MEMORY[0x1E6987CB0];
@@ -1092,38 +1092,38 @@ LABEL_16:
     v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:v124 count:3];
     if (AVGestaltGetBoolAnswer(@"AVGQCapturePhotoSettingsSupportRawEmbeddedThumbnailFormat") && [(AVCapturePhoto *)self isRawPhoto])
     {
-      v23 = [(AVCapturePhotoSettings *)self->_internal->unresolvedSettings availableRawEmbeddedThumbnailPhotoCodecTypes];
+      availableRawEmbeddedThumbnailPhotoCodecTypes = [(AVCapturePhotoSettings *)self->_internal->unresolvedSettings availableRawEmbeddedThumbnailPhotoCodecTypes];
     }
 
     else
     {
-      v23 = [(AVCapturePhotoSettings *)self->_internal->unresolvedSettings availableEmbeddedThumbnailPhotoCodecTypes];
+      availableRawEmbeddedThumbnailPhotoCodecTypes = [(AVCapturePhotoSettings *)self->_internal->unresolvedSettings availableEmbeddedThumbnailPhotoCodecTypes];
     }
 
-    if (![AVCaptureVideoSettingsValidator validateVideoSettings:a4 allowingFeatures:25 validPixelKeys:0 validPixelFormats:0 validCodecKeys:v22 validCodecs:v23 exceptionReason:&v125])
+    if (![AVCaptureVideoSettingsValidator validateVideoSettings:format allowingFeatures:25 validPixelKeys:0 validPixelFormats:0 validCodecKeys:v22 validCodecs:availableRawEmbeddedThumbnailPhotoCodecTypes exceptionReason:&v125])
     {
       goto LABEL_109;
     }
   }
 
-  else if (a5)
+  else if (buffer)
   {
     v40 = 0;
     v73 = 0;
-    v24 = 0;
+    dataCopy = 0;
     v74 = @"If you specify a replacementEmbeddedThumbnailPixelBuffer, you must also specify a replacementEmbeddedThumbnailPhotoFormat";
     goto LABEL_199;
   }
 
-  v24 = a6;
-  if (a6)
+  dataCopy = data;
+  if (data)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       v40 = 0;
       v73 = 0;
-      v24 = 0;
+      dataCopy = 0;
       v74 = @"replacementDepthData must be an instance of AVDepthData";
 LABEL_199:
       v125 = v74;
@@ -1131,7 +1131,7 @@ LABEL_199:
     }
   }
 
-  if (!a7)
+  if (!matte)
   {
     goto LABEL_15;
   }
@@ -1141,12 +1141,12 @@ LABEL_199:
   {
     v40 = 0;
     v73 = 0;
-    v24 = 0;
+    dataCopy = 0;
     v74 = @"replacementPortraitEffectsMatte must be an instance of AVPortraitEffectsMatte";
     goto LABEL_199;
   }
 
-  if (!a6)
+  if (!data)
   {
     v40 = 0;
     v73 = 0;
@@ -1155,7 +1155,7 @@ LABEL_199:
   }
 
 LABEL_15:
-  if (!a8)
+  if (!segmentationMatte)
   {
     goto LABEL_18;
   }
@@ -1165,22 +1165,22 @@ LABEL_15:
   {
     v40 = 0;
     v73 = 0;
-    v24 = 0;
+    dataCopy = 0;
     v74 = @"replacementHairSegmentationMatte must be an instance of AVSemanticSegmentationMatte";
     goto LABEL_199;
   }
 
-  if (([objc_msgSend(a8 "matteType")] & 1) == 0)
+  if (([objc_msgSend(segmentationMatte "matteType")] & 1) == 0)
   {
     v40 = 0;
     v73 = 0;
-    v24 = 0;
+    dataCopy = 0;
     v74 = @"replacementHairSegmentationMatte must have a matteType of AVSemanticSegmentationMatteTypeHair";
     goto LABEL_199;
   }
 
 LABEL_18:
-  if (!a9)
+  if (!skinSegmentationMatte)
   {
     goto LABEL_21;
   }
@@ -1190,22 +1190,22 @@ LABEL_18:
   {
     v40 = 0;
     v73 = 0;
-    v24 = 0;
+    dataCopy = 0;
     v74 = @"replacementSkinSegmentationMatte must be an instance of AVSemanticSegmentationMatte";
     goto LABEL_199;
   }
 
-  if (([objc_msgSend(a9 "matteType")] & 1) == 0)
+  if (([objc_msgSend(skinSegmentationMatte "matteType")] & 1) == 0)
   {
     v40 = 0;
     v73 = 0;
-    v24 = 0;
+    dataCopy = 0;
     v74 = @"replacementSkinSegmentationMatte must have a matteType of AVSemanticSegmentationMatteTypeSkin";
     goto LABEL_199;
   }
 
 LABEL_21:
-  if (!a10)
+  if (!teethSegmentationMatte)
   {
     goto LABEL_24;
   }
@@ -1215,22 +1215,22 @@ LABEL_21:
   {
     v40 = 0;
     v73 = 0;
-    v24 = 0;
+    dataCopy = 0;
     v74 = @"replacementTeethSegmentationMatte must be an instance of AVSemanticSegmentationMatte";
     goto LABEL_199;
   }
 
-  if (([objc_msgSend(a10 "matteType")] & 1) == 0)
+  if (([objc_msgSend(teethSegmentationMatte "matteType")] & 1) == 0)
   {
     v40 = 0;
     v73 = 0;
-    v24 = 0;
+    dataCopy = 0;
     v74 = @"replacementTeethSegmentationMatte must have a matteType of AVSemanticSegmentationMatteTypeTeeth";
     goto LABEL_199;
   }
 
 LABEL_24:
-  if (!a11)
+  if (!glassesSegmentationMatte)
   {
     goto LABEL_27;
   }
@@ -1240,25 +1240,25 @@ LABEL_24:
   {
     v40 = 0;
     v73 = 0;
-    v24 = 0;
+    dataCopy = 0;
     v74 = @"replacementGlassesSegmentationMatte must be an instance of AVSemanticSegmentationMatte";
     goto LABEL_199;
   }
 
-  if (([objc_msgSend(a11 "matteType")] & 1) == 0)
+  if (([objc_msgSend(glassesSegmentationMatte "matteType")] & 1) == 0)
   {
     v40 = 0;
     v73 = 0;
-    v24 = 0;
+    dataCopy = 0;
     v74 = @"replacementGlassesSegmentationMatte must have a matteType of AVSemanticSegmentationMatteTypeGlasses";
     goto LABEL_199;
   }
 
 LABEL_27:
-  v112 = a5;
-  if (!a12)
+  bufferCopy = buffer;
+  if (!settings)
   {
-    v29 = [(AVCapturePhoto *)self _defaultRawCompressionSettings];
+    _defaultRawCompressionSettings = [(AVCapturePhoto *)self _defaultRawCompressionSettings];
     goto LABEL_41;
   }
 
@@ -1267,7 +1267,7 @@ LABEL_27:
   {
     v40 = 0;
     v73 = 0;
-    v24 = 0;
+    dataCopy = 0;
     v74 = @"replacementRawCompressionSettings must be an instance of NSDictionary";
     goto LABEL_199;
   }
@@ -1277,64 +1277,64 @@ LABEL_27:
   v123[0] = *MEMORY[0x1E6987DC0];
   v123[1] = v26;
   v27 = [MEMORY[0x1E695DFD8] setWithArray:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v123, 2)}];
-  v28 = [MEMORY[0x1E695DFA8] setWithArray:{objc_msgSend(a12, "allKeys")}];
+  v28 = [MEMORY[0x1E695DFA8] setWithArray:{objc_msgSend(settings, "allKeys")}];
   [v28 minusSet:v27];
   if ([v28 count])
   {
     v107 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unsupported keys specified: %@. Supported keys are %@", v28, v27];
-    v24 = 0;
+    dataCopy = 0;
     v73 = 0;
     v40 = 0;
     v125 = v107;
     goto LABEL_112;
   }
 
-  v29 = [-[AVCapturePhoto _defaultRawCompressionSettings](self "_defaultRawCompressionSettings")];
-  if ([a12 objectForKeyedSubscript:v25])
+  _defaultRawCompressionSettings = [-[AVCapturePhoto _defaultRawCompressionSettings](self "_defaultRawCompressionSettings")];
+  if ([settings objectForKeyedSubscript:v25])
   {
-    [a12 objectForKeyedSubscript:v25];
+    [settings objectForKeyedSubscript:v25];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v24 = 0;
+      dataCopy = 0;
       v73 = 0;
       v40 = 0;
       v108 = @"replacementAppleProRAWCompressionSettings[AVVideoQualityKey] must be an instance of NSNumber";
       goto LABEL_204;
     }
 
-    [objc_msgSend(a12 objectForKeyedSubscript:{v25), "doubleValue"}];
+    [objc_msgSend(settings objectForKeyedSubscript:{v25), "doubleValue"}];
     if (v30 < 0.0 || v30 > 1.0)
     {
-      v24 = 0;
+      dataCopy = 0;
       v73 = 0;
       v40 = 0;
       v108 = @"replacementAppleProRAWCompressionSettings[AVVideoQualityKey] must be a value >= 0.0 and <= 1.0";
       goto LABEL_204;
     }
 
-    [v29 setObject:objc_msgSend(a12 forKeyedSubscript:{"objectForKeyedSubscript:", v25), v25}];
+    [_defaultRawCompressionSettings setObject:objc_msgSend(settings forKeyedSubscript:{"objectForKeyedSubscript:", v25), v25}];
   }
 
-  if ([a12 objectForKeyedSubscript:v26])
+  if ([settings objectForKeyedSubscript:v26])
   {
-    [a12 objectForKeyedSubscript:v26];
+    [settings objectForKeyedSubscript:v26];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v31 = [objc_msgSend(a12 objectForKeyedSubscript:{v26), "intValue"}];
-      v32 = a8;
+      v31 = [objc_msgSend(settings objectForKeyedSubscript:{v26), "intValue"}];
+      segmentationMatteCopy3 = segmentationMatte;
       if (v31 >= 8)
       {
-        v33 = a7;
+        matteCopy2 = matte;
         if (v31 <= [(AVCapturePhoto *)self _maximumAppleProRAWBitDepth])
         {
-          [v29 setObject:objc_msgSend(a12 forKeyedSubscript:{"objectForKeyedSubscript:", v26), v26}];
+          [_defaultRawCompressionSettings setObject:objc_msgSend(settings forKeyedSubscript:{"objectForKeyedSubscript:", v26), v26}];
           goto LABEL_42;
         }
       }
 
-      v24 = 0;
+      dataCopy = 0;
       v73 = 0;
       v40 = 0;
       v108 = @"replacementAppleProRAWCompressionSettings[AVVideoAppleProRAWBitDepthKey] must be a value >= 8 and <= maximumBitDepth";
@@ -1342,7 +1342,7 @@ LABEL_27:
 
     else
     {
-      v24 = 0;
+      dataCopy = 0;
       v73 = 0;
       v40 = 0;
       v108 = @"replacementAppleProRAWCompressionSettings[AVVideoAppleProRAWBitDepthKey] must be an instance of NSNumber";
@@ -1354,46 +1354,46 @@ LABEL_204:
   }
 
 LABEL_41:
-  v32 = a8;
-  v33 = a7;
+  segmentationMatteCopy3 = segmentationMatte;
+  matteCopy2 = matte;
 LABEL_42:
-  v34 = [v29 isEqual:{-[AVCapturePhoto _defaultRawCompressionSettings](self, "_defaultRawCompressionSettings")}];
-  if ([(AVCapturePhoto *)self metadata]== a3)
+  v34 = [_defaultRawCompressionSettings isEqual:{-[AVCapturePhoto _defaultRawCompressionSettings](self, "_defaultRawCompressionSettings")}];
+  if ([(AVCapturePhoto *)self metadata]== metadata)
   {
     v119 = 0;
   }
 
   else
   {
-    v119 = [(NSDictionary *)[(AVCapturePhoto *)self metadata] isEqual:a3]^ 1;
+    v119 = [(NSDictionary *)[(AVCapturePhoto *)self metadata] isEqual:metadata]^ 1;
   }
 
-  v35 = [(AVCapturePhoto *)self embeddedThumbnailPhotoFormat];
-  if (v112)
+  embeddedThumbnailPhotoFormat = [(AVCapturePhoto *)self embeddedThumbnailPhotoFormat];
+  if (bufferCopy)
   {
     v36 = 0;
   }
 
   else
   {
-    v36 = v35 == a4;
+    v36 = embeddedThumbnailPhotoFormat == format;
   }
 
   v37 = !v36;
   v111 = v37;
-  v113 = [(AVCapturePhoto *)self depthData];
-  v114 = [(AVCapturePhoto *)self portraitEffectsMatte];
+  depthData = [(AVCapturePhoto *)self depthData];
+  portraitEffectsMatte = [(AVCapturePhoto *)self portraitEffectsMatte];
   v115 = [(AVCapturePhoto *)self semanticSegmentationMatteForType:@"AVSemanticSegmentationMatteTypeHair"];
   v116 = [(AVCapturePhoto *)self semanticSegmentationMatteForType:@"AVSemanticSegmentationMatteTypeSkin"];
   v117 = [(AVCapturePhoto *)self semanticSegmentationMatteForType:@"AVSemanticSegmentationMatteTypeTeeth"];
   v118 = [(AVCapturePhoto *)self semanticSegmentationMatteForType:@"AVSemanticSegmentationMatteTypeGlasses"];
   v38 = *MEMORY[0x1E696DE78];
-  if ([a3 objectForKeyedSubscript:*MEMORY[0x1E696DE78]])
+  if ([metadata objectForKeyedSubscript:*MEMORY[0x1E696DE78]])
   {
-    [a3 objectForKeyedSubscript:v38];
+    [metadata objectForKeyedSubscript:v38];
   }
 
-  if (!((v119 | v111) & 1 | (v113 != a6 || v114 != v33) | (v115 != v32) | (v116 != a9 || v117 != a10) | (v118 != a11) | (v34 ^ 1) & 1))
+  if (!((v119 | v111) & 1 | (depthData != data || portraitEffectsMatte != matteCopy2) | (v115 != segmentationMatteCopy3) | (v116 != skinSegmentationMatte || v117 != teethSegmentationMatte) | (v118 != glassesSegmentationMatte) | (v34 ^ 1) & 1))
   {
     return [(AVCapturePhoto *)self fileDataRepresentation];
   }
@@ -1403,62 +1403,62 @@ LABEL_42:
     goto LABEL_109;
   }
 
-  v110 = a3;
-  v39 = [MEMORY[0x1E695DF70] array];
-  v40 = v39;
-  if (!v39)
+  metadataCopy = metadata;
+  array = [MEMORY[0x1E695DF70] array];
+  v40 = array;
+  if (!array)
   {
     goto LABEL_96;
   }
 
-  if (v113 != a6)
+  if (depthData != data)
   {
-    [(__CFData *)v39 addObject:*MEMORY[0x1E69917B0]];
+    [(__CFData *)array addObject:*MEMORY[0x1E69917B0]];
     [(__CFData *)v40 addObject:*MEMORY[0x1E69917C8]];
   }
 
-  if (v114 != v33)
+  if (portraitEffectsMatte != matteCopy2)
   {
     [(__CFData *)v40 addObject:*MEMORY[0x1E69917D0]];
   }
 
-  if (v115 != v32)
+  if (v115 != segmentationMatteCopy3)
   {
     [(__CFData *)v40 addObject:*MEMORY[0x1E69917E0]];
   }
 
-  if (v116 != a9)
+  if (v116 != skinSegmentationMatte)
   {
     [(__CFData *)v40 addObject:*MEMORY[0x1E69917E8]];
   }
 
-  if (v117 != a10)
+  if (v117 != teethSegmentationMatte)
   {
     [(__CFData *)v40 addObject:*MEMORY[0x1E69917F8]];
   }
 
-  if (v118 != a11)
+  if (v118 != glassesSegmentationMatte)
   {
     [(__CFData *)v40 addObject:*MEMORY[0x1E69917D8]];
   }
 
-  v41 = [(AVCapturePhoto *)self _isSushiRAWPhoto];
-  v42 = [(AVCapturePhoto *)self _isProRAWPhoto];
-  v43 = [(AVCapturePhotoSettings *)self->_internal->unresolvedSettings format];
+  _isSushiRAWPhoto = [(AVCapturePhoto *)self _isSushiRAWPhoto];
+  _isProRAWPhoto = [(AVCapturePhoto *)self _isProRAWPhoto];
+  format = [(AVCapturePhotoSettings *)self->_internal->unresolvedSettings format];
   v44 = *MEMORY[0x1E6987CB0];
-  v45 = [(NSDictionary *)v43 objectForKeyedSubscript:*MEMORY[0x1E6987CB0]];
+  v45 = [(NSDictionary *)format objectForKeyedSubscript:*MEMORY[0x1E6987CB0]];
   v109 = [v45 isEqualToString:*MEMORY[0x1E6987D00]];
-  if ([(NSDictionary *)[(AVCapturePhotoSettings *)self->_internal->unresolvedSettings format] objectForKeyedSubscript:v44]&& !v41)
+  if ([(NSDictionary *)[(AVCapturePhotoSettings *)self->_internal->unresolvedSettings format] objectForKeyedSubscript:v44]&& !_isSushiRAWPhoto)
   {
-    if (!v42)
+    if (!_isProRAWPhoto)
     {
       v122 = 0;
-      if (v112)
+      if (bufferCopy)
       {
         v46 = *MEMORY[0x1E6987E08];
-        v47 = [objc_msgSend(a4 objectForKeyedSubscript:{*MEMORY[0x1E6987E08]), "intValue"}];
+        v47 = [objc_msgSend(format objectForKeyedSubscript:{*MEMORY[0x1E6987E08]), "intValue"}];
         v48 = *MEMORY[0x1E6987D70];
-        v49 = [objc_msgSend(a4 objectForKeyedSubscript:{*MEMORY[0x1E6987D70]), "intValue"}];
+        v49 = [objc_msgSend(format objectForKeyedSubscript:{*MEMORY[0x1E6987D70]), "intValue"}];
         if (v47 <= v49)
         {
           v50 = v49;
@@ -1510,7 +1510,7 @@ LABEL_136:
       }
 
 LABEL_137:
-      [a4 objectForKeyedSubscript:v44];
+      [format objectForKeyedSubscript:v44];
       v77 = AVOSTypeForString();
       photoSurfaceSize = self->_internal->photoSurfaceSize;
       v130 = 0;
@@ -1527,9 +1527,9 @@ LABEL_137:
         v128[3] = *MEMORY[0x1E6991890];
         v129[3] = [MEMORY[0x1E696AD98] numberWithBool:v111];
         [MEMORY[0x1E695DF20] dictionaryWithObjects:v129 forKeys:v128 count:4];
-        if (!CMPhotoCompressionSessionOpenExistingContainerForModification() && (!v110 || !v119 || !CMPhotoCompressionSessionAddMetadataFromImageProperties()))
+        if (!CMPhotoCompressionSessionOpenExistingContainerForModification() && (!metadataCopy || !v119 || !CMPhotoCompressionSessionAddMetadataFromImageProperties()))
         {
-          if (v112)
+          if (bufferCopy)
           {
             v81 = 160;
             if (v122 < 0xA0)
@@ -1553,7 +1553,7 @@ LABEL_137:
             v127[1] = [MEMORY[0x1E696AD98] numberWithUnsignedLong:v82];
             [MEMORY[0x1E695DF20] dictionaryWithObjects:v127 forKeys:v126 count:2];
             v83 = CMPhotoCompressionSessionAddThumbnail();
-            v24 = v130;
+            dataCopy = v130;
             if (v83)
             {
               goto LABEL_110;
@@ -1562,19 +1562,19 @@ LABEL_137:
 
           else
           {
-            v24 = v130;
+            dataCopy = v130;
           }
 
-          v84 = a6;
-          v85 = a10;
-          if (a6 && v113 != a6)
+          dataCopy2 = data;
+          teethSegmentationMatteCopy5 = teethSegmentationMatte;
+          if (data && depthData != data)
           {
-            if ([a6 depthDataType] != 1751411059)
+            if ([data depthDataType] != 1751411059)
             {
-              v84 = [a6 depthDataByConvertingToDepthDataType:1751411059];
+              dataCopy2 = [data depthDataByConvertingToDepthDataType:1751411059];
             }
 
-            if ([v84 isDepthDataFiltered])
+            if ([dataCopy2 isDepthDataFiltered])
             {
               v86 = 0;
             }
@@ -1584,99 +1584,99 @@ LABEL_137:
               v86 = &unk_1F1CE9980;
             }
 
-            v87 = [v84 copyAuxiliaryMetadata];
+            copyAuxiliaryMetadata = [dataCopy2 copyAuxiliaryMetadata];
             v88 = *MEMORY[0x1E696D260];
-            [v84 depthDataMap];
-            _addAuxiliaryImage(v24, 0, v88, 1, 0, v87, v86);
-            v85 = a10;
-            if (v87)
+            [dataCopy2 depthDataMap];
+            _addAuxiliaryImage(dataCopy, 0, v88, 1, 0, copyAuxiliaryMetadata, v86);
+            teethSegmentationMatteCopy5 = teethSegmentationMatte;
+            if (copyAuxiliaryMetadata)
             {
-              CFRelease(v87);
+              CFRelease(copyAuxiliaryMetadata);
             }
           }
 
-          if (a7)
+          if (matte)
           {
-            if (v114 != a7)
+            if (portraitEffectsMatte != matte)
             {
-              v89 = [a7 copyAuxiliaryMetadata];
+              copyAuxiliaryMetadata2 = [matte copyAuxiliaryMetadata];
               v90 = *MEMORY[0x1E696D288];
-              [a7 mattingImage];
+              [matte mattingImage];
               v91 = v90;
-              v85 = a10;
-              _addAuxiliaryImage(v24, 0, v91, 5, 0, v89, 0);
-              if (v89)
+              teethSegmentationMatteCopy5 = teethSegmentationMatte;
+              _addAuxiliaryImage(dataCopy, 0, v91, 5, 0, copyAuxiliaryMetadata2, 0);
+              if (copyAuxiliaryMetadata2)
               {
-                CFRelease(v89);
+                CFRelease(copyAuxiliaryMetadata2);
               }
             }
           }
 
-          if (v120)
+          if (segmentationMatteCopy)
           {
-            if (v115 != v120)
+            if (v115 != segmentationMatteCopy)
             {
-              v92 = [(AVSemanticSegmentationMatte *)v120 copyAuxiliaryMetadata];
+              copyAuxiliaryMetadata3 = [(AVSemanticSegmentationMatte *)segmentationMatteCopy copyAuxiliaryMetadata];
               v93 = *MEMORY[0x1E696D298];
               v94 = *MEMORY[0x1E69917E0];
-              [(AVSemanticSegmentationMatte *)v120 mattingImage];
+              [(AVSemanticSegmentationMatte *)segmentationMatteCopy mattingImage];
               v95 = v93;
-              v85 = a10;
-              _addAuxiliaryImage(v24, 0, v95, 4, v94, v92, 0);
-              if (v92)
+              teethSegmentationMatteCopy5 = teethSegmentationMatte;
+              _addAuxiliaryImage(dataCopy, 0, v95, 4, v94, copyAuxiliaryMetadata3, 0);
+              if (copyAuxiliaryMetadata3)
               {
-                CFRelease(v92);
+                CFRelease(copyAuxiliaryMetadata3);
               }
             }
           }
 
-          if (a9)
+          if (skinSegmentationMatte)
           {
-            if (v116 != a9)
+            if (v116 != skinSegmentationMatte)
             {
-              v96 = [a9 copyAuxiliaryMetadata];
+              copyAuxiliaryMetadata4 = [skinSegmentationMatte copyAuxiliaryMetadata];
               v97 = *MEMORY[0x1E696D2A0];
               v98 = *MEMORY[0x1E69917E8];
-              [a9 mattingImage];
+              [skinSegmentationMatte mattingImage];
               v99 = v97;
-              v85 = a10;
-              _addAuxiliaryImage(v24, 0, v99, 4, v98, v96, 0);
-              if (v96)
+              teethSegmentationMatteCopy5 = teethSegmentationMatte;
+              _addAuxiliaryImage(dataCopy, 0, v99, 4, v98, copyAuxiliaryMetadata4, 0);
+              if (copyAuxiliaryMetadata4)
               {
-                CFRelease(v96);
+                CFRelease(copyAuxiliaryMetadata4);
               }
             }
           }
 
-          if (v85)
+          if (teethSegmentationMatteCopy5)
           {
-            if (v117 != v85)
+            if (v117 != teethSegmentationMatteCopy5)
             {
-              v100 = [(AVSemanticSegmentationMatte *)v85 copyAuxiliaryMetadata];
-              v101 = v85;
+              copyAuxiliaryMetadata5 = [(AVSemanticSegmentationMatte *)teethSegmentationMatteCopy5 copyAuxiliaryMetadata];
+              v101 = teethSegmentationMatteCopy5;
               v102 = *MEMORY[0x1E696D2B0];
               v103 = *MEMORY[0x1E69917F8];
               [(AVSemanticSegmentationMatte *)v101 mattingImage];
-              _addAuxiliaryImage(v24, 0, v102, 4, v103, v100, 0);
-              if (v100)
+              _addAuxiliaryImage(dataCopy, 0, v102, 4, v103, copyAuxiliaryMetadata5, 0);
+              if (copyAuxiliaryMetadata5)
               {
-                CFRelease(v100);
+                CFRelease(copyAuxiliaryMetadata5);
               }
             }
           }
 
-          if (a11)
+          if (glassesSegmentationMatte)
           {
-            if (v118 != a11)
+            if (v118 != glassesSegmentationMatte)
             {
-              v104 = [a11 copyAuxiliaryMetadata];
+              copyAuxiliaryMetadata6 = [glassesSegmentationMatte copyAuxiliaryMetadata];
               v105 = *MEMORY[0x1E696D290];
               v106 = *MEMORY[0x1E69917D8];
-              [a11 mattingImage];
-              _addAuxiliaryImage(v24, 0, v105, 4, v106, v104, 0);
-              if (v104)
+              [glassesSegmentationMatte mattingImage];
+              _addAuxiliaryImage(dataCopy, 0, v105, 4, v106, copyAuxiliaryMetadata6, 0);
+              if (copyAuxiliaryMetadata6)
               {
-                CFRelease(v104);
+                CFRelease(copyAuxiliaryMetadata6);
               }
             }
           }
@@ -1701,7 +1701,7 @@ LABEL_111:
       if (!v130)
       {
 LABEL_109:
-        v24 = 0;
+        dataCopy = 0;
         goto LABEL_110;
       }
 
@@ -1713,49 +1713,49 @@ LABEL_108:
     goto LABEL_85;
   }
 
-  v55 = v110;
-  if (!v42)
+  metadata = metadataCopy;
+  if (!_isProRAWPhoto)
   {
-    if (v41)
+    if (_isSushiRAWPhoto)
     {
       if ((v119 & 1) == 0)
       {
-        v55 = [(AVCapturePhoto *)self metadata];
+        metadata = [(AVCapturePhoto *)self metadata];
       }
 
       if ((v111 & 1) == 0)
       {
-        v112 = [(AVCapturePhoto *)self _embeddedThumbnailSourcePixelBuffer];
-        a4 = [(AVCapturePhoto *)self embeddedThumbnailPhotoFormat];
+        bufferCopy = [(AVCapturePhoto *)self _embeddedThumbnailSourcePixelBuffer];
+        format = [(AVCapturePhoto *)self embeddedThumbnailPhotoFormat];
       }
 
-      v65 = [a4 objectForKeyedSubscript:v44];
-      v66 = [objc_msgSend(a4 objectForKeyedSubscript:{*MEMORY[0x1E6987E08]), "intValue"}];
-      v67 = avcp_copyDNGFileDataRepresentationForSushiRawBuffer(-[AVCapturePhoto pixelBuffer](self, "pixelBuffer"), v112, v55, 0, v65, v66 | ([objc_msgSend(a4 objectForKeyedSubscript:{*MEMORY[0x1E6987D70]), "intValue"}] << 32));
+      v65 = [format objectForKeyedSubscript:v44];
+      v66 = [objc_msgSend(format objectForKeyedSubscript:{*MEMORY[0x1E6987E08]), "intValue"}];
+      v67 = avcp_copyDNGFileDataRepresentationForSushiRawBuffer(-[AVCapturePhoto pixelBuffer](self, "pixelBuffer"), bufferCopy, metadata, 0, v65, v66 | ([objc_msgSend(format objectForKeyedSubscript:{*MEMORY[0x1E6987D70]), "intValue"}] << 32));
       v40 = v67;
     }
 
     else
     {
-      v69 = [(AVCapturePhotoSettings *)self->_internal->unresolvedSettings format];
-      if (![(NSDictionary *)v69 objectForKeyedSubscript:*MEMORY[0x1E6966130]])
+      format2 = [(AVCapturePhotoSettings *)self->_internal->unresolvedSettings format];
+      if (![(NSDictionary *)format2 objectForKeyedSubscript:*MEMORY[0x1E6966130]])
       {
         goto LABEL_109;
       }
 
       if ((v119 & 1) == 0)
       {
-        v55 = [(AVCapturePhoto *)self metadata];
+        metadata = [(AVCapturePhoto *)self metadata];
       }
 
       if ((v111 & 1) == 0)
       {
-        a4 = [(AVCapturePhoto *)self embeddedThumbnailPhotoFormat];
+        format = [(AVCapturePhoto *)self embeddedThumbnailPhotoFormat];
       }
 
-      v70 = [a4 objectForKeyedSubscript:v44];
+      v70 = [format objectForKeyedSubscript:v44];
       v71 = avcp_copyCGImageForUncompressedBuffer(self->_internal->photoPixelBuffer);
-      v40 = avcp_copyTIFFFileDataRepresentationForImage(v71, v55, v70);
+      v40 = avcp_copyTIFFFileDataRepresentationForImage(v71, metadata, v70);
       if (v71)
       {
         CFRelease(v71);
@@ -1766,15 +1766,15 @@ LABEL_108:
 
     v68 = v67;
 LABEL_96:
-    v24 = 0;
+    dataCopy = 0;
 LABEL_182:
     v73 = 0;
     goto LABEL_112;
   }
 
 LABEL_85:
-  v56 = [objc_msgSend(a4 objectForKeyedSubscript:{*MEMORY[0x1E6987E08]), "intValue"}];
-  v57 = [objc_msgSend(a4 objectForKeyedSubscript:{*MEMORY[0x1E6987D70]), "intValue"}];
+  v56 = [objc_msgSend(format objectForKeyedSubscript:{*MEMORY[0x1E6987E08]), "intValue"}];
+  v57 = [objc_msgSend(format objectForKeyedSubscript:{*MEMORY[0x1E6987D70]), "intValue"}];
   v129[0] = 0;
   if (CMPhotoDNGCompressorCreateFromSourceDNGWithModificationHandler())
   {
@@ -1783,11 +1783,11 @@ LABEL_85:
 
   if ((v34 & 1) == 0)
   {
-    v58 = [MEMORY[0x1E695DF90] dictionary];
-    v59 = [objc_msgSend(v29 objectForKeyedSubscript:{*MEMORY[0x1E6987C58]), "intValue"}];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    v59 = [objc_msgSend(_defaultRawCompressionSettings objectForKeyedSubscript:{*MEMORY[0x1E6987C58]), "intValue"}];
     v60 = [MEMORY[0x1E696AD98] numberWithInt:v59];
-    [v58 setObject:v60 forKeyedSubscript:*MEMORY[0x1E6991A30]];
-    [objc_msgSend(v29 objectForKeyedSubscript:{*MEMORY[0x1E6987DC0]), "doubleValue"}];
+    [dictionary setObject:v60 forKeyedSubscript:*MEMORY[0x1E6991A30]];
+    [objc_msgSend(_defaultRawCompressionSettings objectForKeyedSubscript:{*MEMORY[0x1E6987DC0]), "doubleValue"}];
     v62 = v61;
     v63 = *MEMORY[0x1E6991A40];
     if (v61 == 1.0)
@@ -1797,12 +1797,12 @@ LABEL_85:
 
     else
     {
-      [v58 setObject:&unk_1F1CE99B0 forKeyedSubscript:v63];
+      [dictionary setObject:&unk_1F1CE99B0 forKeyedSubscript:v63];
       v64 = [MEMORY[0x1E696AD98] numberWithDouble:v62];
       v63 = *MEMORY[0x1E6991A50];
     }
 
-    [v58 setObject:v64 forKeyedSubscript:v63];
+    [dictionary setObject:v64 forKeyedSubscript:v63];
     if (CMPhotoDNGCompressorReplaceMainImageOptions())
     {
       goto LABEL_107;
@@ -1816,7 +1816,7 @@ LABEL_85:
 
   if (v111)
   {
-    if (v112)
+    if (bufferCopy)
     {
       if (v56 <= v57)
       {
@@ -1831,7 +1831,7 @@ LABEL_85:
       v127[0] = *MEMORY[0x1E6991A60];
       v128[0] = [MEMORY[0x1E696AD98] numberWithInt:v76];
       [MEMORY[0x1E695DF20] dictionaryWithObjects:v128 forKeys:v127 count:1];
-      if ([AVCapturePhotoOutput isAppleProRAWPixelFormat:CVPixelBufferGetPixelFormatType(v112)])
+      if ([AVCapturePhotoOutput isAppleProRAWPixelFormat:CVPixelBufferGetPixelFormatType(bufferCopy)])
       {
         if (CMPhotoDNGCompressorSetPreviewImageFromRAW())
         {
@@ -1865,24 +1865,24 @@ LABEL_132:
   v129[0] = 0;
   if (CMPhotoDNGCompressorFinalizeAndCreateData())
   {
-    v24 = 0;
+    dataCopy = 0;
     goto LABEL_111;
   }
 
   v40 = v129[0];
-  v24 = 0;
+  dataCopy = 0;
 LABEL_112:
   v74 = v125;
   if (v125)
   {
 LABEL_113:
-    *a13 = v74;
+    *reason = v74;
   }
 
 LABEL_114:
-  if (v24)
+  if (dataCopy)
   {
-    CFRelease(v24);
+    CFRelease(dataCopy);
   }
 
   if (v73)
@@ -2037,13 +2037,13 @@ LABEL_34:
     return 0;
   }
 
-  v3 = [(AVCapturePhoto *)self fileDataRepresentation];
-  if (!v3)
+  fileDataRepresentation = [(AVCapturePhoto *)self fileDataRepresentation];
+  if (!fileDataRepresentation)
   {
     return 0;
   }
 
-  v5 = v3;
+  v5 = fileDataRepresentation;
   v6 = OUTLINED_FUNCTION_2(MEMORY[0x1E695DF20], v4, *MEMORY[0x1E696E118], self->_internal->processedFileType);
   v7 = CGImageSourceCreateWithData(v5, v6);
   if (!v7)
@@ -2092,7 +2092,7 @@ LABEL_7:
       return 1;
     }
 
-    *(*a1 + 144) = [[AVPortraitEffectsMatte alloc] initWithPixelBuffer:*a2 auxiliaryMetadata:*a3];
+    *(*self + 144) = [[AVPortraitEffectsMatte alloc] initWithPixelBuffer:*a2 auxiliaryMetadata:*a3];
     result = *a2;
   }
 

@@ -1,14 +1,14 @@
 @interface MusicKit_SoftLinking_MPModelLibraryPlaylistEntryReactionChangeRequest
-- (MusicKit_SoftLinking_MPModelLibraryPlaylistEntryReactionChangeRequest)initWithPlaylist:(id)a3 playlistEntry:(id)a4 reactionText:(id)a5;
+- (MusicKit_SoftLinking_MPModelLibraryPlaylistEntryReactionChangeRequest)initWithPlaylist:(id)playlist playlistEntry:(id)entry reactionText:(id)text;
 @end
 
 @implementation MusicKit_SoftLinking_MPModelLibraryPlaylistEntryReactionChangeRequest
 
-- (MusicKit_SoftLinking_MPModelLibraryPlaylistEntryReactionChangeRequest)initWithPlaylist:(id)a3 playlistEntry:(id)a4 reactionText:(id)a5
+- (MusicKit_SoftLinking_MPModelLibraryPlaylistEntryReactionChangeRequest)initWithPlaylist:(id)playlist playlistEntry:(id)entry reactionText:(id)text
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  playlistCopy = playlist;
+  entryCopy = entry;
+  textCopy = text;
   v20.receiver = self;
   v20.super_class = MusicKit_SoftLinking_MPModelLibraryPlaylistEntryReactionChangeRequest;
   v11 = [(MusicKit_SoftLinking_MPModelLibraryPlaylistEntryReactionChangeRequest *)&v20 init];
@@ -33,9 +33,9 @@
     v13 = v12;
     _Block_object_dispose(&v22, 8);
     v14 = [v12 alloc];
-    v15 = [v8 _underlyingModelObject];
-    v16 = [v9 _underlyingModelObject];
-    v17 = [v14 initWithPlaylist:v15 playlistEntry:v16 reactionText:v10];
+    _underlyingModelObject = [playlistCopy _underlyingModelObject];
+    _underlyingModelObject2 = [entryCopy _underlyingModelObject];
+    v17 = [v14 initWithPlaylist:_underlyingModelObject playlistEntry:_underlyingModelObject2 reactionText:textCopy];
     underlyingPlaylistEntryReactionChangeRequest = v11->_underlyingPlaylistEntryReactionChangeRequest;
     v11->_underlyingPlaylistEntryReactionChangeRequest = v17;
   }

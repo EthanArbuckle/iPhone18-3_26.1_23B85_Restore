@@ -1,26 +1,26 @@
 @interface C2MPPathInfo
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasApplicationBytesSent:(BOOL)a3;
-- (void)setHasTransportSmoothedRttMillis:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasApplicationBytesSent:(BOOL)sent;
+- (void)setHasTransportSmoothedRttMillis:(BOOL)millis;
+- (void)writeTo:(id)to;
 @end
 
 @implementation C2MPPathInfo
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   interfaceType = self->_interfaceType;
   if (interfaceType)
   {
-    [v3 setObject:interfaceType forKey:@"interface_type"];
+    [dictionary setObject:interfaceType forKey:@"interface_type"];
   }
 
   radioType = self->_radioType;
@@ -68,9 +68,9 @@ LABEL_9:
   return v4;
 }
 
-- (void)setHasApplicationBytesSent:(BOOL)a3
+- (void)setHasApplicationBytesSent:(BOOL)sent
 {
-  if (a3)
+  if (sent)
   {
     v3 = 2;
   }
@@ -83,9 +83,9 @@ LABEL_9:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasTransportSmoothedRttMillis:(BOOL)a3
+- (void)setHasTransportSmoothedRttMillis:(BOOL)millis
 {
-  if (a3)
+  if (millis)
   {
     v3 = 4;
   }
@@ -104,26 +104,26 @@ LABEL_9:
   v8.receiver = self;
   v8.super_class = C2MPPathInfo;
   v4 = [(C2MPPathInfo *)&v8 description];
-  v5 = [(C2MPPathInfo *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(C2MPPathInfo *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v9 = v4;
+  toCopy = to;
+  v9 = toCopy;
   if (self->_interfaceType)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_radioType)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   has = self->_has;
@@ -131,7 +131,7 @@ LABEL_9:
   {
     applicationBytesSent = self->_applicationBytesSent;
     PBDataWriterWriteUint64Field();
-    v4 = v9;
+    toCopy = v9;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -152,39 +152,39 @@ LABEL_7:
 
   applicationBytesReceived = self->_applicationBytesReceived;
   PBDataWriterWriteUint64Field();
-  v4 = v9;
+  toCopy = v9;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_8:
     transportSmoothedRttMillis = self->_transportSmoothedRttMillis;
     PBDataWriterWriteUint64Field();
-    v4 = v9;
+    toCopy = v9;
   }
 
 LABEL_9:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_interfaceType)
   {
-    [v4 setInterfaceType:?];
-    v4 = v6;
+    [toCopy setInterfaceType:?];
+    toCopy = v6;
   }
 
   if (self->_radioType)
   {
     [v6 setRadioType:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(v4 + 2) = self->_applicationBytesSent;
-    *(v4 + 48) |= 2u;
+    *(toCopy + 2) = self->_applicationBytesSent;
+    *(toCopy + 48) |= 2u;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -203,26 +203,26 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  *(v4 + 1) = self->_applicationBytesReceived;
-  *(v4 + 48) |= 1u;
+  *(toCopy + 1) = self->_applicationBytesReceived;
+  *(toCopy + 48) |= 1u;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_8:
-    *(v4 + 3) = self->_transportSmoothedRttMillis;
-    *(v4 + 48) |= 4u;
+    *(toCopy + 3) = self->_transportSmoothedRttMillis;
+    *(toCopy + 48) |= 4u;
   }
 
 LABEL_9:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_interfaceType copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_interfaceType copyWithZone:zone];
   v7 = *(v5 + 32);
   *(v5 + 32) = v6;
 
-  v8 = [(NSString *)self->_radioType copyWithZone:a3];
+  v8 = [(NSString *)self->_radioType copyWithZone:zone];
   v9 = *(v5 + 40);
   *(v5 + 40) = v8;
 
@@ -264,16 +264,16 @@ LABEL_4:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_20;
   }
 
   interfaceType = self->_interfaceType;
-  if (interfaceType | *(v4 + 4))
+  if (interfaceType | *(equalCopy + 4))
   {
     if (![(NSString *)interfaceType isEqual:?])
     {
@@ -282,7 +282,7 @@ LABEL_4:
   }
 
   radioType = self->_radioType;
-  if (radioType | *(v4 + 5))
+  if (radioType | *(equalCopy + 5))
   {
     if (![(NSString *)radioType isEqual:?])
     {
@@ -292,13 +292,13 @@ LABEL_4:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 48) & 2) == 0 || self->_applicationBytesSent != *(v4 + 2))
+    if ((*(equalCopy + 48) & 2) == 0 || self->_applicationBytesSent != *(equalCopy + 2))
     {
       goto LABEL_20;
     }
   }
 
-  else if ((*(v4 + 48) & 2) != 0)
+  else if ((*(equalCopy + 48) & 2) != 0)
   {
 LABEL_20:
     v7 = 0;
@@ -307,21 +307,21 @@ LABEL_20:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 48) & 1) == 0 || self->_applicationBytesReceived != *(v4 + 1))
+    if ((*(equalCopy + 48) & 1) == 0 || self->_applicationBytesReceived != *(equalCopy + 1))
     {
       goto LABEL_20;
     }
   }
 
-  else if (*(v4 + 48))
+  else if (*(equalCopy + 48))
   {
     goto LABEL_20;
   }
 
-  v7 = (*(v4 + 48) & 4) == 0;
+  v7 = (*(equalCopy + 48) & 4) == 0;
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 48) & 4) == 0 || self->_transportSmoothedRttMillis != *(v4 + 3))
+    if ((*(equalCopy + 48) & 4) == 0 || self->_transportSmoothedRttMillis != *(equalCopy + 3))
     {
       goto LABEL_20;
     }
@@ -376,28 +376,28 @@ LABEL_4:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v6 = v4;
-  if (v4[4])
+  fromCopy = from;
+  v6 = fromCopy;
+  if (fromCopy[4])
   {
     [(C2MPPathInfo *)self setInterfaceType:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (v4[5])
+  if (fromCopy[5])
   {
     [(C2MPPathInfo *)self setRadioType:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 48);
+  v5 = *(fromCopy + 48);
   if ((v5 & 2) != 0)
   {
-    self->_applicationBytesSent = v4[2];
+    self->_applicationBytesSent = fromCopy[2];
     *&self->_has |= 2u;
-    v5 = *(v4 + 48);
+    v5 = *(fromCopy + 48);
     if ((v5 & 1) == 0)
     {
 LABEL_7:
@@ -410,17 +410,17 @@ LABEL_7:
     }
   }
 
-  else if ((v4[6] & 1) == 0)
+  else if ((fromCopy[6] & 1) == 0)
   {
     goto LABEL_7;
   }
 
-  self->_applicationBytesReceived = v4[1];
+  self->_applicationBytesReceived = fromCopy[1];
   *&self->_has |= 1u;
-  if ((v4[6] & 4) != 0)
+  if ((fromCopy[6] & 4) != 0)
   {
 LABEL_8:
-    self->_transportSmoothedRttMillis = v4[3];
+    self->_transportSmoothedRttMillis = fromCopy[3];
     *&self->_has |= 4u;
   }
 

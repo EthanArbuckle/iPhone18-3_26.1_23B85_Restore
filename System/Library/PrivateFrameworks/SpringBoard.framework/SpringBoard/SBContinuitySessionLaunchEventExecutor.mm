@@ -1,60 +1,60 @@
 @interface SBContinuitySessionLaunchEventExecutor
-- (void)_executeAppLaunchEvent:(id)a3 animatedly:(BOOL)a4 completion:(id)a5;
-- (void)_executeDebugLaunchEvent:(id)a3 animatedly:(BOOL)a4 completion:(id)a5;
-- (void)_executeNotificationLaunchEvent:(id)a3 animatedly:(BOOL)a4 completion:(id)a5;
-- (void)_executeWidgetLaunchEvent:(id)a3 animatedly:(BOOL)a4 completion:(id)a5;
-- (void)executeLaunchEvent:(id)a3 animatedly:(BOOL)a4 completion:(id)a5;
+- (void)_executeAppLaunchEvent:(id)event animatedly:(BOOL)animatedly completion:(id)completion;
+- (void)_executeDebugLaunchEvent:(id)event animatedly:(BOOL)animatedly completion:(id)completion;
+- (void)_executeNotificationLaunchEvent:(id)event animatedly:(BOOL)animatedly completion:(id)completion;
+- (void)_executeWidgetLaunchEvent:(id)event animatedly:(BOOL)animatedly completion:(id)completion;
+- (void)executeLaunchEvent:(id)event animatedly:(BOOL)animatedly completion:(id)completion;
 @end
 
 @implementation SBContinuitySessionLaunchEventExecutor
 
-- (void)executeLaunchEvent:(id)a3 animatedly:(BOOL)a4 completion:(id)a5
+- (void)executeLaunchEvent:(id)event animatedly:(BOOL)animatedly completion:(id)completion
 {
-  v6 = a4;
-  v9 = a3;
-  v10 = a5;
-  if (!v9)
+  animatedlyCopy = animatedly;
+  eventCopy = event;
+  completionCopy = completion;
+  if (!eventCopy)
   {
     [SBContinuitySessionLaunchEventExecutor executeLaunchEvent:a2 animatedly:self completion:?];
   }
 
-  v11 = [v9 type];
-  v12 = [v11 isEqualToString:@"notification"];
+  type = [eventCopy type];
+  v12 = [type isEqualToString:@"notification"];
 
   if (v12)
   {
-    [(SBContinuitySessionLaunchEventExecutor *)self _executeNotificationLaunchEvent:v9 animatedly:v6 completion:v10];
+    [(SBContinuitySessionLaunchEventExecutor *)self _executeNotificationLaunchEvent:eventCopy animatedly:animatedlyCopy completion:completionCopy];
   }
 
   else
   {
-    v13 = [v9 type];
-    v14 = [v13 isEqualToString:@"widget"];
+    type2 = [eventCopy type];
+    v14 = [type2 isEqualToString:@"widget"];
 
     if (v14)
     {
-      [(SBContinuitySessionLaunchEventExecutor *)self _executeWidgetLaunchEvent:v9 animatedly:v6 completion:v10];
+      [(SBContinuitySessionLaunchEventExecutor *)self _executeWidgetLaunchEvent:eventCopy animatedly:animatedlyCopy completion:completionCopy];
     }
 
     else
     {
-      v15 = [v9 type];
-      v16 = [MEMORY[0x277D67CC8] launchEventType];
-      v17 = [v15 isEqualToString:v16];
+      type3 = [eventCopy type];
+      launchEventType = [MEMORY[0x277D67CC8] launchEventType];
+      v17 = [type3 isEqualToString:launchEventType];
 
       if (v17)
       {
-        [(SBContinuitySessionLaunchEventExecutor *)self _executeAppLaunchEvent:v9 animatedly:v6 completion:v10];
+        [(SBContinuitySessionLaunchEventExecutor *)self _executeAppLaunchEvent:eventCopy animatedly:animatedlyCopy completion:completionCopy];
       }
 
       else
       {
-        v18 = [v9 type];
-        v19 = [v18 isEqualToString:@"debug"];
+        type4 = [eventCopy type];
+        v19 = [type4 isEqualToString:@"debug"];
 
         if (v19)
         {
-          [(SBContinuitySessionLaunchEventExecutor *)self _executeDebugLaunchEvent:v9 animatedly:v6 completion:v10];
+          [(SBContinuitySessionLaunchEventExecutor *)self _executeDebugLaunchEvent:eventCopy animatedly:animatedlyCopy completion:completionCopy];
         }
 
         else
@@ -65,30 +65,30 @@
             [SBContinuitySessionLaunchEventExecutor executeLaunchEvent:animatedly:completion:];
           }
 
-          v10[2](v10);
+          completionCopy[2](completionCopy);
         }
       }
     }
   }
 }
 
-- (void)_executeNotificationLaunchEvent:(id)a3 animatedly:(BOOL)a4 completion:(id)a5
+- (void)_executeNotificationLaunchEvent:(id)event animatedly:(BOOL)animatedly completion:(id)completion
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a5;
+  eventCopy = event;
+  completionCopy = completion;
   v8 = SBLogContinuitySession();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v14 = v6;
+    v14 = eventCopy;
     _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEFAULT, "Building foreground action for launch event %{public}@", buf, 0xCu);
   }
 
-  v9 = [v6 payload];
-  v12 = v6;
-  v10 = v7;
-  v11 = v6;
+  payload = [eventCopy payload];
+  v12 = eventCopy;
+  v10 = completionCopy;
+  v11 = eventCopy;
   UNSBuildForegroundAction();
 }
 
@@ -266,54 +266,54 @@ void __96__SBContinuitySessionLaunchEventExecutor__executeNotificationLaunchEven
   [a2 addTransactionDidCompleteBlock:v3];
 }
 
-- (void)_executeWidgetLaunchEvent:(id)a3 animatedly:(BOOL)a4 completion:(id)a5
+- (void)_executeWidgetLaunchEvent:(id)event animatedly:(BOOL)animatedly completion:(id)completion
 {
-  v6 = a4;
+  animatedlyCopy = animatedly;
   v45 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a5;
+  eventCopy = event;
+  completionCopy = completion;
   v11 = SBLogContinuitySession();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v44 = v9;
+    v44 = eventCopy;
     _os_log_impl(&dword_21ED4E000, v11, OS_LOG_TYPE_DEFAULT, "Building foreground action for launch event %{public}@", buf, 0xCu);
   }
 
   v12 = objc_alloc(MEMORY[0x277CFA540]);
-  v13 = [v9 payload];
-  v14 = [v12 initWithData:v13];
+  payload = [eventCopy payload];
+  v14 = [v12 initWithData:payload];
 
   if (v14)
   {
-    v37 = v6;
+    v37 = animatedlyCopy;
     v15 = +[SBContinuitySessionManager sharedInstance];
-    v16 = [v15 currentSession];
-    v17 = [v16 mainWindowScene];
+    currentSession = [v15 currentSession];
+    mainWindowScene = [currentSession mainWindowScene];
 
-    if (!v17)
+    if (!mainWindowScene)
     {
       [SBContinuitySessionLaunchEventExecutor _executeWidgetLaunchEvent:a2 animatedly:self completion:?];
     }
 
     v18 = +[SBApplicationController sharedInstance];
-    v19 = [v14 extensionIdentity];
-    v20 = [v19 containerBundleIdentifier];
+    extensionIdentity = [v14 extensionIdentity];
+    containerBundleIdentifier = [extensionIdentity containerBundleIdentifier];
     v38 = v18;
-    v21 = [v18 applicationWithBundleIdentifier:v20];
+    v21 = [v18 applicationWithBundleIdentifier:containerBundleIdentifier];
 
     v22 = +[SBMainWorkspace sharedInstance];
     v23 = [SBDeviceApplicationSceneEntity alloc];
-    v24 = [v17 sceneManager];
-    v25 = [v17 _sbDisplayConfiguration];
-    v26 = [v25 identity];
+    sceneManager = [mainWindowScene sceneManager];
+    _sbDisplayConfiguration = [mainWindowScene _sbDisplayConfiguration];
+    identity = [_sbDisplayConfiguration identity];
     v36 = v21;
-    v27 = [(SBDeviceApplicationSceneEntity *)v23 initWithApplication:v21 sceneHandleProvider:v24 displayIdentity:v26];
+    v27 = [(SBDeviceApplicationSceneEntity *)v23 initWithApplication:v21 sceneHandleProvider:sceneManager displayIdentity:identity];
 
-    v28 = [v14 action];
-    if (v28)
+    action = [v14 action];
+    if (action)
     {
-      v29 = [MEMORY[0x277CBEB98] setWithObject:v28];
+      v29 = [MEMORY[0x277CBEB98] setWithObject:action];
       [(SBApplicationSceneEntity *)v27 addActions:v29];
     }
 
@@ -327,28 +327,28 @@ void __96__SBContinuitySessionLaunchEventExecutor__executeNotificationLaunchEven
       v30 = 4;
     }
 
-    v31 = [v17 _sbDisplayConfiguration];
-    v32 = [v22 createRequestForApplicationActivation:v27 withDisplayConfiguration:v31 options:v30];
+    _sbDisplayConfiguration2 = [mainWindowScene _sbDisplayConfiguration];
+    v32 = [v22 createRequestForApplicationActivation:v27 withDisplayConfiguration:_sbDisplayConfiguration2 options:v30];
 
     if (v32)
     {
-      v33 = [MEMORY[0x277CF0CD0] processHandle];
-      [v32 setOriginatingProcess:v33];
+      processHandle = [MEMORY[0x277CF0CD0] processHandle];
+      [v32 setOriginatingProcess:processHandle];
 
       v39[0] = MEMORY[0x277D85DD0];
       v39[1] = 3221225472;
       v39[2] = __90__SBContinuitySessionLaunchEventExecutor__executeWidgetLaunchEvent_animatedly_completion___block_invoke;
       v39[3] = &unk_2783AE5A0;
-      v40 = v9;
+      v40 = eventCopy;
       v41 = v14;
-      v42 = v10;
+      v42 = completionCopy;
       v34 = [v32 addCompletionHandler:v39];
       [v22 executeTransitionRequest:v32];
     }
 
-    else if (v10)
+    else if (completionCopy)
     {
-      v10[2](v10);
+      completionCopy[2](completionCopy);
     }
   }
 
@@ -360,9 +360,9 @@ void __96__SBContinuitySessionLaunchEventExecutor__executeNotificationLaunchEven
       [SBContinuitySessionLaunchEventExecutor _executeWidgetLaunchEvent:animatedly:completion:];
     }
 
-    if (v10)
+    if (completionCopy)
     {
-      v10[2](v10);
+      completionCopy[2](completionCopy);
     }
   }
 }
@@ -404,23 +404,23 @@ uint64_t __90__SBContinuitySessionLaunchEventExecutor__executeWidgetLaunchEvent_
   return result;
 }
 
-- (void)_executeAppLaunchEvent:(id)a3 animatedly:(BOOL)a4 completion:(id)a5
+- (void)_executeAppLaunchEvent:(id)event animatedly:(BOOL)animatedly completion:(id)completion
 {
   v31 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
+  eventCopy = event;
+  completionCopy = completion;
   v9 = SBLogContinuitySession();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v30 = v7;
+    v30 = eventCopy;
     _os_log_impl(&dword_21ED4E000, v9, OS_LOG_TYPE_DEFAULT, "Building foreground action for launch event %{public}@", buf, 0xCu);
   }
 
   v10 = MEMORY[0x277D67CC8];
-  v11 = [v7 payload];
+  payload = [eventCopy payload];
   v28 = 0;
-  v12 = [v10 eventWithData:v11 error:&v28];
+  v12 = [v10 eventWithData:payload error:&v28];
   v13 = v28;
 
   v14 = SBLogContinuitySession();
@@ -433,26 +433,26 @@ uint64_t __90__SBContinuitySessionLaunchEventExecutor__executeWidgetLaunchEvent_
       _os_log_impl(&dword_21ED4E000, v15, OS_LOG_TYPE_DEFAULT, "Successfully unarchived appLaunchEvent", buf, 2u);
     }
 
-    v16 = [v12 lsApplicationRecord];
-    v17 = [v16 bundleIdentifier];
+    lsApplicationRecord = [v12 lsApplicationRecord];
+    bundleIdentifier = [lsApplicationRecord bundleIdentifier];
 
-    if (v17)
+    if (bundleIdentifier)
     {
-      if (a4)
+      if (animatedly)
       {
 LABEL_12:
         v18 = 0;
 LABEL_16:
-        v21 = [MEMORY[0x277D0AD78] continuityDisplayService];
+        continuityDisplayService = [MEMORY[0x277D0AD78] continuityDisplayService];
         v24[0] = MEMORY[0x277D85DD0];
         v24[1] = 3221225472;
         v24[2] = __87__SBContinuitySessionLaunchEventExecutor__executeAppLaunchEvent_animatedly_completion___block_invoke;
         v24[3] = &unk_2783B8048;
-        v25 = v7;
-        v26 = v17;
-        v27 = v8;
-        v22 = v17;
-        [v21 openApplication:v22 withOptions:v18 completion:v24];
+        v25 = eventCopy;
+        v26 = bundleIdentifier;
+        v27 = completionCopy;
+        v22 = bundleIdentifier;
+        [continuityDisplayService openApplication:v22 withOptions:v18 completion:v24];
 
         goto LABEL_17;
       }
@@ -460,8 +460,8 @@ LABEL_16:
 
     else
     {
-      v19 = [v12 bundleIdentifier];
-      if (!v19)
+      bundleIdentifier2 = [v12 bundleIdentifier];
+      if (!bundleIdentifier2)
       {
         v23 = SBLogContinuitySession();
         if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -472,16 +472,16 @@ LABEL_16:
         goto LABEL_7;
       }
 
-      v17 = v19;
-      if (a4)
+      bundleIdentifier = bundleIdentifier2;
+      if (animatedly)
       {
         goto LABEL_12;
       }
     }
 
-    v20 = [MEMORY[0x277CBEB38] dictionary];
-    [v20 setObject:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277D67118]];
-    v18 = [MEMORY[0x277D0AD60] optionsWithDictionary:v20];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    [dictionary setObject:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277D67118]];
+    v18 = [MEMORY[0x277D0AD60] optionsWithDictionary:dictionary];
 
     goto LABEL_16;
   }
@@ -492,7 +492,7 @@ LABEL_16:
   }
 
 LABEL_7:
-  v8[2](v8);
+  completionCopy[2](completionCopy);
 LABEL_17:
 }
 
@@ -600,21 +600,21 @@ void __87__SBContinuitySessionLaunchEventExecutor__executeAppLaunchEvent_animate
   [a2 addTransactionDidCompleteBlock:v3];
 }
 
-- (void)_executeDebugLaunchEvent:(id)a3 animatedly:(BOOL)a4 completion:(id)a5
+- (void)_executeDebugLaunchEvent:(id)event animatedly:(BOOL)animatedly completion:(id)completion
 {
   v23 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
+  eventCopy = event;
+  completionCopy = completion;
   v9 = SBLogContinuitySession();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v22 = v7;
+    v22 = eventCopy;
     _os_log_impl(&dword_21ED4E000, v9, OS_LOG_TYPE_DEFAULT, "Executing debug launch event %{public}@", buf, 0xCu);
   }
 
-  v10 = [MEMORY[0x277D0AD78] continuityDisplayService];
-  if (a4)
+  continuityDisplayService = [MEMORY[0x277D0AD78] continuityDisplayService];
+  if (animatedly)
   {
     v11 = MEMORY[0x277CBEC10];
   }
@@ -631,12 +631,12 @@ void __87__SBContinuitySessionLaunchEventExecutor__executeAppLaunchEvent_animate
   v15[1] = 3221225472;
   v15[2] = __89__SBContinuitySessionLaunchEventExecutor__executeDebugLaunchEvent_animatedly_completion___block_invoke;
   v15[3] = &unk_2783B8048;
-  v16 = v7;
+  v16 = eventCopy;
   v17 = @"com.apple.tips";
-  v18 = v8;
-  v13 = v8;
-  v14 = v7;
-  [v10 openApplication:@"com.apple.tips" withOptions:v12 completion:v15];
+  v18 = completionCopy;
+  v13 = completionCopy;
+  v14 = eventCopy;
+  [continuityDisplayService openApplication:@"com.apple.tips" withOptions:v12 completion:v15];
 }
 
 void __89__SBContinuitySessionLaunchEventExecutor__executeDebugLaunchEvent_animatedly_completion___block_invoke(id *a1, uint64_t a2, void *a3)

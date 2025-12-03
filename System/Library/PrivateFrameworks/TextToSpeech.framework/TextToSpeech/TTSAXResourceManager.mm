@@ -2,17 +2,17 @@
 + (id)sharedInstance;
 - (NSSet)allAvailableLanguages;
 - (TTSAXResourceManager)init;
-- (id)_resourceWithVoiceId:(id)a3 assetId:(id)a4;
-- (id)_resourcesWithType:(unint64_t)a3 subType:(unint64_t)a4 languageCode:(id)a5;
-- (id)languageCodeForResourceName:(id)a3 withType:(unint64_t)a4;
-- (id)resourceWithVoiceId:(id)a3;
-- (id)resourcesWithType:(unint64_t)a3 subType:(unint64_t)a4;
-- (id)speechVoiceWithVoiceId:(id)a3;
-- (id)superCompactVoiceIdForCompactVoiceId:(id)a3;
-- (void)_performBlockOnObservers:(id)a3;
-- (void)addObserver:(id)a3;
+- (id)_resourceWithVoiceId:(id)id assetId:(id)assetId;
+- (id)_resourcesWithType:(unint64_t)type subType:(unint64_t)subType languageCode:(id)code;
+- (id)languageCodeForResourceName:(id)name withType:(unint64_t)type;
+- (id)resourceWithVoiceId:(id)id;
+- (id)resourcesWithType:(unint64_t)type subType:(unint64_t)subType;
+- (id)speechVoiceWithVoiceId:(id)id;
+- (id)superCompactVoiceIdForCompactVoiceId:(id)id;
+- (void)_performBlockOnObservers:(id)observers;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
-- (void)removeObserver:(id)a3;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation TTSAXResourceManager
@@ -56,28 +56,28 @@
   [(TTSAXResourceManager *)&v4 dealloc];
 }
 
-- (id)resourcesWithType:(unint64_t)a3 subType:(unint64_t)a4
+- (id)resourcesWithType:(unint64_t)type subType:(unint64_t)subType
 {
-  if ((a3 & 0xFFFFFFFFFFFFFFFELL) == 6)
+  if ((type & 0xFFFFFFFFFFFFFFFELL) == 6)
   {
     v5 = MEMORY[0x1E695E0F0];
   }
 
   else
   {
-    v5 = objc_msgSend__resourcesWithType_subType_languageCode_(self, a2, a3, a4, 0);
+    v5 = objc_msgSend__resourcesWithType_subType_languageCode_(self, a2, type, subType, 0);
   }
 
   return v5;
 }
 
-- (id)_resourcesWithType:(unint64_t)a3 subType:(unint64_t)a4 languageCode:(id)a5
+- (id)_resourcesWithType:(unint64_t)type subType:(unint64_t)subType languageCode:(id)code
 {
-  v12 = a5;
-  if (v12)
+  codeCopy = code;
+  if (codeCopy)
   {
     v13 = objc_msgSend_shared(_TtC12TextToSpeech22CoreSynthesisVoiceShim, v8, v9, v10, v11);
-    v17 = objc_msgSend_resourcesWithLanguageCode_(v13, v14, v12, v15, v16);
+    v17 = objc_msgSend_resourcesWithLanguageCode_(v13, v14, codeCopy, v15, v16);
   }
 
   else
@@ -89,18 +89,18 @@
   v23[1] = 3221225472;
   v23[2] = sub_1A934B98C;
   v23[3] = &unk_1E7880598;
-  v23[4] = a3;
-  v23[5] = a4;
+  v23[4] = type;
+  v23[5] = subType;
   v21 = objc_msgSend_ax_filteredArrayUsingBlock_(v17, v18, v23, v19, v20);
 
   return v21;
 }
 
-- (id)resourceWithVoiceId:(id)a3
+- (id)resourceWithVoiceId:(id)id
 {
-  if (a3)
+  if (id)
   {
-    v5 = objc_msgSend__resourceWithVoiceId_assetId_(self, a2, a3, 0, v3);
+    v5 = objc_msgSend__resourceWithVoiceId_assetId_(self, a2, id, 0, v3);
   }
 
   else
@@ -111,32 +111,32 @@
   return v5;
 }
 
-- (id)_resourceWithVoiceId:(id)a3 assetId:(id)a4
+- (id)_resourceWithVoiceId:(id)id assetId:(id)assetId
 {
-  v4 = a3;
+  idCopy = id;
   v9 = objc_msgSend_shared(_TtC12TextToSpeech22CoreSynthesisVoiceShim, v5, v6, v7, v8);
-  v13 = objc_msgSend_resourceVoiceWithIdentifier_(v9, v10, v4, v11, v12);
+  v13 = objc_msgSend_resourceVoiceWithIdentifier_(v9, v10, idCopy, v11, v12);
 
   return v13;
 }
 
-- (id)languageCodeForResourceName:(id)a3 withType:(unint64_t)a4
+- (id)languageCodeForResourceName:(id)name withType:(unint64_t)type
 {
-  v8 = a3;
-  if ((a4 & 0xFFFFFFFFFFFFFFFELL) == 6)
+  nameCopy = name;
+  if ((type & 0xFFFFFFFFFFFFFFFELL) == 6)
   {
     v9 = 0;
   }
 
   else
   {
-    v10 = objc_msgSend_resourcesWithType_subType_(self, v6, a4, 1, v7);
+    v10 = objc_msgSend_resourcesWithType_subType_(self, v6, type, 1, v7);
     v25 = MEMORY[0x1E69E9820];
     v26 = 3221225472;
     v27 = sub_1A934BBE0;
     v28 = &unk_1E78805C0;
-    v29 = v8;
-    v30 = a4;
+    v29 = nameCopy;
+    typeCopy = type;
     v14 = objc_msgSend_indexOfObjectPassingTest_(v10, v11, &v25, v12, v13);
     if (v14 == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -155,12 +155,12 @@
   return v9;
 }
 
-- (id)superCompactVoiceIdForCompactVoiceId:(id)a3
+- (id)superCompactVoiceIdForCompactVoiceId:(id)id
 {
-  v3 = a3;
-  if (objc_msgSend_hasPrefix_(v3, v4, @"com.apple.voice.compact", v5, v6))
+  idCopy = id;
+  if (objc_msgSend_hasPrefix_(idCopy, v4, @"com.apple.voice.compact", v5, v6))
   {
-    v9 = objc_msgSend_stringByReplacingOccurrencesOfString_withString_(v3, v7, @"compact", @"super-compact", v8);
+    v9 = objc_msgSend_stringByReplacingOccurrencesOfString_withString_(idCopy, v7, @"compact", @"super-compact", v8);
   }
 
   else
@@ -171,15 +171,15 @@
   return v9;
 }
 
-- (id)speechVoiceWithVoiceId:(id)a3
+- (id)speechVoiceWithVoiceId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v8 = objc_msgSend_allVoices_(self, v5, 0, v6, v7);
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = sub_1A934BDE8;
   v19[3] = &unk_1E78805E8;
-  v9 = v4;
+  v9 = idCopy;
   v20 = v9;
   v13 = objc_msgSend_indexOfObjectPassingTest_(v8, v10, v19, v11, v12);
   if (v13 == 0x7FFFFFFFFFFFFFFFLL)
@@ -216,24 +216,24 @@
   return allAvailableLanguages;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v3 = v4;
+  observerCopy = observer;
+  v3 = observerCopy;
   AX_PERFORM_WITH_LOCK();
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v3 = v4;
+  observerCopy = observer;
+  v3 = observerCopy;
   AX_PERFORM_WITH_LOCK();
 }
 
-- (void)_performBlockOnObservers:(id)a3
+- (void)_performBlockOnObservers:(id)observers
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  observersCopy = observers;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -244,7 +244,7 @@
   v17 = 3221225472;
   v18 = sub_1A934C430;
   v19 = &unk_1E7880670;
-  v20 = self;
+  selfCopy = self;
   v21 = &v22;
   AX_PERFORM_WITH_LOCK();
   v14 = 0u;
@@ -266,7 +266,7 @@
           objc_enumerationMutation(v5);
         }
 
-        v4[2](v4, *(*(&v12 + 1) + 8 * v9++));
+        observersCopy[2](observersCopy, *(*(&v12 + 1) + 8 * v9++));
       }
 
       while (v7 != v9);

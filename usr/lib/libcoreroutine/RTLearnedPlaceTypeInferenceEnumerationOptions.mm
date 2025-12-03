@@ -1,69 +1,69 @@
 @interface RTLearnedPlaceTypeInferenceEnumerationOptions
-- (RTLearnedPlaceTypeInferenceEnumerationOptions)initWithBatchSize:(unint64_t)a3 fetchLimit:(unint64_t)a4 offset:(unint64_t)a5 dateInterval:(id)a6 sortByCreationDate:(BOOL)a7 ascending:(BOOL)a8 filteredToPlaceTypes:(id)a9 filteredToIdentifiers:(id)a10 filteredToSessionIds:(id)a11 filteredToLearnedPlaceIdentifiers:(id)a12;
-- (RTLearnedPlaceTypeInferenceEnumerationOptions)initWithCoder:(id)a3;
+- (RTLearnedPlaceTypeInferenceEnumerationOptions)initWithBatchSize:(unint64_t)size fetchLimit:(unint64_t)limit offset:(unint64_t)offset dateInterval:(id)interval sortByCreationDate:(BOOL)date ascending:(BOOL)ascending filteredToPlaceTypes:(id)types filteredToIdentifiers:(id)self0 filteredToSessionIds:(id)self1 filteredToLearnedPlaceIdentifiers:(id)self2;
+- (RTLearnedPlaceTypeInferenceEnumerationOptions)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RTLearnedPlaceTypeInferenceEnumerationOptions
 
-- (RTLearnedPlaceTypeInferenceEnumerationOptions)initWithBatchSize:(unint64_t)a3 fetchLimit:(unint64_t)a4 offset:(unint64_t)a5 dateInterval:(id)a6 sortByCreationDate:(BOOL)a7 ascending:(BOOL)a8 filteredToPlaceTypes:(id)a9 filteredToIdentifiers:(id)a10 filteredToSessionIds:(id)a11 filteredToLearnedPlaceIdentifiers:(id)a12
+- (RTLearnedPlaceTypeInferenceEnumerationOptions)initWithBatchSize:(unint64_t)size fetchLimit:(unint64_t)limit offset:(unint64_t)offset dateInterval:(id)interval sortByCreationDate:(BOOL)date ascending:(BOOL)ascending filteredToPlaceTypes:(id)types filteredToIdentifiers:(id)self0 filteredToSessionIds:(id)self1 filteredToLearnedPlaceIdentifiers:(id)self2
 {
-  v14 = a6;
-  v15 = a9;
-  v26 = a10;
-  v16 = a11;
-  v17 = a12;
+  intervalCopy = interval;
+  typesCopy = types;
+  identifiersCopy = identifiers;
+  idsCopy = ids;
+  placeIdentifiersCopy = placeIdentifiers;
   v27.receiver = self;
   v27.super_class = RTLearnedPlaceTypeInferenceEnumerationOptions;
   v18 = [(RTLearnedPlaceTypeInferenceEnumerationOptions *)&v27 init];
   v19 = v18;
   if (v18)
   {
-    v18->_batchSize = a3;
-    v18->_fetchLimit = a4;
-    v18->_offset = a5;
-    objc_storeStrong(&v18->_dateInterval, a6);
-    v19->_sortByCreationDate = a7;
-    v19->_ascending = a8;
-    objc_storeStrong(&v19->_filteredToPlaceTypes, a9);
-    objc_storeStrong(&v19->_filteredToIdentifiers, a10);
-    objc_storeStrong(&v19->_filteredToSessionIds, a11);
-    objc_storeStrong(&v19->_filteredToLearnedPlaceIdentifiers, a12);
+    v18->_batchSize = size;
+    v18->_fetchLimit = limit;
+    v18->_offset = offset;
+    objc_storeStrong(&v18->_dateInterval, interval);
+    v19->_sortByCreationDate = date;
+    v19->_ascending = ascending;
+    objc_storeStrong(&v19->_filteredToPlaceTypes, types);
+    objc_storeStrong(&v19->_filteredToIdentifiers, identifiers);
+    objc_storeStrong(&v19->_filteredToSessionIds, ids);
+    objc_storeStrong(&v19->_filteredToLearnedPlaceIdentifiers, placeIdentifiers);
   }
 
   return v19;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   batchSize = self->_batchSize;
-  v5 = a3;
-  [v5 encodeInteger:batchSize forKey:@"batchSize"];
-  [v5 encodeInteger:self->_fetchLimit forKey:@"fetchLimit"];
-  [v5 encodeInteger:self->_offset forKey:@"offset"];
-  [v5 encodeObject:self->_dateInterval forKey:@"dateInterval"];
-  [v5 encodeInteger:self->_sortByCreationDate forKey:@"sortByCreationDate"];
-  [v5 encodeInteger:self->_ascending forKey:@"ascending"];
-  [v5 encodeObject:self->_filteredToPlaceTypes forKey:@"filteredToPlaceTypes"];
-  [v5 encodeObject:self->_filteredToIdentifiers forKey:@"filteredToIdentifiers"];
-  [v5 encodeObject:self->_filteredToSessionIds forKey:@"filteredToSessionIds"];
-  [v5 encodeObject:self->_filteredToLearnedPlaceIdentifiers forKey:@"filteredToLearnedPlaceIdentifiers"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:batchSize forKey:@"batchSize"];
+  [coderCopy encodeInteger:self->_fetchLimit forKey:@"fetchLimit"];
+  [coderCopy encodeInteger:self->_offset forKey:@"offset"];
+  [coderCopy encodeObject:self->_dateInterval forKey:@"dateInterval"];
+  [coderCopy encodeInteger:self->_sortByCreationDate forKey:@"sortByCreationDate"];
+  [coderCopy encodeInteger:self->_ascending forKey:@"ascending"];
+  [coderCopy encodeObject:self->_filteredToPlaceTypes forKey:@"filteredToPlaceTypes"];
+  [coderCopy encodeObject:self->_filteredToIdentifiers forKey:@"filteredToIdentifiers"];
+  [coderCopy encodeObject:self->_filteredToSessionIds forKey:@"filteredToSessionIds"];
+  [coderCopy encodeObject:self->_filteredToLearnedPlaceIdentifiers forKey:@"filteredToLearnedPlaceIdentifiers"];
 }
 
-- (RTLearnedPlaceTypeInferenceEnumerationOptions)initWithCoder:(id)a3
+- (RTLearnedPlaceTypeInferenceEnumerationOptions)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v15 = [v3 decodeIntegerForKey:@"batchSize"];
-  v4 = [v3 decodeIntegerForKey:@"fetchLimit"];
-  v5 = [v3 decodeIntegerForKey:@"offset"];
-  v6 = [v3 decodeObjectForKey:@"dateInterval"];
-  v7 = [v3 decodeIntegerForKey:@"sortByCreationDate"] != 0;
-  v8 = [v3 decodeIntegerForKey:@"ascending"] != 0;
-  v9 = [v3 decodeObjectForKey:@"filteredToPlaceTypes"];
-  v10 = [v3 decodeObjectForKey:@"filteredToIdentifiers"];
-  v11 = [v3 decodeObjectForKey:@"filteredToSessionIds"];
-  v12 = [v3 decodeObjectForKey:@"filteredToLearnedPlaceIdentifiers"];
+  coderCopy = coder;
+  v15 = [coderCopy decodeIntegerForKey:@"batchSize"];
+  v4 = [coderCopy decodeIntegerForKey:@"fetchLimit"];
+  v5 = [coderCopy decodeIntegerForKey:@"offset"];
+  v6 = [coderCopy decodeObjectForKey:@"dateInterval"];
+  v7 = [coderCopy decodeIntegerForKey:@"sortByCreationDate"] != 0;
+  v8 = [coderCopy decodeIntegerForKey:@"ascending"] != 0;
+  v9 = [coderCopy decodeObjectForKey:@"filteredToPlaceTypes"];
+  v10 = [coderCopy decodeObjectForKey:@"filteredToIdentifiers"];
+  v11 = [coderCopy decodeObjectForKey:@"filteredToSessionIds"];
+  v12 = [coderCopy decodeObjectForKey:@"filteredToLearnedPlaceIdentifiers"];
 
   v13 = [(RTLearnedPlaceTypeInferenceEnumerationOptions *)self initWithBatchSize:v15 fetchLimit:v4 offset:v5 dateInterval:v6 sortByCreationDate:v7 ascending:v8 filteredToPlaceTypes:v9 filteredToIdentifiers:v10 filteredToSessionIds:v11 filteredToLearnedPlaceIdentifiers:v12];
   return v13;
@@ -72,10 +72,10 @@
 - (id)description
 {
   v15 = MEMORY[0x277CCACA8];
-  v3 = [(RTLearnedPlaceTypeInferenceEnumerationOptions *)self batchSize];
-  v4 = [(RTLearnedPlaceTypeInferenceEnumerationOptions *)self fetchLimit];
-  v5 = [(RTLearnedPlaceTypeInferenceEnumerationOptions *)self offset];
-  v6 = [(RTLearnedPlaceTypeInferenceEnumerationOptions *)self dateInterval];
+  batchSize = [(RTLearnedPlaceTypeInferenceEnumerationOptions *)self batchSize];
+  fetchLimit = [(RTLearnedPlaceTypeInferenceEnumerationOptions *)self fetchLimit];
+  offset = [(RTLearnedPlaceTypeInferenceEnumerationOptions *)self offset];
+  dateInterval = [(RTLearnedPlaceTypeInferenceEnumerationOptions *)self dateInterval];
   if ([(RTLearnedPlaceTypeInferenceEnumerationOptions *)self sortByCreationDate])
   {
     v7 = @"YES";
@@ -96,11 +96,11 @@
     v8 = @"NO";
   }
 
-  v9 = [(RTLearnedPlaceTypeInferenceEnumerationOptions *)self filteredToPlaceTypes];
-  v10 = [(RTLearnedPlaceTypeInferenceEnumerationOptions *)self filteredToIdentifiers];
-  v11 = [(RTLearnedPlaceTypeInferenceEnumerationOptions *)self filteredToSessionIds];
-  v12 = [(RTLearnedPlaceTypeInferenceEnumerationOptions *)self filteredToLearnedPlaceIdentifiers];
-  v13 = [v15 stringWithFormat:@"batchSize, %lu, fetchLimit, %lu, offset, %lu, dateinterval, %@, sort by creation date, %@, ascending, %@, filteredToPlaceTypes, %@, filteredToIdentifiers, %@, filteredToSessionIds, %@, filteredToLearnedPlaceIdentifiers, %@, ", v3, v4, v5, v6, v7, v8, v9, v10, v11, v12];
+  filteredToPlaceTypes = [(RTLearnedPlaceTypeInferenceEnumerationOptions *)self filteredToPlaceTypes];
+  filteredToIdentifiers = [(RTLearnedPlaceTypeInferenceEnumerationOptions *)self filteredToIdentifiers];
+  filteredToSessionIds = [(RTLearnedPlaceTypeInferenceEnumerationOptions *)self filteredToSessionIds];
+  filteredToLearnedPlaceIdentifiers = [(RTLearnedPlaceTypeInferenceEnumerationOptions *)self filteredToLearnedPlaceIdentifiers];
+  v13 = [v15 stringWithFormat:@"batchSize, %lu, fetchLimit, %lu, offset, %lu, dateinterval, %@, sort by creation date, %@, ascending, %@, filteredToPlaceTypes, %@, filteredToIdentifiers, %@, filteredToSessionIds, %@, filteredToLearnedPlaceIdentifiers, %@, ", batchSize, fetchLimit, offset, dateInterval, v7, v8, filteredToPlaceTypes, filteredToIdentifiers, filteredToSessionIds, filteredToLearnedPlaceIdentifiers];
 
   return v13;
 }

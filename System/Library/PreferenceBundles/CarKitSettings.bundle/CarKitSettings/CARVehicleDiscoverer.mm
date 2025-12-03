@@ -1,34 +1,34 @@
 @interface CARVehicleDiscoverer
 + (BOOL)isBluetoothLEEnabled;
-- (BOOL)_removeVehicleForAccessory:(id)a3 removedVehicle:(id *)a4;
-- (BOOL)bluetoothPairVehicle:(id)a3;
+- (BOOL)_removeVehicleForAccessory:(id)accessory removedVehicle:(id *)vehicle;
+- (BOOL)bluetoothPairVehicle:(id)vehicle;
 - (CARVehicleDiscoverer)init;
 - (CARVehicleDiscovery)discoveryDelegate;
 - (NSSet)discoveredVehicles;
-- (id)_removeVehicleForBluetoothDevice:(id)a3;
-- (id)_removeVehicleForBluetoothLEDevice:(id)a3;
-- (id)_vehicleForAccessory:(id)a3;
-- (id)_vehicleForBluetoothAddress:(id)a3;
-- (id)_vehicleForBluetoothDevice:(id)a3;
-- (id)_vehicleForBluetoothLEDevice:(id)a3;
-- (id)_vehicleForBluetoothLEIdentifier:(id)a3;
-- (id)viewControllerPresentingPairingForBluetoothDiscoverer:(id)a3;
-- (void)accessoryManager:(id)a3 didConnectVehicleAccessory:(id)a4;
-- (void)accessoryManager:(id)a3 didDisconnectVehicleAccessory:(id)a4;
-- (void)bluetoothDiscoverer:(id)a3 didDiscoverDevice:(id)a4;
-- (void)bluetoothDiscoverer:(id)a3 didRemoveDevice:(id)a4;
-- (void)bluetoothDiscoverer:(id)a3 didUpdateDevice:(id)a4;
-- (void)bluetoothLEDiscoverer:(id)a3 didDiscoverDevice:(id)a4;
-- (void)bluetoothLEDiscoverer:(id)a3 didRemoveDevice:(id)a4;
-- (void)bluetoothLEDiscoverer:(id)a3 didUpdateDevice:(id)a4;
-- (void)cancelledConnectionAttemptOnTransport:(unint64_t)a3;
+- (id)_removeVehicleForBluetoothDevice:(id)device;
+- (id)_removeVehicleForBluetoothLEDevice:(id)device;
+- (id)_vehicleForAccessory:(id)accessory;
+- (id)_vehicleForBluetoothAddress:(id)address;
+- (id)_vehicleForBluetoothDevice:(id)device;
+- (id)_vehicleForBluetoothLEDevice:(id)device;
+- (id)_vehicleForBluetoothLEIdentifier:(id)identifier;
+- (id)viewControllerPresentingPairingForBluetoothDiscoverer:(id)discoverer;
+- (void)accessoryManager:(id)manager didConnectVehicleAccessory:(id)accessory;
+- (void)accessoryManager:(id)manager didDisconnectVehicleAccessory:(id)accessory;
+- (void)bluetoothDiscoverer:(id)discoverer didDiscoverDevice:(id)device;
+- (void)bluetoothDiscoverer:(id)discoverer didRemoveDevice:(id)device;
+- (void)bluetoothDiscoverer:(id)discoverer didUpdateDevice:(id)device;
+- (void)bluetoothLEDiscoverer:(id)discoverer didDiscoverDevice:(id)device;
+- (void)bluetoothLEDiscoverer:(id)discoverer didRemoveDevice:(id)device;
+- (void)bluetoothLEDiscoverer:(id)discoverer didUpdateDevice:(id)device;
+- (void)cancelledConnectionAttemptOnTransport:(unint64_t)transport;
 - (void)dealloc;
-- (void)handleDiscoveredVehicle:(id)a3;
-- (void)handleRemovedVehicle:(id)a3;
-- (void)handleUpdatedVehicle:(id)a3;
-- (void)sessionDidConnect:(id)a3;
+- (void)handleDiscoveredVehicle:(id)vehicle;
+- (void)handleRemovedVehicle:(id)vehicle;
+- (void)handleUpdatedVehicle:(id)vehicle;
+- (void)sessionDidConnect:(id)connect;
 - (void)startWirelessDiscovery;
-- (void)startedConnectionAttemptOnTransport:(unint64_t)a3;
+- (void)startedConnectionAttemptOnTransport:(unint64_t)transport;
 - (void)stopWirelessDiscovery;
 @end
 
@@ -64,8 +64,8 @@
     v5 = objc_alloc_init(CARBluetoothClassicDiscoverer);
     [(CARVehicleDiscoverer *)v3 setBluetoothClassicDiscoverer:v5];
 
-    v6 = [(CARVehicleDiscoverer *)v3 bluetoothClassicDiscoverer];
-    [v6 setBluetoothDiscoveryDelegate:v3];
+    bluetoothClassicDiscoverer = [(CARVehicleDiscoverer *)v3 bluetoothClassicDiscoverer];
+    [bluetoothClassicDiscoverer setBluetoothDiscoveryDelegate:v3];
 
     if ([objc_opt_class() isBluetoothLEEnabled])
     {
@@ -75,21 +75,21 @@
       v8 = objc_alloc_init(CARBluetoothLEDiscoverer);
       [(CARVehicleDiscoverer *)v3 setBluetoothLEDiscoverer:v8];
 
-      v9 = [(CARVehicleDiscoverer *)v3 bluetoothLEDiscoverer];
-      [v9 setBluetoothDiscoveryDelegate:v3];
+      bluetoothLEDiscoverer = [(CARVehicleDiscoverer *)v3 bluetoothLEDiscoverer];
+      [bluetoothLEDiscoverer setBluetoothDiscoveryDelegate:v3];
     }
 
     v10 = objc_alloc_init(CRVehicleAccessoryManager);
     [(CARVehicleDiscoverer *)v3 setAccessoryManager:v10];
 
-    v11 = [(CARVehicleDiscoverer *)v3 accessoryManager];
-    [v11 addObserver:v3];
+    accessoryManager = [(CARVehicleDiscoverer *)v3 accessoryManager];
+    [accessoryManager addObserver:v3];
 
     v12 = objc_alloc_init(CARSessionStatus);
     [(CARVehicleDiscoverer *)v3 setSessionStatus:v12];
 
-    v13 = [(CARVehicleDiscoverer *)v3 sessionStatus];
-    [v13 addSessionObserver:v3];
+    sessionStatus = [(CARVehicleDiscoverer *)v3 sessionStatus];
+    [sessionStatus addSessionObserver:v3];
   }
 
   return v3;
@@ -98,8 +98,8 @@
 - (void)dealloc
 {
   [(CARVehicleDiscoverer *)self stopWirelessDiscovery];
-  v3 = [(CARVehicleDiscoverer *)self accessoryManager];
-  [v3 removeObserver:self];
+  accessoryManager = [(CARVehicleDiscoverer *)self accessoryManager];
+  [accessoryManager removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = CARVehicleDiscoverer;
@@ -109,86 +109,86 @@
 - (void)startWirelessDiscovery
 {
   [(CARVehicleDiscoverer *)self setWirelessDiscovering:1];
-  v3 = [(CARVehicleDiscoverer *)self bluetoothClassicDiscoverer];
-  [v3 startDiscovery];
+  bluetoothClassicDiscoverer = [(CARVehicleDiscoverer *)self bluetoothClassicDiscoverer];
+  [bluetoothClassicDiscoverer startDiscovery];
 
-  v4 = [(CARVehicleDiscoverer *)self bluetoothLEDiscoverer];
-  [v4 startDiscovery];
+  bluetoothLEDiscoverer = [(CARVehicleDiscoverer *)self bluetoothLEDiscoverer];
+  [bluetoothLEDiscoverer startDiscovery];
 }
 
 - (void)stopWirelessDiscovery
 {
   [(CARVehicleDiscoverer *)self setWirelessDiscovering:0];
-  v3 = [(CARVehicleDiscoverer *)self bluetoothClassicDiscoverer];
-  [v3 stopDiscovery];
+  bluetoothClassicDiscoverer = [(CARVehicleDiscoverer *)self bluetoothClassicDiscoverer];
+  [bluetoothClassicDiscoverer stopDiscovery];
 
-  v4 = [(CARVehicleDiscoverer *)self bluetoothLEDiscoverer];
-  [v4 stopDiscovery];
+  bluetoothLEDiscoverer = [(CARVehicleDiscoverer *)self bluetoothLEDiscoverer];
+  [bluetoothLEDiscoverer stopDiscovery];
 }
 
-- (void)handleDiscoveredVehicle:(id)a3
+- (void)handleDiscoveredVehicle:(id)vehicle
 {
-  v7 = a3;
-  v4 = [(CARVehicleDiscoverer *)self discoveryDelegate];
+  vehicleCopy = vehicle;
+  discoveryDelegate = [(CARVehicleDiscoverer *)self discoveryDelegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(CARVehicleDiscoverer *)self discoveryDelegate];
-    [v6 vehicleDiscoverer:self didDiscoverVehicle:v7];
+    discoveryDelegate2 = [(CARVehicleDiscoverer *)self discoveryDelegate];
+    [discoveryDelegate2 vehicleDiscoverer:self didDiscoverVehicle:vehicleCopy];
   }
 }
 
-- (void)handleUpdatedVehicle:(id)a3
+- (void)handleUpdatedVehicle:(id)vehicle
 {
-  v7 = a3;
-  v4 = [(CARVehicleDiscoverer *)self discoveryDelegate];
+  vehicleCopy = vehicle;
+  discoveryDelegate = [(CARVehicleDiscoverer *)self discoveryDelegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(CARVehicleDiscoverer *)self discoveryDelegate];
-    [v6 vehicleDiscoverer:self didUpdateVehicle:v7];
+    discoveryDelegate2 = [(CARVehicleDiscoverer *)self discoveryDelegate];
+    [discoveryDelegate2 vehicleDiscoverer:self didUpdateVehicle:vehicleCopy];
   }
 }
 
-- (void)handleRemovedVehicle:(id)a3
+- (void)handleRemovedVehicle:(id)vehicle
 {
-  v7 = a3;
-  v4 = [(CARVehicleDiscoverer *)self discoveryDelegate];
+  vehicleCopy = vehicle;
+  discoveryDelegate = [(CARVehicleDiscoverer *)self discoveryDelegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(CARVehicleDiscoverer *)self discoveryDelegate];
-    [v6 vehicleDiscoverer:self didRemoveVehicle:v7];
+    discoveryDelegate2 = [(CARVehicleDiscoverer *)self discoveryDelegate];
+    [discoveryDelegate2 vehicleDiscoverer:self didRemoveVehicle:vehicleCopy];
   }
 }
 
-- (id)_vehicleForBluetoothAddress:(id)a3
+- (id)_vehicleForBluetoothAddress:(id)address
 {
-  v4 = a3;
-  v5 = [(CARVehicleDiscoverer *)self vehicleForBluetoothAddress];
-  v6 = [v5 objectForKey:v4];
+  addressCopy = address;
+  vehicleForBluetoothAddress = [(CARVehicleDiscoverer *)self vehicleForBluetoothAddress];
+  v6 = [vehicleForBluetoothAddress objectForKey:addressCopy];
 
   if (!v6)
   {
     v6 = objc_alloc_init(CARDiscoveredVehicle);
-    v7 = [(CARVehicleDiscoverer *)self vehicleForBluetoothAddress];
-    [v7 setObject:v6 forKey:v4];
+    vehicleForBluetoothAddress2 = [(CARVehicleDiscoverer *)self vehicleForBluetoothAddress];
+    [vehicleForBluetoothAddress2 setObject:v6 forKey:addressCopy];
   }
 
   return v6;
 }
 
-- (id)_vehicleForBluetoothDevice:(id)a3
+- (id)_vehicleForBluetoothDevice:(id)device
 {
-  v4 = a3;
-  v5 = [v4 bluetoothAddress];
-  if (v5)
+  deviceCopy = device;
+  bluetoothAddress = [deviceCopy bluetoothAddress];
+  if (bluetoothAddress)
   {
-    v6 = [(CARVehicleDiscoverer *)self _vehicleForBluetoothAddress:v5];
-    [v6 setBluetoothDevice:v4];
+    v6 = [(CARVehicleDiscoverer *)self _vehicleForBluetoothAddress:bluetoothAddress];
+    [v6 setBluetoothDevice:deviceCopy];
   }
 
   else
@@ -199,13 +199,13 @@
   return v6;
 }
 
-- (id)_vehicleForAccessory:(id)a3
+- (id)_vehicleForAccessory:(id)accessory
 {
-  v4 = a3;
-  v5 = [v4 bluetoothAddress];
-  if (v5)
+  accessoryCopy = accessory;
+  bluetoothAddress = [accessoryCopy bluetoothAddress];
+  if (bluetoothAddress)
   {
-    v6 = [(CARVehicleDiscoverer *)self _vehicleForBluetoothAddress:v5];
+    v6 = [(CARVehicleDiscoverer *)self _vehicleForBluetoothAddress:bluetoothAddress];
   }
 
   else
@@ -214,22 +214,22 @@
   }
 
   v7 = v6;
-  [(CARDiscoveredVehicle *)v6 setAccessory:v4];
+  [(CARDiscoveredVehicle *)v6 setAccessory:accessoryCopy];
 
   return v7;
 }
 
-- (id)_removeVehicleForBluetoothDevice:(id)a3
+- (id)_removeVehicleForBluetoothDevice:(id)device
 {
-  v4 = [a3 bluetoothAddress];
-  v5 = [(CARVehicleDiscoverer *)self vehicleForBluetoothAddress];
-  v6 = [v5 objectForKey:v4];
+  bluetoothAddress = [device bluetoothAddress];
+  vehicleForBluetoothAddress = [(CARVehicleDiscoverer *)self vehicleForBluetoothAddress];
+  v6 = [vehicleForBluetoothAddress objectForKey:bluetoothAddress];
 
   [v6 setBluetoothDevice:0];
   if (v6 && ([v6 accessory], v7 = objc_claimAutoreleasedReturnValue(), v7, !v7))
   {
-    v9 = [(CARVehicleDiscoverer *)self vehicleForBluetoothAddress];
-    [v9 removeObjectForKey:v4];
+    vehicleForBluetoothAddress2 = [(CARVehicleDiscoverer *)self vehicleForBluetoothAddress];
+    [vehicleForBluetoothAddress2 removeObjectForKey:bluetoothAddress];
 
     v8 = v6;
   }
@@ -242,30 +242,30 @@
   return v8;
 }
 
-- (id)_vehicleForBluetoothLEIdentifier:(id)a3
+- (id)_vehicleForBluetoothLEIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CARVehicleDiscoverer *)self vehicleForBluetoothLEIdentifier];
-  v6 = [v5 objectForKey:v4];
+  identifierCopy = identifier;
+  vehicleForBluetoothLEIdentifier = [(CARVehicleDiscoverer *)self vehicleForBluetoothLEIdentifier];
+  v6 = [vehicleForBluetoothLEIdentifier objectForKey:identifierCopy];
 
   if (!v6)
   {
     v6 = objc_alloc_init(CARDiscoveredVehicle);
-    v7 = [(CARVehicleDiscoverer *)self vehicleForBluetoothLEIdentifier];
-    [v7 setObject:v6 forKey:v4];
+    vehicleForBluetoothLEIdentifier2 = [(CARVehicleDiscoverer *)self vehicleForBluetoothLEIdentifier];
+    [vehicleForBluetoothLEIdentifier2 setObject:v6 forKey:identifierCopy];
   }
 
   return v6;
 }
 
-- (id)_vehicleForBluetoothLEDevice:(id)a3
+- (id)_vehicleForBluetoothLEDevice:(id)device
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  if (v5)
+  deviceCopy = device;
+  identifier = [deviceCopy identifier];
+  if (identifier)
   {
-    v6 = [(CARVehicleDiscoverer *)self _vehicleForBluetoothLEIdentifier:v5];
-    [v6 setBluetoothLEDevice:v4];
+    v6 = [(CARVehicleDiscoverer *)self _vehicleForBluetoothLEIdentifier:identifier];
+    [v6 setBluetoothLEDevice:deviceCopy];
   }
 
   else
@@ -276,17 +276,17 @@
   return v6;
 }
 
-- (id)_removeVehicleForBluetoothLEDevice:(id)a3
+- (id)_removeVehicleForBluetoothLEDevice:(id)device
 {
-  v4 = [a3 identifier];
-  v5 = [(CARVehicleDiscoverer *)self vehicleForBluetoothLEIdentifier];
-  v6 = [v5 objectForKey:v4];
+  identifier = [device identifier];
+  vehicleForBluetoothLEIdentifier = [(CARVehicleDiscoverer *)self vehicleForBluetoothLEIdentifier];
+  v6 = [vehicleForBluetoothLEIdentifier objectForKey:identifier];
 
   [v6 setBluetoothLEDevice:0];
   if (v6 && ([v6 accessory], v7 = objc_claimAutoreleasedReturnValue(), v7, !v7))
   {
-    v9 = [(CARVehicleDiscoverer *)self vehicleForBluetoothLEIdentifier];
-    [v9 removeObjectForKey:v4];
+    vehicleForBluetoothLEIdentifier2 = [(CARVehicleDiscoverer *)self vehicleForBluetoothLEIdentifier];
+    [vehicleForBluetoothLEIdentifier2 removeObjectForKey:identifier];
 
     v8 = v6;
   }
@@ -299,28 +299,28 @@
   return v8;
 }
 
-- (BOOL)_removeVehicleForAccessory:(id)a3 removedVehicle:(id *)a4
+- (BOOL)_removeVehicleForAccessory:(id)accessory removedVehicle:(id *)vehicle
 {
-  v6 = [a3 bluetoothAddress];
-  v7 = [(CARVehicleDiscoverer *)self vehicleForBluetoothAddress];
-  v8 = [v7 objectForKey:v6];
+  bluetoothAddress = [accessory bluetoothAddress];
+  vehicleForBluetoothAddress = [(CARVehicleDiscoverer *)self vehicleForBluetoothAddress];
+  v8 = [vehicleForBluetoothAddress objectForKey:bluetoothAddress];
 
   [v8 setAccessory:0];
-  if (a4)
+  if (vehicle)
   {
     v9 = v8;
-    *a4 = v8;
+    *vehicle = v8;
   }
 
   if (v8)
   {
-    v10 = [v8 bluetoothDevice];
-    v11 = v10 == 0;
+    bluetoothDevice = [v8 bluetoothDevice];
+    v11 = bluetoothDevice == 0;
 
-    if (!v10 && v6)
+    if (!bluetoothDevice && bluetoothAddress)
     {
-      v12 = [(CARVehicleDiscoverer *)self vehicleForBluetoothAddress];
-      [v12 removeObjectForKey:v6];
+      vehicleForBluetoothAddress2 = [(CARVehicleDiscoverer *)self vehicleForBluetoothAddress];
+      [vehicleForBluetoothAddress2 removeObjectForKey:bluetoothAddress];
 
       v11 = 1;
     }
@@ -334,51 +334,51 @@
   return v11;
 }
 
-- (BOOL)bluetoothPairVehicle:(id)a3
+- (BOOL)bluetoothPairVehicle:(id)vehicle
 {
-  v4 = a3;
-  v5 = [v4 bluetoothLEDevice];
+  vehicleCopy = vehicle;
+  bluetoothLEDevice = [vehicleCopy bluetoothLEDevice];
 
-  if (v5)
+  if (bluetoothLEDevice)
   {
-    v6 = [(CARVehicleDiscoverer *)self bluetoothLEDiscoverer];
-    v7 = [v4 bluetoothLEDevice];
+    bluetoothLEDiscoverer = [(CARVehicleDiscoverer *)self bluetoothLEDiscoverer];
+    bluetoothLEDevice2 = [vehicleCopy bluetoothLEDevice];
 LABEL_5:
-    v9 = v7;
-    LOBYTE(v8) = [v6 pairBluetoothDevice:v7];
+    v9 = bluetoothLEDevice2;
+    LOBYTE(bluetoothDevice) = [bluetoothLEDiscoverer pairBluetoothDevice:bluetoothLEDevice2];
 
     goto LABEL_6;
   }
 
-  v8 = [v4 bluetoothDevice];
+  bluetoothDevice = [vehicleCopy bluetoothDevice];
 
-  if (v8)
+  if (bluetoothDevice)
   {
-    v6 = [(CARVehicleDiscoverer *)self bluetoothClassicDiscoverer];
-    v7 = [v4 bluetoothDevice];
+    bluetoothLEDiscoverer = [(CARVehicleDiscoverer *)self bluetoothClassicDiscoverer];
+    bluetoothLEDevice2 = [vehicleCopy bluetoothDevice];
     goto LABEL_5;
   }
 
 LABEL_6:
 
-  return v8;
+  return bluetoothDevice;
 }
 
 - (NSSet)discoveredVehicles
 {
-  v3 = [(CARVehicleDiscoverer *)self vehicleForBluetoothAddress];
-  v4 = [v3 allValues];
-  v5 = [NSSet setWithArray:v4];
+  vehicleForBluetoothAddress = [(CARVehicleDiscoverer *)self vehicleForBluetoothAddress];
+  allValues = [vehicleForBluetoothAddress allValues];
+  v5 = [NSSet setWithArray:allValues];
   v6 = [v5 mutableCopy];
 
   v28 = 0u;
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v7 = [(CARVehicleDiscoverer *)self accessoryManager];
-  v8 = [v7 connectedVehicleAccessories];
+  accessoryManager = [(CARVehicleDiscoverer *)self accessoryManager];
+  connectedVehicleAccessories = [accessoryManager connectedVehicleAccessories];
 
-  v9 = [v8 countByEnumeratingWithState:&v26 objects:v31 count:16];
+  v9 = [connectedVehicleAccessories countByEnumeratingWithState:&v26 objects:v31 count:16];
   if (v9)
   {
     v10 = v9;
@@ -389,14 +389,14 @@ LABEL_6:
       {
         if (*v27 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(connectedVehicleAccessories);
         }
 
         v13 = [(CARVehicleDiscoverer *)self _vehicleForAccessory:*(*(&v26 + 1) + 8 * i)];
         [v6 addObject:v13];
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v26 objects:v31 count:16];
+      v10 = [connectedVehicleAccessories countByEnumeratingWithState:&v26 objects:v31 count:16];
     }
 
     while (v10);
@@ -406,10 +406,10 @@ LABEL_6:
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v14 = [(CARVehicleDiscoverer *)self bluetoothClassicDiscoverer];
-  v15 = [v14 discoveredBluetoothDevices];
+  bluetoothClassicDiscoverer = [(CARVehicleDiscoverer *)self bluetoothClassicDiscoverer];
+  discoveredBluetoothDevices = [bluetoothClassicDiscoverer discoveredBluetoothDevices];
 
-  v16 = [v15 countByEnumeratingWithState:&v22 objects:v30 count:16];
+  v16 = [discoveredBluetoothDevices countByEnumeratingWithState:&v22 objects:v30 count:16];
   if (v16)
   {
     v17 = v16;
@@ -420,14 +420,14 @@ LABEL_6:
       {
         if (*v23 != v18)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(discoveredBluetoothDevices);
         }
 
         v20 = [(CARVehicleDiscoverer *)self _vehicleForBluetoothDevice:*(*(&v22 + 1) + 8 * j)];
         [v6 addObject:v20];
       }
 
-      v17 = [v15 countByEnumeratingWithState:&v22 objects:v30 count:16];
+      v17 = [discoveredBluetoothDevices countByEnumeratingWithState:&v22 objects:v30 count:16];
     }
 
     while (v17);
@@ -436,63 +436,63 @@ LABEL_6:
   return v6;
 }
 
-- (void)bluetoothDiscoverer:(id)a3 didDiscoverDevice:(id)a4
+- (void)bluetoothDiscoverer:(id)discoverer didDiscoverDevice:(id)device
 {
-  v5 = a4;
+  deviceCopy = device;
   v6 = CarGeneralLogging();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v5;
+    v9 = deviceCopy;
     _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "bluetooth discovered %@", &v8, 0xCu);
   }
 
-  v7 = [(CARVehicleDiscoverer *)self _vehicleForBluetoothDevice:v5];
+  v7 = [(CARVehicleDiscoverer *)self _vehicleForBluetoothDevice:deviceCopy];
   [(CARVehicleDiscoverer *)self handleDiscoveredVehicle:v7];
 }
 
-- (void)bluetoothDiscoverer:(id)a3 didUpdateDevice:(id)a4
+- (void)bluetoothDiscoverer:(id)discoverer didUpdateDevice:(id)device
 {
-  v5 = a4;
+  deviceCopy = device;
   v6 = CarGeneralLogging();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v5;
+    v9 = deviceCopy;
     _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "bluetooth updated %@", &v8, 0xCu);
   }
 
-  v7 = [(CARVehicleDiscoverer *)self _vehicleForBluetoothDevice:v5];
+  v7 = [(CARVehicleDiscoverer *)self _vehicleForBluetoothDevice:deviceCopy];
   [(CARVehicleDiscoverer *)self handleUpdatedVehicle:v7];
 }
 
-- (void)bluetoothDiscoverer:(id)a3 didRemoveDevice:(id)a4
+- (void)bluetoothDiscoverer:(id)discoverer didRemoveDevice:(id)device
 {
-  v5 = a4;
+  deviceCopy = device;
   v6 = CarGeneralLogging();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v5;
+    v9 = deviceCopy;
     _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "bluetooth removed %@", &v8, 0xCu);
   }
 
-  v7 = [(CARVehicleDiscoverer *)self _removeVehicleForBluetoothDevice:v5];
+  v7 = [(CARVehicleDiscoverer *)self _removeVehicleForBluetoothDevice:deviceCopy];
   if (v7)
   {
     [(CARVehicleDiscoverer *)self handleRemovedVehicle:v7];
   }
 }
 
-- (id)viewControllerPresentingPairingForBluetoothDiscoverer:(id)a3
+- (id)viewControllerPresentingPairingForBluetoothDiscoverer:(id)discoverer
 {
-  v4 = [(CARVehicleDiscoverer *)self discoveryDelegate];
+  discoveryDelegate = [(CARVehicleDiscoverer *)self discoveryDelegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(CARVehicleDiscoverer *)self discoveryDelegate];
-    v7 = [v6 viewControllerPresentingPairingForVehicleDiscoverer:self];
+    discoveryDelegate2 = [(CARVehicleDiscoverer *)self discoveryDelegate];
+    v7 = [discoveryDelegate2 viewControllerPresentingPairingForVehicleDiscoverer:self];
   }
 
   else
@@ -503,78 +503,78 @@ LABEL_6:
   return v7;
 }
 
-- (void)bluetoothLEDiscoverer:(id)a3 didDiscoverDevice:(id)a4
+- (void)bluetoothLEDiscoverer:(id)discoverer didDiscoverDevice:(id)device
 {
-  v5 = a4;
+  deviceCopy = device;
   v6 = CarGeneralLogging();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v5;
+    v9 = deviceCopy;
     _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "bluetooth LE discovered %@", &v8, 0xCu);
   }
 
-  v7 = [(CARVehicleDiscoverer *)self _vehicleForBluetoothLEDevice:v5];
+  v7 = [(CARVehicleDiscoverer *)self _vehicleForBluetoothLEDevice:deviceCopy];
   [(CARVehicleDiscoverer *)self handleDiscoveredVehicle:v7];
 }
 
-- (void)bluetoothLEDiscoverer:(id)a3 didUpdateDevice:(id)a4
+- (void)bluetoothLEDiscoverer:(id)discoverer didUpdateDevice:(id)device
 {
-  v5 = a4;
+  deviceCopy = device;
   v6 = CarGeneralLogging();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v5;
+    v9 = deviceCopy;
     _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "bluetooth LE updated %@", &v8, 0xCu);
   }
 
-  v7 = [(CARVehicleDiscoverer *)self _vehicleForBluetoothLEDevice:v5];
+  v7 = [(CARVehicleDiscoverer *)self _vehicleForBluetoothLEDevice:deviceCopy];
   [(CARVehicleDiscoverer *)self handleUpdatedVehicle:v7];
 }
 
-- (void)bluetoothLEDiscoverer:(id)a3 didRemoveDevice:(id)a4
+- (void)bluetoothLEDiscoverer:(id)discoverer didRemoveDevice:(id)device
 {
-  v5 = a4;
+  deviceCopy = device;
   v6 = CarGeneralLogging();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v5;
+    v9 = deviceCopy;
     _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "bluetooth LE removed %@", &v8, 0xCu);
   }
 
-  v7 = [(CARVehicleDiscoverer *)self _removeVehicleForBluetoothLEDevice:v5];
+  v7 = [(CARVehicleDiscoverer *)self _removeVehicleForBluetoothLEDevice:deviceCopy];
   if (v7)
   {
     [(CARVehicleDiscoverer *)self handleRemovedVehicle:v7];
   }
 }
 
-- (void)accessoryManager:(id)a3 didConnectVehicleAccessory:(id)a4
+- (void)accessoryManager:(id)manager didConnectVehicleAccessory:(id)accessory
 {
-  v5 = a4;
+  accessoryCopy = accessory;
   v6 = CarGeneralLogging();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412290;
-    v12 = v5;
+    v12 = accessoryCopy;
     _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "accessory connected %@", &v11, 0xCu);
   }
 
-  v7 = [v5 bluetoothAddress];
-  if (!v7)
+  bluetoothAddress = [accessoryCopy bluetoothAddress];
+  if (!bluetoothAddress)
   {
-    v10 = [(CARVehicleDiscoverer *)self _vehicleForAccessory:v5];
+    v10 = [(CARVehicleDiscoverer *)self _vehicleForAccessory:accessoryCopy];
 LABEL_7:
     [(CARVehicleDiscoverer *)self handleDiscoveredVehicle:v10];
     goto LABEL_8;
   }
 
-  v8 = [(CARVehicleDiscoverer *)self vehicleForBluetoothAddress];
-  v9 = [v8 objectForKey:v7];
+  vehicleForBluetoothAddress = [(CARVehicleDiscoverer *)self vehicleForBluetoothAddress];
+  v9 = [vehicleForBluetoothAddress objectForKey:bluetoothAddress];
 
-  v10 = [(CARVehicleDiscoverer *)self _vehicleForAccessory:v5];
+  v10 = [(CARVehicleDiscoverer *)self _vehicleForAccessory:accessoryCopy];
   if (!v9)
   {
     goto LABEL_7;
@@ -583,19 +583,19 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)accessoryManager:(id)a3 didDisconnectVehicleAccessory:(id)a4
+- (void)accessoryManager:(id)manager didDisconnectVehicleAccessory:(id)accessory
 {
-  v5 = a4;
+  accessoryCopy = accessory;
   v6 = CarGeneralLogging();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v11 = v5;
+    v11 = accessoryCopy;
     _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "accessory disconnected %@", buf, 0xCu);
   }
 
   v9 = 0;
-  v7 = [(CARVehicleDiscoverer *)self _removeVehicleForAccessory:v5 removedVehicle:&v9];
+  v7 = [(CARVehicleDiscoverer *)self _removeVehicleForAccessory:accessoryCopy removedVehicle:&v9];
   v8 = v9;
   if (v7)
   {
@@ -608,9 +608,9 @@ LABEL_8:
   }
 }
 
-- (void)startedConnectionAttemptOnTransport:(unint64_t)a3
+- (void)startedConnectionAttemptOnTransport:(unint64_t)transport
 {
-  if (a3 == 3)
+  if (transport == 3)
   {
     block[5] = v3;
     block[6] = v4;
@@ -623,9 +623,9 @@ LABEL_8:
   }
 }
 
-- (void)cancelledConnectionAttemptOnTransport:(unint64_t)a3
+- (void)cancelledConnectionAttemptOnTransport:(unint64_t)transport
 {
-  if (a3 == 3)
+  if (transport == 3)
   {
     block[5] = v3;
     block[6] = v4;
@@ -638,12 +638,12 @@ LABEL_8:
   }
 }
 
-- (void)sessionDidConnect:(id)a3
+- (void)sessionDidConnect:(id)connect
 {
-  v4 = [a3 configuration];
-  v5 = [v4 transportType];
+  configuration = [connect configuration];
+  transportType = [configuration transportType];
 
-  if (v5 == &dword_0 + 3)
+  if (transportType == &dword_0 + 3)
   {
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;

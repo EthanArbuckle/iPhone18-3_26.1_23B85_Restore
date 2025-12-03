@@ -4,7 +4,7 @@
 - (_UITypeSelectKeyInput)init;
 - (_UITypeSelectKeyInputDelegate)delegate;
 - (void)deleteBackward;
-- (void)insertText:(id)a3;
+- (void)insertText:(id)text;
 @end
 
 @implementation _UITypeSelectKeyInput
@@ -25,19 +25,19 @@
 
 - (BOOL)hasText
 {
-  v2 = [(_UITypeSelectKeyInput *)self typedText];
-  v3 = [v2 length] != 0;
+  typedText = [(_UITypeSelectKeyInput *)self typedText];
+  v3 = [typedText length] != 0;
 
   return v3;
 }
 
-- (void)insertText:(id)a3
+- (void)insertText:(id)text
 {
-  v9 = a3;
-  if (([v9 isEqualToString:@"\t"] & 1) == 0 && (objc_msgSend(v9, "isEqualToString:", @"\n") & 1) == 0 && (objc_msgSend(v9, "isEqualToString:", @"\r") & 1) == 0)
+  textCopy = text;
+  if (([textCopy isEqualToString:@"\t"] & 1) == 0 && (objc_msgSend(textCopy, "isEqualToString:", @"\n") & 1) == 0 && (objc_msgSend(textCopy, "isEqualToString:", @"\r") & 1) == 0)
   {
     typedText = self->_typedText;
-    v5 = v9;
+    v5 = textCopy;
     if (!typedText)
     {
       v6 = objc_alloc_init(MEMORY[0x1E696AD60]);
@@ -45,12 +45,12 @@
       self->_typedText = v6;
 
       typedText = self->_typedText;
-      v5 = v9;
+      v5 = textCopy;
     }
 
     [(NSMutableString *)typedText appendString:v5];
-    v8 = [(_UITypeSelectKeyInput *)self delegate];
-    [v8 _keyInputHasChanged];
+    delegate = [(_UITypeSelectKeyInput *)self delegate];
+    [delegate _keyInputHasChanged];
   }
 }
 
@@ -69,8 +69,8 @@
     [(NSMutableString *)self->_typedText deleteCharactersInRange:v5, v6];
   }
 
-  v7 = [(_UITypeSelectKeyInput *)self delegate];
-  [v7 _keyInputHasChanged];
+  delegate = [(_UITypeSelectKeyInput *)self delegate];
+  [delegate _keyInputHasChanged];
 }
 
 - (_UITypeSelectKeyInputDelegate)delegate

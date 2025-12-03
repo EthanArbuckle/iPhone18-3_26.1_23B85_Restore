@@ -1,25 +1,25 @@
 @interface _UISceneDisplayLink
-+ (id)sceneDisplayLinkForWindowScene:(id)a3;
++ (id)sceneDisplayLinkForWindowScene:(id)scene;
 - (UIScene)_scene;
-- (_UISceneDisplayLink)initWithScene:(id)a3;
-- (void)_displayLinkTick:(id)a3;
+- (_UISceneDisplayLink)initWithScene:(id)scene;
+- (void)_displayLinkTick:(id)tick;
 - (void)_updateStatus;
-- (void)registerTarget:(id)a3 action:(SEL)a4;
-- (void)unregisterTarget:(id)a3 action:(SEL)a4;
+- (void)registerTarget:(id)target action:(SEL)action;
+- (void)unregisterTarget:(id)target action:(SEL)action;
 @end
 
 @implementation _UISceneDisplayLink
 
-+ (id)sceneDisplayLinkForWindowScene:(id)a3
++ (id)sceneDisplayLinkForWindowScene:(id)scene
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  sceneCopy = scene;
+  v5 = sceneCopy;
+  if (sceneCopy)
   {
-    v6 = [v4 _sceneComponentForKey:@"_UISceneDisplayLinkKey"];
+    v6 = [sceneCopy _sceneComponentForKey:@"_UISceneDisplayLinkKey"];
     if (!v6)
     {
-      v6 = [[a1 alloc] initWithScene:v5];
+      v6 = [[self alloc] initWithScene:v5];
       [v5 _registerSceneComponent:v6 forKey:@"_UISceneDisplayLinkKey"];
     }
   }
@@ -32,43 +32,43 @@
   return v6;
 }
 
-- (_UISceneDisplayLink)initWithScene:(id)a3
+- (_UISceneDisplayLink)initWithScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   v8.receiver = self;
   v8.super_class = _UISceneDisplayLink;
   v5 = [(_UISceneDisplayLink *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_scene, v4);
+    objc_storeWeak(&v5->_scene, sceneCopy);
   }
 
   return v6;
 }
 
-- (void)registerTarget:(id)a3 action:(SEL)a4
+- (void)registerTarget:(id)target action:(SEL)action
 {
-  v10 = a3;
+  targetCopy = target;
   targetsAndActions = self->_targetsAndActions;
   if (!targetsAndActions)
   {
-    v7 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v8 = self->_targetsAndActions;
-    self->_targetsAndActions = v7;
+    self->_targetsAndActions = array;
 
     targetsAndActions = self->_targetsAndActions;
   }
 
-  v9 = [[_UISceneDisplayLinkTargetAndAction alloc] initWithTarget:v10 action:a4];
+  v9 = [[_UISceneDisplayLinkTargetAndAction alloc] initWithTarget:targetCopy action:action];
   [(NSMutableArray *)targetsAndActions addObject:v9];
 
   [(_UISceneDisplayLink *)self _updateStatus];
 }
 
-- (void)unregisterTarget:(id)a3 action:(SEL)a4
+- (void)unregisterTarget:(id)target action:(SEL)action
 {
-  v6 = a3;
+  targetCopy = target;
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
@@ -78,9 +78,9 @@
   v14[1] = 3221225472;
   v14[2] = __47___UISceneDisplayLink_unregisterTarget_action___block_invoke;
   v14[3] = &unk_1E7106CA0;
-  v8 = v6;
+  v8 = targetCopy;
   v16 = &v18;
-  v17 = a4;
+  actionCopy = action;
   v15 = v8;
   [(NSMutableArray *)targetsAndActions enumerateObjectsWithOptions:2 usingBlock:v14];
   has_internal_diagnostics = os_variant_has_internal_diagnostics();
@@ -151,13 +151,13 @@ LABEL_6:
     }
 
     v8 = objc_loadWeakRetained(&self->_scene);
-    v9 = [v8 screen];
-    obj = [v9 displayLinkWithTarget:self selector:sel__displayLinkTick_];
+    screen = [v8 screen];
+    obj = [screen displayLinkWithTarget:self selector:sel__displayLinkTick_];
 
     if (obj)
     {
-      v10 = [MEMORY[0x1E695DFD0] mainRunLoop];
-      [obj addToRunLoop:v10 forMode:*MEMORY[0x1E695DA28]];
+      mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+      [obj addToRunLoop:mainRunLoop forMode:*MEMORY[0x1E695DA28]];
 
       objc_storeStrong(p_displayLink, obj);
     }
@@ -187,12 +187,12 @@ LABEL_16:
   }
 }
 
-- (void)_displayLinkTick:(id)a3
+- (void)_displayLinkTick:(id)tick
 {
-  v4 = a3;
-  [v4 timestamp];
+  tickCopy = tick;
+  [tickCopy timestamp];
   v6 = _UIMachTimeForMediaTime(v5);
-  [v4 targetTimestamp];
+  [tickCopy targetTimestamp];
   v8 = _UIMachTimeForMediaTime(v7);
   _UIQOSProcessingBegin("UISceneDisplayLink", 0, v6, v8);
   v19 = 0;
@@ -206,7 +206,7 @@ LABEL_16:
   v16[1] = 3221225472;
   v16[2] = __40___UISceneDisplayLink__displayLinkTick___block_invoke;
   v16[3] = &unk_1E7106CC8;
-  v10 = v4;
+  v10 = tickCopy;
   v17 = v10;
   v18 = &v19;
   [(NSMutableArray *)targetsAndActions enumerateObjectsUsingBlock:v16];

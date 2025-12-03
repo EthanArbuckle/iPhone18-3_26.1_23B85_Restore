@@ -1,26 +1,26 @@
 @interface _UICanvasFeedbackGenerator
 - (_UICanvasFeedbackGenerator)init;
-- (_UICanvasFeedbackGenerator)initWithConfiguration:(id)a3;
-- (_UICanvasFeedbackGenerator)initWithConfiguration:(id)a3 coordinateSpace:(id)a4;
-- (_UICanvasFeedbackGenerator)initWithConfiguration:(id)a3 view:(id)a4;
-- (_UICanvasFeedbackGenerator)initWithCoordinateSpace:(id)a3;
-- (_UICanvasFeedbackGenerator)initWithView:(id)a3;
+- (_UICanvasFeedbackGenerator)initWithConfiguration:(id)configuration;
+- (_UICanvasFeedbackGenerator)initWithConfiguration:(id)configuration coordinateSpace:(id)space;
+- (_UICanvasFeedbackGenerator)initWithConfiguration:(id)configuration view:(id)view;
+- (_UICanvasFeedbackGenerator)initWithCoordinateSpace:(id)space;
+- (_UICanvasFeedbackGenerator)initWithView:(id)view;
 @end
 
 @implementation _UICanvasFeedbackGenerator
 
-- (_UICanvasFeedbackGenerator)initWithView:(id)a3
+- (_UICanvasFeedbackGenerator)initWithView:(id)view
 {
   v4.receiver = self;
   v4.super_class = _UICanvasFeedbackGenerator;
-  return [(UICanvasFeedbackGenerator *)&v4 initWithView:a3];
+  return [(UICanvasFeedbackGenerator *)&v4 initWithView:view];
 }
 
-- (_UICanvasFeedbackGenerator)initWithConfiguration:(id)a3 view:(id)a4
+- (_UICanvasFeedbackGenerator)initWithConfiguration:(id)configuration view:(id)view
 {
   v5.receiver = self;
   v5.super_class = _UICanvasFeedbackGenerator;
-  return [(UICanvasFeedbackGenerator *)&v5 initWithConfiguration:a3 view:a4];
+  return [(UICanvasFeedbackGenerator *)&v5 initWithConfiguration:configuration view:view];
 }
 
 - (_UICanvasFeedbackGenerator)init
@@ -30,25 +30,25 @@
   return [(UICanvasFeedbackGenerator *)&v3 init];
 }
 
-- (_UICanvasFeedbackGenerator)initWithCoordinateSpace:(id)a3
+- (_UICanvasFeedbackGenerator)initWithCoordinateSpace:(id)space
 {
   v4.receiver = self;
   v4.super_class = _UICanvasFeedbackGenerator;
-  return [(UICanvasFeedbackGenerator *)&v4 initWithCoordinateSpace:a3];
+  return [(UICanvasFeedbackGenerator *)&v4 initWithCoordinateSpace:space];
 }
 
-- (_UICanvasFeedbackGenerator)initWithConfiguration:(id)a3 coordinateSpace:(id)a4
+- (_UICanvasFeedbackGenerator)initWithConfiguration:(id)configuration coordinateSpace:(id)space
 {
   v5.receiver = self;
   v5.super_class = _UICanvasFeedbackGenerator;
-  return [(UICanvasFeedbackGenerator *)&v5 initWithConfiguration:a3 coordinateSpace:a4];
+  return [(UICanvasFeedbackGenerator *)&v5 initWithConfiguration:configuration coordinateSpace:space];
 }
 
-- (_UICanvasFeedbackGenerator)initWithConfiguration:(id)a3
+- (_UICanvasFeedbackGenerator)initWithConfiguration:(id)configuration
 {
   v4.receiver = self;
   v4.super_class = _UICanvasFeedbackGenerator;
-  return [(UICanvasFeedbackGenerator *)&v4 initWithConfiguration:a3];
+  return [(UICanvasFeedbackGenerator *)&v4 initWithConfiguration:configuration];
 }
 
 @end

@@ -1,21 +1,21 @@
 @interface AMSMescalFairPlay
-- (AMSMescalFairPlay)initWithMescalType:(int64_t)a3 logKey:(id)a4 error:(id *)a5;
-- (BOOL)verifyPrimeSignature:(id)a3 error:(id *)a4;
-- (BOOL)verifySignature:(id)a3 forData:(id)a4 error:(id *)a5;
-- (id)_dataWithFairPlayBytes:(const char *)a3 length:(unsigned int)a4;
-- (id)exchangeData:(id)a3 error:(id *)a4;
-- (id)primingSignatureForData:(id)a3 error:(id *)a4;
-- (id)signData:(id)a3 error:(id *)a4;
+- (AMSMescalFairPlay)initWithMescalType:(int64_t)type logKey:(id)key error:(id *)error;
+- (BOOL)verifyPrimeSignature:(id)signature error:(id *)error;
+- (BOOL)verifySignature:(id)signature forData:(id)data error:(id *)error;
+- (id)_dataWithFairPlayBytes:(const char *)bytes length:(unsigned int)length;
+- (id)exchangeData:(id)data error:(id *)error;
+- (id)primingSignatureForData:(id)data error:(id *)error;
+- (id)signData:(id)data error:(id *)error;
 - (void)_teardownSession;
 - (void)dealloc;
 @end
 
 @implementation AMSMescalFairPlay
 
-- (AMSMescalFairPlay)initWithMescalType:(int64_t)a3 logKey:(id)a4 error:(id *)a5
+- (AMSMescalFairPlay)initWithMescalType:(int64_t)type logKey:(id)key error:(id *)error
 {
   v36 = *MEMORY[0x1E69E9840];
-  v8 = a4;
+  keyCopy = key;
   v31.receiver = self;
   v31.super_class = AMSMescalFairPlay;
   v9 = [(AMSMescalFairPlay *)&v31 init];
@@ -42,8 +42,8 @@ LABEL_6:
 
   v18 = 0;
 LABEL_7:
-  v10->_mescalType = a3;
-  v19 = [v8 copy];
+  v10->_mescalType = type;
+  v19 = [keyCopy copy];
   logKey = v10->_logKey;
   v10->_logKey = v19;
 
@@ -61,14 +61,14 @@ LABEL_13:
     v21 = +[AMSLogConfig sharedConfig];
   }
 
-  v22 = [v21 OSLogObject];
-  if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
+  oSLogObject = [v21 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     v23 = MEMORY[0x1E696AEC0];
     v24 = objc_opt_class();
-    if (v8)
+    if (keyCopy)
     {
-      [v23 stringWithFormat:@"%@: [%@] ", v24, v8];
+      [v23 stringWithFormat:@"%@: [%@] ", v24, keyCopy];
     }
 
     else
@@ -81,14 +81,14 @@ LABEL_13:
     v33 = v26;
     v34 = 2112;
     v35 = v27;
-    _os_log_impl(&dword_192869000, v22, OS_LOG_TYPE_ERROR, "%{public}@Init failed: %@", buf, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@Init failed: %@", buf, 0x16u);
   }
 
-  if (a5)
+  if (error)
   {
     v28 = v18;
     v25 = 0;
-    *a5 = v18;
+    *error = v18;
   }
 
   else
@@ -114,11 +114,11 @@ LABEL_20:
   [(AMSMescalFairPlay *)&v4 dealloc];
 }
 
-- (id)exchangeData:(id)a3 error:(id *)a4
+- (id)exchangeData:(id)data error:(id *)error
 {
   v34 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = v6;
+  dataCopy = data;
+  v7 = dataCopy;
   context = self->_context;
   if (context)
   {
@@ -135,7 +135,7 @@ LABEL_20:
       v9 = 200;
     }
 
-    Mib5yocT(v9, &self->_hardwareInfo, context, [v6 bytes], objc_msgSend(v6, "length"), &v27, &v26, &v25);
+    Mib5yocT(v9, &self->_hardwareInfo, context, [dataCopy bytes], objc_msgSend(dataCopy, "length"), &v27, &v26, &v25);
     if (v10)
     {
       v11 = v10;
@@ -145,19 +145,19 @@ LABEL_20:
         v12 = +[AMSLogConfig sharedConfig];
       }
 
-      v13 = [v12 OSLogObject];
-      if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+      oSLogObject = [v12 OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
       {
         v14 = objc_opt_class();
         v15 = v14;
-        v16 = [(AMSMescalFairPlay *)self logKey];
+        logKey = [(AMSMescalFairPlay *)self logKey];
         *buf = 138543874;
         v29 = v14;
         v30 = 2114;
-        v31 = v16;
+        v31 = logKey;
         v32 = 2048;
         v33 = v11;
-        _os_log_impl(&dword_192869000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] SAPExchange failed: %ld", buf, 0x20u);
+        _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] SAPExchange failed: %ld", buf, 0x20u);
       }
 
       context = 0;
@@ -184,10 +184,10 @@ LABEL_20:
 
   if (v17)
   {
-    if (a4)
+    if (error)
     {
       v18 = v17;
-      *a4 = v17;
+      *error = v17;
     }
 
     else
@@ -198,19 +198,19 @@ LABEL_20:
         v19 = +[AMSLogConfig sharedConfig];
       }
 
-      v20 = [v19 OSLogObject];
-      if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
+      oSLogObject2 = [v19 OSLogObject];
+      if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
       {
         v21 = objc_opt_class();
         v22 = v21;
-        v23 = [(AMSMescalFairPlay *)self logKey];
+        logKey2 = [(AMSMescalFairPlay *)self logKey];
         *buf = 138543874;
         v29 = v21;
         v30 = 2114;
-        v31 = v23;
+        v31 = logKey2;
         v32 = 2114;
         v33 = v17;
-        _os_log_impl(&dword_192869000, v20, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to exchange data. Error = %{public}@", buf, 0x20u);
+        _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to exchange data. Error = %{public}@", buf, 0x20u);
       }
     }
   }
@@ -218,18 +218,18 @@ LABEL_20:
   return context;
 }
 
-- (id)primingSignatureForData:(id)a3 error:(id *)a4
+- (id)primingSignatureForData:(id)data error:(id *)error
 {
   v38 = *MEMORY[0x1E69E9840];
   v31 = 0;
   v30 = 0;
   context = self->_context;
-  v8 = a3;
-  v9 = a3;
-  v10 = [v9 bytes];
-  v11 = [v9 length];
+  dataCopy = data;
+  dataCopy2 = data;
+  bytes = [dataCopy2 bytes];
+  v11 = [dataCopy2 length];
 
-  jfkdDAjba3jd(context, 100, v10, v11, &v31, &v30);
+  jfkdDAjba3jd(context, 100, bytes, v11, &v31, &v30);
   if (v12)
   {
     v13 = v12;
@@ -239,19 +239,19 @@ LABEL_20:
       v14 = +[AMSLogConfig sharedConfig];
     }
 
-    v15 = [v14 OSLogObject];
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v14 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v16 = objc_opt_class();
       v17 = v16;
-      v18 = [(AMSMescalFairPlay *)self logKey];
+      logKey = [(AMSMescalFairPlay *)self logKey];
       *buf = 138543874;
       v33 = v16;
       v34 = 2114;
-      v35 = v18;
+      v35 = logKey;
       v36 = 2048;
       v37 = v13;
-      _os_log_impl(&dword_192869000, v15, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Could not SAP prime: %lu", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Could not SAP prime: %lu", buf, 0x20u);
     }
   }
 
@@ -270,11 +270,11 @@ LABEL_20:
   v20 = v19;
   if (v19)
   {
-    if (a4)
+    if (error)
     {
       v21 = v19;
       v22 = 0;
-      *a4 = v20;
+      *error = v20;
       goto LABEL_18;
     }
 
@@ -284,19 +284,19 @@ LABEL_20:
       v24 = +[AMSLogConfig sharedConfig];
     }
 
-    v25 = [v24 OSLogObject];
-    if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
+    oSLogObject2 = [v24 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
     {
       v26 = objc_opt_class();
       v27 = v26;
-      v28 = [(AMSMescalFairPlay *)self logKey];
+      logKey2 = [(AMSMescalFairPlay *)self logKey];
       *buf = 138543874;
       v33 = v26;
       v34 = 2114;
-      v35 = v28;
+      v35 = logKey2;
       v36 = 2114;
       v37 = v20;
-      _os_log_impl(&dword_192869000, v25, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to prime data. Error = %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to prime data. Error = %{public}@", buf, 0x20u);
     }
   }
 
@@ -306,17 +306,17 @@ LABEL_18:
   return v22;
 }
 
-- (id)signData:(id)a3 error:(id *)a4
+- (id)signData:(id)data error:(id *)error
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = v6;
+  dataCopy = data;
+  v7 = dataCopy;
   context = self->_context;
   if (context)
   {
     v28 = 0;
     v27 = 0;
-    Fc3vhtJDvr(context, [v6 bytes], objc_msgSend(v6, "length"), &v28, &v27);
+    Fc3vhtJDvr(context, [dataCopy bytes], objc_msgSend(dataCopy, "length"), &v28, &v27);
     if (v9)
     {
       v10 = v9;
@@ -326,19 +326,19 @@ LABEL_18:
         v11 = +[AMSLogConfig sharedConfig];
       }
 
-      v12 = [v11 OSLogObject];
-      if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+      oSLogObject = [v11 OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
       {
         v13 = objc_opt_class();
         v14 = v13;
-        v15 = [(AMSMescalFairPlay *)self logKey];
+        logKey = [(AMSMescalFairPlay *)self logKey];
         *buf = 138543874;
         v30 = v13;
         v31 = 2114;
-        v32 = v15;
+        v32 = logKey;
         v33 = 2048;
         v34 = v10;
-        _os_log_impl(&dword_192869000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] SAPExchange failed: %ld", buf, 0x20u);
+        _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] SAPExchange failed: %ld", buf, 0x20u);
       }
 
       if (v10 == -42186)
@@ -378,10 +378,10 @@ LABEL_18:
 
   if (v19)
   {
-    if (a4)
+    if (error)
     {
       v20 = v19;
-      *a4 = v19;
+      *error = v19;
     }
 
     else
@@ -392,19 +392,19 @@ LABEL_18:
         v21 = +[AMSLogConfig sharedConfig];
       }
 
-      v22 = [v21 OSLogObject];
-      if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
+      oSLogObject2 = [v21 OSLogObject];
+      if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
       {
         v23 = objc_opt_class();
         v24 = v23;
-        v25 = [(AMSMescalFairPlay *)self logKey];
+        logKey2 = [(AMSMescalFairPlay *)self logKey];
         *buf = 138543874;
         v30 = v23;
         v31 = 2114;
-        v32 = v25;
+        v32 = logKey2;
         v33 = 2114;
         v34 = v19;
-        _os_log_impl(&dword_192869000, v22, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to signing data. Error = %{public}@", buf, 0x20u);
+        _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to signing data. Error = %{public}@", buf, 0x20u);
       }
     }
   }
@@ -412,21 +412,21 @@ LABEL_18:
   return context;
 }
 
-- (BOOL)verifyPrimeSignature:(id)a3 error:(id *)a4
+- (BOOL)verifyPrimeSignature:(id)signature error:(id *)error
 {
   v31 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = v6;
+  signatureCopy = signature;
+  v7 = signatureCopy;
   if (!self->_context)
   {
     v15 = AMSError(304, @"Mescal Failed", @"No SAP context for prime verification", 0);
     if (v15)
     {
       v16 = v15;
-      if (a4)
+      if (error)
       {
         v17 = v15;
-        *a4 = v16;
+        *error = v16;
       }
 
       else
@@ -437,19 +437,19 @@ LABEL_18:
           v19 = +[AMSLogConfig sharedConfig];
         }
 
-        v20 = [v19 OSLogObject];
-        if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
+        oSLogObject = [v19 OSLogObject];
+        if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
         {
           v21 = objc_opt_class();
           v22 = v21;
-          v23 = [(AMSMescalFairPlay *)self logKey];
+          logKey = [(AMSMescalFairPlay *)self logKey];
           v25 = 138543874;
           v26 = v21;
           v27 = 2114;
-          v28 = v23;
+          v28 = logKey;
           v29 = 2114;
           v30 = v16;
-          _os_log_impl(&dword_192869000, v20, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to verify primed signature. Error = %{public}@", &v25, 0x20u);
+          _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to verify primed signature. Error = %{public}@", &v25, 0x20u);
         }
       }
     }
@@ -457,7 +457,7 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  [v6 bytes];
+  [signatureCopy bytes];
   [v7 length];
   gLg1CWr7p();
   if (v8)
@@ -469,19 +469,19 @@ LABEL_18:
       v10 = +[AMSLogConfig sharedConfig];
     }
 
-    v11 = [v10 OSLogObject];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+    oSLogObject2 = [v10 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
     {
       v12 = objc_opt_class();
       v13 = v12;
-      v14 = [(AMSMescalFairPlay *)self logKey];
+      logKey2 = [(AMSMescalFairPlay *)self logKey];
       v25 = 138543874;
       v26 = v12;
       v27 = 2048;
-      v28 = v14;
+      v28 = logKey2;
       v29 = 2048;
       v30 = v9;
-      _os_log_impl(&dword_192869000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@: [%public}@] SAPExchange failed: %ld", &v25, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@: [%public}@] SAPExchange failed: %ld", &v25, 0x20u);
     }
 
     [(AMSMescalFairPlay *)self _teardownSession];
@@ -496,11 +496,11 @@ LABEL_19:
   return v18;
 }
 
-- (BOOL)verifySignature:(id)a3 forData:(id)a4 error:(id *)a5
+- (BOOL)verifySignature:(id)signature forData:(id)data error:(id *)error
 {
   v36 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  signatureCopy = signature;
+  dataCopy = data;
   if (!self->_context)
   {
     v17 = @"Mescal Failed";
@@ -510,10 +510,10 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  [v8 bytes];
-  [v8 length];
-  [v9 mutableBytes];
-  [v9 length];
+  [signatureCopy bytes];
+  [signatureCopy length];
+  [dataCopy mutableBytes];
+  [dataCopy length];
   gLg1CWr7p();
   if (!v10)
   {
@@ -528,19 +528,19 @@ LABEL_12:
     v12 = +[AMSLogConfig sharedConfig];
   }
 
-  v13 = [v12 OSLogObject];
-  if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v12 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v14 = objc_opt_class();
     v15 = v14;
-    v16 = [(AMSMescalFairPlay *)self logKey];
+    logKey = [(AMSMescalFairPlay *)self logKey];
     v30 = 138543874;
     v31 = v14;
     v32 = 2114;
-    v33 = v16;
+    v33 = logKey;
     v34 = 2048;
     v35 = v11;
-    _os_log_impl(&dword_192869000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] SAPExchange failed: %ld", &v30, 0x20u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] SAPExchange failed: %ld", &v30, 0x20u);
   }
 
   if (v11 != -42186)
@@ -558,10 +558,10 @@ LABEL_13:
   v22 = v21;
   if (v21)
   {
-    if (a5)
+    if (error)
     {
       v23 = v21;
-      *a5 = v22;
+      *error = v22;
     }
 
     else
@@ -572,19 +572,19 @@ LABEL_13:
         v24 = +[AMSLogConfig sharedConfig];
       }
 
-      v25 = [v24 OSLogObject];
-      if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
+      oSLogObject2 = [v24 OSLogObject];
+      if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
       {
         v26 = objc_opt_class();
         v27 = v26;
-        v28 = [(AMSMescalFairPlay *)self logKey];
+        logKey2 = [(AMSMescalFairPlay *)self logKey];
         v30 = 138543874;
         v31 = v26;
         v32 = 2114;
-        v33 = v28;
+        v33 = logKey2;
         v34 = 2114;
         v35 = v22;
-        _os_log_impl(&dword_192869000, v25, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to verifying signature. Error = %{public}@", &v30, 0x20u);
+        _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to verifying signature. Error = %{public}@", &v30, 0x20u);
       }
     }
   }
@@ -607,9 +607,9 @@ LABEL_23:
   self->_complete = 0;
 }
 
-- (id)_dataWithFairPlayBytes:(const char *)a3 length:(unsigned int)a4
+- (id)_dataWithFairPlayBytes:(const char *)bytes length:(unsigned int)length
 {
-  v4 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytesNoCopy:a3 length:a4 deallocator:&__block_literal_global_89];
+  v4 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytesNoCopy:bytes length:length deallocator:&__block_literal_global_89];
 
   return v4;
 }

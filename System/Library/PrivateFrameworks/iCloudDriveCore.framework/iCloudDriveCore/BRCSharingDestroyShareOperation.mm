@@ -1,26 +1,26 @@
 @interface BRCSharingDestroyShareOperation
-- (BRCSharingDestroyShareOperation)initWithShare:(id)a3 zone:(id)a4 sessionContext:(id)a5;
+- (BRCSharingDestroyShareOperation)initWithShare:(id)share zone:(id)zone sessionContext:(id)context;
 - (id)createActivity;
 - (void)main;
 @end
 
 @implementation BRCSharingDestroyShareOperation
 
-- (BRCSharingDestroyShareOperation)initWithShare:(id)a3 zone:(id)a4 sessionContext:(id)a5
+- (BRCSharingDestroyShareOperation)initWithShare:(id)share zone:(id)zone sessionContext:(id)context
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v10 recordID];
-  v12 = [v11 recordName];
-  v13 = [@"sharing/destroy-share" stringByAppendingPathComponent:v12];
+  contextCopy = context;
+  zoneCopy = zone;
+  shareCopy = share;
+  recordID = [shareCopy recordID];
+  recordName = [recordID recordName];
+  v13 = [@"sharing/destroy-share" stringByAppendingPathComponent:recordName];
 
   v17.receiver = self;
   v17.super_class = BRCSharingDestroyShareOperation;
-  v14 = [(BRCSharingModifyShareOperation *)&v17 initWithName:v13 zone:v9 share:v10 sessionContext:v8];
+  v14 = [(BRCSharingModifyShareOperation *)&v17 initWithName:v13 zone:zoneCopy share:shareCopy sessionContext:contextCopy];
 
-  v15 = [MEMORY[0x277CBC4F8] br_sharingMisc];
-  [(_BRCOperation *)v14 setGroup:v15];
+  br_sharingMisc = [MEMORY[0x277CBC4F8] br_sharingMisc];
+  [(_BRCOperation *)v14 setGroup:br_sharingMisc];
 
   return v14;
 }
@@ -34,15 +34,15 @@
 
 - (void)main
 {
-  v3 = [(BRCServerZone *)self->super._serverZone session];
-  v4 = [v3 clientDB];
-  v5 = [v4 serialQueue];
+  session = [(BRCServerZone *)self->super._serverZone session];
+  clientDB = [session clientDB];
+  serialQueue = [clientDB serialQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __39__BRCSharingDestroyShareOperation_main__block_invoke;
   block[3] = &unk_2784FF450;
   block[4] = self;
-  dispatch_async(v5, block);
+  dispatch_async(serialQueue, block);
 }
 
 void __39__BRCSharingDestroyShareOperation_main__block_invoke(uint64_t a1)

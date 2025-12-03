@@ -1,5 +1,5 @@
 @interface UIAirDropGroupActivityCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_axAppNameForSuggestionCell;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
@@ -8,18 +8,18 @@
 
 @implementation UIAirDropGroupActivityCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"UIAirDropGroupActivityCell" hasInstanceMethod:@"progress" withFullSignature:{"d", 0}];
-  [v3 validateClass:@"UIAirDropGroupActivityCell" hasProperty:@"textSlotID" withType:"I"];
-  [v3 validateClass:@"UIAirDropGroupActivityCell" hasProperty:@"subtitleSlotID" withType:"I"];
-  [v3 validateClass:@"UIAirDropGroupActivityCell" hasProperty:@"transportSlotID" withType:"I"];
-  [v3 validateClass:@"UIAirDropGroupActivityCell" hasProperty:@"displayName" withType:"@"];
-  [v3 validateClass:@"UIAirDropGroupActivityCell" hasProperty:@"subtitle" withType:"@"];
-  [v3 validateClass:@"UIAirDropGroupActivityCell" hasInstanceMethod:@"node" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"UIAirDropNode" hasInstanceMethod:@"peopleSuggestion" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SFPeopleSuggestion" hasInstanceMethod:@"transportBundleIdentifier" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"UIAirDropGroupActivityCell" hasInstanceMethod:@"progress" withFullSignature:{"d", 0}];
+  [validationsCopy validateClass:@"UIAirDropGroupActivityCell" hasProperty:@"textSlotID" withType:"I"];
+  [validationsCopy validateClass:@"UIAirDropGroupActivityCell" hasProperty:@"subtitleSlotID" withType:"I"];
+  [validationsCopy validateClass:@"UIAirDropGroupActivityCell" hasProperty:@"transportSlotID" withType:"I"];
+  [validationsCopy validateClass:@"UIAirDropGroupActivityCell" hasProperty:@"displayName" withType:"@"];
+  [validationsCopy validateClass:@"UIAirDropGroupActivityCell" hasProperty:@"subtitle" withType:"@"];
+  [validationsCopy validateClass:@"UIAirDropGroupActivityCell" hasInstanceMethod:@"node" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"UIAirDropNode" hasInstanceMethod:@"peopleSuggestion" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SFPeopleSuggestion" hasInstanceMethod:@"transportBundleIdentifier" withFullSignature:{"@", 0}];
 }
 
 - (unint64_t)accessibilityTraits
@@ -59,17 +59,17 @@
   {
     if (v3 | v4)
     {
-      v11 = __UIAXStringForVariables();
+      accessibilityLabel = __UIAXStringForVariables();
     }
 
     else
     {
       v14.receiver = self;
       v14.super_class = UIAirDropGroupActivityCellAccessibility;
-      v11 = [(UIAirDropGroupActivityCellAccessibility *)&v14 accessibilityLabel];
+      accessibilityLabel = [(UIAirDropGroupActivityCellAccessibility *)&v14 accessibilityLabel];
     }
 
-    v7 = v11;
+    v7 = accessibilityLabel;
   }
 
   v12 = *MEMORY[0x29EDCA608];
@@ -79,27 +79,27 @@
 
 - (id)accessibilityValue
 {
-  v3 = [(UIAirDropGroupActivityCellAccessibility *)self _accessibilityTransportSlotID];
-  v4 = [(UIAirDropGroupActivityCellAccessibility *)self _axAppNameForSuggestionCell];
+  _accessibilityTransportSlotID = [(UIAirDropGroupActivityCellAccessibility *)self _accessibilityTransportSlotID];
+  _axAppNameForSuggestionCell = [(UIAirDropGroupActivityCellAccessibility *)self _axAppNameForSuggestionCell];
   v5 = objc_alloc(MEMORY[0x29EDBD7E8]);
   v6 = accessibilityLocalizedString(@"sharing.sugggestion");
   v7 = [v5 initWithString:v6];
 
-  if (v3)
+  if (_accessibilityTransportSlotID)
   {
-    v8 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:v3];
+    v8 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:_accessibilityTransportSlotID];
     [v7 setAttribute:v8 forKey:*MEMORY[0x29EDBD9C0]];
   }
 
   else
   {
-    if (![v4 length])
+    if (![_axAppNameForSuggestionCell length])
     {
       goto LABEL_6;
     }
 
     v8 = v7;
-    v7 = [objc_alloc(MEMORY[0x29EDBD7E8]) initWithString:v4];
+    v7 = [objc_alloc(MEMORY[0x29EDBD7E8]) initWithString:_axAppNameForSuggestionCell];
   }
 
 LABEL_6:

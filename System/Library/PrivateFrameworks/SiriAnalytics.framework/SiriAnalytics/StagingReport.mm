@@ -2,7 +2,7 @@
 + (id)failed;
 + (id)terminated;
 + (id)timedOut;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation StagingReport
@@ -31,11 +31,11 @@
   return v2;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  StagingReport.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  StagingReport.encode(with:)(coderCopy);
 }
 
 @end

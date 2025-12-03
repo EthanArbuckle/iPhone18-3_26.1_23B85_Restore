@@ -1,18 +1,18 @@
 @interface _SUIAShockwaveMeshConfiguration
-+ (id)meshConfigurationForState:(int64_t)a3 variant:(int64_t)a4 normalizedStartLocation:(CGRect)a5 settings:(id)a6 bounds:(CGRect)a7 idiom:(int64_t)a8 usesIntelligentFillLight:(BOOL)a9;
++ (id)meshConfigurationForState:(int64_t)state variant:(int64_t)variant normalizedStartLocation:(CGRect)location settings:(id)settings bounds:(CGRect)bounds idiom:(int64_t)idiom usesIntelligentFillLight:(BOOL)light;
 - (CATransform3D)viewTransform;
 - (CGRect)meshFrame;
-- (void)_setMeshFrame:(CGRect)a3;
-- (void)_setViewTransform:(CATransform3D *)a3;
+- (void)_setMeshFrame:(CGRect)frame;
+- (void)_setViewTransform:(CATransform3D *)transform;
 @end
 
 @implementation _SUIAShockwaveMeshConfiguration
 
-- (void)_setMeshFrame:(CGRect)a3
+- (void)_setMeshFrame:(CGRect)frame
 {
   propertyDictionary = self->super._propertyDictionary;
-  v5 = a3;
-  v4 = [MEMORY[0x277CCAE60] valueWithBytes:&v5 objCType:"{CGRect={CGPoint=dd}{CGSize=dd}}"];
+  frameCopy = frame;
+  v4 = [MEMORY[0x277CCAE60] valueWithBytes:&frameCopy objCType:"{CGRect={CGPoint=dd}{CGSize=dd}}"];
   [(NSMutableDictionary *)propertyDictionary setObject:v4 forKey:@"meshFrame"];
 }
 
@@ -34,20 +34,20 @@
   return result;
 }
 
-- (void)_setViewTransform:(CATransform3D *)a3
+- (void)_setViewTransform:(CATransform3D *)transform
 {
   propertyDictionary = self->super._propertyDictionary;
-  v4 = *&a3->m33;
-  v9[4] = *&a3->m31;
+  v4 = *&transform->m33;
+  v9[4] = *&transform->m31;
   v9[5] = v4;
-  v5 = *&a3->m43;
-  v9[6] = *&a3->m41;
+  v5 = *&transform->m43;
+  v9[6] = *&transform->m41;
   v9[7] = v5;
-  v6 = *&a3->m13;
-  v9[0] = *&a3->m11;
+  v6 = *&transform->m13;
+  v9[0] = *&transform->m11;
   v9[1] = v6;
-  v7 = *&a3->m23;
-  v9[2] = *&a3->m21;
+  v7 = *&transform->m23;
+  v9[2] = *&transform->m21;
   v9[3] = v7;
   v8 = [MEMORY[0x277CCAE60] valueWithCATransform3D:v9];
   [(NSMutableDictionary *)propertyDictionary setObject:v8 forKey:@"viewTransform"];
@@ -78,30 +78,30 @@
   return result;
 }
 
-+ (id)meshConfigurationForState:(int64_t)a3 variant:(int64_t)a4 normalizedStartLocation:(CGRect)a5 settings:(id)a6 bounds:(CGRect)a7 idiom:(int64_t)a8 usesIntelligentFillLight:(BOOL)a9
++ (id)meshConfigurationForState:(int64_t)state variant:(int64_t)variant normalizedStartLocation:(CGRect)location settings:(id)settings bounds:(CGRect)bounds idiom:(int64_t)idiom usesIntelligentFillLight:(BOOL)light
 {
-  v87 = a9;
-  height = a7.size.height;
-  width = a7.size.width;
-  y = a7.origin.y;
-  x = a7.origin.x;
-  v13 = a5.size.height;
-  v14 = a5.size.width;
-  v15 = a5.origin.y;
-  v16 = a5.origin.x;
-  v19 = a6;
+  lightCopy = light;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  v13 = location.size.height;
+  v14 = location.size.width;
+  v15 = location.origin.y;
+  v16 = location.origin.x;
+  settingsCopy = settings;
   v20 = objc_alloc_init(_SUIAShockwaveMeshConfiguration);
-  v21 = [v19 meshPointsAnimationSettings];
-  v22 = [v19 meshPointsCancelledAnimationSettings];
-  v23 = [v19 meshPositionAnimationSettings];
+  meshPointsAnimationSettings = [settingsCopy meshPointsAnimationSettings];
+  meshPointsCancelledAnimationSettings = [settingsCopy meshPointsCancelledAnimationSettings];
+  meshPositionAnimationSettings = [settingsCopy meshPositionAnimationSettings];
   v89 = v15;
   v24 = SUIAScreenEdgeForNormalizedButtonRect();
   v25 = 0;
-  if (a4 > 1)
+  if (variant > 1)
   {
-    if (a4 != 2)
+    if (variant != 2)
     {
-      if (a4 != 3)
+      if (variant != 3)
       {
         goto LABEL_10;
       }
@@ -113,9 +113,9 @@
     goto LABEL_8;
   }
 
-  if (!a4)
+  if (!variant)
   {
-    if (![v19 useSiriMeshForCapture])
+    if (![settingsCopy useSiriMeshForCapture])
     {
       v26 = +[_SUIAShockwaveMeshes captureButtonMesh];
       goto LABEL_9;
@@ -128,7 +128,7 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (a4 == 1)
+  if (variant == 1)
   {
     goto LABEL_8;
   }
@@ -172,12 +172,12 @@ LABEL_19:
   v29 = height;
   v30 = width;
   BSRectWithSize();
-  if (a3 > 5)
+  if (state > 5)
   {
     goto LABEL_55;
   }
 
-  if (((1 << a3) & 0x2C) != 0)
+  if (((1 << state) & 0x2C) != 0)
   {
     v96.origin.x = x;
     v96.origin.y = y;
@@ -189,7 +189,7 @@ LABEL_19:
     v97.size.width = width;
     v97.size.height = height;
     CGRectGetHeight(v97);
-    [v19 meshSquareFinalSizeDiagonalRatio];
+    [settingsCopy meshSquareFinalSizeDiagonalRatio];
     if (v24 == 4 || v24 == 1)
     {
       v98.origin.x = x;
@@ -197,13 +197,13 @@ LABEL_19:
       v98.size.width = width;
       v98.size.height = height;
       CGRectGetWidth(v98);
-      [v19 meshRectangularFinalShortDimensionRatio];
+      [settingsCopy meshRectangularFinalShortDimensionRatio];
       v99.origin.x = x;
       v99.origin.y = y;
       v99.size.width = width;
       v99.size.height = height;
       CGRectGetHeight(v99);
-      [v19 meshRectangularFinalLongDimensionRatio];
+      [settingsCopy meshRectangularFinalLongDimensionRatio];
     }
 
     v100.origin.x = SUIAExpandNormalizedRect(x, y, width, height, v16);
@@ -219,9 +219,9 @@ LABEL_19:
     v101.size.width = v64;
     v101.size.height = v66;
     CGRectGetMidY(v101);
-    if ([v19 shouldBehaveLikeLargeScreenIdiom:a8])
+    if ([settingsCopy shouldBehaveLikeLargeScreenIdiom:idiom])
     {
-      [v19 meshFinalProportionTowardsCenterOnLargeDisplays];
+      [settingsCopy meshFinalProportionTowardsCenterOnLargeDisplays];
       UIRectGetCenter();
       v67 = v63;
       v68 = x;
@@ -249,7 +249,7 @@ LABEL_19:
       v103.size.width = width;
       v103.size.height = v70;
       CGRectGetWidth(v103);
-      [v19 meshFinalProportionAcrossScreenLongEdge];
+      [settingsCopy meshFinalProportionAcrossScreenLongEdge];
     }
 
     else if (v24 == 1)
@@ -259,7 +259,7 @@ LABEL_19:
       v104.size.width = width;
       v104.size.height = v70;
       CGRectGetHeight(v104);
-      [v19 meshFinalProportionAcrossScreenShortEdge];
+      [settingsCopy meshFinalProportionAcrossScreenShortEdge];
     }
 
     else
@@ -271,7 +271,7 @@ LABEL_19:
       if (v24 == 8)
       {
         CGRectGetWidth(*&v71);
-        [v19 meshFinalProportionAcrossScreenLongEdge];
+        [settingsCopy meshFinalProportionAcrossScreenLongEdge];
       }
 
       else
@@ -282,43 +282,43 @@ LABEL_19:
         v105.size.width = width;
         v105.size.height = v70;
         CGRectGetHeight(v105);
-        [v19 meshFinalProportionAcrossScreenShortEdge];
+        [settingsCopy meshFinalProportionAcrossScreenShortEdge];
       }
     }
 
     BSRectCenteredAboutPoint();
     [(_SUIAShockwaveMeshConfiguration *)v20 _setMeshFrame:?];
-    if (a4)
+    if (variant)
     {
       v75 = 7;
     }
 
     else
     {
-      if (v87)
+      if (lightCopy)
       {
-        [v19 visionIntelligenceHintRetargetImpulse];
+        [settingsCopy visionIntelligenceHintRetargetImpulse];
       }
 
       else
       {
-        [v19 captureHintRetargetImpulse];
+        [settingsCopy captureHintRetargetImpulse];
       }
 
       v77 = v76;
-      v78 = [v21 copy];
+      v78 = [meshPointsAnimationSettings copy];
 
       [v78 retargetImpulse];
       [v78 setRetargetImpulse:v77 + v79];
-      v80 = [v22 copy];
+      v80 = [meshPointsCancelledAnimationSettings copy];
 
       [v80 retargetImpulse];
       [v80 setRetargetImpulse:v77 + v81];
-      v82 = [v23 copy];
+      v82 = [meshPositionAnimationSettings copy];
 
       [v82 retargetImpulse];
       [v82 setRetargetImpulse:v77 + v83];
-      if ([v19 useSiriMeshForCapture])
+      if ([settingsCopy useSiriMeshForCapture])
       {
         v75 = 7;
       }
@@ -328,29 +328,29 @@ LABEL_19:
         v75 = 9;
       }
 
-      v23 = v82;
-      v22 = v80;
-      v21 = v78;
+      meshPositionAnimationSettings = v82;
+      meshPointsCancelledAnimationSettings = v80;
+      meshPointsAnimationSettings = v78;
     }
 
-    [(_SUIAAbstractDictionaryBackedConfiguration *)v20 _setBehaviorSettings:v23 forKeypath:@"meshFrame"];
+    [(_SUIAAbstractDictionaryBackedConfiguration *)v20 _setBehaviorSettings:meshPositionAnimationSettings forKeypath:@"meshFrame"];
     v84 = [_SUIAShockwaveMeshes identityMeshTransformRows:v75 columns:v75];
     [(_SUIAShockwaveMeshConfiguration *)v20 _setMeshTransform:v84];
 
-    if (a3 == 5)
+    if (state == 5)
     {
-      v85 = v22;
+      v85 = meshPointsCancelledAnimationSettings;
     }
 
     else
     {
-      v85 = v21;
+      v85 = meshPointsAnimationSettings;
     }
 
     [(_SUIAAbstractDictionaryBackedConfiguration *)v20 _setBehaviorSettings:v85 forKeypath:@"meshTransform"];
-    if (a3 != 5)
+    if (state != 5)
     {
-      [v19 meshPointsEndTransitionDelay];
+      [settingsCopy meshPointsEndTransitionDelay];
       [(_SUIAAbstractDictionaryBackedConfiguration *)v20 _setDelay:@"meshTransform" forApplicationOfKeypath:?];
     }
   }
@@ -361,47 +361,47 @@ LABEL_19:
     v39 = v32;
     v40 = v33;
     v41 = v34;
-    if (((1 << a3) & 0x11) != 0)
+    if (((1 << state) & 0x11) != 0)
     {
       [(_SUIAShockwaveMeshConfiguration *)v20 _setMeshFrame:SAUIRectMovedOffscreenByProportionToNormalizedButtonRectInContextOfShockwaveBounds(v31, v32, v33, v34, 1.0, v35, v36, v37, v28, v89, v90, v88, x, y, v30, v29)];
       [(_SUIAShockwaveMeshConfiguration *)v20 _setMeshTransform:v25];
-      if (a3 != 4)
+      if (state != 4)
       {
         goto LABEL_55;
       }
 
-      [(_SUIAAbstractDictionaryBackedConfiguration *)v20 _setBehaviorSettings:v23 forKeypath:@"meshFrame"];
+      [(_SUIAAbstractDictionaryBackedConfiguration *)v20 _setBehaviorSettings:meshPositionAnimationSettings forKeypath:@"meshFrame"];
       v42 = v20;
-      v43 = v22;
+      v43 = meshPointsCancelledAnimationSettings;
     }
 
     else
     {
       v44 = SAUIRectMovedOffscreenByProportionToNormalizedButtonRectInContextOfShockwaveBounds(v31, v32, v33, v34, 1.0, v35, v36, v37, v28, v89, v90, v88, x, y, v30, v29);
-      if (!a4)
+      if (!variant)
       {
-        [v19 captureHintMeshOffset];
+        [settingsCopy captureHintMeshOffset];
         v52 = SAUIRectMovedOffscreenByProportionToNormalizedButtonRectInContextOfShockwaveBounds(v38, v39, v40, v41, v48, v49, v50, v51, v28, v89, v90, v88, x, y, v30, v29);
         v54 = v53;
         v56 = v55;
         v58 = v57;
-        v59 = [v19 captureHintAnimationSettings];
+        captureHintAnimationSettings = [settingsCopy captureHintAnimationSettings];
 
-        v60 = [v19 captureHintAnimationSettings];
+        captureHintAnimationSettings2 = [settingsCopy captureHintAnimationSettings];
 
         v47 = v58;
         v46 = v56;
         v45 = v54;
         v44 = v52;
-        v23 = v59;
-        v21 = v60;
+        meshPositionAnimationSettings = captureHintAnimationSettings;
+        meshPointsAnimationSettings = captureHintAnimationSettings2;
       }
 
       [(_SUIAShockwaveMeshConfiguration *)v20 _setMeshFrame:v44, v45, v46, v47];
-      [(_SUIAAbstractDictionaryBackedConfiguration *)v20 _setBehaviorSettings:v23 forKeypath:@"meshFrame"];
+      [(_SUIAAbstractDictionaryBackedConfiguration *)v20 _setBehaviorSettings:meshPositionAnimationSettings forKeypath:@"meshFrame"];
       [(_SUIAShockwaveMeshConfiguration *)v20 _setMeshTransform:v25];
       v42 = v20;
-      v43 = v21;
+      v43 = meshPointsAnimationSettings;
     }
 
     [(_SUIAAbstractDictionaryBackedConfiguration *)v42 _setBehaviorSettings:v43 forKeypath:@"meshTransform"];

@@ -1,60 +1,60 @@
 @interface PKCloudStoreZoneQueryConfiguration
-- (BOOL)isEqual:(id)a3;
-- (PKCloudStoreZoneQueryConfiguration)initWithCoder:(id)a3;
-- (PKCloudStoreZoneQueryConfiguration)initWithItemType:(unint64_t)a3 recordName:(id)a4;
-- (PKCloudStoreZoneQueryConfiguration)initWithTransactionSourceIdentifier:(id)a3 accountIdentifier:(id)a4 accountType:(int64_t)a5 accountEventIdentifier:(id)a6 altDSID:(id)a7 zoneName:(id)a8;
-- (PKCloudStoreZoneQueryConfiguration)initWithTransactionSourceIdentifier:(id)a3 accountIdentifier:(id)a4 accountType:(int64_t)a5 serviceIdentifier:(id)a6 altDSID:(id)a7 zoneName:(id)a8;
+- (BOOL)isEqual:(id)equal;
+- (PKCloudStoreZoneQueryConfiguration)initWithCoder:(id)coder;
+- (PKCloudStoreZoneQueryConfiguration)initWithItemType:(unint64_t)type recordName:(id)name;
+- (PKCloudStoreZoneQueryConfiguration)initWithTransactionSourceIdentifier:(id)identifier accountIdentifier:(id)accountIdentifier accountType:(int64_t)type accountEventIdentifier:(id)eventIdentifier altDSID:(id)d zoneName:(id)name;
+- (PKCloudStoreZoneQueryConfiguration)initWithTransactionSourceIdentifier:(id)identifier accountIdentifier:(id)accountIdentifier accountType:(int64_t)type serviceIdentifier:(id)serviceIdentifier altDSID:(id)d zoneName:(id)name;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKCloudStoreZoneQueryConfiguration
 
-- (PKCloudStoreZoneQueryConfiguration)initWithItemType:(unint64_t)a3 recordName:(id)a4
+- (PKCloudStoreZoneQueryConfiguration)initWithItemType:(unint64_t)type recordName:(id)name
 {
-  v7 = a4;
+  nameCopy = name;
   v11.receiver = self;
   v11.super_class = PKCloudStoreZoneQueryConfiguration;
   v8 = [(PKCloudStoreZoneQueryConfiguration *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_itemType = a3;
-    objc_storeStrong(&v8->_recordName, a4);
+    v8->_itemType = type;
+    objc_storeStrong(&v8->_recordName, name);
   }
 
   return v9;
 }
 
-- (PKCloudStoreZoneQueryConfiguration)initWithTransactionSourceIdentifier:(id)a3 accountIdentifier:(id)a4 accountType:(int64_t)a5 serviceIdentifier:(id)a6 altDSID:(id)a7 zoneName:(id)a8
+- (PKCloudStoreZoneQueryConfiguration)initWithTransactionSourceIdentifier:(id)identifier accountIdentifier:(id)accountIdentifier accountType:(int64_t)type serviceIdentifier:(id)serviceIdentifier altDSID:(id)d zoneName:(id)name
 {
-  v21 = a3;
-  v15 = a4;
-  v16 = a7;
-  v17 = a8;
-  v18 = [(PKCloudStoreZoneQueryConfiguration *)self initWithItemType:1 recordName:a6];
+  identifierCopy = identifier;
+  accountIdentifierCopy = accountIdentifier;
+  dCopy = d;
+  nameCopy = name;
+  v18 = [(PKCloudStoreZoneQueryConfiguration *)self initWithItemType:1 recordName:serviceIdentifier];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_transactionSourceIdentifier, a3);
-    objc_storeStrong(&v19->_accountIdentifier, a4);
-    v19->_accountType = a5;
-    objc_storeStrong(&v19->_altDSID, a7);
-    objc_storeStrong(&v19->_zoneName, a8);
+    objc_storeStrong(&v18->_transactionSourceIdentifier, identifier);
+    objc_storeStrong(&v19->_accountIdentifier, accountIdentifier);
+    v19->_accountType = type;
+    objc_storeStrong(&v19->_altDSID, d);
+    objc_storeStrong(&v19->_zoneName, name);
   }
 
   return v19;
 }
 
-- (PKCloudStoreZoneQueryConfiguration)initWithTransactionSourceIdentifier:(id)a3 accountIdentifier:(id)a4 accountType:(int64_t)a5 accountEventIdentifier:(id)a6 altDSID:(id)a7 zoneName:(id)a8
+- (PKCloudStoreZoneQueryConfiguration)initWithTransactionSourceIdentifier:(id)identifier accountIdentifier:(id)accountIdentifier accountType:(int64_t)type accountEventIdentifier:(id)eventIdentifier altDSID:(id)d zoneName:(id)name
 {
-  v28 = a3;
-  v27 = a4;
-  v14 = a6;
-  v26 = a7;
-  v15 = a8;
-  v16 = v14;
+  identifierCopy = identifier;
+  accountIdentifierCopy = accountIdentifier;
+  eventIdentifierCopy = eventIdentifier;
+  dCopy = d;
+  nameCopy = name;
+  v16 = eventIdentifierCopy;
   v17 = +[PKAccountEvent recordNamePrefix];
   v18 = [v16 hasPrefix:v17];
 
@@ -70,11 +70,11 @@
   v23 = v22;
   if (v22)
   {
-    objc_storeStrong(&v22->_transactionSourceIdentifier, a3);
-    objc_storeStrong(&v23->_accountIdentifier, a4);
-    v23->_accountType = a5;
-    objc_storeStrong(&v23->_altDSID, a7);
-    objc_storeStrong(&v23->_zoneName, a8);
+    objc_storeStrong(&v22->_transactionSourceIdentifier, identifier);
+    objc_storeStrong(&v23->_accountIdentifier, accountIdentifier);
+    v23->_accountType = type;
+    objc_storeStrong(&v23->_altDSID, d);
+    objc_storeStrong(&v23->_zoneName, name);
   }
 
   return v23;
@@ -95,18 +95,18 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v12 = 1;
   }
 
   else
   {
-    if (v4)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -290,52 +290,52 @@ LABEL_38:
   return v3;
 }
 
-- (PKCloudStoreZoneQueryConfiguration)initWithCoder:(id)a3
+- (PKCloudStoreZoneQueryConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = PKCloudStoreZoneQueryConfiguration;
   v5 = [(PKCloudStoreZoneQueryConfiguration *)&v17 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"recordName"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"recordName"];
     recordName = v5->_recordName;
     v5->_recordName = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"transactionSourceIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"transactionSourceIdentifier"];
     transactionSourceIdentifier = v5->_transactionSourceIdentifier;
     v5->_transactionSourceIdentifier = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accountIdentifier"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accountIdentifier"];
     accountIdentifier = v5->_accountIdentifier;
     v5->_accountIdentifier = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"zoneName"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"zoneName"];
     zoneName = v5->_zoneName;
     v5->_zoneName = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"altDSID"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"altDSID"];
     altDSID = v5->_altDSID;
     v5->_altDSID = v14;
 
-    v5->_itemType = [v4 decodeIntegerForKey:@"itemType"];
-    v5->_accountType = [v4 decodeIntegerForKey:@"accountType"];
+    v5->_itemType = [coderCopy decodeIntegerForKey:@"itemType"];
+    v5->_accountType = [coderCopy decodeIntegerForKey:@"accountType"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   accountType = self->_accountType;
-  v5 = a3;
-  [v5 encodeInteger:accountType forKey:@"accountType"];
-  [v5 encodeInteger:self->_itemType forKey:@"itemType"];
-  [v5 encodeObject:self->_recordName forKey:@"recordName"];
-  [v5 encodeObject:self->_zoneName forKey:@"zoneName"];
-  [v5 encodeObject:self->_transactionSourceIdentifier forKey:@"transactionSourceIdentifier"];
-  [v5 encodeObject:self->_accountIdentifier forKey:@"accountIdentifier"];
-  [v5 encodeObject:self->_altDSID forKey:@"altDSID"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:accountType forKey:@"accountType"];
+  [coderCopy encodeInteger:self->_itemType forKey:@"itemType"];
+  [coderCopy encodeObject:self->_recordName forKey:@"recordName"];
+  [coderCopy encodeObject:self->_zoneName forKey:@"zoneName"];
+  [coderCopy encodeObject:self->_transactionSourceIdentifier forKey:@"transactionSourceIdentifier"];
+  [coderCopy encodeObject:self->_accountIdentifier forKey:@"accountIdentifier"];
+  [coderCopy encodeObject:self->_altDSID forKey:@"altDSID"];
 }
 
 @end

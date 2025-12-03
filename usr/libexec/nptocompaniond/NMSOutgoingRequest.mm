@@ -1,18 +1,18 @@
 @interface NMSOutgoingRequest
-+ (id)requestWithMessageID:(unsigned __int16)a3;
++ (id)requestWithMessageID:(unsigned __int16)d;
 - (NMSMessageCenter)messageCenter;
 - (NMSOutgoingRequest)init;
 - (id)description;
-- (void)setPbRequest:(id)a3;
+- (void)setPbRequest:(id)request;
 @end
 
 @implementation NMSOutgoingRequest
 
-+ (id)requestWithMessageID:(unsigned __int16)a3
++ (id)requestWithMessageID:(unsigned __int16)d
 {
-  v3 = a3;
-  v4 = objc_alloc_init(a1);
-  [v4 setMessageID:v3];
+  dCopy = d;
+  v4 = objc_alloc_init(self);
+  [v4 setMessageID:dCopy];
 
   return v4;
 }
@@ -30,13 +30,13 @@
   return result;
 }
 
-- (void)setPbRequest:(id)a3
+- (void)setPbRequest:(id)request
 {
-  objc_storeStrong(&self->_pbRequest, a3);
-  v7 = a3;
-  v5 = [self->_pbRequest data];
+  objc_storeStrong(&self->_pbRequest, request);
+  requestCopy = request;
+  data = [self->_pbRequest data];
   data = self->_data;
-  self->_data = v5;
+  self->_data = data;
 }
 
 - (id)description

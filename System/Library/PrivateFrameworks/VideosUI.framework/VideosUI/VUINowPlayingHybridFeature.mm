@@ -1,23 +1,23 @@
 @interface VUINowPlayingHybridFeature
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (VUINowPlayingHybridFeature)initWithType:(unint64_t)a3 startTime:(double)a4 duration:(double)a5;
+- (VUINowPlayingHybridFeature)initWithType:(unint64_t)type startTime:(double)time duration:(double)duration;
 - (unint64_t)hash;
 @end
 
 @implementation VUINowPlayingHybridFeature
 
-- (VUINowPlayingHybridFeature)initWithType:(unint64_t)a3 startTime:(double)a4 duration:(double)a5
+- (VUINowPlayingHybridFeature)initWithType:(unint64_t)type startTime:(double)time duration:(double)duration
 {
   v9.receiver = self;
   v9.super_class = VUINowPlayingHybridFeature;
   result = [(VUINowPlayingHybridFeature *)&v9 init];
-  if (a3 && result)
+  if (type && result)
   {
     *&result->_active = 0;
-    result->_type = a3;
-    result->_startTime = a4;
-    result->_duration = a5;
+    result->_type = type;
+    result->_startTime = time;
+    result->_duration = duration;
     result->_skippable = 1;
     result->_activationType = 0;
   }
@@ -56,20 +56,20 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v14 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
-    v7 = [(VUINowPlayingHybridFeature *)self type];
-    if (v7 == [(VUINowPlayingHybridFeature *)v6 type]&& ([(VUINowPlayingHybridFeature *)self startTime], v9 = v8, [(VUINowPlayingHybridFeature *)v6 startTime], v9 == v10))
+    type = [(VUINowPlayingHybridFeature *)self type];
+    if (type == [(VUINowPlayingHybridFeature *)v6 type]&& ([(VUINowPlayingHybridFeature *)self startTime], v9 = v8, [(VUINowPlayingHybridFeature *)v6 startTime], v9 == v10))
     {
       [(VUINowPlayingHybridFeature *)self duration];
       v12 = v11;

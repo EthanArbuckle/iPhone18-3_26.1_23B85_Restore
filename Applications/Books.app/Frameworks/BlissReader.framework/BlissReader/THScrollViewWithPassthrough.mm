@@ -1,15 +1,15 @@
 @interface THScrollViewWithPassthrough
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 @end
 
 @implementation THScrollViewWithPassthrough
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
+  y = test.y;
   v10.receiver = self;
   v10.super_class = THScrollViewWithPassthrough;
-  v6 = [(THScrollViewWithPassthrough *)&v10 hitTest:a4 withEvent:a3.x];
+  v6 = [(THScrollViewWithPassthrough *)&v10 hitTest:event withEvent:test.x];
   if (v6 == self && ([(THScrollViewWithPassthrough *)self heightOfTopZoneForDockingSwipe], y > v7))
   {
     v8 = 0;

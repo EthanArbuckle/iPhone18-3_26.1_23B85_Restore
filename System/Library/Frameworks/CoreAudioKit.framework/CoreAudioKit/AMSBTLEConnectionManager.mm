@@ -1,30 +1,30 @@
 @interface AMSBTLEConnectionManager
-- (AMSBTLEConnectionManager)initWithUIController:(id)a3;
+- (AMSBTLEConnectionManager)initWithUIController:(id)controller;
 - (BOOL)isLECapableHardware;
-- (BOOL)peripheralIsConnectedCentral:(id)a3;
-- (id)amsPeripheralForCBPeripheral:(id)a3;
-- (unsigned)midiDeviceForUUID:(id)a3;
-- (void)centralManager:(id)a3 didConnectPeripheral:(id)a4;
-- (void)centralManager:(id)a3 didDisconnectPeripheral:(id)a4 error:(id)a5;
-- (void)centralManager:(id)a3 didDiscoverPeripheral:(id)a4 advertisementData:(id)a5 RSSI:(id)a6;
-- (void)centralManager:(id)a3 didFailToConnectPeripheral:(id)a4 error:(id)a5;
-- (void)centralManagerDidUpdateState:(id)a3;
+- (BOOL)peripheralIsConnectedCentral:(id)central;
+- (id)amsPeripheralForCBPeripheral:(id)peripheral;
+- (unsigned)midiDeviceForUUID:(id)d;
+- (void)centralManager:(id)manager didConnectPeripheral:(id)peripheral;
+- (void)centralManager:(id)manager didDisconnectPeripheral:(id)peripheral error:(id)error;
+- (void)centralManager:(id)manager didDiscoverPeripheral:(id)peripheral advertisementData:(id)data RSSI:(id)i;
+- (void)centralManager:(id)manager didFailToConnectPeripheral:(id)peripheral error:(id)error;
+- (void)centralManagerDidUpdateState:(id)state;
 - (void)checkAlreadyConnectedPeripherals;
 - (void)createPeripheralList;
 - (void)dealloc;
 - (void)killTimer;
-- (void)peripheral:(id)a3 didDiscoverCharacteristicsForService:(id)a4 error:(id)a5;
-- (void)peripheral:(id)a3 didDiscoverServices:(id)a4;
-- (void)peripheral:(id)a3 didUpdateValueForCharacteristic:(id)a4 error:(id)a5;
-- (void)removeAMSPeripheralForCBPeripheral:(id)a3;
+- (void)peripheral:(id)peripheral didDiscoverCharacteristicsForService:(id)service error:(id)error;
+- (void)peripheral:(id)peripheral didDiscoverServices:(id)services;
+- (void)peripheral:(id)peripheral didUpdateValueForCharacteristic:(id)characteristic error:(id)error;
+- (void)removeAMSPeripheralForCBPeripheral:(id)peripheral;
 - (void)startScan;
 - (void)startTimer;
-- (void)timerFired:(id)a3;
+- (void)timerFired:(id)fired;
 @end
 
 @implementation AMSBTLEConnectionManager
 
-- (AMSBTLEConnectionManager)initWithUIController:(id)a3
+- (AMSBTLEConnectionManager)initWithUIController:(id)controller
 {
   v9.receiver = self;
   v9.super_class = AMSBTLEConnectionManager;
@@ -32,7 +32,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->controller = a3;
+    v4->controller = controller;
     v6 = [objc_alloc(MEMORY[0x277CBDFF8]) initWithDelegate:v4 queue:0];
     v5->centralManager = v6;
     v5->centralState = [(CBCentralManager *)v6 state];
@@ -46,8 +46,8 @@
       MIDIClientCreate(&stru_284A3B338, NotifyProc, v5, &gNotificationClient);
     }
 
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v7 addObserver:v5 selector:sel_updateAdvertisingState_ name:kAdvertisementNotification object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v5 selector:sel_updateAdvertisingState_ name:kAdvertisementNotification object:0];
   }
 
   return v5;
@@ -61,8 +61,8 @@
     gNotificationClient = 0;
   }
 
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:kAdvertisementNotification];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:kAdvertisementNotification];
 
   self->peripheralList = 0;
   centralManager = self->centralManager;
@@ -211,15 +211,15 @@
         v16 = [MEMORY[0x277CBFD00] midiDeviceForUUID:{objc_msgSend(objc_msgSend(v15, "identifier"), "UUIDString")}];
         if (v16)
         {
-          v17 = [MEMORY[0x277CBFD00] nameForMIDIDevice:v16];
+          name = [MEMORY[0x277CBFD00] nameForMIDIDevice:v16];
         }
 
         else
         {
-          v17 = [v15 name];
+          name = [v15 name];
         }
 
-        v18 = v17;
+        v18 = name;
         v19 = [(AMSBTLEConnectionManager *)self amsPeripheralForCBPeripheral:v15];
         if (v19)
         {
@@ -264,7 +264,7 @@
   }
 }
 
-- (void)timerFired:(id)a3
+- (void)timerFired:(id)fired
 {
   v20 = *MEMORY[0x277D85DE8];
   [(AMSBTLEConnectionManager *)self checkAlreadyConnectedPeripherals];
@@ -325,17 +325,17 @@
 
 - (BOOL)isLECapableHardware
 {
-  v2 = [(CBCentralManager *)self->centralManager state];
+  state = [(CBCentralManager *)self->centralManager state];
   v3 = 0;
-  if (v2 > 3)
+  if (state > 3)
   {
-    if (v2 == 4)
+    if (state == 4)
     {
       v4 = @"Bluetooth is currently powered off.";
       goto LABEL_10;
     }
 
-    if (v2 == 5)
+    if (state == 5)
     {
       v3 = 1;
       v4 = @"Bluetooth is powered on and LE capable.";
@@ -346,13 +346,13 @@ LABEL_11:
 
   else
   {
-    if (v2 == 2)
+    if (state == 2)
     {
       v4 = @"The platform/hardware doesn't support Bluetooth Low Energy.";
       goto LABEL_10;
     }
 
-    if (v2 == 3)
+    if (state == 3)
     {
       v4 = @"The app is not authorized to use Bluetooth Low Energy.";
 LABEL_10:
@@ -400,8 +400,8 @@ LABEL_10:
   {
     v3 = objc_alloc(MEMORY[0x277CBEBB8]);
     self->refreshTimer = [v3 initWithFireDate:objc_msgSend(MEMORY[0x277CBEAA8] interval:"dateWithTimeIntervalSinceNow:" target:1.0) selector:self userInfo:sel_timerFired_ repeats:{0, 1, 1.0}];
-    v4 = [MEMORY[0x277CBEB88] currentRunLoop];
-    [v4 addTimer:self->refreshTimer forMode:*MEMORY[0x277CBE738]];
+    currentRunLoop = [MEMORY[0x277CBEB88] currentRunLoop];
+    [currentRunLoop addTimer:self->refreshTimer forMode:*MEMORY[0x277CBE738]];
     [(NSTimer *)self->refreshTimer setTolerance:0.1];
   }
 
@@ -409,30 +409,30 @@ LABEL_10:
   {
     v5 = objc_alloc(MEMORY[0x277CBEBB8]);
     self->connectionTimer = [v5 initWithFireDate:objc_msgSend(MEMORY[0x277CBEAA8] interval:"dateWithTimeIntervalSinceNow:" target:5.0) selector:self userInfo:sel_connectionTimerFired_ repeats:{0, 1, 5.0}];
-    v6 = [MEMORY[0x277CBEB88] currentRunLoop];
-    [v6 addTimer:self->connectionTimer forMode:*MEMORY[0x277CBE738]];
+    currentRunLoop2 = [MEMORY[0x277CBEB88] currentRunLoop];
+    [currentRunLoop2 addTimer:self->connectionTimer forMode:*MEMORY[0x277CBE738]];
     connectionTimer = self->connectionTimer;
 
     [(NSTimer *)connectionTimer setTolerance:0.25];
   }
 }
 
-- (void)centralManagerDidUpdateState:(id)a3
+- (void)centralManagerDidUpdateState:(id)state
 {
   centralManager = self->centralManager;
-  if (centralManager != a3)
+  if (centralManager != state)
   {
     return;
   }
 
-  v5 = [(CBCentralManager *)centralManager state];
-  if (v5 == self->centralState)
+  state = [(CBCentralManager *)centralManager state];
+  if (state == self->centralState)
   {
     return;
   }
 
-  v6 = v5;
-  self->centralState = v5;
+  v6 = state;
+  self->centralState = state;
   controller = self->controller;
   if (v6)
   {
@@ -455,25 +455,25 @@ LABEL_10:
   [(BTLEConnectionTable *)controller setUIEnabled:v8];
 }
 
-- (void)centralManager:(id)a3 didDiscoverPeripheral:(id)a4 advertisementData:(id)a5 RSSI:(id)a6
+- (void)centralManager:(id)manager didDiscoverPeripheral:(id)peripheral advertisementData:(id)data RSSI:(id)i
 {
-  if ([(AMSBTLEConnectionManager *)self peripheralIsConnectedCentral:a4])
+  if ([(AMSBTLEConnectionManager *)self peripheralIsConnectedCentral:peripheral])
   {
     return;
   }
 
-  v9 = [a5 objectForKeyedSubscript:*MEMORY[0x277CBDD08]];
-  v10 = v9;
+  v9 = [data objectForKeyedSubscript:*MEMORY[0x277CBDD08]];
+  name = v9;
   if (!v9)
   {
-    v10 = [a4 name];
+    name = [peripheral name];
   }
 
-  v11 = [(AMSBTLEConnectionManager *)self amsPeripheralForCBPeripheral:a4];
+  v11 = [(AMSBTLEConnectionManager *)self amsPeripheralForCBPeripheral:peripheral];
   if (v11)
   {
     v12 = v11;
-    v13 = [a5 objectForKeyedSubscript:*MEMORY[0x277CBDD30]];
+    v13 = [data objectForKeyedSubscript:*MEMORY[0x277CBDD30]];
     if ([v13 containsObject:{objc_msgSend(MEMORY[0x277CBE0A0], "UUIDWithString:", @"03B80E5A-EDE8-4B33-A751-6CE34EC4C700"}] && (objc_msgSend(objc_msgSend(MEMORY[0x277CBEAA8], "date"), "timeIntervalSince1970"), objc_msgSend(v12, "setLastSeen:"), objc_msgSend(v12, "updateAvailableStateChanged")))
     {
       NSLog(&cfstr_PeripheralIsav_0.isa, [v12 isAvailable]);
@@ -495,7 +495,7 @@ LABEL_10:
 
     if (([objc_msgSend(v12 "name")] & 1) == 0)
     {
-      [v12 setName:v10];
+      [v12 setName:name];
 LABEL_16:
       p_controller = &self->controller;
       goto LABEL_17;
@@ -510,8 +510,8 @@ LABEL_12:
     goto LABEL_16;
   }
 
-  NSLog(&cfstr_DiscoveredANew.isa, v10, [objc_msgSend(a4 "identifier")]);
-  v15 = -[AMSBTLEPeripheral initWithID:name:manager:]([AMSBTLEPeripheral alloc], "initWithID:name:manager:", [objc_msgSend(a4 "identifier")], v10, self->centralManager);
+  NSLog(&cfstr_DiscoveredANew.isa, name, [objc_msgSend(peripheral "identifier")]);
+  v15 = -[AMSBTLEPeripheral initWithID:name:manager:]([AMSBTLEPeripheral alloc], "initWithID:name:manager:", [objc_msgSend(peripheral "identifier")], name, self->centralManager);
   [objc_msgSend(MEMORY[0x277CBEAA8] "date")];
   [(AMSBTLEPeripheral *)v15 setLastSeen:?];
   [(AMSBTLEPeripheral *)v15 updateAvailableStateChanged];
@@ -527,12 +527,12 @@ LABEL_17:
   [(BTLEConnectionTable *)v18 updatePeripheralTable];
 }
 
-- (void)centralManager:(id)a3 didConnectPeripheral:(id)a4
+- (void)centralManager:(id)manager didConnectPeripheral:(id)peripheral
 {
   v20 = *MEMORY[0x277D85DE8];
-  if (self->centralManager == a3)
+  if (self->centralManager == manager)
   {
-    v6 = [(AMSBTLEConnectionManager *)self amsPeripheralForCBPeripheral:a4];
+    v6 = [(AMSBTLEConnectionManager *)self amsPeripheralForCBPeripheral:peripheral];
     if (v6)
     {
       v7 = v6;
@@ -575,14 +575,14 @@ LABEL_17:
 
 LABEL_13:
       [(NSMutableArray *)self->connectedAMSPeripherals addObject:v7];
-      if (([(NSMutableArray *)self->connectedBTPeripherals containsObject:a4]& 1) == 0)
+      if (([(NSMutableArray *)self->connectedBTPeripherals containsObject:peripheral]& 1) == 0)
       {
-        [(NSMutableArray *)self->connectedBTPeripherals addObject:a4];
+        [(NSMutableArray *)self->connectedBTPeripherals addObject:peripheral];
       }
 
-      [a4 setDelegate:self];
+      [peripheral setDelegate:self];
       v18 = [MEMORY[0x277CBE0A0] UUIDWithString:@"03B80E5A-EDE8-4B33-A751-6CE34EC4C700"];
-      [a4 discoverServices:{objc_msgSend(MEMORY[0x277CBEA60], "arrayWithObjects:count:", &v18, 1)}];
+      [peripheral discoverServices:{objc_msgSend(MEMORY[0x277CBEA60], "arrayWithObjects:count:", &v18, 1)}];
     }
 
     else
@@ -592,18 +592,18 @@ LABEL_13:
   }
 }
 
-- (void)centralManager:(id)a3 didDisconnectPeripheral:(id)a4 error:(id)a5
+- (void)centralManager:(id)manager didDisconnectPeripheral:(id)peripheral error:(id)error
 {
   v18 = *MEMORY[0x277D85DE8];
-  if (self->centralManager == a3)
+  if (self->centralManager == manager)
   {
-    if (a5)
+    if (error)
     {
-      NSLog(&cfstr_Centralmanager.isa, a2, a5);
+      NSLog(&cfstr_Centralmanager.isa, a2, error);
     }
 
-    [a4 setDelegate:0];
-    [(NSMutableArray *)self->connectedBTPeripherals removeObject:a4];
+    [peripheral setDelegate:0];
+    [(NSMutableArray *)self->connectedBTPeripherals removeObject:peripheral];
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
@@ -643,25 +643,25 @@ LABEL_13:
   }
 }
 
-- (void)centralManager:(id)a3 didFailToConnectPeripheral:(id)a4 error:(id)a5
+- (void)centralManager:(id)manager didFailToConnectPeripheral:(id)peripheral error:(id)error
 {
-  NSLog(&cfstr_ErrorFailedToC.isa, a4, [a5 localizedDescription]);
-  if (a4)
+  NSLog(&cfstr_ErrorFailedToC.isa, peripheral, [error localizedDescription]);
+  if (peripheral)
   {
 
-    [a4 setDelegate:0];
+    [peripheral setDelegate:0];
   }
 }
 
-- (void)peripheral:(id)a3 didDiscoverServices:(id)a4
+- (void)peripheral:(id)peripheral didDiscoverServices:(id)services
 {
   v21 = *MEMORY[0x277D85DE8];
-  if (a4)
+  if (services)
   {
-    NSLog(&cfstr_PeripheralDidd.isa, a2, a4);
+    NSLog(&cfstr_PeripheralDidd.isa, a2, services);
     centralManager = self->centralManager;
 
-    [(CBCentralManager *)centralManager cancelPeripheralConnection:a3];
+    [(CBCentralManager *)centralManager cancelPeripheralConnection:peripheral];
   }
 
   else
@@ -670,15 +670,15 @@ LABEL_13:
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v7 = [a3 services];
-    v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    services = [peripheral services];
+    v8 = [services countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (!v8)
     {
       goto LABEL_15;
     }
 
     v9 = v8;
-    v15 = self;
+    selfCopy = self;
     v10 = 0;
     v11 = *v17;
     do
@@ -687,61 +687,61 @@ LABEL_13:
       {
         if (*v17 != v11)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(services);
         }
 
         v13 = *(*(&v16 + 1) + 8 * i);
-        v14 = [v13 UUID];
-        if ([v14 isEqual:{objc_msgSend(MEMORY[0x277CBE0A0], "UUIDWithString:", @"03B80E5A-EDE8-4B33-A751-6CE34EC4C700"}])
+        uUID = [v13 UUID];
+        if ([uUID isEqual:{objc_msgSend(MEMORY[0x277CBE0A0], "UUIDWithString:", @"03B80E5A-EDE8-4B33-A751-6CE34EC4C700"}])
         {
-          [a3 discoverCharacteristics:0 forService:v13];
+          [peripheral discoverCharacteristics:0 forService:v13];
           v10 = 1;
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v9 = [services countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v9);
-    self = v15;
+    self = selfCopy;
     if ((v10 & 1) == 0)
     {
 LABEL_15:
-      NSLog(&cfstr_MidiServiceNot.isa, [objc_msgSend(a3 "identifier")]);
-      [(CBCentralManager *)self->centralManager cancelPeripheralConnection:a3];
+      NSLog(&cfstr_MidiServiceNot.isa, [objc_msgSend(peripheral "identifier")]);
+      [(CBCentralManager *)self->centralManager cancelPeripheralConnection:peripheral];
     }
   }
 }
 
-- (void)peripheral:(id)a3 didDiscoverCharacteristicsForService:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didDiscoverCharacteristicsForService:(id)service error:(id)error
 {
   v24 = *MEMORY[0x277D85DE8];
   v9 = [(AMSBTLEConnectionManager *)self amsPeripheralForCBPeripheral:?];
-  if (a5 || !v9)
+  if (error || !v9)
   {
-    if (a5)
+    if (error)
     {
-      NSLog(&cfstr_PeripheralDidd_0.isa, a5);
+      NSLog(&cfstr_PeripheralDidd_0.isa, error);
     }
 
     centralManager = self->centralManager;
 
-    [(CBCentralManager *)centralManager cancelPeripheralConnection:a3];
+    [(CBCentralManager *)centralManager cancelPeripheralConnection:peripheral];
   }
 
   else
   {
-    v10 = [a4 UUID];
-    if ([v10 isEqual:{objc_msgSend(MEMORY[0x277CBE0A0], "UUIDWithString:", @"03B80E5A-EDE8-4B33-A751-6CE34EC4C700"}])
+    uUID = [service UUID];
+    if ([uUID isEqual:{objc_msgSend(MEMORY[0x277CBE0A0], "UUIDWithString:", @"03B80E5A-EDE8-4B33-A751-6CE34EC4C700"}])
     {
-      NSLog(&cfstr_SettingMidiLow.isa, a3);
-      [(CBCentralManager *)self->centralManager setDesiredConnectionLatency:-12 forPeripheral:a3];
+      NSLog(&cfstr_SettingMidiLow.isa, peripheral);
+      [(CBCentralManager *)self->centralManager setDesiredConnectionLatency:-12 forPeripheral:peripheral];
       v21 = 0u;
       v22 = 0u;
       v19 = 0u;
       v20 = 0u;
-      v11 = [a4 characteristics];
-      v12 = [v11 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      characteristics = [service characteristics];
+      v12 = [characteristics countByEnumeratingWithState:&v19 objects:v23 count:16];
       if (v12)
       {
         v13 = v12;
@@ -752,22 +752,22 @@ LABEL_15:
           {
             if (*v20 != v14)
             {
-              objc_enumerationMutation(v11);
+              objc_enumerationMutation(characteristics);
             }
 
             v16 = *(*(&v19 + 1) + 8 * i);
-            v17 = [v16 UUID];
-            if ([v17 isEqual:{objc_msgSend(MEMORY[0x277CBE0A0], "UUIDWithString:", @"7772E5DB-3868-4112-A1A9-F2669D106BF3"}])
+            uUID2 = [v16 UUID];
+            if ([uUID2 isEqual:{objc_msgSend(MEMORY[0x277CBE0A0], "UUIDWithString:", @"7772E5DB-3868-4112-A1A9-F2669D106BF3"}])
             {
               if (([v16 properties] & 2) != 0)
               {
                 NSLog(&cfstr_CheckingPairin.isa);
-                [a3 readValueForCharacteristic:v16];
+                [peripheral readValueForCharacteristic:v16];
               }
             }
           }
 
-          v13 = [v11 countByEnumeratingWithState:&v19 objects:v23 count:16];
+          v13 = [characteristics countByEnumeratingWithState:&v19 objects:v23 count:16];
         }
 
         while (v13);
@@ -776,24 +776,24 @@ LABEL_15:
   }
 }
 
-- (void)peripheral:(id)a3 didUpdateValueForCharacteristic:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didUpdateValueForCharacteristic:(id)characteristic error:(id)error
 {
   v26 = *MEMORY[0x277D85DE8];
-  v8 = [a4 UUID];
-  if ([v8 isEqual:{objc_msgSend(MEMORY[0x277CBE0A0], "UUIDWithString:", @"7772E5DB-3868-4112-A1A9-F2669D106BF3"}])
+  uUID = [characteristic UUID];
+  if ([uUID isEqual:{objc_msgSend(MEMORY[0x277CBE0A0], "UUIDWithString:", @"7772E5DB-3868-4112-A1A9-F2669D106BF3"}])
   {
-    if (a5)
+    if (error)
     {
-      NSLog(&cfstr_ErrorEncounter.isa, a5);
+      NSLog(&cfstr_ErrorEncounter.isa, error);
       centralManager = self->centralManager;
 
-      [(CBCentralManager *)centralManager cancelPeripheralConnection:a3];
+      [(CBCentralManager *)centralManager cancelPeripheralConnection:peripheral];
     }
 
     else
     {
       NSLog(&cfstr_PairingAuthent.isa);
-      v10 = [(AMSBTLEConnectionManager *)self amsPeripheralForCBPeripheral:a3];
+      v10 = [(AMSBTLEConnectionManager *)self amsPeripheralForCBPeripheral:peripheral];
       if (([v10 isOnline] & 1) == 0)
       {
         v23 = 0u;
@@ -834,30 +834,30 @@ LABEL_15:
         }
 
 LABEL_17:
-        v17 = [MEMORY[0x277CBFD00] nullDevice];
-        if (v17)
+        nullDevice = [MEMORY[0x277CBFD00] nullDevice];
+        if (nullDevice)
         {
           if (v10)
           {
-            v18 = v17;
+            v18 = nullDevice;
             v19 = objc_alloc_init(MEMORY[0x277CBEB38]);
-            [v19 setValue:objc_msgSend(objc_msgSend(a3 forKey:{"identifier"), "UUIDString"), @"BLE MIDI Device UUID"}];
-            v20 = [v10 name];
-            [v19 setValue:v20 forKey:*MEMORY[0x277CBFD10]];
+            [v19 setValue:objc_msgSend(objc_msgSend(peripheral forKey:{"identifier"), "UUIDString"), @"BLE MIDI Device UUID"}];
+            name = [v10 name];
+            [v19 setValue:name forKey:*MEMORY[0x277CBFD10]];
             [v19 setValue:&unk_284A43770 forKey:@"MIDI Local Peripheral"];
             [v19 setValue:&unk_284A43788 forKey:@"MIDI Remote Peripheral"];
-            if ([(AMSBTLEConnectionManager *)self peripheralIsConnectedCentral:a3])
+            if ([(AMSBTLEConnectionManager *)self peripheralIsConnectedCentral:peripheral])
             {
               NSLog(&cfstr_AlreadyActingA.isa);
             }
 
             else
             {
-              NSLog(&cfstr_InstructingThe.isa, [objc_msgSend(a3 "identifier")]);
+              NSLog(&cfstr_InstructingThe.isa, [objc_msgSend(peripheral "identifier")]);
               MIDIObjectSetDictionaryProperty(v18, @"BLE MIDI Remote Peripheral", v19);
               sleep(1u);
-              NSLog(&cfstr_DisconnectingF.isa, a3);
-              [(CBCentralManager *)self->centralManager cancelPeripheralConnection:a3];
+              NSLog(&cfstr_DisconnectingF.isa, peripheral);
+              [(CBCentralManager *)self->centralManager cancelPeripheralConnection:peripheral];
             }
           }
 
@@ -876,15 +876,15 @@ LABEL_17:
   }
 }
 
-- (id)amsPeripheralForCBPeripheral:(id)a3
+- (id)amsPeripheralForCBPeripheral:(id)peripheral
 {
   v17 = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!peripheral)
   {
     return 0;
   }
 
-  v4 = [objc_msgSend(a3 "identifier")];
+  v4 = [objc_msgSend(peripheral "identifier")];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -927,10 +927,10 @@ LABEL_4:
   }
 }
 
-- (void)removeAMSPeripheralForCBPeripheral:(id)a3
+- (void)removeAMSPeripheralForCBPeripheral:(id)peripheral
 {
-  NSLog(&cfstr_Removeamsperip.isa, a2, a3);
-  v5 = [(AMSBTLEConnectionManager *)self amsPeripheralForCBPeripheral:a3];
+  NSLog(&cfstr_Removeamsperip.isa, a2, peripheral);
+  v5 = [(AMSBTLEConnectionManager *)self amsPeripheralForCBPeripheral:peripheral];
   if (v5)
   {
     v6 = v5;
@@ -944,9 +944,9 @@ LABEL_4:
   }
 }
 
-- (unsigned)midiDeviceForUUID:(id)a3
+- (unsigned)midiDeviceForUUID:(id)d
 {
-  if (a3)
+  if (d)
   {
     v4 = MIDIGetNumberOfDevices();
     if (v4)
@@ -973,7 +973,7 @@ LABEL_4:
                 MIDIObjectGetStringProperty(v9, @"BLE MIDI Device UUID", &cf1);
                 if (cf1)
                 {
-                  v10 = CFEqual(cf1, a3);
+                  v10 = CFEqual(cf1, d);
                   CFRelease(cf1);
                   if (v10)
                   {
@@ -1001,22 +1001,22 @@ LABEL_4:
   return v9;
 }
 
-- (BOOL)peripheralIsConnectedCentral:(id)a3
+- (BOOL)peripheralIsConnectedCentral:(id)central
 {
-  v4 = [MEMORY[0x277CBFD00] localPeripheral];
+  localPeripheral = [MEMORY[0x277CBFD00] localPeripheral];
   str = 0;
-  if (!v4)
+  if (!localPeripheral)
   {
     return 0;
   }
 
-  MIDIObjectGetStringProperty(v4, @"BLE MIDI Device UUID", &str);
+  MIDIObjectGetStringProperty(localPeripheral, @"BLE MIDI Device UUID", &str);
   if (!str)
   {
     return 0;
   }
 
-  v5 = [objc_msgSend(a3 "identifier")];
+  v5 = [objc_msgSend(central "identifier")];
   v6 = [v5 isEqualToString:str];
   CFRelease(str);
   return v6;

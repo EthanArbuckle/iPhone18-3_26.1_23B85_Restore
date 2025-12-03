@@ -1,13 +1,13 @@
 @interface LaunchWarningDB
 - (BOOL)setupSchema;
 - (_TtC17online_auth_agent15LaunchWarningDB)init;
-- (_TtC17online_auth_agent15LaunchWarningDB)initWithDatabaseURL:(id)a3;
+- (_TtC17online_auth_agent15LaunchWarningDB)initWithDatabaseURL:(id)l;
 - (void)setupPermissions;
 @end
 
 @implementation LaunchWarningDB
 
-- (_TtC17online_auth_agent15LaunchWarningDB)initWithDatabaseURL:(id)a3
+- (_TtC17online_auth_agent15LaunchWarningDB)initWithDatabaseURL:(id)l
 {
   v4 = sub_100043004();
   v5 = *(v4 - 8);
@@ -28,7 +28,7 @@
 
 - (BOOL)setupSchema
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100016508();
 
   return v3 & 1;
@@ -41,8 +41,8 @@
   v5 = *(v4 + 64);
   __chkstk_darwin(v3);
   v7 = &v11 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v8 = self;
-  v9 = [(SQLDB *)v8 dbURL];
+  selfCopy = self;
+  dbURL = [(SQLDB *)selfCopy dbURL];
   sub_100042FA4();
 
   sub_100042FC4();

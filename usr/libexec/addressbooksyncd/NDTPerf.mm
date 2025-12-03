@@ -1,5 +1,5 @@
 @interface NDTPerf
-+ (id)nowMinusPrevious:(id)a3;
++ (id)nowMinusPrevious:(id)previous;
 + (int64_t)cpuTime;
 + (int64_t)dirtyMemory;
 + (int64_t)wallTime;
@@ -58,24 +58,24 @@ LABEL_6:
 
 - (double)cpuTimeMs
 {
-  v2 = [(NDTPerf *)self cpuTime];
+  cpuTime = [(NDTPerf *)self cpuTime];
   if (qword_100071CC8 != -1)
   {
     sub_10003BB70();
   }
 
-  return *&qword_100071980 * v2 / 1000000.0;
+  return *&qword_100071980 * cpuTime / 1000000.0;
 }
 
-+ (id)nowMinusPrevious:(id)a3
++ (id)nowMinusPrevious:(id)previous
 {
-  v3 = a3;
+  previousCopy = previous;
   v4 = objc_alloc_init(NDTPerf);
-  -[NDTPerf setDirtyMemory:](v4, "setDirtyMemory:", -[NDTPerf dirtyMemory](v4, "dirtyMemory") - [v3 dirtyMemory]);
-  -[NDTPerf setCpuTime:](v4, "setCpuTime:", -[NDTPerf cpuTime](v4, "cpuTime") - [v3 cpuTime]);
-  v5 = [v3 wallTime];
+  -[NDTPerf setDirtyMemory:](v4, "setDirtyMemory:", -[NDTPerf dirtyMemory](v4, "dirtyMemory") - [previousCopy dirtyMemory]);
+  -[NDTPerf setCpuTime:](v4, "setCpuTime:", -[NDTPerf cpuTime](v4, "cpuTime") - [previousCopy cpuTime]);
+  wallTime = [previousCopy wallTime];
 
-  [(NDTPerf *)v4 setWallTime:[(NDTPerf *)v4 wallTime]- v5];
+  [(NDTPerf *)v4 setWallTime:[(NDTPerf *)v4 wallTime]- wallTime];
 
   return v4;
 }

@@ -1,19 +1,19 @@
 @interface BLScoreData
-- (_sEispLibDbgInfoFwCommon)readFwCommon:(const _sEispLibDbgInfoShared *)a3;
-- (char)readStructure:(const _sEispLibDbgInfoShared *)a3 withId:(int)a4;
-- (float)scoreVersus:(id)a3;
-- (id)initFromDebugData:(id)a3;
-- (unsigned)structureOffset:(const _sEispLibDbgInfoShared *)a3 withId:(int)a4;
+- (_sEispLibDbgInfoFwCommon)readFwCommon:(const _sEispLibDbgInfoShared *)common;
+- (char)readStructure:(const _sEispLibDbgInfoShared *)structure withId:(int)id;
+- (float)scoreVersus:(id)versus;
+- (id)initFromDebugData:(id)data;
+- (unsigned)structureOffset:(const _sEispLibDbgInfoShared *)offset withId:(int)id;
 - (void)dealloc;
 @end
 
 @implementation BLScoreData
 
-- (id)initFromDebugData:(id)a3
+- (id)initFromDebugData:(id)data
 {
   v20 = *MEMORY[0x29EDCA608];
-  v5 = a3;
-  v6 = [a3 bytes];
+  dataCopy = data;
+  bytes = [data bytes];
   v18.receiver = self;
   v18.super_class = BLScoreData;
   v7 = [(BLScoreData *)&v18 init];
@@ -24,13 +24,13 @@
     goto LABEL_9;
   }
 
-  if (!v6)
+  if (!bytes)
   {
     [BLScoreData initFromDebugData:];
     goto LABEL_9;
   }
 
-  if (*v6 != 108)
+  if (*bytes != 108)
   {
     NSLog(&cfstr_EFileVersionNo.isa);
 LABEL_9:
@@ -39,7 +39,7 @@ LABEL_9:
     goto LABEL_11;
   }
 
-  v9 = [(BLScoreData *)v7 readFwCommon:v6];
+  v9 = [(BLScoreData *)v7 readFwCommon:bytes];
   if (!v9)
   {
     [BLScoreData initFromDebugData:];
@@ -82,19 +82,19 @@ LABEL_11:
   [(BLScoreData *)&v3 dealloc];
 }
 
-- (float)scoreVersus:(id)a3
+- (float)scoreVersus:(id)versus
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  versusCopy = versus;
+  v5 = versusCopy;
+  if (versusCopy)
   {
     var1 = self->_featureVector->var1;
-    if (var1 != *([v4 featureVector] + 512))
+    if (var1 != *([versusCopy featureVector] + 512))
     {
-      v7 = [v5 featureVector];
-      if (var1 >= *(v7 + 512))
+      featureVector = [v5 featureVector];
+      if (var1 >= *(featureVector + 512))
       {
-        var1 = *(v7 + 512);
+        var1 = *(featureVector + 512);
       }
 
       NSLog(&cfstr_ComparingFeatu.isa);
@@ -107,8 +107,8 @@ LABEL_11:
       do
       {
         v10 = self->_featureVector->var0[v8];
-        v11 = [v5 featureVector];
-        v9 = v9 + ((v10 - *(v11 + 4 * v8)) * (v10 - *(v11 + 4 * v8)));
+        featureVector2 = [v5 featureVector];
+        v9 = v9 + ((v10 - *(featureVector2 + 4 * v8)) * (v10 - *(featureVector2 + 4 * v8)));
         ++v8;
       }
 
@@ -131,34 +131,34 @@ LABEL_11:
   return v12;
 }
 
-- (_sEispLibDbgInfoFwCommon)readFwCommon:(const _sEispLibDbgInfoShared *)a3
+- (_sEispLibDbgInfoFwCommon)readFwCommon:(const _sEispLibDbgInfoShared *)common
 {
-  if ([(BLScoreData *)self structureOffset:a3 withId:0]+ 39996 > a3->var4)
+  if ([(BLScoreData *)self structureOffset:common withId:0]+ 39996 > common->var4)
   {
     return 0;
   }
 
-  return [(BLScoreData *)self readStructure:a3 withId:0];
+  return [(BLScoreData *)self readStructure:common withId:0];
 }
 
-- (unsigned)structureOffset:(const _sEispLibDbgInfoShared *)a3 withId:(int)a4
+- (unsigned)structureOffset:(const _sEispLibDbgInfoShared *)offset withId:(int)id
 {
-  if (a3->var3 <= a4)
+  if (offset->var3 <= id)
   {
     return 0;
   }
 
   else
   {
-    return a3->var7[a4];
+    return offset->var7[id];
   }
 }
 
-- (char)readStructure:(const _sEispLibDbgInfoShared *)a3 withId:(int)a4
+- (char)readStructure:(const _sEispLibDbgInfoShared *)structure withId:(int)id
 {
   if ([BLScoreData structureOffset:"structureOffset:withId:" withId:?])
   {
-    return a3 + a3->var7[a4];
+    return structure + structure->var7[id];
   }
 
   else

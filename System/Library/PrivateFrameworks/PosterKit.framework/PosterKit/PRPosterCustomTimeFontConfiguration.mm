@@ -1,28 +1,28 @@
 @interface PRPosterCustomTimeFontConfiguration
-- (BOOL)isEqual:(id)a3;
-- (PRPosterCustomTimeFontConfiguration)initWithBSXPCCoder:(id)a3;
-- (PRPosterCustomTimeFontConfiguration)initWithCoder:(id)a3;
-- (PRPosterCustomTimeFontConfiguration)initWithFont:(id)a3 extensionBundle:(id)a4;
-- (PRPosterCustomTimeFontConfiguration)initWithFont:(id)a3 extensionBundleURL:(id)a4;
-- (PRPosterCustomTimeFontConfiguration)initWithFontPostScriptName:(id)a3 extensionBundleRelativeFilePath:(id)a4;
-- (PRPosterCustomTimeFontConfiguration)timeFontConfigurationWithExtensionBundleURL:(id)a3;
-- (id)fontWithExtensionBundleURL:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (PRPosterCustomTimeFontConfiguration)initWithBSXPCCoder:(id)coder;
+- (PRPosterCustomTimeFontConfiguration)initWithCoder:(id)coder;
+- (PRPosterCustomTimeFontConfiguration)initWithFont:(id)font extensionBundle:(id)bundle;
+- (PRPosterCustomTimeFontConfiguration)initWithFont:(id)font extensionBundleURL:(id)l;
+- (PRPosterCustomTimeFontConfiguration)initWithFontPostScriptName:(id)name extensionBundleRelativeFilePath:(id)path;
+- (PRPosterCustomTimeFontConfiguration)timeFontConfigurationWithExtensionBundleURL:(id)l;
+- (id)fontWithExtensionBundleURL:(id)l;
 - (unint64_t)hash;
-- (void)appendDescriptionToFormatter:(id)a3;
-- (void)encodeWithBSXPCCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)appendDescriptionToFormatter:(id)formatter;
+- (void)encodeWithBSXPCCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PRPosterCustomTimeFontConfiguration
 
-- (PRPosterCustomTimeFontConfiguration)initWithFontPostScriptName:(id)a3 extensionBundleRelativeFilePath:(id)a4
+- (PRPosterCustomTimeFontConfiguration)initWithFontPostScriptName:(id)name extensionBundleRelativeFilePath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  nameCopy = name;
+  pathCopy = path;
+  v8 = pathCopy;
+  if (nameCopy)
   {
-    if (v7)
+    if (pathCopy)
     {
       goto LABEL_3;
     }
@@ -44,7 +44,7 @@ LABEL_3:
   v9 = [(PRPosterTimeFontConfiguration *)&v15 init];
   if (v9)
   {
-    v10 = [v6 copy];
+    v10 = [nameCopy copy];
     fontPostScriptName = v9->_fontPostScriptName;
     v9->_fontPostScriptName = v10;
 
@@ -56,12 +56,12 @@ LABEL_3:
   return v9;
 }
 
-- (PRPosterCustomTimeFontConfiguration)initWithFont:(id)a3 extensionBundle:(id)a4
+- (PRPosterCustomTimeFontConfiguration)initWithFont:(id)font extensionBundle:(id)bundle
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  fontCopy = font;
+  bundleCopy = bundle;
+  v8 = bundleCopy;
+  if (!fontCopy)
   {
     [PRPosterCustomTimeFontConfiguration initWithFont:extensionBundle:];
     if (v8)
@@ -74,31 +74,31 @@ LABEL_8:
     goto LABEL_3;
   }
 
-  if (!v7)
+  if (!bundleCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  v9 = [v6 pr_postScriptName];
-  v10 = [v6 pr_referencePathRelativeToBundle:v8];
+  pr_postScriptName = [fontCopy pr_postScriptName];
+  v10 = [fontCopy pr_referencePathRelativeToBundle:v8];
   v11 = v10;
-  v12 = 0;
-  if (v9 && v10)
+  selfCopy = 0;
+  if (pr_postScriptName && v10)
   {
-    self = [(PRPosterCustomTimeFontConfiguration *)self initWithFontPostScriptName:v9 extensionBundleRelativeFilePath:v10];
-    v12 = self;
+    self = [(PRPosterCustomTimeFontConfiguration *)self initWithFontPostScriptName:pr_postScriptName extensionBundleRelativeFilePath:v10];
+    selfCopy = self;
   }
 
-  return v12;
+  return selfCopy;
 }
 
-- (PRPosterCustomTimeFontConfiguration)initWithFont:(id)a3 extensionBundleURL:(id)a4
+- (PRPosterCustomTimeFontConfiguration)initWithFont:(id)font extensionBundleURL:(id)l
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  fontCopy = font;
+  lCopy = l;
+  v8 = lCopy;
+  if (!fontCopy)
   {
     [PRPosterCustomTimeFontConfiguration initWithFont:extensionBundleURL:];
     if (v8)
@@ -111,36 +111,36 @@ LABEL_8:
     goto LABEL_3;
   }
 
-  if (!v7)
+  if (!lCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  v9 = [v6 pr_postScriptName];
-  v10 = [v6 pr_referencePathRelativeToDirectoryAtURL:v8];
+  pr_postScriptName = [fontCopy pr_postScriptName];
+  v10 = [fontCopy pr_referencePathRelativeToDirectoryAtURL:v8];
   v11 = v10;
-  v12 = 0;
-  if (v9 && v10)
+  selfCopy = 0;
+  if (pr_postScriptName && v10)
   {
-    self = [(PRPosterCustomTimeFontConfiguration *)self initWithFontPostScriptName:v9 extensionBundleRelativeFilePath:v10];
-    v12 = self;
+    self = [(PRPosterCustomTimeFontConfiguration *)self initWithFontPostScriptName:pr_postScriptName extensionBundleRelativeFilePath:v10];
+    selfCopy = self;
   }
 
-  return v12;
+  return selfCopy;
 }
 
-- (PRPosterCustomTimeFontConfiguration)timeFontConfigurationWithExtensionBundleURL:(id)a3
+- (PRPosterCustomTimeFontConfiguration)timeFontConfigurationWithExtensionBundleURL:(id)l
 {
-  v4 = a3;
-  if (!v4)
+  lCopy = l;
+  if (!lCopy)
   {
     [PRPosterCustomTimeFontConfiguration timeFontConfigurationWithExtensionBundleURL:];
   }
 
-  v5 = [(PRPosterCustomTimeFontConfiguration *)self fontPostScriptName];
-  v6 = [(PRPosterCustomTimeFontConfiguration *)self extensionBundleRelativeFilePath];
-  v7 = [MEMORY[0x1E69DB878] pr_fontWithPostScriptName:v5 inBundleAtURL:v4 relativePath:v6];
+  fontPostScriptName = [(PRPosterCustomTimeFontConfiguration *)self fontPostScriptName];
+  extensionBundleRelativeFilePath = [(PRPosterCustomTimeFontConfiguration *)self extensionBundleRelativeFilePath];
+  v7 = [MEMORY[0x1E69DB878] pr_fontWithPostScriptName:fontPostScriptName inBundleAtURL:lCopy relativePath:extensionBundleRelativeFilePath];
   if (v7)
   {
     v8 = [[PRTimeFontConfiguration alloc] initWithCustomFont:v7];
@@ -154,25 +154,25 @@ LABEL_3:
   return v8;
 }
 
-- (id)fontWithExtensionBundleURL:(id)a3
+- (id)fontWithExtensionBundleURL:(id)l
 {
-  v4 = a3;
-  v5 = [(PRPosterCustomTimeFontConfiguration *)self fontPostScriptName];
-  v6 = [(PRPosterCustomTimeFontConfiguration *)self extensionBundleRelativeFilePath];
-  v7 = v6;
+  lCopy = l;
+  fontPostScriptName = [(PRPosterCustomTimeFontConfiguration *)self fontPostScriptName];
+  extensionBundleRelativeFilePath = [(PRPosterCustomTimeFontConfiguration *)self extensionBundleRelativeFilePath];
+  v7 = extensionBundleRelativeFilePath;
   v8 = 0;
-  if (v5 && v6)
+  if (fontPostScriptName && extensionBundleRelativeFilePath)
   {
-    v8 = [MEMORY[0x1E69DB878] pr_fontWithPostScriptName:v5 inBundleAtURL:v4 relativePath:v6];
+    v8 = [MEMORY[0x1E69DB878] pr_fontWithPostScriptName:fontPostScriptName inBundleAtURL:lCopy relativePath:extensionBundleRelativeFilePath];
   }
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v13 = 1;
   }
@@ -184,15 +184,15 @@ LABEL_3:
 
     if (isKindOfClass)
     {
-      v7 = v4;
-      v8 = [(PRPosterCustomTimeFontConfiguration *)self fontPostScriptName];
-      v9 = [(PRPosterCustomTimeFontConfiguration *)v7 fontPostScriptName];
+      v7 = equalCopy;
+      fontPostScriptName = [(PRPosterCustomTimeFontConfiguration *)self fontPostScriptName];
+      fontPostScriptName2 = [(PRPosterCustomTimeFontConfiguration *)v7 fontPostScriptName];
       v10 = BSEqualObjects();
 
       if (v10)
       {
-        v11 = [(PRPosterCustomTimeFontConfiguration *)self extensionBundleRelativeFilePath];
-        v12 = [(PRPosterCustomTimeFontConfiguration *)v7 extensionBundleRelativeFilePath];
+        extensionBundleRelativeFilePath = [(PRPosterCustomTimeFontConfiguration *)self extensionBundleRelativeFilePath];
+        extensionBundleRelativeFilePath2 = [(PRPosterCustomTimeFontConfiguration *)v7 extensionBundleRelativeFilePath];
         v13 = BSEqualObjects();
       }
 
@@ -213,42 +213,42 @@ LABEL_3:
 
 - (unint64_t)hash
 {
-  v3 = [(PRPosterCustomTimeFontConfiguration *)self fontPostScriptName];
-  v4 = [v3 hash];
-  v5 = [(PRPosterCustomTimeFontConfiguration *)self extensionBundleRelativeFilePath];
-  v6 = [v5 hash];
+  fontPostScriptName = [(PRPosterCustomTimeFontConfiguration *)self fontPostScriptName];
+  v4 = [fontPostScriptName hash];
+  extensionBundleRelativeFilePath = [(PRPosterCustomTimeFontConfiguration *)self extensionBundleRelativeFilePath];
+  v6 = [extensionBundleRelativeFilePath hash];
 
   return v6 ^ v4;
 }
 
-- (void)appendDescriptionToFormatter:(id)a3
+- (void)appendDescriptionToFormatter:(id)formatter
 {
-  v7 = a3;
-  v4 = [(PRPosterCustomTimeFontConfiguration *)self fontPostScriptName];
-  [v7 appendString:v4 withName:@"fontPostScriptName"];
+  formatterCopy = formatter;
+  fontPostScriptName = [(PRPosterCustomTimeFontConfiguration *)self fontPostScriptName];
+  [formatterCopy appendString:fontPostScriptName withName:@"fontPostScriptName"];
 
-  v5 = [(PRPosterCustomTimeFontConfiguration *)self extensionBundleRelativeFilePath];
-  v6 = [v7 appendObject:v5 withName:@"extensionBundleRelativeFilePath"];
+  extensionBundleRelativeFilePath = [(PRPosterCustomTimeFontConfiguration *)self extensionBundleRelativeFilePath];
+  v6 = [formatterCopy appendObject:extensionBundleRelativeFilePath withName:@"extensionBundleRelativeFilePath"];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(PRPosterCustomTimeFontConfiguration *)self fontPostScriptName];
-  [v4 encodeObject:v5 forKey:@"fontPostScriptName"];
+  coderCopy = coder;
+  fontPostScriptName = [(PRPosterCustomTimeFontConfiguration *)self fontPostScriptName];
+  [coderCopy encodeObject:fontPostScriptName forKey:@"fontPostScriptName"];
 
-  v6 = [(PRPosterCustomTimeFontConfiguration *)self extensionBundleRelativeFilePath];
-  [v4 encodeObject:v6 forKey:@"extensionBundleRelativeFilePath"];
+  extensionBundleRelativeFilePath = [(PRPosterCustomTimeFontConfiguration *)self extensionBundleRelativeFilePath];
+  [coderCopy encodeObject:extensionBundleRelativeFilePath forKey:@"extensionBundleRelativeFilePath"];
 }
 
-- (PRPosterCustomTimeFontConfiguration)initWithCoder:(id)a3
+- (PRPosterCustomTimeFontConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_self();
-  v6 = [v4 decodeObjectOfClass:v5 forKey:@"fontPostScriptName"];
+  v6 = [coderCopy decodeObjectOfClass:v5 forKey:@"fontPostScriptName"];
 
   v7 = objc_opt_self();
-  v8 = [v4 decodeObjectOfClass:v7 forKey:@"extensionBundleRelativeFilePath"];
+  v8 = [coderCopy decodeObjectOfClass:v7 forKey:@"extensionBundleRelativeFilePath"];
 
   if (v6)
   {
@@ -262,36 +262,36 @@ LABEL_3:
 
   if (v9)
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PRPosterCustomTimeFontConfiguration *)self initWithFontPostScriptName:v6 extensionBundleRelativeFilePath:v8];
-    v10 = self;
+    selfCopy = self;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(PRPosterCustomTimeFontConfiguration *)self fontPostScriptName];
-  [v4 encodeObject:v5 forKey:@"fontPostScriptName"];
+  coderCopy = coder;
+  fontPostScriptName = [(PRPosterCustomTimeFontConfiguration *)self fontPostScriptName];
+  [coderCopy encodeObject:fontPostScriptName forKey:@"fontPostScriptName"];
 
-  v6 = [(PRPosterCustomTimeFontConfiguration *)self extensionBundleRelativeFilePath];
-  [v4 encodeObject:v6 forKey:@"extensionBundleRelativeFilePath"];
+  extensionBundleRelativeFilePath = [(PRPosterCustomTimeFontConfiguration *)self extensionBundleRelativeFilePath];
+  [coderCopy encodeObject:extensionBundleRelativeFilePath forKey:@"extensionBundleRelativeFilePath"];
 }
 
-- (PRPosterCustomTimeFontConfiguration)initWithBSXPCCoder:(id)a3
+- (PRPosterCustomTimeFontConfiguration)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_self();
-  v6 = [v4 decodeObjectOfClass:v5 forKey:@"fontPostScriptName"];
+  v6 = [coderCopy decodeObjectOfClass:v5 forKey:@"fontPostScriptName"];
 
   v7 = objc_opt_self();
-  v8 = [v4 decodeObjectOfClass:v7 forKey:@"extensionBundleRelativeFilePath"];
+  v8 = [coderCopy decodeObjectOfClass:v7 forKey:@"extensionBundleRelativeFilePath"];
 
   if (v6)
   {
@@ -305,16 +305,16 @@ LABEL_3:
 
   if (v9)
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PRPosterCustomTimeFontConfiguration *)self initWithFontPostScriptName:v6 extensionBundleRelativeFilePath:v8];
-    v10 = self;
+    selfCopy = self;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 - (void)initWithFontPostScriptName:extensionBundleRelativeFilePath:.cold.1()

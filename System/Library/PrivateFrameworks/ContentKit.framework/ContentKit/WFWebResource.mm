@@ -1,98 +1,98 @@
 @interface WFWebResource
-+ (WFWebResource)webResourceWithData:(id)a3 MIMEType:(id)a4 textEncodingName:(id)a5 baseURL:(id)a6;
-+ (WFWebResource)webResourceWithFile:(id)a3;
-+ (WFWebResource)webResourceWithHTMLString:(id)a3 baseURL:(id)a4;
-+ (WFWebResource)webResourceWithURL:(id)a3;
-- (WFWebResource)initWithCoder:(id)a3;
-- (WFWebResource)initWithData:(id)a3 URL:(id)a4 MIMEType:(id)a5 textEncodingName:(id)a6 frameName:(id)a7;
-- (WFWebResource)initWithSerializedRepresentation:(id)a3;
++ (WFWebResource)webResourceWithData:(id)data MIMEType:(id)type textEncodingName:(id)name baseURL:(id)l;
++ (WFWebResource)webResourceWithFile:(id)file;
++ (WFWebResource)webResourceWithHTMLString:(id)string baseURL:(id)l;
++ (WFWebResource)webResourceWithURL:(id)l;
+- (WFWebResource)initWithCoder:(id)coder;
+- (WFWebResource)initWithData:(id)data URL:(id)l MIMEType:(id)type textEncodingName:(id)name frameName:(id)frameName;
+- (WFWebResource)initWithSerializedRepresentation:(id)representation;
 - (id)containedImageFile;
 - (id)description;
-- (id)loadInWKWebView:(id)a3;
+- (id)loadInWKWebView:(id)view;
 - (id)serializedRepresentation;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFWebResource
 
-+ (WFWebResource)webResourceWithFile:(id)a3
++ (WFWebResource)webResourceWithFile:(id)file
 {
-  v3 = a3;
-  v4 = [[WFFileWebResource alloc] initWithFile:v3];
+  fileCopy = file;
+  v4 = [[WFFileWebResource alloc] initWithFile:fileCopy];
 
   return v4;
 }
 
-+ (WFWebResource)webResourceWithHTMLString:(id)a3 baseURL:(id)a4
++ (WFWebResource)webResourceWithHTMLString:(id)string baseURL:(id)l
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[WFHTMLStringWebResource alloc] initWithHTMLString:v6 baseURL:v5];
+  lCopy = l;
+  stringCopy = string;
+  v7 = [[WFHTMLStringWebResource alloc] initWithHTMLString:stringCopy baseURL:lCopy];
 
   return v7;
 }
 
-+ (WFWebResource)webResourceWithURL:(id)a3
++ (WFWebResource)webResourceWithURL:(id)l
 {
-  v3 = a3;
-  v4 = [[WFURLWebResource alloc] initWithURL:v3];
+  lCopy = l;
+  v4 = [[WFURLWebResource alloc] initWithURL:lCopy];
 
   return v4;
 }
 
-+ (WFWebResource)webResourceWithData:(id)a3 MIMEType:(id)a4 textEncodingName:(id)a5 baseURL:(id)a6
++ (WFWebResource)webResourceWithData:(id)data MIMEType:(id)type textEncodingName:(id)name baseURL:(id)l
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [[WFWebResource alloc] initWithData:v12 URL:v9 MIMEType:v11 textEncodingName:v10 frameName:0];
+  lCopy = l;
+  nameCopy = name;
+  typeCopy = type;
+  dataCopy = data;
+  v13 = [[WFWebResource alloc] initWithData:dataCopy URL:lCopy MIMEType:typeCopy textEncodingName:nameCopy frameName:0];
 
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(WFWebResource *)self data];
-  [v4 encodeObject:v5 forKey:@"WebResourceData"];
+  coderCopy = coder;
+  data = [(WFWebResource *)self data];
+  [coderCopy encodeObject:data forKey:@"WebResourceData"];
 
   v6 = [(WFWebResource *)self URL];
-  [v4 encodeObject:v6 forKey:@"WebResourceURL"];
+  [coderCopy encodeObject:v6 forKey:@"WebResourceURL"];
 
-  v7 = [(WFWebResource *)self MIMEType];
-  [v4 encodeObject:v7 forKey:@"WebResourceMIMEType"];
+  mIMEType = [(WFWebResource *)self MIMEType];
+  [coderCopy encodeObject:mIMEType forKey:@"WebResourceMIMEType"];
 
-  v8 = [(WFWebResource *)self textEncodingName];
-  [v4 encodeObject:v8 forKey:@"WebResourceTextEncodingName"];
+  textEncodingName = [(WFWebResource *)self textEncodingName];
+  [coderCopy encodeObject:textEncodingName forKey:@"WebResourceTextEncodingName"];
 
-  v9 = [(WFWebResource *)self frameName];
-  [v4 encodeObject:v9 forKey:@"WebResourceFrameName"];
+  frameName = [(WFWebResource *)self frameName];
+  [coderCopy encodeObject:frameName forKey:@"WebResourceFrameName"];
 }
 
-- (WFWebResource)initWithCoder:(id)a3
+- (WFWebResource)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(WFWebResource *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WebResourceData"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WebResourceData"];
     data = v5->_data;
     v5->_data = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WebResourceURL"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WebResourceURL"];
     URL = v5->_URL;
     v5->_URL = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WebResourceURL"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WebResourceURL"];
     MIMEType = v5->_MIMEType;
     v5->_MIMEType = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WebResourceURL"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WebResourceURL"];
     textEncodingName = v5->_textEncodingName;
     v5->_textEncodingName = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WebResourceURL"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WebResourceURL"];
     frameName = v5->_frameName;
     v5->_frameName = v14;
 
@@ -104,50 +104,50 @@
 
 - (id)serializedRepresentation
 {
-  v3 = [(WFWebResource *)self data];
+  data = [(WFWebResource *)self data];
   v4 = [(WFWebResource *)self URL];
-  v5 = [(WFWebResource *)self MIMEType];
-  v6 = [(WFWebResource *)self textEncodingName];
-  v7 = [(WFWebResource *)self frameName];
+  mIMEType = [(WFWebResource *)self MIMEType];
+  textEncodingName = [(WFWebResource *)self textEncodingName];
+  frameName = [(WFWebResource *)self frameName];
   v8 = objc_opt_new();
   v9 = v8;
-  if (v3)
+  if (data)
   {
-    [v8 setObject:v3 forKey:@"WebResourceData"];
+    [v8 setObject:data forKey:@"WebResourceData"];
   }
 
   if (v4)
   {
-    v10 = [v4 absoluteString];
-    [v9 setObject:v10 forKey:@"WebResourceURL"];
+    absoluteString = [v4 absoluteString];
+    [v9 setObject:absoluteString forKey:@"WebResourceURL"];
   }
 
-  if (v5)
+  if (mIMEType)
   {
-    [v9 setObject:v5 forKey:@"WebResourceMIMEType"];
+    [v9 setObject:mIMEType forKey:@"WebResourceMIMEType"];
   }
 
-  if (v6)
+  if (textEncodingName)
   {
-    [v9 setObject:v6 forKey:@"WebResourceTextEncodingName"];
+    [v9 setObject:textEncodingName forKey:@"WebResourceTextEncodingName"];
   }
 
-  if (v7)
+  if (frameName)
   {
-    [v9 setObject:v7 forKey:@"WebResourceFrameName"];
+    [v9 setObject:frameName forKey:@"WebResourceFrameName"];
   }
 
   return v9;
 }
 
-- (WFWebResource)initWithSerializedRepresentation:(id)a3
+- (WFWebResource)initWithSerializedRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = [v4 wfObjectOfClass:objc_opt_class() forKey:@"WebResourceData"];
-  v6 = [v4 wfObjectOfClass:objc_opt_class() forKey:@"WebResourceURL"];
-  v7 = [v4 wfObjectOfClass:objc_opt_class() forKey:@"WebResourceMIMEType"];
-  v8 = [v4 wfObjectOfClass:objc_opt_class() forKey:@"WebResourceTextEncodingName"];
-  v9 = [v4 wfObjectOfClass:objc_opt_class() forKey:@"WebResourceFrameName"];
+  representationCopy = representation;
+  v5 = [representationCopy wfObjectOfClass:objc_opt_class() forKey:@"WebResourceData"];
+  v6 = [representationCopy wfObjectOfClass:objc_opt_class() forKey:@"WebResourceURL"];
+  v7 = [representationCopy wfObjectOfClass:objc_opt_class() forKey:@"WebResourceMIMEType"];
+  v8 = [representationCopy wfObjectOfClass:objc_opt_class() forKey:@"WebResourceTextEncodingName"];
+  v9 = [representationCopy wfObjectOfClass:objc_opt_class() forKey:@"WebResourceFrameName"];
 
   v10 = [(WFWebResource *)self initWithData:v5 URL:v6 MIMEType:v7 textEncodingName:v8 frameName:v9];
   return v10;
@@ -168,37 +168,37 @@
 
   else
   {
-    v8 = [(WFWebResource *)self MIMEType];
-    v7 = [v3 stringWithFormat:@"%@ %@", v4, v8];
+    mIMEType = [(WFWebResource *)self MIMEType];
+    v7 = [v3 stringWithFormat:@"%@ %@", v4, mIMEType];
   }
 
   return v7;
 }
 
-- (WFWebResource)initWithData:(id)a3 URL:(id)a4 MIMEType:(id)a5 textEncodingName:(id)a6 frameName:(id)a7
+- (WFWebResource)initWithData:(id)data URL:(id)l MIMEType:(id)type textEncodingName:(id)name frameName:(id)frameName
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  dataCopy = data;
+  lCopy = l;
+  typeCopy = type;
+  nameCopy = name;
+  frameNameCopy = frameName;
   v17 = [(WFWebResource *)self init];
   if (v17)
   {
-    v18 = [v12 copy];
+    v18 = [dataCopy copy];
     data = v17->_data;
     v17->_data = v18;
 
-    objc_storeStrong(&v17->_URL, a4);
-    v20 = [v14 copy];
+    objc_storeStrong(&v17->_URL, l);
+    v20 = [typeCopy copy];
     MIMEType = v17->_MIMEType;
     v17->_MIMEType = v20;
 
-    v22 = [v15 copy];
+    v22 = [nameCopy copy];
     textEncodingName = v17->_textEncodingName;
     v17->_textEncodingName = v22;
 
-    v24 = [v16 copy];
+    v24 = [frameNameCopy copy];
     frameName = v17->_frameName;
     v17->_frameName = v24;
 
@@ -208,14 +208,14 @@
   return v17;
 }
 
-- (id)loadInWKWebView:(id)a3
+- (id)loadInWKWebView:(id)view
 {
-  v4 = a3;
-  v5 = [(WFWebResource *)self data];
-  v6 = [(WFWebResource *)self MIMEType];
-  v7 = [(WFWebResource *)self textEncodingName];
+  viewCopy = view;
+  data = [(WFWebResource *)self data];
+  mIMEType = [(WFWebResource *)self MIMEType];
+  textEncodingName = [(WFWebResource *)self textEncodingName];
   v8 = [(WFWebResource *)self URL];
-  v9 = [v4 loadData:v5 MIMEType:v6 characterEncodingName:v7 baseURL:v8];
+  v9 = [viewCopy loadData:data MIMEType:mIMEType characterEncodingName:textEncodingName baseURL:v8];
 
   return v9;
 }
@@ -223,15 +223,15 @@
 - (id)containedImageFile
 {
   v3 = MEMORY[0x277D79F68];
-  v4 = [(WFWebResource *)self MIMEType];
-  v5 = [v3 typeFromMIMEType:v4];
+  mIMEType = [(WFWebResource *)self MIMEType];
+  v5 = [v3 typeFromMIMEType:mIMEType];
 
   if ([v5 conformsToUTType:*MEMORY[0x277CE1DB0]] && (objc_msgSend(v5, "conformsToUTType:", *MEMORY[0x277CE1E68]) & 1) == 0)
   {
-    v7 = [(WFWebResource *)self data];
+    data = [(WFWebResource *)self data];
     v8 = [(WFWebResource *)self URL];
-    v9 = [v8 lastPathComponent];
-    v6 = [WFFileRepresentation fileWithData:v7 ofType:v5 proposedFilename:v9];
+    lastPathComponent = [v8 lastPathComponent];
+    v6 = [WFFileRepresentation fileWithData:data ofType:v5 proposedFilename:lastPathComponent];
   }
 
   else

@@ -1,22 +1,22 @@
 @interface SEEndPointBindingAttestationRequestItems
-+ (id)withSubCAAttestation:(id)a3 casdECDSACertificate:(id)a4 casdRSACertificate:(id)a5;
-- (SEEndPointBindingAttestationRequestItems)initWithCoder:(id)a3;
++ (id)withSubCAAttestation:(id)attestation casdECDSACertificate:(id)certificate casdRSACertificate:(id)aCertificate;
+- (SEEndPointBindingAttestationRequestItems)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SEEndPointBindingAttestationRequestItems
 
-+ (id)withSubCAAttestation:(id)a3 casdECDSACertificate:(id)a4 casdRSACertificate:(id)a5
++ (id)withSubCAAttestation:(id)attestation casdECDSACertificate:(id)certificate casdRSACertificate:(id)aCertificate
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  aCertificateCopy = aCertificate;
+  certificateCopy = certificate;
+  attestationCopy = attestation;
   v10 = objc_opt_new();
-  [v10 setSubCAAttestation:v9];
+  [v10 setSubCAAttestation:attestationCopy];
 
-  [v10 setCasdECDSACertificate:v8];
-  [v10 setCasdRSACertificate:v7];
+  [v10 setCasdECDSACertificate:certificateCopy];
+  [v10 setCasdRSACertificate:aCertificateCopy];
 
   return v10;
 }
@@ -24,50 +24,50 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(SEEndPointBindingAttestationRequestItems *)self subCAAttestation];
-  v5 = [v4 asHexString];
-  v6 = [(SEEndPointBindingAttestationRequestItems *)self casdECDSACertificate];
-  v7 = [v6 asHexString];
-  v8 = [(SEEndPointBindingAttestationRequestItems *)self casdRSACertificate];
-  v9 = [v3 stringWithFormat:@"{\n\tsubCAAttestation : %@, \n\tcasdECDACertificate : %@\n, \n\tcasdRSACertificate : %@\n}", v5, v7, v8];
+  subCAAttestation = [(SEEndPointBindingAttestationRequestItems *)self subCAAttestation];
+  asHexString = [subCAAttestation asHexString];
+  casdECDSACertificate = [(SEEndPointBindingAttestationRequestItems *)self casdECDSACertificate];
+  asHexString2 = [casdECDSACertificate asHexString];
+  casdRSACertificate = [(SEEndPointBindingAttestationRequestItems *)self casdRSACertificate];
+  v9 = [v3 stringWithFormat:@"{\n\tsubCAAttestation : %@, \n\tcasdECDACertificate : %@\n, \n\tcasdRSACertificate : %@\n}", asHexString, asHexString2, casdRSACertificate];
 
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(SEEndPointBindingAttestationRequestItems *)self subCAAttestation];
-  [v4 encodeObject:v5 forKey:@"subCAAttestation"];
+  coderCopy = coder;
+  subCAAttestation = [(SEEndPointBindingAttestationRequestItems *)self subCAAttestation];
+  [coderCopy encodeObject:subCAAttestation forKey:@"subCAAttestation"];
 
-  v6 = [(SEEndPointBindingAttestationRequestItems *)self casdECDSACertificate];
-  [v4 encodeObject:v6 forKey:@"casdECDSACertificate"];
+  casdECDSACertificate = [(SEEndPointBindingAttestationRequestItems *)self casdECDSACertificate];
+  [coderCopy encodeObject:casdECDSACertificate forKey:@"casdECDSACertificate"];
 
-  v7 = [(SEEndPointBindingAttestationRequestItems *)self casdRSACertificate];
-  [v4 encodeObject:v7 forKey:@"casdRSACertificate"];
+  casdRSACertificate = [(SEEndPointBindingAttestationRequestItems *)self casdRSACertificate];
+  [coderCopy encodeObject:casdRSACertificate forKey:@"casdRSACertificate"];
 }
 
-- (SEEndPointBindingAttestationRequestItems)initWithCoder:(id)a3
+- (SEEndPointBindingAttestationRequestItems)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = SEEndPointBindingAttestationRequestItems;
   v5 = [(SEEndPointBindingAttestationRequestItems *)&v17 init];
   v6 = v5;
   if (v5)
   {
-    v7 = [(SEEndPointBindingAttestationRequestItems *)v5 subCAAttestation];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"subCAAttestation"];
+    subCAAttestation = [(SEEndPointBindingAttestationRequestItems *)v5 subCAAttestation];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"subCAAttestation"];
     subCAAttestation = v6->_subCAAttestation;
     v6->_subCAAttestation = v8;
 
-    v10 = [(SEEndPointBindingAttestationRequestItems *)v6 casdECDSACertificate];
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"casdECDSACertificate"];
+    casdECDSACertificate = [(SEEndPointBindingAttestationRequestItems *)v6 casdECDSACertificate];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"casdECDSACertificate"];
     casdECDSACertificate = v6->_casdECDSACertificate;
     v6->_casdECDSACertificate = v11;
 
-    v13 = [(SEEndPointBindingAttestationRequestItems *)v6 casdRSACertificate];
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"casdRSACertificate"];
+    casdRSACertificate = [(SEEndPointBindingAttestationRequestItems *)v6 casdRSACertificate];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"casdRSACertificate"];
     casdRSACertificate = v6->_casdRSACertificate;
     v6->_casdRSACertificate = v14;
   }

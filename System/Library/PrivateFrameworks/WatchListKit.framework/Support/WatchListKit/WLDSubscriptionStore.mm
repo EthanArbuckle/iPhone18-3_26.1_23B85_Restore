@@ -1,7 +1,7 @@
 @interface WLDSubscriptionStore
-+ (id)_coalescingIDForUser:(id)a3 forcedReload:(BOOL)a4;
++ (id)_coalescingIDForUser:(id)user forcedReload:(BOOL)reload;
 + (id)sharedInstance;
-+ (void)_postDidUpdateCrossProcessNotificationWithProcessID:(unint64_t)a3;
++ (void)_postDidUpdateCrossProcessNotificationWithProcessID:(unint64_t)d;
 - (BOOL)_shouldFetchFreshCopy;
 - (WLDSubscriptionStore)init;
 - (id)_coalescedCompletion;
@@ -10,12 +10,12 @@
 - (id)_readFromDisk;
 - (id)_stubbedDataPath;
 - (id)_supportPath;
-- (void)_activeAccountChangedNotification:(id)a3;
-- (void)_fetchDataFromCommerceWithCoalescingID:(id)a3 completion:(id)a4;
-- (void)_setAdPlatformsStatusCondition:(id)a3;
-- (void)_setCoalescedCompletion:(id)a3;
-- (void)_setInflightCoalescingID:(id)a3;
-- (void)_writeToDisk:(id)a3;
+- (void)_activeAccountChangedNotification:(id)notification;
+- (void)_fetchDataFromCommerceWithCoalescingID:(id)d completion:(id)completion;
+- (void)_setAdPlatformsStatusCondition:(id)condition;
+- (void)_setCoalescedCompletion:(id)completion;
+- (void)_setInflightCoalescingID:(id)d;
+- (void)_writeToDisk:(id)disk;
 - (void)dealloc;
 @end
 
@@ -80,14 +80,14 @@ void __38__WLDSubscriptionStore_sharedInstance__block_invoke(id a1)
     queue = v2->_queue;
     v2->_queue = v6;
 
-    v8 = [(WLDSubscriptionStore *)v2 _readFromDisk];
+    _readFromDisk = [(WLDSubscriptionStore *)v2 _readFromDisk];
     subscriptionData = v2->_subscriptionData;
-    v2->_subscriptionData = v8;
+    v2->_subscriptionData = _readFromDisk;
 
     v10 = +[TVAppAccountStoreObjC activeAccount];
-    v11 = [v10 ams_DSID];
+    ams_DSID = [v10 ams_DSID];
     accountID = v2->_accountID;
-    v2->_accountID = v11;
+    v2->_accountID = ams_DSID;
 
     v13 = +[NSNotificationCenter defaultCenter];
     v14 = WLKAccountMonitorAccountDidChange;
@@ -95,9 +95,9 @@ void __38__WLDSubscriptionStore_sharedInstance__block_invoke(id a1)
     [v13 addObserver:v2 selector:"_activeAccountChangedNotification:" name:v14 object:v15];
 
     v2->_propLock._os_unfair_lock_opaque = 0;
-    v16 = [(WLDSubscriptionStore *)v2 _getSubscriptionDataMaxAge];
+    _getSubscriptionDataMaxAge = [(WLDSubscriptionStore *)v2 _getSubscriptionDataMaxAge];
     maxAgeInSeconds = v2->_maxAgeInSeconds;
-    v2->_maxAgeInSeconds = v16;
+    v2->_maxAgeInSeconds = _getSubscriptionDataMaxAge;
   }
 
   return v2;
@@ -206,11 +206,11 @@ void __73__WLDSubscriptionStore_fetchSubscriptionData_callerProcessID_completion
   return v3;
 }
 
-- (void)_setInflightCoalescingID:(id)a3
+- (void)_setInflightCoalescingID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   os_unfair_lock_lock(&self->_propLock);
-  v5 = [v4 copy];
+  v5 = [dCopy copy];
 
   inflightCoalescingID = self->_inflightCoalescingID;
   self->_inflightCoalescingID = v5;
@@ -228,11 +228,11 @@ void __73__WLDSubscriptionStore_fetchSubscriptionData_callerProcessID_completion
   return v4;
 }
 
-- (void)_setCoalescedCompletion:(id)a3
+- (void)_setCoalescedCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   os_unfair_lock_lock(&self->_propLock);
-  v5 = objc_retainBlock(v4);
+  v5 = objc_retainBlock(completionCopy);
 
   coalescedCompletion = self->_coalescedCompletion;
   self->_coalescedCompletion = v5;
@@ -240,33 +240,33 @@ void __73__WLDSubscriptionStore_fetchSubscriptionData_callerProcessID_completion
   os_unfair_lock_unlock(&self->_propLock);
 }
 
-+ (id)_coalescingIDForUser:(id)a3 forcedReload:(BOOL)a4
++ (id)_coalescingIDForUser:(id)user forcedReload:(BOOL)reload
 {
   v4 = @"NF";
-  if (a4)
+  if (reload)
   {
     v4 = @"F";
   }
 
-  return [NSString stringWithFormat:@"SR-%@-%@", a3, v4];
+  return [NSString stringWithFormat:@"SR-%@-%@", user, v4];
 }
 
-- (void)_fetchDataFromCommerceWithCoalescingID:(id)a3 completion:(id)a4
+- (void)_fetchDataFromCommerceWithCoalescingID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WLDSubscriptionStore *)self _inflightCoalescingID];
-  if ([v8 isEqualToString:v6] && (-[WLDSubscriptionStore _coalescedCompletion](self, "_coalescedCompletion"), v9 = objc_claimAutoreleasedReturnValue(), v9, !v9))
+  dCopy = d;
+  completionCopy = completion;
+  _inflightCoalescingID = [(WLDSubscriptionStore *)self _inflightCoalescingID];
+  if ([_inflightCoalescingID isEqualToString:dCopy] && (-[WLDSubscriptionStore _coalescedCompletion](self, "_coalescedCompletion"), v9 = objc_claimAutoreleasedReturnValue(), v9, !v9))
   {
     v12 = WLKSubscriptionSyncLogObject();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       LODWORD(location[0]) = 138412290;
-      *(location + 4) = v8;
+      *(location + 4) = _inflightCoalescingID;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Will coalesce operation: %@. Will _not_ go outbound.", location, 0xCu);
     }
 
-    [(WLDSubscriptionStore *)self _setCoalescedCompletion:v7];
+    [(WLDSubscriptionStore *)self _setCoalescedCompletion:completionCopy];
   }
 
   else
@@ -279,14 +279,14 @@ void __73__WLDSubscriptionStore_fetchSubscriptionData_callerProcessID_completion
     v13[2] = __74__WLDSubscriptionStore__fetchDataFromCommerceWithCoalescingID_completion___block_invoke;
     v13[3] = &unk_100045B00;
     objc_copyWeak(&v15, &from);
-    v14 = v7;
+    v14 = completionCopy;
     objc_copyWeak(&v16, location);
     v13[4] = self;
     [v10 setCompletionBlock:v13];
     v11 = +[NSOperationQueue wlkDefaultQueue];
     [v11 addOperation:v10];
 
-    [(WLDSubscriptionStore *)self _setInflightCoalescingID:v6];
+    [(WLDSubscriptionStore *)self _setInflightCoalescingID:dCopy];
     objc_destroyWeak(&v16);
 
     objc_destroyWeak(&v15);
@@ -468,9 +468,9 @@ void __37__WLDSubscriptionStore__readFromDisk__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_writeToDisk:(id)a3
+- (void)_writeToDisk:(id)disk
 {
-  v4 = a3;
+  diskCopy = disk;
   v5 = +[NSFileManager defaultManager];
   v6 = WLKDefaultSupportPath();
   v13 = 0;
@@ -489,7 +489,7 @@ void __37__WLDSubscriptionStore__readFromDisk__block_invoke(uint64_t a1)
   else
   {
     v12 = 0;
-    v8 = [NSKeyedArchiver archivedDataWithRootObject:v4 requiringSecureCoding:1 error:&v12];
+    v8 = [NSKeyedArchiver archivedDataWithRootObject:diskCopy requiringSecureCoding:1 error:&v12];
     v7 = v12;
     if (v7)
     {
@@ -504,8 +504,8 @@ void __37__WLDSubscriptionStore__readFromDisk__block_invoke(uint64_t a1)
     {
       if (v8)
       {
-        v10 = [(WLDSubscriptionStore *)self _supportPath];
-        v11 = [v8 writeToFile:v10 atomically:1];
+        _supportPath = [(WLDSubscriptionStore *)self _supportPath];
+        v11 = [v8 writeToFile:_supportPath atomically:1];
       }
 
       else
@@ -529,9 +529,9 @@ void __37__WLDSubscriptionStore__readFromDisk__block_invoke(uint64_t a1)
   v2 = WLKDefaultSupportPath();
   v3 = [v2 stringByAppendingPathComponent:@"subscription.plist"];
 
-  v4 = [v3 stringByExpandingTildeInPath];
+  stringByExpandingTildeInPath = [v3 stringByExpandingTildeInPath];
 
-  return v4;
+  return stringByExpandingTildeInPath;
 }
 
 - (id)_stubbedDataPath
@@ -539,29 +539,29 @@ void __37__WLDSubscriptionStore__readFromDisk__block_invoke(uint64_t a1)
   v2 = WLKDefaultSupportPath();
   v3 = [v2 stringByAppendingPathComponent:@"stubbedData.plist"];
 
-  v4 = [v3 stringByExpandingTildeInPath];
+  stringByExpandingTildeInPath = [v3 stringByExpandingTildeInPath];
 
-  return v4;
+  return stringByExpandingTildeInPath;
 }
 
-- (void)_activeAccountChangedNotification:(id)a3
+- (void)_activeAccountChangedNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
   v21 = 0;
   v5 = +[TVAppAccountStoreObjC activeAccount];
-  v6 = [v5 ams_DSID];
+  ams_DSID = [v5 ams_DSID];
 
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __58__WLDSubscriptionStore__activeAccountChangedNotification___block_invoke;
   block[3] = &unk_100045B28;
-  v8 = v6;
+  v8 = ams_DSID;
   v15 = v8;
-  v16 = self;
+  selfCopy = self;
   v17 = &v18;
   dispatch_sync(queue, block);
   if ((v19[3] & 1) != 0 || !v8)
@@ -659,7 +659,7 @@ void __58__WLDSubscriptionStore__activeAccountChangedNotification___block_invoke
   return v4;
 }
 
-+ (void)_postDidUpdateCrossProcessNotificationWithProcessID:(unint64_t)a3
++ (void)_postDidUpdateCrossProcessNotificationWithProcessID:(unint64_t)d
 {
   v4 = WLKSubscriptionSyncLogObject();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -676,14 +676,14 @@ void __58__WLDSubscriptionStore__activeAccountChangedNotification___block_invoke
     v5 = _postDidUpdateCrossProcessNotificationWithProcessID__token;
   }
 
-  notify_set_state(v5, a3);
+  notify_set_state(v5, d);
   notify_post(v6);
 }
 
-- (void)_setAdPlatformsStatusCondition:(id)a3
+- (void)_setAdPlatformsStatusCondition:(id)condition
 {
-  v4 = [a3 isTVPlusSubscriber];
-  if (v4 == [(NSUserDefaults *)self->_defaults BOOLForKey:@"IsTVPlusSubscriberLastSetValue"])
+  isTVPlusSubscriber = [condition isTVPlusSubscriber];
+  if (isTVPlusSubscriber == [(NSUserDefaults *)self->_defaults BOOLForKey:@"IsTVPlusSubscriberLastSetValue"])
   {
     v5 = WLKSubscriptionSyncLogObject();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -698,7 +698,7 @@ void __58__WLDSubscriptionStore__activeAccountChangedNotification___block_invoke
     v5 = [[NSUUID alloc] initWithUUIDString:@"25EF2050-5D1D-419D-AC15-CCA299E77EE0"];
     if (v5)
     {
-      if (v4)
+      if (isTVPlusSubscriber)
       {
         v8[0] = _NSConcreteStackBlock;
         v8[1] = 3221225472;

@@ -1,8 +1,8 @@
 @interface UIInputViewControllerInterface
 - (UIInputViewControllerInterface)init;
 - (void)dealloc;
-- (void)setForwardingInterface:(id)a3;
-- (void)syncToKeyboardState:(id)a3 completionHandler:(id)a4;
+- (void)setForwardingInterface:(id)interface;
+- (void)syncToKeyboardState:(id)state completionHandler:(id)handler;
 @end
 
 @implementation UIInputViewControllerInterface
@@ -31,39 +31,39 @@
   [(UIInputViewControllerInterface *)&v4 dealloc];
 }
 
-- (void)setForwardingInterface:(id)a3
+- (void)setForwardingInterface:(id)interface
 {
-  v4 = a3;
+  interfaceCopy = interface;
   [(_UIIVCInterface *)self->_forwardingInterface setResponseDelegate:0];
   forwardingInterface = self->_forwardingInterface;
-  self->_forwardingInterface = v4;
-  v6 = v4;
+  self->_forwardingInterface = interfaceCopy;
+  v6 = interfaceCopy;
 
-  v7 = [(UIInputViewControllerInterface *)self responseDelegate];
-  [(_UIIVCInterface *)self->_forwardingInterface setResponseDelegate:v7];
+  responseDelegate = [(UIInputViewControllerInterface *)self responseDelegate];
+  [(_UIIVCInterface *)self->_forwardingInterface setResponseDelegate:responseDelegate];
 
-  v8 = [(UIInputViewControllerInterface *)self _cachedState];
+  _cachedState = [(UIInputViewControllerInterface *)self _cachedState];
 
-  if (v8)
+  if (_cachedState)
   {
-    v9 = [(UIInputViewControllerInterface *)self forwardingInterface];
-    v10 = [(UIInputViewControllerInterface *)self _cachedState];
-    [v9 _handleInputViewControllerState:v10];
+    forwardingInterface = [(UIInputViewControllerInterface *)self forwardingInterface];
+    _cachedState2 = [(UIInputViewControllerInterface *)self _cachedState];
+    [forwardingInterface _handleInputViewControllerState:_cachedState2];
 
     [(UIInputViewControllerInterface *)self _setCachedState:0];
   }
 }
 
-- (void)syncToKeyboardState:(id)a3 completionHandler:(id)a4
+- (void)syncToKeyboardState:(id)state completionHandler:(id)handler
 {
-  v9 = a4;
-  v6 = [_UIInputViewControllerState stateForKeyboardState:a3];
-  v7 = [(UIInputViewControllerInterface *)self forwardingInterface];
+  handlerCopy = handler;
+  v6 = [_UIInputViewControllerState stateForKeyboardState:state];
+  forwardingInterface = [(UIInputViewControllerInterface *)self forwardingInterface];
 
-  if (v7)
+  if (forwardingInterface)
   {
-    v8 = [(UIInputViewControllerInterface *)self forwardingInterface];
-    [v8 _handleInputViewControllerState:v6];
+    forwardingInterface2 = [(UIInputViewControllerInterface *)self forwardingInterface];
+    [forwardingInterface2 _handleInputViewControllerState:v6];
   }
 
   else
@@ -72,9 +72,9 @@
     [(UIInputViewControllerInterface *)self _handleInputViewControllerState:v6];
   }
 
-  if (v9)
+  if (handlerCopy)
   {
-    v9[2](v9, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 }
 

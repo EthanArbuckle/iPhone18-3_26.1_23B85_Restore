@@ -1,14 +1,14 @@
 @interface LEAudioXPCListener
 + (id)instance;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (LEAudioXPCListener)init;
-- (void)addDevice:(id)a3 toSession:(id)a4;
-- (void)createISODataPathWithOptions:(id)a3;
-- (void)notifyCAPProcedureComplete:(id)a3 withInfo:(id)a4;
-- (void)publishAudioDeviceForSession:(id)a3 withDeviceInfo:(id)a4;
-- (void)removeDevice:(id)a3 fromSession:(id)a4;
-- (void)removeISODataPathWithOptions:(id)a3;
-- (void)setupCIGForHALSession:(id)a3 withDeviceInfo:(id)a4;
+- (void)addDevice:(id)device toSession:(id)session;
+- (void)createISODataPathWithOptions:(id)options;
+- (void)notifyCAPProcedureComplete:(id)complete withInfo:(id)info;
+- (void)publishAudioDeviceForSession:(id)session withDeviceInfo:(id)info;
+- (void)removeDevice:(id)device fromSession:(id)session;
+- (void)removeISODataPathWithOptions:(id)options;
+- (void)setupCIGForHALSession:(id)session withDeviceInfo:(id)info;
 @end
 
 @implementation LEAudioXPCListener
@@ -35,110 +35,110 @@
     v3 = [[NSXPCListener alloc] initWithMachServiceName:@"com.apple.bluetoothaudiod"];
     [(LEAudioXPCListener *)v2 setListener:v3];
 
-    v4 = [(LEAudioXPCListener *)v2 listener];
-    [v4 setDelegate:v2];
+    listener = [(LEAudioXPCListener *)v2 listener];
+    [listener setDelegate:v2];
 
-    v5 = [(LEAudioXPCListener *)v2 listener];
-    [v5 resume];
+    listener2 = [(LEAudioXPCListener *)v2 listener];
+    [listener2 resume];
   }
 
   return v2;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
-  v6 = [v5 valueForEntitlement:@"com.apple.bluetoothaudiod"];
+  connectionCopy = connection;
+  v6 = [connectionCopy valueForEntitlement:@"com.apple.bluetoothaudiod"];
 
   if (v6)
   {
     v7 = objc_alloc_init(BluetoothAudiodXPCObject);
-    [v5 setExportedObject:v7];
+    [connectionCopy setExportedObject:v7];
 
     v8 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___BluetoothAudiodInterface];
-    [v5 setExportedInterface:v8];
+    [connectionCopy setExportedInterface:v8];
 
     v9 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___BluetoothdInterface];
-    [v5 setRemoteObjectInterface:v9];
+    [connectionCopy setRemoteObjectInterface:v9];
 
-    [v5 setInvalidationHandler:&stru_1000953D0];
-    v10 = [v5 remoteObjectProxy];
-    [(LEAudioXPCListener *)self setBluetoothd:v10];
+    [connectionCopy setInvalidationHandler:&stru_1000953D0];
+    remoteObjectProxy = [connectionCopy remoteObjectProxy];
+    [(LEAudioXPCListener *)self setBluetoothd:remoteObjectProxy];
 
-    [v5 resume];
+    [connectionCopy resume];
   }
 
   return v6 != 0;
 }
 
-- (void)addDevice:(id)a3 toSession:(id)a4
+- (void)addDevice:(id)device toSession:(id)session
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(LEAudioXPCListener *)self bluetoothd];
-  [v8 addDevice:v7 toSession:v6];
+  sessionCopy = session;
+  deviceCopy = device;
+  bluetoothd = [(LEAudioXPCListener *)self bluetoothd];
+  [bluetoothd addDevice:deviceCopy toSession:sessionCopy];
 }
 
-- (void)removeDevice:(id)a3 fromSession:(id)a4
+- (void)removeDevice:(id)device fromSession:(id)session
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(LEAudioXPCListener *)self bluetoothd];
-  [v8 removeDevice:v7 fromSession:v6];
+  sessionCopy = session;
+  deviceCopy = device;
+  bluetoothd = [(LEAudioXPCListener *)self bluetoothd];
+  [bluetoothd removeDevice:deviceCopy fromSession:sessionCopy];
 }
 
-- (void)publishAudioDeviceForSession:(id)a3 withDeviceInfo:(id)a4
+- (void)publishAudioDeviceForSession:(id)session withDeviceInfo:(id)info
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(LEAudioXPCListener *)self bluetoothd];
-  [v8 publishAudioDeviceForSession:v7 withDeviceInfo:v6];
+  infoCopy = info;
+  sessionCopy = session;
+  bluetoothd = [(LEAudioXPCListener *)self bluetoothd];
+  [bluetoothd publishAudioDeviceForSession:sessionCopy withDeviceInfo:infoCopy];
 }
 
-- (void)setupCIGForHALSession:(id)a3 withDeviceInfo:(id)a4
+- (void)setupCIGForHALSession:(id)session withDeviceInfo:(id)info
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(LEAudioXPCListener *)self bluetoothd];
-  [v8 setupCIGForHALSession:v7 withDeviceInfo:v6];
+  infoCopy = info;
+  sessionCopy = session;
+  bluetoothd = [(LEAudioXPCListener *)self bluetoothd];
+  [bluetoothd setupCIGForHALSession:sessionCopy withDeviceInfo:infoCopy];
 }
 
-- (void)notifyCAPProcedureComplete:(id)a3 withInfo:(id)a4
+- (void)notifyCAPProcedureComplete:(id)complete withInfo:(id)info
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(LEAudioXPCListener *)self bluetoothd];
-  [v8 notifyCAPProcedureComplete:v7 withInfo:v6];
+  infoCopy = info;
+  completeCopy = complete;
+  bluetoothd = [(LEAudioXPCListener *)self bluetoothd];
+  [bluetoothd notifyCAPProcedureComplete:completeCopy withInfo:infoCopy];
 }
 
-- (void)removeISODataPathWithOptions:(id)a3
+- (void)removeISODataPathWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v5 = qword_1000A9FE0;
   if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = optionsCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Removing ISO Data path for %@", &v7, 0xCu);
   }
 
-  v6 = [(LEAudioXPCListener *)self bluetoothd];
-  [v6 removeISODataPathWithOptions:v4];
+  bluetoothd = [(LEAudioXPCListener *)self bluetoothd];
+  [bluetoothd removeISODataPathWithOptions:optionsCopy];
 }
 
-- (void)createISODataPathWithOptions:(id)a3
+- (void)createISODataPathWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v5 = qword_1000A9FE0;
   if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = optionsCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Creating ISO Data path for %@", &v7, 0xCu);
   }
 
-  v6 = [(LEAudioXPCListener *)self bluetoothd];
-  [v6 createISODataPathWithOptions:v4];
+  bluetoothd = [(LEAudioXPCListener *)self bluetoothd];
+  [bluetoothd createISODataPathWithOptions:optionsCopy];
 }
 
 @end

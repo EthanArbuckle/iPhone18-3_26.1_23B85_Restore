@@ -1,6 +1,6 @@
 @interface MPResponse
 + (id)builderProtocol;
-- (MPResponse)initWithRequest:(id)a3 middleware:(id)a4;
+- (MPResponse)initWithRequest:(id)request middleware:(id)middleware;
 - (id)_stateDumpObject;
 - (id)chain;
 - (void)invalidate;
@@ -11,9 +11,9 @@
 - (id)chain
 {
   v3 = [MPMiddlewareChain alloc];
-  v4 = [(MPResponse *)self middleware];
-  v5 = [objc_opt_class() builderProtocol];
-  v6 = [(MPMiddlewareChain *)v3 initWithMiddleware:v4 protocol:v5];
+  middleware = [(MPResponse *)self middleware];
+  builderProtocol = [objc_opt_class() builderProtocol];
+  v6 = [(MPMiddlewareChain *)v3 initWithMiddleware:middleware protocol:builderProtocol];
 
   return v6;
 }
@@ -52,32 +52,32 @@
     v3 = os_log_create("com.apple.amp.mediaplayer", "Middleware");
     if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
     {
-      v4 = [(MPResponse *)self request];
+      request = [(MPResponse *)self request];
       v6 = 138543362;
-      v7 = v4;
+      v7 = request;
       _os_log_impl(&dword_1A238D000, v3, OS_LOG_TYPE_INFO, "INVALIDATE: Notifying invalidation for request: %{public}@", &v6, 0xCu);
     }
 
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 postNotificationName:MPResponseDidInvalidateNotification object:self];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:MPResponseDidInvalidateNotification object:self];
   }
 }
 
-- (MPResponse)initWithRequest:(id)a3 middleware:(id)a4
+- (MPResponse)initWithRequest:(id)request middleware:(id)middleware
 {
-  v7 = a3;
-  v8 = a4;
+  requestCopy = request;
+  middlewareCopy = middleware;
   v15.receiver = self;
   v15.super_class = MPResponse;
   v9 = [(MPResponse *)&v15 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_request, a3);
-    objc_storeStrong(&v10->_middleware, a4);
+    objc_storeStrong(&v9->_request, request);
+    objc_storeStrong(&v10->_middleware, middleware);
     v10->_valid = 1;
-    v11 = [objc_opt_class() builderProtocol];
-    v12 = [MPMiddlewareChain builderProxyForProtocol:v11];
+    builderProtocol = [objc_opt_class() builderProtocol];
+    v12 = [MPMiddlewareChain builderProxyForProtocol:builderProtocol];
     builder = v10->_builder;
     v10->_builder = v12;
   }
@@ -90,11 +90,11 @@
   v4 = [objc_opt_class() instanceMethodForSelector:a2];
   if (v4 == [objc_opt_class() instanceMethodForSelector:a2])
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
     v9 = NSStringFromSelector(a2);
-    [v6 handleFailureInMethod:a2 object:a1 file:@"MPRequest.m" lineNumber:282 description:{@"Subclass %@ must implement -%@ defined in %@.", v8, v9, @"[MPResponse class]"}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPRequest.m" lineNumber:282 description:{@"Subclass %@ must implement -%@ defined in %@.", v8, v9, @"[MPResponse class]"}];
   }
 
   return &unk_1F150BA00;

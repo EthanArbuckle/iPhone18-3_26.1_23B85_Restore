@@ -1,6 +1,6 @@
 @interface EKDayViewContentStackView
 - (EKDayViewContentStackView)init;
-- (void)updateWithRows:(id)a3;
+- (void)updateWithRows:(id)rows;
 @end
 
 @implementation EKDayViewContentStackView
@@ -25,14 +25,14 @@
   return v2;
 }
 
-- (void)updateWithRows:(id)a3
+- (void)updateWithRows:(id)rows
 {
   v66 = *MEMORY[0x1E69E9840];
-  v45 = a3;
-  v4 = [(NSMutableDictionary *)self->_currentItems allKeys];
-  v5 = pointerEqualitySetWithObjects(v4);
+  rowsCopy = rows;
+  allKeys = [(NSMutableDictionary *)self->_currentItems allKeys];
+  v5 = pointerEqualitySetWithObjects(allKeys);
 
-  v6 = pointerEqualitySetWithObjects(v45);
+  v6 = pointerEqualitySetWithObjects(rowsCopy);
   [v5 minusSet:v6];
 
   v62 = 0u;
@@ -85,7 +85,7 @@
   v53 = 0u;
   v54 = 0u;
   v52 = 0u;
-  v43 = v45;
+  v43 = rowsCopy;
   v14 = [v43 countByEnumeratingWithState:&v52 objects:v64 count:16];
   if (v14)
   {
@@ -101,31 +101,31 @@
 
         v16 = *(*(&v52 + 1) + 8 * j);
         v17 = [(NSMutableDictionary *)self->_currentItems objectForKey:v16];
-        v18 = [v16 view];
-        v19 = v18;
+        view = [v16 view];
+        v19 = view;
         if (v17)
         {
-          [v18 frame];
+          [view frame];
           v21 = v20;
           [(EKDayViewContentStackView *)self frame];
           v23 = v22;
           [(EKDayViewContentStackView *)self bounds];
           v25 = v24;
-          v26 = [v16 view];
-          [v26 frame];
+          view2 = [v16 view];
+          [view2 frame];
           v28 = v27;
           [(EKDayViewContentStackView *)self bounds];
           [v17 setFrame:{v21 - v23, v25, v28}];
 
-          v29 = v19;
+          image = v19;
         }
 
         else
         {
-          v30 = [v18 backgroundViewForEventIndicator];
-          v29 = [v30 image];
+          backgroundViewForEventIndicator = [view backgroundViewForEventIndicator];
+          image = [backgroundViewForEventIndicator image];
 
-          v31 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v29];
+          v31 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:image];
           objc_initWeak(&location, v31);
           v49[0] = MEMORY[0x1E69E9820];
           v49[1] = 3221225472;
@@ -135,15 +135,15 @@
           [v16 setBackgroundChangedCallback:v49];
           [v31 setAlpha:0.0];
           [v31 setClipsToBounds:1];
-          v32 = [v16 view];
-          [v32 frame];
+          view3 = [v16 view];
+          [view3 frame];
           v34 = v33;
           [(EKDayViewContentStackView *)self frame];
           v36 = v35;
           [(EKDayViewContentStackView *)self bounds];
           v38 = v37;
-          v39 = [v16 view];
-          [v39 frame];
+          view4 = [v16 view];
+          [view4 frame];
           v41 = v40;
           [(EKDayViewContentStackView *)self bounds];
           [v31 setFrame:{v34 - v36, v38, v41}];

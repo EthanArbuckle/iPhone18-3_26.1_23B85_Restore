@@ -1,6 +1,6 @@
 @interface EKUILargeTextUtilities
-+ (double)contentSizeCategoryScaledValueForDefaultValue:(double)a3 maximumValue:(double)a4 shouldScaleForSmallerSizes:(BOOL)a5;
-+ (double)contentSizeCategoryScaledValueFromContentSizeCategory:(id)a3 correspondingValue:(double)a4 maximumValue:(double)a5;
++ (double)contentSizeCategoryScaledValueForDefaultValue:(double)value maximumValue:(double)maximumValue shouldScaleForSmallerSizes:(BOOL)sizes;
++ (double)contentSizeCategoryScaledValueFromContentSizeCategory:(id)category correspondingValue:(double)value maximumValue:(double)maximumValue;
 + (void)clearCache;
 @end
 
@@ -12,7 +12,7 @@
   __fontForScaling = 0;
 }
 
-+ (double)contentSizeCategoryScaledValueForDefaultValue:(double)a3 maximumValue:(double)a4 shouldScaleForSmallerSizes:(BOOL)a5
++ (double)contentSizeCategoryScaledValueForDefaultValue:(double)value maximumValue:(double)maximumValue shouldScaleForSmallerSizes:(BOOL)sizes
 {
   v6 = __fontForScaling;
   if (!__fontForScaling)
@@ -24,17 +24,17 @@
     v6 = __fontForScaling;
   }
 
-  [v6 _scaledValueForValue:a3];
+  [v6 _scaledValueForValue:value];
 
   CUIKRoundToScreenScale();
   return result;
 }
 
-+ (double)contentSizeCategoryScaledValueFromContentSizeCategory:(id)a3 correspondingValue:(double)a4 maximumValue:(double)a5
++ (double)contentSizeCategoryScaledValueFromContentSizeCategory:(id)category correspondingValue:(double)value maximumValue:(double)maximumValue
 {
   v5 = MEMORY[0x1E69DB878];
   v6 = *MEMORY[0x1E69DDCF8];
-  v7 = [MEMORY[0x1E69DD1B8] traitCollectionWithPreferredContentSizeCategory:a3];
+  v7 = [MEMORY[0x1E69DD1B8] traitCollectionWithPreferredContentSizeCategory:category];
   v8 = [v5 preferredFontForTextStyle:v6 compatibleWithTraitCollection:v7];
 
   v9 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:v6];

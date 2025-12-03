@@ -1,35 +1,35 @@
 @interface CEKExpandingSlider
-- (CEKExpandingSlider)initWithTitle:(id)a3 minimumValue:(double)a4 maximumValue:(double)a5 defaultValue:(double)a6;
+- (CEKExpandingSlider)initWithTitle:(id)title minimumValue:(double)value maximumValue:(double)maximumValue defaultValue:(double)defaultValue;
 - (CEKExpandingSliderDelegate)delegate;
 - (CGSize)intrinsicContentSize;
 - (NSString)title;
 - (double)value;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (void)_handleExpansionAnimationTimerFired:(id)a3;
-- (void)_handleMarkedValueAnimationTimerFired:(id)a3;
-- (void)_handlePress:(id)a3;
-- (void)_handleSliderDidChangeValue:(id)a3;
-- (void)_setExpanded:(BOOL)a3 animated:(BOOL)a4 shouldNotify:(BOOL)a5;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (void)_handleExpansionAnimationTimerFired:(id)fired;
+- (void)_handleMarkedValueAnimationTimerFired:(id)fired;
+- (void)_handlePress:(id)press;
+- (void)_handleSliderDidChangeValue:(id)value;
+- (void)_setExpanded:(BOOL)expanded animated:(BOOL)animated shouldNotify:(BOOL)notify;
 - (void)_updateColors;
-- (void)_updateLabelColorsForProgress:(double)a3;
-- (void)_updateMarkedValueAnimated:(BOOL)a3;
+- (void)_updateLabelColorsForProgress:(double)progress;
+- (void)_updateMarkedValueAnimated:(BOOL)animated;
 - (void)_updateSubviewVisibility;
-- (void)_updateTickViewFrameForProgress:(double)a3;
-- (void)_updateUIForValue:(double)a3 animated:(BOOL)a4;
-- (void)animator:(id)a3 didUpdateValuesForKeys:(id)a4;
+- (void)_updateTickViewFrameForProgress:(double)progress;
+- (void)_updateUIForValue:(double)value animated:(BOOL)animated;
+- (void)animator:(id)animator didUpdateValuesForKeys:(id)keys;
 - (void)layoutSubviews;
-- (void)setCollapsedCenterX:(double)a3;
-- (void)setTitle:(id)a3;
-- (void)setTitleAlpha:(double)a3;
-- (void)setValue:(double)a3 animated:(BOOL)a4;
+- (void)setCollapsedCenterX:(double)x;
+- (void)setTitle:(id)title;
+- (void)setTitleAlpha:(double)alpha;
+- (void)setValue:(double)value animated:(BOOL)animated;
 - (void)tintColorDidChange;
 @end
 
 @implementation CEKExpandingSlider
 
-- (CEKExpandingSlider)initWithTitle:(id)a3 minimumValue:(double)a4 maximumValue:(double)a5 defaultValue:(double)a6
+- (CEKExpandingSlider)initWithTitle:(id)title minimumValue:(double)value maximumValue:(double)maximumValue defaultValue:(double)defaultValue
 {
-  v10 = a3;
+  titleCopy = title;
   v40.receiver = self;
   v40.super_class = CEKExpandingSlider;
   v11 = *MEMORY[0x1E695F058];
@@ -39,11 +39,11 @@
   v15 = [(CEKExpandingSlider *)&v40 initWithFrame:*MEMORY[0x1E695F058], v12, v13, v14];
   if (v15)
   {
-    v16 = [MEMORY[0x1E69DC888] systemYellowColor];
-    [(CEKExpandingSlider *)v15 setTintColor:v16];
+    systemYellowColor = [MEMORY[0x1E69DC888] systemYellowColor];
+    [(CEKExpandingSlider *)v15 setTintColor:systemYellowColor];
 
     v15->_titleAlpha = 1.0;
-    v17 = [[CEKSlider alloc] initWithTitle:v10];
+    v17 = [[CEKSlider alloc] initWithTitle:titleCopy];
     slider = v15->__slider;
     v15->__slider = v17;
 
@@ -51,16 +51,16 @@
     [(CEKSlider *)v15->__slider setValueLabelVisibility:2];
     [(CEKSlider *)v15->__slider setTitleAlignment:2];
     [(CEKSlider *)v15->__slider setFontStyle:1];
-    v19 = [(CEKSlider *)v15->__slider tickMarksConfiguration];
-    [v19 setMainTickMarkInterval:5];
+    tickMarksConfiguration = [(CEKSlider *)v15->__slider tickMarksConfiguration];
+    [tickMarksConfiguration setMainTickMarkInterval:5];
 
-    v20 = [(CEKSlider *)v15->__slider tickMarksConfiguration];
-    [v20 setTickMarkSpacing:7.0];
+    tickMarksConfiguration2 = [(CEKSlider *)v15->__slider tickMarksConfiguration];
+    [tickMarksConfiguration2 setTickMarkSpacing:7.0];
 
     [(CEKSlider *)v15->__slider setInteractiveWhenHidden:1];
-    [(CEKSlider *)v15->__slider setMinimumValue:a4];
-    [(CEKSlider *)v15->__slider setDefaultValue:a6];
-    [(CEKSlider *)v15->__slider setMaximumValue:a5];
+    [(CEKSlider *)v15->__slider setMinimumValue:value];
+    [(CEKSlider *)v15->__slider setDefaultValue:defaultValue];
+    [(CEKSlider *)v15->__slider setMaximumValue:maximumValue];
     [(CEKSlider *)v15->__slider addTarget:v15 action:sel__handleSliderDidChangeValue_ forControlEvents:4096];
     [(CEKExpandingSlider *)v15 addSubview:v15->__slider];
     v21 = objc_alloc_init(CEKExpandingTickMarksView);
@@ -78,7 +78,7 @@
     [(UILabel *)v15->__titleLabel setLineBreakMode:0];
     [(UILabel *)v15->__titleLabel setNumberOfLines:0];
     [(UILabel *)v15->__titleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-    [(UILabel *)v15->__titleLabel setText:v10];
+    [(UILabel *)v15->__titleLabel setText:titleCopy];
     v25 = CEKFontOfSizeAndStyle(1, 14.0);
     [(UILabel *)v15->__titleLabel setFont:v25];
 
@@ -101,11 +101,11 @@
     v15->__levelIndicatorView = v29;
 
     [(UIView *)v15->__levelIndicatorView setUserInteractionEnabled:0];
-    v31 = [(UIView *)v15->__levelIndicatorView layer];
-    [v31 setAnchorPoint:{0.5, 0.0}];
+    layer = [(UIView *)v15->__levelIndicatorView layer];
+    [layer setAnchorPoint:{0.5, 0.0}];
 
-    v32 = [MEMORY[0x1E69DC888] systemYellowColor];
-    [(UIView *)v15->__levelIndicatorView setBackgroundColor:v32];
+    systemYellowColor2 = [MEMORY[0x1E69DC888] systemYellowColor];
+    [(UIView *)v15->__levelIndicatorView setBackgroundColor:systemYellowColor2];
 
     [(CEKExpandingSlider *)v15 addSubview:v15->__levelIndicatorView];
     v15->_markedValue = 1.79769313e308;
@@ -127,8 +127,8 @@
     [(CEKExpandingSlider *)v15 _updateSubviewVisibility];
     [(CEKExpandingSlider *)v15 _updateLabelColorsForProgress:0.0];
     [(CEKExpandingSlider *)v15 _updateColors];
-    v37 = [MEMORY[0x1E69DD1B8] systemTraitsAffectingColorAppearance];
-    v38 = [(CEKExpandingSlider *)v15 registerForTraitChanges:v37 withAction:sel__updateColors];
+    systemTraitsAffectingColorAppearance = [MEMORY[0x1E69DD1B8] systemTraitsAffectingColorAppearance];
+    v38 = [(CEKExpandingSlider *)v15 registerForTraitChanges:systemTraitsAffectingColorAppearance withAction:sel__updateColors];
   }
 
   return v15;
@@ -136,87 +136,87 @@
 
 - (double)value
 {
-  v2 = [(CEKExpandingSlider *)self _slider];
-  [v2 value];
+  _slider = [(CEKExpandingSlider *)self _slider];
+  [_slider value];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setValue:(double)a3 animated:(BOOL)a4
+- (void)setValue:(double)value animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   [(CEKExpandingSlider *)self value];
-  if (v7 != a3)
+  if (v7 != value)
   {
-    v8 = [(CEKExpandingSlider *)self _slider];
-    [v8 setValue:a3];
+    _slider = [(CEKExpandingSlider *)self _slider];
+    [_slider setValue:value];
 
-    [(CEKExpandingSlider *)self _updateUIForValue:v4 animated:a3];
+    [(CEKExpandingSlider *)self _updateUIForValue:animatedCopy animated:value];
   }
 }
 
 - (NSString)title
 {
-  v2 = [(CEKExpandingSlider *)self _slider];
-  v3 = [v2 title];
+  _slider = [(CEKExpandingSlider *)self _slider];
+  title = [_slider title];
 
-  return v3;
+  return title;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v9 = a3;
-  v4 = [(CEKExpandingSlider *)self _slider];
-  v5 = [v4 title];
-  v6 = [v9 isEqualToString:v5];
+  titleCopy = title;
+  _slider = [(CEKExpandingSlider *)self _slider];
+  title = [_slider title];
+  v6 = [titleCopy isEqualToString:title];
 
   if ((v6 & 1) == 0)
   {
-    v7 = [(CEKExpandingSlider *)self _slider];
-    [v7 setTitle:v9];
+    _slider2 = [(CEKExpandingSlider *)self _slider];
+    [_slider2 setTitle:titleCopy];
 
-    v8 = [(CEKExpandingSlider *)self _titleLabel];
-    [v8 setText:v9];
+    _titleLabel = [(CEKExpandingSlider *)self _titleLabel];
+    [_titleLabel setText:titleCopy];
 
     [(CEKExpandingSlider *)self setNeedsLayout];
   }
 }
 
-- (void)setTitleAlpha:(double)a3
+- (void)setTitleAlpha:(double)alpha
 {
-  if (self->_titleAlpha != a3)
+  if (self->_titleAlpha != alpha)
   {
-    self->_titleAlpha = a3;
+    self->_titleAlpha = alpha;
     [(CEKExpandingSlider *)self _updateSubviewVisibility];
   }
 }
 
-- (void)_setExpanded:(BOOL)a3 animated:(BOOL)a4 shouldNotify:(BOOL)a5
+- (void)_setExpanded:(BOOL)expanded animated:(BOOL)animated shouldNotify:(BOOL)notify
 {
-  if (self->_expanded != a3)
+  if (self->_expanded != expanded)
   {
-    v5 = a5;
-    v6 = a4;
-    v7 = a3;
-    self->_expanded = a3;
+    notifyCopy = notify;
+    animatedCopy = animated;
+    expandedCopy = expanded;
+    self->_expanded = expanded;
     v9 = 1.0;
-    if (!a3)
+    if (!expanded)
     {
       [(CEKExpandingSlider *)self _updateSubviewVisibility];
       v9 = 0.0;
     }
 
-    v10 = [(CEKExpandingSlider *)self _ticksView];
-    [v10 setExpanded:v7 animated:v6];
+    _ticksView = [(CEKExpandingSlider *)self _ticksView];
+    [_ticksView setExpanded:expandedCopy animated:animatedCopy];
 
     [(CEKExpandingSlider *)self setNeedsLayout];
-    if (v6)
+    if (animatedCopy)
     {
       [(CEKExpandingSlider *)self _setExpansionAnimationCounter:[(CEKExpandingSlider *)self _expansionAnimationCounter]+ 1];
       v11 = [MEMORY[0x1E69793D0] functionWithName:*MEMORY[0x1E6979EB8]];
-      v12 = [(CEKExpandingSlider *)self _animator];
-      [v12 setValue:@"CEKExpandingSliderAnimatorProgressKey" forKey:v11 duration:v9 timingCurve:0.35];
+      _animator = [(CEKExpandingSlider *)self _animator];
+      [_animator setValue:@"CEKExpandingSliderAnimatorProgressKey" forKey:v11 duration:v9 timingCurve:0.35];
 
       [MEMORY[0x1E6979518] begin];
       [MEMORY[0x1E6979518] setAnimationTimingFunction:v11];
@@ -233,7 +233,7 @@
       [MEMORY[0x1E69DD250] animateWithDuration:2 delay:v17 options:v16 animations:0.35 completion:0.0];
       [MEMORY[0x1E6979518] commit];
 
-      if (!v5)
+      if (!notifyCopy)
       {
         return;
       }
@@ -243,23 +243,23 @@
     {
       [(CEKExpandingSlider *)self _updateLabelColorsForProgress:v9];
       [(CEKExpandingSlider *)self _updateMarkedValueAnimated:0];
-      if (!v5)
+      if (!notifyCopy)
       {
         return;
       }
     }
 
     expanded = self->_expanded;
-    v14 = [(CEKExpandingSlider *)self delegate];
-    v15 = v14;
+    delegate = [(CEKExpandingSlider *)self delegate];
+    v15 = delegate;
     if (expanded)
     {
-      [v14 sliderWillExpand:self];
+      [delegate sliderWillExpand:self];
     }
 
     else
     {
-      [v14 sliderWillCollapse:self];
+      [delegate sliderWillCollapse:self];
     }
   }
 }
@@ -291,13 +291,13 @@ uint64_t __57__CEKExpandingSlider__setExpanded_animated_shouldNotify___block_inv
     v3 = 0.0;
   }
 
-  v4 = [(CEKExpandingSlider *)self _slider];
-  [v4 setAlpha:v3];
+  _slider = [(CEKExpandingSlider *)self _slider];
+  [_slider setAlpha:v3];
 
   [(CEKExpandingSlider *)self titleAlpha];
   v6 = v5 * 0.6;
-  v7 = [(CEKExpandingSlider *)self _slider];
-  [v7 setTitleAlpha:v6];
+  _slider2 = [(CEKExpandingSlider *)self _slider];
+  [_slider2 setTitleAlpha:v6];
 
   v8 = 0.0;
   if (![(CEKExpandingSlider *)self expanded])
@@ -306,8 +306,8 @@ uint64_t __57__CEKExpandingSlider__setExpanded_animated_shouldNotify___block_inv
     v8 = v9;
   }
 
-  v10 = [(CEKExpandingSlider *)self _titleLabel];
-  [v10 setAlpha:v8];
+  _titleLabel = [(CEKExpandingSlider *)self _titleLabel];
+  [_titleLabel setAlpha:v8];
 
   if ([(CEKExpandingSlider *)self expanded])
   {
@@ -319,8 +319,8 @@ uint64_t __57__CEKExpandingSlider__setExpanded_animated_shouldNotify___block_inv
     v11 = 1.0;
   }
 
-  v12 = [(CEKExpandingSlider *)self _valueLabel];
-  [v12 setAlpha:v11];
+  _valueLabel = [(CEKExpandingSlider *)self _valueLabel];
+  [_valueLabel setAlpha:v11];
 
   if ([(CEKExpandingSlider *)self expanded])
   {
@@ -332,8 +332,8 @@ uint64_t __57__CEKExpandingSlider__setExpanded_animated_shouldNotify___block_inv
     v13 = 1.0;
   }
 
-  v14 = [(CEKExpandingSlider *)self _ticksView];
-  [v14 setAlpha:v13];
+  _ticksView = [(CEKExpandingSlider *)self _ticksView];
+  [_ticksView setAlpha:v13];
 
   if ([(CEKExpandingSlider *)self expanded])
   {
@@ -345,23 +345,23 @@ uint64_t __57__CEKExpandingSlider__setExpanded_animated_shouldNotify___block_inv
     v15 = 1.0;
   }
 
-  v16 = [(CEKExpandingSlider *)self _levelIndicatorView];
-  [v16 setAlpha:v15];
+  _levelIndicatorView = [(CEKExpandingSlider *)self _levelIndicatorView];
+  [_levelIndicatorView setAlpha:v15];
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   v15.receiver = self;
   v15.super_class = CEKExpandingSlider;
-  v7 = [(CEKExpandingSlider *)&v15 hitTest:a4 withEvent:?];
+  v7 = [(CEKExpandingSlider *)&v15 hitTest:event withEvent:?];
   [(CEKExpandingSlider *)self bounds];
   v9 = v8;
   if (![(CEKExpandingSlider *)self expanded])
   {
-    v10 = [(CEKExpandingSlider *)self _ticksView];
-    [v10 intrinsicContentSize];
+    _ticksView = [(CEKExpandingSlider *)self _ticksView];
+    [_ticksView intrinsicContentSize];
     v12 = v11;
 
     [(CEKExpandingSlider *)self collapsedCenterX];
@@ -381,24 +381,24 @@ uint64_t __57__CEKExpandingSlider__setExpanded_animated_shouldNotify___block_inv
   return v7;
 }
 
-- (void)setCollapsedCenterX:(double)a3
+- (void)setCollapsedCenterX:(double)x
 {
-  if (self->_collapsedCenterX != a3)
+  if (self->_collapsedCenterX != x)
   {
-    self->_collapsedCenterX = a3;
+    self->_collapsedCenterX = x;
     [(CEKExpandingSlider *)self setNeedsLayout];
   }
 }
 
 - (void)_updateColors
 {
-  v3 = [(CEKExpandingSlider *)self tintColor];
-  v4 = [(CEKExpandingSlider *)self _slider];
-  [v4 setTintColor:v3];
+  tintColor = [(CEKExpandingSlider *)self tintColor];
+  _slider = [(CEKExpandingSlider *)self _slider];
+  [_slider setTintColor:tintColor];
 
-  v5 = [(CEKExpandingSlider *)self tintColor];
-  v6 = [(CEKExpandingSlider *)self _levelIndicatorView];
-  [v6 setBackgroundColor:v5];
+  tintColor2 = [(CEKExpandingSlider *)self tintColor];
+  _levelIndicatorView = [(CEKExpandingSlider *)self _levelIndicatorView];
+  [_levelIndicatorView setBackgroundColor:tintColor2];
 
   if (![(CEKExpandingSlider *)self expanded])
   {
@@ -417,8 +417,8 @@ uint64_t __57__CEKExpandingSlider__setExpanded_animated_shouldNotify___block_inv
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = [(CEKExpandingSlider *)self _ticksView];
-  [v2 intrinsicContentSize];
+  _ticksView = [(CEKExpandingSlider *)self _ticksView];
+  [_ticksView intrinsicContentSize];
   v4 = v3;
   v6 = v5;
 
@@ -439,11 +439,11 @@ uint64_t __57__CEKExpandingSlider__setExpanded_animated_shouldNotify___block_inv
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(CEKExpandingSlider *)self _slider];
+  _slider = [(CEKExpandingSlider *)self _slider];
   v84 = v8;
   v85 = v6;
   v83 = v10;
-  [v11 setFrame:{v4, v6, v8, v10}];
+  [_slider setFrame:{v4, v6, v8, v10}];
 
   if ([(CEKExpandingSlider *)self expanded])
   {
@@ -455,52 +455,52 @@ uint64_t __57__CEKExpandingSlider__setExpanded_animated_shouldNotify___block_inv
     v12 = 0.0;
   }
 
-  v13 = [(CEKExpandingSlider *)self _animator];
+  _animator = [(CEKExpandingSlider *)self _animator];
   v86 = v12;
-  [v13 setValue:@"CEKExpandingSliderAnimatorProgressKey" forKey:0 duration:v12 timingCurve:0.0];
+  [_animator setValue:@"CEKExpandingSliderAnimatorProgressKey" forKey:0 duration:v12 timingCurve:0.0];
 
-  v14 = [(CEKExpandingSlider *)self _slider];
-  [v14 frameForTitleLabel];
+  _slider2 = [(CEKExpandingSlider *)self _slider];
+  [_slider2 frameForTitleLabel];
   v16 = v15;
   v18 = v17;
   v20 = v19;
   v22 = v21;
-  v23 = [(CEKExpandingSlider *)self _slider];
-  [(CEKExpandingSlider *)self convertRect:v23 fromView:v16, v18, v20, v22];
+  _slider3 = [(CEKExpandingSlider *)self _slider];
+  [(CEKExpandingSlider *)self convertRect:_slider3 fromView:v16, v18, v20, v22];
   v87 = v24;
   v88 = v25;
   v27 = v26;
   rect = v28;
 
-  v29 = [(CEKExpandingSlider *)self _slider];
-  [v29 frameForValueLabel];
+  _slider4 = [(CEKExpandingSlider *)self _slider];
+  [_slider4 frameForValueLabel];
   v31 = v30;
   v33 = v32;
   v35 = v34;
   v37 = v36;
-  v38 = [(CEKExpandingSlider *)self _slider];
-  [(CEKExpandingSlider *)self convertRect:v38 fromView:v31, v33, v35, v37];
+  _slider5 = [(CEKExpandingSlider *)self _slider];
+  [(CEKExpandingSlider *)self convertRect:_slider5 fromView:v31, v33, v35, v37];
   v82 = v39;
 
-  v40 = [(CEKExpandingSlider *)self _slider];
-  [v40 frameForLevelIndicator];
+  _slider6 = [(CEKExpandingSlider *)self _slider];
+  [_slider6 frameForLevelIndicator];
   v42 = v41;
   v44 = v43;
   v46 = v45;
   v48 = v47;
-  v49 = [(CEKExpandingSlider *)self _slider];
-  [(CEKExpandingSlider *)self convertRect:v49 fromView:v42, v44, v46, v48];
+  _slider7 = [(CEKExpandingSlider *)self _slider];
+  [(CEKExpandingSlider *)self convertRect:_slider7 fromView:v42, v44, v46, v48];
   v51 = v50;
   v53 = v52;
   v90 = v54;
   v56 = v55;
 
-  v57 = [(CEKExpandingSlider *)self _titleLabel];
-  [v57 intrinsicContentSize];
+  _titleLabel = [(CEKExpandingSlider *)self _titleLabel];
+  [_titleLabel intrinsicContentSize];
   v59 = v58;
 
-  v60 = [(CEKExpandingSlider *)self _valueLabel];
-  [v60 intrinsicContentSize];
+  _valueLabel = [(CEKExpandingSlider *)self _valueLabel];
+  [_valueLabel intrinsicContentSize];
   v62 = v61;
 
   if ([(CEKExpandingSlider *)self expanded])
@@ -511,8 +511,8 @@ uint64_t __57__CEKExpandingSlider__setExpanded_animated_shouldNotify___block_inv
     v92.size.height = rect;
     v63 = v4;
     v64 = CGRectGetMaxX(v92) - v59;
-    v65 = [(CEKExpandingSlider *)self _titleLabel];
-    [v65 setFrame:{v64, v27, v59, 18.0}];
+    _titleLabel2 = [(CEKExpandingSlider *)self _titleLabel];
+    [_titleLabel2 setFrame:{v64, v27, v59, 18.0}];
 
     v93.origin.x = v63;
     v93.size.width = v84;
@@ -521,8 +521,8 @@ uint64_t __57__CEKExpandingSlider__setExpanded_animated_shouldNotify___block_inv
     CGRectGetMidX(v93);
     UIRoundToViewScale();
     v67 = v66;
-    v68 = [(CEKExpandingSlider *)self _valueLabel];
-    [v68 setFrame:{v67, v82, v62, 18.0}];
+    _valueLabel2 = [(CEKExpandingSlider *)self _valueLabel];
+    [_valueLabel2 setFrame:{v67, v82, v62, 18.0}];
 
     v69 = v90;
   }
@@ -532,8 +532,8 @@ uint64_t __57__CEKExpandingSlider__setExpanded_animated_shouldNotify___block_inv
     [(CEKExpandingSlider *)self collapsedCenterX];
     UIRoundToViewScale();
     v71 = v70;
-    v72 = [(CEKExpandingSlider *)self _titleLabel];
-    [v72 setFrame:{v71, v27, v59, 18.0}];
+    _titleLabel3 = [(CEKExpandingSlider *)self _titleLabel];
+    [_titleLabel3 setFrame:{v71, v27, v59, 18.0}];
 
     [(CEKExpandingSlider *)self collapsedCenterX];
     UIRoundToViewScale();
@@ -543,8 +543,8 @@ uint64_t __57__CEKExpandingSlider__setExpanded_animated_shouldNotify___block_inv
     v94.origin.y = v27;
     v94.size.height = rect;
     v75 = CGRectGetMaxY(v94) + -1.0;
-    v76 = [(CEKExpandingSlider *)self _valueLabel];
-    [v76 setFrame:{v74, v75, v62, 18.0}];
+    _valueLabel3 = [(CEKExpandingSlider *)self _valueLabel];
+    [_valueLabel3 setFrame:{v74, v75, v62, 18.0}];
 
     [(CEKExpandingSlider *)self collapsedCenterX];
     v78 = v77 + -0.5;
@@ -558,21 +558,21 @@ uint64_t __57__CEKExpandingSlider__setExpanded_animated_shouldNotify___block_inv
     v51 = v78;
   }
 
-  v79 = [(CEKExpandingSlider *)self _levelIndicatorView];
-  [v79 setFrame:{v51, v53, v69, v56}];
+  _levelIndicatorView = [(CEKExpandingSlider *)self _levelIndicatorView];
+  [_levelIndicatorView setFrame:{v51, v53, v69, v56}];
 
-  v80 = [(CEKExpandingSlider *)self _animator];
-  v81 = [v80 isAnimating];
+  _animator2 = [(CEKExpandingSlider *)self _animator];
+  isAnimating = [_animator2 isAnimating];
 
-  if ((v81 & 1) == 0)
+  if ((isAnimating & 1) == 0)
   {
     [(CEKExpandingSlider *)self _updateTickViewFrameForProgress:v86];
   }
 }
 
-- (void)animator:(id)a3 didUpdateValuesForKeys:(id)a4
+- (void)animator:(id)animator didUpdateValuesForKeys:(id)keys
 {
-  v5 = [(CEKExpandingSlider *)self _animator:a3];
+  v5 = [(CEKExpandingSlider *)self _animator:animator];
   [v5 valueForKey:@"CEKExpandingSliderAnimatorProgressKey"];
   v7 = v6;
 
@@ -581,73 +581,73 @@ uint64_t __57__CEKExpandingSlider__setExpanded_animated_shouldNotify___block_inv
   [(CEKExpandingSlider *)self _updateLabelColorsForProgress:v7];
 }
 
-- (void)_updateTickViewFrameForProgress:(double)a3
+- (void)_updateTickViewFrameForProgress:(double)progress
 {
-  v5 = [(CEKExpandingSlider *)self _ticksView];
-  [v5 intrinsicContentSize];
+  _ticksView = [(CEKExpandingSlider *)self _ticksView];
+  [_ticksView intrinsicContentSize];
   v7 = v6;
   v9 = v8;
 
-  v10 = [(CEKExpandingSlider *)self _slider];
-  [v10 frameForTicksView];
+  _slider = [(CEKExpandingSlider *)self _slider];
+  [_slider frameForTicksView];
   v12 = v11;
   v14 = v13;
   v16 = v15;
   v18 = v17;
-  v19 = [(CEKExpandingSlider *)self _slider];
-  [(CEKExpandingSlider *)self convertRect:v19 fromView:v12, v14, v16, v18];
+  _slider2 = [(CEKExpandingSlider *)self _slider];
+  [(CEKExpandingSlider *)self convertRect:_slider2 fromView:v12, v14, v16, v18];
   v21 = v20;
   v23 = v22;
   v25 = v24;
 
   [(CEKExpandingSlider *)self collapsedCenterX];
-  v27 = CEKInterpolate(v26 + v7 * -0.5, v21, a3);
-  v28 = CEKInterpolate(v7, v25, a3);
-  v29 = [(CEKExpandingSlider *)self _ticksView];
-  [v29 setFrame:{v27, v23, v28, v9}];
+  v27 = CEKInterpolate(v26 + v7 * -0.5, v21, progress);
+  v28 = CEKInterpolate(v7, v25, progress);
+  _ticksView2 = [(CEKExpandingSlider *)self _ticksView];
+  [_ticksView2 setFrame:{v27, v23, v28, v9}];
 }
 
-- (void)_updateLabelColorsForProgress:(double)a3
+- (void)_updateLabelColorsForProgress:(double)progress
 {
-  v5 = CEKInterpolateClamped(1.0, 0.6, a3);
-  v6 = [MEMORY[0x1E69DC888] labelColor];
-  v7 = [v6 colorWithAlphaComponent:v5];
-  v8 = [(CEKExpandingSlider *)self _titleLabel];
-  [v8 setTextColor:v7];
+  v5 = CEKInterpolateClamped(1.0, 0.6, progress);
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  v7 = [labelColor colorWithAlphaComponent:v5];
+  _titleLabel = [(CEKExpandingSlider *)self _titleLabel];
+  [_titleLabel setTextColor:v7];
 
   if ([(CEKExpandingSlider *)self expanded])
   {
     v16 = 0.0;
     v17 = 0.0;
     v15 = 0.0;
-    v9 = [(CEKExpandingSlider *)self tintColor];
-    v10 = [(CEKExpandingSlider *)self traitCollection];
-    v11 = [v9 resolvedColorWithTraitCollection:v10];
+    tintColor = [(CEKExpandingSlider *)self tintColor];
+    traitCollection = [(CEKExpandingSlider *)self traitCollection];
+    labelColor2 = [tintColor resolvedColorWithTraitCollection:traitCollection];
 
-    [v11 getRed:&v17 green:&v16 blue:&v15 alpha:0];
-    v17 = CEKInterpolateClamped(1.0, v17, a3);
-    v16 = CEKInterpolateClamped(1.0, v16, a3);
-    v15 = CEKInterpolateClamped(1.0, v15, a3);
+    [labelColor2 getRed:&v17 green:&v16 blue:&v15 alpha:0];
+    v17 = CEKInterpolateClamped(1.0, v17, progress);
+    v16 = CEKInterpolateClamped(1.0, v16, progress);
+    v15 = CEKInterpolateClamped(1.0, v15, progress);
     v12 = [MEMORY[0x1E69DC888] colorWithRed:v17 green:v16 blue:v15 alpha:1.0];
-    v13 = [(CEKExpandingSlider *)self _valueLabel];
-    [v13 setTextColor:v12];
+    _valueLabel = [(CEKExpandingSlider *)self _valueLabel];
+    [_valueLabel setTextColor:v12];
   }
 
   else
   {
-    v11 = [MEMORY[0x1E69DC888] labelColor];
-    v14 = [(CEKExpandingSlider *)self _valueLabel];
-    [v14 setTextColor:v11];
+    labelColor2 = [MEMORY[0x1E69DC888] labelColor];
+    _valueLabel2 = [(CEKExpandingSlider *)self _valueLabel];
+    [_valueLabel2 setTextColor:labelColor2];
   }
 }
 
-- (void)_updateMarkedValueAnimated:(BOOL)a3
+- (void)_updateMarkedValueAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(CEKExpandingSlider *)self _gestureRecognizer];
-  v6 = [v5 state];
+  animatedCopy = animated;
+  _gestureRecognizer = [(CEKExpandingSlider *)self _gestureRecognizer];
+  state = [_gestureRecognizer state];
 
-  if ((v6 - 1) < 2 || ([(CEKExpandingSlider *)self _markedValueAnimationTimer], v7 = objc_claimAutoreleasedReturnValue(), v7, v7))
+  if ((state - 1) < 2 || ([(CEKExpandingSlider *)self _markedValueAnimationTimer], v7 = objc_claimAutoreleasedReturnValue(), v7, v7))
   {
     [(CEKExpandingSlider *)self markedValue];
     v9 = v8;
@@ -658,24 +658,24 @@ uint64_t __57__CEKExpandingSlider__setExpanded_animated_shouldNotify___block_inv
     v9 = 1.79769313e308;
   }
 
-  v10 = [(CEKExpandingSlider *)self _slider];
-  [v10 setMarkedValue:v3 animated:v9];
+  _slider = [(CEKExpandingSlider *)self _slider];
+  [_slider setMarkedValue:animatedCopy animated:v9];
 }
 
-- (void)_handlePress:(id)a3
+- (void)_handlePress:(id)press
 {
-  v4 = [a3 state];
-  if ((v4 - 3) >= 2)
+  state = [press state];
+  if ((state - 3) >= 2)
   {
-    if (v4 == 1)
+    if (state == 1)
     {
       [(CEKExpandingSlider *)self _setExpanded:1 animated:1 shouldNotify:1];
-      v14 = [(CEKExpandingSlider *)self _markedValueAnimationTimer];
-      [v14 invalidate];
+      _markedValueAnimationTimer = [(CEKExpandingSlider *)self _markedValueAnimationTimer];
+      [_markedValueAnimationTimer invalidate];
 
       [(CEKExpandingSlider *)self _setMarkedValueAnimationTimer:0];
-      v15 = [(CEKExpandingSlider *)self _expansionAnimationTimer];
-      [v15 invalidate];
+      _expansionAnimationTimer = [(CEKExpandingSlider *)self _expansionAnimationTimer];
+      [_expansionAnimationTimer invalidate];
 
       [(CEKExpandingSlider *)self _setExpansionAnimationTimer:0];
     }
@@ -684,58 +684,58 @@ uint64_t __57__CEKExpandingSlider__setExpanded_animated_shouldNotify___block_inv
   else
   {
     v5 = MEMORY[0x1E695DFF0];
-    v6 = [(CEKExpandingSlider *)self _slider];
-    [v6 animationDuration];
+    _slider = [(CEKExpandingSlider *)self _slider];
+    [_slider animationDuration];
     v8 = [v5 timerWithTimeInterval:self target:sel__handleMarkedValueAnimationTimerFired_ selector:0 userInfo:0 repeats:1.0 - v7];
     [(CEKExpandingSlider *)self _setMarkedValueAnimationTimer:v8];
 
-    v9 = [MEMORY[0x1E695DFD0] currentRunLoop];
-    v10 = [(CEKExpandingSlider *)self _markedValueAnimationTimer];
+    currentRunLoop = [MEMORY[0x1E695DFD0] currentRunLoop];
+    _markedValueAnimationTimer2 = [(CEKExpandingSlider *)self _markedValueAnimationTimer];
     v11 = *MEMORY[0x1E695DA28];
-    [v9 addTimer:v10 forMode:*MEMORY[0x1E695DA28]];
+    [currentRunLoop addTimer:_markedValueAnimationTimer2 forMode:*MEMORY[0x1E695DA28]];
 
     v12 = [MEMORY[0x1E695DFF0] timerWithTimeInterval:self target:sel__handleExpansionAnimationTimerFired_ selector:0 userInfo:0 repeats:1.0];
     [(CEKExpandingSlider *)self _setExpansionAnimationTimer:v12];
 
-    v16 = [MEMORY[0x1E695DFD0] currentRunLoop];
-    v13 = [(CEKExpandingSlider *)self _expansionAnimationTimer];
-    [v16 addTimer:v13 forMode:v11];
+    currentRunLoop2 = [MEMORY[0x1E695DFD0] currentRunLoop];
+    _expansionAnimationTimer2 = [(CEKExpandingSlider *)self _expansionAnimationTimer];
+    [currentRunLoop2 addTimer:_expansionAnimationTimer2 forMode:v11];
   }
 }
 
-- (void)_handleMarkedValueAnimationTimerFired:(id)a3
+- (void)_handleMarkedValueAnimationTimerFired:(id)fired
 {
   [(CEKExpandingSlider *)self _setMarkedValueAnimationTimer:0];
 
   [(CEKExpandingSlider *)self _updateMarkedValueAnimated:1];
 }
 
-- (void)_handleExpansionAnimationTimerFired:(id)a3
+- (void)_handleExpansionAnimationTimerFired:(id)fired
 {
   [(CEKExpandingSlider *)self _setExpansionAnimationTimer:0];
 
   [(CEKExpandingSlider *)self _setExpanded:0 animated:1 shouldNotify:1];
 }
 
-- (void)_handleSliderDidChangeValue:(id)a3
+- (void)_handleSliderDidChangeValue:(id)value
 {
-  [a3 value];
+  [value value];
   [(CEKExpandingSlider *)self _updateUIForValue:0 animated:?];
 
   [(CEKExpandingSlider *)self sendActionsForControlEvents:4096];
 }
 
-- (void)_updateUIForValue:(double)a3 animated:(BOOL)a4
+- (void)_updateUIForValue:(double)value animated:(BOOL)animated
 {
-  v4 = a4;
-  v7 = [(CEKExpandingSlider *)self _slider];
-  v8 = [MEMORY[0x1E696AD98] numberWithDouble:a3 * 100.0];
-  v9 = [v7 formattedIntegerStringFromNumber:v8];
-  v10 = [(CEKExpandingSlider *)self _valueLabel];
-  [v10 setAttributedText:v9];
+  animatedCopy = animated;
+  _slider = [(CEKExpandingSlider *)self _slider];
+  v8 = [MEMORY[0x1E696AD98] numberWithDouble:value * 100.0];
+  v9 = [_slider formattedIntegerStringFromNumber:v8];
+  _valueLabel = [(CEKExpandingSlider *)self _valueLabel];
+  [_valueLabel setAttributedText:v9];
 
-  v11 = [(CEKExpandingSlider *)self _ticksView];
-  [v11 setSelectedValue:v4 animated:a3];
+  _ticksView = [(CEKExpandingSlider *)self _ticksView];
+  [_ticksView setSelectedValue:animatedCopy animated:value];
 
   [(CEKExpandingSlider *)self setNeedsLayout];
 }

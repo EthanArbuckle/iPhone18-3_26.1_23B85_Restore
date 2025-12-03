@@ -14,7 +14,7 @@
   {
     if (a3 == 2)
     {
-      v13 = [MEMORY[0x1E69DC740] tintedButtonConfiguration];
+      tintedButtonConfiguration = [MEMORY[0x1E69DC740] tintedButtonConfiguration];
     }
 
     else
@@ -24,7 +24,7 @@
         goto LABEL_11;
       }
 
-      v13 = [MEMORY[0x1E69DC740] filledButtonConfiguration];
+      tintedButtonConfiguration = [MEMORY[0x1E69DC740] filledButtonConfiguration];
     }
   }
 
@@ -35,15 +35,15 @@
       goto LABEL_11;
     }
 
-    v13 = [MEMORY[0x1E69DC740] grayButtonConfiguration];
+    tintedButtonConfiguration = [MEMORY[0x1E69DC740] grayButtonConfiguration];
   }
 
   else
   {
-    v13 = [MEMORY[0x1E69DC740] plainButtonConfiguration];
+    tintedButtonConfiguration = [MEMORY[0x1E69DC740] plainButtonConfiguration];
   }
 
-  v12 = v13;
+  v12 = tintedButtonConfiguration;
 LABEL_11:
   if (v9)
   {

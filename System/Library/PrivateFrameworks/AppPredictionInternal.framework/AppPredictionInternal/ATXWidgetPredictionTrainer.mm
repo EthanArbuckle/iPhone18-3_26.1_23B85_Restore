@@ -1,28 +1,28 @@
 @interface ATXWidgetPredictionTrainer
-+ (BOOL)shouldTrainModelOnDeviceWithTimeOfLatestTraining:(id)a3;
-+ (id)compiledModelURLForModelName:(id)a3;
-+ (void)moveOriginalModelToWriteablePath:(id)a3;
-- (ATXWidgetPredictionTrainer)initWithInformationStore:(id)a3 distinctScoreCounts:(id)a4;
++ (BOOL)shouldTrainModelOnDeviceWithTimeOfLatestTraining:(id)training;
++ (id)compiledModelURLForModelName:(id)name;
++ (void)moveOriginalModelToWriteablePath:(id)path;
+- (ATXWidgetPredictionTrainer)initWithInformationStore:(id)store distinctScoreCounts:(id)counts;
 - (id)_timeOfLatestTraining;
-- (void)modelPredictionWithSampleDictionaryFeatureProvider:(id)a3 withMLModel:(id)a4;
-- (void)trainWidgetPredictionModelWithActivity:(id)a3;
-- (void)trainWidgetPredictionModelWithMLArrayBatchProvider:(id)a3 modelURL:(id)a4 andSaveToURL:(id)a5 withActivity:(id)a6;
+- (void)modelPredictionWithSampleDictionaryFeatureProvider:(id)provider withMLModel:(id)model;
+- (void)trainWidgetPredictionModelWithActivity:(id)activity;
+- (void)trainWidgetPredictionModelWithMLArrayBatchProvider:(id)provider modelURL:(id)l andSaveToURL:(id)rL withActivity:(id)activity;
 @end
 
 @implementation ATXWidgetPredictionTrainer
 
-- (ATXWidgetPredictionTrainer)initWithInformationStore:(id)a3 distinctScoreCounts:(id)a4
+- (ATXWidgetPredictionTrainer)initWithInformationStore:(id)store distinctScoreCounts:(id)counts
 {
-  v7 = a3;
-  v8 = a4;
+  storeCopy = store;
+  countsCopy = counts;
   v14.receiver = self;
   v14.super_class = ATXWidgetPredictionTrainer;
   v9 = [(ATXWidgetPredictionTrainer *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_informationStore, a3);
-    v11 = [[ATXWidgetPredictionTrainingDatasetBuilder alloc] initWithDistinctScoreCounts:v8];
+    objc_storeStrong(&v9->_informationStore, store);
+    v11 = [[ATXWidgetPredictionTrainingDatasetBuilder alloc] initWithDistinctScoreCounts:countsCopy];
     datasetBuilder = v10->_datasetBuilder;
     v10->_datasetBuilder = v11;
   }
@@ -30,13 +30,13 @@
   return v10;
 }
 
-- (void)trainWidgetPredictionModelWithActivity:(id)a3
+- (void)trainWidgetPredictionModelWithActivity:(id)activity
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  activityCopy = activity;
   v5 = objc_opt_class();
-  v6 = [(ATXWidgetPredictionTrainer *)self _timeOfLatestTraining];
-  LODWORD(v5) = [v5 shouldTrainModelOnDeviceWithTimeOfLatestTraining:v6];
+  _timeOfLatestTraining = [(ATXWidgetPredictionTrainer *)self _timeOfLatestTraining];
+  LODWORD(v5) = [v5 shouldTrainModelOnDeviceWithTimeOfLatestTraining:_timeOfLatestTraining];
 
   if (v5)
   {
@@ -47,23 +47,23 @@
       _os_log_impl(&dword_2263AA000, v7, OS_LOG_TYPE_INFO, "ATXWidgetPredictionTrainer: Preparing to train; it has been sufficiently long since the widget prediction model was trained on-device.", &v20, 2u);
     }
 
-    v8 = [(ATXInformationStore *)self->_informationStore fetchWidgetEngagementRecords];
-    v9 = [(ATXWidgetPredictionTrainingDatasetBuilder *)self->_datasetBuilder createMLArrayBatchProviderFromTrainingArray:v8];
+    fetchWidgetEngagementRecords = [(ATXInformationStore *)self->_informationStore fetchWidgetEngagementRecords];
+    v9 = [(ATXWidgetPredictionTrainingDatasetBuilder *)self->_datasetBuilder createMLArrayBatchProviderFromTrainingArray:fetchWidgetEngagementRecords];
     v10 = [objc_opt_class() compiledModelURLForModelName:@"ATXWidgetPredictionMLModel"];
     v11 = [objc_opt_class() compiledModelURLForModelName:@"ATXPersonalizedWidgetPredictionMLModel"];
     [objc_opt_class() moveOriginalModelToWriteablePath:v10];
-    v12 = [MEMORY[0x277CCAA00] defaultManager];
-    v13 = [v11 path];
-    v14 = [v12 isReadableFileAtPath:v13];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    path = [v11 path];
+    v14 = [defaultManager isReadableFileAtPath:path];
 
     if (v14)
     {
       v15 = __atxlog_handle_timeline();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
       {
-        v16 = [v11 path];
+        path2 = [v11 path];
         v20 = 138412290;
-        v21 = v16;
+        v21 = path2;
         _os_log_impl(&dword_2263AA000, v15, OS_LOG_TYPE_INFO, "Using model from the previous round of on-device training at path: %@", &v20, 0xCu);
       }
 
@@ -71,7 +71,7 @@
       v10 = v17;
     }
 
-    if ([v4 didDefer])
+    if ([activityCopy didDefer])
     {
       v18 = __atxlog_handle_timeline();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -83,18 +83,18 @@
 
     else
     {
-      [(ATXWidgetPredictionTrainer *)self trainWidgetPredictionModelWithMLArrayBatchProvider:v9 modelURL:v10 andSaveToURL:v11 withActivity:v4];
+      [(ATXWidgetPredictionTrainer *)self trainWidgetPredictionModelWithMLArrayBatchProvider:v9 modelURL:v10 andSaveToURL:v11 withActivity:activityCopy];
     }
   }
 
   v19 = *MEMORY[0x277D85DE8];
 }
 
-+ (BOOL)shouldTrainModelOnDeviceWithTimeOfLatestTraining:(id)a3
++ (BOOL)shouldTrainModelOnDeviceWithTimeOfLatestTraining:(id)training
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = [a3 dateByAddingTimeInterval:604800.0];
-  if (a3 && ([MEMORY[0x277CBEAA8] now], v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "laterDate:", v5), v6 = objc_claimAutoreleasedReturnValue(), v6, v5, v6 == v4))
+  v4 = [training dateByAddingTimeInterval:604800.0];
+  if (training && ([MEMORY[0x277CBEAA8] now], v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "laterDate:", v5), v6 = objc_claimAutoreleasedReturnValue(), v6, v5, v6 == v4))
   {
     v8 = __atxlog_handle_timeline();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
@@ -120,14 +120,14 @@
   return v7;
 }
 
-- (void)trainWidgetPredictionModelWithMLArrayBatchProvider:(id)a3 modelURL:(id)a4 andSaveToURL:(id)a5 withActivity:(id)a6
+- (void)trainWidgetPredictionModelWithMLArrayBatchProvider:(id)provider modelURL:(id)l andSaveToURL:(id)rL withActivity:(id)activity
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [v10 array];
-  v15 = [v14 count];
+  providerCopy = provider;
+  lCopy = l;
+  rLCopy = rL;
+  activityCopy = activity;
+  array = [providerCopy array];
+  v15 = [array count];
 
   if (!v15)
   {
@@ -140,7 +140,7 @@
     goto LABEL_14;
   }
 
-  if (!v12)
+  if (!rLCopy)
   {
     v23 = __atxlog_handle_timeline();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_FAULT))
@@ -169,7 +169,7 @@ LABEL_14:
   aBlock[1] = 3221225472;
   aBlock[2] = __116__ATXWidgetPredictionTrainer_trainWidgetPredictionModelWithMLArrayBatchProvider_modelURL_andSaveToURL_withActivity___block_invoke;
   aBlock[3] = &unk_27859F258;
-  v32 = v13;
+  v32 = activityCopy;
   v16 = _Block_copy(aBlock);
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
@@ -177,8 +177,8 @@ LABEL_14:
   v26[3] = &unk_27859F280;
   v29 = &v33;
   v30 = v39;
-  v27 = v12;
-  v28 = self;
+  v27 = rLCopy;
+  selfCopy = self;
   v17 = _Block_copy(v26);
   v18 = [objc_alloc(MEMORY[0x277CBFF80]) initForEvents:3 progressHandler:v16 completionHandler:v17];
   v19 = __atxlog_handle_timeline();
@@ -189,7 +189,7 @@ LABEL_14:
   }
 
   v24 = 0;
-  v20 = [MEMORY[0x277CBFF88] updateTaskForModelAtURL:v11 trainingData:v10 progressHandlers:v18 error:&v24];
+  v20 = [MEMORY[0x277CBFF88] updateTaskForModelAtURL:lCopy trainingData:providerCopy progressHandlers:v18 error:&v24];
   v21 = v24;
   if (v21)
   {
@@ -306,13 +306,13 @@ void __116__ATXWidgetPredictionTrainer_trainWidgetPredictionModelWithMLArrayBatc
   v19 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)compiledModelURLForModelName:(id)a3
++ (id)compiledModelURLForModelName:(id)name
 {
-  if (a3)
+  if (name)
   {
     v3 = MEMORY[0x277CEBCB0];
-    v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.mlmodelc", a3];
-    v5 = [v3 widgetPredictionModelFileWithFilename:v4];
+    name = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.mlmodelc", name];
+    v5 = [v3 widgetPredictionModelFileWithFilename:name];
 
     v6 = [MEMORY[0x277CBEBC0] fileURLWithPath:v5];
   }
@@ -331,45 +331,45 @@ void __116__ATXWidgetPredictionTrainer_trainWidgetPredictionModelWithMLArrayBatc
   return v6;
 }
 
-+ (void)moveOriginalModelToWriteablePath:(id)a3
++ (void)moveOriginalModelToWriteablePath:(id)path
 {
   v29 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  pathCopy = path;
   v4 = [@"ATXWidgetPredictionMLModel" stringByAppendingPathExtension:@"mlmodelc"];
   v5 = MEMORY[0x277CBEBC0];
-  v6 = [MEMORY[0x277CEB3C0] asset];
-  v7 = [v6 filesystemPathForAssetDataRelativePath:v4];
+  asset = [MEMORY[0x277CEB3C0] asset];
+  v7 = [asset filesystemPathForAssetDataRelativePath:v4];
   v8 = [v5 fileURLWithPath:v7];
 
   v9 = __atxlog_handle_timeline();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
-    v10 = [v8 path];
-    v11 = [v3 path];
+    path = [v8 path];
+    path2 = [pathCopy path];
     *buf = 138543618;
-    v24 = v10;
+    v24 = path;
     v25 = 2114;
-    v26 = v11;
+    v26 = path2;
     _os_log_impl(&dword_2263AA000, v9, OS_LOG_TYPE_INFO, "Moving original model from %{public}@ to %{public}@", buf, 0x16u);
   }
 
-  v12 = [MEMORY[0x277CCAA00] defaultManager];
-  v13 = [v8 path];
-  if (![v12 isReadableFileAtPath:v13])
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  path3 = [v8 path];
+  if (![defaultManager isReadableFileAtPath:path3])
   {
     goto LABEL_8;
   }
 
-  v14 = [MEMORY[0x277CCAA00] defaultManager];
-  v15 = [v3 path];
-  v16 = [v14 isReadableFileAtPath:v15];
+  defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+  path4 = [pathCopy path];
+  v16 = [defaultManager2 isReadableFileAtPath:path4];
 
   if ((v16 & 1) == 0)
   {
-    v17 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager3 = [MEMORY[0x277CCAA00] defaultManager];
     v22 = 0;
-    v18 = [v17 copyItemAtURL:v8 toURL:v3 error:&v22];
-    v12 = v22;
+    v18 = [defaultManager3 copyItemAtURL:v8 toURL:pathCopy error:&v22];
+    defaultManager = v22;
 
     if (v18)
     {
@@ -378,18 +378,18 @@ LABEL_9:
       goto LABEL_10;
     }
 
-    v13 = __atxlog_handle_timeline();
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+    path3 = __atxlog_handle_timeline();
+    if (os_log_type_enabled(path3, OS_LOG_TYPE_ERROR))
     {
-      v20 = [v8 path];
-      v21 = [v3 path];
+      path5 = [v8 path];
+      path6 = [pathCopy path];
       *buf = 138543874;
-      v24 = v20;
+      v24 = path5;
       v25 = 2114;
-      v26 = v21;
+      v26 = path6;
       v27 = 2114;
-      v28 = v12;
-      _os_log_error_impl(&dword_2263AA000, v13, OS_LOG_TYPE_ERROR, "Failed to move file from %{public}@ to %{public}@ with error %{public}@", buf, 0x20u);
+      v28 = defaultManager;
+      _os_log_error_impl(&dword_2263AA000, path3, OS_LOG_TYPE_ERROR, "Failed to move file from %{public}@ to %{public}@ with error %{public}@", buf, 0x20u);
     }
 
 LABEL_8:
@@ -414,18 +414,18 @@ LABEL_10:
   return [(NSUserDefaults *)v6 objectForKey:@"timestampOfLastTraining"];
 }
 
-- (void)modelPredictionWithSampleDictionaryFeatureProvider:(id)a3 withMLModel:(id)a4
+- (void)modelPredictionWithSampleDictionaryFeatureProvider:(id)provider withMLModel:(id)model
 {
   v27 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if (!v6)
+  providerCopy = provider;
+  modelCopy = model;
+  if (!modelCopy)
   {
     v7 = objc_opt_new();
     [v7 setComputeUnits:0];
     v8 = [ATXWidgetPredictionTrainer compiledModelURLForModelName:@"ATXPersonalizedWidgetPredictionMLModel"];
     v20 = 0;
-    v6 = [MEMORY[0x277CBFF20] modelWithContentsOfURL:v8 configuration:v7 error:&v20];
+    modelCopy = [MEMORY[0x277CBFF20] modelWithContentsOfURL:v8 configuration:v7 error:&v20];
     v9 = v20;
     if (v9)
     {
@@ -438,7 +438,7 @@ LABEL_10:
   }
 
   v19 = 0;
-  v11 = [v6 predictionFromFeatures:v5 error:&v19];
+  v11 = [modelCopy predictionFromFeatures:providerCopy error:&v19];
   v12 = v19;
   v13 = __atxlog_handle_timeline();
   v14 = v13;
@@ -453,8 +453,8 @@ LABEL_10:
   else if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
     v15 = [v11 featureValueForName:@"engaged"];
-    v16 = [v5 featureValueForName:@"input_widget_family"];
-    v17 = [v5 featureValueForName:@"input_widget_family"];
+    v16 = [providerCopy featureValueForName:@"input_widget_family"];
+    v17 = [providerCopy featureValueForName:@"input_widget_family"];
     *buf = 138543874;
     v22 = v15;
     v23 = 2114;

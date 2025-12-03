@@ -1,25 +1,25 @@
 @interface CAFTestAccEventWithParamsControl
 + (void)load;
-- (void)_didNotifyWithValue:(id)a3;
-- (void)registerObserver:(id)a3;
-- (void)unregisterObserver:(id)a3;
+- (void)_didNotifyWithValue:(id)value;
+- (void)registerObserver:(id)observer;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation CAFTestAccEventWithParamsControl
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___CAFTestAccEventWithParamsControl;
   objc_msgSendSuper2(&v2, sel_load);
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&unk_2846ABC08])
+  observerCopy = observer;
+  if ([observerCopy conformsToProtocol:&unk_2846ABC08])
   {
-    v5 = v4;
+    v5 = observerCopy;
   }
 
   else
@@ -32,12 +32,12 @@
   [(CAFControl *)&v6 registerObserver:v5];
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&unk_2846ABC08])
+  observerCopy = observer;
+  if ([observerCopy conformsToProtocol:&unk_2846ABC08])
   {
-    v5 = v4;
+    v5 = observerCopy;
   }
 
   else
@@ -50,15 +50,15 @@
   [(CAFControl *)&v6 unregisterObserver:v5];
 }
 
-- (void)_didNotifyWithValue:(id)a3
+- (void)_didNotifyWithValue:(id)value
 {
-  v10 = a3;
-  v4 = [(CAFTestAccEventWithParamsControl *)self handler];
+  valueCopy = value;
+  handler = [(CAFTestAccEventWithParamsControl *)self handler];
 
-  if (v4)
+  if (handler)
   {
     objc_opt_class();
-    v5 = [v10 objectForKeyedSubscript:@"testInput9"];
+    v5 = [valueCopy objectForKeyedSubscript:@"testInput9"];
     if (v5 && (objc_opt_isKindOfClass() & 1) != 0)
     {
       v6 = v5;
@@ -70,7 +70,7 @@
     }
 
     objc_opt_class();
-    v7 = [v10 objectForKeyedSubscript:@"testInput10"];
+    v7 = [valueCopy objectForKeyedSubscript:@"testInput10"];
     if (v7 && (objc_opt_isKindOfClass() & 1) != 0)
     {
       v8 = v7;
@@ -83,8 +83,8 @@
 
     if (v6 | v8)
     {
-      v9 = [(CAFTestAccEventWithParamsControl *)self handler];
-      v9[2](v9, [v6 unsignedCharValue], v8);
+      handler2 = [(CAFTestAccEventWithParamsControl *)self handler];
+      handler2[2](handler2, [v6 unsignedCharValue], v8);
     }
   }
 }

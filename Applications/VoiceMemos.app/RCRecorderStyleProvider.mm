@@ -11,9 +11,9 @@
 - (BOOL)hasPlaybackCard;
 - (BOOL)isAccessibilityLargerTextSizeEnabled;
 - (BOOL)librarySupportsBlueCellSelectionStyle;
-- (BOOL)setSplitViewHorizontalSizeClass:(int64_t)a3;
+- (BOOL)setSplitViewHorizontalSizeClass:(int64_t)class;
 - (BOOL)shouldUseIntegratedButtonSearchBarPlacementInRecordingsList;
-- (CAFrameRateRange)displayRefreshRate:(BOOL)a3;
+- (CAFrameRateRange)displayRefreshRate:(BOOL)rate;
 - (CGSize)actionMenuImageSize;
 - (CGSize)bannerSize;
 - (CGSize)cardCenterClusterMaximumControlSize;
@@ -55,16 +55,16 @@
 - (double)transcriptViewParagraphSpacing;
 - (double)trimDeleteButtonHeight;
 - (double)trimDeleteButtonPadding;
-- (double)verticalSpaceAfterCenterContentContainer:(BOOL)a3 isDisplayingTranscriptView:(BOOL)a4 isTranscriptViewExpanded:(BOOL)a5 isTrimMode:(BOOL)a6;
+- (double)verticalSpaceAfterCenterContentContainer:(BOOL)container isDisplayingTranscriptView:(BOOL)view isTranscriptViewExpanded:(BOOL)expanded isTrimMode:(BOOL)mode;
 - (double)verticalSpaceAfterOverviewWaveformWhenTranscriptViewIsExpanded;
 - (double)verticalSpaceAfterTopSpacerView;
 - (double)verticalSpaceBetweenOverviewWaveformAndTimeLabel;
 - (double)verticalSpaceBetweenTimeLabelAndBottomControlsContainer;
-- (double)verticalSpaceBetweenTitleAndCenterContentContainer:(BOOL)a3 isDisplayingTranscriptView:(BOOL)a4;
+- (double)verticalSpaceBetweenTitleAndCenterContentContainer:(BOOL)container isDisplayingTranscriptView:(BOOL)view;
 - (id)_cardGoBackwardForwardImageSymbolConfiguration;
 - (id)_cardPlayPauseImageSymbolConfiguration;
-- (id)_platterTimeLabelFontWithTextStyle:(id)a3 traitCollection:(id)a4;
-- (id)_tintedImageForNavBarSelectedState:(id)a3;
+- (id)_platterTimeLabelFontWithTextStyle:(id)style traitCollection:(id)collection;
+- (id)_tintedImageForNavBarSelectedState:(id)state;
 - (id)accessibilityLargeSizes;
 - (id)bannerBackgroundColor;
 - (id)cardGoBackwardImage;
@@ -79,17 +79,17 @@
 - (id)editingToolbarTitleLabelFont;
 - (id)ellipsisImage;
 - (id)expandCompactRecordingCardPropertyAnimator;
-- (id)favoriteActivitySystemImageName:(BOOL)a3;
+- (id)favoriteActivitySystemImageName:(BOOL)name;
 - (id)favoriteImage;
 - (id)favoriteImageForSwipeAction;
 - (id)filledMoveToFolderImage;
-- (id)formattedDateStringFromDate:(id)a3 forUUID:(id)a4;
+- (id)formattedDateStringFromDate:(id)date forUUID:(id)d;
 - (id)libraryGoBackwardImage;
 - (id)libraryGoForwardImage;
 - (id)libraryPauseImage;
 - (id)libraryPlayImage;
 - (id)moveToFolderImage;
-- (id)multitrackImageForLayerNumber:(unint64_t)a3 rounded:(BOOL)a4 slash:(BOOL)a5 circleFill:(BOOL)a6;
+- (id)multitrackImageForLayerNumber:(unint64_t)number rounded:(BOOL)rounded slash:(BOOL)slash circleFill:(BOOL)fill;
 - (id)notFavoriteImage;
 - (id)notFavoriteImageForSwipeAction;
 - (id)playbackPositionBarColor;
@@ -106,7 +106,7 @@
 - (id)standardInteractionTintColor;
 - (id)swipeTrashImage;
 - (id)transcriptionImageForNavBarSelectedState;
-- (id)waveformColorForSelected:(BOOL)a3 muted:(BOOL)a4 trimMode:(BOOL)a5;
+- (id)waveformColorForSelected:(BOOL)selected muted:(BOOL)muted trimMode:(BOOL)mode;
 - (id)waveformPlaybackBackgroundColor;
 - (id)waveformPlaybackHighlightedBackgroundColor;
 - (id)waveformRecordingColor;
@@ -119,13 +119,13 @@
 
 - (double)topSpacerViewHeight
 {
-  v3 = [(RCRecorderStyleProvider *)self _isIOSMac];
+  _isIOSMac = [(RCRecorderStyleProvider *)self _isIOSMac];
   result = 14.0;
-  if ((v3 & 1) == 0)
+  if ((_isIOSMac & 1) == 0)
   {
-    v5 = [(RCRecorderStyleProvider *)self _isWideIPad];
+    _isWideIPad = [(RCRecorderStyleProvider *)self _isWideIPad];
     result = 17.5;
-    if (v5)
+    if (_isWideIPad)
     {
       return 12.5;
     }
@@ -171,9 +171,9 @@
 
 - (double)bottomSpacerViewHeight
 {
-  v2 = [(RCRecorderStyleProvider *)self _isIOSMac];
+  _isIOSMac = [(RCRecorderStyleProvider *)self _isIOSMac];
   result = 0.0;
-  if (v2)
+  if (_isIOSMac)
   {
     return 20.0;
   }
@@ -209,9 +209,9 @@
 
 - (id)descriptionViewScalableTitleFontForCardView
 {
-  v2 = [(RCRecorderStyleProvider *)self _isIOSMac];
+  _isIOSMac = [(RCRecorderStyleProvider *)self _isIOSMac];
   v3 = &UIFontTextStyleTitle3;
-  if (!v2)
+  if (!_isIOSMac)
   {
     v3 = &UIFontTextStyleTitle2;
   }
@@ -224,10 +224,10 @@
 - (BOOL)isAccessibilityLargerTextSizeEnabled
 {
   v3 = +[UIApplication sharedApplication];
-  v4 = [v3 preferredContentSizeCategory];
+  preferredContentSizeCategory = [v3 preferredContentSizeCategory];
 
-  v5 = [(RCRecorderStyleProvider *)self accessibilityLargeSizes];
-  LOBYTE(v3) = [v5 containsObject:v4];
+  accessibilityLargeSizes = [(RCRecorderStyleProvider *)self accessibilityLargeSizes];
+  LOBYTE(v3) = [accessibilityLargeSizes containsObject:preferredContentSizeCategory];
 
   return v3;
 }
@@ -246,9 +246,9 @@
 
 - (double)descriptionViewTitleToSecondaryPadding
 {
-  v2 = [(RCRecorderStyleProvider *)self _isIOSMac];
+  _isIOSMac = [(RCRecorderStyleProvider *)self _isIOSMac];
   result = 3.0;
-  if (v2)
+  if (_isIOSMac)
   {
     return 4.0;
   }
@@ -286,8 +286,8 @@
 - (id)libraryGoBackwardImage
 {
   v3 = [UIImageSymbolConfiguration configurationWithPointSize:5 weight:2 scale:22.0];
-  v4 = [(RCRecorderStyleProvider *)self goBackwardImage];
-  v5 = [v4 imageWithSymbolConfiguration:v3];
+  goBackwardImage = [(RCRecorderStyleProvider *)self goBackwardImage];
+  v5 = [goBackwardImage imageWithSymbolConfiguration:v3];
 
   return v5;
 }
@@ -295,21 +295,21 @@
 - (id)libraryGoForwardImage
 {
   v3 = [UIImageSymbolConfiguration configurationWithPointSize:5 weight:2 scale:22.0];
-  v4 = [(RCRecorderStyleProvider *)self goForwardImage];
-  v5 = [v4 imageWithSymbolConfiguration:v3];
+  goForwardImage = [(RCRecorderStyleProvider *)self goForwardImage];
+  v5 = [goForwardImage imageWithSymbolConfiguration:v3];
 
   return v5;
 }
 
 - (double)shuttleBarCenterClusterSpacing
 {
-  v3 = [(RCRecorderStyleProvider *)self _isIOSMac];
+  _isIOSMac = [(RCRecorderStyleProvider *)self _isIOSMac];
   result = 14.0;
-  if ((v3 & 1) == 0)
+  if ((_isIOSMac & 1) == 0)
   {
-    v5 = [(RCRecorderStyleProvider *)self _isWideIPad];
+    _isWideIPad = [(RCRecorderStyleProvider *)self _isWideIPad];
     result = 20.0;
-    if (v5)
+    if (_isWideIPad)
     {
       return 27.0;
     }
@@ -329,18 +329,18 @@
 
 - (id)cardPlayImage
 {
-  v3 = [(RCRecorderStyleProvider *)self _cardPlayPauseImageSymbolConfiguration];
-  v4 = [(RCRecorderStyleProvider *)self playImage];
-  v5 = [v4 imageWithSymbolConfiguration:v3];
+  _cardPlayPauseImageSymbolConfiguration = [(RCRecorderStyleProvider *)self _cardPlayPauseImageSymbolConfiguration];
+  playImage = [(RCRecorderStyleProvider *)self playImage];
+  v5 = [playImage imageWithSymbolConfiguration:_cardPlayPauseImageSymbolConfiguration];
 
   return v5;
 }
 
 - (id)cardGoForwardImage
 {
-  v3 = [(RCRecorderStyleProvider *)self _cardGoBackwardForwardImageSymbolConfiguration];
-  v4 = [(RCRecorderStyleProvider *)self goForwardImage];
-  v5 = [v4 imageWithSymbolConfiguration:v3];
+  _cardGoBackwardForwardImageSymbolConfiguration = [(RCRecorderStyleProvider *)self _cardGoBackwardForwardImageSymbolConfiguration];
+  goForwardImage = [(RCRecorderStyleProvider *)self goForwardImage];
+  v5 = [goForwardImage imageWithSymbolConfiguration:_cardGoBackwardForwardImageSymbolConfiguration];
 
   return v5;
 }
@@ -364,9 +364,9 @@
 
 - (id)cardGoBackwardImage
 {
-  v3 = [(RCRecorderStyleProvider *)self _cardGoBackwardForwardImageSymbolConfiguration];
-  v4 = [(RCRecorderStyleProvider *)self goBackwardImage];
-  v5 = [v4 imageWithSymbolConfiguration:v3];
+  _cardGoBackwardForwardImageSymbolConfiguration = [(RCRecorderStyleProvider *)self _cardGoBackwardForwardImageSymbolConfiguration];
+  goBackwardImage = [(RCRecorderStyleProvider *)self goBackwardImage];
+  v5 = [goBackwardImage imageWithSymbolConfiguration:_cardGoBackwardForwardImageSymbolConfiguration];
 
   return v5;
 }
@@ -390,9 +390,9 @@
 
 - (double)bottomControlsContainerLeadingTrailingPadding
 {
-  v2 = [(RCRecorderStyleProvider *)self _isWideIpadOrIOSMac];
+  _isWideIpadOrIOSMac = [(RCRecorderStyleProvider *)self _isWideIpadOrIOSMac];
   result = 36.0;
-  if (v2)
+  if (_isWideIpadOrIOSMac)
   {
     return 20.0;
   }
@@ -402,9 +402,9 @@
 
 - (double)recordButtonHeight
 {
-  v2 = [(RCRecorderStyleProvider *)self _isIOSMac];
+  _isIOSMac = [(RCRecorderStyleProvider *)self _isIOSMac];
   result = 60.0;
-  if (v2)
+  if (_isIOSMac)
   {
     return 44.0;
   }
@@ -454,9 +454,9 @@
 
 - (double)positionReadoutLabelYOffset
 {
-  v2 = [(RCRecorderStyleProvider *)self _isIOSMac];
+  _isIOSMac = [(RCRecorderStyleProvider *)self _isIOSMac];
   result = 0.0;
-  if (v2)
+  if (_isIOSMac)
   {
     return 1.0;
   }
@@ -476,9 +476,9 @@
     return 47.0;
   }
 
-  v4 = [(RCRecorderStyleProvider *)self _isIOSMac];
+  _isIOSMac = [(RCRecorderStyleProvider *)self _isIOSMac];
   result = 0.0;
-  if (v4)
+  if (_isIOSMac)
   {
     return 31.0;
   }
@@ -516,9 +516,9 @@
 
 - (double)recordButtonOuterStrokeWidth
 {
-  v2 = [(RCRecorderStyleProvider *)self _isIOSMac];
+  _isIOSMac = [(RCRecorderStyleProvider *)self _isIOSMac];
   result = 4.0;
-  if (v2)
+  if (_isIOSMac)
   {
     return 2.0;
   }
@@ -541,9 +541,9 @@
 
 - (id)descriptionViewScalableTitleFontForRecordingCollectionViewCell
 {
-  v2 = [(RCRecorderStyleProvider *)self _isIOSMac];
+  _isIOSMac = [(RCRecorderStyleProvider *)self _isIOSMac];
   v3 = &UIFontTextStyleHeadline;
-  if (!v2)
+  if (!_isIOSMac)
   {
     v3 = &UIFontTextStyleBody;
   }
@@ -580,9 +580,9 @@
 
 - (double)transcriptViewParagraphSpacing
 {
-  v2 = [(RCRecorderStyleProvider *)self _isWideIPad];
+  _isWideIPad = [(RCRecorderStyleProvider *)self _isWideIPad];
   result = 16.0;
-  if (v2)
+  if (_isWideIPad)
   {
     return 18.0;
   }
@@ -590,20 +590,20 @@
   return result;
 }
 
-- (id)formattedDateStringFromDate:(id)a3 forUUID:(id)a4
+- (id)formattedDateStringFromDate:(id)date forUUID:(id)d
 {
-  v5 = a4;
-  v6 = a3;
+  dCopy = d;
+  dateCopy = date;
   v7 = +[RCDateFormatter sharedDateFormatter];
-  v8 = [v7 formattedDateStringFromDate:v6 forUUID:v5];
+  v8 = [v7 formattedDateStringFromDate:dateCopy forUUID:dCopy];
 
   return v8;
 }
 
-- (BOOL)setSplitViewHorizontalSizeClass:(int64_t)a3
+- (BOOL)setSplitViewHorizontalSizeClass:(int64_t)class
 {
-  v5 = [(RCRecorderStyleProvider *)self _horizontalSizeClassFromSplitView]!= a3;
-  [(RCRecorderStyleProvider *)self set_horizontalSizeClassFromSplitView:a3];
+  v5 = [(RCRecorderStyleProvider *)self _horizontalSizeClassFromSplitView]!= class;
+  [(RCRecorderStyleProvider *)self set_horizontalSizeClassFromSplitView:class];
   return v5;
 }
 
@@ -617,15 +617,15 @@
 
 - (CGSize)minimumSceneSize
 {
-  v2 = [(RCRecorderStyleProvider *)self _isIOSMac];
+  _isIOSMac = [(RCRecorderStyleProvider *)self _isIOSMac];
   v3 = 976.0;
-  if (!v2)
+  if (!_isIOSMac)
   {
     v3 = 0.0;
   }
 
   v4 = 700.0;
-  if (v2)
+  if (_isIOSMac)
   {
     v4 = 500.0;
   }
@@ -687,9 +687,9 @@
 
 - (double)verticalSpaceAfterTopSpacerView
 {
-  v2 = [(RCRecorderStyleProvider *)self _isIOSMac];
+  _isIOSMac = [(RCRecorderStyleProvider *)self _isIOSMac];
   result = 12.5;
-  if (v2)
+  if (_isIOSMac)
   {
     return 20.0;
   }
@@ -697,25 +697,25 @@
   return result;
 }
 
-- (double)verticalSpaceBetweenTitleAndCenterContentContainer:(BOOL)a3 isDisplayingTranscriptView:(BOOL)a4
+- (double)verticalSpaceBetweenTitleAndCenterContentContainer:(BOOL)container isDisplayingTranscriptView:(BOOL)view
 {
   result = 0.0;
-  if (!a3)
+  if (!container)
   {
-    v5 = a4;
-    v7 = [(RCRecorderStyleProvider *)self _isCompactWidth];
-    if (v5)
+    viewCopy = view;
+    _isCompactWidth = [(RCRecorderStyleProvider *)self _isCompactWidth];
+    if (viewCopy)
     {
       result = 16.0;
-      if (v7)
+      if (_isCompactWidth)
       {
         return result;
       }
 
-      v8 = [(RCRecorderStyleProvider *)self _isWideIPad];
+      _isWideIPad = [(RCRecorderStyleProvider *)self _isWideIPad];
       v9 = 6.0;
       result = 30.0;
-      if (v8)
+      if (_isWideIPad)
       {
         return result;
       }
@@ -723,7 +723,7 @@
 
     else
     {
-      if (v7)
+      if (_isCompactWidth)
       {
         return 48.0;
       }
@@ -736,9 +736,9 @@
       v9 = 32.0;
     }
 
-    v10 = [(RCRecorderStyleProvider *)self _isIOSMac];
+    _isIOSMac = [(RCRecorderStyleProvider *)self _isIOSMac];
     result = 0.0;
-    if (v10)
+    if (_isIOSMac)
     {
       return v9;
     }
@@ -747,20 +747,20 @@
   return result;
 }
 
-- (double)verticalSpaceAfterCenterContentContainer:(BOOL)a3 isDisplayingTranscriptView:(BOOL)a4 isTranscriptViewExpanded:(BOOL)a5 isTrimMode:(BOOL)a6
+- (double)verticalSpaceAfterCenterContentContainer:(BOOL)container isDisplayingTranscriptView:(BOOL)view isTranscriptViewExpanded:(BOOL)expanded isTrimMode:(BOOL)mode
 {
   result = 0.0;
-  if (!a3)
+  if (!container)
   {
-    v7 = a6;
-    v8 = a5;
-    v9 = a4;
-    v11 = [(RCRecorderStyleProvider *)self _isCompactWidth];
-    if (v9)
+    modeCopy = mode;
+    expandedCopy = expanded;
+    viewCopy = view;
+    _isCompactWidth = [(RCRecorderStyleProvider *)self _isCompactWidth];
+    if (viewCopy)
     {
-      if (v11)
+      if (_isCompactWidth)
       {
-        v12 = !v8;
+        v12 = !expandedCopy;
         result = 40.0;
         v13 = 0.0;
         goto LABEL_9;
@@ -768,7 +768,7 @@
 
       if ([(RCRecorderStyleProvider *)self _isWideIPad])
       {
-        v12 = !v8;
+        v12 = !expandedCopy;
         result = 42.0;
         v13 = 25.0;
 LABEL_9:
@@ -780,21 +780,21 @@ LABEL_9:
         return result;
       }
 
-      v14 = [(RCRecorderStyleProvider *)self _isIOSMac];
+      _isIOSMac = [(RCRecorderStyleProvider *)self _isIOSMac];
       result = 33.0;
-      if (v8)
+      if (expandedCopy)
       {
         result = 25.0;
       }
 
-      v15 = v14 == 0;
+      v15 = _isIOSMac == 0;
     }
 
     else
     {
-      if (v11)
+      if (_isCompactWidth)
       {
-        v12 = !v7;
+        v12 = !modeCopy;
         result = 39.0;
         v13 = 26.0;
         goto LABEL_9;
@@ -820,13 +820,13 @@ LABEL_9:
 
 - (double)verticalSpaceAfterOverviewWaveformWhenTranscriptViewIsExpanded
 {
-  v3 = [(RCRecorderStyleProvider *)self _isIOSMac];
+  _isIOSMac = [(RCRecorderStyleProvider *)self _isIOSMac];
   result = 16.0;
-  if ((v3 & 1) == 0)
+  if ((_isIOSMac & 1) == 0)
   {
-    v5 = [(RCRecorderStyleProvider *)self _isWideIPad];
+    _isWideIPad = [(RCRecorderStyleProvider *)self _isWideIPad];
     result = 0.0;
-    if (v5)
+    if (_isWideIPad)
     {
       return 22.0;
     }
@@ -842,9 +842,9 @@ LABEL_9:
     return 45.0;
   }
 
-  v4 = [(RCRecorderStyleProvider *)self _isIOSMac];
+  _isIOSMac = [(RCRecorderStyleProvider *)self _isIOSMac];
   result = 0.0;
-  if (v4)
+  if (_isIOSMac)
   {
     return 26.0;
   }
@@ -854,17 +854,17 @@ LABEL_9:
 
 - (double)bottomControlsContainerInterElementPadding
 {
-  v3 = [(RCRecorderStyleProvider *)self _isCompactWidth];
+  _isCompactWidth = [(RCRecorderStyleProvider *)self _isCompactWidth];
   result = 12.0;
-  if ((v3 & 1) == 0)
+  if ((_isCompactWidth & 1) == 0)
   {
-    v5 = [(RCRecorderStyleProvider *)self _isWideIPad];
+    _isWideIPad = [(RCRecorderStyleProvider *)self _isWideIPad];
     result = 14.0;
-    if ((v5 & 1) == 0)
+    if ((_isWideIPad & 1) == 0)
     {
-      v6 = [(RCRecorderStyleProvider *)self _isIOSMac];
+      _isIOSMac = [(RCRecorderStyleProvider *)self _isIOSMac];
       result = 0.0;
-      if (v6)
+      if (_isIOSMac)
       {
         return 8.0;
       }
@@ -876,9 +876,9 @@ LABEL_9:
 
 - (double)recordingControlSectionHeight
 {
-  v2 = [(RCRecorderStyleProvider *)self _isIOSMac];
+  _isIOSMac = [(RCRecorderStyleProvider *)self _isIOSMac];
   result = 96.0;
-  if (v2)
+  if (_isIOSMac)
   {
     return 73.0;
   }
@@ -888,17 +888,17 @@ LABEL_9:
 
 - (id)transcriptionImageForNavBarSelectedState
 {
-  v3 = [(RCRecorderStyleProvider *)self transcriptionToggleImage];
-  v4 = [(RCRecorderStyleProvider *)self _tintedImageForNavBarSelectedState:v3];
+  transcriptionToggleImage = [(RCRecorderStyleProvider *)self transcriptionToggleImage];
+  v4 = [(RCRecorderStyleProvider *)self _tintedImageForNavBarSelectedState:transcriptionToggleImage];
 
   return v4;
 }
 
 - (double)topMarginMinSafeAreaTopInsetForCardView
 {
-  v2 = [(RCRecorderStyleProvider *)self _isWideIpadOrIOSMac];
+  _isWideIpadOrIOSMac = [(RCRecorderStyleProvider *)self _isWideIpadOrIOSMac];
   result = 32.0;
-  if (v2)
+  if (_isWideIpadOrIOSMac)
   {
     return 0.0;
   }
@@ -908,9 +908,9 @@ LABEL_9:
 
 - (double)recordingViewOverviewWaveformSidePadding
 {
-  v2 = [(RCRecorderStyleProvider *)self _isIOSMac];
+  _isIOSMac = [(RCRecorderStyleProvider *)self _isIOSMac];
   result = 32.0;
-  if (v2)
+  if (_isIOSMac)
   {
     return 23.0;
   }
@@ -920,9 +920,9 @@ LABEL_9:
 
 - (double)trimDeleteButtonPadding
 {
-  v2 = [(RCRecorderStyleProvider *)self _isIOSMac];
+  _isIOSMac = [(RCRecorderStyleProvider *)self _isIOSMac];
   result = 4.0;
-  if (v2)
+  if (_isIOSMac)
   {
     return 6.0;
   }
@@ -932,9 +932,9 @@ LABEL_9:
 
 - (double)trimDeleteButtonHeight
 {
-  v2 = [(RCRecorderStyleProvider *)self _isIOSMac];
+  _isIOSMac = [(RCRecorderStyleProvider *)self _isIOSMac];
   result = 44.0;
-  if (v2)
+  if (_isIOSMac)
   {
     return 36.0;
   }
@@ -952,13 +952,13 @@ LABEL_9:
 
 - (double)shuttleBarCenterClusterHorizontalEdgeInsets
 {
-  v3 = [(RCRecorderStyleProvider *)self _isIOSMac];
+  _isIOSMac = [(RCRecorderStyleProvider *)self _isIOSMac];
   result = -11.0;
-  if ((v3 & 1) == 0)
+  if ((_isIOSMac & 1) == 0)
   {
-    v5 = [(RCRecorderStyleProvider *)self _isWideIPad];
+    _isWideIPad = [(RCRecorderStyleProvider *)self _isWideIPad];
     result = 0.0;
-    if (v5)
+    if (_isWideIPad)
     {
       return -28.0;
     }
@@ -969,9 +969,9 @@ LABEL_9:
 
 - (double)playbackViewTimeSectionHeight
 {
-  v2 = [(RCRecorderStyleProvider *)self _isIOSMac];
+  _isIOSMac = [(RCRecorderStyleProvider *)self _isIOSMac];
   result = 70.0;
-  if (v2)
+  if (_isIOSMac)
   {
     return 116.0;
   }
@@ -981,9 +981,9 @@ LABEL_9:
 
 - (double)playbackViewTimeSectionBottomPadding
 {
-  v2 = [(RCRecorderStyleProvider *)self _isIpad];
+  _isIpad = [(RCRecorderStyleProvider *)self _isIpad];
   result = 0.0;
-  if (v2)
+  if (_isIpad)
   {
     return 18.0;
   }
@@ -1004,9 +1004,9 @@ LABEL_9:
 
 - (double)playbackViewTopPadding
 {
-  v2 = [(RCRecorderStyleProvider *)self presentsEditingControlsInRecordingView];
+  presentsEditingControlsInRecordingView = [(RCRecorderStyleProvider *)self presentsEditingControlsInRecordingView];
   result = 50.0;
-  if (v2)
+  if (presentsEditingControlsInRecordingView)
   {
     return 4.0;
   }
@@ -1016,13 +1016,13 @@ LABEL_9:
 
 - (double)playbackViewVerticalSpacingAboveOverviewWaveform
 {
-  v3 = [(RCRecorderStyleProvider *)self _isIpad];
+  _isIpad = [(RCRecorderStyleProvider *)self _isIpad];
   result = 22.0;
-  if ((v3 & 1) == 0)
+  if ((_isIpad & 1) == 0)
   {
-    v5 = [(RCRecorderStyleProvider *)self _isIOSMac];
+    _isIOSMac = [(RCRecorderStyleProvider *)self _isIOSMac];
     result = 62.0;
-    if (v5)
+    if (_isIOSMac)
     {
       return 38.0;
     }
@@ -1033,9 +1033,9 @@ LABEL_9:
 
 - (double)playbackViewVerticalSpacingBelowOverviewWaveform
 {
-  v2 = [(RCRecorderStyleProvider *)self _isIOSMac];
+  _isIOSMac = [(RCRecorderStyleProvider *)self _isIOSMac];
   result = 41.0;
-  if (v2)
+  if (_isIOSMac)
   {
     return 0.0;
   }
@@ -1046,10 +1046,10 @@ LABEL_9:
 - (BOOL)_isPortrait
 {
   v2 = +[UIApplication sharedApplication];
-  v3 = [v2 delegate];
-  v4 = [v3 window];
-  v5 = [v4 windowScene];
-  v6 = [v5 interfaceOrientation] - 1 < 2;
+  delegate = [v2 delegate];
+  window = [delegate window];
+  windowScene = [window windowScene];
+  v6 = [windowScene interfaceOrientation] - 1 < 2;
 
   return v6;
 }
@@ -1057,10 +1057,10 @@ LABEL_9:
 - (BOOL)_isLandscape
 {
   v2 = +[UIApplication sharedApplication];
-  v3 = [v2 delegate];
-  v4 = [v3 window];
-  v5 = [v4 windowScene];
-  v6 = [v5 interfaceOrientation] - 3 < 2;
+  delegate = [v2 delegate];
+  window = [delegate window];
+  windowScene = [window windowScene];
+  v6 = [windowScene interfaceOrientation] - 3 < 2;
 
   return v6;
 }
@@ -1085,9 +1085,9 @@ LABEL_9:
 
 - (double)centerContentTranscriptViewMaxWidth
 {
-  v2 = [(RCRecorderStyleProvider *)self _isIOSMac];
+  _isIOSMac = [(RCRecorderStyleProvider *)self _isIOSMac];
   result = 930.0;
-  if (v2)
+  if (_isIOSMac)
   {
     return 1024.0;
   }
@@ -1095,11 +1095,11 @@ LABEL_9:
   return result;
 }
 
-- (CAFrameRateRange)displayRefreshRate:(BOOL)a3
+- (CAFrameRateRange)displayRefreshRate:(BOOL)rate
 {
-  v3 = a3;
+  rateCopy = rate;
   result = CAFrameRateRangeMake(48.0, 120.0, 48.0);
-  if (!v3)
+  if (!rateCopy)
   {
     result.minimum = CAFrameRateRangeDefault.minimum;
     result.maximum = CAFrameRateRangeDefault.maximum;
@@ -1111,9 +1111,9 @@ LABEL_9:
 
 - (double)editToolbarTitleTopInset
 {
-  v2 = [(RCRecorderStyleProvider *)self _isIOSMac];
+  _isIOSMac = [(RCRecorderStyleProvider *)self _isIOSMac];
   result = 12.5;
-  if (v2)
+  if (_isIOSMac)
   {
     return 16.0;
   }
@@ -1123,9 +1123,9 @@ LABEL_9:
 
 - (double)editToolbarButtonTopInset
 {
-  v2 = [(RCRecorderStyleProvider *)self _isIOSMac];
+  _isIOSMac = [(RCRecorderStyleProvider *)self _isIOSMac];
   result = 6.0;
-  if (v2)
+  if (_isIOSMac)
   {
     return 9.0;
   }
@@ -1136,8 +1136,8 @@ LABEL_9:
 - (id)libraryPlayImage
 {
   v3 = [UIImageSymbolConfiguration configurationWithPointSize:5 weight:2 scale:32.0];
-  v4 = [(RCRecorderStyleProvider *)self playImage];
-  v5 = [v4 imageWithSymbolConfiguration:v3];
+  playImage = [(RCRecorderStyleProvider *)self playImage];
+  v5 = [playImage imageWithSymbolConfiguration:v3];
 
   return v5;
 }
@@ -1153,9 +1153,9 @@ LABEL_9:
 
 - (id)cardPauseImage
 {
-  v2 = [(RCRecorderStyleProvider *)self _cardPlayPauseImageSymbolConfiguration];
+  _cardPlayPauseImageSymbolConfiguration = [(RCRecorderStyleProvider *)self _cardPlayPauseImageSymbolConfiguration];
   v3 = [UIImage systemImageNamed:@"pause.fill"];
-  v4 = [v3 imageWithSymbolConfiguration:v2];
+  v4 = [v3 imageWithSymbolConfiguration:_cardPlayPauseImageSymbolConfiguration];
 
   return v4;
 }
@@ -1171,25 +1171,25 @@ LABEL_9:
 
 - (id)playbackSettingsImageForNavBarSelectedState
 {
-  v3 = [(RCRecorderStyleProvider *)self playbackSettingsImage];
-  v4 = [(RCRecorderStyleProvider *)self _tintedImageForNavBarSelectedState:v3];
+  playbackSettingsImage = [(RCRecorderStyleProvider *)self playbackSettingsImage];
+  v4 = [(RCRecorderStyleProvider *)self _tintedImageForNavBarSelectedState:playbackSettingsImage];
 
   return v4;
 }
 
-- (id)_tintedImageForNavBarSelectedState:(id)a3
+- (id)_tintedImageForNavBarSelectedState:(id)state
 {
-  v3 = a3;
+  stateCopy = state;
   v4 = +[UIColor systemBlueColor];
-  v5 = [v3 imageWithTintColor:v4];
+  v5 = [stateCopy imageWithTintColor:v4];
 
   return v5;
 }
 
 - (id)copyTranscriptImage
 {
-  v2 = [(RCRecorderStyleProvider *)self copyTranscriptImageName];
-  v3 = [UIImage systemImageNamed:v2];
+  copyTranscriptImageName = [(RCRecorderStyleProvider *)self copyTranscriptImageName];
+  v3 = [UIImage systemImageNamed:copyTranscriptImageName];
 
   return v3;
 }
@@ -1205,8 +1205,8 @@ LABEL_9:
 - (id)filledMoveToFolderImage
 {
   v3 = [UIImage systemImageNamed:@"folder.fill"];
-  v4 = [(RCRecorderStyleProvider *)self imageSymbolConfigForAXsizes];
-  v5 = [v3 imageWithSymbolConfiguration:v4];
+  imageSymbolConfigForAXsizes = [(RCRecorderStyleProvider *)self imageSymbolConfigForAXsizes];
+  v5 = [v3 imageWithSymbolConfiguration:imageSymbolConfigForAXsizes];
 
   return v5;
 }
@@ -1228,50 +1228,50 @@ LABEL_9:
 
 - (id)notFavoriteImageForSwipeAction
 {
-  v3 = [(RCRecorderStyleProvider *)self notFavoriteImageName];
-  v4 = [UIImage systemImageNamed:v3];
-  v5 = [(RCRecorderStyleProvider *)self imageSymbolConfigForAXsizes];
-  v6 = [v4 imageWithSymbolConfiguration:v5];
+  notFavoriteImageName = [(RCRecorderStyleProvider *)self notFavoriteImageName];
+  v4 = [UIImage systemImageNamed:notFavoriteImageName];
+  imageSymbolConfigForAXsizes = [(RCRecorderStyleProvider *)self imageSymbolConfigForAXsizes];
+  v6 = [v4 imageWithSymbolConfiguration:imageSymbolConfigForAXsizes];
 
   return v6;
 }
 
 - (id)favoriteImageForSwipeAction
 {
-  v3 = [(RCRecorderStyleProvider *)self favoriteImageName];
-  v4 = [UIImage systemImageNamed:v3];
-  v5 = [(RCRecorderStyleProvider *)self imageSymbolConfigForAXsizes];
-  v6 = [v4 imageWithSymbolConfiguration:v5];
+  favoriteImageName = [(RCRecorderStyleProvider *)self favoriteImageName];
+  v4 = [UIImage systemImageNamed:favoriteImageName];
+  imageSymbolConfigForAXsizes = [(RCRecorderStyleProvider *)self imageSymbolConfigForAXsizes];
+  v6 = [v4 imageWithSymbolConfiguration:imageSymbolConfigForAXsizes];
 
   return v6;
 }
 
 - (id)favoriteImage
 {
-  v2 = [(RCRecorderStyleProvider *)self favoriteImageName];
-  v3 = [UIImage systemImageNamed:v2];
+  favoriteImageName = [(RCRecorderStyleProvider *)self favoriteImageName];
+  v3 = [UIImage systemImageNamed:favoriteImageName];
 
   return v3;
 }
 
 - (id)notFavoriteImage
 {
-  v2 = [(RCRecorderStyleProvider *)self notFavoriteImageName];
-  v3 = [UIImage systemImageNamed:v2];
+  notFavoriteImageName = [(RCRecorderStyleProvider *)self notFavoriteImageName];
+  v3 = [UIImage systemImageNamed:notFavoriteImageName];
 
   return v3;
 }
 
-- (id)multitrackImageForLayerNumber:(unint64_t)a3 rounded:(BOOL)a4 slash:(BOOL)a5 circleFill:(BOOL)a6
+- (id)multitrackImageForLayerNumber:(unint64_t)number rounded:(BOOL)rounded slash:(BOOL)slash circleFill:(BOOL)fill
 {
-  v6 = a6;
-  v7 = a5;
-  v8 = a4;
-  v9 = [NSString stringWithFormat:@"%lu", a3];
-  v10 = v9;
-  if (!v8)
+  fillCopy = fill;
+  slashCopy = slash;
+  roundedCopy = rounded;
+  number = [NSString stringWithFormat:@"%lu", number];
+  v10 = number;
+  if (!roundedCopy)
   {
-    if (!v7)
+    if (!slashCopy)
     {
       goto LABEL_3;
     }
@@ -1280,7 +1280,7 @@ LABEL_6:
     v12 = [v10 stringByAppendingString:@".slash"];
 
     v10 = v12;
-    if (!v6)
+    if (!fillCopy)
     {
       goto LABEL_11;
     }
@@ -1288,16 +1288,16 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v11 = [v9 stringByAppendingString:@".rounded"];
+  v11 = [number stringByAppendingString:@".rounded"];
 
   v10 = v11;
-  if (v7)
+  if (slashCopy)
   {
     goto LABEL_6;
   }
 
 LABEL_3:
-  if (!v6)
+  if (!fillCopy)
   {
 LABEL_11:
     v16 = +[NSLocale numberingSystem];
@@ -1332,7 +1332,7 @@ LABEL_16:
   }
 
 LABEL_7:
-  v13 = v6 & ~(v8 || v7);
+  v13 = fillCopy & ~(roundedCopy || slashCopy);
   v14 = [v10 stringByAppendingString:@".circle.fill"];
 
   if (!v13)
@@ -1397,9 +1397,9 @@ LABEL_20:
 
 - (double)sidebarCollectionViewTopPadding
 {
-  v2 = [(RCRecorderStyleProvider *)self _isIOSMac];
+  _isIOSMac = [(RCRecorderStyleProvider *)self _isIOSMac];
   result = 0.0;
-  if (v2)
+  if (_isIOSMac)
   {
     return 7.0;
   }
@@ -1409,9 +1409,9 @@ LABEL_20:
 
 - (double)presentedViewsMinimumWidth
 {
-  v2 = [(RCRecorderStyleProvider *)self _isIOSMac];
+  _isIOSMac = [(RCRecorderStyleProvider *)self _isIOSMac];
   result = 500.0;
-  if (!v2)
+  if (!_isIOSMac)
   {
     return 0.0;
   }
@@ -1460,9 +1460,9 @@ LABEL_20:
 
 - (double)recordingSectionDoneButtonDisabledOpacity
 {
-  v2 = [(RCRecorderStyleProvider *)self _isWideIpadOrIOSMac];
+  _isWideIpadOrIOSMac = [(RCRecorderStyleProvider *)self _isWideIpadOrIOSMac];
   result = 0.2;
-  if (v2)
+  if (_isWideIpadOrIOSMac)
   {
     return 0.575;
   }
@@ -1522,15 +1522,15 @@ LABEL_20:
   return v3;
 }
 
-- (id)waveformColorForSelected:(BOOL)a3 muted:(BOOL)a4 trimMode:(BOOL)a5
+- (id)waveformColorForSelected:(BOOL)selected muted:(BOOL)muted trimMode:(BOOL)mode
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10003D72C;
   v7[3] = &unk_10028A960;
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  modeCopy = mode;
+  mutedCopy = muted;
+  selectedCopy = selected;
   v5 = [UIColor colorWithDynamicProvider:v7];
 
   return v5;
@@ -1568,15 +1568,15 @@ LABEL_20:
 
 - (id)editingToolbarTitleLabelFont
 {
-  v2 = [(RCRecorderStyleProvider *)self _isWatch];
+  _isWatch = [(RCRecorderStyleProvider *)self _isWatch];
   v3 = 17.0;
-  if (v2)
+  if (_isWatch)
   {
     v3 = 21.0;
   }
 
   v4 = &UIFontWeightMedium;
-  if (!v2)
+  if (!_isWatch)
   {
     v4 = &UIFontWeightSemibold;
   }
@@ -1596,9 +1596,9 @@ LABEL_20:
 
 - (double)activityWaveformTimeWindowDuration
 {
-  v2 = [(RCRecorderStyleProvider *)self _isWatch];
+  _isWatch = [(RCRecorderStyleProvider *)self _isWatch];
   result = 2.4;
-  if (!v2)
+  if (!_isWatch)
   {
     return 2.0;
   }
@@ -1623,9 +1623,9 @@ LABEL_20:
   return v3;
 }
 
-- (id)_platterTimeLabelFontWithTextStyle:(id)a3 traitCollection:(id)a4
+- (id)_platterTimeLabelFontWithTextStyle:(id)style traitCollection:(id)collection
 {
-  v4 = [UIFontDescriptor preferredFontDescriptorWithTextStyle:a3 compatibleWithTraitCollection:a4];
+  v4 = [UIFontDescriptor preferredFontDescriptorWithTextStyle:style compatibleWithTraitCollection:collection];
   [v4 pointSize];
   v5 = [UIFont monospacedDigitSystemFontOfSize:"monospacedDigitSystemFontOfSize:weight:" weight:?];
 
@@ -1634,11 +1634,11 @@ LABEL_20:
 
 - (double)platterWaveformWidthCompact
 {
-  v3 = [(RCRecorderStyleProvider *)self platterCompactViewSliceCount];
+  platterCompactViewSliceCount = [(RCRecorderStyleProvider *)self platterCompactViewSliceCount];
   [(RCRecorderStyleProvider *)self platterWaveformSliceWidth];
   v5 = v4;
   [(RCRecorderStyleProvider *)self platterWaveformSlicePadding];
-  return v6 * v3 + v3 * v5;
+  return v6 * platterCompactViewSliceCount + platterCompactViewSliceCount * v5;
 }
 
 - (BOOL)explicitlyScrollsToRecordingsCollectionViewItemOnSelection
@@ -1656,19 +1656,19 @@ LABEL_20:
 
 - (BOOL)shouldUseIntegratedButtonSearchBarPlacementInRecordingsList
 {
-  v3 = [(RCRecorderStyleProvider *)self _isIpad];
-  if (v3)
+  _isIpad = [(RCRecorderStyleProvider *)self _isIpad];
+  if (_isIpad)
   {
 
-    LOBYTE(v3) = [(RCRecorderStyleProvider *)self _isCompactWidth];
+    LOBYTE(_isIpad) = [(RCRecorderStyleProvider *)self _isCompactWidth];
   }
 
-  return v3;
+  return _isIpad;
 }
 
-- (id)favoriteActivitySystemImageName:(BOOL)a3
+- (id)favoriteActivitySystemImageName:(BOOL)name
 {
-  if (a3)
+  if (name)
   {
     [(RCRecorderStyleProvider *)self favoriteImageName];
   }

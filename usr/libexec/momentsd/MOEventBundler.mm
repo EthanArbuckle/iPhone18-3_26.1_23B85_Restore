@@ -1,19 +1,19 @@
 @interface MOEventBundler
 + (id)predicatesOfDesiredExperiences;
 + (id)propertyNameDictionary;
-- (MOEventBundler)initWithStartDate:(id)a3 endDate:(id)a4;
-- (id)calculateEventBundlesFromEvents:(id)a3;
-- (id)pruneEventBundles:(id)a3;
+- (MOEventBundler)initWithStartDate:(id)date endDate:(id)endDate;
+- (id)calculateEventBundlesFromEvents:(id)events;
+- (id)pruneEventBundles:(id)bundles;
 @end
 
 @implementation MOEventBundler
 
-- (MOEventBundler)initWithStartDate:(id)a3 endDate:(id)a4
+- (MOEventBundler)initWithStartDate:(id)date endDate:(id)endDate
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (!v8)
+  dateCopy = date;
+  endDateCopy = endDate;
+  v10 = endDateCopy;
+  if (!dateCopy)
   {
     v16 = _mo_log_facility_get_os_log(&MOLogFacilityGeneral);
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -25,12 +25,12 @@
     v18 = v17;
     v19 = @"Invalid parameter not satisfying: startDate";
     v20 = a2;
-    v21 = self;
+    selfCopy2 = self;
     v22 = 67;
     goto LABEL_12;
   }
 
-  if (!v9)
+  if (!endDateCopy)
   {
     v23 = _mo_log_facility_get_os_log(&MOLogFacilityGeneral);
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -42,12 +42,12 @@
     v18 = v17;
     v19 = @"Invalid parameter not satisfying: endDate";
     v20 = a2;
-    v21 = self;
+    selfCopy2 = self;
     v22 = 68;
 LABEL_12:
-    [v17 handleFailureInMethod:v20 object:v21 file:@"MOEventBundler.m" lineNumber:v22 description:v19];
+    [v17 handleFailureInMethod:v20 object:selfCopy2 file:@"MOEventBundler.m" lineNumber:v22 description:v19];
 
-    v15 = 0;
+    selfCopy3 = 0;
     goto LABEL_13;
   }
 
@@ -57,54 +57,54 @@ LABEL_12:
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_startDate, a3);
-    objc_storeStrong(&v12->_endDate, a4);
+    objc_storeStrong(&v11->_startDate, date);
+    objc_storeStrong(&v12->_endDate, endDate);
     v13 = objc_opt_new();
     eventBundleDict = v12->_eventBundleDict;
     v12->_eventBundleDict = v13;
   }
 
   self = v12;
-  v15 = self;
+  selfCopy3 = self;
 LABEL_13:
 
-  return v15;
+  return selfCopy3;
 }
 
-- (id)calculateEventBundlesFromEvents:(id)a3
+- (id)calculateEventBundlesFromEvents:(id)events
 {
-  v5 = a3;
+  eventsCopy = events;
   v6 = _mo_log_facility_get_os_log(&MOLogFacilityBundling);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     *buf = 134217984;
-    v59 = [v5 count];
+    v59 = [eventsCopy count];
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "fetched events count, %lu", buf, 0xCu);
   }
 
   v7 = objc_opt_new();
-  if (v5 && [v5 count])
+  if (eventsCopy && [eventsCopy count])
   {
-    v56 = [(MOEventBundler *)self predicateForBasicFilteringOfEvents];
-    [v5 filterUsingPredicate:?];
+    predicateForBasicFilteringOfEvents = [(MOEventBundler *)self predicateForBasicFilteringOfEvents];
+    [eventsCopy filterUsingPredicate:?];
     v8 = _mo_log_facility_get_os_log(&MOLogFacilityBundling);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
-      v9 = [v5 count];
+      v9 = [eventsCopy count];
       *buf = 134217984;
       v59 = v9;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Basic pruning is done. Number of events post pruning, %lu", buf, 0xCu);
     }
 
     v10 = objc_opt_new();
-    if ([v5 count])
+    if ([eventsCopy count])
     {
       v11 = 0;
       v12 = 1;
       while (1)
       {
-        v13 = [v5 objectAtIndexedSubscript:v11];
-        if ([v13 category] != 7 && objc_msgSend(v13, "category") != 6 && objc_msgSend(v13, "category") != 12 && objc_msgSend(v13, "provider") != 5 && objc_msgSend(v13, "category") != 9 && objc_msgSend(v13, "category") != 10 && (objc_msgSend(v13, "isHomeWorkVisit") & 1) == 0 && objc_msgSend(v13, "category") != 3 && objc_msgSend(v13, "category") != 4 && objc_msgSend(v5, "count") > v11 + 1)
+        v13 = [eventsCopy objectAtIndexedSubscript:v11];
+        if ([v13 category] != 7 && objc_msgSend(v13, "category") != 6 && objc_msgSend(v13, "category") != 12 && objc_msgSend(v13, "provider") != 5 && objc_msgSend(v13, "category") != 9 && objc_msgSend(v13, "category") != 10 && (objc_msgSend(v13, "isHomeWorkVisit") & 1) == 0 && objc_msgSend(v13, "category") != 3 && objc_msgSend(v13, "category") != 4 && objc_msgSend(eventsCopy, "count") > v11 + 1)
         {
           break;
         }
@@ -113,7 +113,7 @@ LABEL_39:
 
         ++v11;
         ++v12;
-        if ([v5 count] <= v11)
+        if ([eventsCopy count] <= v11)
         {
           goto LABEL_40;
         }
@@ -122,7 +122,7 @@ LABEL_39:
       v14 = v12;
       while (1)
       {
-        v15 = [v5 objectAtIndexedSubscript:v14];
+        v15 = [eventsCopy objectAtIndexedSubscript:v14];
         if ([v15 category] == 7)
         {
           goto LABEL_38;
@@ -168,58 +168,58 @@ LABEL_39:
           goto LABEL_38;
         }
 
-        v16 = [v13 startDate];
-        if (!v16)
+        startDate = [v13 startDate];
+        if (!startDate)
         {
           goto LABEL_38;
         }
 
-        v55 = v16;
-        v53 = [v13 endDate];
-        if (!v53)
+        v55 = startDate;
+        endDate = [v13 endDate];
+        if (!endDate)
         {
           goto LABEL_37;
         }
 
-        v47 = [v15 startDate];
-        if (!v47)
+        startDate2 = [v15 startDate];
+        if (!startDate2)
         {
           goto LABEL_36;
         }
 
-        v50 = [v15 endDate];
+        endDate2 = [v15 endDate];
 
-        if (v50)
+        if (endDate2)
         {
           break;
         }
 
 LABEL_38:
 
-        if ([v5 count] <= ++v14)
+        if ([eventsCopy count] <= ++v14)
         {
           goto LABEL_39;
         }
       }
 
-      v54 = [v13 startDate];
-      v55 = [v54 dateByAddingTimeInterval:-0.0];
+      startDate3 = [v13 startDate];
+      v55 = [startDate3 dateByAddingTimeInterval:-0.0];
 
-      v51 = [v13 endDate];
-      v53 = [v51 dateByAddingTimeInterval:0.0];
+      endDate3 = [v13 endDate];
+      endDate = [endDate3 dateByAddingTimeInterval:0.0];
 
-      v48 = [v15 startDate];
-      v52 = [v48 dateByAddingTimeInterval:-0.0];
+      startDate4 = [v15 startDate];
+      v52 = [startDate4 dateByAddingTimeInterval:-0.0];
 
-      v45 = [v15 endDate];
-      v49 = [v45 dateByAddingTimeInterval:0.0];
+      endDate4 = [v15 endDate];
+      v49 = [endDate4 dateByAddingTimeInterval:0.0];
 
-      v46 = [[NSDateInterval alloc] initWithStartDate:v55 endDate:v53];
+      v46 = [[NSDateInterval alloc] initWithStartDate:v55 endDate:endDate];
       v41 = [[NSDateInterval alloc] initWithStartDate:v52 endDate:v49];
       v44 = [v46 intersectionWithDateInterval:?];
-      v42 = [v44 endDate];
-      v39 = [v44 startDate];
-      [v42 timeIntervalSinceDate:v39];
+      endDate5 = [v44 endDate];
+      startDate5 = [v44 startDate];
+      [endDate5 timeIntervalSinceDate:startDate5];
       v18 = v17;
 
       if (v18 > 0.0)
@@ -239,9 +239,9 @@ LABEL_37:
     }
 
 LABEL_40:
-    if ([v5 count])
+    if ([eventsCopy count])
     {
-      v19 = -[MOGraph initWithNumVertices:edges:]([MOGraph alloc], "initWithNumVertices:edges:", [v5 count], v10);
+      v19 = -[MOGraph initWithNumVertices:edges:]([MOGraph alloc], "initWithNumVertices:edges:", [eventsCopy count], v10);
       v20 = _mo_log_facility_get_os_log(&MOLogFacilityBundling);
       if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
       {
@@ -253,7 +253,7 @@ LABEL_40:
 
       v22 = [(MOGraph *)v19 calculateConnectedComponentWithGraphTraversal:1];
       v23 = [v22 count];
-      if (v23 != [v5 count])
+      if (v23 != [eventsCopy count])
       {
         v24 = _mo_log_facility_get_os_log(&MOLogFacilityGeneral);
         if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -265,7 +265,7 @@ LABEL_40:
         [v25 handleFailureInMethod:a2 object:self file:@"MOEventBundler.m" lineNumber:136 description:{@"The events and membership arrays have to be of the same size. (in %s:%d)", "-[MOEventBundler calculateEventBundlesFromEvents:]", 136}];
       }
 
-      if ([v5 count])
+      if ([eventsCopy count])
       {
         v26 = 0;
         do
@@ -280,13 +280,13 @@ LABEL_40:
           }
 
           v30 = [v7 objectForKeyedSubscript:v27];
-          v31 = [v5 objectAtIndexedSubscript:v26];
+          v31 = [eventsCopy objectAtIndexedSubscript:v26];
           [v30 addObject:v31];
 
           ++v26;
         }
 
-        while ([v5 count] > v26);
+        while ([eventsCopy count] > v26);
       }
 
       v32 = _mo_log_facility_get_os_log(&MOLogFacilityBundling);
@@ -315,21 +315,21 @@ LABEL_40:
   return v7;
 }
 
-- (id)pruneEventBundles:(id)a3
+- (id)pruneEventBundles:(id)bundles
 {
-  v3 = a3;
+  bundlesCopy = bundles;
   v53 = +[MOEventBundler predicatesOfDesiredExperiences];
   v84 = 0u;
   v85 = 0u;
   v86 = 0u;
   v87 = 0u;
-  obj = [v3 allKeys];
+  obj = [bundlesCopy allKeys];
   v55 = [obj countByEnumeratingWithState:&v84 objects:v98 count:16];
   if (v55)
   {
     LODWORD(v4) = 0;
     v54 = *v85;
-    v52 = v3;
+    v52 = bundlesCopy;
     do
     {
       v5 = 0;
@@ -343,14 +343,14 @@ LABEL_40:
         v57 = v5;
         v6 = *(*(&v84 + 1) + 8 * v5);
         v56 = objc_autoreleasePoolPush();
-        v7 = [v3 objectForKeyedSubscript:v6];
+        v7 = [bundlesCopy objectForKeyedSubscript:v6];
         v8 = [v7 count];
 
         if (v8)
         {
-          v9 = [v3 objectForKeyedSubscript:v6];
-          v10 = [v9 allObjects];
-          v11 = [v10 mutableCopy];
+          v9 = [bundlesCopy objectForKeyedSubscript:v6];
+          allObjects = [v9 allObjects];
+          v11 = [allObjects mutableCopy];
 
           v82 = 0u;
           v83 = 0u;
@@ -378,13 +378,13 @@ LABEL_40:
                 v19 = _mo_log_facility_get_os_log(&MOLogFacilityBundling);
                 if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
                 {
-                  v20 = [v18 eventIdentifier];
+                  eventIdentifier = [v18 eventIdentifier];
                   *buf = 138412802;
                   v92 = v6;
                   v93 = 1024;
                   v94 = v15;
                   v95 = 2112;
-                  v96 = v20;
+                  v96 = eventIdentifier;
                   _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_INFO, "post graph partitioning bundle %@ with subevent %d:\n %@", buf, 0x1Cu);
                 }
               }
@@ -473,9 +473,9 @@ LABEL_40:
                 v35 = _mo_log_facility_get_os_log(&MOLogFacilityBundling);
                 if (os_log_type_enabled(v35, OS_LOG_TYPE_INFO))
                 {
-                  v36 = [(MOEventBundle *)v32 bundleType];
+                  bundleType = [(MOEventBundle *)v32 bundleType];
                   *buf = 138412290;
-                  v92 = v36;
+                  v92 = bundleType;
                   _os_log_impl(&_mh_execute_header, v35, OS_LOG_TYPE_INFO, "Created post semantic pruning bundle of type: %@ including:", buf, 0xCu);
                 }
 
@@ -506,14 +506,14 @@ LABEL_40:
                       v43 = _mo_log_facility_get_os_log(&MOLogFacilityBundling);
                       if (os_log_type_enabled(v43, OS_LOG_TYPE_INFO))
                       {
-                        v44 = [(MOEventBundle *)v32 bundleType];
-                        v45 = [v42 eventIdentifier];
+                        bundleType2 = [(MOEventBundle *)v32 bundleType];
+                        eventIdentifier2 = [v42 eventIdentifier];
                         *buf = 138412802;
-                        v92 = v44;
+                        v92 = bundleType2;
                         v93 = 1024;
                         v94 = v39;
                         v95 = 2112;
-                        v96 = v45;
+                        v96 = eventIdentifier2;
                         _os_log_impl(&_mh_execute_header, v43, OS_LOG_TYPE_INFO, "post semantic pruning bundle %@, with subevent %d:\n %@", buf, 0x1Cu);
                       }
                     }
@@ -542,7 +542,7 @@ LABEL_42:
             while (v64);
           }
 
-          v3 = v52;
+          bundlesCopy = v52;
         }
 
         objc_autoreleasePoolPop(v56);
@@ -823,8 +823,8 @@ LABEL_42:
   v104 = [NSPredicate predicateWithFormat:@"%K == %i", v103, 5];
   v228[1] = v104;
   v105 = [v2 objectForKeyedSubscript:@"strPhotoMomentInferences"];
-  v106 = [NSPredicate predicateWithFormat:@"ANY %K IN %@", v105, v188];
-  v228[2] = v106;
+  v188 = [NSPredicate predicateWithFormat:@"ANY %K IN %@", v105, v188];
+  v228[2] = v188;
   v107 = [NSArray arrayWithObjects:v228 count:3];
   v187 = [NSCompoundPredicate andPredicateWithSubpredicates:v107];
 
@@ -841,8 +841,8 @@ LABEL_42:
   v112 = [NSPredicate predicateWithFormat:@"%K == %i", v111, 5];
   v226[1] = v112;
   v113 = [v2 objectForKeyedSubscript:@"strPhotoMomentInferences"];
-  v114 = [NSPredicate predicateWithFormat:@"ANY %K IN %@", v113, v186];
-  v226[2] = v114;
+  v186 = [NSPredicate predicateWithFormat:@"ANY %K IN %@", v113, v186];
+  v226[2] = v186;
   v115 = [NSArray arrayWithObjects:v226 count:3];
   v185 = [NSCompoundPredicate andPredicateWithSubpredicates:v115];
 
@@ -867,8 +867,8 @@ LABEL_42:
   v124 = [NSPredicate predicateWithFormat:@"%K == %i", v123, 5];
   v223[1] = v124;
   v125 = [v2 objectForKeyedSubscript:@"strPhotoMomentInferences"];
-  v126 = [NSPredicate predicateWithFormat:@"ANY %K IN %@", v125, v184];
-  v223[2] = v126;
+  v184 = [NSPredicate predicateWithFormat:@"ANY %K IN %@", v125, v184];
+  v223[2] = v184;
   v127 = [NSArray arrayWithObjects:v223 count:3];
   v182 = [NSCompoundPredicate andPredicateWithSubpredicates:v127];
 
@@ -885,8 +885,8 @@ LABEL_42:
   v132 = [NSPredicate predicateWithFormat:@"%K == %i", v131, 5];
   v221[1] = v132;
   v133 = [v2 objectForKeyedSubscript:@"strPhotoMomentInferences"];
-  v134 = [NSPredicate predicateWithFormat:@"ANY %K IN %@", v133, v181];
-  v221[2] = v134;
+  v181 = [NSPredicate predicateWithFormat:@"ANY %K IN %@", v133, v181];
+  v221[2] = v181;
   v135 = [NSArray arrayWithObjects:v221 count:3];
   v180 = [NSCompoundPredicate andPredicateWithSubpredicates:v135];
 

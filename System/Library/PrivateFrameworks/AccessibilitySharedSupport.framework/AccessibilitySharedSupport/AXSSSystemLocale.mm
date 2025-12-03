@@ -1,6 +1,6 @@
 @interface AXSSSystemLocale
 - (AXSSSystemLocale)init;
-- (AXSSSystemLocale)initWithPreferredLanguages:(id)a3;
+- (AXSSSystemLocale)initWithPreferredLanguages:(id)languages;
 - (NSArray)preferredLanguages;
 @end
 
@@ -13,14 +13,14 @@
   return [(AXSSSystemLocale *)&v3 init];
 }
 
-- (AXSSSystemLocale)initWithPreferredLanguages:(id)a3
+- (AXSSSystemLocale)initWithPreferredLanguages:(id)languages
 {
-  v4 = a3;
+  languagesCopy = languages;
   v8.receiver = self;
   v8.super_class = AXSSSystemLocale;
   v5 = [(AXSSSystemLocale *)&v8 init];
   preferredLanguages = v5->_preferredLanguages;
-  v5->_preferredLanguages = v4;
+  v5->_preferredLanguages = languagesCopy;
 
   return v5;
 }
@@ -30,15 +30,15 @@
   preferredLanguages = self->_preferredLanguages;
   if (preferredLanguages)
   {
-    v3 = preferredLanguages;
+    preferredLanguages = preferredLanguages;
   }
 
   else
   {
-    v3 = [MEMORY[0x1E695DF58] preferredLanguages];
+    preferredLanguages = [MEMORY[0x1E695DF58] preferredLanguages];
   }
 
-  return v3;
+  return preferredLanguages;
 }
 
 @end

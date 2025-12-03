@@ -1,14 +1,14 @@
 @interface _BlastDoorLPPlatformColor
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation _BlastDoorLPPlatformColor
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [_BlastDoorLPPlatformColor allocWithZone:a3];
+  v4 = [_BlastDoorLPPlatformColor allocWithZone:zone];
   if (v4)
   {
     [(_BlastDoorLPPlatformColor *)self r];
@@ -25,13 +25,13 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  equalCopy = equal;
   v21.receiver = self;
   v21.super_class = _BlastDoorLPPlatformColor;
-  if ([(_BlastDoorLPPlatformColor *)&v21 isEqual:v4])
+  if ([(_BlastDoorLPPlatformColor *)&v21 isEqual:equalCopy])
   {
     v5 = 1;
   }
@@ -41,7 +41,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v4;
+      v6 = equalCopy;
       [(_BlastDoorLPPlatformColor *)self r];
       v8 = v7;
       [v6 r];

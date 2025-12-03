@@ -1,53 +1,53 @@
 @interface HFCalendarEventBuilder
-- (HFCalendarEventBuilder)initWithEvent:(id)a3;
+- (HFCalendarEventBuilder)initWithEvent:(id)event;
 - (NSDate)effectiveFireDate;
 - (NSString)description;
-- (id)_fireDateForTimeComponents:(id)a3;
+- (id)_fireDateForTimeComponents:(id)components;
 - (id)buildNewEventsFromCurrentState;
-- (id)compareToObject:(id)a3;
+- (id)compareToObject:(id)object;
 - (id)comparisonKey;
 - (id)effectiveCalendar;
 - (id)effectiveFireTimeComponents;
-- (id)naturalLanguageNameOfType:(unint64_t)a3 withHome:(id)a4 recurrences:(id)a5;
-- (id)naturalLanguageNameWithOptions:(id)a3 recurrences:(id)a4;
+- (id)naturalLanguageNameOfType:(unint64_t)type withHome:(id)home recurrences:(id)recurrences;
+- (id)naturalLanguageNameWithOptions:(id)options recurrences:(id)recurrences;
 - (id)performValidation;
 - (void)updateBaseFireDateForTrigger;
 @end
 
 @implementation HFCalendarEventBuilder
 
-- (id)compareToObject:(id)a3
+- (id)compareToObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v13.receiver = self;
   v13.super_class = HFCalendarEventBuilder;
-  v5 = [(HFEventBuilder *)&v13 compareToObject:v4];
+  v5 = [(HFEventBuilder *)&v13 compareToObject:objectCopy];
   if (([v5 containsCriticalDifference] & 1) == 0)
   {
-    v6 = [(HFCalendarEventBuilder *)self fireDate];
-    v7 = [v4 fireDate];
-    v8 = [HFPropertyDifference compareObjectA:v6 toObjectB:v7 key:@"fireDate" priority:3];
+    fireDate = [(HFCalendarEventBuilder *)self fireDate];
+    fireDate2 = [objectCopy fireDate];
+    v8 = [HFPropertyDifference compareObjectA:fireDate toObjectB:fireDate2 key:@"fireDate" priority:3];
     [v5 add:v8];
 
-    v9 = [(HFCalendarEventBuilder *)self fireTimeComponents];
-    v10 = [v4 fireTimeComponents];
-    v11 = [HFPropertyDifference compareObjectA:v9 toObjectB:v10 key:@"fireTimeComponents" priority:3];
+    fireTimeComponents = [(HFCalendarEventBuilder *)self fireTimeComponents];
+    fireTimeComponents2 = [objectCopy fireTimeComponents];
+    v11 = [HFPropertyDifference compareObjectA:fireTimeComponents toObjectB:fireTimeComponents2 key:@"fireTimeComponents" priority:3];
     [v5 add:v11];
   }
 
   return v5;
 }
 
-- (HFCalendarEventBuilder)initWithEvent:(id)a3
+- (HFCalendarEventBuilder)initWithEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v8.receiver = self;
   v8.super_class = HFCalendarEventBuilder;
-  v5 = [(HFEventBuilder *)&v8 initWithEvent:v4];
+  v5 = [(HFEventBuilder *)&v8 initWithEvent:eventCopy];
   if (v5)
   {
-    v6 = [v4 fireDateComponents];
-    [(HFCalendarEventBuilder *)v5 setFireTimeComponents:v6];
+    fireDateComponents = [eventCopy fireDateComponents];
+    [(HFCalendarEventBuilder *)v5 setFireTimeComponents:fireDateComponents];
 
     [(HFCalendarEventBuilder *)v5 setTest_overrideNowDate:0];
     [(HFCalendarEventBuilder *)v5 setTest_overrideCalendar:0];
@@ -58,74 +58,74 @@
 
 - (id)buildNewEventsFromCurrentState
 {
-  v3 = [(HFCalendarEventBuilder *)self effectiveFireTimeComponents];
-  if (!v3)
+  effectiveFireTimeComponents = [(HFCalendarEventBuilder *)self effectiveFireTimeComponents];
+  if (!effectiveFireTimeComponents)
   {
     NSLog(&cfstr_AttemptingToCr.isa, self);
   }
 
-  v4 = [objc_alloc(MEMORY[0x277CD18A8]) initWithFireDateComponents:v3];
+  v4 = [objc_alloc(MEMORY[0x277CD18A8]) initWithFireDateComponents:effectiveFireTimeComponents];
   v5 = [MEMORY[0x277CBEB98] setWithObject:v4];
 
   return v5;
 }
 
-- (id)naturalLanguageNameOfType:(unint64_t)a3 withHome:(id)a4 recurrences:(id)a5
+- (id)naturalLanguageNameOfType:(unint64_t)type withHome:(id)home recurrences:(id)recurrences
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [[HFTriggerNaturalLanguageOptions alloc] initWithHome:v9 nameType:a3];
+  recurrencesCopy = recurrences;
+  homeCopy = home;
+  v10 = [[HFTriggerNaturalLanguageOptions alloc] initWithHome:homeCopy nameType:type];
 
-  v11 = [(HFCalendarEventBuilder *)self naturalLanguageNameWithOptions:v10 recurrences:v8];
+  v11 = [(HFCalendarEventBuilder *)self naturalLanguageNameWithOptions:v10 recurrences:recurrencesCopy];
 
   return v11;
 }
 
-- (id)naturalLanguageNameWithOptions:(id)a3 recurrences:(id)a4
+- (id)naturalLanguageNameWithOptions:(id)options recurrences:(id)recurrences
 {
   v6 = MEMORY[0x277CD1EB0];
-  v7 = a4;
-  v8 = a3;
-  v9 = [(HFCalendarEventBuilder *)self effectiveFireDate];
-  v10 = [v6 hf_naturalLanguageNameWithOptions:v8 fireDate:v9 recurrences:v7];
+  recurrencesCopy = recurrences;
+  optionsCopy = options;
+  effectiveFireDate = [(HFCalendarEventBuilder *)self effectiveFireDate];
+  v10 = [v6 hf_naturalLanguageNameWithOptions:optionsCopy fireDate:effectiveFireDate recurrences:recurrencesCopy];
 
   return v10;
 }
 
 - (id)performValidation
 {
-  v2 = [(HFCalendarEventBuilder *)self effectiveFireDate];
+  effectiveFireDate = [(HFCalendarEventBuilder *)self effectiveFireDate];
 
   v3 = MEMORY[0x277D2C900];
-  if (v2)
+  if (effectiveFireDate)
   {
-    v4 = [MEMORY[0x277D2C900] futureWithNoResult];
+    futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
   }
 
   else
   {
     v5 = [MEMORY[0x277CCA9B8] hf_errorWithCode:33];
-    v4 = [v3 futureWithError:v5];
+    futureWithNoResult = [v3 futureWithError:v5];
   }
 
-  return v4;
+  return futureWithNoResult;
 }
 
 - (void)updateBaseFireDateForTrigger
 {
-  v3 = [(HFCalendarEventBuilder *)self fireTimeComponents];
-  if (v3)
+  fireTimeComponents = [(HFCalendarEventBuilder *)self fireTimeComponents];
+  if (fireTimeComponents)
   {
   }
 
   else
   {
-    v4 = [(HFCalendarEventBuilder *)self fireDate];
+    fireDate = [(HFCalendarEventBuilder *)self fireDate];
 
-    if (v4)
+    if (fireDate)
     {
-      v5 = [(HFCalendarEventBuilder *)self effectiveFireTimeComponents];
-      [(HFCalendarEventBuilder *)self setFireTimeComponents:v5];
+      effectiveFireTimeComponents = [(HFCalendarEventBuilder *)self effectiveFireTimeComponents];
+      [(HFCalendarEventBuilder *)self setFireTimeComponents:effectiveFireTimeComponents];
 
       [(HFCalendarEventBuilder *)self setFireDate:0];
     }
@@ -134,98 +134,98 @@
 
 - (id)effectiveCalendar
 {
-  v2 = [(HFCalendarEventBuilder *)self test_overrideCalendar];
-  v3 = v2;
-  if (v2)
+  test_overrideCalendar = [(HFCalendarEventBuilder *)self test_overrideCalendar];
+  v3 = test_overrideCalendar;
+  if (test_overrideCalendar)
   {
-    v4 = v2;
+    currentCalendar = test_overrideCalendar;
   }
 
   else
   {
-    v4 = [MEMORY[0x277CBEA80] currentCalendar];
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
   }
 
-  v5 = v4;
+  v5 = currentCalendar;
 
   return v5;
 }
 
 - (id)effectiveFireTimeComponents
 {
-  v3 = [(HFCalendarEventBuilder *)self fireTimeComponents];
+  fireTimeComponents = [(HFCalendarEventBuilder *)self fireTimeComponents];
 
-  if (v3)
+  if (fireTimeComponents)
   {
-    v4 = [(HFCalendarEventBuilder *)self fireTimeComponents];
+    fireTimeComponents2 = [(HFCalendarEventBuilder *)self fireTimeComponents];
   }
 
   else
   {
-    v5 = [(HFCalendarEventBuilder *)self fireDate];
+    fireDate = [(HFCalendarEventBuilder *)self fireDate];
 
-    if (v5)
+    if (fireDate)
     {
-      v6 = [(HFCalendarEventBuilder *)self effectiveCalendar];
-      v7 = [(HFCalendarEventBuilder *)self fireDate];
-      v4 = [v6 components:96 fromDate:v7];
+      effectiveCalendar = [(HFCalendarEventBuilder *)self effectiveCalendar];
+      fireDate2 = [(HFCalendarEventBuilder *)self fireDate];
+      fireTimeComponents2 = [effectiveCalendar components:96 fromDate:fireDate2];
     }
 
     else
     {
-      v4 = 0;
+      fireTimeComponents2 = 0;
     }
   }
 
-  return v4;
+  return fireTimeComponents2;
 }
 
 - (NSDate)effectiveFireDate
 {
-  v3 = [(HFCalendarEventBuilder *)self fireDate];
-  v4 = [(HFCalendarEventBuilder *)self fireTimeComponents];
+  fireDate = [(HFCalendarEventBuilder *)self fireDate];
+  fireTimeComponents = [(HFCalendarEventBuilder *)self fireTimeComponents];
 
-  if (v4)
+  if (fireTimeComponents)
   {
-    v5 = [(HFCalendarEventBuilder *)self fireTimeComponents];
-    v6 = [(HFCalendarEventBuilder *)self _fireDateForTimeComponents:v5];
+    fireTimeComponents2 = [(HFCalendarEventBuilder *)self fireTimeComponents];
+    v6 = [(HFCalendarEventBuilder *)self _fireDateForTimeComponents:fireTimeComponents2];
 
-    v3 = v6;
+    fireDate = v6;
   }
 
-  return v3;
+  return fireDate;
 }
 
-- (id)_fireDateForTimeComponents:(id)a3
+- (id)_fireDateForTimeComponents:(id)components
 {
-  if (a3)
+  if (components)
   {
-    v4 = a3;
-    v5 = [(HFCalendarEventBuilder *)self effectiveCalendar];
+    componentsCopy = components;
+    effectiveCalendar = [(HFCalendarEventBuilder *)self effectiveCalendar];
     v6 = objc_alloc_init(MEMORY[0x277CBEAB8]);
-    [v6 setMonth:{objc_msgSend(v4, "month")}];
-    [v6 setDay:{objc_msgSend(v4, "day")}];
-    [v6 setHour:{objc_msgSend(v4, "hour")}];
-    v7 = [v4 minute];
+    [v6 setMonth:{objc_msgSend(componentsCopy, "month")}];
+    [v6 setDay:{objc_msgSend(componentsCopy, "day")}];
+    [v6 setHour:{objc_msgSend(componentsCopy, "hour")}];
+    minute = [componentsCopy minute];
 
-    [v6 setMinute:v7];
+    [v6 setMinute:minute];
     [v6 setSecond:0];
     [v6 setNanosecond:0];
-    v8 = [(HFCalendarEventBuilder *)self test_overrideNowDate];
-    v9 = v8;
-    if (v8)
+    test_overrideNowDate = [(HFCalendarEventBuilder *)self test_overrideNowDate];
+    v9 = test_overrideNowDate;
+    if (test_overrideNowDate)
     {
-      v10 = v8;
+      date = test_overrideNowDate;
     }
 
     else
     {
-      v10 = [MEMORY[0x277CBEAA8] date];
+      date = [MEMORY[0x277CBEAA8] date];
     }
 
-    v12 = v10;
+    v12 = date;
 
-    v13 = [v5 nextDateAfterDate:v12 matchingComponents:v6 options:0];
+    v13 = [effectiveCalendar nextDateAfterDate:v12 matchingComponents:v6 options:0];
     if ([v6 day] == 0x7FFFFFFFFFFFFFFFLL)
     {
       v14 = [v12 dateByAddingTimeInterval:60.0];
@@ -233,15 +233,15 @@
 
       if (v15 == v13)
       {
-        v16 = [v5 dateByAddingUnit:16 value:1 toDate:v13 options:0];
+        v16 = [effectiveCalendar dateByAddingUnit:16 value:1 toDate:v13 options:0];
 
         v13 = v16;
       }
     }
 
-    v17 = [v5 dateBySettingUnit:128 value:0 ofDate:v13 options:0];
+    v17 = [effectiveCalendar dateBySettingUnit:128 value:0 ofDate:v13 options:0];
 
-    v11 = [v5 dateBySettingUnit:0x8000 value:0 ofDate:v17 options:0];
+    v11 = [effectiveCalendar dateBySettingUnit:0x8000 value:0 ofDate:v17 options:0];
   }
 
   else
@@ -255,15 +255,15 @@
 - (NSString)description
 {
   v3 = [MEMORY[0x277D2C8F8] builderWithObject:self];
-  v4 = [(HFCalendarEventBuilder *)self fireDate];
-  v5 = [v3 appendObject:v4 withName:@"fireDate"];
+  fireDate = [(HFCalendarEventBuilder *)self fireDate];
+  v5 = [v3 appendObject:fireDate withName:@"fireDate"];
 
-  v6 = [(HFCalendarEventBuilder *)self fireTimeComponents];
-  v7 = [v3 appendObject:v6 withName:@"fireTimeComponents"];
+  fireTimeComponents = [(HFCalendarEventBuilder *)self fireTimeComponents];
+  v7 = [v3 appendObject:fireTimeComponents withName:@"fireTimeComponents"];
 
-  v8 = [v3 build];
+  build = [v3 build];
 
-  return v8;
+  return build;
 }
 
 - (id)comparisonKey
@@ -271,10 +271,10 @@
   v3 = MEMORY[0x277CCACA8];
   v9.receiver = self;
   v9.super_class = HFCalendarEventBuilder;
-  v4 = [(HFEventBuilder *)&v9 comparisonKey];
-  v5 = [(HFCalendarEventBuilder *)self effectiveFireDate];
-  v6 = [(HFCalendarEventBuilder *)self fireTimeComponents];
-  v7 = [v3 stringWithFormat:@"%@-%@:%@", v4, v5, v6];
+  comparisonKey = [(HFEventBuilder *)&v9 comparisonKey];
+  effectiveFireDate = [(HFCalendarEventBuilder *)self effectiveFireDate];
+  fireTimeComponents = [(HFCalendarEventBuilder *)self fireTimeComponents];
+  v7 = [v3 stringWithFormat:@"%@-%@:%@", comparisonKey, effectiveFireDate, fireTimeComponents];
 
   return v7;
 }

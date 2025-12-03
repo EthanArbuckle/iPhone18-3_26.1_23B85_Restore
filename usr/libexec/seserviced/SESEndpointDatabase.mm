@@ -1,12 +1,12 @@
 @interface SESEndpointDatabase
 - (id)context;
-- (void)handleMFDNotification:(id)a3;
-- (void)startTransaction:(id)a3;
+- (void)handleMFDNotification:(id)notification;
+- (void)startTransaction:(id)transaction;
 @end
 
 @implementation SESEndpointDatabase
 
-- (void)handleMFDNotification:(id)a3
+- (void)handleMFDNotification:(id)notification
 {
   v4 = SESDefaultLogObject();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -24,9 +24,9 @@
   dispatch_async(queue, block);
 }
 
-- (void)startTransaction:(id)a3
+- (void)startTransaction:(id)transaction
 {
-  v8 = a3;
+  transactionCopy = transaction;
   dispatch_assert_queue_V2(self->_queue);
   if (self->_transactionInProgress)
   {
@@ -45,7 +45,7 @@ LABEL_7:
 
   self->_transactionInProgress = 1;
   v5 = sub_10002D094(SESDatabaseTransaction, self, managedObjectContext);
-  v8[2](v8, v5);
+  transactionCopy[2](transactionCopy, v5);
 
   self->_transactionInProgress = 0;
 }

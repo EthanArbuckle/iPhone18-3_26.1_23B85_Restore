@@ -1,13 +1,13 @@
 @interface EDCategoryMigrator
 + (OS_os_log)log;
-+ (void)initializeIfNeededWithCategoryPersistence:(id)a3 categorizer:(id)a4 messagePersistence:(id)a5 activityPersistence:(id)a6;
-+ (void)migrateCategoryForQuery:(id)a3 cancelationToken:(id)a4 reason:(int64_t)a5 progressHandler:(id)a6 completion:(id)a7;
-- (EDCategoryMigrator)initWithCategoryPersistence:(id)a3 categorizer:(id)a4 messagePersistence:(id)a5 activityPersistence:(id)a6;
-- (void)_categorizeMessageBatch:(id)a3 cancelationToken:(id)a4 reason:(int64_t)a5;
-- (void)_categorizeMessagesForQuery:(id)a3 cancelationToken:(id)a4 progressHandler:(id)a5 completion:(id)a6;
++ (void)initializeIfNeededWithCategoryPersistence:(id)persistence categorizer:(id)categorizer messagePersistence:(id)messagePersistence activityPersistence:(id)activityPersistence;
++ (void)migrateCategoryForQuery:(id)query cancelationToken:(id)token reason:(int64_t)reason progressHandler:(id)handler completion:(id)completion;
+- (EDCategoryMigrator)initWithCategoryPersistence:(id)persistence categorizer:(id)categorizer messagePersistence:(id)messagePersistence activityPersistence:(id)activityPersistence;
+- (void)_categorizeMessageBatch:(id)batch cancelationToken:(id)token reason:(int64_t)reason;
+- (void)_categorizeMessagesForQuery:(id)query cancelationToken:(id)token progressHandler:(id)handler completion:(id)completion;
 - (void)_endCategorization;
-- (void)_migrateCategoryForQuery:(id)a3 cancelationToken:(id)a4 reason:(int64_t)a5 progressHandler:(id)a6 completion:(id)a7;
-- (void)_updateCategorizationActivityForMessageBatch:(id)a3 isFinished:(BOOL)a4 cancelationToken:(id)a5;
+- (void)_migrateCategoryForQuery:(id)query cancelationToken:(id)token reason:(int64_t)reason progressHandler:(id)handler completion:(id)completion;
+- (void)_updateCategorizationActivityForMessageBatch:(id)batch isFinished:(BOOL)finished cancelationToken:(id)token;
 @end
 
 @implementation EDCategoryMigrator
@@ -18,7 +18,7 @@
   block[1] = 3221225472;
   block[2] = __25__EDCategoryMigrator_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_20 != -1)
   {
     dispatch_once(&log_onceToken_20, block);
@@ -37,25 +37,25 @@ void __25__EDCategoryMigrator_log__block_invoke(uint64_t a1)
   log_log_20 = v1;
 }
 
-+ (void)initializeIfNeededWithCategoryPersistence:(id)a3 categorizer:(id)a4 messagePersistence:(id)a5 activityPersistence:(id)a6
++ (void)initializeIfNeededWithCategoryPersistence:(id)persistence categorizer:(id)categorizer messagePersistence:(id)messagePersistence activityPersistence:(id)activityPersistence
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  persistenceCopy = persistence;
+  categorizerCopy = categorizer;
+  messagePersistenceCopy = messagePersistence;
+  activityPersistenceCopy = activityPersistence;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __115__EDCategoryMigrator_initializeIfNeededWithCategoryPersistence_categorizer_messagePersistence_activityPersistence___block_invoke;
   v18[3] = &unk_1E8250AB8;
-  v19 = v9;
-  v20 = v10;
-  v21 = v11;
-  v22 = v12;
+  v19 = persistenceCopy;
+  v20 = categorizerCopy;
+  v21 = messagePersistenceCopy;
+  v22 = activityPersistenceCopy;
   v13 = initializeIfNeededWithCategoryPersistence_categorizer_messagePersistence_activityPersistence__once;
-  v14 = v12;
-  v15 = v11;
-  v16 = v10;
-  v17 = v9;
+  v14 = activityPersistenceCopy;
+  v15 = messagePersistenceCopy;
+  v16 = categorizerCopy;
+  v17 = persistenceCopy;
   if (v13 != -1)
   {
     dispatch_once(&initializeIfNeededWithCategoryPersistence_categorizer_messagePersistence_activityPersistence__once, v18);
@@ -69,24 +69,24 @@ void __115__EDCategoryMigrator_initializeIfNeededWithCategoryPersistence_categor
   sDefaultInstance = v1;
 }
 
-+ (void)migrateCategoryForQuery:(id)a3 cancelationToken:(id)a4 reason:(int64_t)a5 progressHandler:(id)a6 completion:(id)a7
++ (void)migrateCategoryForQuery:(id)query cancelationToken:(id)token reason:(int64_t)reason progressHandler:(id)handler completion:(id)completion
 {
-  v14 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = a7;
-  if (v14)
+  queryCopy = query;
+  tokenCopy = token;
+  handlerCopy = handler;
+  completionCopy = completion;
+  if (queryCopy)
   {
-    [sDefaultInstance _migrateCategoryForQuery:v14 cancelationToken:v11 reason:a5 progressHandler:v12 completion:v13];
+    [sDefaultInstance _migrateCategoryForQuery:queryCopy cancelationToken:tokenCopy reason:reason progressHandler:handlerCopy completion:completionCopy];
   }
 }
 
-- (EDCategoryMigrator)initWithCategoryPersistence:(id)a3 categorizer:(id)a4 messagePersistence:(id)a5 activityPersistence:(id)a6
+- (EDCategoryMigrator)initWithCategoryPersistence:(id)persistence categorizer:(id)categorizer messagePersistence:(id)messagePersistence activityPersistence:(id)activityPersistence
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  persistenceCopy = persistence;
+  categorizerCopy = categorizer;
+  messagePersistenceCopy = messagePersistence;
+  activityPersistenceCopy = activityPersistence;
   v30.receiver = self;
   v30.super_class = EDCategoryMigrator;
   v15 = [(EDCategoryMigrator *)&v30 init];
@@ -96,9 +96,9 @@ void __115__EDCategoryMigrator_initializeIfNeededWithCategoryPersistence_categor
     categorizationWriterScheduler = v15->_categorizationWriterScheduler;
     v15->_categorizationWriterScheduler = v16;
 
-    objc_storeStrong(&v15->_categoryPersistence, a3);
-    objc_storeStrong(&v15->_messagePersistence, a5);
-    objc_storeStrong(&v15->_categorizer, a4);
+    objc_storeStrong(&v15->_categoryPersistence, persistence);
+    objc_storeStrong(&v15->_messagePersistence, messagePersistence);
+    objc_storeStrong(&v15->_categorizer, categorizer);
     haveAccessToDb = v15->_haveAccessToDb;
     v15->_haveAccessToDb = 0;
 
@@ -113,7 +113,7 @@ void __115__EDCategoryMigrator_initializeIfNeededWithCategoryPersistence_categor
     categorizationQueueLock = v15->_categorizationQueueLock;
     v15->_categorizationQueueLock = v23;
 
-    objc_storeStrong(&v15->_activityPersistence, a6);
+    objc_storeStrong(&v15->_activityPersistence, activityPersistence);
     v25 = objc_alloc(MEMORY[0x1E699B7F0]);
     v26 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v27 = [v25 initWithObject:v26];
@@ -124,13 +124,13 @@ void __115__EDCategoryMigrator_initializeIfNeededWithCategoryPersistence_categor
   return v15;
 }
 
-- (void)_migrateCategoryForQuery:(id)a3 cancelationToken:(id)a4 reason:(int64_t)a5 progressHandler:(id)a6 completion:(id)a7
+- (void)_migrateCategoryForQuery:(id)query cancelationToken:(id)token reason:(int64_t)reason progressHandler:(id)handler completion:(id)completion
 {
   v39 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
+  queryCopy = query;
+  tokenCopy = token;
+  handlerCopy = handler;
+  completionCopy = completion;
   if (!self->_haveAccessToDb)
   {
     categoryPersistence = self->_categoryPersistence;
@@ -153,7 +153,7 @@ void __115__EDCategoryMigrator_initializeIfNeededWithCategoryPersistence_categor
     }
   }
 
-  self->_reason = a5;
+  self->_reason = reason;
   objc_initWeak(buf, self);
   v34[0] = MEMORY[0x1E69E9820];
   v34[1] = 3221225472;
@@ -161,21 +161,21 @@ void __115__EDCategoryMigrator_initializeIfNeededWithCategoryPersistence_categor
   v34[3] = &unk_1E8251748;
   v34[4] = self;
   objc_copyWeak(&v35, buf);
-  [v13 addCancelationBlock:v34];
+  [tokenCopy addCancelationBlock:v34];
   categorizationQueue = self->_categorizationQueue;
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
   v28[2] = __98__EDCategoryMigrator__migrateCategoryForQuery_cancelationToken_reason_progressHandler_completion___block_invoke_3;
   v28[3] = &unk_1E8251770;
   objc_copyWeak(&v33, buf);
-  v29 = v13;
-  v30 = v12;
-  v31 = v15;
-  v32 = v14;
-  v23 = v14;
-  v24 = v12;
-  v25 = v15;
-  v26 = v13;
+  v29 = tokenCopy;
+  v30 = queryCopy;
+  v31 = completionCopy;
+  v32 = handlerCopy;
+  v23 = handlerCopy;
+  v24 = queryCopy;
+  v25 = completionCopy;
+  v26 = tokenCopy;
   dispatch_async(categorizationQueue, v28);
 
   objc_destroyWeak(&v33);
@@ -267,25 +267,25 @@ void __98__EDCategoryMigrator__migrateCategoryForQuery_cancelationToken_reason_p
   self->_haveAccessToDb = 0;
 }
 
-- (void)_categorizeMessagesForQuery:(id)a3 cancelationToken:(id)a4 progressHandler:(id)a5 completion:(id)a6
+- (void)_categorizeMessagesForQuery:(id)query cancelationToken:(id)token progressHandler:(id)handler completion:(id)completion
 {
   v60 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v31 = a4;
-  v32 = a5;
-  v12 = a6;
-  if (!v11)
+  queryCopy = query;
+  tokenCopy = token;
+  handlerCopy = handler;
+  completionCopy = completion;
+  if (!queryCopy)
   {
-    v29 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v29 handleFailureInMethod:a2 object:self file:@"EDCategoryMigrator.m" lineNumber:152 description:{@"Invalid parameter not satisfying: %@", @"query"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EDCategoryMigrator.m" lineNumber:152 description:{@"Invalid parameter not satisfying: %@", @"query"}];
   }
 
   v13 = [MEMORY[0x1E699B860] transactionWithDescription:@"com.apple.email.categoryMigrator.categorizeMessages"];
   v51 = 0;
   v52 = &v51;
   v53 = 0x2020000000;
-  v14 = [(EDCategoryMigrator *)self messagePersistence];
-  v15 = [v14 countOfMessagesMatchingQuery:v11];
+  messagePersistence = [(EDCategoryMigrator *)self messagePersistence];
+  v15 = [messagePersistence countOfMessagesMatchingQuery:queryCopy];
 
   v54 = v15;
   v47 = 0;
@@ -297,7 +297,7 @@ void __98__EDCategoryMigrator__migrateCategoryForQuery_cancelationToken_reason_p
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v11;
+    *(&buf + 4) = queryCopy;
     _os_log_impl(&dword_1C61EF000, v16, OS_LOG_TYPE_DEFAULT, "Category migrator querying for messages to recategorize with query:%@", &buf, 0xCu);
   }
 
@@ -312,7 +312,7 @@ void __98__EDCategoryMigrator__migrateCategoryForQuery_cancelationToken_reason_p
   v57 = __Block_byref_object_copy__4;
   v58 = __Block_byref_object_dispose__4;
   v59 = 0;
-  v17 = [(EDCategoryMigrator *)self messagePersistence];
+  messagePersistence2 = [(EDCategoryMigrator *)self messagePersistence];
   v37[0] = MEMORY[0x1E69E9820];
   v37[1] = 3221225472;
   v37[2] = __94__EDCategoryMigrator__categorizeMessagesForQuery_cancelationToken_progressHandler_completion___block_invoke;
@@ -321,14 +321,14 @@ void __98__EDCategoryMigrator__migrateCategoryForQuery_cancelationToken_reason_p
   v18 = v30;
   v43 = v46;
   v38 = v18;
-  v39 = self;
-  v19 = v31;
+  selfCopy = self;
+  v19 = tokenCopy;
   v40 = v19;
   v44 = &v47;
-  v20 = v32;
+  v20 = handlerCopy;
   v41 = v20;
   v45 = &v51;
-  [v17 iteratePersistedMessagesMatchingQuery:v11 limit:0x7FFFFFFFFFFFFFFFLL cancelationToken:v19 requireProtectedData:1 handler:v37];
+  [messagePersistence2 iteratePersistedMessagesMatchingQuery:queryCopy limit:0x7FFFFFFFFFFFFFFFLL cancelationToken:v19 requireProtectedData:1 handler:v37];
 
   if (![v19 isCanceled])
   {
@@ -347,23 +347,23 @@ void __98__EDCategoryMigrator__migrateCategoryForQuery_cancelationToken_reason_p
     }
 
     [v13 invalidate];
-    if (v12)
+    if (completionCopy)
     {
-      v27 = [(EDCategoryMigrator *)self categorizationWriterScheduler];
+      categorizationWriterScheduler = [(EDCategoryMigrator *)self categorizationWriterScheduler];
       v33[0] = MEMORY[0x1E69E9820];
       v33[1] = 3221225472;
       v33[2] = __94__EDCategoryMigrator__categorizeMessagesForQuery_cancelationToken_progressHandler_completion___block_invoke_28;
       v33[3] = &unk_1E82517C0;
-      v34 = v12;
+      v34 = completionCopy;
       v35 = &buf;
-      [v27 performBlock:v33];
+      [categorizationWriterScheduler performBlock:v33];
     }
 
-    v22 = +[EDCategoryMigrator log];
-    if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
+    ef_cancelledError = +[EDCategoryMigrator log];
+    if (os_log_type_enabled(ef_cancelledError, OS_LOG_TYPE_DEFAULT))
     {
       *v36 = 0;
-      _os_log_impl(&dword_1C61EF000, v22, OS_LOG_TYPE_DEFAULT, "Category migrator finished categorizing all messages for query", v36, 2u);
+      _os_log_impl(&dword_1C61EF000, ef_cancelledError, OS_LOG_TYPE_DEFAULT, "Category migrator finished categorizing all messages for query", v36, 2u);
     }
 
     goto LABEL_18;
@@ -377,10 +377,10 @@ void __98__EDCategoryMigrator__migrateCategoryForQuery_cancelationToken_reason_p
   }
 
   [v13 invalidate];
-  if (v12)
+  if (completionCopy)
   {
-    v22 = [MEMORY[0x1E696ABC0] ef_cancelledError];
-    (*(v12 + 2))(v12, v22);
+    ef_cancelledError = [MEMORY[0x1E696ABC0] ef_cancelledError];
+    (*(completionCopy + 2))(completionCopy, ef_cancelledError);
 LABEL_18:
   }
 
@@ -446,53 +446,53 @@ LABEL_10:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_categorizeMessageBatch:(id)a3 cancelationToken:(id)a4 reason:(int64_t)a5
+- (void)_categorizeMessageBatch:(id)batch cancelationToken:(id)token reason:(int64_t)reason
 {
   v28 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  [(EDCategoryMigrator *)self _updateCategorizationActivityForMessageBatch:v9 isFinished:0 cancelationToken:v10];
+  batchCopy = batch;
+  tokenCopy = token;
+  [(EDCategoryMigrator *)self _updateCategorizationActivityForMessageBatch:batchCopy isFinished:0 cancelationToken:tokenCopy];
   v11 = +[EDCategoryMigrator log];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v27 = [v9 count];
+    v27 = [batchCopy count];
     _os_log_impl(&dword_1C61EF000, v11, OS_LOG_TYPE_DEFAULT, "Category migrator recategorizing %lu messages to match current categorization version.", buf, 0xCu);
   }
 
-  v12 = [(EDCategoryMigrator *)self categorizer];
-  v13 = [v12 categorizeMessages:v9 reason:a5];
+  categorizer = [(EDCategoryMigrator *)self categorizer];
+  v13 = [categorizer categorizeMessages:batchCopy reason:reason];
 
   if (v13)
   {
-    v14 = [(EDCategoryMigrator *)self categorizationQueueLock];
-    [v14 lockWhenCondition:0];
+    categorizationQueueLock = [(EDCategoryMigrator *)self categorizationQueueLock];
+    [categorizationQueueLock lockWhenCondition:0];
 
     [(EDCategoryMigrator *)self setNumBatchesQueued:[(EDCategoryMigrator *)self numBatchesQueued]+ 1];
     if ([(EDCategoryMigrator *)self numBatchesQueued]== 2)
     {
-      v15 = [(EDCategoryMigrator *)self categorizationQueueLock];
-      [v15 unlockWithCondition:1];
+      categorizationQueueLock2 = [(EDCategoryMigrator *)self categorizationQueueLock];
+      [categorizationQueueLock2 unlockWithCondition:1];
     }
 
     else
     {
-      v15 = [(EDCategoryMigrator *)self categorizationQueueLock];
-      [v15 unlock];
+      categorizationQueueLock2 = [(EDCategoryMigrator *)self categorizationQueueLock];
+      [categorizationQueueLock2 unlock];
     }
 
-    v17 = [(EDCategoryMigrator *)self categorizationWriterScheduler];
+    categorizationWriterScheduler = [(EDCategoryMigrator *)self categorizationWriterScheduler];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __70__EDCategoryMigrator__categorizeMessageBatch_cancelationToken_reason___block_invoke;
     v19[3] = &unk_1E82517E8;
     v24 = a2;
-    v20 = v10;
-    v21 = self;
+    v20 = tokenCopy;
+    selfCopy = self;
     v22 = v13;
-    v25 = a5;
-    v23 = v9;
-    [v17 performBlock:v19];
+    reasonCopy = reason;
+    v23 = batchCopy;
+    [categorizationWriterScheduler performBlock:v19];
 
     v16 = v20;
   }
@@ -580,10 +580,10 @@ void __70__EDCategoryMigrator__categorizeMessageBatch_cancelationToken_reason___
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_updateCategorizationActivityForMessageBatch:(id)a3 isFinished:(BOOL)a4 cancelationToken:(id)a5
+- (void)_updateCategorizationActivityForMessageBatch:(id)batch isFinished:(BOOL)finished cancelationToken:(id)token
 {
-  v8 = a3;
-  v9 = a5;
+  batchCopy = batch;
+  tokenCopy = token;
   if (EMBlackPearlIsFeatureEnabled())
   {
     v10 = objc_alloc_init(MEMORY[0x1E695DFA8]);
@@ -593,7 +593,7 @@ void __70__EDCategoryMigrator__categorizeMessageBatch_cancelationToken_reason___
     v19[3] = &unk_1E8251810;
     v11 = v10;
     v20 = v11;
-    [v8 enumerateObjectsUsingBlock:v19];
+    [batchCopy enumerateObjectsUsingBlock:v19];
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __95__EDCategoryMigrator__updateCategorizationActivityForMessageBatch_isFinished_cancelationToken___block_invoke_2;
@@ -605,8 +605,8 @@ void __70__EDCategoryMigrator__categorizeMessageBatch_cancelationToken_reason___
     v14[2] = __95__EDCategoryMigrator__updateCategorizationActivityForMessageBatch_isFinished_cancelationToken___block_invoke_2_41;
     v14[3] = &unk_1E82518D8;
     v14[4] = self;
-    v17 = a4;
-    v15 = v9;
+    finishedCopy = finished;
+    v15 = tokenCopy;
     v16 = v12;
     v13 = v12;
     [v11 enumerateObjectsUsingBlock:v14];

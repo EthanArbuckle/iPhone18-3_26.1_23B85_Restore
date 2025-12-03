@@ -5,20 +5,20 @@
 - (BOOL)isRequestSelectedForSampling;
 - (BOOL)isSamplingDateCurrent;
 - (void)_createDictationSampledPlistIfItDoesNotExist;
-- (void)_writeDictationSamplingVariablesToFile:(id)a3;
+- (void)_writeDictationSamplingVariablesToFile:(id)file;
 - (void)createDictationSampledPlistIfItDoesNotExist;
 - (void)decrementRequestCount;
-- (void)setRequestCount:(int64_t)a3;
+- (void)setRequestCount:(int64_t)count;
 - (void)updateDateToCurrent;
-- (void)updateRequestCountWithFlag:(BOOL)a3;
+- (void)updateRequestCountWithFlag:(BOOL)flag;
 @end
 
 @implementation ADDictationOnDeviceSampling
 
-- (void)_writeDictationSamplingVariablesToFile:(id)a3
+- (void)_writeDictationSamplingVariablesToFile:(id)file
 {
-  v4 = a3;
-  if (([(NSMutableDictionary *)self->_dictationSamplingVaribles writeToFile:v4 atomically:1]& 1) == 0)
+  fileCopy = file;
+  if (([(NSMutableDictionary *)self->_dictationSamplingVaribles writeToFile:fileCopy atomically:1]& 1) == 0)
   {
     v5 = AFSiriLogContextSpeech;
     if (os_log_type_enabled(AFSiriLogContextSpeech, OS_LOG_TYPE_ERROR))
@@ -26,7 +26,7 @@
       v6 = 136315394;
       v7 = "[ADDictationOnDeviceSampling _writeDictationSamplingVariablesToFile:]";
       v8 = 2112;
-      v9 = v4;
+      v9 = fileCopy;
       _os_log_error_impl(&_mh_execute_header, v5, OS_LOG_TYPE_ERROR, "%s Dictation Sampling: Error while writing _dictationSamplingVaribles to plist - %@", &v6, 0x16u);
     }
   }
@@ -97,9 +97,9 @@ LABEL_9:
 - (BOOL)isRequestSelectedForSampling
 {
   v3 = +[AFPreferences sharedPreferences];
-  v4 = [v3 isDictationHIPAACompliant];
+  isDictationHIPAACompliant = [v3 isDictationHIPAACompliant];
 
-  if (v4)
+  if (isDictationHIPAACompliant)
   {
     v5 = AFSiriLogContextConnection;
     if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
@@ -117,9 +117,9 @@ LABEL_16:
   else
   {
     v7 = +[AFPreferences sharedPreferences];
-    v8 = [v7 isDictationOnDeviceSamplingDisabled];
+    isDictationOnDeviceSamplingDisabled = [v7 isDictationOnDeviceSamplingDisabled];
 
-    if (v8)
+    if (isDictationOnDeviceSamplingDisabled)
     {
       v5 = AFSiriLogContextConnection;
       if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
@@ -134,9 +134,9 @@ LABEL_16:
     else
     {
       v9 = +[AFPreferences sharedPreferences];
-      v10 = [v9 siriDataSharingOptInStatus];
+      siriDataSharingOptInStatus = [v9 siriDataSharingOptInStatus];
 
-      if (v10 == 1)
+      if (siriDataSharingOptInStatus == 1)
       {
         if (self->_numberOfRequestsTillNow)
         {
@@ -243,9 +243,9 @@ LABEL_16:
   [(ADDictationOnDeviceSampling *)self createDictationSampledPlistIfItDoesNotExist];
 }
 
-- (void)setRequestCount:(int64_t)a3
+- (void)setRequestCount:(int64_t)count
 {
-  self->_numberOfRequestsTillNow = a3;
+  self->_numberOfRequestsTillNow = count;
   v4 = [NSNumber numberWithInteger:?];
   [(NSMutableDictionary *)self->_dictationSamplingVaribles setObject:v4 forKeyedSubscript:@"numberOfRequestsTillNow"];
 
@@ -272,10 +272,10 @@ LABEL_16:
   }
 }
 
-- (void)updateRequestCountWithFlag:(BOOL)a3
+- (void)updateRequestCountWithFlag:(BOOL)flag
 {
-  self->_isRequestConsideredForSampling = a3;
-  if (a3)
+  self->_isRequestConsideredForSampling = flag;
+  if (flag)
   {
     [(ADDictationOnDeviceSampling *)self incrementRequestCount];
   }
@@ -293,9 +293,9 @@ LABEL_16:
     fileQueue = v2->_fileQueue;
     v2->_fileQueue = v4;
 
-    v6 = [objc_opt_class() _readDictationSampledPlist];
+    _readDictationSampledPlist = [objc_opt_class() _readDictationSampledPlist];
     dictationSamplingVaribles = v2->_dictationSamplingVaribles;
-    v2->_dictationSamplingVaribles = v6;
+    v2->_dictationSamplingVaribles = _readDictationSampledPlist;
 
     if ([(NSMutableDictionary *)v2->_dictationSamplingVaribles count])
     {

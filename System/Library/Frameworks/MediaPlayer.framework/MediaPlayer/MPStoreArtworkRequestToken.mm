@@ -1,12 +1,12 @@
 @interface MPStoreArtworkRequestToken
-+ (id)tokenWithImageArtworkInfo:(id)a3;
-+ (id)tokenWithVideoArtworkInfo:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)tokenWithImageArtworkInfo:(id)info;
++ (id)tokenWithVideoArtworkInfo:(id)info;
+- (BOOL)isEqual:(id)equal;
 - (MPStoreArtworkRequestToken)init;
-- (MPStoreArtworkRequestToken)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (MPStoreArtworkRequestToken)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)stringRepresentation;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPStoreArtworkRequestToken
@@ -24,8 +24,8 @@
   {
     v3 = 24;
 LABEL_5:
-    v4 = [*(&self->super.isa + v3) stringRepresentation];
-    v5 = [v4 copy];
+    stringRepresentation = [*(&self->super.isa + v3) stringRepresentation];
+    v5 = [stringRepresentation copy];
 
     goto LABEL_7;
   }
@@ -36,7 +36,7 @@ LABEL_7:
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   v5 = v4;
@@ -54,22 +54,22 @@ LABEL_7:
   return v5;
 }
 
-- (MPStoreArtworkRequestToken)initWithCoder:(id)a3
+- (MPStoreArtworkRequestToken)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v21.receiver = self;
   v21.super_class = MPStoreArtworkRequestToken;
   v5 = [(MPStoreArtworkRequestToken *)&v21 init];
   if (v5)
   {
-    v5->_artworkInfoType = [v4 decodeIntegerForKey:@"artworkInfoType"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"cropStyle"];
+    v5->_artworkInfoType = [coderCopy decodeIntegerForKey:@"artworkInfoType"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"cropStyle"];
     cropStyle = v5->_cropStyle;
     v5->_cropStyle = v6;
 
-    if ([v4 containsValueForKey:@"format"])
+    if ([coderCopy containsValueForKey:@"format"])
     {
-      v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"format"];
+      v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"format"];
       format = v5->_format;
       v5->_format = v8;
     }
@@ -86,19 +86,19 @@ LABEL_7:
       objc_storeStrong(&v5->_format, *v11);
     }
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sourceEditorialArtworkKind"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sourceEditorialArtworkKind"];
     sourceEditorialArtworkKind = v5->_sourceEditorialArtworkKind;
     v5->_sourceEditorialArtworkKind = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"artworkURL"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"artworkURL"];
     artworkURL = v5->_artworkURL;
     v5->_artworkURL = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"videoArtwork"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"videoArtwork"];
     videoArtworkInfo = v5->_videoArtworkInfo;
     v5->_videoArtworkInfo = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"imageArtwork"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"imageArtwork"];
     imageArtworkInfo = v5->_imageArtworkInfo;
     v5->_imageArtworkInfo = v18;
   }
@@ -106,23 +106,23 @@ LABEL_7:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   artworkInfoType = self->_artworkInfoType;
-  v5 = a3;
-  [v5 encodeInteger:artworkInfoType forKey:@"artworkInfoType"];
-  [v5 encodeObject:self->_cropStyle forKey:@"cropStyle"];
-  [v5 encodeObject:self->_format forKey:@"format"];
-  [v5 encodeObject:self->_sourceEditorialArtworkKind forKey:@"sourceEditorialArtworkKind"];
-  [v5 encodeObject:self->_artworkURL forKey:@"artworkURL"];
-  [v5 encodeObject:self->_videoArtworkInfo forKey:@"videoArtwork"];
-  [v5 encodeObject:self->_imageArtworkInfo forKey:@"imageArtwork"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:artworkInfoType forKey:@"artworkInfoType"];
+  [coderCopy encodeObject:self->_cropStyle forKey:@"cropStyle"];
+  [coderCopy encodeObject:self->_format forKey:@"format"];
+  [coderCopy encodeObject:self->_sourceEditorialArtworkKind forKey:@"sourceEditorialArtworkKind"];
+  [coderCopy encodeObject:self->_artworkURL forKey:@"artworkURL"];
+  [coderCopy encodeObject:self->_videoArtworkInfo forKey:@"videoArtwork"];
+  [coderCopy encodeObject:self->_imageArtworkInfo forKey:@"imageArtwork"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
@@ -132,7 +132,7 @@ LABEL_7:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = v5;
       if (self->_artworkInfoType == v5->_artworkInfoType)
       {
@@ -258,13 +258,13 @@ LABEL_22:
   return v3;
 }
 
-+ (id)tokenWithVideoArtworkInfo:(id)a3
++ (id)tokenWithVideoArtworkInfo:(id)info
 {
-  if (a3)
+  if (info)
   {
-    v3 = a3;
+    infoCopy = info;
     v4 = objc_alloc_init(MPStoreArtworkRequestToken);
-    [(MPStoreArtworkRequestToken *)v4 setVideoArtworkInfo:v3];
+    [(MPStoreArtworkRequestToken *)v4 setVideoArtworkInfo:infoCopy];
 
     [(MPStoreArtworkRequestToken *)v4 setArtworkInfoType:1];
   }
@@ -277,13 +277,13 @@ LABEL_22:
   return v4;
 }
 
-+ (id)tokenWithImageArtworkInfo:(id)a3
++ (id)tokenWithImageArtworkInfo:(id)info
 {
-  if (a3)
+  if (info)
   {
-    v3 = a3;
+    infoCopy = info;
     v4 = objc_alloc_init(MPStoreArtworkRequestToken);
-    [(MPStoreArtworkRequestToken *)v4 setImageArtworkInfo:v3];
+    [(MPStoreArtworkRequestToken *)v4 setImageArtworkInfo:infoCopy];
 
     [(MPStoreArtworkRequestToken *)v4 setArtworkInfoType:0];
   }

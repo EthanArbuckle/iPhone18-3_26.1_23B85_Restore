@@ -1,17 +1,17 @@
 @interface _UIViewControllerTransitionOptions
 - (CGRect)frameOfSourceInDestination;
 - (NSArray)dimmingVisualEffects;
-- (void)setDimmingColor:(id)a3;
-- (void)setDimmingVisualEffects:(id)a3;
+- (void)setDimmingColor:(id)color;
+- (void)setDimmingVisualEffects:(id)effects;
 @end
 
 @implementation _UIViewControllerTransitionOptions
 
-- (void)setDimmingColor:(id)a3
+- (void)setDimmingColor:(id)color
 {
   v4 = *(self + OBJC_IVAR____UIViewControllerTransitionOptions_dimmingColor);
-  *(self + OBJC_IVAR____UIViewControllerTransitionOptions_dimmingColor) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____UIViewControllerTransitionOptions_dimmingColor) = color;
+  colorCopy = color;
 }
 
 - (NSArray)dimmingVisualEffects
@@ -31,9 +31,9 @@
   return v2;
 }
 
-- (void)setDimmingVisualEffects:(id)a3
+- (void)setDimmingVisualEffects:(id)effects
 {
-  if (a3)
+  if (effects)
   {
     sub_188A34624(0, &unk_1EA931120);
     v4 = sub_18A4A7548();

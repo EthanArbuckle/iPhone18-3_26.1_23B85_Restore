@@ -1,6 +1,6 @@
 @interface VCUserActivityDonation
 + (id)timestampDateFormatter;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)fullDescription;
 - (NSString)sourceAppIdentifierForDisplay;
 - (NSString)sourceAppIdentifierForLaunching;
@@ -8,8 +8,8 @@
 - (NSString)suggestedPhrase;
 - (NSString)title;
 - (NSUserActivity)userActivity;
-- (VCUserActivityDonation)initWithEvent:(id)a3;
-- (VCUserActivityDonation)initWithUserActivity:(id)a3 identifier:(id)a4 sourceAppIdentifier:(id)a5 date:(id)a6;
+- (VCUserActivityDonation)initWithEvent:(id)event;
+- (VCUserActivityDonation)initWithUserActivity:(id)activity identifier:(id)identifier sourceAppIdentifier:(id)appIdentifier date:(id)date;
 - (id)dateString;
 - (id)uniqueProperty;
 @end
@@ -18,20 +18,20 @@
 
 - (id)uniqueProperty
 {
-  v3 = [(VCUserActivityDonation *)self userActivity];
-  v4 = [v3 userInfo];
-  v5 = [v4 mutableCopy];
+  userActivity = [(VCUserActivityDonation *)self userActivity];
+  userInfo = [userActivity userInfo];
+  v5 = [userInfo mutableCopy];
 
-  v6 = [(VCUserActivityDonation *)self userActivity];
-  v7 = [v6 requiredUserInfoKeys];
+  userActivity2 = [(VCUserActivityDonation *)self userActivity];
+  requiredUserInfoKeys = [userActivity2 requiredUserInfoKeys];
 
-  if (v7)
+  if (requiredUserInfoKeys)
   {
     v17 = MEMORY[0x1E69E9820];
     v18 = 3221225472;
     v19 = __40__VCUserActivityDonation_uniqueProperty__block_invoke;
     v20 = &unk_1E7AFFDA8;
-    v21 = v7;
+    v21 = requiredUserInfoKeys;
     v22 = v5;
     [v22 enumerateKeysAndObjectsUsingBlock:&v17];
   }
@@ -49,18 +49,18 @@
   v9 = ;
   [v5 setObject:v9 forKeyedSubscript:@"VCUserActivitySourceAppIdentifier"];
 
-  v10 = [(VCUserActivityDonation *)self userActivity];
-  v11 = [v10 activityType];
-  [v5 setObject:v11 forKeyedSubscript:@"VCUserActivityType"];
+  userActivity3 = [(VCUserActivityDonation *)self userActivity];
+  activityType = [userActivity3 activityType];
+  [v5 setObject:activityType forKeyedSubscript:@"VCUserActivityType"];
 
-  v12 = [(VCUserActivityDonation *)self userActivity];
-  v13 = [v12 webpageURL];
+  userActivity4 = [(VCUserActivityDonation *)self userActivity];
+  webpageURL = [userActivity4 webpageURL];
 
-  if (v13)
+  if (webpageURL)
   {
-    v14 = [(VCUserActivityDonation *)self userActivity];
-    v15 = [v14 webpageURL];
-    [v5 setObject:v15 forKeyedSubscript:@"VCUserActivityWebpageURL"];
+    userActivity5 = [(VCUserActivityDonation *)self userActivity];
+    webpageURL2 = [userActivity5 webpageURL];
+    [v5 setObject:webpageURL2 forKeyedSubscript:@"VCUserActivityWebpageURL"];
   }
 
   return v5;
@@ -95,24 +95,24 @@ void __40__VCUserActivityDonation_uniqueProperty__block_invoke(uint64_t a1, void
 
 - (NSString)suggestedPhrase
 {
-  v2 = [(VCUserActivityDonation *)self userActivity];
-  v3 = [v2 suggestedInvocationPhrase];
+  userActivity = [(VCUserActivityDonation *)self userActivity];
+  suggestedInvocationPhrase = [userActivity suggestedInvocationPhrase];
 
-  return v3;
+  return suggestedInvocationPhrase;
 }
 
 - (NSString)fullDescription
 {
-  v3 = [(VCUserActivityDonation *)self userActivity];
+  userActivity = [(VCUserActivityDonation *)self userActivity];
   v15 = MEMORY[0x1E696AEC0];
-  v4 = [v3 title];
-  v5 = [v3 activityType];
-  v6 = [(VCUserActivityDonation *)self sourceAppIdentifier];
-  v7 = [(VCUserActivityDonation *)self dateString];
-  v8 = [v3 requiredUserInfoKeys];
-  v9 = [v3 userInfo];
-  v10 = [v3 webpageURL];
-  if ([v3 _isEligibleForPrediction])
+  title = [userActivity title];
+  activityType = [userActivity activityType];
+  sourceAppIdentifier = [(VCUserActivityDonation *)self sourceAppIdentifier];
+  dateString = [(VCUserActivityDonation *)self dateString];
+  requiredUserInfoKeys = [userActivity requiredUserInfoKeys];
+  userInfo = [userActivity userInfo];
+  webpageURL = [userActivity webpageURL];
+  if ([userActivity _isEligibleForPrediction])
   {
     v11 = @"Yes";
   }
@@ -122,68 +122,68 @@ void __40__VCUserActivityDonation_uniqueProperty__block_invoke(uint64_t a1, void
     v11 = @"No";
   }
 
-  v12 = [v3 interaction];
-  v13 = [v15 stringWithFormat:@"Title: %@\nActivity Type: %@\nBundle Identifier: %@\nDate: %@\nRequired User Info Keys: %@\nUser Info: %@\nWeb Page URL: %@\nEligible For Prediction: %@\nInteraction: %@\n", v4, v5, v6, v7, v8, v9, v10, v11, v12];
+  interaction = [userActivity interaction];
+  v13 = [v15 stringWithFormat:@"Title: %@\nActivity Type: %@\nBundle Identifier: %@\nDate: %@\nRequired User Info Keys: %@\nUser Info: %@\nWeb Page URL: %@\nEligible For Prediction: %@\nInteraction: %@\n", title, activityType, sourceAppIdentifier, dateString, requiredUserInfoKeys, userInfo, webpageURL, v11, interaction];
 
   return v13;
 }
 
 - (NSString)subtitle
 {
-  v3 = [(VCUserActivityDonation *)self sourceAppIdentifierForDisplay];
-  v4 = [v3 isEqualToString:@"com.apple.mobilenotes"];
+  sourceAppIdentifierForDisplay = [(VCUserActivityDonation *)self sourceAppIdentifierForDisplay];
+  v4 = [sourceAppIdentifierForDisplay isEqualToString:@"com.apple.mobilenotes"];
 
   if (v4)
   {
-    v5 = 0;
+    activitySubtitle = 0;
   }
 
   else
   {
-    v6 = [(VCUserActivityDonation *)self shortcut];
-    v5 = [v6 activitySubtitle];
+    shortcut = [(VCUserActivityDonation *)self shortcut];
+    activitySubtitle = [shortcut activitySubtitle];
   }
 
-  return v5;
+  return activitySubtitle;
 }
 
 - (NSString)title
 {
-  v2 = [(VCUserActivityDonation *)self userActivity];
-  v3 = [v2 title];
+  userActivity = [(VCUserActivityDonation *)self userActivity];
+  title = [userActivity title];
 
-  return v3;
+  return title;
 }
 
 - (id)dateString
 {
-  v3 = [objc_opt_class() timestampDateFormatter];
-  v4 = [(VCUserActivityDonation *)self date];
-  v5 = [v3 stringFromDate:v4];
+  timestampDateFormatter = [objc_opt_class() timestampDateFormatter];
+  date = [(VCUserActivityDonation *)self date];
+  v5 = [timestampDateFormatter stringFromDate:date];
 
   return v5;
 }
 
 - (NSString)sourceAppIdentifierForLaunching
 {
-  v2 = [(VCUserActivityDonation *)self shortcut];
-  v3 = [v2 activityBundleIdentifier];
+  shortcut = [(VCUserActivityDonation *)self shortcut];
+  activityBundleIdentifier = [shortcut activityBundleIdentifier];
 
-  return v3;
+  return activityBundleIdentifier;
 }
 
 - (NSString)sourceAppIdentifierForDisplay
 {
-  v2 = [(VCUserActivityDonation *)self shortcut];
-  v3 = [v2 activityBundleIdentifier];
+  shortcut = [(VCUserActivityDonation *)self shortcut];
+  activityBundleIdentifier = [shortcut activityBundleIdentifier];
 
-  return v3;
+  return activityBundleIdentifier;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -191,7 +191,7 @@ void __40__VCUserActivityDonation_uniqueProperty__block_invoke(uint64_t a1, void
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(NSString *)self->_identifier isEqualToString:v4->_identifier];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(NSString *)self->_identifier isEqualToString:equalCopy->_identifier];
   }
 
   return v5;
@@ -199,52 +199,52 @@ void __40__VCUserActivityDonation_uniqueProperty__block_invoke(uint64_t a1, void
 
 - (NSUserActivity)userActivity
 {
-  v2 = [(VCUserActivityDonation *)self shortcut];
-  v3 = [v2 userActivity];
+  shortcut = [(VCUserActivityDonation *)self shortcut];
+  userActivity = [shortcut userActivity];
 
-  return v3;
+  return userActivity;
 }
 
-- (VCUserActivityDonation)initWithEvent:(id)a3
+- (VCUserActivityDonation)initWithEvent:(id)event
 {
   v63 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v47 = v4;
-  if (v4)
+  eventCopy = event;
+  v47 = eventCopy;
+  if (eventCopy)
   {
-    v5 = v4;
-    v6 = [v5 metadata];
-    v7 = [MEMORY[0x1E6997948] userActivityRequiredString];
-    v51 = [v6 objectForKeyedSubscript:v7];
+    v5 = eventCopy;
+    metadata = [v5 metadata];
+    userActivityRequiredString = [MEMORY[0x1E6997948] userActivityRequiredString];
+    v51 = [metadata objectForKeyedSubscript:userActivityRequiredString];
 
     if (v51)
     {
       v53 = [objc_alloc(MEMORY[0x1E69636A8]) _initWithUserActivityStrings:v51 secondaryString:0 optionalData:0];
-      v8 = [v5 metadata];
-      v9 = [MEMORY[0x1E6997948] suggestedInvocationPhrase];
-      v10 = [v8 objectForKeyedSubscript:v9];
+      metadata2 = [v5 metadata];
+      suggestedInvocationPhrase = [MEMORY[0x1E6997948] suggestedInvocationPhrase];
+      v10 = [metadata2 objectForKeyedSubscript:suggestedInvocationPhrase];
       [v53 setSuggestedInvocationPhrase:v10];
 
-      v11 = [v5 metadata];
-      v12 = [MEMORY[0x1E6997948] isEligibleForPrediction];
-      v46 = [v11 objectForKeyedSubscript:v12];
+      metadata3 = [v5 metadata];
+      isEligibleForPrediction = [MEMORY[0x1E6997948] isEligibleForPrediction];
+      v46 = [metadata3 objectForKeyedSubscript:isEligibleForPrediction];
 
       if (v46)
       {
         [v53 setEligibleForPrediction:{-[NSObject BOOLValue](v46, "BOOLValue")}];
       }
 
-      v13 = [v5 metadata];
-      v14 = [MEMORY[0x1E6997948] itemRelatedContentURL];
-      v50 = [v13 objectForKeyedSubscript:v14];
+      metadata4 = [v5 metadata];
+      itemRelatedContentURL = [MEMORY[0x1E6997948] itemRelatedContentURL];
+      v50 = [metadata4 objectForKeyedSubscript:itemRelatedContentURL];
 
-      v15 = [v5 metadata];
-      v16 = [MEMORY[0x1E6997948] itemRelatedUniqueIdentifier];
-      v49 = [v15 objectForKeyedSubscript:v16];
+      metadata5 = [v5 metadata];
+      itemRelatedUniqueIdentifier = [MEMORY[0x1E6997948] itemRelatedUniqueIdentifier];
+      v49 = [metadata5 objectForKeyedSubscript:itemRelatedUniqueIdentifier];
 
-      v17 = [v5 metadata];
-      v18 = [MEMORY[0x1E6997948] contentDescription];
-      v48 = [v17 objectForKeyedSubscript:v18];
+      metadata6 = [v5 metadata];
+      contentDescription = [MEMORY[0x1E6997948] contentDescription];
+      v48 = [metadata6 objectForKeyedSubscript:contentDescription];
 
       *buf = 0;
       *&buf[8] = buf;
@@ -253,16 +253,16 @@ void __40__VCUserActivityDonation_uniqueProperty__block_invoke(uint64_t a1, void
       v61 = __Block_byref_object_dispose__1141;
       v62 = 0;
       v19 = dispatch_semaphore_create(0);
-      v45 = [MEMORY[0x1E6964E78] defaultSearchableIndex];
+      defaultSearchableIndex = [MEMORY[0x1E6964E78] defaultSearchableIndex];
       v20 = *MEMORY[0x1E6964C08];
       v58[0] = @"_kMDItemThumbnailDataPath";
       v58[1] = v20;
       v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v58 count:2];
-      v22 = [v5 source];
-      v23 = [v22 bundleID];
-      v24 = [v5 metadata];
-      v25 = [MEMORY[0x1E6997948] itemIdentifier];
-      v26 = [v24 objectForKeyedSubscript:v25];
+      source = [v5 source];
+      bundleID = [source bundleID];
+      metadata7 = [v5 metadata];
+      itemIdentifier = [MEMORY[0x1E6997948] itemIdentifier];
+      v26 = [metadata7 objectForKeyedSubscript:itemIdentifier];
       v57 = v26;
       v27 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v57 count:1];
       v28 = *MEMORY[0x1E696A378];
@@ -273,15 +273,15 @@ void __40__VCUserActivityDonation_uniqueProperty__block_invoke(uint64_t a1, void
       v56 = buf;
       v29 = v19;
       v55 = v29;
-      [v45 slowFetchAttributes:v21 protectionClass:v28 bundleID:v23 identifiers:v27 completionHandler:v54];
+      [defaultSearchableIndex slowFetchAttributes:v21 protectionClass:v28 bundleID:bundleID identifiers:v27 completionHandler:v54];
 
       v30 = dispatch_time(0, 5000000000);
       dispatch_semaphore_wait(v29, v30);
       if (v50 || v49 || v48 || *(*&buf[8] + 40))
       {
         v31 = objc_alloc(MEMORY[0x1E6964E90]);
-        v32 = [*MEMORY[0x1E6982D50] identifier];
-        v33 = [v31 initWithItemContentType:v32];
+        identifier = [*MEMORY[0x1E6982D50] identifier];
+        v33 = [v31 initWithItemContentType:identifier];
 
         [v33 setRelatedUniqueIdentifier:v49];
         [v33 setContentURL:v50];
@@ -299,11 +299,11 @@ void __40__VCUserActivityDonation_uniqueProperty__block_invoke(uint64_t a1, void
       v34 = getWFVoiceShortcutClientLogObject();
       if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
       {
-        v35 = [v5 metadata];
+        metadata8 = [v5 metadata];
         *buf = 136315394;
         *&buf[4] = "VCUserActivityFromEvent";
         *&buf[12] = 2112;
-        *&buf[14] = v35;
+        *&buf[14] = metadata8;
         _os_log_impl(&dword_1B1DE3000, v34, OS_LOG_TYPE_DEFAULT, "%s Missing user activity required string from event.metadata=%@", buf, 0x16u);
       }
 
@@ -312,43 +312,43 @@ void __40__VCUserActivityDonation_uniqueProperty__block_invoke(uint64_t a1, void
 
     if (v53)
     {
-      v36 = [v5 UUID];
-      v37 = [v36 UUIDString];
-      v38 = [v5 value];
-      v39 = [v38 stringValue];
-      v40 = [v5 startDate];
-      self = [(VCUserActivityDonation *)self initWithUserActivity:v53 identifier:v37 sourceAppIdentifier:v39 date:v40];
+      uUID = [v5 UUID];
+      uUIDString = [uUID UUIDString];
+      value = [v5 value];
+      stringValue = [value stringValue];
+      startDate = [v5 startDate];
+      self = [(VCUserActivityDonation *)self initWithUserActivity:v53 identifier:uUIDString sourceAppIdentifier:stringValue date:startDate];
 
-      v41 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v41 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v44 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v44 handleFailureInMethod:a2 object:self file:@"VCUserActivityDonation.m" lineNumber:120 description:{@"Invalid parameter not satisfying: %@", @"event"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"VCUserActivityDonation.m" lineNumber:120 description:{@"Invalid parameter not satisfying: %@", @"event"}];
 
-    v41 = 0;
+    selfCopy = 0;
   }
 
   v42 = *MEMORY[0x1E69E9840];
-  return v41;
+  return selfCopy;
 }
 
-- (VCUserActivityDonation)initWithUserActivity:(id)a3 identifier:(id)a4 sourceAppIdentifier:(id)a5 date:(id)a6
+- (VCUserActivityDonation)initWithUserActivity:(id)activity identifier:(id)identifier sourceAppIdentifier:(id)appIdentifier date:(id)date
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (v11)
+  activityCopy = activity;
+  identifierCopy = identifier;
+  appIdentifierCopy = appIdentifier;
+  dateCopy = date;
+  if (activityCopy)
   {
-    if (v12)
+    if (identifierCopy)
     {
       goto LABEL_3;
     }
@@ -356,51 +356,51 @@ void __40__VCUserActivityDonation_uniqueProperty__block_invoke(uint64_t a1, void
 
   else
   {
-    v24 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v24 handleFailureInMethod:a2 object:self file:@"VCUserActivityDonation.m" lineNumber:98 description:{@"Invalid parameter not satisfying: %@", @"userActivity"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"VCUserActivityDonation.m" lineNumber:98 description:{@"Invalid parameter not satisfying: %@", @"userActivity"}];
 
-    if (v12)
+    if (identifierCopy)
     {
 LABEL_3:
-      if (v13)
+      if (appIdentifierCopy)
       {
         goto LABEL_4;
       }
 
 LABEL_12:
-      v26 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v26 handleFailureInMethod:a2 object:self file:@"VCUserActivityDonation.m" lineNumber:100 description:{@"Invalid parameter not satisfying: %@", @"sourceAppIdentifier"}];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"VCUserActivityDonation.m" lineNumber:100 description:{@"Invalid parameter not satisfying: %@", @"sourceAppIdentifier"}];
 
-      if (v14)
+      if (dateCopy)
       {
         goto LABEL_5;
       }
 
 LABEL_13:
-      v27 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v27 handleFailureInMethod:a2 object:self file:@"VCUserActivityDonation.m" lineNumber:101 description:{@"Invalid parameter not satisfying: %@", @"date"}];
+      currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler3 handleFailureInMethod:a2 object:self file:@"VCUserActivityDonation.m" lineNumber:101 description:{@"Invalid parameter not satisfying: %@", @"date"}];
 
       goto LABEL_14;
     }
   }
 
-  v25 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v25 handleFailureInMethod:a2 object:self file:@"VCUserActivityDonation.m" lineNumber:99 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
+  currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler4 handleFailureInMethod:a2 object:self file:@"VCUserActivityDonation.m" lineNumber:99 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
 
-  if (!v13)
+  if (!appIdentifierCopy)
   {
     goto LABEL_12;
   }
 
 LABEL_4:
-  if (!v14)
+  if (!dateCopy)
   {
     goto LABEL_13;
   }
 
 LABEL_5:
-  v15 = 0;
-  if (v11 && v12 && v13)
+  selfCopy = 0;
+  if (activityCopy && identifierCopy && appIdentifierCopy)
   {
     v29.receiver = self;
     v29.super_class = VCUserActivityDonation;
@@ -409,31 +409,31 @@ LABEL_5:
     {
       v16 = objc_alloc(MEMORY[0x1E696EA38]);
       v17 = INDisplayableOrLaunchableBundleIdForBundleIdFromUserActivity();
-      v18 = [v16 initWithUserActivity:v11 bundleIdentifier:v17];
+      v18 = [v16 initWithUserActivity:activityCopy bundleIdentifier:v17];
       shortcut = self->_shortcut;
       self->_shortcut = v18;
 
-      v20 = [v12 copy];
+      v20 = [identifierCopy copy];
       identifier = self->_identifier;
       self->_identifier = v20;
 
-      v22 = [v13 copy];
+      v22 = [appIdentifierCopy copy];
       sourceAppIdentifier = self->_sourceAppIdentifier;
       self->_sourceAppIdentifier = v22;
 
-      objc_storeStrong(&self->_date, a6);
+      objc_storeStrong(&self->_date, date);
       self = self;
-      v15 = self;
+      selfCopy = self;
       goto LABEL_15;
     }
 
 LABEL_14:
-    v15 = 0;
+    selfCopy = 0;
   }
 
 LABEL_15:
 
-  return v15;
+  return selfCopy;
 }
 
 + (id)timestampDateFormatter

@@ -1,35 +1,35 @@
 @interface SFAppleIDPersonInfo
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToPersonInfo:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToPersonInfo:(id)info;
 - (BOOL)isStale;
-- (SFAppleIDPersonInfo)initWithCoder:(id)a3;
-- (SFAppleIDPersonInfo)initWithDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFAppleIDPersonInfo)initWithCoder:(id)coder;
+- (SFAppleIDPersonInfo)initWithDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFAppleIDPersonInfo
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   accountIdentifier = self->_accountIdentifier;
-  v9 = v4;
+  v9 = coderCopy;
   if (accountIdentifier)
   {
-    [v4 encodeObject:accountIdentifier forKey:@"AccountIdentifier"];
-    v4 = v9;
+    [coderCopy encodeObject:accountIdentifier forKey:@"AccountIdentifier"];
+    coderCopy = v9;
   }
 
   altDSID = self->_altDSID;
   if (altDSID)
   {
     [v9 encodeObject:altDSID forKey:@"AltDSID"];
-    v4 = v9;
+    coderCopy = v9;
   }
 
-  [v4 encodeInteger:self->_certificateStatus forKey:@"CertificateStatus"];
+  [coderCopy encodeInteger:self->_certificateStatus forKey:@"CertificateStatus"];
   [v9 encodeBool:self->_didMatchEmail forKey:@"DidMatchEmail"];
   [v9 encodeBool:self->_didMatchPhone forKey:@"DidMatchPhone"];
   matchedValue = self->_matchedValue;
@@ -45,41 +45,41 @@
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(SFAppleIDPersonInfo *)self isEqualToPersonInfo:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(SFAppleIDPersonInfo *)self isEqualToPersonInfo:v5];
   }
 
   return v6;
 }
 
-- (SFAppleIDPersonInfo)initWithDictionary:(id)a3
+- (SFAppleIDPersonInfo)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v17.receiver = self;
   v17.super_class = SFAppleIDPersonInfo;
   v5 = [(SFAppleIDPersonInfo *)&v17 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"AccountIdentifier"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"AccountIdentifier"];
     accountIdentifier = v5->_accountIdentifier;
     v5->_accountIdentifier = v6;
 
-    v8 = [v4 objectForKeyedSubscript:@"AltDSID"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"AltDSID"];
     altDSID = v5->_altDSID;
     v5->_altDSID = v8;
 
     v5->_certificateStatus = CFDictionaryGetInt64();
-    v10 = [v4 objectForKeyedSubscript:@"Matched"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"Matched"];
     if ([v10 isEqualToString:@"email"])
     {
       v11 = 8;
@@ -90,11 +90,11 @@
       if (![v10 isEqualToString:@"phone"])
       {
 LABEL_7:
-        v12 = [v4 objectForKeyedSubscript:@"MatchedValue"];
+        v12 = [dictionaryCopy objectForKeyedSubscript:@"MatchedValue"];
         matchedValue = v5->_matchedValue;
         v5->_matchedValue = v12;
 
-        v14 = [v4 objectForKeyedSubscript:@"ValidUntil"];
+        v14 = [dictionaryCopy objectForKeyedSubscript:@"ValidUntil"];
         validUntilDate = v5->_validUntilDate;
         v5->_validUntilDate = v14;
 
@@ -155,59 +155,59 @@ LABEL_8:
 
 - (BOOL)isStale
 {
-  v3 = [MEMORY[0x1E695DF00] date];
-  LOBYTE(self) = [v3 compare:self->_validUntilDate] == 1;
+  date = [MEMORY[0x1E695DF00] date];
+  LOBYTE(self) = [date compare:self->_validUntilDate] == 1;
 
   return self;
 }
 
-- (SFAppleIDPersonInfo)initWithCoder:(id)a3
+- (SFAppleIDPersonInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = SFAppleIDPersonInfo;
   v5 = [(SFAppleIDPersonInfo *)&v16 init];
   if (v5)
   {
-    if ([v4 containsValueForKey:@"AccountIdentifier"])
+    if ([coderCopy containsValueForKey:@"AccountIdentifier"])
     {
-      v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AccountIdentifier"];
+      v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AccountIdentifier"];
       accountIdentifier = v5->_accountIdentifier;
       v5->_accountIdentifier = v6;
     }
 
-    if ([v4 containsValueForKey:@"AltDSID"])
+    if ([coderCopy containsValueForKey:@"AltDSID"])
     {
-      v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AltDSID"];
+      v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AltDSID"];
       altDSID = v5->_altDSID;
       v5->_altDSID = v8;
     }
 
-    if ([v4 containsValueForKey:@"CertificateStatus"])
+    if ([coderCopy containsValueForKey:@"CertificateStatus"])
     {
-      v5->_certificateStatus = [v4 decodeIntegerForKey:@"CertificateStatus"];
+      v5->_certificateStatus = [coderCopy decodeIntegerForKey:@"CertificateStatus"];
     }
 
-    if ([v4 containsValueForKey:@"DidMatchEmail"])
+    if ([coderCopy containsValueForKey:@"DidMatchEmail"])
     {
-      v5->_didMatchEmail = [v4 decodeBoolForKey:@"DidMatchEmail"];
+      v5->_didMatchEmail = [coderCopy decodeBoolForKey:@"DidMatchEmail"];
     }
 
-    if ([v4 containsValueForKey:@"DidMatchPhone"])
+    if ([coderCopy containsValueForKey:@"DidMatchPhone"])
     {
-      v5->_didMatchPhone = [v4 decodeBoolForKey:@"DidMatchPhone"];
+      v5->_didMatchPhone = [coderCopy decodeBoolForKey:@"DidMatchPhone"];
     }
 
-    if ([v4 containsValueForKey:@"MatchedValue"])
+    if ([coderCopy containsValueForKey:@"MatchedValue"])
     {
-      v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MatchedValue"];
+      v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MatchedValue"];
       matchedValue = v5->_matchedValue;
       v5->_matchedValue = v10;
     }
 
-    if ([v4 containsValueForKey:@"MatchedValue"])
+    if ([coderCopy containsValueForKey:@"MatchedValue"])
     {
-      v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ValidUntilDate"];
+      v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ValidUntilDate"];
       validUntilDate = v5->_validUntilDate;
       v5->_validUntilDate = v12;
     }
@@ -218,9 +218,9 @@ LABEL_8:
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = v4;
   if (v4)
   {
@@ -236,10 +236,10 @@ LABEL_8:
   return v5;
 }
 
-- (BOOL)isEqualToPersonInfo:(id)a3
+- (BOOL)isEqualToPersonInfo:(id)info
 {
-  v6 = a3;
-  if (self == v6)
+  infoCopy = info;
+  if (self == infoCopy)
   {
     v17 = 1;
     goto LABEL_17;
@@ -247,17 +247,17 @@ LABEL_8:
 
   [(SFAppleIDPersonInfo *)self accountIdentifier];
   objc_claimAutoreleasedReturnValue();
-  v7 = [OUTLINED_FUNCTION_2_0() accountIdentifier];
-  v8 = v7;
-  if (v3 == v7)
+  accountIdentifier = [OUTLINED_FUNCTION_2_0() accountIdentifier];
+  v8 = accountIdentifier;
+  if (v3 == accountIdentifier)
   {
   }
 
   else
   {
-    v9 = [(SFAppleIDPersonInfo *)self accountIdentifier];
-    v10 = [(SFAppleIDPersonInfo *)v6 accountIdentifier];
-    v11 = OUTLINED_FUNCTION_1(v10);
+    accountIdentifier2 = [(SFAppleIDPersonInfo *)self accountIdentifier];
+    accountIdentifier3 = [(SFAppleIDPersonInfo *)infoCopy accountIdentifier];
+    v11 = OUTLINED_FUNCTION_1(accountIdentifier3);
 
     if (!v11)
     {
@@ -267,17 +267,17 @@ LABEL_8:
 
   [(SFAppleIDPersonInfo *)self altDSID];
   objc_claimAutoreleasedReturnValue();
-  v12 = [OUTLINED_FUNCTION_2_0() altDSID];
-  v13 = v12;
-  if (v3 == v12)
+  altDSID = [OUTLINED_FUNCTION_2_0() altDSID];
+  v13 = altDSID;
+  if (v3 == altDSID)
   {
   }
 
   else
   {
-    v14 = [(SFAppleIDPersonInfo *)self altDSID];
-    v15 = [(SFAppleIDPersonInfo *)v6 altDSID];
-    v16 = OUTLINED_FUNCTION_1(v15);
+    altDSID2 = [(SFAppleIDPersonInfo *)self altDSID];
+    altDSID3 = [(SFAppleIDPersonInfo *)infoCopy altDSID];
+    v16 = OUTLINED_FUNCTION_1(altDSID3);
 
     if (!v16)
     {
@@ -293,31 +293,31 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  v18 = [(SFAppleIDPersonInfo *)self didMatchEmail];
-  if (v18 != [(SFAppleIDPersonInfo *)v6 didMatchEmail])
+  didMatchEmail = [(SFAppleIDPersonInfo *)self didMatchEmail];
+  if (didMatchEmail != [(SFAppleIDPersonInfo *)infoCopy didMatchEmail])
   {
     goto LABEL_8;
   }
 
-  v19 = [(SFAppleIDPersonInfo *)self didMatchPhone];
-  if (v19 != [(SFAppleIDPersonInfo *)v6 didMatchPhone])
+  didMatchPhone = [(SFAppleIDPersonInfo *)self didMatchPhone];
+  if (didMatchPhone != [(SFAppleIDPersonInfo *)infoCopy didMatchPhone])
   {
     goto LABEL_8;
   }
 
   [(SFAppleIDPersonInfo *)self validUntilDate];
   objc_claimAutoreleasedReturnValue();
-  v20 = [OUTLINED_FUNCTION_2_0() validUntilDate];
-  if (v19 == v20)
+  validUntilDate = [OUTLINED_FUNCTION_2_0() validUntilDate];
+  if (didMatchPhone == validUntilDate)
   {
     v17 = 1;
   }
 
   else
   {
-    v21 = [(SFAppleIDPersonInfo *)self validUntilDate];
-    v22 = [(SFAppleIDPersonInfo *)v6 validUntilDate];
-    v17 = OUTLINED_FUNCTION_1(v22);
+    validUntilDate2 = [(SFAppleIDPersonInfo *)self validUntilDate];
+    validUntilDate3 = [(SFAppleIDPersonInfo *)infoCopy validUntilDate];
+    v17 = OUTLINED_FUNCTION_1(validUntilDate3);
   }
 
 LABEL_17:

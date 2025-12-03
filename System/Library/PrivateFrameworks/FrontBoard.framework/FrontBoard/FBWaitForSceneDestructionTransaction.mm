@@ -1,30 +1,30 @@
 @interface FBWaitForSceneDestructionTransaction
-- (FBWaitForSceneDestructionTransaction)initWithScene:(id)a3;
+- (FBWaitForSceneDestructionTransaction)initWithScene:(id)scene;
 - (id)_customizedDescriptionProperties;
 - (void)_begin;
 - (void)_didComplete;
 - (void)dealloc;
-- (void)sceneDidInvalidate:(id)a3;
+- (void)sceneDidInvalidate:(id)invalidate;
 @end
 
 @implementation FBWaitForSceneDestructionTransaction
 
-- (FBWaitForSceneDestructionTransaction)initWithScene:(id)a3
+- (FBWaitForSceneDestructionTransaction)initWithScene:(id)scene
 {
-  v6 = a3;
-  if (!v6)
+  sceneCopy = scene;
+  if (!sceneCopy)
   {
     [(FBWaitForSceneDestructionTransaction *)a2 initWithScene:?];
   }
 
-  v7 = v6;
+  v7 = sceneCopy;
   v11.receiver = self;
   v11.super_class = FBWaitForSceneDestructionTransaction;
   v8 = [(FBTransaction *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_sceneToWaitForDeath, a3);
+    objc_storeStrong(&v8->_sceneToWaitForDeath, scene);
   }
 
   return v9;
@@ -61,27 +61,27 @@
 
 - (id)_customizedDescriptionProperties
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(FBScene *)self->_sceneToWaitForDeath succinctDescription];
-  [v3 setObject:v4 forKey:@"Scene"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  succinctDescription = [(FBScene *)self->_sceneToWaitForDeath succinctDescription];
+  [dictionary setObject:succinctDescription forKey:@"Scene"];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)sceneDidInvalidate:(id)a3
+- (void)sceneDidInvalidate:(id)invalidate
 {
-  if (self->_sceneToWaitForDeath == a3)
+  if (self->_sceneToWaitForDeath == invalidate)
   {
     block[7] = v3;
     block[8] = v4;
-    [a3 removeObserver:self];
-    v6 = [(FBWaitForSceneDestructionTransaction *)self queue];
+    [invalidate removeObserver:self];
+    queue = [(FBWaitForSceneDestructionTransaction *)self queue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __59__FBWaitForSceneDestructionTransaction_sceneDidInvalidate___block_invoke;
     block[3] = &unk_1E783B580;
     block[4] = self;
-    dispatch_async(v6, block);
+    dispatch_async(queue, block);
   }
 }
 

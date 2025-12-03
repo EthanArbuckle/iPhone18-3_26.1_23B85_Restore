@@ -72,9 +72,9 @@
   v6 = shared_filesystem_metadata_snapshot_service_log_handle();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
-    v7 = [v5 dictionaryRepresentation];
+    dictionaryRepresentation = [v5 dictionaryRepresentation];
     v8 = 138543362;
-    v9 = v7;
+    v9 = dictionaryRepresentation;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Preferences (defaults): %{public}@", &v8, 0xCu);
   }
 }

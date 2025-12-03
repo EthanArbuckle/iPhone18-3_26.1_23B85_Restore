@@ -1,20 +1,20 @@
 @interface CEIcon
-- (CEIcon)initWithCoder:(id)a3;
-- (CEIcon)initWithDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CEIcon)initWithCoder:(id)coder;
+- (CEIcon)initWithDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation CEIcon
 
-- (CEIcon)initWithDictionary:(id)a3
+- (CEIcon)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = CEIcon;
   v5 = [(CEIcon *)&v10 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"type"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"type"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -36,15 +36,15 @@
   return v5;
 }
 
-- (CEIcon)initWithCoder:(id)a3
+- (CEIcon)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = CEIcon;
   v5 = [(CEIcon *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"type"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"type"];
     type = v5->_type;
     v5->_type = v6;
   }
@@ -52,7 +52,7 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[CEIcon allocWithZone:?]];
   [(CEIcon *)v4 setType:self->_type];

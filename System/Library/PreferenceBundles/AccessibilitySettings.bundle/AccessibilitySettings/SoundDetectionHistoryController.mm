@@ -1,14 +1,14 @@
 @interface SoundDetectionHistoryController
-+ (BOOL)_deleteFilesForSpecifier:(id)a3;
++ (BOOL)_deleteFilesForSpecifier:(id)specifier;
 + (id)_axParseSoundDetectionRecordingFiles;
 + (id)_directory;
-+ (id)_formatDateFromString:(id)a3;
-+ (id)_parseJSONFile:(id)a3;
-+ (id)_sortJSONData:(id)a3;
-+ (void)_generateRadarForSpecifier:(id)a3;
++ (id)_formatDateFromString:(id)string;
++ (id)_parseJSONFile:(id)file;
++ (id)_sortJSONData:(id)data;
++ (void)_generateRadarForSpecifier:(id)specifier;
 - (id)specifiers;
-- (id)tableView:(id)a3 leadingSwipeActionsConfigurationForRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5;
+- (id)tableView:(id)view leadingSwipeActionsConfigurationForRowAtIndexPath:(id)path;
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path;
 @end
 
 @implementation SoundDetectionHistoryController
@@ -19,7 +19,7 @@
   if (!v3)
   {
     v25 = OBJC_IVAR___PSListController__specifiers;
-    v32 = self;
+    selfCopy = self;
     v4 = +[NSMutableArray array];
     v24 = +[SoundDetectionHistoryController _axParseSoundDetectionRecordingFiles];
     v5 = [SoundDetectionHistoryController _sortJSONData:?];
@@ -61,16 +61,16 @@
           v16 = [v13 objectForKey:@"audioFilePath"];
           v17 = [v13 objectForKey:@"jsonFilePath"];
           v18 = [v13 objectForKey:@"isCustomModel"];
-          v19 = [v18 BOOLValue];
+          bOOLValue = [v18 BOOLValue];
 
           v20 = &stru_25D420;
-          if ((v19 & 1) == 0)
+          if ((bOOLValue & 1) == 0)
           {
             v21 = AXSDSoundDetectionTypeForIdentifier();
             v20 = AXSDSoundDetectionLocalizedTitleForType();
           }
 
-          v7 = [PSSpecifier preferenceSpecifierNamed:v20 target:v32 set:0 get:0 detail:0 cell:-1 edit:0];
+          v7 = [PSSpecifier preferenceSpecifierNamed:v20 target:selfCopy set:0 get:0 detail:0 cell:-1 edit:0];
 
           [v7 setProperty:objc_opt_class() forKey:v29];
           [v7 setProperty:&off_27AED8 forKey:v28];
@@ -91,10 +91,10 @@
       while (v9);
     }
 
-    v22 = *&v32->PSListController_opaque[v25];
-    *&v32->PSListController_opaque[v25] = v31;
+    v22 = *&selfCopy->PSListController_opaque[v25];
+    *&selfCopy->PSListController_opaque[v25] = v31;
 
-    v3 = *&v32->PSListController_opaque[v25];
+    v3 = *&selfCopy->PSListController_opaque[v25];
   }
 
   return v3;
@@ -115,30 +115,30 @@
 
 + (id)_axParseSoundDetectionRecordingFiles
 {
-  v2 = [a1 _directory];
+  _directory = [self _directory];
   v3 = +[NSFileManager defaultManager];
-  v4 = [v3 enumeratorAtPath:v2];
+  v4 = [v3 enumeratorAtPath:_directory];
 
   v5 = objc_opt_new();
-  v6 = [v4 nextObject];
-  if (v6)
+  nextObject = [v4 nextObject];
+  if (nextObject)
   {
-    v7 = v6;
+    v7 = nextObject;
     do
     {
-      v8 = [v7 pathExtension];
-      v9 = [v8 isEqualToString:@"wav"];
+      pathExtension = [v7 pathExtension];
+      v9 = [pathExtension isEqualToString:@"wav"];
 
       if (!v9)
       {
-        v10 = [v2 stringByAppendingPathComponent:v7];
+        v10 = [_directory stringByAppendingPathComponent:v7];
         v11 = [SoundDetectionHistoryController _parseJSONFile:v10];
         if (v11)
         {
-          v12 = [v7 stringByDeletingPathExtension];
-          v13 = [NSString stringWithFormat:@"%@.%@", v12, @"wav"];
+          stringByDeletingPathExtension = [v7 stringByDeletingPathExtension];
+          v13 = [NSString stringWithFormat:@"%@.%@", stringByDeletingPathExtension, @"wav"];
 
-          v14 = [v2 stringByAppendingPathComponent:v13];
+          v14 = [_directory stringByAppendingPathComponent:v13];
           v15 = [v11 mutableCopy];
           [v15 setObject:v14 forKey:@"audioFilePath"];
           [v15 setObject:v10 forKey:@"jsonFilePath"];
@@ -157,21 +157,21 @@
         }
       }
 
-      v16 = [v4 nextObject];
+      nextObject2 = [v4 nextObject];
 
-      v7 = v16;
+      v7 = nextObject2;
     }
 
-    while (v16);
+    while (nextObject2);
   }
 
   return v5;
 }
 
-+ (id)_parseJSONFile:(id)a3
++ (id)_parseJSONFile:(id)file
 {
-  v3 = a3;
-  v4 = [NSData dataWithContentsOfFile:v3];
+  fileCopy = file;
+  v4 = [NSData dataWithContentsOfFile:fileCopy];
   v10 = 0;
   v5 = [NSJSONSerialization JSONObjectWithData:v4 options:0 error:&v10];
   v6 = v10;
@@ -195,7 +195,7 @@ LABEL_7:
     v7 = AXLogUltron();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      [(SoundDetectionHistoryController *)v3 _parseJSONFile:v7];
+      [(SoundDetectionHistoryController *)fileCopy _parseJSONFile:v7];
     }
 
     goto LABEL_7;
@@ -207,10 +207,10 @@ LABEL_8:
   return v8;
 }
 
-+ (BOOL)_deleteFilesForSpecifier:(id)a3
++ (BOOL)_deleteFilesForSpecifier:(id)specifier
 {
-  v3 = a3;
-  v4 = [v3 propertyForKey:@"audioFilePath"];
+  specifierCopy = specifier;
+  v4 = [specifierCopy propertyForKey:@"audioFilePath"];
   v5 = +[NSFileManager defaultManager];
   v17 = 0;
   [v5 removeItemAtPath:v4 error:&v17];
@@ -234,7 +234,7 @@ LABEL_8:
     _os_log_impl(&dword_0, v9, OS_LOG_TYPE_INFO, "Successfully deleted file: %@", buf, 0xCu);
   }
 
-  v10 = [v3 propertyForKey:@"jsonFilePath"];
+  v10 = [specifierCopy propertyForKey:@"jsonFilePath"];
 
   v11 = +[NSFileManager defaultManager];
   v16 = v6;
@@ -263,22 +263,22 @@ LABEL_8:
   return v7;
 }
 
-+ (id)_sortJSONData:(id)a3
++ (id)_sortJSONData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = [[NSSortDescriptor alloc] initWithKey:@"listenType" ascending:1];
   v5 = [[NSSortDescriptor alloc] initWithKey:@"audioStringDate" ascending:1];
   v9[0] = v5;
   v9[1] = v4;
   v6 = [NSArray arrayWithObjects:v9 count:2];
-  v7 = [v3 sortedArrayUsingDescriptors:v6];
+  v7 = [dataCopy sortedArrayUsingDescriptors:v6];
 
   return v7;
 }
 
-+ (id)_formatDateFromString:(id)a3
++ (id)_formatDateFromString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = objc_alloc_init(NSDateFormatter);
   v5 = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
   [v4 setLocale:v5];
@@ -289,18 +289,18 @@ LABEL_8:
   [v4 setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
   [v4 setDateStyle:2];
   [v4 setTimeStyle:1];
-  v7 = [v4 dateFromString:v3];
+  v7 = [v4 dateFromString:stringCopy];
 
   return v7;
 }
 
-+ (void)_generateRadarForSpecifier:(id)a3
++ (void)_generateRadarForSpecifier:(id)specifier
 {
-  v3 = a3;
-  v22 = [v3 name];
-  v4 = [v3 propertyForKey:@"audioFilePath"];
+  specifierCopy = specifier;
+  name = [specifierCopy name];
+  v4 = [specifierCopy propertyForKey:@"audioFilePath"];
   v25[0] = v4;
-  v5 = [v3 propertyForKey:@"jsonFilePath"];
+  v5 = [specifierCopy propertyForKey:@"jsonFilePath"];
 
   v25[1] = v5;
   v23 = [NSArray arrayWithObjects:v25 count:2];
@@ -308,7 +308,7 @@ LABEL_8:
   v21 = objc_opt_new();
   [v21 setScheme:@"tap-to-radar"];
   [v21 setHost:@"new"];
-  v6 = [NSString stringWithFormat:@"AX Sound Recognition False Positive: %@", v22];
+  v6 = [NSString stringWithFormat:@"AX Sound Recognition False Positive: %@", name];
   v20 = [NSURLQueryItem queryItemWithName:@"Title" value:v6];
 
   v19 = [NSURLQueryItem queryItemWithName:@"Description" value:@"[Add any details about where you were or what you were doing when the false positive occured. Thanks!]"];
@@ -339,28 +339,28 @@ LABEL_8:
   [v18 openURL:v17 withOptions:0];
 }
 
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path
 {
-  if (a4 == 1)
+  if (style == 1)
   {
-    v7 = [(SoundDetectionHistoryController *)self specifierAtIndex:[(SoundDetectionHistoryController *)self indexForIndexPath:a5]];
+    v7 = [(SoundDetectionHistoryController *)self specifierAtIndex:[(SoundDetectionHistoryController *)self indexForIndexPath:path]];
     [SoundDetectionHistoryController _deleteFilesForSpecifier:v7];
     [(SoundDetectionHistoryController *)self removeSpecifier:v7];
   }
 }
 
-- (id)tableView:(id)a3 leadingSwipeActionsConfigurationForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view leadingSwipeActionsConfigurationForRowAtIndexPath:(id)path
 {
   v11 = _NSConcreteStackBlock;
   v12 = 3221225472;
   v13 = __95__SoundDetectionHistoryController_tableView_leadingSwipeActionsConfigurationForRowAtIndexPath___block_invoke;
   v14 = &unk_2586B0;
-  v15 = self;
-  v16 = a4;
-  v4 = v16;
+  selfCopy = self;
+  pathCopy = path;
+  v4 = pathCopy;
   v5 = [UIContextualAction contextualActionWithStyle:0 title:@"File Radar" handler:&v11];
-  v6 = [UIImage systemImageNamed:@"ant.circle.fill", v11, v12, v13, v14, v15];
-  [v5 setImage:v6];
+  selfCopy = [UIImage systemImageNamed:@"ant.circle.fill", v11, v12, v13, v14, selfCopy];
+  [v5 setImage:selfCopy];
 
   v7 = +[UIColor purpleColor];
   [v5 setBackgroundColor:v7];

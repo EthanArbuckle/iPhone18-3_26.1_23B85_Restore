@@ -1,13 +1,13 @@
 @interface GKGameLibraryBiome
-- (id)appInFocusDataFor:(id)a3;
+- (id)appInFocusDataFor:(id)for;
 @end
 
 @implementation GKGameLibraryBiome
 
-- (id)appInFocusDataFor:(id)a3
+- (id)appInFocusDataFor:(id)for
 {
   v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v5 = self;
+  selfCopy = self;
   v6 = GameLibraryBiome.appInFocusData(for:)(v4);
 
   if (v6)

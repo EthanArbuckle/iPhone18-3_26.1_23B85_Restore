@@ -1,5 +1,5 @@
 @interface RAPReportComposerBadRouteSuggestionsViewController
-- (RAPReportComposerBadRouteSuggestionsViewController)initWithReport:(id)a3 question:(id)a4 completion:(id)a5;
+- (RAPReportComposerBadRouteSuggestionsViewController)initWithReport:(id)report question:(id)question completion:(id)completion;
 - (id)tableParts;
 - (void)_instrumentSelectingRoute;
 @end
@@ -15,8 +15,8 @@
 - (id)tableParts
 {
   v3 = objc_alloc_init(NSMutableArray);
-  v4 = [(RAPReportTableViewController *)self userInfoPart];
-  [v3 addObject:v4];
+  userInfoPart = [(RAPReportTableViewController *)self userInfoPart];
+  [v3 addObject:userInfoPart];
 
   whichRoutePart = self->_whichRoutePart;
   if (!whichRoutePart)
@@ -56,8 +56,8 @@
     if (!commentPart)
     {
       v15 = [RAPReportComposerCommentPart alloc];
-      v16 = [(RAPBadRouteSuggestionsQuestion *)self->_question commentQuestion];
-      v17 = [(RAPReportComposerCommentPart *)v15 initWithCommentQuestion:v16];
+      commentQuestion = [(RAPBadRouteSuggestionsQuestion *)self->_question commentQuestion];
+      v17 = [(RAPReportComposerCommentPart *)v15 initWithCommentQuestion:commentQuestion];
       v18 = self->_commentPart;
       self->_commentPart = v17;
 
@@ -70,20 +70,20 @@
   return v3;
 }
 
-- (RAPReportComposerBadRouteSuggestionsViewController)initWithReport:(id)a3 question:(id)a4 completion:(id)a5
+- (RAPReportComposerBadRouteSuggestionsViewController)initWithReport:(id)report question:(id)question completion:(id)completion
 {
-  v9 = a4;
+  questionCopy = question;
   v15.receiver = self;
   v15.super_class = RAPReportComposerBadRouteSuggestionsViewController;
-  v10 = [(RAPReportTableViewController *)&v15 initWithReport:a3 question:v9 completion:a5];
+  v10 = [(RAPReportTableViewController *)&v15 initWithReport:report question:questionCopy completion:completion];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_question, a4);
+    objc_storeStrong(&v10->_question, question);
     [(RAPQuestion *)v11->_question addObserver:v11 changeHandler:&stru_101632090];
-    v12 = [(RAPReportTableViewController *)v11 sendButtonItem];
-    v13 = [(RAPReportComposerBadRouteSuggestionsViewController *)v11 navigationItem];
-    [v13 setRightBarButtonItem:v12];
+    sendButtonItem = [(RAPReportTableViewController *)v11 sendButtonItem];
+    navigationItem = [(RAPReportComposerBadRouteSuggestionsViewController *)v11 navigationItem];
+    [navigationItem setRightBarButtonItem:sendButtonItem];
   }
 
   return v11;

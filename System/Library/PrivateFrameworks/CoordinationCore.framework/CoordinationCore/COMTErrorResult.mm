@@ -1,35 +1,35 @@
 @interface COMTErrorResult
-- (COMTErrorResult)initWithCoder:(id)a3;
-- (COMTErrorResult)initWithError:(id)a3 actionIdentifier:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (COMTErrorResult)initWithCoder:(id)coder;
+- (COMTErrorResult)initWithError:(id)error actionIdentifier:(id)identifier;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation COMTErrorResult
 
-- (COMTErrorResult)initWithError:(id)a3 actionIdentifier:(id)a4
+- (COMTErrorResult)initWithError:(id)error actionIdentifier:(id)identifier
 {
-  v7 = a3;
+  errorCopy = error;
   v11.receiver = self;
   v11.super_class = COMTErrorResult;
-  v8 = [(COMTResult *)&v11 initWithActionIdentifier:a4];
+  v8 = [(COMTResult *)&v11 initWithActionIdentifier:identifier];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_error, a3);
+    objc_storeStrong(&v8->_error, error);
   }
 
   return v9;
 }
 
-- (COMTErrorResult)initWithCoder:(id)a3
+- (COMTErrorResult)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = COMTErrorResult;
-  v5 = [(COMTResult *)&v9 initWithCoder:v4];
+  v5 = [(COMTResult *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ER"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ER"];
     error = v5->_error;
     v5->_error = v6;
   }
@@ -37,14 +37,14 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = COMTErrorResult;
-  v4 = a3;
-  [(COMTResult *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(COMTResult *)&v6 encodeWithCoder:coderCopy];
   v5 = [(COMTErrorResult *)self error:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"ER"];
+  [coderCopy encodeObject:v5 forKey:@"ER"];
 }
 
 @end

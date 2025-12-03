@@ -1,20 +1,20 @@
 @interface TSCH3DLabelResources
-- (TSCH3DLabelResources)initWithSize:(const void *)a3;
+- (TSCH3DLabelResources)initWithSize:(const void *)size;
 - (TSWPStyleProviding)styleProvidingSource;
-- (id)paragraphStyleForKey:(unint64_t)a3 defaultStyle:(id)a4;
-- (id)prepareTextureAtlasWithSamples:(float)a3;
-- (id)resourceAtIndex:(const void *)a3 string:(id)a4 bitmapContextInfo:(id)a5 labelWidth:(double)a6;
-- (void)setParagraphStyle:(id)a3 atIndex:(const void *)a4;
-- (void)setParagraphStyle:(id)a3 forKey:(unint64_t)a4 atIndex:(const void *)a5;
+- (id)paragraphStyleForKey:(unint64_t)key defaultStyle:(id)style;
+- (id)prepareTextureAtlasWithSamples:(float)samples;
+- (id)resourceAtIndex:(const void *)index string:(id)string bitmapContextInfo:(id)info labelWidth:(double)width;
+- (void)setParagraphStyle:(id)style atIndex:(const void *)index;
+- (void)setParagraphStyle:(id)style forKey:(unint64_t)key atIndex:(const void *)index;
 @end
 
 @implementation TSCH3DLabelResources
 
-- (TSCH3DLabelResources)initWithSize:(const void *)a3
+- (TSCH3DLabelResources)initWithSize:(const void *)size
 {
   v7.receiver = self;
   v7.super_class = TSCH3DLabelResources;
-  v3 = [(TSCH3DArray2DResources *)&v7 initWithSize:a3];
+  v3 = [(TSCH3DArray2DResources *)&v7 initWithSize:size];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x277CBEB38]);
@@ -25,13 +25,13 @@
   return v3;
 }
 
-- (id)prepareTextureAtlasWithSamples:(float)a3
+- (id)prepareTextureAtlasWithSamples:(float)samples
 {
-  v5 = a3;
+  samplesCopy = samples;
   atlas = self->_atlas;
-  if (!atlas || (objc_msgSend_samples(atlas, a2, *&a3, v3, v4), v8 != v5) && (*&a3 = vabdd_f64(v5, v8), v3 = 0.00999999978, *&a3 >= 0.00999999978))
+  if (!atlas || (objc_msgSend_samples(atlas, a2, *&samples, v3, v4), v8 != samplesCopy) && (*&samples = vabdd_f64(samplesCopy, v8), v3 = 0.00999999978, *&samples >= 0.00999999978))
   {
-    *&v9 = v5;
+    *&v9 = samplesCopy;
     v10 = objc_msgSend_atlasWithSamples_(TSCH3DTextureAtlas, a2, v9, v3, v4);
     v11 = self->_atlas;
     self->_atlas = v10;
@@ -42,23 +42,23 @@
   return v12;
 }
 
-- (id)paragraphStyleForKey:(unint64_t)a3 defaultStyle:(id)a4
+- (id)paragraphStyleForKey:(unint64_t)key defaultStyle:(id)style
 {
-  v6 = a4;
-  v11 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x277CCABB0], v7, v8, v9, v10, a3);
+  styleCopy = style;
+  v11 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x277CCABB0], v7, v8, v9, v10, key);
   v16 = objc_msgSend_objectForKey_(self->_cache, v12, v13, v14, v15, v11);
   if (!v16)
   {
-    v16 = v6;
+    v16 = styleCopy;
     objc_msgSend_setObject_forKey_(self->_cache, v17, v18, v19, v20, v16, v11);
   }
 
   return v16;
 }
 
-- (void)setParagraphStyle:(id)a3 atIndex:(const void *)a4
+- (void)setParagraphStyle:(id)style atIndex:(const void *)index
 {
-  v25 = a3;
+  styleCopy = style;
   atlas = self->_atlas;
   if (atlas)
   {
@@ -72,23 +72,23 @@
   }
 
   v12 = objc_msgSend_styleProvidingSource(self, v6, v7, v8, v9);
-  v15 = objc_msgSend_labelAttributesWithParagraphStyle_string_bitmapContextInfo_labelWidth_renderSamples_styleProvidingSource_(TSCH3DLabelResourceAttributes, v13, 0.0, v11, v14, v25, 0, 0, v12);
+  v15 = objc_msgSend_labelAttributesWithParagraphStyle_string_bitmapContextInfo_labelWidth_renderSamples_styleProvidingSource_(TSCH3DLabelResourceAttributes, v13, 0.0, v11, v14, styleCopy, 0, 0, v12);
 
   v20 = objc_msgSend_resourceWithLabelAttributes_(TSCH3DLabelResource, v16, v17, v18, v19, v15);
-  objc_msgSend_setResource_atIndex_(self, v21, v22, v23, v24, v20, a4);
+  objc_msgSend_setResource_atIndex_(self, v21, v22, v23, v24, v20, index);
 }
 
-- (void)setParagraphStyle:(id)a3 forKey:(unint64_t)a4 atIndex:(const void *)a5
+- (void)setParagraphStyle:(id)style forKey:(unint64_t)key atIndex:(const void *)index
 {
-  v13 = objc_msgSend_paragraphStyleForKey_defaultStyle_(self, a2, v5, v6, v7, a4, a3);
+  v13 = objc_msgSend_paragraphStyleForKey_defaultStyle_(self, a2, v5, v6, v7, key, style);
   objc_msgSend_setParagraphStyle_atIndex_(self, v9, v10, v11, v12);
 }
 
-- (id)resourceAtIndex:(const void *)a3 string:(id)a4 bitmapContextInfo:(id)a5 labelWidth:(double)a6
+- (id)resourceAtIndex:(const void *)index string:(id)string bitmapContextInfo:(id)info labelWidth:(double)width
 {
-  v10 = a4;
-  v12 = a5;
-  if (!v10)
+  stringCopy = string;
+  infoCopy = info;
+  if (!stringCopy)
   {
     v16 = MEMORY[0x277D81150];
     v17 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v11, v13, v14, v15, "[TSCH3DLabelResources resourceAtIndex:string:bitmapContextInfo:labelWidth:]");
@@ -100,7 +100,7 @@
 
   v133.receiver = self;
   v133.super_class = TSCH3DLabelResources;
-  v32 = [(TSCH3DStringIndexedResources *)&v133 resourceAtIndex:a3 string:v10];
+  v32 = [(TSCH3DStringIndexedResources *)&v133 resourceAtIndex:index string:stringCopy];
   if (!v32)
   {
     v36 = MEMORY[0x277D81150];
@@ -151,7 +151,7 @@
   }
 
   v108 = objc_msgSend_styleProvidingSource(self, v101, v103, v104, v105);
-  v111 = objc_msgSend_labelAttributesWithParagraphStyle_string_bitmapContextInfo_labelWidth_renderSamples_styleProvidingSource_(TSCH3DLabelResourceAttributes, v109, a6, v107, v110, v102, v10, v12, v108);
+  v111 = objc_msgSend_labelAttributesWithParagraphStyle_string_bitmapContextInfo_labelWidth_renderSamples_styleProvidingSource_(TSCH3DLabelResourceAttributes, v109, width, v107, v110, v102, stringCopy, infoCopy, v108);
 
   v117 = objc_msgSend_attributes(v32, v112, v113, v114, v115);
   if (!v117 || (objc_msgSend_attributes(v32, v116, v118, v119, v120), v121 = objc_claimAutoreleasedReturnValue(), isEqual = objc_msgSend_isEqual_(v121, v122, v123, v124, v125, v111), v121, v117, (isEqual & 1) == 0))
@@ -159,7 +159,7 @@
     v127 = objc_msgSend_resourceWithLabelAttributes_(TSCH3DLabelResource, v116, v118, v119, v120, v111);
 
     v32 = v127;
-    objc_msgSend_setResource_atIndex_(self, v128, v129, v130, v131, v127, a3);
+    objc_msgSend_setResource_atIndex_(self, v128, v129, v130, v131, v127, index);
   }
 
   return v32;

@@ -1,10 +1,10 @@
 @interface CDPUICustodianOSSelectionViewModel
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation CDPUICustodianOSSelectionViewModel
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[CDPUICustodianOSSelectionViewModel allocWithZone:?]];
   v5 = [(NSString *)self->_title copy];

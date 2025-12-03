@@ -1,7 +1,7 @@
 @interface _ICInternalSource
 - (_ICInternalSource)init;
-- (id)localizedStringForKey:(id)a3 withLocale:(id)a4;
-- (void)predictedItemsWithProactiveTrigger:(id)a3 searchContext:(id)a4 limit:(unint64_t)a5 timeoutInMilliseconds:(unint64_t)a6 handler:(id)a7;
+- (id)localizedStringForKey:(id)key withLocale:(id)locale;
+- (void)predictedItemsWithProactiveTrigger:(id)trigger searchContext:(id)context limit:(unint64_t)limit timeoutInMilliseconds:(unint64_t)milliseconds handler:(id)handler;
 @end
 
 @implementation _ICInternalSource
@@ -21,55 +21,55 @@
   return v3;
 }
 
-- (void)predictedItemsWithProactiveTrigger:(id)a3 searchContext:(id)a4 limit:(unint64_t)a5 timeoutInMilliseconds:(unint64_t)a6 handler:(id)a7
+- (void)predictedItemsWithProactiveTrigger:(id)trigger searchContext:(id)context limit:(unint64_t)limit timeoutInMilliseconds:(unint64_t)milliseconds handler:(id)handler
 {
   v52[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a7;
+  triggerCopy = trigger;
+  contextCopy = context;
+  handlerCopy = handler;
   v13 = mach_absolute_time();
-  v14 = [v10 attributedString];
-  v15 = [v14 valueForKey:*MEMORY[0x277D23050]];
+  attributedString = [triggerCopy attributedString];
+  v15 = [attributedString valueForKey:*MEMORY[0x277D23050]];
 
-  v16 = [v10 attributedString];
-  v17 = [v16 valueForKey:*MEMORY[0x277D23028]];
+  attributedString2 = [triggerCopy attributedString];
+  v17 = [attributedString2 valueForKey:*MEMORY[0x277D23028]];
 
-  v18 = [v10 attributedString];
-  v49 = [v18 valueForKey:*MEMORY[0x277D22FF8]];
+  attributedString3 = [triggerCopy attributedString];
+  v49 = [attributedString3 valueForKey:*MEMORY[0x277D22FF8]];
 
-  v19 = [MEMORY[0x277CBEB18] array];
-  v50 = [MEMORY[0x277CBEAA8] date];
-  v48 = [v11 applicationBundleIdentifier];
+  array = [MEMORY[0x277CBEB18] array];
+  date = [MEMORY[0x277CBEAA8] date];
+  applicationBundleIdentifier = [contextCopy applicationBundleIdentifier];
   if ([v15 isEqualToString:*MEMORY[0x277D22FB8]] && objc_msgSend(v17, "isEqualToString:", *MEMORY[0x277D22F28]))
   {
-    v20 = [v10 availableApps];
-    v21 = [v20 containsObject:@"com.apple.messages.currentLocation"];
+    availableApps = [triggerCopy availableApps];
+    v21 = [availableApps containsObject:@"com.apple.messages.currentLocation"];
 
     if (v21)
     {
       v47 = v17;
-      v22 = [MEMORY[0x277CBEB38] dictionary];
-      [v22 setObject:@"com.apple.messages.currentLocation" forKey:@"bundleID"];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
+      [dictionary setObject:@"com.apple.messages.currentLocation" forKey:@"bundleID"];
       v23 = MEMORY[0x277CCACA8];
-      v24 = [(_ICInternalSource *)self localizedStringForKey:@"SEND_CURRENT_LOCATION_BUTTON_CAPTION" withLocale:v11];
+      v24 = [(_ICInternalSource *)self localizedStringForKey:@"SEND_CURRENT_LOCATION_BUTTON_CAPTION" withLocale:contextCopy];
       v25 = [v23 stringWithValidatedFormat:v24 validFormatSpecifiers:@"%@" error:0, @""];
 
       LOWORD(v46) = 0;
-      v26 = [[_ICPredictedItem alloc] initWithIdentifier:@"currentLocation" itemType:1 score:v25 value:0 label:0 name:v50 date:1.0 originatingBundleID:v48 originatingWebsiteURL:0 predictionAge:30 shouldAggregate:v46 flags:@"com.apple.messages.currentLocation" targetBundleID:v22 operationData:v10 proactiveTrigger:?];
-      [v19 addObject:v26];
+      v26 = [[_ICPredictedItem alloc] initWithIdentifier:@"currentLocation" itemType:1 score:v25 value:0 label:0 name:date date:1.0 originatingBundleID:applicationBundleIdentifier originatingWebsiteURL:0 predictionAge:30 shouldAggregate:v46 flags:@"com.apple.messages.currentLocation" targetBundleID:dictionary operationData:triggerCopy proactiveTrigger:?];
+      [array addObject:v26];
       goto LABEL_12;
     }
   }
 
   else if ([v15 isEqualToString:@"money"])
   {
-    v27 = [v10 availableApps];
-    v28 = [v27 containsObject:@"com.apple.messages.surf"];
+    availableApps2 = [triggerCopy availableApps];
+    v28 = [availableApps2 containsObject:@"com.apple.messages.surf"];
 
     if (v28)
     {
-      v22 = [MEMORY[0x277CBEB38] dictionary];
-      [v22 setObject:@"com.apple.messages.surf" forKey:@"bundleID"];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
+      [dictionary setObject:@"com.apple.messages.surf" forKey:@"bundleID"];
       v25 = [v49 objectForKey:@"Currency"];
       if (!v25)
       {
@@ -78,12 +78,12 @@ LABEL_13:
         goto LABEL_14;
       }
 
-      [v22 setObject:v25 forKey:@"Currency"];
+      [dictionary setObject:v25 forKey:@"Currency"];
       v47 = v17;
       LOWORD(v46) = 0;
-      v26 = [[_ICPredictedItem alloc] initWithIdentifier:@"surf" itemType:1 score:@"Pay" value:0 label:0 name:v50 date:1.0 originatingBundleID:0 originatingWebsiteURL:0 predictionAge:30 shouldAggregate:v46 flags:0 targetBundleID:v22 operationData:v10 proactiveTrigger:?];
+      v26 = [[_ICPredictedItem alloc] initWithIdentifier:@"surf" itemType:1 score:@"Pay" value:0 label:0 name:date date:1.0 originatingBundleID:0 originatingWebsiteURL:0 predictionAge:30 shouldAggregate:v46 flags:0 targetBundleID:dictionary operationData:triggerCopy proactiveTrigger:?];
       [(_ICPredictedItem *)v26 setLayoutHint:1];
-      [v19 addObject:v26];
+      [array addObject:v26];
 LABEL_12:
 
       v17 = v47;
@@ -100,32 +100,32 @@ LABEL_14:
       goto LABEL_16;
     }
 
-    v29 = [v10 availableApps];
-    v30 = [v29 containsObject:@"com.apple.messages.photos"];
+    availableApps3 = [triggerCopy availableApps];
+    v30 = [availableApps3 containsObject:@"com.apple.messages.photos"];
 
     if (v30)
     {
       v47 = v17;
       v31 = MEMORY[0x277CBEB38];
-      v32 = [v10 attributedString];
-      v22 = [v31 dictionaryWithDictionary:v32];
+      attributedString4 = [triggerCopy attributedString];
+      dictionary = [v31 dictionaryWithDictionary:attributedString4];
 
-      [v22 setObject:@"com.apple.messages.photos" forKey:@"bundleID"];
+      [dictionary setObject:@"com.apple.messages.photos" forKey:@"bundleID"];
       v33 = MEMORY[0x277CCACA8];
-      v34 = [(_ICInternalSource *)self localizedStringForKey:@"CHOOSE_PHOTOS_CAPTION" withLocale:v11];
+      v34 = [(_ICInternalSource *)self localizedStringForKey:@"CHOOSE_PHOTOS_CAPTION" withLocale:contextCopy];
       v25 = [v33 stringWithValidatedFormat:v34 validFormatSpecifiers:@"%@" error:0, @""];
 
       LOWORD(v46) = 0;
-      v26 = [[_ICPredictedItem alloc] initWithIdentifier:@"choosePhotos" itemType:1 score:v25 value:0 label:0 name:v50 date:1.0 originatingBundleID:0 originatingWebsiteURL:0 predictionAge:30 shouldAggregate:v46 flags:0 targetBundleID:v22 operationData:v10 proactiveTrigger:?];
+      v26 = [[_ICPredictedItem alloc] initWithIdentifier:@"choosePhotos" itemType:1 score:v25 value:0 label:0 name:date date:1.0 originatingBundleID:0 originatingWebsiteURL:0 predictionAge:30 shouldAggregate:v46 flags:0 targetBundleID:dictionary operationData:triggerCopy proactiveTrigger:?];
       [(_ICPredictedItem *)v26 setLayoutHint:0];
-      [v19 addObject:v26];
+      [array addObject:v26];
       goto LABEL_12;
     }
   }
 
   v35 = 0;
 LABEL_16:
-  if ([v19 count])
+  if ([array count])
   {
     v36 = 1;
   }
@@ -149,7 +149,7 @@ LABEL_16:
     v37 = [v38 errorWithDomain:@"com.apple.inputcontext.errors" code:5 userInfo:v39];
   }
 
-  v12[2](v12, v19, v37);
+  handlerCopy[2](handlerCopy, array, v37);
   v40 = mach_absolute_time();
   v41 = _ICMachTimeToNanoseconds(v40 - v13);
   v42 = _ICProactiveQuickTypeOSLogFacility();
@@ -172,33 +172,33 @@ LABEL_16:
   v45 = *MEMORY[0x277D85DE8];
 }
 
-- (id)localizedStringForKey:(id)a3 withLocale:(id)a4
+- (id)localizedStringForKey:(id)key withLocale:(id)locale
 {
   v34[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 locale];
+  keyCopy = key;
+  localeCopy = locale;
+  locale = [localeCopy locale];
   if (localizedStringForKey_withLocale__onceToken != -1)
   {
     [_ICInternalSource localizedStringForKey:withLocale:];
   }
 
   v8 = localizedStringForKey_withLocale__localizationsCache;
-  v9 = [v6 locale];
-  v10 = [v8 objectForKey:v9];
+  locale2 = [localeCopy locale];
+  v10 = [v8 objectForKey:locale2];
 
-  if (!v10 || ([v10 objectForKeyedSubscript:v5], (v11 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (!v10 || ([v10 objectForKeyedSubscript:keyCopy], (v11 = objc_claimAutoreleasedReturnValue()) == 0))
   {
     v12 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     if (!v10)
     {
-      v27 = v6;
-      v28 = v5;
-      v34[0] = v7;
+      v27 = localeCopy;
+      v28 = keyCopy;
+      v34[0] = locale;
       v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v34 count:1];
       v14 = MEMORY[0x277CCA8D8];
-      v15 = [v12 localizations];
-      v16 = [v14 preferredLocalizationsFromArray:v15 forPreferences:v13];
+      localizations = [v12 localizations];
+      v16 = [v14 preferredLocalizationsFromArray:localizations forPreferences:v13];
 
       v31 = 0u;
       v32 = 0u;
@@ -239,8 +239,8 @@ LABEL_8:
         }
 
         v24 = v23;
-        [localizedStringForKey_withLocale__localizationsCache setObject:v23 forKey:v7];
-        v5 = v28;
+        [localizedStringForKey_withLocale__localizationsCache setObject:v23 forKey:locale];
+        keyCopy = v28;
         v11 = [v24 objectForKeyedSubscript:v28];
 
         if (!v11)
@@ -248,21 +248,21 @@ LABEL_8:
           goto LABEL_17;
         }
 
-        v6 = v27;
+        localeCopy = v27;
         v10 = 0;
         goto LABEL_19;
       }
 
 LABEL_14:
 
-      v5 = v28;
+      keyCopy = v28;
 LABEL_17:
 
-      v6 = v27;
+      localeCopy = v27;
       v10 = 0;
     }
 
-    v11 = [v12 localizedStringForKey:v5 value:&stru_28670C3F8 table:@"Predictions"];
+    v11 = [v12 localizedStringForKey:keyCopy value:&stru_28670C3F8 table:@"Predictions"];
 LABEL_19:
   }
 

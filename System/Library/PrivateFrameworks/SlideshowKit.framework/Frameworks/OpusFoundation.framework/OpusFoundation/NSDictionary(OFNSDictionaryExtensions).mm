@@ -8,13 +8,13 @@
 - (void)postFormData
 {
   v16 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CBEB28] data];
+  data = [MEMORY[0x277CBEB28] data];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [a1 allKeys];
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  allKeys = [self allKeys];
+  v4 = [allKeys countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -25,60 +25,60 @@
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allKeys);
         }
 
         v8 = *(*(&v11 + 1) + 8 * i);
-        v9 = [a1 objectForKey:v8];
+        v9 = [self objectForKey:v8];
         objc_opt_class();
         if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
         {
           v9 = [v9 description];
         }
 
-        [v2 appendData:{objc_msgSend(objc_msgSend(MEMORY[0x277CCACA8], "mimePart:forName:", v9, v8), "dataUsingEncoding:", 4)}];
+        [data appendData:{objc_msgSend(objc_msgSend(MEMORY[0x277CCACA8], "mimePart:forName:", v9, v8), "dataUsingEncoding:", 4)}];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [allKeys countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);
   }
 
-  return v2;
+  return data;
 }
 
 - (void)stringifyArguments:()OFNSDictionaryExtensions requireEncoding:
 {
-  v7 = [objc_msgSend(a1 "allKeys")];
+  v7 = [objc_msgSend(self "allKeys")];
   v8 = [v7 count];
-  v9 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   if (v8 >= 1)
   {
     v10 = 0;
     do
     {
       v11 = [v7 objectAtIndex:v10];
-      v12 = v11;
+      stringByAddingPercentEscapes = v11;
       if (a4)
       {
-        v12 = [v11 stringByAddingPercentEscapes];
-        v13 = [objc_msgSend(a1 objectForKey:{v12), "stringByAddingPercentEscapes"}];
+        stringByAddingPercentEscapes = [v11 stringByAddingPercentEscapes];
+        v13 = [objc_msgSend(self objectForKey:{stringByAddingPercentEscapes), "stringByAddingPercentEscapes"}];
       }
 
       else
       {
-        v13 = [a1 objectForKey:v11];
+        v13 = [self objectForKey:v11];
       }
 
-      v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@=%@", v12, v13];
+      v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@=%@", stringByAddingPercentEscapes, v13];
       v15 = v14;
       if (v8 != 1)
       {
         v15 = [v14 stringByAppendingString:a3];
       }
 
-      [v9 appendString:v15];
+      [string appendString:v15];
       ++v10;
       --v8;
     }
@@ -86,7 +86,7 @@
     while (v8);
   }
 
-  return v9;
+  return string;
 }
 
 @end

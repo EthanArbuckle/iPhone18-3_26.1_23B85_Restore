@@ -1,6 +1,6 @@
 @interface _PXStoryExplicitChapter
 - (NSString)diagnosticDescription;
-- (_PXStoryExplicitChapter)initWithFirstAssetUUID:(id)a3 assetUUIDs:(id)a4;
+- (_PXStoryExplicitChapter)initWithFirstAssetUUID:(id)d assetUUIDs:(id)ds;
 @end
 
 @implementation _PXStoryExplicitChapter
@@ -8,31 +8,31 @@
 - (NSString)diagnosticDescription
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(_PXStoryExplicitChapter *)self identifier];
-  v5 = [(_PXStoryExplicitChapter *)self localizedTitle];
-  v6 = [(_PXStoryExplicitChapter *)self localizedSubtitle];
-  v7 = [(_PXStoryExplicitChapter *)self assetUUIDs];
-  v8 = [v3 initWithFormat:@"{ id=%@ title=“%@” subtitle=“%@” assetUUIDs=%@ }", v4, v5, v6, v7];
+  identifier = [(_PXStoryExplicitChapter *)self identifier];
+  localizedTitle = [(_PXStoryExplicitChapter *)self localizedTitle];
+  localizedSubtitle = [(_PXStoryExplicitChapter *)self localizedSubtitle];
+  assetUUIDs = [(_PXStoryExplicitChapter *)self assetUUIDs];
+  v8 = [v3 initWithFormat:@"{ id=%@ title=“%@” subtitle=“%@” assetUUIDs=%@ }", identifier, localizedTitle, localizedSubtitle, assetUUIDs];
 
   return v8;
 }
 
-- (_PXStoryExplicitChapter)initWithFirstAssetUUID:(id)a3 assetUUIDs:(id)a4
+- (_PXStoryExplicitChapter)initWithFirstAssetUUID:(id)d assetUUIDs:(id)ds
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  dsCopy = ds;
   v16.receiver = self;
   v16.super_class = _PXStoryExplicitChapter;
   v9 = [(_PXStoryExplicitChapter *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_identifier, a3);
-    v11 = [v7 copy];
+    objc_storeStrong(&v9->_identifier, d);
+    v11 = [dCopy copy];
     firstAssetUUID = v10->_firstAssetUUID;
     v10->_firstAssetUUID = v11;
 
-    v13 = [v8 copy];
+    v13 = [dsCopy copy];
     assetUUIDs = v10->_assetUUIDs;
     v10->_assetUUIDs = v13;
   }

@@ -1,61 +1,61 @@
 @interface PKTextInputElementsController
-- (id)initWithContainerView:(id *)a1;
+- (id)initWithContainerView:(id *)view;
 - (void)flushDiscoveredElements;
-- (void)reportDebugStateDescription:(id)a3;
-- (void)updateTextInputElementsWithReferenceHitPoint:(void *)a3 referenceSearchArea:(CGFloat)a4 referenceCoordSpace:(CGFloat)a5 completion:(CGFloat)x;
+- (void)reportDebugStateDescription:(id)description;
+- (void)updateTextInputElementsWithReferenceHitPoint:(void *)point referenceSearchArea:(CGFloat)area referenceCoordSpace:(CGFloat)space completion:(CGFloat)x;
 @end
 
 @implementation PKTextInputElementsController
 
-- (id)initWithContainerView:(id *)a1
+- (id)initWithContainerView:(id *)view
 {
   v3 = a2;
-  if (a1)
+  if (view)
   {
-    v9.receiver = a1;
+    v9.receiver = view;
     v9.super_class = PKTextInputElementsController;
     v4 = objc_msgSendSuper2(&v9, sel_init);
-    a1 = v4;
+    view = v4;
     if (v4)
     {
       v5 = v4[5];
       v4[5] = MEMORY[0x1E695E0F8];
 
-      v6 = [MEMORY[0x1E695DF00] distantPast];
-      [v6 timeIntervalSinceReferenceDate];
-      a1[6] = v7;
+      distantPast = [MEMORY[0x1E695DF00] distantPast];
+      [distantPast timeIntervalSinceReferenceDate];
+      view[6] = v7;
 
-      objc_storeWeak(a1 + 7, v3);
+      objc_storeWeak(view + 7, v3);
     }
   }
 
-  return a1;
+  return view;
 }
 
-- (void)updateTextInputElementsWithReferenceHitPoint:(void *)a3 referenceSearchArea:(CGFloat)a4 referenceCoordSpace:(CGFloat)a5 completion:(CGFloat)x
+- (void)updateTextInputElementsWithReferenceHitPoint:(void *)point referenceSearchArea:(CGFloat)area referenceCoordSpace:(CGFloat)space completion:(CGFloat)x
 {
   v61 = *MEMORY[0x1E69E9840];
   v17 = a2;
-  v18 = a3;
-  if (a1)
+  pointCopy = point;
+  if (self)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 56));
-    v20 = [WeakRetained window];
-    v21 = [v20 windowScene];
-    v22 = [v21 _visibleWindows];
+    WeakRetained = objc_loadWeakRetained((self + 56));
+    window = [WeakRetained window];
+    windowScene = [window windowScene];
+    _visibleWindows = [windowScene _visibleWindows];
 
     v23 = MEMORY[0x1E695E0F0];
-    if (v22)
+    if (_visibleWindows)
     {
-      v23 = v22;
+      v23 = _visibleWindows;
     }
 
     v24 = v23;
 
     v25 = [[PKTextInputElementsFinder alloc] initWithWindowsToSearch:v24];
-    v26 = *(a1 + 16) + 1;
-    *(a1 + 16) = v26;
-    [*(a1 + 40) allValues];
+    v26 = *(self + 16) + 1;
+    *(self + 16) = v26;
+    [*(self + 40) allValues];
     v52 = 0u;
     v53 = 0u;
     v54 = 0u;
@@ -65,7 +65,7 @@
     {
       v29 = v28;
       v46 = v24;
-      v47 = v18;
+      v47 = pointCopy;
       v30 = *v53;
       do
       {
@@ -77,10 +77,10 @@
           }
 
           v32 = *(*(&v52 + 1) + 8 * i);
-          v33 = [(PKTextInputElement *)v32 coordinateSpace];
+          coordinateSpace = [(PKTextInputElement *)v32 coordinateSpace];
           if ([(PKTextInputElement *)v32 isFocused])
           {
-            v34 = v33 == 0;
+            v34 = coordinateSpace == 0;
           }
 
           else
@@ -90,8 +90,8 @@
 
           if (!v34)
           {
-            v35 = [(PKTextInputElement *)v32 frame];
-            v64.origin.x = PK_convertRectFromCoordinateSpaceToCoordinateSpace(v33, v17, v35, v36, v37, v38);
+            frame = [(PKTextInputElement *)v32 frame];
+            v64.origin.x = PK_convertRectFromCoordinateSpaceToCoordinateSpace(coordinateSpace, v17, frame, v36, v37, v38);
             v64.origin.y = v39;
             v64.size.width = v40;
             v64.size.height = v41;
@@ -115,14 +115,14 @@
       while (v29);
 LABEL_16:
       v24 = v46;
-      v18 = v47;
+      pointCopy = v47;
     }
 
     v42 = os_log_create("com.apple.pencilkit", "PencilTextInput");
     if (os_log_type_enabled(v42, OS_LOG_TYPE_DEBUG))
     {
       *buf = 134218240;
-      v57 = a1;
+      selfCopy = self;
       v58 = 2048;
       v59 = v25;
       _os_log_debug_impl(&dword_1C7CCA000, v42, OS_LOG_TYPE_DEBUG, "ElementsController %p will begin elementsFinder findAvailableTextInputElements %p", buf, 0x16u);
@@ -133,15 +133,15 @@ LABEL_16:
     v48[2] = __129__PKTextInputElementsController_updateTextInputElementsWithReferenceHitPoint_referenceSearchArea_referenceCoordSpace_completion___block_invoke;
     v48[3] = &unk_1E82D68B8;
     v51 = v26;
-    v48[4] = a1;
+    v48[4] = self;
     v49 = v25;
-    v43 = v18;
+    v43 = pointCopy;
     v50 = v43;
     v44 = v25;
     v45 = v44;
     if (v44)
     {
-      [(PKTextInputElementsFinder *)v44 _findAvailableTextInputElementsWithReusableElements:v27 referenceHitPoint:v17 referenceSearchArea:0 referenceCoordSpace:v48 nearPointOnly:a4 completion:a5, x, y, width, height];
+      [(PKTextInputElementsFinder *)v44 _findAvailableTextInputElementsWithReusableElements:v27 referenceHitPoint:v17 referenceSearchArea:0 referenceCoordSpace:v48 nearPointOnly:area completion:space, x, y, width, height];
       v43 = v50;
     }
   }
@@ -293,21 +293,21 @@ void __129__PKTextInputElementsController_updateTextInputElementsWithReferenceHi
 
 - (void)flushDiscoveredElements
 {
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 40);
-    *(a1 + 40) = MEMORY[0x1E695E0F8];
+    v2 = *(self + 40);
+    *(self + 40) = MEMORY[0x1E695E0F8];
 
-    v4 = [MEMORY[0x1E695DF00] distantPast];
-    [v4 timeIntervalSinceReferenceDate];
-    *(a1 + 48) = v3;
+    distantPast = [MEMORY[0x1E695DF00] distantPast];
+    [distantPast timeIntervalSinceReferenceDate];
+    *(self + 48) = v3;
   }
 }
 
-- (void)reportDebugStateDescription:(id)a3
+- (void)reportDebugStateDescription:(id)description
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
+  descriptionCopy = description;
+  array = [MEMORY[0x1E695DF70] array];
   if (self)
   {
     lastDiscoveredElementsByUniqueID = self->_lastDiscoveredElementsByUniqueID;
@@ -323,7 +323,7 @@ void __129__PKTextInputElementsController_updateTextInputElementsWithReferenceHi
   v15[2] = __61__PKTextInputElementsController_reportDebugStateDescription___block_invoke;
   v15[3] = &unk_1E82D68E0;
   v15[4] = self;
-  v7 = v5;
+  v7 = array;
   v16 = v7;
   [(NSDictionary *)lastDiscoveredElementsByUniqueID enumerateKeysAndObjectsUsingBlock:v15];
   [v7 sortUsingSelector:sel_compare_];
@@ -331,7 +331,7 @@ void __129__PKTextInputElementsController_updateTextInputElementsWithReferenceHi
   v9 = [v7 componentsJoinedByString:@"\n"];
   v10 = [v8 stringWithFormat:@"\n%@", v9];
 
-  v4[2](v4, @"lastDiscoveredElements", v10);
+  descriptionCopy[2](descriptionCopy, @"lastDiscoveredElements", v10);
   if (self)
   {
     lastDiscoveredElementsUpdateTime = self->_lastDiscoveredElementsUpdateTime;
@@ -346,7 +346,7 @@ void __129__PKTextInputElementsController_updateTextInputElementsWithReferenceHi
   v13 = objc_alloc_init(MEMORY[0x1E696AB78]);
   [v13 setDateFormat:@"HH:mm:ss.SSS"];
   v14 = [v13 stringFromDate:v12];
-  v4[2](v4, @"lastDiscoveredElementsTime", v14);
+  descriptionCopy[2](descriptionCopy, @"lastDiscoveredElementsTime", v14);
 }
 
 void __61__PKTextInputElementsController_reportDebugStateDescription___block_invoke(uint64_t a1, void *a2, void *a3)

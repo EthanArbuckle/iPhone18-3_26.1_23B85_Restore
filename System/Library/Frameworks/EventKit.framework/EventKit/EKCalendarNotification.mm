@@ -1,14 +1,14 @@
 @interface EKCalendarNotification
-- (BOOL)acknowledgeWithEventStore:(id)a3 error:(id *)a4;
-- (EKCalendarNotification)initWithType:(int64_t)a3;
+- (BOOL)acknowledgeWithEventStore:(id)store error:(id *)error;
+- (EKCalendarNotification)initWithType:(int64_t)type;
 - (NSString)uniqueIdentifier;
 - (void)dealloc;
-- (void)setDotColor:(CGColor *)a3;
+- (void)setDotColor:(CGColor *)color;
 @end
 
 @implementation EKCalendarNotification
 
-- (EKCalendarNotification)initWithType:(int64_t)a3
+- (EKCalendarNotification)initWithType:(int64_t)type
 {
   v7.receiver = self;
   v7.super_class = EKCalendarNotification;
@@ -16,7 +16,7 @@
   v5 = v4;
   if (v4)
   {
-    [(EKCalendarNotification *)v4 setType:a3];
+    [(EKCalendarNotification *)v4 setType:type];
   }
 
   return v5;
@@ -37,13 +37,13 @@
 
 - (NSString)uniqueIdentifier
 {
-  v2 = [(EKCalendarNotification *)self objectID];
-  v3 = [v2 stringRepresentation];
+  objectID = [(EKCalendarNotification *)self objectID];
+  stringRepresentation = [objectID stringRepresentation];
 
-  return v3;
+  return stringRepresentation;
 }
 
-- (void)setDotColor:(CGColor *)a3
+- (void)setDotColor:(CGColor *)color
 {
   dotColor = self->_dotColor;
   if (dotColor)
@@ -51,9 +51,9 @@
     CFRelease(dotColor);
   }
 
-  if (a3)
+  if (color)
   {
-    Copy = CGColorCreateCopy(a3);
+    Copy = CGColorCreateCopy(color);
   }
 
   else
@@ -64,11 +64,11 @@
   self->_dotColor = Copy;
 }
 
-- (BOOL)acknowledgeWithEventStore:(id)a3 error:(id *)a4
+- (BOOL)acknowledgeWithEventStore:(id)store error:(id *)error
 {
-  if (a4)
+  if (error)
   {
-    *a4 = [MEMORY[0x1E696ABC0] errorWithDomain:@"EKErrorDomain" code:5 userInfo:0];
+    *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"EKErrorDomain" code:5 userInfo:0];
   }
 
   return 0;

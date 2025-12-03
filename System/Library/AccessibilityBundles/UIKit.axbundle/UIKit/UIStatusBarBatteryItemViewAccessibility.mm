@@ -1,9 +1,9 @@
 @interface UIStatusBarBatteryItemViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (BOOL)updateForNewData:(id)a3 actions:(int)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (BOOL)updateForNewData:(id)data actions:(int)actions;
 - (CGPoint)accessibilityActivationPoint;
 - (CGRect)accessibilityFrame;
-- (double)_axSetCapacityDirty:(void *)a1;
+- (double)_axSetCapacityDirty:(void *)dirty;
 - (id)_accessibilityIsBatteryPercentVisible;
 - (id)_axCachedAXLabel;
 - (id)accessibilityLabel;
@@ -11,14 +11,14 @@
 - (uint64_t)_accessibilitySetNonQuantizedBatteryLevel:(uint64_t)result;
 - (uint64_t)_axIsCapacityDirty;
 - (unint64_t)accessibilityTraits;
-- (void)_axSetCachedAXLabel:(void *)a1;
+- (void)_axSetCachedAXLabel:(void *)label;
 @end
 
 @implementation UIStatusBarBatteryItemViewAccessibility
 
 - (uint64_t)_accessibilityNonQuantizedBatteryLevel
 {
-  if (a1)
+  if (self)
   {
     return __UIAccessibilityGetAssociatedInteger();
   }
@@ -39,14 +39,14 @@
   return result;
 }
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v7 = location;
   v6 = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   [location[0] validateClass:@"UIStatusBarComposedData"];
   v4 = @"UIStatusBarBatteryItemView";
   v3 = "i";
@@ -63,12 +63,12 @@
 - (id)_accessibilityIsBatteryPercentVisible
 {
   v18 = *MEMORY[0x29EDCA608];
-  v15 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v8 = [v15 superview];
-    location = [v8 subviews];
-    MEMORY[0x29EDC9740](v8);
+    superview = [selfCopy superview];
+    location = [superview subviews];
+    MEMORY[0x29EDC9740](superview);
     memset(__b, 0, sizeof(__b));
     obj = MEMORY[0x29EDC9748](location);
     v10 = [obj countByEnumeratingWithState:__b objects:v17 count:16];
@@ -139,7 +139,7 @@ LABEL_12:
 
 - (CGPoint)accessibilityActivationPoint
 {
-  v14 = self;
+  selfCopy = self;
   v13 = a2;
   v8.receiver = self;
   v8.super_class = UIStatusBarBatteryItemViewAccessibility;
@@ -156,7 +156,7 @@ LABEL_12:
 
 - (CGRect)accessibilityFrame
 {
-  v13 = self;
+  selfCopy = self;
   v12 = a2;
   memset(&v14, 0, sizeof(v14));
   v11.receiver = self;
@@ -166,7 +166,7 @@ LABEL_12:
   v14.origin.y = v3;
   v14.size.width = v4;
   v14.size.height = v5;
-  location = [(UIStatusBarBatteryItemViewAccessibility *)v13 _accessibilityIsBatteryPercentVisible];
+  location = [(UIStatusBarBatteryItemViewAccessibility *)selfCopy _accessibilityIsBatteryPercentVisible];
   if (location)
   {
     [location accessibilityFrame];
@@ -187,43 +187,43 @@ LABEL_12:
 
 - (id)accessibilityLabel
 {
-  v33 = self;
+  selfCopy = self;
   v32[1] = a2;
-  v18 = [(UIStatusBarBatteryItemViewAccessibility *)self _axCachedAXLabel];
+  _axCachedAXLabel = [(UIStatusBarBatteryItemViewAccessibility *)self _axCachedAXLabel];
   LOBYTE(v19) = 0;
-  if (v18)
+  if (_axCachedAXLabel)
   {
-    v19 = [(UIStatusBarBatteryItemViewAccessibility *)v33 _axIsCapacityDirty]^ 1;
+    v19 = [(UIStatusBarBatteryItemViewAccessibility *)selfCopy _axIsCapacityDirty]^ 1;
   }
 
-  *&v2 = MEMORY[0x29EDC9740](v18).n128_u64[0];
+  *&v2 = MEMORY[0x29EDC9740](_axCachedAXLabel).n128_u64[0];
   if (v19)
   {
-    v34 = [(UIStatusBarBatteryItemViewAccessibility *)v33 _axCachedAXLabel];
+    _axCachedAXLabel2 = [(UIStatusBarBatteryItemViewAccessibility *)selfCopy _axCachedAXLabel];
     goto LABEL_28;
   }
 
   v32[0] = [MEMORY[0x29EDC7A58] currentDevice];
-  v31 = [v32[0] isBatteryMonitoringEnabled];
-  if ((v31 & 1) == 0)
+  isBatteryMonitoringEnabled = [v32[0] isBatteryMonitoringEnabled];
+  if ((isBatteryMonitoringEnabled & 1) == 0)
   {
     [v32[0] setBatteryMonitoringEnabled:1];
   }
 
   v30 = -1.0;
-  v29 = [(UIStatusBarBatteryItemViewAccessibility *)v33 _accessibilityIsBatteryPercentVisible];
-  if (v29)
+  _accessibilityIsBatteryPercentVisible = [(UIStatusBarBatteryItemViewAccessibility *)selfCopy _accessibilityIsBatteryPercentVisible];
+  if (_accessibilityIsBatteryPercentVisible)
   {
-    v17 = [v29 safeStringForKey:@"_percentString"];
+    v17 = [_accessibilityIsBatteryPercentVisible safeStringForKey:@"_percentString"];
     v3 = [v17 intValue] / 100.0;
     v30 = v3;
     MEMORY[0x29EDC9740](v17);
   }
 
-  else if (([(UIStatusBarBatteryItemViewAccessibility *)v33 _axIsCapacityDirty]& 1) != 0)
+  else if (([(UIStatusBarBatteryItemViewAccessibility *)selfCopy _axIsCapacityDirty]& 1) != 0)
   {
-    v28 = [(UIStatusBarBatteryItemViewAccessibility *)v33 _accessibilityNonQuantizedBatteryLevel];
-    v4 = v28 / 100.0;
+    _accessibilityNonQuantizedBatteryLevel = [(UIStatusBarBatteryItemViewAccessibility *)selfCopy _accessibilityNonQuantizedBatteryLevel];
+    v4 = _accessibilityNonQuantizedBatteryLevel / 100.0;
     v30 = v4;
   }
 
@@ -239,11 +239,11 @@ LABEL_12:
   v15 = AXFormatFloatWithPercentage();
   v27 = [v14 stringWithFormat:v16, v15];
   MEMORY[0x29EDC9740](v15);
-  v26 = [v32[0] batteryState];
+  batteryState = [v32[0] batteryState];
   v25 = 0;
-  if (v26 == 2)
+  if (batteryState == 2)
   {
-    v24 = [(UIStatusBarBatteryItemViewAccessibility *)v33 safeIntegerForKey:@"cachedBatteryStyle"];
+    v24 = [(UIStatusBarBatteryItemViewAccessibility *)selfCopy safeIntegerForKey:@"cachedBatteryStyle"];
     if (v24)
     {
       v8 = accessibilityLocalizedString(@"status.battery.charging");
@@ -257,7 +257,7 @@ LABEL_12:
 
   else
   {
-    if (v26 != 3)
+    if (batteryState != 3)
     {
       goto LABEL_23;
     }
@@ -280,7 +280,7 @@ LABEL_12:
   *&v7 = MEMORY[0x29EDC9740](v9).n128_u64[0];
 LABEL_23:
   v21 = 0;
-  if (([(UIStatusBarBatteryItemViewAccessibility *)v33 safeBoolForKey:@"_batterySaverModeActive", v7]& 1) != 0)
+  if (([(UIStatusBarBatteryItemViewAccessibility *)selfCopy safeBoolForKey:@"_batterySaverModeActive", v7]& 1) != 0)
   {
     v10 = accessibilityLocalizedString(@"status.low.power.mode");
     v11 = v21;
@@ -288,31 +288,31 @@ LABEL_23:
     MEMORY[0x29EDC9740](v11);
   }
 
-  if ((v31 & 1) == 0)
+  if ((isBatteryMonitoringEnabled & 1) == 0)
   {
     [v32[0] setBatteryMonitoringEnabled:0];
   }
 
   v20 = __UIAXStringForVariables();
-  [(UIStatusBarBatteryItemViewAccessibility *)v33 _axSetCachedAXLabel:v20];
-  v34 = MEMORY[0x29EDC9748](v20);
+  [(UIStatusBarBatteryItemViewAccessibility *)selfCopy _axSetCachedAXLabel:v20];
+  _axCachedAXLabel2 = MEMORY[0x29EDC9748](v20);
   objc_storeStrong(&v20, 0);
   objc_storeStrong(&v21, 0);
   objc_storeStrong(&v25, 0);
   objc_storeStrong(&v27, 0);
-  objc_storeStrong(&v29, 0);
+  objc_storeStrong(&_accessibilityIsBatteryPercentVisible, 0);
   objc_storeStrong(v32, 0);
 LABEL_28:
-  v12 = v34;
+  v12 = _axCachedAXLabel2;
 
   return v12;
 }
 
 - (id)_axCachedAXLabel
 {
-  if (a1)
+  if (self)
   {
-    v2 = objc_getAssociatedObject(a1, &AXCachedAXLabelKey);
+    v2 = objc_getAssociatedObject(self, &AXCachedAXLabelKey);
   }
 
   else
@@ -325,10 +325,10 @@ LABEL_28:
 
 - (uint64_t)_axIsCapacityDirty
 {
-  v3 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    location = objc_getAssociatedObject(v3, &AXBatteryLevelIsDirtyKey);
+    location = objc_getAssociatedObject(selfCopy, &AXBatteryLevelIsDirtyKey);
     if (location)
     {
       v4 = [location BOOLValue] & 1;
@@ -350,14 +350,14 @@ LABEL_28:
   return v4 & 1;
 }
 
-- (void)_axSetCachedAXLabel:(void *)a1
+- (void)_axSetCachedAXLabel:(void *)label
 {
-  v3 = a1;
+  labelCopy = label;
   location = 0;
   objc_storeStrong(&location, a2);
-  if (v3)
+  if (labelCopy)
   {
-    objc_setAssociatedObject(v3, &AXCachedAXLabelKey, location, 1);
+    objc_setAssociatedObject(labelCopy, &AXCachedAXLabelKey, location, 1);
   }
 
   objc_storeStrong(&location, 0);
@@ -365,23 +365,23 @@ LABEL_28:
 
 - (unint64_t)accessibilityTraits
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   v3.receiver = self;
   v3.super_class = UIStatusBarBatteryItemViewAccessibility;
   return [(UIStatusBarBatteryItemViewAccessibility *)&v3 accessibilityTraits]| *MEMORY[0x29EDC7580];
 }
 
-- (BOOL)updateForNewData:(id)a3 actions:(int)a4
+- (BOOL)updateForNewData:(id)data actions:(int)actions
 {
-  v20 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v18 = a4;
-  v16.receiver = v20;
+  objc_storeStrong(location, data);
+  actionsCopy = actions;
+  v16.receiver = selfCopy;
   v16.super_class = UIStatusBarBatteryItemViewAccessibility;
-  v17 = [(UIStatusBarBatteryItemViewAccessibility *)&v16 updateForNewData:location[0] actions:a4];
+  v17 = [(UIStatusBarBatteryItemViewAccessibility *)&v16 updateForNewData:location[0] actions:actions];
   NSClassFromString(&cfstr_Uistatusbarcom.isa);
   if (objc_opt_isKindOfClass())
   {
@@ -397,11 +397,11 @@ LABEL_28:
     objc_storeStrong(v9, 0);
     _Block_object_dispose(&v10, 8);
     v15 = v8;
-    v4 = [(UIStatusBarBatteryItemViewAccessibility *)v20 _accessibilityNonQuantizedBatteryLevel];
-    if (v4 != *(v15 + 2104))
+    _accessibilityNonQuantizedBatteryLevel = [(UIStatusBarBatteryItemViewAccessibility *)selfCopy _accessibilityNonQuantizedBatteryLevel];
+    if (_accessibilityNonQuantizedBatteryLevel != *(v15 + 2104))
     {
-      [UIStatusBarBatteryItemViewAccessibility _accessibilitySetNonQuantizedBatteryLevel:v20];
-      [(UIStatusBarBatteryItemViewAccessibility *)v20 _axSetCapacityDirty:?];
+      [UIStatusBarBatteryItemViewAccessibility _accessibilitySetNonQuantizedBatteryLevel:selfCopy];
+      [(UIStatusBarBatteryItemViewAccessibility *)selfCopy _axSetCapacityDirty:?];
     }
   }
 
@@ -417,12 +417,12 @@ uint64_t __68__UIStatusBarBatteryItemViewAccessibility_updateForNewData_actions_
   return result;
 }
 
-- (double)_axSetCapacityDirty:(void *)a1
+- (double)_axSetCapacityDirty:(void *)dirty
 {
-  if (a1)
+  if (dirty)
   {
     v3 = [MEMORY[0x29EDBA070] numberWithBool:a2 & 1];
-    objc_setAssociatedObject(a1, &AXBatteryLevelIsDirtyKey, v3, 1);
+    objc_setAssociatedObject(dirty, &AXBatteryLevelIsDirtyKey, v3, 1);
     *&result = MEMORY[0x29EDC9740](v3).n128_u64[0];
   }
 

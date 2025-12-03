@@ -1,28 +1,28 @@
 @interface MKCompassView
-+ (id)_parameterForSize:(int64_t)a3;
-+ (id)_parameterForStyle:(int64_t)a3;
-+ (id)_systemFontOfSize:(double)a3 withAttributes:(id)a4 orWeight:(double)a5;
-- (BOOL)isPointInNorthEastHalf:(CGPoint)a3;
++ (id)_parameterForSize:(int64_t)size;
++ (id)_parameterForStyle:(int64_t)style;
++ (id)_systemFontOfSize:(double)size withAttributes:(id)attributes orWeight:(double)weight;
+- (BOOL)isPointInNorthEastHalf:(CGPoint)half;
 - (CGSize)intrinsicContentSize;
-- (MKCompassView)initWithCoder:(id)a3;
-- (MKCompassView)initWithFrame:(CGRect)a3;
+- (MKCompassView)initWithCoder:(id)coder;
+- (MKCompassView)initWithFrame:(CGRect)frame;
 - (double)mapHeading;
-- (id)_compassDirectionImageForKey:(id)a3 sizeParams:(id)a4 styleParams:(id)a5 scale:(double)a6;
-- (id)stringForCompassPoint:(int)a3;
+- (id)_compassDirectionImageForKey:(id)key sizeParams:(id)params styleParams:(id)styleParams scale:(double)scale;
+- (id)stringForCompassPoint:(int)point;
 - (void)_adaptCompassStyleToUserInterfaceStyle;
 - (void)_commonInit;
 - (void)_populateCompassPointLocalizedAbbreviationsArray;
-- (void)_setupImageView:(id)a3;
-- (void)_updateImageForCompassDirection:(int)a3;
+- (void)_setupImageView:(id)view;
+- (void)_updateImageForCompassDirection:(int)direction;
 - (void)_updateLayerForCurrentSizeAndStyle;
 - (void)_updateStyle;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)movedToWindow:(id)a3;
-- (void)setCompassViewSize:(int64_t)a3 style:(int64_t)a4;
-- (void)setMapHeading:(double)a3;
-- (void)traitEnvironment:(id)a3 didChangeTraitCollection:(id)a4;
-- (void)updateLocale:(id)a3;
+- (void)movedToWindow:(id)window;
+- (void)setCompassViewSize:(int64_t)size style:(int64_t)style;
+- (void)setMapHeading:(double)heading;
+- (void)traitEnvironment:(id)environment didChangeTraitCollection:(id)collection;
+- (void)updateLocale:(id)locale;
 @end
 
 @implementation MKCompassView
@@ -65,9 +65,9 @@
 
   [(UIImageView *)self->_containerImageView addSubview:self->_assetImageView];
   [(MKCompassView *)self _populateCompassPointLocalizedAbbreviationsArray];
-  v11 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v12 = MNLocaleDidChangeNotification();
-  [v11 addObserver:self selector:sel_updateLocale_ name:v12 object:0];
+  [defaultCenter addObserver:self selector:sel_updateLocale_ name:v12 object:0];
 
   v15[0] = objc_opt_class();
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
@@ -79,50 +79,50 @@
   v24 = [objc_opt_class() _parameterForSize:{-[MKCompassView compassViewSize](self, "compassViewSize")}];
   v3 = [objc_opt_class() _parameterForStyle:{-[MKCompassView compassViewStyle](self, "compassViewStyle")}];
   v4 = +[MKSystemController sharedInstance];
-  v5 = [v4 isGlassEnabled];
+  isGlassEnabled = [v4 isGlassEnabled];
 
-  if (v5)
+  if (isGlassEnabled)
   {
     [(MKCompassView *)self _mapkit_setGlassBackground];
   }
 
   else
   {
-    v6 = [v3 backgroundColor];
-    [(MKCompassView *)self setBackgroundColor:v6];
+    backgroundColor = [v3 backgroundColor];
+    [(MKCompassView *)self setBackgroundColor:backgroundColor];
   }
 
   [v24 diameter];
   v8 = v7 * 0.5;
-  v9 = [(MKCompassView *)self layer];
-  [v9 setCornerRadius:v8];
+  layer = [(MKCompassView *)self layer];
+  [layer setCornerRadius:v8];
 
   v10 = +[MKSystemController sharedInstance];
-  v11 = [v10 isGlassEnabled];
+  isGlassEnabled2 = [v10 isGlassEnabled];
 
-  if ((v11 & 1) == 0)
+  if ((isGlassEnabled2 & 1) == 0)
   {
-    v12 = [(MKCompassView *)self layer];
-    [v12 setShadowRadius:8.0];
+    layer2 = [(MKCompassView *)self layer];
+    [layer2 setShadowRadius:8.0];
 
-    v13 = [(MKCompassView *)self layer];
-    [v13 setShadowOffset:{0.0, 2.0}];
+    layer3 = [(MKCompassView *)self layer];
+    [layer3 setShadowOffset:{0.0, 2.0}];
 
-    v14 = [v3 shadowColor];
-    v15 = [v14 CGColor];
-    v16 = [(MKCompassView *)self layer];
-    [v16 setShadowColor:v15];
+    shadowColor = [v3 shadowColor];
+    cGColor = [shadowColor CGColor];
+    layer4 = [(MKCompassView *)self layer];
+    [layer4 setShadowColor:cGColor];
 
-    v17 = [(MKCompassView *)self layer];
+    layer5 = [(MKCompassView *)self layer];
     LODWORD(v18) = 1034147594;
-    [v17 setShadowOpacity:v18];
+    [layer5 setShadowOpacity:v18];
 
     v19 = MEMORY[0x1E69DC728];
     [(MKCompassView *)self bounds];
     v20 = [v19 bezierPathWithOvalInRect:?];
-    v21 = [v20 CGPath];
-    v22 = [(MKCompassView *)self layer];
-    [v22 setShadowPath:v21];
+    cGPath = [v20 CGPath];
+    layer6 = [(MKCompassView *)self layer];
+    [layer6 setShadowPath:cGPath];
   }
 
   [(MKCompassView *)self mapHeading];
@@ -131,8 +131,8 @@
 
 - (double)mapHeading
 {
-  v2 = [(UIImageView *)self->_assetImageView layer];
-  v3 = [v2 valueForKeyPath:@"transform.rotation.z"];
+  layer = [(UIImageView *)self->_assetImageView layer];
+  v3 = [layer valueForKeyPath:@"transform.rotation.z"];
   [v3 doubleValue];
   v5 = v4;
 
@@ -157,15 +157,15 @@
 
 - (void)_adaptCompassStyleToUserInterfaceStyle
 {
-  v3 = [(MKCompassView *)self traitCollection];
-  self->_compassViewStyle = [v3 userInterfaceStyle] != 2;
+  traitCollection = [(MKCompassView *)self traitCollection];
+  self->_compassViewStyle = [traitCollection userInterfaceStyle] != 2;
 }
 
-- (id)stringForCompassPoint:(int)a3
+- (id)stringForCompassPoint:(int)point
 {
-  if (a3)
+  if (point)
   {
-    v3 = (a3 - 1);
+    v3 = (point - 1);
   }
 
   else
@@ -176,10 +176,10 @@
   return [(NSArray *)self->_compassPointLocalizedAbbreviations objectAtIndexedSubscript:v3];
 }
 
-- (BOOL)isPointInNorthEastHalf:(CGPoint)a3
+- (BOOL)isPointInNorthEastHalf:(CGPoint)half
 {
-  y = a3.y;
-  x = a3.x;
+  y = half.y;
+  x = half.x;
   [(MKCompassView *)self center];
   v7 = v6;
   [(MKCompassView *)self center];
@@ -211,9 +211,9 @@
   return result;
 }
 
-- (void)setMapHeading:(double)a3
+- (void)setMapHeading:(double)heading
 {
-  v5 = MKCompassPointNEWSForHeading(a3);
+  v5 = MKCompassPointNEWSForHeading(heading);
   if (v5 != self->_lastDrawnCompassDirection)
   {
     v6 = v5;
@@ -222,70 +222,70 @@
   }
 
   memset(&v12, 0, sizeof(v12));
-  CATransform3DMakeRotation(&v12, a3 * -0.0174532925, 0.0, 0.0, 1.0);
+  CATransform3DMakeRotation(&v12, heading * -0.0174532925, 0.0, 0.0, 1.0);
   v7 = +[MKThreadContext currentContext];
   [v7 _CA_setDisableActions:1];
 
   v11 = v12;
-  v8 = [(UIImageView *)self->_assetImageView layer];
+  layer = [(UIImageView *)self->_assetImageView layer];
   v10 = v11;
-  [v8 setTransform:&v10];
+  [layer setTransform:&v10];
 
   v9 = +[MKThreadContext currentContext];
   [v9 _CA_setDisableActions:0];
 }
 
-- (id)_compassDirectionImageForKey:(id)a3 sizeParams:(id)a4 styleParams:(id)a5 scale:(double)a6
+- (id)_compassDirectionImageForKey:(id)key sizeParams:(id)params styleParams:(id)styleParams scale:(double)scale
 {
   v37[2] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  keyCopy = key;
+  paramsCopy = params;
+  styleParamsCopy = styleParams;
   if (_compassDirectionImageForKey_sizeParams_styleParams_scale__onceToken != -1)
   {
     dispatch_once(&_compassDirectionImageForKey_sizeParams_styleParams_scale__onceToken, &__block_literal_global_34357);
   }
 
-  v13 = [_compassDirectionImageForKey_sizeParams_styleParams_scale__compassDirectionImagesDictionary objectForKey:v10];
+  v13 = [_compassDirectionImageForKey_sizeParams_styleParams_scale__compassDirectionImagesDictionary objectForKey:keyCopy];
   if (!v13)
   {
-    [v10 size];
-    UIGraphicsBeginImageContextWithOptions(v39, 0, a6);
-    v14 = [v12 textColor];
+    [keyCopy size];
+    UIGraphicsBeginImageContextWithOptions(v39, 0, scale);
+    textColor = [styleParamsCopy textColor];
     v15 = +[MKSystemController sharedInstance];
-    v16 = [v15 isGlassEnabled];
+    isGlassEnabled = [v15 isGlassEnabled];
 
-    if (v16)
+    if (isGlassEnabled)
     {
-      v17 = [(MKCompassView *)self traitCollection];
+      traitCollection = [(MKCompassView *)self traitCollection];
       v31 = MEMORY[0x1E69E9820];
       v32 = 3221225472;
       v33 = __75__MKCompassView__compassDirectionImageForKey_sizeParams_styleParams_scale___block_invoke_2;
       v34 = &unk_1E76CA8E0;
-      v35 = v10;
-      v18 = [v17 traitCollectionByModifyingTraits:&v31];
+      v35 = keyCopy;
+      v18 = [traitCollection traitCollectionByModifyingTraits:&v31];
 
-      v19 = [MEMORY[0x1E69DC888] labelColor];
-      v20 = [v19 resolvedColorWithTraitCollection:v18];
+      labelColor = [MEMORY[0x1E69DC888] labelColor];
+      v20 = [labelColor resolvedColorWithTraitCollection:v18];
 
-      v14 = v20;
+      textColor = v20;
     }
 
     v36[0] = *MEMORY[0x1E69DB648];
-    v21 = [v11 font];
+    font = [paramsCopy font];
     v36[1] = *MEMORY[0x1E69DB650];
-    v37[0] = v21;
-    v37[1] = v14;
+    v37[0] = font;
+    v37[1] = textColor;
     v22 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v37 forKeys:v36 count:2];
 
     v23 = objc_alloc(MEMORY[0x1E696AAB0]);
-    v24 = [v10 headingString];
-    v25 = [v23 initWithString:v24 attributes:v22];
+    headingString = [keyCopy headingString];
+    v25 = [v23 initWithString:headingString attributes:v22];
 
-    [v10 size];
-    [v10 size];
-    v26 = [v10 headingString];
-    [v26 sizeWithAttributes:v22];
+    [keyCopy size];
+    [keyCopy size];
+    headingString2 = [keyCopy headingString];
+    [headingString2 sizeWithAttributes:v22];
 
     UIRoundToViewScale();
     v28 = v27;
@@ -293,7 +293,7 @@
     [v25 drawAtPoint:{v28, v29}];
     v13 = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
-    [_compassDirectionImageForKey_sizeParams_styleParams_scale__compassDirectionImagesDictionary setObject:v13 forKey:v10];
+    [_compassDirectionImageForKey_sizeParams_styleParams_scale__compassDirectionImagesDictionary setObject:v13 forKey:keyCopy];
   }
 
   return v13;
@@ -325,34 +325,34 @@ void __75__MKCompassView__compassDirectionImageForKey_sizeParams_styleParams_sca
   _compassDirectionImageForKey_sizeParams_styleParams_scale__compassDirectionImagesDictionary = v0;
 }
 
-- (void)_updateImageForCompassDirection:(int)a3
+- (void)_updateImageForCompassDirection:(int)direction
 {
-  v3 = *&a3;
+  v3 = *&direction;
   v23 = [objc_opt_class() _parameterForSize:{-[MKCompassView compassViewSize](self, "compassViewSize")}];
   v5 = [objc_opt_class() _parameterForStyle:{-[MKCompassView compassViewStyle](self, "compassViewStyle")}];
   v6 = MEMORY[0x1E69DCAB8];
   v7 = MEMORY[0x1E696AEC0];
-  v8 = [v23 imageNamePart];
-  v9 = [v5 imageNamePart];
-  v10 = [v7 stringWithFormat:@"Compass%@%@", v8, v9];
+  imageNamePart = [v23 imageNamePart];
+  imageNamePart2 = [v5 imageNamePart];
+  v10 = [v7 stringWithFormat:@"Compass%@%@", imageNamePart, imageNamePart2];
 
   v11 = [v6 _mapkit_imageNamed:v10];
   [(UIImageView *)self->_assetImageView setImage:v11];
 
-  v12 = [(UIImageView *)self->_assetImageView image];
+  image = [(UIImageView *)self->_assetImageView image];
 
-  if (v12)
+  if (image)
   {
     v13 = [_MKCompassDirectionImageKey alloc];
-    v14 = [(UIImageView *)self->_assetImageView image];
-    [v14 size];
+    image2 = [(UIImageView *)self->_assetImageView image];
+    [image2 size];
     v16 = v15;
     v18 = v17;
     v19 = [(MKCompassView *)self stringForCompassPoint:v3];
     v20 = [(_MKCompassDirectionImageKey *)v13 initWithSize:v19 headingString:[(MKCompassView *)self compassViewStyle] compassViewStyle:v16, v18];
 
-    v21 = [(MKCompassView *)self traitCollection];
-    [v21 displayScale];
+    traitCollection = [(MKCompassView *)self traitCollection];
+    [traitCollection displayScale];
     v22 = [(MKCompassView *)self _compassDirectionImageForKey:v20 sizeParams:v23 styleParams:v5 scale:?];
     [(UIImageView *)self->_containerImageView setImage:v22];
 
@@ -365,41 +365,41 @@ void __75__MKCompassView__compassDirectionImageForKey_sizeParams_styleParams_sca
   }
 }
 
-- (void)traitEnvironment:(id)a3 didChangeTraitCollection:(id)a4
+- (void)traitEnvironment:(id)environment didChangeTraitCollection:(id)collection
 {
-  v5 = a4;
-  v6 = [(MKCompassView *)self traitCollection];
-  v7 = [v6 userInterfaceStyle];
-  v8 = [v5 userInterfaceStyle];
+  collectionCopy = collection;
+  traitCollection = [(MKCompassView *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
+  userInterfaceStyle2 = [collectionCopy userInterfaceStyle];
 
-  if (v7 != v8)
+  if (userInterfaceStyle != userInterfaceStyle2)
   {
 
     [(MKCompassView *)self _updateStyle];
   }
 }
 
-- (void)setCompassViewSize:(int64_t)a3 style:(int64_t)a4
+- (void)setCompassViewSize:(int64_t)size style:(int64_t)style
 {
-  if (self->_compassViewSize != a3 || self->_compassViewStyle != a4)
+  if (self->_compassViewSize != size || self->_compassViewStyle != style)
   {
-    self->_compassViewSize = a3;
-    self->_compassViewStyle = a4;
+    self->_compassViewSize = size;
+    self->_compassViewStyle = style;
     [(MKCompassView *)self _updateLayerForCurrentSizeAndStyle];
 
     [(MKCompassView *)self layoutIfNeeded];
   }
 }
 
-- (void)_setupImageView:(id)a3
+- (void)_setupImageView:(id)view
 {
-  v13 = a3;
+  viewCopy = view;
   [(MKCompassView *)self bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  [v13 setBounds:?];
+  [viewCopy setBounds:?];
   v15.origin.x = v5;
   v15.origin.y = v7;
   v15.size.width = v9;
@@ -409,10 +409,10 @@ void __75__MKCompassView__compassDirectionImageForKey_sizeParams_styleParams_sca
   v16.origin.y = v7;
   v16.size.width = v9;
   v16.size.height = v11;
-  [v13 setCenter:{MidX, CGRectGetMidY(v16)}];
+  [viewCopy setCenter:{MidX, CGRectGetMidY(v16)}];
 }
 
-- (void)updateLocale:(id)a3
+- (void)updateLocale:(id)locale
 {
   [(MKCompassView *)self _populateCompassPointLocalizedAbbreviationsArray];
 
@@ -421,27 +421,27 @@ void __75__MKCompassView__compassDirectionImageForKey_sizeParams_styleParams_sca
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = MKCompassView;
   [(MKCompassView *)&v4 dealloc];
 }
 
-- (void)movedToWindow:(id)a3
+- (void)movedToWindow:(id)window
 {
-  if (a3)
+  if (window)
   {
     [(MKCompassView *)self _updateStyle];
   }
 }
 
-- (MKCompassView)initWithCoder:(id)a3
+- (MKCompassView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = MKCompassView;
-  v3 = [(MKCompassView *)&v6 initWithCoder:a3];
+  v3 = [(MKCompassView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -451,11 +451,11 @@ void __75__MKCompassView__compassDirectionImageForKey_sizeParams_styleParams_sca
   return v4;
 }
 
-- (MKCompassView)initWithFrame:(CGRect)a3
+- (MKCompassView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = MKCompassView;
-  v3 = [(MKCompassView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MKCompassView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -465,12 +465,12 @@ void __75__MKCompassView__compassDirectionImageForKey_sizeParams_styleParams_sca
   return v4;
 }
 
-+ (id)_parameterForStyle:(int64_t)a3
++ (id)_parameterForStyle:(int64_t)style
 {
   if (_parameterForStyle__onceToken != -1)
   {
     dispatch_once(&_parameterForStyle__onceToken, &__block_literal_global_40_34410);
-    if (a3)
+    if (style)
     {
       goto LABEL_3;
     }
@@ -480,23 +480,23 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  if (!a3)
+  if (!style)
   {
     goto LABEL_6;
   }
 
 LABEL_3:
-  if (a3 != 1)
+  if (style != 1)
   {
     goto LABEL_8;
   }
 
   v4 = &_parameterForStyle__lightParameters;
 LABEL_7:
-  a1 = *v4;
+  self = *v4;
 LABEL_8:
 
-  return a1;
+  return self;
 }
 
 void __36__MKCompassView__parameterForStyle___block_invoke()
@@ -536,24 +536,24 @@ void __36__MKCompassView__parameterForStyle___block_invoke()
   [_parameterForStyle__darkParameters setShadowColor:v11];
 }
 
-+ (id)_parameterForSize:(int64_t)a3
++ (id)_parameterForSize:(int64_t)size
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __35__MKCompassView__parameterForSize___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_parameterForSize__onceToken != -1)
   {
     dispatch_once(&_parameterForSize__onceToken, block);
   }
 
-  if (a3 <= 2)
+  if (size <= 2)
   {
-    a1 = *off_1E76CA900[a3];
+    self = *off_1E76CA900[size];
   }
 
-  return a1;
+  return self;
 }
 
 void __35__MKCompassView__parameterForSize___block_invoke(uint64_t a1)
@@ -618,17 +618,17 @@ void __35__MKCompassView__parameterForSize___block_invoke(uint64_t a1)
   [_parameterForSize__largeParameters setFont:v18];
 }
 
-+ (id)_systemFontOfSize:(double)a3 withAttributes:(id)a4 orWeight:(double)a5
++ (id)_systemFontOfSize:(double)size withAttributes:(id)attributes orWeight:(double)weight
 {
-  if (a4)
+  if (attributes)
   {
-    v6 = [MEMORY[0x1E69DB880] fontDescriptorWithFontAttributes:{a3, a5}];
-    v7 = [MEMORY[0x1E69DB878] fontWithDescriptor:v6 size:a3];
+    v6 = [MEMORY[0x1E69DB880] fontDescriptorWithFontAttributes:{size, weight}];
+    v7 = [MEMORY[0x1E69DB878] fontWithDescriptor:v6 size:size];
   }
 
   else
   {
-    v7 = [MEMORY[0x1E69DB878] systemFontOfSize:a3 weight:a5];
+    v7 = [MEMORY[0x1E69DB878] systemFontOfSize:size weight:weight];
   }
 
   return v7;

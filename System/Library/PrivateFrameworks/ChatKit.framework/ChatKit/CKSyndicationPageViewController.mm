@@ -1,13 +1,13 @@
 @interface CKSyndicationPageViewController
 - (CKSyndicationOnboardingPageViewControllerDelegate)delegate;
-- (id)pageViewController:(id)a3 viewControllerAfterViewController:(id)a4;
-- (id)pageViewController:(id)a3 viewControllerBeforeViewController:(id)a4;
-- (id)viewControllerAtIndex:(unint64_t)a3;
-- (unint64_t)indexOfViewController:(id)a3;
+- (id)pageViewController:(id)controller viewControllerAfterViewController:(id)viewController;
+- (id)pageViewController:(id)controller viewControllerBeforeViewController:(id)viewController;
+- (id)viewControllerAtIndex:(unint64_t)index;
+- (unint64_t)indexOfViewController:(id)controller;
 - (void)createContentPages;
-- (void)pageControlChanged:(id)a3;
-- (void)pageViewController:(id)a3 didFinishAnimating:(BOOL)a4 previousViewControllers:(id)a5 transitionCompleted:(BOOL)a6;
-- (void)pageViewController:(id)a3 willTransitionToViewControllers:(id)a4;
+- (void)pageControlChanged:(id)changed;
+- (void)pageViewController:(id)controller didFinishAnimating:(BOOL)animating previousViewControllers:(id)controllers transitionCompleted:(BOOL)completed;
+- (void)pageViewController:(id)controller willTransitionToViewControllers:(id)controllers;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
@@ -16,9 +16,9 @@
 
 - (void)createContentPages
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   pageContent = self->_pageContent;
-  self->_pageContent = v3;
+  self->_pageContent = array;
 
   for (i = 0; i != 3; ++i)
   {
@@ -45,41 +45,41 @@
   [(UIPageViewController *)self->_pageViewController setDelegate:self];
   v8 = [(CKSyndicationPageViewController *)self viewControllerAtIndex:0];
   v9 = [MEMORY[0x1E695DEC8] arrayWithObject:v8];
-  v10 = [(CKSyndicationPageViewController *)self pageViewController];
-  [v10 setViewControllers:v9 direction:0 animated:0 completion:0];
+  pageViewController = [(CKSyndicationPageViewController *)self pageViewController];
+  [pageViewController setViewControllers:v9 direction:0 animated:0 completion:0];
 
-  v11 = [(CKSyndicationPageViewController *)self pageViewController];
-  [(CKSyndicationPageViewController *)self addChildViewController:v11];
+  pageViewController2 = [(CKSyndicationPageViewController *)self pageViewController];
+  [(CKSyndicationPageViewController *)self addChildViewController:pageViewController2];
 
-  v12 = [(CKSyndicationPageViewController *)self view];
-  v13 = [(CKSyndicationPageViewController *)self pageViewController];
-  v14 = [v13 view];
-  [v12 addSubview:v14];
+  view = [(CKSyndicationPageViewController *)self view];
+  pageViewController3 = [(CKSyndicationPageViewController *)self pageViewController];
+  view2 = [pageViewController3 view];
+  [view addSubview:view2];
 
-  v15 = [(CKSyndicationPageViewController *)self pageViewController];
-  [v15 didMoveToParentViewController:self];
+  pageViewController4 = [(CKSyndicationPageViewController *)self pageViewController];
+  [pageViewController4 didMoveToParentViewController:self];
 
   v16 = objc_alloc_init(MEMORY[0x1E69DCD10]);
   v17 = MEMORY[0x1E69DC888];
-  v18 = [MEMORY[0x1E69DC888] lightGrayColor];
-  v19 = [MEMORY[0x1E69DC888] darkGrayColor];
-  v20 = [v17 dynamicColorWithLightColor:v18 darkColor:v19];
+  lightGrayColor = [MEMORY[0x1E69DC888] lightGrayColor];
+  darkGrayColor = [MEMORY[0x1E69DC888] darkGrayColor];
+  v20 = [v17 dynamicColorWithLightColor:lightGrayColor darkColor:darkGrayColor];
   [v16 setPageIndicatorTintColor:v20];
 
   v21 = MEMORY[0x1E69DC888];
-  v22 = [MEMORY[0x1E69DC888] darkGrayColor];
-  v23 = [MEMORY[0x1E69DC888] lightGrayColor];
-  v24 = [v21 dynamicColorWithLightColor:v22 darkColor:v23];
+  darkGrayColor2 = [MEMORY[0x1E69DC888] darkGrayColor];
+  lightGrayColor2 = [MEMORY[0x1E69DC888] lightGrayColor];
+  v24 = [v21 dynamicColorWithLightColor:darkGrayColor2 darkColor:lightGrayColor2];
   [v16 setCurrentPageIndicatorTintColor:v24];
 
-  v25 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  [v16 setBackgroundColor:v25];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  [v16 setBackgroundColor:systemBackgroundColor];
 
   [v16 addTarget:self action:sel_pageControlChanged_ forControlEvents:4096];
   [v16 setNumberOfPages:3];
   [(CKSyndicationPageViewController *)self setPageControl:v16];
-  v26 = [(CKSyndicationPageViewController *)self view];
-  [v26 addSubview:v16];
+  view3 = [(CKSyndicationPageViewController *)self view];
+  [view3 addSubview:v16];
 }
 
 - (void)viewDidLayoutSubviews
@@ -87,23 +87,23 @@
   v40.receiver = self;
   v40.super_class = CKSyndicationPageViewController;
   [(CKSyndicationPageViewController *)&v40 viewDidLayoutSubviews];
-  v3 = [(CKSyndicationPageViewController *)self pageControl];
+  pageControl = [(CKSyndicationPageViewController *)self pageControl];
 
-  if (v3)
+  if (pageControl)
   {
-    v4 = [(CKSyndicationPageViewController *)self view];
-    [v4 bounds];
+    view = [(CKSyndicationPageViewController *)self view];
+    [view bounds];
     v6 = v5;
     v8 = v7;
 
-    v9 = [(CKSyndicationPageViewController *)self delegate];
-    v10 = [v9 getButtonTray];
+    delegate = [(CKSyndicationPageViewController *)self delegate];
+    getButtonTray = [delegate getButtonTray];
 
-    if (v10)
+    if (getButtonTray)
     {
-      v11 = [(CKSyndicationPageViewController *)self delegate];
-      v12 = [v11 getButtonTray];
-      [v12 frame];
+      delegate2 = [(CKSyndicationPageViewController *)self delegate];
+      getButtonTray2 = [delegate2 getButtonTray];
+      [getButtonTray2 frame];
       v14 = v13;
     }
 
@@ -121,88 +121,88 @@
 
     v17 = v14 * v16;
     v18 = v8 - v14 * v16 - v14;
-    v19 = [(CKSyndicationPageViewController *)self pageViewController];
-    v20 = [v19 view];
-    [v20 setFrame:{0.0, 0.0, v6, v18}];
+    pageViewController = [(CKSyndicationPageViewController *)self pageViewController];
+    view2 = [pageViewController view];
+    [view2 setFrame:{0.0, 0.0, v6, v18}];
 
-    v21 = [(CKSyndicationPageViewController *)self pageViewController];
-    v22 = [v21 view];
-    [v22 frame];
+    pageViewController2 = [(CKSyndicationPageViewController *)self pageViewController];
+    view3 = [pageViewController2 view];
+    [view3 frame];
     v24 = v17 * 0.5 + v23;
-    v25 = [(CKSyndicationPageViewController *)self pageViewController];
-    v26 = [v25 view];
-    [v26 frame];
+    pageViewController3 = [(CKSyndicationPageViewController *)self pageViewController];
+    view4 = [pageViewController3 view];
+    [view4 frame];
     v28 = v27;
-    v29 = [(CKSyndicationPageViewController *)self pageControl];
-    [v29 setFrame:{0.0, v24, v28, v17}];
+    pageControl2 = [(CKSyndicationPageViewController *)self pageControl];
+    [pageControl2 setFrame:{0.0, v24, v28, v17}];
 
     if (CKIsRunningInMacCatalyst())
     {
-      v30 = [(CKSyndicationPageViewController *)self pageViewController];
-      v31 = [v30 view];
-      [v31 frame];
+      pageViewController4 = [(CKSyndicationPageViewController *)self pageViewController];
+      view5 = [pageViewController4 view];
+      [view5 frame];
       v33 = v32;
-      v34 = [(CKSyndicationPageViewController *)self pageViewController];
-      v35 = [v34 view];
-      [v35 frame];
+      pageViewController5 = [(CKSyndicationPageViewController *)self pageViewController];
+      view6 = [pageViewController5 view];
+      [view6 frame];
       v37 = v36;
-      v38 = [(CKSyndicationPageViewController *)self pageControl];
-      [v38 setFrame:{0.0, v33, v37, v17}];
+      pageControl3 = [(CKSyndicationPageViewController *)self pageControl];
+      [pageControl3 setFrame:{0.0, v33, v37, v17}];
     }
 
-    v39 = [(CKSyndicationPageViewController *)self pageControl];
-    [v39 setAutoresizingMask:8];
+    pageControl4 = [(CKSyndicationPageViewController *)self pageControl];
+    [pageControl4 setAutoresizingMask:8];
   }
 }
 
-- (void)pageControlChanged:(id)a3
+- (void)pageControlChanged:(id)changed
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v4 = [a3 currentPage];
-  v5 = [(CKSyndicationPageViewController *)self pageContent];
-  v6 = [(CKSyndicationPageViewController *)self pageViewController];
-  v7 = [v6 viewControllers];
-  v8 = [v7 firstObject];
-  v9 = [v5 indexOfObject:v8];
+  currentPage = [changed currentPage];
+  pageContent = [(CKSyndicationPageViewController *)self pageContent];
+  pageViewController = [(CKSyndicationPageViewController *)self pageViewController];
+  viewControllers = [pageViewController viewControllers];
+  firstObject = [viewControllers firstObject];
+  v9 = [pageContent indexOfObject:firstObject];
 
-  v10 = v4 < v9;
-  v11 = [(CKSyndicationPageViewController *)self viewControllerAtIndex:v4];
+  v10 = currentPage < v9;
+  v11 = [(CKSyndicationPageViewController *)self viewControllerAtIndex:currentPage];
   v14[0] = v11;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
-  v13 = [(CKSyndicationPageViewController *)self pageViewController];
-  [v13 setViewControllers:v12 direction:v10 animated:1 completion:0];
+  pageViewController2 = [(CKSyndicationPageViewController *)self pageViewController];
+  [pageViewController2 setViewControllers:v12 direction:v10 animated:1 completion:0];
 }
 
-- (id)viewControllerAtIndex:(unint64_t)a3
+- (id)viewControllerAtIndex:(unint64_t)index
 {
-  v5 = [(CKSyndicationPageViewController *)self pageContent];
-  v6 = [v5 count];
+  pageContent = [(CKSyndicationPageViewController *)self pageContent];
+  v6 = [pageContent count];
 
-  if (v6 <= a3)
+  if (v6 <= index)
   {
     v7 = 0;
   }
 
   else
   {
-    v7 = [(NSMutableArray *)self->_pageContent objectAtIndexedSubscript:a3];
+    v7 = [(NSMutableArray *)self->_pageContent objectAtIndexedSubscript:index];
   }
 
   return v7;
 }
 
-- (unint64_t)indexOfViewController:(id)a3
+- (unint64_t)indexOfViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [(CKSyndicationPageViewController *)self pageContent];
-  v6 = [v5 indexOfObject:v4];
+  controllerCopy = controller;
+  pageContent = [(CKSyndicationPageViewController *)self pageContent];
+  v6 = [pageContent indexOfObject:controllerCopy];
 
   return v6;
 }
 
-- (id)pageViewController:(id)a3 viewControllerBeforeViewController:(id)a4
+- (id)pageViewController:(id)controller viewControllerBeforeViewController:(id)viewController
 {
-  v5 = [(CKSyndicationPageViewController *)self indexOfViewController:a4];
+  v5 = [(CKSyndicationPageViewController *)self indexOfViewController:viewController];
   if (v5 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v6 = 0;
@@ -216,9 +216,9 @@
   return v6;
 }
 
-- (id)pageViewController:(id)a3 viewControllerAfterViewController:(id)a4
+- (id)pageViewController:(id)controller viewControllerAfterViewController:(id)viewController
 {
-  v5 = [(CKSyndicationPageViewController *)self indexOfViewController:a4];
+  v5 = [(CKSyndicationPageViewController *)self indexOfViewController:viewController];
   if (v5 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v6 = 0;
@@ -232,27 +232,27 @@
   return v6;
 }
 
-- (void)pageViewController:(id)a3 willTransitionToViewControllers:(id)a4
+- (void)pageViewController:(id)controller willTransitionToViewControllers:(id)controllers
 {
-  v5 = [a4 objectAtIndex:0];
+  v5 = [controllers objectAtIndex:0];
   if (v5)
   {
     v8 = v5;
     v6 = [(CKSyndicationPageViewController *)self indexOfViewController:v5];
-    v7 = [(CKSyndicationPageViewController *)self pageControl];
-    [v7 setCurrentPage:v6];
+    pageControl = [(CKSyndicationPageViewController *)self pageControl];
+    [pageControl setCurrentPage:v6];
 
     v5 = v8;
   }
 }
 
-- (void)pageViewController:(id)a3 didFinishAnimating:(BOOL)a4 previousViewControllers:(id)a5 transitionCompleted:(BOOL)a6
+- (void)pageViewController:(id)controller didFinishAnimating:(BOOL)animating previousViewControllers:(id)controllers transitionCompleted:(BOOL)completed
 {
-  if (!a6)
+  if (!completed)
   {
-    v9 = [a5 objectAtIndex:{0, a4}];
-    v8 = [(CKSyndicationPageViewController *)self pageControl];
-    [v8 setCurrentPage:{-[CKSyndicationPageViewController indexOfViewController:](self, "indexOfViewController:", v9)}];
+    v9 = [controllers objectAtIndex:{0, animating}];
+    pageControl = [(CKSyndicationPageViewController *)self pageControl];
+    [pageControl setCurrentPage:{-[CKSyndicationPageViewController indexOfViewController:](self, "indexOfViewController:", v9)}];
   }
 }
 

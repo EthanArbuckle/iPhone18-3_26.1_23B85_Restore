@@ -1,26 +1,26 @@
 @interface RecommendationFlowControllerRepresentable.FlowControllerDelegate
 - (_TtCV21CloudRecommendationUI41RecommendationFlowControllerRepresentable22FlowControllerDelegate)init;
 - (void)userDidCancelAction;
-- (void)userDidCompleteAction:(id)a3;
+- (void)userDidCompleteAction:(id)action;
 @end
 
 @implementation RecommendationFlowControllerRepresentable.FlowControllerDelegate
 
-- (void)userDidCompleteAction:(id)a3
+- (void)userDidCompleteAction:(id)action
 {
   v5 = *(&self->super.isa + OBJC_IVAR____TtCV21CloudRecommendationUI41RecommendationFlowControllerRepresentable22FlowControllerDelegate_completion);
   v4 = *&self->completion[OBJC_IVAR____TtCV21CloudRecommendationUI41RecommendationFlowControllerRepresentable22FlowControllerDelegate_completion];
-  v6 = a3;
-  v7 = self;
+  actionCopy = action;
+  selfCopy = self;
 
-  v5(v6);
+  v5(actionCopy);
 }
 
 - (void)userDidCancelAction
 {
   v2 = *(&self->super.isa + OBJC_IVAR____TtCV21CloudRecommendationUI41RecommendationFlowControllerRepresentable22FlowControllerDelegate_cancellation);
   v3 = *&self->completion[OBJC_IVAR____TtCV21CloudRecommendationUI41RecommendationFlowControllerRepresentable22FlowControllerDelegate_cancellation];
-  v5 = self;
+  selfCopy = self;
 
   v2(v4);
 }

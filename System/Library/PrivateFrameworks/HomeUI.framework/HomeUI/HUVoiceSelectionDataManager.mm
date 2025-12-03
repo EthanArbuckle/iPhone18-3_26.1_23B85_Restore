@@ -1,46 +1,46 @@
 @interface HUVoiceSelectionDataManager
-- (HUVoiceSelectionDataManager)initWithInputLanguageCode:(id)a3 listOfVoices:(id)a4;
-- (id)voicesForRecognitionLanguageCode:(id)a3 outputLanguageCode:(id)a4;
+- (HUVoiceSelectionDataManager)initWithInputLanguageCode:(id)code listOfVoices:(id)voices;
+- (id)voicesForRecognitionLanguageCode:(id)code outputLanguageCode:(id)languageCode;
 @end
 
 @implementation HUVoiceSelectionDataManager
 
-- (HUVoiceSelectionDataManager)initWithInputLanguageCode:(id)a3 listOfVoices:(id)a4
+- (HUVoiceSelectionDataManager)initWithInputLanguageCode:(id)code listOfVoices:(id)voices
 {
-  v7 = a3;
-  v8 = a4;
+  codeCopy = code;
+  voicesCopy = voices;
   v12.receiver = self;
   v12.super_class = HUVoiceSelectionDataManager;
   v9 = [(SUICVoiceSelectionDefaultDataManager *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_inputLanguageCode, a3);
-    objc_storeStrong(&v10->_listOfVoices, a4);
+    objc_storeStrong(&v9->_inputLanguageCode, code);
+    objc_storeStrong(&v10->_listOfVoices, voices);
   }
 
   return v10;
 }
 
-- (id)voicesForRecognitionLanguageCode:(id)a3 outputLanguageCode:(id)a4
+- (id)voicesForRecognitionLanguageCode:(id)code outputLanguageCode:(id)languageCode
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  codeCopy = code;
+  languageCodeCopy = languageCode;
   v8 = objc_opt_new();
-  v9 = [(HUVoiceSelectionDataManager *)self listOfVoices];
+  listOfVoices = [(HUVoiceSelectionDataManager *)self listOfVoices];
   v16 = MEMORY[0x277D85DD0];
   v17 = 3221225472;
   v18 = __83__HUVoiceSelectionDataManager_voicesForRecognitionLanguageCode_outputLanguageCode___block_invoke;
   v19 = &unk_277DBB278;
-  v20 = v6;
-  v21 = self;
-  v22 = v7;
+  v20 = codeCopy;
+  selfCopy = self;
+  v22 = languageCodeCopy;
   v10 = v8;
   v23 = v10;
-  v11 = v7;
-  v12 = v6;
-  [v9 na_each:&v16];
+  v11 = languageCodeCopy;
+  v12 = codeCopy;
+  [listOfVoices na_each:&v16];
 
   v13 = HFLogForCategory();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))

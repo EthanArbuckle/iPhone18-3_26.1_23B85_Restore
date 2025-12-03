@@ -1,6 +1,6 @@
 @interface AnalyticsEvent
 + (NSString)name;
-+ (void)sendLazy:(id)a3;
++ (void)sendLazy:(id)lazy;
 - (NSDictionary)payload;
 - (NSString)eventName;
 - (id)createPayload;
@@ -8,9 +8,9 @@
 
 @implementation AnalyticsEvent
 
-+ (void)sendLazy:(id)a3
++ (void)sendLazy:(id)lazy
 {
-  v3 = _Block_copy(a3);
+  v3 = _Block_copy(lazy);
   v4 = swift_allocObject();
   *(v4 + 16) = v3;
   swift_getObjCClassMetadata();
@@ -19,7 +19,7 @@
 
 - (NSDictionary)payload
 {
-  v2 = self;
+  selfCopy = self;
   sub_10002771C();
 
   sub_100028200();
@@ -39,7 +39,7 @@
 
 - (id)createPayload
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1000280D8();
 
   if (v3)
@@ -58,7 +58,7 @@
 
 - (NSString)eventName
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000281C4();
 
   v3 = String._bridgeToObjectiveC()();

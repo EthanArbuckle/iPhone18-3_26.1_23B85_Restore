@@ -1,33 +1,33 @@
 @interface NSPPrivacyProxyTokenIssuer
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addTokenKeys:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addTokenKeys:(id)keys;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NSPPrivacyProxyTokenIssuer
 
-- (void)addTokenKeys:(id)a3
+- (void)addTokenKeys:(id)keys
 {
-  v4 = a3;
+  keysCopy = keys;
   tokenKeys = self->_tokenKeys;
-  v8 = v4;
+  v8 = keysCopy;
   if (!tokenKeys)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_tokenKeys;
     self->_tokenKeys = v6;
 
-    v4 = v8;
+    keysCopy = v8;
     tokenKeys = self->_tokenKeys;
   }
 
-  [(NSMutableArray *)tokenKeys addObject:v4];
+  [(NSMutableArray *)tokenKeys addObject:keysCopy];
 }
 
 - (id)description
@@ -36,8 +36,8 @@
   v8.receiver = self;
   v8.super_class = NSPPrivacyProxyTokenIssuer;
   v4 = [(NSPPrivacyProxyTokenIssuer *)&v8 description];
-  v5 = [(NSPPrivacyProxyTokenIssuer *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NSPPrivacyProxyTokenIssuer *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -45,12 +45,12 @@
 - (id)dictionaryRepresentation
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   issuerName = self->_issuerName;
   if (issuerName)
   {
-    [v3 setObject:issuerName forKey:@"issuerName"];
+    [dictionary setObject:issuerName forKey:@"issuerName"];
   }
 
   if ([(NSMutableArray *)self->_tokenKeys count])
@@ -75,8 +75,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v19 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation = [*(*(&v19 + 1) + 8 * i) dictionaryRepresentation];
+          [v6 addObject:dictionaryRepresentation];
         }
 
         v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -117,16 +117,16 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (!self->_issuerName)
   {
     __assert_rtn("[NSPPrivacyProxyTokenIssuer writeTo:]", "NSPPrivacyProxyTokenIssuer.m", 210, "nil != self->_issuerName");
   }
 
-  v5 = v4;
+  v5 = toCopy;
   PBDataWriterWriteStringField();
   v16 = 0u;
   v17 = 0u;
@@ -184,41 +184,41 @@
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v9 = a3;
-  [v9 setIssuerName:self->_issuerName];
+  toCopy = to;
+  [toCopy setIssuerName:self->_issuerName];
   if ([(NSPPrivacyProxyTokenIssuer *)self tokenKeysCount])
   {
-    [v9 clearTokenKeys];
-    v4 = [(NSPPrivacyProxyTokenIssuer *)self tokenKeysCount];
-    if (v4)
+    [toCopy clearTokenKeys];
+    tokenKeysCount = [(NSPPrivacyProxyTokenIssuer *)self tokenKeysCount];
+    if (tokenKeysCount)
     {
-      v5 = v4;
+      v5 = tokenKeysCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(NSPPrivacyProxyTokenIssuer *)self tokenKeysAtIndex:i];
-        [v9 addTokenKeys:v7];
+        [toCopy addTokenKeys:v7];
       }
     }
   }
 
   if (self->_transparencyKeyBundle)
   {
-    [v9 setTransparencyKeyBundle:?];
+    [toCopy setTransparencyKeyBundle:?];
   }
 
-  v8 = v9;
+  v8 = toCopy;
   if (self->_transparencyProof)
   {
-    [v9 setTransparencyProof:?];
-    v8 = v9;
+    [toCopy setTransparencyProof:?];
+    v8 = toCopy;
   }
 
   if (self->_transparencyInternalProof)
   {
-    [v9 setTransparencyInternalProof:?];
-    v8 = v9;
+    [toCopy setTransparencyInternalProof:?];
+    v8 = toCopy;
   }
 
   if (*&self->_has)
@@ -228,11 +228,11 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v27 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_issuerName copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_issuerName copyWithZone:zone];
   v7 = *(v5 + 8);
   *(v5 + 8) = v6;
 
@@ -255,7 +255,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v22 + 1) + 8 * i) copyWithZone:{a3, v22}];
+        v13 = [*(*(&v22 + 1) + 8 * i) copyWithZone:{zone, v22}];
         [v5 addTokenKeys:v13];
       }
 
@@ -265,15 +265,15 @@
     while (v10);
   }
 
-  v14 = [(NSData *)self->_transparencyKeyBundle copyWithZone:a3];
+  v14 = [(NSData *)self->_transparencyKeyBundle copyWithZone:zone];
   v15 = *(v5 + 32);
   *(v5 + 32) = v14;
 
-  v16 = [(NSData *)self->_transparencyProof copyWithZone:a3];
+  v16 = [(NSData *)self->_transparencyProof copyWithZone:zone];
   v17 = *(v5 + 40);
   *(v5 + 40) = v16;
 
-  v18 = [(NSData *)self->_transparencyInternalProof copyWithZone:a3];
+  v18 = [(NSData *)self->_transparencyInternalProof copyWithZone:zone];
   v19 = *(v5 + 24);
   *(v5 + 24) = v18;
 
@@ -287,16 +287,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_14;
   }
 
   issuerName = self->_issuerName;
-  if (issuerName | *(v4 + 1))
+  if (issuerName | *(equalCopy + 1))
   {
     if (![(NSString *)issuerName isEqual:?])
     {
@@ -305,7 +305,7 @@
   }
 
   tokenKeys = self->_tokenKeys;
-  if (tokenKeys | *(v4 + 2))
+  if (tokenKeys | *(equalCopy + 2))
   {
     if (![(NSMutableArray *)tokenKeys isEqual:?])
     {
@@ -314,7 +314,7 @@
   }
 
   transparencyKeyBundle = self->_transparencyKeyBundle;
-  if (transparencyKeyBundle | *(v4 + 4))
+  if (transparencyKeyBundle | *(equalCopy + 4))
   {
     if (![(NSData *)transparencyKeyBundle isEqual:?])
     {
@@ -323,7 +323,7 @@
   }
 
   transparencyProof = self->_transparencyProof;
-  if (transparencyProof | *(v4 + 5))
+  if (transparencyProof | *(equalCopy + 5))
   {
     if (![(NSData *)transparencyProof isEqual:?])
     {
@@ -332,7 +332,7 @@
   }
 
   transparencyInternalProof = self->_transparencyInternalProof;
-  if (transparencyInternalProof | *(v4 + 3))
+  if (transparencyInternalProof | *(equalCopy + 3))
   {
     if (![(NSData *)transparencyInternalProof isEqual:?])
     {
@@ -340,10 +340,10 @@
     }
   }
 
-  v10 = (*(v4 + 52) & 1) == 0;
+  v10 = (*(equalCopy + 52) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 52) & 1) == 0)
+    if ((*(equalCopy + 52) & 1) == 0)
     {
 LABEL_14:
       v10 = 0;
@@ -352,13 +352,13 @@ LABEL_14:
 
     if (self->_supportsTokenUsageFeedback)
     {
-      if ((*(v4 + 48) & 1) == 0)
+      if ((*(equalCopy + 48) & 1) == 0)
       {
         goto LABEL_14;
       }
     }
 
-    else if (*(v4 + 48))
+    else if (*(equalCopy + 48))
     {
       goto LABEL_14;
     }
@@ -391,11 +391,11 @@ LABEL_15:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (*(v4 + 1))
+  fromCopy = from;
+  if (*(fromCopy + 1))
   {
     [(NSPPrivacyProxyTokenIssuer *)self setIssuerName:?];
   }
@@ -404,7 +404,7 @@ LABEL_15:
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = *(v4 + 2);
+  v5 = *(fromCopy + 2);
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
@@ -428,24 +428,24 @@ LABEL_15:
     while (v7);
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(NSPPrivacyProxyTokenIssuer *)self setTransparencyKeyBundle:?];
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(NSPPrivacyProxyTokenIssuer *)self setTransparencyProof:?];
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(NSPPrivacyProxyTokenIssuer *)self setTransparencyInternalProof:?];
   }
 
-  if (*(v4 + 52))
+  if (*(fromCopy + 52))
   {
-    self->_supportsTokenUsageFeedback = *(v4 + 48);
+    self->_supportsTokenUsageFeedback = *(fromCopy + 48);
     *&self->_has |= 1u;
   }
 

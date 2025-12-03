@@ -1,7 +1,7 @@
 @interface SUUIOfferViewElement
 - (BOOL)isCompactModeEnabled;
 - (BOOL)isSimpleOffer;
-- (void)enumerateChildrenUsingBlock:(id)a3;
+- (void)enumerateChildrenUsingBlock:(id)block;
 @end
 
 @implementation SUUIOfferViewElement
@@ -35,33 +35,33 @@ void __37__SUUIOfferViewElement_isSimpleOffer__block_invoke(uint64_t a1, void *a
 
 - (BOOL)isCompactModeEnabled
 {
-  v2 = [(SUUIOfferViewElement *)self attributes];
-  v3 = [v2 objectForKey:@"compact"];
+  attributes = [(SUUIOfferViewElement *)self attributes];
+  v3 = [attributes objectForKey:@"compact"];
 
   if (v3 && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
-- (void)enumerateChildrenUsingBlock:(id)a3
+- (void)enumerateChildrenUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __52__SUUIOfferViewElement_enumerateChildrenUsingBlock___block_invoke;
   v7[3] = &unk_2798F6008;
-  v8 = v4;
+  v8 = blockCopy;
   v6.receiver = self;
   v6.super_class = SUUIOfferViewElement;
-  v5 = v4;
+  v5 = blockCopy;
   [(SUUIViewElement *)&v6 enumerateChildrenUsingBlock:v7];
 }
 

@@ -1,13 +1,13 @@
 @interface VUIMPMediaEntityImageLoadOperation
-- (VUIMPMediaEntityImageLoadOperation)initWithParams:(id)a3 scaleToSize:(CGSize)a4;
-- (VUIMPMediaEntityImageLoadOperation)initWithParams:(id)a3 scaleToSize:(CGSize)a4 cropToFit:(BOOL)a5;
-- (void)_finishWithImage:(id)a3;
+- (VUIMPMediaEntityImageLoadOperation)initWithParams:(id)params scaleToSize:(CGSize)size;
+- (VUIMPMediaEntityImageLoadOperation)initWithParams:(id)params scaleToSize:(CGSize)size cropToFit:(BOOL)fit;
+- (void)_finishWithImage:(id)image;
 - (void)executionDidBegin;
 @end
 
 @implementation VUIMPMediaEntityImageLoadOperation
 
-- (VUIMPMediaEntityImageLoadOperation)initWithParams:(id)a3 scaleToSize:(CGSize)a4 cropToFit:(BOOL)a5
+- (VUIMPMediaEntityImageLoadOperation)initWithParams:(id)params scaleToSize:(CGSize)size cropToFit:(BOOL)fit
 {
   v6 = MEMORY[0x1E695DF30];
   v7 = *MEMORY[0x1E695D940];
@@ -17,24 +17,24 @@
   return 0;
 }
 
-- (VUIMPMediaEntityImageLoadOperation)initWithParams:(id)a3 scaleToSize:(CGSize)a4
+- (VUIMPMediaEntityImageLoadOperation)initWithParams:(id)params scaleToSize:(CGSize)size
 {
   v5.receiver = self;
   v5.super_class = VUIMPMediaEntityImageLoadOperation;
-  return [(VUIImageLoadParamsOperation *)&v5 initWithParams:a3 scaleToSize:0 cropToFit:a4.width, a4.height];
+  return [(VUIImageLoadParamsOperation *)&v5 initWithParams:params scaleToSize:0 cropToFit:size.width, size.height];
 }
 
 - (void)executionDidBegin
 {
-  v3 = [(VUIMPMediaEntityImageLoadOperation *)self _MPMediaEntityImageLoadParams];
-  v4 = [v3 artworkCatalog];
-  v5 = v4;
-  if (v4)
+  _MPMediaEntityImageLoadParams = [(VUIMPMediaEntityImageLoadOperation *)self _MPMediaEntityImageLoadParams];
+  artworkCatalog = [_MPMediaEntityImageLoadParams artworkCatalog];
+  v5 = artworkCatalog;
+  if (artworkCatalog)
   {
-    if ([v4 hasImageOnDisk])
+    if ([artworkCatalog hasImageOnDisk])
     {
-      v6 = [v5 bestImageFromDisk];
-      [(VUIMPMediaEntityImageLoadOperation *)self _finishWithImage:v6];
+      bestImageFromDisk = [v5 bestImageFromDisk];
+      [(VUIMPMediaEntityImageLoadOperation *)self _finishWithImage:bestImageFromDisk];
     }
 
     else
@@ -65,11 +65,11 @@ void __55__VUIMPMediaEntityImageLoadOperation_executionDidBegin__block_invoke(ui
   [WeakRetained _finishWithImage:v3];
 }
 
-- (void)_finishWithImage:(id)a3
+- (void)_finishWithImage:(id)image
 {
-  if (a3)
+  if (image)
   {
-    v4 = [MEMORY[0x1E69D5940] imageWithCGImageRef:objc_msgSend(a3 preserveAlpha:{"CGImage"), 1}];
+    v4 = [MEMORY[0x1E69D5940] imageWithCGImageRef:objc_msgSend(image preserveAlpha:{"CGImage"), 1}];
     [(VUIImageLoadParamsOperation *)self setImage:v4];
   }
 

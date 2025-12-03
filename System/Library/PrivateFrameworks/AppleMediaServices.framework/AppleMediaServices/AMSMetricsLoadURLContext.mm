@@ -1,9 +1,9 @@
 @interface AMSMetricsLoadURLContext
-- (AMSMetricsLoadURLContext)initWithTask:(id)a3 metrics:(id)a4;
-- (AMSMetricsLoadURLContext)initWithTaskInfo:(id)a3 serverPayload:(id)a4;
+- (AMSMetricsLoadURLContext)initWithTask:(id)task metrics:(id)metrics;
+- (AMSMetricsLoadURLContext)initWithTaskInfo:(id)info serverPayload:(id)payload;
 - (id)bagContract;
 - (id)metricsDictionaryPromise;
-- (void)setBagContract:(id)a3;
+- (void)setBagContract:(id)contract;
 @end
 
 @implementation AMSMetricsLoadURLContext
@@ -11,18 +11,18 @@
 - (id)metricsDictionaryPromise
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [(AMSMetricsLoadURLContext *)self task];
-  v4 = [v3 originalRequest];
-  if ([v4 ams_requestIsBagLoad])
+  task = [(AMSMetricsLoadURLContext *)self task];
+  originalRequest = [task originalRequest];
+  if ([originalRequest ams_requestIsBagLoad])
   {
-    v5 = [(AMSMetricsLoadURLContext *)self decodedResponseBody];
+    decodedResponseBody = [(AMSMetricsLoadURLContext *)self decodedResponseBody];
 
-    if (v5)
+    if (decodedResponseBody)
     {
-      v6 = [(AMSMetricsLoadURLContext *)self decodedResponseBody];
-      v7 = [AMSBagNetworkTask _bagDataByApplyingOverridesToBagData:v6];
+      decodedResponseBody2 = [(AMSMetricsLoadURLContext *)self decodedResponseBody];
+      metricsDictionary = [AMSBagNetworkTask _bagDataByApplyingOverridesToBagData:decodedResponseBody2];
 
-      v8 = [v7 objectForKeyedSubscript:@"metrics"];
+      v8 = [metricsDictionary objectForKeyedSubscript:@"metrics"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -57,33 +57,33 @@ LABEL_16:
 
   if (v11)
   {
-    v12 = [(AMSMetricsLoadURLContext *)self bag];
-    v7 = [v12 dictionaryForKey:@"metrics"];
+    bagContract2 = [(AMSMetricsLoadURLContext *)self bag];
+    metricsDictionary = [bagContract2 dictionaryForKey:@"metrics"];
     goto LABEL_9;
   }
 
-  v14 = [(AMSMetricsLoadURLContext *)self bagContract];
+  bagContract = [(AMSMetricsLoadURLContext *)self bagContract];
 
-  if (!v14)
+  if (!bagContract)
   {
-    v12 = +[AMSLogConfig sharedURLLoadingConfig];
-    if (!v12)
+    bagContract2 = +[AMSLogConfig sharedURLLoadingConfig];
+    if (!bagContract2)
     {
-      v12 = +[AMSLogConfig sharedConfig];
+      bagContract2 = +[AMSLogConfig sharedConfig];
     }
 
-    v17 = [v12 OSLogObject];
-    if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+    oSLogObject = [bagContract2 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v19 = 138543362;
       v20 = objc_opt_class();
-      _os_log_impl(&dword_192869000, v17, OS_LOG_TYPE_ERROR, "%{public}@: Failed to load metrics dictionary from bag", &v19, 0xCu);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: Failed to load metrics dictionary from bag", &v19, 0xCu);
     }
 
     goto LABEL_22;
   }
 
-  v12 = [(AMSMetricsLoadURLContext *)self bagContract];
+  bagContract2 = [(AMSMetricsLoadURLContext *)self bagContract];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
 LABEL_22:
@@ -91,21 +91,21 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  v15 = [(AMSMetricsLoadURLContext *)self bagContract];
-  v7 = [v15 metricsDictionary];
+  bagContract3 = [(AMSMetricsLoadURLContext *)self bagContract];
+  metricsDictionary = [bagContract3 metricsDictionary];
 
 LABEL_9:
-  if (!v7)
+  if (!metricsDictionary)
   {
 LABEL_23:
-    v7 = AMSError(204, @"Metrics dictionary missing", @"The metrics dictionary is not present in the bag", 0);
-    v13 = [AMSPromise promiseWithError:v7];
+    metricsDictionary = AMSError(204, @"Metrics dictionary missing", @"The metrics dictionary is not present in the bag", 0);
+    valuePromise = [AMSPromise promiseWithError:metricsDictionary];
     goto LABEL_24;
   }
 
-  v13 = [v7 valuePromise];
+  valuePromise = [metricsDictionary valuePromise];
 LABEL_24:
-  v10 = v13;
+  v10 = valuePromise;
 LABEL_25:
 
   return v10;
@@ -120,67 +120,67 @@ LABEL_25:
   return v5;
 }
 
-- (AMSMetricsLoadURLContext)initWithTask:(id)a3 metrics:(id)a4
+- (AMSMetricsLoadURLContext)initWithTask:(id)task metrics:(id)metrics
 {
-  v7 = a3;
-  v8 = a4;
+  taskCopy = task;
+  metricsCopy = metrics;
   v12.receiver = self;
   v12.super_class = AMSMetricsLoadURLContext;
   v9 = [(AMSMetricsLoadURLContext *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_task, a3);
-    objc_storeStrong(&v10->_taskMetrics, a4);
+    objc_storeStrong(&v9->_task, task);
+    objc_storeStrong(&v10->_taskMetrics, metrics);
   }
 
   return v10;
 }
 
-- (AMSMetricsLoadURLContext)initWithTaskInfo:(id)a3 serverPayload:(id)a4
+- (AMSMetricsLoadURLContext)initWithTaskInfo:(id)info serverPayload:(id)payload
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 task];
-  v9 = [v6 metrics];
-  v10 = [(AMSMetricsLoadURLContext *)self initWithTask:v8 metrics:v9];
+  infoCopy = info;
+  payloadCopy = payload;
+  task = [infoCopy task];
+  metrics = [infoCopy metrics];
+  v10 = [(AMSMetricsLoadURLContext *)self initWithTask:task metrics:metrics];
 
   if (v10)
   {
-    v11 = [v6 properties];
-    v12 = [v11 bag];
+    properties = [infoCopy properties];
+    v12 = [properties bag];
     bag = v10->_bag;
     v10->_bag = v12;
 
-    objc_storeStrong(&v10->_decodedResponseBody, a4);
-    v14 = [v6 error];
+    objc_storeStrong(&v10->_decodedResponseBody, payload);
+    error = [infoCopy error];
     error = v10->_error;
-    v10->_error = v14;
+    v10->_error = error;
 
-    v16 = [v6 properties];
-    v17 = [v16 clientInfo];
+    properties2 = [infoCopy properties];
+    clientInfo = [properties2 clientInfo];
     processInfo = v10->_processInfo;
-    v10->_processInfo = v17;
+    v10->_processInfo = clientInfo;
 
-    v19 = [v6 properties];
+    properties3 = [infoCopy properties];
     properties = v10->_properties;
-    v10->_properties = v19;
+    v10->_properties = properties3;
 
-    v21 = [v6 data];
+    data = [infoCopy data];
     responseBody = v10->_responseBody;
-    v10->_responseBody = v21;
+    v10->_responseBody = data;
 
-    v23 = [v6 session];
-    v24 = [v23 session];
+    session = [infoCopy session];
+    v23Session = [session session];
     session = v10->_session;
-    v10->_session = v24;
+    v10->_session = v23Session;
 
-    v26 = [v6 properties];
-    v27 = [v26 purchaseInfo];
+    properties4 = [infoCopy properties];
+    purchaseInfo = [properties4 purchaseInfo];
 
-    v28 = [v27 purchase];
-    v29 = [v28 metricsOverlay];
-    v30 = [v29 copy];
+    purchase = [purchaseInfo purchase];
+    metricsOverlay = [purchase metricsOverlay];
+    v30 = [metricsOverlay copy];
     metricsOverlay = v10->_metricsOverlay;
     v10->_metricsOverlay = v30;
   }
@@ -188,10 +188,10 @@ LABEL_25:
   return v10;
 }
 
-- (void)setBagContract:(id)a3
+- (void)setBagContract:(id)contract
 {
-  v4 = a3;
-  v5 = [[AMSContractBagShim alloc] initWithBagContract:v4];
+  contractCopy = contract;
+  v5 = [[AMSContractBagShim alloc] initWithBagContract:contractCopy];
 
   [(AMSMetricsLoadURLContext *)self setBag:v5];
 }

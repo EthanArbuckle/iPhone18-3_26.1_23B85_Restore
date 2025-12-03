@@ -8,13 +8,13 @@
 - (CGRect)_closeButtonFrame;
 - (CGRect)_titleBoundingBox;
 - (CGRect)_titleBounds;
-- (TabBarItemView)initWithTabBar:(id)a3;
+- (TabBarItemView)initWithTabBar:(id)bar;
 - (double)_contentWidthIgnoringCollaborationViews;
 - (id)accessibilityIdentifier;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (int64_t)_iconPosition;
-- (int64_t)_physicalEdgeForLogicalEdge:(int64_t)a3;
-- (void)_hover:(id)a3;
+- (int64_t)_physicalEdgeForLogicalEdge:(int64_t)edge;
+- (void)_hover:(id)_hover;
 - (void)_layOutParticipantsView;
 - (void)_layOutUnreadIndicator;
 - (void)_layoutCloseButton;
@@ -34,29 +34,29 @@
 - (void)_updateShowsParticipants;
 - (void)_updateShowsUnreadIndicator;
 - (void)configureForDragPreview;
-- (void)setActive:(BOOL)a3;
-- (void)setBounds:(CGRect)a3;
-- (void)setContentOffset:(double)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setHidesTitleText:(BOOL)a3;
-- (void)setIcon:(id)a3;
-- (void)setIsPlaceholder:(BOOL)a3;
-- (void)setMediaStateIcon:(unint64_t)a3;
-- (void)setPinned:(BOOL)a3;
-- (void)setShareParticipants:(id)a3;
-- (void)setTitleAnchorAdditionalOffset:(double)a3;
-- (void)setTitleLayoutWidth:(double)a3;
-- (void)setTitleText:(id)a3;
-- (void)setUnread:(BOOL)a3;
-- (void)setVisibleEdge:(int64_t)a3;
+- (void)setActive:(BOOL)active;
+- (void)setBounds:(CGRect)bounds;
+- (void)setContentOffset:(double)offset;
+- (void)setFrame:(CGRect)frame;
+- (void)setHidesTitleText:(BOOL)text;
+- (void)setIcon:(id)icon;
+- (void)setIsPlaceholder:(BOOL)placeholder;
+- (void)setMediaStateIcon:(unint64_t)icon;
+- (void)setPinned:(BOOL)pinned;
+- (void)setShareParticipants:(id)participants;
+- (void)setTitleAnchorAdditionalOffset:(double)offset;
+- (void)setTitleLayoutWidth:(double)width;
+- (void)setTitleText:(id)text;
+- (void)setUnread:(BOOL)unread;
+- (void)setVisibleEdge:(int64_t)edge;
 - (void)updateTabBarStyle;
 @end
 
 @implementation TabBarItemView
 
-- (int64_t)_physicalEdgeForLogicalEdge:(int64_t)a3
+- (int64_t)_physicalEdgeForLogicalEdge:(int64_t)edge
 {
-  if (a3 == 2)
+  if (edge == 2)
   {
     if ([(TabBarItemView *)self _sf_usesLeftToRightLayout])
     {
@@ -69,7 +69,7 @@
     }
   }
 
-  else if (a3 == 1)
+  else if (edge == 1)
   {
     if ([(TabBarItemView *)self _sf_usesLeftToRightLayout])
     {
@@ -129,7 +129,7 @@
   x = v29.origin.x;
   y = v29.origin.y;
   width = v29.size.width;
-  v7 = [(TabBarItemView *)self _sf_usesLeftToRightLayout];
+  _sf_usesLeftToRightLayout = [(TabBarItemView *)self _sf_usesLeftToRightLayout];
   if ([(TabBarItemView *)self _showsCloseButton]|| self->_icon || _SFDeviceIsPad())
   {
     [(TabBarItemView *)self _closeButtonFrame];
@@ -137,7 +137,7 @@
     v13 = v9;
     v14 = v10;
     v15 = v11;
-    if (v7)
+    if (_sf_usesLeftToRightLayout)
     {
       MaxX = CGRectGetMaxX(*&v8);
     }
@@ -158,7 +158,7 @@
     }
 
     v19 = MaxX + -12.0;
-    if (v7)
+    if (_sf_usesLeftToRightLayout)
     {
       x = x + v19;
     }
@@ -169,7 +169,7 @@
   if (self->_mediaStateIcon)
   {
     [(UIButton *)self->_mediaStateMuteButton frame];
-    if (!v7)
+    if (!_sf_usesLeftToRightLayout)
     {
       x = x + v20 + 6.0;
     }
@@ -181,7 +181,7 @@
   {
     [(SFAvatarStackView *)self->_participantsView bounds];
     v21 = CGRectGetWidth(v32) + 6.0;
-    if (!v7)
+    if (!_sf_usesLeftToRightLayout)
     {
       x = x + v21;
     }
@@ -193,7 +193,7 @@
   {
     [(SFUnreadIndicator *)self->_unreadIndicator bounds];
     v22 = CGRectGetWidth(v33) + 6.0;
-    if (!v7)
+    if (!_sf_usesLeftToRightLayout)
     {
       x = x + v22;
     }
@@ -234,10 +234,10 @@
   v14 = v13;
   v15 = +[TabIconAndTitleView defaultTabIconSize];
   rect_24 = v16;
-  v17 = [(TabBarItemView *)self _iconPosition];
+  _iconPosition = [(TabBarItemView *)self _iconPosition];
   v79 = v15;
   rect_16 = v15 + 4.0;
-  if (v17 == 1)
+  if (_iconPosition == 1)
   {
     v18 = v15 + 4.0;
   }
@@ -249,21 +249,21 @@
 
   if (!self->_truncatedTitleText)
   {
-    v19 = [(UILabel *)self->_titleLabel font];
+    font = [(UILabel *)self->_titleLabel font];
     *v87 = *MEMORY[0x277CBF3A8];
     WeakRetained = objc_loadWeakRetained(&self->_tabBar);
-    v21 = [WeakRetained items];
-    v22 = [v21 safari_mapObjectsUsingBlock:&__block_literal_global_53];
+    items = [WeakRetained items];
+    v22 = [items safari_mapObjectsUsingBlock:&__block_literal_global_53];
 
     v23 = MEMORY[0x277CBEB70];
     v24 = [v22 sortedArrayUsingComparator:&__block_literal_global_4_0];
     v25 = [v23 orderedSetWithArray:v24];
 
-    v26 = [(NSString *)self->_titleText truncatedTitleWithFont:v19 desiredWidth:v87 truncatedSize:v25 sortedTabBarItemTitles:v12 - v18];
+    v26 = [(NSString *)self->_titleText truncatedTitleWithFont:font desiredWidth:v87 truncatedSize:v25 sortedTabBarItemTitles:v12 - v18];
     truncatedTitleText = self->_truncatedTitleText;
     self->_truncatedTitleText = v26;
 
-    [(NSString *)self->_truncatedTitleText _legacy_sizeWithFont:v19 constrainedToSize:4 lineBreakMode:v12 - v18, v14];
+    [(NSString *)self->_truncatedTitleText _legacy_sizeWithFont:font constrainedToSize:4 lineBreakMode:v12 - v18, v14];
     self->_truncatedTitleTextSize.width = v28;
     self->_truncatedTitleTextSize.height = v29;
     v30 = v87[0];
@@ -282,7 +282,7 @@
   v36 = v6 + v35;
   _SFCeilingFloatToPixels();
   v38 = v37;
-  v39 = [(TabBarItemView *)self _sf_usesLeftToRightLayout];
+  _sf_usesLeftToRightLayout = [(TabBarItemView *)self _sf_usesLeftToRightLayout];
   v88.origin.x = v34;
   v88.origin.y = v36;
   v88.size.width = v38;
@@ -305,14 +305,14 @@
   v86 = v32;
   v91.size.height = v32;
   v43 = fmax(MinX, fmin(MaxX - CGRectGetWidth(v91), rect_8));
-  if (v17 == 3)
+  if (_iconPosition == 3)
   {
     v44 = v79;
     v45 = v79 * 0.5 + 4.0;
-    v46 = [(TabBarItemView *)self _sf_usesLeftToRightLayout];
+    _sf_usesLeftToRightLayout2 = [(TabBarItemView *)self _sf_usesLeftToRightLayout];
     [(TabBarItemView *)self bounds];
     MidX = CGRectGetMidX(v92);
-    if (v46)
+    if (_sf_usesLeftToRightLayout2)
     {
       v43 = v45 + MidX;
     }
@@ -345,12 +345,12 @@
     contentOffset = contentOffset + self->_titleAnchorAdditionalOffset;
   }
 
-  if (v17 == 1)
+  if (_iconPosition == 1)
   {
     v41 = v41 - rect_16;
   }
 
-  if (((v17 == 1) & v39) != 0)
+  if (((_iconPosition == 1) & _sf_usesLeftToRightLayout) != 0)
   {
     v51 = rect_16 + v43 + contentOffset;
   }
@@ -360,31 +360,31 @@
     v51 = v43 + contentOffset;
   }
 
-  [(UIImageView *)self->_iconView setAlpha:(v17 != 0 && !self->_hidesTitleText)];
+  [(UIImageView *)self->_iconView setAlpha:(_iconPosition != 0 && !self->_hidesTitleText)];
   [(UIImageView *)self->_iconView setBounds:0.0, 0.0, v44, rect_24];
-  v52 = [MEMORY[0x277D75348] secondaryLabelColor];
-  [(UIImageView *)self->_iconView setTintColor:v52];
+  secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+  [(UIImageView *)self->_iconView setTintColor:secondaryLabelColor];
 
-  LODWORD(v52) = [(TabBarItemView *)self _hasRoomForIconAndCloseButton];
+  LODWORD(secondaryLabelColor) = [(TabBarItemView *)self _hasRoomForIconAndCloseButton];
   [(TabBarItemView *)self bounds];
   v57 = v53;
   v58 = v54;
   v59 = v55;
   v60 = v56;
-  if (v52)
+  if (secondaryLabelColor)
   {
     v94.origin.x = v51;
     v94.origin.y = v36;
     v94.size.width = v41;
     v94.size.height = v86;
     CGRectGetMidY(v94);
-    if (v17 != 3)
+    if (_iconPosition != 3)
     {
       v61 = v51;
       v62 = v36;
       v63 = v41;
       v64 = v86;
-      if (v39)
+      if (_sf_usesLeftToRightLayout)
       {
         CGRectGetMinX(*&v61);
       }
@@ -407,7 +407,7 @@ LABEL_27:
   }
 
   CGRectGetMidY(*&v53);
-  if (v17 == 3)
+  if (_iconPosition == 3)
   {
     goto LABEL_27;
   }
@@ -425,7 +425,7 @@ LABEL_27:
   v68 = v36;
   v69 = v41;
   v70 = v86;
-  if (v39)
+  if (_sf_usesLeftToRightLayout)
   {
     CGRectGetMinX(*&v67);
     v97.origin.x = x;
@@ -451,7 +451,7 @@ LABEL_30:
   _SFRoundRectToPixels();
   [(UILabel *)self->_titleLabel setFrame:?];
   v71 = 0.0;
-  if (v17 != 3)
+  if (_iconPosition != 3)
   {
     v71 = 1.0;
   }
@@ -520,12 +520,12 @@ uint64_t __56__TabBarItemView__layoutTitleLabelUsingCachedTruncation__block_invo
     v8 = [v4 imageWithRenderingMode:2];
 
     [(UIButton *)self->_mediaStateMuteButton setImage:v8 forState:0];
-    v5 = [(UIButton *)self->_mediaStateMuteButton superview];
+    superview = [(UIButton *)self->_mediaStateMuteButton superview];
 
-    if (!v5)
+    if (!superview)
     {
-      v6 = [(UIVisualEffectView *)self->_contentEffectsView contentView];
-      [v6 addSubview:self->_mediaStateMuteButton];
+      contentView = [(UIVisualEffectView *)self->_contentEffectsView contentView];
+      [contentView addSubview:self->_mediaStateMuteButton];
     }
 
     [(TabBarItemView *)self _layoutMediaStateIndicator];
@@ -539,9 +539,9 @@ uint64_t __56__TabBarItemView__layoutTitleLabelUsingCachedTruncation__block_invo
   }
 }
 
-- (void)setHidesTitleText:(BOOL)a3
+- (void)setHidesTitleText:(BOOL)text
 {
-  self->_hidesTitleText = a3;
+  self->_hidesTitleText = text;
   [(UILabel *)self->_titleLabel setHidden:?];
   [(TabBarItemView *)self _updateIconViewVisibility];
 
@@ -559,9 +559,9 @@ uint64_t __56__TabBarItemView__layoutTitleLabelUsingCachedTruncation__block_invo
 - (void)updateTabBarStyle
 {
   WeakRetained = objc_loadWeakRetained(&self->_tabBar);
-  v4 = [WeakRetained tintStyle];
+  tintStyle = [WeakRetained tintStyle];
 
-  v5 = [MEMORY[0x277D75D00] _sf_effectWithStyle:6 forBarTintStyle:v4];
+  v5 = [MEMORY[0x277D75D00] _sf_effectWithStyle:6 forBarTintStyle:tintStyle];
   [(UIVisualEffectView *)self->_borderEffectsView setEffect:v5];
 
   if (self->_active)
@@ -574,7 +574,7 @@ uint64_t __56__TabBarItemView__layoutTitleLabelUsingCachedTruncation__block_invo
     v6 = 4;
   }
 
-  v7 = [MEMORY[0x277D75D00] _sf_effectWithStyle:v6 forBarTintStyle:v4];
+  v7 = [MEMORY[0x277D75D00] _sf_effectWithStyle:v6 forBarTintStyle:tintStyle];
   [(UIVisualEffectView *)self->_contentEffectsView setEffect:v7];
 
   if (!mediaStateIconColor_colorForLightBars)
@@ -586,16 +586,16 @@ uint64_t __56__TabBarItemView__layoutTitleLabelUsingCachedTruncation__block_invo
 
   if (_SFIsDarkTintStyle())
   {
-    v10 = [MEMORY[0x277D75348] whiteColor];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
   }
 
   else
   {
-    v10 = mediaStateIconColor_colorForLightBars;
+    whiteColor = mediaStateIconColor_colorForLightBars;
   }
 
-  v11 = v10;
-  [(UIButton *)self->_mediaStateMuteButton setTintColor:v10];
+  v11 = whiteColor;
+  [(UIButton *)self->_mediaStateMuteButton setTintColor:whiteColor];
 
   [(TabBarItemView *)self _updateCloseButtonEffect];
 }
@@ -712,9 +712,9 @@ uint64_t __56__TabBarItemView__layoutTitleLabelUsingCachedTruncation__block_invo
 
         else
         {
-          v20 = [(UIVisualEffectView *)self->_borderEffectsView isHidden];
+          isHidden = [(UIVisualEffectView *)self->_borderEffectsView isHidden];
 
-          if ((v20 & 1) == 0)
+          if ((isHidden & 1) == 0)
           {
             v17[2](v17);
             goto LABEL_15;
@@ -778,9 +778,9 @@ uint64_t __30__TabBarItemView__layoutEdges__block_invoke(uint64_t a1)
 
 - (void)_layoutMediaStateIndicator
 {
-  v3 = [(UIButton *)self->_mediaStateMuteButton superview];
+  superview = [(UIButton *)self->_mediaStateMuteButton superview];
 
-  if (v3)
+  if (superview)
   {
     [(TabBarItemView *)self bounds];
     [(TabBarItemView *)self _sf_usesLeftToRightLayout];
@@ -858,9 +858,9 @@ uint64_t __30__TabBarItemView__layoutEdges__block_invoke(uint64_t a1)
 
 - (void)_updateShowsUnreadIndicator
 {
-  v3 = [(TabBarItemView *)self _showsUnreadIndicator];
-  v4 = v3 ^ [(SFUnreadIndicator *)self->_unreadIndicator isHidden];
-  if (v3 && [(SFUnreadIndicator *)self->_unreadIndicator isHidden])
+  _showsUnreadIndicator = [(TabBarItemView *)self _showsUnreadIndicator];
+  v4 = _showsUnreadIndicator ^ [(SFUnreadIndicator *)self->_unreadIndicator isHidden];
+  if (_showsUnreadIndicator && [(SFUnreadIndicator *)self->_unreadIndicator isHidden])
   {
     [(SFUnreadIndicator *)self->_unreadIndicator setHidden:0];
     v9[0] = MEMORY[0x277D85DD0];
@@ -876,7 +876,7 @@ uint64_t __30__TabBarItemView__layoutEdges__block_invoke(uint64_t a1)
   v7[2] = __45__TabBarItemView__updateShowsUnreadIndicator__block_invoke_2;
   v7[3] = &unk_2781D51B8;
   v7[4] = self;
-  v8 = v3;
+  v8 = _showsUnreadIndicator;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __45__TabBarItemView__updateShowsUnreadIndicator__block_invoke_3;
@@ -937,8 +937,8 @@ uint64_t __45__TabBarItemView__updateShowsUnreadIndicator__block_invoke_3(uint64
 
   [(TabBarItemView *)self _contentWidthIgnoringCollaborationViews];
   v4 = v3;
-  v5 = [(TabBarItemView *)self shareParticipants];
-  if ([v5 count])
+  shareParticipants = [(TabBarItemView *)self shareParticipants];
+  if ([shareParticipants count])
   {
     [(SFAvatarStackView *)self->_participantsView sizeForParticipantCount:[(NSArray *)self->_shareParticipants count]];
     v7 = v6 + 6.0;
@@ -990,8 +990,8 @@ uint64_t __45__TabBarItemView__updateShowsUnreadIndicator__block_invoke_3(uint64
 
 - (void)_updateShowsParticipants
 {
-  v3 = [(TabBarItemView *)self _showsParticipants];
-  if (v3)
+  _showsParticipants = [(TabBarItemView *)self _showsParticipants];
+  if (_showsParticipants)
   {
     shareParticipants = self->_shareParticipants;
   }
@@ -1002,10 +1002,10 @@ uint64_t __45__TabBarItemView__updateShowsUnreadIndicator__block_invoke_3(uint64
   }
 
   v5 = shareParticipants;
-  if (v3 == [(SFAvatarStackView *)self->_participantsView isHidden])
+  if (_showsParticipants == [(SFAvatarStackView *)self->_participantsView isHidden])
   {
     v8 = 1;
-    if (!v3)
+    if (!_showsParticipants)
     {
       goto LABEL_9;
     }
@@ -1013,11 +1013,11 @@ uint64_t __45__TabBarItemView__updateShowsUnreadIndicator__block_invoke_3(uint64
     goto LABEL_8;
   }
 
-  v6 = [(SFAvatarStackView *)self->_participantsView shareParticipants];
-  v7 = [v6 count];
+  shareParticipants = [(SFAvatarStackView *)self->_participantsView shareParticipants];
+  v7 = [shareParticipants count];
   v8 = v7 != [(NSArray *)v5 count];
 
-  if (v3)
+  if (_showsParticipants)
   {
 LABEL_8:
     [(SFAvatarStackView *)self->_participantsView setHidden:0];
@@ -1110,18 +1110,18 @@ uint64_t __42__TabBarItemView__updateShowsParticipants__block_invoke_2(uint64_t 
   return Width + 4.0 + v4 + v5;
 }
 
-- (TabBarItemView)initWithTabBar:(id)a3
+- (TabBarItemView)initWithTabBar:(id)bar
 {
-  v4 = a3;
+  barCopy = bar;
   v54.receiver = self;
   v54.super_class = TabBarItemView;
   v5 = [(TabBarItemView *)&v54 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   if (v5)
   {
     objc_initWeak(&location, v5);
-    objc_storeWeak(&v5->_tabBar, v4);
-    v6 = [(TabBarItemView *)v5 layer];
-    [v6 setAllowsGroupBlending:0];
+    objc_storeWeak(&v5->_tabBar, barCopy);
+    layer = [(TabBarItemView *)v5 layer];
+    [layer setAllowsGroupBlending:0];
 
     v7 = objc_alloc_init(MEMORY[0x277D75220]);
     closeButton = v5->_closeButton;
@@ -1130,7 +1130,7 @@ uint64_t __42__TabBarItemView__updateShowsParticipants__block_invoke_2(uint64_t 
     [(UIButton *)v5->_closeButton setAccessibilityIdentifier:@"CloseTabBarItemButton"];
     [(UIButton *)v5->_closeButton setAlpha:0.0];
     v49 = [MEMORY[0x277D755D0] _sf_staticConfigurationWithTextStyle:*MEMORY[0x277D76918] scale:1];
-    v48 = v4;
+    v48 = barCopy;
     v51[0] = MEMORY[0x277D85DD0];
     v51[1] = 3221225472;
     v51[2] = __33__TabBarItemView_initWithTabBar___block_invoke;
@@ -1156,8 +1156,8 @@ uint64_t __42__TabBarItemView__updateShowsParticipants__block_invoke_2(uint64_t 
     [(UILabel *)v5->_titleLabel setFont:v17];
 
     v18 = objc_alloc(MEMORY[0x277D755E8]);
-    v19 = [MEMORY[0x277D28F20] fallbackFavicon];
-    v20 = [v18 initWithImage:v19];
+    fallbackFavicon = [MEMORY[0x277D28F20] fallbackFavicon];
+    v20 = [v18 initWithImage:fallbackFavicon];
     iconView = v5->_iconView;
     v5->_iconView = v20;
 
@@ -1167,8 +1167,8 @@ uint64_t __42__TabBarItemView__updateShowsParticipants__block_invoke_2(uint64_t 
     v5->_unreadIndicator = v22;
 
     [(SFUnreadIndicator *)v5->_unreadIndicator setHidden:1];
-    v24 = [MEMORY[0x277D75348] systemBlueColor];
-    [(SFUnreadIndicator *)v5->_unreadIndicator setTintColor:v24];
+    systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+    [(SFUnreadIndicator *)v5->_unreadIndicator setTintColor:systemBlueColor];
 
     v25 = objc_alloc_init(MEMORY[0x277D28BC8]);
     participantsView = v5->_participantsView;
@@ -1186,9 +1186,9 @@ uint64_t __42__TabBarItemView__updateShowsParticipants__block_invoke_2(uint64_t 
     borderEffectsView = v5->_borderEffectsView;
     v5->_borderEffectsView = v29;
 
-    v31 = [MEMORY[0x277D75348] blackColor];
-    v32 = [(UIVisualEffectView *)v5->_borderEffectsView contentView];
-    [v32 setBackgroundColor:v31];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    contentView = [(UIVisualEffectView *)v5->_borderEffectsView contentView];
+    [contentView setBackgroundColor:blackColor];
 
     [(UIVisualEffectView *)v5->_borderEffectsView _setGroupName:v50];
     [(TabBarItemView *)v5 addSubview:v5->_borderEffectsView];
@@ -1207,13 +1207,13 @@ uint64_t __42__TabBarItemView__updateShowsParticipants__block_invoke_2(uint64_t 
 
     [(UIVisualEffectView *)v5->_closeButtonEffectsView _setGroupName:v50];
     [(UIVisualEffectView *)v5->_closeButtonEffectsView setUserInteractionEnabled:0];
-    v37 = [(UIVisualEffectView *)v5->_closeButtonEffectsView contentView];
-    [v37 addSubview:v5->_closeButtonImageView];
+    contentView2 = [(UIVisualEffectView *)v5->_closeButtonEffectsView contentView];
+    [contentView2 addSubview:v5->_closeButtonImageView];
 
     [(UIButton *)v5->_closeButton addSubview:v5->_closeButtonEffectsView];
     [(TabBarItemView *)v5 addSubview:v5->_closeButton];
-    v38 = [(UIVisualEffectView *)v5->_contentEffectsView contentView];
-    [v38 addSubview:v5->_titleClipperView];
+    contentView3 = [(UIVisualEffectView *)v5->_contentEffectsView contentView];
+    [contentView3 addSubview:v5->_titleClipperView];
 
     v39 = objc_alloc_init(MEMORY[0x277D75D18]);
     iconClipperView = v5->_iconClipperView;
@@ -1241,8 +1241,8 @@ uint64_t __42__TabBarItemView__updateShowsParticipants__block_invoke_2(uint64_t 
     v5->_highlightView = v44;
 
     [(UIView *)v5->_highlightView setAutoresizingMask:18];
-    v46 = [MEMORY[0x277D75348] sf_separateTabBarHighlightColor];
-    [(UIView *)v5->_highlightView setBackgroundColor:v46];
+    sf_separateTabBarHighlightColor = [MEMORY[0x277D75348] sf_separateTabBarHighlightColor];
+    [(UIView *)v5->_highlightView setBackgroundColor:sf_separateTabBarHighlightColor];
 
     [(UIView *)v5->_highlightView setAlpha:0.0];
     [(UIView *)v5->_highlightView setUserInteractionEnabled:0];
@@ -1250,7 +1250,7 @@ uint64_t __42__TabBarItemView__updateShowsParticipants__block_invoke_2(uint64_t 
 
     objc_destroyWeak(&v52);
     objc_destroyWeak(&location);
-    v4 = v48;
+    barCopy = v48;
   }
 
   return v5;
@@ -1321,11 +1321,11 @@ id __33__TabBarItemView_initWithTabBar___block_invoke(uint64_t a1, uint64_t a2, 
   return v14;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
   [(TabBarItemView *)self bounds];
   v14.x = x;
   v14.y = y;
@@ -1333,7 +1333,7 @@ id __33__TabBarItemView_initWithTabBar___block_invoke(uint64_t a1, uint64_t a2, 
   {
     v12.receiver = self;
     v12.super_class = TabBarItemView;
-    v8 = [(TabBarItemView *)&v12 hitTest:v7 withEvent:x, y];
+    v8 = [(TabBarItemView *)&v12 hitTest:eventCopy withEvent:x, y];
     v9 = v8;
     if (v8 == self)
     {
@@ -1354,12 +1354,12 @@ id __33__TabBarItemView_initWithTabBar___block_invoke(uint64_t a1, uint64_t a2, 
   return v10;
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(TabBarItemView *)self bounds];
   v9 = v8;
   v11 = v10;
@@ -1397,12 +1397,12 @@ id __33__TabBarItemView_initWithTabBar___block_invoke(uint64_t a1, uint64_t a2, 
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(TabBarItemView *)self bounds];
   v9 = v8;
   v11 = v10;
@@ -1440,14 +1440,14 @@ id __33__TabBarItemView_initWithTabBar___block_invoke(uint64_t a1, uint64_t a2, 
   }
 }
 
-- (void)setTitleText:(id)a3
+- (void)setTitleText:(id)text
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_titleText != v4)
+  textCopy = text;
+  v5 = textCopy;
+  if (self->_titleText != textCopy)
   {
-    v9 = v4;
-    v6 = [(NSString *)v4 isEqualToString:?];
+    v9 = textCopy;
+    v6 = [(NSString *)textCopy isEqualToString:?];
     v5 = v9;
     if (!v6)
     {
@@ -1461,22 +1461,22 @@ id __33__TabBarItemView_initWithTabBar___block_invoke(uint64_t a1, uint64_t a2, 
   }
 }
 
-- (void)setVisibleEdge:(int64_t)a3
+- (void)setVisibleEdge:(int64_t)edge
 {
-  if (self->_visibleEdge != a3)
+  if (self->_visibleEdge != edge)
   {
-    self->_visibleEdge = a3;
+    self->_visibleEdge = edge;
     [(TabBarItemView *)self _layoutEdges];
 
     [(TabBarItemView *)self _layoutTitleClipperView];
   }
 }
 
-- (void)setTitleLayoutWidth:(double)a3
+- (void)setTitleLayoutWidth:(double)width
 {
-  if (self->_titleLayoutWidth != a3)
+  if (self->_titleLayoutWidth != width)
   {
-    self->_titleLayoutWidth = a3;
+    self->_titleLayoutWidth = width;
     truncatedTitleText = self->_truncatedTitleText;
     self->_truncatedTitleText = 0;
 
@@ -1484,31 +1484,31 @@ id __33__TabBarItemView_initWithTabBar___block_invoke(uint64_t a1, uint64_t a2, 
   }
 }
 
-- (void)setTitleAnchorAdditionalOffset:(double)a3
+- (void)setTitleAnchorAdditionalOffset:(double)offset
 {
-  if (self->_titleAnchorAdditionalOffset != a3)
+  if (self->_titleAnchorAdditionalOffset != offset)
   {
-    self->_titleAnchorAdditionalOffset = a3;
+    self->_titleAnchorAdditionalOffset = offset;
     [(TabBarItemView *)self setNeedsLayout];
   }
 }
 
-- (void)setContentOffset:(double)a3
+- (void)setContentOffset:(double)offset
 {
-  if (self->_contentOffset != a3)
+  if (self->_contentOffset != offset)
   {
-    self->_contentOffset = a3;
+    self->_contentOffset = offset;
     [(TabBarItemView *)self setNeedsLayout];
   }
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  if (self->_active != a3)
+  if (self->_active != active)
   {
     v7[7] = v3;
     v7[8] = v4;
-    self->_active = a3;
+    self->_active = active;
     [(TabBarItemView *)self setClipsToBounds:?];
     WeakRetained = objc_loadWeakRetained(&self->_tabBar);
 
@@ -1552,12 +1552,12 @@ uint64_t __28__TabBarItemView_setActive___block_invoke(uint64_t a1)
   return [v6 _updateMediaStateIndicator];
 }
 
-- (void)setIsPlaceholder:(BOOL)a3
+- (void)setIsPlaceholder:(BOOL)placeholder
 {
-  if (self->_isPlaceholder != a3)
+  if (self->_isPlaceholder != placeholder)
   {
-    self->_isPlaceholder = a3;
-    [(UIHoverGestureRecognizer *)self->_hoverRecognizer setEnabled:!a3];
+    self->_isPlaceholder = placeholder;
+    [(UIHoverGestureRecognizer *)self->_hoverRecognizer setEnabled:!placeholder];
   }
 }
 
@@ -1594,21 +1594,21 @@ uint64_t __28__TabBarItemView_setActive___block_invoke(uint64_t a1)
     v13 = -1.0 - CGRectGetMaxX(v17);
   }
 
-  v14 = 0.0;
+  _showsCloseButton = 0.0;
   if (v13 <= 0.0)
   {
-    v14 = [(TabBarItemView *)self _showsCloseButton];
+    _showsCloseButton = [(TabBarItemView *)self _showsCloseButton];
   }
 
   [(UIButton *)self->_closeButton alpha];
-  if (v15 != v14)
+  if (v15 != _showsCloseButton)
   {
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __41__TabBarItemView__updateCloseButtonAlpha__block_invoke;
     v16[3] = &unk_2781D78C8;
     v16[4] = self;
-    *&v16[5] = v14;
+    *&v16[5] = _showsCloseButton;
     [MEMORY[0x277D75D18] animateWithDuration:v16 animations:0.2];
   }
 }
@@ -1641,9 +1641,9 @@ LABEL_7:
 - (void)_updateCloseButtonEffect
 {
   WeakRetained = objc_loadWeakRetained(&self->_tabBar);
-  v4 = [WeakRetained tintStyle];
+  tintStyle = [WeakRetained tintStyle];
 
-  if (v4)
+  if (tintStyle)
   {
     if (self->_pinned)
     {
@@ -1655,7 +1655,7 @@ LABEL_7:
       v5 = 4;
     }
 
-    v6 = [MEMORY[0x277D75D00] _sf_effectWithStyle:v5 forBarTintStyle:v4];
+    v6 = [MEMORY[0x277D75D00] _sf_effectWithStyle:v5 forBarTintStyle:tintStyle];
     [(UIVisualEffectView *)self->_closeButtonEffectsView setEffect:v6];
   }
 }
@@ -1673,7 +1673,7 @@ LABEL_7:
   }
 }
 
-- (void)_hover:(id)a3
+- (void)_hover:(id)_hover
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
@@ -1710,8 +1710,8 @@ uint64_t __25__TabBarItemView__hover___block_invoke_2(uint64_t a1)
 
 - (BOOL)_isHoveringOverCloseButton
 {
-  v3 = [(TabBarItemView *)self _isHovering];
-  if (v3)
+  _isHovering = [(TabBarItemView *)self _isHovering];
+  if (_isHovering)
   {
     [(UIButton *)self->_closeButton bounds];
     v5 = v4;
@@ -1726,32 +1726,32 @@ uint64_t __25__TabBarItemView__hover___block_invoke_2(uint64_t a1)
     v18 = v9;
     v19 = v11;
 
-    LOBYTE(v3) = CGRectContainsPoint(*&v16, *&v13);
+    LOBYTE(_isHovering) = CGRectContainsPoint(*&v16, *&v13);
   }
 
-  return v3;
+  return _isHovering;
 }
 
 - (void)_updateHighlightAlpha
 {
-  v3 = 0.0;
+  _isHovering = 0.0;
   if (!self->_active)
   {
-    v3 = [(TabBarItemView *)self _isHovering];
+    _isHovering = [(TabBarItemView *)self _isHovering];
   }
 
   highlightView = self->_highlightView;
 
-  [(UIView *)highlightView setAlpha:v3];
+  [(UIView *)highlightView setAlpha:_isHovering];
 }
 
-- (void)setIcon:(id)a3
+- (void)setIcon:(id)icon
 {
-  v5 = a3;
-  if (self->_icon != v5)
+  iconCopy = icon;
+  if (self->_icon != iconCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_icon, a3);
+    v7 = iconCopy;
+    objc_storeStrong(&self->_icon, icon);
     if (self->_icon)
     {
       [(UIImageView *)self->_iconView setImage:?];
@@ -1759,21 +1759,21 @@ uint64_t __25__TabBarItemView__hover___block_invoke_2(uint64_t a1)
 
     else
     {
-      v6 = [MEMORY[0x277D28F20] fallbackFavicon];
-      [(UIImageView *)self->_iconView setImage:v6];
+      fallbackFavicon = [MEMORY[0x277D28F20] fallbackFavicon];
+      [(UIImageView *)self->_iconView setImage:fallbackFavicon];
     }
 
     [(TabBarItemView *)self _layoutTitleLabel];
     [(TabBarItemView *)self _updateIconViewVisibility];
-    v5 = v7;
+    iconCopy = v7;
   }
 }
 
-- (void)setMediaStateIcon:(unint64_t)a3
+- (void)setMediaStateIcon:(unint64_t)icon
 {
-  if (self->_mediaStateIcon != a3)
+  if (self->_mediaStateIcon != icon)
   {
-    self->_mediaStateIcon = a3;
+    self->_mediaStateIcon = icon;
     [(TabBarItemView *)self _updateMediaStateIndicator];
     [(TabBarItemView *)self _updateShowsParticipants];
     [(TabBarItemView *)self _updateShowsUnreadIndicator];
@@ -1782,12 +1782,12 @@ uint64_t __25__TabBarItemView__hover___block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)setPinned:(BOOL)a3
+- (void)setPinned:(BOOL)pinned
 {
-  if (self->_pinned != a3)
+  if (self->_pinned != pinned)
   {
-    self->_pinned = a3;
-    [(UIButton *)self->_closeButton setEnabled:!a3];
+    self->_pinned = pinned;
+    [(UIButton *)self->_closeButton setEnabled:!pinned];
     [(TabBarItemView *)self _updateCloseButtonImage];
     [(TabBarItemView *)self _updateCloseButtonEffect];
     [(TabBarItemView *)self _updateCloseButtonAlpha];
@@ -1797,24 +1797,24 @@ uint64_t __25__TabBarItemView__hover___block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)setUnread:(BOOL)a3
+- (void)setUnread:(BOOL)unread
 {
-  if (self->_unread != a3)
+  if (self->_unread != unread)
   {
-    self->_unread = a3;
+    self->_unread = unread;
     [(TabBarItemView *)self _updateShowsUnreadIndicator];
   }
 }
 
-- (void)setShareParticipants:(id)a3
+- (void)setShareParticipants:(id)participants
 {
-  v8 = a3;
-  v4 = [(TabBarItemView *)self shareParticipants];
-  v5 = [v4 isEqualToArray:v8];
+  participantsCopy = participants;
+  shareParticipants = [(TabBarItemView *)self shareParticipants];
+  v5 = [shareParticipants isEqualToArray:participantsCopy];
 
   if ((v5 & 1) == 0)
   {
-    v6 = [v8 copy];
+    v6 = [participantsCopy copy];
     shareParticipants = self->_shareParticipants;
     self->_shareParticipants = v6;
 
@@ -1840,8 +1840,8 @@ uint64_t __25__TabBarItemView__hover___block_invoke_2(uint64_t a1)
   [(UILabel *)self->_titleLabel setColor:v3];
 
   [(UIVisualEffectView *)self->_closeButtonEffectsView setEffect:0];
-  v4 = [MEMORY[0x277D75348] secondaryLabelColor];
-  [(UIButton *)self->_closeButton setTintColor:v4];
+  secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+  [(UIButton *)self->_closeButton setTintColor:secondaryLabelColor];
 
   [(TabBarItemView *)self _showOrHideCloseButton];
   self->_titleAnchorEdge = 0;

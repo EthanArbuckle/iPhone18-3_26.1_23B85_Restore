@@ -1,20 +1,20 @@
 @interface DownloadPolicyManager
-- (BOOL)_isPolicyRuleCellularDataAllowed:(id)a3 networkType:(int64_t)a4;
-- (BOOL)_isPolicyRuleNetworkTypeAllowed:(id)a3 networkType:(int64_t)a4;
-- (BOOL)_isPolicyRuleSatisfied:(id)a3 forPolicy:(id)a4 networkType:(int64_t)a5;
+- (BOOL)_isPolicyRuleCellularDataAllowed:(id)allowed networkType:(int64_t)type;
+- (BOOL)_isPolicyRuleNetworkTypeAllowed:(id)allowed networkType:(int64_t)type;
+- (BOOL)_isPolicyRuleSatisfied:(id)satisfied forPolicy:(id)policy networkType:(int64_t)type;
 - (DownloadPolicyManager)init;
-- (DownloadPolicyManager)initWithDownloadsDatabase:(id)a3;
-- (id)downloadPolicyForID:(int64_t)a3;
-- (id)overrideDownloadSizeLimitForDownloadIdentifier:(int64_t)a3;
-- (int64_t)_sizeLimitForPolicy:(id)a3 networkType:(int64_t)a4;
-- (int64_t)addDownloadPolicy:(id)a3;
-- (int64_t)downloadSizeLimitForPolicyWithID:(int64_t)a3;
-- (int64_t)downloadSizeLimitForPolicyWithID:(int64_t)a3 networkType:(int64_t)a4;
-- (void)_addPolicy:(id)a3;
+- (DownloadPolicyManager)initWithDownloadsDatabase:(id)database;
+- (id)downloadPolicyForID:(int64_t)d;
+- (id)overrideDownloadSizeLimitForDownloadIdentifier:(int64_t)identifier;
+- (int64_t)_sizeLimitForPolicy:(id)policy networkType:(int64_t)type;
+- (int64_t)addDownloadPolicy:(id)policy;
+- (int64_t)downloadSizeLimitForPolicyWithID:(int64_t)d;
+- (int64_t)downloadSizeLimitForPolicyWithID:(int64_t)d networkType:(int64_t)type;
+- (void)_addPolicy:(id)policy;
 - (void)_initializePolicy;
 - (void)dealloc;
-- (void)removeOverrideDownloadSizeLimitForDownloadIdentifier:(int64_t)a3;
-- (void)setOverrideDownloadSizeLimit:(int64_t)a3 forDownloadIdentifier:(int64_t)a4;
+- (void)removeOverrideDownloadSizeLimitForDownloadIdentifier:(int64_t)identifier;
+- (void)setOverrideDownloadSizeLimit:(int64_t)limit forDownloadIdentifier:(int64_t)identifier;
 @end
 
 @implementation DownloadPolicyManager
@@ -26,7 +26,7 @@
   return [(DownloadPolicyManager *)self initWithDownloadsDatabase:v3];
 }
 
-- (DownloadPolicyManager)initWithDownloadsDatabase:(id)a3
+- (DownloadPolicyManager)initWithDownloadsDatabase:(id)database
 {
   v9.receiver = self;
   v9.super_class = DownloadPolicyManager;
@@ -34,7 +34,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_database = a3;
+    v4->_database = database;
     v4->_policies = objc_alloc_init(NSMutableDictionary);
     database = v5->_database;
     v8[0] = _NSConcreteStackBlock;
@@ -55,7 +55,7 @@
   [(DownloadPolicyManager *)&v3 dealloc];
 }
 
-- (int64_t)addDownloadPolicy:(id)a3
+- (int64_t)addDownloadPolicy:(id)policy
 {
   v29 = 0;
   v30 = &v29;
@@ -80,10 +80,10 @@
         }
 
         v9 = *(*(&v25 + 1) + 8 * i);
-        if ([objc_msgSend(-[NSMutableDictionary objectForKey:](self->_policies objectForKey:{v9), "downloadPolicy"), "isEqual:", a3}])
+        if ([objc_msgSend(-[NSMutableDictionary objectForKey:](self->_policies objectForKey:{v9), "downloadPolicy"), "isEqual:", policy}])
         {
-          v10 = [v9 longLongValue];
-          v30[3] = v10;
+          longLongValue = [v9 longLongValue];
+          v30[3] = longLongValue;
           goto LABEL_11;
         }
       }
@@ -103,7 +103,7 @@ LABEL_11:
   if (!v11)
   {
     v24 = 0;
-    v12 = [NSKeyedArchiver archivedDataWithRootObject:a3 requiringSecureCoding:1 error:&v24];
+    v12 = [NSKeyedArchiver archivedDataWithRootObject:policy requiringSecureCoding:1 error:&v24];
     if (v24)
     {
       v13 = +[SSLogConfig sharedStoreServicesConfig];
@@ -112,20 +112,20 @@ LABEL_11:
         v13 = +[SSLogConfig sharedConfig];
       }
 
-      v14 = [v13 shouldLog];
-      v15 = [v13 shouldLogToDisk];
-      v16 = [v13 OSLogObject];
-      if (v15)
+      shouldLog = [v13 shouldLog];
+      shouldLogToDisk = [v13 shouldLogToDisk];
+      oSLogObject = [v13 OSLogObject];
+      if (shouldLogToDisk)
       {
-        v14 |= 2u;
+        shouldLog |= 2u;
       }
 
-      if (!os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+      if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
       {
-        v14 &= 2u;
+        shouldLog &= 2u;
       }
 
-      if (v14)
+      if (shouldLog)
       {
         v17 = objc_opt_class();
         v33 = 138543618;
@@ -164,28 +164,28 @@ LABEL_11:
   return v11;
 }
 
-- (id)downloadPolicyForID:(int64_t)a3
+- (id)downloadPolicyForID:(int64_t)d
 {
-  v4 = [[NSNumber alloc] initWithLongLong:a3];
+  v4 = [[NSNumber alloc] initWithLongLong:d];
   v5 = [(NSMutableDictionary *)self->_policies objectForKey:v4];
 
   return [v5 downloadPolicy];
 }
 
-- (int64_t)downloadSizeLimitForPolicyWithID:(int64_t)a3
+- (int64_t)downloadSizeLimitForPolicyWithID:(int64_t)d
 {
-  v5 = [+[ISNetworkObserver sharedInstance](ISNetworkObserver networkType];
+  networkType = [+[ISNetworkObserver sharedInstance](ISNetworkObserver networkType];
 
-  return [(DownloadPolicyManager *)self downloadSizeLimitForPolicyWithID:a3 networkType:v5];
+  return [(DownloadPolicyManager *)self downloadSizeLimitForPolicyWithID:d networkType:networkType];
 }
 
-- (int64_t)downloadSizeLimitForPolicyWithID:(int64_t)a3 networkType:(int64_t)a4
+- (int64_t)downloadSizeLimitForPolicyWithID:(int64_t)d networkType:(int64_t)type
 {
-  v6 = [[NSNumber alloc] initWithLongLong:a3];
+  v6 = [[NSNumber alloc] initWithLongLong:d];
   v7 = [(NSMutableDictionary *)self->_policies objectForKey:v6];
   if (v7)
   {
-    v8 = [(DownloadPolicyManager *)self _sizeLimitForPolicy:v7 networkType:a4];
+    v8 = [(DownloadPolicyManager *)self _sizeLimitForPolicy:v7 networkType:type];
   }
 
   else
@@ -196,19 +196,19 @@ LABEL_11:
   return v8;
 }
 
-- (id)overrideDownloadSizeLimitForDownloadIdentifier:(int64_t)a3
+- (id)overrideDownloadSizeLimitForDownloadIdentifier:(int64_t)identifier
 {
-  v4 = [[NSNumber alloc] initWithLongLong:a3];
+  v4 = [[NSNumber alloc] initWithLongLong:identifier];
   v5 = [(NSMutableDictionary *)self->_sizeLimitOverrides objectForKey:v4];
 
   return v5;
 }
 
-- (void)removeOverrideDownloadSizeLimitForDownloadIdentifier:(int64_t)a3
+- (void)removeOverrideDownloadSizeLimitForDownloadIdentifier:(int64_t)identifier
 {
   if (self->_sizeLimitOverrides)
   {
-    v4 = [[NSNumber alloc] initWithLongLong:a3];
+    v4 = [[NSNumber alloc] initWithLongLong:identifier];
     [(NSMutableDictionary *)self->_sizeLimitOverrides removeObjectForKey:?];
     if (![(NSMutableDictionary *)self->_sizeLimitOverrides count])
     {
@@ -218,39 +218,39 @@ LABEL_11:
   }
 }
 
-- (void)setOverrideDownloadSizeLimit:(int64_t)a3 forDownloadIdentifier:(int64_t)a4
+- (void)setOverrideDownloadSizeLimit:(int64_t)limit forDownloadIdentifier:(int64_t)identifier
 {
   if (!self->_sizeLimitOverrides)
   {
     self->_sizeLimitOverrides = objc_alloc_init(NSMutableDictionary);
   }
 
-  v8 = [[NSNumber alloc] initWithLongLong:a4];
-  v7 = [[NSNumber alloc] initWithLongLong:a3];
+  v8 = [[NSNumber alloc] initWithLongLong:identifier];
+  v7 = [[NSNumber alloc] initWithLongLong:limit];
   [(NSMutableDictionary *)self->_sizeLimitOverrides setObject:v7 forKey:v8];
 }
 
-- (void)_addPolicy:(id)a3
+- (void)_addPolicy:(id)policy
 {
-  v5 = [[NSNumber alloc] initWithLongLong:{objc_msgSend(a3, "databaseID")}];
+  v5 = [[NSNumber alloc] initWithLongLong:{objc_msgSend(policy, "databaseID")}];
   if (![(NSMutableDictionary *)self->_policies objectForKey:v5])
   {
-    v6 = -[DownloadPolicyManager _sizeLimitForPolicy:networkType:](self, "_sizeLimitForPolicy:networkType:", a3, [+[ISNetworkObserver sharedInstance](ISNetworkObserver networkType]);
+    v6 = -[DownloadPolicyManager _sizeLimitForPolicy:networkType:](self, "_sizeLimitForPolicy:networkType:", policy, [+[ISNetworkObserver sharedInstance](ISNetworkObserver networkType]);
     v7 = +[SSLogConfig sharedDaemonConfig];
     if (!v7)
     {
       v7 = +[SSLogConfig sharedConfig];
     }
 
-    v8 = [v7 shouldLog];
+    shouldLog = [v7 shouldLog];
     if ([v7 shouldLogToDisk])
     {
-      v9 = v8 | 2;
+      v9 = shouldLog | 2;
     }
 
     else
     {
-      v9 = v8;
+      v9 = shouldLog;
     }
 
     if (!os_log_type_enabled([v7 OSLogObject], OS_LOG_TYPE_INFO))
@@ -279,7 +279,7 @@ LABEL_11:
       }
     }
 
-    [(NSMutableDictionary *)self->_policies setObject:a3 forKey:v5, v13];
+    [(NSMutableDictionary *)self->_policies setObject:policy forKey:v5, v13];
   }
 }
 
@@ -299,15 +299,15 @@ LABEL_11:
     v5 = +[SSLogConfig sharedConfig];
   }
 
-  v6 = [v5 shouldLog];
+  shouldLog = [v5 shouldLog];
   if ([v5 shouldLogToDisk])
   {
-    v7 = v6 | 2;
+    v7 = shouldLog | 2;
   }
 
   else
   {
-    v7 = v6;
+    v7 = shouldLog;
   }
 
   if (!os_log_type_enabled([v5 OSLogObject], OS_LOG_TYPE_INFO))
@@ -364,10 +364,10 @@ LABEL_11:
   }
 }
 
-- (BOOL)_isPolicyRuleCellularDataAllowed:(id)a3 networkType:(int64_t)a4
+- (BOOL)_isPolicyRuleCellularDataAllowed:(id)allowed networkType:(int64_t)type
 {
-  v5 = [a3 cellularDataStates];
-  if (v5 == 3 || (v6 = v5, !SSNetworkTypeIsCellularType()) || (AppBooleanValue = CFPreferencesGetAppBooleanValue(@"AllowAutoDownloadOnCellular", kSSUserDefaultsIdentifier, 0), (v6 & 2) != 0) && AppBooleanValue)
+  cellularDataStates = [allowed cellularDataStates];
+  if (cellularDataStates == 3 || (v6 = cellularDataStates, !SSNetworkTypeIsCellularType()) || (AppBooleanValue = CFPreferencesGetAppBooleanValue(@"AllowAutoDownloadOnCellular", kSSUserDefaultsIdentifier, 0), (v6 & 2) != 0) && AppBooleanValue)
   {
     v8 = 1;
   }
@@ -379,16 +379,16 @@ LABEL_11:
 
   if (SSNetworkTypeIsCellularType())
   {
-    if ([a3 isCellularAllowed])
+    if ([allowed isCellularAllowed])
     {
-      v9 = [a3 userDefaultStates];
-      if ([v9 count])
+      userDefaultStates = [allowed userDefaultStates];
+      if ([userDefaultStates count])
       {
         v18 = 0u;
         v19 = 0u;
         v16 = 0u;
         v17 = 0u;
-        v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v10 = [userDefaultStates countByEnumeratingWithState:&v16 objects:v20 count:16];
         if (v10)
         {
           v11 = v10;
@@ -399,13 +399,13 @@ LABEL_11:
             {
               if (*v17 != v12)
               {
-                objc_enumerationMutation(v9);
+                objc_enumerationMutation(userDefaultStates);
               }
 
               if ([*(*(&v16 + 1) + 8 * i) currentBoolValue])
               {
-                v14 = [a3 downloadSizeLimit];
-                if (v14 == SSDownloadSizeLimitDisabled)
+                downloadSizeLimit = [allowed downloadSizeLimit];
+                if (downloadSizeLimit == SSDownloadSizeLimitDisabled)
                 {
                   return 0;
                 }
@@ -414,7 +414,7 @@ LABEL_11:
               }
             }
 
-            v11 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
+            v11 = [userDefaultStates countByEnumeratingWithState:&v16 objects:v20 count:16];
             if (v11)
             {
               continue;
@@ -430,43 +430,43 @@ LABEL_11:
   return v8;
 }
 
-- (BOOL)_isPolicyRuleNetworkTypeAllowed:(id)a3 networkType:(int64_t)a4
+- (BOOL)_isPolicyRuleNetworkTypeAllowed:(id)allowed networkType:(int64_t)type
 {
-  v5 = [a3 networkTypes];
-  if (![v5 count])
+  networkTypes = [allowed networkTypes];
+  if (![networkTypes count])
   {
     return 1;
   }
 
-  v6 = [[NSNumber alloc] initWithInteger:a4];
-  v7 = [v5 containsObject:v6];
+  v6 = [[NSNumber alloc] initWithInteger:type];
+  v7 = [networkTypes containsObject:v6];
 
   return v7;
 }
 
-- (BOOL)_isPolicyRuleSatisfied:(id)a3 forPolicy:(id)a4 networkType:(int64_t)a5
+- (BOOL)_isPolicyRuleSatisfied:(id)satisfied forPolicy:(id)policy networkType:(int64_t)type
 {
-  v8 = [(DownloadPolicyManager *)self _isPolicyRuleNetworkTypeAllowed:a3 networkType:a5];
+  v8 = [(DownloadPolicyManager *)self _isPolicyRuleNetworkTypeAllowed:satisfied networkType:type];
   if (v8)
   {
 
-    LOBYTE(v8) = [(DownloadPolicyManager *)self _isPolicyRuleCellularDataAllowed:a3 networkType:a5];
+    LOBYTE(v8) = [(DownloadPolicyManager *)self _isPolicyRuleCellularDataAllowed:satisfied networkType:type];
   }
 
   return v8;
 }
 
-- (int64_t)_sizeLimitForPolicy:(id)a3 networkType:(int64_t)a4
+- (int64_t)_sizeLimitForPolicy:(id)policy networkType:(int64_t)type
 {
   v7 = SSDownloadSizeLimitDisabled;
-  v8 = [a3 downloadPolicy];
-  v9 = [v8 policyRules];
+  downloadPolicy = [policy downloadPolicy];
+  policyRules = [downloadPolicy policyRules];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v10 = [v9 countByEnumeratingWithState:&v23 objects:v27 count:16];
-  v11 = v7;
+  v10 = [policyRules countByEnumeratingWithState:&v23 objects:v27 count:16];
+  downloadSizeLimit = v7;
   if (v10)
   {
     v12 = v10;
@@ -477,18 +477,18 @@ LABEL_11:
       {
         if (*v24 != v13)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(policyRules);
         }
 
         v15 = *(*(&v23 + 1) + 8 * i);
-        if ([(DownloadPolicyManager *)self _isPolicyRuleSatisfied:v15 forPolicy:a3 networkType:a4])
+        if ([(DownloadPolicyManager *)self _isPolicyRuleSatisfied:v15 forPolicy:policy networkType:type])
         {
-          v11 = [v15 downloadSizeLimit];
+          downloadSizeLimit = [v15 downloadSizeLimit];
           goto LABEL_11;
         }
       }
 
-      v12 = [v9 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v12 = [policyRules countByEnumeratingWithState:&v23 objects:v27 count:16];
       if (v12)
       {
         continue;
@@ -497,34 +497,34 @@ LABEL_11:
       break;
     }
 
-    v11 = v7;
+    downloadSizeLimit = v7;
   }
 
 LABEL_11:
-  v16 = [v8 downloadKind];
-  if (!v16)
+  downloadKind = [downloadPolicy downloadKind];
+  if (!downloadKind)
   {
-    return v11;
+    return downloadSizeLimit;
   }
 
-  v17 = v16;
-  if (![v9 count] || v11 != v7)
+  v17 = downloadKind;
+  if (![policyRules count] || downloadSizeLimit != v7)
   {
     v18 = [objc_msgSend(+[ISURLBagCache sharedCache](ISURLBagCache "sharedCache")];
     if (v18)
     {
-      v19 = [v18 sizeLimitForNetworkType:a4];
-      if (v11 >= v19)
+      v19 = [v18 sizeLimitForNetworkType:type];
+      if (downloadSizeLimit >= v19)
       {
         v20 = v19;
       }
 
       else
       {
-        v20 = v11;
+        v20 = downloadSizeLimit;
       }
 
-      if (v11 == SSDownloadSizeLimitNoLimit || v11 == v7)
+      if (downloadSizeLimit == SSDownloadSizeLimitNoLimit || downloadSizeLimit == v7)
       {
         return v19;
       }
@@ -535,7 +535,7 @@ LABEL_11:
       }
     }
 
-    else if (a4)
+    else if (type)
     {
       if (SSNetworkTypeIsCellularType())
       {

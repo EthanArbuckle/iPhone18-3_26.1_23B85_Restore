@@ -3,8 +3,8 @@
 - (id)_extraObjects;
 - (id)allObjects;
 - (void)_initializeFrc;
-- (void)controllerDidChangeContent:(id)a3;
-- (void)generator:(id)a3 didChangeObject:(id)a4 atIndexPath:(id)a5 forChangeType:(unint64_t)a6 newIndexPath:(id)a7;
+- (void)controllerDidChangeContent:(id)content;
+- (void)generator:(id)generator didChangeObject:(id)object atIndexPath:(id)path forChangeType:(unint64_t)type newIndexPath:(id)indexPath;
 @end
 
 @implementation MTConditionalNullResultsController
@@ -15,36 +15,36 @@
   v5.super_class = MTConditionalNullResultsController;
   [(MTCoreDataResultsController *)&v5 _initializeFrc];
   v3 = [(MTCoreDataResultsController *)self frc];
-  v4 = [v3 fetchedObjects];
-  -[MTConditionalNullResultsController setHasResults:](self, "setHasResults:", [v4 count] != 0);
+  fetchedObjects = [v3 fetchedObjects];
+  -[MTConditionalNullResultsController setHasResults:](self, "setHasResults:", [fetchedObjects count] != 0);
 }
 
 - (id)allObjects
 {
   v3 = [(MTCoreDataResultsController *)self frc];
-  v4 = [v3 fetchedObjects];
-  v5 = [v4 count];
+  fetchedObjects = [v3 fetchedObjects];
+  v5 = [fetchedObjects count];
 
   if (v5)
   {
-    v6 = &__NSArray0__struct;
+    _extraObjects = &__NSArray0__struct;
   }
 
   else
   {
-    v6 = [(MTConditionalNullResultsController *)self _extraObjects];
+    _extraObjects = [(MTConditionalNullResultsController *)self _extraObjects];
   }
 
-  return v6;
+  return _extraObjects;
 }
 
 - (id)_extraObjects
 {
   v3 = objc_opt_new();
-  v4 = [(MTConditionalNullResultsController *)self numberOfPlaceholderObjects];
-  if (v4)
+  numberOfPlaceholderObjects = [(MTConditionalNullResultsController *)self numberOfPlaceholderObjects];
+  if (numberOfPlaceholderObjects)
   {
-    v5 = v4;
+    v5 = numberOfPlaceholderObjects;
     do
     {
       v6 = +[NSUUID UUID];
@@ -76,16 +76,16 @@
   return changeGenerator;
 }
 
-- (void)controllerDidChangeContent:(id)a3
+- (void)controllerDidChangeContent:(id)content
 {
-  v4 = a3;
+  contentCopy = content;
   v5 = [(MTCoreDataResultsController *)self frc];
-  v6 = [v5 fetchedObjects];
+  fetchedObjects = [v5 fetchedObjects];
 
-  v7 = [v6 count];
+  v7 = [fetchedObjects count];
   if ((v7 != 0) != [(MTConditionalNullResultsController *)self hasResults])
   {
-    v8 = [(MTConditionalNullResultsController *)self _extraObjects];
+    _extraObjects = [(MTConditionalNullResultsController *)self _extraObjects];
     if (v7)
     {
       v9 = &__NSArray0__struct;
@@ -93,12 +93,12 @@
 
     else
     {
-      v9 = v8;
+      v9 = _extraObjects;
     }
 
     if (v7)
     {
-      v10 = v8;
+      v10 = _extraObjects;
     }
 
     else
@@ -106,25 +106,25 @@
       v10 = &__NSArray0__struct;
     }
 
-    v11 = [(MTConditionalNullResultsController *)self changeGenerator];
-    [v11 generateChangesForExistingObjects:v10 newObjects:v9 inSection:0];
+    changeGenerator = [(MTConditionalNullResultsController *)self changeGenerator];
+    [changeGenerator generateChangesForExistingObjects:v10 newObjects:v9 inSection:0];
   }
 
   v12.receiver = self;
   v12.super_class = MTConditionalNullResultsController;
-  [(MTCoreDataResultsController *)&v12 controllerDidChangeContent:v4];
+  [(MTCoreDataResultsController *)&v12 controllerDidChangeContent:contentCopy];
   [(MTConditionalNullResultsController *)self setHasResults:v7 != 0];
 }
 
-- (void)generator:(id)a3 didChangeObject:(id)a4 atIndexPath:(id)a5 forChangeType:(unint64_t)a6 newIndexPath:(id)a7
+- (void)generator:(id)generator didChangeObject:(id)object atIndexPath:(id)path forChangeType:(unint64_t)type newIndexPath:(id)indexPath
 {
-  v11 = a7;
-  v12 = a5;
-  v13 = a4;
+  indexPathCopy = indexPath;
+  pathCopy = path;
+  objectCopy = object;
   v14 = [(MTCoreDataResultsController *)self frc];
   v15.receiver = self;
   v15.super_class = MTConditionalNullResultsController;
-  [(MTCoreDataResultsController *)&v15 controller:v14 didChangeObject:v13 atIndexPath:v12 forChangeType:a6 newIndexPath:v11];
+  [(MTCoreDataResultsController *)&v15 controller:v14 didChangeObject:objectCopy atIndexPath:pathCopy forChangeType:type newIndexPath:indexPathCopy];
 }
 
 @end

@@ -1,50 +1,50 @@
 @interface SBExternalDisplayService
-- (BOOL)_identityParticipatesInExternalDisplayService:(id)a3;
-- (SBExternalDisplayService)initWithDisplayManager:(id)a3;
-- (SBExternalDisplayService)initWithDisplayManager:(id)a3 serviceListenerFactory:(id)a4 connectedDisplayInfoFactory:(id)a5;
-- (id)_extendedModeDisplayConfigurationForHardwareIdentifier:(id)a3 error:(id *)a4;
-- (id)preferredArrangementOfExternalDisplay:(id)a3;
-- (void)_notifyOfPropertyChangesForDisplayConfiguration:(id)a3 requestingClient:(id)a4;
-- (void)addObserver:(id)a3;
-- (void)client:(id)a3 getConnectedDisplayInfoWithCompletion:(id)a4;
-- (void)client:(id)a3 setDisplayArrangement:(id)a4 forDisplay:(id)a5;
-- (void)client:(id)a3 setDisplayMirroringEnabled:(id)a4 forDisplay:(id)a5;
-- (void)client:(id)a3 setDisplayModeSettings:(id)a4 forDisplay:(id)a5 options:(id)a6 completionHandler:(id)a7;
+- (BOOL)_identityParticipatesInExternalDisplayService:(id)service;
+- (SBExternalDisplayService)initWithDisplayManager:(id)manager;
+- (SBExternalDisplayService)initWithDisplayManager:(id)manager serviceListenerFactory:(id)factory connectedDisplayInfoFactory:(id)infoFactory;
+- (id)_extendedModeDisplayConfigurationForHardwareIdentifier:(id)identifier error:(id *)error;
+- (id)preferredArrangementOfExternalDisplay:(id)display;
+- (void)_notifyOfPropertyChangesForDisplayConfiguration:(id)configuration requestingClient:(id)client;
+- (void)addObserver:(id)observer;
+- (void)client:(id)client getConnectedDisplayInfoWithCompletion:(id)completion;
+- (void)client:(id)client setDisplayArrangement:(id)arrangement forDisplay:(id)display;
+- (void)client:(id)client setDisplayMirroringEnabled:(id)enabled forDisplay:(id)display;
+- (void)client:(id)client setDisplayModeSettings:(id)settings forDisplay:(id)display options:(id)options completionHandler:(id)handler;
 - (void)dealloc;
-- (void)displayManager:(id)a3 didConnectIdentity:(id)a4 withConfiguration:(id)a5;
-- (void)displayManager:(id)a3 willDisconnectIdentity:(id)a4;
-- (void)removeObserver:(id)a3;
+- (void)displayManager:(id)manager didConnectIdentity:(id)identity withConfiguration:(id)configuration;
+- (void)displayManager:(id)manager willDisconnectIdentity:(id)identity;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation SBExternalDisplayService
 
-- (SBExternalDisplayService)initWithDisplayManager:(id)a3
+- (SBExternalDisplayService)initWithDisplayManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v5 = objc_alloc_init(SBExternalDisplayServiceConnectionListenerFactory);
   v6 = objc_alloc_init(SBSConnectedDisplayInfoFactory);
-  v7 = [(SBExternalDisplayService *)self initWithDisplayManager:v4 serviceListenerFactory:v5 connectedDisplayInfoFactory:v6];
+  v7 = [(SBExternalDisplayService *)self initWithDisplayManager:managerCopy serviceListenerFactory:v5 connectedDisplayInfoFactory:v6];
 
   return v7;
 }
 
-- (SBExternalDisplayService)initWithDisplayManager:(id)a3 serviceListenerFactory:(id)a4 connectedDisplayInfoFactory:(id)a5
+- (SBExternalDisplayService)initWithDisplayManager:(id)manager serviceListenerFactory:(id)factory connectedDisplayInfoFactory:(id)infoFactory
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  managerCopy = manager;
+  factoryCopy = factory;
+  infoFactoryCopy = infoFactory;
   v23.receiver = self;
   v23.super_class = SBExternalDisplayService;
   v12 = [(SBExternalDisplayService *)&v23 init];
   if (v12)
   {
     v13 = +[SBDefaults localDefaults];
-    v14 = [v13 externalDisplayDefaults];
+    externalDisplayDefaults = [v13 externalDisplayDefaults];
     defaults = v12->_defaults;
-    v12->_defaults = v14;
+    v12->_defaults = externalDisplayDefaults;
 
-    objc_storeStrong(&v12->_displayManager, a3);
-    objc_storeStrong(&v12->_connectedDisplayInfoFactory, a5);
+    objc_storeStrong(&v12->_displayManager, manager);
+    objc_storeStrong(&v12->_connectedDisplayInfoFactory, infoFactory);
     v16 = [(SBDisplayManager *)v12->_displayManager addObserver:v12];
     displayManagerObserverToken = v12->_displayManagerObserverToken;
     v12->_displayManagerObserverToken = v16;
@@ -53,7 +53,7 @@
     serviceQueue = v12->_serviceQueue;
     v12->_serviceQueue = v18;
 
-    v20 = [v10 newExternalDisplayServiceListenerForDelegate:v12 serviceQueue:v12->_serviceQueue];
+    v20 = [factoryCopy newExternalDisplayServiceListenerForDelegate:v12 serviceQueue:v12->_serviceQueue];
     serviceConnectionListener = v12->_serviceConnectionListener;
     v12->_serviceConnectionListener = v20;
 
@@ -72,37 +72,37 @@
   [(SBExternalDisplayService *)&v3 dealloc];
 }
 
-- (id)preferredArrangementOfExternalDisplay:(id)a3
+- (id)preferredArrangementOfExternalDisplay:(id)display
 {
   displayManager = self->_displayManager;
-  v5 = a3;
-  v6 = [(SBDisplayManager *)displayManager mainIdentity];
-  v7 = [SBDisplayArrangementItem preferredArrangementOfDisplay:v5 relativeTo:v6 preferences:self->_defaults];
+  displayCopy = display;
+  mainIdentity = [(SBDisplayManager *)displayManager mainIdentity];
+  v7 = [SBDisplayArrangementItem preferredArrangementOfDisplay:displayCopy relativeTo:mainIdentity preferences:self->_defaults];
 
   return v7;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   observers = self->_observers;
-  v8 = v4;
+  v8 = observerCopy;
   if (!observers)
   {
-    v6 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     v7 = self->_observers;
-    self->_observers = v6;
+    self->_observers = weakObjectsHashTable;
 
-    v4 = v8;
+    observerCopy = v8;
     observers = self->_observers;
   }
 
-  [(NSHashTable *)observers addObject:v4];
+  [(NSHashTable *)observers addObject:observerCopy];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  [(NSHashTable *)self->_observers removeObject:a3];
+  [(NSHashTable *)self->_observers removeObject:observer];
   if (![(NSHashTable *)self->_observers count])
   {
     observers = self->_observers;
@@ -110,10 +110,10 @@
   }
 }
 
-- (void)client:(id)a3 getConnectedDisplayInfoWithCompletion:(id)a4
+- (void)client:(id)client getConnectedDisplayInfoWithCompletion:(id)completion
 {
-  v5 = a4;
-  v4 = v5;
+  completionCopy = completion;
+  v4 = completionCopy;
   BSDispatchMain();
 }
 
@@ -186,15 +186,15 @@ LABEL_12:
   }
 }
 
-- (void)client:(id)a3 setDisplayArrangement:(id)a4 forDisplay:(id)a5
+- (void)client:(id)client setDisplayArrangement:(id)arrangement forDisplay:(id)display
 {
-  v7 = a3;
-  v8 = a4;
-  v12 = a5;
-  v13 = v8;
-  v9 = v8;
-  v10 = v12;
-  v11 = v7;
+  clientCopy = client;
+  arrangementCopy = arrangement;
+  displayCopy = display;
+  v13 = arrangementCopy;
+  v9 = arrangementCopy;
+  v10 = displayCopy;
+  v11 = clientCopy;
   BSDispatchMain();
 }
 
@@ -279,14 +279,14 @@ void __68__SBExternalDisplayService_client_setDisplayArrangement_forDisplay___bl
   }
 }
 
-- (void)client:(id)a3 setDisplayMirroringEnabled:(id)a4 forDisplay:(id)a5
+- (void)client:(id)client setDisplayMirroringEnabled:(id)enabled forDisplay:(id)display
 {
-  v7 = a3;
-  v11 = a4;
-  v12 = a5;
-  v8 = v12;
-  v9 = v11;
-  v10 = v7;
+  clientCopy = client;
+  enabledCopy = enabled;
+  displayCopy = display;
+  v8 = displayCopy;
+  v9 = enabledCopy;
+  v10 = clientCopy;
   BSDispatchMain();
 }
 
@@ -356,20 +356,20 @@ void __73__SBExternalDisplayService_client_setDisplayMirroringEnabled_forDisplay
   }
 }
 
-- (void)client:(id)a3 setDisplayModeSettings:(id)a4 forDisplay:(id)a5 options:(id)a6 completionHandler:(id)a7
+- (void)client:(id)client setDisplayModeSettings:(id)settings forDisplay:(id)display options:(id)options completionHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a4;
-  v18 = v11;
-  v19 = a5;
-  v20 = v12;
-  v21 = a6;
-  v22 = a7;
-  v13 = v22;
-  v14 = v21;
-  v15 = v12;
-  v16 = v19;
-  v17 = v11;
+  clientCopy = client;
+  settingsCopy = settings;
+  v18 = clientCopy;
+  displayCopy = display;
+  v20 = settingsCopy;
+  optionsCopy = options;
+  handlerCopy = handler;
+  v13 = handlerCopy;
+  v14 = optionsCopy;
+  v15 = settingsCopy;
+  v16 = displayCopy;
+  v17 = clientCopy;
   BSDispatchMain();
 }
 
@@ -457,42 +457,42 @@ void __95__SBExternalDisplayService_client_setDisplayModeSettings_forDisplay_opt
   }
 }
 
-- (void)displayManager:(id)a3 didConnectIdentity:(id)a4 withConfiguration:(id)a5
+- (void)displayManager:(id)manager didConnectIdentity:(id)identity withConfiguration:(id)configuration
 {
-  v9 = a4;
-  v7 = a5;
-  if ([(SBExternalDisplayService *)self _identityParticipatesInExternalDisplayService:v9])
+  identityCopy = identity;
+  configurationCopy = configuration;
+  if ([(SBExternalDisplayService *)self _identityParticipatesInExternalDisplayService:identityCopy])
   {
-    v8 = [(SBExternalDisplayService *)self _displayInfoForDisplayIdentity:v9 configuration:v7];
+    v8 = [(SBExternalDisplayService *)self _displayInfoForDisplayIdentity:identityCopy configuration:configurationCopy];
     [(_SBExternalDisplayServiceConnectionListening *)self->_serviceConnectionListener notifyObserversExternalDisplayDidConnect:v8];
   }
 }
 
-- (void)displayManager:(id)a3 willDisconnectIdentity:(id)a4
+- (void)displayManager:(id)manager willDisconnectIdentity:(id)identity
 {
-  v9 = a3;
-  v6 = a4;
-  if ([(SBExternalDisplayService *)self _identityParticipatesInExternalDisplayService:v6])
+  managerCopy = manager;
+  identityCopy = identity;
+  if ([(SBExternalDisplayService *)self _identityParticipatesInExternalDisplayService:identityCopy])
   {
-    v7 = [v9 configurationForIdentity:v6];
-    v8 = [(SBExternalDisplayService *)self _displayInfoForDisplayIdentity:v6 configuration:v7];
+    v7 = [managerCopy configurationForIdentity:identityCopy];
+    v8 = [(SBExternalDisplayService *)self _displayInfoForDisplayIdentity:identityCopy configuration:v7];
 
     [(_SBExternalDisplayServiceConnectionListening *)self->_serviceConnectionListener notifyObserversExternalDisplayWillDisconnect:v8];
   }
 }
 
-- (BOOL)_identityParticipatesInExternalDisplayService:(id)a3
+- (BOOL)_identityParticipatesInExternalDisplayService:(id)service
 {
-  v3 = a3;
-  v4 = [v3 isExternal] && (objc_msgSend(v3, "isContinuityDisplay") & 1) == 0 && objc_msgSend(v3, "sb_displayWindowingMode") == 1;
+  serviceCopy = service;
+  v4 = [serviceCopy isExternal] && (objc_msgSend(serviceCopy, "isContinuityDisplay") & 1) == 0 && objc_msgSend(serviceCopy, "sb_displayWindowingMode") == 1;
 
   return v4;
 }
 
-- (id)_extendedModeDisplayConfigurationForHardwareIdentifier:(id)a3 error:(id *)a4
+- (id)_extendedModeDisplayConfigurationForHardwareIdentifier:(id)identifier error:(id *)error
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  identifierCopy = identifier;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
@@ -502,7 +502,7 @@ void __95__SBExternalDisplayService_client_setDisplayModeSettings_forDisplay_opt
   if (v7)
   {
     v8 = v7;
-    v22 = a4;
+    errorCopy = error;
     v9 = 0;
     v10 = *v25;
     while (2)
@@ -515,9 +515,9 @@ void __95__SBExternalDisplayService_client_setDisplayModeSettings_forDisplay_opt
         }
 
         v12 = *(*(&v24 + 1) + 8 * i);
-        v13 = [(SBDisplayManager *)self->_displayManager configurationForIdentity:v12, v22];
-        v14 = [v13 hardwareIdentifier];
-        v15 = [v14 isEqualToString:v6];
+        errorCopy = [(SBDisplayManager *)self->_displayManager configurationForIdentity:v12, errorCopy];
+        hardwareIdentifier = [errorCopy hardwareIdentifier];
+        v15 = [hardwareIdentifier isEqualToString:identifierCopy];
 
         if (v15)
         {
@@ -541,7 +541,7 @@ void __95__SBExternalDisplayService_client_setDisplayModeSettings_forDisplay_opt
       break;
     }
 
-    v13 = 0;
+    errorCopy = 0;
     v16 = 0;
     if (v9)
     {
@@ -554,21 +554,21 @@ void __95__SBExternalDisplayService_client_setDisplayModeSettings_forDisplay_opt
     }
 
 LABEL_15:
-    a4 = v22;
+    error = errorCopy;
   }
 
   else
   {
-    v13 = 0;
+    errorCopy = 0;
     v16 = 0;
     v17 = 1;
   }
 
-  if (a4 && !v13)
+  if (error && !errorCopy)
   {
-    if (v6)
+    if (identifierCopy)
     {
-      v18 = v6;
+      v18 = identifierCopy;
     }
 
     else
@@ -589,20 +589,20 @@ LABEL_15:
       v20 = v17;
     }
 
-    *a4 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D66FB0] code:v20 userInfo:v19];
+    *error = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D66FB0] code:v20 userInfo:v19];
   }
 
-  return v13;
+  return errorCopy;
 }
 
-- (void)_notifyOfPropertyChangesForDisplayConfiguration:(id)a3 requestingClient:(id)a4
+- (void)_notifyOfPropertyChangesForDisplayConfiguration:(id)configuration requestingClient:(id)client
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 identity];
-  v9 = [(SBExternalDisplayService *)self _displayInfoForDisplayIdentity:v8 configuration:v7];
+  clientCopy = client;
+  configurationCopy = configuration;
+  identity = [configurationCopy identity];
+  v9 = [(SBExternalDisplayService *)self _displayInfoForDisplayIdentity:identity configuration:configurationCopy];
 
-  [(_SBExternalDisplayServiceConnectionListening *)self->_serviceConnectionListener notifyObserversExternalDisplayDidUpdateProperties:v9 requestingClient:v6];
+  [(_SBExternalDisplayServiceConnectionListening *)self->_serviceConnectionListener notifyObserversExternalDisplayDidUpdateProperties:v9 requestingClient:clientCopy];
 }
 
 @end

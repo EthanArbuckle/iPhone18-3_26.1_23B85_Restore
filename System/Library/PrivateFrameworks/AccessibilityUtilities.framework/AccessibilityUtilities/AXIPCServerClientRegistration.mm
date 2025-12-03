@@ -1,27 +1,27 @@
 @interface AXIPCServerClientRegistration
-- (AXIPCServerClientRegistration)initWithPort:(unsigned int)a3 identifier:(id)a4;
+- (AXIPCServerClientRegistration)initWithPort:(unsigned int)port identifier:(id)identifier;
 - (AXIPCServerClientRegistrationDelegate)delegate;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (void)dealloc;
 @end
 
 @implementation AXIPCServerClientRegistration
 
-- (AXIPCServerClientRegistration)initWithPort:(unsigned int)a3 identifier:(id)a4
+- (AXIPCServerClientRegistration)initWithPort:(unsigned int)port identifier:(id)identifier
 {
-  v6 = a4;
+  identifierCopy = identifier;
   v20.receiver = self;
   v20.super_class = AXIPCServerClientRegistration;
   v7 = [(AXIPCServerClientRegistration *)&v20 init];
   if (v7)
   {
-    AXIncrefSendRight(a3);
-    *(v7 + 2) = a3;
-    v8 = [v6 copy];
+    AXIncrefSendRight(port);
+    *(v7 + 2) = port;
+    v8 = [identifierCopy copy];
     v9 = *(v7 + 2);
     *(v7 + 2) = v8;
 
-    v10 = dispatch_source_create(MEMORY[0x1E69E96E0], a3, 1uLL, MEMORY[0x1E69E96A0]);
+    v10 = dispatch_source_create(MEMORY[0x1E69E96E0], port, 1uLL, MEMORY[0x1E69E96A0]);
     v11 = *(v7 + 3);
     *(v7 + 3) = v10;
 
@@ -38,7 +38,7 @@
     v15[1] = 3221225472;
     v15[2] = __57__AXIPCServerClientRegistration_initWithPort_identifier___block_invoke_2;
     v15[3] = &__block_descriptor_36_e5_v8__0l;
-    v16 = a3;
+    portCopy = port;
     dispatch_source_set_cancel_handler(v13, v15);
     dispatch_resume(*(v7 + 3));
     objc_destroyWeak(&v18);
@@ -86,14 +86,14 @@ uint64_t __57__AXIPCServerClientRegistration_initWithPort_identifier___block_inv
   [(AXIPCServerClientRegistration *)&v5 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(AXIPCServerClientRegistration *)self port];
-    v6 = v5 == [v4 port];
+    port = [(AXIPCServerClientRegistration *)self port];
+    v6 = port == [equalCopy port];
   }
 
   else

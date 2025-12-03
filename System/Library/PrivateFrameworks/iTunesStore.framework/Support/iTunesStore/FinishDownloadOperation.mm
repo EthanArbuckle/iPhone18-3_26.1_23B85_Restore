@@ -1,34 +1,34 @@
 @interface FinishDownloadOperation
-- (BOOL)_needsDRMOperationForDownloadKind:(id)a3;
-- (FinishDownloadOperation)initWithDownloadIdentifier:(int64_t)a3 databaseSession:(id)a4;
+- (BOOL)_needsDRMOperationForDownloadKind:(id)kind;
+- (FinishDownloadOperation)initWithDownloadIdentifier:(int64_t)identifier databaseSession:(id)session;
 - (NSString)handlerReleasedDownloadPhase;
 - (NSString)initialDownloadPhase;
-- (id)_downloadSessionPropertiesWithDownloadPhase:(id)a3;
-- (id)_finishResult:(int64_t)a3;
+- (id)_downloadSessionPropertiesWithDownloadPhase:(id)phase;
+- (id)_finishResult:(int64_t)result;
 - (id)_stepOperations;
 - (id)outputBlock;
-- (void)_sendProgressToDelegate:(id)a3;
-- (void)operation:(id)a3 updatedProgress:(id)a4;
+- (void)_sendProgressToDelegate:(id)delegate;
+- (void)operation:(id)operation updatedProgress:(id)progress;
 - (void)run;
-- (void)setHandlerReleasedDownloadPhase:(id)a3;
-- (void)setInitialDownloadPhase:(id)a3;
-- (void)setOutputBlock:(id)a3;
-- (void)stopWithFinishResult:(int64_t)a3;
+- (void)setHandlerReleasedDownloadPhase:(id)phase;
+- (void)setInitialDownloadPhase:(id)phase;
+- (void)setOutputBlock:(id)block;
+- (void)stopWithFinishResult:(int64_t)result;
 @end
 
 @implementation FinishDownloadOperation
 
-- (FinishDownloadOperation)initWithDownloadIdentifier:(int64_t)a3 databaseSession:(id)a4
+- (FinishDownloadOperation)initWithDownloadIdentifier:(int64_t)identifier databaseSession:(id)session
 {
-  v6 = a4;
+  sessionCopy = session;
   v20.receiver = self;
   v20.super_class = FinishDownloadOperation;
   v7 = [(FinishDownloadOperation *)&v20 init];
   if (v7)
   {
     v8 = [DownloadEntity alloc];
-    v9 = [v6 database];
-    v10 = [(DownloadEntity *)v8 initWithPersistentID:a3 inDatabase:v9];
+    database = [sessionCopy database];
+    v10 = [(DownloadEntity *)v8 initWithPersistentID:identifier inDatabase:database];
 
     v11 = [FinishDownloadMemoryEntity alloc];
     v12 = +[FinishDownloadMemoryEntity defaultProperties];
@@ -36,18 +36,18 @@
     download = v7->_download;
     v7->_download = v13;
 
-    [(FinishDownloadMemoryEntity *)v7->_download loadAssetsUsingSession:v6];
-    v15 = [(DownloadEntity *)v10 copyStoreDownloadMetadata];
-    v16 = [v15 sinfs];
+    [(FinishDownloadMemoryEntity *)v7->_download loadAssetsUsingSession:sessionCopy];
+    copyStoreDownloadMetadata = [(DownloadEntity *)v10 copyStoreDownloadMetadata];
+    sinfs = [copyStoreDownloadMetadata sinfs];
 
-    if (!v16)
+    if (!sinfs)
     {
-      v17 = [(FinishDownloadMemoryEntity *)v7->_download mediaAsset];
-      v18 = [v17 SINFs];
-      [v15 setSinfs:v18];
+      mediaAsset = [(FinishDownloadMemoryEntity *)v7->_download mediaAsset];
+      sINFs = [mediaAsset SINFs];
+      [copyStoreDownloadMetadata setSinfs:sINFs];
     }
 
-    [(FinishDownloadMemoryEntity *)v7->_download setStoreMetadata:v15];
+    [(FinishDownloadMemoryEntity *)v7->_download setStoreMetadata:copyStoreDownloadMetadata];
     v7->_stopResult = -1;
   }
 
@@ -82,13 +82,13 @@
   return v4;
 }
 
-- (void)setHandlerReleasedDownloadPhase:(id)a3
+- (void)setHandlerReleasedDownloadPhase:(id)phase
 {
-  v6 = a3;
+  phaseCopy = phase;
   [(FinishDownloadOperation *)self lock];
-  if (self->_handlerReleasedDownloadPhase != v6)
+  if (self->_handlerReleasedDownloadPhase != phaseCopy)
   {
-    v4 = [(NSString *)v6 copy];
+    v4 = [(NSString *)phaseCopy copy];
     handlerReleasedDownloadPhase = self->_handlerReleasedDownloadPhase;
     self->_handlerReleasedDownloadPhase = v4;
   }
@@ -96,13 +96,13 @@
   [(FinishDownloadOperation *)self unlock];
 }
 
-- (void)setInitialDownloadPhase:(id)a3
+- (void)setInitialDownloadPhase:(id)phase
 {
-  v6 = a3;
+  phaseCopy = phase;
   [(FinishDownloadOperation *)self lock];
-  if (self->_initialDownloadPhase != v6)
+  if (self->_initialDownloadPhase != phaseCopy)
   {
-    v4 = [(NSString *)v6 copy];
+    v4 = [(NSString *)phaseCopy copy];
     initialDownloadPhase = self->_initialDownloadPhase;
     self->_initialDownloadPhase = v4;
   }
@@ -110,13 +110,13 @@
   [(FinishDownloadOperation *)self unlock];
 }
 
-- (void)setOutputBlock:(id)a3
+- (void)setOutputBlock:(id)block
 {
-  v6 = a3;
+  blockCopy = block;
   [(FinishDownloadOperation *)self lock];
-  if (self->_outputBlock != v6)
+  if (self->_outputBlock != blockCopy)
   {
-    v4 = [v6 copy];
+    v4 = [blockCopy copy];
     outputBlock = self->_outputBlock;
     self->_outputBlock = v4;
   }
@@ -124,10 +124,10 @@
   [(FinishDownloadOperation *)self unlock];
 }
 
-- (void)stopWithFinishResult:(int64_t)a3
+- (void)stopWithFinishResult:(int64_t)result
 {
   [(FinishDownloadOperation *)self lock];
-  self->_stopResult = a3;
+  self->_stopResult = result;
   [(FinishDownloadOperation *)self unlock];
 
   [(FinishDownloadOperation *)self cancel];
@@ -135,10 +135,10 @@
 
 - (void)run
 {
-  v33 = [(FinishDownloadMemoryEntity *)self->_download databaseID];
-  v3 = [(FinishDownloadMemoryEntity *)self->_download transactionID];
-  v31 = [(FinishDownloadOperation *)self _stepOperations];
-  v4 = [[DownloadHandle alloc] initWithTransactionIdentifier:v3 downloadIdentifier:v33];
+  databaseID = [(FinishDownloadMemoryEntity *)self->_download databaseID];
+  transactionID = [(FinishDownloadMemoryEntity *)self->_download transactionID];
+  _stepOperations = [(FinishDownloadOperation *)self _stepOperations];
+  v4 = [[DownloadHandle alloc] initWithTransactionIdentifier:transactionID downloadIdentifier:databaseID];
   v5 = objc_alloc_init(SSOperationProgress);
   v6 = OBJC_IVAR___ISOperation__progress;
   v7 = *&self->ISOperation_opaque[OBJC_IVAR___ISOperation__progress];
@@ -150,10 +150,10 @@
   v56[1] = SSDownloadPhaseDataRestore;
   v56[2] = SSDownloadPhaseInstalling;
   v8 = [NSArray arrayWithObjects:v56 count:3];
-  v9 = [(FinishDownloadOperation *)self handlerReleasedDownloadPhase];
-  if (v9)
+  handlerReleasedDownloadPhase = [(FinishDownloadOperation *)self handlerReleasedDownloadPhase];
+  if (handlerReleasedDownloadPhase)
   {
-    v10 = [v8 indexOfObject:v9];
+    v10 = [v8 indexOfObject:handlerReleasedDownloadPhase];
   }
 
   else
@@ -161,8 +161,8 @@
     v10 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v32 = [(FinishDownloadOperation *)self initialDownloadPhase];
-  if (v32)
+  initialDownloadPhase = [(FinishDownloadOperation *)self initialDownloadPhase];
+  if (initialDownloadPhase)
   {
     v11 = [v8 indexOfObject:?];
   }
@@ -192,22 +192,22 @@
   v43 = v10;
   v30 = v8;
   v35 = v30;
-  v36 = self;
+  selfCopy = self;
   v40 = &v45;
   v29 = v4;
   v37 = v29;
-  v44 = v33;
+  v44 = databaseID;
   v14 = v12;
   v38 = v14;
   v15 = v13;
   v39 = v15;
   v41 = v51;
-  [v31 enumerateObjectsUsingBlock:v34];
-  v16 = [(FinishDownloadOperation *)self outputBlock];
-  v17 = v16;
-  if (v16)
+  [_stepOperations enumerateObjectsUsingBlock:v34];
+  outputBlock = [(FinishDownloadOperation *)self outputBlock];
+  v17 = outputBlock;
+  if (outputBlock)
   {
-    (*(v16 + 16))(v16, self, v46[5]);
+    (*(outputBlock + 16))(outputBlock, self, v46[5]);
     [(FinishDownloadOperation *)self setOutputBlock:0];
   }
 
@@ -217,21 +217,21 @@
     v18 = +[SSLogConfig sharedConfig];
   }
 
-  v19 = [v18 shouldLog];
-  v20 = [v18 shouldLogToDisk];
-  v21 = [v18 OSLogObject];
-  v22 = v21;
-  if (v20)
+  shouldLog = [v18 shouldLog];
+  shouldLogToDisk = [v18 shouldLogToDisk];
+  oSLogObject = [v18 OSLogObject];
+  v22 = oSLogObject;
+  if (shouldLogToDisk)
   {
-    v23 = v19 | 2;
+    v23 = shouldLog | 2;
   }
 
   else
   {
-    v23 = v19;
+    v23 = shouldLog;
   }
 
-  if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v24 = v23;
   }
@@ -248,7 +248,7 @@
 
   v25 = -[FinishDownloadOperation _finishResult:](self, "_finishResult:", [v46[5] result]);
   v52 = 134218242;
-  v53 = v33;
+  v53 = databaseID;
   v54 = 2112;
   v55 = v25;
   LODWORD(v27) = 22;
@@ -270,15 +270,15 @@ LABEL_20:
   _Block_object_dispose(v51, 8);
 }
 
-- (void)operation:(id)a3 updatedProgress:(id)a4
+- (void)operation:(id)operation updatedProgress:(id)progress
 {
-  v12 = a4;
-  [a3 progressFraction];
+  progressCopy = progress;
+  [operation progressFraction];
   v7 = v6;
   if (v6 > 2.22044605e-16)
   {
-    v8 = [v12 currentValue];
-    v9 = v8 / [v12 maxValue];
+    currentValue = [progressCopy currentValue];
+    v9 = currentValue / [progressCopy maxValue];
     v10 = OBJC_IVAR___ISOperation__progress;
     v11 = [*&self->ISOperation_opaque[OBJC_IVAR___ISOperation__progress] copy];
     [v11 setCurrentValue:{(objc_msgSend(*&self->ISOperation_opaque[v10], "currentValue") + v7 * v9 * objc_msgSend(*&self->ISOperation_opaque[v10], "maxValue"))}];
@@ -286,26 +286,26 @@ LABEL_20:
   }
 }
 
-- (id)_downloadSessionPropertiesWithDownloadPhase:(id)a3
+- (id)_downloadSessionPropertiesWithDownloadPhase:(id)phase
 {
-  v4 = a3;
+  phaseCopy = phase;
   v5 = [DownloadSessionProperties alloc];
-  v6 = [(FinishDownloadMemoryEntity *)self->_download clientIdentifier];
-  v7 = [(FinishDownloadMemoryEntity *)self->_download handlerIdentifier];
-  v8 = -[DownloadSessionProperties initWithClientIdentifier:handlerIdentifier:](v5, "initWithClientIdentifier:handlerIdentifier:", v6, [v7 longLongValue]);
+  clientIdentifier = [(FinishDownloadMemoryEntity *)self->_download clientIdentifier];
+  handlerIdentifier = [(FinishDownloadMemoryEntity *)self->_download handlerIdentifier];
+  v8 = -[DownloadSessionProperties initWithClientIdentifier:handlerIdentifier:](v5, "initWithClientIdentifier:handlerIdentifier:", clientIdentifier, [handlerIdentifier longLongValue]);
 
-  v9 = [(FinishDownloadMemoryEntity *)self->_download mediaAsset];
-  -[DownloadSessionProperties setAssetIdentifier:](v8, "setAssetIdentifier:", [v9 databaseID]);
+  mediaAsset = [(FinishDownloadMemoryEntity *)self->_download mediaAsset];
+  -[DownloadSessionProperties setAssetIdentifier:](v8, "setAssetIdentifier:", [mediaAsset databaseID]);
 
   [(DownloadSessionProperties *)v8 setDownloadIdentifier:[(FinishDownloadMemoryEntity *)self->_download databaseID]];
-  [(DownloadSessionProperties *)v8 setDownloadPhase:v4];
+  [(DownloadSessionProperties *)v8 setDownloadPhase:phaseCopy];
 
   return v8;
 }
 
-- (BOOL)_needsDRMOperationForDownloadKind:(id)a3
+- (BOOL)_needsDRMOperationForDownloadKind:(id)kind
 {
-  v3 = a3;
+  kindCopy = kind;
   if (SSDownloadKindIsMediaKind() & 1) != 0 || (SSDownloadKindIsEBookKind() & 1) != 0 || (SSDownloadKindIsToneKind())
   {
     v4 = 1;
@@ -313,49 +313,49 @@ LABEL_20:
 
   else
   {
-    v4 = [v3 isEqualToString:SSDownloadKindInAppContent];
+    v4 = [kindCopy isEqualToString:SSDownloadKindInAppContent];
   }
 
   return v4;
 }
 
-- (void)_sendProgressToDelegate:(id)a3
+- (void)_sendProgressToDelegate:(id)delegate
 {
-  v5 = a3;
-  v4 = [(FinishDownloadOperation *)self delegate];
+  delegateCopy = delegate;
+  delegate = [(FinishDownloadOperation *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 operation:self updatedProgress:v5];
+    [delegate operation:self updatedProgress:delegateCopy];
   }
 }
 
-- (id)_finishResult:(int64_t)a3
+- (id)_finishResult:(int64_t)result
 {
-  if (a3 > 7)
+  if (result > 7)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_10032C000[a3];
+    return off_10032C000[result];
   }
 }
 
 - (id)_stepOperations
 {
   v3 = +[NSMutableArray array];
-  v4 = [(FinishDownloadMemoryEntity *)self->_download downloadKind];
-  v5 = [(FinishDownloadMemoryEntity *)self->_download mediaAsset];
-  if ([v5 isDRMFree])
+  downloadKind = [(FinishDownloadMemoryEntity *)self->_download downloadKind];
+  mediaAsset = [(FinishDownloadMemoryEntity *)self->_download mediaAsset];
+  if ([mediaAsset isDRMFree])
   {
     v6 = 1;
   }
 
   else
   {
-    v7 = [v5 DPInfoData];
-    v6 = v7 != 0;
+    dPInfoData = [mediaAsset DPInfoData];
+    v6 = dPInfoData != 0;
   }
 
   v8 = +[NSMutableArray array];
@@ -370,7 +370,7 @@ LABEL_20:
     v9 = 0;
   }
 
-  v34 = v4;
+  v34 = downloadKind;
   v35 = v3;
   if ([(FinishDownloadMemoryEntity *)self->_download restoreState]== 1)
   {
@@ -388,14 +388,14 @@ LABEL_20:
     goto LABEL_31;
   }
 
-  if (v6 || [(FinishDownloadMemoryEntity *)self->_download isStoreDownload]&& [(FinishDownloadOperation *)self _needsDRMOperationForDownloadKind:v4])
+  if (v6 || [(FinishDownloadMemoryEntity *)self->_download isStoreDownload]&& [(FinishDownloadOperation *)self _needsDRMOperationForDownloadKind:downloadKind])
   {
     v12 = +[ApplicationWorkspace defaultWorkspace];
     if ([v12 isMultiUser])
     {
-      v13 = [(FinishDownloadMemoryEntity *)self->_download isSharedDownload];
+      isSharedDownload = [(FinishDownloadMemoryEntity *)self->_download isSharedDownload];
 
-      if (!v13)
+      if (!isSharedDownload)
       {
         goto LABEL_28;
       }
@@ -405,9 +405,9 @@ LABEL_20:
       v33 = [(FinishDownloadMemoryEntity *)self->_download valueForProperty:@"store_item_id"];
       v14 = [(FinishDownloadMemoryEntity *)self->_download valueForProperty:@"download_permalink"];
       v15 = [(FinishDownloadMemoryEntity *)self->_download valueForProperty:@"is_from_store"];
-      v16 = [v15 BOOLValue];
+      bOOLValue = [v15 BOOLValue];
 
-      if (v16)
+      if (bOOLValue)
       {
         v17 = v32;
         v18 = [v12 bookPathForAdamID:v33 withPublicationVersion:v32];
@@ -506,19 +506,19 @@ LABEL_33:
     v22 = +[SSLogConfig sharedConfig];
   }
 
-  v23 = [v22 shouldLog];
+  shouldLog = [v22 shouldLog];
   if ([v22 shouldLogToDisk])
   {
-    v24 = v23 | 2;
+    v24 = shouldLog | 2;
   }
 
   else
   {
-    v24 = v23;
+    v24 = shouldLog;
   }
 
-  v25 = [v22 OSLogObject];
-  if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v22 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v26 = v24;
   }
@@ -530,10 +530,10 @@ LABEL_33:
 
   if (v26)
   {
-    v27 = [(FinishDownloadOperation *)self downloadIdentifier];
+    downloadIdentifier = [(FinishDownloadOperation *)self downloadIdentifier];
     [v8 componentsJoinedByString:{@", "}];
     v36 = 134218242;
-    v37 = v27;
+    v37 = downloadIdentifier;
     v39 = v38 = 2112;
     LODWORD(v31) = 22;
     v28 = _os_log_send_and_compose_impl();

@@ -1,21 +1,21 @@
 @interface SwiftUISearchController
 - (UISearchBar)searchBar;
-- (_TtC7SwiftUI23SwiftUISearchController)initWithNibName:(id)a3 bundle:(id)a4;
-- (_TtC7SwiftUI23SwiftUISearchController)initWithSearchResultsController:(id)a3;
+- (_TtC7SwiftUI23SwiftUISearchController)initWithNibName:(id)name bundle:(id)bundle;
+- (_TtC7SwiftUI23SwiftUISearchController)initWithSearchResultsController:(id)controller;
 - (void)handleCustomAccessoryRecoveryGesture;
-- (void)presentationControllerWillDismiss:(id)a3;
-- (void)searchController:(id)a3 willChangeToSearchBarPlacement:(int64_t)a4;
-- (void)updateSearchResultsForSearchController:(id)a3 selectingSearchSuggestion:(id)a4;
+- (void)presentationControllerWillDismiss:(id)dismiss;
+- (void)searchController:(id)controller willChangeToSearchBarPlacement:(int64_t)placement;
+- (void)updateSearchResultsForSearchController:(id)controller selectingSearchSuggestion:(id)suggestion;
 - (void)viewDidLayoutSubviews;
-- (void)willDismissSearchController:(id)a3;
-- (void)willPresentSearchController:(id)a3;
+- (void)willDismissSearchController:(id)controller;
+- (void)willPresentSearchController:(id)controller;
 @end
 
 @implementation SwiftUISearchController
 
 - (UISearchBar)searchBar
 {
-  v2 = self;
+  selfCopy = self;
   v3 = SwiftUISearchController._searchBar.getter();
 
   return v3;
@@ -23,33 +23,33 @@
 
 - (void)handleCustomAccessoryRecoveryGesture
 {
-  v2 = self;
+  selfCopy = self;
   SwiftUISearchController.handleCustomAccessoryRecoveryGesture()();
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   SwiftUISearchController.viewDidLayoutSubviews()();
 }
 
-- (void)searchController:(id)a3 willChangeToSearchBarPlacement:(int64_t)a4
+- (void)searchController:(id)controller willChangeToSearchBarPlacement:(int64_t)placement
 {
-  v6 = a3;
-  v7 = self;
-  specialized SwiftUISearchController.searchController(_:willChangeTo:)(a4);
+  controllerCopy = controller;
+  selfCopy = self;
+  specialized SwiftUISearchController.searchController(_:willChangeTo:)(placement);
 }
 
-- (void)willPresentSearchController:(id)a3
+- (void)willPresentSearchController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
-  SwiftUISearchController.willPresentSearchController(_:)(v4);
+  controllerCopy = controller;
+  selfCopy = self;
+  SwiftUISearchController.willPresentSearchController(_:)(controllerCopy);
 }
 
-- (void)willDismissSearchController:(id)a3
+- (void)willDismissSearchController:(id)controller
 {
-  v5 = self;
+  selfCopy = self;
   v3 = SwiftUISearchController._searchBar.getter();
   v4 = v3[OBJC_IVAR____TtC7SwiftUI14UIKitSearchBar_isActive];
   v3[OBJC_IVAR____TtC7SwiftUI14UIKitSearchBar_isActive] = 0;
@@ -59,7 +59,7 @@
   }
 }
 
-- (void)updateSearchResultsForSearchController:(id)a3 selectingSearchSuggestion:(id)a4
+- (void)updateSearchResultsForSearchController:(id)controller selectingSearchSuggestion:(id)suggestion
 {
   type metadata accessor for UIKitSearchSuggestion(0);
   v4 = *(swift_dynamicCastClassUnconditional() + OBJC_IVAR____TtC7SwiftUI21UIKitSearchSuggestion_platformItem + 416);
@@ -84,25 +84,25 @@ LABEL_7:
   outlined consume of (@escaping @callee_guaranteed (@guaranteed NSFileWrapper?) -> (@owned NSFileWrapper, @error @owned Error))?(v4);
 }
 
-- (_TtC7SwiftUI23SwiftUISearchController)initWithSearchResultsController:(id)a3
+- (_TtC7SwiftUI23SwiftUISearchController)initWithSearchResultsController:(id)controller
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC7SwiftUI23SwiftUISearchController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC7SwiftUI23SwiftUISearchController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)presentationControllerWillDismiss:(id)a3
+- (void)presentationControllerWillDismiss:(id)dismiss
 {
-  v4 = a3;
-  v5 = self;
-  SwiftUISearchController.presentationControllerWillDismiss(_:)(v4);
+  dismissCopy = dismiss;
+  selfCopy = self;
+  SwiftUISearchController.presentationControllerWillDismiss(_:)(dismissCopy);
 }
 
 @end

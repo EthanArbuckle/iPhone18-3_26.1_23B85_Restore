@@ -1,17 +1,17 @@
 @interface VKKeyboardCameraCloseButton
 - (CGSize)intrinsicContentSize;
-- (VKKeyboardCameraCloseButton)initWithFrame:(CGRect)a3;
+- (VKKeyboardCameraCloseButton)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation VKKeyboardCameraCloseButton
 
-- (VKKeyboardCameraCloseButton)initWithFrame:(CGRect)a3
+- (VKKeyboardCameraCloseButton)initWithFrame:(CGRect)frame
 {
   v55[4] = *MEMORY[0x1E69E9840];
   v53.receiver = self;
   v53.super_class = VKKeyboardCameraCloseButton;
-  v3 = [(VKKeyboardCameraCloseButton *)&v53 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(VKKeyboardCameraCloseButton *)&v53 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v5 = v3;
   if (v3)
   {
@@ -24,34 +24,34 @@
     if (v6)
     {
       [(UIButton *)v9 setTranslatesAutoresizingMaskIntoConstraints:0];
-      v10 = [MEMORY[0x1E69DC740] _glassButtonConfiguration];
-      [(UIButton *)v5->_button setConfiguration:v10];
+      _glassButtonConfiguration = [MEMORY[0x1E69DC740] _glassButtonConfiguration];
+      [(UIButton *)v5->_button setConfiguration:_glassButtonConfiguration];
 
       [(VKKeyboardCameraCloseButton *)v5 setOverrideUserInterfaceStyle:2];
-      v11 = [MEMORY[0x1E69DC888] labelColor];
-      [(UIButton *)v5->_button setTintColor:v11];
+      labelColor = [MEMORY[0x1E69DC888] labelColor];
+      [(UIButton *)v5->_button setTintColor:labelColor];
 
       [(VKKeyboardCameraCloseButton *)v5 addSubview:v5->_button];
       v12 = MEMORY[0x1E696ACD8];
-      v13 = [(UIButton *)v5->_button leadingAnchor];
-      v14 = [(VKKeyboardCameraCloseButton *)v5 leadingAnchor];
-      v15 = [v13 constraintEqualToAnchor:v14];
+      leadingAnchor = [(UIButton *)v5->_button leadingAnchor];
+      leadingAnchor2 = [(VKKeyboardCameraCloseButton *)v5 leadingAnchor];
+      v15 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
       v55[0] = v15;
-      v16 = [(UIButton *)v5->_button bottomAnchor];
-      v17 = [(VKKeyboardCameraCloseButton *)v5 bottomAnchor];
-      v18 = [v16 constraintEqualToAnchor:v17];
+      bottomAnchor = [(UIButton *)v5->_button bottomAnchor];
+      bottomAnchor2 = [(VKKeyboardCameraCloseButton *)v5 bottomAnchor];
+      v18 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
       v55[1] = v18;
-      v19 = [(UIButton *)v5->_button topAnchor];
-      v51 = [(VKKeyboardCameraCloseButton *)v5 topAnchor];
-      v52 = v19;
-      v50 = [v19 constraintEqualToAnchor:?];
+      topAnchor = [(UIButton *)v5->_button topAnchor];
+      topAnchor2 = [(VKKeyboardCameraCloseButton *)v5 topAnchor];
+      v52 = topAnchor;
+      v50 = [topAnchor constraintEqualToAnchor:?];
       v55[2] = v50;
-      v20 = [(UIButton *)v5->_button trailingAnchor];
-      v49 = [(VKKeyboardCameraCloseButton *)v5 trailingAnchor];
-      v48 = [v20 constraintEqualToAnchor:?];
+      trailingAnchor = [(UIButton *)v5->_button trailingAnchor];
+      trailingAnchor2 = [(VKKeyboardCameraCloseButton *)v5 trailingAnchor];
+      v48 = [trailingAnchor constraintEqualToAnchor:?];
       v55[3] = v48;
-      v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v55 count:4];
-      [v12 activateConstraints:v21];
+      leadingAnchor5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v55 count:4];
+      [v12 activateConstraints:leadingAnchor5];
     }
 
     else
@@ -68,49 +68,49 @@
       [(VKKeyboardCameraCloseButton *)v5 addSubview:v5->_effectView];
       [(VKKeyboardCameraCloseButton *)v5 addSubview:v5->_button];
       v45 = MEMORY[0x1E696ACD8];
-      v47 = [(UIVisualEffectView *)v5->_effectView leadingAnchor];
-      v44 = [(VKKeyboardCameraCloseButton *)v5 leadingAnchor];
-      v46 = [v47 constraintEqualToAnchor:v44];
+      leadingAnchor3 = [(UIVisualEffectView *)v5->_effectView leadingAnchor];
+      leadingAnchor4 = [(VKKeyboardCameraCloseButton *)v5 leadingAnchor];
+      v46 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
       v54[0] = v46;
-      v42 = [(UIVisualEffectView *)v5->_effectView bottomAnchor];
-      v41 = [(VKKeyboardCameraCloseButton *)v5 bottomAnchor];
-      v43 = [v42 constraintEqualToAnchor:v41];
+      bottomAnchor3 = [(UIVisualEffectView *)v5->_effectView bottomAnchor];
+      bottomAnchor4 = [(VKKeyboardCameraCloseButton *)v5 bottomAnchor];
+      v43 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
       v54[1] = v43;
-      v26 = [(UIVisualEffectView *)v5->_effectView topAnchor];
-      v51 = [(VKKeyboardCameraCloseButton *)v5 topAnchor];
-      v52 = v26;
-      v50 = [v26 constraintEqualToAnchor:?];
+      topAnchor3 = [(UIVisualEffectView *)v5->_effectView topAnchor];
+      topAnchor2 = [(VKKeyboardCameraCloseButton *)v5 topAnchor];
+      v52 = topAnchor3;
+      v50 = [topAnchor3 constraintEqualToAnchor:?];
       v54[2] = v50;
-      v38 = [(UIVisualEffectView *)v5->_effectView trailingAnchor];
-      v49 = [(VKKeyboardCameraCloseButton *)v5 trailingAnchor];
-      v48 = [v38 constraintEqualToAnchor:?];
+      trailingAnchor3 = [(UIVisualEffectView *)v5->_effectView trailingAnchor];
+      trailingAnchor2 = [(VKKeyboardCameraCloseButton *)v5 trailingAnchor];
+      v48 = [trailingAnchor3 constraintEqualToAnchor:?];
       v54[3] = v48;
-      v21 = [(UIButton *)v5->_button leadingAnchor];
-      v40 = [(UIVisualEffectView *)v5->_effectView leadingAnchor];
-      v39 = [v21 constraintEqualToAnchor:v40];
+      leadingAnchor5 = [(UIButton *)v5->_button leadingAnchor];
+      leadingAnchor6 = [(UIVisualEffectView *)v5->_effectView leadingAnchor];
+      v39 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
       v54[4] = v39;
-      v37 = [(UIButton *)v5->_button bottomAnchor];
-      v36 = [(VKKeyboardCameraCloseButton *)v5 bottomAnchor];
-      v27 = [v37 constraintEqualToAnchor:v36];
+      bottomAnchor5 = [(UIButton *)v5->_button bottomAnchor];
+      bottomAnchor6 = [(VKKeyboardCameraCloseButton *)v5 bottomAnchor];
+      v27 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6];
       v54[5] = v27;
-      v28 = [(UIButton *)v5->_button topAnchor];
-      v29 = [(VKKeyboardCameraCloseButton *)v5 topAnchor];
-      v30 = [v28 constraintEqualToAnchor:v29];
+      topAnchor4 = [(UIButton *)v5->_button topAnchor];
+      topAnchor5 = [(VKKeyboardCameraCloseButton *)v5 topAnchor];
+      v30 = [topAnchor4 constraintEqualToAnchor:topAnchor5];
       v54[6] = v30;
-      v31 = [(UIButton *)v5->_button trailingAnchor];
-      v32 = [(VKKeyboardCameraCloseButton *)v5 trailingAnchor];
-      v33 = [v31 constraintEqualToAnchor:v32];
+      trailingAnchor4 = [(UIButton *)v5->_button trailingAnchor];
+      trailingAnchor5 = [(VKKeyboardCameraCloseButton *)v5 trailingAnchor];
+      v33 = [trailingAnchor4 constraintEqualToAnchor:trailingAnchor5];
       v54[7] = v33;
       v34 = [MEMORY[0x1E695DEC8] arrayWithObjects:v54 count:8];
       [v45 activateConstraints:v34];
 
-      v20 = v38;
-      v17 = v41;
+      trailingAnchor = trailingAnchor3;
+      bottomAnchor2 = bottomAnchor4;
 
-      v14 = v44;
-      v16 = v42;
+      leadingAnchor2 = leadingAnchor4;
+      bottomAnchor = bottomAnchor3;
 
-      v13 = v47;
+      leadingAnchor = leadingAnchor3;
       v15 = v46;
 
       v18 = v43;
@@ -133,8 +133,8 @@
 {
   v5.receiver = self;
   v5.super_class = VKKeyboardCameraCloseButton;
-  v3 = [(VKKeyboardCameraCloseButton *)&v5 layoutSubviews];
-  if ((vk_solariumEnabled(v3, v4) & 1) == 0)
+  layoutSubviews = [(VKKeyboardCameraCloseButton *)&v5 layoutSubviews];
+  if ((vk_solariumEnabled(layoutSubviews, v4) & 1) == 0)
   {
     [(UIButton *)self->_button bounds];
     [(UIVisualEffectView *)self->_effectView _setContinuousCornerRadius:CGRectGetWidth(v6) * 0.5];

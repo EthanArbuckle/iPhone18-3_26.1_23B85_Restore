@@ -1,6 +1,6 @@
 @interface HUQuickControlGridViewController
 + (id)controlItemPredicate;
-- (HUQuickControlGridViewController)initWithControlItems:(id)a3 home:(id)a4 itemUpdater:(id)a5 controlOrientation:(unint64_t)a6 preferredControl:(unint64_t)a7;
+- (HUQuickControlGridViewController)initWithControlItems:(id)items home:(id)home itemUpdater:(id)updater controlOrientation:(unint64_t)orientation preferredControl:(unint64_t)control;
 - (id)childQuickControlContentViewControllers;
 - (id)hu_preloadContent;
 - (void)viewDidLoad;
@@ -8,22 +8,22 @@
 
 @implementation HUQuickControlGridViewController
 
-- (HUQuickControlGridViewController)initWithControlItems:(id)a3 home:(id)a4 itemUpdater:(id)a5 controlOrientation:(unint64_t)a6 preferredControl:(unint64_t)a7
+- (HUQuickControlGridViewController)initWithControlItems:(id)items home:(id)home itemUpdater:(id)updater controlOrientation:(unint64_t)orientation preferredControl:(unint64_t)control
 {
-  v12 = a3;
+  itemsCopy = items;
   v19.receiver = self;
   v19.super_class = HUQuickControlGridViewController;
-  v13 = [(HUQuickControlViewController *)&v19 initWithControlItems:v12 home:a4 itemUpdater:a5 controlOrientation:a6 preferredControl:a7];
+  v13 = [(HUQuickControlViewController *)&v19 initWithControlItems:itemsCopy home:home itemUpdater:updater controlOrientation:orientation preferredControl:control];
   if (v13)
   {
-    v14 = [[HUQuickControlGridCollectionItemManager alloc] initWithDelegate:0 controlItems:v12];
+    v14 = [[HUQuickControlGridCollectionItemManager alloc] initWithDelegate:0 controlItems:itemsCopy];
     v15 = [[HUQuickControlCollectionViewController alloc] initWithItemManager:v14];
     collectionViewController = v13->_collectionViewController;
     v13->_collectionViewController = v15;
 
     [(HUQuickControlCollectionViewController *)v13->_collectionViewController setDisableItemUpdatesForOverrideCharacteristicValueChanges:0];
-    v17 = [(HUQuickControlGridViewController *)v13 collectionViewController];
-    [(HUQuickControlGridViewController *)v13 _subclass_configureQuickControlViewController:v17];
+    collectionViewController = [(HUQuickControlGridViewController *)v13 collectionViewController];
+    [(HUQuickControlGridViewController *)v13 _subclass_configureQuickControlViewController:collectionViewController];
   }
 
   return v13;
@@ -33,13 +33,13 @@
 {
   v7.receiver = self;
   v7.super_class = HUQuickControlGridViewController;
-  v3 = [(HUQuickControlViewController *)&v7 hu_preloadContent];
+  hu_preloadContent = [(HUQuickControlViewController *)&v7 hu_preloadContent];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __53__HUQuickControlGridViewController_hu_preloadContent__block_invoke;
   v6[3] = &unk_277DC0788;
   v6[4] = self;
-  v4 = [v3 flatMap:v6];
+  v4 = [hu_preloadContent flatMap:v6];
 
   return v4;
 }
@@ -58,72 +58,72 @@ id __53__HUQuickControlGridViewController_hu_preloadContent__block_invoke(uint64
   v43.receiver = self;
   v43.super_class = HUQuickControlGridViewController;
   [(HUQuickControlGridViewController *)&v43 viewDidLoad];
-  v3 = [(HUQuickControlGridViewController *)self collectionViewController];
-  [(HUQuickControlGridViewController *)self addChildViewController:v3];
+  collectionViewController = [(HUQuickControlGridViewController *)self collectionViewController];
+  [(HUQuickControlGridViewController *)self addChildViewController:collectionViewController];
 
-  v4 = [(HUQuickControlGridViewController *)self collectionViewController];
-  v5 = [v4 view];
-  [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
+  collectionViewController2 = [(HUQuickControlGridViewController *)self collectionViewController];
+  view = [collectionViewController2 view];
+  [view setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v6 = [(HUQuickControlGridViewController *)self collectionViewController];
-  v7 = [v6 view];
-  [v7 setPreservesSuperviewLayoutMargins:1];
+  collectionViewController3 = [(HUQuickControlGridViewController *)self collectionViewController];
+  view2 = [collectionViewController3 view];
+  [view2 setPreservesSuperviewLayoutMargins:1];
 
-  v8 = [MEMORY[0x277D75348] clearColor];
-  v9 = [(HUQuickControlGridViewController *)self collectionViewController];
-  v10 = [v9 view];
-  [v10 setBackgroundColor:v8];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  collectionViewController4 = [(HUQuickControlGridViewController *)self collectionViewController];
+  view3 = [collectionViewController4 view];
+  [view3 setBackgroundColor:clearColor];
 
-  v11 = [(HUQuickControlGridViewController *)self view];
-  v12 = [(HUQuickControlGridViewController *)self collectionViewController];
-  v13 = [v12 view];
-  [v11 addSubview:v13];
+  view4 = [(HUQuickControlGridViewController *)self view];
+  collectionViewController5 = [(HUQuickControlGridViewController *)self collectionViewController];
+  view5 = [collectionViewController5 view];
+  [view4 addSubview:view5];
 
   v31 = MEMORY[0x277CCAAD0];
-  v42 = [(HUQuickControlGridViewController *)self view];
-  v40 = [v42 leadingAnchor];
-  v41 = [(HUQuickControlGridViewController *)self collectionViewController];
-  v39 = [v41 view];
-  v38 = [v39 leadingAnchor];
-  v37 = [v40 constraintEqualToAnchor:v38];
+  view6 = [(HUQuickControlGridViewController *)self view];
+  leadingAnchor = [view6 leadingAnchor];
+  collectionViewController6 = [(HUQuickControlGridViewController *)self collectionViewController];
+  view7 = [collectionViewController6 view];
+  leadingAnchor2 = [view7 leadingAnchor];
+  v37 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v44[0] = v37;
-  v36 = [(HUQuickControlGridViewController *)self view];
-  v34 = [v36 trailingAnchor];
-  v35 = [(HUQuickControlGridViewController *)self collectionViewController];
-  v33 = [v35 view];
-  v32 = [v33 trailingAnchor];
-  v30 = [v34 constraintEqualToAnchor:v32];
+  view8 = [(HUQuickControlGridViewController *)self view];
+  trailingAnchor = [view8 trailingAnchor];
+  collectionViewController7 = [(HUQuickControlGridViewController *)self collectionViewController];
+  view9 = [collectionViewController7 view];
+  trailingAnchor2 = [view9 trailingAnchor];
+  v30 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v44[1] = v30;
-  v29 = [(HUQuickControlGridViewController *)self view];
-  v27 = [v29 topAnchor];
-  v28 = [(HUQuickControlGridViewController *)self collectionViewController];
-  v26 = [v28 view];
-  v14 = [v26 topAnchor];
-  v15 = [v27 constraintEqualToAnchor:v14];
+  view10 = [(HUQuickControlGridViewController *)self view];
+  topAnchor = [view10 topAnchor];
+  collectionViewController8 = [(HUQuickControlGridViewController *)self collectionViewController];
+  view11 = [collectionViewController8 view];
+  topAnchor2 = [view11 topAnchor];
+  v15 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v44[2] = v15;
-  v16 = [(HUQuickControlGridViewController *)self view];
-  v17 = [v16 bottomAnchor];
-  v18 = [(HUQuickControlGridViewController *)self collectionViewController];
-  v19 = [v18 view];
-  v20 = [v19 bottomAnchor];
-  v21 = [v17 constraintEqualToAnchor:v20];
+  view12 = [(HUQuickControlGridViewController *)self view];
+  bottomAnchor = [view12 bottomAnchor];
+  collectionViewController9 = [(HUQuickControlGridViewController *)self collectionViewController];
+  view13 = [collectionViewController9 view];
+  bottomAnchor2 = [view13 bottomAnchor];
+  v21 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v44[3] = v21;
   v22 = [MEMORY[0x277CBEA60] arrayWithObjects:v44 count:4];
   [v31 activateConstraints:v22];
 
-  v23 = [(HUQuickControlGridViewController *)self collectionViewController];
-  [v23 didMoveToParentViewController:self];
+  collectionViewController10 = [(HUQuickControlGridViewController *)self collectionViewController];
+  [collectionViewController10 didMoveToParentViewController:self];
 
-  v24 = [(HUQuickControlGridViewController *)self collectionViewController];
-  v25 = [v24 collectionView];
-  [v25 setScrollEnabled:0];
+  collectionViewController11 = [(HUQuickControlGridViewController *)self collectionViewController];
+  collectionView = [collectionViewController11 collectionView];
+  [collectionView setScrollEnabled:0];
 }
 
 - (id)childQuickControlContentViewControllers
 {
   v5[1] = *MEMORY[0x277D85DE8];
-  v2 = [(HUQuickControlGridViewController *)self collectionViewController];
-  v5[0] = v2;
+  collectionViewController = [(HUQuickControlGridViewController *)self collectionViewController];
+  v5[0] = collectionViewController;
   v3 = [MEMORY[0x277CBEA60] arrayWithObjects:v5 count:1];
 
   return v3;

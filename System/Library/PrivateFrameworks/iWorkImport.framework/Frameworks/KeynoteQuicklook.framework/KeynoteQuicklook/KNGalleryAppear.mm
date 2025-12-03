@@ -1,12 +1,12 @@
 @interface KNGalleryAppear
 + (NSDictionary)defaultAttributes;
-+ (id)localizedMenuString:(int64_t)a3;
-- (void)addAnimationsTo:(id)a3 context:(id)a4;
++ (id)localizedMenuString:(int64_t)string;
+- (void)addAnimationsTo:(id)to context:(id)context;
 @end
 
 @implementation KNGalleryAppear
 
-+ (id)localizedMenuString:(int64_t)a3
++ (id)localizedMenuString:(int64_t)string
 {
   v3 = sub_275DC204C();
   v5 = objc_msgSend_localizedStringForKey_value_table_(v3, v4, @"Appear *gallery content build*", @"Appear", @"Keynote");
@@ -24,15 +24,15 @@
   return v2;
 }
 
-- (void)addAnimationsTo:(id)a3 context:(id)a4
+- (void)addAnimationsTo:(id)to context:(id)context
 {
   v50 = *MEMORY[0x277D85DE8];
-  v42 = a3;
+  toCopy = to;
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
-  obj = objc_msgSend_textures(a4, v5, v6);
+  obj = objc_msgSend_textures(context, v5, v6);
   v8 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v7, &v44, v49, 16);
   if (v8)
   {
@@ -70,7 +70,7 @@
           objc_msgSend_setDuration_(v20, v34, v35, 0.001);
           objc_msgSend_setFillMode_(v20, v36, v41);
           v39 = objc_msgSend_layer(v14, v37, v38);
-          objc_msgSend_setObject_forKey_(v42, v40, v20, v39);
+          objc_msgSend_setObject_forKey_(toCopy, v40, v20, v39);
 
           v12 = v30;
         }

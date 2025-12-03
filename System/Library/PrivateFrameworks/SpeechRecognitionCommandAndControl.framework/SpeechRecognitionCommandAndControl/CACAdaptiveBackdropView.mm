@@ -1,17 +1,17 @@
 @interface CACAdaptiveBackdropView
-+ (id)contrastAdaptiveBackdropViewWithFrame:(CGRect)a3;
-- (CACAdaptiveBackdropView)initWithFrame:(CGRect)a3 isContrasted:(BOOL)a4;
++ (id)contrastAdaptiveBackdropViewWithFrame:(CGRect)frame;
+- (CACAdaptiveBackdropView)initWithFrame:(CGRect)frame isContrasted:(BOOL)contrasted;
 @end
 
 @implementation CACAdaptiveBackdropView
 
-- (CACAdaptiveBackdropView)initWithFrame:(CGRect)a3 isContrasted:(BOOL)a4
+- (CACAdaptiveBackdropView)initWithFrame:(CGRect)frame isContrasted:(BOOL)contrasted
 {
-  v4 = a4;
+  contrastedCopy = contrasted;
   v29[3] = *MEMORY[0x277D85DE8];
   v28.receiver = self;
   v28.super_class = CACAdaptiveBackdropView;
-  v5 = [(CACAdaptiveBackdropView *)&v28 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(CACAdaptiveBackdropView *)&v28 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v5)
   {
     v6 = [MEMORY[0x277CD9EA0] filterWithType:*MEMORY[0x277CDA328]];
@@ -23,8 +23,8 @@
     v9 = [MEMORY[0x277CD9EA0] filterWithType:*MEMORY[0x277CDA588]];
     v10 = MEMORY[0x277D755B8];
     v11 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    v12 = [(CACAdaptiveBackdropView *)v5 traitCollection];
-    v13 = [v10 imageNamed:@"luminance" inBundle:v11 compatibleWithTraitCollection:v12];
+    traitCollection = [(CACAdaptiveBackdropView *)v5 traitCollection];
+    v13 = [v10 imageNamed:@"luminance" inBundle:v11 compatibleWithTraitCollection:traitCollection];
 
     [v9 setValue:objc_msgSend(v13 forKey:{"CGImage"), @"inputColorMap"}];
     [v9 setValue:&unk_287BEFED8 forKey:@"inputAmount"];
@@ -47,10 +47,10 @@
     v29[2] = v19;
     v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v29 count:3];
 
-    v21 = [(CACAdaptiveBackdropView *)v5 layer];
-    [v21 setFilters:v20];
+    layer = [(CACAdaptiveBackdropView *)v5 layer];
+    [layer setFilters:v20];
 
-    if (v4)
+    if (contrastedCopy)
     {
       CACAdaptiveBackdropContrastedGroupName();
     }
@@ -60,20 +60,20 @@
       CACAdaptiveBackdropGroupName();
     }
     v22 = ;
-    v23 = [(CACAdaptiveBackdropView *)v5 layer];
-    [v23 setGroupName:v22];
+    layer2 = [(CACAdaptiveBackdropView *)v5 layer];
+    [layer2 setGroupName:v22];
 
     v24 = CACAdaptiveBackdropScale();
-    v25 = [(CACAdaptiveBackdropView *)v5 layer];
-    [v25 setScale:v24];
+    layer3 = [(CACAdaptiveBackdropView *)v5 layer];
+    [layer3 setScale:v24];
   }
 
   return v5;
 }
 
-+ (id)contrastAdaptiveBackdropViewWithFrame:(CGRect)a3
++ (id)contrastAdaptiveBackdropViewWithFrame:(CGRect)frame
 {
-  v3 = [[CACAdaptiveBackdropView alloc] initWithFrame:1 isContrasted:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [[CACAdaptiveBackdropView alloc] initWithFrame:1 isContrasted:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
 
   return v3;
 }

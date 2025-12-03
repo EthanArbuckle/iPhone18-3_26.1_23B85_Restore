@@ -1,23 +1,23 @@
 @interface PKPaymentServiceProviderPerformPaymentResponse
-- (PKPaymentServiceProviderPerformPaymentResponse)initWithData:(id)a3;
+- (PKPaymentServiceProviderPerformPaymentResponse)initWithData:(id)data;
 @end
 
 @implementation PKPaymentServiceProviderPerformPaymentResponse
 
-- (PKPaymentServiceProviderPerformPaymentResponse)initWithData:(id)a3
+- (PKPaymentServiceProviderPerformPaymentResponse)initWithData:(id)data
 {
   v20 = *MEMORY[0x1E69E9840];
   v15.receiver = self;
   v15.super_class = PKPaymentServiceProviderPerformPaymentResponse;
-  v3 = [(PKWebServiceResponse *)&v15 initWithData:a3];
+  v3 = [(PKWebServiceResponse *)&v15 initWithData:data];
   v4 = v3;
   if (v3)
   {
-    v5 = [(PKWebServiceResponse *)v3 JSONObject];
+    jSONObject = [(PKWebServiceResponse *)v3 JSONObject];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [v5 PKDictionaryForKey:@"purchase"];
+      v6 = [jSONObject PKDictionaryForKey:@"purchase"];
       if (v6)
       {
         v7 = [[PKServiceProviderPurchase alloc] initWithDictionary:v6];
@@ -32,7 +32,7 @@ LABEL_12:
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v17 = v5;
+        v17 = jSONObject;
         _os_log_impl(&dword_1AD337000, v13, OS_LOG_TYPE_DEFAULT, "Malformed PKPaymentServiceProviderPerformPaymentResponse: expected purchase dictionary, however we received %@", buf, 0xCu);
       }
 

@@ -1,12 +1,12 @@
 @interface MADVectorDatabaseManager
-+ (id)sharedDatabaseWithPhotoLibrary:(id)a3;
++ (id)sharedDatabaseWithPhotoLibrary:(id)library;
 + (id)sharedManager;
 + (void)releaseAllSharedDatabase;
-+ (void)releaseSharedDatabaseWithPhotoLibrary:(id)a3;
++ (void)releaseSharedDatabaseWithPhotoLibrary:(id)library;
 - (MADVectorDatabaseManager)init;
-- (id)sharedDatabaseWithPhotoLibrary:(id)a3;
+- (id)sharedDatabaseWithPhotoLibrary:(id)library;
 - (void)releaseAllSharedDatabase;
-- (void)releaseSharedDatabaseWithPhotoLibrary:(id)a3;
+- (void)releaseSharedDatabaseWithPhotoLibrary:(id)library;
 @end
 
 @implementation MADVectorDatabaseManager
@@ -23,9 +23,9 @@
     queue = v2->_queue;
     v2->_queue = v4;
 
-    v6 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     databases = v2->_databases;
-    v2->_databases = v6;
+    v2->_databases = dictionary;
 
     v2->_readOnly = 0;
   }
@@ -39,7 +39,7 @@
   block[1] = 3221225472;
   block[2] = __41__MADVectorDatabaseManager_sharedManager__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (+[MADVectorDatabaseManager sharedManager]::once != -1)
   {
     dispatch_once(&+[MADVectorDatabaseManager sharedManager]::once, block);
@@ -57,9 +57,9 @@ void __41__MADVectorDatabaseManager_sharedManager__block_invoke()
   +[MADVectorDatabaseManager sharedManager]::instance = v0;
 }
 
-- (id)sharedDatabaseWithPhotoLibrary:(id)a3
+- (id)sharedDatabaseWithPhotoLibrary:(id)library
 {
-  v4 = a3;
+  libraryCopy = library;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -71,10 +71,10 @@ void __41__MADVectorDatabaseManager_sharedManager__block_invoke()
   block[1] = 3221225472;
   block[2] = __59__MADVectorDatabaseManager_sharedDatabaseWithPhotoLibrary___block_invoke;
   block[3] = &unk_1E834D210;
-  v10 = v4;
+  v10 = libraryCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = libraryCopy;
   dispatch_sync(queue, block);
   v7 = v13[5];
 
@@ -123,13 +123,13 @@ void __59__MADVectorDatabaseManager_sharedDatabaseWithPhotoLibrary___block_invok
   }
 }
 
-+ (id)sharedDatabaseWithPhotoLibrary:(id)a3
++ (id)sharedDatabaseWithPhotoLibrary:(id)library
 {
-  v3 = a3;
+  libraryCopy = library;
   if (+[VCPVideoCNNAnalyzer isMUBackboneEnabled])
   {
-    v4 = [objc_opt_class() sharedManager];
-    v5 = [v4 sharedDatabaseWithPhotoLibrary:v3];
+    sharedManager = [objc_opt_class() sharedManager];
+    v5 = [sharedManager sharedDatabaseWithPhotoLibrary:libraryCopy];
   }
 
   else
@@ -146,17 +146,17 @@ void __59__MADVectorDatabaseManager_sharedDatabaseWithPhotoLibrary___block_invok
   return v5;
 }
 
-- (void)releaseSharedDatabaseWithPhotoLibrary:(id)a3
+- (void)releaseSharedDatabaseWithPhotoLibrary:(id)library
 {
-  v4 = a3;
+  libraryCopy = library;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __66__MADVectorDatabaseManager_releaseSharedDatabaseWithPhotoLibrary___block_invoke;
   v7[3] = &unk_1E834D238;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = libraryCopy;
+  selfCopy = self;
+  v6 = libraryCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -187,11 +187,11 @@ void __66__MADVectorDatabaseManager_releaseSharedDatabaseWithPhotoLibrary___bloc
   }
 }
 
-+ (void)releaseSharedDatabaseWithPhotoLibrary:(id)a3
++ (void)releaseSharedDatabaseWithPhotoLibrary:(id)library
 {
-  v4 = a3;
-  v3 = [objc_opt_class() sharedManager];
-  [v3 releaseSharedDatabaseWithPhotoLibrary:v4];
+  libraryCopy = library;
+  sharedManager = [objc_opt_class() sharedManager];
+  [sharedManager releaseSharedDatabaseWithPhotoLibrary:libraryCopy];
 }
 
 - (void)releaseAllSharedDatabase
@@ -207,8 +207,8 @@ void __66__MADVectorDatabaseManager_releaseSharedDatabaseWithPhotoLibrary___bloc
 
 + (void)releaseAllSharedDatabase
 {
-  v2 = [objc_opt_class() sharedManager];
-  [v2 releaseAllSharedDatabase];
+  sharedManager = [objc_opt_class() sharedManager];
+  [sharedManager releaseAllSharedDatabase];
 }
 
 @end

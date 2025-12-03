@@ -1,75 +1,75 @@
 @interface NSPersistentStore
-- (id)_deleteChangesWithDuration:(void *)a3 entity:(uint64_t)a4 context:(double)a5 error:;
+- (id)_deleteChangesWithDuration:(void *)duration entity:(uint64_t)entity context:(double)context error:;
 @end
 
 @implementation NSPersistentStore
 
-- (id)_deleteChangesWithDuration:(void *)a3 entity:(uint64_t)a4 context:(double)a5 error:
+- (id)_deleteChangesWithDuration:(void *)duration entity:(uint64_t)entity context:(double)context error:
 {
   v31[1] = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    v8 = a3;
+    durationCopy = duration;
     v9 = a2;
-    [v8 hmd_assertIsExecuting];
-    v10 = [MEMORY[0x277CBE4A8] fetchRequest];
-    v11 = [v10 entity];
-    v12 = [v11 propertiesByName];
-    v13 = [v12 objectForKeyedSubscript:@"changedEntity"];
+    [durationCopy hmd_assertIsExecuting];
+    fetchRequest = [MEMORY[0x277CBE4A8] fetchRequest];
+    entity = [fetchRequest entity];
+    propertiesByName = [entity propertiesByName];
+    v13 = [propertiesByName objectForKeyedSubscript:@"changedEntity"];
 
-    v14 = [v11 propertiesByName];
-    v15 = [v14 objectForKeyedSubscript:@"changeType"];
+    propertiesByName2 = [entity propertiesByName];
+    v15 = [propertiesByName2 objectForKeyedSubscript:@"changeType"];
 
     v16 = MEMORY[0x277CCAC30];
     v29 = v13;
-    v17 = [v13 name];
-    v18 = [v9 name];
+    name = [v13 name];
+    name2 = [v9 name];
 
-    v19 = [v15 name];
-    v20 = [v16 predicateWithFormat:@"(%K == %@) AND (%K == %ld)", v17, v18, v19, 2];
+    name3 = [v15 name];
+    v20 = [v16 predicateWithFormat:@"(%K == %@) AND (%K == %ld)", name, name2, name3, 2];
 
-    [v10 setPredicate:v20];
-    if (a5 <= 2.22044605e-16 || fabs(a5 + -2.22044605e-16) < 2.22044605e-16)
+    [fetchRequest setPredicate:v20];
+    if (context <= 2.22044605e-16 || fabs(context + -2.22044605e-16) < 2.22044605e-16)
     {
-      v23 = [MEMORY[0x277CBE4B0] fetchHistoryWithFetchRequest:v10];
+      v23 = [MEMORY[0x277CBE4B0] fetchHistoryWithFetchRequest:fetchRequest];
     }
 
     else
     {
       v21 = [MEMORY[0x277CBEAA8] now];
-      v22 = [v21 dateByAddingTimeInterval:-a5];
+      v22 = [v21 dateByAddingTimeInterval:-context];
 
       v23 = [MEMORY[0x277CBE4B0] fetchHistoryAfterDate:v22];
-      [v23 setFetchRequest:v10];
+      [v23 setFetchRequest:fetchRequest];
     }
 
-    v31[0] = a1;
+    v31[0] = self;
     v24 = [MEMORY[0x277CBEA60] arrayWithObjects:v31 count:1];
     [v23 setAffectedStores:v24];
 
     [v23 setFetchBatchSize:20];
     [v23 setResultType:4];
-    v25 = [v8 executeRequest:v23 error:a4];
+    v25 = [durationCopy executeRequest:v23 error:entity];
 
     if (v25)
     {
-      v26 = [v25 result];
+      result = [v25 result];
     }
 
     else
     {
-      v26 = 0;
+      result = 0;
     }
   }
 
   else
   {
-    v26 = 0;
+    result = 0;
   }
 
   v27 = *MEMORY[0x277D85DE8];
 
-  return v26;
+  return result;
 }
 
 void __83__NSPersistentStore_HomeKitDaemon__hmd_tombstonesForEntity_duration_context_error___block_invoke(uint64_t a1, void *a2)

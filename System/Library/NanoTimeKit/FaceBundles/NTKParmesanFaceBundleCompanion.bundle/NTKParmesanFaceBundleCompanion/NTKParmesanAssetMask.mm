@@ -1,12 +1,12 @@
 @interface NTKParmesanAssetMask
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (NSString)imageName;
 - (NTKParmesanAssetMask)init;
-- (NTKParmesanAssetMask)initWithImageName:(id)a3 style:(int64_t)a4;
-- (id)copyWithZone:(void *)a3;
+- (NTKParmesanAssetMask)initWithImageName:(id)name style:(int64_t)style;
+- (id)copyWithZone:(void *)zone;
 - (int64_t)hash;
-- (void)setImageName:(id)a3;
+- (void)setImageName:(id)name;
 @end
 
 @implementation NTKParmesanAssetMask
@@ -19,7 +19,7 @@
   return v2;
 }
 
-- (void)setImageName:(id)a3
+- (void)setImageName:(id)name
 {
   v4 = sub_23BFFA300();
   v5 = (self + OBJC_IVAR___NTKParmesanAssetMask_imageName);
@@ -27,13 +27,13 @@
   v5[1] = v6;
 }
 
-- (NTKParmesanAssetMask)initWithImageName:(id)a3 style:(int64_t)a4
+- (NTKParmesanAssetMask)initWithImageName:(id)name style:(int64_t)style
 {
   v6 = sub_23BFFA300();
   v7 = (self + OBJC_IVAR___NTKParmesanAssetMask_imageName);
   *v7 = v6;
   v7[1] = v8;
-  *(self + OBJC_IVAR___NTKParmesanAssetMask_style) = a4;
+  *(self + OBJC_IVAR___NTKParmesanAssetMask_style) = style;
   v10.receiver = self;
   v10.super_class = type metadata accessor for ParmesanAssetMask();
   return [(NTKParmesanAssetMask *)&v10 init];
@@ -41,7 +41,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_23BFA2A88();
 
   v3 = sub_23BFFA2C0();
@@ -56,7 +56,7 @@
   return result;
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
   v4 = *(self + OBJC_IVAR___NTKParmesanAssetMask_imageName);
   v3 = *(self + OBJC_IVAR___NTKParmesanAssetMask_imageName + 8);
@@ -76,21 +76,21 @@
 - (int64_t)hash
 {
   sub_23BFFAE00();
-  v3 = self;
+  selfCopy = self;
 
   sub_23BFFA3A0();
 
-  MEMORY[0x23EEC3A60](*(v3 + OBJC_IVAR___NTKParmesanAssetMask_style));
+  MEMORY[0x23EEC3A60](*(selfCopy + OBJC_IVAR___NTKParmesanAssetMask_style));
   v4 = sub_23BFFADE0();
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_23BFFA960();
     swift_unknownObjectRelease();
@@ -99,7 +99,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = sub_23BFA320C(v8);

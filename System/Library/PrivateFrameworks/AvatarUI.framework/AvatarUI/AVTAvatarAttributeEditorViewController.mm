@@ -1,92 +1,92 @@
 @interface AVTAvatarAttributeEditorViewController
 - (AVTAvatarAttributeEditorViewController)init;
-- (AVTAvatarAttributeEditorViewController)initWithAvatarRecord:(id)a3 avtViewSessionProvider:(id)a4 environment:(id)a5 isCreating:(BOOL)a6;
+- (AVTAvatarAttributeEditorViewController)initWithAvatarRecord:(id)record avtViewSessionProvider:(id)provider environment:(id)environment isCreating:(BOOL)creating;
 - (AVTAvatarAttributeEditorViewControllerDelegate)delegate;
 - (AVTAvatarRecord)avatarRecord;
 - (AVTMemoji)avatar;
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForFooterInSection:(int64_t)a5;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForHeaderInSection:(int64_t)a5;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path;
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForFooterInSection:(int64_t)section;
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForHeaderInSection:(int64_t)section;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
 - (UIEdgeInsets)adjustedSafeAreaInsets;
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5;
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index;
 - (double)maxGroupLabelWidth;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path;
 - (id)createAlphaAssetsLabel;
 - (id)liveView;
-- (id)presetSectionItemForIndexPath:(id)a3;
-- (id)selectedItemInSection:(id)a3;
+- (id)presetSectionItemForIndexPath:(id)path;
+- (id)selectedItemInSection:(id)section;
 - (id)visibleLayout;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
-- (int64_t)interfaceOrientationForFaceTrackingManager:(id)a3;
-- (int64_t)numberOfSectionsInCollectionView:(id)a3;
-- (void)applyLayout:(id)a3 layoutAvatarView:(BOOL)a4 recalculateOffsetIfNeeded:(BOOL)a5;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
+- (int64_t)interfaceOrientationForFaceTrackingManager:(id)manager;
+- (int64_t)numberOfSectionsInCollectionView:(id)view;
+- (void)applyLayout:(id)layout layoutAvatarView:(BOOL)view recalculateOffsetIfNeeded:(BOOL)needed;
 - (void)applyUserInfoViewLayout;
-- (void)attributeEditorSectionController:(id)a3 didDeleteSectionItems:(id)a4;
-- (void)attributeEditorSectionController:(id)a3 didSelectSectionItem:(id)a4;
-- (void)attributeEditorSectionController:(id)a3 didUpdateSectionItem:(id)a4;
-- (void)attributeEditorSectionControllerNeedsLayoutUpdate:(id)a3;
-- (void)beginAVTViewSessionWithDidBeginBlock:(id)a3;
-- (void)collapsibleHeaderController:(id)a3 didUpdateHeaderToHeight:(double)a4;
-- (void)collapsibleHeaderController:(id)a3 isUpdatingHeaderWithIncrementalHeight:(double)a4;
-- (void)collapsibleHeaderController:(id)a3 willUpdateHeaderToHeight:(double)a4;
-- (void)collectionView:(id)a3 cancelPrefetchingForItemsAtIndexPaths:(id)a4;
-- (void)collectionView:(id)a3 didHighlightItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 didUnhighlightItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 prefetchItemsAtIndexPaths:(id)a4;
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)configureAVTViewFromSession:(id)a3;
-- (void)configurePPTMemoji:(id)a3;
-- (void)configureThrottlerForAVTView:(id)a3;
+- (void)attributeEditorSectionController:(id)controller didDeleteSectionItems:(id)items;
+- (void)attributeEditorSectionController:(id)controller didSelectSectionItem:(id)item;
+- (void)attributeEditorSectionController:(id)controller didUpdateSectionItem:(id)item;
+- (void)attributeEditorSectionControllerNeedsLayoutUpdate:(id)update;
+- (void)beginAVTViewSessionWithDidBeginBlock:(id)block;
+- (void)collapsibleHeaderController:(id)controller didUpdateHeaderToHeight:(double)height;
+- (void)collapsibleHeaderController:(id)controller isUpdatingHeaderWithIncrementalHeight:(double)height;
+- (void)collapsibleHeaderController:(id)controller willUpdateHeaderToHeight:(double)height;
+- (void)collectionView:(id)view cancelPrefetchingForItemsAtIndexPaths:(id)paths;
+- (void)collectionView:(id)view didHighlightItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didUnhighlightItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view prefetchItemsAtIndexPaths:(id)paths;
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)configureAVTViewFromSession:(id)session;
+- (void)configurePPTMemoji:(id)memoji;
+- (void)configureThrottlerForAVTView:(id)view;
 - (void)configureUserInfoLabel;
-- (void)contentSizeCategoryDidChange:(id)a3;
+- (void)contentSizeCategoryDidChange:(id)change;
 - (void)createVerticleRuleIfNeeded;
 - (void)didFinishEditing;
-- (void)didTapAvatarView:(id)a3;
-- (void)faceTrackingManager:(id)a3 didUpdateUserInfoWithSize:(CGSize)a4;
-- (void)groupPicker:(id)a3 didSelectGroupAtIndex:(int64_t)a4 tapped:(BOOL)a5;
+- (void)didTapAvatarView:(id)view;
+- (void)faceTrackingManager:(id)manager didUpdateUserInfoWithSize:(CGSize)size;
+- (void)groupPicker:(id)picker didSelectGroupAtIndex:(int64_t)index tapped:(BOOL)tapped;
 - (void)loadView;
-- (void)notifyingContainerViewDidChangeSize:(CGSize)a3;
-- (void)prepareForAnimatedTransitionWithLayout:(id)a3 completionBlock:(id)a4;
-- (void)prepareForPresetsScrollTestOnCategory:(id)a3 readyHandler:(id)a4;
-- (void)rebuildUIModelAfterSelectionInSection:(id)a3 senderRect:(CGRect)a4 reloadSections:(BOOL)a5;
-- (void)reloadCollectionViewDataWithCompletion:(id)a3;
+- (void)notifyingContainerViewDidChangeSize:(CGSize)size;
+- (void)prepareForAnimatedTransitionWithLayout:(id)layout completionBlock:(id)block;
+- (void)prepareForPresetsScrollTestOnCategory:(id)category readyHandler:(id)handler;
+- (void)rebuildUIModelAfterSelectionInSection:(id)section senderRect:(CGRect)rect reloadSections:(BOOL)sections;
+- (void)reloadCollectionViewDataWithCompletion:(id)completion;
 - (void)resetAllSectionControllersStateToDefault;
-- (void)sectionHeaderView:(id)a3 didSelectItem:(id)a4 forPicker:(id)a5 sender:(id)a6;
-- (void)selectCategory:(id)a3 withCompletionDelay:(int64_t)a4 completionHandler:(id)a5;
+- (void)sectionHeaderView:(id)view didSelectItem:(id)item forPicker:(id)picker sender:(id)sender;
+- (void)selectCategory:(id)category withCompletionDelay:(int64_t)delay completionHandler:(id)handler;
 - (void)setTransitioningContainerFrame;
 - (void)setUpHeaderView;
-- (void)setupCollapsibleHeaderIfNeededForLayout:(id)a3 withSession:(id)a4;
+- (void)setupCollapsibleHeaderIfNeededForLayout:(id)layout withSession:(id)session;
 - (void)setupGroupSelectorIfNeeded;
 - (void)setupImageView;
-- (void)setupPreview:(id)a3;
-- (void)setupTapGestureForView:(id)a3;
+- (void)setupPreview:(id)preview;
+- (void)setupTapGestureForView:(id)view;
 - (void)tearDownCollapsibleHeaderIfNeeded;
 - (void)tearDownThrottler;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 - (void)transitionLiveViewToFront;
 - (void)transitionStaticViewToFront;
-- (void)transitionToLiveViewAnimated:(BOOL)a3;
+- (void)transitionToLiveViewAnimated:(BOOL)animated;
 - (void)updateAlphaAssetsLabelFrameIfNeeded;
 - (void)updateBodyEditorHeaderIfNeeded;
-- (void)updateCollapsibleHeaderHeightConstraintsAnimated:(BOOL)a3;
+- (void)updateCollapsibleHeaderHeightConstraintsAnimated:(BOOL)animated;
 - (void)updateForChangedSelectionIfNeeded;
-- (void)updateForSelectionOfItem:(id)a3 controller:(id)a4 reloadSections:(BOOL)a5;
-- (void)updateForSelectionOfItem:(id)a3 inSection:(id)a4 senderRect:(CGRect)a5 reloadSections:(BOOL)a6;
-- (void)updateForSelectionOfSupplementalItem:(id)a3 senderRect:(CGRect)a4;
-- (void)updateHeaderDependentLayoutWithHeaderFrame:(CGRect)a3 fittingSize:(CGSize)a4;
-- (void)updateHeaderViewForPreviewModeType:(unint64_t)a3;
-- (void)updateImageViewWithPosedAvatarRecordForcingRender:(BOOL)a3 completionHandler:(id)a4;
+- (void)updateForSelectionOfItem:(id)item controller:(id)controller reloadSections:(BOOL)sections;
+- (void)updateForSelectionOfItem:(id)item inSection:(id)section senderRect:(CGRect)rect reloadSections:(BOOL)sections;
+- (void)updateForSelectionOfSupplementalItem:(id)item senderRect:(CGRect)rect;
+- (void)updateHeaderDependentLayoutWithHeaderFrame:(CGRect)frame fittingSize:(CGSize)size;
+- (void)updateHeaderViewForPreviewModeType:(unint64_t)type;
+- (void)updateImageViewWithPosedAvatarRecordForcingRender:(BOOL)render completionHandler:(id)handler;
 - (void)updateLayoutAttributes;
 - (void)updateLayoutForAttributesCollectionMaskingView;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation AVTAvatarAttributeEditorViewController
@@ -107,51 +107,51 @@
   return v12;
 }
 
-- (AVTAvatarAttributeEditorViewController)initWithAvatarRecord:(id)a3 avtViewSessionProvider:(id)a4 environment:(id)a5 isCreating:(BOOL)a6
+- (AVTAvatarAttributeEditorViewController)initWithAvatarRecord:(id)record avtViewSessionProvider:(id)provider environment:(id)environment isCreating:(BOOL)creating
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  recordCopy = record;
+  providerCopy = provider;
+  environmentCopy = environment;
   v52.receiver = self;
   v52.super_class = AVTAvatarAttributeEditorViewController;
   v13 = [(AVTAvatarAttributeEditorViewController *)&v52 initWithNibName:0 bundle:0];
   v14 = v13;
   if (v13)
   {
-    v48 = v11;
-    objc_storeStrong(&v13->_environment, a5);
-    objc_storeStrong(&v14->_avtViewSessionProvider, a4);
-    v15 = [v12 coreEnvironment];
-    v16 = [AVTSerialTaskScheduler fifoSchedulerWithEnvironment:v15];
+    v48 = providerCopy;
+    objc_storeStrong(&v13->_environment, environment);
+    objc_storeStrong(&v14->_avtViewSessionProvider, provider);
+    coreEnvironment = [environmentCopy coreEnvironment];
+    v16 = [AVTSerialTaskScheduler fifoSchedulerWithEnvironment:coreEnvironment];
     imageProviderScheduler = v14->_imageProviderScheduler;
     v14->_imageProviderScheduler = v16;
 
-    v51 = [[AVTPresetImageProvider alloc] initWithRenderingScheduler:v14->_imageProviderScheduler environment:v12];
-    v18 = [v12 deviceResourceManager];
-    [v18 registerConsumer:v51];
+    v51 = [[AVTPresetImageProvider alloc] initWithRenderingScheduler:v14->_imageProviderScheduler environment:environmentCopy];
+    deviceResourceManager = [environmentCopy deviceResourceManager];
+    [deviceResourceManager registerConsumer:v51];
 
     v50 = objc_alloc_init(AVTColorLayerProvider);
     v19 = [AVTPresetResourceLoader alloc];
-    v20 = [(AVTPresetResourceLoader *)v19 initWithEnvironment:v12 renderingScheduler:v14->_imageProviderScheduler callbackQueue:MEMORY[0x1E69E96A0]];
+    v20 = [(AVTPresetResourceLoader *)v19 initWithEnvironment:environmentCopy renderingScheduler:v14->_imageProviderScheduler callbackQueue:MEMORY[0x1E69E96A0]];
     v21 = [AVTAvatarAttributeEditorPreloader alloc];
-    v22 = [v12 logger];
+    logger = [environmentCopy logger];
     v47 = v20;
-    v49 = [(AVTAvatarAttributeEditorPreloader *)v21 initWithResourceLoader:v20 logger:v22];
+    v49 = [(AVTAvatarAttributeEditorPreloader *)v21 initWithResourceLoader:v20 logger:logger];
 
     v23 = [[AVTUIStickerGeneratorPool alloc] initWithMaxStickerGeneratorCount:2];
     v24 = [AVTClippableImageStore alloc];
-    v25 = [v12 coreEnvironment];
-    v26 = [v12 imageCacheStoreLocation];
-    v27 = [(AVTImageStore *)v24 initWithEnvironment:v25 validateImages:0 location:v26];
+    coreEnvironment2 = [environmentCopy coreEnvironment];
+    imageCacheStoreLocation = [environmentCopy imageCacheStoreLocation];
+    v27 = [(AVTImageStore *)v24 initWithEnvironment:coreEnvironment2 validateImages:0 location:imageCacheStoreLocation];
 
     v28 = [AVTUIStickerRenderer alloc];
-    [v12 editorThumbnailAvatar];
-    v30 = v29 = a6;
-    v31 = [(AVTUIStickerRenderer *)v28 initWithAvatarRecord:v10 avatar:v30 stickerGeneratorPool:v23 scheduler:v14->_imageProviderScheduler imageStore:v27 environment:v12];
+    [environmentCopy editorThumbnailAvatar];
+    v30 = v29 = creating;
+    v31 = [(AVTUIStickerRenderer *)v28 initWithAvatarRecord:recordCopy avatar:v30 stickerGeneratorPool:v23 scheduler:v14->_imageProviderScheduler imageStore:v27 environment:environmentCopy];
 
     v32 = [AVTAvatarAttributeEditorModelManager alloc];
-    v33 = [v12 editorCoreModel];
-    v34 = [(AVTAvatarAttributeEditorModelManager *)v32 initWithAvatarRecord:v10 coreModel:v33 imageProvider:v51 colorLayerProvider:v50 preloader:v49 environment:v12 stickerRenderer:v31];
+    editorCoreModel = [environmentCopy editorCoreModel];
+    v34 = [(AVTAvatarAttributeEditorModelManager *)v32 initWithAvatarRecord:recordCopy coreModel:editorCoreModel imageProvider:v51 colorLayerProvider:v50 preloader:v49 environment:environmentCopy stickerRenderer:v31];
     modelManager = v14->_modelManager;
     v14->_modelManager = v34;
 
@@ -166,28 +166,28 @@
     }
 
     v37 = [AVTAvatarAttributeEditorDataSource alloc];
-    v38 = [(AVTAvatarAttributeEditorDataSource *)v37 initWithCategories:MEMORY[0x1E695E0F0] currentCategoryIdentifier:v36 renderingScheduler:v14->_imageProviderScheduler environment:v12];
+    v38 = [(AVTAvatarAttributeEditorDataSource *)v37 initWithCategories:MEMORY[0x1E695E0F0] currentCategoryIdentifier:v36 renderingScheduler:v14->_imageProviderScheduler environment:environmentCopy];
     dataSource = v14->_dataSource;
     v14->_dataSource = v38;
 
     [(AVTAvatarAttributeEditorModelManager *)v14->_modelManager setDelegate:v14->_dataSource];
-    v40 = [(AVTAvatarAttributeEditorModelManager *)v14->_modelManager buildUIModel];
-    [(AVTAvatarAttributeEditorDataSource *)v14->_dataSource reloadWithCategories:v40 currentCategoryIndex:[AVTAvatarAttributeEditorDataSource indexForCurrentCategoryGivenPreferredIdentifier:v36 categories:v40]];
+    buildUIModel = [(AVTAvatarAttributeEditorModelManager *)v14->_modelManager buildUIModel];
+    [(AVTAvatarAttributeEditorDataSource *)v14->_dataSource reloadWithCategories:buildUIModel currentCategoryIndex:[AVTAvatarAttributeEditorDataSource indexForCurrentCategoryGivenPreferredIdentifier:v36 categories:buildUIModel]];
     v14->_isCreating = v29;
     v14->_allowFacetracking = AVTUIIsFacetrackingSupported();
-    v41 = [[_AVTAvatarRecordImageProvider alloc] initWithEnvironment:v12];
+    v41 = [[_AVTAvatarRecordImageProvider alloc] initWithEnvironment:environmentCopy];
     headerPreviewImageRenderer = v14->_headerPreviewImageRenderer;
     v14->_headerPreviewImageRenderer = v41;
 
     if (!v14->_allowFacetracking)
     {
-      v43 = [v12 coreEnvironment];
-      v44 = [AVTSerialTaskScheduler fifoSchedulerWithEnvironment:v43];
+      coreEnvironment3 = [environmentCopy coreEnvironment];
+      v44 = [AVTSerialTaskScheduler fifoSchedulerWithEnvironment:coreEnvironment3];
       headerPreviewScheduler = v14->_headerPreviewScheduler;
       v14->_headerPreviewScheduler = v44;
     }
 
-    v11 = v48;
+    providerCopy = v48;
   }
 
   return v14;
@@ -195,25 +195,25 @@
 
 - (AVTAvatarRecord)avatarRecord
 {
-  v2 = [(AVTAvatarAttributeEditorViewController *)self modelManager];
-  v3 = [v2 avatarRecord];
+  modelManager = [(AVTAvatarAttributeEditorViewController *)self modelManager];
+  avatarRecord = [modelManager avatarRecord];
 
-  return v3;
+  return avatarRecord;
 }
 
 - (AVTMemoji)avatar
 {
-  v2 = [(AVTAvatarAttributeEditorViewController *)self modelManager];
-  v3 = [v2 avatar];
+  modelManager = [(AVTAvatarAttributeEditorViewController *)self modelManager];
+  avatar = [modelManager avatar];
 
-  return v3;
+  return avatar;
 }
 
 - (void)loadView
 {
   v3 = [AVTNotifyingContainerView alloc];
-  v4 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v4 bounds];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen bounds];
   v5 = [(AVTNotifyingContainerView *)v3 initWithFrame:?];
 
   [(AVTNotifyingContainerView *)v5 setDelegate:self];
@@ -225,13 +225,13 @@
   v48.receiver = self;
   v48.super_class = AVTAvatarAttributeEditorViewController;
   [(AVTAvatarAttributeEditorViewController *)&v48 viewDidLoad];
-  v3 = [MEMORY[0x1E69DC888] clearColor];
-  v4 = [(AVTAvatarAttributeEditorViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  view = [(AVTAvatarAttributeEditorViewController *)self view];
+  [view setBackgroundColor:clearColor];
 
   v5 = objc_alloc(MEMORY[0x1E69DD250]);
-  v6 = [(AVTAvatarAttributeEditorViewController *)self view];
-  [v6 frame];
+  view2 = [(AVTAvatarAttributeEditorViewController *)self view];
+  [view2 frame];
   v7 = [v5 initWithFrame:?];
   attributesContainerView = self->_attributesContainerView;
   self->_attributesContainerView = v7;
@@ -240,8 +240,8 @@
   v9 = +[AVTUIColorRepository editorBackgroundColor];
   [(UIView *)self->_attributesContainerView setBackgroundColor:v9];
 
-  v10 = [(AVTAvatarAttributeEditorViewController *)self view];
-  [v10 addSubview:self->_attributesContainerView];
+  view3 = [(AVTAvatarAttributeEditorViewController *)self view];
+  [view3 addSubview:self->_attributesContainerView];
 
   v11 = objc_alloc(MEMORY[0x1E69DD250]);
   v12 = *MEMORY[0x1E695F058];
@@ -256,8 +256,8 @@
   [(UIView *)self->_sideGroupContainerView setBackgroundColor:v18];
 
   [(UIView *)self->_sideGroupContainerView setClipsToBounds:1];
-  v19 = [(AVTAvatarAttributeEditorViewController *)self view];
-  [v19 addSubview:self->_sideGroupContainerView];
+  view4 = [(AVTAvatarAttributeEditorViewController *)self view];
+  [view4 addSubview:self->_sideGroupContainerView];
 
   v20 = objc_alloc_init(AVTAvatarAttributeEditorFlowLayout);
   [(UICollectionViewFlowLayout *)v20 setScrollDirection:0];
@@ -270,8 +270,8 @@
   [(UICollectionView *)self->_attributesCollectionView setDataSource:self];
   [(UICollectionView *)self->_attributesCollectionView setPrefetchDataSource:self];
   [(UICollectionView *)self->_attributesCollectionView setDelegate:self];
-  v23 = [MEMORY[0x1E69DC888] clearColor];
-  [(UICollectionView *)self->_attributesCollectionView setBackgroundColor:v23];
+  clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+  [(UICollectionView *)self->_attributesCollectionView setBackgroundColor:clearColor2];
 
   v24 = self->_attributesCollectionView;
   v25 = objc_opt_class();
@@ -300,8 +300,8 @@
   headerMaskingView = self->_headerMaskingView;
   self->_headerMaskingView = v38;
 
-  v40 = [(UIView *)self->_attributesContainerView backgroundColor];
-  [(UIView *)self->_headerMaskingView setBackgroundColor:v40];
+  backgroundColor = [(UIView *)self->_attributesContainerView backgroundColor];
+  [(UIView *)self->_headerMaskingView setBackgroundColor:backgroundColor];
 
   v41 = [[AVTShadowView alloc] initWithFrame:v12, v13, v14, v15];
   shadowView = self->_shadowView;
@@ -309,21 +309,21 @@
 
   [(UIView *)self->_headerMaskingView addSubview:self->_shadowView];
   [(UIView *)self->_attributesContainerView addSubview:self->_headerMaskingView];
-  v43 = [(AVTAvatarAttributeEditorViewController *)self navigationItem];
-  [v43 setLargeTitleDisplayMode:2];
+  navigationItem = [(AVTAvatarAttributeEditorViewController *)self navigationItem];
+  [navigationItem setLargeTitleDisplayMode:2];
 
-  v44 = [(AVTAvatarAttributeEditorViewController *)self navigationItem];
-  [v44 _setBackgroundHidden:1];
+  navigationItem2 = [(AVTAvatarAttributeEditorViewController *)self navigationItem];
+  [navigationItem2 _setBackgroundHidden:1];
 
   [(AVTAvatarAttributeEditorViewController *)self setUpHeaderView];
   if (AVTUIShowAssetsWarning_once())
   {
-    v45 = [(AVTAvatarAttributeEditorViewController *)self createAlphaAssetsLabel];
-    [(AVTAvatarAttributeEditorViewController *)self setAlphaAssetsLabel:v45];
+    createAlphaAssetsLabel = [(AVTAvatarAttributeEditorViewController *)self createAlphaAssetsLabel];
+    [(AVTAvatarAttributeEditorViewController *)self setAlphaAssetsLabel:createAlphaAssetsLabel];
 
-    v46 = [(AVTAvatarAttributeEditorViewController *)self view];
-    v47 = [(AVTAvatarAttributeEditorViewController *)self alphaAssetsLabel];
-    [v46 addSubview:v47];
+    view5 = [(AVTAvatarAttributeEditorViewController *)self view];
+    alphaAssetsLabel = [(AVTAvatarAttributeEditorViewController *)self alphaAssetsLabel];
+    [view5 addSubview:alphaAssetsLabel];
   }
 }
 
@@ -338,8 +338,8 @@
   headerContainerView = self->_headerContainerView;
   self->_headerContainerView = v8;
 
-  v10 = [(AVTAvatarAttributeEditorViewController *)self view];
-  [v10 addSubview:self->_headerContainerView];
+  view = [(AVTAvatarAttributeEditorViewController *)self view];
+  [view addSubview:self->_headerContainerView];
 
   v11 = [[AVTImageTransitioningContainerView alloc] initWithFrame:1 layoutMode:v4, v5, v6, v7];
   transitioningContainer = self->_transitioningContainer;
@@ -353,27 +353,27 @@
   v25[4] = self;
   [(AVTAvatarAttributeEditorViewController *)self updateImageViewWithPosedAvatarRecordForcingRender:0 completionHandler:v25];
   v13 = [AVTBodyCarouselController alloc];
-  v14 = [(AVTAvatarAttributeEditorViewController *)self environment];
-  v15 = [(AVTAvatarAttributeEditorViewController *)self modelManager];
-  v16 = [v15 avatarRecord];
-  v17 = [(AVTBodyCarouselController *)v13 initWithEnvironment:v14 avatarRecord:v16 editorPresentationContext:[(AVTAvatarAttributeEditorViewController *)self editorPresentationContext]];
+  environment = [(AVTAvatarAttributeEditorViewController *)self environment];
+  modelManager = [(AVTAvatarAttributeEditorViewController *)self modelManager];
+  avatarRecord = [modelManager avatarRecord];
+  v17 = [(AVTBodyCarouselController *)v13 initWithEnvironment:environment avatarRecord:avatarRecord editorPresentationContext:[(AVTAvatarAttributeEditorViewController *)self editorPresentationContext]];
   bodyEditorHeaderViewController = self->_bodyEditorHeaderViewController;
   self->_bodyEditorHeaderViewController = v17;
 
-  v19 = [(AVTBodyCarouselController *)self->_bodyEditorHeaderViewController view];
-  [v19 setAutoresizingMask:18];
+  view2 = [(AVTBodyCarouselController *)self->_bodyEditorHeaderViewController view];
+  [view2 setAutoresizingMask:18];
 
-  v20 = [(AVTAvatarAttributeEditorViewController *)self bodyEditorHeaderViewController];
-  [v20 reloadDisplayedSticker];
+  bodyEditorHeaderViewController = [(AVTAvatarAttributeEditorViewController *)self bodyEditorHeaderViewController];
+  [bodyEditorHeaderViewController reloadDisplayedSticker];
 
-  v21 = [(AVTAvatarAttributeEditorViewController *)self avtViewSessionProvider];
-  [v21 avtViewBackingSize];
+  avtViewSessionProvider = [(AVTAvatarAttributeEditorViewController *)self avtViewSessionProvider];
+  [avtViewSessionProvider avtViewBackingSize];
   v22 = [AVTViewCarouselLayout adaptativeLayoutWithAVTViewAspectRatio:?];
   [(AVTAvatarAttributeEditorViewController *)self setAvtViewLayout:v22];
 
-  v23 = [(AVTAvatarAttributeEditorViewController *)self bodyEditorHeaderViewController];
-  v24 = [(AVTAvatarAttributeEditorViewController *)self avtViewLayout];
-  [v23 prepareViewWithLayout:v24];
+  bodyEditorHeaderViewController2 = [(AVTAvatarAttributeEditorViewController *)self bodyEditorHeaderViewController];
+  avtViewLayout = [(AVTAvatarAttributeEditorViewController *)self avtViewLayout];
+  [bodyEditorHeaderViewController2 prepareViewWithLayout:avtViewLayout];
 
   [(UIView *)self->_headerContainerView addSubview:self->_transitioningContainer];
 }
@@ -393,36 +393,36 @@ uint64_t __57__AVTAvatarAttributeEditorViewController_setUpHeaderView__block_inv
 
 - (void)setTransitioningContainerFrame
 {
-  v3 = [(AVTAvatarAttributeEditorViewController *)self avtViewLayout];
+  avtViewLayout = [(AVTAvatarAttributeEditorViewController *)self avtViewLayout];
 
-  v30 = [(AVTAvatarAttributeEditorViewController *)self headerContainerView];
-  [v30 bounds];
+  headerContainerView = [(AVTAvatarAttributeEditorViewController *)self headerContainerView];
+  [headerContainerView bounds];
   v8 = v7;
-  if (v3)
+  if (avtViewLayout)
   {
-    v9 = [(AVTAvatarAttributeEditorViewController *)self headerContainerView];
-    [v9 bounds];
+    headerContainerView2 = [(AVTAvatarAttributeEditorViewController *)self headerContainerView];
+    [headerContainerView2 bounds];
     v11 = v10 * 0.85;
 
-    v12 = [(AVTAvatarAttributeEditorViewController *)self avtViewLayout];
-    [v12 avatarViewSizeForAvailableContentSize:{v8 * 0.85, v11}];
+    avtViewLayout2 = [(AVTAvatarAttributeEditorViewController *)self avtViewLayout];
+    [avtViewLayout2 avatarViewSizeForAvailableContentSize:{v8 * 0.85, v11}];
     v14 = v13;
 
-    v15 = [(AVTAvatarAttributeEditorViewController *)self headerContainerView];
-    [v15 bounds];
+    headerContainerView3 = [(AVTAvatarAttributeEditorViewController *)self headerContainerView];
+    [headerContainerView3 bounds];
     v17 = v16;
-    v18 = [(AVTAvatarAttributeEditorViewController *)self headerContainerView];
-    [v18 bounds];
+    headerContainerView4 = [(AVTAvatarAttributeEditorViewController *)self headerContainerView];
+    [headerContainerView4 bounds];
     v20 = v17 + (v19 - v14) * 0.5;
 
-    v30 = [(AVTAvatarAttributeEditorViewController *)self headerContainerView];
-    [v30 bounds];
+    headerContainerView = [(AVTAvatarAttributeEditorViewController *)self headerContainerView];
+    [headerContainerView bounds];
     v22 = v21;
-    v23 = [(AVTAvatarAttributeEditorViewController *)self headerContainerView];
-    [v23 bounds];
+    headerContainerView5 = [(AVTAvatarAttributeEditorViewController *)self headerContainerView];
+    [headerContainerView5 bounds];
     v25 = v24;
-    v26 = [(AVTAvatarAttributeEditorViewController *)self transitioningContainer];
-    [v26 setFrame:{v22, v20, v25, v14}];
+    transitioningContainer = [(AVTAvatarAttributeEditorViewController *)self transitioningContainer];
+    [transitioningContainer setFrame:{v22, v20, v25, v14}];
   }
 
   else
@@ -430,27 +430,27 @@ uint64_t __57__AVTAvatarAttributeEditorViewController_setUpHeaderView__block_inv
     v27 = v4;
     v28 = v5;
     v29 = v6;
-    v23 = [(AVTAvatarAttributeEditorViewController *)self transitioningContainer];
-    [v23 setFrame:{v27, v28, v8, v29}];
+    headerContainerView5 = [(AVTAvatarAttributeEditorViewController *)self transitioningContainer];
+    [headerContainerView5 setFrame:{v27, v28, v8, v29}];
   }
 }
 
 - (void)didFinishEditing
 {
-  v3 = [(AVTAvatarAttributeEditorViewController *)self headerPreviewScheduler];
-  [v3 cancelAllTasks];
+  headerPreviewScheduler = [(AVTAvatarAttributeEditorViewController *)self headerPreviewScheduler];
+  [headerPreviewScheduler cancelAllTasks];
 
-  v4 = [(AVTAvatarAttributeEditorViewController *)self imageProviderScheduler];
-  [v4 cancelAllTasks];
+  imageProviderScheduler = [(AVTAvatarAttributeEditorViewController *)self imageProviderScheduler];
+  [imageProviderScheduler cancelAllTasks];
 }
 
 - (void)setupGroupSelectorIfNeeded
 {
-  v3 = [(AVTAvatarAttributeEditorViewController *)self dataSource];
-  v29 = [v3 groupPickerItemsForCategories];
+  dataSource = [(AVTAvatarAttributeEditorViewController *)self dataSource];
+  groupPickerItemsForCategories = [dataSource groupPickerItemsForCategories];
 
-  v4 = [(AVTAvatarAttributeEditorViewController *)self currentLayout];
-  if ([v4 showSideGroupPicker])
+  currentLayout = [(AVTAvatarAttributeEditorViewController *)self currentLayout];
+  if ([currentLayout showSideGroupPicker])
   {
   }
 
@@ -460,8 +460,8 @@ uint64_t __57__AVTAvatarAttributeEditorViewController_setUpHeaderView__block_inv
 
     if (!groupDialContainerView)
     {
-      v6 = +[AVTUIFontRepository groupDialBoldLabelFont];
-      [v6 _scaledValueForValue:18.0];
+      currentLayout2 = +[AVTUIFontRepository groupDialBoldLabelFont];
+      [currentLayout2 _scaledValueForValue:18.0];
       if (v14 <= 30.0)
       {
         v15 = v14;
@@ -473,26 +473,26 @@ uint64_t __57__AVTAvatarAttributeEditorViewController_setUpHeaderView__block_inv
       }
 
       v16 = objc_alloc(MEMORY[0x1E69DD250]);
-      [v6 ascender];
+      [currentLayout2 ascender];
       v18 = v17;
-      [v6 descender];
+      [currentLayout2 descender];
       v20 = [v16 initWithFrame:{0.0, 0.0, 50.0, v18 - v19 + v15 * 2.0}];
       v21 = self->_groupDialContainerView;
       self->_groupDialContainerView = v20;
 
-      v22 = [(AVTAvatarAttributeEditorViewController *)self view];
-      [v22 addSubview:self->_groupDialContainerView];
+      view = [(AVTAvatarAttributeEditorViewController *)self view];
+      [view addSubview:self->_groupDialContainerView];
 
       v23 = [AVTGroupDial alloc];
-      v24 = [(AVTAvatarAttributeEditorViewController *)self environment];
-      v25 = [(AVTGroupDial *)v23 initWithGroupItems:v29 environment:v24];
+      environment = [(AVTAvatarAttributeEditorViewController *)self environment];
+      v25 = [(AVTGroupDial *)v23 initWithGroupItems:groupPickerItemsForCategories environment:environment];
       groupDial = self->_groupDial;
       self->_groupDial = v25;
 
       [(AVTGroupDial *)self->_groupDial setDelegate:self];
       v27 = self->_groupDial;
-      v28 = [(AVTAvatarAttributeEditorViewController *)self dataSource];
-      -[AVTGroupDial setSelectedGroupIndex:animated:](v27, "setSelectedGroupIndex:animated:", [v28 currentCategoryIndex], 0);
+      dataSource2 = [(AVTAvatarAttributeEditorViewController *)self dataSource];
+      -[AVTGroupDial setSelectedGroupIndex:animated:](v27, "setSelectedGroupIndex:animated:", [dataSource2 currentCategoryIndex], 0);
 
       [(UIView *)self->_groupDialContainerView bounds];
       [(AVTGroupDial *)self->_groupDial setFrame:?];
@@ -503,8 +503,8 @@ uint64_t __57__AVTAvatarAttributeEditorViewController_setUpHeaderView__block_inv
     }
   }
 
-  v6 = [(AVTAvatarAttributeEditorViewController *)self currentLayout];
-  if (![v6 showSideGroupPicker])
+  currentLayout2 = [(AVTAvatarAttributeEditorViewController *)self currentLayout];
+  if (![currentLayout2 showSideGroupPicker])
   {
 LABEL_11:
 
@@ -516,14 +516,14 @@ LABEL_11:
   if (!groupListView)
   {
     v8 = [AVTGroupListCollectionView alloc];
-    v9 = [(AVTAvatarAttributeEditorViewController *)self environment];
-    v10 = [(AVTGroupListCollectionView *)v8 initWithGroupItems:v29 environment:v9];
+    environment2 = [(AVTAvatarAttributeEditorViewController *)self environment];
+    v10 = [(AVTGroupListCollectionView *)v8 initWithGroupItems:groupPickerItemsForCategories environment:environment2];
     v11 = self->_groupListView;
     self->_groupListView = v10;
 
     v12 = self->_groupListView;
-    v13 = [(AVTAvatarAttributeEditorViewController *)self dataSource];
-    -[AVTGroupListCollectionView setSelectedGroupIndex:animated:](v12, "setSelectedGroupIndex:animated:", [v13 currentCategoryIndex], 0);
+    dataSource3 = [(AVTAvatarAttributeEditorViewController *)self dataSource];
+    -[AVTGroupListCollectionView setSelectedGroupIndex:animated:](v12, "setSelectedGroupIndex:animated:", [dataSource3 currentCategoryIndex], 0);
 
     [(AVTGroupListCollectionView *)self->_groupListView setDelegate:self];
     [(UIView *)self->_sideGroupContainerView bounds];
@@ -535,11 +535,11 @@ LABEL_11:
 LABEL_12:
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v7.receiver = self;
   v7.super_class = AVTAvatarAttributeEditorViewController;
-  [(AVTAvatarAttributeEditorViewController *)&v7 viewWillAppear:a3];
+  [(AVTAvatarAttributeEditorViewController *)&v7 viewWillAppear:appear];
   objc_initWeak(&location, self);
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
@@ -563,73 +563,73 @@ void __57__AVTAvatarAttributeEditorViewController_viewWillAppear___block_invoke(
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v12.receiver = self;
   v12.super_class = AVTAvatarAttributeEditorViewController;
-  [(AVTAvatarAttributeEditorViewController *)&v12 viewDidAppear:a3];
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 addObserver:self selector:sel_contentSizeCategoryDidChange_ name:*MEMORY[0x1E69DDC48] object:0];
+  [(AVTAvatarAttributeEditorViewController *)&v12 viewDidAppear:appear];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_contentSizeCategoryDidChange_ name:*MEMORY[0x1E69DDC48] object:0];
 
-  v5 = [(AVTAvatarAttributeEditorViewController *)self environment];
-  v6 = [v5 usageTrackingSession];
-  [v6 didEnterEditor];
+  environment = [(AVTAvatarAttributeEditorViewController *)self environment];
+  usageTrackingSession = [environment usageTrackingSession];
+  [usageTrackingSession didEnterEditor];
 
-  v7 = [(AVTAvatarAttributeEditorViewController *)self dataSource];
-  v8 = [v7 currentCategoryIndex];
+  dataSource = [(AVTAvatarAttributeEditorViewController *)self dataSource];
+  currentCategoryIndex = [dataSource currentCategoryIndex];
 
-  v9 = [(AVTAvatarAttributeEditorViewController *)self dataSource];
-  v10 = [v9 categoryAtIndex:v8];
+  dataSource2 = [(AVTAvatarAttributeEditorViewController *)self dataSource];
+  v10 = [dataSource2 categoryAtIndex:currentCategoryIndex];
 
-  v11 = [v10 previewMode];
-  -[AVTAvatarAttributeEditorViewController updateHeaderViewForPreviewModeType:](self, "updateHeaderViewForPreviewModeType:", [v11 type]);
+  previewMode = [v10 previewMode];
+  -[AVTAvatarAttributeEditorViewController updateHeaderViewForPreviewModeType:](self, "updateHeaderViewForPreviewModeType:", [previewMode type]);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v8.receiver = self;
   v8.super_class = AVTAvatarAttributeEditorViewController;
-  [(AVTAvatarAttributeEditorViewController *)&v8 viewWillDisappear:a3];
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 removeObserver:self name:*MEMORY[0x1E69DDC48] object:0];
+  [(AVTAvatarAttributeEditorViewController *)&v8 viewWillDisappear:disappear];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DDC48] object:0];
 
-  v5 = [(AVTAvatarAttributeEditorViewController *)self environment];
-  v6 = [v5 usageTrackingSession];
-  [v6 didLeaveEditor];
+  environment = [(AVTAvatarAttributeEditorViewController *)self environment];
+  usageTrackingSession = [environment usageTrackingSession];
+  [usageTrackingSession didLeaveEditor];
 
   if ([(AVTAvatarAttributeEditorViewController *)self allowFacetracking])
   {
-    v7 = [(AVTAvatarAttributeEditorViewController *)self avtViewSession];
-    [v7 tearDownWithCompletionHandler:0];
+    avtViewSession = [(AVTAvatarAttributeEditorViewController *)self avtViewSession];
+    [avtViewSession tearDownWithCompletionHandler:0];
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v11.receiver = self;
   v11.super_class = AVTAvatarAttributeEditorViewController;
-  v4 = a3;
-  [(AVTAvatarAttributeEditorViewController *)&v11 traitCollectionDidChange:v4];
-  v5 = [v4 layoutDirection];
+  changeCopy = change;
+  [(AVTAvatarAttributeEditorViewController *)&v11 traitCollectionDidChange:changeCopy];
+  layoutDirection = [changeCopy layoutDirection];
 
-  v6 = [(AVTAvatarAttributeEditorViewController *)self traitCollection];
-  v7 = [v6 layoutDirection];
+  traitCollection = [(AVTAvatarAttributeEditorViewController *)self traitCollection];
+  layoutDirection2 = [traitCollection layoutDirection];
 
-  if (v5 != v7)
+  if (layoutDirection != layoutDirection2)
   {
     [(AVTAvatarAttributeEditorViewController *)self updateLayoutAttributes];
   }
 
   v8 = [MEMORY[0x1E69DC888] colorNamed:@"verticalRuleColor"];
-  v9 = [v8 CGColor];
-  v10 = [(AVTAvatarAttributeEditorViewController *)self verticleRule];
-  [v10 setBackgroundColor:v9];
+  cGColor = [v8 CGColor];
+  verticleRule = [(AVTAvatarAttributeEditorViewController *)self verticleRule];
+  [verticleRule setBackgroundColor:cGColor];
 }
 
 - (UIEdgeInsets)adjustedSafeAreaInsets
 {
-  v2 = [(AVTAvatarAttributeEditorViewController *)self view];
-  [v2 safeAreaInsets];
+  view = [(AVTAvatarAttributeEditorViewController *)self view];
+  [view safeAreaInsets];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -651,17 +651,17 @@ void __57__AVTAvatarAttributeEditorViewController_viewWillAppear___block_invoke(
   return result;
 }
 
-- (void)notifyingContainerViewDidChangeSize:(CGSize)a3
+- (void)notifyingContainerViewDidChangeSize:(CGSize)size
 {
   v26 = *MEMORY[0x1E69E9840];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v4 = [(AVTAvatarAttributeEditorViewController *)self attributesCollectionView];
-  v5 = [v4 indexPathsForVisibleItems];
+  attributesCollectionView = [(AVTAvatarAttributeEditorViewController *)self attributesCollectionView];
+  indexPathsForVisibleItems = [attributesCollectionView indexPathsForVisibleItems];
 
-  v6 = [v5 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  v6 = [indexPathsForVisibleItems countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v6)
   {
     v7 = v6;
@@ -673,40 +673,40 @@ void __57__AVTAvatarAttributeEditorViewController_viewWillAppear___block_invoke(
       {
         if (*v22 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(indexPathsForVisibleItems);
         }
 
         v10 = *(*(&v21 + 1) + 8 * v9);
-        v11 = [(AVTAvatarAttributeEditorViewController *)self dataSource];
-        v12 = [v10 section];
-        v13 = [(AVTAvatarAttributeEditorViewController *)self dataSource];
-        v14 = [v11 sectionControllerForSectionIndex:v12 inCategoryAtIndex:{objc_msgSend(v13, "currentCategoryIndex")}];
+        dataSource = [(AVTAvatarAttributeEditorViewController *)self dataSource];
+        section = [v10 section];
+        dataSource2 = [(AVTAvatarAttributeEditorViewController *)self dataSource];
+        v14 = [dataSource sectionControllerForSectionIndex:section inCategoryAtIndex:{objc_msgSend(dataSource2, "currentCategoryIndex")}];
 
-        v15 = [(AVTAvatarAttributeEditorViewController *)self view];
-        [v15 bounds];
+        view = [(AVTAvatarAttributeEditorViewController *)self view];
+        [view bounds];
         [v14 invalidateLayoutForNewContainerSize:{v16, v17}];
 
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v7 = [indexPathsForVisibleItems countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v7);
   }
 
-  v18 = [(AVTAvatarAttributeEditorViewController *)self environment];
-  if ([v18 deviceIsPad])
+  environment = [(AVTAvatarAttributeEditorViewController *)self environment];
+  if ([environment deviceIsPad])
   {
   }
 
   else
   {
-    v19 = [(AVTAvatarAttributeEditorViewController *)self environment];
-    v20 = [v19 deviceIsMac];
+    environment2 = [(AVTAvatarAttributeEditorViewController *)self environment];
+    deviceIsMac = [environment2 deviceIsMac];
 
-    if (!v20)
+    if (!deviceIsMac)
     {
       return;
     }
@@ -715,19 +715,19 @@ void __57__AVTAvatarAttributeEditorViewController_viewWillAppear___block_invoke(
   [(AVTAvatarAttributeEditorViewController *)self reloadCollectionViewDataWithCompletion:0];
 }
 
-- (void)prepareForAnimatedTransitionWithLayout:(id)a3 completionBlock:(id)a4
+- (void)prepareForAnimatedTransitionWithLayout:(id)layout completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  layoutCopy = layout;
+  blockCopy = block;
   objc_initWeak(&location, self);
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __97__AVTAvatarAttributeEditorViewController_prepareForAnimatedTransitionWithLayout_completionBlock___block_invoke;
   v10[3] = &unk_1E7F3C770;
   objc_copyWeak(&v13, &location);
-  v8 = v6;
+  v8 = layoutCopy;
   v11 = v8;
-  v9 = v7;
+  v9 = blockCopy;
   v12 = v9;
   [(AVTAvatarAttributeEditorViewController *)self setupPreview:v10];
 
@@ -747,32 +747,32 @@ void __97__AVTAvatarAttributeEditorViewController_prepareForAnimatedTransitionWi
   (*(v3 + 16))(v3, v4);
 }
 
-- (void)updateHeaderViewForPreviewModeType:(unint64_t)a3
+- (void)updateHeaderViewForPreviewModeType:(unint64_t)type
 {
-  if ([(AVTAvatarAttributeEditorViewController *)self previewModeType]!= a3)
+  if ([(AVTAvatarAttributeEditorViewController *)self previewModeType]!= type)
   {
-    v5 = [(AVTAvatarAttributeEditorViewController *)self bodyEditorHeaderViewController];
+    bodyEditorHeaderViewController = [(AVTAvatarAttributeEditorViewController *)self bodyEditorHeaderViewController];
 
-    if (v5)
+    if (bodyEditorHeaderViewController)
     {
-      [(AVTAvatarAttributeEditorViewController *)self setPreviewModeType:a3];
-      if (a3 == 1)
+      [(AVTAvatarAttributeEditorViewController *)self setPreviewModeType:type];
+      if (type == 1)
       {
-        v6 = [(AVTAvatarAttributeEditorViewController *)self bodyEditorHeaderViewController];
-        v7 = [v6 view];
-        v8 = [v7 superview];
+        bodyEditorHeaderViewController2 = [(AVTAvatarAttributeEditorViewController *)self bodyEditorHeaderViewController];
+        view = [bodyEditorHeaderViewController2 view];
+        superview = [view superview];
 
-        if (v8)
+        if (superview)
         {
           return;
         }
 
-        v9 = [(AVTAvatarAttributeEditorViewController *)self bodyEditorHeaderViewController];
-        v10 = [v9 view];
-        [v10 setAlpha:1.0];
+        bodyEditorHeaderViewController3 = [(AVTAvatarAttributeEditorViewController *)self bodyEditorHeaderViewController];
+        view2 = [bodyEditorHeaderViewController3 view];
+        [view2 setAlpha:1.0];
 
-        v11 = [(AVTAvatarAttributeEditorViewController *)self bodyEditorHeaderViewController];
-        [v11 updateStickersforVisibleCells];
+        bodyEditorHeaderViewController4 = [(AVTAvatarAttributeEditorViewController *)self bodyEditorHeaderViewController];
+        [bodyEditorHeaderViewController4 updateStickersforVisibleCells];
 
         v39[0] = MEMORY[0x1E69E9820];
         v39[1] = 3221225472;
@@ -780,22 +780,22 @@ void __97__AVTAvatarAttributeEditorViewController_prepareForAnimatedTransitionWi
         v39[3] = &unk_1E7F3A9B8;
         v39[4] = self;
         v12 = MEMORY[0x1BFB0DE80](v39);
-        v13 = [(AVTAvatarAttributeEditorViewController *)self avtViewSession];
+        avtViewSession = [(AVTAvatarAttributeEditorViewController *)self avtViewSession];
 
-        if (v13)
+        if (avtViewSession)
         {
-          v14 = [(AVTAvatarAttributeEditorViewController *)self bodyEditorHeaderViewController];
-          v15 = [v14 displayedConfiguration];
+          bodyEditorHeaderViewController5 = [(AVTAvatarAttributeEditorViewController *)self bodyEditorHeaderViewController];
+          displayedConfiguration = [bodyEditorHeaderViewController5 displayedConfiguration];
 
-          v16 = [(AVTAvatarAttributeEditorViewController *)self avtViewSession];
-          v17 = [v16 avtView];
+          avtViewSession2 = [(AVTAvatarAttributeEditorViewController *)self avtViewSession];
+          avtView = [avtViewSession2 avtView];
           v37[0] = MEMORY[0x1E69E9820];
           v37[1] = 3221225472;
           v37[2] = __77__AVTAvatarAttributeEditorViewController_updateHeaderViewForPreviewModeType___block_invoke_2;
           v37[3] = &unk_1E7F3AFF8;
           v38 = v12;
           v18 = v12;
-          [v17 transitionToStickerConfiguration:v15 duration:2 style:v37 completionHandler:0.25];
+          [avtView transitionToStickerConfiguration:displayedConfiguration duration:2 style:v37 completionHandler:0.25];
 
 LABEL_15:
           return;
@@ -806,54 +806,54 @@ LABEL_15:
         v36[2] = __77__AVTAvatarAttributeEditorViewController_updateHeaderViewForPreviewModeType___block_invoke_3;
         v36[3] = &unk_1E7F3A9B8;
         v36[4] = self;
-        v25 = MEMORY[0x1BFB0DE80](v36);
+        avtViewSession4 = MEMORY[0x1BFB0DE80](v36);
         v27 = MEMORY[0x1E69DD250];
         v34[0] = MEMORY[0x1E69E9820];
         v34[1] = 3221225472;
         v34[2] = __77__AVTAvatarAttributeEditorViewController_updateHeaderViewForPreviewModeType___block_invoke_4;
         v34[3] = &unk_1E7F3AC00;
         v35 = v12;
-        v15 = v12;
-        [v27 animateWithDuration:v25 animations:v34 completion:0.25];
+        displayedConfiguration = v12;
+        [v27 animateWithDuration:avtViewSession4 animations:v34 completion:0.25];
         v28 = v35;
       }
 
       else
       {
-        v19 = [(AVTAvatarAttributeEditorViewController *)self transitioningContainer];
-        v20 = [v19 superview];
+        transitioningContainer = [(AVTAvatarAttributeEditorViewController *)self transitioningContainer];
+        superview2 = [transitioningContainer superview];
 
-        if (v20)
+        if (superview2)
         {
           return;
         }
 
-        v21 = [(AVTAvatarAttributeEditorViewController *)self modelManager];
-        v22 = [v21 avatar];
-        [v22 setShowsBody:0];
+        modelManager = [(AVTAvatarAttributeEditorViewController *)self modelManager];
+        avatar = [modelManager avatar];
+        [avatar setShowsBody:0];
 
-        v23 = [(AVTAvatarAttributeEditorViewController *)self transitioningContainer];
-        [v23 setAlpha:1.0];
+        transitioningContainer2 = [(AVTAvatarAttributeEditorViewController *)self transitioningContainer];
+        [transitioningContainer2 setAlpha:1.0];
 
         v33[0] = MEMORY[0x1E69E9820];
         v33[1] = 3221225472;
         v33[2] = __77__AVTAvatarAttributeEditorViewController_updateHeaderViewForPreviewModeType___block_invoke_5;
         v33[3] = &unk_1E7F3A9B8;
         v33[4] = self;
-        v15 = MEMORY[0x1BFB0DE80](v33);
-        v24 = [(AVTAvatarAttributeEditorViewController *)self avtViewSession];
+        displayedConfiguration = MEMORY[0x1BFB0DE80](v33);
+        avtViewSession3 = [(AVTAvatarAttributeEditorViewController *)self avtViewSession];
 
-        if (v24)
+        if (avtViewSession3)
         {
-          v15[2](v15);
+          displayedConfiguration[2](displayedConfiguration);
           if (![(AVTAvatarAttributeEditorViewController *)self allowFacetracking])
           {
             goto LABEL_15;
           }
 
-          v25 = [(AVTAvatarAttributeEditorViewController *)self avtViewSession];
-          v26 = [v25 avtView];
-          [v26 transitionToFaceTrackingWithDuration:2 style:0 completionHandler:0.25];
+          avtViewSession4 = [(AVTAvatarAttributeEditorViewController *)self avtViewSession];
+          avtView2 = [avtViewSession4 avtView];
+          [avtView2 transitionToFaceTrackingWithDuration:2 style:0 completionHandler:0.25];
 
 LABEL_14:
           goto LABEL_15;
@@ -864,15 +864,15 @@ LABEL_14:
         v32[2] = __77__AVTAvatarAttributeEditorViewController_updateHeaderViewForPreviewModeType___block_invoke_6;
         v32[3] = &unk_1E7F3A9B8;
         v32[4] = self;
-        v25 = MEMORY[0x1BFB0DE80](v32);
+        avtViewSession4 = MEMORY[0x1BFB0DE80](v32);
         v29 = MEMORY[0x1E69DD250];
         v30[0] = MEMORY[0x1E69E9820];
         v30[1] = 3221225472;
         v30[2] = __77__AVTAvatarAttributeEditorViewController_updateHeaderViewForPreviewModeType___block_invoke_7;
         v30[3] = &unk_1E7F3AC00;
-        v15 = v15;
-        v31 = v15;
-        [v29 animateWithDuration:v25 animations:v30 completion:0.25];
+        displayedConfiguration = displayedConfiguration;
+        v31 = displayedConfiguration;
+        [v29 animateWithDuration:avtViewSession4 animations:v30 completion:0.25];
         v28 = v31;
       }
 
@@ -992,23 +992,23 @@ uint64_t __77__AVTAvatarAttributeEditorViewController_updateHeaderViewForPreview
   return result;
 }
 
-- (void)updateImageViewWithPosedAvatarRecordForcingRender:(BOOL)a3 completionHandler:(id)a4
+- (void)updateImageViewWithPosedAvatarRecordForcingRender:(BOOL)render completionHandler:(id)handler
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(AVTAvatarAttributeEditorViewController *)self avatarRecord];
+  renderCopy = render;
+  handlerCopy = handler;
+  avatarRecord = [(AVTAvatarAttributeEditorViewController *)self avatarRecord];
 
-  if (v7)
+  if (avatarRecord)
   {
-    if (self->_isCreating && !v4)
+    if (self->_isCreating && !renderCopy)
     {
       v8 = MEMORY[0x1E69DCAB8];
       v9 = AVTAvatarUIBundle();
       v10 = [v8 imageNamed:@"newMemojiThumbnail" inBundle:v9 compatibleWithTraitCollection:0];
-      v11 = [(AVTAvatarAttributeEditorViewController *)self transitioningContainer];
-      [v11 setStaticImage:v10];
+      transitioningContainer = [(AVTAvatarAttributeEditorViewController *)self transitioningContainer];
+      [transitioningContainer setStaticImage:v10];
 
-      if (!v6)
+      if (!handlerCopy)
       {
         goto LABEL_10;
       }
@@ -1016,39 +1016,39 @@ uint64_t __77__AVTAvatarAttributeEditorViewController_updateHeaderViewForPreview
       goto LABEL_7;
     }
 
-    v13 = [(AVTAvatarAttributeEditorViewController *)self headerPreviewImageRenderer];
+    headerPreviewImageRenderer = [(AVTAvatarAttributeEditorViewController *)self headerPreviewImageRenderer];
 
-    if (v13)
+    if (headerPreviewImageRenderer)
     {
-      v14 = [(AVTAvatarAttributeEditorViewController *)self avatarRecord];
+      avatarRecord2 = [(AVTAvatarAttributeEditorViewController *)self avatarRecord];
       v15 = +[AVTRenderingScope listControllerThumbnailScope];
-      v16 = [(AVTAvatarAttributeEditorViewController *)self headerPreviewImageRenderer];
-      v17 = [(AVTAvatarAttributeEditorViewController *)self modelManager];
-      v18 = [v17 avatar];
-      v19 = [v16 providerForAvatar:v18 forRecord:v14 scope:v15 usingCache:!v4];
+      headerPreviewImageRenderer2 = [(AVTAvatarAttributeEditorViewController *)self headerPreviewImageRenderer];
+      modelManager = [(AVTAvatarAttributeEditorViewController *)self modelManager];
+      avatar = [modelManager avatar];
+      v19 = [headerPreviewImageRenderer2 providerForAvatar:avatar forRecord:avatarRecord2 scope:v15 usingCache:!renderCopy];
 
       v23[0] = MEMORY[0x1E69E9820];
       v23[1] = 3221225472;
       v23[2] = __110__AVTAvatarAttributeEditorViewController_updateImageViewWithPosedAvatarRecordForcingRender_completionHandler___block_invoke;
       v23[3] = &unk_1E7F3D2A8;
       v23[4] = self;
-      v24 = v14;
-      v25 = v6;
+      v24 = avatarRecord2;
+      v25 = handlerCopy;
       v20 = v19[2];
-      v21 = v14;
+      v21 = avatarRecord2;
       v22 = v20(v19, v23, 0);
     }
   }
 
   else
   {
-    v12 = [(AVTAvatarAttributeEditorViewController *)self transitioningContainer];
-    [v12 setStaticImage:0];
+    transitioningContainer2 = [(AVTAvatarAttributeEditorViewController *)self transitioningContainer];
+    [transitioningContainer2 setStaticImage:0];
 
-    if (v6)
+    if (handlerCopy)
     {
 LABEL_7:
-      v6[2](v6);
+      handlerCopy[2](handlerCopy);
     }
   }
 
@@ -1074,9 +1074,9 @@ void __110__AVTAvatarAttributeEditorViewController_updateImageViewWithPosedAvata
   }
 }
 
-- (void)transitionToLiveViewAnimated:(BOOL)a3
+- (void)transitionToLiveViewAnimated:(BOOL)animated
 {
-  if (a3)
+  if (animated)
   {
     v9 = 0;
     v10 = &v9;
@@ -1086,8 +1086,8 @@ void __110__AVTAvatarAttributeEditorViewController_updateImageViewWithPosedAvata
     v14 = 0;
     v4 = [AVTAvatarToLiveTransition alloc];
     v5 = [(AVTAvatarAttributeEditorViewController *)self environment:MEMORY[0x1E69E9820]];
-    v6 = [v5 logger];
-    v7 = [(AVTAvatarToLiveTransition *)v4 initWithModel:self animated:1 setupHandler:0 completionHandler:&v8 logger:v6];
+    logger = [v5 logger];
+    v7 = [(AVTAvatarToLiveTransition *)v4 initWithModel:self animated:1 setupHandler:0 completionHandler:&v8 logger:logger];
 
     objc_storeWeak(v10 + 5, v7);
     [(AVTAvatarAttributeEditorViewController *)self setCurrentTransition:v7];
@@ -1125,105 +1125,105 @@ void __71__AVTAvatarAttributeEditorViewController_transitionToLiveViewAnimated__
 
 - (void)transitionStaticViewToFront
 {
-  v2 = [(AVTAvatarAttributeEditorViewController *)self transitioningContainer];
-  [v2 transitionStaticViewToFront];
+  transitioningContainer = [(AVTAvatarAttributeEditorViewController *)self transitioningContainer];
+  [transitioningContainer transitionStaticViewToFront];
 }
 
 - (void)transitionLiveViewToFront
 {
-  v2 = [(AVTAvatarAttributeEditorViewController *)self transitioningContainer];
-  [v2 transitionLiveViewToFront];
+  transitioningContainer = [(AVTAvatarAttributeEditorViewController *)self transitioningContainer];
+  [transitioningContainer transitionLiveViewToFront];
 }
 
 - (id)liveView
 {
-  v2 = [(AVTAvatarAttributeEditorViewController *)self avtViewSession];
-  v3 = [v2 avtView];
+  avtViewSession = [(AVTAvatarAttributeEditorViewController *)self avtViewSession];
+  avtView = [avtViewSession avtView];
 
-  return v3;
+  return avtView;
 }
 
-- (void)setupPreview:(id)a3
+- (void)setupPreview:(id)preview
 {
-  v4 = a3;
+  previewCopy = preview;
   if ([(AVTAvatarAttributeEditorViewController *)self allowFacetracking])
   {
-    [(AVTAvatarAttributeEditorViewController *)self beginAVTViewSessionWithDidBeginBlock:v4];
+    [(AVTAvatarAttributeEditorViewController *)self beginAVTViewSessionWithDidBeginBlock:previewCopy];
   }
 
   else
   {
     [(AVTAvatarAttributeEditorViewController *)self setupImageView];
-    v4[2](v4, 0);
+    previewCopy[2](previewCopy, 0);
   }
 }
 
 - (void)setupImageView
 {
-  v3 = [(AVTAvatarAttributeEditorViewController *)self currentLayout];
+  currentLayout = [(AVTAvatarAttributeEditorViewController *)self currentLayout];
 
-  if (v3)
+  if (currentLayout)
   {
-    v4 = [(AVTAvatarAttributeEditorViewController *)self currentLayout];
-    [v4 avatarContainerFrame];
+    currentLayout2 = [(AVTAvatarAttributeEditorViewController *)self currentLayout];
+    [currentLayout2 avatarContainerFrame];
     v6 = v5;
     v8 = v7;
     v10 = v9;
     v12 = v11;
-    v13 = [(AVTAvatarAttributeEditorViewController *)self headerContainerView];
-    [v13 setFrame:{v6, v8, v10, v12}];
+    headerContainerView = [(AVTAvatarAttributeEditorViewController *)self headerContainerView];
+    [headerContainerView setFrame:{v6, v8, v10, v12}];
 
     [(AVTAvatarAttributeEditorViewController *)self setTransitioningContainerFrame];
-    v14 = [(AVTAvatarAttributeEditorViewController *)self headerContainerView];
-    [v14 bounds];
+    headerContainerView2 = [(AVTAvatarAttributeEditorViewController *)self headerContainerView];
+    [headerContainerView2 bounds];
     v16 = v15;
     v18 = v17;
     v20 = v19;
     v22 = v21;
-    v23 = [(AVTAvatarAttributeEditorViewController *)self bodyEditorHeaderViewController];
-    v24 = [v23 view];
-    [v24 setFrame:{v16, v18, v20, v22}];
+    bodyEditorHeaderViewController = [(AVTAvatarAttributeEditorViewController *)self bodyEditorHeaderViewController];
+    view = [bodyEditorHeaderViewController view];
+    [view setFrame:{v16, v18, v20, v22}];
   }
 
-  v25 = [(AVTAvatarAttributeEditorViewController *)self currentLayout];
-  [(AVTAvatarAttributeEditorViewController *)self setupCollapsibleHeaderIfNeededForLayout:v25 withSession:0];
+  currentLayout3 = [(AVTAvatarAttributeEditorViewController *)self currentLayout];
+  [(AVTAvatarAttributeEditorViewController *)self setupCollapsibleHeaderIfNeededForLayout:currentLayout3 withSession:0];
 }
 
-- (void)beginAVTViewSessionWithDidBeginBlock:(id)a3
+- (void)beginAVTViewSessionWithDidBeginBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(AVTAvatarAttributeEditorViewController *)self avtViewSession];
-  if ([v5 isActive])
+  blockCopy = block;
+  avtViewSession = [(AVTAvatarAttributeEditorViewController *)self avtViewSession];
+  if ([avtViewSession isActive])
   {
 
     goto LABEL_7;
   }
 
-  v6 = [(AVTAvatarAttributeEditorViewController *)self allowFacetracking];
+  allowFacetracking = [(AVTAvatarAttributeEditorViewController *)self allowFacetracking];
 
-  if (!v6)
+  if (!allowFacetracking)
   {
 LABEL_7:
-    if (v4)
+    if (blockCopy)
     {
-      v11 = [(AVTAvatarAttributeEditorViewController *)self avtViewSession];
-      v4[2](v4, v11);
+      avtViewSession2 = [(AVTAvatarAttributeEditorViewController *)self avtViewSession];
+      blockCopy[2](blockCopy, avtViewSession2);
     }
 
     goto LABEL_9;
   }
 
-  v7 = [(AVTAvatarAttributeEditorViewController *)self postSessionDidBecomeActiveHandler];
+  postSessionDidBecomeActiveHandler = [(AVTAvatarAttributeEditorViewController *)self postSessionDidBecomeActiveHandler];
 
-  if (v7)
+  if (postSessionDidBecomeActiveHandler)
   {
-    v8 = [(AVTAvatarAttributeEditorViewController *)self postSessionDidBecomeActiveHandler];
-    v8[2](v8, 0);
+    postSessionDidBecomeActiveHandler2 = [(AVTAvatarAttributeEditorViewController *)self postSessionDidBecomeActiveHandler];
+    postSessionDidBecomeActiveHandler2[2](postSessionDidBecomeActiveHandler2, 0);
   }
 
-  [(AVTAvatarAttributeEditorViewController *)self setPostSessionDidBecomeActiveHandler:v4];
+  [(AVTAvatarAttributeEditorViewController *)self setPostSessionDidBecomeActiveHandler:blockCopy];
   objc_initWeak(&location, self);
-  v9 = [(AVTAvatarAttributeEditorViewController *)self avtViewSessionProvider];
+  avtViewSessionProvider = [(AVTAvatarAttributeEditorViewController *)self avtViewSessionProvider];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __79__AVTAvatarAttributeEditorViewController_beginAVTViewSessionWithDidBeginBlock___block_invoke;
@@ -1234,7 +1234,7 @@ LABEL_7:
   v12[2] = __79__AVTAvatarAttributeEditorViewController_beginAVTViewSessionWithDidBeginBlock___block_invoke_3;
   v12[3] = &unk_1E7F3AA30;
   objc_copyWeak(&v13, &location);
-  v10 = [v9 sessionWithDidBecomeActiveHandler:v14 tearDownHandler:v12];
+  v10 = [avtViewSessionProvider sessionWithDidBecomeActiveHandler:v14 tearDownHandler:v12];
   [(AVTAvatarAttributeEditorViewController *)self setAvtViewSession:v10];
 
   objc_destroyWeak(&v13);
@@ -1426,63 +1426,63 @@ void __79__AVTAvatarAttributeEditorViewController_beginAVTViewSessionWithDidBegi
   v5[2](v5);
 }
 
-- (void)configureThrottlerForAVTView:(id)a3
+- (void)configureThrottlerForAVTView:(id)view
 {
-  v10 = a3;
+  viewCopy = view;
   if (AVTUIAdaptativeFrameRate())
   {
     v4 = [AVTViewThrottler alloc];
-    v5 = [(AVTAvatarAttributeEditorViewController *)self environment];
-    v6 = [(AVTViewThrottler *)v4 initWithAVTView:v10 environment:v5];
+    environment = [(AVTAvatarAttributeEditorViewController *)self environment];
+    v6 = [(AVTViewThrottler *)v4 initWithAVTView:viewCopy environment:environment];
     [(AVTAvatarAttributeEditorViewController *)self setAvtViewThrottler:v6];
 
-    v7 = [(AVTAvatarAttributeEditorViewController *)self environment];
-    v8 = [v7 deviceResourceManager];
-    v9 = [(AVTAvatarAttributeEditorViewController *)self avtViewThrottler];
-    [v8 registerConsumer:v9];
+    environment2 = [(AVTAvatarAttributeEditorViewController *)self environment];
+    deviceResourceManager = [environment2 deviceResourceManager];
+    avtViewThrottler = [(AVTAvatarAttributeEditorViewController *)self avtViewThrottler];
+    [deviceResourceManager registerConsumer:avtViewThrottler];
   }
 }
 
 - (void)tearDownThrottler
 {
-  v3 = [(AVTAvatarAttributeEditorViewController *)self avtViewThrottler];
+  avtViewThrottler = [(AVTAvatarAttributeEditorViewController *)self avtViewThrottler];
 
-  if (v3)
+  if (avtViewThrottler)
   {
-    v4 = [(AVTAvatarAttributeEditorViewController *)self avtViewThrottler];
-    [v4 unthrottle];
+    avtViewThrottler2 = [(AVTAvatarAttributeEditorViewController *)self avtViewThrottler];
+    [avtViewThrottler2 unthrottle];
 
-    v5 = [(AVTAvatarAttributeEditorViewController *)self environment];
-    v6 = [v5 deviceResourceManager];
-    v7 = [(AVTAvatarAttributeEditorViewController *)self avtViewThrottler];
-    [v6 unregisterConsumer:v7];
+    environment = [(AVTAvatarAttributeEditorViewController *)self environment];
+    deviceResourceManager = [environment deviceResourceManager];
+    avtViewThrottler3 = [(AVTAvatarAttributeEditorViewController *)self avtViewThrottler];
+    [deviceResourceManager unregisterConsumer:avtViewThrottler3];
 
     [(AVTAvatarAttributeEditorViewController *)self setAvtViewThrottler:0];
   }
 }
 
-- (void)configureAVTViewFromSession:(id)a3
+- (void)configureAVTViewFromSession:(id)session
 {
-  v12 = a3;
-  v4 = [v12 avtView];
-  [v4 updateInterfaceOrientation];
+  sessionCopy = session;
+  avtView = [sessionCopy avtView];
+  [avtView updateInterfaceOrientation];
 
   v5 = AVTUIShowTrackingLostReticle_once();
-  v6 = [v12 avtView];
-  [v6 setEnableReticle:v5];
+  avtView2 = [sessionCopy avtView];
+  [avtView2 setEnableReticle:v5];
 
-  v7 = [v12 avtView];
-  [v7 setEnableFaceTracking:1];
+  avtView3 = [sessionCopy avtView];
+  [avtView3 setEnableFaceTracking:1];
 
-  v8 = [(AVTAvatarAttributeEditorViewController *)self attributesContainerView];
-  v9 = [v8 backgroundColor];
-  v10 = [v12 avtView];
-  [v10 setBackgroundColor:v9];
+  attributesContainerView = [(AVTAvatarAttributeEditorViewController *)self attributesContainerView];
+  backgroundColor = [attributesContainerView backgroundColor];
+  avtView4 = [sessionCopy avtView];
+  [avtView4 setBackgroundColor:backgroundColor];
 
   if (AVTUIShowPerfHUD_once())
   {
-    v11 = [v12 avtView];
-    [v11 setShowPerfHUD:1];
+    avtView5 = [sessionCopy avtView];
+    [avtView5 setShowPerfHUD:1];
   }
 }
 
@@ -1490,65 +1490,65 @@ void __79__AVTAvatarAttributeEditorViewController_beginAVTViewSessionWithDidBegi
 {
   if (![(AVTAvatarAttributeEditorViewController *)self shouldHideUserInfoView]&& [(AVTAvatarAttributeEditorViewController *)self allowFacetracking])
   {
-    v3 = [(AVTAvatarAttributeEditorViewController *)self avtViewSessionProvider];
-    v4 = [v3 faceTrackingManager];
-    v10 = [v4 userInfoView];
+    avtViewSessionProvider = [(AVTAvatarAttributeEditorViewController *)self avtViewSessionProvider];
+    faceTrackingManager = [avtViewSessionProvider faceTrackingManager];
+    userInfoView = [faceTrackingManager userInfoView];
 
-    v5 = [(AVTAvatarAttributeEditorViewController *)self currentLayout];
+    currentLayout = [(AVTAvatarAttributeEditorViewController *)self currentLayout];
 
-    if (v5)
+    if (currentLayout)
     {
-      v6 = [(AVTAvatarAttributeEditorViewController *)self currentLayout];
-      [v6 userInfoFrame];
-      [v10 setFrame:?];
+      currentLayout2 = [(AVTAvatarAttributeEditorViewController *)self currentLayout];
+      [currentLayout2 userInfoFrame];
+      [userInfoView setFrame:?];
     }
 
-    v7 = [(AVTAvatarAttributeEditorViewController *)self attributesContainerView];
-    v8 = [v7 backgroundColor];
-    [v10 setContainerBackgroundColor:v8];
+    attributesContainerView = [(AVTAvatarAttributeEditorViewController *)self attributesContainerView];
+    backgroundColor = [attributesContainerView backgroundColor];
+    [userInfoView setContainerBackgroundColor:backgroundColor];
 
-    v9 = [(AVTAvatarAttributeEditorViewController *)self view];
-    [v9 addSubview:v10];
+    view = [(AVTAvatarAttributeEditorViewController *)self view];
+    [view addSubview:userInfoView];
   }
 }
 
-- (void)setupCollapsibleHeaderIfNeededForLayout:(id)a3 withSession:(id)a4
+- (void)setupCollapsibleHeaderIfNeededForLayout:(id)layout withSession:(id)session
 {
-  v17 = a3;
-  v6 = a4;
-  if ((!-[AVTAvatarAttributeEditorViewController allowFacetracking](self, "allowFacetracking") || -[AVTAvatarAttributeEditorViewController allowFacetracking](self, "allowFacetracking") && [v6 isActive]) && objc_msgSend(v17, "supportedLayoutOrientation") == 1)
+  layoutCopy = layout;
+  sessionCopy = session;
+  if ((!-[AVTAvatarAttributeEditorViewController allowFacetracking](self, "allowFacetracking") || -[AVTAvatarAttributeEditorViewController allowFacetracking](self, "allowFacetracking") && [sessionCopy isActive]) && objc_msgSend(layoutCopy, "supportedLayoutOrientation") == 1)
   {
-    v7 = [(AVTAvatarAttributeEditorViewController *)self collapsibleHeaderController];
+    collapsibleHeaderController = [(AVTAvatarAttributeEditorViewController *)self collapsibleHeaderController];
 
-    if (!v7)
+    if (!collapsibleHeaderController)
     {
       v8 = [AVTCollapsibleHeaderController alloc];
-      v9 = [(AVTAvatarAttributeEditorViewController *)self attributesCollectionView];
-      v10 = [(AVTAvatarAttributeEditorViewController *)self headerContainerView];
-      v11 = [(AVTCollapsibleHeaderController *)v8 initWithScrollView:v9 headerView:v10 minHeight:0.0 maxHeight:0.0];
+      attributesCollectionView = [(AVTAvatarAttributeEditorViewController *)self attributesCollectionView];
+      headerContainerView = [(AVTAvatarAttributeEditorViewController *)self headerContainerView];
+      v11 = [(AVTCollapsibleHeaderController *)v8 initWithScrollView:attributesCollectionView headerView:headerContainerView minHeight:0.0 maxHeight:0.0];
       [(AVTAvatarAttributeEditorViewController *)self setCollapsibleHeaderController:v11];
 
-      v12 = [(AVTAvatarAttributeEditorViewController *)self collapsibleHeaderController];
-      [v12 setShouldOnlyExpandWhenScrollingAtEdge:1];
+      collapsibleHeaderController2 = [(AVTAvatarAttributeEditorViewController *)self collapsibleHeaderController];
+      [collapsibleHeaderController2 setShouldOnlyExpandWhenScrollingAtEdge:1];
 
-      v13 = [(AVTAvatarAttributeEditorViewController *)self collapsibleHeaderController];
-      [v13 setDelegate:self];
+      collapsibleHeaderController3 = [(AVTAvatarAttributeEditorViewController *)self collapsibleHeaderController];
+      [collapsibleHeaderController3 setDelegate:self];
 
-      [v17 groupDialContainerFrame];
+      [layoutCopy groupDialContainerFrame];
       v15 = v14;
-      v16 = [(AVTAvatarAttributeEditorViewController *)self collapsibleHeaderController];
-      [v16 setAdditionalTopContentInset:v15];
+      collapsibleHeaderController4 = [(AVTAvatarAttributeEditorViewController *)self collapsibleHeaderController];
+      [collapsibleHeaderController4 setAdditionalTopContentInset:v15];
 
       [(AVTAvatarAttributeEditorViewController *)self updateCollapsibleHeaderHeightConstraintsAnimated:0];
     }
   }
 }
 
-- (void)updateCollapsibleHeaderHeightConstraintsAnimated:(BOOL)a3
+- (void)updateCollapsibleHeaderHeightConstraintsAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(AVTAvatarAttributeEditorViewController *)self environment];
-  if ([v5 deviceIsPad])
+  animatedCopy = animated;
+  environment = [(AVTAvatarAttributeEditorViewController *)self environment];
+  if ([environment deviceIsPad])
   {
 
 LABEL_4:
@@ -1556,10 +1556,10 @@ LABEL_4:
     goto LABEL_6;
   }
 
-  v6 = [(AVTAvatarAttributeEditorViewController *)self environment];
-  v7 = [v6 deviceIsMac];
+  environment2 = [(AVTAvatarAttributeEditorViewController *)self environment];
+  deviceIsMac = [environment2 deviceIsMac];
 
-  if (v7)
+  if (deviceIsMac)
   {
     goto LABEL_4;
   }
@@ -1567,66 +1567,66 @@ LABEL_4:
   v8 = 0x4064000000000000;
 LABEL_6:
   v9 = *&v8;
-  v10 = [(AVTAvatarAttributeEditorViewController *)self currentLayout];
-  [v10 avatarContainerFrame];
+  currentLayout = [(AVTAvatarAttributeEditorViewController *)self currentLayout];
+  [currentLayout avatarContainerFrame];
   Height = CGRectGetHeight(v14);
 
-  v12 = [(AVTAvatarAttributeEditorViewController *)self collapsibleHeaderController];
-  [v12 updateMinHeight:v3 maxHeight:v9 animated:Height];
+  collapsibleHeaderController = [(AVTAvatarAttributeEditorViewController *)self collapsibleHeaderController];
+  [collapsibleHeaderController updateMinHeight:animatedCopy maxHeight:v9 animated:Height];
 }
 
-- (void)setupTapGestureForView:(id)a3
+- (void)setupTapGestureForView:(id)view
 {
-  v4 = a3;
-  v5 = [(AVTAvatarAttributeEditorViewController *)self tapGestureRecognizer];
+  viewCopy = view;
+  tapGestureRecognizer = [(AVTAvatarAttributeEditorViewController *)self tapGestureRecognizer];
 
-  if (!v5)
+  if (!tapGestureRecognizer)
   {
     v6 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:self action:sel_didTapAvatarView_];
     [(AVTAvatarAttributeEditorViewController *)self setTapGestureRecognizer:v6];
   }
 
-  v7 = [(AVTAvatarAttributeEditorViewController *)self tapGestureRecognizer];
-  [v4 addGestureRecognizer:v7];
+  tapGestureRecognizer2 = [(AVTAvatarAttributeEditorViewController *)self tapGestureRecognizer];
+  [viewCopy addGestureRecognizer:tapGestureRecognizer2];
 }
 
 - (void)tearDownCollapsibleHeaderIfNeeded
 {
-  v3 = [(AVTAvatarAttributeEditorViewController *)self collapsibleHeaderController];
+  collapsibleHeaderController = [(AVTAvatarAttributeEditorViewController *)self collapsibleHeaderController];
 
-  if (v3)
+  if (collapsibleHeaderController)
   {
-    v4 = [(AVTAvatarAttributeEditorViewController *)self collapsibleHeaderController];
-    v7 = [v4 headerView];
+    collapsibleHeaderController2 = [(AVTAvatarAttributeEditorViewController *)self collapsibleHeaderController];
+    headerView = [collapsibleHeaderController2 headerView];
 
     [(AVTAvatarAttributeEditorViewController *)self setCollapsibleHeaderController:0];
-    v5 = [(AVTAvatarAttributeEditorViewController *)self attributesCollectionView];
-    [v5 setDelegate:self];
+    attributesCollectionView = [(AVTAvatarAttributeEditorViewController *)self attributesCollectionView];
+    [attributesCollectionView setDelegate:self];
 
-    v6 = [(AVTAvatarAttributeEditorViewController *)self currentLayout];
-    [v6 avatarContainerFrame];
-    [v7 setFrame:?];
+    currentLayout = [(AVTAvatarAttributeEditorViewController *)self currentLayout];
+    [currentLayout avatarContainerFrame];
+    [headerView setFrame:?];
   }
 }
 
-- (void)didTapAvatarView:(id)a3
+- (void)didTapAvatarView:(id)view
 {
-  v4 = [(AVTAvatarAttributeEditorViewController *)self collapsibleHeaderController];
-  [v4 expandAnimated:1];
+  collapsibleHeaderController = [(AVTAvatarAttributeEditorViewController *)self collapsibleHeaderController];
+  [collapsibleHeaderController expandAnimated:1];
 
-  v6 = [(AVTAvatarAttributeEditorViewController *)self avtViewSessionProvider];
-  v5 = [v6 faceTrackingManager];
-  [v5 resumeFaceTrackingIfNeededAnimated:1];
+  avtViewSessionProvider = [(AVTAvatarAttributeEditorViewController *)self avtViewSessionProvider];
+  faceTrackingManager = [avtViewSessionProvider faceTrackingManager];
+  [faceTrackingManager resumeFaceTrackingIfNeededAnimated:1];
 }
 
 - (id)createAlphaAssetsLabel
 {
   v2 = [objc_alloc(MEMORY[0x1E69DCC10]) initWithFrame:{0.0, 10.0, 300.0, 30.0}];
-  v3 = [MEMORY[0x1E69DC888] clearColor];
-  [v2 setBackgroundColor:v3];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [v2 setBackgroundColor:clearColor];
 
-  v4 = [MEMORY[0x1E69DC888] systemRedColor];
-  [v2 setTextColor:v4];
+  systemRedColor = [MEMORY[0x1E69DC888] systemRedColor];
+  [v2 setTextColor:systemRedColor];
 
   [v2 setText:@"Warning: contains new and/or updated visuals. \nUse with disclosed users only."];
   v5 = +[AVTUIFontRepository groupDialLabelFont];
@@ -1648,10 +1648,10 @@ LABEL_6:
   [(AVTAvatarAttributeEditorViewController *)self updateLayoutAttributes];
 }
 
-- (void)contentSizeCategoryDidChange:(id)a3
+- (void)contentSizeCategoryDidChange:(id)change
 {
-  v4 = [(AVTAvatarAttributeEditorViewController *)self groupDial];
-  [v4 reloadData];
+  groupDial = [(AVTAvatarAttributeEditorViewController *)self groupDial];
+  [groupDial reloadData];
 
   [(AVTAvatarAttributeEditorViewController *)self reloadCollectionViewDataWithCompletion:0];
 
@@ -1660,24 +1660,24 @@ LABEL_6:
 
 - (void)updateLayoutAttributes
 {
-  v3 = [(AVTAvatarAttributeEditorViewController *)self view];
-  [AVTShadowView defaultHeightForSuperview:v3];
+  view = [(AVTAvatarAttributeEditorViewController *)self view];
+  [AVTShadowView defaultHeightForSuperview:view];
   v5 = v4;
 
-  v6 = [(AVTAvatarAttributeEditorViewController *)self headerMaskingView];
-  [v6 bounds];
+  headerMaskingView = [(AVTAvatarAttributeEditorViewController *)self headerMaskingView];
+  [headerMaskingView bounds];
   v8 = v7 - v5;
-  v9 = [(AVTAvatarAttributeEditorViewController *)self headerMaskingView];
-  [v9 bounds];
+  headerMaskingView2 = [(AVTAvatarAttributeEditorViewController *)self headerMaskingView];
+  [headerMaskingView2 bounds];
   v11 = v10;
-  v12 = [(AVTAvatarAttributeEditorViewController *)self shadowView];
-  [v12 setFrame:{0.0, v8, v11, v5}];
+  shadowView = [(AVTAvatarAttributeEditorViewController *)self shadowView];
+  [shadowView setFrame:{0.0, v8, v11, v5}];
 
-  v13 = [(AVTAvatarAttributeEditorViewController *)self shadowView];
-  [v13 setAutoresizingMask:10];
+  shadowView2 = [(AVTAvatarAttributeEditorViewController *)self shadowView];
+  [shadowView2 setAutoresizingMask:10];
 
-  v14 = [(AVTAvatarAttributeEditorViewController *)self view];
-  [v14 bounds];
+  view2 = [(AVTAvatarAttributeEditorViewController *)self view];
+  [view2 bounds];
   v16 = v15;
   v18 = v17;
   [(AVTAvatarAttributeEditorViewController *)self adjustedSafeAreaInsets];
@@ -1685,14 +1685,14 @@ LABEL_6:
   v22 = v21;
   v24 = v23;
   v26 = v25;
-  v27 = [(AVTAvatarAttributeEditorViewController *)self currentLayout];
-  [v27 userInfoViewHeight];
+  currentLayout = [(AVTAvatarAttributeEditorViewController *)self currentLayout];
+  [currentLayout userInfoViewHeight];
   v29 = v28;
-  v30 = [(AVTAvatarAttributeEditorViewController *)self traitCollection];
-  v31 = [v30 layoutDirection] == 1;
-  v32 = [(AVTAvatarAttributeEditorViewController *)self environment];
+  traitCollection = [(AVTAvatarAttributeEditorViewController *)self traitCollection];
+  v31 = [traitCollection layoutDirection] == 1;
+  environment = [(AVTAvatarAttributeEditorViewController *)self environment];
   [(AVTAvatarAttributeEditorViewController *)self maxGroupLabelWidth];
-  v69 = [AVTAvatarAttributeEditorLayoutProvider defaultLayoutInContainerOfSize:v31 insets:v32 userInfoViewHeight:v16 RTL:v18 environment:v20 maxGroupLabelWidth:v22, v24, v26, v29, v33];
+  v69 = [AVTAvatarAttributeEditorLayoutProvider defaultLayoutInContainerOfSize:v31 insets:environment userInfoViewHeight:v16 RTL:v18 environment:v20 maxGroupLabelWidth:v22, v24, v26, v29, v33];
 
   v34 = +[AVTUIFontRepository groupDialBoldLabelFont];
   [v34 _scaledValueForValue:18.0];
@@ -1706,28 +1706,28 @@ LABEL_6:
     v36 = 30.0;
   }
 
-  v37 = [(AVTAvatarAttributeEditorViewController *)self groupDial];
-  [v37 setContentPadding:v36];
+  groupDial = [(AVTAvatarAttributeEditorViewController *)self groupDial];
+  [groupDial setContentPadding:v36];
 
   [v69 groupDialContainerFrame];
   v39 = v38;
-  v40 = [(AVTAvatarAttributeEditorViewController *)self collapsibleHeaderController];
-  [v40 setAdditionalTopContentInset:v39];
+  collapsibleHeaderController = [(AVTAvatarAttributeEditorViewController *)self collapsibleHeaderController];
+  [collapsibleHeaderController setAdditionalTopContentInset:v39];
 
   [v69 containerSize];
   v42 = v41;
   v44 = v43;
-  v45 = [(AVTAvatarAttributeEditorViewController *)self currentLayout];
-  [v45 containerSize];
+  currentLayout2 = [(AVTAvatarAttributeEditorViewController *)self currentLayout];
+  [currentLayout2 containerSize];
   if (v42 != v47 || v44 != v46)
   {
     goto LABEL_15;
   }
 
-  v48 = [v69 contentSizeCategory];
-  v49 = [(AVTAvatarAttributeEditorViewController *)self currentLayout];
-  v50 = [v49 contentSizeCategory];
-  if (![v48 isEqualToString:v50])
+  contentSizeCategory = [v69 contentSizeCategory];
+  currentLayout3 = [(AVTAvatarAttributeEditorViewController *)self currentLayout];
+  contentSizeCategory2 = [currentLayout3 contentSizeCategory];
+  if (![contentSizeCategory isEqualToString:contentSizeCategory2])
   {
 LABEL_14:
 
@@ -1740,8 +1740,8 @@ LABEL_15:
   v54 = v53;
   v56 = v55;
   v58 = v57;
-  v59 = [(AVTAvatarAttributeEditorViewController *)self currentLayout];
-  [v59 edgeInsets];
+  currentLayout4 = [(AVTAvatarAttributeEditorViewController *)self currentLayout];
+  [currentLayout4 edgeInsets];
   if (v54 != v63 || v52 != v60 || v58 != v62 || v56 != v61)
   {
 
@@ -1750,8 +1750,8 @@ LABEL_15:
 
   [v69 userInfoViewHeight];
   v65 = v64;
-  v66 = [(AVTAvatarAttributeEditorViewController *)self currentLayout];
-  [v66 userInfoViewHeight];
+  currentLayout5 = [(AVTAvatarAttributeEditorViewController *)self currentLayout];
+  [currentLayout5 userInfoViewHeight];
   v68 = v67;
 
   if (v65 != v68)
@@ -1768,10 +1768,10 @@ LABEL_16:
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v2 = [(AVTAvatarAttributeEditorViewController *)self dataSource];
-  v3 = [v2 groupPickerItemsForCategories];
+  dataSource = [(AVTAvatarAttributeEditorViewController *)self dataSource];
+  groupPickerItemsForCategories = [dataSource groupPickerItemsForCategories];
 
-  v4 = [v3 countByEnumeratingWithState:&v15 objects:v21 count:16];
+  v4 = [groupPickerItemsForCategories countByEnumeratingWithState:&v15 objects:v21 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1784,22 +1784,22 @@ LABEL_16:
       {
         if (*v16 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(groupPickerItemsForCategories);
         }
 
-        v10 = [*(*(&v15 + 1) + 8 * i) localizedName];
+        localizedName = [*(*(&v15 + 1) + 8 * i) localizedName];
         v11 = +[AVTUIFontRepository groupListLabelFont];
         v19 = v7;
         v20 = v11;
         v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v20 forKeys:&v19 count:1];
-        [v10 sizeWithAttributes:v12];
+        [localizedName sizeWithAttributes:v12];
         if (v8 < v13)
         {
           v8 = v13;
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v15 objects:v21 count:16];
+      v5 = [groupPickerItemsForCategories countByEnumeratingWithState:&v15 objects:v21 count:16];
     }
 
     while (v5);
@@ -1813,51 +1813,51 @@ LABEL_16:
   return ceil(v8);
 }
 
-- (void)applyLayout:(id)a3 layoutAvatarView:(BOOL)a4 recalculateOffsetIfNeeded:(BOOL)a5
+- (void)applyLayout:(id)layout layoutAvatarView:(BOOL)view recalculateOffsetIfNeeded:(BOOL)needed
 {
-  v5 = a5;
-  v6 = a4;
-  v168 = a3;
-  [(AVTAvatarAttributeEditorViewController *)self setCurrentLayout:v168];
-  [v168 attributesContentViewFrame];
+  neededCopy = needed;
+  viewCopy = view;
+  layoutCopy = layout;
+  [(AVTAvatarAttributeEditorViewController *)self setCurrentLayout:layoutCopy];
+  [layoutCopy attributesContentViewFrame];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
-  v16 = [(AVTAvatarAttributeEditorViewController *)self attributesContainerView];
-  [v16 setFrame:{v9, v11, v13, v15}];
+  attributesContainerView = [(AVTAvatarAttributeEditorViewController *)self attributesContainerView];
+  [attributesContainerView setFrame:{v9, v11, v13, v15}];
 
   [(AVTAvatarAttributeEditorViewController *)self setupGroupSelectorIfNeeded];
-  [v168 groupDialContainerFrame];
+  [layoutCopy groupDialContainerFrame];
   v18 = v17;
   v20 = v19;
   v22 = v21;
   v24 = v23;
-  v25 = [(AVTAvatarAttributeEditorViewController *)self groupDialContainerView];
-  [v25 setFrame:{v18, v20, v22, v24}];
+  groupDialContainerView = [(AVTAvatarAttributeEditorViewController *)self groupDialContainerView];
+  [groupDialContainerView setFrame:{v18, v20, v22, v24}];
 
-  v26 = [v168 showSideGroupPicker];
-  v27 = [(AVTAvatarAttributeEditorViewController *)self groupDialContainerView];
-  [v27 setHidden:v26];
+  showSideGroupPicker = [layoutCopy showSideGroupPicker];
+  groupDialContainerView2 = [(AVTAvatarAttributeEditorViewController *)self groupDialContainerView];
+  [groupDialContainerView2 setHidden:showSideGroupPicker];
 
-  [v168 sideGroupContainerFrame];
+  [layoutCopy sideGroupContainerFrame];
   v29 = v28;
   v31 = v30;
   v33 = v32;
   v35 = v34;
-  v36 = [(AVTAvatarAttributeEditorViewController *)self sideGroupContainerView];
-  [v36 setFrame:{v29, v31, v33, v35}];
+  sideGroupContainerView = [(AVTAvatarAttributeEditorViewController *)self sideGroupContainerView];
+  [sideGroupContainerView setFrame:{v29, v31, v33, v35}];
 
-  LODWORD(v36) = [v168 showSideGroupPicker];
-  v37 = [(AVTAvatarAttributeEditorViewController *)self sideGroupContainerView];
-  [v37 setHidden:v36 ^ 1];
+  LODWORD(sideGroupContainerView) = [layoutCopy showSideGroupPicker];
+  sideGroupContainerView2 = [(AVTAvatarAttributeEditorViewController *)self sideGroupContainerView];
+  [sideGroupContainerView2 setHidden:sideGroupContainerView ^ 1];
 
   if (!-[AVTAvatarAttributeEditorViewController allowFacetracking](self, "allowFacetracking") || (-[AVTAvatarAttributeEditorViewController avtViewSession](self, "avtViewSession"), v38 = objc_claimAutoreleasedReturnValue(), v39 = [v38 isActive], v38, v39))
   {
-    if ([v168 supportedLayoutOrientation] == 1)
+    if ([layoutCopy supportedLayoutOrientation] == 1)
     {
-      v40 = [(AVTAvatarAttributeEditorViewController *)self avtViewSession];
-      [(AVTAvatarAttributeEditorViewController *)self setupCollapsibleHeaderIfNeededForLayout:v168 withSession:v40];
+      avtViewSession = [(AVTAvatarAttributeEditorViewController *)self avtViewSession];
+      [(AVTAvatarAttributeEditorViewController *)self setupCollapsibleHeaderIfNeededForLayout:layoutCopy withSession:avtViewSession];
     }
 
     else
@@ -1866,101 +1866,101 @@ LABEL_16:
       [(AVTAvatarAttributeEditorViewController *)self tearDownCollapsibleHeaderIfNeeded];
     }
 
-    [v168 avatarContainerFrame];
+    [layoutCopy avatarContainerFrame];
     v42 = v41;
     v44 = v43;
     v46 = v45;
     v48 = v47;
-    v49 = [(AVTAvatarAttributeEditorViewController *)self headerContainerView];
-    [v49 setFrame:{v42, v44, v46, v48}];
+    headerContainerView = [(AVTAvatarAttributeEditorViewController *)self headerContainerView];
+    [headerContainerView setFrame:{v42, v44, v46, v48}];
 
     [(AVTAvatarAttributeEditorViewController *)self setTransitioningContainerFrame];
-    v50 = [(AVTAvatarAttributeEditorViewController *)self headerContainerView];
-    [v50 bounds];
+    headerContainerView2 = [(AVTAvatarAttributeEditorViewController *)self headerContainerView];
+    [headerContainerView2 bounds];
     v52 = v51;
     v54 = v53;
     v56 = v55;
     v58 = v57;
-    v59 = [(AVTAvatarAttributeEditorViewController *)self bodyEditorHeaderViewController];
-    v60 = [v59 view];
-    [v60 setFrame:{v52, v54, v56, v58}];
+    bodyEditorHeaderViewController = [(AVTAvatarAttributeEditorViewController *)self bodyEditorHeaderViewController];
+    view = [bodyEditorHeaderViewController view];
+    [view setFrame:{v52, v54, v56, v58}];
 
-    [v168 avatarContainerAlpha];
+    [layoutCopy avatarContainerAlpha];
     v62 = v61;
-    v63 = [(AVTAvatarAttributeEditorViewController *)self transitioningContainer];
-    [v63 setAlpha:v62];
+    transitioningContainer = [(AVTAvatarAttributeEditorViewController *)self transitioningContainer];
+    [transitioningContainer setAlpha:v62];
 
-    if (v6)
+    if (viewCopy)
     {
-      v64 = [(AVTAvatarAttributeEditorViewController *)self headerContainerView];
-      [v64 layoutIfNeeded];
+      headerContainerView3 = [(AVTAvatarAttributeEditorViewController *)self headerContainerView];
+      [headerContainerView3 layoutIfNeeded];
 
-      v65 = [(AVTAvatarAttributeEditorViewController *)self transitioningContainer];
-      [v65 layoutIfNeeded];
+      transitioningContainer2 = [(AVTAvatarAttributeEditorViewController *)self transitioningContainer];
+      [transitioningContainer2 layoutIfNeeded];
 
-      v66 = [(AVTAvatarAttributeEditorViewController *)self bodyEditorHeaderViewController];
-      v67 = [v66 view];
-      [v67 layoutIfNeeded];
+      bodyEditorHeaderViewController2 = [(AVTAvatarAttributeEditorViewController *)self bodyEditorHeaderViewController];
+      view2 = [bodyEditorHeaderViewController2 view];
+      [view2 layoutIfNeeded];
     }
 
     [(AVTAvatarAttributeEditorViewController *)self applyUserInfoViewLayout];
   }
 
   [(AVTAvatarAttributeEditorViewController *)self updateAlphaAssetsLabelFrameIfNeeded];
-  v68 = [(AVTAvatarAttributeEditorViewController *)self collapsibleHeaderController];
-  [v68 setShouldResizeHeaderForScrolling:0];
+  collapsibleHeaderController = [(AVTAvatarAttributeEditorViewController *)self collapsibleHeaderController];
+  [collapsibleHeaderController setShouldResizeHeaderForScrolling:0];
 
-  v69 = [(AVTAvatarAttributeEditorViewController *)self attributesContainerView];
-  [v69 bounds];
+  attributesContainerView2 = [(AVTAvatarAttributeEditorViewController *)self attributesContainerView];
+  [attributesContainerView2 bounds];
   v71 = v70;
   v73 = v72;
   v75 = v74;
   v77 = v76;
-  v78 = [(AVTAvatarAttributeEditorViewController *)self attributesCollectionView];
-  [v78 setFrame:{v71, v73, v75, v77}];
+  attributesCollectionView = [(AVTAvatarAttributeEditorViewController *)self attributesCollectionView];
+  [attributesCollectionView setFrame:{v71, v73, v75, v77}];
 
-  [v168 headerMaskingViewAlpha];
+  [layoutCopy headerMaskingViewAlpha];
   v80 = v79;
-  v81 = [(AVTAvatarAttributeEditorViewController *)self headerMaskingView];
-  [v81 setAlpha:v80];
+  headerMaskingView = [(AVTAvatarAttributeEditorViewController *)self headerMaskingView];
+  [headerMaskingView setAlpha:v80];
 
-  [v168 headerMaskingViewFrame];
+  [layoutCopy headerMaskingViewFrame];
   v83 = v82;
   v85 = v84;
   v87 = v86;
   v89 = v88;
-  v90 = [(AVTAvatarAttributeEditorViewController *)self headerMaskingView];
-  [v90 setFrame:{v83, v85, v87, v89}];
+  headerMaskingView2 = [(AVTAvatarAttributeEditorViewController *)self headerMaskingView];
+  [headerMaskingView2 setFrame:{v83, v85, v87, v89}];
 
-  [v168 verticalRuleAlpha];
+  [layoutCopy verticalRuleAlpha];
   v92 = v91;
-  v93 = [(AVTAvatarAttributeEditorViewController *)self verticleRuleContainer];
-  [v93 setAlpha:v92];
+  verticleRuleContainer = [(AVTAvatarAttributeEditorViewController *)self verticleRuleContainer];
+  [verticleRuleContainer setAlpha:v92];
 
-  [v168 verticalRuleFrame];
+  [layoutCopy verticalRuleFrame];
   v95 = v94;
   v97 = v96;
   v99 = v98;
   v101 = v100;
-  v102 = [(AVTAvatarAttributeEditorViewController *)self verticleRuleContainer];
-  [v102 setFrame:{v95, v97, v99, v101}];
+  verticleRuleContainer2 = [(AVTAvatarAttributeEditorViewController *)self verticleRuleContainer];
+  [verticleRuleContainer2 setFrame:{v95, v97, v99, v101}];
 
-  v103 = [(AVTAvatarAttributeEditorViewController *)self verticleRuleContainer];
-  [v103 bounds];
+  verticleRuleContainer3 = [(AVTAvatarAttributeEditorViewController *)self verticleRuleContainer];
+  [verticleRuleContainer3 bounds];
   v105 = v104;
   v107 = v106;
   v109 = v108;
   v111 = v110;
-  v112 = [(AVTAvatarAttributeEditorViewController *)self verticleRule];
-  [v112 setFrame:{v105, v107, v109, v111}];
+  verticleRule = [(AVTAvatarAttributeEditorViewController *)self verticleRule];
+  [verticleRule setFrame:{v105, v107, v109, v111}];
 
-  v113 = [(AVTAvatarAttributeEditorViewController *)self attributesCollectionView];
-  [v113 contentInset];
+  attributesCollectionView2 = [(AVTAvatarAttributeEditorViewController *)self attributesCollectionView];
+  [attributesCollectionView2 contentInset];
   v115 = v114;
   v117 = v116;
   v119 = v118;
   v121 = v120;
-  [v168 attributesContentViewInsets];
+  [layoutCopy attributesContentViewInsets];
   if (v117 == v125 && v115 == v122 && v121 == v124)
   {
     v126 = v123;
@@ -1975,66 +1975,66 @@ LABEL_16:
   {
   }
 
-  v127 = [(AVTAvatarAttributeEditorViewController *)self attributesCollectionView];
-  [v127 contentInset];
+  attributesCollectionView3 = [(AVTAvatarAttributeEditorViewController *)self attributesCollectionView];
+  [attributesCollectionView3 contentInset];
   v129 = v128;
 
-  [v168 attributesContentViewInsets];
+  [layoutCopy attributesContentViewInsets];
   v131 = v130;
   v133 = v132;
   v135 = v134;
   v137 = v136;
-  v138 = [(AVTAvatarAttributeEditorViewController *)self attributesCollectionView];
-  [v138 setContentInset:{v131, v133, v135, v137}];
+  attributesCollectionView4 = [(AVTAvatarAttributeEditorViewController *)self attributesCollectionView];
+  [attributesCollectionView4 setContentInset:{v131, v133, v135, v137}];
 
-  [v168 attributesContentViewScrollIndicatorInsets];
+  [layoutCopy attributesContentViewScrollIndicatorInsets];
   v140 = v139;
   v142 = v141;
   v144 = v143;
   v146 = v145;
-  v147 = [(AVTAvatarAttributeEditorViewController *)self attributesCollectionView];
-  [v147 setScrollIndicatorInsets:{v140, v142, v144, v146}];
+  attributesCollectionView5 = [(AVTAvatarAttributeEditorViewController *)self attributesCollectionView];
+  [attributesCollectionView5 setScrollIndicatorInsets:{v140, v142, v144, v146}];
 
-  if (v5)
+  if (neededCopy)
   {
-    v148 = [(AVTAvatarAttributeEditorViewController *)self attributesCollectionView];
-    [v148 contentOffset];
+    attributesCollectionView6 = [(AVTAvatarAttributeEditorViewController *)self attributesCollectionView];
+    [attributesCollectionView6 contentOffset];
     v150 = v149;
     v152 = v151;
 
-    v153 = [(AVTAvatarAttributeEditorViewController *)self attributesCollectionView];
-    [v153 contentInset];
+    attributesCollectionView7 = [(AVTAvatarAttributeEditorViewController *)self attributesCollectionView];
+    [attributesCollectionView7 contentInset];
     v155 = v129 - v154;
-    v156 = [(AVTAvatarAttributeEditorViewController *)self currentLayout];
-    [v156 userInfoViewHeight];
+    currentLayout = [(AVTAvatarAttributeEditorViewController *)self currentLayout];
+    [currentLayout userInfoViewHeight];
     v158 = v155 + v157;
     +[AVTUserInfoView textVerticalPadding];
     v160 = ceil(v158 + v159);
 
     if (fabs(v160) > 0.00000011920929)
     {
-      v161 = [(AVTAvatarAttributeEditorViewController *)self attributesCollectionView];
-      [v161 setContentOffset:{v150, v152 + v160}];
+      attributesCollectionView8 = [(AVTAvatarAttributeEditorViewController *)self attributesCollectionView];
+      [attributesCollectionView8 setContentOffset:{v150, v152 + v160}];
     }
   }
 
 LABEL_18:
-  v162 = [(AVTAvatarAttributeEditorViewController *)self collapsibleHeaderController];
-  [v162 setShouldResizeHeaderForScrolling:1];
+  collapsibleHeaderController2 = [(AVTAvatarAttributeEditorViewController *)self collapsibleHeaderController];
+  [collapsibleHeaderController2 setShouldResizeHeaderForScrolling:1];
 
   [(AVTAvatarAttributeEditorViewController *)self updateCollapsibleHeaderHeightConstraintsAnimated:0];
-  v163 = [(AVTAvatarAttributeEditorViewController *)self collapsibleHeaderController];
-  [v163 updateInsetsIfNeeded];
+  collapsibleHeaderController3 = [(AVTAvatarAttributeEditorViewController *)self collapsibleHeaderController];
+  [collapsibleHeaderController3 updateInsetsIfNeeded];
 
-  v164 = [(AVTAvatarAttributeEditorViewController *)self delegate];
+  delegate = [(AVTAvatarAttributeEditorViewController *)self delegate];
 
-  v166 = v168;
-  if (v164)
+  v166 = layoutCopy;
+  if (delegate)
   {
-    v167 = [(AVTAvatarAttributeEditorViewController *)self delegate];
-    [v167 attributeEditor:self didUpdateVisibleLayout:v168];
+    delegate2 = [(AVTAvatarAttributeEditorViewController *)self delegate];
+    [delegate2 attributeEditor:self didUpdateVisibleLayout:layoutCopy];
 
-    v166 = v168;
+    v166 = layoutCopy;
   }
 
   MEMORY[0x1EEE66BB8](v165, v166);
@@ -2044,39 +2044,39 @@ LABEL_18:
 {
   if ([(AVTAvatarAttributeEditorViewController *)self allowFacetracking]&& ![(AVTAvatarAttributeEditorViewController *)self shouldHideUserInfoView])
   {
-    v3 = [(AVTAvatarAttributeEditorViewController *)self currentLayout];
-    [v3 userInfoFrame];
+    currentLayout = [(AVTAvatarAttributeEditorViewController *)self currentLayout];
+    [currentLayout userInfoFrame];
     v5 = v4;
     v7 = v6;
     v9 = v8;
     v11 = v10;
 
-    v12 = [(AVTAvatarAttributeEditorViewController *)self collapsibleHeaderController];
-    [v12 maxHeight];
+    collapsibleHeaderController = [(AVTAvatarAttributeEditorViewController *)self collapsibleHeaderController];
+    [collapsibleHeaderController maxHeight];
     v14 = v13;
-    v15 = [(AVTAvatarAttributeEditorViewController *)self collapsibleHeaderController];
-    [v15 currentHeightForHeader];
+    collapsibleHeaderController2 = [(AVTAvatarAttributeEditorViewController *)self collapsibleHeaderController];
+    [collapsibleHeaderController2 currentHeightForHeader];
     v17 = v14 - v16;
 
-    v20 = [(AVTAvatarAttributeEditorViewController *)self avtViewSessionProvider];
-    v18 = [v20 faceTrackingManager];
-    v19 = [v18 userInfoView];
-    [v19 setFrame:{v5, v7 - v17, v9, v11}];
+    avtViewSessionProvider = [(AVTAvatarAttributeEditorViewController *)self avtViewSessionProvider];
+    faceTrackingManager = [avtViewSessionProvider faceTrackingManager];
+    userInfoView = [faceTrackingManager userInfoView];
+    [userInfoView setFrame:{v5, v7 - v17, v9, v11}];
   }
 }
 
 - (id)visibleLayout
 {
-  v3 = [(AVTAvatarAttributeEditorViewController *)self transitioningContainer];
-  [v3 frame];
+  transitioningContainer = [(AVTAvatarAttributeEditorViewController *)self transitioningContainer];
+  [transitioningContainer frame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
   v12 = [AVTAvatarAttributeEditorOverridingLayout alloc];
-  v13 = [(AVTAvatarAttributeEditorViewController *)self currentLayout];
-  v14 = [(AVTAvatarAttributeEditorOverridingLayout *)v12 initWithLayout:v13];
+  currentLayout = [(AVTAvatarAttributeEditorViewController *)self currentLayout];
+  v14 = [(AVTAvatarAttributeEditorOverridingLayout *)v12 initWithLayout:currentLayout];
 
   [(AVTAvatarAttributeEditorOverridingLayout *)v14 setAvatarContainerFrame:v5, v7, v9, v11];
 
@@ -2085,60 +2085,60 @@ LABEL_18:
 
 - (void)createVerticleRuleIfNeeded
 {
-  v3 = [(AVTAvatarAttributeEditorViewController *)self verticleRule];
+  verticleRule = [(AVTAvatarAttributeEditorViewController *)self verticleRule];
 
-  if (!v3)
+  if (!verticleRule)
   {
     v4 = objc_alloc(MEMORY[0x1E69DD250]);
     v5 = [v4 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
     [(AVTAvatarAttributeEditorViewController *)self setVerticleRuleContainer:v5];
 
-    v6 = [(AVTAvatarAttributeEditorViewController *)self currentLayout];
-    [v6 verticalRuleAlpha];
+    currentLayout = [(AVTAvatarAttributeEditorViewController *)self currentLayout];
+    [currentLayout verticalRuleAlpha];
     v8 = v7;
-    v9 = [(AVTAvatarAttributeEditorViewController *)self verticleRuleContainer];
-    [v9 setAlpha:v8];
+    verticleRuleContainer = [(AVTAvatarAttributeEditorViewController *)self verticleRuleContainer];
+    [verticleRuleContainer setAlpha:v8];
 
-    v10 = [MEMORY[0x1E6979398] layer];
-    [(AVTAvatarAttributeEditorViewController *)self setVerticleRule:v10];
+    layer = [MEMORY[0x1E6979398] layer];
+    [(AVTAvatarAttributeEditorViewController *)self setVerticleRule:layer];
 
     v11 = [MEMORY[0x1E69DC888] colorNamed:@"verticalRuleColor"];
-    v12 = [v11 CGColor];
-    v13 = [(AVTAvatarAttributeEditorViewController *)self verticleRule];
-    [v13 setBackgroundColor:v12];
+    cGColor = [v11 CGColor];
+    verticleRule2 = [(AVTAvatarAttributeEditorViewController *)self verticleRule];
+    [verticleRule2 setBackgroundColor:cGColor];
 
-    v14 = [(AVTAvatarAttributeEditorViewController *)self verticleRuleContainer];
-    v15 = [v14 layer];
-    v16 = [(AVTAvatarAttributeEditorViewController *)self verticleRule];
-    [v15 addSublayer:v16];
+    verticleRuleContainer2 = [(AVTAvatarAttributeEditorViewController *)self verticleRuleContainer];
+    layer2 = [verticleRuleContainer2 layer];
+    verticleRule3 = [(AVTAvatarAttributeEditorViewController *)self verticleRule];
+    [layer2 addSublayer:verticleRule3];
 
-    v18 = [(AVTAvatarAttributeEditorViewController *)self attributesContainerView];
-    v17 = [(AVTAvatarAttributeEditorViewController *)self verticleRuleContainer];
-    [v18 addSubview:v17];
+    attributesContainerView = [(AVTAvatarAttributeEditorViewController *)self attributesContainerView];
+    verticleRuleContainer3 = [(AVTAvatarAttributeEditorViewController *)self verticleRuleContainer];
+    [attributesContainerView addSubview:verticleRuleContainer3];
   }
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v27.receiver = self;
   v27.super_class = AVTAvatarAttributeEditorViewController;
-  v7 = a4;
-  [(AVTAvatarAttributeEditorViewController *)&v27 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  coordinatorCopy = coordinator;
+  [(AVTAvatarAttributeEditorViewController *)&v27 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   [(AVTAvatarAttributeEditorViewController *)self adjustedSafeAreaInsets];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
-  v16 = [(AVTAvatarAttributeEditorViewController *)self currentLayout];
-  [v16 userInfoViewHeight];
+  currentLayout = [(AVTAvatarAttributeEditorViewController *)self currentLayout];
+  [currentLayout userInfoViewHeight];
   v18 = v17;
-  v19 = [(AVTAvatarAttributeEditorViewController *)self traitCollection];
-  v20 = [v19 layoutDirection] == 1;
-  v21 = [(AVTAvatarAttributeEditorViewController *)self environment];
+  traitCollection = [(AVTAvatarAttributeEditorViewController *)self traitCollection];
+  v20 = [traitCollection layoutDirection] == 1;
+  environment = [(AVTAvatarAttributeEditorViewController *)self environment];
   [(AVTAvatarAttributeEditorViewController *)self maxGroupLabelWidth];
-  v23 = [AVTAvatarAttributeEditorLayoutProvider defaultLayoutInContainerOfSize:v20 insets:v21 userInfoViewHeight:width RTL:height environment:v9 maxGroupLabelWidth:v11, v13, v15, v18, v22];
+  v23 = [AVTAvatarAttributeEditorLayoutProvider defaultLayoutInContainerOfSize:v20 insets:environment userInfoViewHeight:width RTL:height environment:v9 maxGroupLabelWidth:v11, v13, v15, v18, v22];
 
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
@@ -2147,7 +2147,7 @@ LABEL_18:
   v25[4] = self;
   v26 = v23;
   v24 = v23;
-  [v7 animateAlongsideTransition:v25 completion:0];
+  [coordinatorCopy animateAlongsideTransition:v25 completion:0];
 }
 
 uint64_t __93__AVTAvatarAttributeEditorViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke(uint64_t a1)
@@ -2209,13 +2209,13 @@ uint64_t __93__AVTAvatarAttributeEditorViewController_viewWillTransitionToSize_w
   return [*(a1 + 32) reloadCollectionViewDataWithCompletion:0];
 }
 
-- (void)updateHeaderDependentLayoutWithHeaderFrame:(CGRect)a3 fittingSize:(CGSize)a4
+- (void)updateHeaderDependentLayoutWithHeaderFrame:(CGRect)frame fittingSize:(CGSize)size
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = [(AVTAvatarAttributeEditorViewController *)self currentLayout:a3.origin.x];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  v9 = [(AVTAvatarAttributeEditorViewController *)self currentLayout:frame.origin.x];
   [v9 groupDialContainerFrame];
   v11 = v10;
   v13 = v12;
@@ -2227,41 +2227,41 @@ uint64_t __93__AVTAvatarAttributeEditorViewController_viewWillTransitionToSize_w
   rect = height;
   v45.size.height = height;
   MaxY = CGRectGetMaxY(v45);
-  v17 = [(AVTAvatarAttributeEditorViewController *)self groupDialContainerView];
-  [v17 setFrame:{v11, MaxY, v13, v15}];
+  groupDialContainerView = [(AVTAvatarAttributeEditorViewController *)self groupDialContainerView];
+  [groupDialContainerView setFrame:{v11, MaxY, v13, v15}];
 
-  v18 = [(AVTAvatarAttributeEditorViewController *)self headerMaskingView];
-  [v18 setAlpha:1.0];
+  headerMaskingView = [(AVTAvatarAttributeEditorViewController *)self headerMaskingView];
+  [headerMaskingView setAlpha:1.0];
 
-  v19 = [(AVTAvatarAttributeEditorViewController *)self attributesContainerView];
-  [v19 bounds];
+  attributesContainerView = [(AVTAvatarAttributeEditorViewController *)self attributesContainerView];
+  [attributesContainerView bounds];
   v21 = v20;
   v46.origin.x = v11;
   v46.origin.y = MaxY;
   v46.size.width = v13;
   v46.size.height = v15;
   v22 = CGRectGetMaxY(v46);
-  v23 = [(AVTAvatarAttributeEditorViewController *)self headerMaskingView];
-  [v23 setFrame:{0.0, 0.0, v21, v22}];
+  headerMaskingView2 = [(AVTAvatarAttributeEditorViewController *)self headerMaskingView];
+  [headerMaskingView2 setFrame:{0.0, 0.0, v21, v22}];
 
-  v24 = [(AVTAvatarAttributeEditorViewController *)self avtViewSession];
-  if ([v24 isActive])
+  avtViewSession = [(AVTAvatarAttributeEditorViewController *)self avtViewSession];
+  if ([avtViewSession isActive])
   {
-    v25 = [(AVTAvatarAttributeEditorViewController *)self shouldHideUserInfoView];
+    shouldHideUserInfoView = [(AVTAvatarAttributeEditorViewController *)self shouldHideUserInfoView];
 
-    if (v25)
+    if (shouldHideUserInfoView)
     {
       goto LABEL_8;
     }
 
-    v26 = [(AVTAvatarAttributeEditorViewController *)self currentLayout];
-    [v26 userInfoFrame];
+    currentLayout = [(AVTAvatarAttributeEditorViewController *)self currentLayout];
+    [currentLayout userInfoFrame];
     v28 = v27;
     v30 = v29;
     v32 = v31;
 
-    v24 = +[AVTUIFontRepository groupDialBoldLabelFont];
-    [v24 _scaledValueForValue:18.0];
+    avtViewSession = +[AVTUIFontRepository groupDialBoldLabelFont];
+    [avtViewSession _scaledValueForValue:18.0];
     if (v33 <= 30.0)
     {
       v34 = v33;
@@ -2277,17 +2277,17 @@ uint64_t __93__AVTAvatarAttributeEditorViewController_viewWillTransitionToSize_w
     v47.size.width = width;
     v47.size.height = rect;
     v35 = CGRectGetMaxY(v47) + v34 * 0.5;
-    v36 = [(AVTAvatarAttributeEditorViewController *)self currentLayout];
-    [v36 userInfoViewHeight];
+    currentLayout2 = [(AVTAvatarAttributeEditorViewController *)self currentLayout];
+    [currentLayout2 userInfoViewHeight];
     v38 = v35 - v37;
 
-    v39 = [(AVTAvatarAttributeEditorViewController *)self avtViewSessionProvider];
-    v40 = [v39 faceTrackingManager];
-    v41 = [v40 userInfoView];
+    avtViewSessionProvider = [(AVTAvatarAttributeEditorViewController *)self avtViewSessionProvider];
+    faceTrackingManager = [avtViewSessionProvider faceTrackingManager];
+    userInfoView = [faceTrackingManager userInfoView];
 
-    [v41 setFrame:{v28, v38, v30, v32}];
-    v42 = [(AVTAvatarAttributeEditorViewController *)self attributesContainerView];
-    [v42 bringSubviewToFront:v41];
+    [userInfoView setFrame:{v28, v38, v30, v32}];
+    attributesContainerView2 = [(AVTAvatarAttributeEditorViewController *)self attributesContainerView];
+    [attributesContainerView2 bringSubviewToFront:userInfoView];
   }
 
 LABEL_8:
@@ -2296,25 +2296,25 @@ LABEL_8:
   [(AVTAvatarAttributeEditorViewController *)self setTransitioningContainerFrame];
 }
 
-- (void)faceTrackingManager:(id)a3 didUpdateUserInfoWithSize:(CGSize)a4
+- (void)faceTrackingManager:(id)manager didUpdateUserInfoWithSize:(CGSize)size
 {
-  height = a4.height;
-  v6 = [(AVTAvatarAttributeEditorViewController *)self currentLayout:a3];
+  height = size.height;
+  v6 = [(AVTAvatarAttributeEditorViewController *)self currentLayout:manager];
   [v6 containerSize];
   v8 = v7;
   v10 = v9;
-  v11 = [(AVTAvatarAttributeEditorViewController *)self currentLayout];
-  [v11 edgeInsets];
+  currentLayout = [(AVTAvatarAttributeEditorViewController *)self currentLayout];
+  [currentLayout edgeInsets];
   v13 = v12;
   v15 = v14;
   v17 = v16;
   v19 = v18;
-  v20 = [(AVTAvatarAttributeEditorViewController *)self currentLayout];
-  v21 = [v20 RTL];
-  v22 = [(AVTAvatarAttributeEditorViewController *)self environment];
-  v23 = [(AVTAvatarAttributeEditorViewController *)self currentLayout];
-  [v23 maxGroupLabelWidth];
-  v25 = [AVTAvatarAttributeEditorLayoutProvider defaultLayoutInContainerOfSize:v21 insets:v22 userInfoViewHeight:v8 RTL:v10 environment:v13 maxGroupLabelWidth:v15, v17, v19, height, v24];
+  currentLayout2 = [(AVTAvatarAttributeEditorViewController *)self currentLayout];
+  v21 = [currentLayout2 RTL];
+  environment = [(AVTAvatarAttributeEditorViewController *)self environment];
+  currentLayout3 = [(AVTAvatarAttributeEditorViewController *)self currentLayout];
+  [currentLayout3 maxGroupLabelWidth];
+  v25 = [AVTAvatarAttributeEditorLayoutProvider defaultLayoutInContainerOfSize:v21 insets:environment userInfoViewHeight:v8 RTL:v10 environment:v13 maxGroupLabelWidth:v15, v17, v19, height, v24];
 
   [(AVTAvatarAttributeEditorViewController *)self setCurrentLayout:v25];
   [(AVTAvatarAttributeEditorViewController *)self applyUserInfoViewLayout];
@@ -2322,37 +2322,37 @@ LABEL_8:
 
 - (void)updateAlphaAssetsLabelFrameIfNeeded
 {
-  v3 = [(AVTAvatarAttributeEditorViewController *)self alphaAssetsLabel];
+  alphaAssetsLabel = [(AVTAvatarAttributeEditorViewController *)self alphaAssetsLabel];
 
-  if (v3)
+  if (alphaAssetsLabel)
   {
-    v12 = [(AVTAvatarAttributeEditorViewController *)self currentLayout];
-    [v12 avatarContainerFrame];
+    currentLayout = [(AVTAvatarAttributeEditorViewController *)self currentLayout];
+    [currentLayout avatarContainerFrame];
     v4 = CGRectGetMinX(v14) + 16.0;
-    v5 = [(AVTAvatarAttributeEditorViewController *)self headerMaskingView];
-    [v5 frame];
+    headerMaskingView = [(AVTAvatarAttributeEditorViewController *)self headerMaskingView];
+    [headerMaskingView frame];
     MaxY = CGRectGetMaxY(v15);
-    v7 = [(AVTAvatarAttributeEditorViewController *)self currentLayout];
-    [v7 groupDialContainerFrame];
+    currentLayout2 = [(AVTAvatarAttributeEditorViewController *)self currentLayout];
+    [currentLayout2 groupDialContainerFrame];
     v8 = MaxY - CGRectGetHeight(v16) + -45.0;
-    v9 = [(AVTAvatarAttributeEditorViewController *)self currentLayout];
-    [v9 avatarContainerFrame];
+    currentLayout3 = [(AVTAvatarAttributeEditorViewController *)self currentLayout];
+    [currentLayout3 avatarContainerFrame];
     v10 = CGRectGetWidth(v17) + -32.0;
-    v11 = [(AVTAvatarAttributeEditorViewController *)self alphaAssetsLabel];
-    [v11 setFrame:{v4, v8, v10, 45.0}];
+    alphaAssetsLabel2 = [(AVTAvatarAttributeEditorViewController *)self alphaAssetsLabel];
+    [alphaAssetsLabel2 setFrame:{v4, v8, v10, 45.0}];
   }
 }
 
-- (void)reloadCollectionViewDataWithCompletion:(id)a3
+- (void)reloadCollectionViewDataWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v7 = MEMORY[0x1E69E9820];
   v8 = 3221225472;
   v9 = __81__AVTAvatarAttributeEditorViewController_reloadCollectionViewDataWithCompletion___block_invoke;
   v10 = &unk_1E7F3ACA0;
-  v11 = self;
-  v12 = v4;
-  v5 = v4;
+  selfCopy = self;
+  v12 = completionCopy;
+  v5 = completionCopy;
   v6 = MEMORY[0x1BFB0DE80](&v7);
   if ([(AVTAvatarAttributeEditorViewController *)self collectionViewIsPerformingBatchUpdates:v7])
   {
@@ -2383,25 +2383,25 @@ uint64_t __81__AVTAvatarAttributeEditorViewController_reloadCollectionViewDataWi
 
 - (void)resetAllSectionControllersStateToDefault
 {
-  v3 = [(AVTAvatarAttributeEditorViewController *)self attributesCollectionView];
-  v4 = [v3 numberOfSections];
+  attributesCollectionView = [(AVTAvatarAttributeEditorViewController *)self attributesCollectionView];
+  numberOfSections = [attributesCollectionView numberOfSections];
 
-  if (v4 >= 1)
+  if (numberOfSections >= 1)
   {
     v5 = 0;
     do
     {
-      v6 = [(AVTAvatarAttributeEditorViewController *)self dataSource];
-      v7 = [(AVTAvatarAttributeEditorViewController *)self dataSource];
-      v8 = [v6 sectionControllerForSectionIndex:v5 inCategoryAtIndex:{objc_msgSend(v7, "currentCategoryIndex")}];
+      dataSource = [(AVTAvatarAttributeEditorViewController *)self dataSource];
+      dataSource2 = [(AVTAvatarAttributeEditorViewController *)self dataSource];
+      v8 = [dataSource sectionControllerForSectionIndex:v5 inCategoryAtIndex:{objc_msgSend(dataSource2, "currentCategoryIndex")}];
 
       [v8 resetToDefaultState];
       ++v5;
-      v9 = [(AVTAvatarAttributeEditorViewController *)self attributesCollectionView];
-      v10 = [v9 numberOfSections];
+      attributesCollectionView2 = [(AVTAvatarAttributeEditorViewController *)self attributesCollectionView];
+      numberOfSections2 = [attributesCollectionView2 numberOfSections];
     }
 
-    while (v5 < v10);
+    while (v5 < numberOfSections2);
   }
 }
 
@@ -2426,8 +2426,8 @@ uint64_t __81__AVTAvatarAttributeEditorViewController_reloadCollectionViewDataWi
     v19.size.width = v8;
     v19.size.height = v10;
     Width = CGRectGetWidth(v19);
-    v16 = [(AVTAvatarAttributeEditorViewController *)self view];
-    [v16 frame];
+    view = [(AVTAvatarAttributeEditorViewController *)self view];
+    [view frame];
     Height = CGRectGetHeight(v20);
     v21.origin.x = v4;
     v21.origin.y = v6;
@@ -2437,20 +2437,20 @@ uint64_t __81__AVTAvatarAttributeEditorViewController_reloadCollectionViewDataWi
   }
 }
 
-- (void)collapsibleHeaderController:(id)a3 willUpdateHeaderToHeight:(double)a4
+- (void)collapsibleHeaderController:(id)controller willUpdateHeaderToHeight:(double)height
 {
-  v6 = a3;
-  v7 = [v6 headerView];
-  [v7 frame];
+  controllerCopy = controller;
+  headerView = [controllerCopy headerView];
+  [headerView frame];
   v9 = v8;
   v11 = v10;
   v13 = v12;
 
-  v14 = [(AVTAvatarAttributeEditorViewController *)self attributesContainerView];
-  [v14 bounds];
-  [(AVTAvatarAttributeEditorViewController *)self updateHeaderDependentLayoutWithHeaderFrame:v9 fittingSize:v11, v13, a4, v15, v16];
+  attributesContainerView = [(AVTAvatarAttributeEditorViewController *)self attributesContainerView];
+  [attributesContainerView bounds];
+  [(AVTAvatarAttributeEditorViewController *)self updateHeaderDependentLayoutWithHeaderFrame:v9 fittingSize:v11, v13, height, v15, v16];
 
-  v25 = v6;
+  v25 = controllerCopy;
   [v25 minHeight];
   v18 = v17;
   [v25 maxHeight];
@@ -2458,112 +2458,112 @@ uint64_t __81__AVTAvatarAttributeEditorViewController_reloadCollectionViewDataWi
   [v25 currentHeightForHeader];
   v22 = v21;
 
-  v23 = [(AVTAvatarAttributeEditorViewController *)self avtViewThrottler];
-  v24 = v23;
+  avtViewThrottler = [(AVTAvatarAttributeEditorViewController *)self avtViewThrottler];
+  v24 = avtViewThrottler;
   if (vabdd_f64(v22, v18) >= vabdd_f64(v22, v20))
   {
-    [v23 unthrottle];
+    [avtViewThrottler unthrottle];
   }
 
   else
   {
-    [v23 throttle];
+    [avtViewThrottler throttle];
   }
 
   [(AVTAvatarAttributeEditorViewController *)self updateLayoutForAttributesCollectionMaskingView];
 }
 
-- (void)collapsibleHeaderController:(id)a3 isUpdatingHeaderWithIncrementalHeight:(double)a4
+- (void)collapsibleHeaderController:(id)controller isUpdatingHeaderWithIncrementalHeight:(double)height
 {
-  v6 = [(AVTAvatarAttributeEditorViewController *)self bodyEditorHeaderViewController];
-  v7 = [v6 isAnimatingExpansion];
+  bodyEditorHeaderViewController = [(AVTAvatarAttributeEditorViewController *)self bodyEditorHeaderViewController];
+  isAnimatingExpansion = [bodyEditorHeaderViewController isAnimatingExpansion];
 
-  if (v7)
+  if (isAnimatingExpansion)
   {
-    v8 = [(AVTAvatarAttributeEditorViewController *)self bodyEditorHeaderViewController];
-    v9 = [v8 configureLayoutIfNeededWithHeight:a4];
+    bodyEditorHeaderViewController2 = [(AVTAvatarAttributeEditorViewController *)self bodyEditorHeaderViewController];
+    v9 = [bodyEditorHeaderViewController2 configureLayoutIfNeededWithHeight:height];
   }
 
   [(AVTAvatarAttributeEditorViewController *)self updateLayoutForAttributesCollectionMaskingView];
 }
 
-- (void)collapsibleHeaderController:(id)a3 didUpdateHeaderToHeight:(double)a4
+- (void)collapsibleHeaderController:(id)controller didUpdateHeaderToHeight:(double)height
 {
-  v6 = [(AVTAvatarAttributeEditorViewController *)self bodyEditorHeaderViewController];
-  v7 = [v6 isAnimatingExpansion];
+  bodyEditorHeaderViewController = [(AVTAvatarAttributeEditorViewController *)self bodyEditorHeaderViewController];
+  isAnimatingExpansion = [bodyEditorHeaderViewController isAnimatingExpansion];
 
-  if (v7)
+  if (isAnimatingExpansion)
   {
-    v8 = [(AVTAvatarAttributeEditorViewController *)self bodyEditorHeaderViewController];
-    v9 = [v8 configureLayoutIfNeededWithHeight:a4];
+    bodyEditorHeaderViewController2 = [(AVTAvatarAttributeEditorViewController *)self bodyEditorHeaderViewController];
+    v9 = [bodyEditorHeaderViewController2 configureLayoutIfNeededWithHeight:height];
 
-    v10 = [(AVTAvatarAttributeEditorViewController *)self bodyEditorHeaderViewController];
-    [v10 setIsAnimatingExpansion:0];
+    bodyEditorHeaderViewController3 = [(AVTAvatarAttributeEditorViewController *)self bodyEditorHeaderViewController];
+    [bodyEditorHeaderViewController3 setIsAnimatingExpansion:0];
   }
 
   [(AVTAvatarAttributeEditorViewController *)self updateLayoutForAttributesCollectionMaskingView];
 }
 
-- (int64_t)numberOfSectionsInCollectionView:(id)a3
+- (int64_t)numberOfSectionsInCollectionView:(id)view
 {
-  v4 = [(AVTAvatarAttributeEditorViewController *)self dataSource];
-  v5 = [(AVTAvatarAttributeEditorViewController *)self dataSource];
-  v6 = [v4 numberOfSectionsForCategoryAtIndex:{objc_msgSend(v5, "currentCategoryIndex")}];
+  dataSource = [(AVTAvatarAttributeEditorViewController *)self dataSource];
+  dataSource2 = [(AVTAvatarAttributeEditorViewController *)self dataSource];
+  v6 = [dataSource numberOfSectionsForCategoryAtIndex:{objc_msgSend(dataSource2, "currentCategoryIndex")}];
 
   return v6;
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v6 = [(AVTAvatarAttributeEditorViewController *)self dataSource];
-  v7 = [(AVTAvatarAttributeEditorViewController *)self dataSource];
-  v8 = [v6 sectionControllerForSectionIndex:a4 inCategoryAtIndex:{objc_msgSend(v7, "currentCategoryIndex")}];
+  dataSource = [(AVTAvatarAttributeEditorViewController *)self dataSource];
+  dataSource2 = [(AVTAvatarAttributeEditorViewController *)self dataSource];
+  v8 = [dataSource sectionControllerForSectionIndex:section inCategoryAtIndex:{objc_msgSend(dataSource2, "currentCategoryIndex")}];
 
-  v9 = [v8 numberOfItems];
-  return v9;
+  numberOfItems = [v8 numberOfItems];
+  return numberOfItems;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(AVTAvatarAttributeEditorViewController *)self dataSource];
-  v9 = [v6 section];
-  v10 = [(AVTAvatarAttributeEditorViewController *)self dataSource];
-  v11 = [v8 sectionControllerForSectionIndex:v9 inCategoryAtIndex:{objc_msgSend(v10, "currentCategoryIndex")}];
+  pathCopy = path;
+  viewCopy = view;
+  dataSource = [(AVTAvatarAttributeEditorViewController *)self dataSource];
+  section = [pathCopy section];
+  dataSource2 = [(AVTAvatarAttributeEditorViewController *)self dataSource];
+  v11 = [dataSource sectionControllerForSectionIndex:section inCategoryAtIndex:{objc_msgSend(dataSource2, "currentCategoryIndex")}];
 
-  v12 = [v11 section];
-  v13 = [v12 options];
-  v14 = [v13 showsLabel];
+  section2 = [v11 section];
+  options = [section2 options];
+  showsLabel = [options showsLabel];
 
   v15 = off_1E7F39870;
-  if (!v14)
+  if (!showsLabel)
   {
     v15 = off_1E7F39858;
   }
 
-  v16 = [(__objc2_class *)*v15 cellIdentifier];
-  v17 = [v7 dequeueReusableCellWithReuseIdentifier:v16 forIndexPath:v6];
+  cellIdentifier = [(__objc2_class *)*v15 cellIdentifier];
+  v17 = [viewCopy dequeueReusableCellWithReuseIdentifier:cellIdentifier forIndexPath:pathCopy];
 
-  [v11 updateCell:v17 forItemAtIndex:{objc_msgSend(v6, "row")}];
-  v18 = [(AVTAvatarAttributeEditorViewController *)self dataSource];
-  v19 = [v6 section];
-  v20 = [(AVTAvatarAttributeEditorViewController *)self dataSource];
-  v21 = [v18 sectionCoordinatorForSectionAtIndex:v19 inCategoryAtIndex:{objc_msgSend(v20, "currentCategoryIndex")}];
+  [v11 updateCell:v17 forItemAtIndex:{objc_msgSend(pathCopy, "row")}];
+  dataSource3 = [(AVTAvatarAttributeEditorViewController *)self dataSource];
+  section3 = [pathCopy section];
+  dataSource4 = [(AVTAvatarAttributeEditorViewController *)self dataSource];
+  v21 = [dataSource3 sectionCoordinatorForSectionAtIndex:section3 inCategoryAtIndex:{objc_msgSend(dataSource4, "currentCategoryIndex")}];
 
   if (v21)
   {
-    v22 = [v21 delegate];
+    delegate = [v21 delegate];
 
-    if (v22 != self)
+    if (delegate != self)
     {
       [v21 setDelegate:self];
     }
   }
 
-  v23 = [v11 delegate];
+  delegate2 = [v11 delegate];
 
-  if (!v23)
+  if (!delegate2)
   {
     [v11 setDelegate:self];
   }
@@ -2571,26 +2571,26 @@ uint64_t __81__AVTAvatarAttributeEditorViewController_reloadCollectionViewDataWi
   return v17;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForHeaderInSection:(int64_t)a5
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForHeaderInSection:(int64_t)section
 {
   v31[1] = *MEMORY[0x1E69E9840];
-  v7 = [(AVTAvatarAttributeEditorViewController *)self dataSource:a3];
-  v8 = [(AVTAvatarAttributeEditorViewController *)self dataSource];
-  v9 = [v7 sectionForIndex:a5 inCategoryAtIndex:{objc_msgSend(v8, "currentCategoryIndex")}];
+  v7 = [(AVTAvatarAttributeEditorViewController *)self dataSource:view];
+  dataSource = [(AVTAvatarAttributeEditorViewController *)self dataSource];
+  v9 = [v7 sectionForIndex:section inCategoryAtIndex:{objc_msgSend(dataSource, "currentCategoryIndex")}];
 
   if ([v9 shouldDisplayTitle])
   {
     v10 = +[AVTUIFontRepository attributeTitleFont];
-    v11 = [v9 localizedName];
-    v12 = [(AVTAvatarAttributeEditorViewController *)self attributesCollectionView];
-    [v12 bounds];
+    localizedName = [v9 localizedName];
+    attributesCollectionView = [(AVTAvatarAttributeEditorViewController *)self attributesCollectionView];
+    [attributesCollectionView bounds];
     v14 = v13 + -40.0;
     [v10 lineHeight];
     v16 = v15 + v15;
     v30 = *MEMORY[0x1E69DB648];
     v31[0] = v10;
     v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v31 forKeys:&v30 count:1];
-    [v11 boundingRectWithSize:1 options:v17 attributes:0 context:{v14, v16}];
+    [localizedName boundingRectWithSize:1 options:v17 attributes:0 context:{v14, v16}];
     v19 = v18;
 
     v20 = +[AVTUIFontRepository attributeTitleFont];
@@ -2607,8 +2607,8 @@ uint64_t __81__AVTAvatarAttributeEditorViewController_reloadCollectionViewDataWi
       v23 = 30.0;
     }
 
-    v24 = [(AVTAvatarAttributeEditorViewController *)self attributesCollectionView];
-    [v24 bounds];
+    attributesCollectionView2 = [(AVTAvatarAttributeEditorViewController *)self attributesCollectionView];
+    [attributesCollectionView2 bounds];
     v26 = v25;
     v27 = v19 + v23 * 2.0 + -12.0;
   }
@@ -2626,20 +2626,20 @@ uint64_t __81__AVTAvatarAttributeEditorViewController_reloadCollectionViewDataWi
   return result;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForFooterInSection:(int64_t)a5
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForFooterInSection:(int64_t)section
 {
-  v7 = [(AVTAvatarAttributeEditorViewController *)self dataSource:a3];
-  v8 = [(AVTAvatarAttributeEditorViewController *)self dataSource];
-  v9 = [v7 sectionForIndex:a5 inCategoryAtIndex:{objc_msgSend(v8, "currentCategoryIndex")}];
+  v7 = [(AVTAvatarAttributeEditorViewController *)self dataSource:view];
+  dataSource = [(AVTAvatarAttributeEditorViewController *)self dataSource];
+  v9 = [v7 sectionForIndex:section inCategoryAtIndex:{objc_msgSend(dataSource, "currentCategoryIndex")}];
 
-  v10 = [(AVTAvatarAttributeEditorViewController *)self dataSource];
-  v11 = [(AVTAvatarAttributeEditorViewController *)self dataSource];
-  v12 = [v10 sectionForIndex:a5 + 1 inCategoryAtIndex:{objc_msgSend(v11, "currentCategoryIndex")}];
+  dataSource2 = [(AVTAvatarAttributeEditorViewController *)self dataSource];
+  dataSource3 = [(AVTAvatarAttributeEditorViewController *)self dataSource];
+  v12 = [dataSource2 sectionForIndex:section + 1 inCategoryAtIndex:{objc_msgSend(dataSource3, "currentCategoryIndex")}];
 
   if ([v9 shouldDisplaySeparatorBeforeSection:v12])
   {
-    v13 = [(AVTAvatarAttributeEditorViewController *)self attributesCollectionView];
-    [v13 bounds];
+    attributesCollectionView = [(AVTAvatarAttributeEditorViewController *)self attributesCollectionView];
+    [attributesCollectionView bounds];
     v15 = v14;
 
     v16 = 1.0;
@@ -2658,26 +2658,26 @@ uint64_t __81__AVTAvatarAttributeEditorViewController_reloadCollectionViewDataWi
   return result;
 }
 
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
-  v11 = [(AVTAvatarAttributeEditorViewController *)self dataSource];
-  v12 = [v9 section];
-  v13 = [(AVTAvatarAttributeEditorViewController *)self dataSource];
-  v14 = [v11 sectionForIndex:v12 inCategoryAtIndex:{objc_msgSend(v13, "currentCategoryIndex")}];
+  kindCopy = kind;
+  pathCopy = path;
+  viewCopy = view;
+  dataSource = [(AVTAvatarAttributeEditorViewController *)self dataSource];
+  section = [pathCopy section];
+  dataSource2 = [(AVTAvatarAttributeEditorViewController *)self dataSource];
+  v14 = [dataSource sectionForIndex:section inCategoryAtIndex:{objc_msgSend(dataSource2, "currentCategoryIndex")}];
 
-  if (*MEMORY[0x1E69DDC08] == v8)
+  if (*MEMORY[0x1E69DDC08] == kindCopy)
   {
     v17 = +[AVTAttributeEditorSectionHeaderView reuseIdentifier];
-    v16 = [v10 dequeueReusableSupplementaryViewOfKind:v8 withReuseIdentifier:v17 forIndexPath:v9];
+    v16 = [viewCopy dequeueReusableSupplementaryViewOfKind:kindCopy withReuseIdentifier:v17 forIndexPath:pathCopy];
 
-    v18 = [v14 localizedName];
-    [v16 setDisplayString:v18];
+    localizedName = [v14 localizedName];
+    [v16 setDisplayString:localizedName];
 
-    v19 = [v14 supplementalPicker];
-    [v16 setSupplementalPicker:v19];
+    supplementalPicker = [v14 supplementalPicker];
+    [v16 setSupplementalPicker:supplementalPicker];
 
     [v16 setDelegate:self];
   }
@@ -2685,7 +2685,7 @@ uint64_t __81__AVTAvatarAttributeEditorViewController_reloadCollectionViewDataWi
   else
   {
     v15 = +[AVTAttributeSectionSeparator reuseIdentifier];
-    v16 = [v10 dequeueReusableSupplementaryViewOfKind:v8 withReuseIdentifier:v15 forIndexPath:v9];
+    v16 = [viewCopy dequeueReusableSupplementaryViewOfKind:kindCopy withReuseIdentifier:v15 forIndexPath:pathCopy];
 
     [v14 separatorInsets];
     [v16 setEdgeInsets:?];
@@ -2694,19 +2694,19 @@ uint64_t __81__AVTAvatarAttributeEditorViewController_reloadCollectionViewDataWi
   return v16;
 }
 
-- (id)selectedItemInSection:(id)a3
+- (id)selectedItemInSection:(id)section
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 sectionItems];
-  v5 = [v4 firstObject];
+  sectionCopy = section;
+  sectionItems = [sectionCopy sectionItems];
+  firstObject = [sectionItems firstObject];
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [v3 sectionItems];
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  sectionItems2 = [sectionCopy sectionItems];
+  v7 = [sectionItems2 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -2717,7 +2717,7 @@ uint64_t __81__AVTAvatarAttributeEditorViewController_reloadCollectionViewDataWi
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(sectionItems2);
         }
 
         v11 = *(*(&v14 + 1) + 8 * i);
@@ -2725,12 +2725,12 @@ uint64_t __81__AVTAvatarAttributeEditorViewController_reloadCollectionViewDataWi
         {
           v12 = v11;
 
-          v5 = v12;
+          firstObject = v12;
           goto LABEL_11;
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [sectionItems2 countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v8)
       {
         continue;
@@ -2742,20 +2742,20 @@ uint64_t __81__AVTAvatarAttributeEditorViewController_reloadCollectionViewDataWi
 
 LABEL_11:
 
-  return v5;
+  return firstObject;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
-  v6 = a5;
-  v7 = [(AVTAvatarAttributeEditorViewController *)self dataSource];
-  v8 = [v6 section];
-  v9 = [(AVTAvatarAttributeEditorViewController *)self dataSource];
-  v10 = [v7 sectionControllerForSectionIndex:v8 inCategoryAtIndex:{objc_msgSend(v9, "currentCategoryIndex")}];
+  pathCopy = path;
+  dataSource = [(AVTAvatarAttributeEditorViewController *)self dataSource];
+  section = [pathCopy section];
+  dataSource2 = [(AVTAvatarAttributeEditorViewController *)self dataSource];
+  v10 = [dataSource sectionControllerForSectionIndex:section inCategoryAtIndex:{objc_msgSend(dataSource2, "currentCategoryIndex")}];
 
-  v11 = [v6 row];
-  v12 = [(AVTAvatarAttributeEditorViewController *)self attributesCollectionView];
-  [v12 bounds];
+  v11 = [pathCopy row];
+  attributesCollectionView = [(AVTAvatarAttributeEditorViewController *)self attributesCollectionView];
+  [attributesCollectionView bounds];
   [v10 sizeForItemAtIndex:v11 fittingSize:{v13, v14}];
   v16 = v15;
   v18 = v17;
@@ -2767,14 +2767,14 @@ LABEL_11:
   return result;
 }
 
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index
 {
-  v7 = [(AVTAvatarAttributeEditorViewController *)self dataSource:a3];
-  v8 = [(AVTAvatarAttributeEditorViewController *)self dataSource];
-  v9 = [v7 sectionControllerForSectionIndex:a5 inCategoryAtIndex:{objc_msgSend(v8, "currentCategoryIndex")}];
+  v7 = [(AVTAvatarAttributeEditorViewController *)self dataSource:view];
+  dataSource = [(AVTAvatarAttributeEditorViewController *)self dataSource];
+  v9 = [v7 sectionControllerForSectionIndex:index inCategoryAtIndex:{objc_msgSend(dataSource, "currentCategoryIndex")}];
 
-  v10 = [(AVTAvatarAttributeEditorViewController *)self attributesCollectionView];
-  [v10 bounds];
+  attributesCollectionView = [(AVTAvatarAttributeEditorViewController *)self attributesCollectionView];
+  [attributesCollectionView bounds];
   [v9 edgeInsetsFittingSize:{v11, v12}];
   v14 = v13;
   v16 = v15;
@@ -2792,34 +2792,34 @@ LABEL_11:
   return result;
 }
 
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [(AVTAvatarAttributeEditorViewController *)self dataSource];
-  v10 = [v8 section];
-  v11 = [(AVTAvatarAttributeEditorViewController *)self dataSource];
-  v12 = [v9 sectionControllerForSectionIndex:v10 inCategoryAtIndex:{objc_msgSend(v11, "currentCategoryIndex")}];
+  cellCopy = cell;
+  pathCopy = path;
+  dataSource = [(AVTAvatarAttributeEditorViewController *)self dataSource];
+  section = [pathCopy section];
+  dataSource2 = [(AVTAvatarAttributeEditorViewController *)self dataSource];
+  v12 = [dataSource sectionControllerForSectionIndex:section inCategoryAtIndex:{objc_msgSend(dataSource2, "currentCategoryIndex")}];
 
-  v14 = v7;
-  v13 = [v8 item];
+  v14 = cellCopy;
+  item = [pathCopy item];
 
-  [v12 cell:v14 willDisplayAtIndex:v13];
+  [v12 cell:v14 willDisplayAtIndex:item];
 }
 
-- (void)collectionView:(id)a3 didHighlightItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didHighlightItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AVTAvatarAttributeEditorViewController *)self dataSource];
-  v9 = [v7 section];
-  v10 = [(AVTAvatarAttributeEditorViewController *)self dataSource];
-  v11 = [v8 sectionControllerForSectionIndex:v9 inCategoryAtIndex:{objc_msgSend(v10, "currentCategoryIndex")}];
+  viewCopy = view;
+  pathCopy = path;
+  dataSource = [(AVTAvatarAttributeEditorViewController *)self dataSource];
+  section = [pathCopy section];
+  dataSource2 = [(AVTAvatarAttributeEditorViewController *)self dataSource];
+  v11 = [dataSource sectionControllerForSectionIndex:section inCategoryAtIndex:{objc_msgSend(dataSource2, "currentCategoryIndex")}];
 
   [(AVTAvatarAttributeEditorViewController *)self setIsAnimatingHighlight:1];
-  v12 = [v6 cellForItemAtIndexPath:v7];
+  v12 = [viewCopy cellForItemAtIndexPath:pathCopy];
   objc_initWeak(&location, self);
-  v13 = [v7 row];
+  v13 = [pathCopy row];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __85__AVTAvatarAttributeEditorViewController_collectionView_didHighlightItemAtIndexPath___block_invoke;
@@ -2843,19 +2843,19 @@ void __85__AVTAvatarAttributeEditorViewController_collectionView_didHighlightIte
   }
 }
 
-- (void)collectionView:(id)a3 didUnhighlightItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didUnhighlightItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   objc_initWeak(&location, self);
   v11 = MEMORY[0x1E69E9820];
   v12 = 3221225472;
   v13 = __87__AVTAvatarAttributeEditorViewController_collectionView_didUnhighlightItemAtIndexPath___block_invoke;
   v14 = &unk_1E7F3D348;
   objc_copyWeak(&v17, &location);
-  v8 = v7;
+  v8 = pathCopy;
   v15 = v8;
-  v9 = v6;
+  v9 = viewCopy;
   v16 = v9;
   v10 = MEMORY[0x1BFB0DE80](&v11);
   [(AVTAvatarAttributeEditorViewController *)self setPendingUnhighlightBlock:v10, v11, v12, v13, v14];
@@ -2886,86 +2886,86 @@ void __87__AVTAvatarAttributeEditorViewController_collectionView_didUnhighlightI
   [v6 didUnhighlightItemAtIndex:v8 cell:v7 completionBlock:v9];
 }
 
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(AVTAvatarAttributeEditorViewController *)self dataSource];
-  v7 = [v5 section];
+  pathCopy = path;
+  dataSource = [(AVTAvatarAttributeEditorViewController *)self dataSource];
+  section = [pathCopy section];
 
-  v8 = [(AVTAvatarAttributeEditorViewController *)self dataSource];
-  v9 = [v6 sectionControllerForSectionIndex:v7 inCategoryAtIndex:{objc_msgSend(v8, "currentCategoryIndex")}];
+  dataSource2 = [(AVTAvatarAttributeEditorViewController *)self dataSource];
+  v9 = [dataSource sectionControllerForSectionIndex:section inCategoryAtIndex:{objc_msgSend(dataSource2, "currentCategoryIndex")}];
 
-  LOBYTE(v8) = [objc_opt_class() supportsSelection];
-  return v8;
+  LOBYTE(dataSource2) = [objc_opt_class() supportsSelection];
+  return dataSource2;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(AVTAvatarAttributeEditorViewController *)self dataSource];
-  v9 = [v6 section];
-  v10 = [(AVTAvatarAttributeEditorViewController *)self dataSource];
-  v17 = [v8 sectionControllerForSectionIndex:v9 inCategoryAtIndex:{objc_msgSend(v10, "currentCategoryIndex")}];
+  pathCopy = path;
+  viewCopy = view;
+  dataSource = [(AVTAvatarAttributeEditorViewController *)self dataSource];
+  section = [pathCopy section];
+  dataSource2 = [(AVTAvatarAttributeEditorViewController *)self dataSource];
+  v17 = [dataSource sectionControllerForSectionIndex:section inCategoryAtIndex:{objc_msgSend(dataSource2, "currentCategoryIndex")}];
 
-  v11 = [MEMORY[0x1E696AC88] indexPathForItem:objc_msgSend(v17 inSection:{"selectedIndex"), objc_msgSend(v6, "section")}];
-  v12 = [v7 cellForItemAtIndexPath:v11];
-  v13 = [v12 valueView];
-  [v13 updateSelectedState:0 animated:0];
+  v11 = [MEMORY[0x1E696AC88] indexPathForItem:objc_msgSend(v17 inSection:{"selectedIndex"), objc_msgSend(pathCopy, "section")}];
+  v12 = [viewCopy cellForItemAtIndexPath:v11];
+  valueView = [v12 valueView];
+  [valueView updateSelectedState:0 animated:0];
 
-  v14 = [v7 cellForItemAtIndexPath:v6];
+  v14 = [viewCopy cellForItemAtIndexPath:pathCopy];
 
-  v15 = [v14 valueView];
-  [v15 updateSelectedState:1 animated:1];
+  valueView2 = [v14 valueView];
+  [valueView2 updateSelectedState:1 animated:1];
 
-  v16 = [v6 row];
+  v16 = [pathCopy row];
   [v17 didSelectItemAtIndex:v16 cell:v14];
 }
 
-- (void)sectionHeaderView:(id)a3 didSelectItem:(id)a4 forPicker:(id)a5 sender:(id)a6
+- (void)sectionHeaderView:(id)view didSelectItem:(id)item forPicker:(id)picker sender:(id)sender
 {
-  v35 = a4;
-  v8 = a6;
-  v9 = [v8 superview];
-  [v8 frame];
+  itemCopy = item;
+  senderCopy = sender;
+  superview = [senderCopy superview];
+  [senderCopy frame];
   v11 = v10;
   v13 = v12;
   v15 = v14;
   v17 = v16;
 
-  v18 = [(AVTAvatarAttributeEditorViewController *)self attributesCollectionView];
-  [v9 convertRect:v18 toView:{v11, v13, v15, v17}];
+  attributesCollectionView = [(AVTAvatarAttributeEditorViewController *)self attributesCollectionView];
+  [superview convertRect:attributesCollectionView toView:{v11, v13, v15, v17}];
   v20 = v19;
   v22 = v21;
   v24 = v23;
   v26 = v25;
 
-  v27 = [(AVTAvatarAttributeEditorViewController *)self attributesCollectionView];
-  v28 = [v27 collectionViewLayout];
-  v29 = [v28 layoutAttributesForElementsInRect:{v20, v22, v24, v26}];
+  attributesCollectionView2 = [(AVTAvatarAttributeEditorViewController *)self attributesCollectionView];
+  collectionViewLayout = [attributesCollectionView2 collectionViewLayout];
+  v29 = [collectionViewLayout layoutAttributesForElementsInRect:{v20, v22, v24, v26}];
 
   if ([v29 count])
   {
-    v30 = [v29 firstObject];
-    [v30 frame];
+    firstObject = [v29 firstObject];
+    [firstObject frame];
     v20 = v31;
     v22 = v32;
     v24 = v33;
     v26 = v34;
   }
 
-  [(AVTAvatarAttributeEditorViewController *)self updateForSelectionOfSupplementalItem:v35 senderRect:v20, v22, v24, v26];
+  [(AVTAvatarAttributeEditorViewController *)self updateForSelectionOfSupplementalItem:itemCopy senderRect:v20, v22, v24, v26];
 }
 
-- (void)collectionView:(id)a3 prefetchItemsAtIndexPaths:(id)a4
+- (void)collectionView:(id)view prefetchItemsAtIndexPaths:(id)paths
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  pathsCopy = paths;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v6 = [pathsCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -2976,35 +2976,35 @@ void __87__AVTAvatarAttributeEditorViewController_collectionView_didUnhighlightI
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(pathsCopy);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
         v11 = [(AVTAvatarAttributeEditorViewController *)self presetSectionItemForIndexPath:v10];
         if (v11)
         {
-          v12 = [(AVTAvatarAttributeEditorViewController *)self modelManager];
-          v13 = [v12 preloader];
-          [v13 preloadSectionItem:v11 atIndexPath:v10];
+          modelManager = [(AVTAvatarAttributeEditorViewController *)self modelManager];
+          preloader = [modelManager preloader];
+          [preloader preloadSectionItem:v11 atIndexPath:v10];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [pathsCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)collectionView:(id)a3 cancelPrefetchingForItemsAtIndexPaths:(id)a4
+- (void)collectionView:(id)view cancelPrefetchingForItemsAtIndexPaths:(id)paths
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  pathsCopy = paths;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v6 = [pathsCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -3016,69 +3016,69 @@ void __87__AVTAvatarAttributeEditorViewController_collectionView_didUnhighlightI
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(pathsCopy);
         }
 
         v10 = *(*(&v13 + 1) + 8 * v9);
-        v11 = [(AVTAvatarAttributeEditorViewController *)self modelManager];
-        v12 = [v11 preloader];
-        [v12 cancelPreloadForSectionItemIndexPath:v10];
+        modelManager = [(AVTAvatarAttributeEditorViewController *)self modelManager];
+        preloader = [modelManager preloader];
+        [preloader cancelPreloadForSectionItemIndexPath:v10];
 
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [pathsCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
   }
 }
 
-- (id)presetSectionItemForIndexPath:(id)a3
+- (id)presetSectionItemForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(AVTAvatarAttributeEditorViewController *)self dataSource];
-  v6 = [(AVTAvatarAttributeEditorViewController *)self dataSource];
-  v7 = [v5 numberOfSectionsForCategoryAtIndex:{objc_msgSend(v6, "currentCategoryIndex")}];
-  v8 = [v4 section];
+  pathCopy = path;
+  dataSource = [(AVTAvatarAttributeEditorViewController *)self dataSource];
+  dataSource2 = [(AVTAvatarAttributeEditorViewController *)self dataSource];
+  v7 = [dataSource numberOfSectionsForCategoryAtIndex:{objc_msgSend(dataSource2, "currentCategoryIndex")}];
+  section = [pathCopy section];
 
-  if (v7 <= v8)
+  if (v7 <= section)
   {
     v14 = 0;
   }
 
   else
   {
-    v9 = [(AVTAvatarAttributeEditorViewController *)self dataSource];
-    v10 = [v4 section];
-    v11 = [(AVTAvatarAttributeEditorViewController *)self dataSource];
-    v12 = [v9 sectionControllerForSectionIndex:v10 inCategoryAtIndex:{objc_msgSend(v11, "currentCategoryIndex")}];
+    dataSource3 = [(AVTAvatarAttributeEditorViewController *)self dataSource];
+    section2 = [pathCopy section];
+    dataSource4 = [(AVTAvatarAttributeEditorViewController *)self dataSource];
+    v12 = [dataSource3 sectionControllerForSectionIndex:section2 inCategoryAtIndex:{objc_msgSend(dataSource4, "currentCategoryIndex")}];
 
-    v13 = [v12 numberOfItems];
-    if (v13 <= [v4 item])
+    numberOfItems = [v12 numberOfItems];
+    if (numberOfItems <= [pathCopy item])
     {
       v14 = 0;
     }
 
     else
     {
-      v14 = [v12 prefetchingSectionItemForIndex:{objc_msgSend(v4, "item")}];
+      v14 = [v12 prefetchingSectionItemForIndex:{objc_msgSend(pathCopy, "item")}];
     }
   }
 
   return v14;
 }
 
-- (void)groupPicker:(id)a3 didSelectGroupAtIndex:(int64_t)a4 tapped:(BOOL)a5
+- (void)groupPicker:(id)picker didSelectGroupAtIndex:(int64_t)index tapped:(BOOL)tapped
 {
-  v5 = a5;
-  v8 = [(AVTAvatarAttributeEditorViewController *)self dataSource];
-  v9 = [v8 currentCategoryIndex];
+  tappedCopy = tapped;
+  dataSource = [(AVTAvatarAttributeEditorViewController *)self dataSource];
+  currentCategoryIndex = [dataSource currentCategoryIndex];
 
-  if (v9 == a4)
+  if (currentCategoryIndex == index)
   {
-    if (!v5)
+    if (!tappedCopy)
     {
       goto LABEL_11;
     }
@@ -3086,28 +3086,28 @@ void __87__AVTAvatarAttributeEditorViewController_collectionView_didUnhighlightI
 
   else
   {
-    v10 = [(AVTAvatarAttributeEditorViewController *)self imageProviderScheduler];
-    [v10 cancelAllTasks];
+    imageProviderScheduler = [(AVTAvatarAttributeEditorViewController *)self imageProviderScheduler];
+    [imageProviderScheduler cancelAllTasks];
 
-    v11 = [(AVTAvatarAttributeEditorViewController *)self dataSource];
-    v12 = [v11 categoryAtIndex:a4];
+    dataSource2 = [(AVTAvatarAttributeEditorViewController *)self dataSource];
+    v12 = [dataSource2 categoryAtIndex:index];
 
-    v13 = [(AVTAvatarAttributeEditorViewController *)self modelManager];
-    v14 = [v13 buildUIModelWithSelectedCategory:v12 atIndex:a4];
+    modelManager = [(AVTAvatarAttributeEditorViewController *)self modelManager];
+    v14 = [modelManager buildUIModelWithSelectedCategory:v12 atIndex:index];
 
-    v15 = [(AVTAvatarAttributeEditorViewController *)self environment];
-    v16 = [v15 inMemoryImageCache];
+    environment = [(AVTAvatarAttributeEditorViewController *)self environment];
+    inMemoryImageCache = [environment inMemoryImageCache];
     v17 = objc_opt_respondsToSelector();
 
     if (v17)
     {
-      v18 = [(AVTAvatarAttributeEditorViewController *)self environment];
-      v19 = [v18 inMemoryImageCache];
-      [v19 clearCache];
+      environment2 = [(AVTAvatarAttributeEditorViewController *)self environment];
+      inMemoryImageCache2 = [environment2 inMemoryImageCache];
+      [inMemoryImageCache2 clearCache];
     }
 
-    v20 = [(AVTAvatarAttributeEditorViewController *)self dataSource];
-    [v20 reloadWithCategories:v14 currentCategoryIndex:a4];
+    dataSource3 = [(AVTAvatarAttributeEditorViewController *)self dataSource];
+    [dataSource3 reloadWithCategories:v14 currentCategoryIndex:index];
 
     v29[0] = MEMORY[0x1E69E9820];
     v29[1] = 3221225472;
@@ -3115,43 +3115,43 @@ void __87__AVTAvatarAttributeEditorViewController_collectionView_didUnhighlightI
     v29[3] = &unk_1E7F3A9B8;
     v29[4] = self;
     [(AVTAvatarAttributeEditorViewController *)self reloadCollectionViewDataWithCompletion:v29];
-    v21 = [(AVTAvatarAttributeEditorViewController *)self dataSource];
-    v22 = [v21 currentCategoryIdentifier];
+    dataSource4 = [(AVTAvatarAttributeEditorViewController *)self dataSource];
+    currentCategoryIdentifier = [dataSource4 currentCategoryIdentifier];
 
     AVTUIEditorSetMostRecentGroupName();
-    v23 = [v12 previewMode];
-    -[AVTAvatarAttributeEditorViewController updateHeaderViewForPreviewModeType:](self, "updateHeaderViewForPreviewModeType:", [v23 type]);
+    previewMode = [v12 previewMode];
+    -[AVTAvatarAttributeEditorViewController updateHeaderViewForPreviewModeType:](self, "updateHeaderViewForPreviewModeType:", [previewMode type]);
   }
 
-  v24 = [(AVTAvatarAttributeEditorViewController *)self collapsibleHeaderController];
+  collapsibleHeaderController = [(AVTAvatarAttributeEditorViewController *)self collapsibleHeaderController];
 
-  v25 = v9 == a4;
-  if (v24)
+  v25 = currentCategoryIndex == index;
+  if (collapsibleHeaderController)
   {
-    v26 = [(AVTAvatarAttributeEditorViewController *)self collapsibleHeaderController];
-    [v26 scrollToTopPreservingHeaderHeight:1 animated:v25];
+    collapsibleHeaderController2 = [(AVTAvatarAttributeEditorViewController *)self collapsibleHeaderController];
+    [collapsibleHeaderController2 scrollToTopPreservingHeaderHeight:1 animated:v25];
   }
 
   else
   {
-    v26 = [(AVTAvatarAttributeEditorViewController *)self attributesCollectionView];
-    [v26 scrollRectToVisible:v25 animated:{0.0, 0.0, 1.0, 1.0}];
+    collapsibleHeaderController2 = [(AVTAvatarAttributeEditorViewController *)self attributesCollectionView];
+    [collapsibleHeaderController2 scrollRectToVisible:v25 animated:{0.0, 0.0, 1.0, 1.0}];
   }
 
 LABEL_11:
-  v27 = [(AVTAvatarAttributeEditorViewController *)self avtViewSessionProvider];
-  v28 = [v27 faceTrackingManager];
-  [v28 resumeFaceTrackingIfNeededAnimated:1];
+  avtViewSessionProvider = [(AVTAvatarAttributeEditorViewController *)self avtViewSessionProvider];
+  faceTrackingManager = [avtViewSessionProvider faceTrackingManager];
+  [faceTrackingManager resumeFaceTrackingIfNeededAnimated:1];
 }
 
-- (void)attributeEditorSectionController:(id)a3 didSelectSectionItem:(id)a4
+- (void)attributeEditorSectionController:(id)controller didSelectSectionItem:(id)item
 {
-  v10 = a3;
-  v6 = a4;
-  if ([v6 conformsToProtocol:&unk_1F39BBC08])
+  controllerCopy = controller;
+  itemCopy = item;
+  if ([itemCopy conformsToProtocol:&unk_1F39BBC08])
   {
-    v7 = [v6 avatarUpdater];
-    v8 = v7 != 0;
+    avatarUpdater = [itemCopy avatarUpdater];
+    v8 = avatarUpdater != 0;
   }
 
   else
@@ -3159,71 +3159,71 @@ LABEL_11:
     v8 = 1;
   }
 
-  [(AVTAvatarAttributeEditorViewController *)self updateForSelectionOfItem:v6 controller:v10 reloadSections:v8];
+  [(AVTAvatarAttributeEditorViewController *)self updateForSelectionOfItem:itemCopy controller:controllerCopy reloadSections:v8];
   if ((AVTUIHasDisplayedCategoriesDiscoverability() & 1) == 0)
   {
-    v9 = [(AVTAvatarAttributeEditorViewController *)self groupDial];
-    [v9 startDiscoverability];
+    groupDial = [(AVTAvatarAttributeEditorViewController *)self groupDial];
+    [groupDial startDiscoverability];
   }
 }
 
-- (void)attributeEditorSectionController:(id)a3 didDeleteSectionItems:(id)a4
+- (void)attributeEditorSectionController:(id)controller didDeleteSectionItems:(id)items
 {
-  v20 = a3;
-  v6 = a4;
-  v7 = [v20 section];
-  v8 = [v7 sectionItems];
-  v9 = [v6 firstObject];
-  v10 = [v8 indexOfObject:v9];
+  controllerCopy = controller;
+  itemsCopy = items;
+  section = [controllerCopy section];
+  sectionItems = [section sectionItems];
+  firstObject = [itemsCopy firstObject];
+  v10 = [sectionItems indexOfObject:firstObject];
 
   v11 = v10 - 1;
   if (v10 >= 1)
   {
-    v12 = [(AVTAvatarAttributeEditorViewController *)self modelManager];
-    v13 = [v12 editorState];
-    v14 = [v20 section];
-    v15 = [v14 identifier];
-    [v13 setEnabledMulticolorSubpickersIndex:v11 forMulticolorPickerIdentifier:v15];
+    modelManager = [(AVTAvatarAttributeEditorViewController *)self modelManager];
+    editorState = [modelManager editorState];
+    section2 = [controllerCopy section];
+    identifier = [section2 identifier];
+    [editorState setEnabledMulticolorSubpickersIndex:v11 forMulticolorPickerIdentifier:identifier];
 
-    v16 = [v20 section];
-    v17 = [v16 sectionItems];
-    v18 = [v17 objectAtIndexedSubscript:v11];
+    section3 = [controllerCopy section];
+    sectionItems2 = [section3 sectionItems];
+    v18 = [sectionItems2 objectAtIndexedSubscript:v11];
 
-    v19 = [(AVTAvatarAttributeEditorViewController *)self modelManager];
-    [v19 updateAvatarByDeletingSectionItems:v6 animated:1];
+    modelManager2 = [(AVTAvatarAttributeEditorViewController *)self modelManager];
+    [modelManager2 updateAvatarByDeletingSectionItems:itemsCopy animated:1];
 
-    [(AVTAvatarAttributeEditorViewController *)self updateForSelectionOfItem:v18 controller:v20 reloadSections:1];
+    [(AVTAvatarAttributeEditorViewController *)self updateForSelectionOfItem:v18 controller:controllerCopy reloadSections:1];
   }
 }
 
-- (void)attributeEditorSectionController:(id)a3 didUpdateSectionItem:(id)a4
+- (void)attributeEditorSectionController:(id)controller didUpdateSectionItem:(id)item
 {
-  v5 = a4;
+  itemCopy = item;
   if ([(AVTAvatarAttributeEditorViewController *)self allowFacetracking])
   {
-    v6 = [(AVTAvatarAttributeEditorViewController *)self modelManager];
-    [v6 updateAvatarBySelectingSectionItem:v5 animated:0];
+    modelManager = [(AVTAvatarAttributeEditorViewController *)self modelManager];
+    [modelManager updateAvatarBySelectingSectionItem:itemCopy animated:0];
   }
 
   else
   {
-    v7 = [(AVTAvatarAttributeEditorViewController *)self lastPosedAvatarImageRenderingTime];
-    if (!v7 || (v8 = v7, -[AVTAvatarAttributeEditorViewController lastPosedAvatarImageRenderingTime](self, "lastPosedAvatarImageRenderingTime"), v9 = objc_claimAutoreleasedReturnValue(), [v9 timeIntervalSinceNow], v11 = v10, v9, v8, v11 < -0.05))
+    lastPosedAvatarImageRenderingTime = [(AVTAvatarAttributeEditorViewController *)self lastPosedAvatarImageRenderingTime];
+    if (!lastPosedAvatarImageRenderingTime || (v8 = lastPosedAvatarImageRenderingTime, -[AVTAvatarAttributeEditorViewController lastPosedAvatarImageRenderingTime](self, "lastPosedAvatarImageRenderingTime"), v9 = objc_claimAutoreleasedReturnValue(), [v9 timeIntervalSinceNow], v11 = v10, v9, v8, v11 < -0.05))
     {
       v12 = objc_opt_new();
       [(AVTAvatarAttributeEditorViewController *)self setLastPosedAvatarImageRenderingTime:v12];
 
-      v13 = [(AVTAvatarAttributeEditorViewController *)self headerPreviewScheduler];
-      [v13 cancelAllTasks];
+      headerPreviewScheduler = [(AVTAvatarAttributeEditorViewController *)self headerPreviewScheduler];
+      [headerPreviewScheduler cancelAllTasks];
 
-      v14 = [(AVTAvatarAttributeEditorViewController *)self headerPreviewScheduler];
+      headerPreviewScheduler2 = [(AVTAvatarAttributeEditorViewController *)self headerPreviewScheduler];
       v15[0] = MEMORY[0x1E69E9820];
       v15[1] = 3221225472;
       v15[2] = __96__AVTAvatarAttributeEditorViewController_attributeEditorSectionController_didUpdateSectionItem___block_invoke;
       v15[3] = &unk_1E7F3D370;
       v15[4] = self;
-      v16 = v5;
-      [v14 scheduleTask:v15];
+      v16 = itemCopy;
+      [headerPreviewScheduler2 scheduleTask:v15];
     }
   }
 }
@@ -3244,96 +3244,96 @@ void __96__AVTAvatarAttributeEditorViewController_attributeEditorSectionControll
   [v5 updateImageViewWithPosedAvatarRecordForcingRender:1 completionHandler:v7];
 }
 
-- (void)attributeEditorSectionControllerNeedsLayoutUpdate:(id)a3
+- (void)attributeEditorSectionControllerNeedsLayoutUpdate:(id)update
 {
-  v3 = [(AVTAvatarAttributeEditorViewController *)self attributesCollectionView];
-  [v3 performBatchUpdates:0 completion:0];
+  attributesCollectionView = [(AVTAvatarAttributeEditorViewController *)self attributesCollectionView];
+  [attributesCollectionView performBatchUpdates:0 completion:0];
 }
 
-- (void)updateForSelectionOfItem:(id)a3 controller:(id)a4 reloadSections:(BOOL)a5
+- (void)updateForSelectionOfItem:(id)item controller:(id)controller reloadSections:(BOOL)sections
 {
-  v5 = a5;
-  v31 = a3;
-  v8 = a4;
-  v9 = [v8 section];
-  v10 = [v8 indexForItem:v31];
-  v11 = [(AVTAvatarAttributeEditorViewController *)self dataSource];
-  v12 = [(AVTAvatarAttributeEditorViewController *)self dataSource];
-  v13 = [v11 indexForSection:v9 inCategoryAtIndex:{objc_msgSend(v12, "currentCategoryIndex")}];
+  sectionsCopy = sections;
+  itemCopy = item;
+  controllerCopy = controller;
+  section = [controllerCopy section];
+  v10 = [controllerCopy indexForItem:itemCopy];
+  dataSource = [(AVTAvatarAttributeEditorViewController *)self dataSource];
+  dataSource2 = [(AVTAvatarAttributeEditorViewController *)self dataSource];
+  v13 = [dataSource indexForSection:section inCategoryAtIndex:{objc_msgSend(dataSource2, "currentCategoryIndex")}];
 
   if (v10 == 0x7FFFFFFFFFFFFFFFLL || v13 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:{@"Can't get an index path for item %@ in section %@", v31, v9}];
+    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:{@"Can't get an index path for item %@ in section %@", itemCopy, section}];
   }
 
   v14 = [MEMORY[0x1E696AC88] indexPathForItem:v10 inSection:v13];
-  v15 = [(AVTAvatarAttributeEditorViewController *)self attributesCollectionView];
-  v16 = [v15 indexPathsForVisibleItems];
-  v17 = [v16 containsObject:v14];
+  attributesCollectionView = [(AVTAvatarAttributeEditorViewController *)self attributesCollectionView];
+  indexPathsForVisibleItems = [attributesCollectionView indexPathsForVisibleItems];
+  v17 = [indexPathsForVisibleItems containsObject:v14];
 
   if (v17)
   {
-    v18 = [(AVTAvatarAttributeEditorViewController *)self attributesCollectionView];
-    v19 = [v18 layoutAttributesForItemAtIndexPath:v14];
+    attributesCollectionView2 = [(AVTAvatarAttributeEditorViewController *)self attributesCollectionView];
+    v19 = [attributesCollectionView2 layoutAttributesForItemAtIndexPath:v14];
 
     [v19 frame];
     v21 = v20;
     v23 = v22;
-    v24 = [(AVTAvatarAttributeEditorViewController *)self attributesCollectionView];
-    [v24 bounds];
-    [v8 sizeForFocusingItemAtIndex:v10 fittingSize:{v25, v26}];
+    attributesCollectionView3 = [(AVTAvatarAttributeEditorViewController *)self attributesCollectionView];
+    [attributesCollectionView3 bounds];
+    [controllerCopy sizeForFocusingItemAtIndex:v10 fittingSize:{v25, v26}];
     v28 = v27;
     v30 = v29;
 
-    [(AVTAvatarAttributeEditorViewController *)self updateForSelectionOfItem:v31 inSection:v9 senderRect:v5 reloadSections:v21, v23, v28, v30];
+    [(AVTAvatarAttributeEditorViewController *)self updateForSelectionOfItem:itemCopy inSection:section senderRect:sectionsCopy reloadSections:v21, v23, v28, v30];
   }
 }
 
-- (void)updateForSelectionOfItem:(id)a3 inSection:(id)a4 senderRect:(CGRect)a5 reloadSections:(BOOL)a6
+- (void)updateForSelectionOfItem:(id)item inSection:(id)section senderRect:(CGRect)rect reloadSections:(BOOL)sections
 {
-  v6 = a6;
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v16 = a4;
-  v13 = a3;
-  v14 = [(AVTAvatarAttributeEditorViewController *)self modelManager];
-  [v14 updateAvatarBySelectingSectionItem:v13 animated:1];
+  sectionsCopy = sections;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  sectionCopy = section;
+  itemCopy = item;
+  modelManager = [(AVTAvatarAttributeEditorViewController *)self modelManager];
+  [modelManager updateAvatarBySelectingSectionItem:itemCopy animated:1];
 
-  v15 = [(AVTAvatarAttributeEditorViewController *)self modelManager];
-  [v15 updateEditorStateBySelectingSectionItem:v13 animated:1];
+  modelManager2 = [(AVTAvatarAttributeEditorViewController *)self modelManager];
+  [modelManager2 updateEditorStateBySelectingSectionItem:itemCopy animated:1];
 
-  [(AVTAvatarAttributeEditorViewController *)self rebuildUIModelAfterSelectionInSection:v16 senderRect:v6 reloadSections:x, y, width, height];
+  [(AVTAvatarAttributeEditorViewController *)self rebuildUIModelAfterSelectionInSection:sectionCopy senderRect:sectionsCopy reloadSections:x, y, width, height];
 }
 
-- (void)updateForSelectionOfSupplementalItem:(id)a3 senderRect:(CGRect)a4
+- (void)updateForSelectionOfSupplementalItem:(id)item senderRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3;
-  v10 = [(AVTAvatarAttributeEditorViewController *)self modelManager];
-  [v10 updateAvatarBySelectingSupplementalPickerItem:v9 animated:1];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  itemCopy = item;
+  modelManager = [(AVTAvatarAttributeEditorViewController *)self modelManager];
+  [modelManager updateAvatarBySelectingSupplementalPickerItem:itemCopy animated:1];
 
   [(AVTAvatarAttributeEditorViewController *)self rebuildUIModelAfterSelectionInSection:0 senderRect:x, y, width, height];
 }
 
-- (void)rebuildUIModelAfterSelectionInSection:(id)a3 senderRect:(CGRect)a4 reloadSections:(BOOL)a5
+- (void)rebuildUIModelAfterSelectionInSection:(id)section senderRect:(CGRect)rect reloadSections:(BOOL)sections
 {
-  v5 = a5;
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  sectionsCopy = sections;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v62[1] = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v54 = v11;
-  if (v11)
+  sectionCopy = section;
+  v54 = sectionCopy;
+  if (sectionCopy)
   {
-    v12 = [v11 identifier];
-    v62[0] = v12;
+    identifier = [sectionCopy identifier];
+    v62[0] = identifier;
     v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v62 count:1];
   }
 
@@ -3342,53 +3342,53 @@ void __96__AVTAvatarAttributeEditorViewController_attributeEditorSectionControll
     v13 = MEMORY[0x1E695E0F0];
   }
 
-  v14 = [(AVTAvatarAttributeEditorViewController *)self dataSource];
-  v15 = [v14 currentCategoryIndex];
+  dataSource = [(AVTAvatarAttributeEditorViewController *)self dataSource];
+  currentCategoryIndex = [dataSource currentCategoryIndex];
 
-  v16 = [(AVTAvatarAttributeEditorViewController *)self dataSource];
-  v17 = [v16 categoryAtIndex:v15];
+  dataSource2 = [(AVTAvatarAttributeEditorViewController *)self dataSource];
+  v17 = [dataSource2 categoryAtIndex:currentCategoryIndex];
 
-  v18 = [(AVTAvatarAttributeEditorViewController *)self modelManager];
-  v19 = [v18 buildUIModelWithSelectedCategory:v17 atIndex:v15];
+  modelManager = [(AVTAvatarAttributeEditorViewController *)self modelManager];
+  v19 = [modelManager buildUIModelWithSelectedCategory:v17 atIndex:currentCategoryIndex];
 
-  v20 = [v19 objectAtIndex:v15];
-  v21 = [(AVTAvatarAttributeEditorViewController *)self environment];
-  v22 = [v21 inMemoryImageCache];
+  v20 = [v19 objectAtIndex:currentCategoryIndex];
+  environment = [(AVTAvatarAttributeEditorViewController *)self environment];
+  inMemoryImageCache = [environment inMemoryImageCache];
   v23 = objc_opt_respondsToSelector();
 
   if (v23)
   {
-    v24 = [(AVTAvatarAttributeEditorViewController *)self environment];
-    v25 = [v24 inMemoryImageCache];
-    [v25 clearCache];
+    environment2 = [(AVTAvatarAttributeEditorViewController *)self environment];
+    inMemoryImageCache2 = [environment2 inMemoryImageCache];
+    [inMemoryImageCache2 clearCache];
   }
 
-  v26 = [(AVTAvatarAttributeEditorViewController *)self dataSource];
+  dataSource3 = [(AVTAvatarAttributeEditorViewController *)self dataSource];
   v52 = v19;
-  [v26 reloadWithCategories:v19 currentCategoryIndex:v15];
+  [dataSource3 reloadWithCategories:v19 currentCategoryIndex:currentCategoryIndex];
 
-  v27 = [(AVTAvatarAttributeEditorViewController *)self dataSource];
-  v28 = [v27 indexesForSectionsPresentIn:v20 butNotIn:v17];
+  dataSource4 = [(AVTAvatarAttributeEditorViewController *)self dataSource];
+  v28 = [dataSource4 indexesForSectionsPresentIn:v20 butNotIn:v17];
 
-  v29 = [MEMORY[0x1E696AD50] indexSet];
-  if (v5)
+  indexSet = [MEMORY[0x1E696AD50] indexSet];
+  if (sectionsCopy)
   {
-    v30 = [(AVTAvatarAttributeEditorViewController *)self dataSource];
-    v31 = [v30 indexesForSectionsExcludingSectionsWithIdentifiers:v13 inCategoryAtIndex:v15];
-    [v29 addIndexes:v31];
+    dataSource5 = [(AVTAvatarAttributeEditorViewController *)self dataSource];
+    v31 = [dataSource5 indexesForSectionsExcludingSectionsWithIdentifiers:v13 inCategoryAtIndex:currentCategoryIndex];
+    [indexSet addIndexes:v31];
 
-    [v29 removeIndexes:v28];
+    [indexSet removeIndexes:v28];
   }
 
   v53 = v13;
-  v32 = [(AVTAvatarAttributeEditorViewController *)self dataSource];
-  v33 = [v32 indexesForSectionsPresentIn:v17 butNotIn:v20];
+  dataSource6 = [(AVTAvatarAttributeEditorViewController *)self dataSource];
+  v33 = [dataSource6 indexesForSectionsPresentIn:v17 butNotIn:v20];
 
-  v34 = [(AVTAvatarAttributeEditorViewController *)self dataSource];
-  v35 = [v34 numberOfSectionsForCategoryAtIndex:v15];
+  dataSource7 = [(AVTAvatarAttributeEditorViewController *)self dataSource];
+  v35 = [dataSource7 numberOfSectionsForCategoryAtIndex:currentCategoryIndex];
 
   [(AVTAvatarAttributeEditorViewController *)self setCollectionViewIsPerformingBatchUpdates:1];
-  v36 = [(AVTAvatarAttributeEditorViewController *)self attributesCollectionView];
+  attributesCollectionView = [(AVTAvatarAttributeEditorViewController *)self attributesCollectionView];
   v59[0] = MEMORY[0x1E69E9820];
   v59[1] = 3221225472;
   v59[2] = __106__AVTAvatarAttributeEditorViewController_rebuildUIModelAfterSelectionInSection_senderRect_reloadSections___block_invoke;
@@ -3403,40 +3403,40 @@ void __96__AVTAvatarAttributeEditorViewController_attributeEditorSectionControll
   v55[2] = __106__AVTAvatarAttributeEditorViewController_rebuildUIModelAfterSelectionInSection_senderRect_reloadSections___block_invoke_2;
   v55[3] = &unk_1E7F3D398;
   v55[4] = self;
-  v57 = v15;
+  v57 = currentCategoryIndex;
   v58 = v35;
-  v39 = v29;
+  v39 = indexSet;
   v56 = v39;
-  [v36 performBatchUpdates:v59 completion:v55];
+  [attributesCollectionView performBatchUpdates:v59 completion:v55];
 
   if (![(AVTAvatarAttributeEditorViewController *)self allowFacetracking])
   {
     [(AVTAvatarAttributeEditorViewController *)self updateImageViewWithPosedAvatarRecordForcingRender:1 completionHandler:0];
   }
 
-  v40 = [(AVTAvatarAttributeEditorViewController *)self attributesCollectionView];
-  [v40 bounds];
+  attributesCollectionView2 = [(AVTAvatarAttributeEditorViewController *)self attributesCollectionView];
+  [attributesCollectionView2 bounds];
   v42 = v41;
-  v43 = [(AVTAvatarAttributeEditorViewController *)self environment];
-  [AVTAvatarAttributeEditorSectionController edgeLengthFittingWidth:v43 environment:v42];
+  environment3 = [(AVTAvatarAttributeEditorViewController *)self environment];
+  [AVTAvatarAttributeEditorSectionController edgeLengthFittingWidth:environment3 environment:v42];
   v45 = v44;
 
-  v46 = [v17 previewMode];
-  v47 = [v46 type];
+  previewMode = [v17 previewMode];
+  type = [previewMode type];
 
-  if (v47 == 1)
+  if (type == 1)
   {
-    v48 = [(AVTAvatarAttributeEditorViewController *)self bodyEditorHeaderViewController];
-    [v48 setIsAnimatingExpansion:1];
+    bodyEditorHeaderViewController = [(AVTAvatarAttributeEditorViewController *)self bodyEditorHeaderViewController];
+    [bodyEditorHeaderViewController setIsAnimatingExpansion:1];
   }
 
-  v49 = [(AVTAvatarAttributeEditorViewController *)self collapsibleHeaderController];
-  [v49 expandAnimated:1 withFocusRect:x standardItemHeight:{y, width, height, v45}];
+  collapsibleHeaderController = [(AVTAvatarAttributeEditorViewController *)self collapsibleHeaderController];
+  [collapsibleHeaderController expandAnimated:1 withFocusRect:x standardItemHeight:{y, width, height, v45}];
 
   [(AVTAvatarAttributeEditorViewController *)self updateForChangedSelectionIfNeeded];
-  v50 = [(AVTAvatarAttributeEditorViewController *)self avtViewSessionProvider];
-  v51 = [v50 faceTrackingManager];
-  [v51 resumeFaceTrackingIfNeededAnimated:1];
+  avtViewSessionProvider = [(AVTAvatarAttributeEditorViewController *)self avtViewSessionProvider];
+  faceTrackingManager = [avtViewSessionProvider faceTrackingManager];
+  [faceTrackingManager resumeFaceTrackingIfNeededAnimated:1];
 
   [(AVTAvatarAttributeEditorViewController *)self updateBodyEditorHeaderIfNeeded];
 }
@@ -3501,39 +3501,39 @@ void __106__AVTAvatarAttributeEditorViewController_rebuildUIModelAfterSelectionI
   if (![(AVTAvatarAttributeEditorViewController *)self hasMadeAnySelection])
   {
     [(AVTAvatarAttributeEditorViewController *)self setHasMadeAnySelection:1];
-    v3 = [(AVTAvatarAttributeEditorViewController *)self delegate];
-    [v3 attributeEditorDidMakeFirstSelection:self];
+    delegate = [(AVTAvatarAttributeEditorViewController *)self delegate];
+    [delegate attributeEditorDidMakeFirstSelection:self];
   }
 }
 
 - (void)updateBodyEditorHeaderIfNeeded
 {
-  v3 = [(AVTAvatarAttributeEditorViewController *)self bodyEditorHeaderViewController];
+  bodyEditorHeaderViewController = [(AVTAvatarAttributeEditorViewController *)self bodyEditorHeaderViewController];
 
-  if (v3)
+  if (bodyEditorHeaderViewController)
   {
-    v4 = [(AVTAvatarAttributeEditorViewController *)self bodyEditorHeaderViewController];
-    [v4 reloadDisplayedSticker];
+    bodyEditorHeaderViewController2 = [(AVTAvatarAttributeEditorViewController *)self bodyEditorHeaderViewController];
+    [bodyEditorHeaderViewController2 reloadDisplayedSticker];
 
-    v5 = [(AVTAvatarAttributeEditorViewController *)self bodyEditorHeaderViewController];
-    v6 = [v5 view];
-    v7 = [v6 superview];
+    bodyEditorHeaderViewController3 = [(AVTAvatarAttributeEditorViewController *)self bodyEditorHeaderViewController];
+    view = [bodyEditorHeaderViewController3 view];
+    superview = [view superview];
 
-    if (v7)
+    if (superview)
     {
-      v8 = [(AVTAvatarAttributeEditorViewController *)self bodyEditorHeaderViewController];
-      [v8 updateStickersforVisibleCells];
+      bodyEditorHeaderViewController4 = [(AVTAvatarAttributeEditorViewController *)self bodyEditorHeaderViewController];
+      [bodyEditorHeaderViewController4 updateStickersforVisibleCells];
     }
   }
 }
 
-- (int64_t)interfaceOrientationForFaceTrackingManager:(id)a3
+- (int64_t)interfaceOrientationForFaceTrackingManager:(id)manager
 {
-  v3 = [(AVTAvatarAttributeEditorViewController *)self view];
-  v4 = [v3 window];
-  v5 = [v4 _windowInterfaceOrientation];
+  view = [(AVTAvatarAttributeEditorViewController *)self view];
+  window = [view window];
+  _windowInterfaceOrientation = [window _windowInterfaceOrientation];
 
-  return v5;
+  return _windowInterfaceOrientation;
 }
 
 - (AVTAvatarAttributeEditorViewControllerDelegate)delegate
@@ -3543,24 +3543,24 @@ void __106__AVTAvatarAttributeEditorViewController_rebuildUIModelAfterSelectionI
   return WeakRetained;
 }
 
-- (void)selectCategory:(id)a3 withCompletionDelay:(int64_t)a4 completionHandler:(id)a5
+- (void)selectCategory:(id)category withCompletionDelay:(int64_t)delay completionHandler:(id)handler
 {
-  v8 = a3;
+  categoryCopy = category;
   dataSource = self->_dataSource;
-  v10 = a5;
-  v11 = [(AVTAvatarAttributeEditorDataSource *)dataSource groupPickerItemsForCategories];
+  handlerCopy = handler;
+  groupPickerItemsForCategories = [(AVTAvatarAttributeEditorDataSource *)dataSource groupPickerItemsForCategories];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __117__AVTAvatarAttributeEditorViewController_UIApplicationTesting__selectCategory_withCompletionDelay_completionHandler___block_invoke;
   v15[3] = &unk_1E7F3D3C0;
-  v16 = v8;
-  v12 = v8;
-  v13 = [v11 indexOfObjectPassingTest:v15];
+  v16 = categoryCopy;
+  v12 = categoryCopy;
+  v13 = [groupPickerItemsForCategories indexOfObjectPassingTest:v15];
 
   [(AVTGroupDial *)self->_groupDial setSelectedGroupIndex:v13 animated:0];
   [(AVTAvatarAttributeEditorViewController *)self groupPicker:self->_groupDial didSelectGroupAtIndex:v13 tapped:1];
-  v14 = dispatch_time(0, 1000000000 * a4);
-  dispatch_after(v14, MEMORY[0x1E69E96A0], v10);
+  v14 = dispatch_time(0, 1000000000 * delay);
+  dispatch_after(v14, MEMORY[0x1E69E96A0], handlerCopy);
 }
 
 uint64_t __117__AVTAvatarAttributeEditorViewController_UIApplicationTesting__selectCategory_withCompletionDelay_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -3571,29 +3571,29 @@ uint64_t __117__AVTAvatarAttributeEditorViewController_UIApplicationTesting__sel
   return v4;
 }
 
-- (void)prepareForPresetsScrollTestOnCategory:(id)a3 readyHandler:(id)a4
+- (void)prepareForPresetsScrollTestOnCategory:(id)category readyHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __115__AVTAvatarAttributeEditorViewController_UIApplicationTesting__prepareForPresetsScrollTestOnCategory_readyHandler___block_invoke;
   v8[3] = &unk_1E7F3A8A8;
   v8[4] = self;
-  v9 = v6;
-  v7 = v6;
-  [(AVTAvatarAttributeEditorViewController *)self selectCategory:a3 withCompletionDelay:3 completionHandler:v8];
+  v9 = handlerCopy;
+  v7 = handlerCopy;
+  [(AVTAvatarAttributeEditorViewController *)self selectCategory:category withCompletionDelay:3 completionHandler:v8];
 }
 
-- (void)configurePPTMemoji:(id)a3
+- (void)configurePPTMemoji:(id)memoji
 {
-  v4 = a3;
+  memojiCopy = memoji;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __83__AVTAvatarAttributeEditorViewController_UIApplicationTesting__configurePPTMemoji___block_invoke;
   v6[3] = &unk_1E7F3ACA0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = memojiCopy;
+  v5 = memojiCopy;
   [(AVTAvatarAttributeEditorViewController *)self selectCategory:@"Skin" withCompletionDelay:1 completionHandler:v6];
 }
 

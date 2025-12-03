@@ -8,9 +8,9 @@
 - (id)buildDefaultPlacecardHoursString
 {
   v2 = [[MUPlaceHoursFormatter alloc] initWithHoursString:self->_hoursText AMPMSymbols:self->_AMPMSymbols];
-  v3 = [(MUPlaceHoursFormatter *)v2 buildDefaultPlacecardHoursString];
+  buildDefaultPlacecardHoursString = [(MUPlaceHoursFormatter *)v2 buildDefaultPlacecardHoursString];
 
-  return v3;
+  return buildDefaultPlacecardHoursString;
 }
 
 - (MUHoursSummaryViewModel)init

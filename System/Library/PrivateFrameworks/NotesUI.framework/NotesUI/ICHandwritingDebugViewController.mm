@@ -1,25 +1,25 @@
 @interface ICHandwritingDebugViewController
 - (ICHandwritingDebugDelegate)delegate;
-- (ICHandwritingDebugViewController)initWithDelegate:(id)a3;
+- (ICHandwritingDebugViewController)initWithDelegate:(id)delegate;
 - (OS_dispatch_queue)recognitionQueue;
 - (void)close;
 - (void)refresh;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation ICHandwritingDebugViewController
 
-- (ICHandwritingDebugViewController)initWithDelegate:(id)a3
+- (ICHandwritingDebugViewController)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = ICHandwritingDebugViewController;
   v5 = [(ICHandwritingDebugViewController *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
   }
 
   return v6;
@@ -32,58 +32,58 @@
   v22.super_class = ICHandwritingDebugViewController;
   [(ICHandwritingDebugViewController *)&v22 viewDidLoad];
   v3 = objc_alloc(MEMORY[0x1E69DD168]);
-  v4 = [(ICHandwritingDebugViewController *)self view];
-  [v4 bounds];
+  view = [(ICHandwritingDebugViewController *)self view];
+  [view bounds];
   v5 = [v3 initWithFrame:?];
   [(ICHandwritingDebugViewController *)self setTextView:v5];
 
-  v6 = [(ICHandwritingDebugViewController *)self textView];
-  [v6 setEditable:0];
+  textView = [(ICHandwritingDebugViewController *)self textView];
+  [textView setEditable:0];
 
-  v7 = [(ICHandwritingDebugViewController *)self textView];
-  [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
+  textView2 = [(ICHandwritingDebugViewController *)self textView];
+  [textView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v8 = [(ICHandwritingDebugViewController *)self view];
-  v9 = [(ICHandwritingDebugViewController *)self textView];
-  [v8 addSubview:v9];
+  view2 = [(ICHandwritingDebugViewController *)self view];
+  textView3 = [(ICHandwritingDebugViewController *)self textView];
+  [view2 addSubview:textView3];
 
-  v10 = [(ICHandwritingDebugViewController *)self textView];
-  [v10 ic_addAnchorsToFillSuperview];
+  textView4 = [(ICHandwritingDebugViewController *)self textView];
+  [textView4 ic_addAnchorsToFillSuperview];
 
-  v11 = [(ICHandwritingDebugViewController *)self textView];
-  [v11 setTextContainerInset:{0.0, 12.0, 0.0, 12.0}];
+  textView5 = [(ICHandwritingDebugViewController *)self textView];
+  [textView5 setTextContainerInset:{0.0, 12.0, 0.0, 12.0}];
 
   v12 = [objc_alloc(MEMORY[0x1E69DC638]) initWithActivityIndicatorStyle:100];
   [(ICHandwritingDebugViewController *)self setActivityIndicator:v12];
 
-  v13 = [(ICHandwritingDebugViewController *)self activityIndicator];
-  [v13 setHidesWhenStopped:1];
+  activityIndicator = [(ICHandwritingDebugViewController *)self activityIndicator];
+  [activityIndicator setHidesWhenStopped:1];
 
   v14 = objc_alloc(MEMORY[0x1E69DC708]);
-  v15 = [(ICHandwritingDebugViewController *)self activityIndicator];
-  v16 = [v14 initWithCustomView:v15];
+  activityIndicator2 = [(ICHandwritingDebugViewController *)self activityIndicator];
+  v16 = [v14 initWithCustomView:activityIndicator2];
 
   [v16 setEnabled:0];
   v17 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:13 target:self action:sel_refresh];
   v23[0] = v17;
   v23[1] = v16;
   v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:2];
-  v19 = [(ICHandwritingDebugViewController *)self navigationItem];
-  [v19 setRightBarButtonItems:v18];
+  navigationItem = [(ICHandwritingDebugViewController *)self navigationItem];
+  [navigationItem setRightBarButtonItems:v18];
 
   v20 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:0 target:self action:sel_close];
-  v21 = [(ICHandwritingDebugViewController *)self navigationItem];
-  [v21 setLeftBarButtonItem:v20];
+  navigationItem2 = [(ICHandwritingDebugViewController *)self navigationItem];
+  [navigationItem2 setLeftBarButtonItem:v20];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v6.receiver = self;
   v6.super_class = ICHandwritingDebugViewController;
   [(ICHandwritingDebugViewController *)&v6 viewWillAppear:?];
-  v5 = [(ICHandwritingDebugViewController *)self navigationController];
-  [v5 setNavigationBarHidden:0 animated:v3];
+  navigationController = [(ICHandwritingDebugViewController *)self navigationController];
+  [navigationController setNavigationBarHidden:0 animated:appearCopy];
 
   [(ICHandwritingDebugViewController *)self refresh];
 }
@@ -107,16 +107,16 @@
 - (void)refresh
 {
   v31 = *MEMORY[0x1E69E9840];
-  v3 = [(ICHandwritingDebugViewController *)self delegate];
-  v4 = [v3 drawingsForHandwritingDebug];
-  [(ICHandwritingDebugViewController *)self setDrawings:v4];
+  delegate = [(ICHandwritingDebugViewController *)self delegate];
+  drawingsForHandwritingDebug = [delegate drawingsForHandwritingDebug];
+  [(ICHandwritingDebugViewController *)self setDrawings:drawingsForHandwritingDebug];
 
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v5 = [(ICHandwritingDebugViewController *)self drawings];
-  v6 = [v5 countByEnumeratingWithState:&v24 objects:v30 count:16];
+  drawings = [(ICHandwritingDebugViewController *)self drawings];
+  v6 = [drawings countByEnumeratingWithState:&v24 objects:v30 count:16];
   if (v6)
   {
     v7 = v6;
@@ -127,24 +127,24 @@
       {
         if (*v25 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(drawings);
         }
 
         v10 = *(*(&v24 + 1) + 8 * i);
-        v11 = [v10 visualizationManager];
-        v12 = [v11 recognitionStatusReportingEnabled];
+        visualizationManager = [v10 visualizationManager];
+        recognitionStatusReportingEnabled = [visualizationManager recognitionStatusReportingEnabled];
 
-        if ((v12 & 1) == 0)
+        if ((recognitionStatusReportingEnabled & 1) == 0)
         {
-          v13 = [v10 visualizationManager];
-          [v13 setRecognitionStatusReportingEnabled:1];
+          visualizationManager2 = [v10 visualizationManager];
+          [visualizationManager2 setRecognitionStatusReportingEnabled:1];
 
-          v14 = [v10 visualizationManager];
-          [v14 setDelegate:self];
+          visualizationManager3 = [v10 visualizationManager];
+          [visualizationManager3 setDelegate:self];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v24 objects:v30 count:16];
+      v7 = [drawings countByEnumeratingWithState:&v24 objects:v30 count:16];
     }
 
     while (v7);
@@ -153,17 +153,17 @@
   v15 = os_log_create("com.apple.notes", "PencilKit");
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
-    v16 = [(ICHandwritingDebugViewController *)self drawings];
-    v17 = [v16 count];
+    drawings2 = [(ICHandwritingDebugViewController *)self drawings];
+    v17 = [drawings2 count];
     *buf = 134217984;
     v29 = v17;
     _os_log_impl(&dword_1D4171000, v15, OS_LOG_TYPE_DEFAULT, "Refreshing handwriting debug view with %ld drawings", buf, 0xCu);
   }
 
-  v18 = [(ICHandwritingDebugViewController *)self drawings];
-  v19 = [v18 copy];
+  drawings3 = [(ICHandwritingDebugViewController *)self drawings];
+  v19 = [drawings3 copy];
 
-  v20 = [(ICHandwritingDebugViewController *)self recognitionQueue];
+  recognitionQueue = [(ICHandwritingDebugViewController *)self recognitionQueue];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __43__ICHandwritingDebugViewController_refresh__block_invoke;
@@ -171,7 +171,7 @@
   v22[4] = self;
   v23 = v19;
   v21 = v19;
-  dispatch_async(v20, v22);
+  dispatch_async(recognitionQueue, v22);
 }
 
 void __43__ICHandwritingDebugViewController_refresh__block_invoke(uint64_t a1)
@@ -376,8 +376,8 @@ void __43__ICHandwritingDebugViewController_refresh__block_invoke_45(uint64_t a1
 
 - (void)close
 {
-  v2 = [(ICHandwritingDebugViewController *)self delegate];
-  [v2 handwritingDebugShouldClose];
+  delegate = [(ICHandwritingDebugViewController *)self delegate];
+  [delegate handwritingDebugShouldClose];
 }
 
 - (ICHandwritingDebugDelegate)delegate

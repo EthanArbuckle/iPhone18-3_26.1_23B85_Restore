@@ -1,6 +1,6 @@
 @interface SteppingSignSizeAttributes
 - (CGSize)size;
-- (SteppingSignSizeAttributes)initWithSize:(CGSize)a3 signToPageControlDistance:(double)a4;
+- (SteppingSignSizeAttributes)initWithSize:(CGSize)size signToPageControlDistance:(double)distance;
 @end
 
 @implementation SteppingSignSizeAttributes
@@ -14,10 +14,10 @@
   return result;
 }
 
-- (SteppingSignSizeAttributes)initWithSize:(CGSize)a3 signToPageControlDistance:(double)a4
+- (SteppingSignSizeAttributes)initWithSize:(CGSize)size signToPageControlDistance:(double)distance
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v8.receiver = self;
   v8.super_class = SteppingSignSizeAttributes;
   result = [(SteppingSignSizeAttributes *)&v8 init];
@@ -25,7 +25,7 @@
   {
     result->_size.width = width;
     result->_size.height = height;
-    result->_signToPageControlDistance = a4;
+    result->_signToPageControlDistance = distance;
   }
 
   return result;

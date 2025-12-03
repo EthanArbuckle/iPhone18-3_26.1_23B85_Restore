@@ -1,26 +1,26 @@
 @interface ApplicationMainMenu
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
 - (_TtC5Music19ApplicationMainMenu)init;
-- (void)autoPlayToggleAction:(id)a3;
-- (void)backAction:(id)a3;
-- (void)buildMenuWithBuilder:(id)a3;
-- (void)find:(id)a3;
-- (void)newPlaylistAction:(id)a3;
-- (void)newPlaylistFolderAction:(id)a3;
-- (void)playbackAction:(id)a3;
-- (void)setRepeatAction:(id)a3;
-- (void)showLyricsAction:(id)a3;
-- (void)showNowPlayingAction:(id)a3;
-- (void)validateCommand:(id)a3;
+- (void)autoPlayToggleAction:(id)action;
+- (void)backAction:(id)action;
+- (void)buildMenuWithBuilder:(id)builder;
+- (void)find:(id)find;
+- (void)newPlaylistAction:(id)action;
+- (void)newPlaylistFolderAction:(id)action;
+- (void)playbackAction:(id)action;
+- (void)setRepeatAction:(id)action;
+- (void)showLyricsAction:(id)action;
+- (void)showNowPlayingAction:(id)action;
+- (void)validateCommand:(id)command;
 @end
 
 @implementation ApplicationMainMenu
 
-- (void)find:(id)a3
+- (void)find:(id)find
 {
-  if (a3)
+  if (find)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -29,7 +29,7 @@
   else
   {
     memset(v6, 0, sizeof(v6));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   sub_1001158F4();
@@ -37,26 +37,26 @@
   sub_100011DF0(v6);
 }
 
-- (void)buildMenuWithBuilder:(id)a3
+- (void)buildMenuWithBuilder:(id)builder
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_100314DE4(a3);
+  selfCopy = self;
+  sub_100314DE4(builder);
   swift_unknownObjectRelease();
 }
 
-- (void)validateCommand:(id)a3
+- (void)validateCommand:(id)command
 {
-  v4 = a3;
-  v5 = self;
-  sub_1003150B0(v4);
+  commandCopy = command;
+  selfCopy = self;
+  sub_1003150B0(commandCopy);
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  if (a4)
+  if (sender)
   {
-    v6 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -65,10 +65,10 @@
   else
   {
     memset(v10, 0, sizeof(v10));
-    v7 = self;
+    selfCopy2 = self;
   }
 
-  v8 = sub_1003151F4(a3, v10);
+  v8 = sub_1003151F4(action, v10);
 
   sub_100011DF0(v10);
   return v8 & 1;
@@ -81,61 +81,61 @@
   return result;
 }
 
-- (void)playbackAction:(id)a3
+- (void)playbackAction:(id)action
 {
-  v4 = a3;
-  v5 = self;
+  actionCopy = action;
+  selfCopy = self;
   sub_100319E3C();
 }
 
-- (void)setRepeatAction:(id)a3
+- (void)setRepeatAction:(id)action
 {
-  v4 = a3;
-  v5 = self;
-  sub_10031860C(v4);
+  actionCopy = action;
+  selfCopy = self;
+  sub_10031860C(actionCopy);
 }
 
-- (void)autoPlayToggleAction:(id)a3
+- (void)autoPlayToggleAction:(id)action
 {
-  v4 = a3;
-  v5 = self;
+  actionCopy = action;
+  selfCopy = self;
   sub_10031A0C4();
 }
 
-- (void)newPlaylistAction:(id)a3
+- (void)newPlaylistAction:(id)action
 {
-  v4 = a3;
-  v5 = self;
+  actionCopy = action;
+  selfCopy = self;
   sub_10031C2A8();
 }
 
-- (void)newPlaylistFolderAction:(id)a3
+- (void)newPlaylistFolderAction:(id)action
 {
-  v4 = a3;
-  v5 = self;
+  actionCopy = action;
+  selfCopy = self;
   sub_10031C7B4();
 }
 
-- (void)showNowPlayingAction:(id)a3
+- (void)showNowPlayingAction:(id)action
 {
-  v4 = a3;
-  v5 = self;
+  actionCopy = action;
+  selfCopy = self;
   sub_10031F3F8();
 }
 
-- (void)showLyricsAction:(id)a3
+- (void)showLyricsAction:(id)action
 {
-  v4 = a3;
-  v5 = self;
+  actionCopy = action;
+  selfCopy = self;
   sub_10031F640();
 }
 
-- (void)backAction:(id)a3
+- (void)backAction:(id)action
 {
   v3 = (*(&self->super.super.isa + OBJC_IVAR____TtC5Music19ApplicationMainMenu_interfaceContext))[4];
   if ((v3 & 0x8000000000000000) == 0)
   {
-    v8 = self;
+    selfCopy = self;
     v4 = v3;
     v5 = sub_1006BDF60([v4 selectedIndex]);
 
@@ -148,7 +148,7 @@
 
     else
     {
-      v7 = v8;
+      v7 = selfCopy;
     }
   }
 }

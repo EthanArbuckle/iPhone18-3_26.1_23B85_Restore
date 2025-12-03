@@ -1,12 +1,12 @@
 @interface _UISceneTargetOfEventDeferringEnvironmentsDiffAction
-- (void)_performActionsForUIScene:(id)a3 withUpdatedFBSScene:(id)a4 settingsDiff:(id)a5 fromSettings:(id)a6 transitionContext:(id)a7 lifecycleActionType:(unsigned int)a8;
+- (void)_performActionsForUIScene:(id)scene withUpdatedFBSScene:(id)sScene settingsDiff:(id)diff fromSettings:(id)settings transitionContext:(id)context lifecycleActionType:(unsigned int)type;
 @end
 
 @implementation _UISceneTargetOfEventDeferringEnvironmentsDiffAction
 
-- (void)_performActionsForUIScene:(id)a3 withUpdatedFBSScene:(id)a4 settingsDiff:(id)a5 fromSettings:(id)a6 transitionContext:(id)a7 lifecycleActionType:(unsigned int)a8
+- (void)_performActionsForUIScene:(id)scene withUpdatedFBSScene:(id)sScene settingsDiff:(id)diff fromSettings:(id)settings transitionContext:(id)context lifecycleActionType:(unsigned int)type
 {
-  v10 = self;
+  selfCopy = self;
   v15 = 0;
   if (self)
   {
@@ -14,22 +14,22 @@
     if (!sceneSettingsTargetOfEventDeferringEnvironmentsDiffInspector)
     {
       v12 = objc_opt_new();
-      v13 = v10->_sceneSettingsTargetOfEventDeferringEnvironmentsDiffInspector;
-      v10->_sceneSettingsTargetOfEventDeferringEnvironmentsDiffInspector = v12;
+      v13 = selfCopy->_sceneSettingsTargetOfEventDeferringEnvironmentsDiffInspector;
+      selfCopy->_sceneSettingsTargetOfEventDeferringEnvironmentsDiffInspector = v12;
 
-      [(UIApplicationSceneSettingsDiffInspector *)v10->_sceneSettingsTargetOfEventDeferringEnvironmentsDiffInspector observeTargetOfEventDeferringEnvironmentsWithBlock:&__block_literal_global_91];
-      sceneSettingsTargetOfEventDeferringEnvironmentsDiffInspector = v10->_sceneSettingsTargetOfEventDeferringEnvironmentsDiffInspector;
+      [(UIApplicationSceneSettingsDiffInspector *)selfCopy->_sceneSettingsTargetOfEventDeferringEnvironmentsDiffInspector observeTargetOfEventDeferringEnvironmentsWithBlock:&__block_literal_global_91];
+      sceneSettingsTargetOfEventDeferringEnvironmentsDiffInspector = selfCopy->_sceneSettingsTargetOfEventDeferringEnvironmentsDiffInspector;
     }
 
-    v10 = sceneSettingsTargetOfEventDeferringEnvironmentsDiffInspector;
+    selfCopy = sceneSettingsTargetOfEventDeferringEnvironmentsDiffInspector;
   }
 
-  [(_UISceneTargetOfEventDeferringEnvironmentsDiffAction *)v10 inspectDiff:a5 withContext:&v15, a5, a6, a7, *&a8];
+  [(_UISceneTargetOfEventDeferringEnvironmentsDiffAction *)selfCopy inspectDiff:diff withContext:&v15, diff, settings, context, *&type];
 
   if (v15)
   {
-    v14 = [a3 _keyWindowSceneObserver];
-    [(_UIKeyWindowSceneObserver *)v14 evaluateTargetOfEventDeferringEnvironments];
+    _keyWindowSceneObserver = [scene _keyWindowSceneObserver];
+    [(_UIKeyWindowSceneObserver *)_keyWindowSceneObserver evaluateTargetOfEventDeferringEnvironments];
   }
 }
 

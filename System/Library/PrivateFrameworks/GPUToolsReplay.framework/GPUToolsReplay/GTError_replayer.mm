@@ -20,11 +20,11 @@
 
 - (id)localizedDescription
 {
-  v3 = [(GTError_replayer *)self userInfo];
-  if (!v3 || (result = [v3 objectForKey:*MEMORY[0x277CCA450]]) == 0)
+  userInfo = [(GTError_replayer *)self userInfo];
+  if (!userInfo || (result = [userInfo objectForKey:*MEMORY[0x277CCA450]]) == 0)
   {
-    v5 = [(GTError_replayer *)self code];
-    if (![-[GTError_replayer domain](self "domain")] || (result = _StringForError(v5)) == 0)
+    code = [(GTError_replayer *)self code];
+    if (![-[GTError_replayer domain](self "domain")] || (result = _StringForError(code)) == 0)
     {
       v6.receiver = self;
       v6.super_class = GTError_replayer;

@@ -6,15 +6,15 @@
 
 - (INUISearchFoundationImageAdapter)downcastToIntentsUIVariantIfApplicable
 {
-  v1 = [[INUISearchFoundationImageAdapter alloc] initWithPayloadImage:a1];
-  v2 = [(INUISearchFoundationImageAdapter *)v1 intentsImage];
+  v1 = [[INUISearchFoundationImageAdapter alloc] initWithPayloadImage:self];
+  intentsImage = [(INUISearchFoundationImageAdapter *)v1 intentsImage];
 
-  if (v2)
+  if (intentsImage)
   {
-    v2 = v1;
+    intentsImage = v1;
   }
 
-  return v2;
+  return intentsImage;
 }
 
 @end

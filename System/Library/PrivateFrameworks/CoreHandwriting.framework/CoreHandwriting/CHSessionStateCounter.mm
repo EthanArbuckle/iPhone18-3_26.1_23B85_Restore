@@ -38,10 +38,10 @@
 
 - (BOOL)hasActiveSessions
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_counter > 0;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_counter > 0;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }

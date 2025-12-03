@@ -1,76 +1,76 @@
 @interface MediaService
-- (id)_getAppleMusicAccountName:(id)a3;
-- (id)_getLocalIconImagePath:(id)a3 remoteIconURL:(id)a4;
-- (void)populateMediaService:(id)a3 homeID:(id)a4 homeUserID:(id)a5;
+- (id)_getAppleMusicAccountName:(id)name;
+- (id)_getLocalIconImagePath:(id)path remoteIconURL:(id)l;
+- (void)populateMediaService:(id)service homeID:(id)d homeUserID:(id)iD;
 @end
 
 @implementation MediaService
 
-- (void)populateMediaService:(id)a3 homeID:(id)a4 homeUserID:(id)a5
+- (void)populateMediaService:(id)service homeID:(id)d homeUserID:(id)iD
 {
-  v28 = a4;
-  v7 = a3;
-  v8 = [(MediaService *)self serviceID];
-  v9 = [v8 UUIDString];
-  v10 = [v9 isEqualToString:kAppleMusicServiceIdentifier];
+  dCopy = d;
+  serviceCopy = service;
+  serviceID = [(MediaService *)self serviceID];
+  uUIDString = [serviceID UUIDString];
+  v10 = [uUIDString isEqualToString:kAppleMusicServiceIdentifier];
 
   if (v10)
   {
-    v11 = [(MediaService *)self _getAppleMusicAccountName:v28];
+    v11 = [(MediaService *)self _getAppleMusicAccountName:dCopy];
     [(MediaService *)self setAccountName:v11];
   }
 
-  v12 = [v7 serviceIconPath];
-  [(MediaService *)self setRemoteIconURL:v12];
+  serviceIconPath = [serviceCopy serviceIconPath];
+  [(MediaService *)self setRemoteIconURL:serviceIconPath];
 
-  v13 = [v7 serviceType];
-  v14 = [v13 copy];
+  serviceType = [serviceCopy serviceType];
+  v14 = [serviceType copy];
   [(MediaService *)self setServiceType:v14];
 
-  v15 = [v7 serviceName];
-  v16 = [v15 copy];
+  serviceName = [serviceCopy serviceName];
+  v16 = [serviceName copy];
   [(MediaService *)self setServiceName:v16];
 
-  v17 = [v7 bundleIDS];
-  v18 = [v17 copy];
+  bundleIDS = [serviceCopy bundleIDS];
+  v18 = [bundleIDS copy];
   [(MediaService *)self setAlternateBundleIdentifiers:v18];
 
-  v19 = [v7 configurationPublicKey];
-  v20 = [v19 copy];
+  configurationPublicKey = [serviceCopy configurationPublicKey];
+  v20 = [configurationPublicKey copy];
   [(MediaService *)self setConfigPublicKey:v20];
 
-  v21 = [v7 bundleIDS];
-  v22 = [v21 firstObject];
-  v23 = [v22 copy];
+  bundleIDS2 = [serviceCopy bundleIDS];
+  firstObject = [bundleIDS2 firstObject];
+  v23 = [firstObject copy];
   [(MediaService *)self setBundleIdentifier:v23];
 
-  v24 = [(MediaService *)self serviceID];
-  v25 = [v24 UUIDString];
-  v26 = [v7 serviceIconPath];
+  serviceID2 = [(MediaService *)self serviceID];
+  uUIDString2 = [serviceID2 UUIDString];
+  serviceIconPath2 = [serviceCopy serviceIconPath];
 
-  v27 = [(MediaService *)self _getLocalIconImagePath:v25 remoteIconURL:v26];
+  v27 = [(MediaService *)self _getLocalIconImagePath:uUIDString2 remoteIconURL:serviceIconPath2];
   [(MediaService *)self setIconImageURL:v27];
 }
 
-- (id)_getAppleMusicAccountName:(id)a3
+- (id)_getAppleMusicAccountName:(id)name
 {
-  v3 = a3;
-  v4 = [[MSDAccount alloc] initWithHomeIdentifier:v3];
+  nameCopy = name;
+  v4 = [[MSDAccount alloc] initWithHomeIdentifier:nameCopy];
 
-  v5 = [(MSDAccount *)v4 iTunesAccountName];
+  iTunesAccountName = [(MSDAccount *)v4 iTunesAccountName];
 
-  return v5;
+  return iTunesAccountName;
 }
 
-- (id)_getLocalIconImagePath:(id)a3 remoteIconURL:(id)a4
+- (id)_getLocalIconImagePath:(id)path remoteIconURL:(id)l
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[MSDArtworkManager alloc] initWithServiceID:v6 remoteImageURL:v5];
+  lCopy = l;
+  pathCopy = path;
+  v7 = [[MSDArtworkManager alloc] initWithServiceID:pathCopy remoteImageURL:lCopy];
 
-  v8 = [(MSDArtworkManager *)v7 getLocalCachedImageURL];
+  getLocalCachedImageURL = [(MSDArtworkManager *)v7 getLocalCachedImageURL];
 
-  return v8;
+  return getLocalCachedImageURL;
 }
 
 @end

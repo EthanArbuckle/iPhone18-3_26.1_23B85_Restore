@@ -1,12 +1,12 @@
 @interface SiriPronunciationItemCell
 + (double)defaultCellHeight;
-+ (id)_flatImageFromSnippetBundleNamed:(id)a3;
-- (SiriPronunciationItemCell)initWithFrame:(CGRect)a3;
-- (void)_confirmButtonTapped:(id)a3;
-- (void)_playButtonTapped:(id)a3;
++ (id)_flatImageFromSnippetBundleNamed:(id)named;
+- (SiriPronunciationItemCell)initWithFrame:(CGRect)frame;
+- (void)_confirmButtonTapped:(id)tapped;
+- (void)_playButtonTapped:(id)tapped;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setShowingPlaying:(BOOL)a3;
+- (void)setShowingPlaying:(BOOL)playing;
 @end
 
 @implementation SiriPronunciationItemCell
@@ -19,11 +19,11 @@
   return 44.0;
 }
 
-+ (id)_flatImageFromSnippetBundleNamed:(id)a3
++ (id)_flatImageFromSnippetBundleNamed:(id)named
 {
-  v3 = a3;
+  namedCopy = named;
   v4 = [NSBundle bundleForClass:objc_opt_class()];
-  v5 = [UIImage imageNamed:v3 inBundle:v4];
+  v5 = [UIImage imageNamed:namedCopy inBundle:v4];
 
   v6 = +[UIColor whiteColor];
   v7 = [v5 _flatImageWithColor:v6];
@@ -31,11 +31,11 @@
   return v7;
 }
 
-- (SiriPronunciationItemCell)initWithFrame:(CGRect)a3
+- (SiriPronunciationItemCell)initWithFrame:(CGRect)frame
 {
   v19.receiver = self;
   v19.super_class = SiriPronunciationItemCell;
-  v3 = [(SiriPronunciationItemCell *)&v19 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SiriPronunciationItemCell *)&v19 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[SiriPronunciationItemCell _buttonPlayImage];
@@ -208,12 +208,12 @@
   self->_confirmHandler = 0;
 }
 
-- (void)setShowingPlaying:(BOOL)a3
+- (void)setShowingPlaying:(BOOL)playing
 {
-  if (self->_showingPlaying != a3)
+  if (self->_showingPlaying != playing)
   {
-    self->_showingPlaying = a3;
-    if (a3)
+    self->_showingPlaying = playing;
+    if (playing)
     {
       +[SiriPronunciationItemCell _buttonStopImage];
     }
@@ -227,7 +227,7 @@
   }
 }
 
-- (void)_playButtonTapped:(id)a3
+- (void)_playButtonTapped:(id)tapped
 {
   playHandler = self->_playHandler;
   if (playHandler)
@@ -236,7 +236,7 @@
   }
 }
 
-- (void)_confirmButtonTapped:(id)a3
+- (void)_confirmButtonTapped:(id)tapped
 {
   confirmHandler = self->_confirmHandler;
   if (confirmHandler)

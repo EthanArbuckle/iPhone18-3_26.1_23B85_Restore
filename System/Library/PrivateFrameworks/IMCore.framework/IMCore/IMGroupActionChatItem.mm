@@ -1,14 +1,14 @@
 @interface IMGroupActionChatItem
 - (BOOL)unattributed;
 - (NSArray)fileTransferGUIDs;
-- (id)_initWithItem:(id)a3 sender:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_initWithItem:(id)item sender:(id)sender;
+- (id)copyWithZone:(_NSZone *)zone;
 - (int64_t)actionType;
 @end
 
 @implementation IMGroupActionChatItem
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   v7 = objc_msgSend__item(self, v5, v6);
@@ -41,19 +41,19 @@
   return v6;
 }
 
-- (id)_initWithItem:(id)a3 sender:(id)a4
+- (id)_initWithItem:(id)item sender:(id)sender
 {
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  senderCopy = sender;
   v23.receiver = self;
   v23.super_class = IMGroupActionChatItem;
-  v8 = [(IMChatItem *)&v23 _initWithItem:v6];
+  v8 = [(IMChatItem *)&v23 _initWithItem:itemCopy];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(v8 + 8, a4);
-    *(v9 + 56) = objc_msgSend_errorCode(v6, v10, v11) != 0;
-    isBusiness = objc_msgSend_isBusiness(v7, v12, v13);
+    objc_storeStrong(v8 + 8, sender);
+    *(v9 + 56) = objc_msgSend_errorCode(itemCopy, v10, v11) != 0;
+    isBusiness = objc_msgSend_isBusiness(senderCopy, v12, v13);
     v15 = @"a:";
     if (isBusiness)
     {
@@ -61,7 +61,7 @@
     }
 
     v16 = v15;
-    v19 = objc_msgSend_guid(v6, v17, v18);
+    v19 = objc_msgSend_guid(itemCopy, v17, v18);
     v20 = sub_1A83AC604();
 
     objc_msgSend__setGUID_(v9, v21, v20);

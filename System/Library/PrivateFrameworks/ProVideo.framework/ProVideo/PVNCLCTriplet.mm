@@ -1,22 +1,22 @@
 @interface PVNCLCTriplet
-- (PVNCLCTriplet)initWithColorPrimaryStr:(__CFString *)a3 hgColorPrimary:(int)a4 transferFunctionStr:(__CFString *)a5 hgTransformFunction:(int)a6 ycbcrMatrixStr:(__CFString *)a7 hgYCbCrMatrix:(int)a8;
+- (PVNCLCTriplet)initWithColorPrimaryStr:(__CFString *)str hgColorPrimary:(int)primary transferFunctionStr:(__CFString *)functionStr hgTransformFunction:(int)function ycbcrMatrixStr:(__CFString *)matrixStr hgYCbCrMatrix:(int)matrix;
 @end
 
 @implementation PVNCLCTriplet
 
-- (PVNCLCTriplet)initWithColorPrimaryStr:(__CFString *)a3 hgColorPrimary:(int)a4 transferFunctionStr:(__CFString *)a5 hgTransformFunction:(int)a6 ycbcrMatrixStr:(__CFString *)a7 hgYCbCrMatrix:(int)a8
+- (PVNCLCTriplet)initWithColorPrimaryStr:(__CFString *)str hgColorPrimary:(int)primary transferFunctionStr:(__CFString *)functionStr hgTransformFunction:(int)function ycbcrMatrixStr:(__CFString *)matrixStr hgYCbCrMatrix:(int)matrix
 {
   v15.receiver = self;
   v15.super_class = PVNCLCTriplet;
   result = [(PVNCLCTriplet *)&v15 init];
   if (result)
   {
-    result->_colorPrimary = a3;
-    result->_transferFunction = a5;
-    result->_hgColorPrimary = a4;
-    result->_hgTransferFunction = a6;
-    result->_ycbcrMatrix = a7;
-    result->_hgYCbCrMatrix = a8;
+    result->_colorPrimary = str;
+    result->_transferFunction = functionStr;
+    result->_hgColorPrimary = primary;
+    result->_hgTransferFunction = function;
+    result->_ycbcrMatrix = matrixStr;
+    result->_hgYCbCrMatrix = matrix;
   }
 
   return result;

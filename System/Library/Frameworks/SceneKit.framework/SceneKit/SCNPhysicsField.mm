@@ -4,20 +4,20 @@
 + (SCNPhysicsField)turbulenceFieldWithSmoothness:(CGFloat)smoothness animationSpeed:(CGFloat)speed;
 + (id)field;
 - (SCNPhysicsField)init;
-- (SCNPhysicsField)initWithCoder:(id)a3;
+- (SCNPhysicsField)initWithCoder:(id)coder;
 - (SCNVector3)direction;
-- (SCNVector3)evalAtLocation:(SCNVector3)a3;
+- (SCNVector3)evalAtLocation:(SCNVector3)location;
 - (SCNVector3)halfExtent;
 - (SCNVector3)offset;
 - (c3dPhysicsField)_createField;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)_commonInit;
 - (void)_removeOwner;
-- (void)_setOwner:(id)a3;
+- (void)_setOwner:(id)owner;
 - (void)_setupCommonProperties;
 - (void)_willRemoveFromPhysicsWorld;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)setActive:(BOOL)active;
 - (void)setCategoryBitMask:(NSUInteger)categoryBitMask;
 - (void)setExclusive:(BOOL)exclusive;
@@ -131,7 +131,7 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v3 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:self requiringSecureCoding:0 error:0];
   v4 = [MEMORY[0x277CCAAC8] unarchiveObjectWithData:v3];
@@ -481,12 +481,12 @@ __n128 __29__SCNPhysicsField_setOffset___block_invoke(uint64_t a1, __n128 a2)
   }
 }
 
-- (void)_setOwner:(id)a3
+- (void)_setOwner:(id)owner
 {
   node = self->_node;
   if (node)
   {
-    v6 = node == a3;
+    v6 = node == owner;
   }
 
   else
@@ -517,26 +517,26 @@ __n128 __29__SCNPhysicsField_setOffset___block_invoke(uint64_t a1, __n128 a2)
     }
   }
 
-  self->_node = a3;
+  self->_node = owner;
   if (!self->_field)
   {
     self->_field = [(SCNPhysicsField *)self _createField];
     [(SCNPhysicsField *)self _setupCommonProperties];
   }
 
-  C3DNodeSetHasPhysicsField([a3 nodeRef], 1);
-  v9 = [a3 scene];
-  if (v9)
+  C3DNodeSetHasPhysicsField([owner nodeRef], 1);
+  scene = [owner scene];
+  if (scene)
   {
-    [objc_msgSend(v9 "physicsWorld")];
+    [objc_msgSend(scene "physicsWorld")];
   }
 }
 
-- (SCNVector3)evalAtLocation:(SCNVector3)a3
+- (SCNVector3)evalAtLocation:(SCNVector3)location
 {
-  y = a3.y;
-  z = a3.z;
-  v9 = *&a3.x;
+  y = location.y;
+  z = location.z;
+  v9 = *&location.x;
   if (c3dPhysicsField::contains(self->_field, &v9))
   {
     v6 = (*(self->_field->var0 + 2))(self->_field, v9, 0, 1.0, 1.0, 0.016667);
@@ -556,25 +556,25 @@ __n128 __29__SCNPhysicsField_setOffset___block_invoke(uint64_t a1, __n128 a2)
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  SCNEncodeVector3(a3, @"halfExtent", self->_halfExtent.x, self->_halfExtent.y, self->_halfExtent.z);
-  [a3 encodeDouble:@"strength" forKey:self->_strength];
-  [a3 encodeDouble:@"falloffExponent" forKey:self->_falloffExponent];
-  [a3 encodeDouble:@"minimumDistance" forKey:self->_minimumDistance];
-  [a3 encodeBool:self->_active forKey:@"active"];
-  [a3 encodeInteger:self->_scope forKey:@"scope"];
-  [a3 encodeBool:self->_usesEllipsoidalExtent forKey:@"usesEllipsoidalExtent"];
-  [a3 encodeBool:self->_exclusive forKey:@"exclusive"];
-  SCNEncodeVector3(a3, @"offset", self->_offset.x, self->_offset.y, self->_offset.z);
+  SCNEncodeVector3(coder, @"halfExtent", self->_halfExtent.x, self->_halfExtent.y, self->_halfExtent.z);
+  [coder encodeDouble:@"strength" forKey:self->_strength];
+  [coder encodeDouble:@"falloffExponent" forKey:self->_falloffExponent];
+  [coder encodeDouble:@"minimumDistance" forKey:self->_minimumDistance];
+  [coder encodeBool:self->_active forKey:@"active"];
+  [coder encodeInteger:self->_scope forKey:@"scope"];
+  [coder encodeBool:self->_usesEllipsoidalExtent forKey:@"usesEllipsoidalExtent"];
+  [coder encodeBool:self->_exclusive forKey:@"exclusive"];
+  SCNEncodeVector3(coder, @"offset", self->_offset.x, self->_offset.y, self->_offset.z);
   x = self->_direction.x;
   y = self->_direction.y;
   z = self->_direction.z;
 
-  SCNEncodeVector3(a3, @"direction", x, y, z);
+  SCNEncodeVector3(coder, @"direction", x, y, z);
 }
 
-- (SCNPhysicsField)initWithCoder:(id)a3
+- (SCNPhysicsField)initWithCoder:(id)coder
 {
   v10.receiver = self;
   v10.super_class = SCNPhysicsField;
@@ -584,23 +584,23 @@ __n128 __29__SCNPhysicsField_setOffset___block_invoke(uint64_t a1, __n128 a2)
     v5 = +[SCNTransaction immediateMode];
     [SCNTransaction setImmediateMode:1];
     [(SCNPhysicsField *)v4 _commonInit];
-    *&v6 = SCNDecodeVector3(a3, @"halfExtent");
+    *&v6 = SCNDecodeVector3(coder, @"halfExtent");
     [(SCNPhysicsField *)v4 setHalfExtent:v6];
-    [a3 decodeDoubleForKey:@"strength"];
+    [coder decodeDoubleForKey:@"strength"];
     [(SCNPhysicsField *)v4 setStrength:?];
-    [a3 decodeDoubleForKey:@"falloffExponent"];
+    [coder decodeDoubleForKey:@"falloffExponent"];
     [(SCNPhysicsField *)v4 setFalloffExponent:?];
-    [a3 decodeDoubleForKey:@"minimumDistance"];
+    [coder decodeDoubleForKey:@"minimumDistance"];
     [(SCNPhysicsField *)v4 setMinimumDistance:?];
-    -[SCNPhysicsField setActive:](v4, "setActive:", [a3 decodeBoolForKey:@"active"]);
-    -[SCNPhysicsField setScope:](v4, "setScope:", [a3 decodeIntegerForKey:@"scope"]);
-    -[SCNPhysicsField setUsesEllipsoidalExtent:](v4, "setUsesEllipsoidalExtent:", [a3 decodeBoolForKey:@"usesEllipsoidalExtent"]);
-    -[SCNPhysicsField setExclusive:](v4, "setExclusive:", [a3 decodeBoolForKey:@"exclusive"]);
-    *&v7 = SCNDecodeVector3(a3, @"offset");
+    -[SCNPhysicsField setActive:](v4, "setActive:", [coder decodeBoolForKey:@"active"]);
+    -[SCNPhysicsField setScope:](v4, "setScope:", [coder decodeIntegerForKey:@"scope"]);
+    -[SCNPhysicsField setUsesEllipsoidalExtent:](v4, "setUsesEllipsoidalExtent:", [coder decodeBoolForKey:@"usesEllipsoidalExtent"]);
+    -[SCNPhysicsField setExclusive:](v4, "setExclusive:", [coder decodeBoolForKey:@"exclusive"]);
+    *&v7 = SCNDecodeVector3(coder, @"offset");
     [(SCNPhysicsField *)v4 setOffset:v7];
-    if ([a3 containsValueForKey:@"direction"])
+    if ([coder containsValueForKey:@"direction"])
     {
-      *&v8 = SCNDecodeVector3(a3, @"direction");
+      *&v8 = SCNDecodeVector3(coder, @"direction");
       [(SCNPhysicsField *)v4 setDirection:v8];
     }
 

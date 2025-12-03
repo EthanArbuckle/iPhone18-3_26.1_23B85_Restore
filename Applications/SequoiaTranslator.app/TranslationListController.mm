@@ -1,20 +1,20 @@
 @interface TranslationListController
-- (_TtC17SequoiaTranslator25TranslationListController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC17SequoiaTranslator25TranslationListController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)loadView;
-- (void)presentationController:(id)a3 willPresentWithAdaptiveStyle:(int64_t)a4 transitionCoordinator:(id)a5;
-- (void)presentationControllerDidDismiss:(id)a3;
-- (void)presentationControllerWillDismiss:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)presentationController:(id)controller willPresentWithAdaptiveStyle:(int64_t)style transitionCoordinator:(id)coordinator;
+- (void)presentationControllerDidDismiss:(id)dismiss;
+- (void)presentationControllerWillDismiss:(id)dismiss;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation TranslationListController
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   sub_1002A6088();
 }
 
@@ -28,19 +28,19 @@
   sub_1002A8F4C(1);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_1002A6234(a3);
+  selfCopy = self;
+  sub_1002A6234(appear);
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   swift_unknownObjectRetain();
-  v8 = self;
-  sub_1002A63D8(a4, width, height);
+  selfCopy = self;
+  sub_1002A63D8(coordinator, width, height);
   swift_unknownObjectRelease();
 }
 
@@ -53,24 +53,24 @@
   sub_1002A6A70();
 }
 
-- (_TtC17SequoiaTranslator25TranslationListController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC17SequoiaTranslator25TranslationListController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)presentationController:(id)a3 willPresentWithAdaptiveStyle:(int64_t)a4 transitionCoordinator:(id)a5
+- (void)presentationController:(id)controller willPresentWithAdaptiveStyle:(int64_t)style transitionCoordinator:(id)coordinator
 {
-  v8 = a3;
+  controllerCopy = controller;
   swift_unknownObjectRetain();
-  v9 = self;
-  sub_1002AEDC8(v8, a4, a5);
+  selfCopy = self;
+  sub_1002AEDC8(controllerCopy, style, coordinator);
 
   swift_unknownObjectRelease();
 }
 
-- (void)presentationControllerDidDismiss:(id)a3
+- (void)presentationControllerDidDismiss:(id)dismiss
 {
   v3 = (&self->super.super.super.isa + OBJC_IVAR____TtC17SequoiaTranslator25TranslationListController_viewModelIdentifierInDictionaryMode);
   v4 = *&self->collectionView[OBJC_IVAR____TtC17SequoiaTranslator25TranslationListController_viewModelIdentifierInDictionaryMode];
@@ -78,16 +78,16 @@
   v3[1] = 0;
   if (v4)
   {
-    v5 = self;
+    selfCopy = self;
     sub_1002A3CA0();
   }
 }
 
-- (void)presentationControllerWillDismiss:(id)a3
+- (void)presentationControllerWillDismiss:(id)dismiss
 {
-  v4 = a3;
-  v5 = self;
-  sub_1002AF6EC(v4);
+  dismissCopy = dismiss;
+  selfCopy = self;
+  sub_1002AF6EC(dismissCopy);
 }
 
 @end

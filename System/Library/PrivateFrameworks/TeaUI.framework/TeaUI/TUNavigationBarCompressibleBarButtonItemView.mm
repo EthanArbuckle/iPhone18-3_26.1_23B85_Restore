@@ -1,25 +1,25 @@
 @interface TUNavigationBarCompressibleBarButtonItemView
-- (TUNavigationBarCompressibleBarButtonItemView)initWithCustomItemView:(id)a3;
-- (TUNavigationBarCompressibleBarButtonItemView)initWithRegularItemView:(id)a3;
+- (TUNavigationBarCompressibleBarButtonItemView)initWithCustomItemView:(id)view;
+- (TUNavigationBarCompressibleBarButtonItemView)initWithRegularItemView:(id)view;
 - (UIView)view;
 - (double)contentAlpha;
 - (double)verticalOffset;
-- (void)setContentAlpha:(double)a3;
-- (void)setVerticalOffset:(double)a3;
+- (void)setContentAlpha:(double)alpha;
+- (void)setVerticalOffset:(double)offset;
 @end
 
 @implementation TUNavigationBarCompressibleBarButtonItemView
 
-- (TUNavigationBarCompressibleBarButtonItemView)initWithCustomItemView:(id)a3
+- (TUNavigationBarCompressibleBarButtonItemView)initWithCustomItemView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   v10.receiver = self;
   v10.super_class = TUNavigationBarCompressibleBarButtonItemView;
   v6 = [(TUNavigationBarCompressibleBarButtonItemView *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_customItemView, a3);
+    objc_storeStrong(&v6->_customItemView, view);
     regularItemView = v7->_regularItemView;
     v7->_regularItemView = 0;
   }
@@ -27,9 +27,9 @@
   return v7;
 }
 
-- (TUNavigationBarCompressibleBarButtonItemView)initWithRegularItemView:(id)a3
+- (TUNavigationBarCompressibleBarButtonItemView)initWithRegularItemView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   v10.receiver = self;
   v10.super_class = TUNavigationBarCompressibleBarButtonItemView;
   v6 = [(TUNavigationBarCompressibleBarButtonItemView *)&v10 init];
@@ -39,7 +39,7 @@
     customItemView = v6->_customItemView;
     v6->_customItemView = 0;
 
-    objc_storeStrong(&v7->_regularItemView, a3);
+    objc_storeStrong(&v7->_regularItemView, view);
   }
 
   return v7;
@@ -47,37 +47,37 @@
 
 - (UIView)view
 {
-  v3 = [(TUNavigationBarCompressibleBarButtonItemView *)self customItemView];
-  v4 = v3;
-  if (v3)
+  customItemView = [(TUNavigationBarCompressibleBarButtonItemView *)self customItemView];
+  v4 = customItemView;
+  if (customItemView)
   {
-    v5 = v3;
+    regularItemView = customItemView;
   }
 
   else
   {
-    v5 = [(TUNavigationBarCompressibleBarButtonItemView *)self regularItemView];
+    regularItemView = [(TUNavigationBarCompressibleBarButtonItemView *)self regularItemView];
   }
 
-  v6 = v5;
+  v6 = regularItemView;
 
   return v6;
 }
 
 - (double)contentAlpha
 {
-  v3 = [(TUNavigationBarCompressibleBarButtonItemView *)self customItemView];
+  customItemView = [(TUNavigationBarCompressibleBarButtonItemView *)self customItemView];
 
-  if (v3)
+  if (customItemView)
   {
-    v4 = [(TUNavigationBarCompressibleBarButtonItemView *)self customItemView];
-    [v4 contentAlpha];
+    customItemView2 = [(TUNavigationBarCompressibleBarButtonItemView *)self customItemView];
+    [customItemView2 contentAlpha];
   }
 
   else
   {
-    v4 = [(TUNavigationBarCompressibleBarButtonItemView *)self regularItemView];
-    [v4 alpha];
+    customItemView2 = [(TUNavigationBarCompressibleBarButtonItemView *)self regularItemView];
+    [customItemView2 alpha];
   }
 
   v6 = v5;
@@ -85,32 +85,32 @@
   return v6;
 }
 
-- (void)setContentAlpha:(double)a3
+- (void)setContentAlpha:(double)alpha
 {
-  v5 = [(TUNavigationBarCompressibleBarButtonItemView *)self customItemView];
+  customItemView = [(TUNavigationBarCompressibleBarButtonItemView *)self customItemView];
 
-  if (v5)
+  if (customItemView)
   {
-    v6 = [(TUNavigationBarCompressibleBarButtonItemView *)self customItemView];
-    [v6 setContentAlpha:a3];
+    customItemView2 = [(TUNavigationBarCompressibleBarButtonItemView *)self customItemView];
+    [customItemView2 setContentAlpha:alpha];
   }
 
-  v7 = [(TUNavigationBarCompressibleBarButtonItemView *)self regularItemView];
+  regularItemView = [(TUNavigationBarCompressibleBarButtonItemView *)self regularItemView];
 
-  if (v7)
+  if (regularItemView)
   {
-    v8 = [(TUNavigationBarCompressibleBarButtonItemView *)self regularItemView];
-    [v8 setAlpha:a3];
+    regularItemView2 = [(TUNavigationBarCompressibleBarButtonItemView *)self regularItemView];
+    [regularItemView2 setAlpha:alpha];
   }
 }
 
 - (double)verticalOffset
 {
-  v2 = [(TUNavigationBarCompressibleBarButtonItemView *)self view];
-  v3 = v2;
-  if (v2)
+  view = [(TUNavigationBarCompressibleBarButtonItemView *)self view];
+  v3 = view;
+  if (view)
   {
-    [v2 transform];
+    [view transform];
     v4 = v6;
   }
 
@@ -122,11 +122,11 @@
   return v4;
 }
 
-- (void)setVerticalOffset:(double)a3
+- (void)setVerticalOffset:(double)offset
 {
-  v4 = [(TUNavigationBarCompressibleBarButtonItemView *)self view];
-  CATransform3DMakeTranslation(&v5, 0.0, a3, 0.0);
-  [v4 setTransform3D:&v5];
+  view = [(TUNavigationBarCompressibleBarButtonItemView *)self view];
+  CATransform3DMakeTranslation(&v5, 0.0, offset, 0.0);
+  [view setTransform3D:&v5];
 }
 
 @end

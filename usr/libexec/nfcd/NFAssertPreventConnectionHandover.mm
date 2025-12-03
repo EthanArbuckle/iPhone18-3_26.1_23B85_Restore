@@ -1,17 +1,17 @@
 @interface NFAssertPreventConnectionHandover
-- (BOOL)isEntitled:(id)a3;
+- (BOOL)isEntitled:(id)entitled;
 - (id)onAssert;
 - (id)onDeassert;
 @end
 
 @implementation NFAssertPreventConnectionHandover
 
-- (BOOL)isEntitled:(id)a3
+- (BOOL)isEntitled:(id)entitled
 {
-  v3 = [a3 NF_whitelistChecker];
-  v4 = [v3 chAssertion];
+  nF_whitelistChecker = [entitled NF_whitelistChecker];
+  chAssertion = [nF_whitelistChecker chAssertion];
 
-  return v4;
+  return chAssertion;
 }
 
 - (id)onAssert

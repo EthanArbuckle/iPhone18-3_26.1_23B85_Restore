@@ -1,7 +1,7 @@
 @interface NTKCellularConnectivityImageProvider
 - (NTKCellularConnectivityImageProvider)init;
-- (NTKCellularConnectivityImageProvider)initWithDotLayoutConstraints:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (NTKCellularConnectivityImageProvider)initWithDotLayoutConstraints:(id)constraints;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation NTKCellularConnectivityImageProvider
@@ -20,7 +20,7 @@
   return v3;
 }
 
-- (NTKCellularConnectivityImageProvider)initWithDotLayoutConstraints:(id)a3
+- (NTKCellularConnectivityImageProvider)initWithDotLayoutConstraints:(id)constraints
 {
   v6.receiver = self;
   v6.super_class = NTKCellularConnectivityImageProvider;
@@ -34,7 +34,7 @@
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v12.receiver = self;
   v12.super_class = NTKCellularConnectivityImageProvider;
@@ -44,17 +44,17 @@
   {
     [v5 setNeedsPlatter:self->_needsPlatter];
     [v6 setPlatterAlpha:self->_platterAlpha];
-    v7 = [(UIColor *)self->_platterOverrideColor copyWithZone:a3];
+    v7 = [(UIColor *)self->_platterOverrideColor copyWithZone:zone];
     [v6 setPlatterOverrideColor:v7];
 
-    v8 = [(NSNumber *)self->_imageSize copyWithZone:a3];
+    v8 = [(NSNumber *)self->_imageSize copyWithZone:zone];
     [v6 setImageSize:v8];
 
-    v9 = [(NSNumber *)self->_imageVerticalOffsetScaleFromWidth copyWithZone:a3];
+    v9 = [(NSNumber *)self->_imageVerticalOffsetScaleFromWidth copyWithZone:zone];
     [v6 setImageVerticalOffsetScaleFromWidth:v9];
 
     [v6 setImageAlpha:self->_imageAlpha];
-    v10 = [(UIColor *)self->_imageOverrideColor copyWithZone:a3];
+    v10 = [(UIColor *)self->_imageOverrideColor copyWithZone:zone];
     [v6 setImageOverrideColor:v10];
 
     [v6 setDotLayoutConstraints:self->_dotLayoutConstraints];

@@ -1,20 +1,20 @@
 @interface MPUArtworkView
 - (BOOL)_shouldShowHighlightView;
 - (BOOL)shouldDisplayPlaceholder;
-- (MPUArtworkView)initWithFrame:(CGRect)a3;
-- (MPUArtworkView)initWithImage:(id)a3;
+- (MPUArtworkView)initWithFrame:(CGRect)frame;
+- (MPUArtworkView)initWithImage:(id)image;
 - (void)_imageDidChange;
-- (void)_setAspectConstraintMultiplier:(double)a3;
-- (void)_setPlaceholderHidden:(BOOL)a3;
-- (void)_updateHighlightViewAnimated:(BOOL)a3;
+- (void)_setAspectConstraintMultiplier:(double)multiplier;
+- (void)_setPlaceholderHidden:(BOOL)hidden;
+- (void)_updateHighlightViewAnimated:(BOOL)animated;
 - (void)dealloc;
-- (void)setAutomaticallyApplyAspectConstraints:(BOOL)a3;
-- (void)setDimsWhenHighlighted:(BOOL)a3;
-- (void)setHighlighted:(BOOL)a3 animated:(BOOL)a4;
-- (void)setHighlightedAnimationImages:(id)a3;
-- (void)setHighlightedImage:(id)a3;
-- (void)setImage:(id)a3;
-- (void)setPlaceholderImage:(id)a3;
+- (void)setAutomaticallyApplyAspectConstraints:(BOOL)constraints;
+- (void)setDimsWhenHighlighted:(BOOL)highlighted;
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated;
+- (void)setHighlightedAnimationImages:(id)images;
+- (void)setHighlightedImage:(id)image;
+- (void)setImage:(id)image;
+- (void)setPlaceholderImage:(id)image;
 - (void)startAnimating;
 - (void)stopAnimating;
 - (void)updateConstraints;
@@ -22,11 +22,11 @@
 
 @implementation MPUArtworkView
 
-- (MPUArtworkView)initWithImage:(id)a3
+- (MPUArtworkView)initWithImage:(id)image
 {
   v6.receiver = self;
   v6.super_class = MPUArtworkView;
-  v3 = [(MPUArtworkView *)&v6 initWithImage:a3];
+  v3 = [(MPUArtworkView *)&v6 initWithImage:image];
   v4 = v3;
   if (v3)
   {
@@ -37,11 +37,11 @@
   return v4;
 }
 
-- (MPUArtworkView)initWithFrame:(CGRect)a3
+- (MPUArtworkView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = MPUArtworkView;
-  v3 = [(MPUArtworkView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MPUArtworkView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -62,16 +62,16 @@
 
 - (void)updateConstraints
 {
-  v3 = [(MPUArtworkView *)self image];
-  if (v3)
+  image = [(MPUArtworkView *)self image];
+  if (image)
   {
-    v4 = v3;
-    v5 = [(MPUArtworkView *)self automaticallyApplyAspectConstraints];
+    v4 = image;
+    automaticallyApplyAspectConstraints = [(MPUArtworkView *)self automaticallyApplyAspectConstraints];
 
-    if (v5)
+    if (automaticallyApplyAspectConstraints)
     {
-      v6 = [(MPUArtworkView *)self image];
-      [v6 size];
+      image2 = [(MPUArtworkView *)self image];
+      [image2 size];
       v8 = v7;
       v10 = v9;
 
@@ -87,43 +87,43 @@
   [(MPUArtworkView *)&v11 updateConstraints];
 }
 
-- (void)setHighlighted:(BOOL)a3 animated:(BOOL)a4
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v6.receiver = self;
   v6.super_class = MPUArtworkView;
-  [(MPUArtworkView *)&v6 setHighlighted:a3];
+  [(MPUArtworkView *)&v6 setHighlighted:highlighted];
   if (self->_dimsWhenHighlighted)
   {
-    [(MPUArtworkView *)self _updateHighlightViewAnimated:v4];
+    [(MPUArtworkView *)self _updateHighlightViewAnimated:animatedCopy];
   }
 }
 
-- (void)setHighlightedImage:(id)a3
+- (void)setHighlightedImage:(id)image
 {
   v4.receiver = self;
   v4.super_class = MPUArtworkView;
-  [(MPUArtworkView *)&v4 setHighlightedImage:a3];
+  [(MPUArtworkView *)&v4 setHighlightedImage:image];
   if (self->_dimsWhenHighlighted)
   {
     [(MPUArtworkView *)self _updateHighlightViewAnimated:0];
   }
 }
 
-- (void)setHighlightedAnimationImages:(id)a3
+- (void)setHighlightedAnimationImages:(id)images
 {
   v4.receiver = self;
   v4.super_class = MPUArtworkView;
-  [(MPUArtworkView *)&v4 setHighlightedAnimationImages:a3];
+  [(MPUArtworkView *)&v4 setHighlightedAnimationImages:images];
   if (self->_dimsWhenHighlighted)
   {
     [(MPUArtworkView *)self _updateHighlightViewAnimated:0];
   }
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   if ([(MPUArtworkView *)self isDisplayingPlaceholder])
   {
     [(MPUArtworkView *)self _setPlaceholderHidden:1];
@@ -131,9 +131,9 @@
 
   v6.receiver = self;
   v6.super_class = MPUArtworkView;
-  [(MPUArtworkView *)&v6 setImage:v4];
+  [(MPUArtworkView *)&v6 setImage:imageCopy];
   externalImage = self->_externalImage;
-  self->_externalImage = v4;
+  self->_externalImage = imageCopy;
 
   if ([(MPUArtworkView *)self shouldDisplayPlaceholder])
   {
@@ -165,12 +165,12 @@
   }
 }
 
-- (void)setAutomaticallyApplyAspectConstraints:(BOOL)a3
+- (void)setAutomaticallyApplyAspectConstraints:(BOOL)constraints
 {
-  if (self->_automaticallyApplyAspectConstraints != a3)
+  if (self->_automaticallyApplyAspectConstraints != constraints)
   {
-    self->_automaticallyApplyAspectConstraints = a3;
-    if (a3)
+    self->_automaticallyApplyAspectConstraints = constraints;
+    if (constraints)
     {
 
       [(MPUArtworkView *)self setNeedsUpdateConstraints];
@@ -185,12 +185,12 @@
   }
 }
 
-- (void)setDimsWhenHighlighted:(BOOL)a3
+- (void)setDimsWhenHighlighted:(BOOL)highlighted
 {
-  if (self->_dimsWhenHighlighted != a3)
+  if (self->_dimsWhenHighlighted != highlighted)
   {
-    self->_dimsWhenHighlighted = a3;
-    if (a3)
+    self->_dimsWhenHighlighted = highlighted;
+    if (highlighted)
     {
 
       [(MPUArtworkView *)self _updateHighlightViewAnimated:1];
@@ -205,12 +205,12 @@
   }
 }
 
-- (void)setPlaceholderImage:(id)a3
+- (void)setPlaceholderImage:(id)image
 {
-  v5 = a3;
-  if (self->_placeholderImage != v5)
+  imageCopy = image;
+  if (self->_placeholderImage != imageCopy)
   {
-    objc_storeStrong(&self->_placeholderImage, a3);
+    objc_storeStrong(&self->_placeholderImage, image);
     if ([(MPUArtworkView *)self isDisplayingPlaceholder])
     {
       placeholderImage = self->_placeholderImage;
@@ -231,8 +231,8 @@
     return 0;
   }
 
-  v4 = [(MPUArtworkView *)self placeholderImage];
-  if (v4)
+  placeholderImage = [(MPUArtworkView *)self placeholderImage];
+  if (placeholderImage)
   {
     v3 = self->_externalImage == 0;
   }
@@ -245,13 +245,13 @@
   return v3;
 }
 
-- (void)_setAspectConstraintMultiplier:(double)a3
+- (void)_setAspectConstraintMultiplier:(double)multiplier
 {
   [(NSLayoutConstraint *)self->_aspectConstraint multiplier];
-  if (v5 != a3)
+  if (v5 != multiplier)
   {
     [(MPUArtworkView *)self removeConstraint:self->_aspectConstraint];
-    v6 = [MEMORY[0x277CCAAD0] constraintWithItem:self attribute:8 relatedBy:0 toItem:self attribute:7 multiplier:a3 constant:0.0];
+    v6 = [MEMORY[0x277CCAAD0] constraintWithItem:self attribute:8 relatedBy:0 toItem:self attribute:7 multiplier:multiplier constant:0.0];
     aspectConstraint = self->_aspectConstraint;
     self->_aspectConstraint = v6;
 
@@ -270,15 +270,15 @@
   }
 }
 
-- (void)_setPlaceholderHidden:(BOOL)a3
+- (void)_setPlaceholderHidden:(BOOL)hidden
 {
-  v3 = a3;
-  if (a3)
+  hiddenCopy = hidden;
+  if (hidden)
   {
-    v5 = [(MPUArtworkView *)self _externalImage];
+    _externalImage = [(MPUArtworkView *)self _externalImage];
     v8.receiver = self;
     v8.super_class = MPUArtworkView;
-    [(MPUArtworkView *)&v8 setImage:v5];
+    [(MPUArtworkView *)&v8 setImage:_externalImage];
   }
 
   else
@@ -289,7 +289,7 @@
     [(MPUArtworkView *)&v7 setImage:placeholderImage];
   }
 
-  [(MPUArtworkView *)self setDisplayingPlaceholder:!v3];
+  [(MPUArtworkView *)self setDisplayingPlaceholder:!hiddenCopy];
   [(MPUArtworkView *)self _imageDidChange];
 }
 
@@ -302,40 +302,40 @@
 
   if ([(MPUArtworkView *)self isAnimating])
   {
-    v3 = [(MPUArtworkView *)self highlightedAnimationImages];
-    v4 = [v3 count];
+    highlightedAnimationImages = [(MPUArtworkView *)self highlightedAnimationImages];
+    highlightedImage = [highlightedAnimationImages count];
   }
 
   else
   {
-    v4 = [(MPUArtworkView *)self highlightedImage];
-    v3 = v4;
+    highlightedImage = [(MPUArtworkView *)self highlightedImage];
+    highlightedAnimationImages = highlightedImage;
   }
 
-  v5 = v4 == 0;
+  v5 = highlightedImage == 0;
 
   return v5;
 }
 
-- (void)_updateHighlightViewAnimated:(BOOL)a3
+- (void)_updateHighlightViewAnimated:(BOOL)animated
 {
   if (self->_isDeallocating)
   {
     return;
   }
 
-  v3 = a3;
-  v5 = [(MPUArtworkView *)self _shouldShowHighlightView];
-  v6 = [(UIView *)self->_highlightView isHidden];
+  animatedCopy = animated;
+  _shouldShowHighlightView = [(MPUArtworkView *)self _shouldShowHighlightView];
+  isHidden = [(UIView *)self->_highlightView isHidden];
   [(UIView *)self->_highlightView alpha];
-  v8 = v7 < 1.0 || v6;
-  if ((!v5 || (v8 & 1) == 0) && (v5 || v6 && v7 <= 0.0))
+  v8 = v7 < 1.0 || isHidden;
+  if ((!_shouldShowHighlightView || (v8 & 1) == 0) && (_shouldShowHighlightView || isHidden && v7 <= 0.0))
   {
     return;
   }
 
   v9 = 0.0;
-  if (v5)
+  if (_shouldShowHighlightView)
   {
     v10 = 1.0;
   }
@@ -345,14 +345,14 @@
     v10 = 0.0;
   }
 
-  v11 = [(UIView *)self->_highlightView layer];
-  v12 = [v11 presentationLayer];
+  layer = [(UIView *)self->_highlightView layer];
+  presentationLayer = [layer presentationLayer];
 
-  [v12 opacity];
+  [presentationLayer opacity];
   v14 = v13;
-  if (v3 || v5)
+  if (animatedCopy || _shouldShowHighlightView)
   {
-    if (!v3)
+    if (!animatedCopy)
     {
       goto LABEL_16;
     }
@@ -367,7 +367,7 @@ LABEL_15:
   }
 
 LABEL_16:
-  if (v5)
+  if (_shouldShowHighlightView)
   {
     highlightView = self->_highlightView;
     if (highlightView)

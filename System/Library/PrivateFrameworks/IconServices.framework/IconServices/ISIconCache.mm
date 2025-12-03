@@ -1,10 +1,10 @@
 @interface ISIconCache
 + (id)defaultIconCache;
-- (BOOL)findStoreUnitForIcon:(id)a3 descriptor:(id)a4 UUID:(id *)a5 validationToken:(id *)a6;
-- (ISIconCache)initWithConfiguration:(id)a3;
-- (ISIconCache)initWithURL:(id)a3 storeIndex:(id)a4 sandboxExtensionToken:(unint64_t)a5;
+- (BOOL)findStoreUnitForIcon:(id)icon descriptor:(id)descriptor UUID:(id *)d validationToken:(id *)token;
+- (ISIconCache)initWithConfiguration:(id)configuration;
+- (ISIconCache)initWithURL:(id)l storeIndex:(id)index sandboxExtensionToken:(unint64_t)token;
 - (id)description;
-- (id)storeUnitForUUID:(id)a3;
+- (id)storeUnitForUUID:(id)d;
 - (void)dealloc;
 @end
 
@@ -34,20 +34,20 @@ void __31__ISIconCache_defaultIconCache__block_invoke()
   +[ISIconCache defaultIconCache]::defaultIconCache = v2;
 }
 
-- (ISIconCache)initWithConfiguration:(id)a3
+- (ISIconCache)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [v4 sandboxExtension];
-  v6 = [v5 length];
+  configurationCopy = configuration;
+  sandboxExtension = [configurationCopy sandboxExtension];
+  v6 = [sandboxExtension length];
 
   if (v6)
   {
-    v7 = [v4 sandboxExtension];
-    [v7 UTF8String];
+    sandboxExtension2 = [configurationCopy sandboxExtension];
+    [sandboxExtension2 UTF8String];
     v6 = sandbox_extension_consume();
   }
 
-  v8 = [v4 url];
+  v8 = [configurationCopy url];
   v9 = [v8 URLByAppendingPathComponent:@"store.index" isDirectory:0];
   v10 = [[ISStoreIndex alloc] initWithStoreFileURL:v9];
   v11 = [(ISIconCache *)self initWithURL:v8 storeIndex:v10 sandboxExtensionToken:v6];
@@ -55,20 +55,20 @@ void __31__ISIconCache_defaultIconCache__block_invoke()
   return v11;
 }
 
-- (ISIconCache)initWithURL:(id)a3 storeIndex:(id)a4 sandboxExtensionToken:(unint64_t)a5
+- (ISIconCache)initWithURL:(id)l storeIndex:(id)index sandboxExtensionToken:(unint64_t)token
 {
-  v9 = a3;
-  v10 = a4;
+  lCopy = l;
+  indexCopy = index;
   v16.receiver = self;
   v16.super_class = ISIconCache;
   v11 = [(ISIconCache *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    v11->_sandboxToken = a5;
-    objc_storeStrong(&v11->_cacheURL, a3);
-    objc_storeStrong(&v12->_storeIndex, a4);
-    v13 = [[ISStore alloc] initWithURL:v9];
+    v11->_sandboxToken = token;
+    objc_storeStrong(&v11->_cacheURL, l);
+    objc_storeStrong(&v12->_storeIndex, index);
+    v13 = [[ISStore alloc] initWithURL:lCopy];
     store = v12->_store;
     v12->_store = v13;
   }
@@ -87,37 +87,37 @@ void __31__ISIconCache_defaultIconCache__block_invoke()
 
 - (id)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
-  v4 = [(ISIconCache *)self cachePath];
-  [v3 appendFormat:@"Cache path: %@\n", v4];
+  string = [MEMORY[0x1E696AD60] string];
+  cachePath = [(ISIconCache *)self cachePath];
+  [string appendFormat:@"Cache path: %@\n", cachePath];
 
-  [v3 appendFormat:@"%@", self->_storeIndex];
-  v5 = [MEMORY[0x1E696AEC0] stringWithString:v3];
+  [string appendFormat:@"%@", self->_storeIndex];
+  v5 = [MEMORY[0x1E696AEC0] stringWithString:string];
 
   return v5;
 }
 
-- (BOOL)findStoreUnitForIcon:(id)a3 descriptor:(id)a4 UUID:(id *)a5 validationToken:(id *)a6
+- (BOOL)findStoreUnitForIcon:(id)icon descriptor:(id)descriptor UUID:(id *)d validationToken:(id *)token
 {
   v76[2] = *MEMORY[0x1E69E9840];
-  v45 = a3;
-  v46 = a4;
+  iconCopy = icon;
+  descriptorCopy = descriptor;
   v70 = 0;
   v76[0] = 0;
   v76[1] = 0;
-  v8 = [v45 digest];
-  v47 = self;
-  [v8 _IF_getUUIDBytes:v76 hash64:&v70];
+  digest = [iconCopy digest];
+  selfCopy = self;
+  [digest _IF_getUUIDBytes:v76 hash64:&v70];
 
-  [v46 scale];
+  [descriptorCopy scale];
   v10 = v9;
-  [v46 size];
+  [descriptorCopy size];
   v12 = v11;
-  v13 = [v46 digest];
+  digest2 = [descriptorCopy digest];
   v75[0] = 0;
   v75[1] = 0;
-  v42 = v13;
-  [v13 getUUIDBytes:v75];
+  v42 = digest2;
+  [digest2 getUUIDBytes:v75];
   v64 = 0;
   v65 = &v64;
   v66 = 0x3032000000;
@@ -130,14 +130,14 @@ void __31__ISIconCache_defaultIconCache__block_invoke()
   v61 = __Block_byref_object_copy__2;
   v62 = __Block_byref_object_dispose__2;
   v63 = 0;
-  if (v46)
+  if (descriptorCopy)
   {
     v14 = _ISPrepareISIconSignpostLog();
     v15 = os_signpost_enabled(v14);
 
     if (v15)
     {
-      [v45 _activeSignpostsForDescriptor:v46];
+      [iconCopy _activeSignpostsForDescriptor:descriptorCopy];
       v56 = 0u;
       v57 = 0u;
       v54 = 0u;
@@ -164,11 +164,11 @@ void __31__ISIconCache_defaultIconCache__block_invoke()
               if (v22)
               {
                 v23 = _ISPrepareISIconSignpostLog();
-                v24 = [v20 unsignedLongLongValue];
-                if (v24 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v23))
+                unsignedLongLongValue = [v20 unsignedLongLongValue];
+                if (unsignedLongLongValue - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v23))
                 {
                   *buf = 0;
-                  _os_signpost_emit_with_name_impl(&dword_1A77B8000, v23, OS_SIGNPOST_EVENT, v24, "PrepareISIcon", "STORE_LOOKUP", buf, 2u);
+                  _os_signpost_emit_with_name_impl(&dword_1A77B8000, v23, OS_SIGNPOST_EVENT, unsignedLongLongValue, "PrepareISIcon", "STORE_LOOKUP", buf, 2u);
                 }
               }
             }
@@ -182,7 +182,7 @@ void __31__ISIconCache_defaultIconCache__block_invoke()
     }
   }
 
-  v25 = [(ISIconCache *)v47 storeIndex];
+  storeIndex = [(ISIconCache *)selfCopy storeIndex];
   v52[0] = MEMORY[0x1E69E9820];
   v52[1] = 3221225472;
   v52[2] = __76__ISIconCache_lookup__findStoreUnitForIcon_descriptor_UUID_validationToken___block_invoke;
@@ -193,13 +193,13 @@ void __31__ISIconCache_defaultIconCache__block_invoke()
   v52[8] = v76;
   v52[4] = &v64;
   v52[5] = &v58;
-  [v25 enumerateValuesForUUID:v76 bock:v52];
+  [storeIndex enumerateValuesForUUID:v76 bock:v52];
 
   v26 = v65[5];
   if (v26 && v59[5])
   {
-    *a5 = [v26 copy];
-    *a6 = [v59[5] copy];
+    *d = [v26 copy];
+    *token = [v59[5] copy];
     v44 = 1;
   }
 
@@ -208,14 +208,14 @@ void __31__ISIconCache_defaultIconCache__block_invoke()
     v44 = 0;
   }
 
-  if (v46)
+  if (descriptorCopy)
   {
     v27 = _ISPrepareISIconSignpostLog();
     v28 = os_signpost_enabled(v27);
 
     if (v28)
     {
-      [v45 _activeSignpostsForDescriptor:v46];
+      [iconCopy _activeSignpostsForDescriptor:descriptorCopy];
       v50 = 0u;
       v51 = 0u;
       v48 = 0u;
@@ -252,12 +252,12 @@ void __31__ISIconCache_defaultIconCache__block_invoke()
               if (v36)
               {
                 v37 = _ISPrepareISIconSignpostLog();
-                v38 = [v34 unsignedLongLongValue];
-                if (v38 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v37))
+                unsignedLongLongValue2 = [v34 unsignedLongLongValue];
+                if (unsignedLongLongValue2 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v37))
                 {
                   *buf = 136315138;
                   v72 = v32;
-                  _os_signpost_emit_with_name_impl(&dword_1A77B8000, v37, OS_SIGNPOST_EVENT, v38, "PrepareISIcon", "STORE_LOOKUP_RESULT: %s", buf, 0xCu);
+                  _os_signpost_emit_with_name_impl(&dword_1A77B8000, v37, OS_SIGNPOST_EVENT, unsignedLongLongValue2, "PrepareISIcon", "STORE_LOOKUP_RESULT: %s", buf, 0xCu);
                 }
               }
             }
@@ -328,11 +328,11 @@ LABEL_6:
   *a3 = 1;
 }
 
-- (id)storeUnitForUUID:(id)a3
+- (id)storeUnitForUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(ISIconCache *)self store];
-  v6 = [v5 unitForUUID:v4];
+  dCopy = d;
+  store = [(ISIconCache *)self store];
+  v6 = [store unitForUUID:dCopy];
 
   return v6;
 }

@@ -1,14 +1,14 @@
 @interface RequestContextData
 - (NSString)debugDescription;
 - (_TtC14SiriKitRuntime18RequestContextData)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RequestContextData
 
 - (NSString)debugDescription
 {
-  v2 = self;
+  selfCopy = self;
   v3 = RequestContextData.debugDescription.getter();
   v5 = v4;
 
@@ -17,11 +17,11 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  RequestContextData.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  RequestContextData.encode(with:)(coderCopy);
 }
 
 - (_TtC14SiriKitRuntime18RequestContextData)init

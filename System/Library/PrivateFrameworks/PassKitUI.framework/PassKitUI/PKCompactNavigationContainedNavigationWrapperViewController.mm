@@ -1,37 +1,37 @@
 @interface PKCompactNavigationContainedNavigationWrapperViewController
-- (PKCompactNavigationContainedNavigationWrapperViewController)initWithWrappedViewController:(id)a3 parentViewController:(id)a4;
-- (UIEdgeInsets)_edgeInsetsForChildViewController:(id)a3 insetsAreAbsolute:(BOOL *)a4;
+- (PKCompactNavigationContainedNavigationWrapperViewController)initWithWrappedViewController:(id)controller parentViewController:(id)viewController;
+- (UIEdgeInsets)_edgeInsetsForChildViewController:(id)controller insetsAreAbsolute:(BOOL *)absolute;
 @end
 
 @implementation PKCompactNavigationContainedNavigationWrapperViewController
 
-- (PKCompactNavigationContainedNavigationWrapperViewController)initWithWrappedViewController:(id)a3 parentViewController:(id)a4
+- (PKCompactNavigationContainedNavigationWrapperViewController)initWithWrappedViewController:(id)controller parentViewController:(id)viewController
 {
-  v6 = a4;
+  viewControllerCopy = viewController;
   v10.receiver = self;
   v10.super_class = PKCompactNavigationContainedNavigationWrapperViewController;
-  v7 = [(PKWrapperViewController *)&v10 initWithWrappedViewController:a3 type:1];
+  v7 = [(PKWrapperViewController *)&v10 initWithWrappedViewController:controller type:1];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_parentViewController, v6);
+    objc_storeWeak(&v7->_parentViewController, viewControllerCopy);
   }
 
   return v8;
 }
 
-- (UIEdgeInsets)_edgeInsetsForChildViewController:(id)a3 insetsAreAbsolute:(BOOL *)a4
+- (UIEdgeInsets)_edgeInsetsForChildViewController:(id)controller insetsAreAbsolute:(BOOL *)absolute
 {
-  v6 = a3;
-  v7 = [(PKWrapperViewController *)self wrappedViewController];
-  v8 = v7;
-  if (v7 != v6)
+  controllerCopy = controller;
+  wrappedViewController = [(PKWrapperViewController *)self wrappedViewController];
+  v8 = wrappedViewController;
+  if (wrappedViewController != controllerCopy)
   {
 
 LABEL_3:
     v25.receiver = self;
     v25.super_class = PKCompactNavigationContainedNavigationWrapperViewController;
-    [(PKCompactNavigationContainedNavigationWrapperViewController *)&v25 _edgeInsetsForChildViewController:v6 insetsAreAbsolute:a4];
+    [(PKCompactNavigationContainedNavigationWrapperViewController *)&v25 _edgeInsetsForChildViewController:controllerCopy insetsAreAbsolute:absolute];
     v10 = v9;
     v12 = v11;
     v14 = v13;
@@ -47,9 +47,9 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  if (a4)
+  if (absolute)
   {
-    *a4 = 1;
+    *absolute = 1;
   }
 
   v10 = *MEMORY[0x1E69DDCE0];
@@ -58,11 +58,11 @@ LABEL_3:
   v16 = *(MEMORY[0x1E69DDCE0] + 24);
   if (self->_useParentSafeAreaInsets)
   {
-    v22 = [WeakRetained viewIfLoaded];
-    v23 = v22;
-    if (v22)
+    viewIfLoaded = [WeakRetained viewIfLoaded];
+    v23 = viewIfLoaded;
+    if (viewIfLoaded)
     {
-      [v22 safeAreaInsets];
+      [viewIfLoaded safeAreaInsets];
       v14 = fmax(v24, v14);
     }
   }

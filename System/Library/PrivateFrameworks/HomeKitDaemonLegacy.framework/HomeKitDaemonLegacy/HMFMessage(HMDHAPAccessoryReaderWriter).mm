@@ -6,16 +6,16 @@
 
 - (uint64_t)isSingleReadWriteRequest
 {
-  v2 = [a1 name];
-  if ([v2 isEqualToString:@"kCharacteristicReadRequestKey"])
+  name = [self name];
+  if ([name isEqualToString:@"kCharacteristicReadRequestKey"])
   {
     v3 = 1;
   }
 
   else
   {
-    v4 = [a1 name];
-    v3 = [v4 isEqualToString:@"kCharacteristicWriteRequestKey"];
+    name2 = [self name];
+    v3 = [name2 isEqualToString:@"kCharacteristicWriteRequestKey"];
   }
 
   return v3;

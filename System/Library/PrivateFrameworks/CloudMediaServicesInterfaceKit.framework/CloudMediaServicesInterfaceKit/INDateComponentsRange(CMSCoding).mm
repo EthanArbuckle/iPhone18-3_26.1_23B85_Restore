@@ -8,17 +8,17 @@
 - (id)cmsCoded
 {
   v2 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:3];
-  v3 = [a1 startDateComponents];
-  v4 = [v3 cmsCoded];
-  [v2 cmsSetOptionalObject:v4 forKey:@"startDateComponents"];
+  startDateComponents = [self startDateComponents];
+  cmsCoded = [startDateComponents cmsCoded];
+  [v2 cmsSetOptionalObject:cmsCoded forKey:@"startDateComponents"];
 
-  v5 = [a1 endDateComponents];
-  v6 = [v5 cmsCoded];
-  [v2 cmsSetOptionalObject:v6 forKey:@"endDateComponents"];
+  endDateComponents = [self endDateComponents];
+  cmsCoded2 = [endDateComponents cmsCoded];
+  [v2 cmsSetOptionalObject:cmsCoded2 forKey:@"endDateComponents"];
 
-  v7 = [a1 recurrenceRule];
-  v8 = [v7 cmsCoded];
-  [v2 cmsSetOptionalObject:v8 forKey:@"recurrenceRule"];
+  recurrenceRule = [self recurrenceRule];
+  cmsCoded3 = [recurrenceRule cmsCoded];
+  [v2 cmsSetOptionalObject:cmsCoded3 forKey:@"recurrenceRule"];
 
   return v2;
 }

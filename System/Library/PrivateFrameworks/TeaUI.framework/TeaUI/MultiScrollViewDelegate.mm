@@ -1,35 +1,35 @@
 @interface MultiScrollViewDelegate
-- (BOOL)respondsToSelector:(SEL)a3;
-- (BOOL)scrollViewShouldScrollToTop:(id)a3;
+- (BOOL)respondsToSelector:(SEL)selector;
+- (BOOL)scrollViewShouldScrollToTop:(id)top;
 - (NSString)debugDescription;
-- (id)viewForZoomingInScrollView:(id)a3;
-- (void)scrollViewDidChangeAdjustedContentInset:(id)a3;
-- (void)scrollViewDidEndDecelerating:(id)a3;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewDidEndScrollingAnimation:(id)a3;
-- (void)scrollViewDidEndZooming:(id)a3 withView:(id)a4 atScale:(double)a5;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewDidScrollToTop:(id)a3;
-- (void)scrollViewDidZoom:(id)a3;
-- (void)scrollViewWillBeginDecelerating:(id)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)scrollViewWillBeginZooming:(id)a3 withView:(id)a4;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
+- (id)viewForZoomingInScrollView:(id)view;
+- (void)scrollViewDidChangeAdjustedContentInset:(id)inset;
+- (void)scrollViewDidEndDecelerating:(id)decelerating;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewDidEndScrollingAnimation:(id)animation;
+- (void)scrollViewDidEndZooming:(id)zooming withView:(id)view atScale:(double)scale;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewDidScrollToTop:(id)top;
+- (void)scrollViewDidZoom:(id)zoom;
+- (void)scrollViewWillBeginDecelerating:(id)decelerating;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)scrollViewWillBeginZooming:(id)zooming withView:(id)view;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
 @end
 
 @implementation MultiScrollViewDelegate
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
-  v4 = self;
-  LOBYTE(a3) = MultiScrollViewDelegate.responds(to:)(a3);
+  selfCopy = self;
+  LOBYTE(selector) = MultiScrollViewDelegate.responds(to:)(selector);
 
-  return a3 & 1;
+  return selector & 1;
 }
 
 - (NSString)debugDescription
 {
-  v2 = self;
+  selfCopy = self;
   MultiScrollViewDelegate.debugDescription.getter();
 
   v3 = sub_1D8190EE4();
@@ -37,111 +37,111 @@
   return v3;
 }
 
-- (id)viewForZoomingInScrollView:(id)a3
+- (id)viewForZoomingInScrollView:(id)view
 {
-  v4 = a3;
-  v5 = self;
-  MultiScrollViewDelegate.viewForZooming(in:)(v6, v4);
+  viewCopy = view;
+  selfCopy = self;
+  MultiScrollViewDelegate.viewForZooming(in:)(v6, viewCopy);
   v8 = v7;
 
   return v8;
 }
 
-- (void)scrollViewDidZoom:(id)a3
+- (void)scrollViewDidZoom:(id)zoom
 {
-  v4 = a3;
-  v5 = self;
-  MultiScrollViewDelegate.scrollViewDidZoom(_:)(v4);
+  zoomCopy = zoom;
+  selfCopy = self;
+  MultiScrollViewDelegate.scrollViewDidZoom(_:)(zoomCopy);
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
-  v5 = self;
-  MultiScrollViewDelegate.scrollViewDidScroll(_:)(v4);
+  scrollCopy = scroll;
+  selfCopy = self;
+  MultiScrollViewDelegate.scrollViewDidScroll(_:)(scrollCopy);
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
-  v4 = a3;
-  v5 = self;
-  MultiScrollViewDelegate.scrollViewWillBeginDragging(_:)(v4);
+  draggingCopy = dragging;
+  selfCopy = self;
+  MultiScrollViewDelegate.scrollViewWillBeginDragging(_:)(draggingCopy);
 }
 
-- (void)scrollViewDidEndDecelerating:(id)a3
+- (void)scrollViewDidEndDecelerating:(id)decelerating
 {
-  v4 = a3;
-  v5 = self;
-  MultiScrollViewDelegate.scrollViewDidEndDecelerating(_:)(v4);
+  deceleratingCopy = decelerating;
+  selfCopy = self;
+  MultiScrollViewDelegate.scrollViewDidEndDecelerating(_:)(deceleratingCopy);
 }
 
-- (void)scrollViewWillBeginDecelerating:(id)a3
+- (void)scrollViewWillBeginDecelerating:(id)decelerating
 {
-  v4 = a3;
-  v5 = self;
-  MultiScrollViewDelegate.scrollViewWillBeginDecelerating(_:)(v4);
+  deceleratingCopy = decelerating;
+  selfCopy = self;
+  MultiScrollViewDelegate.scrollViewWillBeginDecelerating(_:)(deceleratingCopy);
 }
 
-- (void)scrollViewDidScrollToTop:(id)a3
+- (void)scrollViewDidScrollToTop:(id)top
 {
-  v4 = a3;
-  v5 = self;
-  MultiScrollViewDelegate.scrollViewDidScrollToTop(_:)(v4);
+  topCopy = top;
+  selfCopy = self;
+  MultiScrollViewDelegate.scrollViewDidScrollToTop(_:)(topCopy);
 }
 
-- (void)scrollViewDidEndScrollingAnimation:(id)a3
+- (void)scrollViewDidEndScrollingAnimation:(id)animation
 {
-  v4 = a3;
-  v5 = self;
-  MultiScrollViewDelegate.scrollViewDidEndScrollingAnimation(_:)(v4);
+  animationCopy = animation;
+  selfCopy = self;
+  MultiScrollViewDelegate.scrollViewDidEndScrollingAnimation(_:)(animationCopy);
 }
 
-- (void)scrollViewDidChangeAdjustedContentInset:(id)a3
+- (void)scrollViewDidChangeAdjustedContentInset:(id)inset
 {
-  v4 = a3;
-  v5 = self;
-  MultiScrollViewDelegate.scrollViewDidChangeAdjustedContentInset(_:)(v4);
+  insetCopy = inset;
+  selfCopy = self;
+  MultiScrollViewDelegate.scrollViewDidChangeAdjustedContentInset(_:)(insetCopy);
 }
 
-- (BOOL)scrollViewShouldScrollToTop:(id)a3
+- (BOOL)scrollViewShouldScrollToTop:(id)top
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = MultiScrollViewDelegate.scrollViewShouldScrollToTop(_:)(v4);
+  topCopy = top;
+  selfCopy = self;
+  LOBYTE(self) = MultiScrollViewDelegate.scrollViewShouldScrollToTop(_:)(topCopy);
 
   return self & 1;
 }
 
-- (void)scrollViewWillBeginZooming:(id)a3 withView:(id)a4
+- (void)scrollViewWillBeginZooming:(id)zooming withView:(id)view
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  MultiScrollViewDelegate.scrollViewWillBeginZooming(_:with:)(v6, a4);
+  zoomingCopy = zooming;
+  viewCopy = view;
+  selfCopy = self;
+  MultiScrollViewDelegate.scrollViewWillBeginZooming(_:with:)(zoomingCopy, view);
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  v6 = a3;
-  v7 = self;
-  MultiScrollViewDelegate.scrollViewDidEndDragging(_:willDecelerate:)(v6, a4);
+  draggingCopy = dragging;
+  selfCopy = self;
+  MultiScrollViewDelegate.scrollViewDidEndDragging(_:willDecelerate:)(draggingCopy, decelerate);
 }
 
-- (void)scrollViewDidEndZooming:(id)a3 withView:(id)a4 atScale:(double)a5
+- (void)scrollViewDidEndZooming:(id)zooming withView:(id)view atScale:(double)scale
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  MultiScrollViewDelegate.scrollViewDidEndZooming(_:with:atScale:)(v8, a4, a5);
+  zoomingCopy = zooming;
+  viewCopy = view;
+  selfCopy = self;
+  MultiScrollViewDelegate.scrollViewDidEndZooming(_:with:atScale:)(zoomingCopy, view, scale);
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  y = a4.y;
-  x = a4.x;
-  v9 = a3;
-  v10 = self;
-  MultiScrollViewDelegate.scrollViewWillEndDragging(_:withVelocity:targetContentOffset:)(v9, a5, x, y);
+  y = velocity.y;
+  x = velocity.x;
+  draggingCopy = dragging;
+  selfCopy = self;
+  MultiScrollViewDelegate.scrollViewWillEndDragging(_:withVelocity:targetContentOffset:)(draggingCopy, offset, x, y);
 }
 
 @end

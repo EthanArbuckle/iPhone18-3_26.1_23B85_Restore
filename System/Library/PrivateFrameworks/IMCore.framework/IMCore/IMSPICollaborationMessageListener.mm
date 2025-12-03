@@ -16,7 +16,7 @@
 
 - (void)startListening
 {
-  v2 = self;
+  selfCopy = self;
   sub_1A84A4674();
 }
 
@@ -24,12 +24,12 @@
 {
   v2 = *(self + OBJC_IVAR___IMSPICollaborationMessageListener_connection);
   *(self + OBJC_IVAR___IMSPICollaborationMessageListener_connection) = 0;
-  v5 = self;
+  selfCopy = self;
   swift_unknownObjectRelease();
-  v3 = [objc_opt_self() sharedController];
-  v4 = [v3 listener];
+  sharedController = [objc_opt_self() sharedController];
+  listener = [sharedController listener];
 
-  [v4 removeHandler_];
+  [listener removeHandler_];
 }
 
 - (IMSPICollaborationMessageListener)init

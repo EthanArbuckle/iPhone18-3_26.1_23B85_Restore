@@ -1,25 +1,25 @@
 @interface PDURLSessionProxyDidReceiveChallengeReply
-- (BOOL)isEqual:(id)a3;
-- (BOOL)readFrom:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)readFrom:(id)from;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsDisposition:(id)a3;
+- (int)StringAsDisposition:(id)disposition;
 - (int)disposition;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PDURLSessionProxyDidReceiveChallengeReply
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   task = self->_task;
-  v6 = *(v4 + 3);
-  v9 = v4;
+  v6 = *(fromCopy + 3);
+  v9 = fromCopy;
   if (task)
   {
     if (!v6)
@@ -40,16 +40,16 @@
     [(PDURLSessionProxyDidReceiveChallengeReply *)self setTask:?];
   }
 
-  v4 = v9;
+  fromCopy = v9;
 LABEL_7:
-  if (*(v4 + 32))
+  if (*(fromCopy + 32))
   {
-    self->_disposition = *(v4 + 4);
+    self->_disposition = *(fromCopy + 4);
     *&self->_has |= 1u;
   }
 
   credential = self->_credential;
-  v8 = *(v4 + 1);
+  v8 = *(fromCopy + 1);
   if (credential)
   {
     if (!v8)
@@ -70,7 +70,7 @@ LABEL_7:
     [(PDURLSessionProxyDidReceiveChallengeReply *)self setCredential:?];
   }
 
-  v4 = v9;
+  fromCopy = v9;
 LABEL_15:
 }
 
@@ -90,16 +90,16 @@ LABEL_15:
   return v4 ^ v3 ^ [(PDURLSessionProxyCredential *)self->_credential hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_11;
   }
 
   task = self->_task;
-  if (task | *(v4 + 3))
+  if (task | *(equalCopy + 3))
   {
     if (![(PDURLSessionProxyTaskMessage *)task isEqual:?])
     {
@@ -107,16 +107,16 @@ LABEL_15:
     }
   }
 
-  v6 = *(v4 + 32);
+  v6 = *(equalCopy + 32);
   if (*&self->_has)
   {
-    if ((*(v4 + 32) & 1) == 0 || self->_disposition != *(v4 + 4))
+    if ((*(equalCopy + 32) & 1) == 0 || self->_disposition != *(equalCopy + 4))
     {
       goto LABEL_11;
     }
   }
 
-  else if (*(v4 + 32))
+  else if (*(equalCopy + 32))
   {
 LABEL_11:
     v8 = 0;
@@ -124,7 +124,7 @@ LABEL_11:
   }
 
   credential = self->_credential;
-  if (credential | *(v4 + 1))
+  if (credential | *(equalCopy + 1))
   {
     v8 = [(PDURLSessionProxyCredential *)credential isEqual:?];
   }
@@ -139,10 +139,10 @@ LABEL_12:
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(PDURLSessionProxyTaskMessage *)self->_task copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(PDURLSessionProxyTaskMessage *)self->_task copyWithZone:zone];
   v7 = v5[3];
   v5[3] = v6;
 
@@ -152,70 +152,70 @@ LABEL_12:
     *(v5 + 32) |= 1u;
   }
 
-  v8 = [(PDURLSessionProxyCredential *)self->_credential copyWithZone:a3];
+  v8 = [(PDURLSessionProxyCredential *)self->_credential copyWithZone:zone];
   v9 = v5[1];
   v5[1] = v8;
 
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_task)
   {
-    [v4 setTask:?];
-    v4 = v5;
+    [toCopy setTask:?];
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 4) = self->_disposition;
-    *(v4 + 32) |= 1u;
+    *(toCopy + 4) = self->_disposition;
+    *(toCopy + 32) |= 1u;
   }
 
   if (self->_credential)
   {
     [v5 setCredential:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_task)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
     disposition = self->_disposition;
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_credential)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (BOOL)readFrom:(id)a3
+- (BOOL)readFrom:(id)from
 {
-  v5 = [a3 position];
-  if (v5 < [a3 length])
+  position = [from position];
+  if (position < [from length])
   {
     while (1)
     {
-      if ([a3 hasError])
+      if ([from hasError])
       {
-        return [a3 hasError] ^ 1;
+        return [from hasError] ^ 1;
       }
 
       v6 = 0;
@@ -224,18 +224,18 @@ LABEL_12:
       while (1)
       {
         LOBYTE(v25) = 0;
-        v9 = [a3 position] + 1;
-        if (v9 >= [a3 position] && (v10 = objc_msgSend(a3, "position") + 1, v10 <= objc_msgSend(a3, "length")))
+        v9 = [from position] + 1;
+        if (v9 >= [from position] && (v10 = objc_msgSend(from, "position") + 1, v10 <= objc_msgSend(from, "length")))
         {
-          v11 = [a3 data];
-          [v11 getBytes:&v25 range:{objc_msgSend(a3, "position"), 1}];
+          data = [from data];
+          [data getBytes:&v25 range:{objc_msgSend(from, "position"), 1}];
 
-          [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+          [from setPosition:{objc_msgSend(from, "position") + 1}];
         }
 
         else
         {
-          [a3 _setError];
+          [from _setError];
         }
 
         v8 |= (v25 & 0x7F) << v6;
@@ -253,11 +253,11 @@ LABEL_12:
         }
       }
 
-      v13 = [a3 hasError] ? 0 : v8;
+      v13 = [from hasError] ? 0 : v8;
 LABEL_15:
-      if (([a3 hasError] & 1) != 0 || (v13 & 7) == 4)
+      if (([from hasError] & 1) != 0 || (v13 & 7) == 4)
       {
-        return [a3 hasError] ^ 1;
+        return [from hasError] ^ 1;
       }
 
       v14 = v13 >> 3;
@@ -275,18 +275,18 @@ LABEL_15:
         while (1)
         {
           LOBYTE(v25) = 0;
-          v19 = [a3 position] + 1;
-          if (v19 >= [a3 position] && (v20 = objc_msgSend(a3, "position") + 1, v20 <= objc_msgSend(a3, "length")))
+          v19 = [from position] + 1;
+          if (v19 >= [from position] && (v20 = objc_msgSend(from, "position") + 1, v20 <= objc_msgSend(from, "length")))
           {
-            v21 = [a3 data];
-            [v21 getBytes:&v25 range:{objc_msgSend(a3, "position"), 1}];
+            data2 = [from data];
+            [data2 getBytes:&v25 range:{objc_msgSend(from, "position"), 1}];
 
-            [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+            [from setPosition:{objc_msgSend(from, "position") + 1}];
           }
 
           else
           {
-            [a3 _setError];
+            [from _setError];
           }
 
           v18 |= (v25 & 0x7F) << v16;
@@ -304,7 +304,7 @@ LABEL_15:
           }
         }
 
-        if ([a3 hasError])
+        if ([from hasError])
         {
           v22 = 0;
         }
@@ -325,7 +325,7 @@ LABEL_40:
         objc_storeStrong(&self->_task, v15);
         v25 = 0;
         v26 = 0;
-        if (!PBReaderPlaceMark() || !sub_10006CE20(v15, a3))
+        if (!PBReaderPlaceMark() || !sub_10006CE20(v15, from))
         {
           goto LABEL_43;
         }
@@ -342,10 +342,10 @@ LABEL_34:
       }
 
 LABEL_41:
-      v23 = [a3 position];
-      if (v23 >= [a3 length])
+      position2 = [from position];
+      if (position2 >= [from length])
       {
-        return [a3 hasError] ^ 1;
+        return [from hasError] ^ 1;
       }
     }
 
@@ -353,7 +353,7 @@ LABEL_41:
     objc_storeStrong(&self->_credential, v15);
     v25 = 0;
     v26 = 0;
-    if (!PBReaderPlaceMark() || !sub_10005E698(v15, a3))
+    if (!PBReaderPlaceMark() || !sub_10005E698(v15, from))
     {
 LABEL_43:
 
@@ -363,7 +363,7 @@ LABEL_43:
     goto LABEL_34;
   }
 
-  return [a3 hasError] ^ 1;
+  return [from hasError] ^ 1;
 }
 
 - (id)dictionaryRepresentation
@@ -372,8 +372,8 @@ LABEL_43:
   task = self->_task;
   if (task)
   {
-    v5 = [(PDURLSessionProxyTaskMessage *)task dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"task"];
+    dictionaryRepresentation = [(PDURLSessionProxyTaskMessage *)task dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation forKey:@"task"];
   }
 
   if (*&self->_has)
@@ -395,8 +395,8 @@ LABEL_43:
   credential = self->_credential;
   if (credential)
   {
-    v9 = [(PDURLSessionProxyCredential *)credential dictionaryRepresentation];
-    [v3 setObject:v9 forKey:@"credential"];
+    dictionaryRepresentation2 = [(PDURLSessionProxyCredential *)credential dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation2 forKey:@"credential"];
   }
 
   return v3;
@@ -407,31 +407,31 @@ LABEL_43:
   v7.receiver = self;
   v7.super_class = PDURLSessionProxyDidReceiveChallengeReply;
   v3 = [(PDURLSessionProxyDidReceiveChallengeReply *)&v7 description];
-  v4 = [(PDURLSessionProxyDidReceiveChallengeReply *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(PDURLSessionProxyDidReceiveChallengeReply *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
 
-- (int)StringAsDisposition:(id)a3
+- (int)StringAsDisposition:(id)disposition
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UseCredential"])
+  dispositionCopy = disposition;
+  if ([dispositionCopy isEqualToString:@"UseCredential"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"PerformDefaultHandling"])
+  else if ([dispositionCopy isEqualToString:@"PerformDefaultHandling"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"CancelAuthenticationChallenge"])
+  else if ([dispositionCopy isEqualToString:@"CancelAuthenticationChallenge"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"RejectProtectionSpace"])
+  else if ([dispositionCopy isEqualToString:@"RejectProtectionSpace"])
   {
     v4 = 3;
   }

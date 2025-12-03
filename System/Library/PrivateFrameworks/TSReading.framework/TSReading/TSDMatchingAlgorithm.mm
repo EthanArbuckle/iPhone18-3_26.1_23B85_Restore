@@ -1,14 +1,14 @@
 @interface TSDMatchingAlgorithm
-+ (id)bestMatchesFromArray:(id)a3;
-- (BOOL)p_step4FindAZeroAndReturnRow:(int *)a3 column:(int *)a4;
-- (id)p_bestMatchesFromArray:(id)a3;
++ (id)bestMatchesFromArray:(id)array;
+- (BOOL)p_step4FindAZeroAndReturnRow:(int *)row column:(int *)column;
+- (id)p_bestMatchesFromArray:(id)array;
 - (int)p_doStep1;
 - (int)p_doStep2;
 - (int)p_doStep3;
 - (int)p_doStep4;
 - (int)p_doStep5;
 - (int)p_doStep6;
-- (int)p_step4IndexOfStarredZeroInRow:(int)a3;
+- (int)p_step4IndexOfStarredZeroInRow:(int)row;
 - (void)p_allocateMatrices;
 - (void)p_deallocateMatrices;
 @end
@@ -20,9 +20,9 @@
   mMatrixDimension = self->mMatrixDimension;
   if (mMatrixDimension <= 0)
   {
-    v4 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDMatchingAlgorithm p_allocateMatrices]"];
-    [v4 handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDMatchingAlgorithm.m"), 51, @"matrix dimension is 0!"}];
+    [currentHandler handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDMatchingAlgorithm.m"), 51, @"matrix dimension is 0!"}];
     mMatrixDimension = self->mMatrixDimension;
   }
 
@@ -199,7 +199,7 @@ LABEL_11:
   }
 }
 
-- (BOOL)p_step4FindAZeroAndReturnRow:(int *)a3 column:(int *)a4
+- (BOOL)p_step4FindAZeroAndReturnRow:(int *)row column:(int *)column
 {
   mMatrixDimension = self->mMatrixDimension;
   if (mMatrixDimension < 1)
@@ -229,12 +229,12 @@ LABEL_8:
     }
   }
 
-  *a3 = v6;
-  *a4 = v7;
+  *row = v6;
+  *column = v7;
   return 1;
 }
 
-- (int)p_step4IndexOfStarredZeroInRow:(int)a3
+- (int)p_step4IndexOfStarredZeroInRow:(int)row
 {
   mMatrixDimension = self->mMatrixDimension;
   if (mMatrixDimension < 1)
@@ -246,7 +246,7 @@ LABEL_5:
   else
   {
     v5 = 0;
-    v6 = &self->mMaskMatrix[mMatrixDimension * a3];
+    v6 = &self->mMaskMatrix[mMatrixDimension * row];
     while (v6[v5] != 1)
     {
       if (mMatrixDimension == ++v5)
@@ -335,9 +335,9 @@ LABEL_7:
       if (v16 < 1)
       {
 LABEL_12:
-        v18 = [MEMORY[0x277D6C290] currentHandler];
+        currentHandler = [MEMORY[0x277D6C290] currentHandler];
         v19 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDMatchingAlgorithm p_doStep5]"];
-        [v18 handleFailureInFunction:v19 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDMatchingAlgorithm.m"), 271, @"did not find prime in row!"}];
+        [currentHandler handleFailureInFunction:v19 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDMatchingAlgorithm.m"), 271, @"did not find prime in row!"}];
         v17 = 0xFFFFFFFFLL;
       }
 
@@ -558,20 +558,20 @@ LABEL_18:
   return 4;
 }
 
-- (id)p_bestMatchesFromArray:(id)a3
+- (id)p_bestMatchesFromArray:(id)array
 {
-  v3 = a3;
+  arrayCopy = array;
   v76 = *MEMORY[0x277D85DE8];
-  if ([a3 count] >= 2)
+  if ([array count] >= 2)
   {
-    v5 = [MEMORY[0x277CBEB38] dictionary];
-    v54 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     v68 = 0u;
     v69 = 0u;
     v70 = 0u;
     v71 = 0u;
-    v6 = [v3 countByEnumeratingWithState:&v68 objects:v75 count:16];
-    v53 = v5;
+    v6 = [arrayCopy countByEnumeratingWithState:&v68 objects:v75 count:16];
+    v53 = dictionary;
     if (v6)
     {
       v7 = v6;
@@ -584,46 +584,46 @@ LABEL_18:
         {
           if (*v69 != v51)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(arrayCopy);
           }
 
           v11 = *(*(&v68 + 1) + 8 * i);
           if (![v11 outgoingMatchObject] || !objc_msgSend(v11, "incomingMatchObject"))
           {
-            v12 = [MEMORY[0x277D6C290] currentHandler];
+            currentHandler = [MEMORY[0x277D6C290] currentHandler];
             v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDMatchingAlgorithm p_bestMatchesFromArray:]"];
             v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDMatchingAlgorithm.m"];
             v15 = v13;
-            v5 = v53;
-            [v12 handleFailureInFunction:v15 file:v14 lineNumber:440 description:@"Match does not have both incoming and outgoing objects!"];
+            dictionary = v53;
+            [currentHandler handleFailureInFunction:v15 file:v14 lineNumber:440 description:@"Match does not have both incoming and outgoing objects!"];
           }
 
-          if (![v5 objectForKeyedSubscript:{objc_msgSend(v11, "outgoingMatchObject")}])
+          if (![dictionary objectForKeyedSubscript:{objc_msgSend(v11, "outgoingMatchObject")}])
           {
-            [v5 setObject:objc_msgSend(MEMORY[0x277CCABB0] forKeyedSubscript:{"numberWithInteger:", v9++), objc_msgSend(v11, "outgoingMatchObject")}];
+            [dictionary setObject:objc_msgSend(MEMORY[0x277CCABB0] forKeyedSubscript:{"numberWithInteger:", v9++), objc_msgSend(v11, "outgoingMatchObject")}];
           }
 
-          if (![v54 objectForKeyedSubscript:{objc_msgSend(v11, "incomingMatchObject")}])
+          if (![dictionary2 objectForKeyedSubscript:{objc_msgSend(v11, "incomingMatchObject")}])
           {
-            [v54 setObject:objc_msgSend(MEMORY[0x277CCABB0] forKeyedSubscript:{"numberWithInteger:", v8++), objc_msgSend(v11, "incomingMatchObject")}];
+            [dictionary2 setObject:objc_msgSend(MEMORY[0x277CCABB0] forKeyedSubscript:{"numberWithInteger:", v8++), objc_msgSend(v11, "incomingMatchObject")}];
           }
         }
 
-        v7 = [v3 countByEnumeratingWithState:&v68 objects:v75 count:16];
+        v7 = [arrayCopy countByEnumeratingWithState:&v68 objects:v75 count:16];
       }
 
       while (v7);
     }
 
-    v16 = [v5 count];
+    v16 = [dictionary count];
     if ((v16 & 0x8000000000000000) != 0)
     {
       [TSDMatchingAlgorithm p_bestMatchesFromArray:];
       v16 = 0x7FFFFFFFFFFFFFFFLL;
     }
 
-    v17 = v54;
-    v18 = [v54 count];
+    v17 = dictionary2;
+    v18 = [dictionary2 count];
     if ((v18 & 0x8000000000000000) != 0)
     {
       [TSDMatchingAlgorithm p_bestMatchesFromArray:];
@@ -634,10 +634,10 @@ LABEL_18:
     v67[1] = 3221225472;
     v67[2] = __47__TSDMatchingAlgorithm_p_bestMatchesFromArray___block_invoke;
     v67[3] = &unk_279D49108;
-    v67[4] = v3;
+    v67[4] = arrayCopy;
     if (v16 == 1 || v18 == 1)
     {
-      return [MEMORY[0x277CBEA60] arrayWithObject:{objc_msgSend(objc_msgSend(v3, "sortedArrayUsingComparator:", v67), "firstObject")}];
+      return [MEMORY[0x277CBEA60] arrayWithObject:{objc_msgSend(objc_msgSend(arrayCopy, "sortedArrayUsingComparator:", v67), "firstObject")}];
     }
 
     else
@@ -680,7 +680,7 @@ LABEL_18:
       v66 = 0u;
       v63 = 0u;
       v64 = 0u;
-      v24 = [v3 countByEnumeratingWithState:&v63 objects:v74 count:16];
+      v24 = [arrayCopy countByEnumeratingWithState:&v63 objects:v74 count:16];
       if (v24)
       {
         v25 = v24;
@@ -691,75 +691,75 @@ LABEL_18:
           {
             if (*v64 != v52)
             {
-              objc_enumerationMutation(v3);
+              objc_enumerationMutation(arrayCopy);
             }
 
             v27 = *(*(&v63 + 1) + 8 * m);
-            v28 = [objc_msgSend(v5 objectForKeyedSubscript:{objc_msgSend(v27, "outgoingMatchObject")), "integerValue"}];
+            v28 = [objc_msgSend(dictionary objectForKeyedSubscript:{objc_msgSend(v27, "outgoingMatchObject")), "integerValue"}];
             v29 = [objc_msgSend(v17 objectForKeyedSubscript:{objc_msgSend(v27, "incomingMatchObject")), "integerValue"}];
             if (*(&self->mObjectMapping[self->mMatrixDimension * v28] + v29))
             {
-              v30 = [MEMORY[0x277D6C290] currentHandler];
+              currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
               v31 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDMatchingAlgorithm p_bestMatchesFromArray:]"];
               v32 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDMatchingAlgorithm.m"];
-              v33 = v30;
-              v17 = v54;
+              v33 = currentHandler2;
+              v17 = dictionary2;
               [v33 handleFailureInFunction:v31 file:v32 lineNumber:502 description:{@"Duplicate match between objects! (%@ is a duplicate of %@)", v27, *(&self->mObjectMapping[self->mMatrixDimension * v28] + v29)}];
             }
 
-            v34 = [v27 matchCost];
+            matchCost = [v27 matchCost];
             mObjectMapping = self->mObjectMapping;
-            self->mCostMatrix[self->mMatrixDimension * v28 + v29] = v34;
+            self->mCostMatrix[self->mMatrixDimension * v28 + v29] = matchCost;
             *(&mObjectMapping[self->mMatrixDimension * v28] + v29) = v27;
-            v5 = v53;
+            dictionary = v53;
           }
 
-          v25 = [v3 countByEnumeratingWithState:&v63 objects:v74 count:16];
+          v25 = [arrayCopy countByEnumeratingWithState:&v63 objects:v74 count:16];
         }
 
         while (v25);
       }
 
-      v36 = 1;
+      p_doStep4 = 1;
       do
       {
-        if (v36 > 3)
+        if (p_doStep4 > 3)
         {
-          switch(v36)
+          switch(p_doStep4)
           {
             case 4:
-              v36 = [(TSDMatchingAlgorithm *)self p_doStep4];
+              p_doStep4 = [(TSDMatchingAlgorithm *)self p_doStep4];
               break;
             case 5:
-              v36 = [(TSDMatchingAlgorithm *)self p_doStep5];
+              p_doStep4 = [(TSDMatchingAlgorithm *)self p_doStep5];
               break;
             case 6:
-              v36 = [(TSDMatchingAlgorithm *)self p_doStep6];
+              p_doStep4 = [(TSDMatchingAlgorithm *)self p_doStep6];
               break;
             default:
               goto LABEL_57;
           }
         }
 
-        else if (v36 == 1)
+        else if (p_doStep4 == 1)
         {
-          v36 = [(TSDMatchingAlgorithm *)self p_doStep1];
+          p_doStep4 = [(TSDMatchingAlgorithm *)self p_doStep1];
         }
 
-        else if (v36 == 2)
+        else if (p_doStep4 == 2)
         {
-          v36 = [(TSDMatchingAlgorithm *)self p_doStep2];
+          p_doStep4 = [(TSDMatchingAlgorithm *)self p_doStep2];
         }
 
         else
         {
-          v36 = [(TSDMatchingAlgorithm *)self p_doStep3];
+          p_doStep4 = [(TSDMatchingAlgorithm *)self p_doStep3];
         }
       }
 
-      while (v36 > 0);
+      while (p_doStep4 > 0);
 LABEL_57:
-      v3 = [MEMORY[0x277CBEB18] array];
+      arrayCopy = [MEMORY[0x277CBEB18] array];
       v37 = self->mMatrixDimension;
       if (v37 >= 1)
       {
@@ -771,7 +771,7 @@ LABEL_57:
             {
               if (self->mMaskMatrix[n * v37 + ii] == 1 && *(&self->mObjectMapping[ii] + n * v37))
               {
-                [v3 addObject:?];
+                [arrayCopy addObject:?];
                 v37 = self->mMatrixDimension;
               }
             }
@@ -780,8 +780,8 @@ LABEL_57:
       }
 
       [(TSDMatchingAlgorithm *)self p_deallocateMatrices];
-      v40 = [v3 sortedArrayUsingComparator:v67];
-      [v3 removeAllObjects];
+      v40 = [arrayCopy sortedArrayUsingComparator:v67];
+      [arrayCopy removeAllObjects];
       v61 = 0u;
       v62 = 0u;
       v59 = 0u;
@@ -805,7 +805,7 @@ LABEL_57:
             v56 = 0u;
             v57 = 0u;
             v58 = 0u;
-            v46 = [v3 countByEnumeratingWithState:&v55 objects:v72 count:16];
+            v46 = [arrayCopy countByEnumeratingWithState:&v55 objects:v72 count:16];
             if (v46)
             {
               v47 = v46;
@@ -816,7 +816,7 @@ LABEL_73:
               {
                 if (*v56 != v48)
                 {
-                  objc_enumerationMutation(v3);
+                  objc_enumerationMutation(arrayCopy);
                 }
 
                 if ([*(*(&v55 + 1) + 8 * v49) conflictsWithMatch:v45])
@@ -826,7 +826,7 @@ LABEL_73:
 
                 if (v47 == ++v49)
                 {
-                  v47 = [v3 countByEnumeratingWithState:&v55 objects:v72 count:16];
+                  v47 = [arrayCopy countByEnumeratingWithState:&v55 objects:v72 count:16];
                   if (v47)
                   {
                     goto LABEL_73;
@@ -840,7 +840,7 @@ LABEL_73:
             else
             {
 LABEL_79:
-              [v3 addObject:v45];
+              [arrayCopy addObject:v45];
             }
           }
 
@@ -852,7 +852,7 @@ LABEL_79:
     }
   }
 
-  return v3;
+  return arrayCopy;
 }
 
 uint64_t __47__TSDMatchingAlgorithm_p_bestMatchesFromArray___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -888,10 +888,10 @@ uint64_t __47__TSDMatchingAlgorithm_p_bestMatchesFromArray___block_invoke(uint64
   }
 }
 
-+ (id)bestMatchesFromArray:(id)a3
++ (id)bestMatchesFromArray:(id)array
 {
   v4 = objc_alloc_init(TSDMatchingAlgorithm);
-  v5 = [(TSDMatchingAlgorithm *)v4 p_bestMatchesFromArray:a3];
+  v5 = [(TSDMatchingAlgorithm *)v4 p_bestMatchesFromArray:array];
 
   return v5;
 }

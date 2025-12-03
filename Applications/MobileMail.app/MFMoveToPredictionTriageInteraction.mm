@@ -1,43 +1,43 @@
 @interface MFMoveToPredictionTriageInteraction
-+ (id)interactionWithMessageListItems:(id)a3 undoManager:(id)a4 origin:(int64_t)a5 actor:(int64_t)a6 presentationSource:(id)a7 delegate:(id)a8 presentingViewController:(id)a9 predictedMailbox:(id)a10;
-+ (id)predictMailboxForMovingMessages:(id)a3;
-+ (id)predictMailboxForMovingMessages:(id)a3 completionHandler:(id)a4;
-+ (id)predictMailboxForMovingMessagesWithIDs:(id)a3;
++ (id)interactionWithMessageListItems:(id)items undoManager:(id)manager origin:(int64_t)origin actor:(int64_t)actor presentationSource:(id)source delegate:(id)delegate presentingViewController:(id)controller predictedMailbox:(id)self0;
++ (id)predictMailboxForMovingMessages:(id)messages;
++ (id)predictMailboxForMovingMessages:(id)messages completionHandler:(id)handler;
++ (id)predictMailboxForMovingMessagesWithIDs:(id)ds;
 - (BOOL)hasPrediction;
-- (id)_mailboxForObjectID:(id)a3;
-- (id)alertActionsWithCompletion:(id)a3;
-- (id)cardActionsWithCompletion:(id)a3;
+- (id)_mailboxForObjectID:(id)d;
+- (id)alertActionsWithCompletion:(id)completion;
+- (id)cardActionsWithCompletion:(id)completion;
 - (id)lazyPreviewActionHandler;
 - (id)lazyPreviewActions;
-- (id)previewActionItemForSwipe:(BOOL)a3;
-- (void)_enumeratePredictionActions:(id)a3;
-- (void)_performInteractionAfterPreparation:(id)a3 completion:(id)a4;
-- (void)_presentFollowUpActionSheetWithCompletion:(id)a3;
+- (id)previewActionItemForSwipe:(BOOL)swipe;
+- (void)_enumeratePredictionActions:(id)actions;
+- (void)_performInteractionAfterPreparation:(id)preparation completion:(id)completion;
+- (void)_presentFollowUpActionSheetWithCompletion:(id)completion;
 - (void)_presentTransferUI;
-- (void)moveToTargetEMMailbox:(id)a3;
+- (void)moveToTargetEMMailbox:(id)mailbox;
 @end
 
 @implementation MFMoveToPredictionTriageInteraction
 
-+ (id)interactionWithMessageListItems:(id)a3 undoManager:(id)a4 origin:(int64_t)a5 actor:(int64_t)a6 presentationSource:(id)a7 delegate:(id)a8 presentingViewController:(id)a9 predictedMailbox:(id)a10
++ (id)interactionWithMessageListItems:(id)items undoManager:(id)manager origin:(int64_t)origin actor:(int64_t)actor presentationSource:(id)source delegate:(id)delegate presentingViewController:(id)controller predictedMailbox:(id)self0
 {
-  v16 = a3;
-  v17 = a7;
-  v18 = a8;
-  v19 = a9;
-  v20 = a10;
-  v31.receiver = a1;
+  itemsCopy = items;
+  sourceCopy = source;
+  delegateCopy = delegate;
+  controllerCopy = controller;
+  mailboxCopy = mailbox;
+  v31.receiver = self;
   v31.super_class = &OBJC_METACLASS___MFMoveToPredictionTriageInteraction;
-  v21 = objc_msgSendSuper2(&v31, "interactionWithMessageListItems:undoManager:origin:actor:", v16, a4, a5, a6);
+  v21 = objc_msgSendSuper2(&v31, "interactionWithMessageListItems:undoManager:origin:actor:", itemsCopy, manager, origin, actor);
   v22 = v21;
   if (v21)
   {
-    [v21 setTransferUIViewController:v19];
-    [v22 setDelegate:v18];
-    [v22 setPresentationSource:v17];
-    if (v20)
+    [v21 setTransferUIViewController:controllerCopy];
+    [v22 setDelegate:delegateCopy];
+    [v22 setPresentationSource:sourceCopy];
+    if (mailboxCopy)
     {
-      [v22 setPrediction:v20];
+      [v22 setPrediction:mailboxCopy];
     }
 
     else
@@ -49,7 +49,7 @@
       v27 = sub_1001FF53C;
       v28 = &unk_1006551A8;
       objc_copyWeak(&v29, &location);
-      v23 = [a1 predictMailboxForMovingMessages:v16 completionHandler:&v25];
+      v23 = [self predictMailboxForMovingMessages:itemsCopy completionHandler:&v25];
       objc_destroyWeak(&v29);
       objc_destroyWeak(&location);
     }
@@ -60,97 +60,97 @@
   return v22;
 }
 
-+ (id)predictMailboxForMovingMessages:(id)a3 completionHandler:(id)a4
++ (id)predictMailboxForMovingMessages:(id)messages completionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
+  messagesCopy = messages;
+  handlerCopy = handler;
   v7 = +[UIApplication sharedApplication];
-  v8 = [v7 daemonInterface];
-  v9 = [v8 messageRepository];
+  daemonInterface = [v7 daemonInterface];
+  messageRepository = [daemonInterface messageRepository];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1001FF704;
   v13[3] = &unk_1006551D0;
-  v10 = v6;
+  v10 = handlerCopy;
   v14 = v10;
-  v11 = [v9 predictMailboxForMovingMessages:v5 completionHandler:v13];
+  v11 = [messageRepository predictMailboxForMovingMessages:messagesCopy completionHandler:v13];
 
   return v11;
 }
 
-+ (id)predictMailboxForMovingMessages:(id)a3
++ (id)predictMailboxForMovingMessages:(id)messages
 {
-  v3 = a3;
+  messagesCopy = messages;
   v4 = +[EFPromise promise];
   v5 = +[UIApplication sharedApplication];
-  v6 = [v5 daemonInterface];
-  v7 = [v6 messageRepository];
+  daemonInterface = [v5 daemonInterface];
+  messageRepository = [daemonInterface messageRepository];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_1001FF9EC;
   v16[3] = &unk_1006551F8;
   v8 = v4;
   v17 = v8;
-  v9 = v3;
+  v9 = messagesCopy;
   v18 = v9;
-  v10 = [v7 predictMailboxForMovingMessages:v9 completionHandler:v16];
+  v10 = [messageRepository predictMailboxForMovingMessages:v9 completionHandler:v16];
 
-  v11 = [v8 future];
+  future = [v8 future];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_1001FFADC;
   v14[3] = &unk_10064D028;
   v12 = v10;
   v15 = v12;
-  [v11 addFailureBlock:v14];
+  [future addFailureBlock:v14];
 
-  return v11;
+  return future;
 }
 
-+ (id)predictMailboxForMovingMessagesWithIDs:(id)a3
++ (id)predictMailboxForMovingMessagesWithIDs:(id)ds
 {
-  v3 = a3;
+  dsCopy = ds;
   v4 = +[EFPromise promise];
   v5 = +[UIApplication sharedApplication];
-  v6 = [v5 daemonInterface];
-  v7 = [v6 messageRepository];
+  daemonInterface = [v5 daemonInterface];
+  messageRepository = [daemonInterface messageRepository];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_1001FFD6C;
   v16[3] = &unk_1006551F8;
   v8 = v4;
   v17 = v8;
-  v9 = v3;
+  v9 = dsCopy;
   v18 = v9;
-  v10 = [v7 predictMailboxForMovingMessagesWithIDs:v9 completionHandler:v16];
+  v10 = [messageRepository predictMailboxForMovingMessagesWithIDs:v9 completionHandler:v16];
 
-  v11 = [v8 future];
+  future = [v8 future];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_1001FFE40;
   v14[3] = &unk_10064D028;
   v12 = v10;
   v15 = v12;
-  [v11 addFailureBlock:v14];
+  [future addFailureBlock:v14];
 
-  return v11;
+  return future;
 }
 
-- (void)moveToTargetEMMailbox:(id)a3
+- (void)moveToTargetEMMailbox:(id)mailbox
 {
-  v4 = a3;
-  [(MFMoveMessageTriageInteraction *)self setTargetMailbox:v4];
+  mailboxCopy = mailbox;
+  [(MFMoveMessageTriageInteraction *)self setTargetMailbox:mailboxCopy];
   v5.receiver = self;
   v5.super_class = MFMoveToPredictionTriageInteraction;
   [(MFTriageInteraction *)&v5 _performInteractionAfterPreparation:0 completion:0];
 }
 
-- (void)_performInteractionAfterPreparation:(id)a3 completion:(id)a4
+- (void)_performInteractionAfterPreparation:(id)preparation completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   if ([(MFMoveToPredictionTriageInteraction *)self hasPrediction])
   {
-    [(MFMoveToPredictionTriageInteraction *)self _presentFollowUpActionSheetWithCompletion:v5];
+    [(MFMoveToPredictionTriageInteraction *)self _presentFollowUpActionSheetWithCompletion:completionCopy];
   }
 
   else
@@ -159,9 +159,9 @@
   }
 }
 
-- (id)previewActionItemForSwipe:(BOOL)a3
+- (id)previewActionItemForSwipe:(BOOL)swipe
 {
-  if (a3)
+  if (swipe)
   {
     v7.receiver = self;
     v7.super_class = MFMoveToPredictionTriageInteraction;
@@ -170,8 +170,8 @@
 
   else
   {
-    v5 = [(MFMoveMessageTriageInteraction *)self title];
-    v4 = [_MFLazyPreviewActionItem previewActionItemWithTitle:v5 dataSource:self];
+    title = [(MFMoveMessageTriageInteraction *)self title];
+    v4 = [_MFLazyPreviewActionItem previewActionItemWithTitle:title dataSource:self];
   }
 
   return v4;
@@ -233,9 +233,9 @@
   return v6;
 }
 
-- (id)cardActionsWithCompletion:(id)a3
+- (id)cardActionsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(MFMoveToPredictionTriageInteraction *)self hasPrediction])
   {
     v5 = objc_alloc_init(NSMutableArray);
@@ -244,32 +244,32 @@
     v22[2] = sub_100200650;
     v22[3] = &unk_1006552C0;
     v22[4] = self;
-    v24 = v4;
-    v6 = v5;
-    v23 = v6;
+    v24 = completionCopy;
+    ef_stringByTrimmingWhitespaceAndNewlineCharacters = v5;
+    v23 = ef_stringByTrimmingWhitespaceAndNewlineCharacters;
     [(MFMoveToPredictionTriageInteraction *)self _enumeratePredictionActions:v22];
-    v7 = [v6 copy];
+    v7 = [ef_stringByTrimmingWhitespaceAndNewlineCharacters copy];
 
     v8 = v24;
   }
 
   else
   {
-    v9 = [(MFMoveMessageTriageInteraction *)self cardTitle];
-    v6 = [v9 ef_stringByTrimmingWhitespaceAndNewlineCharacters];
+    cardTitle = [(MFMoveMessageTriageInteraction *)self cardTitle];
+    ef_stringByTrimmingWhitespaceAndNewlineCharacters = [cardTitle ef_stringByTrimmingWhitespaceAndNewlineCharacters];
 
-    v10 = [(MFMoveMessageTriageInteraction *)self _iconImageName];
-    v11 = [(MFTriageInteraction *)self _tintColor];
+    _iconImageName = [(MFMoveMessageTriageInteraction *)self _iconImageName];
+    _tintColor = [(MFTriageInteraction *)self _tintColor];
     v16 = _NSConcreteStackBlock;
     v17 = 3221225472;
     v18 = sub_100200874;
     v19 = &unk_100653818;
-    v20 = self;
-    v21 = v4;
-    v12 = [MFCardAction cardActionWithTitle:v6 shortTitle:0 imageName:v10 tintColor:v11 handler:&v16];
+    selfCopy = self;
+    v21 = completionCopy;
+    v12 = [MFCardAction cardActionWithTitle:ef_stringByTrimmingWhitespaceAndNewlineCharacters shortTitle:0 imageName:_iconImageName tintColor:_tintColor handler:&v16];
 
-    v13 = [(MFMoveMessageTriageInteraction *)self accessibilityIdentifier];
-    [v12 setAccessibilityIdentifier:v13];
+    accessibilityIdentifier = [(MFMoveMessageTriageInteraction *)self accessibilityIdentifier];
+    [v12 setAccessibilityIdentifier:accessibilityIdentifier];
 
     v14 = [NSArray alloc];
     v7 = [v14 initWithObjects:{v12, 0, v16, v17, v18, v19}];
@@ -280,9 +280,9 @@
   return v7;
 }
 
-- (id)alertActionsWithCompletion:(id)a3
+- (id)alertActionsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(MFMoveToPredictionTriageInteraction *)self hasPrediction])
   {
     v5 = objc_alloc_init(NSMutableArray);
@@ -290,7 +290,7 @@
     v9[1] = 3221225472;
     v9[2] = sub_100200A60;
     v9[3] = &unk_100655310;
-    v11 = v4;
+    v11 = completionCopy;
     v9[4] = self;
     v6 = v5;
     v10 = v6;
@@ -300,7 +300,7 @@
 
   else
   {
-    v6 = [(MFTriageInteraction *)self alertActionWithCompletion:v4];
+    v6 = [(MFTriageInteraction *)self alertActionWithCompletion:completionCopy];
     v12 = v6;
     v7 = [NSArray arrayWithObjects:&v12 count:1];
   }
@@ -310,27 +310,27 @@
 
 - (BOOL)hasPrediction
 {
-  v2 = [(MFMoveToPredictionTriageInteraction *)self prediction];
-  v3 = v2 != 0;
+  prediction = [(MFMoveToPredictionTriageInteraction *)self prediction];
+  v3 = prediction != 0;
 
   return v3;
 }
 
-- (id)_mailboxForObjectID:(id)a3
+- (id)_mailboxForObjectID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = +[UIApplication sharedApplication];
-  v5 = [v4 daemonInterface];
-  v6 = [v5 mailboxRepository];
-  v7 = [v6 mailboxForObjectID:v3];
-  v8 = [v7 result];
+  daemonInterface = [v4 daemonInterface];
+  mailboxRepository = [daemonInterface mailboxRepository];
+  v7 = [mailboxRepository mailboxForObjectID:dCopy];
+  result = [v7 result];
 
-  return v8;
+  return result;
 }
 
-- (void)_enumeratePredictionActions:(id)a3
+- (void)_enumeratePredictionActions:(id)actions
 {
-  v4 = a3;
+  actionsCopy = actions;
   v5 = +[NSBundle mainBundle];
   v6 = [v5 localizedStringForKey:@"MOVE_FORMAT%1$lu" value:&stru_100662A88 table:@"Main"];
   v7 = [NSString localizedStringWithFormat:v6, [(MFTriageInteraction *)self messageCount]];
@@ -342,23 +342,23 @@
   v17[2] = sub_100200FC4;
   v17[3] = &unk_10064C7E8;
   v17[4] = self;
-  (*(v4 + 2))(v4, v9, 0, v17);
+  (*(actionsCopy + 2))(actionsCopy, v9, 0, v17);
 
-  v10 = [(MFMoveToPredictionTriageInteraction *)self prediction];
-  if (v10)
+  prediction = [(MFMoveToPredictionTriageInteraction *)self prediction];
+  if (prediction)
   {
     v11 = +[NSBundle mainBundle];
     v12 = [v11 localizedStringForKey:@"MOVE_TO" value:&stru_100662A88 table:@"Main"];
-    v13 = [v10 name];
-    v14 = [NSString stringWithFormat:v12, v13];
+    name = [prediction name];
+    v14 = [NSString stringWithFormat:v12, name];
 
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_100200FCC;
     v15[3] = &unk_10064C660;
     v15[4] = self;
-    v16 = v10;
-    (*(v4 + 2))(v4, v14, 1, v15);
+    v16 = prediction;
+    (*(actionsCopy + 2))(actionsCopy, v14, 1, v15);
   }
 }
 
@@ -366,32 +366,32 @@
 {
   v9.receiver = self;
   v9.super_class = MFMoveToPredictionTriageInteraction;
-  v3 = [(MFTriageInteraction *)&v9 delegate];
-  if ([v3 conformsToProtocol:&OBJC_PROTOCOL___MFMoveToPredictionTriageInteractionDelegate])
+  delegate = [(MFTriageInteraction *)&v9 delegate];
+  if ([delegate conformsToProtocol:&OBJC_PROTOCOL___MFMoveToPredictionTriageInteractionDelegate])
   {
     [(MFMoveMessageTriageInteraction *)self setDidPresentTransferUI:1];
     objc_initWeak(&location, self);
-    v4 = [(MFMoveToPredictionTriageInteraction *)self prediction];
-    v5 = [(MFMoveToPredictionTriageInteraction *)self transferUIViewController];
+    prediction = [(MFMoveToPredictionTriageInteraction *)self prediction];
+    transferUIViewController = [(MFMoveToPredictionTriageInteraction *)self transferUIViewController];
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_100201174;
     v6[3] = &unk_10064C838;
     objc_copyWeak(&v7, &location);
-    [v3 presentTransferUIWithMoveInteraction:self prediction:v4 fromViewController:v5 didDismissHandler:v6];
+    [delegate presentTransferUIWithMoveInteraction:self prediction:prediction fromViewController:transferUIViewController didDismissHandler:v6];
 
     objc_destroyWeak(&v7);
     objc_destroyWeak(&location);
   }
 }
 
-- (void)_presentFollowUpActionSheetWithCompletion:(id)a3
+- (void)_presentFollowUpActionSheetWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = &stru_100655350;
-  if (v4)
+  if (completionCopy)
   {
-    v5 = v4;
+    v5 = completionCopy;
   }
 
   v17[0] = _NSConcreteStackBlock;
@@ -408,17 +408,17 @@
   v7 = v13[3] = &unk_1006552C0;
   v14 = v7;
   v8 = v6;
-  v15 = self;
+  selfCopy = self;
   v16 = v8;
   [(MFMoveToPredictionTriageInteraction *)self _enumeratePredictionActions:v13];
   v9 = +[NSNotificationCenter defaultCenter];
   [v9 postNotificationName:@"MFMoveToPredictionTriageInteractionPredictionPresented" object:self];
 
-  v10 = [(MFTriageInteraction *)self delegate];
-  v11 = [v10 presentingViewControllerForTriageInteraction:self];
+  delegate = [(MFTriageInteraction *)self delegate];
+  v11 = [delegate presentingViewControllerForTriageInteraction:self];
 
-  v12 = [(MFTriageInteraction *)self presentationSource];
-  [v7 mf_presentFromViewController:v11 withSource:v12];
+  presentationSource = [(MFTriageInteraction *)self presentationSource];
+  [v7 mf_presentFromViewController:v11 withSource:presentationSource];
 }
 
 @end

@@ -1,11 +1,11 @@
 @interface UIPDFSquareOrCircleAnnotation
-- (UIPDFSquareOrCircleAnnotation)initWithAnnotationDictionary:(CGPDFDictionary *)a3;
-- (void)drawInContext:(CGContext *)a3;
+- (UIPDFSquareOrCircleAnnotation)initWithAnnotationDictionary:(CGPDFDictionary *)dictionary;
+- (void)drawInContext:(CGContext *)context;
 @end
 
 @implementation UIPDFSquareOrCircleAnnotation
 
-- (UIPDFSquareOrCircleAnnotation)initWithAnnotationDictionary:(CGPDFDictionary *)a3
+- (UIPDFSquareOrCircleAnnotation)initWithAnnotationDictionary:(CGPDFDictionary *)dictionary
 {
   v10.receiver = self;
   v10.super_class = UIPDFSquareOrCircleAnnotation;
@@ -16,7 +16,7 @@
     v4->_W = 1.0;
     v4->_S = 83;
     value = 0;
-    if (CGPDFDictionaryGetDictionary(a3, "BS", &value))
+    if (CGPDFDictionaryGetDictionary(dictionary, "BS", &value))
     {
       CGPDFDictionaryGetNumber(value, "W", &v5->_W);
       dict = 0;
@@ -30,7 +30,7 @@
     }
 
     dict = 0;
-    if (CGPDFDictionaryGetDictionary(a3, "BE", &dict))
+    if (CGPDFDictionaryGetDictionary(dictionary, "BE", &dict))
     {
       v5->_SE = 83.0;
       v7 = 0;
@@ -47,14 +47,14 @@
   return v5;
 }
 
-- (void)drawInContext:(CGContext *)a3
+- (void)drawInContext:(CGContext *)context
 {
   lengths[1] = *MEMORY[0x1E69E9840];
   if (self->super._appearanceStream)
   {
     v19.receiver = self;
     v19.super_class = UIPDFSquareOrCircleAnnotation;
-    [(UIPDFAnnotation *)&v19 drawInContext:a3];
+    [(UIPDFAnnotation *)&v19 drawInContext:context];
   }
 
   else
@@ -64,9 +64,9 @@
     v8 = v7;
     v10 = v9;
     v12 = v11;
-    CGContextSaveGState(a3);
-    CGContextSetStrokeColorWithColor(a3, self->super._color);
-    CGContextSetLineWidth(a3, self->_W);
+    CGContextSaveGState(context);
+    CGContextSetStrokeColorWithColor(context, self->super._color);
+    CGContextSetLineWidth(context, self->_W);
     if (self->_S == 68)
     {
       D = self->_D;
@@ -87,19 +87,19 @@
           while (Count != v17);
         }
 
-        CGContextSetLineDash(a3, 0.0, v16, Count);
+        CGContextSetLineDash(context, 0.0, v16, Count);
         free(v16);
       }
 
       else
       {
         lengths[0] = 3.0;
-        CGContextSetLineDash(a3, 0.0, lengths, 1uLL);
+        CGContextSetLineDash(context, 0.0, lengths, 1uLL);
       }
     }
 
-    [(UIPDFSquareOrCircleAnnotation *)self strokePath:a3 inRect:v6, v8, v10, v12];
-    CGContextRestoreGState(a3);
+    [(UIPDFSquareOrCircleAnnotation *)self strokePath:context inRect:v6, v8, v10, v12];
+    CGContextRestoreGState(context);
   }
 }
 

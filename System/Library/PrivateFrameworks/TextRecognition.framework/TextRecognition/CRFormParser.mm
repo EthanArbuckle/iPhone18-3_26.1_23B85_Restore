@@ -1,33 +1,33 @@
 @interface CRFormParser
-+ (BOOL)_isRegion:(id)a3 segmentedBoxLeftOfRegion:(id)a4 withTolerance:(double)a5 modalWidth:(double)a6 modelGap:(double)a7;
-+ (_NSRange)_rangeOfFirstSegmentedFieldGroupInFields:(id)a3 startIndex:(int64_t)a4 modalWidth:(double)a5 modelGap:(double)a6;
-+ (double)globalLineHeightInDocument:(id)a3;
-+ (id)_dominantLocaleInRegions:(id)a3;
-+ (id)_groupSegmentedFieldsInAlignedFields:(id)a3;
-+ (id)_groupSegmentedFieldsInFields:(id)a3;
-+ (id)_mergedFieldsWithUnifiedQuadsFromFields:(id)a3 needsFieldReplacement:(BOOL *)a4 originalField:(id)a5 replacementField:(id)a6;
-+ (id)_orderedGroupsWithFields:(id)a3 lines:(id)a4;
-+ (id)_restoredFieldsWithFields:(id)a3 originalField:(id)a4 replacementField:(id)a5;
-+ (id)_textFieldsAndRegionsFrom:(id)a3;
-+ (id)convertDetectedFields:(id)a3;
-+ (id)horizontalClustersFromFields:(id)a3;
-+ (id)predictLineHeightForFields:(id)a3 inDocument:(id)a4 shouldUpdateExternalFields:(BOOL)a5;
-+ (uint64_t)horizontalClustersFromFields:(uint64_t)a1;
-+ (void)_setPrecedingExternalFieldsForFields:(id)a3;
-+ (void)horizontalClustersFromFields:(void *)a1;
-- (BOOL)_localeIsEnabled:(id)a3;
++ (BOOL)_isRegion:(id)region segmentedBoxLeftOfRegion:(id)ofRegion withTolerance:(double)tolerance modalWidth:(double)width modelGap:(double)gap;
++ (_NSRange)_rangeOfFirstSegmentedFieldGroupInFields:(id)fields startIndex:(int64_t)index modalWidth:(double)width modelGap:(double)gap;
++ (double)globalLineHeightInDocument:(id)document;
++ (id)_dominantLocaleInRegions:(id)regions;
++ (id)_groupSegmentedFieldsInAlignedFields:(id)fields;
++ (id)_groupSegmentedFieldsInFields:(id)fields;
++ (id)_mergedFieldsWithUnifiedQuadsFromFields:(id)fields needsFieldReplacement:(BOOL *)replacement originalField:(id)field replacementField:(id)replacementField;
++ (id)_orderedGroupsWithFields:(id)fields lines:(id)lines;
++ (id)_restoredFieldsWithFields:(id)fields originalField:(id)field replacementField:(id)replacementField;
++ (id)_textFieldsAndRegionsFrom:(id)from;
++ (id)convertDetectedFields:(id)fields;
++ (id)horizontalClustersFromFields:(id)fields;
++ (id)predictLineHeightForFields:(id)fields inDocument:(id)document shouldUpdateExternalFields:(BOOL)externalFields;
++ (uint64_t)horizontalClustersFromFields:(uint64_t)fields;
++ (void)_setPrecedingExternalFieldsForFields:(id)fields;
++ (void)horizontalClustersFromFields:(void *)fields;
+- (BOOL)_localeIsEnabled:(id)enabled;
 - (CRFormParser)init;
-- (id)_orderAndGroupLinesInDocument:(id)a3 allFields:(id)a4 regions:(id)a5;
-- (id)parseFieldsInDocument:(id)a3 allFields:(id)a4 shouldUpdateExternalFields:(BOOL)a5;
-- (void)_parseFieldsWithLabelFinderAndKeywords:(id)a3 fieldsAndRegions:(id)a4 updateExternal:(BOOL)a5 locale:(id)a6;
-- (void)_parseFieldsWithTransformer:(id)a3 fieldsAndRegions:(id)a4 updateExternal:(BOOL)a5 locale:(id)a6;
+- (id)_orderAndGroupLinesInDocument:(id)document allFields:(id)fields regions:(id)regions;
+- (id)parseFieldsInDocument:(id)document allFields:(id)fields shouldUpdateExternalFields:(BOOL)externalFields;
+- (void)_parseFieldsWithLabelFinderAndKeywords:(id)keywords fieldsAndRegions:(id)regions updateExternal:(BOOL)external locale:(id)locale;
+- (void)_parseFieldsWithTransformer:(id)transformer fieldsAndRegions:(id)regions updateExternal:(BOOL)external locale:(id)locale;
 @end
 
 @implementation CRFormParser
 
-- (BOOL)_localeIsEnabled:(id)a3
+- (BOOL)_localeIsEnabled:(id)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v4 = sub_1B429FB98();
     v6 = v5;
@@ -39,7 +39,7 @@
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   v8 = sub_1B4139E48(v4, v6);
 
   return v8;
@@ -60,13 +60,13 @@
   return v2;
 }
 
-+ (id)_orderedGroupsWithFields:(id)a3 lines:(id)a4
++ (id)_orderedGroupsWithFields:(id)fields lines:(id)lines
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v5, "count") + objc_msgSend(v6, "count")}];
-  [v7 addObjectsFromArray:v6];
-  [v7 addObjectsFromArray:v5];
+  fieldsCopy = fields;
+  linesCopy = lines;
+  v7 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(fieldsCopy, "count") + objc_msgSend(linesCopy, "count")}];
+  [v7 addObjectsFromArray:linesCopy];
+  [v7 addObjectsFromArray:fieldsCopy];
   if (_MergedGlobals_9 != -1)
   {
     dispatch_once(&_MergedGlobals_9, &__block_literal_global);
@@ -84,16 +84,16 @@ void __47__CRFormParser__orderedGroupsWithFields_lines___block_invoke()
   qword_1ED95FD48 = v0;
 }
 
-+ (id)convertDetectedFields:(id)a3
++ (id)convertDetectedFields:(id)fields
 {
   v26 = *MEMORY[0x1E69E9840];
-  v19 = a3;
-  v20 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v19, "count")}];
+  fieldsCopy = fields;
+  v20 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(fieldsCopy, "count")}];
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v3 = v19;
+  v3 = fieldsCopy;
   v4 = [v3 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v4)
   {
@@ -108,29 +108,29 @@ void __47__CRFormParser__orderedGroupsWithFields_lines___block_invoke()
         }
 
         v7 = *(*(&v21 + 1) + 8 * i);
-        v8 = [v7 fieldType];
-        if (v8 == 1)
+        fieldType = [v7 fieldType];
+        if (fieldType == 1)
         {
           v12 = [CRFormTextFieldOutputRegion alloc];
-          v10 = [v7 boundingQuad];
-          v13 = [v7 textContentType];
-          v14 = [v7 fieldSource];
-          v15 = [v7 hasBoundedWidth];
+          boundingQuad = [v7 boundingQuad];
+          textContentType = [v7 textContentType];
+          fieldSource = [v7 fieldSource];
+          hasBoundedWidth = [v7 hasBoundedWidth];
           LOBYTE(v18) = [v7 hasBoundedHeight];
-          v11 = [(CRFormTextFieldOutputRegion *)v12 initWithQuad:v10 labelRegion:0 subFields:0 contentType:v13 source:v14 hasBoundedWidth:v15 hasBoundedHeight:v18];
+          v11 = [(CRFormTextFieldOutputRegion *)v12 initWithQuad:boundingQuad labelRegion:0 subFields:0 contentType:textContentType source:fieldSource hasBoundedWidth:hasBoundedWidth hasBoundedHeight:v18];
         }
 
         else
         {
-          if (v8 != 2)
+          if (fieldType != 2)
           {
             v16 = 0;
             goto LABEL_13;
           }
 
           v9 = [CRFormSelectableFieldOutputRegion alloc];
-          v10 = [v7 boundingQuad];
-          v11 = -[CRFormSelectableFieldOutputRegion initWithQuad:type:labelRegion:source:](v9, "initWithQuad:type:labelRegion:source:", v10, 0, 0, [v7 fieldSource]);
+          boundingQuad = [v7 boundingQuad];
+          v11 = -[CRFormSelectableFieldOutputRegion initWithQuad:type:labelRegion:source:](v9, "initWithQuad:type:labelRegion:source:", boundingQuad, 0, 0, [v7 fieldSource]);
         }
 
         v16 = v11;
@@ -152,42 +152,42 @@ LABEL_13:
   return v20;
 }
 
-+ (BOOL)_isRegion:(id)a3 segmentedBoxLeftOfRegion:(id)a4 withTolerance:(double)a5 modalWidth:(double)a6 modelGap:(double)a7
++ (BOOL)_isRegion:(id)region segmentedBoxLeftOfRegion:(id)ofRegion withTolerance:(double)tolerance modalWidth:(double)width modelGap:(double)gap
 {
-  v8 = a4;
-  v9 = [a3 boundingQuad];
-  v10 = [v8 boundingQuad];
-  [v9 size];
+  ofRegionCopy = ofRegion;
+  boundingQuad = [region boundingQuad];
+  boundingQuad2 = [ofRegionCopy boundingQuad];
+  [boundingQuad size];
   v47 = v11;
-  [v10 size];
+  [boundingQuad2 size];
   v46 = v12;
-  [v9 size];
+  [boundingQuad size];
   v45 = v13;
-  [v10 size];
+  [boundingQuad2 size];
   v44 = v14;
-  [v10 topLeft];
+  [boundingQuad2 topLeft];
   v43 = v15;
-  [v9 topRight];
+  [boundingQuad topRight];
   v17 = v16;
-  [v9 size];
+  [boundingQuad size];
   v19 = v18;
-  [v10 size];
+  [boundingQuad2 size];
   v21 = v20;
-  [v9 size];
+  [boundingQuad size];
   v23 = v22;
-  [v10 size];
+  [boundingQuad2 size];
   v25 = v24;
-  [v9 midPoint];
+  [boundingQuad midPoint];
   v27 = v26;
-  [v10 midPoint];
+  [boundingQuad2 midPoint];
   v29 = v28;
-  [v9 midPoint];
+  [boundingQuad midPoint];
   v31 = v30;
-  [v10 midPoint];
+  [boundingQuad2 midPoint];
   v33 = (v45 + v44) * 0.5;
-  v34 = fabs(-(a6 - v33 * 100.0));
+  v34 = fabs(-(width - v33 * 100.0));
   v35 = v27 < v29;
-  if (fabs(-(a7 - vabdd_f64(v43, v17) * 100.0)) >= 1.0)
+  if (fabs(-(gap - vabdd_f64(v43, v17) * 100.0)) >= 1.0)
   {
     v35 = 0;
   }
@@ -217,9 +217,9 @@ LABEL_13:
   return v41;
 }
 
-+ (double)globalLineHeightInDocument:(id)a3
++ (double)globalLineHeightInDocument:(id)document
 {
-  v3 = a3;
+  documentCopy = document;
   v22 = 0;
   v23 = &v22;
   v24 = 0x4812000000;
@@ -234,7 +234,7 @@ LABEL_13:
   v21[2] = __43__CRFormParser_globalLineHeightInDocument___block_invoke;
   v21[3] = &unk_1E7BC1E50;
   v21[4] = &v22;
-  [v3 enumerateContentsWithTypes:8 usingBlock:v21];
+  [documentCopy enumerateContentsWithTypes:8 usingBlock:v21];
   v4 = v23;
   v5 = v23[7];
   v6 = v23[6];
@@ -388,33 +388,33 @@ void __43__CRFormParser_globalLineHeightInDocument___block_invoke(uint64_t a1, v
   v4[7] = v9;
 }
 
-+ (id)predictLineHeightForFields:(id)a3 inDocument:(id)a4 shouldUpdateExternalFields:(BOOL)a5
++ (id)predictLineHeightForFields:(id)fields inDocument:(id)document shouldUpdateExternalFields:(BOOL)externalFields
 {
-  v5 = a5;
+  externalFieldsCopy = externalFields;
   v38 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v25 = v8;
-  v26 = [v8 _flattenedFields];
+  fieldsCopy = fields;
+  documentCopy = document;
+  v25 = fieldsCopy;
+  _flattenedFields = [fieldsCopy _flattenedFields];
   v10 = CROSLogForCategory(6);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
     *buf = 136315650;
     v33 = "+[CRFormParser predictLineHeightForFields:inDocument:shouldUpdateExternalFields:]";
     v34 = 2048;
-    v35 = [v26 count];
+    v35 = [_flattenedFields count];
     v36 = 1024;
-    v37 = v5;
+    v37 = externalFieldsCopy;
     _os_log_impl(&dword_1B40D2000, v10, OS_LOG_TYPE_DEBUG, "%s: Parsing %lu form fields (updateExcludedFields: %d)", buf, 0x1Cu);
   }
 
-  [a1 globalLineHeightInDocument:v9];
+  [self globalLineHeightInDocument:documentCopy];
   v12 = v11;
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v13 = v26;
+  v13 = _flattenedFields;
   v14 = [v13 countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v14)
   {
@@ -441,12 +441,12 @@ void __43__CRFormParser_globalLineHeightInDocument___block_invoke(uint64_t a1, v
         v18 = *(*(&v27 + 1) + 8 * i);
         if ([v18 fieldType] == 1)
         {
-          if ([v18 fieldSource] == 1 || objc_msgSend(v18, "fieldSource") == 2 || (objc_msgSend(v18, "fieldSource") != 3 ? (v19 = !v5) : (v19 = 0), !v19))
+          if ([v18 fieldSource] == 1 || objc_msgSend(v18, "fieldSource") == 2 || (objc_msgSend(v18, "fieldSource") != 3 ? (v19 = !externalFieldsCopy) : (v19 = 0), !v19))
           {
             if (objc_opt_respondsToSelector())
             {
-              v20 = [v18 boundingQuad];
-              [v20 size];
+              boundingQuad = [v18 boundingQuad];
+              [boundingQuad size];
               v22 = v21;
 
               v23 = v22 * 0.95;
@@ -470,28 +470,28 @@ void __43__CRFormParser_globalLineHeightInDocument___block_invoke(uint64_t a1, v
   return v25;
 }
 
-+ (_NSRange)_rangeOfFirstSegmentedFieldGroupInFields:(id)a3 startIndex:(int64_t)a4 modalWidth:(double)a5 modelGap:(double)a6
++ (_NSRange)_rangeOfFirstSegmentedFieldGroupInFields:(id)fields startIndex:(int64_t)index modalWidth:(double)width modelGap:(double)gap
 {
-  v9 = a3;
+  fieldsCopy = fields;
   v10 = 0x7FFFFFFFFFFFFFFFLL;
-  while (a4 + 1 < [v9 count])
+  while (index + 1 < [fieldsCopy count])
   {
-    v11 = [v9 objectAtIndexedSubscript:a4];
-    v12 = [v9 objectAtIndexedSubscript:a4 + 1];
-    v13 = [objc_opt_class() _isRegion:v11 segmentedBoxLeftOfRegion:v12 withTolerance:0.2 modalWidth:a5 modelGap:a6];
+    v11 = [fieldsCopy objectAtIndexedSubscript:index];
+    v12 = [fieldsCopy objectAtIndexedSubscript:index + 1];
+    v13 = [objc_opt_class() _isRegion:v11 segmentedBoxLeftOfRegion:v12 withTolerance:0.2 modalWidth:width modelGap:gap];
     if ([v11 fieldSource] == 1 && objc_msgSend(v11, "fieldType") == 1)
     {
       if (!((v10 == 0x7FFFFFFFFFFFFFFFLL) | v13 & 1))
       {
-        ++a4;
+        ++index;
         goto LABEL_16;
       }
 
-      if (v10 != 0x7FFFFFFFFFFFFFFFLL && ((v13 ^ 1) & 1) == 0 && a4 == [v9 count] - 2)
+      if (v10 != 0x7FFFFFFFFFFFFFFFLL && ((v13 ^ 1) & 1) == 0 && index == [fieldsCopy count] - 2)
       {
-        a4 += 2;
+        index += 2;
 LABEL_16:
-        v15 = a4 - v10;
+        v15 = index - v10;
 
         if (v15)
         {
@@ -503,26 +503,26 @@ LABEL_16:
 
       if ((v13 & (v10 == 0x7FFFFFFFFFFFFFFFLL)) != 0)
       {
-        v14 = a4;
+        indexCopy = index;
       }
 
       else
       {
-        v14 = v10;
+        indexCopy = v10;
       }
     }
 
     else
     {
-      v14 = 0x7FFFFFFFFFFFFFFFLL;
+      indexCopy = 0x7FFFFFFFFFFFFFFFLL;
       if (v10 != 0x7FFFFFFFFFFFFFFFLL)
       {
         goto LABEL_16;
       }
     }
 
-    ++a4;
-    v10 = v14;
+    ++index;
+    v10 = indexCopy;
   }
 
   v15 = 0;
@@ -536,9 +536,9 @@ LABEL_18:
   return result;
 }
 
-+ (id)horizontalClustersFromFields:(id)a3
++ (id)horizontalClustersFromFields:(id)fields
 {
-  v3 = a3;
+  fieldsCopy = fields;
   v18 = 0;
   v19 = &v18;
   v20 = 0x4812000000;
@@ -551,8 +551,8 @@ LABEL_18:
   v17[2] = __45__CRFormParser_horizontalClustersFromFields___block_invoke;
   v17[3] = &unk_1E7BC1E78;
   v17[4] = &v18;
-  v13 = v3;
-  [v3 enumerateObjectsUsingBlock:v17];
+  v13 = fieldsCopy;
+  [fieldsCopy enumerateObjectsUsingBlock:v17];
   v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:0x6DB6DB6DB6DB6DB7 * ((v19[7] - v19[6]) >> 3)];
   v5 = v19[6];
   for (i = v19[7]; v5 != i; v5 += 56)
@@ -561,8 +561,8 @@ LABEL_18:
     v16 = 0;
     v14 = 0;
     std::vector<unsigned long>::__init_with_size[abi:ne200100]<unsigned long *,unsigned long *>(&v14, *(v5 + 32), *(v5 + 40), (*(v5 + 40) - *(v5 + 32)) >> 3);
-    v7 = [MEMORY[0x1E696AD50] indexSet];
-    [v4 addObject:v7];
+    indexSet = [MEMORY[0x1E696AD50] indexSet];
+    [v4 addObject:indexSet];
 
     v9 = v14;
     v8 = v15;
@@ -571,8 +571,8 @@ LABEL_18:
       do
       {
         v10 = *v9;
-        v11 = [v4 lastObject];
-        [v11 addIndex:v10];
+        lastObject = [v4 lastObject];
+        [lastObject addIndex:v10];
 
         ++v9;
       }
@@ -594,13 +594,13 @@ LABEL_18:
   return v4;
 }
 
-+ (void)horizontalClustersFromFields:(void *)a1
++ (void)horizontalClustersFromFields:(void *)fields
 {
-  v2 = *a1;
-  if (*a1)
+  v2 = *fields;
+  if (*fields)
   {
-    v3 = a1[1];
-    v4 = *a1;
+    v3 = fields[1];
+    v4 = *fields;
     if (v3 != v2)
     {
       do
@@ -616,14 +616,14 @@ LABEL_18:
       }
 
       while (v3 != v2);
-      v4 = *a1;
+      v4 = *fields;
     }
 
-    a1[1] = v2;
+    fields[1] = v2;
     operator delete(v4);
   }
 
-  return a1;
+  return fields;
 }
 
 void __45__CRFormParser_horizontalClustersFromFields___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -883,18 +883,18 @@ void __45__CRFormParser_horizontalClustersFromFields___block_invoke(uint64_t a1,
 LABEL_48:
 }
 
-+ (id)_groupSegmentedFieldsInFields:(id)a3
++ (id)_groupSegmentedFieldsInFields:(id)fields
 {
-  v3 = a3;
-  v4 = [CRFormParser horizontalClustersFromFields:v3];
-  v5 = [MEMORY[0x1E695DF70] array];
+  fieldsCopy = fields;
+  v4 = [CRFormParser horizontalClustersFromFields:fieldsCopy];
+  array = [MEMORY[0x1E695DF70] array];
   v10 = MEMORY[0x1E69E9820];
   v11 = 3221225472;
   v12 = __46__CRFormParser__groupSegmentedFieldsInFields___block_invoke;
   v13 = &unk_1E7BC1EC0;
-  v6 = v3;
+  v6 = fieldsCopy;
   v14 = v6;
-  v7 = v5;
+  v7 = array;
   v15 = v7;
   [v4 enumerateObjectsUsingBlock:&v10];
   v8 = [v6 mutableCopy];
@@ -1037,10 +1037,10 @@ void __46__CRFormParser__groupSegmentedFieldsInFields___block_invoke_24(uint64_t
   }
 }
 
-+ (id)_groupSegmentedFieldsInAlignedFields:(id)a3
++ (id)_groupSegmentedFieldsInAlignedFields:(id)fields
 {
   v65 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  fieldsCopy = fields;
   v4 = 0;
   v5 = 0;
   v59[0] = 0;
@@ -1049,21 +1049,21 @@ void __46__CRFormParser__groupSegmentedFieldsInFields___block_invoke_24(uint64_t
   v58 = v59;
   v56 = v57;
   v57[0] = 0;
-  while (v4 < [v3 count] - 1)
+  while (v4 < [fieldsCopy count] - 1)
   {
-    v6 = [v3 objectAtIndexedSubscript:v4];
-    v7 = [v6 boundingQuad];
-    [v7 size];
+    v6 = [fieldsCopy objectAtIndexedSubscript:v4];
+    boundingQuad = [v6 boundingQuad];
+    [boundingQuad size];
     v9 = v8;
 
     v10 = v4 + 1;
-    v11 = [v3 objectAtIndexedSubscript:v4 + 1];
-    v12 = [v11 boundingQuad];
-    [v12 boundingBox];
+    v11 = [fieldsCopy objectAtIndexedSubscript:v4 + 1];
+    boundingQuad2 = [v11 boundingQuad];
+    [boundingQuad2 boundingBox];
     MinX = CGRectGetMinX(v67);
-    v14 = [v3 objectAtIndexedSubscript:v4];
-    v15 = [v14 boundingQuad];
-    [v15 boundingBox];
+    v14 = [fieldsCopy objectAtIndexedSubscript:v4];
+    boundingQuad3 = [v14 boundingQuad];
+    [boundingQuad3 boundingBox];
     MaxX = CGRectGetMaxX(v68);
 
     v17 = (v9 * 100.0);
@@ -1251,9 +1251,9 @@ LABEL_21:
   }
 
   v41 = v27;
-  v42 = [a1 _rangeOfFirstSegmentedFieldGroupInFields:v3 startIndex:0 modalWidth:v35 modelGap:v27];
+  v42 = [self _rangeOfFirstSegmentedFieldGroupInFields:fieldsCopy startIndex:0 modalWidth:v35 modelGap:v27];
   v44 = v43;
-  v45 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   *&v46 = 136315650;
   v52 = v46;
   while (v42 != 0x7FFFFFFFFFFFFFFFLL)
@@ -1273,30 +1273,30 @@ LABEL_21:
     if (v44 >= 2)
     {
       v48 = [MEMORY[0x1E696AC90] indexSetWithIndexesInRange:{v42, v44}];
-      [v45 addObject:v48];
+      [array addObject:v48];
     }
 
-    v42 = [a1 _rangeOfFirstSegmentedFieldGroupInFields:v3 startIndex:v42 + v44 modalWidth:v35 modelGap:{v41, v52}];
+    v42 = [self _rangeOfFirstSegmentedFieldGroupInFields:fieldsCopy startIndex:v42 + v44 modalWidth:v35 modelGap:{v41, v52}];
     v44 = v49;
   }
 
   if (v44 >= 2)
   {
     v50 = [MEMORY[0x1E696AC90] indexSetWithIndexesInRange:{0x7FFFFFFFFFFFFFFFLL, v44}];
-    [v45 addObject:v50];
+    [array addObject:v50];
   }
 
   std::__tree<std::__value_type<int,unsigned long>,std::__map_value_compare<int,std::__value_type<int,unsigned long>,std::less<int>,true>,std::allocator<std::__value_type<int,unsigned long>>>::destroy(v57[0]);
   std::__tree<std::__value_type<int,unsigned long>,std::__map_value_compare<int,std::__value_type<int,unsigned long>,std::less<int>,true>,std::allocator<std::__value_type<int,unsigned long>>>::destroy(v59[0]);
 
-  return v45;
+  return array;
 }
 
-+ (id)_textFieldsAndRegionsFrom:(id)a3
++ (id)_textFieldsAndRegionsFrom:(id)from
 {
-  v3 = a3;
+  fromCopy = from;
   v4 = [MEMORY[0x1E696AE18] predicateWithBlock:&__block_literal_global_30];
-  v5 = [v3 filteredArrayUsingPredicate:v4];
+  v5 = [fromCopy filteredArrayUsingPredicate:v4];
 
   return v5;
 }
@@ -1336,17 +1336,17 @@ LABEL_10:
   return v7;
 }
 
-- (void)_parseFieldsWithLabelFinderAndKeywords:(id)a3 fieldsAndRegions:(id)a4 updateExternal:(BOOL)a5 locale:(id)a6
+- (void)_parseFieldsWithLabelFinderAndKeywords:(id)keywords fieldsAndRegions:(id)regions updateExternal:(BOOL)external locale:(id)locale
 {
   v34 = *MEMORY[0x1E69E9840];
-  v24 = a3;
-  v26 = [a4 _nonFieldRegions];
+  keywordsCopy = keywords;
+  _nonFieldRegions = [regions _nonFieldRegions];
   v7 = objc_opt_new();
   v30 = 0u;
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  obj = v24;
+  obj = keywordsCopy;
   v8 = [obj countByEnumeratingWithState:&v28 objects:v33 count:16];
   if (v8)
   {
@@ -1362,7 +1362,7 @@ LABEL_10:
 
         v11 = *(*(&v28 + 1) + 8 * i);
         memset(v27, 0, sizeof(v27));
-        v12 = [CRFormLabelFinder parseAndAssignLabelForField:v11 regions:v26 associatedLabels:v7 labelRegions:v27];
+        v12 = [CRFormLabelFinder parseAndAssignLabelForField:v11 regions:_nonFieldRegions associatedLabels:v7 labelRegions:v27];
         if ([v11 fieldType] == 1 && objc_msgSend(v11, "fieldSource") == 1 && objc_msgSend(v11, "textContentType"))
         {
           [v11 setTextContentType:0];
@@ -1370,8 +1370,8 @@ LABEL_10:
 
         if ([v11 fieldType] == 1 && objc_msgSend(v11, "fieldSource") == 7)
         {
-          v13 = [v11 fieldValue];
-          v14 = [v13 length] == 0;
+          fieldValue = [v11 fieldValue];
+          v14 = [fieldValue length] == 0;
 
           if (!v14)
           {
@@ -1381,13 +1381,13 @@ LABEL_10:
 
         else
         {
-          v15 = [v12 text];
-          v16 = v15 == 0;
+          text = [v12 text];
+          v16 = text == 0;
 
           if (!v16)
           {
-            v17 = [v12 text];
-            v18 = [CRFormContentTypeKeywordBasedPredictor predictContentTypeWithKeywordMatching:v17 locale:0 keyword:0 withPriorityKeywords:1];
+            text2 = [v12 text];
+            v18 = [CRFormContentTypeKeywordBasedPredictor predictContentTypeWithKeywordMatching:text2 locale:0 keyword:0 withPriorityKeywords:1];
 
             if (v18 || (([v12 text], v19 = objc_claimAutoreleasedReturnValue(), v18 = +[CRFormContentTypeKeywordBasedPredictor predictContentTypeWithKeywordMatching:locale:keyword:withPriorityKeywords:](CRFormContentTypeKeywordBasedPredictor, "predictContentTypeWithKeywordMatching:locale:keyword:withPriorityKeywords:", v19, 0, 0, 0), v19, +[CRFormContentTypeKeywordBasedPredictor useKeywordTypes](CRFormContentTypeKeywordBasedPredictor, "useKeywordTypes"), v20 = objc_claimAutoreleasedReturnValue(), objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInteger:", v18), v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(v20, "containsObject:", v21), v21, v20, v18) ? (v23 = v22) : (v23 = 0), (v23 & 1) != 0))
             {
@@ -1410,37 +1410,37 @@ LABEL_10:
   }
 }
 
-- (void)_parseFieldsWithTransformer:(id)a3 fieldsAndRegions:(id)a4 updateExternal:(BOOL)a5 locale:(id)a6
+- (void)_parseFieldsWithTransformer:(id)transformer fieldsAndRegions:(id)regions updateExternal:(BOOL)external locale:(id)locale
 {
-  v7 = a5;
-  v15 = a3;
-  v10 = a4;
-  v11 = a6;
-  [(CRFormParser *)self _parseFieldsWithLabelFinderAndKeywords:v15 fieldsAndRegions:v10 updateExternal:v7 locale:v11];
+  externalCopy = external;
+  transformerCopy = transformer;
+  regionsCopy = regions;
+  localeCopy = locale;
+  [(CRFormParser *)self _parseFieldsWithLabelFinderAndKeywords:transformerCopy fieldsAndRegions:regionsCopy updateExternal:externalCopy locale:localeCopy];
   predictor = self->_predictor;
-  v13 = [v15 _fieldsOfType:1];
-  v14 = [objc_opt_class() _textFieldsAndRegionsFrom:v10];
-  [(CRFormContentTypePredictor *)predictor predictAndAssignContentTypesForFields:v13 fieldsAndRegions:v14 locale:v11 updateExternal:v7];
+  v13 = [transformerCopy _fieldsOfType:1];
+  v14 = [objc_opt_class() _textFieldsAndRegionsFrom:regionsCopy];
+  [(CRFormContentTypePredictor *)predictor predictAndAssignContentTypesForFields:v13 fieldsAndRegions:v14 locale:localeCopy updateExternal:externalCopy];
 }
 
-+ (id)_mergedFieldsWithUnifiedQuadsFromFields:(id)a3 needsFieldReplacement:(BOOL *)a4 originalField:(id)a5 replacementField:(id)a6
++ (id)_mergedFieldsWithUnifiedQuadsFromFields:(id)fields needsFieldReplacement:(BOOL *)replacement originalField:(id)field replacementField:(id)replacementField
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
-  v12 = [v9 indexOfObjectPassingTest:&__block_literal_global_116];
-  v13 = [v9 indexOfObjectPassingTest:&__block_literal_global_118];
+  fieldsCopy = fields;
+  fieldCopy = field;
+  replacementFieldCopy = replacementField;
+  v12 = [fieldsCopy indexOfObjectPassingTest:&__block_literal_global_116];
+  v13 = [fieldsCopy indexOfObjectPassingTest:&__block_literal_global_118];
   if (v13 == 0x7FFFFFFFFFFFFFFFLL || v12 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v24 = v9;
+    v24 = fieldsCopy;
   }
 
   else
   {
-    v14 = [v9 mutableCopy];
-    v15 = [v9 objectAtIndexedSubscript:v13];
-    v16 = [v15 boundingQuad];
-    [v16 normalizationSize];
+    v14 = [fieldsCopy mutableCopy];
+    v15 = [fieldsCopy objectAtIndexedSubscript:v13];
+    boundingQuad = [v15 boundingQuad];
+    [boundingQuad normalizationSize];
     v18 = v17;
     v20 = v19;
 
@@ -1450,19 +1450,19 @@ LABEL_10:
     v34[3] = &__block_descriptor_48_e39_B32__0___CRFormFieldProviding__8Q16_B24l;
     v34[4] = v18;
     v34[5] = v20;
-    v21 = [v9 indexesOfObjectsPassingTest:v34];
+    v21 = [fieldsCopy indexesOfObjectsPassingTest:v34];
     v26[0] = MEMORY[0x1E69E9820];
     v26[1] = 3221225472;
     v26[2] = __109__CRFormParser__mergedFieldsWithUnifiedQuadsFromFields_needsFieldReplacement_originalField_replacementField___block_invoke_4;
     v26[3] = &unk_1E7BC1F48;
-    v27 = v9;
+    v27 = fieldsCopy;
     v31 = v18;
     v32 = v20;
-    v28 = v10;
-    v29 = v11;
+    v28 = fieldCopy;
+    v29 = replacementFieldCopy;
     v22 = v14;
     v30 = v22;
-    v33 = a4;
+    replacementCopy = replacement;
     [v21 enumerateIndexesUsingBlock:v26];
     v23 = v30;
     v24 = v22;
@@ -1512,18 +1512,18 @@ void __109__CRFormParser__mergedFieldsWithUnifiedQuadsFromFields_needsFieldRepla
   **(a1 + 80) = 1;
 }
 
-+ (id)_restoredFieldsWithFields:(id)a3 originalField:(id)a4 replacementField:(id)a5
++ (id)_restoredFieldsWithFields:(id)fields originalField:(id)field replacementField:(id)replacementField
 {
   v29 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v7, "count")}];
+  fieldsCopy = fields;
+  fieldCopy = field;
+  replacementFieldCopy = replacementField;
+  v10 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(fieldsCopy, "count")}];
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  obj = v7;
+  obj = fieldsCopy;
   v11 = [obj countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v11)
   {
@@ -1541,7 +1541,7 @@ void __109__CRFormParser__mergedFieldsWithUnifiedQuadsFromFields_needsFieldRepla
         v14 = *(*(&v24 + 1) + 8 * v13);
         if ([v14 fieldSource] == 4 || objc_msgSend(v14, "fieldSource") == 5 || objc_msgSend(v14, "fieldSource") == 6)
         {
-          v15 = [v8 objectAtIndexedSubscript:{objc_msgSend(v9, "indexOfObject:", v14)}];
+          v15 = [fieldCopy objectAtIndexedSubscript:{objc_msgSend(replacementFieldCopy, "indexOfObject:", v14)}];
           [v10 addObject:v15];
         }
 
@@ -1551,13 +1551,13 @@ void __109__CRFormParser__mergedFieldsWithUnifiedQuadsFromFields_needsFieldRepla
           v15 = v16;
           if (v16)
           {
-            v17 = [v16 precedingExternalField];
-            v18 = v17 == 0;
+            precedingExternalField = [v16 precedingExternalField];
+            v18 = precedingExternalField == 0;
 
             if (!v18)
             {
-              v19 = [v15 precedingExternalField];
-              v20 = [v8 objectAtIndexedSubscript:{objc_msgSend(v9, "indexOfObject:", v19)}];
+              precedingExternalField2 = [v15 precedingExternalField];
+              v20 = [fieldCopy objectAtIndexedSubscript:{objc_msgSend(replacementFieldCopy, "indexOfObject:", precedingExternalField2)}];
               [v15 setPrecedingExternalField:v20];
             }
           }
@@ -1579,16 +1579,16 @@ void __109__CRFormParser__mergedFieldsWithUnifiedQuadsFromFields_needsFieldRepla
   return v10;
 }
 
-- (id)_orderAndGroupLinesInDocument:(id)a3 allFields:(id)a4 regions:(id)a5
+- (id)_orderAndGroupLinesInDocument:(id)document allFields:(id)fields regions:(id)regions
 {
   v56 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v36 = a5;
-  v28 = v7;
-  v29 = v8;
-  v33 = [v7 contentsWithTypes:8];
-  [objc_opt_class() _groupSegmentedFieldsInFields:v8];
+  documentCopy = document;
+  fieldsCopy = fields;
+  regionsCopy = regions;
+  v28 = documentCopy;
+  v29 = fieldsCopy;
+  v33 = [documentCopy contentsWithTypes:8];
+  [objc_opt_class() _groupSegmentedFieldsInFields:fieldsCopy];
   v34 = v45 = 0;
   v31 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v34, "count")}];
   v32 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v34, "count")}];
@@ -1615,8 +1615,8 @@ void __109__CRFormParser__mergedFieldsWithUnifiedQuadsFromFields_needsFieldRepla
         v13 = CROSLogForCategory(6);
         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
         {
-          v14 = [v12 boundingQuad];
-          v15 = [v14 description];
+          boundingQuad = [v12 boundingQuad];
+          v15 = [boundingQuad description];
           *buf = 136315394;
           v48 = "[CRFormParser _orderAndGroupLinesInDocument:allFields:regions:]";
           v49 = 2112;
@@ -1666,8 +1666,8 @@ void __109__CRFormParser__mergedFieldsWithUnifiedQuadsFromFields_needsFieldRepla
           objc_enumerationMutation(v20);
         }
 
-        v24 = [*(*(&v37 + 1) + 8 * j) subregions];
-        [v36 addObjectsFromArray:v24];
+        subregions = [*(*(&v37 + 1) + 8 * j) subregions];
+        [regionsCopy addObjectsFromArray:subregions];
       }
 
       v21 = [v20 countByEnumeratingWithState:&v37 objects:v46 count:16];
@@ -1676,27 +1676,27 @@ void __109__CRFormParser__mergedFieldsWithUnifiedQuadsFromFields_needsFieldRepla
     while (v21);
   }
 
-  v25 = [v36 _flattenedFields];
+  _flattenedFields = [regionsCopy _flattenedFields];
   if (v45 == 1)
   {
-    v26 = [objc_opt_class() _restoredFieldsWithFields:v25 originalField:v31 replacementField:v32];
+    v26 = [objc_opt_class() _restoredFieldsWithFields:_flattenedFields originalField:v31 replacementField:v32];
 
-    v25 = v26;
+    _flattenedFields = v26;
   }
 
-  return v25;
+  return _flattenedFields;
 }
 
-+ (id)_dominantLocaleInRegions:(id)a3
++ (id)_dominantLocaleInRegions:(id)regions
 {
   v38 = *MEMORY[0x1E69E9840];
-  v24 = a3;
+  regionsCopy = regions;
   v3 = objc_opt_new();
   v35 = 0u;
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v4 = v24;
+  v4 = regionsCopy;
   v5 = [v4 countByEnumeratingWithState:&v33 objects:v37 count:16];
   if (v5)
   {
@@ -1716,17 +1716,17 @@ void __109__CRFormParser__mergedFieldsWithUnifiedQuadsFromFields_needsFieldRepla
         {
           if ([v8 type] != 0x2000 || (objc_msgSend(v9, "labelRegion"), v10 = objc_claimAutoreleasedReturnValue(), v9, (v9 = v10) != 0))
           {
-            v11 = [v9 text];
-            v12 = [v11 length] == 0;
+            text = [v9 text];
+            v12 = [text length] == 0;
 
             if (!v12)
             {
-              v13 = [v9 text];
-              if ([v13 length] == 1)
+              text2 = [v9 text];
+              if ([text2 length] == 1)
               {
-                v14 = [MEMORY[0x1E696AB08] punctuationCharacterSet];
-                v15 = [v9 text];
-                v16 = [v14 characterIsMember:{objc_msgSend(v15, "characterAtIndex:", 0)}];
+                punctuationCharacterSet = [MEMORY[0x1E696AB08] punctuationCharacterSet];
+                text3 = [v9 text];
+                v16 = [punctuationCharacterSet characterIsMember:{objc_msgSend(text3, "characterAtIndex:", 0)}];
 
                 if (v16)
                 {
@@ -1738,11 +1738,11 @@ void __109__CRFormParser__mergedFieldsWithUnifiedQuadsFromFields_needsFieldRepla
               {
               }
 
-              v17 = [v9 recognizedLocale];
-              if (v17)
+              recognizedLocale = [v9 recognizedLocale];
+              if (recognizedLocale)
               {
                 v18 = MEMORY[0x1E696AD98];
-                v19 = [v3 objectForKeyedSubscript:v17];
+                v19 = [v3 objectForKeyedSubscript:recognizedLocale];
                 v20 = v19;
                 if (!v19)
                 {
@@ -1750,7 +1750,7 @@ void __109__CRFormParser__mergedFieldsWithUnifiedQuadsFromFields_needsFieldRepla
                 }
 
                 v21 = [v18 numberWithInteger:{objc_msgSend(v19, "integerValue") + 1}];
-                [v3 setObject:v21 forKeyedSubscript:v17];
+                [v3 setObject:v21 forKeyedSubscript:recognizedLocale];
               }
             }
           }
@@ -1801,16 +1801,16 @@ void __41__CRFormParser__dominantLocaleInRegions___block_invoke(uint64_t a1, voi
   }
 }
 
-+ (void)_setPrecedingExternalFieldsForFields:(id)a3
++ (void)_setPrecedingExternalFieldsForFields:(id)fields
 {
   v17 = *MEMORY[0x1E69E9840];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = a3;
+  fieldsCopy = fields;
   v4 = 0;
-  v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v5 = [fieldsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = *v13;
@@ -1820,7 +1820,7 @@ void __41__CRFormParser__dominantLocaleInRegions___block_invoke(uint64_t a1, voi
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(fieldsCopy);
         }
 
         v8 = *(*(&v12 + 1) + 8 * i);
@@ -1842,21 +1842,21 @@ void __41__CRFormParser__dominantLocaleInRegions___block_invoke(uint64_t a1, voi
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [fieldsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v5);
   }
 }
 
-- (id)parseFieldsInDocument:(id)a3 allFields:(id)a4 shouldUpdateExternalFields:(BOOL)a5
+- (id)parseFieldsInDocument:(id)document allFields:(id)fields shouldUpdateExternalFields:(BOOL)externalFields
 {
-  v5 = a5;
+  externalFieldsCopy = externalFields;
   v23 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  documentCopy = document;
+  fieldsCopy = fields;
   v10 = objc_opt_new();
-  v11 = [(CRFormParser *)self _orderAndGroupLinesInDocument:v8 allFields:v9 regions:v10];
+  v11 = [(CRFormParser *)self _orderAndGroupLinesInDocument:documentCopy allFields:fieldsCopy regions:v10];
   [objc_opt_class() _setPrecedingExternalFieldsForFields:v11];
   v12 = [objc_opt_class() _dominantLocaleInRegions:v10];
   v13 = [(CRFormParser *)self _localeIsEnabled:v12];
@@ -1873,8 +1873,8 @@ void __41__CRFormParser__dominantLocaleInRegions___block_invoke(uint64_t a1, voi
       _os_log_impl(&dword_1B40D2000, v14, OS_LOG_TYPE_DEFAULT, "%s: Content type prediction for locale %@ is enabled.", &v19, 0x16u);
     }
 
-    [(CRFormParser *)self _parseFieldsWithTransformer:v11 fieldsAndRegions:v10 updateExternal:v5 locale:v12];
-    v14 = [CRFormContentTypeRefiner groupAndAssignStructuralContentTypesForFields:v11 locale:v12 updateExternalFields:v5];
+    [(CRFormParser *)self _parseFieldsWithTransformer:v11 fieldsAndRegions:v10 updateExternal:externalFieldsCopy locale:v12];
+    v14 = [CRFormContentTypeRefiner groupAndAssignStructuralContentTypesForFields:v11 locale:v12 updateExternalFields:externalFieldsCopy];
     v16 = [v14 mutableCopy];
 
     v11 = v16;
@@ -1893,19 +1893,19 @@ void __41__CRFormParser__dominantLocaleInRegions___block_invoke(uint64_t a1, voi
   return v11;
 }
 
-+ (uint64_t)horizontalClustersFromFields:(uint64_t)a1
++ (uint64_t)horizontalClustersFromFields:(uint64_t)fields
 {
-  v3 = *(a1 + 8);
-  v2 = *(a1 + 16);
+  v3 = *(fields + 8);
+  v2 = *(fields + 16);
   while (v2 != v3)
   {
-    *(a1 + 16) = v2 - 56;
+    *(fields + 16) = v2 - 56;
     v4 = *(v2 - 24);
     if (v4)
     {
       *(v2 - 16) = v4;
       operator delete(v4);
-      v2 = *(a1 + 16);
+      v2 = *(fields + 16);
     }
 
     else
@@ -1914,12 +1914,12 @@ void __41__CRFormParser__dominantLocaleInRegions___block_invoke(uint64_t a1, voi
     }
   }
 
-  if (*a1)
+  if (*fields)
   {
-    operator delete(*a1);
+    operator delete(*fields);
   }
 
-  return a1;
+  return fields;
 }
 
 @end

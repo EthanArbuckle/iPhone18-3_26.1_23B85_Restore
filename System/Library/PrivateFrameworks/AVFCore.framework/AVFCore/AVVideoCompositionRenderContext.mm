@@ -1,10 +1,10 @@
 @interface AVVideoCompositionRenderContext
-+ (id)renderContextPropertiesFromFigCompositor:(OpaqueFigVideoCompositor *)a3;
++ (id)renderContextPropertiesFromFigCompositor:(OpaqueFigVideoCompositor *)compositor;
 - (AVEdgeWidths)edgeWidths;
 - (AVPixelAspectRatio)pixelAspectRatio;
-- (AVVideoCompositionRenderContext)initWithFigVideoCompositor:(OpaqueFigVideoCompositor *)a3 clientRequiredPixelBufferAttributes:(id)a4 videoComposition:(id)a5 pixelBufferPool:(__CVPixelBufferPool *)a6;
-- (BOOL)hasEqualPropertiesToFigVideoCompositor:(OpaqueFigVideoCompositor *)a3;
-- (BOOL)isBufferYCbCr:(__CVBuffer *)a3;
+- (AVVideoCompositionRenderContext)initWithFigVideoCompositor:(OpaqueFigVideoCompositor *)compositor clientRequiredPixelBufferAttributes:(id)attributes videoComposition:(id)composition pixelBufferPool:(__CVPixelBufferPool *)pool;
+- (BOOL)hasEqualPropertiesToFigVideoCompositor:(OpaqueFigVideoCompositor *)compositor;
+- (BOOL)isBufferYCbCr:(__CVBuffer *)cr;
 - (CGAffineTransform)renderTransform;
 - (CGSize)size;
 - (CVPixelBufferRef)newPixelBuffer;
@@ -149,10 +149,10 @@ void __49__AVVideoCompositionRenderContext_newPixelBuffer__block_invoke(uint64_t
   }
 }
 
-+ (id)renderContextPropertiesFromFigCompositor:(OpaqueFigVideoCompositor *)a3
++ (id)renderContextPropertiesFromFigCompositor:(OpaqueFigVideoCompositor *)compositor
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (renderContextPropertiesFromFigCompositor__keysOnce != -1)
   {
     +[AVVideoCompositionRenderContext(Internal) renderContextPropertiesFromFigCompositor:];
@@ -189,7 +189,7 @@ void __49__AVVideoCompositionRenderContext_newPixelBuffer__block_invoke(uint64_t
 
         if (v14)
         {
-          [v3 setObject:v14 forKey:v10];
+          [dictionary setObject:v14 forKey:v10];
         }
       }
 
@@ -199,7 +199,7 @@ void __49__AVVideoCompositionRenderContext_newPixelBuffer__block_invoke(uint64_t
     while (v6);
   }
 
-  return v3;
+  return dictionary;
 }
 
 id __86__AVVideoCompositionRenderContext_Internal__renderContextPropertiesFromFigCompositor___block_invoke()
@@ -209,7 +209,7 @@ id __86__AVVideoCompositionRenderContext_Internal__renderContextPropertiesFromFi
   return result;
 }
 
-- (AVVideoCompositionRenderContext)initWithFigVideoCompositor:(OpaqueFigVideoCompositor *)a3 clientRequiredPixelBufferAttributes:(id)a4 videoComposition:(id)a5 pixelBufferPool:(__CVPixelBufferPool *)a6
+- (AVVideoCompositionRenderContext)initWithFigVideoCompositor:(OpaqueFigVideoCompositor *)compositor clientRequiredPixelBufferAttributes:(id)attributes videoComposition:(id)composition pixelBufferPool:(__CVPixelBufferPool *)pool
 {
   v49.receiver = self;
   v49.super_class = AVVideoCompositionRenderContext;
@@ -222,11 +222,11 @@ id __86__AVVideoCompositionRenderContext_Internal__renderContextPropertiesFromFi
   v11 = objc_alloc_init(AVVideoCompositionRenderContextInternal);
   v10->_internal = v11;
   CFRetain(v11);
-  v10->_internal->_pixelBufferPool = a6;
+  v10->_internal->_pixelBufferPool = pool;
   CVPixelBufferPoolRetain(v10->_internal->_pixelBufferPool);
-  v10->_internal->_videoComposition = [a5 copy];
-  v10->_internal->_clientRequiredPixelBufferAttributes = [a4 copy];
-  v10->_internal->_basisProperties = [AVVideoCompositionRenderContext renderContextPropertiesFromFigCompositor:a3];
+  v10->_internal->_videoComposition = [composition copy];
+  v10->_internal->_clientRequiredPixelBufferAttributes = [attributes copy];
+  v10->_internal->_basisProperties = [AVVideoCompositionRenderContext renderContextPropertiesFromFigCompositor:compositor];
   v10->_internal->_bufferPoollInitMutex = FigSimpleMutexCreate();
   v12 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
   v10->_internal->_pixelBufferPoolQ = dispatch_queue_create("com.apple.avvideocompositionrendercontext.pixelbufferpoolq", v12);
@@ -362,9 +362,9 @@ LABEL_12:
   return v10;
 }
 
-- (BOOL)hasEqualPropertiesToFigVideoCompositor:(OpaqueFigVideoCompositor *)a3
+- (BOOL)hasEqualPropertiesToFigVideoCompositor:(OpaqueFigVideoCompositor *)compositor
 {
-  v4 = [AVVideoCompositionRenderContext renderContextPropertiesFromFigCompositor:a3];
+  v4 = [AVVideoCompositionRenderContext renderContextPropertiesFromFigCompositor:compositor];
   if (v4)
   {
     v5 = v4;
@@ -486,16 +486,16 @@ LABEL_26:
   return self->_internal->_pixelBufferPool;
 }
 
-- (BOOL)isBufferYCbCr:(__CVBuffer *)a3
+- (BOOL)isBufferYCbCr:(__CVBuffer *)cr
 {
-  if (!a3)
+  if (!cr)
   {
     return 0;
   }
 
   if (!self->_internal->pixelFormatFamily)
   {
-    CVPixelBufferGetPixelFormatType(a3);
+    CVPixelBufferGetPixelFormatType(cr);
     DescriptionWithPixelFormatType = CVPixelFormatDescriptionGetDescriptionWithPixelFormatType();
     if (CFDictionaryGetValue(DescriptionWithPixelFormatType, *MEMORY[0x1E69662B8]) == *MEMORY[0x1E695E4D0])
     {

@@ -1,82 +1,82 @@
 @interface OAXPicture
-+ (id)GifSubBlip:(id)a3 drawingState:(id)a4;
-+ (id)readFromXmlNode:(_xmlNode *)a3 inNamespace:(id)a4 drawingState:(id)a5;
-+ (void)mapImageWithGifAsMovie:(id)a3 xmlNode:(_xmlNode *)a4 drawingState:(id)a5;
-+ (void)readNonVisualPropertiesFromXmlNode:(_xmlNode *)a3 inNamespace:(id)a4 toDrawable:(id)a5 drawingState:(id)a6;
++ (id)GifSubBlip:(id)blip drawingState:(id)state;
++ (id)readFromXmlNode:(_xmlNode *)node inNamespace:(id)namespace drawingState:(id)state;
++ (void)mapImageWithGifAsMovie:(id)movie xmlNode:(_xmlNode *)node drawingState:(id)state;
++ (void)readNonVisualPropertiesFromXmlNode:(_xmlNode *)node inNamespace:(id)namespace toDrawable:(id)drawable drawingState:(id)state;
 @end
 
 @implementation OAXPicture
 
-+ (id)readFromXmlNode:(_xmlNode *)a3 inNamespace:(id)a4 drawingState:(id)a5
++ (id)readFromXmlNode:(_xmlNode *)node inNamespace:(id)namespace drawingState:(id)state
 {
-  v8 = a4;
-  v9 = a5;
+  namespaceCopy = namespace;
+  stateCopy = state;
   v10 = objc_alloc_init(OADImage);
-  [OAXDrawable readNonVisualPropertiesFromDrawableXmlNode:a3 inNamespace:v8 visualNodeName:"nvPicPr" toDrawable:v10 drawingState:v9];
-  v11 = OCXFindChild(a3, v8, "nvPicPr");
+  [OAXDrawable readNonVisualPropertiesFromDrawableXmlNode:node inNamespace:namespaceCopy visualNodeName:"nvPicPr" toDrawable:v10 drawingState:stateCopy];
+  v11 = OCXFindChild(node, namespaceCopy, "nvPicPr");
   if (!v11)
   {
     [TCMessageException raise:OABadFormat];
   }
 
-  [OAXPicture readNonVisualPropertiesFromXmlNode:v11 inNamespace:v8 toDrawable:v10 drawingState:v9];
-  v12 = OCXFindChild(a3, v8, "spPr");
+  [OAXPicture readNonVisualPropertiesFromXmlNode:v11 inNamespace:namespaceCopy toDrawable:v10 drawingState:stateCopy];
+  v12 = OCXFindChild(node, namespaceCopy, "spPr");
   if (!v12)
   {
     [TCMessageException raise:OABadFormat];
   }
 
-  v13 = [(OADGraphic *)v10 graphicProperties];
-  [OAXGraphic readPropertiesFromXmlNode:v12 graphicProperties:v13 drawingState:v9];
+  graphicProperties = [(OADGraphic *)v10 graphicProperties];
+  [OAXGraphic readPropertiesFromXmlNode:v12 graphicProperties:graphicProperties drawingState:stateCopy];
 
-  v14 = OCXFindChild(a3, v8, "blipFill");
+  v14 = OCXFindChild(node, namespaceCopy, "blipFill");
   if (!v14)
   {
     [TCMessageException raise:OABadFormat];
   }
 
-  v15 = [v9 packagePart];
-  v16 = [OAXFill readImageFillFromXmlNode:v14 packagePart:v15 forDrawable:v10 drawingState:v9];
+  packagePart = [stateCopy packagePart];
+  v16 = [OAXFill readImageFillFromXmlNode:v14 packagePart:packagePart forDrawable:v10 drawingState:stateCopy];
 
-  v17 = [(OADImage *)v10 imageProperties];
-  [v17 setImageFill:v16];
+  imageProperties = [(OADImage *)v10 imageProperties];
+  [imageProperties setImageFill:v16];
 
-  [OAXTransform2D readFromParentXmlNode:v12 inNamespace:v8 toDrawable:v10 drawingState:v9];
-  v18 = [OAXGeometry readFromParentXmlNode:v12 drawingState:v9];
+  [OAXTransform2D readFromParentXmlNode:v12 inNamespace:namespaceCopy toDrawable:v10 drawingState:stateCopy];
+  v18 = [OAXGeometry readFromParentXmlNode:v12 drawingState:stateCopy];
   [(OADImage *)v10 setGeometry:v18];
 
-  v19 = [v9 client];
-  [v19 readClientDataFromPictureNode:a3 toImage:v10 state:v9];
+  client = [stateCopy client];
+  [client readClientDataFromPictureNode:node toImage:v10 state:stateCopy];
 
-  v20 = [(OADImage *)v10 movie];
+  movie = [(OADImage *)v10 movie];
 
-  if (!v20)
+  if (!movie)
   {
-    [a1 mapImageWithGifAsMovie:v10 xmlNode:v14 drawingState:v9];
+    [self mapImageWithGifAsMovie:v10 xmlNode:v14 drawingState:stateCopy];
   }
 
   return v10;
 }
 
-+ (void)readNonVisualPropertiesFromXmlNode:(_xmlNode *)a3 inNamespace:(id)a4 toDrawable:(id)a5 drawingState:(id)a6
++ (void)readNonVisualPropertiesFromXmlNode:(_xmlNode *)node inNamespace:(id)namespace toDrawable:(id)drawable drawingState:(id)state
 {
-  v9 = a4;
-  v54 = a5;
-  v10 = a6;
-  v11 = OCXFindChild(a3, v9, "cNvPicPr");
+  namespaceCopy = namespace;
+  drawableCopy = drawable;
+  stateCopy = state;
+  v11 = OCXFindChild(node, namespaceCopy, "cNvPicPr");
   if (v11)
   {
-    v12 = [v10 OAXMainNamespace];
-    v13 = OCXFindChild(v11, v12, "picLocks");
+    oAXMainNamespace = [stateCopy OAXMainNamespace];
+    v13 = OCXFindChild(v11, oAXMainNamespace, "picLocks");
 
     if (v13)
     {
       v14 = CXDefaultBoolAttribute(v13, CXNoNamespace, "noChangeAspect", 0);
-      v15 = [v54 drawableProperties];
-      [v15 setAspectRatioLocked:v14];
+      drawableProperties = [drawableCopy drawableProperties];
+      [drawableProperties setAspectRatioLocked:v14];
     }
 
-    v16 = OCXFindChild(a3, v9, "cNvPr");
+    v16 = OCXFindChild(node, namespaceCopy, "cNvPr");
     v17 = v16;
     if (v16)
     {
@@ -93,7 +93,7 @@
         [(OADLinkedMediaFile *)v23 setIsExternal:1];
         v24 = [(OCXDelayedMediaContext *)[OAXMovieContext alloc] initWithTargetLocation:v22 package:0];
         [(OCDDelayedNode *)v23 setDelayedContext:v24];
-        [v54 setMovie:v23];
+        [drawableCopy setMovie:v23];
       }
 
       v55 = 0;
@@ -101,40 +101,40 @@
       v26 = v55;
       if (v25)
       {
-        v27 = [v54 drawableProperties];
-        [v27 setAltDescription:v26];
+        drawableProperties2 = [drawableCopy drawableProperties];
+        [drawableProperties2 setAltDescription:v26];
       }
     }
 
-    v28 = OCXFindChild(a3, v9, "nvPr");
+    v28 = OCXFindChild(node, namespaceCopy, "nvPr");
     v29 = v28;
     if (v28)
     {
       for (i = OCXFirstChild(v28); i; i = OCXNextSibling(i))
       {
-        v31 = [v10 OAXMainNamespace];
-        v32 = [v31 containsNode:i];
+        oAXMainNamespace2 = [stateCopy OAXMainNamespace];
+        v32 = [oAXMainNamespace2 containsNode:i];
 
         if (v32)
         {
           if (xmlStrEqual(i->name, "wavAudioFile"))
           {
-            v38 = [v10 packagePart];
-            v37 = [v10 OCXReadRelationshipForNode:i attributeName:"embed" packagePart:v38];
+            packagePart = [stateCopy packagePart];
+            v37 = [stateCopy OCXReadRelationshipForNode:i attributeName:"embed" packagePart:packagePart];
 
             v39 = [OAXMovieContext alloc];
-            v40 = [v37 targetLocation];
-            v41 = [v10 packagePart];
-            v42 = [v41 package];
-            v43 = [(OCXDelayedMediaContext *)v39 initWithTargetLocation:v40 package:v42];
+            targetLocation = [v37 targetLocation];
+            packagePart2 = [stateCopy packagePart];
+            package = [packagePart2 package];
+            v43 = [(OCXDelayedMediaContext *)v39 initWithTargetLocation:targetLocation package:package];
 
-            v44 = CXDefaultStringAttribute(i, CXNoNamespace, "name", 0);
+            targetLocation2 = CXDefaultStringAttribute(i, CXNoNamespace, "name", 0);
             v45 = objc_alloc_init(OADSound);
             [(OCDDelayedNode *)v45 setDelayedContext:v43];
-            [(OADSound *)v45 setName:v44];
-            v46 = objc_alloc_init(OADOle);
-            [(OADOle *)v46 setObject:v45];
-            [v54 setOle:v46];
+            [(OADSound *)v45 setName:targetLocation2];
+            client = objc_alloc_init(OADOle);
+            [(OADOle *)client setObject:v45];
+            [drawableCopy setOle:client];
             goto LABEL_22;
           }
 
@@ -145,21 +145,21 @@
             v37 = objc_alloc_init(*v34);
             if (v37)
             {
-              v47 = [v10 packagePart];
-              v43 = [v10 OCXReadRelationshipForNode:i attributeName:"link" packagePart:v47];
+              packagePart3 = [stateCopy packagePart];
+              v43 = [stateCopy OCXReadRelationshipForNode:i attributeName:"link" packagePart:packagePart3];
 
-              v44 = [(OAXMovieContext *)v43 targetLocation];
-              if (v44)
+              targetLocation2 = [(OAXMovieContext *)v43 targetLocation];
+              if (targetLocation2)
               {
                 v48 = [OAXMovieContext alloc];
-                v49 = [v10 packagePart];
-                v50 = [v49 package];
-                v45 = [(OCXDelayedMediaContext *)v48 initWithTargetLocation:v44 package:v50];
+                packagePart4 = [stateCopy packagePart];
+                package2 = [packagePart4 package];
+                v45 = [(OCXDelayedMediaContext *)v48 initWithTargetLocation:targetLocation2 package:package2];
 
                 [v37 setDelayedContext:v45];
-                [v37 setUrl:v44];
+                [v37 setUrl:targetLocation2];
                 [v37 setIsExternal:{-[OAXMovieContext targetMode](v43, "targetMode") == 1}];
-                [v54 setMovie:v37];
+                [drawableCopy setMovie:v37];
 LABEL_25:
 
 LABEL_26:
@@ -180,8 +180,8 @@ LABEL_26:
               }
 
               v45 = CXDefaultStringAttribute(v52, CXNoNamespace, "uri", 0);
-              v46 = [v10 client];
-              [(OADOle *)v46 readBlipExtWithURI:v45 fromNode:v53 toDrawable:v54 state:v10];
+              client = [stateCopy client];
+              [(OADOle *)client readBlipExtWithURI:v45 fromNode:v53 toDrawable:drawableCopy state:stateCopy];
 LABEL_22:
 
               goto LABEL_25;
@@ -193,43 +193,43 @@ LABEL_22:
   }
 }
 
-+ (id)GifSubBlip:(id)a3 drawingState:(id)a4
++ (id)GifSubBlip:(id)blip drawingState:(id)state
 {
-  v5 = a4;
-  v6 = [a3 blipRef];
-  v7 = [v6 blip];
-  v8 = [v5 targetBlipCollection];
-  v9 = [v8 blips];
+  stateCopy = state;
+  blipRef = [blip blipRef];
+  blip = [blipRef blip];
+  targetBlipCollection = [stateCopy targetBlipCollection];
+  blips = [targetBlipCollection blips];
 
-  v10 = [v6 index];
-  if (v7)
+  index = [blipRef index];
+  if (blip)
   {
     goto LABEL_2;
   }
 
-  v14 = v10;
-  if (![v9 count] || objc_msgSend(v9, "count") <= (v14 - 1))
+  v14 = index;
+  if (![blips count] || objc_msgSend(blips, "count") <= (v14 - 1))
   {
-    v7 = 0;
+    blip = 0;
 LABEL_11:
     v12 = 0;
     goto LABEL_15;
   }
 
-  v7 = [v9 objectAtIndexedSubscript:?];
-  if (!v7)
+  blip = [blips objectAtIndexedSubscript:?];
+  if (!blip)
   {
     goto LABEL_11;
   }
 
 LABEL_2:
-  v11 = [v7 mainSubBlip];
-  if ([v11 type] != 7 || (v12 = v11) == 0)
+  mainSubBlip = [blip mainSubBlip];
+  if ([mainSubBlip type] != 7 || (v12 = mainSubBlip) == 0)
   {
-    v13 = [v7 altSubBlip];
-    if ([v13 type] == 7)
+    altSubBlip = [blip altSubBlip];
+    if ([altSubBlip type] == 7)
     {
-      v12 = v13;
+      v12 = altSubBlip;
     }
 
     else
@@ -244,13 +244,13 @@ LABEL_15:
   return v12;
 }
 
-+ (void)mapImageWithGifAsMovie:(id)a3 xmlNode:(_xmlNode *)a4 drawingState:(id)a5
++ (void)mapImageWithGifAsMovie:(id)movie xmlNode:(_xmlNode *)node drawingState:(id)state
 {
-  v26 = a3;
-  v8 = a5;
-  v9 = [v26 imageProperties];
-  v10 = [v9 imageFill];
-  v11 = [a1 GifSubBlip:v10 drawingState:v8];
+  movieCopy = movie;
+  stateCopy = state;
+  imageProperties = [movieCopy imageProperties];
+  imageFill = [imageProperties imageFill];
+  v11 = [self GifSubBlip:imageFill drawingState:stateCopy];
 
   if (v11)
   {
@@ -259,51 +259,51 @@ LABEL_15:
       [v11 load];
     }
 
-    v12 = [v11 data];
-    if (v12)
+    data = [v11 data];
+    if (data)
     {
       v13 = objc_autoreleasePoolPush();
-      v14 = CGImageSourceCreateWithData(v12, 0);
+      v14 = CGImageSourceCreateWithData(data, 0);
       if (CGImageSourceGetCount(v14) >= 2)
       {
-        v15 = [v8 packagePart];
-        v16 = [v8 OAXMainNamespace];
-        v17 = OCXFindChild(a4, v16, "blip");
+        packagePart = [stateCopy packagePart];
+        oAXMainNamespace = [stateCopy OAXMainNamespace];
+        v17 = OCXFindChild(node, oAXMainNamespace, "blip");
 
         if (v17)
         {
-          v18 = [v8 OCXReadRelationshipForNode:v17 attributeName:"embed" packagePart:v15];
+          v18 = [stateCopy OCXReadRelationshipForNode:v17 attributeName:"embed" packagePart:packagePart];
           v19 = v18;
           if (v18)
           {
-            v20 = [v18 targetLocation];
-            if (v20)
+            targetLocation = [v18 targetLocation];
+            if (targetLocation)
             {
-              v25 = v15;
+              v25 = packagePart;
               v21 = objc_alloc_init(OADVideoFile);
               v22 = [OAXMovieContext alloc];
-              v23 = [v25 package];
-              v24 = [(OCXDelayedMediaContext *)v22 initWithTargetLocation:v20 package:v23];
+              package = [v25 package];
+              v24 = [(OCXDelayedMediaContext *)v22 initWithTargetLocation:targetLocation package:package];
 
               [(OCDDelayedNode *)v21 setDelayedContext:v24];
-              [(OADLinkedMediaFile *)v21 setUrl:v20];
+              [(OADLinkedMediaFile *)v21 setUrl:targetLocation];
               [(OADLinkedMediaFile *)v21 setIsExternal:0];
               [(OADMovie *)v21 setLoop:1];
-              [v26 setMovie:v21];
+              [movieCopy setMovie:v21];
 
-              v15 = v25;
+              packagePart = v25;
             }
           }
 
           else
           {
-            v20 = 0;
+            targetLocation = 0;
           }
         }
 
         else
         {
-          v20 = 0;
+          targetLocation = 0;
           v19 = 0;
         }
       }

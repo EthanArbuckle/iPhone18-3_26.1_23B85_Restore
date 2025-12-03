@@ -2,7 +2,7 @@
 + (id)makeHairlineSeparator;
 - (CGRect)titleRect;
 - (CGSize)_scaledImageSize;
-- (ContinuousReadingBannerView)initWithContinuousReadingItem:(id)a3;
+- (ContinuousReadingBannerView)initWithContinuousReadingItem:(id)item;
 - (NSString)subtitle;
 - (NSString)title;
 - (UIEdgeInsets)topHairlineInsets;
@@ -15,28 +15,28 @@
 - (void)_updateLabels;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setFrame:(CGRect)a3;
-- (void)setImage:(id)a3;
-- (void)setSubtitle:(id)a3;
-- (void)setTheme:(id)a3;
-- (void)setTitle:(id)a3;
-- (void)setTopHairlineInsets:(UIEdgeInsets)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setFrame:(CGRect)frame;
+- (void)setImage:(id)image;
+- (void)setSubtitle:(id)subtitle;
+- (void)setTheme:(id)theme;
+- (void)setTitle:(id)title;
+- (void)setTopHairlineInsets:(UIEdgeInsets)insets;
 @end
 
 @implementation ContinuousReadingBannerView
 
-- (ContinuousReadingBannerView)initWithContinuousReadingItem:(id)a3
+- (ContinuousReadingBannerView)initWithContinuousReadingItem:(id)item
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  itemCopy = item;
   v20.receiver = self;
   v20.super_class = ContinuousReadingBannerView;
   v6 = [(ContinuousReadingBannerView *)&v20 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_continuousReadingItem, a3);
+    objc_storeStrong(&v6->_continuousReadingItem, item);
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
@@ -57,7 +57,7 @@
             objc_enumerationMutation(v8);
           }
 
-          [v5 addObserver:v7 forKeyPath:*(*(&v16 + 1) + 8 * v12++) options:0 context:kContinuousReadingItemObserverContext];
+          [itemCopy addObserver:v7 forKeyPath:*(*(&v16 + 1) + 8 * v12++) options:0 context:kContinuousReadingItemObserverContext];
         }
 
         while (v10 != v12);
@@ -69,8 +69,8 @@
 
     [(ContinuousReadingBannerView *)v7 _updateLabels];
     [(ContinuousReadingBannerView *)v7 setOpaque:1];
-    v13 = [MEMORY[0x277D75348] systemGroupedBackgroundColor];
-    [(ContinuousReadingBannerView *)v7 setBackgroundColor:v13];
+    systemGroupedBackgroundColor = [MEMORY[0x277D75348] systemGroupedBackgroundColor];
+    [(ContinuousReadingBannerView *)v7 setBackgroundColor:systemGroupedBackgroundColor];
 
     [(ContinuousReadingBannerView *)v7 _updateImage];
     [(ContinuousReadingBannerView *)v7 setAutoresizingMask:34];
@@ -118,12 +118,12 @@
   [(ContinuousReadingBannerView *)&v8 dealloc];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (kContinuousReadingItemObserverContext == a6)
+  if (kContinuousReadingItemObserverContext == context)
   {
 
-    [(ContinuousReadingBannerView *)self _updateLabels:a3];
+    [(ContinuousReadingBannerView *)self _updateLabels:path];
   }
 
   else
@@ -132,7 +132,7 @@
     v10 = v7;
     v8.receiver = self;
     v8.super_class = ContinuousReadingBannerView;
-    [(ContinuousReadingBannerView *)&v8 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(ContinuousReadingBannerView *)&v8 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 
@@ -145,9 +145,9 @@
   [(ContinuousReadingBannerView *)self safeAreaInsets];
   v8 = fmax(v7, 15.0);
   v10 = fmax(v9, 15.0);
-  v11 = [(ContinuousReadingBannerView *)self image];
+  image = [(ContinuousReadingBannerView *)self image];
 
-  if (v11)
+  if (image)
   {
     v12 = v8 + 50.0;
   }
@@ -157,43 +157,43 @@
     v12 = v8;
   }
 
-  v23 = [(ContinuousReadingBannerView *)self titleLabel];
+  titleLabel = [(ContinuousReadingBannerView *)self titleLabel];
   v13 = v4 - v12 - v10;
-  [v23 sizeThatFits:{v13, 1.79769313e308}];
+  [titleLabel sizeThatFits:{v13, 1.79769313e308}];
   _SFRoundRectToPixels();
-  [v23 setFrame:?];
+  [titleLabel setFrame:?];
   _SFRoundFloatToPixels();
-  [v23 _setFirstLineBaselineFrameOriginY:v6 - v14];
-  v15 = [(ContinuousReadingBannerView *)self subtitleLabel];
-  [v15 sizeThatFits:{v13, 1.79769313e308}];
+  [titleLabel _setFirstLineBaselineFrameOriginY:v6 - v14];
+  subtitleLabel = [(ContinuousReadingBannerView *)self subtitleLabel];
+  [subtitleLabel sizeThatFits:{v13, 1.79769313e308}];
   _SFRoundRectToPixels();
-  [v15 setFrame:?];
+  [subtitleLabel setFrame:?];
   _SFRoundFloatToPixels();
-  [v15 _setFirstLineBaselineFrameOriginY:v6 - v16];
-  v17 = [(ContinuousReadingBannerView *)self imageView];
-  [v17 frame];
+  [subtitleLabel _setFirstLineBaselineFrameOriginY:v6 - v16];
+  imageView = [(ContinuousReadingBannerView *)self imageView];
+  [imageView frame];
   width = v25.size.width;
   height = v25.size.height;
   v25.origin.x = v8;
   CGRectGetHeight(v25);
   _SFRoundFloatToPixels();
-  [v17 setFrame:{v8, v20, width, height}];
-  v21 = [(ContinuousReadingBannerView *)self _topHairline];
-  [v21 frame];
+  [imageView setFrame:{v8, v20, width, height}];
+  _topHairline = [(ContinuousReadingBannerView *)self _topHairline];
+  [_topHairline frame];
   _SFRoundRectToPixels();
-  [v21 setFrame:?];
-  v22 = [(ContinuousReadingBannerView *)self _bottomHairline];
-  [v22 frame];
+  [_topHairline setFrame:?];
+  _bottomHairline = [(ContinuousReadingBannerView *)self _bottomHairline];
+  [_bottomHairline frame];
   _SFOnePixel();
   _SFRoundRectToPixels();
-  [v22 setFrame:?];
+  [_bottomHairline setFrame:?];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v3.receiver = self;
   v3.super_class = ContinuousReadingBannerView;
-  [(ContinuousReadingBannerView *)&v3 setFrame:a3.origin.x, a3.origin.y, a3.size.width, 60.0];
+  [(ContinuousReadingBannerView *)&v3 setFrame:frame.origin.x, frame.origin.y, frame.size.width, 60.0];
 }
 
 + (id)makeHairlineSeparator
@@ -202,22 +202,22 @@
   _SFOnePixel();
   v4 = [v2 initWithFrame:{0.0, 0.0, 0.0, v3}];
   [v4 setAutoresizingMask:2];
-  v5 = [MEMORY[0x277D75348] opaqueSeparatorColor];
-  [v4 setBackgroundColor:v5];
+  opaqueSeparatorColor = [MEMORY[0x277D75348] opaqueSeparatorColor];
+  [v4 setBackgroundColor:opaqueSeparatorColor];
 
   return v4;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v7 = a3;
-  v4 = [(ContinuousReadingBannerView *)self title];
-  v5 = [v7 isEqual:v4];
+  titleCopy = title;
+  title = [(ContinuousReadingBannerView *)self title];
+  v5 = [titleCopy isEqual:title];
 
   if ((v5 & 1) == 0)
   {
-    v6 = [(ContinuousReadingBannerView *)self titleLabel];
-    [v6 setText:v7];
+    titleLabel = [(ContinuousReadingBannerView *)self titleLabel];
+    [titleLabel setText:titleCopy];
 
     [(ContinuousReadingBannerView *)self setNeedsLayout];
   }
@@ -225,24 +225,24 @@
 
 - (NSString)title
 {
-  v2 = [(ContinuousReadingBannerView *)self titleLabel];
-  v3 = [v2 text];
+  titleLabel = [(ContinuousReadingBannerView *)self titleLabel];
+  text = [titleLabel text];
 
-  return v3;
+  return text;
 }
 
-- (void)setSubtitle:(id)a3
+- (void)setSubtitle:(id)subtitle
 {
-  v8 = a3;
-  v4 = [(ContinuousReadingBannerView *)self subtitle];
-  v5 = [v8 isEqual:v4];
+  subtitleCopy = subtitle;
+  subtitle = [(ContinuousReadingBannerView *)self subtitle];
+  v5 = [subtitleCopy isEqual:subtitle];
 
   if ((v5 & 1) == 0)
   {
-    v6 = [(ContinuousReadingBannerView *)self subtitleLabel];
-    if ([v8 length])
+    subtitleLabel = [(ContinuousReadingBannerView *)self subtitleLabel];
+    if ([subtitleCopy length])
     {
-      v7 = v8;
+      v7 = subtitleCopy;
     }
 
     else
@@ -250,7 +250,7 @@
       v7 = 0;
     }
 
-    [v6 setText:v7];
+    [subtitleLabel setText:v7];
 
     [(ContinuousReadingBannerView *)self setNeedsLayout];
   }
@@ -258,25 +258,25 @@
 
 - (NSString)subtitle
 {
-  v2 = [(ContinuousReadingBannerView *)self subtitleLabel];
-  v3 = [v2 text];
+  subtitleLabel = [(ContinuousReadingBannerView *)self subtitleLabel];
+  text = [subtitleLabel text];
 
-  return v3;
+  return text;
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v11 = a3;
-  v4 = [(ContinuousReadingBannerView *)self image];
-  if (([v11 isEqual:v4] & 1) == 0)
+  imageCopy = image;
+  image = [(ContinuousReadingBannerView *)self image];
+  if (([imageCopy isEqual:image] & 1) == 0)
   {
-    if ((v11 == 0) == (v4 != 0))
+    if ((imageCopy == 0) == (image != 0))
     {
       [(ContinuousReadingBannerView *)self setNeedsLayout];
     }
 
-    v5 = [(ContinuousReadingBannerView *)self imageView];
-    if (v11)
+    imageView = [(ContinuousReadingBannerView *)self imageView];
+    if (imageCopy)
     {
       v13.width = 40.0;
       v13.height = 40.0;
@@ -291,27 +291,27 @@
       v9 = CGPathCreateWithEllipseInRect(v14, 0);
       CGContextAddPath(CurrentContext, v9);
       CGContextClip(CurrentContext);
-      [v11 drawInRect:{v6, v7, 40.0, 40.0}];
+      [imageCopy drawInRect:{v6, v7, 40.0, 40.0}];
       CGPathRelease(v9);
       v10 = UIGraphicsGetImageFromCurrentImageContext();
-      [v5 setImage:v10];
+      [imageView setImage:v10];
 
       UIGraphicsEndImageContext();
     }
 
     else
     {
-      [v5 setImage:0];
+      [imageView setImage:0];
     }
   }
 }
 
 - (UIImage)image
 {
-  v2 = [(ContinuousReadingBannerView *)self imageView];
-  v3 = [v2 image];
+  imageView = [(ContinuousReadingBannerView *)self imageView];
+  image = [imageView image];
 
-  return v3;
+  return image;
 }
 
 - (UILabel)titleLabel
@@ -328,8 +328,8 @@
     [(UILabel *)v6 setFont:v7];
 
     v8 = self->_titleLabel;
-    v9 = [MEMORY[0x277D75348] labelColor];
-    [(UILabel *)v8 setTextColor:v9];
+    labelColor = [MEMORY[0x277D75348] labelColor];
+    [(UILabel *)v8 setTextColor:labelColor];
 
     [(UILabel *)self->_titleLabel setNumberOfLines:1];
     [(ContinuousReadingBannerView *)self addSubview:self->_titleLabel];
@@ -355,8 +355,8 @@
     [(UILabel *)v6 setFont:v7];
 
     v8 = self->_subtitleLabel;
-    v9 = [MEMORY[0x277D75348] secondaryLabelColor];
-    [(UILabel *)v8 setTextColor:v9];
+    secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+    [(UILabel *)v8 setTextColor:secondaryLabelColor];
 
     [(UILabel *)self->_subtitleLabel setNumberOfLines:1];
     [(ContinuousReadingBannerView *)self addSubview:self->_subtitleLabel];
@@ -386,23 +386,23 @@
   return v6;
 }
 
-- (void)setTopHairlineInsets:(UIEdgeInsets)a3
+- (void)setTopHairlineInsets:(UIEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.left;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(v3, *&self->_topHairlineInsets.top), vceqq_f64(v4, *&self->_topHairlineInsets.bottom)))) & 1) == 0)
   {
-    self->_topHairlineInsets = a3;
+    self->_topHairlineInsets = insets;
     [(ContinuousReadingBannerView *)self setNeedsLayout];
   }
 }
 
 - (CGRect)titleRect
 {
-  v2 = [(ContinuousReadingBannerView *)self titleLabel];
-  [v2 frame];
+  titleLabel = [(ContinuousReadingBannerView *)self titleLabel];
+  [titleLabel frame];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -419,49 +419,49 @@
   return result;
 }
 
-- (void)setTheme:(id)a3
+- (void)setTheme:(id)theme
 {
-  v15 = a3;
+  themeCopy = theme;
   v4 = WBSIsEqual();
-  v5 = v15;
+  v5 = themeCopy;
   if ((v4 & 1) == 0)
   {
-    v6 = [v15 traitCollection];
-    [(ContinuousReadingBannerView *)self _setLocalOverrideTraitCollection:v6];
+    traitCollection = [themeCopy traitCollection];
+    [(ContinuousReadingBannerView *)self _setLocalOverrideTraitCollection:traitCollection];
 
-    v7 = [v15 themeColor];
-    if (v7)
+    themeColor = [themeCopy themeColor];
+    if (themeColor)
     {
-      [(ContinuousReadingBannerView *)self setBackgroundColor:v7];
+      [(ContinuousReadingBannerView *)self setBackgroundColor:themeColor];
     }
 
     else
     {
-      v8 = [MEMORY[0x277D75348] systemGroupedBackgroundColor];
-      [(ContinuousReadingBannerView *)self setBackgroundColor:v8];
+      systemGroupedBackgroundColor = [MEMORY[0x277D75348] systemGroupedBackgroundColor];
+      [(ContinuousReadingBannerView *)self setBackgroundColor:systemGroupedBackgroundColor];
     }
 
-    v9 = [v15 separatorColor];
-    v10 = v9;
-    if (v9)
+    separatorColor = [themeCopy separatorColor];
+    v10 = separatorColor;
+    if (separatorColor)
     {
-      v11 = v9;
+      opaqueSeparatorColor = separatorColor;
     }
 
     else
     {
-      v11 = [MEMORY[0x277D75348] opaqueSeparatorColor];
+      opaqueSeparatorColor = [MEMORY[0x277D75348] opaqueSeparatorColor];
     }
 
-    v12 = v11;
+    v12 = opaqueSeparatorColor;
 
-    v13 = [(ContinuousReadingBannerView *)self _topHairline];
-    [v13 setBackgroundColor:v12];
+    _topHairline = [(ContinuousReadingBannerView *)self _topHairline];
+    [_topHairline setBackgroundColor:v12];
 
-    v14 = [(ContinuousReadingBannerView *)self _bottomHairline];
-    [v14 setBackgroundColor:v12];
+    _bottomHairline = [(ContinuousReadingBannerView *)self _bottomHairline];
+    [_bottomHairline setBackgroundColor:v12];
 
-    v5 = v15;
+    v5 = themeCopy;
   }
 }
 
@@ -470,9 +470,9 @@
   topHairline = self->_topHairline;
   if (!topHairline)
   {
-    v4 = [objc_opt_class() makeHairlineSeparator];
+    makeHairlineSeparator = [objc_opt_class() makeHairlineSeparator];
     v5 = self->_topHairline;
-    self->_topHairline = v4;
+    self->_topHairline = makeHairlineSeparator;
 
     [(ContinuousReadingBannerView *)self addSubview:self->_topHairline];
     topHairline = self->_topHairline;
@@ -488,9 +488,9 @@
   bottomHairline = self->_bottomHairline;
   if (!bottomHairline)
   {
-    v4 = [objc_opt_class() makeHairlineSeparator];
+    makeHairlineSeparator = [objc_opt_class() makeHairlineSeparator];
     v5 = self->_bottomHairline;
-    self->_bottomHairline = v4;
+    self->_bottomHairline = makeHairlineSeparator;
 
     [(ContinuousReadingBannerView *)self addSubview:self->_bottomHairline];
     bottomHairline = self->_bottomHairline;
@@ -503,11 +503,11 @@
 
 - (void)_updateLabels
 {
-  v3 = [(ContinuousReadingItem *)self->_continuousReadingItem title];
-  [(ContinuousReadingBannerView *)self setTitle:v3];
+  title = [(ContinuousReadingItem *)self->_continuousReadingItem title];
+  [(ContinuousReadingBannerView *)self setTitle:title];
 
-  v4 = [(ContinuousReadingItem *)self->_continuousReadingItem subtitle];
-  [(ContinuousReadingBannerView *)self setSubtitle:v4];
+  subtitle = [(ContinuousReadingItem *)self->_continuousReadingItem subtitle];
+  [(ContinuousReadingBannerView *)self setSubtitle:subtitle];
 }
 
 - (CGSize)_scaledImageSize
@@ -520,8 +520,8 @@
 
   else
   {
-    v4 = [MEMORY[0x277D759A0] mainScreen];
-    [v4 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     v6 = v5;
 
     v3 = v6 * 40.0;

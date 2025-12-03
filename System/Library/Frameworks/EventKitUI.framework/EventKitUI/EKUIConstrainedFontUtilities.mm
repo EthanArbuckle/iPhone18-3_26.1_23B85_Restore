@@ -2,9 +2,9 @@
 + (id)constrainedBodyBoldTextLabelFont;
 + (id)constrainedBodyTextLabelFont;
 + (id)constrainedCaption1TextLabelFont;
-+ (id)constrainedFontForTextStyle:(id)a3 maximumContentSizeCategory:(id)a4 addingSymbolicTraits:(unsigned int)a5 traitCollection:(id)a6;
-+ (id)constrainedFontForTextStyle:(id)a3 minimumContentSizeCategory:(id)a4 maximumContentSizeCategory:(id)a5 traitCollection:(id)a6;
-+ (int64_t)tableViewCellCappedSymbolImageScaleWithScale:(int64_t)a3 traitCollection:(id)a4;
++ (id)constrainedFontForTextStyle:(id)style maximumContentSizeCategory:(id)category addingSymbolicTraits:(unsigned int)traits traitCollection:(id)collection;
++ (id)constrainedFontForTextStyle:(id)style minimumContentSizeCategory:(id)category maximumContentSizeCategory:(id)sizeCategory traitCollection:(id)collection;
++ (int64_t)tableViewCellCappedSymbolImageScaleWithScale:(int64_t)scale traitCollection:(id)collection;
 + (void)clearFontCaches;
 + (void)initialize;
 @end
@@ -17,7 +17,7 @@
   block[1] = 3221225472;
   block[2] = __42__EKUIConstrainedFontUtilities_initialize__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (initialize_onceToken != -1)
   {
     dispatch_once(&initialize_onceToken, block);
@@ -91,74 +91,74 @@ void __42__EKUIConstrainedFontUtilities_initialize__block_invoke(uint64_t a1)
   return v2;
 }
 
-+ (id)constrainedFontForTextStyle:(id)a3 minimumContentSizeCategory:(id)a4 maximumContentSizeCategory:(id)a5 traitCollection:(id)a6
++ (id)constrainedFontForTextStyle:(id)style minimumContentSizeCategory:(id)category maximumContentSizeCategory:(id)sizeCategory traitCollection:(id)collection
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = v12;
-  if (v12)
+  styleCopy = style;
+  categoryCopy = category;
+  sizeCategoryCopy = sizeCategory;
+  collectionCopy = collection;
+  v13 = collectionCopy;
+  if (collectionCopy)
   {
-    v14 = [v12 preferredContentSizeCategory];
+    preferredContentSizeCategory = [collectionCopy preferredContentSizeCategory];
   }
 
   else
   {
     v15 = +[EKUIApplicationExtensionOverrides shared];
-    v14 = [v15 preferredContentSizeCategoryOrOverride];
+    preferredContentSizeCategory = [v15 preferredContentSizeCategoryOrOverride];
   }
 
   v16 = *MEMORY[0x1E69DDC90];
-  if (*MEMORY[0x1E69DDC90] != v10 && UIContentSizeCategoryCompareToCategory(v14, v10) == NSOrderedAscending)
+  if (*MEMORY[0x1E69DDC90] != categoryCopy && UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, categoryCopy) == NSOrderedAscending)
   {
-    v17 = v10;
+    v17 = categoryCopy;
 
-    v14 = v17;
+    preferredContentSizeCategory = v17;
   }
 
-  if (v16 != v11 && UIContentSizeCategoryCompareToCategory(v14, v11) == NSOrderedDescending)
+  if (v16 != sizeCategoryCopy && UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, sizeCategoryCopy) == NSOrderedDescending)
   {
-    v18 = v11;
+    v18 = sizeCategoryCopy;
 
-    v14 = v18;
+    preferredContentSizeCategory = v18;
   }
 
   v19 = MEMORY[0x1E69DB878];
-  v20 = [MEMORY[0x1E69DD1B8] traitCollectionWithPreferredContentSizeCategory:v14];
-  v21 = [v19 preferredFontForTextStyle:v9 compatibleWithTraitCollection:v20];
+  v20 = [MEMORY[0x1E69DD1B8] traitCollectionWithPreferredContentSizeCategory:preferredContentSizeCategory];
+  v21 = [v19 preferredFontForTextStyle:styleCopy compatibleWithTraitCollection:v20];
 
   return v21;
 }
 
-+ (id)constrainedFontForTextStyle:(id)a3 maximumContentSizeCategory:(id)a4 addingSymbolicTraits:(unsigned int)a5 traitCollection:(id)a6
++ (id)constrainedFontForTextStyle:(id)style maximumContentSizeCategory:(id)category addingSymbolicTraits:(unsigned int)traits traitCollection:(id)collection
 {
-  v7 = *&a5;
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
-  v12 = v11;
-  if (v11)
+  v7 = *&traits;
+  styleCopy = style;
+  categoryCopy = category;
+  collectionCopy = collection;
+  v12 = collectionCopy;
+  if (collectionCopy)
   {
-    v13 = [v11 preferredContentSizeCategory];
+    preferredContentSizeCategory = [collectionCopy preferredContentSizeCategory];
   }
 
   else
   {
     v14 = +[EKUIApplicationExtensionOverrides shared];
-    v13 = [v14 preferredContentSizeCategoryOrOverride];
+    preferredContentSizeCategory = [v14 preferredContentSizeCategoryOrOverride];
   }
 
-  if (*MEMORY[0x1E69DDC90] != v10 && UIContentSizeCategoryCompareToCategory(v13, v10) == NSOrderedDescending)
+  if (*MEMORY[0x1E69DDC90] != categoryCopy && UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, categoryCopy) == NSOrderedDescending)
   {
-    v15 = v10;
+    v15 = categoryCopy;
 
-    v13 = v15;
+    preferredContentSizeCategory = v15;
   }
 
   v16 = MEMORY[0x1E69DB880];
-  v17 = [MEMORY[0x1E69DD1B8] traitCollectionWithPreferredContentSizeCategory:v13];
-  v18 = [v16 preferredFontDescriptorWithTextStyle:v9 compatibleWithTraitCollection:v17];
+  v17 = [MEMORY[0x1E69DD1B8] traitCollectionWithPreferredContentSizeCategory:preferredContentSizeCategory];
+  v18 = [v16 preferredFontDescriptorWithTextStyle:styleCopy compatibleWithTraitCollection:v17];
 
   v19 = [v18 fontDescriptorWithSymbolicTraits:v7];
   if (v19)
@@ -176,16 +176,16 @@ void __42__EKUIConstrainedFontUtilities_initialize__block_invoke(uint64_t a1)
   return v21;
 }
 
-+ (int64_t)tableViewCellCappedSymbolImageScaleWithScale:(int64_t)a3 traitCollection:(id)a4
++ (int64_t)tableViewCellCappedSymbolImageScaleWithScale:(int64_t)scale traitCollection:(id)collection
 {
-  v5 = a4;
-  v6 = [v5 preferredContentSizeCategory];
-  v7 = UIContentSizeCategoryCompareToCategory(v6, *MEMORY[0x1E69DDC30]);
+  collectionCopy = collection;
+  preferredContentSizeCategory = [collectionCopy preferredContentSizeCategory];
+  v7 = UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, *MEMORY[0x1E69DDC30]);
 
   if (v7 == NSOrderedAscending)
   {
-    v9 = [v5 preferredContentSizeCategory];
-    v10 = UIContentSizeCategoryCompareToCategory(v9, *MEMORY[0x1E69DDC40]);
+    preferredContentSizeCategory2 = [collectionCopy preferredContentSizeCategory];
+    v10 = UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory2, *MEMORY[0x1E69DDC40]);
 
     v8 = 2;
     if (v10 == NSOrderedAscending)
@@ -199,19 +199,19 @@ void __42__EKUIConstrainedFontUtilities_initialize__block_invoke(uint64_t a1)
     v8 = 1;
   }
 
-  if (v8 >= a3)
+  if (v8 >= scale)
   {
-    v11 = a3;
+    scaleCopy = scale;
   }
 
   else
   {
-    v11 = v8;
+    scaleCopy = v8;
   }
 
-  if ((a3 + 1) >= 2)
+  if ((scale + 1) >= 2)
   {
-    v12 = v11;
+    v12 = scaleCopy;
   }
 
   else

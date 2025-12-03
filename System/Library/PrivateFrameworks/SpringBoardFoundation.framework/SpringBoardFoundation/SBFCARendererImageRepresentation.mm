@@ -1,25 +1,25 @@
 @interface SBFCARendererImageRepresentation
-+ (id)representationWithFileURL:(id)a3 imageOrientation:(int64_t)a4;
-+ (id)representationWithIOSurface:(id)a3 imageOrientation:(int64_t)a4;
-+ (id)representationWithImage:(id)a3;
-+ (id)representationWithImageData:(id)a3 imageOrientation:(int64_t)a4;
-- (CGImage)createCGImageReturningScale:(double *)a3;
-- (SBFCARendererImageRepresentation)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
++ (id)representationWithFileURL:(id)l imageOrientation:(int64_t)orientation;
++ (id)representationWithIOSurface:(id)surface imageOrientation:(int64_t)orientation;
++ (id)representationWithImage:(id)image;
++ (id)representationWithImageData:(id)data imageOrientation:(int64_t)orientation;
+- (CGImage)createCGImageReturningScale:(double *)scale;
+- (SBFCARendererImageRepresentation)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SBFCARendererImageRepresentation
 
-+ (id)representationWithImage:(id)a3
++ (id)representationWithImage:(id)image
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  imageCopy = image;
+  v5 = imageCopy;
+  if (imageCopy)
   {
-    v6 = [(UIImage *)v4 ioSurface];
-    if (v6)
+    ioSurface = [(UIImage *)imageCopy ioSurface];
+    if (ioSurface)
     {
-      v7 = [a1 representationWithIOSurface:v6 imageOrientation:{-[UIImage imageOrientation](v5, "imageOrientation")}];
+      v7 = [self representationWithIOSurface:ioSurface imageOrientation:{-[UIImage imageOrientation](v5, "imageOrientation")}];
     }
 
     else
@@ -29,7 +29,7 @@
       v9 = v8;
       if (v8 && [v8 length])
       {
-        v7 = [a1 representationWithImageData:v9 imageOrientation:{-[UIImage imageOrientation](v5, "imageOrientation")}];
+        v7 = [self representationWithImageData:v9 imageOrientation:{-[UIImage imageOrientation](v5, "imageOrientation")}];
       }
 
       else
@@ -37,7 +37,7 @@
         v10 = UIImageJPEGRepresentation(v5, 100.0);
         if (v10)
         {
-          v7 = [a1 representationWithImageData:v10 imageOrientation:{-[UIImage imageOrientation](v5, "imageOrientation")}];
+          v7 = [self representationWithImageData:v10 imageOrientation:{-[UIImage imageOrientation](v5, "imageOrientation")}];
         }
 
         else
@@ -56,71 +56,71 @@
   return v7;
 }
 
-+ (id)representationWithFileURL:(id)a3 imageOrientation:(int64_t)a4
++ (id)representationWithFileURL:(id)l imageOrientation:(int64_t)orientation
 {
-  v6 = a3;
-  v7 = objc_alloc_init(a1);
+  lCopy = l;
+  v7 = objc_alloc_init(self);
   v8 = v7;
   if (v7)
   {
     v7[1] = 3;
-    v9 = [v6 copy];
+    v9 = [lCopy copy];
     v10 = v8[2];
     v8[2] = v9;
 
-    v8[4] = a4;
+    v8[4] = orientation;
   }
 
   return v8;
 }
 
-+ (id)representationWithImageData:(id)a3 imageOrientation:(int64_t)a4
++ (id)representationWithImageData:(id)data imageOrientation:(int64_t)orientation
 {
-  v6 = a3;
-  v7 = objc_alloc_init(a1);
+  dataCopy = data;
+  v7 = objc_alloc_init(self);
   v8 = v7;
   if (v7)
   {
     v7[1] = 1;
-    v9 = [v6 copy];
+    v9 = [dataCopy copy];
     v10 = v8[3];
     v8[3] = v9;
 
-    v8[4] = a4;
+    v8[4] = orientation;
   }
 
   return v8;
 }
 
-+ (id)representationWithIOSurface:(id)a3 imageOrientation:(int64_t)a4
++ (id)representationWithIOSurface:(id)surface imageOrientation:(int64_t)orientation
 {
-  v7 = a3;
-  v8 = objc_alloc_init(a1);
+  surfaceCopy = surface;
+  v8 = objc_alloc_init(self);
   v9 = v8;
   if (v8)
   {
     *(v8 + 1) = 2;
-    objc_storeStrong(v8 + 5, a3);
-    v9[4] = a4;
+    objc_storeStrong(v8 + 5, surface);
+    v9[4] = orientation;
   }
 
   return v9;
 }
 
-- (SBFCARendererImageRepresentation)initWithCoder:(id)a3
+- (SBFCARendererImageRepresentation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = SBFCARendererImageRepresentation;
   v5 = [(SBFCARendererImageRepresentation *)&v14 init];
   if (v5)
   {
-    v6 = [v4 decodeIntegerForKey:@"representationType"];
+    v6 = [coderCopy decodeIntegerForKey:@"representationType"];
     v5->_representationType = v6;
     switch(v6)
     {
       case 3:
-        v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"fileURL"];
+        v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"fileURL"];
         fileURL = v5->_fileURL;
         v5->_fileURL = v11;
 
@@ -131,20 +131,20 @@
 
         break;
       case 2:
-        v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"surface"];
+        v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"surface"];
         surface = v5->_surface;
         v5->_surface = v9;
 
         if (v5->_surface)
         {
 LABEL_8:
-          v5->_imageOrientation = [v4 decodeIntegerForKey:@"orientation"];
+          v5->_imageOrientation = [coderCopy decodeIntegerForKey:@"orientation"];
           goto LABEL_11;
         }
 
         break;
       case 1:
-        v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"imageData"];
+        v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"imageData"];
         imageData = v5->_imageData;
         v5->_imageData = v7;
 
@@ -166,19 +166,19 @@ LABEL_11:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  [v5 encodeInteger:self->_representationType forKey:@"representationType"];
-  [v5 encodeInteger:self->_imageOrientation forKey:@"orientation"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:self->_representationType forKey:@"representationType"];
+  [coderCopy encodeInteger:self->_imageOrientation forKey:@"orientation"];
   v4 = self->_representationType - 1;
   if (v4 <= 2)
   {
-    [v5 encodeObject:*(&self->super.isa + qword_1BEAD5BB0[v4]) forKey:off_1E80807F0[v4]];
+    [coderCopy encodeObject:*(&self->super.isa + qword_1BEAD5BB0[v4]) forKey:off_1E80807F0[v4]];
   }
 }
 
-- (CGImage)createCGImageReturningScale:(double *)a3
+- (CGImage)createCGImageReturningScale:(double *)scale
 {
   representationType = self->_representationType;
   switch(representationType)
@@ -211,20 +211,20 @@ LABEL_11:
         if (MappedDataFromPath)
         {
 LABEL_22:
-          v6 = _SBFCARendererCGImageForImageData(MappedDataFromPath);
+          buildCGImage = _SBFCARendererCGImageForImageData(MappedDataFromPath);
         }
 
         else
         {
-          v6 = 0;
+          buildCGImage = 0;
         }
 
-        if (a3)
+        if (scale)
         {
           goto LABEL_14;
         }
 
-        return v6;
+        return buildCGImage;
       }
 
       break;
@@ -232,12 +232,12 @@ LABEL_22:
       surface = self->_surface;
       if (surface)
       {
-        v8 = [(IOSurface *)surface CGImageBuilder];
-        v6 = [v8 buildCGImage];
+        cGImageBuilder = [(IOSurface *)surface CGImageBuilder];
+        buildCGImage = [cGImageBuilder buildCGImage];
 
-        if (!a3)
+        if (!scale)
         {
-          return v6;
+          return buildCGImage;
         }
 
         goto LABEL_14;
@@ -248,10 +248,10 @@ LABEL_22:
       imageData = self->_imageData;
       if (imageData)
       {
-        v6 = _SBFCARendererCGImageForImageData(imageData);
-        if (!a3)
+        buildCGImage = _SBFCARendererCGImageForImageData(imageData);
+        if (!scale)
         {
-          return v6;
+          return buildCGImage;
         }
 
         goto LABEL_14;
@@ -260,14 +260,14 @@ LABEL_22:
       break;
   }
 
-  v6 = 0;
-  if (a3)
+  buildCGImage = 0;
+  if (scale)
   {
 LABEL_14:
-    *a3 = 1.0;
+    *scale = 1.0;
   }
 
-  return v6;
+  return buildCGImage;
 }
 
 - (void)createCGImageReturningScale:(os_log_t)log .cold.1(uint64_t *a1, uint64_t a2, os_log_t log)

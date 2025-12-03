@@ -1,15 +1,15 @@
 @interface HMDataSetting
-- (BOOL)isKindOfClass:(Class)a3;
+- (BOOL)isKindOfClass:(Class)class;
 - (id)internalValue;
-- (id)valueForUpdate:(id)a3;
+- (id)valueForUpdate:(id)update;
 @end
 
 @implementation HMDataSetting
 
-- (id)valueForUpdate:(id)a3
+- (id)valueForUpdate:(id)update
 {
-  v3 = a3;
-  if (v3)
+  updateCopy = update;
+  if (updateCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -19,7 +19,7 @@
     }
   }
 
-  v4 = [[HMSettingValue alloc] initDataSettingWithValue:v3];
+  v4 = [[HMSettingValue alloc] initDataSettingWithValue:updateCopy];
 
   return v4;
 }
@@ -27,17 +27,17 @@
 - (id)internalValue
 {
   v3 = [HMSettingValue alloc];
-  v4 = [(HMSetting *)self value];
-  v5 = [(HMSettingValue *)v3 initDataSettingWithValue:v4];
+  value = [(HMSetting *)self value];
+  v5 = [(HMSettingValue *)v3 initDataSettingWithValue:value];
 
   return v5;
 }
 
-- (BOOL)isKindOfClass:(Class)a3
+- (BOOL)isKindOfClass:(Class)class
 {
   v5.receiver = self;
   v5.super_class = HMDataSetting;
-  return [(HMDataSetting *)&v5 isKindOfClass:?]|| objc_opt_class() == a3;
+  return [(HMDataSetting *)&v5 isKindOfClass:?]|| objc_opt_class() == class;
 }
 
 @end

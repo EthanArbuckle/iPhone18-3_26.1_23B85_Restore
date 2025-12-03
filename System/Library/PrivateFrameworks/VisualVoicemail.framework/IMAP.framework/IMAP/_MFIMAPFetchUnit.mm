@@ -1,5 +1,5 @@
 @interface _MFIMAPFetchUnit
-- (BOOL)matchesFetchResponse:(id)a3;
+- (BOOL)matchesFetchResponse:(id)response;
 - (id)copyFailedFetchResponse;
 - (void)_setupExpectedFetchResult;
 - (void)dealloc;
@@ -72,9 +72,9 @@ LABEL_12:
               if (v13 != 0x7FFFFFFFFFFFFFFFLL)
               {
                 v24 = [(NSString *)self->_fetchItem substringWithRange:v23, v13 - v23];
-                v25 = [v24 intValue];
+                intValue = [v24 intValue];
 
-                v13 = [(MFIMAPFetchResult *)self->_expectedFetchResult setStartOffset:v25];
+                v13 = [(MFIMAPFetchResult *)self->_expectedFetchResult setStartOffset:intValue];
               }
             }
           }
@@ -87,21 +87,21 @@ LABEL_12:
   }
 }
 
-- (BOOL)matchesFetchResponse:(id)a3
+- (BOOL)matchesFetchResponse:(id)response
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v19 = v4;
+  responseCopy = response;
+  v19 = responseCopy;
   if (!self->_expectedFetchResult)
   {
-    if (!self->_fetchItem || ([(_MFIMAPFetchUnit *)self _setupExpectedFetchResult], v4 = v19, !self->_expectedFetchResult))
+    if (!self->_fetchItem || ([(_MFIMAPFetchUnit *)self _setupExpectedFetchResult], responseCopy = v19, !self->_expectedFetchResult))
     {
       v16 = 0;
       goto LABEL_25;
     }
   }
 
-  [v4 fetchResults];
+  [responseCopy fetchResults];
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
@@ -120,13 +120,13 @@ LABEL_4:
       }
 
       v9 = *(*(&v20 + 1) + 8 * v8);
-      v10 = [v9 type];
-      if ((v10 - 4) < 2)
+      type = [v9 type];
+      if ((type - 4) < 2)
       {
         break;
       }
 
-      if (v10 == 6)
+      if (type == 6)
       {
         if ([(MFIMAPFetchResult *)self->_expectedFetchResult type]== 6)
         {
@@ -134,7 +134,7 @@ LABEL_4:
         }
       }
 
-      else if (v10 == 7)
+      else if (type == 7)
       {
         break;
       }
@@ -152,12 +152,12 @@ LABEL_17:
       }
     }
 
-    v11 = [(MFIMAPFetchResult *)self->_expectedFetchResult type];
-    if (v11 <= 7 && ((1 << v11) & 0xB0) != 0)
+    type2 = [(MFIMAPFetchResult *)self->_expectedFetchResult type];
+    if (type2 <= 7 && ((1 << type2) & 0xB0) != 0)
     {
-      v13 = [v9 section];
-      v14 = [(MFIMAPFetchResult *)self->_expectedFetchResult section];
-      v15 = [v13 caseInsensitiveCompare:v14] == 0;
+      section = [v9 section];
+      section2 = [(MFIMAPFetchResult *)self->_expectedFetchResult section];
+      v15 = [section caseInsensitiveCompare:section2] == 0;
 
       if (v15)
       {

@@ -1,21 +1,21 @@
 @interface HFAnalyticsEnergyDashboardVisitEvent
-- (HFAnalyticsEnergyDashboardVisitEvent)initWithData:(id)a3;
+- (HFAnalyticsEnergyDashboardVisitEvent)initWithData:(id)data;
 - (id)payload;
 @end
 
 @implementation HFAnalyticsEnergyDashboardVisitEvent
 
-- (HFAnalyticsEnergyDashboardVisitEvent)initWithData:(id)a3
+- (HFAnalyticsEnergyDashboardVisitEvent)initWithData:(id)data
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"energyDashboardStatus"];
+  dataCopy = data;
+  v5 = [dataCopy objectForKeyedSubscript:@"energyDashboardStatus"];
   if (!v5)
   {
     NSLog(&cfstr_Hfanalyticsene_8.isa);
   }
 
   objc_opt_class();
-  v6 = [v4 objectForKeyedSubscript:@"energyForecastGridID"];
+  v6 = [dataCopy objectForKeyedSubscript:@"energyForecastGridID"];
   if (objc_opt_isKindOfClass())
   {
     v7 = v6;
@@ -33,7 +33,7 @@
     NSLog(&cfstr_Hfanalyticsene_9.isa);
   }
 
-  v9 = [v4 objectForKeyedSubscript:@"energyDashboardDoublePaneEnabled"];
+  v9 = [dataCopy objectForKeyedSubscript:@"energyDashboardDoublePaneEnabled"];
   if (!v9)
   {
     NSLog(&cfstr_Hfanalyticsene_10.isa);
@@ -57,14 +57,14 @@
 {
   v9.receiver = self;
   v9.super_class = HFAnalyticsEnergyDashboardVisitEvent;
-  v3 = [(HFAnalyticsEvent *)&v9 payload];
-  v4 = [v3 mutableCopy];
+  payload = [(HFAnalyticsEvent *)&v9 payload];
+  v4 = [payload mutableCopy];
 
-  v5 = [(HFAnalyticsEnergyDashboardVisitEvent *)self status];
-  [v4 na_safeSetObject:v5 forKey:@"energyDashboardStatus"];
+  status = [(HFAnalyticsEnergyDashboardVisitEvent *)self status];
+  [v4 na_safeSetObject:status forKey:@"energyDashboardStatus"];
 
-  v6 = [(HFAnalyticsEnergyDashboardVisitEvent *)self gridID];
-  [v4 na_safeSetObject:v6 forKey:@"energyForecastGridID"];
+  gridID = [(HFAnalyticsEnergyDashboardVisitEvent *)self gridID];
+  [v4 na_safeSetObject:gridID forKey:@"energyForecastGridID"];
 
   v7 = [MEMORY[0x277CCABB0] numberWithBool:{-[HFAnalyticsEnergyDashboardVisitEvent isDoublePaneEnabled](self, "isDoublePaneEnabled")}];
   [v4 na_safeSetObject:v7 forKey:@"energyDashboardDoublePaneEnabled"];

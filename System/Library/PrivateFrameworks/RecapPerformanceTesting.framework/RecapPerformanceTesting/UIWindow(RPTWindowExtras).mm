@@ -9,7 +9,7 @@
 
 - (double)_draggableFrame
 {
-  v1 = [a1 valueForKeyPath:@"nsWindowProxy.attachedWindow._draggableFrame"];
+  v1 = [self valueForKeyPath:@"nsWindowProxy.attachedWindow._draggableFrame"];
   [v1 CGRectValue];
   v3 = v2;
 
@@ -18,8 +18,8 @@
 
 - (double)_rpt_safeVisibleFrameOfScreen
 {
-  v1 = [a1 nsScreen];
-  [v1 visibleFrame];
+  nsScreen = [self nsScreen];
+  [nsScreen visibleFrame];
   v3 = v2;
   v5 = v4;
   v7 = v6;
@@ -36,12 +36,12 @@
 
 - (double)rpt_accessibilityActivationPointAttribute
 {
-  v2 = [a1 valueForKeyPath:@"nsWindowProxy.attachedWindow.accessibilityActivationPoint"];
+  v2 = [self valueForKeyPath:@"nsWindowProxy.attachedWindow.accessibilityActivationPoint"];
   [v2 CGPointValue];
   v4 = v3;
 
-  v5 = [a1 nsScreen];
-  [v5 frame];
+  nsScreen = [self nsScreen];
+  [nsScreen frame];
   CGRectGetHeight(v7);
 
   return v4;
@@ -49,12 +49,12 @@
 
 - (void)_rpt_moveToSafeTopLeftOfScreemVisibleFrameAndResize:()RPTWindowExtras
 {
-  [a1 _rpt_safeVisibleFrameOfScreen];
+  [self _rpt_safeVisibleFrameOfScreen];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  [a1 nsWindowFrame];
+  [self nsWindowFrame];
   v17 = v16;
   v19 = v18;
   if (a2 == *MEMORY[0x277CBF3A8] && a3 == *(MEMORY[0x277CBF3A8] + 8))
@@ -93,7 +93,7 @@
   v33.size.width = a2;
   v33.size.height = a3;
   v23 = CGRectGetHeight(v33);
-  v25 = [a1 valueForKeyPath:@"nsWindowProxy.attachedWindow"];
+  v25 = [self valueForKeyPath:@"nsWindowProxy.attachedWindow"];
   [v25 setFrame:1 display:{MinX, v21, Width, v23}];
 }
 

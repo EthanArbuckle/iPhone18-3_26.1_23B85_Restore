@@ -1,14 +1,14 @@
 @interface MTPlaybackContext
-+ (id)contextWithReason:(unint64_t)a3;
++ (id)contextWithReason:(unint64_t)reason;
 + (id)defaultContext;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation MTPlaybackContext
 
 + (id)defaultContext
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
   [v2 setSource:0];
   [v2 setInteractive:1];
   if (isTV())
@@ -26,17 +26,17 @@
   return v2;
 }
 
-+ (id)contextWithReason:(unint64_t)a3
++ (id)contextWithReason:(unint64_t)reason
 {
-  v4 = [a1 defaultContext];
-  [v4 setSource:a3];
+  defaultContext = [self defaultContext];
+  [defaultContext setSource:reason];
 
-  return v4;
+  return defaultContext;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setSource:{-[MTPlaybackContext source](self, "source")}];
   [v4 setInteractive:{-[MTPlaybackContext isInteractive](self, "isInteractive")}];
   [v4 setPresentationType:{-[MTPlaybackContext presentationType](self, "presentationType")}];

@@ -1,14 +1,14 @@
 @interface WebBookmarkReadonlyCollection
 - (id)_collection;
-- (id)bookmarkWithID:(int)a3;
-- (id)bookmarksMatchingString:(id)a3;
+- (id)bookmarkWithID:(int)d;
+- (id)bookmarksMatchingString:(id)string;
 - (id)databaseHealthInformation;
 - (id)initReadonlySafariBookmarkCollection;
-- (id)leafChildCountForFoldersInFolderWithID:(int)a3;
-- (id)readingListBookmarksMatchingString:(id)a3 maxResults:(unsigned int)a4 onlyArchivedBookmarks:(BOOL)a5;
-- (id)readingListWithUnreadOnly:(BOOL)a3 filteredUsingString:(id)a4;
-- (unint64_t)leafChildCountForBookmarksInFolderWithID:(int)a3;
-- (void)enumerateBookmarks:(BOOL)a3 andReadingListItems:(BOOL)a4 matchingString:(id)a5 usingBlock:(id)a6;
+- (id)leafChildCountForFoldersInFolderWithID:(int)d;
+- (id)readingListBookmarksMatchingString:(id)string maxResults:(unsigned int)results onlyArchivedBookmarks:(BOOL)bookmarks;
+- (id)readingListWithUnreadOnly:(BOOL)only filteredUsingString:(id)string;
+- (unint64_t)leafChildCountForBookmarksInFolderWithID:(int)d;
+- (void)enumerateBookmarks:(BOOL)bookmarks andReadingListItems:(BOOL)items matchingString:(id)string usingBlock:(id)block;
 @end
 
 @implementation WebBookmarkReadonlyCollection
@@ -21,10 +21,10 @@
   if (v2)
   {
     v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.WebBookmarks.WebBookmarkReadonlyCollection.%@.%p.%@", objc_opt_class(), v2, @"InternalQueue"];
-    v4 = [v3 UTF8String];
+    uTF8String = [v3 UTF8String];
     v5 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v6 = dispatch_get_global_queue(0, 0);
-    v7 = dispatch_queue_create_with_target_V2(v4, v5, v6);
+    v7 = dispatch_queue_create_with_target_V2(uTF8String, v5, v6);
     internalQueue = v2->_internalQueue;
     v2->_internalQueue = v7;
 
@@ -53,22 +53,22 @@
   return v8;
 }
 
-- (void)enumerateBookmarks:(BOOL)a3 andReadingListItems:(BOOL)a4 matchingString:(id)a5 usingBlock:(id)a6
+- (void)enumerateBookmarks:(BOOL)bookmarks andReadingListItems:(BOOL)items matchingString:(id)string usingBlock:(id)block
 {
-  v10 = a5;
-  v11 = a6;
+  stringCopy = string;
+  blockCopy = block;
   internalQueue = self->_internalQueue;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __98__WebBookmarkReadonlyCollection_enumerateBookmarks_andReadingListItems_matchingString_usingBlock___block_invoke;
   v15[3] = &unk_279E76E90;
-  v18 = a3;
-  v19 = a4;
+  bookmarksCopy = bookmarks;
+  itemsCopy = items;
   v15[4] = self;
-  v16 = v10;
-  v17 = v11;
-  v13 = v11;
-  v14 = v10;
+  v16 = stringCopy;
+  v17 = blockCopy;
+  v13 = blockCopy;
+  v14 = stringCopy;
   dispatch_sync(internalQueue, v15);
 }
 
@@ -78,9 +78,9 @@ void __98__WebBookmarkReadonlyCollection_enumerateBookmarks_andReadingListItems_
   [v2 enumerateBookmarks:*(a1 + 56) andReadingListItems:*(a1 + 57) matchingString:*(a1 + 40) usingBlock:*(a1 + 48)];
 }
 
-- (id)readingListBookmarksMatchingString:(id)a3 maxResults:(unsigned int)a4 onlyArchivedBookmarks:(BOOL)a5
+- (id)readingListBookmarksMatchingString:(id)string maxResults:(unsigned int)results onlyArchivedBookmarks:(BOOL)bookmarks
 {
-  v8 = a3;
+  stringCopy = string;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
@@ -92,12 +92,12 @@ void __98__WebBookmarkReadonlyCollection_enumerateBookmarks_andReadingListItems_
   v13[1] = 3221225472;
   v13[2] = __101__WebBookmarkReadonlyCollection_readingListBookmarksMatchingString_maxResults_onlyArchivedBookmarks___block_invoke;
   v13[3] = &unk_279E76EB8;
-  v14 = v8;
+  v14 = stringCopy;
   v15 = &v18;
   v13[4] = self;
-  v16 = a4;
-  v17 = a5;
-  v10 = v8;
+  resultsCopy = results;
+  bookmarksCopy = bookmarks;
+  v10 = stringCopy;
   dispatch_sync(internalQueue, v13);
   v11 = v19[5];
 
@@ -115,9 +115,9 @@ void __101__WebBookmarkReadonlyCollection_readingListBookmarksMatchingString_max
   *(v3 + 40) = v2;
 }
 
-- (id)bookmarksMatchingString:(id)a3
+- (id)bookmarksMatchingString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -129,10 +129,10 @@ void __101__WebBookmarkReadonlyCollection_readingListBookmarksMatchingString_max
   block[1] = 3221225472;
   block[2] = __57__WebBookmarkReadonlyCollection_bookmarksMatchingString___block_invoke;
   block[3] = &unk_279E76EE0;
-  v10 = v4;
+  v10 = stringCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = stringCopy;
   dispatch_sync(internalQueue, block);
   v7 = v13[5];
 
@@ -150,9 +150,9 @@ void __57__WebBookmarkReadonlyCollection_bookmarksMatchingString___block_invoke(
   *(v3 + 40) = v2;
 }
 
-- (id)readingListWithUnreadOnly:(BOOL)a3 filteredUsingString:(id)a4
+- (id)readingListWithUnreadOnly:(BOOL)only filteredUsingString:(id)string
 {
-  v6 = a4;
+  stringCopy = string;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -164,11 +164,11 @@ void __57__WebBookmarkReadonlyCollection_bookmarksMatchingString___block_invoke(
   v11[1] = 3221225472;
   v11[2] = __79__WebBookmarkReadonlyCollection_readingListWithUnreadOnly_filteredUsingString___block_invoke;
   v11[3] = &unk_279E76F08;
-  v12 = v6;
+  v12 = stringCopy;
   v13 = &v15;
-  v14 = a3;
+  onlyCopy = only;
   v11[4] = self;
-  v8 = v6;
+  v8 = stringCopy;
   dispatch_sync(internalQueue, v11);
   v9 = v16[5];
 
@@ -186,7 +186,7 @@ void __79__WebBookmarkReadonlyCollection_readingListWithUnreadOnly_filteredUsing
   *(v3 + 40) = v2;
 }
 
-- (id)bookmarkWithID:(int)a3
+- (id)bookmarkWithID:(int)d
 {
   v8 = 0;
   v9 = &v8;
@@ -201,7 +201,7 @@ void __79__WebBookmarkReadonlyCollection_readingListWithUnreadOnly_filteredUsing
   block[3] = &unk_279E75BC0;
   block[4] = self;
   block[5] = &v8;
-  v7 = a3;
+  dCopy = d;
   dispatch_sync(internalQueue, block);
   v4 = v9[5];
   _Block_object_dispose(&v8, 8);
@@ -249,7 +249,7 @@ void __58__WebBookmarkReadonlyCollection_databaseHealthInformation__block_invoke
   *(v3 + 40) = v2;
 }
 
-- (unint64_t)leafChildCountForBookmarksInFolderWithID:(int)a3
+- (unint64_t)leafChildCountForBookmarksInFolderWithID:(int)d
 {
   v8 = 0;
   v9 = &v8;
@@ -262,7 +262,7 @@ void __58__WebBookmarkReadonlyCollection_databaseHealthInformation__block_invoke
   block[3] = &unk_279E75BC0;
   block[4] = self;
   block[5] = &v8;
-  v7 = a3;
+  dCopy = d;
   dispatch_sync(internalQueue, block);
   v4 = v9[3];
   _Block_object_dispose(&v8, 8);
@@ -275,7 +275,7 @@ void __74__WebBookmarkReadonlyCollection_leafChildCountForBookmarksInFolderWithI
   *(*(*(a1 + 40) + 8) + 24) = [v2 leafChildCountForBookmarksInFolderWithID:*(a1 + 48)];
 }
 
-- (id)leafChildCountForFoldersInFolderWithID:(int)a3
+- (id)leafChildCountForFoldersInFolderWithID:(int)d
 {
   v8 = 0;
   v9 = &v8;
@@ -290,7 +290,7 @@ void __74__WebBookmarkReadonlyCollection_leafChildCountForBookmarksInFolderWithI
   block[3] = &unk_279E75BC0;
   block[4] = self;
   block[5] = &v8;
-  v7 = a3;
+  dCopy = d;
   dispatch_sync(internalQueue, block);
   v4 = v9[5];
   _Block_object_dispose(&v8, 8);

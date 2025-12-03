@@ -1,25 +1,25 @@
 @interface WFStaccatoPreviewViewProvider
-+ (id)primarySymbolForConfiguredAction:(id)a3;
-+ (id)secondarySymbolForConfiguredAction:(id)a3;
++ (id)primarySymbolForConfiguredAction:(id)action;
++ (id)secondarySymbolForConfiguredAction:(id)action;
 @end
 
 @implementation WFStaccatoPreviewViewProvider
 
-+ (id)secondarySymbolForConfiguredAction:(id)a3
++ (id)secondarySymbolForConfiguredAction:(id)action
 {
-  v3 = a3;
-  v4 = [v3 sectionIdentifier];
-  v5 = [v4 isEqualToString:@"Accessibility"];
+  actionCopy = action;
+  sectionIdentifier = [actionCopy sectionIdentifier];
+  v5 = [sectionIdentifier isEqualToString:@"Accessibility"];
 
   if (v5)
   {
-    v6 = v3;
+    v6 = actionCopy;
     if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v7 = [v6 intent];
-      v8 = [v7 serializedParameters];
+      intent = [v6 intent];
+      serializedParameters = [intent serializedParameters];
 
-      v9 = [v8 objectForKey:@"feature"];
+      v9 = [serializedParameters objectForKey:@"feature"];
       if (v9)
       {
         objc_opt_class();
@@ -88,11 +88,11 @@
   return v11;
 }
 
-+ (id)primarySymbolForConfiguredAction:(id)a3
++ (id)primarySymbolForConfiguredAction:(id)action
 {
-  v3 = a3;
-  v4 = [v3 sectionIdentifier];
-  v5 = [v4 isEqualToString:@"Accessibility"];
+  actionCopy = action;
+  sectionIdentifier = [actionCopy sectionIdentifier];
+  v5 = [sectionIdentifier isEqualToString:@"Accessibility"];
 
   if (v5)
   {
@@ -101,8 +101,8 @@
 
   else
   {
-    v7 = [v3 sectionIdentifier];
-    v8 = [v7 isEqualToString:@"Camera"];
+    sectionIdentifier2 = [actionCopy sectionIdentifier];
+    v8 = [sectionIdentifier2 isEqualToString:@"Camera"];
 
     if (v8)
     {
@@ -111,8 +111,8 @@
 
     else
     {
-      v9 = [v3 sectionIdentifier];
-      v10 = [v9 isEqualToString:@"Magnifier"];
+      sectionIdentifier3 = [actionCopy sectionIdentifier];
+      v10 = [sectionIdentifier3 isEqualToString:@"Magnifier"];
 
       if (v10)
       {
@@ -121,8 +121,8 @@
 
       else
       {
-        v11 = [v3 sectionIdentifier];
-        v12 = [v11 isEqualToString:@"Translate"];
+        sectionIdentifier4 = [actionCopy sectionIdentifier];
+        v12 = [sectionIdentifier4 isEqualToString:@"Translate"];
 
         if (v12)
         {
@@ -131,8 +131,8 @@
 
         else
         {
-          v13 = [v3 sectionIdentifier];
-          v14 = [v13 isEqualToString:@"VisualIntelligence"];
+          sectionIdentifier5 = [actionCopy sectionIdentifier];
+          v14 = [sectionIdentifier5 isEqualToString:@"VisualIntelligence"];
 
           if (v14)
           {

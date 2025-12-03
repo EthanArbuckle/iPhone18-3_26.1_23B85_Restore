@@ -21,25 +21,25 @@
 - (NSMeasurement)batteryLevelMarkerCriticalLow;
 - (NSMeasurement)batteryLevelMarkerLow;
 - (unsigned)batteryLevelState;
-- (void)registerObserver:(id)a3;
-- (void)unregisterObserver:(id)a3;
+- (void)registerObserver:(id)observer;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation CAFBatteryLevel
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___CAFBatteryLevel;
   objc_msgSendSuper2(&v2, sel_load);
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&unk_28468B230])
+  observerCopy = observer;
+  if ([observerCopy conformsToProtocol:&unk_28468B230])
   {
-    v5 = v4;
+    v5 = observerCopy;
   }
 
   else
@@ -52,12 +52,12 @@
   [(CAFService *)&v6 registerObserver:v5];
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&unk_28468B230])
+  observerCopy = observer;
+  if ([observerCopy conformsToProtocol:&unk_28468B230])
   {
-    v5 = v4;
+    v5 = observerCopy;
   }
 
   else
@@ -73,13 +73,13 @@
 - (CAFMeasurementCharacteristic)batteryLevelCharacteristic
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  [v6 validateRegisteredForAccessory:v8 service:v9 characteristic:@"0x0000000030000031"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000030000031"];
 
   objc_opt_class();
   v10 = [(CAFService *)self characteristicForType:@"0x0000000030000031"];
@@ -98,49 +98,49 @@
 
 - (NSMeasurement)batteryLevel
 {
-  v2 = [(CAFBatteryLevel *)self batteryLevelCharacteristic];
-  v3 = [v2 measurementValue];
+  batteryLevelCharacteristic = [(CAFBatteryLevel *)self batteryLevelCharacteristic];
+  measurementValue = [batteryLevelCharacteristic measurementValue];
 
-  return v3;
+  return measurementValue;
 }
 
 - (CAFUInt8Range)batteryLevelRange
 {
-  v2 = [(CAFBatteryLevel *)self batteryLevelCharacteristic];
-  v3 = [v2 range];
-  v4 = [v3 uInt8Range];
+  batteryLevelCharacteristic = [(CAFBatteryLevel *)self batteryLevelCharacteristic];
+  range = [batteryLevelCharacteristic range];
+  uInt8Range = [range uInt8Range];
 
-  return v4;
+  return uInt8Range;
 }
 
 - (CAFMeasurementRange)batteryLevelMeasurementRange
 {
-  v3 = [(CAFBatteryLevel *)self batteryLevelRange];
-  v4 = [(CAFBatteryLevel *)self batteryLevel];
-  v5 = [v4 unit];
-  v6 = [v3 measurementRangeWithUnit:v5];
+  batteryLevelRange = [(CAFBatteryLevel *)self batteryLevelRange];
+  batteryLevel = [(CAFBatteryLevel *)self batteryLevel];
+  unit = [batteryLevel unit];
+  v6 = [batteryLevelRange measurementRangeWithUnit:unit];
 
   return v6;
 }
 
 - (BOOL)batteryLevelInvalid
 {
-  v2 = [(CAFBatteryLevel *)self batteryLevelCharacteristic];
-  v3 = [v2 isInvalid];
+  batteryLevelCharacteristic = [(CAFBatteryLevel *)self batteryLevelCharacteristic];
+  isInvalid = [batteryLevelCharacteristic isInvalid];
 
-  return v3;
+  return isInvalid;
 }
 
 - (CAFBatteryLevelStateCharacteristic)batteryLevelStateCharacteristic
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  [v6 validateRegisteredForAccessory:v8 service:v9 characteristic:@"0x0000000030000035"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000030000035"];
 
   objc_opt_class();
   v10 = [(CAFService *)self characteristicForType:@"0x0000000030000035"];
@@ -159,22 +159,22 @@
 
 - (unsigned)batteryLevelState
 {
-  v2 = [(CAFBatteryLevel *)self batteryLevelStateCharacteristic];
-  v3 = [v2 batteryLevelStateValue];
+  batteryLevelStateCharacteristic = [(CAFBatteryLevel *)self batteryLevelStateCharacteristic];
+  batteryLevelStateValue = [batteryLevelStateCharacteristic batteryLevelStateValue];
 
-  return v3;
+  return batteryLevelStateValue;
 }
 
 - (CAFMeasurementCharacteristic)batteryLevelMarkerLowCharacteristic
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  [v6 validateRegisteredForAccessory:v8 service:v9 characteristic:@"0x000000003000004C"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x000000003000004C"];
 
   objc_opt_class();
   v10 = [(CAFService *)self characteristicForType:@"0x000000003000004C"];
@@ -193,35 +193,35 @@
 
 - (NSMeasurement)batteryLevelMarkerLow
 {
-  v2 = [(CAFBatteryLevel *)self batteryLevelMarkerLowCharacteristic];
-  v3 = [v2 measurementValue];
+  batteryLevelMarkerLowCharacteristic = [(CAFBatteryLevel *)self batteryLevelMarkerLowCharacteristic];
+  measurementValue = [batteryLevelMarkerLowCharacteristic measurementValue];
 
-  return v3;
+  return measurementValue;
 }
 
 - (CAFUInt8Range)batteryLevelMarkerLowRange
 {
-  v2 = [(CAFBatteryLevel *)self batteryLevelMarkerLowCharacteristic];
-  v3 = [v2 range];
-  v4 = [v3 uInt8Range];
+  batteryLevelMarkerLowCharacteristic = [(CAFBatteryLevel *)self batteryLevelMarkerLowCharacteristic];
+  range = [batteryLevelMarkerLowCharacteristic range];
+  uInt8Range = [range uInt8Range];
 
-  return v4;
+  return uInt8Range;
 }
 
 - (CAFMeasurementRange)batteryLevelMarkerLowMeasurementRange
 {
-  v3 = [(CAFBatteryLevel *)self batteryLevelMarkerLowRange];
-  v4 = [(CAFBatteryLevel *)self batteryLevelMarkerLow];
-  v5 = [v4 unit];
-  v6 = [v3 measurementRangeWithUnit:v5];
+  batteryLevelMarkerLowRange = [(CAFBatteryLevel *)self batteryLevelMarkerLowRange];
+  batteryLevelMarkerLow = [(CAFBatteryLevel *)self batteryLevelMarkerLow];
+  unit = [batteryLevelMarkerLow unit];
+  v6 = [batteryLevelMarkerLowRange measurementRangeWithUnit:unit];
 
   return v6;
 }
 
 - (BOOL)hasBatteryLevelMarkerLow
 {
-  v2 = [(CAFBatteryLevel *)self batteryLevelMarkerLowCharacteristic];
-  v3 = v2 != 0;
+  batteryLevelMarkerLowCharacteristic = [(CAFBatteryLevel *)self batteryLevelMarkerLowCharacteristic];
+  v3 = batteryLevelMarkerLowCharacteristic != 0;
 
   return v3;
 }
@@ -229,13 +229,13 @@
 - (CAFMeasurementCharacteristic)batteryLevelMarkerCriticalLowCharacteristic
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  [v6 validateRegisteredForAccessory:v8 service:v9 characteristic:@"0x000000003000004D"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x000000003000004D"];
 
   objc_opt_class();
   v10 = [(CAFService *)self characteristicForType:@"0x000000003000004D"];
@@ -254,35 +254,35 @@
 
 - (NSMeasurement)batteryLevelMarkerCriticalLow
 {
-  v2 = [(CAFBatteryLevel *)self batteryLevelMarkerCriticalLowCharacteristic];
-  v3 = [v2 measurementValue];
+  batteryLevelMarkerCriticalLowCharacteristic = [(CAFBatteryLevel *)self batteryLevelMarkerCriticalLowCharacteristic];
+  measurementValue = [batteryLevelMarkerCriticalLowCharacteristic measurementValue];
 
-  return v3;
+  return measurementValue;
 }
 
 - (CAFUInt8Range)batteryLevelMarkerCriticalLowRange
 {
-  v2 = [(CAFBatteryLevel *)self batteryLevelMarkerCriticalLowCharacteristic];
-  v3 = [v2 range];
-  v4 = [v3 uInt8Range];
+  batteryLevelMarkerCriticalLowCharacteristic = [(CAFBatteryLevel *)self batteryLevelMarkerCriticalLowCharacteristic];
+  range = [batteryLevelMarkerCriticalLowCharacteristic range];
+  uInt8Range = [range uInt8Range];
 
-  return v4;
+  return uInt8Range;
 }
 
 - (CAFMeasurementRange)batteryLevelMarkerCriticalLowMeasurementRange
 {
-  v3 = [(CAFBatteryLevel *)self batteryLevelMarkerCriticalLowRange];
-  v4 = [(CAFBatteryLevel *)self batteryLevelMarkerCriticalLow];
-  v5 = [v4 unit];
-  v6 = [v3 measurementRangeWithUnit:v5];
+  batteryLevelMarkerCriticalLowRange = [(CAFBatteryLevel *)self batteryLevelMarkerCriticalLowRange];
+  batteryLevelMarkerCriticalLow = [(CAFBatteryLevel *)self batteryLevelMarkerCriticalLow];
+  unit = [batteryLevelMarkerCriticalLow unit];
+  v6 = [batteryLevelMarkerCriticalLowRange measurementRangeWithUnit:unit];
 
   return v6;
 }
 
 - (BOOL)hasBatteryLevelMarkerCriticalLow
 {
-  v2 = [(CAFBatteryLevel *)self batteryLevelMarkerCriticalLowCharacteristic];
-  v3 = v2 != 0;
+  batteryLevelMarkerCriticalLowCharacteristic = [(CAFBatteryLevel *)self batteryLevelMarkerCriticalLowCharacteristic];
+  v3 = batteryLevelMarkerCriticalLowCharacteristic != 0;
 
   return v3;
 }
@@ -290,13 +290,13 @@
 - (BOOL)registeredForBatteryLevel
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 characteristic:@"0x0000000030000031"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000030000031"];
 
   return v10;
 }
@@ -304,13 +304,13 @@
 - (BOOL)registeredForBatteryLevelState
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 characteristic:@"0x0000000030000035"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000030000035"];
 
   return v10;
 }
@@ -318,13 +318,13 @@
 - (BOOL)registeredForBatteryLevelMarkerLow
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 characteristic:@"0x000000003000004C"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x000000003000004C"];
 
   return v10;
 }
@@ -332,13 +332,13 @@
 - (BOOL)registeredForBatteryLevelMarkerCriticalLow
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 characteristic:@"0x000000003000004D"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x000000003000004D"];
 
   return v10;
 }

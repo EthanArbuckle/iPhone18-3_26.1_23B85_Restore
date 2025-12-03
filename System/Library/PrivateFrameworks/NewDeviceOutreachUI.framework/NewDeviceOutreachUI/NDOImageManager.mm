@@ -1,6 +1,6 @@
 @interface NDOImageManager
 + (NDOImageManager)sharedManager;
-- (id)fetchImageWithURLString:(id)a3 completion:(id)a4;
+- (id)fetchImageWithURLString:(id)string completion:(id)completion;
 - (id)initPrivate;
 @end
 
@@ -12,7 +12,7 @@
   block[1] = 3221225472;
   block[2] = __32__NDOImageManager_sharedManager__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedManager_onceToken != -1)
   {
     dispatch_once(&sharedManager_onceToken, block);
@@ -45,33 +45,33 @@ uint64_t __32__NDOImageManager_sharedManager__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (id)fetchImageWithURLString:(id)a3 completion:(id)a4
+- (id)fetchImageWithURLString:(id)string completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NDOImageManager *)self imageCache];
-  v9 = [v8 objectForKey:v6];
+  stringCopy = string;
+  completionCopy = completion;
+  imageCache = [(NDOImageManager *)self imageCache];
+  v9 = [imageCache objectForKey:stringCopy];
 
   if (v9)
   {
-    v7[2](v7, v9, 0);
+    completionCopy[2](completionCopy, v9, 0);
     v10 = 0;
   }
 
   else
   {
-    v11 = [MEMORY[0x277CBEBC0] URLWithString:v6];
+    v11 = [MEMORY[0x277CBEBC0] URLWithString:stringCopy];
     if (v11)
     {
-      v12 = [MEMORY[0x277CCAD30] sharedSession];
+      mEMORY[0x277CCAD30] = [MEMORY[0x277CCAD30] sharedSession];
       v19[0] = MEMORY[0x277D85DD0];
       v19[1] = 3221225472;
       v19[2] = __54__NDOImageManager_fetchImageWithURLString_completion___block_invoke;
       v19[3] = &unk_279978310;
-      v21 = v7;
+      v21 = completionCopy;
       v19[4] = self;
-      v20 = v6;
-      v10 = [v12 dataTaskWithURL:v11 completionHandler:v19];
+      v20 = stringCopy;
+      v10 = [mEMORY[0x277CCAD30] dataTaskWithURL:v11 completionHandler:v19];
 
       [v10 resume];
       v13 = v21;
@@ -87,10 +87,10 @@ uint64_t __32__NDOImageManager_sharedManager__block_invoke(uint64_t a1)
 
       v15 = MEMORY[0x277CCA9B8];
       v16 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-      v17 = [v16 bundleIdentifier];
-      v13 = [v15 errorWithDomain:v17 code:0 userInfo:0];
+      bundleIdentifier = [v16 bundleIdentifier];
+      v13 = [v15 errorWithDomain:bundleIdentifier code:0 userInfo:0];
 
-      (v7)[2](v7, 0, v13);
+      (completionCopy)[2](completionCopy, 0, v13);
       v10 = 0;
     }
   }

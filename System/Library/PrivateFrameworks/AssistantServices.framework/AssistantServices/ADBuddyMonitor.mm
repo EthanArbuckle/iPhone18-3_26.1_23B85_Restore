@@ -46,13 +46,13 @@
     serialQueue = v2->_serialQueue;
     v2->_serialQueue = v4;
 
-    v6 = [(ADBuddyMonitor *)v2 _checkBuddyState];
-    v2->_isPastBuddy = v6;
+    _checkBuddyState = [(ADBuddyMonitor *)v2 _checkBuddyState];
+    v2->_isPastBuddy = _checkBuddyState;
     v7 = AFSiriLogContextDaemon;
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
     {
       v8 = @"running";
-      if (v6)
+      if (_checkBuddyState)
       {
         v8 = @"complete";
       }
@@ -84,7 +84,7 @@
   block[1] = 3221225472;
   block[2] = sub_1001418A0;
   block[3] = &unk_10051E200;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1005902E8 != -1)
   {
     dispatch_once(&qword_1005902E8, block);

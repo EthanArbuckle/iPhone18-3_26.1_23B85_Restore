@@ -1,8 +1,8 @@
 @interface SFHistoryViewController
-- (BOOL)_shouldSessionBeExpanded:(id)a3;
+- (BOOL)_shouldSessionBeExpanded:(id)expanded;
 - (BookmarksPanelViewControllerDelegate)delegate;
 - (LinkPreviewProvider)linkPreviewProvider;
-- (SFHistoryViewController)initWithHistory:(id)a3;
+- (SFHistoryViewController)initWithHistory:(id)history;
 - (TabGroupProvider)tabGroupProvider;
 - (_SFNavigationIntentHandling)navigationIntentHandler;
 - (id)_clearHistoryBarButtonItem;
@@ -17,60 +17,60 @@
 - (id)_makeSearchBarContainerRegistration;
 - (id)_moreMenu;
 - (id)_moreMenuBarButtonItem;
-- (id)_previewMenuForHistoryItems:(id)a3;
+- (id)_previewMenuForHistoryItems:(id)items;
 - (id)_savedStateDictionary;
 - (id)_toolbarItems;
-- (id)_trailingSwipeActionConfigurationForIndexPath:(id)a3;
-- (id)collectionView:(id)a3 contextMenuConfiguration:(id)a4 dismissalPreviewForItemAtIndexPath:(id)a5;
-- (id)collectionView:(id)a3 contextMenuConfigurationForItemsAtIndexPaths:(id)a4 point:(CGPoint)a5;
-- (id)collectionView:(id)a3 itemsForBeginningDragSession:(id)a4 atIndexPath:(id)a5;
-- (void)_addIndexPathsOfItemsNeedingReconfiguration:(id)a3;
+- (id)_trailingSwipeActionConfigurationForIndexPath:(id)path;
+- (id)collectionView:(id)view contextMenuConfiguration:(id)configuration dismissalPreviewForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view contextMenuConfigurationForItemsAtIndexPaths:(id)paths point:(CGPoint)point;
+- (id)collectionView:(id)view itemsForBeginningDragSession:(id)session atIndexPath:(id)path;
+- (void)_addIndexPathsOfItemsNeedingReconfiguration:(id)reconfiguration;
 - (void)_adjustContentOffsetHidingSearchBar;
 - (void)_clearExplanationView;
 - (void)_configureClearHistoryButton;
 - (void)_deleteCurrentlySelectedItems;
-- (void)_deselectHistoryItemsInSession:(id)a3;
+- (void)_deselectHistoryItemsInSession:(id)session;
 - (void)_reconfigureItemsIfNeeded;
-- (void)_reloadItemsInSession:(id)a3 animated:(BOOL)a4;
-- (void)_reloadWithSessions:(id)a3 animated:(BOOL)a4;
+- (void)_reloadItemsInSession:(id)session animated:(BOOL)animated;
+- (void)_reloadWithSessions:(id)sessions animated:(BOOL)animated;
 - (void)_restoreScrollPositionIfNeeded;
 - (void)_saveViewState;
-- (void)_showClearHistoryMenu:(id)a3;
+- (void)_showClearHistoryMenu:(id)menu;
 - (void)_showExplanationView;
 - (void)_toggleEditMode;
 - (void)_updateBarButtonItems;
 - (void)_updateContentOffsetIfNeeded;
 - (void)_updateDeleteSelectedItemsButtonEnabled;
 - (void)_updateMoreMenu;
-- (void)collectionView:(id)a3 didDeselectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 dragSessionWillBegin:(id)a4;
-- (void)collectionView:(id)a3 willPerformPreviewActionForMenuWithConfiguration:(id)a4 animator:(id)a5;
-- (void)didMoveToParentViewController:(id)a3;
-- (void)historyViewDataSource:(id)a3 didComputeSessions:(id)a4;
+- (void)collectionView:(id)view didDeselectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view dragSessionWillBegin:(id)begin;
+- (void)collectionView:(id)view willPerformPreviewActionForMenuWithConfiguration:(id)configuration animator:(id)animator;
+- (void)didMoveToParentViewController:(id)controller;
+- (void)historyViewDataSource:(id)source didComputeSessions:(id)sessions;
 - (void)resetSearchText;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
-- (void)setTabGroupProvider:(id)a3;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)setTabGroupProvider:(id)provider;
 - (void)updateClearHistoryButtonEnabled;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
-- (void)willMoveToParentViewController:(id)a3;
+- (void)willMoveToParentViewController:(id)controller;
 @end
 
 @implementation SFHistoryViewController
 
-- (SFHistoryViewController)initWithHistory:(id)a3
+- (SFHistoryViewController)initWithHistory:(id)history
 {
-  v4 = a3;
-  v5 = [(SFHistoryViewController *)self _createCollectionViewLayout];
+  historyCopy = history;
+  _createCollectionViewLayout = [(SFHistoryViewController *)self _createCollectionViewLayout];
   v26.receiver = self;
   v26.super_class = SFHistoryViewController;
-  v6 = [(SFHistoryViewController *)&v26 initWithCollectionViewLayout:v5];
+  v6 = [(SFHistoryViewController *)&v26 initWithCollectionViewLayout:_createCollectionViewLayout];
 
   if (v6)
   {
@@ -78,14 +78,14 @@
     [(SFHistoryViewController *)v6 setTitle:v7];
 
     [(SFHistoryViewController *)v6 setClearsSelectionOnViewWillAppear:0];
-    v8 = [[SFHistoryViewDataSource alloc] initWithHistory:v4];
+    v8 = [[SFHistoryViewDataSource alloc] initWithHistory:historyCopy];
     historyDataSource = v6->_historyDataSource;
     v6->_historyDataSource = v8;
 
     [(SFHistoryViewDataSource *)v6->_historyDataSource setDelegate:v6];
-    v10 = [(SFHistoryViewController *)v6 _savedStateDictionary];
+    _savedStateDictionary = [(SFHistoryViewController *)v6 _savedStateDictionary];
     v11 = MEMORY[0x277CBEB58];
-    v12 = [v10 objectForKeyedSubscript:@"savedExpandedSections"];
+    v12 = [_savedStateDictionary objectForKeyedSubscript:@"savedExpandedSections"];
     v13 = v12;
     v14 = MEMORY[0x277CBEBF8];
     if (v12)
@@ -103,7 +103,7 @@
     v6->_expandedSessionIdentifiers = v16;
 
     v18 = MEMORY[0x277CBEB58];
-    v19 = [v10 objectForKeyedSubscript:@"savedCollapsedSections"];
+    v19 = [_savedStateDictionary objectForKeyedSubscript:@"savedCollapsedSections"];
     v20 = v19;
     if (v19)
     {
@@ -125,19 +125,19 @@
   return v6;
 }
 
-- (void)setTabGroupProvider:(id)a3
+- (void)setTabGroupProvider:(id)provider
 {
-  v4 = a3;
-  objc_storeWeak(&self->_tabGroupProvider, v4);
-  [(SFHistoryViewDataSource *)self->_historyDataSource setTabGroupProvider:v4];
+  providerCopy = provider;
+  objc_storeWeak(&self->_tabGroupProvider, providerCopy);
+  [(SFHistoryViewDataSource *)self->_historyDataSource setTabGroupProvider:providerCopy];
 }
 
-- (void)didMoveToParentViewController:(id)a3
+- (void)didMoveToParentViewController:(id)controller
 {
   v5.receiver = self;
   v5.super_class = SFHistoryViewController;
   [(SFHistoryViewController *)&v5 didMoveToParentViewController:?];
-  if (!a3)
+  if (!controller)
   {
     [(SFHistoryViewController *)self resetSearchText];
   }
@@ -149,22 +149,22 @@
   v42.super_class = SFHistoryViewController;
   [(SFHistoryViewController *)&v42 viewDidLoad];
   self->_needsContentOffsetUpdate = 1;
-  v3 = [(SFHistoryViewController *)self collectionView];
-  [v3 setAllowsMultipleSelectionDuringEditing:1];
-  [v3 setDragDelegate:self];
-  [v3 setKeyboardDismissMode:1];
-  [v3 setAccessibilityIdentifier:@"HistoryCollectionView"];
-  [v3 _pocketInsets];
-  [v3 _setPocketInsets:v4 + 1.0];
+  collectionView = [(SFHistoryViewController *)self collectionView];
+  [collectionView setAllowsMultipleSelectionDuringEditing:1];
+  [collectionView setDragDelegate:self];
+  [collectionView setKeyboardDismissMode:1];
+  [collectionView setAccessibilityIdentifier:@"HistoryCollectionView"];
+  [collectionView _pocketInsets];
+  [collectionView _setPocketInsets:v4 + 1.0];
   if (([MEMORY[0x277D49A08] isSolariumEnabled] & 1) == 0)
   {
-    v5 = [MEMORY[0x277D75348] systemGroupedBackgroundColor];
-    [v3 setBackgroundColor:v5];
+    systemGroupedBackgroundColor = [MEMORY[0x277D75348] systemGroupedBackgroundColor];
+    [collectionView setBackgroundColor:systemGroupedBackgroundColor];
   }
 
-  v6 = [(SFHistoryViewController *)self _makeHeaderRegistration];
-  v7 = [(SFHistoryViewController *)self _makeHistoryCellRegistration];
-  v8 = [(SFHistoryViewController *)self _makeSearchBarContainerRegistration];
+  _makeHeaderRegistration = [(SFHistoryViewController *)self _makeHeaderRegistration];
+  _makeHistoryCellRegistration = [(SFHistoryViewController *)self _makeHistoryCellRegistration];
+  _makeSearchBarContainerRegistration = [(SFHistoryViewController *)self _makeSearchBarContainerRegistration];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v32 = WeakRetained;
   if (![MEMORY[0x277D49A08] isSolariumEnabled])
@@ -188,8 +188,8 @@
     searchBar = self->_searchBar;
     self->_searchBar = v17;
 
-    v19 = [(SFHistoryViewController *)self view];
-    [v19 bounds];
+    view = [(SFHistoryViewController *)self view];
+    [view bounds];
     Width = CGRectGetWidth(v43);
     [(UISearchBar *)self->_searchBar sizeThatFits:*MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8)];
     [(UISearchBar *)self->_searchBar setFrame:0.0, 0.0, Width, v21];
@@ -200,18 +200,18 @@
 
   self->_shouldUseSearchControllerInNavigationItem = 1;
 LABEL_5:
-  v10 = [(SFHistoryViewController *)self navigationItem];
+  navigationItem = [(SFHistoryViewController *)self navigationItem];
   v11 = [objc_alloc(MEMORY[0x277D759F0]) initWithSearchResultsController:0];
   [(UISearchController *)v11 setObscuresBackgroundDuringPresentation:0];
-  [v10 setPreferredSearchBarPlacement:2];
-  [v10 setSearchController:v11];
+  [navigationItem setPreferredSearchBarPlacement:2];
+  [navigationItem setSearchController:v11];
   searchController = self->_searchController;
   self->_searchController = v11;
   v13 = v11;
 
-  v14 = [(UISearchController *)v13 searchBar];
+  searchBar = [(UISearchController *)v13 searchBar];
   v15 = self->_searchBar;
-  self->_searchBar = v14;
+  self->_searchBar = searchBar;
 
 LABEL_11:
   [(UISearchBar *)self->_searchBar setDelegate:self];
@@ -225,13 +225,13 @@ LABEL_11:
   v38[2] = __38__SFHistoryViewController_viewDidLoad__block_invoke;
   v38[3] = &unk_2781D7F18;
   v38[4] = self;
-  v24 = v8;
+  v24 = _makeSearchBarContainerRegistration;
   v39 = v24;
-  v25 = v6;
+  v25 = _makeHeaderRegistration;
   v40 = v25;
-  v26 = v7;
+  v26 = _makeHistoryCellRegistration;
   v41 = v26;
-  v27 = [v23 initWithCollectionView:v3 cellProvider:v38];
+  v27 = [v23 initWithCollectionView:collectionView cellProvider:v38];
   collectionDataSource = self->_collectionDataSource;
   self->_collectionDataSource = v27;
 
@@ -241,19 +241,19 @@ LABEL_11:
   v35[2] = __38__SFHistoryViewController_viewDidLoad__block_invoke_2;
   v35[3] = &unk_2781DB8B8;
   objc_copyWeak(&v36, &location);
-  v29 = [(UICollectionViewDiffableDataSource *)self->_collectionDataSource sectionSnapshotHandlers];
-  [v29 setWillCollapseItemHandler:v35];
+  sectionSnapshotHandlers = [(UICollectionViewDiffableDataSource *)self->_collectionDataSource sectionSnapshotHandlers];
+  [sectionSnapshotHandlers setWillCollapseItemHandler:v35];
 
   v33[0] = MEMORY[0x277D85DD0];
   v33[1] = 3221225472;
   v33[2] = __38__SFHistoryViewController_viewDidLoad__block_invoke_3;
   v33[3] = &unk_2781DB8B8;
   objc_copyWeak(&v34, &location);
-  v30 = [(UICollectionViewDiffableDataSource *)self->_collectionDataSource sectionSnapshotHandlers];
-  [v30 setWillExpandItemHandler:v33];
+  sectionSnapshotHandlers2 = [(UICollectionViewDiffableDataSource *)self->_collectionDataSource sectionSnapshotHandlers];
+  [sectionSnapshotHandlers2 setWillExpandItemHandler:v33];
 
-  v31 = [(SFHistoryViewController *)self _toolbarItems];
-  [(SFHistoryViewController *)self setToolbarItems:v31 animated:0];
+  _toolbarItems = [(SFHistoryViewController *)self _toolbarItems];
+  [(SFHistoryViewController *)self setToolbarItems:_toolbarItems animated:0];
 
   [(SFHistoryViewController *)self _updateBarButtonItems];
   objc_destroyWeak(&v34);
@@ -325,11 +325,11 @@ void __38__SFHistoryViewController_viewDidLoad__block_invoke_3(uint64_t a1, void
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = SFHistoryViewController;
-  [(SFHistoryViewController *)&v6 viewWillAppear:a3];
+  [(SFHistoryViewController *)&v6 viewWillAppear:appear];
   if ([(NSOrderedSet *)self->_sessionsToApplyOnAppear count])
   {
     [(SFHistoryViewController *)self _reloadWithSessions:self->_sessionsToApplyOnAppear animated:0];
@@ -338,26 +338,26 @@ void __38__SFHistoryViewController_viewDidLoad__block_invoke_3(uint64_t a1, void
   }
 
   [(SFHistoryViewController *)self updateClearHistoryButtonEnabled];
-  v5 = [(SFHistoryViewController *)self navigationController];
-  [v5 setToolbarHidden:0 animated:1];
+  navigationController = [(SFHistoryViewController *)self navigationController];
+  [navigationController setToolbarHidden:0 animated:1];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v6.receiver = self;
   v6.super_class = SFHistoryViewController;
-  [(SFHistoryViewController *)&v6 viewWillDisappear:a3];
+  [(SFHistoryViewController *)&v6 viewWillDisappear:disappear];
   [(SFHistoryViewController *)self _saveViewState];
-  v4 = [(SFHistoryViewController *)self collectionView];
-  v5 = [v4 contextMenuInteraction];
-  [v5 dismissMenu];
+  collectionView = [(SFHistoryViewController *)self collectionView];
+  contextMenuInteraction = [collectionView contextMenuInteraction];
+  [contextMenuInteraction dismissMenu];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = SFHistoryViewController;
-  [(SFHistoryViewController *)&v4 viewDidDisappear:a3];
+  [(SFHistoryViewController *)&v4 viewDidDisappear:disappear];
   [(SFHistoryViewController *)self setEditing:0];
 }
 
@@ -378,17 +378,17 @@ void __38__SFHistoryViewController_viewDidLoad__block_invoke_3(uint64_t a1, void
   if (!self->_shouldUseSearchControllerInNavigationItem)
   {
     searchBar = self->_searchBar;
-    v4 = [(SFHistoryViewController *)self view];
-    [v4 layoutMargins];
+    view = [(SFHistoryViewController *)self view];
+    [view layoutMargins];
     [(UISearchBar *)searchBar _setOverrideContentInsets:10 forRectEdges:?];
   }
 }
 
-- (void)willMoveToParentViewController:(id)a3
+- (void)willMoveToParentViewController:(id)controller
 {
   v5.receiver = self;
   v5.super_class = SFHistoryViewController;
-  [(SFHistoryViewController *)&v5 willMoveToParentViewController:a3];
+  [(SFHistoryViewController *)&v5 willMoveToParentViewController:controller];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
@@ -396,29 +396,29 @@ void __38__SFHistoryViewController_viewDidLoad__block_invoke_3(uint64_t a1, void
   }
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
+  animatedCopy = animated;
+  editingCopy = editing;
   v14.receiver = self;
   v14.super_class = SFHistoryViewController;
   [SFHistoryViewController setEditing:sel_setEditing_animated_ animated:?];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained panelViewController:self updateToolbarItemsAnimated:v4];
+    [WeakRetained panelViewController:self updateToolbarItemsAnimated:animatedCopy];
   }
 
   else
   {
-    v8 = [(SFHistoryViewController *)self _toolbarItems];
-    [(SFHistoryViewController *)self setToolbarItems:v8 animated:v4];
+    _toolbarItems = [(SFHistoryViewController *)self _toolbarItems];
+    [(SFHistoryViewController *)self setToolbarItems:_toolbarItems animated:animatedCopy];
   }
 
   [(SFHistoryViewController *)self _updateBarButtonItems];
   v9 = WBS_LOG_CHANNEL_PREFIXUserInteraction();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
-  if (v5)
+  if (editingCopy)
   {
     if (v10)
     {
@@ -446,9 +446,9 @@ void __38__SFHistoryViewController_viewDidLoad__block_invoke_3(uint64_t a1, void
     }
   }
 
-  v11 = [(SFHistoryViewController *)self collectionView];
-  v12 = [v11 indexPathsForVisibleItems];
-  [(SFHistoryViewController *)self _addIndexPathsOfItemsNeedingReconfiguration:v12];
+  collectionView = [(SFHistoryViewController *)self collectionView];
+  indexPathsForVisibleItems = [collectionView indexPathsForVisibleItems];
+  [(SFHistoryViewController *)self _addIndexPathsOfItemsNeedingReconfiguration:indexPathsForVisibleItems];
 }
 
 - (id)_makeHeaderRegistration
@@ -647,18 +647,18 @@ id __54__SFHistoryViewController__createCollectionViewLayout__block_invoke_2(uin
   return v6;
 }
 
-- (void)_reloadWithSessions:(id)a3 animated:(BOOL)a4
+- (void)_reloadWithSessions:(id)sessions animated:(BOOL)animated
 {
-  v53 = a4;
+  animatedCopy = animated;
   v67[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  sessionsCopy = sessions;
+  if (!sessionsCopy)
   {
-    v5 = [MEMORY[0x277CBEB70] orderedSet];
+    sessionsCopy = [MEMORY[0x277CBEB70] orderedSet];
   }
 
   v50 = self->_sessions;
-  objc_storeStrong(&self->_sessions, v5);
+  objc_storeStrong(&self->_sessions, sessionsCopy);
   v6 = objc_alloc_init(MEMORY[0x277CFB890]);
   if (!self->_shouldUseSearchControllerInNavigationItem)
   {
@@ -676,32 +676,32 @@ id __54__SFHistoryViewController__createCollectionViewLayout__block_invoke_2(uin
     }
   }
 
-  v12 = [v5 array];
-  [v6 appendSectionsWithIdentifiers:v12];
+  array = [sessionsCopy array];
+  [v6 appendSectionsWithIdentifiers:array];
 
-  v48 = [(UICollectionViewDiffableDataSource *)self->_collectionDataSource snapshot];
-  v49 = self;
+  snapshot = [(UICollectionViewDiffableDataSource *)self->_collectionDataSource snapshot];
+  selfCopy = self;
   v47 = v6;
-  if ([v48 numberOfSections] >= 2 && !self->_shouldUseSearchControllerInNavigationItem || objc_msgSend(v48, "numberOfItems") && self->_shouldUseSearchControllerInNavigationItem)
+  if ([snapshot numberOfSections] >= 2 && !self->_shouldUseSearchControllerInNavigationItem || objc_msgSend(snapshot, "numberOfItems") && self->_shouldUseSearchControllerInNavigationItem)
   {
-    obj = v5;
-    v13 = [v6 sectionIdentifiers];
-    v14 = v48;
-    v15 = [v48 sectionIdentifiers];
-    v16 = [v13 differenceFromArray:v15 withOptions:4];
+    obj = sessionsCopy;
+    sectionIdentifiers = [v6 sectionIdentifiers];
+    v14 = snapshot;
+    sectionIdentifiers2 = [snapshot sectionIdentifiers];
+    v16 = [sectionIdentifiers differenceFromArray:sectionIdentifiers2 withOptions:4];
 
-    v17 = [v48 sectionIdentifiers];
-    v18 = [v16 safari_removalIndexes];
-    v19 = [v17 objectsAtIndexes:v18];
-    [v48 deleteSectionsWithIdentifiers:v19];
+    sectionIdentifiers3 = [snapshot sectionIdentifiers];
+    safari_removalIndexes = [v16 safari_removalIndexes];
+    v19 = [sectionIdentifiers3 objectsAtIndexes:safari_removalIndexes];
+    [snapshot deleteSectionsWithIdentifiers:v19];
 
     v60 = 0u;
     v61 = 0u;
     v58 = 0u;
     v59 = 0u;
     v46 = v16;
-    v20 = [v16 insertions];
-    v21 = [v20 countByEnumeratingWithState:&v58 objects:v65 count:16];
+    insertions = [v16 insertions];
+    v21 = [insertions countByEnumeratingWithState:&v58 objects:v65 count:16];
     if (v21)
     {
       v22 = v21;
@@ -712,56 +712,56 @@ id __54__SFHistoryViewController__createCollectionViewLayout__block_invoke_2(uin
         {
           if (*v59 != v23)
           {
-            objc_enumerationMutation(v20);
+            objc_enumerationMutation(insertions);
           }
 
           v25 = *(*(&v58 + 1) + 8 * i);
-          v26 = [v25 index];
+          index = [v25 index];
           v27 = v14;
-          v28 = [v14 numberOfSections];
-          v29 = [v25 object];
-          v30 = v29;
-          if (v26 == v28)
+          numberOfSections = [v14 numberOfSections];
+          object = [v25 object];
+          v30 = object;
+          if (index == numberOfSections)
           {
-            v64 = v29;
+            v64 = object;
             v31 = [MEMORY[0x277CBEA60] arrayWithObjects:&v64 count:1];
             [v27 appendSectionsWithIdentifiers:v31];
           }
 
           else
           {
-            v63 = v29;
+            v63 = object;
             v31 = [MEMORY[0x277CBEA60] arrayWithObjects:&v63 count:1];
-            v32 = [v27 sectionIdentifiers];
-            v33 = [v32 objectAtIndexedSubscript:v26];
+            sectionIdentifiers4 = [v27 sectionIdentifiers];
+            v33 = [sectionIdentifiers4 objectAtIndexedSubscript:index];
             [v27 insertSectionsWithIdentifiers:v31 beforeSectionWithIdentifier:v33];
           }
 
           v14 = v27;
         }
 
-        v22 = [v20 countByEnumeratingWithState:&v58 objects:v65 count:16];
+        v22 = [insertions countByEnumeratingWithState:&v58 objects:v65 count:16];
       }
 
       while (v22);
     }
 
-    self = v49;
-    [(UICollectionViewDiffableDataSource *)v49->_collectionDataSource applySnapshot:v14 animatingDifferences:v53];
+    self = selfCopy;
+    [(UICollectionViewDiffableDataSource *)selfCopy->_collectionDataSource applySnapshot:v14 animatingDifferences:animatedCopy];
 
-    v5 = obj;
+    sessionsCopy = obj;
   }
 
   else
   {
-    [(UICollectionViewDiffableDataSource *)self->_collectionDataSource applySnapshot:v6 animatingDifferences:v53];
+    [(UICollectionViewDiffableDataSource *)self->_collectionDataSource applySnapshot:v6 animatingDifferences:animatedCopy];
   }
 
   v56 = 0u;
   v57 = 0u;
   v54 = 0u;
   v55 = 0u;
-  obja = v5;
+  obja = sessionsCopy;
   v34 = [obja countByEnumeratingWithState:&v54 objects:v62 count:16];
   v35 = v50;
   if (v34)
@@ -781,26 +781,26 @@ id __54__SFHistoryViewController__createCollectionViewLayout__block_invoke_2(uin
         v40 = [(NSOrderedSet *)v35 indexOfObject:v39];
         if (v40 == 0x7FFFFFFFFFFFFFFFLL)
         {
-          [(SFHistoryViewController *)self _reloadItemsInSession:v39 animated:v53];
+          [(SFHistoryViewController *)self _reloadItemsInSession:v39 animated:animatedCopy];
           continue;
         }
 
         v41 = [(NSOrderedSet *)v35 objectAtIndexedSubscript:v40];
-        v42 = [(UISearchBar *)self->_searchBar text];
-        if ([v42 length])
+        text = [(UISearchBar *)self->_searchBar text];
+        if ([text length])
         {
 
 LABEL_34:
-          [(SFHistoryViewController *)self _reloadItemsInSession:v39 animated:v53];
+          [(SFHistoryViewController *)self _reloadItemsInSession:v39 animated:animatedCopy];
           goto LABEL_35;
         }
 
-        v43 = [v41 historyItems];
-        v44 = [v39 historyItems];
-        v45 = [v43 isEqualToOrderedSet:v44];
+        historyItems = [v41 historyItems];
+        historyItems2 = [v39 historyItems];
+        v45 = [historyItems isEqualToOrderedSet:historyItems2];
 
         v35 = v50;
-        self = v49;
+        self = selfCopy;
 
         if ((v45 & 1) == 0)
         {
@@ -834,8 +834,8 @@ LABEL_35:
     [(SFHistoryViewController *)self _clearExplanationView];
   }
 
-  v3 = [(UISearchBar *)self->_searchBar text];
-  v4 = [v3 length];
+  text = [(UISearchBar *)self->_searchBar text];
+  v4 = [text length];
 
   if (v4)
   {
@@ -849,8 +849,8 @@ LABEL_35:
   v13 = ;
   v5 = [objc_alloc(MEMORY[0x277D753A8]) initWithConfiguration:v13];
   [(UIView *)v5 setAutoresizingMask:18];
-  v6 = [(SFHistoryViewController *)self collectionView];
-  [v6 bounds];
+  collectionView = [(SFHistoryViewController *)self collectionView];
+  [collectionView bounds];
   [(UIView *)v5 setFrame:?];
 
   [(UIView *)v5 setUserInteractionEnabled:0];
@@ -858,20 +858,20 @@ LABEL_35:
   self->_explanationView = v5;
   v8 = v5;
 
-  v9 = [(SFHistoryViewController *)self collectionView];
-  [v9 addSubview:self->_explanationView];
+  collectionView2 = [(SFHistoryViewController *)self collectionView];
+  [collectionView2 addSubview:self->_explanationView];
 
-  v10 = [(SFHistoryViewController *)self navigationItem];
-  v11 = [v10 searchController];
-  v12 = v11;
+  navigationItem = [(SFHistoryViewController *)self navigationItem];
+  searchController = [navigationItem searchController];
+  v12 = searchController;
   if (!v4)
   {
-    [v11 setActive:0];
+    [searchController setActive:0];
   }
 
   if (([v12 isActive] & 1) == 0)
   {
-    [v10 setSearchController:0];
+    [navigationItem setSearchController:0];
   }
 }
 
@@ -881,110 +881,110 @@ LABEL_35:
   explanationView = self->_explanationView;
   self->_explanationView = 0;
 
-  v4 = [(SFHistoryViewController *)self navigationItem];
-  v5 = [v4 searchController];
+  navigationItem = [(SFHistoryViewController *)self navigationItem];
+  searchController = [navigationItem searchController];
 
-  if (!v5)
+  if (!searchController)
   {
     searchController = self->_searchController;
-    v7 = [(SFHistoryViewController *)self navigationItem];
-    [v7 setSearchController:searchController];
+    navigationItem2 = [(SFHistoryViewController *)self navigationItem];
+    [navigationItem2 setSearchController:searchController];
   }
 }
 
-- (void)_reloadItemsInSession:(id)a3 animated:(BOOL)a4
+- (void)_reloadItemsInSession:(id)session animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v14[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  sessionCopy = session;
   v7 = objc_alloc_init(MEMORY[0x277D75070]);
-  v14[0] = v6;
+  v14[0] = sessionCopy;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:1];
   [v7 appendItems:v8];
 
-  v9 = [v6 historyItems];
-  v10 = [v9 array];
-  [v7 appendItems:v10 intoParentItem:v6];
+  historyItems = [sessionCopy historyItems];
+  array = [historyItems array];
+  [v7 appendItems:array intoParentItem:sessionCopy];
 
-  if ([(SFHistoryViewController *)self _shouldSessionBeExpanded:v6])
+  if ([(SFHistoryViewController *)self _shouldSessionBeExpanded:sessionCopy])
   {
-    v13 = v6;
+    v13 = sessionCopy;
     v11 = [MEMORY[0x277CBEA60] arrayWithObjects:&v13 count:1];
     [v7 expandItems:v11];
   }
 
   else
   {
-    v12 = v6;
+    v12 = sessionCopy;
     v11 = [MEMORY[0x277CBEA60] arrayWithObjects:&v12 count:1];
     [v7 collapseItems:v11];
   }
 
-  [(UICollectionViewDiffableDataSource *)self->_collectionDataSource applySnapshot:v7 toSection:v6 animatingDifferences:v4];
+  [(UICollectionViewDiffableDataSource *)self->_collectionDataSource applySnapshot:v7 toSection:sessionCopy animatingDifferences:animatedCopy];
 }
 
-- (BOOL)_shouldSessionBeExpanded:(id)a3
+- (BOOL)_shouldSessionBeExpanded:(id)expanded
 {
-  v4 = a3;
-  v5 = [(UISearchBar *)self->_searchBar text];
-  v6 = [v5 length];
+  expandedCopy = expanded;
+  text = [(UISearchBar *)self->_searchBar text];
+  v6 = [text length];
 
   if (!v6)
   {
     collapsedSessionIdentifiers = self->_collapsedSessionIdentifiers;
-    v9 = [v4 identifier];
-    LOBYTE(collapsedSessionIdentifiers) = [(NSMutableSet *)collapsedSessionIdentifiers containsObject:v9];
+    identifier = [expandedCopy identifier];
+    LOBYTE(collapsedSessionIdentifiers) = [(NSMutableSet *)collapsedSessionIdentifiers containsObject:identifier];
 
     if (collapsedSessionIdentifiers)
     {
-      v7 = 0;
+      safari_isInToday = 0;
       goto LABEL_7;
     }
 
     expandedSessionIdentifiers = self->_expandedSessionIdentifiers;
-    v11 = [v4 identifier];
-    LOBYTE(expandedSessionIdentifiers) = [(NSMutableSet *)expandedSessionIdentifiers containsObject:v11];
+    identifier2 = [expandedCopy identifier];
+    LOBYTE(expandedSessionIdentifiers) = [(NSMutableSet *)expandedSessionIdentifiers containsObject:identifier2];
 
     if ((expandedSessionIdentifiers & 1) == 0)
     {
-      v12 = [v4 lastVisitedDate];
-      v7 = [v12 safari_isInToday];
+      lastVisitedDate = [expandedCopy lastVisitedDate];
+      safari_isInToday = [lastVisitedDate safari_isInToday];
 
       goto LABEL_7;
     }
   }
 
-  v7 = 1;
+  safari_isInToday = 1;
 LABEL_7:
 
-  return v7;
+  return safari_isInToday;
 }
 
-- (void)_addIndexPathsOfItemsNeedingReconfiguration:(id)a3
+- (void)_addIndexPathsOfItemsNeedingReconfiguration:(id)reconfiguration
 {
   indexPathsOfItemsNeedingReconfiguration = self->_indexPathsOfItemsNeedingReconfiguration;
   if (indexPathsOfItemsNeedingReconfiguration)
   {
-    [(NSMutableSet *)indexPathsOfItemsNeedingReconfiguration addObjectsFromArray:a3];
+    [(NSMutableSet *)indexPathsOfItemsNeedingReconfiguration addObjectsFromArray:reconfiguration];
   }
 
   else
   {
-    v5 = [MEMORY[0x277CBEB58] setWithArray:a3];
+    v5 = [MEMORY[0x277CBEB58] setWithArray:reconfiguration];
     v6 = self->_indexPathsOfItemsNeedingReconfiguration;
     self->_indexPathsOfItemsNeedingReconfiguration = v5;
   }
 
-  v7 = [(SFHistoryViewController *)self view];
-  [v7 setNeedsLayout];
+  view = [(SFHistoryViewController *)self view];
+  [view setNeedsLayout];
 }
 
 - (void)_reconfigureItemsIfNeeded
 {
   if ([(NSMutableSet *)self->_indexPathsOfItemsNeedingReconfiguration count])
   {
-    v3 = [(UICollectionViewDiffableDataSource *)self->_collectionDataSource snapshot];
-    v4 = [(NSMutableSet *)self->_indexPathsOfItemsNeedingReconfiguration allObjects];
+    snapshot = [(UICollectionViewDiffableDataSource *)self->_collectionDataSource snapshot];
+    allObjects = [(NSMutableSet *)self->_indexPathsOfItemsNeedingReconfiguration allObjects];
     indexPathsOfItemsNeedingReconfiguration = self->_indexPathsOfItemsNeedingReconfiguration;
     self->_indexPathsOfItemsNeedingReconfiguration = 0;
 
@@ -993,10 +993,10 @@ LABEL_7:
     v7[2] = __52__SFHistoryViewController__reconfigureItemsIfNeeded__block_invoke;
     v7[3] = &unk_2781DB978;
     v7[4] = self;
-    v6 = [v4 safari_mapObjectsUsingBlock:v7];
-    [v3 reconfigureItemsWithIdentifiers:v6];
+    v6 = [allObjects safari_mapObjectsUsingBlock:v7];
+    [snapshot reconfigureItemsWithIdentifiers:v6];
 
-    [(UICollectionViewDiffableDataSource *)self->_collectionDataSource applySnapshot:v3 animatingDifferences:0];
+    [(UICollectionViewDiffableDataSource *)self->_collectionDataSource applySnapshot:snapshot animatingDifferences:0];
   }
 }
 
@@ -1012,23 +1012,23 @@ LABEL_7:
   {
     if ([(SFHistoryViewController *)self isEditing])
     {
-      v4 = [(SFHistoryViewController *)self _doneBarButtonItem];
-      v10[0] = v4;
-      v5 = [MEMORY[0x277D751E0] flexibleSpaceItem];
-      v10[1] = v5;
-      v6 = [(SFHistoryViewController *)self _deleteSelectedBarButtonItem];
-      v10[2] = v6;
+      _doneBarButtonItem = [(SFHistoryViewController *)self _doneBarButtonItem];
+      v10[0] = _doneBarButtonItem;
+      flexibleSpaceItem = [MEMORY[0x277D751E0] flexibleSpaceItem];
+      v10[1] = flexibleSpaceItem;
+      _deleteSelectedBarButtonItem = [(SFHistoryViewController *)self _deleteSelectedBarButtonItem];
+      v10[2] = _deleteSelectedBarButtonItem;
       v7 = v10;
     }
 
     else
     {
-      v4 = [(SFHistoryViewController *)self _editBarButtonItem];
-      v9[0] = v4;
-      v5 = [MEMORY[0x277D751E0] flexibleSpaceItem];
-      v9[1] = v5;
-      v6 = [(SFHistoryViewController *)self _clearHistoryBarButtonItem];
-      v9[2] = v6;
+      _doneBarButtonItem = [(SFHistoryViewController *)self _editBarButtonItem];
+      v9[0] = _doneBarButtonItem;
+      flexibleSpaceItem = [MEMORY[0x277D751E0] flexibleSpaceItem];
+      v9[1] = flexibleSpaceItem;
+      _deleteSelectedBarButtonItem = [(SFHistoryViewController *)self _clearHistoryBarButtonItem];
+      v9[2] = _deleteSelectedBarButtonItem;
       v7 = v9;
     }
 
@@ -1126,9 +1126,9 @@ void __45__SFHistoryViewController__doneBarButtonItem__block_invoke(uint64_t a1)
 {
   if (!self->_deleteItemsButton)
   {
-    v3 = [MEMORY[0x277D49A08] isSaveForLaterEnabled];
+    isSaveForLaterEnabled = [MEMORY[0x277D49A08] isSaveForLaterEnabled];
     v4 = objc_alloc(MEMORY[0x277D751E0]);
-    if (v3)
+    if (isSaveForLaterEnabled)
     {
       v5 = [MEMORY[0x277D755B8] systemImageNamed:@"trash"];
       v6 = [v4 initWithImage:v5 style:0 target:self action:sel__deleteCurrentlySelectedItems];
@@ -1143,8 +1143,8 @@ void __45__SFHistoryViewController__doneBarButtonItem__block_invoke(uint64_t a1)
     deleteItemsButton = self->_deleteItemsButton;
     self->_deleteItemsButton = v6;
 
-    v8 = [MEMORY[0x277D75348] systemRedColor];
-    [(UIBarButtonItem *)self->_deleteItemsButton setTintColor:v8];
+    systemRedColor = [MEMORY[0x277D75348] systemRedColor];
+    [(UIBarButtonItem *)self->_deleteItemsButton setTintColor:systemRedColor];
   }
 
   [(SFHistoryViewController *)self _updateDeleteSelectedItemsButtonEnabled];
@@ -1161,8 +1161,8 @@ void __45__SFHistoryViewController__doneBarButtonItem__block_invoke(uint64_t a1)
   {
     v4 = objc_alloc(MEMORY[0x277D751E0]);
     v5 = [MEMORY[0x277D755B8] systemImageNamed:@"ellipsis"];
-    v6 = [(SFHistoryViewController *)self _moreMenu];
-    v7 = [v4 initWithImage:v5 menu:v6];
+    _moreMenu = [(SFHistoryViewController *)self _moreMenu];
+    v7 = [v4 initWithImage:v5 menu:_moreMenu];
     v8 = self->_moreMenuButton;
     self->_moreMenuButton = v7;
 
@@ -1179,9 +1179,9 @@ void __45__SFHistoryViewController__doneBarButtonItem__block_invoke(uint64_t a1)
 {
   if ([MEMORY[0x277D49A08] isSaveForLaterEnabled])
   {
-    v4 = [(SFHistoryViewController *)self _moreMenu];
-    v3 = [(SFHistoryViewController *)self _moreMenuBarButtonItem];
-    [v3 setMenu:v4];
+    _moreMenu = [(SFHistoryViewController *)self _moreMenu];
+    _moreMenuBarButtonItem = [(SFHistoryViewController *)self _moreMenuBarButtonItem];
+    [_moreMenuBarButtonItem setMenu:_moreMenu];
   }
 }
 
@@ -1201,8 +1201,8 @@ void __45__SFHistoryViewController__doneBarButtonItem__block_invoke(uint64_t a1)
 
   [v6 setAccessibilityIdentifier:@"SelectWebsitesButton"];
   v14[0] = v6;
-  v7 = [(SFHistoryViewController *)self _makeClearHistoryAction];
-  v14[1] = v7;
+  _makeClearHistoryAction = [(SFHistoryViewController *)self _makeClearHistoryAction];
+  v14[1] = _makeClearHistoryAction;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:2];
 
   v9 = [MEMORY[0x277D75710] menuWithChildren:v8];
@@ -1260,8 +1260,8 @@ void __50__SFHistoryViewController__makeClearHistoryAction__block_invoke(uint64_
 
 - (void)_configureClearHistoryButton
 {
-  v3 = [MEMORY[0x277D75348] systemRedColor];
-  [(UIBarButtonItem *)self->_clearHistoryButton setTintColor:v3];
+  systemRedColor = [MEMORY[0x277D75348] systemRedColor];
+  [(UIBarButtonItem *)self->_clearHistoryButton setTintColor:systemRedColor];
 
   [(UIBarButtonItem *)self->_clearHistoryButton setTarget:self];
   clearHistoryButton = self->_clearHistoryButton;
@@ -1269,17 +1269,17 @@ void __50__SFHistoryViewController__makeClearHistoryAction__block_invoke(uint64_
   [(UIBarButtonItem *)clearHistoryButton setAction:sel__showClearHistoryMenu_];
 }
 
-- (void)_showClearHistoryMenu:(id)a3
+- (void)_showClearHistoryMenu:(id)menu
 {
-  v4 = a3;
-  v9 = v4;
+  menuCopy = menu;
+  v9 = menuCopy;
   if (self->_isHistoryClearingRestricted)
   {
     v5 = [objc_alloc(MEMORY[0x277D4A740]) initWithPresenter:self];
     [v5 displayHistoryClearingDenialAlert];
 
 LABEL_7:
-    v4 = v9;
+    menuCopy = v9;
     goto LABEL_8;
   }
 
@@ -1292,7 +1292,7 @@ LABEL_7:
     WeakRetained = objc_loadWeakRetained(&self->_tabGroupProvider);
     [(SafariClearBrowsingDataController *)self->_clearBrowsingDataController setTabGroupProvider:WeakRetained];
 
-    v4 = v9;
+    menuCopy = v9;
   }
 
   if (self->_allowClearingHistory)
@@ -1442,9 +1442,9 @@ void __58__SFHistoryViewController_updateClearHistoryButtonEnabled__block_invoke
 
 - (void)_updateDeleteSelectedItemsButtonEnabled
 {
-  v5 = [(SFHistoryViewController *)self collectionView];
-  v3 = [v5 indexPathsForSelectedItems];
-  if ([v3 count])
+  collectionView = [(SFHistoryViewController *)self collectionView];
+  indexPathsForSelectedItems = [collectionView indexPathsForSelectedItems];
+  if ([indexPathsForSelectedItems count])
   {
     allowClearingHistory = self->_allowClearingHistory;
   }
@@ -1471,24 +1471,24 @@ void __58__SFHistoryViewController_updateClearHistoryButtonEnabled__block_invoke
       [(SFHistoryViewController *)self _moreMenuBarButtonItem];
     }
     v3 = ;
-    v4 = [(SFHistoryViewController *)self navigationItem];
-    [v4 setRightBarButtonItem:v3];
+    navigationItem = [(SFHistoryViewController *)self navigationItem];
+    [navigationItem setRightBarButtonItem:v3];
 
-    v5 = [(SFHistoryViewController *)self isEditing];
-    if (v5)
+    isEditing = [(SFHistoryViewController *)self isEditing];
+    if (isEditing)
     {
-      v7 = [(SFHistoryViewController *)self _deleteSelectedBarButtonItem];
+      _deleteSelectedBarButtonItem = [(SFHistoryViewController *)self _deleteSelectedBarButtonItem];
     }
 
     else
     {
-      v7 = 0;
+      _deleteSelectedBarButtonItem = 0;
     }
 
-    v6 = [(SFHistoryViewController *)self navigationItem];
-    [v6 setLeftBarButtonItem:v7];
+    navigationItem2 = [(SFHistoryViewController *)self navigationItem];
+    [navigationItem2 setLeftBarButtonItem:_deleteSelectedBarButtonItem];
 
-    if (v5)
+    if (isEditing)
     {
     }
   }
@@ -1521,14 +1521,14 @@ void __58__SFHistoryViewController_updateClearHistoryButtonEnabled__block_invoke
 
 - (void)_deleteCurrentlySelectedItems
 {
-  v3 = [(SFHistoryViewController *)self collectionView];
-  v4 = [v3 indexPathsForSelectedItems];
+  collectionView = [(SFHistoryViewController *)self collectionView];
+  indexPathsForSelectedItems = [collectionView indexPathsForSelectedItems];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __56__SFHistoryViewController__deleteCurrentlySelectedItems__block_invoke;
   v10[3] = &unk_2781DB978;
   v10[4] = self;
-  v5 = [v4 safari_mapObjectsUsingBlock:v10];
+  v5 = [indexPathsForSelectedItems safari_mapObjectsUsingBlock:v10];
 
   objc_initWeak(&location, self);
   historyDataSource = self->_historyDataSource;
@@ -1548,10 +1548,10 @@ void __56__SFHistoryViewController__deleteCurrentlySelectedItems__block_invoke_2
   [WeakRetained _updateDeleteSelectedItemsButtonEnabled];
 }
 
-- (id)_trailingSwipeActionConfigurationForIndexPath:(id)a3
+- (id)_trailingSwipeActionConfigurationForIndexPath:(id)path
 {
   v18[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  pathCopy = path;
   if (self->_allowClearingHistory)
   {
     objc_initWeak(&location, self);
@@ -1560,7 +1560,7 @@ void __56__SFHistoryViewController__deleteCurrentlySelectedItems__block_invoke_2
     aBlock[2] = __73__SFHistoryViewController__trailingSwipeActionConfigurationForIndexPath___block_invoke;
     aBlock[3] = &unk_2781DB9F0;
     objc_copyWeak(&v16, &location);
-    v15 = v4;
+    v15 = pathCopy;
     v5 = _Block_copy(aBlock);
     v6 = MEMORY[0x277D753C0];
     v7 = _WBSLocalizedString();
@@ -1618,14 +1618,14 @@ void __73__SFHistoryViewController__trailingSwipeActionConfigurationForIndexPath
   }
 }
 
-- (id)_previewMenuForHistoryItems:(id)a3
+- (id)_previewMenuForHistoryItems:(id)items
 {
   v46[3] = *MEMORY[0x277D85DE8];
-  v32 = a3;
-  v4 = [MEMORY[0x277CBEB18] array];
-  v5 = [MEMORY[0x277CBEB18] array];
-  v6 = [MEMORY[0x277CBEB18] array];
-  v7 = [v32 safari_mapObjectsUsingBlock:&__block_literal_global_210];
+  itemsCopy = items;
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
+  array3 = [MEMORY[0x277CBEB18] array];
+  v7 = [itemsCopy safari_mapObjectsUsingBlock:&__block_literal_global_210];
   v8 = MEMORY[0x277D750C8];
   v9 = _WBSLocalizedString();
   v10 = [MEMORY[0x277D755B8] systemImageNamed:@"doc.on.doc"];
@@ -1636,7 +1636,7 @@ void __73__SFHistoryViewController__trailingSwipeActionConfigurationForIndexPath
   v11 = v7;
   v45 = v11;
   v12 = [v8 actionWithTitle:v9 image:v10 identifier:0 handler:v44];
-  [v4 addObject:v12];
+  [array addObject:v12];
 
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x277D85DD0];
@@ -1655,19 +1655,19 @@ void __73__SFHistoryViewController__trailingSwipeActionConfigurationForIndexPath
   v16 = v14;
   v39 = v16;
   v17 = [v15 _sf_openInNewTabActionWithHandler:v38];
-  [v5 addObject:v17];
+  [array2 addObject:v17];
 
   if ([v13 count] == 1)
   {
-    v18 = [(SFHistoryViewController *)self tabGroupProvider];
-    v19 = [v13 firstObject];
+    tabGroupProvider = [(SFHistoryViewController *)self tabGroupProvider];
+    firstObject = [v13 firstObject];
     v36[0] = MEMORY[0x277D85DD0];
     v36[1] = 3221225472;
     v36[2] = __55__SFHistoryViewController__previewMenuForHistoryItems___block_invoke_6;
     v36[3] = &unk_2781D87B0;
     v37 = v16;
-    v20 = [v18 openInTabGroupMenuWithNewTabGroupName:0 URL:v19 descendantCount:0 handler:v36];
-    [v5 addObject:v20];
+    v20 = [tabGroupProvider openInTabGroupMenuWithNewTabGroupName:0 URL:firstObject descendantCount:0 handler:v36];
+    [array2 addObject:v20];
   }
 
   if (self->_allowClearingHistory)
@@ -1680,22 +1680,22 @@ void __73__SFHistoryViewController__trailingSwipeActionConfigurationForIndexPath
     v33[2] = __55__SFHistoryViewController__previewMenuForHistoryItems___block_invoke_7;
     v33[3] = &unk_2781DA008;
     objc_copyWeak(&v35, &location);
-    v34 = v32;
+    v34 = itemsCopy;
     v24 = [v21 actionWithTitle:v22 image:v23 identifier:0 handler:v33];
 
     [v24 setAttributes:2];
     [v24 setAccessibilityIdentifier:@"DeleteHistoryItemButton"];
-    [v6 addObject:v24];
+    [array3 addObject:v24];
 
     objc_destroyWeak(&v35);
   }
 
   v25 = MEMORY[0x277D75710];
-  v26 = [MEMORY[0x277D75710] menuWithTitle:&stru_2827BF158 image:0 identifier:0 options:1 children:v4];
+  v26 = [MEMORY[0x277D75710] menuWithTitle:&stru_2827BF158 image:0 identifier:0 options:1 children:array];
   v46[0] = v26;
-  v27 = [MEMORY[0x277D75710] menuWithTitle:&stru_2827BF158 image:0 identifier:0 options:1 children:v5];
+  v27 = [MEMORY[0x277D75710] menuWithTitle:&stru_2827BF158 image:0 identifier:0 options:1 children:array2];
   v46[1] = v27;
-  v28 = [MEMORY[0x277D75710] menuWithTitle:&stru_2827BF158 image:0 identifier:0 options:1 children:v6];
+  v28 = [MEMORY[0x277D75710] menuWithTitle:&stru_2827BF158 image:0 identifier:0 options:1 children:array3];
   v46[2] = v28;
   v29 = [MEMORY[0x277CBEA60] arrayWithObjects:v46 count:3];
   v30 = [v25 menuWithTitle:&stru_2827BF158 children:v29];
@@ -1763,21 +1763,21 @@ void __55__SFHistoryViewController__previewMenuForHistoryItems___block_invoke_7(
   }
 }
 
-- (void)_deselectHistoryItemsInSession:(id)a3
+- (void)_deselectHistoryItemsInSession:(id)session
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  sessionCopy = session;
   if ([(SFHistoryViewController *)self isEditing])
   {
-    v5 = [(SFHistoryViewController *)self collectionView];
-    v6 = [v5 indexPathsForSelectedItems];
+    collectionView = [(SFHistoryViewController *)self collectionView];
+    indexPathsForSelectedItems = [collectionView indexPathsForSelectedItems];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __58__SFHistoryViewController__deselectHistoryItemsInSession___block_invoke;
     v17[3] = &unk_2781DBA18;
     v17[4] = self;
-    v18 = v4;
-    v7 = [v6 safari_filterObjectsUsingBlock:v17];
+    v18 = sessionCopy;
+    v7 = [indexPathsForSelectedItems safari_filterObjectsUsingBlock:v17];
 
     v15 = 0u;
     v16 = 0u;
@@ -1799,7 +1799,7 @@ void __55__SFHistoryViewController__previewMenuForHistoryItems___block_invoke_7(
             objc_enumerationMutation(v8);
           }
 
-          [v5 deselectItemAtIndexPath:*(*(&v13 + 1) + 8 * v12++) animated:{0, v13}];
+          [collectionView deselectItemAtIndexPath:*(*(&v13 + 1) + 8 * v12++) animated:{0, v13}];
         }
 
         while (v10 != v12);
@@ -1822,24 +1822,24 @@ uint64_t __58__SFHistoryViewController__deselectHistoryItemsInSession___block_in
   return v5;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
   v18[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(UICollectionViewDiffableDataSource *)self->_collectionDataSource itemIdentifierForIndexPath:v7];
-  v9 = [(SFHistoryViewController *)self isEditing];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(UICollectionViewDiffableDataSource *)self->_collectionDataSource itemIdentifierForIndexPath:pathCopy];
+  isEditing = [(SFHistoryViewController *)self isEditing];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  if (v9)
+  if (isEditing)
   {
     if ((isKindOfClass & 1) == 0)
     {
-      [v6 deselectItemAtIndexPath:v7 animated:0];
+      [viewCopy deselectItemAtIndexPath:pathCopy animated:0];
     }
 
     [(SFHistoryViewController *)self _updateDeleteSelectedItemsButtonEnabled];
-    v18[0] = v7;
+    v18[0] = pathCopy;
     v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:1];
     [(SFHistoryViewController *)self _addIndexPathsOfItemsNeedingReconfiguration:v11];
   }
@@ -1850,52 +1850,52 @@ uint64_t __58__SFHistoryViewController__deselectHistoryItemsInSession___block_in
     {
       v12 = MEMORY[0x277D28F40];
       v13 = v8;
-      v14 = [v12 builder];
+      builder = [v12 builder];
       v15 = [v13 url];
 
-      v16 = [v14 navigationIntentWithHistoryURL:v15];
+      v16 = [builder navigationIntentWithHistoryURL:v15];
 
       [v16 setShouldDismissSidebarOnLoad:1];
       WeakRetained = objc_loadWeakRetained(&self->_navigationIntentHandler);
       [WeakRetained dispatchNavigationIntent:v16];
     }
 
-    [v6 deselectItemAtIndexPath:v7 animated:1];
+    [viewCopy deselectItemAtIndexPath:pathCopy animated:1];
   }
 }
 
-- (void)collectionView:(id)a3 didDeselectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didDeselectItemAtIndexPath:(id)path
 {
   v7[1] = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  pathCopy = path;
   if ([(SFHistoryViewController *)self isEditing])
   {
     [(SFHistoryViewController *)self _updateDeleteSelectedItemsButtonEnabled];
-    v7[0] = v5;
+    v7[0] = pathCopy;
     v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v7 count:1];
     [(SFHistoryViewController *)self _addIndexPathsOfItemsNeedingReconfiguration:v6];
   }
 }
 
-- (id)collectionView:(id)a3 contextMenuConfigurationForItemsAtIndexPaths:(id)a4 point:(CGPoint)a5
+- (id)collectionView:(id)view contextMenuConfigurationForItemsAtIndexPaths:(id)paths point:(CGPoint)point
 {
   v28[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if ([v8 count])
+  viewCopy = view;
+  pathsCopy = paths;
+  if ([pathsCopy count])
   {
-    if ([v8 count] == 1)
+    if ([pathsCopy count] == 1)
     {
       collectionDataSource = self->_collectionDataSource;
-      v10 = [v8 firstObject];
-      v11 = [(UICollectionViewDiffableDataSource *)collectionDataSource itemIdentifierForIndexPath:v10];
+      firstObject = [pathsCopy firstObject];
+      v11 = [(UICollectionViewDiffableDataSource *)collectionDataSource itemIdentifierForIndexPath:firstObject];
 
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
       if (isKindOfClass)
       {
-        v13 = [v11 historyItems];
-        v14 = [v13 array];
+        historyItems = [v11 historyItems];
+        array = [historyItems array];
       }
 
       else
@@ -1904,12 +1904,12 @@ uint64_t __58__SFHistoryViewController__deselectHistoryItemsInSession___block_in
         if (objc_opt_isKindOfClass())
         {
           v28[0] = v11;
-          v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v28 count:1];
+          array = [MEMORY[0x277CBEA60] arrayWithObjects:v28 count:1];
         }
 
         else
         {
-          v14 = 0;
+          array = 0;
         }
       }
     }
@@ -1921,11 +1921,11 @@ uint64_t __58__SFHistoryViewController__deselectHistoryItemsInSession___block_in
       v27[2] = __93__SFHistoryViewController_collectionView_contextMenuConfigurationForItemsAtIndexPaths_point___block_invoke;
       v27[3] = &unk_2781DB978;
       v27[4] = self;
-      v14 = [v8 safari_mapObjectsUsingBlock:v27];
+      array = [pathsCopy safari_mapObjectsUsingBlock:v27];
       isKindOfClass = 0;
     }
 
-    if ([v14 count])
+    if ([array count])
     {
       objc_initWeak(&location, self);
       v16 = MEMORY[0x277D753B0];
@@ -1935,7 +1935,7 @@ uint64_t __58__SFHistoryViewController__deselectHistoryItemsInSession___block_in
       v22[3] = &unk_2781DBA40;
       objc_copyWeak(&v24, &location);
       v25 = isKindOfClass & 1;
-      v17 = v14;
+      v17 = array;
       v23 = v17;
       v19[0] = MEMORY[0x277D85DD0];
       v19[1] = 3221225472;
@@ -2018,21 +2018,21 @@ id __93__SFHistoryViewController_collectionView_contextMenuConfigurationForItems
   return v4;
 }
 
-- (void)collectionView:(id)a3 willPerformPreviewActionForMenuWithConfiguration:(id)a4 animator:(id)a5
+- (void)collectionView:(id)view willPerformPreviewActionForMenuWithConfiguration:(id)configuration animator:(id)animator
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  viewCopy = view;
+  configurationCopy = configuration;
+  animatorCopy = animator;
   objc_initWeak(&location, self);
-  v11 = [v10 previewViewController];
+  previewViewController = [animatorCopy previewViewController];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __100__SFHistoryViewController_collectionView_willPerformPreviewActionForMenuWithConfiguration_animator___block_invoke;
   v13[3] = &unk_2781D4F30;
   objc_copyWeak(&v15, &location);
-  v12 = v11;
+  v12 = previewViewController;
   v14 = v12;
-  [v10 addAnimations:v13];
+  [animatorCopy addAnimations:v13];
 
   objc_destroyWeak(&v15);
   objc_destroyWeak(&location);
@@ -2051,15 +2051,15 @@ void __100__SFHistoryViewController_collectionView_willPerformPreviewActionForMe
   }
 }
 
-- (id)collectionView:(id)a3 contextMenuConfiguration:(id)a4 dismissalPreviewForItemAtIndexPath:(id)a5
+- (id)collectionView:(id)view contextMenuConfiguration:(id)configuration dismissalPreviewForItemAtIndexPath:(id)path
 {
-  v6 = [(UICollectionViewDiffableDataSource *)self->_collectionDataSource itemIdentifierForIndexPath:a5, a4];
+  configuration = [(UICollectionViewDiffableDataSource *)self->_collectionDataSource itemIdentifierForIndexPath:path, configuration];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [(SFHistoryViewController *)self collectionView];
-    v8 = [v7 indexPathsForSelectedItems];
-    v9 = [v8 count];
+    collectionView = [(SFHistoryViewController *)self collectionView];
+    indexPathsForSelectedItems = [collectionView indexPathsForSelectedItems];
+    v9 = [indexPathsForSelectedItems count];
 
     if (v9 <= 1)
     {
@@ -2071,12 +2071,12 @@ void __100__SFHistoryViewController_collectionView_willPerformPreviewActionForMe
   return 0;
 }
 
-- (id)collectionView:(id)a3 itemsForBeginningDragSession:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view itemsForBeginningDragSession:(id)session atIndexPath:(id)path
 {
   v21[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
-  v9 = [(UICollectionViewDiffableDataSource *)self->_collectionDataSource itemIdentifierForIndexPath:v8];
+  viewCopy = view;
+  pathCopy = path;
+  v9 = [(UICollectionViewDiffableDataSource *)self->_collectionDataSource itemIdentifierForIndexPath:pathCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -2086,12 +2086,12 @@ void __100__SFHistoryViewController_collectionView_willPerformPreviewActionForMe
     v13 = [v11 initWithObject:v12];
 
     v14 = [objc_alloc(MEMORY[0x277D75470]) initWithItemProvider:v13];
-    v15 = [v7 cellForItemAtIndexPath:v8];
+    v15 = [viewCopy cellForItemAtIndexPath:pathCopy];
     v16 = v15;
     if (v15)
     {
-      v17 = [v15 contentView];
-      v18 = [v14 safari_itemWithCustomBackgroundForPreviewView:v17];
+      contentView = [v15 contentView];
+      v18 = [v14 safari_itemWithCustomBackgroundForPreviewView:contentView];
 
       v14 = v18;
     }
@@ -2108,26 +2108,26 @@ void __100__SFHistoryViewController_collectionView_willPerformPreviewActionForMe
   return v19;
 }
 
-- (void)collectionView:(id)a3 dragSessionWillBegin:(id)a4
+- (void)collectionView:(id)view dragSessionWillBegin:(id)begin
 {
-  v4 = [MEMORY[0x277D499B8] sharedLogger];
-  [v4 didStartDragWithDragContentType:11];
+  mEMORY[0x277D499B8] = [MEMORY[0x277D499B8] sharedLogger];
+  [mEMORY[0x277D499B8] didStartDragWithDragContentType:11];
 }
 
-- (void)historyViewDataSource:(id)a3 didComputeSessions:(id)a4
+- (void)historyViewDataSource:(id)source didComputeSessions:(id)sessions
 {
-  v8 = a4;
-  v6 = [(SFHistoryViewController *)self viewIfLoaded];
-  v7 = [v6 window];
+  sessionsCopy = sessions;
+  viewIfLoaded = [(SFHistoryViewController *)self viewIfLoaded];
+  window = [viewIfLoaded window];
 
-  if (v7)
+  if (window)
   {
-    [(SFHistoryViewController *)self _reloadWithSessions:v8 animated:self->_hasLoadedHistory];
+    [(SFHistoryViewController *)self _reloadWithSessions:sessionsCopy animated:self->_hasLoadedHistory];
   }
 
   else
   {
-    objc_storeStrong(&self->_sessionsToApplyOnAppear, a4);
+    objc_storeStrong(&self->_sessionsToApplyOnAppear, sessions);
   }
 
   [(SFHistoryViewController *)self updateClearHistoryButtonEnabled];
@@ -2139,8 +2139,8 @@ void __100__SFHistoryViewController_collectionView_willPerformPreviewActionForMe
   if (self->_needsContentOffsetUpdate && self->_hasLoadedHistory)
   {
     self->_needsContentOffsetUpdate = 0;
-    v3 = [MEMORY[0x277CBEBD0] safari_browserDefaults];
-    v4 = [v3 objectForKey:@"SavedCollectionViewScrollState-HistoryView"];
+    safari_browserDefaults = [MEMORY[0x277CBEBD0] safari_browserDefaults];
+    v4 = [safari_browserDefaults objectForKey:@"SavedCollectionViewScrollState-HistoryView"];
 
     if (v4)
     {
@@ -2159,18 +2159,18 @@ void __100__SFHistoryViewController_collectionView_willPerformPreviewActionForMe
 - (void)_saveViewState
 {
   v50[6] = *MEMORY[0x277D85DE8];
-  v3 = [(UICollectionViewDiffableDataSource *)self->_collectionDataSource snapshot];
-  v4 = [v3 numberOfItems];
+  snapshot = [(UICollectionViewDiffableDataSource *)self->_collectionDataSource snapshot];
+  numberOfItems = [snapshot numberOfItems];
 
-  if (v4)
+  if (numberOfItems)
   {
-    v5 = [(SFHistoryViewController *)self collectionView];
-    v6 = [(UICollectionViewDiffableDataSource *)self->_collectionDataSource snapshot];
-    v7 = [v6 itemIdentifiers];
-    v8 = [v7 lastObject];
+    collectionView = [(SFHistoryViewController *)self collectionView];
+    snapshot2 = [(UICollectionViewDiffableDataSource *)self->_collectionDataSource snapshot];
+    itemIdentifiers = [snapshot2 itemIdentifiers];
+    lastObject = [itemIdentifiers lastObject];
 
-    v9 = [(UICollectionViewDiffableDataSource *)self->_collectionDataSource indexPathForItemIdentifier:v8];
-    v10 = [v5 layoutAttributesForItemAtIndexPath:v9];
+    v9 = [(UICollectionViewDiffableDataSource *)self->_collectionDataSource indexPathForItemIdentifier:lastObject];
+    v10 = [collectionView layoutAttributesForItemAtIndexPath:v9];
     [v10 frame];
     v12 = v11;
     v14 = v13;
@@ -2182,17 +2182,17 @@ void __100__SFHistoryViewController_collectionView_willPerformPreviewActionForMe
     v51.size.width = v16;
     v51.size.height = v18;
     MaxY = CGRectGetMaxY(v51);
-    [v5 frame];
+    [collectionView frame];
     if (MaxY >= CGRectGetMaxY(v52))
     {
-      [v5 contentOffset];
+      [collectionView contentOffset];
       v25 = v24;
       v27 = v26;
-      v28 = [v5 indexPathsForVisibleItems];
-      v29 = [v28 sortedArrayUsingSelector:sel_compare_];
-      v20 = [v29 firstObject];
+      indexPathsForVisibleItems = [collectionView indexPathsForVisibleItems];
+      v29 = [indexPathsForVisibleItems sortedArrayUsingSelector:sel_compare_];
+      firstObject = [v29 firstObject];
 
-      v30 = [v5 layoutAttributesForItemAtIndexPath:v20];
+      v30 = [collectionView layoutAttributesForItemAtIndexPath:firstObject];
       [v30 frame];
       v32 = v31;
       v34 = v33;
@@ -2205,23 +2205,23 @@ void __100__SFHistoryViewController_collectionView_willPerformPreviewActionForMe
       v53.size.height = v38;
       v54 = CGRectOffset(v53, -v25, -v27);
       MinY = CGRectGetMinY(v54);
-      [v5 adjustedContentInset];
+      [collectionView adjustedContentInset];
       v41 = MinY - v40;
       v49[0] = @"TopVisibleCellSection";
-      v21 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v20, "section")}];
-      v50[0] = v21;
+      allObjects3 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(firstObject, "section")}];
+      v50[0] = allObjects3;
       v49[1] = @"TopVisibleCellRow";
-      v22 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v20, "row")}];
+      v22 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(firstObject, "row")}];
       v50[1] = v22;
       v49[2] = @"TopVisibleCellOffset";
       v42 = [MEMORY[0x277CCABB0] numberWithDouble:v41];
       v50[2] = v42;
       v49[3] = @"savedExpandedSections";
-      v43 = [(NSMutableSet *)self->_expandedSessionIdentifiers allObjects];
-      v50[3] = v43;
+      allObjects = [(NSMutableSet *)self->_expandedSessionIdentifiers allObjects];
+      v50[3] = allObjects;
       v49[4] = @"savedCollapsedSections";
-      v44 = [(NSMutableSet *)self->_collapsedSessionIdentifiers allObjects];
-      v50[4] = v44;
+      allObjects2 = [(NSMutableSet *)self->_collapsedSessionIdentifiers allObjects];
+      v50[4] = allObjects2;
       v49[5] = @"Timestamp";
       v45 = [MEMORY[0x277CBEAA8] now];
       v50[5] = v45;
@@ -2230,44 +2230,44 @@ void __100__SFHistoryViewController_collectionView_willPerformPreviewActionForMe
 
     else
     {
-      v20 = [(NSMutableSet *)self->_expandedSessionIdentifiers allObjects];
-      v48[0] = v20;
+      firstObject = [(NSMutableSet *)self->_expandedSessionIdentifiers allObjects];
+      v48[0] = firstObject;
       v47[1] = @"savedCollapsedSections";
-      v21 = [(NSMutableSet *)self->_collapsedSessionIdentifiers allObjects];
-      v48[1] = v21;
+      allObjects3 = [(NSMutableSet *)self->_collapsedSessionIdentifiers allObjects];
+      v48[1] = allObjects3;
       v47[2] = @"Timestamp";
       v22 = [MEMORY[0x277CBEAA8] now];
       v48[2] = v22;
       v23 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v48 forKeys:v47 count:3];
     }
 
-    v46 = [MEMORY[0x277CBEBD0] safari_browserDefaults];
-    [v46 setObject:v23 forKey:@"SavedCollectionViewScrollState-HistoryView"];
+    safari_browserDefaults = [MEMORY[0x277CBEBD0] safari_browserDefaults];
+    [safari_browserDefaults setObject:v23 forKey:@"SavedCollectionViewScrollState-HistoryView"];
   }
 }
 
 - (id)_savedStateDictionary
 {
-  v2 = [MEMORY[0x277CBEBD0] safari_browserDefaults];
-  v3 = [v2 objectForKey:@"SavedCollectionViewScrollState-HistoryView"];
+  safari_browserDefaults = [MEMORY[0x277CBEBD0] safari_browserDefaults];
+  v3 = [safari_browserDefaults objectForKey:@"SavedCollectionViewScrollState-HistoryView"];
 
   if (v3)
   {
-    v4 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     v5 = [v3 objectForKeyedSubscript:@"Timestamp"];
-    [v4 timeIntervalSinceDate:v5];
+    [date timeIntervalSinceDate:v5];
     v7 = v6;
 
-    v8 = [MEMORY[0x277CBEBD0] safari_browserDefaults];
-    v9 = v8;
+    safari_browserDefaults2 = [MEMORY[0x277CBEBD0] safari_browserDefaults];
+    v9 = safari_browserDefaults2;
     if (v7 <= 480.0)
     {
-      v10 = [v8 objectForKey:@"SavedCollectionViewScrollState-HistoryView"];
+      v10 = [safari_browserDefaults2 objectForKey:@"SavedCollectionViewScrollState-HistoryView"];
     }
 
     else
     {
-      [v8 removeObjectForKey:@"SavedCollectionViewScrollState-HistoryView"];
+      [safari_browserDefaults2 removeObjectForKey:@"SavedCollectionViewScrollState-HistoryView"];
       v10 = 0;
     }
   }
@@ -2282,38 +2282,38 @@ void __100__SFHistoryViewController_collectionView_willPerformPreviewActionForMe
 
 - (void)_restoreScrollPositionIfNeeded
 {
-  v3 = [(SFHistoryViewController *)self _savedStateDictionary];
-  v24 = v3;
-  if (v3)
+  _savedStateDictionary = [(SFHistoryViewController *)self _savedStateDictionary];
+  v24 = _savedStateDictionary;
+  if (_savedStateDictionary)
   {
-    v4 = [v3 objectForKeyedSubscript:@"TopVisibleCellRow"];
-    v5 = [v4 integerValue];
+    v4 = [_savedStateDictionary objectForKeyedSubscript:@"TopVisibleCellRow"];
+    integerValue = [v4 integerValue];
 
     v6 = [v24 objectForKeyedSubscript:@"TopVisibleCellSection"];
-    v7 = [v6 integerValue];
+    integerValue2 = [v6 integerValue];
 
-    v8 = [MEMORY[0x277CCAA70] indexPathForRow:v5 inSection:v7];
-    v9 = [(UICollectionViewDiffableDataSource *)self->_collectionDataSource snapshot];
-    v10 = [v8 section];
-    if (v10 >= [v9 numberOfSections] || (v11 = objc_msgSend(v8, "row"), objc_msgSend(v9, "sectionIdentifiers"), v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "objectAtIndexedSubscript:", objc_msgSend(v8, "section")), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v9, "numberOfItemsInSection:", v13), v13, v12, v11 >= v14))
+    v8 = [MEMORY[0x277CCAA70] indexPathForRow:integerValue inSection:integerValue2];
+    snapshot = [(UICollectionViewDiffableDataSource *)self->_collectionDataSource snapshot];
+    section = [v8 section];
+    if (section >= [snapshot numberOfSections] || (v11 = objc_msgSend(v8, "row"), objc_msgSend(snapshot, "sectionIdentifiers"), v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "objectAtIndexedSubscript:", objc_msgSend(v8, "section")), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(snapshot, "numberOfItemsInSection:", v13), v13, v12, v11 >= v14))
     {
       [(SFHistoryViewController *)self _adjustContentOffsetHidingSearchBar];
     }
 
     else
     {
-      v15 = [(SFHistoryViewController *)self collectionView];
-      [v15 scrollToItemAtIndexPath:v8 atScrollPosition:1 animated:0];
-      [v15 contentOffset];
+      collectionView = [(SFHistoryViewController *)self collectionView];
+      [collectionView scrollToItemAtIndexPath:v8 atScrollPosition:1 animated:0];
+      [collectionView contentOffset];
       v17 = v16;
       v19 = v18;
       v20 = [v24 objectForKey:@"TopVisibleCellOffset"];
       [v20 doubleValue];
       v22 = v19 - v21;
 
-      [v15 setContentOffset:0 animated:{v17, v22}];
-      v23 = [MEMORY[0x277CBEBD0] safari_browserDefaults];
-      [v23 removeObjectForKey:@"SavedCollectionViewScrollState-HistoryView"];
+      [collectionView setContentOffset:0 animated:{v17, v22}];
+      safari_browserDefaults = [MEMORY[0x277CBEBD0] safari_browserDefaults];
+      [safari_browserDefaults removeObjectForKey:@"SavedCollectionViewScrollState-HistoryView"];
     }
   }
 
@@ -2327,15 +2327,15 @@ void __100__SFHistoryViewController_collectionView_willPerformPreviewActionForMe
 {
   if (!self->_shouldUseSearchControllerInNavigationItem)
   {
-    v8 = [(UICollectionViewDiffableDataSource *)self->_collectionDataSource snapshot];
-    if ([v8 numberOfItems])
+    snapshot = [(UICollectionViewDiffableDataSource *)self->_collectionDataSource snapshot];
+    if ([snapshot numberOfItems])
     {
-      v4 = [v8 itemIdentifiers];
-      v5 = [v4 safari_firstObjectPassingTest:&__block_literal_global_250];
+      itemIdentifiers = [snapshot itemIdentifiers];
+      v5 = [itemIdentifiers safari_firstObjectPassingTest:&__block_literal_global_250];
 
-      v6 = [(SFHistoryViewController *)self collectionView];
+      collectionView = [(SFHistoryViewController *)self collectionView];
       v7 = [(UICollectionViewDiffableDataSource *)self->_collectionDataSource indexPathForItemIdentifier:v5];
-      [v6 scrollToItemAtIndexPath:v7 atScrollPosition:1 animated:0];
+      [collectionView scrollToItemAtIndexPath:v7 atScrollPosition:1 animated:0];
     }
   }
 }
@@ -2368,12 +2368,12 @@ uint64_t __62__SFHistoryViewController__adjustContentOffsetHidingSearchBar__bloc
   return v5;
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
   if (!self->_shouldUseSearchControllerInNavigationItem)
   {
-    y = a5->y;
-    v8 = [(SFHistoryViewController *)self collectionView:a3];
+    y = offset->y;
+    v8 = [(SFHistoryViewController *)self collectionView:dragging];
     [v8 adjustedContentInset];
     v10 = v9;
 
@@ -2386,7 +2386,7 @@ uint64_t __62__SFHistoryViewController__adjustContentOffsetHidingSearchBar__bloc
       v13 = -v10;
     }
 
-    a5->y = v13;
+    offset->y = v13;
   }
 }
 

@@ -1,19 +1,19 @@
 @interface VUIDebugContainerView
 - (void)layoutSubviews;
-- (void)setCollectionView:(id)a3;
+- (void)setCollectionView:(id)view;
 @end
 
 @implementation VUIDebugContainerView
 
-- (void)setCollectionView:(id)a3
+- (void)setCollectionView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   collectionView = self->_collectionView;
-  v7 = v5;
-  if (collectionView != v5)
+  v7 = viewCopy;
+  if (collectionView != viewCopy)
   {
     [(UICollectionView *)collectionView removeFromSuperview];
-    objc_storeStrong(&self->_collectionView, a3);
+    objc_storeStrong(&self->_collectionView, view);
     if (self->_collectionView)
     {
       [(VUIDebugContainerView *)self addSubview:?];

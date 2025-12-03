@@ -1,15 +1,15 @@
 @interface KCSharingParticipant
-- (BOOL)isEqual:(id)a3;
-- (KCSharingParticipant)initWithCoder:(id)a3;
-- (KCSharingParticipant)initWithHandle:(id)a3 permissionLevel:(int64_t)a4;
-- (KCSharingParticipant)initWithParticipantID:(id)a3 handle:(id)a4 permissionLevel:(int64_t)a5 isCurrentUser:(BOOL)a6 inviteStatus:(int64_t)a7 sharingInvitationData:(id)a8;
+- (BOOL)isEqual:(id)equal;
+- (KCSharingParticipant)initWithCoder:(id)coder;
+- (KCSharingParticipant)initWithHandle:(id)handle permissionLevel:(int64_t)level;
+- (KCSharingParticipant)initWithParticipantID:(id)d handle:(id)handle permissionLevel:(int64_t)level isCurrentUser:(BOOL)user inviteStatus:(int64_t)status sharingInvitationData:(id)data;
 - (KCSharingParticipant)invitedBy;
 - (NSDictionary)JSONObject;
 - (NSString)longDescription;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation KCSharingParticipant
@@ -21,36 +21,36 @@
   return WeakRetained;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
-  if ([v6 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v7 = v6;
-    v8 = [(KCSharingParticipant *)self sharingInvitationData];
-    if (v8)
+    v7 = equalCopy;
+    sharingInvitationData = [(KCSharingParticipant *)self sharingInvitationData];
+    if (sharingInvitationData)
     {
-      v9 = [(KCSharingParticipant *)self sharingInvitationData];
-      v3 = [v7 sharingInvitationData];
-      v10 = [v9 isEqualToData:v3];
+      sharingInvitationData2 = [(KCSharingParticipant *)self sharingInvitationData];
+      sharingInvitationData3 = [v7 sharingInvitationData];
+      v10 = [sharingInvitationData2 isEqualToData:sharingInvitationData3];
     }
 
     else
     {
-      v9 = [v7 sharingInvitationData];
-      v10 = v9 == 0;
+      sharingInvitationData2 = [v7 sharingInvitationData];
+      v10 = sharingInvitationData2 == 0;
     }
 
-    v12 = [(KCSharingParticipant *)self participantID];
-    v13 = [v7 participantID];
-    if (v12 == v13 || (-[KCSharingParticipant participantID](self, "participantID"), v3 = objc_claimAutoreleasedReturnValue(), [v7 participantID], v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v3, "isEqualToString:", v4)))
+    participantID = [(KCSharingParticipant *)self participantID];
+    participantID2 = [v7 participantID];
+    if (participantID == participantID2 || (-[KCSharingParticipant participantID](self, "participantID"), sharingInvitationData3 = objc_claimAutoreleasedReturnValue(), [v7 participantID], v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(sharingInvitationData3, "isEqualToString:", v4)))
     {
-      v14 = [(KCSharingParticipant *)self handle];
-      v15 = [v7 handle];
-      if ([v14 isEqual:v15] && (v20 = v10, v16 = -[KCSharingParticipant permissionLevel](self, "permissionLevel"), v16 == objc_msgSend(v7, "permissionLevel")) && (v17 = -[KCSharingParticipant isCurrentUser](self, "isCurrentUser"), v17 == objc_msgSend(v7, "isCurrentUser")))
+      handle = [(KCSharingParticipant *)self handle];
+      handle2 = [v7 handle];
+      if ([handle isEqual:handle2] && (v20 = v10, v16 = -[KCSharingParticipant permissionLevel](self, "permissionLevel"), v16 == objc_msgSend(v7, "permissionLevel")) && (v17 = -[KCSharingParticipant isCurrentUser](self, "isCurrentUser"), v17 == objc_msgSend(v7, "isCurrentUser")))
       {
-        v19 = [(KCSharingParticipant *)self inviteStatus];
-        v11 = (v19 == [v7 inviteStatus]) & v20;
+        inviteStatus = [(KCSharingParticipant *)self inviteStatus];
+        v11 = (inviteStatus == [v7 inviteStatus]) & v20;
       }
 
       else
@@ -58,7 +58,7 @@
         v11 = 0;
       }
 
-      if (v12 == v13)
+      if (participantID == participantID2)
       {
         goto LABEL_15;
       }
@@ -81,55 +81,55 @@ LABEL_16:
 
 - (unint64_t)hash
 {
-  v3 = [(KCSharingParticipant *)self participantID];
-  v4 = [v3 hash];
-  v5 = [(KCSharingParticipant *)self handle];
-  v6 = [v5 hash] ^ v4;
+  participantID = [(KCSharingParticipant *)self participantID];
+  v4 = [participantID hash];
+  handle = [(KCSharingParticipant *)self handle];
+  v6 = [handle hash] ^ v4;
   v7 = v6 ^ [(KCSharingParticipant *)self permissionLevel];
-  v8 = [(KCSharingParticipant *)self isCurrentUser];
-  v9 = v7 ^ v8 ^ [(KCSharingParticipant *)self inviteStatus];
-  v10 = [(KCSharingParticipant *)self sharingInvitationData];
-  v11 = [v10 hash];
+  isCurrentUser = [(KCSharingParticipant *)self isCurrentUser];
+  v9 = v7 ^ isCurrentUser ^ [(KCSharingParticipant *)self inviteStatus];
+  sharingInvitationData = [(KCSharingParticipant *)self sharingInvitationData];
+  v11 = [sharingInvitationData hash];
 
   return v9 ^ v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(KCSharingParticipant *)self participantID];
-  [v4 encodeObject:v5 forKey:@"participantID"];
+  coderCopy = coder;
+  participantID = [(KCSharingParticipant *)self participantID];
+  [coderCopy encodeObject:participantID forKey:@"participantID"];
 
-  v6 = [(KCSharingParticipant *)self handle];
-  [v4 encodeObject:v6 forKey:@"handle"];
+  handle = [(KCSharingParticipant *)self handle];
+  [coderCopy encodeObject:handle forKey:@"handle"];
 
-  [v4 encodeInt64:-[KCSharingParticipant permissionLevel](self forKey:{"permissionLevel"), @"permissionLevel"}];
-  [v4 encodeBool:-[KCSharingParticipant isCurrentUser](self forKey:{"isCurrentUser"), @"isCurrentUser"}];
-  [v4 encodeInt64:-[KCSharingParticipant inviteStatus](self forKey:{"inviteStatus"), @"inviteStatus"}];
-  v7 = [(KCSharingParticipant *)self sharingInvitationData];
-  [v4 encodeObject:v7 forKey:@"inviteData"];
+  [coderCopy encodeInt64:-[KCSharingParticipant permissionLevel](self forKey:{"permissionLevel"), @"permissionLevel"}];
+  [coderCopy encodeBool:-[KCSharingParticipant isCurrentUser](self forKey:{"isCurrentUser"), @"isCurrentUser"}];
+  [coderCopy encodeInt64:-[KCSharingParticipant inviteStatus](self forKey:{"inviteStatus"), @"inviteStatus"}];
+  sharingInvitationData = [(KCSharingParticipant *)self sharingInvitationData];
+  [coderCopy encodeObject:sharingInvitationData forKey:@"inviteData"];
 }
 
-- (KCSharingParticipant)initWithCoder:(id)a3
+- (KCSharingParticipant)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = KCSharingParticipant;
   v5 = [(KCSharingParticipant *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"participantID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"participantID"];
     participantID = v5->_participantID;
     v5->_participantID = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"handle"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"handle"];
     handle = v5->_handle;
     v5->_handle = v8;
 
-    v5->_permissionLevel = [v4 decodeInt64ForKey:@"permissionLevel"];
-    v5->_isCurrentUser = [v4 decodeBoolForKey:@"isCurrentUser"];
-    v5->_inviteStatus = [v4 decodeInt64ForKey:@"inviteStatus"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"inviteData"];
+    v5->_permissionLevel = [coderCopy decodeInt64ForKey:@"permissionLevel"];
+    v5->_isCurrentUser = [coderCopy decodeBoolForKey:@"isCurrentUser"];
+    v5->_inviteStatus = [coderCopy decodeInt64ForKey:@"inviteStatus"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"inviteData"];
     sharingInvitationData = v5->_sharingInvitationData;
     v5->_sharingInvitationData = v10;
   }
@@ -141,17 +141,17 @@ LABEL_16:
 {
   v19[4] = *MEMORY[0x1E69E9840];
   v18[0] = @"handle";
-  v3 = [(KCSharingParticipant *)self handle];
-  v19[0] = v3;
+  handle = [(KCSharingParticipant *)self handle];
+  v19[0] = handle;
   v18[1] = @"permissionLevel";
-  v4 = [(KCSharingParticipant *)self permissionLevel];
+  permissionLevel = [(KCSharingParticipant *)self permissionLevel];
   v5 = @"readOnly";
-  if (v4 == 1)
+  if (permissionLevel == 1)
   {
     v5 = @"readWrite";
   }
 
-  if (v4 == 2)
+  if (permissionLevel == 2)
   {
     v5 = @"owner";
   }
@@ -162,26 +162,26 @@ LABEL_16:
   v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[KCSharingParticipant isCurrentUser](self, "isCurrentUser")}];
   v19[2] = v7;
   v18[3] = @"inviteStatus";
-  v8 = [(KCSharingParticipant *)self inviteStatus];
-  if ((v8 - 1) > 2)
+  inviteStatus = [(KCSharingParticipant *)self inviteStatus];
+  if ((inviteStatus - 1) > 2)
   {
     v9 = @"unknown";
   }
 
   else
   {
-    v9 = off_1E70D4F38[v8 - 1];
+    v9 = off_1E70D4F38[inviteStatus - 1];
   }
 
   v19[3] = v9;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v19 forKeys:v18 count:4];
   v11 = [v10 mutableCopy];
 
-  v12 = [(KCSharingParticipant *)self participantID];
-  [v11 setObject:v12 forKeyedSubscript:@"participantID"];
+  participantID = [(KCSharingParticipant *)self participantID];
+  [v11 setObject:participantID forKeyedSubscript:@"participantID"];
 
-  v13 = [(KCSharingParticipant *)self sharingInvitationData];
-  v14 = [v13 base64EncodedStringWithOptions:0];
+  sharingInvitationData = [(KCSharingParticipant *)self sharingInvitationData];
+  v14 = [sharingInvitationData base64EncodedStringWithOptions:0];
   [v11 setObject:v14 forKeyedSubscript:@"inviteToken"];
 
   v15 = [v11 copy];
@@ -196,8 +196,8 @@ LABEL_16:
   v4 = [v3 mutableCopy];
 
   v5 = MEMORY[0x1E696AEC0];
-  v6 = [(KCSharingParticipant *)self sharingInvitationData];
-  v7 = [v6 base64EncodedStringWithOptions:0];
+  sharingInvitationData = [(KCSharingParticipant *)self sharingInvitationData];
+  v7 = [sharingInvitationData base64EncodedStringWithOptions:0];
   v8 = [v5 stringWithFormat:@" inviteToken:%@", v7];
 
   [v4 insertString:v8 atIndex:{objc_msgSend(v4, "length") - 1}];
@@ -208,16 +208,16 @@ LABEL_16:
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(KCSharingParticipant *)self participantID];
-  v5 = [(KCSharingParticipant *)self handle];
-  v6 = [(KCSharingParticipant *)self permissionLevel];
+  participantID = [(KCSharingParticipant *)self participantID];
+  handle = [(KCSharingParticipant *)self handle];
+  permissionLevel = [(KCSharingParticipant *)self permissionLevel];
   v7 = @"readOnly";
-  if (v6 == 1)
+  if (permissionLevel == 1)
   {
     v7 = @"readWrite";
   }
 
-  if (v6 == 2)
+  if (permissionLevel == 2)
   {
     v7 = @"owner";
   }
@@ -254,47 +254,47 @@ LABEL_16:
     v12 = @"NO";
   }
 
-  v13 = [v3 stringWithFormat:@"KCSharingParticipant(%@, handle:%@ permissionLevel:%@ inviteStatus: %@ isCurrentUser:%@ isOwner:%@)", v4, v5, v8, v10, v11, v12];
+  v13 = [v3 stringWithFormat:@"KCSharingParticipant(%@, handle:%@ permissionLevel:%@ inviteStatus: %@ isCurrentUser:%@ isOwner:%@)", participantID, handle, v8, v10, v11, v12];
 
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [KCSharingParticipant alloc];
-  v5 = [(KCSharingParticipant *)self participantID];
-  v6 = [(KCSharingParticipant *)self handle];
-  v7 = [(KCSharingParticipant *)self permissionLevel];
-  v8 = [(KCSharingParticipant *)self isCurrentUser];
-  v9 = [(KCSharingParticipant *)self inviteStatus];
-  v10 = [(KCSharingParticipant *)self sharingInvitationData];
-  v11 = [(KCSharingParticipant *)v4 initWithParticipantID:v5 handle:v6 permissionLevel:v7 isCurrentUser:v8 inviteStatus:v9 sharingInvitationData:v10];
+  participantID = [(KCSharingParticipant *)self participantID];
+  handle = [(KCSharingParticipant *)self handle];
+  permissionLevel = [(KCSharingParticipant *)self permissionLevel];
+  isCurrentUser = [(KCSharingParticipant *)self isCurrentUser];
+  inviteStatus = [(KCSharingParticipant *)self inviteStatus];
+  sharingInvitationData = [(KCSharingParticipant *)self sharingInvitationData];
+  v11 = [(KCSharingParticipant *)v4 initWithParticipantID:participantID handle:handle permissionLevel:permissionLevel isCurrentUser:isCurrentUser inviteStatus:inviteStatus sharingInvitationData:sharingInvitationData];
 
   return v11;
 }
 
-- (KCSharingParticipant)initWithParticipantID:(id)a3 handle:(id)a4 permissionLevel:(int64_t)a5 isCurrentUser:(BOOL)a6 inviteStatus:(int64_t)a7 sharingInvitationData:(id)a8
+- (KCSharingParticipant)initWithParticipantID:(id)d handle:(id)handle permissionLevel:(int64_t)level isCurrentUser:(BOOL)user inviteStatus:(int64_t)status sharingInvitationData:(id)data
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a8;
+  dCopy = d;
+  handleCopy = handle;
+  dataCopy = data;
   v25.receiver = self;
   v25.super_class = KCSharingParticipant;
   v17 = [(KCSharingParticipant *)&v25 init];
   if (v17)
   {
-    v18 = [v14 copy];
+    v18 = [dCopy copy];
     participantID = v17->_participantID;
     v17->_participantID = v18;
 
-    v20 = [v15 copy];
+    v20 = [handleCopy copy];
     handle = v17->_handle;
     v17->_handle = v20;
 
-    v17->_isCurrentUser = a6;
-    v17->_permissionLevel = a5;
-    v17->_inviteStatus = a7;
-    v22 = [v16 copy];
+    v17->_isCurrentUser = user;
+    v17->_permissionLevel = level;
+    v17->_inviteStatus = status;
+    v22 = [dataCopy copy];
     sharingInvitationData = v17->_sharingInvitationData;
     v17->_sharingInvitationData = v22;
   }
@@ -302,17 +302,17 @@ LABEL_16:
   return v17;
 }
 
-- (KCSharingParticipant)initWithHandle:(id)a3 permissionLevel:(int64_t)a4
+- (KCSharingParticipant)initWithHandle:(id)handle permissionLevel:(int64_t)level
 {
-  v7 = a3;
+  handleCopy = handle;
   v11.receiver = self;
   v11.super_class = KCSharingParticipant;
   v8 = [(KCSharingParticipant *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_handle, a3);
-    v9->_permissionLevel = a4;
+    objc_storeStrong(&v8->_handle, handle);
+    v9->_permissionLevel = level;
   }
 
   return v9;

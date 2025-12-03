@@ -1,14 +1,14 @@
 @interface FAFamilyPaymentInfoResponse
-- (FAFamilyPaymentInfoResponse)initWithHTTPResponse:(id)a3 data:(id)a4;
+- (FAFamilyPaymentInfoResponse)initWithHTTPResponse:(id)response data:(id)data;
 @end
 
 @implementation FAFamilyPaymentInfoResponse
 
-- (FAFamilyPaymentInfoResponse)initWithHTTPResponse:(id)a3 data:(id)a4
+- (FAFamilyPaymentInfoResponse)initWithHTTPResponse:(id)response data:(id)data
 {
   v24.receiver = self;
   v24.super_class = FAFamilyPaymentInfoResponse;
-  v4 = [(AAResponse *)&v24 initWithHTTPResponse:a3 data:a4];
+  v4 = [(AAResponse *)&v24 initWithHTTPResponse:response data:data];
   v5 = v4;
   if (v4)
   {

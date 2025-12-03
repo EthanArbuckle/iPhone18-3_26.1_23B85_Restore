@@ -2,7 +2,7 @@
 - (BOOL)multitaskingWasCompleted;
 - (BOOL)multitaskingWasTurnedOff;
 - (BYMultitaskingGestures)init;
-- (BYMultitaskingGestures)initWithPreferencesController:(id)a3;
+- (BYMultitaskingGestures)initWithPreferencesController:(id)controller;
 @end
 
 @implementation BYMultitaskingGestures
@@ -15,16 +15,16 @@
   return v4;
 }
 
-- (BYMultitaskingGestures)initWithPreferencesController:(id)a3
+- (BYMultitaskingGestures)initWithPreferencesController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v9.receiver = self;
   v9.super_class = BYMultitaskingGestures;
   v6 = [(BYMultitaskingGestures *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_preferencesController, a3);
+    objc_storeStrong(&v6->_preferencesController, controller);
   }
 
   return v7;
@@ -32,16 +32,16 @@
 
 - (BOOL)multitaskingWasCompleted
 {
-  v2 = [(BYMultitaskingGestures *)self preferencesController];
-  v3 = [v2 BOOLForKey:@"MultitaskingWasCompleted"];
+  preferencesController = [(BYMultitaskingGestures *)self preferencesController];
+  v3 = [preferencesController BOOLForKey:@"MultitaskingWasCompleted"];
 
   return v3;
 }
 
 - (BOOL)multitaskingWasTurnedOff
 {
-  v2 = [(BYMultitaskingGestures *)self preferencesController];
-  v3 = [v2 BOOLForKey:@"MultitaskingWasTurnedOff"];
+  preferencesController = [(BYMultitaskingGestures *)self preferencesController];
+  v3 = [preferencesController BOOLForKey:@"MultitaskingWasTurnedOff"];
 
   return v3;
 }

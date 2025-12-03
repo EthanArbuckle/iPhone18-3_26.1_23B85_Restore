@@ -1,30 +1,30 @@
 @interface _UIVisibilityPropagationInteraction
-+ (_UIVisibilityPropagationInteraction)interactionWithPID:(int)a3 environmentIdentifier:(id)a4;
++ (_UIVisibilityPropagationInteraction)interactionWithPID:(int)d environmentIdentifier:(id)identifier;
 - (UIView)view;
-- (uint64_t)_visibilityLock_didMoveToWindow:(uint64_t)a1;
-- (void)_didMoveFromWindow:(id)a3 toWindow:(id)a4;
-- (void)_setVisibilityPropagationEnabled:(uint64_t)a1;
-- (void)_setVisibilityTarget:(uint64_t)a1;
+- (uint64_t)_visibilityLock_didMoveToWindow:(uint64_t)window;
+- (void)_didMoveFromWindow:(id)window toWindow:(id)toWindow;
+- (void)_setVisibilityPropagationEnabled:(uint64_t)enabled;
+- (void)_setVisibilityTarget:(uint64_t)target;
 - (void)_viewVisibilityDidChange;
 - (void)_visibilityLock_enqueueUpdateIfNecessary;
-- (void)_visibilityLock_setSource:(uint64_t)a1;
+- (void)_visibilityLock_setSource:(uint64_t)source;
 - (void)_visibilityLock_updateVisibility;
 - (void)dealloc;
-- (void)didMoveToView:(id)a3;
-- (void)willMoveToView:(id)a3;
+- (void)didMoveToView:(id)view;
+- (void)willMoveToView:(id)view;
 @end
 
 @implementation _UIVisibilityPropagationInteraction
 
 - (void)_visibilityLock_updateVisibility
 {
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_assert_owner((a1 + 80));
-    if ((*(a1 + 93) & 1) == 0 && *(a1 + 88) == 1 && *(a1 + 90) == 1)
+    os_unfair_lock_assert_owner((self + 80));
+    if ((*(self + 93) & 1) == 0 && *(self + 88) == 1 && *(self + 90) == 1)
     {
-      WeakRetained = objc_loadWeakRetained((a1 + 16));
-      v2 = objc_loadWeakRetained((a1 + 24));
+      WeakRetained = objc_loadWeakRetained((self + 16));
+      v2 = objc_loadWeakRetained((self + 24));
       v3 = 0;
       if (WeakRetained && v2)
       {
@@ -35,30 +35,30 @@
 
         else
         {
-          v3 = *(a1 + 40);
+          v3 = *(self + 40);
         }
       }
 
-      [(_UIVisibilityPropagationInteraction *)a1 _visibilityLock_setSource:v3];
+      [(_UIVisibilityPropagationInteraction *)self _visibilityLock_setSource:v3];
     }
 
     else
     {
 
-      [(_UIVisibilityPropagationInteraction *)a1 _visibilityLock_setSource:?];
+      [(_UIVisibilityPropagationInteraction *)self _visibilityLock_setSource:?];
     }
   }
 }
 
 - (void)_visibilityLock_enqueueUpdateIfNecessary
 {
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_assert_owner((a1 + 80));
-    if ((*(a1 + 92) & 1) == 0)
+    os_unfair_lock_assert_owner((self + 80));
+    if ((*(self + 92) & 1) == 0)
     {
-      objc_initWeak(&location, a1);
-      *(a1 + 92) = 1;
+      objc_initWeak(&location, self);
+      *(self + 92) = 1;
       v2 = dispatch_get_global_queue(25, 0);
       v3[0] = MEMORY[0x1E69E9820];
       v3[1] = 3221225472;
@@ -88,7 +88,7 @@
   os_unfair_lock_lock(&self->_visibilityProcessingLock);
   os_unfair_lock_lock(&self->_visibilityLock);
   self->_visibilityLock_invalidated = 1;
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -109,7 +109,7 @@
           objc_enumerationMutation(v4);
         }
 
-        [v3 removeObserver:*(*(&v11 + 1) + 8 * v8++)];
+        [defaultCenter removeObserver:*(*(&v11 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
@@ -131,11 +131,11 @@
   [(_UIVisibilityPropagationInteraction *)&v10 dealloc];
 }
 
-+ (_UIVisibilityPropagationInteraction)interactionWithPID:(int)a3 environmentIdentifier:(id)a4
++ (_UIVisibilityPropagationInteraction)interactionWithPID:(int)d environmentIdentifier:(id)identifier
 {
-  v4 = *&a3;
+  v4 = *&d;
   v35 = *MEMORY[0x1E69E9840];
-  v7 = a4;
+  identifierCopy = identifier;
   if (v4 <= 0)
   {
     v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"invalid pid %i", v4];
@@ -149,7 +149,7 @@
       *&v26[12] = 2114;
       *&v26[14] = v17;
       v27 = 2048;
-      v28 = a1;
+      selfCopy3 = self;
       v29 = 2114;
       v30 = @"_UIVisibilityPropagationView.m";
       v31 = 1024;
@@ -165,7 +165,7 @@
     JUMPOUT(0x18A2992C8);
   }
 
-  v8 = v7;
+  v8 = identifierCopy;
   NSClassFromString(&cfstr_Nsstring.isa);
   if (!v8)
   {
@@ -180,7 +180,7 @@
       *&v26[12] = 2114;
       *&v26[14] = v21;
       v27 = 2048;
-      v28 = a1;
+      selfCopy3 = self;
       v29 = 2114;
       v30 = @"_UIVisibilityPropagationView.m";
       v31 = 1024;
@@ -209,7 +209,7 @@
       *&v26[12] = 2114;
       *&v26[14] = v25;
       v27 = 2048;
-      v28 = a1;
+      selfCopy3 = self;
       v29 = 2114;
       v30 = @"_UIVisibilityPropagationView.m";
       v31 = 1024;
@@ -251,65 +251,65 @@
   return v11;
 }
 
-- (void)_setVisibilityTarget:(uint64_t)a1
+- (void)_setVisibilityTarget:(uint64_t)target
 {
   v3 = a2;
-  if (a1)
+  if (target)
   {
     v6 = v3;
-    os_unfair_lock_lock((a1 + 80));
+    os_unfair_lock_lock((target + 80));
     if ((BSEqualObjects() & 1) == 0)
     {
       v4 = [v6 copy];
-      v5 = *(a1 + 8);
-      *(a1 + 8) = v4;
+      v5 = *(target + 8);
+      *(target + 8) = v4;
 
-      [(_UIVisibilityPropagationInteraction *)a1 _visibilityLock_enqueueUpdateIfNecessary];
+      [(_UIVisibilityPropagationInteraction *)target _visibilityLock_enqueueUpdateIfNecessary];
     }
 
-    os_unfair_lock_unlock((a1 + 80));
+    os_unfair_lock_unlock((target + 80));
     v3 = v6;
   }
 }
 
-- (void)_setVisibilityPropagationEnabled:(uint64_t)a1
+- (void)_setVisibilityPropagationEnabled:(uint64_t)enabled
 {
-  if (a1)
+  if (enabled)
   {
-    os_unfair_lock_lock((a1 + 80));
-    if (*(a1 + 88) != a2)
+    os_unfair_lock_lock((enabled + 80));
+    if (*(enabled + 88) != a2)
     {
-      *(a1 + 88) = a2;
-      [(_UIVisibilityPropagationInteraction *)a1 _visibilityLock_updateVisibility];
+      *(enabled + 88) = a2;
+      [(_UIVisibilityPropagationInteraction *)enabled _visibilityLock_updateVisibility];
     }
 
-    os_unfair_lock_unlock((a1 + 80));
+    os_unfair_lock_unlock((enabled + 80));
   }
 }
 
-- (uint64_t)_visibilityLock_didMoveToWindow:(uint64_t)a1
+- (uint64_t)_visibilityLock_didMoveToWindow:(uint64_t)window
 {
   v40 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (window)
   {
-    os_unfair_lock_assert_owner((a1 + 80));
-    WeakRetained = objc_loadWeakRetained((a1 + 24));
+    os_unfair_lock_assert_owner((window + 80));
+    WeakRetained = objc_loadWeakRetained((window + 24));
     v5 = WeakRetained;
-    if ((*(a1 + 93) & 1) == 0 && v3 && WeakRetained == v3)
+    if ((*(window + 93) & 1) == 0 && v3 && WeakRetained == v3)
     {
 
 LABEL_36:
-      a1 = 0;
+      window = 0;
       goto LABEL_37;
     }
 
-    v7 = (a1 + 32);
-    v6 = *(a1 + 32);
+    v7 = (window + 32);
+    v6 = *(window + 32);
     v8 = v6 != 0;
     if (v6)
     {
-      v9 = [MEMORY[0x1E696AD88] defaultCenter];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
       v37 = 0u;
       v38 = 0u;
       v35 = 0u;
@@ -328,7 +328,7 @@ LABEL_36:
               objc_enumerationMutation(v10);
             }
 
-            [v9 removeObserver:*(*(&v35 + 1) + 8 * i)];
+            [defaultCenter removeObserver:*(*(&v35 + 1) + 8 * i)];
           }
 
           v11 = [v10 countByEnumeratingWithState:&v35 objects:v39 count:16];
@@ -341,31 +341,31 @@ LABEL_36:
       *v7 = 0;
     }
 
-    v15 = *(a1 + 40);
+    v15 = *(window + 40);
     if (v15)
     {
-      *(a1 + 40) = 0;
+      *(window + 40) = 0;
 
       v8 = 1;
     }
 
-    if (*(a1 + 91) == 1)
+    if (*(window + 91) == 1)
     {
-      *(a1 + 91) = 0;
+      *(window + 91) = 0;
       v8 = 1;
     }
 
     if (v5)
     {
-      objc_storeWeak((a1 + 24), 0);
+      objc_storeWeak((window + 24), 0);
 
-      if (!v3 || (*(a1 + 93) & 1) != 0)
+      if (!v3 || (*(window + 93) & 1) != 0)
       {
         goto LABEL_34;
       }
     }
 
-    else if (!v3 || (*(a1 + 93) & 1) != 0)
+    else if (!v3 || (*(window + 93) & 1) != 0)
     {
       if (!v8)
       {
@@ -375,9 +375,9 @@ LABEL_36:
       goto LABEL_34;
     }
 
-    v16 = [MEMORY[0x1E696AD88] defaultCenter];
-    v17 = [MEMORY[0x1E696ADC8] mainQueue];
-    objc_initWeak(&location, a1);
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    mainQueue = [MEMORY[0x1E696ADC8] mainQueue];
+    objc_initWeak(&location, window);
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __71___UIVisibilityPropagationInteraction__visibilityLock_didMoveToWindow___block_invoke;
@@ -385,19 +385,19 @@ LABEL_36:
     objc_copyWeak(&v33, &location);
     v18 = _Block_copy(aBlock);
     v19 = [MEMORY[0x1E695DF70] arrayWithCapacity:4];
-    v20 = [v16 addObserverForName:@"UIWindowDidMoveToScreenNotification" object:v3 queue:v17 usingBlock:v18];
+    v20 = [defaultCenter2 addObserverForName:@"UIWindowDidMoveToScreenNotification" object:v3 queue:mainQueue usingBlock:v18];
     [v19 addObject:v20];
 
-    v21 = [v16 addObserverForName:@"_UIWindowDidMoveToSceneNotification" object:v3 queue:v17 usingBlock:v18];
+    v21 = [defaultCenter2 addObserverForName:@"_UIWindowDidMoveToSceneNotification" object:v3 queue:mainQueue usingBlock:v18];
     [v19 addObject:v21];
 
-    v22 = [v16 addObserverForName:@"UIWindowDidBecomeVisibleNotification" object:v3 queue:v17 usingBlock:v18];
+    v22 = [defaultCenter2 addObserverForName:@"UIWindowDidBecomeVisibleNotification" object:v3 queue:mainQueue usingBlock:v18];
     [v19 addObject:v22];
 
-    v23 = [v16 addObserverForName:@"UIWindowDidBecomeHiddenNotification" object:v3 queue:v17 usingBlock:v18];
+    v23 = [defaultCenter2 addObserverForName:@"UIWindowDidBecomeHiddenNotification" object:v3 queue:mainQueue usingBlock:v18];
     [v19 addObject:v23];
 
-    objc_storeStrong((a1 + 32), v19);
+    objc_storeStrong((window + 32), v19);
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -415,21 +415,21 @@ LABEL_36:
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0 && ![v3 _isRemoteInputHostWindow])
           {
-            v27 = [(UIWindow *)v3 _fbsScene];
-            v25 = v27;
-            if (v27)
+            _fbsScene = [(UIWindow *)v3 _fbsScene];
+            v25 = _fbsScene;
+            if (_fbsScene)
             {
-              v28 = [v27 identityToken];
-              v29 = [v28 stringRepresentation];
+              identityToken = [_fbsScene identityToken];
+              stringRepresentation = [identityToken stringRepresentation];
               v30 = _UISVisibilityEnvironmentForSceneIdentityTokenString();
-              v31 = *(a1 + 40);
-              *(a1 + 40) = v30;
+              v31 = *(window + 40);
+              *(window + 40) = v30;
             }
 
             else
             {
-              v28 = *(a1 + 40);
-              *(a1 + 40) = 0;
+              identityToken = *(window + 40);
+              *(window + 40) = 0;
             }
 
             goto LABEL_33;
@@ -441,48 +441,48 @@ LABEL_36:
       v24 = _UISVisibilityEnvironmentForUIHostedWindowContextID();
     }
 
-    v25 = *(a1 + 40);
-    *(a1 + 40) = v24;
+    v25 = *(window + 40);
+    *(window + 40) = v24;
 LABEL_33:
 
-    objc_storeWeak((a1 + 24), v3);
-    *(a1 + 91) = 1;
+    objc_storeWeak((window + 24), v3);
+    *(window + 91) = 1;
 
     objc_destroyWeak(&v33);
     objc_destroyWeak(&location);
 
 LABEL_34:
-    [(_UIVisibilityPropagationInteraction *)a1 _visibilityLock_updateVisibility];
-    a1 = 1;
+    [(_UIVisibilityPropagationInteraction *)window _visibilityLock_updateVisibility];
+    window = 1;
   }
 
 LABEL_37:
 
-  return a1;
+  return window;
 }
 
-- (void)_visibilityLock_setSource:(uint64_t)a1
+- (void)_visibilityLock_setSource:(uint64_t)source
 {
   v5 = a2;
-  if (a1)
+  if (source)
   {
-    os_unfair_lock_assert_owner((a1 + 80));
+    os_unfair_lock_assert_owner((source + 80));
     if ((BSEqualStrings() & 1) == 0)
     {
       v3 = [v5 copy];
-      v4 = *(a1 + 48);
-      *(a1 + 48) = v3;
+      v4 = *(source + 48);
+      *(source + 48) = v3;
 
-      [(_UIVisibilityPropagationInteraction *)a1 _visibilityLock_enqueueUpdateIfNecessary];
+      [(_UIVisibilityPropagationInteraction *)source _visibilityLock_enqueueUpdateIfNecessary];
     }
   }
 }
 
-- (void)willMoveToView:(id)a3
+- (void)willMoveToView:(id)view
 {
   os_unfair_lock_lock(&self->_visibilityLock);
   WeakRetained = objc_loadWeakRetained(&self->_visibilityLock_view);
-  if (!a3 || self->_visibilityLock_invalidated || !WeakRetained && self->_visibilityLock_isTrackingView)
+  if (!view || self->_visibilityLock_invalidated || !WeakRetained && self->_visibilityLock_isTrackingView)
   {
     [(_UIVisibilityPropagationInteraction *)self _visibilityLock_didMoveToWindow:?];
   }
@@ -490,11 +490,11 @@ LABEL_37:
   os_unfair_lock_unlock(&self->_visibilityLock);
 }
 
-- (void)didMoveToView:(id)a3
+- (void)didMoveToView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   os_unfair_lock_lock(&self->_visibilityLock);
-  v5 = v4;
+  v5 = viewCopy;
   v6 = v5;
   if (self)
   {
@@ -523,8 +523,8 @@ LABEL_14:
           self->_visibilityLock_isTrackingView = 1;
           v6 = v5;
 LABEL_17:
-          v10 = [v6 window];
-          v11 = [(_UIVisibilityPropagationInteraction *)self _visibilityLock_didMoveToWindow:v10];
+          window = [v6 window];
+          v11 = [(_UIVisibilityPropagationInteraction *)self _visibilityLock_didMoveToWindow:window];
 
           if ((v11 & 1) == 0)
           {
@@ -568,11 +568,11 @@ LABEL_22:
   os_unfair_lock_unlock(&self->_visibilityLock);
 }
 
-- (void)_didMoveFromWindow:(id)a3 toWindow:(id)a4
+- (void)_didMoveFromWindow:(id)window toWindow:(id)toWindow
 {
-  v5 = a4;
+  toWindowCopy = toWindow;
   os_unfair_lock_lock(&self->_visibilityLock);
-  [(_UIVisibilityPropagationInteraction *)self _visibilityLock_didMoveToWindow:v5];
+  [(_UIVisibilityPropagationInteraction *)self _visibilityLock_didMoveToWindow:toWindowCopy];
 
   os_unfair_lock_unlock(&self->_visibilityLock);
 }
@@ -583,10 +583,10 @@ LABEL_22:
   WeakRetained = objc_loadWeakRetained(&self->_visibilityLock_view);
   if (WeakRetained)
   {
-    v3 = [WeakRetained isHidden];
-    if (self->_visibilityLock_isViewVisible != (v3 ^ 1))
+    isHidden = [WeakRetained isHidden];
+    if (self->_visibilityLock_isViewVisible != (isHidden ^ 1))
     {
-      self->_visibilityLock_isViewVisible = v3 ^ 1;
+      self->_visibilityLock_isViewVisible = isHidden ^ 1;
       [(_UIVisibilityPropagationInteraction *)self _visibilityLock_updateVisibility];
     }
   }

@@ -1,12 +1,12 @@
 @interface GKImageColorPalette
-- (BOOL)analyzeImage:(CGImage *)a3;
-- (GKImageColorPalette)initWithImage:(id)a3;
-- (unsigned)weightHistogram:(unsigned int *)a3 size:(unsigned int)a4 spread:(unsigned int)a5;
+- (BOOL)analyzeImage:(CGImage *)image;
+- (GKImageColorPalette)initWithImage:(id)image;
+- (unsigned)weightHistogram:(unsigned int *)histogram size:(unsigned int)size spread:(unsigned int)spread;
 - (void)clearSaturationAndBrightnessHistograms;
 - (void)findBrightColors;
-- (void)generateHSVMapWithContext:(CGContext *)a3;
-- (void)iterateOverPixelsWithBlock:(id)a3 forHue:(unsigned int)a4;
-- (void)printHistogram:(unsigned int *)a3 ofSize:(unsigned int)a4;
+- (void)generateHSVMapWithContext:(CGContext *)context;
+- (void)iterateOverPixelsWithBlock:(id)block forHue:(unsigned int)hue;
+- (void)printHistogram:(unsigned int *)histogram ofSize:(unsigned int)size;
 - (void)reset;
 @end
 
@@ -38,12 +38,12 @@
   bzero(self->_brightnessHistogram, 0x400uLL);
 }
 
-- (void)generateHSVMapWithContext:(CGContext *)a3
+- (void)generateHSVMapWithContext:(CGContext *)context
 {
-  if (a3)
+  if (context)
   {
-    BytesPerRow = CGBitmapContextGetBytesPerRow(a3);
-    Data = CGBitmapContextGetData(a3);
+    BytesPerRow = CGBitmapContextGetBytesPerRow(context);
+    Data = CGBitmapContextGetData(context);
     if (Data)
     {
       v7 = Data;
@@ -53,7 +53,7 @@
       self->_imageHSVMap = v10;
       if (v10)
       {
-        BitmapInfo = CGBitmapContextGetBitmapInfo(a3);
+        BitmapInfo = CGBitmapContextGetBitmapInfo(context);
         if (height)
         {
           v15 = 0;
@@ -232,15 +232,15 @@
   }
 }
 
-- (void)printHistogram:(unsigned int *)a3 ofSize:(unsigned int)a4
+- (void)printHistogram:(unsigned int *)histogram ofSize:(unsigned int)size
 {
-  if (a4)
+  if (size)
   {
     v5 = 0;
-    v6 = a4;
+    sizeCopy = size;
     do
     {
-      v7 = a3[v5];
+      v7 = histogram[v5];
       if (v7)
       {
         printf("%ld - %ld\n", v5, v7);
@@ -249,16 +249,16 @@
       ++v5;
     }
 
-    while (v6 != v5);
+    while (sizeCopy != v5);
   }
 }
 
-- (unsigned)weightHistogram:(unsigned int *)a3 size:(unsigned int)a4 spread:(unsigned int)a5
+- (unsigned)weightHistogram:(unsigned int *)histogram size:(unsigned int)size spread:(unsigned int)spread
 {
-  v8 = 4 * a4;
+  v8 = 4 * size;
   v9 = malloc_type_malloc(v8, 0x100004052888210uLL);
-  memcpy(v9, a3, v8);
-  if (a4)
+  memcpy(v9, histogram, v8);
+  if (size)
   {
     v11 = 0;
     v12 = 0;
@@ -268,7 +268,7 @@
     do
     {
       v16 = *(v9 + v11);
-      if (!a5)
+      if (!spread)
       {
         goto LABEL_25;
       }
@@ -278,11 +278,11 @@
       v19 = 1.0;
       v20 = v15;
       v21 = v14;
-      v22 = a5;
+      spreadCopy = spread;
       v23 = 1;
       do
       {
-        v24 = v20 < 0 && a4 == 360;
+        v24 = v20 < 0 && size == 360;
         v25 = v20 + 360;
         if (!v24)
         {
@@ -297,7 +297,7 @@
           {
             v10 = (v19 * -0.0500000007 + 1.0) * v10;
             v16 += vcvtad_u64_f64(v10);
-            a3[v25] = 0;
+            histogram[v25] = 0;
           }
 
           else
@@ -307,12 +307,12 @@
         }
 
         v26 = v21 - 360;
-        if (v21 <= 360 || a4 != 360)
+        if (v21 <= 360 || size != 360)
         {
           v26 = v21;
         }
 
-        if (v26 < a4)
+        if (v26 < size)
         {
           LODWORD(v10) = *(v9 + v26);
           v10 = *&v10;
@@ -320,7 +320,7 @@
           {
             v10 = (v18 * -0.0500000007 + 1.0) * v10;
             v16 += vcvtad_u64_f64(v10);
-            a3[v26] = 0;
+            histogram[v26] = 0;
           }
 
           else
@@ -333,19 +333,19 @@
         ++v18;
         ++v21;
         --v20;
-        --v22;
+        --spreadCopy;
       }
 
-      while (v22);
+      while (spreadCopy);
       if ((v23 & 1) == 0)
       {
-        v16 = a3[v11];
+        v16 = histogram[v11];
       }
 
       else
       {
 LABEL_25:
-        a3[v11] = v16;
+        histogram[v11] = v16;
       }
 
       if (v16 > v12)
@@ -359,7 +359,7 @@ LABEL_25:
       ++v15;
     }
 
-    while (v11 != a4);
+    while (v11 != size);
   }
 
   else
@@ -371,11 +371,11 @@ LABEL_25:
   return v13;
 }
 
-- (void)iterateOverPixelsWithBlock:(id)a3 forHue:(unsigned int)a4
+- (void)iterateOverPixelsWithBlock:(id)block forHue:(unsigned int)hue
 {
-  v4 = *&a4;
-  v6 = a3;
-  if (v6)
+  v4 = *&hue;
+  blockCopy = block;
+  if (blockCopy)
   {
     if (self->_imageHSVMap)
     {
@@ -385,7 +385,7 @@ LABEL_25:
         v7 = 0;
         v8 = 0;
         width = self->_imageSize.width;
-        v13 = v6;
+        v13 = blockCopy;
         do
         {
           v10 = width;
@@ -394,8 +394,8 @@ LABEL_25:
           {
             do
             {
-              (*(v6 + 2))(v13, &self->_imageHSVMap[v11], v4);
-              v6 = v13;
+              (*(blockCopy + 2))(v13, &self->_imageHSVMap[v11], v4);
+              blockCopy = v13;
               ++v11;
               --v10;
             }
@@ -476,43 +476,43 @@ uint64_t __39__GKImageColorPalette_findBrightColors__block_invoke_2(uint64_t a1,
   return v7;
 }
 
-- (BOOL)analyzeImage:(CGImage *)a3
+- (BOOL)analyzeImage:(CGImage *)image
 {
   [(GKImageColorPalette *)self reset];
-  if (a3)
+  if (image)
   {
-    Width = CGImageGetWidth(a3);
-    Height = CGImageGetHeight(a3);
+    Width = CGImageGetWidth(image);
+    Height = CGImageGetHeight(image);
     self->_imageSize.width = Width;
     self->_imageSize.height = Height;
     v7 = [[GKImageContext alloc] initWithSize:0 scale:self->_imageSize.width options:self->_imageSize.height, 1.0];
-    v8 = [(GKImageContext *)v7 CGContext];
+    cGContext = [(GKImageContext *)v7 CGContext];
     v11.size.width = self->_imageSize.width;
     v11.size.height = self->_imageSize.height;
     v11.origin.x = 0.0;
     v11.origin.y = 0.0;
-    CGContextDrawImage(v8, v11, a3);
+    CGContextDrawImage(cGContext, v11, image);
     [(GKImageColorPalette *)self generateHSVMapWithContext:[(GKImageContext *)v7 CGContext]];
     imageHSVMap = self->_imageHSVMap;
-    LOBYTE(a3) = imageHSVMap != 0;
+    LOBYTE(image) = imageHSVMap != 0;
     if (imageHSVMap)
     {
       [(GKImageColorPalette *)self findBrightColors];
     }
   }
 
-  return a3;
+  return image;
 }
 
-- (GKImageColorPalette)initWithImage:(id)a3
+- (GKImageColorPalette)initWithImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   v7.receiver = self;
   v7.super_class = GKImageColorPalette;
   v5 = [(GKImageColorPalette *)&v7 init];
   if (v5)
   {
-    -[GKImageColorPalette analyzeImage:](v5, "analyzeImage:", [v4 CGImage]);
+    -[GKImageColorPalette analyzeImage:](v5, "analyzeImage:", [imageCopy CGImage]);
   }
 
   return v5;

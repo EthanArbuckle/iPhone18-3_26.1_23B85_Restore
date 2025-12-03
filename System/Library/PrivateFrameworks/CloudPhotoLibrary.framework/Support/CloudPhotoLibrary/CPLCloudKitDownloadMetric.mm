@@ -1,7 +1,7 @@
 @interface CPLCloudKitDownloadMetric
 - (CPLCloudKitDownloadMetric)init;
 - (id)description;
-- (void)prepareCKEventMetric:(id)a3;
+- (void)prepareCKEventMetric:(id)metric;
 @end
 
 @implementation CPLCloudKitDownloadMetric
@@ -13,24 +13,24 @@
   return [(CPLCloudKitMetric *)&v3 initWithName:@"resourcesDownload"];
 }
 
-- (void)prepareCKEventMetric:(id)a3
+- (void)prepareCKEventMetric:(id)metric
 {
   requestedItemCount = self->_requestedItemCount;
-  v5 = a3;
+  metricCopy = metric;
   v6 = [NSNumber numberWithUnsignedInteger:requestedItemCount];
-  [v5 setObject:v6 forKeyedSubscript:@"requestedCount"];
+  [metricCopy setObject:v6 forKeyedSubscript:@"requestedCount"];
 
   v7 = [NSNumber numberWithUnsignedLongLong:self->_expectedSize];
-  [v5 setObject:v7 forKeyedSubscript:@"expectedSize"];
+  [metricCopy setObject:v7 forKeyedSubscript:@"expectedSize"];
 
   v8 = [NSNumber numberWithUnsignedInteger:self->_downloadedItemCount];
-  [v5 setObject:v8 forKeyedSubscript:@"downloadedCount"];
+  [metricCopy setObject:v8 forKeyedSubscript:@"downloadedCount"];
 
   v9 = [NSNumber numberWithUnsignedLongLong:self->_downloadedSize];
-  [v5 setObject:v9 forKeyedSubscript:@"downloadedSize"];
+  [metricCopy setObject:v9 forKeyedSubscript:@"downloadedSize"];
 
   v10 = [NSNumber numberWithUnsignedInteger:self->_transcodedItemCount];
-  [v5 setObject:v10 forKeyedSubscript:@"transcodedCount"];
+  [metricCopy setObject:v10 forKeyedSubscript:@"transcodedCount"];
 }
 
 - (id)description
@@ -40,22 +40,22 @@
     if (self->_downloadedItemCount || [(CPLCloudKitMetric *)self result])
     {
       v3 = [NSString alloc];
-      v4 = [(CPLCloudKitMetric *)self identifier];
+      identifier = [(CPLCloudKitMetric *)self identifier];
       requestedItemCount = self->_requestedItemCount;
       v6 = [NSByteCountFormatter stringFromByteCount:self->_expectedSize countStyle:3];
       downloadedItemCount = self->_downloadedItemCount;
       v8 = [NSByteCountFormatter stringFromByteCount:self->_downloadedSize countStyle:3];
-      v9 = [(CPLCloudKitMetric *)self resultDescription];
-      v10 = [v3 initWithFormat:@"<%@ (%lu/%@ -> %lu/%@)%@>", v4, requestedItemCount, v6, downloadedItemCount, v8, v9];
+      resultDescription = [(CPLCloudKitMetric *)self resultDescription];
+      v10 = [v3 initWithFormat:@"<%@ (%lu/%@ -> %lu/%@)%@>", identifier, requestedItemCount, v6, downloadedItemCount, v8, resultDescription];
     }
 
     else
     {
       v12 = [NSString alloc];
-      v13 = [(CPLCloudKitMetric *)self identifier];
+      identifier2 = [(CPLCloudKitMetric *)self identifier];
       v14 = self->_requestedItemCount;
       v15 = [NSByteCountFormatter stringFromByteCount:self->_expectedSize countStyle:3];
-      v10 = [v12 initWithFormat:@"<%@ (%lu/%@)>", v13, v14, v15];
+      v10 = [v12 initWithFormat:@"<%@ (%lu/%@)>", identifier2, v14, v15];
     }
   }
 

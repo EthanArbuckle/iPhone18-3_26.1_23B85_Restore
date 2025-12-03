@@ -1,30 +1,30 @@
 @interface _OSLogChunkFileReference
-- (BOOL)readXattrForTimespan:(id *)a3;
-- (_OSLogChunkFileReference)initWithCollection:(id)a3 subpath:(const char *)a4;
-- (id)copyMappedChunkFile:(id *)a3;
+- (BOOL)readXattrForTimespan:(id *)timespan;
+- (_OSLogChunkFileReference)initWithCollection:(id)collection subpath:(const char *)subpath;
+- (id)copyMappedChunkFile:(id *)file;
 - (void)dealloc;
 @end
 
 @implementation _OSLogChunkFileReference
 
-- (id)copyMappedChunkFile:(id *)a3
+- (id)copyMappedChunkFile:(id *)file
 {
-  v5 = [(_OSLogCollectionReference *)self->_oslcr diagnosticsDirectoryReference];
-  v6 = openat([v5 fileDescriptor], self->_path, 0);
+  diagnosticsDirectoryReference = [(_OSLogCollectionReference *)self->_oslcr diagnosticsDirectoryReference];
+  v6 = openat([diagnosticsDirectoryReference fileDescriptor], self->_path, 0);
 
   if (v6 == -1)
   {
-    if (!a3)
+    if (!file)
     {
       return 0;
     }
 
     [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:*__error() userInfo:0];
-    *a3 = v7 = 0;
+    *file = v7 = 0;
     return v7;
   }
 
-  v7 = [[_OSLogChunkFile alloc] initWithFileDescriptor:v6 error:a3];
+  v7 = [[_OSLogChunkFile alloc] initWithFileDescriptor:v6 error:file];
   if (close(v6) != -1)
   {
     return v7;
@@ -44,7 +44,7 @@
   return result;
 }
 
-- (BOOL)readXattrForTimespan:(id *)a3
+- (BOOL)readXattrForTimespan:(id *)timespan
 {
   v23 = *MEMORY[0x277D85DE8];
   v5 = _index_log();
@@ -58,8 +58,8 @@
 
   *buf = 0u;
   memset(v22, 0, sizeof(v22));
-  v7 = [(_OSLogCollectionReference *)self->_oslcr diagnosticsDirectoryReference];
-  [v7 fileDescriptor];
+  diagnosticsDirectoryReference = [(_OSLogCollectionReference *)self->_oslcr diagnosticsDirectoryReference];
+  [diagnosticsDirectoryReference fileDescriptor];
   v8 = self->_path;
   v9 = _os_trace_getxattr_at();
 
@@ -81,9 +81,9 @@ LABEL_10:
 
   else
   {
-    if (a3)
+    if (timespan)
     {
-      *a3 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:*__error() userInfo:0];
+      *timespan = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:*__error() userInfo:0];
     }
 
     v10 = _index_log();
@@ -113,17 +113,17 @@ LABEL_10:
   [(_OSLogChunkFileReference *)&v3 dealloc];
 }
 
-- (_OSLogChunkFileReference)initWithCollection:(id)a3 subpath:(const char *)a4
+- (_OSLogChunkFileReference)initWithCollection:(id)collection subpath:(const char *)subpath
 {
-  v7 = a3;
+  collectionCopy = collection;
   v11.receiver = self;
   v11.super_class = _OSLogChunkFileReference;
   v8 = [(_OSLogChunkFileReference *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_oslcr, a3);
-    v9->_path = strdup(a4);
+    objc_storeStrong(&v8->_oslcr, collection);
+    v9->_path = strdup(subpath);
   }
 
   return v9;

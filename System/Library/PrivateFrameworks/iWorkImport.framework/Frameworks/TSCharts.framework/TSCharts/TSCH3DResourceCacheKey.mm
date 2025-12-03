@@ -1,35 +1,35 @@
 @interface TSCH3DResourceCacheKey
-+ (id)keyWithLoader:(id)a3 resource:(id)a4 virtualScreen:(int64_t)a5;
-- (BOOL)isEqual:(id)a3;
-- (TSCH3DResourceCacheKey)initWithLoader:(id)a3 resource:(id)a4 virtualScreen:(int64_t)a5;
++ (id)keyWithLoader:(id)loader resource:(id)resource virtualScreen:(int64_t)screen;
+- (BOOL)isEqual:(id)equal;
+- (TSCH3DResourceCacheKey)initWithLoader:(id)loader resource:(id)resource virtualScreen:(int64_t)screen;
 - (id)description;
 @end
 
 @implementation TSCH3DResourceCacheKey
 
-+ (id)keyWithLoader:(id)a3 resource:(id)a4 virtualScreen:(int64_t)a5
++ (id)keyWithLoader:(id)loader resource:(id)resource virtualScreen:(int64_t)screen
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [a1 alloc];
-  v15 = objc_msgSend_initWithLoader_resource_virtualScreen_(v10, v11, v12, v13, v14, v8, v9, a5);
+  loaderCopy = loader;
+  resourceCopy = resource;
+  v10 = [self alloc];
+  v15 = objc_msgSend_initWithLoader_resource_virtualScreen_(v10, v11, v12, v13, v14, loaderCopy, resourceCopy, screen);
 
   return v15;
 }
 
-- (TSCH3DResourceCacheKey)initWithLoader:(id)a3 resource:(id)a4 virtualScreen:(int64_t)a5
+- (TSCH3DResourceCacheKey)initWithLoader:(id)loader resource:(id)resource virtualScreen:(int64_t)screen
 {
-  v9 = a3;
-  v10 = a4;
+  loaderCopy = loader;
+  resourceCopy = resource;
   v14.receiver = self;
   v14.super_class = TSCH3DResourceCacheKey;
   v11 = [(TSCH3DResourceCacheKey *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_loader, a3);
-    objc_storeStrong(&v12->_resource, a4);
-    v12->_virtualScreen = a5;
+    objc_storeStrong(&v11->_loader, loader);
+    objc_storeStrong(&v12->_resource, resource);
+    v12->_virtualScreen = screen;
   }
 
   return v12;
@@ -46,13 +46,13 @@
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     loader = self->_loader;
     v11 = objc_msgSend_loader(v5, v7, v8, v9, v10);
     isEqual = objc_msgSend_isEqual_(loader, v12, v13, v14, v15, v11);

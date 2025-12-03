@@ -1,6 +1,6 @@
 @interface IDSEncryptionQueueManager
 - (IDSEncryptionQueueManager)init;
-- (id)_queueForPriority:(int64_t)a3;
+- (id)_queueForPriority:(int64_t)priority;
 @end
 
 @implementation IDSEncryptionQueueManager
@@ -28,15 +28,15 @@
   return v2;
 }
 
-- (id)_queueForPriority:(int64_t)a3
+- (id)_queueForPriority:(int64_t)priority
 {
   v3 = 16;
-  if (a3 == 100)
+  if (priority == 100)
   {
     v3 = 8;
   }
 
-  if (a3 == 300)
+  if (priority == 300)
   {
     v3 = 24;
   }

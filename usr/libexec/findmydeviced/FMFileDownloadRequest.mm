@@ -1,21 +1,21 @@
 @interface FMFileDownloadRequest
-- (FMFileDownloadRequest)initWithAsset:(id)a3;
+- (FMFileDownloadRequest)initWithAsset:(id)asset;
 - (id)requestHeaders;
 - (id)requestUrl;
 @end
 
 @implementation FMFileDownloadRequest
 
-- (FMFileDownloadRequest)initWithAsset:(id)a3
+- (FMFileDownloadRequest)initWithAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   v8.receiver = self;
   v8.super_class = FMFileDownloadRequest;
   v5 = [(FMDRequest *)&v8 initWithAccount:0];
   v6 = v5;
   if (v5)
   {
-    [(FMFileDownloadRequest *)v5 setAsset:v4];
+    [(FMFileDownloadRequest *)v5 setAsset:assetCopy];
   }
 
   return v6;
@@ -23,8 +23,8 @@
 
 - (id)requestUrl
 {
-  v2 = [(FMFileDownloadRequest *)self asset];
-  v3 = [v2 url];
+  asset = [(FMFileDownloadRequest *)self asset];
+  v3 = [asset url];
 
   return v3;
 }
@@ -33,16 +33,16 @@
 {
   v9.receiver = self;
   v9.super_class = FMFileDownloadRequest;
-  v3 = [(FMDRequest *)&v9 requestHeaders];
-  v4 = [(FMFileDownloadRequest *)self asset];
-  v5 = [v4 lastModified];
-  [v3 fm_safeSetObject:v5 forKey:@"If-Modified-Since"];
+  requestHeaders = [(FMDRequest *)&v9 requestHeaders];
+  asset = [(FMFileDownloadRequest *)self asset];
+  lastModified = [asset lastModified];
+  [requestHeaders fm_safeSetObject:lastModified forKey:@"If-Modified-Since"];
 
-  v6 = [(FMFileDownloadRequest *)self asset];
-  v7 = [v6 etag];
-  [v3 fm_safeSetObject:v7 forKey:@"If-None-Match"];
+  asset2 = [(FMFileDownloadRequest *)self asset];
+  etag = [asset2 etag];
+  [requestHeaders fm_safeSetObject:etag forKey:@"If-None-Match"];
 
-  return v3;
+  return requestHeaders;
 }
 
 @end

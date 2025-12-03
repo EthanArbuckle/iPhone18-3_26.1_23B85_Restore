@@ -1,14 +1,14 @@
 @interface UINavigationBarAccessibility__PhotosUI__UIKit
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event;
 @end
 
 @implementation UINavigationBarAccessibility__PhotosUI__UIKit
 
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
   UIAccessibilityPointForPoint();
   v9 = v8;
   v11 = v10;
@@ -19,7 +19,7 @@
   {
     v14.receiver = self;
     v14.super_class = UINavigationBarAccessibility__PhotosUI__UIKit;
-    v12 = [(UINavigationBarAccessibility__PhotosUI__UIKit *)&v14 _accessibilityHitTest:v7 withEvent:x, y];
+    v12 = [(UINavigationBarAccessibility__PhotosUI__UIKit *)&v14 _accessibilityHitTest:eventCopy withEvent:x, y];
   }
 
   else

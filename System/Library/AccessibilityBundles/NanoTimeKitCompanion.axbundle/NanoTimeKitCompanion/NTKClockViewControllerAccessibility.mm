@@ -1,26 +1,26 @@
 @interface NTKClockViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_endFaceLibraryControllerPresentation;
-- (void)celebrationViewControllerStartedAnimation:(id)a3;
+- (void)celebrationViewControllerStartedAnimation:(id)animation;
 @end
 
 @implementation NTKClockViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"NTKClockViewController" hasInstanceMethod:@"_showLibraryViewControllerAnimated: withCompletion:" withFullSignature:{"v", "B", "@?", 0}];
-  [v3 validateClass:@"NTKClockViewController" hasInstanceMethod:@"_endFaceLibraryControllerPresentation" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"NTKComplicationControllerCache"];
-  [v3 validateClass:@"NTKComplicationControllerCache" hasClassMethod:@"sharedCache" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NTKClockViewController" hasInstanceMethod:@"celebrationViewControllerStartedAnimation:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"NCEClockCelebrationViewController"];
-  [v3 validateClass:@"NCEClockCelebrationViewController" hasProperty:@"currentCelebration" withType:"@"];
-  [v3 validateClass:@"NCEFireVector"];
-  [v3 validateClass:@"NCEFireVector" hasProperty:@"celebration" withType:"@"];
-  [v3 validateClass:@"NCECelebration"];
-  [v3 validateClass:@"NCECelebration" hasInstanceMethod:@"name" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"NTKClockViewController" hasInstanceMethod:@"_showLibraryViewControllerAnimated: withCompletion:" withFullSignature:{"v", "B", "@?", 0}];
+  [validationsCopy validateClass:@"NTKClockViewController" hasInstanceMethod:@"_endFaceLibraryControllerPresentation" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"NTKComplicationControllerCache"];
+  [validationsCopy validateClass:@"NTKComplicationControllerCache" hasClassMethod:@"sharedCache" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NTKClockViewController" hasInstanceMethod:@"celebrationViewControllerStartedAnimation:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"NCEClockCelebrationViewController"];
+  [validationsCopy validateClass:@"NCEClockCelebrationViewController" hasProperty:@"currentCelebration" withType:"@"];
+  [validationsCopy validateClass:@"NCEFireVector"];
+  [validationsCopy validateClass:@"NCEFireVector" hasProperty:@"celebration" withType:"@"];
+  [validationsCopy validateClass:@"NCECelebration"];
+  [validationsCopy validateClass:@"NCECelebration" hasInstanceMethod:@"name" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -40,13 +40,13 @@
   UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, 0);
 }
 
-- (void)celebrationViewControllerStartedAnimation:(id)a3
+- (void)celebrationViewControllerStartedAnimation:(id)animation
 {
   v10.receiver = self;
   v10.super_class = NTKClockViewControllerAccessibility;
-  v3 = a3;
-  [(NTKClockViewControllerAccessibility *)&v10 celebrationViewControllerStartedAnimation:v3];
-  v4 = [v3 safeValueForKeyPath:{@"currentCelebration.celebration", v10.receiver, v10.super_class}];
+  animationCopy = animation;
+  [(NTKClockViewControllerAccessibility *)&v10 celebrationViewControllerStartedAnimation:animationCopy];
+  v4 = [animationCopy safeValueForKeyPath:{@"currentCelebration.celebration", v10.receiver, v10.super_class}];
 
   v5 = [v4 safeStringForKey:@"name"];
   if ([v5 isEqualToString:@"com.apple.watch.celebrations.fireworks"])

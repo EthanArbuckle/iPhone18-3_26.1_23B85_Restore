@@ -1,26 +1,26 @@
 @interface ServiceDelegate
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (id)_bundleForPID:(int)a3;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (id)_bundleForPID:(int)d;
 @end
 
 @implementation ServiceDelegate
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
-  v6 = sub_100001D38(@"com.apple.private.ndoagent", v5);
+  connectionCopy = connection;
+  v6 = sub_100001D38(@"com.apple.private.ndoagent", connectionCopy);
   if (v6)
   {
-    v7 = -[ServiceDelegate _bundleForPID:](self, "_bundleForPID:", [v5 processIdentifier]);
-    v8 = [v7 bundleIdentifier];
+    v7 = -[ServiceDelegate _bundleForPID:](self, "_bundleForPID:", [connectionCopy processIdentifier]);
+    bundleIdentifier = [v7 bundleIdentifier];
 
     v9 = _NDOLogSystem();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109378;
-      v21 = [v5 processIdentifier];
+      processIdentifier = [connectionCopy processIdentifier];
       v22 = 2112;
-      v23 = v8;
+      v23 = bundleIdentifier;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "connection added from %d with calling process: %@", buf, 0x12u);
     }
 
@@ -38,27 +38,27 @@
     v17 = [NSSet setWithObjects:objc_opt_class(), 0];
     [v10 setClasses:v17 forSelector:"getAmsPropertiesForContext:withReply:" argumentIndex:0 ofReply:1];
 
-    [v5 setExportedInterface:v10];
-    v18 = [[NDOAgent alloc] initWithCallingProcessBundleID:v8];
-    [v5 setExportedObject:v18];
-    [v5 resume];
+    [connectionCopy setExportedInterface:v10];
+    v18 = [[NDOAgent alloc] initWithCallingProcessBundleID:bundleIdentifier];
+    [connectionCopy setExportedObject:v18];
+    [connectionCopy resume];
   }
 
   else
   {
-    v8 = _NDOLogSystem();
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    bundleIdentifier = _NDOLogSystem();
+    if (os_log_type_enabled(bundleIdentifier, OS_LOG_TYPE_ERROR))
     {
-      sub_100072728(v8);
+      sub_100072728(bundleIdentifier);
     }
   }
 
   return v6;
 }
 
-- (id)_bundleForPID:(int)a3
+- (id)_bundleForPID:(int)d
 {
-  v3 = [[NSString alloc] initWithBytes:buffer length:proc_pidpath(a3 encoding:{buffer, 0x1000u), 4}];
+  v3 = [[NSString alloc] initWithBytes:buffer length:proc_pidpath(d encoding:{buffer, 0x1000u), 4}];
   v4 = [NSURL fileURLWithPath:v3];
 
   if (v4)

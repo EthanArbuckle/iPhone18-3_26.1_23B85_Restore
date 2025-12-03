@@ -1,23 +1,23 @@
 @interface SUSetupMescalSessionOperation
 - (BOOL)_isMescalEnabled;
 - (SUMescalSession)mescalSession;
-- (SUSetupMescalSessionOperation)initWithURLRequestProperties:(id)a3;
-- (id)_setupSAPCertificate:(id *)a3;
-- (id)_setupSAPWithData:(id)a3 error:(id *)a4;
+- (SUSetupMescalSessionOperation)initWithURLRequestProperties:(id)properties;
+- (id)_setupSAPCertificate:(id *)certificate;
+- (id)_setupSAPWithData:(id)data error:(id *)error;
 - (void)dealloc;
 - (void)run;
 @end
 
 @implementation SUSetupMescalSessionOperation
 
-- (SUSetupMescalSessionOperation)initWithURLRequestProperties:(id)a3
+- (SUSetupMescalSessionOperation)initWithURLRequestProperties:(id)properties
 {
   v6.receiver = self;
   v6.super_class = SUSetupMescalSessionOperation;
   v4 = [(SUSetupMescalSessionOperation *)&v6 init];
   if (v4)
   {
-    v4->_requestProperties = [a3 copy];
+    v4->_requestProperties = [properties copy];
   }
 
   return v4;
@@ -59,19 +59,19 @@
 
     else
     {
-      v15 = [MEMORY[0x1E69D4938] sharedConfig];
-      v16 = [v15 shouldLog];
-      if ([v15 shouldLogToDisk])
+      mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+      shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+      if ([mEMORY[0x1E69D4938] shouldLogToDisk])
       {
-        v17 = v16 | 2;
+        v17 = shouldLog | 2;
       }
 
       else
       {
-        v17 = v16;
+        v17 = shouldLog;
       }
 
-      if (!os_log_type_enabled([v15 OSLogObject], OS_LOG_TYPE_DEFAULT))
+      if (!os_log_type_enabled([mEMORY[0x1E69D4938] OSLogObject], OS_LOG_TYPE_DEFAULT))
       {
         v17 &= 2u;
       }
@@ -109,19 +109,19 @@
     else
     {
 LABEL_8:
-      v8 = [MEMORY[0x1E69D4938] sharedConfig];
-      v9 = [v8 shouldLog];
-      if ([v8 shouldLogToDisk])
+      mEMORY[0x1E69D4938]2 = [MEMORY[0x1E69D4938] sharedConfig];
+      shouldLog2 = [mEMORY[0x1E69D4938]2 shouldLog];
+      if ([mEMORY[0x1E69D4938]2 shouldLogToDisk])
       {
-        v10 = v9 | 2;
+        v10 = shouldLog2 | 2;
       }
 
       else
       {
-        v10 = v9;
+        v10 = shouldLog2;
       }
 
-      if (!os_log_type_enabled([v8 OSLogObject], OS_LOG_TYPE_DEFAULT))
+      if (!os_log_type_enabled([mEMORY[0x1E69D4938]2 OSLogObject], OS_LOG_TYPE_DEFAULT))
       {
         v10 &= 2u;
       }
@@ -181,21 +181,21 @@ LABEL_8:
   v6 = [(SSURLRequestProperties *)self->_requestProperties URL];
   if (!v6)
   {
-    v7 = [(SSURLRequestProperties *)self->_requestProperties URLBagURLBlock];
-    if (v7)
+    uRLBagURLBlock = [(SSURLRequestProperties *)self->_requestProperties URLBagURLBlock];
+    if (uRLBagURLBlock)
     {
-      v8 = (*(v7 + 16))(v7, v4);
+      v8 = (*(uRLBagURLBlock + 16))(uRLBagURLBlock, v4);
     }
 
     else
     {
-      v9 = [(SSURLRequestProperties *)self->_requestProperties URLBagKey];
-      if (!v9)
+      uRLBagKey = [(SSURLRequestProperties *)self->_requestProperties URLBagKey];
+      if (!uRLBagKey)
       {
         return 0;
       }
 
-      v8 = [v5 urlForKey:v9];
+      v8 = [v5 urlForKey:uRLBagKey];
     }
 
     v6 = v8;
@@ -216,24 +216,24 @@ LABEL_9:
     if (v11)
     {
       v12 = v11;
-      v13 = [v6 absoluteString];
-      v14 = [v12 rangeOfFirstMatchInString:v13 options:0 range:{0, objc_msgSend(v13, "length")}];
+      absoluteString = [v6 absoluteString];
+      v14 = [v12 rangeOfFirstMatchInString:absoluteString options:0 range:{0, objc_msgSend(absoluteString, "length")}];
 
       if (v14 != 0x7FFFFFFFFFFFFFFFLL)
       {
-        v21 = [MEMORY[0x1E69D4938] sharedConfig];
-        v22 = [v21 shouldLog];
-        if ([v21 shouldLogToDisk])
+        mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+        shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+        if ([mEMORY[0x1E69D4938] shouldLogToDisk])
         {
-          v23 = v22 | 2;
+          v23 = shouldLog | 2;
         }
 
         else
         {
-          v23 = v22;
+          v23 = shouldLog;
         }
 
-        if (!os_log_type_enabled([v21 OSLogObject], OS_LOG_TYPE_DEBUG))
+        if (!os_log_type_enabled([mEMORY[0x1E69D4938] OSLogObject], OS_LOG_TYPE_DEBUG))
         {
           v23 &= 2u;
         }
@@ -260,19 +260,19 @@ LABEL_9:
     }
   }
 
-  v15 = [MEMORY[0x1E69D4938] sharedConfig];
-  v16 = [v15 shouldLog];
-  if ([v15 shouldLogToDisk])
+  mEMORY[0x1E69D4938]2 = [MEMORY[0x1E69D4938] sharedConfig];
+  shouldLog2 = [mEMORY[0x1E69D4938]2 shouldLog];
+  if ([mEMORY[0x1E69D4938]2 shouldLogToDisk])
   {
-    v17 = v16 | 2;
+    v17 = shouldLog2 | 2;
   }
 
   else
   {
-    v17 = v16;
+    v17 = shouldLog2;
   }
 
-  if (!os_log_type_enabled([v15 OSLogObject], OS_LOG_TYPE_DEFAULT))
+  if (!os_log_type_enabled([mEMORY[0x1E69D4938]2 OSLogObject], OS_LOG_TYPE_DEFAULT))
   {
     v17 &= 2u;
   }
@@ -301,7 +301,7 @@ LABEL_19:
   return v19;
 }
 
-- (id)_setupSAPCertificate:(id *)a3
+- (id)_setupSAPCertificate:(id *)certificate
 {
   v26 = *MEMORY[0x1E69E9840];
   v23 = 0;
@@ -312,19 +312,19 @@ LABEL_19:
   [v6 setURLBagKey:@"sign-sap-setup-cert"];
   [v5 setRequestProperties:v6];
 
-  v7 = [MEMORY[0x1E69D4938] sharedConfig];
-  v8 = [v7 shouldLog];
-  if ([v7 shouldLogToDisk])
+  mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+  shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+  if ([mEMORY[0x1E69D4938] shouldLogToDisk])
   {
-    v9 = v8 | 2;
+    v9 = shouldLog | 2;
   }
 
   else
   {
-    v9 = v8;
+    v9 = shouldLog;
   }
 
-  if (!os_log_type_enabled([v7 OSLogObject], OS_LOG_TYPE_DEBUG))
+  if (!os_log_type_enabled([mEMORY[0x1E69D4938] OSLogObject], OS_LOG_TYPE_DEBUG))
   {
     v9 &= 2u;
   }
@@ -351,19 +351,19 @@ LABEL_19:
     v13 = [objc_msgSend(objc_msgSend(v5 "dataProvider")];
     if (!v13)
     {
-      v14 = [MEMORY[0x1E69D4938] sharedConfig];
-      v15 = [v14 shouldLog];
-      if ([v14 shouldLogToDisk])
+      mEMORY[0x1E69D4938]2 = [MEMORY[0x1E69D4938] sharedConfig];
+      shouldLog2 = [mEMORY[0x1E69D4938]2 shouldLog];
+      if ([mEMORY[0x1E69D4938]2 shouldLogToDisk])
       {
-        v16 = v15 | 2;
+        v16 = shouldLog2 | 2;
       }
 
       else
       {
-        v16 = v15;
+        v16 = shouldLog2;
       }
 
-      if (!os_log_type_enabled([v14 OSLogObject], OS_LOG_TYPE_DEFAULT))
+      if (!os_log_type_enabled([mEMORY[0x1E69D4938]2 OSLogObject], OS_LOG_TYPE_DEFAULT))
       {
         v16 &= 2u;
       }
@@ -394,15 +394,15 @@ LABEL_19:
     v13 = 0;
   }
 
-  if (a3 && !v13)
+  if (certificate && !v13)
   {
-    *a3 = v23;
+    *certificate = v23;
   }
 
   return v13;
 }
 
-- (id)_setupSAPWithData:(id)a3 error:(id *)a4
+- (id)_setupSAPWithData:(id)data error:(id *)error
 {
   v28 = *MEMORY[0x1E69E9840];
   v25 = 0;
@@ -412,22 +412,22 @@ LABEL_19:
   [v8 setAllowedRetryCount:0];
   [v8 setHTTPMethod:@"POST"];
   [v8 setURLBagKey:@"sign-sap-setup"];
-  [v8 setValue:a3 forRequestParameter:@"sign-sap-setup-buffer"];
+  [v8 setValue:data forRequestParameter:@"sign-sap-setup-buffer"];
   [v7 setRequestProperties:v8];
 
-  v9 = [MEMORY[0x1E69D4938] sharedConfig];
-  v10 = [v9 shouldLog];
-  if ([v9 shouldLogToDisk])
+  mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+  shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+  if ([mEMORY[0x1E69D4938] shouldLogToDisk])
   {
-    v11 = v10 | 2;
+    v11 = shouldLog | 2;
   }
 
   else
   {
-    v11 = v10;
+    v11 = shouldLog;
   }
 
-  if (!os_log_type_enabled([v9 OSLogObject], OS_LOG_TYPE_DEBUG))
+  if (!os_log_type_enabled([mEMORY[0x1E69D4938] OSLogObject], OS_LOG_TYPE_DEBUG))
   {
     v11 &= 2u;
   }
@@ -454,19 +454,19 @@ LABEL_19:
     v15 = [objc_msgSend(objc_msgSend(v7 "dataProvider")];
     if (!v15)
     {
-      v16 = [MEMORY[0x1E69D4938] sharedConfig];
-      v17 = [v16 shouldLog];
-      if ([v16 shouldLogToDisk])
+      mEMORY[0x1E69D4938]2 = [MEMORY[0x1E69D4938] sharedConfig];
+      shouldLog2 = [mEMORY[0x1E69D4938]2 shouldLog];
+      if ([mEMORY[0x1E69D4938]2 shouldLogToDisk])
       {
-        v18 = v17 | 2;
+        v18 = shouldLog2 | 2;
       }
 
       else
       {
-        v18 = v17;
+        v18 = shouldLog2;
       }
 
-      if (!os_log_type_enabled([v16 OSLogObject], OS_LOG_TYPE_DEFAULT))
+      if (!os_log_type_enabled([mEMORY[0x1E69D4938]2 OSLogObject], OS_LOG_TYPE_DEFAULT))
       {
         v18 &= 2u;
       }
@@ -497,9 +497,9 @@ LABEL_19:
     v15 = 0;
   }
 
-  if (a4 && !v15)
+  if (error && !v15)
   {
-    *a4 = v25;
+    *error = v25;
   }
 
   return v15;

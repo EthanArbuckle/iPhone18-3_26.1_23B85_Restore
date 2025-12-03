@@ -26,10 +26,10 @@
   v9.receiver = self;
   v9.super_class = _HFMediaValueManagerTransaction;
   v3 = [(_HFMediaValueManagerTransaction *)&v9 description];
-  v4 = [(_HFMediaValueManagerTransaction *)self transactionNumber];
+  transactionNumber = [(_HFMediaValueManagerTransaction *)self transactionNumber];
   v5 = NSStringFromHMMediaPlaybackState([(_HFMediaValueManagerTransaction *)self playbackState]);
-  v6 = [(_HFMediaValueManagerTransaction *)self writeFuture];
-  v7 = [v3 stringByAppendingFormat:@"(Transaction ID %@) --> Transitioning to %@ %@", v4, v5, v6];;
+  writeFuture = [(_HFMediaValueManagerTransaction *)self writeFuture];
+  v7 = [v3 stringByAppendingFormat:@"(Transaction ID %@) --> Transitioning to %@ %@", transactionNumber, v5, writeFuture];;
 
   return v7;
 }

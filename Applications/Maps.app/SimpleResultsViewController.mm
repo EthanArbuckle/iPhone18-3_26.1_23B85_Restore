@@ -1,53 +1,53 @@
 @interface SimpleResultsViewController
-- (BOOL)containsMapItem:(id)a3;
-- (BOOL)shouldQuickActionMenuPresenter:(id)a3 showDirectionsToPlace:(id)a4;
+- (BOOL)containsMapItem:(id)item;
+- (BOOL)shouldQuickActionMenuPresenter:(id)presenter showDirectionsToPlace:(id)place;
 - (MUScrollViewImpressionsCalculator)impressionsCalculator;
-- (SimpleResultsViewController)initWithShareDelegate:(id)a3 visualEffectDisabled:(BOOL)a4;
+- (SimpleResultsViewController)initWithShareDelegate:(id)delegate visualEffectDisabled:(BOOL)disabled;
 - (SimpleResultsViewControllerDelegate)resultsDelegate;
-- (double)_searchAlongRouteHeaderHeightForStyle:(unint64_t)a3 traitCollection:(id)a4;
-- (double)heightForLayout:(unint64_t)a3;
-- (id)mapServiceTraitsForQuickActionPresenter:(id)a3;
-- (void)_updateHeaderWithContainerStyle:(unint64_t)a3 traitCollection:(id)a4;
-- (void)applyAlphaToContent:(double)a3;
-- (void)dataSource:(id)a3 itemFocused:(id)a4;
-- (void)dataSource:(id)a3 itemTapped:(id)a4;
-- (void)dataSourceUpdated:(id)a3;
+- (double)_searchAlongRouteHeaderHeightForStyle:(unint64_t)style traitCollection:(id)collection;
+- (double)heightForLayout:(unint64_t)layout;
+- (id)mapServiceTraitsForQuickActionPresenter:(id)presenter;
+- (void)_updateHeaderWithContainerStyle:(unint64_t)style traitCollection:(id)collection;
+- (void)applyAlphaToContent:(double)content;
+- (void)dataSource:(id)source itemFocused:(id)focused;
+- (void)dataSource:(id)source itemTapped:(id)tapped;
+- (void)dataSourceUpdated:(id)updated;
 - (void)didBecomeCurrent;
-- (void)didChangeLayout:(unint64_t)a3;
+- (void)didChangeLayout:(unint64_t)layout;
 - (void)didResignCurrent;
-- (void)didTapOnAddStopWithSearchResult:(id)a3 atIndexPath:(id)a4;
-- (void)didTapOnCallWithSearchResult:(id)a3;
-- (void)didTapOnContainmentParentMapItem:(id)a3;
-- (void)didTapOnCuratedGuide:(id)a3;
-- (void)didTapOnCuratedGuides:(id)a3;
-- (void)didTapOnDirectionsWithSearchResult:(id)a3;
-- (void)didTapOnFlyoverWithSearchResult:(id)a3;
-- (void)didTapOnLookAroundWithSearchResult:(id)a3;
-- (void)didTapOnTappableEntry:(id)a3;
-- (void)didTapOnUserGeneratedGuide:(id)a3;
-- (void)didTapOnWebsiteWithSearchResult:(id)a3;
-- (void)handleDismissAction:(id)a3;
-- (void)headerViewButtonTapped:(id)a3 buttonType:(unint64_t)a4;
-- (void)quickActionMenuPresenter:(id)a3 selectedCall:(id)a4;
-- (void)quickActionMenuPresenter:(id)a3 selectedDirectionsTo:(id)a4;
-- (void)quickActionMenuPresenter:(id)a3 selectedRemoveDroppedPinOf:(id)a4;
-- (void)quickActionMenuPresenter:(id)a3 selectedShareLocationOf:(id)a4;
-- (void)quickActionMenuPresenter:(id)a3 selectedShowPlaceCard:(id)a4;
-- (void)quickActionMenuPresenter:(id)a3 selectedViewWebsiteFor:(id)a4;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)setCluster:(id)a3 sortAlphabetically:(BOOL)a4 originalSearchInfo:(id)a5;
-- (void)setCluster:(id)a3 sortAlphabetically:(BOOL)a4 originalSearchInfo:(id)a5 searchResults:(id)a6;
-- (void)setDisplayDistance:(BOOL)a3;
-- (void)setIsPresentingSearchAlongTheRouteResults:(BOOL)a3;
-- (void)setSearchResults:(id)a3 sortAlphabetically:(BOOL)a4 originalSearchInfo:(id)a5;
+- (void)didTapOnAddStopWithSearchResult:(id)result atIndexPath:(id)path;
+- (void)didTapOnCallWithSearchResult:(id)result;
+- (void)didTapOnContainmentParentMapItem:(id)item;
+- (void)didTapOnCuratedGuide:(id)guide;
+- (void)didTapOnCuratedGuides:(id)guides;
+- (void)didTapOnDirectionsWithSearchResult:(id)result;
+- (void)didTapOnFlyoverWithSearchResult:(id)result;
+- (void)didTapOnLookAroundWithSearchResult:(id)result;
+- (void)didTapOnTappableEntry:(id)entry;
+- (void)didTapOnUserGeneratedGuide:(id)guide;
+- (void)didTapOnWebsiteWithSearchResult:(id)result;
+- (void)handleDismissAction:(id)action;
+- (void)headerViewButtonTapped:(id)tapped buttonType:(unint64_t)type;
+- (void)quickActionMenuPresenter:(id)presenter selectedCall:(id)call;
+- (void)quickActionMenuPresenter:(id)presenter selectedDirectionsTo:(id)to;
+- (void)quickActionMenuPresenter:(id)presenter selectedRemoveDroppedPinOf:(id)of;
+- (void)quickActionMenuPresenter:(id)presenter selectedShareLocationOf:(id)of;
+- (void)quickActionMenuPresenter:(id)presenter selectedShowPlaceCard:(id)card;
+- (void)quickActionMenuPresenter:(id)presenter selectedViewWebsiteFor:(id)for;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)setCluster:(id)cluster sortAlphabetically:(BOOL)alphabetically originalSearchInfo:(id)info;
+- (void)setCluster:(id)cluster sortAlphabetically:(BOOL)alphabetically originalSearchInfo:(id)info searchResults:(id)results;
+- (void)setDisplayDistance:(BOOL)distance;
+- (void)setIsPresentingSearchAlongTheRouteResults:(BOOL)results;
+- (void)setSearchResults:(id)results sortAlphabetically:(BOOL)alphabetically originalSearchInfo:(id)info;
 - (void)updatePreferredContentSize;
-- (void)updateTitle:(BOOL)a3;
+- (void)updateTitle:(BOOL)title;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)willBecomeCurrent:(BOOL)a3;
-- (void)willChangeContainerStyle:(unint64_t)a3;
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)willBecomeCurrent:(BOOL)current;
+- (void)willChangeContainerStyle:(unint64_t)style;
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation SimpleResultsViewController
@@ -120,98 +120,98 @@ LABEL_12:
   return v14;
 }
 
-- (BOOL)shouldQuickActionMenuPresenter:(id)a3 showDirectionsToPlace:(id)a4
+- (BOOL)shouldQuickActionMenuPresenter:(id)presenter showDirectionsToPlace:(id)place
 {
-  v5 = a4;
-  v6 = [(SimpleResultsViewController *)self resultsDelegate];
-  v7 = [v6 venuesManagerForSimpleResults];
-  v8 = [v5 mapItem];
+  placeCopy = place;
+  resultsDelegate = [(SimpleResultsViewController *)self resultsDelegate];
+  venuesManagerForSimpleResults = [resultsDelegate venuesManagerForSimpleResults];
+  mapItem = [placeCopy mapItem];
 
-  LOBYTE(v5) = [v7 isUserAtSameVenueAsMapItem:v8];
-  return v5 ^ 1;
+  LOBYTE(placeCopy) = [venuesManagerForSimpleResults isUserAtSameVenueAsMapItem:mapItem];
+  return placeCopy ^ 1;
 }
 
-- (void)quickActionMenuPresenter:(id)a3 selectedRemoveDroppedPinOf:(id)a4
+- (void)quickActionMenuPresenter:(id)presenter selectedRemoveDroppedPinOf:(id)of
 {
-  v5 = a4;
-  v6 = [(SimpleResultsViewController *)self resultsDelegate];
-  [v6 simpleResultsViewContoller:0 removeDroppedPin:v5];
+  ofCopy = of;
+  resultsDelegate = [(SimpleResultsViewController *)self resultsDelegate];
+  [resultsDelegate simpleResultsViewContoller:0 removeDroppedPin:ofCopy];
 }
 
-- (id)mapServiceTraitsForQuickActionPresenter:(id)a3
+- (id)mapServiceTraitsForQuickActionPresenter:(id)presenter
 {
-  v3 = [(SimpleResultsViewController *)self resultsDelegate];
-  v4 = [v3 traits];
+  resultsDelegate = [(SimpleResultsViewController *)self resultsDelegate];
+  traits = [resultsDelegate traits];
 
-  return v4;
+  return traits;
 }
 
-- (void)quickActionMenuPresenter:(id)a3 selectedShowPlaceCard:(id)a4
+- (void)quickActionMenuPresenter:(id)presenter selectedShowPlaceCard:(id)card
 {
-  v5 = [a4 searchResult];
-  if (v5)
+  searchResult = [card searchResult];
+  if (searchResult)
   {
-    v7 = v5;
-    v6 = [(SimpleResultsViewController *)self resultsDelegate];
-    [v6 simpleResultsViewContoller:self selectSearchResult:v7];
+    v7 = searchResult;
+    resultsDelegate = [(SimpleResultsViewController *)self resultsDelegate];
+    [resultsDelegate simpleResultsViewContoller:self selectSearchResult:v7];
 
-    v5 = v7;
+    searchResult = v7;
   }
 }
 
-- (void)quickActionMenuPresenter:(id)a3 selectedShareLocationOf:(id)a4
+- (void)quickActionMenuPresenter:(id)presenter selectedShareLocationOf:(id)of
 {
-  v5 = [a4 searchResult];
-  if (v5)
+  searchResult = [of searchResult];
+  if (searchResult)
   {
-    v9 = v5;
-    v6 = [v5 contactForSharingToMessages];
-    v7 = [ShareItem shareItemWithSearchResult:v9 contact:v6 includePrintActivity:0];
+    v9 = searchResult;
+    contactForSharingToMessages = [searchResult contactForSharingToMessages];
+    v7 = [ShareItem shareItemWithSearchResult:v9 contact:contactForSharingToMessages includePrintActivity:0];
 
-    v8 = [(SimpleResultsViewController *)self resultsDelegate];
-    [v8 simpleResultsViewContoller:0 doShareSheetForShareItem:v7 completion:0];
+    resultsDelegate = [(SimpleResultsViewController *)self resultsDelegate];
+    [resultsDelegate simpleResultsViewContoller:0 doShareSheetForShareItem:v7 completion:0];
 
-    v5 = v9;
+    searchResult = v9;
   }
 }
 
-- (void)quickActionMenuPresenter:(id)a3 selectedViewWebsiteFor:(id)a4
+- (void)quickActionMenuPresenter:(id)presenter selectedViewWebsiteFor:(id)for
 {
-  v5 = [a4 searchResult];
-  if (v5)
+  searchResult = [for searchResult];
+  if (searchResult)
   {
-    v7 = v5;
-    v6 = [(SimpleResultsViewController *)self resultsDelegate];
-    [v6 simpleResultsViewContoller:0 openWebsiteForSearchResult:v7];
+    v7 = searchResult;
+    resultsDelegate = [(SimpleResultsViewController *)self resultsDelegate];
+    [resultsDelegate simpleResultsViewContoller:0 openWebsiteForSearchResult:v7];
 
-    v5 = v7;
+    searchResult = v7;
   }
 }
 
-- (void)quickActionMenuPresenter:(id)a3 selectedCall:(id)a4
+- (void)quickActionMenuPresenter:(id)presenter selectedCall:(id)call
 {
-  v5 = [a4 searchResult];
-  if (v5)
+  searchResult = [call searchResult];
+  if (searchResult)
   {
-    v7 = v5;
-    v6 = [(SimpleResultsViewController *)self resultsDelegate];
-    [v6 simpleResultsViewContoller:self doAudioCallToSearchResult:v7];
+    v7 = searchResult;
+    resultsDelegate = [(SimpleResultsViewController *)self resultsDelegate];
+    [resultsDelegate simpleResultsViewContoller:self doAudioCallToSearchResult:v7];
 
-    v5 = v7;
+    searchResult = v7;
   }
 }
 
-- (void)quickActionMenuPresenter:(id)a3 selectedDirectionsTo:(id)a4
+- (void)quickActionMenuPresenter:(id)presenter selectedDirectionsTo:(id)to
 {
-  v5 = [a4 searchResult];
-  if (v5)
+  searchResult = [to searchResult];
+  if (searchResult)
   {
     v6 = objc_alloc_init(SearchFieldItem);
     v7 = +[SearchResult currentLocationSearchResult];
     [(SearchFieldItem *)v6 setSearchResult:v7];
 
     v8 = objc_alloc_init(SearchFieldItem);
-    [(SearchFieldItem *)v8 setSearchResult:v5];
+    [(SearchFieldItem *)v8 setSearchResult:searchResult];
     v9 = [DirectionItem alloc];
     v16[0] = v6;
     v16[1] = v8;
@@ -221,38 +221,38 @@ LABEL_12:
     v14 = @"DirectionsSessionInitiatorKey";
     v15 = &off_1016E8030;
     v12 = [NSDictionary dictionaryWithObjects:&v15 forKeys:&v14 count:1];
-    v13 = [(SimpleResultsViewController *)self resultsDelegate];
-    [v13 simpleResultsViewContoller:self doDirectionItem:v11 withUserInfo:v12];
+    resultsDelegate = [(SimpleResultsViewController *)self resultsDelegate];
+    [resultsDelegate simpleResultsViewContoller:self doDirectionItem:v11 withUserInfo:v12];
   }
 }
 
-- (void)handleDismissAction:(id)a3
+- (void)handleDismissAction:(id)action
 {
   v4.receiver = self;
   v4.super_class = SimpleResultsViewController;
-  [(ContaineeViewController *)&v4 handleDismissAction:a3];
+  [(ContaineeViewController *)&v4 handleDismissAction:action];
   [(SimpleResultsViewController *)self _captureCloseAction];
   +[SearchResultsAnalyticsManager didCloseCluster];
 }
 
-- (double)heightForLayout:(unint64_t)a3
+- (double)heightForLayout:(unint64_t)layout
 {
-  if (a3 - 3 < 3)
+  if (layout - 3 < 3)
   {
-    v4 = [(ContaineeViewController *)self cardPresentationController];
-    [v4 availableHeight];
+    cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+    [cardPresentationController availableHeight];
     v6 = v5;
 
     return v6;
   }
 
-  if (a3 != 2)
+  if (layout != 2)
   {
     v6 = -1.0;
-    if (a3 == 1)
+    if (layout == 1)
     {
-      v7 = [(ContaineeViewController *)self cardPresentationController];
-      [v7 bottomSafeOffset];
+      cardPresentationController2 = [(ContaineeViewController *)self cardPresentationController];
+      [cardPresentationController2 bottomSafeOffset];
       v9 = v8;
       [(ContainerHeaderView *)self->_titleHeaderView frame];
       v6 = CGRectGetHeight(v15) + v9;
@@ -278,57 +278,57 @@ LABEL_12:
   return result;
 }
 
-- (void)willChangeContainerStyle:(unint64_t)a3
+- (void)willChangeContainerStyle:(unint64_t)style
 {
   v6.receiver = self;
   v6.super_class = SimpleResultsViewController;
   [(ContaineeViewController *)&v6 willChangeContainerStyle:?];
-  v5 = [(SimpleResultsViewController *)self traitCollection];
-  [(SimpleResultsViewController *)self _updateHeaderWithContainerStyle:a3 traitCollection:v5];
+  traitCollection = [(SimpleResultsViewController *)self traitCollection];
+  [(SimpleResultsViewController *)self _updateHeaderWithContainerStyle:style traitCollection:traitCollection];
 }
 
-- (void)willBecomeCurrent:(BOOL)a3
+- (void)willBecomeCurrent:(BOOL)current
 {
   v5.receiver = self;
   v5.super_class = SimpleResultsViewController;
-  [(ContaineeViewController *)&v5 willBecomeCurrent:a3];
+  [(ContaineeViewController *)&v5 willBecomeCurrent:current];
   if (self->_cluster)
   {
-    v4 = [(SimpleResultsViewController *)self resultsDelegate];
-    [v4 simpleResultsViewContoller:self selectClusteredLabelMarker:self->_cluster];
+    resultsDelegate = [(SimpleResultsViewController *)self resultsDelegate];
+    [resultsDelegate simpleResultsViewContoller:self selectClusteredLabelMarker:self->_cluster];
   }
 }
 
-- (void)applyAlphaToContent:(double)a3
+- (void)applyAlphaToContent:(double)content
 {
   v5.receiver = self;
   v5.super_class = SimpleResultsViewController;
   [(ContaineeViewController *)&v5 applyAlphaToContent:?];
   if (sub_10000FA08(self) != 5 && (MapsFeature_IsEnabled_SearchAndDiscovery() & 1) == 0)
   {
-    [(ContainerHeaderView *)self->_titleHeaderView setHairLineAlpha:a3];
+    [(ContainerHeaderView *)self->_titleHeaderView setHairLineAlpha:content];
   }
 }
 
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator
 {
   v8.receiver = self;
   v8.super_class = SimpleResultsViewController;
-  v6 = a3;
-  [(SimpleResultsViewController *)&v8 willTransitionToTraitCollection:v6 withTransitionCoordinator:a4];
+  collectionCopy = collection;
+  [(SimpleResultsViewController *)&v8 willTransitionToTraitCollection:collectionCopy withTransitionCoordinator:coordinator];
   v7 = [(ContaineeViewController *)self cardPresentationController:v8.receiver];
-  -[SimpleResultsViewController _updateHeaderWithContainerStyle:traitCollection:](self, "_updateHeaderWithContainerStyle:traitCollection:", [v7 containerStyle], v6);
+  -[SimpleResultsViewController _updateHeaderWithContainerStyle:traitCollection:](self, "_updateHeaderWithContainerStyle:traitCollection:", [v7 containerStyle], collectionCopy);
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v9.receiver = self;
   v9.super_class = SimpleResultsViewController;
-  [(ContaineeViewController *)&v9 viewWillAppear:a3];
-  v4 = [(ContaineeViewController *)self cardPresentationController];
-  v5 = [v4 containerStyle];
-  v6 = [(SimpleResultsViewController *)self traitCollection];
-  [(SimpleResultsViewController *)self _updateHeaderWithContainerStyle:v5 traitCollection:v6];
+  [(ContaineeViewController *)&v9 viewWillAppear:appear];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  containerStyle = [cardPresentationController containerStyle];
+  traitCollection = [(SimpleResultsViewController *)self traitCollection];
+  [(SimpleResultsViewController *)self _updateHeaderWithContainerStyle:containerStyle traitCollection:traitCollection];
 
   if (!self->_quickActionMenuPresenter)
   {
@@ -345,36 +345,36 @@ LABEL_12:
   v60.receiver = self;
   v60.super_class = SimpleResultsViewController;
   [(ContaineeViewController *)&v60 viewDidLoad];
-  v3 = [(SimpleResultsViewController *)self view];
-  [v3 setAccessibilityIdentifier:@"SimpleResultsView"];
+  view = [(SimpleResultsViewController *)self view];
+  [view setAccessibilityIdentifier:@"SimpleResultsView"];
   v4 = [ContainerHeaderView alloc];
   y = CGRectZero.origin.y;
   width = CGRectZero.size.width;
   height = CGRectZero.size.height;
-  v8 = [(ContainerHeaderView *)v4 initWithFrame:CGRectZero.origin.x, y, width, height];
+  height = [(ContainerHeaderView *)v4 initWithFrame:CGRectZero.origin.x, y, width, height];
   titleHeaderView = self->_titleHeaderView;
-  self->_titleHeaderView = v8;
+  self->_titleHeaderView = height;
 
   [(ContainerHeaderView *)self->_titleHeaderView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(ContainerHeaderView *)self->_titleHeaderView setDelegate:self];
-  [v3 addSubview:self->_titleHeaderView];
+  [view addSubview:self->_titleHeaderView];
   if (sub_10000FA08(self) == 5)
   {
     [(ContainerHeaderView *)self->_titleHeaderView setHairLineAlpha:0.0];
-    v10 = [[SimpleResultTitleView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
+    height2 = [[SimpleResultTitleView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
     p_macResultsTitleView = &self->_macResultsTitleView;
     macResultsTitleView = self->_macResultsTitleView;
-    self->_macResultsTitleView = v10;
+    self->_macResultsTitleView = height2;
 
     [(SimpleResultTitleView *)self->_macResultsTitleView setTranslatesAutoresizingMaskIntoConstraints:0];
   }
 
   else
   {
-    v13 = [[ResultsTitleView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
+    height3 = [[ResultsTitleView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
     p_macResultsTitleView = &self->_resultsTitleView;
     resultsTitleView = self->_resultsTitleView;
-    self->_resultsTitleView = v13;
+    self->_resultsTitleView = height3;
 
     [(ResultsTitleView *)self->_resultsTitleView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(ResultsTitleView *)self->_resultsTitleView setEditButtonHidden:1];
@@ -389,9 +389,9 @@ LABEL_12:
   }
 
   [(ContainerHeaderView *)self->_titleHeaderView setTitleView:*p_macResultsTitleView];
-  v17 = [[MapsThemeTableView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
+  height4 = [[MapsThemeTableView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
   tableView = self->_tableView;
-  self->_tableView = &v17->super;
+  self->_tableView = &height4->super;
 
   [(UITableView *)self->_tableView setAccessibilityIdentifier:@"SimpleResultsTableView"];
   [(UITableView *)self->_tableView setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -399,18 +399,18 @@ LABEL_12:
   [(UITableView *)self->_tableView setBackgroundColor:v19];
 
   [(UITableView *)self->_tableView setSectionHeaderTopPadding:0.0];
-  [v3 addSubview:self->_tableView];
+  [view addSubview:self->_tableView];
   v20 = sub_10000FA08(self);
-  v21 = [(ContainerHeaderView *)self->_titleHeaderView heightAnchor];
-  v22 = v21;
+  heightAnchor = [(ContainerHeaderView *)self->_titleHeaderView heightAnchor];
+  v22 = heightAnchor;
   if (v20 == 5)
   {
-    [v21 constraintEqualToConstant:54.0];
+    [heightAnchor constraintEqualToConstant:54.0];
   }
 
   else
   {
-    [v21 constraintGreaterThanOrEqualToConstant:54.0];
+    [heightAnchor constraintGreaterThanOrEqualToConstant:54.0];
   }
   v23 = ;
   titleHeaderViewHeightConstraint = self->_titleHeaderViewHeightConstraint;
@@ -426,45 +426,45 @@ LABEL_12:
     v25 = 0.0;
   }
 
-  v26 = [(UITableView *)self->_tableView bottomAnchor];
-  v27 = [v3 bottomAnchor];
-  v28 = [v26 constraintEqualToAnchor:v27 constant:-16.0];
+  bottomAnchor = [(UITableView *)self->_tableView bottomAnchor];
+  bottomAnchor2 = [view bottomAnchor];
+  v28 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-16.0];
   bottomConstraint = self->_bottomConstraint;
   self->_bottomConstraint = v28;
 
   v61[0] = self->_titleHeaderViewHeightConstraint;
-  v58 = [(ContainerHeaderView *)self->_titleHeaderView topAnchor];
-  v57 = [v3 topAnchor];
-  v56 = [v58 constraintEqualToAnchor:v57];
+  topAnchor = [(ContainerHeaderView *)self->_titleHeaderView topAnchor];
+  topAnchor2 = [view topAnchor];
+  v56 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v61[1] = v56;
-  v55 = [(ContainerHeaderView *)self->_titleHeaderView leadingAnchor];
-  v54 = [v3 leadingAnchor];
-  v53 = [v55 constraintEqualToAnchor:v54];
+  leadingAnchor = [(ContainerHeaderView *)self->_titleHeaderView leadingAnchor];
+  leadingAnchor2 = [view leadingAnchor];
+  v53 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v61[2] = v53;
-  v52 = [(ContainerHeaderView *)self->_titleHeaderView trailingAnchor];
-  v51 = [v3 trailingAnchor];
-  v50 = [v52 constraintEqualToAnchor:v51];
+  trailingAnchor = [(ContainerHeaderView *)self->_titleHeaderView trailingAnchor];
+  trailingAnchor2 = [view trailingAnchor];
+  v50 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v61[3] = v50;
-  v49 = [(UITableView *)self->_tableView leadingAnchor];
-  v48 = [v3 leadingAnchor];
-  v30 = [v49 constraintEqualToAnchor:v48 constant:v25];
+  leadingAnchor3 = [(UITableView *)self->_tableView leadingAnchor];
+  leadingAnchor4 = [view leadingAnchor];
+  v30 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:v25];
   v61[4] = v30;
-  v31 = [(UITableView *)self->_tableView trailingAnchor];
-  v59 = v3;
-  v32 = [v3 trailingAnchor];
-  v33 = [v31 constraintEqualToAnchor:v32];
+  trailingAnchor3 = [(UITableView *)self->_tableView trailingAnchor];
+  v59 = view;
+  trailingAnchor4 = [view trailingAnchor];
+  v33 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v61[5] = v33;
-  v34 = [(UITableView *)self->_tableView topAnchor];
-  v35 = [(ContainerHeaderView *)self->_titleHeaderView bottomAnchor];
-  v36 = [v34 constraintEqualToAnchor:v35];
+  topAnchor3 = [(UITableView *)self->_tableView topAnchor];
+  bottomAnchor3 = [(ContainerHeaderView *)self->_titleHeaderView bottomAnchor];
+  v36 = [topAnchor3 constraintEqualToAnchor:bottomAnchor3];
   v37 = self->_bottomConstraint;
   v61[6] = v36;
   v61[7] = v37;
   v38 = [NSArray arrayWithObjects:v61 count:8];
   [NSLayoutConstraint activateConstraints:v38];
 
-  v39 = [(SimpleResultsViewController *)self view];
-  [v39 layoutIfNeeded];
+  view2 = [(SimpleResultsViewController *)self view];
+  [view2 layoutIfNeeded];
 
   v40 = [[SearchResultsDataSource alloc] initWithTableView:self->_tableView];
   resultsDataSource = self->_resultsDataSource;
@@ -486,9 +486,9 @@ LABEL_12:
   [(UITableView *)self->_tableView setDelegate:self->_resultsDataSource];
   [(UITableView *)self->_tableView setDataSource:self->_resultsDataSource];
   v43 = +[MapsDragAndDropManager sharedManager];
-  v44 = [v43 deviceSupportsDragAndDrop];
+  deviceSupportsDragAndDrop = [v43 deviceSupportsDragAndDrop];
 
-  if (v44)
+  if (deviceSupportsDragAndDrop)
   {
     [(UITableView *)self->_tableView setDragDelegate:self->_resultsDataSource];
   }
@@ -496,15 +496,15 @@ LABEL_12:
   [(UITableView *)self->_tableView reloadData];
   [(SimpleResultsViewController *)self updateTitle:0];
   [(SimpleResultsViewController *)self updatePreferredContentSize];
-  v45 = [(ContaineeViewController *)self cardPresentationController];
-  v46 = [v45 containerStyle];
-  v47 = [(SimpleResultsViewController *)self traitCollection];
-  [(SimpleResultsViewController *)self _updateHeaderWithContainerStyle:v46 traitCollection:v47];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  containerStyle = [cardPresentationController containerStyle];
+  traitCollection = [(SimpleResultsViewController *)self traitCollection];
+  [(SimpleResultsViewController *)self _updateHeaderWithContainerStyle:containerStyle traitCollection:traitCollection];
 }
 
-- (void)headerViewButtonTapped:(id)a3 buttonType:(unint64_t)a4
+- (void)headerViewButtonTapped:(id)tapped buttonType:(unint64_t)type
 {
-  v5 = a3;
+  tappedCopy = tapped;
   v6 = sub_100067540();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -512,113 +512,113 @@ LABEL_12:
     v9.super_class = SimpleResultsViewController;
     v7 = [(SimpleResultsViewController *)&v9 class];
     *buf = 138412546;
-    v11 = self;
+    selfCopy = self;
     v12 = 2112;
     v13 = v7;
     v8 = v7;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Header view close button tapped. Self : %@, Super class: %@", buf, 0x16u);
   }
 
-  [(SimpleResultsViewController *)self handleDismissAction:v5];
+  [(SimpleResultsViewController *)self handleDismissAction:tappedCopy];
 }
 
-- (void)didTapOnAddStopWithSearchResult:(id)a3 atIndexPath:(id)a4
+- (void)didTapOnAddStopWithSearchResult:(id)result atIndexPath:(id)path
 {
-  v8 = a3;
-  v5 = [(SimpleResultsViewController *)self resultsDelegate];
+  resultCopy = result;
+  resultsDelegate = [(SimpleResultsViewController *)self resultsDelegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(SimpleResultsViewController *)self resultsDelegate];
-    [v7 simpleResultsViewContoller:self didTapOnAddStopWithSearchResult:v8];
+    resultsDelegate2 = [(SimpleResultsViewController *)self resultsDelegate];
+    [resultsDelegate2 simpleResultsViewContoller:self didTapOnAddStopWithSearchResult:resultCopy];
   }
 }
 
-- (void)didTapOnTappableEntry:(id)a3
+- (void)didTapOnTappableEntry:(id)entry
 {
-  v8 = a3;
-  v4 = [(SimpleResultsViewController *)self resultsDelegate];
+  entryCopy = entry;
+  resultsDelegate = [(SimpleResultsViewController *)self resultsDelegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(SimpleResultsViewController *)self resultsDelegate];
-    v7 = [self->_originalSearchInfo results];
-    [v6 simpleResultsViewContoller:self selectTappableEntry:v8 resultsList:v7];
+    resultsDelegate2 = [(SimpleResultsViewController *)self resultsDelegate];
+    results = [self->_originalSearchInfo results];
+    [resultsDelegate2 simpleResultsViewContoller:self selectTappableEntry:entryCopy resultsList:results];
   }
 }
 
-- (void)didTapOnContainmentParentMapItem:(id)a3
+- (void)didTapOnContainmentParentMapItem:(id)item
 {
-  v8 = a3;
-  v4 = [(SimpleResultsViewController *)self resultsDelegate];
+  itemCopy = item;
+  resultsDelegate = [(SimpleResultsViewController *)self resultsDelegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(SimpleResultsViewController *)self resultsDelegate];
-    v7 = [self->_originalSearchInfo results];
-    [v6 simpleResultsViewContoller:self selectContainmentParentMapItem:v8 resultsList:v7];
+    resultsDelegate2 = [(SimpleResultsViewController *)self resultsDelegate];
+    results = [self->_originalSearchInfo results];
+    [resultsDelegate2 simpleResultsViewContoller:self selectContainmentParentMapItem:itemCopy resultsList:results];
   }
 }
 
-- (void)didTapOnFlyoverWithSearchResult:(id)a3
+- (void)didTapOnFlyoverWithSearchResult:(id)result
 {
-  v7 = a3;
-  v4 = [(SimpleResultsViewController *)self resultsDelegate];
+  resultCopy = result;
+  resultsDelegate = [(SimpleResultsViewController *)self resultsDelegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(SimpleResultsViewController *)self resultsDelegate];
-    [v6 simpleResultsViewContoller:self didTapOnFlyoverWithSearchResult:v7];
+    resultsDelegate2 = [(SimpleResultsViewController *)self resultsDelegate];
+    [resultsDelegate2 simpleResultsViewContoller:self didTapOnFlyoverWithSearchResult:resultCopy];
   }
 }
 
-- (void)didTapOnWebsiteWithSearchResult:(id)a3
+- (void)didTapOnWebsiteWithSearchResult:(id)result
 {
-  v7 = a3;
-  v4 = [(SimpleResultsViewController *)self resultsDelegate];
+  resultCopy = result;
+  resultsDelegate = [(SimpleResultsViewController *)self resultsDelegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(SimpleResultsViewController *)self resultsDelegate];
-    [v6 simpleResultsViewContoller:self didTapOnWebsiteWithSearchResult:v7];
+    resultsDelegate2 = [(SimpleResultsViewController *)self resultsDelegate];
+    [resultsDelegate2 simpleResultsViewContoller:self didTapOnWebsiteWithSearchResult:resultCopy];
   }
 }
 
-- (void)didTapOnCallWithSearchResult:(id)a3
+- (void)didTapOnCallWithSearchResult:(id)result
 {
-  v7 = a3;
-  v4 = [(SimpleResultsViewController *)self resultsDelegate];
+  resultCopy = result;
+  resultsDelegate = [(SimpleResultsViewController *)self resultsDelegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(SimpleResultsViewController *)self resultsDelegate];
-    [v6 simpleResultsViewContoller:self didTapOnCallWithSearchResult:v7];
+    resultsDelegate2 = [(SimpleResultsViewController *)self resultsDelegate];
+    [resultsDelegate2 simpleResultsViewContoller:self didTapOnCallWithSearchResult:resultCopy];
   }
 }
 
-- (void)didTapOnLookAroundWithSearchResult:(id)a3
+- (void)didTapOnLookAroundWithSearchResult:(id)result
 {
-  v7 = a3;
-  v4 = [(SimpleResultsViewController *)self resultsDelegate];
+  resultCopy = result;
+  resultsDelegate = [(SimpleResultsViewController *)self resultsDelegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(SimpleResultsViewController *)self resultsDelegate];
-    [v6 simpleResultsViewContoller:self didTapOnLookAroundWithSearchResult:v7];
+    resultsDelegate2 = [(SimpleResultsViewController *)self resultsDelegate];
+    [resultsDelegate2 simpleResultsViewContoller:self didTapOnLookAroundWithSearchResult:resultCopy];
   }
 }
 
-- (void)didTapOnDirectionsWithSearchResult:(id)a3
+- (void)didTapOnDirectionsWithSearchResult:(id)result
 {
-  v4 = a3;
-  v5 = [(SimpleResultsViewController *)self resultsDelegate];
+  resultCopy = result;
+  resultsDelegate = [(SimpleResultsViewController *)self resultsDelegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
@@ -627,81 +627,81 @@ LABEL_12:
     v8 = +[SearchResult currentLocationSearchResult];
     [(SearchFieldItem *)v7 setSearchResult:v8];
 
-    v9 = [SearchFieldItem searchFieldItemWithObject:v4];
+    v9 = [SearchFieldItem searchFieldItemWithObject:resultCopy];
     v10 = [DirectionItem alloc];
     v14[0] = v7;
     v14[1] = v9;
     v11 = [NSArray arrayWithObjects:v14 count:2];
     v12 = [(DirectionItem *)v10 initWithItems:v11 ignoreMapType:0 transportType:0];
 
-    v13 = [(SimpleResultsViewController *)self resultsDelegate];
-    [v13 simpleResultsViewContoller:self selectDirectionItem:v12];
+    resultsDelegate2 = [(SimpleResultsViewController *)self resultsDelegate];
+    [resultsDelegate2 simpleResultsViewContoller:self selectDirectionItem:v12];
   }
 }
 
-- (void)didTapOnCuratedGuides:(id)a3
+- (void)didTapOnCuratedGuides:(id)guides
 {
-  v7 = a3;
-  v4 = [(SimpleResultsViewController *)self resultsDelegate];
+  guidesCopy = guides;
+  resultsDelegate = [(SimpleResultsViewController *)self resultsDelegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(SimpleResultsViewController *)self resultsDelegate];
-    [v6 simpleResultsViewContoller:self showCuratedCollectionsList:v7 title:0];
+    resultsDelegate2 = [(SimpleResultsViewController *)self resultsDelegate];
+    [resultsDelegate2 simpleResultsViewContoller:self showCuratedCollectionsList:guidesCopy title:0];
   }
 }
 
-- (void)didTapOnCuratedGuide:(id)a3
+- (void)didTapOnCuratedGuide:(id)guide
 {
-  v7 = a3;
-  v4 = [(SimpleResultsViewController *)self resultsDelegate];
+  guideCopy = guide;
+  resultsDelegate = [(SimpleResultsViewController *)self resultsDelegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(SimpleResultsViewController *)self resultsDelegate];
-    [v6 simpleResultsViewContoller:self showCuratedCollection:v7];
+    resultsDelegate2 = [(SimpleResultsViewController *)self resultsDelegate];
+    [resultsDelegate2 simpleResultsViewContoller:self showCuratedCollection:guideCopy];
   }
 }
 
-- (void)didTapOnUserGeneratedGuide:(id)a3
+- (void)didTapOnUserGeneratedGuide:(id)guide
 {
-  v7 = a3;
-  v4 = [(SimpleResultsViewController *)self resultsDelegate];
+  guideCopy = guide;
+  resultsDelegate = [(SimpleResultsViewController *)self resultsDelegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(SimpleResultsViewController *)self resultsDelegate];
-    [v6 simpleResultsViewContoller:self showUserGeneratedCollection:v7];
+    resultsDelegate2 = [(SimpleResultsViewController *)self resultsDelegate];
+    [resultsDelegate2 simpleResultsViewContoller:self showUserGeneratedCollection:guideCopy];
   }
 }
 
-- (void)dataSource:(id)a3 itemTapped:(id)a4
+- (void)dataSource:(id)source itemTapped:(id)tapped
 {
-  v7 = a4;
+  tappedCopy = tapped;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [(SimpleResultsViewController *)self resultsDelegate];
-    [v6 simpleResultsViewContoller:self selectSearchResult:v7];
+    resultsDelegate = [(SimpleResultsViewController *)self resultsDelegate];
+    [resultsDelegate simpleResultsViewContoller:self selectSearchResult:tappedCopy];
 
-    [(SimpleResultsViewController *)self _captureTapActionWithSearchResult:v7];
-    objc_storeStrong(&self->_lastItemTapped, a4);
+    [(SimpleResultsViewController *)self _captureTapActionWithSearchResult:tappedCopy];
+    objc_storeStrong(&self->_lastItemTapped, tapped);
   }
 }
 
-- (void)dataSource:(id)a3 itemFocused:(id)a4
+- (void)dataSource:(id)source itemFocused:(id)focused
 {
-  v7 = a4;
+  focusedCopy = focused;
   if (sub_10000FA08(self) != 5)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(SimpleResultsViewController *)self resultsDelegate];
-      [v5 simpleResultsViewContoller:self focusSearchResult:v7];
+      resultsDelegate = [(SimpleResultsViewController *)self resultsDelegate];
+      [resultsDelegate simpleResultsViewContoller:self focusSearchResult:focusedCopy];
 
       lastItemTapped = self->_lastItemTapped;
       self->_lastItemTapped = 0;
@@ -722,7 +722,7 @@ LABEL_12:
 LABEL_7:
 }
 
-- (void)dataSourceUpdated:(id)a3
+- (void)dataSourceUpdated:(id)updated
 {
   [(UITableView *)self->_tableView reloadData];
   [(UITableView *)self->_tableView layoutIfNeeded];
@@ -731,9 +731,9 @@ LABEL_7:
   [(SimpleResultsViewController *)self updatePreferredContentSize];
 }
 
-- (double)_searchAlongRouteHeaderHeightForStyle:(unint64_t)a3 traitCollection:(id)a4
+- (double)_searchAlongRouteHeaderHeightForStyle:(unint64_t)style traitCollection:(id)collection
 {
-  v4 = sub_100A5FC54(a3, a4);
+  v4 = sub_100A5FC54(style, collection);
   result = 75.0;
   if (v4)
   {
@@ -743,13 +743,13 @@ LABEL_7:
   return result;
 }
 
-- (void)_updateHeaderWithContainerStyle:(unint64_t)a3 traitCollection:(id)a4
+- (void)_updateHeaderWithContainerStyle:(unint64_t)style traitCollection:(id)collection
 {
-  v8 = a4;
+  collectionCopy = collection;
   [(ContainerHeaderView *)self->_titleHeaderView setShouldCenterButtonVertically:[(SimpleResultsViewController *)self isPresentingSearchAlongTheRouteResults]];
   if ([(SimpleResultsViewController *)self isPresentingSearchAlongTheRouteResults])
   {
-    [(SimpleResultsViewController *)self _searchAlongRouteHeaderHeightForStyle:a3 traitCollection:v8];
+    [(SimpleResultsViewController *)self _searchAlongRouteHeaderHeightForStyle:style traitCollection:collectionCopy];
   }
 
   else
@@ -771,69 +771,69 @@ LABEL_7:
   [(NSLayoutConstraint *)self->_titleHeaderViewHeightConstraint setConstant:v6];
 }
 
-- (void)setIsPresentingSearchAlongTheRouteResults:(BOOL)a3
+- (void)setIsPresentingSearchAlongTheRouteResults:(BOOL)results
 {
-  self->_isPresentingSearchAlongTheRouteResults = a3;
+  self->_isPresentingSearchAlongTheRouteResults = results;
   [(SearchResultsDataSource *)self->_resultsDataSource setIsPresentingSearchAlongTheRouteResults:?];
-  v6 = [(ContaineeViewController *)self cardPresentationController];
-  v4 = [v6 containerStyle];
-  v5 = [(SimpleResultsViewController *)self traitCollection];
-  [(SimpleResultsViewController *)self _updateHeaderWithContainerStyle:v4 traitCollection:v5];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  containerStyle = [cardPresentationController containerStyle];
+  traitCollection = [(SimpleResultsViewController *)self traitCollection];
+  [(SimpleResultsViewController *)self _updateHeaderWithContainerStyle:containerStyle traitCollection:traitCollection];
 }
 
-- (void)setDisplayDistance:(BOOL)a3
+- (void)setDisplayDistance:(BOOL)distance
 {
-  if (self->_displayDistance != a3)
+  if (self->_displayDistance != distance)
   {
-    self->_displayDistance = a3;
+    self->_displayDistance = distance;
     [(SearchResultsDataSource *)self->_resultsDataSource setDisplayDistance:?];
   }
 }
 
-- (void)setCluster:(id)a3 sortAlphabetically:(BOOL)a4 originalSearchInfo:(id)a5 searchResults:(id)a6
+- (void)setCluster:(id)cluster sortAlphabetically:(BOOL)alphabetically originalSearchInfo:(id)info searchResults:(id)results
 {
-  v8 = a4;
-  v11 = a3;
-  if (self->_cluster != v11)
+  alphabeticallyCopy = alphabetically;
+  clusterCopy = cluster;
+  if (self->_cluster != clusterCopy)
   {
-    v16 = v11;
-    objc_storeStrong(&self->_cluster, a3);
-    v12 = a6;
-    v13 = a5;
-    [(SimpleResultsViewController *)self setSearchResults:v12 sortAlphabetically:v8 originalSearchInfo:v13];
+    v16 = clusterCopy;
+    objc_storeStrong(&self->_cluster, cluster);
+    resultsCopy = results;
+    infoCopy = info;
+    [(SimpleResultsViewController *)self setSearchResults:resultsCopy sortAlphabetically:alphabeticallyCopy originalSearchInfo:infoCopy];
 
     if (v16)
     {
       resultsDataSource = self->_resultsDataSource;
-      v15 = [(SearchResultsDataSource *)resultsDataSource impressionsSessionIdentifier];
-      [SearchResultsAnalyticsManager didShowClusterWithDataSource:resultsDataSource impressionsSessionIdentifier:v15];
+      impressionsSessionIdentifier = [(SearchResultsDataSource *)resultsDataSource impressionsSessionIdentifier];
+      [SearchResultsAnalyticsManager didShowClusterWithDataSource:resultsDataSource impressionsSessionIdentifier:impressionsSessionIdentifier];
     }
 
     [(SimpleResultsViewController *)self updateTitle:1];
-    v11 = v16;
+    clusterCopy = v16;
   }
 }
 
-- (void)setCluster:(id)a3 sortAlphabetically:(BOOL)a4 originalSearchInfo:(id)a5
+- (void)setCluster:(id)cluster sortAlphabetically:(BOOL)alphabetically originalSearchInfo:(id)info
 {
-  v6 = a4;
-  v9 = a3;
-  v10 = a5;
-  v11 = v10;
-  if (self->_cluster != v9)
+  alphabeticallyCopy = alphabetically;
+  clusterCopy = cluster;
+  infoCopy = info;
+  v11 = infoCopy;
+  if (self->_cluster != clusterCopy)
   {
-    v24 = v6;
-    v25 = v10;
+    v24 = alphabeticallyCopy;
+    v25 = infoCopy;
     [(SimpleResultsViewController *)self loadViewIfNeeded];
-    objc_storeStrong(&self->_cluster, a3);
-    self->_isClusterResult = [(VKLabelMarker *)v9 clusterFeatureCount]!= 0;
-    v12 = [(VKLabelMarker *)self->_cluster clusterFeatureAnnotations];
-    v13 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v12 count]);
+    objc_storeStrong(&self->_cluster, cluster);
+    self->_isClusterResult = [(VKLabelMarker *)clusterCopy clusterFeatureCount]!= 0;
+    clusterFeatureAnnotations = [(VKLabelMarker *)self->_cluster clusterFeatureAnnotations];
+    v13 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [clusterFeatureAnnotations count]);
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v14 = v12;
+    v14 = clusterFeatureAnnotations;
     v15 = [v14 countByEnumeratingWithState:&v26 objects:v30 count:16];
     if (v15)
     {
@@ -851,11 +851,11 @@ LABEL_7:
           v19 = *(*(&v26 + 1) + 8 * i);
           if (objc_opt_respondsToSelector())
           {
-            v20 = [v19 searchResult];
-            if (v20)
+            searchResult = [v19 searchResult];
+            if (searchResult)
             {
-              v21 = v20;
-              [v13 addObject:v20];
+              v21 = searchResult;
+              [v13 addObject:searchResult];
             }
           }
         }
@@ -868,11 +868,11 @@ LABEL_7:
 
     v11 = v25;
     [(SimpleResultsViewController *)self setSearchResults:v13 sortAlphabetically:v24 originalSearchInfo:v25];
-    if (v9)
+    if (clusterCopy)
     {
       resultsDataSource = self->_resultsDataSource;
-      v23 = [(SearchResultsDataSource *)resultsDataSource impressionsSessionIdentifier];
-      [SearchResultsAnalyticsManager didShowClusterWithDataSource:resultsDataSource impressionsSessionIdentifier:v23];
+      impressionsSessionIdentifier = [(SearchResultsDataSource *)resultsDataSource impressionsSessionIdentifier];
+      [SearchResultsAnalyticsManager didShowClusterWithDataSource:resultsDataSource impressionsSessionIdentifier:impressionsSessionIdentifier];
     }
   }
 
@@ -883,23 +883,23 @@ LABEL_7:
   }
 }
 
-- (void)setSearchResults:(id)a3 sortAlphabetically:(BOOL)a4 originalSearchInfo:(id)a5
+- (void)setSearchResults:(id)results sortAlphabetically:(BOOL)alphabetically originalSearchInfo:(id)info
 {
-  v6 = a4;
-  v21 = a5;
-  v9 = a3;
+  alphabeticallyCopy = alphabetically;
+  infoCopy = info;
+  resultsCopy = results;
   v10 = +[NSUUID UUID];
-  v11 = [(SimpleResultsViewController *)self impressionsCalculator];
-  [v11 setSessionIdentifier:v10];
+  impressionsCalculator = [(SimpleResultsViewController *)self impressionsCalculator];
+  [impressionsCalculator setSessionIdentifier:v10];
 
-  objc_storeStrong(&self->_originalSearchInfo, a5);
+  objc_storeStrong(&self->_originalSearchInfo, info);
   v12 = off_1015F60E8;
-  if (!v6)
+  if (!alphabeticallyCopy)
   {
     v12 = off_1015F6278;
   }
 
-  v13 = [objc_alloc(*v12) initWithObjects:v9];
+  v13 = [objc_alloc(*v12) initWithObjects:resultsCopy];
 
   if (self->_cluster)
   {
@@ -909,36 +909,36 @@ LABEL_7:
       [(SearchResultsDataSource *)self->_resultsDataSource setIsShowingClusterResults:self->_isClusterResult];
       if ([(SimpleResultsViewController *)self isPresentingSearchAlongTheRouteResults])
       {
-        v14 = [self->_resultsDataSource currentLocation];
+        currentLocation = [self->_resultsDataSource currentLocation];
 
-        if (!v14)
+        if (!currentLocation)
         {
           v15 = +[MKLocationManager sharedLocationManager];
-          v16 = [v15 currentLocation];
-          [(SearchResultsDataSource *)self->_resultsDataSource setApproxLocation:v16];
+          currentLocation2 = [v15 currentLocation];
+          [(SearchResultsDataSource *)self->_resultsDataSource setApproxLocation:currentLocation2];
         }
       }
     }
   }
 
-  v17 = [self->_originalSearchInfo placeSummaryMetadata];
-  [(SearchResultsDataSource *)self->_resultsDataSource setPlaceSummaryMetadata:v17];
+  placeSummaryMetadata = [self->_originalSearchInfo placeSummaryMetadata];
+  [(SearchResultsDataSource *)self->_resultsDataSource setPlaceSummaryMetadata:placeSummaryMetadata];
 
   v18 = [[SearchResultsDataSourceContent alloc] initWithOrderedDataSource:v13];
   [(SearchResultsDataSource *)self->_resultsDataSource setContent:v18];
 
   [(SearchResultsDataSource *)self->_resultsDataSource setDisplaysAsChainResult:[self->_originalSearchInfo isChainResults]];
   [(SearchResultsDataSource *)self->_resultsDataSource setPrefersAddressOverCategory:[self->_originalSearchInfo prefersAddressOverCategory]];
-  v19 = [(SimpleResultsViewController *)self impressionsCalculator];
-  v20 = [v19 sessionIdentifier];
-  [(SearchResultsDataSource *)self->_resultsDataSource setImpressionsSessionIdentifier:v20];
+  impressionsCalculator2 = [(SimpleResultsViewController *)self impressionsCalculator];
+  sessionIdentifier = [impressionsCalculator2 sessionIdentifier];
+  [(SearchResultsDataSource *)self->_resultsDataSource setImpressionsSessionIdentifier:sessionIdentifier];
 
   [(SimpleResultsViewController *)self updateTitle:0];
 }
 
-- (BOOL)containsMapItem:(id)a3
+- (BOOL)containsMapItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   [(VKLabelMarker *)self->_cluster clusterFeatureAnnotations];
   v12 = 0u;
   v13 = 0u;
@@ -957,10 +957,10 @@ LABEL_7:
           objc_enumerationMutation(v5);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) searchResult];
-        v10 = [v9 mapItem];
+        searchResult = [*(*(&v12 + 1) + 8 * i) searchResult];
+        mapItem = [searchResult mapItem];
 
-        if (v10 == v4)
+        if (mapItem == itemCopy)
         {
           LOBYTE(v6) = 1;
           goto LABEL_11;
@@ -996,17 +996,17 @@ LABEL_11:
   }
 }
 
-- (void)updateTitle:(BOOL)a3
+- (void)updateTitle:(BOOL)title
 {
-  v3 = a3;
-  v5 = [(SearchResultsDataSource *)self->_resultsDataSource content];
-  v6 = [v5 objects];
-  v7 = [v6 count];
+  titleCopy = title;
+  content = [(SearchResultsDataSource *)self->_resultsDataSource content];
+  objects = [content objects];
+  v7 = [objects count];
 
   if (sub_10000FA08(self) == 5)
   {
     title = self->_title;
-    if (v3)
+    if (titleCopy)
     {
       if (!title)
       {
@@ -1017,7 +1017,7 @@ LABEL_12:
         v17 = [v9 localizedStringForKey:v11 value:@"localized string not found" table:0];
         v25 = [NSString localizedStringWithFormat:v17, v7];
 
-        v14 = v25;
+        titleCopy2 = v25;
         goto LABEL_13;
       }
     }
@@ -1030,14 +1030,14 @@ LABEL_12:
       goto LABEL_12;
     }
 
-    v14 = title;
+    titleCopy2 = title;
 LABEL_13:
-    v26 = v14;
-    [(SimpleResultTitleView *)self->_macResultsTitleView setTitle:v14];
+    v26 = titleCopy2;
+    [(SimpleResultTitleView *)self->_macResultsTitleView setTitle:titleCopy2];
     goto LABEL_21;
   }
 
-  if (v3)
+  if (titleCopy)
   {
     v12 = +[NSBundle mainBundle];
     v13 = [v12 localizedStringForKey:@"Stops [Cluster Card]" value:@"localized string not found" table:0];
@@ -1063,11 +1063,11 @@ LABEL_13:
 LABEL_16:
   v26 = v16;
   v19 = [NSString stringWithFormat:@"%@", v16];
-  v20 = [self->_originalSearchInfo headerDisplayName];
-  if ([v20 length] && -[SearchInfo isChainResults](self->_originalSearchInfo, "isChainResults"))
+  headerDisplayName = [self->_originalSearchInfo headerDisplayName];
+  if ([headerDisplayName length] && -[SearchInfo isChainResults](self->_originalSearchInfo, "isChainResults"))
   {
     v21 = 0;
-    v22 = v20;
+    v22 = headerDisplayName;
     v23 = v19;
   }
 
@@ -1085,13 +1085,13 @@ LABEL_16:
 LABEL_21:
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
   v5.receiver = self;
   v5.super_class = SimpleResultsViewController;
-  [(ContaineeViewController *)&v5 scrollViewDidScroll:a3];
-  v4 = [(SimpleResultsViewController *)self impressionsCalculator];
-  [v4 logImpressions];
+  [(ContaineeViewController *)&v5 scrollViewDidScroll:scroll];
+  impressionsCalculator = [(SimpleResultsViewController *)self impressionsCalculator];
+  [impressionsCalculator logImpressions];
 }
 
 - (void)didBecomeCurrent
@@ -1099,16 +1099,16 @@ LABEL_21:
   v7.receiver = self;
   v7.super_class = SimpleResultsViewController;
   [(ContaineeViewController *)&v7 didBecomeCurrent];
-  v3 = [(SimpleResultsViewController *)self impressionsCalculator];
-  [v3 setActive:1];
+  impressionsCalculator = [(SimpleResultsViewController *)self impressionsCalculator];
+  [impressionsCalculator setActive:1];
 
-  v4 = [(SimpleResultsViewController *)self impressionsCalculator];
-  v5 = [v4 hasImpressionElements];
+  impressionsCalculator2 = [(SimpleResultsViewController *)self impressionsCalculator];
+  hasImpressionElements = [impressionsCalculator2 hasImpressionElements];
 
-  if ((v5 & 1) == 0)
+  if ((hasImpressionElements & 1) == 0)
   {
-    v6 = [(SimpleResultsViewController *)self impressionsCalculator];
-    [v6 logImpressions];
+    impressionsCalculator3 = [(SimpleResultsViewController *)self impressionsCalculator];
+    [impressionsCalculator3 logImpressions];
   }
 }
 
@@ -1117,17 +1117,17 @@ LABEL_21:
   v4.receiver = self;
   v4.super_class = SimpleResultsViewController;
   [(ContaineeViewController *)&v4 didResignCurrent];
-  v3 = [(SimpleResultsViewController *)self impressionsCalculator];
-  [v3 setActive:0];
+  impressionsCalculator = [(SimpleResultsViewController *)self impressionsCalculator];
+  [impressionsCalculator setActive:0];
 }
 
-- (void)didChangeLayout:(unint64_t)a3
+- (void)didChangeLayout:(unint64_t)layout
 {
   v5.receiver = self;
   v5.super_class = SimpleResultsViewController;
-  [(ContaineeViewController *)&v5 didChangeLayout:a3];
-  v4 = [(SimpleResultsViewController *)self impressionsCalculator];
-  [v4 logImpressions];
+  [(ContaineeViewController *)&v5 didChangeLayout:layout];
+  impressionsCalculator = [(SimpleResultsViewController *)self impressionsCalculator];
+  [impressionsCalculator logImpressions];
 }
 
 - (void)viewDidLayoutSubviews
@@ -1135,20 +1135,20 @@ LABEL_21:
   v4.receiver = self;
   v4.super_class = SimpleResultsViewController;
   [(ContaineeViewController *)&v4 viewDidLayoutSubviews];
-  v3 = [(SimpleResultsViewController *)self impressionsCalculator];
-  [v3 logImpressions];
+  impressionsCalculator = [(SimpleResultsViewController *)self impressionsCalculator];
+  [impressionsCalculator logImpressions];
 }
 
-- (SimpleResultsViewController)initWithShareDelegate:(id)a3 visualEffectDisabled:(BOOL)a4
+- (SimpleResultsViewController)initWithShareDelegate:(id)delegate visualEffectDisabled:(BOOL)disabled
 {
-  v5 = a3;
+  delegateCopy = delegate;
   v9.receiver = self;
   v9.super_class = SimpleResultsViewController;
   v6 = [(SimpleResultsViewController *)&v9 initWithNibName:0 bundle:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeWeak(&v6->_shareDelegate, v5);
+    objc_storeWeak(&v6->_shareDelegate, delegateCopy);
     v7->_displayDistance = 1;
   }
 

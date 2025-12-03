@@ -1,16 +1,16 @@
 @interface HeadphoneBatteryContainerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityOverridesInvalidFrames;
 - (CGRect)accessibilityFrame;
 @end
 
 @implementation HeadphoneBatteryContainerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SharingViewService.HeadphoneBatteryContainer"];
-  [v3 validateClass:@"SharingViewService.HeadphoneBatteryContainer" isKindOfClass:@"UIView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SharingViewService.HeadphoneBatteryContainer"];
+  [validationsCopy validateClass:@"SharingViewService.HeadphoneBatteryContainer" isKindOfClass:@"UIView"];
 }
 
 - (BOOL)_accessibilityOverridesInvalidFrames
@@ -42,11 +42,11 @@
   {
     objc_opt_class();
     v10 = __UIAccessibilityCastAsClass();
-    v11 = [v10 superview];
-    v12 = v11;
-    if (v11)
+    superview = [v10 superview];
+    v12 = superview;
+    if (superview)
     {
-      [v11 accessibilityFrame];
+      [superview accessibilityFrame];
       v5 = v13;
       [v12 accessibilityFrame];
       v8 = v14;

@@ -1,36 +1,36 @@
 @interface HSTFirmwareManager
-- (BOOL)decodeFromMap:(void *)a3;
-- (BOOL)handleHSDecode:(void *)a3;
-- (BOOL)handleHSEncode:(void *)a3;
-- (HSTFirmwareManager)initWithDevice:(__MTDevice *)a3;
+- (BOOL)decodeFromMap:(void *)map;
+- (BOOL)handleHSDecode:(void *)decode;
+- (BOOL)handleHSEncode:(void *)encode;
+- (HSTFirmwareManager)initWithDevice:(__MTDevice *)device;
 - (id).cxx_construct;
-- (id)preferenceValueForKey:(id)a3;
+- (id)preferenceValueForKey:(id)key;
 - (id)preferences;
-- (void)_handleDriverEvent:(id)a3;
-- (void)_handleExternalMessageEvent:(id)a3;
-- (void)_handleGetDebugEvent:(id)a3;
-- (void)_handleHSTFrame:(id)a3;
-- (void)_handleProxClearedAfterOccludedWakeEvent:(id)a3;
-- (void)_handleResetEvent:(id)a3;
-- (void)_handleScreenOrientationEvent:(id)a3;
-- (void)_handleSetReportEvent:(id)a3;
-- (void)_handleStockholmStateEvent:(id)a3;
-- (void)_handleStuckTouchDetectorStateEvent:(id)a3;
-- (void)_handleTouchModeEvent:(id)a3;
-- (void)_handleUSBChargingStateEvent:(id)a3;
-- (void)_handleWirelessChargingStateEvent:(id)a3;
+- (void)_handleDriverEvent:(id)event;
+- (void)_handleExternalMessageEvent:(id)event;
+- (void)_handleGetDebugEvent:(id)event;
+- (void)_handleHSTFrame:(id)frame;
+- (void)_handleProxClearedAfterOccludedWakeEvent:(id)event;
+- (void)_handleResetEvent:(id)event;
+- (void)_handleScreenOrientationEvent:(id)event;
+- (void)_handleSetReportEvent:(id)event;
+- (void)_handleStockholmStateEvent:(id)event;
+- (void)_handleStuckTouchDetectorStateEvent:(id)event;
+- (void)_handleTouchModeEvent:(id)event;
+- (void)_handleUSBChargingStateEvent:(id)event;
+- (void)_handleWirelessChargingStateEvent:(id)event;
 - (void)_restoreFirmwareState;
 - (void)_setEnabledInputsReport;
-- (void)encodeToMap:(void *)a3;
-- (void)handleConsume:(id)a3;
-- (void)setPreferenceValue:(id)a3 forKey:(id)a4;
+- (void)encodeToMap:(void *)map;
+- (void)handleConsume:(id)consume;
+- (void)setPreferenceValue:(id)value forKey:(id)key;
 @end
 
 @implementation HSTFirmwareManager
 
-- (HSTFirmwareManager)initWithDevice:(__MTDevice *)a3
+- (HSTFirmwareManager)initWithDevice:(__MTDevice *)device
 {
-  if (!a3)
+  if (!device)
   {
     v13 = +[NSAssertionHandler currentHandler];
     [v13 handleFailureInMethod:a2 object:self file:@"HSTFirmwareManager.mm" lineNumber:260 description:{@"Invalid parameter not satisfying: %@", @"device"}];
@@ -41,7 +41,7 @@
   v5 = [(HSStage *)&v15 init];
   if (v5)
   {
-    v6 = CFRetain(a3);
+    v6 = CFRetain(device);
     deviceObj = v5->_deviceObj;
     v5->_deviceObj = v6;
 
@@ -59,15 +59,15 @@
   return v5;
 }
 
-- (void)_handleTouchModeEvent:(id)a3
+- (void)_handleTouchModeEvent:(id)event
 {
-  v4 = a3;
-  v5 = [v4 touchMode];
+  eventCopy = event;
+  touchMode = [eventCopy touchMode];
   touchMode = self->_state.touchMode;
-  if (touchMode != v5)
+  if (touchMode != touchMode)
   {
     self->_state.prevTouchMode = touchMode;
-    self->_state.touchMode = v5;
+    self->_state.touchMode = touchMode;
     v7 = MTLoggingPlugin();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
@@ -82,19 +82,19 @@
 
   v9.receiver = self;
   v9.super_class = HSTFirmwareManager;
-  [(HSStage *)&v9 handleConsume:v4];
+  [(HSStage *)&v9 handleConsume:eventCopy];
 }
 
-- (void)_handleScreenOrientationEvent:(id)a3
+- (void)_handleScreenOrientationEvent:(id)event
 {
-  v4 = a3;
-  v5 = [v4 screenOrientation];
-  if (self->_state.screenOrientation != v5)
+  eventCopy = event;
+  screenOrientation = [eventCopy screenOrientation];
+  if (self->_state.screenOrientation != screenOrientation)
   {
-    self->_state.screenOrientation = v5;
+    self->_state.screenOrientation = screenOrientation;
     deviceObj = self->_deviceObj;
     v8 = -99;
-    v9 = v5;
+    v9 = screenOrientation;
     memset(v10, 0, sizeof(v10));
     setReport<HSTPipeline::FirmwareInterface::FeatureReport::HostNotificationControl>(deviceObj);
     [(HSTFirmwareManager *)self _setEnabledInputsReport];
@@ -102,16 +102,16 @@
 
   v7.receiver = self;
   v7.super_class = HSTFirmwareManager;
-  [(HSStage *)&v7 handleConsume:v4];
+  [(HSStage *)&v7 handleConsume:eventCopy];
 }
 
-- (void)_handleStockholmStateEvent:(id)a3
+- (void)_handleStockholmStateEvent:(id)event
 {
-  v4 = a3;
-  v5 = [v4 stockholmState];
-  if (self->_state.stockholmState != v5)
+  eventCopy = event;
+  stockholmState = [eventCopy stockholmState];
+  if (self->_state.stockholmState != stockholmState)
   {
-    self->_state.stockholmState = v5;
+    self->_state.stockholmState = stockholmState;
     v6 = MTLoggingPlugin();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
@@ -164,16 +164,16 @@
 
   v13.receiver = self;
   v13.super_class = HSTFirmwareManager;
-  [(HSStage *)&v13 handleConsume:v4];
+  [(HSStage *)&v13 handleConsume:eventCopy];
 }
 
-- (void)_handleWirelessChargingStateEvent:(id)a3
+- (void)_handleWirelessChargingStateEvent:(id)event
 {
-  v4 = a3;
-  v5 = [v4 wirelessChargingState];
-  if (self->_state.wirelessChargingState != v5)
+  eventCopy = event;
+  wirelessChargingState = [eventCopy wirelessChargingState];
+  if (self->_state.wirelessChargingState != wirelessChargingState)
   {
-    self->_state.wirelessChargingState = v5;
+    self->_state.wirelessChargingState = wirelessChargingState;
     v6 = MTLoggingPlugin();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
@@ -209,12 +209,12 @@
 
   v10.receiver = self;
   v10.super_class = HSTFirmwareManager;
-  [(HSStage *)&v10 handleConsume:v4];
+  [(HSStage *)&v10 handleConsume:eventCopy];
 }
 
-- (void)_handleProxClearedAfterOccludedWakeEvent:(id)a3
+- (void)_handleProxClearedAfterOccludedWakeEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   if ([(HSTFirmwareManager *)self _isSleeping])
   {
     v5 = MTLoggingPlugin();
@@ -241,25 +241,25 @@
 
   v8.receiver = self;
   v8.super_class = HSTFirmwareManager;
-  [(HSStage *)&v8 handleConsume:v4];
+  [(HSStage *)&v8 handleConsume:eventCopy];
 }
 
-- (void)_handleUSBChargingStateEvent:(id)a3
+- (void)_handleUSBChargingStateEvent:(id)event
 {
-  v4 = a3;
-  [(HSTFirmwareManager *)self _setUSBChargingState:v4];
+  eventCopy = event;
+  [(HSTFirmwareManager *)self _setUSBChargingState:eventCopy];
   v5.receiver = self;
   v5.super_class = HSTFirmwareManager;
-  [(HSStage *)&v5 handleConsume:v4];
+  [(HSStage *)&v5 handleConsume:eventCopy];
 }
 
-- (void)_handleStuckTouchDetectorStateEvent:(id)a3
+- (void)_handleStuckTouchDetectorStateEvent:(id)event
 {
-  v4 = a3;
-  v5 = [v4 stuckTouchDetectorState];
-  if (self->_state.stuckTouchDetectorState != v5)
+  eventCopy = event;
+  stuckTouchDetectorState = [eventCopy stuckTouchDetectorState];
+  if (self->_state.stuckTouchDetectorState != stuckTouchDetectorState)
   {
-    self->_state.stuckTouchDetectorState = v5;
+    self->_state.stuckTouchDetectorState = stuckTouchDetectorState;
     v6 = MTLoggingPlugin();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
@@ -295,7 +295,7 @@
 
   v10.receiver = self;
   v10.super_class = HSTFirmwareManager;
-  [(HSStage *)&v10 handleConsume:v4];
+  [(HSStage *)&v10 handleConsume:eventCopy];
 }
 
 - (void)_setEnabledInputsReport
@@ -371,18 +371,18 @@
   }
 }
 
-- (void)_handleResetEvent:(id)a3
+- (void)_handleResetEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   [(HSTFirmwareManager *)self _restoreFirmwareState];
   v5.receiver = self;
   v5.super_class = HSTFirmwareManager;
-  [(HSStage *)&v5 handleConsume:v4];
+  [(HSStage *)&v5 handleConsume:eventCopy];
 }
 
-- (void)_handleGetDebugEvent:(id)a3
+- (void)_handleGetDebugEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v5 = objc_opt_new();
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
@@ -415,24 +415,24 @@
     [HSTFirmwareManager _handleGetDebugEvent:];
   }
 
-  *(v4 + 16) = 1;
-  [*(v4 + 3) addObject:v5];
+  *(eventCopy + 16) = 1;
+  [*(eventCopy + 3) addObject:v5];
   v14.receiver = self;
   v14.super_class = HSTFirmwareManager;
-  [(HSStage *)&v14 handleConsume:v4];
+  [(HSStage *)&v14 handleConsume:eventCopy];
 }
 
-- (void)_handleSetReportEvent:(id)a3
+- (void)_handleSetReportEvent:(id)event
 {
   deviceObj = self->_deviceObj;
-  v5 = [a3 report];
-  HSTPipeline::FirmwareUtil::SetReportWithData(deviceObj, v5, v4);
+  report = [event report];
+  HSTPipeline::FirmwareUtil::SetReportWithData(deviceObj, report, v4);
 }
 
-- (void)_handleDriverEvent:(id)a3
+- (void)_handleDriverEvent:(id)event
 {
-  v4 = a3;
-  if ([v4 notification] == 5)
+  eventCopy = event;
+  if ([eventCopy notification] == 5)
   {
     v5 = MTLoggingPlugin();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -448,7 +448,7 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if ([v4 notification] == 6)
+  if ([eventCopy notification] == 6)
   {
     v5 = MTLoggingPlugin();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -464,31 +464,31 @@ LABEL_9:
 LABEL_10:
 }
 
-- (void)_handleHSTFrame:(id)a3
+- (void)_handleHSTFrame:(id)frame
 {
-  v3 = a3;
-  if (v3)
+  frameCopy = frame;
+  if (frameCopy)
   {
     v4 = MTLoggingPlugin();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
     {
-      -[HSTFirmwareManager _handleHSTFrame:].cold.1([v3[1] bytes], v5, v4);
+      -[HSTFirmwareManager _handleHSTFrame:].cold.1([frameCopy[1] bytes], v5, v4);
     }
 
-    [v3[1] bytes];
-    [v3[1] length];
+    [frameCopy[1] bytes];
+    [frameCopy[1] length];
     MTDeviceInjectFrame();
   }
 }
 
-- (void)_handleExternalMessageEvent:(id)a3
+- (void)_handleExternalMessageEvent:(id)event
 {
-  v3 = a3;
-  v4 = [v3 message];
-  [v4 bytes];
+  eventCopy = event;
+  message = [eventCopy message];
+  [message bytes];
 
-  v5 = [v3 message];
-  v6 = [v5 length];
+  message2 = [eventCopy message];
+  v6 = [message2 length];
 
   if (v6 <= 1)
   {
@@ -518,13 +518,13 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)handleConsume:(id)a3
+- (void)handleConsume:(id)consume
 {
-  v4 = a3;
+  consumeCopy = consume;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = consumeCopy;
   }
 
   else
@@ -534,12 +534,12 @@ LABEL_8:
 
   if (v5)
   {
-    [(HSTFirmwareManager *)self _handleTouchModeEvent:v4];
+    [(HSTFirmwareManager *)self _handleTouchModeEvent:consumeCopy];
   }
 
   else
   {
-    v6 = v4;
+    v6 = consumeCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -706,7 +706,7 @@ LABEL_8:
 
   if (self->_state.filteredClients)
   {
-    v22 = v4;
+    v22 = consumeCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -722,29 +722,29 @@ LABEL_8:
   }
 }
 
-- (void)encodeToMap:(void *)a3
+- (void)encodeToMap:(void *)map
 {
   p_state = &self->_state;
-  HSUtil::Encoder::encodeBool(a3, HSUtil::CoderKey::Literal<(char)112,(char)111,(char)119,(char)101,(char)114,(char)101,(char)100,(char)87,(char)104,(char)101,(char)110,(char)83,(char)99,(char)114,(char)101,(char)101,(char)110,(char)79,(char)102,(char)102>::Key, self->_state.poweredWhenScreenOff);
-  HSUtil::Encoder::encodeUInt(a3, HSUtil::CoderKey::Literal<(char)116,(char)111,(char)117,(char)99,(char)104,(char)77,(char)111,(char)100,(char)101>::Key, p_state->touchMode);
-  HSUtil::Encoder::encodeUInt(a3, HSUtil::CoderKey::Literal<(char)112,(char)114,(char)101,(char)118,(char)84,(char)111,(char)117,(char)99,(char)104,(char)77,(char)111,(char)100,(char)101>::Key, p_state->prevTouchMode);
-  HSUtil::Encoder::encodeUInt(a3, HSUtil::CoderKey::Literal<(char)115,(char)99,(char)114,(char)101,(char)101,(char)110,(char)79,(char)114,(char)105,(char)101,(char)110,(char)116,(char)97,(char)116,(char)105,(char)111,(char)110>::Key, p_state->screenOrientation);
-  HSUtil::Encoder::encodeUInt(a3, HSUtil::CoderKey::Literal<(char)115,(char)116,(char)111,(char)99,(char)107,(char)104,(char)111,(char)108,(char)109,(char)83,(char)116,(char)97,(char)116,(char)101>::Key, p_state->stockholmState);
-  HSUtil::Encoder::encodeUInt(a3, HSUtil::CoderKey::Literal<(char)119,(char)105,(char)114,(char)101,(char)108,(char)101,(char)115,(char)115,(char)67,(char)104,(char)97,(char)114,(char)103,(char)105,(char)110,(char)103,(char)83,(char)116,(char)97,(char)116,(char)101>::Key, p_state->wirelessChargingState);
-  HSUtil::Encoder::encodeUInt(a3, HSUtil::CoderKey::Literal<(char)117,(char)115,(char)98,(char)67,(char)104,(char)97,(char)114,(char)103,(char)105,(char)110,(char)103,(char)83,(char)116,(char)97,(char)116,(char)101>::Key, p_state->usbChargingState);
-  HSUtil::Encoder::encodeUInt(a3, HSUtil::CoderKey::Literal<(char)115,(char)116,(char)117,(char)99,(char)107,(char)84,(char)111,(char)117,(char)99,(char)104,(char)68,(char)101,(char)116,(char)101,(char)99,(char)116,(char)111,(char)114,(char)83,(char)116,(char)97,(char)116,(char)101>::Key, p_state->stuckTouchDetectorState);
-  HSUtil::Encoder::encodeBool(a3, HSUtil::CoderKey::Literal<(char)105,(char)109,(char)97,(char)103,(char)101,(char)115,(char)69,(char)110,(char)97,(char)98,(char)108,(char)101,(char)100>::Key, p_state->imagesEnabled);
+  HSUtil::Encoder::encodeBool(map, HSUtil::CoderKey::Literal<(char)112,(char)111,(char)119,(char)101,(char)114,(char)101,(char)100,(char)87,(char)104,(char)101,(char)110,(char)83,(char)99,(char)114,(char)101,(char)101,(char)110,(char)79,(char)102,(char)102>::Key, self->_state.poweredWhenScreenOff);
+  HSUtil::Encoder::encodeUInt(map, HSUtil::CoderKey::Literal<(char)116,(char)111,(char)117,(char)99,(char)104,(char)77,(char)111,(char)100,(char)101>::Key, p_state->touchMode);
+  HSUtil::Encoder::encodeUInt(map, HSUtil::CoderKey::Literal<(char)112,(char)114,(char)101,(char)118,(char)84,(char)111,(char)117,(char)99,(char)104,(char)77,(char)111,(char)100,(char)101>::Key, p_state->prevTouchMode);
+  HSUtil::Encoder::encodeUInt(map, HSUtil::CoderKey::Literal<(char)115,(char)99,(char)114,(char)101,(char)101,(char)110,(char)79,(char)114,(char)105,(char)101,(char)110,(char)116,(char)97,(char)116,(char)105,(char)111,(char)110>::Key, p_state->screenOrientation);
+  HSUtil::Encoder::encodeUInt(map, HSUtil::CoderKey::Literal<(char)115,(char)116,(char)111,(char)99,(char)107,(char)104,(char)111,(char)108,(char)109,(char)83,(char)116,(char)97,(char)116,(char)101>::Key, p_state->stockholmState);
+  HSUtil::Encoder::encodeUInt(map, HSUtil::CoderKey::Literal<(char)119,(char)105,(char)114,(char)101,(char)108,(char)101,(char)115,(char)115,(char)67,(char)104,(char)97,(char)114,(char)103,(char)105,(char)110,(char)103,(char)83,(char)116,(char)97,(char)116,(char)101>::Key, p_state->wirelessChargingState);
+  HSUtil::Encoder::encodeUInt(map, HSUtil::CoderKey::Literal<(char)117,(char)115,(char)98,(char)67,(char)104,(char)97,(char)114,(char)103,(char)105,(char)110,(char)103,(char)83,(char)116,(char)97,(char)116,(char)101>::Key, p_state->usbChargingState);
+  HSUtil::Encoder::encodeUInt(map, HSUtil::CoderKey::Literal<(char)115,(char)116,(char)117,(char)99,(char)107,(char)84,(char)111,(char)117,(char)99,(char)104,(char)68,(char)101,(char)116,(char)101,(char)99,(char)116,(char)111,(char)114,(char)83,(char)116,(char)97,(char)116,(char)101>::Key, p_state->stuckTouchDetectorState);
+  HSUtil::Encoder::encodeBool(map, HSUtil::CoderKey::Literal<(char)105,(char)109,(char)97,(char)103,(char)101,(char)115,(char)69,(char)110,(char)97,(char)98,(char)108,(char)101,(char)100>::Key, p_state->imagesEnabled);
   v5 = HSUtil::CoderKey::Literal<(char)114,(char)101,(char)112,(char)111,(char)114,(char)116,(char)65,(char)108,(char)119,(char)97,(char)121,(char)115,(char)69,(char)110,(char)97,(char)98,(char)108,(char)101,(char)100>::Key;
   reportAlwaysEnabled = p_state->reportAlwaysEnabled;
 
-  HSUtil::Encoder::encodeBool(a3, v5, reportAlwaysEnabled);
+  HSUtil::Encoder::encodeBool(map, v5, reportAlwaysEnabled);
 }
 
-- (BOOL)decodeFromMap:(void *)a3
+- (BOOL)decodeFromMap:(void *)map
 {
   p_state = &self->_state;
-  self->_state.poweredWhenScreenOff = HSUtil::Decoder::decodeBool(a3, HSUtil::CoderKey::Literal<(char)112,(char)111,(char)119,(char)101,(char)114,(char)101,(char)100,(char)87,(char)104,(char)101,(char)110,(char)83,(char)99,(char)114,(char)101,(char)101,(char)110,(char)79,(char)102,(char)102>::Key);
-  if (*a3)
+  self->_state.poweredWhenScreenOff = HSUtil::Decoder::decodeBool(map, HSUtil::CoderKey::Literal<(char)112,(char)111,(char)119,(char)101,(char)114,(char)101,(char)100,(char)87,(char)104,(char)101,(char)110,(char)83,(char)99,(char)114,(char)101,(char)101,(char)110,(char)79,(char)102,(char)102>::Key);
+  if (*map)
   {
     memset(__b, 170, sizeof(__b));
     basename_r("/Library/Caches/com.apple.xbs/Sources/Multitouch/HIDSensingTouch/HSTouchHIDService/HSTFirmwareManager.mm", __b);
@@ -756,8 +756,8 @@ LABEL_8:
     return 0;
   }
 
-  p_state->touchMode = HSUtil::Decoder::decodeUInt(a3, HSUtil::CoderKey::Literal<(char)116,(char)111,(char)117,(char)99,(char)104,(char)77,(char)111,(char)100,(char)101>::Key);
-  if (*a3)
+  p_state->touchMode = HSUtil::Decoder::decodeUInt(map, HSUtil::CoderKey::Literal<(char)116,(char)111,(char)117,(char)99,(char)104,(char)77,(char)111,(char)100,(char)101>::Key);
+  if (*map)
   {
     memset(__b, 170, sizeof(__b));
     basename_r("/Library/Caches/com.apple.xbs/Sources/Multitouch/HIDSensingTouch/HSTouchHIDService/HSTFirmwareManager.mm", __b);
@@ -769,8 +769,8 @@ LABEL_8:
     return 0;
   }
 
-  p_state->prevTouchMode = HSUtil::Decoder::decodeUInt(a3, HSUtil::CoderKey::Literal<(char)112,(char)114,(char)101,(char)118,(char)84,(char)111,(char)117,(char)99,(char)104,(char)77,(char)111,(char)100,(char)101>::Key);
-  if (*a3)
+  p_state->prevTouchMode = HSUtil::Decoder::decodeUInt(map, HSUtil::CoderKey::Literal<(char)112,(char)114,(char)101,(char)118,(char)84,(char)111,(char)117,(char)99,(char)104,(char)77,(char)111,(char)100,(char)101>::Key);
+  if (*map)
   {
     memset(__b, 170, sizeof(__b));
     basename_r("/Library/Caches/com.apple.xbs/Sources/Multitouch/HIDSensingTouch/HSTouchHIDService/HSTFirmwareManager.mm", __b);
@@ -782,8 +782,8 @@ LABEL_8:
     return 0;
   }
 
-  p_state->screenOrientation = HSUtil::Decoder::decodeUInt(a3, HSUtil::CoderKey::Literal<(char)115,(char)99,(char)114,(char)101,(char)101,(char)110,(char)79,(char)114,(char)105,(char)101,(char)110,(char)116,(char)97,(char)116,(char)105,(char)111,(char)110>::Key);
-  if (*a3)
+  p_state->screenOrientation = HSUtil::Decoder::decodeUInt(map, HSUtil::CoderKey::Literal<(char)115,(char)99,(char)114,(char)101,(char)101,(char)110,(char)79,(char)114,(char)105,(char)101,(char)110,(char)116,(char)97,(char)116,(char)105,(char)111,(char)110>::Key);
+  if (*map)
   {
     memset(__b, 170, sizeof(__b));
     basename_r("/Library/Caches/com.apple.xbs/Sources/Multitouch/HIDSensingTouch/HSTouchHIDService/HSTFirmwareManager.mm", __b);
@@ -795,8 +795,8 @@ LABEL_8:
     return 0;
   }
 
-  p_state->stockholmState = HSUtil::Decoder::decodeUInt(a3, HSUtil::CoderKey::Literal<(char)115,(char)116,(char)111,(char)99,(char)107,(char)104,(char)111,(char)108,(char)109,(char)83,(char)116,(char)97,(char)116,(char)101>::Key);
-  if (*a3)
+  p_state->stockholmState = HSUtil::Decoder::decodeUInt(map, HSUtil::CoderKey::Literal<(char)115,(char)116,(char)111,(char)99,(char)107,(char)104,(char)111,(char)108,(char)109,(char)83,(char)116,(char)97,(char)116,(char)101>::Key);
+  if (*map)
   {
     memset(__b, 170, sizeof(__b));
     basename_r("/Library/Caches/com.apple.xbs/Sources/Multitouch/HIDSensingTouch/HSTouchHIDService/HSTFirmwareManager.mm", __b);
@@ -808,8 +808,8 @@ LABEL_8:
     return 0;
   }
 
-  p_state->wirelessChargingState = HSUtil::Decoder::decodeUInt(a3, HSUtil::CoderKey::Literal<(char)119,(char)105,(char)114,(char)101,(char)108,(char)101,(char)115,(char)115,(char)67,(char)104,(char)97,(char)114,(char)103,(char)105,(char)110,(char)103,(char)83,(char)116,(char)97,(char)116,(char)101>::Key);
-  if (*a3)
+  p_state->wirelessChargingState = HSUtil::Decoder::decodeUInt(map, HSUtil::CoderKey::Literal<(char)119,(char)105,(char)114,(char)101,(char)108,(char)101,(char)115,(char)115,(char)67,(char)104,(char)97,(char)114,(char)103,(char)105,(char)110,(char)103,(char)83,(char)116,(char)97,(char)116,(char)101>::Key);
+  if (*map)
   {
     memset(__b, 170, sizeof(__b));
     basename_r("/Library/Caches/com.apple.xbs/Sources/Multitouch/HIDSensingTouch/HSTouchHIDService/HSTFirmwareManager.mm", __b);
@@ -821,8 +821,8 @@ LABEL_8:
     return 0;
   }
 
-  p_state->usbChargingState = HSUtil::Decoder::decodeUInt(a3, HSUtil::CoderKey::Literal<(char)117,(char)115,(char)98,(char)67,(char)104,(char)97,(char)114,(char)103,(char)105,(char)110,(char)103,(char)83,(char)116,(char)97,(char)116,(char)101>::Key);
-  if (*a3)
+  p_state->usbChargingState = HSUtil::Decoder::decodeUInt(map, HSUtil::CoderKey::Literal<(char)117,(char)115,(char)98,(char)67,(char)104,(char)97,(char)114,(char)103,(char)105,(char)110,(char)103,(char)83,(char)116,(char)97,(char)116,(char)101>::Key);
+  if (*map)
   {
     memset(__b, 170, sizeof(__b));
     basename_r("/Library/Caches/com.apple.xbs/Sources/Multitouch/HIDSensingTouch/HSTouchHIDService/HSTFirmwareManager.mm", __b);
@@ -834,8 +834,8 @@ LABEL_8:
     return 0;
   }
 
-  p_state->stuckTouchDetectorState = HSUtil::Decoder::decodeUInt(a3, HSUtil::CoderKey::Literal<(char)115,(char)116,(char)117,(char)99,(char)107,(char)84,(char)111,(char)117,(char)99,(char)104,(char)68,(char)101,(char)116,(char)101,(char)99,(char)116,(char)111,(char)114,(char)83,(char)116,(char)97,(char)116,(char)101>::Key);
-  if (*a3)
+  p_state->stuckTouchDetectorState = HSUtil::Decoder::decodeUInt(map, HSUtil::CoderKey::Literal<(char)115,(char)116,(char)117,(char)99,(char)107,(char)84,(char)111,(char)117,(char)99,(char)104,(char)68,(char)101,(char)116,(char)101,(char)99,(char)116,(char)111,(char)114,(char)83,(char)116,(char)97,(char)116,(char)101>::Key);
+  if (*map)
   {
     memset(__b, 170, sizeof(__b));
     basename_r("/Library/Caches/com.apple.xbs/Sources/Multitouch/HIDSensingTouch/HSTouchHIDService/HSTFirmwareManager.mm", __b);
@@ -847,8 +847,8 @@ LABEL_8:
     return 0;
   }
 
-  p_state->imagesEnabled = HSUtil::Decoder::decodeBool(a3, HSUtil::CoderKey::Literal<(char)105,(char)109,(char)97,(char)103,(char)101,(char)115,(char)69,(char)110,(char)97,(char)98,(char)108,(char)101,(char)100>::Key);
-  if (*a3)
+  p_state->imagesEnabled = HSUtil::Decoder::decodeBool(map, HSUtil::CoderKey::Literal<(char)105,(char)109,(char)97,(char)103,(char)101,(char)115,(char)69,(char)110,(char)97,(char)98,(char)108,(char)101,(char)100>::Key);
+  if (*map)
   {
     memset(__b, 170, sizeof(__b));
     basename_r("/Library/Caches/com.apple.xbs/Sources/Multitouch/HIDSensingTouch/HSTouchHIDService/HSTFirmwareManager.mm", __b);
@@ -860,8 +860,8 @@ LABEL_8:
     return 0;
   }
 
-  p_state->reportAlwaysEnabled = HSUtil::Decoder::decodeBool(a3, HSUtil::CoderKey::Literal<(char)114,(char)101,(char)112,(char)111,(char)114,(char)116,(char)65,(char)108,(char)119,(char)97,(char)121,(char)115,(char)69,(char)110,(char)97,(char)98,(char)108,(char)101,(char)100>::Key);
-  if (*a3)
+  p_state->reportAlwaysEnabled = HSUtil::Decoder::decodeBool(map, HSUtil::CoderKey::Literal<(char)114,(char)101,(char)112,(char)111,(char)114,(char)116,(char)65,(char)108,(char)119,(char)97,(char)121,(char)115,(char)69,(char)110,(char)97,(char)98,(char)108,(char)101,(char)100>::Key);
+  if (*map)
   {
     memset(__b, 170, sizeof(__b));
     basename_r("/Library/Caches/com.apple.xbs/Sources/Multitouch/HIDSensingTouch/HSTouchHIDService/HSTFirmwareManager.mm", __b);
@@ -876,26 +876,26 @@ LABEL_8:
   return 1;
 }
 
-- (BOOL)handleHSEncode:(void *)a3
+- (BOOL)handleHSEncode:(void *)encode
 {
-  if (!*a3)
+  if (!*encode)
   {
-    *&v6 = *(a3 + 17);
+    *&v6 = *(encode + 17);
     DWORD2(v6) = 4;
-    std::vector<HSUtil::Encoder::ContainerRecord>::push_back[abi:ne200100](a3 + 56, &v6);
-    HSUtil::Encoder::_writeTokenValue32(a3, 0xEBu, 0);
+    std::vector<HSUtil::Encoder::ContainerRecord>::push_back[abi:ne200100](encode + 56, &v6);
+    HSUtil::Encoder::_writeTokenValue32(encode, 0xEBu, 0);
   }
 
-  [(HSTFirmwareManager *)self encodeToMap:a3];
-  if (!*a3)
+  [(HSTFirmwareManager *)self encodeToMap:encode];
+  if (!*encode)
   {
-    HSUtil::Encoder::_encodeContainerStop(a3);
+    HSUtil::Encoder::_encodeContainerStop(encode);
   }
 
   return 1;
 }
 
-- (BOOL)handleHSDecode:(void *)a3
+- (BOOL)handleHSDecode:(void *)decode
 {
   *&v5 = 0xAAAAAAAAAAAAAAAALL;
   *(&v5 + 1) = 0xAAAAAAAAAAAAAAAALL;
@@ -904,8 +904,8 @@ LABEL_8:
   v10 = v5;
   v11 = v5;
   v9 = v5;
-  HSUtil::Decoder::decodeMap(a3, &v9);
-  if (*a3)
+  HSUtil::Decoder::decodeMap(decode, &v9);
+  if (*decode)
   {
     memset(__b, 170, sizeof(__b));
     basename_r("/Library/Caches/com.apple.xbs/Sources/Multitouch/HIDSensingTouch/HSTouchHIDService/HSTFirmwareManager.mm", __b);
@@ -953,13 +953,13 @@ LABEL_8:
   return v2;
 }
 
-- (id)preferenceValueForKey:(id)a3
+- (id)preferenceValueForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v8[0] = 0xAAAAAAAAAAAAAAAALL;
   v8[1] = 0xAAAAAAAAAAAAAAAALL;
   HSUtil::ObjectLock::ObjectLock(v8, self);
-  if ([v4 isEqualToString:@"imagesEnabled"])
+  if ([keyCopy isEqualToString:@"imagesEnabled"])
   {
     v5 = 11;
 LABEL_5:
@@ -967,7 +967,7 @@ LABEL_5:
     goto LABEL_7;
   }
 
-  if ([v4 isEqualToString:@"reportAlwaysEnabled"])
+  if ([keyCopy isEqualToString:@"reportAlwaysEnabled"])
   {
     v5 = 12;
     goto LABEL_5;
@@ -980,21 +980,21 @@ LABEL_7:
   return v6;
 }
 
-- (void)setPreferenceValue:(id)a3 forKey:(id)a4
+- (void)setPreferenceValue:(id)value forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  keyCopy = key;
   v10 = 0xAAAAAAAAAAAAAAAALL;
   v11 = 0xAAAAAAAAAAAAAAAALL;
   HSUtil::ObjectLock::ObjectLock(&v10, self);
-  if (![v7 isEqualToString:@"imagesEnabled"])
+  if (![keyCopy isEqualToString:@"imagesEnabled"])
   {
-    if (![v7 isEqualToString:@"reportAlwaysEnabled"])
+    if (![keyCopy isEqualToString:@"reportAlwaysEnabled"])
     {
       goto LABEL_10;
     }
 
-    v8 = v6;
+    v8 = valueCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -1015,7 +1015,7 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v8 = v6;
+  v8 = valueCopy;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {

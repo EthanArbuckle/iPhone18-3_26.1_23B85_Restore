@@ -1,18 +1,18 @@
 @interface TransactionUIManager
-- (void)pinAuthResultWithError:(id)a3 cancelsFlow:(BOOL)a4;
-- (void)pinDataReceivedWithPinData:(id)a3 analyticsData:(id)a4;
+- (void)pinAuthResultWithError:(id)error cancelsFlow:(BOOL)flow;
+- (void)pinDataReceivedWithPinData:(id)data analyticsData:(id)analyticsData;
 - (void)pinViewLoaded;
-- (void)reportPINErrorWithError:(int64_t)a3 analyticsData:(id)a4;
-- (void)setVoiceOverWithEnabled:(BOOL)a3;
-- (void)vasReadSuccessWithMerchantNames:(id)a3;
+- (void)reportPINErrorWithError:(int64_t)error analyticsData:(id)data;
+- (void)setVoiceOverWithEnabled:(BOOL)enabled;
+- (void)vasReadSuccessWithMerchantNames:(id)names;
 @end
 
 @implementation TransactionUIManager
 
-- (void)vasReadSuccessWithMerchantNames:(id)a3
+- (void)vasReadSuccessWithMerchantNames:(id)names
 {
   v3 = *(*self + 264);
-  v4 = a3;
+  namesCopy = names;
 
   v6 = v3(v5);
   if (v6)
@@ -44,10 +44,10 @@
   }
 }
 
-- (void)pinDataReceivedWithPinData:(id)a3 analyticsData:(id)a4
+- (void)pinDataReceivedWithPinData:(id)data analyticsData:(id)analyticsData
 {
-  v12 = a3;
-  v6 = a4;
+  dataCopy = data;
+  analyticsDataCopy = analyticsData;
 
   v7 = sub_26139F01C();
   v9 = v8;
@@ -56,7 +56,7 @@
   if (v10)
   {
     v11 = v10;
-    sub_26131C99C(v12, v7, v9);
+    sub_26131C99C(dataCopy, v7, v9);
 
     sub_26124C6C4(v7, v9);
   }
@@ -68,9 +68,9 @@
   }
 }
 
-- (void)reportPINErrorWithError:(int64_t)a3 analyticsData:(id)a4
+- (void)reportPINErrorWithError:(int64_t)error analyticsData:(id)data
 {
-  v6 = a4;
+  dataCopy = data;
 
   v7 = sub_26139F01C();
   v9 = v8;
@@ -79,7 +79,7 @@
   if (v10)
   {
     v11 = v10;
-    sub_26131CC1C(a3, v7, v9);
+    sub_26131CC1C(error, v7, v9);
 
     sub_26124C6C4(v7, v9);
   }
@@ -91,9 +91,9 @@
   }
 }
 
-- (void)pinAuthResultWithError:(id)a3 cancelsFlow:(BOOL)a4
+- (void)pinAuthResultWithError:(id)error cancelsFlow:(BOOL)flow
 {
-  if (a3)
+  if (error)
   {
     v6 = sub_2613A18CC();
     v8 = v7;
@@ -111,11 +111,11 @@
   if (v11)
   {
     v12 = v11;
-    sub_26131C740(v6, v8, a4);
+    sub_26131C740(v6, v8, flow);
   }
 }
 
-- (void)setVoiceOverWithEnabled:(BOOL)a3
+- (void)setVoiceOverWithEnabled:(BOOL)enabled
 {
   v4 = *(*self + 288);
 
@@ -123,7 +123,7 @@
   if (v5)
   {
     v6 = v5;
-    sub_26131D050(a3);
+    sub_26131D050(enabled);
   }
 }
 

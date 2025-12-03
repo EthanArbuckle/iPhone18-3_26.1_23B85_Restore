@@ -1,15 +1,15 @@
 @interface HMMTRSoftwareUpdateProvider
 + (id)logCategory;
-- (BOOL)canEstablishConnectionForNodeID:(id)a3;
+- (BOOL)canEstablishConnectionForNodeID:(id)d;
 - (HMMTRAccessoryServerBrowser)browser;
-- (HMMTRSoftwareUpdateProvider)initWithQueue:(id)a3 browser:(id)a4;
+- (HMMTRSoftwareUpdateProvider)initWithQueue:(id)queue browser:(id)browser;
 - (HMMTRSoftwareUpdateProviderDelegate)delegate;
-- (void)notifyDelegateCheckFirmwareUpdateSessionWithPairing:(id)a3 completionHandler:(id)a4;
-- (void)notifyDelegateOfApplyUpdateWithPairing:(id)a3 requestParams:(id)a4 completionHandler:(id)a5;
-- (void)notifyDelegateOfNotifyUpdateWithPairing:(id)a3 params:(id)a4 completionHandler:(id)a5;
-- (void)notifyUpdateRequestedForNodeID:(id)a3 isUserTriggered:(BOOL)a4 isRetry:(BOOL)a5;
-- (void)triggerQueryImageWithPairing:(id)a3 accessoryInitiated:(BOOL)a4 requestParams:(id)a5 completionHandler:(id)a6;
-- (void)updateOTAProviderStateForNodeID:(id)a3 otaProviderState:(int64_t)a4;
+- (void)notifyDelegateCheckFirmwareUpdateSessionWithPairing:(id)pairing completionHandler:(id)handler;
+- (void)notifyDelegateOfApplyUpdateWithPairing:(id)pairing requestParams:(id)params completionHandler:(id)handler;
+- (void)notifyDelegateOfNotifyUpdateWithPairing:(id)pairing params:(id)params completionHandler:(id)handler;
+- (void)notifyUpdateRequestedForNodeID:(id)d isUserTriggered:(BOOL)triggered isRetry:(BOOL)retry;
+- (void)triggerQueryImageWithPairing:(id)pairing accessoryInitiated:(BOOL)initiated requestParams:(id)params completionHandler:(id)handler;
+- (void)updateOTAProviderStateForNodeID:(id)d otaProviderState:(int64_t)state;
 @end
 
 @implementation HMMTRSoftwareUpdateProvider
@@ -28,16 +28,16 @@
   return WeakRetained;
 }
 
-- (BOOL)canEstablishConnectionForNodeID:(id)a3
+- (BOOL)canEstablishConnectionForNodeID:(id)d
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   WeakRetained = objc_loadWeakRetained(&self->_browser);
   v6 = WeakRetained;
   if (!WeakRetained)
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy2 = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
@@ -45,7 +45,7 @@
       v17 = 138543618;
       v18 = v11;
       v19 = 2112;
-      v20 = v4;
+      v20 = dCopy;
       v12 = "%{public}@Unable to get browser ref for canEstablishConnectionForNodeID:%@";
       v13 = v10;
       v14 = 22;
@@ -63,7 +63,7 @@ LABEL_9:
   if (([WeakRetained isCurrentDeviceAllowedAccessoryControlDespiteReachableResident] & 1) == 0)
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy2 = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
@@ -79,19 +79,19 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v7 = [v6 canEstablishConnectionForNodeID:v4];
+  v7 = [v6 canEstablishConnectionForNodeID:dCopy];
 LABEL_10:
 
   v15 = *MEMORY[0x277D85DE8];
   return v7;
 }
 
-- (void)updateOTAProviderStateForNodeID:(id)a3 otaProviderState:(int64_t)a4
+- (void)updateOTAProviderStateForNodeID:(id)d otaProviderState:(int64_t)state
 {
   v33 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  dCopy = d;
   v7 = objc_autoreleasePoolPush();
-  v8 = self;
+  selfCopy = self;
   v9 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
@@ -102,16 +102,16 @@ LABEL_10:
     v29 = 2112;
     v30 = v11;
     v31 = 2112;
-    v32 = v6;
+    v32 = dCopy;
     _os_log_impl(&dword_22AEAE000, v9, OS_LOG_TYPE_INFO, "%{public}@HK informed to update OTA provider state to:%@, for nodeID: %@", &v27, 0x20u);
   }
 
   objc_autoreleasePoolPop(v7);
-  WeakRetained = objc_loadWeakRetained(&v8->_browser);
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_browser);
   if (!WeakRetained)
   {
     v17 = objc_autoreleasePoolPush();
-    v18 = v8;
+    v18 = selfCopy;
     v19 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
@@ -119,7 +119,7 @@ LABEL_10:
       v27 = 138543618;
       v28 = v20;
       v29 = 2112;
-      v30 = v6;
+      v30 = dCopy;
       v21 = "%{public}@Unable to get browser ref for updateOTAProviderStateForNodeID:%@";
 LABEL_13:
       _os_log_impl(&dword_22AEAE000, v19, OS_LOG_TYPE_ERROR, v21, &v27, 0x16u);
@@ -136,11 +136,11 @@ LABEL_14:
     goto LABEL_19;
   }
 
-  v13 = [WeakRetained accessoryServerWithNodeID:v6];
+  v13 = [WeakRetained accessoryServerWithNodeID:dCopy];
   if (!v13)
   {
     v17 = objc_autoreleasePoolPush();
-    v18 = v8;
+    v18 = selfCopy;
     v19 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
@@ -148,7 +148,7 @@ LABEL_14:
       v27 = 138543618;
       v28 = v20;
       v29 = 2112;
-      v30 = v6;
+      v30 = dCopy;
       v21 = "%{public}@Could not associate with a paired accessory for updateOTAProviderStateForNodeID:%@";
       goto LABEL_13;
     }
@@ -157,17 +157,17 @@ LABEL_14:
   }
 
   v14 = v13;
-  v15 = [v13 matterFirmwareUpdateStatus];
-  if (v15)
+  matterFirmwareUpdateStatus = [v13 matterFirmwareUpdateStatus];
+  if (matterFirmwareUpdateStatus)
   {
-    v16 = [v14 matterFirmwareUpdateStatus];
-    [v16 updateFirmwareUpdateStatus:a4];
+    matterFirmwareUpdateStatus2 = [v14 matterFirmwareUpdateStatus];
+    [matterFirmwareUpdateStatus2 updateFirmwareUpdateStatus:state];
   }
 
   else
   {
     v22 = objc_autoreleasePoolPush();
-    v23 = v8;
+    v23 = selfCopy;
     v24 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
@@ -175,7 +175,7 @@ LABEL_14:
       v27 = 138543618;
       v28 = v25;
       v29 = 2112;
-      v30 = v6;
+      v30 = dCopy;
       _os_log_impl(&dword_22AEAE000, v24, OS_LOG_TYPE_ERROR, "%{public}@MatterFirmwareUpdateStatus instance not found for nodeID:%@", &v27, 0x16u);
     }
 
@@ -186,16 +186,16 @@ LABEL_19:
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)notifyUpdateRequestedForNodeID:(id)a3 isUserTriggered:(BOOL)a4 isRetry:(BOOL)a5
+- (void)notifyUpdateRequestedForNodeID:(id)d isUserTriggered:(BOOL)triggered isRetry:(BOOL)retry
 {
   v34 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  dCopy = d;
   WeakRetained = objc_loadWeakRetained(&self->_browser);
   v10 = WeakRetained;
   if (!WeakRetained)
   {
     v13 = objc_autoreleasePoolPush();
-    v14 = self;
+    selfCopy2 = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
@@ -203,7 +203,7 @@ LABEL_19:
       *buf = 138543618;
       v31 = v16;
       v32 = 2112;
-      v33 = v8;
+      v33 = dCopy;
       v17 = "%{public}@Unable to get browser ref for notifyUpdateRequestedForNodeID:%@";
       v18 = v15;
       v19 = OS_LOG_TYPE_ERROR;
@@ -218,10 +218,10 @@ LABEL_10:
     goto LABEL_15;
   }
 
-  if (!a4)
+  if (!triggered)
   {
     v13 = objc_autoreleasePoolPush();
-    v14 = self;
+    selfCopy2 = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
@@ -238,25 +238,25 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v11 = [WeakRetained accessoryServerWithNodeID:v8];
+  v11 = [WeakRetained accessoryServerWithNodeID:dCopy];
   if (v11)
   {
-    v12 = [v10 threadSoftwareUpdateController];
+    threadSoftwareUpdateController = [v10 threadSoftwareUpdateController];
     v26[0] = MEMORY[0x277D85DD0];
     v26[1] = 3221225472;
     v26[2] = __86__HMMTRSoftwareUpdateProvider_notifyUpdateRequestedForNodeID_isUserTriggered_isRetry___block_invoke;
     v26[3] = &unk_2786EE8C0;
     v26[4] = self;
-    v27 = v8;
+    v27 = dCopy;
     v28 = v10;
-    v29 = a5;
-    [v12 handleUpdateRequestedForAccessoryServer:v11 completion:v26];
+    retryCopy = retry;
+    [threadSoftwareUpdateController handleUpdateRequestedForAccessoryServer:v11 completion:v26];
   }
 
   else
   {
     v21 = objc_autoreleasePoolPush();
-    v22 = self;
+    selfCopy3 = self;
     v23 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
@@ -264,7 +264,7 @@ LABEL_10:
       *buf = 138543618;
       v31 = v24;
       v32 = 2112;
-      v33 = v8;
+      v33 = dCopy;
       _os_log_impl(&dword_22AEAE000, v23, OS_LOG_TYPE_ERROR, "%{public}@Could not associate with a paired accessory for notifyUpdateRequestedForNodeID:%@", buf, 0x16u);
     }
 
@@ -308,21 +308,21 @@ void __86__HMMTRSoftwareUpdateProvider_notifyUpdateRequestedForNodeID_isUserTrig
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)notifyDelegateCheckFirmwareUpdateSessionWithPairing:(id)a3 completionHandler:(id)a4
+- (void)notifyDelegateCheckFirmwareUpdateSessionWithPairing:(id)pairing completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMMTRSoftwareUpdateProvider *)self clientQueue];
+  pairingCopy = pairing;
+  handlerCopy = handler;
+  clientQueue = [(HMMTRSoftwareUpdateProvider *)self clientQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __101__HMMTRSoftwareUpdateProvider_notifyDelegateCheckFirmwareUpdateSessionWithPairing_completionHandler___block_invoke;
   block[3] = &unk_2786F0EA8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = pairingCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = pairingCopy;
+  dispatch_async(clientQueue, block);
 }
 
 void __101__HMMTRSoftwareUpdateProvider_notifyDelegateCheckFirmwareUpdateSessionWithPairing_completionHandler___block_invoke(uint64_t a1)
@@ -403,24 +403,24 @@ LABEL_14:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)notifyDelegateOfNotifyUpdateWithPairing:(id)a3 params:(id)a4 completionHandler:(id)a5
+- (void)notifyDelegateOfNotifyUpdateWithPairing:(id)pairing params:(id)params completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(HMMTRSoftwareUpdateProvider *)self clientQueue];
+  pairingCopy = pairing;
+  paramsCopy = params;
+  handlerCopy = handler;
+  clientQueue = [(HMMTRSoftwareUpdateProvider *)self clientQueue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __96__HMMTRSoftwareUpdateProvider_notifyDelegateOfNotifyUpdateWithPairing_params_completionHandler___block_invoke;
   v15[3] = &unk_2786EFA60;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v9;
-  v13 = v10;
-  v14 = v8;
-  dispatch_async(v11, v15);
+  v16 = pairingCopy;
+  v17 = paramsCopy;
+  v18 = handlerCopy;
+  v12 = paramsCopy;
+  v13 = handlerCopy;
+  v14 = pairingCopy;
+  dispatch_async(clientQueue, v15);
 }
 
 void __96__HMMTRSoftwareUpdateProvider_notifyDelegateOfNotifyUpdateWithPairing_params_completionHandler___block_invoke(uint64_t a1)
@@ -502,24 +502,24 @@ LABEL_14:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)notifyDelegateOfApplyUpdateWithPairing:(id)a3 requestParams:(id)a4 completionHandler:(id)a5
+- (void)notifyDelegateOfApplyUpdateWithPairing:(id)pairing requestParams:(id)params completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(HMMTRSoftwareUpdateProvider *)self clientQueue];
+  pairingCopy = pairing;
+  paramsCopy = params;
+  handlerCopy = handler;
+  clientQueue = [(HMMTRSoftwareUpdateProvider *)self clientQueue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __102__HMMTRSoftwareUpdateProvider_notifyDelegateOfApplyUpdateWithPairing_requestParams_completionHandler___block_invoke;
   v15[3] = &unk_2786EFA60;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v9;
-  v13 = v10;
-  v14 = v8;
-  dispatch_async(v11, v15);
+  v16 = pairingCopy;
+  v17 = paramsCopy;
+  v18 = handlerCopy;
+  v12 = paramsCopy;
+  v13 = handlerCopy;
+  v14 = pairingCopy;
+  dispatch_async(clientQueue, v15);
 }
 
 void __102__HMMTRSoftwareUpdateProvider_notifyDelegateOfApplyUpdateWithPairing_requestParams_completionHandler___block_invoke(uint64_t a1)
@@ -601,15 +601,15 @@ LABEL_14:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)triggerQueryImageWithPairing:(id)a3 accessoryInitiated:(BOOL)a4 requestParams:(id)a5 completionHandler:(id)a6
+- (void)triggerQueryImageWithPairing:(id)pairing accessoryInitiated:(BOOL)initiated requestParams:(id)params completionHandler:(id)handler
 {
-  v8 = a4;
+  initiatedCopy = initiated;
   v31 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  pairingCopy = pairing;
+  paramsCopy = params;
+  handlerCopy = handler;
   v13 = objc_autoreleasePoolPush();
-  v14 = self;
+  selfCopy = self;
   v15 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
   {
@@ -617,25 +617,25 @@ LABEL_14:
     *buf = 138543618;
     v28 = v16;
     v29 = 1024;
-    v30 = v8;
+    v30 = initiatedCopy;
     _os_log_impl(&dword_22AEAE000, v15, OS_LOG_TYPE_INFO, "%{public}@triggerQueryImageWithPairing method is called and accessoryInitiated is %d", buf, 0x12u);
   }
 
   objc_autoreleasePoolPop(v13);
-  v17 = [(HMMTRSoftwareUpdateProvider *)v14 clientQueue];
+  clientQueue = [(HMMTRSoftwareUpdateProvider *)selfCopy clientQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __111__HMMTRSoftwareUpdateProvider_triggerQueryImageWithPairing_accessoryInitiated_requestParams_completionHandler___block_invoke;
   block[3] = &unk_2786EF8F0;
-  block[4] = v14;
-  v23 = v10;
-  v24 = v11;
-  v25 = v12;
-  v26 = v8;
-  v18 = v11;
-  v19 = v12;
-  v20 = v10;
-  dispatch_async(v17, block);
+  block[4] = selfCopy;
+  v23 = pairingCopy;
+  v24 = paramsCopy;
+  v25 = handlerCopy;
+  v26 = initiatedCopy;
+  v18 = paramsCopy;
+  v19 = handlerCopy;
+  v20 = pairingCopy;
+  dispatch_async(clientQueue, block);
 
   v21 = *MEMORY[0x277D85DE8];
 }
@@ -719,18 +719,18 @@ LABEL_14:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (HMMTRSoftwareUpdateProvider)initWithQueue:(id)a3 browser:(id)a4
+- (HMMTRSoftwareUpdateProvider)initWithQueue:(id)queue browser:(id)browser
 {
-  v7 = a3;
-  v8 = a4;
+  queueCopy = queue;
+  browserCopy = browser;
   v12.receiver = self;
   v12.super_class = HMMTRSoftwareUpdateProvider;
   v9 = [(HMMTRSoftwareUpdateProvider *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_clientQueue, a3);
-    objc_storeWeak(&v10->_browser, v8);
+    objc_storeStrong(&v9->_clientQueue, queue);
+    objc_storeWeak(&v10->_browser, browserCopy);
   }
 
   return v10;

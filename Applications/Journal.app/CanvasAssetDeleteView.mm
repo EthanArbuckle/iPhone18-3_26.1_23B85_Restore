@@ -1,14 +1,14 @@
 @interface CanvasAssetDeleteView
 - (BOOL)accessibilityElementsHidden;
 - (void)layoutSubviews;
-- (void)setAccessibilityElementsHidden:(BOOL)a3;
+- (void)setAccessibilityElementsHidden:(BOOL)hidden;
 @end
 
 @implementation CanvasAssetDeleteView
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_100134204();
 }
 
@@ -19,14 +19,14 @@
   return [(CanvasAssetDeleteView *)&v3 accessibilityElementsHidden];
 }
 
-- (void)setAccessibilityElementsHidden:(BOOL)a3
+- (void)setAccessibilityElementsHidden:(BOOL)hidden
 {
-  v3 = a3;
-  v4 = self;
-  [(CanvasAssetDeleteView *)v4 setIsAccessibilityElement:v3 ^ 1];
-  v5.receiver = v4;
+  hiddenCopy = hidden;
+  selfCopy = self;
+  [(CanvasAssetDeleteView *)selfCopy setIsAccessibilityElement:hiddenCopy ^ 1];
+  v5.receiver = selfCopy;
   v5.super_class = type metadata accessor for CanvasAssetDeleteView();
-  [(CanvasAssetDeleteView *)&v5 setAccessibilityElementsHidden:v3];
+  [(CanvasAssetDeleteView *)&v5 setAccessibilityElementsHidden:hiddenCopy];
 }
 
 @end

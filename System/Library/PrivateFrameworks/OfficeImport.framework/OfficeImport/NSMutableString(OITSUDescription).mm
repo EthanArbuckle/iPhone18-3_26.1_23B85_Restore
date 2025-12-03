@@ -15,8 +15,8 @@
   }
 
   [v6 deleteCharactersInRange:{a3, objc_msgSend(v6, "length") - a3}];
-  [a1 insertString:v6 atIndex:0];
-  [a1 replaceOccurrencesOfString:@"\n" withString:objc_msgSend(MEMORY[0x277CCACA8] options:"stringWithFormat:" range:{@"\n%@", v6), 0, 0, objc_msgSend(a1, "length")}];
+  [self insertString:v6 atIndex:0];
+  [self replaceOccurrencesOfString:@"\n" withString:objc_msgSend(MEMORY[0x277CCACA8] options:"stringWithFormat:" range:{@"\n%@", v6), 0, 0, objc_msgSend(self, "length")}];
 }
 
 @end

@@ -1,15 +1,15 @@
 @interface HFSymptomFixManager
 + (id)sharedManager;
-- (BOOL)anySymptomIsBeingFixedForFixableObject:(id)a3;
-- (BOOL)shouldSuppressNetworkDiagnosticsSymptomsForSymptomsHandler:(id)a3;
+- (BOOL)anySymptomIsBeingFixedForFixableObject:(id)object;
+- (BOOL)shouldSuppressNetworkDiagnosticsSymptomsForSymptomsHandler:(id)handler;
 - (HFSymptomFixManager)init;
-- (id)_itemForFixSession:(id)a3;
-- (id)_itemForSymptom:(id)a3 accessory:(id)a4;
-- (int64_t)fixStateForSymptom:(id)a3 accessory:(id)a4;
-- (void)fixSession:(id)a3 didChangeState:(int64_t)a4;
-- (void)fixSymptom:(id)a3 forFixableObject:(id)a4 presentingViewController:(id)a5;
-- (void)suppressNetworkDiagnosticsSymptomsForAccessory:(id)a3;
-- (void)unsuppressNetworkDiagnosticsSymptomsForAccessory:(id)a3;
+- (id)_itemForFixSession:(id)session;
+- (id)_itemForSymptom:(id)symptom accessory:(id)accessory;
+- (int64_t)fixStateForSymptom:(id)symptom accessory:(id)accessory;
+- (void)fixSession:(id)session didChangeState:(int64_t)state;
+- (void)fixSymptom:(id)symptom forFixableObject:(id)object presentingViewController:(id)controller;
+- (void)suppressNetworkDiagnosticsSymptomsForAccessory:(id)accessory;
+- (void)unsuppressNetworkDiagnosticsSymptomsForAccessory:(id)accessory;
 @end
 
 @implementation HFSymptomFixManager
@@ -20,7 +20,7 @@
   block[1] = 3221225472;
   block[2] = __36__HFSymptomFixManager_sharedManager__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_280E02EF8 != -1)
   {
     dispatch_once(&qword_280E02EF8, block);
@@ -57,17 +57,17 @@ void __36__HFSymptomFixManager_sharedManager__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (BOOL)anySymptomIsBeingFixedForFixableObject:(id)a3
+- (BOOL)anySymptomIsBeingFixedForFixableObject:(id)object
 {
-  v4 = a3;
-  v5 = [(HFSymptomFixManager *)self items];
+  objectCopy = object;
+  items = [(HFSymptomFixManager *)self items];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __62__HFSymptomFixManager_anySymptomIsBeingFixedForFixableObject___block_invoke;
   v9[3] = &unk_277DF9B78;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 na_any:v9];
+  v10 = objectCopy;
+  v6 = objectCopy;
+  v7 = [items na_any:v9];
 
   return v7;
 }
@@ -97,119 +97,119 @@ uint64_t __62__HFSymptomFixManager_anySymptomIsBeingFixedForFixableObject___bloc
   return v5;
 }
 
-- (int64_t)fixStateForSymptom:(id)a3 accessory:(id)a4
+- (int64_t)fixStateForSymptom:(id)symptom accessory:(id)accessory
 {
-  v4 = [(HFSymptomFixManager *)self _itemForSymptom:a3 accessory:a4];
+  v4 = [(HFSymptomFixManager *)self _itemForSymptom:symptom accessory:accessory];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 fixSession];
-    v7 = [v6 state];
+    fixSession = [v4 fixSession];
+    state = [fixSession state];
   }
 
   else
   {
-    v7 = 0;
+    state = 0;
   }
 
-  return v7;
+  return state;
 }
 
-- (BOOL)shouldSuppressNetworkDiagnosticsSymptomsForSymptomsHandler:(id)a3
+- (BOOL)shouldSuppressNetworkDiagnosticsSymptomsForSymptomsHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(HFSymptomFixManager *)self suppressedSymptomsHandlersForNetworkDiagnosticsSymptoms];
-  v6 = [v5 containsObject:v4];
+  handlerCopy = handler;
+  suppressedSymptomsHandlersForNetworkDiagnosticsSymptoms = [(HFSymptomFixManager *)self suppressedSymptomsHandlersForNetworkDiagnosticsSymptoms];
+  v6 = [suppressedSymptomsHandlersForNetworkDiagnosticsSymptoms containsObject:handlerCopy];
 
   return v6;
 }
 
-- (void)suppressNetworkDiagnosticsSymptomsForAccessory:(id)a3
+- (void)suppressNetworkDiagnosticsSymptomsForAccessory:(id)accessory
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HFSymptomFixManager *)self suppressedSymptomsHandlersForNetworkDiagnosticsSymptoms];
-  v6 = [v4 symptomsHandler];
-  [v5 addObject:v6];
+  accessoryCopy = accessory;
+  suppressedSymptomsHandlersForNetworkDiagnosticsSymptoms = [(HFSymptomFixManager *)self suppressedSymptomsHandlersForNetworkDiagnosticsSymptoms];
+  symptomsHandler = [accessoryCopy symptomsHandler];
+  [suppressedSymptomsHandlersForNetworkDiagnosticsSymptoms addObject:symptomsHandler];
 
   v7 = HFLogForCategory(0);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [(HFSymptomFixManager *)self suppressedSymptomsHandlersForNetworkDiagnosticsSymptoms];
+    suppressedSymptomsHandlersForNetworkDiagnosticsSymptoms2 = [(HFSymptomFixManager *)self suppressedSymptomsHandlersForNetworkDiagnosticsSymptoms];
     v10 = 138412546;
-    v11 = v4;
+    v11 = accessoryCopy;
     v12 = 2112;
-    v13 = v8;
+    v13 = suppressedSymptomsHandlersForNetworkDiagnosticsSymptoms2;
     _os_log_impl(&dword_20D9BF000, v7, OS_LOG_TYPE_DEFAULT, "Suppress network diagnostics symptoms for accessory: %@, on suppressedSymptomsHandlersForNetworkDiagnosticsSymptoms: %@", &v10, 0x16u);
   }
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)unsuppressNetworkDiagnosticsSymptomsForAccessory:(id)a3
+- (void)unsuppressNetworkDiagnosticsSymptomsForAccessory:(id)accessory
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HFSymptomFixManager *)self suppressedSymptomsHandlersForNetworkDiagnosticsSymptoms];
-  v6 = [v4 symptomsHandler];
-  [v5 removeObject:v6];
+  accessoryCopy = accessory;
+  suppressedSymptomsHandlersForNetworkDiagnosticsSymptoms = [(HFSymptomFixManager *)self suppressedSymptomsHandlersForNetworkDiagnosticsSymptoms];
+  symptomsHandler = [accessoryCopy symptomsHandler];
+  [suppressedSymptomsHandlersForNetworkDiagnosticsSymptoms removeObject:symptomsHandler];
 
   v7 = HFLogForCategory(0);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [(HFSymptomFixManager *)self suppressedSymptomsHandlersForNetworkDiagnosticsSymptoms];
+    suppressedSymptomsHandlersForNetworkDiagnosticsSymptoms2 = [(HFSymptomFixManager *)self suppressedSymptomsHandlersForNetworkDiagnosticsSymptoms];
     v10 = 138412546;
-    v11 = v4;
+    v11 = accessoryCopy;
     v12 = 2112;
-    v13 = v8;
+    v13 = suppressedSymptomsHandlersForNetworkDiagnosticsSymptoms2;
     _os_log_impl(&dword_20D9BF000, v7, OS_LOG_TYPE_DEFAULT, "Stop suppressing network diagnostics symptoms for accessory: %@, on suppressedSymptomsHandlersForNetworkDiagnosticsSymptoms: %@", &v10, 0x16u);
   }
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fixSymptom:(id)a3 forFixableObject:(id)a4 presentingViewController:(id)a5
+- (void)fixSymptom:(id)symptom forFixableObject:(id)object presentingViewController:(id)controller
 {
   v50 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v38 = a5;
+  symptomCopy = symptom;
+  objectCopy = object;
+  controllerCopy = controller;
   v10 = HFLogForCategory(0);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v47 = v8;
+    v47 = symptomCopy;
     v48 = 2112;
-    v49 = v9;
+    v49 = objectCopy;
     _os_log_impl(&dword_20D9BF000, v10, OS_LOG_TYPE_DEFAULT, "Starting fix for symptom %@ on fixable object %@", buf, 0x16u);
   }
 
-  if (!+[HFUtilities isInternalInstall]|| ![(HFSymptomFixManagerItem *)v8 hf_generatedByHomeAppForDebuggingPurposes])
+  if (!+[HFUtilities isInternalInstall]|| ![(HFSymptomFixManagerItem *)symptomCopy hf_generatedByHomeAppForDebuggingPurposes])
   {
     v41 = 0u;
     v42 = 0u;
     v39 = 0u;
     v40 = 0u;
-    v17 = [(HFSymptomFixManagerItem *)v9 accessories];
-    v18 = [(HFSymptomFixManagerItem *)v17 countByEnumeratingWithState:&v39 objects:v45 count:16];
+    accessories = [(HFSymptomFixManagerItem *)objectCopy accessories];
+    v18 = [(HFSymptomFixManagerItem *)accessories countByEnumeratingWithState:&v39 objects:v45 count:16];
     if (v18)
     {
       v19 = v18;
-      v35 = v9;
+      v35 = objectCopy;
       v20 = *v40;
       v36 = *v40;
-      v37 = v17;
+      v37 = accessories;
       do
       {
         for (i = 0; i != v19; ++i)
         {
           if (*v40 != v20)
           {
-            objc_enumerationMutation(v17);
+            objc_enumerationMutation(accessories);
           }
 
           v22 = *(*(&v39 + 1) + 8 * i);
-          v23 = [(HFSymptomFixManager *)self _itemForSymptom:v8 accessory:v22];
+          v23 = [(HFSymptomFixManager *)self _itemForSymptom:symptomCopy accessory:v22];
           if (v23)
           {
             v24 = HFLogForCategory(0);
@@ -225,15 +225,15 @@ uint64_t __62__HFSymptomFixManager_anySymptomIsBeingFixedForFixableObject___bloc
 
           else
           {
-            v25 = [(HFSymptomFixManagerItem *)v22 symptomsHandler];
-            v24 = [v25 newFixSessionForSymptom:v8];
+            symptomsHandler = [(HFSymptomFixManagerItem *)v22 symptomsHandler];
+            v24 = [symptomsHandler newFixSessionForSymptom:symptomCopy];
 
             if (v24)
             {
-              v26 = v8;
-              v27 = [[HFSymptomFixManagerItem alloc] initWithSymptom:v8 fixSession:v24 accessory:v22];
-              v28 = [(HFSymptomFixManager *)self items];
-              [v28 addObject:v27];
+              v26 = symptomCopy;
+              v27 = [[HFSymptomFixManagerItem alloc] initWithSymptom:symptomCopy fixSession:v24 accessory:v22];
+              items = [(HFSymptomFixManager *)self items];
+              [items addObject:v27];
 
               v29 = HFLogForCategory(0);
               if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
@@ -243,12 +243,12 @@ uint64_t __62__HFSymptomFixManager_anySymptomIsBeingFixedForFixableObject___bloc
                 _os_log_error_impl(&dword_20D9BF000, v29, OS_LOG_TYPE_ERROR, "Now Posting HFSymptomFixManagerStartSessionNotification for item  %@", buf, 0xCu);
               }
 
-              v30 = [MEMORY[0x277CCAB98] defaultCenter];
+              defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
               v43 = @"symptomItemIdentifier";
-              v31 = [(HFSymptomFixManagerItem *)v27 identifier];
-              v44 = v31;
+              identifier = [(HFSymptomFixManagerItem *)v27 identifier];
+              v44 = identifier;
               v32 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v44 forKeys:&v43 count:1];
-              [v30 postNotificationName:@"HFSymptomFixManagerStartSessionNotification" object:0 userInfo:v32];
+              [defaultCenter postNotificationName:@"HFSymptomFixManagerStartSessionNotification" object:0 userInfo:v32];
 
               v33 = HFLogForCategory(0);
               if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
@@ -259,11 +259,11 @@ uint64_t __62__HFSymptomFixManager_anySymptomIsBeingFixedForFixableObject___bloc
               }
 
               [v24 setDelegate:self];
-              [v24 setPresentingViewController:v38];
+              [v24 setPresentingViewController:controllerCopy];
               [v24 start];
-              v8 = v26;
+              symptomCopy = v26;
               v20 = v36;
-              v17 = v37;
+              accessories = v37;
             }
 
             else
@@ -272,7 +272,7 @@ uint64_t __62__HFSymptomFixManager_anySymptomIsBeingFixedForFixableObject___bloc
               if (os_log_type_enabled(&v27->super, OS_LOG_TYPE_ERROR))
               {
                 *buf = 138412546;
-                v47 = v8;
+                v47 = symptomCopy;
                 v48 = 2112;
                 v49 = v22;
                 _os_log_error_impl(&dword_20D9BF000, &v27->super, OS_LOG_TYPE_ERROR, "Could not create fix session for symptom: %@ accessory: %@", buf, 0x16u);
@@ -281,11 +281,11 @@ uint64_t __62__HFSymptomFixManager_anySymptomIsBeingFixedForFixableObject___bloc
           }
         }
 
-        v19 = [(HFSymptomFixManagerItem *)v17 countByEnumeratingWithState:&v39 objects:v45 count:16];
+        v19 = [(HFSymptomFixManagerItem *)accessories countByEnumeratingWithState:&v39 objects:v45 count:16];
       }
 
       while (v19);
-      v9 = v35;
+      objectCopy = v35;
     }
 
     goto LABEL_37;
@@ -298,10 +298,10 @@ uint64_t __62__HFSymptomFixManager_anySymptomIsBeingFixedForFixableObject___bloc
     _os_log_impl(&dword_20D9BF000, v11, OS_LOG_TYPE_DEFAULT, "Updating symptom UI for debugging purposes", buf, 2u);
   }
 
-  if ([(HFSymptomFixManagerItem *)v8 type]== 11)
+  if ([(HFSymptomFixManagerItem *)symptomCopy type]== 11)
   {
     objc_opt_class();
-    v12 = v9;
+    v12 = objectCopy;
     if (objc_opt_isKindOfClass())
     {
       v13 = v12;
@@ -317,10 +317,10 @@ uint64_t __62__HFSymptomFixManager_anySymptomIsBeingFixedForFixableObject___bloc
     [(HFSymptomFixManagerItem *)v14 hf_setFakeWiFiMismatchSymptom:0];
   }
 
-  if ([(HFSymptomFixManagerItem *)v8 type]== 19)
+  if ([(HFSymptomFixManagerItem *)symptomCopy type]== 19)
   {
     objc_opt_class();
-    v15 = v9;
+    v15 = objectCopy;
     if (objc_opt_isKindOfClass())
     {
       v16 = v15;
@@ -331,29 +331,29 @@ uint64_t __62__HFSymptomFixManager_anySymptomIsBeingFixedForFixableObject___bloc
       v16 = 0;
     }
 
-    v17 = v16;
+    accessories = v16;
 
-    [(HFSymptomFixManagerItem *)v17 hf_setFakeCaptiveLeaseRenewalSymptom:0];
+    [(HFSymptomFixManagerItem *)accessories hf_setFakeCaptiveLeaseRenewalSymptom:0];
 LABEL_37:
   }
 
   v34 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_itemForSymptom:(id)a3 accessory:(id)a4
+- (id)_itemForSymptom:(id)symptom accessory:(id)accessory
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HFSymptomFixManager *)self items];
+  symptomCopy = symptom;
+  accessoryCopy = accessory;
+  items = [(HFSymptomFixManager *)self items];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __49__HFSymptomFixManager__itemForSymptom_accessory___block_invoke;
   v13[3] = &unk_277DF9BA0;
-  v14 = v6;
-  v15 = v7;
-  v9 = v7;
-  v10 = v6;
-  v11 = [v8 na_firstObjectPassingTest:v13];
+  v14 = symptomCopy;
+  v15 = accessoryCopy;
+  v9 = accessoryCopy;
+  v10 = symptomCopy;
+  v11 = [items na_firstObjectPassingTest:v13];
 
   return v11;
 }
@@ -376,17 +376,17 @@ uint64_t __49__HFSymptomFixManager__itemForSymptom_accessory___block_invoke(uint
   return v6;
 }
 
-- (id)_itemForFixSession:(id)a3
+- (id)_itemForFixSession:(id)session
 {
-  v4 = a3;
-  v5 = [(HFSymptomFixManager *)self items];
+  sessionCopy = session;
+  items = [(HFSymptomFixManager *)self items];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __42__HFSymptomFixManager__itemForFixSession___block_invoke;
   v9[3] = &unk_277DF9B78;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 na_firstObjectPassingTest:v9];
+  v10 = sessionCopy;
+  v6 = sessionCopy;
+  v7 = [items na_firstObjectPassingTest:v9];
 
   return v7;
 }
@@ -399,22 +399,22 @@ uint64_t __42__HFSymptomFixManager__itemForFixSession___block_invoke(uint64_t a1
   return v4;
 }
 
-- (void)fixSession:(id)a3 didChangeState:(int64_t)a4
+- (void)fixSession:(id)session didChangeState:(int64_t)state
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  sessionCopy = session;
   v7 = HFLogForCategory(0);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = NSStringFromHMSymptomFixSessionState(a4);
+    v8 = NSStringFromHMSymptomFixSessionState(state);
     *buf = 138412546;
-    v28 = v6;
+    v28 = sessionCopy;
     v29 = 2112;
     v30 = v8;
     _os_log_impl(&dword_20D9BF000, v7, OS_LOG_TYPE_DEFAULT, "HFSymptomFixManager fixSession:%@ didChangeState:%@", buf, 0x16u);
   }
 
-  v9 = [(HFSymptomFixManager *)self _itemForFixSession:v6];
+  v9 = [(HFSymptomFixManager *)self _itemForFixSession:sessionCopy];
   if (v9)
   {
     v10 = +[HFHomeKitDispatcher sharedDispatcher];
@@ -426,7 +426,7 @@ uint64_t __42__HFSymptomFixManager__itemForFixSession___block_invoke(uint64_t a1
     v24 = v11;
     [v10 dispatchSymptomFixSessionObserverMessage:v23 sender:0];
 
-    if (a4 == 2)
+    if (state == 2)
     {
       v12 = HFLogForCategory(0);
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -436,28 +436,28 @@ uint64_t __42__HFSymptomFixManager__itemForFixSession___block_invoke(uint64_t a1
         _os_log_error_impl(&dword_20D9BF000, v12, OS_LOG_TYPE_ERROR, "Now Posting HFSymptomFixManagerEndSessionNotification for item  %@", buf, 0xCu);
       }
 
-      v13 = [MEMORY[0x277CCAB98] defaultCenter];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
       v25 = @"symptomItemIdentifier";
-      v14 = [v11 identifier];
-      v26 = v14;
+      identifier = [v11 identifier];
+      v26 = identifier;
       v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v26 forKeys:&v25 count:1];
-      [v13 postNotificationName:@"HFSymptomFixManagerEndSessionNotification" object:0 userInfo:v15];
+      [defaultCenter postNotificationName:@"HFSymptomFixManagerEndSessionNotification" object:0 userInfo:v15];
 
-      v16 = [(HFSymptomFixManager *)self items];
-      [v16 removeObject:v11];
+      items = [(HFSymptomFixManager *)self items];
+      [items removeObject:v11];
 
-      v17 = [v6 error];
+      error = [sessionCopy error];
 
-      if (v17)
+      if (error)
       {
         v18 = HFLogForCategory(0);
         if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
         {
-          v22 = [v6 error];
+          error2 = [sessionCopy error];
           *buf = 138412546;
-          v28 = v6;
+          v28 = sessionCopy;
           v29 = 2112;
-          v30 = v22;
+          v30 = error2;
           _os_log_error_impl(&dword_20D9BF000, v18, OS_LOG_TYPE_ERROR, "Error with Fix Session: %@ error: %@", buf, 0x16u);
         }
       }
@@ -471,11 +471,11 @@ uint64_t __42__HFSymptomFixManager__itemForFixSession___block_invoke(uint64_t a1
     v19 = HFLogForCategory(0);
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
-      v21 = [(HFSymptomFixManager *)self items];
+      items2 = [(HFSymptomFixManager *)self items];
       *buf = 138412546;
-      v28 = v6;
+      v28 = sessionCopy;
       v29 = 2112;
-      v30 = v21;
+      v30 = items2;
       _os_log_error_impl(&dword_20D9BF000, v19, OS_LOG_TYPE_ERROR, "HFSymptomFixManager received fix session callback for unknown session %@. All items: %@", buf, 0x16u);
     }
   }

@@ -1,59 +1,59 @@
 @interface FontInstallMissingAppViewController
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)viewWillAppear:(BOOL)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation FontInstallMissingAppViewController
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v16 = self;
+  selfCopy = self;
   v15 = a2;
-  v14 = a3;
+  appearCopy = appear;
   v13.receiver = self;
   v13.super_class = FontInstallMissingAppViewController;
-  [(FontInstallMissingAppViewController *)&v13 viewWillAppear:a3];
-  v5 = v16;
-  v6 = [(FontInstallMissingAppViewController *)v16 tableView];
-  [v6 setDataSource:v5];
+  [(FontInstallMissingAppViewController *)&v13 viewWillAppear:appear];
+  v5 = selfCopy;
+  tableView = [(FontInstallMissingAppViewController *)selfCopy tableView];
+  [tableView setDataSource:v5];
 
-  v7 = v16;
-  v8 = [(FontInstallMissingAppViewController *)v16 tableView];
-  [v8 setDelegate:v7];
+  v7 = selfCopy;
+  tableView2 = [(FontInstallMissingAppViewController *)selfCopy tableView];
+  [tableView2 setDelegate:v7];
 
-  v9 = [(FontInstallMissingAppViewController *)v16 tableView];
-  [v9 setEstimatedSectionHeaderHeight:100.0];
+  tableView3 = [(FontInstallMissingAppViewController *)selfCopy tableView];
+  [tableView3 setEstimatedSectionHeaderHeight:100.0];
 
-  v10 = [(FontInstallMissingAppViewController *)v16 tableView];
-  [v10 setSectionHeaderHeight:UITableViewAutomaticDimension];
+  tableView4 = [(FontInstallMissingAppViewController *)selfCopy tableView];
+  [tableView4 setSectionHeaderHeight:UITableViewAutomaticDimension];
 
-  v11 = [(FontInstallMissingAppViewController *)v16 tableView];
-  [v11 registerClass:objc_opt_class() forHeaderFooterViewReuseIdentifier:providerHeaderReuseIdentifier];
+  tableView5 = [(FontInstallMissingAppViewController *)selfCopy tableView];
+  [tableView5 registerClass:objc_opt_class() forHeaderFooterViewReuseIdentifier:providerHeaderReuseIdentifier];
 
-  v12 = [(NSMutableDictionary *)v16->font objectForKeyedSubscript:@"providers"];
+  v12 = [(NSMutableDictionary *)selfCopy->font objectForKeyedSubscript:@"providers"];
   v3 = [v12 mutableCopy];
-  providers = v16->providers;
-  v16->providers = v3;
+  providers = selfCopy->providers;
+  selfCopy->providers = v3;
 }
 
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, view);
   v11 = 0;
-  objc_storeStrong(&v11, a4);
-  v10 = [v11 item];
-  v9 = [(NSMutableArray *)v13->providers objectAtIndexedSubscript:v10];
-  [(NSMutableArray *)v13->providers removeObjectAtIndex:v10];
-  [(NSMutableArray *)v13->providers insertObject:v9 atIndex:0];
-  font = v13->font;
-  v7 = [NSArray arrayWithArray:v13->providers];
+  objc_storeStrong(&v11, path);
+  item = [v11 item];
+  v9 = [(NSMutableArray *)selfCopy->providers objectAtIndexedSubscript:item];
+  [(NSMutableArray *)selfCopy->providers removeObjectAtIndex:item];
+  [(NSMutableArray *)selfCopy->providers insertObject:v9 atIndex:0];
+  font = selfCopy->font;
+  v7 = [NSArray arrayWithArray:selfCopy->providers];
   [NSMutableDictionary setObject:"setObject:forKey:" forKey:?];
 
   v8 = v11;
@@ -64,47 +64,47 @@
   return v8;
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, view);
   objc_storeStrong(location, 0);
   return 1;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v5 = [(NSMutableArray *)v7->providers count];
+  objc_storeStrong(location, view);
+  v5 = [(NSMutableArray *)selfCopy->providers count];
   objc_storeStrong(location, 0);
   return v5;
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v13[1] = a4;
+  objc_storeStrong(location, view);
+  v13[1] = section;
   v6 = +[NSBundle mainBundle];
   v13[0] = [(NSBundle *)v6 localizedStringForKey:@"PROVIDER_INSTRUCTIONS" value:&stru_10001CD88 table:0];
 
   v12 = [location[0] dequeueReusableHeaderFooterViewWithIdentifier:providerHeaderReuseIdentifier];
-  v7 = [v12 textLabel];
-  [v7 setLineBreakMode:?];
+  textLabel = [v12 textLabel];
+  [textLabel setLineBreakMode:?];
 
-  v8 = [v12 textLabel];
-  [v8 setNumberOfLines:0];
+  textLabel2 = [v12 textLabel];
+  [textLabel2 setNumberOfLines:0];
 
   v9 = v13[0];
-  v10 = [v12 textLabel];
-  [v10 setText:v9];
+  textLabel3 = [v12 textLabel];
+  [textLabel3 setText:v9];
 
   v11 = v12;
   objc_storeStrong(&v12, 0);
@@ -114,27 +114,27 @@
   return v11;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, view);
   v16 = 0;
-  objc_storeStrong(&v16, a4);
+  objc_storeStrong(&v16, path);
   v15 = [location[0] dequeueReusableCellWithIdentifier:@"ProviderCell"];
-  v14 = -[NSMutableArray objectAtIndexedSubscript:](v18->providers, "objectAtIndexedSubscript:", [v16 item]);
+  v14 = -[NSMutableArray objectAtIndexedSubscript:](selfCopy->providers, "objectAtIndexedSubscript:", [v16 item]);
   [v15 setProviderBundle:v14];
   v9 = +[UIScreen mainScreen];
   [(UIScreen *)v9 scale];
   v8 = [UIImage _applicationIconImageForBundleIdentifier:"_applicationIconImageForBundleIdentifier:format:scale:" format:v14 scale:?];
-  v7 = [v15 imageView];
-  [v7 setImage:v8];
+  imageView = [v15 imageView];
+  [imageView setImage:v8];
 
   v12 = [[LSApplicationRecord alloc] initWithBundleIdentifier:v14 allowPlaceholder:0 error:0];
-  v11 = [v12 localizedName];
-  v10 = [v15 textLabel];
-  [v10 setText:v11];
+  localizedName = [v12 localizedName];
+  textLabel = [v15 textLabel];
+  [textLabel setText:localizedName];
 
   if ([v16 item])
   {
@@ -146,7 +146,7 @@
     v4 = 3;
   }
 
-  [v15 setAccessoryType:{v4, a4}];
+  [v15 setAccessoryType:{v4, path}];
   v13 = v15;
   objc_storeStrong(&v14, 0);
   objc_storeStrong(&v15, 0);

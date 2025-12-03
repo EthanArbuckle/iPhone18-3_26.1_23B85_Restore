@@ -1,14 +1,14 @@
 @interface ICSMethodValue
-+ (id)methodParameterFromCode:(int)a3;
-+ (id)methodValueFromICSString:(id)a3;
-- (void)_ICSStringWithOptions:(unint64_t)a3 appendingToString:(id)a4;
++ (id)methodParameterFromCode:(int)code;
++ (id)methodValueFromICSString:(id)string;
+- (void)_ICSStringWithOptions:(unint64_t)options appendingToString:(id)string;
 @end
 
 @implementation ICSMethodValue
 
-+ (id)methodValueFromICSString:(id)a3
++ (id)methodValueFromICSString:(id)string
 {
-  v3 = [ICSCalendar methodFromICSString:a3];
+  v3 = [ICSCalendar methodFromICSString:string];
   if (v3)
   {
     v4 = [ICSMethodValue methodParameterFromCode:v3];
@@ -22,19 +22,19 @@
   return v4;
 }
 
-+ (id)methodParameterFromCode:(int)a3
++ (id)methodParameterFromCode:(int)code
 {
-  v3 = [(ICSPredefinedValue *)[ICSMethodValue alloc] initWithLong:a3];
+  v3 = [(ICSPredefinedValue *)[ICSMethodValue alloc] initWithLong:code];
 
   return v3;
 }
 
-- (void)_ICSStringWithOptions:(unint64_t)a3 appendingToString:(id)a4
+- (void)_ICSStringWithOptions:(unint64_t)options appendingToString:(id)string
 {
-  v4 = a3;
-  v6 = a4;
+  optionsCopy = options;
+  stringCopy = string;
   v7 = [ICSCalendar ICSStringFromMethod:[(ICSPredefinedValue *)self longValue]];
-  iCalendarAppendStringToStringWithOptions(v7, v6, v4);
+  iCalendarAppendStringToStringWithOptions(v7, stringCopy, optionsCopy);
 }
 
 @end

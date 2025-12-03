@@ -1,8 +1,8 @@
 @interface ToneMapSmoothingResources
-- ($F99D9A4FB75BC57F3386B8DC8EE08D7A)computeSizeForLevel:(SEL)a3 xDivisor:(unint64_t)a4 yDivisor:(unint64_t)a5;
-- ($F99D9A4FB75BC57F3386B8DC8EE08D7A)computeSizeForOddEvenLevel:(SEL)a3 xDivisor:(unint64_t)a4 yDivisor:(unint64_t)a5;
-- (ToneMapSmoothingResources)initWithMetalContext:(id)a3 width:(unint64_t)a4 height:(unint64_t)a5 mtlSubAllocatorID:(unsigned int)a6 srlVersion:(int)a7;
-- (int)allocateResourcesForWidth:(unint64_t)a3 height:(unint64_t)a4 useMaskPyramid:(BOOL)a5;
+- ($F99D9A4FB75BC57F3386B8DC8EE08D7A)computeSizeForLevel:(SEL)level xDivisor:(unint64_t)divisor yDivisor:(unint64_t)yDivisor;
+- ($F99D9A4FB75BC57F3386B8DC8EE08D7A)computeSizeForOddEvenLevel:(SEL)level xDivisor:(unint64_t)divisor yDivisor:(unint64_t)yDivisor;
+- (ToneMapSmoothingResources)initWithMetalContext:(id)context width:(unint64_t)width height:(unint64_t)height mtlSubAllocatorID:(unsigned int)d srlVersion:(int)version;
+- (int)allocateResourcesForWidth:(unint64_t)width height:(unint64_t)height useMaskPyramid:(BOOL)pyramid;
 - (void)calcPyramidDimensions;
 - (void)dealloc;
 - (void)makeResourcesAliasable;
@@ -38,9 +38,9 @@
   }
 }
 
-- (ToneMapSmoothingResources)initWithMetalContext:(id)a3 width:(unint64_t)a4 height:(unint64_t)a5 mtlSubAllocatorID:(unsigned int)a6 srlVersion:(int)a7
+- (ToneMapSmoothingResources)initWithMetalContext:(id)context width:(unint64_t)width height:(unint64_t)height mtlSubAllocatorID:(unsigned int)d srlVersion:(int)version
 {
-  v13 = a3;
+  contextCopy = context;
   v120.receiver = self;
   v120.super_class = ToneMapSmoothingResources;
   v14 = [(ToneMapSmoothingResources *)&v120 init];
@@ -50,12 +50,12 @@
     goto LABEL_12;
   }
 
-  v14->_mtlSubAllocatorID = a6;
-  v14->_width = a4;
-  v14->_height = a5;
-  v14->_maxNPyramidLevels = objc_msgSend_calcMaxNPyramidLevelsForWidth_height_(ToneMapSmoothingResources, v15, a4, a5);
-  objc_storeStrong(&v16->_metalContext, a3);
-  v16->_srlVersion = a7;
+  v14->_mtlSubAllocatorID = d;
+  v14->_width = width;
+  v14->_height = height;
+  v14->_maxNPyramidLevels = objc_msgSend_calcMaxNPyramidLevelsForWidth_height_(ToneMapSmoothingResources, v15, width, height);
+  objc_storeStrong(&v16->_metalContext, context);
+  v16->_srlVersion = version;
   v17 = objc_opt_new();
   v20 = v17;
   if (!v17)
@@ -67,7 +67,7 @@
   objc_msgSend_setStorageMode_(v17, v18, 0, v19);
   objc_msgSend_setHazardTrackingMode_(v20, v21, 2, v22);
   objc_msgSend_setSize_(v20, v23, 512000, v24);
-  v28 = objc_msgSend_device(v13, v25, v26, v27);
+  v28 = objc_msgSend_device(contextCopy, v25, v26, v27);
   v31 = objc_msgSend_newHeapWithDescriptor_(v28, v29, v20, v30);
   internalHeap = v16->_internalHeap;
   v16->_internalHeap = v31;
@@ -208,9 +208,9 @@ LABEL_13:
   [(ToneMapSmoothingResources *)&v3 dealloc];
 }
 
-- (int)allocateResourcesForWidth:(unint64_t)a3 height:(unint64_t)a4 useMaskPyramid:(BOOL)a5
+- (int)allocateResourcesForWidth:(unint64_t)width height:(unint64_t)height useMaskPyramid:(BOOL)pyramid
 {
-  if (self->_width != a3)
+  if (self->_width != width)
   {
     sub_295896E4C();
 LABEL_25:
@@ -219,14 +219,14 @@ LABEL_25:
     goto LABEL_16;
   }
 
-  if (self->_height != a4)
+  if (self->_height != height)
   {
     sub_295896EB4();
     goto LABEL_25;
   }
 
-  v6 = a5;
-  v7 = objc_msgSend_allocator(self->_metalContext, a2, a3, a4);
+  pyramidCopy = pyramid;
+  v7 = objc_msgSend_allocator(self->_metalContext, a2, width, height);
   v10 = objc_msgSend_newTextureDescriptor_(v7, v8, self->_mtlSubAllocatorID, v9);
 
   if (v10)
@@ -238,7 +238,7 @@ LABEL_25:
       v16 = 0;
       while (1)
       {
-        if (v6)
+        if (pyramidCopy)
         {
           var0 = self->_dimensions[v14].var0;
           v18 = objc_msgSend_desc(v10, v11, v12, v13);
@@ -408,15 +408,15 @@ LABEL_16:
   objc_msgSend_removeAllObjects(self->_masksPyramid, v32, v33, v34);
 }
 
-- ($F99D9A4FB75BC57F3386B8DC8EE08D7A)computeSizeForLevel:(SEL)a3 xDivisor:(unint64_t)a4 yDivisor:(unint64_t)a5
+- ($F99D9A4FB75BC57F3386B8DC8EE08D7A)computeSizeForLevel:(SEL)level xDivisor:(unint64_t)divisor yDivisor:(unint64_t)yDivisor
 {
   retstr->var0 = 0;
   retstr->var1 = 0;
   retstr->var2 = 0;
-  if (self[2].var1 > a4)
+  if (self[2].var1 > divisor)
   {
-    v6 = (self[1].var0 + 24 * a4);
-    v7 = (a5 + *v6 - 1) / a5;
+    v6 = (self[1].var0 + 24 * divisor);
+    v7 = (yDivisor + *v6 - 1) / yDivisor;
     v8 = (a6 + v6[2] - 1) / a6;
     retstr->var0 = v7;
     retstr->var1 = v8;
@@ -426,15 +426,15 @@ LABEL_16:
   return self;
 }
 
-- ($F99D9A4FB75BC57F3386B8DC8EE08D7A)computeSizeForOddEvenLevel:(SEL)a3 xDivisor:(unint64_t)a4 yDivisor:(unint64_t)a5
+- ($F99D9A4FB75BC57F3386B8DC8EE08D7A)computeSizeForOddEvenLevel:(SEL)level xDivisor:(unint64_t)divisor yDivisor:(unint64_t)yDivisor
 {
   retstr->var0 = 0;
   retstr->var1 = 0;
   retstr->var2 = 0;
-  if (self[2].var1 > a4)
+  if (self[2].var1 > divisor)
   {
-    v6 = self[1].var0 + 24 * a4;
-    v7 = (a5 + *(v6 + 8) - 1) / a5;
+    v6 = self[1].var0 + 24 * divisor;
+    v7 = (yDivisor + *(v6 + 8) - 1) / yDivisor;
     v8 = (a6 + *(v6 + 16) - 1) / a6;
     retstr->var0 = v7;
     retstr->var1 = v8;

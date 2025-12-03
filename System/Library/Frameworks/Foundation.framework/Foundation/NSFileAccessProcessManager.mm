@@ -1,18 +1,18 @@
 @interface NSFileAccessProcessManager
-+ (BOOL)needToManageConnection:(id)a3 forURLs:(id)a4;
++ (BOOL)needToManageConnection:(id)connection forURLs:(id)ls;
 - (NSArray)URLs;
-- (NSFileAccessProcessManager)initWithClient:(id)a3 queue:(id)a4;
+- (NSFileAccessProcessManager)initWithClient:(id)client queue:(id)queue;
 - (id)suspensionHandler;
 - (void)_ensureMonitor;
 - (void)allowSuspension;
 - (void)dealloc;
 - (void)invalidate;
-- (void)killProcessWithMessage:(id)a3;
-- (void)preventSuspensionWithActivityName:(id)a3;
+- (void)killProcessWithMessage:(id)message;
+- (void)preventSuspensionWithActivityName:(id)name;
 - (void)processSuspended;
-- (void)safelySendMessageWithReplyUsingBlock:(id)a3;
-- (void)setSuspensionHandler:(id)a3;
-- (void)setURLs:(id)a3;
+- (void)safelySendMessageWithReplyUsingBlock:(id)block;
+- (void)setSuspensionHandler:(id)handler;
+- (void)setURLs:(id)ls;
 @end
 
 @implementation NSFileAccessProcessManager
@@ -94,10 +94,10 @@
   }
 }
 
-+ (BOOL)needToManageConnection:(id)a3 forURLs:(id)a4
++ (BOOL)needToManageConnection:(id)connection forURLs:(id)ls
 {
   v43 = *MEMORY[0x1E69E9840];
-  if (![a4 count])
+  if (![ls count])
   {
     return 0;
   }
@@ -188,7 +188,7 @@ LABEL_42:
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v11 = [a4 countByEnumeratingWithState:&v31 objects:v30 count:16];
+  v11 = [ls countByEnumeratingWithState:&v31 objects:v30 count:16];
   if (v11)
   {
     v13 = v11;
@@ -202,16 +202,16 @@ LABEL_42:
       {
         if (*v32 != v14)
         {
-          objc_enumerationMutation(a4);
+          objc_enumerationMutation(ls);
         }
 
-        v16 = [*(*(&v31 + 1) + 8 * i) path];
-        if ([(__CFString *)v16 hasPrefix:@"/var"])
+        path = [*(*(&v31 + 1) + 8 * i) path];
+        if ([(__CFString *)path hasPrefix:@"/var"])
         {
-          v16 = [@"/private" stringByAppendingString:v16];
+          path = [@"/private" stringByAppendingString:path];
         }
 
-        if (![(__CFString *)v16 hasPrefix:v10]|| [(__CFString *)v16 containsString:@"/com.apple.watchconnectivity/"])
+        if (![(__CFString *)path hasPrefix:v10]|| [(__CFString *)path containsString:@"/com.apple.watchconnectivity/"])
         {
           v21 = _NSFCProcessMonitorLog();
           if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
@@ -219,7 +219,7 @@ LABEL_42:
             *buf = 138543619;
             v36 = v8;
             v37 = 2113;
-            v38 = v16;
+            v38 = path;
             _os_log_debug_impl(&dword_18075C000, v21, OS_LOG_TYPE_DEBUG, "Will be managing connection for %{public}@ because path is not private %{private}@", buf, 0x16u);
           }
 
@@ -232,14 +232,14 @@ LABEL_42:
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
         {
           *buf = v27;
-          v36 = v16;
+          v36 = path;
           v37 = 2114;
           v38 = v8;
           _os_log_debug_impl(&dword_18075C000, v17, OS_LOG_TYPE_DEBUG, "Skipping path %{private}@ for %{public}@ because path it is private", buf, 0x16u);
         }
       }
 
-      v13 = [a4 countByEnumeratingWithState:&v31 objects:v30 count:16];
+      v13 = [ls countByEnumeratingWithState:&v31 objects:v30 count:16];
       v18 = 0;
       v6 = v28;
       if (v13)
@@ -277,7 +277,7 @@ void *__61__NSFileAccessProcessManager_needToManageConnection_forURLs___block_in
   return result;
 }
 
-- (NSFileAccessProcessManager)initWithClient:(id)a3 queue:(id)a4
+- (NSFileAccessProcessManager)initWithClient:(id)client queue:(id)queue
 {
   v9 = *MEMORY[0x1E69E9840];
   v8.receiver = self;
@@ -285,22 +285,22 @@ void *__61__NSFileAccessProcessManager_needToManageConnection_forURLs___block_in
   v6 = [(NSFileAccessProcessManager *)&v8 init];
   if (v6)
   {
-    v6->_connection = xpc_retain(a3);
-    v6->_pid = xpc_connection_get_pid(a3);
-    v6->_queue = a4;
-    dispatch_retain(a4);
+    v6->_connection = xpc_retain(client);
+    v6->_pid = xpc_connection_get_pid(client);
+    v6->_queue = queue;
+    dispatch_retain(queue);
   }
 
   return v6;
 }
 
-- (void)setSuspensionHandler:(id)a3
+- (void)setSuspensionHandler:(id)handler
 {
   suspensionHandler = self->_suspensionHandler;
-  if (suspensionHandler != a3)
+  if (suspensionHandler != handler)
   {
 
-    self->_suspensionHandler = [a3 copy];
+    self->_suspensionHandler = [handler copy];
 
     [(NSFileAccessProcessManager *)self _ensureMonitor];
   }
@@ -360,13 +360,13 @@ uint64_t __46__NSFileAccessProcessManager_processSuspended__block_invoke(uint64_
   return v2;
 }
 
-- (void)setURLs:(id)a3
+- (void)setURLs:(id)ls
 {
   urls = self->_urls;
-  if (urls != a3)
+  if (urls != ls)
   {
 
-    self->_urls = [a3 copy];
+    self->_urls = [ls copy];
 
     [(NSFileAccessProcessManager *)self _ensureMonitor];
   }
@@ -379,7 +379,7 @@ uint64_t __46__NSFileAccessProcessManager_processSuspended__block_invoke(uint64_
   return v2;
 }
 
-- (void)killProcessWithMessage:(id)a3
+- (void)killProcessWithMessage:(id)message
 {
   pid = xpc_connection_get_pid(self->_connection);
   if (qword_1ED43FDE8 != -1)
@@ -389,13 +389,13 @@ uint64_t __46__NSFileAccessProcessManager_processSuspended__block_invoke(uint64_
 
   if (off_1ED43FDD0)
   {
-    off_1ED43FDD0(pid, 0, a3);
+    off_1ED43FDD0(pid, 0, message);
   }
 
   kill(pid, 9);
 }
 
-- (void)safelySendMessageWithReplyUsingBlock:(id)a3
+- (void)safelySendMessageWithReplyUsingBlock:(id)block
 {
   v24 = *MEMORY[0x1E69E9840];
   if (qword_1ED43FDF0 != -1)
@@ -429,7 +429,7 @@ uint64_t __46__NSFileAccessProcessManager_processSuspended__block_invoke(uint64_
         v15[2] = __67__NSFileAccessProcessManager_safelySendMessageWithReplyUsingBlock___block_invoke_31;
         v15[3] = &unk_1E69F2C00;
         v15[4] = self;
-        (*(a3 + 2))(a3, v15);
+        (*(block + 2))(block, v15);
       }
 
       else
@@ -464,7 +464,7 @@ uint64_t __46__NSFileAccessProcessManager_processSuspended__block_invoke(uint64_
         v18[2] = __67__NSFileAccessProcessManager_safelySendMessageWithReplyUsingBlock___block_invoke;
         v18[3] = &unk_1E69F6D08;
         v18[4] = self;
-        v18[5] = a3;
+        v18[5] = block;
         v18[6] = &buf;
         v18[7] = v12;
         v14 = [v13 initWithPID:pid flags:3 reason:4 name:@"filecoordinationd waiting for response from NSFilePresenter" withHandler:v18];
@@ -482,7 +482,7 @@ uint64_t __46__NSFileAccessProcessManager_processSuspended__block_invoke(uint64_
 
     else
     {
-      (*(a3 + 2))(a3, 0);
+      (*(block + 2))(block, 0);
     }
 
     free(v5);
@@ -490,9 +490,9 @@ uint64_t __46__NSFileAccessProcessManager_processSuspended__block_invoke(uint64_
 
   else
   {
-    v10 = *(a3 + 2);
+    v10 = *(block + 2);
 
-    v10(a3, 0);
+    v10(block, 0);
   }
 }
 
@@ -559,7 +559,7 @@ uint64_t __67__NSFileAccessProcessManager_safelySendMessageWithReplyUsingBlock__
   return [*(a1 + 32) killProcessWithMessage:@"The process did not finish responding to an NSFilePresenter message before being suspended."];
 }
 
-- (void)preventSuspensionWithActivityName:(id)a3
+- (void)preventSuspensionWithActivityName:(id)name
 {
   v11 = *MEMORY[0x1E69E9840];
   if (qword_1ED43FDF0 != -1)
@@ -579,11 +579,11 @@ uint64_t __67__NSFileAccessProcessManager_safelySendMessageWithReplyUsingBlock__
         v8[0] = 67109378;
         v8[1] = pid;
         v9 = 2114;
-        v10 = a3;
+        nameCopy = name;
         _os_log_debug_impl(&dword_18075C000, v7, OS_LOG_TYPE_DEBUG, "Scheduling suspension prevention of pid %d for activity: %{public}@", v8, 0x12u);
       }
 
-      self->_assertionToken = [+[_NSFileAccessAsynchronousProcessAssertionScheduler sharedInstance](_NSFileAccessAsynchronousProcessAssertionScheduler addAssertionWithName:"addAssertionWithName:forPID:" forPID:a3, pid];
+      self->_assertionToken = [+[_NSFileAccessAsynchronousProcessAssertionScheduler sharedInstance](_NSFileAccessAsynchronousProcessAssertionScheduler addAssertionWithName:"addAssertionWithName:forPID:" forPID:name, pid];
     }
 
     free(v5);

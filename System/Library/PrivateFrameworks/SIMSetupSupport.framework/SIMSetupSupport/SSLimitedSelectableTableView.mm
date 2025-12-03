@@ -1,51 +1,51 @@
 @interface SSLimitedSelectableTableView
-- (SSLimitedSelectableTableView)initWithFrame:(CGRect)a3 style:(int64_t)a4 limit:(unint64_t)a5;
+- (SSLimitedSelectableTableView)initWithFrame:(CGRect)frame style:(int64_t)style limit:(unint64_t)limit;
 - (UITableViewDelegate)viewDelegate;
 - (void)_refreshTableView;
-- (void)setDelegate:(id)a3;
-- (void)tableView:(id)a3 didDeselectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)setDelegate:(id)delegate;
+- (void)tableView:(id)view didDeselectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation SSLimitedSelectableTableView
 
-- (SSLimitedSelectableTableView)initWithFrame:(CGRect)a3 style:(int64_t)a4 limit:(unint64_t)a5
+- (SSLimitedSelectableTableView)initWithFrame:(CGRect)frame style:(int64_t)style limit:(unint64_t)limit
 {
   v7.receiver = self;
   v7.super_class = SSLimitedSelectableTableView;
-  result = [(SSLimitedSelectableTableView *)&v7 initWithFrame:a4 style:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  result = [(SSLimitedSelectableTableView *)&v7 initWithFrame:style style:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (result)
   {
-    result->_limit = a5;
+    result->_limit = limit;
   }
 
   return result;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  [(SSLimitedSelectableTableView *)self setViewDelegate:a3];
+  [(SSLimitedSelectableTableView *)self setViewDelegate:delegate];
   v4.receiver = self;
   v4.super_class = SSLimitedSelectableTableView;
   [(SSLimitedSelectableTableView *)&v4 setDelegate:self];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
+  pathCopy = path;
+  viewCopy = view;
   [(SSLimitedSelectableTableView *)self _refreshTableView];
-  v8 = [(SSLimitedSelectableTableView *)self viewDelegate];
-  [v8 tableView:v7 didSelectRowAtIndexPath:v6];
+  viewDelegate = [(SSLimitedSelectableTableView *)self viewDelegate];
+  [viewDelegate tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
 }
 
-- (void)tableView:(id)a3 didDeselectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didDeselectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
+  pathCopy = path;
+  viewCopy = view;
   [(SSLimitedSelectableTableView *)self _refreshTableView];
-  v8 = [(SSLimitedSelectableTableView *)self viewDelegate];
-  [v8 tableView:v7 didDeselectRowAtIndexPath:v6];
+  viewDelegate = [(SSLimitedSelectableTableView *)self viewDelegate];
+  [viewDelegate tableView:viewCopy didDeselectRowAtIndexPath:pathCopy];
 }
 
 - (void)_refreshTableView
@@ -62,8 +62,8 @@
         {
           v5 = [MEMORY[0x277CCAA70] indexPathForRow:v4 inSection:v3];
           v6 = [(SSLimitedSelectableTableView *)self cellForRowAtIndexPath:v5];
-          v7 = [(SSLimitedSelectableTableView *)self indexPathsForSelectedRows];
-          v8 = [v7 containsObject:v5];
+          indexPathsForSelectedRows = [(SSLimitedSelectableTableView *)self indexPathsForSelectedRows];
+          v8 = [indexPathsForSelectedRows containsObject:v5];
 
           if (v8)
           {
@@ -76,16 +76,16 @@
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v9 = [(SSLimitedSelectableTableView *)self indexPathsForSelectedRows];
-              [v6 setEnable:{objc_msgSend(v9, "count") < -[SSLimitedSelectableTableView limit](self, "limit")}];
+              indexPathsForSelectedRows2 = [(SSLimitedSelectableTableView *)self indexPathsForSelectedRows];
+              [v6 setEnable:{objc_msgSend(indexPathsForSelectedRows2, "count") < -[SSLimitedSelectableTableView limit](self, "limit")}];
             }
 
             else
             {
               [v6 setUserInteractionEnabled:0];
-              v9 = [v6 imageView];
-              v10 = [MEMORY[0x277D75348] systemGrayColor];
-              [v9 setTintColor:v10];
+              indexPathsForSelectedRows2 = [v6 imageView];
+              systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
+              [indexPathsForSelectedRows2 setTintColor:systemGrayColor];
             }
           }
 

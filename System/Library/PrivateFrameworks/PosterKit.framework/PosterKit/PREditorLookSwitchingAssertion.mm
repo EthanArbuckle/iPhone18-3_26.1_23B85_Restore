@@ -1,24 +1,24 @@
 @interface PREditorLookSwitchingAssertion
 - (PREditor)editor;
-- (PREditorLookSwitchingAssertion)initWithEditor:(id)a3 reason:(id)a4;
+- (PREditorLookSwitchingAssertion)initWithEditor:(id)editor reason:(id)reason;
 - (void)dealloc;
 - (void)invalidate;
 @end
 
 @implementation PREditorLookSwitchingAssertion
 
-- (PREditorLookSwitchingAssertion)initWithEditor:(id)a3 reason:(id)a4
+- (PREditorLookSwitchingAssertion)initWithEditor:(id)editor reason:(id)reason
 {
-  v6 = a3;
-  v7 = a4;
+  editorCopy = editor;
+  reasonCopy = reason;
   v13.receiver = self;
   v13.super_class = PREditorLookSwitchingAssertion;
   v8 = [(PREditorLookSwitchingAssertion *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_editor, v6);
-    v10 = [v7 copy];
+    objc_storeWeak(&v8->_editor, editorCopy);
+    v10 = [reasonCopy copy];
     reason = v9->_reason;
     v9->_reason = v10;
   }
@@ -29,7 +29,7 @@
 - (void)dealloc
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = NSStringFromSelector(a1);
+  v5 = NSStringFromSelector(self);
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
   v8 = 138544642;
@@ -51,8 +51,8 @@
 {
   if (![(PREditorLookSwitchingAssertion *)self isInvalidated])
   {
-    v3 = [(PREditorLookSwitchingAssertion *)self editor];
-    [v3 removeLookSwitchingAssertion:self];
+    editor = [(PREditorLookSwitchingAssertion *)self editor];
+    [editor removeLookSwitchingAssertion:self];
     [(PREditorLookSwitchingAssertion *)self setInvalidated:1];
   }
 }

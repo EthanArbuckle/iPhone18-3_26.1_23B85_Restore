@@ -1,34 +1,34 @@
 @interface UIKBAnalyticsDispatcher
-+ (id)allowedValuesForTextEditingPreferredFieldName:(id)a3;
-+ (id)allowedValuesForType:(id)a3;
++ (id)allowedValuesForTextEditingPreferredFieldName:(id)name;
++ (id)allowedValuesForType:(id)type;
 + (id)currentInputMode;
-+ (id)preferredEventName:(id)a3;
++ (id)preferredEventName:(id)name;
 + (id)sharedInstance;
-+ (void)analyticsDispatchEventTextEditingOperation:(id)a3 trigger:(id)a4;
-+ (void)candidateViewExtended:(id)a3 direction:(id)a4;
++ (void)analyticsDispatchEventTextEditingOperation:(id)operation trigger:(id)trigger;
++ (void)candidateViewExtended:(id)extended direction:(id)direction;
 + (void)decrementAllowCursorMovementCount;
 + (void)didCandidateBarAction;
 + (void)didCandidateReplacement;
-+ (void)didCandidateReplacementWithRemovedText:(id)a3 insertedText:(id)a4;
-+ (void)didCommitText:(id)a3;
-+ (void)didDeleteBackwardText:(id)a3;
-+ (void)didInsertText:(id)a3 relativeRangeBefore:(_NSRange)a4 selectedTextBefore:(id)a5 withLanguage:(id)a6;
++ (void)didCandidateReplacementWithRemovedText:(id)text insertedText:(id)insertedText;
++ (void)didCommitText:(id)text;
++ (void)didDeleteBackwardText:(id)text;
++ (void)didInsertText:(id)text relativeRangeBefore:(_NSRange)before selectedTextBefore:(id)textBefore withLanguage:(id)language;
 + (void)didRevisionBubbleTap;
-+ (void)dispatchFloatingKeyboardEventOfType:(id)a3 trigger:(id)a4 pinnedToEdge:(id)a5 position:(CGPoint)a6 touchUpPosition:(CGPoint)a7;
-+ (void)emojiInsertedByMethod:(id)a3 inputType:(id)a4;
-+ (void)emojiPopoverSummoned:(id)a3 appendsEmoji:(BOOL)a4;
-+ (void)floatingKeyboardMoved:(id)a3 toPosition:(CGPoint)a4 touchPosition:(CGPoint)a5;
-+ (void)floatingKeyboardSummonedEvent:(id)a3 trigger:(id)a4 finalPosition:(CGPoint)a5;
-+ (void)globeKeyEducationShown:(double)a3;
++ (void)dispatchFloatingKeyboardEventOfType:(id)type trigger:(id)trigger pinnedToEdge:(id)edge position:(CGPoint)position touchUpPosition:(CGPoint)upPosition;
++ (void)emojiInsertedByMethod:(id)method inputType:(id)type;
++ (void)emojiPopoverSummoned:(id)summoned appendsEmoji:(BOOL)emoji;
++ (void)floatingKeyboardMoved:(id)moved toPosition:(CGPoint)position touchPosition:(CGPoint)touchPosition;
++ (void)floatingKeyboardSummonedEvent:(id)event trigger:(id)trigger finalPosition:(CGPoint)position;
++ (void)globeKeyEducationShown:(double)shown;
 + (void)globeKeyLongPress;
-+ (void)handwritingResized:(id)a3;
-+ (void)hapticEventEngineDuration:(double)a3 startCount:(unint64_t)a4 actionCount:(unint64_t)a5;
++ (void)handwritingResized:(id)resized;
++ (void)hapticEventEngineDuration:(double)duration startCount:(unint64_t)count actionCount:(unint64_t)actionCount;
 + (void)incrementAllowCursorMovementCount;
-+ (void)keyboardAnalyticsDispatchWithSelector:(SEL)a3 withTrigger:(id)a4;
-+ (void)keyboardCameraSessionEndedForTextContentType:(id)a3 didFindText:(BOOL)a4 didInsertText:(BOOL)a5 sender:(id)a6;
-+ (void)keyboardShortcutInvokedWithKeyboardShortcutLeaf:(id)a3 keyEvent:(id)a4 keyboardProperties:(id)a5;
-+ (void)sessionAnalyticsEnded:(id)a3;
-+ (void)setKeyboardTrialParameters:(id)a3;
++ (void)keyboardAnalyticsDispatchWithSelector:(SEL)selector withTrigger:(id)trigger;
++ (void)keyboardCameraSessionEndedForTextContentType:(id)type didFindText:(BOOL)text didInsertText:(BOOL)insertText sender:(id)sender;
++ (void)keyboardShortcutInvokedWithKeyboardShortcutLeaf:(id)leaf keyEvent:(id)event keyboardProperties:(id)properties;
++ (void)sessionAnalyticsEnded:(id)ended;
++ (void)setKeyboardTrialParameters:(id)parameters;
 - (UIKBAnalyticsDispatcher)init;
 - (void)resetCandidateReplacementVariables;
 @end
@@ -82,11 +82,11 @@ void __41__UIKBAnalyticsDispatcher_sharedInstance__block_invoke()
   self->_nextCandidateReplacementSource = 0;
 }
 
-+ (id)preferredEventName:(id)a3
++ (id)preferredEventName:(id)name
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && [v3 length])
+  nameCopy = name;
+  v4 = nameCopy;
+  if (nameCopy && [nameCopy length])
   {
     v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", @"UIKBAnalytics", v4];
   }
@@ -102,25 +102,25 @@ void __41__UIKBAnalyticsDispatcher_sharedInstance__block_invoke()
 + (id)currentInputMode
 {
   v2 = +[UIKeyboardInputModeController sharedInputModeController];
-  v3 = [v2 currentInputMode];
-  v4 = [v3 identifierWithLayouts];
+  currentInputMode = [v2 currentInputMode];
+  identifierWithLayouts = [currentInputMode identifierWithLayouts];
 
-  return v4;
+  return identifierWithLayouts;
 }
 
-+ (void)setKeyboardTrialParameters:(id)a3
++ (void)setKeyboardTrialParameters:(id)parameters
 {
-  v3 = a3;
+  parametersCopy = parameters;
   v5 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-  v4 = [v5 _textInputSessionAnalytics];
-  [v4 setKeyboardTrialParameters:v3];
+  _textInputSessionAnalytics = [v5 _textInputSessionAnalytics];
+  [_textInputSessionAnalytics setKeyboardTrialParameters:parametersCopy];
 }
 
-+ (id)allowedValuesForTextEditingPreferredFieldName:(id)a3
++ (id)allowedValuesForTextEditingPreferredFieldName:(id)name
 {
   v10[6] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([v3 isEqualToString:@"Operation"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"Operation"])
   {
     v10[0] = @"Undo";
     v10[1] = @"UndoCancel";
@@ -136,7 +136,7 @@ LABEL_5:
     goto LABEL_7;
   }
 
-  if ([v3 isEqualToString:@"TriggerType"])
+  if ([nameCopy isEqualToString:@"TriggerType"])
   {
     v9[0] = @"UndoHUDGesturePan";
     v9[1] = @"UndoHUDGestureDoubleTap";
@@ -163,29 +163,29 @@ LABEL_7:
 + (void)incrementAllowCursorMovementCount
 {
   v3 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-  v2 = [v3 _textInputSessionAnalytics];
-  [v2 incrementAllowCursorMovementCount];
+  _textInputSessionAnalytics = [v3 _textInputSessionAnalytics];
+  [_textInputSessionAnalytics incrementAllowCursorMovementCount];
 }
 
 + (void)decrementAllowCursorMovementCount
 {
   v3 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-  v2 = [v3 _textInputSessionAnalytics];
-  [v2 decrementAllowCursorMovementCount];
+  _textInputSessionAnalytics = [v3 _textInputSessionAnalytics];
+  [_textInputSessionAnalytics decrementAllowCursorMovementCount];
 }
 
-+ (void)analyticsDispatchEventTextEditingOperation:(id)a3 trigger:(id)a4
++ (void)analyticsDispatchEventTextEditingOperation:(id)operation trigger:(id)trigger
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  operationCopy = operation;
+  triggerCopy = trigger;
   v8 = UITextInputSessionLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412546;
-    v24 = v6;
+    v24 = operationCopy;
     v25 = 2112;
-    v26 = v7;
+    v26 = triggerCopy;
     _os_log_debug_impl(&dword_188A29000, v8, OS_LOG_TYPE_DEBUG, "[UIKBAnalyticsDispatcher] analyticsDispatchEventTextEditingOperation:%@ trigger:%@", buf, 0x16u);
   }
 
@@ -193,68 +193,68 @@ LABEL_7:
   block[1] = 3221225472;
   block[2] = __78__UIKBAnalyticsDispatcher_analyticsDispatchEventTextEditingOperation_trigger___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (analyticsDispatchEventTextEditingOperation_trigger__onceToken != -1)
   {
     dispatch_once(&analyticsDispatchEventTextEditingOperation_trigger__onceToken, block);
   }
 
-  v9 = [MEMORY[0x1E69D9550] sharedInstance];
+  mEMORY[0x1E69D9550] = [MEMORY[0x1E69D9550] sharedInstance];
   v10 = [objc_opt_class() preferredEventName:@"TextEditing"];
-  v22[0] = v6;
-  v22[1] = v7;
+  v22[0] = operationCopy;
+  v22[1] = triggerCopy;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:2];
-  v12 = [objc_opt_class() currentInputMode];
-  [v9 dispatchEventWithName:v10 values:v11 inputMode:v12];
+  currentInputMode = [objc_opt_class() currentInputMode];
+  [mEMORY[0x1E69D9550] dispatchEventWithName:v10 values:v11 inputMode:currentInputMode];
 
-  v13 = [MEMORY[0x1E69D4E18] sharedInstance];
+  mEMORY[0x1E69D4E18] = [MEMORY[0x1E69D4E18] sharedInstance];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __78__UIKBAnalyticsDispatcher_analyticsDispatchEventTextEditingOperation_trigger___block_invoke_2;
   v18[3] = &unk_1E70FB4F0;
-  v14 = v6;
+  v14 = operationCopy;
   v19 = v14;
-  v15 = v7;
+  v15 = triggerCopy;
   v20 = v15;
-  [v13 logBlock:v18 domain:@"com.apple.keyboard.UIKit"];
+  [mEMORY[0x1E69D4E18] logBlock:v18 domain:@"com.apple.keyboard.UIKit"];
 
   if (@"Copy" == v14)
   {
     v16 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-    v17 = [v16 _textInputSessionAnalytics];
-    [v17 didCopy];
+    _textInputSessionAnalytics = [v16 _textInputSessionAnalytics];
+    [_textInputSessionAnalytics didCopy];
     goto LABEL_15;
   }
 
   if (@"Cut" == v14)
   {
     v16 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-    v17 = [v16 _textInputSessionAnalytics];
-    [v17 didCut];
+    _textInputSessionAnalytics = [v16 _textInputSessionAnalytics];
+    [_textInputSessionAnalytics didCut];
     goto LABEL_15;
   }
 
   if (@"Paste" == v14)
   {
     v16 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-    v17 = [v16 _textInputSessionAnalytics];
-    [v17 didPaste];
+    _textInputSessionAnalytics = [v16 _textInputSessionAnalytics];
+    [_textInputSessionAnalytics didPaste];
     goto LABEL_15;
   }
 
   if (@"Undo" == v14)
   {
     v16 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-    v17 = [v16 _textInputSessionAnalytics];
-    [v17 didUndo];
+    _textInputSessionAnalytics = [v16 _textInputSessionAnalytics];
+    [_textInputSessionAnalytics didUndo];
     goto LABEL_15;
   }
 
   if (@"Redo" == v14)
   {
     v16 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-    v17 = [v16 _textInputSessionAnalytics];
-    [v17 didRedo];
+    _textInputSessionAnalytics = [v16 _textInputSessionAnalytics];
+    [_textInputSessionAnalytics didRedo];
 LABEL_15:
   }
 }
@@ -297,10 +297,10 @@ id __78__UIKBAnalyticsDispatcher_analyticsDispatchEventTextEditingOperation_trig
   return v3;
 }
 
-+ (void)keyboardAnalyticsDispatchWithSelector:(SEL)a3 withTrigger:(id)a4
++ (void)keyboardAnalyticsDispatchWithSelector:(SEL)selector withTrigger:(id)trigger
 {
-  v7 = a4;
-  v5 = NSStringFromSelector(a3);
+  triggerCopy = trigger;
+  v5 = NSStringFromSelector(selector);
   if ([v5 containsString:@"cut"])
   {
     v6 = UIKBAnalyticsTextEditingOperationCut;
@@ -321,15 +321,15 @@ id __78__UIKBAnalyticsDispatcher_analyticsDispatchEventTextEditingOperation_trig
     v6 = UIKBAnalyticsTextEditingOperationPaste;
   }
 
-  [UIKBAnalyticsDispatcher analyticsDispatchEventTextEditingOperation:*v6 trigger:v7];
+  [UIKBAnalyticsDispatcher analyticsDispatchEventTextEditingOperation:*v6 trigger:triggerCopy];
 LABEL_8:
 }
 
-+ (id)allowedValuesForType:(id)a3
++ (id)allowedValuesForType:(id)type
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([v3 isEqualToString:@"eventType"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"eventType"])
   {
     v19 = @"Untether";
     v20 = @"Tether";
@@ -342,7 +342,7 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if ([v3 isEqualToString:@"triggerType"])
+  if ([typeCopy isEqualToString:@"triggerType"])
   {
     v14 = @"Interactive";
     v15 = @"NonInteractive";
@@ -356,7 +356,7 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if ([v3 isEqualToString:@"screenEdge"])
+  if ([typeCopy isEqualToString:@"screenEdge"])
   {
     v9 = @"NotOnEdge";
     v10 = @"LeftEdge";
@@ -374,23 +374,23 @@ LABEL_9:
   return v7;
 }
 
-+ (void)floatingKeyboardSummonedEvent:(id)a3 trigger:(id)a4 finalPosition:(CGPoint)a5
++ (void)floatingKeyboardSummonedEvent:(id)event trigger:(id)trigger finalPosition:(CGPoint)position
 {
-  y = a5.y;
-  x = a5.x;
-  v8 = a4;
-  v9 = a3;
-  [objc_opt_class() dispatchFloatingKeyboardEventOfType:v9 trigger:v8 pinnedToEdge:@"NotOnEdge" position:x touchUpPosition:{y, *MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)}];
+  y = position.y;
+  x = position.x;
+  triggerCopy = trigger;
+  eventCopy = event;
+  [objc_opt_class() dispatchFloatingKeyboardEventOfType:eventCopy trigger:triggerCopy pinnedToEdge:@"NotOnEdge" position:x touchUpPosition:{y, *MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)}];
 }
 
-+ (void)floatingKeyboardMoved:(id)a3 toPosition:(CGPoint)a4 touchPosition:(CGPoint)a5
++ (void)floatingKeyboardMoved:(id)moved toPosition:(CGPoint)position touchPosition:(CGPoint)touchPosition
 {
-  y = a5.y;
-  x = a5.x;
-  v7 = a4.y;
-  v8 = a4.x;
-  v13 = a3;
-  if ([v13 isEqualToString:@"BottomEdge"])
+  y = touchPosition.y;
+  x = touchPosition.x;
+  v7 = position.y;
+  v8 = position.x;
+  movedCopy = moved;
+  if ([movedCopy isEqualToString:@"BottomEdge"])
   {
     v9 = objc_opt_class();
     v10 = @"Tether";
@@ -399,7 +399,7 @@ LABEL_9:
 
   else
   {
-    v12 = [v13 isEqualToString:@"NotOnEdge"];
+    v12 = [movedCopy isEqualToString:@"NotOnEdge"];
     v9 = objc_opt_class();
     v10 = @"Move";
     v11 = UIKBAnalyticsFloatingKeyboardTriggerTypePositioned;
@@ -409,26 +409,26 @@ LABEL_9:
     }
   }
 
-  [v9 dispatchFloatingKeyboardEventOfType:v10 trigger:*v11 pinnedToEdge:v13 position:v8 touchUpPosition:{v7, x, y}];
+  [v9 dispatchFloatingKeyboardEventOfType:v10 trigger:*v11 pinnedToEdge:movedCopy position:v8 touchUpPosition:{v7, x, y}];
 }
 
-+ (void)dispatchFloatingKeyboardEventOfType:(id)a3 trigger:(id)a4 pinnedToEdge:(id)a5 position:(CGPoint)a6 touchUpPosition:(CGPoint)a7
++ (void)dispatchFloatingKeyboardEventOfType:(id)type trigger:(id)trigger pinnedToEdge:(id)edge position:(CGPoint)position touchUpPosition:(CGPoint)upPosition
 {
-  y = a7.y;
-  x = a7.x;
-  v9 = a6.y;
-  v10 = a6.x;
+  y = upPosition.y;
+  x = upPosition.x;
+  v9 = position.y;
+  v10 = position.x;
   v42[7] = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
+  typeCopy = type;
+  triggerCopy = trigger;
+  edgeCopy = edge;
   v17 = [objc_opt_class() preferredEventName:@"floatingKeyboardUsageEvent"];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __109__UIKBAnalyticsDispatcher_dispatchFloatingKeyboardEventOfType_trigger_pinnedToEdge_position_touchUpPosition___block_invoke;
   block[3] = &unk_1E70F32F0;
   v40 = v17;
-  v41 = a1;
+  selfCopy = self;
   v18 = dispatchFloatingKeyboardEventOfType_trigger_pinnedToEdge_position_touchUpPosition__onceToken;
   v19 = v17;
   if (v18 != -1)
@@ -436,12 +436,12 @@ LABEL_9:
     dispatch_once(&dispatchFloatingKeyboardEventOfType_trigger_pinnedToEdge_position_touchUpPosition__onceToken, block);
   }
 
-  v20 = [MEMORY[0x1E69D9550] sharedInstance];
-  v42[0] = v14;
-  v42[1] = v15;
-  v42[2] = v16;
+  mEMORY[0x1E69D9550] = [MEMORY[0x1E69D9550] sharedInstance];
+  v42[0] = typeCopy;
+  v42[1] = triggerCopy;
+  v42[2] = edgeCopy;
   [MEMORY[0x1E696AD98] numberWithDouble:v10];
-  v21 = v31 = v14;
+  v21 = v31 = typeCopy;
   v42[3] = v21;
   v22 = [MEMORY[0x1E696AD98] numberWithDouble:v9];
   v42[4] = v22;
@@ -450,24 +450,24 @@ LABEL_9:
   v24 = [MEMORY[0x1E696AD98] numberWithDouble:y];
   v42[6] = v24;
   v25 = [MEMORY[0x1E695DEC8] arrayWithObjects:v42 count:7];
-  v26 = [objc_opt_class() currentInputMode];
+  currentInputMode = [objc_opt_class() currentInputMode];
   v32 = v19;
-  [v20 dispatchEventWithName:v19 values:v25 inputMode:v26];
+  [mEMORY[0x1E69D9550] dispatchEventWithName:v19 values:v25 inputMode:currentInputMode];
 
-  v27 = [MEMORY[0x1E69D4E18] sharedInstance];
+  mEMORY[0x1E69D4E18] = [MEMORY[0x1E69D4E18] sharedInstance];
   v33[0] = MEMORY[0x1E69E9820];
   v33[1] = 3221225472;
   v33[2] = __109__UIKBAnalyticsDispatcher_dispatchFloatingKeyboardEventOfType_trigger_pinnedToEdge_position_touchUpPosition___block_invoke_2;
   v33[3] = &unk_1E70FB518;
   v34 = v31;
-  v35 = v15;
-  v36 = v16;
+  v35 = triggerCopy;
+  v36 = edgeCopy;
   v37 = v10;
   v38 = v9;
-  v28 = v16;
-  v29 = v15;
+  v28 = edgeCopy;
+  v29 = triggerCopy;
   v30 = v31;
-  [v27 logBlock:v33 domain:@"com.apple.keyboard.UIKit"];
+  [mEMORY[0x1E69D4E18] logBlock:v33 domain:@"com.apple.keyboard.UIKit"];
 }
 
 void __109__UIKBAnalyticsDispatcher_dispatchFloatingKeyboardEventOfType_trigger_pinnedToEdge_position_touchUpPosition___block_invoke(uint64_t a1)
@@ -523,11 +523,11 @@ id __109__UIKBAnalyticsDispatcher_dispatchFloatingKeyboardEventOfType_trigger_pi
   return v2;
 }
 
-+ (void)candidateViewExtended:(id)a3 direction:(id)a4
++ (void)candidateViewExtended:(id)extended direction:(id)direction
 {
   v18[2] = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = a3;
+  directionCopy = direction;
+  extendedCopy = extended;
   v7 = [objc_opt_class() preferredEventName:@"candidateViewExtended"];
   v13 = MEMORY[0x1E69E9820];
   v14 = 3221225472;
@@ -541,12 +541,12 @@ id __109__UIKBAnalyticsDispatcher_dispatchFloatingKeyboardEventOfType_trigger_pi
     dispatch_once(&candidateViewExtended_direction__onceToken, &v13);
   }
 
-  v10 = [MEMORY[0x1E69D9550] sharedInstance];
-  v18[0] = v6;
-  v18[1] = v5;
+  mEMORY[0x1E69D9550] = [MEMORY[0x1E69D9550] sharedInstance];
+  v18[0] = extendedCopy;
+  v18[1] = directionCopy;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:2];
-  v12 = [objc_opt_class() currentInputMode];
-  [v10 dispatchEventWithName:v9 values:v11 inputMode:v12];
+  currentInputMode = [objc_opt_class() currentInputMode];
+  [mEMORY[0x1E69D9550] dispatchEventWithName:v9 values:v11 inputMode:currentInputMode];
 }
 
 void __59__UIKBAnalyticsDispatcher_candidateViewExtended_direction___block_invoke(uint64_t a1)
@@ -579,19 +579,19 @@ void __59__UIKBAnalyticsDispatcher_candidateViewExtended_direction___block_invok
 + (void)didRevisionBubbleTap
 {
   v3 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-  v2 = [v3 _textInputSessionAnalytics];
-  [v2 didRevisionBubbleTap];
+  _textInputSessionAnalytics = [v3 _textInputSessionAnalytics];
+  [_textInputSessionAnalytics didRevisionBubbleTap];
 }
 
 + (void)didCandidateReplacement
 {
   v14 = +[UIKBAnalyticsDispatcher sharedInstance];
-  v2 = [v14 nextCandidateReplacementRemovedText];
-  v3 = [v14 nextCandidateReplacementInsertedText];
-  v4 = [v14 nextCandidateReplacementPostCandidateInsertedText];
-  if (v3)
+  nextCandidateReplacementRemovedText = [v14 nextCandidateReplacementRemovedText];
+  nextCandidateReplacementInsertedText = [v14 nextCandidateReplacementInsertedText];
+  nextCandidateReplacementPostCandidateInsertedText = [v14 nextCandidateReplacementPostCandidateInsertedText];
+  if (nextCandidateReplacementInsertedText)
   {
-    v5 = v3;
+    v5 = nextCandidateReplacementInsertedText;
   }
 
   else
@@ -599,9 +599,9 @@ void __59__UIKBAnalyticsDispatcher_candidateViewExtended_direction___block_invok
     v5 = &stru_1EFB14550;
   }
 
-  if (v4)
+  if (nextCandidateReplacementPostCandidateInsertedText)
   {
-    v6 = v4;
+    v6 = nextCandidateReplacementPostCandidateInsertedText;
   }
 
   else
@@ -612,9 +612,9 @@ void __59__UIKBAnalyticsDispatcher_candidateViewExtended_direction___block_invok
   v7 = [(__CFString *)v5 stringByAppendingString:v6];
   v8 = v14;
   v9 = v7;
-  if (v3)
+  if (nextCandidateReplacementInsertedText)
   {
-    v10 = v2 == 0;
+    v10 = nextCandidateReplacementRemovedText == 0;
   }
 
   else
@@ -624,84 +624,84 @@ void __59__UIKBAnalyticsDispatcher_candidateViewExtended_direction___block_invok
 
   if (!v10)
   {
-    v11 = [v14 nextCandidateReplacementSource];
-    if (v11 > 6)
+    nextCandidateReplacementSource = [v14 nextCandidateReplacementSource];
+    if (nextCandidateReplacementSource > 6)
     {
-      if (v11 > 8)
+      if (nextCandidateReplacementSource > 8)
       {
         v8 = v14;
-        if (v11 == 9)
+        if (nextCandidateReplacementSource == 9)
         {
           v12 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-          v13 = [v12 _textInputSessionAnalytics];
-          [v13 didCompositionReplacementForText:v2 withText:v9];
+          _textInputSessionAnalytics = [v12 _textInputSessionAnalytics];
+          [_textInputSessionAnalytics didCompositionReplacementForText:nextCandidateReplacementRemovedText withText:v9];
         }
 
         else
         {
-          if (v11 != 10)
+          if (nextCandidateReplacementSource != 10)
           {
             goto LABEL_29;
           }
 
           v12 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-          v13 = [v12 _textInputSessionAnalytics];
-          [v13 didDecompositionReplacementForText:v2 withText:v9];
+          _textInputSessionAnalytics = [v12 _textInputSessionAnalytics];
+          [_textInputSessionAnalytics didDecompositionReplacementForText:nextCandidateReplacementRemovedText withText:v9];
         }
       }
 
-      else if (v11 == 7)
+      else if (nextCandidateReplacementSource == 7)
       {
         v12 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-        v13 = [v12 _textInputSessionAnalytics];
-        [v13 didInlineCompletionTapOnCompletionReplacementForText:v2 withText:v9];
+        _textInputSessionAnalytics = [v12 _textInputSessionAnalytics];
+        [_textInputSessionAnalytics didInlineCompletionTapOnCompletionReplacementForText:nextCandidateReplacementRemovedText withText:v9];
       }
 
       else
       {
         v12 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-        v13 = [v12 _textInputSessionAnalytics];
-        [v13 didRevisionBubbleReplacementForText:v2 withText:v9];
+        _textInputSessionAnalytics = [v12 _textInputSessionAnalytics];
+        [_textInputSessionAnalytics didRevisionBubbleReplacementForText:nextCandidateReplacementRemovedText withText:v9];
       }
     }
 
-    else if (v11 > 4)
+    else if (nextCandidateReplacementSource > 4)
     {
-      if (v11 == 5)
+      if (nextCandidateReplacementSource == 5)
       {
         v12 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-        v13 = [v12 _textInputSessionAnalytics];
-        [v13 didCandidateBarReplacementForText:v2 withText:v9];
+        _textInputSessionAnalytics = [v12 _textInputSessionAnalytics];
+        [_textInputSessionAnalytics didCandidateBarReplacementForText:nextCandidateReplacementRemovedText withText:v9];
       }
 
       else
       {
         v12 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-        v13 = [v12 _textInputSessionAnalytics];
-        [v13 didInlineCompletionReplacementForText:v2 withText:v9];
+        _textInputSessionAnalytics = [v12 _textInputSessionAnalytics];
+        [_textInputSessionAnalytics didInlineCompletionReplacementForText:nextCandidateReplacementRemovedText withText:v9];
       }
     }
 
     else
     {
       v8 = v14;
-      if (v11 == 3)
+      if (nextCandidateReplacementSource == 3)
       {
         v12 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-        v13 = [v12 _textInputSessionAnalytics];
-        [v13 didAutocorrectReplacementForText:v2 withText:v9];
+        _textInputSessionAnalytics = [v12 _textInputSessionAnalytics];
+        [_textInputSessionAnalytics didAutocorrectReplacementForText:nextCandidateReplacementRemovedText withText:v9];
       }
 
       else
       {
-        if (v11 != 4)
+        if (nextCandidateReplacementSource != 4)
         {
           goto LABEL_29;
         }
 
         v12 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-        v13 = [v12 _textInputSessionAnalytics];
-        [v13 didAutocorrectTapOnCompletionReplacementForText:v2 withText:v9];
+        _textInputSessionAnalytics = [v12 _textInputSessionAnalytics];
+        [_textInputSessionAnalytics didAutocorrectTapOnCompletionReplacementForText:nextCandidateReplacementRemovedText withText:v9];
       }
     }
 
@@ -712,48 +712,48 @@ LABEL_29:
   [v8 resetCandidateReplacementVariables];
 }
 
-+ (void)didCandidateReplacementWithRemovedText:(id)a3 insertedText:(id)a4
++ (void)didCandidateReplacementWithRemovedText:(id)text insertedText:(id)insertedText
 {
-  v5 = a4;
-  v6 = a3;
+  insertedTextCopy = insertedText;
+  textCopy = text;
   v7 = +[UIKBAnalyticsDispatcher sharedInstance];
-  [v7 setNextCandidateReplacementRemovedText:v6];
+  [v7 setNextCandidateReplacementRemovedText:textCopy];
 
   v8 = +[UIKBAnalyticsDispatcher sharedInstance];
-  [v8 setNextCandidateReplacementInsertedText:v5];
+  [v8 setNextCandidateReplacementInsertedText:insertedTextCopy];
 
   +[UIKBAnalyticsDispatcher didCandidateReplacement];
 }
 
-+ (void)didCommitText:(id)a3
++ (void)didCommitText:(id)text
 {
-  v7 = a3;
+  textCopy = text;
   v3 = +[UIKBAnalyticsDispatcher sharedInstance];
   v4 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-  v5 = [v4 _textInputSessionAnalytics];
+  _textInputSessionAnalytics = [v4 _textInputSessionAnalytics];
 
-  v6 = [v3 nextCommitTextSource];
-  if ((v6 - 3) >= 4)
+  nextCommitTextSource = [v3 nextCommitTextSource];
+  if ((nextCommitTextSource - 3) >= 4)
   {
-    if (v6 == 1)
+    if (nextCommitTextSource == 1)
     {
-      [v5 didCommitTextFromImplicitAction:v7];
+      [_textInputSessionAnalytics didCommitTextFromImplicitAction:textCopy];
     }
 
-    else if (v6 == 2)
+    else if (nextCommitTextSource == 2)
     {
-      [v5 didCommitTextFromCandidateBar:v7];
+      [_textInputSessionAnalytics didCommitTextFromCandidateBar:textCopy];
     }
 
     else
     {
-      [v5 didCommitTextFromUnknownSource:v7];
+      [_textInputSessionAnalytics didCommitTextFromUnknownSource:textCopy];
     }
   }
 
   else
   {
-    [v5 didCommitTextFromKeyboard:v7];
+    [_textInputSessionAnalytics didCommitTextFromKeyboard:textCopy];
   }
 
   [v3 setNextCommitTextSource:0];
@@ -762,16 +762,16 @@ LABEL_29:
 + (void)didCandidateBarAction
 {
   v3 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-  v2 = [v3 _textInputSessionAnalytics];
-  [v2 didCandidateBarAction];
+  _textInputSessionAnalytics = [v3 _textInputSessionAnalytics];
+  [_textInputSessionAnalytics didCandidateBarAction];
 }
 
-+ (void)globeKeyEducationShown:(double)a3
++ (void)globeKeyEducationShown:(double)shown
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v4 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
   v5 = qword_1ED49CCB8;
-  qword_1ED49CCB8 = v4;
+  qword_1ED49CCB8 = date;
 
   v6 = [objc_opt_class() preferredEventName:@"globeKeyEducationShown"];
   block[0] = MEMORY[0x1E69E9820];
@@ -786,12 +786,12 @@ LABEL_29:
     dispatch_once(&qword_1ED49CCC0, block);
   }
 
-  v9 = [MEMORY[0x1E69D9550] sharedInstance];
-  v10 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  mEMORY[0x1E69D9550] = [MEMORY[0x1E69D9550] sharedInstance];
+  v10 = [MEMORY[0x1E696AD98] numberWithDouble:shown];
   v15[0] = v10;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
-  v12 = [objc_opt_class() currentInputMode];
-  [v9 dispatchEventWithName:v8 values:v11 inputMode:v12];
+  currentInputMode = [objc_opt_class() currentInputMode];
+  [mEMORY[0x1E69D9550] dispatchEventWithName:v8 values:v11 inputMode:currentInputMode];
 }
 
 void __50__UIKBAnalyticsDispatcher_globeKeyEducationShown___block_invoke(uint64_t a1)
@@ -813,8 +813,8 @@ void __50__UIKBAnalyticsDispatcher_globeKeyEducationShown___block_invoke(uint64_
   v15[1] = *MEMORY[0x1E69E9840];
   if (qword_1ED49CCB8)
   {
-    v2 = [MEMORY[0x1E695DF00] date];
-    [v2 timeIntervalSinceDate:qword_1ED49CCB8];
+    date = [MEMORY[0x1E695DF00] date];
+    [date timeIntervalSinceDate:qword_1ED49CCB8];
     v4 = v3;
 
     v5 = v4 < 5.0;
@@ -838,12 +838,12 @@ void __50__UIKBAnalyticsDispatcher_globeKeyEducationShown___block_invoke(uint64_
     dispatch_once(&qword_1ED49CCC8, block);
   }
 
-  v9 = [MEMORY[0x1E69D9550] sharedInstance];
+  mEMORY[0x1E69D9550] = [MEMORY[0x1E69D9550] sharedInstance];
   v10 = [MEMORY[0x1E696AD98] numberWithBool:v5];
   v15[0] = v10;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
-  v12 = [objc_opt_class() currentInputMode];
-  [v9 dispatchEventWithName:v8 values:v11 inputMode:v12];
+  currentInputMode = [objc_opt_class() currentInputMode];
+  [mEMORY[0x1E69D9550] dispatchEventWithName:v8 values:v11 inputMode:currentInputMode];
 }
 
 void __44__UIKBAnalyticsDispatcher_globeKeyLongPress__block_invoke(uint64_t a1)
@@ -860,10 +860,10 @@ void __44__UIKBAnalyticsDispatcher_globeKeyLongPress__block_invoke(uint64_t a1)
   [v7 registerEventSpec:v6];
 }
 
-+ (void)handwritingResized:(id)a3
++ (void)handwritingResized:(id)resized
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  resizedCopy = resized;
   v4 = [objc_opt_class() preferredEventName:@"handwritingResized"];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -877,11 +877,11 @@ void __44__UIKBAnalyticsDispatcher_globeKeyLongPress__block_invoke(uint64_t a1)
     dispatch_once(&handwritingResized__onceToken, block);
   }
 
-  v7 = [MEMORY[0x1E69D9550] sharedInstance];
-  v12[0] = v3;
+  mEMORY[0x1E69D9550] = [MEMORY[0x1E69D9550] sharedInstance];
+  v12[0] = resizedCopy;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
-  v9 = [objc_opt_class() currentInputMode];
-  [v7 dispatchEventWithName:v6 values:v8 inputMode:v9];
+  currentInputMode = [objc_opt_class() currentInputMode];
+  [mEMORY[0x1E69D9550] dispatchEventWithName:v6 values:v8 inputMode:currentInputMode];
 }
 
 void __46__UIKBAnalyticsDispatcher_handwritingResized___block_invoke(uint64_t a1)
@@ -903,35 +903,35 @@ void __46__UIKBAnalyticsDispatcher_handwritingResized___block_invoke(uint64_t a1
   [v9 registerEventSpec:v8];
 }
 
-+ (void)sessionAnalyticsEnded:(id)a3
++ (void)sessionAnalyticsEnded:(id)ended
 {
-  v3 = a3;
+  endedCopy = ended;
   v4 = @"TextInputSession";
   v5 = @"TextInputSessionUpdate";
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __49__UIKBAnalyticsDispatcher_sessionAnalyticsEnded___block_invoke;
   block[3] = &unk_1E70F6228;
-  v29 = v3;
+  v29 = endedCopy;
   v6 = v4;
   v30 = v6;
   v7 = v5;
   v31 = v7;
   v8 = sessionAnalyticsEnded__onceToken;
-  v9 = v3;
+  v9 = endedCopy;
   if (v8 != -1)
   {
     dispatch_once(&sessionAnalyticsEnded__onceToken, block);
   }
 
-  v10 = [objc_opt_class() currentInputMode];
-  v11 = [v9 sessionIdentifier];
-  v12 = [v11 UUIDString];
-  v13 = v12;
+  currentInputMode = [objc_opt_class() currentInputMode];
+  sessionIdentifier = [v9 sessionIdentifier];
+  uUIDString = [sessionIdentifier UUIDString];
+  v13 = uUIDString;
   v14 = @"<nil>";
-  if (v12)
+  if (uUIDString)
   {
-    v14 = v12;
+    v14 = uUIDString;
   }
 
   v15 = v14;
@@ -943,7 +943,7 @@ void __46__UIKBAnalyticsDispatcher_handwritingResized___block_invoke(uint64_t a1
   v25 = v6;
   v16 = v15;
   v26 = v16;
-  v17 = v10;
+  v17 = currentInputMode;
   v27 = v17;
   [v9 enumerateAnalytics:v24];
   v20[0] = MEMORY[0x1E69E9820];
@@ -1041,51 +1041,51 @@ void __49__UIKBAnalyticsDispatcher_sessionAnalyticsEnded___block_invoke_2(void *
   }
 }
 
-+ (void)didInsertText:(id)a3 relativeRangeBefore:(_NSRange)a4 selectedTextBefore:(id)a5 withLanguage:(id)a6
++ (void)didInsertText:(id)text relativeRangeBefore:(_NSRange)before selectedTextBefore:(id)textBefore withLanguage:(id)language
 {
-  length = a4.length;
-  location = a4.location;
-  v14 = a3;
-  v10 = a5;
-  v11 = a6;
+  length = before.length;
+  location = before.location;
+  textCopy = text;
+  textBeforeCopy = textBefore;
+  languageCopy = language;
   if (!+[UIKeyboard inputUIOOP](UIKeyboard, "inputUIOOP") || +[UIKeyboard isKeyboardProcess])
   {
     v12 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-    v13 = [v12 _textInputSessionAnalytics];
-    [v13 didInsertText:v14 relativeRangeBefore:location selectedTextBefore:length withLanguage:{v10, v11}];
+    _textInputSessionAnalytics = [v12 _textInputSessionAnalytics];
+    [_textInputSessionAnalytics didInsertText:textCopy relativeRangeBefore:location selectedTextBefore:length withLanguage:{textBeforeCopy, languageCopy}];
   }
 }
 
-+ (void)didDeleteBackwardText:(id)a3
++ (void)didDeleteBackwardText:(id)text
 {
-  v13 = a3;
+  textCopy = text;
   v3 = +[UIKBAnalyticsDispatcher sharedInstance];
   if ([v3 nextCandidateReplacementSource] == 9)
   {
 
 LABEL_4:
     v6 = +[UIKBAnalyticsDispatcher sharedInstance];
-    v7 = [v6 nextCandidateReplacementRemovedText];
-    v8 = v7;
+    nextCandidateReplacementRemovedText = [v6 nextCandidateReplacementRemovedText];
+    v8 = nextCandidateReplacementRemovedText;
     v9 = &stru_1EFB14550;
-    if (v7)
+    if (nextCandidateReplacementRemovedText)
     {
-      v9 = v7;
+      v9 = nextCandidateReplacementRemovedText;
     }
 
     v10 = v9;
 
-    v11 = [v13 stringByAppendingString:v10];
+    v11 = [textCopy stringByAppendingString:v10];
 
-    v12 = +[UIKBAnalyticsDispatcher sharedInstance];
-    [v12 setNextCandidateReplacementRemovedText:v11];
+    _textInputSessionAnalytics = +[UIKBAnalyticsDispatcher sharedInstance];
+    [_textInputSessionAnalytics setNextCandidateReplacementRemovedText:v11];
     goto LABEL_7;
   }
 
   v4 = +[UIKBAnalyticsDispatcher sharedInstance];
-  v5 = [v4 nextCandidateReplacementSource];
+  nextCandidateReplacementSource = [v4 nextCandidateReplacementSource];
 
-  if (v5 == 10)
+  if (nextCandidateReplacementSource == 10)
   {
     goto LABEL_4;
   }
@@ -1093,17 +1093,17 @@ LABEL_4:
   if (!+[UIKeyboard inputUIOOP](UIKeyboard, "inputUIOOP") || +[UIKeyboard isKeyboardProcess])
   {
     v11 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-    v12 = [v11 _textInputSessionAnalytics];
-    [v12 didDeleteBackwardText:v13];
+    _textInputSessionAnalytics = [v11 _textInputSessionAnalytics];
+    [_textInputSessionAnalytics didDeleteBackwardText:textCopy];
 LABEL_7:
   }
 }
 
-+ (void)emojiPopoverSummoned:(id)a3 appendsEmoji:(BOOL)a4
++ (void)emojiPopoverSummoned:(id)summoned appendsEmoji:(BOOL)emoji
 {
-  v4 = a4;
+  emojiCopy = emoji;
   v18[2] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  summonedCopy = summoned;
   v6 = [objc_opt_class() preferredEventName:@"emojiPopoverSummoned"];
   v13 = MEMORY[0x1E69E9820];
   v14 = 3221225472;
@@ -1117,13 +1117,13 @@ LABEL_7:
     dispatch_once(&emojiPopoverSummoned_appendsEmoji__onceToken, &v13);
   }
 
-  v9 = [MEMORY[0x1E69D9550] sharedInstance];
-  v18[0] = v5;
-  v10 = [MEMORY[0x1E696AD98] numberWithBool:v4];
+  mEMORY[0x1E69D9550] = [MEMORY[0x1E69D9550] sharedInstance];
+  v18[0] = summonedCopy;
+  v10 = [MEMORY[0x1E696AD98] numberWithBool:emojiCopy];
   v18[1] = v10;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:2];
-  v12 = [objc_opt_class() currentInputMode];
-  [v9 dispatchEventWithName:v8 values:v11 inputMode:v12];
+  currentInputMode = [objc_opt_class() currentInputMode];
+  [mEMORY[0x1E69D9550] dispatchEventWithName:v8 values:v11 inputMode:currentInputMode];
 }
 
 void __61__UIKBAnalyticsDispatcher_emojiPopoverSummoned_appendsEmoji___block_invoke(uint64_t a1)
@@ -1149,35 +1149,35 @@ void __61__UIKBAnalyticsDispatcher_emojiPopoverSummoned_appendsEmoji___block_inv
   [v10 registerEventSpec:v9];
 }
 
-+ (void)emojiInsertedByMethod:(id)a3 inputType:(id)a4
++ (void)emojiInsertedByMethod:(id)method inputType:(id)type
 {
   v16[3] = *MEMORY[0x1E69E9840];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __59__UIKBAnalyticsDispatcher_emojiInsertedByMethod_inputType___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   v5 = emojiInsertedByMethod_inputType__onceToken;
-  v6 = a4;
-  v7 = a3;
+  typeCopy = type;
+  methodCopy = method;
   if (v5 != -1)
   {
     dispatch_once(&emojiInsertedByMethod_inputType__onceToken, block);
   }
 
   v8 = +[UIKeyboardImpl activeInstance];
-  v9 = [v8 hardwareKeyboardAttached];
+  hardwareKeyboardAttached = [v8 hardwareKeyboardAttached];
 
-  v10 = [MEMORY[0x1E69D9550] sharedInstance];
+  mEMORY[0x1E69D9550] = [MEMORY[0x1E69D9550] sharedInstance];
   v11 = [objc_opt_class() preferredEventName:@"emojiInserted"];
-  v16[0] = v7;
-  v16[1] = v6;
-  v12 = [MEMORY[0x1E696AD98] numberWithBool:v9];
+  v16[0] = methodCopy;
+  v16[1] = typeCopy;
+  v12 = [MEMORY[0x1E696AD98] numberWithBool:hardwareKeyboardAttached];
   v16[2] = v12;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:3];
 
-  v14 = [objc_opt_class() currentInputMode];
-  [v10 dispatchEventWithName:v11 values:v13 inputMode:v14];
+  currentInputMode = [objc_opt_class() currentInputMode];
+  [mEMORY[0x1E69D9550] dispatchEventWithName:v11 values:v13 inputMode:currentInputMode];
 }
 
 void __59__UIKBAnalyticsDispatcher_emojiInsertedByMethod_inputType___block_invoke()
@@ -1214,54 +1214,54 @@ void __59__UIKBAnalyticsDispatcher_emojiInsertedByMethod_inputType___block_invok
   [v11 registerEventSpec:v10];
 }
 
-+ (void)keyboardShortcutInvokedWithKeyboardShortcutLeaf:(id)a3 keyEvent:(id)a4 keyboardProperties:(id)a5
++ (void)keyboardShortcutInvokedWithKeyboardShortcutLeaf:(id)leaf keyEvent:(id)event keyboardProperties:(id)properties
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v9 language];
-  v11 = [MEMORY[0x1E696AD60] string];
-  v12 = [v7 _keyboardShortcut];
-  v13 = v12;
-  if (v12)
+  leafCopy = leaf;
+  eventCopy = event;
+  propertiesCopy = properties;
+  language = [propertiesCopy language];
+  string = [MEMORY[0x1E696AD60] string];
+  _keyboardShortcut = [leafCopy _keyboardShortcut];
+  v13 = _keyboardShortcut;
+  if (_keyboardShortcut)
   {
-    v14 = [v12 currentLocalizedKeyCombination];
-    v15 = [v14 _readableStringForModifierFlagsUsingWords:0 forHUD:0];
-    [v11 appendString:v15];
+    currentLocalizedKeyCombination = [_keyboardShortcut currentLocalizedKeyCombination];
+    v15 = [currentLocalizedKeyCombination _readableStringForModifierFlagsUsingWords:0 forHUD:0];
+    [string appendString:v15];
 
-    v16 = [v13 currentLocalizedKeyCombination];
-    v17 = [v16 _readableStringForKeyEquivalentUsingWords:0 forHUD:0 isSingleCharacterOrKeySymbol:0];
-    [v11 appendString:v17];
+    currentLocalizedKeyCombination2 = [v13 currentLocalizedKeyCombination];
+    v17 = [currentLocalizedKeyCombination2 _readableStringForKeyEquivalentUsingWords:0 forHUD:0 isSingleCharacterOrKeySymbol:0];
+    [string appendString:v17];
   }
 
-  v18 = [v11 stringByReplacingOccurrencesOfString:@" " withString:&stru_1EFB14550];
-  v19 = [v11 copy];
+  v18 = [string stringByReplacingOccurrencesOfString:@" " withString:&stru_1EFB14550];
+  v19 = [string copy];
   v20 = v19;
   if (v19 && [v19 length])
   {
-    v33 = v8;
+    v33 = eventCopy;
     v21 = +[UIKeyboardInputModeController sharedInputModeController];
-    v22 = [v21 currentSystemInputMode];
-    v23 = [v22 identifier];
+    currentSystemInputMode = [v21 currentSystemInputMode];
+    identifier = [currentSystemInputMode identifier];
 
-    if (!v23 || ![(__CFString *)v23 length])
+    if (!identifier || ![(__CFString *)identifier length])
     {
       goto LABEL_19;
     }
 
     v24 = +[UIKeyboardInputModeController sharedInputModeController];
-    v25 = [v24 currentSystemInputMode];
-    v26 = [v25 isExtensionInputMode];
+    currentSystemInputMode2 = [v24 currentSystemInputMode];
+    isExtensionInputMode = [currentSystemInputMode2 isExtensionInputMode];
 
-    if (v26)
+    if (isExtensionInputMode)
     {
 
-      v23 = @"Other";
+      identifier = @"Other";
     }
 
     v27 = _UIMainBundleIdentifier();
     v28 = v27;
-    v8 = v33;
+    eventCopy = v33;
     if (!v27 || ![v27 length])
     {
 LABEL_18:
@@ -1272,26 +1272,26 @@ LABEL_19:
 
     [v33 _keyCode];
     [v33 _modifierFlags];
-    [v9 subinterfaceID];
-    [v9 standardType];
+    [propertiesCopy subinterfaceID];
+    [propertiesCopy standardType];
     v29 = objc_opt_self();
     if (objc_opt_isKindOfClass())
     {
-      v30 = [v7 action];
+      action = [leafCopy action];
 
-      if (v30)
+      if (action)
       {
-        v31 = NSStringFromSelector(v30);
+        v31 = NSStringFromSelector(action);
 LABEL_17:
-        v34 = v10;
-        v35 = v23;
+        v34 = language;
+        v35 = identifier;
         v36 = v28;
         v37 = v20;
         v38 = v31;
         v32 = v31;
         AnalyticsSendEventLazy();
 
-        v8 = v33;
+        eventCopy = v33;
         goto LABEL_18;
       }
     }
@@ -1348,22 +1348,22 @@ id __103__UIKBAnalyticsDispatcher_keyboardShortcutInvokedWithKeyboardShortcutLea
   return v13;
 }
 
-+ (void)keyboardCameraSessionEndedForTextContentType:(id)a3 didFindText:(BOOL)a4 didInsertText:(BOOL)a5 sender:(id)a6
++ (void)keyboardCameraSessionEndedForTextContentType:(id)type didFindText:(BOOL)text didInsertText:(BOOL)insertText sender:(id)sender
 {
-  v7 = a5;
-  v8 = a4;
+  insertTextCopy = insertText;
+  textCopy = text;
   v19[4] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a6;
+  typeCopy = type;
+  senderCopy = sender;
   if (keyboardCameraSessionEndedForTextContentType_didFindText_didInsertText_sender__onceToken != -1)
   {
     dispatch_once(&keyboardCameraSessionEndedForTextContentType_didFindText_didInsertText_sender__onceToken, &__block_literal_global_114);
   }
 
-  if (![(__CFString *)v9 length])
+  if (![(__CFString *)typeCopy length])
   {
 
-    v9 = @"None";
+    typeCopy = @"None";
   }
 
   v11 = @"custom";
@@ -1380,22 +1380,22 @@ LABEL_9:
 
   v13 = +[UIMenuController sharedMenuController];
 
-  if (v13 == v10)
+  if (v13 == senderCopy)
   {
     v12 = UIKBAnalyticsKeyboardCameraInvocationSourceCalloutBar;
     goto LABEL_9;
   }
 
 LABEL_10:
-  v15 = [MEMORY[0x1E69D9550] sharedInstance];
-  v16 = [MEMORY[0x1E696AD98] numberWithBool:v7];
+  mEMORY[0x1E69D9550] = [MEMORY[0x1E69D9550] sharedInstance];
+  v16 = [MEMORY[0x1E696AD98] numberWithBool:insertTextCopy];
   v19[0] = v16;
-  v17 = [MEMORY[0x1E696AD98] numberWithBool:v8];
+  v17 = [MEMORY[0x1E696AD98] numberWithBool:textCopy];
   v19[1] = v17;
-  v19[2] = v9;
+  v19[2] = typeCopy;
   v19[3] = v11;
   v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:4];
-  [v15 dispatchEventWithName:@"keyboardCameraSessionEnded" values:v18];
+  [mEMORY[0x1E69D9550] dispatchEventWithName:@"keyboardCameraSessionEnded" values:v18];
 }
 
 void __105__UIKBAnalyticsDispatcher_keyboardCameraSessionEndedForTextContentType_didFindText_didInsertText_sender___block_invoke()
@@ -1423,7 +1423,7 @@ void __105__UIKBAnalyticsDispatcher_keyboardCameraSessionEndedForTextContentType
   [v9 registerEventSpec:v8];
 }
 
-+ (void)hapticEventEngineDuration:(double)a3 startCount:(unint64_t)a4 actionCount:(unint64_t)a5
++ (void)hapticEventEngineDuration:(double)duration startCount:(unint64_t)count actionCount:(unint64_t)actionCount
 {
   v13[3] = *MEMORY[0x1E69E9840];
   if (hapticEventEngineDuration_startCount_actionCount__onceToken != -1)
@@ -1431,14 +1431,14 @@ void __105__UIKBAnalyticsDispatcher_keyboardCameraSessionEndedForTextContentType
     dispatch_once(&hapticEventEngineDuration_startCount_actionCount__onceToken, &__block_literal_global_121);
   }
 
-  v8 = [MEMORY[0x1E69D9550] sharedInstance];
-  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:llround(a3)];
-  v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{a4, v9}];
+  mEMORY[0x1E69D9550] = [MEMORY[0x1E69D9550] sharedInstance];
+  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:llround(duration)];
+  v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{count, v9}];
   v13[1] = v10;
-  v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a5];
+  v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:actionCount];
   v13[2] = v11;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:3];
-  [v8 dispatchEventWithName:@"HapticFeedback.Daily" values:v12];
+  [mEMORY[0x1E69D9550] dispatchEventWithName:@"HapticFeedback.Daily" values:v12];
 }
 
 void __76__UIKBAnalyticsDispatcher_hapticEventEngineDuration_startCount_actionCount___block_invoke()

@@ -1,21 +1,21 @@
 @interface UIButton
-- (void)cos_setTitle:(id)a3 pillButtonWidth:(double)a4;
+- (void)cos_setTitle:(id)title pillButtonWidth:(double)width;
 @end
 
 @implementation UIButton
 
-- (void)cos_setTitle:(id)a3 pillButtonWidth:(double)a4
+- (void)cos_setTitle:(id)title pillButtonWidth:(double)width
 {
-  v5 = a3;
+  titleCopy = title;
   v6 = BPSPillButtonImage();
   [(UIButton *)self setBackgroundImage:v6 forState:0];
-  [(UIButton *)self setTitle:v5 forState:0];
+  [(UIButton *)self setTitle:titleCopy forState:0];
 
-  v7 = [(UIButton *)self titleLabel];
-  [v7 setAdjustsFontSizeToFitWidth:1];
+  titleLabel = [(UIButton *)self titleLabel];
+  [titleLabel setAdjustsFontSizeToFitWidth:1];
 
-  v8 = [(UIButton *)self titleLabel];
-  [v8 setTextAlignment:1];
+  titleLabel2 = [(UIButton *)self titleLabel];
+  [titleLabel2 setTextAlignment:1];
 
   [(UIButton *)self setTitleEdgeInsets:0.0, 4.0, 0.0, 4.0];
   v28 = &off_100281978;

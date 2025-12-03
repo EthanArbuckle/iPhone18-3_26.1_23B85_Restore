@@ -1,28 +1,28 @@
 @interface WFTimeIntervalContentItem
-+ (id)localizedPluralTypeDescriptionWithContext:(id)a3;
-+ (id)localizedTypeDescriptionWithContext:(id)a3;
++ (id)localizedPluralTypeDescriptionWithContext:(id)context;
++ (id)localizedTypeDescriptionWithContext:(id)context;
 + (id)outputTypes;
 + (id)ownedTypes;
 - (WFTimeInterval)timeInterval;
-- (id)generateObjectRepresentationForClass:(Class)a3 options:(id)a4 error:(id *)a5;
+- (id)generateObjectRepresentationForClass:(Class)class options:(id)options error:(id *)error;
 @end
 
 @implementation WFTimeIntervalContentItem
 
-+ (id)localizedPluralTypeDescriptionWithContext:(id)a3
++ (id)localizedPluralTypeDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Time intervals", @"Time intervals");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
 
-+ (id)localizedTypeDescriptionWithContext:(id)a3
++ (id)localizedTypeDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Time interval", @"Time interval");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
@@ -47,38 +47,38 @@
   return v4;
 }
 
-- (id)generateObjectRepresentationForClass:(Class)a3 options:(id)a4 error:(id *)a5
+- (id)generateObjectRepresentationForClass:(Class)class options:(id)options error:(id *)error
 {
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == class)
   {
-    v8 = [(WFTimeIntervalContentItem *)self timeInterval];
-    v9 = [v8 absoluteTimeString];
+    timeInterval = [(WFTimeIntervalContentItem *)self timeInterval];
+    absoluteTimeString = [timeInterval absoluteTimeString];
   }
 
-  else if (objc_opt_class() == a3)
+  else if (objc_opt_class() == class)
   {
     v10 = MEMORY[0x277CCABB0];
-    v8 = [(WFTimeIntervalContentItem *)self timeInterval];
-    [v8 timeInterval];
-    v9 = [v10 numberWithDouble:?];
+    timeInterval = [(WFTimeIntervalContentItem *)self timeInterval];
+    [timeInterval timeInterval];
+    absoluteTimeString = [v10 numberWithDouble:?];
   }
 
   else
   {
-    if (objc_opt_class() != a3)
+    if (objc_opt_class() != class)
     {
       v7 = 0;
       goto LABEL_9;
     }
 
     v11 = MEMORY[0x277CBEAA8];
-    v8 = [(WFTimeIntervalContentItem *)self timeInterval];
-    [v8 timeInterval];
-    v9 = [v11 dateWithTimeIntervalSinceNow:?];
+    timeInterval = [(WFTimeIntervalContentItem *)self timeInterval];
+    [timeInterval timeInterval];
+    absoluteTimeString = [v11 dateWithTimeIntervalSinceNow:?];
   }
 
-  v12 = v9;
-  v7 = [WFObjectRepresentation object:v9];
+  v12 = absoluteTimeString;
+  v7 = [WFObjectRepresentation object:absoluteTimeString];
 
 LABEL_9:
 

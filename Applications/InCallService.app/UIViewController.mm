@@ -1,24 +1,24 @@
 @interface UIViewController
-- (BOOL)isChildOf:(id)a3;
+- (BOOL)isChildOf:(id)of;
 @end
 
 @implementation UIViewController
 
-- (BOOL)isChildOf:(id)a3
+- (BOOL)isChildOf:(id)of
 {
-  v4 = a3;
-  v5 = [(UIViewController *)self parentViewController];
-  v6 = v5;
-  if (v5)
+  ofCopy = of;
+  parentViewController = [(UIViewController *)self parentViewController];
+  v6 = parentViewController;
+  if (parentViewController)
   {
-    if (v5 == v4)
+    if (parentViewController == ofCopy)
     {
       v7 = 1;
     }
 
     else
     {
-      v7 = [v5 isChildOf:v4];
+      v7 = [parentViewController isChildOf:ofCopy];
     }
   }
 

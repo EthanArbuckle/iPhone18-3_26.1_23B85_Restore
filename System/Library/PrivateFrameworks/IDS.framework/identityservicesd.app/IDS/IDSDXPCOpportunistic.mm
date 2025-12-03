@@ -1,43 +1,43 @@
 @interface IDSDXPCOpportunistic
-- (IDSDXPCOpportunistic)initWithQueue:(id)a3 connection:(id)a4 opportunisticCache:(id)a5;
-- (void)copyOpportunisticCacheWithBlock:(id)a3;
+- (IDSDXPCOpportunistic)initWithQueue:(id)queue connection:(id)connection opportunisticCache:(id)cache;
+- (void)copyOpportunisticCacheWithBlock:(id)block;
 @end
 
 @implementation IDSDXPCOpportunistic
 
-- (IDSDXPCOpportunistic)initWithQueue:(id)a3 connection:(id)a4 opportunisticCache:(id)a5
+- (IDSDXPCOpportunistic)initWithQueue:(id)queue connection:(id)connection opportunisticCache:(id)cache
 {
-  v8 = a4;
-  v9 = a5;
+  connectionCopy = connection;
+  cacheCopy = cache;
   v13.receiver = self;
   v13.super_class = IDSDXPCOpportunistic;
   v10 = [(IDSDXPCOpportunistic *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_connection, a4);
-    objc_storeStrong(&v11->_opportunisticCache, a5);
+    objc_storeStrong(&v10->_connection, connection);
+    objc_storeStrong(&v11->_opportunisticCache, cache);
   }
 
   return v11;
 }
 
-- (void)copyOpportunisticCacheWithBlock:(id)a3
+- (void)copyOpportunisticCacheWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(IDSDXPCOpportunistic *)self connection];
-  v6 = [v5 hasEntitlement:kIDSTestToolEntitlement];
+  blockCopy = block;
+  connection = [(IDSDXPCOpportunistic *)self connection];
+  v6 = [connection hasEntitlement:kIDSTestToolEntitlement];
 
   if (v6)
   {
-    v7 = [(IDSDXPCOpportunistic *)self opportunisticCache];
+    opportunisticCache = [(IDSDXPCOpportunistic *)self opportunisticCache];
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_10036D7E0;
     v9[3] = &unk_100BD94B8;
     v9[4] = self;
-    v10 = v4;
-    [v7 copyCacheWithBlock:v9];
+    v10 = blockCopy;
+    [opportunisticCache copyCacheWithBlock:v9];
   }
 
   else
@@ -48,7 +48,7 @@
       sub_1009181D0(self, v8);
     }
 
-    (*(v4 + 2))(v4, &__NSDictionary0__struct);
+    (*(blockCopy + 2))(blockCopy, &__NSDictionary0__struct);
   }
 }
 

@@ -2,11 +2,11 @@
 - (BOOL)isObserving;
 - (WFNextStaccatoActionStreamObserver)init;
 - (WFNextStaccatoActionStreamObserverDelegate)delegate;
-- (void)didReceiveNextAction:(id)a3 baseAction:(id)a4 forAppWithBundleIdentifier:(id)a5 associatedLiveActivityIdentifier:(id)a6;
-- (void)observingProviderObservationDidInterrupted:(id)a3;
-- (void)removeTrackingActivityID:(id)a3;
-- (void)startObservingWithCompletion:(id)a3;
-- (void)stopObservingWithCompletion:(id)a3;
+- (void)didReceiveNextAction:(id)action baseAction:(id)baseAction forAppWithBundleIdentifier:(id)identifier associatedLiveActivityIdentifier:(id)activityIdentifier;
+- (void)observingProviderObservationDidInterrupted:(id)interrupted;
+- (void)removeTrackingActivityID:(id)d;
+- (void)startObservingWithCompletion:(id)completion;
+- (void)stopObservingWithCompletion:(id)completion;
 @end
 
 @implementation WFNextStaccatoActionStreamObserver
@@ -18,7 +18,7 @@
   return WeakRetained;
 }
 
-- (void)observingProviderObservationDidInterrupted:(id)a3
+- (void)observingProviderObservationDidInterrupted:(id)interrupted
 {
   v12 = *MEMORY[0x1E69E9840];
   v4 = getWFStaccatoLogObject();
@@ -29,26 +29,26 @@
     _os_log_impl(&dword_1B1DE3000, v4, OS_LOG_TYPE_ERROR, "%s Next Action Observation Stream interrupted", &v10, 0xCu);
   }
 
-  v5 = [(WFNextStaccatoActionStreamObserver *)self delegate];
+  delegate = [(WFNextStaccatoActionStreamObserver *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
     v7 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E69ACD10] code:1001 userInfo:0];
-    v8 = [(WFNextStaccatoActionStreamObserver *)self delegate];
-    [v8 nextActionStreamObserver:self didStopObservingWithError:v7];
+    delegate2 = [(WFNextStaccatoActionStreamObserver *)self delegate];
+    [delegate2 nextActionStreamObserver:self didStopObservingWithError:v7];
   }
 
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)didReceiveNextAction:(id)a3 baseAction:(id)a4 forAppWithBundleIdentifier:(id)a5 associatedLiveActivityIdentifier:(id)a6
+- (void)didReceiveNextAction:(id)action baseAction:(id)baseAction forAppWithBundleIdentifier:(id)identifier associatedLiveActivityIdentifier:(id)activityIdentifier
 {
   v64 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  actionCopy = action;
+  baseActionCopy = baseAction;
+  identifierCopy = identifier;
+  activityIdentifierCopy = activityIdentifier;
   v14 = getWFStaccatoLogObject();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
@@ -57,131 +57,131 @@
     _os_log_impl(&dword_1B1DE3000, v14, OS_LOG_TYPE_DEBUG, "%s Received Next Action entry", buf, 0xCu);
   }
 
-  v15 = [(WFNextStaccatoActionStreamObserver *)self baseAction];
+  baseAction = [(WFNextStaccatoActionStreamObserver *)self baseAction];
 
-  if (!v15)
+  if (!baseAction)
   {
     goto LABEL_16;
   }
 
-  v16 = [(WFNextStaccatoActionStreamObserver *)self baseAction];
-  v17 = [v16 associatedBundleIdentifier];
-  v18 = [v17 isEqualToString:v12];
+  baseAction2 = [(WFNextStaccatoActionStreamObserver *)self baseAction];
+  associatedBundleIdentifier = [baseAction2 associatedBundleIdentifier];
+  v18 = [associatedBundleIdentifier isEqualToString:identifierCopy];
 
   if (!v18)
   {
     goto LABEL_25;
   }
 
-  if (v13)
+  if (activityIdentifierCopy)
   {
-    v19 = [(WFNextStaccatoActionStreamObserver *)self trackingActivityIDs];
-    if ([v19 containsObject:v13])
+    trackingActivityIDs = [(WFNextStaccatoActionStreamObserver *)self trackingActivityIDs];
+    if ([trackingActivityIDs containsObject:activityIdentifierCopy])
     {
 
 LABEL_16:
-      v28 = [(WFNextStaccatoActionStreamObserver *)self delegate];
+      delegate = [(WFNextStaccatoActionStreamObserver *)self delegate];
       v29 = objc_opt_respondsToSelector();
 
       if (v29)
       {
-        v30 = [(WFNextStaccatoActionStreamObserver *)self metadataProvider];
-        v31 = [v10 identifier];
+        metadataProvider = [(WFNextStaccatoActionStreamObserver *)self metadataProvider];
+        identifier = [actionCopy identifier];
         v61 = 0;
-        v32 = [v30 actionForBundleIdentifier:v12 andActionIdentifier:v31 error:&v61];
+        v32 = [metadataProvider actionForBundleIdentifier:identifierCopy andActionIdentifier:identifier error:&v61];
         v33 = v61;
 
         if (v32)
         {
-          v59 = v11;
+          v59 = baseActionCopy;
           v34 = +[VCVoiceShortcutClient standardClient];
           v60 = v33;
-          v35 = [v34 serializedParametersForLinkAction:v10 actionMetadata:v32 error:&v60];
+          v35 = [v34 serializedParametersForLinkAction:actionCopy actionMetadata:v32 error:&v60];
           v36 = v60;
 
           if (v35)
           {
             v53 = v36;
             v55 = v34;
-            if (v13)
+            if (activityIdentifierCopy)
             {
-              v37 = [(WFNextStaccatoActionStreamObserver *)self trackingActivityIDs];
-              v38 = [v37 containsObject:v13];
+              trackingActivityIDs2 = [(WFNextStaccatoActionStreamObserver *)self trackingActivityIDs];
+              v38 = [trackingActivityIDs2 containsObject:activityIdentifierCopy];
 
               if ((v38 & 1) == 0)
               {
-                v39 = [(WFNextStaccatoActionStreamObserver *)self trackingActivityIDs];
-                [v39 addObject:v13];
+                trackingActivityIDs3 = [(WFNextStaccatoActionStreamObserver *)self trackingActivityIDs];
+                [trackingActivityIDs3 addObject:activityIdentifierCopy];
               }
             }
 
             v40 = objc_alloc(MEMORY[0x1E696E730]);
-            v41 = [v10 identifier];
-            v57 = v10;
-            v42 = [v40 initWithAppBundleIdentifier:v12 appIntentIdentifier:v41 serializedParameters:v35];
+            identifier2 = [actionCopy identifier];
+            v57 = actionCopy;
+            v42 = [v40 initWithAppBundleIdentifier:identifierCopy appIntentIdentifier:identifier2 serializedParameters:v35];
 
-            v43 = [v32 title];
-            v44 = [v43 localizedStringForLocaleIdentifier:0];
+            title = [v32 title];
+            v44 = [title localizedStringForLocaleIdentifier:0];
 
             v45 = [WFConfiguredActionButtonIntentAction alloc];
-            v46 = [(WFNextStaccatoActionStreamObserver *)self baseAction];
-            v47 = [v46 previewIcon];
-            v48 = [(WFConfiguredStaccatoIntentAction *)v45 initWithIntent:v42 named:v44 previewIcon:v47 appShortcutIdentifier:0 templateParameterValues:0 contextualParameters:0 shortcutsMetadata:0 colorScheme:0];
+            baseAction3 = [(WFNextStaccatoActionStreamObserver *)self baseAction];
+            previewIcon = [baseAction3 previewIcon];
+            v48 = [(WFConfiguredStaccatoIntentAction *)v45 initWithIntent:v42 named:v44 previewIcon:previewIcon appShortcutIdentifier:0 templateParameterValues:0 contextualParameters:0 shortcutsMetadata:0 colorScheme:0];
 
-            v49 = [(WFNextStaccatoActionStreamObserver *)self delegate];
-            [v49 nextActionStreamObserver:self didReceiveNextAction:v48 associatedLiveActivityIdentifier:v13];
+            delegate2 = [(WFNextStaccatoActionStreamObserver *)self delegate];
+            [delegate2 nextActionStreamObserver:self didReceiveNextAction:v48 associatedLiveActivityIdentifier:activityIdentifierCopy];
 
             v34 = v55;
-            v10 = v57;
+            actionCopy = v57;
             v36 = v53;
           }
 
           v33 = v36;
-          v11 = v59;
+          baseActionCopy = v59;
         }
       }
 
       goto LABEL_25;
     }
 
-    v54 = v19;
-    v56 = v10;
-    v58 = v11;
+    v54 = trackingActivityIDs;
+    v56 = actionCopy;
+    v58 = baseActionCopy;
   }
 
   else
   {
-    v56 = v10;
-    v58 = v11;
+    v56 = actionCopy;
+    v58 = baseActionCopy;
   }
 
-  v20 = [(WFNextStaccatoActionStreamObserver *)self baseAction];
-  v21 = [v20 intent];
-  v22 = [v21 appIntentIdentifier];
-  v23 = [v58 identifier];
-  if ([v22 isEqualToString:v23])
+  baseAction4 = [(WFNextStaccatoActionStreamObserver *)self baseAction];
+  intent = [baseAction4 intent];
+  appIntentIdentifier = [intent appIntentIdentifier];
+  identifier3 = [v58 identifier];
+  if ([appIntentIdentifier isEqualToString:identifier3])
   {
     v24 = 0;
   }
 
   else
   {
-    v51 = [(WFNextStaccatoActionStreamObserver *)self baseAction];
-    v25 = [v51 intent];
-    [v25 appIntentIdentifier];
-    v26 = v52 = v20;
-    v27 = [v56 identifier];
-    v24 = [v26 isEqualToString:v27] ^ 1;
+    baseAction5 = [(WFNextStaccatoActionStreamObserver *)self baseAction];
+    intent2 = [baseAction5 intent];
+    [intent2 appIntentIdentifier];
+    v26 = v52 = baseAction4;
+    identifier4 = [v56 identifier];
+    v24 = [v26 isEqualToString:identifier4] ^ 1;
 
-    v20 = v52;
+    baseAction4 = v52;
   }
 
-  if (v13)
+  if (activityIdentifierCopy)
   {
   }
 
-  v10 = v56;
-  v11 = v58;
+  actionCopy = v56;
+  baseActionCopy = v58;
   if ((v24 & 1) == 0)
   {
     goto LABEL_16;
@@ -192,20 +192,20 @@ LABEL_25:
   v50 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeTrackingActivityID:(id)a3
+- (void)removeTrackingActivityID:(id)d
 {
-  v4 = a3;
-  v5 = [(WFNextStaccatoActionStreamObserver *)self trackingActivityIDs];
-  [v5 removeObject:v4];
+  dCopy = d;
+  trackingActivityIDs = [(WFNextStaccatoActionStreamObserver *)self trackingActivityIDs];
+  [trackingActivityIDs removeObject:dCopy];
 }
 
-- (void)stopObservingWithCompletion:(id)a3
+- (void)stopObservingWithCompletion:(id)completion
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(WFNextStaccatoActionStreamObserver *)self observingProvider];
+  completionCopy = completion;
+  observingProvider = [(WFNextStaccatoActionStreamObserver *)self observingProvider];
 
-  if (v5)
+  if (observingProvider)
   {
     v6 = getWFStaccatoLogObject();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -215,20 +215,20 @@ LABEL_25:
       _os_log_impl(&dword_1B1DE3000, v6, OS_LOG_TYPE_INFO, "%s Stopping Next Action Observation", buf, 0xCu);
     }
 
-    v7 = [(WFNextStaccatoActionStreamObserver *)self observingProvider];
-    v8 = [(WFNextStaccatoActionStreamObserver *)self connectionUUID];
+    observingProvider2 = [(WFNextStaccatoActionStreamObserver *)self observingProvider];
+    connectionUUID = [(WFNextStaccatoActionStreamObserver *)self connectionUUID];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __66__WFNextStaccatoActionStreamObserver_stopObservingWithCompletion___block_invoke;
     v10[3] = &unk_1E7B02B00;
     v10[4] = self;
-    v11 = v4;
-    [v7 stopObservingNextActionStreamWithConnectionUUID:v8 completion:v10];
+    v11 = completionCopy;
+    [observingProvider2 stopObservingNextActionStreamWithConnectionUUID:connectionUUID completion:v10];
   }
 
   else
   {
-    (*(v4 + 2))(v4, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 
   v9 = *MEMORY[0x1E69E9840];
@@ -282,10 +282,10 @@ void __66__WFNextStaccatoActionStreamObserver_stopObservingWithCompletion___bloc
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)startObservingWithCompletion:(id)a3
+- (void)startObservingWithCompletion:(id)completion
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   v5 = [objc_alloc(MEMORY[0x1E69AD060]) initWithObserver:self];
   [(WFNextStaccatoActionStreamObserver *)self setObservingProvider:v5];
 
@@ -297,15 +297,15 @@ void __66__WFNextStaccatoActionStreamObserver_stopObservingWithCompletion___bloc
     _os_log_impl(&dword_1B1DE3000, v6, OS_LOG_TYPE_INFO, "%s Starting Next Action Observation", buf, 0xCu);
   }
 
-  v7 = [(WFNextStaccatoActionStreamObserver *)self observingProvider];
+  observingProvider = [(WFNextStaccatoActionStreamObserver *)self observingProvider];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __67__WFNextStaccatoActionStreamObserver_startObservingWithCompletion___block_invoke;
   v10[3] = &unk_1E7B01C88;
   v10[4] = self;
-  v11 = v4;
-  v8 = v4;
-  [v7 startObservingNextActionStreamWithCompletion:v10];
+  v11 = completionCopy;
+  v8 = completionCopy;
+  [observingProvider startObservingNextActionStreamWithCompletion:v10];
 
   v9 = *MEMORY[0x1E69E9840];
 }
@@ -374,8 +374,8 @@ LABEL_6:
 
 - (BOOL)isObserving
 {
-  v2 = [(WFNextStaccatoActionStreamObserver *)self connectionUUID];
-  v3 = v2 != 0;
+  connectionUUID = [(WFNextStaccatoActionStreamObserver *)self connectionUUID];
+  v3 = connectionUUID != 0;
 
   return v3;
 }

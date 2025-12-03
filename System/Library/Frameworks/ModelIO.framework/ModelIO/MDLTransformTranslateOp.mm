@@ -1,37 +1,37 @@
 @interface MDLTransformTranslateOp
-- (MDLTransformTranslateOp)initWithName:(id)a3 inverse:(BOOL)a4 data:(id)a5;
-- (double)float4x4AtTime:(uint64_t)a3;
-- (void)double4x4AtTime:(uint64_t)a3@<X2>;
+- (MDLTransformTranslateOp)initWithName:(id)name inverse:(BOOL)inverse data:(id)data;
+- (double)float4x4AtTime:(uint64_t)time;
+- (void)double4x4AtTime:(uint64_t)time@<X2>;
 @end
 
 @implementation MDLTransformTranslateOp
 
-- (MDLTransformTranslateOp)initWithName:(id)a3 inverse:(BOOL)a4 data:(id)a5
+- (MDLTransformTranslateOp)initWithName:(id)name inverse:(BOOL)inverse data:(id)data
 {
-  v9 = a3;
-  v10 = a5;
+  nameCopy = name;
+  dataCopy = data;
   v15.receiver = self;
   v15.super_class = MDLTransformTranslateOp;
   v11 = [(MDLTransformTranslateOp *)&v15 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_animatedValue, a5);
-    objc_storeStrong(&v12->_name, a3);
-    v12->_inverse = a4;
+    objc_storeStrong(&v11->_animatedValue, data);
+    objc_storeStrong(&v12->_name, name);
+    v12->_inverse = inverse;
     v13 = v12;
   }
 
   return v12;
 }
 
-- (double)float4x4AtTime:(uint64_t)a3
+- (double)float4x4AtTime:(uint64_t)time
 {
-  objc_msgSend_float3AtTime_(*(a1 + 24), a2, a3);
+  objc_msgSend_float3AtTime_(*(self + 24), a2, time);
   v4.columns[3] = v4.columns[0];
   v4.columns[0] = *MEMORY[0x277D860B8];
   v4.columns[3].i32[3] = 1.0;
-  if (*(a1 + 8))
+  if (*(self + 8))
   {
     v4.columns[1] = *(MEMORY[0x277D860B8] + 16);
     v4.columns[2] = *(MEMORY[0x277D860B8] + 32);
@@ -41,12 +41,12 @@
   return *v4.columns[0].i64;
 }
 
-- (void)double4x4AtTime:(uint64_t)a3@<X2>
+- (void)double4x4AtTime:(uint64_t)time@<X2>
 {
-  result = *(a1 + 24);
+  result = *(self + 24);
   if (result)
   {
-    result = objc_msgSend_double3AtTime_(result, a2, a3);
+    result = objc_msgSend_double3AtTime_(result, a2, time);
     v7 = v14;
     v8 = vextq_s8(v7, v7, 8uLL).u64[0];
     *&v9 = vars0;
@@ -61,7 +61,7 @@
 
   v7.i64[1] = v8;
   *(&v9 + 1) = 1.0;
-  if (*(a1 + 8))
+  if (*(self + 8))
   {
     v18 = *(MEMORY[0x277D860A0] + 32);
     v19 = *(MEMORY[0x277D860A0] + 48);

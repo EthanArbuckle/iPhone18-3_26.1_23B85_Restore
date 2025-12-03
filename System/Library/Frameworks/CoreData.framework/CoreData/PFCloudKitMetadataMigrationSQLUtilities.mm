@@ -1,10 +1,10 @@
 @interface PFCloudKitMetadataMigrationSQLUtilities
 + (BOOL)migrationDebugEnabled;
-+ (id)columnNamesFromCreateStatement:(uint64_t)a1;
-+ (id)columnStatementsFromCreateStatement:(uint64_t)a1;
-+ (id)tableNameFromCreateStatement:(uint64_t)a1;
-+ (id)tableNameFromStatement:(id)a3 withPrefix:(id)a4;
-+ (uint64_t)fetchSchemaSQLForEntity:(void *)a3 usingConnection:;
++ (id)columnNamesFromCreateStatement:(uint64_t)statement;
++ (id)columnStatementsFromCreateStatement:(uint64_t)statement;
++ (id)tableNameFromCreateStatement:(uint64_t)statement;
++ (id)tableNameFromStatement:(id)statement withPrefix:(id)prefix;
++ (uint64_t)fetchSchemaSQLForEntity:(void *)entity usingConnection:;
 @end
 
 @implementation PFCloudKitMetadataMigrationSQLUtilities
@@ -26,11 +26,11 @@ uint64_t __64__PFCloudKitMetadataMigrationSQLUtilities_migrationDebugEnabled__bl
   return result;
 }
 
-+ (uint64_t)fetchSchemaSQLForEntity:(void *)a3 usingConnection:
++ (uint64_t)fetchSchemaSQLForEntity:(void *)entity usingConnection:
 {
   v24 = *MEMORY[0x1E69E9840];
   objc_opt_self();
-  v5 = -[NSSQLiteConnection fetchTableCreationSQLContaining:](a3, [a2 tableName]);
+  v5 = -[NSSQLiteConnection fetchTableCreationSQLContaining:](entity, [a2 tableName]);
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -78,18 +78,18 @@ LABEL_11:
   LogStream = _PFLogGetLogStream(17);
   if (os_log_type_enabled(LogStream, OS_LOG_TYPE_ERROR))
   {
-    v15 = [a2 tableName];
+    tableName = [a2 tableName];
     *buf = 138412290;
-    v22 = v15;
+    v22 = tableName;
     _os_log_error_impl(&dword_18565F000, LogStream, OS_LOG_TYPE_ERROR, "CoreData: fault: Couldn't find sql for table '%@', did you check if it exists first?\n", buf, 0xCu);
   }
 
   v13 = _PFLogGetLogStream(17);
   if (os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
   {
-    v16 = [a2 tableName];
+    tableName2 = [a2 tableName];
     *buf = 138412290;
-    v22 = v16;
+    v22 = tableName2;
     _os_log_fault_impl(&dword_18565F000, v13, OS_LOG_TYPE_FAULT, "CoreData: Couldn't find sql for table '%@', did you check if it exists first?", buf, 0xCu);
   }
 
@@ -99,13 +99,13 @@ LABEL_16:
   return result;
 }
 
-+ (id)tableNameFromStatement:(id)a3 withPrefix:(id)a4
++ (id)tableNameFromStatement:(id)statement withPrefix:(id)prefix
 {
   v20 = *MEMORY[0x1E69E9840];
   v6 = objc_autoreleasePoolPush();
-  if ([a3 hasPrefix:a4])
+  if ([statement hasPrefix:prefix])
   {
-    v7 = [a3 substringFromIndex:{objc_msgSend(a4, "length") + (objc_msgSend(a4, "hasSuffix:", @" "}];
+    v7 = [statement substringFromIndex:{objc_msgSend(prefix, "length") + (objc_msgSend(prefix, "hasSuffix:", @" "}];
     v8 = [v7 rangeOfString:@" "];
     if (v8 == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -113,7 +113,7 @@ LABEL_16:
       if (os_log_type_enabled(LogStream, OS_LOG_TYPE_ERROR))
       {
         v18 = 138412290;
-        v19 = v7;
+        statementCopy2 = v7;
         _os_log_error_impl(&dword_18565F000, LogStream, OS_LOG_TYPE_ERROR, "CoreData: fault: Failed to find the end of the table name in this statement: %@\n", &v18, 0xCu);
       }
 
@@ -121,7 +121,7 @@ LABEL_16:
       if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
       {
         v18 = 138412290;
-        v19 = v7;
+        statementCopy2 = v7;
         _os_log_fault_impl(&dword_18565F000, v10, OS_LOG_TYPE_FAULT, "CoreData: Failed to find the end of the table name in this statement: %@", &v18, 0xCu);
       }
     }
@@ -136,7 +136,7 @@ LABEL_16:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
       v18 = 138412290;
-      v19 = a3;
+      statementCopy2 = statement;
       _os_log_error_impl(&dword_18565F000, v13, OS_LOG_TYPE_ERROR, "CoreData: fault: This is not a create table statement? %@\n", &v18, 0xCu);
     }
 
@@ -144,7 +144,7 @@ LABEL_16:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_FAULT))
     {
       v18 = 138412290;
-      v19 = a3;
+      statementCopy2 = statement;
       _os_log_fault_impl(&dword_18565F000, v14, OS_LOG_TYPE_FAULT, "CoreData: This is not a create table statement? %@", &v18, 0xCu);
     }
 
@@ -158,14 +158,14 @@ LABEL_16:
   return result;
 }
 
-+ (id)tableNameFromCreateStatement:(uint64_t)a1
++ (id)tableNameFromCreateStatement:(uint64_t)statement
 {
   objc_opt_self();
 
   return [PFCloudKitMetadataMigrationSQLUtilities tableNameFromStatement:a2 withPrefix:@"CREATE TABLE"];
 }
 
-+ (id)columnStatementsFromCreateStatement:(uint64_t)a1
++ (id)columnStatementsFromCreateStatement:(uint64_t)statement
 {
   v28 = *MEMORY[0x1E69E9840];
   objc_opt_self();
@@ -247,7 +247,7 @@ LABEL_16:
   return result;
 }
 
-+ (id)columnNamesFromCreateStatement:(uint64_t)a1
++ (id)columnNamesFromCreateStatement:(uint64_t)statement
 {
   v34 = *MEMORY[0x1E69E9840];
   objc_opt_self();

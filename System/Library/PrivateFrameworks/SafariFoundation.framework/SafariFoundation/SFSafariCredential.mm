@@ -1,44 +1,44 @@
 @interface SFSafariCredential
-- (BOOL)isEqual:(id)a3;
-- (SFSafariCredential)initWithCoder:(id)a3;
-- (SFSafariCredential)initWithExternalCredential:(id)a3;
-- (SFSafariCredential)initWithOneTimeCode:(id)a3;
-- (SFSafariCredential)initWithUser:(id)a3 password:(id)a4 site:(id)a5 creationDate:(id)a6 customTitle:(id)a7 groupName:(id)a8 requestedHost:(id)a9;
-- (SFSafariCredential)initWithUser:(id)a3 password:(id)a4 site:(id)a5 creationDate:(id)a6 customTitle:(id)a7 requestedHost:(id)a8;
-- (SFSafariCredential)initWithUser:(id)a3 password:(id)a4 site:(id)a5 creationDate:(id)a6 requestedHost:(id)a7;
+- (BOOL)isEqual:(id)equal;
+- (SFSafariCredential)initWithCoder:(id)coder;
+- (SFSafariCredential)initWithExternalCredential:(id)credential;
+- (SFSafariCredential)initWithOneTimeCode:(id)code;
+- (SFSafariCredential)initWithUser:(id)user password:(id)password site:(id)site creationDate:(id)date customTitle:(id)title groupName:(id)name requestedHost:(id)host;
+- (SFSafariCredential)initWithUser:(id)user password:(id)password site:(id)site creationDate:(id)date customTitle:(id)title requestedHost:(id)host;
+- (SFSafariCredential)initWithUser:(id)user password:(id)password site:(id)site creationDate:(id)date requestedHost:(id)host;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFSafariCredential
 
-- (SFSafariCredential)initWithUser:(id)a3 password:(id)a4 site:(id)a5 creationDate:(id)a6 requestedHost:(id)a7
+- (SFSafariCredential)initWithUser:(id)user password:(id)password site:(id)site creationDate:(id)date requestedHost:(id)host
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  userCopy = user;
+  passwordCopy = password;
+  siteCopy = site;
+  dateCopy = date;
+  hostCopy = host;
   v28.receiver = self;
   v28.super_class = SFSafariCredential;
   v17 = [(SFSafariCredential *)&v28 init];
   if (v17)
   {
-    v18 = [v12 copy];
+    v18 = [userCopy copy];
     user = v17->_user;
     v17->_user = v18;
 
-    v20 = [v13 copy];
+    v20 = [passwordCopy copy];
     password = v17->_password;
     v17->_password = v20;
 
-    v22 = [v14 copy];
+    v22 = [siteCopy copy];
     site = v17->_site;
     v17->_site = v22;
 
-    objc_storeStrong(&v17->_creationDate, a6);
-    v24 = [v16 copy];
+    objc_storeStrong(&v17->_creationDate, date);
+    v24 = [hostCopy copy];
     requestedHost = v17->_requestedHost;
     v17->_requestedHost = v24;
 
@@ -48,15 +48,15 @@
   return v17;
 }
 
-- (SFSafariCredential)initWithUser:(id)a3 password:(id)a4 site:(id)a5 creationDate:(id)a6 customTitle:(id)a7 requestedHost:(id)a8
+- (SFSafariCredential)initWithUser:(id)user password:(id)password site:(id)site creationDate:(id)date customTitle:(id)title requestedHost:(id)host
 {
-  v14 = a7;
-  v15 = [(SFSafariCredential *)self initWithUser:a3 password:a4 site:a5 creationDate:a6 requestedHost:a8];
+  titleCopy = title;
+  v15 = [(SFSafariCredential *)self initWithUser:user password:password site:site creationDate:date requestedHost:host];
   if (v15)
   {
-    if ([v14 length])
+    if ([titleCopy length])
     {
-      v16 = [v14 copy];
+      v16 = [titleCopy copy];
       customTitle = v15->_customTitle;
       v15->_customTitle = v16;
     }
@@ -67,23 +67,23 @@
   return v15;
 }
 
-- (SFSafariCredential)initWithUser:(id)a3 password:(id)a4 site:(id)a5 creationDate:(id)a6 customTitle:(id)a7 groupName:(id)a8 requestedHost:(id)a9
+- (SFSafariCredential)initWithUser:(id)user password:(id)password site:(id)site creationDate:(id)date customTitle:(id)title groupName:(id)name requestedHost:(id)host
 {
-  v15 = a7;
-  v16 = a8;
-  v17 = [(SFSafariCredential *)self initWithUser:a3 password:a4 site:a5 creationDate:a6 requestedHost:a9];
+  titleCopy = title;
+  nameCopy = name;
+  v17 = [(SFSafariCredential *)self initWithUser:user password:password site:site creationDate:date requestedHost:host];
   if (v17)
   {
-    if ([v15 length])
+    if ([titleCopy length])
     {
-      v18 = [v15 copy];
+      v18 = [titleCopy copy];
       customTitle = v17->_customTitle;
       v17->_customTitle = v18;
     }
 
-    if ([v16 length])
+    if ([nameCopy length])
     {
-      v20 = [v16 copy];
+      v20 = [nameCopy copy];
       groupName = v17->_groupName;
       v17->_groupName = v20;
     }
@@ -94,15 +94,15 @@
   return v17;
 }
 
-- (SFSafariCredential)initWithOneTimeCode:(id)a3
+- (SFSafariCredential)initWithOneTimeCode:(id)code
 {
-  v4 = a3;
+  codeCopy = code;
   v10.receiver = self;
   v10.super_class = SFSafariCredential;
   v5 = [(SFSafariCredential *)&v10 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [codeCopy copy];
     oneTimeCode = v5->_oneTimeCode;
     v5->_oneTimeCode = v6;
 
@@ -112,25 +112,25 @@
   return v5;
 }
 
-- (SFSafariCredential)initWithExternalCredential:(id)a3
+- (SFSafariCredential)initWithExternalCredential:(id)credential
 {
-  v5 = a3;
+  credentialCopy = credential;
   v21.receiver = self;
   v21.super_class = SFSafariCredential;
   v6 = [(SFSafariCredential *)&v21 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_externalCredential, a3);
-    v8 = [(SFSafariPasswordCredential *)v7->_externalCredential user];
+    objc_storeStrong(&v6->_externalCredential, credential);
+    user = [(SFSafariPasswordCredential *)v7->_externalCredential user];
     user = v7->_user;
-    v7->_user = v8;
+    v7->_user = user;
 
-    v10 = [(SFSafariPasswordCredential *)v7->_externalCredential password];
-    v11 = v10;
-    if (v10)
+    password = [(SFSafariPasswordCredential *)v7->_externalCredential password];
+    v11 = password;
+    if (password)
     {
-      v12 = v10;
+      v12 = password;
     }
 
     else
@@ -140,24 +140,24 @@
 
     objc_storeStrong(&v7->_password, v12);
 
-    v13 = [(SFSafariPasswordCredential *)v7->_externalCredential site];
+    site = [(SFSafariPasswordCredential *)v7->_externalCredential site];
     site = v7->_site;
-    v7->_site = v13;
+    v7->_site = site;
 
-    v15 = [(SFSafariPasswordCredential *)v7->_externalCredential creationDate];
-    v16 = v15;
-    if (v15)
+    creationDate = [(SFSafariPasswordCredential *)v7->_externalCredential creationDate];
+    v16 = creationDate;
+    if (creationDate)
     {
-      v17 = v15;
+      distantPast = creationDate;
     }
 
     else
     {
-      v17 = [MEMORY[0x277CBEAA8] distantPast];
+      distantPast = [MEMORY[0x277CBEAA8] distantPast];
     }
 
     creationDate = v7->_creationDate;
-    v7->_creationDate = v17;
+    v7->_creationDate = distantPast;
 
     objc_opt_class();
     v7->_isExternalPasskey = objc_opt_isKindOfClass() & 1;
@@ -175,48 +175,48 @@
   return [v3 stringWithFormat:@"<%@: %p; site = %@; user = %@; date = %@", v4, self, self->_site, user, self->_creationDate];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
 
   else
   {
-    v6 = v4;
+    v6 = equalCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       externalCredential = self->_externalCredential;
       if (externalCredential)
       {
-        v8 = [(SFSafariCredential *)v6 externalCredential];
-        v9 = [(SFSafariPasswordCredential *)externalCredential isEqual:v8];
+        externalCredential = [(SFSafariCredential *)v6 externalCredential];
+        v9 = [(SFSafariPasswordCredential *)externalCredential isEqual:externalCredential];
       }
 
       else
       {
         user = self->_user;
-        v8 = [(SFSafariCredential *)v6 user];
-        if ([(NSString *)user isEqual:v8])
+        externalCredential = [(SFSafariCredential *)v6 user];
+        if ([(NSString *)user isEqual:externalCredential])
         {
           password = self->_password;
-          v12 = [(SFSafariCredential *)v6 password];
-          if ([(NSString *)password isEqual:v12])
+          password = [(SFSafariCredential *)v6 password];
+          if ([(NSString *)password isEqual:password])
           {
             site = self->_site;
-            v14 = [(SFSafariCredential *)v6 site];
-            if ([(NSString *)site isEqual:v14])
+            site = [(SFSafariCredential *)v6 site];
+            if ([(NSString *)site isEqual:site])
             {
               creationDate = self->_creationDate;
-              v16 = [(SFSafariCredential *)v6 creationDate];
-              if ([(NSDate *)creationDate isEqual:v16])
+              creationDate = [(SFSafariCredential *)v6 creationDate];
+              if ([(NSDate *)creationDate isEqual:creationDate])
               {
                 requestedHost = self->_requestedHost;
-                v18 = [(SFSafariCredential *)v6 requestedHost];
+                requestedHost = [(SFSafariCredential *)v6 requestedHost];
                 v9 = WBSIsEqual();
               }
 
@@ -272,11 +272,11 @@
   }
 }
 
-- (SFSafariCredential)initWithCoder:(id)a3
+- (SFSafariCredential)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [MEMORY[0x277CBEB98] setWithObject:objc_opt_class()];
-  v6 = [v4 decodeObjectOfClasses:v5 forKey:@"externalCredential"];
+  v6 = [coderCopy decodeObjectOfClasses:v5 forKey:@"externalCredential"];
 
   if (v6)
   {
@@ -285,13 +285,13 @@
 
   else
   {
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"user"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"password"];
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"site"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"date"];
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"customTitle"];
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"groupName"];
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"oneTimeCode"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"user"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"password"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"site"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"date"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"customTitle"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"groupName"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"oneTimeCode"];
     if (v13)
     {
       v7 = [(SFSafariCredential *)self initWithOneTimeCode:v13];
@@ -299,7 +299,7 @@
 
     else
     {
-      v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"requestedHost"];
+      v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"requestedHost"];
       v7 = [(SFSafariCredential *)self initWithUser:v16 password:v8 site:v9 creationDate:v10 customTitle:v11 groupName:v12 requestedHost:v14];
     }
   }
@@ -307,12 +307,12 @@
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   externalCredential = self->_externalCredential;
   if (externalCredential)
   {
-    v4 = a3;
+    coderCopy = coder;
     v5 = @"externalCredential";
     requestedHost = externalCredential;
   }
@@ -320,20 +320,20 @@
   else
   {
     user = self->_user;
-    v9 = a3;
-    [v9 encodeObject:user forKey:@"user"];
-    [v9 encodeObject:self->_password forKey:@"password"];
-    [v9 encodeObject:self->_site forKey:@"site"];
-    [v9 encodeObject:self->_creationDate forKey:@"date"];
-    [v9 encodeObject:self->_customTitle forKey:@"customTitle"];
-    [v9 encodeObject:self->_groupName forKey:@"groupName"];
-    [v9 encodeObject:self->_oneTimeCode forKey:@"oneTimeCode"];
+    coderCopy2 = coder;
+    [coderCopy2 encodeObject:user forKey:@"user"];
+    [coderCopy2 encodeObject:self->_password forKey:@"password"];
+    [coderCopy2 encodeObject:self->_site forKey:@"site"];
+    [coderCopy2 encodeObject:self->_creationDate forKey:@"date"];
+    [coderCopy2 encodeObject:self->_customTitle forKey:@"customTitle"];
+    [coderCopy2 encodeObject:self->_groupName forKey:@"groupName"];
+    [coderCopy2 encodeObject:self->_oneTimeCode forKey:@"oneTimeCode"];
     requestedHost = self->_requestedHost;
     v5 = @"requestedHost";
-    v4 = v9;
+    coderCopy = coderCopy2;
   }
 
-  [v4 encodeObject:requestedHost forKey:v5];
+  [coderCopy encodeObject:requestedHost forKey:v5];
 }
 
 @end

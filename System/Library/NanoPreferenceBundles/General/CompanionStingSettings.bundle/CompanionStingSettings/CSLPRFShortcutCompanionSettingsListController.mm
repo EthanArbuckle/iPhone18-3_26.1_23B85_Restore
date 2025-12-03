@@ -1,10 +1,10 @@
 @interface CSLPRFShortcutCompanionSettingsListController
 - (CSLPRFShortcutCompanionSettingsListController)init;
-- (id)_makeListItemSpecifier:(id)a3 value:(id)a4;
+- (id)_makeListItemSpecifier:(id)specifier value:(id)value;
 - (id)_settingsModel;
 - (id)specifiers;
 - (void)reloadSpecifiers;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -42,26 +42,26 @@
   if (!v4)
   {
     v5 = +[NSMutableArray array];
-    v6 = [(CSLPRFStingConfiguration *)self->_stingConfiguration workoutIdentifier];
+    workoutIdentifier = [(CSLPRFStingConfiguration *)self->_stingConfiguration workoutIdentifier];
     v7 = [PSSpecifier groupSpecifierWithID:@"StingShortcutGroupID"];
     selectedGroupSpecifier = self->_selectedGroupSpecifier;
     self->_selectedGroupSpecifier = v7;
 
     [(PSSpecifier *)self->_selectedGroupSpecifier setProperty:&__kCFBooleanTrue forKey:PSIsRadioGroupKey];
     [v5 addObject:self->_selectedGroupSpecifier];
-    v9 = [(CSLPRFShortcutCompanionSettingsListController *)self _settingsModel];
-    v10 = [v9 shortcutItems];
+    _settingsModel = [(CSLPRFShortcutCompanionSettingsListController *)self _settingsModel];
+    shortcutItems = [_settingsModel shortcutItems];
 
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = sub_5BBC;
     v16[3] = &unk_C340;
     v16[4] = self;
-    v17 = v6;
+    v17 = workoutIdentifier;
     v18 = v5;
     v11 = v5;
-    v12 = v6;
-    [v10 enumerateKeysAndObjectsUsingBlock:v16];
+    v12 = workoutIdentifier;
+    [shortcutItems enumerateKeysAndObjectsUsingBlock:v16];
     v13 = [v11 copy];
     v14 = *&self->PSListController_opaque[v3];
     *&self->PSListController_opaque[v3] = v13;
@@ -72,12 +72,12 @@
   return v4;
 }
 
-- (id)_makeListItemSpecifier:(id)a3 value:(id)a4
+- (id)_makeListItemSpecifier:(id)specifier value:(id)value
 {
-  v6 = a4;
-  v7 = [PSSpecifier preferenceSpecifierNamed:a3 target:self set:0 get:0 detail:0 cell:3 edit:0];
-  [v7 setIdentifier:v6];
-  [v7 setProperty:v6 forKey:PSValueKey];
+  valueCopy = value;
+  v7 = [PSSpecifier preferenceSpecifierNamed:specifier target:self set:0 get:0 detail:0 cell:3 edit:0];
+  [v7 setIdentifier:valueCopy];
+  [v7 setProperty:valueCopy forKey:PSValueKey];
 
   return v7;
 }
@@ -97,8 +97,8 @@
   model = self->_model;
   if (!model)
   {
-    v4 = [(CSLPRFShortcutCompanionSettingsListController *)self specifier];
-    v5 = [v4 propertyForKey:@"StingSettingsModel"];
+    specifier = [(CSLPRFShortcutCompanionSettingsListController *)self specifier];
+    v5 = [specifier propertyForKey:@"StingSettingsModel"];
     v6 = self->_model;
     self->_model = v5;
 
@@ -108,18 +108,18 @@
   return model;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CSLPRFShortcutCompanionSettingsListController *)self indexForIndexPath:v6];
+  pathCopy = path;
+  viewCopy = view;
+  v8 = [(CSLPRFShortcutCompanionSettingsListController *)self indexForIndexPath:pathCopy];
   v9 = [*&self->PSListController_opaque[OBJC_IVAR___PSListController__specifiers] objectAtIndex:v8];
   v10 = [v9 propertyForKey:PSValueKey];
   [(CSLPRFStingConfiguration *)self->_stingConfiguration setConfigurationForBundleID:0 actionType:2 identifier:v10 source:1];
   [(PSSpecifier *)self->_selectedGroupSpecifier setProperty:v9 forKey:PSRadioGroupCheckedSpecifierKey];
   v11.receiver = self;
   v11.super_class = CSLPRFShortcutCompanionSettingsListController;
-  [(CSLPRFShortcutCompanionSettingsListController *)&v11 tableView:v7 didSelectRowAtIndexPath:v6];
+  [(CSLPRFShortcutCompanionSettingsListController *)&v11 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
 }
 
 @end

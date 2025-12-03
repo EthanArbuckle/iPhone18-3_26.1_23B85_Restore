@@ -1,5 +1,5 @@
 @interface CKPhotoStackBalloonViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (CGPoint)accessibilityActivationPoint;
 - (id)accessibilityCustomActions;
 - (id)accessibilityLabel;
@@ -10,40 +10,40 @@
 
 @implementation CKPhotoStackBalloonViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CKAggregateAttachmentMessagePartChatItem" hasInstanceMethod:@"aggregateChatItems" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKPhotoStackBalloonView" isKindOfClass:@"CKGenericPhotoStackBalloonView"];
-  [v3 validateClass:@"CKGenericPhotoStackBalloonView" hasInstanceMethod:@"stackView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKMessagePartChatItem" hasInstanceMethod:@"visibleAssociatedMessageChatItems" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKAggregateAcknowledgmentChatItem"];
-  [v3 validateClass:@"PXMessagesStackItemsLayout" hasInstanceMethod:@"primaryItemIndex" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"PXMessagesStackView" hasInstanceMethod:@"currentAssetReference" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PXMessagesStackView" isKindOfClass:@"PXBaseMessagesStackView"];
-  [v3 validateClass:@"PXBaseMessagesStackView" hasInstanceVariable:@"_layout" withType:"PXMessagesStackItemsLayout"];
-  [v3 validateClass:@"PXAssetReference" hasInstanceMethod:@"asset" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKMediaObjectBackedAsset" hasInstanceMethod:@"playbackStyle" withFullSignature:{"q", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CKAggregateAttachmentMessagePartChatItem" hasInstanceMethod:@"aggregateChatItems" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKPhotoStackBalloonView" isKindOfClass:@"CKGenericPhotoStackBalloonView"];
+  [validationsCopy validateClass:@"CKGenericPhotoStackBalloonView" hasInstanceMethod:@"stackView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKMessagePartChatItem" hasInstanceMethod:@"visibleAssociatedMessageChatItems" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKAggregateAcknowledgmentChatItem"];
+  [validationsCopy validateClass:@"PXMessagesStackItemsLayout" hasInstanceMethod:@"primaryItemIndex" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"PXMessagesStackView" hasInstanceMethod:@"currentAssetReference" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PXMessagesStackView" isKindOfClass:@"PXBaseMessagesStackView"];
+  [validationsCopy validateClass:@"PXBaseMessagesStackView" hasInstanceVariable:@"_layout" withType:"PXMessagesStackItemsLayout"];
+  [validationsCopy validateClass:@"PXAssetReference" hasInstanceMethod:@"asset" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKMediaObjectBackedAsset" hasInstanceMethod:@"playbackStyle" withFullSignature:{"q", 0}];
 }
 
 - (id)accessibilityLabel
 {
   objc_opt_class();
   v3 = __UIAccessibilityCastAsSafeCategory();
-  v4 = [(CKPhotoStackBalloonViewAccessibility *)self _axChatItemForBalloon];
-  v5 = [v4 safeArrayForKey:@"aggregateChatItems"];
+  _axChatItemForBalloon = [(CKPhotoStackBalloonViewAccessibility *)self _axChatItemForBalloon];
+  v5 = [_axChatItemForBalloon safeArrayForKey:@"aggregateChatItems"];
 
-  v6 = [(CKPhotoStackBalloonViewAccessibility *)self _accessibilityStackView];
-  v7 = [v6 safeValueForKey:@"layout"];
+  _accessibilityStackView = [(CKPhotoStackBalloonViewAccessibility *)self _accessibilityStackView];
+  v7 = [_accessibilityStackView safeValueForKey:@"layout"];
   v8 = [v7 safeIntegerForKey:@"primaryItemIndex"];
 
-  v9 = 0;
+  firstObject = 0;
   if (v8 < [v5 count])
   {
     v10 = [v5 objectAtIndex:v8];
     v11 = [v10 safeArrayForKey:@"visibleAssociatedMessageChatItems"];
     v12 = [v11 ax_filteredArrayUsingBlock:&__block_literal_global_1431];
-    v9 = [v12 firstObject];
+    firstObject = [v12 firstObject];
   }
 
   v13 = [v5 count];
@@ -51,11 +51,11 @@
   v15 = accessibilityLocalizedString(@"attachment.count");
   v16 = [v14 localizedStringWithFormat:v15, v13];
 
-  v17 = [v3 _axMessageSender];
-  v18 = [v3 _axReplyDescription];
-  v19 = [v3 _axStickerDescription];
-  v20 = [v9 accessibilityLabel];
-  v23 = [v3 _axMessageTime];
+  _axMessageSender = [v3 _axMessageSender];
+  _axReplyDescription = [v3 _axReplyDescription];
+  _axStickerDescription = [v3 _axStickerDescription];
+  accessibilityLabel = [firstObject accessibilityLabel];
+  _axMessageTime = [v3 _axMessageTime];
   v21 = __UIAXStringForVariables();
 
   return v21;
@@ -72,16 +72,16 @@ uint64_t __58__CKPhotoStackBalloonViewAccessibility_accessibilityLabel__block_in
 
 - (id)accessibilityValue
 {
-  v3 = [(CKPhotoStackBalloonViewAccessibility *)self _axChatItemForBalloon];
-  v4 = [v3 safeArrayForKey:@"aggregateChatItems"];
+  _axChatItemForBalloon = [(CKPhotoStackBalloonViewAccessibility *)self _axChatItemForBalloon];
+  v4 = [_axChatItemForBalloon safeArrayForKey:@"aggregateChatItems"];
 
   v5 = [v4 count];
-  v6 = [(CKPhotoStackBalloonViewAccessibility *)self _accessibilityStackView];
-  v7 = [v6 safeValueForKey:@"layout"];
+  _accessibilityStackView = [(CKPhotoStackBalloonViewAccessibility *)self _accessibilityStackView];
+  v7 = [_accessibilityStackView safeValueForKey:@"layout"];
   v8 = [v7 safeIntegerForKey:@"primaryItemIndex"];
 
-  v9 = [(CKPhotoStackBalloonViewAccessibility *)self _accessibilityStackView];
-  v10 = [v9 safeValueForKeyPath:@"currentAssetReference.asset"];
+  _accessibilityStackView2 = [(CKPhotoStackBalloonViewAccessibility *)self _accessibilityStackView];
+  v10 = [_accessibilityStackView2 safeValueForKeyPath:@"currentAssetReference.asset"];
 
   if ([v10 safeIntegerForKey:@"playbackStyle"] == 4)
   {
@@ -105,20 +105,20 @@ uint64_t __58__CKPhotoStackBalloonViewAccessibility_accessibilityLabel__block_in
 
 - (void)accessibilityIncrement
 {
-  v2 = [(CKPhotoStackBalloonViewAccessibility *)self _accessibilityStackView];
-  [v2 accessibilityIncrement];
+  _accessibilityStackView = [(CKPhotoStackBalloonViewAccessibility *)self _accessibilityStackView];
+  [_accessibilityStackView accessibilityIncrement];
 }
 
 - (void)accessibilityDecrement
 {
-  v2 = [(CKPhotoStackBalloonViewAccessibility *)self _accessibilityStackView];
-  [v2 accessibilityDecrement];
+  _accessibilityStackView = [(CKPhotoStackBalloonViewAccessibility *)self _accessibilityStackView];
+  [_accessibilityStackView accessibilityDecrement];
 }
 
 - (CGPoint)accessibilityActivationPoint
 {
-  v2 = [(CKPhotoStackBalloonViewAccessibility *)self _accessibilityStackView];
-  [v2 accessibilityActivationPoint];
+  _accessibilityStackView = [(CKPhotoStackBalloonViewAccessibility *)self _accessibilityStackView];
+  [_accessibilityStackView accessibilityActivationPoint];
   v4 = v3;
   v6 = v5;
 
@@ -131,17 +131,17 @@ uint64_t __58__CKPhotoStackBalloonViewAccessibility_accessibilityLabel__block_in
 
 - (id)accessibilityCustomActions
 {
-  v3 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   v8.receiver = self;
   v8.super_class = CKPhotoStackBalloonViewAccessibility;
-  v4 = [(CKPhotoStackBalloonViewAccessibility *)&v8 accessibilityCustomActions];
-  [v3 axSafelyAddObjectsFromArray:v4];
+  accessibilityCustomActions = [(CKPhotoStackBalloonViewAccessibility *)&v8 accessibilityCustomActions];
+  [array axSafelyAddObjectsFromArray:accessibilityCustomActions];
 
-  v5 = [(CKPhotoStackBalloonViewAccessibility *)self _accessibilityStackView];
-  v6 = [v5 accessibilityCustomActions];
-  [v3 axSafelyAddObjectsFromArray:v6];
+  _accessibilityStackView = [(CKPhotoStackBalloonViewAccessibility *)self _accessibilityStackView];
+  accessibilityCustomActions2 = [_accessibilityStackView accessibilityCustomActions];
+  [array axSafelyAddObjectsFromArray:accessibilityCustomActions2];
 
-  return v3;
+  return array;
 }
 
 @end

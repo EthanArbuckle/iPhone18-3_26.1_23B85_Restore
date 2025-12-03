@@ -1,27 +1,27 @@
 @interface CCCalendarEventContent
-+ (id)descriptionForTypeIdentifier:(unsigned __int16)a3;
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
-- (CCCalendarEventContent)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (CCCalendarEventContent)initWithTitle:(id)a3 locationName:(id)a4 error:(id *)a5;
++ (id)descriptionForTypeIdentifier:(unsigned __int16)identifier;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
+- (CCCalendarEventContent)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (CCCalendarEventContent)initWithTitle:(id)title locationName:(id)name error:(id *)error;
 - (NSString)locationName;
 - (NSString)title;
 - (id)jsonDictionary;
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4;
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type;
 @end
 
 @implementation CCCalendarEventContent
 
-- (CCCalendarEventContent)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCCalendarEventContent)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
   v8 = 0;
   if (IsInstanceOfExpectedClass)
   {
-    v9 = [v6 objectForKeyedSubscript:@"title"];
-    v10 = [v6 objectForKeyedSubscript:@"locationName"];
-    v11 = [[CCCalendarEventContent alloc] initWithTitle:v9 locationName:v10 error:a4];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"title"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"locationName"];
+    v11 = [[CCCalendarEventContent alloc] initWithTitle:v9 locationName:v10 error:error];
   }
 
   else
@@ -38,14 +38,14 @@
   v3 = objc_opt_new();
   if (self->_title)
   {
-    v4 = [(CCCalendarEventContent *)self title];
-    [v3 setObject:v4 forKeyedSubscript:@"title"];
+    title = [(CCCalendarEventContent *)self title];
+    [v3 setObject:title forKeyedSubscript:@"title"];
   }
 
   if (self->_locationName)
   {
-    v5 = [(CCCalendarEventContent *)self locationName];
-    [v3 setObject:v5 forKeyedSubscript:@"locationName"];
+    locationName = [(CCCalendarEventContent *)self locationName];
+    [v3 setObject:locationName forKeyedSubscript:@"locationName"];
   }
 
   v6 = [v3 copy];
@@ -53,19 +53,19 @@
   return v6;
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type
 {
-  v7 = a3;
+  blockCopy = block;
   if (self->_title)
   {
     v5 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:54388 stringValue:self->_title];
-    v7[2](v7, v5);
+    blockCopy[2](blockCopy, v5);
   }
 
   if (self->_locationName)
   {
     v6 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:54389 stringValue:self->_locationName];
-    v7[2](v7, v6);
+    blockCopy[2](blockCopy, v6);
   }
 }
 
@@ -83,10 +83,10 @@
   return v2;
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v5 = a3;
-  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v5];
+  dataCopy = data;
+  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v7 = MEMORY[0x1E6993AB8];
   v8 = MEMORY[0x1E6993AB0];
   v9 = MEMORY[0x1E6993AA8];
@@ -235,15 +235,15 @@ LABEL_38:
   return v30;
 }
 
-- (CCCalendarEventContent)initWithTitle:(id)a3 locationName:(id)a4 error:(id *)a5
+- (CCCalendarEventContent)initWithTitle:(id)title locationName:(id)name error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  titleCopy = title;
+  nameCopy = name;
   v10 = objc_opt_new();
-  if (!v8)
+  if (!titleCopy)
   {
     v12 = 0;
-    if (!v9)
+    if (!nameCopy)
     {
       goto LABEL_8;
     }
@@ -257,7 +257,7 @@ LABEL_6:
     if (!IsInstanceOfExpectedClass)
     {
       CCSetError();
-      v16 = 0;
+      selfCopy = 0;
       v12 = v14;
       goto LABEL_11;
     }
@@ -273,36 +273,36 @@ LABEL_6:
   if (!v11)
   {
     CCSetError();
-    v16 = 0;
+    selfCopy = 0;
     goto LABEL_11;
   }
 
   CCPBDataWriterWriteStringField();
-  if (v9)
+  if (nameCopy)
   {
     goto LABEL_6;
   }
 
 LABEL_8:
-  v15 = [v10 immutableData];
-  self = [(CCItemMessage *)self initWithData:v15 error:a5];
+  immutableData = [v10 immutableData];
+  self = [(CCItemMessage *)self initWithData:immutableData error:error];
 
-  v16 = self;
+  selfCopy = self;
 LABEL_11:
 
-  return v16;
+  return selfCopy;
 }
 
-+ (id)descriptionForTypeIdentifier:(unsigned __int16)a3
++ (id)descriptionForTypeIdentifier:(unsigned __int16)identifier
 {
-  if ((a3 + 11151) > 4u)
+  if ((identifier + 11151) > 4u)
   {
     return 0;
   }
 
   else
   {
-    return *(&off_1E73E6E70 + (a3 + 11151));
+    return *(&off_1E73E6E70 + (identifier + 11151));
   }
 }
 

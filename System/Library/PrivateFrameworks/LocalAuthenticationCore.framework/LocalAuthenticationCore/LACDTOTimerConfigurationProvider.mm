@@ -1,5 +1,5 @@
 @interface LACDTOTimerConfigurationProvider
-- (LACDTOTimerConfigurationProvider)initWithSEP:(id)a3;
+- (LACDTOTimerConfigurationProvider)initWithSEP:(id)p;
 - (id)currentConfiguration;
 - (id)defaultConfiguration;
 - (void)currentConfiguration;
@@ -7,16 +7,16 @@
 
 @implementation LACDTOTimerConfigurationProvider
 
-- (LACDTOTimerConfigurationProvider)initWithSEP:(id)a3
+- (LACDTOTimerConfigurationProvider)initWithSEP:(id)p
 {
-  v5 = a3;
+  pCopy = p;
   v9.receiver = self;
   v9.super_class = LACDTOTimerConfigurationProvider;
   v6 = [(LACDTOTimerConfigurationProvider *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_sep, a3);
+    objc_storeStrong(&v6->_sep, p);
   }
 
   return v7;
@@ -31,7 +31,7 @@
   v6 = v11;
   if (v5)
   {
-    v7 = [(LACDTORatchetSEPStateParser *)v3 timerConfigurationFromState:v5];
+    defaultConfiguration = [(LACDTORatchetSEPStateParser *)v3 timerConfigurationFromState:v5];
   }
 
   else
@@ -42,10 +42,10 @@
       [(LACDTOTimerConfigurationProvider *)v6 currentConfiguration];
     }
 
-    v7 = [(LACDTOTimerConfigurationProvider *)self defaultConfiguration];
+    defaultConfiguration = [(LACDTOTimerConfigurationProvider *)self defaultConfiguration];
   }
 
-  v9 = v7;
+  v9 = defaultConfiguration;
 
   return v9;
 }
@@ -68,7 +68,7 @@
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_1B0233000, a2, OS_LOG_TYPE_ERROR, "Could not fetch current configuration (%@). Falling back to default", &v3, 0xCu);
   v2 = *MEMORY[0x1E69E9840];
 }

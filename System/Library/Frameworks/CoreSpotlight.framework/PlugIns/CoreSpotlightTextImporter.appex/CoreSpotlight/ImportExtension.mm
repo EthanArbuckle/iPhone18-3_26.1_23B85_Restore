@@ -1,34 +1,34 @@
 @interface ImportExtension
-- (BOOL)updateAttributes:(id)a3 forFileAtURL:(id)a4 error:(id *)a5;
+- (BOOL)updateAttributes:(id)attributes forFileAtURL:(id)l error:(id *)error;
 @end
 
 @implementation ImportExtension
 
-- (BOOL)updateAttributes:(id)a3 forFileAtURL:(id)a4 error:(id *)a5
+- (BOOL)updateAttributes:(id)attributes forFileAtURL:(id)l error:(id *)error
 {
-  v6 = a3;
-  v7 = a4;
+  attributesCopy = attributes;
+  lCopy = l;
   v8 = logForCSLogCategoryDefault();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    *&buf[4] = v7;
+    *&buf[4] = lCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "~~~ AEC In updateAttributes, contentURL: %@", buf, 0xCu);
   }
 
-  v9 = [v7 pathExtension];
+  pathExtension = [lCopy pathExtension];
   context = objc_autoreleasePoolPush();
-  if (![v9 isEqual:@"plist"])
+  if (![pathExtension isEqual:@"plist"])
   {
-    if ([v9 isEqual:@"plist"])
+    if ([pathExtension isEqual:@"plist"])
     {
       v91 = 0;
-      v16 = [NSString stringWithContentsOfURL:v7 encoding:4 error:&v91];
+      v16 = [NSString stringWithContentsOfURL:lCopy encoding:4 error:&v91];
       v11 = v91;
       if (!v16)
       {
         v90 = v11;
-        v16 = [NSString stringWithContentsOfURL:v7 encoding:10 error:&v90];
+        v16 = [NSString stringWithContentsOfURL:lCopy encoding:10 error:&v90];
         v17 = v90;
 
         if (v16)
@@ -39,7 +39,7 @@
         else
         {
           v89 = v17;
-          v16 = [NSString stringWithContentsOfURL:v7 encoding:30 error:&v89];
+          v16 = [NSString stringWithContentsOfURL:lCopy encoding:30 error:&v89];
           v40 = v89;
 
           if (v16)
@@ -50,36 +50,36 @@
           else
           {
             v88 = v40;
-            v16 = [NSString stringWithContentsOfURL:v7 encoding:1 error:&v88];
+            v16 = [NSString stringWithContentsOfURL:lCopy encoding:1 error:&v88];
             v11 = v88;
 
             if (!v16)
             {
-              [v6 setTextContent:@"Importing failed. Force snazzyweaselgoo"];
+              [attributesCopy setTextContent:@"Importing failed. Force snazzyweaselgoo"];
               goto LABEL_40;
             }
           }
         }
       }
 
-      [v6 setTextContent:v16];
+      [attributesCopy setTextContent:v16];
 
 LABEL_40:
-      v10 = [v7 lastPathComponent];
-      v44 = [v10 stringByDeletingPathExtension];
-      [v6 setDisplayName:v44];
+      lastPathComponent = [lCopy lastPathComponent];
+      stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
+      [attributesCopy setDisplayName:stringByDeletingPathExtension];
 
       goto LABEL_95;
     }
 
-    v10 = v7;
+    lastPathComponent = lCopy;
     v81 = [NSArray arrayWithObjects:MDItemTitle, MDItemSubject, MDItemComment, MDItemAuthors, MDItemEditors, MDItemOrganizations, MDItemCopyright, MDItemContentCreationDate, MDItemContentModificationDate, MDItemKeywords, MDItemCreator, 0];
     v75 = NSCompanyDocumentAttribute;
     v70 = NSEditorDocumentAttribute;
     v73 = NSAuthorDocumentAttribute;
     v82 = [NSArray arrayWithObjects:NSTitleDocumentAttribute, NSSubjectDocumentAttribute, NSCommentDocumentAttribute, NSAuthorDocumentAttribute, NSEditorDocumentAttribute, NSCompanyDocumentAttribute, NSCopyrightDocumentAttribute, NSCreationTimeDocumentAttribute, NSModificationTimeDocumentAttribute, NSKeywordsDocumentAttribute, @"NSGeneratorDocumentAttribute", 0];
     v78 = [v82 count];
-    if ([v9 isEqual:@"xml"])
+    if ([pathExtension isEqual:@"xml"])
     {
       v18 = objc_alloc_init(NSMutableDictionary);
       v19 = 0;
@@ -91,14 +91,14 @@ LABEL_40:
 LABEL_94:
       v66 = v20;
       [v20 closeFile];
-      [v6 addAttributesFromDictionary:v18];
+      [attributesCopy addAttributesFromDictionary:v18];
 
       v11 = 0;
       goto LABEL_95;
     }
 
     v87 = 0;
-    v23 = [v10 getResourceValue:&v87 forKey:NSURLIsDirectoryKey error:0];
+    v23 = [lastPathComponent getResourceValue:&v87 forKey:NSURLIsDirectoryKey error:0];
     v71 = v87;
     if (v71)
     {
@@ -117,7 +117,7 @@ LABEL_94:
       v27 = +[NSDictionary dictionary];
       v28 = [NSDictionary dictionaryWithObjectsAndKeys:v26, @"NSIndexing", v27, NSDefaultAttributesDocumentOption, 0];
       v85 = 0;
-      v79 = [v25 initWithURL:v10 options:v28 documentAttributes:&v85 error:0];
+      v79 = [v25 initWithURL:lastPathComponent options:v28 documentAttributes:&v85 error:0];
       v19 = v85;
 
       v29 = 0;
@@ -139,14 +139,14 @@ LABEL_93:
         goto LABEL_94;
       }
 
-      v45 = [v79 string];
+      string = [v79 string];
       memset(v97, 0, sizeof(v97));
       v95 = 0u;
       v96 = 0u;
       *buf = 0u;
       v94 = 0u;
-      v72 = v45;
-      v46 = [v45 length];
+      v72 = string;
+      v46 = [string length];
       v47 = v46;
       if (v46 >= 32)
       {
@@ -301,7 +301,7 @@ LABEL_92:
       goto LABEL_93;
     }
 
-    v31 = [NSFileHandle fileHandleForReadingFromURL:v10 error:0];
+    v31 = [NSFileHandle fileHandleForReadingFromURL:lastPathComponent error:0];
     if (!v31)
     {
       v74 = 0;
@@ -342,7 +342,7 @@ LABEL_45:
 
       if (v36)
       {
-        v37 = [NSData dataWithContentsOfURL:v10];
+        v37 = [NSData dataWithContentsOfURL:lastPathComponent];
         v38 = v37;
         if (v37)
         {
@@ -363,21 +363,21 @@ LABEL_45:
     v80 = [NSAttributedString alloc];
     v69 = [NSNumber numberWithInt:51200];
     v41 = +[NSDictionary dictionary];
-    v42 = [NSNumber numberWithBool:v77 < 0x200];
-    v43 = [NSDictionary dictionaryWithObjectsAndKeys:v69, @"NSIndexing", v41, NSDefaultAttributesDocumentOption, v74, @"NSFileHandle", v30, @"NSFileHeaderData", v42, @"NSNoReadNecessary", 0];
+    0x200 = [NSNumber numberWithBool:v77 < 0x200];
+    v43 = [NSDictionary dictionaryWithObjectsAndKeys:v69, @"NSIndexing", v41, NSDefaultAttributesDocumentOption, v74, @"NSFileHandle", v30, @"NSFileHeaderData", 0x200, @"NSNoReadNecessary", 0];
     v86 = 0;
-    v79 = [v80 initWithURL:v10 options:v43 documentAttributes:&v86 error:0];
+    v79 = [v80 initWithURL:lastPathComponent options:v43 documentAttributes:&v86 error:0];
     v19 = v86;
 
     goto LABEL_46;
   }
 
   v92 = 0;
-  v10 = [NSDictionary dictionaryWithContentsOfURL:v7 error:&v92];
+  lastPathComponent = [NSDictionary dictionaryWithContentsOfURL:lCopy error:&v92];
   v11 = v92;
-  if (v10)
+  if (lastPathComponent)
   {
-    v12 = [v10 objectForKeyedSubscript:@"kMDItemDisplayName"];
+    v12 = [lastPathComponent objectForKeyedSubscript:@"kMDItemDisplayName"];
     v13 = v12;
     if (v12)
     {
@@ -389,10 +389,10 @@ LABEL_45:
       v14 = @"No Name";
     }
 
-    [v6 setDisplayName:v14];
+    [attributesCopy setDisplayName:v14];
 
-    v15 = [v10 objectForKeyedSubscript:@"kMDItemTextContent"];
-    [v6 setTextContent:v15];
+    v15 = [lastPathComponent objectForKeyedSubscript:@"kMDItemTextContent"];
+    [attributesCopy setTextContent:v15];
   }
 
   else
@@ -406,15 +406,15 @@ LABEL_45:
     }
   }
 
-  [v6 setTitle:@"Test Import Happened"];
-  [v6 setContentDescription:@"This is a Description"];
+  [attributesCopy setTitle:@"Test Import Happened"];
+  [attributesCopy setContentDescription:@"This is a Description"];
 LABEL_95:
 
   objc_autoreleasePoolPop(context);
-  if (a5)
+  if (error)
   {
     v67 = v11;
-    *a5 = v11;
+    *error = v11;
   }
 
   return 1;

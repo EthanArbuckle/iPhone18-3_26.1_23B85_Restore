@@ -1,34 +1,34 @@
 @interface _UIWTCProofreadingInteraction
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (UIView)view;
-- (_UIWTCProofreadingInteraction)initWithDelegate:(id)a3;
+- (_UIWTCProofreadingInteraction)initWithDelegate:(id)delegate;
 - (_UIWTCProofreadingInteractionDelegate)delegate;
 - (id)proofreadingTapCreateIfNecessary;
-- (void)didMoveToView:(id)a3;
-- (void)tapInteraction:(id)a3;
-- (void)willMoveToView:(id)a3;
+- (void)didMoveToView:(id)view;
+- (void)tapInteraction:(id)interaction;
+- (void)willMoveToView:(id)view;
 @end
 
 @implementation _UIWTCProofreadingInteraction
 
-- (_UIWTCProofreadingInteraction)initWithDelegate:(id)a3
+- (_UIWTCProofreadingInteraction)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = _UIWTCProofreadingInteraction;
   v5 = [(_UIWTCProofreadingInteraction *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
   }
 
   return v6;
 }
 
-- (void)willMoveToView:(id)a3
+- (void)willMoveToView:(id)view
 {
-  obj = a3;
+  obj = view;
   if (self->_proofreadingTap)
   {
     WeakRetained = objc_loadWeakRetained(&self->_view);
@@ -38,11 +38,11 @@
   objc_storeWeak(&self->_view, obj);
 }
 
-- (void)didMoveToView:(id)a3
+- (void)didMoveToView:(id)view
 {
-  v4 = a3;
-  v5 = [(_UIWTCProofreadingInteraction *)self proofreadingTapCreateIfNecessary];
-  [v4 addGestureRecognizer:v5];
+  viewCopy = view;
+  proofreadingTapCreateIfNecessary = [(_UIWTCProofreadingInteraction *)self proofreadingTapCreateIfNecessary];
+  [viewCopy addGestureRecognizer:proofreadingTapCreateIfNecessary];
 }
 
 - (id)proofreadingTapCreateIfNecessary
@@ -66,28 +66,28 @@
   return v6;
 }
 
-- (void)tapInteraction:(id)a3
+- (void)tapInteraction:(id)interaction
 {
-  v6 = a3;
-  if ([v6 state] == 3)
+  interactionCopy = interaction;
+  if ([interactionCopy state] == 3)
   {
-    v4 = [(_UIWTCProofreadingInteraction *)self delegate];
+    delegate = [(_UIWTCProofreadingInteraction *)self delegate];
     WeakRetained = objc_loadWeakRetained(&self->_view);
-    [v6 locationInView:WeakRetained];
-    [v4 proofreadingInteraction:self receivedTapAtLocation:?];
+    [interactionCopy locationInView:WeakRetained];
+    [delegate proofreadingInteraction:self receivedTapAtLocation:?];
   }
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = [(_UIWTCProofreadingInteraction *)self delegate];
+  beginCopy = begin;
+  delegate = [(_UIWTCProofreadingInteraction *)self delegate];
   WeakRetained = objc_loadWeakRetained(&self->_view);
-  [v4 locationInView:WeakRetained];
+  [beginCopy locationInView:WeakRetained];
   v8 = v7;
   v10 = v9;
 
-  LOBYTE(self) = [v5 proofreadingInteraction:self shouldRespondToTapAtPoint:{v8, v10}];
+  LOBYTE(self) = [delegate proofreadingInteraction:self shouldRespondToTapAtPoint:{v8, v10}];
   return self;
 }
 

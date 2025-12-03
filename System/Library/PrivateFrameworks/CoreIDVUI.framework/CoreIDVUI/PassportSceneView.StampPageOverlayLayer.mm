@@ -1,11 +1,11 @@
 @interface PassportSceneView.StampPageOverlayLayer
 - (_TtCC9CoreIDVUI17PassportSceneView21StampPageOverlayLayer)init;
-- (_TtCC9CoreIDVUI17PassportSceneView21StampPageOverlayLayer)initWithLayer:(id)a3;
+- (_TtCC9CoreIDVUI17PassportSceneView21StampPageOverlayLayer)initWithLayer:(id)layer;
 @end
 
 @implementation PassportSceneView.StampPageOverlayLayer
 
-- (_TtCC9CoreIDVUI17PassportSceneView21StampPageOverlayLayer)initWithLayer:(id)a3
+- (_TtCC9CoreIDVUI17PassportSceneView21StampPageOverlayLayer)initWithLayer:(id)layer
 {
   swift_unknownObjectRetain();
   sub_245911354();

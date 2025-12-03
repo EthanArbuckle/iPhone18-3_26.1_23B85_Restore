@@ -1,47 +1,47 @@
 @interface MRAction
-- (MRAction)initWithAction:(id)a3 andTarget:(id)a4;
-- (MRAction)initWithAction:(id)a3 inRenderer:(id)a4;
-- (MRAction)initWithBlock:(id)a3 andSender:(id)a4;
-- (MRAction)initWithSelector:(SEL)a3 sender:(id)a4 andTargetPath:(id)a5 inRenderer:(id)a6;
+- (MRAction)initWithAction:(id)action andTarget:(id)target;
+- (MRAction)initWithAction:(id)action inRenderer:(id)renderer;
+- (MRAction)initWithBlock:(id)block andSender:(id)sender;
+- (MRAction)initWithSelector:(SEL)selector sender:(id)sender andTargetPath:(id)path inRenderer:(id)renderer;
 - (MRLayer)resolvedTarget;
 - (double)invoke;
-- (void)_resolveTargetPath:(id)a3;
+- (void)_resolveTargetPath:(id)path;
 - (void)dealloc;
 @end
 
 @implementation MRAction
 
-- (MRAction)initWithAction:(id)a3 inRenderer:(id)a4
+- (MRAction)initWithAction:(id)action inRenderer:(id)renderer
 {
   v9.receiver = self;
   v9.super_class = MRAction;
   v6 = [(MRAction *)&v9 init];
   if (v6)
   {
-    v7 = a3;
-    v6->_renderer = a4;
-    v6->_mcAction = v7;
-    v6->_targetPath = [(NSString *)[(MCAction *)v7 targetObjectID] copy];
+    actionCopy = action;
+    v6->_renderer = renderer;
+    v6->_mcAction = actionCopy;
+    v6->_targetPath = [(NSString *)[(MCAction *)actionCopy targetObjectID] copy];
   }
 
   return v6;
 }
 
-- (MRAction)initWithAction:(id)a3 andTarget:(id)a4
+- (MRAction)initWithAction:(id)action andTarget:(id)target
 {
   v8.receiver = self;
   v8.super_class = MRAction;
   v6 = [(MRAction *)&v8 init];
   if (v6)
   {
-    v6->_mcAction = a3;
-    v6->_resolvedTarget = a4;
+    v6->_mcAction = action;
+    v6->_resolvedTarget = target;
   }
 
   return v6;
 }
 
-- (MRAction)initWithSelector:(SEL)a3 sender:(id)a4 andTargetPath:(id)a5 inRenderer:(id)a6
+- (MRAction)initWithSelector:(SEL)selector sender:(id)sender andTargetPath:(id)path inRenderer:(id)renderer
 {
   v14.receiver = self;
   v14.super_class = MRAction;
@@ -49,26 +49,26 @@
   v11 = v10;
   if (v10)
   {
-    v10->_renderer = a6;
+    v10->_renderer = renderer;
     v12 = [NSInvocation invocationWithMethodSignature:[NSMethodSignature signatureWithObjCTypes:"d@:@"]];
     v11->_invocation = v12;
-    [(NSInvocation *)v12 setSelector:a3];
-    v11->_sender = a4;
-    v11->_targetPath = [a5 copy];
+    [(NSInvocation *)v12 setSelector:selector];
+    v11->_sender = sender;
+    v11->_targetPath = [path copy];
   }
 
   return v11;
 }
 
-- (MRAction)initWithBlock:(id)a3 andSender:(id)a4
+- (MRAction)initWithBlock:(id)block andSender:(id)sender
 {
   v8.receiver = self;
   v8.super_class = MRAction;
   v6 = [(MRAction *)&v8 init];
   if (v6)
   {
-    v6->_block = [a3 copy];
-    v6->_sender = a4;
+    v6->_block = [block copy];
+    v6->_sender = sender;
   }
 
   return v6;
@@ -95,7 +95,7 @@
 - (double)invoke
 {
   v6 = 0.0;
-  v7 = self;
+  selfCopy = self;
   block = self->_block;
   if (block)
   {
@@ -107,9 +107,9 @@
   else if (self->_invocation)
   {
     [(NSInvocation *)self->_invocation setTarget:[(MRAction *)self resolvedTarget]];
-    [(NSInvocation *)self->_invocation setArgument:&v7 atIndex:2];
-    [(NSInvocation *)v7->_invocation invoke];
-    [(NSInvocation *)v7->_invocation getReturnValue:&v6];
+    [(NSInvocation *)self->_invocation setArgument:&selfCopy atIndex:2];
+    [(NSInvocation *)selfCopy->_invocation invoke];
+    [(NSInvocation *)selfCopy->_invocation getReturnValue:&v6];
     return v6;
   }
 
@@ -154,15 +154,15 @@ LABEL_8:
   return self->_resolvedTarget;
 }
 
-- (void)_resolveTargetPath:(id)a3
+- (void)_resolveTargetPath:(id)path
 {
   sender = self->_sender;
-  if (![a3 length])
+  if (![path length])
   {
     goto LABEL_21;
   }
 
-  v6 = [a3 componentsSeparatedByString:@"/"];
+  v6 = [path componentsSeparatedByString:@"/"];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -188,7 +188,7 @@ LABEL_8:
       v11 = *(*(&v15 + 1) + 8 * v10);
       if ([v11 isEqualToString:@".."])
       {
-        v12 = [sender superlayer];
+        superlayer = [sender superlayer];
         goto LABEL_11;
       }
 
@@ -203,17 +203,17 @@ LABEL_8:
       {
         if ([v11 isEqualToString:@"@currentSublayer"])
         {
-          v12 = [sender currentSublayer];
+          superlayer = [sender currentSublayer];
         }
 
         else
         {
 LABEL_10:
-          v12 = [sender sublayerForKey:v11];
+          superlayer = [sender sublayerForKey:v11];
         }
 
 LABEL_11:
-        sender = v12;
+        sender = superlayer;
         goto LABEL_12;
       }
 
@@ -245,7 +245,7 @@ LABEL_21:
 
   else
   {
-    NSLog(@"Error: could not resolve action target path '%@'.", a3);
+    NSLog(@"Error: could not resolve action target path '%@'.", path);
   }
 }
 

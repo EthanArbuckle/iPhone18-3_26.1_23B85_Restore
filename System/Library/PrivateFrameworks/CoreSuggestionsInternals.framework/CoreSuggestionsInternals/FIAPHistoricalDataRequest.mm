@@ -1,25 +1,25 @@
 @interface FIAPHistoricalDataRequest
-+ (id)historicalDataRequestWithPersonHandle:(id)a3 startDate:(id)a4 endDate:(id)a5;
-- (BOOL)_dateRangeIsSubsetOfHistoricalDataRequest:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToHistoricalDataRequest:(id)a3;
-- (BOOL)subsetOfHistoricalDataRequest:(id)a3;
-- (FIAPHistoricalDataRequest)initWithCoder:(id)a3;
-- (FIAPHistoricalDataRequest)initWithRequestId:(unint64_t)a3 pluginIdentifier:(id)a4 personHandle:(id)a5 startDate:(id)a6 endDate:(id)a7;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)historicalDataRequestWithPersonHandle:(id)handle startDate:(id)date endDate:(id)endDate;
+- (BOOL)_dateRangeIsSubsetOfHistoricalDataRequest:(id)request;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToHistoricalDataRequest:(id)request;
+- (BOOL)subsetOfHistoricalDataRequest:(id)request;
+- (FIAPHistoricalDataRequest)initWithCoder:(id)coder;
+- (FIAPHistoricalDataRequest)initWithRequestId:(unint64_t)id pluginIdentifier:(id)identifier personHandle:(id)handle startDate:(id)date endDate:(id)endDate;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FIAPHistoricalDataRequest
 
-- (BOOL)subsetOfHistoricalDataRequest:(id)a3
+- (BOOL)subsetOfHistoricalDataRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = self->_personHandle;
   v6 = v5;
-  if (v5 == v4[3])
+  if (v5 == requestCopy[3])
   {
 
     goto LABEL_5;
@@ -30,7 +30,7 @@
   if (v7)
   {
 LABEL_5:
-    v8 = [(FIAPHistoricalDataRequest *)self _dateRangeIsSubsetOfHistoricalDataRequest:v4];
+    v8 = [(FIAPHistoricalDataRequest *)self _dateRangeIsSubsetOfHistoricalDataRequest:requestCopy];
     goto LABEL_6;
   }
 
@@ -40,30 +40,30 @@ LABEL_6:
   return v8;
 }
 
-- (BOOL)_dateRangeIsSubsetOfHistoricalDataRequest:(id)a3
+- (BOOL)_dateRangeIsSubsetOfHistoricalDataRequest:(id)request
 {
   startDate = self->_startDate;
-  v5 = *(a3 + 4);
-  v6 = a3;
+  v5 = *(request + 4);
+  requestCopy = request;
   v7 = [(NSDate *)startDate compare:v5];
   endDate = self->_endDate;
-  v9 = v6[5];
+  v9 = requestCopy[5];
 
   v10 = [(NSDate *)endDate compare:v9]+ 1;
   return v7 < 2 && v10 < 2;
 }
 
-- (BOOL)isEqualToHistoricalDataRequest:(id)a3
+- (BOOL)isEqualToHistoricalDataRequest:(id)request
 {
-  v4 = a3;
-  if (!v4)
+  requestCopy = request;
+  if (!requestCopy)
   {
     goto LABEL_16;
   }
 
   v5 = self->_personHandle;
   v6 = v5;
-  if (v5 == v4[3])
+  if (v5 == requestCopy[3])
   {
   }
 
@@ -79,7 +79,7 @@ LABEL_6:
 
   v8 = self->_pluginIdentifier;
   v9 = v8;
-  if (v8 == v4[2])
+  if (v8 == requestCopy[2])
   {
   }
 
@@ -95,7 +95,7 @@ LABEL_6:
 
   v11 = self->_startDate;
   v12 = v11;
-  if (v11 == v4[4])
+  if (v11 == requestCopy[4])
   {
   }
 
@@ -111,7 +111,7 @@ LABEL_6:
 
   v14 = self->_endDate;
   v15 = v14;
-  if (v14 == v4[5])
+  if (v14 == requestCopy[5])
   {
 
     goto LABEL_19;
@@ -122,7 +122,7 @@ LABEL_6:
   if (v16)
   {
 LABEL_19:
-    v17 = self->_requestId == v4[1];
+    v17 = self->_requestId == requestCopy[1];
     goto LABEL_17;
   }
 
@@ -133,24 +133,24 @@ LABEL_17:
   return v17;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(FIAPHistoricalDataRequest *)self isEqualToHistoricalDataRequest:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(FIAPHistoricalDataRequest *)self isEqualToHistoricalDataRequest:v5];
   }
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   objc_opt_class();
   v5 = objc_opt_new();
@@ -158,19 +158,19 @@ LABEL_17:
   if (v5)
   {
     *(v5 + 8) = self->_requestId;
-    v7 = [(NSString *)self->_pluginIdentifier copyWithZone:a3];
+    v7 = [(NSString *)self->_pluginIdentifier copyWithZone:zone];
     v8 = v6[2];
     v6[2] = v7;
 
-    v9 = [(NSString *)self->_personHandle copyWithZone:a3];
+    v9 = [(NSString *)self->_personHandle copyWithZone:zone];
     v10 = v6[3];
     v6[3] = v9;
 
-    v11 = [(NSDate *)self->_startDate copyWithZone:a3];
+    v11 = [(NSDate *)self->_startDate copyWithZone:zone];
     v12 = v6[4];
     v6[4] = v11;
 
-    v13 = [(NSDate *)self->_endDate copyWithZone:a3];
+    v13 = [(NSDate *)self->_endDate copyWithZone:zone];
     v14 = v6[5];
     v6[5] = v13;
   }
@@ -178,25 +178,25 @@ LABEL_17:
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   requestId = self->_requestId;
-  v5 = a3;
-  [v5 encodeInt64:requestId forKey:@"rid"];
-  [v5 encodeObject:self->_pluginIdentifier forKey:@"pid"];
-  [v5 encodeObject:self->_personHandle forKey:@"prh"];
-  [v5 encodeObject:self->_startDate forKey:@"sdt"];
-  [v5 encodeObject:self->_endDate forKey:@"edt"];
+  coderCopy = coder;
+  [coderCopy encodeInt64:requestId forKey:@"rid"];
+  [coderCopy encodeObject:self->_pluginIdentifier forKey:@"pid"];
+  [coderCopy encodeObject:self->_personHandle forKey:@"prh"];
+  [coderCopy encodeObject:self->_startDate forKey:@"sdt"];
+  [coderCopy encodeObject:self->_endDate forKey:@"edt"];
 }
 
-- (FIAPHistoricalDataRequest)initWithCoder:(id)a3
+- (FIAPHistoricalDataRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeInt64ForKey:@"rid"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pid"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"prh"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sdt"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"edt"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeInt64ForKey:@"rid"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pid"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"prh"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sdt"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"edt"];
 
   v10 = [(FIAPHistoricalDataRequest *)self initWithRequestId:v5 pluginIdentifier:v6 personHandle:v7 startDate:v8 endDate:v9];
   return v10;
@@ -220,34 +220,34 @@ LABEL_17:
   return v5;
 }
 
-- (FIAPHistoricalDataRequest)initWithRequestId:(unint64_t)a3 pluginIdentifier:(id)a4 personHandle:(id)a5 startDate:(id)a6 endDate:(id)a7
+- (FIAPHistoricalDataRequest)initWithRequestId:(unint64_t)id pluginIdentifier:(id)identifier personHandle:(id)handle startDate:(id)date endDate:(id)endDate
 {
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  identifierCopy = identifier;
+  handleCopy = handle;
+  dateCopy = date;
+  endDateCopy = endDate;
   v20.receiver = self;
   v20.super_class = FIAPHistoricalDataRequest;
   v17 = [(FIAPHistoricalDataRequest *)&v20 init];
   v18 = v17;
   if (v17)
   {
-    v17->_requestId = a3;
-    objc_storeStrong(&v17->_pluginIdentifier, a4);
-    objc_storeStrong(&v18->_personHandle, a5);
-    objc_storeStrong(&v18->_startDate, a6);
-    objc_storeStrong(&v18->_endDate, a7);
+    v17->_requestId = id;
+    objc_storeStrong(&v17->_pluginIdentifier, identifier);
+    objc_storeStrong(&v18->_personHandle, handle);
+    objc_storeStrong(&v18->_startDate, date);
+    objc_storeStrong(&v18->_endDate, endDate);
   }
 
   return v18;
 }
 
-+ (id)historicalDataRequestWithPersonHandle:(id)a3 startDate:(id)a4 endDate:(id)a5
++ (id)historicalDataRequestWithPersonHandle:(id)handle startDate:(id)date endDate:(id)endDate
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[FIAPHistoricalDataRequest alloc] initWithPersonHandle:v9 startDate:v8 endDate:v7];
+  endDateCopy = endDate;
+  dateCopy = date;
+  handleCopy = handle;
+  v10 = [[FIAPHistoricalDataRequest alloc] initWithPersonHandle:handleCopy startDate:dateCopy endDate:endDateCopy];
 
   return v10;
 }

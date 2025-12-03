@@ -1,26 +1,26 @@
 @interface ADDynamicPolynomialsLensDistortionModel
-- (ADDynamicPolynomialsLensDistortionModel)initWithDistortionCenter:(CGPoint)a3 dynFactor:(float)a4 polynomialsBase:(const ADDistortionPolynomials *)a5 polynomialsDynamic:(const ADDistortionPolynomials *)a6;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (ADDynamicPolynomialsLensDistortionModel)initWithDistortionCenter:(CGPoint)center dynFactor:(float)factor polynomialsBase:(const ADDistortionPolynomials *)base polynomialsDynamic:(const ADDistortionPolynomials *)dynamic;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)setDistortionPolynomials:(const ADDistortionPolynomials *)a3;
-- (void)setDistortionPolynomialsBase:(const ADDistortionPolynomials *)a3;
-- (void)setDistortionPolynomialsDynamic:(const ADDistortionPolynomials *)a3;
+- (void)setDistortionPolynomials:(const ADDistortionPolynomials *)polynomials;
+- (void)setDistortionPolynomialsBase:(const ADDistortionPolynomials *)base;
+- (void)setDistortionPolynomialsDynamic:(const ADDistortionPolynomials *)dynamic;
 - (void)updatePolynomials;
 @end
 
 @implementation ADDynamicPolynomialsLensDistortionModel
 
-- (ADDynamicPolynomialsLensDistortionModel)initWithDistortionCenter:(CGPoint)a3 dynFactor:(float)a4 polynomialsBase:(const ADDistortionPolynomials *)a5 polynomialsDynamic:(const ADDistortionPolynomials *)a6
+- (ADDynamicPolynomialsLensDistortionModel)initWithDistortionCenter:(CGPoint)center dynFactor:(float)factor polynomialsBase:(const ADDistortionPolynomials *)base polynomialsDynamic:(const ADDistortionPolynomials *)dynamic
 {
-  if (!a5 || !a6)
+  if (!base || !dynamic)
   {
-    v20 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE660] reason:@"distortion polynomials cannot be nil" userInfo:{0, a3.x, a3.y}];
+    v20 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE660] reason:@"distortion polynomials cannot be nil" userInfo:{0, center.x, center.y}];
     objc_exception_throw(v20);
   }
 
-  y = a3.y;
-  x = a3.x;
+  y = center.y;
+  x = center.x;
   v21.receiver = self;
   v21.super_class = ADDynamicPolynomialsLensDistortionModel;
   v11 = [(ADDynamicPolynomialsLensDistortionModel *)&v21 init];
@@ -28,28 +28,28 @@
   if (v11)
   {
     [(ADPolynomialsLensDistortionModel *)v11 setDistortionCenter:x, y];
-    v13 = *&a5->inverseOrders[4];
-    v15 = *a5->forwardOrders;
-    v14 = *&a5->forwardOrders[4];
-    *v12->_polynomialsBase.inverseOrders = *a5->inverseOrders;
+    v13 = *&base->inverseOrders[4];
+    v15 = *base->forwardOrders;
+    v14 = *&base->forwardOrders[4];
+    *v12->_polynomialsBase.inverseOrders = *base->inverseOrders;
     *&v12->_polynomialsBase.inverseOrders[4] = v13;
     *v12->_polynomialsBase.forwardOrders = v15;
     *&v12->_polynomialsBase.forwardOrders[4] = v14;
-    v16 = *&a6->inverseOrders[4];
-    v18 = *a6->forwardOrders;
-    v17 = *&a6->forwardOrders[4];
-    *v12->_polynomialsDynamic.inverseOrders = *a6->inverseOrders;
+    v16 = *&dynamic->inverseOrders[4];
+    v18 = *dynamic->forwardOrders;
+    v17 = *&dynamic->forwardOrders[4];
+    *v12->_polynomialsDynamic.inverseOrders = *dynamic->inverseOrders;
     *&v12->_polynomialsDynamic.inverseOrders[4] = v16;
     *v12->_polynomialsDynamic.forwardOrders = v18;
     *&v12->_polynomialsDynamic.forwardOrders[4] = v17;
-    v12->_dynamicFactor = a4;
+    v12->_dynamicFactor = factor;
     [(ADDynamicPolynomialsLensDistortionModel *)v12 updatePolynomials];
   }
 
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [ADDynamicPolynomialsLensDistortionModel alloc];
   [(ADPolynomialsLensDistortionModel *)self distortionCenter];
@@ -57,11 +57,11 @@
   return [ADDynamicPolynomialsLensDistortionModel initWithDistortionCenter:v4 dynFactor:"initWithDistortionCenter:dynFactor:polynomialsBase:polynomialsDynamic:" polynomialsBase:&self->_polynomialsBase polynomialsDynamic:&self->_polynomialsDynamic];
 }
 
-- (void)setDistortionPolynomials:(const ADDistortionPolynomials *)a3
+- (void)setDistortionPolynomials:(const ADDistortionPolynomials *)polynomials
 {
   v8.receiver = self;
   v8.super_class = ADDynamicPolynomialsLensDistortionModel;
-  [(ADPolynomialsLensDistortionModel *)&v8 setDistortionPolynomials:a3];
+  [(ADPolynomialsLensDistortionModel *)&v8 setDistortionPolynomials:polynomials];
   v4 = &self->super._polynomials.forwardOrders[6];
   inverseOrders = self->_polynomialsDynamic.inverseOrders;
   v6 = self->_polynomialsBase.inverseOrders;
@@ -79,18 +79,18 @@
   while (v7);
 }
 
-- (void)setDistortionPolynomialsDynamic:(const ADDistortionPolynomials *)a3
+- (void)setDistortionPolynomialsDynamic:(const ADDistortionPolynomials *)dynamic
 {
-  if (!a3)
+  if (!dynamic)
   {
     v8 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE660] reason:@"distortionPolynomials cannot be nil" userInfo:{0, v3, v4}];
     objc_exception_throw(v8);
   }
 
-  v5 = *&a3->inverseOrders[4];
-  v7 = *a3->forwardOrders;
-  v6 = *&a3->forwardOrders[4];
-  *self->_polynomialsDynamic.inverseOrders = *a3->inverseOrders;
+  v5 = *&dynamic->inverseOrders[4];
+  v7 = *dynamic->forwardOrders;
+  v6 = *&dynamic->forwardOrders[4];
+  *self->_polynomialsDynamic.inverseOrders = *dynamic->inverseOrders;
   *&self->_polynomialsDynamic.inverseOrders[4] = v5;
   *self->_polynomialsDynamic.forwardOrders = v7;
   *&self->_polynomialsDynamic.forwardOrders[4] = v6;
@@ -98,18 +98,18 @@
   [(ADDynamicPolynomialsLensDistortionModel *)self updatePolynomials];
 }
 
-- (void)setDistortionPolynomialsBase:(const ADDistortionPolynomials *)a3
+- (void)setDistortionPolynomialsBase:(const ADDistortionPolynomials *)base
 {
-  if (!a3)
+  if (!base)
   {
     v8 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE660] reason:@"distortionPolynomials cannot be nil" userInfo:{0, v3, v4}];
     objc_exception_throw(v8);
   }
 
-  v5 = *&a3->inverseOrders[4];
-  v7 = *a3->forwardOrders;
-  v6 = *&a3->forwardOrders[4];
-  *self->_polynomialsBase.inverseOrders = *a3->inverseOrders;
+  v5 = *&base->inverseOrders[4];
+  v7 = *base->forwardOrders;
+  v6 = *&base->forwardOrders[4];
+  *self->_polynomialsBase.inverseOrders = *base->inverseOrders;
   *&self->_polynomialsBase.inverseOrders[4] = v5;
   *self->_polynomialsBase.forwardOrders = v7;
   *&self->_polynomialsBase.forwardOrders[4] = v6;
@@ -145,22 +145,22 @@
   return v7 ^ (4 * [ADPolynomialsLensDistortionModel hashPolynomials:&self->_polynomialsDynamic]);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (!equalCopy)
   {
     goto LABEL_10;
   }
 
-  if (self == v4)
+  if (self == equalCopy)
   {
     v12 = 1;
     goto LABEL_14;
   }
 
-  if (([(ADDynamicPolynomialsLensDistortionModel *)v4 isMemberOfClass:objc_opt_class()]& 1) != 0)
+  if (([(ADDynamicPolynomialsLensDistortionModel *)equalCopy isMemberOfClass:objc_opt_class()]& 1) != 0)
   {
     v6 = v5;
     [(ADPolynomialsLensDistortionModel *)self distortionCenter];

@@ -1,9 +1,9 @@
 @interface CAAUEQGraphView
 - (NSArray)accessibilityElements;
-- (void)layoutSublayersOfLayer:(id)a3;
+- (void)layoutSublayersOfLayer:(id)layer;
 - (void)removeFromSuperview;
 - (void)tintColorDidChange;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
 @end
 
 @implementation CAAUEQGraphView
@@ -14,19 +14,19 @@
   v4.super_class = type metadata accessor for CAAUEQGraphView();
   v2 = v4.receiver;
   [(CAAUEQGraphView *)&v4 removeFromSuperview];
-  v3 = [objc_opt_self() defaultCenter];
-  [v3 removeObserver_];
+  defaultCenter = [objc_opt_self() defaultCenter];
+  [defaultCenter removeObserver_];
 }
 
 - (void)tintColorDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_23716B88C();
 }
 
 - (NSArray)accessibilityElements
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_23716BEA8();
 
   if (v3)
@@ -42,28 +42,28 @@
   return v4;
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
   sub_237115094(0, &qword_27DE94790);
   sub_237114F70();
   sub_2371966DC();
-  v6 = a4;
-  v7 = self;
+  eventCopy = event;
+  selfCopy = self;
   v8 = sub_2371966CC();
-  v10.receiver = v7;
+  v10.receiver = selfCopy;
   v10.super_class = type metadata accessor for CAAUEQGraphView();
-  [(CAAUEQGraphView *)&v10 touchesCancelled:v8 withEvent:v6];
+  [(CAAUEQGraphView *)&v10 touchesCancelled:v8 withEvent:eventCopy];
 
   v9 = sub_2371966CC();
 
-  [(CAAUEQGraphView *)v7 touchesEnded:v9 withEvent:v6];
+  [(CAAUEQGraphView *)selfCopy touchesEnded:v9 withEvent:eventCopy];
 }
 
-- (void)layoutSublayersOfLayer:(id)a3
+- (void)layoutSublayersOfLayer:(id)layer
 {
-  v4 = a3;
-  v5 = self;
-  sub_23716D938(v4);
+  layerCopy = layer;
+  selfCopy = self;
+  sub_23716D938(layerCopy);
 }
 
 @end

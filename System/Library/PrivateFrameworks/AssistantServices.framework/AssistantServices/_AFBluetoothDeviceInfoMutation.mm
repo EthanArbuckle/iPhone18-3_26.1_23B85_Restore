@@ -11,7 +11,7 @@
 - (BOOL)getSupportsPersonalVolume;
 - (BOOL)getSupportsSpokenNotification;
 - (BOOL)getSupportsVoiceTrigger;
-- (_AFBluetoothDeviceInfoMutation)initWithBase:(id)a3;
+- (_AFBluetoothDeviceInfoMutation)initWithBase:(id)base;
 - (id)getAddress;
 - (id)getDeviceUID;
 - (id)getHeadGestureConfiguration;
@@ -26,15 +26,15 @@
 {
   if ((*(&self->_mutationFlags + 2) & 4) != 0)
   {
-    v2 = self->_headGestureConfiguration;
+    headGestureConfiguration = self->_headGestureConfiguration;
   }
 
   else
   {
-    v2 = [(AFBluetoothDeviceInfo *)self->_base headGestureConfiguration];
+    headGestureConfiguration = [(AFBluetoothDeviceInfo *)self->_base headGestureConfiguration];
   }
 
-  return v2;
+  return headGestureConfiguration;
 }
 
 - (BOOL)getSupportsLiveTranslationCapability
@@ -223,57 +223,57 @@
 {
   if ((*&self->_mutationFlags & 8) != 0)
   {
-    v2 = self->_deviceUID;
+    deviceUID = self->_deviceUID;
   }
 
   else
   {
-    v2 = [(AFBluetoothDeviceInfo *)self->_base deviceUID];
+    deviceUID = [(AFBluetoothDeviceInfo *)self->_base deviceUID];
   }
 
-  return v2;
+  return deviceUID;
 }
 
 - (id)getName
 {
   if ((*&self->_mutationFlags & 4) != 0)
   {
-    v2 = self->_name;
+    name = self->_name;
   }
 
   else
   {
-    v2 = [(AFBluetoothDeviceInfo *)self->_base name];
+    name = [(AFBluetoothDeviceInfo *)self->_base name];
   }
 
-  return v2;
+  return name;
 }
 
 - (id)getAddress
 {
   if ((*&self->_mutationFlags & 2) != 0)
   {
-    v2 = self->_address;
+    address = self->_address;
   }
 
   else
   {
-    v2 = [(AFBluetoothDeviceInfo *)self->_base address];
+    address = [(AFBluetoothDeviceInfo *)self->_base address];
   }
 
-  return v2;
+  return address;
 }
 
-- (_AFBluetoothDeviceInfoMutation)initWithBase:(id)a3
+- (_AFBluetoothDeviceInfoMutation)initWithBase:(id)base
 {
-  v5 = a3;
+  baseCopy = base;
   v9.receiver = self;
   v9.super_class = _AFBluetoothDeviceInfoMutation;
   v6 = [(_AFBluetoothDeviceInfoMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_base, a3);
+    objc_storeStrong(&v6->_base, base);
   }
 
   return v7;

@@ -1,7 +1,7 @@
 @interface TSPCompressionComponentWriteChannel
 - (void)close;
 - (void)dealloc;
-- (void)writeData:(id)a3;
+- (void)writeData:(id)data;
 @end
 
 @implementation TSPCompressionComponentWriteChannel
@@ -34,17 +34,17 @@
   dispatch_sync(writeQueue, block);
 }
 
-- (void)writeData:(id)a3
+- (void)writeData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   writeQueue = self->_writeQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = sub_276A20F80;
   v7[3] = &unk_27A6E4808;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dataCopy;
+  v6 = dataCopy;
   dispatch_sync(writeQueue, v7);
 }
 

@@ -1,56 +1,56 @@
 @interface ASDVPPRequest
-- (ASDVPPRequest)initWithCoder:(id)a3;
+- (ASDVPPRequest)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ASDVPPRequest
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   accountIdentifier = self->_accountIdentifier;
-  v5 = a3;
-  [v5 encodeObject:accountIdentifier forKey:@"Account"];
-  [v5 encodeInt64:self->_archiveType forKey:@"ArchiveType"];
-  [v5 encodeObject:self->_bundleIdentifier forKey:@"Bundle"];
-  [v5 encodeObject:self->_externalVersionIdentifier forKey:@"ExternalVersion"];
-  [v5 encodeObject:self->_itemIdentifier forKey:@"Item"];
-  [v5 encodeObject:self->_requestIdentifier forKey:@"Request"];
-  [v5 encodeInt64:self->_requestType forKey:@"RequestType"];
-  [v5 encodeInt64:self->_softwarePlatform forKey:@"SoftwarePlatform"];
+  coderCopy = coder;
+  [coderCopy encodeObject:accountIdentifier forKey:@"Account"];
+  [coderCopy encodeInt64:self->_archiveType forKey:@"ArchiveType"];
+  [coderCopy encodeObject:self->_bundleIdentifier forKey:@"Bundle"];
+  [coderCopy encodeObject:self->_externalVersionIdentifier forKey:@"ExternalVersion"];
+  [coderCopy encodeObject:self->_itemIdentifier forKey:@"Item"];
+  [coderCopy encodeObject:self->_requestIdentifier forKey:@"Request"];
+  [coderCopy encodeInt64:self->_requestType forKey:@"RequestType"];
+  [coderCopy encodeInt64:self->_softwarePlatform forKey:@"SoftwarePlatform"];
 }
 
-- (ASDVPPRequest)initWithCoder:(id)a3
+- (ASDVPPRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = ASDVPPRequest;
   v5 = [(ASDVPPRequest *)&v17 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Account"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Account"];
     accountIdentifier = v5->_accountIdentifier;
     v5->_accountIdentifier = v6;
 
-    v5->_archiveType = [v4 decodeInt64ForKey:@"ArchiveType"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Bundle"];
+    v5->_archiveType = [coderCopy decodeInt64ForKey:@"ArchiveType"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Bundle"];
     bundleIdentifier = v5->_bundleIdentifier;
     v5->_bundleIdentifier = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ExternalVersion"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ExternalVersion"];
     externalVersionIdentifier = v5->_externalVersionIdentifier;
     v5->_externalVersionIdentifier = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Item"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Item"];
     itemIdentifier = v5->_itemIdentifier;
     v5->_itemIdentifier = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Request"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Request"];
     requestIdentifier = v5->_requestIdentifier;
     v5->_requestIdentifier = v14;
 
-    v5->_requestType = [v4 decodeInt64ForKey:@"RequestType"];
-    v5->_softwarePlatform = [v4 decodeInt64ForKey:@"SoftwarePlatform"];
+    v5->_requestType = [coderCopy decodeInt64ForKey:@"RequestType"];
+    v5->_softwarePlatform = [coderCopy decodeInt64ForKey:@"SoftwarePlatform"];
   }
 
   return v5;

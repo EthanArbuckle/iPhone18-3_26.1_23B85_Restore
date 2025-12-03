@@ -1,13 +1,13 @@
 @interface PushSubscriptionRequest
 - (NSDictionary)parameters;
 - (_TtC18PodcastsFoundation23PushSubscriptionRequest)init;
-- (_TtC18PodcastsFoundation23PushSubscriptionRequest)initWithEndpointURL:(id)a3 action:(id)a4 apnsToken:(id)a5;
-- (id)buildURLRequestAndReturnError:(id *)a3;
+- (_TtC18PodcastsFoundation23PushSubscriptionRequest)initWithEndpointURL:(id)l action:(id)action apnsToken:(id)token;
+- (id)buildURLRequestAndReturnError:(id *)error;
 @end
 
 @implementation PushSubscriptionRequest
 
-- (_TtC18PodcastsFoundation23PushSubscriptionRequest)initWithEndpointURL:(id)a3 action:(id)a4 apnsToken:(id)a5
+- (_TtC18PodcastsFoundation23PushSubscriptionRequest)initWithEndpointURL:(id)l action:(id)action apnsToken:(id)token
 {
   ObjectType = swift_getObjectType();
   v8 = sub_1D9176C2C();
@@ -18,7 +18,7 @@
   sub_1D9176B9C();
   v13 = sub_1D917820C();
   v15 = v14;
-  v16 = a5;
+  tokenCopy = token;
   v17 = sub_1D9176C8C();
   v19 = v18;
 
@@ -38,7 +38,7 @@
 
 - (NSDictionary)parameters
 {
-  v2 = self;
+  selfCopy = self;
   PushSubscriptionRequest.parameters.getter();
 
   v3 = sub_1D917802C();
@@ -46,14 +46,14 @@
   return v3;
 }
 
-- (id)buildURLRequestAndReturnError:(id *)a3
+- (id)buildURLRequestAndReturnError:(id *)error
 {
   v4 = sub_1D917653C();
   v5 = *(v4 - 8);
   v6 = *(v5 + 64);
   MEMORY[0x1EEE9AC00](v4);
   v8 = &v12 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v9 = self;
+  selfCopy = self;
   PushSubscriptionRequest.buildURLRequest()(v8);
 
   v10 = sub_1D91764BC();

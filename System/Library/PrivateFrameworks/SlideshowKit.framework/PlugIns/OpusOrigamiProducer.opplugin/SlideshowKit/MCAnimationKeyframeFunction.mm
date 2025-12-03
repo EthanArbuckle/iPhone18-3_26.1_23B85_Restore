@@ -1,32 +1,32 @@
 @interface MCAnimationKeyframeFunction
-+ (id)keyframeWithFunction:(id)a3 atTime:(double)a4 offsetKind:(int)a5 forDuration:(double)a6;
++ (id)keyframeWithFunction:(id)function atTime:(double)time offsetKind:(int)kind forDuration:(double)duration;
 - (MCAnimationKeyframeFunction)init;
-- (MCAnimationKeyframeFunction)initWithImprint:(id)a3;
+- (MCAnimationKeyframeFunction)initWithImprint:(id)imprint;
 - (NSDictionary)functionParameters;
 - (NSString)function;
 - (id)description;
 - (id)imprint;
-- (void)_copySelfToSnapshot:(id)a3;
+- (void)_copySelfToSnapshot:(id)snapshot;
 - (void)demolish;
-- (void)setDuration:(double)a3;
-- (void)setFunction:(id)a3;
-- (void)setFunctionParameters:(id)a3;
-- (void)setFunctionTimeFactor:(double)a3;
-- (void)setFunctionTimeOffset:(double)a3;
-- (void)setInnerEaseInControl:(float)a3;
-- (void)setInnerEaseOutControl:(float)a3;
+- (void)setDuration:(double)duration;
+- (void)setFunction:(id)function;
+- (void)setFunctionParameters:(id)parameters;
+- (void)setFunctionTimeFactor:(double)factor;
+- (void)setFunctionTimeOffset:(double)offset;
+- (void)setInnerEaseInControl:(float)control;
+- (void)setInnerEaseOutControl:(float)control;
 @end
 
 @implementation MCAnimationKeyframeFunction
 
-+ (id)keyframeWithFunction:(id)a3 atTime:(double)a4 offsetKind:(int)a5 forDuration:(double)a6
++ (id)keyframeWithFunction:(id)function atTime:(double)time offsetKind:(int)kind forDuration:(double)duration
 {
-  v7 = *&a5;
+  v7 = *&kind;
   v10 = objc_alloc_init(MCAnimationKeyframeFunction);
-  [(MCAnimationKeyframe *)v10 setTimeOffset:a4];
+  [(MCAnimationKeyframe *)v10 setTimeOffset:time];
   [(MCAnimationKeyframe *)v10 setTimeOffsetKind:v7];
-  [(MCAnimationKeyframeFunction *)v10 setDuration:a6];
-  [(MCAnimationKeyframeFunction *)v10 setFunction:a3];
+  [(MCAnimationKeyframeFunction *)v10 setDuration:duration];
+  [(MCAnimationKeyframeFunction *)v10 setFunction:function];
 
   return v10;
 }
@@ -45,18 +45,18 @@
   return result;
 }
 
-- (MCAnimationKeyframeFunction)initWithImprint:(id)a3
+- (MCAnimationKeyframeFunction)initWithImprint:(id)imprint
 {
   v15.receiver = self;
   v15.super_class = MCAnimationKeyframeFunction;
   v4 = [(MCAnimationKeyframe *)&v15 initWithImprint:?];
   if (v4)
   {
-    [objc_msgSend(a3 objectForKey:{@"duration", "doubleValue"}];
+    [objc_msgSend(imprint objectForKey:{@"duration", "doubleValue"}];
     v4->mDuration = v5;
-    v4->mFunction = [a3 objectForKey:@"functionString"];
-    v4->mFunctionParameters = [a3 objectForKey:@"parameters"];
-    v6 = [a3 objectForKey:@"offset"];
+    v4->mFunction = [imprint objectForKey:@"functionString"];
+    v4->mFunctionParameters = [imprint objectForKey:@"parameters"];
+    v6 = [imprint objectForKey:@"offset"];
     if (v6)
     {
       [v6 doubleValue];
@@ -68,7 +68,7 @@
     }
 
     v4->mFunctionTimeOffset = v7;
-    v8 = [a3 objectForKey:@"factor"];
+    v8 = [imprint objectForKey:@"factor"];
     if (v8)
     {
       [v8 doubleValue];
@@ -80,7 +80,7 @@
     }
 
     v4->mFunctionTimeFactor = v9;
-    v10 = [a3 objectForKey:@"innerEaseInControl"];
+    v10 = [imprint objectForKey:@"innerEaseInControl"];
     if (v10)
     {
       [v10 floatValue];
@@ -92,7 +92,7 @@
     }
 
     v4->mInnerEaseInControl = v11;
-    v12 = [a3 objectForKey:@"innerEaseOutControl"];
+    v12 = [imprint objectForKey:@"innerEaseOutControl"];
     if (v12)
     {
       [v12 floatValue];
@@ -123,49 +123,49 @@
 {
   v7.receiver = self;
   v7.super_class = MCAnimationKeyframeFunction;
-  v3 = [(MCAnimationKeyframe *)&v7 imprint];
-  [v3 setObject:+[NSNumber numberWithDouble:](NSNumber forKey:{"numberWithDouble:", self->mDuration), @"duration"}];
+  imprint = [(MCAnimationKeyframe *)&v7 imprint];
+  [imprint setObject:+[NSNumber numberWithDouble:](NSNumber forKey:{"numberWithDouble:", self->mDuration), @"duration"}];
   mFunction = self->mFunction;
   if (mFunction)
   {
-    [v3 setObject:mFunction forKey:@"functionString"];
+    [imprint setObject:mFunction forKey:@"functionString"];
   }
 
   mFunctionParameters = self->mFunctionParameters;
   if (mFunctionParameters)
   {
-    [v3 setObject:mFunctionParameters forKey:@"parameters"];
+    [imprint setObject:mFunctionParameters forKey:@"parameters"];
   }
 
   if (self->mFunctionTimeOffset != 0.0)
   {
-    [v3 setObject:+[NSNumber numberWithDouble:](NSNumber forKey:{"numberWithDouble:"), @"offset"}];
+    [imprint setObject:+[NSNumber numberWithDouble:](NSNumber forKey:{"numberWithDouble:"), @"offset"}];
   }
 
   if (self->mFunctionTimeFactor != 1.0)
   {
-    [v3 setObject:+[NSNumber numberWithDouble:](NSNumber forKey:{"numberWithDouble:"), @"factor"}];
+    [imprint setObject:+[NSNumber numberWithDouble:](NSNumber forKey:{"numberWithDouble:"), @"factor"}];
   }
 
   if (self->mInnerEaseInControl != 0.0)
   {
-    [v3 setObject:+[NSNumber numberWithFloat:](NSNumber forKey:{"numberWithFloat:"), @"innerEaseInControl"}];
+    [imprint setObject:+[NSNumber numberWithFloat:](NSNumber forKey:{"numberWithFloat:"), @"innerEaseInControl"}];
   }
 
   if (self->mInnerEaseOutControl != 1.0)
   {
-    [v3 setObject:+[NSNumber numberWithFloat:](NSNumber forKey:{"numberWithFloat:"), @"innerEaseOutControl"}];
+    [imprint setObject:+[NSNumber numberWithFloat:](NSNumber forKey:{"numberWithFloat:"), @"innerEaseOutControl"}];
   }
 
-  return v3;
+  return imprint;
 }
 
-- (void)setDuration:(double)a3
+- (void)setDuration:(double)duration
 {
-  if (self->mDuration != a3)
+  if (self->mDuration != duration)
   {
     [(MCAnimationPathKeyframed *)self->super.mAnimationPath willChangeValueForKey:@"keyframes"];
-    self->mDuration = a3;
+    self->mDuration = duration;
     mAnimationPath = self->super.mAnimationPath;
 
     [(MCAnimationPathKeyframed *)mAnimationPath didChangeValueForKey:@"keyframes"];
@@ -185,14 +185,14 @@
   return v3;
 }
 
-- (void)setFunction:(id)a3
+- (void)setFunction:(id)function
 {
-  if (([a3 isEqualToString:self->mFunction] & 1) == 0)
+  if (([function isEqualToString:self->mFunction] & 1) == 0)
   {
     [(MCAnimationPathKeyframed *)self->super.mAnimationPath willChangeValueForKey:@"keyframes"];
     objc_sync_enter(self);
 
-    self->mFunction = [a3 copy];
+    self->mFunction = [function copy];
     objc_sync_exit(self);
     mAnimationPath = self->super.mAnimationPath;
 
@@ -213,14 +213,14 @@
   return v3;
 }
 
-- (void)setFunctionParameters:(id)a3
+- (void)setFunctionParameters:(id)parameters
 {
-  if (([a3 isEqualToDictionary:self->mFunctionParameters] & 1) == 0)
+  if (([parameters isEqualToDictionary:self->mFunctionParameters] & 1) == 0)
   {
     [(MCAnimationPathKeyframed *)self->super.mAnimationPath willChangeValueForKey:@"keyframes"];
     objc_sync_enter(self);
 
-    self->mFunctionParameters = a3;
+    self->mFunctionParameters = parameters;
     objc_sync_exit(self);
     mAnimationPath = self->super.mAnimationPath;
 
@@ -228,48 +228,48 @@
   }
 }
 
-- (void)setFunctionTimeOffset:(double)a3
+- (void)setFunctionTimeOffset:(double)offset
 {
-  if (self->mFunctionTimeOffset != a3)
+  if (self->mFunctionTimeOffset != offset)
   {
     [(MCAnimationPathKeyframed *)self->super.mAnimationPath willChangeValueForKey:@"keyframes"];
-    self->mFunctionTimeOffset = a3;
+    self->mFunctionTimeOffset = offset;
     mAnimationPath = self->super.mAnimationPath;
 
     [(MCAnimationPathKeyframed *)mAnimationPath didChangeValueForKey:@"keyframes"];
   }
 }
 
-- (void)setFunctionTimeFactor:(double)a3
+- (void)setFunctionTimeFactor:(double)factor
 {
-  if (self->mFunctionTimeFactor != a3)
+  if (self->mFunctionTimeFactor != factor)
   {
     [(MCAnimationPathKeyframed *)self->super.mAnimationPath willChangeValueForKey:@"keyframes"];
-    self->mFunctionTimeFactor = a3;
+    self->mFunctionTimeFactor = factor;
     mAnimationPath = self->super.mAnimationPath;
 
     [(MCAnimationPathKeyframed *)mAnimationPath didChangeValueForKey:@"keyframes"];
   }
 }
 
-- (void)setInnerEaseInControl:(float)a3
+- (void)setInnerEaseInControl:(float)control
 {
-  if (self->mInnerEaseInControl != a3)
+  if (self->mInnerEaseInControl != control)
   {
     [(MCAnimationPathKeyframed *)self->super.mAnimationPath willChangeValueForKey:@"keyframes"];
-    self->mInnerEaseInControl = a3;
+    self->mInnerEaseInControl = control;
     mAnimationPath = self->super.mAnimationPath;
 
     [(MCAnimationPathKeyframed *)mAnimationPath didChangeValueForKey:@"keyframes"];
   }
 }
 
-- (void)setInnerEaseOutControl:(float)a3
+- (void)setInnerEaseOutControl:(float)control
 {
-  if (self->mInnerEaseOutControl != a3)
+  if (self->mInnerEaseOutControl != control)
   {
     [(MCAnimationPathKeyframed *)self->super.mAnimationPath willChangeValueForKey:@"keyframes"];
-    self->mInnerEaseOutControl = a3;
+    self->mInnerEaseOutControl = control;
     mAnimationPath = self->super.mAnimationPath;
 
     [(MCAnimationPathKeyframed *)mAnimationPath didChangeValueForKey:@"keyframes"];
@@ -285,29 +285,29 @@
   return [NSString stringWithFormat:@"function '%@' from %f to %f with time mapping (%f, %f), easeIn %f and easeOut %f", mFunction, v5, v6 + self->mDuration, *&self->mFunctionTimeOffset, *&self->mFunctionTimeFactor, self->mInnerEaseInControl, self->mInnerEaseOutControl];
 }
 
-- (void)_copySelfToSnapshot:(id)a3
+- (void)_copySelfToSnapshot:(id)snapshot
 {
   objc_sync_enter(self);
   v7.receiver = self;
   v7.super_class = MCAnimationKeyframeFunction;
-  [(MCAnimationKeyframe *)&v7 _copySelfToSnapshot:a3];
-  *(a3 + 6) = *&self->mDuration;
+  [(MCAnimationKeyframe *)&v7 _copySelfToSnapshot:snapshot];
+  *(snapshot + 6) = *&self->mDuration;
   mFunction = self->mFunction;
   if (mFunction)
   {
-    *(a3 + 7) = [(NSString *)mFunction copy];
+    *(snapshot + 7) = [(NSString *)mFunction copy];
   }
 
   mFunctionParameters = self->mFunctionParameters;
   if (mFunctionParameters)
   {
-    *(a3 + 8) = [(NSDictionary *)mFunctionParameters copy];
+    *(snapshot + 8) = [(NSDictionary *)mFunctionParameters copy];
   }
 
-  *(a3 + 9) = *&self->mFunctionTimeOffset;
-  *(a3 + 10) = *&self->mFunctionTimeFactor;
-  *(a3 + 10) = LODWORD(self->mInnerEaseInControl);
-  *(a3 + 11) = LODWORD(self->mInnerEaseOutControl);
+  *(snapshot + 9) = *&self->mFunctionTimeOffset;
+  *(snapshot + 10) = *&self->mFunctionTimeFactor;
+  *(snapshot + 10) = LODWORD(self->mInnerEaseInControl);
+  *(snapshot + 11) = LODWORD(self->mInnerEaseOutControl);
   objc_sync_exit(self);
 }
 

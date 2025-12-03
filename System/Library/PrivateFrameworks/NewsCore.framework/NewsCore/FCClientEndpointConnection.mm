@@ -1,51 +1,51 @@
 @interface FCClientEndpointConnection
-- (FCClientEndpointConnection)initWithConfigurationManager:(id)a3;
-- (FCClientEndpointConnection)initWithEndpointConnection:(id)a3 configurationManager:(id)a4;
-- (void)configurationManager:(id)a3 configurationDidChange:(id)a4;
-- (void)reportConcern:(id)a3 callbackQueue:(id)a4 completion:(id)a5;
-- (void)reportConcernV2:(id)a3 callbackQueue:(id)a4 completion:(id)a5;
-- (void)submitWebAccessWithTagID:(id)a3 purchaseID:(id)a4 emailAddress:(id)a5 purchaseReceipt:(id)a6 countryCode:(id)a7 languageCode:(id)a8 callbackQueue:(id)a9 completion:(id)a10;
-- (void)updateBaseURLWith:(id)a3;
+- (FCClientEndpointConnection)initWithConfigurationManager:(id)manager;
+- (FCClientEndpointConnection)initWithEndpointConnection:(id)connection configurationManager:(id)manager;
+- (void)configurationManager:(id)manager configurationDidChange:(id)change;
+- (void)reportConcern:(id)concern callbackQueue:(id)queue completion:(id)completion;
+- (void)reportConcernV2:(id)v2 callbackQueue:(id)queue completion:(id)completion;
+- (void)submitWebAccessWithTagID:(id)d purchaseID:(id)iD emailAddress:(id)address purchaseReceipt:(id)receipt countryCode:(id)code languageCode:(id)languageCode callbackQueue:(id)queue completion:(id)self0;
+- (void)updateBaseURLWith:(id)with;
 @end
 
 @implementation FCClientEndpointConnection
 
-- (FCClientEndpointConnection)initWithConfigurationManager:(id)a3
+- (FCClientEndpointConnection)initWithConfigurationManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v5 = objc_alloc_init(FCEndpointConnection);
-  v6 = [(FCClientEndpointConnection *)self initWithEndpointConnection:v5 configurationManager:v4];
+  v6 = [(FCClientEndpointConnection *)self initWithEndpointConnection:v5 configurationManager:managerCopy];
 
   return v6;
 }
 
-- (FCClientEndpointConnection)initWithEndpointConnection:(id)a3 configurationManager:(id)a4
+- (FCClientEndpointConnection)initWithEndpointConnection:(id)connection configurationManager:(id)manager
 {
-  v7 = a3;
-  v8 = a4;
+  connectionCopy = connection;
+  managerCopy = manager;
   v19.receiver = self;
   v19.super_class = FCClientEndpointConnection;
   v9 = [(FCClientEndpointConnection *)&v19 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_endpointConnection, a3);
-    objc_storeStrong(&v10->_configurationManager, a4);
+    objc_storeStrong(&v9->_endpointConnection, connection);
+    objc_storeStrong(&v10->_configurationManager, manager);
     v11 = objc_alloc_init(FCAsyncSerialQueue);
     serialQueue = v10->_serialQueue;
     v10->_serialQueue = v11;
 
-    v13 = [(FCClientEndpointConnection *)v10 configurationManager];
-    [v13 addObserver:v10];
+    configurationManager = [(FCClientEndpointConnection *)v10 configurationManager];
+    [configurationManager addObserver:v10];
 
     objc_initWeak(&location, v10);
-    v14 = [(FCClientEndpointConnection *)v10 serialQueue];
+    serialQueue = [(FCClientEndpointConnection *)v10 serialQueue];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __78__FCClientEndpointConnection_initWithEndpointConnection_configurationManager___block_invoke;
     v16[3] = &unk_1E7C3BD20;
     objc_copyWeak(&v17, &location);
-    [v14 enqueueBlock:v16];
+    [serialQueue enqueueBlock:v16];
 
     objc_destroyWeak(&v17);
     objc_destroyWeak(&location);
@@ -92,25 +92,25 @@ void __78__FCClientEndpointConnection_initWithEndpointConnection_configurationMa
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)reportConcernV2:(id)a3 callbackQueue:(id)a4 completion:(id)a5
+- (void)reportConcernV2:(id)v2 callbackQueue:(id)queue completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  v2Copy = v2;
+  queueCopy = queue;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v11 = [(FCClientEndpointConnection *)self serialQueue];
+  serialQueue = [(FCClientEndpointConnection *)self serialQueue];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __71__FCClientEndpointConnection_reportConcernV2_callbackQueue_completion___block_invoke;
   v15[3] = &unk_1E7C3BD70;
   objc_copyWeak(&v19, &location);
-  v12 = v8;
+  v12 = v2Copy;
   v16 = v12;
-  v13 = v9;
+  v13 = queueCopy;
   v17 = v13;
-  v14 = v10;
+  v14 = completionCopy;
   v18 = v14;
-  [v11 enqueueBlock:v15];
+  [serialQueue enqueueBlock:v15];
 
   objc_destroyWeak(&v19);
   objc_destroyWeak(&location);
@@ -180,25 +180,25 @@ void __71__FCClientEndpointConnection_reportConcernV2_callbackQueue_completion__
   }
 }
 
-- (void)reportConcern:(id)a3 callbackQueue:(id)a4 completion:(id)a5
+- (void)reportConcern:(id)concern callbackQueue:(id)queue completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  concernCopy = concern;
+  queueCopy = queue;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v11 = [(FCClientEndpointConnection *)self serialQueue];
+  serialQueue = [(FCClientEndpointConnection *)self serialQueue];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __69__FCClientEndpointConnection_reportConcern_callbackQueue_completion___block_invoke;
   v15[3] = &unk_1E7C3BD70;
   objc_copyWeak(&v19, &location);
-  v12 = v8;
+  v12 = concernCopy;
   v16 = v12;
-  v13 = v9;
+  v13 = queueCopy;
   v17 = v13;
-  v14 = v10;
+  v14 = completionCopy;
   v18 = v14;
-  [v11 enqueueBlock:v15];
+  [serialQueue enqueueBlock:v15];
 
   objc_destroyWeak(&v19);
   objc_destroyWeak(&location);
@@ -268,29 +268,29 @@ void __69__FCClientEndpointConnection_reportConcern_callbackQueue_completion___b
   }
 }
 
-- (void)submitWebAccessWithTagID:(id)a3 purchaseID:(id)a4 emailAddress:(id)a5 purchaseReceipt:(id)a6 countryCode:(id)a7 languageCode:(id)a8 callbackQueue:(id)a9 completion:(id)a10
+- (void)submitWebAccessWithTagID:(id)d purchaseID:(id)iD emailAddress:(id)address purchaseReceipt:(id)receipt countryCode:(id)code languageCode:(id)languageCode callbackQueue:(id)queue completion:(id)self0
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
-  v22 = a10;
+  dCopy = d;
+  iDCopy = iD;
+  addressCopy = address;
+  receiptCopy = receipt;
+  codeCopy = code;
+  languageCodeCopy = languageCode;
+  queueCopy = queue;
+  completionCopy = completion;
   v23 = objc_alloc_init(MEMORY[0x1E69B6F48]);
-  v31 = v15;
-  [v23 setChannelId:v15];
-  v30 = v16;
-  v24 = v16;
-  v25 = v17;
+  v31 = dCopy;
+  [v23 setChannelId:dCopy];
+  v30 = iDCopy;
+  v24 = iDCopy;
+  v25 = addressCopy;
   [v23 setIapId:v24];
-  [v23 setEmail:v17];
-  [v23 setPurchaseReceipt:v18];
-  [v23 setCountry:v19];
-  [v23 setLanguage:v20];
+  [v23 setEmail:addressCopy];
+  [v23 setPurchaseReceipt:receiptCopy];
+  [v23 setCountry:codeCopy];
+  [v23 setLanguage:languageCodeCopy];
   objc_initWeak(&location, self);
-  v26 = [(FCClientEndpointConnection *)self serialQueue];
+  serialQueue = [(FCClientEndpointConnection *)self serialQueue];
   v33[0] = MEMORY[0x1E69E9820];
   v33[1] = 3221225472;
   v33[2] = __145__FCClientEndpointConnection_submitWebAccessWithTagID_purchaseID_emailAddress_purchaseReceipt_countryCode_languageCode_callbackQueue_completion___block_invoke;
@@ -298,11 +298,11 @@ void __69__FCClientEndpointConnection_reportConcern_callbackQueue_completion___b
   objc_copyWeak(&v37, &location);
   v27 = v23;
   v34 = v27;
-  v28 = v21;
+  v28 = queueCopy;
   v35 = v28;
-  v29 = v22;
+  v29 = completionCopy;
   v36 = v29;
-  [v26 enqueueBlock:v33];
+  [serialQueue enqueueBlock:v33];
 
   objc_destroyWeak(&v37);
   objc_destroyWeak(&location);
@@ -372,24 +372,24 @@ void __145__FCClientEndpointConnection_submitWebAccessWithTagID_purchaseID_email
   }
 }
 
-- (void)updateBaseURLWith:(id)a3
+- (void)updateBaseURLWith:(id)with
 {
-  v4 = [FCBaseURLConfiguration CAPIBaseURLForConfiguration:a3];
+  v4 = [FCBaseURLConfiguration CAPIBaseURLForConfiguration:with];
   [(FCClientEndpointConnection *)self setBaseURL:v4];
 }
 
-- (void)configurationManager:(id)a3 configurationDidChange:(id)a4
+- (void)configurationManager:(id)manager configurationDidChange:(id)change
 {
-  v5 = a4;
-  v6 = [(FCClientEndpointConnection *)self serialQueue];
+  changeCopy = change;
+  serialQueue = [(FCClientEndpointConnection *)self serialQueue];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __74__FCClientEndpointConnection_configurationManager_configurationDidChange___block_invoke;
   v8[3] = &unk_1E7C3BDC0;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
-  [v6 enqueueBlock:v8];
+  v9 = changeCopy;
+  v7 = changeCopy;
+  [serialQueue enqueueBlock:v8];
 }
 
 void __74__FCClientEndpointConnection_configurationManager_configurationDidChange___block_invoke(uint64_t a1, void *a2)

@@ -1,15 +1,15 @@
 @interface _SFQRImagePreviewViewController
 - (BCSAction)action;
-- (_SFQRImagePreviewViewController)initWithElementInfo:(id)a3;
-- (id)_contentViewSubtitleWithAction:(id)a3;
+- (_SFQRImagePreviewViewController)initWithElementInfo:(id)info;
+- (id)_contentViewSubtitleWithAction:(id)action;
 - (void)loadView;
 @end
 
 @implementation _SFQRImagePreviewViewController
 
-- (_SFQRImagePreviewViewController)initWithElementInfo:(id)a3
+- (_SFQRImagePreviewViewController)initWithElementInfo:(id)info
 {
-  v5 = a3;
+  infoCopy = info;
   v12.receiver = self;
   v12.super_class = _SFQRImagePreviewViewController;
   v6 = [(_SFQRImagePreviewViewController *)&v12 initWithNibName:0 bundle:0];
@@ -19,10 +19,10 @@
     imageView = v6->_imageView;
     v6->_imageView = v7;
 
-    v9 = [v5 image];
-    [(UIImageView *)v6->_imageView setImage:v9];
+    image = [infoCopy image];
+    [(UIImageView *)v6->_imageView setImage:image];
 
-    objc_storeStrong(&v6->_activatedElementInfo, a3);
+    objc_storeStrong(&v6->_activatedElementInfo, info);
     v10 = v6;
   }
 
@@ -37,18 +37,18 @@
   return v4;
 }
 
-- (id)_contentViewSubtitleWithAction:(id)a3
+- (id)_contentViewSubtitleWithAction:(id)action
 {
-  v3 = a3;
-  v4 = [v3 urlThatCanBeOpened];
+  actionCopy = action;
+  urlThatCanBeOpened = [actionCopy urlThatCanBeOpened];
 
-  if (v4)
+  if (urlThatCanBeOpened)
   {
-    v5 = [v3 urlThatCanBeOpened];
-    v4 = [v5 safari_userVisibleString];
+    urlThatCanBeOpened2 = [actionCopy urlThatCanBeOpened];
+    urlThatCanBeOpened = [urlThatCanBeOpened2 safari_userVisibleString];
   }
 
-  return v4;
+  return urlThatCanBeOpened;
 }
 
 - (void)loadView
@@ -57,17 +57,17 @@
   v81.receiver = self;
   v81.super_class = _SFQRImagePreviewViewController;
   [(_SFQRImagePreviewViewController *)&v81 loadView];
-  v3 = [(_SFQRImagePreviewViewController *)self view];
-  v4 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v4 bounds];
+  view = [(_SFQRImagePreviewViewController *)self view];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen bounds];
   v6 = v5;
   v8 = v7;
 
-  v9 = [(UIImageView *)self->_imageView image];
-  v10 = [v9 CGImage];
+  image = [(UIImageView *)self->_imageView image];
+  cGImage = [image CGImage];
 
-  Width = CGImageGetWidth(v10);
-  Height = CGImageGetHeight(v10);
+  Width = CGImageGetWidth(cGImage);
+  Height = CGImageGetHeight(cGImage);
   v13 = Width / Height;
   v14 = v6 / v8;
   v15 = v8 / Height * Width;
@@ -98,31 +98,31 @@
 
   [(UIImageView *)self->_imageView setTranslatesAutoresizingMaskIntoConstraints:0];
   imageView = self->_imageView;
-  v19 = v3;
+  v19 = view;
   [v19 addSubview:imageView];
-  v20 = [MEMORY[0x1E69DC888] whiteColor];
-  [v19 setBackgroundColor:v20];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  [v19 setBackgroundColor:whiteColor];
 
   v21 = [SFQRImageHeaderView alloc];
   v22 = [(SFQRImageHeaderView *)v21 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
-  v23 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  [(SFQRImageHeaderView *)v22 setBackgroundColor:v23];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  [(SFQRImageHeaderView *)v22 setBackgroundColor:systemBackgroundColor];
 
-  v80 = [(_SFQRImagePreviewViewController *)self action];
-  [(SFQRImageHeaderView *)v22 setAction:v80];
+  action = [(_SFQRImagePreviewViewController *)self action];
+  [(SFQRImageHeaderView *)v22 setAction:action];
   [(SFQRImageHeaderView *)v22 setTranslatesAutoresizingMaskIntoConstraints:0];
   v24 = v22;
   [v19 addSubview:v22];
   v25 = [SFQRImageContentView alloc];
-  v26 = [v80 localizedDefaultActionDescription];
-  v27 = [(_SFQRImagePreviewViewController *)self _contentViewSubtitleWithAction:v80];
-  v28 = [(SFQRImageContentView *)v25 initWithTitle:v26 subtitle:v27];
+  localizedDefaultActionDescription = [action localizedDefaultActionDescription];
+  v27 = [(_SFQRImagePreviewViewController *)self _contentViewSubtitleWithAction:action];
+  v28 = [(SFQRImageContentView *)v25 initWithTitle:localizedDefaultActionDescription subtitle:v27];
 
-  v29 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  [(SFQRImageContentView *)v28 setBackgroundColor:v29];
+  systemBackgroundColor2 = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  [(SFQRImageContentView *)v28 setBackgroundColor:systemBackgroundColor2];
 
-  v30 = [(_SFQRImagePreviewViewController *)self view];
-  [v30 bounds];
+  view2 = [(_SFQRImagePreviewViewController *)self view];
+  [view2 bounds];
   [(SFQRImageContentView *)v28 sizeThatFits:v31, v32];
   v34 = v33;
 
@@ -131,65 +131,65 @@
   [(_SFQRImagePreviewViewController *)self setPreferredContentSize:fmin(v6, v8), v16 + 56.0 + v34];
   v65 = MEMORY[0x1E696ACD8];
   v35 = self->_imageView;
-  v79 = [(SFQRImageHeaderView *)v24 topAnchor];
-  v78 = [v19 topAnchor];
-  v77 = [v79 constraintEqualToAnchor:v78];
+  topAnchor = [(SFQRImageHeaderView *)v24 topAnchor];
+  topAnchor2 = [v19 topAnchor];
+  v77 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v82[0] = v77;
-  v75 = [(SFQRImageHeaderView *)v24 heightAnchor];
-  v74 = [v75 constraintEqualToConstant:56.0];
+  heightAnchor = [(SFQRImageHeaderView *)v24 heightAnchor];
+  v74 = [heightAnchor constraintEqualToConstant:56.0];
   v82[1] = v74;
   v76 = v24;
-  v73 = [(SFQRImageHeaderView *)v24 widthAnchor];
-  v72 = [v19 widthAnchor];
-  v71 = [v73 constraintEqualToAnchor:v72];
+  widthAnchor = [(SFQRImageHeaderView *)v24 widthAnchor];
+  widthAnchor2 = [v19 widthAnchor];
+  v71 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
   v82[2] = v71;
-  v70 = [(SFQRImageHeaderView *)v24 bottomAnchor];
+  bottomAnchor = [(SFQRImageHeaderView *)v24 bottomAnchor];
   v36 = v35;
   v63 = v35;
-  v69 = [(UIImageView *)v35 topAnchor];
-  v68 = [v70 constraintEqualToAnchor:v69];
+  topAnchor3 = [(UIImageView *)v35 topAnchor];
+  v68 = [bottomAnchor constraintEqualToAnchor:topAnchor3];
   v82[3] = v68;
-  v37 = [(UIImageView *)self->_imageView widthAnchor];
-  v67 = v37;
-  v38 = [(UIImageView *)self->_imageView heightAnchor];
-  v66 = v38;
+  widthAnchor3 = [(UIImageView *)self->_imageView widthAnchor];
+  v67 = widthAnchor3;
+  heightAnchor2 = [(UIImageView *)self->_imageView heightAnchor];
+  v66 = heightAnchor2;
   v39 = v17 / v16;
   if (v16 == 0.0)
   {
     v39 = 1.0;
   }
 
-  v64 = [v37 constraintEqualToAnchor:v38 multiplier:v39];
+  v64 = [widthAnchor3 constraintEqualToAnchor:heightAnchor2 multiplier:v39];
   v82[4] = v64;
-  v62 = [(UIImageView *)v36 leftAnchor];
-  v61 = [v19 leftAnchor];
-  v60 = [v62 constraintGreaterThanOrEqualToAnchor:v61];
+  leftAnchor = [(UIImageView *)v36 leftAnchor];
+  leftAnchor2 = [v19 leftAnchor];
+  v60 = [leftAnchor constraintGreaterThanOrEqualToAnchor:leftAnchor2];
   v82[5] = v60;
-  v58 = [(UIImageView *)v36 rightAnchor];
-  v57 = [v19 rightAnchor];
-  v56 = [v58 constraintLessThanOrEqualToAnchor:v57];
+  rightAnchor = [(UIImageView *)v36 rightAnchor];
+  rightAnchor2 = [v19 rightAnchor];
+  v56 = [rightAnchor constraintLessThanOrEqualToAnchor:rightAnchor2];
   v82[6] = v56;
-  v55 = [(UIImageView *)v36 centerXAnchor];
-  v54 = [v19 centerXAnchor];
-  v53 = [v55 constraintEqualToAnchor:v54];
+  centerXAnchor = [(UIImageView *)v36 centerXAnchor];
+  centerXAnchor2 = [v19 centerXAnchor];
+  v53 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v82[7] = v53;
-  v52 = [(UIImageView *)v36 bottomAnchor];
+  bottomAnchor2 = [(UIImageView *)v36 bottomAnchor];
   v40 = v28;
-  v51 = [(SFQRImageContentView *)v28 topAnchor];
-  v50 = [v52 constraintEqualToAnchor:v51];
+  topAnchor4 = [(SFQRImageContentView *)v28 topAnchor];
+  v50 = [bottomAnchor2 constraintEqualToAnchor:topAnchor4];
   v82[8] = v50;
-  v41 = [(SFQRImageContentView *)v28 heightAnchor];
-  v42 = [v41 constraintEqualToConstant:v34];
+  heightAnchor3 = [(SFQRImageContentView *)v28 heightAnchor];
+  v42 = [heightAnchor3 constraintEqualToConstant:v34];
   v82[9] = v42;
   v59 = v28;
-  v43 = [(SFQRImageContentView *)v28 widthAnchor];
-  v44 = [v19 widthAnchor];
-  v45 = [v43 constraintEqualToAnchor:v44];
+  widthAnchor4 = [(SFQRImageContentView *)v28 widthAnchor];
+  widthAnchor5 = [v19 widthAnchor];
+  v45 = [widthAnchor4 constraintEqualToAnchor:widthAnchor5];
   v82[10] = v45;
-  v46 = [(SFQRImageContentView *)v40 bottomAnchor];
-  v47 = [v19 bottomAnchor];
+  bottomAnchor3 = [(SFQRImageContentView *)v40 bottomAnchor];
+  bottomAnchor4 = [v19 bottomAnchor];
 
-  v48 = [v46 constraintEqualToAnchor:v47];
+  v48 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   v82[11] = v48;
   v49 = [MEMORY[0x1E695DEC8] arrayWithObjects:v82 count:12];
   [v65 activateConstraints:v49];

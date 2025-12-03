@@ -1,8 +1,8 @@
 @interface MIBUSerializationUtil
-+ (id)maxLengthForTag:(id)a3;
++ (id)maxLengthForTag:(id)tag;
 + (id)tagLengthMapping;
 + (id)tagTypeMapping;
-+ (id)typeForTag:(id)a3;
++ (id)typeForTag:(id)tag;
 + (id)typeLengthMapping;
 @end
 
@@ -44,30 +44,30 @@
   return v3;
 }
 
-+ (id)typeForTag:(id)a3
++ (id)typeForTag:(id)tag
 {
-  v4 = a3;
-  v5 = [a1 tagTypeMapping];
-  v6 = [v5 objectForKey:v4];
+  tagCopy = tag;
+  tagTypeMapping = [self tagTypeMapping];
+  v6 = [tagTypeMapping objectForKey:tagCopy];
 
   return v6;
 }
 
-+ (id)maxLengthForTag:(id)a3
++ (id)maxLengthForTag:(id)tag
 {
-  v4 = a3;
-  v5 = [a1 tagTypeMapping];
-  v6 = [v5 objectForKey:v4];
+  tagCopy = tag;
+  tagTypeMapping = [self tagTypeMapping];
+  v6 = [tagTypeMapping objectForKey:tagCopy];
 
   if (v6)
   {
-    v7 = [a1 typeLengthMapping];
-    v8 = [v7 objectForKey:v6];
+    typeLengthMapping = [self typeLengthMapping];
+    v8 = [typeLengthMapping objectForKey:v6];
 
     if (!v8)
     {
-      v9 = [a1 tagLengthMapping];
-      v8 = [v9 objectForKey:v4];
+      tagLengthMapping = [self tagLengthMapping];
+      v8 = [tagLengthMapping objectForKey:tagCopy];
     }
   }
 

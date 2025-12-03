@@ -1,79 +1,79 @@
 @interface AGXG18PFamilyComputeContext_mtlnext
-- (AGXG18PFamilyComputeContext_mtlnext)initWithCommandBuffer:(id)a3 allocator:(id)a4 enableStateLoaderProgramTracking:(BOOL)a5;
-- (AGXG18PFamilyComputeContext_mtlnext)initWithCommandBufferForQueueSparseOperation:(id)a3 allocator:(id)a4;
-- (BOOL)writeGenericBVHStructureOfAccelerationStructure:(id)a3 into:(id)a4;
-- (BOOL)writeGenericBVHStructureSizesOfAccelerationStructure:(id)a3 into:(id)a4;
+- (AGXG18PFamilyComputeContext_mtlnext)initWithCommandBuffer:(id)buffer allocator:(id)allocator enableStateLoaderProgramTracking:(BOOL)tracking;
+- (AGXG18PFamilyComputeContext_mtlnext)initWithCommandBufferForQueueSparseOperation:(id)operation allocator:(id)allocator;
+- (BOOL)writeGenericBVHStructureOfAccelerationStructure:(id)structure into:(id)into;
+- (BOOL)writeGenericBVHStructureSizesOfAccelerationStructure:(id)structure into:(id)into;
 - (unint64_t)stages;
-- (void)barrierAfterEncoderStages:(unint64_t)a3 beforeEncoderStages:(unint64_t)a4 options:(unint64_t)a5;
-- (void)barrierAfterQueueStages:(unint64_t)a3 beforeStages:(unint64_t)a4 options:(unint64_t)a5;
-- (void)barrierAfterStages:(unint64_t)a3 beforeQueueStages:(unint64_t)a4 options:(unint64_t)a5;
-- (void)buildAccelerationStructure:(id)a3 descriptor:(id)a4 scratchBuffer:(MTL4BufferRange)a5;
-- (void)copyAccelerationStructure:(id)a3 toAccelerationStructure:(id)a4;
-- (void)copyAndCompactAccelerationStructure:(id)a3 toAccelerationStructure:(id)a4;
-- (void)copyFromBuffer:(id)a3 sourceOffset:(unint64_t)a4 sourceBytesPerRow:(unint64_t)a5 sourceBytesPerImage:(unint64_t)a6 sourceSize:(id *)a7 toTexture:(id)a8 destinationSlice:(unint64_t)a9 destinationLevel:(unint64_t)a10 destinationOrigin:(id *)a11;
-- (void)copyFromBuffer:(id)a3 sourceOffset:(unint64_t)a4 sourceBytesPerRow:(unint64_t)a5 sourceBytesPerImage:(unint64_t)a6 sourceSize:(id *)a7 toTexture:(id)a8 destinationSlice:(unint64_t)a9 destinationLevel:(unint64_t)a10 destinationOrigin:(id *)a11 options:(unint64_t)a12;
-- (void)copyFromBuffer:(id)a3 sourceOffset:(unint64_t)a4 toBuffer:(id)a5 destinationOffset:(unint64_t)a6 size:(unint64_t)a7;
-- (void)copyFromTensor:(id)a3 sourceSlice:(MTLTensorSlice)a4 toTensor:(id)a5 destinationSlice:(MTLTensorSlice)a6;
-- (void)copyFromTexture:(id)a3 sourceSlice:(unint64_t)a4 sourceLevel:(unint64_t)a5 sourceOrigin:(id *)a6 sourceSize:(id *)a7 toBuffer:(id)a8 destinationOffset:(unint64_t)a9 destinationBytesPerRow:(unint64_t)a10 destinationBytesPerImage:(unint64_t)a11;
-- (void)copyFromTexture:(id)a3 sourceSlice:(unint64_t)a4 sourceLevel:(unint64_t)a5 sourceOrigin:(id *)a6 sourceSize:(id *)a7 toBuffer:(id)a8 destinationOffset:(unint64_t)a9 destinationBytesPerRow:(unint64_t)a10 destinationBytesPerImage:(unint64_t)a11 options:(unint64_t)a12;
-- (void)copyFromTexture:(id)a3 sourceSlice:(unint64_t)a4 sourceLevel:(unint64_t)a5 sourceOrigin:(id *)a6 sourceSize:(id *)a7 toTexture:(id)a8 destinationSlice:(unint64_t)a9 destinationLevel:(unint64_t)a10 destinationOrigin:(id *)a11;
-- (void)copyFromTexture:(id)a3 sourceSlice:(unint64_t)a4 sourceLevel:(unint64_t)a5 toTexture:(id)a6 destinationSlice:(unint64_t)a7 destinationLevel:(unint64_t)a8 sliceCount:(unint64_t)a9 levelCount:(unint64_t)a10;
-- (void)copyFromTexture:(id)a3 toTexture:(id)a4;
-- (void)copyIndirectCommandBuffer:(id)a3 sourceRange:(_NSRange)a4 destination:(id)a5 destinationIndex:(unint64_t)a6;
-- (void)copyTextureMappingsFromTexture:(id)a3 sourceSlices:(const unint64_t *)a4 sourceLevels:(const unint64_t *)a5 sourceOrigins:(id *)a6 sourceSizes:(id *)a7 numSizes:(unint64_t)a8 toTexture:(id)a9 destinationSlices:(const unint64_t *)a10 destinationLevels:(const unint64_t *)a11 destinationOrigins:(id *)a12;
-- (void)copyTextureMappingsFromTexture:(id)a3 toTexture:(id)a4 operations:(id *)a5 count:(unint64_t)a6;
+- (void)barrierAfterEncoderStages:(unint64_t)stages beforeEncoderStages:(unint64_t)encoderStages options:(unint64_t)options;
+- (void)barrierAfterQueueStages:(unint64_t)stages beforeStages:(unint64_t)beforeStages options:(unint64_t)options;
+- (void)barrierAfterStages:(unint64_t)stages beforeQueueStages:(unint64_t)queueStages options:(unint64_t)options;
+- (void)buildAccelerationStructure:(id)structure descriptor:(id)descriptor scratchBuffer:(MTL4BufferRange)buffer;
+- (void)copyAccelerationStructure:(id)structure toAccelerationStructure:(id)accelerationStructure;
+- (void)copyAndCompactAccelerationStructure:(id)structure toAccelerationStructure:(id)accelerationStructure;
+- (void)copyFromBuffer:(id)buffer sourceOffset:(unint64_t)offset sourceBytesPerRow:(unint64_t)row sourceBytesPerImage:(unint64_t)image sourceSize:(id *)size toTexture:(id)texture destinationSlice:(unint64_t)slice destinationLevel:(unint64_t)self0 destinationOrigin:(id *)self1;
+- (void)copyFromBuffer:(id)buffer sourceOffset:(unint64_t)offset sourceBytesPerRow:(unint64_t)row sourceBytesPerImage:(unint64_t)image sourceSize:(id *)size toTexture:(id)texture destinationSlice:(unint64_t)slice destinationLevel:(unint64_t)self0 destinationOrigin:(id *)self1 options:(unint64_t)self2;
+- (void)copyFromBuffer:(id)buffer sourceOffset:(unint64_t)offset toBuffer:(id)toBuffer destinationOffset:(unint64_t)destinationOffset size:(unint64_t)size;
+- (void)copyFromTensor:(id)tensor sourceSlice:(MTLTensorSlice)slice toTensor:(id)toTensor destinationSlice:(MTLTensorSlice)destinationSlice;
+- (void)copyFromTexture:(id)texture sourceSlice:(unint64_t)slice sourceLevel:(unint64_t)level sourceOrigin:(id *)origin sourceSize:(id *)size toBuffer:(id)buffer destinationOffset:(unint64_t)offset destinationBytesPerRow:(unint64_t)self0 destinationBytesPerImage:(unint64_t)self1;
+- (void)copyFromTexture:(id)texture sourceSlice:(unint64_t)slice sourceLevel:(unint64_t)level sourceOrigin:(id *)origin sourceSize:(id *)size toBuffer:(id)buffer destinationOffset:(unint64_t)offset destinationBytesPerRow:(unint64_t)self0 destinationBytesPerImage:(unint64_t)self1 options:(unint64_t)self2;
+- (void)copyFromTexture:(id)texture sourceSlice:(unint64_t)slice sourceLevel:(unint64_t)level sourceOrigin:(id *)origin sourceSize:(id *)size toTexture:(id)toTexture destinationSlice:(unint64_t)destinationSlice destinationLevel:(unint64_t)self0 destinationOrigin:(id *)self1;
+- (void)copyFromTexture:(id)texture sourceSlice:(unint64_t)slice sourceLevel:(unint64_t)level toTexture:(id)toTexture destinationSlice:(unint64_t)destinationSlice destinationLevel:(unint64_t)destinationLevel sliceCount:(unint64_t)count levelCount:(unint64_t)self0;
+- (void)copyFromTexture:(id)texture toTexture:(id)toTexture;
+- (void)copyIndirectCommandBuffer:(id)buffer sourceRange:(_NSRange)range destination:(id)destination destinationIndex:(unint64_t)index;
+- (void)copyTextureMappingsFromTexture:(id)texture sourceSlices:(const unint64_t *)slices sourceLevels:(const unint64_t *)levels sourceOrigins:(id *)origins sourceSizes:(id *)sizes numSizes:(unint64_t)numSizes toTexture:(id)toTexture destinationSlices:(const unint64_t *)self0 destinationLevels:(const unint64_t *)self1 destinationOrigins:(id *)self2;
+- (void)copyTextureMappingsFromTexture:(id)texture toTexture:(id)toTexture operations:(id *)operations count:(unint64_t)count;
 - (void)createBlitContextIfNeeded;
 - (void)dealloc;
-- (void)deserializeInstanceAccelerationStructure:(id)a3 referencedAccelerationStructures:(id)a4 fromBuffer:(MTL4BufferRange)a5;
-- (void)deserializePrimitiveAccelerationStructure:(id)a3 fromBuffer:(MTL4BufferRange)a4;
+- (void)deserializeInstanceAccelerationStructure:(id)structure referencedAccelerationStructures:(id)structures fromBuffer:(MTL4BufferRange)buffer;
+- (void)deserializePrimitiveAccelerationStructure:(id)structure fromBuffer:(MTL4BufferRange)buffer;
 - (void)destroyImpl;
-- (void)dispatchThreadgroups:(id *)a3 threadsPerThreadgroup:(id *)a4;
-- (void)dispatchThreadgroupsWithIndirectBuffer:(unint64_t)a3 threadsPerThreadgroup:(id *)a4;
-- (void)dispatchThreads:(id *)a3 threadsPerThreadgroup:(id *)a4;
-- (void)dispatchThreadsWithIndirectBuffer:(unint64_t)a3;
-- (void)encodeSyncComputeWithBackFacingBarrierSrcMask:(unsigned int)a3 BackFacingBarrierDstMask:(unsigned int)a4 FrontFacingBarrierSrcMask:(unsigned int)a5 FrontFacingBarrierDstMask:(unsigned int)a6;
+- (void)dispatchThreadgroups:(id *)threadgroups threadsPerThreadgroup:(id *)threadgroup;
+- (void)dispatchThreadgroupsWithIndirectBuffer:(unint64_t)buffer threadsPerThreadgroup:(id *)threadgroup;
+- (void)dispatchThreads:(id *)threads threadsPerThreadgroup:(id *)threadgroup;
+- (void)dispatchThreadsWithIndirectBuffer:(unint64_t)buffer;
+- (void)encodeSyncComputeWithBackFacingBarrierSrcMask:(unsigned int)mask BackFacingBarrierDstMask:(unsigned int)dstMask FrontFacingBarrierSrcMask:(unsigned int)srcMask FrontFacingBarrierDstMask:(unsigned int)barrierDstMask;
 - (void)endEncoding;
-- (void)executeCommandsInBuffer:(id)a3 indirectBuffer:(unint64_t)a4;
-- (void)executeCommandsInBuffer:(id)a3 withRange:(_NSRange)a4;
-- (void)fillBuffer:(id)a3 range:(_NSRange)a4 pattern4:(unsigned int)a5;
-- (void)fillBuffer:(id)a3 range:(_NSRange)a4 value:(unsigned __int8)a5;
-- (void)fillTexture:(id)a3 level:(unint64_t)a4 slice:(unint64_t)a5 region:(id *)a6 bytes:(const void *)a7 length:(unint64_t)a8;
-- (void)filterCounterRangeWithFirstBatch:(unsigned int)a3 lastBatch:(unsigned int)a4 filterIndex:(unsigned int)a5;
-- (void)generateMipmapsForTexture:(id)a3;
-- (void)internalResolveCounterHeap:(id)a3 offset:(unint64_t)a4 size:(unint64_t)a5 destAddress:(unint64_t)a6 destResource:(id)a7;
-- (void)optimizeContentsForCPUAccess:(id)a3;
-- (void)optimizeContentsForCPUAccess:(id)a3 slice:(unint64_t)a4 level:(unint64_t)a5;
-- (void)optimizeContentsForGPUAccess:(id)a3;
-- (void)optimizeContentsForGPUAccess:(id)a3 slice:(unint64_t)a4 level:(unint64_t)a5;
-- (void)optimizeIndirectCommandBuffer:(id)a3 withRange:(_NSRange)a4;
-- (void)refitAccelerationStructure:(id)a3 descriptor:(id)a4 destination:(id)a5 scratchBuffer:(MTL4BufferRange)a6 options:(unint64_t)a7;
-- (void)resetCommandsInBuffer:(id)a3 withRange:(_NSRange)a4;
-- (void)serializeInstanceAccelerationStructure:(id)a3 referencedAccelerationStructures:(id)a4 toBuffer:(MTL4BufferRange)a5;
-- (void)serializePrimitiveAccelerationStructure:(id)a3 toBuffer:(MTL4BufferRange)a4;
-- (void)setArgumentTable:(id)a3;
-- (void)setComputePipelineState:(id)a3;
-- (void)setImageblockWidth:(unint64_t)a3 height:(unint64_t)a4;
-- (void)setToolsDispatchBufferSPI:(unint64_t)a3 atIndex:(unint64_t)a4;
-- (void)updateFence:(id)a3 afterEncoderStages:(unint64_t)a4;
-- (void)updateTextureMappings:(id)a3 heap:(id)a4 operations:(id *)a5 count:(unint64_t)a6;
-- (void)updateTextureMappings:(id)a3 numRegions:(unint64_t)a4 regions:(id *)a5 levels:(const unint64_t *)a6 slices:(const unint64_t *)a7 heap:(id)a8 rangeModes:(const unint64_t *)a9 rangeOffsets:(unint64_t *)a10;
-- (void)waitForFence:(id)a3 beforeEncoderStages:(unint64_t)a4;
-- (void)writeAccelerationStructureSerializationData:(id)a3 toBuffer:(MTL4BufferRange)a4;
-- (void)writeAccelerationStructureTraversalDepth:(id)a3 toBuffer:(MTL4BufferRange)a4;
-- (void)writeCompactedAccelerationStructureSize:(id)a3 toBuffer:(MTL4BufferRange)a4;
-- (void)writeDeserializedAccelerationStructureSize:(MTL4BufferRange)a3 toBuffer:(MTL4BufferRange)a4;
-- (void)writeGenericBVHStructureSizesOfAccelerationStructure:(id)a3 toBuffer:(MTL4BufferRange)a4;
-- (void)writeSerializedAccelerationStructureSize:(id)a3 toBuffer:(MTL4BufferRange)a4;
-- (void)writeTimestampWithGranularity:(int64_t)a3 intoHeap:(id)a4 atIndex:(unint64_t)a5;
+- (void)executeCommandsInBuffer:(id)buffer indirectBuffer:(unint64_t)indirectBuffer;
+- (void)executeCommandsInBuffer:(id)buffer withRange:(_NSRange)range;
+- (void)fillBuffer:(id)buffer range:(_NSRange)range pattern4:(unsigned int)pattern4;
+- (void)fillBuffer:(id)buffer range:(_NSRange)range value:(unsigned __int8)value;
+- (void)fillTexture:(id)texture level:(unint64_t)level slice:(unint64_t)slice region:(id *)region bytes:(const void *)bytes length:(unint64_t)length;
+- (void)filterCounterRangeWithFirstBatch:(unsigned int)batch lastBatch:(unsigned int)lastBatch filterIndex:(unsigned int)index;
+- (void)generateMipmapsForTexture:(id)texture;
+- (void)internalResolveCounterHeap:(id)heap offset:(unint64_t)offset size:(unint64_t)size destAddress:(unint64_t)address destResource:(id)resource;
+- (void)optimizeContentsForCPUAccess:(id)access;
+- (void)optimizeContentsForCPUAccess:(id)access slice:(unint64_t)slice level:(unint64_t)level;
+- (void)optimizeContentsForGPUAccess:(id)access;
+- (void)optimizeContentsForGPUAccess:(id)access slice:(unint64_t)slice level:(unint64_t)level;
+- (void)optimizeIndirectCommandBuffer:(id)buffer withRange:(_NSRange)range;
+- (void)refitAccelerationStructure:(id)structure descriptor:(id)descriptor destination:(id)destination scratchBuffer:(MTL4BufferRange)buffer options:(unint64_t)options;
+- (void)resetCommandsInBuffer:(id)buffer withRange:(_NSRange)range;
+- (void)serializeInstanceAccelerationStructure:(id)structure referencedAccelerationStructures:(id)structures toBuffer:(MTL4BufferRange)buffer;
+- (void)serializePrimitiveAccelerationStructure:(id)structure toBuffer:(MTL4BufferRange)buffer;
+- (void)setArgumentTable:(id)table;
+- (void)setComputePipelineState:(id)state;
+- (void)setImageblockWidth:(unint64_t)width height:(unint64_t)height;
+- (void)setToolsDispatchBufferSPI:(unint64_t)i atIndex:(unint64_t)index;
+- (void)updateFence:(id)fence afterEncoderStages:(unint64_t)stages;
+- (void)updateTextureMappings:(id)mappings heap:(id)heap operations:(id *)operations count:(unint64_t)count;
+- (void)updateTextureMappings:(id)mappings numRegions:(unint64_t)regions regions:(id *)a5 levels:(const unint64_t *)levels slices:(const unint64_t *)slices heap:(id)heap rangeModes:(const unint64_t *)modes rangeOffsets:(unint64_t *)self0;
+- (void)waitForFence:(id)fence beforeEncoderStages:(unint64_t)stages;
+- (void)writeAccelerationStructureSerializationData:(id)data toBuffer:(MTL4BufferRange)buffer;
+- (void)writeAccelerationStructureTraversalDepth:(id)depth toBuffer:(MTL4BufferRange)buffer;
+- (void)writeCompactedAccelerationStructureSize:(id)size toBuffer:(MTL4BufferRange)buffer;
+- (void)writeDeserializedAccelerationStructureSize:(MTL4BufferRange)size toBuffer:(MTL4BufferRange)buffer;
+- (void)writeGenericBVHStructureSizesOfAccelerationStructure:(id)structure toBuffer:(MTL4BufferRange)buffer;
+- (void)writeSerializedAccelerationStructureSize:(id)size toBuffer:(MTL4BufferRange)buffer;
+- (void)writeTimestampWithGranularity:(int64_t)granularity intoHeap:(id)heap atIndex:(unint64_t)index;
 @end
 
 @implementation AGXG18PFamilyComputeContext_mtlnext
 
-- (void)internalResolveCounterHeap:(id)a3 offset:(unint64_t)a4 size:(unint64_t)a5 destAddress:(unint64_t)a6 destResource:(id)a7
+- (void)internalResolveCounterHeap:(id)heap offset:(unint64_t)offset size:(unint64_t)size destAddress:(unint64_t)address destResource:(id)resource
 {
   [(AGXG18PFamilyComputeContext_mtlnext *)self createBlitContextIfNeeded];
   blit_context = self->_blit_context;
-  v14 = *(a3 + 1);
+  v14 = *(heap + 1);
   v15 = *(v14 + *MEMORY[0x29EDC5638] + 72);
   if (*(*blit_context + 1896))
   {
@@ -81,21 +81,21 @@
   }
 
   IOGPUResourceListAddResource();
-  if (a7)
+  if (resource)
   {
-    v16 = a7;
-    v17 = a6;
+    resourceCopy = resource;
+    addressCopy2 = address;
     v18 = v14;
   }
 
   else
   {
-    v16 = 0;
-    v17 = a6;
+    resourceCopy = 0;
+    addressCopy2 = address;
     v18 = 0;
   }
 
-  AGX::BlitContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::copyBufferToBufferImpl(blit_context, v16, v17, v18, v15 + a4, a5);
+  AGX::BlitContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::copyBufferToBufferImpl(blit_context, resourceCopy, addressCopy2, v18, v15 + offset, size);
   *(*(*blit_context + 2328) + 594) = 1;
 }
 
@@ -132,7 +132,7 @@
   return result;
 }
 
-- (void)encodeSyncComputeWithBackFacingBarrierSrcMask:(unsigned int)a3 BackFacingBarrierDstMask:(unsigned int)a4 FrontFacingBarrierSrcMask:(unsigned int)a5 FrontFacingBarrierDstMask:(unsigned int)a6
+- (void)encodeSyncComputeWithBackFacingBarrierSrcMask:(unsigned int)mask BackFacingBarrierDstMask:(unsigned int)dstMask FrontFacingBarrierSrcMask:(unsigned int)srcMask FrontFacingBarrierDstMask:(unsigned int)barrierDstMask
 {
   impl = self->_impl;
   v12 = 0;
@@ -140,11 +140,11 @@
   v11 = impl[97];
   *v11 = 1610744318;
   impl[97] = v11 + 1;
-  *(impl + 507) = a3;
-  *(impl + 508) = a4;
-  *(impl + 509) = a5;
-  *(impl + 510) = a6;
-  *(impl + 515) |= a3 | a4 | a5 | a6;
+  *(impl + 507) = mask;
+  *(impl + 508) = dstMask;
+  *(impl + 509) = srcMask;
+  *(impl + 510) = barrierDstMask;
+  *(impl + 515) |= mask | dstMask | srcMask | barrierDstMask;
 }
 
 - (unint64_t)stages
@@ -155,9 +155,9 @@
   return (v3 & 7) << 27;
 }
 
-- (void)writeAccelerationStructureTraversalDepth:(id)a3 toBuffer:(MTL4BufferRange)a4
+- (void)writeAccelerationStructureTraversalDepth:(id)depth toBuffer:(MTL4BufferRange)buffer
 {
-  var0 = a4.var0;
+  var0 = buffer.var0;
   *(self->_impl + 572) |= 4u;
   if ((self->_bvhBarrierBeforeStages & 0x20000000) != 0)
   {
@@ -207,13 +207,13 @@
     AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::flush(bvh_builder);
   }
 
-  v10 = [a3 buffer];
-  v11 = [a3 bufferOffset];
+  buffer = [depth buffer];
+  bufferOffset = [depth bufferOffset];
   Pipeline = AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::getOrCreatePipeline(bvh_builder, 55, 0);
-  v13 = [v10 gpuAddress];
+  gpuAddress = [buffer gpuAddress];
   v14 = *(bvh_builder + 4);
   v15 = (*(v14 + 24) + *(v14 + 4));
-  *v15 = v13 + v11;
+  *v15 = gpuAddress + bufferOffset;
   v15[1] = var0;
   v18 = vdupq_n_s64(1uLL);
   v19 = 1;
@@ -222,9 +222,9 @@
   AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::executeKernelWithThreadsInternal(*(bvh_builder + 2), v14, Pipeline, v18.i8, v16.i8);
 }
 
-- (void)writeAccelerationStructureSerializationData:(id)a3 toBuffer:(MTL4BufferRange)a4
+- (void)writeAccelerationStructureSerializationData:(id)data toBuffer:(MTL4BufferRange)buffer
 {
-  var0 = a4.var0;
+  var0 = buffer.var0;
   *(self->_impl + 572) |= 4u;
   if ((self->_bvhBarrierBeforeStages & 0x20000000) != 0)
   {
@@ -274,8 +274,8 @@
     AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::flush(bvh_builder);
   }
 
-  v10 = [a3 buffer];
-  v11 = [a3 bufferOffset];
+  buffer = [data buffer];
+  bufferOffset = [data bufferOffset];
   Pipeline = AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::getOrCreatePipeline(bvh_builder, 179, 0);
   v20 = 0;
   v21 = 0;
@@ -301,7 +301,7 @@
   }
 
   *(v13 + 32) = AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::kBvhVersions[AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::getVersionToEncode(BOOL,BOOL,BOOL)::gen] & 0x1FFFFFFF;
-  *v13 = [v10 gpuAddress] + v11;
+  *v13 = [buffer gpuAddress] + bufferOffset;
   *(v13 + 8) = var0;
   v15 = *(bvh_builder + 4);
   *(*(v15 + 24) + *(v15 + 4) + 168) = v21;
@@ -312,9 +312,9 @@
   AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::executeKernelWithThreadsInternal(*(bvh_builder + 2), v15, Pipeline, v18.i8, v16.i8);
 }
 
-- (void)writeGenericBVHStructureSizesOfAccelerationStructure:(id)a3 toBuffer:(MTL4BufferRange)a4
+- (void)writeGenericBVHStructureSizesOfAccelerationStructure:(id)structure toBuffer:(MTL4BufferRange)buffer
 {
-  var0 = a4.var0;
+  var0 = buffer.var0;
   *(self->_impl + 572) |= 4u;
   if ((self->_bvhBarrierBeforeStages & 0x20000000) != 0)
   {
@@ -365,12 +365,12 @@
   }
 
   Pipeline = AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::getOrCreatePipeline(bvh_builder, 41, 0);
-  v11 = [a3 buffer];
-  v12 = [a3 bufferOffset];
-  v13 = [v11 gpuAddress];
+  buffer = [structure buffer];
+  bufferOffset = [structure bufferOffset];
+  gpuAddress = [buffer gpuAddress];
   v14 = *(bvh_builder + 4);
   v15 = (*(v14 + 24) + *(v14 + 4));
-  *v15 = v13 + v12;
+  *v15 = gpuAddress + bufferOffset;
   v15[1] = var0;
   v18 = vdupq_n_s64(1uLL);
   v19 = 1;
@@ -379,7 +379,7 @@
   AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::executeKernelWithThreadsInternal(*(bvh_builder + 2), v14, Pipeline, v18.i8, v16.i8);
 }
 
-- (BOOL)writeGenericBVHStructureOfAccelerationStructure:(id)a3 into:(id)a4
+- (BOOL)writeGenericBVHStructureOfAccelerationStructure:(id)structure into:(id)into
 {
   *(self->_impl + 572) |= 4u;
   if ((self->_bvhBarrierBeforeStages & 0x20000000) != 0)
@@ -425,44 +425,44 @@
     bvh_builder = self->_bvh_builder;
   }
 
-  v10 = [a4 headerBuffer];
-  v11 = [a4 headerBufferOffset];
-  v57 = [a4 innerNodeBuffer];
-  v56 = [a4 innerNodeBufferOffset];
-  v12 = [a4 leafNodeBuffer];
-  v13 = [a4 leafNodeBufferOffset];
-  v47 = [a4 primitiveBuffer];
-  v14 = [a4 primitiveBufferOffset];
-  v48 = [a4 geometryBuffer];
-  v15 = [a4 geometryBufferOffset];
-  v49 = [a4 instanceTransformBuffer];
-  v46 = [a4 instanceTransformBufferOffset];
-  v55 = [a4 perPrimitiveDataBuffer];
-  v54 = [a4 perPrimitiveDataBufferOffset];
-  v58 = [a4 controlPointBuffer];
-  v53 = [a4 controlPointBufferOffset];
-  v16 = [a4 version];
+  headerBuffer = [into headerBuffer];
+  headerBufferOffset = [into headerBufferOffset];
+  innerNodeBuffer = [into innerNodeBuffer];
+  innerNodeBufferOffset = [into innerNodeBufferOffset];
+  leafNodeBuffer = [into leafNodeBuffer];
+  leafNodeBufferOffset = [into leafNodeBufferOffset];
+  primitiveBuffer = [into primitiveBuffer];
+  primitiveBufferOffset = [into primitiveBufferOffset];
+  geometryBuffer = [into geometryBuffer];
+  geometryBufferOffset = [into geometryBufferOffset];
+  instanceTransformBuffer = [into instanceTransformBuffer];
+  instanceTransformBufferOffset = [into instanceTransformBufferOffset];
+  perPrimitiveDataBuffer = [into perPrimitiveDataBuffer];
+  perPrimitiveDataBufferOffset = [into perPrimitiveDataBufferOffset];
+  controlPointBuffer = [into controlPointBuffer];
+  controlPointBufferOffset = [into controlPointBufferOffset];
+  version = [into version];
   if (*(bvh_builder + 49) == 1)
   {
     AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::flush(bvh_builder);
   }
 
-  v17 = [a3 buffer];
-  v18 = [a3 bufferOffset];
-  v50 = dword_29D2F53D0[v16];
-  v52 = v17;
-  v51 = v18;
-  *(*(*(bvh_builder + 4) + 24) + *(*(bvh_builder + 4) + 4) + 56) = [v17 gpuAddress] + v18;
-  *(*(*(bvh_builder + 4) + 24) + *(*(bvh_builder + 4) + 4) + 80) = [v10 gpuAddress] + v11;
-  *(*(*(bvh_builder + 4) + 24) + *(*(bvh_builder + 4) + 4) + 88) = [v57 gpuAddress] + v56;
-  *(*(*(bvh_builder + 4) + 24) + *(*(bvh_builder + 4) + 4) + 96) = [v12 gpuAddress] + v13;
-  *(*(*(bvh_builder + 4) + 24) + *(*(bvh_builder + 4) + 4) + 104) = [v47 gpuAddress] + v14;
-  *(*(*(bvh_builder + 4) + 24) + *(*(bvh_builder + 4) + 4) + 112) = [v48 gpuAddress] + v15;
-  *(*(*(bvh_builder + 4) + 24) + *(*(bvh_builder + 4) + 4) + 120) = [v49 gpuAddress] + v46;
-  *(*(*(bvh_builder + 4) + 24) + *(*(bvh_builder + 4) + 4) + 128) = [v55 gpuAddress] + v54;
-  v19 = v58;
-  v20 = v53;
-  *(*(*(bvh_builder + 4) + 24) + *(*(bvh_builder + 4) + 4) + 136) = [v58 gpuAddress] + v53;
+  buffer = [structure buffer];
+  bufferOffset = [structure bufferOffset];
+  v50 = dword_29D2F53D0[version];
+  v52 = buffer;
+  v51 = bufferOffset;
+  *(*(*(bvh_builder + 4) + 24) + *(*(bvh_builder + 4) + 4) + 56) = [buffer gpuAddress] + bufferOffset;
+  *(*(*(bvh_builder + 4) + 24) + *(*(bvh_builder + 4) + 4) + 80) = [headerBuffer gpuAddress] + headerBufferOffset;
+  *(*(*(bvh_builder + 4) + 24) + *(*(bvh_builder + 4) + 4) + 88) = [innerNodeBuffer gpuAddress] + innerNodeBufferOffset;
+  *(*(*(bvh_builder + 4) + 24) + *(*(bvh_builder + 4) + 4) + 96) = [leafNodeBuffer gpuAddress] + leafNodeBufferOffset;
+  *(*(*(bvh_builder + 4) + 24) + *(*(bvh_builder + 4) + 4) + 104) = [primitiveBuffer gpuAddress] + primitiveBufferOffset;
+  *(*(*(bvh_builder + 4) + 24) + *(*(bvh_builder + 4) + 4) + 112) = [geometryBuffer gpuAddress] + geometryBufferOffset;
+  *(*(*(bvh_builder + 4) + 24) + *(*(bvh_builder + 4) + 4) + 120) = [instanceTransformBuffer gpuAddress] + instanceTransformBufferOffset;
+  *(*(*(bvh_builder + 4) + 24) + *(*(bvh_builder + 4) + 4) + 128) = [perPrimitiveDataBuffer gpuAddress] + perPrimitiveDataBufferOffset;
+  v19 = controlPointBuffer;
+  v20 = controlPointBufferOffset;
+  *(*(*(bvh_builder + 4) + 24) + *(*(bvh_builder + 4) + 4) + 136) = [controlPointBuffer gpuAddress] + controlPointBufferOffset;
   v71 = 0;
   v72 = 0;
   v73 = 0;
@@ -474,7 +474,7 @@
   v73 = 0;
   AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::allocateInline(&v71, bvh_builder, 8, 0);
   v22 = v72;
-  *v71 = v16;
+  *v71 = version;
   *(*(*(bvh_builder + 4) + 24) + *(*(bvh_builder + 4) + 4) + 64) = v22;
   {
     {
@@ -489,8 +489,8 @@
     }
 
     AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::encodeWriteGenericBVHStructures(AGXG18PFamilyRayTracingAccelerationStructure *,AGXG18PFamilyBuffer *,unsigned long,AGXG18PFamilyBuffer *,unsigned long,AGXG18PFamilyBuffer *,unsigned long,AGXG18PFamilyBuffer *,unsigned long,AGXG18PFamilyBuffer *,unsigned long,AGXG18PFamilyBuffer *,unsigned long,AGXG18PFamilyBuffer *,unsigned long,AGXG18PFamilyBuffer *,unsigned long,MTLGenericBVHHeaderVersionSPI)::verify = 0;
-    v19 = v58;
-    v20 = v53;
+    v19 = controlPointBuffer;
+    v20 = controlPointBufferOffset;
   }
 
   if (AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::encodeWriteGenericBVHStructures(AGXG18PFamilyRayTracingAccelerationStructure *,AGXG18PFamilyBuffer *,unsigned long,AGXG18PFamilyBuffer *,unsigned long,AGXG18PFamilyBuffer *,unsigned long,AGXG18PFamilyBuffer *,unsigned long,AGXG18PFamilyBuffer *,unsigned long,AGXG18PFamilyBuffer *,unsigned long,AGXG18PFamilyBuffer *,unsigned long,AGXG18PFamilyBuffer *,unsigned long,MTLGenericBVHHeaderVersionSPI)::verify == 1)
@@ -542,7 +542,7 @@
     *&v77 = 0;
     AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::allocateInline(&v76, bvh_builder, 8, 0);
     v31 = v76.i64[1];
-    *v76.i64[0] = v16;
+    *v76.i64[0] = version;
     *(*(*(bvh_builder + 4) + 24) + *(*(bvh_builder + 4) + 4) + 64) = v31;
     v32 = AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::getOrCreatePipeline(bvh_builder, 45, 0);
     v76 = 0u;
@@ -575,7 +575,7 @@
   }
 
   while (v30);
-  v37 = AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::getOrCreatePipeline(bvh_builder, dword_29D2F53E8[v16], 0);
+  v37 = AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::getOrCreatePipeline(bvh_builder, dword_29D2F53E8[version], 0);
   v76 = 0u;
   v77 = 0u;
   AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::dispatchWithIndirectThreadCountExtended(bvh_builder, v37, v21 + 20, &v76, 1, 0, 1);
@@ -591,10 +591,10 @@
   *&v77 = 8;
   *(&v77 + 1) = v69;
   *v68.i64[0] = 0;
-  v39 = [v52 gpuAddress];
+  gpuAddress = [v52 gpuAddress];
   v40 = [v52 length];
-  v41 = v39 + v51;
-  if (v55)
+  v41 = gpuAddress + v51;
+  if (perPrimitiveDataBuffer)
   {
     v65 = 0uLL;
     v66 = 0;
@@ -612,9 +612,9 @@
     v65.i64[1] = 72;
     v66 = v40;
     v67 = 0;
-    v61 = [v55 gpuAddress] + v54;
-    v62 = v54;
-    v63 = [v55 length];
+    v61 = [perPrimitiveDataBuffer gpuAddress] + perPrimitiveDataBufferOffset;
+    v62 = perPrimitiveDataBufferOffset;
+    v63 = [perPrimitiveDataBuffer length];
     v64 = 0;
     AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::encodeStridedCopy(bvh_builder, v41, v65.i64, 4, v68.i64, 0, 4, &v61, v76.i64, 4);
   }
@@ -638,9 +638,9 @@
     v65.i64[1] = 88;
     v66 = v40;
     v67 = 0;
-    v42 = [v19 gpuAddress];
+    gpuAddress2 = [v19 gpuAddress];
     v43 = [v19 length];
-    v61 = v42 + v20;
+    v61 = gpuAddress2 + v20;
     v62 = v20;
     v63 = v43;
     v64 = 0;
@@ -648,7 +648,7 @@
   }
 
   *(*(*(bvh_builder + 4) + 24) + *(*(bvh_builder + 4) + 4) + 56) = [v52 gpuAddress] + v51;
-  *(*(*(bvh_builder + 4) + 24) + *(*(bvh_builder + 4) + 4) + 88) = [v57 gpuAddress] + v56;
+  *(*(*(bvh_builder + 4) + 24) + *(*(bvh_builder + 4) + 4) + 88) = [innerNodeBuffer gpuAddress] + innerNodeBufferOffset;
   v44 = AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::getOrCreatePipeline(bvh_builder, 53, 0);
   v68 = vdupq_n_s64(1uLL);
   v69 = 1;
@@ -658,17 +658,17 @@
   return 1;
 }
 
-- (BOOL)writeGenericBVHStructureSizesOfAccelerationStructure:(id)a3 into:(id)a4
+- (BOOL)writeGenericBVHStructureSizesOfAccelerationStructure:(id)structure into:(id)into
 {
   *(self->_impl + 572) |= 4u;
-  [(AGXG18PFamilyComputeContext_mtlnext *)self doesNotRecognizeSelector:a2, a4];
+  [(AGXG18PFamilyComputeContext_mtlnext *)self doesNotRecognizeSelector:a2, into];
   return 0;
 }
 
-- (void)writeDeserializedAccelerationStructureSize:(MTL4BufferRange)a3 toBuffer:(MTL4BufferRange)a4
+- (void)writeDeserializedAccelerationStructureSize:(MTL4BufferRange)size toBuffer:(MTL4BufferRange)buffer
 {
-  var0 = a4.var0;
-  v5 = a3.var0;
+  var0 = buffer.var0;
+  v5 = size.var0;
   *(self->_impl + 572) |= 4u;
   if ((self->_bvhBarrierBeforeStages & 0x20000000) != 0)
   {
@@ -729,9 +729,9 @@
   AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::executeKernelWithThreadsInternal(*(bvh_builder + 2), *(bvh_builder + 4), Pipeline, v14.i8, v12.i8);
 }
 
-- (void)writeSerializedAccelerationStructureSize:(id)a3 toBuffer:(MTL4BufferRange)a4
+- (void)writeSerializedAccelerationStructureSize:(id)size toBuffer:(MTL4BufferRange)buffer
 {
-  var0 = a4.var0;
+  var0 = buffer.var0;
   *(self->_impl + 572) |= 4u;
   if ((self->_bvhBarrierBeforeStages & 0x20000000) != 0)
   {
@@ -781,10 +781,10 @@
     AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::flush(bvh_builder);
   }
 
-  v10 = [a3 buffer];
-  v11 = [a3 bufferOffset];
-  v12 = v11 + [v10 gpuAddress];
-  [v10 length];
+  buffer = [size buffer];
+  bufferOffset = [size bufferOffset];
+  v12 = bufferOffset + [buffer gpuAddress];
+  [buffer length];
   v13 = (*(*(bvh_builder + 4) + 24) + *(*(bvh_builder + 4) + 4));
   *v13 = v12 + 64;
   v13[1] = var0;
@@ -796,10 +796,10 @@
   AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::executeKernelWithThreadsInternal(*(bvh_builder + 2), *(bvh_builder + 4), Pipeline, v17.i8, v15.i8);
 }
 
-- (void)deserializeInstanceAccelerationStructure:(id)a3 referencedAccelerationStructures:(id)a4 fromBuffer:(MTL4BufferRange)a5
+- (void)deserializeInstanceAccelerationStructure:(id)structure referencedAccelerationStructures:(id)structures fromBuffer:(MTL4BufferRange)buffer
 {
-  var1 = a5.var1;
-  var0 = a5.var0;
+  var1 = buffer.var1;
+  var0 = buffer.var0;
   *(self->_impl + 572) |= 4u;
   if ((self->_bvhBarrierBeforeStages & 0x20000000) != 0)
   {
@@ -844,15 +844,15 @@
     bvh_builder = self->_bvh_builder;
   }
 
-  v13 = [a3 accelerationStructureUniqueIdentifier];
+  accelerationStructureUniqueIdentifier = [structure accelerationStructureUniqueIdentifier];
 
-  AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::encodeDeserialize(bvh_builder, a3, a4, var0, var1, v13);
+  AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::encodeDeserialize(bvh_builder, structure, structures, var0, var1, accelerationStructureUniqueIdentifier);
 }
 
-- (void)deserializePrimitiveAccelerationStructure:(id)a3 fromBuffer:(MTL4BufferRange)a4
+- (void)deserializePrimitiveAccelerationStructure:(id)structure fromBuffer:(MTL4BufferRange)buffer
 {
-  var1 = a4.var1;
-  var0 = a4.var0;
+  var1 = buffer.var1;
+  var0 = buffer.var0;
   *(self->_impl + 572) |= 4u;
   if ((self->_bvhBarrierBeforeStages & 0x20000000) != 0)
   {
@@ -897,15 +897,15 @@
     bvh_builder = self->_bvh_builder;
   }
 
-  v11 = [a3 accelerationStructureUniqueIdentifier];
+  accelerationStructureUniqueIdentifier = [structure accelerationStructureUniqueIdentifier];
 
-  AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::encodeDeserialize(bvh_builder, a3, 0, var0, var1, v11);
+  AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::encodeDeserialize(bvh_builder, structure, 0, var0, var1, accelerationStructureUniqueIdentifier);
 }
 
-- (void)serializeInstanceAccelerationStructure:(id)a3 referencedAccelerationStructures:(id)a4 toBuffer:(MTL4BufferRange)a5
+- (void)serializeInstanceAccelerationStructure:(id)structure referencedAccelerationStructures:(id)structures toBuffer:(MTL4BufferRange)buffer
 {
-  var1 = a5.var1;
-  var0 = a5.var0;
+  var1 = buffer.var1;
+  var0 = buffer.var0;
   *(self->_impl + 572) |= 4u;
   if ((self->_bvhBarrierBeforeStages & 0x20000000) != 0)
   {
@@ -950,13 +950,13 @@
     bvh_builder = self->_bvh_builder;
   }
 
-  AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::encodeSerialize(bvh_builder, a3, a4, var0, var1);
+  AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::encodeSerialize(bvh_builder, structure, structures, var0, var1);
 }
 
-- (void)serializePrimitiveAccelerationStructure:(id)a3 toBuffer:(MTL4BufferRange)a4
+- (void)serializePrimitiveAccelerationStructure:(id)structure toBuffer:(MTL4BufferRange)buffer
 {
-  var1 = a4.var1;
-  var0 = a4.var0;
+  var1 = buffer.var1;
+  var0 = buffer.var0;
   *(self->_impl + 572) |= 4u;
   if ((self->_bvhBarrierBeforeStages & 0x20000000) != 0)
   {
@@ -1001,13 +1001,13 @@
     bvh_builder = self->_bvh_builder;
   }
 
-  AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::encodeSerialize(bvh_builder, a3, 0, var0, var1);
+  AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::encodeSerialize(bvh_builder, structure, 0, var0, var1);
 }
 
-- (void)writeCompactedAccelerationStructureSize:(id)a3 toBuffer:(MTL4BufferRange)a4
+- (void)writeCompactedAccelerationStructureSize:(id)size toBuffer:(MTL4BufferRange)buffer
 {
-  var1 = a4.var1;
-  var0 = a4.var0;
+  var1 = buffer.var1;
+  var0 = buffer.var0;
   *(self->_impl + 572) |= 4u;
   if ((self->_bvhBarrierBeforeStages & 0x20000000) != 0)
   {
@@ -1058,9 +1058,9 @@
   AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::allocateInline(&v18, bvh_builder, 48, 1);
   v12 = v18;
   v11 = v19;
-  v13 = [objc_msgSend(a3 "buffer")];
-  v14 = [a3 bufferOffset] + v13;
-  v15 = [a3 size];
+  v13 = [objc_msgSend(size "buffer")];
+  v14 = [size bufferOffset] + v13;
+  v15 = [size size];
   *v12 = v14;
   *(v12 + 8) = v15;
   *(v12 + 16) = var0;
@@ -1071,11 +1071,11 @@
   }
 
   *(v12 + 40) = AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::encodeWriteCompactedSize(AGXG18PFamilyRayTracingAccelerationStructure *,MTL4BufferRange,unsigned long,MTLDataType,BOOL)::skipCompaction ^ 1;
-  [objc_msgSend(a3 "buffer")];
-  [a3 bufferOffset];
-  [objc_msgSend(a3 "buffer")];
-  [a3 bufferOffset];
-  [objc_msgSend(a3 "buffer")];
+  [objc_msgSend(size "buffer")];
+  [size bufferOffset];
+  [objc_msgSend(size "buffer")];
+  [size bufferOffset];
+  [objc_msgSend(size "buffer")];
   {
     {
     }
@@ -1108,7 +1108,7 @@
       v16 = 8;
     }
 
-    BatchForCommand = AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::getBatchForCommand(bvh_builder, 2, a3, 0, var0, var1, var0, v16, 0, 0);
+    BatchForCommand = AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::getBatchForCommand(bvh_builder, 2, size, 0, var0, var1, var0, v16, 0, 0);
     v18 = v11;
     std::vector<unsigned long long>::push_back[abi:nn200100](BatchForCommand + 216, &v18);
   }
@@ -1120,7 +1120,7 @@
   }
 }
 
-- (void)copyAndCompactAccelerationStructure:(id)a3 toAccelerationStructure:(id)a4
+- (void)copyAndCompactAccelerationStructure:(id)structure toAccelerationStructure:(id)accelerationStructure
 {
   *(self->_impl + 572) |= 4u;
   if ((self->_bvhBarrierBeforeStages & 0x20000000) != 0)
@@ -1166,10 +1166,10 @@
     bvh_builder = self->_bvh_builder;
   }
 
-  AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::encodeCopyAndCompact(bvh_builder, a3, a4, 0);
+  AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::encodeCopyAndCompact(bvh_builder, structure, accelerationStructure, 0);
 }
 
-- (void)copyAccelerationStructure:(id)a3 toAccelerationStructure:(id)a4
+- (void)copyAccelerationStructure:(id)structure toAccelerationStructure:(id)accelerationStructure
 {
   *(self->_impl + 572) |= 4u;
   if ((self->_bvhBarrierBeforeStages & 0x20000000) != 0)
@@ -1215,36 +1215,36 @@
     bvh_builder = self->_bvh_builder;
   }
 
-  v14 = a4;
-  v15 = a3;
+  accelerationStructureCopy = accelerationStructure;
+  structureCopy = structure;
   if (*(bvh_builder + 49) == 1)
   {
-    BatchForCommand = AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::getBatchForCommand(bvh_builder, 3, a3, a4, 0, -1, 0, 0, 0, 0);
-    v13 = a3;
-    std::vector<AGXG18PFamilyTexture *>::push_back[abi:nn200100](BatchForCommand + 144, &v13);
-    if (a4)
+    BatchForCommand = AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::getBatchForCommand(bvh_builder, 3, structure, accelerationStructure, 0, -1, 0, 0, 0, 0);
+    structureCopy2 = structure;
+    std::vector<AGXG18PFamilyTexture *>::push_back[abi:nn200100](BatchForCommand + 144, &structureCopy2);
+    if (accelerationStructure)
     {
-      v12 = a4;
+      structureCopy3 = accelerationStructure;
     }
 
     else
     {
-      v12 = a3;
+      structureCopy3 = structure;
     }
 
-    v13 = v12;
-    std::vector<AGXG18PFamilyTexture *>::push_back[abi:nn200100](BatchForCommand + 168, &v13);
+    structureCopy2 = structureCopy3;
+    std::vector<AGXG18PFamilyTexture *>::push_back[abi:nn200100](BatchForCommand + 168, &structureCopy2);
   }
 
   else
   {
-    AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::encodeCopies(bvh_builder, &v15, &v14, 1uLL, v4);
+    AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::encodeCopies(bvh_builder, &structureCopy, &accelerationStructureCopy, 1uLL, v4);
   }
 }
 
-- (void)refitAccelerationStructure:(id)a3 descriptor:(id)a4 destination:(id)a5 scratchBuffer:(MTL4BufferRange)a6 options:(unint64_t)a7
+- (void)refitAccelerationStructure:(id)structure descriptor:(id)descriptor destination:(id)destination scratchBuffer:(MTL4BufferRange)buffer options:(unint64_t)options
 {
-  v165 = a7;
+  optionsCopy = options;
   v206 = *MEMORY[0x29EDCA608];
   *(self->_impl + 572) |= 4u;
   if ((self->_bvhBarrierBeforeStages & 0x20000000) != 0)
@@ -1299,20 +1299,20 @@
     device = self->_device;
     if (device)
     {
-      [(AGXG18PFamilyDevice *)device accelerationStructureSizesWithDescriptor:a4, a4, a5, a6.var0, a6.var1];
+      [(AGXG18PFamilyDevice *)device accelerationStructureSizesWithDescriptor:descriptor, descriptor, destination, buffer.var0, buffer.var1];
     }
 
-    v14 = a5;
-    if (v167 > [a3 size])
+    destinationCopy = destination;
+    if (v167 > [structure size])
     {
-      v14 = [(AGXG18PFamilyDevice *)self->_device newAccelerationStructureWithSize:v167];
+      destinationCopy = [(AGXG18PFamilyDevice *)self->_device newAccelerationStructureWithSize:v167];
     }
 
     v15 = [(AGXG18PFamilyDevice *)self->_device newBufferWithLength:*(&v167 + 1) options:32];
-    -[AGXG18PFamilyComputeContext_mtlnext buildAccelerationStructure:descriptor:scratchBuffer:](self, "buildAccelerationStructure:descriptor:scratchBuffer:", v14, a4, [v15 gpuAddress], objc_msgSend(v15, "length"));
-    if (v14 != a5)
+    -[AGXG18PFamilyComputeContext_mtlnext buildAccelerationStructure:descriptor:scratchBuffer:](self, "buildAccelerationStructure:descriptor:scratchBuffer:", destinationCopy, descriptor, [v15 gpuAddress], objc_msgSend(v15, "length"));
+    if (destinationCopy != destination)
     {
-      [(AGXG18PFamilyComputeContext_mtlnext *)self copyAndCompactAccelerationStructure:v14 toAccelerationStructure:a5];
+      [(AGXG18PFamilyComputeContext_mtlnext *)self copyAndCompactAccelerationStructure:destinationCopy toAccelerationStructure:destination];
     }
 
     return;
@@ -1320,19 +1320,19 @@
 
   context = objc_autoreleasePoolPush();
   bvh_builder = self->_bvh_builder;
-  [a5 accelerationStructureUniqueIdentifier];
-  if (a3 != a5)
+  [destination accelerationStructureUniqueIdentifier];
+  if (structure != destination)
   {
-    [objc_msgSend(a5 "buffer")];
-    [a5 bufferOffset];
-    [a5 size];
+    [objc_msgSend(destination "buffer")];
+    [destination bufferOffset];
+    [destination size];
   }
 
-  AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::newBVHDescriptor(&v187, a4, 1);
+  AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::newBVHDescriptor(&v187, descriptor, 1);
   if (BYTE2(v188) == 6 && (v194 - 3) >= 2)
   {
-    v18 = [a4 instancedAccelerationStructures];
-    v19 = [v18 count];
+    instancedAccelerationStructures = [descriptor instancedAccelerationStructures];
+    v19 = [instancedAccelerationStructures count];
     v20 = v19;
     if (v19 <= 1)
     {
@@ -1351,7 +1351,7 @@
       v23 = *(&v167 + 1);
       do
       {
-        v24 = [v18 objectAtIndexedSubscript:v22];
+        v24 = [instancedAccelerationStructures objectAtIndexedSubscript:v22];
         v25 = [objc_msgSend(v24 "buffer")];
         *(v23 + 8 * v22++) = [v24 bufferOffset] + v25;
       }
@@ -1360,15 +1360,15 @@
     }
 
     v17 = v167;
-    v26 = [v18 count];
-    if ([v18 count] < 2)
+    v26 = [instancedAccelerationStructures count];
+    if ([instancedAccelerationStructures count] < 2)
     {
       v27 = 4;
     }
 
     else
     {
-      v27 = 4 * [v18 count];
+      v27 = 4 * [instancedAccelerationStructures count];
     }
 
     AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::BuilderBufferForPrivateAllocation(&v167, bvh_builder, v27, 0);
@@ -1378,7 +1378,7 @@
       v29 = *(&v167 + 1);
       do
       {
-        *(v29 + 4 * v28) = *([v18 objectAtIndexedSubscript:v28] + 360);
+        *(v29 + 4 * v28) = *([instancedAccelerationStructures objectAtIndexedSubscript:v28] + 360);
         ++v28;
       }
 
@@ -1392,19 +1392,19 @@
   {
     v16 = 0;
     v17 = 0;
-    v18 = 0;
+    instancedAccelerationStructures = 0;
   }
 
   v167 = 0u;
   v168 = 0u;
-  AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::newResourceBuffer(v186, bvh_builder, &v187, a4, &v167);
+  AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::newResourceBuffer(v186, bvh_builder, &v187, descriptor, &v167);
   v161 = v187;
-  if (a5)
+  if (destination)
   {
-    v30 = [a5 buffer];
-    if (v30)
+    buffer = [destination buffer];
+    if (buffer)
     {
-      v31 = a3 == a5;
+      v31 = structure == destination;
     }
 
     else
@@ -1412,14 +1412,14 @@
       v31 = 1;
     }
 
-    if (v30)
+    if (buffer)
     {
-      v32 = a5;
+      structureCopy2 = destination;
     }
 
     else
     {
-      v32 = a3;
+      structureCopy2 = structure;
     }
 
     if (v31)
@@ -1429,41 +1429,41 @@
 
     else
     {
-      v33 = [a3 buffer];
+      buffer2 = [structure buffer];
       v162 = 1;
-      if (v33 == [a5 buffer])
+      if (buffer2 == [destination buffer])
       {
-        v34 = [a3 bufferOffset];
-        if (v34 == [a5 bufferOffset])
+        bufferOffset = [structure bufferOffset];
+        if (bufferOffset == [destination bufferOffset])
         {
           v162 = 0;
         }
       }
 
-      v32 = a5;
+      structureCopy2 = destination;
     }
   }
 
   else
   {
     v162 = 0;
-    v32 = a3;
+    structureCopy2 = structure;
   }
 
-  v164 = v32;
-  v35 = [v32 buffer];
-  v36 = [v164 bufferOffset];
-  v37 = [v35 gpuAddress];
-  v38 = [v35 length];
-  if ((BYTE2(v188) & 0xFE) == 6 || (v165 & 3) != 0)
+  v164 = structureCopy2;
+  buffer3 = [structureCopy2 buffer];
+  bufferOffset2 = [v164 bufferOffset];
+  gpuAddress = [buffer3 gpuAddress];
+  v38 = [buffer3 length];
+  if ((BYTE2(v188) & 0xFE) == 6 || (optionsCopy & 3) != 0)
   {
     v203 = 0;
     v204 = 0;
     v205 = 0;
     v43 = AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncoding>::allocateInline(&v203, bvh_builder, 128, 0);
-    v158 = v37;
-    v159 = v36;
-    v44 = v165 & 1;
+    v158 = gpuAddress;
+    v159 = bufferOffset2;
+    v44 = optionsCopy & 1;
     v45 = v203;
     v155 = v204;
     v156 = v205;
@@ -1477,11 +1477,11 @@
     *(v45 + 16) = 0u;
     v157 = HIBYTE(v187);
     {
-      v44 = v165 & 1;
+      v44 = optionsCopy & 1;
       if (v43)
       {
         AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::getSelectedRiaBvhGen(void)::riaBvhGenOverride = 0;
-        v44 = v165 & 1;
+        v44 = optionsCopy & 1;
       }
     }
 
@@ -1498,7 +1498,7 @@
     *(v45 + 16) = *&v186[0];
     *(v45 + 122) = 0;
     *(v45 + 101) = v44;
-    *(v45 + 102) = (v165 & 2) != 0;
+    *(v45 + 102) = (optionsCopy & 2) != 0;
     v160 = v46;
     {
       v46 = v160;
@@ -1761,8 +1761,8 @@ LABEL_154:
       v178 = v197[1];
       v175 = v195;
       v176 = v196;
-      v39 = a3;
-      *&v180 = v39;
+      structureCopy4 = structure;
+      *&v180 = structureCopy4;
       v95 = v164;
       v40 = v95;
       if (v160 > 1)
@@ -1775,7 +1775,7 @@ LABEL_154:
         v96 = 0;
       }
 
-      v97 = v96 & v165 & 1;
+      v97 = v96 & optionsCopy & 1;
       if (v162)
       {
         v98 = 32;
@@ -1786,7 +1786,7 @@ LABEL_154:
         v98 = 0;
       }
 
-      v41 = (v98 & 0xFFFFFFF3 | (4 * (v165 & 3)) | v157 & 2 | v97) ^ 2;
+      v41 = (v98 & 0xFFFFFFF3 | (4 * (optionsCopy & 3)) | v157 & 2 | v97) ^ 2;
       *(&v180 + 1) = v95;
       *&v181 = v155;
       *(&v181 + 1) = v45;
@@ -2107,8 +2107,8 @@ LABEL_90:
   v172 = v192;
   v167 = v187;
   v168 = v188;
-  v39 = a3;
-  *&v180 = v39;
+  structureCopy4 = structure;
+  *&v180 = structureCopy4;
   v40 = v164;
   *(&v180 + 1) = v40;
   if (v162)
@@ -2130,18 +2130,18 @@ LABEL_180:
   v185 = v41;
   if (*(v42 + 49) == 1)
   {
-    if (a5)
+    if (destination)
     {
-      v99 = a5;
+      structureCopy5 = destination;
     }
 
     else
     {
-      v99 = a3;
+      structureCopy5 = structure;
     }
 
     v101 = (BYTE2(v188) & 0xFE) == 6 && (v194 - 3) < 2;
-    BatchForCommand = AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::getBatchForCommand(v42, 1, a3, v99, 0, -1, 0, 0, v18, v101);
+    BatchForCommand = AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::getBatchForCommand(v42, 1, structure, structureCopy5, 0, -1, 0, 0, instancedAccelerationStructures, v101);
     v103 = BatchForCommand;
     v105 = BatchForCommand[16];
     v104 = BatchForCommand[17];
@@ -2301,7 +2301,7 @@ LABEL_180:
       *(v105 + 176) = v114;
       *(v105 + 144) = v112;
       *&v180 = 0;
-      *(v105 + 200) = v39;
+      *(v105 + 200) = structureCopy4;
       *(&v180 + 1) = 0;
       *(v105 + 208) = v40;
       *(v105 + 216) = v181;
@@ -2326,7 +2326,7 @@ LABEL_180:
   objc_autoreleasePoolPop(context);
 }
 
-- (void)buildAccelerationStructure:(id)a3 descriptor:(id)a4 scratchBuffer:(MTL4BufferRange)a5
+- (void)buildAccelerationStructure:(id)structure descriptor:(id)descriptor scratchBuffer:(MTL4BufferRange)buffer
 {
   v5 = MEMORY[0x2A1C7C4A8](self);
   v7 = v6;
@@ -5986,20 +5986,20 @@ LABEL_534:
   objc_autoreleasePoolPop(context);
 }
 
-- (void)writeTimestampWithGranularity:(int64_t)a3 intoHeap:(id)a4 atIndex:(unint64_t)a5
+- (void)writeTimestampWithGranularity:(int64_t)granularity intoHeap:(id)heap atIndex:(unint64_t)index
 {
-  if (!HIDWORD(a5))
+  if (!HIDWORD(index))
   {
-    v5 = a5;
-    if ([a4 count] >= a5)
+    indexCopy = index;
+    if ([heap count] >= index)
     {
       impl = self->_impl;
       if (impl[5864])
       {
-        *&v10 = a4;
-        DWORD2(v10) = v5;
+        *&v10 = heap;
+        DWORD2(v10) = indexCopy;
         std::vector<AGX::AGXTimestampEntry>::push_back[abi:nn200100]((impl + 5840), &v10);
-        if (a3 == 1)
+        if (granularity == 1)
         {
           AGX::ComputeContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext,AGX::HAL300::EncoderComputeServiceClassesNext>::suspendComputePass(impl);
 
@@ -6009,26 +6009,26 @@ LABEL_534:
 
       else
       {
-        *&v10 = a4;
-        DWORD2(v10) = v5;
+        *&v10 = heap;
+        DWORD2(v10) = indexCopy;
         std::vector<AGX::AGXTimestampEntry>::push_back[abi:nn200100]((impl + 5816), &v10);
       }
     }
   }
 }
 
-- (void)copyTextureMappingsFromTexture:(id)a3 toTexture:(id)a4 operations:(id *)a5 count:(unint64_t)a6
+- (void)copyTextureMappingsFromTexture:(id)texture toTexture:(id)toTexture operations:(id *)operations count:(unint64_t)count
 {
   v6 = *(self->_legacy_blit_context + 1);
   v7 = v6[485];
   v6[486] = v7;
-  if (a6)
+  if (count)
   {
     v13 = 0;
     v14 = 1;
     do
     {
-      v15 = &a5[v13];
+      v15 = &operations[v13];
       var1_low = LODWORD(v15->var1);
       var2 = v15->var2;
       v21 = *&v15->var3.var0;
@@ -6040,11 +6040,11 @@ LABEL_534:
       v24 = v15->var0.var0.var2;
       v25 = *&v15->var0.var1.var0;
       v26 = v15->var0.var1.var2;
-      AGX::BlitDispatchContextGen2<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::sparseTexture(legacy_blit_context, a3, &v23, var1_low, var2, 0, 0, 0, 0, a4, &v21, var4, var5, 1u, 0);
+      AGX::BlitDispatchContextGen2<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::sparseTexture(legacy_blit_context, texture, &v23, var1_low, var2, 0, 0, 0, 0, toTexture, &v21, var4, var5, 1u, 0);
       v13 = v14++;
     }
 
-    while (v13 < a6);
+    while (v13 < count);
     v6 = *(self->_legacy_blit_context + 1);
     v7 = v6[485];
   }
@@ -6052,33 +6052,33 @@ LABEL_534:
   v6[487] = v7;
 }
 
-- (void)copyTextureMappingsFromTexture:(id)a3 sourceSlices:(const unint64_t *)a4 sourceLevels:(const unint64_t *)a5 sourceOrigins:(id *)a6 sourceSizes:(id *)a7 numSizes:(unint64_t)a8 toTexture:(id)a9 destinationSlices:(const unint64_t *)a10 destinationLevels:(const unint64_t *)a11 destinationOrigins:(id *)a12
+- (void)copyTextureMappingsFromTexture:(id)texture sourceSlices:(const unint64_t *)slices sourceLevels:(const unint64_t *)levels sourceOrigins:(id *)origins sourceSizes:(id *)sizes numSizes:(unint64_t)numSizes toTexture:(id)toTexture destinationSlices:(const unint64_t *)self0 destinationLevels:(const unint64_t *)self1 destinationOrigins:(id *)self2
 {
   legacy_blit_context = self->_legacy_blit_context;
   v13 = legacy_blit_context[1];
   v14 = v13[485];
   v13[486] = v14;
-  if (a8)
+  if (numSizes)
   {
     v21 = 0;
     v22 = 1;
     do
     {
       v23 = v21;
-      v24 = &a6[v21];
+      v24 = &origins[v21];
       v30 = *&v24->var0;
       var2 = v24->var2;
-      v25 = &a7[v21];
+      v25 = &sizes[v21];
       v32 = *&v25->var0;
       v26 = v21;
-      v27 = LODWORD(a5[v26]);
-      v28 = a4[v26];
+      v27 = LODWORD(levels[v26]);
+      v28 = slices[v26];
       v33 = v25->var2;
-      AGX::BlitDispatchContextGen2<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::sparseTexture(legacy_blit_context, a3, &v30, v27, v28, 0, 0, 0, 0, a9, &a12[v23], a11[v26], a10[v26], 1u, 0);
+      AGX::BlitDispatchContextGen2<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::sparseTexture(legacy_blit_context, texture, &v30, v27, v28, 0, 0, 0, 0, toTexture, &destinationOrigins[v23], destinationLevels[v26], destinationSlices[v26], 1u, 0);
       v21 = v22++;
     }
 
-    while (v21 < a8);
+    while (v21 < numSizes);
     v13 = *(self->_legacy_blit_context + 1);
     v14 = v13[485];
   }
@@ -6086,18 +6086,18 @@ LABEL_534:
   v13[487] = v14;
 }
 
-- (void)updateTextureMappings:(id)a3 heap:(id)a4 operations:(id *)a5 count:(unint64_t)a6
+- (void)updateTextureMappings:(id)mappings heap:(id)heap operations:(id *)operations count:(unint64_t)count
 {
   v6 = *(self->_legacy_blit_context + 1);
   v7 = v6[485];
   v6[486] = v7;
-  if (a6)
+  if (count)
   {
     v12 = 0;
     v13 = 1;
     do
     {
-      v14 = &a5[v12];
+      v14 = &operations[v12];
       v15 = *&v14->var3;
       v16 = *&v14->var1.var0.var1;
       v20[0] = *&v14->var0;
@@ -6109,18 +6109,18 @@ LABEL_534:
       legacy_blit_context = self->_legacy_blit_context;
       if (LODWORD(v20[0]))
       {
-        AGX::BlitDispatchContextGen2<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::sparseTexture(legacy_blit_context, a3, v20 + 2, DWORD2(v21), v15, v20[0], 0, 0, 0, 0, 0, 0, 0, 1u, 0);
+        AGX::BlitDispatchContextGen2<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::sparseTexture(legacy_blit_context, mappings, v20 + 2, DWORD2(v21), v15, v20[0], 0, 0, 0, 0, 0, 0, 0, 1u, 0);
       }
 
       else
       {
-        AGX::BlitDispatchContextGen2<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::sparseTexture(legacy_blit_context, a3, v20 + 2, DWORD2(v21), v15, 0, 0, 0, 0, 0, 0, 0, 0, 1u, [*(a4 + *MEMORY[0x29EDC5618]) gpuAddress] + *(&v22 + 1) * *(*(a3 + 74) + 236));
+        AGX::BlitDispatchContextGen2<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::sparseTexture(legacy_blit_context, mappings, v20 + 2, DWORD2(v21), v15, 0, 0, 0, 0, 0, 0, 0, 0, 1u, [*(heap + *MEMORY[0x29EDC5618]) gpuAddress] + *(&v22 + 1) * *(*(mappings + 74) + 236));
       }
 
       v12 = v13++;
     }
 
-    while (v12 < a6);
+    while (v12 < count);
     v6 = *(self->_legacy_blit_context + 1);
     v7 = v6[485];
   }
@@ -6128,44 +6128,44 @@ LABEL_534:
   v6[487] = v7;
 }
 
-- (void)updateTextureMappings:(id)a3 numRegions:(unint64_t)a4 regions:(id *)a5 levels:(const unint64_t *)a6 slices:(const unint64_t *)a7 heap:(id)a8 rangeModes:(const unint64_t *)a9 rangeOffsets:(unint64_t *)a10
+- (void)updateTextureMappings:(id)mappings numRegions:(unint64_t)regions regions:(id *)a5 levels:(const unint64_t *)levels slices:(const unint64_t *)slices heap:(id)heap rangeModes:(const unint64_t *)modes rangeOffsets:(unint64_t *)self0
 {
   legacy_blit_context = self->_legacy_blit_context;
   v11 = legacy_blit_context[1];
   v12 = v11[485];
   v11[486] = v12;
-  v13 = a4;
-  if (a4)
+  regionsCopy = regions;
+  if (regions)
   {
     do
     {
-      v23 = *a6++;
+      v23 = *levels++;
       v22 = v23;
-      v25 = *a7++;
+      v25 = *slices++;
       v24 = v25;
-      v27 = *a9;
-      a9 = (a9 + 4);
+      v27 = *modes;
+      modes = (modes + 4);
       v26 = v27;
       if (v27)
       {
-        AGX::BlitDispatchContextGen2<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::sparseTexture(legacy_blit_context, a3, a5, v22, v24, v26, 0, 0, 0, 0, 0, 0, 0, 1u, 0);
+        AGX::BlitDispatchContextGen2<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::sparseTexture(legacy_blit_context, mappings, a5, v22, v24, v26, 0, 0, 0, 0, 0, 0, 0, 1u, 0);
       }
 
       else
       {
         v19 = legacy_blit_context;
-        v20 = *a10;
-        v21 = [*(a8 + *MEMORY[0x29EDC5618]) gpuAddress] + v20 * *(*(a3 + 74) + 236);
+        v20 = *offsets;
+        v21 = [*(heap + *MEMORY[0x29EDC5618]) gpuAddress] + v20 * *(*(mappings + 74) + 236);
         legacy_blit_context = v19;
-        AGX::BlitDispatchContextGen2<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::sparseTexture(v19, a3, a5, v22, v24, 0, 0, 0, 0, 0, 0, 0, 0, 1u, v21);
+        AGX::BlitDispatchContextGen2<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::sparseTexture(v19, mappings, a5, v22, v24, 0, 0, 0, 0, 0, 0, 0, 0, 1u, v21);
       }
 
-      ++a10;
+      ++offsets;
       ++a5;
-      --v13;
+      --regionsCopy;
     }
 
-    while (v13);
+    while (regionsCopy);
     v11 = *(self->_legacy_blit_context + 1);
     v12 = v11[485];
   }
@@ -6173,19 +6173,19 @@ LABEL_534:
   v11[487] = v12;
 }
 
-- (AGXG18PFamilyComputeContext_mtlnext)initWithCommandBufferForQueueSparseOperation:(id)a3 allocator:(id)a4
+- (AGXG18PFamilyComputeContext_mtlnext)initWithCommandBufferForQueueSparseOperation:(id)operation allocator:(id)allocator
 {
   v16.receiver = self;
   v16.super_class = AGXG18PFamilyComputeContext_mtlnext;
-  v5 = [(IOGPUMetal4ComputeCommandEncoder *)&v16 initWithCommandAllocator:a4];
+  v5 = [(IOGPUMetal4ComputeCommandEncoder *)&v16 initWithCommandAllocator:allocator];
   if (v5)
   {
-    *(v5 + 14) = [a3 device];
-    v6 = *(a3 + 13);
+    *(v5 + 14) = [operation device];
+    v6 = *(operation + 13);
     *(v6 + 20) = 1;
     v7 = *(v6 + 16);
-    v8 = [a3 protectionOptions];
-    v9 = [a3 device];
+    protectionOptions = [operation protectionOptions];
+    device = [operation device];
     v10 = *(*(v5 + 14) + 848);
     if (*(v10 + 15792) >> 3 < 0x551uLL)
     {
@@ -6224,8 +6224,8 @@ LABEL_8:
     *(v5 + 12) = 0;
     if (v13)
     {
-      v17[0] = v9;
-      v17[1] = a3;
+      v17[0] = device;
+      v17[1] = operation;
       v17[2] = v5;
       v25 = 1;
       v26[0] = 0;
@@ -6235,13 +6235,13 @@ LABEL_8:
       v29 = 0;
       v30 = 0;
       v31 = 1;
-      v32 = [0 usedForRaytracingEmulation];
+      usedForRaytracingEmulation = [0 usedForRaytracingEmulation];
       v18 = 1;
       v19 = 0;
       v20 = v7;
       v21 = 0;
       v22 = 1;
-      v23 = v8;
+      v23 = protectionOptions;
       v24 = 0;
       AGX::ComputeContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext,AGX::HAL300::EncoderComputeServiceClassesNext>::ComputeContext<AGX::HAL300::EncoderComputeServiceConfigB>(v13, v26, v17);
       v14 = AGX::BlitDispatchContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::BlitDispatchContext(*(v5 + 11), *(v5 + 9), 0, 0, 1);
@@ -6265,31 +6265,31 @@ LABEL_8:
   return v5;
 }
 
-- (void)setToolsDispatchBufferSPI:(unint64_t)a3 atIndex:(unint64_t)a4
+- (void)setToolsDispatchBufferSPI:(unint64_t)i atIndex:(unint64_t)index
 {
   impl = self->_impl;
-  if ((a4 + 68) > 0x1E)
+  if ((index + 68) > 0x1E)
   {
     v6 = impl[568];
-    v7 = (a4 + 37);
+    v7 = (index + 37);
     v5 = (v6 + 8 * v7 + 1272);
   }
 
   else
   {
-    v5 = (*(impl[567] + 24) + *(impl[567] + 4) + 8 * (a4 + 68));
+    v5 = (*(impl[567] + 24) + *(impl[567] + 4) + 8 * (index + 68));
     v6 = impl[568];
-    v7 = (a4 + 37);
+    v7 = (index + 37);
   }
 
-  *v5 = a3;
+  *v5 = i;
   *(v6 + 8 * v7 + 1576) = 0;
 }
 
-- (void)fillTexture:(id)a3 level:(unint64_t)a4 slice:(unint64_t)a5 region:(id *)a6 bytes:(const void *)a7 length:(unint64_t)a8
+- (void)fillTexture:(id)texture level:(unint64_t)level slice:(unint64_t)slice region:(id *)region bytes:(const void *)bytes length:(unint64_t)length
 {
-  v11 = a5;
-  v12 = a4;
+  sliceCopy = slice;
+  levelCopy = level;
   if (self && (self->_bvhBarrierBeforeStages & 0x10000000) != 0)
   {
     AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::flush(self->_bvh_builder);
@@ -6306,14 +6306,14 @@ LABEL_8:
   }
 
   [(AGXG18PFamilyComputeContext_mtlnext *)self createBlitContextIfNeeded];
-  if (!AGX::BlitUtil::requireLegacyBlit<true>(a3))
+  if (!AGX::BlitUtil::requireLegacyBlit<true>(texture))
   {
     blit_context = self->_blit_context;
-    v38 = *&a6->var0.var2;
-    v40 = *&a6->var0.var0;
+    v38 = *&region->var0.var2;
+    v40 = *&region->var0.var0;
     v41 = v38;
-    v42 = *&a6->var1.var1;
-    AGX::BlitContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::fillTexture(blit_context, a3, v12, v11, &v40, a7, a8);
+    v42 = *&region->var1.var1;
+    AGX::BlitContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::fillTexture(blit_context, texture, levelCopy, sliceCopy, &v40, bytes, length);
     return;
   }
 
@@ -6337,11 +6337,11 @@ LABEL_8:
 
   legacy_blit_context = self->_legacy_blit_context;
   *(legacy_blit_context[1] + 1944) = *(legacy_blit_context[1] + 1940);
-  v19 = *&a6->var0.var2;
-  v40 = *&a6->var0.var0;
+  v19 = *&region->var0.var2;
+  v40 = *&region->var0.var0;
   v41 = v19;
-  v42 = *&a6->var1.var1;
-  AGX::LegacyBlitContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::fillTexture(legacy_blit_context, a3, v12, v11, &v40, a7, a8);
+  v42 = *&region->var1.var1;
+  AGX::LegacyBlitContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::fillTexture(legacy_blit_context, texture, levelCopy, sliceCopy, &v40, bytes, length);
   v20 = self->_impl;
   v21 = v20[6];
   if (!*(v21 + 1240) || !*(v21 + 1248))
@@ -6415,10 +6415,10 @@ LABEL_20:
   AGX::ComputeContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext,AGX::HAL300::EncoderComputeServiceClassesNext>::resumeComputePass(v36);
 }
 
-- (void)fillBuffer:(id)a3 range:(_NSRange)a4 pattern4:(unsigned int)a5
+- (void)fillBuffer:(id)buffer range:(_NSRange)range pattern4:(unsigned int)pattern4
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   if (self && (self->_bvhBarrierBeforeStages & 0x10000000) != 0)
   {
     AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::flush(self->_bvh_builder);
@@ -6438,8 +6438,8 @@ LABEL_20:
   if (!AGX::BlitUtil::requireLegacyBlit<true>(0))
   {
     blit_context = self->_blit_context;
-    v34 = a5;
-    AGX::MSLBlitDispatchContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::blitCDMBuffer(blit_context + 1, a3, *(a3 + *MEMORY[0x29EDC5638] + 72) + location, 0, 0, length, &v34, 4uLL);
+    pattern4Copy = pattern4;
+    AGX::MSLBlitDispatchContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::blitCDMBuffer(blit_context + 1, buffer, *(buffer + *MEMORY[0x29EDC5638] + 72) + location, 0, 0, length, &pattern4Copy, 4uLL);
     return;
   }
 
@@ -6463,8 +6463,8 @@ LABEL_20:
 
   legacy_blit_context = self->_legacy_blit_context;
   *(legacy_blit_context[1] + 1944) = *(legacy_blit_context[1] + 1940);
-  v33 = a5;
-  AGX::LegacyBlitContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::fillBuffer(legacy_blit_context, a3, location, length, &v33, 4uLL);
+  pattern4Copy2 = pattern4;
+  AGX::LegacyBlitContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::fillBuffer(legacy_blit_context, buffer, location, length, &pattern4Copy2, 4uLL);
   v14 = self->_impl;
   v15 = v14[6];
   if (!*(v15 + 1240) || !*(v15 + 1248))
@@ -6538,12 +6538,12 @@ LABEL_20:
   AGX::ComputeContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext,AGX::HAL300::EncoderComputeServiceClassesNext>::resumeComputePass(v30);
 }
 
-- (void)copyFromTensor:(id)a3 sourceSlice:(MTLTensorSlice)a4 toTensor:(id)a5 destinationSlice:(MTLTensorSlice)a6
+- (void)copyFromTensor:(id)tensor sourceSlice:(MTLTensorSlice)slice toTensor:(id)toTensor destinationSlice:(MTLTensorSlice)destinationSlice
 {
-  var1 = a6.var1;
-  var0 = a6.var0;
-  v8 = a4.var1;
-  v9 = a4.var0;
+  var1 = destinationSlice.var1;
+  var0 = destinationSlice.var0;
+  v8 = slice.var1;
+  v9 = slice.var0;
   if (self && (self->_bvhBarrierBeforeStages & 0x10000000) != 0)
   {
     AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::flush(self->_bvh_builder);
@@ -6604,7 +6604,7 @@ LABEL_8:
   if (v16)
   {
     v47 = blit_context;
-    v48 = a5;
+    toTensorCopy2 = toTensor;
     v19 = 0;
     v20 = v16;
     v21 = v14 + 64;
@@ -6618,7 +6618,7 @@ LABEL_8:
         *(v21 - 32) = *([v9 tensorExtentsInternal] + 8 * v19 + 8);
         v23 *= v25;
         v21[32] = v23;
-        *v21 = *(*(a3 + 41) + 8 * v19 + 192);
+        *v21 = *(*(tensor + 41) + 8 * v19 + 192);
         v22 *= v25;
       }
 
@@ -6633,14 +6633,14 @@ LABEL_8:
 
   else
   {
-    if (*(*(a3 + 41) + 337))
+    if (*(*(tensor + 41) + 337))
     {
       return;
     }
 
     v46 = v17;
     v47 = blit_context;
-    v48 = a5;
+    toTensorCopy2 = toTensor;
     v22 = 1;
     v50[194] = 1;
     if (v18 <= 1)
@@ -6661,7 +6661,7 @@ LABEL_8:
     v28 = v50 + 96;
     v29 = 1;
     v31 = v47;
-    v30 = v48;
+    v30 = toTensorCopy2;
     do
     {
       v32 = *([var1 tensorExtentsInternal] + 8 * v26 + 8);
@@ -6670,7 +6670,7 @@ LABEL_8:
         *(v28 - 32) = *([var0 tensorExtentsInternal] + 8 * v26 + 8);
         v29 *= v32;
         v28[32] = v29;
-        *v28 = *(v48[41] + 8 * v26 + 192);
+        *v28 = *(toTensorCopy2[41] + 8 * v26 + 192);
       }
 
       ++v26;
@@ -6678,15 +6678,15 @@ LABEL_8:
     }
 
     while (v27 != v26);
-    v33 = a3;
+    tensorCopy2 = tensor;
   }
 
   else
   {
     v31 = v47;
-    v30 = v48;
-    v33 = a3;
-    if (*(v48[41] + 337))
+    v30 = toTensorCopy2;
+    tensorCopy2 = tensor;
+    if (*(toTensorCopy2[41] + 337))
     {
       return;
     }
@@ -6704,7 +6704,7 @@ LABEL_8:
     *(v50 + 48) = 1;
   }
 
-  v34 = AGX::Tensor<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::kTensorDataTypeSize[*(v33[41] + 24)];
+  v34 = AGX::Tensor<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::kTensorDataTypeSize[*(tensorCopy2[41] + 24)];
   v50[192] = v34;
   v54 = 103;
   v56 = 0;
@@ -6716,7 +6716,7 @@ LABEL_8:
   v36 = *(*(TensorBlitPipeline + 16) + 4064);
   v37 = v31[6];
   v38 = (*(v37 + 24) + *(v37 + 4));
-  *v38 = *v33[41] + *(v33[41] + 32) * v34;
+  *v38 = *tensorCopy2[41] + *(tensorCopy2[41] + 32) * v34;
   v38[1] = *v30[41] + *(v30[41] + 32) * v34;
   v38[2] = v50 + v49;
   v39 = *v31;
@@ -6764,7 +6764,7 @@ LABEL_8:
   }
 }
 
-- (void)optimizeIndirectCommandBuffer:(id)a3 withRange:(_NSRange)a4
+- (void)optimizeIndirectCommandBuffer:(id)buffer withRange:(_NSRange)range
 {
   if (self && (self->_bvhBarrierBeforeStages & 0x10000000) != 0)
   {
@@ -6878,11 +6878,11 @@ LABEL_34:
   }
 }
 
-- (void)copyIndirectCommandBuffer:(id)a3 sourceRange:(_NSRange)a4 destination:(id)a5 destinationIndex:(unint64_t)a6
+- (void)copyIndirectCommandBuffer:(id)buffer sourceRange:(_NSRange)range destination:(id)destination destinationIndex:(unint64_t)index
 {
-  v6 = a6;
-  length = a4.length;
-  location = a4.location;
+  indexCopy = index;
+  length = range.length;
+  location = range.location;
   if (self && (self->_bvhBarrierBeforeStages & 0x10000000) != 0)
   {
     AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::flush(self->_bvh_builder);
@@ -6921,7 +6921,7 @@ LABEL_34:
 
     legacy_blit_context = self->_legacy_blit_context;
     *(legacy_blit_context[1] + 1944) = *(legacy_blit_context[1] + 1940);
-    AGX::BlitDispatchContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::blitCopyICBWithTA(legacy_blit_context, *(a5 + 52), v6, *(a3 + 52), location, length, *(a3 + 102) == 0);
+    AGX::BlitDispatchContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::blitCopyICBWithTA(legacy_blit_context, *(destination + 52), indexCopy, *(buffer + 52), location, length, *(buffer + 102) == 0);
     v16 = self->_impl;
     v17 = v16[6];
     if (*(v17 + 1240) && *(v17 + 1248))
@@ -6997,10 +6997,10 @@ LABEL_34:
   }
 }
 
-- (void)resetCommandsInBuffer:(id)a3 withRange:(_NSRange)a4
+- (void)resetCommandsInBuffer:(id)buffer withRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   if (self && (self->_bvhBarrierBeforeStages & 0x10000000) != 0)
   {
     AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::flush(self->_bvh_builder);
@@ -7039,7 +7039,7 @@ LABEL_34:
 
     legacy_blit_context = self->_legacy_blit_context;
     *(legacy_blit_context[1] + 1944) = *(legacy_blit_context[1] + 1940);
-    AGX::BlitDispatchContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::blitResetICBWithTA(legacy_blit_context, *(a3 + 52), location, length, *(a3 + 102) == 0);
+    AGX::BlitDispatchContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::blitResetICBWithTA(legacy_blit_context, *(buffer + 52), location, length, *(buffer + 102) == 0);
     v12 = self->_impl;
     v13 = v12[6];
     if (*(v13 + 1240) && *(v13 + 1248))
@@ -7115,10 +7115,10 @@ LABEL_34:
   }
 }
 
-- (void)optimizeContentsForCPUAccess:(id)a3 slice:(unint64_t)a4 level:(unint64_t)a5
+- (void)optimizeContentsForCPUAccess:(id)access slice:(unint64_t)slice level:(unint64_t)level
 {
-  v5 = a5;
-  v6 = a4;
+  levelCopy = level;
+  sliceCopy = slice;
   if (self && (self->_bvhBarrierBeforeStages & 0x10000000) != 0)
   {
     AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::flush(self->_bvh_builder);
@@ -7135,7 +7135,7 @@ LABEL_34:
   }
 
   [(AGXG18PFamilyComputeContext_mtlnext *)self createBlitContextIfNeeded];
-  if (AGX::BlitUtil::requireLegacyBlit<true>(a3))
+  if (AGX::BlitUtil::requireLegacyBlit<true>(access))
   {
     if (self)
     {
@@ -7157,7 +7157,7 @@ LABEL_34:
 
     legacy_blit_context = self->_legacy_blit_context;
     *(legacy_blit_context[1] + 1944) = *(legacy_blit_context[1] + 1940);
-    AGX::LegacyBlitContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::optimizeContentsForUncompressedAccess(legacy_blit_context, a3, v6, v5);
+    AGX::LegacyBlitContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::optimizeContentsForUncompressedAccess(legacy_blit_context, access, sliceCopy, levelCopy);
     v13 = self->_impl;
     v14 = v13[6];
     if (*(v14 + 1240) && *(v14 + 1248))
@@ -7234,10 +7234,10 @@ LABEL_36:
 
   v30 = self->_blit_context;
 
-  AGX::BlitContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::optimizeContentsForUncompressedAccess(v30, a3, v6, v5);
+  AGX::BlitContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::optimizeContentsForUncompressedAccess(v30, access, sliceCopy, levelCopy);
 }
 
-- (void)optimizeContentsForCPUAccess:(id)a3
+- (void)optimizeContentsForCPUAccess:(id)access
 {
   if (self && (self->_bvhBarrierBeforeStages & 0x10000000) != 0)
   {
@@ -7255,7 +7255,7 @@ LABEL_36:
   }
 
   [(AGXG18PFamilyComputeContext_mtlnext *)self createBlitContextIfNeeded];
-  if (AGX::BlitUtil::requireLegacyBlit<true>(a3))
+  if (AGX::BlitUtil::requireLegacyBlit<true>(access))
   {
     if (self)
     {
@@ -7277,7 +7277,7 @@ LABEL_36:
 
     legacy_blit_context = self->_legacy_blit_context;
     *(legacy_blit_context[1] + 1944) = *(legacy_blit_context[1] + 1940);
-    v9 = *(a3 + 74);
+    v9 = *(access + 74);
     if (!*(v9 + 48) && *(v9 + 584))
     {
       v28 = *(v9 + 396) & 0xFF00;
@@ -7314,7 +7314,7 @@ LABEL_36:
             v36 = *(v9 + 584);
             if (v36 && *(v36 + 1304) > j && !*(v9 + 57))
             {
-              AGX::LegacyBlitContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::optimizeContentsForUncompressedAccess(legacy_blit_context, a3, i, j);
+              AGX::LegacyBlitContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::optimizeContentsForUncompressedAccess(legacy_blit_context, access, i, j);
             }
           }
         }
@@ -7396,7 +7396,7 @@ LABEL_71:
     abort();
   }
 
-  v27 = *(a3 + 74);
+  v27 = *(access + 74);
   if (*(v27 + 48) || !*(v27 + 584))
   {
     return;
@@ -7437,17 +7437,17 @@ LABEL_71:
         v40 = *(v27 + 584);
         if (v40 && *(v40 + 1304) > m && !*(v27 + 57))
         {
-          AGX::BlitContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::optimizeContentsForUncompressedAccess(v30, a3, k, m);
+          AGX::BlitContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::optimizeContentsForUncompressedAccess(v30, access, k, m);
         }
       }
     }
   }
 }
 
-- (void)optimizeContentsForGPUAccess:(id)a3 slice:(unint64_t)a4 level:(unint64_t)a5
+- (void)optimizeContentsForGPUAccess:(id)access slice:(unint64_t)slice level:(unint64_t)level
 {
-  v5 = a5;
-  v6 = a4;
+  levelCopy = level;
+  sliceCopy = slice;
   if (self && (self->_bvhBarrierBeforeStages & 0x10000000) != 0)
   {
     AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::flush(self->_bvh_builder);
@@ -7464,7 +7464,7 @@ LABEL_71:
   }
 
   [(AGXG18PFamilyComputeContext_mtlnext *)self createBlitContextIfNeeded];
-  if (AGX::BlitUtil::requireLegacyBlit<true>(a3))
+  if (AGX::BlitUtil::requireLegacyBlit<true>(access))
   {
     if (self)
     {
@@ -7486,19 +7486,19 @@ LABEL_71:
 
     legacy_blit_context = self->_legacy_blit_context;
     *(legacy_blit_context[1] + 1944) = *(legacy_blit_context[1] + 1940);
-    v13 = *(a3 + 74);
+    v13 = *(access + 74);
     if (!*&v13[6] || (v13[5].i8[0] & 2) != 0)
     {
       v14 = v13[73];
-      if (*&v14 && *(*&v14 + 1304) > v5 && !v13[7].i8[1])
+      if (*&v14 && *(*&v14 + 1304) > levelCopy && !v13[7].i8[1])
       {
-        v15 = v13[17].i32[0] >> (v13[18].i8[0] + v5);
+        v15 = v13[17].i32[0] >> (v13[18].i8[0] + levelCopy);
         v16 = v15 <= 1 ? 1 : v15;
         v17 = *(*&v13[26] + 24);
         if (v17)
         {
           v18 = 0;
-          v19 = vmax_u32(vshl_u32(v13[16], vneg_s32(vdup_n_s32(v13[18].i32[0] + v5))), 0x100000001);
+          v19 = vmax_u32(vshl_u32(v13[16], vneg_s32(vdup_n_s32(v13[18].i32[0] + levelCopy))), 0x100000001);
           v20.i64[0] = v19.u32[0];
           v20.i64[1] = v19.u32[1];
           v48 = v20;
@@ -7510,7 +7510,7 @@ LABEL_71:
             v53 = 0;
             v50 = v48;
             v51 = v16;
-            AGX::LegacyBlitContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::copyTextureToTextureImpl(legacy_blit_context, a3, v18, v6, v5, v54.i8, a3, v18, v6, v5, v52.i8, &v50);
+            AGX::LegacyBlitContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::copyTextureToTextureImpl(legacy_blit_context, access, v18, sliceCopy, levelCopy, v54.i8, access, v18, sliceCopy, levelCopy, v52.i8, &v50);
             ++v18;
           }
 
@@ -7594,19 +7594,19 @@ LABEL_56:
   }
 
   v38 = self->_blit_context;
-  v39 = *(a3 + 74);
+  v39 = *(access + 74);
   if (!*&v39[6] || (v39[5].i8[0] & 2) != 0)
   {
     v40 = v39[73];
-    if (*&v40 && *(*&v40 + 1304) > v5 && !v39[7].i8[1])
+    if (*&v40 && *(*&v40 + 1304) > levelCopy && !v39[7].i8[1])
     {
-      v41 = v39[17].i32[0] >> (v39[18].i8[0] + v5);
+      v41 = v39[17].i32[0] >> (v39[18].i8[0] + levelCopy);
       v42 = v41 <= 1 ? 1 : v41;
       v43 = *(*&v39[26] + 24);
       if (v43)
       {
         v44 = 0;
-        v45 = vmax_u32(vshl_u32(v39[16], vneg_s32(vdup_n_s32(v39[18].i32[0] + v5))), 0x100000001);
+        v45 = vmax_u32(vshl_u32(v39[16], vneg_s32(vdup_n_s32(v39[18].i32[0] + levelCopy))), 0x100000001);
         v46.i64[0] = v45.u32[0];
         v46.i64[1] = v45.u32[1];
         v49 = v46;
@@ -7618,7 +7618,7 @@ LABEL_56:
           v53 = 0;
           v50 = v49;
           v51 = v42;
-          AGX::BlitContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::copyTextureToTextureImpl(v38, a3, v44, v6, v5, &v54, a3, v44, v6, v5, &v52, &v50);
+          AGX::BlitContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::copyTextureToTextureImpl(v38, access, v44, sliceCopy, levelCopy, &v54, access, v44, sliceCopy, levelCopy, &v52, &v50);
           ++v44;
         }
 
@@ -7628,7 +7628,7 @@ LABEL_56:
   }
 }
 
-- (void)optimizeContentsForGPUAccess:(id)a3
+- (void)optimizeContentsForGPUAccess:(id)access
 {
   if (self && (self->_bvhBarrierBeforeStages & 0x10000000) != 0)
   {
@@ -7646,7 +7646,7 @@ LABEL_56:
   }
 
   [(AGXG18PFamilyComputeContext_mtlnext *)self createBlitContextIfNeeded];
-  if (AGX::BlitUtil::requireLegacyBlit<true>(a3))
+  if (AGX::BlitUtil::requireLegacyBlit<true>(access))
   {
     if (self)
     {
@@ -7668,7 +7668,7 @@ LABEL_56:
 
     legacy_blit_context = self->_legacy_blit_context;
     *(legacy_blit_context[1] + 1944) = *(legacy_blit_context[1] + 1940);
-    AGX::LegacyBlitContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::optimizeContentsForCompressedAccess(legacy_blit_context, a3);
+    AGX::LegacyBlitContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::optimizeContentsForCompressedAccess(legacy_blit_context, access);
     v9 = self->_impl;
     v10 = v9[6];
     if (*(v10 + 1240) && *(v10 + 1248))
@@ -7744,7 +7744,7 @@ LABEL_59:
   }
 
   v26 = self->_blit_context;
-  v27 = *(a3 + 74);
+  v27 = *(access + 74);
   if ((!*(v27 + 48) || (*(v27 + 40) & 2) != 0) && *(v27 + 584))
   {
     v28 = *(v27 + 396) & 0xFF00;
@@ -7785,7 +7785,7 @@ LABEL_59:
           {
             v33 = *(v27 + 136) >> (*(v27 + 144) + i);
             v34 = v33 <= 1 ? 1 : v33;
-            v35 = *(*(*(a3 + 74) + 208) + 24);
+            v35 = *(*(*(access + 74) + 208) + 24);
             if (v35)
             {
               v36 = 0;
@@ -7801,7 +7801,7 @@ LABEL_59:
                 v46 = 0;
                 v43 = v42;
                 v44 = v34;
-                AGX::BlitContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::copyTextureToTextureImpl(v26, a3, v36, v30, i, &v47, a3, v36, v30, i, &v45, &v43);
+                AGX::BlitContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::copyTextureToTextureImpl(v26, access, v36, v30, i, &v47, access, v36, v30, i, &v45, &v43);
                 ++v36;
               }
 
@@ -7818,10 +7818,10 @@ LABEL_59:
   }
 }
 
-- (void)fillBuffer:(id)a3 range:(_NSRange)a4 value:(unsigned __int8)a5
+- (void)fillBuffer:(id)buffer range:(_NSRange)range value:(unsigned __int8)value
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   if (self && (self->_bvhBarrierBeforeStages & 0x10000000) != 0)
   {
     AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::flush(self->_bvh_builder);
@@ -7841,8 +7841,8 @@ LABEL_59:
   if (!AGX::BlitUtil::requireLegacyBlit<true>(0))
   {
     blit_context = self->_blit_context;
-    HIBYTE(v33) = a5;
-    AGX::MSLBlitDispatchContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::blitCDMBuffer(blit_context + 1, a3, *(a3 + *MEMORY[0x29EDC5638] + 72) + location, 0, 0, length, &v33 + 1, 1uLL);
+    HIBYTE(v33) = value;
+    AGX::MSLBlitDispatchContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::blitCDMBuffer(blit_context + 1, buffer, *(buffer + *MEMORY[0x29EDC5638] + 72) + location, 0, 0, length, &v33 + 1, 1uLL);
     return;
   }
 
@@ -7866,8 +7866,8 @@ LABEL_59:
 
   legacy_blit_context = self->_legacy_blit_context;
   *(legacy_blit_context[1] + 1944) = *(legacy_blit_context[1] + 1940);
-  LOBYTE(v33) = a5;
-  AGX::LegacyBlitContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::fillBuffer(legacy_blit_context, a3, location, length, &v33, 1uLL);
+  LOBYTE(v33) = value;
+  AGX::LegacyBlitContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::fillBuffer(legacy_blit_context, buffer, location, length, &v33, 1uLL);
   v14 = self->_impl;
   v15 = v14[6];
   if (!*(v15 + 1240) || !*(v15 + 1248))
@@ -7941,7 +7941,7 @@ LABEL_20:
   AGX::ComputeContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext,AGX::HAL300::EncoderComputeServiceClassesNext>::resumeComputePass(v30);
 }
 
-- (void)generateMipmapsForTexture:(id)a3
+- (void)generateMipmapsForTexture:(id)texture
 {
   if (self && (self->_bvhBarrierBeforeStages & 0x10000000) != 0)
   {
@@ -7959,7 +7959,7 @@ LABEL_20:
   }
 
   [(AGXG18PFamilyComputeContext_mtlnext *)self createBlitContextIfNeeded];
-  if (AGX::BlitUtil::requireLegacyBlit<true>(a3))
+  if (AGX::BlitUtil::requireLegacyBlit<true>(texture))
   {
     if (self)
     {
@@ -7981,7 +7981,7 @@ LABEL_20:
 
     legacy_blit_context = self->_legacy_blit_context;
     *(legacy_blit_context[1] + 1944) = *(legacy_blit_context[1] + 1940);
-    AGX::LegacyBlitContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::generateMipmapsForTexture(legacy_blit_context, a3);
+    AGX::LegacyBlitContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::generateMipmapsForTexture(legacy_blit_context, texture);
     v9 = self->_impl;
     v10 = v9[6];
     if (*(v10 + 1240) && *(v10 + 1248))
@@ -8056,7 +8056,7 @@ LABEL_69:
     abort();
   }
 
-  v26 = *(a3 + 74);
+  v26 = *(texture + 74);
   if (!*(v26 + 168))
   {
     v27 = *(v26 + 32);
@@ -8146,7 +8146,7 @@ LABEL_62:
               v51[1] = 0;
               v51[2] = 0;
               v52 = v38;
-              AGX::MSLBlitDispatchContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::blitCDMTextureToTexture(v29 + 1, a3, v53, a3, v56, v57, v38++, v51);
+              AGX::MSLBlitDispatchContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::blitCDMTextureToTexture(v29 + 1, texture, v53, texture, v56, v57, v38++, v51);
             }
 
             while (v35 != v38);
@@ -8180,14 +8180,14 @@ LABEL_49:
   }
 }
 
-- (void)copyFromBuffer:(id)a3 sourceOffset:(unint64_t)a4 sourceBytesPerRow:(unint64_t)a5 sourceBytesPerImage:(unint64_t)a6 sourceSize:(id *)a7 toTexture:(id)a8 destinationSlice:(unint64_t)a9 destinationLevel:(unint64_t)a10 destinationOrigin:(id *)a11 options:(unint64_t)a12
+- (void)copyFromBuffer:(id)buffer sourceOffset:(unint64_t)offset sourceBytesPerRow:(unint64_t)row sourceBytesPerImage:(unint64_t)image sourceSize:(id *)size toTexture:(id)texture destinationSlice:(unint64_t)slice destinationLevel:(unint64_t)self0 destinationOrigin:(id *)self1 options:(unint64_t)self2
 {
-  v14 = a6;
-  v41 = a4;
-  v42 = a5;
+  imageCopy = image;
+  offsetCopy = offset;
+  rowCopy = row;
   if (self && (self->_bvhBarrierBeforeStages & 0x10000000) != 0)
   {
-    v40 = a6;
+    imageCopy2 = image;
     AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::flush(self->_bvh_builder);
     impl = self->_impl;
     AGX::ComputeContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext,AGX::HAL300::EncoderComputeServiceClassesNext>::encodeBarrier(impl, 22, self->_bvhFlushNeedsReasourceAliasCFI, 0, 0);
@@ -8199,18 +8199,18 @@ LABEL_49:
 
     self->_bvhBarrierBeforeStages = 0;
     self->_bvhFlushNeedsReasourceAliasCFI = 0;
-    v14 = v40;
+    imageCopy = imageCopy2;
   }
 
   [(AGXG18PFamilyComputeContext_mtlnext *)self createBlitContextIfNeeded];
-  if (!AGX::BlitUtil::requireLegacyBlit<true>(a8))
+  if (!AGX::BlitUtil::requireLegacyBlit<true>(texture))
   {
     blit_context = self->_blit_context;
-    v45 = *&a11->var0;
-    var2 = a11->var2;
-    v43 = *&a7->var0;
-    v44 = a7->var2;
-    AGX::BlitContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::copyBufferToTexture(blit_context, a8, a9, a10, &v45, &v43, a3, v41, v42, v14, a12);
+    v45 = *&origin->var0;
+    var2 = origin->var2;
+    v43 = *&size->var0;
+    v44 = size->var2;
+    AGX::BlitContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::copyBufferToTexture(blit_context, texture, slice, level, &v45, &v43, buffer, offsetCopy, rowCopy, imageCopy, options);
     return;
   }
 
@@ -8234,11 +8234,11 @@ LABEL_49:
 
   legacy_blit_context = self->_legacy_blit_context;
   *(legacy_blit_context[1] + 1944) = *(legacy_blit_context[1] + 1940);
-  v45 = *&a11->var0;
-  var2 = a11->var2;
-  v43 = *&a7->var0;
-  v44 = a7->var2;
-  AGX::LegacyBlitContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::copyBufferToTexture(legacy_blit_context, a8, a9, a10, &v45, v43.i32, a3, v41, v42, v14, a12);
+  v45 = *&origin->var0;
+  var2 = origin->var2;
+  v43 = *&size->var0;
+  v44 = size->var2;
+  AGX::LegacyBlitContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::copyBufferToTexture(legacy_blit_context, texture, slice, level, &v45, v43.i32, buffer, offsetCopy, rowCopy, imageCopy, options);
   v21 = self->_impl;
   v22 = v21[6];
   if (!*(v22 + 1240) || !*(v22 + 1248))
@@ -8312,14 +8312,14 @@ LABEL_20:
   AGX::ComputeContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext,AGX::HAL300::EncoderComputeServiceClassesNext>::resumeComputePass(v37);
 }
 
-- (void)copyFromBuffer:(id)a3 sourceOffset:(unint64_t)a4 sourceBytesPerRow:(unint64_t)a5 sourceBytesPerImage:(unint64_t)a6 sourceSize:(id *)a7 toTexture:(id)a8 destinationSlice:(unint64_t)a9 destinationLevel:(unint64_t)a10 destinationOrigin:(id *)a11
+- (void)copyFromBuffer:(id)buffer sourceOffset:(unint64_t)offset sourceBytesPerRow:(unint64_t)row sourceBytesPerImage:(unint64_t)image sourceSize:(id *)size toTexture:(id)texture destinationSlice:(unint64_t)slice destinationLevel:(unint64_t)self0 destinationOrigin:(id *)self1
 {
-  v13 = a6;
-  v42 = a5;
-  v17 = a9;
+  imageCopy = image;
+  rowCopy = row;
+  sliceCopy2 = slice;
   if (self && (self->_bvhBarrierBeforeStages & 0x10000000) != 0)
   {
-    v41 = a6;
+    imageCopy2 = image;
     AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::flush(self->_bvh_builder);
     impl = self->_impl;
     AGX::ComputeContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext,AGX::HAL300::EncoderComputeServiceClassesNext>::encodeBarrier(impl, 22, self->_bvhFlushNeedsReasourceAliasCFI, 0, 0);
@@ -8331,19 +8331,19 @@ LABEL_20:
 
     self->_bvhBarrierBeforeStages = 0;
     self->_bvhFlushNeedsReasourceAliasCFI = 0;
-    v17 = a9;
-    v13 = v41;
+    sliceCopy2 = slice;
+    imageCopy = imageCopy2;
   }
 
   [(AGXG18PFamilyComputeContext_mtlnext *)self createBlitContextIfNeeded];
-  if (!AGX::BlitUtil::requireLegacyBlit<true>(a8))
+  if (!AGX::BlitUtil::requireLegacyBlit<true>(texture))
   {
     blit_context = self->_blit_context;
-    v45 = *&a11->var0;
-    var2 = a11->var2;
-    v43 = *&a7->var0;
-    v44 = a7->var2;
-    AGX::BlitContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::copyBufferToTexture(blit_context, a8, v17, a10, &v45, &v43, a3, a4, v42, v13, 0);
+    v45 = *&origin->var0;
+    var2 = origin->var2;
+    v43 = *&size->var0;
+    v44 = size->var2;
+    AGX::BlitContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::copyBufferToTexture(blit_context, texture, sliceCopy2, level, &v45, &v43, buffer, offset, rowCopy, imageCopy, 0);
     return;
   }
 
@@ -8367,11 +8367,11 @@ LABEL_20:
 
   legacy_blit_context = self->_legacy_blit_context;
   *(legacy_blit_context[1] + 1944) = *(legacy_blit_context[1] + 1940);
-  v45 = *&a11->var0;
-  var2 = a11->var2;
-  v43 = *&a7->var0;
-  v44 = a7->var2;
-  AGX::LegacyBlitContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::copyBufferToTexture(legacy_blit_context, a8, v17, a10, &v45, v43.i32, a3, a4, v42, v13, 0);
+  v45 = *&origin->var0;
+  var2 = origin->var2;
+  v43 = *&size->var0;
+  v44 = size->var2;
+  AGX::LegacyBlitContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::copyBufferToTexture(legacy_blit_context, texture, sliceCopy2, level, &v45, v43.i32, buffer, offset, rowCopy, imageCopy, 0);
   v22 = self->_impl;
   v23 = v22[6];
   if (!*(v23 + 1240) || !*(v23 + 1248))
@@ -8445,9 +8445,9 @@ LABEL_20:
   AGX::ComputeContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext,AGX::HAL300::EncoderComputeServiceClassesNext>::resumeComputePass(v38);
 }
 
-- (void)copyFromBuffer:(id)a3 sourceOffset:(unint64_t)a4 toBuffer:(id)a5 destinationOffset:(unint64_t)a6 size:(unint64_t)a7
+- (void)copyFromBuffer:(id)buffer sourceOffset:(unint64_t)offset toBuffer:(id)toBuffer destinationOffset:(unint64_t)destinationOffset size:(unint64_t)size
 {
-  v7 = a7;
+  sizeCopy = size;
   if (self && (self->_bvhBarrierBeforeStages & 0x10000000) != 0)
   {
     AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::flush(self->_bvh_builder);
@@ -8486,7 +8486,7 @@ LABEL_20:
 
     legacy_blit_context = self->_legacy_blit_context;
     *(legacy_blit_context[1] + 1944) = *(legacy_blit_context[1] + 1940);
-    AGX::LegacyBlitContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::copyBufferToBuffer(legacy_blit_context, a5, a6, a3, a4, v7);
+    AGX::LegacyBlitContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::copyBufferToBuffer(legacy_blit_context, toBuffer, destinationOffset, buffer, offset, sizeCopy);
     v17 = self->_impl;
     v18 = v17[6];
     if (*(v18 + 1240) && *(v18 + 1248))
@@ -8563,22 +8563,22 @@ LABEL_36:
 
   v34 = self->_blit_context;
   v35 = *MEMORY[0x29EDC5638];
-  v36 = *(a5 + v35 + 72) + a6;
-  v37 = *(a3 + v35 + 72) + a4;
+  v36 = *(toBuffer + v35 + 72) + destinationOffset;
+  v37 = *(buffer + v35 + 72) + offset;
 
-  AGX::BlitContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::copyBufferToBufferImpl(v34, a5, v36, a3, v37, v7);
+  AGX::BlitContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::copyBufferToBufferImpl(v34, toBuffer, v36, buffer, v37, sizeCopy);
 }
 
-- (void)copyFromTexture:(id)a3 sourceSlice:(unint64_t)a4 sourceLevel:(unint64_t)a5 sourceOrigin:(id *)a6 sourceSize:(id *)a7 toBuffer:(id)a8 destinationOffset:(unint64_t)a9 destinationBytesPerRow:(unint64_t)a10 destinationBytesPerImage:(unint64_t)a11 options:(unint64_t)a12
+- (void)copyFromTexture:(id)texture sourceSlice:(unint64_t)slice sourceLevel:(unint64_t)level sourceOrigin:(id *)origin sourceSize:(id *)size toBuffer:(id)buffer destinationOffset:(unint64_t)offset destinationBytesPerRow:(unint64_t)self0 destinationBytesPerImage:(unint64_t)self1 options:(unint64_t)self2
 {
-  v12 = a8;
-  v15 = a5;
-  v16 = a4;
-  v20 = a11;
-  v19 = a12;
+  bufferCopy2 = buffer;
+  levelCopy = level;
+  sliceCopy = slice;
+  imageCopy2 = image;
+  optionsCopy2 = options;
   if (self && (self->_bvhBarrierBeforeStages & 0x10000000) != 0)
   {
-    v22 = a4;
+    sliceCopy2 = slice;
     AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::flush(self->_bvh_builder);
     impl = self->_impl;
     AGX::ComputeContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext,AGX::HAL300::EncoderComputeServiceClassesNext>::encodeBarrier(impl, 22, self->_bvhFlushNeedsReasourceAliasCFI, 0, 0);
@@ -8590,21 +8590,21 @@ LABEL_36:
 
     self->_bvhBarrierBeforeStages = 0;
     self->_bvhFlushNeedsReasourceAliasCFI = 0;
-    v16 = v22;
-    v12 = a8;
-    v19 = a12;
-    v20 = a11;
+    sliceCopy = sliceCopy2;
+    bufferCopy2 = buffer;
+    optionsCopy2 = options;
+    imageCopy2 = image;
   }
 
   [(AGXG18PFamilyComputeContext_mtlnext *)self createBlitContextIfNeeded];
-  if (!AGX::BlitUtil::requireLegacyBlit<true>(a3))
+  if (!AGX::BlitUtil::requireLegacyBlit<true>(texture))
   {
     blit_context = self->_blit_context;
-    v48 = *&a6->var0;
-    var2 = a6->var2;
-    v46 = *&a7->var0;
-    v47 = a7->var2;
-    AGX::BlitContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::copyTextureToBuffer(blit_context, v12, a9, a10, v20, a3, v16, v15, &v48, &v46, v19);
+    v48 = *&origin->var0;
+    var2 = origin->var2;
+    v46 = *&size->var0;
+    v47 = size->var2;
+    AGX::BlitContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::copyTextureToBuffer(blit_context, bufferCopy2, offset, row, imageCopy2, texture, sliceCopy, levelCopy, &v48, &v46, optionsCopy2);
     return;
   }
 
@@ -8628,11 +8628,11 @@ LABEL_36:
 
   legacy_blit_context = self->_legacy_blit_context;
   *(legacy_blit_context[1] + 1944) = *(legacy_blit_context[1] + 1940);
-  v48 = *&a6->var0;
-  var2 = a6->var2;
-  v46 = *&a7->var0;
-  v47 = a7->var2;
-  AGX::LegacyBlitContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::copyTextureToBuffer(legacy_blit_context, v12, a9, a10, v20, a3, v16, v15, &v48, v46.i32, v19);
+  v48 = *&origin->var0;
+  var2 = origin->var2;
+  v46 = *&size->var0;
+  v47 = size->var2;
+  AGX::LegacyBlitContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::copyTextureToBuffer(legacy_blit_context, bufferCopy2, offset, row, imageCopy2, texture, sliceCopy, levelCopy, &v48, v46.i32, optionsCopy2);
   v27 = self->_impl;
   v28 = v27[6];
   if (!*(v28 + 1240) || !*(v28 + 1248))
@@ -8706,13 +8706,13 @@ LABEL_20:
   AGX::ComputeContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext,AGX::HAL300::EncoderComputeServiceClassesNext>::resumeComputePass(v43);
 }
 
-- (void)copyFromTexture:(id)a3 sourceSlice:(unint64_t)a4 sourceLevel:(unint64_t)a5 sourceOrigin:(id *)a6 sourceSize:(id *)a7 toBuffer:(id)a8 destinationOffset:(unint64_t)a9 destinationBytesPerRow:(unint64_t)a10 destinationBytesPerImage:(unint64_t)a11
+- (void)copyFromTexture:(id)texture sourceSlice:(unint64_t)slice sourceLevel:(unint64_t)level sourceOrigin:(id *)origin sourceSize:(id *)size toBuffer:(id)buffer destinationOffset:(unint64_t)offset destinationBytesPerRow:(unint64_t)self0 destinationBytesPerImage:(unint64_t)self1
 {
-  v11 = a8;
-  v14 = a5;
-  v15 = a4;
-  v18 = a11;
-  v19 = a9;
+  bufferCopy2 = buffer;
+  levelCopy = level;
+  sliceCopy = slice;
+  imageCopy2 = image;
+  offsetCopy2 = offset;
   if (self && (self->_bvhBarrierBeforeStages & 0x10000000) != 0)
   {
     AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::flush(self->_bvh_builder);
@@ -8726,20 +8726,20 @@ LABEL_20:
 
     self->_bvhBarrierBeforeStages = 0;
     self->_bvhFlushNeedsReasourceAliasCFI = 0;
-    v11 = a8;
-    v19 = a9;
-    v18 = a11;
+    bufferCopy2 = buffer;
+    offsetCopy2 = offset;
+    imageCopy2 = image;
   }
 
   [(AGXG18PFamilyComputeContext_mtlnext *)self createBlitContextIfNeeded];
-  if (!AGX::BlitUtil::requireLegacyBlit<true>(a3))
+  if (!AGX::BlitUtil::requireLegacyBlit<true>(texture))
   {
     blit_context = self->_blit_context;
-    v46 = *&a6->var0;
-    var2 = a6->var2;
-    v44 = *&a7->var0;
-    v45 = a7->var2;
-    AGX::BlitContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::copyTextureToBuffer(blit_context, v11, v19, a10, v18, a3, v15, v14, &v46, &v44, 0);
+    v46 = *&origin->var0;
+    var2 = origin->var2;
+    v44 = *&size->var0;
+    v45 = size->var2;
+    AGX::BlitContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::copyTextureToBuffer(blit_context, bufferCopy2, offsetCopy2, row, imageCopy2, texture, sliceCopy, levelCopy, &v46, &v44, 0);
     return;
   }
 
@@ -8763,11 +8763,11 @@ LABEL_20:
 
   legacy_blit_context = self->_legacy_blit_context;
   *(legacy_blit_context[1] + 1944) = *(legacy_blit_context[1] + 1940);
-  v46 = *&a6->var0;
-  var2 = a6->var2;
-  v44 = *&a7->var0;
-  v45 = a7->var2;
-  AGX::LegacyBlitContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::copyTextureToBuffer(legacy_blit_context, v11, v19, a10, v18, a3, v15, v14, &v46, v44.i32, 0);
+  v46 = *&origin->var0;
+  var2 = origin->var2;
+  v44 = *&size->var0;
+  v45 = size->var2;
+  AGX::LegacyBlitContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::copyTextureToBuffer(legacy_blit_context, bufferCopy2, offsetCopy2, row, imageCopy2, texture, sliceCopy, levelCopy, &v46, v44.i32, 0);
   v25 = self->_impl;
   v26 = v25[6];
   if (!*(v26 + 1240) || !*(v26 + 1248))
@@ -8841,52 +8841,52 @@ LABEL_20:
   AGX::ComputeContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext,AGX::HAL300::EncoderComputeServiceClassesNext>::resumeComputePass(v41);
 }
 
-- (void)copyFromTexture:(id)a3 sourceSlice:(unint64_t)a4 sourceLevel:(unint64_t)a5 sourceOrigin:(id *)a6 sourceSize:(id *)a7 toTexture:(id)a8 destinationSlice:(unint64_t)a9 destinationLevel:(unint64_t)a10 destinationOrigin:(id *)a11
+- (void)copyFromTexture:(id)texture sourceSlice:(unint64_t)slice sourceLevel:(unint64_t)level sourceOrigin:(id *)origin sourceSize:(id *)size toTexture:(id)toTexture destinationSlice:(unint64_t)destinationSlice destinationLevel:(unint64_t)self0 destinationOrigin:(id *)self1
 {
-  v11 = a8;
-  v72 = a5;
-  v13 = a4;
-  v14 = a3;
-  v15 = self;
-  v16 = a10;
-  v17 = a9;
+  toTextureCopy2 = toTexture;
+  levelCopy = level;
+  sliceCopy = slice;
+  textureCopy2 = texture;
+  selfCopy = self;
+  destinationLevelCopy2 = destinationLevel;
+  destinationSliceCopy2 = destinationSlice;
   v18 = 0x2A179C000uLL;
   if (self && (self->_bvhBarrierBeforeStages & 0x10000000) != 0)
   {
-    v20 = a4;
+    sliceCopy2 = slice;
     AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::flush(self->_bvh_builder);
-    impl = v15->_impl;
-    AGX::ComputeContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext,AGX::HAL300::EncoderComputeServiceClassesNext>::encodeBarrier(impl, 22, v15->_bvhFlushNeedsReasourceAliasCFI, 0, 0);
+    impl = selfCopy->_impl;
+    AGX::ComputeContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext,AGX::HAL300::EncoderComputeServiceClassesNext>::encodeBarrier(impl, 22, selfCopy->_bvhFlushNeedsReasourceAliasCFI, 0, 0);
     *(impl + 2306) = 0;
     if (*(impl + 2292) == 1 && !*(impl + 4976))
     {
       AGX::ComputeContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext,AGX::HAL300::EncoderComputeServiceClassesNext>::insertIndirectTGOptKernel(impl, 22, (impl + 5544), (impl + 5552), (impl + 5560));
     }
 
-    v15->_bvhBarrierBeforeStages = 0;
-    v15->_bvhFlushNeedsReasourceAliasCFI = 0;
-    v17 = a9;
-    v13 = v20;
-    v16 = a10;
-    v11 = a8;
-    v14 = a3;
+    selfCopy->_bvhBarrierBeforeStages = 0;
+    selfCopy->_bvhFlushNeedsReasourceAliasCFI = 0;
+    destinationSliceCopy2 = destinationSlice;
+    sliceCopy = sliceCopy2;
+    destinationLevelCopy2 = destinationLevel;
+    toTextureCopy2 = toTexture;
+    textureCopy2 = texture;
     v18 = 0x2A179C000uLL;
   }
 
-  [(AGXG18PFamilyComputeContext_mtlnext *)v15 createBlitContextIfNeeded];
-  if (AGX::BlitUtil::requireLegacyBlit<true>(v14) || AGX::BlitUtil::requireLegacyBlit<true>(v11))
+  [(AGXG18PFamilyComputeContext_mtlnext *)selfCopy createBlitContextIfNeeded];
+  if (AGX::BlitUtil::requireLegacyBlit<true>(textureCopy2) || AGX::BlitUtil::requireLegacyBlit<true>(toTextureCopy2))
   {
-    if (v15)
+    if (selfCopy)
     {
-      bvh_builder = v15->_bvh_builder;
-      if (bvh_builder && v15->_bvhFlushOnSplit)
+      bvh_builder = selfCopy->_bvh_builder;
+      if (bvh_builder && selfCopy->_bvhFlushOnSplit)
       {
         AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::flush(bvh_builder);
-        v15->_bvhFlushOnSplit = 0;
+        selfCopy->_bvhFlushOnSplit = 0;
       }
 
-      AGX::ComputeContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext,AGX::HAL300::EncoderComputeServiceClassesNext>::suspendComputePass(v15->_impl);
-      blit_context = v15->_blit_context;
+      AGX::ComputeContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext,AGX::HAL300::EncoderComputeServiceClassesNext>::suspendComputePass(selfCopy->_impl);
+      blit_context = selfCopy->_blit_context;
       if (blit_context)
       {
         blit_context[1192] = 0;
@@ -8894,15 +8894,15 @@ LABEL_20:
       }
     }
 
-    legacy_blit_context = v15->_legacy_blit_context;
+    legacy_blit_context = selfCopy->_legacy_blit_context;
     *(*(legacy_blit_context + 8) + 1944) = *(*(legacy_blit_context + 8) + 1940);
-    v83 = *a11;
-    v79 = *&a6->var0;
-    var2 = a6->var2;
-    v75 = *&a7->var0;
-    v77 = a7->var2;
-    v25 = v14[74];
-    v26 = v11[74];
+    v83 = *destinationOrigin;
+    v79 = *&origin->var0;
+    var2 = origin->var2;
+    v75 = *&size->var0;
+    v77 = size->var2;
+    v25 = textureCopy2[74];
+    v26 = toTextureCopy2[74];
     if (*(*(v25 + 208) + 24) >= *(*(v26 + 208) + 24))
     {
       v27 = *(*(v26 + 208) + 24);
@@ -8915,7 +8915,7 @@ LABEL_20:
 
     if (v27)
     {
-      v74 = v15;
+      v74 = selfCopy;
       v28 = *(v25 + 32);
       v29 = *(v26 + 32);
       v30 = v28 == 261;
@@ -8951,7 +8951,7 @@ LABEL_20:
         v85 = v75;
         v86 = v77;
         v36 = legacy_blit_context;
-        AGX::LegacyBlitContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::copyTextureToTextureImpl(legacy_blit_context, v11, v34, v17, v16, v89.i8, v14, v35, v13, v72, v87.i8, &v85);
+        AGX::LegacyBlitContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::copyTextureToTextureImpl(legacy_blit_context, toTextureCopy2, v34, destinationSliceCopy2, destinationLevelCopy2, v89.i8, textureCopy2, v35, sliceCopy, levelCopy, v87.i8, &v85);
         legacy_blit_context = v36;
         ++v34;
         ++v35;
@@ -8959,12 +8959,12 @@ LABEL_20:
       }
 
       while (v27);
-      v15 = v74;
+      selfCopy = v74;
       v18 = 0x2A179C000;
     }
 
     v37 = *(v18 + 1164);
-    v38 = *(&v15->super.super.super.super.super.isa + v37);
+    v38 = *(&selfCopy->super.super.super.super.super.isa + v37);
     v39 = v38[6];
     if (*(v39 + 1240) && *(v39 + 1248))
     {
@@ -9004,7 +9004,7 @@ LABEL_32:
       v38[85] = v40 + 16;
 LABEL_33:
       IOGPUResourceListAddResource();
-      v42 = v15->_legacy_blit_context;
+      v42 = selfCopy->_legacy_blit_context;
       *(v42[1] + 1948) = *(v42[1] + 1940);
       AGX::BlitDispatchContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::endPreviousBlitCommand(v42, 1, v43, v44, v45, v46);
       v47 = v42[27];
@@ -9028,7 +9028,7 @@ LABEL_33:
         AGX::BlitDispatchContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::endPreviousBlitCommand(v42, 1, v50, v51, v52, v53);
       }
 
-      v54 = *(&v15->super.super.super.super.super.isa + v37);
+      v54 = *(&selfCopy->super.super.super.super.super.isa + v37);
 
       AGX::ComputeContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext,AGX::HAL300::EncoderComputeServiceClassesNext>::resumeComputePass(v54);
       return;
@@ -9038,14 +9038,14 @@ LABEL_58:
     abort();
   }
 
-  v55 = v15->_blit_context;
-  v84 = *a11;
-  v80 = *&a6->var0;
-  v82 = a6->var2;
-  v76 = *&a7->var0;
-  v78 = a7->var2;
-  v56 = v14[74];
-  v57 = v11[74];
+  v55 = selfCopy->_blit_context;
+  v84 = *destinationOrigin;
+  v80 = *&origin->var0;
+  v82 = origin->var2;
+  v76 = *&size->var0;
+  v78 = size->var2;
+  v56 = textureCopy2[74];
+  v57 = toTextureCopy2[74];
   if (*(*(v56 + 208) + 24) >= *(*(v57 + 208) + 24))
   {
     v58 = *(*(v57 + 208) + 24);
@@ -9058,9 +9058,9 @@ LABEL_58:
 
   if (v58)
   {
-    v59 = v17;
-    v60 = v16;
-    v61 = v13;
+    v59 = destinationSliceCopy2;
+    v60 = destinationLevelCopy2;
+    v61 = sliceCopy;
     v62 = *(v56 + 32);
     v63 = *(v57 + 32);
     v64 = v62 == 261;
@@ -9095,7 +9095,7 @@ LABEL_58:
       v88 = v82;
       v85 = v76;
       v86 = v78;
-      AGX::BlitContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::copyTextureToTextureImpl(v55, v11, v68++, v59, v60, &v89, v14, v69++, v61, v72, &v87, &v85);
+      AGX::BlitContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::copyTextureToTextureImpl(v55, toTextureCopy2, v68++, v59, v60, &v89, textureCopy2, v69++, v61, levelCopy, &v87, &v85);
       --v58;
     }
 
@@ -9103,12 +9103,12 @@ LABEL_58:
   }
 }
 
-- (void)copyFromTexture:(id)a3 sourceSlice:(unint64_t)a4 sourceLevel:(unint64_t)a5 toTexture:(id)a6 destinationSlice:(unint64_t)a7 destinationLevel:(unint64_t)a8 sliceCount:(unint64_t)a9 levelCount:(unint64_t)a10
+- (void)copyFromTexture:(id)texture sourceSlice:(unint64_t)slice sourceLevel:(unint64_t)level toTexture:(id)toTexture destinationSlice:(unint64_t)destinationSlice destinationLevel:(unint64_t)destinationLevel sliceCount:(unint64_t)count levelCount:(unint64_t)self0
 {
-  v128 = a8;
-  v129 = a5;
-  v130 = a7;
-  v131 = a4;
+  destinationLevelCopy = destinationLevel;
+  levelCopy = level;
+  destinationSliceCopy = destinationSlice;
+  sliceCopy = slice;
   if (self && (self->_bvhBarrierBeforeStages & 0x10000000) != 0)
   {
     AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::flush(self->_bvh_builder);
@@ -9125,7 +9125,7 @@ LABEL_58:
   }
 
   [(AGXG18PFamilyComputeContext_mtlnext *)self createBlitContextIfNeeded];
-  if (AGX::BlitUtil::requireLegacyBlit<true>(a3) || AGX::BlitUtil::requireLegacyBlit<true>(a6))
+  if (AGX::BlitUtil::requireLegacyBlit<true>(texture) || AGX::BlitUtil::requireLegacyBlit<true>(toTexture))
   {
     if (self)
     {
@@ -9147,7 +9147,7 @@ LABEL_58:
 
     legacy_blit_context = self->_legacy_blit_context;
     *(legacy_blit_context[1] + 1944) = *(legacy_blit_context[1] + 1940);
-    AGX::LegacyBlitContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::copyTextureToTexture(legacy_blit_context, a6, v130, v128, a3, v131, v129, a9, v14, a10);
+    AGX::LegacyBlitContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::copyTextureToTexture(legacy_blit_context, toTexture, destinationSliceCopy, destinationLevelCopy, texture, sliceCopy, levelCopy, count, v14, levelCount);
     v18 = self->_impl;
     v19 = v18[6];
     if (*(v19 + 1240) && *(v19 + 1248))
@@ -9207,8 +9207,8 @@ LABEL_21:
       {
         AGX::BlitDispatchContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::beginComputePass(v22, 0);
         v29 = v22[1];
-        LODWORD(v140) = 0;
-        AGX::BlitUSCStateLoader<AGX::HAL300::Encoders,AGX::HAL300::Classes>::barrier(v29 + 24, &v140);
+        LODWORD(toTextureCopy4) = 0;
+        AGX::BlitUSCStateLoader<AGX::HAL300::Encoders,AGX::HAL300::Classes>::barrier(v29 + 24, &toTextureCopy4);
         AGX::BlitDispatchContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::endPreviousBlitCommand(v22, 1, v30, v31, v32, v33);
       }
 
@@ -9222,8 +9222,8 @@ LABEL_158:
     abort();
   }
 
-  v35 = *(a3 + 74);
-  v36 = *(a6 + 74);
+  v35 = *(texture + 74);
+  v36 = *(toTexture + 74);
   if (*(v35 + 236))
   {
     v37 = 0;
@@ -9248,7 +9248,7 @@ LABEL_158:
   v45 = v41 == 260 && v40 == 261;
   v120 = v45;
   v121 = v43;
-  v132 = a3;
+  textureCopy = texture;
   if (v37 && *(v35 + 396) == *(v36 + 396))
   {
     v117 = *(v36 + 584) != 0;
@@ -9267,7 +9267,7 @@ LABEL_158:
     v191 = 1;
     if (v122)
     {
-      v47 = a10 == 0;
+      v47 = levelCount == 0;
     }
 
     else
@@ -9280,26 +9280,26 @@ LABEL_158:
       v48 = 0;
       do
       {
-        v49 = v128;
-        v50 = v129;
-        v51 = a10;
+        v49 = destinationLevelCopy;
+        v50 = levelCopy;
+        levelCountCopy = levelCount;
         do
         {
-          v140 = a6;
+          toTextureCopy4 = toTexture;
           LODWORD(v141) = v48 + v121;
-          HIDWORD(v141) = v130;
+          HIDWORD(v141) = destinationSliceCopy;
           LODWORD(v142) = v49;
-          v174 = a3;
+          toTextureCopy9 = texture;
           LODWORD(v175) = v48 + v120;
-          HIDWORD(v175) = v131;
+          HIDWORD(v175) = sliceCopy;
           LODWORD(v176) = v50;
-          v188(v187, &v140, &v174);
+          v188(v187, &toTextureCopy4, &toTextureCopy9);
           ++v50;
           ++v49;
-          --v51;
+          --levelCountCopy;
         }
 
-        while (v51);
+        while (levelCountCopy);
         ++v48;
       }
 
@@ -9315,39 +9315,39 @@ LABEL_158:
       v186 = &v192;
       if (v122)
       {
-        if (a10)
+        if (levelCount)
         {
           for (i = 0; i != v122; ++i)
           {
-            v53 = v128;
-            v54 = v129;
-            v55 = a10;
+            v53 = destinationLevelCopy;
+            v54 = levelCopy;
+            levelCountCopy2 = levelCount;
             do
             {
-              v140 = a6;
+              toTextureCopy4 = toTexture;
               LODWORD(v141) = i + v121;
-              HIDWORD(v141) = v130;
+              HIDWORD(v141) = destinationSliceCopy;
               LODWORD(v142) = v53;
-              v174 = a3;
+              toTextureCopy9 = texture;
               LODWORD(v175) = i + v120;
-              HIDWORD(v175) = v131;
+              HIDWORD(v175) = sliceCopy;
               LODWORD(v176) = v54;
-              v184(v183, &v140, &v174);
+              v184(v183, &toTextureCopy4, &toTextureCopy9);
               ++v54;
               ++v53;
-              --v55;
+              --levelCountCopy2;
             }
 
-            while (v55);
+            while (levelCountCopy2);
           }
         }
       }
     }
 
     v118 = v46;
-    v56 = v122 * a9 * *(v193 + 6);
-    v174 = 0;
-    v175 = &v174;
+    v56 = v122 * count * *(v193 + 6);
+    toTextureCopy9 = 0;
+    v175 = &toTextureCopy9;
     v176 = 0x4812000000;
     v177 = __Block_byref_object_copy__433;
     v178 = __Block_byref_object_dispose__434;
@@ -9366,8 +9366,8 @@ LABEL_158:
     v170 = &unk_29F341B60;
     v173 = 1;
     v171 = &__block_literal_global_430;
-    v172 = &v174;
-    if (v122 && a9 && a10)
+    v172 = &toTextureCopy9;
+    if (v122 && count && levelCount)
     {
       v57 = 0;
       do
@@ -9378,30 +9378,30 @@ LABEL_158:
         v60 = v57 + v120;
         do
         {
-          v61 = v128;
-          v62 = v129;
-          v63 = a10;
+          v61 = destinationLevelCopy;
+          v62 = levelCopy;
+          levelCountCopy3 = levelCount;
           do
           {
-            v140 = a6;
+            toTextureCopy4 = toTexture;
             LODWORD(v141) = v59;
-            HIDWORD(v141) = v58 + v130;
+            HIDWORD(v141) = v58 + destinationSliceCopy;
             LODWORD(v142) = v61;
-            v153 = a3;
+            textureCopy5 = texture;
             LODWORD(v154) = v60;
-            HIDWORD(v154) = v58 + v131;
+            HIDWORD(v154) = v58 + sliceCopy;
             LODWORD(v155) = v62;
-            v169(v168, &v140, &v153);
+            v169(v168, &toTextureCopy4, &textureCopy5);
             ++v62;
             ++v61;
-            --v63;
+            --levelCountCopy3;
           }
 
-          while (v63);
+          while (levelCountCopy3);
           ++v58;
         }
 
-        while (v58 != a9);
+        while (v58 != count);
         v57 = v124 + 1;
       }
 
@@ -9415,11 +9415,11 @@ LABEL_158:
       v163 = ___ZN3AGX11BlitContextINS_6HAL3008EncodersENS1_7ClassesENS1_10ObjClassesENS1_19CommandEncodingNextEE20copyTextureToTextureEP20AGXG18PFamilyTexturejjS8_jjjj_block_invoke_2_437;
       v164 = &unk_29F341B60;
       v167 = 1;
-      v166 = &v174;
+      v166 = &toTextureCopy9;
       v165 = &__block_literal_global_430;
       if (v122)
       {
-        if (a9 && a10)
+        if (count && levelCount)
         {
           v64 = 0;
           do
@@ -9430,30 +9430,30 @@ LABEL_158:
             v67 = v64 + v120;
             do
             {
-              v68 = v128;
-              v69 = v129;
-              v70 = a10;
+              v68 = destinationLevelCopy;
+              v69 = levelCopy;
+              levelCountCopy4 = levelCount;
               do
               {
-                v140 = a6;
+                toTextureCopy4 = toTexture;
                 LODWORD(v141) = v66;
-                HIDWORD(v141) = v65 + v130;
+                HIDWORD(v141) = v65 + destinationSliceCopy;
                 LODWORD(v142) = v68;
-                v153 = a3;
+                textureCopy5 = texture;
                 LODWORD(v154) = v67;
-                HIDWORD(v154) = v65 + v131;
+                HIDWORD(v154) = v65 + sliceCopy;
                 LODWORD(v155) = v69;
-                v163(v162, &v140, &v153);
+                v163(v162, &toTextureCopy4, &textureCopy5);
                 ++v69;
                 ++v68;
-                --v70;
+                --levelCountCopy4;
               }
 
-              while (v70);
+              while (levelCountCopy4);
               ++v65;
             }
 
-            while (v65 != a9);
+            while (v65 != count);
             v64 = v125 + 1;
           }
 
@@ -9480,13 +9480,13 @@ LABEL_158:
     v76 = v175[7];
     if (v77 == v76)
     {
-      v79 = a3;
+      textureCopy7 = texture;
     }
 
     else
     {
       v78 = v175[6];
-      v79 = a3;
+      textureCopy7 = texture;
       do
       {
         v80 = *v78++;
@@ -9520,8 +9520,8 @@ LABEL_158:
       }
     }
 
-    v153 = 0;
-    v154 = &v153;
+    textureCopy5 = 0;
+    v154 = &textureCopy5;
     v155 = 0x4812000000;
     v156 = __Block_byref_object_copy__438;
     v157 = __Block_byref_object_dispose__439;
@@ -9529,20 +9529,20 @@ LABEL_158:
     v160 = 0;
     v161 = 0;
     __p = 0;
-    v140 = MEMORY[0x29EDCA5F8];
+    toTextureCopy4 = MEMORY[0x29EDCA5F8];
     v141 = 3221225472;
     v142 = ___ZN3AGX11BlitContextINS_6HAL3008EncodersENS1_7ClassesENS1_10ObjClassesENS1_19CommandEncodingNextEE20copyTextureToTextureEP20AGXG18PFamilyTexturejjS8_jjjj_block_invoke_2_444;
     v143 = &unk_29F341BA8;
-    v149 = &v153;
+    v149 = &textureCopy5;
     v150 = v123;
     v151 = v117;
     v152 = 1;
     v146 = &__block_literal_global_443;
     v147 = &__block_literal_global_430;
-    v148 = &v174;
-    v144 = a6;
-    v145 = v79;
-    if (v122 && a9 && a10)
+    v148 = &toTextureCopy9;
+    toTextureCopy8 = toTexture;
+    textureCopy9 = textureCopy7;
+    if (v122 && count && levelCount)
     {
       v93 = 0;
       do
@@ -9553,30 +9553,30 @@ LABEL_158:
         v96 = v93 + v120;
         do
         {
-          v97 = v128;
-          v98 = v129;
-          v99 = a10;
+          v97 = destinationLevelCopy;
+          v98 = levelCopy;
+          levelCountCopy5 = levelCount;
           do
           {
-            v133 = a6;
+            toTextureCopy6 = toTexture;
             LODWORD(v134) = v95;
-            HIDWORD(v134) = v94 + v130;
+            HIDWORD(v134) = v94 + destinationSliceCopy;
             LODWORD(v135) = v97;
-            *&v196 = a3;
+            *&v196 = texture;
             DWORD2(v196) = v96;
-            HIDWORD(v196) = v94 + v131;
+            HIDWORD(v196) = v94 + sliceCopy;
             LODWORD(v197) = v98;
-            v142(&v140, &v133, &v196);
+            v142(&toTextureCopy4, &toTextureCopy6, &v196);
             ++v98;
             ++v97;
-            --v99;
+            --levelCountCopy5;
           }
 
-          while (v99);
+          while (levelCountCopy5);
           ++v94;
         }
 
-        while (v94 != a9);
+        while (v94 != count);
         v93 = v127 + 1;
       }
 
@@ -9646,13 +9646,13 @@ LABEL_158:
 
     if (v105 != v106)
     {
-      v133 = MEMORY[0x29EDCA5F8];
+      toTextureCopy6 = MEMORY[0x29EDCA5F8];
       v134 = 3221225472;
       v135 = ___ZN3AGX11BlitContextINS_6HAL3008EncodersENS1_7ClassesENS1_10ObjClassesENS1_19CommandEncodingNextEE20copyTextureToTextureEP20AGXG18PFamilyTexturejjS8_jjjj_block_invoke_3_445;
       v136 = &unk_29F341BD0;
-      v138 = a3;
+      textureCopy8 = texture;
       v139 = v123;
-      v137 = a6;
+      toTextureCopy7 = toTexture;
       v113 = v104[6];
       if (v113[1] <= *v113)
       {
@@ -9663,7 +9663,7 @@ LABEL_158:
             v115 = *(v106 - 3);
             v197 = *(v106 - 1);
             v196 = v115;
-            v135(&v133, &v196);
+            v135(&toTextureCopy6, &v196);
             v106 -= 3;
           }
 
@@ -9678,7 +9678,7 @@ LABEL_158:
           v114 = *v113;
           v197 = v113[2];
           v196 = v114;
-          v135(&v133, &v196);
+          v135(&toTextureCopy6, &v196);
           v113 += 3;
         }
 
@@ -9686,14 +9686,14 @@ LABEL_158:
       }
     }
 
-    _Block_object_dispose(&v153, 8);
+    _Block_object_dispose(&textureCopy5, 8);
     if (__p)
     {
       v160 = __p;
       operator delete(__p);
     }
 
-    _Block_object_dispose(&v174, 8);
+    _Block_object_dispose(&toTextureCopy9, 8);
     if (__src)
     {
       v181 = __src;
@@ -9705,16 +9705,16 @@ LABEL_158:
 
   else
   {
-    v140 = MEMORY[0x29EDCA5F8];
+    toTextureCopy4 = MEMORY[0x29EDCA5F8];
     v141 = 3221225472;
     v142 = ___ZN3AGX11BlitContextINS_6HAL3008EncodersENS1_7ClassesENS1_10ObjClassesENS1_19CommandEncodingNextEE20copyTextureToTextureEP20AGXG18PFamilyTexturejjS8_jjjj_block_invoke_2;
     v143 = &unk_29F341AC8;
-    v145 = a3;
+    textureCopy9 = texture;
     v146 = v38;
-    v144 = a6;
+    toTextureCopy8 = toTexture;
     if (v122)
     {
-      v82 = a9 == 0;
+      v82 = count == 0;
     }
 
     else
@@ -9722,7 +9722,7 @@ LABEL_158:
       v82 = 1;
     }
 
-    if (!v82 && a10 != 0)
+    if (!v82 && levelCount != 0)
     {
       v84 = 0;
       do
@@ -9733,31 +9733,31 @@ LABEL_158:
         v87 = v84 + v120;
         do
         {
-          v88 = v85 + v130;
+          v88 = v85 + destinationSliceCopy;
           v126 = v85;
-          v89 = v85 + v131;
-          v90 = v128;
-          v91 = v129;
-          v92 = a10;
+          v89 = v85 + sliceCopy;
+          v90 = destinationLevelCopy;
+          v91 = levelCopy;
+          levelCountCopy6 = levelCount;
           do
           {
-            v174 = a6;
+            toTextureCopy9 = toTexture;
             v175 = __PAIR64__(v88, v86);
             LODWORD(v176) = v90;
-            v153 = v132;
+            textureCopy5 = textureCopy;
             v154 = __PAIR64__(v89, v87);
             LODWORD(v155) = v91;
-            v142(&v140, &v174, &v153);
+            v142(&toTextureCopy4, &toTextureCopy9, &textureCopy5);
             ++v91;
             ++v90;
-            --v92;
+            --levelCountCopy6;
           }
 
-          while (v92);
+          while (levelCountCopy6);
           v85 = v126 + 1;
         }
 
-        while (v126 + 1 != a9);
+        while (v126 + 1 != count);
         v84 = v119 + 1;
       }
 
@@ -9766,63 +9766,63 @@ LABEL_158:
   }
 }
 
-- (void)copyFromTexture:(id)a3 toTexture:(id)a4
+- (void)copyFromTexture:(id)texture toTexture:(id)toTexture
 {
-  v7 = [a3 width];
-  v8 = [a3 height];
-  v9 = [a3 depth];
-  v54 = v9;
-  v55 = v8;
-  v10 = [a4 width];
-  v11 = [a4 height];
-  v12 = [a4 depth];
+  width = [texture width];
+  height = [texture height];
+  depth = [texture depth];
+  v54 = depth;
+  v55 = height;
+  width2 = [toTexture width];
+  height2 = [toTexture height];
+  depth2 = [toTexture depth];
   v13 = 0;
-  v52 = v12;
-  v53 = v11;
+  v52 = depth2;
+  v53 = height2;
   v14 = &v53;
   v15 = &v52;
   v16 = &v53;
   v17 = &v52;
-  v18 = v9 > v12;
-  if (v9 <= v12)
+  v18 = depth > depth2;
+  if (depth <= depth2)
   {
-    v19 = v12;
+    v19 = depth2;
   }
 
   else
   {
-    v19 = v9;
+    v19 = depth;
   }
 
-  if (v9 <= v12)
+  if (depth <= depth2)
   {
-    v20 = v11;
+    v20 = height2;
   }
 
   else
   {
-    v20 = v8;
+    v20 = height;
   }
 
   if (v18)
   {
-    v21 = v10;
+    v21 = width2;
   }
 
   else
   {
-    v21 = v7;
+    v21 = width;
   }
 
   if (v18)
   {
-    v22 = v7;
+    v22 = width;
   }
 
   else
   {
     v17 = &v54;
-    v22 = v10;
+    v22 = width2;
   }
 
   v23 = v18;
@@ -9831,48 +9831,48 @@ LABEL_158:
     v16 = &v55;
   }
 
-  if (v8 <= v11)
+  if (height <= height2)
   {
     v24 = v19;
   }
 
   else
   {
-    v24 = v9;
+    v24 = depth;
   }
 
-  if (v8 <= v11)
+  if (height <= height2)
   {
     v25 = v20;
   }
 
   else
   {
-    v25 = v8;
+    v25 = height;
   }
 
-  if (v8 <= v11)
+  if (height <= height2)
   {
     v26 = v21;
   }
 
   else
   {
-    v26 = v10;
+    v26 = width2;
   }
 
-  if (v8 <= v11)
+  if (height <= height2)
   {
     v27 = v23;
   }
 
   else
   {
-    v22 = v7;
+    v22 = width;
     v27 = 1;
   }
 
-  if (v8 <= v11)
+  if (height <= height2)
   {
     v28 = v17;
   }
@@ -9882,7 +9882,7 @@ LABEL_158:
     v28 = &v52;
   }
 
-  if (v8 <= v11)
+  if (height <= height2)
   {
     v29 = v16;
   }
@@ -9892,59 +9892,59 @@ LABEL_158:
     v29 = &v53;
   }
 
-  if (v7 <= v10)
+  if (width <= width2)
   {
     v30 = v24;
   }
 
   else
   {
-    v30 = v9;
+    v30 = depth;
   }
 
-  if (v7 <= v10)
+  if (width <= width2)
   {
     v31 = v25;
   }
 
   else
   {
-    v31 = v8;
+    v31 = height;
   }
 
-  if (v7 <= v10)
+  if (width <= width2)
   {
     v32 = v26;
   }
 
   else
   {
-    v32 = v10;
+    v32 = width2;
   }
 
-  if (v7 <= v10)
+  if (width <= width2)
   {
     v14 = v29;
   }
 
   v33 = *v14;
-  if (v7 <= v10)
+  if (width <= width2)
   {
     v34 = v22;
   }
 
   else
   {
-    v34 = v7;
+    v34 = width;
   }
 
-  if (v7 <= v10)
+  if (width <= width2)
   {
     v15 = v28;
   }
 
   v35 = *v15;
-  if (v7 <= v10)
+  if (width <= width2)
   {
     v36 = v27;
   }
@@ -9982,16 +9982,16 @@ LABEL_158:
     v38 = v13;
   }
 
-  v39 = [a3 mipmapLevelCount] - v37;
-  v40 = [a4 mipmapLevelCount] - v38;
+  v39 = [texture mipmapLevelCount] - v37;
+  v40 = [toTexture mipmapLevelCount] - v38;
   if (v39 >= v40)
   {
-    v41 = a4;
+    textureCopy = toTexture;
   }
 
   else
   {
-    v41 = a3;
+    textureCopy = texture;
   }
 
   if (v39 >= v40)
@@ -10004,9 +10004,9 @@ LABEL_158:
     v42 = v37;
   }
 
-  v43 = [v41 mipmapLevelCount] - v42;
-  v44 = [a3 arrayLength];
-  if (([a3 textureType] - 5) >= 2)
+  v43 = [textureCopy mipmapLevelCount] - v42;
+  arrayLength = [texture arrayLength];
+  if (([texture textureType] - 5) >= 2)
   {
     v45 = 1;
   }
@@ -10016,9 +10016,9 @@ LABEL_158:
     v45 = 6;
   }
 
-  v46 = v45 * v44;
-  v47 = [a4 arrayLength];
-  if (([a4 textureType] - 5) >= 2)
+  v46 = v45 * arrayLength;
+  arrayLength2 = [toTexture arrayLength];
+  if (([toTexture textureType] - 5) >= 2)
   {
     v48 = 1;
   }
@@ -10028,18 +10028,18 @@ LABEL_158:
     v48 = 6;
   }
 
-  if (v46 >= v48 * v47)
+  if (v46 >= v48 * arrayLength2)
   {
-    v49 = a4;
+    textureCopy2 = toTexture;
   }
 
   else
   {
-    v49 = a3;
+    textureCopy2 = texture;
   }
 
-  v50 = [v49 arrayLength];
-  if (([v49 textureType] - 5) >= 2)
+  arrayLength3 = [textureCopy2 arrayLength];
+  if (([textureCopy2 textureType] - 5) >= 2)
   {
     v51 = 1;
   }
@@ -10049,10 +10049,10 @@ LABEL_158:
     v51 = 6;
   }
 
-  [(AGXG18PFamilyComputeContext_mtlnext *)self copyFromTexture:a3 sourceSlice:0 sourceLevel:v37 toTexture:a4 destinationSlice:0 destinationLevel:v38 sliceCount:v51 * v50 levelCount:v43, v52, v53];
+  [(AGXG18PFamilyComputeContext_mtlnext *)self copyFromTexture:texture sourceSlice:0 sourceLevel:v37 toTexture:toTexture destinationSlice:0 destinationLevel:v38 sliceCount:v51 * arrayLength3 levelCount:v43, v52, v53];
 }
 
-- (void)waitForFence:(id)a3 beforeEncoderStages:(unint64_t)a4
+- (void)waitForFence:(id)fence beforeEncoderStages:(unint64_t)stages
 {
   v4 = *(self->_impl + 613);
   if (!v4)
@@ -10060,14 +10060,14 @@ LABEL_158:
     operator new();
   }
 
-  v5 = *(a3 + *MEMORY[0x29EDC5610]);
+  v5 = *(fence + *MEMORY[0x29EDC5610]);
 
   AGX::FenceList::insertFence(v4, v5);
 }
 
-- (void)updateFence:(id)a3 afterEncoderStages:(unint64_t)a4
+- (void)updateFence:(id)fence afterEncoderStages:(unint64_t)stages
 {
-  if ((a4 & 0x20000000) != 0)
+  if ((stages & 0x20000000) != 0)
   {
     self->_bvhFlushOnSplit = 1;
   }
@@ -10079,18 +10079,18 @@ LABEL_158:
     operator new();
   }
 
-  AGX::FenceList::insertFence(v5, *(a3 + *MEMORY[0x29EDC5610]));
+  AGX::FenceList::insertFence(v5, *(fence + *MEMORY[0x29EDC5610]));
   *(impl + 2304) = 1;
 }
 
-- (void)barrierAfterEncoderStages:(unint64_t)a3 beforeEncoderStages:(unint64_t)a4 options:(unint64_t)a5
+- (void)barrierAfterEncoderStages:(unint64_t)stages beforeEncoderStages:(unint64_t)encoderStages options:(unint64_t)options
 {
-  v5 = a5;
-  v7 = a3;
-  if ((a3 & 0xFFFFFFFFDFFFFFFFLL) != 0)
+  optionsCopy = options;
+  stagesCopy = stages;
+  if ((stages & 0xFFFFFFFFDFFFFFFFLL) != 0)
   {
     impl = self->_impl;
-    AGX::ComputeContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext,AGX::HAL300::EncoderComputeServiceClassesNext>::encodeBarrier(impl, 22, (a5 >> 1) & 1, 0, 0);
+    AGX::ComputeContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext,AGX::HAL300::EncoderComputeServiceClassesNext>::encodeBarrier(impl, 22, (options >> 1) & 1, 0, 0);
     *(impl + 2306) = 0;
     if (*(impl + 573) == 1 && !*(impl + 1244))
     {
@@ -10098,12 +10098,12 @@ LABEL_158:
     }
   }
 
-  if ((v7 & 0x20000000) != 0)
+  if ((stagesCopy & 0x20000000) != 0)
   {
     if (self->_bvh_builder)
     {
-      self->_bvhBarrierBeforeStages |= a4;
-      if ((v5 & 2) != 0)
+      self->_bvhBarrierBeforeStages |= encoderStages;
+      if ((optionsCopy & 2) != 0)
       {
         self->_bvhFlushNeedsReasourceAliasCFI = 1;
       }
@@ -10118,20 +10118,20 @@ LABEL_158:
   }
 }
 
-- (void)barrierAfterStages:(unint64_t)a3 beforeQueueStages:(unint64_t)a4 options:(unint64_t)a5
+- (void)barrierAfterStages:(unint64_t)stages beforeQueueStages:(unint64_t)queueStages options:(unint64_t)options
 {
-  if ((a3 & 0x20000000) != 0)
+  if ((stages & 0x20000000) != 0)
   {
     self->_bvhFlushOnSplit = 1;
   }
 
-  AGX::BarrierTracker::addFrontFacingBarrier(self->_impl + 2028, a3, a4, a5);
+  AGX::BarrierTracker::addFrontFacingBarrier(self->_impl + 2028, stages, queueStages, options);
 }
 
-- (void)barrierAfterQueueStages:(unint64_t)a3 beforeStages:(unint64_t)a4 options:(unint64_t)a5
+- (void)barrierAfterQueueStages:(unint64_t)stages beforeStages:(unint64_t)beforeStages options:(unint64_t)options
 {
   impl = self->_impl;
-  if (AGX::BarrierTracker::addBackFacingBarrier((impl + 2028), a3, a4, a5))
+  if (AGX::BarrierTracker::addBackFacingBarrier((impl + 2028), stages, beforeStages, options))
   {
     v7 = 0;
     agxaReserveCDMTokenSpace<AGX::HAL300::Encoders,AGX::HAL300::DataBufferAllocator>(22, (impl + 3), 4, 0, 0, 0, &v7);
@@ -10141,11 +10141,11 @@ LABEL_158:
   }
 }
 
-- (void)filterCounterRangeWithFirstBatch:(unsigned int)a3 lastBatch:(unsigned int)a4 filterIndex:(unsigned int)a5
+- (void)filterCounterRangeWithFirstBatch:(unsigned int)batch lastBatch:(unsigned int)lastBatch filterIndex:(unsigned int)index
 {
   impl = self->_impl;
-  impl[483] = a3;
-  impl[484] = a4;
+  impl[483] = batch;
+  impl[484] = lastBatch;
 }
 
 - (void)endEncoding
@@ -10185,7 +10185,7 @@ LABEL_158:
   [(AGXG18PFamilyComputeContext_mtlnext *)self destroyImpl];
 }
 
-- (void)setComputePipelineState:(id)a3
+- (void)setComputePipelineState:(id)state
 {
   impl = self->_impl;
   if (impl[237])
@@ -10193,27 +10193,27 @@ LABEL_158:
     MTLResourceListAddResource();
   }
 
-  AGX::ComputeContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext,AGX::HAL300::EncoderComputeServiceClassesNext>::setPipelineCommon(impl, a3 + 112);
+  AGX::ComputeContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext,AGX::HAL300::EncoderComputeServiceClassesNext>::setPipelineCommon(impl, state + 112);
   *(impl + 2305) = 1;
 }
 
-- (void)setArgumentTable:(id)a3
+- (void)setArgumentTable:(id)table
 {
   impl = self->_impl;
-  if (impl[294] != a3)
+  if (impl[294] != table)
   {
-    v5 = a3;
+    tableCopy = table;
     v6 = impl[294];
-    if (v6 != v5)
+    if (v6 != tableCopy)
     {
-      v7 = v5;
+      v7 = tableCopy;
 
       impl[294] = v7;
     }
 
-    if (a3)
+    if (table)
     {
-      v8 = *(a3 + 4);
+      v8 = *(table + 4);
     }
 
     else
@@ -10225,7 +10225,7 @@ LABEL_158:
   }
 }
 
-- (void)executeCommandsInBuffer:(id)a3 indirectBuffer:(unint64_t)a4
+- (void)executeCommandsInBuffer:(id)buffer indirectBuffer:(unint64_t)indirectBuffer
 {
   if (self && (self->_bvhBarrierBeforeStages & 0x8000000) != 0)
   {
@@ -10247,15 +10247,15 @@ LABEL_158:
   *(v8 + 486) = *(v8 + 485);
   *(v8 + 515) |= 1u;
   v9 = 0;
-  v10 = a4;
-  AGX::ComputeContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext,AGX::HAL300::EncoderComputeServiceClassesNext>::executeCommandsInBufferCommon(v8, a3, &v9);
+  indirectBufferCopy = indirectBuffer;
+  AGX::ComputeContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext,AGX::HAL300::EncoderComputeServiceClassesNext>::executeCommandsInBufferCommon(v8, buffer, &v9);
   *(self->_impl + 487) = *(self->_impl + 485);
 }
 
-- (void)executeCommandsInBuffer:(id)a3 withRange:(_NSRange)a4
+- (void)executeCommandsInBuffer:(id)buffer withRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   if (self && (self->_bvhBarrierBeforeStages & 0x8000000) != 0)
   {
     AGX::RayTracingGPUBuilderGen1<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext>::flush(self->_bvh_builder);
@@ -10281,7 +10281,7 @@ LABEL_158:
     v11[0] = 1;
     v11[2] = location;
     v11[3] = location + length - 1;
-    AGX::ComputeContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext,AGX::HAL300::EncoderComputeServiceClassesNext>::executeCommandsInBufferCommon(v9, a3, v11);
+    AGX::ComputeContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext,AGX::HAL300::EncoderComputeServiceClassesNext>::executeCommandsInBufferCommon(v9, buffer, v11);
     v9 = self->_impl;
     v10 = *(v9 + 485);
   }
@@ -10289,7 +10289,7 @@ LABEL_158:
   *(v9 + 487) = v10;
 }
 
-- (void)dispatchThreadsWithIndirectBuffer:(unint64_t)a3
+- (void)dispatchThreadsWithIndirectBuffer:(unint64_t)buffer
 {
   if (self && (self->_bvhBarrierBeforeStages & 0x8000000) != 0)
   {
@@ -10313,19 +10313,19 @@ LABEL_158:
   v7 = *(v6 + 292);
   if (*(v6 + 573) == 1 && *(v6 + 1244) || (v6[5600] & 1) != 0 || (v8 = *(v7 + 16), *(v8 + 4088) != 1) || (*(v7 + 346) & 1) != 0 || *(v8 + 3916) || *(v8 + 3912))
   {
-    AGX::ComputeContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext,AGX::HAL300::EncoderComputeServiceClassesNext>::executeKernelWithImprovedIndirectCommon(v6, a3);
+    AGX::ComputeContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext,AGX::HAL300::EncoderComputeServiceClassesNext>::executeKernelWithImprovedIndirectCommon(v6, buffer);
   }
 
   else
   {
     memset(v9, 0, sizeof(v9));
-    AGX::ComputeContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext,AGX::HAL300::EncoderComputeServiceClassesNext>::executeIndirectKernelWithThreadgroupOptimization(v6, a3, 1, v9);
+    AGX::ComputeContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext,AGX::HAL300::EncoderComputeServiceClassesNext>::executeIndirectKernelWithThreadgroupOptimization(v6, buffer, 1, v9);
   }
 
   *(self->_impl + 487) = *(self->_impl + 485);
 }
 
-- (void)dispatchThreadgroupsWithIndirectBuffer:(unint64_t)a3 threadsPerThreadgroup:(id *)a4
+- (void)dispatchThreadgroupsWithIndirectBuffer:(unint64_t)buffer threadsPerThreadgroup:(id *)threadgroup
 {
   if (self && (self->_bvhBarrierBeforeStages & 0x8000000) != 0)
   {
@@ -10345,26 +10345,26 @@ LABEL_158:
   v8 = self->_impl;
   v8[5864] = 1;
   *(v8 + 486) = *(v8 + 485);
-  if (a4->var1 * a4->var0 * a4->var2 <= *(*(v8 + 292) + 456))
+  if (threadgroup->var1 * threadgroup->var0 * threadgroup->var2 <= *(*(v8 + 292) + 456))
   {
-    v9 = *&a4->var0;
-    var2 = a4->var2;
+    v9 = *&threadgroup->var0;
+    var2 = threadgroup->var2;
     *(v8 + 515) |= 1u;
-    AGX::ComputeContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext,AGX::HAL300::EncoderComputeServiceClassesNext>::executeKernelThreadgroupsIndirectInternal(v8, a3, &v9);
+    AGX::ComputeContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext,AGX::HAL300::EncoderComputeServiceClassesNext>::executeKernelThreadgroupsIndirectInternal(v8, buffer, &v9);
     *(self->_impl + 487) = *(self->_impl + 485);
   }
 }
 
-- (void)setImageblockWidth:(unint64_t)a3 height:(unint64_t)a4
+- (void)setImageblockWidth:(unint64_t)width height:(unint64_t)height
 {
   impl = self->_impl;
-  impl[524] = a3;
-  impl[525] = a4;
+  impl[524] = width;
+  impl[525] = height;
   impl[526] = 1;
   *(impl + 699) |= 0x4000000uLL;
 }
 
-- (void)dispatchThreads:(id *)a3 threadsPerThreadgroup:(id *)a4
+- (void)dispatchThreads:(id *)threads threadsPerThreadgroup:(id *)threadgroup
 {
   if (self && (self->_bvhBarrierBeforeStages & 0x8000000) != 0)
   {
@@ -10384,19 +10384,19 @@ LABEL_158:
   v8 = self->_impl;
   v8[5864] = 1;
   *(v8 + 486) = *(v8 + 485);
-  if (a4->var1 * a4->var0 * a4->var2 <= *(*(v8 + 292) + 456))
+  if (threadgroup->var1 * threadgroup->var0 * threadgroup->var2 <= *(*(v8 + 292) + 456))
   {
-    v11 = *&a3->var0;
-    var2 = a3->var2;
-    v9 = *&a4->var0;
-    v10 = a4->var2;
+    v11 = *&threads->var0;
+    var2 = threads->var2;
+    v9 = *&threadgroup->var0;
+    v10 = threadgroup->var2;
     *(v8 + 515) |= 1u;
     AGX::ComputeContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext,AGX::HAL300::EncoderComputeServiceClassesNext>::executeKernelThreadsInternal(v8, 22, &v11, &v9);
     *(self->_impl + 487) = *(self->_impl + 485);
   }
 }
 
-- (void)dispatchThreadgroups:(id *)a3 threadsPerThreadgroup:(id *)a4
+- (void)dispatchThreadgroups:(id *)threadgroups threadsPerThreadgroup:(id *)threadgroup
 {
   if (self && (self->_bvhBarrierBeforeStages & 0x8000000) != 0)
   {
@@ -10416,12 +10416,12 @@ LABEL_158:
   v8 = self->_impl;
   v8[5864] = 1;
   *(v8 + 486) = *(v8 + 485);
-  if (a4->var1 * a4->var0 * a4->var2 <= *(*(v8 + 292) + 456))
+  if (threadgroup->var1 * threadgroup->var0 * threadgroup->var2 <= *(*(v8 + 292) + 456))
   {
-    v11 = *&a4->var0;
-    var2 = a4->var2;
-    v9 = *&a3->var0;
-    v10 = a3->var2;
+    v11 = *&threadgroup->var0;
+    var2 = threadgroup->var2;
+    v9 = *&threadgroups->var0;
+    v10 = threadgroups->var2;
     *(v8 + 515) |= 1u;
     AGX::ComputeContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext,AGX::HAL300::EncoderComputeServiceClassesNext>::executeKernelCommonImpl(v8, &v11, &v9);
     *(self->_impl + 487) = *(self->_impl + 485);
@@ -10807,26 +10807,26 @@ LABEL_32:
   v56 = self->_allocator;
 }
 
-- (AGXG18PFamilyComputeContext_mtlnext)initWithCommandBuffer:(id)a3 allocator:(id)a4 enableStateLoaderProgramTracking:(BOOL)a5
+- (AGXG18PFamilyComputeContext_mtlnext)initWithCommandBuffer:(id)buffer allocator:(id)allocator enableStateLoaderProgramTracking:(BOOL)tracking
 {
-  self->_allocator = a4;
+  self->_allocator = allocator;
   v20.receiver = self;
   v20.super_class = AGXG18PFamilyComputeContext_mtlnext;
-  v8 = [(IOGPUMetal4ComputeCommandEncoder *)&v20 initWithCommandAllocator:a4];
+  v8 = [(IOGPUMetal4ComputeCommandEncoder *)&v20 initWithCommandAllocator:allocator];
   v9 = v8;
   if (v8)
   {
     v19.receiver = v8;
     v19.super_class = AGXG18PFamilyComputeContext_mtlnext;
-    [(_MTL4CommandEncoder *)&v19 setCommandBuffer:a3];
-    *(v9 + 112) = [a3 device];
-    *(v9 + 64) = a3;
-    v10 = *(a3 + 13);
+    [(_MTL4CommandEncoder *)&v19 setCommandBuffer:buffer];
+    *(v9 + 112) = [buffer device];
+    *(v9 + 64) = buffer;
+    v10 = *(buffer + 13);
     *(v10 + 20) = 1;
     v11 = *(v10 + 16);
-    v12 = [a3 protectionOptions];
-    v13 = [a3 device];
-    v14 = *(a4 + 22);
+    protectionOptions = [buffer protectionOptions];
+    device = [buffer device];
+    v14 = *(allocator + 22);
     *(v14 + 16) = 1;
     v15 = *(v14 + 8);
     bzero(v15, 0x16F8uLL);
@@ -10836,8 +10836,8 @@ LABEL_32:
     *(v9 + 96) = 0;
     v16 = *(v9 + 104);
     v17 = *(v9 + 72);
-    v21[0] = v13;
-    v21[1] = a3;
+    v21[0] = device;
+    v21[1] = buffer;
     v21[2] = v9;
     v29 = 0;
     v30[0] = 0;
@@ -10847,15 +10847,15 @@ LABEL_32:
     v33 = 0;
     v34 = 0;
     v35 = 1;
-    v36 = a5;
-    v37 = [0 usedForRaytracingEmulation];
+    trackingCopy = tracking;
+    usedForRaytracingEmulation = [0 usedForRaytracingEmulation];
     v22 = 1;
     v23 = 0;
     v24 = v11;
     v25 = 0;
     v26 = 1;
-    v27 = v12;
-    v28 = a5;
+    v27 = protectionOptions;
+    trackingCopy2 = tracking;
     AGX::ComputeContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses,AGX::HAL300::CommandEncodingNext,AGX::HAL300::EncoderComputeServiceClassesNext>::ComputeContext<AGX::HAL300::EncoderComputeServiceConfigB>(v17, v30, v21);
     *(v9 + 120) = 0;
     *(v9 + 128) = 0;

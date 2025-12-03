@@ -1,15 +1,15 @@
 @interface TrialStateRelay
-- (TrialStateRelay)initWithMonitoring:(TrialStateDelegate *)a3;
-- (void)_updateTrialState:(id)a3 experimentIdentifiers:(id)a4;
+- (TrialStateRelay)initWithMonitoring:(TrialStateDelegate *)monitoring;
+- (void)_updateTrialState:(id)state experimentIdentifiers:(id)identifiers;
 - (void)dealloc;
-- (void)refreshTrialState:(id)a3;
-- (void)subscribeToTrialNamespace:(id)a3;
+- (void)refreshTrialState:(id)state;
+- (void)subscribeToTrialNamespace:(id)namespace;
 - (void)unsubscribeAllUpdateHandlers;
 @end
 
 @implementation TrialStateRelay
 
-- (TrialStateRelay)initWithMonitoring:(TrialStateDelegate *)a3
+- (TrialStateRelay)initWithMonitoring:(TrialStateDelegate *)monitoring
 {
   v28.receiver = self;
   v28.super_class = TrialStateRelay;
@@ -18,7 +18,7 @@
   {
     if (objc_opt_class())
     {
-      v4->_trialStateDelegate = a3;
+      v4->_trialStateDelegate = monitoring;
       v5 = dispatch_queue_create("analyticsd.Trial.CallbackQueue", 0);
       fObj = v4->_trialClientQueue.fObj.fObj;
       v4->_trialClientQueue.fObj.fObj = v5;
@@ -104,8 +104,8 @@
         v22 = qword_100192D98;
         if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
         {
-          v23 = [v26 localizedDescription];
-          sub_10011E540(v23, buf, v22);
+          localizedDescription = [v26 localizedDescription];
+          sub_10011E540(localizedDescription, buf, v22);
         }
       }
     }
@@ -167,32 +167,32 @@
   [(TrialStateRelay *)&v11 dealloc];
 }
 
-- (void)refreshTrialState:(id)a3
+- (void)refreshTrialState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   [(TRIClient *)self->trialClient refresh];
-  v5 = [(TRIClient *)self->trialClient experimentIdentifiersWithNamespaceName:v4];
+  v5 = [(TRIClient *)self->trialClient experimentIdentifiersWithNamespaceName:stateCopy];
   v6 = qword_100192D98;
   if (v5)
   {
     v7 = qword_100192D98;
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
-      v8 = [v5 experimentId];
-      v9 = [v5 deploymentId];
-      v10 = [v5 treatmentId];
+      experimentId = [v5 experimentId];
+      deploymentId = [v5 deploymentId];
+      treatmentId = [v5 treatmentId];
       v11 = 138413058;
-      v12 = v4;
+      v12 = stateCopy;
       v13 = 2112;
-      v14 = v8;
+      v14 = experimentId;
       v15 = 1024;
-      v16 = v9;
+      v16 = deploymentId;
       v17 = 2112;
-      v18 = v10;
+      v18 = treatmentId;
       _os_log_debug_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "[TrialStateRelay] TrialIdentifier: experimentIdentifiers for namespace %@ are: experimentId: %@, deploymentId: %d, treatmentId: %@", &v11, 0x26u);
     }
 
-    [(TrialStateRelay *)self _updateTrialState:v4 experimentIdentifiers:v5];
+    [(TrialStateRelay *)self _updateTrialState:stateCopy experimentIdentifiers:v5];
   }
 
   else if (os_log_type_enabled(qword_100192D98, OS_LOG_TYPE_DEBUG))
@@ -201,9 +201,9 @@
   }
 }
 
-- (void)subscribeToTrialNamespace:(id)a3
+- (void)subscribeToTrialNamespace:(id)namespace
 {
-  v4 = a3;
+  namespaceCopy = namespace;
   if (self->trialClient)
   {
     v5 = objc_autoreleasePoolPush();
@@ -215,7 +215,7 @@
     v14 = sub_100095394;
     v15 = &unk_100185A78;
     objc_copyWeak(&v17, &location);
-    v8 = v4;
+    v8 = namespaceCopy;
     v16 = v8;
     v9 = [(TRIClient *)trialClient addUpdateHandlerForNamespaceName:v8 queue:v7 usingBlock:&v12];
 
@@ -277,22 +277,22 @@
   }
 }
 
-- (void)_updateTrialState:(id)a3 experimentIdentifiers:(id)a4
+- (void)_updateTrialState:(id)state experimentIdentifiers:(id)identifiers
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7 && ([v7 experimentId], v9 = objc_claimAutoreleasedReturnValue(), v9, v9))
+  stateCopy = state;
+  identifiersCopy = identifiers;
+  v8 = identifiersCopy;
+  if (identifiersCopy && ([identifiersCopy experimentId], v9 = objc_claimAutoreleasedReturnValue(), v9, v9))
   {
     trialStateDelegate = self->_trialStateDelegate;
-    sub_10000459C(v24, [v6 UTF8String]);
-    v11 = [v8 experimentId];
-    v12 = v11;
-    sub_10000459C(v22, [v11 UTF8String]);
+    sub_10000459C(v24, [stateCopy UTF8String]);
+    experimentId = [v8 experimentId];
+    v12 = experimentId;
+    sub_10000459C(v22, [experimentId UTF8String]);
     std::to_string(&v21, [v8 deploymentId]);
-    v13 = [v8 treatmentId];
-    v14 = v13;
-    sub_10000459C(__p, [v13 UTF8String]);
+    treatmentId = [v8 treatmentId];
+    v14 = treatmentId;
+    sub_10000459C(__p, [treatmentId UTF8String]);
     (*(trialStateDelegate->var0 + 2))(&v18, trialStateDelegate, 1, v24, v22, &v21, __p);
     v15 = v18;
     v18 = 0;
@@ -316,7 +316,7 @@
   else
   {
     v16 = self->_trialStateDelegate;
-    sub_10000459C(v24, [v6 UTF8String]);
+    sub_10000459C(v24, [stateCopy UTF8String]);
     sub_10000459C(v22, "");
     sub_10000459C(&v21, "");
     sub_10000459C(__p, "");

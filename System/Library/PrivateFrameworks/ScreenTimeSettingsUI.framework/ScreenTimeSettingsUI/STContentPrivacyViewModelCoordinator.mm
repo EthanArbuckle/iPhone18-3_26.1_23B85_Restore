@@ -1,53 +1,53 @@
 @interface STContentPrivacyViewModelCoordinator
 + (NSSet)_remoteDeviceRestrictions;
-+ (id)_coreAnalyticsEventWithRestrictionsEnabled:(BOOL)a3 valuesByRestriction:(id)a4 userType:(unint64_t)a5 userIsManaged:(BOOL)a6;
++ (id)_coreAnalyticsEventWithRestrictionsEnabled:(BOOL)enabled valuesByRestriction:(id)restriction userType:(unint64_t)type userIsManaged:(BOOL)managed;
 + (id)_localDeviceRestrictions;
 + (id)appRatingsRestrictionItem;
-+ (id)visibleRestrictionsForIsLocalDevice:(BOOL)a3;
-- (STContentPrivacyViewModelCoordinator)initWithPersistenceController:(id)a3 organizationSettingsRestrictionUtility:(id)a4 userDSID:(id)a5 userName:(id)a6 currentAccountIsProto:(BOOL)a7 loadCompletionHandler:(id)a8;
-- (STContentPrivacyViewModelCoordinator)initWithPersistenceController:(id)a3 userDSID:(id)a4 userName:(id)a5 currentAccountIsProto:(BOOL)a6;
-- (STContentPrivacyViewModelCoordinator)initWithPersistenceController:(id)a3 userDSID:(id)a4 userName:(id)a5 currentAccountIsProto:(BOOL)a6 loadCompletionHandler:(id)a7;
-- (id)_createUnrestrictedConfigurationForUser:(id)a3 withType:(id)a4;
-- (id)_restrictionsForWebFilterState:(unint64_t)a3;
-- (id)_valueForMCFeature:(id)a3;
-- (id)_valueForSBCapability:(id)a3;
++ (id)visibleRestrictionsForIsLocalDevice:(BOOL)device;
+- (STContentPrivacyViewModelCoordinator)initWithPersistenceController:(id)controller organizationSettingsRestrictionUtility:(id)utility userDSID:(id)d userName:(id)name currentAccountIsProto:(BOOL)proto loadCompletionHandler:(id)handler;
+- (STContentPrivacyViewModelCoordinator)initWithPersistenceController:(id)controller userDSID:(id)d userName:(id)name currentAccountIsProto:(BOOL)proto;
+- (STContentPrivacyViewModelCoordinator)initWithPersistenceController:(id)controller userDSID:(id)d userName:(id)name currentAccountIsProto:(BOOL)proto loadCompletionHandler:(id)handler;
+- (id)_createUnrestrictedConfigurationForUser:(id)user withType:(id)type;
+- (id)_restrictionsForWebFilterState:(unint64_t)state;
+- (id)_valueForMCFeature:(id)feature;
+- (id)_valueForSBCapability:(id)capability;
 - (id)_valueForWebFilterState;
-- (id)_valueInConfiguration:(id)a3 keyPath:(id)a4;
+- (id)_valueInConfiguration:(id)configuration keyPath:(id)path;
 - (id)_valuesByRestriction;
 - (id)_visibleRestrictions;
-- (id)createValuesForRestrictions:(id)a3 multiplayerRestriction:(id)a4;
-- (id)valueForRestriction:(id)a3;
+- (id)createValuesForRestrictions:(id)restrictions multiplayerRestriction:(id)restriction;
+- (id)valueForRestriction:(id)restriction;
 - (void)_registerForPersistentStoreNotifications;
-- (void)_reportCoreAnalyticsEventForChangedCommunicationLimits:(id)a3 userType:(unint64_t)a4 userIsRemote:(BOOL)a5;
-- (void)_reportCoreAnalyticsEventWithRestrictionsEnabled:(BOOL)a3 valuesByRestriction:(id)a4 userType:(unint64_t)a5 userIsManaged:(BOOL)a6;
-- (void)_setValue:(id)a3 forMCFeature:(id)a4;
-- (void)_setValue:(id)a3 forSBCapability:(id)a4;
-- (void)_updateConfiguration:(id)a3 keyPath:(id)a4 value:(id)a5;
-- (void)controller:(id)a3 didChangeObject:(id)a4 atIndexPath:(id)a5 forChangeType:(unint64_t)a6 newIndexPath:(id)a7;
-- (void)loadValuesByRestrictionWithCompletionHandler:(id)a3;
-- (void)loadViewModelWithCompletionHandler:(id)a3;
+- (void)_reportCoreAnalyticsEventForChangedCommunicationLimits:(id)limits userType:(unint64_t)type userIsRemote:(BOOL)remote;
+- (void)_reportCoreAnalyticsEventWithRestrictionsEnabled:(BOOL)enabled valuesByRestriction:(id)restriction userType:(unint64_t)type userIsManaged:(BOOL)managed;
+- (void)_setValue:(id)value forMCFeature:(id)feature;
+- (void)_setValue:(id)value forSBCapability:(id)capability;
+- (void)_updateConfiguration:(id)configuration keyPath:(id)path value:(id)value;
+- (void)controller:(id)controller didChangeObject:(id)object atIndexPath:(id)path forChangeType:(unint64_t)type newIndexPath:(id)indexPath;
+- (void)loadValuesByRestrictionWithCompletionHandler:(id)handler;
+- (void)loadViewModelWithCompletionHandler:(id)handler;
 - (void)reloadViewModelForRemoteChanges;
-- (void)saveCommunicationLimits:(id)a3 completionHandler:(id)a4;
-- (void)saveContentPrivacyEnabled:(BOOL)a3 completionHandler:(id)a4;
-- (void)saveRestrictionValue:(id)a3 forItem:(id)a4 completionHandler:(id)a5;
-- (void)saveSiriImageGenerationIsAllowed:(BOOL)a3 completionHandler:(id)a4;
-- (void)saveValuesForRestrictions:(id)a3 completionHandler:(id)a4;
+- (void)saveCommunicationLimits:(id)limits completionHandler:(id)handler;
+- (void)saveContentPrivacyEnabled:(BOOL)enabled completionHandler:(id)handler;
+- (void)saveRestrictionValue:(id)value forItem:(id)item completionHandler:(id)handler;
+- (void)saveSiriImageGenerationIsAllowed:(BOOL)allowed completionHandler:(id)handler;
+- (void)saveValuesForRestrictions:(id)restrictions completionHandler:(id)handler;
 @end
 
 @implementation STContentPrivacyViewModelCoordinator
 
-- (STContentPrivacyViewModelCoordinator)initWithPersistenceController:(id)a3 userDSID:(id)a4 userName:(id)a5 currentAccountIsProto:(BOOL)a6
+- (STContentPrivacyViewModelCoordinator)initWithPersistenceController:(id)controller userDSID:(id)d userName:(id)name currentAccountIsProto:(BOOL)proto
 {
-  v6 = a6;
-  v10 = a4;
+  protoCopy = proto;
+  dCopy = d;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __110__STContentPrivacyViewModelCoordinator_initWithPersistenceController_userDSID_userName_currentAccountIsProto___block_invoke;
   v14[3] = &unk_279B7D488;
-  v15 = v10;
-  v16 = self;
-  v11 = v10;
-  v12 = [(STContentPrivacyViewModelCoordinator *)v16 initWithPersistenceController:a3 userDSID:v11 userName:a5 currentAccountIsProto:v6 loadCompletionHandler:v14];
+  v15 = dCopy;
+  selfCopy = self;
+  v11 = dCopy;
+  v12 = [(STContentPrivacyViewModelCoordinator *)selfCopy initWithPersistenceController:controller userDSID:v11 userName:name currentAccountIsProto:protoCopy loadCompletionHandler:v14];
 
   return v12;
 }
@@ -84,41 +84,41 @@ void __110__STContentPrivacyViewModelCoordinator_initWithPersistenceController_u
   }
 }
 
-- (STContentPrivacyViewModelCoordinator)initWithPersistenceController:(id)a3 userDSID:(id)a4 userName:(id)a5 currentAccountIsProto:(BOOL)a6 loadCompletionHandler:(id)a7
+- (STContentPrivacyViewModelCoordinator)initWithPersistenceController:(id)controller userDSID:(id)d userName:(id)name currentAccountIsProto:(BOOL)proto loadCompletionHandler:(id)handler
 {
-  v7 = a6;
-  v12 = a7;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
+  protoCopy = proto;
+  handlerCopy = handler;
+  nameCopy = name;
+  dCopy = d;
+  controllerCopy = controller;
   v16 = objc_opt_new();
-  v17 = [objc_alloc(MEMORY[0x277D4BA10]) initWithPersistenceController:v15 restrictionPayloadUtility:v16];
-  v18 = [(STContentPrivacyViewModelCoordinator *)self initWithPersistenceController:v15 organizationSettingsRestrictionUtility:v17 userDSID:v14 userName:v13 currentAccountIsProto:v7 loadCompletionHandler:v12];
+  v17 = [objc_alloc(MEMORY[0x277D4BA10]) initWithPersistenceController:controllerCopy restrictionPayloadUtility:v16];
+  v18 = [(STContentPrivacyViewModelCoordinator *)self initWithPersistenceController:controllerCopy organizationSettingsRestrictionUtility:v17 userDSID:dCopy userName:nameCopy currentAccountIsProto:protoCopy loadCompletionHandler:handlerCopy];
 
   return v18;
 }
 
-- (STContentPrivacyViewModelCoordinator)initWithPersistenceController:(id)a3 organizationSettingsRestrictionUtility:(id)a4 userDSID:(id)a5 userName:(id)a6 currentAccountIsProto:(BOOL)a7 loadCompletionHandler:(id)a8
+- (STContentPrivacyViewModelCoordinator)initWithPersistenceController:(id)controller organizationSettingsRestrictionUtility:(id)utility userDSID:(id)d userName:(id)name currentAccountIsProto:(BOOL)proto loadCompletionHandler:(id)handler
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a8;
+  controllerCopy = controller;
+  utilityCopy = utility;
+  dCopy = d;
+  nameCopy = name;
+  handlerCopy = handler;
   v37.receiver = self;
   v37.super_class = STContentPrivacyViewModelCoordinator;
   v20 = [(STContentPrivacyViewModelCoordinator *)&v37 init];
   v21 = v20;
   if (v20)
   {
-    objc_storeStrong(&v20->_persistenceController, a3);
-    objc_storeStrong(&v21->_organizationSettingsRestrictionUtility, a4);
-    v21->_currentAccountIsProto = a7;
-    v22 = [v17 copy];
+    objc_storeStrong(&v20->_persistenceController, controller);
+    objc_storeStrong(&v21->_organizationSettingsRestrictionUtility, utility);
+    v21->_currentAccountIsProto = proto;
+    v22 = [dCopy copy];
     userDSID = v21->_userDSID;
     v21->_userDSID = v22;
 
-    v24 = [v18 copy];
+    v24 = [nameCopy copy];
     userName = v21->_userName;
     v21->_userName = v24;
 
@@ -131,13 +131,13 @@ void __110__STContentPrivacyViewModelCoordinator_initWithPersistenceController_u
     v32 = 3221225472;
     v33 = __171__STContentPrivacyViewModelCoordinator_initWithPersistenceController_organizationSettingsRestrictionUtility_userDSID_userName_currentAccountIsProto_loadCompletionHandler___block_invoke;
     v34 = &unk_279B7D4B0;
-    v36 = v19;
+    v36 = handlerCopy;
     v28 = v21;
     v35 = v28;
     [(STContentPrivacyViewModelCoordinator *)v28 loadViewModelWithCompletionHandler:&v31];
     [(STContentPrivacyViewModelCoordinator *)v28 _registerForPersistentStoreNotifications:v31];
-    v29 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v29 addObserver:v28 selector:sel__contactStoreDidChange_ name:*MEMORY[0x277CBD140] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v28 selector:sel__contactStoreDidChange_ name:*MEMORY[0x277CBD140] object:0];
   }
 
   return v21;
@@ -171,9 +171,9 @@ void __171__STContentPrivacyViewModelCoordinator_initWithPersistenceController_o
 + (NSSet)_remoteDeviceRestrictions
 {
   v85[18] = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CBEAF8] autoupdatingCurrentLocale];
-  v3 = [v2 countryCode];
-  if (!v3)
+  autoupdatingCurrentLocale = [MEMORY[0x277CBEAF8] autoupdatingCurrentLocale];
+  countryCode = [autoupdatingCurrentLocale countryCode];
+  if (!countryCode)
   {
     v4 = +[STUILog contentPrivacy];
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -182,7 +182,7 @@ void __171__STContentPrivacyViewModelCoordinator_initWithPersistenceController_o
     }
   }
 
-  v5 = [v3 isEqual:@"CN"];
+  v5 = [countryCode isEqual:@"CN"];
   v6 = @"MusicPodcastsNewsWorkoutsSpecifierName";
   if (v5)
   {
@@ -191,8 +191,8 @@ void __171__STContentPrivacyViewModelCoordinator_initWithPersistenceController_o
 
   v78 = v6;
 
-  v7 = [MEMORY[0x277D75418] currentDevice];
-  v80 = [v7 sf_isChinaRegionCellularDevice];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  sf_isChinaRegionCellularDevice = [currentDevice sf_isChinaRegionCellularDevice];
 
   v82 = *MEMORY[0x277D4BC70];
   v83 = [MEMORY[0x277CBEB58] setWithCapacity:80];
@@ -238,13 +238,13 @@ void __171__STContentPrivacyViewModelCoordinator_initWithPersistenceController_o
   if ((_os_feature_enabled_impl() & 1) == 0)
   {
     v17 = [STRestrictionItem alloc];
-    v18 = [MEMORY[0x277D4BA40] sharedRatings];
-    v19 = [v18 preferredRegion];
-    v20 = [(STRestrictionItem *)v17 initWithConfiguration:@"system.ratings" restrictionKey:@"ratingRegion" labelName:@"RatingForSpecifierName" type:3 restrictionValue:v19];
+    mEMORY[0x277D4BA40] = [MEMORY[0x277D4BA40] sharedRatings];
+    preferredRegion = [mEMORY[0x277D4BA40] preferredRegion];
+    v20 = [(STRestrictionItem *)v17 initWithConfiguration:@"system.ratings" restrictionKey:@"ratingRegion" labelName:@"RatingForSpecifierName" type:3 restrictionValue:preferredRegion];
     [v83 addObject:v20];
   }
 
-  if (v80)
+  if (sf_isChinaRegionCellularDevice)
   {
     v21 = @"AADC_WirelessChangesSpecifierName";
   }
@@ -390,19 +390,19 @@ void __171__STContentPrivacyViewModelCoordinator_initWithPersistenceController_o
 - (id)_visibleRestrictions
 {
   v3 = objc_opt_class();
-  v4 = [(STContentPrivacyViewModelCoordinator *)self isLocalDevice];
+  isLocalDevice = [(STContentPrivacyViewModelCoordinator *)self isLocalDevice];
 
-  return [v3 visibleRestrictionsForIsLocalDevice:v4];
+  return [v3 visibleRestrictionsForIsLocalDevice:isLocalDevice];
 }
 
-+ (id)visibleRestrictionsForIsLocalDevice:(BOOL)a3
++ (id)visibleRestrictionsForIsLocalDevice:(BOOL)device
 {
-  v3 = a3;
+  deviceCopy = device;
   v4 = MEMORY[0x277CBEB58];
   v5 = +[STContentPrivacyViewModelCoordinator _remoteDeviceRestrictions];
   v6 = [v4 setWithSet:v5];
 
-  if (v3)
+  if (deviceCopy)
   {
     v7 = +[STContentPrivacyViewModelCoordinator _localDeviceRestrictions];
     [v6 unionSet:v7];
@@ -411,11 +411,11 @@ void __171__STContentPrivacyViewModelCoordinator_initWithPersistenceController_o
   return v6;
 }
 
-- (id)_valueForMCFeature:(id)a3
+- (id)_valueForMCFeature:(id)feature
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277D262A0] sharedConnection];
-  v5 = [v4 effectiveValueForSetting:v3];
+  featureCopy = feature;
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  v5 = [mEMORY[0x277D262A0] effectiveValueForSetting:featureCopy];
 
   v6 = +[STUILog contentPrivacy];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -426,23 +426,23 @@ void __171__STContentPrivacyViewModelCoordinator_initWithPersistenceController_o
   return v5;
 }
 
-- (void)_setValue:(id)a3 forMCFeature:(id)a4
+- (void)_setValue:(id)value forMCFeature:(id)feature
 {
-  v5 = a3;
-  v6 = a4;
+  valueCopy = value;
+  featureCopy = feature;
   v7 = +[STUILog contentPrivacy];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     [STContentPrivacyViewModelCoordinator _setValue:forMCFeature:];
   }
 
-  v8 = [MEMORY[0x277D262A0] sharedConnection];
-  [v8 setBoolValue:objc_msgSend(v5 forSetting:{"BOOLValue"), v6}];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  [mEMORY[0x277D262A0] setBoolValue:objc_msgSend(valueCopy forSetting:{"BOOLValue"), featureCopy}];
 }
 
-- (id)_valueForSBCapability:(id)a3
+- (id)_valueForSBCapability:(id)capability
 {
-  v3 = a3;
+  capabilityCopy = capability;
   v4 = CFPreferencesCopyAppValue(*MEMORY[0x277D4BC80], *MEMORY[0x277D4BC88]);
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -451,7 +451,7 @@ void __171__STContentPrivacyViewModelCoordinator_initWithPersistenceController_o
     v4 = 0;
   }
 
-  v5 = [v4 containsObject:v3];
+  v5 = [v4 containsObject:capabilityCopy];
   v6 = +[STUILog contentPrivacy];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
@@ -473,10 +473,10 @@ void __171__STContentPrivacyViewModelCoordinator_initWithPersistenceController_o
   return v7;
 }
 
-- (void)_setValue:(id)a3 forSBCapability:(id)a4
+- (void)_setValue:(id)value forSBCapability:(id)capability
 {
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  capabilityCopy = capability;
   v8 = +[STUILog contentPrivacy];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -493,14 +493,14 @@ void __171__STContentPrivacyViewModelCoordinator_initWithPersistenceController_o
   }
 
   v12 = [MEMORY[0x277CBEB58] setWithArray:v11];
-  if ([v6 BOOLValue])
+  if ([valueCopy BOOLValue])
   {
-    [v12 removeObject:v7];
+    [v12 removeObject:capabilityCopy];
   }
 
   else
   {
-    [v12 addObject:v7];
+    [v12 addObject:capabilityCopy];
   }
 
   if ([v12 count])
@@ -513,28 +513,28 @@ void __171__STContentPrivacyViewModelCoordinator_initWithPersistenceController_o
     v13 = 0;
   }
 
-  v14 = [v12 allObjects];
+  allObjects = [v12 allObjects];
 
-  CFPreferencesSetAppValue(v9, v14, v10);
+  CFPreferencesSetAppValue(v9, allObjects, v10);
   CFPreferencesSetAppValue(*MEMORY[0x277D4BC90], v13, v10);
   CFPreferencesAppSynchronize(v10);
   notify_post("com.apple.locationd/Restrictions");
   notify_post("com.apple.Preferences.ChangedRestrictionsEnabledStateNotification");
-  v15 = [v11 containsObject:v7];
-  v16 = [(STContentPrivacyViewModelCoordinator *)self viewModel];
-  if (![v16 hasPasscode] || !objc_msgSend(v7, "isEqualToString:", @"location"))
+  v15 = [v11 containsObject:capabilityCopy];
+  viewModel = [(STContentPrivacyViewModelCoordinator *)self viewModel];
+  if (![viewModel hasPasscode] || !objc_msgSend(capabilityCopy, "isEqualToString:", @"location"))
   {
     goto LABEL_16;
   }
 
-  v17 = [v6 BOOLValue];
+  bOOLValue = [valueCopy BOOLValue];
 
-  if (v15 == v17)
+  if (v15 == bOOLValue)
   {
-    [v6 BOOLValue];
-    v16 = objc_opt_new();
+    [valueCopy BOOLValue];
+    viewModel = objc_opt_new();
     v18 = objc_opt_new();
-    [v16 postNotificationForContext:v18];
+    [viewModel postNotificationForContext:v18];
 
 LABEL_16:
   }
@@ -543,53 +543,53 @@ LABEL_16:
 - (id)_valueForWebFilterState
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = [(STContentPrivacyViewModelCoordinator *)self isRestrictAdultContentEnabledValue];
-  v4 = [v3 BOOLValue];
+  isRestrictAdultContentEnabledValue = [(STContentPrivacyViewModelCoordinator *)self isRestrictAdultContentEnabledValue];
+  bOOLValue = [isRestrictAdultContentEnabledValue BOOLValue];
 
-  if (v4)
+  if (bOOLValue)
   {
-    v5 = [(STContentPrivacyViewModelCoordinator *)self isRestrictAdultContentEnabledValue];
-    v6 = [(STContentPrivacyViewModelCoordinator *)self isRestrictAdultContentEnabledValue];
+    isRestrictAdultContentEnabledValue2 = [(STContentPrivacyViewModelCoordinator *)self isRestrictAdultContentEnabledValue];
+    isRestrictAdultContentEnabledValue3 = [(STContentPrivacyViewModelCoordinator *)self isRestrictAdultContentEnabledValue];
   }
 
   else
   {
     v7 = [[STRestrictionItem alloc] initWithConfiguration:@"system.webcontentfilter.basic" restrictionKey:@"restrictWeb" labelName:&stru_28766E5A8 type:3 restrictionValue:0];
-    v5 = [(STContentPrivacyViewModelCoordinator *)self valueForRestriction:v7];
+    isRestrictAdultContentEnabledValue2 = [(STContentPrivacyViewModelCoordinator *)self valueForRestriction:v7];
 
     v8 = [[STRestrictionItem alloc] initWithConfiguration:@"system.webcontentfilter.basic" restrictionKey:@"useContentFilter" labelName:&stru_28766E5A8 type:3 restrictionValue:0];
-    v6 = [(STContentPrivacyViewModelCoordinator *)self valueForRestriction:v8];
+    isRestrictAdultContentEnabledValue3 = [(STContentPrivacyViewModelCoordinator *)self valueForRestriction:v8];
   }
 
   v9 = [[STRestrictionItem alloc] initWithConfiguration:@"system.webcontentfilter.basic" restrictionKey:@"whiteListEnabled" labelName:&stru_28766E5A8 type:3 restrictionValue:0];
   v10 = [(STContentPrivacyViewModelCoordinator *)self valueForRestriction:v9];
 
-  if ([v5 BOOLValue])
+  if ([isRestrictAdultContentEnabledValue2 BOOLValue])
   {
-    if ([v6 BOOLValue] && !objc_msgSend(v10, "BOOLValue"))
+    if ([isRestrictAdultContentEnabledValue3 BOOLValue] && !objc_msgSend(v10, "BOOLValue"))
     {
       v15 = &unk_28769D220;
     }
 
     else
     {
-      if (([v6 BOOLValue] & 1) != 0 || (objc_msgSend(v10, "BOOLValue") & 1) == 0)
+      if (([isRestrictAdultContentEnabledValue3 BOOLValue] & 1) != 0 || (objc_msgSend(v10, "BOOLValue") & 1) == 0)
       {
-        v11 = [(STContentPrivacyViewModelCoordinator *)self configurationPayloadsByType];
-        v12 = [v11 objectForKeyedSubscript:@"system.webcontentfilter.basic"];
+        configurationPayloadsByType = [(STContentPrivacyViewModelCoordinator *)self configurationPayloadsByType];
+        v12 = [configurationPayloadsByType objectForKeyedSubscript:@"system.webcontentfilter.basic"];
 
-        v13 = [v12 serialize];
+        serialize = [v12 serialize];
         v14 = +[STUILog contentPrivacy];
         if (os_log_type_enabled(v14, OS_LOG_TYPE_FAULT))
         {
           v17 = 138544130;
-          v18 = v5;
+          v18 = isRestrictAdultContentEnabledValue2;
           v19 = 2114;
-          v20 = v6;
+          v20 = isRestrictAdultContentEnabledValue3;
           v21 = 2114;
           v22 = v10;
           v23 = 2112;
-          v24 = v13;
+          v24 = serialize;
           _os_log_fault_impl(&dword_264BA2000, v14, OS_LOG_TYPE_FAULT, "Unknown web filter state\n%{public}@ %{public}@ %{public}@ %@", &v17, 0x2Au);
         }
       }
@@ -606,10 +606,10 @@ LABEL_16:
   return v15;
 }
 
-- (id)_restrictionsForWebFilterState:(unint64_t)a3
+- (id)_restrictionsForWebFilterState:(unint64_t)state
 {
   v51[3] = *MEMORY[0x277D85DE8];
-  switch(a3)
+  switch(state)
   {
     case 2uLL:
       v14 = [[STRestrictionItem alloc] initWithConfiguration:@"system.webcontentfilter.basic" restrictionKey:@"restrictWeb" labelName:&stru_28766E5A8 type:3 restrictionValue:0];
@@ -631,15 +631,15 @@ LABEL_16:
       if (!v20)
       {
         v40 = v5;
-        v21 = [MEMORY[0x277D262A0] sharedConnection];
-        v22 = [v21 defaultUserBookmarks];
+        mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+        defaultUserBookmarks = [mEMORY[0x277D262A0] defaultUserBookmarks];
 
-        v23 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v22, "count")}];
+        v23 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(defaultUserBookmarks, "count")}];
         v41 = 0u;
         v42 = 0u;
         v43 = 0u;
         v44 = 0u;
-        v24 = v22;
+        v24 = defaultUserBookmarks;
         v25 = [v24 countByEnumeratingWithState:&v41 objects:v45 count:16];
         if (v25)
         {
@@ -657,9 +657,9 @@ LABEL_16:
               v29 = *(*(&v41 + 1) + 8 * i);
               v30 = MEMORY[0x277CFBBF0];
               v31 = [v29 URL];
-              v32 = [v31 absoluteString];
-              v33 = [v29 title];
-              v34 = [v30 buildWithAddress:v32 withPageTitle:v33];
+              absoluteString = [v31 absoluteString];
+              title = [v29 title];
+              v34 = [v30 buildWithAddress:absoluteString withPageTitle:title];
 
               [v23 addObject:v34];
             }
@@ -714,8 +714,8 @@ LABEL_17:
       goto LABEL_19;
   }
 
-  v38 = [MEMORY[0x277CCA890] currentHandler];
-  [v38 handleFailureInMethod:a2 object:self file:@"STContentPrivacyViewModel.m" lineNumber:714 description:{@"Unimplemented web filter state %d", a3}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"STContentPrivacyViewModel.m" lineNumber:714 description:{@"Unimplemented web filter state %d", state}];
 
   v13 = MEMORY[0x277CBEC10];
 LABEL_19:
@@ -723,37 +723,37 @@ LABEL_19:
   return v13;
 }
 
-- (id)valueForRestriction:(id)a3
+- (id)valueForRestriction:(id)restriction
 {
-  v5 = a3;
-  v6 = [v5 rmConfiguration];
-  v7 = [v5 payloadKey];
+  restrictionCopy = restriction;
+  rmConfiguration = [restrictionCopy rmConfiguration];
+  payloadKey = [restrictionCopy payloadKey];
 
-  if (![v6 isEqualToString:@"STCustomRestrictionConfiguration"])
+  if (![rmConfiguration isEqualToString:@"STCustomRestrictionConfiguration"])
   {
-    if ([v6 isEqualToString:@"STMCFeatureConfiguration"])
+    if ([rmConfiguration isEqualToString:@"STMCFeatureConfiguration"])
     {
-      v15 = [(STContentPrivacyViewModelCoordinator *)self _valueForMCFeature:v7];
+      _valueForWebFilterState = [(STContentPrivacyViewModelCoordinator *)self _valueForMCFeature:payloadKey];
     }
 
     else
     {
-      if (![v6 isEqualToString:@"STSBCapabilityConfiguration"])
+      if (![rmConfiguration isEqualToString:@"STSBCapabilityConfiguration"])
       {
         v27 = STSupportedConfigurations();
-        v28 = [v27 objectForKeyedSubscript:v6];
+        v28 = [v27 objectForKeyedSubscript:rmConfiguration];
 
         if (!v28)
         {
-          [(STContentPrivacyViewModelCoordinator *)a2 valueForRestriction:v6];
+          [(STContentPrivacyViewModelCoordinator *)a2 valueForRestriction:rmConfiguration];
         }
 
-        v29 = [(STContentPrivacyViewModelCoordinator *)self configurationPayloadsByType];
-        v12 = [v29 objectForKeyedSubscript:v6];
+        configurationPayloadsByType = [(STContentPrivacyViewModelCoordinator *)self configurationPayloadsByType];
+        v12 = [configurationPayloadsByType objectForKeyedSubscript:rmConfiguration];
 
         if (v12)
         {
-          v18 = [(STContentPrivacyViewModelCoordinator *)self _valueInConfiguration:v12 keyPath:v7];
+          v18 = [(STContentPrivacyViewModelCoordinator *)self _valueInConfiguration:v12 keyPath:payloadKey];
 LABEL_29:
 
           goto LABEL_30;
@@ -762,15 +762,15 @@ LABEL_29:
         goto LABEL_40;
       }
 
-      v15 = [(STContentPrivacyViewModelCoordinator *)self _valueForSBCapability:v7];
+      _valueForWebFilterState = [(STContentPrivacyViewModelCoordinator *)self _valueForSBCapability:payloadKey];
     }
 
 LABEL_16:
-    v18 = v15;
+    v18 = _valueForWebFilterState;
     goto LABEL_30;
   }
 
-  if ([v7 isEqualToString:@"STCustomRestrictionCellularData"])
+  if ([payloadKey isEqualToString:@"STCustomRestrictionCellularData"])
   {
     v8 = @"network.cellular.settings";
     v9 = [[STRestrictionItem alloc] initWithConfiguration:@"network.cellular.settings" restrictionKey:@"allowAppCellularDataModification" labelName:&stru_28766E5A8 type:3 restrictionValue:0];
@@ -803,9 +803,9 @@ LABEL_22:
       v23 = v11;
     }
 
-    v24 = [v12 BOOLValue];
+    bOOLValue = [v12 BOOLValue];
     v25 = MEMORY[0x277CBEC28];
-    if (v24 && [v23 BOOLValue])
+    if (bOOLValue && [v23 BOOLValue])
     {
       v25 = v11;
     }
@@ -815,7 +815,7 @@ LABEL_22:
     goto LABEL_29;
   }
 
-  if ([v7 isEqualToString:@"STCustomRestrictionSiriDictation"])
+  if ([payloadKey isEqualToString:@"STCustomRestrictionSiriDictation"])
   {
     v8 = @"system.siri";
     v16 = [[STRestrictionItem alloc] initWithConfiguration:@"system.siri" restrictionKey:@"allowAssistant" labelName:&stru_28766E5A8 type:3 restrictionValue:0];
@@ -837,7 +837,7 @@ LABEL_22:
     goto LABEL_22;
   }
 
-  if ([v7 isEqualToString:@"STCustomRestrictionMathResults"])
+  if ([payloadKey isEqualToString:@"STCustomRestrictionMathResults"])
   {
     v8 = @"system.siri";
     v19 = [[STRestrictionItem alloc] initWithConfiguration:@"system.siri" restrictionKey:@"allowMathPaperSolving" labelName:&stru_28766E5A8 type:3 restrictionValue:0];
@@ -859,14 +859,14 @@ LABEL_22:
     goto LABEL_22;
   }
 
-  if ([v7 isEqualToString:@"STCustomRestrictionWebFilterState"])
+  if ([payloadKey isEqualToString:@"STCustomRestrictionWebFilterState"])
   {
-    v15 = [(STContentPrivacyViewModelCoordinator *)self _valueForWebFilterState];
+    _valueForWebFilterState = [(STContentPrivacyViewModelCoordinator *)self _valueForWebFilterState];
     goto LABEL_16;
   }
 
-  v30 = [MEMORY[0x277CCA890] currentHandler];
-  [v30 handleFailureInMethod:a2 object:self file:@"STContentPrivacyViewModel.m" lineNumber:764 description:{@"Unimplemented key %@", v7}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"STContentPrivacyViewModel.m" lineNumber:764 description:{@"Unimplemented key %@", payloadKey}];
 
 LABEL_40:
   v18 = 0;
@@ -878,15 +878,15 @@ LABEL_30:
 - (id)_valuesByRestriction
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [(STContentPrivacyViewModelCoordinator *)self viewModel];
-  v4 = [v3 visibleRestrictions];
+  viewModel = [(STContentPrivacyViewModelCoordinator *)self viewModel];
+  visibleRestrictions = [viewModel visibleRestrictions];
 
-  v5 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v4, "count")}];
+  v5 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(visibleRestrictions, "count")}];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = visibleRestrictions;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -917,16 +917,16 @@ LABEL_30:
 
 - (void)_registerForPersistentStoreNotifications
 {
-  v3 = [(STContentPrivacyViewModelCoordinator *)self persistenceController];
-  v4 = [v3 viewContext];
+  persistenceController = [(STContentPrivacyViewModelCoordinator *)self persistenceController];
+  viewContext = [persistenceController viewContext];
 
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __80__STContentPrivacyViewModelCoordinator__registerForPersistentStoreNotifications__block_invoke;
   v6[3] = &unk_279B7CAE0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = viewContext;
+  v5 = viewContext;
   [v5 performBlockAndWait:v6];
 }
 
@@ -985,9 +985,9 @@ void __80__STContentPrivacyViewModelCoordinator__registerForPersistentStoreNotif
   }
 }
 
-- (void)controller:(id)a3 didChangeObject:(id)a4 atIndexPath:(id)a5 forChangeType:(unint64_t)a6 newIndexPath:(id)a7
+- (void)controller:(id)controller didChangeObject:(id)object atIndexPath:(id)path forChangeType:(unint64_t)type newIndexPath:(id)indexPath
 {
-  if ([(STContentPrivacyViewModelCoordinator *)self numExpectedChanges:a3])
+  if ([(STContentPrivacyViewModelCoordinator *)self numExpectedChanges:controller])
   {
     [(STContentPrivacyViewModelCoordinator *)self setNumExpectedChanges:[(STContentPrivacyViewModelCoordinator *)self numExpectedChanges]- 1];
     v8 = +[STUILog contentPrivacy];
@@ -1012,8 +1012,8 @@ void __80__STContentPrivacyViewModelCoordinator__registerForPersistentStoreNotif
 
 - (void)reloadViewModelForRemoteChanges
 {
-  v3 = [(STContentPrivacyViewModelCoordinator *)self viewModel];
-  [v3 setIsLoaded:0];
+  viewModel = [(STContentPrivacyViewModelCoordinator *)self viewModel];
+  [viewModel setIsLoaded:0];
 
   [(STContentPrivacyViewModelCoordinator *)self loadViewModelWithCompletionHandler:&__block_literal_global_7];
 }
@@ -1041,22 +1041,22 @@ void __71__STContentPrivacyViewModelCoordinator_reloadViewModelForRemoteChanges_
   }
 }
 
-- (id)_createUnrestrictedConfigurationForUser:(id)a3 withType:(id)a4
+- (id)_createUnrestrictedConfigurationForUser:(id)user withType:(id)type
 {
   v18 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a3;
+  typeCopy = type;
+  userCopy = user;
   v9 = +[STUILog contentPrivacy];
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v17 = v7;
+    v17 = typeCopy;
     _os_log_impl(&dword_264BA2000, v9, OS_LOG_TYPE_DEFAULT, "Creating new restriction configuration %{public}@", buf, 0xCu);
   }
 
-  v10 = [v8 contentPrivacyConfigurationIdentifierForType:v7];
+  v10 = [userCopy contentPrivacyConfigurationIdentifierForType:typeCopy];
 
-  if ([v7 isEqualToString:@"account.settings"])
+  if ([typeCopy isEqualToString:@"account.settings"])
   {
     v11 = MEMORY[0x277CFBB80];
 LABEL_9:
@@ -1066,19 +1066,19 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if ([v7 isEqualToString:@"application.settings"])
+  if ([typeCopy isEqualToString:@"application.settings"])
   {
     v11 = MEMORY[0x277CFBB90];
     goto LABEL_9;
   }
 
-  if ([v7 isEqualToString:@"application.store"])
+  if ([typeCopy isEqualToString:@"application.store"])
   {
     v11 = MEMORY[0x277CFBB98];
     goto LABEL_9;
   }
 
-  if ([v7 isEqualToString:@"legacy.restrictions.apps"])
+  if ([typeCopy isEqualToString:@"legacy.restrictions.apps"])
   {
     v13 = [MEMORY[0x277CFBBA8] buildRequiredOnlyWithIdentifier:v10];
     [v13 setPayloadBlacklistedAppBundleIDs:MEMORY[0x277CBEBF8]];
@@ -1086,98 +1086,98 @@ LABEL_10:
 
   else
   {
-    if ([v7 isEqualToString:@"media.settings"])
+    if ([typeCopy isEqualToString:@"media.settings"])
     {
       v11 = MEMORY[0x277CFBBB0];
       goto LABEL_9;
     }
 
-    if ([v7 isEqualToString:@"network.cellular.settings"])
+    if ([typeCopy isEqualToString:@"network.cellular.settings"])
     {
       v11 = MEMORY[0x277CFBBB8];
       goto LABEL_9;
     }
 
-    if ([v7 isEqualToString:@"passcode.settings"])
+    if ([typeCopy isEqualToString:@"passcode.settings"])
     {
       v11 = MEMORY[0x277CFBBC0];
       goto LABEL_9;
     }
 
-    if ([v7 isEqualToString:@"system.airdrop"])
+    if ([typeCopy isEqualToString:@"system.airdrop"])
     {
       v11 = MEMORY[0x277CFBBE0];
       goto LABEL_9;
     }
 
-    if ([v7 isEqualToString:@"system.camera"])
+    if ([typeCopy isEqualToString:@"system.camera"])
     {
       v11 = MEMORY[0x277CFBBF8];
       goto LABEL_9;
     }
 
-    if ([v7 isEqualToString:@"system.carplay"])
+    if ([typeCopy isEqualToString:@"system.carplay"])
     {
       v11 = MEMORY[0x277CFBC00];
       goto LABEL_9;
     }
 
-    if ([v7 isEqualToString:@"system.donotdisturb"])
+    if ([typeCopy isEqualToString:@"system.donotdisturb"])
     {
       v11 = MEMORY[0x277CFBC08];
       goto LABEL_9;
     }
 
-    if ([v7 isEqualToString:@"system.gamecenter"])
+    if ([typeCopy isEqualToString:@"system.gamecenter"])
     {
       v11 = MEMORY[0x277CFBC10];
       goto LABEL_9;
     }
 
-    if ([v7 isEqualToString:@"system.icloud"])
+    if ([typeCopy isEqualToString:@"system.icloud"])
     {
       v11 = MEMORY[0x277CFBC40];
       goto LABEL_9;
     }
 
-    if ([v7 isEqualToString:@"system.music"])
+    if ([typeCopy isEqualToString:@"system.music"])
     {
       v11 = MEMORY[0x277CFBC18];
       goto LABEL_9;
     }
 
-    if ([v7 isEqualToString:@"system.ratings"])
+    if ([typeCopy isEqualToString:@"system.ratings"])
     {
       v11 = MEMORY[0x277CFBC20];
       goto LABEL_9;
     }
 
-    if ([v7 isEqualToString:@"system.siri"])
+    if ([typeCopy isEqualToString:@"system.siri"])
     {
       v11 = MEMORY[0x277CFBC28];
       goto LABEL_9;
     }
 
-    if ([v7 isEqualToString:@"system.tvprovider"])
+    if ([typeCopy isEqualToString:@"system.tvprovider"])
     {
       v11 = MEMORY[0x277CFBC30];
       goto LABEL_9;
     }
 
-    if ([v7 isEqualToString:@"system.webcontentfilter.basic"])
+    if ([typeCopy isEqualToString:@"system.webcontentfilter.basic"])
     {
       v12 = [MEMORY[0x277CFBBE8] buildRequiredOnlyWithIdentifier:v10 withRestrictWeb:MEMORY[0x277CBEC28]];
       goto LABEL_10;
     }
 
-    if ([v7 isEqualToString:@"system.web.tracking"])
+    if ([typeCopy isEqualToString:@"system.web.tracking"])
     {
       v11 = MEMORY[0x277CFBC38];
       goto LABEL_9;
     }
 
-    v15 = [MEMORY[0x277CCA890] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"STContentPrivacyViewModel.m" lineNumber:901 description:{@"Unimplemented for type %@", v7}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"STContentPrivacyViewModel.m" lineNumber:901 description:{@"Unimplemented for type %@", typeCopy}];
 
     v13 = 0;
   }
@@ -1187,37 +1187,37 @@ LABEL_11:
   return v13;
 }
 
-- (id)_valueInConfiguration:(id)a3 keyPath:(id)a4
+- (id)_valueInConfiguration:(id)configuration keyPath:(id)path
 {
   v14[3] = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = a3;
-  v7 = [v5 substringToIndex:1];
-  v8 = [v5 substringWithRange:{1, objc_msgSend(v5, "length") - 1}];
+  pathCopy = path;
+  configurationCopy = configuration;
+  v7 = [pathCopy substringToIndex:1];
+  v8 = [pathCopy substringWithRange:{1, objc_msgSend(pathCopy, "length") - 1}];
 
-  v9 = [v7 capitalizedString];
-  v14[1] = v9;
+  capitalizedString = [v7 capitalizedString];
+  v14[1] = capitalizedString;
   v14[2] = v8;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:3];
   v11 = [v10 componentsJoinedByString:&stru_28766E5A8];
 
-  v12 = [v6 valueForKeyPath:v11];
+  v12 = [configurationCopy valueForKeyPath:v11];
 
   return v12;
 }
 
-- (void)_updateConfiguration:(id)a3 keyPath:(id)a4 value:(id)a5
+- (void)_updateConfiguration:(id)configuration keyPath:(id)path value:(id)value
 {
   v22[3] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
-  v9 = a4;
-  v10 = [v9 substringToIndex:1];
-  v11 = [v9 substringWithRange:{1, objc_msgSend(v9, "length") - 1}];
+  configurationCopy = configuration;
+  valueCopy = value;
+  pathCopy = path;
+  v10 = [pathCopy substringToIndex:1];
+  v11 = [pathCopy substringWithRange:{1, objc_msgSend(pathCopy, "length") - 1}];
 
   v22[0] = @"payload";
-  v12 = [v10 capitalizedString];
-  v22[1] = v12;
+  capitalizedString = [v10 capitalizedString];
+  v22[1] = capitalizedString;
   v22[2] = v11;
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:3];
   v14 = [v13 componentsJoinedByString:&stru_28766E5A8];
@@ -1230,29 +1230,29 @@ LABEL_11:
     v18 = 2112;
     v19 = v14;
     v20 = 2112;
-    v21 = v8;
+    v21 = valueCopy;
     _os_log_impl(&dword_264BA2000, v15, OS_LOG_TYPE_DEFAULT, "Setting CEM key %@.%@ to %@", &v16, 0x20u);
   }
 
-  [v7 setValue:v8 forKeyPath:v14];
-  [v7 updateServerHash];
+  [configurationCopy setValue:valueCopy forKeyPath:v14];
+  [configurationCopy updateServerHash];
 }
 
-- (void)loadViewModelWithCompletionHandler:(id)a3
+- (void)loadViewModelWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(STContentPrivacyViewModelCoordinator *)self viewModel];
-  v6 = [(STContentPrivacyViewModelCoordinator *)self persistenceController];
+  handlerCopy = handler;
+  viewModel = [(STContentPrivacyViewModelCoordinator *)self viewModel];
+  persistenceController = [(STContentPrivacyViewModelCoordinator *)self persistenceController];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __75__STContentPrivacyViewModelCoordinator_loadViewModelWithCompletionHandler___block_invoke;
   v9[3] = &unk_279B7D550;
-  v10 = v5;
-  v11 = v4;
+  v10 = viewModel;
+  v11 = handlerCopy;
   v9[4] = self;
-  v7 = v5;
-  v8 = v4;
-  [v6 performBackgroundTask:v9];
+  v7 = viewModel;
+  v8 = handlerCopy;
+  [persistenceController performBackgroundTask:v9];
 }
 
 void __75__STContentPrivacyViewModelCoordinator_loadViewModelWithCompletionHandler___block_invoke(uint64_t a1, void *a2)
@@ -1851,16 +1851,16 @@ void __75__STContentPrivacyViewModelCoordinator_loadViewModelWithCompletionHandl
   }
 }
 
-- (void)loadValuesByRestrictionWithCompletionHandler:(id)a3
+- (void)loadValuesByRestrictionWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __85__STContentPrivacyViewModelCoordinator_loadValuesByRestrictionWithCompletionHandler___block_invoke;
   v6[3] = &unk_279B7D4B0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   [(STContentPrivacyViewModelCoordinator *)self loadViewModelWithCompletionHandler:v6];
 }
 
@@ -1874,23 +1874,23 @@ void __85__STContentPrivacyViewModelCoordinator_loadValuesByRestrictionWithCompl
   (*(v2 + 16))(v2, v5, v4);
 }
 
-- (void)saveContentPrivacyEnabled:(BOOL)a3 completionHandler:(id)a4
+- (void)saveContentPrivacyEnabled:(BOOL)enabled completionHandler:(id)handler
 {
-  v4 = a3;
+  enabledCopy = enabled;
   *&v21[5] = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  handlerCopy = handler;
   v7 = +[STUILog contentPrivacy];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [(STContentPrivacyViewModelCoordinator *)self userDSID];
+    userDSID = [(STContentPrivacyViewModelCoordinator *)self userDSID];
     *buf = 67240450;
-    v21[0] = v4;
+    v21[0] = enabledCopy;
     LOWORD(v21[1]) = 2112;
-    *(&v21[1] + 2) = v8;
+    *(&v21[1] + 2) = userDSID;
     _os_log_impl(&dword_264BA2000, v7, OS_LOG_TYPE_DEFAULT, "Asked to change restriction enabled/disabled to %{public}d for %@", buf, 0x12u);
   }
 
-  if (!v4 && [(STContentPrivacyViewModelCoordinator *)self isLocalDevice])
+  if (!enabledCopy && [(STContentPrivacyViewModelCoordinator *)self isLocalDevice])
   {
     v9 = *MEMORY[0x277D4BC80];
     v10 = *MEMORY[0x277D4BC88];
@@ -1908,21 +1908,21 @@ void __85__STContentPrivacyViewModelCoordinator_loadValuesByRestrictionWithCompl
     CFPreferencesAppSynchronize(v10);
     notify_post("com.apple.locationd/Restrictions");
     notify_post("com.apple.Preferences.ChangedRestrictionsEnabledStateNotification");
-    v13 = [(STContentPrivacyViewModelCoordinator *)self _valuesByRestriction];
-    v14 = [(STContentPrivacyViewModelCoordinator *)self viewModel];
-    [v14 setValuesByRestriction:v13];
+    _valuesByRestriction = [(STContentPrivacyViewModelCoordinator *)self _valuesByRestriction];
+    viewModel = [(STContentPrivacyViewModelCoordinator *)self viewModel];
+    [viewModel setValuesByRestriction:_valuesByRestriction];
   }
 
-  v15 = [(STContentPrivacyViewModelCoordinator *)self persistenceController];
+  persistenceController = [(STContentPrivacyViewModelCoordinator *)self persistenceController];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __84__STContentPrivacyViewModelCoordinator_saveContentPrivacyEnabled_completionHandler___block_invoke;
   v17[3] = &unk_279B7D5A0;
   v17[4] = self;
-  v18 = v6;
-  v19 = v4;
-  v16 = v6;
-  [v15 performBackgroundTask:v17];
+  v18 = handlerCopy;
+  v19 = enabledCopy;
+  v16 = handlerCopy;
+  [persistenceController performBackgroundTask:v17];
 }
 
 void __84__STContentPrivacyViewModelCoordinator_saveContentPrivacyEnabled_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -2099,28 +2099,28 @@ void __84__STContentPrivacyViewModelCoordinator_saveContentPrivacyEnabled_comple
   }
 }
 
-- (void)saveSiriImageGenerationIsAllowed:(BOOL)a3 completionHandler:(id)a4
+- (void)saveSiriImageGenerationIsAllowed:(BOOL)allowed completionHandler:(id)handler
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(STContentPrivacyViewModelCoordinator *)self viewModel];
-  v8 = [v7 isSiriImageGenerationAllowed];
+  allowedCopy = allowed;
+  handlerCopy = handler;
+  viewModel = [(STContentPrivacyViewModelCoordinator *)self viewModel];
+  isSiriImageGenerationAllowed = [viewModel isSiriImageGenerationAllowed];
 
-  v9 = [(STContentPrivacyViewModelCoordinator *)self viewModel];
-  [v9 setIsSiriImageGenerationAllowed:v4];
+  viewModel2 = [(STContentPrivacyViewModelCoordinator *)self viewModel];
+  [viewModel2 setIsSiriImageGenerationAllowed:allowedCopy];
 
   objc_initWeak(&location, self);
-  v10 = [(STContentPrivacyViewModelCoordinator *)self persistenceController];
+  persistenceController = [(STContentPrivacyViewModelCoordinator *)self persistenceController];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __91__STContentPrivacyViewModelCoordinator_saveSiriImageGenerationIsAllowed_completionHandler___block_invoke;
   v12[3] = &unk_279B7D5C8;
   objc_copyWeak(&v14, &location);
-  v15 = v4;
-  v16 = v8;
-  v11 = v6;
+  v15 = allowedCopy;
+  v16 = isSiriImageGenerationAllowed;
+  v11 = handlerCopy;
   v13 = v11;
-  [v10 performBackgroundTask:v12];
+  [persistenceController performBackgroundTask:v12];
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
@@ -2188,24 +2188,24 @@ void __91__STContentPrivacyViewModelCoordinator_saveSiriImageGenerationIsAllowed
   }
 }
 
-- (void)saveCommunicationLimits:(id)a3 completionHandler:(id)a4
+- (void)saveCommunicationLimits:(id)limits completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(STContentPrivacyViewModelCoordinator *)self userObjectID];
-  v9 = [(STContentPrivacyViewModelCoordinator *)self persistenceController];
+  limitsCopy = limits;
+  handlerCopy = handler;
+  userObjectID = [(STContentPrivacyViewModelCoordinator *)self userObjectID];
+  persistenceController = [(STContentPrivacyViewModelCoordinator *)self persistenceController];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __82__STContentPrivacyViewModelCoordinator_saveCommunicationLimits_completionHandler___block_invoke;
   v13[3] = &unk_279B7D618;
-  v14 = v8;
-  v15 = v6;
-  v16 = self;
-  v17 = v7;
-  v10 = v6;
-  v11 = v7;
-  v12 = v8;
-  [v9 performBackgroundTask:v13];
+  v14 = userObjectID;
+  v15 = limitsCopy;
+  selfCopy = self;
+  v17 = handlerCopy;
+  v10 = limitsCopy;
+  v11 = handlerCopy;
+  v12 = userObjectID;
+  [persistenceController performBackgroundTask:v13];
 }
 
 void __82__STContentPrivacyViewModelCoordinator_saveCommunicationLimits_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -2335,22 +2335,22 @@ void __82__STContentPrivacyViewModelCoordinator_saveCommunicationLimits_completi
   }
 }
 
-- (void)saveValuesForRestrictions:(id)a3 completionHandler:(id)a4
+- (void)saveValuesForRestrictions:(id)restrictions completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(STContentPrivacyViewModelCoordinator *)self persistenceController];
+  restrictionsCopy = restrictions;
+  handlerCopy = handler;
+  persistenceController = [(STContentPrivacyViewModelCoordinator *)self persistenceController];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __84__STContentPrivacyViewModelCoordinator_saveValuesForRestrictions_completionHandler___block_invoke;
   v12[3] = &unk_279B7D668;
   v12[4] = self;
-  v13 = v7;
-  v14 = v8;
+  v13 = restrictionsCopy;
+  v14 = handlerCopy;
   v15 = a2;
-  v10 = v7;
-  v11 = v8;
-  [v9 performBackgroundTask:v12];
+  v10 = restrictionsCopy;
+  v11 = handlerCopy;
+  [persistenceController performBackgroundTask:v12];
 }
 
 void __84__STContentPrivacyViewModelCoordinator_saveValuesForRestrictions_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -2764,42 +2764,42 @@ LABEL_74:
   }
 }
 
-- (void)saveRestrictionValue:(id)a3 forItem:(id)a4 completionHandler:(id)a5
+- (void)saveRestrictionValue:(id)value forItem:(id)item completionHandler:(id)handler
 {
   v44[2] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [v10 rmConfiguration];
-  v13 = [v10 payloadKey];
-  if (!v9)
+  valueCopy = value;
+  itemCopy = item;
+  handlerCopy = handler;
+  rmConfiguration = [itemCopy rmConfiguration];
+  payloadKey = [itemCopy payloadKey];
+  if (!valueCopy)
   {
-    v9 = [MEMORY[0x277CBEB68] null];
+    valueCopy = [MEMORY[0x277CBEB68] null];
   }
 
-  if ([v12 isEqualToString:@"STCustomRestrictionConfiguration"])
+  if ([rmConfiguration isEqualToString:@"STCustomRestrictionConfiguration"])
   {
-    if ([v13 isEqualToString:@"STCustomRestrictionCellularData"])
+    if ([payloadKey isEqualToString:@"STCustomRestrictionCellularData"])
     {
       v14 = [[STRestrictionItem alloc] initWithConfiguration:@"network.cellular.settings" restrictionKey:@"allowAppCellularDataModification" labelName:&stru_28766E5A8 type:3 restrictionValue:0];
       v43[0] = v14;
-      v44[0] = v9;
+      v44[0] = valueCopy;
       v15 = [[STRestrictionItem alloc] initWithConfiguration:@"network.cellular.settings" restrictionKey:@"allowCellularPlanModification" labelName:&stru_28766E5A8 type:3 restrictionValue:0];
       v43[1] = v15;
-      v44[1] = v9;
+      v44[1] = valueCopy;
       v16 = MEMORY[0x277CBEAC0];
       v17 = v44;
       v18 = v43;
     }
 
-    else if ([v13 isEqualToString:@"STCustomRestrictionSiriDictation"])
+    else if ([payloadKey isEqualToString:@"STCustomRestrictionSiriDictation"])
     {
       v14 = [[STRestrictionItem alloc] initWithConfiguration:@"system.siri" restrictionKey:@"allowAssistant" labelName:&stru_28766E5A8 type:3 restrictionValue:0];
       v41[0] = v14;
-      v42[0] = v9;
+      v42[0] = valueCopy;
       v15 = [[STRestrictionItem alloc] initWithConfiguration:@"system.siri" restrictionKey:@"allowDictation" labelName:&stru_28766E5A8 type:3 restrictionValue:0];
       v41[1] = v15;
-      v42[1] = v9;
+      v42[1] = valueCopy;
       v16 = MEMORY[0x277CBEAC0];
       v17 = v42;
       v18 = v41;
@@ -2807,17 +2807,17 @@ LABEL_74:
 
     else
     {
-      if (![v13 isEqualToString:@"STCustomRestrictionMathResults"])
+      if (![payloadKey isEqualToString:@"STCustomRestrictionMathResults"])
       {
-        if ([v13 isEqualToString:@"STCustomRestrictionWebFilterState"])
+        if ([payloadKey isEqualToString:@"STCustomRestrictionWebFilterState"])
         {
-          v20 = -[STContentPrivacyViewModelCoordinator _restrictionsForWebFilterState:](self, "_restrictionsForWebFilterState:", [v9 unsignedIntegerValue]);
+          v20 = -[STContentPrivacyViewModelCoordinator _restrictionsForWebFilterState:](self, "_restrictionsForWebFilterState:", [valueCopy unsignedIntegerValue]);
         }
 
         else
         {
-          v30 = [MEMORY[0x277CCA890] currentHandler];
-          [v30 handleFailureInMethod:a2 object:self file:@"STContentPrivacyViewModel.m" lineNumber:1406 description:{@"Unimplemented restriction %@ %@", v12, v13}];
+          currentHandler = [MEMORY[0x277CCA890] currentHandler];
+          [currentHandler handleFailureInMethod:a2 object:self file:@"STContentPrivacyViewModel.m" lineNumber:1406 description:{@"Unimplemented restriction %@ %@", rmConfiguration, payloadKey}];
 
           v20 = 0;
         }
@@ -2827,10 +2827,10 @@ LABEL_74:
 
       v14 = [[STRestrictionItem alloc] initWithConfiguration:@"system.siri" restrictionKey:@"allowMathPaperSolving" labelName:&stru_28766E5A8 type:3 restrictionValue:0];
       v39[0] = v14;
-      v40[0] = v9;
+      v40[0] = valueCopy;
       v15 = [[STRestrictionItem alloc] initWithConfiguration:@"system.siri" restrictionKey:@"allowKeyboardMathSolving" labelName:&stru_28766E5A8 type:3 restrictionValue:0];
       v39[1] = v15;
-      v40[1] = v9;
+      v40[1] = valueCopy;
       v16 = MEMORY[0x277CBEAC0];
       v17 = v40;
       v18 = v39;
@@ -2839,61 +2839,61 @@ LABEL_74:
     v20 = [v16 dictionaryWithObjects:v17 forKeys:v18 count:2];
 
 LABEL_23:
-    v19 = [(STContentPrivacyViewModelCoordinator *)self viewModel];
-    v21 = [(STRestrictionItem *)v19 valuesByRestriction];
-    [(STRestrictionItem *)v21 setObject:v9 forKeyedSubscript:v10];
+    viewModel = [(STContentPrivacyViewModelCoordinator *)self viewModel];
+    valuesByRestriction = [(STRestrictionItem *)viewModel valuesByRestriction];
+    [(STRestrictionItem *)valuesByRestriction setObject:valueCopy forKeyedSubscript:itemCopy];
     goto LABEL_24;
   }
 
-  v19 = [[STRestrictionItem alloc] initWithConfiguration:@"system.gamecenter" restrictionKey:@"allowedGameCenterOtherPlayerTypes" labelName:&stru_28766E5A8 type:3 restrictionValue:0];
+  viewModel = [[STRestrictionItem alloc] initWithConfiguration:@"system.gamecenter" restrictionKey:@"allowedGameCenterOtherPlayerTypes" labelName:&stru_28766E5A8 type:3 restrictionValue:0];
   v20 = 0;
-  if ([v10 isEqual:v19])
+  if ([itemCopy isEqual:viewModel])
   {
-    v20 = [(STContentPrivacyViewModelCoordinator *)self createValuesForRestrictions:v9 multiplayerRestriction:v10];
+    v20 = [(STContentPrivacyViewModelCoordinator *)self createValuesForRestrictions:valueCopy multiplayerRestriction:itemCopy];
   }
 
-  v21 = [[STRestrictionItem alloc] initWithConfiguration:@"application.store" restrictionKey:@"allowAppInstallation" labelName:&stru_28766E5A8 type:0 restrictionValue:0];
-  if ([v10 isEqual:v21])
+  valuesByRestriction = [[STRestrictionItem alloc] initWithConfiguration:@"application.store" restrictionKey:@"allowAppInstallation" labelName:&stru_28766E5A8 type:0 restrictionValue:0];
+  if ([itemCopy isEqual:valuesByRestriction])
   {
-    v31 = v13;
-    v32 = v12;
-    v22 = [(STContentPrivacyViewModelCoordinator *)self viewModel];
-    v23 = [v22 isEligibleForAppDistribution];
+    v31 = payloadKey;
+    v32 = rmConfiguration;
+    viewModel2 = [(STContentPrivacyViewModelCoordinator *)self viewModel];
+    isEligibleForAppDistribution = [viewModel2 isEligibleForAppDistribution];
 
-    if ((v23 & 1) == 0)
+    if ((isEligibleForAppDistribution & 1) == 0)
     {
       v24 = [[STRestrictionItem alloc] initWithConfiguration:@"application.store" restrictionKey:@"allowAppInstallation" labelName:&stru_28766E5A8 type:3 restrictionValue:0];
       v37[0] = v24;
-      v38[0] = v9;
+      v38[0] = valueCopy;
       v25 = [[STRestrictionItem alloc] initWithConfiguration:@"application.store" restrictionKey:@"allowUIAppInstallation" labelName:&stru_28766E5A8 type:3 restrictionValue:0];
       v37[1] = v25;
-      v38[1] = v9;
+      v38[1] = valueCopy;
       v26 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v38 forKeys:v37 count:2];
 
       v20 = v26;
     }
 
-    v13 = v31;
-    v12 = v32;
+    payloadKey = v31;
+    rmConfiguration = v32;
   }
 
   if (!v20)
   {
-    v27 = v13;
-    v35 = v10;
-    v28 = v9;
-    if (!v9)
+    v27 = payloadKey;
+    v35 = itemCopy;
+    null = valueCopy;
+    if (!valueCopy)
     {
-      v28 = [MEMORY[0x277CBEB68] null];
+      null = [MEMORY[0x277CBEB68] null];
     }
 
-    v36 = v28;
+    v36 = null;
     v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v36 forKeys:&v35 count:1];
-    if (!v9)
+    if (!valueCopy)
     {
     }
 
-    v13 = v27;
+    payloadKey = v27;
   }
 
 LABEL_24:
@@ -2903,8 +2903,8 @@ LABEL_24:
   v33[2] = __87__STContentPrivacyViewModelCoordinator_saveRestrictionValue_forItem_completionHandler___block_invoke;
   v33[3] = &unk_279B7D690;
   v33[4] = self;
-  v34 = v11;
-  v29 = v11;
+  v34 = handlerCopy;
+  v29 = handlerCopy;
   [(STContentPrivacyViewModelCoordinator *)self saveValuesForRestrictions:v20 completionHandler:v33];
 }
 
@@ -2921,36 +2921,36 @@ void __87__STContentPrivacyViewModelCoordinator_saveRestrictionValue_forItem_com
   (*(*(a1 + 40) + 16))();
 }
 
-- (id)createValuesForRestrictions:(id)a3 multiplayerRestriction:(id)a4
+- (id)createValuesForRestrictions:(id)restrictions multiplayerRestriction:(id)restriction
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v25 = a4;
+  restrictionsCopy = restrictions;
+  restrictionCopy = restriction;
   v7 = [[STRestrictionItem alloc] initWithConfiguration:@"system.gamecenter" restrictionKey:@"allowGameCenterNearbyMultiplayer" labelName:&stru_28766E5A8 type:0 restrictionValue:0];
-  v8 = [(STContentPrivacyViewModelCoordinator *)self viewModel];
-  v9 = [v8 valuesByRestriction];
-  v10 = [v9 objectForKeyedSubscript:v7];
-  v11 = [v10 BOOLValue];
+  viewModel = [(STContentPrivacyViewModelCoordinator *)self viewModel];
+  valuesByRestriction = [viewModel valuesByRestriction];
+  v10 = [valuesByRestriction objectForKeyedSubscript:v7];
+  bOOLValue = [v10 BOOLValue];
 
-  v12 = [v6 isEqual:&unk_28769D1A8];
+  v12 = [restrictionsCopy isEqual:&unk_28769D1A8];
   v13 = [[STRestrictionItem alloc] initWithConfiguration:@"system.gamecenter" restrictionKey:@"allowedGameCenterOtherPlayerTypes" labelName:&stru_28766E5A8 type:3 restrictionValue:0];
-  v14 = [(STContentPrivacyViewModelCoordinator *)self viewModel];
-  v15 = [v14 valuesByRestriction];
-  v16 = [v15 objectForKeyedSubscript:v13];
+  viewModel2 = [(STContentPrivacyViewModelCoordinator *)self viewModel];
+  valuesByRestriction2 = [viewModel2 valuesByRestriction];
+  v16 = [valuesByRestriction2 objectForKeyedSubscript:v13];
   v17 = [v16 isEqual:&unk_28769D1A8];
 
-  if (v12 && (v17 & 1) == 0 && v11)
+  if (v12 && (v17 & 1) == 0 && bOOLValue)
   {
-    v18 = v25;
-    v30 = v25;
-    v19 = v6;
-    if (!v6)
+    v18 = restrictionCopy;
+    v30 = restrictionCopy;
+    null = restrictionsCopy;
+    if (!restrictionsCopy)
     {
-      v19 = [MEMORY[0x277CBEB68] null];
+      null = [MEMORY[0x277CBEB68] null];
     }
 
     v31 = v7;
-    v32 = v19;
+    v32 = null;
     v33 = MEMORY[0x277CBEC28];
     v20 = MEMORY[0x277CBEAC0];
     v21 = &v32;
@@ -2959,31 +2959,31 @@ void __87__STContentPrivacyViewModelCoordinator_saveRestrictionValue_forItem_com
 
   else
   {
-    if (v12 & 1 | ((v17 & 1) == 0) | v11 & 1)
+    if (v12 & 1 | ((v17 & 1) == 0) | bOOLValue & 1)
     {
       v23 = 0;
-      v18 = v25;
+      v18 = restrictionCopy;
       goto LABEL_14;
     }
 
-    v18 = v25;
-    v26 = v25;
-    v19 = v6;
-    if (!v6)
+    v18 = restrictionCopy;
+    v26 = restrictionCopy;
+    null = restrictionsCopy;
+    if (!restrictionsCopy)
     {
-      v19 = [MEMORY[0x277CBEB68] null];
+      null = [MEMORY[0x277CBEB68] null];
     }
 
     v27 = v7;
-    v28 = v19;
+    v28 = null;
     v29 = MEMORY[0x277CBEC38];
     v20 = MEMORY[0x277CBEAC0];
     v21 = &v28;
     v22 = &v26;
   }
 
-  v23 = [v20 dictionaryWithObjects:v21 forKeys:v22 count:{2, v25, v26, v27, v28, v29, v30, v31, v32, v33, v34}];
-  if (!v6)
+  v23 = [v20 dictionaryWithObjects:v21 forKeys:v22 count:{2, restrictionCopy, v26, v27, v28, v29, v30, v31, v32, v33, v34}];
+  if (!restrictionsCopy)
   {
   }
 
@@ -2992,12 +2992,12 @@ LABEL_14:
   return v23;
 }
 
-+ (id)_coreAnalyticsEventWithRestrictionsEnabled:(BOOL)a3 valuesByRestriction:(id)a4 userType:(unint64_t)a5 userIsManaged:(BOOL)a6
++ (id)_coreAnalyticsEventWithRestrictionsEnabled:(BOOL)enabled valuesByRestriction:(id)restriction userType:(unint64_t)type userIsManaged:(BOOL)managed
 {
-  v40 = a3;
-  v6 = a4;
+  enabledCopy = enabled;
+  restrictionCopy = restriction;
   v7 = [[STRestrictionItem alloc] initWithConfiguration:@"STSBCapabilityConfiguration" restrictionKey:@"kTCCServiceMediaLibrary" labelName:&stru_28766E5A8 type:3 restrictionValue:0];
-  v8 = [v6 objectForKeyedSubscript:v7];
+  v8 = [restrictionCopy objectForKeyedSubscript:v7];
 
   if (v8)
   {
@@ -3010,7 +3010,7 @@ LABEL_14:
   }
 
   v9 = [[STRestrictionItem alloc] initWithConfiguration:@"system.gamecenter" restrictionKey:@"allowedGameCenterOtherPlayerTypes" labelName:&stru_28766E5A8 type:3 restrictionValue:0];
-  v10 = [v6 objectForKeyedSubscript:v9];
+  v10 = [restrictionCopy objectForKeyedSubscript:v9];
 
   if (v10)
   {
@@ -3023,7 +3023,7 @@ LABEL_14:
   }
 
   v11 = [[STRestrictionItem alloc] initWithConfiguration:@"system.gamecenter" restrictionKey:@"allowAddingGameCenterFriends" labelName:&stru_28766E5A8 type:3 restrictionValue:0];
-  v12 = [v6 objectForKeyedSubscript:v11];
+  v12 = [restrictionCopy objectForKeyedSubscript:v11];
 
   if (v12)
   {
@@ -3036,7 +3036,7 @@ LABEL_14:
   }
 
   v13 = [[STRestrictionItem alloc] initWithConfiguration:@"system.gamecenter" restrictionKey:@"allowGameCenterFriendsSharingModification" labelName:&stru_28766E5A8 type:3 restrictionValue:0];
-  v14 = [v6 objectForKeyedSubscript:v13];
+  v14 = [restrictionCopy objectForKeyedSubscript:v13];
 
   if (v14)
   {
@@ -3049,7 +3049,7 @@ LABEL_14:
   }
 
   v16 = [[STRestrictionItem alloc] initWithConfiguration:@"system.camera" restrictionKey:@"allowScreenRecording" labelName:&stru_28766E5A8 type:3 restrictionValue:0];
-  v17 = [v6 objectForKeyedSubscript:v16];
+  v17 = [restrictionCopy objectForKeyedSubscript:v16];
 
   if (v17)
   {
@@ -3062,7 +3062,7 @@ LABEL_14:
   }
 
   v19 = [[STRestrictionItem alloc] initWithConfiguration:@"system.gamecenter" restrictionKey:@"allowGameCenterNearbyMultiplayer" labelName:&stru_28766E5A8 type:3 restrictionValue:0];
-  v20 = [v6 objectForKeyedSubscript:v19];
+  v20 = [restrictionCopy objectForKeyedSubscript:v19];
 
   if (v20)
   {
@@ -3075,7 +3075,7 @@ LABEL_14:
   }
 
   v22 = [[STRestrictionItem alloc] initWithConfiguration:@"system.gamecenter" restrictionKey:@"allowGameCenterPrivateMessaging" labelName:&stru_28766E5A8 type:3 restrictionValue:0];
-  v23 = [v6 objectForKeyedSubscript:v22];
+  v23 = [restrictionCopy objectForKeyedSubscript:v22];
 
   if (v23)
   {
@@ -3088,7 +3088,7 @@ LABEL_14:
   }
 
   v25 = [[STRestrictionItem alloc] initWithConfiguration:@"system.gamecenter" restrictionKey:@"allowGameCenterProfilePrivacyModification" labelName:&stru_28766E5A8 type:3 restrictionValue:0];
-  v26 = [v6 objectForKeyedSubscript:v25];
+  v26 = [restrictionCopy objectForKeyedSubscript:v25];
 
   if (v26)
   {
@@ -3101,7 +3101,7 @@ LABEL_14:
   }
 
   v28 = [[STRestrictionItem alloc] initWithConfiguration:@"system.gamecenter" restrictionKey:@"allowGameCenterProfileModification" labelName:&stru_28766E5A8 type:3 restrictionValue:0];
-  v29 = [v6 objectForKeyedSubscript:v28];
+  v29 = [restrictionCopy objectForKeyedSubscript:v28];
 
   if (v29)
   {
@@ -3113,49 +3113,49 @@ LABEL_14:
     v30 = 0;
   }
 
-  if (a5 > 7)
+  if (type > 7)
   {
     v31 = 0;
   }
 
   else
   {
-    v31 = qword_264CD1A08[a5];
+    v31 = qword_264CD1A08[type];
   }
 
-  LOBYTE(v35) = a6;
+  LOBYTE(v35) = managed;
   BYTE3(v34) = v30;
   BYTE2(v34) = v27;
   BYTE1(v34) = v24;
   LOBYTE(v34) = v21;
-  v32 = [objc_alloc(MEMORY[0x277D4BA68]) initWithContentAndPrivacyRestrictionsEnabled:v40 mediaAndAppleMusicIsRestricted:v37 gameCenterMultiplayerGamesIsRestricted:v36 gameCenterAddingFriendsIsRestricted:HIDWORD(v35) gameCenterConnectWithFriendsIsRestricted:v15 gameCenterScreenRecordingIsRestricted:v18 gameCenterNearbyMultiplayerIsRestricted:v34 gameCenterPrivateMessagingIsRestricted:v31 gameCenterProfilePrivacyChangesIsRestricted:v35 gameCenterAvatarAndNicknameChangesIsRestricted:? userAgeGroup:? userIsManaged:?];
+  v32 = [objc_alloc(MEMORY[0x277D4BA68]) initWithContentAndPrivacyRestrictionsEnabled:enabledCopy mediaAndAppleMusicIsRestricted:v37 gameCenterMultiplayerGamesIsRestricted:v36 gameCenterAddingFriendsIsRestricted:HIDWORD(v35) gameCenterConnectWithFriendsIsRestricted:v15 gameCenterScreenRecordingIsRestricted:v18 gameCenterNearbyMultiplayerIsRestricted:v34 gameCenterPrivateMessagingIsRestricted:v31 gameCenterProfilePrivacyChangesIsRestricted:v35 gameCenterAvatarAndNicknameChangesIsRestricted:? userAgeGroup:? userIsManaged:?];
 
   return v32;
 }
 
-- (void)_reportCoreAnalyticsEventWithRestrictionsEnabled:(BOOL)a3 valuesByRestriction:(id)a4 userType:(unint64_t)a5 userIsManaged:(BOOL)a6
+- (void)_reportCoreAnalyticsEventWithRestrictionsEnabled:(BOOL)enabled valuesByRestriction:(id)restriction userType:(unint64_t)type userIsManaged:(BOOL)managed
 {
-  v6 = [STContentPrivacyViewModelCoordinator _coreAnalyticsEventWithRestrictionsEnabled:a3 valuesByRestriction:a4 userType:a5 userIsManaged:a6];
+  v6 = [STContentPrivacyViewModelCoordinator _coreAnalyticsEventWithRestrictionsEnabled:enabled valuesByRestriction:restriction userType:type userIsManaged:managed];
   [MEMORY[0x277D4B970] reportEvent:v6];
 }
 
-- (void)_reportCoreAnalyticsEventForChangedCommunicationLimits:(id)a3 userType:(unint64_t)a4 userIsRemote:(BOOL)a5
+- (void)_reportCoreAnalyticsEventForChangedCommunicationLimits:(id)limits userType:(unint64_t)type userIsRemote:(BOOL)remote
 {
-  v5 = a5;
-  v11 = a3;
-  v7 = [v11 screenTimeCommunicationLimit] || objc_msgSend(v11, "downtimeCommunicationLimit");
-  v8 = [v11 contactManagementState];
-  if (a4 > 7)
+  remoteCopy = remote;
+  limitsCopy = limits;
+  v7 = [limitsCopy screenTimeCommunicationLimit] || objc_msgSend(limitsCopy, "downtimeCommunicationLimit");
+  contactManagementState = [limitsCopy contactManagementState];
+  if (type > 7)
   {
     v9 = 0;
   }
 
   else
   {
-    v9 = qword_264CD1A08[a4];
+    v9 = qword_264CD1A08[type];
   }
 
-  v10 = [objc_alloc(MEMORY[0x277D4B950]) initWithCommunicationLimited:v7 contactManagementEnabled:v8 == 2 contactEditingAllowed:objc_msgSend(v11 userAgeGroup:"contactsEditable") userIsRemote:{v9, v5}];
+  v10 = [objc_alloc(MEMORY[0x277D4B950]) initWithCommunicationLimited:v7 contactManagementEnabled:contactManagementState == 2 contactEditingAllowed:objc_msgSend(limitsCopy userAgeGroup:"contactsEditable") userIsRemote:{v9, remoteCopy}];
   [MEMORY[0x277D4B970] reportEvent:v10];
 }
 

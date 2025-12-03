@@ -1,17 +1,17 @@
 @interface FCMockFetchedValueDescriptor
-- (BOOL)isValue:(id)a3 equalToValue:(id)a4;
-- (FCMockFetchedValueDescriptor)initWithInputManagers:(id)a3;
-- (void)fetchValueWithCachePolicy:(unint64_t)a3 qualityOfService:(int64_t)a4 completion:(id)a5;
+- (BOOL)isValue:(id)value equalToValue:(id)toValue;
+- (FCMockFetchedValueDescriptor)initWithInputManagers:(id)managers;
+- (void)fetchValueWithCachePolicy:(unint64_t)policy qualityOfService:(int64_t)service completion:(id)completion;
 - (void)markDirty;
 @end
 
 @implementation FCMockFetchedValueDescriptor
 
-- (FCMockFetchedValueDescriptor)initWithInputManagers:(id)a3
+- (FCMockFetchedValueDescriptor)initWithInputManagers:(id)managers
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  managersCopy = managers;
+  if (!managersCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v10 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "inputManagers"];
     *buf = 136315906;
@@ -30,7 +30,7 @@
   v5 = [(FCFetchedValueDescriptor *)&v11 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [managersCopy copy];
     myInputManagers = v5->_myInputManagers;
     v5->_myInputManagers = v6;
   }
@@ -41,35 +41,35 @@
 
 - (void)markDirty
 {
-  v3 = [(FCFetchedValueDescriptor *)self observer];
-  [v3 fetchedValueDescriptorValueIsDirty:self];
+  observer = [(FCFetchedValueDescriptor *)self observer];
+  [observer fetchedValueDescriptorValueIsDirty:self];
 }
 
-- (void)fetchValueWithCachePolicy:(unint64_t)a3 qualityOfService:(int64_t)a4 completion:(id)a5
+- (void)fetchValueWithCachePolicy:(unint64_t)policy qualityOfService:(int64_t)service completion:(id)completion
 {
-  v8 = a5;
-  v9 = [(FCMockFetchedValueDescriptor *)self willFetchBlock];
+  completionCopy = completion;
+  willFetchBlock = [(FCMockFetchedValueDescriptor *)self willFetchBlock];
 
-  if (v9)
+  if (willFetchBlock)
   {
-    v10 = [(FCMockFetchedValueDescriptor *)self willFetchBlock];
-    v10[2]();
+    willFetchBlock2 = [(FCMockFetchedValueDescriptor *)self willFetchBlock];
+    willFetchBlock2[2]();
   }
 
   [(FCMockFetchedValueDescriptor *)self setWillFetchCount:[(FCMockFetchedValueDescriptor *)self willFetchCount]+ 1];
-  v12 = [(FCMockFetchedValueDescriptor *)self fetchValue];
-  v11 = [(FCMockFetchedValueDescriptor *)self fetchError];
-  [(FCMockFetchedValueDescriptor *)self setLastFetchCachePolicy:a3];
-  [(FCMockFetchedValueDescriptor *)self setLastFetchQualityOfService:a4];
-  v8[2](v8, v12, v11);
+  fetchValue = [(FCMockFetchedValueDescriptor *)self fetchValue];
+  fetchError = [(FCMockFetchedValueDescriptor *)self fetchError];
+  [(FCMockFetchedValueDescriptor *)self setLastFetchCachePolicy:policy];
+  [(FCMockFetchedValueDescriptor *)self setLastFetchQualityOfService:service];
+  completionCopy[2](completionCopy, fetchValue, fetchError);
 }
 
-- (BOOL)isValue:(id)a3 equalToValue:(id)a4
+- (BOOL)isValue:(id)value equalToValue:(id)toValue
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(FCMockFetchedValueDescriptor *)self valueEqualityTest];
-  v9 = (v8)[2](v8, v7, v6);
+  toValueCopy = toValue;
+  valueCopy = value;
+  valueEqualityTest = [(FCMockFetchedValueDescriptor *)self valueEqualityTest];
+  v9 = (valueEqualityTest)[2](valueEqualityTest, valueCopy, toValueCopy);
 
   return v9;
 }

@@ -1,10 +1,10 @@
 @interface CWFMLOLink
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToMLOLink:(id)a3;
-- (CWFMLOLink)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToMLOLink:(id)link;
+- (CWFMLOLink)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CWFMLOLink
@@ -20,14 +20,14 @@
   return v7;
 }
 
-- (BOOL)isEqualToMLOLink:(id)a3
+- (BOOL)isEqualToMLOLink:(id)link
 {
-  v4 = a3;
+  linkCopy = link;
   band = self->_band;
-  if (band == [v4 band] && (channel = self->_channel, channel == objc_msgSend(v4, "channel")) && (width = self->_width, width == objc_msgSend(v4, "width")))
+  if (band == [linkCopy band] && (channel = self->_channel, channel == objc_msgSend(linkCopy, "channel")) && (width = self->_width, width == objc_msgSend(linkCopy, "width")))
   {
     subchannel = self->_subchannel;
-    v9 = subchannel == [v4 subchannel];
+    v9 = subchannel == [linkCopy subchannel];
   }
 
   else
@@ -38,24 +38,24 @@
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CWFMLOLink *)self isEqualToMLOLink:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CWFMLOLink *)self isEqualToMLOLink:v5];
   }
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[CWFMLOLink allocWithZone:?]];
   [(CWFMLOLink *)v4 setBand:self->_band];
@@ -65,28 +65,28 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   band = self->_band;
-  v5 = a3;
-  [v5 encodeInt:band forKey:@"_band"];
-  [v5 encodeInt:self->_channel forKey:@"_channel"];
-  [v5 encodeInt:self->_width forKey:@"_width"];
-  [v5 encodeInt:self->_subchannel forKey:@"_subchannel"];
+  coderCopy = coder;
+  [coderCopy encodeInt:band forKey:@"_band"];
+  [coderCopy encodeInt:self->_channel forKey:@"_channel"];
+  [coderCopy encodeInt:self->_width forKey:@"_width"];
+  [coderCopy encodeInt:self->_subchannel forKey:@"_subchannel"];
 }
 
-- (CWFMLOLink)initWithCoder:(id)a3
+- (CWFMLOLink)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = CWFMLOLink;
   v5 = [(CWFMLOLink *)&v7 init];
   if (v5)
   {
-    v5->_band = [v4 decodeIntForKey:@"_band"];
-    v5->_channel = [v4 decodeIntForKey:@"_channel"];
-    v5->_width = [v4 decodeIntForKey:@"_width"];
-    v5->_subchannel = [v4 decodeIntForKey:@"_subchannel"];
+    v5->_band = [coderCopy decodeIntForKey:@"_band"];
+    v5->_channel = [coderCopy decodeIntForKey:@"_channel"];
+    v5->_width = [coderCopy decodeIntForKey:@"_width"];
+    v5->_subchannel = [coderCopy decodeIntForKey:@"_subchannel"];
   }
 
   return v5;

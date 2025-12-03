@@ -1,11 +1,11 @@
 @interface ChinaCellularInput
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (ChinaCellularInput)init;
-- (ChinaCellularInput)initWithCoder:(id)a3;
+- (ChinaCellularInput)initWithCoder:(id)coder;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ChinaCellularInput
@@ -30,17 +30,17 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v11.receiver = self;
   v11.super_class = ChinaCellularInput;
-  if (![(EligibilityInput *)&v11 isEqual:v4])
+  if (![(EligibilityInput *)&v11 isEqual:equalCopy])
   {
     goto LABEL_9;
   }
 
-  if (v4 == self)
+  if (equalCopy == self)
   {
     v9 = 1;
     goto LABEL_11;
@@ -49,9 +49,9 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(ChinaCellularInput *)self chinaCellularDevice];
-    v7 = v6 ^ [(ChinaCellularInput *)v5 chinaCellularDevice];
+    v5 = equalCopy;
+    chinaCellularDevice = [(ChinaCellularInput *)self chinaCellularDevice];
+    v7 = chinaCellularDevice ^ [(ChinaCellularInput *)v5 chinaCellularDevice];
     if (v7 == 1)
     {
       v8 = sub_10001F638();
@@ -87,16 +87,16 @@ LABEL_11:
   return v3 ^ [(ChinaCellularInput *)self chinaCellularDevice];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = ChinaCellularInput;
-  v4 = [(EligibilityInput *)&v6 copyWithZone:a3];
+  v4 = [(EligibilityInput *)&v6 copyWithZone:zone];
   [v4 setChinaCellularDevice:{-[ChinaCellularInput chinaCellularDevice](self, "chinaCellularDevice")}];
   return v4;
 }
 
-- (ChinaCellularInput)initWithCoder:(id)a3
+- (ChinaCellularInput)initWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = ChinaCellularInput;
@@ -109,11 +109,11 @@ LABEL_11:
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = ChinaCellularInput;
-  [(EligibilityInput *)&v3 encodeWithCoder:a3];
+  [(EligibilityInput *)&v3 encodeWithCoder:coder];
 }
 
 - (ChinaCellularInput)init

@@ -1,59 +1,59 @@
 @interface FSFSchema
-- (id)initSchemaForClass:(id)a3 inLanguage:(id)a4 withRepoUrl:(id)a5 pkgName:(id)a6 version:(id)a7;
+- (id)initSchemaForClass:(id)class inLanguage:(id)language withRepoUrl:(id)url pkgName:(id)name version:(id)version;
 @end
 
 @implementation FSFSchema
 
-- (id)initSchemaForClass:(id)a3 inLanguage:(id)a4 withRepoUrl:(id)a5 pkgName:(id)a6 version:(id)a7
+- (id)initSchemaForClass:(id)class inLanguage:(id)language withRepoUrl:(id)url pkgName:(id)name version:(id)version
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  classCopy = class;
+  languageCopy = language;
+  urlCopy = url;
+  nameCopy = name;
+  versionCopy = version;
   v27.receiver = self;
   v27.super_class = FSFSchema;
   v17 = [(FSFSchema *)&v27 init];
   if (v17)
   {
     v25 = objc_alloc(MEMORY[0x277CBEAC0]);
-    v26 = v13;
-    if (!v13)
+    null = languageCopy;
+    if (!languageCopy)
     {
-      v26 = [MEMORY[0x277CBEB68] null];
+      null = [MEMORY[0x277CBEB68] null];
     }
 
-    v18 = v14;
-    if (!v14)
+    null2 = urlCopy;
+    if (!urlCopy)
     {
-      v18 = [MEMORY[0x277CBEB68] null];
+      null2 = [MEMORY[0x277CBEB68] null];
     }
 
-    v19 = v12;
-    if (!v12)
+    null3 = classCopy;
+    if (!classCopy)
     {
-      v19 = [MEMORY[0x277CBEB68] null];
+      null3 = [MEMORY[0x277CBEB68] null];
     }
 
-    v20 = v15;
-    if (!v15)
+    null4 = nameCopy;
+    if (!nameCopy)
     {
-      v20 = [MEMORY[0x277CBEB68] null];
+      null4 = [MEMORY[0x277CBEB68] null];
     }
 
-    v21 = v16;
-    if (!v16)
+    null5 = versionCopy;
+    if (!versionCopy)
     {
-      v21 = [MEMORY[0x277CBEB68] null];
+      null5 = [MEMORY[0x277CBEB68] null];
     }
 
-    v22 = [v25 initWithObjectsAndKeys:{v26, @"language", v18, @"repo_url", v19, @"class_name", v20, @"pkg_name", v21, @"version", 0}];
+    v22 = [v25 initWithObjectsAndKeys:{null, @"language", null2, @"repo_url", null3, @"class_name", null4, @"pkg_name", null5, @"version", 0}];
     schemaData = v17->_schemaData;
     v17->_schemaData = v22;
 
-    if (v16)
+    if (versionCopy)
     {
-      if (v15)
+      if (nameCopy)
       {
         goto LABEL_14;
       }
@@ -62,10 +62,10 @@
     else
     {
 
-      if (v15)
+      if (nameCopy)
       {
 LABEL_14:
-        if (v12)
+        if (classCopy)
         {
           goto LABEL_15;
         }
@@ -74,10 +74,10 @@ LABEL_14:
       }
     }
 
-    if (v12)
+    if (classCopy)
     {
 LABEL_15:
-      if (v14)
+      if (urlCopy)
       {
         goto LABEL_16;
       }
@@ -87,10 +87,10 @@ LABEL_15:
 
 LABEL_20:
 
-    if (v14)
+    if (urlCopy)
     {
 LABEL_16:
-      if (v13)
+      if (languageCopy)
       {
         goto LABEL_17;
       }
@@ -102,7 +102,7 @@ LABEL_22:
 
 LABEL_21:
 
-    if (v13)
+    if (languageCopy)
     {
       goto LABEL_17;
     }

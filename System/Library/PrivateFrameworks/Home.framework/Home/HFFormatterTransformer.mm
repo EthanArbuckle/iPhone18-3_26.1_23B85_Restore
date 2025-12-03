@@ -1,21 +1,21 @@
 @interface HFFormatterTransformer
 - (HFFormatterTransformer)init;
-- (HFFormatterTransformer)initWithSourceFormatter:(id)a3 transformBlock:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)stringForObjectValue:(id)a3;
+- (HFFormatterTransformer)initWithSourceFormatter:(id)formatter transformBlock:(id)block;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)stringForObjectValue:(id)value;
 @end
 
 @implementation HFFormatterTransformer
 
-- (HFFormatterTransformer)initWithSourceFormatter:(id)a3 transformBlock:(id)a4
+- (HFFormatterTransformer)initWithSourceFormatter:(id)formatter transformBlock:(id)block
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v7 || !v8)
+  formatterCopy = formatter;
+  blockCopy = block;
+  v9 = blockCopy;
+  if (!formatterCopy || !blockCopy)
   {
-    v13 = [MEMORY[0x277CCA890] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"HFFormatterTransformer.m" lineNumber:19 description:{@"Invalid parameter not satisfying: %@", @"sourceFormatter && transformBlock"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HFFormatterTransformer.m" lineNumber:19 description:{@"Invalid parameter not satisfying: %@", @"sourceFormatter && transformBlock"}];
   }
 
   v14.receiver = self;
@@ -24,7 +24,7 @@
   v11 = v10;
   if (v10)
   {
-    [(HFFormatterTransformer *)v10 setSourceFormatter:v7];
+    [(HFFormatterTransformer *)v10 setSourceFormatter:formatterCopy];
     [(HFFormatterTransformer *)v11 setTransformBlock:v9];
   }
 
@@ -33,35 +33,35 @@
 
 - (HFFormatterTransformer)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithSourceFormatter_transformBlock_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HFFormatterTransformer.m" lineNumber:29 description:{@"%s is unavailable; use %@ instead", "-[HFFormatterTransformer init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFFormatterTransformer.m" lineNumber:29 description:{@"%s is unavailable; use %@ instead", "-[HFFormatterTransformer init]", v5}];
 
   return 0;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(HFFormatterTransformer *)self sourceFormatter];
-  v6 = [(HFFormatterTransformer *)self transformBlock];
-  v7 = [v4 initWithSourceFormatter:v5 transformBlock:v6];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  sourceFormatter = [(HFFormatterTransformer *)self sourceFormatter];
+  transformBlock = [(HFFormatterTransformer *)self transformBlock];
+  v7 = [v4 initWithSourceFormatter:sourceFormatter transformBlock:transformBlock];
 
   return v7;
 }
 
-- (id)stringForObjectValue:(id)a3
+- (id)stringForObjectValue:(id)value
 {
-  v4 = a3;
-  v5 = [(HFFormatterTransformer *)self sourceFormatter];
-  v6 = [v5 stringForObjectValue:v4];
+  valueCopy = value;
+  sourceFormatter = [(HFFormatterTransformer *)self sourceFormatter];
+  v6 = [sourceFormatter stringForObjectValue:valueCopy];
 
-  v7 = [(HFFormatterTransformer *)self transformBlock];
+  transformBlock = [(HFFormatterTransformer *)self transformBlock];
 
-  if (v7)
+  if (transformBlock)
   {
-    v8 = [(HFFormatterTransformer *)self transformBlock];
-    v9 = (v8)[2](v8, v6, v4);
+    transformBlock2 = [(HFFormatterTransformer *)self transformBlock];
+    v9 = (transformBlock2)[2](transformBlock2, v6, valueCopy);
 
     v6 = v9;
   }

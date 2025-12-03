@@ -1,16 +1,16 @@
 @interface TransitionViewController
 + (id)rootController;
 - (BOOL)_canTearDown;
-- (BOOL)_internalBooleanDefaultNamed:(id)a3;
+- (BOOL)_internalBooleanDefaultNamed:(id)named;
 - (BOOL)_isRootControllerClass;
 - (BOOL)_shouldCancelForApplicationChange;
 - (BOOL)_shouldRegisterForApplicationChange;
 - (NSString)description;
-- (TransitionViewController)initWithInternalInfo:(id)a3 mechanism:(id)a4 backoffCounter:(id)a5 remoteUIHost:(id)a6 allowsLandscape:(BOOL)a7;
-- (TransitionViewController)initWithInternalInfo:(id)a3 parent:(id)a4 allowsLandscape:(BOOL)a5;
-- (TransitionViewController)initWithRequestID:(id)a3 endpoint:(id)a4;
-- (TransitionViewController)initWithRequestID:(id)a3 endpoint:(id)a4 presentationMode:(int64_t)a5;
-- (TransitionViewController)initWithRequestID:(id)a3 endpoint:(id)a4 remoteAlertPresentationMode:(int64_t)a5;
+- (TransitionViewController)initWithInternalInfo:(id)info mechanism:(id)mechanism backoffCounter:(id)counter remoteUIHost:(id)host allowsLandscape:(BOOL)landscape;
+- (TransitionViewController)initWithInternalInfo:(id)info parent:(id)parent allowsLandscape:(BOOL)landscape;
+- (TransitionViewController)initWithRequestID:(id)d endpoint:(id)endpoint;
+- (TransitionViewController)initWithRequestID:(id)d endpoint:(id)endpoint presentationMode:(int64_t)mode;
+- (TransitionViewController)initWithRequestID:(id)d endpoint:(id)endpoint remoteAlertPresentationMode:(int64_t)mode;
 - (id)_allSceneSessions;
 - (id)localizedCallerName;
 - (int)_preferredStatusBarVisibility;
@@ -19,13 +19,13 @@
 - (void)_cancelForApplicationChangeIfNeeded;
 - (void)_destroyAllSceneSessions;
 - (void)_destroyCurrentSceneSession;
-- (void)_destroyScenesSessions:(id)a3;
-- (void)_dismissChild:(id)a3 andRoot:(BOOL)a4 reason:(id)a5 completion:(id)a6;
-- (void)_dismissRootWithReason:(id)a3 completion:(id)a4;
+- (void)_destroyScenesSessions:(id)sessions;
+- (void)_dismissChild:(id)child andRoot:(BOOL)root reason:(id)reason completion:(id)completion;
+- (void)_dismissRootWithReason:(id)reason completion:(id)completion;
 - (void)_handleHomeButtonPressed;
 - (void)_invalidateConnection;
-- (void)_mechanismEvent:(int64_t)a3 value:(id)a4 reply:(id)a5;
-- (void)_performOnMainQueueWhenAppeared:(id)a3;
+- (void)_mechanismEvent:(int64_t)event value:(id)value reply:(id)reply;
+- (void)_performOnMainQueueWhenAppeared:(id)appeared;
 - (void)_resetUI;
 - (void)_setActivityWatchdog;
 - (void)_setupConnection;
@@ -33,73 +33,73 @@
 - (void)_tearDown;
 - (void)_tearDownIfNeeded;
 - (void)_viewDidDisappear;
-- (void)authMethodWithReply:(id)a3;
-- (void)configureWithContext:(id)a3 completion:(id)a4;
+- (void)authMethodWithReply:(id)reply;
+- (void)configureWithContext:(id)context completion:(id)completion;
 - (void)dealloc;
 - (void)didReceiveAuthenticationData;
-- (void)dismissChildWithCompletionHandler:(id)a3;
-- (void)dismissRemoteUIWithIdleEndpoint:(id)a3 wasInvalidated:(BOOL)a4 completionHandler:(id)a5;
-- (void)handleButtonActions:(id)a3;
-- (void)handleSceneButton:(int64_t)a3;
-- (void)mechanismEvent:(int64_t)a3 value:(id)a4 reply:(id)a5;
-- (void)noteActivatedWithPresentationMode:(int64_t)a3;
+- (void)dismissChildWithCompletionHandler:(id)handler;
+- (void)dismissRemoteUIWithIdleEndpoint:(id)endpoint wasInvalidated:(BOOL)invalidated completionHandler:(id)handler;
+- (void)handleButtonActions:(id)actions;
+- (void)handleSceneButton:(int64_t)button;
+- (void)mechanismEvent:(int64_t)event value:(id)value reply:(id)reply;
+- (void)noteActivatedWithPresentationMode:(int64_t)mode;
 - (void)sceneDeactivated;
 - (void)supportedInterfaceOrientations;
-- (void)transitionToController:(int64_t)a3 internalInfo:(id)a4 completionHandler:(id)a5;
+- (void)transitionToController:(int64_t)controller internalInfo:(id)info completionHandler:(id)handler;
 - (void)uiCancel;
-- (void)uiCancelWithError:(id)a3;
+- (void)uiCancelWithError:(id)error;
 - (void)uiDismissed;
-- (void)uiEvent:(int64_t)a3 options:(id)a4;
-- (void)uiFailureWithError:(id)a3;
+- (void)uiEvent:(int64_t)event options:(id)options;
+- (void)uiFailureWithError:(id)error;
 - (void)uiFallback;
-- (void)uiOpenURL:(id)a3;
-- (void)uiSuccessWithResult:(id)a3;
+- (void)uiOpenURL:(id)l;
+- (void)uiSuccessWithResult:(id)result;
 - (void)viewDidLoad;
-- (void)viewModelDidReceiveAuthenticationDataWithInternalInfo:(id)a3 mechanism:(id)a4;
+- (void)viewModelDidReceiveAuthenticationDataWithInternalInfo:(id)info mechanism:(id)mechanism;
 @end
 
 @implementation TransitionViewController
 
-- (TransitionViewController)initWithRequestID:(id)a3 endpoint:(id)a4
+- (TransitionViewController)initWithRequestID:(id)d endpoint:(id)endpoint
 {
-  v6 = a4;
-  v7 = a3;
+  endpointCopy = endpoint;
+  dCopy = d;
   v8 = +[LACDevice sharedInstance];
-  v9 = [v8 usesFrontBoardServicesForRemoteUI];
+  usesFrontBoardServicesForRemoteUI = [v8 usesFrontBoardServicesForRemoteUI];
 
-  if (v9)
+  if (usesFrontBoardServicesForRemoteUI)
   {
     v10 = 2;
   }
 
   else
   {
-    v10 = v6 != 0;
+    v10 = endpointCopy != 0;
   }
 
-  v11 = [(TransitionViewController *)self initWithRequestID:v7 endpoint:v6 presentationMode:v10];
+  v11 = [(TransitionViewController *)self initWithRequestID:dCopy endpoint:endpointCopy presentationMode:v10];
 
   return v11;
 }
 
-- (TransitionViewController)initWithRequestID:(id)a3 endpoint:(id)a4 remoteAlertPresentationMode:(int64_t)a5
+- (TransitionViewController)initWithRequestID:(id)d endpoint:(id)endpoint remoteAlertPresentationMode:(int64_t)mode
 {
-  v6 = [(TransitionViewController *)self initWithRequestID:a3 endpoint:a4 presentationMode:1];
+  v6 = [(TransitionViewController *)self initWithRequestID:d endpoint:endpoint presentationMode:1];
   v7 = v6;
   if (v6)
   {
-    v6->_remoteAlertPresentationMode = a5;
+    v6->_remoteAlertPresentationMode = mode;
     [(TransitionViewController *)v6 _setupRemoteAlert];
   }
 
   return v7;
 }
 
-- (TransitionViewController)initWithRequestID:(id)a3 endpoint:(id)a4 presentationMode:(int64_t)a5
+- (TransitionViewController)initWithRequestID:(id)d endpoint:(id)endpoint presentationMode:(int64_t)mode
 {
-  v7 = a3;
-  v9 = a3;
-  v10 = a4;
+  dCopy = d;
+  dCopy2 = d;
+  endpointCopy = endpoint;
   v24.receiver = self;
   v24.super_class = TransitionViewController;
   v11 = [(TransitionViewController *)&v24 init];
@@ -110,9 +110,9 @@
 
   v11->_allowsLandscape = (LACUserInterfaceSupportedOrientations() & 5) != 0;
   v11->_instanceId = +[TransitionViewController newInstanceId];
-  objc_storeStrong(&v11->_requestID, v7);
-  v11->_presentationMode = a5;
-  objc_storeStrong(&v11->_connectionEndpoint, a4);
+  objc_storeStrong(&v11->_requestID, dCopy);
+  v11->_presentationMode = mode;
+  objc_storeStrong(&v11->_connectionEndpoint, endpoint);
   WeakRetained = objc_loadWeakRetained(&_rootController);
 
   if (!WeakRetained)
@@ -125,10 +125,10 @@
     goto LABEL_12;
   }
 
-  v13 = [(TransitionViewController *)v11 _shouldSkipStaleRootControllerRecovery];
+  _shouldSkipStaleRootControllerRecovery = [(TransitionViewController *)v11 _shouldSkipStaleRootControllerRecovery];
   v14 = LALogForCategory();
   v15 = os_log_type_enabled(v14, OS_LOG_TYPE_ERROR);
-  if (!v13)
+  if (!_shouldSkipStaleRootControllerRecovery)
   {
     if (v15)
     {
@@ -152,19 +152,19 @@ LABEL_12:
     v17 = objc_loadWeakRetained(&_rootController);
     if (v11 == v17)
     {
-      v18 = @"will become a new root VC";
+      dCopy = @"will become a new root VC";
     }
 
     else
     {
-      v7 = objc_loadWeakRetained(&_rootController);
-      v18 = [NSString stringWithFormat:@"root VC: %@", v7];
+      dCopy = objc_loadWeakRetained(&_rootController);
+      dCopy = [NSString stringWithFormat:@"root VC: %@", dCopy];
     }
 
     *buf = 138543618;
     v26 = v11;
     v27 = 2114;
-    v28 = v18;
+    v28 = dCopy;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Initializing %{public}@, %{public}@", buf, 0x16u);
     if (v11 != v17)
     {
@@ -298,15 +298,15 @@ void __36__TransitionViewController__resetUI__block_invoke(uint64_t a1)
   viewModel = self->_viewModel;
   self->_viewModel = v5;
 
-  v7 = [(TransitionViewModel *)self->_viewModel delegates];
-  [v7 addObject:self];
+  delegates = [(TransitionViewModel *)self->_viewModel delegates];
+  [delegates addObject:self];
 
 LABEL_8:
   v8 = self->_viewModel;
   if (v8)
   {
-    v9 = [(TransitionViewModel *)v8 delegates];
-    v10 = [v9 count];
+    delegates2 = [(TransitionViewModel *)v8 delegates];
+    v10 = [delegates2 count];
 
     if (v10 >= remoteAlertPresentationMode)
     {
@@ -372,21 +372,21 @@ LABEL_8:
   self->_remoteUIHost = v10;
 
   v12 = self->_remoteUIHost;
-  v13 = [(TransitionViewController *)self requestID];
+  requestID = [(TransitionViewController *)self requestID];
   v24[0] = _NSConcreteStackBlock;
   v24[1] = 3221225472;
   v24[2] = __44__TransitionViewController__setupConnection__block_invoke_2_33;
   v24[3] = &unk_1000AA3E8;
   objc_copyWeak(&v25, &location);
   v24[4] = self;
-  [(LACRemoteUIHost *)v12 connectRemoteUI:self requestID:v13 reply:v24];
+  [(LACRemoteUIHost *)v12 connectRemoteUI:self requestID:requestID reply:v24];
 
-  v14 = [(TransitionViewController *)self mechanism];
-  if (v14)
+  mechanism = [(TransitionViewController *)self mechanism];
+  if (mechanism)
   {
-    v15 = [(TransitionViewController *)self isRemoteViewController];
+    isRemoteViewController = [(TransitionViewController *)self isRemoteViewController];
 
-    if (v15)
+    if (isRemoteViewController)
     {
       v16 = dispatch_semaphore_create(0);
       mechanism = self->_mechanism;
@@ -527,10 +527,10 @@ void __44__TransitionViewController__setupConnection__block_invoke_2_36(uint64_t
   }
 }
 
-- (TransitionViewController)initWithInternalInfo:(id)a3 parent:(id)a4 allowsLandscape:(BOOL)a5
+- (TransitionViewController)initWithInternalInfo:(id)info parent:(id)parent allowsLandscape:(BOOL)landscape
 {
-  v9 = a3;
-  v10 = a4;
+  infoCopy = info;
+  parentCopy = parent;
   v20.receiver = self;
   v20.super_class = TransitionViewController;
   v11 = [(TransitionViewController *)&v20 init];
@@ -543,48 +543,48 @@ void __44__TransitionViewController__setupConnection__block_invoke_2_36(uint64_t
       *buf = 138543874;
       v22 = v11;
       v23 = 2114;
-      v24 = v10;
+      v24 = parentCopy;
       v25 = 2114;
-      v26 = v9;
+      v26 = infoCopy;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "%{public}@ is initializing as a child of %{public}@ with %{public}@", buf, 0x20u);
     }
 
-    objc_storeStrong(&v11->_internalInfo, a3);
-    v13 = [v10 mechanism];
+    objc_storeStrong(&v11->_internalInfo, info);
+    mechanism = [parentCopy mechanism];
     mechanism = v11->_mechanism;
-    v11->_mechanism = v13;
+    v11->_mechanism = mechanism;
 
-    v15 = [v10 backoffCounter];
+    backoffCounter = [parentCopy backoffCounter];
     backoffCounter = v11->_backoffCounter;
-    v11->_backoffCounter = v15;
+    v11->_backoffCounter = backoffCounter;
 
-    v17 = [v10 remoteUIHost];
+    remoteUIHost = [parentCopy remoteUIHost];
     remoteUIHost = v11->_remoteUIHost;
-    v11->_remoteUIHost = v17;
+    v11->_remoteUIHost = remoteUIHost;
 
-    v11->_allowsLandscape = a5;
+    v11->_allowsLandscape = landscape;
     [(TransitionViewController *)v11 didReceiveAuthenticationData];
   }
 
   return v11;
 }
 
-- (TransitionViewController)initWithInternalInfo:(id)a3 mechanism:(id)a4 backoffCounter:(id)a5 remoteUIHost:(id)a6 allowsLandscape:(BOOL)a7
+- (TransitionViewController)initWithInternalInfo:(id)info mechanism:(id)mechanism backoffCounter:(id)counter remoteUIHost:(id)host allowsLandscape:(BOOL)landscape
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  infoCopy = info;
+  mechanismCopy = mechanism;
+  counterCopy = counter;
+  hostCopy = host;
   v18.receiver = self;
   v18.super_class = TransitionViewController;
   v16 = [(TransitionViewController *)&v18 init];
   if (v16)
   {
     v16->_instanceId = +[TransitionViewController newInstanceId];
-    objc_storeStrong(&v16->_backoffCounter, a5);
-    objc_storeStrong(&v16->_remoteUIHost, a6);
-    v16->_allowsLandscape = a7;
-    [(TransitionViewController *)v16 viewModelDidReceiveAuthenticationDataWithInternalInfo:v12 mechanism:v13];
+    objc_storeStrong(&v16->_backoffCounter, counter);
+    objc_storeStrong(&v16->_remoteUIHost, host);
+    v16->_allowsLandscape = landscape;
+    [(TransitionViewController *)v16 viewModelDidReceiveAuthenticationDataWithInternalInfo:infoCopy mechanism:mechanismCopy];
   }
 
   return v16;
@@ -592,11 +592,11 @@ void __44__TransitionViewController__setupConnection__block_invoke_2_36(uint64_t
 
 - (void)didReceiveAuthenticationData
 {
-  v2 = self;
+  selfCopy = self;
   v3 = [(NSDictionary *)self->_internalInfo objectForKey:@"Policy"];
-  v2->_policy = [v3 integerValue];
+  selfCopy->_policy = [v3 integerValue];
 
-  v4 = [(NSDictionary *)v2->_internalInfo objectForKey:@"Options"];
+  v4 = [(NSDictionary *)selfCopy->_internalInfo objectForKey:@"Options"];
   v5 = [v4 mutableCopy];
 
   if (v5)
@@ -605,8 +605,8 @@ void __44__TransitionViewController__setupConnection__block_invoke_2_36(uint64_t
     v44 = 0u;
     v41 = 0u;
     v42 = 0u;
-    v6 = [v5 allKeys];
-    v7 = [v6 countByEnumeratingWithState:&v41 objects:v45 count:16];
+    allKeys = [v5 allKeys];
+    v7 = [allKeys countByEnumeratingWithState:&v41 objects:v45 count:16];
     if (v7)
     {
       v8 = v7;
@@ -618,7 +618,7 @@ void __44__TransitionViewController__setupConnection__block_invoke_2_36(uint64_t
         {
           if (*v42 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(allKeys);
           }
 
           v12 = *(*(&v41 + 1) + 8 * i);
@@ -633,71 +633,71 @@ void __44__TransitionViewController__setupConnection__block_invoke_2_36(uint64_t
             v39[1] = 3221225472;
             v39[2] = __56__TransitionViewController_didReceiveAuthenticationData__block_invoke;
             v39[3] = &unk_1000AA438;
-            v39[4] = v2;
+            v39[4] = selfCopy;
             __56__TransitionViewController_didReceiveAuthenticationData__block_invoke(v39, v38, v40);
-            v15 = v6;
-            v17 = v16 = v2;
+            v15 = allKeys;
+            v17 = v16 = selfCopy;
             [v5 setObject:v17 forKeyedSubscript:v12];
 
-            v2 = v16;
-            v6 = v15;
+            selfCopy = v16;
+            allKeys = v15;
 
             v10 = &_sScP8rawValues5UInt8Vvg_ptr;
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v41 objects:v45 count:16];
+        v8 = [allKeys countByEnumeratingWithState:&v41 objects:v45 count:16];
       }
 
       while (v8);
     }
   }
 
-  objc_storeStrong(&v2->_options, v5);
-  options = v2->_options;
+  objc_storeStrong(&selfCopy->_options, v5);
+  options = selfCopy->_options;
   if (options)
   {
     v19 = [(NSDictionary *)options objectForKey:&off_1000AF200];
     v20 = v19;
     if (v19)
     {
-      -[TransitionViewController setModalPresentationStyle:](v2, "setModalPresentationStyle:", [v19 integerValue]);
+      -[TransitionViewController setModalPresentationStyle:](selfCopy, "setModalPresentationStyle:", [v19 integerValue]);
     }
 
-    v21 = [(NSDictionary *)v2->_options objectForKey:&off_1000AF218];
+    v21 = [(NSDictionary *)selfCopy->_options objectForKey:&off_1000AF218];
     v22 = v21;
     if (v21)
     {
-      -[TransitionViewController setModalTransitionStyle:](v2, "setModalTransitionStyle:", [v21 integerValue]);
+      -[TransitionViewController setModalTransitionStyle:](selfCopy, "setModalTransitionStyle:", [v21 integerValue]);
     }
   }
 
-  v23 = [(TransitionViewController *)v2 localizedCallerName];
-  callerName = v2->_callerName;
-  v2->_callerName = v23;
+  localizedCallerName = [(TransitionViewController *)selfCopy localizedCallerName];
+  callerName = selfCopy->_callerName;
+  selfCopy->_callerName = localizedCallerName;
 
-  v25 = [(NSDictionary *)v2->_options objectForKeyedSubscript:&off_1000AF230];
-  v2->_callerNameOverride = [v25 isEqualToString:v2->_callerName];
+  v25 = [(NSDictionary *)selfCopy->_options objectForKeyedSubscript:&off_1000AF230];
+  selfCopy->_callerNameOverride = [v25 isEqualToString:selfCopy->_callerName];
 
-  v26 = [(NSDictionary *)v2->_internalInfo objectForKey:@"CallerId"];
-  callerBundleId = v2->_callerBundleId;
-  v2->_callerBundleId = v26;
+  v26 = [(NSDictionary *)selfCopy->_internalInfo objectForKey:@"CallerId"];
+  callerBundleId = selfCopy->_callerBundleId;
+  selfCopy->_callerBundleId = v26;
 
-  v28 = [(TransitionViewController *)v2 options];
-  v29 = [v28 objectForKeyedSubscript:&off_1000AF248];
+  options = [(TransitionViewController *)selfCopy options];
+  v29 = [options objectForKeyedSubscript:&off_1000AF248];
   v30 = [LACStringHelper truncateString:v29 maxLength:512];
-  authenticationTitle = v2->_authenticationTitle;
-  v2->_authenticationTitle = v30;
+  authenticationTitle = selfCopy->_authenticationTitle;
+  selfCopy->_authenticationTitle = v30;
 
-  v32 = [(TransitionViewController *)v2 options];
-  v33 = [v32 objectForKeyedSubscript:&off_1000AF260];
+  options2 = [(TransitionViewController *)selfCopy options];
+  v33 = [options2 objectForKeyedSubscript:&off_1000AF260];
   v34 = [LACStringHelper truncateString:v33 maxLength:512];
-  authenticationSubtitle = v2->_authenticationSubtitle;
-  v2->_authenticationSubtitle = v34;
+  authenticationSubtitle = selfCopy->_authenticationSubtitle;
+  selfCopy->_authenticationSubtitle = v34;
 
-  v36 = [[LACCachedExternalizedContext alloc] initWithExternalizationDelegate:v2->_mechanism];
-  cachedExternalizedContext = v2->_cachedExternalizedContext;
-  v2->_cachedExternalizedContext = v36;
+  v36 = [[LACCachedExternalizedContext alloc] initWithExternalizationDelegate:selfCopy->_mechanism];
+  cachedExternalizedContext = selfCopy->_cachedExternalizedContext;
+  selfCopy->_cachedExternalizedContext = v36;
 }
 
 id __56__TransitionViewController_didReceiveAuthenticationData__block_invoke(uint64_t a1, void *a2, int a3)
@@ -735,30 +735,30 @@ id __56__TransitionViewController_didReceiveAuthenticationData__block_invoke(uin
     v4 = v3;
     if (v3)
     {
-      v5 = [v3 localizedName];
-      v6 = v5;
-      if (v5)
+      localizedName = [v3 localizedName];
+      v6 = localizedName;
+      if (localizedName)
       {
-        v7 = v5;
+        v7 = localizedName;
         v8 = v2;
       }
 
       else
       {
-        v9 = [v4 localizedShortName];
-        v8 = v9;
-        if (v9)
+        localizedShortName = [v4 localizedShortName];
+        v8 = localizedShortName;
+        if (localizedShortName)
         {
-          v7 = v9;
+          v7 = localizedShortName;
         }
 
         else
         {
-          v10 = [v4 bundleIdentifier];
-          v11 = v10;
-          if (v10)
+          bundleIdentifier = [v4 bundleIdentifier];
+          v11 = bundleIdentifier;
+          if (bundleIdentifier)
           {
-            v12 = v10;
+            v12 = bundleIdentifier;
           }
 
           else
@@ -779,19 +779,19 @@ id __56__TransitionViewController_didReceiveAuthenticationData__block_invoke(uin
   return v2;
 }
 
-- (void)dismissRemoteUIWithIdleEndpoint:(id)a3 wasInvalidated:(BOOL)a4 completionHandler:(id)a5
+- (void)dismissRemoteUIWithIdleEndpoint:(id)endpoint wasInvalidated:(BOOL)invalidated completionHandler:(id)handler
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  invalidatedCopy = invalidated;
+  endpointCopy = endpoint;
+  handlerCopy = handler;
   v10 = +[TransitionViewController newTaskId];
   v11 = LALogForCategory();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
-    v37 = self;
+    selfCopy = self;
     v38 = 1024;
-    v39 = v6;
+    v39 = invalidatedCopy;
     v40 = 1024;
     v41 = v10;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Dismissing %{public}@, invalidated: %d, created tid:%u", buf, 0x18u);
@@ -802,8 +802,8 @@ id __56__TransitionViewController_didReceiveAuthenticationData__block_invoke(uin
   v30[1] = 3221225472;
   v30[2] = __93__TransitionViewController_dismissRemoteUIWithIdleEndpoint_wasInvalidated_completionHandler___block_invoke;
   v30[3] = &unk_1000AA460;
-  v12 = v9;
-  v33 = v6;
+  v12 = handlerCopy;
+  v33 = invalidatedCopy;
   v30[4] = self;
   v31 = v12;
   objc_copyWeak(&v32, buf);
@@ -817,7 +817,7 @@ id __56__TransitionViewController_didReceiveAuthenticationData__block_invoke(uin
   else
   {
     [(TransitionViewController *)self setDismissing:1];
-    if (v6 && !self->_appeared)
+    if (invalidatedCopy && !self->_appeared)
     {
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
@@ -933,20 +933,20 @@ void __93__TransitionViewController_dismissRemoteUIWithIdleEndpoint_wasInvalidat
   [v1 _dismissRootWithReason:v2 completion:0];
 }
 
-- (void)transitionToController:(int64_t)a3 internalInfo:(id)a4 completionHandler:(id)a5
+- (void)transitionToController:(int64_t)controller internalInfo:(id)info completionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
+  infoCopy = info;
+  handlerCopy = handler;
   v10 = +[TransitionViewController newTaskId];
   v11 = LALogForCategory();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138544130;
-    v36 = self;
+    selfCopy2 = self;
     v37 = 1024;
-    v38 = a3;
+    controllerCopy = controller;
     v39 = 2114;
-    v40 = v8;
+    v40 = infoCopy;
     v41 = 1024;
     v42 = v10;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%{public}@ transitioning to %d (%{public}@), created tid:%u", buf, 0x22u);
@@ -960,7 +960,7 @@ void __93__TransitionViewController_dismissRemoteUIWithIdleEndpoint_wasInvalidat
   else
   {
     v13 = _os_feature_enabled_impl();
-    if (a3 == 1)
+    if (controller == 1)
     {
       v12 = v13;
     }
@@ -986,22 +986,22 @@ void __93__TransitionViewController_dismissRemoteUIWithIdleEndpoint_wasInvalidat
     }
 
     *buf = 136315138;
-    v36 = v15;
+    selfCopy2 = v15;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Setting _allowsLandscape = %s", buf, 0xCu);
   }
 
-  v16 = [v8 objectForKey:@"CallerId"];
+  v16 = [infoCopy objectForKey:@"CallerId"];
   if (v16)
   {
-    v17 = [v8 objectForKey:@"BackgroundUi"];
-    v18 = [v17 BOOLValue];
+    v17 = [infoCopy objectForKey:@"BackgroundUi"];
+    bOOLValue = [v17 BOOLValue];
 
-    v19 = [v8 objectForKey:@"Policy"];
-    v20 = [v19 integerValue];
+    v19 = [infoCopy objectForKey:@"Policy"];
+    integerValue = [v19 integerValue];
 
-    if ((v18 & 1) == 0 && ([LACPolicyUtilities isApplePayPolicy:v20]& 1) == 0)
+    if ((bOOLValue & 1) == 0 && ([LACPolicyUtilities isApplePayPolicy:integerValue]& 1) == 0)
     {
-      v21 = [v8 objectForKeyedSubscript:@"ProcessId"];
+      v21 = [infoCopy objectForKeyedSubscript:@"ProcessId"];
       if (+[LAUtils callerRunningOnForeground:pid:](LAUtils, "callerRunningOnForeground:pid:", v16, [v21 unsignedIntValue]))
       {
       }
@@ -1009,8 +1009,8 @@ void __93__TransitionViewController_dismissRemoteUIWithIdleEndpoint_wasInvalidat
       else
       {
         v22 = +[NSBundle mainBundle];
-        v23 = [v22 bundleIdentifier];
-        v24 = [LAUtils callerRunningOnForeground:v23 pid:geteuid()];
+        bundleIdentifier = [v22 bundleIdentifier];
+        v24 = [LAUtils callerRunningOnForeground:bundleIdentifier pid:geteuid()];
 
         if ((v24 & 1) == 0)
         {
@@ -1018,7 +1018,7 @@ void __93__TransitionViewController_dismissRemoteUIWithIdleEndpoint_wasInvalidat
           v33[1] = 3221225472;
           v33[2] = __82__TransitionViewController_transitionToController_internalInfo_completionHandler___block_invoke;
           v33[3] = &unk_1000AA500;
-          v34 = v9;
+          v34 = handlerCopy;
           [(TransitionViewController *)self _dismissRemoteUIWithCompletionHandler:v33];
 
           goto LABEL_25;
@@ -1027,13 +1027,13 @@ void __93__TransitionViewController_dismissRemoteUIWithIdleEndpoint_wasInvalidat
     }
   }
 
-  if ([(TransitionViewController *)self _shouldHideStatusBarForController:a3])
+  if ([(TransitionViewController *)self _shouldHideStatusBarForController:controller])
   {
     v25 = LALogForCategory();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v36 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "%@ will hide status bar, because the child controller needs it", buf, 0xCu);
     }
 
@@ -1053,10 +1053,10 @@ void __93__TransitionViewController_dismissRemoteUIWithIdleEndpoint_wasInvalidat
   v27[3] = &unk_1000AA590;
   objc_copyWeak(v31, buf);
   v32 = v10;
-  v30 = v9;
-  v31[1] = a3;
-  v28 = v8;
-  v29 = self;
+  v30 = handlerCopy;
+  v31[1] = controller;
+  v28 = infoCopy;
+  selfCopy3 = self;
   [(TransitionViewController *)self _performOnMainQueueWhenAppeared:v27];
 
   objc_destroyWeak(v31);
@@ -1264,15 +1264,15 @@ uint64_t __82__TransitionViewController_transitionToController_internalInfo_comp
   return result;
 }
 
-- (void)_performOnMainQueueWhenAppeared:(id)a3
+- (void)_performOnMainQueueWhenAppeared:(id)appeared
 {
-  v4 = a3;
+  appearedCopy = appeared;
   v5 = +[TransitionViewController newTaskId];
   v6 = LALogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     *buf = 138543618;
-    v16 = self;
+    selfCopy = self;
     v17 = 1024;
     v18 = v5;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "%{public}@ will perform task when appeared, created tid:%u", buf, 0x12u);
@@ -1287,8 +1287,8 @@ uint64_t __82__TransitionViewController_transitionToController_internalInfo_comp
   objc_copyWeak(&v13, buf);
   v14 = v5;
   v11 = v7;
-  v12 = v4;
-  v8 = v4;
+  v12 = appearedCopy;
+  v8 = appearedCopy;
   v9 = v7;
   dispatch_async(&_dispatch_main_q, v10);
 
@@ -1405,15 +1405,15 @@ uint64_t __60__TransitionViewController__performOnMainQueueWhenAppeared___block_
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v13 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ viewDidLoad", buf, 0xCu);
   }
 
   v10.receiver = self;
   v10.super_class = TransitionViewController;
   [(TransitionViewController *)&v10 viewDidLoad];
-  v4 = [(TransitionViewController *)self view];
-  [v4 setAccessibilityIdentifier:@"authentication_ui"];
+  view = [(TransitionViewController *)self view];
+  [view setAccessibilityIdentifier:@"authentication_ui"];
 
   objc_initWeak(buf, self);
   v5 = objc_opt_self();
@@ -1449,7 +1449,7 @@ void __39__TransitionViewController_viewDidLoad__block_invoke(uint64_t a1)
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v14 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ viewDidDisappear", buf, 0xCu);
   }
 
@@ -1504,20 +1504,20 @@ LABEL_11:
   }
 }
 
-- (void)uiEvent:(int64_t)a3 options:(id)a4
+- (void)uiEvent:(int64_t)event options:(id)options
 {
-  v6 = a4;
+  optionsCopy = options;
   v7 = LALogForCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = @"with options: ";
     v10 = 138544130;
     v9 = &stru_1000ADB50;
-    v11 = self;
+    selfCopy = self;
     v12 = 1024;
-    if (v6)
+    if (optionsCopy)
     {
-      v9 = v6;
+      v9 = optionsCopy;
     }
 
     else
@@ -1525,7 +1525,7 @@ LABEL_11:
       v8 = &stru_1000ADB50;
     }
 
-    v13 = a3;
+    eventCopy = event;
     v14 = 2112;
     v15 = v8;
     v16 = 2114;
@@ -1533,14 +1533,14 @@ LABEL_11:
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ has generated UI event:%d %@%{public}@", &v10, 0x26u);
   }
 
-  [(LACUIMechanism *)self->_mechanism uiEvent:a3 options:v6];
+  [(LACUIMechanism *)self->_mechanism uiEvent:event options:optionsCopy];
 }
 
-- (void)uiOpenURL:(id)a3
+- (void)uiOpenURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   v4 = +[URLOpener sharedInstance];
-  v5 = [v4 openURL:v3];
+  v5 = [v4 openURL:lCopy];
 
   if (v5)
   {
@@ -1548,7 +1548,7 @@ LABEL_11:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v7 = 138543618;
-      v8 = v3;
+      v8 = lCopy;
       v9 = 2114;
       v10 = v5;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Unable to open URL: %{public}@ error: %{public}@", &v7, 0x16u);
@@ -1570,14 +1570,14 @@ LABEL_11:
   [(TransitionViewController *)self uiEvent:2 options:0];
 }
 
-- (void)uiCancelWithError:(id)a3
+- (void)uiCancelWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   [(TransitionViewController *)self _setActivityWatchdog];
-  if (v4)
+  if (errorCopy)
   {
     v6 = NSUnderlyingErrorKey;
-    v7 = v4;
+    v7 = errorCopy;
     v5 = [NSDictionary dictionaryWithObjects:&v7 forKeys:&v6 count:1];
   }
 
@@ -1596,43 +1596,43 @@ LABEL_11:
   [(TransitionViewController *)self uiEvent:3 options:0];
 }
 
-- (void)uiSuccessWithResult:(id)a3
+- (void)uiSuccessWithResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v5 = LALogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138543362;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ UI success", &v6, 0xCu);
   }
 
   [(TransitionViewController *)self _setActivityWatchdog];
-  [(LACUIMechanism *)self->_mechanism uiSuccessWithResult:v4];
+  [(LACUIMechanism *)self->_mechanism uiSuccessWithResult:resultCopy];
 }
 
-- (void)uiFailureWithError:(id)a3
+- (void)uiFailureWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = LALogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138543618;
-    v7 = self;
+    selfCopy = self;
     v8 = 2114;
-    v9 = v4;
+    v9 = errorCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ UI failure: %{public}@", &v6, 0x16u);
   }
 
   [(TransitionViewController *)self _setActivityWatchdog];
-  [(LACUIMechanism *)self->_mechanism uiFailureWithError:v4];
+  [(LACUIMechanism *)self->_mechanism uiFailureWithError:errorCopy];
 }
 
-- (void)authMethodWithReply:(id)a3
+- (void)authMethodWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v5 = [LAErrorHelper internalErrorWithMessage:@"No auth blob on mechanism."];
-  (*(a3 + 2))(v4, 0, v5);
+  (*(reply + 2))(replyCopy, 0, v5);
 }
 
 - (void)_setActivityWatchdog
@@ -1666,21 +1666,21 @@ void __48__TransitionViewController__setActivityWatchdog__block_invoke(uint64_t 
   }
 }
 
-- (void)mechanismEvent:(int64_t)a3 value:(id)a4 reply:(id)a5
+- (void)mechanismEvent:(int64_t)event value:(id)value reply:(id)reply
 {
-  v8 = a4;
-  v9 = a5;
+  valueCopy = value;
+  replyCopy = reply;
   objc_initWeak(&location, self);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __55__TransitionViewController_mechanismEvent_value_reply___block_invoke;
   block[3] = &unk_1000AA630;
   objc_copyWeak(v15, &location);
-  v15[1] = a3;
-  v13 = v8;
-  v14 = v9;
-  v10 = v9;
-  v11 = v8;
+  v15[1] = event;
+  v13 = valueCopy;
+  v14 = replyCopy;
+  v10 = replyCopy;
+  v11 = valueCopy;
   dispatch_async(&_dispatch_main_q, block);
 
   objc_destroyWeak(v15);
@@ -1693,10 +1693,10 @@ void __55__TransitionViewController_mechanismEvent_value_reply___block_invoke(ui
   [WeakRetained _mechanismEvent:*(a1 + 56) value:*(a1 + 32) reply:*(a1 + 40)];
 }
 
-- (void)_mechanismEvent:(int64_t)a3 value:(id)a4 reply:(id)a5
+- (void)_mechanismEvent:(int64_t)event value:(id)value reply:(id)reply
 {
-  v8 = a4;
-  v9 = a5;
+  valueCopy = value;
+  replyCopy = reply;
   v10 = LALogForCategory();
   v11 = v10;
   if (self->_childController)
@@ -1713,9 +1713,9 @@ void __55__TransitionViewController_mechanismEvent_value_reply___block_invoke(ui
   {
     v13 = NSStringFromMechanismEventAndValue();
     v15 = 138543874;
-    v16 = self;
+    selfCopy = self;
     v17 = 1024;
-    v18 = a3;
+    eventCopy = event;
     v19 = 2112;
     v20 = v13;
     _os_log_impl(&_mh_execute_header, v11, v12, "%{public}@ has received mechanism event %d (%@)", &v15, 0x1Cu);
@@ -1724,45 +1724,45 @@ void __55__TransitionViewController_mechanismEvent_value_reply___block_invoke(ui
   childController = self->_childController;
   if (childController)
   {
-    [(TransitionViewController *)childController mechanismEvent:a3 value:v8 reply:v9];
+    [(TransitionViewController *)childController mechanismEvent:event value:valueCopy reply:replyCopy];
   }
 
   else
   {
-    if ((a3 & 0xFFFFFFFFFFFFFFFCLL) == 8)
+    if ((event & 0xFFFFFFFFFFFFFFFCLL) == 8)
     {
-      self->_resetUiEvent = a3;
+      self->_resetUiEvent = event;
     }
 
-    v9[2](v9);
+    replyCopy[2](replyCopy);
   }
 }
 
-- (void)dismissChildWithCompletionHandler:(id)a3
+- (void)dismissChildWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = LALogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v12 = "[TransitionViewController dismissChildWithCompletionHandler:]";
     v13 = 2112;
-    v14 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s  on %@", buf, 0x16u);
   }
 
   self->_awaitingDisappear = 1;
   [(TransitionViewController *)self setDismissing:1];
   objc_initWeak(buf, self);
-  v6 = [(TransitionViewController *)self isFullScreenController];
+  isFullScreenController = [(TransitionViewController *)self isFullScreenController];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = __62__TransitionViewController_dismissChildWithCompletionHandler___block_invoke;
   v8[3] = &unk_1000AA658;
   objc_copyWeak(&v10, buf);
-  v7 = v4;
+  v7 = handlerCopy;
   v9 = v7;
-  [(TransitionViewController *)self dismissViewControllerAnimated:v6 completion:v8];
+  [(TransitionViewController *)self dismissViewControllerAnimated:isFullScreenController completion:v8];
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(buf);
@@ -1780,35 +1780,35 @@ void __62__TransitionViewController_dismissChildWithCompletionHandler___block_in
   }
 }
 
-- (void)handleSceneButton:(int64_t)a3
+- (void)handleSceneButton:(int64_t)button
 {
   v5 = LALogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [NSNumber numberWithInteger:a3];
+    v6 = [NSNumber numberWithInteger:button];
     v7 = 138543618;
-    v8 = self;
+    selfCopy = self;
     v9 = 2112;
     v10 = v6;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ is handling action for scene button %@", &v7, 0x16u);
   }
 
-  if (!a3)
+  if (!button)
   {
     [(TransitionViewController *)self _handleHomeButtonPressed];
   }
 }
 
-- (void)handleButtonActions:(id)a3
+- (void)handleButtonActions:(id)actions
 {
-  v4 = a3;
+  actionsCopy = actions;
   v5 = LALogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v17 = self;
+    selfCopy = self;
     v18 = 2112;
-    v19 = v4;
+    v19 = actionsCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ is handling button action %@", buf, 0x16u);
   }
 
@@ -1816,7 +1816,7 @@ void __62__TransitionViewController_dismissChildWithCompletionHandler___block_in
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v6 = v4;
+  v6 = actionsCopy;
   v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
@@ -1899,10 +1899,10 @@ LABEL_13:
 
 - (int64_t)preferredStatusBarStyle
 {
-  v2 = [(TransitionViewController *)self traitCollection];
-  v3 = [v2 userInterfaceStyle];
+  traitCollection = [(TransitionViewController *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  if (v3 == 2)
+  if (userInterfaceStyle == 2)
   {
     return 1;
   }
@@ -1913,16 +1913,16 @@ LABEL_13:
   }
 }
 
-- (void)configureWithContext:(id)a3 completion:(id)a4
+- (void)configureWithContext:(id)context completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   v6 = LALogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 136315394;
-    v10 = "[TransitionViewController configureWithContext:completion:]";
+    selfCopy2 = "[TransitionViewController configureWithContext:completion:]";
     v11 = 2112;
-    v12 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%s  on %@", &v9, 0x16u);
   }
 
@@ -1932,50 +1932,50 @@ LABEL_13:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138543362;
-      v10 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ Enforcing portrait mode regardless of the current orientation", &v9, 0xCu);
     }
 
-    v8 = [(TransitionViewController *)self _remoteViewControllerProxy];
-    [v8 setLaunchingInterfaceOrientation:1];
+    _remoteViewControllerProxy = [(TransitionViewController *)self _remoteViewControllerProxy];
+    [_remoteViewControllerProxy setLaunchingInterfaceOrientation:1];
   }
 
-  if (v5)
+  if (completionCopy)
   {
-    v5[2](v5);
+    completionCopy[2](completionCopy);
   }
 }
 
-- (void)noteActivatedWithPresentationMode:(int64_t)a3
+- (void)noteActivatedWithPresentationMode:(int64_t)mode
 {
   v5.receiver = self;
   v5.super_class = TransitionViewController;
   [(TransitionViewController *)&v5 noteActivatedWithPresentationMode:?];
-  self->_remoteAlertPresentationMode = a3;
+  self->_remoteAlertPresentationMode = mode;
   [(TransitionViewController *)self _setupRemoteAlert];
 }
 
-- (void)_dismissChild:(id)a3 andRoot:(BOOL)a4 reason:(id)a5 completion:(id)a6
+- (void)_dismissChild:(id)child andRoot:(BOOL)root reason:(id)reason completion:(id)completion
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  childCopy = child;
+  reasonCopy = reason;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v29[0] = _NSConcreteStackBlock;
   v29[1] = 3221225472;
   v29[2] = __68__TransitionViewController__dismissChild_andRoot_reason_completion___block_invoke;
   v29[3] = &unk_1000AA680;
   objc_copyWeak(&v32, &location);
-  v13 = v11;
+  v13 = reasonCopy;
   v30 = v13;
-  v14 = v12;
+  v14 = completionCopy;
   v31 = v14;
   v15 = objc_retainBlock(v29);
   v21 = _NSConcreteStackBlock;
   v22 = 3221225472;
   v23 = __68__TransitionViewController__dismissChild_andRoot_reason_completion___block_invoke_151;
   v24 = &unk_1000AA6A8;
-  v28 = a4;
+  rootCopy = root;
   objc_copyWeak(&v27, &location);
   v16 = v13;
   v25 = v16;
@@ -1983,21 +1983,21 @@ LABEL_13:
   v26 = v17;
   v18 = objc_retainBlock(&v21);
   v19 = v18;
-  if (v10)
+  if (childCopy)
   {
     v20 = LALogForCategory();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543874;
-      v35 = self;
+      selfCopy = self;
       v36 = 2114;
-      v37 = v10;
+      v37 = childCopy;
       v38 = 2114;
       v39 = v16;
       _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "%{public}@ will dismiss %{public}@ (%{public}@)", buf, 0x20u);
     }
 
-    [v10 dismissChildWithCompletionHandler:{v19, v21, v22, v23, v24, v25}];
+    [childCopy dismissChildWithCompletionHandler:{v19, v21, v22, v23, v24, v25}];
   }
 
   else
@@ -2050,24 +2050,24 @@ void __68__TransitionViewController__dismissChild_andRoot_reason_completion___bl
   }
 }
 
-- (void)_dismissRootWithReason:(id)a3 completion:(id)a4
+- (void)_dismissRootWithReason:(id)reason completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TransitionViewController *)self _remoteViewControllerProxy];
-  if (v8)
+  reasonCopy = reason;
+  completionCopy = completion;
+  _remoteViewControllerProxy = [(TransitionViewController *)self _remoteViewControllerProxy];
+  if (_remoteViewControllerProxy)
   {
     v9 = LALogForCategory();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138543618;
-      v11 = self;
+      selfCopy = self;
       v12 = 2114;
-      v13 = v6;
+      v13 = reasonCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ RVC proxy was dismissed (%{public}@)", &v10, 0x16u);
     }
 
-    [v8 dismiss];
+    [_remoteViewControllerProxy dismiss];
   }
 
   else if ([(TransitionViewController *)self _canTearDown])
@@ -2076,36 +2076,36 @@ void __68__TransitionViewController__dismissChild_andRoot_reason_completion___bl
   }
 
   [(TransitionViewController *)self _tearDownIfNeeded];
-  if (v7)
+  if (completionCopy)
   {
-    v7[2](v7);
+    completionCopy[2](completionCopy);
   }
 }
 
-- (BOOL)_internalBooleanDefaultNamed:(id)a3
+- (BOOL)_internalBooleanDefaultNamed:(id)named
 {
-  v3 = a3;
+  namedCopy = named;
   if (os_variant_allows_internal_security_policies())
   {
     v4 = +[NSUserDefaults standardUserDefaults];
     v5 = [v4 persistentDomainForName:NSGlobalDomain];
 
-    v6 = [v5 objectForKeyedSubscript:v3];
+    v6 = [v5 objectForKeyedSubscript:namedCopy];
     v7 = v6;
     if (!v6)
     {
       v6 = &__kCFBooleanFalse;
     }
 
-    v8 = [v6 BOOLValue];
+    bOOLValue = [v6 BOOLValue];
   }
 
   else
   {
-    v8 = 0;
+    bOOLValue = 0;
   }
 
-  return v8;
+  return bOOLValue;
 }
 
 - (void)_cancelForApplicationChangeIfNeeded
@@ -2116,7 +2116,7 @@ void __68__TransitionViewController__dismissChild_andRoot_reason_completion___bl
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
       v4 = 138543362;
-      v5 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Canceling %{public}@ due to application change.", &v4, 0xCu);
     }
 
@@ -2127,9 +2127,9 @@ void __68__TransitionViewController__dismissChild_andRoot_reason_completion___bl
 - (BOOL)_shouldRegisterForApplicationChange
 {
   v2 = +[LACDevice sharedInstance];
-  v3 = [v2 isClarityBoardRunning];
+  isClarityBoardRunning = [v2 isClarityBoardRunning];
 
-  return v3;
+  return isClarityBoardRunning;
 }
 
 - (BOOL)_shouldCancelForApplicationChange
@@ -2145,13 +2145,13 @@ void __68__TransitionViewController__dismissChild_andRoot_reason_completion___bl
   return v4;
 }
 
-- (void)viewModelDidReceiveAuthenticationDataWithInternalInfo:(id)a3 mechanism:(id)a4
+- (void)viewModelDidReceiveAuthenticationDataWithInternalInfo:(id)info mechanism:(id)mechanism
 {
-  v6 = a3;
-  objc_storeStrong(&self->_mechanism, a4);
-  v7 = a4;
+  infoCopy = info;
+  objc_storeStrong(&self->_mechanism, mechanism);
+  mechanismCopy = mechanism;
   internalInfo = self->_internalInfo;
-  self->_internalInfo = v6;
+  self->_internalInfo = infoCopy;
 
   [(TransitionViewController *)self didReceiveAuthenticationData];
 }
@@ -2203,7 +2203,7 @@ LABEL_4:
       v7 = +[TransitionViewController rootController];
       v8 = [NSNumber numberWithBool:self->_hasRequestedReset];
       v9 = 138412802;
-      v10 = self;
+      selfCopy = self;
       v11 = 2112;
       v12 = v7;
       v13 = 2112;
@@ -2221,8 +2221,8 @@ LABEL_4:
 {
   if (self->_presentationMode)
   {
-    v3 = [(TransitionViewController *)self remoteUIHost];
-    if (v3)
+    remoteUIHost = [(TransitionViewController *)self remoteUIHost];
+    if (remoteUIHost)
     {
       objc_initWeak(&location, self);
       v4[0] = _NSConcreteStackBlock;
@@ -2231,7 +2231,7 @@ LABEL_4:
       v4[3] = &unk_1000AA6F8;
       objc_copyWeak(&v5, &location);
       v4[4] = self;
-      [v3 checkHasPendingUIRequestsForRemoteUI:self completion:v4];
+      [remoteUIHost checkHasPendingUIRequestsForRemoteUI:self completion:v4];
       objc_destroyWeak(&v5);
       objc_destroyWeak(&location);
     }
@@ -2298,9 +2298,9 @@ void __37__TransitionViewController__tearDown__block_invoke_2(uint64_t a1)
   _connection = 0;
 
   v5 = +[LACFlags sharedInstance];
-  v6 = [v5 featureFlagLaunchAngelEnabled];
+  featureFlagLaunchAngelEnabled = [v5 featureFlagLaunchAngelEnabled];
 
-  if (v6)
+  if (featureFlagLaunchAngelEnabled)
   {
     [v7 invalidate];
   }
@@ -2338,12 +2338,12 @@ id __55__TransitionViewController__destroyCurrentSceneSession__block_invoke(uint
 - (void)_destroyAllSceneSessions
 {
   v3 = +[UIApplication sharedApplication];
-  v4 = [v3 supportsMultipleScenes];
+  supportsMultipleScenes = [v3 supportsMultipleScenes];
 
-  if (v4)
+  if (supportsMultipleScenes)
   {
-    v5 = [(TransitionViewController *)self _allSceneSessions];
-    [(TransitionViewController *)self _destroyScenesSessions:v5];
+    _allSceneSessions = [(TransitionViewController *)self _allSceneSessions];
+    [(TransitionViewController *)self _destroyScenesSessions:_allSceneSessions];
   }
 
   else
@@ -2353,14 +2353,14 @@ id __55__TransitionViewController__destroyCurrentSceneSession__block_invoke(uint
   }
 }
 
-- (void)_destroyScenesSessions:(id)a3
+- (void)_destroyScenesSessions:(id)sessions
 {
-  v4 = a3;
-  v5 = v4;
+  sessionsCopy = sessions;
+  v5 = sessionsCopy;
   if ((self->_presentationMode - 1) <= 1)
   {
     self->_didDeactivateScene = 1;
-    v6 = [v4 count];
+    v6 = [sessionsCopy count];
     v7 = LALogForCategory();
     v8 = 16 * (v6 == 0);
     if (os_log_type_enabled(v7, v8))
@@ -2391,7 +2391,7 @@ id __55__TransitionViewController__destroyCurrentSceneSession__block_invoke(uint
           }
 
           v14 = *(*(&v25 + 1) + 8 * i);
-          v15 = [v14 scene];
+          scene = [v14 scene];
           objc_opt_class();
           isKindOfClass = objc_opt_isKindOfClass();
 
@@ -2401,23 +2401,23 @@ id __55__TransitionViewController__destroyCurrentSceneSession__block_invoke(uint
           {
             if (v18)
             {
-              v19 = [v14 scene];
+              scene2 = [v14 scene];
               *buf = 138543362;
-              v30 = v19;
+              v30 = scene2;
               _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Will deactivate remote alert scene %{public}@", buf, 0xCu);
             }
 
-            v20 = [v14 scene];
-            [v20 deactivate];
+            scene3 = [v14 scene];
+            [scene3 deactivate];
           }
 
           else
           {
             if (v18)
             {
-              v21 = [v14 persistentIdentifier];
+              persistentIdentifier = [v14 persistentIdentifier];
               *buf = 138543362;
-              v30 = v21;
+              v30 = persistentIdentifier;
               _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Will destroy scene session %{public}@", buf, 0xCu);
             }
 
@@ -2459,9 +2459,9 @@ void __51__TransitionViewController__destroyScenesSessions___block_invoke(uint64
   v24 = 0u;
   v25 = 0u;
   v3 = +[UIApplication sharedApplication];
-  v4 = [v3 openSessions];
+  openSessions = [v3 openSessions];
 
-  v5 = [v4 countByEnumeratingWithState:&v22 objects:v27 count:16];
+  v5 = [openSessions countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v5)
   {
     v6 = v5;
@@ -2472,13 +2472,13 @@ void __51__TransitionViewController__destroyScenesSessions___block_invoke(uint64
       {
         if (*v23 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(openSessions);
         }
 
         [v2 addObject:*(*(&v22 + 1) + 8 * i)];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v22 objects:v27 count:16];
+      v6 = [openSessions countByEnumeratingWithState:&v22 objects:v27 count:16];
     }
 
     while (v6);
@@ -2489,9 +2489,9 @@ void __51__TransitionViewController__destroyScenesSessions___block_invoke(uint64
   v18 = 0u;
   v19 = 0u;
   v9 = +[UIApplication sharedApplication];
-  v10 = [v9 connectedScenes];
+  connectedScenes = [v9 connectedScenes];
 
-  v11 = [v10 countByEnumeratingWithState:&v18 objects:v26 count:16];
+  v11 = [connectedScenes countByEnumeratingWithState:&v18 objects:v26 count:16];
   if (v11)
   {
     v12 = v11;
@@ -2502,22 +2502,22 @@ void __51__TransitionViewController__destroyScenesSessions___block_invoke(uint64
       {
         if (*v19 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(connectedScenes);
         }
 
-        v15 = [*(*(&v18 + 1) + 8 * j) session];
-        [v2 addObject:v15];
+        session = [*(*(&v18 + 1) + 8 * j) session];
+        [v2 addObject:session];
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v18 objects:v26 count:16];
+      v12 = [connectedScenes countByEnumeratingWithState:&v18 objects:v26 count:16];
     }
 
     while (v12);
   }
 
-  v16 = [v2 allObjects];
+  allObjects = [v2 allObjects];
 
-  return v16;
+  return allObjects;
 }
 
 - (void)initWithRequestID:endpoint:presentationMode:.cold.1()
@@ -2562,7 +2562,7 @@ void __60__TransitionViewController__performOnMainQueueWhenAppeared___block_invo
 - (void)supportedInterfaceOrientations
 {
   v3 = "portrait";
-  if (a1)
+  if (self)
   {
     v3 = "all";
   }

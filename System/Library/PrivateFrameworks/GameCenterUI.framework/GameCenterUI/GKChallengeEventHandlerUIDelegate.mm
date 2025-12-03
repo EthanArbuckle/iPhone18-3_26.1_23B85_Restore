@@ -1,70 +1,70 @@
 @interface GKChallengeEventHandlerUIDelegate
-- (void)showLocallyCompletedBannerForIssuingPlayer:(id)a3 challenge:(id)a4 handler:(id)a5;
-- (void)showReceivedBannerForIssuingPlayer:(id)a3 challenge:(id)a4 handler:(id)a5;
-- (void)showRemotelyCompletedBannerForReceivingPlayer:(id)a3 challenge:(id)a4 handler:(id)a5;
+- (void)showLocallyCompletedBannerForIssuingPlayer:(id)player challenge:(id)challenge handler:(id)handler;
+- (void)showReceivedBannerForIssuingPlayer:(id)player challenge:(id)challenge handler:(id)handler;
+- (void)showRemotelyCompletedBannerForReceivingPlayer:(id)player challenge:(id)challenge handler:(id)handler;
 @end
 
 @implementation GKChallengeEventHandlerUIDelegate
 
-- (void)showReceivedBannerForIssuingPlayer:(id)a3 challenge:(id)a4 handler:(id)a5
+- (void)showReceivedBannerForIssuingPlayer:(id)player challenge:(id)challenge handler:(id)handler
 {
-  v7 = a5;
-  v8 = a3;
-  v14 = [a4 alertGoalText];
-  v9 = [v8 displayNameWithOptions:0];
+  handlerCopy = handler;
+  playerCopy = player;
+  alertGoalText = [challenge alertGoalText];
+  v9 = [playerCopy displayNameWithOptions:0];
   v10 = MEMORY[0x277CCACA8];
   v11 = GKGameCenterUIFrameworkBundle();
   v12 = GKGetLocalizedStringFromTableInBundle();
-  v13 = [v10 stringWithFormat:v12, v14];
+  v13 = [v10 stringWithFormat:v12, alertGoalText];
 
   if (GKApplicationLinkedOnOrAfter())
   {
-    [GKNotificationBanner showBannerWithTitle:v9 player:v8 message:v13 touchHandler:v7];
+    [GKNotificationBanner showBannerWithTitle:v9 player:playerCopy message:v13 touchHandler:handlerCopy];
   }
 
   else
   {
-    [GKNotificationBanner showBannerWithTitle:v9 player:v8 message:v13 completionHandler:v7];
+    [GKNotificationBanner showBannerWithTitle:v9 player:playerCopy message:v13 completionHandler:handlerCopy];
   }
 }
 
-- (void)showRemotelyCompletedBannerForReceivingPlayer:(id)a3 challenge:(id)a4 handler:(id)a5
+- (void)showRemotelyCompletedBannerForReceivingPlayer:(id)player challenge:(id)challenge handler:(id)handler
 {
-  v7 = a5;
-  v8 = a3;
-  v14 = [a4 alertGoalText];
-  v9 = [v8 displayNameWithOptions:0];
+  handlerCopy = handler;
+  playerCopy = player;
+  alertGoalText = [challenge alertGoalText];
+  v9 = [playerCopy displayNameWithOptions:0];
   v10 = MEMORY[0x277CCACA8];
   v11 = GKGameCenterUIFrameworkBundle();
   v12 = GKGetLocalizedStringFromTableInBundle();
-  v13 = [v10 stringWithFormat:v12, v14];
+  v13 = [v10 stringWithFormat:v12, alertGoalText];
 
   if (GKApplicationLinkedOnOrAfter())
   {
-    [GKNotificationBanner showBannerWithTitle:v9 player:v8 message:v13 touchHandler:v7];
+    [GKNotificationBanner showBannerWithTitle:v9 player:playerCopy message:v13 touchHandler:handlerCopy];
   }
 
   else
   {
-    [GKNotificationBanner showBannerWithTitle:v9 player:v8 message:v13 completionHandler:v7];
+    [GKNotificationBanner showBannerWithTitle:v9 player:playerCopy message:v13 completionHandler:handlerCopy];
   }
 }
 
-- (void)showLocallyCompletedBannerForIssuingPlayer:(id)a3 challenge:(id)a4 handler:(id)a5
+- (void)showLocallyCompletedBannerForIssuingPlayer:(id)player challenge:(id)challenge handler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  playerCopy = player;
+  challengeCopy = challenge;
+  handlerCopy = handler;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __98__GKChallengeEventHandlerUIDelegate_showLocallyCompletedBannerForIssuingPlayer_challenge_handler___block_invoke;
   v13[3] = &unk_27966BF40;
-  v14 = v8;
-  v15 = v7;
-  v16 = v9;
-  v10 = v9;
-  v11 = v7;
-  v12 = v8;
+  v14 = challengeCopy;
+  v15 = playerCopy;
+  v16 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = playerCopy;
+  v12 = challengeCopy;
   [v12 loadBannerImageWithHandler:v13];
 }
 

@@ -1,6 +1,6 @@
 @interface _NSKVODeallocSentinel
-+ (void)_havingRegistrationLockHeldAttachSentinelToObjectIfNeeded:(id)a3;
-- (id)_initWithObservedObject:(id)a3;
++ (void)_havingRegistrationLockHeldAttachSentinelToObjectIfNeeded:(id)needed;
+- (id)_initWithObservedObject:(id)object;
 - (void)dealloc;
 @end
 
@@ -15,7 +15,7 @@
   [(_NSKVODeallocSentinel *)&v3 dealloc];
 }
 
-- (id)_initWithObservedObject:(id)a3
+- (id)_initWithObservedObject:(id)object
 {
   v6 = *MEMORY[0x1E69E9840];
   v5.receiver = self;
@@ -23,23 +23,23 @@
   result = [(_NSKVODeallocSentinel *)&v5 init];
   if (result)
   {
-    *(result + 1) = a3;
+    *(result + 1) = object;
   }
 
   return result;
 }
 
-+ (void)_havingRegistrationLockHeldAttachSentinelToObjectIfNeeded:(id)a3
++ (void)_havingRegistrationLockHeldAttachSentinelToObjectIfNeeded:(id)needed
 {
-  Class = object_getClass(a3);
+  Class = object_getClass(needed);
   if (_NSKVOUsesBaseClassObservationInfoImplementationForClass(Class))
   {
     v6 = objc_opt_class();
-    if (!objc_getAssociatedObject(a3, v6))
+    if (!objc_getAssociatedObject(needed, v6))
     {
-      value = [[a1 alloc] _initWithObservedObject:a3];
+      value = [[self alloc] _initWithObservedObject:needed];
       v7 = objc_opt_class();
-      objc_setAssociatedObject(a3, v7, value, 0x10001);
+      objc_setAssociatedObject(needed, v7, value, 0x10001);
     }
   }
 }

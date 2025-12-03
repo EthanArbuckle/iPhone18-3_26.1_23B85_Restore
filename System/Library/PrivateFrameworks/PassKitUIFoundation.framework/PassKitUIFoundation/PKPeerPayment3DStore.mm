@@ -2,15 +2,15 @@
 + (PKPeerPayment3DStore)sharedInstance;
 - (id)_init;
 - (id)material;
-- (id)nodeForCharacter:(id)a3;
-- (void)_setMonitorMotion:(BOOL)a3;
+- (id)nodeForCharacter:(id)character;
+- (void)_setMonitorMotion:(BOOL)motion;
 - (void)_updateMonitorMotion;
-- (void)charactersForText:(id)a3 completion:(id)a4 synchronously:(BOOL)a5;
-- (void)motionManager:(id)a3 didReceiveMotion:(id)a4;
-- (void)newSceneWithCompletion:(id)a3 synchronously:(BOOL)a4;
-- (void)relinquishScene:(id)a3;
-- (void)sceneDidBecomeActive:(id)a3;
-- (void)sceneDidBecomeInactive:(id)a3;
+- (void)charactersForText:(id)text completion:(id)completion synchronously:(BOOL)synchronously;
+- (void)motionManager:(id)manager didReceiveMotion:(id)motion;
+- (void)newSceneWithCompletion:(id)completion synchronously:(BOOL)synchronously;
+- (void)relinquishScene:(id)scene;
+- (void)sceneDidBecomeActive:(id)active;
+- (void)sceneDidBecomeInactive:(id)inactive;
 @end
 
 @implementation PKPeerPayment3DStore
@@ -79,10 +79,10 @@ uint64_t __38__PKPeerPayment3DStore_sharedInstance__block_invoke()
   return v3;
 }
 
-- (void)newSceneWithCompletion:(id)a3 synchronously:(BOOL)a4
+- (void)newSceneWithCompletion:(id)completion synchronously:(BOOL)synchronously
 {
-  v4 = a4;
-  v6 = a3;
+  synchronouslyCopy = synchronously;
+  completionCopy = completion;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __61__PKPeerPayment3DStore_newSceneWithCompletion_synchronously___block_invoke;
@@ -90,10 +90,10 @@ uint64_t __38__PKPeerPayment3DStore_sharedInstance__block_invoke()
   v14[4] = self;
   v7 = MEMORY[0x25F8AAFE0](v14);
   v8 = v7;
-  if (v4)
+  if (synchronouslyCopy)
   {
     v9 = v7[2](v7);
-    v6[2](v6, v9);
+    completionCopy[2](completionCopy, v9);
   }
 
   else
@@ -105,7 +105,7 @@ uint64_t __38__PKPeerPayment3DStore_sharedInstance__block_invoke()
     v11[3] = &unk_2799FFC38;
     v11[4] = self;
     v12 = v7;
-    v13 = v6;
+    v13 = completionCopy;
     dispatch_async(sceneLoadingQueue, v11);
 
     v9 = v12;
@@ -138,64 +138,64 @@ void __61__PKPeerPayment3DStore_newSceneWithCompletion_synchronously___block_inv
   (*(a1[6] + 16))();
 }
 
-- (void)relinquishScene:(id)a3
+- (void)relinquishScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   os_unfair_lock_lock(&self->_lock);
-  [(NSMutableArray *)self->_activeScenes removeObjectIdenticalTo:v4];
+  [(NSMutableArray *)self->_activeScenes removeObjectIdenticalTo:sceneCopy];
 
-  v5 = [(PKPeerPayment3DStore *)self _shouldMonitorMotion];
+  _shouldMonitorMotion = [(PKPeerPayment3DStore *)self _shouldMonitorMotion];
   os_unfair_lock_unlock(&self->_lock);
 
-  [(PKPeerPayment3DStore *)self _setMonitorMotion:v5];
+  [(PKPeerPayment3DStore *)self _setMonitorMotion:_shouldMonitorMotion];
 }
 
-- (void)sceneDidBecomeActive:(id)a3
+- (void)sceneDidBecomeActive:(id)active
 {
-  v5 = a3;
-  [v5 setPaused:0];
+  activeCopy = active;
+  [activeCopy setPaused:0];
   os_unfair_lock_lock(&self->_lock);
-  if ([(NSMutableArray *)self->_activeScenes indexOfObjectIdenticalTo:v5]== 0x7FFFFFFFFFFFFFFFLL)
+  if ([(NSMutableArray *)self->_activeScenes indexOfObjectIdenticalTo:activeCopy]== 0x7FFFFFFFFFFFFFFFLL)
   {
-    [(NSMutableArray *)self->_activeScenes addObject:v5];
+    [(NSMutableArray *)self->_activeScenes addObject:activeCopy];
   }
 
-  v4 = [(PKPeerPayment3DStore *)self _shouldMonitorMotion];
+  _shouldMonitorMotion = [(PKPeerPayment3DStore *)self _shouldMonitorMotion];
   os_unfair_lock_unlock(&self->_lock);
-  [(PKPeerPayment3DStore *)self _setMonitorMotion:v4];
+  [(PKPeerPayment3DStore *)self _setMonitorMotion:_shouldMonitorMotion];
 }
 
-- (void)sceneDidBecomeInactive:(id)a3
+- (void)sceneDidBecomeInactive:(id)inactive
 {
-  v4 = a3;
-  [v4 setPaused:1];
+  inactiveCopy = inactive;
+  [inactiveCopy setPaused:1];
   os_unfair_lock_lock(&self->_lock);
-  [(NSMutableArray *)self->_activeScenes removeObjectIdenticalTo:v4];
+  [(NSMutableArray *)self->_activeScenes removeObjectIdenticalTo:inactiveCopy];
 
-  v5 = [(PKPeerPayment3DStore *)self _shouldMonitorMotion];
+  _shouldMonitorMotion = [(PKPeerPayment3DStore *)self _shouldMonitorMotion];
   os_unfair_lock_unlock(&self->_lock);
 
-  [(PKPeerPayment3DStore *)self _setMonitorMotion:v5];
+  [(PKPeerPayment3DStore *)self _setMonitorMotion:_shouldMonitorMotion];
 }
 
 - (void)_updateMonitorMotion
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(PKPeerPayment3DStore *)self _shouldMonitorMotion];
+  _shouldMonitorMotion = [(PKPeerPayment3DStore *)self _shouldMonitorMotion];
   os_unfair_lock_unlock(&self->_lock);
 
-  [(PKPeerPayment3DStore *)self _setMonitorMotion:v3];
+  [(PKPeerPayment3DStore *)self _setMonitorMotion:_shouldMonitorMotion];
 }
 
-- (void)_setMonitorMotion:(BOOL)a3
+- (void)_setMonitorMotion:(BOOL)motion
 {
-  if (self->_monitorMotion != a3)
+  if (self->_monitorMotion != motion)
   {
-    v4 = a3;
-    self->_monitorMotion = a3;
+    motionCopy = motion;
+    self->_monitorMotion = motion;
     v6 = +[PKMotionManager sharedManager];
     v7 = v6;
-    if (v4)
+    if (motionCopy)
     {
       [v6 registerClient:self];
     }
@@ -207,11 +207,11 @@ void __61__PKPeerPayment3DStore_newSceneWithCompletion_synchronously___block_inv
   }
 }
 
-- (void)motionManager:(id)a3 didReceiveMotion:(id)a4
+- (void)motionManager:(id)manager didReceiveMotion:(id)motion
 {
   v37 = *MEMORY[0x277D85DE8];
-  v5 = [a4 attitude];
-  [v5 quaternion];
+  attitude = [motion attitude];
+  [attitude quaternion];
   v27 = v6;
 
   v34 = 0;
@@ -306,9 +306,9 @@ void __61__PKPeerPayment3DStore_newSceneWithCompletion_synchronously___block_inv
   textMaterial = self->_textMaterial;
   if (!textMaterial)
   {
-    v4 = [MEMORY[0x277CDBA90] material];
+    material = [MEMORY[0x277CDBA90] material];
     v5 = self->_textMaterial;
-    self->_textMaterial = v4;
+    self->_textMaterial = material;
 
     v6 = self->_textMaterial;
     v19[0] = *MEMORY[0x277CDBC10];
@@ -336,13 +336,13 @@ void __61__PKPeerPayment3DStore_newSceneWithCompletion_synchronously___block_inv
   return v16;
 }
 
-- (void)charactersForText:(id)a3 completion:(id)a4 synchronously:(BOOL)a5
+- (void)charactersForText:(id)text completion:(id)completion synchronously:(BOOL)synchronously
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v8 && v9)
+  synchronouslyCopy = synchronously;
+  textCopy = text;
+  completionCopy = completion;
+  v10 = completionCopy;
+  if (textCopy && completionCopy)
   {
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
@@ -351,9 +351,9 @@ void __61__PKPeerPayment3DStore_newSceneWithCompletion_synchronously___block_inv
     v19[4] = self;
     v11 = MEMORY[0x25F8AAFE0](v19);
     v12 = v11;
-    if (v5)
+    if (synchronouslyCopy)
     {
-      v13 = (*(v11 + 16))(v11, v8);
+      v13 = (*(v11 + 16))(v11, textCopy);
       (v10)[2](v10, v13);
     }
 
@@ -366,7 +366,7 @@ void __61__PKPeerPayment3DStore_newSceneWithCompletion_synchronously___block_inv
       v15[3] = &unk_2799FFC88;
       v17 = v10;
       v18 = v12;
-      v16 = v8;
+      v16 = textCopy;
       dispatch_async(sceneLoadingQueue, v15);
 
       v13 = v17;
@@ -416,21 +416,21 @@ void __67__PKPeerPayment3DStore_charactersForText_completion_synchronously___blo
   (*(v1 + 16))(v1, v2);
 }
 
-- (id)nodeForCharacter:(id)a3
+- (id)nodeForCharacter:(id)character
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  characterCopy = character;
+  if (!characterCopy)
   {
-    v9 = 0;
+    clone = 0;
     goto LABEL_18;
   }
 
-  v5 = [(NSCache *)self->_cache objectForKey:v4];
+  v5 = [(NSCache *)self->_cache objectForKey:characterCopy];
   if (v5)
   {
     v6 = v5;
-    v7 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
     v8 = PKEqualObjects();
 
     if (v8)
@@ -438,7 +438,7 @@ void __67__PKPeerPayment3DStore_charactersForText_completion_synchronously___blo
 
       v6 = 0;
 LABEL_16:
-      v9 = 0;
+      clone = 0;
       goto LABEL_17;
     }
   }
@@ -446,44 +446,44 @@ LABEL_16:
   else
   {
     v10 = MEMORY[0x277CCACA8];
-    v11 = [&unk_286FD1300 objectForKeyedSubscript:v4];
+    v11 = [&unk_286FD1300 objectForKeyedSubscript:characterCopy];
     if (v11)
     {
-      v12 = [&unk_286FD1300 objectForKeyedSubscript:v4];
-      v13 = [v10 stringWithFormat:@"Character%@", v12];
+      v12 = [&unk_286FD1300 objectForKeyedSubscript:characterCopy];
+      characterCopy = [v10 stringWithFormat:@"Character%@", v12];
     }
 
     else
     {
-      v13 = [v10 stringWithFormat:@"Character%@", v4];
+      characterCopy = [v10 stringWithFormat:@"Character%@", characterCopy];
     }
 
     v14 = PKPassKitUIFoundationBundle();
-    v15 = [v14 URLForResource:v13 withExtension:@"scn"];
+    v15 = [v14 URLForResource:characterCopy withExtension:@"scn"];
 
     if (v15)
     {
       v16 = [MEMORY[0x277CDBAF8] sceneWithURL:v15 options:0 error:0];
-      v17 = [v16 rootNode];
+      rootNode = [v16 rootNode];
 
-      v18 = [v17 childNodes];
-      v6 = [v18 objectAtIndexedSubscript:0];
+      childNodes = [rootNode childNodes];
+      v6 = [childNodes objectAtIndexedSubscript:0];
 
-      [v6 setName:v4];
-      [(NSCache *)self->_cache setObject:v6 forKey:v4];
+      [v6 setName:characterCopy];
+      [(NSCache *)self->_cache setObject:v6 forKey:characterCopy];
     }
 
     else
     {
       cache = self->_cache;
-      v20 = [MEMORY[0x277CBEB68] null];
-      [(NSCache *)cache setObject:v20 forKey:v4];
+      null2 = [MEMORY[0x277CBEB68] null];
+      [(NSCache *)cache setObject:null2 forKey:characterCopy];
 
       v21 = PKLogFacilityTypeGetObject();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v27 = v4;
+        v27 = characterCopy;
         _os_log_impl(&dword_25E0A9000, v21, OS_LOG_TYPE_DEFAULT, "Missing character for %{public}@", buf, 0xCu);
       }
 
@@ -496,17 +496,17 @@ LABEL_16:
     }
   }
 
-  v9 = [v6 clone];
-  v22 = [v9 geometry];
-  v23 = [v22 copy];
-  [v9 setGeometry:v23];
+  clone = [v6 clone];
+  geometry = [clone geometry];
+  v23 = [geometry copy];
+  [clone setGeometry:v23];
 
 LABEL_17:
 LABEL_18:
 
   v24 = *MEMORY[0x277D85DE8];
 
-  return v9;
+  return clone;
 }
 
 @end

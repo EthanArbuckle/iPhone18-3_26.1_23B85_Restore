@@ -1,18 +1,18 @@
 @interface AXMVisionEngineCache
-- (AXMVisionEngineCache)initWithCacheSize:(int64_t)a3;
-- (id)_cacheQueue_resultForKey:(id)a3;
+- (AXMVisionEngineCache)initWithCacheSize:(int64_t)size;
+- (id)_cacheQueue_resultForKey:(id)key;
 - (id)debugDescription;
 - (id)description;
-- (id)resultForKey:(id)a3;
+- (id)resultForKey:(id)key;
 - (int64_t)cacheSize;
-- (void)_cacheQueue_setResult:(id)a3 forKey:(id)a4;
+- (void)_cacheQueue_setResult:(id)result forKey:(id)key;
 - (void)purgeCache;
-- (void)setResult:(id)a3 forKey:(id)a4;
+- (void)setResult:(id)result forKey:(id)key;
 @end
 
 @implementation AXMVisionEngineCache
 
-- (AXMVisionEngineCache)initWithCacheSize:(int64_t)a3
+- (AXMVisionEngineCache)initWithCacheSize:(int64_t)size
 {
   v13.receiver = self;
   v13.super_class = AXMVisionEngineCache;
@@ -24,14 +24,14 @@
     cacheQueue = v4->_cacheQueue;
     v4->_cacheQueue = v6;
 
-    v4->_cacheQueue_maxItems = a3;
-    v8 = [MEMORY[0x1E695DF90] dictionary];
+    v4->_cacheQueue_maxItems = size;
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     cacheQueue_results = v4->_cacheQueue_results;
-    v4->_cacheQueue_results = v8;
+    v4->_cacheQueue_results = dictionary;
 
-    v10 = [MEMORY[0x1E695DFA0] orderedSet];
+    orderedSet = [MEMORY[0x1E695DFA0] orderedSet];
     cacheQueue_orderedKeys = v4->_cacheQueue_orderedKeys;
-    v4->_cacheQueue_orderedKeys = v10;
+    v4->_cacheQueue_orderedKeys = orderedSet;
   }
 
   return v4;
@@ -131,11 +131,11 @@ uint64_t __33__AXMVisionEngineCache_cacheSize__block_invoke(uint64_t a1)
   return result;
 }
 
-- (id)resultForKey:(id)a3
+- (id)resultForKey:(id)key
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  keyCopy = key;
+  v5 = keyCopy;
+  if (keyCopy)
   {
     v12 = 0;
     v13 = &v12;
@@ -150,7 +150,7 @@ uint64_t __33__AXMVisionEngineCache_cacheSize__block_invoke(uint64_t a1)
     block[3] = &unk_1E7A1CFC0;
     v11 = &v12;
     block[4] = self;
-    v10 = v4;
+    v10 = keyCopy;
     dispatch_sync(cacheQueue, block);
     v7 = v13[5];
 
@@ -173,29 +173,29 @@ void __37__AXMVisionEngineCache_resultForKey___block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-- (id)_cacheQueue_resultForKey:(id)a3
+- (id)_cacheQueue_resultForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_cacheQueue_results objectForKey:v4];
+  keyCopy = key;
+  v5 = [(NSMutableDictionary *)self->_cacheQueue_results objectForKey:keyCopy];
   if (v5)
   {
-    [(NSMutableOrderedSet *)self->_cacheQueue_orderedKeys removeObject:v4];
-    [(NSMutableOrderedSet *)self->_cacheQueue_orderedKeys addObject:v4];
+    [(NSMutableOrderedSet *)self->_cacheQueue_orderedKeys removeObject:keyCopy];
+    [(NSMutableOrderedSet *)self->_cacheQueue_orderedKeys addObject:keyCopy];
     v6 = AXMediaLogEngineCache();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
-      [(AXMVisionEngineCache *)v4 _cacheQueue_resultForKey:v6];
+      [(AXMVisionEngineCache *)keyCopy _cacheQueue_resultForKey:v6];
     }
   }
 
   return v5;
 }
 
-- (void)setResult:(id)a3 forKey:(id)a4
+- (void)setResult:(id)result forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  resultCopy = result;
+  keyCopy = key;
+  if (keyCopy)
   {
     cacheQueue = self->_cacheQueue;
     block[0] = MEMORY[0x1E69E9820];
@@ -203,37 +203,37 @@ void __37__AXMVisionEngineCache_resultForKey___block_invoke(uint64_t a1)
     block[2] = __41__AXMVisionEngineCache_setResult_forKey___block_invoke;
     block[3] = &unk_1E7A1D5C8;
     block[4] = self;
-    v10 = v6;
-    v11 = v7;
+    v10 = resultCopy;
+    v11 = keyCopy;
     dispatch_sync(cacheQueue, block);
   }
 }
 
-- (void)_cacheQueue_setResult:(id)a3 forKey:(id)a4
+- (void)_cacheQueue_setResult:(id)result forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  resultCopy = result;
+  keyCopy = key;
+  if (resultCopy)
   {
-    [(NSMutableDictionary *)self->_cacheQueue_results setObject:v6 forKey:v7];
+    [(NSMutableDictionary *)self->_cacheQueue_results setObject:resultCopy forKey:keyCopy];
     p_cacheQueue_orderedKeys = &self->_cacheQueue_orderedKeys;
-    [(NSMutableOrderedSet *)self->_cacheQueue_orderedKeys removeObject:v7];
-    [(NSMutableOrderedSet *)self->_cacheQueue_orderedKeys addObject:v7];
+    [(NSMutableOrderedSet *)self->_cacheQueue_orderedKeys removeObject:keyCopy];
+    [(NSMutableOrderedSet *)self->_cacheQueue_orderedKeys addObject:keyCopy];
     v9 = AXMediaLogEngineCache();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
-      [AXMVisionEngineCache _cacheQueue_setResult:v7 forKey:&self->_cacheQueue_orderedKeys];
+      [AXMVisionEngineCache _cacheQueue_setResult:keyCopy forKey:&self->_cacheQueue_orderedKeys];
     }
 
     if ([(NSMutableOrderedSet *)self->_cacheQueue_orderedKeys count]> self->_cacheQueue_maxItems)
     {
-      v10 = [(NSMutableOrderedSet *)self->_cacheQueue_orderedKeys firstObject];
-      [(NSMutableDictionary *)self->_cacheQueue_results removeObjectForKey:v10];
-      [(NSMutableOrderedSet *)self->_cacheQueue_orderedKeys removeObject:v10];
+      firstObject = [(NSMutableOrderedSet *)self->_cacheQueue_orderedKeys firstObject];
+      [(NSMutableDictionary *)self->_cacheQueue_results removeObjectForKey:firstObject];
+      [(NSMutableOrderedSet *)self->_cacheQueue_orderedKeys removeObject:firstObject];
       v11 = AXMediaLogEngineCache();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
       {
-        [AXMVisionEngineCache _cacheQueue_setResult:v10 forKey:p_cacheQueue_orderedKeys];
+        [AXMVisionEngineCache _cacheQueue_setResult:firstObject forKey:p_cacheQueue_orderedKeys];
       }
     }
   }
@@ -243,11 +243,11 @@ void __37__AXMVisionEngineCache_resultForKey___block_invoke(uint64_t a1)
     v12 = AXMediaLogEngineCache();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
-      [AXMVisionEngineCache _cacheQueue_setResult:v7 forKey:self];
+      [AXMVisionEngineCache _cacheQueue_setResult:keyCopy forKey:self];
     }
 
-    [(NSMutableDictionary *)self->_cacheQueue_results removeObjectForKey:v7];
-    [(NSMutableOrderedSet *)self->_cacheQueue_orderedKeys removeObject:v7];
+    [(NSMutableDictionary *)self->_cacheQueue_results removeObjectForKey:keyCopy];
+    [(NSMutableOrderedSet *)self->_cacheQueue_orderedKeys removeObject:keyCopy];
   }
 }
 

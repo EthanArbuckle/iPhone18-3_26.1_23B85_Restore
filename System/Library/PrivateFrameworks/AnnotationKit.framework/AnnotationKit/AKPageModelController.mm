@@ -1,57 +1,57 @@
 @interface AKPageModelController
-+ (BOOL)automaticallyNotifiesObserversForKey:(id)a3;
++ (BOOL)automaticallyNotifiesObserversForKey:(id)key;
 - (AKPageModelController)init;
-- (AKPageModelController)initWithArchivableRepresentation:(id)a3;
+- (AKPageModelController)initWithArchivableRepresentation:(id)representation;
 - (AKStatistics)statisticsLogger;
 - (BOOL)hasHDRAnnotation;
 - (BOOL)hasMaskBorderAnnotation;
-- (CGImage)renderAnnotationsOnImage:(CGImage *)a3 wantsHDR:(BOOL)a4 opaque:(BOOL)a5 withTransform:(CGAffineTransform *)a6 shouldApplyCropRect:(BOOL)a7 forPreview:(BOOL)a8;
+- (CGImage)renderAnnotationsOnImage:(CGImage *)image wantsHDR:(BOOL)r opaque:(BOOL)opaque withTransform:(CGAffineTransform *)transform shouldApplyCropRect:(BOOL)rect forPreview:(BOOL)preview;
 - (CGRect)appliedCropRect;
 - (double)annotationHeadroom;
 - (id)archivableRepresentation;
 - (id)representedObject;
 - (id)selectionStateForUndo;
-- (void)_coalescedEnsureInkAnnotationIsInFront:(id)a3;
-- (void)_enableEditObservationForAnnotationIfNew:(id)a3;
+- (void)_coalescedEnsureInkAnnotationIsInFront:(id)front;
+- (void)_enableEditObservationForAnnotationIfNew:(id)new;
 - (void)_ensureInkAnnotationIsInFrontWhenEditsAreDone;
-- (void)_logAnnotationAdded:(id)a3;
+- (void)_logAnnotationAdded:(id)added;
 - (void)_postSelectedAnnotationsChangedNotification;
 - (void)addCropToolAnnotation;
-- (void)addSelectedAnnotations:(id)a3;
-- (void)addSelectedAnnotationsObject:(id)a3;
+- (void)addSelectedAnnotations:(id)annotations;
+- (void)addSelectedAnnotationsObject:(id)object;
 - (void)bringSelectedAnnotationsForward;
 - (void)bringSelectedAnnotationsToFront;
-- (void)insertAnnotations:(id)a3 atIndexes:(id)a4;
-- (void)insertObject:(id)a3 inAnnotationsAtIndex:(unint64_t)a4;
-- (void)intersectSelectedAnnotations:(id)a3;
+- (void)insertAnnotations:(id)annotations atIndexes:(id)indexes;
+- (void)insertObject:(id)object inAnnotationsAtIndex:(unint64_t)index;
+- (void)intersectSelectedAnnotations:(id)annotations;
 - (void)removeAllAnnotations;
-- (void)removeAnnotationsAtIndexes:(id)a3;
+- (void)removeAnnotationsAtIndexes:(id)indexes;
 - (void)removeCropToolAnnotation;
-- (void)removeObjectFromAnnotationsAtIndex:(unint64_t)a3;
-- (void)removeSelectedAnnotations:(id)a3;
-- (void)removeSelectedAnnotationsObject:(id)a3;
-- (void)replaceAnnotationsAtIndexes:(id)a3 withAnnotations:(id)a4;
-- (void)replaceObjectInAnnotationsAtIndex:(unint64_t)a3 withObject:(id)a4;
-- (void)restoreSelectionStateForUndo:(id)a3;
+- (void)removeObjectFromAnnotationsAtIndex:(unint64_t)index;
+- (void)removeSelectedAnnotations:(id)annotations;
+- (void)removeSelectedAnnotationsObject:(id)object;
+- (void)replaceAnnotationsAtIndexes:(id)indexes withAnnotations:(id)annotations;
+- (void)replaceObjectInAnnotationsAtIndex:(unint64_t)index withObject:(id)object;
+- (void)restoreSelectionStateForUndo:(id)undo;
 - (void)selectAllAnnotations;
-- (void)selectAnnotation:(id)a3 byExtendingSelection:(BOOL)a4;
-- (void)selectAnnotationsAtIndexes:(id)a3 byExtendingSelection:(BOOL)a4;
+- (void)selectAnnotation:(id)annotation byExtendingSelection:(BOOL)selection;
+- (void)selectAnnotationsAtIndexes:(id)indexes byExtendingSelection:(BOOL)selection;
 - (void)sendSelectedAnnotationsBackward;
 - (void)sendSelectedAnnotationsToBack;
-- (void)setInkCanvasAnnotation:(id)a3;
-- (void)setInkCanvasAnnotationOneTime:(id)a3;
-- (void)setSelectedAnnotations:(id)a3;
+- (void)setInkCanvasAnnotation:(id)annotation;
+- (void)setInkCanvasAnnotationOneTime:(id)time;
+- (void)setSelectedAnnotations:(id)annotations;
 @end
 
 @implementation AKPageModelController
 
-+ (BOOL)automaticallyNotifiesObserversForKey:(id)a3
++ (BOOL)automaticallyNotifiesObserversForKey:(id)key
 {
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS___AKPageModelController;
-  v3 = a3;
-  v4 = objc_msgSendSuper2(&v7, sel_automaticallyNotifiesObserversForKey_, v3);
-  v5 = [v3 isEqualToString:{@"selectedAnnotations", v7.receiver, v7.super_class}];
+  keyCopy = key;
+  v4 = objc_msgSendSuper2(&v7, sel_automaticallyNotifiesObserversForKey_, keyCopy);
+  v5 = [keyCopy isEqualToString:{@"selectedAnnotations", v7.receiver, v7.super_class}];
 
   return (v5 ^ 1) & v4;
 }
@@ -63,9 +63,9 @@
   v2 = [(AKPageModelController *)&v9 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB40] orderedSet];
+    orderedSet = [MEMORY[0x277CBEB40] orderedSet];
     v4 = *(v2 + 1);
-    *(v2 + 1) = v3;
+    *(v2 + 1) = orderedSet;
 
     v5 = [MEMORY[0x277CBEB58] set];
     v6 = *(v2 + 2);
@@ -79,46 +79,46 @@
   return v2;
 }
 
-- (void)insertObject:(id)a3 inAnnotationsAtIndex:(unint64_t)a4
+- (void)insertObject:(id)object inAnnotationsAtIndex:(unint64_t)index
 {
-  v7 = a3;
+  objectCopy = object;
   if (([(NSMutableOrderedSet *)self->_mutableAnnotations containsObject:?]& 1) == 0)
   {
-    [(NSMutableOrderedSet *)self->_mutableAnnotations insertObject:v7 atIndex:a4];
+    [(NSMutableOrderedSet *)self->_mutableAnnotations insertObject:objectCopy atIndex:index];
     [(AKPageModelController *)self _ensureInkAnnotationIsInFrontWhenEditsAreDone];
-    v6 = [(AKPageModelController *)self inkCanvasAnnotation];
+    inkCanvasAnnotation = [(AKPageModelController *)self inkCanvasAnnotation];
 
-    if (!v6)
+    if (!inkCanvasAnnotation)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [(AKPageModelController *)self setInkCanvasAnnotation:v7];
+        [(AKPageModelController *)self setInkCanvasAnnotation:objectCopy];
       }
     }
 
-    [(AKPageModelController *)self _enableEditObservationForAnnotationIfNew:v7];
-    [(AKPageModelController *)self _logAnnotationAdded:v7];
+    [(AKPageModelController *)self _enableEditObservationForAnnotationIfNew:objectCopy];
+    [(AKPageModelController *)self _logAnnotationAdded:objectCopy];
   }
 }
 
-- (void)insertAnnotations:(id)a3 atIndexes:(id)a4
+- (void)insertAnnotations:(id)annotations atIndexes:(id)indexes
 {
   v33 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  annotationsCopy = annotations;
+  indexesCopy = indexes;
   mutableAnnotations = self->_mutableAnnotations;
-  v9 = [MEMORY[0x277CBEB98] setWithArray:v6];
+  v9 = [MEMORY[0x277CBEB98] setWithArray:annotationsCopy];
   LOBYTE(mutableAnnotations) = [(NSMutableOrderedSet *)mutableAnnotations intersectsSet:v9];
 
   if (mutableAnnotations)
   {
-    v10 = [v7 firstIndex];
+    firstIndex = [indexesCopy firstIndex];
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v11 = v6;
+    v11 = annotationsCopy;
     v12 = [v11 countByEnumeratingWithState:&v23 objects:v31 count:16];
     if (v12)
     {
@@ -133,8 +133,8 @@
             objc_enumerationMutation(v11);
           }
 
-          [(AKPageModelController *)self insertObject:*(*(&v23 + 1) + 8 * i) inAnnotationsAtIndex:v10, v23];
-          v10 = [v7 indexGreaterThanIndex:v10];
+          [(AKPageModelController *)self insertObject:*(*(&v23 + 1) + 8 * i) inAnnotationsAtIndex:firstIndex, v23];
+          firstIndex = [indexesCopy indexGreaterThanIndex:firstIndex];
         }
 
         v13 = [v11 countByEnumeratingWithState:&v23 objects:v31 count:16];
@@ -146,13 +146,13 @@
 
   else
   {
-    [(NSMutableOrderedSet *)self->_mutableAnnotations insertObjects:v6 atIndexes:v7];
+    [(NSMutableOrderedSet *)self->_mutableAnnotations insertObjects:annotationsCopy atIndexes:indexesCopy];
     [(AKPageModelController *)self _ensureInkAnnotationIsInFrontWhenEditsAreDone];
     v29 = 0u;
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v16 = v6;
+    v16 = annotationsCopy;
     v17 = [v16 countByEnumeratingWithState:&v27 objects:v32 count:16];
     if (v17)
     {
@@ -168,9 +168,9 @@
           }
 
           v21 = *(*(&v27 + 1) + 8 * j);
-          v22 = [(AKPageModelController *)self inkCanvasAnnotation];
+          inkCanvasAnnotation = [(AKPageModelController *)self inkCanvasAnnotation];
 
-          if (!v22)
+          if (!inkCanvasAnnotation)
           {
             objc_opt_class();
             if (objc_opt_isKindOfClass())
@@ -191,38 +191,38 @@
   }
 }
 
-- (void)_enableEditObservationForAnnotationIfNew:(id)a3
+- (void)_enableEditObservationForAnnotationIfNew:(id)new
 {
-  v3 = a3;
-  if ((sub_23F4ABA3C() & 1) == 0 && ([v3 isEdited] & 1) == 0 && (objc_msgSend(v3, "shouldObserveEdits") & 1) == 0)
+  newCopy = new;
+  if ((sub_23F4ABA3C() & 1) == 0 && ([newCopy isEdited] & 1) == 0 && (objc_msgSend(newCopy, "shouldObserveEdits") & 1) == 0)
   {
-    [v3 setShouldObserveEdits:1];
+    [newCopy setShouldObserveEdits:1];
   }
 }
 
 - (void)removeAllAnnotations
 {
   v3 = MEMORY[0x277CCAA78];
-  v4 = [(AKPageModelController *)self annotations];
-  v5 = [v3 indexSetWithIndexesInRange:{0, objc_msgSend(v4, "count")}];
+  annotations = [(AKPageModelController *)self annotations];
+  v5 = [v3 indexSetWithIndexesInRange:{0, objc_msgSend(annotations, "count")}];
 
   [(AKPageModelController *)self removeAnnotationsAtIndexes:v5];
 }
 
-- (void)removeObjectFromAnnotationsAtIndex:(unint64_t)a3
+- (void)removeObjectFromAnnotationsAtIndex:(unint64_t)index
 {
-  if ([(NSMutableOrderedSet *)self->_mutableAnnotations count]> a3)
+  if ([(NSMutableOrderedSet *)self->_mutableAnnotations count]> index)
   {
-    v6 = [(NSMutableOrderedSet *)self->_mutableAnnotations objectAtIndex:a3];
+    v6 = [(NSMutableOrderedSet *)self->_mutableAnnotations objectAtIndex:index];
     if ([(NSMutableSet *)self->_mutableSelectedAnnotations containsObject:?])
     {
       [(AKPageModelController *)self removeSelectedAnnotationsObject:v6];
     }
 
     [v6 setShouldObserveEdits:0];
-    v5 = [(AKPageModelController *)self inkCanvasAnnotation];
+    inkCanvasAnnotation = [(AKPageModelController *)self inkCanvasAnnotation];
 
-    if (v5)
+    if (inkCanvasAnnotation)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -231,15 +231,15 @@
       }
     }
 
-    [(NSMutableOrderedSet *)self->_mutableAnnotations removeObjectAtIndex:a3];
+    [(NSMutableOrderedSet *)self->_mutableAnnotations removeObjectAtIndex:index];
   }
 }
 
-- (void)removeAnnotationsAtIndexes:(id)a3
+- (void)removeAnnotationsAtIndexes:(id)indexes
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(NSMutableOrderedSet *)self->_mutableAnnotations objectsAtIndexes:v4];
+  indexesCopy = indexes;
+  v5 = [(NSMutableOrderedSet *)self->_mutableAnnotations objectsAtIndexes:indexesCopy];
   mutableSelectedAnnotations = self->_mutableSelectedAnnotations;
   v7 = [MEMORY[0x277CBEB98] setWithArray:v5];
   LODWORD(mutableSelectedAnnotations) = [(NSMutableSet *)mutableSelectedAnnotations intersectsSet:v7];
@@ -271,9 +271,9 @@
         }
 
         [*(*(&v15 + 1) + 8 * v13) setShouldObserveEdits:{0, v15}];
-        v14 = [(AKPageModelController *)self inkCanvasAnnotation];
+        inkCanvasAnnotation = [(AKPageModelController *)self inkCanvasAnnotation];
 
-        if (v14)
+        if (inkCanvasAnnotation)
         {
           objc_opt_class();
           if (objc_opt_isKindOfClass())
@@ -292,20 +292,20 @@
     while (v11);
   }
 
-  [(NSMutableOrderedSet *)self->_mutableAnnotations removeObjectsAtIndexes:v4];
+  [(NSMutableOrderedSet *)self->_mutableAnnotations removeObjectsAtIndexes:indexesCopy];
 }
 
-- (void)replaceObjectInAnnotationsAtIndex:(unint64_t)a3 withObject:(id)a4
+- (void)replaceObjectInAnnotationsAtIndex:(unint64_t)index withObject:(id)object
 {
-  v7 = a4;
-  v6 = [(NSMutableOrderedSet *)self->_mutableAnnotations objectAtIndex:a3];
+  objectCopy = object;
+  v6 = [(NSMutableOrderedSet *)self->_mutableAnnotations objectAtIndex:index];
   if ([(NSMutableSet *)self->_mutableSelectedAnnotations containsObject:v6])
   {
     [(AKPageModelController *)self removeSelectedAnnotationsObject:v6];
   }
 
   [v6 setShouldObserveEdits:0];
-  [(NSMutableOrderedSet *)self->_mutableAnnotations replaceObjectAtIndex:a3 withObject:v7];
+  [(NSMutableOrderedSet *)self->_mutableAnnotations replaceObjectAtIndex:index withObject:objectCopy];
   [(AKPageModelController *)self _ensureInkAnnotationIsInFrontWhenEditsAreDone];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -316,29 +316,29 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(AKPageModelController *)self setInkCanvasAnnotation:v7];
+    [(AKPageModelController *)self setInkCanvasAnnotation:objectCopy];
   }
 
-  [(AKPageModelController *)self _enableEditObservationForAnnotationIfNew:v7];
+  [(AKPageModelController *)self _enableEditObservationForAnnotationIfNew:objectCopy];
 }
 
-- (void)replaceAnnotationsAtIndexes:(id)a3 withAnnotations:(id)a4
+- (void)replaceAnnotationsAtIndexes:(id)indexes withAnnotations:(id)annotations
 {
   v44 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  indexesCopy = indexes;
+  annotationsCopy = annotations;
   mutableAnnotations = self->_mutableAnnotations;
-  v9 = [MEMORY[0x277CBEB98] setWithArray:v7];
+  v9 = [MEMORY[0x277CBEB98] setWithArray:annotationsCopy];
   LOBYTE(mutableAnnotations) = [(NSMutableOrderedSet *)mutableAnnotations intersectsSet:v9];
 
   if (mutableAnnotations)
   {
-    v10 = [v6 firstIndex];
+    firstIndex = [indexesCopy firstIndex];
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v11 = v7;
+    v11 = annotationsCopy;
     v12 = [v11 countByEnumeratingWithState:&v29 objects:v41 count:16];
     if (v12)
     {
@@ -353,8 +353,8 @@
             objc_enumerationMutation(v11);
           }
 
-          [(AKPageModelController *)self replaceObjectInAnnotationsAtIndex:v10 withObject:*(*(&v29 + 1) + 8 * i), v29];
-          v10 = [v6 indexGreaterThanIndex:v10];
+          [(AKPageModelController *)self replaceObjectInAnnotationsAtIndex:firstIndex withObject:*(*(&v29 + 1) + 8 * i), v29];
+          firstIndex = [indexesCopy indexGreaterThanIndex:firstIndex];
         }
 
         v13 = [v11 countByEnumeratingWithState:&v29 objects:v41 count:16];
@@ -367,7 +367,7 @@
   else
   {
     v16 = MEMORY[0x277CBEB98];
-    v17 = [(NSMutableOrderedSet *)self->_mutableAnnotations objectsAtIndexes:v6];
+    v17 = [(NSMutableOrderedSet *)self->_mutableAnnotations objectsAtIndexes:indexesCopy];
     v11 = [v16 setWithArray:v17];
 
     if ([(NSMutableSet *)self->_mutableSelectedAnnotations intersectsSet:v11])
@@ -379,8 +379,8 @@
     v40 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v18 = [v11 allObjects];
-    v19 = [v18 countByEnumeratingWithState:&v37 objects:v43 count:16];
+    allObjects = [v11 allObjects];
+    v19 = [allObjects countByEnumeratingWithState:&v37 objects:v43 count:16];
     if (v19)
     {
       v20 = v19;
@@ -391,7 +391,7 @@
         {
           if (*v38 != v21)
           {
-            objc_enumerationMutation(v18);
+            objc_enumerationMutation(allObjects);
           }
 
           [*(*(&v37 + 1) + 8 * j) setShouldObserveEdits:0];
@@ -402,19 +402,19 @@
           }
         }
 
-        v20 = [v18 countByEnumeratingWithState:&v37 objects:v43 count:16];
+        v20 = [allObjects countByEnumeratingWithState:&v37 objects:v43 count:16];
       }
 
       while (v20);
     }
 
-    [(NSMutableOrderedSet *)self->_mutableAnnotations replaceObjectsAtIndexes:v6 withObjects:v7];
+    [(NSMutableOrderedSet *)self->_mutableAnnotations replaceObjectsAtIndexes:indexesCopy withObjects:annotationsCopy];
     [(AKPageModelController *)self _ensureInkAnnotationIsInFrontWhenEditsAreDone];
     v35 = 0u;
     v36 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v23 = v7;
+    v23 = annotationsCopy;
     v24 = [v23 countByEnumeratingWithState:&v33 objects:v42 count:16];
     if (v24)
     {
@@ -447,72 +447,72 @@
   }
 }
 
-- (void)addSelectedAnnotationsObject:(id)a3
+- (void)addSelectedAnnotationsObject:(id)object
 {
-  v7 = a3;
-  v4 = [(AKPageModelController *)self cropAnnotation];
+  objectCopy = object;
+  cropAnnotation = [(AKPageModelController *)self cropAnnotation];
 
-  if (v4 != v7)
+  if (cropAnnotation != objectCopy)
   {
-    v5 = [(AKPageModelController *)self inkCanvasAnnotation];
+    inkCanvasAnnotation = [(AKPageModelController *)self inkCanvasAnnotation];
 
-    if (v5 != v7)
+    if (inkCanvasAnnotation != objectCopy)
     {
-      v6 = [MEMORY[0x277CBEB98] setWithObject:v7];
+      v6 = [MEMORY[0x277CBEB98] setWithObject:objectCopy];
       [(AKPageModelController *)self willChangeValueForKey:@"selectedAnnotations" withSetMutation:1 usingObjects:v6];
-      [(NSMutableSet *)self->_mutableSelectedAnnotations addObject:v7];
+      [(NSMutableSet *)self->_mutableSelectedAnnotations addObject:objectCopy];
       [(AKPageModelController *)self didChangeValueForKey:@"selectedAnnotations" withSetMutation:1 usingObjects:v6];
       [(AKPageModelController *)self _postSelectedAnnotationsChangedNotification];
     }
   }
 }
 
-- (void)addSelectedAnnotations:(id)a3
+- (void)addSelectedAnnotations:(id)annotations
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(AKPageModelController *)self cropAnnotation];
-  if (v5)
+  annotationsCopy = annotations;
+  cropAnnotation = [(AKPageModelController *)self cropAnnotation];
+  if (cropAnnotation)
   {
-    v6 = v5;
-    v7 = [(AKPageModelController *)self cropAnnotation];
-    v8 = [v4 containsObject:v7];
+    v6 = cropAnnotation;
+    cropAnnotation2 = [(AKPageModelController *)self cropAnnotation];
+    v8 = [annotationsCopy containsObject:cropAnnotation2];
 
     if (v8)
     {
-      v9 = [v4 mutableCopy];
-      v10 = [(AKPageModelController *)self cropAnnotation];
-      [v9 removeObject:v10];
+      v9 = [annotationsCopy mutableCopy];
+      cropAnnotation3 = [(AKPageModelController *)self cropAnnotation];
+      [v9 removeObject:cropAnnotation3];
 
-      v4 = v9;
+      annotationsCopy = v9;
     }
   }
 
-  v11 = [(AKPageModelController *)self inkCanvasAnnotation];
-  if (v11)
+  inkCanvasAnnotation = [(AKPageModelController *)self inkCanvasAnnotation];
+  if (inkCanvasAnnotation)
   {
-    v12 = v11;
-    v13 = [(AKPageModelController *)self inkCanvasAnnotation];
-    v14 = [v4 containsObject:v13];
+    v12 = inkCanvasAnnotation;
+    inkCanvasAnnotation2 = [(AKPageModelController *)self inkCanvasAnnotation];
+    v14 = [annotationsCopy containsObject:inkCanvasAnnotation2];
 
     if (v14)
     {
-      v15 = [v4 mutableCopy];
-      v16 = [(AKPageModelController *)self inkCanvasAnnotation];
-      [v15 removeObject:v16];
+      v15 = [annotationsCopy mutableCopy];
+      inkCanvasAnnotation3 = [(AKPageModelController *)self inkCanvasAnnotation];
+      [v15 removeObject:inkCanvasAnnotation3];
 
-      v4 = v15;
+      annotationsCopy = v15;
     }
   }
 
   v17 = [(NSMutableOrderedSet *)self->_mutableAnnotations set];
-  v18 = [v4 isSubsetOfSet:v17];
+  v18 = [annotationsCopy isSubsetOfSet:v17];
 
   if (v18)
   {
-    [(AKPageModelController *)self willChangeValueForKey:@"selectedAnnotations" withSetMutation:1 usingObjects:v4];
-    [(NSMutableSet *)self->_mutableSelectedAnnotations unionSet:v4];
-    [(AKPageModelController *)self didChangeValueForKey:@"selectedAnnotations" withSetMutation:1 usingObjects:v4];
+    [(AKPageModelController *)self willChangeValueForKey:@"selectedAnnotations" withSetMutation:1 usingObjects:annotationsCopy];
+    [(NSMutableSet *)self->_mutableSelectedAnnotations unionSet:annotationsCopy];
+    [(AKPageModelController *)self didChangeValueForKey:@"selectedAnnotations" withSetMutation:1 usingObjects:annotationsCopy];
   }
 
   else
@@ -521,7 +521,7 @@
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v19 = v4;
+    v19 = annotationsCopy;
     v20 = [v19 countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (v20)
     {
@@ -551,30 +551,30 @@
   [(AKPageModelController *)self _postSelectedAnnotationsChangedNotification];
 }
 
-- (void)removeSelectedAnnotationsObject:(id)a3
+- (void)removeSelectedAnnotationsObject:(id)object
 {
   v4 = MEMORY[0x277CBEB98];
-  v5 = a3;
-  v6 = [v4 setWithObject:v5];
+  objectCopy = object;
+  v6 = [v4 setWithObject:objectCopy];
   [(AKPageModelController *)self willChangeValueForKey:@"selectedAnnotations" withSetMutation:2 usingObjects:v6];
-  [(NSMutableSet *)self->_mutableSelectedAnnotations removeObject:v5];
+  [(NSMutableSet *)self->_mutableSelectedAnnotations removeObject:objectCopy];
 
   [(AKPageModelController *)self didChangeValueForKey:@"selectedAnnotations" withSetMutation:2 usingObjects:v6];
   [(AKPageModelController *)self _postSelectedAnnotationsChangedNotification];
 }
 
-- (void)removeSelectedAnnotations:(id)a3
+- (void)removeSelectedAnnotations:(id)annotations
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  annotationsCopy = annotations;
   v5 = [(NSMutableOrderedSet *)self->_mutableAnnotations set];
-  v6 = [v4 isSubsetOfSet:v5];
+  v6 = [annotationsCopy isSubsetOfSet:v5];
 
   if (v6)
   {
-    [(AKPageModelController *)self willChangeValueForKey:@"selectedAnnotations" withSetMutation:2 usingObjects:v4];
-    [(NSMutableSet *)self->_mutableSelectedAnnotations minusSet:v4];
-    [(AKPageModelController *)self didChangeValueForKey:@"selectedAnnotations" withSetMutation:2 usingObjects:v4];
+    [(AKPageModelController *)self willChangeValueForKey:@"selectedAnnotations" withSetMutation:2 usingObjects:annotationsCopy];
+    [(NSMutableSet *)self->_mutableSelectedAnnotations minusSet:annotationsCopy];
+    [(AKPageModelController *)self didChangeValueForKey:@"selectedAnnotations" withSetMutation:2 usingObjects:annotationsCopy];
   }
 
   else
@@ -583,7 +583,7 @@
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v7 = v4;
+    v7 = annotationsCopy;
     v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v8)
     {
@@ -613,26 +613,26 @@
   [(AKPageModelController *)self _postSelectedAnnotationsChangedNotification];
 }
 
-- (void)intersectSelectedAnnotations:(id)a3
+- (void)intersectSelectedAnnotations:(id)annotations
 {
-  v4 = a3;
-  [(AKPageModelController *)self willChangeValueForKey:@"selectedAnnotations" withSetMutation:3 usingObjects:v4];
-  [(NSMutableSet *)self->_mutableSelectedAnnotations intersectSet:v4];
-  [(AKPageModelController *)self didChangeValueForKey:@"selectedAnnotations" withSetMutation:3 usingObjects:v4];
+  annotationsCopy = annotations;
+  [(AKPageModelController *)self willChangeValueForKey:@"selectedAnnotations" withSetMutation:3 usingObjects:annotationsCopy];
+  [(NSMutableSet *)self->_mutableSelectedAnnotations intersectSet:annotationsCopy];
+  [(AKPageModelController *)self didChangeValueForKey:@"selectedAnnotations" withSetMutation:3 usingObjects:annotationsCopy];
 
   [(AKPageModelController *)self _postSelectedAnnotationsChangedNotification];
 }
 
-- (void)setSelectedAnnotations:(id)a3
+- (void)setSelectedAnnotations:(id)annotations
 {
-  v9 = a3;
-  v4 = [(AKPageModelController *)self inkCanvasAnnotation];
-  v5 = [(AKPageModelController *)self cropAnnotation];
-  if (v4 && ([v9 containsObject:v4] & 1) != 0)
+  annotationsCopy = annotations;
+  inkCanvasAnnotation = [(AKPageModelController *)self inkCanvasAnnotation];
+  cropAnnotation = [(AKPageModelController *)self cropAnnotation];
+  if (inkCanvasAnnotation && ([annotationsCopy containsObject:inkCanvasAnnotation] & 1) != 0)
   {
-    v6 = [v9 mutableCopy];
-    [v6 removeObject:v4];
-    if (!v5)
+    v6 = [annotationsCopy mutableCopy];
+    [v6 removeObject:inkCanvasAnnotation];
+    if (!cropAnnotation)
     {
       goto LABEL_10;
     }
@@ -640,24 +640,24 @@
     goto LABEL_9;
   }
 
-  if (v5 && [v9 containsObject:v5])
+  if (cropAnnotation && [annotationsCopy containsObject:cropAnnotation])
   {
-    v7 = [v9 mutableCopy];
+    v7 = [annotationsCopy mutableCopy];
     v6 = v7;
-    if (v4)
+    if (inkCanvasAnnotation)
     {
-      [v7 removeObject:v4];
+      [v7 removeObject:inkCanvasAnnotation];
     }
 
 LABEL_9:
-    [v6 removeObject:v5];
+    [v6 removeObject:cropAnnotation];
 LABEL_10:
 
     v8 = v6;
     goto LABEL_12;
   }
 
-  v8 = v9;
+  v8 = annotationsCopy;
 LABEL_12:
   v10 = v8;
   [(AKPageModelController *)self willChangeValueForKey:@"selectedAnnotations" withSetMutation:4 usingObjects:v8];
@@ -666,20 +666,20 @@ LABEL_12:
   [(AKPageModelController *)self _postSelectedAnnotationsChangedNotification];
 }
 
-- (void)selectAnnotation:(id)a3 byExtendingSelection:(BOOL)a4
+- (void)selectAnnotation:(id)annotation byExtendingSelection:(BOOL)selection
 {
-  v4 = a4;
-  v6 = a3;
-  if (v6)
+  selectionCopy = selection;
+  annotationCopy = annotation;
+  if (annotationCopy)
   {
-    if (v4)
+    if (selectionCopy)
     {
-      [(AKPageModelController *)self addSelectedAnnotationsObject:v6];
+      [(AKPageModelController *)self addSelectedAnnotationsObject:annotationCopy];
     }
 
     else
     {
-      v7 = [MEMORY[0x277CBEB98] setWithObject:v6];
+      v7 = [MEMORY[0x277CBEB98] setWithObject:annotationCopy];
       [(AKPageModelController *)self setSelectedAnnotations:v7];
     }
   }
@@ -687,14 +687,14 @@ LABEL_12:
   MEMORY[0x2821F96F8]();
 }
 
-- (void)selectAnnotationsAtIndexes:(id)a3 byExtendingSelection:(BOOL)a4
+- (void)selectAnnotationsAtIndexes:(id)indexes byExtendingSelection:(BOOL)selection
 {
-  v4 = a4;
+  selectionCopy = selection;
   v6 = MEMORY[0x277CBEB98];
-  v7 = [(NSMutableOrderedSet *)self->_mutableAnnotations objectsAtIndexes:a3];
+  v7 = [(NSMutableOrderedSet *)self->_mutableAnnotations objectsAtIndexes:indexes];
   v8 = [v6 setWithArray:v7];
 
-  if (v4)
+  if (selectionCopy)
   {
     [(AKPageModelController *)self addSelectedAnnotations:v8];
   }
@@ -708,27 +708,27 @@ LABEL_12:
 - (void)selectAllAnnotations
 {
   v3 = MEMORY[0x277CBEB98];
-  v5 = [(AKPageModelController *)self annotations];
-  v4 = [v3 setWithArray:v5];
+  annotations = [(AKPageModelController *)self annotations];
+  v4 = [v3 setWithArray:annotations];
   [(AKPageModelController *)self setSelectedAnnotations:v4];
 }
 
 - (void)bringSelectedAnnotationsForward
 {
-  v3 = [(AKPageModelController *)self annotations];
+  annotations = [(AKPageModelController *)self annotations];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_23F4B44C8;
   v15[3] = &unk_278C7BDA0;
   v15[4] = self;
-  v4 = [v3 indexesOfObjectsPassingTest:v15];
+  v4 = [annotations indexesOfObjectsPassingTest:v15];
 
-  v5 = [(AKPageModelController *)self annotations];
-  v6 = [v5 objectsAtIndexes:v4];
+  annotations2 = [(AKPageModelController *)self annotations];
+  v6 = [annotations2 objectsAtIndexes:v4];
 
   v7 = [v4 lastIndex] + 1;
-  v8 = [(AKPageModelController *)self annotations];
-  v9 = [v8 count];
+  annotations3 = [(AKPageModelController *)self annotations];
+  v9 = [annotations3 count];
 
   if (v7 >= v9)
   {
@@ -736,20 +736,20 @@ LABEL_12:
     goto LABEL_5;
   }
 
-  v10 = [(AKPageModelController *)self annotations];
-  v11 = [v10 objectAtIndex:v7];
+  annotations4 = [(AKPageModelController *)self annotations];
+  annotations5 = [annotations4 objectAtIndex:v7];
 
   [(AKPageModelController *)self removeAnnotationsAtIndexes:v4];
-  if (!v11)
+  if (!annotations5)
   {
 LABEL_5:
-    v11 = [(AKPageModelController *)self annotations];
-    v13 = [v11 count];
+    annotations5 = [(AKPageModelController *)self annotations];
+    v13 = [annotations5 count];
     goto LABEL_6;
   }
 
-  v12 = [(AKPageModelController *)self annotations];
-  v13 = [v12 indexOfObject:v11] + 1;
+  annotations6 = [(AKPageModelController *)self annotations];
+  v13 = [annotations6 indexOfObject:annotations5] + 1;
 
 LABEL_6:
   v14 = [MEMORY[0x277CCAA78] indexSetWithIndexesInRange:{v13, objc_msgSend(v6, "count")}];
@@ -759,20 +759,20 @@ LABEL_6:
 
 - (void)bringSelectedAnnotationsToFront
 {
-  v3 = [(AKPageModelController *)self annotations];
+  annotations = [(AKPageModelController *)self annotations];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = sub_23F4B4660;
   v10[3] = &unk_278C7BDA0;
   v10[4] = self;
-  v4 = [v3 indexesOfObjectsPassingTest:v10];
+  v4 = [annotations indexesOfObjectsPassingTest:v10];
 
-  v5 = [(AKPageModelController *)self annotations];
-  v6 = [v5 objectsAtIndexes:v4];
+  annotations2 = [(AKPageModelController *)self annotations];
+  v6 = [annotations2 objectsAtIndexes:v4];
 
   [(AKPageModelController *)self removeAnnotationsAtIndexes:v4];
-  v7 = [(AKPageModelController *)self annotations];
-  v8 = [v7 count];
+  annotations3 = [(AKPageModelController *)self annotations];
+  v8 = [annotations3 count];
 
   v9 = [MEMORY[0x277CCAA78] indexSetWithIndexesInRange:{v8, objc_msgSend(v6, "count")}];
   [(AKPageModelController *)self insertAnnotations:v6 atIndexes:v9];
@@ -781,27 +781,27 @@ LABEL_6:
 
 - (void)sendSelectedAnnotationsBackward
 {
-  v3 = [(AKPageModelController *)self annotations];
+  annotations = [(AKPageModelController *)self annotations];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = sub_23F4B4850;
   v14[3] = &unk_278C7BDA0;
   v14[4] = self;
-  v4 = [v3 indexesOfObjectsPassingTest:v14];
+  v4 = [annotations indexesOfObjectsPassingTest:v14];
 
-  v5 = [(AKPageModelController *)self annotations];
-  v6 = [v5 objectsAtIndexes:v4];
+  annotations2 = [(AKPageModelController *)self annotations];
+  v6 = [annotations2 objectsAtIndexes:v4];
 
-  v7 = [v4 firstIndex];
-  if (v7 <= 0)
+  firstIndex = [v4 firstIndex];
+  if (firstIndex <= 0)
   {
     [(AKPageModelController *)self removeAnnotationsAtIndexes:v4];
     goto LABEL_5;
   }
 
-  v8 = v7 - 1;
-  v9 = [(AKPageModelController *)self annotations];
-  v10 = [v9 objectAtIndex:v8];
+  v8 = firstIndex - 1;
+  annotations3 = [(AKPageModelController *)self annotations];
+  v10 = [annotations3 objectAtIndex:v8];
 
   [(AKPageModelController *)self removeAnnotationsAtIndexes:v4];
   if (!v10)
@@ -811,8 +811,8 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v11 = [(AKPageModelController *)self annotations];
-  v12 = [v11 indexOfObject:v10];
+  annotations4 = [(AKPageModelController *)self annotations];
+  v12 = [annotations4 indexOfObject:v10];
 
 LABEL_6:
   v13 = [MEMORY[0x277CCAA78] indexSetWithIndexesInRange:{v12, objc_msgSend(v6, "count")}];
@@ -822,16 +822,16 @@ LABEL_6:
 
 - (void)sendSelectedAnnotationsToBack
 {
-  v3 = [(AKPageModelController *)self annotations];
+  annotations = [(AKPageModelController *)self annotations];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = sub_23F4B49C4;
   v8[3] = &unk_278C7BDA0;
   v8[4] = self;
-  v4 = [v3 indexesOfObjectsPassingTest:v8];
+  v4 = [annotations indexesOfObjectsPassingTest:v8];
 
-  v5 = [(AKPageModelController *)self annotations];
-  v6 = [v5 objectsAtIndexes:v4];
+  annotations2 = [(AKPageModelController *)self annotations];
+  v6 = [annotations2 objectsAtIndexes:v4];
 
   [(AKPageModelController *)self removeAnnotationsAtIndexes:v4];
   v7 = [MEMORY[0x277CCAA78] indexSetWithIndexesInRange:{0, objc_msgSend(v6, "count")}];
@@ -841,9 +841,9 @@ LABEL_6:
 
 - (void)addCropToolAnnotation
 {
-  v3 = [(AKPageModelController *)self cropAnnotation];
+  cropAnnotation = [(AKPageModelController *)self cropAnnotation];
 
-  if (!v3)
+  if (!cropAnnotation)
   {
     v5 = objc_alloc_init(AKCropAnnotation);
     [(AKPageModelController *)self setCropAnnotation:v5];
@@ -858,51 +858,51 @@ LABEL_6:
 
 - (void)removeCropToolAnnotation
 {
-  v3 = [(AKPageModelController *)self cropAnnotation];
+  cropAnnotation = [(AKPageModelController *)self cropAnnotation];
 
-  if (v3)
+  if (cropAnnotation)
   {
     v4 = [(AKPageModelController *)self mutableArrayValueForKey:@"annotations"];
-    v5 = [(AKPageModelController *)self cropAnnotation];
-    [v4 removeObject:v5];
+    cropAnnotation2 = [(AKPageModelController *)self cropAnnotation];
+    [v4 removeObject:cropAnnotation2];
 
     [(AKPageModelController *)self setCropAnnotation:0];
   }
 }
 
-- (void)setInkCanvasAnnotation:(id)a3
+- (void)setInkCanvasAnnotation:(id)annotation
 {
-  v5 = a3;
+  annotationCopy = annotation;
   p_inkCanvasAnnotation = &self->_inkCanvasAnnotation;
-  if (self->_inkCanvasAnnotation != v5)
+  if (self->_inkCanvasAnnotation != annotationCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_inkCanvasAnnotation, a3);
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v7 postNotificationName:off_27E39A388[0] object:self];
+    v8 = annotationCopy;
+    objc_storeStrong(p_inkCanvasAnnotation, annotation);
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:off_27E39A388[0] object:self];
 
-    v5 = v8;
+    annotationCopy = v8;
   }
 
-  MEMORY[0x2821F96F8](p_inkCanvasAnnotation, v5);
+  MEMORY[0x2821F96F8](p_inkCanvasAnnotation, annotationCopy);
 }
 
-- (void)setInkCanvasAnnotationOneTime:(id)a3
+- (void)setInkCanvasAnnotationOneTime:(id)time
 {
-  v6 = a3;
-  if (v6)
+  timeCopy = time;
+  if (timeCopy)
   {
-    v4 = [(AKPageModelController *)self mutableArrayValueForKey:@"annotations"];
-    [v4 addObject:v6];
+    inkCanvasAnnotation = [(AKPageModelController *)self mutableArrayValueForKey:@"annotations"];
+    [inkCanvasAnnotation addObject:timeCopy];
   }
 
   else
   {
-    v4 = [(AKPageModelController *)self inkCanvasAnnotation];
-    if (v4)
+    inkCanvasAnnotation = [(AKPageModelController *)self inkCanvasAnnotation];
+    if (inkCanvasAnnotation)
     {
       v5 = [(AKPageModelController *)self mutableArrayValueForKey:@"annotations"];
-      [v5 removeObject:v4];
+      [v5 removeObject:inkCanvasAnnotation];
     }
   }
 }
@@ -913,17 +913,17 @@ LABEL_6:
   v6 = &v5;
   v7 = 0x2020000000;
   v8 = 0;
-  v2 = [(AKPageModelController *)self annotations];
+  annotations = [(AKPageModelController *)self annotations];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = sub_23F4B4DA0;
   v4[3] = &unk_278C7BCC0;
   v4[4] = &v5;
-  [v2 enumerateObjectsUsingBlock:v4];
+  [annotations enumerateObjectsUsingBlock:v4];
 
-  LOBYTE(v2) = *(v6 + 24);
+  LOBYTE(annotations) = *(v6 + 24);
   _Block_object_dispose(&v5, 8);
-  return v2;
+  return annotations;
 }
 
 - (BOOL)hasHDRAnnotation
@@ -933,8 +933,8 @@ LABEL_6:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v2 = [(AKPageModelController *)self annotations];
-  v3 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  annotations = [(AKPageModelController *)self annotations];
+  v3 = [annotations countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v3)
   {
     v4 = *v12;
@@ -944,7 +944,7 @@ LABEL_6:
       {
         if (*v12 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(annotations);
         }
 
         v6 = *(*(&v11 + 1) + 8 * i);
@@ -957,9 +957,9 @@ LABEL_6:
               continue;
             }
 
-            v9 = [v6 foregroundColorHDR];
+            foregroundColorHDR = [v6 foregroundColorHDR];
 
-            if (!v9)
+            if (!foregroundColorHDR)
             {
               continue;
             }
@@ -970,7 +970,7 @@ LABEL_6:
         goto LABEL_16;
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v3 = [annotations countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v3)
       {
         continue;
@@ -992,8 +992,8 @@ LABEL_16:
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(AKPageModelController *)self annotations];
-  v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  annotations = [(AKPageModelController *)self annotations];
+  v3 = [annotations countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v3)
   {
     v4 = v3;
@@ -1005,7 +1005,7 @@ LABEL_16:
       {
         if (*v11 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(annotations);
         }
 
         [*(*(&v10 + 1) + 8 * i) desiredHeadroom];
@@ -1015,7 +1015,7 @@ LABEL_16:
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [annotations countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v4);
@@ -1029,38 +1029,38 @@ LABEL_16:
   return v6;
 }
 
-- (CGImage)renderAnnotationsOnImage:(CGImage *)a3 wantsHDR:(BOOL)a4 opaque:(BOOL)a5 withTransform:(CGAffineTransform *)a6 shouldApplyCropRect:(BOOL)a7 forPreview:(BOOL)a8
+- (CGImage)renderAnnotationsOnImage:(CGImage *)image wantsHDR:(BOOL)r opaque:(BOOL)opaque withTransform:(CGAffineTransform *)transform shouldApplyCropRect:(BOOL)rect forPreview:(BOOL)preview
 {
   v71 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (image)
   {
-    v8 = a7;
-    v10 = a5;
-    v11 = a4;
-    v62 = [(AKPageModelController *)self annotations:a3];
-    if (v11)
+    rectCopy = rect;
+    opaqueCopy = opaque;
+    rCopy = r;
+    v62 = [(AKPageModelController *)self annotations:image];
+    if (rCopy)
     {
       [(AKPageModelController *)self annotationHeadroom];
     }
 
-    Width = CGImageGetWidth(a3);
-    Height = CGImageGetHeight(a3);
+    Width = CGImageGetWidth(image);
+    Height = CGImageGetHeight(image);
     v16 = Width;
     v17 = Height;
-    v18 = [(AKPageModelController *)self cropAnnotation];
+    cropAnnotation = [(AKPageModelController *)self cropAnnotation];
     y = 0.0;
-    if (v8)
+    if (rectCopy)
     {
       [(AKPageModelController *)self appliedCropRect];
       IsInfinite = CGRectIsInfinite(v72);
       v21 = IsInfinite;
       v61 = !IsInfinite;
-      if (v18 || !IsInfinite)
+      if (cropAnnotation || !IsInfinite)
       {
-        if (v18)
+        if (cropAnnotation)
         {
           v22 = [v62 mutableCopy];
-          [v22 removeObject:v18];
+          [v22 removeObject:cropAnnotation];
 
           v62 = v22;
         }
@@ -1076,15 +1076,15 @@ LABEL_16:
           v24 = v28;
         }
 
-        if (v18)
+        if (cropAnnotation)
         {
-          [v18 rectangle];
+          [cropAnnotation rectangle];
           v25 = v25 + v29;
-          [v18 rectangle];
+          [cropAnnotation rectangle];
           y = y + v30;
-          [v18 rectangle];
+          [cropAnnotation rectangle];
           v24 = v31;
-          [v18 rectangle];
+          [cropAnnotation rectangle];
         }
 
         v77.origin.x = 0.0;
@@ -1106,13 +1106,13 @@ LABEL_16:
         v74.size.height = v37;
         Height = CGRectGetHeight(v74);
 LABEL_17:
-        ColorSpace = CGImageGetColorSpace(a3);
-        if (v11)
+        ColorSpace = CGImageGetColorSpace(image);
+        if (rCopy)
         {
           CGImageGetContentHeadroom();
           v40 = CGColorSpaceCreateWithName(*MEMORY[0x277CBF3F8]);
           v41 = v40;
-          if (v10)
+          if (opaqueCopy)
           {
             v42 = 4357;
           }
@@ -1140,7 +1140,7 @@ LABEL_17:
             v44 = v41;
           }
 
-          if (v10)
+          if (opaqueCopy)
           {
             v42 = 8198;
           }
@@ -1164,12 +1164,12 @@ LABEL_17:
           v75.origin.y = 0.0;
           v75.size.width = v16;
           v75.size.height = v17;
-          CGContextDrawImage(v47, v75, a3);
+          CGContextDrawImage(v47, v75, image);
           CGContextSaveGState(v47);
-          v48 = *&a6->c;
-          v67 = *&a6->a;
+          v48 = *&transform->c;
+          v67 = *&transform->a;
           v68 = v48;
-          v69 = *&a6->tx;
+          v69 = *&transform->tx;
           CGContextSetCTM();
           if (v61)
           {
@@ -1230,7 +1230,7 @@ LABEL_17:
         else
         {
           NSLog(&cfstr_Cgbitmapcontex.isa);
-          Image = CGImageRetain(a3);
+          Image = CGImageRetain(image);
           if (!v41)
           {
             goto LABEL_45;
@@ -1260,15 +1260,15 @@ LABEL_45:
 {
   v20 = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CBEB18];
-  v4 = [(AKPageModelController *)self annotations];
-  v5 = [v3 arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  annotations = [(AKPageModelController *)self annotations];
+  v5 = [v3 arrayWithCapacity:{objc_msgSend(annotations, "count")}];
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [(AKPageModelController *)self annotations];
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  annotations2 = [(AKPageModelController *)self annotations];
+  v7 = [annotations2 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1279,14 +1279,14 @@ LABEL_45:
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(annotations2);
         }
 
-        v11 = [*(*(&v15 + 1) + 8 * i) dataRepresentation];
-        [v5 addObject:v11];
+        dataRepresentation = [*(*(&v15 + 1) + 8 * i) dataRepresentation];
+        [v5 addObject:dataRepresentation];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [annotations2 countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);
@@ -1298,10 +1298,10 @@ LABEL_45:
   return v13;
 }
 
-- (AKPageModelController)initWithArchivableRepresentation:(id)a3
+- (AKPageModelController)initWithArchivableRepresentation:(id)representation
 {
   v24[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  representationCopy = representation;
   v5 = [(AKPageModelController *)self init];
   if (v5)
   {
@@ -1315,7 +1315,7 @@ LABEL_45:
     v24[1] = objc_opt_class();
     v24[2] = objc_opt_class();
     v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v24 count:3];
-    v7 = [AKSecureSerializationHelper secureCodingCompliantObjectForData:v4 ofClasses:v6 withOptionalKey:0];
+    v7 = [AKSecureSerializationHelper secureCodingCompliantObjectForData:representationCopy ofClasses:v6 withOptionalKey:0];
 
     v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v7, "count")}];
     v12 = MEMORY[0x277D85DD0];
@@ -1342,40 +1342,40 @@ LABEL_45:
 
 - (id)selectionStateForUndo
 {
-  v2 = [(AKPageModelController *)self selectedAnnotations];
-  v3 = [v2 copy];
+  selectedAnnotations = [(AKPageModelController *)self selectedAnnotations];
+  v3 = [selectedAnnotations copy];
 
   return v3;
 }
 
-- (void)restoreSelectionStateForUndo:(id)a3
+- (void)restoreSelectionStateForUndo:(id)undo
 {
-  v4 = a3;
+  undoCopy = undo;
   v5 = [(AKPageModelController *)self mutableSetValueForKey:@"selectedAnnotations"];
-  [v5 setSet:v4];
+  [v5 setSet:undoCopy];
 }
 
 - (void)_ensureInkAnnotationIsInFrontWhenEditsAreDone
 {
   v6[1] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB88] currentRunLoop];
-  [v3 cancelPerformSelector:sel__coalescedEnsureInkAnnotationIsInFront_ target:self argument:0];
+  currentRunLoop = [MEMORY[0x277CBEB88] currentRunLoop];
+  [currentRunLoop cancelPerformSelector:sel__coalescedEnsureInkAnnotationIsInFront_ target:self argument:0];
 
-  v4 = [MEMORY[0x277CBEB88] currentRunLoop];
+  currentRunLoop2 = [MEMORY[0x277CBEB88] currentRunLoop];
   v6[0] = *MEMORY[0x277CBE738];
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v6 count:1];
-  [v4 performSelector:sel__coalescedEnsureInkAnnotationIsInFront_ target:self argument:0 order:349999 modes:v5];
+  [currentRunLoop2 performSelector:sel__coalescedEnsureInkAnnotationIsInFront_ target:self argument:0 order:349999 modes:v5];
 }
 
-- (void)_coalescedEnsureInkAnnotationIsInFront:(id)a3
+- (void)_coalescedEnsureInkAnnotationIsInFront:(id)front
 {
-  v4 = [MEMORY[0x277CBEB88] currentRunLoop];
-  [v4 cancelPerformSelector:sel__coalescedEnsureInkAnnotationIsInFront_ target:self argument:0];
+  currentRunLoop = [MEMORY[0x277CBEB88] currentRunLoop];
+  [currentRunLoop cancelPerformSelector:sel__coalescedEnsureInkAnnotationIsInFront_ target:self argument:0];
 
-  v5 = [(AKPageModelController *)self inkCanvasAnnotation];
-  if (v5)
+  inkCanvasAnnotation = [(AKPageModelController *)self inkCanvasAnnotation];
+  if (inkCanvasAnnotation)
   {
-    v11 = v5;
+    v11 = inkCanvasAnnotation;
     v6 = [(AKPageModelController *)self mutableArrayValueForKey:@"annotations"];
     v7 = [v6 indexOfObject:v11];
     if (v7 != 0x7FFFFFFFFFFFFFFFLL)
@@ -1383,32 +1383,32 @@ LABEL_45:
       v8 = v7;
       if (v7 != [v6 count] - 1)
       {
-        v9 = [MEMORY[0x277CCAB98] defaultCenter];
-        [v9 postNotificationName:off_27E39A390[0] object:0];
+        defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+        [defaultCenter postNotificationName:off_27E39A390[0] object:0];
 
         [v6 removeObjectAtIndex:v8];
         [v6 addObject:v11];
-        v10 = [MEMORY[0x277CCAB98] defaultCenter];
-        [v10 postNotificationName:off_27E39A398 object:0];
+        defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+        [defaultCenter2 postNotificationName:off_27E39A398 object:0];
       }
     }
 
-    v5 = v11;
+    inkCanvasAnnotation = v11;
   }
 }
 
-- (void)_logAnnotationAdded:(id)a3
+- (void)_logAnnotationAdded:(id)added
 {
-  v4 = a3;
-  v5 = [(AKPageModelController *)self statisticsLogger];
-  [v5 logAnnotationAdded:v4];
+  addedCopy = added;
+  statisticsLogger = [(AKPageModelController *)self statisticsLogger];
+  [statisticsLogger logAnnotationAdded:addedCopy];
 }
 
 - (void)_postSelectedAnnotationsChangedNotification
 {
   v3 = [MEMORY[0x277CCAB88] notificationWithName:off_27E39A380[0] object:self];
-  v2 = [MEMORY[0x277CCABA0] defaultQueue];
-  [v2 enqueueNotification:v3 postingStyle:2 coalesceMask:1 forModes:0];
+  defaultQueue = [MEMORY[0x277CCABA0] defaultQueue];
+  [defaultQueue enqueueNotification:v3 postingStyle:2 coalesceMask:1 forModes:0];
 }
 
 - (id)representedObject

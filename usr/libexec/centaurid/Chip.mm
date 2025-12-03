@@ -1,14 +1,14 @@
 @interface Chip
-+ (BOOL)hasHardware:(BOOL *)a3;
-+ (id)bootModeAsString:(int64_t)a3;
++ (BOOL)hasHardware:(BOOL *)hardware;
++ (id)bootModeAsString:(int64_t)string;
 + (id)getCentauriBootArgs;
-+ (id)stateAsString:(int64_t)a3;
-- (BOOL)activate:(id *)a3;
-- (BOOL)bootInMode:(int64_t)a3 lpmData:(id)a4 powerTablePaths:(id)a5 failureReason:(id *)a6;
-- (BOOL)collectLogsWithReason:(id)a3 fatal:(BOOL)a4 useFWReason:(BOOL)a5 lpm:(BOOL)a6;
++ (id)stateAsString:(int64_t)string;
+- (BOOL)activate:(id *)activate;
+- (BOOL)bootInMode:(int64_t)mode lpmData:(id)data powerTablePaths:(id)paths failureReason:(id *)reason;
+- (BOOL)collectLogsWithReason:(id)reason fatal:(BOOL)fatal useFWReason:(BOOL)wReason lpm:(BOOL)lpm;
 - (BOOL)reset;
-- (BOOL)storeFirmwareBootTimestamps:(id)a3;
-- (Chip)initWithQueue:(id)a3 delegate:(id)a4;
+- (BOOL)storeFirmwareBootTimestamps:(id)timestamps;
+- (Chip)initWithQueue:(id)queue delegate:(id)delegate;
 - (id)getCrashlogs;
 - (id)getFirmwareBootTimestamps;
 - (id)getHostBootTimestamps;
@@ -16,11 +16,11 @@
 - (id)getSiKPublicKey;
 - (id)ping;
 - (id)preflightQuery;
-- (id)shellCommand:(id)a3;
-- (int)createController:(id *)a3;
+- (id)shellCommand:(id)command;
+- (int)createController:(id *)controller;
 - (int)powerCycle;
 - (int)powerOff;
-- (int)powerOn:(id *)a3;
+- (int)powerOn:(id *)on;
 - (int64_t)getChipState;
 - (unint64_t)driverInstance;
 - (void)dealloc;
@@ -28,15 +28,15 @@
 - (void)handleCrashlogAvailable;
 - (void)invalidate;
 - (void)log;
-- (void)setHardwareHealth:(BOOL)a3;
+- (void)setHardwareHealth:(BOOL)health;
 @end
 
 @implementation Chip
 
-- (Chip)initWithQueue:(id)a3 delegate:(id)a4
+- (Chip)initWithQueue:(id)queue delegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  queueCopy = queue;
+  delegateCopy = delegate;
   v14.receiver = self;
   v14.super_class = Chip;
   v9 = [(Chip *)&v14 init];
@@ -46,8 +46,8 @@
     [(Chip *)v9 setState:0];
     v10->_hasFirmware = CentauriBooterIsFirmwarePresent();
     v10->_hasHardware = [objc_opt_class() hasHardware:&v10->_builtIn];
-    objc_storeStrong(&v10->_queue, a3);
-    objc_storeWeak(&v10->_delegate, v8);
+    objc_storeStrong(&v10->_queue, queue);
+    objc_storeWeak(&v10->_delegate, delegateCopy);
     v11 = objc_alloc_init(CCHIInterface);
     cchiInterface = v10->_cchiInterface;
     v10->_cchiInterface = v11;
@@ -81,7 +81,7 @@
   [(Chip *)&v4 dealloc];
 }
 
-- (BOOL)activate:(id *)a3
+- (BOOL)activate:(id *)activate
 {
   v14 = 0;
   v6 = sub_100025204();
@@ -99,7 +99,7 @@
   ChipPower = CentauriControllerGetChipPower();
   if (ChipPower)
   {
-    *a3 = [NSString stringWithFormat:@"getChipPowerFailure:0x%08x", ChipPower];
+    *activate = [NSString stringWithFormat:@"getChipPowerFailure:0x%08x", ChipPower];
     v11 = sub_100025204();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
@@ -213,10 +213,10 @@
   return v3;
 }
 
-+ (BOOL)hasHardware:(BOOL *)a3
++ (BOOL)hasHardware:(BOOL *)hardware
 {
   parent = 0;
-  if (!a3)
+  if (!hardware)
   {
     v22 = sub_100025204();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -392,32 +392,32 @@ LABEL_15:
     IOObjectRelease(MatchingService);
   }
 
-  *a3 = v9;
+  *hardware = v9;
   return v14;
 }
 
-+ (id)stateAsString:(int64_t)a3
++ (id)stateAsString:(int64_t)string
 {
-  if ((a3 - 1) > 4)
+  if ((string - 1) > 4)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_10005C890[a3 - 1];
+    return off_10005C890[string - 1];
   }
 }
 
-+ (id)bootModeAsString:(int64_t)a3
++ (id)bootModeAsString:(int64_t)string
 {
   v3 = @"Normal";
-  if (a3 == 1)
+  if (string == 1)
   {
     v3 = @"LowPower";
   }
 
-  if (a3 == 2)
+  if (string == 2)
   {
     return @"LowPowerDebug";
   }
@@ -428,10 +428,10 @@ LABEL_15:
   }
 }
 
-- (BOOL)bootInMode:(int64_t)a3 lpmData:(id)a4 powerTablePaths:(id)a5 failureReason:(id *)a6
+- (BOOL)bootInMode:(int64_t)mode lpmData:(id)data powerTablePaths:(id)paths failureReason:(id *)reason
 {
-  v9 = a4;
-  v10 = a5;
+  dataCopy = data;
+  pathsCopy = paths;
   v51 = 0u;
   v52 = 0u;
   v49 = 0u;
@@ -443,13 +443,13 @@ LABEL_15:
   {
     v12 = [objc_opt_class() description];
     v13 = NSStringFromSelector(a2);
-    v14 = [objc_opt_class() bootModeAsString:a3];
+    v14 = [objc_opt_class() bootModeAsString:mode];
     v15 = v14;
     v16 = "yes";
     *buf = 138544130;
     v62 = 2114;
     v61 = v12;
-    if (!v9)
+    if (!dataCopy)
     {
       v16 = "no";
     }
@@ -466,7 +466,7 @@ LABEL_15:
   if ([(Chip *)self state]!= 1)
   {
     v37 = [objc_opt_class() stateAsString:{-[Chip state](self, "state")}];
-    *a6 = [NSString stringWithFormat:@"wrongState:%@", v37];
+    *reason = [NSString stringWithFormat:@"wrongState:%@", v37];
 
     v38 = sub_100025204();
     if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
@@ -496,23 +496,23 @@ LABEL_15:
     *(&v48 + 1) = "/usr/local/standalone/firmware/Centauri/ftab.bin";
   }
 
-  if (a3 == 1)
+  if (mode == 1)
   {
     DWORD2(v49) = 1;
   }
 
-  v18 = [objc_opt_class() getCentauriBootArgs];
-  v19 = v18;
-  if (!v18)
+  getCentauriBootArgs = [objc_opt_class() getCentauriBootArgs];
+  v19 = getCentauriBootArgs;
+  if (!getCentauriBootArgs)
   {
     v21 = 0;
-    *a6 = @"bootArgQueryFailure";
+    *reason = @"bootArgQueryFailure";
     goto LABEL_38;
   }
 
-  if (a3 == 2)
+  if (mode == 2)
   {
-    v59[0] = v18;
+    v59[0] = getCentauriBootArgs;
     v59[1] = @"lpm-firmware=1";
     v20 = [NSArray arrayWithObjects:v59 count:2];
     v21 = [v20 componentsJoinedByString:@" "];
@@ -520,7 +520,7 @@ LABEL_15:
 
   else
   {
-    v21 = v18;
+    v21 = getCentauriBootArgs;
   }
 
   if ([v21 length])
@@ -530,14 +530,14 @@ LABEL_15:
     *&v49 = [NSDictionary dictionaryWithObjects:&v58 forKeys:&v57 count:1];
   }
 
-  if (v9)
+  if (dataCopy)
   {
-    *(&v51 + 1) = v9;
+    *(&v51 + 1) = dataCopy;
   }
 
-  if (v10)
+  if (pathsCopy)
   {
-    *(&v52 + 1) = v10;
+    *(&v52 + 1) = pathsCopy;
   }
 
   v22 = +[NSUserDefaults standardUserDefaults];
@@ -556,7 +556,7 @@ LABEL_15:
 
   self->_booted = 1;
   objc_storeStrong(&self->_activeBootArgs, v21);
-  objc_storeStrong(&self->_activePowerTablePaths, a5);
+  objc_storeStrong(&self->_activePowerTablePaths, paths);
   v28 = objc_autoreleasePoolPush();
   v29 = CentauriBooterCreate();
   if (v29)
@@ -569,7 +569,7 @@ LABEL_15:
       goto LABEL_25;
     }
 
-    *a6 = @"bootFailure";
+    *reason = @"bootFailure";
     v40 = sub_100025204();
     if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
     {
@@ -583,7 +583,7 @@ LABEL_15:
 
   else
   {
-    *a6 = @"booterCreateFailure";
+    *reason = @"booterCreateFailure";
     v40 = sub_100025204();
     if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
     {
@@ -636,7 +636,7 @@ LABEL_30:
   }
 
   [NSString stringWithFormat:@"interfaceStartFailure:%@", v17];
-  *a6 = LOBYTE(v30) = 0;
+  *reason = LOBYTE(v30) = 0;
   if (v29)
   {
 LABEL_31:
@@ -692,8 +692,8 @@ LABEL_39:
     goto LABEL_14;
   }
 
-  v7 = [(CCHIInterface *)self->_cchiInterface hello];
-  if (!v7)
+  hello = [(CCHIInterface *)self->_cchiInterface hello];
+  if (!hello)
   {
     v8 = sub_100025204();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -706,7 +706,7 @@ LABEL_39:
     }
 
 LABEL_14:
-    v7 = 0;
+    hello = 0;
     goto LABEL_7;
   }
 
@@ -720,13 +720,13 @@ LABEL_14:
     v17 = 2114;
     v18 = v10;
     v19 = 2114;
-    v20 = v7;
+    v20 = hello;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%{public}@::%{public}@: success: '%{public}@'", &v15, 0x20u);
   }
 
 LABEL_7:
 
-  return v7;
+  return hello;
 }
 
 - (BOOL)reset
@@ -803,10 +803,10 @@ LABEL_7:
   return 0;
 }
 
-- (BOOL)collectLogsWithReason:(id)a3 fatal:(BOOL)a4 useFWReason:(BOOL)a5 lpm:(BOOL)a6
+- (BOOL)collectLogsWithReason:(id)reason fatal:(BOOL)fatal useFWReason:(BOOL)wReason lpm:(BOOL)lpm
 {
-  v6 = a4;
-  v9 = a3;
+  fatalCopy = fatal;
+  reasonCopy = reason;
   v10 = sub_100025204();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -817,7 +817,7 @@ LABEL_7:
     *buf = 138544130;
     v42 = v11;
     v43 = 2114;
-    if (v6)
+    if (fatalCopy)
     {
       v14 = "fatal";
     }
@@ -826,7 +826,7 @@ LABEL_7:
     v45 = 2080;
     v46 = v14;
     v47 = 2114;
-    v48[0] = v9;
+    v48[0] = reasonCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%{public}@::%{public}@: %s: '%{public}@'", buf, 0x2Au);
   }
 
@@ -865,8 +865,8 @@ LABEL_7:
     goto LABEL_22;
   }
 
-  v15 = v9;
-  [v9 UTF8String];
+  v15 = reasonCopy;
+  [reasonCopy UTF8String];
   v16 = CentauriControllerCollectLogsWithOptions();
   if (v16)
   {
@@ -875,13 +875,13 @@ LABEL_7:
     {
       v34 = [objc_opt_class() description];
       v35 = NSStringFromSelector(a2);
-      v36 = v9;
-      v37 = [v9 UTF8String];
+      v36 = reasonCopy;
+      uTF8String = [reasonCopy UTF8String];
       v38 = "nonfatal";
       *buf = 138544386;
       v43 = 2114;
       v42 = v34;
-      if (v6)
+      if (fatalCopy)
       {
         v38 = "fatal";
       }
@@ -892,7 +892,7 @@ LABEL_7:
       v47 = 1024;
       LODWORD(v48[0]) = v16;
       WORD2(v48[0]) = 2080;
-      *(v48 + 6) = v37;
+      *(v48 + 6) = uTF8String;
       _os_log_error_impl(&_mh_execute_header, v23, OS_LOG_TYPE_ERROR, "%{public}@::%{public}@: %s log collection failed: 0x%08x: '%s'", buf, 0x30u);
     }
 
@@ -901,10 +901,10 @@ LABEL_7:
       goto LABEL_23;
     }
 
-    v24 = v9;
-    [v9 UTF8String];
+    v24 = reasonCopy;
+    [reasonCopy UTF8String];
     v32 = "nonfatal";
-    if (v6)
+    if (fatalCopy)
     {
       v32 = "fatal";
     }
@@ -914,7 +914,7 @@ LABEL_7:
     {
 LABEL_23:
       v17 = 0;
-      if (!v6)
+      if (!fatalCopy)
       {
         goto LABEL_10;
       }
@@ -942,7 +942,7 @@ LABEL_22:
   }
 
   v17 = 1;
-  if (v6)
+  if (fatalCopy)
   {
 LABEL_9:
     [(Chip *)self handleCrashlogAvailable];
@@ -1035,7 +1035,7 @@ LABEL_10:
   return v7;
 }
 
-- (int)powerOn:(id *)a3
+- (int)powerOn:(id *)on
 {
   v6 = sub_100025204();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -1052,7 +1052,7 @@ LABEL_10:
   if ([(Chip *)self state]!= 5)
   {
     v12 = [objc_opt_class() stateAsString:{-[Chip state](self, "state")}];
-    *a3 = [NSString stringWithFormat:@"wrongState:%@", v12];
+    *on = [NSString stringWithFormat:@"wrongState:%@", v12];
 
     v13 = sub_100025204();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -1076,7 +1076,7 @@ LABEL_10:
   v9 = CentauriControllerSetChipPower();
   if (v9)
   {
-    *a3 = [NSString stringWithFormat:@"setChipPowerOnFailure:0x%08x", v9];
+    *on = [NSString stringWithFormat:@"setChipPowerOnFailure:0x%08x", v9];
     v14 = sub_100025204();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
@@ -1101,7 +1101,7 @@ LABEL_14:
   v10 = v28;
   if (v9)
   {
-    *a3 = [NSString stringWithFormat:@"createControllerFailure:%@", v10];
+    *on = [NSString stringWithFormat:@"createControllerFailure:%@", v10];
     v15 = sub_100025204();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
@@ -1132,7 +1132,7 @@ LABEL_14:
         _os_log_error_impl(&_mh_execute_header, v20, OS_LOG_TYPE_ERROR, "%{public}@::%{public}@: power off failed: 0x%08x", buf, 0x1Cu);
       }
 
-      *a3 = [*a3 stringByAppendingFormat:@", setChipPowerOffFailure:0x%08x", v19];
+      *on = [*on stringByAppendingFormat:@", setChipPowerOffFailure:0x%08x", v19];
     }
   }
 
@@ -1233,9 +1233,9 @@ LABEL_7:
   return 0;
 }
 
-- (id)shellCommand:(id)a3
+- (id)shellCommand:(id)command
 {
-  v5 = a3;
+  commandCopy = command;
   v6 = sub_100025204();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -1246,7 +1246,7 @@ LABEL_7:
     v19 = 2114;
     v20 = v8;
     v21 = 2112;
-    v22 = v5;
+    v22 = commandCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%{public}@::%{public}@: %@", &v17, 0x20u);
   }
 
@@ -1270,7 +1270,7 @@ LABEL_7:
     goto LABEL_14;
   }
 
-  v9 = [(CCHIInterface *)self->_cchiInterface shell:v5];
+  v9 = [(CCHIInterface *)self->_cchiInterface shell:commandCopy];
   if (!v9)
   {
     v10 = sub_100025204();
@@ -1341,8 +1341,8 @@ LABEL_7:
     goto LABEL_14;
   }
 
-  v7 = [(CCHIInterface *)self->_cchiInterface getPMUFaultInfo];
-  if (!v7)
+  getPMUFaultInfo = [(CCHIInterface *)self->_cchiInterface getPMUFaultInfo];
+  if (!getPMUFaultInfo)
   {
     v8 = sub_100025204();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -1355,7 +1355,7 @@ LABEL_7:
     }
 
 LABEL_14:
-    v7 = 0;
+    getPMUFaultInfo = 0;
     goto LABEL_7;
   }
 
@@ -1369,13 +1369,13 @@ LABEL_14:
     v17 = 2114;
     v18 = v10;
     v19 = 2114;
-    v20 = v7;
+    v20 = getPMUFaultInfo;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%{public}@::%{public}@: success: '%{public}@'", &v15, 0x20u);
   }
 
 LABEL_7:
 
-  return v7;
+  return getPMUFaultInfo;
 }
 
 - (id)getSiKPublicKey
@@ -1412,8 +1412,8 @@ LABEL_7:
     goto LABEL_14;
   }
 
-  v7 = [(CCHIInterface *)self->_cchiInterface getSiKPublicKey];
-  if (!v7)
+  getSiKPublicKey = [(CCHIInterface *)self->_cchiInterface getSiKPublicKey];
+  if (!getSiKPublicKey)
   {
     v8 = sub_100025204();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -1426,7 +1426,7 @@ LABEL_7:
     }
 
 LABEL_14:
-    v7 = 0;
+    getSiKPublicKey = 0;
     goto LABEL_7;
   }
 
@@ -1440,13 +1440,13 @@ LABEL_14:
     v17 = 2114;
     v18 = v10;
     v19 = 2114;
-    v20 = v7;
+    v20 = getSiKPublicKey;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%{public}@::%{public}@: success: '%{public}@'", &v15, 0x20u);
   }
 
 LABEL_7:
 
-  return v7;
+  return getSiKPublicKey;
 }
 
 - (id)getFirmwareBootTimestamps
@@ -1483,8 +1483,8 @@ LABEL_7:
     goto LABEL_14;
   }
 
-  v7 = [(CCHIInterface *)self->_cchiInterface getBootPerformanceStats];
-  if (!v7)
+  getBootPerformanceStats = [(CCHIInterface *)self->_cchiInterface getBootPerformanceStats];
+  if (!getBootPerformanceStats)
   {
     v8 = sub_100025204();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -1497,7 +1497,7 @@ LABEL_7:
     }
 
 LABEL_14:
-    v7 = 0;
+    getBootPerformanceStats = 0;
     goto LABEL_7;
   }
 
@@ -1515,12 +1515,12 @@ LABEL_14:
 
 LABEL_7:
 
-  return v7;
+  return getBootPerformanceStats;
 }
 
-- (BOOL)storeFirmwareBootTimestamps:(id)a3
+- (BOOL)storeFirmwareBootTimestamps:(id)timestamps
 {
-  v23 = a3;
+  timestampsCopy = timestamps;
   v3 = sub_100025204();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
@@ -1538,7 +1538,7 @@ LABEL_7:
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v7 = v23;
+  v7 = timestampsCopy;
   v8 = [v7 countByEnumeratingWithState:&v24 objects:v34 count:16];
   if (v8)
   {
@@ -1554,9 +1554,9 @@ LABEL_7:
 
         v11 = *(*(&v24 + 1) + 8 * i);
         v12 = [v7 objectForKeyedSubscript:v11];
-        v13 = [v12 longLongValue];
+        longLongValue = [v12 longLongValue];
 
-        v14 = [NSNumber numberWithUnsignedLongLong:1000 * v13];
+        v14 = [NSNumber numberWithUnsignedLongLong:1000 * longLongValue];
         [v6 setObject:v14 forKey:v11];
       }
 
@@ -1720,9 +1720,9 @@ LABEL_11:
   return v11;
 }
 
-- (void)setHardwareHealth:(BOOL)a3
+- (void)setHardwareHealth:(BOOL)health
 {
-  v3 = a3;
+  healthCopy = health;
   v5 = sub_100025204();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1733,7 +1733,7 @@ LABEL_11:
     v14 = 2114;
     v15 = v7;
     v16 = 1024;
-    v17 = v3;
+    v17 = healthCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}@::%{public}@: status: %d", &v12, 0x1Cu);
   }
 
@@ -1783,7 +1783,7 @@ LABEL_11:
     v34 = 1024;
     v35 = controller != 0;
     v36 = 2048;
-    v37 = [(Chip *)self driverInstance];
+    driverInstance = [(Chip *)self driverInstance];
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%{public}@::%{public}@: state %@, HW %u, FW %u, builtin %u, controller %u, driver 0x%llx", &v22, 0x42u);
   }
 
@@ -1840,7 +1840,7 @@ LABEL_11:
   [(CCHIInterface *)self->_cchiInterface log];
 }
 
-- (int)createController:(id *)a3
+- (int)createController:(id *)controller
 {
   v6 = sub_100025204();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -1868,7 +1868,7 @@ LABEL_11:
   v10 = objc_retainBlock(v22);
   if (self->_controller)
   {
-    *a3 = @"alreadyCreated";
+    *controller = @"alreadyCreated";
     v17 = sub_100025204();
     LODWORD(v11) = -536870212;
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -1886,7 +1886,7 @@ LABEL_11:
     v11 = CentauriControllerCreateWithParameters();
     if (v11 || !self->_controller)
     {
-      *a3 = [NSString stringWithFormat:@"createFailure:0x%08x", v11];
+      *controller = [NSString stringWithFormat:@"createFailure:0x%08x", v11];
       v17 = sub_100025204();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
       {
@@ -1904,7 +1904,7 @@ LABEL_11:
       v11 = CentauriControllerRegisterUniqueErrorHandlerWithQueue();
       if (v11)
       {
-        *a3 = [NSString stringWithFormat:@"registerErrorHandlerFailure:0x%08x", v11];
+        *controller = [NSString stringWithFormat:@"registerErrorHandlerFailure:0x%08x", v11];
         v17 = sub_100025204();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
         {
@@ -1931,7 +1931,7 @@ LABEL_11:
           goto LABEL_9;
         }
 
-        *a3 = [NSString stringWithFormat:@"registerCrashlogHandlerFailure:0x%08x", v11];
+        *controller = [NSString stringWithFormat:@"registerCrashlogHandlerFailure:0x%08x", v11];
         v17 = sub_100025204();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
         {

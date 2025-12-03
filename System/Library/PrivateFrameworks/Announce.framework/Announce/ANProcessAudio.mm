@@ -1,33 +1,33 @@
 @interface ANProcessAudio
-+ (AudioComponentDescription)_lookupComponent:(SEL)a3;
-+ (BOOL)_configureEngine:(id)a3 player:(id)a4 effect:(id)a5 sourceFile:(id)a6 error:(id *)a7;
-+ (BOOL)_renderAudioTo:(id)a3 length:(int64_t)a4 engine:(id)a5 error:(id *)a6;
-+ (BOOL)process:(id)a3 to:(id)a4 withOptions:(unint64_t)a5 error:(id *)a6;
-+ (id)_ANAudioEffectToName:(unint64_t)a3;
-+ (id)_lookupTunings:(unint64_t)a3;
++ (AudioComponentDescription)_lookupComponent:(SEL)component;
++ (BOOL)_configureEngine:(id)engine player:(id)player effect:(id)effect sourceFile:(id)file error:(id *)error;
++ (BOOL)_renderAudioTo:(id)to length:(int64_t)length engine:(id)engine error:(id *)error;
++ (BOOL)process:(id)process to:(id)to withOptions:(unint64_t)options error:(id *)error;
++ (id)_ANAudioEffectToName:(unint64_t)name;
++ (id)_lookupTunings:(unint64_t)tunings;
 @end
 
 @implementation ANProcessAudio
 
-+ (BOOL)process:(id)a3 to:(id)a4 withOptions:(unint64_t)a5 error:(id *)a6
++ (BOOL)process:(id)process to:(id)to withOptions:(unint64_t)options error:(id *)error
 {
   v49 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  if (a5)
+  processCopy = process;
+  toCopy = to;
+  if (options)
   {
     v11 = [MEMORY[0x277CBEAA8] now];
-    v12 = [objc_alloc(MEMORY[0x277CB8398]) initForReading:v9 error:a6];
+    v12 = [objc_alloc(MEMORY[0x277CB8398]) initForReading:processCopy error:error];
     if (!v12)
     {
       v35 = ANLogHandleAudioProcessor();
       if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
       {
-        v36 = *a6;
+        v36 = *error;
         *buf = 138412802;
         *&buf[4] = &stru_2836DAA20;
         *&buf[12] = 2112;
-        *&buf[14] = v9;
+        *&buf[14] = processCopy;
         v45 = 2112;
         v46 = v36;
         _os_log_impl(&dword_2237C8000, v35, OS_LOG_TYPE_ERROR, "%@Failed to open file %@, %@", buf, 0x20u);
@@ -47,14 +47,14 @@
       v16 = v15;
       v17 = objc_opt_new();
       v18 = objc_opt_new();
-      if ([ANProcessAudio _configureEngine:v18 player:v17 effect:v16 sourceFile:v13 error:a6])
+      if ([ANProcessAudio _configureEngine:v18 player:v17 effect:v16 sourceFile:v13 error:error])
       {
         v42 = v17;
         v43 = v11;
         v19 = objc_alloc(MEMORY[0x277CB8398]);
-        v20 = [v13 fileFormat];
-        v21 = [v20 settings];
-        v22 = [v19 initForWriting:v10 settings:v21 error:a6];
+        fileFormat = [v13 fileFormat];
+        settings = [fileFormat settings];
+        v22 = [v19 initForWriting:toCopy settings:settings error:error];
 
         v23 = ANLogHandleAudioProcessor();
         v24 = v23;
@@ -70,16 +70,16 @@
             _os_log_impl(&dword_2237C8000, v24, OS_LOG_TYPE_DEFAULT, "%@Ouput File Frames Before: %lld", buf, 0x16u);
           }
 
-          +[ANProcessAudio _renderAudioTo:length:engine:error:](ANProcessAudio, "_renderAudioTo:length:engine:error:", v22, [v13 length], v18, a6);
+          +[ANProcessAudio _renderAudioTo:length:engine:error:](ANProcessAudio, "_renderAudioTo:length:engine:error:", v22, [v13 length], v18, error);
           v26 = ANLogHandleAudioProcessor();
           if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
           {
             *buf = 138413058;
             *&buf[4] = &stru_2836DAA20;
             *&buf[12] = 2112;
-            *&buf[14] = v9;
+            *&buf[14] = processCopy;
             v45 = 2112;
-            v46 = v10;
+            v46 = toCopy;
             v47 = 2112;
             v48 = v18;
             _os_log_impl(&dword_2237C8000, v26, OS_LOG_TYPE_DEBUG, "%@Process file: %@ to %@ with engine %@", buf, 0x2Au);
@@ -88,8 +88,8 @@
           v27 = ANLogHandleAudioProcessor();
           if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
           {
-            v28 = [MEMORY[0x277CBEAA8] date];
-            [v28 timeIntervalSinceDate:v43];
+            date = [MEMORY[0x277CBEAA8] date];
+            [date timeIntervalSinceDate:v43];
             *buf = 138412802;
             *&buf[4] = &stru_2836DAA20;
             *&buf[12] = 2080;
@@ -104,7 +104,7 @@
           [v18 detachNode:v42];
           [v18 detachNode:v16];
 
-          v30 = [objc_alloc(MEMORY[0x277CB8398]) initForReading:v10 error:a6];
+          v30 = [objc_alloc(MEMORY[0x277CB8398]) initForReading:toCopy error:error];
           v31 = ANLogHandleAudioProcessor();
           v32 = v31;
           if (v30)
@@ -157,7 +157,7 @@
         v38 = ANLogHandleAudioProcessor();
         if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
         {
-          v39 = *a6;
+          v39 = *error;
           *buf = 138412546;
           *&buf[4] = &stru_2836DAA20;
           *&buf[12] = 2112;
@@ -196,23 +196,23 @@ LABEL_34:
   return v34;
 }
 
-+ (BOOL)_configureEngine:(id)a3 player:(id)a4 effect:(id)a5 sourceFile:(id)a6 error:(id *)a7
++ (BOOL)_configureEngine:(id)engine player:(id)player effect:(id)effect sourceFile:(id)file error:(id *)error
 {
   v53 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = [v14 processingFormat];
-  v16 = [v11 enableManualRenderingMode:0 format:v15 maximumFrameCount:4096 error:a7];
+  engineCopy = engine;
+  playerCopy = player;
+  effectCopy = effect;
+  fileCopy = file;
+  processingFormat = [fileCopy processingFormat];
+  v16 = [engineCopy enableManualRenderingMode:0 format:processingFormat maximumFrameCount:4096 error:error];
 
   if (v16)
   {
-    v41 = a7;
-    v42 = v14;
-    [v11 attachNode:v12];
-    v43 = v12;
-    v40 = v12;
+    errorCopy = error;
+    v42 = fileCopy;
+    [engineCopy attachNode:playerCopy];
+    v43 = playerCopy;
+    v40 = playerCopy;
     v17 = [ANProcessAudio _lookupTunings:1];
     v44 = 0u;
     v45 = 0u;
@@ -236,9 +236,9 @@ LABEL_34:
           v23 = [v17 objectForKeyedSubscript:v22];
           [v23 floatValue];
           v25 = v24;
-          v26 = [v13 AUAudioUnit];
-          v27 = [v26 parameterTree];
-          v28 = [v27 parameterWithAddress:{objc_msgSend(v22, "unsignedIntegerValue")}];
+          aUAudioUnit = [effectCopy AUAudioUnit];
+          parameterTree = [aUAudioUnit parameterTree];
+          v28 = [parameterTree parameterWithAddress:{objc_msgSend(v22, "unsignedIntegerValue")}];
           LODWORD(v29) = v25;
           [v28 setValue:v29];
         }
@@ -249,18 +249,18 @@ LABEL_34:
       while (v19);
     }
 
-    [v11 attachNode:v13];
-    v14 = v42;
-    v30 = [v42 processingFormat];
-    [v11 connect:v40 to:v13 format:v30];
+    [engineCopy attachNode:effectCopy];
+    fileCopy = v42;
+    processingFormat2 = [v42 processingFormat];
+    [engineCopy connect:v40 to:effectCopy format:processingFormat2];
 
-    v31 = v13;
-    v32 = [v11 mainMixerNode];
-    v33 = [v42 processingFormat];
-    [v11 connect:v31 to:v32 format:v33];
+    v31 = effectCopy;
+    mainMixerNode = [engineCopy mainMixerNode];
+    processingFormat3 = [v42 processingFormat];
+    [engineCopy connect:v31 to:mainMixerNode format:processingFormat3];
 
     [v40 scheduleFile:v42 atTime:0 completionHandler:0];
-    v34 = [v11 startAndReturnError:v41];
+    v34 = [engineCopy startAndReturnError:errorCopy];
     if (v34)
     {
       [v40 play];
@@ -271,7 +271,7 @@ LABEL_34:
       v36 = ANLogHandleAudioProcessor();
       if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
       {
-        v37 = *v41;
+        v37 = *errorCopy;
         *buf = 138412546;
         v50 = &stru_2836DAA20;
         v51 = 2112;
@@ -280,7 +280,7 @@ LABEL_34:
       }
     }
 
-    v12 = v43;
+    playerCopy = v43;
   }
 
   else
@@ -288,7 +288,7 @@ LABEL_34:
     v31 = ANLogHandleAudioProcessor();
     if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
     {
-      v35 = *a7;
+      v35 = *error;
       *buf = 138412546;
       v50 = &stru_2836DAA20;
       v51 = 2112;
@@ -303,7 +303,7 @@ LABEL_34:
   return v34;
 }
 
-+ (AudioComponentDescription)_lookupComponent:(SEL)a3
++ (AudioComponentDescription)_lookupComponent:(SEL)component
 {
   *&retstr->componentType = 0;
   *&retstr->componentManufacturer = 0;
@@ -316,10 +316,10 @@ LABEL_34:
   return result;
 }
 
-+ (id)_lookupTunings:(unint64_t)a3
++ (id)_lookupTunings:(unint64_t)tunings
 {
   v7[1] = *MEMORY[0x277D85DE8];
-  if (a3 == 1)
+  if (tunings == 1)
   {
     v6 = &unk_2836E1E70;
     v7[0] = &unk_2836E1F98;
@@ -336,15 +336,15 @@ LABEL_34:
   return v3;
 }
 
-+ (id)_ANAudioEffectToName:(unint64_t)a3
++ (id)_ANAudioEffectToName:(unint64_t)name
 {
   v3 = @"N/A";
-  if (a3 == 1)
+  if (name == 1)
   {
     v3 = @"AppleAUNormalizer";
   }
 
-  if (a3)
+  if (name)
   {
     return v3;
   }
@@ -355,39 +355,39 @@ LABEL_34:
   }
 }
 
-+ (BOOL)_renderAudioTo:(id)a3 length:(int64_t)a4 engine:(id)a5 error:(id *)a6
++ (BOOL)_renderAudioTo:(id)to length:(int64_t)length engine:(id)engine error:(id *)error
 {
   v33 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a5;
+  toCopy = to;
+  engineCopy = engine;
   v11 = ANLogHandleAudioProcessor();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
     v30 = &stru_2836DAA20;
     v31 = 2048;
-    v32 = a4;
+    lengthCopy = length;
     _os_log_impl(&dword_2237C8000, v11, OS_LOG_TYPE_DEFAULT, "%@Rendering Audio with length: %lld", buf, 0x16u);
   }
 
   v12 = objc_alloc(MEMORY[0x277CB83C8]);
-  v13 = [v10 manualRenderingFormat];
-  v14 = [v12 initWithPCMFormat:v13 frameCapacity:objc_msgSend(v10, "manualRenderingMaximumFrameCount")];
+  manualRenderingFormat = [engineCopy manualRenderingFormat];
+  v14 = [v12 initWithPCMFormat:manualRenderingFormat frameCapacity:objc_msgSend(engineCopy, "manualRenderingMaximumFrameCount")];
 
   v15 = 0;
   while (1)
   {
-    if ([v10 manualRenderingSampleTime] >= a4)
+    if ([engineCopy manualRenderingSampleTime] >= length)
     {
       v21 = 1;
       goto LABEL_17;
     }
 
-    v16 = a4 - [v10 manualRenderingSampleTime];
-    v17 = [v14 frameCapacity];
-    v18 = v17 >= v16 ? v16 : v17;
+    v16 = length - [engineCopy manualRenderingSampleTime];
+    frameCapacity = [v14 frameCapacity];
+    v18 = frameCapacity >= v16 ? v16 : frameCapacity;
     v28 = v15;
-    v19 = [v10 renderOffline:v18 toBuffer:v14 error:&v28];
+    v19 = [engineCopy renderOffline:v18 toBuffer:v14 error:&v28];
     v20 = v28;
 
     v21 = v19 != 0;
@@ -397,7 +397,7 @@ LABEL_34:
     }
 
     v27 = v20;
-    v22 = [v9 writeFromBuffer:v14 error:&v27];
+    v22 = [toCopy writeFromBuffer:v14 error:&v27];
     v15 = v27;
 
     if ((v22 & 1) == 0)
@@ -408,7 +408,7 @@ LABEL_34:
         *buf = 138412546;
         v30 = &stru_2836DAA20;
         v31 = 2112;
-        v32 = v15;
+        lengthCopy = v15;
         _os_log_impl(&dword_2237C8000, v23, OS_LOG_TYPE_ERROR, "%@error when writing out audio to file: %@", buf, 0x16u);
       }
 
@@ -423,7 +423,7 @@ LABEL_34:
     *buf = 138412546;
     v30 = &stru_2836DAA20;
     v31 = 2112;
-    v32 = v20;
+    lengthCopy = v20;
     _os_log_impl(&dword_2237C8000, v23, OS_LOG_TYPE_ERROR, "%@error when rendering status: %@", buf, 0x16u);
   }
 
@@ -432,10 +432,10 @@ LABEL_16:
   v15 = v20;
 LABEL_17:
 
-  if (a6)
+  if (error)
   {
     v24 = v15;
-    *a6 = v15;
+    *error = v15;
   }
 
   v25 = *MEMORY[0x277D85DE8];

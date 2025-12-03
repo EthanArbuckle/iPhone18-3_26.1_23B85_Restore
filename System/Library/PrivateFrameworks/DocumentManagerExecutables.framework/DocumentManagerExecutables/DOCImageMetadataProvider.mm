@@ -1,29 +1,29 @@
 @interface DOCImageMetadataProvider
-+ (id)imageMetadataProviderWithNode:(id)a3 levelOfDetail:(int64_t)a4 URL:(id)a5;
-- (BOOL)readTag:(CGImageMetadataTag *)a3 path:(id)a4 title:(id *)a5 value:(id *)a6;
++ (id)imageMetadataProviderWithNode:(id)node levelOfDetail:(int64_t)detail URL:(id)l;
+- (BOOL)readTag:(CGImageMetadataTag *)tag path:(id)path title:(id *)title value:(id *)value;
 - (NSArray)displaySortOrder;
 - (NSDictionary)metadataValues;
 - (id)compactMetadataValues;
 - (id)fullMetadataValues;
-- (void)addCGExifPropertiesToDictionary:(id)a3;
-- (void)addColorInfoToDictionary:(id)a3;
-- (void)addCreditTypeToDictionary:(id)a3;
-- (void)addDigitalSourceTypeToDictionary:(id)a3;
-- (void)addFlashProperitesToDictionary:(id)a3;
-- (void)addGPSInfoToDictionary:(id)a3;
-- (void)addHasAlphaToDictionary:(id)a3;
-- (void)addHasDPIToDictionary:(id)a3;
-- (void)addHasSizeToDictionary:(id)a3;
+- (void)addCGExifPropertiesToDictionary:(id)dictionary;
+- (void)addColorInfoToDictionary:(id)dictionary;
+- (void)addCreditTypeToDictionary:(id)dictionary;
+- (void)addDigitalSourceTypeToDictionary:(id)dictionary;
+- (void)addFlashProperitesToDictionary:(id)dictionary;
+- (void)addGPSInfoToDictionary:(id)dictionary;
+- (void)addHasAlphaToDictionary:(id)dictionary;
+- (void)addHasDPIToDictionary:(id)dictionary;
+- (void)addHasSizeToDictionary:(id)dictionary;
 - (void)dealloc;
 @end
 
 @implementation DOCImageMetadataProvider
 
-+ (id)imageMetadataProviderWithNode:(id)a3 levelOfDetail:(int64_t)a4 URL:(id)a5
++ (id)imageMetadataProviderWithNode:(id)node levelOfDetail:(int64_t)detail URL:(id)l
 {
-  v7 = a3;
-  v8 = a5;
-  if (!v8)
+  nodeCopy = node;
+  lCopy = l;
+  if (!lCopy)
   {
     goto LABEL_9;
   }
@@ -34,9 +34,9 @@
   }
 
   v9 = imageMetadataProviderWithNode_levelOfDetail_URL__imageTypes;
-  v10 = [v7 contentType];
-  v11 = [v10 identifier];
-  LODWORD(v9) = [v9 containsObject:v11];
+  contentType = [nodeCopy contentType];
+  identifier = [contentType identifier];
+  LODWORD(v9) = [v9 containsObject:identifier];
 
   if (!v9)
   {
@@ -45,7 +45,7 @@ LABEL_9:
     goto LABEL_13;
   }
 
-  v12 = CGImageSourceCreateWithURL(v8, 0);
+  v12 = CGImageSourceCreateWithURL(lCopy, 0);
   v13 = v12;
   if (!v12)
   {
@@ -69,7 +69,7 @@ LABEL_11:
   }
 
   v13 = objc_opt_new();
-  *(v13 + 24) = a4;
+  *(v13 + 24) = detail;
   objc_storeStrong((v13 + 8), v14);
   *(v13 + 16) = v15;
 LABEL_12:
@@ -94,11 +94,11 @@ void __76__DOCImageMetadataProvider_imageMetadataProviderWithNode_levelOfDetail_
   [(DOCImageMetadataProvider *)&v3 dealloc];
 }
 
-- (void)addHasSizeToDictionary:(id)a3
+- (void)addHasSizeToDictionary:(id)dictionary
 {
   imageProperties = self->_imageProperties;
   v5 = *MEMORY[0x277CD3450];
-  v6 = a3;
+  dictionaryCopy = dictionary;
   [(NSDictionary *)imageProperties objectForKeyedSubscript:v5];
   v7 = 0.0;
   v19 = v8 = 0.0;
@@ -130,12 +130,12 @@ void __76__DOCImageMetadataProvider_imageMetadataProviderWithNode_levelOfDetail_
   }
 
   v18 = DOCLocalizedMetadataStringForWidthByHeight(v7, v17);
-  [v6 setObject:v18 forKeyedSubscript:@"Dimensions"];
+  [dictionaryCopy setObject:v18 forKeyedSubscript:@"Dimensions"];
 }
 
-- (void)addHasDPIToDictionary:(id)a3
+- (void)addHasDPIToDictionary:(id)dictionary
 {
-  v18 = a3;
+  dictionaryCopy = dictionary;
   v4 = [(NSDictionary *)self->_imageProperties objectForKeyedSubscript:*MEMORY[0x277CD2F30]];
   v5 = v4;
   if (v4)
@@ -161,8 +161,8 @@ void __76__DOCImageMetadataProvider_imageMetadataProviderWithNode_levelOfDetail_
       v13 = v12;
       if (v12)
       {
-        v14 = [v12 intValue];
-        v15 = v14 == 8 || v14 == 6;
+        intValue = [v12 intValue];
+        v15 = intValue == 8 || intValue == 6;
         if (v15)
         {
           v16 = v7;
@@ -182,42 +182,42 @@ void __76__DOCImageMetadataProvider_imageMetadataProviderWithNode_levelOfDetail_
       }
 
       v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"%d × %d", v7, v11];
-      [v18 setObject:v17 forKeyedSubscript:@"Resolution"];
+      [dictionaryCopy setObject:v17 forKeyedSubscript:@"Resolution"];
     }
   }
 }
 
-- (void)addHasAlphaToDictionary:(id)a3
+- (void)addHasAlphaToDictionary:(id)dictionary
 {
-  v7 = a3;
+  dictionaryCopy = dictionary;
   v4 = [(NSDictionary *)self->_imageProperties objectForKeyedSubscript:*MEMORY[0x277CD3368]];
   v5 = v4;
   if (v4)
   {
     v6 = DOCLocalizedMetadataYesNoStringForBool([v4 BOOLValue]);
-    [v7 setObject:v6 forKeyedSubscript:@"hasAlpha"];
+    [dictionaryCopy setObject:v6 forKeyedSubscript:@"hasAlpha"];
   }
 }
 
-- (void)addColorInfoToDictionary:(id)a3
+- (void)addColorInfoToDictionary:(id)dictionary
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   v4 = [(NSDictionary *)self->_imageProperties objectForKeyedSubscript:*MEMORY[0x277CD3400]];
   if (v4)
   {
-    [v6 setObject:v4 forKeyedSubscript:@"ColorSpace"];
+    [dictionaryCopy setObject:v4 forKeyedSubscript:@"ColorSpace"];
   }
 
   v5 = [(NSDictionary *)self->_imageProperties objectForKeyedSubscript:*MEMORY[0x277CD3460]];
   if (v5)
   {
-    [v6 setObject:v5 forKeyedSubscript:@"ColorProfile"];
+    [dictionaryCopy setObject:v5 forKeyedSubscript:@"ColorProfile"];
   }
 }
 
-- (void)addCGExifPropertiesToDictionary:(id)a3
+- (void)addCGExifPropertiesToDictionary:(id)dictionary
 {
-  v28 = a3;
+  dictionaryCopy = dictionary;
   v4 = [(NSDictionary *)self->_imageProperties objectForKeyedSubscript:*MEMORY[0x277CD3038]];
   if (v4)
   {
@@ -225,25 +225,25 @@ void __76__DOCImageMetadataProvider_imageMetadataProviderWithNode_levelOfDetail_
     [v5 setMaxFractionalDigits:4];
     v6 = [v4 objectForKeyedSubscript:*MEMORY[0x277CD2F48]];
     v7 = [v5 displayStringForMetadataValue:v6];
-    [v28 setObject:v7 forKeyedSubscript:@"ApertureValue"];
+    [dictionaryCopy setObject:v7 forKeyedSubscript:@"ApertureValue"];
 
     v8 = [v4 objectForKeyedSubscript:*MEMORY[0x277CD3058]];
     v9 = DOCLocalizedMetadataStringForExposureProgramNumber(v8);
-    [v28 setObject:v9 forKeyedSubscript:@"ExposureProgram"];
+    [dictionaryCopy setObject:v9 forKeyedSubscript:@"ExposureProgram"];
 
     v10 = objc_opt_new();
     [v10 setMaxFractionalDigits:4];
     [v10 setPrefersIntegerFractionalDisplay:1];
     v11 = [v4 objectForKeyedSubscript:*MEMORY[0x277CD3060]];
     v12 = [v10 displayStringForMetadataValue:v11];
-    [v28 setObject:v12 forKeyedSubscript:@"ExposureTime"];
+    [dictionaryCopy setObject:v12 forKeyedSubscript:@"ExposureTime"];
 
     v13 = objc_opt_new();
     [v13 setMaxFractionalDigits:4];
     [v13 setLengthUnits:8];
     v14 = [v4 objectForKeyedSubscript:*MEMORY[0x277CD3088]];
     v15 = [v13 displayStringForMetadataValue:v14];
-    [v28 setObject:v15 forKeyedSubscript:@"FocalLength"];
+    [dictionaryCopy setObject:v15 forKeyedSubscript:@"FocalLength"];
 
     v16 = objc_opt_new();
     [v16 setMaxFractionalDigits:2];
@@ -253,37 +253,37 @@ void __76__DOCImageMetadataProvider_imageMetadataProviderWithNode_levelOfDetail_
     [v16 setDecimalFormatString:v18];
     v19 = [v4 objectForKeyedSubscript:*MEMORY[0x277CD3068]];
     v20 = [v16 displayStringForMetadataValue:v19];
-    [v28 setObject:v20 forKeyedSubscript:@"FNumber"];
+    [dictionaryCopy setObject:v20 forKeyedSubscript:@"FNumber"];
 
     v21 = [v4 objectForKeyedSubscript:*MEMORY[0x277CD30F0]];
     v22 = DOCLocalizedMetadataStringForMeteringModeNumber(v21);
-    [v28 setObject:v22 forKeyedSubscript:@"MeteringMode"];
+    [dictionaryCopy setObject:v22 forKeyedSubscript:@"MeteringMode"];
 
     v23 = [v4 objectForKeyedSubscript:*MEMORY[0x277CD30B0]];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v24 = [v23 firstObject];
+      firstObject = [v23 firstObject];
 
-      v23 = v24;
+      v23 = firstObject;
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v25 = [v23 description];
-      [v28 setObject:v25 forKeyedSubscript:@"ISOSpeed"];
+      [dictionaryCopy setObject:v25 forKeyedSubscript:@"ISOSpeed"];
     }
 
     v26 = [v4 objectForKeyedSubscript:*MEMORY[0x277CD31A8]];
     v27 = DOCLocalizedMetadataStringForWhiteBalanceModeNumber(v26);
-    [v28 setObject:v27 forKeyedSubscript:@"WhiteBalance"];
+    [dictionaryCopy setObject:v27 forKeyedSubscript:@"WhiteBalance"];
   }
 }
 
-- (void)addFlashProperitesToDictionary:(id)a3
+- (void)addFlashProperitesToDictionary:(id)dictionary
 {
-  v11 = a3;
+  dictionaryCopy = dictionary;
   v4 = [(NSDictionary *)self->_imageProperties objectForKeyedSubscript:*MEMORY[0x277CD3038]];
   v5 = v4;
   if (v4)
@@ -292,19 +292,19 @@ void __76__DOCImageMetadataProvider_imageMetadataProviderWithNode_levelOfDetail_
     v7 = v6;
     if (v6)
     {
-      v8 = [v6 integerValue];
-      v9 = DOCLocalizedMetadataYesNoStringForBool(v8 & 1);
-      [v11 setObject:v9 forKeyedSubscript:@"Flash"];
+      integerValue = [v6 integerValue];
+      v9 = DOCLocalizedMetadataYesNoStringForBool(integerValue & 1);
+      [dictionaryCopy setObject:v9 forKeyedSubscript:@"Flash"];
 
-      v10 = DOCLocalizedMetadataYesNoStringForBool((v8 >> 6) & 1);
-      [v11 setObject:v10 forKeyedSubscript:@"FlashRedEye"];
+      v10 = DOCLocalizedMetadataYesNoStringForBool((integerValue >> 6) & 1);
+      [dictionaryCopy setObject:v10 forKeyedSubscript:@"FlashRedEye"];
     }
   }
 }
 
-- (void)addGPSInfoToDictionary:(id)a3
+- (void)addGPSInfoToDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v7 = 0.0;
   v8 = 0.0;
   if (DOCSpotlightGPSInfoFromCGImagePropertyDictionary(self->_imageProperties, &v8, &v7))
@@ -313,42 +313,42 @@ void __76__DOCImageMetadataProvider_imageMetadataProviderWithNode_levelOfDetail_
     v6 = DOCLocalizedMetadataStringForLongitude(v7);
     if ([v5 length] && objc_msgSend(v6, "length"))
     {
-      [v4 setObject:v5 forKeyedSubscript:@"GPSLatitude"];
-      [v4 setObject:v6 forKeyedSubscript:@"GPSLongitude"];
+      [dictionaryCopy setObject:v5 forKeyedSubscript:@"GPSLatitude"];
+      [dictionaryCopy setObject:v6 forKeyedSubscript:@"GPSLongitude"];
     }
   }
 }
 
-- (void)addDigitalSourceTypeToDictionary:(id)a3
+- (void)addDigitalSourceTypeToDictionary:(id)dictionary
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   v4 = [(NSDictionary *)self->_imageProperties objectForKeyedSubscript:*MEMORY[0x277CD3380]];
   v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277CD3388]];
   if (v5)
   {
-    [v6 setObject:v5 forKeyedSubscript:@"DigitalSourceType"];
+    [dictionaryCopy setObject:v5 forKeyedSubscript:@"DigitalSourceType"];
   }
 }
 
-- (void)addCreditTypeToDictionary:(id)a3
+- (void)addCreditTypeToDictionary:(id)dictionary
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   v4 = [(NSDictionary *)self->_imageProperties objectForKeyedSubscript:*MEMORY[0x277CD3380]];
   v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277CD3378]];
   if (v5)
   {
-    [v6 setObject:v5 forKeyedSubscript:@"Credit"];
+    [dictionaryCopy setObject:v5 forKeyedSubscript:@"Credit"];
   }
 }
 
-- (BOOL)readTag:(CGImageMetadataTag *)a3 path:(id)a4 title:(id *)a5 value:(id *)a6
+- (BOOL)readTag:(CGImageMetadataTag *)tag path:(id)path title:(id *)title value:(id *)value
 {
-  v9 = a4;
-  *a5 = CGImageMetadataTagCopyName(a3);
-  v10 = CGImageMetadataTagCopyValue(a3);
-  LODWORD(a3) = [MEMORY[0x277CBEBF8] containsObject:v9];
+  pathCopy = path;
+  *title = CGImageMetadataTagCopyName(tag);
+  v10 = CGImageMetadataTagCopyValue(tag);
+  LODWORD(tag) = [MEMORY[0x277CBEBF8] containsObject:pathCopy];
 
-  if (a3 && (objc_opt_respondsToSelector() & 1) != 0)
+  if (tag && (objc_opt_respondsToSelector() & 1) != 0)
   {
     v11 = DOCLocalizedMetadataYesNoStringForBool([v10 BOOLValue]);
   }
@@ -358,7 +358,7 @@ void __76__DOCImageMetadataProvider_imageMetadataProviderWithNode_levelOfDetail_
     v11 = v10;
   }
 
-  *a6 = v11;
+  *value = v11;
 
   return 1;
 }
@@ -401,22 +401,22 @@ void __76__DOCImageMetadataProvider_imageMetadataProviderWithNode_levelOfDetail_
   {
     if (levelOfDetail == 1)
     {
-      v4 = [(DOCImageMetadataProvider *)self fullMetadataValues];
+      fullMetadataValues = [(DOCImageMetadataProvider *)self fullMetadataValues];
     }
 
     else
     {
-      v6 = [MEMORY[0x277CCA890] currentHandler];
-      [v6 handleFailureInMethod:a2 object:self file:@"DOCImageMetadataProvider.m" lineNumber:384 description:{@"Unhandled DOCMetadataLevelOfDetail %lu", self->_levelOfDetail}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"DOCImageMetadataProvider.m" lineNumber:384 description:{@"Unhandled DOCMetadataLevelOfDetail %lu", self->_levelOfDetail}];
     }
   }
 
   else
   {
-    v4 = [(DOCImageMetadataProvider *)self compactMetadataValues];
+    fullMetadataValues = [(DOCImageMetadataProvider *)self compactMetadataValues];
   }
 
-  return v4;
+  return fullMetadataValues;
 }
 
 - (id)compactMetadataValues
@@ -446,7 +446,7 @@ void __76__DOCImageMetadataProvider_imageMetadataProviderWithNode_levelOfDetail_
   block[2] = __46__DOCImageMetadataProvider_fullMetadataValues__block_invoke;
   block[3] = &unk_278FA24C0;
   v12 = v4;
-  v13 = self;
+  selfCopy = self;
   v6 = v3;
   v14 = v6;
   v7 = v4;

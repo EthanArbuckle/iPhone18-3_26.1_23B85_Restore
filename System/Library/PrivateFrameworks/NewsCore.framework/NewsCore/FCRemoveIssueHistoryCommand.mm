@@ -1,13 +1,13 @@
 @interface FCRemoveIssueHistoryCommand
-- (FCRemoveIssueHistoryCommand)initWithIssueHistoryItemIDs:(id)a3;
+- (FCRemoveIssueHistoryCommand)initWithIssueHistoryItemIDs:(id)ds;
 @end
 
 @implementation FCRemoveIssueHistoryCommand
 
-- (FCRemoveIssueHistoryCommand)initWithIssueHistoryItemIDs:(id)a3
+- (FCRemoveIssueHistoryCommand)initWithIssueHistoryItemIDs:(id)ds
 {
   v4 = MEMORY[0x1E695BA90];
-  v5 = a3;
+  dsCopy = ds;
   v6 = [v4 alloc];
   v7 = [v6 initWithZoneName:@"IssueReadingHistory" ownerName:*MEMORY[0x1E695B728]];
   v15[0] = MEMORY[0x1E69E9820];
@@ -16,7 +16,7 @@
   v15[3] = &unk_1E7C38BD8;
   v8 = v7;
   v16 = v8;
-  v9 = [v5 fc_arrayByTransformingWithBlock:v15];
+  v9 = [dsCopy fc_arrayByTransformingWithBlock:v15];
 
   if (v9)
   {

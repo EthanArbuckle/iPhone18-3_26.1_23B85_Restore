@@ -1,15 +1,15 @@
 @interface TimelineRequest
 - (_TtC9WidgetKit15TimelineRequest)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TimelineRequest
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_192078B10(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_192078B10(coderCopy);
 }
 
 - (_TtC9WidgetKit15TimelineRequest)init

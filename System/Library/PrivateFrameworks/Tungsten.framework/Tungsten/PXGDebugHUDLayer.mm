@@ -1,9 +1,9 @@
 @interface PXGDebugHUDLayer
 - (PXGDebugHUDLayer)init;
 - (void)dealloc;
-- (void)setFrame:(CGRect)a3;
-- (void)updateDebugHUDWithStats:(id *)a3;
-- (void)updateLayerAtIndex:(int64_t)a3 time:(double)a4 redZone:(double)a5 yellowZone:(double)a6;
+- (void)setFrame:(CGRect)frame;
+- (void)updateDebugHUDWithStats:(id *)stats;
+- (void)updateLayerAtIndex:(int64_t)index time:(double)time redZone:(double)zone yellowZone:(double)yellowZone;
 @end
 
 @implementation PXGDebugHUDLayer
@@ -18,21 +18,21 @@
   [(PXGDebugHUDLayer *)&v3 dealloc];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v3.receiver = self;
   v3.super_class = PXGDebugHUDLayer;
-  [(PXGDebugHUDLayer *)&v3 setFrame:a3.origin.x, a3.origin.y, 100.0, 90.0];
+  [(PXGDebugHUDLayer *)&v3 setFrame:frame.origin.x, frame.origin.y, 100.0, 90.0];
 }
 
-- (void)updateLayerAtIndex:(int64_t)a3 time:(double)a4 redZone:(double)a5 yellowZone:(double)a6
+- (void)updateLayerAtIndex:(int64_t)index time:(double)time redZone:(double)zone yellowZone:(double)yellowZone
 {
-  v11 = [(PXGDebugHUDLayer *)self graphLayers];
-  v14 = [v11 objectAtIndexedSubscript:a3];
+  graphLayers = [(PXGDebugHUDLayer *)self graphLayers];
+  v14 = [graphLayers objectAtIndexedSubscript:index];
 
-  if (a4 <= a5)
+  if (time <= zone)
   {
-    if (a4 <= a6)
+    if (time <= yellowZone)
     {
       v12 = &OBJC_IVAR___PXGDebugHUDLayer__green;
       v13 = 40.0;
@@ -52,33 +52,33 @@
   }
 
   [v14 setBackgroundColor:*(&self->super.super.isa + *v12)];
-  [v14 setFrame:{55.0, a3 * 12.0 + 4.0, v13, 5.0}];
+  [v14 setFrame:{55.0, index * 12.0 + 4.0, v13, 5.0}];
 }
 
-- (void)updateDebugHUDWithStats:(id *)a3
+- (void)updateDebugHUDWithStats:(id *)stats
 {
   v5 = +[PXTungstenSettings sharedInstance];
   -[PXGDebugHUDLayer setHidden:](self, "setHidden:", [v5 wantsStatsDebugHUD] ^ 1);
 
-  v6 = [MEMORY[0x277D759A0] px_mainScreen];
-  v7 = [v6 maximumFramesPerSecond];
+  px_mainScreen = [MEMORY[0x277D759A0] px_mainScreen];
+  maximumFramesPerSecond = [px_mainScreen maximumFramesPerSecond];
 
   for (i = 0; i != 6; ++i)
   {
-    [(PXGDebugHUDLayer *)self updateLayerAtIndex:i time:a3->var0[i] redZone:0.8 / v7 / 6.0 yellowZone:0.5 / v7 / 6.0];
+    [(PXGDebugHUDLayer *)self updateLayerAtIndex:i time:stats->var0[i] redZone:0.8 / maximumFramesPerSecond / 6.0 yellowZone:0.5 / maximumFramesPerSecond / 6.0];
   }
 
   v9 = 0;
   v10 = 0.0;
   do
   {
-    v10 = v10 + a3->var0[v9] + a3->var0[v9 + 1];
+    v10 = v10 + stats->var0[v9] + stats->var0[v9 + 1];
     v9 += 2;
   }
 
   while (v9 != 6);
 
-  [(PXGDebugHUDLayer *)self updateLayerAtIndex:6 time:v10 redZone:0.8 / v7 yellowZone:0.5 / v7];
+  [(PXGDebugHUDLayer *)self updateLayerAtIndex:6 time:v10 redZone:0.8 / maximumFramesPerSecond yellowZone:0.5 / maximumFramesPerSecond];
 }
 
 - (PXGDebugHUDLayer)init
@@ -102,8 +102,8 @@
     [(PXGDebugHUDLayer *)v2 setFrame:0.0, 0.0, 100.0, 90.0];
     [(PXGDebugHUDLayer *)v2 setZPosition:10000.0];
     [(PXGDebugHUDLayer *)v2 setShouldRasterize:1];
-    v4 = [MEMORY[0x277D759A0] px_mainScreen];
-    [v4 scale];
+    px_mainScreen = [MEMORY[0x277D759A0] px_mainScreen];
+    [px_mainScreen scale];
     v6 = v5;
 
     [(PXGDebugHUDLayer *)v2 setRasterizationScale:v6];
@@ -113,10 +113,10 @@
     [(PXGDebugHUDLayer *)v2 setBackgroundColor:v7];
     CGColorRelease(v7);
     CGColorSpaceRelease(DeviceRGB);
-    v8 = [MEMORY[0x277CD9FC8] layer];
-    [v8 setContentsScale:v6];
-    [v8 setFrame:{0.0, 0.0, 50.0, 90.0}];
-    [v8 setFontSize:10.0];
+    layer = [MEMORY[0x277CD9FC8] layer];
+    [layer setContentsScale:v6];
+    [layer setFrame:{0.0, 0.0, 50.0, 90.0}];
+    [layer setFontSize:10.0];
     v9 = [MEMORY[0x277CBEB18] arrayWithCapacity:6];
     for (i = 0; i != 6; ++i)
     {
@@ -125,17 +125,17 @@
 
     [v9 addObject:@"Total"];
     v11 = [v9 componentsJoinedByString:@"\n"];
-    [v8 setString:v11];
+    [layer setString:v11];
 
-    [(PXGDebugHUDLayer *)v2 addSublayer:v8];
+    [(PXGDebugHUDLayer *)v2 addSublayer:layer];
     v12 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:7];
     for (j = 0; j != 7; ++j)
     {
-      v14 = [MEMORY[0x277CD9ED0] layer];
-      [v14 setFrame:{55.0, j * 12.0 + 4.0, 40.0, 5.0}];
-      [v14 setBackgroundColor:v2->_green];
-      [(PXGDebugHUDLayer *)v2 addSublayer:v14];
-      [v12 addObject:v14];
+      layer2 = [MEMORY[0x277CD9ED0] layer];
+      [layer2 setFrame:{55.0, j * 12.0 + 4.0, 40.0, 5.0}];
+      [layer2 setBackgroundColor:v2->_green];
+      [(PXGDebugHUDLayer *)v2 addSublayer:layer2];
+      [v12 addObject:layer2];
     }
 
     v15 = [v12 copy];

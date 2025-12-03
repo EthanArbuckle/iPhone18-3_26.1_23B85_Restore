@@ -1,16 +1,16 @@
 @interface HMBModelCloudReference
-+ (void)applyNativeCKValue:(id)a3 fromSource:(unint64_t)a4 associatingWith:(id)a5 toModel:(id)a6 propertyNamed:(id)a7;
-- (BOOL)isEqual:(id)a3;
++ (void)applyNativeCKValue:(id)value fromSource:(unint64_t)source associatingWith:(id)with toModel:(id)model propertyNamed:(id)named;
+- (BOOL)isEqual:(id)equal;
 - (HMBCloudZone)cloudZone;
-- (HMBModelCloudReference)initWithCoder:(id)a3;
-- (HMBModelCloudReference)initWithModelID:(id)a3 action:(unint64_t)a4;
+- (HMBModelCloudReference)initWithCoder:(id)coder;
+- (HMBModelCloudReference)initWithModelID:(id)d action:(unint64_t)action;
 - (id)attributeDescriptions;
-- (id)nativeCKValueWithEncodingContext:(id)a3 error:(id *)a4;
-- (id)referencedModelOfType:(Class)a3 fromCloudZone:(id)a4 allowExternalFetch:(BOOL)a5;
+- (id)nativeCKValueWithEncodingContext:(id)context error:(id *)error;
+- (id)referencedModelOfType:(Class)type fromCloudZone:(id)zone allowExternalFetch:(BOOL)fetch;
 - (unint64_t)action;
 - (unint64_t)hash;
-- (void)associateWithContainer:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)associateWithContainer:(id)container;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMBModelCloudReference
@@ -22,17 +22,17 @@
   return WeakRetained;
 }
 
-- (id)nativeCKValueWithEncodingContext:(id)a3 error:(id *)a4
+- (id)nativeCKValueWithEncodingContext:(id)context error:(id *)error
 {
   v43 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (!v6)
+  contextCopy = context;
+  if (!contextCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_26;
   }
 
-  v7 = v6;
+  v7 = contextCopy;
   objc_opt_class();
   v8 = objc_opt_isKindOfClass() & 1;
   if (v8)
@@ -53,9 +53,9 @@ LABEL_26:
     _HMFPreconditionFailure();
   }
 
-  v11 = [v7 createdRecords];
-  v12 = [(HMBModelReference *)self hmbModelID];
-  v13 = [v11 objectForKey:v12];
+  createdRecords = [v7 createdRecords];
+  hmbModelID = [(HMBModelReference *)self hmbModelID];
+  v13 = [createdRecords objectForKey:hmbModelID];
 
   if (v13)
   {
@@ -64,14 +64,14 @@ LABEL_7:
     reference = self->_reference;
     self->_reference = v14;
 
-    v16 = [(HMBModelCloudReference *)self reference];
+    reference = [(HMBModelCloudReference *)self reference];
     goto LABEL_15;
   }
 
-  v17 = [(HMBModelReference *)self localZone];
-  v18 = [(HMBModelReference *)self hmbModelID];
+  localZone = [(HMBModelReference *)self localZone];
+  hmbModelID2 = [(HMBModelReference *)self hmbModelID];
   v36 = 0;
-  v19 = [v17 externalIDForModelID:v18 error:&v36];
+  v19 = [localZone externalIDForModelID:hmbModelID2 error:&v36];
   v20 = v36;
 
   if (!v19)
@@ -82,17 +82,17 @@ LABEL_7:
     }
 
     v29 = objc_autoreleasePoolPush();
-    v30 = self;
+    selfCopy = self;
     v31 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
     {
       v32 = HMFGetLogIdentifier();
-      v33 = [(HMBModelReference *)v30 hmbModelID];
-      v34 = [v33 UUIDString];
+      hmbModelID3 = [(HMBModelReference *)selfCopy hmbModelID];
+      uUIDString = [hmbModelID3 UUIDString];
       *buf = 138543874;
       v38 = v32;
       v39 = 2112;
-      v40 = v34;
+      v40 = uUIDString;
       v41 = 2112;
       v42 = v20;
       _os_log_impl(&dword_22AD27000, v31, OS_LOG_TYPE_ERROR, "%{public}@Unable to determine CKRecordID for model ID %@: %@", buf, 0x20u);
@@ -100,7 +100,7 @@ LABEL_7:
 
     objc_autoreleasePoolPop(v29);
     v13 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_14;
     }
@@ -120,7 +120,7 @@ LABEL_7:
 
   v20 = v21;
   v22 = objc_autoreleasePoolPush();
-  v23 = self;
+  selfCopy2 = self;
   v24 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
   {
@@ -135,68 +135,68 @@ LABEL_7:
   }
 
   objc_autoreleasePoolPop(v22);
-  if (a4)
+  if (error)
   {
 LABEL_13:
     v26 = v20;
-    *a4 = v20;
+    *error = v20;
   }
 
 LABEL_14:
 
-  v16 = 0;
+  reference = 0;
 LABEL_15:
 
   v27 = *MEMORY[0x277D85DE8];
 
-  return v16;
+  return reference;
 }
 
 - (id)attributeDescriptions
 {
   v13.receiver = self;
   v13.super_class = HMBModelCloudReference;
-  v3 = [(HMBModelReference *)&v13 attributeDescriptions];
-  v4 = [v3 mutableCopy];
+  attributeDescriptions = [(HMBModelReference *)&v13 attributeDescriptions];
+  v4 = [attributeDescriptions mutableCopy];
 
-  v5 = [(HMBModelCloudReference *)self reference];
+  reference = [(HMBModelCloudReference *)self reference];
   v6 = objc_alloc(MEMORY[0x277D0F778]);
-  if (v5)
+  if (reference)
   {
-    v7 = [(HMBModelCloudReference *)self reference];
+    reference2 = [(HMBModelCloudReference *)self reference];
     v8 = @"Reference";
   }
 
   else
   {
-    v9 = [(HMBModelCloudReference *)self action];
-    if (*MEMORY[0x277CBC070] == v9)
+    action = [(HMBModelCloudReference *)self action];
+    if (*MEMORY[0x277CBC070] == action)
     {
-      v7 = @"validate";
+      reference2 = @"validate";
     }
 
-    else if (v9)
+    else if (action)
     {
-      if (v9 == 1)
+      if (action == 1)
       {
-        v7 = @"delete";
+        reference2 = @"delete";
       }
 
       else
       {
-        v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"<unknown %lu>", v9];
+        reference2 = [MEMORY[0x277CCACA8] stringWithFormat:@"<unknown %lu>", action];
       }
     }
 
     else
     {
-      v7 = @"none";
+      reference2 = @"none";
     }
 
     v8 = @"Action";
   }
 
-  v10 = [v6 initWithName:v8 value:v7];
+  v10 = [v6 initWithName:v8 value:reference2];
   [v4 addObject:v10];
 
   v11 = [v4 copy];
@@ -204,26 +204,26 @@ LABEL_15:
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = HMBModelCloudReference;
-  v4 = a3;
-  [(HMBModelReference *)&v7 encodeWithCoder:v4];
-  [v4 encodeInteger:-[HMBModelCloudReference action](self forKey:{"action", v7.receiver, v7.super_class), @"HMB.a"}];
-  v5 = [(HMBModelCloudReference *)self reference];
-  v6 = [v5 recordID];
-  [v4 encodeObject:v6 forKey:@"HMB.r"];
+  coderCopy = coder;
+  [(HMBModelReference *)&v7 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:-[HMBModelCloudReference action](self forKey:{"action", v7.receiver, v7.super_class), @"HMB.a"}];
+  reference = [(HMBModelCloudReference *)self reference];
+  recordID = [reference recordID];
+  [coderCopy encodeObject:recordID forKey:@"HMB.r"];
 }
 
-- (HMBModelCloudReference)initWithCoder:(id)a3
+- (HMBModelCloudReference)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMB.r"];
-  v6 = [v4 decodeIntegerForKey:@"HMB.a"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMB.r"];
+  v6 = [coderCopy decodeIntegerForKey:@"HMB.a"];
   v10.receiver = self;
   v10.super_class = HMBModelCloudReference;
-  v7 = [(HMBModelReference *)&v10 initWithCoder:v4];
+  v7 = [(HMBModelReference *)&v10 initWithCoder:coderCopy];
 
   if (v7)
   {
@@ -246,13 +246,13 @@ LABEL_15:
   return [(HMBModelCloudReference *)self action]^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -263,23 +263,23 @@ LABEL_15:
   v6 = v5;
   if (v6)
   {
-    v7 = [(HMBModelCloudReference *)self reference];
+    reference = [(HMBModelCloudReference *)self reference];
 
-    if (v7 && ([v6 reference], v8 = objc_claimAutoreleasedReturnValue(), v8, v8))
+    if (reference && ([v6 reference], v8 = objc_claimAutoreleasedReturnValue(), v8, v8))
     {
-      v9 = [v6 reference];
-      v10 = [(HMBModelCloudReference *)self reference];
-      v11 = [v9 isEqual:v10];
+      reference2 = [v6 reference];
+      reference3 = [(HMBModelCloudReference *)self reference];
+      v11 = [reference2 isEqual:reference3];
     }
 
     else
     {
-      v9 = [(HMBModelReference *)self hmbModelID];
-      v10 = [v6 hmbModelID];
-      if ([v9 isEqual:v10])
+      reference2 = [(HMBModelReference *)self hmbModelID];
+      reference3 = [v6 hmbModelID];
+      if ([reference2 isEqual:reference3])
       {
-        v12 = [(HMBModelCloudReference *)self action];
-        v11 = v12 == [v6 action];
+        action = [(HMBModelCloudReference *)self action];
+        v11 = action == [v6 action];
       }
 
       else
@@ -297,35 +297,35 @@ LABEL_15:
   return v11;
 }
 
-- (id)referencedModelOfType:(Class)a3 fromCloudZone:(id)a4 allowExternalFetch:(BOOL)a5
+- (id)referencedModelOfType:(Class)type fromCloudZone:(id)zone allowExternalFetch:(BOOL)fetch
 {
-  v5 = a5;
+  fetchCopy = fetch;
   v48 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = [v8 localZone];
-  if (v9)
+  zoneCopy = zone;
+  localZone = [zoneCopy localZone];
+  if (localZone)
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
       v13 = HMFGetLogIdentifier();
-      v14 = [(HMBModelReference *)v11 hmbModelID];
+      hmbModelID = [(HMBModelReference *)selfCopy hmbModelID];
       *buf = 138543874;
       v43 = v13;
       v44 = 2112;
-      v45 = v14;
+      v45 = hmbModelID;
       v46 = 2112;
-      v47 = v9;
+      v47 = localZone;
       _os_log_impl(&dword_22AD27000, v12, OS_LOG_TYPE_INFO, "%{public}@Looking for referenced model %@ in localZone %@", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v10);
     v41 = 0;
-    v15 = [(HMBModelReference *)v11 referencedModelOfType:a3 fromLocalZone:v9 error:&v41];
+    v15 = [(HMBModelReference *)selfCopy referencedModelOfType:type fromLocalZone:localZone error:&v41];
     v16 = v41;
-    v17 = v16;
+    reference3 = v16;
     if (v15)
     {
       v18 = [MEMORY[0x277D2C900] futureWithResult:v15];
@@ -337,16 +337,16 @@ LABEL_10:
     if (v16)
     {
       v19 = objc_autoreleasePoolPush();
-      v20 = v11;
+      v20 = selfCopy;
       v21 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
       {
         v22 = HMFGetLogIdentifier();
-        v23 = [(HMBModelReference *)v20 hmbModelID];
+        hmbModelID2 = [(HMBModelReference *)v20 hmbModelID];
         *buf = 138543618;
         v43 = v22;
         v44 = 2112;
-        v45 = v23;
+        v45 = hmbModelID2;
         _os_log_impl(&dword_22AD27000, v21, OS_LOG_TYPE_ERROR, "%{public}@Error fetching model %@", buf, 0x16u);
       }
 
@@ -359,33 +359,33 @@ LABEL_10:
     }
   }
 
-  v26 = [(HMBModelCloudReference *)self reference];
-  v27 = [v26 recordID];
+  reference = [(HMBModelCloudReference *)self reference];
+  recordID = [reference recordID];
 
   v28 = objc_autoreleasePoolPush();
-  v29 = self;
+  selfCopy2 = self;
   v30 = HMFGetOSLogHandle();
   v31 = v30;
-  if (v27 && v5)
+  if (recordID && fetchCopy)
   {
     if (os_log_type_enabled(v30, OS_LOG_TYPE_INFO))
     {
       v32 = HMFGetLogIdentifier();
-      v33 = [(HMBModelReference *)v29 hmbModelID];
-      v34 = [(HMBModelCloudReference *)v29 reference];
+      hmbModelID3 = [(HMBModelReference *)selfCopy2 hmbModelID];
+      reference2 = [(HMBModelCloudReference *)selfCopy2 reference];
       *buf = 138543874;
       v43 = v32;
       v44 = 2112;
-      v45 = v33;
+      v45 = hmbModelID3;
       v46 = 2112;
-      v47 = v34;
+      v47 = reference2;
       _os_log_impl(&dword_22AD27000, v31, OS_LOG_TYPE_INFO, "%{public}@No local model for %@, fetching via CKReference %@", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v28);
-    v17 = [(HMBModelCloudReference *)v29 reference];
-    v35 = [v17 recordID];
-    v18 = [v8 fetchCompleteModelForRecordID:v35];
+    reference3 = [(HMBModelCloudReference *)selfCopy2 reference];
+    recordID2 = [reference3 recordID];
+    v18 = [zoneCopy fetchCompleteModelForRecordID:recordID2];
   }
 
   else
@@ -393,18 +393,18 @@ LABEL_10:
     if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
     {
       v36 = HMFGetLogIdentifier();
-      v37 = [(HMBModelReference *)v29 hmbModelID];
+      hmbModelID4 = [(HMBModelReference *)selfCopy2 hmbModelID];
       *buf = 138543618;
       v43 = v36;
       v44 = 2112;
-      v45 = v37;
+      v45 = hmbModelID4;
       _os_log_impl(&dword_22AD27000, v31, OS_LOG_TYPE_ERROR, "%{public}@Unable to find referenced model %@, no local model and no CKReference to fetch", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v28);
     v38 = MEMORY[0x277D2C900];
-    v17 = [MEMORY[0x277CCA9B8] hmfErrorWithCode:2];
-    v18 = [v38 futureWithError:v17];
+    reference3 = [MEMORY[0x277CCA9B8] hmfErrorWithCode:2];
+    v18 = [v38 futureWithError:reference3];
   }
 
 LABEL_19:
@@ -414,20 +414,20 @@ LABEL_19:
   return v18;
 }
 
-- (void)associateWithContainer:(id)a3
+- (void)associateWithContainer:(id)container
 {
-  v4 = a3;
-  if (v4)
+  containerCopy = container;
+  if (containerCopy)
   {
-    v5 = v4;
+    v5 = containerCopy;
     v12.receiver = self;
     v12.super_class = HMBModelCloudReference;
-    [(HMBModelReference *)&v12 associateWithContainer:v4];
-    v6 = [v5 mirror];
+    [(HMBModelReference *)&v12 associateWithContainer:containerCopy];
+    mirror = [v5 mirror];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = v6;
+      v7 = mirror;
     }
 
     else
@@ -436,10 +436,10 @@ LABEL_19:
     }
 
     v8 = v7;
-    v9 = [(HMBModelCloudReference *)self cloudZone];
-    if (!v9)
+    cloudZone = [(HMBModelCloudReference *)self cloudZone];
+    if (!cloudZone)
     {
-      v9 = v8;
+      cloudZone = v8;
     }
   }
 
@@ -452,40 +452,40 @@ LABEL_19:
 
 - (unint64_t)action
 {
-  v3 = [(HMBModelCloudReference *)self reference];
+  reference = [(HMBModelCloudReference *)self reference];
 
-  if (!v3)
+  if (!reference)
   {
     return self->_action;
   }
 
-  v4 = [(HMBModelCloudReference *)self reference];
-  v5 = [v4 referenceAction];
+  reference2 = [(HMBModelCloudReference *)self reference];
+  referenceAction = [reference2 referenceAction];
 
-  return v5;
+  return referenceAction;
 }
 
-- (HMBModelCloudReference)initWithModelID:(id)a3 action:(unint64_t)a4
+- (HMBModelCloudReference)initWithModelID:(id)d action:(unint64_t)action
 {
   v6.receiver = self;
   v6.super_class = HMBModelCloudReference;
-  result = [(HMBModelReference *)&v6 initWithModelID:a3];
+  result = [(HMBModelReference *)&v6 initWithModelID:d];
   if (result)
   {
-    result->_action = a4;
+    result->_action = action;
   }
 
   return result;
 }
 
-+ (void)applyNativeCKValue:(id)a3 fromSource:(unint64_t)a4 associatingWith:(id)a5 toModel:(id)a6 propertyNamed:(id)a7
++ (void)applyNativeCKValue:(id)value fromSource:(unint64_t)source associatingWith:(id)with toModel:(id)model propertyNamed:(id)named
 {
   v66 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
-  v15 = v11;
+  valueCopy = value;
+  withCopy = with;
+  modelCopy = model;
+  namedCopy = named;
+  v15 = valueCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -501,7 +501,7 @@ LABEL_19:
 
   if (v17)
   {
-    v18 = [v13 hmbPropertyNamed:v14];
+    v18 = [modelCopy hmbPropertyNamed:namedCopy];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -515,70 +515,70 @@ LABEL_19:
 
     v20 = v19;
 
-    v55 = a1;
+    selfCopy = self;
     if (v20)
     {
       v50 = v18;
-      v52 = v14;
-      v53 = v12;
-      v54 = v13;
-      [v20 associateWithContainer:v12];
+      v52 = namedCopy;
+      v53 = withCopy;
+      v54 = modelCopy;
+      [v20 associateWithContainer:withCopy];
       v51 = v17;
-      v21 = [v17 recordID];
-      v22 = [v21 zoneID];
-      v23 = [v22 zoneName];
-      v24 = [v20 reference];
-      v25 = [v24 recordID];
-      v26 = [v25 zoneID];
-      v27 = [v26 zoneName];
-      v28 = [v23 isEqualToString:v27];
+      recordID = [v17 recordID];
+      zoneID = [recordID zoneID];
+      zoneName = [zoneID zoneName];
+      reference = [v20 reference];
+      recordID2 = [reference recordID];
+      zoneID2 = [recordID2 zoneID];
+      zoneName2 = [zoneID2 zoneName];
+      v28 = [zoneName isEqualToString:zoneName2];
 
       if (v28)
       {
-        v13 = v54;
-        v14 = v52;
+        modelCopy = v54;
+        namedCopy = v52;
         [v54 hmbSetProperty:v20 named:v52];
 
-        v12 = v53;
+        withCopy = v53;
         v17 = v51;
         goto LABEL_22;
       }
 
       v36 = objc_autoreleasePoolPush();
-      v41 = v55;
+      v41 = selfCopy;
       v38 = HMFGetOSLogHandle();
-      v13 = v54;
-      v14 = v52;
+      modelCopy = v54;
+      namedCopy = v52;
       if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
       {
         v42 = HMFGetLogIdentifier();
-        v43 = [v54 hmbDescription];
+        hmbDescription = [v54 hmbDescription];
         v17 = v51;
         [v51 hmbDescription];
         v44 = v49 = v36;
-        v45 = [v20 reference];
-        v46 = [v45 hmbDescription];
+        reference2 = [v20 reference];
+        hmbDescription2 = [reference2 hmbDescription];
         *buf = 138544386;
         v57 = v42;
         v58 = 2112;
-        v59 = v43;
+        v59 = hmbDescription;
         v60 = 2112;
         v61 = v52;
         v62 = 2112;
         v63 = v44;
         v64 = 2112;
-        v65 = v46;
+        v65 = hmbDescription2;
         _os_log_impl(&dword_22AD27000, v38, OS_LOG_TYPE_ERROR, "%{public}@Received CKRecord with a HMBModelCloudReference field (%@/%@) where zone name for reference stored in the CKRecord field does not match the zone name in the HMBModel field (%@!=%@)", buf, 0x34u);
 
-        v13 = v54;
+        modelCopy = v54;
         v36 = v49;
 
-        v12 = v53;
+        withCopy = v53;
       }
 
       else
       {
-        v12 = v53;
+        withCopy = v53;
         v17 = v51;
       }
 
@@ -588,19 +588,19 @@ LABEL_19:
     else
     {
       v36 = objc_autoreleasePoolPush();
-      v37 = a1;
+      selfCopy2 = self;
       v38 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
       {
         v39 = HMFGetLogIdentifier();
-        [v13 hmbDescription];
+        [modelCopy hmbDescription];
         v40 = v48 = v36;
         *buf = 138544130;
         v57 = v39;
         v58 = 2112;
         v59 = v40;
         v60 = 2112;
-        v61 = v14;
+        v61 = namedCopy;
         v62 = 2112;
         v63 = v15;
         _os_log_impl(&dword_22AD27000, v38, OS_LOG_TYPE_ERROR, "%{public}@Received CKRecord with a HMBModelCloudReference field (%@/%@) where the corresponding CKRecord field is not set or not of the expected type (got %@)", buf, 0x2Au);
@@ -615,15 +615,15 @@ LABEL_19:
 
   if (v15)
   {
-    v29 = v14;
+    v29 = namedCopy;
     v30 = objc_autoreleasePoolPush();
-    v31 = a1;
+    selfCopy3 = self;
     v32 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
     {
       v33 = HMFGetLogIdentifier();
-      [v13 hmbDescription];
-      v35 = v34 = v13;
+      [modelCopy hmbDescription];
+      v35 = v34 = modelCopy;
       *buf = 138544130;
       v57 = v33;
       v58 = 2112;
@@ -634,12 +634,12 @@ LABEL_19:
       v63 = v29;
       _os_log_impl(&dword_22AD27000, v32, OS_LOG_TYPE_ERROR, "%{public}@Unexpectedly found %@ in CKRecord field for wrapped model value %@/%@ which we expected to be a CKReference (ignoring).", buf, 0x2Au);
 
-      v13 = v34;
+      modelCopy = v34;
       v17 = 0;
     }
 
     objc_autoreleasePoolPop(v30);
-    v14 = v29;
+    namedCopy = v29;
   }
 
 LABEL_22:

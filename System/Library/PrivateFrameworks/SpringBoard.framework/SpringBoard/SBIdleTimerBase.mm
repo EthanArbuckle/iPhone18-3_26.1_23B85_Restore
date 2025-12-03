@@ -1,15 +1,15 @@
 @interface SBIdleTimerBase
 - (BOOL)isActivated;
 - (BOOL)isDisabled;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (unint64_t)hash;
-- (void)_enumerateObserversRespondingToSelector:(SEL)a3 usingBlock:(id)a4;
-- (void)_makeObserversPerformSelector:(SEL)a3;
-- (void)addIdleTimerObserver:(id)a3;
+- (void)_enumerateObserversRespondingToSelector:(SEL)selector usingBlock:(id)block;
+- (void)_makeObserversPerformSelector:(SEL)selector;
+- (void)addIdleTimerObserver:(id)observer;
 - (void)removeAllIdleTimerObservers;
-- (void)removeIdleTimerObserver:(id)a3;
-- (void)setActivated:(BOOL)a3;
+- (void)removeIdleTimerObserver:(id)observer;
+- (void)setActivated:(BOOL)activated;
 @end
 
 @implementation SBIdleTimerBase
@@ -23,18 +23,18 @@
 
 - (id)succinctDescription
 {
-  v2 = [(SBIdleTimerBase *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBIdleTimerBase *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBIdleTimerBase *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBIdleTimerBase *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 - (void)removeAllIdleTimerObservers
@@ -46,27 +46,27 @@
   }
 }
 
-- (void)addIdleTimerObserver:(id)a3
+- (void)addIdleTimerObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   observers = self->_observers;
-  v8 = v4;
+  v8 = observerCopy;
   if (!observers)
   {
-    v6 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     v7 = self->_observers;
-    self->_observers = v6;
+    self->_observers = weakObjectsHashTable;
 
-    v4 = v8;
+    observerCopy = v8;
     observers = self->_observers;
   }
 
-  [(NSHashTable *)observers addObject:v4];
+  [(NSHashTable *)observers addObject:observerCopy];
 }
 
-- (void)removeIdleTimerObserver:(id)a3
+- (void)removeIdleTimerObserver:(id)observer
 {
-  [(NSHashTable *)self->_observers removeObject:a3];
+  [(NSHashTable *)self->_observers removeObject:observer];
   if (![(NSHashTable *)self->_observers count])
   {
     observers = self->_observers;
@@ -85,15 +85,15 @@ id __41__SBIdleTimerBase__logExpirationTimeout___block_invoke(uint64_t a1)
   return v2;
 }
 
-- (void)_makeObserversPerformSelector:(SEL)a3
+- (void)_makeObserversPerformSelector:(SEL)selector
 {
   v42 = *MEMORY[0x277D85DE8];
-  v5 = [(NSHashTable *)self->_observers allObjects];
+  allObjects = [(NSHashTable *)self->_observers allObjects];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v27 objects:v41 count:16];
+  v6 = [allObjects countByEnumeratingWithState:&v27 objects:v41 count:16];
   if (!v6)
   {
     goto LABEL_15;
@@ -110,14 +110,14 @@ id __41__SBIdleTimerBase__logExpirationTimeout___block_invoke(uint64_t a1)
     {
       if (*v28 != v9)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(allObjects);
       }
 
       v11 = *(*(&v27 + 1) + 8 * v10);
       if (objc_opt_respondsToSelector())
       {
         Class = object_getClass(v11);
-        MethodImplementation = class_getMethodImplementation(Class, a3);
+        MethodImplementation = class_getMethodImplementation(Class, selector);
         if (!MethodImplementation)
         {
           [SBIdleTimerBase _makeObserversPerformSelector:];
@@ -128,14 +128,14 @@ id __41__SBIdleTimerBase__logExpirationTimeout___block_invoke(uint64_t a1)
         {
           v15 = objc_opt_class();
           v26 = v15;
-          NSStringFromSelector(a3);
+          NSStringFromSelector(selector);
           v16 = v9;
-          v18 = v17 = v5;
+          v18 = v17 = allObjects;
           v19 = objc_opt_class();
           *buf = 138544386;
           v32 = v15;
           v33 = 2048;
-          v34 = self;
+          selfCopy2 = self;
           v35 = 2114;
           v36 = v18;
           v37 = 2114;
@@ -145,12 +145,12 @@ id __41__SBIdleTimerBase__logExpirationTimeout___block_invoke(uint64_t a1)
           v20 = v19;
           _os_log_impl(&dword_21ED4E000, v14, OS_LOG_TYPE_DEFAULT, "<%{public}@: %p> sending %{public}@ to <%{public}@: %p>", buf, 0x34u);
 
-          v5 = v17;
+          allObjects = v17;
           v9 = v16;
           v7 = v25;
         }
 
-        (MethodImplementation)(v11, a3, self);
+        (MethodImplementation)(v11, selector, self);
         v8 = 1;
       }
 
@@ -158,7 +158,7 @@ id __41__SBIdleTimerBase__logExpirationTimeout___block_invoke(uint64_t a1)
     }
 
     while (v7 != v10);
-    v7 = [v5 countByEnumeratingWithState:&v27 objects:v41 count:16];
+    v7 = [allObjects countByEnumeratingWithState:&v27 objects:v41 count:16];
   }
 
   while (v7);
@@ -170,11 +170,11 @@ LABEL_15:
     {
       v22 = objc_opt_class();
       v23 = v22;
-      v24 = NSStringFromSelector(a3);
+      v24 = NSStringFromSelector(selector);
       *buf = 138543874;
       v32 = v22;
       v33 = 2048;
-      v34 = self;
+      selfCopy2 = self;
       v35 = 2114;
       v36 = v24;
       _os_log_impl(&dword_21ED4E000, v21, OS_LOG_TYPE_DEFAULT, "<%{public}@: %p> no observers for %{public}@", buf, 0x20u);
@@ -182,19 +182,19 @@ LABEL_15:
   }
 }
 
-- (void)_enumerateObserversRespondingToSelector:(SEL)a3 usingBlock:(id)a4
+- (void)_enumerateObserversRespondingToSelector:(SEL)selector usingBlock:(id)block
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  blockCopy = block;
   observers = self->_observers;
   if (observers)
   {
-    v7 = [(NSHashTable *)observers allObjects];
+    allObjects = [(NSHashTable *)observers allObjects];
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    v8 = [allObjects countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v8)
     {
       v9 = v8;
@@ -206,20 +206,20 @@ LABEL_15:
         {
           if (*v14 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(allObjects);
           }
 
           v12 = *(*(&v13 + 1) + 8 * v11);
           if (objc_opt_respondsToSelector())
           {
-            v5[2](v5, v12);
+            blockCopy[2](blockCopy, v12);
           }
 
           ++v11;
         }
 
         while (v9 != v11);
-        v9 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v9 = [allObjects countByEnumeratingWithState:&v13 objects:v17 count:16];
       }
 
       while (v9);
@@ -245,7 +245,7 @@ LABEL_15:
   return 0;
 }
 
-- (void)setActivated:(BOOL)a3
+- (void)setActivated:(BOOL)activated
 {
   OUTLINED_FUNCTION_1_2();
   objc_opt_class();

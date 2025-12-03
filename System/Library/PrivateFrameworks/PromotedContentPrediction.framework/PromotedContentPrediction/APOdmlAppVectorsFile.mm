@@ -1,17 +1,17 @@
 @interface APOdmlAppVectorsFile
-- (id)initForReadingContentsOfURL:(id)a3 version:(id)a4;
+- (id)initForReadingContentsOfURL:(id)l version:(id)version;
 - (id)nextVector;
 - (void)dealloc;
 @end
 
 @implementation APOdmlAppVectorsFile
 
-- (id)initForReadingContentsOfURL:(id)a3 version:(id)a4
+- (id)initForReadingContentsOfURL:(id)l version:(id)version
 {
   v35 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
+  lCopy = l;
+  versionCopy = version;
+  v8 = lCopy;
   v11 = objc_msgSend_fileSystemRepresentation(v8, v9, v10);
   v12 = fopen(v11, "r");
   if (!v12)
@@ -22,7 +22,7 @@
       *buf = 138412546;
       v32 = objc_opt_class();
       v33 = 2112;
-      v34 = v6;
+      v34 = lCopy;
       v17 = v32;
       _os_log_impl(&dword_260ECB000, v16, OS_LOG_TYPE_DEFAULT, "[%@] Could not open file for reading at %@.", buf, 0x16u);
     }
@@ -56,7 +56,7 @@
 LABEL_20:
         fclose(v13);
 LABEL_21:
-        v26 = 0;
+        selfCopy = 0;
         goto LABEL_22;
       }
 
@@ -106,7 +106,7 @@ LABEL_19:
   if (v14)
   {
     v14->_numberOfVectors = HIDWORD(__ptr);
-    objc_storeStrong(&v14->_vectorVersion, a4);
+    objc_storeStrong(&v14->_vectorVersion, version);
     v15->_file = v13;
     v15->_nextIndex = 0;
   }
@@ -117,11 +117,11 @@ LABEL_19:
   }
 
   self = v15;
-  v26 = self;
+  selfCopy = self;
 LABEL_22:
 
   v27 = *MEMORY[0x277D85DE8];
-  return v26;
+  return selfCopy;
 }
 
 - (void)dealloc

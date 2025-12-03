@@ -1,29 +1,29 @@
 @interface CIImageRowReader
-+ (id)forImage:(id)a3 downscaleToMax:(unsigned int)a4 colorspace:(CGColorSpace *)a5 usingContext:(id)a6;
-+ (id)forImage:(id)a3 usingContext:(id)a4;
-+ (id)forImage:(id)a3 usingContext:(id)a4 colorspace:(CGColorSpace *)a5;
-+ (id)fromImage:(CGImage *)a3;
-+ (id)fromImageFile:(id)a3;
-+ (id)withDictionary:(id)a3;
++ (id)forImage:(id)image downscaleToMax:(unsigned int)max colorspace:(CGColorSpace *)colorspace usingContext:(id)context;
++ (id)forImage:(id)image usingContext:(id)context;
++ (id)forImage:(id)image usingContext:(id)context colorspace:(CGColorSpace *)colorspace;
++ (id)fromImage:(CGImage *)image;
++ (id)fromImageFile:(id)file;
++ (id)withDictionary:(id)dictionary;
 - (CIImageRowReader)init;
-- (const)rowAtIndex:(unsigned int)a3;
-- (void)_dumpImage:(id)a3 colorspace:(CGColorSpace *)a4;
+- (const)rowAtIndex:(unsigned int)index;
+- (void)_dumpImage:(id)image colorspace:(CGColorSpace *)colorspace;
 - (void)dealloc;
-- (void)dumpImage:(id)a3;
-- (void)dumpImageAsDeviceRGB:(id)a3;
-- (void)dumpImageAsDict:(id)a3;
+- (void)dumpImage:(id)image;
+- (void)dumpImageAsDeviceRGB:(id)b;
+- (void)dumpImageAsDict:(id)dict;
 @end
 
 @implementation CIImageRowReader
 
-+ (id)fromImageFile:(id)a3
++ (id)fromImageFile:(id)file
 {
   if (![objc_msgSend(MEMORY[0x1E696AC08] "defaultManager")])
   {
     return 0;
   }
 
-  v4 = [MEMORY[0x1E695DFF8] fileURLWithPath:a3];
+  v4 = [MEMORY[0x1E695DFF8] fileURLWithPath:file];
   if (!v4)
   {
     return 0;
@@ -53,17 +53,17 @@
   return v9;
 }
 
-+ (id)fromImage:(CGImage *)a3
++ (id)fromImage:(CGImage *)image
 {
-  if (!a3)
+  if (!image)
   {
     return 0;
   }
 
-  Width = CGImageGetWidth(a3);
-  Height = CGImageGetHeight(a3);
-  BitsPerComponent = CGImageGetBitsPerComponent(a3);
-  ColorSpace = CGImageGetColorSpace(a3);
+  Width = CGImageGetWidth(image);
+  Height = CGImageGetHeight(image);
+  BitsPerComponent = CGImageGetBitsPerComponent(image);
+  ColorSpace = CGImageGetColorSpace(image);
   v8 = 0;
   if (!Width || !Height || !BitsPerComponent)
   {
@@ -83,7 +83,7 @@
   v15.size.height = Height;
   v15.origin.x = 0.0;
   v15.origin.y = 0.0;
-  CGContextDrawImage(v12, v15, a3);
+  CGContextDrawImage(v12, v15, image);
   CGContextFlush(v12);
   CGContextRelease(v12);
   v8 = objc_alloc_init(CIImageRowReader);
@@ -106,7 +106,7 @@
   return v8;
 }
 
-- (void)_dumpImage:(id)a3 colorspace:(CGColorSpace *)a4
+- (void)_dumpImage:(id)image colorspace:(CGColorSpace *)colorspace
 {
   v7 = objc_opt_new();
   v8 = [MEMORY[0x1E695DEF0] dataWithBytes:self->data length:self->height * self->bpr];
@@ -131,11 +131,11 @@
       v13 = 6;
     }
 
-    v14 = CGImageCreate(width, height, 8uLL, 0x20uLL, self->bpr, a4, v13, v11, 0, 0, kCGRenderingIntentDefault);
+    v14 = CGImageCreate(width, height, 8uLL, 0x20uLL, self->bpr, colorspace, v13, v11, 0, 0, kCGRenderingIntentDefault);
     CGDataProviderRelease(v12);
     if (v14)
     {
-      v15 = [objc_alloc(MEMORY[0x1E695DFF8]) initFileURLWithPath:a3];
+      v15 = [objc_alloc(MEMORY[0x1E695DFF8]) initFileURLWithPath:image];
       v16 = CGImageDestinationCreateWithURL(v15, @"public.tiff", 1uLL, 0);
       CGImageDestinationAddImage(v16, v14, 0);
       CGImageDestinationFinalize(v16);
@@ -147,7 +147,7 @@
   [v7 drain];
 }
 
-- (void)dumpImage:(id)a3
+- (void)dumpImage:(id)image
 {
   if (self->cs)
   {
@@ -158,7 +158,7 @@
   else
   {
     v5 = +[CIContext defaultRGBColorSpace];
-    [(CIImageRowReader *)self _dumpImage:a3 colorspace:v5];
+    [(CIImageRowReader *)self _dumpImage:image colorspace:v5];
     if (v5)
     {
 
@@ -167,18 +167,18 @@
   }
 }
 
-- (void)dumpImageAsDeviceRGB:(id)a3
+- (void)dumpImageAsDeviceRGB:(id)b
 {
   DeviceRGB = CGColorSpaceCreateDeviceRGB();
-  [(CIImageRowReader *)self _dumpImage:a3 colorspace:DeviceRGB];
+  [(CIImageRowReader *)self _dumpImage:b colorspace:DeviceRGB];
 
   CGColorSpaceRelease(DeviceRGB);
 }
 
-+ (id)forImage:(id)a3 downscaleToMax:(unsigned int)a4 colorspace:(CGColorSpace *)a5 usingContext:(id)a6
++ (id)forImage:(id)image downscaleToMax:(unsigned int)max colorspace:(CGColorSpace *)colorspace usingContext:(id)context
 {
-  v9 = a3;
-  [a3 extent];
+  imageCopy = image;
+  [image extent];
   x = v19.origin.x;
   y = v19.origin.y;
   width = v19.size.width;
@@ -206,18 +206,18 @@
     return 0;
   }
 
-  v15 = a4;
-  if (width > a4 || height > v15)
+  maxCopy = max;
+  if (width > max || height > maxCopy)
   {
-    v17 = fmin(fmin(v15 / width, v15 / height), 1.0);
+    v17 = fmin(fmin(maxCopy / width, maxCopy / height), 1.0);
     CGAffineTransformMakeScale(&v18, v17, v17);
-    v9 = [v9 imageByApplyingTransform:&v18];
+    imageCopy = [imageCopy imageByApplyingTransform:&v18];
   }
 
-  return [CIImageRowReader forImage:v9 usingContext:a6 colorspace:a5];
+  return [CIImageRowReader forImage:imageCopy usingContext:context colorspace:colorspace];
 }
 
-- (void)dumpImageAsDict:(id)a3
+- (void)dumpImageAsDict:(id)dict
 {
   v6[8] = *MEMORY[0x1E69E9840];
   v5[0] = @"bytes";
@@ -236,38 +236,38 @@
   v6[6] = [MEMORY[0x1E696AD98] numberWithShort:self->blue];
   v5[7] = @"alpha";
   v6[7] = [MEMORY[0x1E696AD98] numberWithShort:self->alpha];
-  [objc_msgSend(MEMORY[0x1E695DF20] dictionaryWithObjects:v6 forKeys:v5 count:{8), "writeToFile:atomically:", a3, 1}];
+  [objc_msgSend(MEMORY[0x1E695DF20] dictionaryWithObjects:v6 forKeys:v5 count:{8), "writeToFile:atomically:", dict, 1}];
 }
 
-+ (id)withDictionary:(id)a3
++ (id)withDictionary:(id)dictionary
 {
   v4 = objc_alloc_init(CIImageRowReader);
-  v5 = [a3 valueForKey:@"bytes"];
+  v5 = [dictionary valueForKey:@"bytes"];
   v6 = malloc_type_malloc([v5 length], 0xE01A4A35uLL);
   v4->data = v6;
   memcpy(v6, [v5 bytes], objc_msgSend(v5, "length"));
-  v4->bpr = [objc_msgSend(a3 valueForKey:{@"bpr", "unsignedLongValue"}];
-  v4->width = [objc_msgSend(a3 valueForKey:{@"width", "unsignedLongValue"}];
-  v4->height = [objc_msgSend(a3 valueForKey:{@"height", "unsignedLongValue"}];
-  v4->red = [objc_msgSend(a3 valueForKey:{@"red", "shortValue"}];
-  v4->green = [objc_msgSend(a3 valueForKey:{@"green", "shortValue"}];
-  v4->blue = [objc_msgSend(a3 valueForKey:{@"blue", "shortValue"}];
-  v4->alpha = [objc_msgSend(a3 valueForKey:{@"alpha", "shortValue"}];
+  v4->bpr = [objc_msgSend(dictionary valueForKey:{@"bpr", "unsignedLongValue"}];
+  v4->width = [objc_msgSend(dictionary valueForKey:{@"width", "unsignedLongValue"}];
+  v4->height = [objc_msgSend(dictionary valueForKey:{@"height", "unsignedLongValue"}];
+  v4->red = [objc_msgSend(dictionary valueForKey:{@"red", "shortValue"}];
+  v4->green = [objc_msgSend(dictionary valueForKey:{@"green", "shortValue"}];
+  v4->blue = [objc_msgSend(dictionary valueForKey:{@"blue", "shortValue"}];
+  v4->alpha = [objc_msgSend(dictionary valueForKey:{@"alpha", "shortValue"}];
   return v4;
 }
 
-+ (id)forImage:(id)a3 usingContext:(id)a4
++ (id)forImage:(id)image usingContext:(id)context
 {
   v6 = +[CIContext defaultRGBColorSpace];
-  v7 = [CIImageRowReader forImage:a3 usingContext:a4 colorspace:v6];
+  v7 = [CIImageRowReader forImage:image usingContext:context colorspace:v6];
   CGColorSpaceRelease(v6);
   return v7;
 }
 
-+ (id)forImage:(id)a3 usingContext:(id)a4 colorspace:(CGColorSpace *)a5
++ (id)forImage:(id)image usingContext:(id)context colorspace:(CGColorSpace *)colorspace
 {
   v8 = objc_alloc_init(CIImageRowReader);
-  [a3 extent];
+  [image extent];
   v10 = v9;
   v12 = v11;
   *&v9 = v13;
@@ -278,15 +278,15 @@
   if (v17)
   {
     v18 = v17;
-    [a4 render:a3 toBitmap:v17 rowBytes:4 * v14 bounds:264 format:a5 colorSpace:{v10, v12, v14, v16}];
+    [context render:image toBitmap:v17 rowBytes:4 * v14 bounds:264 format:colorspace colorSpace:{v10, v12, v14, v16}];
     v8->bpr = 4 * v14;
     v8->data = v18;
     v8->height = v16;
     v8->width = v14;
     *&v8->red = 0x3000200010000;
-    if (a5)
+    if (colorspace)
     {
-      v19 = CFRetain(a5);
+      v19 = CFRetain(colorspace);
     }
 
     else
@@ -333,12 +333,12 @@
   [(CIImageRowReader *)&v5 dealloc];
 }
 
-- (const)rowAtIndex:(unsigned int)a3
+- (const)rowAtIndex:(unsigned int)index
 {
   data = self->data;
   if (data)
   {
-    return &data[self->bpr * a3];
+    return &data[self->bpr * index];
   }
 
   else

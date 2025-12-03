@@ -8,32 +8,32 @@
 
 - (id)hmd_dictionaryEncoding
 {
-  v2 = [MEMORY[0x277CBEB38] dictionary];
-  v3 = [a1 identifier];
-  [v2 setObject:v3 forKeyedSubscript:@"HAP.identifier"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  identifier = [self identifier];
+  [dictionary setObject:identifier forKeyedSubscript:@"HAP.identifier"];
 
-  v4 = [a1 privateKey];
+  privateKey = [self privateKey];
 
-  if (v4)
+  if (privateKey)
   {
-    v5 = [a1 privateKey];
-    v6 = [v5 data];
-    [v2 setObject:v6 forKeyedSubscript:@"HAP.privateKey"];
+    privateKey2 = [self privateKey];
+    data = [privateKey2 data];
+    [dictionary setObject:data forKeyedSubscript:@"HAP.privateKey"];
   }
 
-  v7 = [a1 publicKey];
+  publicKey = [self publicKey];
 
-  if (v7)
+  if (publicKey)
   {
-    v8 = [a1 publicKey];
-    v9 = [v8 data];
-    [v2 setObject:v9 forKeyedSubscript:@"HAP.publicKey"];
+    publicKey2 = [self publicKey];
+    data2 = [publicKey2 data];
+    [dictionary setObject:data2 forKeyedSubscript:@"HAP.publicKey"];
   }
 
-  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(a1, "permissions")}];
-  [v2 setObject:v10 forKeyedSubscript:@"HAP.permissions"];
+  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(self, "permissions")}];
+  [dictionary setObject:v10 forKeyedSubscript:@"HAP.permissions"];
 
-  v11 = [v2 copy];
+  v11 = [dictionary copy];
 
   return v11;
 }

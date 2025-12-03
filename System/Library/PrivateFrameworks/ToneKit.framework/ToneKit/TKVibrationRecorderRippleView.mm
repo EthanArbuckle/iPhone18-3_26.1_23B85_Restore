@@ -1,30 +1,30 @@
 @interface TKVibrationRecorderRippleView
-- (TKVibrationRecorderRippleView)initWithStyleProvider:(id)a3;
+- (TKVibrationRecorderRippleView)initWithStyleProvider:(id)provider;
 - (double)_currentSpeed;
 - (id)_reusableRingLayer;
 - (id)_reusableTouchContextObject;
-- (void)_enqueueReusableRingLayer:(id)a3;
-- (void)_enqueueReusableTouchContextObject:(id)a3;
-- (void)_enqueueRingLayerWithTimeIntervalSinceCreation:(double)a3 normalizedLocation:(CGPoint)a4 speed:(double)a5;
-- (void)_refresh:(id)a3;
+- (void)_enqueueReusableRingLayer:(id)layer;
+- (void)_enqueueReusableTouchContextObject:(id)object;
+- (void)_enqueueRingLayerWithTimeIntervalSinceCreation:(double)creation normalizedLocation:(CGPoint)location speed:(double)speed;
+- (void)_refresh:(id)_refresh;
 - (void)_startAnimation;
 - (void)_stopAnimation;
-- (void)_touchBeganAtLocation:(CGPoint)a3;
+- (void)_touchBeganAtLocation:(CGPoint)location;
 - (void)_updateRingEnlargementAnimation;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setFadeOutRadius:(double)a3;
-- (void)setFirstRippleInitialRadius:(double)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)setFadeOutRadius:(double)radius;
+- (void)setFirstRippleInitialRadius:(double)radius;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation TKVibrationRecorderRippleView
 
-- (TKVibrationRecorderRippleView)initWithStyleProvider:(id)a3
+- (TKVibrationRecorderRippleView)initWithStyleProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v15.receiver = self;
   v15.super_class = TKVibrationRecorderRippleView;
   v6 = [(TKVibrationRecorderRippleView *)&v15 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
@@ -43,9 +43,9 @@
       objc_storeStrong(&v6->_ringLayersQueue, v9);
       objc_storeStrong(&v6->_reusableRingLayers, v10);
       objc_storeStrong(&v6->_ringLayersByIdentifiers, v12);
-      objc_storeStrong(&v6->_styleProvider, a3);
-      v13 = [v5 vibrationRecorderRippleViewBackgroundColor];
-      [(TKVibrationRecorderRippleView *)v6 setBackgroundColor:v13];
+      objc_storeStrong(&v6->_styleProvider, provider);
+      vibrationRecorderRippleViewBackgroundColor = [providerCopy vibrationRecorderRippleViewBackgroundColor];
+      [(TKVibrationRecorderRippleView *)v6 setBackgroundColor:vibrationRecorderRippleViewBackgroundColor];
 
       [(TKVibrationRecorderRippleView *)v6 setOpaque:1];
       [(TKVibrationRecorderRippleView *)v6 setFingerStillSpeed:1.0];
@@ -74,20 +74,20 @@
   [(TKVibrationRecorderRippleView *)&v3 dealloc];
 }
 
-- (void)setFirstRippleInitialRadius:(double)a3
+- (void)setFirstRippleInitialRadius:(double)radius
 {
-  if (self->_firstRippleInitialRadius != a3)
+  if (self->_firstRippleInitialRadius != radius)
   {
-    self->_firstRippleInitialRadius = a3;
+    self->_firstRippleInitialRadius = radius;
     [(TKVibrationRecorderRippleView *)self _updateRingEnlargementAnimation];
   }
 }
 
-- (void)setFadeOutRadius:(double)a3
+- (void)setFadeOutRadius:(double)radius
 {
-  if (self->_fadeOutRadius != a3)
+  if (self->_fadeOutRadius != radius)
   {
-    self->_fadeOutRadius = a3;
+    self->_fadeOutRadius = radius;
     [(TKVibrationRecorderRippleView *)self _updateRingEnlargementAnimation];
     reusableRingLayers = self->_reusableRingLayers;
 
@@ -95,7 +95,7 @@
   }
 }
 
-- (void)_refresh:(id)a3
+- (void)_refresh:(id)_refresh
 {
   x = self->_currentTouchLocation.x;
   y = self->_currentTouchLocation.y;
@@ -127,13 +127,13 @@
       numberOfRipplesForCurrentTouch = 1;
     }
 
-    v19 = [(NSMutableArray *)self->_ringLayersQueue tk_lastEnqueuedObject];
-    [v19 normalizedRingLocation];
+    tk_lastEnqueuedObject = [(NSMutableArray *)self->_ringLayersQueue tk_lastEnqueuedObject];
+    [tk_lastEnqueuedObject normalizedRingLocation];
     v21 = v20;
     v23 = v22;
-    [v19 timeIntervalSinceCreation];
+    [tk_lastEnqueuedObject timeIntervalSinceCreation];
     v25 = v24;
-    [v19 ringSpeed];
+    [tk_lastEnqueuedObject ringSpeed];
     v27 = v26;
     v28 = vcvtmd_u64_f64(v25 * v26);
     if (v28)
@@ -171,8 +171,8 @@
     {
       if (v35)
       {
-        v37 = [(NSMutableArray *)self->_recentTouchesContextQueue tk_lastEnqueuedObject];
-        [v37 timeIntervalSinceCreation];
+        tk_lastEnqueuedObject2 = [(NSMutableArray *)self->_recentTouchesContextQueue tk_lastEnqueuedObject];
+        [tk_lastEnqueuedObject2 timeIntervalSinceCreation];
         v39 = v38;
 
         if (v39 <= 0.0)
@@ -182,8 +182,8 @@
 LABEL_18:
             if (v36 <= 5 && isTrackingTouch)
             {
-              v41 = [(NSMutableArray *)self->_recentTouchesContextQueue tk_nextDequeuedObject];
-              [v41 timeIntervalSinceCreation];
+              tk_nextDequeuedObject = [(NSMutableArray *)self->_recentTouchesContextQueue tk_nextDequeuedObject];
+              [tk_nextDequeuedObject timeIntervalSinceCreation];
               v43 = v42;
 
               if (v43 <= 0.0)
@@ -192,10 +192,10 @@ LABEL_18:
               }
             }
 
-            v44 = [(NSMutableArray *)self->_recentTouchesContextQueue tk_dequeueObject];
-            if (v44)
+            tk_dequeueObject = [(NSMutableArray *)self->_recentTouchesContextQueue tk_dequeueObject];
+            if (tk_dequeueObject)
             {
-              [(TKVibrationRecorderRippleView *)self _enqueueReusableTouchContextObject:v44];
+              [(TKVibrationRecorderRippleView *)self _enqueueReusableTouchContextObject:tk_dequeueObject];
             }
 
             --v36;
@@ -207,9 +207,9 @@ LABEL_18:
         }
       }
 
-      v40 = [(TKVibrationRecorderRippleView *)self _reusableTouchContextObject];
-      [v40 configureWithTimeIntervalSinceCreation:0.0 location:{x, y}];
-      [(NSMutableArray *)self->_recentTouchesContextQueue tk_enqueueObject:v40];
+      _reusableTouchContextObject = [(TKVibrationRecorderRippleView *)self _reusableTouchContextObject];
+      [_reusableTouchContextObject configureWithTimeIntervalSinceCreation:0.0 location:{x, y}];
+      [(NSMutableArray *)self->_recentTouchesContextQueue tk_enqueueObject:_reusableTouchContextObject];
       ++v36;
       self->_needsCurrentSpeedRefresh = 1;
     }
@@ -307,24 +307,24 @@ LABEL_18:
 {
   if ([(NSMutableArray *)self->_reusableTouchContexts count])
   {
-    v3 = [(NSMutableArray *)self->_reusableTouchContexts tk_dequeueObject];
+    tk_dequeueObject = [(NSMutableArray *)self->_reusableTouchContexts tk_dequeueObject];
   }
 
   else
   {
-    v3 = objc_alloc_init(TKVibrationRecorderRippleTouchContext);
+    tk_dequeueObject = objc_alloc_init(TKVibrationRecorderRippleTouchContext);
   }
 
-  return v3;
+  return tk_dequeueObject;
 }
 
-- (void)_enqueueReusableTouchContextObject:(id)a3
+- (void)_enqueueReusableTouchContextObject:(id)object
 {
-  if (a3)
+  if (object)
   {
-    v4 = a3;
-    [v4 reset];
-    [(NSMutableArray *)self->_reusableTouchContexts tk_enqueueObject:v4];
+    objectCopy = object;
+    [objectCopy reset];
+    [(NSMutableArray *)self->_reusableTouchContexts tk_enqueueObject:objectCopy];
   }
 }
 
@@ -358,29 +358,29 @@ LABEL_18:
   }
 }
 
-- (void)_enqueueRingLayerWithTimeIntervalSinceCreation:(double)a3 normalizedLocation:(CGPoint)a4 speed:(double)a5
+- (void)_enqueueRingLayerWithTimeIntervalSinceCreation:(double)creation normalizedLocation:(CGPoint)location speed:(double)speed
 {
-  y = a4.y;
-  x = a4.x;
+  y = location.y;
+  x = location.x;
   [(TKVibrationRecorderRippleView *)self firstRippleInitialRadius];
   v11 = v10;
   [(TKVibrationRecorderRippleView *)self fadeOutRadius];
-  v13 = (v12 / 0.84 - v11) / (a5 * 12.8);
-  v16 = [(TKVibrationRecorderRippleView *)self _reusableRingLayer];
-  [v16 configureWithTimeIntervalSinceCreation:a3 normalizedRingLocation:x ringSpeed:{y, a5}];
+  v13 = (v12 / 0.84 - v11) / (speed * 12.8);
+  _reusableRingLayer = [(TKVibrationRecorderRippleView *)self _reusableRingLayer];
+  [_reusableRingLayer configureWithTimeIntervalSinceCreation:creation normalizedRingLocation:x ringSpeed:{y, speed}];
   ++self->_lastRingLayerIdentifier;
   v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:?];
-  [(NSMutableDictionary *)self->_ringLayersByIdentifiers setObject:v16 forKey:v14];
-  [(NSMutableArray *)self->_ringLayersQueue tk_enqueueObject:v16];
-  v15 = [(TKVibrationRecorderRippleView *)self layer];
-  [v15 addSublayer:v16];
+  [(NSMutableDictionary *)self->_ringLayersByIdentifiers setObject:_reusableRingLayer forKey:v14];
+  [(NSMutableArray *)self->_ringLayersQueue tk_enqueueObject:_reusableRingLayer];
+  layer = [(TKVibrationRecorderRippleView *)self layer];
+  [layer addSublayer:_reusableRingLayer];
 
   [(TKVibrationRecorderRippleView *)self setNeedsLayout];
   [(CAAnimation *)self->_ringEnlargementAnimation setDelegate:self];
   [(CAAnimation *)self->_ringEnlargementAnimation setDuration:v13];
-  [(CAAnimation *)self->_ringEnlargementAnimation setBeginTime:CACurrentMediaTime() - a3];
+  [(CAAnimation *)self->_ringEnlargementAnimation setBeginTime:CACurrentMediaTime() - creation];
   [(CAAnimation *)self->_ringEnlargementAnimation setValue:v14 forKey:@"ring layer identifier"];
-  [v16 addAnimation:self->_ringEnlargementAnimation forKey:@"ring enlargement animation"];
+  [_reusableRingLayer addAnimation:self->_ringEnlargementAnimation forKey:@"ring enlargement animation"];
   [(CAAnimation *)self->_ringEnlargementAnimation setDelegate:0];
 }
 
@@ -397,20 +397,20 @@ LABEL_18:
   return [(NSMutableArray *)reusableRingLayers tk_dequeueObject];
 }
 
-- (void)_enqueueReusableRingLayer:(id)a3
+- (void)_enqueueReusableRingLayer:(id)layer
 {
-  if (a3)
+  if (layer)
   {
-    v6 = a3;
-    [v6 reset];
+    layerCopy = layer;
+    [layerCopy reset];
     [(TKVibrationRecorderRippleView *)self fadeOutRadius];
-    [v6 setFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), v4 + v4, v4 + v4}];
-    v5 = [(TKVibrationRecorderRippleView *)self tintColor];
-    [v6 setStrokeColor:{objc_msgSend(v5, "CGColor")}];
+    [layerCopy setFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), v4 + v4, v4 + v4}];
+    tintColor = [(TKVibrationRecorderRippleView *)self tintColor];
+    [layerCopy setStrokeColor:{objc_msgSend(tintColor, "CGColor")}];
 
     [(TKVibrationRecorderStyleProvider *)self->_styleProvider vibrationRecorderRippleRingLineWidth];
-    [v6 setLineWidth:?];
-    [(NSMutableArray *)self->_reusableRingLayers tk_enqueueObject:v6];
+    [layerCopy setLineWidth:?];
+    [(NSMutableArray *)self->_reusableRingLayers tk_enqueueObject:layerCopy];
   }
 }
 
@@ -502,10 +502,10 @@ LABEL_18:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_touchBeganAtLocation:(CGPoint)a3
+- (void)_touchBeganAtLocation:(CGPoint)location
 {
-  y = a3.y;
-  x = a3.x;
+  y = location.y;
+  x = location.x;
   [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
   self->_currentTouchStartTime = v6;
   self->_numberOfRipplesForCurrentTouch = 0;
@@ -516,24 +516,24 @@ LABEL_18:
   [(TKVibrationRecorderRippleView *)self _startAnimation];
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v5 = [a3 anyObject];
-  [v5 locationInView:self];
+  anyObject = [began anyObject];
+  [anyObject locationInView:self];
   [(TKVibrationRecorderRippleView *)self _touchBeganAtLocation:?];
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
-  v5 = [a3 anyObject];
-  [v5 locationInView:self];
+  anyObject = [moved anyObject];
+  [anyObject locationInView:self];
   [(TKVibrationRecorderRippleView *)self _touchMovedToLocation:?];
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  v5 = [a3 anyObject];
-  [v5 locationInView:self];
+  anyObject = [ended anyObject];
+  [anyObject locationInView:self];
   [(TKVibrationRecorderRippleView *)self _touchEndedAtLocation:?];
 }
 

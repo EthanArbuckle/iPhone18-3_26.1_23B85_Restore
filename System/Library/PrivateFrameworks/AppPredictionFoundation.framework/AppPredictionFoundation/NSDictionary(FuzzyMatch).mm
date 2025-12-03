@@ -12,22 +12,22 @@
   if (objc_opt_isKindOfClass())
   {
     v5 = v4;
-    if (a1 == v5)
+    if (self == v5)
     {
       v16 = 1;
     }
 
     else
     {
-      v6 = [a1 count];
+      v6 = [self count];
       if (v6 == [v5 count])
       {
         v21 = 0u;
         v22 = 0u;
         v19 = 0u;
         v20 = 0u;
-        v7 = a1;
-        v8 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        selfCopy = self;
+        v8 = [selfCopy countByEnumeratingWithState:&v19 objects:v23 count:16];
         if (v8)
         {
           v9 = v8;
@@ -38,11 +38,11 @@
             {
               if (*v20 != v10)
               {
-                objc_enumerationMutation(v7);
+                objc_enumerationMutation(selfCopy);
               }
 
               v12 = *(*(&v19 + 1) + 8 * i);
-              v13 = [v7 objectForKey:{v12, v19}];
+              v13 = [selfCopy objectForKey:{v12, v19}];
               v14 = [v5 objectForKey:v12];
               v15 = [v13 atx_isFuzzyMatch:v14];
 
@@ -53,7 +53,7 @@
               }
             }
 
-            v9 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
+            v9 = [selfCopy countByEnumeratingWithState:&v19 objects:v23 count:16];
             if (v9)
             {
               continue;

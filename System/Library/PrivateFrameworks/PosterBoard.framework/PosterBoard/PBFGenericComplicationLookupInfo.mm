@@ -1,23 +1,23 @@
 @interface PBFGenericComplicationLookupInfo
-+ (id)complicationLookupForWidgetFamily:(id)a3 extensionBundleIdentifier:(id)a4 containingBundleIdentifier:(id)a5 kind:(id)a6 intent:(id)a7 suggestedComplication:(id)a8;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)complicationLookupForWidgetFamily:(id)family extensionBundleIdentifier:(id)identifier containingBundleIdentifier:(id)bundleIdentifier kind:(id)kind intent:(id)intent suggestedComplication:(id)complication;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation PBFGenericComplicationLookupInfo
 
-+ (id)complicationLookupForWidgetFamily:(id)a3 extensionBundleIdentifier:(id)a4 containingBundleIdentifier:(id)a5 kind:(id)a6 intent:(id)a7 suggestedComplication:(id)a8
++ (id)complicationLookupForWidgetFamily:(id)family extensionBundleIdentifier:(id)identifier containingBundleIdentifier:(id)bundleIdentifier kind:(id)kind intent:(id)intent suggestedComplication:(id)complication
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  if (v13)
+  familyCopy = family;
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
+  kindCopy = kind;
+  intentCopy = intent;
+  complicationCopy = complication;
+  if (familyCopy)
   {
-    if (v14)
+    if (identifierCopy)
     {
       goto LABEL_3;
     }
@@ -26,17 +26,17 @@
   else
   {
     +[PBFGenericComplicationLookupInfo complicationLookupForWidgetFamily:extensionBundleIdentifier:containingBundleIdentifier:kind:intent:suggestedComplication:];
-    if (v14)
+    if (identifierCopy)
     {
 LABEL_3:
-      if (v15)
+      if (bundleIdentifierCopy)
       {
         goto LABEL_4;
       }
 
 LABEL_10:
       +[PBFGenericComplicationLookupInfo complicationLookupForWidgetFamily:extensionBundleIdentifier:containingBundleIdentifier:kind:intent:suggestedComplication:];
-      if (v16)
+      if (kindCopy)
       {
         goto LABEL_5;
       }
@@ -46,13 +46,13 @@ LABEL_10:
   }
 
   +[PBFGenericComplicationLookupInfo complicationLookupForWidgetFamily:extensionBundleIdentifier:containingBundleIdentifier:kind:intent:suggestedComplication:];
-  if (!v15)
+  if (!bundleIdentifierCopy)
   {
     goto LABEL_10;
   }
 
 LABEL_4:
-  if (v16)
+  if (kindCopy)
   {
     goto LABEL_5;
   }
@@ -61,34 +61,34 @@ LABEL_11:
   +[PBFGenericComplicationLookupInfo complicationLookupForWidgetFamily:extensionBundleIdentifier:containingBundleIdentifier:kind:intent:suggestedComplication:];
 LABEL_5:
   v19 = objc_alloc_init(PBFGenericComplicationLookupInfo);
-  v20 = [v13 copy];
+  v20 = [familyCopy copy];
   complicationWidgetFamily = v19->_complicationWidgetFamily;
   v19->_complicationWidgetFamily = v20;
 
-  v22 = [v14 copy];
+  v22 = [identifierCopy copy];
   complicationExtensionBundleIdentifier = v19->_complicationExtensionBundleIdentifier;
   v19->_complicationExtensionBundleIdentifier = v22;
 
-  v24 = [v15 copy];
+  v24 = [bundleIdentifierCopy copy];
   complicationContainingBundleIdentifier = v19->_complicationContainingBundleIdentifier;
   v19->_complicationContainingBundleIdentifier = v24;
 
-  v26 = [v16 copy];
+  v26 = [kindCopy copy];
   complicationWidgetKind = v19->_complicationWidgetKind;
   v19->_complicationWidgetKind = v26;
 
   complicationIntent = v19->_complicationIntent;
-  v19->_complicationIntent = v17;
-  v29 = v17;
+  v19->_complicationIntent = intentCopy;
+  v29 = intentCopy;
 
-  v30 = [v18 copy];
+  v30 = [complicationCopy copy];
   suggestedComplication = v19->_suggestedComplication;
   v19->_suggestedComplication = v30;
 
   return v19;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(PBFGenericComplicationLookupInfo);
   v5 = [(NSNumber *)self->_complicationWidgetFamily copy];
@@ -132,11 +132,11 @@ LABEL_5:
   return hash;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self || (v6 = [(PBFGenericComplicationLookupInfo *)v4 hash], v6 == [(PBFGenericComplicationLookupInfo *)self hash]))
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self || (v6 = [(PBFGenericComplicationLookupInfo *)equalCopy hash], v6 == [(PBFGenericComplicationLookupInfo *)self hash]))
   {
     v7 = 1;
   }
@@ -147,14 +147,14 @@ LABEL_5:
     if (objc_opt_isKindOfClass())
     {
       v9 = v5;
-      v10 = [(PBFGenericComplicationLookupInfo *)v9 complicationWidgetFamily];
-      v11 = [(PBFGenericComplicationLookupInfo *)self complicationWidgetFamily];
+      complicationWidgetFamily = [(PBFGenericComplicationLookupInfo *)v9 complicationWidgetFamily];
+      complicationWidgetFamily2 = [(PBFGenericComplicationLookupInfo *)self complicationWidgetFamily];
       v12 = BSEqualObjects();
 
       if (v12 && ([(PBFGenericComplicationLookupInfo *)v9 complicationContainingBundleIdentifier], v13 = objc_claimAutoreleasedReturnValue(), [(PBFGenericComplicationLookupInfo *)self complicationContainingBundleIdentifier], v14 = objc_claimAutoreleasedReturnValue(), v15 = BSEqualObjects(), v14, v13, v15) && ([(PBFGenericComplicationLookupInfo *)v9 complicationExtensionBundleIdentifier], v16 = objc_claimAutoreleasedReturnValue(), [(PBFGenericComplicationLookupInfo *)self complicationExtensionBundleIdentifier], v17 = objc_claimAutoreleasedReturnValue(), v18 = BSEqualObjects(), v17, v16, v18))
       {
-        v19 = [(PBFGenericComplicationLookupInfo *)v9 complicationWidgetKind];
-        v20 = [(PBFGenericComplicationLookupInfo *)self complicationWidgetKind];
+        complicationWidgetKind = [(PBFGenericComplicationLookupInfo *)v9 complicationWidgetKind];
+        complicationWidgetKind2 = [(PBFGenericComplicationLookupInfo *)self complicationWidgetKind];
         v7 = BSEqualObjects();
       }
 

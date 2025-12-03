@@ -13,21 +13,21 @@
 - (id)_ratingValue;
 - (int64_t)_lastConfirmedAge;
 - (int64_t)_requiredAgeForPlayback;
-- (void)_logRatingsInfo:(id)a3 maxAllowedRank:(id)a4 ratingValue:(id)a5;
-- (void)_performAgeGateVerificationWithCompletion:(id)a3;
-- (void)_performRestrictionsCheckWithCompletion:(id)a3;
-- (void)_preflightDownloadWithCompletion:(id)a3;
-- (void)_preflightWithOptions:(int64_t)a3 userInfo:(id)a4 completion:(id)a5;
-- (void)_promptForHighQualityDownloadsWithCompletion:(id)a3;
-- (void)_setLastAgeConfirmationPrompted:(id)a3;
-- (void)_setLastConfirmedAge:(int64_t)a3;
-- (void)_showAgeConfirmationWithPresentingViewController:(id)a3 completion:(id)a4;
-- (void)_showRestrictionsAlertForRatingDomain:(id)a3 completion:(id)a4;
-- (void)preflightWithOptions:(int64_t)a3 completion:(id)a4;
-- (void)setFrequencyOfAgeConfirmation:(id)a3;
-- (void)setMediaItem:(id)a3;
-- (void)setRestrictionsState:(int64_t)a3;
-- (void)setVideosPlayable:(id)a3;
+- (void)_logRatingsInfo:(id)info maxAllowedRank:(id)rank ratingValue:(id)value;
+- (void)_performAgeGateVerificationWithCompletion:(id)completion;
+- (void)_performRestrictionsCheckWithCompletion:(id)completion;
+- (void)_preflightDownloadWithCompletion:(id)completion;
+- (void)_preflightWithOptions:(int64_t)options userInfo:(id)info completion:(id)completion;
+- (void)_promptForHighQualityDownloadsWithCompletion:(id)completion;
+- (void)_setLastAgeConfirmationPrompted:(id)prompted;
+- (void)_setLastConfirmedAge:(int64_t)age;
+- (void)_showAgeConfirmationWithPresentingViewController:(id)controller completion:(id)completion;
+- (void)_showRestrictionsAlertForRatingDomain:(id)domain completion:(id)completion;
+- (void)preflightWithOptions:(int64_t)options completion:(id)completion;
+- (void)setFrequencyOfAgeConfirmation:(id)confirmation;
+- (void)setMediaItem:(id)item;
+- (void)setRestrictionsState:(int64_t)state;
+- (void)setVideosPlayable:(id)playable;
 @end
 
 @implementation VUIPreflightManager
@@ -65,64 +65,64 @@ void __46__VUIPreflightManager_defaultPreflightManager__block_invoke()
   return result;
 }
 
-- (void)setVideosPlayable:(id)a3
+- (void)setVideosPlayable:(id)playable
 {
-  v5 = a3;
-  if (self->_videosPlayable != v5)
+  playableCopy = playable;
+  if (self->_videosPlayable != playableCopy)
   {
-    objc_storeStrong(&self->_videosPlayable, a3);
+    objc_storeStrong(&self->_videosPlayable, playable);
     mediaItem = self->_mediaItem;
     self->_mediaItem = 0;
 
-    if (v5)
+    if (playableCopy)
     {
-      v7 = [(VUIVideosPlayable *)v5 metadata];
+      metadata = [(VUIVideosPlayable *)playableCopy metadata];
 
-      if (!v7)
+      if (!metadata)
       {
         v8 = VUIDefaultLogObject();
         if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
         {
-          [(VUIPreflightManager *)v5 setVideosPlayable:v8];
+          [(VUIPreflightManager *)playableCopy setVideosPlayable:v8];
         }
       }
 
       if (sFrequencyOfConfirmation == -1)
       {
-        v9 = [(VUIVideosPlayable *)v5 frequencyOfAgeConfirmation];
-        v10 = v9;
-        if (v9)
+        frequencyOfAgeConfirmation = [(VUIVideosPlayable *)playableCopy frequencyOfAgeConfirmation];
+        v10 = frequencyOfAgeConfirmation;
+        if (frequencyOfAgeConfirmation)
         {
-          sFrequencyOfConfirmation = [v9 integerValue];
+          sFrequencyOfConfirmation = [frequencyOfAgeConfirmation integerValue];
         }
       }
     }
   }
 }
 
-- (void)setFrequencyOfAgeConfirmation:(id)a3
+- (void)setFrequencyOfAgeConfirmation:(id)confirmation
 {
-  v6 = a3;
-  objc_storeStrong(&self->_frequencyOfAgeConfirmation, a3);
-  v5 = v6;
-  if (v6)
+  confirmationCopy = confirmation;
+  objc_storeStrong(&self->_frequencyOfAgeConfirmation, confirmation);
+  v5 = confirmationCopy;
+  if (confirmationCopy)
   {
-    sFrequencyOfConfirmation = [v6 integerValue];
-    v5 = v6;
+    sFrequencyOfConfirmation = [confirmationCopy integerValue];
+    v5 = confirmationCopy;
   }
 }
 
-- (void)setMediaItem:(id)a3
+- (void)setMediaItem:(id)item
 {
-  v5 = a3;
-  if (self->_mediaItem != v5)
+  itemCopy = item;
+  if (self->_mediaItem != itemCopy)
   {
-    v9 = v5;
-    objc_storeStrong(&self->_mediaItem, a3);
+    v9 = itemCopy;
+    objc_storeStrong(&self->_mediaItem, item);
     videosPlayable = self->_videosPlayable;
     self->_videosPlayable = 0;
 
-    v5 = v9;
+    itemCopy = v9;
     if (v9)
     {
       if (sFrequencyOfConfirmation == -1)
@@ -134,33 +134,33 @@ void __46__VUIPreflightManager_defaultPreflightManager__block_invoke()
           sFrequencyOfConfirmation = [v7 integerValue];
         }
 
-        v5 = v9;
+        itemCopy = v9;
       }
     }
   }
 }
 
-- (void)preflightWithOptions:(int64_t)a3 completion:(id)a4
+- (void)preflightWithOptions:(int64_t)options completion:(id)completion
 {
-  v7 = a4;
-  v6 = [(VUIPreflightManager *)self presentingController];
+  completionCopy = completion;
+  presentingController = [(VUIPreflightManager *)self presentingController];
 
-  if (v6)
+  if (presentingController)
   {
-    [(VUIPreflightManager *)self _preflightWithOptions:a3 userInfo:0 completion:v7];
+    [(VUIPreflightManager *)self _preflightWithOptions:options userInfo:0 completion:completionCopy];
   }
 
-  else if (v7)
+  else if (completionCopy)
   {
-    (*(v7 + 2))(v7, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 }
 
-- (void)setRestrictionsState:(int64_t)a3
+- (void)setRestrictionsState:(int64_t)state
 {
   v5 = VUIDefaultLogObject();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
-  if (a3 == 2)
+  if (state == 2)
   {
     if (v6)
     {
@@ -171,7 +171,7 @@ void __46__VUIPreflightManager_defaultPreflightManager__block_invoke()
     }
   }
 
-  else if (a3 == 1)
+  else if (state == 1)
   {
     if (v6)
     {
@@ -182,7 +182,7 @@ void __46__VUIPreflightManager_defaultPreflightManager__block_invoke()
     }
   }
 
-  else if (a3)
+  else if (state)
   {
     if (v6)
     {
@@ -202,21 +202,21 @@ LABEL_12:
     _os_log_impl(&dword_1E323F000, v5, OS_LOG_TYPE_DEFAULT, v7, v8, 2u);
   }
 
-  self->_restrictionsState = a3;
+  self->_restrictionsState = state;
 }
 
-- (void)_preflightWithOptions:(int64_t)a3 userInfo:(id)a4 completion:(id)a5
+- (void)_preflightWithOptions:(int64_t)options userInfo:(id)info completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
+  infoCopy = info;
+  completionCopy = completion;
   v37 = 0;
   v38 = &v37;
   v39 = 0x2020000000;
-  v40 = a3;
+  optionsCopy = options;
   objc_initWeak(&location, self);
-  if (!v8)
+  if (!infoCopy)
   {
-    v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
+    infoCopy = objc_alloc_init(MEMORY[0x1E695DF90]);
   }
 
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -224,9 +224,9 @@ LABEL_12:
   aBlock[2] = __65__VUIPreflightManager__preflightWithOptions_userInfo_completion___block_invoke;
   aBlock[3] = &unk_1E8732F80;
   objc_copyWeak(&v35, &location);
-  v10 = v9;
+  v10 = completionCopy;
   v34 = v10;
-  v11 = v8;
+  v11 = infoCopy;
   v33 = v11;
   v12 = _Block_copy(aBlock);
   v26[0] = MEMORY[0x1E69E9820];
@@ -382,14 +382,14 @@ uint64_t __65__VUIPreflightManager__preflightWithOptions_userInfo_completion___b
   return v10();
 }
 
-- (void)_logRatingsInfo:(id)a3 maxAllowedRank:(id)a4 ratingValue:(id)a5
+- (void)_logRatingsInfo:(id)info maxAllowedRank:(id)rank ratingValue:(id)value
 {
   v29 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  infoCopy = info;
+  rankCopy = rank;
+  valueCopy = value;
   v10 = *MEMORY[0x1E69D5B10];
-  if ([v7 isEqualToString:*MEMORY[0x1E69D5B10]])
+  if ([infoCopy isEqualToString:*MEMORY[0x1E69D5B10]])
   {
     v11 = VUIDefaultLogObject();
     if (!os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -405,7 +405,7 @@ LABEL_7:
   }
 
   v12 = *MEMORY[0x1E69D5B18];
-  v13 = [v7 isEqualToString:*MEMORY[0x1E69D5B18]];
+  v13 = [infoCopy isEqualToString:*MEMORY[0x1E69D5B18]];
   v14 = VUIDefaultLogObject();
   v11 = v14;
   if (v13)
@@ -422,23 +422,23 @@ LABEL_7:
 
   if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
   {
-    [VUIPreflightManager _logRatingsInfo:v7 maxAllowedRank:v11 ratingValue:?];
+    [VUIPreflightManager _logRatingsInfo:infoCopy maxAllowedRank:v11 ratingValue:?];
   }
 
 LABEL_10:
 
   v15 = VUIDefaultLogObject();
   v16 = os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT);
-  if (v9)
+  if (valueCopy)
   {
     if (!v16)
     {
       goto LABEL_16;
     }
 
-    v17 = [v9 integerValue];
+    integerValue = [valueCopy integerValue];
     v27 = 134217984;
-    v28 = v17;
+    v28 = integerValue;
     v18 = "VUIPreflightManager::restriction validation with value : %ld";
     v19 = v15;
     v20 = 12;
@@ -462,13 +462,13 @@ LABEL_16:
 
   v21 = VUIDefaultLogObject();
   v22 = os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT);
-  if (v8)
+  if (rankCopy)
   {
     if (v22)
     {
-      v23 = [v8 integerValue];
+      integerValue2 = [rankCopy integerValue];
       v27 = 134217984;
-      v28 = v23;
+      v28 = integerValue2;
       v24 = "VUIPreflightManager::restriction validation max allowed rank : %ld";
       v25 = v21;
       v26 = 12;
@@ -489,59 +489,59 @@ LABEL_21:
 
 - (id)_ratingDomain
 {
-  v3 = [(VUIPreflightManager *)self mediaItem];
+  mediaItem = [(VUIPreflightManager *)self mediaItem];
 
-  if (v3)
+  if (mediaItem)
   {
-    v4 = [(VUIPreflightManager *)self mediaItem];
-    v5 = [v4 mediaItemMetadataForProperty:*MEMORY[0x1E69D5B08]];
+    mediaItem2 = [(VUIPreflightManager *)self mediaItem];
+    v5 = [mediaItem2 mediaItemMetadataForProperty:*MEMORY[0x1E69D5B08]];
 LABEL_20:
-    v12 = v5;
+    contentRating = v5;
     goto LABEL_21;
   }
 
-  v6 = [(VUIPreflightManager *)self videosPlayable];
+  videosPlayable = [(VUIPreflightManager *)self videosPlayable];
 
-  if (!v6)
+  if (!videosPlayable)
   {
-    v11 = [(VUIPreflightManager *)self extrasInfo];
+    extrasInfo = [(VUIPreflightManager *)self extrasInfo];
 
-    if (v11)
+    if (extrasInfo)
     {
-      v12 = *MEMORY[0x1E69D5B10];
+      contentRating = *MEMORY[0x1E69D5B10];
       goto LABEL_22;
     }
 
-    v13 = [(VUIPreflightManager *)self mediaEntity];
-    if (v13)
+    mediaEntity = [(VUIPreflightManager *)self mediaEntity];
+    if (mediaEntity)
     {
     }
 
     else
     {
-      v12 = [(VUIPreflightManager *)self contentRating];
+      contentRating = [(VUIPreflightManager *)self contentRating];
 
-      if (!v12)
+      if (!contentRating)
       {
         goto LABEL_22;
       }
     }
 
-    v14 = [(VUIPreflightManager *)self mediaEntity];
-    if (v14)
+    mediaEntity2 = [(VUIPreflightManager *)self mediaEntity];
+    if (mediaEntity2)
     {
-      v15 = [(VUIPreflightManager *)self mediaEntity];
-      v4 = [v15 contentRating];
+      mediaEntity3 = [(VUIPreflightManager *)self mediaEntity];
+      mediaItem2 = [mediaEntity3 contentRating];
     }
 
     else
     {
-      v4 = [(VUIPreflightManager *)self contentRating];
+      mediaItem2 = [(VUIPreflightManager *)self contentRating];
     }
 
-    v16 = [v4 ratingSystemKind];
+    ratingSystemKind = [mediaItem2 ratingSystemKind];
     v10 = MEMORY[0x1E69D5B18];
-    if (v16 != 2)
+    if (ratingSystemKind != 2)
     {
       v10 = MEMORY[0x1E69D5B10];
     }
@@ -549,13 +549,13 @@ LABEL_20:
     goto LABEL_19;
   }
 
-  v7 = [(VUIPreflightManager *)self videosPlayable];
-  v8 = [v7 metadata];
-  v4 = [v8 ratingDomain];
+  videosPlayable2 = [(VUIPreflightManager *)self videosPlayable];
+  metadata = [videosPlayable2 metadata];
+  mediaItem2 = [metadata ratingDomain];
 
-  if ([v4 length])
+  if ([mediaItem2 length])
   {
-    v9 = [v4 isEqualToString:@"Show"];
+    v9 = [mediaItem2 isEqualToString:@"Show"];
     v10 = MEMORY[0x1E69D5B18];
     if (!v9)
     {
@@ -567,148 +567,148 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  v12 = 0;
+  contentRating = 0;
 LABEL_21:
 
 LABEL_22:
 
-  return v12;
+  return contentRating;
 }
 
 - (BOOL)_isTrailer
 {
-  v3 = [(VUIPreflightManager *)self mediaItem];
+  mediaItem = [(VUIPreflightManager *)self mediaItem];
 
-  if (v3)
+  if (mediaItem)
   {
-    v5 = [(VUIPreflightManager *)self mediaItem];
-    v4 = [v5 mediaItemMetadataForProperty:*MEMORY[0x1E69D5C78]];
+    mediaItem2 = [(VUIPreflightManager *)self mediaItem];
+    videosPlayable = [mediaItem2 mediaItemMetadataForProperty:*MEMORY[0x1E69D5C78]];
 
-    LOBYTE(v5) = [v4 isEqualToString:*MEMORY[0x1E69D5EC0]];
+    LOBYTE(mediaItem2) = [videosPlayable isEqualToString:*MEMORY[0x1E69D5EC0]];
 LABEL_5:
 
-    return v5;
+    return mediaItem2;
   }
 
-  v5 = [(VUIPreflightManager *)self videosPlayable];
+  mediaItem2 = [(VUIPreflightManager *)self videosPlayable];
 
-  if (v5)
+  if (mediaItem2)
   {
-    v4 = [(VUIPreflightManager *)self videosPlayable];
-    v6 = [v4 mediaType];
-    LOBYTE(v5) = [v6 isEqualToString:@"Trailer"];
+    videosPlayable = [(VUIPreflightManager *)self videosPlayable];
+    mediaType = [videosPlayable mediaType];
+    LOBYTE(mediaItem2) = [mediaType isEqualToString:@"Trailer"];
 
     goto LABEL_5;
   }
 
-  return v5;
+  return mediaItem2;
 }
 
 - (BOOL)_isSportingEvent
 {
-  v3 = [(VUIPreflightManager *)self mediaItem];
-  if (v3)
+  mediaItem = [(VUIPreflightManager *)self mediaItem];
+  if (mediaItem)
   {
-    v4 = v3;
-    v5 = [(VUIPreflightManager *)self mediaItem];
+    v4 = mediaItem;
+    mediaItem2 = [(VUIPreflightManager *)self mediaItem];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v7 = [(VUIPreflightManager *)self mediaItem];
-      LOBYTE(v8) = [v7 isSportingEvent];
+      mediaItem3 = [(VUIPreflightManager *)self mediaItem];
+      LOBYTE(videosPlayable) = [mediaItem3 isSportingEvent];
 LABEL_6:
 
-      return v8;
+      return videosPlayable;
     }
   }
 
-  v8 = [(VUIPreflightManager *)self videosPlayable];
+  videosPlayable = [(VUIPreflightManager *)self videosPlayable];
 
-  if (v8)
+  if (videosPlayable)
   {
-    v7 = [(VUIPreflightManager *)self videosPlayable];
-    v9 = [v7 mediaType];
-    LOBYTE(v8) = [v9 isEqualToString:@"SportingEvent"];
+    mediaItem3 = [(VUIPreflightManager *)self videosPlayable];
+    mediaType = [mediaItem3 mediaType];
+    LOBYTE(videosPlayable) = [mediaType isEqualToString:@"SportingEvent"];
 
     goto LABEL_6;
   }
 
-  return v8;
+  return videosPlayable;
 }
 
 - (id)_ratingValue
 {
-  v3 = [(VUIPreflightManager *)self mediaItem];
+  mediaItem = [(VUIPreflightManager *)self mediaItem];
 
-  if (v3)
+  if (mediaItem)
   {
-    v4 = [(VUIPreflightManager *)self mediaItem];
-    v5 = [v4 mediaItemMetadataForProperty:*MEMORY[0x1E69D5B20]];
+    mediaItem2 = [(VUIPreflightManager *)self mediaItem];
+    contentRating = [mediaItem2 mediaItemMetadataForProperty:*MEMORY[0x1E69D5B20]];
 LABEL_3:
-    v6 = v5;
+    ratingValue = contentRating;
 LABEL_6:
 
     goto LABEL_7;
   }
 
-  v7 = [(VUIPreflightManager *)self videosPlayable];
+  videosPlayable = [(VUIPreflightManager *)self videosPlayable];
 
-  if (v7)
+  if (videosPlayable)
   {
-    v4 = [(VUIPreflightManager *)self videosPlayable];
-    v8 = [v4 metadata];
-    v6 = [v8 ratingValue];
+    mediaItem2 = [(VUIPreflightManager *)self videosPlayable];
+    metadata = [mediaItem2 metadata];
+    ratingValue = [metadata ratingValue];
 
     goto LABEL_6;
   }
 
-  v10 = [(VUIPreflightManager *)self extrasInfo];
+  extrasInfo = [(VUIPreflightManager *)self extrasInfo];
 
-  if (v10)
+  if (extrasInfo)
   {
-    v4 = [(VUIPreflightManager *)self extrasInfo];
-    v5 = [v4 contentRating];
+    mediaItem2 = [(VUIPreflightManager *)self extrasInfo];
+    contentRating = [mediaItem2 contentRating];
     goto LABEL_3;
   }
 
-  v11 = [(VUIPreflightManager *)self mediaEntity];
-  if (v11)
+  mediaEntity = [(VUIPreflightManager *)self mediaEntity];
+  if (mediaEntity)
   {
 
 LABEL_15:
-    v12 = [(VUIPreflightManager *)self mediaEntity];
-    if (v12)
+    mediaEntity2 = [(VUIPreflightManager *)self mediaEntity];
+    if (mediaEntity2)
     {
-      v13 = [(VUIPreflightManager *)self mediaEntity];
-      v4 = [v13 contentRating];
+      mediaEntity3 = [(VUIPreflightManager *)self mediaEntity];
+      mediaItem2 = [mediaEntity3 contentRating];
     }
 
     else
     {
-      v4 = [(VUIPreflightManager *)self contentRating];
+      mediaItem2 = [(VUIPreflightManager *)self contentRating];
     }
 
-    v5 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:{objc_msgSend(v4, "rank")}];
+    contentRating = [MEMORY[0x1E696AD98] numberWithUnsignedLong:{objc_msgSend(mediaItem2, "rank")}];
     goto LABEL_3;
   }
 
-  v6 = [(VUIPreflightManager *)self contentRating];
+  ratingValue = [(VUIPreflightManager *)self contentRating];
 
-  if (v6)
+  if (ratingValue)
   {
     goto LABEL_15;
   }
 
 LABEL_7:
 
-  return v6;
+  return ratingValue;
 }
 
-- (void)_performRestrictionsCheckWithCompletion:(id)a3
+- (void)_performRestrictionsCheckWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = VUIDefaultLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -716,7 +716,7 @@ LABEL_7:
     _os_log_impl(&dword_1E323F000, v5, OS_LOG_TYPE_DEFAULT, "VUIPreflightManager::will perform restrictions check", buf, 2u);
   }
 
-  if (v4)
+  if (completionCopy)
   {
     if ([(VUIPreflightManager *)self _isSportingEvent])
     {
@@ -730,22 +730,22 @@ LABEL_7:
 
     else if (![(VUIPreflightManager *)self _isAllowedToPlayOrPurchase])
     {
-      v7 = [(VUIPreflightManager *)self _ratingDomain];
-      [(VUIPreflightManager *)self _showRestrictionsAlertForRatingDomain:v7 completion:v4];
+      _ratingDomain = [(VUIPreflightManager *)self _ratingDomain];
+      [(VUIPreflightManager *)self _showRestrictionsAlertForRatingDomain:_ratingDomain completion:completionCopy];
 
       goto LABEL_11;
     }
 
-    v4[2](v4, 1);
+    completionCopy[2](completionCopy, 1);
   }
 
 LABEL_11:
 }
 
-- (void)_showRestrictionsAlertForRatingDomain:(id)a3 completion:(id)a4
+- (void)_showRestrictionsAlertForRatingDomain:(id)domain completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  domainCopy = domain;
+  completionCopy = completion;
   v8 = VUIDefaultLogObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -761,7 +761,7 @@ LABEL_11:
   else
   {
     v9 = @"TRANSACTION_RESTRICTED_MOVIE";
-    if ([v6 length] && objc_msgSend(v6, "isEqualToString:", *MEMORY[0x1E69D5B18]))
+    if ([domainCopy length] && objc_msgSend(domainCopy, "isEqualToString:", *MEMORY[0x1E69D5B18]))
     {
       v9 = @"TRANSACTION_RESTRICTED_TVSHOW";
     }
@@ -770,9 +770,9 @@ LABEL_11:
   if ([(VUIPreflightManager *)self restrictionsCheckType]== 1)
   {
     v9 = @"DOWNLOAD_RESTRICTED_TVSHOW";
-    if ([v6 length])
+    if ([domainCopy length])
     {
-      if ([v6 isEqualToString:*MEMORY[0x1E69D5B10]])
+      if ([domainCopy isEqualToString:*MEMORY[0x1E69D5B10]])
       {
         v9 = @"DOWNLOAD_RESTRICTED_MOVIE";
       }
@@ -789,7 +789,7 @@ LABEL_11:
   v27[1] = 3221225472;
   v27[2] = __72__VUIPreflightManager__showRestrictionsAlertForRatingDomain_completion___block_invoke;
   v27[3] = &unk_1E8732FF8;
-  v15 = v7;
+  v15 = completionCopy;
   v28 = v15;
   v16 = [VUIAlertAction vui_actionWithTitle:v14 style:0 handler:v27];
   [v12 vui_addAction:v16];
@@ -805,8 +805,8 @@ LABEL_11:
   v20 = [VUIAlertAction vui_actionWithTitle:v18 style:0 handler:&v22];
   [v12 vui_addAction:{v20, v22, v23, v24, v25}];
 
-  v21 = [(VUIPreflightManager *)self presentingController];
-  [v12 vui_presentAlertFromPresentingController:v21 animated:1 completion:0];
+  presentingController = [(VUIPreflightManager *)self presentingController];
+  [v12 vui_presentAlertFromPresentingController:presentingController animated:1 completion:0];
 }
 
 void __72__VUIPreflightManager__showRestrictionsAlertForRatingDomain_completion___block_invoke(uint64_t a1)
@@ -835,34 +835,34 @@ uint64_t __72__VUIPreflightManager__showRestrictionsAlertForRatingDomain_complet
 
 - (BOOL)_isAllowedToPlayOrPurchase
 {
-  v3 = [(VUIPreflightManager *)self _ratingDomain];
-  v4 = [(VUIPreflightManager *)self _ratingValue];
-  if ([v3 length])
+  _ratingDomain = [(VUIPreflightManager *)self _ratingDomain];
+  _ratingValue = [(VUIPreflightManager *)self _ratingValue];
+  if ([_ratingDomain length])
   {
-    if ([v3 isEqualToString:*MEMORY[0x1E69D5B10]])
+    if ([_ratingDomain isEqualToString:*MEMORY[0x1E69D5B10]])
     {
       v5 = +[VUISettingsManager sharedInstance];
-      v6 = [v5 maxMovieRank];
+      maxMovieRank = [v5 maxMovieRank];
     }
 
     else
     {
-      v6 = 0;
+      maxMovieRank = 0;
     }
 
-    if ([v3 isEqualToString:*MEMORY[0x1E69D5B18]])
+    if ([_ratingDomain isEqualToString:*MEMORY[0x1E69D5B18]])
     {
       v17 = +[VUISettingsManager sharedInstance];
-      v18 = [v17 maxTVShowRank];
+      maxTVShowRank = [v17 maxTVShowRank];
 
-      v6 = v18;
+      maxMovieRank = maxTVShowRank;
     }
 
-    [(VUIPreflightManager *)self _logRatingsInfo:v3 maxAllowedRank:v6 ratingValue:v4];
-    v19 = [v4 integerValue];
-    v20 = [v6 integerValue];
-    v22 = v19 > 0 && v20 >= v19;
-    if (v4)
+    [(VUIPreflightManager *)self _logRatingsInfo:_ratingDomain maxAllowedRank:maxMovieRank ratingValue:_ratingValue];
+    integerValue = [_ratingValue integerValue];
+    integerValue2 = [maxMovieRank integerValue];
+    v22 = integerValue > 0 && integerValue2 >= integerValue;
+    if (_ratingValue)
     {
       v23 = v22;
     }
@@ -872,9 +872,9 @@ uint64_t __72__VUIPreflightManager__showRestrictionsAlertForRatingDomain_complet
       v23 = 0;
     }
 
-    if (v6)
+    if (maxMovieRank)
     {
-      v15 = v6;
+      v15 = maxMovieRank;
     }
 
     else
@@ -882,7 +882,7 @@ uint64_t __72__VUIPreflightManager__showRestrictionsAlertForRatingDomain_complet
       v15 = 0;
     }
 
-    if (v6)
+    if (maxMovieRank)
     {
       v16 = v23;
     }
@@ -910,46 +910,46 @@ uint64_t __72__VUIPreflightManager__showRestrictionsAlertForRatingDomain_complet
 
 - (int64_t)_requiredAgeForPlayback
 {
-  v3 = [(VUIPreflightManager *)self requiredAgeForPlayback];
+  requiredAgeForPlayback = [(VUIPreflightManager *)self requiredAgeForPlayback];
 
-  if (v3)
+  if (requiredAgeForPlayback)
   {
-    v4 = [(VUIPreflightManager *)self requiredAgeForPlayback];
-    if (!v4)
+    requiredAgeForPlayback2 = [(VUIPreflightManager *)self requiredAgeForPlayback];
+    if (!requiredAgeForPlayback2)
     {
       return -1;
     }
 
 LABEL_9:
-    v9 = [v4 integerValue];
+    integerValue = [requiredAgeForPlayback2 integerValue];
 
-    return v9;
+    return integerValue;
   }
 
-  v5 = [(VUIPreflightManager *)self mediaItem];
+  mediaItem = [(VUIPreflightManager *)self mediaItem];
 
-  if (v5)
+  if (mediaItem)
   {
-    v6 = [(VUIPreflightManager *)self mediaItem];
-    v7 = [v6 mediaItemMetadataForProperty:*MEMORY[0x1E69D5D00]];
+    mediaItem2 = [(VUIPreflightManager *)self mediaItem];
+    requiredAgeForPlayback3 = [mediaItem2 mediaItemMetadataForProperty:*MEMORY[0x1E69D5D00]];
   }
 
   else
   {
-    v8 = [(VUIPreflightManager *)self videosPlayable];
+    videosPlayable = [(VUIPreflightManager *)self videosPlayable];
 
-    if (!v8)
+    if (!videosPlayable)
     {
       return -1;
     }
 
-    v6 = [(VUIPreflightManager *)self videosPlayable];
-    v7 = [v6 requiredAgeForPlayback];
+    mediaItem2 = [(VUIPreflightManager *)self videosPlayable];
+    requiredAgeForPlayback3 = [mediaItem2 requiredAgeForPlayback];
   }
 
-  v4 = v7;
+  requiredAgeForPlayback2 = requiredAgeForPlayback3;
 
-  if (v4)
+  if (requiredAgeForPlayback2)
   {
     goto LABEL_9;
   }
@@ -957,13 +957,13 @@ LABEL_9:
   return -1;
 }
 
-- (void)_performAgeGateVerificationWithCompletion:(id)a3
+- (void)_performAgeGateVerificationWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = +[VUIAgeVerification sharedInstance];
-  v6 = [v5 isAgeVerificationEnabled];
+  isAgeVerificationEnabled = [v5 isAgeVerificationEnabled];
 
-  if (v6)
+  if (isAgeVerificationEnabled)
   {
     v7 = VUIDefaultLogObject();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -972,34 +972,34 @@ LABEL_9:
       _os_log_impl(&dword_1E323F000, v7, OS_LOG_TYPE_DEFAULT, "VUIPreflightManager:: isAgeVerificationEnabled=YES. Calling VUIAgeVerification", buf, 2u);
     }
 
-    v8 = [(VUIPreflightManager *)self _getAdamId];
-    v9 = [(VUIPreflightManager *)self _getMediaApiResourceType];
-    v10 = [(VUIPreflightManager *)self _getCanonicalMeta];
+    _getAdamId = [(VUIPreflightManager *)self _getAdamId];
+    _getMediaApiResourceType = [(VUIPreflightManager *)self _getMediaApiResourceType];
+    _getCanonicalMeta = [(VUIPreflightManager *)self _getCanonicalMeta];
     v11 = +[VUIAgeVerification sharedInstance];
-    v12 = [(VUIPreflightManager *)self _ratingValue];
-    v13 = [(VUIPreflightManager *)self _ratingDomain];
-    [v11 performAgeGateVerificationWithRatingValue:v12 ratingDomain:v13 adamId:v8 resourceType:v9 canonicalMeta:v10 completion:v4];
+    _ratingValue = [(VUIPreflightManager *)self _ratingValue];
+    _ratingDomain = [(VUIPreflightManager *)self _ratingDomain];
+    [v11 performAgeGateVerificationWithRatingValue:_ratingValue ratingDomain:_ratingDomain adamId:_getAdamId resourceType:_getMediaApiResourceType canonicalMeta:_getCanonicalMeta completion:completionCopy];
   }
 
   else if ([(VUIPreflightManager *)self _shouldShowAgeConfirmationAlert])
   {
     objc_initWeak(buf, self);
-    v14 = [(VUIPreflightManager *)self presentingController];
+    presentingController = [(VUIPreflightManager *)self presentingController];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __65__VUIPreflightManager__performAgeGateVerificationWithCompletion___block_invoke;
     v15[3] = &unk_1E872DE58;
     objc_copyWeak(&v17, buf);
-    v16 = v4;
-    [(VUIPreflightManager *)self _showAgeConfirmationWithPresentingViewController:v14 completion:v15];
+    v16 = completionCopy;
+    [(VUIPreflightManager *)self _showAgeConfirmationWithPresentingViewController:presentingController completion:v15];
 
     objc_destroyWeak(&v17);
     objc_destroyWeak(buf);
   }
 
-  else if (v4)
+  else if (completionCopy)
   {
-    (*(v4 + 2))(v4, 1);
+    (*(completionCopy + 2))(completionCopy, 1);
   }
 }
 
@@ -1024,65 +1024,65 @@ void __65__VUIPreflightManager__performAgeGateVerificationWithCompletion___block
 
 - (id)_getAdamId
 {
-  v3 = [(VUIPreflightManager *)self mediaItem];
+  mediaItem = [(VUIPreflightManager *)self mediaItem];
 
-  if (v3)
+  if (mediaItem)
   {
-    v4 = [(VUIPreflightManager *)self mediaItem];
-    v5 = [v4 mediaItemMetadataForProperty:*MEMORY[0x1E69D5DA8]];
+    mediaItem2 = [(VUIPreflightManager *)self mediaItem];
+    adamID = [mediaItem2 mediaItemMetadataForProperty:*MEMORY[0x1E69D5DA8]];
 LABEL_8:
-    v9 = v5;
+    mediaEntity = adamID;
 LABEL_9:
 
     goto LABEL_10;
   }
 
-  v6 = [(VUIPreflightManager *)self videosPlayable];
+  videosPlayable = [(VUIPreflightManager *)self videosPlayable];
 
-  if (v6)
+  if (videosPlayable)
   {
-    v7 = [(VUIPreflightManager *)self videosPlayable];
+    videosPlayable2 = [(VUIPreflightManager *)self videosPlayable];
 LABEL_7:
-    v4 = v7;
-    v5 = [v7 adamID];
+    mediaItem2 = videosPlayable2;
+    adamID = [videosPlayable2 adamID];
     goto LABEL_8;
   }
 
-  v8 = [(VUIPreflightManager *)self extrasInfo];
+  extrasInfo = [(VUIPreflightManager *)self extrasInfo];
 
-  if (v8)
+  if (extrasInfo)
   {
-    v7 = [(VUIPreflightManager *)self extrasInfo];
+    videosPlayable2 = [(VUIPreflightManager *)self extrasInfo];
     goto LABEL_7;
   }
 
-  v9 = [(VUIPreflightManager *)self mediaEntity];
+  mediaEntity = [(VUIPreflightManager *)self mediaEntity];
 
-  if (v9)
+  if (mediaEntity)
   {
-    v4 = [(VUIPreflightManager *)self mediaEntity];
-    v11 = [v4 storeID];
-    v9 = [v11 stringValue];
+    mediaItem2 = [(VUIPreflightManager *)self mediaEntity];
+    storeID = [mediaItem2 storeID];
+    mediaEntity = [storeID stringValue];
 
     goto LABEL_9;
   }
 
 LABEL_10:
 
-  return v9;
+  return mediaEntity;
 }
 
 - (id)_getMediaApiResourceType
 {
-  v3 = [(VUIPreflightManager *)self mediaItem];
+  mediaItem = [(VUIPreflightManager *)self mediaItem];
 
-  if (v3)
+  if (mediaItem)
   {
-    v4 = [(VUIPreflightManager *)self mediaItem];
-    v5 = [v4 mediaItemMetadataForProperty:*MEMORY[0x1E69D5C78]];
+    mediaItem2 = [(VUIPreflightManager *)self mediaItem];
+    v5 = [mediaItem2 mediaItemMetadataForProperty:*MEMORY[0x1E69D5C78]];
 
-    LOBYTE(v4) = [v5 isEqualToString:*MEMORY[0x1E69D5ED0]];
-    if ((v4 & 1) == 0)
+    LOBYTE(mediaItem2) = [v5 isEqualToString:*MEMORY[0x1E69D5ED0]];
+    if ((mediaItem2 & 1) == 0)
     {
       return @"movies";
     }
@@ -1090,29 +1090,29 @@ LABEL_10:
     return @"tv-episodes";
   }
 
-  v6 = [(VUIPreflightManager *)self videosPlayable];
+  videosPlayable = [(VUIPreflightManager *)self videosPlayable];
 
-  if (!v6)
+  if (!videosPlayable)
   {
-    v11 = [(VUIPreflightManager *)self extrasInfo];
+    extrasInfo = [(VUIPreflightManager *)self extrasInfo];
 
-    if (v11)
+    if (extrasInfo)
     {
       return @"movies";
     }
 
-    v12 = [(VUIPreflightManager *)self mediaEntity];
+    mediaEntity = [(VUIPreflightManager *)self mediaEntity];
 
-    if (!v12)
+    if (!mediaEntity)
     {
       return @"movies";
     }
 
-    v13 = [(VUIPreflightManager *)self mediaEntity];
-    v14 = [v13 type];
-    v15 = [v14 mediaCategoryType];
+    mediaEntity2 = [(VUIPreflightManager *)self mediaEntity];
+    type = [mediaEntity2 type];
+    mediaCategoryType = [type mediaCategoryType];
 
-    if (!v15)
+    if (!mediaCategoryType)
     {
       return @"movies";
     }
@@ -1120,9 +1120,9 @@ LABEL_10:
     return @"tv-episodes";
   }
 
-  v7 = [(VUIPreflightManager *)self videosPlayable];
-  v8 = [v7 mediaType];
-  v9 = [v8 isEqualToString:@"Movie"];
+  videosPlayable2 = [(VUIPreflightManager *)self videosPlayable];
+  mediaType = [videosPlayable2 mediaType];
+  v9 = [mediaType isEqualToString:@"Movie"];
 
   if ((v9 & 1) == 0)
   {
@@ -1135,69 +1135,69 @@ LABEL_10:
 - (id)_getCanonicalMeta
 {
   v22[3] = *MEMORY[0x1E69E9840];
-  v3 = [(VUIPreflightManager *)self videosPlayable];
+  videosPlayable = [(VUIPreflightManager *)self videosPlayable];
 
-  if (v3)
+  if (videosPlayable)
   {
-    v4 = [(VUIPreflightManager *)self videosPlayable];
-    v5 = [v4 metadata];
+    videosPlayable2 = [(VUIPreflightManager *)self videosPlayable];
+    metadata = [videosPlayable2 metadata];
 
-    v6 = [v5 title];
-    v7 = [v5 showTitle];
-    v8 = [v5 artworkURLFormat];
-    v9 = [v5 artworkAspectRatio];
+    title = [metadata title];
+    showTitle = [metadata showTitle];
+    artworkURLFormat = [metadata artworkURLFormat];
+    artworkAspectRatio = [metadata artworkAspectRatio];
   }
 
   else
   {
-    v6 = [(VUIPreflightManager *)self mediaItem];
+    title = [(VUIPreflightManager *)self mediaItem];
 
-    if (!v6)
+    if (!title)
     {
-      v7 = 0;
-      v8 = 0;
-      v9 = 0;
+      showTitle = 0;
+      artworkURLFormat = 0;
+      artworkAspectRatio = 0;
       v10 = 0;
       goto LABEL_11;
     }
 
-    v16 = [(VUIPreflightManager *)self mediaItem];
-    v6 = [v16 mediaItemMetadataForProperty:*MEMORY[0x1E69D5DC0]];
+    mediaItem = [(VUIPreflightManager *)self mediaItem];
+    title = [mediaItem mediaItemMetadataForProperty:*MEMORY[0x1E69D5DC0]];
 
-    v17 = [(VUIPreflightManager *)self mediaItem];
-    v7 = [v17 mediaItemMetadataForProperty:*MEMORY[0x1E69D5D38]];
+    mediaItem2 = [(VUIPreflightManager *)self mediaItem];
+    showTitle = [mediaItem2 mediaItemMetadataForProperty:*MEMORY[0x1E69D5D38]];
 
-    v18 = [(VUIPreflightManager *)self mediaItem];
-    v5 = [v18 mediaItemMetadataForProperty:*MEMORY[0x1E69D5DB8]];
+    mediaItem3 = [(VUIPreflightManager *)self mediaItem];
+    metadata = [mediaItem3 mediaItemMetadataForProperty:*MEMORY[0x1E69D5DB8]];
 
-    if (v5)
+    if (metadata)
     {
-      v5 = v5;
-      v9 = &unk_1F5E5EC50;
-      v8 = v5;
+      metadata = metadata;
+      artworkAspectRatio = &unk_1F5E5EC50;
+      artworkURLFormat = metadata;
     }
 
     else
     {
-      v20 = [(VUIPreflightManager *)self mediaItem];
-      v8 = [v20 mediaItemMetadataForProperty:*MEMORY[0x1E69D5AB8]];
+      mediaItem4 = [(VUIPreflightManager *)self mediaItem];
+      artworkURLFormat = [mediaItem4 mediaItemMetadataForProperty:*MEMORY[0x1E69D5AB8]];
 
-      v9 = &unk_1F5E5EC60;
+      artworkAspectRatio = &unk_1F5E5EC60;
     }
   }
 
   v10 = 0;
-  if (v6 && v8 && v9)
+  if (title && artworkURLFormat && artworkAspectRatio)
   {
-    v11 = [v8 dataUsingEncoding:4];
+    v11 = [artworkURLFormat dataUsingEncoding:4];
     v12 = [v11 base64EncodedStringWithOptions:0];
     v13 = MEMORY[0x1E695DF90];
-    v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@", v9, @"title", @"imageUrlString", @"aspectRatio", v6, v12];
+    v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@", artworkAspectRatio, @"title", @"imageUrlString", @"aspectRatio", title, v12];
     v22[2] = v14;
     v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v22 forKeys:&v21 count:3];
     v10 = [v13 dictionaryWithDictionary:v15];
 
-    [v10 vui_setObjectIfNotNil:v7 forKey:@"showTitle"];
+    [v10 vui_setObjectIfNotNil:showTitle forKey:@"showTitle"];
   }
 
 LABEL_11:
@@ -1207,32 +1207,32 @@ LABEL_11:
 
 - (int64_t)_lastConfirmedAge
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 integerForKey:@"lastConfirmedAge"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults integerForKey:@"lastConfirmedAge"];
 
   return v3;
 }
 
-- (void)_setLastConfirmedAge:(int64_t)a3
+- (void)_setLastConfirmedAge:(int64_t)age
 {
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v4 setInteger:a3 forKey:@"lastConfirmedAge"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults setInteger:age forKey:@"lastConfirmedAge"];
 }
 
 - (id)_lastAgeConfirmationPrompted
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 objectForKey:@"ageConfirmationLastPrompted"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults objectForKey:@"ageConfirmationLastPrompted"];
 
   return v3;
 }
 
-- (void)_setLastAgeConfirmationPrompted:(id)a3
+- (void)_setLastAgeConfirmationPrompted:(id)prompted
 {
   v3 = MEMORY[0x1E695E000];
-  v4 = a3;
-  v5 = [v3 standardUserDefaults];
-  [v5 setObject:v4 forKey:@"ageConfirmationLastPrompted"];
+  promptedCopy = prompted;
+  standardUserDefaults = [v3 standardUserDefaults];
+  [standardUserDefaults setObject:promptedCopy forKey:@"ageConfirmationLastPrompted"];
 }
 
 - (BOOL)_shouldShowAgeConfirmationAlert
@@ -1242,20 +1242,20 @@ LABEL_11:
     return 0;
   }
 
-  v3 = [(VUIPreflightManager *)self _requiredAgeForPlayback];
-  if (v3 < 1)
+  _requiredAgeForPlayback = [(VUIPreflightManager *)self _requiredAgeForPlayback];
+  if (_requiredAgeForPlayback < 1)
   {
     return 0;
   }
 
-  v4 = v3;
-  v5 = [(VUIPreflightManager *)self _lastConfirmedAge];
-  v6 = [(VUIPreflightManager *)self _lastAgeConfirmationPrompted];
-  v7 = [MEMORY[0x1E695DF00] date];
-  [v7 timeIntervalSinceDate:v6];
-  if (v6)
+  v4 = _requiredAgeForPlayback;
+  _lastConfirmedAge = [(VUIPreflightManager *)self _lastConfirmedAge];
+  _lastAgeConfirmationPrompted = [(VUIPreflightManager *)self _lastAgeConfirmationPrompted];
+  date = [MEMORY[0x1E695DF00] date];
+  [date timeIntervalSinceDate:_lastAgeConfirmationPrompted];
+  if (_lastAgeConfirmationPrompted)
   {
-    v10 = sFrequencyOfConfirmation < (v8 / 60.0) || v4 > v5;
+    v10 = sFrequencyOfConfirmation < (v8 / 60.0) || v4 > _lastConfirmedAge;
   }
 
   else
@@ -1266,14 +1266,14 @@ LABEL_11:
   return v10;
 }
 
-- (void)_showAgeConfirmationWithPresentingViewController:(id)a3 completion:(id)a4
+- (void)_showAgeConfirmationWithPresentingViewController:(id)controller completion:(id)completion
 {
-  v5 = a4;
-  v6 = [(VUIPreflightManager *)self _requiredAgeForPlayback];
+  completionCopy = completion;
+  _requiredAgeForPlayback = [(VUIPreflightManager *)self _requiredAgeForPlayback];
   v7 = MEMORY[0x1E696AEC0];
   v8 = +[VUILocalizationManager sharedInstance];
   v9 = [v8 localizedStringForKey:@"AGE_GATE_CONFIRMATION_MESSAGE"];
-  v10 = [v7 stringWithValidatedFormat:v9 validFormatSpecifiers:@"%d %d" error:0, v6, v6];
+  v10 = [v7 stringWithValidatedFormat:v9 validFormatSpecifiers:@"%d %d" error:0, _requiredAgeForPlayback, _requiredAgeForPlayback];
 
   v11 = [VUIAlertController vui_alertControllerWithTitle:0 message:v10 preferredStyle:1];
   v12 = +[VUILocalizationManager sharedInstance];
@@ -1282,7 +1282,7 @@ LABEL_11:
   v23[1] = 3221225472;
   v23[2] = __83__VUIPreflightManager__showAgeConfirmationWithPresentingViewController_completion___block_invoke;
   v23[3] = &unk_1E8732FF8;
-  v14 = v5;
+  v14 = completionCopy;
   v24 = v14;
   v15 = [VUIAlertAction vui_actionWithTitle:v13 style:0 handler:v23];
   [v11 vui_addAction:v15];
@@ -1298,8 +1298,8 @@ LABEL_11:
   v19 = [VUIAlertAction vui_actionWithTitle:v17 style:1 handler:v21];
   [v11 vui_addAction:v19];
 
-  v20 = [(VUIPreflightManager *)self presentingController];
-  [v11 vui_presentAlertFromPresentingController:v20 animated:1 completion:0];
+  presentingController = [(VUIPreflightManager *)self presentingController];
+  [v11 vui_presentAlertFromPresentingController:presentingController animated:1 completion:0];
 }
 
 uint64_t __83__VUIPreflightManager__showAgeConfirmationWithPresentingViewController_completion___block_invoke(uint64_t a1)
@@ -1324,16 +1324,16 @@ uint64_t __83__VUIPreflightManager__showAgeConfirmationWithPresentingViewControl
   return result;
 }
 
-- (void)_preflightDownloadWithCompletion:(id)a3
+- (void)_preflightDownloadWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __56__VUIPreflightManager__preflightDownloadWithCompletion___block_invoke;
   aBlock[3] = &unk_1E872E828;
   objc_copyWeak(&v15, &location);
-  v5 = v4;
+  v5 = completionCopy;
   v14 = v5;
   v6 = _Block_copy(aBlock);
   if (+[VUIAuthenticationManager userHasActiveAccount])
@@ -1608,11 +1608,11 @@ void __56__VUIPreflightManager__preflightDownloadWithCompletion___block_invoke_2
   }
 }
 
-- (void)_promptForHighQualityDownloadsWithCompletion:(id)a3
+- (void)_promptForHighQualityDownloadsWithCompletion:(id)completion
 {
-  if (a3)
+  if (completion)
   {
-    (*(a3 + 2))(a3);
+    (*(completion + 2))(completion);
   }
 }
 

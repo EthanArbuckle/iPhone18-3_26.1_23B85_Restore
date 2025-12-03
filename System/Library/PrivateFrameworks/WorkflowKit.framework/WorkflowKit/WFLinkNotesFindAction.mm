@@ -1,14 +1,14 @@
 @interface WFLinkNotesFindAction
-- (id)localizedNameWithContext:(id)a3;
+- (id)localizedNameWithContext:(id)context;
 @end
 
 @implementation WFLinkNotesFindAction
 
-- (id)localizedNameWithContext:(id)a3
+- (id)localizedNameWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Find Notes", @"Find Notes");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }

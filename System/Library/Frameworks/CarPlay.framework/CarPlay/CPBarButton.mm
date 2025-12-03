@@ -1,11 +1,11 @@
 @interface CPBarButton
-- (CPBarButton)initWithCoder:(id)a3;
+- (CPBarButton)initWithCoder:(id)coder;
 - (CPBarButton)initWithImage:(UIImage *)image handler:(CPBarButtonHandler)handler;
 - (CPBarButton)initWithTitle:(NSString *)title handler:(CPBarButtonHandler)handler;
 - (CPBarButton)initWithType:(CPBarButtonType)type handler:(CPBarButtonHandler)handler;
 - (CPBarButtonDelegate)delegate;
 - (NSString)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)handlePrimaryAction;
 - (void)setImage:(UIImage *)image;
 - (void)setTitle:(NSString *)title;
@@ -27,9 +27,9 @@
     v9->_handler = v10;
 
     objc_storeStrong(&v9->_image, image);
-    v12 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
     identifier = v9->_identifier;
-    v9->_identifier = v12;
+    v9->_identifier = uUID;
 
     v9->_enabled = 1;
     v9->_buttonStyle = 0;
@@ -52,9 +52,9 @@
     v9->_handler = v10;
 
     objc_storeStrong(&v9->_title, title);
-    v12 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
     identifier = v9->_identifier;
-    v9->_identifier = v12;
+    v9->_identifier = uUID;
 
     v9->_enabled = 1;
     v9->_buttonStyle = 0;
@@ -63,49 +63,49 @@
   return v9;
 }
 
-- (CPBarButton)initWithCoder:(id)a3
+- (CPBarButton)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = CPBarButton;
   v5 = [(CPBarButton *)&v15 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CPBarButtonIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CPBarButtonIdentifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v5->_enabled = [v4 decodeBoolForKey:@"CPBarButtonEnabled"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CPBarButtonTitle"];
+    v5->_enabled = [coderCopy decodeBoolForKey:@"CPBarButtonEnabled"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CPBarButtonTitle"];
     title = v5->_title;
     v5->_title = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CPBarButtonImage"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CPBarButtonImage"];
     v11 = objc_opt_class();
     v12 = CPSanitizeImage(v10, v11);
     image = v5->_image;
     v5->_image = v12;
 
-    v5->_buttonStyle = [v4 decodeIntegerForKey:@"CPBarButtonStyle"];
+    v5->_buttonStyle = [coderCopy decodeIntegerForKey:@"CPBarButtonStyle"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
-  v4 = [(CPBarButton *)self identifier];
-  [v7 encodeObject:v4 forKey:@"CPBarButtonIdentifier"];
+  coderCopy = coder;
+  identifier = [(CPBarButton *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"CPBarButtonIdentifier"];
 
-  [v7 encodeBool:-[CPBarButton isEnabled](self forKey:{"isEnabled"), @"CPBarButtonEnabled"}];
-  v5 = [(CPBarButton *)self title];
-  [v7 encodeObject:v5 forKey:@"CPBarButtonTitle"];
+  [coderCopy encodeBool:-[CPBarButton isEnabled](self forKey:{"isEnabled"), @"CPBarButtonEnabled"}];
+  title = [(CPBarButton *)self title];
+  [coderCopy encodeObject:title forKey:@"CPBarButtonTitle"];
 
-  v6 = [(CPBarButton *)self image];
-  [v7 encodeObject:v6 forKey:@"CPBarButtonImage"];
+  image = [(CPBarButton *)self image];
+  [coderCopy encodeObject:image forKey:@"CPBarButtonImage"];
 
-  [v7 encodeInteger:-[CPBarButton buttonStyle](self forKey:{"buttonStyle"), @"CPBarButtonStyle"}];
+  [coderCopy encodeInteger:-[CPBarButton buttonStyle](self forKey:{"buttonStyle"), @"CPBarButtonStyle"}];
 }
 
 - (NSString)description
@@ -114,9 +114,9 @@
   v9.receiver = self;
   v9.super_class = CPBarButton;
   v4 = [(CPBarButton *)&v9 description];
-  v5 = [(CPBarButton *)self identifier];
+  identifier = [(CPBarButton *)self identifier];
   v6 = CPSStringFromBOOL([(CPBarButton *)self isEnabled]);
-  v7 = [v3 stringWithFormat:@"%@ {UUID: %@, enabled: %@}", v4, v5, v6];
+  v7 = [v3 stringWithFormat:@"%@ {UUID: %@, enabled: %@}", v4, identifier, v6];
 
   return v7;
 }
@@ -132,8 +132,8 @@
     v8 = self->_image;
     self->_image = v7;
 
-    v9 = [(CPBarButton *)self delegate];
-    [v9 barButton:self setImage:self->_image];
+    delegate = [(CPBarButton *)self delegate];
+    [delegate barButton:self setImage:self->_image];
   }
 }
 
@@ -146,29 +146,29 @@
     v5 = self->_title;
     self->_title = v4;
 
-    v6 = [(CPBarButton *)self delegate];
-    [v6 barButton:self setTitle:v7];
+    delegate = [(CPBarButton *)self delegate];
+    [delegate barButton:self setTitle:v7];
   }
 }
 
 - (void)handlePrimaryAction
 {
   v9 = *MEMORY[0x277D85DE8];
-  v3 = [(CPBarButton *)self handler];
+  handler = [(CPBarButton *)self handler];
 
   v4 = CarPlayFrameworkGeneralLogging();
-  v5 = v4;
-  if (v3)
+  handler2 = v4;
+  if (handler)
   {
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       v7 = 138412290;
-      v8 = self;
-      _os_log_impl(&dword_236ED4000, v5, OS_LOG_TYPE_DEFAULT, "%@ will call action handler", &v7, 0xCu);
+      selfCopy = self;
+      _os_log_impl(&dword_236ED4000, handler2, OS_LOG_TYPE_DEFAULT, "%@ will call action handler", &v7, 0xCu);
     }
 
-    v5 = [(CPBarButton *)self handler];
-    (*(v5 + 16))(v5, self);
+    handler2 = [(CPBarButton *)self handler];
+    (*(handler2 + 16))(handler2, self);
   }
 
   else if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -196,7 +196,7 @@
       v12 = NSStringFromSelector(a2);
       [v10 raise:v11 format:{@"Invalid button type passed to %@", v12}];
 
-      v9 = 0;
+      selfCopy = 0;
       goto LABEL_7;
     }
 
@@ -204,10 +204,10 @@
   }
 
   self = v8;
-  v9 = self;
+  selfCopy = self;
 LABEL_7:
 
-  return v9;
+  return selfCopy;
 }
 
 - (CPBarButtonDelegate)delegate

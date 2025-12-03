@@ -1,53 +1,53 @@
 @interface HOAddLocationViewController
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4;
-- (BOOL)textFieldShouldReturn:(id)a3;
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path;
+- (BOOL)textFieldShouldReturn:(id)return;
 - (HOAddLocationViewController)init;
-- (HOAddLocationViewController)initWithCoder:(id)a3;
-- (HOAddLocationViewController)initWithName:(id)a3 delegate:(id)a4;
-- (HOAddLocationViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (HOAddLocationViewController)initWithStyle:(int64_t)a3;
+- (HOAddLocationViewController)initWithCoder:(id)coder;
+- (HOAddLocationViewController)initWithName:(id)name delegate:(id)delegate;
+- (HOAddLocationViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (HOAddLocationViewController)initWithStyle:(int64_t)style;
 - (HOAddLocationViewControllerDelegate)delegate;
 - (HUEditableTextCell)nameCell;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4 rowIdentifier:(id)a5;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
-- (void)cancelButtonPressed:(id)a3;
-- (void)imagePickerController:(id)a3 didFinishPickingMediaWithInfo:(id)a4;
-- (void)nameCellTextChanged:(id)a3;
-- (void)presentWallpaperEditingViewControllerWithImage:(id)a3 wallpaper:(id)a4;
-- (void)saveButtonPressed:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path rowIdentifier:(id)identifier;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
+- (void)cancelButtonPressed:(id)pressed;
+- (void)imagePickerController:(id)controller didFinishPickingMediaWithInfo:(id)info;
+- (void)nameCellTextChanged:(id)changed;
+- (void)presentWallpaperEditingViewControllerWithImage:(id)image wallpaper:(id)wallpaper;
+- (void)saveButtonPressed:(id)pressed;
 - (void)setNavigationBarVisibility;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)textFieldDidChange:(id)a3;
-- (void)updateCell:(id)a3 forIndexPath:(id)a4 animated:(BOOL)a5;
-- (void)updateWallpaper:(id)a3 image:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)textFieldDidChange:(id)change;
+- (void)updateCell:(id)cell forIndexPath:(id)path animated:(BOOL)animated;
+- (void)updateWallpaper:(id)wallpaper image:(id)image;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)wallpaperEditing:(id)a3 didFinishWithWallpaper:(id)a4 image:(id)a5;
-- (void)wallpaperPicker:(id)a3 didReceiveDroppedImage:(id)a4;
-- (void)wallpaperPicker:(id)a3 didSelectWallpaper:(id)a4 withImage:(id)a5;
-- (void)wallpaperPickerDidFinish:(id)a3 wallpaper:(id)a4 image:(id)a5;
-- (void)wallpaperPickerRequestOpenWallpaperEditor:(id)a3;
-- (void)wallpaperThumbnailCell:(id)a3 didReceiveDroppedImage:(id)a4;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)wallpaperEditing:(id)editing didFinishWithWallpaper:(id)wallpaper image:(id)image;
+- (void)wallpaperPicker:(id)picker didReceiveDroppedImage:(id)image;
+- (void)wallpaperPicker:(id)picker didSelectWallpaper:(id)wallpaper withImage:(id)image;
+- (void)wallpaperPickerDidFinish:(id)finish wallpaper:(id)wallpaper image:(id)image;
+- (void)wallpaperPickerRequestOpenWallpaperEditor:(id)editor;
+- (void)wallpaperThumbnailCell:(id)cell didReceiveDroppedImage:(id)image;
 @end
 
 @implementation HOAddLocationViewController
 
-- (HOAddLocationViewController)initWithName:(id)a3 delegate:(id)a4
+- (HOAddLocationViewController)initWithName:(id)name delegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  delegateCopy = delegate;
   v15.receiver = self;
   v15.super_class = HOAddLocationViewController;
   v8 = [(HOAddLocationViewController *)&v15 initWithStyle:1];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_delegate, v7);
+    objc_storeWeak(&v8->_delegate, delegateCopy);
     v10 = [[HFHomeBuilder alloc] initWithExistingObject:0 inHome:0];
     homeBuilder = v9->_homeBuilder;
     v9->_homeBuilder = v10;
 
-    v12 = [v6 copy];
+    v12 = [nameCopy copy];
     editedName = v9->_editedName;
     v9->_editedName = v12;
 
@@ -66,16 +66,16 @@
   return 0;
 }
 
-- (HOAddLocationViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (HOAddLocationViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  v6 = [NSAssertionHandler currentHandler:a3];
+  v6 = [NSAssertionHandler currentHandler:name];
   v7 = NSStringFromSelector("init");
   [v6 handleFailureInMethod:a2 object:self file:@"HOAddLocationViewController.m" lineNumber:77 description:{@"%s is unavailable; use %@ instead", "-[HOAddLocationViewController initWithNibName:bundle:]", v7}];
 
   return 0;
 }
 
-- (HOAddLocationViewController)initWithCoder:(id)a3
+- (HOAddLocationViewController)initWithCoder:(id)coder
 {
   v5 = +[NSAssertionHandler currentHandler];
   v6 = NSStringFromSelector("init");
@@ -84,7 +84,7 @@
   return 0;
 }
 
-- (HOAddLocationViewController)initWithStyle:(int64_t)a3
+- (HOAddLocationViewController)initWithStyle:(int64_t)style
 {
   v5 = +[NSAssertionHandler currentHandler];
   v6 = NSStringFromSelector("init");
@@ -99,14 +99,14 @@
   v31.super_class = HOAddLocationViewController;
   [(HOAddLocationViewController *)&v31 viewDidLoad];
   [(HOAddLocationViewController *)self setNavigationBarVisibility];
-  v3 = [(HOAddLocationViewController *)self tableView];
-  [v3 setRowHeight:UITableViewAutomaticDimension];
+  tableView = [(HOAddLocationViewController *)self tableView];
+  [tableView setRowHeight:UITableViewAutomaticDimension];
 
-  v4 = [(HOAddLocationViewController *)self tableView];
-  [v4 setEstimatedRowHeight:44.0];
+  tableView2 = [(HOAddLocationViewController *)self tableView];
+  [tableView2 setEstimatedRowHeight:44.0];
 
-  v5 = [(HOAddLocationViewController *)self tableView];
-  [v5 _setSectionContentInsetFollowsLayoutMargins:1];
+  tableView3 = [(HOAddLocationViewController *)self tableView];
+  [tableView3 _setSectionContentInsetFollowsLayoutMargins:1];
 
   v6 = sub_100003520(@"HOAddLocationTitle");
   [(HOAddLocationViewController *)self setTitle:v6];
@@ -124,11 +124,11 @@
   v30[3] = &unk_1000C1C50;
   v30[4] = self;
   [v7 na_each:v30];
-  v8 = [(HOAddLocationViewController *)self tableView];
+  tableView4 = [(HOAddLocationViewController *)self tableView];
   v9 = objc_opt_class();
   v10 = objc_opt_class();
   v11 = NSStringFromClass(v10);
-  [v8 registerClass:v9 forHeaderFooterViewReuseIdentifier:v11];
+  [tableView4 registerClass:v9 forHeaderFooterViewReuseIdentifier:v11];
 
   if (+[HUWallpaperPickerInlineViewController useWallpaperPickerCell])
   {
@@ -137,55 +137,55 @@
   }
 
   v13 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:0 target:self action:"saveButtonPressed:"];
-  v14 = [(HOAddLocationViewController *)self navigationItem];
-  [v14 setRightBarButtonItem:v13];
+  navigationItem = [(HOAddLocationViewController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v13];
 
-  v15 = [(HOAddLocationViewController *)self navigationItem];
-  v16 = [v15 rightBarButtonItem];
-  [v16 setStyle:2];
+  navigationItem2 = [(HOAddLocationViewController *)self navigationItem];
+  rightBarButtonItem = [navigationItem2 rightBarButtonItem];
+  [rightBarButtonItem setStyle:2];
 
-  v17 = [(HOAddLocationViewController *)self navigationItem];
-  v18 = [v17 rightBarButtonItem];
-  [v18 setAccessibilityIdentifier:@"Home.HomeSettings.AddHome.Save"];
+  navigationItem3 = [(HOAddLocationViewController *)self navigationItem];
+  rightBarButtonItem2 = [navigationItem3 rightBarButtonItem];
+  [rightBarButtonItem2 setAccessibilityIdentifier:@"Home.HomeSettings.AddHome.Save"];
 
   v19 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:1 target:self action:"cancelButtonPressed:"];
-  v20 = [(HOAddLocationViewController *)self navigationItem];
-  [v20 setLeftBarButtonItem:v19];
+  navigationItem4 = [(HOAddLocationViewController *)self navigationItem];
+  [navigationItem4 setLeftBarButtonItem:v19];
 
-  v21 = [(HOAddLocationViewController *)self navigationItem];
-  v22 = [v21 leftBarButtonItem];
-  [v22 setAccessibilityIdentifier:@"Home.HomeSettings.AddHome.Cancel"];
+  navigationItem5 = [(HOAddLocationViewController *)self navigationItem];
+  leftBarButtonItem = [navigationItem5 leftBarButtonItem];
+  [leftBarButtonItem setAccessibilityIdentifier:@"Home.HomeSettings.AddHome.Cancel"];
 
-  v23 = [(HOAddLocationViewController *)self navigationItem];
-  v24 = [v23 rightBarButtonItem];
-  [v24 setEnabled:0];
+  navigationItem6 = [(HOAddLocationViewController *)self navigationItem];
+  rightBarButtonItem3 = [navigationItem6 rightBarButtonItem];
+  [rightBarButtonItem3 setEnabled:0];
 
   v25 = [HUTableViewDiffableDataSource alloc];
-  v26 = [(HOAddLocationViewController *)self tableView];
+  tableView5 = [(HOAddLocationViewController *)self tableView];
   v29[0] = _NSConcreteStackBlock;
   v29[1] = 3221225472;
   v29[2] = sub_100003778;
   v29[3] = &unk_1000C1C78;
   v29[4] = self;
-  v27 = [v25 initWithTableView:v26 cellProvider:v29 delegate:self];
+  v27 = [v25 initWithTableView:tableView5 cellProvider:v29 delegate:self];
   diffableDataSource = self->_diffableDataSource;
   self->_diffableDataSource = v27;
 
   [(HOAddLocationViewController *)self applySnapshotWithAnimation:0];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = HOAddLocationViewController;
   [(HOAddLocationViewController *)&v5 viewWillDisappear:1];
-  v4 = [(HOAddLocationViewController *)self view];
-  [v4 endEditing:1];
+  view = [(HOAddLocationViewController *)self view];
+  [view endEditing:1];
 }
 
-- (void)saveButtonPressed:(id)a3
+- (void)saveButtonPressed:(id)pressed
 {
-  v4 = a3;
+  pressedCopy = pressed;
   v5 = HFLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -196,40 +196,40 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "(%@:%s) Save button pressed.", buf, 0x16u);
   }
 
-  v6 = [(HOAddLocationViewController *)self editedName];
-  v7 = [HFUtilities sanitizeUserEnteredHomeKitName:v6];
+  editedName = [(HOAddLocationViewController *)self editedName];
+  v7 = [HFUtilities sanitizeUserEnteredHomeKitName:editedName];
 
-  v8 = [(HOAddLocationViewController *)self nameCell];
-  v9 = [v8 textField];
-  [v9 setText:v7];
+  nameCell = [(HOAddLocationViewController *)self nameCell];
+  textField = [nameCell textField];
+  [textField setText:v7];
 
-  v10 = [(HOAddLocationViewController *)self homeBuilder];
-  [v10 setName:v7];
+  homeBuilder = [(HOAddLocationViewController *)self homeBuilder];
+  [homeBuilder setName:v7];
 
-  v11 = [(HOAddLocationViewController *)self navigationItem];
-  v12 = [v11 rightBarButtonItem];
-  [(HOAddLocationViewController *)self setSavedButtonBarItem:v12];
+  navigationItem = [(HOAddLocationViewController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  [(HOAddLocationViewController *)self setSavedButtonBarItem:rightBarButtonItem];
 
   v13 = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:100];
   v14 = [[UIBarButtonItem alloc] initWithCustomView:v13];
-  v15 = [(HOAddLocationViewController *)self navigationItem];
-  [v15 setRightBarButtonItem:v14];
+  navigationItem2 = [(HOAddLocationViewController *)self navigationItem];
+  [navigationItem2 setRightBarButtonItem:v14];
 
   [v13 startAnimating];
-  v16 = [(HOAddLocationViewController *)self nameCell];
-  v17 = [v16 textField];
-  [v17 resignFirstResponder];
+  nameCell2 = [(HOAddLocationViewController *)self nameCell];
+  textField2 = [nameCell2 textField];
+  [textField2 resignFirstResponder];
 
   v18 = [[UIBarButtonItem alloc] initWithCustomView:v13];
-  v19 = [(HOAddLocationViewController *)self navigationItem];
-  [v19 setRightBarButtonItem:v18];
+  navigationItem3 = [(HOAddLocationViewController *)self navigationItem];
+  [navigationItem3 setRightBarButtonItem:v18];
 
-  v20 = [(HOAddLocationViewController *)self nameCell];
-  v21 = [v20 textField];
-  [v21 resignFirstResponder];
+  nameCell3 = [(HOAddLocationViewController *)self nameCell];
+  textField3 = [nameCell3 textField];
+  [textField3 resignFirstResponder];
 
-  v22 = [(HOAddLocationViewController *)self homeBuilder];
-  v23 = [v22 commitItem];
+  homeBuilder2 = [(HOAddLocationViewController *)self homeBuilder];
+  commitItem = [homeBuilder2 commitItem];
 
   objc_initWeak(buf, self);
   v32[0] = _NSConcreteStackBlock;
@@ -237,13 +237,13 @@
   v32[2] = sub_100003D58;
   v32[3] = &unk_1000C1CA0;
   v32[4] = self;
-  v24 = [v23 addCompletionBlock:v32];
+  v24 = [commitItem addCompletionBlock:v32];
   v31[0] = _NSConcreteStackBlock;
   v31[1] = 3221225472;
   v31[2] = sub_100003DC8;
   v31[3] = &unk_1000C1CC8;
   v31[4] = self;
-  v25 = [v23 addSuccessBlock:v31];
+  v25 = [commitItem addSuccessBlock:v31];
   v28[0] = _NSConcreteStackBlock;
   v28[1] = 3221225472;
   v28[2] = sub_100003E5C;
@@ -251,26 +251,26 @@
   objc_copyWeak(&v30, buf);
   v26 = v7;
   v29 = v26;
-  v27 = [v23 addFailureBlock:v28];
+  v27 = [commitItem addFailureBlock:v28];
 
   objc_destroyWeak(&v30);
   objc_destroyWeak(buf);
 }
 
-- (void)cancelButtonPressed:(id)a3
+- (void)cancelButtonPressed:(id)pressed
 {
-  v4 = [(HOAddLocationViewController *)self delegate];
-  [v4 addLocationViewController:self didFinishWithHome:0];
+  delegate = [(HOAddLocationViewController *)self delegate];
+  [delegate addLocationViewController:self didFinishWithHome:0];
 }
 
-- (void)nameCellTextChanged:(id)a3
+- (void)nameCellTextChanged:(id)changed
 {
-  v9 = a3;
-  v4 = [v9 text];
-  if (v4)
+  changedCopy = changed;
+  text = [changedCopy text];
+  if (text)
   {
-    v5 = [v9 text];
-    v6 = [v5 isEqualToString:&stru_1000C7DF8] ^ 1;
+    text2 = [changedCopy text];
+    v6 = [text2 isEqualToString:&stru_1000C7DF8] ^ 1;
   }
 
   else
@@ -278,105 +278,105 @@
     v6 = 0;
   }
 
-  v7 = [(HOAddLocationViewController *)self navigationItem];
-  v8 = [v7 rightBarButtonItem];
-  [v8 setEnabled:v6];
+  navigationItem = [(HOAddLocationViewController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  [rightBarButtonItem setEnabled:v6];
 
   [(HOAddLocationViewController *)self setModalInPresentation:v6];
 }
 
-- (void)updateCell:(id)a3 forIndexPath:(id)a4 animated:(BOOL)a5
+- (void)updateCell:(id)cell forIndexPath:(id)path animated:(BOOL)animated
 {
-  v7 = a4;
-  v8 = [(HOAddLocationViewController *)self diffableDataSource];
-  v9 = [v8 itemIdentifierForIndexPath:v7];
+  pathCopy = path;
+  diffableDataSource = [(HOAddLocationViewController *)self diffableDataSource];
+  v9 = [diffableDataSource itemIdentifierForIndexPath:pathCopy];
 
-  LODWORD(v7) = [v9 isEqualToString:off_1000D81E0];
-  if (v7)
+  LODWORD(pathCopy) = [v9 isEqualToString:off_1000D81E0];
+  if (pathCopy)
   {
-    v10 = [(HOAddLocationViewController *)self homeBuilder];
-    v11 = [v10 wallpaperBuilder];
-    v12 = [v11 wallpaperEditCollectionFuture];
+    homeBuilder = [(HOAddLocationViewController *)self homeBuilder];
+    wallpaperBuilder = [homeBuilder wallpaperBuilder];
+    wallpaperEditCollectionFuture = [wallpaperBuilder wallpaperEditCollectionFuture];
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_100004398;
     v14[3] = &unk_1000C1D40;
     v14[4] = self;
-    v15 = a5;
-    v13 = [v12 addSuccessBlock:v14];
+    animatedCopy = animated;
+    v13 = [wallpaperEditCollectionFuture addSuccessBlock:v14];
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4 rowIdentifier:(id)a5
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path rowIdentifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v10 isEqualToString:off_1000D81C0])
+  viewCopy = view;
+  pathCopy = path;
+  identifierCopy = identifier;
+  if ([identifierCopy isEqualToString:off_1000D81C0])
   {
     v11 = objc_opt_class();
     v12 = NSStringFromClass(v11);
-    v13 = [v8 dequeueReusableCellWithIdentifier:v12 forIndexPath:v9];
+    v13 = [viewCopy dequeueReusableCellWithIdentifier:v12 forIndexPath:pathCopy];
 
-    v14 = [v13 textField];
-    [v14 setAutocapitalizationType:1];
+    textField = [v13 textField];
+    [textField setAutocapitalizationType:1];
 
-    v15 = [v13 textField];
-    [v15 setClearButtonMode:3];
+    textField2 = [v13 textField];
+    [textField2 setClearButtonMode:3];
 
-    v16 = [v13 textField];
-    [v16 setDelegate:self];
+    textField3 = [v13 textField];
+    [textField3 setDelegate:self];
 
-    v17 = [(HOAddLocationViewController *)self editedName];
-    v18 = [v13 textField];
-    [v18 setText:v17];
+    editedName = [(HOAddLocationViewController *)self editedName];
+    textField4 = [v13 textField];
+    [textField4 setText:editedName];
 
     [(HOAddLocationViewController *)self setNameCell:v13];
-    v19 = [(HOAddLocationViewController *)self nameCell];
-    v20 = [v19 textField];
-    [v20 addTarget:self action:"nameCellTextChanged:" forControlEvents:917504];
+    nameCell = [(HOAddLocationViewController *)self nameCell];
+    textField5 = [nameCell textField];
+    [textField5 addTarget:self action:"nameCellTextChanged:" forControlEvents:917504];
 
 LABEL_5:
     goto LABEL_6;
   }
 
-  if ([v10 isEqualToString:off_1000D81E0])
+  if ([identifierCopy isEqualToString:off_1000D81E0])
   {
     v21 = objc_opt_class();
     v22 = NSStringFromClass(v21);
-    v13 = [v8 dequeueReusableCellWithIdentifier:v22 forIndexPath:v9];
+    v13 = [viewCopy dequeueReusableCellWithIdentifier:v22 forIndexPath:pathCopy];
 
-    v23 = [(HOAddLocationViewController *)self wallpaperPickerViewController];
-    [v13 setViewController:v23];
+    wallpaperPickerViewController = [(HOAddLocationViewController *)self wallpaperPickerViewController];
+    [v13 setViewController:wallpaperPickerViewController];
 
     v24 = +[HFWallpaperManager sharedInstance];
     v25 = [v24 allNamedWallpapersForWallpaperCollectionType:0];
-    v26 = [(HOAddLocationViewController *)self wallpaperPickerViewController];
-    [v26 setNamedWallpapers:v25];
+    wallpaperPickerViewController2 = [(HOAddLocationViewController *)self wallpaperPickerViewController];
+    [wallpaperPickerViewController2 setNamedWallpapers:v25];
 
     v27 = +[HFWallpaperManager sharedInstance];
     v28 = [v27 allNamedWallpaperThumbnailsForWallpaperCollectionType:0];
-    v29 = [(HOAddLocationViewController *)self wallpaperPickerViewController];
-    [v29 setNamedWallpaperThumbnails:v28];
+    wallpaperPickerViewController3 = [(HOAddLocationViewController *)self wallpaperPickerViewController];
+    [wallpaperPickerViewController3 setNamedWallpaperThumbnails:v28];
 
-    v30 = [(HOAddLocationViewController *)self wallpaperPickerViewController];
-    [v8 frame];
-    [v30 setImageSizeToFitWidth:3 forNumberOfWallpapers:v31];
+    wallpaperPickerViewController4 = [(HOAddLocationViewController *)self wallpaperPickerViewController];
+    [viewCopy frame];
+    [wallpaperPickerViewController4 setImageSizeToFitWidth:3 forNumberOfWallpapers:v31];
 
-    v19 = [(HOAddLocationViewController *)self wallpaperPickerViewController];
-    [v19 setDelegate:self];
+    nameCell = [(HOAddLocationViewController *)self wallpaperPickerViewController];
+    [nameCell setDelegate:self];
     goto LABEL_5;
   }
 
-  if ([v10 isEqualToString:off_1000D81C8])
+  if ([identifierCopy isEqualToString:off_1000D81C8])
   {
     v33 = objc_opt_class();
     v34 = NSStringFromClass(v33);
-    v13 = [v8 dequeueReusableCellWithIdentifier:v34 forIndexPath:v9];
+    v13 = [viewCopy dequeueReusableCellWithIdentifier:v34 forIndexPath:pathCopy];
 
     v35 = sub_100003520(@"HOAddLocationTakePhotoTitle");
-    v36 = [v13 textLabel];
-    [v36 setText:v35];
+    textLabel = [v13 textLabel];
+    [textLabel setText:v35];
 
     [v13 setDisabled:{+[UIImagePickerController isSourceTypeAvailable:](UIImagePickerController, "isSourceTypeAvailable:", 1) ^ 1}];
     v37 = @"Home.HomeSettings.AddHome.TakePhoto";
@@ -385,11 +385,11 @@ LABEL_13:
     goto LABEL_6;
   }
 
-  if ([v10 isEqualToString:off_1000D81D0])
+  if ([identifierCopy isEqualToString:off_1000D81D0])
   {
     v38 = objc_opt_class();
     v39 = NSStringFromClass(v38);
-    v13 = [v8 dequeueReusableCellWithIdentifier:v39 forIndexPath:v9];
+    v13 = [viewCopy dequeueReusableCellWithIdentifier:v39 forIndexPath:pathCopy];
 
     [v13 setAccessoryType:1];
     [v13 setHideIcon:1];
@@ -400,11 +400,11 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  if ([v10 isEqualToString:off_1000D81D8])
+  if ([identifierCopy isEqualToString:off_1000D81D8])
   {
     v41 = objc_opt_class();
     v42 = NSStringFromClass(v41);
-    v43 = [v8 dequeueReusableCellWithIdentifier:v42 forIndexPath:v9];
+    v43 = [viewCopy dequeueReusableCellWithIdentifier:v42 forIndexPath:pathCopy];
 
     [v43 setAccessibilityIdentifier:@"Home.HomeSettings.AddHome.WallpaperThumbnail"];
     [v43 setDelegate:self];
@@ -416,16 +416,16 @@ LABEL_13:
     v49 = v46 / v48;
 
     [v43 setImageSize:round(v49 * 244.0)];
-    v50 = [(HOAddLocationViewController *)self homeBuilder];
-    v51 = [v50 wallpaperBuilder];
-    v52 = [v51 wallpaperEditCollectionFuture];
+    homeBuilder = [(HOAddLocationViewController *)self homeBuilder];
+    wallpaperBuilder = [homeBuilder wallpaperBuilder];
+    wallpaperEditCollectionFuture = [wallpaperBuilder wallpaperEditCollectionFuture];
     v54[0] = _NSConcreteStackBlock;
     v54[1] = 3221225472;
     v54[2] = sub_100004A14;
     v54[3] = &unk_1000C1D68;
     v13 = v43;
     v55 = v13;
-    v53 = [v52 addSuccessBlock:v54];
+    v53 = [wallpaperEditCollectionFuture addSuccessBlock:v54];
   }
 
   else
@@ -434,33 +434,33 @@ LABEL_13:
   }
 
 LABEL_6:
-  [(HOAddLocationViewController *)self updateCell:v13 forIndexPath:v9 animated:0];
+  [(HOAddLocationViewController *)self updateCell:v13 forIndexPath:pathCopy animated:0];
 
   return v13;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  [a3 deselectRowAtIndexPath:v6 animated:1];
-  v7 = [(HOAddLocationViewController *)self diffableDataSource];
-  v8 = [v7 itemIdentifierForIndexPath:v6];
+  pathCopy = path;
+  [view deselectRowAtIndexPath:pathCopy animated:1];
+  diffableDataSource = [(HOAddLocationViewController *)self diffableDataSource];
+  v8 = [diffableDataSource itemIdentifierForIndexPath:pathCopy];
 
   if ([v8 isEqualToString:off_1000D81C8])
   {
-    v9 = objc_alloc_init(UIImagePickerController);
-    [v9 setDelegate:self];
-    [v9 setSourceType:1];
-    [(HOAddLocationViewController *)self presentViewController:v9 animated:1 completion:0];
+    homeBuilder = objc_alloc_init(UIImagePickerController);
+    [homeBuilder setDelegate:self];
+    [homeBuilder setSourceType:1];
+    [(HOAddLocationViewController *)self presentViewController:homeBuilder animated:1 completion:0];
   }
 
   else
   {
     if ([v8 isEqualToString:off_1000D81D0])
     {
-      v10 = [(HOAddLocationViewController *)self navigationController];
+      navigationController = [(HOAddLocationViewController *)self navigationController];
       v11 = HULocalizedString();
-      [HUWallpaperPickerViewController presentSecurePickerFromNavigationController:v10 collectionType:0 withTitle:v11 delegate:self];
+      [HUWallpaperPickerViewController presentSecurePickerFromNavigationController:navigationController collectionType:0 withTitle:v11 delegate:self];
 
       goto LABEL_8;
     }
@@ -470,36 +470,36 @@ LABEL_6:
       goto LABEL_8;
     }
 
-    v9 = [(HOAddLocationViewController *)self homeBuilder];
-    v12 = [v9 wallpaperBuilder];
-    v13 = [v12 wallpaperEditCollectionFuture];
+    homeBuilder = [(HOAddLocationViewController *)self homeBuilder];
+    wallpaperBuilder = [homeBuilder wallpaperBuilder];
+    wallpaperEditCollectionFuture = [wallpaperBuilder wallpaperEditCollectionFuture];
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_100004C84;
     v15[3] = &unk_1000C1D68;
     v15[4] = self;
-    v14 = [v13 addSuccessBlock:v15];
+    v14 = [wallpaperEditCollectionFuture addSuccessBlock:v15];
   }
 
 LABEL_8:
 }
 
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(HOAddLocationViewController *)self diffableDataSource];
-  v7 = [v6 itemIdentifierForIndexPath:v5];
+  pathCopy = path;
+  diffableDataSource = [(HOAddLocationViewController *)self diffableDataSource];
+  v7 = [diffableDataSource itemIdentifierForIndexPath:pathCopy];
 
   v8 = ([v7 isEqualToString:off_1000D81E0] & 1) == 0 && (+[UIImagePickerController isSourceTypeAvailable:](UIImagePickerController, "isSourceTypeAvailable:", 1) || (objc_msgSend(v7, "isEqualToString:", off_1000D81C8) & 1) == 0);
   return v8;
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
+  viewCopy = view;
   v7 = +[UIListContentConfiguration groupedHeaderConfiguration];
-  v8 = [(HOAddLocationViewController *)self diffableDataSource];
-  v9 = [v8 sectionIdentifierForIndex:a4];
+  diffableDataSource = [(HOAddLocationViewController *)self diffableDataSource];
+  v9 = [diffableDataSource sectionIdentifierForIndex:section];
 
   if ([v9 isEqualToString:off_1000D81B0])
   {
@@ -522,108 +522,108 @@ LABEL_7:
 
   v12 = objc_opt_class();
   v13 = NSStringFromClass(v12);
-  v14 = [v6 dequeueReusableHeaderFooterViewWithIdentifier:v13];
+  v14 = [viewCopy dequeueReusableHeaderFooterViewWithIdentifier:v13];
 
   [v14 setContentConfiguration:v7];
 
   return v14;
 }
 
-- (void)textFieldDidChange:(id)a3
+- (void)textFieldDidChange:(id)change
 {
-  v5 = [a3 object];
-  v4 = [v5 text];
-  [(HOAddLocationViewController *)self setEditedName:v4];
+  object = [change object];
+  text = [object text];
+  [(HOAddLocationViewController *)self setEditedName:text];
 }
 
-- (BOOL)textFieldShouldReturn:(id)a3
+- (BOOL)textFieldShouldReturn:(id)return
 {
-  v4 = a3;
-  v5 = [v4 text];
-  v6 = [HFUtilities sanitizeUserEnteredHomeKitName:v5];
+  returnCopy = return;
+  text = [returnCopy text];
+  v6 = [HFUtilities sanitizeUserEnteredHomeKitName:text];
   [(HOAddLocationViewController *)self setEditedName:v6];
 
-  [v4 resignFirstResponder];
+  [returnCopy resignFirstResponder];
   return 1;
 }
 
-- (void)wallpaperPickerDidFinish:(id)a3 wallpaper:(id)a4 image:(id)a5
+- (void)wallpaperPickerDidFinish:(id)finish wallpaper:(id)wallpaper image:(id)image
 {
-  [(HOAddLocationViewController *)self updateWallpaper:a4 image:a5];
-  v7 = [(HOAddLocationViewController *)self navigationController];
-  v6 = [v7 popToViewController:self animated:1];
+  [(HOAddLocationViewController *)self updateWallpaper:wallpaper image:image];
+  navigationController = [(HOAddLocationViewController *)self navigationController];
+  v6 = [navigationController popToViewController:self animated:1];
 }
 
-- (void)wallpaperThumbnailCell:(id)a3 didReceiveDroppedImage:(id)a4
+- (void)wallpaperThumbnailCell:(id)cell didReceiveDroppedImage:(id)image
 {
-  v5 = a4;
+  imageCopy = image;
   v8 = +[NSUUID UUID];
-  v6 = [v8 UUIDString];
-  v7 = [HFWallpaper customWallpaperWithAssetIdentifier:v6];
-  [(HOAddLocationViewController *)self updateWallpaper:v7 image:v5];
+  uUIDString = [v8 UUIDString];
+  v7 = [HFWallpaper customWallpaperWithAssetIdentifier:uUIDString];
+  [(HOAddLocationViewController *)self updateWallpaper:v7 image:imageCopy];
 }
 
-- (void)wallpaperPicker:(id)a3 didReceiveDroppedImage:(id)a4
+- (void)wallpaperPicker:(id)picker didReceiveDroppedImage:(id)image
 {
-  v6 = a4;
-  v7 = a3;
+  imageCopy = image;
+  pickerCopy = picker;
   v8 = +[NSUUID UUID];
-  v9 = [v8 UUIDString];
-  v16 = [HFWallpaper customWallpaperWithAssetIdentifier:v9];
+  uUIDString = [v8 UUIDString];
+  v16 = [HFWallpaper customWallpaperWithAssetIdentifier:uUIDString];
 
-  [v7 setOriginalCustomImage:v6];
-  v10 = [(HOAddLocationViewController *)self homeBuilder];
-  v11 = [v10 wallpaperBuilder];
-  [v11 setWallpaper:v16 image:v6];
+  [pickerCopy setOriginalCustomImage:imageCopy];
+  homeBuilder = [(HOAddLocationViewController *)self homeBuilder];
+  wallpaperBuilder = [homeBuilder wallpaperBuilder];
+  [wallpaperBuilder setWallpaper:v16 image:imageCopy];
 
-  v12 = [(HOAddLocationViewController *)self diffableDataSource];
-  v13 = [v12 indexPathForItemIdentifier:off_1000D81E0];
+  diffableDataSource = [(HOAddLocationViewController *)self diffableDataSource];
+  v13 = [diffableDataSource indexPathForItemIdentifier:off_1000D81E0];
 
-  v14 = [(HOAddLocationViewController *)self tableView];
-  v15 = [v14 cellForRowAtIndexPath:v13];
+  tableView = [(HOAddLocationViewController *)self tableView];
+  v15 = [tableView cellForRowAtIndexPath:v13];
   [(HOAddLocationViewController *)self updateCell:v15 forIndexPath:v13 animated:1];
 }
 
-- (void)wallpaperPicker:(id)a3 didSelectWallpaper:(id)a4 withImage:(id)a5
+- (void)wallpaperPicker:(id)picker didSelectWallpaper:(id)wallpaper withImage:(id)image
 {
-  v7 = a5;
-  v8 = a4;
-  v10 = [(HOAddLocationViewController *)self homeBuilder];
-  v9 = [v10 wallpaperBuilder];
-  [v9 setWallpaper:v8 image:v7];
+  imageCopy = image;
+  wallpaperCopy = wallpaper;
+  homeBuilder = [(HOAddLocationViewController *)self homeBuilder];
+  wallpaperBuilder = [homeBuilder wallpaperBuilder];
+  [wallpaperBuilder setWallpaper:wallpaperCopy image:imageCopy];
 }
 
-- (void)wallpaperPickerRequestOpenWallpaperEditor:(id)a3
+- (void)wallpaperPickerRequestOpenWallpaperEditor:(id)editor
 {
-  v4 = [(HOAddLocationViewController *)self homeBuilder];
-  v5 = [v4 wallpaperBuilder];
-  v6 = [v5 wallpaperEditCollectionFuture];
+  homeBuilder = [(HOAddLocationViewController *)self homeBuilder];
+  wallpaperBuilder = [homeBuilder wallpaperBuilder];
+  wallpaperEditCollectionFuture = [wallpaperBuilder wallpaperEditCollectionFuture];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000053D0;
   v8[3] = &unk_1000C1D68;
   v8[4] = self;
-  v7 = [v6 addSuccessBlock:v8];
+  v7 = [wallpaperEditCollectionFuture addSuccessBlock:v8];
 }
 
-- (void)wallpaperEditing:(id)a3 didFinishWithWallpaper:(id)a4 image:(id)a5
+- (void)wallpaperEditing:(id)editing didFinishWithWallpaper:(id)wallpaper image:(id)image
 {
-  [(HOAddLocationViewController *)self updateWallpaper:a4 image:a5];
+  [(HOAddLocationViewController *)self updateWallpaper:wallpaper image:image];
 
   [(HOAddLocationViewController *)self dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)imagePickerController:(id)a3 didFinishPickingMediaWithInfo:(id)a4
+- (void)imagePickerController:(id)controller didFinishPickingMediaWithInfo:(id)info
 {
-  v5 = a4;
+  infoCopy = info;
   [(HOAddLocationViewController *)self dismissViewControllerAnimated:1 completion:0];
-  v6 = [v5 objectForKeyedSubscript:UIImagePickerControllerOriginalImage];
+  v6 = [infoCopy objectForKeyedSubscript:UIImagePickerControllerOriginalImage];
 
   UIImageWriteToSavedPhotosAlbum(v6, 0, 0, 0);
   v7 = [HFWallpaper alloc];
   v8 = +[NSUUID UUID];
-  v9 = [v8 UUIDString];
-  v10 = [v7 initWithType:1 assetIdentifier:v9 cropInfo:0];
+  uUIDString = [v8 UUIDString];
+  v10 = [v7 initWithType:1 assetIdentifier:uUIDString cropInfo:0];
 
   v11 = +[HFWallpaperManager sharedInstance];
   v12 = [v11 processOriginalImageFromWallpaper:v10 originalImage:v6];
@@ -631,45 +631,45 @@ LABEL_7:
   [(HOAddLocationViewController *)self presentWallpaperEditingViewControllerWithImage:v12 wallpaper:v10];
 }
 
-- (void)presentWallpaperEditingViewControllerWithImage:(id)a3 wallpaper:(id)a4
+- (void)presentWallpaperEditingViewControllerWithImage:(id)image wallpaper:(id)wallpaper
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[HUWallpaperEditingViewController alloc] initWithWallpaper:v6 image:v7 delegate:self];
+  wallpaperCopy = wallpaper;
+  imageCopy = image;
+  v8 = [[HUWallpaperEditingViewController alloc] initWithWallpaper:wallpaperCopy image:imageCopy delegate:self];
 
   [(HOAddLocationViewController *)self presentViewController:v8 animated:1 completion:0];
 }
 
-- (void)updateWallpaper:(id)a3 image:(id)a4
+- (void)updateWallpaper:(id)wallpaper image:(id)image
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HOAddLocationViewController *)self homeBuilder];
-  v9 = [v8 wallpaperBuilder];
-  [v9 setWallpaper:v7 image:v6];
+  imageCopy = image;
+  wallpaperCopy = wallpaper;
+  homeBuilder = [(HOAddLocationViewController *)self homeBuilder];
+  wallpaperBuilder = [homeBuilder wallpaperBuilder];
+  [wallpaperBuilder setWallpaper:wallpaperCopy image:imageCopy];
 
-  v12 = [(HOAddLocationViewController *)self diffableDataSource];
-  v10 = [(HOAddLocationViewController *)self diffableDataSource];
-  v11 = [v10 snapshot];
-  [v12 applySnapshotUsingReloadData:v11];
+  diffableDataSource = [(HOAddLocationViewController *)self diffableDataSource];
+  diffableDataSource2 = [(HOAddLocationViewController *)self diffableDataSource];
+  snapshot = [diffableDataSource2 snapshot];
+  [diffableDataSource applySnapshotUsingReloadData:snapshot];
 }
 
 - (void)setNavigationBarVisibility
 {
-  v3 = [(HOAddLocationViewController *)self navigationController];
-  [v3 setNavigationBarHidden:0 animated:1];
+  navigationController = [(HOAddLocationViewController *)self navigationController];
+  [navigationController setNavigationBarHidden:0 animated:1];
 
-  v4 = [(HOAddLocationViewController *)self navigationItem];
-  [v4 setHidesBackButton:0];
+  navigationItem = [(HOAddLocationViewController *)self navigationItem];
+  [navigationItem setHidesBackButton:0];
 
-  v5 = [(HOAddLocationViewController *)self navigationController];
-  v6 = [v5 navigationBar];
+  navigationController2 = [(HOAddLocationViewController *)self navigationController];
+  navigationBar = [navigationController2 navigationBar];
   v7 = +[UIColor systemBackgroundColor];
-  [v6 setBarTintColor:v7];
+  [navigationBar setBarTintColor:v7];
 
-  v9 = [(HOAddLocationViewController *)self navigationController];
-  v8 = [v9 navigationBar];
-  [v8 _setHidesShadow:0];
+  navigationController3 = [(HOAddLocationViewController *)self navigationController];
+  navigationBar2 = [navigationController3 navigationBar];
+  [navigationBar2 _setHidesShadow:0];
 }
 
 - (HOAddLocationViewControllerDelegate)delegate

@@ -4,8 +4,8 @@
 - (int)batchId;
 - (int)probeId;
 - (int)sampleId;
-- (void)setPayload:(id)a3;
-- (void)setTimestamp:(double)a3;
+- (void)setPayload:(id)payload;
+- (void)setTimestamp:(double)timestamp;
 @end
 
 @implementation RWIProtocolDebuggerProbeSample
@@ -31,11 +31,11 @@
   return [(RWIProtocolJSONObject *)&v3 integerForKey:@"batchId"];
 }
 
-- (void)setTimestamp:(double)a3
+- (void)setTimestamp:(double)timestamp
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolDebuggerProbeSample;
-  [(RWIProtocolJSONObject *)&v3 setDouble:@"timestamp" forKey:a3];
+  [(RWIProtocolJSONObject *)&v3 setDouble:@"timestamp" forKey:timestamp];
 }
 
 - (double)timestamp
@@ -46,11 +46,11 @@
   return result;
 }
 
-- (void)setPayload:(id)a3
+- (void)setPayload:(id)payload
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolDebuggerProbeSample;
-  [(RWIProtocolJSONObject *)&v3 setObject:a3 forKey:@"payload"];
+  [(RWIProtocolJSONObject *)&v3 setObject:payload forKey:@"payload"];
 }
 
 - (RWIProtocolRuntimeRemoteObject)payload

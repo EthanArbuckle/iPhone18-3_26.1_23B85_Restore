@@ -1,5 +1,5 @@
 @interface CallRecordingRecordingViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_axUpdateLabels;
 - (void)layoutSubviews;
@@ -7,11 +7,11 @@
 
 @implementation CallRecordingRecordingViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CommunicationsUI.CallRecordingRecordingView" isKindOfClass:@"UIView"];
-  [v3 validateClass:@"CommunicationsUI.CallRecordingRecordingView" hasSwiftField:@"$__lazy_storage_$_stopButton" withSwiftType:"Optional<UIButton>"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CommunicationsUI.CallRecordingRecordingView" isKindOfClass:@"UIView"];
+  [validationsCopy validateClass:@"CommunicationsUI.CallRecordingRecordingView" hasSwiftField:@"$__lazy_storage_$_stopButton" withSwiftType:"Optional<UIButton>"];
 }
 
 - (void)_axUpdateLabels

@@ -1,117 +1,117 @@
 @interface BDSServiceProxy
-- (BDSServiceProxy)initWithConnectionDelegate:(id)a3;
+- (BDSServiceProxy)initWithConnectionDelegate:(id)delegate;
 - (BDSServiceProxyConnectionDelegate)connectionDelegate;
-- (id)remoteObjectProxyWithErrorHandler:(id)a3;
-- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)a3;
-- (id)updateReadingNowWithCompletion:(id)a3;
-- (id)updateWantToReadWithCompletion:(id)a3;
-- (void)addStoreItem:(id)a3 completion:(id)a4;
-- (void)addStoreItems:(id)a3 completion:(id)a4;
-- (void)assetDetailForAssetID:(id)a3 completion:(id)a4;
-- (void)assetDetailsForAssetIDs:(id)a3 completion:(id)a4;
-- (void)assetReviewForAssetReviewID:(id)a3 completion:(id)a4;
-- (void)assetReviewsForAssetReviewIDs:(id)a3 completion:(id)a4;
-- (void)audiobookStoreEnabledWithCompletion:(id)a3;
-- (void)bookWidgetReadingHistoryStateInfoWithCompletion:(id)a3;
-- (void)clearSyncMetadata:(id)a3;
-- (void)cloudSyncDiagnosticDetachWithCompletionHandler:(id)a3;
-- (void)cloudSyncDiagnosticFindLocalIdDupesWithCompletionHandler:(id)a3;
-- (void)cloudSyncDiagnosticInfoWithCompletionHandler:(id)a3;
-- (void)collectionDetailForCollectionID:(id)a3 completion:(id)a4;
-- (void)collectionDetailsForCollectionIDs:(id)a3 completion:(id)a4;
-- (void)collectionMemberForCollectionMemberID:(id)a3 completion:(id)a4;
-- (void)currentAssetDetailCloudSyncVersions:(id)a3;
-- (void)currentCloudSyncVersions:(id)a3;
-- (void)currentCollectionDetailCloudSyncVersions:(id)a3;
-- (void)currentCollectionMemberCloudSyncVersions:(id)a3;
-- (void)currentReadingNowDetailCloudSyncVersions:(id)a3;
+- (id)remoteObjectProxyWithErrorHandler:(id)handler;
+- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)handler;
+- (id)updateReadingNowWithCompletion:(id)completion;
+- (id)updateWantToReadWithCompletion:(id)completion;
+- (void)addStoreItem:(id)item completion:(id)completion;
+- (void)addStoreItems:(id)items completion:(id)completion;
+- (void)assetDetailForAssetID:(id)d completion:(id)completion;
+- (void)assetDetailsForAssetIDs:(id)ds completion:(id)completion;
+- (void)assetReviewForAssetReviewID:(id)d completion:(id)completion;
+- (void)assetReviewsForAssetReviewIDs:(id)ds completion:(id)completion;
+- (void)audiobookStoreEnabledWithCompletion:(id)completion;
+- (void)bookWidgetReadingHistoryStateInfoWithCompletion:(id)completion;
+- (void)clearSyncMetadata:(id)metadata;
+- (void)cloudSyncDiagnosticDetachWithCompletionHandler:(id)handler;
+- (void)cloudSyncDiagnosticFindLocalIdDupesWithCompletionHandler:(id)handler;
+- (void)cloudSyncDiagnosticInfoWithCompletionHandler:(id)handler;
+- (void)collectionDetailForCollectionID:(id)d completion:(id)completion;
+- (void)collectionDetailsForCollectionIDs:(id)ds completion:(id)completion;
+- (void)collectionMemberForCollectionMemberID:(id)d completion:(id)completion;
+- (void)currentAssetDetailCloudSyncVersions:(id)versions;
+- (void)currentCloudSyncVersions:(id)versions;
+- (void)currentCollectionDetailCloudSyncVersions:(id)versions;
+- (void)currentCollectionMemberCloudSyncVersions:(id)versions;
+- (void)currentReadingNowDetailCloudSyncVersions:(id)versions;
 - (void)dealloc;
-- (void)deleteAssetDetailForAssetID:(id)a3 completion:(id)a4;
-- (void)deleteAssetReviewForAssetReviewID:(id)a3 completion:(id)a4;
-- (void)deleteAssetReviewForAssetReviewIDs:(id)a3 completion:(id)a4;
-- (void)deleteCollectionDetailForCollectionID:(id)a3 completion:(id)a4;
-- (void)deleteCollectionDetailForCollectionIDs:(id)a3 completion:(id)a4;
-- (void)deleteCollectionMemberForCollectionMemberID:(id)a3 completion:(id)a4;
-- (void)deleteCollectionMemberForCollectionMemberIDs:(id)a3 completion:(id)a4;
-- (void)deleteEngagementDataForKey:(id)a3 completion:(id)a4;
-- (void)deleteItemsWithStoreIDs:(id)a3 completion:(id)a4;
-- (void)deleteReadingNowDetailForAssetID:(id)a3 completion:(id)a4;
-- (void)deleteStoreItemWithStoreID:(id)a3 completion:(id)a4;
-- (void)deleteStoreItemsWithStoreIDs:(id)a3 completion:(id)a4;
-- (void)deleteUserDatumForKey:(id)a3 completion:(id)a4;
-- (void)dissociateCloudDataFromSyncWithCompletion:(id)a3;
-- (void)engagementDataForKey:(id)a3 completion:(id)a4;
-- (void)fetchAllHiddenItemStoreIDsWithCompletion:(id)a3;
-- (void)fetchAssetDetailsForUnsyncedTastes:(id)a3;
-- (void)fetchCollectionMembersInCollectionID:(id)a3 completion:(id)a4;
-- (void)fetchFinishedAssetCountByYearWithCompletion:(id)a3;
-- (void)fetchFinishedDatesByAssetIDForYear:(int64_t)a3 completion:(id)a4;
-- (void)fetchMaxSortOrderInCollectionID:(id)a3 completion:(id)a4;
-- (void)fetchMostRecentAudiobookWithCompletion:(id)a3;
-- (void)forceFetchRemoteChanges:(id)a3;
+- (void)deleteAssetDetailForAssetID:(id)d completion:(id)completion;
+- (void)deleteAssetReviewForAssetReviewID:(id)d completion:(id)completion;
+- (void)deleteAssetReviewForAssetReviewIDs:(id)ds completion:(id)completion;
+- (void)deleteCollectionDetailForCollectionID:(id)d completion:(id)completion;
+- (void)deleteCollectionDetailForCollectionIDs:(id)ds completion:(id)completion;
+- (void)deleteCollectionMemberForCollectionMemberID:(id)d completion:(id)completion;
+- (void)deleteCollectionMemberForCollectionMemberIDs:(id)ds completion:(id)completion;
+- (void)deleteEngagementDataForKey:(id)key completion:(id)completion;
+- (void)deleteItemsWithStoreIDs:(id)ds completion:(id)completion;
+- (void)deleteReadingNowDetailForAssetID:(id)d completion:(id)completion;
+- (void)deleteStoreItemWithStoreID:(id)d completion:(id)completion;
+- (void)deleteStoreItemsWithStoreIDs:(id)ds completion:(id)completion;
+- (void)deleteUserDatumForKey:(id)key completion:(id)completion;
+- (void)dissociateCloudDataFromSyncWithCompletion:(id)completion;
+- (void)engagementDataForKey:(id)key completion:(id)completion;
+- (void)fetchAllHiddenItemStoreIDsWithCompletion:(id)completion;
+- (void)fetchAssetDetailsForUnsyncedTastes:(id)tastes;
+- (void)fetchCollectionMembersInCollectionID:(id)d completion:(id)completion;
+- (void)fetchFinishedAssetCountByYearWithCompletion:(id)completion;
+- (void)fetchFinishedDatesByAssetIDForYear:(int64_t)year completion:(id)completion;
+- (void)fetchMaxSortOrderInCollectionID:(id)d completion:(id)completion;
+- (void)fetchMostRecentAudiobookWithCompletion:(id)completion;
+- (void)forceFetchRemoteChanges:(id)changes;
 - (void)formXPCConnection;
-- (void)getAssetDetailChangesSince:(id)a3 completion:(id)a4;
-- (void)getAssetReviewChangesSince:(id)a3 completion:(id)a4;
-- (void)getBookWidgetDataWithLimit:(int64_t)a3 completion:(id)a4;
-- (void)getBookWidgetInfoWithLimit:(int64_t)a3 completion:(id)a4;
-- (void)getCollectionDetailChangesSince:(id)a3 completion:(id)a4;
-- (void)getCollectionMemberChangesSince:(id)a3 completion:(id)a4;
-- (void)getEngagementDataChangesSince:(id)a3 completion:(id)a4;
-- (void)getReadingNowDetailChangesSince:(id)a3 completion:(id)a4;
-- (void)getStoreItemChangesSince:(id)a3 completion:(id)a4;
-- (void)getUserDataChangesSince:(id)a3 completion:(id)a4;
-- (void)hasSaltChangedWithCompletion:(id)a3;
-- (void)hideItemsWithStoreIDs:(id)a3 completion:(id)a4;
-- (void)mergeMovedReadingHistoryDataWithCompletionHandler:(id)a3;
-- (void)monitorServiceNotificationsWithChangeToken:(id)a3 completion:(id)a4;
-- (void)needsReadingNowAssetTypePopulation:(id)a3;
-- (void)priceTrackingCtlAddTrackedItems:(id)a3 completion:(id)a4;
-- (void)priceTrackingCtlGetStateWithCompletion:(id)a3;
-- (void)priceTrackingCtlOverrideReferencePrices:(id)a3 completion:(id)a4;
-- (void)priceTrackingSetConfiguration:(id)a3 completion:(id)a4;
-- (void)readingGoalsChangeBooksFinishedGoalTo:(int64_t)a3 withCompletion:(id)a4;
-- (void)readingGoalsChangeDailyGoalTo:(double)a3 withCompletion:(id)a4;
-- (void)readingGoalsClearDataWithCompletion:(id)a3;
-- (void)readingGoalsClearLocalCachedDataWithCompletion:(id)a3;
-- (void)readingGoalsStateInfoWithCompletion:(id)a3;
-- (void)readingHistoryBackupWithName:(id)a3 completion:(id)a4;
-- (void)readingHistoryClearDataWithCompletion:(id)a3;
-- (void)readingHistoryClearDate:(id)a3 withCompletion:(id)a4;
-- (void)readingHistoryClearDefaultsCachedDataWithCompletion:(id)a3;
-- (void)readingHistoryClearTodayWithCompletion:(id)a3;
-- (void)readingHistoryHandleSyncFileChangeWithSyncVersionInfo:(id)a3 updateInfo:(id)a4 completion:(id)a5;
-- (void)readingHistoryIncrementWithDate:(id)a3 by:(int64_t)a4 withCompletion:(id)a5;
-- (void)readingHistoryListBackupWithCompletion:(id)a3;
-- (void)readingHistoryReadingHistoryStateInfoWithRangeStart:(id)a3 rangeEnd:(id)a4 currentTime:(id)a5 withCompletion:(id)a6;
-- (void)readingHistoryRestoreWithName:(id)a3 completion:(id)a4;
-- (void)readingHistoryServiceStatusInfoWithCompletion:(id)a3;
-- (void)readingNowDetailsForAssetIDs:(id)a3 completion:(id)a4;
-- (void)resetPurchasedTokenForStoreIDs:(id)a3 completion:(id)a4;
-- (void)resetStaleJaliscoDatabaseWithCompletion:(id)a3;
-- (void)resolvedAssetDetailForAssetID:(id)a3 completion:(id)a4;
-- (void)resolvedUserDataValueForKey:(id)a3 completion:(id)a4;
+- (void)getAssetDetailChangesSince:(id)since completion:(id)completion;
+- (void)getAssetReviewChangesSince:(id)since completion:(id)completion;
+- (void)getBookWidgetDataWithLimit:(int64_t)limit completion:(id)completion;
+- (void)getBookWidgetInfoWithLimit:(int64_t)limit completion:(id)completion;
+- (void)getCollectionDetailChangesSince:(id)since completion:(id)completion;
+- (void)getCollectionMemberChangesSince:(id)since completion:(id)completion;
+- (void)getEngagementDataChangesSince:(id)since completion:(id)completion;
+- (void)getReadingNowDetailChangesSince:(id)since completion:(id)completion;
+- (void)getStoreItemChangesSince:(id)since completion:(id)completion;
+- (void)getUserDataChangesSince:(id)since completion:(id)completion;
+- (void)hasSaltChangedWithCompletion:(id)completion;
+- (void)hideItemsWithStoreIDs:(id)ds completion:(id)completion;
+- (void)mergeMovedReadingHistoryDataWithCompletionHandler:(id)handler;
+- (void)monitorServiceNotificationsWithChangeToken:(id)token completion:(id)completion;
+- (void)needsReadingNowAssetTypePopulation:(id)population;
+- (void)priceTrackingCtlAddTrackedItems:(id)items completion:(id)completion;
+- (void)priceTrackingCtlGetStateWithCompletion:(id)completion;
+- (void)priceTrackingCtlOverrideReferencePrices:(id)prices completion:(id)completion;
+- (void)priceTrackingSetConfiguration:(id)configuration completion:(id)completion;
+- (void)readingGoalsChangeBooksFinishedGoalTo:(int64_t)to withCompletion:(id)completion;
+- (void)readingGoalsChangeDailyGoalTo:(double)to withCompletion:(id)completion;
+- (void)readingGoalsClearDataWithCompletion:(id)completion;
+- (void)readingGoalsClearLocalCachedDataWithCompletion:(id)completion;
+- (void)readingGoalsStateInfoWithCompletion:(id)completion;
+- (void)readingHistoryBackupWithName:(id)name completion:(id)completion;
+- (void)readingHistoryClearDataWithCompletion:(id)completion;
+- (void)readingHistoryClearDate:(id)date withCompletion:(id)completion;
+- (void)readingHistoryClearDefaultsCachedDataWithCompletion:(id)completion;
+- (void)readingHistoryClearTodayWithCompletion:(id)completion;
+- (void)readingHistoryHandleSyncFileChangeWithSyncVersionInfo:(id)info updateInfo:(id)updateInfo completion:(id)completion;
+- (void)readingHistoryIncrementWithDate:(id)date by:(int64_t)by withCompletion:(id)completion;
+- (void)readingHistoryListBackupWithCompletion:(id)completion;
+- (void)readingHistoryReadingHistoryStateInfoWithRangeStart:(id)start rangeEnd:(id)end currentTime:(id)time withCompletion:(id)completion;
+- (void)readingHistoryRestoreWithName:(id)name completion:(id)completion;
+- (void)readingHistoryServiceStatusInfoWithCompletion:(id)completion;
+- (void)readingNowDetailsForAssetIDs:(id)ds completion:(id)completion;
+- (void)resetPurchasedTokenForStoreIDs:(id)ds completion:(id)completion;
+- (void)resetStaleJaliscoDatabaseWithCompletion:(id)completion;
+- (void)resolvedAssetDetailForAssetID:(id)d completion:(id)completion;
+- (void)resolvedUserDataValueForKey:(id)key completion:(id)completion;
 - (void)scheduleRestart;
-- (void)setAssetDetail:(id)a3 completion:(id)a4;
-- (void)setAssetDetails:(id)a3 completion:(id)a4;
-- (void)setAssetReview:(id)a3 completion:(id)a4;
-- (void)setAssetReviews:(id)a3 completion:(id)a4;
-- (void)setBookWidgetInfo:(id)a3 completion:(id)a4;
-- (void)setCollectionDetail:(id)a3 completion:(id)a4;
-- (void)setCollectionDetails:(id)a3 completion:(id)a4;
-- (void)setCollectionMember:(id)a3 completion:(id)a4;
-- (void)setCollectionMembers:(id)a3 completion:(id)a4;
-- (void)setEngagementData:(id)a3 completion:(id)a4;
-- (void)setEngagementDatas:(id)a3 completion:(id)a4;
-- (void)setReadingNowDetails:(id)a3 completion:(id)a4;
-- (void)setUserData:(id)a3 completion:(id)a4;
-- (void)setUserDataValue:(id)a3 forKey:(id)a4 completion:(id)a5;
-- (void)setUserDatum:(id)a3 completion:(id)a4;
+- (void)setAssetDetail:(id)detail completion:(id)completion;
+- (void)setAssetDetails:(id)details completion:(id)completion;
+- (void)setAssetReview:(id)review completion:(id)completion;
+- (void)setAssetReviews:(id)reviews completion:(id)completion;
+- (void)setBookWidgetInfo:(id)info completion:(id)completion;
+- (void)setCollectionDetail:(id)detail completion:(id)completion;
+- (void)setCollectionDetails:(id)details completion:(id)completion;
+- (void)setCollectionMember:(id)member completion:(id)completion;
+- (void)setCollectionMembers:(id)members completion:(id)completion;
+- (void)setEngagementData:(id)data completion:(id)completion;
+- (void)setEngagementDatas:(id)datas completion:(id)completion;
+- (void)setReadingNowDetails:(id)details completion:(id)completion;
+- (void)setUserData:(id)data completion:(id)completion;
+- (void)setUserDataValue:(id)value forKey:(id)key completion:(id)completion;
+- (void)setUserDatum:(id)datum completion:(id)completion;
 - (void)shutdown;
-- (void)signalFetchChangesTransaction:(id)a3;
-- (void)storeItemForStoreID:(id)a3 completion:(id)a4;
-- (void)updateBitrateForItemWithAdamID:(id)a3 completion:(id)a4;
-- (void)userDataValueForKey:(id)a3 completion:(id)a4;
-- (void)userDatumForKey:(id)a3 completion:(id)a4;
+- (void)signalFetchChangesTransaction:(id)transaction;
+- (void)storeItemForStoreID:(id)d completion:(id)completion;
+- (void)updateBitrateForItemWithAdamID:(id)d completion:(id)completion;
+- (void)userDataValueForKey:(id)key completion:(id)completion;
+- (void)userDatumForKey:(id)key completion:(id)completion;
 @end
 
 @implementation BDSServiceProxy
@@ -143,8 +143,8 @@
   clientSideListener = self->_clientSideListener;
   self->_clientSideListener = v7;
 
-  v9 = [(BDSServiceProxy *)self connectionDelegate];
-  [(BDSClientSideListener *)self->_clientSideListener setDelegate:v9];
+  connectionDelegate = [(BDSServiceProxy *)self connectionDelegate];
+  [(BDSClientSideListener *)self->_clientSideListener setDelegate:connectionDelegate];
 
   [(NSXPCConnection *)self->_connection setRemoteObjectInterface:v6];
   v10 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F5E7C440];
@@ -166,10 +166,10 @@
   [(BDSServiceProxy *)self setConnectionHealthy:self->_remoteObjectProxy != 0];
   if ([(BDSServiceProxy *)self connectionHealthy])
   {
-    v13 = [MEMORY[0x1E698F550] shared];
-    v14 = [v13 verboseLoggingEnabled];
+    mEMORY[0x1E698F550] = [MEMORY[0x1E698F550] shared];
+    verboseLoggingEnabled = [mEMORY[0x1E698F550] verboseLoggingEnabled];
 
-    if (v14)
+    if (verboseLoggingEnabled)
     {
       v15 = BDSCloudKitDevelopmentLog();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -188,8 +188,8 @@
   }
 
   [(NSXPCConnection *)self->_connection resume];
-  v17 = [(BDSServiceProxy *)self connectionDelegate];
-  [v17 serviceConnectionDidResume];
+  connectionDelegate2 = [(BDSServiceProxy *)self connectionDelegate];
+  [connectionDelegate2 serviceConnectionDidResume];
 
   objc_destroyWeak(&v23);
   objc_destroyWeak(&location);
@@ -197,16 +197,16 @@
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (BDSServiceProxy)initWithConnectionDelegate:(id)a3
+- (BDSServiceProxy)initWithConnectionDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v18.receiver = self;
   v18.super_class = BDSServiceProxy;
   v5 = [(BDSServiceProxy *)&v18 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_connectionDelegate, v4);
+    objc_storeWeak(&v5->_connectionDelegate, delegateCopy);
     objc_initWeak(&location, v6);
     v7 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v8 = dispatch_queue_create("BDSService Notify Queue", v7);
@@ -242,31 +242,31 @@
   objc_destroyWeak(&location);
 }
 
-- (id)remoteObjectProxyWithErrorHandler:(id)a3
+- (id)remoteObjectProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   remoteObjectProxy = self->_remoteObjectProxy;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = sub_1E45EE5A4;
   v9[3] = &unk_1E87597F8;
-  v10 = v4;
-  v6 = v4;
+  v10 = handlerCopy;
+  v6 = handlerCopy;
   v7 = [(BDSServiceProtocol *)remoteObjectProxy remoteObjectProxyWithErrorHandler:v9];
 
   return v7;
 }
 
-- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)a3
+- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   remoteObjectProxy = self->_remoteObjectProxy;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = sub_1E45EE6E0;
   v9[3] = &unk_1E87597F8;
-  v10 = v4;
-  v6 = v4;
+  v10 = handlerCopy;
+  v6 = handlerCopy;
   v7 = [(BDSServiceProtocol *)remoteObjectProxy synchronousRemoteObjectProxyWithErrorHandler:v9];
 
   return v7;
@@ -299,16 +299,16 @@
   }
 }
 
-- (void)dissociateCloudDataFromSyncWithCompletion:(id)a3
+- (void)dissociateCloudDataFromSyncWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(BDSServiceProxy *)self connectionHealthy])
   {
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = sub_1E45EEAA4;
     v9[3] = &unk_1E87597F8;
-    v5 = v4;
+    v5 = completionCopy;
     v10 = v5;
     v6 = [(BDSServiceProxy *)self remoteObjectProxyWithErrorHandler:v9];
     [v6 dissociateCloudDataFromSyncWithCompletion:v5];
@@ -316,7 +316,7 @@
 
   else
   {
-    v7 = _Block_copy(v4);
+    v7 = _Block_copy(completionCopy);
     if (v7)
     {
       v8 = [MEMORY[0x1E696ABC0] errorWithDomain:@"BDSErrorDomain" code:1000 userInfo:0];
@@ -325,9 +325,9 @@
   }
 }
 
-- (void)signalFetchChangesTransaction:(id)a3
+- (void)signalFetchChangesTransaction:(id)transaction
 {
-  v4 = a3;
+  transactionCopy = transaction;
   if (![(BDSServiceProxy *)self connectionHealthy])
   {
     v5 = BDSServiceLog();
@@ -341,7 +341,7 @@
   aBlock[1] = 3221225472;
   aBlock[2] = sub_1E45EEC58;
   aBlock[3] = &unk_1E8759820;
-  v6 = v4;
+  v6 = transactionCopy;
   v12 = v6;
   v7 = _Block_copy(aBlock);
   v9[0] = MEMORY[0x1E69E9820];
@@ -353,25 +353,25 @@
   bds_dispatch_service(self, v9, v7);
 }
 
-- (void)assetDetailForAssetID:(id)a3 completion:(id)a4
+- (void)assetDetailForAssetID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   if ([(BDSServiceProxy *)self connectionHealthy])
   {
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = sub_1E45EEDF8;
     v12[3] = &unk_1E87597F8;
-    v8 = v7;
+    v8 = completionCopy;
     v13 = v8;
     v9 = [(BDSServiceProxy *)self remoteObjectProxyWithErrorHandler:v12];
-    [v9 assetDetailForAssetID:v6 completion:v8];
+    [v9 assetDetailForAssetID:dCopy completion:v8];
   }
 
   else
   {
-    v10 = _Block_copy(v7);
+    v10 = _Block_copy(completionCopy);
     if (v10)
     {
       v11 = [MEMORY[0x1E696ABC0] errorWithDomain:@"BDSErrorDomain" code:1000 userInfo:0];
@@ -380,10 +380,10 @@
   }
 }
 
-- (void)assetDetailsForAssetIDs:(id)a3 completion:(id)a4
+- (void)assetDetailsForAssetIDs:(id)ds completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  completionCopy = completion;
   if ([(BDSServiceProxy *)self connectionHealthy])
   {
     v8 = objc_opt_new();
@@ -406,19 +406,19 @@
     v21[3] = &unk_1E87598C0;
     v10 = v9;
     v22 = v10;
-    v23 = self;
+    selfCopy = self;
     v25 = v27;
     v11 = v8;
     v24 = v11;
     v26 = v29;
-    [v6 bds_traverseBatchesOfSize:64 block:v21];
+    [dsCopy bds_traverseBatchesOfSize:64 block:v21];
     v12 = dispatch_get_global_queue(2, 0);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = sub_1E45EF39C;
     block[3] = &unk_1E87598E8;
     v17 = v11;
-    v18 = v7;
+    v18 = completionCopy;
     v19 = v29;
     v20 = v27;
     v13 = v11;
@@ -430,7 +430,7 @@
 
   else
   {
-    v14 = _Block_copy(v7);
+    v14 = _Block_copy(completionCopy);
     if (v14)
     {
       v15 = [MEMORY[0x1E696ABC0] errorWithDomain:@"BDSErrorDomain" code:1000 userInfo:0];
@@ -439,25 +439,25 @@
   }
 }
 
-- (void)resolvedAssetDetailForAssetID:(id)a3 completion:(id)a4
+- (void)resolvedAssetDetailForAssetID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   if ([(BDSServiceProxy *)self connectionHealthy])
   {
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = sub_1E45EF53C;
     v12[3] = &unk_1E87597F8;
-    v8 = v7;
+    v8 = completionCopy;
     v13 = v8;
     v9 = [(BDSServiceProxy *)self remoteObjectProxyWithErrorHandler:v12];
-    [v9 resolvedAssetDetailForAssetID:v6 completion:v8];
+    [v9 resolvedAssetDetailForAssetID:dCopy completion:v8];
   }
 
   else
   {
-    v10 = _Block_copy(v7);
+    v10 = _Block_copy(completionCopy);
     if (v10)
     {
       v11 = [MEMORY[0x1E696ABC0] errorWithDomain:@"BDSErrorDomain" code:1000 userInfo:0];
@@ -466,16 +466,16 @@
   }
 }
 
-- (void)currentAssetDetailCloudSyncVersions:(id)a3
+- (void)currentAssetDetailCloudSyncVersions:(id)versions
 {
-  v4 = a3;
+  versionsCopy = versions;
   if ([(BDSServiceProxy *)self connectionHealthy])
   {
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = sub_1E45EF698;
     v9[3] = &unk_1E87597F8;
-    v5 = v4;
+    v5 = versionsCopy;
     v10 = v5;
     v6 = [(BDSServiceProxy *)self remoteObjectProxyWithErrorHandler:v9];
     [v6 currentAssetDetailCloudSyncVersions:v5];
@@ -483,7 +483,7 @@
 
   else
   {
-    v7 = _Block_copy(v4);
+    v7 = _Block_copy(versionsCopy);
     v8 = v7;
     if (v7)
     {
@@ -492,15 +492,15 @@
   }
 }
 
-- (void)deleteAssetDetailForAssetID:(id)a3 completion:(id)a4
+- (void)deleteAssetDetailForAssetID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   if ([(BDSServiceProxy *)self connectionHealthy])
   {
-    if (v7)
+    if (completionCopy)
     {
-      v8 = v7;
+      v8 = completionCopy;
     }
 
     else
@@ -513,14 +513,14 @@
     v13[1] = 3221225472;
     v13[2] = sub_1E45EF834;
     v13[3] = &unk_1E87597F8;
-    v14 = v7;
+    v14 = completionCopy;
     v10 = [(BDSServiceProxy *)self remoteObjectProxyWithErrorHandler:v13];
-    [v10 deleteAssetDetailForAssetID:v6 completion:v9];
+    [v10 deleteAssetDetailForAssetID:dCopy completion:v9];
   }
 
   else
   {
-    v11 = _Block_copy(v7);
+    v11 = _Block_copy(completionCopy);
     if (v11)
     {
       v12 = [MEMORY[0x1E696ABC0] errorWithDomain:@"BDSErrorDomain" code:1000 userInfo:0];
@@ -529,25 +529,25 @@
   }
 }
 
-- (void)getAssetDetailChangesSince:(id)a3 completion:(id)a4
+- (void)getAssetDetailChangesSince:(id)since completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  sinceCopy = since;
+  completionCopy = completion;
   if ([(BDSServiceProxy *)self connectionHealthy])
   {
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = sub_1E45EFB7C;
     v12[3] = &unk_1E87597F8;
-    v8 = v7;
+    v8 = completionCopy;
     v13 = v8;
     v9 = [(BDSServiceProxy *)self remoteObjectProxyWithErrorHandler:v12];
-    [v9 getAssetDetailChangesSince:v6 completion:v8];
+    [v9 getAssetDetailChangesSince:sinceCopy completion:v8];
   }
 
   else
   {
-    v10 = _Block_copy(v7);
+    v10 = _Block_copy(completionCopy);
     if (v10)
     {
       v11 = [MEMORY[0x1E696ABC0] errorWithDomain:@"BDSErrorDomain" code:1000 userInfo:0];
@@ -556,15 +556,15 @@
   }
 }
 
-- (void)setAssetDetail:(id)a3 completion:(id)a4
+- (void)setAssetDetail:(id)detail completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  detailCopy = detail;
+  completionCopy = completion;
   if ([(BDSServiceProxy *)self connectionHealthy])
   {
-    if (v7)
+    if (completionCopy)
     {
-      v8 = v7;
+      v8 = completionCopy;
     }
 
     else
@@ -577,14 +577,14 @@
     v13[1] = 3221225472;
     v13[2] = sub_1E45EFD48;
     v13[3] = &unk_1E87597F8;
-    v14 = v7;
+    v14 = completionCopy;
     v10 = [(BDSServiceProxy *)self remoteObjectProxyWithErrorHandler:v13];
-    [v10 setAssetDetail:v6 completion:v9];
+    [v10 setAssetDetail:detailCopy completion:v9];
   }
 
   else
   {
-    v11 = _Block_copy(v7);
+    v11 = _Block_copy(completionCopy);
     if (v11)
     {
       v12 = [MEMORY[0x1E696ABC0] errorWithDomain:@"BDSErrorDomain" code:1000 userInfo:0];
@@ -593,10 +593,10 @@
   }
 }
 
-- (void)setAssetDetails:(id)a3 completion:(id)a4
+- (void)setAssetDetails:(id)details completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  detailsCopy = details;
+  completionCopy = completion;
   if ([(BDSServiceProxy *)self connectionHealthy])
   {
     v30[0] = 0;
@@ -614,26 +614,26 @@
     v26[2] = 0x2020000000;
     v27 = 0;
     v8 = dispatch_group_create();
-    v9 = [v6 allKeys];
+    allKeys = [detailsCopy allKeys];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = sub_1E45F007C;
     v19[3] = &unk_1E87599A0;
     v10 = v8;
     v20 = v10;
-    v21 = v6;
-    v22 = self;
+    v21 = detailsCopy;
+    selfCopy = self;
     v23 = v30;
     v24 = v28;
     v25 = v26;
-    [v9 bds_traverseBatchesOfSize:64 block:v19];
+    [allKeys bds_traverseBatchesOfSize:64 block:v19];
 
     v11 = dispatch_get_global_queue(2, 0);
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = sub_1E45F02E4;
     v14[3] = &unk_1E87599C8;
-    v15 = v7;
+    v15 = completionCopy;
     v16 = v28;
     v17 = v26;
     v18 = v30;
@@ -646,7 +646,7 @@
 
   else
   {
-    v12 = _Block_copy(v7);
+    v12 = _Block_copy(completionCopy);
     if (v12)
     {
       v13 = [MEMORY[0x1E696ABC0] errorWithDomain:@"BDSErrorDomain" code:1000 userInfo:0];
@@ -655,16 +655,16 @@
   }
 }
 
-- (void)fetchAssetDetailsForUnsyncedTastes:(id)a3
+- (void)fetchAssetDetailsForUnsyncedTastes:(id)tastes
 {
-  v4 = a3;
+  tastesCopy = tastes;
   if ([(BDSServiceProxy *)self connectionHealthy])
   {
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = sub_1E45F0478;
     v9[3] = &unk_1E87597F8;
-    v5 = v4;
+    v5 = tastesCopy;
     v10 = v5;
     v6 = [(BDSServiceProxy *)self remoteObjectProxyWithErrorHandler:v9];
     [v6 fetchAssetDetailsForUnsyncedTastes:v5];
@@ -672,7 +672,7 @@
 
   else
   {
-    v7 = _Block_copy(v4);
+    v7 = _Block_copy(tastesCopy);
     if (v7)
     {
       v8 = [MEMORY[0x1E696ABC0] errorWithDomain:@"BDSErrorDomain" code:1000 userInfo:0];
@@ -681,24 +681,24 @@
   }
 }
 
-- (void)fetchFinishedDatesByAssetIDForYear:(int64_t)a3 completion:(id)a4
+- (void)fetchFinishedDatesByAssetIDForYear:(int64_t)year completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   if ([(BDSServiceProxy *)self connectionHealthy])
   {
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = sub_1E45F060C;
     v11[3] = &unk_1E87597F8;
-    v7 = v6;
+    v7 = completionCopy;
     v12 = v7;
     v8 = [(BDSServiceProxy *)self remoteObjectProxyWithErrorHandler:v11];
-    [v8 fetchFinishedDatesByAssetIDForYear:a3 completion:v7];
+    [v8 fetchFinishedDatesByAssetIDForYear:year completion:v7];
   }
 
   else
   {
-    v9 = _Block_copy(v6);
+    v9 = _Block_copy(completionCopy);
     if (v9)
     {
       v10 = [MEMORY[0x1E696ABC0] errorWithDomain:@"BDSErrorDomain" code:1000 userInfo:0];
@@ -707,16 +707,16 @@
   }
 }
 
-- (void)fetchFinishedAssetCountByYearWithCompletion:(id)a3
+- (void)fetchFinishedAssetCountByYearWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(BDSServiceProxy *)self connectionHealthy])
   {
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = sub_1E45F0798;
     v9[3] = &unk_1E87597F8;
-    v5 = v4;
+    v5 = completionCopy;
     v10 = v5;
     v6 = [(BDSServiceProxy *)self remoteObjectProxyWithErrorHandler:v9];
     [v6 fetchFinishedAssetCountByYearWithCompletion:v5];
@@ -724,7 +724,7 @@
 
   else
   {
-    v7 = _Block_copy(v4);
+    v7 = _Block_copy(completionCopy);
     if (v7)
     {
       v8 = [MEMORY[0x1E696ABC0] errorWithDomain:@"BDSErrorDomain" code:1000 userInfo:0];
@@ -733,10 +733,10 @@
   }
 }
 
-- (void)readingNowDetailsForAssetIDs:(id)a3 completion:(id)a4
+- (void)readingNowDetailsForAssetIDs:(id)ds completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  completionCopy = completion;
   if ([(BDSServiceProxy *)self connectionHealthy])
   {
     v8 = objc_opt_new();
@@ -759,19 +759,19 @@
     v21[3] = &unk_1E87598C0;
     v10 = v9;
     v22 = v10;
-    v23 = self;
+    selfCopy = self;
     v25 = v27;
     v11 = v8;
     v24 = v11;
     v26 = v29;
-    [v6 bds_traverseBatchesOfSize:64 block:v21];
+    [dsCopy bds_traverseBatchesOfSize:64 block:v21];
     v12 = dispatch_get_global_queue(2, 0);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = sub_1E45F0D24;
     block[3] = &unk_1E87598E8;
     v17 = v11;
-    v18 = v7;
+    v18 = completionCopy;
     v19 = v29;
     v20 = v27;
     v13 = v11;
@@ -783,7 +783,7 @@
 
   else
   {
-    v14 = _Block_copy(v7);
+    v14 = _Block_copy(completionCopy);
     if (v14)
     {
       v15 = [MEMORY[0x1E696ABC0] errorWithDomain:@"BDSErrorDomain" code:1000 userInfo:0];
@@ -792,16 +792,16 @@
   }
 }
 
-- (void)currentReadingNowDetailCloudSyncVersions:(id)a3
+- (void)currentReadingNowDetailCloudSyncVersions:(id)versions
 {
-  v4 = a3;
+  versionsCopy = versions;
   if ([(BDSServiceProxy *)self connectionHealthy])
   {
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = sub_1E45F0E80;
     v9[3] = &unk_1E87597F8;
-    v5 = v4;
+    v5 = versionsCopy;
     v10 = v5;
     v6 = [(BDSServiceProxy *)self remoteObjectProxyWithErrorHandler:v9];
     [v6 currentReadingNowDetailCloudSyncVersions:v5];
@@ -809,7 +809,7 @@
 
   else
   {
-    v7 = _Block_copy(v4);
+    v7 = _Block_copy(versionsCopy);
     v8 = v7;
     if (v7)
     {
@@ -818,15 +818,15 @@
   }
 }
 
-- (void)deleteReadingNowDetailForAssetID:(id)a3 completion:(id)a4
+- (void)deleteReadingNowDetailForAssetID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   if ([(BDSServiceProxy *)self connectionHealthy])
   {
-    if (v7)
+    if (completionCopy)
     {
-      v8 = v7;
+      v8 = completionCopy;
     }
 
     else
@@ -839,14 +839,14 @@
     v13[1] = 3221225472;
     v13[2] = sub_1E45F101C;
     v13[3] = &unk_1E87597F8;
-    v14 = v7;
+    v14 = completionCopy;
     v10 = [(BDSServiceProxy *)self remoteObjectProxyWithErrorHandler:v13];
-    [v10 deleteReadingNowDetailForAssetID:v6 completion:v9];
+    [v10 deleteReadingNowDetailForAssetID:dCopy completion:v9];
   }
 
   else
   {
-    v11 = _Block_copy(v7);
+    v11 = _Block_copy(completionCopy);
     if (v11)
     {
       v12 = [MEMORY[0x1E696ABC0] errorWithDomain:@"BDSErrorDomain" code:1000 userInfo:0];
@@ -855,25 +855,25 @@
   }
 }
 
-- (void)getReadingNowDetailChangesSince:(id)a3 completion:(id)a4
+- (void)getReadingNowDetailChangesSince:(id)since completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  sinceCopy = since;
+  completionCopy = completion;
   if ([(BDSServiceProxy *)self connectionHealthy])
   {
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = sub_1E45F11C8;
     v12[3] = &unk_1E87597F8;
-    v8 = v7;
+    v8 = completionCopy;
     v13 = v8;
     v9 = [(BDSServiceProxy *)self remoteObjectProxyWithErrorHandler:v12];
-    [v9 getReadingNowDetailChangesSince:v6 completion:v8];
+    [v9 getReadingNowDetailChangesSince:sinceCopy completion:v8];
   }
 
   else
   {
-    v10 = _Block_copy(v7);
+    v10 = _Block_copy(completionCopy);
     if (v10)
     {
       v11 = [MEMORY[0x1E696ABC0] errorWithDomain:@"BDSErrorDomain" code:1000 userInfo:0];
@@ -882,10 +882,10 @@
   }
 }
 
-- (void)setReadingNowDetails:(id)a3 completion:(id)a4
+- (void)setReadingNowDetails:(id)details completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  detailsCopy = details;
+  completionCopy = completion;
   if ([(BDSServiceProxy *)self connectionHealthy])
   {
     v30[0] = 0;
@@ -903,26 +903,26 @@
     v26[2] = 0x2020000000;
     v27 = 0;
     v8 = dispatch_group_create();
-    v9 = [v6 allKeys];
+    allKeys = [detailsCopy allKeys];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = sub_1E45F1504;
     v19[3] = &unk_1E87599A0;
     v10 = v8;
     v20 = v10;
-    v21 = v6;
-    v22 = self;
+    v21 = detailsCopy;
+    selfCopy = self;
     v23 = v30;
     v24 = v28;
     v25 = v26;
-    [v9 bds_traverseBatchesOfSize:64 block:v19];
+    [allKeys bds_traverseBatchesOfSize:64 block:v19];
 
     v11 = dispatch_get_global_queue(2, 0);
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = sub_1E45F176C;
     v14[3] = &unk_1E87599C8;
-    v15 = v7;
+    v15 = completionCopy;
     v16 = v28;
     v17 = v26;
     v18 = v30;
@@ -935,7 +935,7 @@
 
   else
   {
-    v12 = _Block_copy(v7);
+    v12 = _Block_copy(completionCopy);
     if (v12)
     {
       v13 = [MEMORY[0x1E696ABC0] errorWithDomain:@"BDSErrorDomain" code:1000 userInfo:0];
@@ -944,16 +944,16 @@
   }
 }
 
-- (void)needsReadingNowAssetTypePopulation:(id)a3
+- (void)needsReadingNowAssetTypePopulation:(id)population
 {
-  v4 = a3;
+  populationCopy = population;
   if ([(BDSServiceProxy *)self connectionHealthy])
   {
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = sub_1E45F1900;
     v9[3] = &unk_1E87597F8;
-    v5 = v4;
+    v5 = populationCopy;
     v10 = v5;
     v6 = [(BDSServiceProxy *)self remoteObjectProxyWithErrorHandler:v9];
     [v6 needsReadingNowAssetTypePopulation:v5];
@@ -961,7 +961,7 @@
 
   else
   {
-    v7 = _Block_copy(v4);
+    v7 = _Block_copy(populationCopy);
     if (v7)
     {
       v8 = [MEMORY[0x1E696ABC0] errorWithDomain:@"BDSErrorDomain" code:1000 userInfo:0];
@@ -970,25 +970,25 @@
   }
 }
 
-- (void)assetReviewForAssetReviewID:(id)a3 completion:(id)a4
+- (void)assetReviewForAssetReviewID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   if ([(BDSServiceProxy *)self connectionHealthy])
   {
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = sub_1E45F1AA0;
     v12[3] = &unk_1E87597F8;
-    v8 = v7;
+    v8 = completionCopy;
     v13 = v8;
     v9 = [(BDSServiceProxy *)self remoteObjectProxyWithErrorHandler:v12];
-    [v9 assetReviewForAssetReviewID:v6 completion:v8];
+    [v9 assetReviewForAssetReviewID:dCopy completion:v8];
   }
 
   else
   {
-    v10 = _Block_copy(v7);
+    v10 = _Block_copy(completionCopy);
     if (v10)
     {
       v11 = [MEMORY[0x1E696ABC0] errorWithDomain:@"BDSErrorDomain" code:1000 userInfo:0];
@@ -997,10 +997,10 @@
   }
 }
 
-- (void)assetReviewsForAssetReviewIDs:(id)a3 completion:(id)a4
+- (void)assetReviewsForAssetReviewIDs:(id)ds completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  completionCopy = completion;
   if ([(BDSServiceProxy *)self connectionHealthy])
   {
     v8 = objc_opt_new();
@@ -1023,19 +1023,19 @@
     v21[3] = &unk_1E87598C0;
     v10 = v9;
     v22 = v10;
-    v23 = self;
+    selfCopy = self;
     v25 = v27;
     v11 = v8;
     v24 = v11;
     v26 = v29;
-    [v6 bds_traverseBatchesOfSize:64 block:v21];
+    [dsCopy bds_traverseBatchesOfSize:64 block:v21];
     v12 = dispatch_get_global_queue(2, 0);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = sub_1E45F202C;
     block[3] = &unk_1E87598E8;
     v17 = v11;
-    v18 = v7;
+    v18 = completionCopy;
     v19 = v29;
     v20 = v27;
     v13 = v11;
@@ -1047,7 +1047,7 @@
 
   else
   {
-    v14 = _Block_copy(v7);
+    v14 = _Block_copy(completionCopy);
     if (v14)
     {
       v15 = [MEMORY[0x1E696ABC0] errorWithDomain:@"BDSErrorDomain" code:1000 userInfo:0];
@@ -1056,15 +1056,15 @@
   }
 }
 
-- (void)deleteAssetReviewForAssetReviewID:(id)a3 completion:(id)a4
+- (void)deleteAssetReviewForAssetReviewID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   if ([(BDSServiceProxy *)self connectionHealthy])
   {
-    if (v7)
+    if (completionCopy)
     {
-      v8 = v7;
+      v8 = completionCopy;
     }
 
     else
@@ -1077,14 +1077,14 @@
     v13[1] = 3221225472;
     v13[2] = sub_1E45F21E8;
     v13[3] = &unk_1E87597F8;
-    v14 = v7;
+    v14 = completionCopy;
     v10 = [(BDSServiceProxy *)self remoteObjectProxyWithErrorHandler:v13];
-    [v10 deleteAssetReviewForAssetReviewID:v6 completion:v9];
+    [v10 deleteAssetReviewForAssetReviewID:dCopy completion:v9];
   }
 
   else
   {
-    v11 = _Block_copy(v7);
+    v11 = _Block_copy(completionCopy);
     if (v11)
     {
       v12 = [MEMORY[0x1E696ABC0] errorWithDomain:@"BDSErrorDomain" code:1000 userInfo:0];
@@ -1093,15 +1093,15 @@
   }
 }
 
-- (void)deleteAssetReviewForAssetReviewIDs:(id)a3 completion:(id)a4
+- (void)deleteAssetReviewForAssetReviewIDs:(id)ds completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  completionCopy = completion;
   if ([(BDSServiceProxy *)self connectionHealthy])
   {
-    if (v7)
+    if (completionCopy)
     {
-      v8 = v7;
+      v8 = completionCopy;
     }
 
     else
@@ -1114,14 +1114,14 @@
     v13[1] = 3221225472;
     v13[2] = sub_1E45F23A4;
     v13[3] = &unk_1E87597F8;
-    v14 = v7;
+    v14 = completionCopy;
     v10 = [(BDSServiceProxy *)self remoteObjectProxyWithErrorHandler:v13];
-    [v10 deleteAssetReviewForAssetReviewIDs:v6 completion:v9];
+    [v10 deleteAssetReviewForAssetReviewIDs:dsCopy completion:v9];
   }
 
   else
   {
-    v11 = _Block_copy(v7);
+    v11 = _Block_copy(completionCopy);
     if (v11)
     {
       v12 = [MEMORY[0x1E696ABC0] errorWithDomain:@"BDSErrorDomain" code:1000 userInfo:0];
@@ -1130,25 +1130,25 @@
   }
 }
 
-- (void)getAssetReviewChangesSince:(id)a3 completion:(id)a4
+- (void)getAssetReviewChangesSince:(id)since completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  sinceCopy = since;
+  completionCopy = completion;
   if ([(BDSServiceProxy *)self connectionHealthy])
   {
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = sub_1E45F2708;
     v12[3] = &unk_1E87597F8;
-    v8 = v7;
+    v8 = completionCopy;
     v13 = v8;
     v9 = [(BDSServiceProxy *)self remoteObjectProxyWithErrorHandler:v12];
-    [v9 getAssetReviewChangesSince:v6 completion:v8];
+    [v9 getAssetReviewChangesSince:sinceCopy completion:v8];
   }
 
   else
   {
-    v10 = _Block_copy(v7);
+    v10 = _Block_copy(completionCopy);
     if (v10)
     {
       v11 = [MEMORY[0x1E696ABC0] errorWithDomain:@"BDSErrorDomain" code:1000 userInfo:0];
@@ -1157,15 +1157,15 @@
   }
 }
 
-- (void)setAssetReview:(id)a3 completion:(id)a4
+- (void)setAssetReview:(id)review completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  reviewCopy = review;
+  completionCopy = completion;
   if ([(BDSServiceProxy *)self connectionHealthy])
   {
-    if (v7)
+    if (completionCopy)
     {
-      v8 = v7;
+      v8 = completionCopy;
     }
 
     else
@@ -1178,14 +1178,14 @@
     v13[1] = 3221225472;
     v13[2] = sub_1E45F28D4;
     v13[3] = &unk_1E87597F8;
-    v14 = v7;
+    v14 = completionCopy;
     v10 = [(BDSServiceProxy *)self remoteObjectProxyWithErrorHandler:v13];
-    [v10 setAssetReview:v6 completion:v9];
+    [v10 setAssetReview:reviewCopy completion:v9];
   }
 
   else
   {
-    v11 = _Block_copy(v7);
+    v11 = _Block_copy(completionCopy);
     if (v11)
     {
       v12 = [MEMORY[0x1E696ABC0] errorWithDomain:@"BDSErrorDomain" code:1000 userInfo:0];
@@ -1194,10 +1194,10 @@
   }
 }
 
-- (void)setAssetReviews:(id)a3 completion:(id)a4
+- (void)setAssetReviews:(id)reviews completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  reviewsCopy = reviews;
+  completionCopy = completion;
   if ([(BDSServiceProxy *)self connectionHealthy])
   {
     v30[0] = 0;
@@ -1215,26 +1215,26 @@
     v26[2] = 0x2020000000;
     v27 = 0;
     v8 = dispatch_group_create();
-    v9 = [v6 allKeys];
+    allKeys = [reviewsCopy allKeys];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = sub_1E45F2C08;
     v19[3] = &unk_1E87599A0;
     v10 = v8;
     v20 = v10;
-    v21 = v6;
-    v22 = self;
+    v21 = reviewsCopy;
+    selfCopy = self;
     v23 = v30;
     v24 = v28;
     v25 = v26;
-    [v9 bds_traverseBatchesOfSize:64 block:v19];
+    [allKeys bds_traverseBatchesOfSize:64 block:v19];
 
     v11 = dispatch_get_global_queue(2, 0);
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = sub_1E45F2E70;
     v14[3] = &unk_1E87599C8;
-    v15 = v7;
+    v15 = completionCopy;
     v16 = v28;
     v17 = v26;
     v18 = v30;
@@ -1247,7 +1247,7 @@
 
   else
   {
-    v12 = _Block_copy(v7);
+    v12 = _Block_copy(completionCopy);
     if (v12)
     {
       v13 = [MEMORY[0x1E696ABC0] errorWithDomain:@"BDSErrorDomain" code:1000 userInfo:0];
@@ -1256,15 +1256,15 @@
   }
 }
 
-- (void)addStoreItem:(id)a3 completion:(id)a4
+- (void)addStoreItem:(id)item completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  completionCopy = completion;
   if ([(BDSServiceProxy *)self connectionHealthy])
   {
-    if (v7)
+    if (completionCopy)
     {
-      v8 = v7;
+      v8 = completionCopy;
     }
 
     else
@@ -1277,14 +1277,14 @@
     v13[1] = 3221225472;
     v13[2] = sub_1E45F3038;
     v13[3] = &unk_1E87597F8;
-    v14 = v7;
+    v14 = completionCopy;
     v10 = [(BDSServiceProxy *)self remoteObjectProxyWithErrorHandler:v13];
-    [v10 addStoreItem:v6 completion:v9];
+    [v10 addStoreItem:itemCopy completion:v9];
   }
 
   else
   {
-    v11 = _Block_copy(v7);
+    v11 = _Block_copy(completionCopy);
     if (v11)
     {
       v12 = [MEMORY[0x1E696ABC0] errorWithDomain:@"BDSErrorDomain" code:1000 userInfo:0];
@@ -1293,10 +1293,10 @@
   }
 }
 
-- (void)addStoreItems:(id)a3 completion:(id)a4
+- (void)addStoreItems:(id)items completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  itemsCopy = items;
+  completionCopy = completion;
   if ([(BDSServiceProxy *)self connectionHealthy])
   {
     v30[0] = 0;
@@ -1314,26 +1314,26 @@
     v26[2] = 0x2020000000;
     v27 = 0;
     v8 = dispatch_group_create();
-    v9 = [v6 allKeys];
+    allKeys = [itemsCopy allKeys];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = sub_1E45F336C;
     v19[3] = &unk_1E87599A0;
     v10 = v8;
     v20 = v10;
-    v21 = v6;
-    v22 = self;
+    v21 = itemsCopy;
+    selfCopy = self;
     v23 = v30;
     v24 = v28;
     v25 = v26;
-    [v9 bds_traverseBatchesOfSize:64 block:v19];
+    [allKeys bds_traverseBatchesOfSize:64 block:v19];
 
     v11 = dispatch_get_global_queue(2, 0);
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = sub_1E45F35D4;
     v14[3] = &unk_1E87599C8;
-    v15 = v7;
+    v15 = completionCopy;
     v16 = v28;
     v17 = v26;
     v18 = v30;
@@ -1346,7 +1346,7 @@
 
   else
   {
-    v12 = _Block_copy(v7);
+    v12 = _Block_copy(completionCopy);
     if (v12)
     {
       v13 = [MEMORY[0x1E696ABC0] errorWithDomain:@"BDSErrorDomain" code:1000 userInfo:0];
@@ -1355,15 +1355,15 @@
   }
 }
 
-- (void)deleteStoreItemWithStoreID:(id)a3 completion:(id)a4
+- (void)deleteStoreItemWithStoreID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   if ([(BDSServiceProxy *)self connectionHealthy])
   {
-    if (v7)
+    if (completionCopy)
     {
-      v8 = v7;
+      v8 = completionCopy;
     }
 
     else
@@ -1376,14 +1376,14 @@
     v13[1] = 3221225472;
     v13[2] = sub_1E45F3798;
     v13[3] = &unk_1E87597F8;
-    v14 = v7;
+    v14 = completionCopy;
     v10 = [(BDSServiceProxy *)self remoteObjectProxyWithErrorHandler:v13];
-    [v10 deleteStoreItemWithStoreID:v6 completion:v9];
+    [v10 deleteStoreItemWithStoreID:dCopy completion:v9];
   }
 
   else
   {
-    v11 = _Block_copy(v7);
+    v11 = _Block_copy(completionCopy);
     if (v11)
     {
       v12 = [MEMORY[0x1E696ABC0] errorWithDomain:@"BDSErrorDomain" code:1000 userInfo:0];
@@ -1392,15 +1392,15 @@
   }
 }
 
-- (void)deleteStoreItemsWithStoreIDs:(id)a3 completion:(id)a4
+- (void)deleteStoreItemsWithStoreIDs:(id)ds completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  completionCopy = completion;
   if ([(BDSServiceProxy *)self connectionHealthy])
   {
-    if (v7)
+    if (completionCopy)
     {
-      v8 = v7;
+      v8 = completionCopy;
     }
 
     else
@@ -1413,14 +1413,14 @@
     v13[1] = 3221225472;
     v13[2] = sub_1E45F3954;
     v13[3] = &unk_1E87597F8;
-    v14 = v7;
+    v14 = completionCopy;
     v10 = [(BDSServiceProxy *)self remoteObjectProxyWithErrorHandler:v13];
-    [v10 deleteStoreItemsWithStoreIDs:v6 completion:v9];
+    [v10 deleteStoreItemsWithStoreIDs:dsCopy completion:v9];
   }
 
   else
   {
-    v11 = _Block_copy(v7);
+    v11 = _Block_copy(completionCopy);
     if (v11)
     {
       v12 = [MEMORY[0x1E696ABC0] errorWithDomain:@"BDSErrorDomain" code:1000 userInfo:0];
@@ -1429,25 +1429,25 @@
   }
 }
 
-- (void)getStoreItemChangesSince:(id)a3 completion:(id)a4
+- (void)getStoreItemChangesSince:(id)since completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  sinceCopy = since;
+  completionCopy = completion;
   if ([(BDSServiceProxy *)self connectionHealthy])
   {
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = sub_1E45F3C9C;
     v12[3] = &unk_1E87597F8;
-    v8 = v7;
+    v8 = completionCopy;
     v13 = v8;
     v9 = [(BDSServiceProxy *)self remoteObjectProxyWithErrorHandler:v12];
-    [v9 getStoreItemChangesSince:v6 completion:v8];
+    [v9 getStoreItemChangesSince:sinceCopy completion:v8];
   }
 
   else
   {
-    v10 = _Block_copy(v7);
+    v10 = _Block_copy(completionCopy);
     if (v10)
     {
       v11 = [MEMORY[0x1E696ABC0] errorWithDomain:@"BDSErrorDomain" code:1000 userInfo:0];
@@ -1456,25 +1456,25 @@
   }
 }
 
-- (void)storeItemForStoreID:(id)a3 completion:(id)a4
+- (void)storeItemForStoreID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   if ([(BDSServiceProxy *)self connectionHealthy])
   {
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = sub_1E45F3E48;
     v12[3] = &unk_1E87597F8;
-    v8 = v7;
+    v8 = completionCopy;
     v13 = v8;
     v9 = [(BDSServiceProxy *)self remoteObjectProxyWithErrorHandler:v12];
-    [v9 storeItemForStoreID:v6 completion:v8];
+    [v9 storeItemForStoreID:dCopy completion:v8];
   }
 
   else
   {
-    v10 = _Block_copy(v7);
+    v10 = _Block_copy(completionCopy);
     if (v10)
     {
       v11 = [MEMORY[0x1E696ABC0] errorWithDomain:@"BDSErrorDomain" code:1000 userInfo:0];
@@ -1483,25 +1483,25 @@
   }
 }
 
-- (void)collectionDetailForCollectionID:(id)a3 completion:(id)a4
+- (void)collectionDetailForCollectionID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   if ([(BDSServiceProxy *)self connectionHealthy])
   {
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = sub_1E45F3FE8;
     v12[3] = &unk_1E87597F8;
-    v8 = v7;
+    v8 = completionCopy;
     v13 = v8;
     v9 = [(BDSServiceProxy *)self remoteObjectProxyWithErrorHandler:v12];
-    [v9 collectionDetailForCollectionID:v6 completion:v8];
+    [v9 collectionDetailForCollectionID:dCopy completion:v8];
   }
 
   else
   {
-    v10 = _Block_copy(v7);
+    v10 = _Block_copy(completionCopy);
     if (v10)
     {
       v11 = [MEMORY[0x1E696ABC0] errorWithDomain:@"BDSErrorDomain" code:1000 userInfo:0];
@@ -1510,10 +1510,10 @@
   }
 }
 
-- (void)collectionDetailsForCollectionIDs:(id)a3 completion:(id)a4
+- (void)collectionDetailsForCollectionIDs:(id)ds completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  completionCopy = completion;
   if ([(BDSServiceProxy *)self connectionHealthy])
   {
     v8 = objc_opt_new();
@@ -1536,19 +1536,19 @@
     v21[3] = &unk_1E87598C0;
     v10 = v9;
     v22 = v10;
-    v23 = self;
+    selfCopy = self;
     v25 = v27;
     v11 = v8;
     v24 = v11;
     v26 = v29;
-    [v6 bds_traverseBatchesOfSize:64 block:v21];
+    [dsCopy bds_traverseBatchesOfSize:64 block:v21];
     v12 = dispatch_get_global_queue(2, 0);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = sub_1E45F4574;
     block[3] = &unk_1E87598E8;
     v17 = v11;
-    v18 = v7;
+    v18 = completionCopy;
     v19 = v29;
     v20 = v27;
     v13 = v11;
@@ -1560,7 +1560,7 @@
 
   else
   {
-    v14 = _Block_copy(v7);
+    v14 = _Block_copy(completionCopy);
     if (v14)
     {
       v15 = [MEMORY[0x1E696ABC0] errorWithDomain:@"BDSErrorDomain" code:1000 userInfo:0];
@@ -1569,16 +1569,16 @@
   }
 }
 
-- (void)currentCollectionDetailCloudSyncVersions:(id)a3
+- (void)currentCollectionDetailCloudSyncVersions:(id)versions
 {
-  v4 = a3;
+  versionsCopy = versions;
   if ([(BDSServiceProxy *)self connectionHealthy])
   {
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = sub_1E45F46D0;
     v9[3] = &unk_1E87597F8;
-    v5 = v4;
+    v5 = versionsCopy;
     v10 = v5;
     v6 = [(BDSServiceProxy *)self remoteObjectProxyWithErrorHandler:v9];
     [v6 currentCollectionDetailCloudSyncVersions:v5];
@@ -1586,7 +1586,7 @@
 
   else
   {
-    v7 = _Block_copy(v4);
+    v7 = _Block_copy(versionsCopy);
     v8 = v7;
     if (v7)
     {
@@ -1595,17 +1595,17 @@
   }
 }
 
-- (void)deleteCollectionDetailForCollectionID:(id)a3 completion:(id)a4
+- (void)deleteCollectionDetailForCollectionID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v7)
+  dCopy = d;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (!completionCopy)
   {
-    v7 = &unk_1F5E616E8;
+    completionCopy = &unk_1F5E616E8;
   }
 
-  v9 = _Block_copy(v7);
+  v9 = _Block_copy(completionCopy);
   if ([(BDSServiceProxy *)self connectionHealthy])
   {
     v13[0] = MEMORY[0x1E69E9820];
@@ -1614,7 +1614,7 @@
     v13[3] = &unk_1E87597F8;
     v14 = v8;
     v10 = [(BDSServiceProxy *)self remoteObjectProxyWithErrorHandler:v13];
-    [v10 deleteCollectionDetailForCollectionID:v6 completion:v9];
+    [v10 deleteCollectionDetailForCollectionID:dCopy completion:v9];
   }
 
   else
@@ -1628,17 +1628,17 @@
   }
 }
 
-- (void)deleteCollectionDetailForCollectionIDs:(id)a3 completion:(id)a4
+- (void)deleteCollectionDetailForCollectionIDs:(id)ds completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v7)
+  dsCopy = ds;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (!completionCopy)
   {
-    v7 = &unk_1F5E61708;
+    completionCopy = &unk_1F5E61708;
   }
 
-  v9 = _Block_copy(v7);
+  v9 = _Block_copy(completionCopy);
   if ([(BDSServiceProxy *)self connectionHealthy])
   {
     v13[0] = MEMORY[0x1E69E9820];
@@ -1647,7 +1647,7 @@
     v13[3] = &unk_1E87597F8;
     v14 = v8;
     v10 = [(BDSServiceProxy *)self remoteObjectProxyWithErrorHandler:v13];
-    [v10 deleteCollectionDetailForCollectionIDs:v6 completion:v9];
+    [v10 deleteCollectionDetailForCollectionIDs:dsCopy completion:v9];
   }
 
   else
@@ -1661,25 +1661,25 @@
   }
 }
 
-- (void)getCollectionDetailChangesSince:(id)a3 completion:(id)a4
+- (void)getCollectionDetailChangesSince:(id)since completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  sinceCopy = since;
+  completionCopy = completion;
   if ([(BDSServiceProxy *)self connectionHealthy])
   {
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = sub_1E45F4D80;
     v12[3] = &unk_1E87597F8;
-    v8 = v7;
+    v8 = completionCopy;
     v13 = v8;
     v9 = [(BDSServiceProxy *)self remoteObjectProxyWithErrorHandler:v12];
-    [v9 getCollectionDetailChangesSince:v6 completion:v8];
+    [v9 getCollectionDetailChangesSince:sinceCopy completion:v8];
   }
 
   else
   {
-    v10 = _Block_copy(v7);
+    v10 = _Block_copy(completionCopy);
     if (v10)
     {
       v11 = [MEMORY[0x1E696ABC0] errorWithDomain:@"BDSErrorDomain" code:1000 userInfo:0];
@@ -1688,17 +1688,17 @@
   }
 }
 
-- (void)setCollectionDetail:(id)a3 completion:(id)a4
+- (void)setCollectionDetail:(id)detail completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v7)
+  detailCopy = detail;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (!completionCopy)
   {
-    v7 = &unk_1F5E61728;
+    completionCopy = &unk_1F5E61728;
   }
 
-  v9 = _Block_copy(v7);
+  v9 = _Block_copy(completionCopy);
   if ([(BDSServiceProxy *)self connectionHealthy])
   {
     v13[0] = MEMORY[0x1E69E9820];
@@ -1707,7 +1707,7 @@
     v13[3] = &unk_1E87597F8;
     v14 = v8;
     v10 = [(BDSServiceProxy *)self remoteObjectProxyWithErrorHandler:v13];
-    [v10 setCollectionDetail:v6 completion:v9];
+    [v10 setCollectionDetail:detailCopy completion:v9];
   }
 
   else
@@ -1721,10 +1721,10 @@
   }
 }
 
-- (void)setCollectionDetails:(id)a3 completion:(id)a4
+- (void)setCollectionDetails:(id)details completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  detailsCopy = details;
+  completionCopy = completion;
   if ([(BDSServiceProxy *)self connectionHealthy])
   {
     v30[0] = 0;
@@ -1742,26 +1742,26 @@
     v26[2] = 0x2020000000;
     v27 = 0;
     v8 = dispatch_group_create();
-    v9 = [v6 allKeys];
+    allKeys = [detailsCopy allKeys];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = sub_1E45F5288;
     v19[3] = &unk_1E87599A0;
     v10 = v8;
     v20 = v10;
-    v21 = v6;
-    v22 = self;
+    v21 = detailsCopy;
+    selfCopy = self;
     v23 = v30;
     v24 = v28;
     v25 = v26;
-    [v9 bds_traverseBatchesOfSize:64 block:v19];
+    [allKeys bds_traverseBatchesOfSize:64 block:v19];
 
     v11 = dispatch_get_global_queue(2, 0);
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = sub_1E45F54F0;
     v14[3] = &unk_1E87599C8;
-    v15 = v7;
+    v15 = completionCopy;
     v16 = v28;
     v17 = v26;
     v18 = v30;
@@ -1774,7 +1774,7 @@
 
   else
   {
-    v12 = _Block_copy(v7);
+    v12 = _Block_copy(completionCopy);
     if (v12)
     {
       v13 = [MEMORY[0x1E696ABC0] errorWithDomain:@"BDSErrorDomain" code:1000 userInfo:0];
@@ -1783,25 +1783,25 @@
   }
 }
 
-- (void)collectionMemberForCollectionMemberID:(id)a3 completion:(id)a4
+- (void)collectionMemberForCollectionMemberID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   if ([(BDSServiceProxy *)self connectionHealthy])
   {
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = sub_1E45F5698;
     v12[3] = &unk_1E87597F8;
-    v8 = v7;
+    v8 = completionCopy;
     v13 = v8;
     v9 = [(BDSServiceProxy *)self remoteObjectProxyWithErrorHandler:v12];
-    [v9 collectionMemberForCollectionMemberID:v6 completion:v8];
+    [v9 collectionMemberForCollectionMemberID:dCopy completion:v8];
   }
 
   else
   {
-    v10 = _Block_copy(v7);
+    v10 = _Block_copy(completionCopy);
     if (v10)
     {
       v11 = [MEMORY[0x1E696ABC0] errorWithDomain:@"BDSErrorDomain" code:1000 userInfo:0];
@@ -1810,16 +1810,16 @@
   }
 }
 
-- (void)currentCollectionMemberCloudSyncVersions:(id)a3
+- (void)currentCollectionMemberCloudSyncVersions:(id)versions
 {
-  v4 = a3;
+  versionsCopy = versions;
   if ([(BDSServiceProxy *)self connectionHealthy])
   {
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = sub_1E45F57F4;
     v9[3] = &unk_1E87597F8;
-    v5 = v4;
+    v5 = versionsCopy;
     v10 = v5;
     v6 = [(BDSServiceProxy *)self remoteObjectProxyWithErrorHandler:v9];
     [v6 currentCollectionMemberCloudSyncVersions:v5];
@@ -1827,7 +1827,7 @@
 
   else
   {
-    v7 = _Block_copy(v4);
+    v7 = _Block_copy(versionsCopy);
     v8 = v7;
     if (v7)
     {
@@ -1836,17 +1836,17 @@
   }
 }
 
-- (void)deleteCollectionMemberForCollectionMemberID:(id)a3 completion:(id)a4
+- (void)deleteCollectionMemberForCollectionMemberID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v7)
+  dCopy = d;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (!completionCopy)
   {
-    v7 = &unk_1F5E61748;
+    completionCopy = &unk_1F5E61748;
   }
 
-  v9 = _Block_copy(v7);
+  v9 = _Block_copy(completionCopy);
   if ([(BDSServiceProxy *)self connectionHealthy])
   {
     v13[0] = MEMORY[0x1E69E9820];
@@ -1855,7 +1855,7 @@
     v13[3] = &unk_1E87597F8;
     v14 = v8;
     v10 = [(BDSServiceProxy *)self remoteObjectProxyWithErrorHandler:v13];
-    [v10 deleteCollectionMemberForCollectionMemberID:v6 completion:v9];
+    [v10 deleteCollectionMemberForCollectionMemberID:dCopy completion:v9];
   }
 
   else
@@ -1869,17 +1869,17 @@
   }
 }
 
-- (void)deleteCollectionMemberForCollectionMemberIDs:(id)a3 completion:(id)a4
+- (void)deleteCollectionMemberForCollectionMemberIDs:(id)ds completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v7)
+  dsCopy = ds;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (!completionCopy)
   {
-    v7 = &unk_1F5E61768;
+    completionCopy = &unk_1F5E61768;
   }
 
-  v9 = _Block_copy(v7);
+  v9 = _Block_copy(completionCopy);
   if ([(BDSServiceProxy *)self connectionHealthy])
   {
     v13[0] = MEMORY[0x1E69E9820];
@@ -1888,7 +1888,7 @@
     v13[3] = &unk_1E87597F8;
     v14 = v8;
     v10 = [(BDSServiceProxy *)self remoteObjectProxyWithErrorHandler:v13];
-    [v10 deleteCollectionMemberForCollectionMemberIDs:v6 completion:v9];
+    [v10 deleteCollectionMemberForCollectionMemberIDs:dsCopy completion:v9];
   }
 
   else
@@ -1902,25 +1902,25 @@
   }
 }
 
-- (void)fetchCollectionMembersInCollectionID:(id)a3 completion:(id)a4
+- (void)fetchCollectionMembersInCollectionID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   if ([(BDSServiceProxy *)self connectionHealthy])
   {
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = sub_1E45F5E9C;
     v12[3] = &unk_1E87597F8;
-    v8 = v7;
+    v8 = completionCopy;
     v13 = v8;
     v9 = [(BDSServiceProxy *)self remoteObjectProxyWithErrorHandler:v12];
-    [v9 fetchCollectionMembersInCollectionID:v6 completion:v8];
+    [v9 fetchCollectionMembersInCollectionID:dCopy completion:v8];
   }
 
   else
   {
-    v10 = _Block_copy(v7);
+    v10 = _Block_copy(completionCopy);
     if (v10)
     {
       v11 = [MEMORY[0x1E696ABC0] errorWithDomain:@"BDSErrorDomain" code:1000 userInfo:0];
@@ -1929,25 +1929,25 @@
   }
 }
 
-- (void)getCollectionMemberChangesSince:(id)a3 completion:(id)a4
+- (void)getCollectionMemberChangesSince:(id)since completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  sinceCopy = since;
+  completionCopy = completion;
   if ([(BDSServiceProxy *)self connectionHealthy])
   {
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = sub_1E45F604C;
     v12[3] = &unk_1E87597F8;
-    v8 = v7;
+    v8 = completionCopy;
     v13 = v8;
     v9 = [(BDSServiceProxy *)self remoteObjectProxyWithErrorHandler:v12];
-    [v9 getCollectionMemberChangesSince:v6 completion:v8];
+    [v9 getCollectionMemberChangesSince:sinceCopy completion:v8];
   }
 
   else
   {
-    v10 = _Block_copy(v7);
+    v10 = _Block_copy(completionCopy);
     if (v10)
     {
       v11 = [MEMORY[0x1E696ABC0] errorWithDomain:@"BDSErrorDomain" code:1000 userInfo:0];
@@ -1956,17 +1956,17 @@
   }
 }
 
-- (void)setCollectionMember:(id)a3 completion:(id)a4
+- (void)setCollectionMember:(id)member completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v7)
+  memberCopy = member;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (!completionCopy)
   {
-    v7 = &unk_1F5E61788;
+    completionCopy = &unk_1F5E61788;
   }
 
-  v9 = _Block_copy(v7);
+  v9 = _Block_copy(completionCopy);
   if ([(BDSServiceProxy *)self connectionHealthy])
   {
     v13[0] = MEMORY[0x1E69E9820];
@@ -1975,7 +1975,7 @@
     v13[3] = &unk_1E87597F8;
     v14 = v8;
     v10 = [(BDSServiceProxy *)self remoteObjectProxyWithErrorHandler:v13];
-    [v10 setCollectionMember:v6 completion:v9];
+    [v10 setCollectionMember:memberCopy completion:v9];
   }
 
   else
@@ -1989,10 +1989,10 @@
   }
 }
 
-- (void)setCollectionMembers:(id)a3 completion:(id)a4
+- (void)setCollectionMembers:(id)members completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  membersCopy = members;
+  completionCopy = completion;
   if ([(BDSServiceProxy *)self connectionHealthy])
   {
     v30[0] = 0;
@@ -2010,26 +2010,26 @@
     v26[2] = 0x2020000000;
     v27 = 0;
     v8 = dispatch_group_create();
-    v9 = [v6 allKeys];
+    allKeys = [membersCopy allKeys];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = sub_1E45F6554;
     v19[3] = &unk_1E87599A0;
     v10 = v8;
     v20 = v10;
-    v21 = v6;
-    v22 = self;
+    v21 = membersCopy;
+    selfCopy = self;
     v23 = v30;
     v24 = v28;
     v25 = v26;
-    [v9 bds_traverseBatchesOfSize:64 block:v19];
+    [allKeys bds_traverseBatchesOfSize:64 block:v19];
 
     v11 = dispatch_get_global_queue(2, 0);
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = sub_1E45F67BC;
     v14[3] = &unk_1E87599C8;
-    v15 = v7;
+    v15 = completionCopy;
     v16 = v28;
     v17 = v26;
     v18 = v30;
@@ -2042,7 +2042,7 @@
 
   else
   {
-    v12 = _Block_copy(v7);
+    v12 = _Block_copy(completionCopy);
     if (v12)
     {
       v13 = [MEMORY[0x1E696ABC0] errorWithDomain:@"BDSErrorDomain" code:1000 userInfo:0];
@@ -2051,25 +2051,25 @@
   }
 }
 
-- (void)fetchMaxSortOrderInCollectionID:(id)a3 completion:(id)a4
+- (void)fetchMaxSortOrderInCollectionID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   if ([(BDSServiceProxy *)self connectionHealthy])
   {
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = sub_1E45F6964;
     v12[3] = &unk_1E87597F8;
-    v8 = v7;
+    v8 = completionCopy;
     v13 = v8;
     v9 = [(BDSServiceProxy *)self remoteObjectProxyWithErrorHandler:v12];
-    [v9 fetchMaxSortOrderInCollectionID:v6 completion:v8];
+    [v9 fetchMaxSortOrderInCollectionID:dCopy completion:v8];
   }
 
   else
   {
-    v10 = _Block_copy(v7);
+    v10 = _Block_copy(completionCopy);
     if (v10)
     {
       v11 = [MEMORY[0x1E696ABC0] errorWithDomain:@"BDSErrorDomain" code:1000 userInfo:0];
@@ -2078,16 +2078,16 @@
   }
 }
 
-- (void)fetchMostRecentAudiobookWithCompletion:(id)a3
+- (void)fetchMostRecentAudiobookWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(BDSServiceProxy *)self connectionHealthy])
   {
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = sub_1E45F6AF0;
     v9[3] = &unk_1E87597F8;
-    v5 = v4;
+    v5 = completionCopy;
     v10 = v5;
     v6 = [(BDSServiceProxy *)self remoteObjectProxyWithErrorHandler:v9];
     [v6 fetchMostRecentAudiobookWithCompletion:v5];
@@ -2095,7 +2095,7 @@
 
   else
   {
-    v7 = _Block_copy(v4);
+    v7 = _Block_copy(completionCopy);
     if (v7)
     {
       v8 = [MEMORY[0x1E696ABC0] errorWithDomain:@"BDSErrorDomain" code:1000 userInfo:0];
@@ -2104,16 +2104,16 @@
   }
 }
 
-- (id)updateWantToReadWithCompletion:(id)a3
+- (id)updateWantToReadWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(BDSServiceProxy *)self connectionHealthy])
   {
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = sub_1E45F6E7C;
     v11[3] = &unk_1E87597F8;
-    v5 = v4;
+    v5 = completionCopy;
     v12 = v5;
     v6 = [(BDSServiceProxy *)self remoteObjectProxyWithErrorHandler:v11];
     v7 = [v6 updateWantToReadWithCompletion:v5];
@@ -2121,7 +2121,7 @@
 
   else
   {
-    v8 = _Block_copy(v4);
+    v8 = _Block_copy(completionCopy);
     if (v8)
     {
       v9 = [MEMORY[0x1E696ABC0] errorWithDomain:@"BDSErrorDomain" code:1000 userInfo:0];
@@ -2135,16 +2135,16 @@
   return v7;
 }
 
-- (id)updateReadingNowWithCompletion:(id)a3
+- (id)updateReadingNowWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(BDSServiceProxy *)self connectionHealthy])
   {
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = sub_1E45F703C;
     v11[3] = &unk_1E87597F8;
-    v5 = v4;
+    v5 = completionCopy;
     v12 = v5;
     v6 = [(BDSServiceProxy *)self remoteObjectProxyWithErrorHandler:v11];
     v7 = [v6 updateReadingNowWithCompletion:v5];
@@ -2152,7 +2152,7 @@
 
   else
   {
-    v8 = _Block_copy(v4);
+    v8 = _Block_copy(completionCopy);
     if (v8)
     {
       v9 = [MEMORY[0x1E696ABC0] errorWithDomain:@"BDSErrorDomain" code:1000 userInfo:0];
@@ -2166,25 +2166,25 @@
   return v7;
 }
 
-- (void)updateBitrateForItemWithAdamID:(id)a3 completion:(id)a4
+- (void)updateBitrateForItemWithAdamID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   if ([(BDSServiceProxy *)self connectionHealthy])
   {
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = sub_1E45F71D4;
     v12[3] = &unk_1E87597F8;
-    v8 = v7;
+    v8 = completionCopy;
     v13 = v8;
     v9 = [(BDSServiceProxy *)self remoteObjectProxyWithErrorHandler:v12];
-    [v9 updateBitrateForItemWithAdamID:v6 completion:v8];
+    [v9 updateBitrateForItemWithAdamID:dCopy completion:v8];
   }
 
   else
   {
-    v10 = _Block_copy(v7);
+    v10 = _Block_copy(completionCopy);
     if (v10)
     {
       v11 = [MEMORY[0x1E696ABC0] errorWithDomain:@"BDSErrorDomain" code:1000 userInfo:0];
@@ -2193,16 +2193,16 @@
   }
 }
 
-- (void)audiobookStoreEnabledWithCompletion:(id)a3
+- (void)audiobookStoreEnabledWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(BDSServiceProxy *)self connectionHealthy])
   {
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = sub_1E45F735C;
     v9[3] = &unk_1E87597F8;
-    v5 = v4;
+    v5 = completionCopy;
     v10 = v5;
     v6 = [(BDSServiceProxy *)self remoteObjectProxyWithErrorHandler:v9];
     [v6 audiobookStoreEnabledWithCompletion:v5];
@@ -2210,7 +2210,7 @@
 
   else
   {
-    v7 = _Block_copy(v4);
+    v7 = _Block_copy(completionCopy);
     if (v7)
     {
       v8 = [MEMORY[0x1E696ABC0] errorWithDomain:@"BDSErrorDomain" code:1000 userInfo:0];
@@ -2219,16 +2219,16 @@
   }
 }
 
-- (void)currentCloudSyncVersions:(id)a3
+- (void)currentCloudSyncVersions:(id)versions
 {
-  v4 = a3;
+  versionsCopy = versions;
   if ([(BDSServiceProxy *)self connectionHealthy])
   {
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = sub_1E45F74D4;
     v9[3] = &unk_1E87597F8;
-    v5 = v4;
+    v5 = versionsCopy;
     v10 = v5;
     v6 = [(BDSServiceProxy *)self remoteObjectProxyWithErrorHandler:v9];
     [v6 currentCloudSyncVersions:v5];
@@ -2236,7 +2236,7 @@
 
   else
   {
-    v7 = _Block_copy(v4);
+    v7 = _Block_copy(versionsCopy);
     v8 = v7;
     if (v7)
     {
@@ -2245,25 +2245,25 @@
   }
 }
 
-- (void)setUserDatum:(id)a3 completion:(id)a4
+- (void)setUserDatum:(id)datum completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  datumCopy = datum;
+  completionCopy = completion;
   if ([(BDSServiceProxy *)self connectionHealthy])
   {
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = sub_1E45F7658;
     v12[3] = &unk_1E87597F8;
-    v8 = v7;
+    v8 = completionCopy;
     v13 = v8;
     v9 = [(BDSServiceProxy *)self remoteObjectProxyWithErrorHandler:v12];
-    [v9 setUserDatum:v6 completion:v8];
+    [v9 setUserDatum:datumCopy completion:v8];
   }
 
   else
   {
-    v10 = _Block_copy(v7);
+    v10 = _Block_copy(completionCopy);
     if (v10)
     {
       v11 = [MEMORY[0x1E696ABC0] errorWithDomain:@"BDSErrorDomain" code:1000 userInfo:0];
@@ -2272,25 +2272,25 @@
   }
 }
 
-- (void)setUserData:(id)a3 completion:(id)a4
+- (void)setUserData:(id)data completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  completionCopy = completion;
   if ([(BDSServiceProxy *)self connectionHealthy])
   {
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = sub_1E45F7800;
     v12[3] = &unk_1E87597F8;
-    v8 = v7;
+    v8 = completionCopy;
     v13 = v8;
     v9 = [(BDSServiceProxy *)self remoteObjectProxyWithErrorHandler:v12];
-    [v9 setUserData:v6 completion:v8];
+    [v9 setUserData:dataCopy completion:v8];
   }
 
   else
   {
-    v10 = _Block_copy(v7);
+    v10 = _Block_copy(completionCopy);
     if (v10)
     {
       v11 = [MEMORY[0x1E696ABC0] errorWithDomain:@"BDSErrorDomain" code:1000 userInfo:0];
@@ -2299,25 +2299,25 @@
   }
 }
 
-- (void)deleteUserDatumForKey:(id)a3 completion:(id)a4
+- (void)deleteUserDatumForKey:(id)key completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  completionCopy = completion;
   if ([(BDSServiceProxy *)self connectionHealthy])
   {
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = sub_1E45F79A4;
     v12[3] = &unk_1E87597F8;
-    v8 = v7;
+    v8 = completionCopy;
     v13 = v8;
     v9 = [(BDSServiceProxy *)self remoteObjectProxyWithErrorHandler:v12];
-    [v9 deleteUserDatumForKey:v6 completion:v8];
+    [v9 deleteUserDatumForKey:keyCopy completion:v8];
   }
 
   else
   {
-    v10 = _Block_copy(v7);
+    v10 = _Block_copy(completionCopy);
     if (v10)
     {
       v11 = [MEMORY[0x1E696ABC0] errorWithDomain:@"BDSErrorDomain" code:1000 userInfo:0];
@@ -2326,25 +2326,25 @@
   }
 }
 
-- (void)userDatumForKey:(id)a3 completion:(id)a4
+- (void)userDatumForKey:(id)key completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  completionCopy = completion;
   if ([(BDSServiceProxy *)self connectionHealthy])
   {
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = sub_1E45F7B44;
     v12[3] = &unk_1E87597F8;
-    v8 = v7;
+    v8 = completionCopy;
     v13 = v8;
     v9 = [(BDSServiceProxy *)self remoteObjectProxyWithErrorHandler:v12];
-    [v9 userDatumForKey:v6 completion:v8];
+    [v9 userDatumForKey:keyCopy completion:v8];
   }
 
   else
   {
-    v10 = _Block_copy(v7);
+    v10 = _Block_copy(completionCopy);
     if (v10)
     {
       v11 = [MEMORY[0x1E696ABC0] errorWithDomain:@"BDSErrorDomain" code:1000 userInfo:0];
@@ -2353,25 +2353,25 @@
   }
 }
 
-- (void)getUserDataChangesSince:(id)a3 completion:(id)a4
+- (void)getUserDataChangesSince:(id)since completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  sinceCopy = since;
+  completionCopy = completion;
   if ([(BDSServiceProxy *)self connectionHealthy])
   {
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = sub_1E45F7F74;
     v12[3] = &unk_1E87597F8;
-    v8 = v7;
+    v8 = completionCopy;
     v13 = v8;
     v9 = [(BDSServiceProxy *)self remoteObjectProxyWithErrorHandler:v12];
-    [v9 getUserDataChangesSince:v6 completion:v8];
+    [v9 getUserDataChangesSince:sinceCopy completion:v8];
   }
 
   else
   {
-    v10 = _Block_copy(v7);
+    v10 = _Block_copy(completionCopy);
     if (v10)
     {
       v11 = [MEMORY[0x1E696ABC0] errorWithDomain:@"BDSErrorDomain" code:1000 userInfo:0];
@@ -2380,25 +2380,25 @@
   }
 }
 
-- (void)resolvedUserDataValueForKey:(id)a3 completion:(id)a4
+- (void)resolvedUserDataValueForKey:(id)key completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  completionCopy = completion;
   if ([(BDSServiceProxy *)self connectionHealthy])
   {
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = sub_1E45F8120;
     v12[3] = &unk_1E87597F8;
-    v8 = v7;
+    v8 = completionCopy;
     v13 = v8;
     v9 = [(BDSServiceProxy *)self remoteObjectProxyWithErrorHandler:v12];
-    [v9 resolvedUserDataValueForKey:v6 completion:v8];
+    [v9 resolvedUserDataValueForKey:keyCopy completion:v8];
   }
 
   else
   {
-    v10 = _Block_copy(v7);
+    v10 = _Block_copy(completionCopy);
     if (v10)
     {
       v11 = [MEMORY[0x1E696ABC0] errorWithDomain:@"BDSErrorDomain" code:1000 userInfo:0];
@@ -2407,25 +2407,25 @@
   }
 }
 
-- (void)userDataValueForKey:(id)a3 completion:(id)a4
+- (void)userDataValueForKey:(id)key completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  completionCopy = completion;
   if ([(BDSServiceProxy *)self connectionHealthy])
   {
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = sub_1E45F82C0;
     v12[3] = &unk_1E87597F8;
-    v8 = v7;
+    v8 = completionCopy;
     v13 = v8;
     v9 = [(BDSServiceProxy *)self remoteObjectProxyWithErrorHandler:v12];
-    [v9 userDataValueForKey:v6 completion:v8];
+    [v9 userDataValueForKey:keyCopy completion:v8];
   }
 
   else
   {
-    v10 = _Block_copy(v7);
+    v10 = _Block_copy(completionCopy);
     if (v10)
     {
       v11 = [MEMORY[0x1E696ABC0] errorWithDomain:@"BDSErrorDomain" code:1000 userInfo:0];
@@ -2434,26 +2434,26 @@
   }
 }
 
-- (void)setUserDataValue:(id)a3 forKey:(id)a4 completion:(id)a5
+- (void)setUserDataValue:(id)value forKey:(id)key completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  valueCopy = value;
+  keyCopy = key;
+  completionCopy = completion;
   if ([(BDSServiceProxy *)self connectionHealthy])
   {
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = sub_1E45F8478;
     v15[3] = &unk_1E87597F8;
-    v11 = v10;
+    v11 = completionCopy;
     v16 = v11;
     v12 = [(BDSServiceProxy *)self remoteObjectProxyWithErrorHandler:v15];
-    [v12 setUserDataValue:v8 forKey:v9 completion:v11];
+    [v12 setUserDataValue:valueCopy forKey:keyCopy completion:v11];
   }
 
   else
   {
-    v13 = _Block_copy(v10);
+    v13 = _Block_copy(completionCopy);
     if (v13)
     {
       v14 = [MEMORY[0x1E696ABC0] errorWithDomain:@"BDSErrorDomain" code:1000 userInfo:0];
@@ -2462,20 +2462,20 @@
   }
 }
 
-- (void)deleteEngagementDataForKey:(id)a3 completion:(id)a4
+- (void)deleteEngagementDataForKey:(id)key completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  completionCopy = completion;
   if ([(BDSServiceProxy *)self connectionHealthy])
   {
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = sub_1E45F8638;
     v13[3] = &unk_1E87597F8;
-    v8 = v7;
+    v8 = completionCopy;
     v14 = v8;
     v9 = [(BDSServiceProxy *)self remoteObjectProxyWithErrorHandler:v13];
-    [v9 deleteEngagementDataForKey:v6 completion:v8];
+    [v9 deleteEngagementDataForKey:keyCopy completion:v8];
 
     v10 = v14;
   }
@@ -2488,7 +2488,7 @@
       sub_1E47021FC();
     }
 
-    v10 = _Block_copy(v7);
+    v10 = _Block_copy(completionCopy);
     if (v10)
     {
       v12 = [MEMORY[0x1E696ABC0] errorWithDomain:@"BDSErrorDomain" code:1000 userInfo:0];
@@ -2497,20 +2497,20 @@
   }
 }
 
-- (void)engagementDataForKey:(id)a3 completion:(id)a4
+- (void)engagementDataForKey:(id)key completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  completionCopy = completion;
   if ([(BDSServiceProxy *)self connectionHealthy])
   {
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = sub_1E45F8818;
     v13[3] = &unk_1E87597F8;
-    v8 = v7;
+    v8 = completionCopy;
     v14 = v8;
     v9 = [(BDSServiceProxy *)self remoteObjectProxyWithErrorHandler:v13];
-    [v9 engagementDataForKey:v6 completion:v8];
+    [v9 engagementDataForKey:keyCopy completion:v8];
 
     v10 = v14;
   }
@@ -2523,7 +2523,7 @@
       sub_1E47022A8();
     }
 
-    v10 = _Block_copy(v7);
+    v10 = _Block_copy(completionCopy);
     if (v10)
     {
       v12 = [MEMORY[0x1E696ABC0] errorWithDomain:@"BDSErrorDomain" code:1000 userInfo:0];
@@ -2532,20 +2532,20 @@
   }
 }
 
-- (void)getEngagementDataChangesSince:(id)a3 completion:(id)a4
+- (void)getEngagementDataChangesSince:(id)since completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  sinceCopy = since;
+  completionCopy = completion;
   if ([(BDSServiceProxy *)self connectionHealthy])
   {
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = sub_1E45F8DD0;
     v13[3] = &unk_1E87597F8;
-    v8 = v7;
+    v8 = completionCopy;
     v14 = v8;
     v9 = [(BDSServiceProxy *)self remoteObjectProxyWithErrorHandler:v13];
-    [v9 getEngagementDataChangesSince:v6 completion:v8];
+    [v9 getEngagementDataChangesSince:sinceCopy completion:v8];
 
     v10 = v14;
   }
@@ -2558,7 +2558,7 @@
       sub_1E47024AC();
     }
 
-    v10 = _Block_copy(v7);
+    v10 = _Block_copy(completionCopy);
     if (v10)
     {
       v12 = [MEMORY[0x1E696ABC0] errorWithDomain:@"BDSErrorDomain" code:1000 userInfo:0];
@@ -2567,20 +2567,20 @@
   }
 }
 
-- (void)setEngagementDatas:(id)a3 completion:(id)a4
+- (void)setEngagementDatas:(id)datas completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  datasCopy = datas;
+  completionCopy = completion;
   if ([(BDSServiceProxy *)self connectionHealthy])
   {
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = sub_1E45F8FC0;
     v13[3] = &unk_1E87597F8;
-    v8 = v7;
+    v8 = completionCopy;
     v14 = v8;
     v9 = [(BDSServiceProxy *)self remoteObjectProxyWithErrorHandler:v13];
-    [v9 setEngagementDatas:v6 completion:v8];
+    [v9 setEngagementDatas:datasCopy completion:v8];
 
     v10 = v14;
   }
@@ -2593,7 +2593,7 @@
       sub_1E4702558();
     }
 
-    v10 = _Block_copy(v7);
+    v10 = _Block_copy(completionCopy);
     if (v10)
     {
       v12 = [MEMORY[0x1E696ABC0] errorWithDomain:@"BDSErrorDomain" code:1000 userInfo:0];
@@ -2602,20 +2602,20 @@
   }
 }
 
-- (void)setEngagementData:(id)a3 completion:(id)a4
+- (void)setEngagementData:(id)data completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  completionCopy = completion;
   if ([(BDSServiceProxy *)self connectionHealthy])
   {
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = sub_1E45F91A8;
     v13[3] = &unk_1E87597F8;
-    v8 = v7;
+    v8 = completionCopy;
     v14 = v8;
     v9 = [(BDSServiceProxy *)self remoteObjectProxyWithErrorHandler:v13];
-    [v9 setEngagementData:v6 completion:v8];
+    [v9 setEngagementData:dataCopy completion:v8];
 
     v10 = v14;
   }
@@ -2628,7 +2628,7 @@
       sub_1E4702604();
     }
 
-    v10 = _Block_copy(v7);
+    v10 = _Block_copy(completionCopy);
     if (v10)
     {
       v12 = [MEMORY[0x1E696ABC0] errorWithDomain:@"BDSErrorDomain" code:1000 userInfo:0];
@@ -2637,16 +2637,16 @@
   }
 }
 
-- (void)clearSyncMetadata:(id)a3
+- (void)clearSyncMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   if ([(BDSServiceProxy *)self connectionHealthy])
   {
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = sub_1E45F9374;
     v10[3] = &unk_1E87597F8;
-    v5 = v4;
+    v5 = metadataCopy;
     v11 = v5;
     v6 = [(BDSServiceProxy *)self remoteObjectProxyWithErrorHandler:v10];
     [v6 clearSyncMetadata:v5];
@@ -2662,7 +2662,7 @@
       sub_1E47026B0();
     }
 
-    v7 = _Block_copy(v4);
+    v7 = _Block_copy(metadataCopy);
     if (v7)
     {
       v9 = [MEMORY[0x1E696ABC0] errorWithDomain:@"BDSErrorDomain" code:1000 userInfo:0];
@@ -2671,16 +2671,16 @@
   }
 }
 
-- (void)forceFetchRemoteChanges:(id)a3
+- (void)forceFetchRemoteChanges:(id)changes
 {
-  v4 = a3;
+  changesCopy = changes;
   if ([(BDSServiceProxy *)self connectionHealthy])
   {
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = sub_1E45F9538;
     v10[3] = &unk_1E87597F8;
-    v5 = v4;
+    v5 = changesCopy;
     v11 = v5;
     v6 = [(BDSServiceProxy *)self remoteObjectProxyWithErrorHandler:v10];
     [v6 forceFetchRemoteChanges:v5];
@@ -2696,7 +2696,7 @@
       sub_1E470275C();
     }
 
-    v7 = _Block_copy(v4);
+    v7 = _Block_copy(changesCopy);
     if (v7)
     {
       v9 = [MEMORY[0x1E696ABC0] errorWithDomain:@"BDSErrorDomain" code:1000 userInfo:0];
@@ -2705,16 +2705,16 @@
   }
 }
 
-- (void)cloudSyncDiagnosticDetachWithCompletionHandler:(id)a3
+- (void)cloudSyncDiagnosticDetachWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if ([(BDSServiceProxy *)self connectionHealthy])
   {
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = sub_1E45F96FC;
     v10[3] = &unk_1E87597F8;
-    v5 = v4;
+    v5 = handlerCopy;
     v11 = v5;
     v6 = [(BDSServiceProxy *)self remoteObjectProxyWithErrorHandler:v10];
     [v6 cloudSyncDiagnosticDetachWithCompletionHandler:v5];
@@ -2730,7 +2730,7 @@
       sub_1E4702808();
     }
 
-    v7 = _Block_copy(v4);
+    v7 = _Block_copy(handlerCopy);
     if (v7)
     {
       v9 = [MEMORY[0x1E696ABC0] errorWithDomain:@"BDSErrorDomain" code:1000 userInfo:0];
@@ -2739,16 +2739,16 @@
   }
 }
 
-- (void)cloudSyncDiagnosticFindLocalIdDupesWithCompletionHandler:(id)a3
+- (void)cloudSyncDiagnosticFindLocalIdDupesWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if ([(BDSServiceProxy *)self connectionHealthy])
   {
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = sub_1E45F98C0;
     v10[3] = &unk_1E87597F8;
-    v5 = v4;
+    v5 = handlerCopy;
     v11 = v5;
     v6 = [(BDSServiceProxy *)self remoteObjectProxyWithErrorHandler:v10];
     [v6 cloudSyncDiagnosticFindLocalIdDupesWithCompletionHandler:v5];
@@ -2764,7 +2764,7 @@
       sub_1E47028B4();
     }
 
-    v7 = _Block_copy(v4);
+    v7 = _Block_copy(handlerCopy);
     if (v7)
     {
       v9 = [MEMORY[0x1E696ABC0] errorWithDomain:@"BDSErrorDomain" code:1000 userInfo:0];
@@ -2773,12 +2773,12 @@
   }
 }
 
-- (void)cloudSyncDiagnosticInfoWithCompletionHandler:(id)a3
+- (void)cloudSyncDiagnosticInfoWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  if (v4)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v5 = v4;
+    v5 = handlerCopy;
   }
 
   else
@@ -2817,13 +2817,13 @@
   }
 }
 
-- (void)hideItemsWithStoreIDs:(id)a3 completion:(id)a4
+- (void)hideItemsWithStoreIDs:(id)ds completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  dsCopy = ds;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v8 = v7;
+    v8 = completionCopy;
   }
 
   else
@@ -2837,7 +2837,7 @@
     v16 = 3221225472;
     v17 = sub_1E45FA5D4;
     v18 = &unk_1E8759AA0;
-    v9 = v6;
+    v9 = dsCopy;
     v19 = v9;
     v10 = v8;
     v20 = v10;
@@ -2864,13 +2864,13 @@
   }
 }
 
-- (void)resetPurchasedTokenForStoreIDs:(id)a3 completion:(id)a4
+- (void)resetPurchasedTokenForStoreIDs:(id)ds completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  dsCopy = ds;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v8 = v7;
+    v8 = completionCopy;
   }
 
   else
@@ -2884,7 +2884,7 @@
     v16 = 3221225472;
     v17 = sub_1E45FA7B0;
     v18 = &unk_1E8759AA0;
-    v9 = v6;
+    v9 = dsCopy;
     v19 = v9;
     v10 = v8;
     v20 = v10;
@@ -2911,13 +2911,13 @@
   }
 }
 
-- (void)deleteItemsWithStoreIDs:(id)a3 completion:(id)a4
+- (void)deleteItemsWithStoreIDs:(id)ds completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  dsCopy = ds;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v8 = v7;
+    v8 = completionCopy;
   }
 
   else
@@ -2931,7 +2931,7 @@
     v16 = 3221225472;
     v17 = sub_1E45FA9B8;
     v18 = &unk_1E8759AA0;
-    v9 = v6;
+    v9 = dsCopy;
     v19 = v9;
     v10 = v8;
     v20 = v10;
@@ -2958,12 +2958,12 @@
   }
 }
 
-- (void)resetStaleJaliscoDatabaseWithCompletion:(id)a3
+- (void)resetStaleJaliscoDatabaseWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v5 = v4;
+    v5 = completionCopy;
   }
 
   else
@@ -3002,12 +3002,12 @@
   }
 }
 
-- (void)fetchAllHiddenItemStoreIDsWithCompletion:(id)a3
+- (void)fetchAllHiddenItemStoreIDsWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v5 = v4;
+    v5 = completionCopy;
   }
 
   else
@@ -3046,13 +3046,13 @@
   }
 }
 
-- (void)monitorServiceNotificationsWithChangeToken:(id)a3 completion:(id)a4
+- (void)monitorServiceNotificationsWithChangeToken:(id)token completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  tokenCopy = token;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v8 = v7;
+    v8 = completionCopy;
   }
 
   else
@@ -3072,7 +3072,7 @@
     v15[1] = 3221225472;
     v15[2] = sub_1E45FB5B0;
     v15[3] = &unk_1E8759AE8;
-    v16 = v6;
+    v16 = tokenCopy;
     v17 = v9;
     v10 = v9;
     bds_dispatch_service(self, v15, v10);
@@ -3098,13 +3098,13 @@
   }
 }
 
-- (void)setBookWidgetInfo:(id)a3 completion:(id)a4
+- (void)setBookWidgetInfo:(id)info completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  infoCopy = info;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v8 = v7;
+    v8 = completionCopy;
   }
 
   else
@@ -3118,7 +3118,7 @@
     v16 = 3221225472;
     v17 = sub_1E45FB738;
     v18 = &unk_1E8759AA0;
-    v9 = v6;
+    v9 = infoCopy;
     v19 = v9;
     v10 = v8;
     v20 = v10;
@@ -3145,20 +3145,20 @@
   }
 }
 
-- (void)getBookWidgetDataWithLimit:(int64_t)a3 completion:(id)a4
+- (void)getBookWidgetDataWithLimit:(int64_t)limit completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   if ([(BDSServiceProxy *)self connectionHealthy])
   {
     v12 = MEMORY[0x1E69E9820];
     v13 = 3221225472;
     v14 = sub_1E45FB910;
     v15 = &unk_1E8759B10;
-    v17 = a3;
-    v7 = v6;
+    limitCopy = limit;
+    v7 = completionCopy;
     v16 = v7;
     v8 = [(BDSServiceProxy *)self remoteObjectProxyWithErrorHandler:&v12];
-    [v8 getBookWidgetDataWithLimit:a3 completion:{v7, v12, v13, v14, v15}];
+    [v8 getBookWidgetDataWithLimit:limit completion:{v7, v12, v13, v14, v15}];
 
     v9 = v16;
   }
@@ -3171,7 +3171,7 @@
       sub_1E470323C();
     }
 
-    v9 = _Block_copy(v6);
+    v9 = _Block_copy(completionCopy);
     if (v9)
     {
       v11 = [MEMORY[0x1E696ABC0] errorWithDomain:@"BDSErrorDomain" code:1000 userInfo:0];
@@ -3180,20 +3180,20 @@
   }
 }
 
-- (void)getBookWidgetInfoWithLimit:(int64_t)a3 completion:(id)a4
+- (void)getBookWidgetInfoWithLimit:(int64_t)limit completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   if ([(BDSServiceProxy *)self connectionHealthy])
   {
     v12 = MEMORY[0x1E69E9820];
     v13 = 3221225472;
     v14 = sub_1E45FBAEC;
     v15 = &unk_1E8759B10;
-    v17 = a3;
-    v7 = v6;
+    limitCopy = limit;
+    v7 = completionCopy;
     v16 = v7;
     v8 = [(BDSServiceProxy *)self remoteObjectProxyWithErrorHandler:&v12];
-    [v8 getBookWidgetInfoWithLimit:a3 completion:{v7, v12, v13, v14, v15}];
+    [v8 getBookWidgetInfoWithLimit:limit completion:{v7, v12, v13, v14, v15}];
 
     v9 = v16;
   }
@@ -3206,7 +3206,7 @@
       sub_1E47032E8();
     }
 
-    v9 = _Block_copy(v6);
+    v9 = _Block_copy(completionCopy);
     if (v9)
     {
       v11 = [MEMORY[0x1E696ABC0] errorWithDomain:@"BDSErrorDomain" code:1000 userInfo:0];
@@ -3215,12 +3215,12 @@
   }
 }
 
-- (void)readingGoalsChangeBooksFinishedGoalTo:(int64_t)a3 withCompletion:(id)a4
+- (void)readingGoalsChangeBooksFinishedGoalTo:(int64_t)to withCompletion:(id)completion
 {
-  v6 = a4;
-  if (v6)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v7 = v6;
+    v7 = completionCopy;
   }
 
   else
@@ -3234,11 +3234,11 @@
     v14 = 3221225472;
     v15 = sub_1E45FBCA8;
     v16 = &unk_1E8759B10;
-    v18 = a3;
+    toCopy = to;
     v8 = v7;
     v17 = v8;
     v9 = [(BDSServiceProxy *)self remoteObjectProxyWithErrorHandler:&v13];
-    [v9 readingGoalsChangeBooksFinishedGoalTo:a3 withCompletion:{v8, v13, v14, v15, v16}];
+    [v9 readingGoalsChangeBooksFinishedGoalTo:to withCompletion:{v8, v13, v14, v15, v16}];
 
     v10 = v17;
   }
@@ -3260,12 +3260,12 @@
   }
 }
 
-- (void)readingGoalsChangeDailyGoalTo:(double)a3 withCompletion:(id)a4
+- (void)readingGoalsChangeDailyGoalTo:(double)to withCompletion:(id)completion
 {
-  v6 = a4;
-  if (v6)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v7 = v6;
+    v7 = completionCopy;
   }
 
   else
@@ -3279,11 +3279,11 @@
     v14 = 3221225472;
     v15 = sub_1E45FBE68;
     v16 = &unk_1E8759B10;
-    v18 = a3;
+    toCopy = to;
     v8 = v7;
     v17 = v8;
     v9 = [(BDSServiceProxy *)self remoteObjectProxyWithErrorHandler:&v13];
-    [v9 readingGoalsChangeDailyGoalTo:v8 withCompletion:{a3, v13, v14, v15, v16}];
+    [v9 readingGoalsChangeDailyGoalTo:v8 withCompletion:{to, v13, v14, v15, v16}];
 
     v10 = v17;
   }
@@ -3305,12 +3305,12 @@
   }
 }
 
-- (void)readingGoalsClearDataWithCompletion:(id)a3
+- (void)readingGoalsClearDataWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v5 = v4;
+    v5 = completionCopy;
   }
 
   else
@@ -3349,12 +3349,12 @@
   }
 }
 
-- (void)readingGoalsClearLocalCachedDataWithCompletion:(id)a3
+- (void)readingGoalsClearLocalCachedDataWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v5 = v4;
+    v5 = completionCopy;
   }
 
   else
@@ -3393,12 +3393,12 @@
   }
 }
 
-- (void)readingGoalsStateInfoWithCompletion:(id)a3
+- (void)readingGoalsStateInfoWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v5 = v4;
+    v5 = completionCopy;
   }
 
   else
@@ -3437,12 +3437,12 @@
   }
 }
 
-- (void)readingHistoryClearDataWithCompletion:(id)a3
+- (void)readingHistoryClearDataWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v5 = v4;
+    v5 = completionCopy;
   }
 
   else
@@ -3481,12 +3481,12 @@
   }
 }
 
-- (void)readingHistoryClearDefaultsCachedDataWithCompletion:(id)a3
+- (void)readingHistoryClearDefaultsCachedDataWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v5 = v4;
+    v5 = completionCopy;
   }
 
   else
@@ -3525,13 +3525,13 @@
   }
 }
 
-- (void)readingHistoryClearDate:(id)a3 withCompletion:(id)a4
+- (void)readingHistoryClearDate:(id)date withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  dateCopy = date;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v8 = v7;
+    v8 = completionCopy;
   }
 
   else
@@ -3548,7 +3548,7 @@
     v9 = v8;
     v15 = v9;
     v10 = [(BDSServiceProxy *)self remoteObjectProxyWithErrorHandler:v14];
-    [v10 readingHistoryClearDate:v6 withCompletion:v9];
+    [v10 readingHistoryClearDate:dateCopy withCompletion:v9];
 
     v11 = v15;
   }
@@ -3570,12 +3570,12 @@
   }
 }
 
-- (void)readingHistoryClearTodayWithCompletion:(id)a3
+- (void)readingHistoryClearTodayWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v5 = v4;
+    v5 = completionCopy;
   }
 
   else
@@ -3614,14 +3614,14 @@
   }
 }
 
-- (void)readingHistoryHandleSyncFileChangeWithSyncVersionInfo:(id)a3 updateInfo:(id)a4 completion:(id)a5
+- (void)readingHistoryHandleSyncFileChangeWithSyncVersionInfo:(id)info updateInfo:(id)updateInfo completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  infoCopy = info;
+  updateInfoCopy = updateInfo;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v11 = v10;
+    v11 = completionCopy;
   }
 
   else
@@ -3642,8 +3642,8 @@
     v17[1] = 3221225472;
     v17[2] = sub_1E45FCCEC;
     v17[3] = &unk_1E8759B58;
-    v18 = v8;
-    v19 = v9;
+    v18 = infoCopy;
+    v19 = updateInfoCopy;
     v20 = v12;
     bds_dispatch_service(self, v17, v13);
 
@@ -3667,13 +3667,13 @@
   }
 }
 
-- (void)readingHistoryIncrementWithDate:(id)a3 by:(int64_t)a4 withCompletion:(id)a5
+- (void)readingHistoryIncrementWithDate:(id)date by:(int64_t)by withCompletion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  if (v9)
+  dateCopy = date;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v10 = v9;
+    v10 = completionCopy;
   }
 
   else
@@ -3687,13 +3687,13 @@
     v17[1] = 3221225472;
     v17[2] = sub_1E45FCE58;
     v17[3] = &unk_1E8759B80;
-    v11 = v8;
+    v11 = dateCopy;
     v18 = v11;
-    v20 = a4;
+    byCopy = by;
     v12 = v10;
     v19 = v12;
     v13 = [(BDSServiceProxy *)self remoteObjectProxyWithErrorHandler:v17];
-    [v13 readingHistoryIncrementWithDate:v11 by:a4 withCompletion:v12];
+    [v13 readingHistoryIncrementWithDate:v11 by:by withCompletion:v12];
 
     v14 = v18;
   }
@@ -3715,15 +3715,15 @@
   }
 }
 
-- (void)readingHistoryReadingHistoryStateInfoWithRangeStart:(id)a3 rangeEnd:(id)a4 currentTime:(id)a5 withCompletion:(id)a6
+- (void)readingHistoryReadingHistoryStateInfoWithRangeStart:(id)start rangeEnd:(id)end currentTime:(id)time withCompletion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (v13)
+  startCopy = start;
+  endCopy = end;
+  timeCopy = time;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v14 = v13;
+    v14 = completionCopy;
   }
 
   else
@@ -3740,7 +3740,7 @@
     v15 = v14;
     v21 = v15;
     v16 = [(BDSServiceProxy *)self remoteObjectProxyWithErrorHandler:v20];
-    [v16 readingHistoryReadingHistoryStateInfoWithRangeStart:v10 rangeEnd:v11 currentTime:v12 withCompletion:v15];
+    [v16 readingHistoryReadingHistoryStateInfoWithRangeStart:startCopy rangeEnd:endCopy currentTime:timeCopy withCompletion:v15];
 
     v17 = v21;
   }
@@ -3762,12 +3762,12 @@
   }
 }
 
-- (void)readingHistoryServiceStatusInfoWithCompletion:(id)a3
+- (void)readingHistoryServiceStatusInfoWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v5 = v4;
+    v5 = completionCopy;
   }
 
   else
@@ -3806,13 +3806,13 @@
   }
 }
 
-- (void)priceTrackingSetConfiguration:(id)a3 completion:(id)a4
+- (void)priceTrackingSetConfiguration:(id)configuration completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  configurationCopy = configuration;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v9 = v8;
+    v9 = completionCopy;
   }
 
   else
@@ -3831,7 +3831,7 @@
     v10 = v9;
     v16 = v10;
     v11 = [(BDSServiceProxy *)self remoteObjectProxyWithErrorHandler:v15];
-    [v11 priceTrackingSetConfiguration:v7 completion:v10];
+    [v11 priceTrackingSetConfiguration:configurationCopy completion:v10];
   }
 
   else
@@ -3851,12 +3851,12 @@
   }
 }
 
-- (void)priceTrackingCtlGetStateWithCompletion:(id)a3
+- (void)priceTrackingCtlGetStateWithCompletion:(id)completion
 {
-  v5 = a3;
-  if (v5)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v6 = v5;
+    v6 = completionCopy;
   }
 
   else
@@ -3895,13 +3895,13 @@
   }
 }
 
-- (void)priceTrackingCtlAddTrackedItems:(id)a3 completion:(id)a4
+- (void)priceTrackingCtlAddTrackedItems:(id)items completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  itemsCopy = items;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v9 = v8;
+    v9 = completionCopy;
   }
 
   else
@@ -3920,7 +3920,7 @@
     v10 = v9;
     v16 = v10;
     v11 = [(BDSServiceProxy *)self remoteObjectProxyWithErrorHandler:v15];
-    [v11 priceTrackingCtlAddTrackedItems:v7 completion:v10];
+    [v11 priceTrackingCtlAddTrackedItems:itemsCopy completion:v10];
   }
 
   else
@@ -3940,13 +3940,13 @@
   }
 }
 
-- (void)priceTrackingCtlOverrideReferencePrices:(id)a3 completion:(id)a4
+- (void)priceTrackingCtlOverrideReferencePrices:(id)prices completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  pricesCopy = prices;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v9 = v8;
+    v9 = completionCopy;
   }
 
   else
@@ -3965,7 +3965,7 @@
     v10 = v9;
     v16 = v10;
     v11 = [(BDSServiceProxy *)self remoteObjectProxyWithErrorHandler:v15];
-    [v11 priceTrackingCtlOverrideReferencePrices:v7 completion:v10];
+    [v11 priceTrackingCtlOverrideReferencePrices:pricesCopy completion:v10];
   }
 
   else
@@ -3985,13 +3985,13 @@
   }
 }
 
-- (void)readingHistoryBackupWithName:(id)a3 completion:(id)a4
+- (void)readingHistoryBackupWithName:(id)name completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  nameCopy = name;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v8 = v7;
+    v8 = completionCopy;
   }
 
   else
@@ -4005,7 +4005,7 @@
     v16 = 3221225472;
     v17 = sub_1E45FDE48;
     v18 = &unk_1E8759AA0;
-    v9 = v6;
+    v9 = nameCopy;
     v19 = v9;
     v10 = v8;
     v20 = v10;
@@ -4032,12 +4032,12 @@
   }
 }
 
-- (void)readingHistoryListBackupWithCompletion:(id)a3
+- (void)readingHistoryListBackupWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v5 = v4;
+    v5 = completionCopy;
   }
 
   else
@@ -4076,13 +4076,13 @@
   }
 }
 
-- (void)readingHistoryRestoreWithName:(id)a3 completion:(id)a4
+- (void)readingHistoryRestoreWithName:(id)name completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  nameCopy = name;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v8 = v7;
+    v8 = completionCopy;
   }
 
   else
@@ -4096,7 +4096,7 @@
     v16 = 3221225472;
     v17 = sub_1E45FE23C;
     v18 = &unk_1E8759AA0;
-    v9 = v6;
+    v9 = nameCopy;
     v19 = v9;
     v10 = v8;
     v20 = v10;
@@ -4123,12 +4123,12 @@
   }
 }
 
-- (void)bookWidgetReadingHistoryStateInfoWithCompletion:(id)a3
+- (void)bookWidgetReadingHistoryStateInfoWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v5 = v4;
+    v5 = completionCopy;
   }
 
   else
@@ -4167,16 +4167,16 @@
   }
 }
 
-- (void)mergeMovedReadingHistoryDataWithCompletionHandler:(id)a3
+- (void)mergeMovedReadingHistoryDataWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if ([(BDSServiceProxy *)self connectionHealthy])
   {
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = sub_1E45FE5BC;
     v10[3] = &unk_1E87597F8;
-    v5 = v4;
+    v5 = handlerCopy;
     v11 = v5;
     v6 = [(BDSServiceProxy *)self remoteObjectProxyWithErrorHandler:v10];
     [v6 mergeMovedReadingHistoryDataWithCompletionHandler:v5];
@@ -4192,7 +4192,7 @@
       sub_1E470406C();
     }
 
-    v7 = _Block_copy(v4);
+    v7 = _Block_copy(handlerCopy);
     if (v7)
     {
       v9 = [MEMORY[0x1E696ABC0] errorWithDomain:@"BDSErrorDomain" code:1000 userInfo:0];
@@ -4201,16 +4201,16 @@
   }
 }
 
-- (void)hasSaltChangedWithCompletion:(id)a3
+- (void)hasSaltChangedWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(BDSServiceProxy *)self connectionHealthy])
   {
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = sub_1E45FE788;
     v10[3] = &unk_1E87597F8;
-    v5 = v4;
+    v5 = completionCopy;
     v11 = v5;
     v6 = [(BDSServiceProxy *)self remoteObjectProxyWithErrorHandler:v10];
     [v6 hasSaltChangedWithCompletion:v5];
@@ -4226,7 +4226,7 @@
       sub_1E4704118();
     }
 
-    v7 = _Block_copy(v4);
+    v7 = _Block_copy(completionCopy);
     if (v7)
     {
       v9 = [MEMORY[0x1E696ABC0] errorWithDomain:@"BDSErrorDomain" code:1000 userInfo:0];

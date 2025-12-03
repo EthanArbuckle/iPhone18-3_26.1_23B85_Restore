@@ -1,6 +1,6 @@
 @interface ProvisioningCardReaderCardView
 - (CGSize)sizeThatFits:(CGSize)result;
-- (_TtC9PassKitUI30ProvisioningCardReaderCardView)initWithFrame:(CGRect)a3;
+- (_TtC9PassKitUI30ProvisioningCardReaderCardView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -15,11 +15,11 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BD787E2C();
 }
 
-- (_TtC9PassKitUI30ProvisioningCardReaderCardView)initWithFrame:(CGRect)a3
+- (_TtC9PassKitUI30ProvisioningCardReaderCardView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

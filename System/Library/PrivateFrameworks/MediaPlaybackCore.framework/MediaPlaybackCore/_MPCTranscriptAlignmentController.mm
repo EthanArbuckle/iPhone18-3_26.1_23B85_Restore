@@ -2,7 +2,7 @@
 - (BOOL)isEnabled;
 - (MPCPlaybackEngineEventConsumer)eventConsumer;
 - (NSArray)transcriptAlignments;
-- (void)resolveWith:(double)a3 referenceTime:(double)a4 completionHandler:(id)a5;
+- (void)resolveWith:(double)with referenceTime:(double)time completionHandler:(id)handler;
 - (void)startProcessing;
 @end
 
@@ -17,7 +17,7 @@
 
 - (NSArray)transcriptAlignments
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1C5CE47DC();
 
   if (v3)
@@ -36,7 +36,7 @@
 
 - (BOOL)isEnabled
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1C5CE4880();
 
   return v3 & 1;
@@ -44,19 +44,19 @@
 
 - (void)startProcessing
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C5CE48F8();
 }
 
-- (void)resolveWith:(double)a3 referenceTime:(double)a4 completionHandler:(id)a5
+- (void)resolveWith:(double)with referenceTime:(double)time completionHandler:(id)handler
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
-  *(v9 + 16) = a3;
-  *(v9 + 24) = a4;
+  *(v9 + 16) = with;
+  *(v9 + 24) = time;
   *(v9 + 32) = v8;
   *(v9 + 40) = self;
-  v10 = self;
+  selfCopy = self;
 
   sub_1C5E3A9D0(&unk_1C6036488, v9);
 }

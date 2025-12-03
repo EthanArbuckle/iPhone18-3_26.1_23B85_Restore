@@ -1,20 +1,20 @@
 @interface MIOFeatureDescription
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)optional;
-- (MIOFeatureDescription)initWithSpecification:(const void *)a3;
+- (MIOFeatureDescription)initWithSpecification:(const void *)specification;
 - (NSString)shortDescription;
 - (id)description;
 - (id)featureTypeDictionaryForModelViewer;
 - (id)featureTypeStringForModelViewer;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (int64_t)type;
 - (unint64_t)hash;
-- (void)setShortDescription:(id)a3;
+- (void)setShortDescription:(id)description;
 @end
 
 @implementation MIOFeatureDescription
 
-- (MIOFeatureDescription)initWithSpecification:(const void *)a3
+- (MIOFeatureDescription)initWithSpecification:(const void *)specification
 {
   v16.receiver = self;
   v16.super_class = MIOFeatureDescription;
@@ -25,7 +25,7 @@
     return v5;
   }
 
-  CoreML::Specification::FeatureDescription::CopyFrom(v4 + 1, a3);
+  CoreML::Specification::FeatureDescription::CopyFrom(v4 + 1, specification);
   v6 = 0;
   type = v5->_featureDescriptionParams.type_;
   if (!type)
@@ -83,7 +83,7 @@ LABEL_16:
   return v5;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [MIOMutableFeatureDescription alloc];
 
@@ -93,7 +93,7 @@ LABEL_16:
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(MIOFeatureDescription *)self name];
+  name = [(MIOFeatureDescription *)self name];
   v5 = MIOFeatureTypeToString([(MIOFeatureDescription *)self type]);
   if ([(MIOFeatureDescription *)self optional])
   {
@@ -105,17 +105,17 @@ LABEL_16:
     v6 = "NO";
   }
 
-  v7 = [(MIOFeatureDescription *)self constraint];
-  v8 = [(MIOFeatureDescription *)self shortDescription];
-  v9 = [v3 stringWithFormat:@"MIOFeatureDescription (%@) {type: %@, optional: %s, constraint: %@, shortDescription: %@}", v4, v5, v6, v7, v8];
+  constraint = [(MIOFeatureDescription *)self constraint];
+  shortDescription = [(MIOFeatureDescription *)self shortDescription];
+  v9 = [v3 stringWithFormat:@"MIOFeatureDescription (%@) {type: %@, optional: %s, constraint: %@, shortDescription: %@}", name, v5, v6, constraint, shortDescription];
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v19 = 1;
   }
@@ -125,31 +125,31 @@ LABEL_16:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(MIOFeatureDescription *)self name];
-      v7 = [(MIOFeatureDescription *)v5 name];
-      v8 = [v6 isEqual:v7];
+      v5 = equalCopy;
+      name = [(MIOFeatureDescription *)self name];
+      name2 = [(MIOFeatureDescription *)v5 name];
+      v8 = [name isEqual:name2];
 
       if (v8)
       {
-        v9 = [(MIOFeatureDescription *)self shortDescription];
-        v10 = [(MIOFeatureDescription *)v5 shortDescription];
-        v11 = [v9 isEqual:v10];
+        shortDescription = [(MIOFeatureDescription *)self shortDescription];
+        shortDescription2 = [(MIOFeatureDescription *)v5 shortDescription];
+        v11 = [shortDescription isEqual:shortDescription2];
 
         if (v11)
         {
-          v12 = [(MIOFeatureDescription *)self type];
-          if (v12 == [(MIOFeatureDescription *)v5 type])
+          type = [(MIOFeatureDescription *)self type];
+          if (type == [(MIOFeatureDescription *)v5 type])
           {
-            v13 = [(MIOFeatureDescription *)self optional];
-            if (v13 == [(MIOFeatureDescription *)v5 optional])
+            optional = [(MIOFeatureDescription *)self optional];
+            if (optional == [(MIOFeatureDescription *)v5 optional])
             {
-              v14 = [(MIOFeatureDescription *)self constraint];
-              if (v14 && ([(MIOFeatureDescription *)v5 constraint], v15 = objc_claimAutoreleasedReturnValue(), v15, v14, v15))
+              constraint = [(MIOFeatureDescription *)self constraint];
+              if (constraint && ([(MIOFeatureDescription *)v5 constraint], v15 = objc_claimAutoreleasedReturnValue(), v15, constraint, v15))
               {
-                v16 = [(MIOFeatureDescription *)self constraint];
-                v17 = [(MIOFeatureDescription *)v5 constraint];
-                v18 = [v16 isEqual:v17];
+                constraint2 = [(MIOFeatureDescription *)self constraint];
+                constraint3 = [(MIOFeatureDescription *)v5 constraint];
+                v18 = [constraint2 isEqual:constraint3];
 
                 if (v18)
                 {
@@ -159,16 +159,16 @@ LABEL_16:
 
               else
               {
-                v20 = [(MIOFeatureDescription *)self constraint];
-                if (v20)
+                constraint4 = [(MIOFeatureDescription *)self constraint];
+                if (constraint4)
                 {
                 }
 
                 else
                 {
-                  v21 = [(MIOFeatureDescription *)v5 constraint];
+                  constraint5 = [(MIOFeatureDescription *)v5 constraint];
 
-                  if (!v21)
+                  if (!constraint5)
                   {
 LABEL_19:
                     v19 = 1;
@@ -197,14 +197,14 @@ LABEL_18:
 
 - (unint64_t)hash
 {
-  v3 = [(MIOFeatureDescription *)self name];
-  v4 = [v3 hash];
-  v5 = [(MIOFeatureDescription *)self type];
-  v6 = [(MIOFeatureDescription *)self optional];
-  v7 = [(MIOFeatureDescription *)self constraint];
-  v8 = [v7 hash];
+  name = [(MIOFeatureDescription *)self name];
+  v4 = [name hash];
+  type = [(MIOFeatureDescription *)self type];
+  optional = [(MIOFeatureDescription *)self optional];
+  constraint = [(MIOFeatureDescription *)self constraint];
+  v8 = [constraint hash];
 
-  return v5 ^ v4 ^ v6 ^ v8;
+  return type ^ v4 ^ optional ^ v8;
 }
 
 - (NSString)shortDescription
@@ -218,10 +218,10 @@ LABEL_18:
   return [MEMORY[0x1E696AEC0] stringWithUTF8String:v2];
 }
 
-- (void)setShortDescription:(id)a3
+- (void)setShortDescription:(id)description
 {
-  v7 = a3;
-  v4 = [v7 UTF8String];
+  descriptionCopy = description;
+  uTF8String = [descriptionCopy UTF8String];
   ptr = self->_featureDescriptionParams._internal_metadata_.ptr_;
   v6 = (ptr & 0xFFFFFFFFFFFFFFFCLL);
   if (ptr)
@@ -229,7 +229,7 @@ LABEL_18:
     v6 = *v6;
   }
 
-  google::protobuf::internal::ArenaStringPtr::Set<google::protobuf::internal::ArenaStringPtr::EmptyDefault>(&self->_featureDescriptionParams.shortdescription_, v4, v6);
+  google::protobuf::internal::ArenaStringPtr::Set<google::protobuf::internal::ArenaStringPtr::EmptyDefault>(&self->_featureDescriptionParams.shortdescription_, uTF8String, v6);
 }
 
 - (int64_t)type

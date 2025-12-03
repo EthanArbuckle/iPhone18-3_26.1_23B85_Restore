@@ -1,15 +1,15 @@
 @interface CoreIRBus
-- (BOOL)setPairedAppleRemote:(id)a3 error:(id *)a4;
+- (BOOL)setPairedAppleRemote:(id)remote error:(id *)error;
 - (CoreIRBus)init;
-- (CoreIRBus)initWithBus:(id)a3;
-- (CoreIRBus)initWithCoder:(id)a3;
+- (CoreIRBus)initWithBus:(id)bus;
+- (CoreIRBus)initWithCoder:(id)coder;
 - (id)description;
 - (void)dealloc;
-- (void)didDispatchCommandFromAppleRemote:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setLastAppleRemote:(id)a3;
-- (void)setPairedAppleRemote:(id)a3;
-- (void)willRemoveDevice:(id)a3;
+- (void)didDispatchCommandFromAppleRemote:(id)remote;
+- (void)encodeWithCoder:(id)coder;
+- (void)setLastAppleRemote:(id)remote;
+- (void)setPairedAppleRemote:(id)remote;
+- (void)willRemoveDevice:(id)device;
 @end
 
 @implementation CoreIRBus
@@ -28,18 +28,18 @@
   return result;
 }
 
-- (CoreIRBus)initWithBus:(id)a3
+- (CoreIRBus)initWithBus:(id)bus
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v7.receiver = self;
     v7.super_class = CoreIRBus;
-    v5 = [(CoreRCBus *)&v7 initWithBus:a3];
+    v5 = [(CoreRCBus *)&v7 initWithBus:bus];
     if (v5)
     {
-      -[CoreIRBus setPairedAppleRemote:](v5, "setPairedAppleRemote:", [a3 pairedAppleRemote]);
-      -[CoreIRBus setLastAppleRemote:](v5, "setLastAppleRemote:", [a3 lastAppleRemote]);
+      -[CoreIRBus setPairedAppleRemote:](v5, "setPairedAppleRemote:", [bus pairedAppleRemote]);
+      -[CoreIRBus setLastAppleRemote:](v5, "setLastAppleRemote:", [bus lastAppleRemote]);
     }
   }
 
@@ -52,27 +52,27 @@
   return v5;
 }
 
-- (CoreIRBus)initWithCoder:(id)a3
+- (CoreIRBus)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = CoreIRBus;
   v4 = [(CoreRCBus *)&v6 initWithCoder:?];
   if (v4)
   {
-    -[CoreIRBus setPairedAppleRemote:](v4, "setPairedAppleRemote:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"pairedAppleRemote"]);
-    -[CoreIRBus setLastAppleRemote:](v4, "setLastAppleRemote:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"lastAppleRemote"]);
+    -[CoreIRBus setPairedAppleRemote:](v4, "setPairedAppleRemote:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"pairedAppleRemote"]);
+    -[CoreIRBus setLastAppleRemote:](v4, "setLastAppleRemote:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"lastAppleRemote"]);
   }
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = CoreIRBus;
   [(CoreRCBus *)&v5 encodeWithCoder:?];
-  [a3 encodeObject:-[CoreIRBus pairedAppleRemote](self forKey:{"pairedAppleRemote"), @"pairedAppleRemote"}];
-  [a3 encodeObject:-[CoreIRBus lastAppleRemote](self forKey:{"lastAppleRemote"), @"lastAppleRemote"}];
+  [coder encodeObject:-[CoreIRBus pairedAppleRemote](self forKey:{"pairedAppleRemote"), @"pairedAppleRemote"}];
+  [coder encodeObject:-[CoreIRBus lastAppleRemote](self forKey:{"lastAppleRemote"), @"lastAppleRemote"}];
 }
 
 - (void)dealloc
@@ -89,15 +89,15 @@
   v3 = [objc_alloc(MEMORY[0x277CCAB68]) initWithString:{-[CoreRCBus description](&v6, sel_description)}];
   if ([(CoreIRBus *)self pairedAppleRemote])
   {
-    v4 = [(CoreIRBus *)self pairedAppleRemote];
+    pairedAppleRemote = [(CoreIRBus *)self pairedAppleRemote];
   }
 
   else
   {
-    v4 = @"N";
+    pairedAppleRemote = @"N";
   }
 
-  [v3 appendFormat:@" Paired: %@;", v4];
+  [v3 appendFormat:@" Paired: %@;", pairedAppleRemote];
   if ([(CoreIRBus *)self lastAppleRemote])
   {
     [v3 appendFormat:@" Last Apple Remote: %@;", -[CoreIRBus lastAppleRemote](self, "lastAppleRemote")];
@@ -106,49 +106,49 @@
   return v3;
 }
 
-- (void)willRemoveDevice:(id)a3
+- (void)willRemoveDevice:(id)device
 {
-  if ([(CoreRCDevice *)[(CoreIRBus *)self lastAppleRemote] isEqual:a3])
+  if ([(CoreRCDevice *)[(CoreIRBus *)self lastAppleRemote] isEqual:device])
   {
     [(CoreIRBus *)self setLastAppleRemote:0];
   }
 
-  if ([(CoreRCDevice *)[(CoreIRBus *)self pairedAppleRemote] isEqual:a3])
+  if ([(CoreRCDevice *)[(CoreIRBus *)self pairedAppleRemote] isEqual:device])
   {
     [(CoreIRBus *)self setPairedAppleRemote:0];
   }
 
   v5.receiver = self;
   v5.super_class = CoreIRBus;
-  [(CoreRCBus *)&v5 willRemoveDevice:a3];
+  [(CoreRCBus *)&v5 willRemoveDevice:device];
 }
 
-- (void)setLastAppleRemote:(id)a3
+- (void)setLastAppleRemote:(id)remote
 {
-  v4 = [(CoreRCBus *)self deviceOnBusEquivalentTo:a3];
+  v4 = [(CoreRCBus *)self deviceOnBusEquivalentTo:remote];
 
   self->_lastAppleRemote = v4;
 }
 
-- (void)setPairedAppleRemote:(id)a3
+- (void)setPairedAppleRemote:(id)remote
 {
-  v4 = [(CoreRCBus *)self deviceOnBusEquivalentTo:a3];
+  v4 = [(CoreRCBus *)self deviceOnBusEquivalentTo:remote];
 
   self->_pairedAppleRemote = v4;
 }
 
-- (BOOL)setPairedAppleRemote:(id)a3 error:(id *)a4
+- (BOOL)setPairedAppleRemote:(id)remote error:(id *)error
 {
-  [(CoreIRBus *)self setPairedAppleRemote:a3, a4];
+  [(CoreIRBus *)self setPairedAppleRemote:remote, error];
   [(CoreRCBus *)self didUpdateProperties:&unk_28593C228];
   return 1;
 }
 
-- (void)didDispatchCommandFromAppleRemote:(id)a3
+- (void)didDispatchCommandFromAppleRemote:(id)remote
 {
-  if ([(CoreIRBus *)self lastAppleRemote]!= a3)
+  if ([(CoreIRBus *)self lastAppleRemote]!= remote)
   {
-    [(CoreIRBus *)self setLastAppleRemote:a3];
+    [(CoreIRBus *)self setLastAppleRemote:remote];
 
     [(CoreRCBus *)self didUpdateProperties:&unk_28593C240];
   }

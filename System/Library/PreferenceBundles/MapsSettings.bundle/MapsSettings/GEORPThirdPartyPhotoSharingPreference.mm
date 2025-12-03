@@ -1,12 +1,12 @@
 @interface GEORPThirdPartyPhotoSharingPreference
-+ (id)thirdPartyPhotoSharingPreferenceFromResponse:(id)a3;
++ (id)thirdPartyPhotoSharingPreferenceFromResponse:(id)response;
 @end
 
 @implementation GEORPThirdPartyPhotoSharingPreference
 
-+ (id)thirdPartyPhotoSharingPreferenceFromResponse:(id)a3
++ (id)thirdPartyPhotoSharingPreferenceFromResponse:(id)response
 {
-  v3 = a3;
+  responseCopy = response;
   v7 = 0;
   v8 = &v7;
   v9 = 0x3032000000;
@@ -18,7 +18,7 @@
   v6[2] = sub_204C0;
   v6[3] = &unk_80010;
   v6[4] = &v7;
-  [v3 enumerateFeedbackInfosUsingBlock:v6];
+  [responseCopy enumerateFeedbackInfosUsingBlock:v6];
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
 

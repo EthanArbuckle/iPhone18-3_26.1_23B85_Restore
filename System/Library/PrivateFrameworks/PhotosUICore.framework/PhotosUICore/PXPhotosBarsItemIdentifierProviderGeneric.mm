@@ -1,27 +1,27 @@
 @interface PXPhotosBarsItemIdentifierProviderGeneric
-+ (void)valuesForModel:(id)a3 title:(id *)a4 leadingIdentifiers:(id *)a5 trailingIdentifiers:(id *)a6 leadingToolbarIdentifiers:(id *)a7 centerToolbarIdentifiers:(id *)a8 trailingToolbarIdentifiers:(id *)a9 hasSharedLibraryOrPreview:(BOOL)a10 canShowSortAndFilterMenu:(BOOL)a11;
++ (void)valuesForModel:(id)model title:(id *)title leadingIdentifiers:(id *)identifiers trailingIdentifiers:(id *)trailingIdentifiers leadingToolbarIdentifiers:(id *)toolbarIdentifiers centerToolbarIdentifiers:(id *)centerToolbarIdentifiers trailingToolbarIdentifiers:(id *)trailingToolbarIdentifiers hasSharedLibraryOrPreview:(BOOL)self0 canShowSortAndFilterMenu:(BOOL)self1;
 @end
 
 @implementation PXPhotosBarsItemIdentifierProviderGeneric
 
-+ (void)valuesForModel:(id)a3 title:(id *)a4 leadingIdentifiers:(id *)a5 trailingIdentifiers:(id *)a6 leadingToolbarIdentifiers:(id *)a7 centerToolbarIdentifiers:(id *)a8 trailingToolbarIdentifiers:(id *)a9 hasSharedLibraryOrPreview:(BOOL)a10 canShowSortAndFilterMenu:(BOOL)a11
++ (void)valuesForModel:(id)model title:(id *)title leadingIdentifiers:(id *)identifiers trailingIdentifiers:(id *)trailingIdentifiers leadingToolbarIdentifiers:(id *)toolbarIdentifiers centerToolbarIdentifiers:(id *)centerToolbarIdentifiers trailingToolbarIdentifiers:(id *)trailingToolbarIdentifiers hasSharedLibraryOrPreview:(BOOL)self0 canShowSortAndFilterMenu:(BOOL)self1
 {
-  v11 = a3;
-  v12 = [v11 currentDataSource];
-  v13 = [v11 allowedChromeItems];
-  v144 = v12;
-  v141 = [v12 containerCollection];
-  v134 = [v141 px_isCloudKitSharedAlbum];
-  v14 = [v11 isInSelectMode];
-  v15 = [v11 selectionSnapshot];
-  v16 = [v15 isAnyItemSelected];
+  modelCopy = model;
+  currentDataSource = [modelCopy currentDataSource];
+  allowedChromeItems = [modelCopy allowedChromeItems];
+  v144 = currentDataSource;
+  containerCollection = [currentDataSource containerCollection];
+  px_isCloudKitSharedAlbum = [containerCollection px_isCloudKitSharedAlbum];
+  isInSelectMode = [modelCopy isInSelectMode];
+  selectionSnapshot = [modelCopy selectionSnapshot];
+  isAnyItemSelected = [selectionSnapshot isAnyItemSelected];
 
-  v17 = [v11 navBarStyle];
-  v18 = [v11 allowsAddAction];
+  navBarStyle = [modelCopy navBarStyle];
+  allowsAddAction = [modelCopy allowsAddAction];
   v19 = 0;
-  if (v18 && (v14 & 1) == 0 && (v16 & 1) == 0)
+  if (allowsAddAction && (isInSelectMode & 1) == 0 && (isAnyItemSelected & 1) == 0)
   {
-    if ([v11 allowsEmptyPlaceholderBehavior])
+    if ([modelCopy allowsEmptyPlaceholderBehavior])
     {
       v19 = [v144 isFiltered] ^ 1;
     }
@@ -33,10 +33,10 @@
   }
 
   v135 = v19;
-  if ([v11 allowsShareAction])
+  if ([modelCopy allowsShareAction])
   {
-    v20 = [v11 assetActionManager];
-    v106 = [v20 supportsActionType:*off_1E7721B88];
+    assetActionManager = [modelCopy assetActionManager];
+    v106 = [assetActionManager supportsActionType:*off_1E7721B88];
   }
 
   else
@@ -44,39 +44,39 @@
     v106 = 0;
   }
 
-  v110 = [v11 allowsTrashAction];
-  v117 = [v11 allowsSelectAllAction];
-  if ([v11 isInCompactMode])
+  allowsTrashAction = [modelCopy allowsTrashAction];
+  allowsSelectAllAction = [modelCopy allowsSelectAllAction];
+  if ([modelCopy isInCompactMode])
   {
     v21 = 0;
   }
 
   else
   {
-    v22 = [v11 supportsAspectRatioToggle];
+    supportsAspectRatioToggle = [modelCopy supportsAspectRatioToggle];
     v21 = 0;
-    if (v22 && (v13 & 0x2000) != 0)
+    if (supportsAspectRatioToggle && (allowedChromeItems & 0x2000) != 0)
     {
-      v21 = [v11 gridStyle] != 6;
+      v21 = [modelCopy gridStyle] != 6;
     }
   }
 
   v124 = v21;
-  v23 = [v11 wantsToolbarVisible];
-  v24 = [v11 toolbarStyle];
-  v25 = [off_1E7721810 sharedInstance];
-  if ([v25 enableNewActionMenu])
+  wantsToolbarVisible = [modelCopy wantsToolbarVisible];
+  toolbarStyle = [modelCopy toolbarStyle];
+  sharedInstance = [off_1E7721810 sharedInstance];
+  if ([sharedInstance enableNewActionMenu])
   {
-    v26 = [v11 allowsActionMenuBehavior];
+    allowsActionMenuBehavior = [modelCopy allowsActionMenuBehavior];
 
-    if (v26)
+    if (allowsActionMenuBehavior)
     {
-      v27 = [v11 currentLens];
-      v28 = [v27 allowsActionMenu];
+      currentLens = [modelCopy currentLens];
+      allowsActionMenu = [currentLens allowsActionMenu];
 
-      if (v28)
+      if (allowsActionMenu)
       {
-        v29 = (v13 >> 1) & 1;
+        v29 = (allowedChromeItems >> 1) & 1;
         goto LABEL_21;
       }
     }
@@ -88,102 +88,102 @@
 
   LODWORD(v29) = 0;
 LABEL_21:
-  if (v17)
+  if (navBarStyle)
   {
     v30 = 0;
   }
 
   else
   {
-    v30 = v23;
+    v30 = wantsToolbarVisible;
   }
 
-  v31 = v23;
+  v31 = wantsToolbarVisible;
   if (v30 == 1)
   {
-    v31 = MEMORY[0x1A590D320](v23);
+    v31 = MEMORY[0x1A590D320](wantsToolbarVisible);
   }
 
   v125 = v31;
-  v130 = [v11 allowsDismissAction];
-  v127 = [v11 allowsAddToLibraryAction];
-  v119 = [v11 allowsContentSyndicationSaveAllAction];
-  v132 = [v11 allowsInfoAction];
-  v32 = [v11 allowsMultiSelectMenu];
-  v108 = v32 & v14;
-  if (v24 == 1)
+  allowsDismissAction = [modelCopy allowsDismissAction];
+  allowsAddToLibraryAction = [modelCopy allowsAddToLibraryAction];
+  allowsContentSyndicationSaveAllAction = [modelCopy allowsContentSyndicationSaveAllAction];
+  allowsInfoAction = [modelCopy allowsInfoAction];
+  allowsMultiSelectMenu = [modelCopy allowsMultiSelectMenu];
+  v108 = allowsMultiSelectMenu & isInSelectMode;
+  if (toolbarStyle == 1)
   {
     v33 = 0;
   }
 
   else
   {
-    v33 = v32 & v14;
+    v33 = allowsMultiSelectMenu & isInSelectMode;
   }
 
-  v120 = [v11 allowsReplyAction];
-  v121 = [v11 allowsTapbackAction];
+  allowsReplyAction = [modelCopy allowsReplyAction];
+  allowsTapbackAction = [modelCopy allowsTapbackAction];
   v133 = v29;
-  if ([v11 wantsToolbarVisible] && (objc_msgSend(v11, "prefersActionsInToolbar") & 1) != 0)
+  if ([modelCopy wantsToolbarVisible] && (objc_msgSend(modelCopy, "prefersActionsInToolbar") & 1) != 0)
   {
-    v34 = 1;
+    prefersActionsInToolbar = 1;
   }
 
-  else if ([v11 shouldAlwaysRespectToolbarActionPlacementPreference])
+  else if ([modelCopy shouldAlwaysRespectToolbarActionPlacementPreference])
   {
-    v34 = [v11 prefersActionsInToolbar];
-  }
-
-  else
-  {
-    v34 = 0;
-  }
-
-  v35 = [v11 allowsSearch];
-  if (([v11 wantsToolbarVisible] & 1) != 0 || v34)
-  {
-    v105 = [v11 isInCompactMode];
+    prefersActionsInToolbar = [modelCopy prefersActionsInToolbar];
   }
 
   else
   {
-    v105 = 0;
+    prefersActionsInToolbar = 0;
   }
 
-  v112 = v24;
-  if (v13)
+  allowsSearch = [modelCopy allowsSearch];
+  if (([modelCopy wantsToolbarVisible] & 1) != 0 || prefersActionsInToolbar)
   {
-    v137 = [v11 dismissAffordance];
-  }
-
-  else
-  {
-    v137 = 0;
-  }
-
-  v36 = [v11 contentPrivacyState];
-  v115 = [v11 allowsShareAllAction];
-  v114 = v17;
-  if ([v11 allowsShareAllAction])
-  {
-    v116 = [v11 wantsShareGridButtonVisible];
+    isInCompactMode = [modelCopy isInCompactMode];
   }
 
   else
   {
-    v116 = 0;
+    isInCompactMode = 0;
   }
 
-  v37 = [v11 specManager];
-  v38 = [v37 spec];
-  v39 = [v38 wantsToggleSidebarButton];
-
-  v104 = [v11 wantsSelectModeCaptionInContextMenu];
-  v40 = [v11 allowsSortAndFilterMenu];
-  v41 = (([v11 wantsToolbarVisible] | v34) & 1) != 0 && objc_msgSend(v11, "isInCompactMode") && objc_msgSend(v11, "gridStyle") != 6;
-  if ([v11 allowsCurationModeToggle])
+  v112 = toolbarStyle;
+  if (allowedChromeItems)
   {
-    v42 = [v11 canShowCurationModeToggle] ^ 1;
+    dismissAffordance = [modelCopy dismissAffordance];
+  }
+
+  else
+  {
+    dismissAffordance = 0;
+  }
+
+  contentPrivacyState = [modelCopy contentPrivacyState];
+  allowsShareAllAction = [modelCopy allowsShareAllAction];
+  v114 = navBarStyle;
+  if ([modelCopy allowsShareAllAction])
+  {
+    wantsShareGridButtonVisible = [modelCopy wantsShareGridButtonVisible];
+  }
+
+  else
+  {
+    wantsShareGridButtonVisible = 0;
+  }
+
+  specManager = [modelCopy specManager];
+  spec = [specManager spec];
+  wantsToggleSidebarButton = [spec wantsToggleSidebarButton];
+
+  wantsSelectModeCaptionInContextMenu = [modelCopy wantsSelectModeCaptionInContextMenu];
+  allowsSortAndFilterMenu = [modelCopy allowsSortAndFilterMenu];
+  v41 = (([modelCopy wantsToolbarVisible] | prefersActionsInToolbar) & 1) != 0 && objc_msgSend(modelCopy, "isInCompactMode") && objc_msgSend(modelCopy, "gridStyle") != 6;
+  if ([modelCopy allowsCurationModeToggle])
+  {
+    v42 = [modelCopy canShowCurationModeToggle] ^ 1;
   }
 
   else
@@ -192,30 +192,30 @@ LABEL_21:
   }
 
   v131 = v42;
-  v43 = [v11 prefersCurationModeToggleInNavBar];
-  if (v36)
+  prefersCurationModeToggleInNavBar = [modelCopy prefersCurationModeToggleInNavBar];
+  if (contentPrivacyState)
   {
-    v44 = [MEMORY[0x1E695DF70] array];
-    v45 = [MEMORY[0x1E695DF70] array];
-    if (v39)
+    array = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
+    if (wantsToggleSidebarButton)
     {
       v46 = off_1E7721F48;
-      v47 = a6;
-      v48 = a8;
+      trailingIdentifiersCopy5 = trailingIdentifiers;
+      centerToolbarIdentifiersCopy5 = centerToolbarIdentifiers;
     }
 
     else
     {
-      v47 = a6;
-      v48 = a8;
-      if (v137 == 1)
+      trailingIdentifiersCopy5 = trailingIdentifiers;
+      centerToolbarIdentifiersCopy5 = centerToolbarIdentifiers;
+      if (dismissAffordance == 1)
       {
         v46 = off_1E7721E58;
       }
 
       else
       {
-        if (v137 != 2)
+        if (dismissAffordance != 2)
         {
 LABEL_89:
           v51 = 0;
@@ -229,12 +229,12 @@ LABEL_89:
       }
     }
 
-    [v44 addObject:*v46];
+    [array addObject:*v46];
     goto LABEL_89;
   }
 
-  v49 = v43;
-  v50 = v40 & a11;
+  v49 = prefersCurationModeToggleInNavBar;
+  v50 = allowsSortAndFilterMenu & menu;
   if (([v144 containsAnyItems] & 1) == 0 && (!MEMORY[0x1A590D320]() || !objc_msgSend(v144, "isFiltered")))
   {
     v62 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -254,7 +254,7 @@ LABEL_89:
     v146 = v66;
     v67 = _Block_copy(v145);
     v68 = v67;
-    if (v39)
+    if (wantsToggleSidebarButton)
     {
       (*(v67 + 2))(v67, *off_1E7721F48);
     }
@@ -270,7 +270,7 @@ LABEL_89:
       v69 = (v64[2])(v64, *off_1E7721F20);
     }
 
-    if (v132)
+    if (allowsInfoAction)
     {
       v69 = (v64[2])(v64, *off_1E7721E88);
     }
@@ -280,24 +280,24 @@ LABEL_89:
       v69 = (v64[2])(v64, *off_1E7721E08);
     }
 
-    if (v134)
+    if (px_isCloudKitSharedAlbum)
     {
       v69 = (v64[2])(v64, *off_1E7721F10);
     }
 
-    if (!(v39 & 1 | ((v130 & 1) == 0)))
+    if (!(wantsToggleSidebarButton & 1 | ((allowsDismissAction & 1) == 0)))
     {
       v69 = v68[2](v68, *off_1E7721E58);
     }
 
-    if (v137 == 1)
+    if (dismissAffordance == 1)
     {
       v70 = off_1E7721E58;
     }
 
     else
     {
-      if (v137 != 2)
+      if (dismissAffordance != 2)
       {
         goto LABEL_92;
       }
@@ -312,8 +312,8 @@ LABEL_92:
       [v63 insertObject:*off_1E7721E20 atIndex:0];
     }
 
-    v44 = v66;
-    v45 = v63;
+    array = v66;
+    array2 = v63;
 
     v51 = 0;
     v54 = 0;
@@ -322,7 +322,7 @@ LABEL_92:
     goto LABEL_96;
   }
 
-  if (!v14)
+  if (!isInSelectMode)
   {
     v71 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v157[0] = MEMORY[0x1E69E9820];
@@ -365,9 +365,9 @@ LABEL_92:
     v150 = v77;
     v118 = _Block_copy(v149);
     v78 = MEMORY[0x1A590D320]();
-    if ((v78 & v35) == 1)
+    if ((v78 & allowsSearch) == 1)
     {
-      if (v105)
+      if (isInCompactMode)
       {
         v78 = [v77 addObject:*off_1E7721EE0];
       }
@@ -384,9 +384,9 @@ LABEL_92:
     }
 
     v107 = v77;
-    if (v119)
+    if (allowsContentSyndicationSaveAllAction)
     {
-      if (v34)
+      if (prefersActionsInToolbar)
       {
         v80 = v129;
       }
@@ -404,14 +404,14 @@ LABEL_92:
       (v129[2])(v129, *off_1E7721F40);
     }
 
-    v81 = v115 & v34;
-    v82 = [v11 wantsSelectButton];
-    if (v82)
+    v81 = allowsShareAllAction & prefersActionsInToolbar;
+    wantsSelectButton = [modelCopy wantsSelectButton];
+    if (wantsSelectButton)
     {
-      v82 = (*(v72 + 2))(v72, *off_1E7721EE8);
+      wantsSelectButton = (*(v72 + 2))(v72, *off_1E7721EE8);
     }
 
-    if ((v81 | v116))
+    if ((v81 | wantsShareGridButtonVisible))
     {
       if (v81)
       {
@@ -423,14 +423,14 @@ LABEL_92:
         v83 = v72;
       }
 
-      v82 = (v83[2])(v83, *off_1E7721F08);
+      wantsSelectButton = (v83[2])(v83, *off_1E7721F08);
     }
 
-    if (v120)
+    if (allowsReplyAction)
     {
-      if (v34)
+      if (prefersActionsInToolbar)
       {
-        if (MEMORY[0x1A590D320](v82))
+        if (MEMORY[0x1A590D320](wantsSelectButton))
         {
           v84 = v126;
         }
@@ -441,20 +441,20 @@ LABEL_92:
         }
 
         (v84[2])(v84, *off_1E7721ED0);
-        v82 = v129;
-        if ((v121 & 1) == 0)
+        wantsSelectButton = v129;
+        if ((allowsTapbackAction & 1) == 0)
         {
 LABEL_132:
-          if (v132)
+          if (allowsInfoAction)
           {
-            v82 = (*(v72 + 2))(v72, *off_1E7721E88);
+            wantsSelectButton = (*(v72 + 2))(v72, *off_1E7721E88);
           }
 
-          if (v127)
+          if (allowsAddToLibraryAction)
           {
-            if (v34)
+            if (prefersActionsInToolbar)
             {
-              if (MEMORY[0x1A590D320](v82))
+              if (MEMORY[0x1A590D320](wantsSelectButton))
               {
                 v85 = v118[2];
               }
@@ -470,21 +470,21 @@ LABEL_132:
               v85 = *(v72 + 2);
             }
 
-            v82 = v85();
+            wantsSelectButton = v85();
           }
 
           if (v124)
           {
-            v82 = (*(v72 + 2))(v72, *off_1E7721F38);
+            wantsSelectButton = (*(v72 + 2))(v72, *off_1E7721F38);
           }
 
-          v47 = a6;
-          if (v134)
+          trailingIdentifiersCopy5 = trailingIdentifiers;
+          if (px_isCloudKitSharedAlbum)
           {
-            v82 = (*(v72 + 2))(v72, *off_1E7721F10);
+            wantsSelectButton = (*(v72 + 2))(v72, *off_1E7721F10);
           }
 
-          if (v39)
+          if (wantsToggleSidebarButton)
           {
             v86 = off_1E7721F48;
             v87 = v136;
@@ -493,27 +493,27 @@ LABEL_132:
           else
           {
             v87 = v136;
-            if (v130)
+            if (allowsDismissAction)
             {
-              v82 = v136[2](v136, *off_1E7721E58);
+              wantsSelectButton = v136[2](v136, *off_1E7721E58);
             }
 
-            if (v137 == 1)
+            if (dismissAffordance == 1)
             {
               v86 = off_1E7721E58;
             }
 
             else
             {
-              if (v137 != 2)
+              if (dismissAffordance != 2)
               {
 LABEL_156:
                 if (!(v131 & 1 | ((v49 & 1) == 0)))
                 {
-                  v82 = v87[2](v87, *off_1E7721F40);
+                  wantsSelectButton = v87[2](v87, *off_1E7721F40);
                 }
 
-                v88 = MEMORY[0x1A590D320](v82);
+                v88 = MEMORY[0x1A590D320](wantsSelectButton);
                 if (v88)
                 {
                   if (v133)
@@ -540,14 +540,14 @@ LABEL_156:
                   [v109 insertObject:*off_1E7721E20 atIndex:0];
                 }
 
-                v45 = v109;
-                v44 = v111;
+                array2 = v109;
+                array = v111;
                 v54 = [v123 copy];
                 v53 = [v113 copy];
                 v52 = [v77 copy];
 
                 v51 = 0;
-                v48 = a8;
+                centerToolbarIdentifiersCopy5 = centerToolbarIdentifiers;
                 goto LABEL_222;
               }
 
@@ -555,17 +555,17 @@ LABEL_156:
             }
           }
 
-          v82 = v87[2](v87, *v86);
+          wantsSelectButton = v87[2](v87, *v86);
           goto LABEL_156;
         }
 
 LABEL_131:
-        v82 = (*(v82 + 16))(v82, *off_1E7721F30);
+        wantsSelectButton = (*(wantsSelectButton + 16))(wantsSelectButton, *off_1E7721F30);
         goto LABEL_132;
       }
 
-      v82 = (*(v72 + 2))(v72, *off_1E7721ED0);
-      if ((v121 & 1) == 0)
+      wantsSelectButton = (*(v72 + 2))(v72, *off_1E7721ED0);
+      if ((allowsTapbackAction & 1) == 0)
       {
         goto LABEL_132;
       }
@@ -573,19 +573,19 @@ LABEL_131:
 
     else
     {
-      if ((v121 & 1) == 0)
+      if ((allowsTapbackAction & 1) == 0)
       {
         goto LABEL_132;
       }
 
-      v82 = v129;
-      if (v34)
+      wantsSelectButton = v129;
+      if (prefersActionsInToolbar)
       {
         goto LABEL_131;
       }
     }
 
-    v82 = v72;
+    wantsSelectButton = v72;
     goto LABEL_131;
   }
 
@@ -595,14 +595,14 @@ LABEL_131:
   BYTE2(v103) = v33;
   BYTE1(v103) = v125 ^ 1;
   LOBYTE(v103) = 0;
-  [a1 _topBarValuesForSelectionModeWithModel:v11 title:v161 leadingIdentifiers:&v160 trailingIdentifiers:&v159 allowSelectAll:v117 allowAdd:v135 allowTrashActions:v103 allowDeleteShareActions:? wantsMultiSelectMenu:?];
+  [self _topBarValuesForSelectionModeWithModel:modelCopy title:v161 leadingIdentifiers:&v160 trailingIdentifiers:&v159 allowSelectAll:allowsSelectAllAction allowAdd:v135 allowTrashActions:v103 allowDeleteShareActions:? wantsMultiSelectMenu:?];
   v51 = v161[0];
-  v44 = v160;
-  v45 = v159;
+  array = v160;
+  array2 = v159;
   v52 = 0;
   v53 = 0;
   v54 = 0;
-  if (v23)
+  if (wantsToolbarVisible)
   {
     v55 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v56 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -611,7 +611,7 @@ LABEL_131:
     {
       v58 = MEMORY[0x1A590D320]();
       v59 = *off_1E7721F08;
-      v60 = v110;
+      v60 = allowsTrashAction;
       if (v58 && v112 != 1)
       {
         v61 = v55;
@@ -625,8 +625,8 @@ LABEL_131:
 
     else
     {
-      v60 = v110;
-      if ((v110 & v125) == 1)
+      v60 = allowsTrashAction;
+      if ((allowsTrashAction & v125) == 1)
       {
         v61 = v55;
         if (!MEMORY[0x1A590D320]() || v112 == 1)
@@ -642,32 +642,32 @@ LABEL_131:
         [v79 addObject:*off_1E7721F50];
         v138 = 0;
 LABEL_172:
-        if ([v11 navBarStyle] || MEMORY[0x1A590D320]())
+        if ([modelCopy navBarStyle] || MEMORY[0x1A590D320]())
         {
           if ((MEMORY[0x1A590D320]() & 1) == 0)
           {
             [v56 addObject:*off_1E7721EC0];
           }
 
-          if ([v11 allowsMergeDuplicatesAction])
+          if ([modelCopy allowsMergeDuplicatesAction])
           {
             v89 = off_1E7721E98;
           }
 
-          else if ([v11 allowsMoveToLibraryAction])
+          else if ([modelCopy allowsMoveToLibraryAction])
           {
             v89 = off_1E7721EA0;
           }
 
-          else if ([v11 allowsMoveToPersonalLibraryAction])
+          else if ([modelCopy allowsMoveToPersonalLibraryAction])
           {
             v89 = off_1E7721EA8;
           }
 
           else
           {
-            v90 = [v11 allowsMoveToSharedLibraryAction];
-            if (v90)
+            allowsMoveToSharedLibraryAction = [modelCopy allowsMoveToSharedLibraryAction];
+            if (allowsMoveToSharedLibraryAction)
             {
               v89 = off_1E7721EB0;
             }
@@ -677,7 +677,7 @@ LABEL_172:
               v89 = off_1E7721EF8;
             }
 
-            if ((v90 & 1) == 0 && ((v104 ^ 1) & 1) == 0)
+            if ((allowsMoveToSharedLibraryAction & 1) == 0 && ((wantsSelectModeCaptionInContextMenu ^ 1) & 1) == 0)
             {
               goto LABEL_201;
             }
@@ -691,32 +691,32 @@ LABEL_172:
             v89 = off_1E7721E08;
           }
 
-          else if ([v11 allowsMergeDuplicatesAction])
+          else if ([modelCopy allowsMergeDuplicatesAction])
           {
             v89 = off_1E7721E98;
           }
 
-          else if ([v11 allowsMoveToLibraryAction])
+          else if ([modelCopy allowsMoveToLibraryAction])
           {
             v89 = off_1E7721EA0;
           }
 
-          else if ([v11 allowsMoveToPersonalLibraryAction])
+          else if ([modelCopy allowsMoveToPersonalLibraryAction])
           {
             v89 = off_1E7721EA8;
           }
 
           else
           {
-            v90 = [v11 allowsMoveToSharedLibraryAction];
-            if (!v90)
+            allowsMoveToSharedLibraryAction = [modelCopy allowsMoveToSharedLibraryAction];
+            if (!allowsMoveToSharedLibraryAction)
             {
 LABEL_201:
-              v91 = v127 & v34;
+              v91 = allowsAddToLibraryAction & prefersActionsInToolbar;
               v92 = v57;
               if (v91 == 1)
               {
-                if ((MEMORY[0x1A590D320](v90) & 1) == 0)
+                if ((MEMORY[0x1A590D320](allowsMoveToSharedLibraryAction) & 1) == 0)
                 {
                   [v56 addObject:*off_1E7721EC0];
                 }
@@ -724,8 +724,8 @@ LABEL_201:
                 [v56 addObject:*off_1E7721E18];
               }
 
-              v93 = [v11 allowsFileRadarAction];
-              if (v93)
+              allowsFileRadarAction = [modelCopy allowsFileRadarAction];
+              if (allowsFileRadarAction)
               {
                 v94 = MEMORY[0x1A590D320]();
                 v95 = v57;
@@ -735,21 +735,21 @@ LABEL_201:
                   v95 = v56;
                 }
 
-                v93 = [v95 addObject:*off_1E7721E80];
+                allowsFileRadarAction = [v95 addObject:*off_1E7721E80];
               }
 
               if ((v125 & v138 & v60) == 1)
               {
-                if (!MEMORY[0x1A590D320](v93) || (v96 = v57, v112 == 1))
+                if (!MEMORY[0x1A590D320](allowsFileRadarAction) || (v96 = v57, v112 == 1))
                 {
                   [v56 addObject:*off_1E7721EC0];
                   v96 = v56;
                 }
 
-                v93 = [v96 addObject:*off_1E7721F50];
+                allowsFileRadarAction = [v96 addObject:*off_1E7721F50];
               }
 
-              if (v108 && (!MEMORY[0x1A590D320](v93) || v112 == 1))
+              if (v108 && (!MEMORY[0x1A590D320](allowsFileRadarAction) || v112 == 1))
               {
                 [v56 addObject:*off_1E7721E90];
                 [v56 addObject:*off_1E7721F00];
@@ -771,7 +771,7 @@ LABEL_201:
           }
         }
 
-        v90 = [v56 addObject:*v89];
+        allowsMoveToSharedLibraryAction = [v56 addObject:*v89];
         goto LABEL_201;
       }
     }
@@ -782,51 +782,51 @@ LABEL_201:
   }
 
 LABEL_219:
-  if (!a4)
+  if (!title)
   {
 LABEL_96:
-    v47 = a6;
-    v48 = a8;
+    trailingIdentifiersCopy5 = trailingIdentifiers;
+    centerToolbarIdentifiersCopy5 = centerToolbarIdentifiers;
     goto LABEL_222;
   }
 
-  v47 = a6;
-  v48 = a8;
+  trailingIdentifiersCopy5 = trailingIdentifiers;
+  centerToolbarIdentifiersCopy5 = centerToolbarIdentifiers;
   if (v51)
   {
     v97 = v51;
-    *a4 = v51;
+    *title = v51;
   }
 
 LABEL_222:
-  if (a5 && v44)
+  if (identifiers && array)
   {
-    v98 = v44;
-    *a5 = v44;
+    v98 = array;
+    *identifiers = array;
   }
 
-  if (v47 && v45)
+  if (trailingIdentifiersCopy5 && array2)
   {
-    v99 = v45;
-    *v47 = v45;
+    v99 = array2;
+    *trailingIdentifiersCopy5 = array2;
   }
 
-  if (a7 && v54)
+  if (toolbarIdentifiers && v54)
   {
     v100 = v54;
-    *a7 = v54;
+    *toolbarIdentifiers = v54;
   }
 
-  if (v48 && v53)
+  if (centerToolbarIdentifiersCopy5 && v53)
   {
     v101 = v53;
-    *v48 = v53;
+    *centerToolbarIdentifiersCopy5 = v53;
   }
 
-  if (a9 && v52)
+  if (trailingToolbarIdentifiers && v52)
   {
     v102 = v52;
-    *a9 = v52;
+    *trailingToolbarIdentifiers = v52;
   }
 }
 

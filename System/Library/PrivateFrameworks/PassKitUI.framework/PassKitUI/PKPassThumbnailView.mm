@@ -1,91 +1,91 @@
 @interface PKPassThumbnailView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (id)initWithPass:(void *)a3 suppressedContent:(void *)a4 rendererState:(int)a5 options:;
-- (uint64_t)_layoutWithBounds:(uint64_t)a3@<X8> commit:(double)a4@<D0>;
-- (uint64_t)sizeStateForSize:(double)a3@<D0>;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (id)initWithPass:(void *)pass suppressedContent:(void *)content rendererState:(int)state options:;
+- (uint64_t)_layoutWithBounds:(uint64_t)bounds@<X8> commit:(double)commit@<D0>;
+- (uint64_t)sizeStateForSize:(double)size@<D0>;
 - (void)_updateRasterizationScale;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)setBrighten:(uint64_t)a1;
-- (void)setShadowVisibility:(uint64_t)a1;
+- (void)setBrighten:(uint64_t)brighten;
+- (void)setShadowVisibility:(uint64_t)visibility;
 @end
 
 @implementation PKPassThumbnailView
 
-- (id)initWithPass:(void *)a3 suppressedContent:(void *)a4 rendererState:(int)a5 options:
+- (id)initWithPass:(void *)pass suppressedContent:(void *)content rendererState:(int)state options:
 {
   v10 = a2;
-  v11 = a4;
-  if (!a1 || !v10)
+  contentCopy = content;
+  if (!self || !v10)
   {
     goto LABEL_12;
   }
 
-  v38.receiver = a1;
+  v38.receiver = self;
   v38.super_class = PKPassThumbnailView;
   v12 = objc_msgSendSuper2(&v38, sel_initWithFrame_, *MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24));
-  a1 = v12;
+  self = v12;
   if (!v12)
   {
 LABEL_19:
-    a1 = a1;
-    v28 = a1;
+    self = self;
+    selfCopy = self;
     goto LABEL_20;
   }
 
   objc_storeStrong(v12 + 58, a2);
-  *(a1 + 102) = a5;
-  a1[59] = a3;
-  *(a1 + 457) = 1;
-  a1[61] = 0x3FF0000000000000;
-  *(a1 + 458) = 0;
+  *(self + 102) = state;
+  self[59] = pass;
+  *(self + 457) = 1;
+  self[61] = 0x3FF0000000000000;
+  *(self + 458) = 0;
   v13 = objc_alloc_init(MEMORY[0x1E69DD250]);
-  v14 = a1[52];
-  a1[52] = v13;
+  v14 = self[52];
+  self[52] = v13;
 
-  [a1 addSubview:a1[52]];
+  [self addSubview:self[52]];
   v15 = objc_alloc_init(MEMORY[0x1E69DD250]);
-  v16 = a1[53];
-  a1[53] = v15;
+  v16 = self[53];
+  self[53] = v15;
 
-  [a1[52] addSubview:a1[53]];
-  v17 = [a1[53] layer];
-  v18 = [MEMORY[0x1E69DC888] blackColor];
-  [v17 setShadowColor:{objc_msgSend(v18, "CGColor")}];
+  [self[52] addSubview:self[53]];
+  layer = [self[53] layer];
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
+  [layer setShadowColor:{objc_msgSend(blackColor, "CGColor")}];
 
-  v19 = *(a1 + 61) * 0.25;
+  v19 = *(self + 61) * 0.25;
   *&v19 = v19;
-  [v17 setShadowOpacity:v19];
-  [v17 setShadowOffset:{0.0, 12.0}];
-  [v17 setShadowRadius:18.0];
-  [(PKPassThumbnailView *)a1 _updateRasterizationScale];
-  v37 = v11;
-  v36 = v11;
-  v20 = a1[54];
+  [layer setShadowOpacity:v19];
+  [layer setShadowOffset:{0.0, 12.0}];
+  [layer setShadowRadius:18.0];
+  [(PKPassThumbnailView *)self _updateRasterizationScale];
+  v37 = contentCopy;
+  v36 = contentCopy;
+  v20 = self[54];
   if (v20)
   {
     [v20 removeFromSuperview];
-    v21 = a1[54];
-    a1[54] = 0;
+    v21 = self[54];
+    self[54] = 0;
   }
 
-  v22 = *(a1 + 102);
+  v22 = *(self + 102);
   v23 = [PKPassView alloc];
   v24 = v22 & 3;
-  v25 = a1[58];
+  v25 = self[58];
   if ((v22 & 3) != 0)
   {
-    v11 = 5;
+    contentCopy = 5;
   }
 
   else
   {
-    v11 = 4;
+    contentCopy = 4;
   }
 
-  v26 = a1[59];
+  v26 = self[59];
   v27 = v26 | 0x5F7;
-  if ((a1[51] & 3) == 0)
+  if ((self[51] & 3) == 0)
   {
     if (PKIsLowEndDevice())
     {
@@ -99,19 +99,19 @@ LABEL_19:
   {
 LABEL_15:
     v29 = v36;
-    v30 = [(PKPassView *)v23 initWithPass:v25 content:v11 suppressedContent:v27 rendererState:v36];
-    v31 = a1[54];
-    a1[54] = v30;
+    v30 = [(PKPassView *)v23 initWithPass:v25 content:contentCopy suppressedContent:v27 rendererState:v36];
+    v31 = self[54];
+    self[54] = v30;
 
-    [a1[54] setUserInteractionEnabled:0];
-    [a1[54] setModallyPresented:*(a1 + 458)];
-    [a1[54] setPaused:v24 == 0];
-    [a1[54] sizeToFit];
-    v32 = [a1[54] layer];
-    [v32 setMinificationFilter:*MEMORY[0x1E6979D68]];
-    v33 = a1[53];
-    v34 = a1[54];
-    if (a1[55])
+    [self[54] setUserInteractionEnabled:0];
+    [self[54] setModallyPresented:*(self + 458)];
+    [self[54] setPaused:v24 == 0];
+    [self[54] sizeToFit];
+    layer2 = [self[54] layer];
+    [layer2 setMinificationFilter:*MEMORY[0x1E6979D68]];
+    v33 = self[53];
+    v34 = self[54];
+    if (self[55])
     {
       [v33 insertSubview:v34 belowSubview:?];
     }
@@ -121,31 +121,31 @@ LABEL_15:
       [v33 addSubview:v34];
     }
 
-    v11 = v37;
-    [a1 setNeedsLayout];
+    contentCopy = v37;
+    [self setNeedsLayout];
 
     goto LABEL_19;
   }
 
   __break(1u);
 LABEL_12:
-  v28 = 0;
+  selfCopy = 0;
 LABEL_20:
 
-  return v28;
+  return selfCopy;
 }
 
 - (void)_updateRasterizationScale
 {
-  if (a1)
+  if (self)
   {
-    v2 = [a1 window];
-    v3 = [v2 windowScene];
-    v8 = [v3 screen];
+    window = [self window];
+    windowScene = [window windowScene];
+    screen = [windowScene screen];
 
-    if (v8)
+    if (screen)
     {
-      [v8 scale];
+      [screen scale];
     }
 
     else
@@ -154,11 +154,11 @@ LABEL_20:
     }
 
     v5 = v4;
-    v6 = [a1[53] layer];
-    [v6 rasterizationScale];
+    layer = [self[53] layer];
+    [layer rasterizationScale];
     if (v7 != v5)
     {
-      [v6 setRasterizationScale:v5];
+      [layer setRasterizationScale:v5];
     }
   }
 }
@@ -171,9 +171,9 @@ LABEL_20:
   [(PKPassThumbnailView *)&self->super.super.super.isa _updateRasterizationScale];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(PKPassThumbnailView *)self _layoutWithBounds:v5 commit:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), a3.width, a3.height];
+  [(PKPassThumbnailView *)self _layoutWithBounds:v5 commit:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), fits.width, fits.height];
   v3 = *v5;
   v4 = *&v5[1];
   result.height = v4;
@@ -181,7 +181,7 @@ LABEL_20:
   return result;
 }
 
-- (uint64_t)_layoutWithBounds:(uint64_t)a3@<X8> commit:(double)a4@<D0>
+- (uint64_t)_layoutWithBounds:(uint64_t)bounds@<X8> commit:(double)commit@<D0>
 {
   if (result)
   {
@@ -189,12 +189,12 @@ LABEL_20:
     [*(result + 432) sizeOfFront];
     v14 = v13;
     v16 = v15;
-    v17 = [*(v12 + 464) style];
+    style = [*(v12 + 464) style];
     v18 = v16;
-    if (v17 != 6)
+    if (style != 6)
     {
       v18 = v14 * 0.704081633;
-      if (v17 == 7)
+      if (style == 7)
       {
         v56 = a5;
         v58 = a6;
@@ -254,11 +254,11 @@ LABEL_20:
       if (*(v12 + 412) != v32)
       {
         *(v12 + 412) = v32;
-        v33 = [*(v12 + 424) layer];
-        [v33 setShouldRasterize:*(v12 + 412)];
+        layer = [*(v12 + 424) layer];
+        [layer setShouldRasterize:*(v12 + 412)];
       }
 
-      [*(v12 + 416) setFrame:{a4 + -44.0, a5 + -44.0, a6 + 44.0 + 44.0, a7 + 44.0}];
+      [*(v12 + 416) setFrame:{commit + -44.0, a5 + -44.0, a6 + 44.0 + 44.0, a7 + 44.0}];
       [*(v12 + 416) setClipsToBounds:v31];
       [*(v12 + 448) setAlpha:v31];
       PKSizeAlignedInRect();
@@ -284,8 +284,8 @@ LABEL_20:
       v61 = v66.size.width;
       v45 = v66.size.height;
       [*(v12 + 424) setFrame:{v66.origin.x, v66.origin.y}];
-      v46 = [*(v12 + 432) layer];
-      [v46 anchorPoint];
+      layer2 = [*(v12 + 432) layer];
+      [layer2 anchorPoint];
       v48 = v47;
       v50 = v49;
 
@@ -302,26 +302,26 @@ LABEL_20:
       v30 = v57;
     }
 
-    *a3 = v25;
-    *(a3 + 8) = v30;
-    *(a3 + 16) = v31;
+    *bounds = v25;
+    *(bounds + 8) = v30;
+    *(bounds + 16) = v31;
   }
 
   else
   {
-    *a3 = 0;
-    *(a3 + 8) = 0;
-    *(a3 + 16) = 0;
+    *bounds = 0;
+    *(bounds + 8) = 0;
+    *(bounds + 16) = 0;
   }
 
   return result;
 }
 
-- (uint64_t)sizeStateForSize:(double)a3@<D0>
+- (uint64_t)sizeStateForSize:(double)size@<D0>
 {
   if (result)
   {
-    return [(PKPassThumbnailView *)result _layoutWithBounds:a2 commit:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), a3, a4];
+    return [(PKPassThumbnailView *)result _layoutWithBounds:a2 commit:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), size, a4];
   }
 
   *a2 = 0;
@@ -339,19 +339,19 @@ LABEL_20:
   [(PKPassThumbnailView *)self _layoutWithBounds:v7 commit:v3, v4, v5, v6];
 }
 
-- (void)setBrighten:(uint64_t)a1
+- (void)setBrighten:(uint64_t)brighten
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  if (a1 && *(a1 + 456) != a2)
+  if (brighten && *(brighten + 456) != a2)
   {
-    *(a1 + 456) = a2;
-    if (*(a1 + 456) == 1)
+    *(brighten + 456) = a2;
+    if (*(brighten + 456) == 1)
     {
       v3 = objc_alloc_init(MEMORY[0x1E69DD250]);
-      v4 = *(a1 + 440);
-      *(a1 + 440) = v3;
+      v4 = *(brighten + 440);
+      *(brighten + 440) = v3;
 
-      v5 = *(a1 + 440);
+      v5 = *(brighten + 440);
       v6 = [MEMORY[0x1E69DC888] colorWithDisplayP3Red:0.921569 green:0.2 blue:0.145098 alpha:1.0];
       [v5 setBackgroundColor:v6];
 
@@ -364,36 +364,36 @@ LABEL_20:
       v8 = [MEMORY[0x1E696B098] valueWithCAColorMatrix:v12];
       [v7 setValue:v8 forKey:@"inputColorMatrix"];
 
-      v9 = [*(a1 + 440) layer];
+      layer = [*(brighten + 440) layer];
       v13[0] = v7;
       v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1];
-      [v9 setFilters:v10];
+      [layer setFilters:v10];
 
-      [*(a1 + 424) addSubview:*(a1 + 440)];
-      [a1 setNeedsLayout];
+      [*(brighten + 424) addSubview:*(brighten + 440)];
+      [brighten setNeedsLayout];
     }
 
     else
     {
-      [*(a1 + 440) removeFromSuperview];
-      v11 = *(a1 + 440);
-      *(a1 + 440) = 0;
+      [*(brighten + 440) removeFromSuperview];
+      v11 = *(brighten + 440);
+      *(brighten + 440) = 0;
     }
   }
 }
 
-- (void)setShadowVisibility:(uint64_t)a1
+- (void)setShadowVisibility:(uint64_t)visibility
 {
-  if (a1)
+  if (visibility)
   {
     v3 = fmax(fmin(a2, 1.0), 0.0);
-    if (*(a1 + 488) != v3)
+    if (*(visibility + 488) != v3)
     {
-      *(a1 + 488) = v3;
-      v5 = [*(a1 + 424) layer];
-      v4 = *(a1 + 488) * 0.25;
+      *(visibility + 488) = v3;
+      layer = [*(visibility + 424) layer];
+      v4 = *(visibility + 488) * 0.25;
       *&v4 = v4;
-      [v5 setShadowOpacity:v4];
+      [layer setShadowOpacity:v4];
     }
   }
 }

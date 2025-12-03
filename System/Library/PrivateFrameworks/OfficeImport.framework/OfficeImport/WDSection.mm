@@ -12,7 +12,7 @@
 - (BOOL)isChapterNumberSeparatorOverridden;
 - (BOOL)isColumnCountOverridden;
 - (BOOL)isColumnSpaceOverridden;
-- (BOOL)isColumnWidthDefinedAt:(unsigned int)a3;
+- (BOOL)isColumnWidthDefinedAt:(unsigned int)at;
 - (BOOL)isColumnsEqualWidthOverridden;
 - (BOOL)isFooterMarginOverridden;
 - (BOOL)isFormattingChangeDateOverridden;
@@ -46,7 +46,7 @@
 - (BOOL)rtlGutter;
 - (BOOL)titlePage;
 - (WDDocument)document;
-- (WDSection)initWithDocument:(id)a3;
+- (WDSection)initWithDocument:(id)document;
 - (id).cxx_construct;
 - (id)bottomBorder;
 - (id)description;
@@ -71,8 +71,8 @@
 - (int)verticalJustification;
 - (int64_t)bottomMargin;
 - (int64_t)columnSpace;
-- (int64_t)columnSpaceAt:(unsigned int)a3;
-- (int64_t)columnWidthAt:(unsigned int)a3;
+- (int64_t)columnSpaceAt:(unsigned int)at;
+- (int64_t)columnWidthAt:(unsigned int)at;
 - (int64_t)footerMargin;
 - (int64_t)gutterMargin;
 - (int64_t)headerMargin;
@@ -88,43 +88,43 @@
 - (unsigned)lineNumberIncrement;
 - (unsigned)pageNumberStart;
 - (unsigned)pageScale;
-- (void)appendColumnSpace:(int64_t)a3;
-- (void)appendColumnWidth:(int64_t)a3;
-- (void)setBidi:(BOOL)a3;
-- (void)setBorderDepth:(int)a3;
-- (void)setBorderDisplay:(int)a3;
-- (void)setBorderOffset:(int)a3;
-- (void)setBottomMargin:(int64_t)a3;
-- (void)setBreakType:(int)a3;
-- (void)setChapterNumberSeparator:(int)a3;
-- (void)setColumnCount:(unsigned __int16)a3;
-- (void)setColumnSpace:(int64_t)a3;
-- (void)setColumnsEqualWidth:(BOOL)a3;
-- (void)setFooterMargin:(int64_t)a3;
-- (void)setFormattingChangeDate:(id)a3;
-- (void)setFormattingChanged:(BOOL)a3;
-- (void)setGutterMargin:(int64_t)a3;
-- (void)setHeaderMargin:(int64_t)a3;
-- (void)setIndexToAuthorIDOfFormattingChange:(unsigned __int16)a3;
-- (void)setLeftMargin:(int64_t)a3;
-- (void)setLineNumberDistance:(signed __int16)a3;
-- (void)setLineNumberIncrement:(unsigned __int16)a3;
-- (void)setLineNumberRestart:(int)a3;
-- (void)setLineNumberStart:(signed __int16)a3;
-- (void)setPageHeight:(int64_t)a3;
-- (void)setPageNumberFormat:(int)a3;
-- (void)setPageNumberRestart:(BOOL)a3;
-- (void)setPageNumberStart:(unsigned __int16)a3;
-- (void)setPageOrientation:(int)a3;
-- (void)setPageScale:(unsigned int)a3;
-- (void)setPageWidth:(int64_t)a3;
-- (void)setResolveMode:(int)a3;
-- (void)setRightMargin:(int64_t)a3;
-- (void)setRtlGutter:(BOOL)a3;
-- (void)setTextDirection:(int)a3;
-- (void)setTitlePage:(BOOL)a3;
-- (void)setTopMargin:(int64_t)a3;
-- (void)setVerticalJustification:(int)a3;
+- (void)appendColumnSpace:(int64_t)space;
+- (void)appendColumnWidth:(int64_t)width;
+- (void)setBidi:(BOOL)bidi;
+- (void)setBorderDepth:(int)depth;
+- (void)setBorderDisplay:(int)display;
+- (void)setBorderOffset:(int)offset;
+- (void)setBottomMargin:(int64_t)margin;
+- (void)setBreakType:(int)type;
+- (void)setChapterNumberSeparator:(int)separator;
+- (void)setColumnCount:(unsigned __int16)count;
+- (void)setColumnSpace:(int64_t)space;
+- (void)setColumnsEqualWidth:(BOOL)width;
+- (void)setFooterMargin:(int64_t)margin;
+- (void)setFormattingChangeDate:(id)date;
+- (void)setFormattingChanged:(BOOL)changed;
+- (void)setGutterMargin:(int64_t)margin;
+- (void)setHeaderMargin:(int64_t)margin;
+- (void)setIndexToAuthorIDOfFormattingChange:(unsigned __int16)change;
+- (void)setLeftMargin:(int64_t)margin;
+- (void)setLineNumberDistance:(signed __int16)distance;
+- (void)setLineNumberIncrement:(unsigned __int16)increment;
+- (void)setLineNumberRestart:(int)restart;
+- (void)setLineNumberStart:(signed __int16)start;
+- (void)setPageHeight:(int64_t)height;
+- (void)setPageNumberFormat:(int)format;
+- (void)setPageNumberRestart:(BOOL)restart;
+- (void)setPageNumberStart:(unsigned __int16)start;
+- (void)setPageOrientation:(int)orientation;
+- (void)setPageScale:(unsigned int)scale;
+- (void)setPageWidth:(int64_t)width;
+- (void)setResolveMode:(int)mode;
+- (void)setRightMargin:(int64_t)margin;
+- (void)setRtlGutter:(BOOL)gutter;
+- (void)setTextDirection:(int)direction;
+- (void)setTitlePage:(BOOL)page;
+- (void)setTopMargin:(int64_t)margin;
+- (void)setVerticalJustification:(int)justification;
 @end
 
 @implementation WDSection
@@ -898,9 +898,9 @@ LABEL_10:
   return v7;
 }
 
-- (WDSection)initWithDocument:(id)a3
+- (WDSection)initWithDocument:(id)document
 {
-  v4 = a3;
+  documentCopy = document;
   v22.receiver = self;
   v22.super_class = WDSection;
   v5 = [(WDSection *)&v22 init];
@@ -908,32 +908,32 @@ LABEL_10:
   if (v5)
   {
     *(v5 + 8) = *(v5 + 8) & 0xF8 | 1;
-    objc_storeWeak(&v5->mDocument, v4);
-    v7 = [[WDText alloc] initWithDocument:v4 textType:0];
+    objc_storeWeak(&v5->mDocument, documentCopy);
+    v7 = [[WDText alloc] initWithDocument:documentCopy textType:0];
     mText = v6->mText;
     v6->mText = v7;
 
-    v9 = [[WDText alloc] initWithDocument:v4 textType:2];
+    v9 = [[WDText alloc] initWithDocument:documentCopy textType:2];
     mEvenPageHeader = v6->mEvenPageHeader;
     v6->mEvenPageHeader = v9;
 
-    v11 = [[WDText alloc] initWithDocument:v4 textType:2];
+    v11 = [[WDText alloc] initWithDocument:documentCopy textType:2];
     mOddPageHeader = v6->mOddPageHeader;
     v6->mOddPageHeader = v11;
 
-    v13 = [[WDText alloc] initWithDocument:v4 textType:2];
+    v13 = [[WDText alloc] initWithDocument:documentCopy textType:2];
     mFirstPageHeader = v6->mFirstPageHeader;
     v6->mFirstPageHeader = v13;
 
-    v15 = [[WDText alloc] initWithDocument:v4 textType:2];
+    v15 = [[WDText alloc] initWithDocument:documentCopy textType:2];
     mEvenPageFooter = v6->mEvenPageFooter;
     v6->mEvenPageFooter = v15;
 
-    v17 = [[WDText alloc] initWithDocument:v4 textType:2];
+    v17 = [[WDText alloc] initWithDocument:documentCopy textType:2];
     mOddPageFooter = v6->mOddPageFooter;
     v6->mOddPageFooter = v17;
 
-    v19 = [[WDText alloc] initWithDocument:v4 textType:2];
+    v19 = [[WDText alloc] initWithDocument:documentCopy textType:2];
     mFirstPageFooter = v6->mFirstPageFooter;
     v6->mFirstPageFooter = v19;
   }
@@ -941,10 +941,10 @@ LABEL_10:
   return v6;
 }
 
-- (void)setResolveMode:(int)a3
+- (void)setResolveMode:(int)mode
 {
-  v3 = (2 * (a3 == 1)) | (4 * (a3 == 2));
-  if (!a3)
+  v3 = (2 * (mode == 1)) | (4 * (mode == 2));
+  if (!mode)
   {
     ++v3;
   }
@@ -952,7 +952,7 @@ LABEL_10:
   *(self + 8) = v3 | *(self + 8) & 0xF8;
 }
 
-- (void)setBreakType:(int)a3
+- (void)setBreakType:(int)type
 {
   if ((*(self + 8) & 2) != 0)
   {
@@ -971,11 +971,11 @@ LABEL_10:
     v4 = 104;
   }
 
-  *(&self->super.isa + v4) = a3;
+  *(&self->super.isa + v4) = type;
   *(&self->super.isa + v3) |= 0x20u;
 }
 
-- (void)setPageWidth:(int64_t)a3
+- (void)setPageWidth:(int64_t)width
 {
   if ((*(self + 8) & 2) != 0)
   {
@@ -994,11 +994,11 @@ LABEL_10:
     v4 = 112;
   }
 
-  *(&self->super.isa + v4) = a3;
+  *(&self->super.isa + v4) = width;
   *(&self->super.isa + v3) |= 0x40u;
 }
 
-- (void)setPageHeight:(int64_t)a3
+- (void)setPageHeight:(int64_t)height
 {
   if ((*(self + 8) & 2) != 0)
   {
@@ -1017,7 +1017,7 @@ LABEL_10:
     v4 = 120;
   }
 
-  *(&self->super.isa + v4) = a3;
+  *(&self->super.isa + v4) = height;
   *(&self->super.isa + v3) |= 0x80u;
 }
 
@@ -1041,7 +1041,7 @@ LABEL_10:
   return *(&self->super.isa + v3);
 }
 
-- (void)setPageScale:(unsigned int)a3
+- (void)setPageScale:(unsigned int)scale
 {
   if ((*(self + 8) & 2) != 0)
   {
@@ -1060,7 +1060,7 @@ LABEL_10:
     v4 = 128;
   }
 
-  *(&self->super.isa + v4) = a3;
+  *(&self->super.isa + v4) = scale;
   *(&self->super.isa + v3) |= 0x100u;
 }
 
@@ -1117,7 +1117,7 @@ LABEL_9:
   return *(&self->super.isa + v3);
 }
 
-- (void)setTextDirection:(int)a3
+- (void)setTextDirection:(int)direction
 {
   if ((*(self + 8) & 2) != 0)
   {
@@ -1136,7 +1136,7 @@ LABEL_9:
     v4 = 136;
   }
 
-  *(&self->super.isa + v4) = a3;
+  *(&self->super.isa + v4) = direction;
   *(&self->super.isa + v3) |= 0x400u;
 }
 
@@ -1196,7 +1196,7 @@ LABEL_4:
   return *(&self->super.isa + v3);
 }
 
-- (void)setPageOrientation:(int)a3
+- (void)setPageOrientation:(int)orientation
 {
   if ((*(self + 8) & 2) != 0)
   {
@@ -1215,7 +1215,7 @@ LABEL_4:
     v4 = 132;
   }
 
-  *(&self->super.isa + v4) = a3;
+  *(&self->super.isa + v4) = orientation;
   *(&self->super.isa + v3) |= 0x200u;
 }
 
@@ -1255,7 +1255,7 @@ LABEL_4:
   return v2;
 }
 
-- (void)setLeftMargin:(int64_t)a3
+- (void)setLeftMargin:(int64_t)margin
 {
   if ((*(self + 8) & 2) != 0)
   {
@@ -1274,11 +1274,11 @@ LABEL_4:
     v4 = 144;
   }
 
-  *(&self->super.isa + v4) = a3;
+  *(&self->super.isa + v4) = margin;
   *(&self->super.isa + v3) |= 0x800u;
 }
 
-- (void)setRightMargin:(int64_t)a3
+- (void)setRightMargin:(int64_t)margin
 {
   if ((*(self + 8) & 2) != 0)
   {
@@ -1297,11 +1297,11 @@ LABEL_4:
     v4 = 152;
   }
 
-  *(&self->super.isa + v4) = a3;
+  *(&self->super.isa + v4) = margin;
   *(&self->super.isa + v3) |= 0x1000u;
 }
 
-- (void)setTopMargin:(int64_t)a3
+- (void)setTopMargin:(int64_t)margin
 {
   if ((*(self + 8) & 2) != 0)
   {
@@ -1320,11 +1320,11 @@ LABEL_4:
     v4 = 160;
   }
 
-  *(&self->super.isa + v4) = a3;
+  *(&self->super.isa + v4) = margin;
   *(&self->super.isa + v3) |= 0x2000u;
 }
 
-- (void)setBottomMargin:(int64_t)a3
+- (void)setBottomMargin:(int64_t)margin
 {
   if ((*(self + 8) & 2) != 0)
   {
@@ -1343,11 +1343,11 @@ LABEL_4:
     v4 = 168;
   }
 
-  *(&self->super.isa + v4) = a3;
+  *(&self->super.isa + v4) = margin;
   *(&self->super.isa + v3) |= 0x4000u;
 }
 
-- (void)setHeaderMargin:(int64_t)a3
+- (void)setHeaderMargin:(int64_t)margin
 {
   if ((*(self + 8) & 2) != 0)
   {
@@ -1366,7 +1366,7 @@ LABEL_4:
     v4 = 176;
   }
 
-  *(&self->super.isa + v4) = a3;
+  *(&self->super.isa + v4) = margin;
   *(&self->super.isa + v3) |= 0x8000u;
 }
 
@@ -1426,7 +1426,7 @@ LABEL_4:
   return *(&self->super.isa + v3);
 }
 
-- (void)setFooterMargin:(int64_t)a3
+- (void)setFooterMargin:(int64_t)margin
 {
   if ((*(self + 8) & 2) != 0)
   {
@@ -1445,7 +1445,7 @@ LABEL_4:
     v4 = 184;
   }
 
-  *(&self->super.isa + v4) = a3;
+  *(&self->super.isa + v4) = margin;
   *(&self->super.isa + v3) |= 0x10000u;
 }
 
@@ -1502,7 +1502,7 @@ LABEL_9:
   return *(&self->super.isa + v3);
 }
 
-- (void)setGutterMargin:(int64_t)a3
+- (void)setGutterMargin:(int64_t)margin
 {
   if ((*(self + 8) & 2) != 0)
   {
@@ -1521,7 +1521,7 @@ LABEL_9:
     v4 = 192;
   }
 
-  *(&self->super.isa + v4) = a3;
+  *(&self->super.isa + v4) = margin;
   *(&self->super.isa + v3) |= 0x20000u;
 }
 
@@ -1581,7 +1581,7 @@ LABEL_9:
   return v2 & 1;
 }
 
-- (void)setRtlGutter:(BOOL)a3
+- (void)setRtlGutter:(BOOL)gutter
 {
   if ((*(self + 8) & 2) != 0)
   {
@@ -1600,7 +1600,7 @@ LABEL_9:
     v4 = 200;
   }
 
-  *(&self->super.isa + v4) = a3;
+  *(&self->super.isa + v4) = gutter;
   *(&self->super.isa + v3) |= 0x40000u;
 }
 
@@ -1900,7 +1900,7 @@ LABEL_4:
   return *(&self->super.isa + v3);
 }
 
-- (void)setBorderDepth:(int)a3
+- (void)setBorderDepth:(int)depth
 {
   if ((*(self + 8) & 2) != 0)
   {
@@ -1919,7 +1919,7 @@ LABEL_4:
     v4 = 204;
   }
 
-  *(&self->super.isa + v4) = a3;
+  *(&self->super.isa + v4) = depth;
   *(&self->super.isa + v3) |= 0x80000u;
 }
 
@@ -1979,7 +1979,7 @@ LABEL_4:
   return *(&self->super.isa + v3);
 }
 
-- (void)setBorderDisplay:(int)a3
+- (void)setBorderDisplay:(int)display
 {
   if ((*(self + 8) & 2) != 0)
   {
@@ -1998,7 +1998,7 @@ LABEL_4:
     v4 = 208;
   }
 
-  *(&self->super.isa + v4) = a3;
+  *(&self->super.isa + v4) = display;
   *(&self->super.isa + v3) |= 0x100000u;
 }
 
@@ -2058,7 +2058,7 @@ LABEL_4:
   return *(&self->super.isa + v3);
 }
 
-- (void)setBorderOffset:(int)a3
+- (void)setBorderOffset:(int)offset
 {
   if ((*(self + 8) & 2) != 0)
   {
@@ -2077,7 +2077,7 @@ LABEL_4:
     v4 = 212;
   }
 
-  *(&self->super.isa + v4) = a3;
+  *(&self->super.isa + v4) = offset;
   *(&self->super.isa + v3) |= 0x200000u;
 }
 
@@ -2134,7 +2134,7 @@ LABEL_4:
   return 0;
 }
 
-- (void)setLineNumberStart:(signed __int16)a3
+- (void)setLineNumberStart:(signed __int16)start
 {
   if ((*(self + 8) & 2) != 0)
   {
@@ -2153,7 +2153,7 @@ LABEL_4:
     v4 = 216;
   }
 
-  *(&self->super.isa + v4) = a3;
+  *(&self->super.isa + v4) = start;
   *(&self->super.isa + v3) |= 0x400000u;
 }
 
@@ -2213,7 +2213,7 @@ LABEL_4:
   return *(&self->super.isa + v3);
 }
 
-- (void)setLineNumberIncrement:(unsigned __int16)a3
+- (void)setLineNumberIncrement:(unsigned __int16)increment
 {
   if ((*(self + 8) & 2) != 0)
   {
@@ -2232,7 +2232,7 @@ LABEL_4:
     v4 = 218;
   }
 
-  *(&self->super.isa + v4) = a3;
+  *(&self->super.isa + v4) = increment;
   *(&self->super.isa + v3) |= 0x800000u;
 }
 
@@ -2289,7 +2289,7 @@ LABEL_4:
   return 0;
 }
 
-- (void)setLineNumberDistance:(signed __int16)a3
+- (void)setLineNumberDistance:(signed __int16)distance
 {
   if ((*(self + 8) & 2) != 0)
   {
@@ -2308,7 +2308,7 @@ LABEL_4:
     v4 = 220;
   }
 
-  *(&self->super.isa + v4) = a3;
+  *(&self->super.isa + v4) = distance;
   *(&self->super.isa + v3) |= 0x1000000u;
 }
 
@@ -2365,7 +2365,7 @@ LABEL_9:
   return *(&self->super.isa + v3);
 }
 
-- (void)setLineNumberRestart:(int)a3
+- (void)setLineNumberRestart:(int)restart
 {
   if ((*(self + 8) & 2) != 0)
   {
@@ -2384,7 +2384,7 @@ LABEL_9:
     v4 = 224;
   }
 
-  *(&self->super.isa + v4) = a3;
+  *(&self->super.isa + v4) = restart;
   *(&self->super.isa + v3) |= 0x2000000u;
 }
 
@@ -2444,7 +2444,7 @@ LABEL_4:
   return *(&self->super.isa + v3);
 }
 
-- (void)setPageNumberFormat:(int)a3
+- (void)setPageNumberFormat:(int)format
 {
   if ((*(self + 8) & 2) != 0)
   {
@@ -2463,7 +2463,7 @@ LABEL_4:
     v4 = 228;
   }
 
-  *(&self->super.isa + v4) = a3;
+  *(&self->super.isa + v4) = format;
   *(&self->super.isa + v3) |= 0x4000000u;
 }
 
@@ -2523,7 +2523,7 @@ LABEL_4:
   return *(&self->super.isa + v3);
 }
 
-- (void)setPageNumberStart:(unsigned __int16)a3
+- (void)setPageNumberStart:(unsigned __int16)start
 {
   if ((*(self + 8) & 2) != 0)
   {
@@ -2542,7 +2542,7 @@ LABEL_4:
     v4 = 232;
   }
 
-  *(&self->super.isa + v4) = a3;
+  *(&self->super.isa + v4) = start;
   *(&self->super.isa + v3) |= 0x8000000u;
 }
 
@@ -2603,7 +2603,7 @@ LABEL_4:
   return v3;
 }
 
-- (void)setPageNumberRestart:(BOOL)a3
+- (void)setPageNumberRestart:(BOOL)restart
 {
   if ((*(self + 8) & 2) != 0)
   {
@@ -2620,7 +2620,7 @@ LABEL_4:
     v3 = 288;
   }
 
-  if (a3)
+  if (restart)
   {
     v4 = 805306368;
   }
@@ -2689,7 +2689,7 @@ LABEL_4:
   return *(&self->super.isa + v3);
 }
 
-- (void)setChapterNumberSeparator:(int)a3
+- (void)setChapterNumberSeparator:(int)separator
 {
   if ((*(self + 8) & 2) != 0)
   {
@@ -2708,7 +2708,7 @@ LABEL_4:
     v4 = 236;
   }
 
-  *(&self->super.isa + v4) = a3;
+  *(&self->super.isa + v4) = separator;
   *(&self->super.isa + v3) |= 0x40000000u;
 }
 
@@ -2748,7 +2748,7 @@ LABEL_4:
   return v2;
 }
 
-- (void)setColumnCount:(unsigned __int16)a3
+- (void)setColumnCount:(unsigned __int16)count
 {
   if ((*(self + 8) & 2) != 0)
   {
@@ -2758,7 +2758,7 @@ LABEL_4:
     columnSpaces = self->mTrackedProperties.columnSpaces;
     self->mTrackedProperties.columnSpaces = 0;
 
-    self->mTrackedProperties.columnCount = a3;
+    self->mTrackedProperties.columnCount = count;
     *(&self->mTrackedProperties + 54) |= 0x80000000;
   }
 
@@ -2770,7 +2770,7 @@ LABEL_4:
     v6 = self->mOriginalProperties.columnSpaces;
     self->mOriginalProperties.columnSpaces = 0;
 
-    self->mOriginalProperties.columnCount = a3;
+    self->mOriginalProperties.columnCount = count;
     *(&self->mOriginalProperties + 54) |= 0x80000000;
     if ((*(&self->mTrackedProperties + 54) & 0x80000000) == 0)
     {
@@ -2783,35 +2783,35 @@ LABEL_4:
   }
 }
 
-- (int64_t)columnWidthAt:(unsigned int)a3
+- (int64_t)columnWidthAt:(unsigned int)at
 {
   v5 = *(self + 8);
   if ((v5 & 6) != 0)
   {
-    if ([(NSMutableArray *)self->mTrackedProperties.columnWidths count]> a3)
+    if ([(NSMutableArray *)self->mTrackedProperties.columnWidths count]> at)
     {
-      v6 = [(NSMutableArray *)self->mTrackedProperties.columnWidths objectAtIndex:a3];
-      v7 = [v6 intValue];
+      v6 = [(NSMutableArray *)self->mTrackedProperties.columnWidths objectAtIndex:at];
+      intValue = [v6 intValue];
       goto LABEL_9;
     }
 
     v5 = *(self + 8);
   }
 
-  if ((v5 & 4) == 0 && (v5 & 1) == 0 || [(NSMutableArray *)self->mOriginalProperties.columnWidths count]<= a3)
+  if ((v5 & 4) == 0 && (v5 & 1) == 0 || [(NSMutableArray *)self->mOriginalProperties.columnWidths count]<= at)
   {
     return 0;
   }
 
-  v6 = [(NSMutableArray *)self->mOriginalProperties.columnWidths objectAtIndex:a3];
-  v7 = [v6 intValue];
+  v6 = [(NSMutableArray *)self->mOriginalProperties.columnWidths objectAtIndex:at];
+  intValue = [v6 intValue];
 LABEL_9:
-  v8 = v7;
+  v8 = intValue;
 
   return v8;
 }
 
-- (void)appendColumnWidth:(int64_t)a3
+- (void)appendColumnWidth:(int64_t)width
 {
   if ((*(self + 8) & 2) != 0)
   {
@@ -2844,7 +2844,7 @@ LABEL_9:
     }
   }
 
-  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:a3];
+  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:width];
   [(NSMutableArray *)columnWidths addObject:?];
 }
 
@@ -2884,12 +2884,12 @@ LABEL_4:
   return [(NSMutableArray *)self->mOriginalProperties.columnWidths count]>= v4;
 }
 
-- (BOOL)isColumnWidthDefinedAt:(unsigned int)a3
+- (BOOL)isColumnWidthDefinedAt:(unsigned int)at
 {
   v5 = *(self + 8);
   if ((v5 & 6) != 0 && (*(&self->mTrackedProperties + 54) & 0x80000000) != 0)
   {
-    if ([(NSMutableArray *)self->mTrackedProperties.columnWidths count]> a3)
+    if ([(NSMutableArray *)self->mTrackedProperties.columnWidths count]> at)
     {
       return 1;
     }
@@ -2910,37 +2910,37 @@ LABEL_4:
     }
   }
 
-  return (*(&self->mOriginalProperties + 54) & 0x80000000) != 0 && [(NSMutableArray *)self->mOriginalProperties.columnWidths count]> a3;
+  return (*(&self->mOriginalProperties + 54) & 0x80000000) != 0 && [(NSMutableArray *)self->mOriginalProperties.columnWidths count]> at;
 }
 
-- (int64_t)columnSpaceAt:(unsigned int)a3
+- (int64_t)columnSpaceAt:(unsigned int)at
 {
   v5 = *(self + 8);
   if ((v5 & 6) != 0)
   {
-    if ([(NSMutableArray *)self->mTrackedProperties.columnSpaces count]> a3)
+    if ([(NSMutableArray *)self->mTrackedProperties.columnSpaces count]> at)
     {
-      v6 = [(NSMutableArray *)self->mTrackedProperties.columnSpaces objectAtIndex:a3];
-      v7 = [v6 intValue];
+      v6 = [(NSMutableArray *)self->mTrackedProperties.columnSpaces objectAtIndex:at];
+      intValue = [v6 intValue];
       goto LABEL_9;
     }
 
     v5 = *(self + 8);
   }
 
-  if ((v5 & 4) == 0 && (v5 & 1) == 0 || [(NSMutableArray *)self->mOriginalProperties.columnSpaces count]<= a3)
+  if ((v5 & 4) == 0 && (v5 & 1) == 0 || [(NSMutableArray *)self->mOriginalProperties.columnSpaces count]<= at)
   {
     return 0;
   }
 
-  v6 = [(NSMutableArray *)self->mOriginalProperties.columnSpaces objectAtIndex:a3];
-  v7 = [v6 longValue];
+  v6 = [(NSMutableArray *)self->mOriginalProperties.columnSpaces objectAtIndex:at];
+  intValue = [v6 longValue];
 LABEL_9:
 
-  return v7;
+  return intValue;
 }
 
-- (void)appendColumnSpace:(int64_t)a3
+- (void)appendColumnSpace:(int64_t)space
 {
   if ((*(self + 8) & 2) != 0)
   {
@@ -2973,7 +2973,7 @@ LABEL_9:
     }
   }
 
-  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:a3];
+  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:space];
   [(NSMutableArray *)columnSpaces addObject:?];
 }
 
@@ -2995,7 +2995,7 @@ LABEL_9:
   return v2 & 1;
 }
 
-- (void)setColumnsEqualWidth:(BOOL)a3
+- (void)setColumnsEqualWidth:(BOOL)width
 {
   if ((*(self + 8) & 2) != 0)
   {
@@ -3012,7 +3012,7 @@ LABEL_9:
     v3 = 292;
   }
 
-  *(&self->super.isa + v3) = *(&self->super.isa + v3) & 0xFFFC | a3 | 2;
+  *(&self->super.isa + v3) = *(&self->super.isa + v3) & 0xFFFC | width | 2;
 }
 
 - (int64_t)columnSpace
@@ -3035,7 +3035,7 @@ LABEL_9:
   return *(&self->super.isa + v3);
 }
 
-- (void)setColumnSpace:(int64_t)a3
+- (void)setColumnSpace:(int64_t)space
 {
   if ((*(self + 8) & 2) != 0)
   {
@@ -3054,7 +3054,7 @@ LABEL_9:
     v4 = 264;
   }
 
-  *(&self->super.isa + v4) = a3;
+  *(&self->super.isa + v4) = space;
   *(&self->super.isa + v3) |= 4u;
 }
 
@@ -3114,7 +3114,7 @@ LABEL_4:
   return *(&self->super.isa + v3);
 }
 
-- (void)setVerticalJustification:(int)a3
+- (void)setVerticalJustification:(int)justification
 {
   if ((*(self + 8) & 2) != 0)
   {
@@ -3133,7 +3133,7 @@ LABEL_4:
     v4 = 272;
   }
 
-  *(&self->super.isa + v4) = a3;
+  *(&self->super.isa + v4) = justification;
   *(&self->super.isa + v3) |= 8u;
 }
 
@@ -3173,7 +3173,7 @@ LABEL_4:
   return v2;
 }
 
-- (void)setTitlePage:(BOOL)a3
+- (void)setTitlePage:(BOOL)page
 {
   if ((*(self + 8) & 2) != 0)
   {
@@ -3190,7 +3190,7 @@ LABEL_4:
     v3 = 292;
   }
 
-  if (a3)
+  if (page)
   {
     v4 = 48;
   }
@@ -3223,7 +3223,7 @@ LABEL_9:
   return v2 & 1;
 }
 
-- (void)setBidi:(BOOL)a3
+- (void)setBidi:(BOOL)bidi
 {
   if ((*(self + 8) & 2) != 0)
   {
@@ -3242,7 +3242,7 @@ LABEL_9:
     v4 = 288;
   }
 
-  *(&self->super.isa + v4) = *(&self->super.isa + v4) & 0xFFFFFFFE | a3;
+  *(&self->super.isa + v4) = *(&self->super.isa + v4) & 0xFFFFFFFE | bidi;
   *(&self->super.isa + v3) |= 0x400u;
 }
 
@@ -3303,7 +3303,7 @@ LABEL_4:
   return v3;
 }
 
-- (void)setFormattingChanged:(BOOL)a3
+- (void)setFormattingChanged:(BOOL)changed
 {
   if ((*(self + 8) & 2) != 0)
   {
@@ -3320,7 +3320,7 @@ LABEL_4:
     v3 = 292;
   }
 
-  if (a3)
+  if (changed)
   {
     v4 = 192;
   }
@@ -3389,7 +3389,7 @@ LABEL_4:
   return *(&self->super.isa + v3);
 }
 
-- (void)setIndexToAuthorIDOfFormattingChange:(unsigned __int16)a3
+- (void)setIndexToAuthorIDOfFormattingChange:(unsigned __int16)change
 {
   if ((*(self + 8) & 2) != 0)
   {
@@ -3408,7 +3408,7 @@ LABEL_4:
     v4 = 276;
   }
 
-  *(&self->super.isa + v4) = a3;
+  *(&self->super.isa + v4) = change;
   *(&self->super.isa + v3) |= 0x100u;
 }
 
@@ -3472,12 +3472,12 @@ LABEL_4:
   return v3;
 }
 
-- (void)setFormattingChangeDate:(id)a3
+- (void)setFormattingChangeDate:(id)date
 {
-  v5 = a3;
+  dateCopy = date;
   if ((*(self + 8) & 2) != 0)
   {
-    v8 = v5;
+    v8 = dateCopy;
     v6 = 516;
     v7 = 504;
   }
@@ -3489,14 +3489,14 @@ LABEL_4:
       goto LABEL_6;
     }
 
-    v8 = v5;
+    v8 = dateCopy;
     v6 = 292;
     v7 = 280;
   }
 
-  objc_storeStrong((&self->super.isa + v7), a3);
+  objc_storeStrong((&self->super.isa + v7), date);
   *(&self->super.isa + v6) |= 0x200u;
-  v5 = v8;
+  dateCopy = v8;
 LABEL_6:
 }
 

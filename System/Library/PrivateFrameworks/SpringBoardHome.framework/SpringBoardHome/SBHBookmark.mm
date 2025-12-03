@@ -1,6 +1,6 @@
 @interface SBHBookmark
-- (BOOL)iconCompleteUninstall:(id)a3;
-- (BOOL)iconSupportsUninstall:(id)a3;
+- (BOOL)iconCompleteUninstall:(id)uninstall;
+- (BOOL)iconSupportsUninstall:(id)uninstall;
 - (BOOL)isAppClip;
 - (BOOL)isShortcutsWebClip;
 - (BOOL)isSingleStepShortcutWebClip;
@@ -8,37 +8,37 @@
 - (CPSWebClip)appClip;
 - (NSString)identifier;
 - (NSURL)launchURL;
-- (SBHBookmark)initWithWebClip:(id)a3;
-- (id)folderTitleOptionsForIcon:(id)a3;
-- (id)icon:(id)a3 displayNameForLocation:(id)a4;
-- (id)icon:(id)a3 imageWithInfo:(SBIconImageInfo *)a4;
-- (id)icon:(id)a3 imageWithInfo:(SBIconImageInfo *)a4 traitCollection:(id)a5 options:(unint64_t)a6;
-- (id)icon:(id)a3 layerWithInfo:(SBIconImageInfo *)a4 traitCollection:(id)a5 options:(unint64_t)a6;
-- (id)icon:(id)a3 unmaskedImageWithInfo:(SBIconImageInfo *)a4;
-- (id)isImageWithInfo:(SBIconImageInfo *)a3 traitCollection:(id)a4 options:(unint64_t)a5;
+- (SBHBookmark)initWithWebClip:(id)clip;
+- (id)folderTitleOptionsForIcon:(id)icon;
+- (id)icon:(id)icon displayNameForLocation:(id)location;
+- (id)icon:(id)icon imageWithInfo:(SBIconImageInfo *)info;
+- (id)icon:(id)icon imageWithInfo:(SBIconImageInfo *)info traitCollection:(id)collection options:(unint64_t)options;
+- (id)icon:(id)icon layerWithInfo:(SBIconImageInfo *)info traitCollection:(id)collection options:(unint64_t)options;
+- (id)icon:(id)icon unmaskedImageWithInfo:(SBIconImageInfo *)info;
+- (id)isImageWithInfo:(SBIconImageInfo *)info traitCollection:(id)collection options:(unint64_t)options;
 - (void)_cleanupAppClipIfNecessary;
-- (void)_deviceUnlockedForFirstTime:(id)a3;
+- (void)_deviceUnlockedForFirstTime:(id)time;
 - (void)dealloc;
 @end
 
 @implementation SBHBookmark
 
-- (SBHBookmark)initWithWebClip:(id)a3
+- (SBHBookmark)initWithWebClip:(id)clip
 {
-  v5 = a3;
+  clipCopy = clip;
   v12.receiver = self;
   v12.super_class = SBHBookmark;
   v6 = [(SBHBookmark *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_webClip, a3);
-    v8 = [v5 placeholderBundleIdentifier];
+    objc_storeStrong(&v6->_webClip, clip);
+    placeholderBundleIdentifier = [clipCopy placeholderBundleIdentifier];
     placeholderBundleIdentifier = v7->_placeholderBundleIdentifier;
-    v7->_placeholderBundleIdentifier = v8;
+    v7->_placeholderBundleIdentifier = placeholderBundleIdentifier;
 
-    v10 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v10 addObserver:v7 selector:sel__deviceUnlockedForFirstTime_ name:*MEMORY[0x1E69D4040] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v7 selector:sel__deviceUnlockedForFirstTime_ name:*MEMORY[0x1E69D4040] object:0];
   }
 
   return v7;
@@ -46,8 +46,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E69D4040] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69D4040] object:0];
 
   v4.receiver = self;
   v4.super_class = SBHBookmark;
@@ -56,25 +56,25 @@
 
 - (NSString)identifier
 {
-  v2 = [(SBHBookmark *)self webClip];
-  v3 = [v2 identifier];
+  webClip = [(SBHBookmark *)self webClip];
+  identifier = [webClip identifier];
 
-  return v3;
+  return identifier;
 }
 
 - (NSURL)launchURL
 {
-  v2 = [(SBHBookmark *)self webClip];
-  v3 = [v2 applicationLaunchURL];
+  webClip = [(SBHBookmark *)self webClip];
+  applicationLaunchURL = [webClip applicationLaunchURL];
 
-  return v3;
+  return applicationLaunchURL;
 }
 
 - (BOOL)isShortcutsWebClip
 {
-  v2 = [(SBHBookmark *)self webClip];
-  v3 = [v2 shortcutIdentifier];
-  v4 = v3 != 0;
+  webClip = [(SBHBookmark *)self webClip];
+  shortcutIdentifier = [webClip shortcutIdentifier];
+  v4 = shortcutIdentifier != 0;
 
   return v4;
 }
@@ -86,9 +86,9 @@
     return 0;
   }
 
-  v3 = [(SBHBookmark *)self webClip];
-  v4 = [v3 pageURL];
-  v5 = v4 == 0;
+  webClip = [(SBHBookmark *)self webClip];
+  pageURL = [webClip pageURL];
+  v5 = pageURL == 0;
 
   return v5;
 }
@@ -115,9 +115,9 @@
 
     v4 = v3;
     _Block_object_dispose(&v12, 8);
-    v5 = [v3 sharedStore];
-    v6 = [(UIWebClip *)self->_webClip identifier];
-    v7 = [v5 synchronouslyGetAppClipWithIdentifier:v6];
+    sharedStore = [v3 sharedStore];
+    identifier = [(UIWebClip *)self->_webClip identifier];
+    v7 = [sharedStore synchronouslyGetAppClipWithIdentifier:identifier];
     appClip = self->_appClip;
     self->_appClip = v7;
   }
@@ -134,66 +134,66 @@
     return 1;
   }
 
-  v3 = [(SBHBookmark *)self webClip];
-  v4 = [v3 isAppClip];
+  webClip = [(SBHBookmark *)self webClip];
+  isAppClip = [webClip isAppClip];
 
-  return v4;
+  return isAppClip;
 }
 
-- (void)_deviceUnlockedForFirstTime:(id)a3
+- (void)_deviceUnlockedForFirstTime:(id)time
 {
-  v4 = [MEMORY[0x1E696AD88] sbh_leafIconDataSourceNotificationCenter];
-  [v4 postNotificationName:@"SBLeafIconDataSourceDidChangeNotification" object:self];
+  sbh_leafIconDataSourceNotificationCenter = [MEMORY[0x1E696AD88] sbh_leafIconDataSourceNotificationCenter];
+  [sbh_leafIconDataSourceNotificationCenter postNotificationName:@"SBLeafIconDataSourceDidChangeNotification" object:self];
 }
 
 - (BOOL)isUninstallSupported
 {
-  v2 = [(SBHBookmark *)self webClip];
-  v3 = [v2 removalDisallowed];
+  webClip = [(SBHBookmark *)self webClip];
+  removalDisallowed = [webClip removalDisallowed];
 
-  return v3 ^ 1;
+  return removalDisallowed ^ 1;
 }
 
-- (id)icon:(id)a3 displayNameForLocation:(id)a4
+- (id)icon:(id)icon displayNameForLocation:(id)location
 {
-  v4 = [(SBHBookmark *)self webClip:a3];
-  v5 = [v4 title];
+  v4 = [(SBHBookmark *)self webClip:icon];
+  title = [v4 title];
 
-  return v5;
+  return title;
 }
 
-- (id)icon:(id)a3 unmaskedImageWithInfo:(SBIconImageInfo *)a4
+- (id)icon:(id)icon unmaskedImageWithInfo:(SBIconImageInfo *)info
 {
-  v5 = a3;
+  iconCopy = icon;
   v6 = objc_autoreleasePoolPush();
-  v7 = [(SBHBookmark *)self webClip];
-  v8 = [v7 iconImage];
+  webClip = [(SBHBookmark *)self webClip];
+  iconImage = [webClip iconImage];
 
   objc_autoreleasePoolPop(v6);
 
-  return v8;
+  return iconImage;
 }
 
-- (id)icon:(id)a3 imageWithInfo:(SBIconImageInfo *)a4
+- (id)icon:(id)icon imageWithInfo:(SBIconImageInfo *)info
 {
   v7 = v6;
   v8 = v5;
   v9 = v4;
-  if ([(SBHBookmark *)self isAppClip:a3])
+  if ([(SBHBookmark *)self isAppClip:icon])
   {
     v11 = objc_alloc(MEMORY[0x1E69A8A00]);
-    v12 = [(SBHBookmark *)self webClip];
-    v13 = [v12 applicationBundleIdentifier];
-    v14 = [v11 initWithBundleIdentifier:v13];
+    webClip = [(SBHBookmark *)self webClip];
+    applicationBundleIdentifier = [webClip applicationBundleIdentifier];
+    v14 = [v11 initWithBundleIdentifier:applicationBundleIdentifier];
 
     v15 = [objc_alloc(MEMORY[0x1E69A8A30]) initWithSize:v9 scale:{v8, v7}];
     v16 = [v14 prepareImageForDescriptor:v15];
     if (v16)
     {
       v17 = objc_alloc(MEMORY[0x1E69DCAB8]);
-      v18 = [v16 CGImage];
+      cGImage = [v16 CGImage];
       [v16 scale];
-      v19 = [v17 initWithCGImage:v18 scale:0 orientation:?];
+      v19 = [v17 initWithCGImage:cGImage scale:0 orientation:?];
     }
 
     else
@@ -210,61 +210,61 @@
   return v19;
 }
 
-- (id)isImageWithInfo:(SBIconImageInfo *)a3 traitCollection:(id)a4 options:(unint64_t)a5
+- (id)isImageWithInfo:(SBIconImageInfo *)info traitCollection:(id)collection options:(unint64_t)options
 {
-  v8 = a4;
+  collectionCopy = collection;
   v9 = v7;
   v10 = v6;
   v11 = v5;
   v32[1] = *MEMORY[0x1E69E9840];
-  v13 = a3;
+  infoCopy = info;
   v14 = objc_autoreleasePoolPush();
-  v15 = [(SBHBookmark *)self webClip];
-  v16 = SBHIconServicesOptionsForImageOptions(v8);
+  webClip = [(SBHBookmark *)self webClip];
+  v16 = SBHIconServicesOptionsForImageOptions(collectionCopy);
   if ([(SBHBookmark *)self isAppClip])
   {
     v17 = objc_alloc(MEMORY[0x1E69A8A00]);
-    v18 = [v15 applicationBundleIdentifier];
-    v19 = [v17 initWithBundleIdentifier:v18];
+    applicationBundleIdentifier = [webClip applicationBundleIdentifier];
+    v19 = [v17 initWithBundleIdentifier:applicationBundleIdentifier];
   }
 
   else
   {
-    v20 = [(SBIconImageInfo *)v13 sbh_iconImageAppearance];
-    v21 = [v20 appearanceType];
-    if (v21 > 6)
+    sbh_iconImageAppearance = [(SBIconImageInfo *)infoCopy sbh_iconImageAppearance];
+    appearanceType = [sbh_iconImageAppearance appearanceType];
+    if (appearanceType > 6)
     {
       v23 = 0;
     }
 
     else
     {
-      if (((1 << v21) & 0x70) != 0)
+      if (((1 << appearanceType) & 0x70) != 0)
       {
-        v22 = [v15 tintableIconImage];
+        tintableIconImage = [webClip tintableIconImage];
       }
 
       else
       {
-        if (((1 << v21) & 5) != 0)
+        if (((1 << appearanceType) & 5) != 0)
         {
-          [v15 iconImage];
+          [webClip iconImage];
         }
 
         else
         {
-          [v15 darkIconImage];
+          [webClip darkIconImage];
         }
-        v22 = ;
+        tintableIconImage = ;
       }
 
-      v23 = v22;
+      v23 = tintableIconImage;
     }
 
     v24 = objc_alloc(MEMORY[0x1E69A8988]);
-    v25 = [v23 CGImage];
+    cGImage = [v23 CGImage];
     [v23 scale];
-    v26 = [v24 initWithCGImage:v25 scale:?];
+    v26 = [v24 initWithCGImage:cGImage scale:?];
     v27 = objc_alloc(MEMORY[0x1E69A8A00]);
     v32[0] = v26;
     v28 = [MEMORY[0x1E695DEC8] arrayWithObjects:v32 count:1];
@@ -272,7 +272,7 @@
   }
 
   v29 = [objc_alloc(MEMORY[0x1E69A8A30]) initWithSize:v11 scale:{v10, v9}];
-  SBHModifyImageDescriptorWithTraitCollection(v29, v13, v16);
+  SBHModifyImageDescriptorWithTraitCollection(v29, infoCopy, v16);
   v30 = [v19 prepareImageForDescriptor:v29];
 
   objc_autoreleasePoolPop(v14);
@@ -280,20 +280,20 @@
   return v30;
 }
 
-- (id)icon:(id)a3 imageWithInfo:(SBIconImageInfo *)a4 traitCollection:(id)a5 options:(unint64_t)a6
+- (id)icon:(id)icon imageWithInfo:(SBIconImageInfo *)info traitCollection:(id)collection options:(unint64_t)options
 {
   v11 = v9;
   v12 = v8;
   v13 = v7;
   v14 = v6;
-  v16 = a4;
-  v17 = [(SBHBookmark *)self isImageWithInfo:v16 traitCollection:a5 options:v14, v13, v12, v11];
+  infoCopy = info;
+  v17 = [(SBHBookmark *)self isImageWithInfo:infoCopy traitCollection:collection options:v14, v13, v12, v11];
   if (v17)
   {
     v18 = objc_alloc(MEMORY[0x1E69DCAB8]);
-    v19 = [v17 CGImage];
+    cGImage = [v17 CGImage];
     [v17 scale];
-    v20 = [v18 initWithCGImage:v19 scale:0 orientation:?];
+    v20 = [v18 initWithCGImage:cGImage scale:0 orientation:?];
   }
 
   else
@@ -306,60 +306,60 @@
   return v21;
 }
 
-- (id)icon:(id)a3 layerWithInfo:(SBIconImageInfo *)a4 traitCollection:(id)a5 options:(unint64_t)a6
+- (id)icon:(id)icon layerWithInfo:(SBIconImageInfo *)info traitCollection:(id)collection options:(unint64_t)options
 {
   v11 = v9;
   v12 = v8;
   v13 = v7;
   v14 = v6;
-  v16 = a4;
-  v17 = [(SBHBookmark *)self isImageWithInfo:v16 traitCollection:a5 options:v14, v13, v12, v11];
+  infoCopy = info;
+  v17 = [(SBHBookmark *)self isImageWithInfo:infoCopy traitCollection:collection options:v14, v13, v12, v11];
   if ([(SBHBookmark *)self isAppClip])
   {
     v18 = objc_alloc(MEMORY[0x1E69DCAB8]);
-    v19 = [v17 CGImage];
+    cGImage = [v17 CGImage];
     [v17 scale];
-    v20 = [v18 initWithCGImage:v19 scale:0 orientation:?];
-    v21 = [SBIcon makeIconLayerFromImage:v20];
+    v20 = [v18 initWithCGImage:cGImage scale:0 orientation:?];
+    iCRIconLayer = [SBIcon makeIconLayerFromImage:v20];
   }
 
   else
   {
-    v21 = [v17 ICRIconLayer];
+    iCRIconLayer = [v17 ICRIconLayer];
   }
 
-  v22 = SBHIconServicesOptionsForImageOptions(a5);
-  SBHIconServicesAddDebugLayerOverlayWithTraitCollection(v21, v16, v22, v14, v13, v12, v11);
+  v22 = SBHIconServicesOptionsForImageOptions(collection);
+  SBHIconServicesAddDebugLayerOverlayWithTraitCollection(iCRIconLayer, infoCopy, v22, v14, v13, v12, v11);
 
-  return v21;
+  return iCRIconLayer;
 }
 
-- (BOOL)iconSupportsUninstall:(id)a3
+- (BOOL)iconSupportsUninstall:(id)uninstall
 {
-  v3 = [(SBHBookmark *)self webClip];
-  v4 = [v3 removalDisallowed];
+  webClip = [(SBHBookmark *)self webClip];
+  removalDisallowed = [webClip removalDisallowed];
 
-  return v4 ^ 1;
+  return removalDisallowed ^ 1;
 }
 
-- (BOOL)iconCompleteUninstall:(id)a3
+- (BOOL)iconCompleteUninstall:(id)uninstall
 {
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 postNotificationName:@"SBWebBookmarkWasUninstalledNotification" object:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"SBWebBookmarkWasUninstalledNotification" object:self];
 
   if ([(SBHBookmark *)self isAppClip])
   {
-    v5 = [(SBHBookmark *)self appClip];
+    appClip = [(SBHBookmark *)self appClip];
   }
 
-  v6 = [(SBHBookmark *)self webClip];
-  v7 = [v6 removeFromDisk];
+  webClip = [(SBHBookmark *)self webClip];
+  removeFromDisk = [webClip removeFromDisk];
 
   [(SBHBookmark *)self _cleanupAppClipIfNecessary];
-  return v7;
+  return removeFromDisk;
 }
 
-- (id)folderTitleOptionsForIcon:(id)a3
+- (id)folderTitleOptionsForIcon:(id)icon
 {
   v7[1] = *MEMORY[0x1E69E9840];
   v3 = SBHBundle();
@@ -376,19 +376,19 @@
   v32 = *MEMORY[0x1E69E9840];
   if ([(SBHBookmark *)self isAppClip])
   {
-    v3 = [(SBHBookmark *)self appClip];
-    v4 = [v3 applicationBundleIdentifier];
-    v5 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:v4 allowPlaceholder:0 error:0];
-    v6 = [v5 appClipMetadata];
+    appClip = [(SBHBookmark *)self appClip];
+    applicationBundleIdentifier = [appClip applicationBundleIdentifier];
+    v5 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:applicationBundleIdentifier allowPlaceholder:0 error:0];
+    appClipMetadata = [v5 appClipMetadata];
 
-    if (v6)
+    if (appClipMetadata)
     {
       v21 = 0u;
       v22 = 0u;
       v19 = 0u;
       v20 = 0u;
-      v7 = [MEMORY[0x1E69DD2B8] appClips];
-      v8 = [v7 countByEnumeratingWithState:&v19 objects:v27 count:16];
+      appClips = [MEMORY[0x1E69DD2B8] appClips];
+      v8 = [appClips countByEnumeratingWithState:&v19 objects:v27 count:16];
       if (v8)
       {
         v9 = *v20;
@@ -399,11 +399,11 @@
           {
             if (*v20 != v9)
             {
-              objc_enumerationMutation(v7);
+              objc_enumerationMutation(appClips);
             }
 
-            v11 = [*(*(&v19 + 1) + 8 * v10) applicationBundleIdentifier];
-            v12 = [v11 isEqualToString:v4];
+            applicationBundleIdentifier2 = [*(*(&v19 + 1) + 8 * v10) applicationBundleIdentifier];
+            v12 = [applicationBundleIdentifier2 isEqualToString:applicationBundleIdentifier];
 
             if (v12)
             {
@@ -411,7 +411,7 @@
               if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
               {
                 LODWORD(buf) = 138412290;
-                *(&buf + 4) = v4;
+                *(&buf + 4) = applicationBundleIdentifier;
                 _os_log_impl(&dword_1BEB18000, v16, OS_LOG_TYPE_DEFAULT, "Bailing on cleanup of app clip '%@'; appclip in use by other UIWebClip", &buf, 0xCu);
               }
 
@@ -422,7 +422,7 @@
           }
 
           while (v8 != v10);
-          v8 = [v7 countByEnumeratingWithState:&v19 objects:v27 count:16];
+          v8 = [appClips countByEnumeratingWithState:&v19 objects:v27 count:16];
           if (v8)
           {
             continue;
@@ -436,7 +436,7 @@
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
         LODWORD(buf) = 138412290;
-        *(&buf + 4) = v4;
+        *(&buf + 4) = applicationBundleIdentifier;
         _os_log_impl(&dword_1BEB18000, v13, OS_LOG_TYPE_DEFAULT, "Starting cleanup of app clip '%@'", &buf, 0xCu);
       }
 
@@ -462,19 +462,19 @@
       v17[1] = 3221225472;
       v17[2] = __41__SBHBookmark__cleanupAppClipIfNecessary__block_invoke;
       v17[3] = &unk_1E808C058;
-      v18 = v4;
+      v18 = applicationBundleIdentifier;
       [v14 uninstallAppWithBundleID:v18 requestUserConfirmation:0 completion:v17];
-      v7 = v18;
+      appClips = v18;
     }
 
     else
     {
-      v7 = SBLogCommon();
-      if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+      appClips = SBLogCommon();
+      if (os_log_type_enabled(appClips, OS_LOG_TYPE_DEFAULT))
       {
         LODWORD(buf) = 138412290;
-        *(&buf + 4) = v4;
-        _os_log_impl(&dword_1BEB18000, v7, OS_LOG_TYPE_DEFAULT, "Bailing on cleanup of app clip '%@': Appclips were removed from install of the real app.", &buf, 0xCu);
+        *(&buf + 4) = applicationBundleIdentifier;
+        _os_log_impl(&dword_1BEB18000, appClips, OS_LOG_TYPE_DEFAULT, "Bailing on cleanup of app clip '%@': Appclips were removed from install of the real app.", &buf, 0xCu);
       }
     }
 

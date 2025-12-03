@@ -1,66 +1,66 @@
 @interface MIFileManager
-+ (id)_sanitizeFilePathForVarOrTmpSymlink:(id)a3 error:(id *)a4;
++ (id)_sanitizeFilePathForVarOrTmpSymlink:(id)symlink error:(id *)error;
 + (id)defaultManager;
-- (BOOL)_bulkSetPropertiesForPath:(const char *)a3 existingFD:(int)a4 UID:(unsigned int)a5 GID:(unsigned int)a6 mode:(unsigned __int16)a7 flags:(unsigned int)a8 dataProtectionClass:(int)a9 removeACL:(BOOL)a10 error:(id *)a11;
-- (BOOL)_copyItemAtURL:(id)a3 toURL:(id)a4 failIfSrcMissing:(BOOL)a5 alwaysClone:(BOOL)a6 ignoreErrors:(BOOL)a7 error:(id *)a8;
-- (BOOL)_itemIsType:(unsigned __int16)a3 withDescription:(id)a4 atURL:(id)a5 error:(id *)a6;
-- (BOOL)_markEAFlag:(const char *)a3 forAppIdentifier:(id)a4 insecurelyCachedOnBundle:(id)a5 error:(id *)a6;
-- (BOOL)_moveItemAtURL:(id)a3 toURL:(id)a4 failIfSrcMissing:(BOOL)a5 error:(id *)a6;
-- (BOOL)_removeACLAtPath:(const char *)a3 isDir:(BOOL)a4 error:(id *)a5;
-- (BOOL)_setData:(id)a3 forExtendedAttributeNamed:(id)a4 onURL:(id)a5 orFD:(int)a6 error:(id *)a7;
-- (BOOL)_stageURLByCopying:(id)a3 toItemName:(id)a4 inStagingDir:(id)a5 stagingMode:(int)a6 settingUID:(unsigned int)a7 gid:(unsigned int)a8 dataProtectionClass:(int)a9 hasSymlink:(BOOL *)a10 error:(id *)a11;
-- (BOOL)_validateSymlink:(id)a3 withStartingDepth:(unsigned int)a4 andEndingDepth:(unsigned int *)a5;
-- (BOOL)captureStoreDataFromDirectory:(id)a3 toDirectory:(id)a4 doCopy:(BOOL)a5 failureIsFatal:(BOOL)a6 includeiTunesMetadata:(BOOL)a7 withError:(id *)a8;
-- (BOOL)clearExtendedAttributesAtURL:(id)a3 error:(id *)a4;
-- (BOOL)clearPlaceholderStatusForBundle:(id)a3 withError:(id *)a4;
-- (BOOL)copyVolumeInfo:(id *)a3 forURL:(id)a4 error:(id *)a5;
-- (BOOL)createDirectoryAtURL:(id)a3 withIntermediateDirectories:(BOOL)a4 mode:(unsigned __int16)a5 class:(int)a6 error:(id *)a7;
-- (BOOL)createSymbolicLinkAtURL:(id)a3 withDestinationURL:(id)a4 error:(id *)a5;
-- (BOOL)dataProtectionClassOfItemAtURL:(id)a3 class:(int *)a4 error:(id *)a5;
-- (BOOL)enumerateExtendedAttributeNamesAtURL:(id)a3 includeCompression:(BOOL)a4 error:(id *)a5 enumerator:(id)a6;
-- (BOOL)itemDoesNotExistAtURL:(id)a3;
-- (BOOL)itemDoesNotExistOrIsNotDirectoryAtURL:(id)a3;
-- (BOOL)itemExistsAtURL:(id)a3 error:(id *)a4;
-- (BOOL)markBundleAsPlaceholder:(id)a3 withError:(id *)a4;
-- (BOOL)removeExtendedAttributeNamed:(id)a3 fromURL:(id)a4 error:(id *)a5;
-- (BOOL)removeItemAtURL:(id)a3 keepParent:(BOOL)a4 error:(id *)a5;
-- (BOOL)secureRenameFromSourceURL:(id)a3 toDestinationURL:(id)a4 destinationStatus:(unsigned __int8)a5 error:(id *)a6;
-- (BOOL)setDataProtectionClassOfItemAtURL:(id)a3 toClass:(int)a4 ifPredicate:(id)a5 error:(id *)a6;
-- (BOOL)setInstallType:(id)a3 inExtendedAttributeOnBundle:(id)a4 error:(id *)a5;
-- (BOOL)setModificationDateToNowForURL:(id)a3 error:(id *)a4;
-- (BOOL)setOwnerOfURL:(id)a3 toUID:(unsigned int)a4 gid:(unsigned int)a5 error:(id *)a6;
-- (BOOL)setOwnershipAtURL:(id)a3 toUID:(unsigned int)a4 gid:(unsigned int)a5 error:(id *)a6;
-- (BOOL)setPermissionsForURL:(id)a3 toMode:(unsigned __int16)a4 error:(id *)a5;
-- (BOOL)stageURL:(id)a3 toItemName:(id)a4 inStagingDir:(id)a5 stagingMode:(int)a6 settingUID:(unsigned int)a7 gid:(unsigned int)a8 hasSymlink:(BOOL *)a9 error:(id *)a10;
-- (BOOL)stageURLByMoving:(id)a3 toItemName:(id)a4 inStagingDir:(id)a5 settingUID:(unsigned int)a6 gid:(unsigned int)a7 dataProtectionClass:(int)a8 breakHardlinks:(BOOL)a9 hasSymlink:(BOOL *)a10 error:(id *)a11;
-- (BOOL)standardizeOwnershipAtURL:(id)a3 toUID:(unsigned int)a4 GID:(unsigned int)a5 removeACLs:(BOOL)a6 setProtectionClass:(BOOL)a7 foundSymlink:(BOOL *)a8 error:(id *)a9;
-- (BOOL)validateSymlinksInURLDoNotEscapeURL:(id)a3 error:(id *)a4;
-- (id)_dataForExtendedAttributeNamed:(id)a3 length:(int64_t)a4 onURL:(id)a5 orFD:(int)a6 error:(id *)a7;
-- (id)_firstAvailableParentForURL:(id)a3 error:(id *)a4;
-- (id)_insecureCachedAppIdentifierIfMarkedWithEAFlag:(const char *)a3 bundleURL:(id)a4 allowPlaceholders:(BOOL)a5 error:(id *)a6;
-- (id)_realPathWhatExistsInPath:(id)a3 isDirectory:(BOOL)a4;
-- (id)_traverseUntilFirstAvailableParentOfURL:(id)a3 withBlock:(id)a4;
-- (id)aclTextFromURL:(id)a3 error:(id *)a4;
-- (id)createRelativeDirectoryPath:(id)a3 inBaseDirectory:(id)a4 mode:(unsigned __int16)a5 class:(int)a6 error:(id *)a7;
-- (id)createTemporaryDirectoryInDirectoryURL:(id)a3 error:(id *)a4;
-- (id)debugDescriptionForItemAtURL:(id)a3;
-- (id)destinationOfSymbolicLinkAtURL:(id)a3 error:(id *)a4;
-- (id)enumerateExternalVolumesWithBlock:(id)a3;
-- (id)enumerateURLsForItemsInDirectoryAtURL:(id)a3 ignoreSymlinks:(BOOL)a4 withBlock:(id)a5;
-- (id)extendedAttributesFromURL:(id)a3 includeCompression:(BOOL)a4 error:(id *)a5;
-- (id)installTypeFromExtendedAttributeOnBundle:(id)a3 error:(id *)a4;
-- (id)modificationDateForURL:(id)a3 error:(id *)a4;
-- (id)mountPointForURL:(id)a3 error:(id *)a4;
-- (id)mountPointForVolumeUUID:(id)a3 error:(id *)a4;
-- (id)realPathForURL:(id)a3 allowNonExistentPathComponents:(BOOL)a4 isDirectory:(BOOL)a5 error:(id *)a6;
-- (id)realPathForURL:(id)a3 ifChildOfURL:(id)a4;
-- (id)traverseDirectoryAtURL:(id)a3 withBlock:(id)a4;
-- (id)upToFirstFourBytesFromURL:(id)a3 error:(id *)a4;
-- (id)urlsForItemsInDirectoryAtURL:(id)a3 ignoringSymlinks:(BOOL)a4 error:(id *)a5;
-- (id)volumeUUIDForURL:(id)a3 error:(id *)a4;
-- (int)deviceForURLOrFirstAvailableParent:(id)a3 error:(id *)a4;
-- (unint64_t)diskUsageForURL:(id)a3;
-- (void)logAccessPermissionsForURL:(id)a3;
+- (BOOL)_bulkSetPropertiesForPath:(const char *)path existingFD:(int)d UID:(unsigned int)iD GID:(unsigned int)gID mode:(unsigned __int16)mode flags:(unsigned int)flags dataProtectionClass:(int)class removeACL:(BOOL)self0 error:(id *)self1;
+- (BOOL)_copyItemAtURL:(id)l toURL:(id)rL failIfSrcMissing:(BOOL)missing alwaysClone:(BOOL)clone ignoreErrors:(BOOL)errors error:(id *)error;
+- (BOOL)_itemIsType:(unsigned __int16)type withDescription:(id)description atURL:(id)l error:(id *)error;
+- (BOOL)_markEAFlag:(const char *)flag forAppIdentifier:(id)identifier insecurelyCachedOnBundle:(id)bundle error:(id *)error;
+- (BOOL)_moveItemAtURL:(id)l toURL:(id)rL failIfSrcMissing:(BOOL)missing error:(id *)error;
+- (BOOL)_removeACLAtPath:(const char *)path isDir:(BOOL)dir error:(id *)error;
+- (BOOL)_setData:(id)data forExtendedAttributeNamed:(id)named onURL:(id)l orFD:(int)d error:(id *)error;
+- (BOOL)_stageURLByCopying:(id)copying toItemName:(id)name inStagingDir:(id)dir stagingMode:(int)mode settingUID:(unsigned int)d gid:(unsigned int)gid dataProtectionClass:(int)class hasSymlink:(BOOL *)self0 error:(id *)self1;
+- (BOOL)_validateSymlink:(id)symlink withStartingDepth:(unsigned int)depth andEndingDepth:(unsigned int *)endingDepth;
+- (BOOL)captureStoreDataFromDirectory:(id)directory toDirectory:(id)toDirectory doCopy:(BOOL)copy failureIsFatal:(BOOL)fatal includeiTunesMetadata:(BOOL)metadata withError:(id *)error;
+- (BOOL)clearExtendedAttributesAtURL:(id)l error:(id *)error;
+- (BOOL)clearPlaceholderStatusForBundle:(id)bundle withError:(id *)error;
+- (BOOL)copyVolumeInfo:(id *)info forURL:(id)l error:(id *)error;
+- (BOOL)createDirectoryAtURL:(id)l withIntermediateDirectories:(BOOL)directories mode:(unsigned __int16)mode class:(int)class error:(id *)error;
+- (BOOL)createSymbolicLinkAtURL:(id)l withDestinationURL:(id)rL error:(id *)error;
+- (BOOL)dataProtectionClassOfItemAtURL:(id)l class:(int *)class error:(id *)error;
+- (BOOL)enumerateExtendedAttributeNamesAtURL:(id)l includeCompression:(BOOL)compression error:(id *)error enumerator:(id)enumerator;
+- (BOOL)itemDoesNotExistAtURL:(id)l;
+- (BOOL)itemDoesNotExistOrIsNotDirectoryAtURL:(id)l;
+- (BOOL)itemExistsAtURL:(id)l error:(id *)error;
+- (BOOL)markBundleAsPlaceholder:(id)placeholder withError:(id *)error;
+- (BOOL)removeExtendedAttributeNamed:(id)named fromURL:(id)l error:(id *)error;
+- (BOOL)removeItemAtURL:(id)l keepParent:(BOOL)parent error:(id *)error;
+- (BOOL)secureRenameFromSourceURL:(id)l toDestinationURL:(id)rL destinationStatus:(unsigned __int8)status error:(id *)error;
+- (BOOL)setDataProtectionClassOfItemAtURL:(id)l toClass:(int)class ifPredicate:(id)predicate error:(id *)error;
+- (BOOL)setInstallType:(id)type inExtendedAttributeOnBundle:(id)bundle error:(id *)error;
+- (BOOL)setModificationDateToNowForURL:(id)l error:(id *)error;
+- (BOOL)setOwnerOfURL:(id)l toUID:(unsigned int)d gid:(unsigned int)gid error:(id *)error;
+- (BOOL)setOwnershipAtURL:(id)l toUID:(unsigned int)d gid:(unsigned int)gid error:(id *)error;
+- (BOOL)setPermissionsForURL:(id)l toMode:(unsigned __int16)mode error:(id *)error;
+- (BOOL)stageURL:(id)l toItemName:(id)name inStagingDir:(id)dir stagingMode:(int)mode settingUID:(unsigned int)d gid:(unsigned int)gid hasSymlink:(BOOL *)symlink error:(id *)self0;
+- (BOOL)stageURLByMoving:(id)moving toItemName:(id)name inStagingDir:(id)dir settingUID:(unsigned int)d gid:(unsigned int)gid dataProtectionClass:(int)class breakHardlinks:(BOOL)hardlinks hasSymlink:(BOOL *)self0 error:(id *)self1;
+- (BOOL)standardizeOwnershipAtURL:(id)l toUID:(unsigned int)d GID:(unsigned int)iD removeACLs:(BOOL)ls setProtectionClass:(BOOL)class foundSymlink:(BOOL *)symlink error:(id *)error;
+- (BOOL)validateSymlinksInURLDoNotEscapeURL:(id)l error:(id *)error;
+- (id)_dataForExtendedAttributeNamed:(id)named length:(int64_t)length onURL:(id)l orFD:(int)d error:(id *)error;
+- (id)_firstAvailableParentForURL:(id)l error:(id *)error;
+- (id)_insecureCachedAppIdentifierIfMarkedWithEAFlag:(const char *)flag bundleURL:(id)l allowPlaceholders:(BOOL)placeholders error:(id *)error;
+- (id)_realPathWhatExistsInPath:(id)path isDirectory:(BOOL)directory;
+- (id)_traverseUntilFirstAvailableParentOfURL:(id)l withBlock:(id)block;
+- (id)aclTextFromURL:(id)l error:(id *)error;
+- (id)createRelativeDirectoryPath:(id)path inBaseDirectory:(id)directory mode:(unsigned __int16)mode class:(int)class error:(id *)error;
+- (id)createTemporaryDirectoryInDirectoryURL:(id)l error:(id *)error;
+- (id)debugDescriptionForItemAtURL:(id)l;
+- (id)destinationOfSymbolicLinkAtURL:(id)l error:(id *)error;
+- (id)enumerateExternalVolumesWithBlock:(id)block;
+- (id)enumerateURLsForItemsInDirectoryAtURL:(id)l ignoreSymlinks:(BOOL)symlinks withBlock:(id)block;
+- (id)extendedAttributesFromURL:(id)l includeCompression:(BOOL)compression error:(id *)error;
+- (id)installTypeFromExtendedAttributeOnBundle:(id)bundle error:(id *)error;
+- (id)modificationDateForURL:(id)l error:(id *)error;
+- (id)mountPointForURL:(id)l error:(id *)error;
+- (id)mountPointForVolumeUUID:(id)d error:(id *)error;
+- (id)realPathForURL:(id)l allowNonExistentPathComponents:(BOOL)components isDirectory:(BOOL)directory error:(id *)error;
+- (id)realPathForURL:(id)l ifChildOfURL:(id)rL;
+- (id)traverseDirectoryAtURL:(id)l withBlock:(id)block;
+- (id)upToFirstFourBytesFromURL:(id)l error:(id *)error;
+- (id)urlsForItemsInDirectoryAtURL:(id)l ignoringSymlinks:(BOOL)symlinks error:(id *)error;
+- (id)volumeUUIDForURL:(id)l error:(id *)error;
+- (int)deviceForURLOrFirstAvailableParent:(id)parent error:(id *)error;
+- (unint64_t)diskUsageForURL:(id)l;
+- (void)logAccessPermissionsForURL:(id)l;
 @end
 
 @implementation MIFileManager
@@ -71,7 +71,7 @@
   block[1] = 3221225472;
   block[2] = __31__MIFileManager_defaultManager__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (defaultManager_onceToken_1 != -1)
   {
     dispatch_once(&defaultManager_onceToken_1, block);
@@ -89,14 +89,14 @@ uint64_t __31__MIFileManager_defaultManager__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (BOOL)removeItemAtURL:(id)a3 keepParent:(BOOL)a4 error:(id *)a5
+- (BOOL)removeItemAtURL:(id)l keepParent:(BOOL)parent error:(id *)error
 {
-  v6 = a4;
-  v7 = a3;
+  parentCopy = parent;
+  lCopy = l;
   v8 = removefile_state_alloc();
   v10 = v8;
   value = 0;
-  if (!v7)
+  if (!lCopy)
   {
     v17 = *MEMORY[0x1E696A798];
     v18 = @"nil url passed to -removeItemAtURL:error:";
@@ -121,7 +121,7 @@ LABEL_19:
     MOLogWrite();
   }
 
-  if (v6)
+  if (parentCopy)
   {
     v13 = 3;
   }
@@ -131,12 +131,12 @@ LABEL_19:
     v13 = 1;
   }
 
-  if (removefile([v7 fileSystemRepresentation], v10, v13) && *__error() != 2)
+  if (removefile([lCopy fileSystemRepresentation], v10, v13) && *__error() != 2)
   {
     v21 = *MEMORY[0x1E696A798];
     v22 = *__error();
     v23 = __error();
-    v28 = v7;
+    v28 = lCopy;
     strerror(*v23);
     v18 = @"removefile of %@ failed: %s";
     v19 = 132;
@@ -156,14 +156,14 @@ LABEL_19:
 
   v15 = *MEMORY[0x1E696A798];
   strerror(value);
-  _CreateError("[MIFileManager removeItemAtURL:keepParent:error:]", 138, v15, v14, 0, 0, @"removefile of %@ failed: %s", v16, v7);
+  _CreateError("[MIFileManager removeItemAtURL:keepParent:error:]", 138, v15, v14, 0, 0, @"removefile of %@ failed: %s", v16, lCopy);
   v24 = LABEL_20:;
   removefile_state_free(v10);
-  if (a5)
+  if (error)
   {
     v25 = v24;
     v26 = 0;
-    *a5 = v24;
+    *error = v24;
   }
 
   else
@@ -176,38 +176,38 @@ LABEL_24:
   return v26;
 }
 
-- (BOOL)createDirectoryAtURL:(id)a3 withIntermediateDirectories:(BOOL)a4 mode:(unsigned __int16)a5 class:(int)a6 error:(id *)a7
+- (BOOL)createDirectoryAtURL:(id)l withIntermediateDirectories:(BOOL)directories mode:(unsigned __int16)mode class:(int)class error:(id *)error
 {
-  v8 = *&a6;
-  v10 = a4;
-  v11 = a3;
-  v12 = [v11 fileSystemRepresentation];
-  if (v10)
+  v8 = *&class;
+  directoriesCopy = directories;
+  lCopy = l;
+  fileSystemRepresentation = [lCopy fileSystemRepresentation];
+  if (directoriesCopy)
   {
-    v13 = mkpath_np(v12, a5);
+    v13 = mkpath_np(fileSystemRepresentation, mode);
     if (v13)
     {
       v14 = v13;
       if (v13 != 17)
       {
         v15 = *MEMORY[0x1E696A798];
-        v16 = [v11 path];
+        path = [lCopy path];
         strerror(v14);
-        v18 = _CreateError("[MIFileManager createDirectoryAtURL:withIntermediateDirectories:mode:class:error:]", 161, v15, v14, 0, 0, @"mkpath_np of %@ failed: %s", v17, v16);
+        v18 = _CreateError("[MIFileManager createDirectoryAtURL:withIntermediateDirectories:mode:class:error:]", 161, v15, v14, 0, 0, @"mkpath_np of %@ failed: %s", v17, path);
 
         goto LABEL_15;
       }
     }
   }
 
-  else if (mkdir(v12, a5) && *__error() != 17)
+  else if (mkdir(fileSystemRepresentation, mode) && *__error() != 17)
   {
     v34 = *MEMORY[0x1E696A798];
     v35 = *__error();
-    v31 = [v11 path];
+    path2 = [lCopy path];
     v36 = __error();
     strerror(*v36);
-    _CreateError("[MIFileManager createDirectoryAtURL:withIntermediateDirectories:mode:class:error:]", 167, v34, v35, 0, 0, @"mkdir of %@ failed: %s", v37, v31);
+    _CreateError("[MIFileManager createDirectoryAtURL:withIntermediateDirectories:mode:class:error:]", 167, v34, v35, 0, 0, @"mkdir of %@ failed: %s", v37, path2);
     goto LABEL_14;
   }
 
@@ -218,20 +218,20 @@ LABEL_24:
     goto LABEL_21;
   }
 
-  v19 = opendir([v11 fileSystemRepresentation]);
+  v19 = opendir([lCopy fileSystemRepresentation]);
   if (!v19)
   {
     v29 = *MEMORY[0x1E696A798];
     v30 = *__error();
-    v31 = [v11 path];
+    path2 = [lCopy path];
     v32 = __error();
     strerror(*v32);
-    _CreateError("[MIFileManager createDirectoryAtURL:withIntermediateDirectories:mode:class:error:]", 177, v29, v30, 0, 0, @"opendir of %@ failed: %s", v33, v31);
+    _CreateError("[MIFileManager createDirectoryAtURL:withIntermediateDirectories:mode:class:error:]", 177, v29, v30, 0, 0, @"opendir of %@ failed: %s", v33, path2);
     v18 = LABEL_14:;
 
 LABEL_15:
     v23 = 0;
-    if (!a7)
+    if (!error)
     {
       goto LABEL_21;
     }
@@ -247,7 +247,7 @@ LABEL_15:
   {
     v24 = *MEMORY[0x1E696A798];
     v25 = *__error();
-    v26 = [v11 path];
+    path3 = [lCopy path];
     v27 = __error();
     strerror(*v27);
     v18 = _CreateError("[MIFileManager createDirectoryAtURL:withIntermediateDirectories:mode:class:error:]", 183, v24, v25, 0, 0, @"Failed to setclass(%d) on directory %@: %s", v28, v8);
@@ -259,14 +259,14 @@ LABEL_15:
   }
 
   closedir(v20);
-  if (a7)
+  if (error)
   {
 LABEL_19:
     if (!v23)
     {
       v38 = v18;
       v23 = 0;
-      *a7 = v18;
+      *error = v18;
     }
   }
 
@@ -275,14 +275,14 @@ LABEL_21:
   return v23;
 }
 
-- (id)createRelativeDirectoryPath:(id)a3 inBaseDirectory:(id)a4 mode:(unsigned __int16)a5 class:(int)a6 error:(id *)a7
+- (id)createRelativeDirectoryPath:(id)path inBaseDirectory:(id)directory mode:(unsigned __int16)mode class:(int)class error:(id *)error
 {
-  v8 = *&a6;
-  v9 = a5;
-  v12 = a4;
-  v13 = [a3 pathComponents];
-  v14 = [v13 count];
-  v15 = v12;
+  v8 = *&class;
+  modeCopy = mode;
+  directoryCopy = directory;
+  pathComponents = [path pathComponents];
+  v14 = [pathComponents count];
+  v15 = directoryCopy;
   v21 = v15;
   if (!v14)
   {
@@ -296,7 +296,7 @@ LABEL_8:
   while (1)
   {
     v17 = v15;
-    v18 = [v13 objectAtIndexedSubscript:v16];
+    v18 = [pathComponents objectAtIndexedSubscript:v16];
     v15 = [v15 URLByAppendingPathComponent:v18 isDirectory:1];
 
     if (v14 != 1)
@@ -304,7 +304,7 @@ LABEL_8:
       break;
     }
 
-    if (![(MIFileManager *)self createDirectoryAtURL:v15 withIntermediateDirectories:0 mode:v9 class:v8 error:a7])
+    if (![(MIFileManager *)self createDirectoryAtURL:v15 withIntermediateDirectories:0 mode:modeCopy class:v8 error:error])
     {
       goto LABEL_9;
     }
@@ -317,7 +317,7 @@ LABEL_7:
     }
   }
 
-  if ([(MIFileManager *)self createDirectoryAtURL:v15 withIntermediateDirectories:0 mode:v9 error:a7])
+  if ([(MIFileManager *)self createDirectoryAtURL:v15 withIntermediateDirectories:0 mode:modeCopy error:error])
   {
     goto LABEL_7;
   }
@@ -329,21 +329,21 @@ LABEL_10:
   return v19;
 }
 
-- (BOOL)_copyItemAtURL:(id)a3 toURL:(id)a4 failIfSrcMissing:(BOOL)a5 alwaysClone:(BOOL)a6 ignoreErrors:(BOOL)a7 error:(id *)a8
+- (BOOL)_copyItemAtURL:(id)l toURL:(id)rL failIfSrcMissing:(BOOL)missing alwaysClone:(BOOL)clone ignoreErrors:(BOOL)errors error:(id *)error
 {
-  v9 = a7;
-  v10 = a6;
-  v13 = a3;
-  v14 = a4;
+  errorsCopy = errors;
+  cloneCopy = clone;
+  lCopy = l;
+  rLCopy = rL;
   v15 = objc_opt_new();
-  [v15 setIgnoreErrors:v9];
+  [v15 setIgnoreErrors:errorsCopy];
   [v15 setError:0];
-  if (a5 || (memset(&v38, 0, sizeof(v38)), !lstat([v13 fileSystemRepresentation], &v38)))
+  if (missing || (memset(&v38, 0, sizeof(v38)), !lstat([lCopy fileSystemRepresentation], &v38)))
   {
     memset(&v37, 0, sizeof(v37));
-    if (lstat([v14 fileSystemRepresentation], &v37) || (v37.st_mode & 0xF000) != 0x4000)
+    if (lstat([rLCopy fileSystemRepresentation], &v37) || (v37.st_mode & 0xF000) != 0x4000)
     {
-      if (v10)
+      if (cloneCopy)
       {
         v22 = 34373647;
       }
@@ -356,25 +356,25 @@ LABEL_10:
       v23 = copyfile_state_alloc();
       copyfile_state_set(v23, 6u, _CopyfileStatusCallback);
       copyfile_state_set(v23, 7u, v15);
-      v24 = copyfile([v13 fileSystemRepresentation], objc_msgSend(v14, "fileSystemRepresentation"), v23, v22);
+      v24 = copyfile([lCopy fileSystemRepresentation], objc_msgSend(rLCopy, "fileSystemRepresentation"), v23, v22);
       v17 = v24 == 0;
       if (v24)
       {
-        v25 = [v15 error];
-        v26 = v25;
-        if (v25)
+        error = [v15 error];
+        v26 = error;
+        if (error)
         {
-          v18 = v25;
+          v18 = error;
         }
 
         else
         {
           v30 = *__error();
           v36 = *MEMORY[0x1E696A798];
-          v31 = [v13 path];
-          v35 = [v14 path];
+          path = [lCopy path];
+          path2 = [rLCopy path];
           strerror(v30);
-          v18 = _CreateError("[MIFileManager _copyItemAtURL:toURL:failIfSrcMissing:alwaysClone:ignoreErrors:error:]", 360, v36, v30, 0, 0, @"copyfile of %@ to %@ failed: %s", v32, v31);
+          v18 = _CreateError("[MIFileManager _copyItemAtURL:toURL:failIfSrcMissing:alwaysClone:ignoreErrors:error:]", 360, v36, v30, 0, 0, @"copyfile of %@ to %@ failed: %s", v32, path);
         }
 
         if (!v23)
@@ -398,8 +398,8 @@ LABEL_10:
     else
     {
       v19 = *MEMORY[0x1E696A798];
-      v20 = [v14 path];
-      v18 = _CreateError("[MIFileManager _copyItemAtURL:toURL:failIfSrcMissing:alwaysClone:ignoreErrors:error:]", 326, v19, 17, 0, 0, @"Destination %@ exists and is a directory", v21, v20);
+      path3 = [rLCopy path];
+      v18 = _CreateError("[MIFileManager _copyItemAtURL:toURL:failIfSrcMissing:alwaysClone:ignoreErrors:error:]", 326, v19, 17, 0, 0, @"Destination %@ exists and is a directory", v21, path3);
 
       v17 = 0;
     }
@@ -417,32 +417,32 @@ LABEL_10:
     else
     {
       v27 = *MEMORY[0x1E696A798];
-      v28 = [v13 path];
+      path4 = [lCopy path];
       strerror(v16);
-      v18 = _CreateError("[MIFileManager _copyItemAtURL:toURL:failIfSrcMissing:alwaysClone:ignoreErrors:error:]", 315, v27, v16, 0, 0, @"stat of %@ failed: %s", v29, v28);
+      v18 = _CreateError("[MIFileManager _copyItemAtURL:toURL:failIfSrcMissing:alwaysClone:ignoreErrors:error:]", 315, v27, v16, 0, 0, @"stat of %@ failed: %s", v29, path4);
     }
   }
 
 LABEL_20:
-  if (a8 && !v17)
+  if (error && !v17)
   {
     v33 = v18;
-    *a8 = v18;
+    *error = v18;
   }
 
   return v17;
 }
 
-- (BOOL)_moveItemAtURL:(id)a3 toURL:(id)a4 failIfSrcMissing:(BOOL)a5 error:(id *)a6
+- (BOOL)_moveItemAtURL:(id)l toURL:(id)rL failIfSrcMissing:(BOOL)missing error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = [v10 fileSystemRepresentation];
-  v14 = [v11 fileSystemRepresentation];
-  if (!a5)
+  lCopy = l;
+  rLCopy = rL;
+  fileSystemRepresentation = [lCopy fileSystemRepresentation];
+  fileSystemRepresentation2 = [rLCopy fileSystemRepresentation];
+  if (!missing)
   {
     memset(&v38, 0, sizeof(v38));
-    if (lstat(v12, &v38))
+    if (lstat(fileSystemRepresentation, &v38))
     {
       v15 = __error();
       v16 = *v15;
@@ -456,14 +456,14 @@ LABEL_20:
       {
         v23 = *MEMORY[0x1E696A798];
         strerror(*v15);
-        v18 = _CreateError("[MIFileManager _moveItemAtURL:toURL:failIfSrcMissing:error:]", 394, v23, v16, 0, 0, @"stat of %s failed: %s", v24, v12);
+        v18 = _CreateError("[MIFileManager _moveItemAtURL:toURL:failIfSrcMissing:error:]", 394, v23, v16, 0, 0, @"stat of %s failed: %s", v24, fileSystemRepresentation);
       }
 
       goto LABEL_26;
     }
   }
 
-  rename(v12, v14, v13);
+  rename(fileSystemRepresentation, fileSystemRepresentation2, v13);
   if (!v19)
   {
     v22 = 0;
@@ -475,11 +475,11 @@ LABEL_20:
   {
     v21 = 1;
 LABEL_17:
-    v25 = [v10 path];
-    v26 = [v25 containsString:@"/System/Library/AppPlaceholders"];
+    path = [lCopy path];
+    v26 = [path containsString:@"/System/Library/AppPlaceholders"];
 
     v37 = 0;
-    v17 = [(MIFileManager *)self _copyItemAtURL:v10 toURL:v11 failIfSrcMissing:1 alwaysClone:0 ignoreErrors:0 error:&v37];
+    v17 = [(MIFileManager *)self _copyItemAtURL:lCopy toURL:rLCopy failIfSrcMissing:1 alwaysClone:0 ignoreErrors:0 error:&v37];
     v27 = v37;
     v18 = v27;
     if (!v17 || (v21 & 1) != 0 || (v26 & 1) != 0)
@@ -488,7 +488,7 @@ LABEL_17:
     }
 
     v36 = v27;
-    v28 = [(MIFileManager *)self removeItemAtURL:v10 error:&v36];
+    v28 = [(MIFileManager *)self removeItemAtURL:lCopy error:&v36];
     v22 = v36;
 
     if (!v28 && (!gLogHandle || *(gLogHandle + 44) >= 3))
@@ -505,13 +505,13 @@ LABEL_24:
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_FAULT))
     {
-      [MIFileManager _moveItemAtURL:v12 toURL:v14 failIfSrcMissing:? error:?];
+      [MIFileManager _moveItemAtURL:fileSystemRepresentation toURL:fileSystemRepresentation2 failIfSrcMissing:? error:?];
     }
 
     if (!gLogHandle || *(gLogHandle + 44) >= 3)
     {
-      v34 = v12;
-      v35 = v14;
+      v34 = fileSystemRepresentation;
+      v35 = fileSystemRepresentation2;
       MOLogWrite();
     }
 
@@ -522,14 +522,14 @@ LABEL_24:
   v29 = v20;
   v30 = *MEMORY[0x1E696A798];
   strerror(v20);
-  v18 = _CreateError("[MIFileManager _moveItemAtURL:toURL:failIfSrcMissing:error:]", 414, v30, v29, 0, 0, @"rename of %s to %s failed: %s", v31, v12);
+  v18 = _CreateError("[MIFileManager _moveItemAtURL:toURL:failIfSrcMissing:error:]", 414, v30, v29, 0, 0, @"rename of %s to %s failed: %s", v31, fileSystemRepresentation);
   LOBYTE(v17) = 0;
 LABEL_26:
-  if (a6 && !v17)
+  if (error && !v17)
   {
     v32 = v18;
     LOBYTE(v17) = 0;
-    *a6 = v18;
+    *error = v18;
   }
 
   v22 = v18;
@@ -538,15 +538,15 @@ LABEL_30:
   return v17;
 }
 
-- (id)createTemporaryDirectoryInDirectoryURL:(id)a3 error:(id *)a4
+- (id)createTemporaryDirectoryInDirectoryURL:(id)l error:(id *)error
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  if (a4)
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
-  v5 = [a3 URLByAppendingPathComponent:@"temp.XXXXXX" isDirectory:1];
+  v5 = [l URLByAppendingPathComponent:@"temp.XXXXXX" isDirectory:1];
   v6 = strdup([v5 fileSystemRepresentation]);
   if (mkdtemp(v6))
   {
@@ -562,10 +562,10 @@ LABEL_30:
     v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:&v14 count:1];
     v11 = _CreateAndLogError("[MIFileManager createTemporaryDirectoryInDirectoryURL:error:]", 478, @"MIInstallerErrorDomain", 4, v8, v9, @"Failed to create temp dir at path %s", v10, v6);
 
-    if (a4)
+    if (error)
     {
       v12 = v11;
-      *a4 = v11;
+      *error = v11;
     }
 
     free(v6);
@@ -576,16 +576,16 @@ LABEL_30:
   return v7;
 }
 
-- (BOOL)_removeACLAtPath:(const char *)a3 isDir:(BOOL)a4 error:(id *)a5
+- (BOOL)_removeACLAtPath:(const char *)path isDir:(BOOL)dir error:(id *)error
 {
-  v6 = a4;
+  dirCopy = dir;
   v8 = acl_init(0);
   if (v8)
   {
     v9 = v8;
-    if (v6)
+    if (dirCopy)
     {
-      v10 = opendir(a3);
+      v10 = opendir(path);
       if (v10)
       {
         v11 = v10;
@@ -595,7 +595,7 @@ LABEL_30:
           v49 = *__error();
           v50 = __error();
           strerror(*v50);
-          v17 = _CreateError("[MIFileManager _removeACLAtPath:isDir:error:]", 511, v48, v49, 0, 0, @"dirfd of %s failed: %s", v51, a3);
+          v17 = _CreateError("[MIFileManager _removeACLAtPath:isDir:error:]", 511, v48, v49, 0, 0, @"dirfd of %s failed: %s", v51, path);
           v18 = 511;
         }
 
@@ -612,7 +612,7 @@ LABEL_30:
           v13 = *__error();
           v14 = __error();
           strerror(*v14);
-          v17 = _CreateError("[MIFileManager _removeACLAtPath:isDir:error:]", 516, v12, v13, 0, 0, @"Failed to set ACL on dir %s: %s", v15, a3);
+          v17 = _CreateError("[MIFileManager _removeACLAtPath:isDir:error:]", 516, v12, v13, 0, 0, @"Failed to set ACL on dir %s: %s", v15, path);
           v18 = 516;
         }
 
@@ -628,13 +628,13 @@ LABEL_20:
       v38 = *__error();
       v39 = __error();
       strerror(*v39);
-      v42 = _CreateError("[MIFileManager _removeACLAtPath:isDir:error:]", 505, v37, v38, 0, 0, @"opendir of %s failed: %s", v40, a3);
+      v42 = _CreateError("[MIFileManager _removeACLAtPath:isDir:error:]", 505, v37, v38, 0, 0, @"opendir of %s failed: %s", v40, path);
       v43 = 505;
     }
 
     else
     {
-      v28 = open(a3, 2097154);
+      v28 = open(path, 2097154);
       if ((v28 & 0x80000000) == 0)
       {
         v29 = v28;
@@ -646,7 +646,7 @@ LABEL_20:
           v32 = *__error();
           v33 = __error();
           strerror(*v33);
-          v35 = _CreateError("[MIFileManager _removeACLAtPath:isDir:error:]", 527, v31, v32, 0, 0, @"Failed to set ACL on %s: %s", v34, a3);
+          v35 = _CreateError("[MIFileManager _removeACLAtPath:isDir:error:]", 527, v31, v32, 0, 0, @"Failed to set ACL on %s: %s", v34, path);
           v26 = _CreateAndLogError("[MIFileManager _removeACLAtPath:isDir:error:]", 527, @"MIInstallerErrorDomain", 4, v35, 0, @"Failed to remove ACL", v36, v56);
         }
 
@@ -658,7 +658,7 @@ LABEL_20:
         close(v29);
 LABEL_21:
         acl_free(v9);
-        if (!a5)
+        if (!error)
         {
           goto LABEL_24;
         }
@@ -670,7 +670,7 @@ LABEL_21:
       v45 = *__error();
       v46 = __error();
       strerror(*v46);
-      v42 = _CreateError("[MIFileManager _removeACLAtPath:isDir:error:]", 522, v44, v45, 0, 0, @"open of %s failed: %s", v47, a3);
+      v42 = _CreateError("[MIFileManager _removeACLAtPath:isDir:error:]", 522, v44, v45, 0, 0, @"open of %s failed: %s", v47, path);
       v43 = 522;
     }
 
@@ -688,7 +688,7 @@ LABEL_21:
   v26 = _CreateAndLogError("[MIFileManager _removeACLAtPath:isDir:error:]", 498, @"MIInstallerErrorDomain", 4, v24, 0, @"Failed to remove ACL", v25, v55);
 
   v27 = 0;
-  if (!a5)
+  if (!error)
   {
     goto LABEL_24;
   }
@@ -697,7 +697,7 @@ LABEL_22:
   if (!v27)
   {
     v52 = v26;
-    *a5 = v26;
+    *error = v26;
   }
 
 LABEL_24:
@@ -705,10 +705,10 @@ LABEL_24:
   return v27;
 }
 
-- (BOOL)_bulkSetPropertiesForPath:(const char *)a3 existingFD:(int)a4 UID:(unsigned int)a5 GID:(unsigned int)a6 mode:(unsigned __int16)a7 flags:(unsigned int)a8 dataProtectionClass:(int)a9 removeACL:(BOOL)a10 error:(id *)a11
+- (BOOL)_bulkSetPropertiesForPath:(const char *)path existingFD:(int)d UID:(unsigned int)iD GID:(unsigned int)gID mode:(unsigned __int16)mode flags:(unsigned int)flags dataProtectionClass:(int)class removeACL:(BOOL)self0 error:(id *)self1
 {
-  v33 = a4;
-  v34 = a3;
+  dCopy = d;
+  pathCopy = path;
   v36[3] = *MEMORY[0x1E69E9840];
   v36[0] = 5;
   v36[1] = 0;
@@ -716,14 +716,14 @@ LABEL_24:
   v15 = acl_size(1);
   v35 = v32;
   v16 = v15 + 28;
-  if (!a10)
+  if (!l)
   {
     v16 = 28;
   }
 
   v17 = &v32[-((v16 + 15) & 0xFFFFFFFFFFFFFFF0)];
   v18 = 12;
-  if (a9 == -1)
+  if (class == -1)
   {
     v19 = 8;
   }
@@ -741,19 +741,19 @@ LABEL_24:
 
   else
   {
-    *v17 = a5;
+    *v17 = iD;
     v21 = v17 + 1;
     v20 = 0x8000;
     v18 = 16;
   }
 
-  *v21 = a6;
-  v21[1] = a7 & 0xFFF;
-  v21[2] = a8;
+  *v21 = gID;
+  v21[1] = mode & 0xFFF;
+  v21[2] = flags;
   v22 = (v21 + 3);
   v23 = v20 | 0x70000;
   HIDWORD(v36[0]) = v20 | 0x70000;
-  if (a10)
+  if (l)
   {
     *(v21 + 3) = v19;
     v18 += 8;
@@ -768,14 +768,14 @@ LABEL_24:
     v24 = 0;
   }
 
-  if (a9 != -1)
+  if (class != -1)
   {
-    *v22++ = a9;
+    *v22++ = class;
     v18 += 4;
     HIDWORD(v36[0]) = v23 | 0x40000000;
   }
 
-  if (a10)
+  if (l)
   {
     v25 = acl_copy_ext_native(v22, 1, v15);
     if (v25 > v15)
@@ -788,9 +788,9 @@ LABEL_24:
     v18 += v25;
   }
 
-  if (v33 < 0)
+  if (dCopy < 0)
   {
-    if (setattrlist(v34, v36, v17, v18, 1u))
+    if (setattrlist(pathCopy, v36, v17, v18, 1u))
     {
       goto LABEL_20;
     }
@@ -801,20 +801,20 @@ LABEL_24:
     goto LABEL_26;
   }
 
-  if (!fsetattrlist(v33, v36, v17, v18, 0))
+  if (!fsetattrlist(dCopy, v36, v17, v18, 0))
   {
     goto LABEL_24;
   }
 
 LABEL_20:
   v27 = *__error();
-  _CreateAndLogError("[MIFileManager _bulkSetPropertiesForPath:existingFD:UID:GID:mode:flags:dataProtectionClass:removeACL:error:]", 684, *MEMORY[0x1E696A798], v27, 0, 0, @"setattrlist failed for file %s", v28, v34);
+  _CreateAndLogError("[MIFileManager _bulkSetPropertiesForPath:existingFD:UID:GID:mode:flags:dataProtectionClass:removeACL:error:]", 684, *MEMORY[0x1E696A798], v27, 0, 0, @"setattrlist failed for file %s", v28, pathCopy);
   v29 = LABEL_21:;
-  if (a11)
+  if (error)
   {
     v29 = v29;
     v30 = 0;
-    *a11 = v29;
+    *error = v29;
   }
 
   else
@@ -827,11 +827,11 @@ LABEL_26:
   return v30;
 }
 
-- (BOOL)stageURLByMoving:(id)a3 toItemName:(id)a4 inStagingDir:(id)a5 settingUID:(unsigned int)a6 gid:(unsigned int)a7 dataProtectionClass:(int)a8 breakHardlinks:(BOOL)a9 hasSymlink:(BOOL *)a10 error:(id *)a11
+- (BOOL)stageURLByMoving:(id)moving toItemName:(id)name inStagingDir:(id)dir settingUID:(unsigned int)d gid:(unsigned int)gid dataProtectionClass:(int)class breakHardlinks:(BOOL)hardlinks hasSymlink:(BOOL *)self0 error:(id *)self1
 {
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
+  movingCopy = moving;
+  nameCopy = name;
+  dirCopy = dir;
   v51 = 0;
   v52 = &v51;
   v53 = 0x2020000000;
@@ -842,34 +842,34 @@ LABEL_26:
   v48 = __Block_byref_object_copy__11;
   v49 = __Block_byref_object_dispose__11;
   v50 = 0;
-  v20 = [v19 URLByAppendingPathComponent:v18 isDirectory:0];
+  v20 = [dirCopy URLByAppendingPathComponent:nameCopy isDirectory:0];
   v21 = objc_opt_new();
   v44 = 0;
-  LOBYTE(a5) = [(MIFileManager *)self moveItemAtURL:v17 toURL:v20 error:&v44];
-  v32 = v17;
+  LOBYTE(dir) = [(MIFileManager *)self moveItemAtURL:movingCopy toURL:v20 error:&v44];
+  v32 = movingCopy;
   v22 = v44;
-  if ((a5 & 1) == 0)
+  if ((dir & 1) == 0)
   {
     goto LABEL_9;
   }
 
-  v23 = [v20 fileSystemRepresentation];
+  fileSystemRepresentation = [v20 fileSystemRepresentation];
   v43 = v22;
   v34[0] = MEMORY[0x1E69E9820];
   v34[1] = 3221225472;
   v34[2] = __125__MIFileManager_stageURLByMoving_toItemName_inStagingDir_settingUID_gid_dataProtectionClass_breakHardlinks_hasSymlink_error___block_invoke;
   v34[3] = &unk_1E7AE21D0;
   v34[4] = self;
-  v35 = v19;
-  v39 = a6;
-  v40 = a7;
-  v41 = a8;
-  v42 = a9;
+  v35 = dirCopy;
+  dCopy = d;
+  gidCopy = gid;
+  classCopy = class;
+  hardlinksCopy = hardlinks;
   v24 = v21;
   v36 = v24;
   v37 = &v45;
   v38 = &v51;
-  v25 = TraverseDirectory(v23, 0, 0x88u, &v43, v34);
+  v25 = TraverseDirectory(fileSystemRepresentation, 0, 0x88u, &v43, v34);
   v26 = v43;
 
   if (v26)
@@ -887,19 +887,19 @@ LABEL_26:
 
     v22 = v26;
 LABEL_9:
-    if (a11)
+    if (error)
     {
       if (v22)
       {
         v29 = v22;
         v30 = 0;
-        *a11 = v22;
+        *error = v22;
       }
 
       else
       {
         v30 = 0;
-        *a11 = v46[5];
+        *error = v46[5];
       }
     }
 
@@ -920,9 +920,9 @@ LABEL_9:
   }
 
   v22 = 0;
-  if (a10)
+  if (symlink)
   {
-    *a10 = *(v52 + 24);
+    *symlink = *(v52 + 24);
   }
 
   v30 = 1;
@@ -1186,12 +1186,12 @@ void __125__MIFileManager_stageURLByMoving_toItemName_inStagingDir_settingUID_gi
   }
 }
 
-- (BOOL)_stageURLByCopying:(id)a3 toItemName:(id)a4 inStagingDir:(id)a5 stagingMode:(int)a6 settingUID:(unsigned int)a7 gid:(unsigned int)a8 dataProtectionClass:(int)a9 hasSymlink:(BOOL *)a10 error:(id *)a11
+- (BOOL)_stageURLByCopying:(id)copying toItemName:(id)name inStagingDir:(id)dir stagingMode:(int)mode settingUID:(unsigned int)d gid:(unsigned int)gid dataProtectionClass:(int)class hasSymlink:(BOOL *)self0 error:(id *)self1
 {
   v57 = *MEMORY[0x1E69E9840];
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
+  copyingCopy = copying;
+  nameCopy = name;
+  dirCopy = dir;
   v52 = 0;
   v53 = &v52;
   v54 = 0x2020000000;
@@ -1210,7 +1210,7 @@ void __125__MIFileManager_stageURLByMoving_toItemName_inStagingDir_settingUID_gi
   v42[1] = v42;
   v42[2] = 0x2020000000;
   v43 = 0;
-  v20 = [v19 URLByAppendingPathComponent:v18 isDirectory:0];
+  v20 = [dirCopy URLByAppendingPathComponent:nameCopy isDirectory:0];
   v21 = v20;
   [v20 fileSystemRepresentation];
   v22 = __strlcpy_chk();
@@ -1221,23 +1221,23 @@ void __125__MIFileManager_stageURLByMoving_toItemName_inStagingDir_settingUID_gi
   if (v22 >= 0x400)
   {
     v23 = v20;
-    v24 = [v20 fileSystemRepresentation];
-    v26 = _CreateAndLogError("[MIFileManager _stageURLByCopying:toItemName:inStagingDir:stagingMode:settingUID:gid:dataProtectionClass:hasSymlink:error:]", 947, @"MIInstallerErrorDomain", 4, 0, 0, @"Staging destination path was too long: %s (%zu)", v25, v24);
+    fileSystemRepresentation = [v20 fileSystemRepresentation];
+    v26 = _CreateAndLogError("[MIFileManager _stageURLByCopying:toItemName:inStagingDir:stagingMode:settingUID:gid:dataProtectionClass:hasSymlink:error:]", 947, @"MIInstallerErrorDomain", 4, 0, 0, @"Staging destination path was too long: %s (%zu)", v25, fileSystemRepresentation);
 LABEL_5:
-    if (a11)
+    if (error)
     {
       if (v26)
       {
         v31 = v26;
         v32 = 0;
-        *a11 = v26;
+        *error = v26;
       }
 
       else
       {
         v32 = 0;
         v26 = 0;
-        *a11 = v47[5];
+        *error = v47[5];
       }
     }
 
@@ -1249,8 +1249,8 @@ LABEL_5:
     goto LABEL_13;
   }
 
-  v27 = v17;
-  v28 = [v17 fileSystemRepresentation];
+  v27 = copyingCopy;
+  fileSystemRepresentation2 = [copyingCopy fileSystemRepresentation];
   v40 = 0;
   v35[0] = MEMORY[0x1E69E9820];
   v35[1] = 3221225472;
@@ -1263,17 +1263,17 @@ LABEL_5:
   v35[10] = v56;
   v35[4] = self;
   v35[5] = v44;
-  v36 = a6;
-  v37 = a7;
-  v38 = a8;
-  v39 = a9;
+  modeCopy = mode;
+  dCopy = d;
+  gidCopy = gid;
+  classCopy = class;
   v34[0] = MEMORY[0x1E69E9820];
   v34[1] = 3221225472;
   v34[2] = __124__MIFileManager__stageURLByCopying_toItemName_inStagingDir_stagingMode_settingUID_gid_dataProtectionClass_hasSymlink_error___block_invoke_2;
   v34[3] = &unk_1E7AE2248;
   v34[4] = v41;
   v34[5] = v56;
-  v29 = TraverseDirectoryWithPostTraversal(v28, 0, 8u, &v40, v35, v34);
+  v29 = TraverseDirectoryWithPostTraversal(fileSystemRepresentation2, 0, 8u, &v40, v35, v34);
   v30 = v40;
   v26 = v30;
   if (!v29 || v47[5] | v30)
@@ -1282,9 +1282,9 @@ LABEL_5:
   }
 
   v26 = 0;
-  if (a10)
+  if (symlink)
   {
-    *a10 = *(v53 + 24);
+    *symlink = *(v53 + 24);
   }
 
   v32 = 1;
@@ -1575,24 +1575,24 @@ uint64_t __124__MIFileManager__stageURLByCopying_toItemName_inStagingDir_staging
   return 1;
 }
 
-- (BOOL)stageURL:(id)a3 toItemName:(id)a4 inStagingDir:(id)a5 stagingMode:(int)a6 settingUID:(unsigned int)a7 gid:(unsigned int)a8 hasSymlink:(BOOL *)a9 error:(id *)a10
+- (BOOL)stageURL:(id)l toItemName:(id)name inStagingDir:(id)dir stagingMode:(int)mode settingUID:(unsigned int)d gid:(unsigned int)gid hasSymlink:(BOOL *)symlink error:(id *)self0
 {
-  if (a6)
+  if (mode)
   {
     LODWORD(v11) = 4;
-    return [(MIFileManager *)self _stageURLByCopying:a3 toItemName:a4 inStagingDir:a5 stagingMode:*&a6 settingUID:*&a7 gid:*&a8 dataProtectionClass:v11 hasSymlink:a9 error:a10];
+    return [(MIFileManager *)self _stageURLByCopying:l toItemName:name inStagingDir:dir stagingMode:*&mode settingUID:*&d gid:*&gid dataProtectionClass:v11 hasSymlink:symlink error:error];
   }
 
   else
   {
     LOBYTE(v11) = 1;
-    return [(MIFileManager *)self stageURLByMoving:a3 toItemName:a4 inStagingDir:a5 settingUID:*&a7 gid:*&a8 dataProtectionClass:4 breakHardlinks:v11 hasSymlink:a9 error:a10];
+    return [(MIFileManager *)self stageURLByMoving:l toItemName:name inStagingDir:dir settingUID:*&d gid:*&gid dataProtectionClass:4 breakHardlinks:v11 hasSymlink:symlink error:error];
   }
 }
 
-- (BOOL)standardizeOwnershipAtURL:(id)a3 toUID:(unsigned int)a4 GID:(unsigned int)a5 removeACLs:(BOOL)a6 setProtectionClass:(BOOL)a7 foundSymlink:(BOOL *)a8 error:(id *)a9
+- (BOOL)standardizeOwnershipAtURL:(id)l toUID:(unsigned int)d GID:(unsigned int)iD removeACLs:(BOOL)ls setProtectionClass:(BOOL)class foundSymlink:(BOOL *)symlink error:(id *)error
 {
-  v15 = a3;
+  lCopy = l;
   v34 = 0;
   v35 = &v34;
   v36 = 0x3032000000;
@@ -1603,20 +1603,20 @@ uint64_t __124__MIFileManager__stageURLByCopying_toItemName_inStagingDir_staging
   v31 = &v30;
   v32 = 0x2020000000;
   v33 = 0;
-  v16 = [v15 fileSystemRepresentation];
+  fileSystemRepresentation = [lCopy fileSystemRepresentation];
   v29 = 0;
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __102__MIFileManager_standardizeOwnershipAtURL_toUID_GID_removeACLs_setProtectionClass_foundSymlink_error___block_invoke;
   v24[3] = &unk_1E7AE2270;
-  v27 = a7;
+  classCopy = class;
   v24[4] = self;
   v24[5] = &v30;
-  v25 = a4;
-  v26 = a5;
-  v28 = a6;
+  dCopy = d;
+  iDCopy = iD;
+  lsCopy = ls;
   v24[6] = &v34;
-  v17 = TraverseDirectory(v16, 0, 8u, &v29, v24);
+  v17 = TraverseDirectory(fileSystemRepresentation, 0, 8u, &v29, v24);
   v18 = v29;
   v19 = v29;
   v20 = v35;
@@ -1628,14 +1628,14 @@ uint64_t __124__MIFileManager__stageURLByCopying_toItemName_inStagingDir_staging
 
   v21 = v20[5];
   v22 = (v21 == 0) & v17;
-  if (a9 && !v22)
+  if (error && !v22)
   {
-    *a9 = v21;
+    *error = v21;
   }
 
-  if (a8)
+  if (symlink)
   {
-    *a8 = *(v31 + 24);
+    *symlink = *(v31 + 24);
   }
 
   _Block_object_dispose(&v30, 8);
@@ -1706,25 +1706,25 @@ uint64_t __102__MIFileManager_standardizeOwnershipAtURL_toUID_GID_removeACLs_set
   return v13;
 }
 
-- (BOOL)setOwnershipAtURL:(id)a3 toUID:(unsigned int)a4 gid:(unsigned int)a5 error:(id *)a6
+- (BOOL)setOwnershipAtURL:(id)l toUID:(unsigned int)d gid:(unsigned int)gid error:(id *)error
 {
-  v9 = a3;
+  lCopy = l;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
   v25 = __Block_byref_object_copy__11;
   v26 = __Block_byref_object_dispose__11;
   v27 = 0;
-  v10 = [v9 fileSystemRepresentation];
+  fileSystemRepresentation = [lCopy fileSystemRepresentation];
   v21 = 0;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __51__MIFileManager_setOwnershipAtURL_toUID_gid_error___block_invoke;
   v18[3] = &unk_1E7AE2298;
-  v19 = a4;
-  v20 = a5;
+  dCopy = d;
+  gidCopy = gid;
   v18[4] = &v22;
-  v11 = TraverseDirectory(v10, 0, 0, &v21, v18);
+  v11 = TraverseDirectory(fileSystemRepresentation, 0, 0, &v21, v18);
   v12 = v21;
   v13 = v21;
   v14 = v23;
@@ -1736,9 +1736,9 @@ uint64_t __102__MIFileManager_standardizeOwnershipAtURL_toUID_GID_removeACLs_set
 
   v15 = v14[5];
   v16 = (v15 == 0) & v11;
-  if (a6 && !v16)
+  if (error && !v16)
   {
-    *a6 = v15;
+    *error = v15;
   }
 
   _Block_object_dispose(&v22, 8);
@@ -1765,26 +1765,26 @@ BOOL __51__MIFileManager_setOwnershipAtURL_toUID_gid_error___block_invoke(uint64
   return v4 == 0;
 }
 
-- (BOOL)validateSymlinksInURLDoNotEscapeURL:(id)a3 error:(id *)a4
+- (BOOL)validateSymlinksInURLDoNotEscapeURL:(id)l error:(id *)error
 {
-  v6 = a3;
+  lCopy = l;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
   v23 = __Block_byref_object_copy__11;
   v24 = __Block_byref_object_dispose__11;
   v25 = 0;
-  v7 = [v6 fileSystemRepresentation];
+  fileSystemRepresentation = [lCopy fileSystemRepresentation];
   v19 = 0;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __59__MIFileManager_validateSymlinksInURLDoNotEscapeURL_error___block_invoke;
   v16[3] = &unk_1E7AE22C0;
   v16[4] = self;
-  v8 = v6;
+  v8 = lCopy;
   v17 = v8;
   v18 = &v20;
-  v9 = TraverseDirectory(v7, 0, 0, &v19, v16);
+  v9 = TraverseDirectory(fileSystemRepresentation, 0, 0, &v19, v16);
   v10 = v19;
   v11 = v19;
   v12 = v21;
@@ -1796,9 +1796,9 @@ BOOL __51__MIFileManager_setOwnershipAtURL_toUID_gid_error___block_invoke(uint64
 
   v13 = v12[5];
   v14 = (v13 == 0) & v9;
-  if (a4 && !v14)
+  if (error && !v14)
   {
-    *a4 = v13;
+    *error = v13;
   }
 
   _Block_object_dispose(&v20, 8);
@@ -1827,19 +1827,19 @@ uint64_t __59__MIFileManager_validateSymlinksInURLDoNotEscapeURL_error___block_i
   return v6;
 }
 
-- (id)enumerateURLsForItemsInDirectoryAtURL:(id)a3 ignoreSymlinks:(BOOL)a4 withBlock:(id)a5
+- (id)enumerateURLsForItemsInDirectoryAtURL:(id)l ignoreSymlinks:(BOOL)symlinks withBlock:(id)block
 {
-  v7 = a5;
-  v8 = [a3 fileSystemRepresentation];
+  blockCopy = block;
+  fileSystemRepresentation = [l fileSystemRepresentation];
   v18 = 0;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __80__MIFileManager_enumerateURLsForItemsInDirectoryAtURL_ignoreSymlinks_withBlock___block_invoke;
   v15[3] = &unk_1E7AE22E8;
-  v17 = a4;
-  v9 = v7;
+  symlinksCopy = symlinks;
+  v9 = blockCopy;
   v16 = v9;
-  v10 = TraverseDirectory(v8, 1, 0, &v18, v15);
+  v10 = TraverseDirectory(fileSystemRepresentation, 1, 0, &v18, v15);
   v11 = v18;
   v12 = v11;
   v13 = 0;
@@ -1879,18 +1879,18 @@ uint64_t __80__MIFileManager_enumerateURLsForItemsInDirectoryAtURL_ignoreSymlink
   }
 }
 
-- (id)traverseDirectoryAtURL:(id)a3 withBlock:(id)a4
+- (id)traverseDirectoryAtURL:(id)l withBlock:(id)block
 {
-  v5 = a4;
-  v6 = [a3 fileSystemRepresentation];
+  blockCopy = block;
+  fileSystemRepresentation = [l fileSystemRepresentation];
   v15 = 0;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __50__MIFileManager_traverseDirectoryAtURL_withBlock___block_invoke;
   v13[3] = &unk_1E7AE2310;
-  v7 = v5;
+  v7 = blockCopy;
   v14 = v7;
-  v8 = TraverseDirectory(v6, 1, 0, &v15, v13);
+  v8 = TraverseDirectory(fileSystemRepresentation, 1, 0, &v15, v13);
   v9 = v15;
   v10 = v9;
   v11 = 0;
@@ -1914,9 +1914,9 @@ uint64_t __50__MIFileManager_traverseDirectoryAtURL_withBlock___block_invoke(uin
   return v9;
 }
 
-- (id)urlsForItemsInDirectoryAtURL:(id)a3 ignoringSymlinks:(BOOL)a4 error:(id *)a5
+- (id)urlsForItemsInDirectoryAtURL:(id)l ignoringSymlinks:(BOOL)symlinks error:(id *)error
 {
-  v7 = a3;
+  lCopy = l;
   v8 = objc_opt_new();
   v24 = 0;
   v25 = &v24;
@@ -1924,17 +1924,17 @@ uint64_t __50__MIFileManager_traverseDirectoryAtURL_withBlock___block_invoke(uin
   v27 = __Block_byref_object_copy__11;
   v28 = __Block_byref_object_dispose__11;
   v29 = 0;
-  v9 = [v7 fileSystemRepresentation];
+  fileSystemRepresentation = [lCopy fileSystemRepresentation];
   v23 = 0;
   v16 = MEMORY[0x1E69E9820];
   v17 = 3221225472;
   v18 = __69__MIFileManager_urlsForItemsInDirectoryAtURL_ignoringSymlinks_error___block_invoke;
   v19 = &unk_1E7AE2338;
-  v22 = a4;
+  symlinksCopy = symlinks;
   v21 = &v24;
   v10 = v8;
   v20 = v10;
-  v11 = TraverseDirectory(v9, 1, 0, &v23, &v16);
+  v11 = TraverseDirectory(fileSystemRepresentation, 1, 0, &v23, &v16);
   v12 = v23;
   v13 = v23;
   if (!v25[5])
@@ -1942,7 +1942,7 @@ uint64_t __50__MIFileManager_traverseDirectoryAtURL_withBlock___block_invoke(uin
     if (v11)
     {
       v14 = [v10 copy];
-      if (!a5)
+      if (!error)
       {
         goto LABEL_9;
       }
@@ -1954,7 +1954,7 @@ uint64_t __50__MIFileManager_traverseDirectoryAtURL_withBlock___block_invoke(uin
   }
 
   v14 = 0;
-  if (!a5)
+  if (!error)
   {
     goto LABEL_9;
   }
@@ -1962,7 +1962,7 @@ uint64_t __50__MIFileManager_traverseDirectoryAtURL_withBlock___block_invoke(uin
 LABEL_7:
   if (!v14)
   {
-    *a5 = v25[5];
+    *error = v25[5];
   }
 
 LABEL_9:
@@ -2007,24 +2007,24 @@ uint64_t __69__MIFileManager_urlsForItemsInDirectoryAtURL_ignoringSymlinks_error
   return v10;
 }
 
-- (BOOL)createSymbolicLinkAtURL:(id)a3 withDestinationURL:(id)a4 error:(id *)a5
+- (BOOL)createSymbolicLinkAtURL:(id)l withDestinationURL:(id)rL error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = symlink([v8 fileSystemRepresentation], objc_msgSend(v7, "fileSystemRepresentation"));
+  lCopy = l;
+  rLCopy = rL;
+  v9 = symlink([rLCopy fileSystemRepresentation], objc_msgSend(lCopy, "fileSystemRepresentation"));
   if (v9)
   {
     v10 = *MEMORY[0x1E696A798];
     v11 = *__error();
-    v12 = [v8 fileSystemRepresentation];
-    [v7 fileSystemRepresentation];
+    fileSystemRepresentation = [rLCopy fileSystemRepresentation];
+    [lCopy fileSystemRepresentation];
     v13 = __error();
     strerror(*v13);
-    v15 = _CreateError("[MIFileManager createSymbolicLinkAtURL:withDestinationURL:error:]", 1386, v10, v11, 0, 0, @"Could not create symlink containing %s at %s: %s", v14, v12);
-    if (a5)
+    v15 = _CreateError("[MIFileManager createSymbolicLinkAtURL:withDestinationURL:error:]", 1386, v10, v11, 0, 0, @"Could not create symlink containing %s at %s: %s", v14, fileSystemRepresentation);
+    if (error)
     {
       v15 = v15;
-      *a5 = v15;
+      *error = v15;
     }
   }
 
@@ -2036,21 +2036,21 @@ uint64_t __69__MIFileManager_urlsForItemsInDirectoryAtURL_ignoringSymlinks_error
   return v9 == 0;
 }
 
-- (id)destinationOfSymbolicLinkAtURL:(id)a3 error:(id *)a4
+- (id)destinationOfSymbolicLinkAtURL:(id)l error:(id *)error
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = readlink([v5 fileSystemRepresentation], v17, 0x400uLL);
+  lCopy = l;
+  v6 = readlink([lCopy fileSystemRepresentation], v17, 0x400uLL);
   if (v6 < 0)
   {
     v11 = *MEMORY[0x1E696A798];
     v12 = *__error();
-    v13 = [v5 fileSystemRepresentation];
+    fileSystemRepresentation = [lCopy fileSystemRepresentation];
     v14 = __error();
     strerror(*v14);
-    v10 = _CreateError("[MIFileManager destinationOfSymbolicLinkAtURL:error:]", 1406, v11, v12, 0, 0, @"Could not readlink %s : %s", v15, v13);
+    v10 = _CreateError("[MIFileManager destinationOfSymbolicLinkAtURL:error:]", 1406, v11, v12, 0, 0, @"Could not readlink %s : %s", v15, fileSystemRepresentation);
     v9 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_7;
     }
@@ -2064,7 +2064,7 @@ uint64_t __69__MIFileManager_urlsForItemsInDirectoryAtURL_ignoringSymlinks_error
     v9 = [v7 fileURLWithPath:v8];
 
     v10 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_7;
     }
@@ -2073,7 +2073,7 @@ uint64_t __69__MIFileManager_urlsForItemsInDirectoryAtURL_ignoringSymlinks_error
   if (!v9)
   {
     v10 = v10;
-    *a4 = v10;
+    *error = v10;
   }
 
 LABEL_7:
@@ -2081,11 +2081,11 @@ LABEL_7:
   return v9;
 }
 
-- (BOOL)itemExistsAtURL:(id)a3 error:(id *)a4
+- (BOOL)itemExistsAtURL:(id)l error:(id *)error
 {
-  v5 = a3;
+  lCopy = l;
   memset(&v13, 0, sizeof(v13));
-  v6 = lstat([v5 fileSystemRepresentation], &v13);
+  v6 = lstat([lCopy fileSystemRepresentation], &v13);
   if (v6)
   {
     v7 = __error();
@@ -2096,23 +2096,23 @@ LABEL_7:
       MOLogWrite();
     }
 
-    if (a4)
+    if (error)
     {
       v9 = *MEMORY[0x1E696A798];
-      v10 = [v5 fileSystemRepresentation];
+      fileSystemRepresentation = [lCopy fileSystemRepresentation];
       strerror(v8);
-      *a4 = _CreateError("[MIFileManager itemExistsAtURL:error:]", 1433, v9, v8, 0, 0, @"lstat of %s failed: %s", v11, v10);
+      *error = _CreateError("[MIFileManager itemExistsAtURL:error:]", 1433, v9, v8, 0, 0, @"lstat of %s failed: %s", v11, fileSystemRepresentation);
     }
   }
 
   return v6 == 0;
 }
 
-- (BOOL)itemDoesNotExistAtURL:(id)a3
+- (BOOL)itemDoesNotExistAtURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   memset(&v7, 0, sizeof(v7));
-  if (!lstat([v3 fileSystemRepresentation], &v7))
+  if (!lstat([lCopy fileSystemRepresentation], &v7))
   {
 LABEL_7:
     v4 = 0;
@@ -2137,10 +2137,10 @@ LABEL_8:
   return v4;
 }
 
-- (BOOL)itemDoesNotExistOrIsNotDirectoryAtURL:(id)a3
+- (BOOL)itemDoesNotExistOrIsNotDirectoryAtURL:(id)l
 {
   v13 = 0;
-  v3 = [(MIFileManager *)self itemIsDirectoryAtURL:a3 error:&v13];
+  v3 = [(MIFileManager *)self itemIsDirectoryAtURL:l error:&v13];
   v4 = v13;
   v5 = v4;
   if (v3)
@@ -2150,9 +2150,9 @@ LABEL_8:
 
   else
   {
-    v7 = [v4 domain];
+    domain = [v4 domain];
     v8 = *MEMORY[0x1E696A798];
-    if ([v7 isEqualToString:*MEMORY[0x1E696A798]])
+    if ([domain isEqualToString:*MEMORY[0x1E696A798]])
     {
       v9 = [v5 code] == 2;
     }
@@ -2162,8 +2162,8 @@ LABEL_8:
       v9 = 0;
     }
 
-    v10 = [v5 domain];
-    if ([v10 isEqualToString:v8])
+    domain2 = [v5 domain];
+    if ([domain2 isEqualToString:v8])
     {
       v11 = [v5 code] == 22;
     }
@@ -2179,13 +2179,13 @@ LABEL_8:
   return v6;
 }
 
-- (BOOL)_itemIsType:(unsigned __int16)a3 withDescription:(id)a4 atURL:(id)a5 error:(id *)a6
+- (BOOL)_itemIsType:(unsigned __int16)type withDescription:(id)description atURL:(id)l error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  typeCopy = type;
+  descriptionCopy = description;
   memset(&v18, 0, sizeof(v18));
-  v10 = [a5 fileSystemRepresentation];
-  if (lstat(v10, &v18))
+  fileSystemRepresentation = [l fileSystemRepresentation];
+  if (lstat(fileSystemRepresentation, &v18))
   {
     v12 = __error();
     v13 = *v12;
@@ -2195,24 +2195,24 @@ LABEL_8:
       MOLogWrite();
     }
 
-    if (a6)
+    if (error)
     {
       v14 = *MEMORY[0x1E696A798];
       strerror(v13);
-      _CreateError("[MIFileManager _itemIsType:withDescription:atURL:error:]", 1491, v14, v13, 0, 0, @"lstat of %s failed: %s", v15, v10);
+      _CreateError("[MIFileManager _itemIsType:withDescription:atURL:error:]", 1491, v14, v13, 0, 0, @"lstat of %s failed: %s", v15, fileSystemRepresentation);
 LABEL_12:
-      *a6 = v16 = 0;
+      *error = v16 = 0;
       goto LABEL_14;
     }
 
     goto LABEL_13;
   }
 
-  if ((v18.st_mode & 0xF000) != v8)
+  if ((v18.st_mode & 0xF000) != typeCopy)
   {
-    if (a6)
+    if (error)
     {
-      _CreateError("[MIFileManager _itemIsType:withDescription:atURL:error:]", 1481, *MEMORY[0x1E696A798], 22, 0, 0, @"%s is not a %@ (mode 0%ho)", v11, v10);
+      _CreateError("[MIFileManager _itemIsType:withDescription:atURL:error:]", 1481, *MEMORY[0x1E696A798], 22, 0, 0, @"%s is not a %@ (mode 0%ho)", v11, fileSystemRepresentation);
       goto LABEL_12;
     }
 
@@ -2227,25 +2227,25 @@ LABEL_14:
   return v16;
 }
 
-- (id)_traverseUntilFirstAvailableParentOfURL:(id)a3 withBlock:(id)a4
+- (id)_traverseUntilFirstAvailableParentOfURL:(id)l withBlock:(id)block
 {
-  v5 = a4;
-  v6 = [a3 path];
+  blockCopy = block;
+  path = [l path];
   memset(&v16, 0, sizeof(v16));
-  v7 = [v6 fileSystemRepresentation];
-  if (lstat(v7, &v16))
+  fileSystemRepresentation = [path fileSystemRepresentation];
+  if (lstat(fileSystemRepresentation, &v16))
   {
     v9 = *__error();
     if (v9 == 2)
     {
-      while (![v6 isEqualToString:@"/"])
+      while (![path isEqualToString:@"/"])
       {
-        v11 = [v6 stringByDeletingLastPathComponent];
+        stringByDeletingLastPathComponent = [path stringByDeletingLastPathComponent];
 
         memset(&v16, 0, sizeof(v16));
-        v6 = v11;
-        v7 = [v11 fileSystemRepresentation];
-        if (!lstat(v7, &v16))
+        path = stringByDeletingLastPathComponent;
+        fileSystemRepresentation = [stringByDeletingLastPathComponent fileSystemRepresentation];
+        if (!lstat(fileSystemRepresentation, &v16))
         {
           goto LABEL_7;
         }
@@ -2263,7 +2263,7 @@ LABEL_14:
     else
     {
 LABEL_6:
-      _CreateError("[MIFileManager _traverseUntilFirstAvailableParentOfURL:withBlock:]", 1550, *MEMORY[0x1E696A798], v9, 0, 0, @"lstat failed for %s", v8, v7);
+      _CreateError("[MIFileManager _traverseUntilFirstAvailableParentOfURL:withBlock:]", 1550, *MEMORY[0x1E696A798], v9, 0, 0, @"lstat failed for %s", v8, fileSystemRepresentation);
     }
     v12 = ;
   }
@@ -2271,7 +2271,7 @@ LABEL_6:
   else
   {
 LABEL_7:
-    v12 = v5[2](v5, v7, &v16);
+    v12 = blockCopy[2](blockCopy, fileSystemRepresentation, &v16);
   }
 
   v13 = v12;
@@ -2279,9 +2279,9 @@ LABEL_7:
   return v13;
 }
 
-- (id)_firstAvailableParentForURL:(id)a3 error:(id *)a4
+- (id)_firstAvailableParentForURL:(id)l error:(id *)error
 {
-  v6 = a3;
+  lCopy = l;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -2293,13 +2293,13 @@ LABEL_7:
   v13[2] = __51__MIFileManager__firstAvailableParentForURL_error___block_invoke;
   v13[3] = &unk_1E7AE2360;
   v13[4] = &v14;
-  v7 = [(MIFileManager *)self _traverseUntilFirstAvailableParentOfURL:v6 withBlock:v13];
+  v7 = [(MIFileManager *)self _traverseUntilFirstAvailableParentOfURL:lCopy withBlock:v13];
   v8 = v7;
   v9 = v15[5];
-  if (a4 && !v9)
+  if (error && !v9)
   {
     v10 = v7;
-    *a4 = v8;
+    *error = v8;
     v9 = v15[5];
   }
 
@@ -2320,9 +2320,9 @@ uint64_t __51__MIFileManager__firstAvailableParentForURL_error___block_invoke(ui
   return 0;
 }
 
-- (int)deviceForURLOrFirstAvailableParent:(id)a3 error:(id *)a4
+- (int)deviceForURLOrFirstAvailableParent:(id)parent error:(id *)error
 {
-  v6 = a3;
+  parentCopy = parent;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -2332,12 +2332,12 @@ uint64_t __51__MIFileManager__firstAvailableParentForURL_error___block_invoke(ui
   v10[2] = __58__MIFileManager_deviceForURLOrFirstAvailableParent_error___block_invoke;
   v10[3] = &unk_1E7AE2360;
   v10[4] = &v11;
-  v7 = [(MIFileManager *)self _traverseUntilFirstAvailableParentOfURL:v6 withBlock:v10];
+  v7 = [(MIFileManager *)self _traverseUntilFirstAvailableParentOfURL:parentCopy withBlock:v10];
   v8 = *(v12 + 6);
-  if (a4 && v8 == -1)
+  if (error && v8 == -1)
   {
     v7 = v7;
-    *a4 = v7;
+    *error = v7;
     v8 = *(v12 + 6);
   }
 
@@ -2361,13 +2361,13 @@ id __58__MIFileManager_deviceForURLOrFirstAvailableParent_error___block_invoke(u
   return v9;
 }
 
-- (id)mountPointForURL:(id)a3 error:(id *)a4
+- (id)mountPointForURL:(id)l error:(id *)error
 {
   v19[260] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  lCopy = l;
   bzero(v18, 0x878uLL);
   v17 = 0;
-  v7 = [(MIFileManager *)self _firstAvailableParentForURL:v6 error:&v17];
+  v7 = [(MIFileManager *)self _firstAvailableParentForURL:lCopy error:&v17];
   v8 = v17;
   if (v7)
   {
@@ -2376,13 +2376,13 @@ id __58__MIFileManager_deviceForURLOrFirstAvailableParent_error___block_invoke(u
     {
       v10 = *__error();
       v11 = *MEMORY[0x1E696A798];
-      v12 = [v6 path];
+      path = [lCopy path];
       strerror(v10);
-      v14 = _CreateError("[MIFileManager mountPointForURL:error:]", 1616, v11, v10, 0, 0, @"statfs failed for %@: %s", v13, v12);
+      v14 = _CreateError("[MIFileManager mountPointForURL:error:]", 1616, v11, v10, 0, 0, @"statfs failed for %@: %s", v13, path);
 
       v9 = 0;
       v8 = v14;
-      if (!a4)
+      if (!error)
       {
         goto LABEL_10;
       }
@@ -2391,7 +2391,7 @@ id __58__MIFileManager_deviceForURLOrFirstAvailableParent_error___block_invoke(u
     else
     {
       v9 = [MEMORY[0x1E695DFF8] fileURLWithFileSystemRepresentation:v19 isDirectory:1 relativeToURL:0];
-      if (!a4)
+      if (!error)
       {
         goto LABEL_10;
       }
@@ -2401,7 +2401,7 @@ id __58__MIFileManager_deviceForURLOrFirstAvailableParent_error___block_invoke(u
   else
   {
     v9 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_10;
     }
@@ -2410,7 +2410,7 @@ id __58__MIFileManager_deviceForURLOrFirstAvailableParent_error___block_invoke(u
   if (!v9)
   {
     v15 = v8;
-    *a4 = v8;
+    *error = v8;
   }
 
 LABEL_10:
@@ -2418,7 +2418,7 @@ LABEL_10:
   return v9;
 }
 
-- (id)volumeUUIDForURL:(id)a3 error:(id *)a4
+- (id)volumeUUIDForURL:(id)l error:(id *)error
 {
   v20 = *MEMORY[0x1E69E9840];
   v16 = xmmword_1B175DBE0;
@@ -2427,7 +2427,7 @@ LABEL_10:
   v18[1] = 0;
   v19 = 0;
   v15 = 0;
-  v5 = [(MIFileManager *)self _firstAvailableParentForURL:a3 error:&v15];
+  v5 = [(MIFileManager *)self _firstAvailableParentForURL:l error:&v15];
   v6 = v15;
   if (v5)
   {
@@ -2435,13 +2435,13 @@ LABEL_10:
     {
       v7 = *__error();
       v8 = *MEMORY[0x1E696A798];
-      v9 = [v5 path];
+      path = [v5 path];
       strerror(v7);
-      v11 = _CreateError("[MIFileManager volumeUUIDForURL:error:]", 1652, v8, v7, 0, 0, @"getattrlist failed for %@: %s", v10, v9);
+      v11 = _CreateError("[MIFileManager volumeUUIDForURL:error:]", 1652, v8, v7, 0, 0, @"getattrlist failed for %@: %s", v10, path);
 
       v12 = 0;
       v6 = v11;
-      if (!a4)
+      if (!error)
       {
         goto LABEL_10;
       }
@@ -2450,7 +2450,7 @@ LABEL_10:
     else
     {
       v12 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDBytes:v18 + 4];
-      if (!a4)
+      if (!error)
       {
         goto LABEL_10;
       }
@@ -2460,7 +2460,7 @@ LABEL_10:
   else
   {
     v12 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_10;
     }
@@ -2469,7 +2469,7 @@ LABEL_10:
   if (!v12)
   {
     v13 = v6;
-    *a4 = v6;
+    *error = v6;
   }
 
 LABEL_10:
@@ -2477,14 +2477,14 @@ LABEL_10:
   return v12;
 }
 
-- (BOOL)copyVolumeInfo:(id *)a3 forURL:(id)a4 error:(id *)a5
+- (BOOL)copyVolumeInfo:(id *)info forURL:(id)l error:(id *)error
 {
   v26 = *MEMORY[0x1E69E9840];
   v20 = xmmword_1B175DBF8;
   v21 = 0;
   bzero(v22, 0x434uLL);
   v19 = 0;
-  v9 = [(MIFileManager *)self _firstAvailableParentForURL:a4 error:&v19];
+  v9 = [(MIFileManager *)self _firstAvailableParentForURL:l error:&v19];
   v10 = v19;
   if (!v9)
   {
@@ -2495,17 +2495,17 @@ LABEL_10:
   {
     v11 = *__error();
     v12 = *MEMORY[0x1E696A798];
-    v13 = [v9 path];
+    path = [v9 path];
     strerror(v11);
-    v15 = _CreateError("[MIFileManager copyVolumeInfo:forURL:error:]", 1692, v12, v11, 0, 0, @"getattrlist failed for %@: %s", v14, v13);
+    v15 = _CreateError("[MIFileManager copyVolumeInfo:forURL:error:]", 1692, v12, v11, 0, 0, @"getattrlist failed for %@: %s", v14, path);
 
     v10 = v15;
 LABEL_4:
-    if (a5)
+    if (error)
     {
       v16 = v10;
       v17 = 0;
-      *a5 = v10;
+      *error = v10;
     }
 
     else
@@ -2516,11 +2516,11 @@ LABEL_4:
     goto LABEL_10;
   }
 
-  if (a3)
+  if (info)
   {
-    memcpy(a3->var2, v23 + v23[0], v23[1]);
-    *a3->var0 = v24;
-    memcpy(a3->var1, v25 + v25[0], v25[1]);
+    memcpy(info->var2, v23 + v23[0], v23[1]);
+    *info->var0 = v24;
+    memcpy(info->var1, v25 + v25[0], v25[1]);
   }
 
   v17 = 1;
@@ -2529,9 +2529,9 @@ LABEL_10:
   return v17;
 }
 
-- (id)mountPointForVolumeUUID:(id)a3 error:(id *)a4
+- (id)mountPointForVolumeUUID:(id)d error:(id *)error
 {
-  v6 = a3;
+  dCopy = d;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -2542,16 +2542,16 @@ LABEL_10:
   v14[1] = 3221225472;
   v14[2] = __47__MIFileManager_mountPointForVolumeUUID_error___block_invoke;
   v14[3] = &unk_1E7AE2388;
-  v7 = v6;
+  v7 = dCopy;
   v15 = v7;
   v16 = &v17;
   v8 = [(MIFileManager *)self enumerateExternalVolumesWithBlock:v14];
   v9 = v8;
   v10 = v18[5];
-  if (a4 && !v10)
+  if (error && !v10)
   {
     v11 = v8;
-    *a4 = v9;
+    *error = v9;
     v10 = v18[5];
   }
 
@@ -2579,10 +2579,10 @@ void __47__MIFileManager_mountPointForVolumeUUID_error___block_invoke(uint64_t a
   *a4 = v8;
 }
 
-- (id)enumerateExternalVolumesWithBlock:(id)a3
+- (id)enumerateExternalVolumesWithBlock:(id)block
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   v20 = 0;
   v19 = 0;
   v5 = getmntinfo_r_np(&v20, 2);
@@ -2629,7 +2629,7 @@ LABEL_8:
 
   if (v10)
   {
-    v4[2](v4, v9, v10, &v19);
+    blockCopy[2](blockCopy, v9, v10, &v19);
     if ((v19 & 1) == 0)
     {
 
@@ -2649,10 +2649,10 @@ LABEL_13:
   return v7;
 }
 
-- (id)upToFirstFourBytesFromURL:(id)a3 error:(id *)a4
+- (id)upToFirstFourBytesFromURL:(id)l error:(id *)error
 {
   v12 = 0;
-  v5 = [MEMORY[0x1E696AC00] fileHandleForReadingFromURL:a3 error:&v12];
+  v5 = [MEMORY[0x1E696AC00] fileHandleForReadingFromURL:l error:&v12];
   v6 = v12;
   if (v5)
   {
@@ -2661,7 +2661,7 @@ LABEL_13:
     v8 = v11;
 
     v6 = v8;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_7;
     }
@@ -2670,7 +2670,7 @@ LABEL_13:
   else
   {
     v7 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_7;
     }
@@ -2679,7 +2679,7 @@ LABEL_13:
   if (!v7)
   {
     v9 = v6;
-    *a4 = v6;
+    *error = v6;
   }
 
 LABEL_7:
@@ -2687,10 +2687,10 @@ LABEL_7:
   return v7;
 }
 
-- (id)aclTextFromURL:(id)a3 error:(id *)a4
+- (id)aclTextFromURL:(id)l error:(id *)error
 {
-  v5 = a3;
-  file = acl_get_file([v5 fileSystemRepresentation], ACL_TYPE_EXTENDED);
+  lCopy = l;
+  file = acl_get_file([lCopy fileSystemRepresentation], ACL_TYPE_EXTENDED);
   if (file)
   {
     v7 = file;
@@ -2702,7 +2702,7 @@ LABEL_7:
       acl_free(v7);
       acl_free(v9);
       v11 = 0;
-      if (!a4)
+      if (!error)
       {
         goto LABEL_10;
       }
@@ -2712,9 +2712,9 @@ LABEL_7:
 
     v16 = *__error();
     v17 = *MEMORY[0x1E696A798];
-    v18 = [v5 path];
+    path = [lCopy path];
     strerror(v16);
-    v11 = _CreateError("[MIFileManager aclTextFromURL:error:]", 1831, v17, v16, 0, 0, @"Could not read ACL text for file %@: %s", v19, v18);
+    v11 = _CreateError("[MIFileManager aclTextFromURL:error:]", 1831, v17, v16, 0, 0, @"Could not read ACL text for file %@: %s", v19, path);
 
     acl_free(v7);
   }
@@ -2723,13 +2723,13 @@ LABEL_7:
   {
     v12 = *__error();
     v13 = *MEMORY[0x1E696A798];
-    v14 = [v5 path];
+    path2 = [lCopy path];
     strerror(v12);
-    v11 = _CreateError("[MIFileManager aclTextFromURL:error:]", 1825, v13, v12, 0, 0, @"Could not get ACL for file %@: %s", v15, v14);
+    v11 = _CreateError("[MIFileManager aclTextFromURL:error:]", 1825, v13, v12, 0, 0, @"Could not get ACL for file %@: %s", v15, path2);
   }
 
   v10 = 0;
-  if (!a4)
+  if (!error)
   {
     goto LABEL_10;
   }
@@ -2738,7 +2738,7 @@ LABEL_8:
   if (!v10)
   {
     v20 = v11;
-    *a4 = v11;
+    *error = v11;
   }
 
 LABEL_10:
@@ -2746,23 +2746,23 @@ LABEL_10:
   return v10;
 }
 
-- (BOOL)enumerateExtendedAttributeNamesAtURL:(id)a3 includeCompression:(BOOL)a4 error:(id *)a5 enumerator:(id)a6
+- (BOOL)enumerateExtendedAttributeNamesAtURL:(id)l includeCompression:(BOOL)compression error:(id *)error enumerator:(id)enumerator
 {
-  v8 = a4;
-  v10 = a3;
-  v11 = a6;
-  LOBYTE(a5) = _EnumerateExtendedAttributes([a3 fileSystemRepresentation], v8, a5, v11);
+  compressionCopy = compression;
+  lCopy = l;
+  enumeratorCopy = enumerator;
+  LOBYTE(error) = _EnumerateExtendedAttributes([l fileSystemRepresentation], compressionCopy, error, enumeratorCopy);
 
-  return a5;
+  return error;
 }
 
-- (id)extendedAttributesFromURL:(id)a3 includeCompression:(BOOL)a4 error:(id *)a5
+- (id)extendedAttributesFromURL:(id)l includeCompression:(BOOL)compression error:(id *)error
 {
-  v6 = a4;
+  compressionCopy = compression;
   v7 = MEMORY[0x1E695DF90];
-  v8 = a3;
+  lCopy = l;
   v9 = objc_alloc_init(v7);
-  v10 = [v8 fileSystemRepresentation];
+  fileSystemRepresentation = [lCopy fileSystemRepresentation];
 
   v24 = 0;
   v19 = MEMORY[0x1E69E9820];
@@ -2771,13 +2771,13 @@ LABEL_10:
   v22 = &unk_1E7AE23B0;
   v11 = v9;
   v23 = v11;
-  LOBYTE(v8) = _EnumerateExtendedAttributes(v10, v6, &v24, &v19);
+  LOBYTE(lCopy) = _EnumerateExtendedAttributes(fileSystemRepresentation, compressionCopy, &v24, &v19);
   v12 = v24;
   v13 = v12;
-  if (v8)
+  if (lCopy)
   {
     v14 = [v11 copy];
-    if (!a5)
+    if (!error)
     {
       goto LABEL_11;
     }
@@ -2785,12 +2785,12 @@ LABEL_10:
     goto LABEL_9;
   }
 
-  v15 = [v12 domain];
-  if ([v15 isEqualToString:@"MIInstallerErrorDomain"])
+  domain = [v12 domain];
+  if ([domain isEqualToString:@"MIInstallerErrorDomain"])
   {
-    v16 = [v13 code];
+    code = [v13 code];
 
-    if (v16 == 140)
+    if (code == 140)
     {
 
       v13 = 0;
@@ -2804,13 +2804,13 @@ LABEL_10:
   }
 
   v14 = 0;
-  if (a5)
+  if (error)
   {
 LABEL_9:
     if (!v14)
     {
       v17 = v13;
-      *a5 = v13;
+      *error = v13;
     }
   }
 
@@ -2846,23 +2846,23 @@ uint64_t __68__MIFileManager_extendedAttributesFromURL_includeCompression_error_
   return 1;
 }
 
-- (BOOL)clearExtendedAttributesAtURL:(id)a3 error:(id *)a4
+- (BOOL)clearExtendedAttributesAtURL:(id)l error:(id *)error
 {
-  v5 = a3;
+  lCopy = l;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
   v19 = __Block_byref_object_copy__11;
   v20 = __Block_byref_object_dispose__11;
   v21 = 0;
-  v6 = [v5 fileSystemRepresentation];
+  fileSystemRepresentation = [lCopy fileSystemRepresentation];
   v14[4] = &v16;
   v15 = 0;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __52__MIFileManager_clearExtendedAttributesAtURL_error___block_invoke;
   v14[3] = &unk_1E7AE23D8;
-  v7 = TraverseDirectory(v6, 0, 0x200u, &v15, v14);
+  v7 = TraverseDirectory(fileSystemRepresentation, 0, 0x200u, &v15, v14);
   v8 = v15;
   if (v7)
   {
@@ -2878,11 +2878,11 @@ uint64_t __68__MIFileManager_extendedAttributesFromURL_includeCompression_error_
     v8 = v10;
   }
 
-  if (a4)
+  if (error)
   {
     v11 = v8;
     v12 = 0;
-    *a4 = v8;
+    *error = v8;
   }
 
   else
@@ -2969,19 +2969,19 @@ LABEL_13:
   return 1;
 }
 
-- (BOOL)dataProtectionClassOfItemAtURL:(id)a3 class:(int *)a4 error:(id *)a5
+- (BOOL)dataProtectionClassOfItemAtURL:(id)l class:(int *)class error:(id *)error
 {
-  v7 = a3;
-  v8 = open([v7 fileSystemRepresentation], 256);
+  lCopy = l;
+  v8 = open([lCopy fileSystemRepresentation], 256);
   v9 = v8;
   if (v8 < 0)
   {
     v13 = *MEMORY[0x1E696A798];
     v14 = *__error();
-    v15 = [v7 fileSystemRepresentation];
+    fileSystemRepresentation = [lCopy fileSystemRepresentation];
     v16 = __error();
     strerror(*v16);
-    _CreateError("[MIFileManager dataProtectionClassOfItemAtURL:class:error:]", 2130, v13, v14, 0, 0, @"Failed to open %s : %s", v17, v15);
+    _CreateError("[MIFileManager dataProtectionClassOfItemAtURL:class:error:]", 2130, v13, v14, 0, 0, @"Failed to open %s : %s", v17, fileSystemRepresentation);
   }
 
   else
@@ -2990,7 +2990,7 @@ LABEL_13:
     if ((v10 & 0x80000000) == 0)
     {
       v11 = 0;
-      *a4 = v10;
+      *class = v10;
       v12 = 1;
 LABEL_9:
       close(v9);
@@ -3000,17 +3000,17 @@ LABEL_9:
 
     v18 = *MEMORY[0x1E696A798];
     v19 = *__error();
-    v20 = [v7 fileSystemRepresentation];
+    fileSystemRepresentation2 = [lCopy fileSystemRepresentation];
     v21 = __error();
     strerror(*v21);
-    _CreateError("[MIFileManager dataProtectionClassOfItemAtURL:class:error:]", 2136, v18, v19, 0, 0, @"Failed to getclass of file %s: %s", v22, v20);
+    _CreateError("[MIFileManager dataProtectionClassOfItemAtURL:class:error:]", 2136, v18, v19, 0, 0, @"Failed to getclass of file %s: %s", v22, fileSystemRepresentation2);
   }
   v23 = ;
   v11 = v23;
-  if (a5)
+  if (error)
   {
     v24 = v23;
-    *a5 = v11;
+    *error = v11;
   }
 
   v12 = 0;
@@ -3025,20 +3025,20 @@ LABEL_10:
   return v25;
 }
 
-- (BOOL)setDataProtectionClassOfItemAtURL:(id)a3 toClass:(int)a4 ifPredicate:(id)a5 error:(id *)a6
+- (BOOL)setDataProtectionClassOfItemAtURL:(id)l toClass:(int)class ifPredicate:(id)predicate error:(id *)error
 {
-  v8 = *&a4;
-  v9 = a3;
-  v10 = a5;
-  v11 = open([v9 fileSystemRepresentation], 256);
+  v8 = *&class;
+  lCopy = l;
+  predicateCopy = predicate;
+  v11 = open([lCopy fileSystemRepresentation], 256);
   v12 = v11;
   if (v11 < 0)
   {
     v18 = *MEMORY[0x1E696A798];
     v19 = *__error();
-    v20 = [v9 fileSystemRepresentation];
+    fileSystemRepresentation = [lCopy fileSystemRepresentation];
     v21 = __error();
-    v33 = v20;
+    v33 = fileSystemRepresentation;
     strerror(*v21);
     v23 = @"Failed to open %s : %s";
     v24 = 2161;
@@ -3046,14 +3046,14 @@ LABEL_10:
 
   else
   {
-    if (!v10)
+    if (!predicateCopy)
     {
 LABEL_5:
       if (fcntl(v12, 64, v8))
       {
         v14 = *MEMORY[0x1E696A798];
         v15 = *__error();
-        [v9 fileSystemRepresentation];
+        [lCopy fileSystemRepresentation];
         v16 = __error();
         strerror(*v16);
         _CreateError("[MIFileManager setDataProtectionClassOfItemAtURL:toClass:ifPredicate:error:]", 2178, v14, v15, 0, 0, @"Failed to setclass(%d) on file %s: %s", v17, v8);
@@ -3072,7 +3072,7 @@ LABEL_14:
     v13 = fcntl(v11, 63);
     if ((v13 & 0x80000000) == 0)
     {
-      if (!v10[2](v10, v13))
+      if (!predicateCopy[2](predicateCopy, v13))
       {
         goto LABEL_8;
       }
@@ -3082,9 +3082,9 @@ LABEL_14:
 
     v18 = *MEMORY[0x1E696A798];
     v19 = *__error();
-    v27 = [v9 fileSystemRepresentation];
+    fileSystemRepresentation2 = [lCopy fileSystemRepresentation];
     v28 = __error();
-    v33 = v27;
+    v33 = fileSystemRepresentation2;
     strerror(*v28);
     v23 = @"Failed to getclass of file %s: %s";
     v24 = 2169;
@@ -3093,10 +3093,10 @@ LABEL_14:
   _CreateError("[MIFileManager setDataProtectionClassOfItemAtURL:toClass:ifPredicate:error:]", v24, v18, v19, 0, 0, v23, v22, v33);
   v29 = LABEL_11:;
   v25 = v29;
-  if (a6)
+  if (error)
   {
     v30 = v29;
-    *a6 = v25;
+    *error = v25;
   }
 
   v26 = 0;
@@ -3111,21 +3111,21 @@ LABEL_15:
   return v31;
 }
 
-- (BOOL)setOwnerOfURL:(id)a3 toUID:(unsigned int)a4 gid:(unsigned int)a5 error:(id *)a6
+- (BOOL)setOwnerOfURL:(id)l toUID:(unsigned int)d gid:(unsigned int)gid error:(id *)error
 {
-  v9 = a3;
-  v10 = lchown([v9 fileSystemRepresentation], a4, a5);
+  lCopy = l;
+  v10 = lchown([lCopy fileSystemRepresentation], d, gid);
   if (v10)
   {
     v11 = *__error();
     v12 = *MEMORY[0x1E696A798];
-    v13 = [v9 fileSystemRepresentation];
+    fileSystemRepresentation = [lCopy fileSystemRepresentation];
     strerror(v11);
-    v15 = _CreateError("[MIFileManager setOwnerOfURL:toUID:gid:error:]", 2201, v12, v11, 0, 0, @"Failed to lchown %s : %s", v14, v13);
-    if (a6)
+    v15 = _CreateError("[MIFileManager setOwnerOfURL:toUID:gid:error:]", 2201, v12, v11, 0, 0, @"Failed to lchown %s : %s", v14, fileSystemRepresentation);
+    if (error)
     {
       v15 = v15;
-      *a6 = v15;
+      *error = v15;
     }
   }
 
@@ -3137,21 +3137,21 @@ LABEL_15:
   return v10 == 0;
 }
 
-- (BOOL)setPermissionsForURL:(id)a3 toMode:(unsigned __int16)a4 error:(id *)a5
+- (BOOL)setPermissionsForURL:(id)l toMode:(unsigned __int16)mode error:(id *)error
 {
-  v7 = a3;
-  v8 = lchmod([v7 fileSystemRepresentation], a4);
+  lCopy = l;
+  v8 = lchmod([lCopy fileSystemRepresentation], mode);
   if (v8)
   {
     v9 = *__error();
     v10 = *MEMORY[0x1E696A798];
-    v11 = [v7 fileSystemRepresentation];
+    fileSystemRepresentation = [lCopy fileSystemRepresentation];
     strerror(v9);
-    v13 = _CreateError("[MIFileManager setPermissionsForURL:toMode:error:]", 2220, v10, v9, 0, 0, @"Failed to lchmod %s : %s", v12, v11);
-    if (a5)
+    v13 = _CreateError("[MIFileManager setPermissionsForURL:toMode:error:]", 2220, v10, v9, 0, 0, @"Failed to lchmod %s : %s", v12, fileSystemRepresentation);
+    if (error)
     {
       v13 = v13;
-      *a5 = v13;
+      *error = v13;
     }
   }
 
@@ -3163,12 +3163,12 @@ LABEL_15:
   return v8 == 0;
 }
 
-- (BOOL)captureStoreDataFromDirectory:(id)a3 toDirectory:(id)a4 doCopy:(BOOL)a5 failureIsFatal:(BOOL)a6 includeiTunesMetadata:(BOOL)a7 withError:(id *)a8
+- (BOOL)captureStoreDataFromDirectory:(id)directory toDirectory:(id)toDirectory doCopy:(BOOL)copy failureIsFatal:(BOOL)fatal includeiTunesMetadata:(BOOL)metadata withError:(id *)error
 {
-  v34 = a5;
+  copyCopy = copy;
   v48 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v35 = a4;
+  directoryCopy = directory;
+  toDirectoryCopy = toDirectory;
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
@@ -3177,11 +3177,11 @@ LABEL_15:
   if (v11)
   {
     v12 = v11;
-    v30 = a8;
+    errorCopy = error;
     v13 = 0;
     v14 = 0;
     v15 = *v40;
-    v31 = v10;
+    v31 = directoryCopy;
 LABEL_3:
     v16 = 0;
     while (1)
@@ -3192,14 +3192,14 @@ LABEL_3:
       }
 
       v17 = *(*(&v39 + 1) + 8 * v16);
-      if (!a7 && ([*(*(&v39 + 1) + 8 * v16) isEqualToString:@"iTunesMetadata.plist"] & 1) != 0)
+      if (!metadata && ([*(*(&v39 + 1) + 8 * v16) isEqualToString:@"iTunesMetadata.plist"] & 1) != 0)
       {
         goto LABEL_15;
       }
 
-      v18 = [v35 URLByAppendingPathComponent:v17 isDirectory:0];
-      v19 = [v10 URLByAppendingPathComponent:v17 isDirectory:0];
-      if (v34)
+      v18 = [toDirectoryCopy URLByAppendingPathComponent:v17 isDirectory:0];
+      v19 = [directoryCopy URLByAppendingPathComponent:v17 isDirectory:0];
+      if (copyCopy)
       {
         v38 = v14;
         v20 = [(MIFileManager *)self copyItemIfExistsAtURL:v19 toURL:v18 error:&v38];
@@ -3231,16 +3231,16 @@ LABEL_3:
           _CreateAndLogError("[MIFileManager captureStoreDataFromDirectory:toDirectory:doCopy:failureIsFatal:includeiTunesMetadata:withError:]", 2260, @"MIInstallerErrorDomain", 24, v21, v23, @"Failed to move %@ to %@", v26, v19);
           v14 = LABEL_13:;
 
-          v10 = v31;
+          directoryCopy = v31;
           v21 = v14;
-          if (a6)
+          if (fatal)
           {
 
-            if (v30)
+            if (errorCopy)
             {
               v27 = v14;
               v28 = 0;
-              *v30 = v14;
+              *errorCopy = v14;
             }
 
             else
@@ -3278,11 +3278,11 @@ LABEL_23:
   return v28;
 }
 
-- (id)_realPathWhatExistsInPath:(id)a3 isDirectory:(BOOL)a4
+- (id)_realPathWhatExistsInPath:(id)path isDirectory:(BOOL)directory
 {
-  v17 = a4;
-  v5 = [a3 pathComponents];
-  v6 = [v5 count];
+  directoryCopy = directory;
+  pathComponents = [path pathComponents];
+  v6 = [pathComponents count];
   v7 = v6 - 1;
   if (v6 == 1)
   {
@@ -3293,15 +3293,15 @@ LABEL_23:
   {
     do
     {
-      v8 = [v5 subarrayWithRange:{0, v7 + 1}];
+      v8 = [pathComponents subarrayWithRange:{0, v7 + 1}];
       v9 = [MEMORY[0x1E695DFF8] fileURLWithPathComponents:v8];
       v10 = 0;
       if ([(MIFileManager *)self itemExistsAtURL:v9])
       {
-        v11 = [(MIFileManager *)self realPathForURL:v9 allowNonExistentPathComponents:0 isDirectory:v17 error:0];
+        v11 = [(MIFileManager *)self realPathForURL:v9 allowNonExistentPathComponents:0 isDirectory:directoryCopy error:0];
         if (v11)
         {
-          v12 = [v5 subarrayWithRange:{v7 + 1, objc_msgSend(v5, "count") - (v7 + 1)}];
+          v12 = [pathComponents subarrayWithRange:{v7 + 1, objc_msgSend(pathComponents, "count") - (v7 + 1)}];
           v13 = [MEMORY[0x1E696AEC0] pathWithComponents:v12];
           if (gLogHandle && *(gLogHandle + 44) >= 7)
           {
@@ -3310,7 +3310,7 @@ LABEL_23:
             MOLogWrite();
           }
 
-          v10 = [v11 URLByAppendingPathComponent:v13 isDirectory:{v17, v15, v16}];
+          v10 = [v11 URLByAppendingPathComponent:v13 isDirectory:{directoryCopy, v15, v16}];
         }
 
         else
@@ -3333,36 +3333,36 @@ LABEL_23:
   return v10;
 }
 
-- (id)realPathForURL:(id)a3 allowNonExistentPathComponents:(BOOL)a4 isDirectory:(BOOL)a5 error:(id *)a6
+- (id)realPathForURL:(id)l allowNonExistentPathComponents:(BOOL)components isDirectory:(BOOL)directory error:(id *)error
 {
-  v7 = a5;
-  v8 = a4;
+  directoryCopy = directory;
+  componentsCopy = components;
   v22 = *MEMORY[0x1E69E9840];
   bzero(v21, 0x400uLL);
-  v11 = [a3 path];
-  if (realpath_DARWIN_EXTSN([v11 fileSystemRepresentation], v21))
+  path = [l path];
+  if (realpath_DARWIN_EXTSN([path fileSystemRepresentation], v21))
   {
-    v12 = [MEMORY[0x1E695DFF8] fileURLWithFileSystemRepresentation:v21 isDirectory:v7 relativeToURL:0];
+    v12 = [MEMORY[0x1E695DFF8] fileURLWithFileSystemRepresentation:v21 isDirectory:directoryCopy relativeToURL:0];
 LABEL_11:
     v19 = v12;
     goto LABEL_12;
   }
 
   v13 = *__error();
-  if (v13 == 2 && v8)
+  if (v13 == 2 && componentsCopy)
   {
-    v12 = [(MIFileManager *)self _realPathWhatExistsInPath:v11 isDirectory:v7];
+    v12 = [(MIFileManager *)self _realPathWhatExistsInPath:path isDirectory:directoryCopy];
     goto LABEL_11;
   }
 
   v15 = *MEMORY[0x1E696A798];
-  v16 = [v11 fileSystemRepresentation];
+  fileSystemRepresentation = [path fileSystemRepresentation];
   strerror(v13);
-  v18 = _CreateAndLogError("[MIFileManager realPathForURL:allowNonExistentPathComponents:isDirectory:error:]", 2319, v15, v13, 0, 0, @"Failed to realpath %s : %s at %s", v17, v16);
-  if (a6)
+  v18 = _CreateAndLogError("[MIFileManager realPathForURL:allowNonExistentPathComponents:isDirectory:error:]", 2319, v15, v13, 0, 0, @"Failed to realpath %s : %s at %s", v17, fileSystemRepresentation);
+  if (error)
   {
     v18 = v18;
-    *a6 = v18;
+    *error = v18;
   }
 
   v19 = 0;
@@ -3371,15 +3371,15 @@ LABEL_12:
   return v19;
 }
 
-- (BOOL)_validateSymlink:(id)a3 withStartingDepth:(unsigned int)a4 andEndingDepth:(unsigned int *)a5
+- (BOOL)_validateSymlink:(id)symlink withStartingDepth:(unsigned int)depth andEndingDepth:(unsigned int *)endingDepth
 {
   v24 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = v7;
-  if (v7)
+  symlinkCopy = symlink;
+  v8 = symlinkCopy;
+  if (symlinkCopy)
   {
-    v18 = a5;
-    [v7 pathComponents];
+    endingDepthCopy = endingDepth;
+    [symlinkCopy pathComponents];
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
@@ -3389,7 +3389,7 @@ LABEL_12:
     {
       v11 = v10;
       v12 = *v20;
-      v13 = a4;
+      depthCopy2 = depth;
       while (2)
       {
         for (i = 0; i != v11; ++i)
@@ -3402,15 +3402,15 @@ LABEL_12:
           v15 = *(*(&v19 + 1) + 8 * i);
           if ([v15 isEqualToString:@".."])
           {
-            --v13;
+            --depthCopy2;
           }
 
           else if (([v15 isEqualToString:&stru_1F28762E8] & 1) == 0 && (objc_msgSend(v15, "isEqualToString:", @".") & 1) == 0)
           {
-            v13 += [v15 isEqualToString:@"/"] ^ 1;
+            depthCopy2 += [v15 isEqualToString:@"/"] ^ 1;
           }
 
-          if (v13 < a4)
+          if (depthCopy2 < depth)
           {
 
             goto LABEL_18;
@@ -3429,12 +3429,12 @@ LABEL_12:
 
     else
     {
-      v13 = a4;
+      depthCopy2 = depth;
     }
 
-    if (v18)
+    if (endingDepthCopy)
     {
-      *v18 = v13;
+      *endingDepthCopy = depthCopy2;
     }
 
     v16 = 1;
@@ -3450,13 +3450,13 @@ LABEL_18:
   return v16;
 }
 
-- (id)realPathForURL:(id)a3 ifChildOfURL:(id)a4
+- (id)realPathForURL:(id)l ifChildOfURL:(id)rL
 {
   v79 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  rLCopy = rL;
   bzero(v78, 0x400uLL);
-  if (!v6 || !v7)
+  if (!lCopy || !rLCopy)
   {
     if (gLogHandle && *(gLogHandle + 44) < 3)
     {
@@ -3466,35 +3466,35 @@ LABEL_18:
     goto LABEL_14;
   }
 
-  v8 = [v7 path];
-  v9 = [v8 hasPrefix:@"/private/"];
+  path = [rLCopy path];
+  v9 = [path hasPrefix:@"/private/"];
 
   if (v9)
   {
     v10 = MEMORY[0x1E695DFF8];
-    v11 = [v7 path];
-    v12 = [v11 substringFromIndex:{objc_msgSend(@"/private", "length")}];
+    path2 = [rLCopy path];
+    v12 = [path2 substringFromIndex:{objc_msgSend(@"/private", "length")}];
     v13 = [v10 fileURLWithPath:v12];
 
-    v7 = v13;
+    rLCopy = v13;
   }
 
-  v14 = [v6 path];
-  v15 = [v14 hasPrefix:@"/private/"];
+  path3 = [lCopy path];
+  v15 = [path3 hasPrefix:@"/private/"];
 
   if (v15)
   {
     v16 = MEMORY[0x1E695DFF8];
-    v17 = [v6 path];
-    v18 = [v17 substringFromIndex:{objc_msgSend(@"/private", "length")}];
+    path4 = [lCopy path];
+    v18 = [path4 substringFromIndex:{objc_msgSend(@"/private", "length")}];
     v19 = [v16 fileURLWithPath:v18];
 
-    v6 = v19;
+    lCopy = v19;
   }
 
-  v20 = [v6 path];
-  v21 = [v7 path];
-  v22 = [v20 hasPrefix:v21];
+  path5 = [lCopy path];
+  path6 = [rLCopy path];
+  v22 = [path5 hasPrefix:path6];
 
   if ((v22 & 1) == 0)
   {
@@ -3503,15 +3503,15 @@ LABEL_18:
       goto LABEL_38;
     }
 
-    v25 = [v6 path];
-    v64 = [v7 path];
+    path7 = [lCopy path];
+    path8 = [rLCopy path];
     MOLogWrite();
 
     goto LABEL_37;
   }
 
-  v23 = [v6 pathComponents];
-  v24 = [v23 containsObject:@".."];
+  pathComponents = [lCopy pathComponents];
+  v24 = [pathComponents containsObject:@".."];
 
   if (v24)
   {
@@ -3523,13 +3523,13 @@ LABEL_18:
     goto LABEL_11;
   }
 
-  v26 = readlink([v6 fileSystemRepresentation], v78, 0x400uLL);
+  v26 = readlink([lCopy fileSystemRepresentation], v78, 0x400uLL);
   if (v26 == -1)
   {
     if (*__error() == 22 || *__error() == 2)
     {
-      v27 = [v6 path];
-      v28 = 0;
+      path9 = [lCopy path];
+      stringByDeletingLastPathComponent = 0;
       goto LABEL_28;
     }
 
@@ -3546,8 +3546,8 @@ LABEL_38:
     v39 = 0;
     v38 = 0;
     v36 = 0;
-    v27 = 0;
-    v28 = 0;
+    path9 = 0;
+    stringByDeletingLastPathComponent = 0;
     goto LABEL_39;
   }
 
@@ -3559,7 +3559,7 @@ LABEL_38:
     }
 
 LABEL_11:
-    v25 = [v6 path];
+    path7 = [lCopy path];
 LABEL_36:
     MOLogWrite();
 LABEL_37:
@@ -3568,8 +3568,8 @@ LABEL_37:
   }
 
   v77 = 0;
-  v29 = [v7 path];
-  v30 = [(MIFileManager *)self _validateSymlink:v29 withStartingDepth:0 andEndingDepth:&v77];
+  path10 = [rLCopy path];
+  v30 = [(MIFileManager *)self _validateSymlink:path10 withStartingDepth:0 andEndingDepth:&v77];
 
   if (!v30)
   {
@@ -3578,35 +3578,35 @@ LABEL_37:
       goto LABEL_38;
     }
 
-    v25 = [v7 path];
+    path7 = [rLCopy path];
     goto LABEL_36;
   }
 
-  v31 = [v6 path];
-  v32 = [v7 path];
-  v33 = [v31 substringFromIndex:{objc_msgSend(v32, "length")}];
+  path11 = [lCopy path];
+  path12 = [rLCopy path];
+  v33 = [path11 substringFromIndex:{objc_msgSend(path12, "length")}];
 
-  v28 = [v33 stringByDeletingLastPathComponent];
+  stringByDeletingLastPathComponent = [v33 stringByDeletingLastPathComponent];
 
   v34 = [MEMORY[0x1E696AEC0] stringWithFileSystemRepresentation:v78 length:v26];
-  v27 = [v28 stringByAppendingPathComponent:v34];
+  path9 = [stringByDeletingLastPathComponent stringByAppendingPathComponent:v34];
 
-  if (![(MIFileManager *)self _validateSymlink:v27 withStartingDepth:v77 andEndingDepth:0])
+  if (![(MIFileManager *)self _validateSymlink:path9 withStartingDepth:v77 andEndingDepth:0])
   {
     if (gLogHandle && *(gLogHandle + 44) < 3)
     {
       goto LABEL_56;
     }
 
-    v42 = [v6 path];
-    v65 = [v7 path];
+    path13 = [lCopy path];
+    path14 = [rLCopy path];
     MOLogWrite();
 
     goto LABEL_55;
   }
 
 LABEL_28:
-  v35 = [(MIFileManager *)self _realPathForURL:v7 allowNonExistentPathComponents:0];
+  v35 = [(MIFileManager *)self _realPathForURL:rLCopy allowNonExistentPathComponents:0];
   if (!v35)
   {
     if (gLogHandle && *(gLogHandle + 44) < 3)
@@ -3614,7 +3614,7 @@ LABEL_28:
       goto LABEL_56;
     }
 
-    v42 = [v7 path];
+    path13 = [rLCopy path];
     MOLogWrite();
 LABEL_55:
 
@@ -3626,7 +3626,7 @@ LABEL_56:
   }
 
   v36 = v35;
-  v37 = [(MIFileManager *)self _realPathForURL:v6 allowNonExistentPathComponents:1];
+  v37 = [(MIFileManager *)self _realPathForURL:lCopy allowNonExistentPathComponents:1];
   if (v37)
   {
     v38 = v37;
@@ -3645,11 +3645,11 @@ LABEL_32:
       goto LABEL_39;
     }
 
-    v44 = [v38 pathComponents];
-    v75 = [v36 pathComponents];
-    v45 = [v75 count];
-    v76 = v44;
-    v46 = [v44 count];
+    pathComponents2 = [v38 pathComponents];
+    pathComponents3 = [v36 pathComponents];
+    v45 = [pathComponents3 count];
+    v76 = pathComponents2;
+    v46 = [pathComponents2 count];
     if (v46 < 2 || v45 <= 1)
     {
       if (gLogHandle && *(gLogHandle + 44) < 3)
@@ -3657,20 +3657,20 @@ LABEL_32:
         goto LABEL_73;
       }
 
-      v56 = [v6 path];
-      v57 = [v7 path];
-      v58 = [v38 path];
-      v71 = [v36 path];
-      v73 = v58;
-      v54 = v57;
-      v55 = v56;
+      path15 = [lCopy path];
+      path16 = [rLCopy path];
+      path17 = [v38 path];
+      path18 = [v36 path];
+      path21 = path17;
+      v54 = path16;
+      v55 = path15;
     }
 
     else
     {
       v47 = v46;
       v48 = 1;
-      v49 = [v75 objectAtIndexedSubscript:1];
+      v49 = [pathComponents3 objectAtIndexedSubscript:1];
       if ([v49 isEqualToString:@"private"])
       {
         v48 = 2;
@@ -3699,7 +3699,7 @@ LABEL_78:
 
         while (1)
         {
-          v59 = [v75 objectAtIndexedSubscript:v48];
+          v59 = [pathComponents3 objectAtIndexedSubscript:v48];
           v60 = [v76 objectAtIndexedSubscript:v51];
           v74 = [v59 isEqualToString:v60];
 
@@ -3722,17 +3722,17 @@ LABEL_78:
           goto LABEL_73;
         }
 
-        v61 = [v6 path];
-        v68 = [v7 path];
-        v73 = [v38 path];
-        v62 = [v36 path];
-        v67 = [v75 objectAtIndexedSubscript:v48];
+        path19 = [lCopy path];
+        path20 = [rLCopy path];
+        path21 = [v38 path];
+        path22 = [v36 path];
+        v67 = [pathComponents3 objectAtIndexedSubscript:v48];
         v66 = [v76 objectAtIndexedSubscript:v72];
-        v71 = v62;
-        v55 = v61;
+        path18 = path22;
+        v55 = path19;
         MOLogWrite();
 
-        v54 = v68;
+        v54 = path20;
         goto LABEL_72;
       }
 
@@ -3741,13 +3741,13 @@ LABEL_78:
         goto LABEL_73;
       }
 
-      v69 = [v6 path];
-      v52 = [v7 path];
-      v53 = [v38 path];
-      v71 = [v36 path];
-      v73 = v53;
-      v54 = v52;
-      v55 = v69;
+      path23 = [lCopy path];
+      path24 = [rLCopy path];
+      path25 = [v38 path];
+      path18 = [v36 path];
+      path21 = path25;
+      v54 = path24;
+      v55 = path23;
     }
 
     MOLogWrite();
@@ -3759,7 +3759,7 @@ LABEL_73:
 
   if (!gLogHandle || *(gLogHandle + 44) >= 3)
   {
-    v63 = [v6 path];
+    path26 = [lCopy path];
     MOLogWrite();
   }
 
@@ -3771,23 +3771,23 @@ LABEL_39:
   return v40;
 }
 
-- (BOOL)markBundleAsPlaceholder:(id)a3 withError:(id *)a4
+- (BOOL)markBundleAsPlaceholder:(id)placeholder withError:(id *)error
 {
   value = 1;
-  v5 = [a3 fileSystemRepresentation];
-  v6 = setxattr(v5, "com.apple.installd.placeholder", &value, 4uLL, 0, 1);
+  fileSystemRepresentation = [placeholder fileSystemRepresentation];
+  v6 = setxattr(fileSystemRepresentation, "com.apple.installd.placeholder", &value, 4uLL, 0, 1);
   if (v6)
   {
     v7 = __error();
     v8 = *v7;
     v10 = _CreateError("[MIFileManager markBundleAsPlaceholder:withError:]", 2575, *MEMORY[0x1E696A798], *v7, 0, 0, @"setxattr for %s on %s failed", v9, "com.apple.installd.placeholder");
     strerror(v8);
-    v12 = _CreateAndLogError("[MIFileManager markBundleAsPlaceholder:withError:]", 2575, @"MIInstallerErrorDomain", 4, v10, 0, @"Could't set placeholder EA on %s: %s", v11, v5);
+    v12 = _CreateAndLogError("[MIFileManager markBundleAsPlaceholder:withError:]", 2575, @"MIInstallerErrorDomain", 4, v10, 0, @"Could't set placeholder EA on %s: %s", v11, fileSystemRepresentation);
 
-    if (a4)
+    if (error)
     {
       v13 = v12;
-      *a4 = v12;
+      *error = v12;
     }
   }
 
@@ -3799,51 +3799,51 @@ LABEL_39:
   return v6 == 0;
 }
 
-- (BOOL)clearPlaceholderStatusForBundle:(id)a3 withError:(id *)a4
+- (BOOL)clearPlaceholderStatusForBundle:(id)bundle withError:(id *)error
 {
-  v5 = [a3 fileSystemRepresentation];
-  v6 = removexattr(v5, "com.apple.installd.placeholder", 1);
+  fileSystemRepresentation = [bundle fileSystemRepresentation];
+  v6 = removexattr(fileSystemRepresentation, "com.apple.installd.placeholder", 1);
   if (v6)
   {
     v7 = __error();
-    v9 = _CreateError("[MIFileManager clearPlaceholderStatusForBundle:withError:]", 2599, *MEMORY[0x1E696A798], *v7, 0, 0, @"removexattr on %s for %s failed", v8, v5);
-    v11 = _CreateAndLogError("[MIFileManager clearPlaceholderStatusForBundle:withError:]", 2599, @"MIInstallerErrorDomain", 4, v9, 0, @"Could't remove placeholder EA on %s", v10, v5);
+    v9 = _CreateError("[MIFileManager clearPlaceholderStatusForBundle:withError:]", 2599, *MEMORY[0x1E696A798], *v7, 0, 0, @"removexattr on %s for %s failed", v8, fileSystemRepresentation);
+    v11 = _CreateAndLogError("[MIFileManager clearPlaceholderStatusForBundle:withError:]", 2599, @"MIInstallerErrorDomain", 4, v9, 0, @"Could't remove placeholder EA on %s", v10, fileSystemRepresentation);
 
-    if (a4)
+    if (error)
     {
       v12 = v11;
-      *a4 = v11;
+      *error = v11;
     }
   }
 
   return v6 == 0;
 }
 
-- (BOOL)_markEAFlag:(const char *)a3 forAppIdentifier:(id)a4 insecurelyCachedOnBundle:(id)a5 error:(id *)a6
+- (BOOL)_markEAFlag:(const char *)flag forAppIdentifier:(id)identifier insecurelyCachedOnBundle:(id)bundle error:(id *)error
 {
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  bundleCopy = bundle;
   value = 1;
-  if (!v9 || ![v9 length])
+  if (!identifierCopy || ![identifierCopy length])
   {
-    v19 = [v10 fileSystemRepresentation];
-    v17 = _CreateAndLogError("[MIFileManager _markEAFlag:forAppIdentifier:insecurelyCachedOnBundle:error:]", 2615, @"MIInstallerErrorDomain", 4, 0, 0, @"Attempted to set a zero-length or nil app identifier on %s", v20, v19);
+    fileSystemRepresentation = [bundleCopy fileSystemRepresentation];
+    v17 = _CreateAndLogError("[MIFileManager _markEAFlag:forAppIdentifier:insecurelyCachedOnBundle:error:]", 2615, @"MIInstallerErrorDomain", 4, 0, 0, @"Attempted to set a zero-length or nil app identifier on %s", v20, fileSystemRepresentation);
     goto LABEL_10;
   }
 
-  v11 = open([v10 fileSystemRepresentation], 256);
+  v11 = open([bundleCopy fileSystemRepresentation], 256);
   if (v11 < 0)
   {
     v23 = __error();
     v24 = *v23;
     v25 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:*v23 userInfo:0];
-    v26 = [v10 fileSystemRepresentation];
+    fileSystemRepresentation2 = [bundleCopy fileSystemRepresentation];
     strerror(v24);
-    v17 = _CreateAndLogError("[MIFileManager _markEAFlag:forAppIdentifier:insecurelyCachedOnBundle:error:]", 2622, @"MIInstallerErrorDomain", 4, v25, 0, @"Couldn't open bundle %s for setting extended attributes: %s", v27, v26);
+    v17 = _CreateAndLogError("[MIFileManager _markEAFlag:forAppIdentifier:insecurelyCachedOnBundle:error:]", 2622, @"MIInstallerErrorDomain", 4, v25, 0, @"Couldn't open bundle %s for setting extended attributes: %s", v27, fileSystemRepresentation2);
 
 LABEL_10:
     v18 = 0;
-    if (!a6)
+    if (!error)
     {
       goto LABEL_13;
     }
@@ -3852,37 +3852,37 @@ LABEL_10:
   }
 
   v12 = v11;
-  if (fsetxattr(v11, a3, &value, 4uLL, 0, 0))
+  if (fsetxattr(v11, flag, &value, 4uLL, 0, 0))
   {
     v13 = __error();
     v14 = *v13;
     v15 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:*v13 userInfo:0];
-    [v10 fileSystemRepresentation];
+    [bundleCopy fileSystemRepresentation];
     strerror(v14);
-    v17 = _CreateAndLogError("[MIFileManager _markEAFlag:forAppIdentifier:insecurelyCachedOnBundle:error:]", 2628, @"MIInstallerErrorDomain", 4, v15, 0, @"Couldn't set %s EA on %s: %s", v16, a3);
+    v17 = _CreateAndLogError("[MIFileManager _markEAFlag:forAppIdentifier:insecurelyCachedOnBundle:error:]", 2628, @"MIInstallerErrorDomain", 4, v15, 0, @"Couldn't set %s EA on %s: %s", v16, flag);
 
 LABEL_6:
     v18 = 0;
     goto LABEL_7;
   }
 
-  v28 = [v9 UTF8String];
-  v29 = strlen(v28);
-  if (fsetxattr(v12, "com.apple.installd.appIdentifier", v28, v29, 0, 0))
+  uTF8String = [identifierCopy UTF8String];
+  v29 = strlen(uTF8String);
+  if (fsetxattr(v12, "com.apple.installd.appIdentifier", uTF8String, v29, 0, 0))
   {
     v30 = __error();
     v31 = *v30;
     v32 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:*v30 userInfo:0];
-    v33 = [v10 fileSystemRepresentation];
+    fileSystemRepresentation3 = [bundleCopy fileSystemRepresentation];
     strerror(v31);
-    v17 = _CreateAndLogError("[MIFileManager _markEAFlag:forAppIdentifier:insecurelyCachedOnBundle:error:]", 2637, @"MIInstallerErrorDomain", 4, v32, 0, @"Couldn't set app identifier EA on %s: %s", v34, v33);
+    v17 = _CreateAndLogError("[MIFileManager _markEAFlag:forAppIdentifier:insecurelyCachedOnBundle:error:]", 2637, @"MIInstallerErrorDomain", 4, v32, 0, @"Couldn't set app identifier EA on %s: %s", v34, fileSystemRepresentation3);
 
-    if (fremovexattr(v12, a3, 1) < 0)
+    if (fremovexattr(v12, flag, 1) < 0)
     {
       v35 = *__error();
       if (!gLogHandle || *(gLogHandle + 44) >= 3)
       {
-        [v10 fileSystemRepresentation];
+        [bundleCopy fileSystemRepresentation];
         strerror(v35);
         MOLogWrite();
       }
@@ -3895,7 +3895,7 @@ LABEL_6:
   v18 = 1;
 LABEL_7:
   close(v12);
-  if (!a6)
+  if (!error)
   {
     goto LABEL_13;
   }
@@ -3904,7 +3904,7 @@ LABEL_11:
   if (!v18)
   {
     v21 = v17;
-    *a6 = v17;
+    *error = v17;
   }
 
 LABEL_13:
@@ -3912,23 +3912,23 @@ LABEL_13:
   return v18;
 }
 
-- (id)_insecureCachedAppIdentifierIfMarkedWithEAFlag:(const char *)a3 bundleURL:(id)a4 allowPlaceholders:(BOOL)a5 error:(id *)a6
+- (id)_insecureCachedAppIdentifierIfMarkedWithEAFlag:(const char *)flag bundleURL:(id)l allowPlaceholders:(BOOL)placeholders error:(id *)error
 {
-  v9 = a4;
+  lCopy = l;
   value = 0;
-  v10 = open([v9 fileSystemRepresentation], 256);
+  v10 = open([lCopy fileSystemRepresentation], 256);
   if (v10 < 0)
   {
     v16 = __error();
     v17 = *v16;
     v18 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:*v16 userInfo:0];
-    v19 = [v9 fileSystemRepresentation];
+    fileSystemRepresentation = [lCopy fileSystemRepresentation];
     strerror(v17);
-    v15 = _CreateAndLogError("[MIFileManager _insecureCachedAppIdentifierIfMarkedWithEAFlag:bundleURL:allowPlaceholders:error:]", 2668, @"MIInstallerErrorDomain", 4, v18, 0, @"Couldn't open bundle %s for setting extended attributes: %s", v20, v19);
+    v15 = _CreateAndLogError("[MIFileManager _insecureCachedAppIdentifierIfMarkedWithEAFlag:bundleURL:allowPlaceholders:error:]", 2668, @"MIInstallerErrorDomain", 4, v18, 0, @"Couldn't open bundle %s for setting extended attributes: %s", v20, fileSystemRepresentation);
 
     v21 = 0;
     v22 = 0;
-    if (!a6)
+    if (!error)
     {
       goto LABEL_17;
     }
@@ -3937,22 +3937,22 @@ LABEL_13:
   }
 
   v11 = v10;
-  if (fgetxattr(v10, a3, &value, 4uLL, 0, 0) != 4)
+  if (fgetxattr(v10, flag, &value, 4uLL, 0, 0) != 4)
   {
     v23 = *__error();
     if (v23 == 93)
     {
       v24 = *MEMORY[0x1E696A798];
-      v36 = [v9 path];
-      v15 = _CreateError("[MIFileManager _insecureCachedAppIdentifierIfMarkedWithEAFlag:bundleURL:allowPlaceholders:error:]", 2676, v24, 93, 0, 0, @"Attr named %s not present on %@", v25, a3);
+      path = [lCopy path];
+      v15 = _CreateError("[MIFileManager _insecureCachedAppIdentifierIfMarkedWithEAFlag:bundleURL:allowPlaceholders:error:]", 2676, v24, 93, 0, 0, @"Attr named %s not present on %@", v25, flag);
     }
 
     else
     {
       v27 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:v23 userInfo:0];
-      [v9 fileSystemRepresentation];
+      [lCopy fileSystemRepresentation];
       strerror(v23);
-      v15 = _CreateAndLogError("[MIFileManager _insecureCachedAppIdentifierIfMarkedWithEAFlag:bundleURL:allowPlaceholders:error:]", 2678, @"MIInstallerErrorDomain", 4, v27, 0, @"Couldn't get %s EA from %s: %s", v28, a3);
+      v15 = _CreateAndLogError("[MIFileManager _insecureCachedAppIdentifierIfMarkedWithEAFlag:bundleURL:allowPlaceholders:error:]", 2678, @"MIInstallerErrorDomain", 4, v27, 0, @"Couldn't get %s EA from %s: %s", v28, flag);
     }
 
     goto LABEL_13;
@@ -3960,19 +3960,19 @@ LABEL_13:
 
   if (value != 1)
   {
-    [v9 fileSystemRepresentation];
-    v15 = _CreateAndLogError("[MIFileManager _insecureCachedAppIdentifierIfMarkedWithEAFlag:bundleURL:allowPlaceholders:error:]", 2682, @"MIInstallerErrorDomain", 141, 0, 0, @"%s EA was not set to expected value from %s", v26, a3);
+    [lCopy fileSystemRepresentation];
+    v15 = _CreateAndLogError("[MIFileManager _insecureCachedAppIdentifierIfMarkedWithEAFlag:bundleURL:allowPlaceholders:error:]", 2682, @"MIInstallerErrorDomain", 141, 0, 0, @"%s EA was not set to expected value from %s", v26, flag);
     goto LABEL_13;
   }
 
-  if (!a5)
+  if (!placeholders)
   {
     v38 = 0;
     if (fgetxattr(v11, "com.apple.installd.placeholder", &v38, 4uLL, 0, 0) == 4)
     {
       v12 = *MEMORY[0x1E696A798];
-      v13 = [v9 path];
-      v15 = _CreateError("[MIFileManager _insecureCachedAppIdentifierIfMarkedWithEAFlag:bundleURL:allowPlaceholders:error:]", 2691, v12, 93, 0, 0, @"Not allowed to mark placeholder as validatedByFreeProfile for %@", v14, v13);
+      path2 = [lCopy path];
+      v15 = _CreateError("[MIFileManager _insecureCachedAppIdentifierIfMarkedWithEAFlag:bundleURL:allowPlaceholders:error:]", 2691, v12, 93, 0, 0, @"Not allowed to mark placeholder as validatedByFreeProfile for %@", v14, path2);
 
 LABEL_13:
       v22 = 0;
@@ -3993,14 +3993,14 @@ LABEL_13:
       goto LABEL_14;
     }
 
-    [v9 fileSystemRepresentation];
+    [lCopy fileSystemRepresentation];
     v34 = _CreateAndLogError("[MIFileManager _insecureCachedAppIdentifierIfMarkedWithEAFlag:bundleURL:allowPlaceholders:error:]", 2704, @"MIInstallerErrorDomain", 4, 0, 0, @"Failed to convert app identifier EA data (%@) to string from %s", v35, v22);
   }
 
   else
   {
-    v32 = [v9 fileSystemRepresentation];
-    v34 = _CreateAndLogError("[MIFileManager _insecureCachedAppIdentifierIfMarkedWithEAFlag:bundleURL:allowPlaceholders:error:]", 2698, @"MIInstallerErrorDomain", 4, v15, 0, @"Couldn't get appIdentifier EA from %s", v33, v32);
+    fileSystemRepresentation2 = [lCopy fileSystemRepresentation];
+    v34 = _CreateAndLogError("[MIFileManager _insecureCachedAppIdentifierIfMarkedWithEAFlag:bundleURL:allowPlaceholders:error:]", 2698, @"MIInstallerErrorDomain", 4, v15, 0, @"Couldn't get appIdentifier EA from %s", v33, fileSystemRepresentation2);
 
     v22 = 0;
   }
@@ -4009,7 +4009,7 @@ LABEL_13:
   v15 = v34;
 LABEL_14:
   close(v11);
-  if (!a6)
+  if (!error)
   {
     goto LABEL_17;
   }
@@ -4018,7 +4018,7 @@ LABEL_15:
   if (!v21)
   {
     v29 = v15;
-    *a6 = v15;
+    *error = v15;
   }
 
 LABEL_17:
@@ -4026,24 +4026,24 @@ LABEL_17:
   return v21;
 }
 
-- (BOOL)setInstallType:(id)a3 inExtendedAttributeOnBundle:(id)a4 error:(id *)a5
+- (BOOL)setInstallType:(id)type inExtendedAttributeOnBundle:(id)bundle error:(id *)error
 {
-  v7 = a4;
-  value = [a3 unsignedLongLongValue];
-  v8 = setxattr([v7 fileSystemRepresentation], "com.apple.installd.installType", &value, 8uLL, 0, 1);
+  bundleCopy = bundle;
+  value = [type unsignedLongLongValue];
+  v8 = setxattr([bundleCopy fileSystemRepresentation], "com.apple.installd.installType", &value, 8uLL, 0, 1);
   if (v8)
   {
     v9 = __error();
     v10 = *v9;
     v11 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:*v9 userInfo:0];
-    v12 = [v7 fileSystemRepresentation];
+    fileSystemRepresentation = [bundleCopy fileSystemRepresentation];
     strerror(v10);
-    v14 = _CreateAndLogError("[MIFileManager setInstallType:inExtendedAttributeOnBundle:error:]", 2751, @"MIInstallerErrorDomain", 4, v11, 0, @"Couldn't set installType EA on %s: %s", v13, v12);
+    v14 = _CreateAndLogError("[MIFileManager setInstallType:inExtendedAttributeOnBundle:error:]", 2751, @"MIInstallerErrorDomain", 4, v11, 0, @"Couldn't set installType EA on %s: %s", v13, fileSystemRepresentation);
 
-    if (a5)
+    if (error)
     {
       v15 = v14;
-      *a5 = v14;
+      *error = v14;
     }
   }
 
@@ -4055,26 +4055,26 @@ LABEL_17:
   return v8 == 0;
 }
 
-- (id)installTypeFromExtendedAttributeOnBundle:(id)a3 error:(id *)a4
+- (id)installTypeFromExtendedAttributeOnBundle:(id)bundle error:(id *)error
 {
-  v5 = a3;
+  bundleCopy = bundle;
   value = 0;
-  v6 = getxattr([v5 fileSystemRepresentation], "com.apple.installd.installType", &value, 8uLL, 0, 1);
+  v6 = getxattr([bundleCopy fileSystemRepresentation], "com.apple.installd.installType", &value, 8uLL, 0, 1);
   if (v6 < 0)
   {
     v9 = *__error();
     if (v9 == 93)
     {
-      v10 = [v5 path];
-      v8 = _CreateAndLogError("[MIFileManager installTypeFromExtendedAttributeOnBundle:error:]", 2768, @"MIInstallerErrorDomain", 158, 0, 0, @"Install type extended attribute not found on %@", v11, v10);
+      path = [bundleCopy path];
+      v8 = _CreateAndLogError("[MIFileManager installTypeFromExtendedAttributeOnBundle:error:]", 2768, @"MIInstallerErrorDomain", 158, 0, 0, @"Install type extended attribute not found on %@", v11, path);
     }
 
     else
     {
       v14 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:v9 userInfo:0];
-      v15 = [v5 fileSystemRepresentation];
+      fileSystemRepresentation = [bundleCopy fileSystemRepresentation];
       strerror(v9);
-      v8 = _CreateAndLogError("[MIFileManager installTypeFromExtendedAttributeOnBundle:error:]", 2770, @"MIInstallerErrorDomain", 4, v14, 0, @"Couldn't get installType EA from %s: %s", v16, v15);
+      v8 = _CreateAndLogError("[MIFileManager installTypeFromExtendedAttributeOnBundle:error:]", 2770, @"MIInstallerErrorDomain", 4, v14, 0, @"Couldn't get installType EA from %s: %s", v16, fileSystemRepresentation);
     }
   }
 
@@ -4084,7 +4084,7 @@ LABEL_17:
     {
       v7 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:value];
       v8 = 0;
-      if (!a4)
+      if (!error)
       {
         goto LABEL_12;
       }
@@ -4092,12 +4092,12 @@ LABEL_17:
       goto LABEL_10;
     }
 
-    v12 = [v5 fileSystemRepresentation];
-    v8 = _CreateAndLogError("[MIFileManager installTypeFromExtendedAttributeOnBundle:error:]", 2776, @"MIInstallerErrorDomain", 4, 0, 0, @"getxattr for installType EA on %s returned %zd (expected %zu)", v13, v12);
+    fileSystemRepresentation2 = [bundleCopy fileSystemRepresentation];
+    v8 = _CreateAndLogError("[MIFileManager installTypeFromExtendedAttributeOnBundle:error:]", 2776, @"MIInstallerErrorDomain", 4, 0, 0, @"getxattr for installType EA on %s returned %zd (expected %zu)", v13, fileSystemRepresentation2);
   }
 
   v7 = 0;
-  if (!a4)
+  if (!error)
   {
     goto LABEL_12;
   }
@@ -4106,7 +4106,7 @@ LABEL_10:
   if (!v7)
   {
     v17 = v8;
-    *a4 = v8;
+    *error = v8;
   }
 
 LABEL_12:
@@ -4114,21 +4114,21 @@ LABEL_12:
   return v7;
 }
 
-- (BOOL)_setData:(id)a3 forExtendedAttributeNamed:(id)a4 onURL:(id)a5 orFD:(int)a6 error:(id *)a7
+- (BOOL)_setData:(id)data forExtendedAttributeNamed:(id)named onURL:(id)l orFD:(int)d error:(id *)error
 {
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
-  v15 = [a5 fileSystemRepresentation];
-  v16 = [v13 UTF8String];
+  lCopy = l;
+  namedCopy = named;
+  dataCopy = data;
+  fileSystemRepresentation = [l fileSystemRepresentation];
+  uTF8String = [namedCopy UTF8String];
 
-  v17 = [v14 bytes];
-  v18 = [v14 length];
+  bytes = [dataCopy bytes];
+  v18 = [dataCopy length];
 
-  if (!v14)
+  if (!dataCopy)
   {
-    v25 = _CreateAndLogError("[MIFileManager _setData:forExtendedAttributeNamed:onURL:orFD:error:]", 2798, @"MIInstallerErrorDomain", 4, 0, 0, @"Attempted to set nil data on %s for EA named %s", v19, v15);
-    if (a7)
+    v25 = _CreateAndLogError("[MIFileManager _setData:forExtendedAttributeNamed:onURL:orFD:error:]", 2798, @"MIInstallerErrorDomain", 4, 0, 0, @"Attempted to set nil data on %s for EA named %s", v19, fileSystemRepresentation);
+    if (error)
     {
       goto LABEL_5;
     }
@@ -4138,9 +4138,9 @@ LABEL_7:
     goto LABEL_10;
   }
 
-  if ((a6 & 0x80000000) == 0)
+  if ((d & 0x80000000) == 0)
   {
-    if (fsetxattr(a6, v16, v17, v18, 0, 0))
+    if (fsetxattr(d, uTF8String, bytes, v18, 0, 0))
     {
       goto LABEL_4;
     }
@@ -4151,7 +4151,7 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (!setxattr(v15, v16, v17, v18, 0, 1))
+  if (!setxattr(fileSystemRepresentation, uTF8String, bytes, v18, 0, 1))
   {
     goto LABEL_9;
   }
@@ -4159,11 +4159,11 @@ LABEL_9:
 LABEL_4:
   v20 = __error();
   v21 = *v20;
-  v23 = _CreateError("[MIFileManager _setData:forExtendedAttributeNamed:onURL:orFD:error:]", 2811, *MEMORY[0x1E696A798], *v20, 0, 0, @"[f]setxattr failed for path %s fd %d", v22, v15);
+  v23 = _CreateError("[MIFileManager _setData:forExtendedAttributeNamed:onURL:orFD:error:]", 2811, *MEMORY[0x1E696A798], *v20, 0, 0, @"[f]setxattr failed for path %s fd %d", v22, fileSystemRepresentation);
   strerror(v21);
-  v25 = _CreateAndLogError("[MIFileManager _setData:forExtendedAttributeNamed:onURL:orFD:error:]", 2811, @"MIInstallerErrorDomain", 4, v23, 0, @"Failed to set EA named %s on %s: %s", v24, v16);
+  v25 = _CreateAndLogError("[MIFileManager _setData:forExtendedAttributeNamed:onURL:orFD:error:]", 2811, @"MIInstallerErrorDomain", 4, v23, 0, @"Failed to set EA named %s on %s: %s", v24, uTF8String);
 
-  if (!a7)
+  if (!error)
   {
     goto LABEL_7;
   }
@@ -4171,31 +4171,31 @@ LABEL_4:
 LABEL_5:
   v26 = v25;
   v27 = 0;
-  *a7 = v25;
+  *error = v25;
 LABEL_10:
 
   return v27;
 }
 
-- (id)_dataForExtendedAttributeNamed:(id)a3 length:(int64_t)a4 onURL:(id)a5 orFD:(int)a6 error:(id *)a7
+- (id)_dataForExtendedAttributeNamed:(id)named length:(int64_t)length onURL:(id)l orFD:(int)d error:(id *)error
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = [a3 fileSystemRepresentation];
-  v15 = [v13 fileSystemRepresentation];
+  namedCopy = named;
+  lCopy = l;
+  fileSystemRepresentation = [named fileSystemRepresentation];
+  fileSystemRepresentation2 = [lCopy fileSystemRepresentation];
 
-  if (a4 < 0 && (a6 < 0 ? (v16 = getxattr(v15, v14, 0, 0, 0, 1)) : (v16 = fgetxattr(a6, v14, 0, 0, 0, 0)), a4 = v16, v16 < 0))
+  if (length < 0 && (d < 0 ? (v16 = getxattr(fileSystemRepresentation2, fileSystemRepresentation, 0, 0, 0, 1)) : (v16 = fgetxattr(d, fileSystemRepresentation, 0, 0, 0, 0)), length = v16, v16 < 0))
   {
     v28 = *__error();
     if (v28 == 93)
     {
-      v22 = _CreateError("[MIFileManager _dataForExtendedAttributeNamed:length:onURL:orFD:error:]", 2857, *MEMORY[0x1E696A798], 93, 0, 0, @"xattr named %s not present on %s", v29, v14);
+      v22 = _CreateError("[MIFileManager _dataForExtendedAttributeNamed:length:onURL:orFD:error:]", 2857, *MEMORY[0x1E696A798], 93, 0, 0, @"xattr named %s not present on %s", v29, fileSystemRepresentation);
     }
 
     else
     {
-      v30 = _CreateError("[MIFileManager _dataForExtendedAttributeNamed:length:onURL:orFD:error:]", 2860, *MEMORY[0x1E696A798], v28, 0, 0, @"[f]getxattr failed to get length for xattr named %s path %s fd %d", v29, v14);
-      v22 = _CreateAndLogError("[MIFileManager _dataForExtendedAttributeNamed:length:onURL:orFD:error:]", 2860, @"MIInstallerErrorDomain", 4, v30, 0, @"Couldn't get length for xattr named %s on %s", v31, v14);
+      v30 = _CreateError("[MIFileManager _dataForExtendedAttributeNamed:length:onURL:orFD:error:]", 2860, *MEMORY[0x1E696A798], v28, 0, 0, @"[f]getxattr failed to get length for xattr named %s path %s fd %d", v29, fileSystemRepresentation);
+      v22 = _CreateAndLogError("[MIFileManager _dataForExtendedAttributeNamed:length:onURL:orFD:error:]", 2860, @"MIInstallerErrorDomain", 4, v30, 0, @"Couldn't get length for xattr named %s on %s", v31, fileSystemRepresentation);
     }
 
     v17 = 0;
@@ -4203,11 +4203,11 @@ LABEL_10:
 
   else
   {
-    v17 = [MEMORY[0x1E695DF88] dataWithLength:a4];
-    v18 = [v17 mutableBytes];
-    if (a6 < 0)
+    v17 = [MEMORY[0x1E695DF88] dataWithLength:length];
+    mutableBytes = [v17 mutableBytes];
+    if (d < 0)
     {
-      v19 = getxattr(v15, v14, v18, a4, 0, 1);
+      v19 = getxattr(fileSystemRepresentation2, fileSystemRepresentation, mutableBytes, length, 0, 1);
       if ((v19 & 0x8000000000000000) == 0)
       {
         goto LABEL_8;
@@ -4216,15 +4216,15 @@ LABEL_10:
 
     else
     {
-      v19 = fgetxattr(a6, v14, v18, a4, 0, 0);
+      v19 = fgetxattr(d, fileSystemRepresentation, mutableBytes, length, 0, 0);
       if ((v19 & 0x8000000000000000) == 0)
       {
 LABEL_8:
-        if (v19 == a4)
+        if (v19 == length)
         {
           v21 = [v17 copy];
           v22 = 0;
-          if (!a7)
+          if (!error)
           {
             goto LABEL_24;
           }
@@ -4232,7 +4232,7 @@ LABEL_8:
           goto LABEL_22;
         }
 
-        v25 = _CreateAndLogError("[MIFileManager _dataForExtendedAttributeNamed:length:onURL:orFD:error:]", 2893, @"MIInstallerErrorDomain", 4, 0, 0, @"getxattr for xattr named %s on %s returned %zd (expected %zu)", v20, v14);
+        v25 = _CreateAndLogError("[MIFileManager _dataForExtendedAttributeNamed:length:onURL:orFD:error:]", 2893, @"MIInstallerErrorDomain", 4, 0, 0, @"getxattr for xattr named %s on %s returned %zd (expected %zu)", v20, fileSystemRepresentation);
         goto LABEL_15;
       }
     }
@@ -4240,19 +4240,19 @@ LABEL_8:
     v23 = *__error();
     if (v23 == 93)
     {
-      v25 = _CreateError("[MIFileManager _dataForExtendedAttributeNamed:length:onURL:orFD:error:]", 2886, *MEMORY[0x1E696A798], 93, 0, 0, @"xattr named %s not present on %s", v24, v14);
+      v25 = _CreateError("[MIFileManager _dataForExtendedAttributeNamed:length:onURL:orFD:error:]", 2886, *MEMORY[0x1E696A798], 93, 0, 0, @"xattr named %s not present on %s", v24, fileSystemRepresentation);
 LABEL_15:
       v22 = v25;
       goto LABEL_21;
     }
 
-    v26 = _CreateError("[MIFileManager _dataForExtendedAttributeNamed:length:onURL:orFD:error:]", 2889, *MEMORY[0x1E696A798], v23, 0, 0, @"[f]getxattr failed for xattr named %s path %s fd %d", v24, v14);
-    v22 = _CreateAndLogError("[MIFileManager _dataForExtendedAttributeNamed:length:onURL:orFD:error:]", 2889, @"MIInstallerErrorDomain", 4, v26, 0, @"Couldn't get data from xattr named %s on %s", v27, v14);
+    v26 = _CreateError("[MIFileManager _dataForExtendedAttributeNamed:length:onURL:orFD:error:]", 2889, *MEMORY[0x1E696A798], v23, 0, 0, @"[f]getxattr failed for xattr named %s path %s fd %d", v24, fileSystemRepresentation);
+    v22 = _CreateAndLogError("[MIFileManager _dataForExtendedAttributeNamed:length:onURL:orFD:error:]", 2889, @"MIInstallerErrorDomain", 4, v26, 0, @"Couldn't get data from xattr named %s on %s", v27, fileSystemRepresentation);
   }
 
 LABEL_21:
   v21 = 0;
-  if (!a7)
+  if (!error)
   {
     goto LABEL_24;
   }
@@ -4261,7 +4261,7 @@ LABEL_22:
   if (!v21)
   {
     v32 = v22;
-    *a7 = v22;
+    *error = v22;
   }
 
 LABEL_24:
@@ -4269,11 +4269,11 @@ LABEL_24:
   return v21;
 }
 
-- (BOOL)removeExtendedAttributeNamed:(id)a3 fromURL:(id)a4 error:(id *)a5
+- (BOOL)removeExtendedAttributeNamed:(id)named fromURL:(id)l error:(id *)error
 {
-  v7 = a3;
+  namedCopy = named;
   v8 = 1;
-  if (removexattr([a4 fileSystemRepresentation], objc_msgSend(v7, "fileSystemRepresentation"), 1))
+  if (removexattr([l fileSystemRepresentation], objc_msgSend(namedCopy, "fileSystemRepresentation"), 1))
   {
     v9 = __error();
     v10 = *v9;
@@ -4287,12 +4287,12 @@ LABEL_24:
     {
       v12 = *MEMORY[0x1E696A798];
       strerror(*v9);
-      v11 = _CreateError("[MIFileManager removeExtendedAttributeNamed:fromURL:error:]", 2924, v12, v10, 0, 0, @"Failed to remove extended attribute named %@ from %s: %s", v13, v7);
-      if (a5)
+      v11 = _CreateError("[MIFileManager removeExtendedAttributeNamed:fromURL:error:]", 2924, v12, v10, 0, 0, @"Failed to remove extended attribute named %@ from %s: %s", v13, namedCopy);
+      if (error)
       {
         v11 = v11;
         v8 = 0;
-        *a5 = v11;
+        *error = v11;
       }
 
       else
@@ -4310,15 +4310,15 @@ LABEL_24:
   return v8;
 }
 
-- (unint64_t)diskUsageForURL:(id)a3
+- (unint64_t)diskUsageForURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
   v19 = 0;
   v4 = [MEMORY[0x1E696AC70] hashTableWithOptions:256];
-  v5 = [v3 fileSystemRepresentation];
+  fileSystemRepresentation = [lCopy fileSystemRepresentation];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __33__MIFileManager_diskUsageForURL___block_invoke;
@@ -4327,11 +4327,11 @@ LABEL_24:
   v15 = 0;
   v6 = v4;
   v13 = v6;
-  v7 = TraverseDirectory(v5, 2, 0x1C0u, &v15, v12);
+  v7 = TraverseDirectory(fileSystemRepresentation, 2, 0x1C0u, &v15, v12);
   v8 = v15;
   if ((v7 & 1) == 0 && (!gLogHandle || *(gLogHandle + 44) >= 3))
   {
-    v11 = [v3 path];
+    path = [lCopy path];
     MOLogWrite();
   }
 
@@ -4372,20 +4372,20 @@ uint64_t __33__MIFileManager_diskUsageForURL___block_invoke(uint64_t a1, uint64_
   return 1;
 }
 
-- (BOOL)setModificationDateToNowForURL:(id)a3 error:(id *)a4
+- (BOOL)setModificationDateToNowForURL:(id)l error:(id *)error
 {
-  v5 = a3;
-  v6 = open([v5 fileSystemRepresentation], 256);
+  lCopy = l;
+  v6 = open([lCopy fileSystemRepresentation], 256);
   if (v6 < 0)
   {
     v15 = *__error();
     v16 = *MEMORY[0x1E696A798];
-    v17 = [v5 path];
+    path = [lCopy path];
     strerror(v15);
-    v14 = _CreateError("[MIFileManager setModificationDateToNowForURL:error:]", 3183, v16, v15, 0, 0, @"open() failed for %@: %s", v18, v17);
+    v14 = _CreateError("[MIFileManager setModificationDateToNowForURL:error:]", 3183, v16, v15, 0, 0, @"open() failed for %@: %s", v18, path);
 
     v9 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_10;
     }
@@ -4400,9 +4400,9 @@ uint64_t __33__MIFileManager_diskUsageForURL___block_invoke(uint64_t a1, uint64_
   {
     v10 = *__error();
     v11 = *MEMORY[0x1E696A798];
-    v12 = [v5 path];
+    path2 = [lCopy path];
     strerror(v10);
-    v14 = _CreateError("[MIFileManager setModificationDateToNowForURL:error:]", 3189, v11, v10, 0, 0, @"futimes() failed for %@: %s", v13, v12);
+    v14 = _CreateError("[MIFileManager setModificationDateToNowForURL:error:]", 3189, v11, v10, 0, 0, @"futimes() failed for %@: %s", v13, path2);
   }
 
   else
@@ -4411,13 +4411,13 @@ uint64_t __33__MIFileManager_diskUsageForURL___block_invoke(uint64_t a1, uint64_
   }
 
   close(v7);
-  if (a4)
+  if (error)
   {
 LABEL_8:
     if (!v9)
     {
       v19 = v14;
-      *a4 = v14;
+      *error = v14;
     }
   }
 
@@ -4426,46 +4426,46 @@ LABEL_10:
   return v9;
 }
 
-- (id)modificationDateForURL:(id)a3 error:(id *)a4
+- (id)modificationDateForURL:(id)l error:(id *)error
 {
-  v5 = a3;
+  lCopy = l;
   memset(&v11, 0, sizeof(v11));
-  if (lstat([v5 fileSystemRepresentation], &v11))
+  if (lstat([lCopy fileSystemRepresentation], &v11))
   {
-    if (a4)
+    if (error)
     {
       v6 = *__error();
       v7 = *MEMORY[0x1E696A798];
-      v8 = [v5 path];
+      path = [lCopy path];
       strerror(v6);
-      *a4 = _CreateError("[MIFileManager modificationDateForURL:error:]", 3214, v7, v6, 0, 0, @"lstat() failed for %@: %s", v9, v8);
+      *error = _CreateError("[MIFileManager modificationDateForURL:error:]", 3214, v7, v6, 0, 0, @"lstat() failed for %@: %s", v9, path);
 
-      a4 = 0;
+      error = 0;
     }
   }
 
   else
   {
-    a4 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSince1970:v11.st_mtimespec.tv_nsec / 1000000000.0 + v11.st_mtimespec.tv_sec];
+    error = [MEMORY[0x1E695DF00] dateWithTimeIntervalSince1970:v11.st_mtimespec.tv_nsec / 1000000000.0 + v11.st_mtimespec.tv_sec];
   }
 
-  return a4;
+  return error;
 }
 
-- (id)debugDescriptionForItemAtURL:(id)a3
+- (id)debugDescriptionForItemAtURL:(id)l
 {
   v50 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  lCopy = l;
   v5 = objc_alloc(MEMORY[0x1E696AD60]);
-  v6 = [v4 path];
-  v7 = [v5 initWithFormat:@"Extra info about %@: ", v6];
+  path = [lCopy path];
+  v7 = [v5 initWithFormat:@"Extra info about %@: ", path];
 
   memset(&v48, 0, sizeof(v48));
-  if (lstat([v4 fileSystemRepresentation], &v48))
+  if (lstat([lCopy fileSystemRepresentation], &v48))
   {
     v8 = *__error();
-    v9 = [v4 path];
-    [v7 appendFormat:@"Couldn't stat %@: %s", v9, strerror(v8)];
+    path2 = [lCopy path];
+    [v7 appendFormat:@"Couldn't stat %@: %s", path2, strerror(v8)];
 
     v10 = [v7 copy];
     goto LABEL_50;
@@ -4475,7 +4475,7 @@ LABEL_10:
   if ((v48.st_mode & 0xF000) == 0x8000)
   {
     v47 = 0;
-    v11 = [(MIFileManager *)self upToFirstFourBytesFromURL:v4 error:&v47];
+    v11 = [(MIFileManager *)self upToFirstFourBytesFromURL:lCopy error:&v47];
     v12 = v47;
     if (v11)
     {
@@ -4486,7 +4486,7 @@ LABEL_10:
     {
       if (!gLogHandle || *(gLogHandle + 44) >= 3)
       {
-        v32 = [v4 path];
+        path3 = [lCopy path];
         v36 = v12;
         MOLogWrite();
       }
@@ -4501,7 +4501,7 @@ LABEL_10:
   }
 
   v46 = v12;
-  v13 = [(MIFileManager *)self aclTextFromURL:v4 error:&v46, v32, v36];
+  v13 = [(MIFileManager *)self aclTextFromURL:lCopy error:&v46, path3, v36];
   v14 = v46;
 
   if (v13)
@@ -4510,16 +4510,16 @@ LABEL_10:
     goto LABEL_22;
   }
 
-  v15 = [v14 domain];
-  if (![v15 isEqualToString:*MEMORY[0x1E696A798]])
+  domain = [v14 domain];
+  if (![domain isEqualToString:*MEMORY[0x1E696A798]])
   {
 
     goto LABEL_18;
   }
 
-  v16 = [v14 code];
+  code = [v14 code];
 
-  if (v16 != 2)
+  if (code != 2)
   {
 LABEL_18:
     if (!gLogHandle || *(gLogHandle + 44) >= 3)
@@ -4537,17 +4537,17 @@ LABEL_21:
   v14 = 0;
 LABEL_22:
   v45 = v14;
-  v17 = [(MIFileManager *)self extendedAttributesFromURL:v4 error:&v45, v33];
+  v17 = [(MIFileManager *)self extendedAttributesFromURL:lCopy error:&v45, v33];
   v18 = v45;
 
   if (!v17)
   {
-    v19 = [v18 domain];
-    if ([v19 isEqualToString:@"MIInstallerErrorDomain"])
+    domain2 = [v18 domain];
+    if ([domain2 isEqualToString:@"MIInstallerErrorDomain"])
     {
-      v20 = [v18 code];
+      code2 = [v18 code];
 
-      if (v20 == 140)
+      if (code2 == 140)
       {
         [v7 appendString:@"extendedAttributes=<not found> "];
 LABEL_31:
@@ -4572,13 +4572,13 @@ LABEL_31:
 
   [v7 appendFormat:@"extendedAttributes=%@ ", v17];
 LABEL_32:
-  v21 = [v4 pathExtension];
-  v22 = [v21 isEqualToString:@"plist"];
+  pathExtension = [lCopy pathExtension];
+  v22 = [pathExtension isEqualToString:@"plist"];
 
   if (v22)
   {
     v44 = v18;
-    v23 = [MEMORY[0x1E695DF20] MI_dictionaryWithContentsOfURL:v4 options:0 error:&v44];
+    v23 = [MEMORY[0x1E695DF20] MI_dictionaryWithContentsOfURL:lCopy options:0 error:&v44];
     v24 = v44;
 
     if (v23)
@@ -4640,7 +4640,7 @@ LABEL_37:
     {
       if (!gLogHandle || *(gLogHandle + 44) >= 3)
       {
-        v35 = [v4 path];
+        path4 = [lCopy path];
         v37 = v24;
         MOLogWrite();
       }
@@ -4658,21 +4658,21 @@ LABEL_50:
   return v10;
 }
 
-- (void)logAccessPermissionsForURL:(id)a3
+- (void)logAccessPermissionsForURL:(id)l
 {
   v38 = *MEMORY[0x1E69E9840];
-  v3 = [a3 MI_allAccessURLs];
+  mI_allAccessURLs = [l MI_allAccessURLs];
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v33 objects:v37 count:16];
+  v4 = [mI_allAccessURLs countByEnumeratingWithState:&v33 objects:v37 count:16];
   if (v4)
   {
     v5 = v4;
     v6 = *v34;
     v28 = *MEMORY[0x1E696A798];
-    v29 = v3;
+    v29 = mI_allAccessURLs;
     do
     {
       v7 = 0;
@@ -4680,7 +4680,7 @@ LABEL_50:
       {
         if (*v34 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(mI_allAccessURLs);
         }
 
         v8 = *(*(&v33 + 1) + 8 * v7);
@@ -4690,7 +4690,7 @@ LABEL_50:
           v31 = 0;
           v11 = [(MIFileManager *)self aclTextFromURL:v8 error:&v31];
           v12 = v31;
-          v10 = v12;
+          path3 = v12;
           if (v11)
           {
             if (!gLogHandle || *(gLogHandle + 44) >= 5)
@@ -4698,12 +4698,12 @@ LABEL_50:
               st_mode = v32.st_mode;
               st_uid = v32.st_uid;
               st_gid = v32.st_gid;
-              v16 = [v8 path];
-              v26 = v16;
+              path = [v8 path];
+              v26 = path;
               v27 = v11;
               v24 = st_gid;
               v25 = st_mode;
-              v23 = st_uid;
+              path2 = st_uid;
               MOLogWrite();
               goto LABEL_24;
             }
@@ -4711,12 +4711,12 @@ LABEL_50:
             goto LABEL_25;
           }
 
-          v17 = [v12 domain];
-          if ([v17 isEqualToString:v28])
+          domain = [v12 domain];
+          if ([domain isEqualToString:v28])
           {
-            v18 = [v10 code];
+            code = [path3 code];
 
-            if (v18 == 2)
+            if (code == 2)
             {
               goto LABEL_21;
             }
@@ -4728,8 +4728,8 @@ LABEL_50:
 
           if (!gLogHandle || *(gLogHandle + 44) >= 3)
           {
-            v23 = [v8 path];
-            v24 = v10;
+            path2 = [v8 path];
+            v24 = path3;
             MOLogWrite();
           }
 
@@ -4737,7 +4737,7 @@ LABEL_21:
 
           if (gLogHandle && *(gLogHandle + 44) < 5)
           {
-            v10 = 0;
+            path3 = 0;
           }
 
           else
@@ -4745,16 +4745,16 @@ LABEL_21:
             v19 = v32.st_mode;
             v20 = v32.st_uid;
             v21 = v32.st_gid;
-            v16 = [v8 path];
+            path = [v8 path];
             v25 = v19;
-            v26 = v16;
-            v23 = v20;
+            v26 = path;
+            path2 = v20;
             v24 = v21;
             MOLogWrite();
-            v10 = 0;
+            path3 = 0;
 LABEL_24:
 
-            v3 = v29;
+            mI_allAccessURLs = v29;
           }
 
 LABEL_25:
@@ -4765,8 +4765,8 @@ LABEL_25:
         v9 = *__error();
         if (!gLogHandle || *(gLogHandle + 44) >= 3)
         {
-          v10 = [v8 path];
-          v23 = v10;
+          path3 = [v8 path];
+          path2 = path3;
           v24 = strerror(v9);
           MOLogWrite();
 LABEL_26:
@@ -4776,7 +4776,7 @@ LABEL_26:
       }
 
       while (v5 != v7);
-      v22 = [v3 countByEnumeratingWithState:&v33 objects:v37 count:16];
+      v22 = [mI_allAccessURLs countByEnumeratingWithState:&v33 objects:v37 count:16];
       v5 = v22;
     }
 
@@ -4784,24 +4784,24 @@ LABEL_26:
   }
 }
 
-+ (id)_sanitizeFilePathForVarOrTmpSymlink:(id)a3 error:(id *)a4
++ (id)_sanitizeFilePathForVarOrTmpSymlink:(id)symlink error:(id *)error
 {
-  v5 = a3;
-  if ([v5 hasPrefix:@"/var"])
+  symlinkCopy = symlink;
+  if ([symlinkCopy hasPrefix:@"/var"])
   {
     v6 = [MEMORY[0x1E695DFF8] fileURLWithPath:@"/var/" isDirectory:1];
-    v7 = [objc_opt_class() defaultManager];
+    defaultManager = [objc_opt_class() defaultManager];
     v22 = 0;
-    v8 = [v7 realPathForURL:v6 allowNonExistentPathComponents:0 isDirectory:1 error:&v22];
+    v8 = [defaultManager realPathForURL:v6 allowNonExistentPathComponents:0 isDirectory:1 error:&v22];
     v9 = v22;
 
     if (v8)
     {
-      v11 = [v8 path];
+      path = [v8 path];
       v12 = @"/var";
 LABEL_7:
-      v14 = [v5 substringFromIndex:{-[__CFString length](v12, "length")}];
-      v15 = [v11 stringByAppendingString:v14];
+      v14 = [symlinkCopy substringFromIndex:{-[__CFString length](v12, "length")}];
+      v15 = [path stringByAppendingString:v14];
 
       v16 = 0;
       goto LABEL_13;
@@ -4813,11 +4813,11 @@ LABEL_7:
 
   else
   {
-    if (![v5 hasPrefix:@"/tmp"])
+    if (![symlinkCopy hasPrefix:@"/tmp"])
     {
-      v15 = v5;
+      v15 = symlinkCopy;
       v16 = 0;
-      if (!a4)
+      if (!error)
       {
         goto LABEL_16;
       }
@@ -4826,14 +4826,14 @@ LABEL_7:
     }
 
     v6 = [MEMORY[0x1E695DFF8] fileURLWithPath:@"/tmp/" isDirectory:1];
-    v13 = [objc_opt_class() defaultManager];
+    defaultManager2 = [objc_opt_class() defaultManager];
     v21 = 0;
-    v8 = [v13 realPathForURL:v6 allowNonExistentPathComponents:0 isDirectory:1 error:&v21];
+    v8 = [defaultManager2 realPathForURL:v6 allowNonExistentPathComponents:0 isDirectory:1 error:&v21];
     v9 = v21;
 
     if (v8)
     {
-      v11 = [v8 path];
+      path = [v8 path];
       v12 = @"/tmp";
       goto LABEL_7;
     }
@@ -4846,7 +4846,7 @@ LABEL_7:
   v15 = 0;
 LABEL_13:
 
-  if (!a4)
+  if (!error)
   {
     goto LABEL_16;
   }
@@ -4855,7 +4855,7 @@ LABEL_14:
   if (!v15)
   {
     v19 = v16;
-    *a4 = v16;
+    *error = v16;
   }
 
 LABEL_16:
@@ -4863,25 +4863,25 @@ LABEL_16:
   return v15;
 }
 
-- (BOOL)secureRenameFromSourceURL:(id)a3 toDestinationURL:(id)a4 destinationStatus:(unsigned __int8)a5 error:(id *)a6
+- (BOOL)secureRenameFromSourceURL:(id)l toDestinationURL:(id)rL destinationStatus:(unsigned __int8)status error:(id *)error
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  v62 = v10;
-  v12 = [v10 URLByDeletingLastPathComponent];
-  v61 = v11;
-  v13 = [v11 URLByDeletingLastPathComponent];
+  statusCopy = status;
+  lCopy = l;
+  rLCopy = rL;
+  v62 = lCopy;
+  uRLByDeletingLastPathComponent = [lCopy URLByDeletingLastPathComponent];
+  v61 = rLCopy;
+  uRLByDeletingLastPathComponent2 = [rLCopy URLByDeletingLastPathComponent];
   v14 = objc_opt_class();
-  v15 = [v12 path];
+  path = [uRLByDeletingLastPathComponent path];
   v65 = 0;
-  v16 = [v14 _sanitizeFilePathForVarOrTmpSymlink:v15 error:&v65];
+  v16 = [v14 _sanitizeFilePathForVarOrTmpSymlink:path error:&v65];
   v17 = v65;
 
   if (!v16)
   {
-    v21 = [v12 path];
-    v29 = _CreateAndLogError("[MIFileManager secureRenameFromSourceURL:toDestinationURL:destinationStatus:error:]", 3392, @"MIInstallerErrorDomain", 4, v17, 0, @"Failed to sanitize source file path %@", v28, v21);
+    path2 = [uRLByDeletingLastPathComponent path];
+    path4 = _CreateAndLogError("[MIFileManager secureRenameFromSourceURL:toDestinationURL:destinationStatus:error:]", 3392, @"MIInstallerErrorDomain", 4, v17, 0, @"Failed to sanitize source file path %@", v28, path2);
     v30 = 0;
     v22 = v17;
 LABEL_10:
@@ -4889,44 +4889,44 @@ LABEL_10:
     goto LABEL_30;
   }
 
-  v60 = a6;
-  v18 = [v16 fileSystemRepresentation];
+  errorCopy = error;
+  fileSystemRepresentation = [v16 fileSystemRepresentation];
   v19 = objc_opt_class();
-  v20 = [v13 path];
+  path3 = [uRLByDeletingLastPathComponent2 path];
   v64 = v17;
-  v21 = [v19 _sanitizeFilePathForVarOrTmpSymlink:v20 error:&v64];
+  path2 = [v19 _sanitizeFilePathForVarOrTmpSymlink:path3 error:&v64];
   v22 = v64;
 
-  if (!v21)
+  if (!path2)
   {
-    v21 = [v13 path];
-    v29 = _CreateAndLogError("[MIFileManager secureRenameFromSourceURL:toDestinationURL:destinationStatus:error:]", 3399, @"MIInstallerErrorDomain", 4, v22, 0, @"Failed to sanitize destination file path %@", v31, v21);
+    path2 = [uRLByDeletingLastPathComponent2 path];
+    path4 = _CreateAndLogError("[MIFileManager secureRenameFromSourceURL:toDestinationURL:destinationStatus:error:]", 3399, @"MIInstallerErrorDomain", 4, v22, 0, @"Failed to sanitize destination file path %@", v31, path2);
     v30 = 0;
-    a6 = v60;
+    error = errorCopy;
     goto LABEL_10;
   }
 
   v58 = v22;
-  v59 = v13;
-  v23 = [v21 fileSystemRepresentation];
-  v24 = open(v18, 537919488);
+  v59 = uRLByDeletingLastPathComponent2;
+  fileSystemRepresentation2 = [path2 fileSystemRepresentation];
+  v24 = open(fileSystemRepresentation, 537919488);
   if ((v24 & 0x80000000) != 0)
   {
     v33 = *__error();
     v34 = *MEMORY[0x1E696A798];
     v35 = v33;
     strerror(v33);
-    v29 = _CreateError("[MIFileManager secureRenameFromSourceURL:toDestinationURL:destinationStatus:error:]", 3407, v34, v35, 0, 0, @"Failed to open file %s : %s", v36, v18);
+    path4 = _CreateError("[MIFileManager secureRenameFromSourceURL:toDestinationURL:destinationStatus:error:]", 3407, v34, v35, 0, 0, @"Failed to open file %s : %s", v36, fileSystemRepresentation);
   }
 
   else
   {
     v25 = v24;
-    v26 = open(v23, 537919488);
+    v26 = open(fileSystemRepresentation2, 537919488);
     if ((v26 & 0x80000000) == 0)
     {
       v27 = v26;
-      if (v7 == 2)
+      if (statusCopy == 2)
       {
         v53 = 0;
         v57 = 4;
@@ -4934,7 +4934,7 @@ LABEL_10:
 
       else
       {
-        if (v7 != 1)
+        if (statusCopy != 1)
         {
           v41 = v61;
           v53 = [(MIFileManager *)self itemExistsAtURL:v61];
@@ -4950,42 +4950,42 @@ LABEL_10:
 
           v57 = v42;
 LABEL_20:
-          v43 = [v62 lastPathComponent];
-          v44 = [v43 fileSystemRepresentation];
-          v45 = [v41 lastPathComponent];
-          LODWORD(v44) = renameatx_np(v25, v44, v27, [v45 fileSystemRepresentation], v57);
-          v30 = v44 == 0;
+          lastPathComponent = [v62 lastPathComponent];
+          fileSystemRepresentation3 = [lastPathComponent fileSystemRepresentation];
+          lastPathComponent2 = [v41 lastPathComponent];
+          LODWORD(fileSystemRepresentation3) = renameatx_np(v25, fileSystemRepresentation3, v27, [lastPathComponent2 fileSystemRepresentation], v57);
+          v30 = fileSystemRepresentation3 == 0;
 
           v55 = v27;
           v56 = v25;
-          if (v44)
+          if (fileSystemRepresentation3)
           {
             v46 = *__error();
             v54 = *MEMORY[0x1E696A798];
-            v29 = [v62 path];
-            v47 = [v61 path];
+            path4 = [v62 path];
+            path5 = [v61 path];
             strerror(v46);
             v49 = _CreateError("[MIFileManager secureRenameFromSourceURL:toDestinationURL:destinationStatus:error:]", 3433, v54, v46, 0, 0, @"Failed to renameatx_np() for source fd %d path %@ to destination fd %d path %@ with flags 0x%x, Error: %s", v48, v25);
-            a6 = v60;
+            error = errorCopy;
           }
 
           else
           {
             if (!v53)
             {
-              v29 = 0;
-              a6 = v60;
+              path4 = 0;
+              error = errorCopy;
               goto LABEL_28;
             }
 
             v63 = 0;
             v32 = v62;
             v50 = [(MIFileManager *)self removeItemAtURL:v62 error:&v63];
-            v29 = v63;
-            a6 = v60;
+            path4 = v63;
+            error = errorCopy;
             if (v50)
             {
-              v13 = v59;
+              uRLByDeletingLastPathComponent2 = v59;
 LABEL_29:
               v22 = v58;
               close(v56);
@@ -4999,15 +4999,15 @@ LABEL_29:
               goto LABEL_23;
             }
 
-            v47 = [v62 path];
+            path5 = [v62 path];
             MOLogWrite();
             v49 = 0;
           }
 
 LABEL_23:
-          v29 = v49;
+          path4 = v49;
 LABEL_28:
-          v13 = v59;
+          uRLByDeletingLastPathComponent2 = v59;
           v32 = v62;
           goto LABEL_29;
         }
@@ -5024,20 +5024,20 @@ LABEL_28:
     v38 = *MEMORY[0x1E696A798];
     v39 = v37;
     strerror(v37);
-    v29 = _CreateError("[MIFileManager secureRenameFromSourceURL:toDestinationURL:destinationStatus:error:]", 3414, v38, v39, 0, 0, @"Failed to open file %s : %s", v40, v23);
+    path4 = _CreateError("[MIFileManager secureRenameFromSourceURL:toDestinationURL:destinationStatus:error:]", 3414, v38, v39, 0, 0, @"Failed to open file %s : %s", v40, fileSystemRepresentation2);
     close(v25);
   }
 
   v30 = 0;
-  v13 = v59;
-  a6 = v60;
+  uRLByDeletingLastPathComponent2 = v59;
+  error = errorCopy;
   v32 = v62;
 LABEL_30:
 
-  if (a6 && !v30)
+  if (error && !v30)
   {
-    v51 = v29;
-    *a6 = v29;
+    v51 = path4;
+    *error = path4;
   }
 
   return v30;

@@ -1,18 +1,18 @@
 @interface BatteryTrustedData
-- (BOOL)hasAuthPassed:(id)a3;
+- (BOOL)hasAuthPassed:(id)passed;
 - (BOOL)haveFrameworkToRun;
-- (BOOL)isTrustedAuthFeatureDisabled:(id)a3;
+- (BOOL)isTrustedAuthFeatureDisabled:(id)disabled;
 - (BOOL)startMatchingNotifications;
-- (BatteryTrustedData)initWithIdentifer:(id)a3;
-- (id)decodeNonce:(id)a3;
-- (id)getInitTimerValueForAlarm:(id)a3;
+- (BatteryTrustedData)initWithIdentifer:(id)identifer;
+- (id)decodeNonce:(id)nonce;
+- (id)getInitTimerValueForAlarm:(id)alarm;
 - (void)cancelAlarm;
-- (void)handleAppleBatteryAuthIORegData:(id)a3;
-- (void)handleDataFromService:(unsigned int)a3 messageType:(unsigned int)a4 messageArgument:(void *)a5;
-- (void)handleServiceAdded:(unsigned int)a3;
+- (void)handleAppleBatteryAuthIORegData:(id)data;
+- (void)handleDataFromService:(unsigned int)service messageType:(unsigned int)type messageArgument:(void *)argument;
+- (void)handleServiceAdded:(unsigned int)added;
 - (void)readOverrideTimeFromDefaults;
-- (void)sendToPPS:(id)a3;
-- (void)setAlarmInSeconds:(id)a3;
+- (void)sendToPPS:(id)s;
+- (void)setAlarmInSeconds:(id)seconds;
 - (void)start;
 - (void)stop;
 - (void)triggerBatteryReauthentication;
@@ -20,9 +20,9 @@
 
 @implementation BatteryTrustedData
 
-- (BatteryTrustedData)initWithIdentifer:(id)a3
+- (BatteryTrustedData)initWithIdentifer:(id)identifer
 {
-  v4 = a3;
+  identiferCopy = identifer;
   v21.receiver = self;
   v21.super_class = BatteryTrustedData;
   v5 = [(BatteryTrustedData *)&v21 init];
@@ -37,7 +37,7 @@
     goto LABEL_9;
   }
 
-  if (!v4)
+  if (!identiferCopy)
   {
     if (os_log_type_enabled(qword_1000ACA68, OS_LOG_TYPE_ERROR))
     {
@@ -58,12 +58,12 @@ LABEL_9:
   v6->_authLastPassedTime = 0.0;
   v6->_authTriggeredTime = 0.0;
   v8 = +[NSCharacterSet whitespaceAndNewlineCharacterSet];
-  v9 = [v4 stringByTrimmingCharactersInSet:v8];
+  v9 = [identiferCopy stringByTrimmingCharactersInSet:v8];
 
   v10 = [NSString stringWithFormat:@"%@.battery%@", @"com.apple.powerd.batterytrusteddata.dailytaskQueue", v9];
-  v11 = [v10 UTF8String];
+  uTF8String = [v10 UTF8String];
   v12 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-  v13 = dispatch_queue_create(v11, v12);
+  v13 = dispatch_queue_create(uTF8String, v12);
   queue = v6->_queue;
   v6->_queue = v13;
 
@@ -98,8 +98,8 @@ LABEL_14:
 
 - (void)readOverrideTimeFromDefaults
 {
-  v3 = [(BatteryTrustedData *)self defaults];
-  v4 = [v3 objectForKey:@"OverrideTimeSeconds"];
+  defaults = [(BatteryTrustedData *)self defaults];
+  v4 = [defaults objectForKey:@"OverrideTimeSeconds"];
 
   v5 = qword_1000ACA68;
   v6 = os_log_type_enabled(qword_1000ACA68, OS_LOG_TYPE_DEFAULT);
@@ -122,18 +122,18 @@ LABEL_14:
   }
 }
 
-- (id)getInitTimerValueForAlarm:(id)a3
+- (id)getInitTimerValueForAlarm:(id)alarm
 {
-  v4 = a3;
+  alarmCopy = alarm;
   v5 = self->_defaultTimer;
-  if (!v4)
+  if (!alarmCopy)
   {
 LABEL_12:
     v18 = v5;
     goto LABEL_22;
   }
 
-  if (([v4 BOOLValue] & 1) == 0)
+  if (([alarmCopy BOOLValue] & 1) == 0)
   {
     v17 = qword_1000ACA68;
     if (os_log_type_enabled(qword_1000ACA68, OS_LOG_TYPE_DEFAULT))
@@ -150,19 +150,19 @@ LABEL_12:
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 unsignedLongValue];
+    unsignedLongValue = [v6 unsignedLongValue];
     v9 = +[NSDate date];
     [v9 timeIntervalSince1970];
     v11 = v10;
 
-    v12 = [(NSNumber *)self->_defaultTimer unsignedIntValue];
-    if (v8 >= v11)
+    unsignedIntValue = [(NSNumber *)self->_defaultTimer unsignedIntValue];
+    if (unsignedLongValue >= v11)
     {
       v23 = qword_1000ACA68;
       if (os_log_type_enabled(qword_1000ACA68, OS_LOG_TYPE_DEFAULT))
       {
         v26 = 134218498;
-        v27 = v8;
+        v27 = unsignedLongValue;
         v28 = 2048;
         v29 = v11;
         v30 = 2112;
@@ -177,7 +177,7 @@ LABEL_17:
 
     else
     {
-      v13 = (v8 + v12);
+      v13 = (unsignedLongValue + unsignedIntValue);
       if (v13 <= v11)
       {
 
@@ -293,8 +293,8 @@ LABEL_22:
     goto LABEL_20;
   }
 
-  v3 = [(BatteryTrustedData *)self initialData];
-  v4 = [(BatteryTrustedData *)self isTrustedAuthFeatureDisabled:v3];
+  initialData = [(BatteryTrustedData *)self initialData];
+  v4 = [(BatteryTrustedData *)self isTrustedAuthFeatureDisabled:initialData];
 
   if (v4)
   {
@@ -344,21 +344,21 @@ LABEL_20:
   }
 }
 
-- (void)sendToPPS:(id)a3
+- (void)sendToPPS:(id)s
 {
-  v4 = a3;
-  if (v4)
+  sCopy = s;
+  if (sCopy)
   {
     if (self->_ppsId)
     {
 LABEL_3:
-      v16 = self;
+      selfCopy = self;
       v5 = +[NSMutableDictionary dictionary];
       v17 = 0u;
       v18 = 0u;
       v19 = 0u;
       v20 = 0u;
-      v6 = v4;
+      v6 = sCopy;
       v7 = [v6 countByEnumeratingWithState:&v17 objects:v22 count:16];
       if (v7)
       {
@@ -385,7 +385,7 @@ LABEL_3:
         while (v8);
       }
 
-      if (v16->_ppsId)
+      if (selfCopy->_ppsId)
       {
         PPSSendTelemetry();
       }
@@ -488,9 +488,9 @@ LABEL_20:
   }
 }
 
-- (void)setAlarmInSeconds:(id)a3
+- (void)setAlarmInSeconds:(id)seconds
 {
-  v4 = a3;
+  secondsCopy = seconds;
   [(BatteryTrustedData *)self cancelAlarm];
   v5 = qword_1000ACA68;
   if (self->_doNotRunAnymore)
@@ -508,7 +508,7 @@ LABEL_20:
     if (os_log_type_enabled(qword_1000ACA68, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v12 = v4;
+      v12 = secondsCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Arming a new timer for %@ seconds\n", buf, 0xCu);
     }
 
@@ -524,22 +524,22 @@ LABEL_20:
     handler[3] = &unk_100099210;
     handler[4] = self;
     dispatch_source_set_event_handler(v8, handler);
-    v9 = dispatch_walltime(0, 1000000000 * [v4 unsignedIntValue]);
+    v9 = dispatch_walltime(0, 1000000000 * [secondsCopy unsignedIntValue]);
     dispatch_source_set_timer(self->_periodicTimer, v9, 0xFFFFFFFFFFFFFFFFLL, 0);
     dispatch_resume(self->_periodicTimer);
   }
 }
 
-- (BOOL)isTrustedAuthFeatureDisabled:(id)a3
+- (BOOL)isTrustedAuthFeatureDisabled:(id)disabled
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 count])
+  disabledCopy = disabled;
+  v5 = disabledCopy;
+  if (disabledCopy && [disabledCopy count])
   {
     v6 = [v5 objectForKeyedSubscript:@"TrustedBatteryEnabled"];
-    v7 = [v6 BOOLValue];
+    bOOLValue = [v6 BOOLValue];
     v8 = qword_1000ACA68;
-    if (v7)
+    if (bOOLValue)
     {
       if (os_log_type_enabled(qword_1000ACA68, OS_LOG_TYPE_DEFAULT))
       {
@@ -558,7 +558,7 @@ LABEL_20:
       [(BatteryTrustedData *)self updatePublishedData:&off_1000A3020];
     }
 
-    v9 = v7 ^ 1;
+    v9 = bOOLValue ^ 1;
   }
 
   else
@@ -575,11 +575,11 @@ LABEL_20:
   return v9;
 }
 
-- (BOOL)hasAuthPassed:(id)a3
+- (BOOL)hasAuthPassed:(id)passed
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4 || ([v4 objectForKeyedSubscript:@"BatteryAuthPassed"], v6 = objc_claimAutoreleasedReturnValue(), v6, !v6))
+  passedCopy = passed;
+  v5 = passedCopy;
+  if (!passedCopy || ([passedCopy objectForKeyedSubscript:@"BatteryAuthPassed"], v6 = objc_claimAutoreleasedReturnValue(), v6, !v6))
   {
     v12 = qword_1000ACA68;
     if (os_log_type_enabled(qword_1000ACA68, OS_LOG_TYPE_DEFAULT))
@@ -592,9 +592,9 @@ LABEL_20:
   }
 
   v7 = [v5 objectForKeyedSubscript:@"BatteryAuthPassed"];
-  v8 = [v7 BOOLValue];
+  bOOLValue = [v7 BOOLValue];
 
-  if ((v8 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
     v13 = [NSNumber numberWithInt:[(NSNumber *)self->_failedAuthCount intValue]+ 1];
     failedAuthCount = self->_failedAuthCount;
@@ -627,11 +627,11 @@ LABEL_12:
   return v11;
 }
 
-- (id)decodeNonce:(id)a3
+- (id)decodeNonce:(id)nonce
 {
-  v3 = a3;
+  nonceCopy = nonce;
   v4 = +[NSMutableDictionary dictionary];
-  if (v3 && [v3 length])
+  if (nonceCopy && [nonceCopy length])
   {
     v5 = qword_1000ACA68;
     if (os_log_type_enabled(qword_1000ACA68, OS_LOG_TYPE_DEFAULT))
@@ -641,8 +641,8 @@ LABEL_12:
     }
 
     memset(v11, 0, sizeof(v11));
-    [v3 bytes];
-    if ([v3 length] <= 0x20)
+    [nonceCopy bytes];
+    if ([nonceCopy length] <= 0x20)
     {
       __memcpy_chk();
       v6 = [NSNumber numberWithInt:BYTE9(v11[0])];
@@ -665,9 +665,9 @@ LABEL_12:
   return v4;
 }
 
-- (void)handleAppleBatteryAuthIORegData:(id)a3
+- (void)handleAppleBatteryAuthIORegData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   if ([(BatteryTrustedData *)self doNotRunAnymore])
   {
     if (!self->_doNotRunAnymore)
@@ -677,14 +677,14 @@ LABEL_3:
       if (os_log_type_enabled(qword_1000ACA68, OS_LOG_TYPE_DEFAULT))
       {
         v14 = 138412290;
-        v15 = v4;
+        v15 = dataCopy;
         _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Data is %@", &v14, 0xCu);
       }
 
-      v6 = [v4 objectForKeyedSubscript:@"TrustedBatteryDataRaw"];
+      v6 = [dataCopy objectForKeyedSubscript:@"TrustedBatteryDataRaw"];
       v7 = [(BatteryTrustedData *)self decodeNonce:v6];
 
-      if ([(BatteryTrustedData *)self hasAuthPassed:v4])
+      if ([(BatteryTrustedData *)self hasAuthPassed:dataCopy])
       {
         [(BatteryTrustedData *)self sendToPPS:v7];
       }
@@ -700,7 +700,7 @@ LABEL_3:
       }
 
       v10 = [NSMutableDictionary dictionaryWithDictionary:v7];
-      v11 = [v4 objectForKeyedSubscript:@"TrustedBatteryEnabled"];
+      v11 = [dataCopy objectForKeyedSubscript:@"TrustedBatteryEnabled"];
       [v10 setValue:v11 forKeyPath:@"Trusted Data Enabled"];
 
       v12 = [[NSNumber alloc] initWithUnsignedLongLong:self->_authLastPassedTime];
@@ -716,7 +716,7 @@ LABEL_3:
 
   else
   {
-    v8 = [(BatteryTrustedData *)self isTrustedAuthFeatureDisabled:v4];
+    v8 = [(BatteryTrustedData *)self isTrustedAuthFeatureDisabled:dataCopy];
     self->_doNotRunAnymore = v8;
     if (!v8)
     {
@@ -760,36 +760,36 @@ LABEL_13:
 - (BOOL)startMatchingNotifications
 {
   [(BatteryTrustedData *)self setIoNotificationPort:IONotificationPortCreate(kIOMainPortDefault)];
-  v3 = [(BatteryTrustedData *)self ioNotificationPort];
-  if (v3)
+  ioNotificationPort = [(BatteryTrustedData *)self ioNotificationPort];
+  if (ioNotificationPort)
   {
-    v4 = [(BatteryTrustedData *)self ioNotificationPort];
-    v5 = [(BatteryTrustedData *)self queue];
-    IONotificationPortSetDispatchQueue(v4, v5);
+    ioNotificationPort2 = [(BatteryTrustedData *)self ioNotificationPort];
+    queue = [(BatteryTrustedData *)self queue];
+    IONotificationPortSetDispatchQueue(ioNotificationPort2, queue);
 
-    v6 = [(BatteryTrustedData *)self ioNotificationPort];
+    ioNotificationPort3 = [(BatteryTrustedData *)self ioNotificationPort];
     v7 = IOServiceMatching("AppleBatteryAuth");
-    if (IOServiceAddMatchingNotification(v6, "IOServiceFirstMatch", v7, sub_10002AA98, self, &self->_ioServiceAddedIterator))
+    if (IOServiceAddMatchingNotification(ioNotificationPort3, "IOServiceFirstMatch", v7, sub_10002AA98, self, &self->_ioServiceAddedIterator))
     {
-      LODWORD(v3) = os_log_type_enabled(qword_1000ACA68, OS_LOG_TYPE_ERROR);
-      if (v3)
+      LODWORD(ioNotificationPort) = os_log_type_enabled(qword_1000ACA68, OS_LOG_TYPE_ERROR);
+      if (ioNotificationPort)
       {
         sub_100063E6C();
-        LOBYTE(v3) = 0;
+        LOBYTE(ioNotificationPort) = 0;
       }
     }
 
     else
     {
       sub_10002AA98(self, [(BatteryTrustedData *)self ioServiceAddedIterator]);
-      LOBYTE(v3) = 1;
+      LOBYTE(ioNotificationPort) = 1;
     }
   }
 
-  return v3;
+  return ioNotificationPort;
 }
 
-- (void)handleServiceAdded:(unsigned int)a3
+- (void)handleServiceAdded:(unsigned int)added
 {
   v5 = qword_1000ACA68;
   if (os_log_type_enabled(qword_1000ACA68, OS_LOG_TYPE_DEFAULT))
@@ -799,17 +799,17 @@ LABEL_13:
   }
 
   notification = 0;
-  if (IOServiceAddInterestNotification([(BatteryTrustedData *)self ioNotificationPort], a3, "IOGeneralInterest", sub_10002AC44, self, &notification))
+  if (IOServiceAddInterestNotification([(BatteryTrustedData *)self ioNotificationPort], added, "IOGeneralInterest", sub_10002AC44, self, &notification))
   {
     if (os_log_type_enabled(qword_1000ACA68, OS_LOG_TYPE_ERROR))
     {
       sub_100063EE0();
     }
 
-    IOObjectRelease(a3);
+    IOObjectRelease(added);
   }
 
-  else if (IORegistryEntryCreateCFProperties(a3, &v7, kCFAllocatorDefault, 0))
+  else if (IORegistryEntryCreateCFProperties(added, &v7, kCFAllocatorDefault, 0))
   {
     if (os_log_type_enabled(qword_1000ACA68, OS_LOG_TYPE_ERROR))
     {
@@ -824,7 +824,7 @@ LABEL_13:
   }
 }
 
-- (void)handleDataFromService:(unsigned int)a3 messageType:(unsigned int)a4 messageArgument:(void *)a5
+- (void)handleDataFromService:(unsigned int)service messageType:(unsigned int)type messageArgument:(void *)argument
 {
   v7 = qword_1000ACA68;
   if (os_log_type_enabled(qword_1000ACA68, OS_LOG_TYPE_DEFAULT))
@@ -834,7 +834,7 @@ LABEL_13:
   }
 
   properties = 0;
-  v8 = IORegistryEntryCreateCFProperties(a3, &properties, kCFAllocatorDefault, 0);
+  v8 = IORegistryEntryCreateCFProperties(service, &properties, kCFAllocatorDefault, 0);
   v9 = properties;
   if (v8)
   {

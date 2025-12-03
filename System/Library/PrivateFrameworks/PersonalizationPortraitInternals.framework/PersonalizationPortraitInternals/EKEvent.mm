@@ -1,15 +1,15 @@
 @interface EKEvent
-- (id)pp_eventNameForCategory:(void *)a1;
+- (id)pp_eventNameForCategory:(void *)category;
 @end
 
 @implementation EKEvent
 
-- (id)pp_eventNameForCategory:(void *)a1
+- (id)pp_eventNameForCategory:(void *)category
 {
-  if (a1)
+  if (category)
   {
     v4 = objc_autoreleasePoolPush();
-    v5 = [a1 customObjectForKey:*MEMORY[0x277D3A760]];
+    v5 = [category customObjectForKey:*MEMORY[0x277D3A760]];
     if (!v5 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       v10 = 0;
@@ -29,8 +29,8 @@ LABEL_22:
       goto LABEL_23;
     }
 
-    v8 = [v7 firstObject];
-    v9 = v8;
+    firstObject = [v7 firstObject];
+    v9 = firstObject;
     v10 = 0;
     if (a2 > 4)
     {
@@ -38,7 +38,7 @@ LABEL_22:
       {
         if (a2 == 5)
         {
-          v11 = [v8 objectForKeyedSubscript:@"reservationFor"];
+          v11 = [firstObject objectForKeyedSubscript:@"reservationFor"];
           v12 = v11;
           v13 = @"arrivalBoatTerminal";
           goto LABEL_19;
@@ -55,7 +55,7 @@ LABEL_22:
     {
       if (a2 == 3)
       {
-        v11 = [v8 objectForKeyedSubscript:@"reservationFor"];
+        v11 = [firstObject objectForKeyedSubscript:@"reservationFor"];
         v12 = v11;
         v13 = @"arrivalStation";
         goto LABEL_19;
@@ -63,7 +63,7 @@ LABEL_22:
 
       if (a2 == 4)
       {
-        v11 = [v8 objectForKeyedSubscript:@"reservationFor"];
+        v11 = [firstObject objectForKeyedSubscript:@"reservationFor"];
         v12 = v11;
         v13 = @"arrivalBusStop";
 LABEL_19:
@@ -78,7 +78,7 @@ LABEL_21:
       goto LABEL_22;
     }
 
-    v12 = [v8 objectForKeyedSubscript:@"reservationFor"];
+    v12 = [firstObject objectForKeyedSubscript:@"reservationFor"];
     v10 = [v12 objectForKeyedSubscript:@"name"];
 LABEL_20:
 

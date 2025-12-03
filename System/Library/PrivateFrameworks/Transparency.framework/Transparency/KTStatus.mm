@@ -1,22 +1,22 @@
 @interface KTStatus
-- (KTStatus)initWithApplication:(id)a3;
-- (id)status:(id *)a3;
-- (void)errorForFailedEvent:(id)a3 completionBlock:(id)a4;
-- (void)errorsForFailedEvents:(id)a3 completionBlock:(id)a4;
-- (void)getCurrentStatus:(id)a3;
-- (void)getSelfStatus:(id)a3;
-- (void)getStatus:(id)a3;
-- (void)ignoreFailedEvent:(id)a3 completionBlock:(id)a4;
-- (void)ignoreFailedEvents:(id)a3 completionBlock:(id)a4;
+- (KTStatus)initWithApplication:(id)application;
+- (id)status:(id *)status;
+- (void)errorForFailedEvent:(id)event completionBlock:(id)block;
+- (void)errorsForFailedEvents:(id)events completionBlock:(id)block;
+- (void)getCurrentStatus:(id)status;
+- (void)getSelfStatus:(id)status;
+- (void)getStatus:(id)status;
+- (void)ignoreFailedEvent:(id)event completionBlock:(id)block;
+- (void)ignoreFailedEvents:(id)events completionBlock:(id)block;
 @end
 
 @implementation KTStatus
 
-- (KTStatus)initWithApplication:(id)a3
+- (KTStatus)initWithApplication:(id)application
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [TransparencyApplication applicationValueForIdentifier:v5];
+  applicationCopy = application;
+  v6 = [TransparencyApplication applicationValueForIdentifier:applicationCopy];
 
   if (v6)
   {
@@ -26,14 +26,14 @@
     v8 = v7;
     if (v7)
     {
-      objc_storeStrong(&v7->_applicationIdentifier, a3);
+      objc_storeStrong(&v7->_applicationIdentifier, application);
       v9 = [[TransparencyApplication alloc] initWithIdentifier:v8->_applicationIdentifier];
       application = v8->_application;
       v8->_application = v9;
     }
 
     self = v8;
-    v11 = self;
+    selfCopy = self;
   }
 
   else
@@ -47,15 +47,15 @@
     if (os_log_type_enabled(TRANSPARENCY_DEFAULT_LOG_INTERNAL_4, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v17 = v5;
+      v17 = applicationCopy;
       _os_log_impl(&dword_1E10DB000, v12, OS_LOG_TYPE_ERROR, "Unknown application identifier: %@", buf, 0xCu);
     }
 
-    v11 = 0;
+    selfCopy = 0;
   }
 
   v13 = *MEMORY[0x1E69E9840];
-  return v11;
+  return selfCopy;
 }
 
 uint64_t __32__KTStatus_initWithApplication___block_invoke()
@@ -65,15 +65,15 @@ uint64_t __32__KTStatus_initWithApplication___block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)getCurrentStatus:(id)a3
+- (void)getCurrentStatus:(id)status
 {
-  v4 = a3;
+  statusCopy = status;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __29__KTStatus_getCurrentStatus___block_invoke;
   v6[3] = &unk_1E8701710;
-  v7 = v4;
-  v5 = v4;
+  v7 = statusCopy;
+  v5 = statusCopy;
   [(KTStatus *)self getStatus:v6];
 }
 
@@ -88,7 +88,7 @@ void __29__KTStatus_getCurrentStatus___block_invoke(uint64_t a1, void *a2, void 
   (*(v4 + 16))(v4, v7, v8, v5);
 }
 
-- (id)status:(id *)a3
+- (id)status:(id *)status
 {
   v16 = 0;
   v17 = &v16;
@@ -122,9 +122,9 @@ void __29__KTStatus_getCurrentStatus___block_invoke(uint64_t a1, void *a2, void 
     v11[5] = v4;
   }
 
-  if (a3)
+  if (status)
   {
-    *a3 = v11[5];
+    *status = v11[5];
   }
 
   v6 = v17[5];
@@ -202,15 +202,15 @@ uint64_t __19__KTStatus_status___block_invoke_4()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)getStatus:(id)a3
+- (void)getStatus:(id)status
 {
-  v4 = a3;
+  statusCopy = status;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __22__KTStatus_getStatus___block_invoke;
   v8[3] = &unk_1E8701530;
   v8[4] = self;
-  v9 = v4;
+  v9 = statusCopy;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __22__KTStatus_getStatus___block_invoke_267;
@@ -312,15 +312,15 @@ uint64_t __22__KTStatus_getStatus___block_invoke_2_268()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)getSelfStatus:(id)a3
+- (void)getSelfStatus:(id)status
 {
-  v4 = a3;
+  statusCopy = status;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __26__KTStatus_getSelfStatus___block_invoke;
   v8[3] = &unk_1E8701530;
   v8[4] = self;
-  v9 = v4;
+  v9 = statusCopy;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __26__KTStatus_getSelfStatus___block_invoke_276;
@@ -422,23 +422,23 @@ uint64_t __26__KTStatus_getSelfStatus___block_invoke_2_277()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)errorForFailedEvent:(id)a3 completionBlock:(id)a4
+- (void)errorForFailedEvent:(id)event completionBlock:(id)block
 {
-  v5 = a3;
-  v6 = a4;
+  eventCopy = event;
+  blockCopy = block;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __48__KTStatus_errorForFailedEvent_completionBlock___block_invoke;
   v11[3] = &unk_1E8701530;
-  v12 = v5;
-  v13 = v6;
+  v12 = eventCopy;
+  v13 = blockCopy;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __48__KTStatus_errorForFailedEvent_completionBlock___block_invoke_2_287;
   v9[3] = &unk_1E87013C8;
   v10 = v13;
   v7 = v13;
-  v8 = v5;
+  v8 = eventCopy;
   [TransparencyXPCConnection invokeXPCAsynchronousCallWithBlock:v11 errorHandler:v9];
 }
 
@@ -560,23 +560,23 @@ uint64_t __48__KTStatus_errorForFailedEvent_completionBlock___block_invoke_3()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)errorsForFailedEvents:(id)a3 completionBlock:(id)a4
+- (void)errorsForFailedEvents:(id)events completionBlock:(id)block
 {
-  v5 = a3;
-  v6 = a4;
+  eventsCopy = events;
+  blockCopy = block;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __50__KTStatus_errorsForFailedEvents_completionBlock___block_invoke;
   v11[3] = &unk_1E8701530;
-  v12 = v5;
-  v13 = v6;
+  v12 = eventsCopy;
+  v13 = blockCopy;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __50__KTStatus_errorsForFailedEvents_completionBlock___block_invoke_295;
   v9[3] = &unk_1E87013C8;
   v10 = v13;
   v7 = v13;
-  v8 = v5;
+  v8 = eventsCopy;
   [TransparencyXPCConnection invokeXPCAsynchronousCallWithBlock:v11 errorHandler:v9];
 }
 
@@ -669,23 +669,23 @@ uint64_t __50__KTStatus_errorsForFailedEvents_completionBlock___block_invoke_2_2
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)ignoreFailedEvent:(id)a3 completionBlock:(id)a4
+- (void)ignoreFailedEvent:(id)event completionBlock:(id)block
 {
-  v5 = a3;
-  v6 = a4;
+  eventCopy = event;
+  blockCopy = block;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __46__KTStatus_ignoreFailedEvent_completionBlock___block_invoke;
   v11[3] = &unk_1E8701530;
-  v12 = v5;
-  v13 = v6;
+  v12 = eventCopy;
+  v13 = blockCopy;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __46__KTStatus_ignoreFailedEvent_completionBlock___block_invoke_304;
   v9[3] = &unk_1E87013C8;
   v10 = v13;
   v7 = v13;
-  v8 = v5;
+  v8 = eventCopy;
   [TransparencyXPCConnection invokeXPCAsynchronousCallWithBlock:v11 errorHandler:v9];
 }
 
@@ -780,23 +780,23 @@ uint64_t __46__KTStatus_ignoreFailedEvent_completionBlock___block_invoke_2_305()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)ignoreFailedEvents:(id)a3 completionBlock:(id)a4
+- (void)ignoreFailedEvents:(id)events completionBlock:(id)block
 {
-  v5 = a3;
-  v6 = a4;
+  eventsCopy = events;
+  blockCopy = block;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __47__KTStatus_ignoreFailedEvents_completionBlock___block_invoke;
   v11[3] = &unk_1E8701530;
-  v12 = v5;
-  v13 = v6;
+  v12 = eventsCopy;
+  v13 = blockCopy;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __47__KTStatus_ignoreFailedEvents_completionBlock___block_invoke_313;
   v9[3] = &unk_1E87013C8;
   v10 = v13;
   v7 = v13;
-  v8 = v5;
+  v8 = eventsCopy;
   [TransparencyXPCConnection invokeXPCAsynchronousCallWithBlock:v11 errorHandler:v9];
 }
 

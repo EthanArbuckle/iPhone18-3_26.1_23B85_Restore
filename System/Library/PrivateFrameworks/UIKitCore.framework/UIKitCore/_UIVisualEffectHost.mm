@@ -1,38 +1,38 @@
 @interface _UIVisualEffectHost
 - (NSString)description;
 - (_UIVisualEffectBackdropView)captureView;
-- (_UIVisualEffectHost)initWithContentView:(id)a3;
-- (id)_cloneFilters:(id)a3;
-- (id)_viewForEntry:(id)a3 fromCapturePool:(id)a4 imagePool:(id)a5 otherPool:(id)a6;
-- (void)_applyEffectDescriptor:(id)a3;
-- (void)_applyIdentityDescriptorEffectInvertingView:(id)a3;
-- (void)_applyRequestedDescriptorEffectInvertingView:(id)a3;
-- (void)_configureEffectDescriptor:(id)a3;
+- (_UIVisualEffectHost)initWithContentView:(id)view;
+- (id)_cloneFilters:(id)filters;
+- (id)_viewForEntry:(id)entry fromCapturePool:(id)pool imagePool:(id)imagePool otherPool:(id)otherPool;
+- (void)_applyEffectDescriptor:(id)descriptor;
+- (void)_applyIdentityDescriptorEffectInvertingView:(id)view;
+- (void)_applyRequestedDescriptorEffectInvertingView:(id)view;
+- (void)_configureEffectDescriptor:(id)descriptor;
 - (void)_evaluateInPlaceFiltering;
-- (void)_iterateViews:(id)a3;
+- (void)_iterateViews:(id)views;
 - (void)_updateAdjustTintColors;
-- (void)_updateView:(id)a3 shouldDrawWithTintColor:(BOOL)a4;
-- (void)_view:(id)a3 willMoveToWindow:(id)a4;
+- (void)_updateView:(id)view shouldDrawWithTintColor:(BOOL)color;
+- (void)_view:(id)_view willMoveToWindow:(id)window;
 - (void)beginTransition;
 - (void)endTransition;
-- (void)prepareToTransitionToEffectDescriptor:(id)a3;
-- (void)setCaptureView:(id)a3;
-- (void)setContentViewRequired:(BOOL)a3;
-- (void)setCurrentEffectDescriptor:(id)a3;
-- (void)setPrimaryCaptureGroup:(id)a3;
-- (void)willGainDescendent:(id)a3;
+- (void)prepareToTransitionToEffectDescriptor:(id)descriptor;
+- (void)setCaptureView:(id)view;
+- (void)setContentViewRequired:(BOOL)required;
+- (void)setCurrentEffectDescriptor:(id)descriptor;
+- (void)setPrimaryCaptureGroup:(id)group;
+- (void)willGainDescendent:(id)descendent;
 @end
 
 @implementation _UIVisualEffectHost
 
 - (void)_updateAdjustTintColors
 {
-  v3 = [(_UIVisualEffectDescriptor *)self->_currentEffectDescriptor textShouldRenderWithTintColor];
-  v4 = v3;
+  textShouldRenderWithTintColor = [(_UIVisualEffectDescriptor *)self->_currentEffectDescriptor textShouldRenderWithTintColor];
+  v4 = textShouldRenderWithTintColor;
   v5 = !self->_autosetSubviewLabelTintColor;
-  if (v3 == v5)
+  if (textShouldRenderWithTintColor == v5)
   {
-    [(_UIVisualEffectHost *)self _updateView:self->_contentView shouldDrawWithTintColor:v3 || v5];
+    [(_UIVisualEffectHost *)self _updateView:self->_contentView shouldDrawWithTintColor:textShouldRenderWithTintColor || v5];
   }
 
   self->_autosetSubviewLabelTintColor = v4;
@@ -43,11 +43,11 @@
 
 - (void)_evaluateInPlaceFiltering
 {
-  v3 = [(_UIVisualEffectViewParticipating *)self->_contentView layer];
+  layer = [(_UIVisualEffectViewParticipating *)self->_contentView layer];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = layer;
   }
 
   else
@@ -63,12 +63,12 @@
     primaryCaptureGroup = self->_primaryCaptureGroup;
     if (primaryCaptureGroup)
     {
-      v7 = [(_UIVisualEffectViewBackdropCaptureGroup *)primaryCaptureGroup allowInPlaceFiltering];
+      allowInPlaceFiltering = [(_UIVisualEffectViewBackdropCaptureGroup *)primaryCaptureGroup allowInPlaceFiltering];
     }
 
     else
     {
-      v7 = 1;
+      allowInPlaceFiltering = 1;
     }
 
     transitionEffectDescriptor = self->_transitionEffectDescriptor;
@@ -77,8 +77,8 @@
       transitionEffectDescriptor = self->_currentEffectDescriptor;
     }
 
-    v9 = (transitionEffectDescriptor == 0) & v7;
-    if (transitionEffectDescriptor && ((v7 ^ 1) & 1) == 0)
+    v9 = (transitionEffectDescriptor == 0) & allowInPlaceFiltering;
+    if (transitionEffectDescriptor && ((allowInPlaceFiltering ^ 1) & 1) == 0)
     {
       v9 = [(_UIVisualEffectDescriptor *)transitionEffectDescriptor disableInPlaceFiltering]^ 1;
     }
@@ -116,18 +116,18 @@
   transitionEffectDescriptor = self->_transitionEffectDescriptor;
   if (transitionEffectDescriptor)
   {
-    v4 = [(_UIVisualEffectDescriptor *)transitionEffectDescriptor _identityContainerView];
-    [(_UIVisualEffectHost *)self _applyRequestedDescriptorEffectInvertingView:v4];
+    _identityContainerView = [(_UIVisualEffectDescriptor *)transitionEffectDescriptor _identityContainerView];
+    [(_UIVisualEffectHost *)self _applyRequestedDescriptorEffectInvertingView:_identityContainerView];
   }
 }
 
-- (_UIVisualEffectHost)initWithContentView:(id)a3
+- (_UIVisualEffectHost)initWithContentView:(id)view
 {
-  v6 = a3;
-  if (!v6)
+  viewCopy = view;
+  if (!viewCopy)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"_UIVisualEffectHost.m" lineNumber:27 description:@"Cannot construct a content host with a nil content view"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIVisualEffectHost.m" lineNumber:27 description:@"Cannot construct a content host with a nil content view"];
   }
 
   v13.receiver = self;
@@ -136,7 +136,7 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_contentView, a3);
+    objc_storeStrong(&v7->_contentView, view);
     v9 = objc_opt_new();
     views = v8->_views;
     v8->_views = v9;
@@ -145,23 +145,23 @@
   return v8;
 }
 
-- (void)setContentViewRequired:(BOOL)a3
+- (void)setContentViewRequired:(BOOL)required
 {
-  if (a3 && !self->_contentViewRequired)
+  if (required && !self->_contentViewRequired)
   {
-    v5 = [(_UIVisualEffectDescriptor *)self->_currentEffectDescriptor _requestedContainerView];
+    _requestedContainerView = [(_UIVisualEffectDescriptor *)self->_currentEffectDescriptor _requestedContainerView];
 
-    if (v5)
+    if (_requestedContainerView)
     {
       contentView = self->_contentView;
-      v7 = [(_UIVisualEffectDescriptor *)self->_currentEffectDescriptor _requestedContainerView];
-      [v7 setContainedView:contentView];
+      _requestedContainerView2 = [(_UIVisualEffectDescriptor *)self->_currentEffectDescriptor _requestedContainerView];
+      [_requestedContainerView2 setContainedView:contentView];
     }
 
     else if (([(NSMutableArray *)self->_views containsObject:self->_contentView]& 1) == 0)
     {
-      v8 = [(_UIVisualEffectDescriptor *)self->_currentEffectDescriptor underlays];
-      v9 = [v8 count];
+      underlays = [(_UIVisualEffectDescriptor *)self->_currentEffectDescriptor underlays];
+      v9 = [underlays count];
 
       v10 = [(NSMutableArray *)self->_views count];
       views = self->_views;
@@ -178,15 +178,15 @@
     }
   }
 
-  self->_contentViewRequired = a3;
+  self->_contentViewRequired = required;
 }
 
-- (void)setPrimaryCaptureGroup:(id)a3
+- (void)setPrimaryCaptureGroup:(id)group
 {
-  v5 = a3;
-  if (self->_primaryCaptureGroup != v5)
+  groupCopy = group;
+  if (self->_primaryCaptureGroup != groupCopy)
   {
-    objc_storeStrong(&self->_primaryCaptureGroup, a3);
+    objc_storeStrong(&self->_primaryCaptureGroup, group);
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __46___UIVisualEffectHost_setPrimaryCaptureGroup___block_invoke;
@@ -199,9 +199,9 @@
   }
 }
 
-- (void)setCaptureView:(id)a3
+- (void)setCaptureView:(id)view
 {
-  obj = a3;
+  obj = view;
   WeakRetained = objc_loadWeakRetained(&self->_captureView);
   if (WeakRetained != obj)
   {
@@ -214,8 +214,8 @@
 
     [obj setRenderMode:1];
     [obj setCaptureGroup:self->_primaryCaptureGroup];
-    v5 = [(_UIVisualEffectDescriptor *)self->_currentEffectDescriptor filterEntries];
-    v6 = [(_UIVisualEffectHost *)self _cloneFilters:v5];
+    filterEntries = [(_UIVisualEffectDescriptor *)self->_currentEffectDescriptor filterEntries];
+    v6 = [(_UIVisualEffectHost *)self _cloneFilters:filterEntries];
     [obj setFilters:v6];
 
     [obj applyRequestedFilterEffects];
@@ -223,48 +223,48 @@
   }
 }
 
-- (void)_updateView:(id)a3 shouldDrawWithTintColor:(BOOL)a4
+- (void)_updateView:(id)view shouldDrawWithTintColor:(BOOL)color
 {
-  v5 = a3;
+  viewCopy = view;
   v6 = [_UIViewBlockVisitor alloc];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __59___UIVisualEffectHost__updateView_shouldDrawWithTintColor___block_invoke;
   v8[3] = &__block_descriptor_33_e16_B16__0__UIView_8l;
-  v9 = a4;
+  colorCopy = color;
   v7 = [(_UIViewBlockVisitor *)v6 initWithTraversalDirection:2 visitorBlock:v8];
-  [v5 _receiveVisitor:v7];
+  [viewCopy _receiveVisitor:v7];
 }
 
-- (void)setCurrentEffectDescriptor:(id)a3
+- (void)setCurrentEffectDescriptor:(id)descriptor
 {
-  v5 = a3;
-  if (self->_currentEffectDescriptor != v5)
+  descriptorCopy = descriptor;
+  if (self->_currentEffectDescriptor != descriptorCopy)
   {
-    v8 = v5;
-    [(_UIVisualEffectDescriptor *)v5 uniqueFilterNames];
+    v8 = descriptorCopy;
+    [(_UIVisualEffectDescriptor *)descriptorCopy uniqueFilterNames];
     transitionEffectDescriptor = self->_transitionEffectDescriptor;
     self->_transitionEffectDescriptor = 0;
 
-    objc_storeStrong(&self->_currentEffectDescriptor, a3);
+    objc_storeStrong(&self->_currentEffectDescriptor, descriptor);
     [(_UIVisualEffectHost *)self _updateAdjustTintColors];
     [(_UIVisualEffectHost *)self _configureEffectDescriptor:self->_currentEffectDescriptor];
-    v7 = [(_UIVisualEffectDescriptor *)self->_currentEffectDescriptor _identityContainerView];
-    [(_UIVisualEffectHost *)self _applyRequestedDescriptorEffectInvertingView:v7];
+    _identityContainerView = [(_UIVisualEffectDescriptor *)self->_currentEffectDescriptor _identityContainerView];
+    [(_UIVisualEffectHost *)self _applyRequestedDescriptorEffectInvertingView:_identityContainerView];
 
-    v5 = v8;
+    descriptorCopy = v8;
   }
 }
 
-- (void)prepareToTransitionToEffectDescriptor:(id)a3
+- (void)prepareToTransitionToEffectDescriptor:(id)descriptor
 {
   v12[2] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = v5;
+  descriptorCopy = descriptor;
+  v6 = descriptorCopy;
   p_currentEffectDescriptor = &self->_currentEffectDescriptor;
-  if (self->_currentEffectDescriptor != v5)
+  if (self->_currentEffectDescriptor != descriptorCopy)
   {
-    [(_UIVisualEffectDescriptor *)v5 uniqueFilterNames];
+    [(_UIVisualEffectDescriptor *)descriptorCopy uniqueFilterNames];
     if (*p_currentEffectDescriptor)
     {
       v12[0] = *p_currentEffectDescriptor;
@@ -277,11 +277,11 @@
 
     else
     {
-      objc_storeStrong(&self->_transitionEffectDescriptor, a3);
+      objc_storeStrong(&self->_transitionEffectDescriptor, descriptor);
     }
 
     [(_UIVisualEffectDescriptor *)self->_transitionEffectDescriptor uniqueFilterNames];
-    objc_storeStrong(&self->_currentEffectDescriptor, a3);
+    objc_storeStrong(&self->_currentEffectDescriptor, descriptor);
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __61___UIVisualEffectHost_prepareToTransitionToEffectDescriptor___block_invoke;
@@ -291,16 +291,16 @@
   }
 }
 
-- (void)_applyEffectDescriptor:(id)a3
+- (void)_applyEffectDescriptor:(id)descriptor
 {
   v62 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  descriptorCopy = descriptor;
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
-  v5 = [v4 underlays];
-  v6 = [v5 countByEnumeratingWithState:&v54 objects:v61 count:16];
+  underlays = [descriptorCopy underlays];
+  v6 = [underlays countByEnumeratingWithState:&v54 objects:v61 count:16];
   if (v6)
   {
     v7 = v6;
@@ -312,7 +312,7 @@
       {
         if (*v55 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(underlays);
         }
 
         v11 = *(*(&v54 + 1) + 8 * i);
@@ -322,7 +322,7 @@
         ++v8;
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v54 objects:v61 count:16];
+      v7 = [underlays countByEnumeratingWithState:&v54 objects:v61 count:16];
     }
 
     while (v7);
@@ -337,8 +337,8 @@
   v53 = 0u;
   v50 = 0u;
   v51 = 0u;
-  v13 = [v4 viewEffects];
-  v14 = [v13 countByEnumeratingWithState:&v50 objects:v60 count:16];
+  viewEffects = [descriptorCopy viewEffects];
+  v14 = [viewEffects countByEnumeratingWithState:&v50 objects:v60 count:16];
   if (v14)
   {
     v15 = v14;
@@ -349,7 +349,7 @@
       {
         if (*v51 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(viewEffects);
         }
 
         v18 = *(*(&v50 + 1) + 8 * j);
@@ -357,7 +357,7 @@
         [v18 applyEffectAsRequested:1 toView:v19];
       }
 
-      v15 = [v13 countByEnumeratingWithState:&v50 objects:v60 count:16];
+      v15 = [viewEffects countByEnumeratingWithState:&v50 objects:v60 count:16];
     }
 
     while (v15);
@@ -367,14 +367,14 @@
   v49 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v37 = v4;
-  obj = [v4 filterEntries];
+  v37 = descriptorCopy;
+  obj = [descriptorCopy filterEntries];
   v41 = [obj countByEnumeratingWithState:&v46 objects:v59 count:16];
   if (v41)
   {
     v20 = 0;
     v39 = *v47;
-    v40 = self;
+    selfCopy = self;
     do
     {
       for (k = 0; k != v41; ++k)
@@ -386,15 +386,15 @@
 
         v22 = *(*(&v46 + 1) + 8 * k);
         v23 = [(NSMutableArray *)self->_views objectAtIndexedSubscript:v8];
-        v24 = [v23 layer];
+        layer = [v23 layer];
         v25 = [v22 valueAsRequested:1];
         v26 = [(NSMutableArray *)self->_views objectAtIndexedSubscript:v8];
-        v27 = [v26 filters];
-        v28 = [v27 objectAtIndexedSubscript:v20];
-        v29 = [v28 filterName];
-        _UIVisualEffectSubviewApplyFilterValues(v24, v25, v29);
+        filters = [v26 filters];
+        v28 = [filters objectAtIndexedSubscript:v20];
+        filterName = [v28 filterName];
+        _UIVisualEffectSubviewApplyFilterValues(layer, v25, filterName);
 
-        self = v40;
+        self = selfCopy;
         ++v20;
       }
 
@@ -408,8 +408,8 @@
   v45 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v30 = [v37 overlays];
-  v31 = [v30 countByEnumeratingWithState:&v42 objects:v58 count:16];
+  overlays = [v37 overlays];
+  v31 = [overlays countByEnumeratingWithState:&v42 objects:v58 count:16];
   if (v31)
   {
     v32 = v31;
@@ -420,7 +420,7 @@
       {
         if (*v43 != v33)
         {
-          objc_enumerationMutation(v30);
+          objc_enumerationMutation(overlays);
         }
 
         ++v8;
@@ -429,30 +429,30 @@
         [v35 applyEffectAsRequested:1 toView:v36];
       }
 
-      v32 = [v30 countByEnumeratingWithState:&v42 objects:v58 count:16];
+      v32 = [overlays countByEnumeratingWithState:&v42 objects:v58 count:16];
     }
 
     while (v32);
   }
 }
 
-- (id)_viewForEntry:(id)a3 fromCapturePool:(id)a4 imagePool:(id)a5 otherPool:(id)a6
+- (id)_viewForEntry:(id)entry fromCapturePool:(id)pool imagePool:(id)imagePool otherPool:(id)otherPool
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = [v11 requirements];
-  switch(v15)
+  entryCopy = entry;
+  poolCopy = pool;
+  imagePoolCopy = imagePool;
+  otherPoolCopy = otherPool;
+  requirements = [entryCopy requirements];
+  switch(requirements)
   {
     case 0:
-      v16 = v14;
+      v16 = otherPoolCopy;
       goto LABEL_7;
     case 1:
-      v16 = v13;
+      v16 = imagePoolCopy;
       goto LABEL_7;
     case 2:
-      v16 = v12;
+      v16 = poolCopy;
 LABEL_7:
       v17 = v16;
       v18 = objc_opt_class();
@@ -462,18 +462,18 @@ LABEL_7:
   v17 = 0;
   v18 = 0;
 LABEL_9:
-  v19 = [v17 firstObject];
-  if (v19)
+  firstObject = [v17 firstObject];
+  if (firstObject)
   {
-    v20 = v19;
+    v20 = firstObject;
     [v17 removeObjectAtIndex:0];
   }
 
   else if (!v18 || (v20 = objc_alloc_init(v18)) == 0)
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v22 = NSStringFromClass(v18);
-    [v21 handleFailureInMethod:a2 object:self file:@"_UIVisualEffectHost.m" lineNumber:215 description:{@"Unable to allocate a view necessary for implementing the requested effect (viewClass=%@, entry=%@)", v22, v11}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIVisualEffectHost.m" lineNumber:215 description:{@"Unable to allocate a view necessary for implementing the requested effect (viewClass=%@, entry=%@)", v22, entryCopy}];
 
     v20 = 0;
   }
@@ -481,16 +481,16 @@ LABEL_9:
   return v20;
 }
 
-- (void)_configureEffectDescriptor:(id)a3
+- (void)_configureEffectDescriptor:(id)descriptor
 {
   v70 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
-  v6 = [MEMORY[0x1E695DF70] array];
-  v7 = [MEMORY[0x1E695DF70] array];
-  v52 = [v4 _identityContainerView];
-  v50 = v4;
-  v51 = [v4 _requestedContainerView];
+  descriptorCopy = descriptor;
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
+  array3 = [MEMORY[0x1E695DF70] array];
+  _identityContainerView = [descriptorCopy _identityContainerView];
+  v50 = descriptorCopy;
+  _requestedContainerView = [descriptorCopy _requestedContainerView];
   v61 = 0u;
   v62 = 0u;
   v63 = 0u;
@@ -512,15 +512,15 @@ LABEL_9:
         }
 
         v14 = *(*(&v61 + 1) + 8 * i);
-        if (v14 != self->_contentView && v14 != v52 && v14 != v51)
+        if (v14 != self->_contentView && v14 != _identityContainerView && v14 != _requestedContainerView)
         {
           [*(*(&v61 + 1) + 8 * i) setFilters:v12];
           [(_UIVisualEffectViewParticipating *)v14 setViewEffects:v12];
           [(_UIVisualEffectViewParticipating *)v14 setContainedView:0];
           objc_opt_class();
           isKindOfClass = objc_opt_isKindOfClass();
-          v18 = v5;
-          if (isKindOfClass & 1) != 0 || (objc_opt_class(), v19 = objc_opt_isKindOfClass(), v18 = v6, (v19) || (v20 = [(_UIVisualEffectViewParticipating *)v14 isMemberOfClass:objc_opt_class()], v18 = v7, v20))
+          v18 = array;
+          if (isKindOfClass & 1) != 0 || (objc_opt_class(), v19 = objc_opt_isKindOfClass(), v18 = array2, (v19) || (v20 = [(_UIVisualEffectViewParticipating *)v14 isMemberOfClass:objc_opt_class()], v18 = array3, v20))
           {
             [v18 addObject:v14];
           }
@@ -538,8 +538,8 @@ LABEL_9:
   v60 = 0u;
   v57 = 0u;
   v58 = 0u;
-  v21 = [v50 underlays];
-  v22 = [v21 countByEnumeratingWithState:&v57 objects:v68 count:16];
+  underlays = [v50 underlays];
+  v22 = [underlays countByEnumeratingWithState:&v57 objects:v68 count:16];
   if (v22)
   {
     v23 = v22;
@@ -550,11 +550,11 @@ LABEL_9:
       {
         if (*v58 != v24)
         {
-          objc_enumerationMutation(v21);
+          objc_enumerationMutation(underlays);
         }
 
         v26 = *(*(&v57 + 1) + 8 * j);
-        v27 = [(_UIVisualEffectHost *)self _viewForEntry:v26 fromCapturePool:v5 imagePool:v6 otherPool:v7];
+        v27 = [(_UIVisualEffectHost *)self _viewForEntry:v26 fromCapturePool:array imagePool:array2 otherPool:array3];
         [v27 setPrimaryCaptureGroup:self->_primaryCaptureGroup];
         v67 = v26;
         v28 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v67 count:1];
@@ -563,32 +563,32 @@ LABEL_9:
         [(NSMutableArray *)self->_views addObject:v27];
       }
 
-      v23 = [v21 countByEnumeratingWithState:&v57 objects:v68 count:16];
+      v23 = [underlays countByEnumeratingWithState:&v57 objects:v68 count:16];
     }
 
     while (v23);
   }
 
-  v29 = [v50 filterEntries];
-  v30 = [v50 viewEffects];
-  v48 = v30;
-  if ([v29 count] || objc_msgSend(v30, "count") || v51 || v52)
+  filterEntries = [v50 filterEntries];
+  viewEffects = [v50 viewEffects];
+  v48 = viewEffects;
+  if ([filterEntries count] || objc_msgSend(viewEffects, "count") || _requestedContainerView || _identityContainerView)
   {
-    [(_UIVisualEffectViewParticipating *)self->_contentView setFilters:v29];
-    [(_UIVisualEffectViewParticipating *)self->_contentView setViewEffects:v30];
+    [(_UIVisualEffectViewParticipating *)self->_contentView setFilters:filterEntries];
+    [(_UIVisualEffectViewParticipating *)self->_contentView setViewEffects:viewEffects];
     v31 = self->_contentView;
-    if (v51)
+    if (_requestedContainerView)
     {
-      [(_UIVisualEffectViewParticipating *)v51 setContainedView:v31];
-      v32 = v51;
+      [(_UIVisualEffectViewParticipating *)_requestedContainerView setContainedView:v31];
+      v32 = _requestedContainerView;
 
       v31 = v32;
     }
 
-    if (v52 && v52 != v51)
+    if (_identityContainerView && _identityContainerView != _requestedContainerView)
     {
-      [(_UIVisualEffectViewParticipating *)v52 setContainedView:v31];
-      v33 = v52;
+      [(_UIVisualEffectViewParticipating *)_identityContainerView setContainedView:v31];
+      v33 = _identityContainerView;
 
       v31 = v33;
 LABEL_38:
@@ -622,18 +622,18 @@ LABEL_39:
   if (WeakRetained)
   {
     [WeakRetained setCaptureGroup:self->_primaryCaptureGroup];
-    v37 = [(_UIVisualEffectHost *)self _cloneFilters:v29];
+    v37 = [(_UIVisualEffectHost *)self _cloneFilters:filterEntries];
     [v36 setFilters:v37];
   }
 
   v46 = v36;
-  v49 = v29;
+  v49 = filterEntries;
   v55 = 0u;
   v56 = 0u;
   v53 = 0u;
   v54 = 0u;
-  v38 = [v50 overlays];
-  v39 = [v38 countByEnumeratingWithState:&v53 objects:v66 count:16];
+  overlays = [v50 overlays];
+  v39 = [overlays countByEnumeratingWithState:&v53 objects:v66 count:16];
   if (v39)
   {
     v40 = v39;
@@ -644,11 +644,11 @@ LABEL_39:
       {
         if (*v54 != v41)
         {
-          objc_enumerationMutation(v38);
+          objc_enumerationMutation(overlays);
         }
 
         v43 = *(*(&v53 + 1) + 8 * k);
-        v44 = [(_UIVisualEffectHost *)self _viewForEntry:v43 fromCapturePool:v5 imagePool:v6 otherPool:v7];
+        v44 = [(_UIVisualEffectHost *)self _viewForEntry:v43 fromCapturePool:array imagePool:array2 otherPool:array3];
         [v44 setPrimaryCaptureGroup:self->_primaryCaptureGroup];
         v65 = v43;
         v45 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v65 count:1];
@@ -657,25 +657,25 @@ LABEL_39:
         [(NSMutableArray *)self->_views addObject:v44];
       }
 
-      v40 = [v38 countByEnumeratingWithState:&v53 objects:v66 count:16];
+      v40 = [overlays countByEnumeratingWithState:&v53 objects:v66 count:16];
     }
 
     while (v40);
   }
 }
 
-- (id)_cloneFilters:(id)a3
+- (id)_cloneFilters:(id)filters
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([v3 count])
+  filtersCopy = filters;
+  if ([filtersCopy count])
   {
     v4 = objc_opt_new();
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v5 = v3;
+    v5 = filtersCopy;
     v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v6)
     {
@@ -709,10 +709,10 @@ LABEL_39:
   return v4;
 }
 
-- (void)_iterateViews:(id)a3
+- (void)_iterateViews:(id)views
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  viewsCopy = views;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -735,13 +735,13 @@ LABEL_39:
         v10 = *(*(&v12 + 1) + 8 * i);
         do
         {
-          v4[2](v4, v10);
-          v11 = [v10 containedView];
+          viewsCopy[2](viewsCopy, v10);
+          containedView = [v10 containedView];
 
-          v10 = v11;
+          v10 = containedView;
         }
 
-        while (v11);
+        while (containedView);
       }
 
       v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -751,9 +751,9 @@ LABEL_39:
   }
 }
 
-- (void)_applyIdentityDescriptorEffectInvertingView:(id)a3
+- (void)_applyIdentityDescriptorEffectInvertingView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   WeakRetained = objc_loadWeakRetained(&self->_captureView);
   [WeakRetained applyIdentityFilterEffects];
 
@@ -761,15 +761,15 @@ LABEL_39:
   v7[1] = 3221225472;
   v7[2] = __67___UIVisualEffectHost__applyIdentityDescriptorEffectInvertingView___block_invoke;
   v7[3] = &unk_1E70F6DE8;
-  v8 = v4;
-  v6 = v4;
+  v8 = viewCopy;
+  v6 = viewCopy;
   [(_UIVisualEffectHost *)self _iterateViews:v7];
   [(_UIVisualEffectHost *)self _evaluateInPlaceFiltering];
 }
 
-- (void)_applyRequestedDescriptorEffectInvertingView:(id)a3
+- (void)_applyRequestedDescriptorEffectInvertingView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   if (dyld_program_sdk_at_least())
   {
     [(_UIVisualEffectViewParticipating *)self->_contentView setClipsToBounds:[(_UIVisualEffectDescriptor *)self->_currentEffectDescriptor contentViewRequiresClipping]];
@@ -782,33 +782,33 @@ LABEL_39:
   v7[1] = 3221225472;
   v7[2] = __68___UIVisualEffectHost__applyRequestedDescriptorEffectInvertingView___block_invoke;
   v7[3] = &unk_1E70F6DE8;
-  v8 = v4;
-  v6 = v4;
+  v8 = viewCopy;
+  v6 = viewCopy;
   [(_UIVisualEffectHost *)self _iterateViews:v7];
   [(_UIVisualEffectHost *)self _evaluateInPlaceFiltering];
 }
 
-- (void)_view:(id)a3 willMoveToWindow:(id)a4
+- (void)_view:(id)_view willMoveToWindow:(id)window
 {
-  v7 = a3;
-  if (a4)
+  _viewCopy = _view;
+  if (window)
   {
-    v6 = [(_UIVisualEffectDescriptor *)self->_currentEffectDescriptor textShouldRenderWithTintColor];
+    textShouldRenderWithTintColor = [(_UIVisualEffectDescriptor *)self->_currentEffectDescriptor textShouldRenderWithTintColor];
   }
 
   else
   {
-    v6 = 0;
+    textShouldRenderWithTintColor = 0;
   }
 
-  [(_UIVisualEffectHost *)self _updateView:v7 shouldDrawWithTintColor:v6];
+  [(_UIVisualEffectHost *)self _updateView:_viewCopy shouldDrawWithTintColor:textShouldRenderWithTintColor];
 }
 
-- (void)willGainDescendent:(id)a3
+- (void)willGainDescendent:(id)descendent
 {
   currentEffectDescriptor = self->_currentEffectDescriptor;
-  v5 = a3;
-  [(_UIVisualEffectHost *)self _updateView:v5 shouldDrawWithTintColor:[(_UIVisualEffectDescriptor *)currentEffectDescriptor textShouldRenderWithTintColor]];
+  descendentCopy = descendent;
+  [(_UIVisualEffectHost *)self _updateView:descendentCopy shouldDrawWithTintColor:[(_UIVisualEffectDescriptor *)currentEffectDescriptor textShouldRenderWithTintColor]];
 }
 
 - (NSString)description

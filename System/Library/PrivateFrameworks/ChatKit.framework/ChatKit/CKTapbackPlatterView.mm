@@ -2,31 +2,31 @@
 - (CGRect)tapbackContentContainerRect;
 - (UIColor)backgroundColor;
 - (void)layoutSubviews;
-- (void)setBackgroundColor:(id)a3;
+- (void)setBackgroundColor:(id)color;
 @end
 
 @implementation CKTapbackPlatterView
 
 - (UIColor)backgroundColor
 {
-  v2 = [*(&self->super.super.super.isa + OBJC_IVAR___CKTapbackPlatterView_contentBackground) backgroundColor];
+  backgroundColor = [*(&self->super.super.super.isa + OBJC_IVAR___CKTapbackPlatterView_contentBackground) backgroundColor];
 
-  return v2;
+  return backgroundColor;
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   v4 = *(&self->super.super.super.isa + OBJC_IVAR___CKTapbackPlatterView_contentBackground);
-  v5 = a3;
-  v6 = self;
+  colorCopy = color;
+  selfCopy = self;
   [v4 setBackgroundColor_];
-  [*(&v6->super.super.super.isa + OBJC_IVAR___CKTapbackPlatterView_mediumTail) setBackgroundColor_];
-  [*(&v6->super.super.super.isa + OBJC_IVAR___CKTapbackPlatterView_smallTail) setBackgroundColor_];
+  [*(&selfCopy->super.super.super.isa + OBJC_IVAR___CKTapbackPlatterView_mediumTail) setBackgroundColor_];
+  [*(&selfCopy->super.super.super.isa + OBJC_IVAR___CKTapbackPlatterView_smallTail) setBackgroundColor_];
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_190C18544();
 }
 

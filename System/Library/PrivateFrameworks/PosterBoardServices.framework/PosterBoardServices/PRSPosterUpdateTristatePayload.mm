@@ -1,49 +1,49 @@
 @interface PRSPosterUpdateTristatePayload
-- (PRSPosterUpdateTristatePayload)initWithCoder:(id)a3;
-- (PRSPosterUpdateTristatePayload)initWithState:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PRSPosterUpdateTristatePayload)initWithCoder:(id)coder;
+- (PRSPosterUpdateTristatePayload)initWithState:(id)state;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)rawValue;
 @end
 
 @implementation PRSPosterUpdateTristatePayload
 
-- (PRSPosterUpdateTristatePayload)initWithState:(id)a3
+- (PRSPosterUpdateTristatePayload)initWithState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v9.receiver = self;
   v9.super_class = PRSPosterUpdateTristatePayload;
-  v5 = [(PRSPosterUpdatePayload *)&v9 _init];
-  if (v5)
+  _init = [(PRSPosterUpdatePayload *)&v9 _init];
+  if (_init)
   {
-    v6 = [v4 copy];
-    tristate = v5->_tristate;
-    v5->_tristate = v6;
+    v6 = [stateCopy copy];
+    tristate = _init->_tristate;
+    _init->_tristate = v6;
   }
 
-  return v5;
+  return _init;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   tristate = self->_tristate;
 
   return [v4 initWithState:tristate];
 }
 
-- (PRSPosterUpdateTristatePayload)initWithCoder:(id)a3
+- (PRSPosterUpdateTristatePayload)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(PRSPosterUpdatePayload *)self _init];
-  if (v5)
+  coderCopy = coder;
+  _init = [(PRSPosterUpdatePayload *)self _init];
+  if (_init)
   {
     v6 = objc_opt_self();
-    v7 = [v4 decodeObjectOfClass:v6 forKey:@"_tristate"];
-    tristate = v5->_tristate;
-    v5->_tristate = v7;
+    v7 = [coderCopy decodeObjectOfClass:v6 forKey:@"_tristate"];
+    tristate = _init->_tristate;
+    _init->_tristate = v7;
   }
 
-  return v5;
+  return _init;
 }
 
 - (id)rawValue

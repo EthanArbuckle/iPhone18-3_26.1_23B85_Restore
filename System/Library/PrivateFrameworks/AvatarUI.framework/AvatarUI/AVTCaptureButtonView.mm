@@ -1,15 +1,15 @@
 @interface AVTCaptureButtonView
-- (AVTCaptureButtonView)initWithFrame:(CGRect)a3;
+- (AVTCaptureButtonView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation AVTCaptureButtonView
 
-- (AVTCaptureButtonView)initWithFrame:(CGRect)a3
+- (AVTCaptureButtonView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = AVTCaptureButtonView;
-  v3 = [(AVTCaptureButtonView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(AVTCaptureButtonView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [MEMORY[0x1E69DC738] buttonWithType:1];
@@ -28,8 +28,8 @@
   v13.receiver = self;
   v13.super_class = AVTCaptureButtonView;
   [(AVTCaptureButtonView *)&v13 layoutSubviews];
-  v3 = [(AVTCaptureButtonView *)self button];
-  [v3 frame];
+  button = [(AVTCaptureButtonView *)self button];
+  [button frame];
   [(AVTCaptureButtonView *)self bounds];
   UIRectCenteredIntegralRect();
   v5 = v4;
@@ -37,8 +37,8 @@
   v9 = v8;
   v11 = v10;
 
-  v12 = [(AVTCaptureButtonView *)self button];
-  [v12 setFrame:{v5, v7, v9, v11}];
+  button2 = [(AVTCaptureButtonView *)self button];
+  [button2 setFrame:{v5, v7, v9, v11}];
 }
 
 @end

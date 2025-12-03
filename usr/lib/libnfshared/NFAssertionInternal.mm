@@ -1,11 +1,11 @@
 @interface NFAssertionInternal
-- (BOOL)isEqual:(id)a3;
-- (NFAssertionInternal)initWithCoder:(id)a3;
-- (NFAssertionInternal)initWithDictionary:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (NFAssertionInternal)initWithCoder:(id)coder;
+- (NFAssertionInternal)initWithDictionary:(id)dictionary;
 - (id)description;
 - (id)sessionID;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NFAssertionInternal
@@ -26,21 +26,21 @@
   return objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], a2, @"Assertion Type = %@ for PID %d, taken at %@", v3, self->_pid, self->_assertionTimeString);
 }
 
-- (NFAssertionInternal)initWithDictionary:(id)a3
+- (NFAssertionInternal)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v22.receiver = self;
   v22.super_class = NFAssertionInternal;
   v6 = [(NFAssertionInternal *)&v22 init];
   if (v6)
   {
-    v7 = objc_msgSend_objectForKeyedSubscript_(v4, v5, @"NFAssertionType");
+    v7 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v5, @"NFAssertionType");
     v6->_assertionType = objc_msgSend_unsignedIntegerValue(v7, v8, v9);
 
-    v11 = objc_msgSend_objectForKeyedSubscript_(v4, v10, @"NFAssertionPID");
+    v11 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v10, @"NFAssertionPID");
     v6->_pid = objc_msgSend_intValue(v11, v12, v13);
 
-    v15 = objc_msgSend_objectForKeyedSubscript_(v4, v14, @"NFAssertionTime");
+    v15 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v14, @"NFAssertionTime");
     assertionTime = v6->_assertionTime;
     v6->_assertionTime = v15;
 
@@ -52,23 +52,23 @@
   return v6;
 }
 
-- (NFAssertionInternal)initWithCoder:(id)a3
+- (NFAssertionInternal)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = NFAssertionInternal;
   v6 = [(NFAssertionInternal *)&v17 init];
   if (v6)
   {
-    v6->_assertionType = objc_msgSend_decodeIntegerForKey_(v4, v5, @"NFAssertionType");
-    v6->_pid = objc_msgSend_decodeInt32ForKey_(v4, v7, @"NFAssertionPID");
+    v6->_assertionType = objc_msgSend_decodeIntegerForKey_(coderCopy, v5, @"NFAssertionType");
+    v6->_pid = objc_msgSend_decodeInt32ForKey_(coderCopy, v7, @"NFAssertionPID");
     v8 = objc_opt_class();
-    v10 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v9, v8, @"NFAssertionTime");
+    v10 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v9, v8, @"NFAssertionTime");
     assertionTime = v6->_assertionTime;
     v6->_assertionTime = v10;
 
     v12 = objc_opt_class();
-    v14 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v13, v12, @"NFAssertionTimeString");
+    v14 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v13, v12, @"NFAssertionTimeString");
     assertionTimeString = v6->_assertionTimeString;
     v6->_assertionTimeString = v14;
   }
@@ -76,14 +76,14 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   assertionType = self->_assertionType;
-  v9 = a3;
-  objc_msgSend_encodeInteger_forKey_(v9, v5, assertionType, @"NFAssertionType");
-  objc_msgSend_encodeInt32_forKey_(v9, v6, self->_pid, @"NFAssertionPID");
-  objc_msgSend_encodeObject_forKey_(v9, v7, self->_assertionTime, @"NFAssertionTime");
-  objc_msgSend_encodeObject_forKey_(v9, v8, self->_assertionTimeString, @"NFAssertionTimeString");
+  coderCopy = coder;
+  objc_msgSend_encodeInteger_forKey_(coderCopy, v5, assertionType, @"NFAssertionType");
+  objc_msgSend_encodeInt32_forKey_(coderCopy, v6, self->_pid, @"NFAssertionPID");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v7, self->_assertionTime, @"NFAssertionTime");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v8, self->_assertionTimeString, @"NFAssertionTimeString");
 }
 
 - (id)sessionID
@@ -104,10 +104,10 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     isEqual = 1;
   }
@@ -115,10 +115,10 @@
   else
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && (assertionType = self->_assertionType, assertionType == objc_msgSend_assertionType(v4, v5, v6)) && (pid = self->_pid, pid == objc_msgSend_pid(v4, v8, v9)))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && (assertionType = self->_assertionType, assertionType == objc_msgSend_assertionType(equalCopy, v5, v6)) && (pid = self->_pid, pid == objc_msgSend_pid(equalCopy, v8, v9)))
     {
       assertionTime = self->_assertionTime;
-      v14 = objc_msgSend_assertionTime(v4, v11, v12);
+      v14 = objc_msgSend_assertionTime(equalCopy, v11, v12);
       isEqual = objc_msgSend_isEqual_(assertionTime, v15, v14);
     }
 

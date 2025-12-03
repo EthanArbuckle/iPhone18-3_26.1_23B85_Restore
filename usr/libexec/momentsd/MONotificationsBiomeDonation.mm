@@ -1,21 +1,21 @@
 @interface MONotificationsBiomeDonation
-+ (BOOL)donateNotificationReport:(id)a3 error:(id *)a4;
++ (BOOL)donateNotificationReport:(id)report error:(id *)error;
 + (id)sharedDateFormatter;
-+ (int)convertAnalyticsDeviceTypeToBiomeDeviceType:(unint64_t)a3;
++ (int)convertAnalyticsDeviceTypeToBiomeDeviceType:(unint64_t)type;
 @end
 
 @implementation MONotificationsBiomeDonation
 
-+ (int)convertAnalyticsDeviceTypeToBiomeDeviceType:(unint64_t)a3
++ (int)convertAnalyticsDeviceTypeToBiomeDeviceType:(unint64_t)type
 {
-  if (a3 - 1 > 4)
+  if (type - 1 > 4)
   {
     return 0;
   }
 
   else
   {
-    return dword_100323010[a3 - 1];
+    return dword_100323010[type - 1];
   }
 }
 
@@ -42,19 +42,19 @@ void __51__MONotificationsBiomeDonation_sharedDateFormatter__block_invoke(id a1)
   [v3 setDateFormat:@"yyyy-MM-dd HH:mm"];
 }
 
-+ (BOOL)donateNotificationReport:(id)a3 error:(id *)a4
++ (BOOL)donateNotificationReport:(id)report error:(id *)error
 {
-  v68 = a3;
+  reportCopy = report;
   v4 = _mo_log_facility_get_os_log(&MOLogFacilityNotificationReporter);
   v5 = v4;
-  if (!v68)
+  if (!reportCopy)
   {
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
     {
       [MONotificationsBiomeDonation donateNotificationReport:v5 error:?];
     }
 
-    if (a4)
+    if (error)
     {
       v72[0] = NSLocalizedDescriptionKey;
       v72[1] = NSLocalizedFailureReasonErrorKey;
@@ -62,7 +62,7 @@ void __51__MONotificationsBiomeDonation_sharedDateFormatter__block_invoke(id a1)
       v73[1] = @"The report parameter cannot be nil";
       v64 = [NSDictionary dictionaryWithObjects:v73 forKeys:v72 count:2];
       [NSError errorWithDomain:@"MONotificationsBiomeDonation" code:1001 userInfo:v64];
-      *a4 = v6 = 0;
+      *error = v6 = 0;
     }
 
     else
@@ -79,12 +79,12 @@ void __51__MONotificationsBiomeDonation_sharedDateFormatter__block_invoke(id a1)
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "biome donation happening", buf, 2u);
   }
 
-  v63 = [a1 sharedDateFormatter];
-  v54 = [v68 objectForKeyedSubscript:@"reporterUUID"];
-  v60 = [v68 objectForKeyedSubscript:@"reporterWritingDate"];
+  sharedDateFormatter = [self sharedDateFormatter];
+  v54 = [reportCopy objectForKeyedSubscript:@"reporterUUID"];
+  v60 = [reportCopy objectForKeyedSubscript:@"reporterWritingDate"];
   if (v60)
   {
-    v53 = [v63 dateFromString:?];
+    v53 = [sharedDateFormatter dateFromString:?];
   }
 
   else
@@ -92,10 +92,10 @@ void __51__MONotificationsBiomeDonation_sharedDateFormatter__block_invoke(id a1)
     v53 = 0;
   }
 
-  v57 = [v68 objectForKeyedSubscript:@"isSignificantLocationEnabled"];
-  v56 = [v68 objectForKeyedSubscript:@"isSystemNotificationsEnabled"];
-  v55 = [v68 objectForKeyedSubscript:@"isAppNotificationsEnabled"];
-  v7 = [v68 objectForKeyedSubscript:@"maxAvailabilityProbability"];
+  v57 = [reportCopy objectForKeyedSubscript:@"isSignificantLocationEnabled"];
+  v56 = [reportCopy objectForKeyedSubscript:@"isSystemNotificationsEnabled"];
+  v55 = [reportCopy objectForKeyedSubscript:@"isAppNotificationsEnabled"];
+  v7 = [reportCopy objectForKeyedSubscript:@"maxAvailabilityProbability"];
   v59 = v7;
   if (v7)
   {
@@ -108,10 +108,10 @@ void __51__MONotificationsBiomeDonation_sharedDateFormatter__block_invoke(id a1)
     v51 = 0;
   }
 
-  v58 = [v68 objectForKeyedSubscript:@"maxAvailabilityProbabilityDate"];
+  v58 = [reportCopy objectForKeyedSubscript:@"maxAvailabilityProbabilityDate"];
   if (v58)
   {
-    v52 = [v63 dateFromString:?];
+    v52 = [sharedDateFormatter dateFromString:?];
   }
 
   else
@@ -125,9 +125,9 @@ void __51__MONotificationsBiomeDonation_sharedDateFormatter__block_invoke(id a1)
     v10 = [NSString stringWithFormat:@"availabilityProbability%02ld", i];
     v11 = [NSString stringWithFormat:@"predictionDate%02ld", i];
     v12 = [NSString stringWithFormat:@"locationFilterProbability%02ld", i];
-    v13 = [v68 objectForKeyedSubscript:v10];
-    v14 = [v68 objectForKeyedSubscript:v12];
-    v15 = [v68 objectForKeyedSubscript:v11];
+    v13 = [reportCopy objectForKeyedSubscript:v10];
+    v14 = [reportCopy objectForKeyedSubscript:v12];
+    v15 = [reportCopy objectForKeyedSubscript:v11];
     v16 = v15;
     if (v13 || v14 || v15)
     {
@@ -152,7 +152,7 @@ LABEL_23:
           if (v16)
           {
 LABEL_24:
-            v20 = [v63 dateFromString:v16];
+            v20 = [sharedDateFormatter dateFromString:v16];
 LABEL_28:
             v21 = [[BMMomentsNotificationsPrediction alloc] initWithVailabilityProbability:v66 locationFilterProbability:v19 predictionDate:v20];
             [v65 addObject:v21];
@@ -178,10 +178,10 @@ LABEL_27:
 LABEL_29:
   }
 
-  v67 = [v68 objectForKeyedSubscript:@"proposedFireDate"];
+  v67 = [reportCopy objectForKeyedSubscript:@"proposedFireDate"];
   if (v67)
   {
-    v50 = [v63 dateFromString:?];
+    v50 = [sharedDateFormatter dateFromString:?];
   }
 
   else
@@ -189,22 +189,22 @@ LABEL_29:
     v50 = 0;
   }
 
-  v22 = [v68 objectForKeyedSubscript:@"proposedFireDateSource"];
+  v22 = [reportCopy objectForKeyedSubscript:@"proposedFireDateSource"];
   v23 = v22;
   if (v22)
   {
-    v24 = [v22 integerValue];
+    integerValue = [v22 integerValue];
   }
 
   else
   {
-    v24 = 0;
+    integerValue = 0;
   }
 
-  v25 = [v68 objectForKeyedSubscript:@"fireAlarmDate"];
+  v25 = [reportCopy objectForKeyedSubscript:@"fireAlarmDate"];
   if (v25)
   {
-    v47 = [v63 dateFromString:v25];
+    v47 = [sharedDateFormatter dateFromString:v25];
   }
 
   else
@@ -212,13 +212,13 @@ LABEL_29:
     v47 = 0;
   }
 
-  v49 = [v68 objectForKeyedSubscript:@"fireTimerAlarmErrorDescription"];
-  v48 = [v68 objectForKeyedSubscript:@"fireTimerAlarmErrorCode"];
-  v26 = [v68 objectForKeyedSubscript:@"fireTimerAlarmErrorDomain"];
+  v49 = [reportCopy objectForKeyedSubscript:@"fireTimerAlarmErrorDescription"];
+  v48 = [reportCopy objectForKeyedSubscript:@"fireTimerAlarmErrorCode"];
+  v26 = [reportCopy objectForKeyedSubscript:@"fireTimerAlarmErrorDomain"];
   v27 = +[MOPlatformInfo extractHardwareAndSoftwareMetadata];
   v28 = [v27 objectForKey:@"kMODeviceClass"];
 
-  v29 = [a1 convertAnalyticsDeviceTypeToBiomeDeviceType:{+[MOOnboardingAnalyticsUtilities convertMGDeviceClassToAnalyticsDeviceType:](MOOnboardingAnalyticsUtilities, "convertMGDeviceClassToAnalyticsDeviceType:", v28)}];
+  v29 = [self convertAnalyticsDeviceTypeToBiomeDeviceType:{+[MOOnboardingAnalyticsUtilities convertMGDeviceClassToAnalyticsDeviceType:](MOOnboardingAnalyticsUtilities, "convertMGDeviceClassToAnalyticsDeviceType:", v28)}];
   v30 = [BMMomentsNotifications alloc];
   v31 = +[NSDate date];
   v32 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", +[MOPlatformInfo isDNUEnabled]);
@@ -226,19 +226,19 @@ LABEL_29:
   LODWORD(v45) = 0;
   LODWORD(v44) = 0;
   LODWORD(v43) = 0;
-  LODWORD(v42) = v24;
+  LODWORD(v42) = integerValue;
   v33 = [v30 initWithReporterIdentification:v54 reporterWritingDate:v53 isSignificantLocationEnabled:v57 isSystemNotificationsEnabled:v56 isAppNotificationsEnabled:v55 predictionTuple:v65 maxAvailabilityProbability:v51 maxAvailabilityProbabilityDate:v52 proposedFireDate:v50 proposedFireDateSource:v42 realTimeCheckHandlerRetryDate:0 realTimeCheckHandlerFailure:0 realTimeCheckHandlerErrorDescription:0 realTimeCheckHandlerErrorCode:0 realTimeAlarmErrorDomain:0 fireAlarmDate:v47 fireTimerAlarmErrorDescription:v49 fireTimerAlarmErrorCode:v48 fireTimerAlarmErrorDomain:v26 realTimeCheckRejected:0 realTimeCheckIsTraveling:0 realTimeCheckIsPlaceEligible:0 realTimeCheckIsInVisit:0 realTimeCheckIsInWorkoutHealthKit:0 realTimeCheckIsInWorkoutMotion:0 realTimeCheckIsJournaling:0 realTimeCheckIsAtHome:0 eventType:v43 eventTime:v31 AttemptSuccessful:0 contentType:v44 suggestionIdentifier:0 bundleInterfaceType:v45 bundleGoodnessScore:0 deviceId:0 deviceType:v46 isDevicePrimary:0 journalingAppFirstParty:0 schedulingState:0 scheduleDeliverySetting:0 isOnDefaultSchedule:v32 isDNUGated:?];
 
   v34 = BiomeLibrary();
-  v35 = [v34 Moments];
-  v36 = [v35 Events];
-  v37 = [v36 Notifications];
-  v38 = [v37 source];
+  moments = [v34 Moments];
+  events = [moments Events];
+  notifications = [events Notifications];
+  source = [notifications source];
 
-  v6 = v38 != 0;
-  if (v38)
+  v6 = source != 0;
+  if (source)
   {
-    [v38 sendEvent:v33];
+    [source sendEvent:v33];
     v39 = _mo_log_facility_get_os_log(&MOLogFacilityNotificationReporter);
     if (os_log_type_enabled(v39, OS_LOG_TYPE_INFO))
     {
@@ -257,14 +257,14 @@ LABEL_46:
       [MONotificationsBiomeDonation donateNotificationReport:v40 error:?];
     }
 
-    if (a4)
+    if (error)
     {
       v70[0] = NSLocalizedDescriptionKey;
       v70[1] = NSLocalizedFailureReasonErrorKey;
       v71[0] = @"Biome Notifications source not available";
       v71[1] = @"BMLibrary.Moments.Events.Notifications.source returned nil";
       v39 = [NSDictionary dictionaryWithObjects:v71 forKeys:v70 count:2];
-      *a4 = [NSError errorWithDomain:@"MONotificationsBiomeDonation" code:1002 userInfo:v39];
+      *error = [NSError errorWithDomain:@"MONotificationsBiomeDonation" code:1002 userInfo:v39];
       goto LABEL_46;
     }
   }

@@ -7,7 +7,7 @@
 
 - (unint64_t)String
 {
-  result = OUTLINED_FUNCTION_8_1(a1);
+  result = OUTLINED_FUNCTION_8_1(self);
   if (!result)
   {
     OUTLINED_FUNCTION_37_0();

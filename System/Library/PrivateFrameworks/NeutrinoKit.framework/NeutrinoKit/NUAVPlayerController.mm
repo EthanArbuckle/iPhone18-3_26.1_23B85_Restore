@@ -1,37 +1,37 @@
 @interface NUAVPlayerController
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)currentTime;
-- (BOOL)prepareWithAVAsset:(id)a3 videoComposition:(id)a4 audioMix:(id)a5 loopsVideo:(BOOL)a6 seekToTime:(id *)a7;
+- (BOOL)prepareWithAVAsset:(id)asset videoComposition:(id)composition audioMix:(id)mix loopsVideo:(BOOL)video seekToTime:(id *)time;
 - (NUAVPlayerController)init;
 - (NUAVPlayerControllerDelegate)delegate;
-- (id)_loopingPlayerItemWithVideoAsset:(id)a3 videoComposition:(id)a4 audioMix:(id)a5;
-- (id)_playerItemWithVideoAsset:(id)a3 videoComposition:(id)a4 audioMix:(id)a5;
-- (id)_playerItemsWithVideoAsset:(id)a3 videoComposition:(id)a4 audioMix:(id)a5 loopsVideo:(BOOL)a6;
-- (void)_addPlayerItemKVO:(id)a3;
+- (id)_loopingPlayerItemWithVideoAsset:(id)asset videoComposition:(id)composition audioMix:(id)mix;
+- (id)_playerItemWithVideoAsset:(id)asset videoComposition:(id)composition audioMix:(id)mix;
+- (id)_playerItemsWithVideoAsset:(id)asset videoComposition:(id)composition audioMix:(id)mix loopsVideo:(BOOL)video;
+- (void)_addPlayerItemKVO:(id)o;
 - (void)_addPlayerKVO;
 - (void)_addTimeObserver;
-- (void)_notifyExternalPlaybackChange:(BOOL)a3;
-- (void)_notifyPlaybackRateChange:(float)a3;
-- (void)_notifyPlaybackTimeChange:(id *)a3;
-- (void)_notifyPlayerStatusChange:(int64_t)a3;
-- (void)_removePlayerItemKVO:(id)a3 removeFromArray:(BOOL)a4;
+- (void)_notifyExternalPlaybackChange:(BOOL)change;
+- (void)_notifyPlaybackRateChange:(float)change;
+- (void)_notifyPlaybackTimeChange:(id *)change;
+- (void)_notifyPlayerStatusChange:(int64_t)change;
+- (void)_removePlayerItemKVO:(id)o removeFromArray:(BOOL)array;
 - (void)_removePlayerKVO;
 - (void)_removeTimeObserver;
-- (void)_setRate:(float)a3;
+- (void)_setRate:(float)rate;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)playerItemDidReachEnd:(id)a3;
-- (void)playerItemFailedToPlayToEnd:(id)a3;
-- (void)seek:(id *)a3 toleranceBefore:(id *)a4 toleranceAfter:(id *)a5;
-- (void)seek:(id *)a3 toleranceBefore:(id *)a4 toleranceAfter:(id *)a5 forceSeek:(BOOL)a6;
-- (void)seek:(id *)a3 toleranceBefore:(id *)a4 toleranceAfter:(id *)a5 forceSeek:(BOOL)a6 completionHandler:(id)a7;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)playerItemDidReachEnd:(id)end;
+- (void)playerItemFailedToPlayToEnd:(id)end;
+- (void)seek:(id *)seek toleranceBefore:(id *)before toleranceAfter:(id *)after;
+- (void)seek:(id *)seek toleranceBefore:(id *)before toleranceAfter:(id *)after forceSeek:(BOOL)forceSeek;
+- (void)seek:(id *)seek toleranceBefore:(id *)before toleranceAfter:(id *)after forceSeek:(BOOL)forceSeek completionHandler:(id)handler;
 - (void)seekBack;
 - (void)seekForward;
-- (void)setLoopsVideo:(BOOL)a3;
-- (void)step:(int64_t)a3;
-- (void)updateAppliesPerFrameHDRDisplayMetadata:(BOOL)a3;
-- (void)updateAudioMix:(id)a3;
-- (void)updateVideoComposition:(id)a3;
-- (void)updateWithVideoPrepareNodeFromVideoComposition:(id)a3;
+- (void)setLoopsVideo:(BOOL)video;
+- (void)step:(int64_t)step;
+- (void)updateAppliesPerFrameHDRDisplayMetadata:(BOOL)metadata;
+- (void)updateAudioMix:(id)mix;
+- (void)updateVideoComposition:(id)composition;
+- (void)updateWithVideoPrepareNodeFromVideoComposition:(id)composition;
 @end
 
 @implementation NUAVPlayerController
@@ -43,10 +43,10 @@
   return WeakRetained;
 }
 
-- (void)_addPlayerItemKVO:(id)a3
+- (void)_addPlayerItemKVO:(id)o
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  oCopy = o;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -67,9 +67,9 @@ LABEL_3:
       }
 
       v10 = *(*(&v15 + 1) + 8 * v9);
-      v11 = [v10 playerItem];
+      playerItem = [v10 playerItem];
 
-      if (v11 == v4)
+      if (playerItem == oCopy)
       {
         break;
       }
@@ -100,27 +100,27 @@ LABEL_9:
   }
 
   v12 = objc_opt_new();
-  [v12 setPlayerItem:v4];
+  [v12 setPlayerItem:oCopy];
   [(NSMutableArray *)self->_playerItemObservations addObject:v12];
 LABEL_12:
   if (([v12 registeredKVO] & 1) == 0)
   {
-    [v4 addObserver:self forKeyPath:@"status" options:3 context:kPlayerItemStatusCtx];
-    v13 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v13 addObserver:self selector:sel_playerItemDidReachEnd_ name:*MEMORY[0x277CE60C0] object:v4];
+    [oCopy addObserver:self forKeyPath:@"status" options:3 context:kPlayerItemStatusCtx];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:self selector:sel_playerItemDidReachEnd_ name:*MEMORY[0x277CE60C0] object:oCopy];
 
-    v14 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v14 addObserver:self selector:sel_playerItemFailedToPlayToEnd_ name:*MEMORY[0x277CE60D0] object:v4];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:self selector:sel_playerItemFailedToPlayToEnd_ name:*MEMORY[0x277CE60D0] object:oCopy];
 
     [v12 setRegisteredKVO:1];
   }
 }
 
-- (void)_removePlayerItemKVO:(id)a3 removeFromArray:(BOOL)a4
+- (void)_removePlayerItemKVO:(id)o removeFromArray:(BOOL)array
 {
-  v4 = a4;
+  arrayCopy = array;
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  oCopy = o;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -141,9 +141,9 @@ LABEL_12:
         }
 
         v12 = *(*(&v17 + 1) + 8 * i);
-        v13 = [v12 playerItem];
+        playerItem = [v12 playerItem];
 
-        if (v13 == v6)
+        if (playerItem == oCopy)
         {
           v14 = v12;
 
@@ -151,15 +151,15 @@ LABEL_12:
           {
             if ([v14 registeredKVO])
             {
-              [v6 removeObserver:self forKeyPath:@"status" context:kPlayerItemStatusCtx];
+              [oCopy removeObserver:self forKeyPath:@"status" context:kPlayerItemStatusCtx];
               [v14 setRegisteredKVO:0];
-              v15 = [MEMORY[0x277CCAB98] defaultCenter];
-              [v15 removeObserver:self name:*MEMORY[0x277CE60C0] object:v6];
+              defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+              [defaultCenter removeObserver:self name:*MEMORY[0x277CE60C0] object:oCopy];
 
-              v16 = [MEMORY[0x277CCAB98] defaultCenter];
-              [v16 removeObserver:self name:*MEMORY[0x277CE60D0] object:v6];
+              defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+              [defaultCenter2 removeObserver:self name:*MEMORY[0x277CE60D0] object:oCopy];
 
-              if (v4)
+              if (arrayCopy)
               {
                 [(NSMutableArray *)self->_playerItemObservations removeObject:v14];
               }
@@ -188,17 +188,17 @@ LABEL_14:
 {
   if (!self->_playerControllerKVOFlags.registeredPlayer)
   {
-    v3 = [(NUAVPlayerController *)self player];
-    [v3 addObserver:self forKeyPath:@"rate" options:3 context:kPlayerRateCtx];
+    player = [(NUAVPlayerController *)self player];
+    [player addObserver:self forKeyPath:@"rate" options:3 context:kPlayerRateCtx];
 
-    v4 = [(NUAVPlayerController *)self player];
-    [v4 addObserver:self forKeyPath:@"status" options:3 context:kPlayerStatusCtx];
+    player2 = [(NUAVPlayerController *)self player];
+    [player2 addObserver:self forKeyPath:@"status" options:3 context:kPlayerStatusCtx];
 
-    v5 = [(NUAVPlayerController *)self player];
-    [v5 addObserver:self forKeyPath:@"currentItem" options:3 context:kPlayerCurrentItemCtx];
+    player3 = [(NUAVPlayerController *)self player];
+    [player3 addObserver:self forKeyPath:@"currentItem" options:3 context:kPlayerCurrentItemCtx];
 
-    v6 = [(NUAVPlayerController *)self player];
-    [v6 addObserver:self forKeyPath:@"externalPlaybackActive" options:3 context:kExternalPlaybackCtx];
+    player4 = [(NUAVPlayerController *)self player];
+    [player4 addObserver:self forKeyPath:@"externalPlaybackActive" options:3 context:kExternalPlaybackCtx];
 
     self->_playerControllerKVOFlags.registeredPlayer = 1;
   }
@@ -208,50 +208,50 @@ LABEL_14:
 {
   if (self->_playerControllerKVOFlags.registeredPlayer)
   {
-    v3 = [(NUAVPlayerController *)self player];
-    [v3 removeObserver:self forKeyPath:@"rate" context:kPlayerRateCtx];
+    player = [(NUAVPlayerController *)self player];
+    [player removeObserver:self forKeyPath:@"rate" context:kPlayerRateCtx];
 
-    v4 = [(NUAVPlayerController *)self player];
-    [v4 removeObserver:self forKeyPath:@"status" context:kPlayerStatusCtx];
+    player2 = [(NUAVPlayerController *)self player];
+    [player2 removeObserver:self forKeyPath:@"status" context:kPlayerStatusCtx];
 
-    v5 = [(NUAVPlayerController *)self player];
-    [v5 removeObserver:self forKeyPath:@"currentItem" context:kPlayerCurrentItemCtx];
+    player3 = [(NUAVPlayerController *)self player];
+    [player3 removeObserver:self forKeyPath:@"currentItem" context:kPlayerCurrentItemCtx];
 
-    v6 = [(NUAVPlayerController *)self player];
-    [v6 removeObserver:self forKeyPath:@"externalPlaybackActive" context:kExternalPlaybackCtx];
+    player4 = [(NUAVPlayerController *)self player];
+    [player4 removeObserver:self forKeyPath:@"externalPlaybackActive" context:kExternalPlaybackCtx];
 
     self->_playerControllerKVOFlags.registeredPlayer = 0;
   }
 }
 
-- (void)_setRate:(float)a3
+- (void)_setRate:(float)rate
 {
-  v5 = [(NUAVPlayerController *)self player];
-  [v5 rate];
-  if (*&v4 != a3)
+  player = [(NUAVPlayerController *)self player];
+  [player rate];
+  if (*&v4 != rate)
   {
-    *&v4 = a3;
-    [v5 setRate:v4];
+    *&v4 = rate;
+    [player setRate:v4];
   }
 }
 
-- (void)playerItemFailedToPlayToEnd:(id)a3
+- (void)playerItemFailedToPlayToEnd:(id)end
 {
-  v4 = [a3 userInfo];
-  v6 = [v4 objectForKey:*MEMORY[0x277CE60C8]];
+  userInfo = [end userInfo];
+  v6 = [userInfo objectForKey:*MEMORY[0x277CE60C8]];
 
-  v5 = [(NUAVPlayerController *)self delegate];
-  [v5 playerControllerFailedToPlayToEnd:self error:v6];
+  delegate = [(NUAVPlayerController *)self delegate];
+  [delegate playerControllerFailedToPlayToEnd:self error:v6];
 }
 
-- (void)playerItemDidReachEnd:(id)a3
+- (void)playerItemDidReachEnd:(id)end
 {
-  v4 = [(NUAVPlayerController *)self player];
-  v5 = [v4 currentItem];
-  v6 = v5;
-  if (v5)
+  player = [(NUAVPlayerController *)self player];
+  currentItem = [player currentItem];
+  v6 = currentItem;
+  if (currentItem)
   {
-    [v5 duration];
+    [currentItem duration];
   }
 
   else
@@ -261,16 +261,16 @@ LABEL_14:
 
   Seconds = CMTimeGetSeconds(&time);
 
-  v8 = [(NUAVPlayerController *)self delegate];
-  [v8 playerControllerDidFinishPlaying:self duration:Seconds];
+  delegate = [(NUAVPlayerController *)self delegate];
+  [delegate playerControllerDidFinishPlaying:self duration:Seconds];
 }
 
 - (void)_removeTimeObserver
 {
   if (self->_playerTimeObserver)
   {
-    v3 = [(NUAVPlayerController *)self player];
-    [v3 removeTimeObserver:self->_playerTimeObserver];
+    player = [(NUAVPlayerController *)self player];
+    [player removeTimeObserver:self->_playerTimeObserver];
 
     playerTimeObserver = self->_playerTimeObserver;
     self->_playerTimeObserver = 0;
@@ -279,9 +279,9 @@ LABEL_14:
 
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)currentTime
 {
-  v5 = [(NUAVPlayerController *)self player];
-  v6 = v5;
-  if (!v5)
+  player = [(NUAVPlayerController *)self player];
+  v6 = player;
+  if (!player)
   {
     v8 = MEMORY[0x277CC0898];
     *&retstr->var0 = *MEMORY[0x277CC0898];
@@ -292,7 +292,7 @@ LABEL_14:
   retstr->var0 = 0;
   *&retstr->var1 = 0;
   retstr->var3 = 0;
-  [v5 currentTime];
+  [player currentTime];
   if (retstr->var2)
   {
     v10 = *&retstr->var0;
@@ -311,16 +311,16 @@ LABEL_5:
 {
   if (!self->_playerTimeObserver)
   {
-    v4 = [(NUAVPlayerController *)self player];
+    player = [(NUAVPlayerController *)self player];
 
-    if (!v4)
+    if (!player)
     {
-      v9 = [MEMORY[0x277CCA890] currentHandler];
-      [v9 handleFailureInMethod:a2 object:self file:@"NUAVPlayerController.m" lineNumber:599 description:@"We should have an AVPlayer object here"];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"NUAVPlayerController.m" lineNumber:599 description:@"We should have an AVPlayer object here"];
     }
 
-    v5 = [(NUAVPlayerController *)self player];
-    objc_initWeak(&location, v5);
+    player2 = [(NUAVPlayerController *)self player];
+    objc_initWeak(&location, player2);
 
     objc_copyWeak(&to, &self->_delegate);
     objc_initWeak(&from, self);
@@ -381,36 +381,36 @@ void __40__NUAVPlayerController__addTimeObserver__block_invoke(uint64_t a1, uint
   }
 }
 
-- (void)_notifyExternalPlaybackChange:(BOOL)a3
+- (void)_notifyExternalPlaybackChange:(BOOL)change
 {
   observatory = self->_observatory;
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __54__NUAVPlayerController__notifyExternalPlaybackChange___block_invoke;
   v4[3] = &__block_descriptor_33_e14_v16__0___v___8l;
-  v5 = a3;
+  changeCopy = change;
   [(NUObservatory *)observatory notifyAllObserversForKey:3 withBlock:v4];
 }
 
-- (void)_notifyPlayerStatusChange:(int64_t)a3
+- (void)_notifyPlayerStatusChange:(int64_t)change
 {
   observatory = self->_observatory;
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __50__NUAVPlayerController__notifyPlayerStatusChange___block_invoke;
   v4[3] = &__block_descriptor_40_e14_v16__0___v___8l;
-  v4[4] = a3;
+  v4[4] = change;
   [(NUObservatory *)observatory notifyAllObserversForKey:2 withBlock:v4];
 }
 
-- (void)_notifyPlaybackTimeChange:(id *)a3
+- (void)_notifyPlaybackTimeChange:(id *)change
 {
   observatory = self->_observatory;
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __50__NUAVPlayerController__notifyPlaybackTimeChange___block_invoke;
   v4[3] = &__block_descriptor_56_e14_v16__0___v___8l;
-  v5 = *a3;
+  v5 = *change;
   [(NUObservatory *)observatory notifyAllObserversForKey:1 withBlock:v4];
 }
 
@@ -422,36 +422,36 @@ uint64_t __50__NUAVPlayerController__notifyPlaybackTimeChange___block_invoke(uin
   return v2(a2, &v4);
 }
 
-- (void)_notifyPlaybackRateChange:(float)a3
+- (void)_notifyPlaybackRateChange:(float)change
 {
   observatory = self->_observatory;
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __50__NUAVPlayerController__notifyPlaybackRateChange___block_invoke;
   v4[3] = &__block_descriptor_36_e14_v16__0___v___8l;
-  v5 = a3;
+  changeCopy = change;
   [(NUObservatory *)observatory notifyAllObserversForKey:0 withBlock:v4];
 }
 
-- (void)step:(int64_t)a3
+- (void)step:(int64_t)step
 {
-  v6 = [(NUAVPlayerController *)self player];
-  v4 = [v6 currentItem];
-  v5 = v4;
-  if (v4)
+  player = [(NUAVPlayerController *)self player];
+  currentItem = [player currentItem];
+  v5 = currentItem;
+  if (currentItem)
   {
-    [v4 stepByCount:a3];
+    [currentItem stepByCount:step];
   }
 }
 
-- (void)seek:(id *)a3 toleranceBefore:(id *)a4 toleranceAfter:(id *)a5 forceSeek:(BOOL)a6 completionHandler:(id)a7
+- (void)seek:(id *)seek toleranceBefore:(id *)before toleranceAfter:(id *)after forceSeek:(BOOL)forceSeek completionHandler:(id)handler
 {
-  v7 = a6;
+  forceSeekCopy = forceSeek;
   v37 = *MEMORY[0x277D85DE8];
-  v12 = a7;
-  v13 = [(NUAVPlayerController *)self player];
-  v14 = [v13 currentItem];
-  if (v14 && (![(NUAVPlayerController *)self currentlySeeking]|| v7))
+  handlerCopy = handler;
+  player = [(NUAVPlayerController *)self player];
+  currentItem = [player currentItem];
+  if (currentItem && (![(NUAVPlayerController *)self currentlySeeking]|| forceSeekCopy))
   {
     memset(&v30, 0, sizeof(v30));
     videoAsset = self->_videoAsset;
@@ -460,12 +460,12 @@ uint64_t __50__NUAVPlayerController__notifyPlaybackTimeChange___block_invoke(uin
       [(AVAsset *)videoAsset duration];
     }
 
-    v29 = *a3;
-    time1 = *a3;
+    v29 = *seek;
+    time1 = *seek;
     time2 = v30;
     if (CMTimeCompare(&time1, &time2) < 0)
     {
-      time1 = *a3;
+      time1 = *seek;
       v23 = *MEMORY[0x277CC08F0];
       *&time2.value = *MEMORY[0x277CC08F0];
       v16 = *(MEMORY[0x277CC08F0] + 16);
@@ -479,7 +479,7 @@ uint64_t __50__NUAVPlayerController__notifyPlaybackTimeChange___block_invoke(uin
 
     else
     {
-      [v14 duration];
+      [currentItem duration];
     }
 
     self->_currentSeekTime = v29;
@@ -491,18 +491,18 @@ uint64_t __50__NUAVPlayerController__notifyPlaybackTimeChange___block_invoke(uin
     v17 = *MEMORY[0x277D2D088];
     if (os_log_type_enabled(*MEMORY[0x277D2D088], OS_LOG_TYPE_DEBUG))
     {
-      time1 = *a3;
+      time1 = *seek;
       v18 = v17;
       Seconds = CMTimeGetSeconds(&time1);
-      time1 = *a4;
+      time1 = *before;
       v20 = CMTimeGetSeconds(&time1);
-      time1 = *a5;
+      time1 = *after;
       v21 = CMTimeGetSeconds(&time1);
       LODWORD(time1.value) = 134219010;
       v22 = @"NO";
       *(&time1.value + 4) = self;
       LOWORD(time1.flags) = 2048;
-      if (v7)
+      if (forceSeekCopy)
       {
         v22 = @"YES";
       }
@@ -517,18 +517,18 @@ uint64_t __50__NUAVPlayerController__notifyPlaybackTimeChange___block_invoke(uin
       _os_log_debug_impl(&dword_25BD29000, v18, OS_LOG_TYPE_DEBUG, "<%p> seekToTime:%f toleranceBefore:%f toleranceAfter:%f forceSeek:%@", &time1, 0x34u);
     }
 
-    [v14 cancelPendingSeeks];
+    [currentItem cancelPendingSeeks];
     v26[0] = MEMORY[0x277D85DD0];
     v26[1] = 3221225472;
     v26[2] = __88__NUAVPlayerController_seek_toleranceBefore_toleranceAfter_forceSeek_completionHandler___block_invoke;
     v26[3] = &unk_279973B90;
     v26[4] = self;
-    v27 = v12;
+    v27 = handlerCopy;
     time1 = v29;
-    time2 = *a4;
-    v24 = *&a5->var0;
-    var3 = a5->var3;
-    [v14 seekToTime:&time1 toleranceBefore:&time2 toleranceAfter:&v24 completionHandler:v26];
+    time2 = *before;
+    v24 = *&after->var0;
+    var3 = after->var3;
+    [currentItem seekToTime:&time1 toleranceBefore:&time2 toleranceAfter:&v24 completionHandler:v26];
   }
 }
 
@@ -551,31 +551,31 @@ uint64_t __88__NUAVPlayerController_seek_toleranceBefore_toleranceAfter_forceSee
   return result;
 }
 
-- (void)seek:(id *)a3 toleranceBefore:(id *)a4 toleranceAfter:(id *)a5 forceSeek:(BOOL)a6
+- (void)seek:(id *)seek toleranceBefore:(id *)before toleranceAfter:(id *)after forceSeek:(BOOL)forceSeek
 {
-  v8 = *a3;
-  v7 = *a4;
-  v6 = *a5;
-  [(NUAVPlayerController *)self seek:&v8 toleranceBefore:&v7 toleranceAfter:&v6 forceSeek:a6 completionHandler:0];
+  v8 = *seek;
+  v7 = *before;
+  v6 = *after;
+  [(NUAVPlayerController *)self seek:&v8 toleranceBefore:&v7 toleranceAfter:&v6 forceSeek:forceSeek completionHandler:0];
 }
 
-- (void)seek:(id *)a3 toleranceBefore:(id *)a4 toleranceAfter:(id *)a5
+- (void)seek:(id *)seek toleranceBefore:(id *)before toleranceAfter:(id *)after
 {
-  v7 = *a3;
-  v6 = *a4;
-  v5 = *a4;
+  v7 = *seek;
+  v6 = *before;
+  v5 = *before;
   [(NUAVPlayerController *)self seek:&v7 toleranceBefore:&v6 toleranceAfter:&v5 forceSeek:0];
 }
 
 - (void)seekBack
 {
-  v3 = [(NUAVPlayerController *)self player];
-  v4 = [v3 currentItem];
-  v5 = v4;
-  if (v4)
+  player = [(NUAVPlayerController *)self player];
+  currentItem = [player currentItem];
+  v5 = currentItem;
+  if (currentItem)
   {
     memset(&v13, 0, sizeof(v13));
-    [v4 currentTime];
+    [currentItem currentTime];
     memset(&v12, 0, sizeof(v12));
     CMTimeMake(&v12, 10, 1);
     memset(&v11, 0, sizeof(v11));
@@ -593,21 +593,21 @@ uint64_t __88__NUAVPlayerController_seek_toleranceBefore_toleranceAfter_forceSee
       v11.epoch = v6;
     }
 
-    v7 = [(NUAVPlayerController *)self player];
+    player2 = [(NUAVPlayerController *)self player];
     lhs = v11;
-    [v7 seekToTime:&lhs];
+    [player2 seekToTime:&lhs];
   }
 }
 
 - (void)seekForward
 {
-  v3 = [(NUAVPlayerController *)self player];
-  v4 = [v3 currentItem];
-  v5 = v4;
-  if (v4)
+  player = [(NUAVPlayerController *)self player];
+  currentItem = [player currentItem];
+  v5 = currentItem;
+  if (currentItem)
   {
     memset(&v12[1], 0, sizeof(CMTime));
-    [v4 duration];
+    [currentItem duration];
     memset(v12, 0, 24);
     [v5 currentTime];
     memset(&v11, 0, sizeof(v11));
@@ -626,31 +626,31 @@ uint64_t __88__NUAVPlayerController_seek_toleranceBefore_toleranceAfter_forceSee
       v10 = lhs;
     }
 
-    v6 = [(NUAVPlayerController *)self player];
+    player2 = [(NUAVPlayerController *)self player];
     lhs = v10;
-    [v6 seekToTime:&lhs];
+    [player2 seekToTime:&lhs];
   }
 }
 
-- (void)setLoopsVideo:(BOOL)a3
+- (void)setLoopsVideo:(BOOL)video
 {
   v30 = *MEMORY[0x277D85DE8];
-  if (self->_loopsVideo != a3)
+  if (self->_loopsVideo != video)
   {
-    v3 = a3;
+    videoCopy = video;
     if (self->_videoAsset)
     {
       [(NUAVPlayerController *)self _removePlayerKVO];
-      v5 = [(NUAVPlayerController *)self _playerItemsWithVideoAsset:self->_videoAsset videoComposition:self->_videoComposition audioMix:self->_audioMix loopsVideo:v3];
-      v6 = [(NUAVPlayerController *)self player];
-      [v6 rate];
+      v5 = [(NUAVPlayerController *)self _playerItemsWithVideoAsset:self->_videoAsset videoComposition:self->_videoComposition audioMix:self->_audioMix loopsVideo:videoCopy];
+      player = [(NUAVPlayerController *)self player];
+      [player rate];
       v8 = v7;
       v24 = 0u;
       v25 = 0u;
       v26 = 0u;
       v27 = 0u;
-      v9 = [v6 items];
-      v10 = [v9 countByEnumeratingWithState:&v24 objects:v29 count:16];
+      items = [player items];
+      v10 = [items countByEnumeratingWithState:&v24 objects:v29 count:16];
       if (v10)
       {
         v11 = v10;
@@ -662,20 +662,20 @@ uint64_t __88__NUAVPlayerController_seek_toleranceBefore_toleranceAfter_forceSee
           {
             if (*v25 != v12)
             {
-              objc_enumerationMutation(v9);
+              objc_enumerationMutation(items);
             }
 
             [(NUAVPlayerController *)self _removePlayerItemKVO:*(*(&v24 + 1) + 8 * v13++)];
           }
 
           while (v11 != v13);
-          v11 = [v9 countByEnumeratingWithState:&v24 objects:v29 count:16];
+          v11 = [items countByEnumeratingWithState:&v24 objects:v29 count:16];
         }
 
         while (v11);
       }
 
-      [v6 removeAllItems];
+      [player removeAllItems];
       v22 = 0u;
       v23 = 0u;
       v20 = 0u;
@@ -696,7 +696,7 @@ uint64_t __88__NUAVPlayerController_seek_toleranceBefore_toleranceAfter_forceSee
               objc_enumerationMutation(v14);
             }
 
-            [v6 insertItem:*(*(&v20 + 1) + 8 * v18++) afterItem:{0, v20}];
+            [player insertItem:*(*(&v20 + 1) + 8 * v18++) afterItem:{0, v20}];
           }
 
           while (v16 != v18);
@@ -706,29 +706,29 @@ uint64_t __88__NUAVPlayerController_seek_toleranceBefore_toleranceAfter_forceSee
         while (v16);
       }
 
-      [(AVPlayer *)self->_player setActionAtItemEnd:v3 ^ 1];
+      [(AVPlayer *)self->_player setActionAtItemEnd:videoCopy ^ 1];
       LODWORD(v19) = v8;
-      [v6 setRate:v19];
+      [player setRate:v19];
       [(NUAVPlayerController *)self _addPlayerKVO];
     }
 
-    self->_loopsVideo = v3;
+    self->_loopsVideo = videoCopy;
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v47 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = v12;
-  if (kPlayerItemStatusCtx == a6)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  v13 = changeCopy;
+  if (kPlayerItemStatusCtx == context)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v14 = v11;
+      v14 = objectCopy;
     }
 
     else
@@ -738,9 +738,9 @@ uint64_t __88__NUAVPlayerController_seek_toleranceBefore_toleranceAfter_forceSee
 
     v15 = v14;
     v16 = [v13 objectForKey:*MEMORY[0x277CCA2F0]];
-    v17 = [v16 integerValue];
+    integerValue = [v16 integerValue];
 
-    if (v17 == 2)
+    if (integerValue == 2)
     {
       if (*MEMORY[0x277D2D078] != -1)
       {
@@ -753,20 +753,20 @@ uint64_t __88__NUAVPlayerController_seek_toleranceBefore_toleranceAfter_forceSee
         goto LABEL_48;
       }
 
-      v37 = v38;
-      v39 = [v15 error];
+      delegate = v38;
+      error = [v15 error];
       *buf = 134218242;
       *&buf[4] = self;
       *&buf[12] = 2112;
-      *&buf[14] = v39;
-      _os_log_debug_impl(&dword_25BD29000, v37, OS_LOG_TYPE_DEBUG, "<%p> AVPlayerStatusFailed with error %@", buf, 0x16u);
+      *&buf[14] = error;
+      _os_log_debug_impl(&dword_25BD29000, delegate, OS_LOG_TYPE_DEBUG, "<%p> AVPlayerStatusFailed with error %@", buf, 0x16u);
     }
 
     else
     {
-      if (v17 != 1)
+      if (integerValue != 1)
       {
-        if (!v17)
+        if (!integerValue)
         {
           if (*MEMORY[0x277D2D078] != -1)
           {
@@ -798,26 +798,26 @@ uint64_t __88__NUAVPlayerController_seek_toleranceBefore_toleranceAfter_forceSee
         _os_log_debug_impl(&dword_25BD29000, v33, OS_LOG_TYPE_DEBUG, "<%p> AVPlayerStatusReadyToPlay", buf, 0xCu);
       }
 
-      v34 = [(NUAVPlayerController *)self player];
-      v35 = [v34 currentItem];
-      v36 = [v35 isEqual:v11];
+      player = [(NUAVPlayerController *)self player];
+      currentItem = [player currentItem];
+      v36 = [currentItem isEqual:objectCopy];
 
       if (!v36)
       {
         goto LABEL_48;
       }
 
-      v37 = [(NUAVPlayerController *)self delegate];
-      [v37 playerControllerIsReadyForPlayback:self];
+      delegate = [(NUAVPlayerController *)self delegate];
+      [delegate playerControllerIsReadyForPlayback:self];
     }
 
 LABEL_48:
     goto LABEL_49;
   }
 
-  if (kPlayerRateCtx == a6)
+  if (kPlayerRateCtx == context)
   {
-    v19 = [v12 objectForKey:*MEMORY[0x277CCA2F0]];
+    v19 = [changeCopy objectForKey:*MEMORY[0x277CCA2F0]];
     [v19 floatValue];
     v21 = v20;
 
@@ -838,27 +838,27 @@ LABEL_48:
 
     *&v23 = v21;
     [(NUAVPlayerController *)self _notifyPlaybackRateChange:v23];
-    v24 = [(NUAVPlayerController *)self player];
-    v25 = [v24 currentItem];
-    v26 = [v25 videoComposition];
-    v27 = [v26 instructions];
-    v28 = [v27 firstObject];
+    player2 = [(NUAVPlayerController *)self player];
+    currentItem2 = [player2 currentItem];
+    videoComposition = [currentItem2 videoComposition];
+    instructions = [videoComposition instructions];
+    firstObject = [instructions firstObject];
 
-    if (v28)
+    if (firstObject)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         *&v29 = v21;
-        [v28 setPlaybackRate:v29];
+        [firstObject setPlaybackRate:v29];
       }
     }
   }
 
-  else if (kPlayerStatusCtx == a6)
+  else if (kPlayerStatusCtx == context)
   {
-    v30 = [v12 objectForKey:*MEMORY[0x277CCA2F0]];
-    v31 = [v30 integerValue];
+    v30 = [changeCopy objectForKey:*MEMORY[0x277CCA2F0]];
+    integerValue2 = [v30 integerValue];
 
     if (*MEMORY[0x277D2D078] != -1)
     {
@@ -871,21 +871,21 @@ LABEL_48:
       *buf = 134218240;
       *&buf[4] = self;
       *&buf[12] = 1024;
-      *&buf[14] = v31;
+      *&buf[14] = integerValue2;
       _os_log_debug_impl(&dword_25BD29000, v32, OS_LOG_TYPE_DEBUG, "<%p> status %d", buf, 0x12u);
     }
 
-    [(NUAVPlayerController *)self _notifyPlayerStatusChange:v31];
+    [(NUAVPlayerController *)self _notifyPlayerStatusChange:integerValue2];
   }
 
   else
   {
-    if (kPlayerCurrentItemCtx != a6)
+    if (kPlayerCurrentItemCtx != context)
     {
-      if (kExternalPlaybackCtx == a6)
+      if (kExternalPlaybackCtx == context)
       {
-        v42 = [v12 objectForKey:*MEMORY[0x277CCA2F0]];
-        v43 = [v42 BOOLValue];
+        v42 = [changeCopy objectForKey:*MEMORY[0x277CCA2F0]];
+        bOOLValue = [v42 BOOLValue];
 
         if (*MEMORY[0x277D2D078] != -1)
         {
@@ -898,18 +898,18 @@ LABEL_48:
           *buf = 134218240;
           *&buf[4] = self;
           *&buf[12] = 1024;
-          *&buf[14] = v43;
+          *&buf[14] = bOOLValue;
           _os_log_debug_impl(&dword_25BD29000, v44, OS_LOG_TYPE_DEBUG, "<%p> external playback active %d", buf, 0x12u);
         }
 
-        [(NUAVPlayerController *)self _notifyExternalPlaybackChange:v43];
+        [(NUAVPlayerController *)self _notifyExternalPlaybackChange:bOOLValue];
       }
 
       else
       {
         v45.receiver = self;
         v45.super_class = NUAVPlayerController;
-        [(NUAVPlayerController *)&v45 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+        [(NUAVPlayerController *)&v45 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
       }
 
       goto LABEL_49;
@@ -937,8 +937,8 @@ LABEL_48:
         *buf = *MEMORY[0x277CC08F0];
         *&buf[16] = *(MEMORY[0x277CC08F0] + 16);
         [v15 seekToTime:buf completionHandler:&__block_literal_global];
-        v41 = [(NUAVPlayerController *)self player];
-        [v41 insertItem:v15 afterItem:0];
+        player3 = [(NUAVPlayerController *)self player];
+        [player3 insertItem:v15 afterItem:0];
 
         [(NUAVPlayerController *)self _addPlayerKVO];
       }
@@ -950,19 +950,19 @@ LABEL_48:
 LABEL_49:
 }
 
-- (void)updateAppliesPerFrameHDRDisplayMetadata:(BOOL)a3
+- (void)updateAppliesPerFrameHDRDisplayMetadata:(BOOL)metadata
 {
   v24 = *MEMORY[0x277D85DE8];
-  self->_appliesPerFrameHDRDisplayMetadata = a3;
+  self->_appliesPerFrameHDRDisplayMetadata = metadata;
   AlwaysApplyPerFrameHDRDisplayMetadata();
   self->_appliesPerFrameHDRDisplayMetadata = 1;
-  v4 = [(NUAVPlayerController *)self player];
+  player = [(NUAVPlayerController *)self player];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [v4 items];
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v23 count:16];
+  items = [player items];
+  v6 = [items countByEnumeratingWithState:&v15 objects:v23 count:16];
   if (v6)
   {
     v7 = v6;
@@ -973,13 +973,13 @@ LABEL_49:
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(items);
         }
 
         [*(*(&v15 + 1) + 8 * i) setAppliesPerFrameHDRDisplayMetadata:self->_appliesPerFrameHDRDisplayMetadata];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v15 objects:v23 count:16];
+      v7 = [items countByEnumeratingWithState:&v15 objects:v23 count:16];
     }
 
     while (v7);
@@ -994,8 +994,8 @@ LABEL_49:
   if (os_log_type_enabled(*MEMORY[0x277D2D088], OS_LOG_TYPE_DEFAULT))
   {
     v11 = v10;
-    v12 = [v4 items];
-    v13 = [v12 count];
+    items2 = [player items];
+    v13 = [items2 count];
     v14 = @"view ignoring dolby metadata";
     if (self->_appliesPerFrameHDRDisplayMetadata)
     {
@@ -1010,19 +1010,19 @@ LABEL_49:
   }
 }
 
-- (void)updateAudioMix:(id)a3
+- (void)updateAudioMix:(id)mix
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (self->_audioMix != v5)
+  mixCopy = mix;
+  if (self->_audioMix != mixCopy)
   {
-    objc_storeStrong(&self->_audioMix, a3);
-    v6 = [(NUAVPlayerController *)self loopsVideo];
-    if (v5 && v6)
+    objc_storeStrong(&self->_audioMix, mix);
+    loopsVideo = [(NUAVPlayerController *)self loopsVideo];
+    if (mixCopy && loopsVideo)
     {
       v19 = 0;
-      v7 = [MEMORY[0x277D2D048] repeatAudio:v5 count:10 error:&v19];
-      v8 = v19;
+      v7 = [MEMORY[0x277D2D048] repeatAudio:mixCopy count:10 error:&v19];
+      player = v19;
       if (!v7)
       {
         if (*MEMORY[0x277D2D078] != -1)
@@ -1034,23 +1034,23 @@ LABEL_49:
         if (os_log_type_enabled(*MEMORY[0x277D2D088], OS_LOG_TYPE_ERROR))
         {
           *buf = 138412290;
-          v22 = v8;
+          v22 = player;
           _os_log_error_impl(&dword_25BD29000, v14, OS_LOG_TYPE_ERROR, "Failed to loop audio mix, error: %@", buf, 0xCu);
         }
 
         goto LABEL_14;
       }
 
-      v5 = v7;
+      mixCopy = v7;
     }
 
-    v8 = [(NUAVPlayerController *)self player];
+    player = [(NUAVPlayerController *)self player];
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v9 = [v8 items];
-    v10 = [v9 countByEnumeratingWithState:&v15 objects:v20 count:16];
+    items = [player items];
+    v10 = [items countByEnumeratingWithState:&v15 objects:v20 count:16];
     if (v10)
     {
       v11 = v10;
@@ -1061,13 +1061,13 @@ LABEL_49:
         {
           if (*v16 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(items);
           }
 
-          [*(*(&v15 + 1) + 8 * i) setAudioMix:v5];
+          [*(*(&v15 + 1) + 8 * i) setAudioMix:mixCopy];
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v15 objects:v20 count:16];
+        v11 = [items countByEnumeratingWithState:&v15 objects:v20 count:16];
       }
 
       while (v11);
@@ -1077,11 +1077,11 @@ LABEL_14:
   }
 }
 
-- (void)updateWithVideoPrepareNodeFromVideoComposition:(id)a3
+- (void)updateWithVideoPrepareNodeFromVideoComposition:(id)composition
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = [a3 instructions];
-  v5 = [v4 firstObject];
+  instructions = [composition instructions];
+  firstObject = [instructions firstObject];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -1112,10 +1112,10 @@ LABEL_14:
           v22 = 0u;
           v23 = 0u;
           v24 = 0u;
-          v10 = [v9 videoComposition];
-          v11 = [v10 instructions];
+          videoComposition = [v9 videoComposition];
+          instructions2 = [videoComposition instructions];
 
-          v12 = [v11 countByEnumeratingWithState:&v21 objects:v29 count:16];
+          v12 = [instructions2 countByEnumeratingWithState:&v21 objects:v29 count:16];
           if (v12)
           {
             v13 = v12;
@@ -1127,22 +1127,22 @@ LABEL_14:
               {
                 if (*v22 != v14)
                 {
-                  objc_enumerationMutation(v11);
+                  objc_enumerationMutation(instructions2);
                 }
 
                 v16 = *(*(&v21 + 1) + 8 * v15);
                 objc_opt_class();
                 if (objc_opt_isKindOfClass())
                 {
-                  v17 = [v5 videoRenderPrepareNode];
-                  [v16 setVideoRenderPrepareNode:v17];
+                  videoRenderPrepareNode = [firstObject videoRenderPrepareNode];
+                  [v16 setVideoRenderPrepareNode:videoRenderPrepareNode];
                 }
 
                 ++v15;
               }
 
               while (v13 != v15);
-              v13 = [v11 countByEnumeratingWithState:&v21 objects:v29 count:16];
+              v13 = [instructions2 countByEnumeratingWithState:&v21 objects:v29 count:16];
             }
 
             while (v13);
@@ -1160,19 +1160,19 @@ LABEL_14:
   }
 }
 
-- (void)updateVideoComposition:(id)a3
+- (void)updateVideoComposition:(id)composition
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (self->_videoComposition != v5)
+  compositionCopy = composition;
+  if (self->_videoComposition != compositionCopy)
   {
-    objc_storeStrong(&self->_videoComposition, a3);
-    v6 = [(NUAVPlayerController *)self loopsVideo];
-    if (v5 && v6)
+    objc_storeStrong(&self->_videoComposition, composition);
+    loopsVideo = [(NUAVPlayerController *)self loopsVideo];
+    if (compositionCopy && loopsVideo)
     {
       v19 = 0;
-      v7 = [MEMORY[0x277D2D048] repeatVideoComposition:v5 count:10 error:&v19];
-      v8 = v19;
+      v7 = [MEMORY[0x277D2D048] repeatVideoComposition:compositionCopy count:10 error:&v19];
+      player = v19;
       if (!v7)
       {
         if (*MEMORY[0x277D2D078] != -1)
@@ -1184,23 +1184,23 @@ LABEL_14:
         if (os_log_type_enabled(*MEMORY[0x277D2D088], OS_LOG_TYPE_ERROR))
         {
           *buf = 138412290;
-          v22 = v8;
+          v22 = player;
           _os_log_error_impl(&dword_25BD29000, v14, OS_LOG_TYPE_ERROR, "Failed to repeat video composition, error: %@", buf, 0xCu);
         }
 
         goto LABEL_14;
       }
 
-      v5 = v7;
+      compositionCopy = v7;
     }
 
-    v8 = [(NUAVPlayerController *)self player];
+    player = [(NUAVPlayerController *)self player];
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v9 = [v8 items];
-    v10 = [v9 countByEnumeratingWithState:&v15 objects:v20 count:16];
+    items = [player items];
+    v10 = [items countByEnumeratingWithState:&v15 objects:v20 count:16];
     if (v10)
     {
       v11 = v10;
@@ -1211,13 +1211,13 @@ LABEL_14:
         {
           if (*v16 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(items);
           }
 
-          [*(*(&v15 + 1) + 8 * i) setVideoComposition:v5];
+          [*(*(&v15 + 1) + 8 * i) setVideoComposition:compositionCopy];
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v15 objects:v20 count:16];
+        v11 = [items countByEnumeratingWithState:&v15 objects:v20 count:16];
       }
 
       while (v11);
@@ -1227,20 +1227,20 @@ LABEL_14:
   }
 }
 
-- (id)_loopingPlayerItemWithVideoAsset:(id)a3 videoComposition:(id)a4 audioMix:(id)a5
+- (id)_loopingPlayerItemWithVideoAsset:(id)asset videoComposition:(id)composition audioMix:(id)mix
 {
   v25 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
+  compositionCopy = composition;
+  mixCopy = mix;
   v22 = 0;
-  v10 = [MEMORY[0x277D2D048] repeatVideo:a3 count:10 error:&v22];
+  v10 = [MEMORY[0x277D2D048] repeatVideo:asset count:10 error:&v22];
   v11 = v22;
   if (v10)
   {
-    if (v8)
+    if (compositionCopy)
     {
       v21 = 0;
-      v12 = [MEMORY[0x277D2D048] repeatVideoComposition:v8 count:10 error:&v21];
+      v12 = [MEMORY[0x277D2D048] repeatVideoComposition:compositionCopy count:10 error:&v21];
       v13 = v21;
 
       if (!v12)
@@ -1263,11 +1263,11 @@ LABEL_14:
       }
 
       v11 = v13;
-      if (v9)
+      if (mixCopy)
       {
 LABEL_5:
         v20 = 0;
-        v14 = [MEMORY[0x277D2D048] repeatAudio:v9 count:10 error:&v20];
+        v14 = [MEMORY[0x277D2D048] repeatAudio:mixCopy count:10 error:&v20];
         v13 = v20;
 
         if (!v14)
@@ -1302,7 +1302,7 @@ LABEL_25:
     else
     {
       v12 = 0;
-      if (v9)
+      if (mixCopy)
       {
         goto LABEL_5;
       }
@@ -1332,16 +1332,16 @@ LABEL_26:
   return v16;
 }
 
-- (id)_playerItemWithVideoAsset:(id)a3 videoComposition:(id)a4 audioMix:(id)a5
+- (id)_playerItemWithVideoAsset:(id)asset videoComposition:(id)composition audioMix:(id)mix
 {
   v17 = *MEMORY[0x277D85DE8];
   v8 = MEMORY[0x277CE65B0];
-  v9 = a5;
-  v10 = a4;
-  v11 = [v8 playerItemWithAsset:a3];
-  [v11 setVideoComposition:v10];
+  mixCopy = mix;
+  compositionCopy = composition;
+  v11 = [v8 playerItemWithAsset:asset];
+  [v11 setVideoComposition:compositionCopy];
 
-  [v11 setAudioMix:v9];
+  [v11 setAudioMix:mixCopy];
   [v11 setSeekingWaitsForVideoCompositionRendering:1];
   [v11 setAllowedAudioSpatializationFormats:4];
   AlwaysApplyPerFrameHDRDisplayMetadata();
@@ -1373,16 +1373,16 @@ LABEL_26:
   return v11;
 }
 
-- (id)_playerItemsWithVideoAsset:(id)a3 videoComposition:(id)a4 audioMix:(id)a5 loopsVideo:(BOOL)a6
+- (id)_playerItemsWithVideoAsset:(id)asset videoComposition:(id)composition audioMix:(id)mix loopsVideo:(BOOL)video
 {
-  v6 = a6;
+  videoCopy = video;
   v25 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (v6)
+  assetCopy = asset;
+  compositionCopy = composition;
+  mixCopy = mix;
+  if (videoCopy)
   {
-    v13 = [(NUAVPlayerController *)self _loopingPlayerItemWithVideoAsset:v10 videoComposition:v11 audioMix:v12];
+    v13 = [(NUAVPlayerController *)self _loopingPlayerItemWithVideoAsset:assetCopy videoComposition:compositionCopy audioMix:mixCopy];
     if (v13)
     {
       v14 = v13;
@@ -1405,7 +1405,7 @@ LABEL_6:
 
   else
   {
-    v17 = [(NUAVPlayerController *)self _playerItemWithVideoAsset:v10 videoComposition:v11 audioMix:v12];
+    v17 = [(NUAVPlayerController *)self _playerItemWithVideoAsset:assetCopy videoComposition:compositionCopy audioMix:mixCopy];
     if (v17)
     {
       v14 = v17;
@@ -1424,7 +1424,7 @@ LABEL_6:
   if (os_log_type_enabled(*MEMORY[0x277D2D088], OS_LOG_TYPE_ERROR))
   {
     *buf = 138412290;
-    v24 = v10;
+    v24 = assetCopy;
     _os_log_error_impl(&dword_25BD29000, v18, OS_LOG_TYPE_ERROR, "Failed to create player item from asset: %@", buf, 0xCu);
   }
 
@@ -1434,19 +1434,19 @@ LABEL_12:
   return v16;
 }
 
-- (BOOL)prepareWithAVAsset:(id)a3 videoComposition:(id)a4 audioMix:(id)a5 loopsVideo:(BOOL)a6 seekToTime:(id *)a7
+- (BOOL)prepareWithAVAsset:(id)asset videoComposition:(id)composition audioMix:(id)mix loopsVideo:(BOOL)video seekToTime:(id *)time
 {
-  v7 = a6;
+  videoCopy = video;
   v64 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  obj = a4;
-  v14 = a4;
-  v39 = a5;
-  v15 = a5;
+  assetCopy = asset;
+  obj = composition;
+  compositionCopy = composition;
+  mixCopy = mix;
+  mixCopy2 = mix;
   player = self->_player;
-  v42 = v13;
-  v43 = v14;
-  v44 = v15;
+  v42 = assetCopy;
+  v43 = compositionCopy;
+  v44 = mixCopy2;
   if (player)
   {
     [(NUAVPlayerController *)self _removeTimeObserver];
@@ -1454,15 +1454,15 @@ LABEL_12:
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v37 = [MEMORY[0x277CCA890] currentHandler];
-      [v37 handleFailureInMethod:a2 object:self file:@"NUAVPlayerController.m" lineNumber:132 description:@"expected an AVQueuePlayer"];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"NUAVPlayerController.m" lineNumber:132 description:@"expected an AVQueuePlayer"];
     }
 
     v16 = self->_player;
-    v17 = [(AVPlayer *)v16 items];
-    v18 = [v17 copy];
+    items = [(AVPlayer *)v16 items];
+    v18 = [items copy];
 
-    v19 = [(NUAVPlayerController *)self _playerItemsWithVideoAsset:v42 videoComposition:v14 audioMix:v44 loopsVideo:v7];
+    v19 = [(NUAVPlayerController *)self _playerItemsWithVideoAsset:v42 videoComposition:compositionCopy audioMix:v44 loopsVideo:videoCopy];
     v60 = 0u;
     v61 = 0u;
     v58 = 0u;
@@ -1521,36 +1521,36 @@ LABEL_12:
 
   else
   {
-    v28 = [(NUAVPlayerController *)self _playerItemsWithVideoAsset:v13 videoComposition:v14 audioMix:v15 loopsVideo:v7];
+    v28 = [(NUAVPlayerController *)self _playerItemsWithVideoAsset:assetCopy videoComposition:compositionCopy audioMix:mixCopy2 loopsVideo:videoCopy];
     v29 = [objc_alloc(MEMORY[0x277CE65F8]) initWithItems:v28];
     [(AVPlayer *)v29 setPreventsDisplaySleepDuringVideoPlayback:0];
-    [(AVPlayer *)v29 setActionAtItemEnd:v7 ^ 1];
+    [(AVPlayer *)v29 setActionAtItemEnd:videoCopy ^ 1];
     [(AVPlayer *)v29 setMuted:self->_muted];
     v30 = self->_player;
     self->_player = v29;
     v31 = v29;
 
-    v32 = [MEMORY[0x277CB83F8] auxiliarySession];
-    v33 = v32;
+    auxiliarySession = [MEMORY[0x277CB83F8] auxiliarySession];
+    v33 = auxiliarySession;
     v34 = MEMORY[0x277CB8020];
-    if (!v7)
+    if (!videoCopy)
     {
       v34 = MEMORY[0x277CB8030];
     }
 
-    [v32 setCategory:*v34 error:0];
+    [auxiliarySession setCategory:*v34 error:0];
     [(AVPlayer *)self->_player setAudioSession:v33];
   }
 
   v35 = MEMORY[0x277CC0898];
   *&self->_currentSeekTime.value = *MEMORY[0x277CC0898];
   self->_currentSeekTime.epoch = *(v35 + 16);
-  objc_storeStrong(&self->_videoAsset, a3);
+  objc_storeStrong(&self->_videoAsset, asset);
   objc_storeStrong(&self->_videoComposition, obj);
-  objc_storeStrong(&self->_audioMix, v39);
-  self->_loopsVideo = v7;
+  objc_storeStrong(&self->_audioMix, mixCopy);
+  self->_loopsVideo = videoCopy;
   [(NUAVPlayerController *)self _addPlayerKVO];
-  if (a7->var2)
+  if (time->var2)
   {
     objc_initWeak(&location, self);
     v51[0] = MEMORY[0x277D85DD0];
@@ -1558,8 +1558,8 @@ LABEL_12:
     v51[2] = __91__NUAVPlayerController_prepareWithAVAsset_videoComposition_audioMix_loopsVideo_seekToTime___block_invoke;
     v51[3] = &unk_279973F50;
     objc_copyWeak(&v52, &location);
-    v49 = *&a7->var0;
-    var3 = a7->var3;
+    v49 = *&time->var0;
+    var3 = time->var3;
     v47 = *MEMORY[0x277CC08F0];
     v48 = *(MEMORY[0x277CC08F0] + 16);
     v45 = v47;
@@ -1606,8 +1606,8 @@ void __91__NUAVPlayerController_prepareWithAVAsset_videoComposition_audioMix_loo
           objc_enumerationMutation(v3);
         }
 
-        v8 = [*(*(&v10 + 1) + 8 * v7) playerItem];
-        [(NUAVPlayerController *)self _removePlayerItemKVO:v8 removeFromArray:0];
+        playerItem = [*(*(&v10 + 1) + 8 * v7) playerItem];
+        [(NUAVPlayerController *)self _removePlayerItemKVO:playerItem removeFromArray:0];
 
         ++v7;
       }

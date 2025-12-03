@@ -15,14 +15,14 @@
   v15 = a7;
   v16 = a8;
   v17 = *MEMORY[0x1E6996540];
-  v18 = [a1 generatedWatchImageData];
-  LOBYTE(v17) = (*(v17 + 16))(v17, v18);
+  generatedWatchImageData = [self generatedWatchImageData];
+  LOBYTE(v17) = (*(v17 + 16))(v17, generatedWatchImageData);
 
   if (v17)
   {
     if (objc_opt_respondsToSelector())
     {
-      [a1 posterSnapshotForSize:v14 topPadding:v15 contact:v16 posterConfiguration:a2 completion:{a3, a4}];
+      [self posterSnapshotForSize:v14 topPadding:v15 contact:v16 posterConfiguration:a2 completion:{a3, a4}];
     }
 
     else
@@ -39,8 +39,8 @@
 
   else
   {
-    v19 = [a1 generatedWatchImageData];
-    (v16)[2](v16, v19);
+    generatedWatchImageData2 = [self generatedWatchImageData];
+    (v16)[2](v16, generatedWatchImageData2);
   }
 }
 
@@ -53,9 +53,9 @@
   v8[3] = &unk_1E74E5678;
   v3 = v2;
   v9 = v3;
-  [a1 snapshotImageDataWithPreferredSize:0 topPadding:0 contact:v8 posterConfiguration:410.0 completion:{502.0, 165.0}];
-  v4 = [v3 future];
-  v5 = [v4 resultWithTimeout:0 error:5.0];
+  [self snapshotImageDataWithPreferredSize:0 topPadding:0 contact:v8 posterConfiguration:410.0 completion:{502.0, 165.0}];
+  future = [v3 future];
+  v5 = [future resultWithTimeout:0 error:5.0];
 
   objc_opt_class();
   v6 = 0;
@@ -83,19 +83,19 @@
     _os_log_impl(&dword_199A75000, v14, OS_LOG_TYPE_DEFAULT, "Generating image data for snapshot image of size: %@", buf, 0xCu);
   }
 
-  v16 = [v12 ioSurface];
-  if (v16)
+  ioSurface = [v12 ioSurface];
+  if (ioSurface)
   {
     [v12 ioSurface];
-    v17 = UICreateCGImageFromIOSurface();
+    cGImage = UICreateCGImageFromIOSurface();
   }
 
   else
   {
-    v17 = [v12 CGImage];
+    cGImage = [v12 CGImage];
   }
 
-  v18 = v17;
+  v18 = cGImage;
   v19 = [_TtC10ContactsUI20CNWallpaperUtilities supportsWatchImageDataRepairFor:v13];
   v20 = floor(a4);
   Width = CGImageGetWidth(v18);
@@ -119,7 +119,7 @@
   }
 
   v27 = CGImageCreateByScaling();
-  if (v16)
+  if (ioSurface)
   {
     CGImageRelease(v18);
   }
@@ -165,7 +165,7 @@
   Height = CGImageGetHeight(v36);
   v39 = CGImageGetWidth(v36);
   v40 = v29 > Height && v19;
-  v41 = v36;
+  cGImage2 = v36;
   if (v40)
   {
     v42 = v39;
@@ -181,10 +181,10 @@
     *&v51[5] = v42;
     *&v51[6] = Height;
     v45 = [v44 imageWithActions:v51];
-    v41 = [v45 CGImage];
+    cGImage2 = [v45 CGImage];
   }
 
-  if ([a1 imageIsFullyTransparent:v41])
+  if ([self imageIsFullyTransparent:cGImage2])
   {
     v46 = [objc_opt_class() log];
     if (os_log_type_enabled(v46, OS_LOG_TYPE_ERROR))
@@ -201,7 +201,7 @@ LABEL_37:
   }
 
   v47 = CGImageDestinationCreateWithData(v37, @"public.heic", 1uLL, 0);
-  CGImageDestinationAddImage(v47, v41, 0);
+  CGImageDestinationAddImage(v47, cGImage2, 0);
   CGImageDestinationFinalize(v47);
   CGImageRelease(v36);
   if (v47)
@@ -292,8 +292,8 @@ LABEL_9:
   }
 
   v16 = *MEMORY[0x1E6996540];
-  v17 = [a1 posterArchiveData];
-  LODWORD(v16) = (*(v16 + 16))(v16, v17);
+  posterArchiveData = [self posterArchiveData];
+  LODWORD(v16) = (*(v16 + 16))(v16, posterArchiveData);
 
   if (v16)
   {
@@ -312,8 +312,8 @@ LABEL_9:
     v19 = v39;
     if (!v19)
     {
-      v20 = [a1 posterArchiveData];
-      v19 = [CNPRSPosterArchiver unarchiveCNConfigurationFromData:v20 error:0];
+      posterArchiveData2 = [self posterArchiveData];
+      v19 = [CNPRSPosterArchiver unarchiveCNConfigurationFromData:posterArchiveData2 error:0];
     }
 
     if (v40)
@@ -330,19 +330,19 @@ LABEL_9:
     v23 = [CNPRUISIncomingCallSnapshotDefinition contentsOnlySnapshotDefinitionWithContext:v21 attachmentIdentifiers:0];
     v24 = [CNPRUISPosterSnapshotRequest requestForConfiguration:v19 definition:v23 interfaceOrientation:1];
     v25 = objc_alloc_init(CNPRUISPosterSnapshotController);
-    v26 = [a1 extensionBundleID];
-    v27 = v26;
-    if (v26)
+    extensionBundleID = [self extensionBundleID];
+    v27 = extensionBundleID;
+    if (extensionBundleID)
     {
-      v28 = v26;
+      providerBundleIdentifier = extensionBundleID;
     }
 
     else
     {
-      v28 = [v19 providerBundleIdentifier];
+      providerBundleIdentifier = [v19 providerBundleIdentifier];
     }
 
-    v38 = v28;
+    v38 = providerBundleIdentifier;
 
     v48 = 0;
     v29 = [(CNPRUISPosterSnapshotController *)v25 latestSnapshotBundleForRequest:v24 error:&v48];
@@ -350,7 +350,7 @@ LABEL_9:
     if (v29 && ([v23 levelSets], v36 = v23, v30 = v22, v31 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v31, "firstObject"), v32 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v29, "snapshotForLevelSet:", v32), v33 = objc_claimAutoreleasedReturnValue(), v32, v31, v22 = v30, v23 = v36, v33))
     {
       v34 = v38;
-      v35 = [a1 snapshotDataFromSnapshotImage:v33 forSize:v38 topPadding:a2 extensionBundleID:{a3, a4}];
+      v35 = [self snapshotDataFromSnapshotImage:v33 forSize:v38 topPadding:a2 extensionBundleID:{a3, a4}];
       (v14)[2](v14, v35);
     }
 
@@ -360,7 +360,7 @@ LABEL_9:
       v41[1] = 3221225472;
       v41[2] = __101__CNWallpaper_Snapshotting__posterSnapshotForSize_topPadding_contact_posterConfiguration_completion___block_invoke;
       v41[3] = &unk_1E74E5630;
-      v41[4] = a1;
+      v41[4] = self;
       v44 = v14;
       v42 = v23;
       v45 = a2;

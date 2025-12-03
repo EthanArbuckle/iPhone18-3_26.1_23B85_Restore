@@ -4,7 +4,7 @@
 - (NSString)method;
 - (NSString)path;
 - (NSURL)URL;
-- (VSWebServerRequest)initWithRequest:(_CFHTTPServerRequest *)a3;
+- (VSWebServerRequest)initWithRequest:(_CFHTTPServerRequest *)request;
 - (id)bodyStream;
 - (id)connection;
 - (id)description;
@@ -12,7 +12,7 @@
 
 @implementation VSWebServerRequest
 
-- (VSWebServerRequest)initWithRequest:(_CFHTTPServerRequest *)a3
+- (VSWebServerRequest)initWithRequest:(_CFHTTPServerRequest *)request
 {
   v7.receiver = self;
   v7.super_class = VSWebServerRequest;
@@ -20,7 +20,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_request = a3;
+    v4->_request = request;
     _CFHTTPServerRequestSetClient();
   }
 
@@ -111,10 +111,10 @@
   v10.receiver = self;
   v10.super_class = VSWebServerRequest;
   v4 = [(VSWebServerRequest *)&v10 description];
-  v5 = [(VSWebServerRequest *)self method];
-  v6 = [(VSWebServerRequest *)self path];
-  v7 = [(VSWebServerRequest *)self headerFields];
-  v8 = [v3 stringWithFormat:@"<%@ %@ %@ \n\n%@>", v4, v5, v6, v7];
+  method = [(VSWebServerRequest *)self method];
+  path = [(VSWebServerRequest *)self path];
+  headerFields = [(VSWebServerRequest *)self headerFields];
+  v8 = [v3 stringWithFormat:@"<%@ %@ %@ \n\n%@>", v4, method, path, headerFields];
 
   return v8;
 }

@@ -1,27 +1,27 @@
 @interface TabBarItemViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event;
 - (id)accessibilityLabel;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_accessibilityUpdateAXInfo;
-- (void)setFrame:(CGRect)a3;
-- (void)setTitleText:(id)a3;
+- (void)setFrame:(CGRect)frame;
+- (void)setTitleText:(id)text;
 @end
 
 @implementation TabBarItemViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"TabBarItemView" hasInstanceVariable:@"_titleText" withType:"NSString"];
-  [v3 validateClass:@"TabBarItemView" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
-  [v3 validateClass:@"TabBarItemView" hasInstanceMethod:@"closeButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"TabBarItemView" hasInstanceMethod:@"setTitleText:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"TabBarItemView" hasInstanceMethod:@"setActive:" withFullSignature:{"v", "B", 0}];
-  [v3 validateClass:@"TabBarItemView" hasInstanceMethod:@"setPinned:" withFullSignature:{"v", "B", 0}];
-  [v3 validateClass:@"TabBarItemView" hasInstanceMethod:@"isActive" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"TabBarItemView" hasInstanceMethod:@"isPinned" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"TabBarItemView" hasInstanceMethod:@"_isPinnedAndNarrow" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"TabBarItemView" hasInstanceVariable:@"_titleText" withType:"NSString"];
+  [validationsCopy validateClass:@"TabBarItemView" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"TabBarItemView" hasInstanceMethod:@"closeButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"TabBarItemView" hasInstanceMethod:@"setTitleText:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"TabBarItemView" hasInstanceMethod:@"setActive:" withFullSignature:{"v", "B", 0}];
+  [validationsCopy validateClass:@"TabBarItemView" hasInstanceMethod:@"setPinned:" withFullSignature:{"v", "B", 0}];
+  [validationsCopy validateClass:@"TabBarItemView" hasInstanceMethod:@"isActive" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"TabBarItemView" hasInstanceMethod:@"isPinned" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"TabBarItemView" hasInstanceMethod:@"_isPinnedAndNarrow" withFullSignature:{"B", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -74,29 +74,29 @@
   [v11 setAccessibilityLabel:v14];
 
   v15 = [(TabBarItemViewAccessibility *)self safeBoolForKey:@"isActive"];
-  v16 = [v3 accessibilityTraits];
-  v17 = *MEMORY[0x29EDC7FC0] | v16;
+  accessibilityTraits = [v3 accessibilityTraits];
+  v17 = *MEMORY[0x29EDC7FC0] | accessibilityTraits;
   if (v15)
   {
-    v18 = *MEMORY[0x29EDC7FC0] | v16;
+    v18 = *MEMORY[0x29EDC7FC0] | accessibilityTraits;
   }
 
   else
   {
-    v18 = v16 & ~*MEMORY[0x29EDC7FC0];
+    v18 = accessibilityTraits & ~*MEMORY[0x29EDC7FC0];
   }
 
   [v3 setAccessibilityTraits:v18];
   [v3 setAccessibilityRespondsToUserInteraction:1];
 }
 
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
   v8 = [(TabBarItemViewAccessibility *)self safeValueForKey:@"_titleLabel"];
-  v9 = [(TabBarItemViewAccessibility *)self _accessibilityParentView];
+  _accessibilityParentView = [(TabBarItemViewAccessibility *)self _accessibilityParentView];
   UIAccessibilityPointForPoint();
   v11 = v10;
   v13 = v12;
@@ -113,7 +113,7 @@
   {
     v17.receiver = self;
     v17.super_class = TabBarItemViewAccessibility;
-    v14 = [(TabBarItemViewAccessibility *)&v17 _accessibilityHitTest:v7 withEvent:x, y];
+    v14 = [(TabBarItemViewAccessibility *)&v17 _accessibilityHitTest:eventCopy withEvent:x, y];
   }
 
   v15 = v14;
@@ -121,16 +121,16 @@
   return v15;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = TabBarItemViewAccessibility;
-  [(TabBarItemViewAccessibility *)&v7 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(TabBarItemViewAccessibility *)&v7 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(TabBarItemViewAccessibility *)self bounds];
   v4 = [(TabBarItemViewAccessibility *)self safeValueForKey:@"_titleLabel"];
   v5 = [(TabBarItemViewAccessibility *)self safeValueForKey:@"closeButton"];
-  v6 = [v4 accessibilityTraits];
-  if ((*MEMORY[0x29EDC7FC0] & v6) != 0)
+  accessibilityTraits = [v4 accessibilityTraits];
+  if ((*MEMORY[0x29EDC7FC0] & accessibilityTraits) != 0)
   {
     [v5 bounds];
   }
@@ -139,11 +139,11 @@
   [v4 setAccessibilityFrame:?];
 }
 
-- (void)setTitleText:(id)a3
+- (void)setTitleText:(id)text
 {
   v4.receiver = self;
   v4.super_class = TabBarItemViewAccessibility;
-  [(TabBarItemViewAccessibility *)&v4 setTitleText:a3];
+  [(TabBarItemViewAccessibility *)&v4 setTitleText:text];
   [(TabBarItemViewAccessibility *)self _accessibilityUpdateAXInfo];
 }
 

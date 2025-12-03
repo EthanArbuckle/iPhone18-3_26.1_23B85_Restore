@@ -2,30 +2,30 @@
 - (EFDebouncer)reloadDebouncer;
 - (EFDebouncer)reloadWithEmptyUpdateDebouncer;
 - (EMMessageRepository)repository;
-- (MUIHighlightedMessagesController)initWithRepository:(id)a3 delegate:(id)a4;
+- (MUIHighlightedMessagesController)initWithRepository:(id)repository delegate:(id)delegate;
 - (MUIHighlightedMessagesControllerDelegate)delegate;
 - (NSArray)mailboxes;
 - (NSPredicate)filterPredicate;
 - (id)messageList;
-- (void)collection:(id)a3 addedItemIDs:(id)a4 after:(id)a5;
-- (void)collection:(id)a3 addedItemIDs:(id)a4 before:(id)a5;
-- (void)collection:(id)a3 changedItemIDs:(id)a4;
-- (void)collection:(id)a3 deletedItemIDs:(id)a4;
-- (void)collection:(id)a3 movedItemIDs:(id)a4 after:(id)a5;
-- (void)collection:(id)a3 movedItemIDs:(id)a4 before:(id)a5;
-- (void)collection:(id)a3 replacedExistingItemID:(id)a4 withNewItemID:(id)a5;
-- (void)collectionDidFinishInitialLoad:(id)a3;
-- (void)reloadApplyingEmptyUpdate:(BOOL)a3;
-- (void)setDelegate:(id)a3;
-- (void)setFilterPredicate:(id)a3;
-- (void)setMailboxes:(id)a3;
-- (void)setReloadDebouncer:(id)a3;
-- (void)setReloadWithEmptyUpdateDebouncer:(id)a3;
+- (void)collection:(id)collection addedItemIDs:(id)ds after:(id)after;
+- (void)collection:(id)collection addedItemIDs:(id)ds before:(id)before;
+- (void)collection:(id)collection changedItemIDs:(id)ds;
+- (void)collection:(id)collection deletedItemIDs:(id)ds;
+- (void)collection:(id)collection movedItemIDs:(id)ds after:(id)after;
+- (void)collection:(id)collection movedItemIDs:(id)ds before:(id)before;
+- (void)collection:(id)collection replacedExistingItemID:(id)d withNewItemID:(id)iD;
+- (void)collectionDidFinishInitialLoad:(id)load;
+- (void)reloadApplyingEmptyUpdate:(BOOL)update;
+- (void)setDelegate:(id)delegate;
+- (void)setFilterPredicate:(id)predicate;
+- (void)setMailboxes:(id)mailboxes;
+- (void)setReloadDebouncer:(id)debouncer;
+- (void)setReloadWithEmptyUpdateDebouncer:(id)debouncer;
 @end
 
 @implementation MUIHighlightedMessagesController
 
-- (void)reloadApplyingEmptyUpdate:(BOOL)a3
+- (void)reloadApplyingEmptyUpdate:(BOOL)update
 {
   swift_getObjectType();
   MEMORY[0x277D82BE0](self);
@@ -34,23 +34,23 @@
   MEMORY[0x277D82BD8](self);
 }
 
-- (MUIHighlightedMessagesController)initWithRepository:(id)a3 delegate:(id)a4
+- (MUIHighlightedMessagesController)initWithRepository:(id)repository delegate:(id)delegate
 {
   swift_getObjectType();
-  MEMORY[0x277D82BE0](a3);
+  MEMORY[0x277D82BE0](repository);
   swift_unknownObjectRetain();
-  return sub_214A634BC(a3, a4);
+  return sub_214A634BC(repository, delegate);
 }
 
-- (void)setMailboxes:(id)a3
+- (void)setMailboxes:(id)mailboxes
 {
   swift_getObjectType();
-  MEMORY[0x277D82BE0](a3);
+  MEMORY[0x277D82BE0](mailboxes);
   MEMORY[0x277D82BE0](self);
   sub_214A63684();
   v4 = sub_214CCF7E4();
   sub_214A63874(v4);
-  MEMORY[0x277D82BD8](a3);
+  MEMORY[0x277D82BD8](mailboxes);
   MEMORY[0x277D82BD8](self);
 }
 
@@ -64,12 +64,12 @@
   return v5;
 }
 
-- (void)setFilterPredicate:(id)a3
+- (void)setFilterPredicate:(id)predicate
 {
   swift_getObjectType();
-  MEMORY[0x277D82BE0](a3);
+  MEMORY[0x277D82BE0](predicate);
   MEMORY[0x277D82BE0](self);
-  sub_214A66EDC(a3);
+  sub_214A66EDC(predicate);
   MEMORY[0x277D82BD8](self);
 }
 
@@ -125,34 +125,34 @@
   return v5;
 }
 
-- (void)collection:(id)a3 addedItemIDs:(id)a4 before:(id)a5
+- (void)collection:(id)collection addedItemIDs:(id)ds before:(id)before
 {
   swift_getObjectType();
   swift_unknownObjectRetain();
-  MEMORY[0x277D82BE0](a4);
+  MEMORY[0x277D82BE0](ds);
   swift_unknownObjectRetain();
   MEMORY[0x277D82BE0](self);
   __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27CA37710);
   v6 = sub_214CCF7E4();
-  MUIHighlightedMessagesController.collection(_:addedItemIDs:before:)(a3, v6, a5);
+  MUIHighlightedMessagesController.collection(_:addedItemIDs:before:)(collection, v6, before);
 
-  MEMORY[0x277D82BD8](a4);
+  MEMORY[0x277D82BD8](ds);
   MEMORY[0x277D82BD8](self);
   swift_unknownObjectRelease();
   swift_unknownObjectRelease();
 }
 
-- (void)collectionDidFinishInitialLoad:(id)a3
+- (void)collectionDidFinishInitialLoad:(id)load
 {
   swift_getObjectType();
   swift_unknownObjectRetain();
   MEMORY[0x277D82BE0](self);
-  MUIHighlightedMessagesController.collectionDidFinishInitialLoad(_:)(a3);
+  MUIHighlightedMessagesController.collectionDidFinishInitialLoad(_:)(load);
   MEMORY[0x277D82BD8](self);
   swift_unknownObjectRelease();
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   swift_getObjectType();
   swift_unknownObjectRetain();
@@ -161,21 +161,21 @@
   MEMORY[0x277D82BD8](self);
 }
 
-- (void)setReloadDebouncer:(id)a3
+- (void)setReloadDebouncer:(id)debouncer
 {
   swift_getObjectType();
-  MEMORY[0x277D82BE0](a3);
+  MEMORY[0x277D82BE0](debouncer);
   MEMORY[0x277D82BE0](self);
-  sub_214C1662C(a3);
+  sub_214C1662C(debouncer);
   MEMORY[0x277D82BD8](self);
 }
 
-- (void)setReloadWithEmptyUpdateDebouncer:(id)a3
+- (void)setReloadWithEmptyUpdateDebouncer:(id)debouncer
 {
   swift_getObjectType();
-  MEMORY[0x277D82BE0](a3);
+  MEMORY[0x277D82BE0](debouncer);
   MEMORY[0x277D82BE0](self);
-  sub_214C16734(a3);
+  sub_214C16734(debouncer);
   MEMORY[0x277D82BD8](self);
 }
 
@@ -189,95 +189,95 @@
   return v5;
 }
 
-- (void)collection:(id)a3 addedItemIDs:(id)a4 after:(id)a5
+- (void)collection:(id)collection addedItemIDs:(id)ds after:(id)after
 {
   swift_getObjectType();
   swift_unknownObjectRetain();
-  MEMORY[0x277D82BE0](a4);
+  MEMORY[0x277D82BE0](ds);
   swift_unknownObjectRetain();
   MEMORY[0x277D82BE0](self);
   __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27CA37710);
   v6 = sub_214CCF7E4();
-  MUIHighlightedMessagesController.collection(_:addedItemIDs:after:)(a3, v6, a5);
+  MUIHighlightedMessagesController.collection(_:addedItemIDs:after:)(collection, v6, after);
 
-  MEMORY[0x277D82BD8](a4);
+  MEMORY[0x277D82BD8](ds);
   MEMORY[0x277D82BD8](self);
   swift_unknownObjectRelease();
   swift_unknownObjectRelease();
 }
 
-- (void)collection:(id)a3 movedItemIDs:(id)a4 before:(id)a5
+- (void)collection:(id)collection movedItemIDs:(id)ds before:(id)before
 {
   swift_getObjectType();
   swift_unknownObjectRetain();
-  MEMORY[0x277D82BE0](a4);
+  MEMORY[0x277D82BE0](ds);
   swift_unknownObjectRetain();
   MEMORY[0x277D82BE0](self);
   __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27CA37710);
   v6 = sub_214CCF7E4();
-  MUIHighlightedMessagesController.collection(_:movedItemIDs:before:)(a3, v6, a5);
+  MUIHighlightedMessagesController.collection(_:movedItemIDs:before:)(collection, v6, before);
 
-  MEMORY[0x277D82BD8](a4);
+  MEMORY[0x277D82BD8](ds);
   MEMORY[0x277D82BD8](self);
   swift_unknownObjectRelease();
   swift_unknownObjectRelease();
 }
 
-- (void)collection:(id)a3 movedItemIDs:(id)a4 after:(id)a5
+- (void)collection:(id)collection movedItemIDs:(id)ds after:(id)after
 {
   swift_getObjectType();
   swift_unknownObjectRetain();
-  MEMORY[0x277D82BE0](a4);
+  MEMORY[0x277D82BE0](ds);
   swift_unknownObjectRetain();
   MEMORY[0x277D82BE0](self);
   __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27CA37710);
   v6 = sub_214CCF7E4();
-  MUIHighlightedMessagesController.collection(_:movedItemIDs:after:)(a3, v6, a5);
+  MUIHighlightedMessagesController.collection(_:movedItemIDs:after:)(collection, v6, after);
 
-  MEMORY[0x277D82BD8](a4);
+  MEMORY[0x277D82BD8](ds);
   MEMORY[0x277D82BD8](self);
   swift_unknownObjectRelease();
   swift_unknownObjectRelease();
 }
 
-- (void)collection:(id)a3 changedItemIDs:(id)a4
+- (void)collection:(id)collection changedItemIDs:(id)ds
 {
   swift_getObjectType();
   swift_unknownObjectRetain();
-  MEMORY[0x277D82BE0](a4);
+  MEMORY[0x277D82BE0](ds);
   MEMORY[0x277D82BE0](self);
   __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27CA37710);
   v5 = sub_214CCF7E4();
-  MUIHighlightedMessagesController.collection(_:changedItemIDs:)(a3, v5);
+  MUIHighlightedMessagesController.collection(_:changedItemIDs:)(collection, v5);
 
-  MEMORY[0x277D82BD8](a4);
+  MEMORY[0x277D82BD8](ds);
   MEMORY[0x277D82BD8](self);
   swift_unknownObjectRelease();
 }
 
-- (void)collection:(id)a3 deletedItemIDs:(id)a4
+- (void)collection:(id)collection deletedItemIDs:(id)ds
 {
   swift_getObjectType();
   swift_unknownObjectRetain();
-  MEMORY[0x277D82BE0](a4);
+  MEMORY[0x277D82BE0](ds);
   MEMORY[0x277D82BE0](self);
   __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27CA37710);
   v5 = sub_214CCF7E4();
-  MUIHighlightedMessagesController.collection(_:deletedItemIDs:)(a3, v5);
+  MUIHighlightedMessagesController.collection(_:deletedItemIDs:)(collection, v5);
 
-  MEMORY[0x277D82BD8](a4);
+  MEMORY[0x277D82BD8](ds);
   MEMORY[0x277D82BD8](self);
   swift_unknownObjectRelease();
 }
 
-- (void)collection:(id)a3 replacedExistingItemID:(id)a4 withNewItemID:(id)a5
+- (void)collection:(id)collection replacedExistingItemID:(id)d withNewItemID:(id)iD
 {
   swift_getObjectType();
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
   MEMORY[0x277D82BE0](self);
-  MUIHighlightedMessagesController.collection(_:replacedExisting:withNewItemID:)(a3, a4, a5);
+  MUIHighlightedMessagesController.collection(_:replacedExisting:withNewItemID:)(collection, d, iD);
   MEMORY[0x277D82BD8](self);
   swift_unknownObjectRelease();
   swift_unknownObjectRelease();

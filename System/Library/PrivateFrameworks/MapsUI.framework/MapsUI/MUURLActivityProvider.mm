@@ -1,19 +1,19 @@
 @interface MUURLActivityProvider
-+ (id)activityProviderFromDataProvider:(id)a3;
-- (id)activityViewController:(id)a3 itemForActivityType:(id)a4;
-- (id)activityViewController:(id)a3 subjectForActivityType:(id)a4;
-- (id)activityViewController:(id)a3 thumbnailForActivityType:(id)a4;
-- (id)activityViewControllerPlaceholderItem:(id)a3;
-- (void)registerSocialThumbnailImage:(id)a3;
-- (void)registerThumbnailImage:(id)a3;
-- (void)registerURL:(id)a3;
++ (id)activityProviderFromDataProvider:(id)provider;
+- (id)activityViewController:(id)controller itemForActivityType:(id)type;
+- (id)activityViewController:(id)controller subjectForActivityType:(id)type;
+- (id)activityViewController:(id)controller thumbnailForActivityType:(id)type;
+- (id)activityViewControllerPlaceholderItem:(id)item;
+- (void)registerSocialThumbnailImage:(id)image;
+- (void)registerThumbnailImage:(id)image;
+- (void)registerURL:(id)l;
 @end
 
 @implementation MUURLActivityProvider
 
-- (id)activityViewController:(id)a3 thumbnailForActivityType:(id)a4
+- (id)activityViewController:(id)controller thumbnailForActivityType:(id)type
 {
-  v5 = [a4 isEqualToString:*MEMORY[0x1E69CDA78]];
+  v5 = [type isEqualToString:*MEMORY[0x1E69CDA78]];
   socialThumbnailImageProvider = self->_socialThumbnailImageProvider;
   if (socialThumbnailImageProvider)
   {
@@ -35,19 +35,19 @@
   return socialThumbnailImageProvider;
 }
 
-- (id)activityViewController:(id)a3 subjectForActivityType:(id)a4
+- (id)activityViewController:(id)controller subjectForActivityType:(id)type
 {
   v15 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  typeCopy = type;
   v6 = MUGetMUActivityProvidersLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v13 = 138412290;
-    v14 = v5;
+    v14 = typeCopy;
     _os_log_impl(&dword_1C5620000, v6, OS_LOG_TYPE_INFO, "Fetching subject for activity view controller with activity type %@", &v13, 0xCu);
   }
 
-  if ([v5 isEqualToString:*MEMORY[0x1E69CDA78]] && self->_airDropJSON)
+  if ([typeCopy isEqualToString:*MEMORY[0x1E69CDA78]] && self->_airDropJSON)
   {
     v7 = MUGetMUActivityProvidersLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
@@ -77,7 +77,7 @@
   return v9;
 }
 
-- (id)activityViewControllerPlaceholderItem:(id)a3
+- (id)activityViewControllerPlaceholderItem:(id)item
 {
   v3 = MUGetMUActivityProvidersLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
@@ -87,8 +87,8 @@
   }
 
   v4 = objc_alloc_init(MEMORY[0x1E696ACA0]);
-  v5 = [*MEMORY[0x1E6983030] identifier];
-  [v4 registerItemForTypeIdentifier:v5 loadHandler:&__block_literal_global_2153];
+  identifier = [*MEMORY[0x1E6983030] identifier];
+  [v4 registerItemForTypeIdentifier:identifier loadHandler:&__block_literal_global_2153];
 
   return v4;
 }
@@ -108,30 +108,30 @@ void __63__MUURLActivityProvider_activityViewControllerPlaceholderItem___block_i
   v3[2](v3, v4, 0);
 }
 
-- (id)activityViewController:(id)a3 itemForActivityType:(id)a4
+- (id)activityViewController:(id)controller itemForActivityType:(id)type
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  typeCopy = type;
   v8 = MUGetMUActivityProvidersLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v18 = v7;
+    v18 = typeCopy;
     _os_log_impl(&dword_1C5620000, v8, OS_LOG_TYPE_INFO, "Fetching URL for activity view controller with activity type %@", buf, 0xCu);
   }
 
   objc_initWeak(buf, self);
   v9 = objc_alloc_init(MEMORY[0x1E696ACA0]);
-  v10 = [*MEMORY[0x1E6983030] identifier];
+  identifier = [*MEMORY[0x1E6983030] identifier];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __68__MUURLActivityProvider_activityViewController_itemForActivityType___block_invoke;
   v14[3] = &unk_1E8218BA0;
   objc_copyWeak(&v16, buf);
-  v11 = v7;
+  v11 = typeCopy;
   v15 = v11;
-  [v9 registerItemForTypeIdentifier:v10 loadHandler:v14];
+  [v9 registerItemForTypeIdentifier:identifier loadHandler:v14];
 
   objc_destroyWeak(&v16);
   objc_destroyWeak(buf);
@@ -257,52 +257,52 @@ void __68__MUURLActivityProvider_activityViewController_itemForActivityType___bl
   v9();
 }
 
-- (void)registerSocialThumbnailImage:(id)a3
+- (void)registerSocialThumbnailImage:(id)image
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(image);
   socialThumbnailImageProvider = self->_socialThumbnailImageProvider;
   self->_socialThumbnailImageProvider = v4;
 
   MEMORY[0x1EEE66BB8](v4, socialThumbnailImageProvider);
 }
 
-- (void)registerThumbnailImage:(id)a3
+- (void)registerThumbnailImage:(id)image
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(image);
   thumbnailImageProvider = self->_thumbnailImageProvider;
   self->_thumbnailImageProvider = v4;
 
   MEMORY[0x1EEE66BB8](v4, thumbnailImageProvider);
 }
 
-- (void)registerURL:(id)a3
+- (void)registerURL:(id)l
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(l);
   urlProviderBlock = self->_urlProviderBlock;
   self->_urlProviderBlock = v4;
 
   MEMORY[0x1EEE66BB8](v4, urlProviderBlock);
 }
 
-+ (id)activityProviderFromDataProvider:(id)a3
++ (id)activityProviderFromDataProvider:(id)provider
 {
-  v3 = a3;
+  providerCopy = provider;
   v4 = objc_alloc_init(MUURLActivityProvider);
-  v5 = [v3 activityURL];
-  [(MUURLActivityProvider *)v4 setOriginalURL:v5];
+  activityURL = [providerCopy activityURL];
+  [(MUURLActivityProvider *)v4 setOriginalURL:activityURL];
 
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __58__MUURLActivityProvider_activityProviderFromDataProvider___block_invoke;
   v17[3] = &unk_1E8218BE8;
-  v6 = v3;
+  v6 = providerCopy;
   v18 = v6;
   [(MUURLActivityProvider *)v4 registerURL:v17];
-  v7 = [v6 airDropJSON];
-  [(MUURLActivityProvider *)v4 registerAirDropJSON:v7];
+  airDropJSON = [v6 airDropJSON];
+  [(MUURLActivityProvider *)v4 registerAirDropJSON:airDropJSON];
 
-  v8 = [v6 subjectTitle];
-  [(MUURLActivityProvider *)v4 registerSubjectTitle:v8];
+  subjectTitle = [v6 subjectTitle];
+  [(MUURLActivityProvider *)v4 registerSubjectTitle:subjectTitle];
 
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
@@ -314,8 +314,8 @@ void __68__MUURLActivityProvider_activityViewController_itemForActivityType___bl
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = [v9 risonActivityURL];
-    [(MUURLActivityProvider *)v4 registerRisonURL:v10];
+    risonActivityURL = [v9 risonActivityURL];
+    [(MUURLActivityProvider *)v4 registerRisonURL:risonActivityURL];
   }
 
   objc_opt_class();

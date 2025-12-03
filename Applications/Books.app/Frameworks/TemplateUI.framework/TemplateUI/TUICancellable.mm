@@ -1,15 +1,15 @@
 @interface TUICancellable
-+ (id)newWithCancelBlock:(id)a3;
-- (TUICancellable)initWithCancelBlock:(id)a3;
++ (id)newWithCancelBlock:(id)block;
+- (TUICancellable)initWithCancelBlock:(id)block;
 - (void)cancel;
 - (void)dealloc;
 @end
 
 @implementation TUICancellable
 
-- (TUICancellable)initWithCancelBlock:(id)a3
+- (TUICancellable)initWithCancelBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v10.receiver = self;
   v10.super_class = TUICancellable;
   v5 = [(TUICancellable *)&v10 init];
@@ -17,7 +17,7 @@
   if (v5)
   {
     v5->_lock._os_unfair_lock_opaque = 0;
-    v7 = [v4 copy];
+    v7 = [blockCopy copy];
     cancelBlock = v6->_cancelBlock;
     v6->_cancelBlock = v7;
   }
@@ -49,10 +49,10 @@
   }
 }
 
-+ (id)newWithCancelBlock:(id)a3
++ (id)newWithCancelBlock:(id)block
 {
-  v3 = a3;
-  v4 = [[TUICancellable alloc] initWithCancelBlock:v3];
+  blockCopy = block;
+  v4 = [[TUICancellable alloc] initWithCancelBlock:blockCopy];
 
   return v4;
 }

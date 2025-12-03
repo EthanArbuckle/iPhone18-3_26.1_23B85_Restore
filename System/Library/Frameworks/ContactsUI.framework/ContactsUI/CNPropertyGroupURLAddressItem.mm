@@ -1,25 +1,25 @@
 @interface CNPropertyGroupURLAddressItem
-- (id)_urlWithUserString:(id)a3;
+- (id)_urlWithUserString:(id)string;
 - (id)defaultActionURL;
-- (id)displayStringForValue:(id)a3;
+- (id)displayStringForValue:(id)value;
 @end
 
 @implementation CNPropertyGroupURLAddressItem
 
-- (id)_urlWithUserString:(id)a3
+- (id)_urlWithUserString:(id)string
 {
-  v3 = a3;
-  if ([v3 length])
+  stringCopy = string;
+  if ([stringCopy length])
   {
     v4 = objc_autoreleasePoolPush();
-    v5 = [MEMORY[0x1E695DFF8] _web_URLWithUserTypedString:v3];
-    v6 = [v5 scheme];
+    v5 = [MEMORY[0x1E695DFF8] _web_URLWithUserTypedString:stringCopy];
+    scheme = [v5 scheme];
 
-    if (!v6)
+    if (!scheme)
     {
       v7 = MEMORY[0x1E695DFF8];
-      v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"http://%@", v3];
-      v9 = [v7 _web_URLWithUserTypedString:v8];
+      stringCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"http://%@", stringCopy];
+      v9 = [v7 _web_URLWithUserTypedString:stringCopy];
 
       v5 = v9;
     }
@@ -37,19 +37,19 @@
 
 - (id)defaultActionURL
 {
-  v3 = [(CNPropertyGroupItem *)self labeledValue];
-  v4 = [v3 value];
-  v5 = [(CNPropertyGroupURLAddressItem *)self _urlWithUserString:v4];
+  labeledValue = [(CNPropertyGroupItem *)self labeledValue];
+  value = [labeledValue value];
+  v5 = [(CNPropertyGroupURLAddressItem *)self _urlWithUserString:value];
 
   return v5;
 }
 
-- (id)displayStringForValue:(id)a3
+- (id)displayStringForValue:(id)value
 {
-  v3 = [(CNPropertyGroupURLAddressItem *)self _urlWithUserString:a3];
-  v4 = [v3 _web_userVisibleString];
+  v3 = [(CNPropertyGroupURLAddressItem *)self _urlWithUserString:value];
+  _web_userVisibleString = [v3 _web_userVisibleString];
 
-  return v4;
+  return _web_userVisibleString;
 }
 
 @end

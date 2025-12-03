@@ -1,9 +1,9 @@
 @interface BDSSecureEngagementData
 - (NSString)debugDescription;
 - (id)mutableCopy;
-- (void)_configureFromEngagementData:(id)a3 withMergers:(id)a4;
-- (void)configureFromCloudData:(id)a3 withMergers:(id)a4;
-- (void)resolveConflictsFromRecord:(id)a3 withResolvers:(id)a4;
+- (void)_configureFromEngagementData:(id)data withMergers:(id)mergers;
+- (void)configureFromCloudData:(id)data withMergers:(id)mergers;
+- (void)resolveConflictsFromRecord:(id)record withResolvers:(id)resolvers;
 @end
 
 @implementation BDSSecureEngagementData
@@ -15,13 +15,13 @@
   return [(BDSMutableSecureEngagementData *)v3 initWithCloudData:self];
 }
 
-- (void)configureFromCloudData:(id)a3 withMergers:(id)a4
+- (void)configureFromCloudData:(id)data withMergers:(id)mergers
 {
-  v5 = a4;
+  mergersCopy = mergers;
   v6 = BUProtocolCast();
   if (v6)
   {
-    [(BDSSecureEngagementData *)self _configureFromEngagementData:v6 withMergers:v5];
+    [(BDSSecureEngagementData *)self _configureFromEngagementData:v6 withMergers:mergersCopy];
   }
 
   else
@@ -34,64 +34,64 @@
   }
 }
 
-- (void)_configureFromEngagementData:(id)a3 withMergers:(id)a4
+- (void)_configureFromEngagementData:(id)data withMergers:(id)mergers
 {
-  v6 = a3;
+  dataCopy = data;
   v19.receiver = self;
   v19.super_class = BDSSecureEngagementData;
-  [(BCCloudData *)&v19 configureFromCloudData:v6 withMergers:a4];
-  v7 = [v6 startTimestampString];
-  [(BDSSecureEngagementData *)self setDifferentString:v7 forKey:@"startTimestampString"];
+  [(BCCloudData *)&v19 configureFromCloudData:dataCopy withMergers:mergers];
+  startTimestampString = [dataCopy startTimestampString];
+  [(BDSSecureEngagementData *)self setDifferentString:startTimestampString forKey:@"startTimestampString"];
 
-  [v6 durationInterval];
+  [dataCopy durationInterval];
   v8 = [NSNumber numberWithDouble:?];
   [(BDSSecureEngagementData *)self setDifferentNumber:v8 forKey:@"durationInterval"];
 
-  v9 = [(BDSSecureEngagementData *)self value];
-  v10 = [v6 value];
-  v11 = [BDSSecureEngagementDataHelper mergedTimeSliceDataLocal:v9 remote:v10];
+  value = [(BDSSecureEngagementData *)self value];
+  value2 = [dataCopy value];
+  v11 = [BDSSecureEngagementDataHelper mergedTimeSliceDataLocal:value remote:value2];
 
   if (v11)
   {
     [(BDSSecureEngagementData *)self setDifferentObject:v11 forKey:@"value"];
   }
 
-  v12 = [v6 value];
-  [(BDSSecureEngagementData *)self setDifferentObject:v12 forKey:@"value"];
+  value3 = [dataCopy value];
+  [(BDSSecureEngagementData *)self setDifferentObject:value3 forKey:@"value"];
 
   v13 = +[BULogUtilities shared];
-  v14 = [v13 verboseLoggingEnabled];
+  verboseLoggingEnabled = [v13 verboseLoggingEnabled];
 
-  if (v14)
+  if (verboseLoggingEnabled)
   {
     v15 = sub_10000DB80();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = [(BDSSecureEngagementData *)self startTimestampString];
+      startTimestampString2 = [(BDSSecureEngagementData *)self startTimestampString];
       v17 = [(BDSSecureEngagementData *)self debugDescription];
-      v18 = [v6 startTimestampString];
+      startTimestampString3 = [dataCopy startTimestampString];
       *buf = 138412802;
-      v21 = v16;
+      v21 = startTimestampString2;
       v22 = 2112;
       v23 = v17;
       v24 = 2112;
-      v25 = v18;
+      v25 = startTimestampString3;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "\\BDSSecureEngagementData configured: %@ %@ from engagementData:%@\\"", buf, 0x20u);
     }
   }
 }
 
-- (void)resolveConflictsFromRecord:(id)a3 withResolvers:(id)a4
+- (void)resolveConflictsFromRecord:(id)record withResolvers:(id)resolvers
 {
-  v6 = a3;
+  recordCopy = record;
   v43.receiver = self;
   v43.super_class = BDSSecureEngagementData;
-  [(BCCloudData *)&v43 resolveConflictsFromRecord:v6 withResolvers:a4];
-  if (v6)
+  [(BCCloudData *)&v43 resolveConflictsFromRecord:recordCopy withResolvers:resolvers];
+  if (recordCopy)
   {
-    v7 = [BCCloudData localIdentifierFromRecord:v6];
-    v8 = [(BDSSecureEngagementData *)self startTimestampString];
-    v9 = [v8 isEqualToString:v7];
+    v7 = [BCCloudData localIdentifierFromRecord:recordCopy];
+    startTimestampString = [(BDSSecureEngagementData *)self startTimestampString];
+    v9 = [startTimestampString isEqualToString:v7];
 
     if ((v9 & 1) == 0)
     {
@@ -104,15 +104,15 @@
       [(BDSSecureEngagementData *)self setStartTimestampString:v7];
     }
 
-    v11 = [(BDSSecureEngagementData *)self modificationDate];
-    if (v11)
+    modificationDate = [(BDSSecureEngagementData *)self modificationDate];
+    if (modificationDate)
     {
-      v12 = v11;
-      v13 = [(BDSSecureEngagementData *)self modificationDate];
-      [v13 timeIntervalSinceReferenceDate];
+      v12 = modificationDate;
+      modificationDate2 = [(BDSSecureEngagementData *)self modificationDate];
+      [modificationDate2 timeIntervalSinceReferenceDate];
       v15 = v14;
-      v16 = [v6 modificationDate];
-      [v16 timeIntervalSinceReferenceDate];
+      modificationDate3 = [recordCopy modificationDate];
+      [modificationDate3 timeIntervalSinceReferenceDate];
       v18 = v17;
 
       if (v15 > v18)
@@ -120,24 +120,24 @@
         v19 = sub_100002660();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
         {
-          v20 = [(BDSSecureEngagementData *)self startTimestampString];
-          v21 = [v6 recordID];
-          v22 = [v21 recordName];
-          v23 = [(BDSSecureEngagementData *)self modificationDate];
-          [v23 timeIntervalSinceReferenceDate];
+          startTimestampString2 = [(BDSSecureEngagementData *)self startTimestampString];
+          recordID = [recordCopy recordID];
+          recordName = [recordID recordName];
+          modificationDate4 = [(BDSSecureEngagementData *)self modificationDate];
+          [modificationDate4 timeIntervalSinceReferenceDate];
           v25 = v24;
-          v26 = [v6 modificationDate];
-          [v26 timeIntervalSinceReferenceDate];
+          modificationDate5 = [recordCopy modificationDate];
+          [modificationDate5 timeIntervalSinceReferenceDate];
           v27 = @"newer";
           *buf = 138412802;
-          v45 = v20;
+          v45 = startTimestampString2;
           if (v25 == v28)
           {
             v27 = @"the same";
           }
 
           v46 = 2112;
-          v47 = v22;
+          v47 = recordName;
           v48 = 2114;
           v49 = v27;
           _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_INFO, "BDSSecureEngagementData %@ Resolving conflicts from record %@, keeping my properties as my modification date is %{public}@.", buf, 0x20u);
@@ -148,38 +148,38 @@
       }
     }
 
-    v29 = [v6 objectForKey:@"durationInterval"];
+    v29 = [recordCopy objectForKey:@"durationInterval"];
     [(BDSSecureEngagementData *)self setDifferentNumber:v29 forKey:@"durationInterval"];
-    v30 = [v6 objectForKey:@"value"];
-    v31 = [(BDSSecureEngagementData *)self value];
-    v32 = [BDSSecureEngagementDataHelper mergedTimeSliceDataLocal:v31 remote:v30];
+    v30 = [recordCopy objectForKey:@"value"];
+    value = [(BDSSecureEngagementData *)self value];
+    v32 = [BDSSecureEngagementDataHelper mergedTimeSliceDataLocal:value remote:v30];
 
     if (v32)
     {
       [(BDSSecureEngagementData *)self setDifferentObject:v32 forKey:@"value"];
     }
 
-    v33 = [v6 modificationDate];
-    [(BDSSecureEngagementData *)self setDifferentDate:v33 forKey:@"modificationDate"];
-    v34 = [(BDSSecureEngagementData *)self hasChanges];
+    modificationDate6 = [recordCopy modificationDate];
+    [(BDSSecureEngagementData *)self setDifferentDate:modificationDate6 forKey:@"modificationDate"];
+    hasChanges = [(BDSSecureEngagementData *)self hasChanges];
     v35 = +[BULogUtilities shared];
-    v36 = [v35 verboseLoggingEnabled];
+    verboseLoggingEnabled = [v35 verboseLoggingEnabled];
 
-    if (v34)
+    if (hasChanges)
     {
-      if (v36)
+      if (verboseLoggingEnabled)
       {
         v37 = sub_10000DB80();
         if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
         {
-          v38 = [(BDSSecureEngagementData *)self startTimestampString];
-          v42 = [v6 recordID];
-          v39 = [v42 recordName];
+          startTimestampString3 = [(BDSSecureEngagementData *)self startTimestampString];
+          recordID2 = [recordCopy recordID];
+          recordName2 = [recordID2 recordName];
           v40 = [(BDSSecureEngagementData *)self debugDescription];
           *buf = 138412802;
-          v45 = v38;
+          v45 = startTimestampString3;
           v46 = 2112;
-          v47 = v39;
+          v47 = recordName2;
           v48 = 2112;
           v49 = v40;
           v41 = "\\BDSSecureEngagementData %@ Resolving: Adopted properties from record: %@ %@\\"";
@@ -193,19 +193,19 @@ LABEL_24:
       }
     }
 
-    else if (v36)
+    else if (verboseLoggingEnabled)
     {
       v37 = sub_10000DB80();
       if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
       {
-        v38 = [(BDSSecureEngagementData *)self startTimestampString];
-        v42 = [v6 recordID];
-        v39 = [v42 recordName];
+        startTimestampString3 = [(BDSSecureEngagementData *)self startTimestampString];
+        recordID2 = [recordCopy recordID];
+        recordName2 = [recordID2 recordName];
         v40 = [(BDSSecureEngagementData *)self debugDescription];
         *buf = 138412802;
-        v45 = v38;
+        v45 = startTimestampString3;
         v46 = 2112;
-        v47 = v39;
+        v47 = recordName2;
         v48 = 2112;
         v49 = v40;
         v41 = "\\BDSSecureEngagementData %@ Resolving: Identical properties from record: %@ %@\\"";
@@ -229,9 +229,9 @@ LABEL_27:
 
 - (NSString)debugDescription
 {
-  v3 = [(BDSSecureEngagementData *)self startTimestampString];
+  startTimestampString = [(BDSSecureEngagementData *)self startTimestampString];
   [(BDSSecureEngagementData *)self durationInterval];
-  v5 = [NSString stringWithFormat:@"start timestamp: %@, duration: %.1lf", v3, v4];
+  v5 = [NSString stringWithFormat:@"start timestamp: %@, duration: %.1lf", startTimestampString, v4];
 
   return v5;
 }

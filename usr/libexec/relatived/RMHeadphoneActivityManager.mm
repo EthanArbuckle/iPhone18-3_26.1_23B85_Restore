@@ -36,10 +36,10 @@
 
 - (BOOL)mslLoggingEnabled
 {
-  v2 = [(RMHeadphoneActivityManager *)self activityManager];
-  v3 = [v2 mslLoggingEnabled];
+  activityManager = [(RMHeadphoneActivityManager *)self activityManager];
+  mslLoggingEnabled = [activityManager mslLoggingEnabled];
 
-  return v3;
+  return mslLoggingEnabled;
 }
 
 - (void)startMslLogging
@@ -47,14 +47,14 @@
   v3 = sub_10000E778();
   v5 = [NSString stringWithFormat:@"%@/HeadphoneActivity/MSL/", v3];
 
-  v4 = [(RMHeadphoneActivityManager *)self activityManager];
-  [v4 startMslLoggingWithFilenamePrefix:@"headphoneactivity" filePath:v5];
+  activityManager = [(RMHeadphoneActivityManager *)self activityManager];
+  [activityManager startMslLoggingWithFilenamePrefix:@"headphoneactivity" filePath:v5];
 }
 
 - (void)stopMslLogging
 {
-  v2 = [(RMHeadphoneActivityManager *)self activityManager];
-  [v2 stopMslLogging];
+  activityManager = [(RMHeadphoneActivityManager *)self activityManager];
+  [activityManager stopMslLogging];
 }
 
 @end

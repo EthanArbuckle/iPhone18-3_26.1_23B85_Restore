@@ -1,11 +1,11 @@
 @interface HighlightedParagraphView
-- (_TtC23ShelfKitCollectionViews24HighlightedParagraphView)initWithCoder:(id)a3;
-- (_TtC23ShelfKitCollectionViews24HighlightedParagraphView)initWithFrame:(CGRect)a3;
+- (_TtC23ShelfKitCollectionViews24HighlightedParagraphView)initWithCoder:(id)coder;
+- (_TtC23ShelfKitCollectionViews24HighlightedParagraphView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation HighlightedParagraphView
 
-- (_TtC23ShelfKitCollectionViews24HighlightedParagraphView)initWithFrame:(CGRect)a3
+- (_TtC23ShelfKitCollectionViews24HighlightedParagraphView)initWithFrame:(CGRect)frame
 {
   v3 = (&self->super.super.super.isa + OBJC_IVAR____TtC23ShelfKitCollectionViews24HighlightedParagraphView_onDismissMenu);
   *v3 = 0;
@@ -20,7 +20,7 @@
   return result;
 }
 
-- (_TtC23ShelfKitCollectionViews24HighlightedParagraphView)initWithCoder:(id)a3
+- (_TtC23ShelfKitCollectionViews24HighlightedParagraphView)initWithCoder:(id)coder
 {
   v3 = (&self->super.super.super.isa + OBJC_IVAR____TtC23ShelfKitCollectionViews24HighlightedParagraphView_onDismissMenu);
   *v3 = 0;

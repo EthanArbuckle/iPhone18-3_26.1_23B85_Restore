@@ -1,31 +1,31 @@
 @interface _VFBlockObserver
-- (_VFBlockObserver)initWithResultBlock:(id)a3 completionBlock:(id)a4 failureBlock:(id)a5;
+- (_VFBlockObserver)initWithResultBlock:(id)block completionBlock:(id)completionBlock failureBlock:(id)failureBlock;
 - (void)observerDidComplete;
-- (void)observerDidFailWithError:(id)a3;
-- (void)observerDidReceiveResult:(id)a3;
+- (void)observerDidFailWithError:(id)error;
+- (void)observerDidReceiveResult:(id)result;
 @end
 
 @implementation _VFBlockObserver
 
-- (_VFBlockObserver)initWithResultBlock:(id)a3 completionBlock:(id)a4 failureBlock:(id)a5
+- (_VFBlockObserver)initWithResultBlock:(id)block completionBlock:(id)completionBlock failureBlock:(id)failureBlock
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  blockCopy = block;
+  completionBlockCopy = completionBlock;
+  failureBlockCopy = failureBlock;
   v19.receiver = self;
   v19.super_class = _VFBlockObserver;
   v11 = [(_VFBlockObserver *)&v19 init];
   if (v11)
   {
-    v12 = MEMORY[0x2743C3100](v8);
+    v12 = MEMORY[0x2743C3100](blockCopy);
     resultBlock = v11->_resultBlock;
     v11->_resultBlock = v12;
 
-    v14 = MEMORY[0x2743C3100](v9);
+    v14 = MEMORY[0x2743C3100](completionBlockCopy);
     completionBlock = v11->_completionBlock;
     v11->_completionBlock = v14;
 
-    v16 = MEMORY[0x2743C3100](v10);
+    v16 = MEMORY[0x2743C3100](failureBlockCopy);
     failureBlock = v11->_failureBlock;
     v11->_failureBlock = v16;
   }
@@ -33,12 +33,12 @@
   return v11;
 }
 
-- (void)observerDidReceiveResult:(id)a3
+- (void)observerDidReceiveResult:(id)result
 {
   resultBlock = self->_resultBlock;
   if (resultBlock)
   {
-    resultBlock[2](resultBlock, a3);
+    resultBlock[2](resultBlock, result);
   }
 }
 
@@ -51,12 +51,12 @@
   }
 }
 
-- (void)observerDidFailWithError:(id)a3
+- (void)observerDidFailWithError:(id)error
 {
   failureBlock = self->_failureBlock;
   if (failureBlock)
   {
-    failureBlock[2](failureBlock, a3);
+    failureBlock[2](failureBlock, error);
   }
 }
 

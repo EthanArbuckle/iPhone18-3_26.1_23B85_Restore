@@ -3,13 +3,13 @@
 - (SFActivityAdvertiser)init;
 - (id)exportedInterface;
 - (id)remoteObjectInterface;
-- (void)activityPayloadForAdvertisementPayload:(id)a3 command:(id)a4 requestedByDevice:(id)a5 withCompletionHandler:(id)a6;
-- (void)advertiseAdvertisementPayload:(id)a3 options:(id)a4;
-- (void)didSendPayloadForActivityIdentifier:(id)a3 toDevice:(id)a4 error:(id)a5;
-- (void)fetchLoginIDWithCompletionHandler:(id)a3;
-- (void)fetchPeerForUUID:(id)a3 withCompletionHandler:(id)a4;
-- (void)fetchSFPeerDevicesWithCompletionHandler:(id)a3;
-- (void)pairedDevicesChanged:(id)a3;
+- (void)activityPayloadForAdvertisementPayload:(id)payload command:(id)command requestedByDevice:(id)device withCompletionHandler:(id)handler;
+- (void)advertiseAdvertisementPayload:(id)payload options:(id)options;
+- (void)didSendPayloadForActivityIdentifier:(id)identifier toDevice:(id)device error:(id)error;
+- (void)fetchLoginIDWithCompletionHandler:(id)handler;
+- (void)fetchPeerForUUID:(id)d withCompletionHandler:(id)handler;
+- (void)fetchSFPeerDevicesWithCompletionHandler:(id)handler;
+- (void)pairedDevicesChanged:(id)changed;
 @end
 
 @implementation SFActivityAdvertiser
@@ -58,9 +58,9 @@ void __40__SFActivityAdvertiser_sharedAdvertiser__block_invoke()
   return v3;
 }
 
-- (void)fetchLoginIDWithCompletionHandler:(id)a3
+- (void)fetchLoginIDWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = _os_activity_create(&dword_1A9662000, "Sharing/SFActivityAdvertiser/fetchLoginIDWithCompletionHandler", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -69,16 +69,16 @@ void __40__SFActivityAdvertiser_sharedAdvertiser__block_invoke()
   v7[1] = 3221225472;
   v7[2] = __58__SFActivityAdvertiser_fetchLoginIDWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E788FFF0;
-  v6 = v4;
+  v6 = handlerCopy;
   v8 = v6;
   [(SFActivityAdvertiser *)self _getRemoteObjectProxyOnQueue:v7];
 
   os_activity_scope_leave(&state);
 }
 
-- (void)fetchSFPeerDevicesWithCompletionHandler:(id)a3
+- (void)fetchSFPeerDevicesWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = _os_activity_create(&dword_1A9662000, "Sharing/SFActivityAdvertiser/fetchSFPeerDevicesWithCompletionHandler", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -87,17 +87,17 @@ void __40__SFActivityAdvertiser_sharedAdvertiser__block_invoke()
   v7[1] = 3221225472;
   v7[2] = __64__SFActivityAdvertiser_fetchSFPeerDevicesWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E788FFF0;
-  v6 = v4;
+  v6 = handlerCopy;
   v8 = v6;
   [(SFActivityAdvertiser *)self _getRemoteObjectProxyOnQueue:v7];
 
   os_activity_scope_leave(&state);
 }
 
-- (void)fetchPeerForUUID:(id)a3 withCompletionHandler:(id)a4
+- (void)fetchPeerForUUID:(id)d withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  handlerCopy = handler;
   v8 = _os_activity_create(&dword_1A9662000, "Sharing/SFActivityAdvertiser/fetchPeerForUUID", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -106,19 +106,19 @@ void __40__SFActivityAdvertiser_sharedAdvertiser__block_invoke()
   v11[1] = 3221225472;
   v11[2] = __63__SFActivityAdvertiser_fetchPeerForUUID_withCompletionHandler___block_invoke;
   v11[3] = &unk_1E7890018;
-  v9 = v6;
+  v9 = dCopy;
   v12 = v9;
-  v10 = v7;
+  v10 = handlerCopy;
   v13 = v10;
   [(SFActivityAdvertiser *)self _getRemoteObjectProxyOnQueue:v11];
 
   os_activity_scope_leave(&state);
 }
 
-- (void)advertiseAdvertisementPayload:(id)a3 options:(id)a4
+- (void)advertiseAdvertisementPayload:(id)payload options:(id)options
 {
-  v6 = a3;
-  v7 = a4;
+  payloadCopy = payload;
+  optionsCopy = options;
   v8 = _os_activity_create(&dword_1A9662000, "Sharing/SFActivityAdvertiser/advertiseAdvertisementPayload", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -128,9 +128,9 @@ void __40__SFActivityAdvertiser_sharedAdvertiser__block_invoke()
   v11[2] = __62__SFActivityAdvertiser_advertiseAdvertisementPayload_options___block_invoke;
   v11[3] = &unk_1E7890040;
   v11[4] = self;
-  v9 = v6;
+  v9 = payloadCopy;
   v12 = v9;
-  v10 = v7;
+  v10 = optionsCopy;
   v13 = v10;
   [(SFActivityAdvertiser *)self _getRemoteObjectProxyOnQueue:v11];
 
@@ -176,23 +176,23 @@ void __62__SFActivityAdvertiser_advertiseAdvertisementPayload_options___block_in
   }
 }
 
-- (void)activityPayloadForAdvertisementPayload:(id)a3 command:(id)a4 requestedByDevice:(id)a5 withCompletionHandler:(id)a6
+- (void)activityPayloadForAdvertisementPayload:(id)payload command:(id)command requestedByDevice:(id)device withCompletionHandler:(id)handler
 {
   v34 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  payloadCopy = payload;
+  commandCopy = command;
+  deviceCopy = device;
+  handlerCopy = handler;
   v14 = handoff_log();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     v15 = objc_opt_class();
     v16 = NSStringFromClass(v15);
-    v17 = SFAdvertisementDescriptionFromPayloadData(v10);
+    v17 = SFAdvertisementDescriptionFromPayloadData(payloadCopy);
     *buf = 138412802;
     v29 = v16;
     v30 = 2112;
-    v31 = v12;
+    v31 = deviceCopy;
     v32 = 2112;
     v33 = v17;
     _os_log_impl(&dword_1A9662000, v14, OS_LOG_TYPE_DEFAULT, "[%@] Received payload request from %@ for %@", buf, 0x20u);
@@ -203,14 +203,14 @@ void __62__SFActivityAdvertiser_advertiseAdvertisementPayload_options___block_in
   block[2] = __111__SFActivityAdvertiser_activityPayloadForAdvertisementPayload_command_requestedByDevice_withCompletionHandler___block_invoke;
   block[3] = &unk_1E7890068;
   block[4] = self;
-  v24 = v10;
-  v25 = v11;
-  v26 = v12;
-  v27 = v13;
-  v18 = v13;
-  v19 = v12;
-  v20 = v11;
-  v21 = v10;
+  v24 = payloadCopy;
+  v25 = commandCopy;
+  v26 = deviceCopy;
+  v27 = handlerCopy;
+  v18 = handlerCopy;
+  v19 = deviceCopy;
+  v20 = commandCopy;
+  v21 = payloadCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 
   v22 = *MEMORY[0x1E69E9840];
@@ -253,22 +253,22 @@ void __111__SFActivityAdvertiser_activityPayloadForAdvertisementPayload_command_
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)didSendPayloadForActivityIdentifier:(id)a3 toDevice:(id)a4 error:(id)a5
+- (void)didSendPayloadForActivityIdentifier:(id)identifier toDevice:(id)device error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  deviceCopy = device;
+  errorCopy = error;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __75__SFActivityAdvertiser_didSendPayloadForActivityIdentifier_toDevice_error___block_invoke;
   v14[3] = &unk_1E788B9C0;
   v14[4] = self;
-  v15 = v8;
-  v16 = v9;
-  v17 = v10;
-  v11 = v10;
-  v12 = v9;
-  v13 = v8;
+  v15 = identifierCopy;
+  v16 = deviceCopy;
+  v17 = errorCopy;
+  v11 = errorCopy;
+  v12 = deviceCopy;
+  v13 = identifierCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v14);
 }
 
@@ -309,16 +309,16 @@ void __75__SFActivityAdvertiser_didSendPayloadForActivityIdentifier_toDevice_err
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)pairedDevicesChanged:(id)a3
+- (void)pairedDevicesChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __45__SFActivityAdvertiser_pairedDevicesChanged___block_invoke;
   v6[3] = &unk_1E788A658;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = changedCopy;
+  v5 = changedCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 

@@ -1,28 +1,28 @@
 @interface NHSSRelevantWidget
-- (NHSSRelevantWidget)initWithCoder:(id)a3;
-- (NHSSRelevantWidget)initWithExtensionBundleIdentifier:(id)a3 appBundleIdentifier:(id)a4 widgetKind:(id)a5 confidenceCategory:(int64_t)a6 intentIndexingHash:(int64_t)a7;
+- (NHSSRelevantWidget)initWithCoder:(id)coder;
+- (NHSSRelevantWidget)initWithExtensionBundleIdentifier:(id)identifier appBundleIdentifier:(id)bundleIdentifier widgetKind:(id)kind confidenceCategory:(int64_t)category intentIndexingHash:(int64_t)hash;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NHSSRelevantWidget
 
-- (NHSSRelevantWidget)initWithExtensionBundleIdentifier:(id)a3 appBundleIdentifier:(id)a4 widgetKind:(id)a5 confidenceCategory:(int64_t)a6 intentIndexingHash:(int64_t)a7
+- (NHSSRelevantWidget)initWithExtensionBundleIdentifier:(id)identifier appBundleIdentifier:(id)bundleIdentifier widgetKind:(id)kind confidenceCategory:(int64_t)category intentIndexingHash:(int64_t)hash
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
+  kindCopy = kind;
   v19.receiver = self;
   v19.super_class = NHSSRelevantWidget;
   v16 = [(NHSSRelevantWidget *)&v19 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_extensionBundleIdentifier, a3);
-    objc_storeStrong(&v17->_appBundleIdentifier, a4);
-    objc_storeStrong(&v17->_widgetKind, a5);
-    v17->_confidenceCategory = a6;
-    v17->_intentIndexingHash = a7;
+    objc_storeStrong(&v16->_extensionBundleIdentifier, identifier);
+    objc_storeStrong(&v17->_appBundleIdentifier, bundleIdentifier);
+    objc_storeStrong(&v17->_widgetKind, kind);
+    v17->_confidenceCategory = category;
+    v17->_intentIndexingHash = hash;
   }
 
   return v17;
@@ -36,30 +36,30 @@
   [v3 appendString:self->_widgetKind withName:@"widgetKind"];
   v4 = [v3 appendInteger:self->_confidenceCategory withName:@"confidenceCategory"];
   v5 = [v3 appendInt64:self->_intentIndexingHash withName:@"intentIndexingHash"];
-  v6 = [v3 build];
+  build = [v3 build];
 
-  return v6;
+  return build;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   extensionBundleIdentifier = self->_extensionBundleIdentifier;
-  v5 = a3;
-  [v5 encodeObject:extensionBundleIdentifier forKey:@"extensionBundleIdentifier"];
-  [v5 encodeObject:self->_appBundleIdentifier forKey:@"appBundleIdentifier"];
-  [v5 encodeObject:self->_widgetKind forKey:@"widgetKind"];
-  [v5 encodeInteger:self->_confidenceCategory forKey:@"confidenceCategory"];
-  [v5 encodeInt64:self->_intentIndexingHash forKey:@"intentIndexingHash"];
+  coderCopy = coder;
+  [coderCopy encodeObject:extensionBundleIdentifier forKey:@"extensionBundleIdentifier"];
+  [coderCopy encodeObject:self->_appBundleIdentifier forKey:@"appBundleIdentifier"];
+  [coderCopy encodeObject:self->_widgetKind forKey:@"widgetKind"];
+  [coderCopy encodeInteger:self->_confidenceCategory forKey:@"confidenceCategory"];
+  [coderCopy encodeInt64:self->_intentIndexingHash forKey:@"intentIndexingHash"];
 }
 
-- (NHSSRelevantWidget)initWithCoder:(id)a3
+- (NHSSRelevantWidget)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"extensionBundleIdentifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"appBundleIdentifier"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"widgetKind"];
-  v8 = [v4 decodeIntegerForKey:@"confidenceCategory"];
-  v9 = [v4 decodeInt64ForKey:@"intentIndexingHash"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"extensionBundleIdentifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"appBundleIdentifier"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"widgetKind"];
+  v8 = [coderCopy decodeIntegerForKey:@"confidenceCategory"];
+  v9 = [coderCopy decodeInt64ForKey:@"intentIndexingHash"];
 
   v10 = [(NHSSRelevantWidget *)self initWithExtensionBundleIdentifier:v5 appBundleIdentifier:v6 widgetKind:v7 confidenceCategory:v8 intentIndexingHash:v9];
   return v10;

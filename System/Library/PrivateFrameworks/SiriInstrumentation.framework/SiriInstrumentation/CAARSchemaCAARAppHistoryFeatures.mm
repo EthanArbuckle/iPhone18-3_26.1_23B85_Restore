@@ -1,55 +1,55 @@
 @interface CAARSchemaCAARAppHistoryFeatures
-- (BOOL)isEqual:(id)a3;
-- (CAARSchemaCAARAppHistoryFeatures)initWithDictionary:(id)a3;
-- (CAARSchemaCAARAppHistoryFeatures)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CAARSchemaCAARAppHistoryFeatures)initWithDictionary:(id)dictionary;
+- (CAARSchemaCAARAppHistoryFeatures)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasNumAppLaunchesLastInfinity:(BOOL)a3;
-- (void)setHasNumAppLaunchesLastOneDay:(BOOL)a3;
-- (void)setHasNumAppLaunchesLastOneHour:(BOOL)a3;
-- (void)setHasNumAppLaunchesLastSevenDays:(BOOL)a3;
-- (void)setHasNumAppLaunchesLastSixHours:(BOOL)a3;
-- (void)setHasNumAppLaunchesLastTenMinutes:(BOOL)a3;
-- (void)setHasNumAppLaunchesLastTwentyEightDays:(BOOL)a3;
-- (void)setHasNumAppLaunchesLastTwoMinutes:(BOOL)a3;
-- (void)setHasNumMinutesSinceAppLastLaunched:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasNumAppLaunchesLastInfinity:(BOOL)infinity;
+- (void)setHasNumAppLaunchesLastOneDay:(BOOL)day;
+- (void)setHasNumAppLaunchesLastOneHour:(BOOL)hour;
+- (void)setHasNumAppLaunchesLastSevenDays:(BOOL)days;
+- (void)setHasNumAppLaunchesLastSixHours:(BOOL)hours;
+- (void)setHasNumAppLaunchesLastTenMinutes:(BOOL)minutes;
+- (void)setHasNumAppLaunchesLastTwentyEightDays:(BOOL)days;
+- (void)setHasNumAppLaunchesLastTwoMinutes:(BOOL)minutes;
+- (void)setHasNumMinutesSinceAppLastLaunched:(BOOL)launched;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CAARSchemaCAARAppHistoryFeatures
 
-- (CAARSchemaCAARAppHistoryFeatures)initWithDictionary:(id)a3
+- (CAARSchemaCAARAppHistoryFeatures)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v22.receiver = self;
   v22.super_class = CAARSchemaCAARAppHistoryFeatures;
   v5 = [(CAARSchemaCAARAppHistoryFeatures *)&v22 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"numMinutesSinceAppInstalled"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"numMinutesSinceAppInstalled"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[CAARSchemaCAARAppHistoryFeatures setNumMinutesSinceAppInstalled:](v5, "setNumMinutesSinceAppInstalled:", [v6 unsignedIntValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"numMinutesSinceAppLastLaunched"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"numMinutesSinceAppLastLaunched"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[CAARSchemaCAARAppHistoryFeatures setNumMinutesSinceAppLastLaunched:](v5, "setNumMinutesSinceAppLastLaunched:", [v7 unsignedIntValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"numAppLaunchesLastTwoMinutes"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"numAppLaunchesLastTwoMinutes"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[CAARSchemaCAARAppHistoryFeatures setNumAppLaunchesLastTwoMinutes:](v5, "setNumAppLaunchesLastTwoMinutes:", [v8 unsignedIntValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"numAppLaunchesLastTenMinutes"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"numAppLaunchesLastTenMinutes"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -57,21 +57,21 @@
     }
 
     v19 = v9;
-    v10 = [v4 objectForKeyedSubscript:@"numAppLaunchesLastOneHour"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"numAppLaunchesLastOneHour"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[CAARSchemaCAARAppHistoryFeatures setNumAppLaunchesLastOneHour:](v5, "setNumAppLaunchesLastOneHour:", [v10 unsignedIntValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"numAppLaunchesLastSixHours"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"numAppLaunchesLastSixHours"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[CAARSchemaCAARAppHistoryFeatures setNumAppLaunchesLastSixHours:](v5, "setNumAppLaunchesLastSixHours:", [v11 unsignedIntValue]);
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"numAppLaunchesLastOneDay"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"numAppLaunchesLastOneDay"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -80,7 +80,7 @@
 
     v20 = v8;
     v21 = v6;
-    v13 = [v4 objectForKeyedSubscript:@"numAppLaunchesLastSevenDays"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"numAppLaunchesLastSevenDays"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -88,14 +88,14 @@
     }
 
     v14 = v7;
-    v15 = [v4 objectForKeyedSubscript:@"numAppLaunchesLastTwentyEightDays"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"numAppLaunchesLastTwentyEightDays"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[CAARSchemaCAARAppHistoryFeatures setNumAppLaunchesLastTwentyEightDays:](v5, "setNumAppLaunchesLastTwentyEightDays:", [v15 unsignedIntValue]);
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"numAppLaunchesLastInfinity"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"numAppLaunchesLastInfinity"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -108,30 +108,30 @@
   return v5;
 }
 
-- (CAARSchemaCAARAppHistoryFeatures)initWithJSON:(id)a3
+- (CAARSchemaCAARAppHistoryFeatures)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(CAARSchemaCAARAppHistoryFeatures *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(CAARSchemaCAARAppHistoryFeatures *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(CAARSchemaCAARAppHistoryFeatures *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -144,12 +144,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 0x200) != 0)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[CAARSchemaCAARAppHistoryFeatures numAppLaunchesLastInfinity](self, "numAppLaunchesLastInfinity")}];
-    [v3 setObject:v7 forKeyedSubscript:@"numAppLaunchesLastInfinity"];
+    [dictionary setObject:v7 forKeyedSubscript:@"numAppLaunchesLastInfinity"];
 
     has = self->_has;
     if ((has & 0x40) == 0)
@@ -170,7 +170,7 @@ LABEL_3:
   }
 
   v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[CAARSchemaCAARAppHistoryFeatures numAppLaunchesLastOneDay](self, "numAppLaunchesLastOneDay")}];
-  [v3 setObject:v8 forKeyedSubscript:@"numAppLaunchesLastOneDay"];
+  [dictionary setObject:v8 forKeyedSubscript:@"numAppLaunchesLastOneDay"];
 
   has = self->_has;
   if ((has & 0x10) == 0)
@@ -186,7 +186,7 @@ LABEL_4:
 
 LABEL_17:
   v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[CAARSchemaCAARAppHistoryFeatures numAppLaunchesLastOneHour](self, "numAppLaunchesLastOneHour")}];
-  [v3 setObject:v9 forKeyedSubscript:@"numAppLaunchesLastOneHour"];
+  [dictionary setObject:v9 forKeyedSubscript:@"numAppLaunchesLastOneHour"];
 
   has = self->_has;
   if ((has & 0x80) == 0)
@@ -202,7 +202,7 @@ LABEL_5:
 
 LABEL_18:
   v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[CAARSchemaCAARAppHistoryFeatures numAppLaunchesLastSevenDays](self, "numAppLaunchesLastSevenDays")}];
-  [v3 setObject:v10 forKeyedSubscript:@"numAppLaunchesLastSevenDays"];
+  [dictionary setObject:v10 forKeyedSubscript:@"numAppLaunchesLastSevenDays"];
 
   has = self->_has;
   if ((has & 0x20) == 0)
@@ -218,7 +218,7 @@ LABEL_6:
 
 LABEL_19:
   v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[CAARSchemaCAARAppHistoryFeatures numAppLaunchesLastSixHours](self, "numAppLaunchesLastSixHours")}];
-  [v3 setObject:v11 forKeyedSubscript:@"numAppLaunchesLastSixHours"];
+  [dictionary setObject:v11 forKeyedSubscript:@"numAppLaunchesLastSixHours"];
 
   has = self->_has;
   if ((has & 8) == 0)
@@ -234,7 +234,7 @@ LABEL_7:
 
 LABEL_20:
   v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[CAARSchemaCAARAppHistoryFeatures numAppLaunchesLastTenMinutes](self, "numAppLaunchesLastTenMinutes")}];
-  [v3 setObject:v12 forKeyedSubscript:@"numAppLaunchesLastTenMinutes"];
+  [dictionary setObject:v12 forKeyedSubscript:@"numAppLaunchesLastTenMinutes"];
 
   has = self->_has;
   if ((has & 0x100) == 0)
@@ -250,7 +250,7 @@ LABEL_8:
 
 LABEL_21:
   v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[CAARSchemaCAARAppHistoryFeatures numAppLaunchesLastTwentyEightDays](self, "numAppLaunchesLastTwentyEightDays")}];
-  [v3 setObject:v13 forKeyedSubscript:@"numAppLaunchesLastTwentyEightDays"];
+  [dictionary setObject:v13 forKeyedSubscript:@"numAppLaunchesLastTwentyEightDays"];
 
   has = self->_has;
   if ((has & 4) == 0)
@@ -266,7 +266,7 @@ LABEL_9:
 
 LABEL_22:
   v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[CAARSchemaCAARAppHistoryFeatures numAppLaunchesLastTwoMinutes](self, "numAppLaunchesLastTwoMinutes")}];
-  [v3 setObject:v14 forKeyedSubscript:@"numAppLaunchesLastTwoMinutes"];
+  [dictionary setObject:v14 forKeyedSubscript:@"numAppLaunchesLastTwoMinutes"];
 
   has = self->_has;
   if ((has & 1) == 0)
@@ -282,19 +282,19 @@ LABEL_10:
 
 LABEL_23:
   v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[CAARSchemaCAARAppHistoryFeatures numMinutesSinceAppInstalled](self, "numMinutesSinceAppInstalled")}];
-  [v3 setObject:v15 forKeyedSubscript:@"numMinutesSinceAppInstalled"];
+  [dictionary setObject:v15 forKeyedSubscript:@"numMinutesSinceAppInstalled"];
 
   if ((*&self->_has & 2) != 0)
   {
 LABEL_11:
     v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[CAARSchemaCAARAppHistoryFeatures numMinutesSinceAppLastLaunched](self, "numMinutesSinceAppLastLaunched")}];
-    [v3 setObject:v5 forKeyedSubscript:@"numMinutesSinceAppLastLaunched"];
+    [dictionary setObject:v5 forKeyedSubscript:@"numMinutesSinceAppLastLaunched"];
   }
 
 LABEL_12:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -436,16 +436,16 @@ LABEL_11:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_42;
   }
 
   has = self->_has;
-  v6 = v4[24];
+  v6 = equalCopy[24];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_42;
@@ -454,13 +454,13 @@ LABEL_11:
   if (*&has)
   {
     numMinutesSinceAppInstalled = self->_numMinutesSinceAppInstalled;
-    if (numMinutesSinceAppInstalled != [v4 numMinutesSinceAppInstalled])
+    if (numMinutesSinceAppInstalled != [equalCopy numMinutesSinceAppInstalled])
     {
       goto LABEL_42;
     }
 
     has = self->_has;
-    v6 = v4[24];
+    v6 = equalCopy[24];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -472,13 +472,13 @@ LABEL_11:
   if (v8)
   {
     numMinutesSinceAppLastLaunched = self->_numMinutesSinceAppLastLaunched;
-    if (numMinutesSinceAppLastLaunched != [v4 numMinutesSinceAppLastLaunched])
+    if (numMinutesSinceAppLastLaunched != [equalCopy numMinutesSinceAppLastLaunched])
     {
       goto LABEL_42;
     }
 
     has = self->_has;
-    v6 = v4[24];
+    v6 = equalCopy[24];
   }
 
   v10 = (*&has >> 2) & 1;
@@ -490,13 +490,13 @@ LABEL_11:
   if (v10)
   {
     numAppLaunchesLastTwoMinutes = self->_numAppLaunchesLastTwoMinutes;
-    if (numAppLaunchesLastTwoMinutes != [v4 numAppLaunchesLastTwoMinutes])
+    if (numAppLaunchesLastTwoMinutes != [equalCopy numAppLaunchesLastTwoMinutes])
     {
       goto LABEL_42;
     }
 
     has = self->_has;
-    v6 = v4[24];
+    v6 = equalCopy[24];
   }
 
   v12 = (*&has >> 3) & 1;
@@ -508,13 +508,13 @@ LABEL_11:
   if (v12)
   {
     numAppLaunchesLastTenMinutes = self->_numAppLaunchesLastTenMinutes;
-    if (numAppLaunchesLastTenMinutes != [v4 numAppLaunchesLastTenMinutes])
+    if (numAppLaunchesLastTenMinutes != [equalCopy numAppLaunchesLastTenMinutes])
     {
       goto LABEL_42;
     }
 
     has = self->_has;
-    v6 = v4[24];
+    v6 = equalCopy[24];
   }
 
   v14 = (*&has >> 4) & 1;
@@ -526,13 +526,13 @@ LABEL_11:
   if (v14)
   {
     numAppLaunchesLastOneHour = self->_numAppLaunchesLastOneHour;
-    if (numAppLaunchesLastOneHour != [v4 numAppLaunchesLastOneHour])
+    if (numAppLaunchesLastOneHour != [equalCopy numAppLaunchesLastOneHour])
     {
       goto LABEL_42;
     }
 
     has = self->_has;
-    v6 = v4[24];
+    v6 = equalCopy[24];
   }
 
   v16 = (*&has >> 5) & 1;
@@ -544,13 +544,13 @@ LABEL_11:
   if (v16)
   {
     numAppLaunchesLastSixHours = self->_numAppLaunchesLastSixHours;
-    if (numAppLaunchesLastSixHours != [v4 numAppLaunchesLastSixHours])
+    if (numAppLaunchesLastSixHours != [equalCopy numAppLaunchesLastSixHours])
     {
       goto LABEL_42;
     }
 
     has = self->_has;
-    v6 = v4[24];
+    v6 = equalCopy[24];
   }
 
   v18 = (*&has >> 6) & 1;
@@ -562,13 +562,13 @@ LABEL_11:
   if (v18)
   {
     numAppLaunchesLastOneDay = self->_numAppLaunchesLastOneDay;
-    if (numAppLaunchesLastOneDay != [v4 numAppLaunchesLastOneDay])
+    if (numAppLaunchesLastOneDay != [equalCopy numAppLaunchesLastOneDay])
     {
       goto LABEL_42;
     }
 
     has = self->_has;
-    v6 = v4[24];
+    v6 = equalCopy[24];
   }
 
   v20 = (*&has >> 7) & 1;
@@ -580,13 +580,13 @@ LABEL_11:
   if (v20)
   {
     numAppLaunchesLastSevenDays = self->_numAppLaunchesLastSevenDays;
-    if (numAppLaunchesLastSevenDays != [v4 numAppLaunchesLastSevenDays])
+    if (numAppLaunchesLastSevenDays != [equalCopy numAppLaunchesLastSevenDays])
     {
       goto LABEL_42;
     }
 
     has = self->_has;
-    v6 = v4[24];
+    v6 = equalCopy[24];
   }
 
   v22 = (*&has >> 8) & 1;
@@ -598,10 +598,10 @@ LABEL_11:
   if (v22)
   {
     numAppLaunchesLastTwentyEightDays = self->_numAppLaunchesLastTwentyEightDays;
-    if (numAppLaunchesLastTwentyEightDays == [v4 numAppLaunchesLastTwentyEightDays])
+    if (numAppLaunchesLastTwentyEightDays == [equalCopy numAppLaunchesLastTwentyEightDays])
     {
       has = self->_has;
-      v6 = v4[24];
+      v6 = equalCopy[24];
       goto LABEL_38;
     }
 
@@ -620,7 +620,7 @@ LABEL_38:
   if (v24)
   {
     numAppLaunchesLastInfinity = self->_numAppLaunchesLastInfinity;
-    if (numAppLaunchesLastInfinity != [v4 numAppLaunchesLastInfinity])
+    if (numAppLaunchesLastInfinity != [equalCopy numAppLaunchesLastInfinity])
     {
       goto LABEL_42;
     }
@@ -632,9 +632,9 @@ LABEL_43:
   return v26;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -765,9 +765,9 @@ LABEL_11:
 LABEL_12:
 }
 
-- (void)setHasNumAppLaunchesLastInfinity:(BOOL)a3
+- (void)setHasNumAppLaunchesLastInfinity:(BOOL)infinity
 {
-  if (a3)
+  if (infinity)
   {
     v3 = 512;
   }
@@ -780,9 +780,9 @@ LABEL_12:
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasNumAppLaunchesLastTwentyEightDays:(BOOL)a3
+- (void)setHasNumAppLaunchesLastTwentyEightDays:(BOOL)days
 {
-  if (a3)
+  if (days)
   {
     v3 = 256;
   }
@@ -795,9 +795,9 @@ LABEL_12:
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasNumAppLaunchesLastSevenDays:(BOOL)a3
+- (void)setHasNumAppLaunchesLastSevenDays:(BOOL)days
 {
-  if (a3)
+  if (days)
   {
     v3 = 128;
   }
@@ -810,9 +810,9 @@ LABEL_12:
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasNumAppLaunchesLastOneDay:(BOOL)a3
+- (void)setHasNumAppLaunchesLastOneDay:(BOOL)day
 {
-  if (a3)
+  if (day)
   {
     v3 = 64;
   }
@@ -825,9 +825,9 @@ LABEL_12:
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasNumAppLaunchesLastSixHours:(BOOL)a3
+- (void)setHasNumAppLaunchesLastSixHours:(BOOL)hours
 {
-  if (a3)
+  if (hours)
   {
     v3 = 32;
   }
@@ -840,9 +840,9 @@ LABEL_12:
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasNumAppLaunchesLastOneHour:(BOOL)a3
+- (void)setHasNumAppLaunchesLastOneHour:(BOOL)hour
 {
-  if (a3)
+  if (hour)
   {
     v3 = 16;
   }
@@ -855,9 +855,9 @@ LABEL_12:
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasNumAppLaunchesLastTenMinutes:(BOOL)a3
+- (void)setHasNumAppLaunchesLastTenMinutes:(BOOL)minutes
 {
-  if (a3)
+  if (minutes)
   {
     v3 = 8;
   }
@@ -870,9 +870,9 @@ LABEL_12:
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasNumAppLaunchesLastTwoMinutes:(BOOL)a3
+- (void)setHasNumAppLaunchesLastTwoMinutes:(BOOL)minutes
 {
-  if (a3)
+  if (minutes)
   {
     v3 = 4;
   }
@@ -885,9 +885,9 @@ LABEL_12:
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasNumMinutesSinceAppLastLaunched:(BOOL)a3
+- (void)setHasNumMinutesSinceAppLastLaunched:(BOOL)launched
 {
-  if (a3)
+  if (launched)
   {
     v3 = 2;
   }

@@ -23,19 +23,19 @@
 + (id)cnui_symbolImageForContactCardChevron
 {
   v2 = +[CNUIColorRepository contactCardChevronImageColor];
-  v3 = [a1 cnui_symbolImageForContactCardChevronWithColor:v2];
+  v3 = [self cnui_symbolImageForContactCardChevronWithColor:v2];
 
   return v3;
 }
 
 - (uint64_t)cnui_CGImageSnapshot
 {
-  if ([a1 ioSurface])
+  if ([self ioSurface])
   {
     v2 = UICreateCGImageFromIOSurface();
-    [a1 size];
+    [self size];
     v4 = v3;
-    [a1 size];
+    [self size];
     v6 = v5;
     DeviceRGB = CGColorSpaceCreateDeviceRGB();
     v8 = CGBitmapContextCreate(0, v4, v6, 8uLL, vcvtd_n_u64_f64(v4, 2uLL), DeviceRGB, 1u);
@@ -67,9 +67,9 @@
 
   else
   {
-    v12 = a1;
+    selfCopy = self;
 
-    return [v12 CGImage];
+    return [selfCopy CGImage];
   }
 }
 
@@ -123,7 +123,7 @@
 + (id)cnui_carPlayUserActionSymbolImageForActionType:()CNUI
 {
   v2 = [MEMORY[0x1E6996C08] symbolImageNameForActionType:?];
-  v3 = [a1 cnui_symbolImageNamed:v2 scale:2 withColor:0 useFixedSize:1 compatibleWithTextStyle:*MEMORY[0x1E69DDD00]];
+  v3 = [self cnui_symbolImageNamed:v2 scale:2 withColor:0 useFixedSize:1 compatibleWithTextStyle:*MEMORY[0x1E69DDD00]];
 
   return v3;
 }
@@ -134,7 +134,7 @@
   v10 = a6;
   v11 = a5;
   v12 = [v9 symbolImageNameForActionType:a3];
-  v13 = [a1 cnui_symbolImageNamed:v12 scale:2 withColor:v11 useFixedSize:1 compatibleWithTextStyle:v10];
+  v13 = [self cnui_symbolImageNamed:v12 scale:2 withColor:v11 useFixedSize:1 compatibleWithTextStyle:v10];
 
   return v13;
 }
@@ -145,7 +145,7 @@
   v8 = MEMORY[0x1E6996C08];
   v9 = a5;
   v10 = [v8 symbolOulinedImageNameForActionType:a3];
-  v11 = [a1 cnui_symbolImageNamed:v10 scale:2 withColor:v9 useFixedSize:1 compatibleWithTextStyle:v7];
+  v11 = [self cnui_symbolImageNamed:v10 scale:2 withColor:v9 useFixedSize:1 compatibleWithTextStyle:v7];
 
   return v11;
 }
@@ -172,14 +172,14 @@
   {
     v5 = *MEMORY[0x1E69DDCF8];
     v6 = a4;
-    v7 = [a1 cnui_symbolImageNamed:@"staroflife.fill" scale:3 withColor:v6 useFixedSize:1 compatibleWithTextStyle:v5];
+    v7 = [self cnui_symbolImageNamed:@"staroflife.fill" scale:3 withColor:v6 useFixedSize:1 compatibleWithTextStyle:v5];
   }
 
   else
   {
     v9 = a4;
-    v6 = [a1 cnui_actionTypeForTransportType:a3];
-    v7 = [a1 cnui_userActionSymbolImageForActionType:v6 scale:2 withColor:v9];
+    v6 = [self cnui_actionTypeForTransportType:a3];
+    v7 = [self cnui_userActionSymbolImageForActionType:v6 scale:2 withColor:v9];
   }
 
   return v7;
@@ -188,7 +188,7 @@
 + (id)cnui_symbolImageForContactCardMenuChevron
 {
   v2 = +[CNUIColorRepository contactCardChevronImageColor];
-  v3 = [a1 cnui_symbolImageNamed:@"chevron.up.chevron.down" scale:1 weight:7 withColor:v2 useFixedSize:0 compatibleWithTextStyle:*MEMORY[0x1E69DDCF8]];
+  v3 = [self cnui_symbolImageNamed:@"chevron.up.chevron.down" scale:1 weight:7 withColor:v2 useFixedSize:0 compatibleWithTextStyle:*MEMORY[0x1E69DDCF8]];
 
   return v3;
 }
@@ -205,7 +205,7 @@
 + (id)cnui_symbolImageForUnknownNumberContactCardChevron
 {
   v2 = +[CNUIColorRepository contactCardChevronImageColor];
-  v3 = [a1 cnui_symbolImageForUnknownNumberContactCardChevronWithColor:v2];
+  v3 = [self cnui_symbolImageForUnknownNumberContactCardChevronWithColor:v2];
 
   return v3;
 }
@@ -213,7 +213,7 @@
 + (id)cnui_symbolImageForDynamicallySizedContactCardChevron
 {
   v2 = +[CNUIColorRepository contactCardChevronImageColor];
-  v3 = [a1 cnui_symbolImageForDynamicallySizedContactCardChevronWithColor:v2];
+  v3 = [self cnui_symbolImageForDynamicallySizedContactCardChevronWithColor:v2];
 
   return v3;
 }
@@ -230,7 +230,7 @@
 + (id)cnui_tintedImageNamed:()CNUI withTint:
 {
   v6 = a4;
-  v7 = [a1 cnui_imageNamed:a3];
+  v7 = [self cnui_imageNamed:a3];
   v8 = v7;
   if (v6)
   {
@@ -273,7 +273,7 @@
     v10 = [v8 objectForKey:v6];
     if (!v10)
     {
-      v11 = [a1 cnui_imageNamed:v6];
+      v11 = [self cnui_imageNamed:v6];
       v10 = [v11 imageWithRenderingMode:2];
 
       [v9 setObject:v10 forKey:v6];

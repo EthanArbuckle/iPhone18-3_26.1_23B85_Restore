@@ -1,23 +1,23 @@
 @interface FTAudioAnalytics
-- (FTAudioAnalytics)initWithFlatbuffData:(id)a3 root:(const AudioAnalytics *)a4 verify:(BOOL)a5;
+- (FTAudioAnalytics)initWithFlatbuffData:(id)data root:(const AudioAnalytics *)root verify:(BOOL)verify;
 - (NSArray)acoustic_features;
 - (NSArray)speech_recognition_features;
-- (Offset<siri::speech::schema_fb::AudioAnalytics>)addObjectToBuffer:(void *)a3;
-- (id)acoustic_features_objectAtIndex:(unint64_t)a3;
+- (Offset<siri::speech::schema_fb::AudioAnalytics>)addObjectToBuffer:(void *)buffer;
+- (id)acoustic_features_objectAtIndex:(unint64_t)index;
 - (id)flatbuffData;
-- (id)speech_recognition_features_objectAtIndex:(unint64_t)a3;
+- (id)speech_recognition_features_objectAtIndex:(unint64_t)index;
 - (unint64_t)acoustic_features_count;
 - (unint64_t)speech_recognition_features_count;
-- (void)acoustic_features_enumerateObjectsUsingBlock:(id)a3;
-- (void)speech_recognition_features_enumerateObjectsUsingBlock:(id)a3;
+- (void)acoustic_features_enumerateObjectsUsingBlock:(id)block;
+- (void)speech_recognition_features_enumerateObjectsUsingBlock:(id)block;
 @end
 
 @implementation FTAudioAnalytics
 
-- (FTAudioAnalytics)initWithFlatbuffData:(id)a3 root:(const AudioAnalytics *)a4 verify:(BOOL)a5
+- (FTAudioAnalytics)initWithFlatbuffData:(id)data root:(const AudioAnalytics *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v25.receiver = self;
   v25.super_class = FTAudioAnalytics;
   v10 = [(FTAudioAnalytics *)&v25 init];
@@ -26,35 +26,35 @@
     goto LABEL_13;
   }
 
-  if (!v9 || ![v9 length])
+  if (!dataCopy || ![dataCopy length])
   {
     goto LABEL_14;
   }
 
-  objc_storeStrong(&v10->_data, a3);
-  if (!a4)
+  objc_storeStrong(&v10->_data, data);
+  if (!root)
   {
-    v11 = [(NSData *)v10->_data bytes];
-    a4 = v11 + *v11;
+    bytes = [(NSData *)v10->_data bytes];
+    root = bytes + *bytes;
   }
 
-  v10->_root = a4;
-  if (!v5)
+  v10->_root = root;
+  if (!verifyCopy)
   {
     goto LABEL_13;
   }
 
-  v12 = [(NSData *)v10->_data bytes];
+  bytes2 = [(NSData *)v10->_data bytes];
   v13 = [(NSData *)v10->_data length];
   root = v10->_root;
-  if (root < v12 || root > v12 + v13)
+  if (root < bytes2 || root > bytes2 + v13)
   {
     goto LABEL_14;
   }
 
-  v16 = [(NSData *)v10->_data bytes];
+  bytes3 = [(NSData *)v10->_data bytes];
   v17 = [(NSData *)v10->_data length];
-  v21[0] = v16;
+  v21[0] = bytes3;
   v21[1] = v17;
   v22 = xmmword_233005E20;
   v23 = 0;
@@ -85,12 +85,12 @@ LABEL_13:
   v3 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"speech_recognition_features"];
   if (!v3)
   {
-    v4 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __47__FTAudioAnalytics_speech_recognition_features__block_invoke;
     v6[3] = &unk_2789B8AD8;
-    v3 = v4;
+    v3 = array;
     v7 = v3;
     [(FTAudioAnalytics *)self speech_recognition_features_enumerateObjectsUsingBlock:v6];
     [(NSMutableDictionary *)self->_storage setObject:v3 forKeyedSubscript:@"speech_recognition_features"];
@@ -99,13 +99,13 @@ LABEL_13:
   return v3;
 }
 
-- (id)speech_recognition_features_objectAtIndex:(unint64_t)a3
+- (id)speech_recognition_features_objectAtIndex:(unint64_t)index
 {
   v5 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"speech_recognition_features"];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 objectAtIndexedSubscript:a3];
+    v7 = [v5 objectAtIndexedSubscript:index];
 LABEL_3:
     v8 = v7;
     goto LABEL_8;
@@ -118,7 +118,7 @@ LABEL_3:
     v11 = *v10[4].var0;
     if (v11)
     {
-      v12 = &root[4 * a3 + v11 + *root[v11].var0];
+      v12 = &root[4 * index + v11 + *root[v11].var0];
       v7 = [[FTAudioAnalytics_SpeechRecognitionFeaturesEntry alloc] initWithFlatbuffData:self->_data root:v12 + 4 + *(v12 + 4) verify:0];
       goto LABEL_3;
     }
@@ -157,14 +157,14 @@ LABEL_8:
   return v5;
 }
 
-- (void)speech_recognition_features_enumerateObjectsUsingBlock:(id)a3
+- (void)speech_recognition_features_enumerateObjectsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"speech_recognition_features"];
   v6 = v5;
   if (v5)
   {
-    [v5 enumerateObjectsUsingBlock:v4];
+    [v5 enumerateObjectsUsingBlock:blockCopy];
   }
 
   else
@@ -187,7 +187,7 @@ LABEL_8:
           do
           {
             v15 = [[FTAudioAnalytics_SpeechRecognitionFeaturesEntry alloc] initWithFlatbuffData:self->_data root:&v13[*v13->var0] verify:0];
-            v4[2](v4, v15, v12, &v18);
+            blockCopy[2](blockCopy, v15, v12, &v18);
             v16 = v18;
 
             if (v16)
@@ -213,12 +213,12 @@ LABEL_8:
   v3 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"acoustic_features"];
   if (!v3)
   {
-    v4 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __37__FTAudioAnalytics_acoustic_features__block_invoke;
     v6[3] = &unk_2789B8AD8;
-    v3 = v4;
+    v3 = array;
     v7 = v3;
     [(FTAudioAnalytics *)self acoustic_features_enumerateObjectsUsingBlock:v6];
     [(NSMutableDictionary *)self->_storage setObject:v3 forKeyedSubscript:@"acoustic_features"];
@@ -227,13 +227,13 @@ LABEL_8:
   return v3;
 }
 
-- (id)acoustic_features_objectAtIndex:(unint64_t)a3
+- (id)acoustic_features_objectAtIndex:(unint64_t)index
 {
   v5 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"acoustic_features"];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 objectAtIndexedSubscript:a3];
+    v7 = [v5 objectAtIndexedSubscript:index];
 LABEL_3:
     v8 = v7;
     goto LABEL_8;
@@ -246,7 +246,7 @@ LABEL_3:
     v11 = *v10[6].var0;
     if (v11)
     {
-      v12 = &root[4 * a3 + v11 + *root[v11].var0];
+      v12 = &root[4 * index + v11 + *root[v11].var0];
       v7 = [[FTAudioAnalytics_AcousticFeaturesEntry alloc] initWithFlatbuffData:self->_data root:v12 + 4 + *(v12 + 4) verify:0];
       goto LABEL_3;
     }
@@ -285,14 +285,14 @@ LABEL_8:
   return v5;
 }
 
-- (void)acoustic_features_enumerateObjectsUsingBlock:(id)a3
+- (void)acoustic_features_enumerateObjectsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"acoustic_features"];
   v6 = v5;
   if (v5)
   {
-    [v5 enumerateObjectsUsingBlock:v4];
+    [v5 enumerateObjectsUsingBlock:blockCopy];
   }
 
   else
@@ -315,7 +315,7 @@ LABEL_8:
           do
           {
             v15 = [[FTAudioAnalytics_AcousticFeaturesEntry alloc] initWithFlatbuffData:self->_data root:&v13[*v13->var0] verify:0];
-            v4[2](v4, v15, v12, &v18);
+            blockCopy[2](blockCopy, v15, v12, &v18);
             v16 = v18;
 
             if (v16)
@@ -336,20 +336,20 @@ LABEL_8:
   }
 }
 
-- (Offset<siri::speech::schema_fb::AudioAnalytics>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::AudioAnalytics>)addObjectToBuffer:(void *)buffer
 {
   v59 = *MEMORY[0x277D85DE8];
   memset(&v56, 0, sizeof(v56));
-  v5 = [(FTAudioAnalytics *)self speech_recognition_features];
-  std::vector<apple::aiml::flatbuffers2::Offset<siri::speech::schema_fb::RecognitionToken>>::reserve(&v56, [v5 count]);
+  speech_recognition_features = [(FTAudioAnalytics *)self speech_recognition_features];
+  std::vector<apple::aiml::flatbuffers2::Offset<siri::speech::schema_fb::RecognitionToken>>::reserve(&v56, [speech_recognition_features count]);
 
   v54 = 0u;
   v55 = 0u;
   v52 = 0u;
   v53 = 0u;
-  v6 = [(FTAudioAnalytics *)self speech_recognition_features];
-  v45 = self;
-  v7 = [v6 countByEnumeratingWithState:&v52 objects:v58 count:16];
+  speech_recognition_features2 = [(FTAudioAnalytics *)self speech_recognition_features];
+  selfCopy = self;
+  v7 = [speech_recognition_features2 countByEnumeratingWithState:&v52 objects:v58 count:16];
   if (v7)
   {
     v8 = *v53;
@@ -359,10 +359,10 @@ LABEL_8:
       {
         if (*v53 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(speech_recognition_features2);
         }
 
-        v10 = [*(*(&v52 + 1) + 8 * i) addObjectToBuffer:a3];
+        v10 = [*(*(&v52 + 1) + 8 * i) addObjectToBuffer:buffer];
         end = v56.__end_;
         if (v56.__end_ >= v56.__end_cap_.__value_)
         {
@@ -418,7 +418,7 @@ LABEL_8:
         v56.__end_ = v12;
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v52 objects:v58 count:16];
+      v7 = [speech_recognition_features2 countByEnumeratingWithState:&v52 objects:v58 count:16];
     }
 
     while (v7);
@@ -434,18 +434,18 @@ LABEL_8:
     v20 = v56.__begin_;
   }
 
-  v21 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateVector<apple::aiml::flatbuffers2::String>(a3, v20, v56.__end_ - v56.__begin_);
+  v21 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateVector<apple::aiml::flatbuffers2::String>(buffer, v20, v56.__end_ - v56.__begin_);
   memset(&v51, 0, sizeof(v51));
-  v22 = [(FTAudioAnalytics *)v45 acoustic_features];
-  std::vector<apple::aiml::flatbuffers2::Offset<siri::speech::schema_fb::RecognitionToken>>::reserve(&v51, [v22 count]);
+  acoustic_features = [(FTAudioAnalytics *)selfCopy acoustic_features];
+  std::vector<apple::aiml::flatbuffers2::Offset<siri::speech::schema_fb::RecognitionToken>>::reserve(&v51, [acoustic_features count]);
 
   v49 = 0u;
   v50 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v23 = [(FTAudioAnalytics *)v45 acoustic_features];
+  acoustic_features2 = [(FTAudioAnalytics *)selfCopy acoustic_features];
   v46 = v21;
-  v24 = [v23 countByEnumeratingWithState:&v47 objects:v57 count:16];
+  v24 = [acoustic_features2 countByEnumeratingWithState:&v47 objects:v57 count:16];
   if (v24)
   {
     v25 = *v48;
@@ -455,10 +455,10 @@ LABEL_8:
       {
         if (*v48 != v25)
         {
-          objc_enumerationMutation(v23);
+          objc_enumerationMutation(acoustic_features2);
         }
 
-        v27 = [*(*(&v47 + 1) + 8 * j) addObjectToBuffer:a3];
+        v27 = [*(*(&v47 + 1) + 8 * j) addObjectToBuffer:buffer];
         v28 = v51.__end_;
         if (v51.__end_ >= v51.__end_cap_.__value_)
         {
@@ -514,7 +514,7 @@ LABEL_8:
         v51.__end_ = v29;
       }
 
-      v24 = [v23 countByEnumeratingWithState:&v47 objects:v57 count:16];
+      v24 = [acoustic_features2 countByEnumeratingWithState:&v47 objects:v57 count:16];
     }
 
     while (v24);
@@ -530,14 +530,14 @@ LABEL_8:
     v37 = v51.__begin_;
   }
 
-  v38 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateVector<apple::aiml::flatbuffers2::String>(a3, v37, v51.__end_ - v51.__begin_);
-  *(a3 + 70) = 1;
-  v39 = *(a3 + 8);
-  v40 = *(a3 + 12);
-  v41 = *(a3 + 10);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 4, v46);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 6, v38);
-  v42.var0 = apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(a3, v39 - v40 + v41);
+  v38 = apple::aiml::flatbuffers2::FlatBufferBuilder::CreateVector<apple::aiml::flatbuffers2::String>(buffer, v37, v51.__end_ - v51.__begin_);
+  *(buffer + 70) = 1;
+  v39 = *(buffer + 8);
+  v40 = *(buffer + 12);
+  v41 = *(buffer + 10);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 4, v46);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 6, v38);
+  v42.var0 = apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(buffer, v39 - v40 + v41);
   if (v51.__begin_)
   {
     v51.__end_ = v51.__begin_;

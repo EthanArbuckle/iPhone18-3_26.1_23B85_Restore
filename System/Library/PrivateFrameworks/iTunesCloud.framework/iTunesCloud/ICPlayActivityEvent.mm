@@ -1,14 +1,14 @@
 @interface ICPlayActivityEvent
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToEvent:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToEvent:(id)event;
 - (ICPlayActivityEvent)init;
-- (ICPlayActivityEvent)initWithCoder:(id)a3;
-- (ICPlayActivityEvent)initWithDataRepresentation:(id)a3;
+- (ICPlayActivityEvent)initWithCoder:(id)coder;
+- (ICPlayActivityEvent)initWithDataRepresentation:(id)representation;
 - (NSData)dataRepresentation;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (int64_t)persistentID;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ICPlayActivityEvent
@@ -28,40 +28,40 @@
 - (NSData)dataRepresentation
 {
   v3 = objc_alloc_init(ICPAPlayActivityEvent);
-  v4 = [(ICPlayActivityEvent *)self containerType];
-  if ((v4 - 1) > 5)
+  containerType = [(ICPlayActivityEvent *)self containerType];
+  if ((containerType - 1) > 5)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = dword_1B47556F0[v4 - 1];
+    v5 = dword_1B47556F0[containerType - 1];
   }
 
   if (v3)
   {
     *&v3->_has |= 0x2000000uLL;
     v3->_containerType = v5;
-    v6 = [(ICPlayActivityEvent *)self isContinuityCameraUsed];
+    isContinuityCameraUsed = [(ICPlayActivityEvent *)self isContinuityCameraUsed];
     *&v3->_has |= 0x8000000000uLL;
-    v3->_continuityCameraUsed = v6;
-    v7 = [(ICPlayActivityEvent *)self isContinuityMicrophoneUsed];
+    v3->_continuityCameraUsed = isContinuityCameraUsed;
+    isContinuityMicrophoneUsed = [(ICPlayActivityEvent *)self isContinuityMicrophoneUsed];
     *&v3->_has |= 0x10000000000uLL;
-    v3->_continuityMicrophoneUsed = v7;
-    v8 = [(ICPlayActivityEvent *)self isDisplayTranslationEnabled];
+    v3->_continuityMicrophoneUsed = isContinuityMicrophoneUsed;
+    isDisplayTranslationEnabled = [(ICPlayActivityEvent *)self isDisplayTranslationEnabled];
     *&v3->_has |= 0x20000000000uLL;
-    v3->_displayTranslationEnabled = v8;
-    v9 = [(ICPlayActivityEvent *)self isDisplayTransliterationEnabled];
+    v3->_displayTranslationEnabled = isDisplayTranslationEnabled;
+    isDisplayTransliterationEnabled = [(ICPlayActivityEvent *)self isDisplayTransliterationEnabled];
     *&v3->_has |= 0x40000000000uLL;
-    v3->_displayTransliterationEnabled = v9;
-    v10 = [(ICPlayActivityEvent *)self deviceName];
-    objc_storeStrong(&v3->_deviceName, v10);
+    v3->_displayTransliterationEnabled = isDisplayTransliterationEnabled;
+    deviceName = [(ICPlayActivityEvent *)self deviceName];
+    objc_storeStrong(&v3->_deviceName, deviceName);
 
-    v11 = [(ICPlayActivityEvent *)self displayType];
-    if ((v11 - 1) < 3)
+    displayType = [(ICPlayActivityEvent *)self displayType];
+    if ((displayType - 1) < 3)
     {
-      v12 = v11;
+      v12 = displayType;
     }
 
     else
@@ -84,15 +84,15 @@
     [(ICPlayActivityEvent *)self displayType];
   }
 
-  v13 = [(ICPlayActivityEvent *)self endReasonType];
-  if ((v13 - 1) > 0xE)
+  endReasonType = [(ICPlayActivityEvent *)self endReasonType];
+  if ((endReasonType - 1) > 0xE)
   {
     v14 = 0;
   }
 
   else
   {
-    v14 = dword_1B4755720[v13 - 1];
+    v14 = dword_1B4755720[endReasonType - 1];
   }
 
   if (v3)
@@ -101,26 +101,26 @@
     v3->_endReasonType = v14;
   }
 
-  v15 = [(ICPlayActivityEvent *)self eventDate];
-  [v15 timeIntervalSinceReferenceDate];
+  eventDate = [(ICPlayActivityEvent *)self eventDate];
+  [eventDate timeIntervalSinceReferenceDate];
   if (v3)
   {
     *&v3->_has |= 0x20uLL;
     v3->_eventDateTimestamp = v16;
   }
 
-  v17 = [(ICPlayActivityEvent *)self eventTimeZone];
-  v18 = [v17 name];
+  eventTimeZone = [(ICPlayActivityEvent *)self eventTimeZone];
+  name = [eventTimeZone name];
   if (v3)
   {
-    objc_storeStrong(&v3->_eventTimeZoneName, v18);
+    objc_storeStrong(&v3->_eventTimeZoneName, name);
   }
 
-  v19 = [(ICPlayActivityEvent *)self featureName];
-  v20 = v19;
+  featureName = [(ICPlayActivityEvent *)self featureName];
+  v20 = featureName;
   if (v3)
   {
-    objc_storeStrong(&v3->_featureName, v19);
+    objc_storeStrong(&v3->_featureName, featureName);
 
     [(ICPlayActivityEvent *)self itemDuration];
     *&v3->_has |= 0x100uLL;
@@ -131,10 +131,10 @@
     [(ICPlayActivityEvent *)self itemStartTime];
     *&v3->_has |= 0x400uLL;
     v3->_itemStartTime = v23;
-    v24 = [(ICPlayActivityEvent *)self itemType];
-    if ((v24 - 1) < 9)
+    itemType = [(ICPlayActivityEvent *)self itemType];
+    if ((itemType - 1) < 9)
     {
-      v25 = v24;
+      v25 = itemType;
     }
 
     else
@@ -147,20 +147,20 @@
     v26 = [(ICPlayActivityEvent *)self mediaType]== 1;
     *&v3->_has |= 0x40000000uLL;
     v3->_mediaType = v26;
-    v27 = [(ICPlayActivityEvent *)self lyricsDisplayedCharacterCount];
+    lyricsDisplayedCharacterCount = [(ICPlayActivityEvent *)self lyricsDisplayedCharacterCount];
     *&v3->_has |= 1uLL;
-    v3->_characterDisplayedCount = v27;
-    v28 = [(ICPlayActivityEvent *)self lyricsLanguage];
-    objc_storeStrong(&v3->_lyricLanguage, v28);
+    v3->_characterDisplayedCount = lyricsDisplayedCharacterCount;
+    lyricsLanguage = [(ICPlayActivityEvent *)self lyricsLanguage];
+    objc_storeStrong(&v3->_lyricLanguage, lyricsLanguage);
 
-    v29 = [(ICPlayActivityEvent *)self isOffline];
+    isOffline = [(ICPlayActivityEvent *)self isOffline];
     *&v3->_has |= 0x200000000000uLL;
-    v3->_offline = v29;
-    v30 = [(ICPlayActivityEvent *)self persistentID];
+    v3->_offline = isOffline;
+    persistentID = [(ICPlayActivityEvent *)self persistentID];
     *&v3->_has |= 0x800uLL;
-    v3->_persistentID = v30;
-    v31 = [(ICPlayActivityEvent *)self queueGroupingID];
-    objc_storeStrong(&v3->_queueGroupingID, v31);
+    v3->_persistentID = persistentID;
+    queueGroupingID = [(ICPlayActivityEvent *)self queueGroupingID];
+    objc_storeStrong(&v3->_queueGroupingID, queueGroupingID);
   }
 
   else
@@ -176,32 +176,32 @@
 
     [(ICPlayActivityEvent *)self isOffline];
     [(ICPlayActivityEvent *)self persistentID];
-    v31 = [(ICPlayActivityEvent *)self queueGroupingID];
+    queueGroupingID = [(ICPlayActivityEvent *)self queueGroupingID];
   }
 
-  v32 = [(ICPlayActivityEvent *)self recommendationData];
-  v33 = v32;
+  recommendationData = [(ICPlayActivityEvent *)self recommendationData];
+  v33 = recommendationData;
   if (v3)
   {
-    objc_storeStrong(&v3->_recommendationData, v32);
+    objc_storeStrong(&v3->_recommendationData, recommendationData);
 
     SBEnabled = self->_SBEnabled;
     *&v3->_has |= 0x800000000000uLL;
     v3->_sBEnabled = SBEnabled;
-    v35 = [(ICPlayActivityEvent *)self sourceType];
-    v36 = v35 == 1;
-    if (v35 == 2)
+    sourceType = [(ICPlayActivityEvent *)self sourceType];
+    v36 = sourceType == 1;
+    if (sourceType == 2)
     {
       v36 = 2;
     }
 
     *&v3->_has |= 0x400000000uLL;
     v3->_sourceType = v36;
-    v37 = [(ICPlayActivityEvent *)self storeAccountID];
+    storeAccountID = [(ICPlayActivityEvent *)self storeAccountID];
     *&v3->_has |= 0x40000uLL;
-    v3->_storeAccountID = v37;
-    v38 = [(ICPlayActivityEvent *)self storeFrontID];
-    objc_storeStrong(&v3->_storeFrontID, v38);
+    v3->_storeAccountID = storeAccountID;
+    storeFrontID = [(ICPlayActivityEvent *)self storeFrontID];
+    objc_storeStrong(&v3->_storeFrontID, storeFrontID);
   }
 
   else
@@ -209,37 +209,37 @@
 
     [(ICPlayActivityEvent *)self sourceType];
     [(ICPlayActivityEvent *)self storeAccountID];
-    v38 = [(ICPlayActivityEvent *)self storeFrontID];
+    storeFrontID = [(ICPlayActivityEvent *)self storeFrontID];
   }
 
-  v39 = [(ICPlayActivityEvent *)self timedMetadata];
+  timedMetadata = [(ICPlayActivityEvent *)self timedMetadata];
   if (v3)
   {
-    objc_storeStrong(&v3->_timedMetadata, v39);
+    objc_storeStrong(&v3->_timedMetadata, timedMetadata);
   }
 
-  v40 = [(ICPlayActivityEvent *)self trackInfo];
+  trackInfo = [(ICPlayActivityEvent *)self trackInfo];
   if (v3)
   {
-    objc_storeStrong(&v3->_trackInfo, v40);
+    objc_storeStrong(&v3->_trackInfo, trackInfo);
   }
 
-  v41 = [(ICPlayActivityEvent *)self requestingBundleIdentifier];
+  requestingBundleIdentifier = [(ICPlayActivityEvent *)self requestingBundleIdentifier];
   if (v3)
   {
-    objc_storeStrong(&v3->_requestingBundleIdentifier, v41);
+    objc_storeStrong(&v3->_requestingBundleIdentifier, requestingBundleIdentifier);
   }
 
-  v42 = [(ICPlayActivityEvent *)self requestingBundleVersion];
-  v43 = v42;
+  requestingBundleVersion = [(ICPlayActivityEvent *)self requestingBundleVersion];
+  v43 = requestingBundleVersion;
   if (v3)
   {
-    objc_storeStrong(&v3->_requestingBundleVersion, v42);
+    objc_storeStrong(&v3->_requestingBundleVersion, requestingBundleVersion);
 
-    v44 = [(ICPlayActivityEvent *)self systemReleaseType];
-    if ((v44 - 1) < 4)
+    systemReleaseType = [(ICPlayActivityEvent *)self systemReleaseType];
+    if ((systemReleaseType - 1) < 4)
     {
-      v45 = v44;
+      v45 = systemReleaseType;
     }
 
     else
@@ -249,12 +249,12 @@
 
     *&v3->_has |= 0x800000000uLL;
     v3->_systemReleaseType = v45;
-    v46 = [(ICPlayActivityEvent *)self sharedActivityGroupSizeCurrent];
+    sharedActivityGroupSizeCurrent = [(ICPlayActivityEvent *)self sharedActivityGroupSizeCurrent];
     *&v3->_has |= 0x8000uLL;
-    v3->_sharedActivityGroupSizeCurrent = v46;
-    v47 = [(ICPlayActivityEvent *)self sharedActivityGroupSizeMax];
+    v3->_sharedActivityGroupSizeCurrent = sharedActivityGroupSizeCurrent;
+    sharedActivityGroupSizeMax = [(ICPlayActivityEvent *)self sharedActivityGroupSizeMax];
     *&v3->_has |= 0x10000uLL;
-    v3->_sharedActivityGroupSizeMax = v47;
+    v3->_sharedActivityGroupSizeMax = sharedActivityGroupSizeMax;
   }
 
   else
@@ -265,27 +265,27 @@
     [(ICPlayActivityEvent *)self sharedActivityGroupSizeMax];
   }
 
-  v48 = [(ICPlayActivityEvent *)self sharedActivityType];
-  if ((v48 - 1) > 5)
+  sharedActivityType = [(ICPlayActivityEvent *)self sharedActivityType];
+  if ((sharedActivityType - 1) > 5)
   {
     v49 = 0;
   }
 
   else
   {
-    v49 = dword_1B4755708[v48 - 1];
+    v49 = dword_1B4755708[sharedActivityType - 1];
   }
 
   if (v3)
   {
     *&v3->_has |= 0x200000000uLL;
     v3->_sharedActivityType = v49;
-    v50 = [(ICPlayActivityEvent *)self isCollaborativePlaylist];
+    isCollaborativePlaylist = [(ICPlayActivityEvent *)self isCollaborativePlaylist];
     *&v3->_has |= 0x100000000000uLL;
-    v3->_isCollaborativePlaylist = v50;
-    v51 = [(ICPlayActivityEvent *)self vocalAttenuationAvailability];
-    v52 = v51 == 1;
-    if (v51 == 2)
+    v3->_isCollaborativePlaylist = isCollaborativePlaylist;
+    vocalAttenuationAvailability = [(ICPlayActivityEvent *)self vocalAttenuationAvailability];
+    v52 = vocalAttenuationAvailability == 1;
+    if (vocalAttenuationAvailability == 2)
     {
       v52 = 2;
     }
@@ -298,10 +298,10 @@
     [(ICPlayActivityEvent *)self wallClockPlayDuration];
     *&v3->_has |= 0x800000uLL;
     v3->_wallClockPlayDuration = v54;
-    v55 = [(ICPlayActivityEvent *)self userTransitionTypePreference];
-    if ((v55 - 1) < 3)
+    userTransitionTypePreference = [(ICPlayActivityEvent *)self userTransitionTypePreference];
+    if ((userTransitionTypePreference - 1) < 3)
     {
-      v56 = v55;
+      v56 = userTransitionTypePreference;
     }
 
     else
@@ -311,10 +311,10 @@
 
     *&v3->_has |= 0x2000000000uLL;
     v3->_userTransitionTypePreference = v56;
-    v57 = [(ICPlayActivityEvent *)self transitionTypeProvided];
-    if ((v57 - 1) < 5)
+    transitionTypeProvided = [(ICPlayActivityEvent *)self transitionTypeProvided];
+    if ((transitionTypeProvided - 1) < 5)
     {
-      v58 = v57;
+      v58 = transitionTypeProvided;
     }
 
     else
@@ -324,10 +324,10 @@
 
     *&v3->_has |= 0x1000000000uLL;
     v3->_transitionTypeProvided = v58;
-    v59 = [(ICPlayActivityEvent *)self audioQualityPreference];
-    if ((v59 - 1) < 4)
+    audioQualityPreference = [(ICPlayActivityEvent *)self audioQualityPreference];
+    if ((audioQualityPreference - 1) < 4)
     {
-      v60 = v59;
+      v60 = audioQualityPreference;
     }
 
     else
@@ -337,9 +337,9 @@
 
     *&v3->_has |= 0x1000000uLL;
     v3->_audioQualityPreference = v60;
-    v61 = [(ICPlayActivityEvent *)self playbackFormatPreference];
-    v62 = v61 == 1;
-    if (v61 == 2)
+    playbackFormatPreference = [(ICPlayActivityEvent *)self playbackFormatPreference];
+    v62 = playbackFormatPreference == 1;
+    if (playbackFormatPreference == 2)
     {
       v62 = 2;
     }
@@ -360,41 +360,41 @@
     [(ICPlayActivityEvent *)self playbackFormatPreference];
   }
 
-  v63 = [(ICPlayActivityEvent *)self targetedAudioQuality];
-  v144 = v63;
-  if (v63)
+  targetedAudioQuality = [(ICPlayActivityEvent *)self targetedAudioQuality];
+  v144 = targetedAudioQuality;
+  if (targetedAudioQuality)
   {
     v64 = objc_alloc_init(ICPAAudioQualityDictionary);
-    v65 = [v63 bitDepth];
+    bitDepth = [targetedAudioQuality bitDepth];
     if (v64)
     {
       *&v64->_has |= 1u;
-      v64->_bitDepth = v65;
-      v66 = [v63 bitRate];
+      v64->_bitDepth = bitDepth;
+      bitRate = [targetedAudioQuality bitRate];
       *&v64->_has |= 2u;
-      v64->_bitRate = v66;
+      v64->_bitRate = bitRate;
     }
 
     else
     {
-      [v63 bitRate];
+      [targetedAudioQuality bitRate];
     }
 
-    v67 = [v63 channelLayoutDescription];
-    [(ICPAAudioQualityDictionary *)v64 setChannelLayoutDescription:v67];
+    channelLayoutDescription = [targetedAudioQuality channelLayoutDescription];
+    [(ICPAAudioQualityDictionary *)v64 setChannelLayoutDescription:channelLayoutDescription];
 
-    v63 = v144;
-    v68 = [v144 codec];
+    targetedAudioQuality = v144;
+    codec = [v144 codec];
     if (v64)
     {
       *&v64->_has |= 8u;
-      v64->_codec = v68;
-      v69 = [v144 sampleRate];
+      v64->_codec = codec;
+      sampleRate = [v144 sampleRate];
       *&v64->_has |= 4u;
-      v64->_sampleRate = v69;
-      v70 = [v144 isSpatialized];
+      v64->_sampleRate = sampleRate;
+      isSpatialized = [v144 isSpatialized];
       *&v64->_has |= 0x10u;
-      v64->_isSpatialized = v70;
+      v64->_isSpatialized = isSpatialized;
       if (!v3)
       {
 LABEL_62:
@@ -418,108 +418,108 @@ LABEL_62:
   }
 
 LABEL_63:
-  v142 = [(ICPlayActivityEvent *)self providedAudioQuality];
-  if (v142)
+  providedAudioQuality = [(ICPlayActivityEvent *)self providedAudioQuality];
+  if (providedAudioQuality)
   {
     v71 = objc_alloc_init(ICPAAudioQualityDictionary);
-    v72 = [v142 bitDepth];
+    bitDepth2 = [providedAudioQuality bitDepth];
     if (v71)
     {
       *&v71->_has |= 1u;
-      v71->_bitDepth = v72;
-      v73 = [v142 bitRate];
+      v71->_bitDepth = bitDepth2;
+      bitRate2 = [providedAudioQuality bitRate];
       *&v71->_has |= 2u;
-      v71->_bitRate = v73;
+      v71->_bitRate = bitRate2;
     }
 
     else
     {
-      [v142 bitRate];
+      [providedAudioQuality bitRate];
     }
 
-    v74 = [v142 channelLayoutDescription];
-    [(ICPAAudioQualityDictionary *)v71 setChannelLayoutDescription:v74];
+    channelLayoutDescription2 = [providedAudioQuality channelLayoutDescription];
+    [(ICPAAudioQualityDictionary *)v71 setChannelLayoutDescription:channelLayoutDescription2];
 
-    v75 = [v142 codec];
+    codec2 = [providedAudioQuality codec];
     if (v71)
     {
       *&v71->_has |= 8u;
-      v71->_codec = v75;
-      v76 = [v142 sampleRate];
+      v71->_codec = codec2;
+      sampleRate2 = [providedAudioQuality sampleRate];
       *&v71->_has |= 4u;
-      v71->_sampleRate = v76;
-      v77 = [v142 isSpatialized];
+      v71->_sampleRate = sampleRate2;
+      isSpatialized2 = [providedAudioQuality isSpatialized];
       *&v71->_has |= 0x10u;
-      v71->_isSpatialized = v77;
+      v71->_isSpatialized = isSpatialized2;
     }
 
     else
     {
-      [v142 sampleRate];
-      [v142 isSpatialized];
+      [providedAudioQuality sampleRate];
+      [providedAudioQuality isSpatialized];
     }
 
-    v63 = v144;
+    targetedAudioQuality = v144;
     if (v3)
     {
       objc_storeStrong(&v3->_providedAudioQuality, v71);
     }
   }
 
-  v143 = [(ICPlayActivityEvent *)self enqueuerProperties];
-  if (v143)
+  enqueuerProperties = [(ICPlayActivityEvent *)self enqueuerProperties];
+  if (enqueuerProperties)
   {
     v78 = objc_alloc_init(ICPAPlayActivityEnqueuerProperties);
-    v79 = v143;
-    v80 = [v143 buildVersion];
-    if (v80 && v78)
+    v79 = enqueuerProperties;
+    buildVersion = [enqueuerProperties buildVersion];
+    if (buildVersion && v78)
     {
-      objc_storeStrong(&v78->_buildVersion, v80);
+      objc_storeStrong(&v78->_buildVersion, buildVersion);
     }
 
-    v81 = [v143 deviceGUID];
-    if (v81 && v78)
+    deviceGUID = [enqueuerProperties deviceGUID];
+    if (deviceGUID && v78)
     {
-      objc_storeStrong(&v78->_deviceGUID, v81);
+      objc_storeStrong(&v78->_deviceGUID, deviceGUID);
     }
 
-    v82 = [v143 deviceName];
-    if (v82 && v78)
+    deviceName2 = [enqueuerProperties deviceName];
+    if (deviceName2 && v78)
     {
-      objc_storeStrong(&v78->_deviceName, v82);
+      objc_storeStrong(&v78->_deviceName, deviceName2);
     }
 
-    v83 = [v143 isPrivateListeningEnabled];
-    v84 = v83;
-    if (v83)
+    isPrivateListeningEnabled = [enqueuerProperties isPrivateListeningEnabled];
+    v84 = isPrivateListeningEnabled;
+    if (isPrivateListeningEnabled)
     {
-      v85 = [v83 BOOLValue];
+      bOOLValue = [isPrivateListeningEnabled BOOLValue];
       if (v78)
       {
         *&v78->_has |= 4u;
-        v78->_privateListeningEnabled = v85;
+        v78->_privateListeningEnabled = bOOLValue;
       }
     }
 
-    v86 = [v143 timeZone];
-    v87 = v86;
-    if (v86)
+    timeZone = [enqueuerProperties timeZone];
+    v87 = timeZone;
+    if (timeZone)
     {
-      v88 = [v86 name];
+      name2 = [timeZone name];
       if (v78)
       {
-        objc_storeStrong(&v78->_timeZoneName, v88);
+        objc_storeStrong(&v78->_timeZoneName, name2);
       }
 
-      v79 = v143;
+      v79 = enqueuerProperties;
     }
 
-    v89 = [v79 systemReleaseType];
+    systemReleaseType2 = [v79 systemReleaseType];
     if (v78)
     {
-      if ((v89 - 1) < 4)
+      if ((systemReleaseType2 - 1) < 4)
       {
-        v90 = v89;
+        v90 = systemReleaseType2;
       }
 
       else
@@ -529,14 +529,14 @@ LABEL_63:
 
       *&v78->_has |= 2u;
       v78->_systemReleaseType = v90;
-      v91 = [v79 isSBEnabled];
+      isSBEnabled = [v79 isSBEnabled];
       *&v78->_has |= 8u;
-      v78->_sBEnabled = v91;
-      v92 = [v79 storeAccountID];
-      if (v92)
+      v78->_sBEnabled = isSBEnabled;
+      storeAccountID2 = [v79 storeAccountID];
+      if (storeAccountID2)
       {
         *&v78->_has |= 1u;
-        v78->_storeAccountID = v92;
+        v78->_storeAccountID = storeAccountID2;
       }
     }
 
@@ -546,10 +546,10 @@ LABEL_63:
       [v79 storeAccountID];
     }
 
-    v93 = [v79 storeFrontID];
-    if (v93 && v78)
+    storeFrontID2 = [v79 storeFrontID];
+    if (storeFrontID2 && v78)
     {
-      objc_storeStrong(&v78->_storeFrontID, v93);
+      objc_storeStrong(&v78->_storeFrontID, storeFrontID2);
     }
 
     if (v3)
@@ -557,48 +557,48 @@ LABEL_63:
       objc_storeStrong(&v3->_enqueuerProperties, v78);
     }
 
-    v63 = v144;
+    targetedAudioQuality = v144;
   }
 
-  v94 = [(ICPlayActivityEvent *)self householdID];
+  householdID = [(ICPlayActivityEvent *)self householdID];
   if (v3)
   {
-    objc_storeStrong(&v3->_householdID, v94);
+    objc_storeStrong(&v3->_householdID, householdID);
   }
 
-  v95 = [(ICPlayActivityEvent *)self isPrivateListeningEnabled];
-  v96 = v95;
-  if (v95)
+  isPrivateListeningEnabled2 = [(ICPlayActivityEvent *)self isPrivateListeningEnabled];
+  v96 = isPrivateListeningEnabled2;
+  if (isPrivateListeningEnabled2)
   {
-    v97 = [v95 BOOLValue];
+    bOOLValue2 = [isPrivateListeningEnabled2 BOOLValue];
     if (v3)
     {
       *&v3->_has |= 0x400000000000uLL;
-      v3->_privateListeningEnabled = v97;
+      v3->_privateListeningEnabled = bOOLValue2;
     }
   }
 
-  v98 = [(ICPlayActivityEvent *)self isSiriInitiated];
-  v99 = v98;
-  if (v98)
+  isSiriInitiated = [(ICPlayActivityEvent *)self isSiriInitiated];
+  v99 = isSiriInitiated;
+  if (isSiriInitiated)
   {
-    v100 = [v98 BOOLValue];
+    bOOLValue3 = [isSiriInitiated BOOLValue];
     if (v3)
     {
       *&v3->_has |= 0x1000000000000uLL;
-      v3->_siriInitiated = v100;
+      v3->_siriInitiated = bOOLValue3;
     }
   }
 
   if (self->_version > 1)
   {
     v105 = objc_alloc_init(ICPAPlayModeDictionary);
-    v107 = [(ICPlayActivityEvent *)self autoPlayMode];
+    autoPlayMode = [(ICPlayActivityEvent *)self autoPlayMode];
     if (v105)
     {
-      if ((v107 - 1) < 3)
+      if ((autoPlayMode - 1) < 3)
       {
-        v108 = v107;
+        v108 = autoPlayMode;
       }
 
       else
@@ -608,10 +608,10 @@ LABEL_63:
 
       *&v105->_has |= 1u;
       v105->_autoPlayMode = v108;
-      v109 = [(ICPlayActivityEvent *)self repeatPlayMode];
-      if ((v109 - 1) < 3)
+      repeatPlayMode = [(ICPlayActivityEvent *)self repeatPlayMode];
+      if ((repeatPlayMode - 1) < 3)
       {
-        v110 = v109;
+        v110 = repeatPlayMode;
       }
 
       else
@@ -621,9 +621,9 @@ LABEL_63:
 
       *&v105->_has |= 2u;
       v105->_repeatPlayMode = v110;
-      v111 = [(ICPlayActivityEvent *)self shufflePlayMode];
-      v112 = v111 == 1;
-      if (v111 == 2)
+      shufflePlayMode = [(ICPlayActivityEvent *)self shufflePlayMode];
+      v112 = shufflePlayMode == 1;
+      if (shufflePlayMode == 2)
       {
         v112 = 2;
       }
@@ -649,21 +649,21 @@ LABEL_63:
     objc_storeStrong(&v3->_playMode, v105);
 LABEL_128:
     v113 = objc_alloc(MEMORY[0x1E695DF70]);
-    v114 = [(ICPlayActivityEvent *)self buildFeatures];
-    v115 = [v113 initWithArray:v114];
+    buildFeatures = [(ICPlayActivityEvent *)self buildFeatures];
+    v115 = [v113 initWithArray:buildFeatures];
     if (v3)
     {
       objc_storeStrong(&v3->_buildFeatures, v115);
     }
 
-    v116 = [(ICPlayActivityEvent *)self buildVersion];
-    v117 = v116;
+    buildVersion2 = [(ICPlayActivityEvent *)self buildVersion];
+    v117 = buildVersion2;
     if (v3)
     {
-      objc_storeStrong(&v3->_buildVersion, v116);
+      objc_storeStrong(&v3->_buildVersion, buildVersion2);
 
-      v118 = [(ICPlayActivityEvent *)self eventType];
-      if (v118 == 1)
+      eventType = [(ICPlayActivityEvent *)self eventType];
+      if (eventType == 1)
       {
         v119 = 2;
       }
@@ -673,7 +673,7 @@ LABEL_128:
         v119 = 1;
       }
 
-      if (v118 == 2)
+      if (eventType == 2)
       {
         v119 = 3;
       }
@@ -692,52 +692,52 @@ LABEL_128:
       [(ICPlayActivityEvent *)self reasonHintType];
     }
 
-    v63 = v144;
+    targetedAudioQuality = v144;
     storeID = [(ICPlayActivityEvent *)self containerIDs];
-    v121 = [storeID adamID];
+    adamID = [storeID adamID];
     if (v3)
     {
       *&v3->_has |= 8uLL;
-      v3->_containerAdamID = v121;
-      v122 = [storeID globalPlaylistID];
-      objc_storeStrong(&v3->_globalPlaylistID, v122);
+      v3->_containerAdamID = adamID;
+      globalPlaylistID = [storeID globalPlaylistID];
+      objc_storeStrong(&v3->_globalPlaylistID, globalPlaylistID);
     }
 
     else
     {
-      v122 = [storeID globalPlaylistID];
+      globalPlaylistID = [storeID globalPlaylistID];
     }
 
-    v123 = [storeID playlistVersionHash];
+    playlistVersionHash = [storeID playlistVersionHash];
     if (v3)
     {
-      objc_storeStrong(&v3->_playlistVersionHash, v123);
+      objc_storeStrong(&v3->_playlistVersionHash, playlistVersionHash);
     }
 
-    v124 = [storeID stationHash];
+    stationHash = [storeID stationHash];
     if (v3)
     {
-      objc_storeStrong(&v3->_stationHash, v124);
+      objc_storeStrong(&v3->_stationHash, stationHash);
     }
 
-    v125 = [storeID stationStringID];
-    v126 = v125;
+    stationStringID = [storeID stationStringID];
+    v126 = stationStringID;
     if (v3)
     {
-      objc_storeStrong(&v3->_stationStringID, v125);
+      objc_storeStrong(&v3->_stationStringID, stationStringID);
 
-      v127 = [storeID stationID];
+      stationID = [storeID stationID];
       *&v3->_has |= 0x20000uLL;
-      v3->_stationID = v127;
-      v128 = [storeID cloudAlbumID];
-      objc_storeStrong(&v3->_cloudAlbumID, v128);
+      v3->_stationID = stationID;
+      cloudAlbumID = [storeID cloudAlbumID];
+      objc_storeStrong(&v3->_cloudAlbumID, cloudAlbumID);
 
-      v129 = [storeID cloudPlaylistID];
+      cloudPlaylistID = [storeID cloudPlaylistID];
       *&v3->_has |= 4uLL;
-      v3->_cloudPlaylistID = v129;
-      v130 = [storeID cloudPlaylistFolderID];
+      v3->_cloudPlaylistID = cloudPlaylistID;
+      cloudPlaylistFolderID = [storeID cloudPlaylistFolderID];
       *&v3->_has |= 2uLL;
-      v3->_cloudPlaylistFolderID = v130;
+      v3->_cloudPlaylistFolderID = cloudPlaylistFolderID;
     }
 
     else
@@ -750,83 +750,83 @@ LABEL_128:
       [storeID cloudPlaylistFolderID];
     }
 
-    v131 = [(ICPlayActivityEvent *)self itemIDs];
-    v132 = [v131 subscriptionAdamID];
+    itemIDs = [(ICPlayActivityEvent *)self itemIDs];
+    subscriptionAdamID = [itemIDs subscriptionAdamID];
     if (v3)
     {
       *&v3->_has |= 0x80000uLL;
-      v3->_subscriptionAdamID = v132;
-      v133 = [v131 purchasedAdamID];
+      v3->_subscriptionAdamID = subscriptionAdamID;
+      purchasedAdamID = [itemIDs purchasedAdamID];
       *&v3->_has |= 0x1000uLL;
-      v3->_purchasedAdamID = v133;
-      v134 = [v131 radioAdamID];
+      v3->_purchasedAdamID = purchasedAdamID;
+      radioAdamID = [itemIDs radioAdamID];
       *&v3->_has |= 0x2000uLL;
-      v3->_radioAdamID = v134;
-      v135 = [v131 cloudID];
+      v3->_radioAdamID = radioAdamID;
+      cloudID = [itemIDs cloudID];
       *&v3->_has |= 0x80uLL;
-      v3->_itemCloudID = v135;
-      v136 = [v131 lyricsID];
-      objc_storeStrong(&v3->_lyricsID, v136);
+      v3->_itemCloudID = cloudID;
+      lyricsID = [itemIDs lyricsID];
+      objc_storeStrong(&v3->_lyricsID, lyricsID);
 
-      v137 = [v131 equivalencySourceAdamID];
+      equivalencySourceAdamID = [itemIDs equivalencySourceAdamID];
       *&v3->_has |= 0x10uLL;
-      v3->_equivalencySourceAdamID = v137;
-      v138 = [v131 reportingAdamID];
+      v3->_equivalencySourceAdamID = equivalencySourceAdamID;
+      reportingAdamID = [itemIDs reportingAdamID];
       *&v3->_has |= 0x4000uLL;
-      v3->_reportingAdamID = v138;
+      v3->_reportingAdamID = reportingAdamID;
     }
 
     else
     {
-      [v131 purchasedAdamID];
-      [v131 radioAdamID];
-      [v131 cloudID];
-      [v131 lyricsID];
+      [itemIDs purchasedAdamID];
+      [itemIDs radioAdamID];
+      [itemIDs cloudID];
+      [itemIDs lyricsID];
 
-      [v131 equivalencySourceAdamID];
-      [v131 reportingAdamID];
+      [itemIDs equivalencySourceAdamID];
+      [itemIDs reportingAdamID];
     }
 
     goto LABEL_148;
   }
 
-  v101 = [(ICPlayActivityEvent *)self containerID];
+  containerID = [(ICPlayActivityEvent *)self containerID];
   if (v3)
   {
-    objc_storeStrong(&v3->_containerID, v101);
+    objc_storeStrong(&v3->_containerID, containerID);
   }
 
-  v102 = [(ICPlayActivityEvent *)self externalID];
+  externalID = [(ICPlayActivityEvent *)self externalID];
   if (v3)
   {
-    objc_storeStrong(&v3->_externalID, v102);
+    objc_storeStrong(&v3->_externalID, externalID);
   }
 
-  v103 = [(ICPlayActivityEvent *)self personalizedContainerID];
+  personalizedContainerID = [(ICPlayActivityEvent *)self personalizedContainerID];
   if (v3)
   {
-    objc_storeStrong(&v3->_personalizedContainerID, v103);
+    objc_storeStrong(&v3->_personalizedContainerID, personalizedContainerID);
   }
 
-  v104 = [(ICPlayActivityEvent *)self storeID];
-  v105 = v104;
+  storeID = [(ICPlayActivityEvent *)self storeID];
+  v105 = storeID;
   if (v3)
   {
-    v105 = v104;
+    v105 = storeID;
     storeID = v3->_storeID;
     v3->_storeID = &v105->super.super.isa;
 LABEL_148:
   }
 
-  v139 = [(ICPAPlayActivityEvent *)v3 data];
+  data = [(ICPAPlayActivityEvent *)v3 data];
 
-  return v139;
+  return data;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v5 = [(ICPlayActivityEvent *)self _mutableCopyClass];
-  v6 = [[(objc_class *)v5 allocWithZone:a3] init];
+  _mutableCopyClass = [(ICPlayActivityEvent *)self _mutableCopyClass];
+  v6 = [[(objc_class *)_mutableCopyClass allocWithZone:zone] init];
 
   if (v6)
   {
@@ -895,49 +895,49 @@ LABEL_148:
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  v4 = [(ICPlayActivityEvent *)self dataRepresentation];
-  if ([v4 length])
+  coderCopy = coder;
+  dataRepresentation = [(ICPlayActivityEvent *)self dataRepresentation];
+  if ([dataRepresentation length])
   {
-    [v5 encodeObject:v4 forKey:@"_ICPlayActivityEventCoderDataRepresentation"];
+    [coderCopy encodeObject:dataRepresentation forKey:@"_ICPlayActivityEventCoderDataRepresentation"];
   }
 }
 
-- (ICPlayActivityEvent)initWithCoder:(id)a3
+- (ICPlayActivityEvent)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_ICPlayActivityEventCoderDataRepresentation"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_ICPlayActivityEventCoderDataRepresentation"];
 
   v6 = [(ICPlayActivityEvent *)self initWithDataRepresentation:v5];
   return v6;
 }
 
-- (BOOL)isEqualToEvent:(id)a3
+- (BOOL)isEqualToEvent:(id)event
 {
-  v4 = a3;
-  if (![(ICPlayActivityEvent *)self isEqual:v4])
+  eventCopy = event;
+  if (![(ICPlayActivityEvent *)self isEqual:eventCopy])
   {
     goto LABEL_109;
   }
 
   autoPlayMode = self->_autoPlayMode;
-  if (autoPlayMode != [v4 autoPlayMode])
+  if (autoPlayMode != [eventCopy autoPlayMode])
   {
     goto LABEL_109;
   }
 
   buildFeatures = self->_buildFeatures;
-  v7 = [v4 buildFeatures];
-  v8 = v7;
-  if (buildFeatures == v7)
+  buildFeatures = [eventCopy buildFeatures];
+  v8 = buildFeatures;
+  if (buildFeatures == buildFeatures)
   {
   }
 
   else
   {
-    v9 = [(NSArray *)buildFeatures isEqual:v7];
+    v9 = [(NSArray *)buildFeatures isEqual:buildFeatures];
 
     if (!v9)
     {
@@ -946,27 +946,27 @@ LABEL_148:
   }
 
   containerType = self->_containerType;
-  if (containerType != [v4 containerType])
+  if (containerType != [eventCopy containerType])
   {
     goto LABEL_109;
   }
 
   continuityCameraUsed = self->_continuityCameraUsed;
-  if (continuityCameraUsed != [v4 isContinuityCameraUsed])
+  if (continuityCameraUsed != [eventCopy isContinuityCameraUsed])
   {
     goto LABEL_109;
   }
 
   deviceName = self->_deviceName;
-  v13 = [v4 deviceName];
-  v14 = v13;
-  if (deviceName == v13)
+  deviceName = [eventCopy deviceName];
+  v14 = deviceName;
+  if (deviceName == deviceName)
   {
   }
 
   else
   {
-    v15 = [(NSString *)deviceName isEqual:v13];
+    v15 = [(NSString *)deviceName isEqual:deviceName];
 
     if (!v15)
     {
@@ -975,27 +975,27 @@ LABEL_148:
   }
 
   displayType = self->_displayType;
-  if (displayType != [v4 displayType])
+  if (displayType != [eventCopy displayType])
   {
     goto LABEL_109;
   }
 
   endReasonType = self->_endReasonType;
-  if (endReasonType != [v4 endReasonType])
+  if (endReasonType != [eventCopy endReasonType])
   {
     goto LABEL_109;
   }
 
   eventDate = self->_eventDate;
-  v19 = [v4 eventDate];
-  v20 = v19;
-  if (eventDate == v19)
+  eventDate = [eventCopy eventDate];
+  v20 = eventDate;
+  if (eventDate == eventDate)
   {
   }
 
   else
   {
-    v21 = [(NSDate *)eventDate isEqual:v19];
+    v21 = [(NSDate *)eventDate isEqual:eventDate];
 
     if (!v21)
     {
@@ -1004,15 +1004,15 @@ LABEL_148:
   }
 
   eventTimeZone = self->_eventTimeZone;
-  v23 = [v4 eventTimeZone];
-  v24 = v23;
-  if (eventTimeZone == v23)
+  eventTimeZone = [eventCopy eventTimeZone];
+  v24 = eventTimeZone;
+  if (eventTimeZone == eventTimeZone)
   {
   }
 
   else
   {
-    v25 = [(NSTimeZone *)eventTimeZone isEqual:v23];
+    v25 = [(NSTimeZone *)eventTimeZone isEqual:eventTimeZone];
 
     if (!v25)
     {
@@ -1021,21 +1021,21 @@ LABEL_148:
   }
 
   eventType = self->_eventType;
-  if (eventType != [v4 eventType])
+  if (eventType != [eventCopy eventType])
   {
     goto LABEL_109;
   }
 
   externalID = self->_externalID;
-  v28 = [v4 externalID];
-  v29 = v28;
-  if (externalID == v28)
+  externalID = [eventCopy externalID];
+  v29 = externalID;
+  if (externalID == externalID)
   {
   }
 
   else
   {
-    v30 = [(NSString *)externalID isEqual:v28];
+    v30 = [(NSString *)externalID isEqual:externalID];
 
     if (!v30)
     {
@@ -1044,15 +1044,15 @@ LABEL_148:
   }
 
   featureName = self->_featureName;
-  v32 = [v4 featureName];
-  v33 = v32;
-  if (featureName == v32)
+  featureName = [eventCopy featureName];
+  v33 = featureName;
+  if (featureName == featureName)
   {
   }
 
   else
   {
-    v34 = [(NSString *)featureName isEqual:v32];
+    v34 = [(NSString *)featureName isEqual:featureName];
 
     if (!v34)
     {
@@ -1061,15 +1061,15 @@ LABEL_148:
   }
 
   householdID = self->_householdID;
-  v36 = [v4 householdID];
-  v37 = v36;
-  if (householdID == v36)
+  householdID = [eventCopy householdID];
+  v37 = householdID;
+  if (householdID == householdID)
   {
   }
 
   else
   {
-    v38 = [(NSString *)householdID isEqual:v36];
+    v38 = [(NSString *)householdID isEqual:householdID];
 
     if (!v38)
     {
@@ -1078,48 +1078,48 @@ LABEL_148:
   }
 
   itemDuration = self->_itemDuration;
-  [v4 itemDuration];
+  [eventCopy itemDuration];
   if (itemDuration != v40)
   {
     goto LABEL_109;
   }
 
   itemEndTime = self->_itemEndTime;
-  [v4 itemEndTime];
+  [eventCopy itemEndTime];
   if (itemEndTime != v42)
   {
     goto LABEL_109;
   }
 
   itemStartTime = self->_itemStartTime;
-  [v4 itemStartTime];
+  [eventCopy itemStartTime];
   if (itemStartTime != v44)
   {
     goto LABEL_109;
   }
 
   itemType = self->_itemType;
-  if (itemType != [v4 itemType])
+  if (itemType != [eventCopy itemType])
   {
     goto LABEL_109;
   }
 
   lyricsDisplayedCharacterCount = self->_lyricsDisplayedCharacterCount;
-  if (lyricsDisplayedCharacterCount != [v4 lyricsDisplayedCharacterCount])
+  if (lyricsDisplayedCharacterCount != [eventCopy lyricsDisplayedCharacterCount])
   {
     goto LABEL_109;
   }
 
   lyricsLanguage = self->_lyricsLanguage;
-  v48 = [v4 lyricsLanguage];
-  v49 = v48;
-  if (lyricsLanguage == v48)
+  lyricsLanguage = [eventCopy lyricsLanguage];
+  v49 = lyricsLanguage;
+  if (lyricsLanguage == lyricsLanguage)
   {
   }
 
   else
   {
-    v50 = [(NSString *)lyricsLanguage isEqual:v48];
+    v50 = [(NSString *)lyricsLanguage isEqual:lyricsLanguage];
 
     if (!v50)
     {
@@ -1128,33 +1128,33 @@ LABEL_148:
   }
 
   mediaType = self->_mediaType;
-  if (mediaType != [v4 mediaType])
+  if (mediaType != [eventCopy mediaType])
   {
     goto LABEL_109;
   }
 
   offline = self->_offline;
-  if (offline != [v4 isOffline])
+  if (offline != [eventCopy isOffline])
   {
     goto LABEL_109;
   }
 
   persistentID = self->_persistentID;
-  if (persistentID != [v4 persistentID])
+  if (persistentID != [eventCopy persistentID])
   {
     goto LABEL_109;
   }
 
   privateListeningEnabled = self->_privateListeningEnabled;
-  v55 = [v4 isPrivateListeningEnabled];
-  v56 = v55;
-  if (privateListeningEnabled == v55)
+  isPrivateListeningEnabled = [eventCopy isPrivateListeningEnabled];
+  v56 = isPrivateListeningEnabled;
+  if (privateListeningEnabled == isPrivateListeningEnabled)
   {
   }
 
   else
   {
-    v57 = [(NSNumber *)privateListeningEnabled isEqual:v55];
+    v57 = [(NSNumber *)privateListeningEnabled isEqual:isPrivateListeningEnabled];
 
     if (!v57)
     {
@@ -1163,15 +1163,15 @@ LABEL_148:
   }
 
   queueGroupingID = self->_queueGroupingID;
-  v59 = [v4 queueGroupingID];
-  v60 = v59;
-  if (queueGroupingID == v59)
+  queueGroupingID = [eventCopy queueGroupingID];
+  v60 = queueGroupingID;
+  if (queueGroupingID == queueGroupingID)
   {
   }
 
   else
   {
-    v61 = [(NSString *)queueGroupingID isEqual:v59];
+    v61 = [(NSString *)queueGroupingID isEqual:queueGroupingID];
 
     if (!v61)
     {
@@ -1180,21 +1180,21 @@ LABEL_148:
   }
 
   reasonHintType = self->_reasonHintType;
-  if (reasonHintType != [v4 reasonHintType])
+  if (reasonHintType != [eventCopy reasonHintType])
   {
     goto LABEL_109;
   }
 
   recommendationData = self->_recommendationData;
-  v64 = [v4 recommendationData];
-  v65 = v64;
-  if (recommendationData == v64)
+  recommendationData = [eventCopy recommendationData];
+  v65 = recommendationData;
+  if (recommendationData == recommendationData)
   {
   }
 
   else
   {
-    v66 = [(NSData *)recommendationData isEqual:v64];
+    v66 = [(NSData *)recommendationData isEqual:recommendationData];
 
     if (!v66)
     {
@@ -1203,21 +1203,21 @@ LABEL_148:
   }
 
   repeatPlayMode = self->_repeatPlayMode;
-  if (repeatPlayMode != [v4 repeatPlayMode])
+  if (repeatPlayMode != [eventCopy repeatPlayMode])
   {
     goto LABEL_109;
   }
 
   requestingBundleIdentifier = self->_requestingBundleIdentifier;
-  v69 = [v4 requestingBundleIdentifier];
-  v70 = v69;
-  if (requestingBundleIdentifier == v69)
+  requestingBundleIdentifier = [eventCopy requestingBundleIdentifier];
+  v70 = requestingBundleIdentifier;
+  if (requestingBundleIdentifier == requestingBundleIdentifier)
   {
   }
 
   else
   {
-    v71 = [(NSString *)requestingBundleIdentifier isEqual:v69];
+    v71 = [(NSString *)requestingBundleIdentifier isEqual:requestingBundleIdentifier];
 
     if (!v71)
     {
@@ -1226,15 +1226,15 @@ LABEL_148:
   }
 
   v72 = self->_requestingBundleIdentifier;
-  v73 = [v4 requestingBundleIdentifier];
-  v74 = v73;
-  if (v72 == v73)
+  requestingBundleIdentifier2 = [eventCopy requestingBundleIdentifier];
+  v74 = requestingBundleIdentifier2;
+  if (v72 == requestingBundleIdentifier2)
   {
   }
 
   else
   {
-    v75 = [(NSString *)v72 isEqual:v73];
+    v75 = [(NSString *)v72 isEqual:requestingBundleIdentifier2];
 
     if (!v75)
     {
@@ -1243,15 +1243,15 @@ LABEL_148:
   }
 
   requestingBundleVersion = self->_requestingBundleVersion;
-  v77 = [v4 requestingBundleVersion];
-  v78 = v77;
-  if (requestingBundleVersion == v77)
+  requestingBundleVersion = [eventCopy requestingBundleVersion];
+  v78 = requestingBundleVersion;
+  if (requestingBundleVersion == requestingBundleVersion)
   {
   }
 
   else
   {
-    v79 = [(NSString *)requestingBundleVersion isEqual:v77];
+    v79 = [(NSString *)requestingBundleVersion isEqual:requestingBundleVersion];
 
     if (!v79)
     {
@@ -1260,7 +1260,7 @@ LABEL_148:
   }
 
   SBEnabled = self->_SBEnabled;
-  if (SBEnabled != [v4 isSBEnabled])
+  if (SBEnabled != [eventCopy isSBEnabled])
   {
 LABEL_109:
     v117 = 0;
@@ -1268,15 +1268,15 @@ LABEL_109:
   }
 
   siriInitiated = self->_siriInitiated;
-  v82 = [v4 isSiriInitiated];
-  v83 = v82;
-  if (siriInitiated == v82)
+  isSiriInitiated = [eventCopy isSiriInitiated];
+  v83 = isSiriInitiated;
+  if (siriInitiated == isSiriInitiated)
   {
   }
 
   else
   {
-    v84 = [(NSNumber *)siriInitiated isEqual:v82];
+    v84 = [(NSNumber *)siriInitiated isEqual:isSiriInitiated];
 
     if (!v84)
     {
@@ -1285,39 +1285,39 @@ LABEL_109:
   }
 
   shufflePlayMode = self->_shufflePlayMode;
-  if (shufflePlayMode != [v4 shufflePlayMode])
+  if (shufflePlayMode != [eventCopy shufflePlayMode])
   {
     goto LABEL_109;
   }
 
   sourceType = self->_sourceType;
-  if (sourceType != [v4 sourceType])
+  if (sourceType != [eventCopy sourceType])
   {
     goto LABEL_109;
   }
 
   systemReleaseType = self->_systemReleaseType;
-  if (systemReleaseType != [v4 systemReleaseType])
+  if (systemReleaseType != [eventCopy systemReleaseType])
   {
     goto LABEL_109;
   }
 
   storeAccountID = self->_storeAccountID;
-  if (storeAccountID != [v4 storeAccountID])
+  if (storeAccountID != [eventCopy storeAccountID])
   {
     goto LABEL_109;
   }
 
   storeFrontID = self->_storeFrontID;
-  v90 = [v4 storeFrontID];
-  v91 = v90;
-  if (storeFrontID == v90)
+  storeFrontID = [eventCopy storeFrontID];
+  v91 = storeFrontID;
+  if (storeFrontID == storeFrontID)
   {
   }
 
   else
   {
-    v92 = [(NSString *)storeFrontID isEqual:v90];
+    v92 = [(NSString *)storeFrontID isEqual:storeFrontID];
 
     if (!v92)
     {
@@ -1326,15 +1326,15 @@ LABEL_109:
   }
 
   timedMetadata = self->_timedMetadata;
-  v94 = [v4 timedMetadata];
-  v95 = v94;
-  if (timedMetadata == v94)
+  timedMetadata = [eventCopy timedMetadata];
+  v95 = timedMetadata;
+  if (timedMetadata == timedMetadata)
   {
   }
 
   else
   {
-    v96 = [(NSData *)timedMetadata isEqual:v94];
+    v96 = [(NSData *)timedMetadata isEqual:timedMetadata];
 
     if (!v96)
     {
@@ -1343,15 +1343,15 @@ LABEL_109:
   }
 
   trackInfo = self->_trackInfo;
-  v98 = [v4 trackInfo];
-  v99 = v98;
-  if (trackInfo == v98)
+  trackInfo = [eventCopy trackInfo];
+  v99 = trackInfo;
+  if (trackInfo == trackInfo)
   {
   }
 
   else
   {
-    v100 = [(NSData *)trackInfo isEqual:v98];
+    v100 = [(NSData *)trackInfo isEqual:trackInfo];
 
     if (!v100)
     {
@@ -1360,96 +1360,96 @@ LABEL_109:
   }
 
   audioQualityPreference = self->_audioQualityPreference;
-  if (audioQualityPreference != [v4 audioQualityPreference])
+  if (audioQualityPreference != [eventCopy audioQualityPreference])
   {
     goto LABEL_109;
   }
 
   playbackFormatPreference = self->_playbackFormatPreference;
-  if (playbackFormatPreference != [v4 playbackFormatPreference])
+  if (playbackFormatPreference != [eventCopy playbackFormatPreference])
   {
     goto LABEL_109;
   }
 
   sharedActivityGroupSizeCurrent = self->_sharedActivityGroupSizeCurrent;
-  if (sharedActivityGroupSizeCurrent != [v4 sharedActivityGroupSizeCurrent])
+  if (sharedActivityGroupSizeCurrent != [eventCopy sharedActivityGroupSizeCurrent])
   {
     goto LABEL_109;
   }
 
   sharedActivityGroupSizeMax = self->_sharedActivityGroupSizeMax;
-  if (sharedActivityGroupSizeMax != [v4 sharedActivityGroupSizeMax])
+  if (sharedActivityGroupSizeMax != [eventCopy sharedActivityGroupSizeMax])
   {
     goto LABEL_109;
   }
 
   sharedActivityType = self->_sharedActivityType;
-  if (sharedActivityType != [v4 sharedActivityType])
+  if (sharedActivityType != [eventCopy sharedActivityType])
   {
     goto LABEL_109;
   }
 
   collaborativePlaylist = self->_collaborativePlaylist;
-  if (collaborativePlaylist != [v4 isCollaborativePlaylist])
+  if (collaborativePlaylist != [eventCopy isCollaborativePlaylist])
   {
     goto LABEL_109;
   }
 
   vocalAttenuationAvailability = self->_vocalAttenuationAvailability;
-  if (vocalAttenuationAvailability != [v4 vocalAttenuationAvailability])
+  if (vocalAttenuationAvailability != [eventCopy vocalAttenuationAvailability])
   {
     goto LABEL_109;
   }
 
   vocalAttenuationDuration = self->_vocalAttenuationDuration;
-  [v4 vocalAttenuationDuration];
+  [eventCopy vocalAttenuationDuration];
   if (vocalAttenuationDuration != v109)
   {
     goto LABEL_109;
   }
 
   continuityMicrophoneUsed = self->_continuityMicrophoneUsed;
-  if (continuityMicrophoneUsed != [v4 isContinuityMicrophoneUsed])
+  if (continuityMicrophoneUsed != [eventCopy isContinuityMicrophoneUsed])
   {
     goto LABEL_109;
   }
 
   displayTranslationEnabled = self->_displayTranslationEnabled;
-  if (displayTranslationEnabled != [v4 isDisplayTranslationEnabled])
+  if (displayTranslationEnabled != [eventCopy isDisplayTranslationEnabled])
   {
     goto LABEL_109;
   }
 
   displayTransliterationEnabled = self->_displayTransliterationEnabled;
-  if (displayTransliterationEnabled != [v4 isDisplayTransliterationEnabled])
+  if (displayTransliterationEnabled != [eventCopy isDisplayTransliterationEnabled])
   {
     goto LABEL_109;
   }
 
   wallClockPlayDuration = self->_wallClockPlayDuration;
-  [v4 wallClockPlayDuration];
+  [eventCopy wallClockPlayDuration];
   if (wallClockPlayDuration != v114)
   {
     goto LABEL_109;
   }
 
   userTransitionTypePreference = self->_userTransitionTypePreference;
-  if (userTransitionTypePreference != [v4 userTransitionTypePreference])
+  if (userTransitionTypePreference != [eventCopy userTransitionTypePreference])
   {
     goto LABEL_109;
   }
 
   transitionTypeProvided = self->_transitionTypeProvided;
-  v117 = transitionTypeProvided == [v4 transitionTypeProvided];
+  v117 = transitionTypeProvided == [eventCopy transitionTypeProvided];
 LABEL_110:
 
   return v117;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
@@ -1459,8 +1459,8 @@ LABEL_110:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(ICPlayActivityEvent *)self persistentID];
-      v6 = v5 == [(ICPlayActivityEvent *)v4 persistentID];
+      persistentID = [(ICPlayActivityEvent *)self persistentID];
+      v6 = persistentID == [(ICPlayActivityEvent *)equalCopy persistentID];
     }
 
     else
@@ -1689,8 +1689,8 @@ LABEL_110:
   buildFeatures = self->_buildFeatures;
   if (buildFeatures)
   {
-    v19 = [(NSArray *)buildFeatures msv_compactDescription];
-    [v6 appendFormat:@"    buildFeatures:[%@]\n", v19];
+    msv_compactDescription = [(NSArray *)buildFeatures msv_compactDescription];
+    [v6 appendFormat:@"    buildFeatures:[%@]\n", msv_compactDescription];
   }
 
   if (self->_autoPlayMode)
@@ -1794,10 +1794,10 @@ LABEL_110:
   return v6;
 }
 
-- (ICPlayActivityEvent)initWithDataRepresentation:(id)a3
+- (ICPlayActivityEvent)initWithDataRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = [[ICPAPlayActivityEvent alloc] initWithData:v4];
+  representationCopy = representation;
+  v5 = [[ICPAPlayActivityEvent alloc] initWithData:representationCopy];
   if (v5)
   {
     v6 = [(ICPlayActivityEvent *)self init];
@@ -1822,7 +1822,7 @@ LABEL_110:
         has = v5->_has;
       }
 
-      v137 = v4;
+      v137 = representationCopy;
       if ((*&has & 0x80000000) != 0)
       {
         playbackFormatPreference = v5->_playbackFormatPreference;
@@ -1873,7 +1873,7 @@ LABEL_110:
           isSpatialized = 0;
         }
 
-        [(ICMutablePlayActivityAudioQualityProperties *)v14 setSpatialized:isSpatialized, v4];
+        [(ICMutablePlayActivityAudioQualityProperties *)v14 setSpatialized:isSpatialized, representationCopy];
         objc_storeStrong(&v6->_targetedAudioQuality, v14);
       }
 
@@ -2635,7 +2635,7 @@ LABEL_179:
 LABEL_213:
                                   objc_storeStrong(&v6->_storeID, storeID);
 LABEL_249:
-                                  v4 = v138;
+                                  representationCopy = v138;
                                   goto LABEL_250;
                                 }
 

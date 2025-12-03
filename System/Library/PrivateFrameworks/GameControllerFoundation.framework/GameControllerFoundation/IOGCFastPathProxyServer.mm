@@ -1,24 +1,24 @@
 @interface IOGCFastPathProxyServer
 - (IOGCFastPathProxyServer)init;
-- (IOGCFastPathProxyServer)initWithServerName:(id)a3;
+- (IOGCFastPathProxyServer)initWithServerName:(id)name;
 @end
 
 @implementation IOGCFastPathProxyServer
 
-- (IOGCFastPathProxyServer)initWithServerName:(id)a3
+- (IOGCFastPathProxyServer)initWithServerName:(id)name
 {
   v14.receiver = self;
   v14.super_class = IOGCFastPathProxyServer;
-  v3 = a3;
+  nameCopy = name;
   v4 = [(IOGCFastPathProxyServer *)&v14 init];
   v5 = dispatch_queue_create("IOGCFastPathProxyServer", 0);
   v6 = *(v4 + 1);
   *(v4 + 1) = v5;
 
-  v7 = v3;
-  v8 = [v7 UTF8String];
+  v7 = nameCopy;
+  uTF8String = [v7 UTF8String];
 
-  mach_service = xpc_connection_create_mach_service(v8, *(v4 + 1), 1uLL);
+  mach_service = xpc_connection_create_mach_service(uTF8String, *(v4 + 1), 1uLL);
   v10 = *(v4 + 2);
   *(v4 + 2) = mach_service;
 

@@ -1,31 +1,31 @@
 @interface DBGString
-+ (id)valueWithEncodedValue:(id)a3 format:(id)a4 error:(id *)a5;
-+ (id)withString:(id)a3;
-- (DBGString)initWithString:(id)a3;
++ (id)valueWithEncodedValue:(id)value format:(id)format error:(id *)error;
++ (id)withString:(id)string;
+- (DBGString)initWithString:(id)string;
 - (NSString)debugDescription;
 - (NSString)description;
 @end
 
 @implementation DBGString
 
-+ (id)withString:(id)a3
++ (id)withString:(id)string
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithString:v4];
+  stringCopy = string;
+  v5 = [[self alloc] initWithString:stringCopy];
 
   return v5;
 }
 
-- (DBGString)initWithString:(id)a3
+- (DBGString)initWithString:(id)string
 {
-  v5 = a3;
+  stringCopy = string;
   v9.receiver = self;
   v9.super_class = DBGString;
   v6 = [(DBGString *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_string, a3);
+    objc_storeStrong(&v6->_string, string);
   }
 
   return v7;
@@ -33,8 +33,8 @@
 
 - (NSString)description
 {
-  v2 = [(DBGString *)self objectValue];
-  v3 = [v2 description];
+  objectValue = [(DBGString *)self objectValue];
+  v3 = [objectValue description];
 
   return v3;
 }
@@ -49,21 +49,21 @@
   return v6;
 }
 
-+ (id)valueWithEncodedValue:(id)a3 format:(id)a4 error:(id *)a5
++ (id)valueWithEncodedValue:(id)value format:(id)format error:(id *)error
 {
-  v8 = a3;
-  if ([a4 isEqualToString:@"public.plain-text"] && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  valueCopy = value;
+  if ([format isEqualToString:@"public.plain-text"] && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v9 = [a1 withString:v8];
+    v9 = [self withString:valueCopy];
   }
 
   else
   {
     v9 = 0;
-    if (!v8 && a5)
+    if (!valueCopy && error)
     {
       v9 = 0;
-      *a5 = 0;
+      *error = 0;
     }
   }
 

@@ -1,13 +1,13 @@
 @interface GEOAPNetworkSelectionHarvestReporter
-+ (void)reportCellConnectionQualityHarvestRecord:(id)a3;
++ (void)reportCellConnectionQualityHarvestRecord:(id)record;
 @end
 
 @implementation GEOAPNetworkSelectionHarvestReporter
 
-+ (void)reportCellConnectionQualityHarvestRecord:(id)a3
++ (void)reportCellConnectionQualityHarvestRecord:(id)record
 {
-  v3 = [a3 data];
-  [GEOAPPortal captureNetSelectionHarvestWithHarvestData:v3];
+  data = [record data];
+  [GEOAPPortal captureNetSelectionHarvestWithHarvestData:data];
 }
 
 @end

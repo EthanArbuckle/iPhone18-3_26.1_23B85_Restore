@@ -1,7 +1,7 @@
 @interface PeerTracking
 - (PeerTracking)init;
 - (void)cacheCharacteristics;
-- (void)changeConnectionState:(unsigned __int8)a3;
+- (void)changeConnectionState:(unsigned __int8)state;
 @end
 
 @implementation PeerTracking
@@ -35,11 +35,11 @@
   return v2;
 }
 
-- (void)changeConnectionState:(unsigned __int8)a3
+- (void)changeConnectionState:(unsigned __int8)state
 {
-  if (self->_connectionState != a3)
+  if (self->_connectionState != state)
   {
-    self->_connectionState = a3;
+    self->_connectionState = state;
     self->_timeOfLatestConnectionState = sub_100005288();
   }
 }

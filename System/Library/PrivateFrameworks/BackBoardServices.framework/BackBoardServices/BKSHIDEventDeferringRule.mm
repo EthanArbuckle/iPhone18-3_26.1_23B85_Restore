@@ -1,37 +1,37 @@
 @interface BKSHIDEventDeferringRule
 - (BKSHIDEventDeferringRule)init;
-- (BKSHIDEventDeferringRule)initWithCoder:(id)a3;
-- (BOOL)eventDescriptorIsRestricted:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)_initWithPredicate:(id)a3 restrictedToEventDescriptors:(id)a4 target:(id)a5 reason:(id)a6 identity:(id)a7;
-- (int64_t)mostRecentFirstCompare:(id)a3;
-- (int64_t)weightedDeferringRuleCompare:(id)a3;
-- (void)appendDescriptionToFormatter:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BKSHIDEventDeferringRule)initWithCoder:(id)coder;
+- (BOOL)eventDescriptorIsRestricted:(id)restricted;
+- (BOOL)isEqual:(id)equal;
+- (id)_initWithPredicate:(id)predicate restrictedToEventDescriptors:(id)descriptors target:(id)target reason:(id)reason identity:(id)identity;
+- (int64_t)mostRecentFirstCompare:(id)compare;
+- (int64_t)weightedDeferringRuleCompare:(id)compare;
+- (void)appendDescriptionToFormatter:(id)formatter;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BKSHIDEventDeferringRule
 
-- (void)appendDescriptionToFormatter:(id)a3
+- (void)appendDescriptionToFormatter:(id)formatter
 {
-  v9 = a3;
-  v4 = [v9 appendObject:self->_identity withName:0];
-  v5 = [v9 appendObject:self->_predicate withName:0];
+  formatterCopy = formatter;
+  v4 = [formatterCopy appendObject:self->_identity withName:0];
+  v5 = [formatterCopy appendObject:self->_predicate withName:0];
   restrictedToEventDescriptors = self->_restrictedToEventDescriptors;
   if (restrictedToEventDescriptors)
   {
-    v7 = [v9 appendObject:restrictedToEventDescriptors withName:0];
+    v7 = [formatterCopy appendObject:restrictedToEventDescriptors withName:0];
   }
 
-  [v9 appendRightArrow];
-  v8 = [v9 appendObject:self->_target withName:0];
-  [v9 appendString:self->_reason withName:@"reason"];
+  [formatterCopy appendRightArrow];
+  v8 = [formatterCopy appendObject:self->_target withName:0];
+  [formatterCopy appendString:self->_reason withName:@"reason"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v16 = 1;
   }
@@ -45,18 +45,18 @@
     }
 
     identity = self->_identity;
-    v7 = v4->_identity;
+    v7 = equalCopy->_identity;
     if (!BSEqualObjects())
     {
       goto LABEL_8;
     }
 
     predicate = self->_predicate;
-    v9 = v4->_predicate;
-    if (BSEqualObjects() && (restrictedToEventDescriptors = self->_restrictedToEventDescriptors, v11 = v4->_restrictedToEventDescriptors, BSEqualObjects()) && (target = self->_target, v13 = v4->_target, BSEqualObjects()))
+    v9 = equalCopy->_predicate;
+    if (BSEqualObjects() && (restrictedToEventDescriptors = self->_restrictedToEventDescriptors, v11 = equalCopy->_restrictedToEventDescriptors, BSEqualObjects()) && (target = self->_target, v13 = equalCopy->_target, BSEqualObjects()))
     {
       reason = self->_reason;
-      v15 = v4->_reason;
+      v15 = equalCopy->_reason;
       v16 = BSEqualObjects();
     }
 
@@ -70,24 +70,24 @@ LABEL_8:
   return v16;
 }
 
-- (BKSHIDEventDeferringRule)initWithCoder:(id)a3
+- (BKSHIDEventDeferringRule)initWithCoder:(id)coder
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
   if (v5 == objc_opt_class())
   {
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"predicate"];
-    v9 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"descriptors"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"predicate"];
+    v9 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"descriptors"];
     v10 = [MEMORY[0x1E695DFD8] setWithArray:v9];
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"target"];
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"reason"];
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ident"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"target"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"reason"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ident"];
     v15 = v14;
     if (v8 && v12 && v13 && v14)
     {
       self = [(BKSHIDEventDeferringRule *)self _initWithPredicate:v8 restrictedToEventDescriptors:v10 target:v12 reason:v13 identity:v14];
-      v11 = self;
+      selfCopy = self;
     }
 
     else
@@ -99,9 +99,9 @@ LABEL_8:
       v26[0] = v22;
       v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v26 forKeys:&v25 count:1];
       v17 = [v21 errorWithDomain:v20 code:4866 userInfo:v16];
-      [v4 failWithError:v17];
+      [coderCopy failWithError:v17];
 
-      v11 = 0;
+      selfCopy = 0;
     }
   }
 
@@ -114,32 +114,32 @@ LABEL_8:
     v24 = v8;
     v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v24 forKeys:&v23 count:1];
     v10 = [v6 errorWithDomain:v7 code:4866 userInfo:v9];
-    [v4 failWithError:v10];
-    v11 = 0;
+    [coderCopy failWithError:v10];
+    selfCopy = 0;
   }
 
   v18 = *MEMORY[0x1E69E9840];
-  return v11;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   predicate = self->_predicate;
-  v6 = a3;
-  [v6 encodeObject:predicate forKey:@"predicate"];
-  v5 = [(NSSet *)self->_restrictedToEventDescriptors allObjects];
-  [v6 encodeObject:v5 forKey:@"descriptors"];
+  coderCopy = coder;
+  [coderCopy encodeObject:predicate forKey:@"predicate"];
+  allObjects = [(NSSet *)self->_restrictedToEventDescriptors allObjects];
+  [coderCopy encodeObject:allObjects forKey:@"descriptors"];
 
-  [v6 encodeObject:self->_target forKey:@"target"];
-  [v6 encodeObject:self->_reason forKey:@"reason"];
-  [v6 encodeObject:self->_identity forKey:@"ident"];
+  [coderCopy encodeObject:self->_target forKey:@"target"];
+  [coderCopy encodeObject:self->_reason forKey:@"reason"];
+  [coderCopy encodeObject:self->_identity forKey:@"ident"];
 }
 
-- (BOOL)eventDescriptorIsRestricted:(id)a3
+- (BOOL)eventDescriptorIsRestricted:(id)restricted
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4 && [(NSSet *)self->_restrictedToEventDescriptors count])
+  restrictedCopy = restricted;
+  if (restrictedCopy && [(NSSet *)self->_restrictedToEventDescriptors count])
   {
     v15 = 0u;
     v16 = 0u;
@@ -160,7 +160,7 @@ LABEL_8:
             objc_enumerationMutation(v5);
           }
 
-          if ([*(*(&v13 + 1) + 8 * i) describes:{v4, v13}])
+          if ([*(*(&v13 + 1) + 8 * i) describes:{restrictedCopy, v13}])
           {
             v10 = 0;
             goto LABEL_14;
@@ -190,46 +190,46 @@ LABEL_14:
   return v10;
 }
 
-- (int64_t)mostRecentFirstCompare:(id)a3
+- (int64_t)mostRecentFirstCompare:(id)compare
 {
-  v4 = a3;
-  v5 = [(BKSHIDEventDeferringRule *)self identity];
-  v6 = [v5 seed];
+  compareCopy = compare;
+  identity = [(BKSHIDEventDeferringRule *)self identity];
+  seed = [identity seed];
 
-  v7 = [v4 identity];
+  identity2 = [compareCopy identity];
 
-  v8 = [v7 seed];
-  if (v6 > v8)
+  seed2 = [identity2 seed];
+  if (seed > seed2)
   {
     return -1;
   }
 
   else
   {
-    return v6 != v8;
+    return seed != seed2;
   }
 }
 
-- (int64_t)weightedDeferringRuleCompare:(id)a3
+- (int64_t)weightedDeferringRuleCompare:(id)compare
 {
-  v4 = a3;
-  v5 = self;
-  v6 = [(BKSHIDEventDeferringRule *)v5 predicate];
-  v7 = [v4 predicate];
-  v8 = v6;
+  compareCopy = compare;
+  selfCopy = self;
+  predicate = [(BKSHIDEventDeferringRule *)selfCopy predicate];
+  predicate2 = [compareCopy predicate];
+  v8 = predicate;
   objc_opt_self();
-  v9 = [v8 display];
-  v10 = v9 != 0;
+  display = [v8 display];
+  v10 = display != 0;
 
-  v11 = [v8 token];
+  token = [v8 token];
 
-  v12 = (v11 != 0) | (2 * v10);
-  v13 = [v7 display];
-  v14 = v13 != 0;
+  v12 = (token != 0) | (2 * v10);
+  display2 = [predicate2 display];
+  v14 = display2 != 0;
 
-  v15 = [v7 token];
+  token2 = [predicate2 token];
 
-  v16 = (v15 != 0) | (2 * v14);
+  v16 = (token2 != 0) | (2 * v14);
   v17 = v12 > v16;
   if (v12 == v16)
   {
@@ -253,17 +253,17 @@ LABEL_14:
 
   if (!v19)
   {
-    if ([v8 isEqual:v7])
+    if ([v8 isEqual:predicate2])
     {
-      v20 = [(BKSHIDEventDeferringRule *)v5 identity];
-      v21 = [v20 seed];
+      identity = [(BKSHIDEventDeferringRule *)selfCopy identity];
+      seed = [identity seed];
 
-      v22 = [v4 identity];
-      v23 = [v22 seed];
+      identity2 = [compareCopy identity];
+      seed2 = [identity2 seed];
 
-      if (v21 <= v23)
+      if (seed <= seed2)
       {
-        v19 = v21 < v23;
+        v19 = seed < seed2;
       }
 
       else
@@ -281,15 +281,15 @@ LABEL_14:
   return v19;
 }
 
-- (id)_initWithPredicate:(id)a3 restrictedToEventDescriptors:(id)a4 target:(id)a5 reason:(id)a6 identity:(id)a7
+- (id)_initWithPredicate:(id)predicate restrictedToEventDescriptors:(id)descriptors target:(id)target reason:(id)reason identity:(id)identity
 {
   v118 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = v13;
+  predicateCopy = predicate;
+  descriptorsCopy = descriptors;
+  targetCopy = target;
+  reasonCopy = reason;
+  identityCopy = identity;
+  v18 = predicateCopy;
   if (!v18)
   {
     v39 = MEMORY[0x1E696AEC0];
@@ -307,7 +307,7 @@ LABEL_14:
       v108 = 2114;
       v109 = v45;
       v110 = 2048;
-      v111 = self;
+      selfCopy9 = self;
       v112 = 2114;
       v113 = @"BKSHIDEventDeferringRule.m";
       v114 = 1024;
@@ -328,13 +328,13 @@ LABEL_14:
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v46 = MEMORY[0x1E696AEC0];
-    v47 = [v19 classForCoder];
-    if (!v47)
+    classForCoder = [v19 classForCoder];
+    if (!classForCoder)
     {
-      v47 = objc_opt_class();
+      classForCoder = objc_opt_class();
     }
 
-    v48 = NSStringFromClass(v47);
+    v48 = NSStringFromClass(classForCoder);
     v49 = objc_opt_class();
     v50 = NSStringFromClass(v49);
     v51 = [v46 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"predicate", v48, v50];
@@ -349,7 +349,7 @@ LABEL_14:
       v108 = 2114;
       v109 = v54;
       v110 = 2048;
-      v111 = self;
+      selfCopy9 = self;
       v112 = 2114;
       v113 = @"BKSHIDEventDeferringRule.m";
       v114 = 1024;
@@ -365,7 +365,7 @@ LABEL_14:
     JUMPOUT(0x18638B9E8);
   }
 
-  v20 = v14;
+  v20 = descriptorsCopy;
   if (!v20)
   {
     v55 = MEMORY[0x1E696AEC0];
@@ -383,7 +383,7 @@ LABEL_14:
       v108 = 2114;
       v109 = v61;
       v110 = 2048;
-      v111 = self;
+      selfCopy9 = self;
       v112 = 2114;
       v113 = @"BKSHIDEventDeferringRule.m";
       v114 = 1024;
@@ -404,13 +404,13 @@ LABEL_14:
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v62 = MEMORY[0x1E696AEC0];
-    v63 = [v21 classForCoder];
-    if (!v63)
+    classForCoder2 = [v21 classForCoder];
+    if (!classForCoder2)
     {
-      v63 = objc_opt_class();
+      classForCoder2 = objc_opt_class();
     }
 
-    v64 = NSStringFromClass(v63);
+    v64 = NSStringFromClass(classForCoder2);
     v65 = objc_opt_class();
     v66 = NSStringFromClass(v65);
     v67 = [v62 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"eventDescriptors", v64, v66];
@@ -425,7 +425,7 @@ LABEL_14:
       v108 = 2114;
       v109 = v70;
       v110 = 2048;
-      v111 = self;
+      selfCopy9 = self;
       v112 = 2114;
       v113 = @"BKSHIDEventDeferringRule.m";
       v114 = 1024;
@@ -441,7 +441,7 @@ LABEL_14:
     JUMPOUT(0x18638BC38);
   }
 
-  v22 = v15;
+  v22 = targetCopy;
   if (!v22)
   {
     v71 = MEMORY[0x1E696AEC0];
@@ -459,7 +459,7 @@ LABEL_14:
       v108 = 2114;
       v109 = v77;
       v110 = 2048;
-      v111 = self;
+      selfCopy9 = self;
       v112 = 2114;
       v113 = @"BKSHIDEventDeferringRule.m";
       v114 = 1024;
@@ -480,13 +480,13 @@ LABEL_14:
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v78 = MEMORY[0x1E696AEC0];
-    v79 = [v23 classForCoder];
-    if (!v79)
+    classForCoder3 = [v23 classForCoder];
+    if (!classForCoder3)
     {
-      v79 = objc_opt_class();
+      classForCoder3 = objc_opt_class();
     }
 
-    v80 = NSStringFromClass(v79);
+    v80 = NSStringFromClass(classForCoder3);
     v81 = objc_opt_class();
     v82 = NSStringFromClass(v81);
     v83 = [v78 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"target", v80, v82];
@@ -501,7 +501,7 @@ LABEL_14:
       v108 = 2114;
       v109 = v86;
       v110 = 2048;
-      v111 = self;
+      selfCopy9 = self;
       v112 = 2114;
       v113 = @"BKSHIDEventDeferringRule.m";
       v114 = 1024;
@@ -517,7 +517,7 @@ LABEL_14:
     JUMPOUT(0x18638BE8CLL);
   }
 
-  v24 = v16;
+  v24 = reasonCopy;
   v25 = MEMORY[0x1E696AEC0];
   v26 = objc_opt_class();
   if (!v24)
@@ -535,7 +535,7 @@ LABEL_14:
       v108 = 2114;
       v109 = v91;
       v110 = 2048;
-      v111 = self;
+      selfCopy9 = self;
       v112 = 2114;
       v113 = @"BKSHIDEventDeferringRule.m";
       v114 = 1024;
@@ -554,13 +554,13 @@ LABEL_14:
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v92 = MEMORY[0x1E696AEC0];
-    v93 = [v24 classForCoder];
-    if (!v93)
+    classForCoder4 = [v24 classForCoder];
+    if (!classForCoder4)
     {
-      v93 = objc_opt_class();
+      classForCoder4 = objc_opt_class();
     }
 
-    v94 = NSStringFromClass(v93);
+    v94 = NSStringFromClass(classForCoder4);
     v95 = objc_opt_class();
     v96 = NSStringFromClass(v95);
     v97 = [v92 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"reason", v94, v96];
@@ -575,7 +575,7 @@ LABEL_14:
       v108 = 2114;
       v109 = v100;
       v110 = 2048;
-      v111 = self;
+      selfCopy9 = self;
       v112 = 2114;
       v113 = @"BKSHIDEventDeferringRule.m";
       v114 = 1024;
@@ -605,7 +605,7 @@ LABEL_14:
       v108 = 2114;
       v109 = v104;
       v110 = 2048;
-      v111 = self;
+      selfCopy9 = self;
       v112 = 2114;
       v113 = @"BKSHIDEventDeferringRule.m";
       v114 = 1024;
@@ -642,7 +642,7 @@ LABEL_14:
     reason = v28->_reason;
     v28->_reason = v35;
 
-    objc_storeStrong(&v28->_identity, a7);
+    objc_storeStrong(&v28->_identity, identity);
   }
 
   v37 = *MEMORY[0x1E69E9840];
@@ -662,7 +662,7 @@ LABEL_14:
     v11 = 2114;
     v12 = v7;
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     v15 = 2114;
     v16 = @"BKSHIDEventDeferringRule.m";
     v17 = 1024;

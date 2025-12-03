@@ -53,7 +53,7 @@ LABEL_7:
       v22[2] = __68__UIView_MRUAnimations__mru_animateUsingType_animations_completion___block_invoke;
       v22[3] = &unk_1E7665C50;
       v23 = v8;
-      [a1 _animateUsingSpringWithDuration:5 delay:v22 options:v9 mass:0.8 stiffness:0.0 damping:2.0 initialVelocity:300.0 animations:42.0 completion:0.0];
+      [self _animateUsingSpringWithDuration:5 delay:v22 options:v9 mass:0.8 stiffness:0.0 damping:2.0 initialVelocity:300.0 animations:42.0 completion:0.0];
       v10 = v23;
 LABEL_8:
 
@@ -67,7 +67,7 @@ LABEL_8:
   v7[0] = *a3;
   v7[1] = v5;
   v8 = *(a3 + 32);
-  return [a1 mru_animateWithSpringParameters:v7 options:a4 animations:a5 completion:0];
+  return [self mru_animateWithSpringParameters:v7 options:a4 animations:a5 completion:0];
 }
 
 @end

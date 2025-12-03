@@ -6,12 +6,12 @@
 
 - (BOOL)prefersStatusBarHidden
 {
-  v3 = [(NavigationDebugSplitViewController *)self shouldHideStatusBar];
+  shouldHideStatusBar = [(NavigationDebugSplitViewController *)self shouldHideStatusBar];
 
-  if (v3)
+  if (shouldHideStatusBar)
   {
-    v4 = [(NavigationDebugSplitViewController *)self shouldHideStatusBar];
-    v5 = v4[2]();
+    shouldHideStatusBar2 = [(NavigationDebugSplitViewController *)self shouldHideStatusBar];
+    v5 = shouldHideStatusBar2[2]();
 
     return v5;
   }

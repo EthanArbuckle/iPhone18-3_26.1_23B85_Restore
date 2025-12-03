@@ -1,15 +1,15 @@
 @interface MSDCloudManager
 + (id)sharedManager;
-+ (void)handlePushNotification:(id)a3;
++ (void)handlePushNotification:(id)notification;
 - (MSDCloudManager)init;
 - (void)_checkAccountStatus;
 - (void)_handleAccountStatusUnsupported;
-- (void)_handleCKAccountStatusChanged:(id)a3;
-- (void)_handleDeviceSupportsEncryption:(id)a3;
-- (void)_withAccountCheckLock:(id)a3;
-- (void)addSubscriptionForDatabase:(id)a3;
+- (void)_handleCKAccountStatusChanged:(id)changed;
+- (void)_handleDeviceSupportsEncryption:(id)encryption;
+- (void)_withAccountCheckLock:(id)lock;
+- (void)addSubscriptionForDatabase:(id)database;
 - (void)dealloc;
-- (void)isCloudKitAccessAvailable:(id)a3;
+- (void)isCloudKitAccessAvailable:(id)available;
 @end
 
 @implementation MSDCloudManager
@@ -62,7 +62,7 @@
   block[1] = 3221225472;
   block[2] = sub_100020248;
   block[3] = &unk_1000508C0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100059A90 != -1)
   {
     dispatch_once(&qword_100059A90, block);
@@ -73,29 +73,29 @@
   return v2;
 }
 
-- (void)addSubscriptionForDatabase:(id)a3
+- (void)addSubscriptionForDatabase:(id)database
 {
-  v4 = a3;
-  v5 = [v4 databaseScope];
-  if (v5 == 2)
+  databaseCopy = database;
+  databaseScope = [databaseCopy databaseScope];
+  if (databaseScope == 2)
   {
     v6 = @"com.apple.msd.privateDatabaseSubscription";
     goto LABEL_5;
   }
 
-  if (v5 == 3)
+  if (databaseScope == 3)
   {
     v6 = @"com.apple.msd.sharedDatabaseSubscription";
 LABEL_5:
     objc_initWeak(&location, self);
-    objc_initWeak(&from, v4);
+    objc_initWeak(&from, databaseCopy);
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_10002040C;
     v9[3] = &unk_100051DB0;
     objc_copyWeak(&v10, &location);
     objc_copyWeak(&v11, &from);
-    [v4 addSubscriptionForDatabaseWithIdentifier:v6 completion:v9];
+    [databaseCopy addSubscriptionForDatabaseWithIdentifier:v6 completion:v9];
     objc_destroyWeak(&v11);
     objc_destroyWeak(&v10);
     objc_destroyWeak(&from);
@@ -112,23 +112,23 @@ LABEL_5:
   v8 = sub_100030FE4();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
   {
-    sub_10002186C(v4);
+    sub_10002186C(databaseCopy);
   }
 
 LABEL_11:
 }
 
-- (void)isCloudKitAccessAvailable:(id)a3
+- (void)isCloudKitAccessAvailable:(id)available
 {
-  v3 = a3;
-  if (v3)
+  availableCopy = available;
+  if (availableCopy)
   {
     v4 = +[CKContainer MSDCloudKitContainer];
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_1000208B8;
     v6[3] = &unk_100051DD8;
-    v7 = v3;
+    v7 = availableCopy;
     [v4 accountInfoWithCompletionHandler:v6];
 
     v5 = v7;
@@ -146,9 +146,9 @@ LABEL_11:
   }
 }
 
-+ (void)handlePushNotification:(id)a3
++ (void)handlePushNotification:(id)notification
 {
-  v3 = a3;
+  notificationCopy = notification;
   v4 = sub_100030FE4();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -156,8 +156,8 @@ LABEL_11:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Handling a CloudKit push notification", &v17, 2u);
   }
 
-  v5 = [v3 userInfo];
-  v6 = [CKNotification notificationFromRemoteNotificationDictionary:v5];
+  userInfo = [notificationCopy userInfo];
+  v6 = [CKNotification notificationFromRemoteNotificationDictionary:userInfo];
 
   if (v6)
   {
@@ -196,8 +196,8 @@ LABEL_11:
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "A CloudKit database changed in DatabaseScope = %@", &v17, 0xCu);
     }
 
-    v13 = [v9 databaseScope];
-    if (v13 == 1)
+    databaseScope = [v9 databaseScope];
+    if (databaseScope == 1)
     {
       v11 = sub_100030FE4();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -208,23 +208,23 @@ LABEL_11:
       goto LABEL_22;
     }
 
-    if (v13 == 3)
+    if (databaseScope == 3)
     {
       v11 = +[CKContainer MSDCloudKitContainer];
-      v14 = [v11 sharedCloudDatabase];
-      v15 = v14;
+      sharedCloudDatabase = [v11 sharedCloudDatabase];
+      v15 = sharedCloudDatabase;
       v16 = &stru_100051E18;
       goto LABEL_19;
     }
 
-    if (v13 == 2)
+    if (databaseScope == 2)
     {
       v11 = +[CKContainer MSDCloudKitContainer];
-      v14 = [v11 privateCloudDatabase];
-      v15 = v14;
+      sharedCloudDatabase = [v11 privateCloudDatabase];
+      v15 = sharedCloudDatabase;
       v16 = &stru_100051DF8;
 LABEL_19:
-      [v14 refreshDatabase:0 completion:v16];
+      [sharedCloudDatabase refreshDatabase:0 completion:v16];
 
 LABEL_22:
     }
@@ -235,7 +235,7 @@ LABEL_22:
     v9 = sub_100030FE4();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      sub_1000219E0(v3);
+      sub_1000219E0(notificationCopy);
     }
   }
 }
@@ -265,10 +265,10 @@ LABEL_22:
   [v3 clearPrivateAndSharedLocalData];
 }
 
-- (void)_handleDeviceSupportsEncryption:(id)a3
+- (void)_handleDeviceSupportsEncryption:(id)encryption
 {
-  v4 = a3;
-  if ([(CKAccountInfo *)self->_accountInfo isEqual:v4])
+  encryptionCopy = encryption;
+  if ([(CKAccountInfo *)self->_accountInfo isEqual:encryptionCopy])
   {
     v5 = sub_100030FE4();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -281,14 +281,14 @@ LABEL_4:
     }
   }
 
-  else if ([v4 hasValidCredentials])
+  else if ([encryptionCopy hasValidCredentials])
   {
-    [(MSDCloudManager *)self setAccountInfo:v4];
+    [(MSDCloudManager *)self setAccountInfo:encryptionCopy];
     v8 = +[MSDDefaultsManager sharedManager];
     v9 = [v8 objectForDefault:@"CKAccountSupportsManatee"];
-    v10 = [v9 BOOLValue];
+    bOOLValue = [v9 BOOLValue];
 
-    if (!v10)
+    if (!bOOLValue)
     {
       v11 = +[MSDDefaultsManager sharedManager];
       [v11 setObject:&__kCFBooleanTrue forDefault:@"CKAccountSupportsManatee"];
@@ -320,15 +320,15 @@ LABEL_4:
 LABEL_12:
 }
 
-- (void)_handleCKAccountStatusChanged:(id)a3
+- (void)_handleCKAccountStatusChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   v5 = sub_100030FE4();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 name];
+    name = [changedCopy name];
     *buf = 138412290;
-    v11 = v6;
+    v11 = name;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Received notification %@", buf, 0xCu);
   }
 
@@ -344,11 +344,11 @@ LABEL_12:
   objc_destroyWeak(buf);
 }
 
-- (void)_withAccountCheckLock:(id)a3
+- (void)_withAccountCheckLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   os_unfair_lock_lock(&self->_accountCheckLock);
-  v4[2](v4);
+  lockCopy[2](lockCopy);
 
   os_unfair_lock_unlock(&self->_accountCheckLock);
 }

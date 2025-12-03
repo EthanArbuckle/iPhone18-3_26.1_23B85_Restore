@@ -1,22 +1,22 @@
 @interface NRLaunchDaemon
 + (id)sharedInstance;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (NRLaunchDaemon)init;
-- (id)_enableNanoDaemons:(unint64_t)a3;
-- (id)deletePairedStoreWithUUID:(id)a3;
-- (id)getLocalPairingStorePairingID:(id)a3;
+- (id)_enableNanoDaemons:(unint64_t)daemons;
+- (id)deletePairedStoreWithUUID:(id)d;
+- (id)getLocalPairingStorePairingID:(id)d;
 - (id)launchDaemonsPaths;
-- (void)chownWhine:(id)a3;
+- (void)chownWhine:(id)whine;
 - (void)dealloc;
-- (void)xpcCleanupPairingStoreWithUUIDs:(id)a3 withCompletion:(id)a4;
-- (void)xpcDeletePairedStoreWithUUID:(id)a3 withCompletion:(id)a4;
-- (void)xpcDeleteQuarantinedDataWithStoreUUID:(id)a3 completion:(id)a4;
-- (void)xpcEnableAltOnlyNanoDaemons:(BOOL)a3 withCompletion:(id)a4;
-- (void)xpcEnableNanoDaemons:(unint64_t)a3 withCompletion:(id)a4;
-- (void)xpcGetBackupHashWithCompletion:(id)a3;
-- (void)xpcQuarantineDataWithStoreUUID:(id)a3 services:(id)a4 completion:(id)a5;
+- (void)xpcCleanupPairingStoreWithUUIDs:(id)ds withCompletion:(id)completion;
+- (void)xpcDeletePairedStoreWithUUID:(id)d withCompletion:(id)completion;
+- (void)xpcDeleteQuarantinedDataWithStoreUUID:(id)d completion:(id)completion;
+- (void)xpcEnableAltOnlyNanoDaemons:(BOOL)daemons withCompletion:(id)completion;
+- (void)xpcEnableNanoDaemons:(unint64_t)daemons withCompletion:(id)completion;
+- (void)xpcGetBackupHashWithCompletion:(id)completion;
+- (void)xpcQuarantineDataWithStoreUUID:(id)d services:(id)services completion:(id)completion;
 - (void)xpcStartListener;
-- (void)xpcUnquarantineDataWithStoreUUID:(id)a3 services:(id)a4 completion:(id)a5;
+- (void)xpcUnquarantineDataWithStoreUUID:(id)d services:(id)services completion:(id)completion;
 @end
 
 @implementation NRLaunchDaemon
@@ -46,7 +46,7 @@
   block[1] = 3221225472;
   block[2] = sub_100000E58;
   block[3] = &unk_1000082A0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10000CC18 != -1)
   {
     dispatch_once(&qword_10000CC18, block);
@@ -67,8 +67,8 @@
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [(NRLaunchDaemon *)self xpcClients];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  xpcClients = [(NRLaunchDaemon *)self xpcClients];
+  v5 = [xpcClients countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -80,7 +80,7 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(xpcClients);
         }
 
         v9 = *(*(&v11 + 1) + 8 * v8);
@@ -93,7 +93,7 @@
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [xpcClients countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -120,14 +120,14 @@
   [(NSXPCListener *)v7 resume];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
-  v6 = [v5 valueForEntitlement:@"com.apple.nano.nanoregistry.nanoregistrylaunchd"];
+  connectionCopy = connection;
+  v6 = [connectionCopy valueForEntitlement:@"com.apple.nano.nanoregistry.nanoregistrylaunchd"];
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 && ([v6 BOOLValue])
   {
-    [v5 setExportedObject:self];
+    [connectionCopy setExportedObject:self];
     v7 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___NRLaunchDaemonXPCDaemonDelegate];
     v20[0] = objc_opt_class();
     v20[1] = objc_opt_class();
@@ -148,10 +148,10 @@
     v14 = 1;
     [v7 setClasses:v13 forSelector:"xpcUnquarantineDataWithStoreUUID:services:completion:" argumentIndex:1 ofReply:0];
 
-    [v5 setExportedInterface:v7];
-    [v5 resume];
+    [connectionCopy setExportedInterface:v7];
+    [connectionCopy resume];
     [(NSPointerArray *)self->_xpcClients compact];
-    [(NSPointerArray *)self->_xpcClients addPointer:v5];
+    [(NSPointerArray *)self->_xpcClients addPointer:connectionCopy];
   }
 
   else
@@ -215,51 +215,51 @@ LABEL_10:
   return v2;
 }
 
-- (void)xpcEnableAltOnlyNanoDaemons:(BOOL)a3 withCompletion:(id)a4
+- (void)xpcEnableAltOnlyNanoDaemons:(BOOL)daemons withCompletion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   launchdQueue = self->_launchdQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000150C;
   block[3] = &unk_1000082C8;
-  v11 = a3;
+  daemonsCopy = daemons;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = completionCopy;
+  v8 = completionCopy;
   dispatch_async(launchdQueue, block);
 }
 
-- (void)xpcEnableNanoDaemons:(unint64_t)a3 withCompletion:(id)a4
+- (void)xpcEnableNanoDaemons:(unint64_t)daemons withCompletion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   launchdQueue = self->_launchdQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100001620;
   block[3] = &unk_1000082F0;
-  v10 = v6;
-  v11 = a3;
+  v10 = completionCopy;
+  daemonsCopy = daemons;
   block[4] = self;
-  v8 = v6;
+  v8 = completionCopy;
   dispatch_sync(launchdQueue, block);
 }
 
-- (id)_enableNanoDaemons:(unint64_t)a3
+- (id)_enableNanoDaemons:(unint64_t)daemons
 {
   v4 = CFPreferencesCopyValue(@"StoreDemoMode", @"com.apple.demo-settings", @"mobile", kCFPreferencesAnyHost);
   if (!v4 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v6 = [(NRLaunchDaemon *)self launchDaemonsPaths];
+    launchDaemonsPaths = [(NRLaunchDaemon *)self launchDaemonsPaths];
     goto LABEL_33;
   }
 
-  v5 = [v4 BOOLValue];
-  v6 = [(NRLaunchDaemon *)self launchDaemonsPaths];
-  if ((v5 & 1) == 0)
+  bOOLValue = [v4 BOOLValue];
+  launchDaemonsPaths = [(NRLaunchDaemon *)self launchDaemonsPaths];
+  if ((bOOLValue & 1) == 0)
   {
 LABEL_33:
-    if (![v6 count])
+    if (![launchDaemonsPaths count])
     {
       v78 = 0;
       goto LABEL_85;
@@ -272,7 +272,7 @@ LABEL_33:
     {
       if (v32)
       {
-        if (v32 == 1 && a3 - 1 < 2)
+        if (v32 == 1 && daemons - 1 < 2)
         {
 LABEL_38:
           v33 = 1;
@@ -281,7 +281,7 @@ LABEL_38:
         }
       }
 
-      else if (a3 == 1)
+      else if (daemons == 1)
       {
         goto LABEL_38;
       }
@@ -289,7 +289,7 @@ LABEL_38:
       v33 = 0;
       v34 = @"launch_disable_directory";
 LABEL_41:
-      v35 = [v6 objectAtIndexedSubscript:v32];
+      v35 = [launchDaemonsPaths objectAtIndexedSubscript:v32];
       v36 = [NSString stringWithFormat:@"%@(%@)", v34, v35];
 
       v37 = nr_root_daemon_log();
@@ -307,8 +307,8 @@ LABEL_41:
       }
 
       v40 = +[NSDate date];
-      v41 = v6;
-      v42 = [v6 objectAtIndexedSubscript:v32];
+      v41 = launchDaemonsPaths;
+      v42 = [launchDaemonsPaths objectAtIndexedSubscript:v32];
       [v42 cStringUsingEncoding:4];
       if (v33)
       {
@@ -373,7 +373,7 @@ LABEL_58:
 LABEL_59:
 
       ++v32;
-      v6 = v41;
+      launchDaemonsPaths = v41;
       if (v32 >= [v41 count])
       {
         v4 = v75;
@@ -383,14 +383,14 @@ LABEL_59:
   }
 
   v7 = +[NSMutableDictionary dictionary];
-  v8 = v6;
+  v8 = launchDaemonsPaths;
   v74 = v4;
-  if ([v6 count])
+  if ([launchDaemonsPaths count])
   {
     v9 = 0;
     v78 = 0;
-    v10 = a3 - 1;
-    v80 = a3 == 1;
+    v10 = daemons - 1;
+    v80 = daemons == 1;
     v77 = v10 < 2;
     do
     {
@@ -417,7 +417,7 @@ LABEL_59:
         v14 = nr_root_daemon_log();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
         {
-          v15 = [v6 objectAtIndexedSubscript:v9];
+          v15 = [launchDaemonsPaths objectAtIndexedSubscript:v9];
           *buf = 138543362;
           v96 = v15;
           _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Scanning NanoLaunchDaemons directory at %{public}@", buf, 0xCu);
@@ -425,7 +425,7 @@ LABEL_59:
       }
 
       v16 = +[NSFileManager defaultManager];
-      v17 = [v6 objectAtIndexedSubscript:v9];
+      v17 = [launchDaemonsPaths objectAtIndexedSubscript:v9];
       if (v78)
       {
         v18 = [v16 contentsOfDirectoryAtPath:v17 error:0];
@@ -490,7 +490,7 @@ LABEL_59:
       }
 
       ++v9;
-      v6 = v8;
+      launchDaemonsPaths = v8;
     }
 
     while (v9 < [v8 count]);
@@ -524,7 +524,7 @@ LABEL_59:
 
         v59 = *(*(&v82 + 1) + 8 * j);
         v60 = [v54 objectForKeyedSubscript:v59];
-        v61 = [v60 BOOLValue];
+        bOOLValue2 = [v60 BOOLValue];
 
         v62 = [[NSDictionary alloc] initWithContentsOfFile:v59];
         v63 = [v62 valueForKey:@"Label"];
@@ -537,7 +537,7 @@ LABEL_59:
 
         else
         {
-          v64 = v61 == 0;
+          v64 = bOOLValue2 == 0;
         }
 
         if (v64)
@@ -601,39 +601,39 @@ LABEL_82:
   }
 
   v4 = v74;
-  v6 = v8;
+  launchDaemonsPaths = v8;
 LABEL_85:
 
   return v78;
 }
 
-- (id)getLocalPairingStorePairingID:(id)a3
+- (id)getLocalPairingStorePairingID:(id)d
 {
-  v4 = a3;
-  v5 = [(NRLaunchDaemon *)self getLocalPairingStorePath];
-  if (v4)
+  dCopy = d;
+  getLocalPairingStorePath = [(NRLaunchDaemon *)self getLocalPairingStorePath];
+  if (dCopy)
   {
-    v6 = [v4 UUIDString];
-    v7 = [v5 stringByAppendingPathComponent:v6];
+    uUIDString = [dCopy UUIDString];
+    v7 = [getLocalPairingStorePath stringByAppendingPathComponent:uUIDString];
 
-    v5 = v7;
+    getLocalPairingStorePath = v7;
   }
 
-  return v5;
+  return getLocalPairingStorePath;
 }
 
-- (void)xpcDeletePairedStoreWithUUID:(id)a3 withCompletion:(id)a4
+- (void)xpcDeletePairedStoreWithUUID:(id)d withCompletion:(id)completion
 {
-  v6 = a4;
-  v7 = [(NRLaunchDaemon *)self deletePairedStoreWithUUID:a3];
-  v6[2](v6, v7);
+  completionCopy = completion;
+  v7 = [(NRLaunchDaemon *)self deletePairedStoreWithUUID:d];
+  completionCopy[2](completionCopy, v7);
 }
 
-- (id)deletePairedStoreWithUUID:(id)a3
+- (id)deletePairedStoreWithUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = +[NSFileManager defaultManager];
-  v6 = [(NRLaunchDaemon *)self getLocalPairingStorePairingID:v4];
+  v6 = [(NRLaunchDaemon *)self getLocalPairingStorePairingID:dCopy];
 
   v10 = 0;
   [v5 removeItemAtPath:v6 error:&v10];
@@ -643,11 +643,11 @@ LABEL_85:
   return v7;
 }
 
-- (void)chownWhine:(id)a3
+- (void)chownWhine:(id)whine
 {
-  v3 = a3;
+  whineCopy = whine;
   memset(&v7, 0, sizeof(v7));
-  stat([v3 UTF8String], &v7);
+  stat([whineCopy UTF8String], &v7);
   if (!v7.st_uid || !v7.st_gid)
   {
     v4 = nr_root_daemon_log();
@@ -658,18 +658,18 @@ LABEL_85:
       v6 = nr_root_daemon_log();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
       {
-        sub_100004514(v3, v6);
+        sub_100004514(whineCopy, v6);
       }
     }
 
-    chown([v3 UTF8String], 0x1F5u, 0x1F5u);
+    chown([whineCopy UTF8String], 0x1F5u, 0x1F5u);
   }
 }
 
-- (void)xpcCleanupPairingStoreWithUUIDs:(id)a3 withCompletion:(id)a4
+- (void)xpcCleanupPairingStoreWithUUIDs:(id)ds withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  completionCopy = completion;
   v8 = nr_root_daemon_log();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
 
@@ -689,18 +689,18 @@ LABEL_85:
   block[2] = sub_10000242C;
   block[3] = &unk_100008318;
   block[4] = self;
-  v15 = v6;
-  v16 = v7;
-  v12 = v7;
-  v13 = v6;
+  v15 = dsCopy;
+  v16 = completionCopy;
+  v12 = completionCopy;
+  v13 = dsCopy;
   dispatch_sync(v11, block);
 }
 
-- (void)xpcQuarantineDataWithStoreUUID:(id)a3 services:(id)a4 completion:(id)a5
+- (void)xpcQuarantineDataWithStoreUUID:(id)d services:(id)services completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  dCopy = d;
+  servicesCopy = services;
+  completionCopy = completion;
   v10 = nr_root_daemon_log();
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
 
@@ -710,7 +710,7 @@ LABEL_85:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v7;
+      *(&buf + 4) = dCopy;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Began quarantine %@", &buf, 0xCu);
     }
   }
@@ -720,13 +720,13 @@ LABEL_85:
   v19 = 0x3032000000;
   v20 = sub_1000029FC;
   v21 = sub_100002A0C;
-  v22 = [[NRSyncDataDeleter alloc] initWithStoreUUID:v7 services:v8];
+  v22 = [[NRSyncDataDeleter alloc] initWithStoreUUID:dCopy services:servicesCopy];
   v13 = *(*(&buf + 1) + 40);
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100002A14;
   v15[3] = &unk_100008340;
-  v14 = v9;
+  v14 = completionCopy;
   v16 = v14;
   p_buf = &buf;
   [v13 quarantineDataWithCompletion:v15];
@@ -734,11 +734,11 @@ LABEL_85:
   _Block_object_dispose(&buf, 8);
 }
 
-- (void)xpcUnquarantineDataWithStoreUUID:(id)a3 services:(id)a4 completion:(id)a5
+- (void)xpcUnquarantineDataWithStoreUUID:(id)d services:(id)services completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  dCopy = d;
+  servicesCopy = services;
+  completionCopy = completion;
   v10 = nr_root_daemon_log();
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
 
@@ -748,7 +748,7 @@ LABEL_85:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v7;
+      *(&buf + 4) = dCopy;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Began unquarantine %@", &buf, 0xCu);
     }
   }
@@ -758,13 +758,13 @@ LABEL_85:
   v19 = 0x3032000000;
   v20 = sub_1000029FC;
   v21 = sub_100002A0C;
-  v22 = [[NRSyncDataDeleter alloc] initWithStoreUUID:v7 services:v8];
+  v22 = [[NRSyncDataDeleter alloc] initWithStoreUUID:dCopy services:servicesCopy];
   v13 = *(*(&buf + 1) + 40);
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100002C5C;
   v15[3] = &unk_100008340;
-  v14 = v9;
+  v14 = completionCopy;
   v16 = v14;
   p_buf = &buf;
   [v13 unquarantineDataWithCompletion:v15];
@@ -772,10 +772,10 @@ LABEL_85:
   _Block_object_dispose(&buf, 8);
 }
 
-- (void)xpcDeleteQuarantinedDataWithStoreUUID:(id)a3 completion:(id)a4
+- (void)xpcDeleteQuarantinedDataWithStoreUUID:(id)d completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  dCopy = d;
+  completionCopy = completion;
   v7 = nr_root_daemon_log();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
 
@@ -785,7 +785,7 @@ LABEL_85:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v5;
+      *(&buf + 4) = dCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Began delete %@", &buf, 0xCu);
     }
   }
@@ -795,13 +795,13 @@ LABEL_85:
   v16 = 0x3032000000;
   v17 = sub_1000029FC;
   v18 = sub_100002A0C;
-  v19 = [[NRSyncDataDeleter alloc] initWithStoreUUID:v5 services:0];
+  v19 = [[NRSyncDataDeleter alloc] initWithStoreUUID:dCopy services:0];
   v10 = *(*(&buf + 1) + 40);
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_100002E8C;
   v12[3] = &unk_100008368;
-  v11 = v6;
+  v11 = completionCopy;
   v13 = v11;
   p_buf = &buf;
   [v10 deleteQuarantinedDataWithCompletion:v12];
@@ -809,9 +809,9 @@ LABEL_85:
   _Block_object_dispose(&buf, 8);
 }
 
-- (void)xpcGetBackupHashWithCompletion:(id)a3
+- (void)xpcGetBackupHashWithCompletion:(id)completion
 {
-  v9 = a3;
+  completionCopy = completion;
   v3 = objc_opt_new();
   CFPreferencesSynchronize(@"com.apple.MobileBackup", kCFPreferencesCurrentUser, kCFPreferencesCurrentHost);
   v4 = CFPreferencesCopyAppValue(@"RestoreInfo", @"com.apple.MobileBackup");
@@ -825,14 +825,14 @@ LABEL_85:
       {
         v6 = [v5 description];
         v7 = [v6 dataUsingEncoding:4];
-        v8 = [v7 NRSHA256];
+        nRSHA256 = [v7 NRSHA256];
 
-        v3 = v8;
+        v3 = nRSHA256;
       }
     }
   }
 
-  v9[2](v9, v3, 0);
+  completionCopy[2](completionCopy, v3, 0);
 }
 
 @end

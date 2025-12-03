@@ -1,32 +1,32 @@
 @interface RibbonBarItemCollectionViewCell
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4;
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in;
 - (void)handleTap;
 - (void)layoutSubviews;
-- (void)setAccessibilityTraits:(unint64_t)a3;
-- (void)setIsAccessibilityElement:(BOOL)a3;
+- (void)setAccessibilityTraits:(unint64_t)traits;
+- (void)setIsAccessibilityElement:(BOOL)element;
 @end
 
 @implementation RibbonBarItemCollectionViewCell
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1006E9E20();
 }
 
-- (void)setIsAccessibilityElement:(BOOL)a3
+- (void)setIsAccessibilityElement:(BOOL)element
 {
-  v3 = a3;
+  elementCopy = element;
   v4.receiver = self;
   v4.super_class = swift_getObjectType();
-  [(RibbonBarItemCollectionViewCell *)&v4 setIsAccessibilityElement:v3];
+  [(RibbonBarItemCollectionViewCell *)&v4 setIsAccessibilityElement:elementCopy];
 }
 
-- (void)setAccessibilityTraits:(unint64_t)a3
+- (void)setAccessibilityTraits:(unint64_t)traits
 {
   v4.receiver = self;
   v4.super_class = swift_getObjectType();
-  [(RibbonBarItemCollectionViewCell *)&v4 setAccessibilityTraits:a3];
+  [(RibbonBarItemCollectionViewCell *)&v4 setAccessibilityTraits:traits];
 }
 
 - (void)handleTap
@@ -34,7 +34,7 @@
   v2 = *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC8AppStore31RibbonBarItemCollectionViewCell_tapAction);
   if (v2)
   {
-    v3 = self;
+    selfCopy = self;
     v4 = sub_10000827C(v2);
     v2(v4);
 
@@ -42,13 +42,13 @@
   }
 }
 
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in
 {
   swift_unknownObjectRetain();
-  v6 = self;
+  selfCopy = self;
   sub_1006EA084(v20);
   sub_10002A400(v20, v20[3]);
-  v7 = [a4 traitCollection];
+  traitCollection = [in traitCollection];
   dispatch thunk of Placeable.measure(toFit:with:)();
   v9 = v8;
   v11 = v10;

@@ -1,28 +1,28 @@
 @interface WFGetFocusAction
-- (void)runAsynchronouslyWithInput:(id)a3;
+- (void)runAsynchronouslyWithInput:(id)input;
 @end
 
 @implementation WFGetFocusAction
 
-- (void)runAsynchronouslyWithInput:(id)a3
+- (void)runAsynchronouslyWithInput:(id)input
 {
-  v8 = [MEMORY[0x277D7C438] activeMode];
-  if ([v8 isPlaceholder])
+  activeMode = [MEMORY[0x277D7C438] activeMode];
+  if ([activeMode isPlaceholder])
   {
     [(WFGetFocusAction *)self finishRunningWithError:0];
   }
 
   else
   {
-    v4 = [v8 activityIdentifier];
-    if ([v4 length])
+    activityIdentifier = [activeMode activityIdentifier];
+    if ([activityIdentifier length])
     {
-      v5 = [[WFFocusMode alloc] initWithFCActivityDescribing:v8];
+      v5 = [[WFFocusMode alloc] initWithFCActivityDescribing:activeMode];
       v6 = [(WFContentItem *)WFFocusModeContentItem itemWithObject:v5];
       if (v6)
       {
-        v7 = [(WFGetFocusAction *)self output];
-        [v7 addItem:v6];
+        output = [(WFGetFocusAction *)self output];
+        [output addItem:v6];
       }
 
       [(WFGetFocusAction *)self finishRunningWithError:0];

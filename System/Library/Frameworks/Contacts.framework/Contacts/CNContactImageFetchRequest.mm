@@ -1,16 +1,16 @@
 @interface CNContactImageFetchRequest
 + (id)allCurrentImagesRequest;
-+ (id)allImagesRequestForContactIdentifiers:(id)a3;
++ (id)allImagesRequestForContactIdentifiers:(id)identifiers;
 + (id)allRecentImagesRequest;
-+ (id)currentImagesRequestForContactIdentifiers:(id)a3;
-+ (id)recentImagesRequestForContactIdentifiers:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (CNContactImageFetchRequest)initWithCoder:(id)a3;
-- (CNContactImageFetchRequest)initWithContactIdentifiers:(id)a3 recencyType:(int64_t)a4;
++ (id)currentImagesRequestForContactIdentifiers:(id)identifiers;
++ (id)recentImagesRequestForContactIdentifiers:(id)identifiers;
+- (BOOL)isEqual:(id)equal;
+- (CNContactImageFetchRequest)initWithCoder:(id)coder;
+- (CNContactImageFetchRequest)initWithContactIdentifiers:(id)identifiers recencyType:(int64_t)type;
 - (id)persistentStoreRequest;
 - (id)predicate;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CNContactImageFetchRequest
@@ -25,8 +25,8 @@
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:1];
   [v3 setSortDescriptors:v5];
 
-  v6 = [(CNContactImageFetchRequest *)self predicate];
-  [v3 setPredicate:v6];
+  predicate = [(CNContactImageFetchRequest *)self predicate];
+  [v3 setPredicate:predicate];
 
   return v3;
 }
@@ -37,15 +37,15 @@
   [v3 setContactIdentifiers:self->_contactIdentifiers];
   [v3 setRecencyType:self->_recencyType];
   [v3 setDeletedItemPolicy:0];
-  v4 = [v3 build];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-+ (id)recentImagesRequestForContactIdentifiers:(id)a3
++ (id)recentImagesRequestForContactIdentifiers:(id)identifiers
 {
-  v3 = a3;
-  if (!v3)
+  identifiersCopy = identifiers;
+  if (!identifiersCopy)
   {
     if (CNGuardOSLog_cn_once_token_0_8 != -1)
     {
@@ -59,7 +59,7 @@
     }
   }
 
-  v12 = [[CNContactImageFetchRequest alloc] initWithContactIdentifiers:v3 recencyType:0];
+  v12 = [[CNContactImageFetchRequest alloc] initWithContactIdentifiers:identifiersCopy recencyType:0];
 
   return v12;
 }
@@ -71,10 +71,10 @@
   return v2;
 }
 
-+ (id)currentImagesRequestForContactIdentifiers:(id)a3
++ (id)currentImagesRequestForContactIdentifiers:(id)identifiers
 {
-  v3 = a3;
-  if (!v3)
+  identifiersCopy = identifiers;
+  if (!identifiersCopy)
   {
     if (CNGuardOSLog_cn_once_token_0_8 != -1)
     {
@@ -88,7 +88,7 @@
     }
   }
 
-  v12 = [[CNContactImageFetchRequest alloc] initWithContactIdentifiers:v3 recencyType:1];
+  v12 = [[CNContactImageFetchRequest alloc] initWithContactIdentifiers:identifiersCopy recencyType:1];
 
   return v12;
 }
@@ -100,10 +100,10 @@
   return v2;
 }
 
-+ (id)allImagesRequestForContactIdentifiers:(id)a3
++ (id)allImagesRequestForContactIdentifiers:(id)identifiers
 {
-  v3 = a3;
-  if (!v3)
+  identifiersCopy = identifiers;
+  if (!identifiersCopy)
   {
     if (CNGuardOSLog_cn_once_token_0_8 != -1)
     {
@@ -117,36 +117,36 @@
     }
   }
 
-  v12 = [[CNContactImageFetchRequest alloc] initWithContactIdentifiers:v3 recencyType:2];
+  v12 = [[CNContactImageFetchRequest alloc] initWithContactIdentifiers:identifiersCopy recencyType:2];
 
   return v12;
 }
 
-- (CNContactImageFetchRequest)initWithContactIdentifiers:(id)a3 recencyType:(int64_t)a4
+- (CNContactImageFetchRequest)initWithContactIdentifiers:(id)identifiers recencyType:(int64_t)type
 {
-  v7 = a3;
+  identifiersCopy = identifiers;
   v12.receiver = self;
   v12.super_class = CNContactImageFetchRequest;
   v8 = [(CNContactImageFetchRequest *)&v12 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_contactIdentifiers, a3);
-    v9->_recencyType = a4;
+    objc_storeStrong(&v8->_contactIdentifiers, identifiers);
+    v9->_recencyType = type;
     v10 = v9;
   }
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v6 = 1;
-  if (self != v4)
+  if (self != equalCopy)
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) == 0 || self->_recencyType != v4->_recencyType || (contactIdentifiers = self->_contactIdentifiers, contactIdentifiers | v4->_contactIdentifiers) && ![(NSArray *)contactIdentifiers isEqual:?])
+    if ((objc_opt_isKindOfClass() & 1) == 0 || self->_recencyType != equalCopy->_recencyType || (contactIdentifiers = self->_contactIdentifiers, contactIdentifiers | equalCopy->_contactIdentifiers) && ![(NSArray *)contactIdentifiers isEqual:?])
     {
       v6 = 0;
     }
@@ -171,19 +171,19 @@
   return [MEMORY[0x1E6996730] arrayHash:self->_contactIdentifiers] - v3 + 32 * v3 + 16337;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   contactIdentifiers = self->_contactIdentifiers;
-  v5 = a3;
-  [v5 encodeObject:contactIdentifiers forKey:@"contactIdentifiers"];
-  [v5 encodeInteger:self->_recencyType forKey:@"recencyType"];
+  coderCopy = coder;
+  [coderCopy encodeObject:contactIdentifiers forKey:@"contactIdentifiers"];
+  [coderCopy encodeInteger:self->_recencyType forKey:@"recencyType"];
 }
 
-- (CNContactImageFetchRequest)initWithCoder:(id)a3
+- (CNContactImageFetchRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"contactIdentifiers"];
-  v6 = [v4 decodeIntegerForKey:@"recencyType"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"contactIdentifiers"];
+  v6 = [coderCopy decodeIntegerForKey:@"recencyType"];
 
   v7 = [(CNContactImageFetchRequest *)self initWithContactIdentifiers:v5 recencyType:v6];
   return v7;

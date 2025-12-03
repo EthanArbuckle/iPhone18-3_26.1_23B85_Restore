@@ -30,7 +30,7 @@
   if (!*a2)
   {
     type metadata accessor for (offset: Int, element: PointMark)(255, a3, a4);
-    v9 = a5(a1, v8);
+    v9 = a5(self, v8);
     if (!v10)
     {
       atomic_store(v9, a2);
@@ -57,7 +57,7 @@
   if (!*a2)
   {
     v7 = a3(255);
-    v8 = a4(a1, v7);
+    v8 = a4(self, v7);
     if (!v9)
     {
       atomic_store(v8, a2);
@@ -99,7 +99,7 @@
   if (!*a2)
   {
     v7 = a3(255);
-    v8 = a4(a1, v7);
+    v8 = a4(self, v7);
     if (!v9)
     {
       atomic_store(v8, a2);

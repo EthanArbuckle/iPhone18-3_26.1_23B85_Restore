@@ -1,54 +1,54 @@
 @interface MFMessageResultsGenerator
-- (MFMessageResultsGenerator)initWithKeys:(id)a3 downloadIfNecessary:(BOOL)a4;
-- (id)_accountReference:(id)a3;
-- (id)_attachmentValueForKey:(id)a3;
-- (id)_bestAlternativePart:(id)a3;
-- (id)_bodySummary:(id)a3;
-- (id)_conversationReference:(id)a3;
-- (id)_convertEmailAddress:(id)a3;
-- (id)_convertEmailAddresses:(id)a3;
-- (id)_dateReceived:(id)a3;
-- (id)_dateSent:(id)a3;
+- (MFMessageResultsGenerator)initWithKeys:(id)keys downloadIfNecessary:(BOOL)necessary;
+- (id)_accountReference:(id)reference;
+- (id)_attachmentValueForKey:(id)key;
+- (id)_bestAlternativePart:(id)part;
+- (id)_bodySummary:(id)summary;
+- (id)_conversationReference:(id)reference;
+- (id)_convertEmailAddress:(id)address;
+- (id)_convertEmailAddresses:(id)addresses;
+- (id)_dateReceived:(id)received;
+- (id)_dateSent:(id)sent;
 - (id)_defaultAttachmentManager;
-- (id)_headerData:(id)a3;
-- (id)_headerValueForKey:(id)a3;
-- (id)_isLocalDraft:(id)a3;
+- (id)_headerData:(id)data;
+- (id)_headerValueForKey:(id)key;
+- (id)_isLocalDraft:(id)draft;
 - (id)_knownAttachmentLimiterTests;
-- (id)_localMessageReference:(id)a3;
-- (id)_mailboxType:(id)a3;
-- (id)_mailboxURL:(id)a3;
-- (id)_messageIDHash:(id)a3;
-- (id)_messageLibraryID:(id)a3;
-- (id)_messageReference:(id)a3;
-- (id)_outgoing:(id)a3;
-- (id)_predictiveModelSummary:(id)a3;
-- (id)_publisherBulletinID:(id)a3;
-- (id)_receivingAddresses:(id)a3;
-- (id)_recipientBcc:(id)a3;
-- (id)_recipientCc:(id)a3;
-- (id)_recipientTo:(id)a3;
-- (id)_rfc822Data:(id)a3;
-- (id)_sender:(id)a3;
-- (id)_status:(id)a3;
-- (id)_subject:(id)a3;
-- (id)_suppressionContexts:(id)a3;
-- (id)_testForAttachmentLimiterType:(id)a3;
-- (id)blockForKey:(id)a3;
+- (id)_localMessageReference:(id)reference;
+- (id)_mailboxType:(id)type;
+- (id)_mailboxURL:(id)l;
+- (id)_messageIDHash:(id)hash;
+- (id)_messageLibraryID:(id)d;
+- (id)_messageReference:(id)reference;
+- (id)_outgoing:(id)_outgoing;
+- (id)_predictiveModelSummary:(id)summary;
+- (id)_publisherBulletinID:(id)d;
+- (id)_receivingAddresses:(id)addresses;
+- (id)_recipientBcc:(id)bcc;
+- (id)_recipientCc:(id)cc;
+- (id)_recipientTo:(id)to;
+- (id)_rfc822Data:(id)data;
+- (id)_sender:(id)_sender;
+- (id)_status:(id)_status;
+- (id)_subject:(id)_subject;
+- (id)_suppressionContexts:(id)contexts;
+- (id)_testForAttachmentLimiterType:(id)type;
+- (id)blockForKey:(id)key;
 - (void)_addressBook;
 - (void)dealloc;
 @end
 
 @implementation MFMessageResultsGenerator
 
-- (MFMessageResultsGenerator)initWithKeys:(id)a3 downloadIfNecessary:(BOOL)a4
+- (MFMessageResultsGenerator)initWithKeys:(id)keys downloadIfNecessary:(BOOL)necessary
 {
   v9.receiver = self;
   v9.super_class = MFMessageResultsGenerator;
-  v5 = [(_MFResultsGenerator *)&v9 initWithKeys:a3];
+  v5 = [(_MFResultsGenerator *)&v9 initWithKeys:keys];
   v6 = v5;
   if (v5)
   {
-    v5->_shouldDownload = a4;
+    v5->_shouldDownload = necessary;
     v7 = v5;
   }
 
@@ -68,18 +68,18 @@
   [(MFMessageResultsGenerator *)&v4 dealloc];
 }
 
-- (id)blockForKey:(id)a3
+- (id)blockForKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   if (qword_100185958 != -1)
   {
     sub_1000D4A44();
   }
 
-  v4 = [qword_100185950 objectForKeyedSubscript:v3];
+  v4 = [qword_100185950 objectForKeyedSubscript:keyCopy];
   if (!v4)
   {
-    if ([v3 hasPrefix:@"MSResultsKeyAttachments"])
+    if ([keyCopy hasPrefix:@"MSResultsKeyAttachments"])
     {
       v4 = &stru_1001593F0;
     }
@@ -95,100 +95,100 @@
   return v5;
 }
 
-- (id)_messageLibraryID:(id)a3
+- (id)_messageLibraryID:(id)d
 {
   v3 = [NSNumber numberWithLongLong:[(MFLibraryMessage *)self->_message libraryID]];
 
   return v3;
 }
 
-- (id)_messageReference:(id)a3
+- (id)_messageReference:(id)reference
 {
-  v4 = [(MFLibraryMessage *)self->_message globalMessageURL];
-  if (!v4)
+  globalMessageURL = [(MFLibraryMessage *)self->_message globalMessageURL];
+  if (!globalMessageURL)
   {
-    v4 = [(MFLibraryMessage *)self->_message mf_externalReference];
+    globalMessageURL = [(MFLibraryMessage *)self->_message mf_externalReference];
   }
 
-  v5 = [v4 absoluteString];
+  absoluteString = [globalMessageURL absoluteString];
 
-  return v5;
+  return absoluteString;
 }
 
-- (id)_localMessageReference:(id)a3
+- (id)_localMessageReference:(id)reference
 {
-  v3 = [(MFLibraryMessage *)self->_message mf_externalReference];
-  v4 = [v3 absoluteString];
+  mf_externalReference = [(MFLibraryMessage *)self->_message mf_externalReference];
+  absoluteString = [mf_externalReference absoluteString];
 
-  return v4;
+  return absoluteString;
 }
 
-- (id)_publisherBulletinID:(id)a3
+- (id)_publisherBulletinID:(id)d
 {
-  v4 = [(MFLibraryMessage *)self->_message account];
-  v5 = [v4 uniqueServerIdForMessage:self->_message];
+  account = [(MFLibraryMessage *)self->_message account];
+  absoluteString = [account uniqueServerIdForMessage:self->_message];
 
-  if (!v5)
+  if (!absoluteString)
   {
-    v6 = [(MFLibraryMessage *)self->_message mf_externalReference];
-    v5 = [v6 absoluteString];
+    mf_externalReference = [(MFLibraryMessage *)self->_message mf_externalReference];
+    absoluteString = [mf_externalReference absoluteString];
   }
 
-  return v5;
+  return absoluteString;
 }
 
-- (id)_conversationReference:(id)a3
+- (id)_conversationReference:(id)reference
 {
-  v3 = [(MFLibraryMessage *)self->_message mf_conversationReference];
-  v4 = [v3 absoluteString];
+  mf_conversationReference = [(MFLibraryMessage *)self->_message mf_conversationReference];
+  absoluteString = [mf_conversationReference absoluteString];
 
-  return v4;
+  return absoluteString;
 }
 
-- (id)_accountReference:(id)a3
+- (id)_accountReference:(id)reference
 {
-  v3 = [(MFLibraryMessage *)self->_message account];
-  v4 = [v3 uniqueID];
+  account = [(MFLibraryMessage *)self->_message account];
+  uniqueID = [account uniqueID];
 
-  return v4;
+  return uniqueID;
 }
 
-- (id)_mailboxURL:(id)a3
+- (id)_mailboxURL:(id)l
 {
-  v3 = [(MFLibraryMessage *)self->_message mailbox];
-  v4 = [v3 URLString];
+  mailbox = [(MFLibraryMessage *)self->_message mailbox];
+  uRLString = [mailbox URLString];
 
-  return v4;
+  return uRLString;
 }
 
-- (id)_messageIDHash:(id)a3
+- (id)_messageIDHash:(id)hash
 {
   v3 = [NSNumber numberWithLongLong:[(MFLibraryMessage *)self->_message messageIDHash]];
-  v4 = [v3 stringValue];
+  stringValue = [v3 stringValue];
 
-  return v4;
+  return stringValue;
 }
 
-- (id)_subject:(id)a3
+- (id)_subject:(id)_subject
 {
-  v3 = [(MFLibraryMessage *)self->_message subject];
-  v4 = [v3 subjectString];
+  subject = [(MFLibraryMessage *)self->_message subject];
+  subjectString = [subject subjectString];
 
-  return v4;
+  return subjectString;
 }
 
-- (id)_bodySummary:(id)a3
+- (id)_bodySummary:(id)summary
 {
-  v4 = [(MFLibraryMessage *)self->_message summary];
-  if (!v4)
+  summary = [(MFLibraryMessage *)self->_message summary];
+  if (!summary)
   {
-    v4 = [MessageBodyLoader copySummaryForMessage:self->_message downloadIfNecessary:self->_shouldDownload];
+    summary = [MessageBodyLoader copySummaryForMessage:self->_message downloadIfNecessary:self->_shouldDownload];
   }
 
-  return v4;
+  return summary;
 }
 
-- (id)_predictiveModelSummary:(id)a3
+- (id)_predictiveModelSummary:(id)summary
 {
   v3 = [(MFMessageResultsGenerator *)self _copyPredictiveModelSummaryForMessage:self->_message downloadIfNecessary:self->_shouldDownload];
 
@@ -198,9 +198,9 @@
 - (id)_defaultAttachmentManager
 {
   v2 = sub_100027C70();
-  v3 = [v2 defaultAttachmentManager];
+  defaultAttachmentManager = [v2 defaultAttachmentManager];
 
-  return v3;
+  return defaultAttachmentManager;
 }
 
 - (void)_addressBook
@@ -215,42 +215,42 @@
   return result;
 }
 
-- (id)_convertEmailAddress:(id)a3
+- (id)_convertEmailAddress:(id)address
 {
-  v4 = a3;
+  addressCopy = address;
   if ([(MFMessageResultsGenerator *)self _addressBook])
   {
-    v5 = v4;
-    v6 = [v5 emailAddressValue];
-    v7 = [v6 displayName];
-    v8 = v7;
-    if (v7)
+    v5 = addressCopy;
+    emailAddressValue = [v5 emailAddressValue];
+    displayName = [emailAddressValue displayName];
+    v8 = displayName;
+    if (displayName)
     {
-      v9 = v7;
+      stringValue = displayName;
     }
 
     else
     {
-      v9 = [v5 stringValue];
+      stringValue = [v5 stringValue];
     }
 
-    v11 = v9;
+    v11 = stringValue;
 
     v12 = v5;
-    v13 = [v12 emailAddressValue];
-    v14 = [v13 simpleAddress];
-    v15 = v14;
-    if (v14)
+    emailAddressValue2 = [v12 emailAddressValue];
+    simpleAddress = [emailAddressValue2 simpleAddress];
+    v15 = simpleAddress;
+    if (simpleAddress)
     {
-      v16 = v14;
+      stringValue2 = simpleAddress;
     }
 
     else
     {
-      v16 = [v12 stringValue];
+      stringValue2 = [v12 stringValue];
     }
 
-    v17 = v16;
+    v17 = stringValue2;
 
     v18 = MFPreferredCompositeNameForAddressAndDisplayName();
     v19 = v18;
@@ -260,11 +260,11 @@
       [v20 setShouldIncludeDisplayName:1];
       v21 = [ECEmailAddressComponents componentsWithString:v17];
       [v21 setDisplayName:v19];
-      v22 = [v21 emailAddressValue];
-      v23 = v22;
-      if (v22)
+      emailAddressValue3 = [v21 emailAddressValue];
+      v23 = emailAddressValue3;
+      if (emailAddressValue3)
       {
-        v24 = v22;
+        v24 = emailAddressValue3;
       }
 
       else
@@ -293,7 +293,7 @@
 
   else
   {
-    v25 = v4;
+    v25 = addressCopy;
   }
 
   v26 = v25;
@@ -301,17 +301,17 @@
   return v25;
 }
 
-- (id)_convertEmailAddresses:(id)a3
+- (id)_convertEmailAddresses:(id)addresses
 {
-  v4 = a3;
+  addressesCopy = addresses;
   if ([(MFMessageResultsGenerator *)self _addressBook])
   {
-    v5 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v4 count]);
+    v5 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [addressesCopy count]);
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v6 = v4;
+    v6 = addressesCopy;
     v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v7)
     {
@@ -341,21 +341,21 @@
 
   else
   {
-    v5 = v4;
+    v5 = addressesCopy;
   }
 
   return v5;
 }
 
-- (id)_sender:(id)a3
+- (id)_sender:(id)_sender
 {
-  v4 = [(MFLibraryMessage *)self->_message firstSender];
-  v5 = [(MFMessageResultsGenerator *)self _convertEmailAddress:v4];
+  firstSender = [(MFLibraryMessage *)self->_message firstSender];
+  v5 = [(MFMessageResultsGenerator *)self _convertEmailAddress:firstSender];
 
   return v5;
 }
 
-- (id)_recipientBcc:(id)a3
+- (id)_recipientBcc:(id)bcc
 {
   v4 = [(MFLibraryMessage *)self->_message bcc];
   v5 = [(MFMessageResultsGenerator *)self _convertEmailAddresses:v4];
@@ -363,7 +363,7 @@
   return v5;
 }
 
-- (id)_recipientCc:(id)a3
+- (id)_recipientCc:(id)cc
 {
   v4 = [(MFLibraryMessage *)self->_message cc];
   v5 = [(MFMessageResultsGenerator *)self _convertEmailAddresses:v4];
@@ -371,7 +371,7 @@
   return v5;
 }
 
-- (id)_recipientTo:(id)a3
+- (id)_recipientTo:(id)to
 {
   v4 = [(MFLibraryMessage *)self->_message to];
   v5 = [(MFMessageResultsGenerator *)self _convertEmailAddresses:v4];
@@ -379,36 +379,36 @@
   return v5;
 }
 
-- (id)_receivingAddresses:(id)a3
+- (id)_receivingAddresses:(id)addresses
 {
-  v3 = [(MFLibraryMessage *)self->_message account];
-  v4 = [v3 emailAddressesAndAliasesList];
+  account = [(MFLibraryMessage *)self->_message account];
+  emailAddressesAndAliasesList = [account emailAddressesAndAliasesList];
 
-  return v4;
+  return emailAddressesAndAliasesList;
 }
 
-- (id)_dateSent:(id)a3
+- (id)_dateSent:(id)sent
 {
-  v3 = [(MFLibraryMessage *)self->_message dateSent];
+  dateSent = [(MFLibraryMessage *)self->_message dateSent];
 
-  return v3;
+  return dateSent;
 }
 
-- (id)_dateReceived:(id)a3
+- (id)_dateReceived:(id)received
 {
-  v3 = [(MFLibraryMessage *)self->_message dateReceived];
+  dateReceived = [(MFLibraryMessage *)self->_message dateReceived];
 
-  return v3;
+  return dateReceived;
 }
 
-- (id)_status:(id)a3
+- (id)_status:(id)_status
 {
-  v4 = [(MFLibraryMessage *)self->_message messageFlags];
-  v5 = [(MFLibraryMessage *)self->_message conversationFlags];
-  v6 = [(MFLibraryMessage *)self->_message conversationFlags];
-  if (v4 >> 10)
+  messageFlags = [(MFLibraryMessage *)self->_message messageFlags];
+  conversationFlags = [(MFLibraryMessage *)self->_message conversationFlags];
+  conversationFlags2 = [(MFLibraryMessage *)self->_message conversationFlags];
+  if (messageFlags >> 10)
   {
-    v7 = v4 >> 10 == 63;
+    v7 = messageFlags >> 10 == 63;
   }
 
   else
@@ -416,14 +416,14 @@
     v7 = 1;
   }
 
-  v8 = ((v4 >> 1) & 8 | v4 & 1 | (v4 >> 6) & 4 | (v4 >> 1) & 2) ^ 1;
+  v8 = ((messageFlags >> 1) & 8 | messageFlags & 1 | (messageFlags >> 6) & 4 | (messageFlags >> 1) & 2) ^ 1;
   if (!v7)
   {
     v8 |= 0x10uLL;
   }
 
-  v9 = (v4 >> 15) & 0x40 | (v4 >> 19) & 0x20 | ((v5 & 1) << 7) | (v6 << 6) & 0x100 | v8;
-  if ((v4 & 0x18000000000) != 0)
+  v9 = (messageFlags >> 15) & 0x40 | (messageFlags >> 19) & 0x20 | ((conversationFlags & 1) << 7) | (conversationFlags2 << 6) & 0x100 | v8;
+  if ((messageFlags & 0x18000000000) != 0)
   {
     v10 = v9 | 0x200;
   }
@@ -438,12 +438,12 @@
   return v11;
 }
 
-- (id)_isLocalDraft:(id)a3
+- (id)_isLocalDraft:(id)draft
 {
-  v3 = [(MFLibraryMessage *)self->_message mailbox];
+  mailbox = [(MFLibraryMessage *)self->_message mailbox];
   v4 = +[LocalAccount localAccount];
-  v5 = [v4 transientDraftsFolder];
-  v6 = [v3 isEqual:v5];
+  transientDraftsFolder = [v4 transientDraftsFolder];
+  v6 = [mailbox isEqual:transientDraftsFolder];
 
   if (v6)
   {
@@ -458,70 +458,70 @@
   return v7;
 }
 
-- (id)_outgoing:(id)a3
+- (id)_outgoing:(id)_outgoing
 {
-  v3 = [(MFLibraryMessage *)self->_message mailbox];
-  v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 isOutgoingMailboxUid]);
+  mailbox = [(MFLibraryMessage *)self->_message mailbox];
+  v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [mailbox isOutgoingMailboxUid]);
 
   return v4;
 }
 
-- (id)_mailboxType:(id)a3
+- (id)_mailboxType:(id)type
 {
-  v3 = [(MFLibraryMessage *)self->_message mailbox];
-  v4 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v3 mailboxType]);
+  mailbox = [(MFLibraryMessage *)self->_message mailbox];
+  v4 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [mailbox mailboxType]);
 
   return v4;
 }
 
-- (id)_suppressionContexts:(id)a3
+- (id)_suppressionContexts:(id)contexts
 {
   v4 = objc_alloc_init(NSMutableSet);
-  v5 = [(MFLibraryMessage *)self->_message mf_externalReference];
-  v6 = [v5 absoluteString];
+  mf_externalReference = [(MFLibraryMessage *)self->_message mf_externalReference];
+  absoluteString = [mf_externalReference absoluteString];
 
-  if (v6)
+  if (absoluteString)
   {
-    [v4 addObject:v6];
+    [v4 addObject:absoluteString];
   }
 
-  v7 = [(MFLibraryMessage *)self->_message mf_conversationReference];
-  v8 = [v7 absoluteString];
+  mf_conversationReference = [(MFLibraryMessage *)self->_message mf_conversationReference];
+  absoluteString2 = [mf_conversationReference absoluteString];
 
-  if (v8)
+  if (absoluteString2)
   {
-    [v4 addObject:v8];
+    [v4 addObject:absoluteString2];
   }
 
-  v9 = [(MFLibraryMessage *)self->_message mailbox];
-  v10 = [v9 URLString];
-  if (v10)
+  mailbox = [(MFLibraryMessage *)self->_message mailbox];
+  uRLString = [mailbox URLString];
+  if (uRLString)
   {
-    [v4 addObject:v10];
+    [v4 addObject:uRLString];
   }
 
-  if ([v9 mailboxType] == 7)
+  if ([mailbox mailboxType] == 7)
   {
     [v4 addObject:@"com.apple.mobilemail.context.AllInbox"];
   }
 
-  v11 = [(MFLibraryMessage *)self->_message messageFlags];
-  if ((v11 & 0x1000000) != 0)
+  messageFlags = [(MFLibraryMessage *)self->_message messageFlags];
+  if ((messageFlags & 0x1000000) != 0)
   {
     [v4 addObject:MSUserNotificationCenterTopicVIP];
   }
 
-  if ((v11 & 0x10) != 0)
+  if ((messageFlags & 0x10) != 0)
   {
     [v4 addObject:@"com.apple.mobilemail.context.flagged"];
   }
 
-  if ((v11 & 0x18000000000) != 0)
+  if ((messageFlags & 0x18000000000) != 0)
   {
     [v4 addObject:@"com.apple.mobilemail.context.toMe"];
   }
 
-  if (v11 >> 10 && v11 >> 10 != 63)
+  if (messageFlags >> 10 && messageFlags >> 10 != 63)
   {
     [v4 addObject:@"com.apple.mobilemail.context.hasAttachments"];
   }
@@ -531,15 +531,15 @@
     [v4 addObject:MSUserNotificationCenterTopicNotifiedThreads];
   }
 
-  v12 = [(MFLibraryMessage *)self->_message readLater];
+  readLater = [(MFLibraryMessage *)self->_message readLater];
 
-  if (v12)
+  if (readLater)
   {
     [v4 addObject:MSUserNotificationCenterTopicRemindMe];
   }
 
-  v13 = [(MFLibraryMessage *)self->_message category];
-  if ([v13 state] && objc_msgSend(v13, "isPrimary"))
+  category = [(MFLibraryMessage *)self->_message category];
+  if ([category state] && objc_msgSend(category, "isPrimary"))
   {
     [v4 addObject:MSUserNotificationCenterTopicPrimary];
   }
@@ -559,24 +559,24 @@
   return v3;
 }
 
-- (id)_testForAttachmentLimiterType:(id)a3
+- (id)_testForAttachmentLimiterType:(id)type
 {
-  v4 = a3;
-  v5 = [(MFMessageResultsGenerator *)self _knownAttachmentLimiterTests];
-  v6 = [v5 objectForKey:v4];
+  typeCopy = type;
+  _knownAttachmentLimiterTests = [(MFMessageResultsGenerator *)self _knownAttachmentLimiterTests];
+  v6 = [_knownAttachmentLimiterTests objectForKey:typeCopy];
 
   return v6;
 }
 
-- (id)_attachmentValueForKey:(id)a3
+- (id)_attachmentValueForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(MFLibraryMessage *)self->_message messageBodyIfAvailable];
-  v6 = [v5 topLevelPart];
-  v7 = [v6 attachmentURLs];
+  keyCopy = key;
+  messageBodyIfAvailable = [(MFLibraryMessage *)self->_message messageBodyIfAvailable];
+  topLevelPart = [messageBodyIfAvailable topLevelPart];
+  attachmentURLs = [topLevelPart attachmentURLs];
   attachmentManager = self->_attachmentManager;
   v22 = 0;
-  v9 = [(MFAttachmentManager *)attachmentManager attachmentsForURLs:v7 error:&v22];
+  v9 = [(MFAttachmentManager *)attachmentManager attachmentsForURLs:attachmentURLs error:&v22];
   v10 = v22;
   if (!v9)
   {
@@ -614,14 +614,14 @@ LABEL_9:
   v25 = sub_100077AD4;
   v26 = sub_100077AE4;
   v27 = 0;
-  v11 = [v4 length];
+  v11 = [keyCopy length];
   v12 = qword_100185970;
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_100078F34;
   v16[3] = &unk_1001594E0;
-  v17 = v4;
-  v18 = self;
+  v17 = keyCopy;
+  selfCopy = self;
   v19 = v9;
   p_buf = &buf;
   [v12 enumerateMatchesInString:v17 options:4 range:0 usingBlock:{v11, v16}];
@@ -633,19 +633,19 @@ LABEL_10:
   return v13;
 }
 
-- (id)_rfc822Data:(id)a3
+- (id)_rfc822Data:(id)data
 {
-  v4 = [(MFLibraryMessage *)self->_message mailbox];
-  v5 = [v4 store];
+  mailbox = [(MFLibraryMessage *)self->_message mailbox];
+  store = [mailbox store];
 
   v6 = objc_alloc_init(MFMutableData);
-  v7 = [v5 headerDataForMessage:self->_message downloadIfNecessary:0];
+  v7 = [store headerDataForMessage:self->_message downloadIfNecessary:0];
   if (v7)
   {
     [v6 appendData:v7];
   }
 
-  v8 = [v5 fullBodyDataForMessage:self->_message andHeaderDataIfReadilyAvailable:0 isComplete:0 downloadIfNecessary:0 didDownload:0];
+  v8 = [store fullBodyDataForMessage:self->_message andHeaderDataIfReadilyAvailable:0 isComplete:0 downloadIfNecessary:0 didDownload:0];
 
   if (v8)
   {
@@ -655,31 +655,31 @@ LABEL_10:
   return v6;
 }
 
-- (id)_bestAlternativePart:(id)a3
+- (id)_bestAlternativePart:(id)part
 {
-  v3 = [(MFLibraryMessage *)self->_message bestAlternativePart];
+  bestAlternativePart = [(MFLibraryMessage *)self->_message bestAlternativePart];
 
-  return v3;
+  return bestAlternativePart;
 }
 
-- (id)_headerData:(id)a3
+- (id)_headerData:(id)data
 {
-  v4 = [(MFLibraryMessage *)self->_message mailbox];
-  v5 = [v4 store];
+  mailbox = [(MFLibraryMessage *)self->_message mailbox];
+  store = [mailbox store];
 
-  v6 = [v5 headerDataForMessage:self->_message downloadIfNecessary:0];
+  v6 = [store headerDataForMessage:self->_message downloadIfNecessary:0];
 
   return v6;
 }
 
-- (id)_headerValueForKey:(id)a3
+- (id)_headerValueForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(MFLibraryMessage *)self->_message messageBodyIfAvailable];
-  v6 = [v5 topLevelPart];
+  keyCopy = key;
+  messageBodyIfAvailable = [(MFLibraryMessage *)self->_message messageBodyIfAvailable];
+  topLevelPart = [messageBodyIfAvailable topLevelPart];
 
-  v7 = [(MFLibraryMessage *)self->_message bestAlternativeInPart:v6];
-  v8 = [(MFLibraryMessage *)self->_message defaultAlternativeInPart:v6];
+  v7 = [(MFLibraryMessage *)self->_message bestAlternativeInPart:topLevelPart];
+  v8 = [(MFLibraryMessage *)self->_message defaultAlternativeInPart:topLevelPart];
   if (v7 != v8)
   {
     v9 = MFLogGeneral();
@@ -690,8 +690,8 @@ LABEL_10:
     }
   }
 
-  v10 = [(MFLibraryMessage *)self->_message headers];
-  v11 = [v10 headersForKey:v4];
+  headers = [(MFLibraryMessage *)self->_message headers];
+  v11 = [headers headersForKey:keyCopy];
 
   return v11;
 }

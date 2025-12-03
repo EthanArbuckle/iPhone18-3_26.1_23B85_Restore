@@ -13,7 +13,7 @@
   v5 = a3;
   v6 = [[v4 alloc] initWithTitle:v5 style:0 target:0 action:0];
 
-  [a1 setBackBarButtonItem:v6];
+  [self setBackBarButtonItem:v6];
 }
 
 - (uint64_t)_pu_shouldUpdateBarButtonItems:()PhotosUI withNewBarButtonItems:
@@ -62,8 +62,8 @@ LABEL_13:
 - (uint64_t)pu_shouldUpdateRightBarButtonItems:()PhotosUI
 {
   v4 = a3;
-  v5 = [a1 rightBarButtonItems];
-  v6 = [a1 _pu_shouldUpdateBarButtonItems:v5 withNewBarButtonItems:v4];
+  rightBarButtonItems = [self rightBarButtonItems];
+  v6 = [self _pu_shouldUpdateBarButtonItems:rightBarButtonItems withNewBarButtonItems:v4];
 
   return v6;
 }
@@ -71,8 +71,8 @@ LABEL_13:
 - (uint64_t)pu_shouldUpdateLeftBarButtonItems:()PhotosUI
 {
   v4 = a3;
-  v5 = [a1 leftBarButtonItems];
-  v6 = [a1 _pu_shouldUpdateBarButtonItems:v5 withNewBarButtonItems:v4];
+  leftBarButtonItems = [self leftBarButtonItems];
+  v6 = [self _pu_shouldUpdateBarButtonItems:leftBarButtonItems withNewBarButtonItems:v4];
 
   return v6;
 }

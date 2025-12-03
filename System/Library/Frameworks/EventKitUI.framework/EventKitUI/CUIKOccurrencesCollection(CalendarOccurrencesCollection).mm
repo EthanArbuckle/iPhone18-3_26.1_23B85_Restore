@@ -7,10 +7,10 @@
 - (CalendarOccurrencesCollection)asCalendarOccurrencesCollection
 {
   v2 = [CalendarOccurrencesCollection alloc];
-  v3 = [a1 occurrences];
-  v4 = [a1 timedOccurrences];
-  v5 = [a1 allDayOccurrences];
-  v6 = -[CalendarOccurrencesCollection initWithOccurrences:timedOccurrences:allDayOccurrences:generation:](v2, "initWithOccurrences:timedOccurrences:allDayOccurrences:generation:", v3, v4, v5, [a1 generation]);
+  occurrences = [self occurrences];
+  timedOccurrences = [self timedOccurrences];
+  allDayOccurrences = [self allDayOccurrences];
+  v6 = -[CalendarOccurrencesCollection initWithOccurrences:timedOccurrences:allDayOccurrences:generation:](v2, "initWithOccurrences:timedOccurrences:allDayOccurrences:generation:", occurrences, timedOccurrences, allDayOccurrences, [self generation]);
 
   return v6;
 }

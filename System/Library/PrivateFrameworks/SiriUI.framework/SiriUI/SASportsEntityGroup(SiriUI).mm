@@ -14,15 +14,15 @@
   v10 = a5;
   if (v8)
   {
-    v8[2](v8, a1);
+    v8[2](v8, self);
   }
 
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v11 = [a1 entities];
-  v12 = [v11 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  entities = [self entities];
+  v12 = [entities countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v12)
   {
     v13 = v12;
@@ -34,14 +34,14 @@
       {
         if (*v17 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(entities);
         }
 
         [*(*(&v16 + 1) + 8 * v15++) siriui_enumerateEntitiesWithGroupHandler:v8 teamHandler:v9 athleteHandler:v10];
       }
 
       while (v13 != v15);
-      v13 = [v11 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v13 = [entities countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v13);
@@ -50,8 +50,8 @@
 
 - (uint64_t)siriui_containsTeams
 {
-  v1 = [a1 entities];
-  v2 = [v1 lastObject];
+  entities = [self entities];
+  lastObject = [entities lastObject];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -60,8 +60,8 @@
 
 - (uint64_t)siriui_containsAthletes
 {
-  v1 = [a1 entities];
-  v2 = [v1 lastObject];
+  entities = [self entities];
+  lastObject = [entities lastObject];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 

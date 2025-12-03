@@ -1,8 +1,8 @@
 @interface ASDSkannerService
 + (ASDSkannerService)defaultService;
 - (ASDSkannerService)init;
-- (id)_initWithServiceBroker:(id *)a1;
-- (void)fetchStoriesWithCompletionHandler:(id)a3;
+- (id)_initWithServiceBroker:(id *)broker;
+- (void)fetchStoriesWithCompletionHandler:(id)handler;
 @end
 
 @implementation ASDSkannerService
@@ -15,22 +15,22 @@
   return v4;
 }
 
-- (id)_initWithServiceBroker:(id *)a1
+- (id)_initWithServiceBroker:(id *)broker
 {
   v4 = a2;
-  if (a1)
+  if (broker)
   {
-    v7.receiver = a1;
+    v7.receiver = broker;
     v7.super_class = ASDSkannerService;
     v5 = objc_msgSendSuper2(&v7, sel_init);
-    a1 = v5;
+    broker = v5;
     if (v5)
     {
       objc_storeStrong(v5 + 1, a2);
     }
   }
 
-  return a1;
+  return broker;
 }
 
 + (ASDSkannerService)defaultService
@@ -54,16 +54,16 @@ void __35__ASDSkannerService_defaultService__block_invoke()
   _MergedGlobals_38 = v1;
 }
 
-- (void)fetchStoriesWithCompletionHandler:(id)a3
+- (void)fetchStoriesWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   serviceBroker = self->_serviceBroker;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __55__ASDSkannerService_fetchStoriesWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7CDCBD0;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   [(ASDServiceBroker *)serviceBroker getSkannerServiceWithCompletionHandler:v7];
 }
 

@@ -1,129 +1,129 @@
 @interface MSASStateMachine
 - (BOOL)hasEnqueuedActivities;
 - (BOOL)isInRetryState;
-- (BOOL)workQueueEndCommandWithError:(id)a3 command:(id)a4 params:(id)a5 albumGUID:(id)a6 assetCollectionGUID:(id)a7;
+- (BOOL)workQueueEndCommandWithError:(id)error command:(id)command params:(id)params albumGUID:(id)d assetCollectionGUID:(id)iD;
 - (MSASPhoneInvitations)phoneInvitations;
 - (MSASProtocol)protocol;
 - (MSASStateMachine)init;
-- (MSASStateMachine)initWithPersonID:(id)a3 eventQueue:(id)a4;
+- (MSASStateMachine)initWithPersonID:(id)d eventQueue:(id)queue;
 - (MSAlbumSharingDaemon)daemon;
 - (NSDictionary)serverSideConfiguration;
 - (NSString)serverSideConfigurationVersion;
-- (id)_URLReauthFailureWithUnderlyingError:(id)a3;
-- (id)_albumForRequestFromParams:(id)a3;
+- (id)_URLReauthFailureWithUnderlyingError:(id)error;
+- (id)_albumForRequestFromParams:(id)params;
 - (id)_assetCollectionFailedError;
 - (id)_assetCollectionRejectedError;
 - (id)_canceledError;
-- (id)_createCopiedAssetsInAssetCollections:(id)a3;
+- (id)_createCopiedAssetsInAssetCollections:(id)collections;
 - (id)_metadataBackoffManager;
-- (id)_serverSideConfigDictionaryByApplyingDefaultsToDictionary:(id)a3;
+- (id)_serverSideConfigDictionaryByApplyingDefaultsToDictionary:(id)dictionary;
 - (id)_stoppedError;
 - (id)delegate;
 - (id)latestNextActivityDate;
 - (id)migrationCtagToCheckForChanges;
-- (id)persistentObjectForKey:(id)a3;
+- (id)persistentObjectForKey:(id)key;
 - (id)rootCtagToCheckForChanges;
 - (id)serverCommunicationBackoffDate;
 - (id)serverSideQueueServerSideConfiguration;
-- (void)MSASAssetDownloader:(id)a3 didFinishDownloadingAsset:(id)a4 inAlbumGUID:(id)a5 error:(id)a6;
-- (void)MSASAssetDownloader:(id)a3 willBeginBatchCount:(unint64_t)a4;
-- (void)MSASAssetDownloaderDidFinishBatch:(id)a3;
-- (void)MSASAssetUploader:(id)a3 didFinishUploadingAssetCollection:(id)a4 intoAlbum:(id)a5 error:(id)a6;
-- (void)MSBackoffManagerDidUpdateNextExpiryDate:(id)a3;
-- (void)_actionDidFinishWithError:(id)a3 album:(id)a4;
-- (void)_addAssetCollectionsDisposition:(int)a3 params:(id)a4;
-- (void)_addCommentDisposition:(int)a3 params:(id)a4;
-- (void)_cancelOutstandingCommandsDisposition:(int)a3 params:(id)a4;
-- (void)_checkForAlbumSyncedStateDisposition:(int)a3 params:(id)a4;
-- (void)_checkForAssetCollectionUpdatesDisposition:(int)a3 params:(id)a4;
-- (void)_checkForChangesDisposition:(int)a3 params:(id)a4;
-- (void)_checkForCommentChangesDisposition:(int)a3 params:(id)a4;
-- (void)_checkForUpdatesInAlbumDisposition:(int)a3 params:(id)a4;
-- (void)_continueAddingAssetCollectionsDisposition:(int)a3 params:(id)a4;
-- (void)_createAlbumDisposition:(int)a3 params:(id)a4;
-- (void)_deleteAlbumDisposition:(int)a3 params:(id)a4;
-- (void)_deleteAssetCollectionsDisposition:(int)a3 params:(id)a4;
-- (void)_deleteAssetFilesInAssetCollection:(id)a3;
-- (void)_deleteAssetFilesInAssetCollections:(id)a3;
-- (void)_deleteCommentDisposition:(int)a3 params:(id)a4;
-- (void)_didFinishCheckingUpdatesInAlbumsDisposition:(int)a3 params:(id)a4;
-- (void)_getAccessControlsDisposition:(int)a3 params:(id)a4;
-- (void)_getAlbumURLDisposition:(int)a3 params:(id)a4;
-- (void)_markAsSpamInvitationForAlbumDisposition:(int)a3 params:(id)a4;
-- (void)_markAsSpamInvitationForTokenDisposition:(int)a3 params:(id)a4;
-- (void)_removeSharingRelationshipsDisposition:(int)a3 params:(id)a4;
-- (void)_scheduleEventDisposition:(int)a3 params:(id)a4;
-- (void)_sendGetUploadTokensDisposition:(int)a3 params:(id)a4;
-- (void)_sendPutAssetCollectionsDisposition:(int)a3 params:(id)a4;
-- (void)_sendReauthorizeAssetsForDownloadDisposition:(int)a3 params:(id)a4;
-- (void)_sendUploadCompleteDisposition:(int)a3 params:(id)a4;
-- (void)_setAlbumSyncedStateDisposition:(int)a3 params:(id)a4;
-- (void)_setAssetCollectionSyncedStateDisposition:(int)a3 params:(id)a4;
-- (void)_subscribeToAlbumDisposition:(int)a3 params:(id)a4;
-- (void)_unsubscribeFromAlbumDisposition:(int)a3 params:(id)a4;
-- (void)_updateAlbumDisposition:(int)a3 params:(id)a4;
-- (void)_workQueueEmptyFileTransferQueuesCompletionBlock:(id)a3;
-- (void)acceptInvitationWithToken:(id)a3 info:(id)a4 completionBlock:(id)a5;
-- (void)addAssetCollections:(id)a3 toAlbum:(id)a4 info:(id)a5;
-- (void)addComments:(id)a3 toAssetCollection:(id)a4 inAlbum:(id)a5 info:(id)a6;
-- (void)addSharingRelationships:(id)a3 toOwnedAlbum:(id)a4 info:(id)a5 completionBlock:(id)a6;
-- (void)cancelCompletionBlock:(id)a3;
-- (void)cancelOutstandingCommandsForAlbumWithGUID:(id)a3;
-- (void)cancelOutstandingCommandsForAssetCollectionWithGUID:(id)a3;
-- (void)checkForAlbumSyncedStateChangesInAlbums:(id)a3 info:(id)a4;
-- (void)checkForAssetCollectionUpdates:(id)a3 inAlbum:(id)a4 info:(id)a5;
+- (void)MSASAssetDownloader:(id)downloader didFinishDownloadingAsset:(id)asset inAlbumGUID:(id)d error:(id)error;
+- (void)MSASAssetDownloader:(id)downloader willBeginBatchCount:(unint64_t)count;
+- (void)MSASAssetDownloaderDidFinishBatch:(id)batch;
+- (void)MSASAssetUploader:(id)uploader didFinishUploadingAssetCollection:(id)collection intoAlbum:(id)album error:(id)error;
+- (void)MSBackoffManagerDidUpdateNextExpiryDate:(id)date;
+- (void)_actionDidFinishWithError:(id)error album:(id)album;
+- (void)_addAssetCollectionsDisposition:(int)disposition params:(id)params;
+- (void)_addCommentDisposition:(int)disposition params:(id)params;
+- (void)_cancelOutstandingCommandsDisposition:(int)disposition params:(id)params;
+- (void)_checkForAlbumSyncedStateDisposition:(int)disposition params:(id)params;
+- (void)_checkForAssetCollectionUpdatesDisposition:(int)disposition params:(id)params;
+- (void)_checkForChangesDisposition:(int)disposition params:(id)params;
+- (void)_checkForCommentChangesDisposition:(int)disposition params:(id)params;
+- (void)_checkForUpdatesInAlbumDisposition:(int)disposition params:(id)params;
+- (void)_continueAddingAssetCollectionsDisposition:(int)disposition params:(id)params;
+- (void)_createAlbumDisposition:(int)disposition params:(id)params;
+- (void)_deleteAlbumDisposition:(int)disposition params:(id)params;
+- (void)_deleteAssetCollectionsDisposition:(int)disposition params:(id)params;
+- (void)_deleteAssetFilesInAssetCollection:(id)collection;
+- (void)_deleteAssetFilesInAssetCollections:(id)collections;
+- (void)_deleteCommentDisposition:(int)disposition params:(id)params;
+- (void)_didFinishCheckingUpdatesInAlbumsDisposition:(int)disposition params:(id)params;
+- (void)_getAccessControlsDisposition:(int)disposition params:(id)params;
+- (void)_getAlbumURLDisposition:(int)disposition params:(id)params;
+- (void)_markAsSpamInvitationForAlbumDisposition:(int)disposition params:(id)params;
+- (void)_markAsSpamInvitationForTokenDisposition:(int)disposition params:(id)params;
+- (void)_removeSharingRelationshipsDisposition:(int)disposition params:(id)params;
+- (void)_scheduleEventDisposition:(int)disposition params:(id)params;
+- (void)_sendGetUploadTokensDisposition:(int)disposition params:(id)params;
+- (void)_sendPutAssetCollectionsDisposition:(int)disposition params:(id)params;
+- (void)_sendReauthorizeAssetsForDownloadDisposition:(int)disposition params:(id)params;
+- (void)_sendUploadCompleteDisposition:(int)disposition params:(id)params;
+- (void)_setAlbumSyncedStateDisposition:(int)disposition params:(id)params;
+- (void)_setAssetCollectionSyncedStateDisposition:(int)disposition params:(id)params;
+- (void)_subscribeToAlbumDisposition:(int)disposition params:(id)params;
+- (void)_unsubscribeFromAlbumDisposition:(int)disposition params:(id)params;
+- (void)_updateAlbumDisposition:(int)disposition params:(id)params;
+- (void)_workQueueEmptyFileTransferQueuesCompletionBlock:(id)block;
+- (void)acceptInvitationWithToken:(id)token info:(id)info completionBlock:(id)block;
+- (void)addAssetCollections:(id)collections toAlbum:(id)album info:(id)info;
+- (void)addComments:(id)comments toAssetCollection:(id)collection inAlbum:(id)album info:(id)info;
+- (void)addSharingRelationships:(id)relationships toOwnedAlbum:(id)album info:(id)info completionBlock:(id)block;
+- (void)cancelCompletionBlock:(id)block;
+- (void)cancelOutstandingCommandsForAlbumWithGUID:(id)d;
+- (void)cancelOutstandingCommandsForAssetCollectionWithGUID:(id)d;
+- (void)checkForAlbumSyncedStateChangesInAlbums:(id)albums info:(id)info;
+- (void)checkForAssetCollectionUpdates:(id)updates inAlbum:(id)album info:(id)info;
 - (void)checkForChangesIfMissingRootCtag;
-- (void)checkForChangesResetSync:(BOOL)a3 info:(id)a4;
-- (void)checkForCommentChanges:(id)a3 inAlbumWithGUID:(id)a4 withClientOrgKey:(id)a5;
-- (void)checkForUpdatesInAlbums:(id)a3 resetSync:(BOOL)a4 info:(id)a5;
-- (void)continueAddingAssetCollections:(id)a3 skipAssetCollections:(id)a4 toAlbum:(id)a5 info:(id)a6;
-- (void)createAlbum:(id)a3 info:(id)a4;
-- (void)deleteAlbum:(id)a3 info:(id)a4;
-- (void)deleteAssetCollections:(id)a3 inAlbum:(id)a4 info:(id)a5;
-- (void)deleteComments:(id)a3 inAssetCollection:(id)a4 inAlbum:(id)a5 info:(id)a6;
-- (void)getAccessControlsForAlbums:(id)a3 info:(id)a4;
-- (void)markAsSpamInvitationForAlbum:(id)a3 invitationGUID:(id)a4 info:(id)a5;
-- (void)markAsSpamInvitationForToken:(id)a3 info:(id)a4;
-- (void)purgeEverythingCompletionBlock:(id)a3;
+- (void)checkForChangesResetSync:(BOOL)sync info:(id)info;
+- (void)checkForCommentChanges:(id)changes inAlbumWithGUID:(id)d withClientOrgKey:(id)key;
+- (void)checkForUpdatesInAlbums:(id)albums resetSync:(BOOL)sync info:(id)info;
+- (void)continueAddingAssetCollections:(id)collections skipAssetCollections:(id)assetCollections toAlbum:(id)album info:(id)info;
+- (void)createAlbum:(id)album info:(id)info;
+- (void)deleteAlbum:(id)album info:(id)info;
+- (void)deleteAssetCollections:(id)collections inAlbum:(id)album info:(id)info;
+- (void)deleteComments:(id)comments inAssetCollection:(id)collection inAlbum:(id)album info:(id)info;
+- (void)getAccessControlsForAlbums:(id)albums info:(id)info;
+- (void)markAsSpamInvitationForAlbum:(id)album invitationGUID:(id)d info:(id)info;
+- (void)markAsSpamInvitationForToken:(id)token info:(id)info;
+- (void)purgeEverythingCompletionBlock:(id)block;
 - (void)refreshServerSideConfig;
-- (void)removeSharingRelationships:(id)a3 fromOwnedAlbum:(id)a4 info:(id)a5;
-- (void)retrieveAssets:(id)a3 inAlbumWithGUID:(id)a4;
+- (void)removeSharingRelationships:(id)relationships fromOwnedAlbum:(id)album info:(id)info;
+- (void)retrieveAssets:(id)assets inAlbumWithGUID:(id)d;
 - (void)retryOutstandingActivities;
-- (void)scheduleEvent:(id)a3 assetCollectionGUID:(id)a4 albumGUID:(id)a5 info:(id)a6;
-- (void)serverSideQueueSetServerSideConfiguration:(id)a3;
-- (void)setAlbumSyncedState:(id)a3 forAlbum:(id)a4 info:(id)a5;
-- (void)setAssetCollectionSyncedState:(id)a3 forAssetCollection:(id)a4 album:(id)a5 info:(id)a6;
-- (void)setDaemon:(id)a3;
-- (void)setFocusAlbumGUID:(id)a3;
-- (void)setFocusAssetCollectionGUID:(id)a3;
-- (void)setMultipleContributorsEnabled:(BOOL)a3 forAlbum:(id)a4 info:(id)a5 completionBlock:(id)a6;
-- (void)setPendingRootCtag:(id)a3;
-- (void)setPersistentObject:(id)a3 forKey:(id)a4;
-- (void)setPublicAccessEnabled:(BOOL)a3 forAlbum:(id)a4 info:(id)a5 completionBlock:(id)a6;
+- (void)scheduleEvent:(id)event assetCollectionGUID:(id)d albumGUID:(id)iD info:(id)info;
+- (void)serverSideQueueSetServerSideConfiguration:(id)configuration;
+- (void)setAlbumSyncedState:(id)state forAlbum:(id)album info:(id)info;
+- (void)setAssetCollectionSyncedState:(id)state forAssetCollection:(id)collection album:(id)album info:(id)info;
+- (void)setDaemon:(id)daemon;
+- (void)setFocusAlbumGUID:(id)d;
+- (void)setFocusAssetCollectionGUID:(id)d;
+- (void)setMultipleContributorsEnabled:(BOOL)enabled forAlbum:(id)album info:(id)info completionBlock:(id)block;
+- (void)setPendingRootCtag:(id)ctag;
+- (void)setPersistentObject:(id)object forKey:(id)key;
+- (void)setPublicAccessEnabled:(BOOL)enabled forAlbum:(id)album info:(id)info completionBlock:(id)block;
 - (void)setRootCtagFromPendingRootCtag;
-- (void)setServerSideConfiguration:(id)a3;
-- (void)shutDownCompletionBlock:(id)a3;
+- (void)setServerSideConfiguration:(id)configuration;
+- (void)shutDownCompletionBlock:(id)block;
 - (void)start;
-- (void)stopAssetDownloadsCompletionBlock:(id)a3;
-- (void)subscribeToAlbum:(id)a3 info:(id)a4;
-- (void)unsubscribeFromAlbum:(id)a3 info:(id)a4;
-- (void)updateAlbum:(id)a3 updateAlbumFlags:(int)a4 info:(id)a5;
-- (void)validateInvitationForAlbum:(id)a3 completionBlock:(id)a4;
-- (void)videoURLForAssetCollection:(id)a3 inAlbum:(id)a4 completionBlock:(id)a5;
-- (void)videoURLsForAssetCollection:(id)a3 forMediaAssetType:(unint64_t)a4 inAlbum:(id)a5 completionBlock:(id)a6;
+- (void)stopAssetDownloadsCompletionBlock:(id)block;
+- (void)subscribeToAlbum:(id)album info:(id)info;
+- (void)unsubscribeFromAlbum:(id)album info:(id)info;
+- (void)updateAlbum:(id)album updateAlbumFlags:(int)flags info:(id)info;
+- (void)validateInvitationForAlbum:(id)album completionBlock:(id)block;
+- (void)videoURLForAssetCollection:(id)collection inAlbum:(id)album completionBlock:(id)block;
+- (void)videoURLsForAssetCollection:(id)collection forMediaAssetType:(unint64_t)type inAlbum:(id)album completionBlock:(id)block;
 - (void)workQueueApplyServerSideConfiguration;
-- (void)workQueueCancelAllCommandsFilteredByAlbumGUID:(id)a3 assetCollectionGUID:(id)a4;
-- (void)workQueueCancelCompletionBlock:(id)a3;
+- (void)workQueueCancelAllCommandsFilteredByAlbumGUID:(id)d assetCollectionGUID:(id)iD;
+- (void)workQueueCancelCompletionBlock:(id)block;
 - (void)workQueueCheckForNextCommand;
-- (void)workQueueDidFailToFinishCommandDueToTemporaryError:(id)a3;
+- (void)workQueueDidFailToFinishCommandDueToTemporaryError:(id)error;
 - (void)workQueueDidFinishCommand;
 - (void)workQueueDidFinishCommandByLeavingCommandInQueue;
-- (void)workQueueDidFinishCommandByReplacingCurrentCommandWithCommand:(id)a3 params:(id)a4 personID:(id)a5 albumGUID:(id)a6 assetCollectionGUID:(id)a7;
+- (void)workQueueDidFinishCommandByReplacingCurrentCommandWithCommand:(id)command params:(id)params personID:(id)d albumGUID:(id)iD assetCollectionGUID:(id)uID;
 - (void)workQueueDidFinishCommandDueToCancellation;
 - (void)workQueuePerformNextCommand;
 - (void)workQueueRefreshServerSideConfig;
 - (void)workQueueRetryOutstandingActivities;
-- (void)workQueueScheduleReauthForAssets:(id)a3 inAlbum:(id)a4;
+- (void)workQueueScheduleReauthForAssets:(id)assets inAlbum:(id)album;
 - (void)workQueueUpdateNextActivityDate;
 @end
 
@@ -143,15 +143,15 @@
   return WeakRetained;
 }
 
-- (void)MSASAssetDownloaderDidFinishBatch:(id)a3
+- (void)MSASAssetDownloaderDidFinishBatch:(id)batch
 {
-  v4 = [(MSASStateMachine *)self workQueue];
+  workQueue = [(MSASStateMachine *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __54__MSASStateMachine_MSASAssetDownloaderDidFinishBatch___block_invoke;
   block[3] = &unk_278E926D8;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(workQueue, block);
 }
 
 uint64_t __54__MSASStateMachine_MSASAssetDownloaderDidFinishBatch___block_invoke(uint64_t a1)
@@ -247,12 +247,12 @@ LABEL_20:
   return result;
 }
 
-- (id)_albumForRequestFromParams:(id)a3
+- (id)_albumForRequestFromParams:(id)params
 {
-  v4 = [a3 objectForKey:@"album"];
-  v5 = [(MSASStateMachine *)self delegate];
-  v6 = [v4 GUID];
-  v7 = [v5 albumWithGUID:v6];
+  v4 = [params objectForKey:@"album"];
+  delegate = [(MSASStateMachine *)self delegate];
+  gUID = [v4 GUID];
+  v7 = [delegate albumWithGUID:gUID];
 
   if (v7)
   {
@@ -269,41 +269,41 @@ LABEL_20:
   return v9;
 }
 
-- (void)_sendReauthorizeAssetsForDownloadDisposition:(int)a3 params:(id)a4
+- (void)_sendReauthorizeAssetsForDownloadDisposition:(int)disposition params:(id)params
 {
   v40 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [v6 objectForKey:@"assets"];
-  v8 = [(MSASStateMachine *)self _albumForRequestFromParams:v6];
-  v9 = [v6 objectForKey:@"error"];
+  paramsCopy = params;
+  v7 = [paramsCopy objectForKey:@"assets"];
+  v8 = [(MSASStateMachine *)self _albumForRequestFromParams:paramsCopy];
+  v9 = [paramsCopy objectForKey:@"error"];
   v10 = v9;
-  if (a3 == 2)
+  if (disposition == 2)
   {
-    v12 = [(MSASStateMachine *)self eventQueue];
+    eventQueue = [(MSASStateMachine *)self eventQueue];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __72__MSASStateMachine__sendReauthorizeAssetsForDownloadDisposition_params___block_invoke_319;
     v20[3] = &unk_278E92638;
     v21 = v7;
-    v22 = self;
+    selfCopy = self;
     v23 = v8;
-    dispatch_async(v12, v20);
+    dispatch_async(eventQueue, v20);
   }
 
-  else if (!a3)
+  else if (!disposition)
   {
     if (v9)
     {
-      v11 = [(MSASStateMachine *)self eventQueue];
+      eventQueue2 = [(MSASStateMachine *)self eventQueue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __72__MSASStateMachine__sendReauthorizeAssetsForDownloadDisposition_params___block_invoke;
       block[3] = &unk_278E92660;
       v30 = v7;
-      v31 = self;
+      selfCopy2 = self;
       v32 = v8;
       v33 = v10;
-      dispatch_async(v11, block);
+      dispatch_async(eventQueue2, block);
 
       [(MSASStateMachine *)self workQueueDidFinishCommand];
     }
@@ -313,7 +313,7 @@ LABEL_20:
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543874;
-        v35 = self;
+        selfCopy3 = self;
         v36 = 2048;
         v37 = [v7 count];
         v38 = 2114;
@@ -321,26 +321,26 @@ LABEL_20:
         _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%{public}@: Reauthorizing %ld assets download from album %{public}@", buf, 0x20u);
       }
 
-      v13 = [(MSASStateMachine *)self protocol];
-      v14 = [v13 stopHandlerBlock];
-      [(MSASStateMachine *)self _setStopHandlerBlock:v14];
+      protocol = [(MSASStateMachine *)self protocol];
+      stopHandlerBlock = [protocol stopHandlerBlock];
+      [(MSASStateMachine *)self _setStopHandlerBlock:stopHandlerBlock];
 
       objc_initWeak(buf, self);
-      v15 = [(MSASStateMachine *)self delegate];
-      v16 = [v8 GUID];
-      v17 = [v15 MSASStateMachineDidRequestAlbumURLStringForAlbumWithGUID:v16 info:0];
+      delegate = [(MSASStateMachine *)self delegate];
+      gUID = [v8 GUID];
+      v17 = [delegate MSASStateMachineDidRequestAlbumURLStringForAlbumWithGUID:gUID info:0];
 
-      v18 = [(MSASStateMachine *)self protocol];
+      protocol2 = [(MSASStateMachine *)self protocol];
       v24[0] = MEMORY[0x277D85DD0];
       v24[1] = 3221225472;
       v24[2] = __72__MSASStateMachine__sendReauthorizeAssetsForDownloadDisposition_params___block_invoke_315;
       v24[3] = &unk_278E917E8;
       v24[4] = self;
       objc_copyWeak(&v28, buf);
-      v25 = v6;
+      v25 = paramsCopy;
       v26 = v8;
       v27 = v7;
-      [v18 getTokensForAssets:v27 inAlbum:v26 albumURLString:v17 completionBlock:v24];
+      [protocol2 getTokensForAssets:v27 inAlbum:v26 albumURLString:v17 completionBlock:v24];
 
       objc_destroyWeak(&v28);
       objc_destroyWeak(buf);
@@ -838,62 +838,62 @@ void __72__MSASStateMachine__sendReauthorizeAssetsForDownloadDisposition_params_
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)workQueueScheduleReauthForAssets:(id)a3 inAlbum:(id)a4
+- (void)workQueueScheduleReauthForAssets:(id)assets inAlbum:(id)album
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  assetsCopy = assets;
+  albumCopy = album;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v15 = 138543874;
-    v16 = self;
+    selfCopy = self;
     v17 = 2048;
-    v18 = [v6 count];
+    v18 = [assetsCopy count];
     v19 = 2114;
-    v20 = v7;
+    v20 = albumCopy;
     _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%{public}@: Scheduling reauthorization for %ld items in album %{public}@", &v15, 0x20u);
   }
 
-  v8 = [MEMORY[0x277CBEB38] dictionary];
-  v9 = v8;
-  if (v7)
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v9 = dictionary;
+  if (albumCopy)
   {
-    [v8 setObject:v7 forKey:@"album"];
+    [dictionary setObject:albumCopy forKey:@"album"];
   }
 
-  if (v6)
+  if (assetsCopy)
   {
-    [v9 setObject:v6 forKey:@"assets"];
+    [v9 setObject:assetsCopy forKey:@"assets"];
   }
 
-  v10 = [(MSASStateMachine *)self _model];
+  _model = [(MSASStateMachine *)self _model];
   v11 = NSStringFromSelector(sel__sendReauthorizeAssetsForDownloadDisposition_params_);
-  v12 = [(MSASStateMachine *)self personID];
-  v13 = [v7 GUID];
-  [v10 enqueueCommandAtHeadOfQueue:v11 params:v9 personID:v12 albumGUID:v13 assetCollectionGUID:0];
+  personID = [(MSASStateMachine *)self personID];
+  gUID = [albumCopy GUID];
+  [_model enqueueCommandAtHeadOfQueue:v11 params:v9 personID:personID albumGUID:gUID assetCollectionGUID:0];
 
   [(MSASStateMachine *)self workQueueRetryOutstandingActivities];
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)MSASAssetDownloader:(id)a3 didFinishDownloadingAsset:(id)a4 inAlbumGUID:(id)a5 error:(id)a6
+- (void)MSASAssetDownloader:(id)downloader didFinishDownloadingAsset:(id)asset inAlbumGUID:(id)d error:(id)error
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  v12 = [(MSASStateMachine *)self workQueue];
+  assetCopy = asset;
+  dCopy = d;
+  errorCopy = error;
+  workQueue = [(MSASStateMachine *)self workQueue];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __84__MSASStateMachine_MSASAssetDownloader_didFinishDownloadingAsset_inAlbumGUID_error___block_invoke;
   v16[3] = &unk_278E92660;
   v16[4] = self;
-  v17 = v10;
-  v18 = v11;
-  v19 = v9;
-  v13 = v9;
-  v14 = v11;
-  v15 = v10;
-  dispatch_async(v12, v16);
+  v17 = dCopy;
+  v18 = errorCopy;
+  v19 = assetCopy;
+  v13 = assetCopy;
+  v14 = errorCopy;
+  v15 = dCopy;
+  dispatch_async(workQueue, v16);
 }
 
 void __84__MSASStateMachine_MSASAssetDownloader_didFinishDownloadingAsset_inAlbumGUID_error___block_invoke(uint64_t a1)
@@ -935,9 +935,9 @@ void __84__MSASStateMachine_MSASAssetDownloader_didFinishDownloadingAsset_inAlbu
   [v2 MSASStateMachine:*(a1 + 32) didFinishRetrievingAsset:*(a1 + 40) inAlbum:*(a1 + 48) error:*(a1 + 56)];
 }
 
-- (void)MSASAssetDownloader:(id)a3 willBeginBatchCount:(unint64_t)a4
+- (void)MSASAssetDownloader:(id)downloader willBeginBatchCount:(unint64_t)count
 {
-  v5 = [(MSASStateMachine *)self workQueue:a3];
+  v5 = [(MSASStateMachine *)self workQueue:downloader];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __60__MSASStateMachine_MSASAssetDownloader_willBeginBatchCount___block_invoke;
@@ -953,33 +953,33 @@ void __60__MSASStateMachine_MSASAssetDownloader_willBeginBatchCount___block_invo
   [v1 _setAssetInfoToReauthForDownload:v2];
 }
 
-- (void)retrieveAssets:(id)a3 inAlbumWithGUID:(id)a4
+- (void)retrieveAssets:(id)assets inAlbumWithGUID:(id)d
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  assetsCopy = assets;
+  dCopy = d;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     *buf = 138543874;
-    v16 = self;
+    selfCopy = self;
     v17 = 2048;
-    v18 = [v6 count];
+    v18 = [assetsCopy count];
     v19 = 2114;
-    v20 = v7;
+    v20 = dCopy;
     _os_log_debug_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG, "%{public}@: Retrieving %ld assets in albumGUID %{public}@.", buf, 0x20u);
   }
 
-  v8 = [(MSASStateMachine *)self _assetDownloader];
+  _assetDownloader = [(MSASStateMachine *)self _assetDownloader];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __51__MSASStateMachine_retrieveAssets_inAlbumWithGUID___block_invoke;
   v12[3] = &unk_278E92638;
   v12[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
-  [v8 registerAssets:v10 completionBlock:v12];
+  v13 = assetsCopy;
+  v14 = dCopy;
+  v9 = dCopy;
+  v10 = assetsCopy;
+  [_assetDownloader registerAssets:v10 completionBlock:v12];
 
   v11 = *MEMORY[0x277D85DE8];
 }
@@ -1070,24 +1070,24 @@ void __51__MSASStateMachine_retrieveAssets_inAlbumWithGUID___block_invoke_3(uint
   [v2 MSASStateMachine:*(a1 + 32) didFinishEnqueueingAssetsForDownload:*(a1 + 40) inAlbumWithGUID:*(a1 + 48)];
 }
 
-- (void)MSASAssetUploader:(id)a3 didFinishUploadingAssetCollection:(id)a4 intoAlbum:(id)a5 error:(id)a6
+- (void)MSASAssetUploader:(id)uploader didFinishUploadingAssetCollection:(id)collection intoAlbum:(id)album error:(id)error
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  v12 = [(MSASStateMachine *)self workQueue];
+  collectionCopy = collection;
+  albumCopy = album;
+  errorCopy = error;
+  workQueue = [(MSASStateMachine *)self workQueue];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __88__MSASStateMachine_MSASAssetUploader_didFinishUploadingAssetCollection_intoAlbum_error___block_invoke;
   v16[3] = &unk_278E92660;
   v16[4] = self;
-  v17 = v9;
-  v18 = v10;
-  v19 = v11;
-  v13 = v11;
-  v14 = v10;
-  v15 = v9;
-  dispatch_async(v12, v16);
+  v17 = collectionCopy;
+  v18 = albumCopy;
+  v19 = errorCopy;
+  v13 = errorCopy;
+  v14 = albumCopy;
+  v15 = collectionCopy;
+  dispatch_async(workQueue, v16);
 }
 
 void __88__MSASStateMachine_MSASAssetUploader_didFinishUploadingAssetCollection_intoAlbum_error___block_invoke(id *a1)
@@ -1186,15 +1186,15 @@ LABEL_18:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_deleteAssetFilesInAssetCollections:(id)a3
+- (void)_deleteAssetFilesInAssetCollections:(id)collections
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  collectionsCopy = collections;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v5 = [collectionsCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1206,14 +1206,14 @@ LABEL_18:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(collectionsCopy);
         }
 
         [(MSASStateMachine *)self _deleteAssetFilesInAssetCollection:*(*(&v10 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [collectionsCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
@@ -1222,17 +1222,17 @@ LABEL_18:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_deleteAssetFilesInAssetCollection:(id)a3
+- (void)_deleteAssetFilesInAssetCollection:(id)collection
 {
   v35 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  collectionCopy = collection;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
-    v4 = [v3 GUID];
+    gUID = [collectionCopy GUID];
     *buf = 138543618;
-    v29 = self;
+    selfCopy3 = self;
     v30 = 2114;
-    v31 = v4;
+    v31 = gUID;
     _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%{public}@: Cleaning up files for asset collection %{public}@.", buf, 0x16u);
   }
 
@@ -1240,9 +1240,9 @@ LABEL_18:
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v21 = v3;
-  v5 = [v3 assets];
-  v6 = [v5 countByEnumeratingWithState:&v24 objects:v34 count:16];
+  v21 = collectionCopy;
+  assets = [collectionCopy assets];
+  v6 = [assets countByEnumeratingWithState:&v24 objects:v34 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1255,41 +1255,41 @@ LABEL_18:
       {
         if (*v25 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(assets);
         }
 
         v11 = *(*(&v24 + 1) + 8 * v10);
         v12 = objc_autoreleasePoolPush();
-        v13 = [v11 path];
+        path = [v11 path];
 
-        if (v13)
+        if (path)
         {
           if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
           {
-            v17 = [v11 path];
+            path2 = [v11 path];
             *buf = 138543618;
-            v29 = self;
+            selfCopy3 = self;
             v30 = 2112;
-            v31 = v17;
+            v31 = path2;
             _os_log_debug_impl(&dword_245B99000, v9, OS_LOG_TYPE_DEBUG, "%{public}@: Deleting asset file: %@", buf, 0x16u);
           }
 
-          v14 = [MEMORY[0x277CCAA00] defaultManager];
-          v15 = [v11 path];
+          defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+          path3 = [v11 path];
           v23 = 0;
-          [v14 removeItemAtPath:v15 error:&v23];
+          [defaultManager removeItemAtPath:path3 error:&v23];
           v16 = v23;
 
           if (v16 && os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
           {
-            v18 = [v11 path];
-            v19 = [v16 MSVerboseDescription];
+            path4 = [v11 path];
+            mSVerboseDescription = [v16 MSVerboseDescription];
             *buf = 138543874;
-            v29 = self;
+            selfCopy3 = self;
             v30 = 2112;
-            v31 = v18;
+            v31 = path4;
             v32 = 2114;
-            v33 = v19;
+            v33 = mSVerboseDescription;
             _os_log_debug_impl(&dword_245B99000, v9, OS_LOG_TYPE_DEBUG, "%{public}@: Failed to delete asset file at path %@. Error: %{public}@", buf, 0x20u);
           }
         }
@@ -1299,7 +1299,7 @@ LABEL_18:
       }
 
       while (v7 != v10);
-      v7 = [v5 countByEnumeratingWithState:&v24 objects:v34 count:16];
+      v7 = [assets countByEnumeratingWithState:&v24 objects:v34 count:16];
     }
 
     while (v7);
@@ -1308,25 +1308,25 @@ LABEL_18:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)videoURLsForAssetCollection:(id)a3 forMediaAssetType:(unint64_t)a4 inAlbum:(id)a5 completionBlock:(id)a6
+- (void)videoURLsForAssetCollection:(id)collection forMediaAssetType:(unint64_t)type inAlbum:(id)album completionBlock:(id)block
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(MSASStateMachine *)self workQueue];
+  collectionCopy = collection;
+  albumCopy = album;
+  blockCopy = block;
+  workQueue = [(MSASStateMachine *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __90__MSASStateMachine_videoURLsForAssetCollection_forMediaAssetType_inAlbum_completionBlock___block_invoke;
   block[3] = &unk_278E91A00;
   block[4] = self;
-  v18 = v10;
-  v20 = v12;
-  v21 = a4;
-  v19 = v11;
-  v14 = v12;
-  v15 = v11;
-  v16 = v10;
-  dispatch_async(v13, block);
+  v18 = collectionCopy;
+  v20 = blockCopy;
+  typeCopy = type;
+  v19 = albumCopy;
+  v14 = blockCopy;
+  v15 = albumCopy;
+  v16 = collectionCopy;
+  dispatch_async(workQueue, block);
 }
 
 void __90__MSASStateMachine_videoURLsForAssetCollection_forMediaAssetType_inAlbum_completionBlock___block_invoke(uint64_t a1)
@@ -1692,24 +1692,24 @@ uint64_t __90__MSASStateMachine_videoURLsForAssetCollection_forMediaAssetType_in
   return v6();
 }
 
-- (void)videoURLForAssetCollection:(id)a3 inAlbum:(id)a4 completionBlock:(id)a5
+- (void)videoURLForAssetCollection:(id)collection inAlbum:(id)album completionBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(MSASStateMachine *)self workQueue];
+  collectionCopy = collection;
+  albumCopy = album;
+  blockCopy = block;
+  workQueue = [(MSASStateMachine *)self workQueue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __71__MSASStateMachine_videoURLForAssetCollection_inAlbum_completionBlock___block_invoke;
   v15[3] = &unk_278E916F0;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_async(v11, v15);
+  v16 = collectionCopy;
+  v17 = albumCopy;
+  v18 = blockCopy;
+  v12 = blockCopy;
+  v13 = albumCopy;
+  v14 = collectionCopy;
+  dispatch_async(workQueue, v15);
 }
 
 void __71__MSASStateMachine_videoURLForAssetCollection_inAlbum_completionBlock___block_invoke(id *a1)
@@ -1903,25 +1903,25 @@ uint64_t __71__MSASStateMachine_videoURLForAssetCollection_inAlbum_completionBlo
   return v6();
 }
 
-- (void)setMultipleContributorsEnabled:(BOOL)a3 forAlbum:(id)a4 info:(id)a5 completionBlock:(id)a6
+- (void)setMultipleContributorsEnabled:(BOOL)enabled forAlbum:(id)album info:(id)info completionBlock:(id)block
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(MSASStateMachine *)self workQueue];
+  albumCopy = album;
+  infoCopy = info;
+  blockCopy = block;
+  workQueue = [(MSASStateMachine *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __81__MSASStateMachine_setMultipleContributorsEnabled_forAlbum_info_completionBlock___block_invoke;
   block[3] = &unk_278E91EB8;
-  v21 = a3;
+  enabledCopy = enabled;
   block[4] = self;
-  v18 = v10;
-  v19 = v11;
-  v20 = v12;
-  v14 = v11;
-  v15 = v12;
-  v16 = v10;
-  dispatch_async(v13, block);
+  v18 = albumCopy;
+  v19 = infoCopy;
+  v20 = blockCopy;
+  v14 = infoCopy;
+  v15 = blockCopy;
+  v16 = albumCopy;
+  dispatch_async(workQueue, block);
 }
 
 void __81__MSASStateMachine_setMultipleContributorsEnabled_forAlbum_info_completionBlock___block_invoke(uint64_t a1)
@@ -2001,25 +2001,25 @@ uint64_t __81__MSASStateMachine_setMultipleContributorsEnabled_forAlbum_info_com
   return v5();
 }
 
-- (void)setPublicAccessEnabled:(BOOL)a3 forAlbum:(id)a4 info:(id)a5 completionBlock:(id)a6
+- (void)setPublicAccessEnabled:(BOOL)enabled forAlbum:(id)album info:(id)info completionBlock:(id)block
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(MSASStateMachine *)self workQueue];
+  albumCopy = album;
+  infoCopy = info;
+  blockCopy = block;
+  workQueue = [(MSASStateMachine *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __73__MSASStateMachine_setPublicAccessEnabled_forAlbum_info_completionBlock___block_invoke;
   block[3] = &unk_278E91EB8;
-  v21 = a3;
+  enabledCopy = enabled;
   block[4] = self;
-  v18 = v10;
-  v19 = v11;
-  v20 = v12;
-  v14 = v11;
-  v15 = v12;
-  v16 = v10;
-  dispatch_async(v13, block);
+  v18 = albumCopy;
+  v19 = infoCopy;
+  v20 = blockCopy;
+  v14 = infoCopy;
+  v15 = blockCopy;
+  v16 = albumCopy;
+  dispatch_async(workQueue, block);
 }
 
 void __73__MSASStateMachine_setPublicAccessEnabled_forAlbum_info_completionBlock___block_invoke(uint64_t a1)
@@ -2099,21 +2099,21 @@ uint64_t __73__MSASStateMachine_setPublicAccessEnabled_forAlbum_info_completionB
   return v5();
 }
 
-- (void)_scheduleEventDisposition:(int)a3 params:(id)a4
+- (void)_scheduleEventDisposition:(int)disposition params:(id)params
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [v6 objectForKey:@"event"];
-  v8 = [v6 objectForKey:@"assetCollectionGUID"];
-  v9 = [v6 objectForKey:@"albumGUID"];
-  v10 = [v6 objectForKey:@"info"];
+  paramsCopy = params;
+  v7 = [paramsCopy objectForKey:@"event"];
+  v8 = [paramsCopy objectForKey:@"assetCollectionGUID"];
+  v9 = [paramsCopy objectForKey:@"albumGUID"];
+  v10 = [paramsCopy objectForKey:@"info"];
 
-  if (!a3)
+  if (!disposition)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138544130;
-      v19 = self;
+      selfCopy = self;
       v20 = 2114;
       v21 = v7;
       v22 = 2114;
@@ -2123,7 +2123,7 @@ uint64_t __73__MSASStateMachine_setPublicAccessEnabled_forAlbum_info_completionB
       _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%{public}@: Event fired: %{public}@ for assetCollectionGUID: %{public}@, albumGUID: %{public}@", buf, 0x2Au);
     }
 
-    v11 = [(MSASStateMachine *)self eventQueue];
+    eventQueue = [(MSASStateMachine *)self eventQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __53__MSASStateMachine__scheduleEventDisposition_params___block_invoke;
@@ -2133,7 +2133,7 @@ uint64_t __73__MSASStateMachine_setPublicAccessEnabled_forAlbum_info_completionB
     v15 = v8;
     v16 = v9;
     v17 = v10;
-    dispatch_async(v11, block);
+    dispatch_async(eventQueue, block);
 
     [(MSASStateMachine *)self workQueueDidFinishCommand];
   }
@@ -2147,41 +2147,41 @@ void __53__MSASStateMachine__scheduleEventDisposition_params___block_invoke(uint
   [v2 MSASStateMachine:*(a1 + 32) didFireScheduledEvent:*(a1 + 40) forAssetCollectionGUID:*(a1 + 48) albumGUID:*(a1 + 56) info:*(a1 + 64)];
 }
 
-- (void)scheduleEvent:(id)a3 assetCollectionGUID:(id)a4 albumGUID:(id)a5 info:(id)a6
+- (void)scheduleEvent:(id)event assetCollectionGUID:(id)d albumGUID:(id)iD info:(id)info
 {
   v33 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  eventCopy = event;
+  dCopy = d;
+  iDCopy = iD;
+  infoCopy = info;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     *buf = 138544130;
-    v26 = self;
+    selfCopy = self;
     v27 = 2114;
-    v28 = v10;
+    v28 = eventCopy;
     v29 = 2114;
-    v30 = v11;
+    v30 = dCopy;
     v31 = 2114;
-    v32 = v12;
+    v32 = iDCopy;
     _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%{public}@: Scheduling event to fire: %{public}@, asset collection GUID: %{public}@ album GUID: %{public}@", buf, 0x2Au);
   }
 
-  v14 = [(MSASStateMachine *)self workQueue];
+  workQueue = [(MSASStateMachine *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __69__MSASStateMachine_scheduleEvent_assetCollectionGUID_albumGUID_info___block_invoke;
   block[3] = &unk_278E92688;
   block[4] = self;
-  v21 = v10;
-  v22 = v11;
-  v23 = v12;
-  v24 = v13;
-  v15 = v13;
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
-  dispatch_async(v14, block);
+  v21 = eventCopy;
+  v22 = dCopy;
+  v23 = iDCopy;
+  v24 = infoCopy;
+  v15 = infoCopy;
+  v16 = iDCopy;
+  v17 = dCopy;
+  v18 = eventCopy;
+  dispatch_async(workQueue, block);
 
   v19 = *MEMORY[0x277D85DE8];
 }
@@ -2228,19 +2228,19 @@ void __69__MSASStateMachine_scheduleEvent_assetCollectionGUID_albumGUID_info___b
   [*(a1 + 32) workQueueRetryOutstandingActivities];
 }
 
-- (void)_addCommentDisposition:(int)a3 params:(id)a4
+- (void)_addCommentDisposition:(int)disposition params:(id)params
 {
   v49 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v22 = [v6 objectForKey:@"comment"];
-  v7 = [v6 objectForKey:@"assetCollection"];
-  v8 = [(MSASStateMachine *)self _albumForRequestFromParams:v6];
-  v9 = [v6 objectForKey:@"info"];
-  v10 = [v6 objectForKey:@"error"];
+  paramsCopy = params;
+  v22 = [paramsCopy objectForKey:@"comment"];
+  v7 = [paramsCopy objectForKey:@"assetCollection"];
+  v8 = [(MSASStateMachine *)self _albumForRequestFromParams:paramsCopy];
+  v9 = [paramsCopy objectForKey:@"info"];
+  v10 = [paramsCopy objectForKey:@"error"];
   v11 = v10;
-  if (a3 == 2)
+  if (disposition == 2)
   {
-    v13 = [(MSASStateMachine *)self eventQueue];
+    eventQueue = [(MSASStateMachine *)self eventQueue];
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __50__MSASStateMachine__addCommentDisposition_params___block_invoke_3;
@@ -2250,14 +2250,14 @@ void __69__MSASStateMachine_scheduleEvent_assetCollectionGUID_albumGUID_info___b
     v25 = v7;
     v26 = v8;
     v27 = v9;
-    dispatch_async(v13, v23);
+    dispatch_async(eventQueue, v23);
   }
 
-  else if (!a3)
+  else if (!disposition)
   {
     if (v10)
     {
-      v12 = [(MSASStateMachine *)self eventQueue];
+      eventQueue2 = [(MSASStateMachine *)self eventQueue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __50__MSASStateMachine__addCommentDisposition_params___block_invoke;
@@ -2268,7 +2268,7 @@ void __69__MSASStateMachine_scheduleEvent_assetCollectionGUID_albumGUID_info___b
       v38 = v8;
       v39 = v9;
       v40 = v11;
-      dispatch_async(v12, block);
+      dispatch_async(eventQueue2, block);
 
       [(MSASStateMachine *)self workQueueDidFinishCommand];
     }
@@ -2277,39 +2277,39 @@ void __69__MSASStateMachine_scheduleEvent_assetCollectionGUID_albumGUID_info___b
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
       {
-        v14 = [v7 GUID];
+        gUID = [v7 GUID];
         *buf = 138544130;
-        v42 = self;
+        selfCopy = self;
         v43 = 2114;
         v44 = v22;
         v45 = 2114;
-        v46 = v14;
+        v46 = gUID;
         v47 = 2114;
         v48 = v8;
         _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%{public}@: Adding comment %{public}@ to asset collection %{public}@ in album %{public}@.", buf, 0x2Au);
       }
 
-      v15 = [(MSASStateMachine *)self protocol];
-      v16 = [v15 stopHandlerBlock];
-      [(MSASStateMachine *)self _setStopHandlerBlock:v16];
+      protocol = [(MSASStateMachine *)self protocol];
+      stopHandlerBlock = [protocol stopHandlerBlock];
+      [(MSASStateMachine *)self _setStopHandlerBlock:stopHandlerBlock];
 
       objc_initWeak(buf, self);
-      v17 = [(MSASStateMachine *)self delegate];
-      v18 = [v8 GUID];
-      v19 = [v17 MSASStateMachineDidRequestAlbumURLStringForAlbumWithGUID:v18 info:v9];
+      delegate = [(MSASStateMachine *)self delegate];
+      gUID2 = [v8 GUID];
+      v19 = [delegate MSASStateMachineDidRequestAlbumURLStringForAlbumWithGUID:gUID2 info:v9];
 
-      v20 = [(MSASStateMachine *)self protocol];
+      protocol2 = [(MSASStateMachine *)self protocol];
       v28[0] = MEMORY[0x277D85DD0];
       v28[1] = 3221225472;
       v28[2] = __50__MSASStateMachine__addCommentDisposition_params___block_invoke_283;
       v28[3] = &unk_278E91620;
       objc_copyWeak(&v34, buf);
-      v29 = v6;
+      v29 = paramsCopy;
       v30 = v8;
       v31 = v7;
       v32 = v22;
       v33 = v9;
-      [v20 addComment:v32 toAssetCollection:v31 inAlbum:v30 albumURLString:v19 completionBlock:v28];
+      [protocol2 addComment:v32 toAssetCollection:v31 inAlbum:v30 albumURLString:v19 completionBlock:v28];
 
       objc_destroyWeak(&v34);
       objc_destroyWeak(buf);
@@ -2499,27 +2499,27 @@ void __50__MSASStateMachine__addCommentDisposition_params___block_invoke_2_286(u
   [v4 MSASStateMachine:*(a1 + 32) didFinishAddingComment:*(a1 + 40) toAssetCollection:*(a1 + 48) inAlbum:*(a1 + 56) info:*(a1 + 64) error:0];
 }
 
-- (void)addComments:(id)a3 toAssetCollection:(id)a4 inAlbum:(id)a5 info:(id)a6
+- (void)addComments:(id)comments toAssetCollection:(id)collection inAlbum:(id)album info:(id)info
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(MSASStateMachine *)self workQueue];
+  commentsCopy = comments;
+  collectionCopy = collection;
+  albumCopy = album;
+  infoCopy = info;
+  workQueue = [(MSASStateMachine *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __63__MSASStateMachine_addComments_toAssetCollection_inAlbum_info___block_invoke;
   block[3] = &unk_278E92688;
   block[4] = self;
-  v20 = v10;
-  v21 = v11;
-  v22 = v12;
-  v23 = v13;
-  v15 = v13;
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
-  dispatch_async(v14, block);
+  v20 = commentsCopy;
+  v21 = collectionCopy;
+  v22 = albumCopy;
+  v23 = infoCopy;
+  v15 = infoCopy;
+  v16 = albumCopy;
+  v17 = collectionCopy;
+  v18 = commentsCopy;
+  dispatch_async(workQueue, block);
 }
 
 uint64_t __63__MSASStateMachine_addComments_toAssetCollection_inAlbum_info___block_invoke(uint64_t a1)
@@ -2611,33 +2611,33 @@ uint64_t __63__MSASStateMachine_addComments_toAssetCollection_inAlbum_info___blo
   return result;
 }
 
-- (void)_removeSharingRelationshipsDisposition:(int)a3 params:(id)a4
+- (void)_removeSharingRelationshipsDisposition:(int)disposition params:(id)params
 {
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [v6 objectForKey:@"sharingRelationships"];
-  v8 = [(MSASStateMachine *)self _albumForRequestFromParams:v6];
-  v9 = [v6 objectForKey:@"info"];
-  if (a3 == 2)
+  paramsCopy = params;
+  v7 = [paramsCopy objectForKey:@"sharingRelationships"];
+  v8 = [(MSASStateMachine *)self _albumForRequestFromParams:paramsCopy];
+  v9 = [paramsCopy objectForKey:@"info"];
+  if (disposition == 2)
   {
-    v13 = [(MSASStateMachine *)self eventQueue];
+    eventQueue = [(MSASStateMachine *)self eventQueue];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __66__MSASStateMachine__removeSharingRelationshipsDisposition_params___block_invoke_3;
     v15[3] = &unk_278E92660;
     v16 = v7;
-    v17 = self;
+    selfCopy = self;
     v18 = v8;
     v19 = v9;
-    dispatch_async(v13, v15);
+    dispatch_async(eventQueue, v15);
   }
 
-  else if (!a3)
+  else if (!disposition)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543874;
-      v27 = self;
+      selfCopy2 = self;
       v28 = 2048;
       v29 = [v7 count];
       v30 = 2114;
@@ -2645,23 +2645,23 @@ uint64_t __63__MSASStateMachine_addComments_toAssetCollection_inAlbum_info___blo
       _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%{public}@: Removing %ld sharing relationships from album %{public}@", buf, 0x20u);
     }
 
-    v10 = [(MSASStateMachine *)self protocol];
-    v11 = [v10 stopHandlerBlock];
-    [(MSASStateMachine *)self _setStopHandlerBlock:v11];
+    protocol = [(MSASStateMachine *)self protocol];
+    stopHandlerBlock = [protocol stopHandlerBlock];
+    [(MSASStateMachine *)self _setStopHandlerBlock:stopHandlerBlock];
 
     objc_initWeak(buf, self);
-    v12 = [(MSASStateMachine *)self protocol];
+    protocol2 = [(MSASStateMachine *)self protocol];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __66__MSASStateMachine__removeSharingRelationshipsDisposition_params___block_invoke;
     v20[3] = &unk_278E915D0;
     v20[4] = self;
     objc_copyWeak(&v25, buf);
-    v21 = v6;
+    v21 = paramsCopy;
     v22 = v8;
     v23 = v7;
     v24 = v9;
-    [v12 removeSharingRelationships:v23 fromAlbum:v22 completionBlock:v20];
+    [protocol2 removeSharingRelationships:v23 fromAlbum:v22 completionBlock:v20];
 
     objc_destroyWeak(&v25);
     objc_destroyWeak(buf);
@@ -2919,24 +2919,24 @@ void __66__MSASStateMachine__removeSharingRelationshipsDisposition_params___bloc
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeSharingRelationships:(id)a3 fromOwnedAlbum:(id)a4 info:(id)a5
+- (void)removeSharingRelationships:(id)relationships fromOwnedAlbum:(id)album info:(id)info
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(MSASStateMachine *)self workQueue];
+  relationshipsCopy = relationships;
+  albumCopy = album;
+  infoCopy = info;
+  workQueue = [(MSASStateMachine *)self workQueue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __67__MSASStateMachine_removeSharingRelationships_fromOwnedAlbum_info___block_invoke;
   v15[3] = &unk_278E92660;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v19 = self;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_async(v11, v15);
+  v16 = relationshipsCopy;
+  v17 = albumCopy;
+  v18 = infoCopy;
+  selfCopy = self;
+  v12 = infoCopy;
+  v13 = albumCopy;
+  v14 = relationshipsCopy;
+  dispatch_async(workQueue, v15);
 }
 
 void __67__MSASStateMachine_removeSharingRelationships_fromOwnedAlbum_info___block_invoke(uint64_t a1)
@@ -2986,27 +2986,27 @@ void __67__MSASStateMachine_removeSharingRelationships_fromOwnedAlbum_info___blo
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addSharingRelationships:(id)a3 toOwnedAlbum:(id)a4 info:(id)a5 completionBlock:(id)a6
+- (void)addSharingRelationships:(id)relationships toOwnedAlbum:(id)album info:(id)info completionBlock:(id)block
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(MSASStateMachine *)self workQueue];
+  relationshipsCopy = relationships;
+  albumCopy = album;
+  infoCopy = info;
+  blockCopy = block;
+  workQueue = [(MSASStateMachine *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __78__MSASStateMachine_addSharingRelationships_toOwnedAlbum_info_completionBlock___block_invoke;
   block[3] = &unk_278E921D0;
   block[4] = self;
-  v20 = v10;
-  v21 = v11;
-  v22 = v12;
-  v23 = v13;
-  v15 = v13;
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
-  dispatch_async(v14, block);
+  v20 = relationshipsCopy;
+  v21 = albumCopy;
+  v22 = infoCopy;
+  v23 = blockCopy;
+  v15 = blockCopy;
+  v16 = infoCopy;
+  v17 = albumCopy;
+  v18 = relationshipsCopy;
+  dispatch_async(workQueue, block);
 }
 
 void __78__MSASStateMachine_addSharingRelationships_toOwnedAlbum_info_completionBlock___block_invoke(id *a1)
@@ -3196,23 +3196,23 @@ void __78__MSASStateMachine_addSharingRelationships_toOwnedAlbum_info_completion
   [v4 MSASStateMachine:*(a1 + 32) didFinishAddingSharingRelationships:*(a1 + 40) toOwnedAlbum:*(a1 + 48) info:*(a1 + 56) error:*(a1 + 64)];
 }
 
-- (void)_sendGetUploadTokensDisposition:(int)a3 params:(id)a4
+- (void)_sendGetUploadTokensDisposition:(int)disposition params:(id)params
 {
   v50 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v32 = [v6 objectForKey:@"assetCollection"];
-  v31 = [(MSASStateMachine *)self _albumForRequestFromParams:v6];
-  v30 = [v6 objectForKey:@"info"];
+  paramsCopy = params;
+  v32 = [paramsCopy objectForKey:@"assetCollection"];
+  v31 = [(MSASStateMachine *)self _albumForRequestFromParams:paramsCopy];
+  v30 = [paramsCopy objectForKey:@"info"];
   v7 = MEMORY[0x277CBEB18];
-  v8 = [v32 assets];
-  v9 = [v7 arrayWithCapacity:{objc_msgSend(v8, "count")}];
+  assets = [v32 assets];
+  v9 = [v7 arrayWithCapacity:{objc_msgSend(assets, "count")}];
 
   v47 = 0u;
   v48 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v10 = [v32 assets];
-  v11 = [v10 countByEnumeratingWithState:&v45 objects:v49 count:16];
+  assets2 = [v32 assets];
+  v11 = [assets2 countByEnumeratingWithState:&v45 objects:v49 count:16];
   if (v11)
   {
     v12 = *v46;
@@ -3222,12 +3222,12 @@ void __78__MSASStateMachine_addSharingRelationships_toOwnedAlbum_info_completion
       {
         if (*v46 != v12)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(assets2);
         }
 
         v14 = *(*(&v45 + 1) + 8 * i);
-        v15 = [v14 MMCSAccessHeader];
-        v16 = v15 == 0;
+        mMCSAccessHeader = [v14 MMCSAccessHeader];
+        v16 = mMCSAccessHeader == 0;
 
         if (v16)
         {
@@ -3235,15 +3235,15 @@ void __78__MSASStateMachine_addSharingRelationships_toOwnedAlbum_info_completion
         }
       }
 
-      v11 = [v10 countByEnumeratingWithState:&v45 objects:v49 count:16];
+      v11 = [assets2 countByEnumeratingWithState:&v45 objects:v49 count:16];
     }
 
     while (v11);
   }
 
-  if (a3 == 2)
+  if (disposition == 2)
   {
-    v25 = [(MSASStateMachine *)self eventQueue];
+    eventQueue = [(MSASStateMachine *)self eventQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __59__MSASStateMachine__sendGetUploadTokensDisposition_params___block_invoke_3_271;
@@ -3253,41 +3253,41 @@ void __78__MSASStateMachine_addSharingRelationships_toOwnedAlbum_info_completion
     v34 = v26;
     v35 = v31;
     v36 = v30;
-    dispatch_async(v25, block);
+    dispatch_async(eventQueue, block);
 
-    v27 = [(MSASStateMachine *)self _model];
-    v28 = [v26 GUID];
-    [v27 requeuePendingAssetCollectionGUID:v28];
+    _model = [(MSASStateMachine *)self _model];
+    gUID = [v26 GUID];
+    [_model requeuePendingAssetCollectionGUID:gUID];
 
     [(MSASStateMachine *)self _deleteAssetFilesInAssetCollection:v26];
   }
 
-  else if (!a3)
+  else if (!disposition)
   {
-    v17 = [(MSASStateMachine *)self protocol];
-    v18 = [v17 stopHandlerBlock];
-    [(MSASStateMachine *)self _setStopHandlerBlock:v18];
+    protocol = [(MSASStateMachine *)self protocol];
+    stopHandlerBlock = [protocol stopHandlerBlock];
+    [(MSASStateMachine *)self _setStopHandlerBlock:stopHandlerBlock];
 
     objc_initWeak(&location, self);
-    v19 = [(MSASStateMachine *)self delegate];
-    v20 = [v31 GUID];
-    v21 = [v19 MSASStateMachineDidRequestAlbumURLStringForAlbumWithGUID:v20 info:v30];
+    delegate = [(MSASStateMachine *)self delegate];
+    gUID2 = [v31 GUID];
+    v21 = [delegate MSASStateMachineDidRequestAlbumURLStringForAlbumWithGUID:gUID2 info:v30];
 
-    v22 = [(MSASStateMachine *)self protocol];
-    v23 = [v32 GUID];
-    v24 = [v31 GUID];
+    protocol2 = [(MSASStateMachine *)self protocol];
+    gUID3 = [v32 GUID];
+    gUID4 = [v31 GUID];
     v37[0] = MEMORY[0x277D85DD0];
     v37[1] = 3221225472;
     v37[2] = __59__MSASStateMachine__sendGetUploadTokensDisposition_params___block_invoke;
     v37[3] = &unk_278E91440;
     v37[4] = self;
     objc_copyWeak(&v43, &location);
-    v38 = v6;
+    v38 = paramsCopy;
     v39 = v9;
     v40 = v32;
     v41 = v31;
     v42 = v30;
-    [v22 getUploadTokens:v39 forAssetCollectionWithGUID:v23 inAlbumWithGUID:v24 albumURLString:v21 completionBlock:v37];
+    [protocol2 getUploadTokens:v39 forAssetCollectionWithGUID:gUID3 inAlbumWithGUID:gUID4 albumURLString:v21 completionBlock:v37];
 
     objc_destroyWeak(&v43);
     objc_destroyWeak(&location);
@@ -3502,26 +3502,26 @@ void __59__MSASStateMachine__sendGetUploadTokensDisposition_params___block_invok
   [WeakRetained workQueueDidFinishCommand];
 }
 
-- (void)_sendPutAssetCollectionsDisposition:(int)a3 params:(id)a4
+- (void)_sendPutAssetCollectionsDisposition:(int)disposition params:(id)params
 {
   v47 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v24 = [v6 objectForKey:@"successfulAssetCollections"];
-  v7 = [(MSASStateMachine *)self _albumForRequestFromParams:v6];
-  v25 = [v6 objectForKey:@"info"];
-  if (a3 == 2)
+  paramsCopy = params;
+  v24 = [paramsCopy objectForKey:@"successfulAssetCollections"];
+  v7 = [(MSASStateMachine *)self _albumForRequestFromParams:paramsCopy];
+  v25 = [paramsCopy objectForKey:@"info"];
+  if (disposition == 2)
   {
-    v14 = [(MSASStateMachine *)self eventQueue];
+    eventQueue = [(MSASStateMachine *)self eventQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __63__MSASStateMachine__sendPutAssetCollectionsDisposition_params___block_invoke_7;
     block[3] = &unk_278E92660;
     v15 = v24;
     v31 = v15;
-    v32 = self;
+    selfCopy = self;
     v33 = v7;
     v34 = v25;
-    dispatch_async(v14, block);
+    dispatch_async(eventQueue, block);
 
     v28 = 0u;
     v29 = 0u;
@@ -3543,9 +3543,9 @@ void __59__MSASStateMachine__sendGetUploadTokensDisposition_params___block_invok
           }
 
           v20 = *(*(&v26 + 1) + 8 * v19);
-          v21 = [(MSASStateMachine *)self _model];
-          v22 = [v20 GUID];
-          [v21 requeuePendingAssetCollectionGUID:v22];
+          _model = [(MSASStateMachine *)self _model];
+          gUID = [v20 GUID];
+          [_model requeuePendingAssetCollectionGUID:gUID];
 
           [(MSASStateMachine *)self _deleteAssetFilesInAssetCollection:v20];
           ++v19;
@@ -3559,12 +3559,12 @@ void __59__MSASStateMachine__sendGetUploadTokensDisposition_params___block_invok
     }
   }
 
-  else if (!a3)
+  else if (!disposition)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543874;
-      v42 = self;
+      selfCopy2 = self;
       v43 = 2048;
       v44 = [v24 count];
       v45 = 2114;
@@ -3572,26 +3572,26 @@ void __59__MSASStateMachine__sendGetUploadTokensDisposition_params___block_invok
       _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%{public}@: Adding %ld photos to album %{public}@.", buf, 0x20u);
     }
 
-    v8 = [(MSASStateMachine *)self protocol];
-    v9 = [v8 stopHandlerBlock];
-    [(MSASStateMachine *)self _setStopHandlerBlock:v9];
+    protocol = [(MSASStateMachine *)self protocol];
+    stopHandlerBlock = [protocol stopHandlerBlock];
+    [(MSASStateMachine *)self _setStopHandlerBlock:stopHandlerBlock];
 
     objc_initWeak(buf, self);
-    v10 = [(MSASStateMachine *)self delegate];
-    v11 = [v7 GUID];
-    v12 = [v10 MSASStateMachineDidRequestAlbumURLStringForAlbumWithGUID:v11 info:v25];
+    delegate = [(MSASStateMachine *)self delegate];
+    gUID2 = [v7 GUID];
+    v12 = [delegate MSASStateMachineDidRequestAlbumURLStringForAlbumWithGUID:gUID2 info:v25];
 
-    v13 = [(MSASStateMachine *)self protocol];
+    protocol2 = [(MSASStateMachine *)self protocol];
     v35[0] = MEMORY[0x277D85DD0];
     v35[1] = 3221225472;
     v35[2] = __63__MSASStateMachine__sendPutAssetCollectionsDisposition_params___block_invoke;
     v35[3] = &unk_278E91550;
     v35[4] = self;
     objc_copyWeak(&v39, buf);
-    v36 = v6;
+    v36 = paramsCopy;
     v37 = v7;
     v38 = v25;
-    [v13 putAssetCollections:v24 intoAlbum:v37 albumURLString:v12 completionBlock:v35];
+    [protocol2 putAssetCollections:v24 intoAlbum:v37 albumURLString:v12 completionBlock:v35];
 
     objc_destroyWeak(&v39);
     objc_destroyWeak(buf);
@@ -4260,15 +4260,15 @@ void __63__MSASStateMachine__sendPutAssetCollectionsDisposition_params___block_i
   [WeakRetained workQueueDidFinishCommand];
 }
 
-- (void)_sendUploadCompleteDisposition:(int)a3 params:(id)a4
+- (void)_sendUploadCompleteDisposition:(int)disposition params:(id)params
 {
   v90 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v47 = [v6 objectForKey:@"successfulAssetCollections"];
-  v48 = [v6 objectForKey:@"failedAssetCollectionsAndErrors"];
-  v46 = [(MSASStateMachine *)self _albumForRequestFromParams:v6];
-  v45 = [v6 objectForKey:@"info"];
-  if (a3 == 2)
+  paramsCopy = params;
+  v47 = [paramsCopy objectForKey:@"successfulAssetCollections"];
+  v48 = [paramsCopy objectForKey:@"failedAssetCollectionsAndErrors"];
+  v46 = [(MSASStateMachine *)self _albumForRequestFromParams:paramsCopy];
+  v45 = [paramsCopy objectForKey:@"info"];
+  if (disposition == 2)
   {
     v69 = 0u;
     v70 = 0u;
@@ -4328,22 +4328,22 @@ void __63__MSASStateMachine__sendPutAssetCollectionsDisposition_params___block_i
       while (v19);
     }
 
-    v22 = [(MSASStateMachine *)self eventQueue];
+    eventQueue = [(MSASStateMachine *)self eventQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __58__MSASStateMachine__sendUploadCompleteDisposition_params___block_invoke_3;
     block[3] = &unk_278E92688;
     v23 = v14;
     v58 = v23;
-    v59 = self;
+    selfCopy = self;
     v60 = v46;
     v61 = v45;
     v24 = v18;
     v62 = v24;
-    dispatch_async(v22, block);
+    dispatch_async(eventQueue, block);
 
-    v25 = [(MSASStateMachine *)self _model];
-    [v25 beginTransaction];
+    _model = [(MSASStateMachine *)self _model];
+    [_model beginTransaction];
 
     v55 = 0u;
     v56 = 0u;
@@ -4365,9 +4365,9 @@ void __63__MSASStateMachine__sendPutAssetCollectionsDisposition_params___block_i
           }
 
           v30 = *(*(&v53 + 1) + 8 * v29);
-          v31 = [(MSASStateMachine *)self _model];
-          v32 = [v30 GUID];
-          [v31 requeuePendingAssetCollectionGUID:v32];
+          _model2 = [(MSASStateMachine *)self _model];
+          gUID = [v30 GUID];
+          [_model2 requeuePendingAssetCollectionGUID:gUID];
 
           [(MSASStateMachine *)self _deleteAssetFilesInAssetCollection:v30];
           ++v29;
@@ -4400,9 +4400,9 @@ void __63__MSASStateMachine__sendPutAssetCollectionsDisposition_params___block_i
           }
 
           v37 = *(*(&v49 + 1) + 8 * v36);
-          v38 = [(MSASStateMachine *)self _model];
-          v39 = [v37 GUID];
-          [v38 requeuePendingAssetCollectionGUID:v39];
+          _model3 = [(MSASStateMachine *)self _model];
+          gUID2 = [v37 GUID];
+          [_model3 requeuePendingAssetCollectionGUID:gUID2];
 
           [(MSASStateMachine *)self _deleteAssetFilesInAssetCollection:v37];
           ++v36;
@@ -4415,18 +4415,18 @@ void __63__MSASStateMachine__sendPutAssetCollectionsDisposition_params___block_i
       while (v34);
     }
 
-    v40 = [(MSASStateMachine *)self _model];
-    [v40 endTransaction];
+    _model4 = [(MSASStateMachine *)self _model];
+    [_model4 endTransaction];
 
-    v41 = [(MSASStateMachine *)self _assetUploader];
-    [v41 unregisterAssetCollections:v26];
+    _assetUploader = [(MSASStateMachine *)self _assetUploader];
+    [_assetUploader unregisterAssetCollections:v26];
 
-    v42 = [(MSASStateMachine *)self _assetUploader];
-    v43 = [v33 allKeys];
-    [v42 unregisterAssetCollections:v43];
+    _assetUploader2 = [(MSASStateMachine *)self _assetUploader];
+    allKeys = [v33 allKeys];
+    [_assetUploader2 unregisterAssetCollections:allKeys];
   }
 
-  else if (!a3)
+  else if (!disposition)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
@@ -4434,7 +4434,7 @@ void __63__MSASStateMachine__sendPutAssetCollectionsDisposition_params___block_i
       v8 = [v48 count];
       v9 = CFAbsoluteTimeGetCurrent() - self->_startOfUpload;
       *buf = 138544130;
-      v83 = self;
+      selfCopy2 = self;
       v84 = 2048;
       v85 = v7;
       v86 = 2048;
@@ -4444,25 +4444,25 @@ void __63__MSASStateMachine__sendPutAssetCollectionsDisposition_params___block_i
       _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%{public}@: Sending upload complete for %ld successful photos, and %ld failed photos. Took %.2fs to upload", buf, 0x2Au);
     }
 
-    v10 = [(MSASStateMachine *)self protocol];
-    v11 = [v10 stopHandlerBlock];
-    [(MSASStateMachine *)self _setStopHandlerBlock:v11];
+    protocol = [(MSASStateMachine *)self protocol];
+    stopHandlerBlock = [protocol stopHandlerBlock];
+    [(MSASStateMachine *)self _setStopHandlerBlock:stopHandlerBlock];
 
     objc_initWeak(buf, self);
-    v12 = [(MSASStateMachine *)self protocol];
-    v13 = [v48 allKeys];
+    protocol2 = [(MSASStateMachine *)self protocol];
+    allKeys2 = [v48 allKeys];
     v71[0] = MEMORY[0x277D85DD0];
     v71[1] = 3221225472;
     v71[2] = __58__MSASStateMachine__sendUploadCompleteDisposition_params___block_invoke;
     v71[3] = &unk_278E91500;
     v71[4] = self;
     objc_copyWeak(&v77, buf);
-    v72 = v6;
+    v72 = paramsCopy;
     v73 = v47;
     v74 = v46;
     v75 = v45;
     v76 = v48;
-    [v12 sendUploadCompleteSuccessfulAssetCollections:v73 failedAssetCollections:v13 album:v74 completionBlock:v71];
+    [protocol2 sendUploadCompleteSuccessfulAssetCollections:v73 failedAssetCollections:allKeys2 album:v74 completionBlock:v71];
 
     objc_destroyWeak(&v77);
     objc_destroyWeak(buf);
@@ -5147,15 +5147,15 @@ void __58__MSASStateMachine__sendUploadCompleteDisposition_params___block_invoke
   v35 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_continueAddingAssetCollectionsDisposition:(int)a3 params:(id)a4
+- (void)_continueAddingAssetCollectionsDisposition:(int)disposition params:(id)params
 {
   v72 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [v5 objectForKey:@"assetCollections"];
-  v40 = self;
-  v38 = [(MSASStateMachine *)self _albumForRequestFromParams:v5];
-  v39 = v5;
-  v41 = [v5 objectForKey:@"info"];
+  paramsCopy = params;
+  v6 = [paramsCopy objectForKey:@"assetCollections"];
+  selfCopy = self;
+  v38 = [(MSASStateMachine *)self _albumForRequestFromParams:paramsCopy];
+  v39 = paramsCopy;
+  v41 = [paramsCopy objectForKey:@"info"];
   v61 = 0u;
   v62 = 0u;
   v63 = 0u;
@@ -5176,12 +5176,12 @@ void __58__MSASStateMachine__sendUploadCompleteDisposition_params___block_invoke
 
         v8 = *(*(&v61 + 1) + 8 * i);
         v9 = objc_autoreleasePoolPush();
-        v10 = [v8 metadata];
-        v11 = [v10 objectForKey:@"originalPaths"];
+        metadata = [v8 metadata];
+        v11 = [metadata objectForKey:@"originalPaths"];
 
         if (v11)
         {
-          v12 = [MEMORY[0x277CCAA00] defaultManager];
+          defaultManager = [MEMORY[0x277CCAA00] defaultManager];
           v57 = 0u;
           v58 = 0u;
           v59 = 0u;
@@ -5201,7 +5201,7 @@ void __58__MSASStateMachine__sendUploadCompleteDisposition_params___block_invoke
                   objc_enumerationMutation(v13);
                 }
 
-                [v12 removeItemAtPath:*(*(&v57 + 1) + 8 * j) error:0];
+                [defaultManager removeItemAtPath:*(*(&v57 + 1) + 8 * j) error:0];
               }
 
               v15 = [v13 countByEnumeratingWithState:&v57 objects:v70 count:16];
@@ -5210,8 +5210,8 @@ void __58__MSASStateMachine__sendUploadCompleteDisposition_params___block_invoke
             while (v15);
           }
 
-          v18 = [v8 metadata];
-          v19 = [v18 mutableCopy];
+          metadata2 = [v8 metadata];
+          v19 = [metadata2 mutableCopy];
 
           [v19 removeObjectForKey:@"originalPaths"];
           [v8 setMetadata:v19];
@@ -5226,7 +5226,7 @@ void __58__MSASStateMachine__sendUploadCompleteDisposition_params___block_invoke
     while (v44);
   }
 
-  if (a3 == 2)
+  if (disposition == 2)
   {
     v49 = 0u;
     v50 = 0u;
@@ -5248,20 +5248,20 @@ void __58__MSASStateMachine__sendUploadCompleteDisposition_params___block_invoke
           }
 
           v32 = *(*(&v47 + 1) + 8 * k);
-          [(MSASStateMachine *)v40 _deleteAssetFilesInAssetCollection:v32];
-          v33 = [(MSASStateMachine *)v40 eventQueue];
+          [(MSASStateMachine *)selfCopy _deleteAssetFilesInAssetCollection:v32];
+          eventQueue = [(MSASStateMachine *)selfCopy eventQueue];
           block[0] = MEMORY[0x277D85DD0];
           block[1] = 3221225472;
           block[2] = __70__MSASStateMachine__continueAddingAssetCollectionsDisposition_params___block_invoke_253;
           block[3] = &unk_278E92638;
-          block[4] = v40;
+          block[4] = selfCopy;
           block[5] = v32;
           v46 = v41;
-          dispatch_async(v33, block);
+          dispatch_async(eventQueue, block);
 
-          v34 = [(MSASStateMachine *)v40 _model];
-          v35 = [v32 GUID];
-          [v34 requeuePendingAssetCollectionGUID:v35];
+          _model = [(MSASStateMachine *)selfCopy _model];
+          gUID = [v32 GUID];
+          [_model requeuePendingAssetCollectionGUID:gUID];
         }
 
         v29 = [v27 countByEnumeratingWithState:&v47 objects:v65 count:16];
@@ -5277,34 +5277,34 @@ void __58__MSASStateMachine__sendUploadCompleteDisposition_params___block_invoke
 
   v21 = v38;
   v20 = v39;
-  if (!a3)
+  if (!disposition)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       v22 = [obj count];
       *buf = 138543618;
-      v67 = v40;
+      v67 = selfCopy;
       v68 = 2048;
       v69 = v22;
       _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%{public}@: Preparing upload of assets for %ld asset collections.", buf, 0x16u);
     }
 
     v23 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(obj, "count")}];
-    v24 = [MEMORY[0x277CBEB38] dictionary];
-    v25 = [(MSASStateMachine *)v40 _assetUploader];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    _assetUploader = [(MSASStateMachine *)selfCopy _assetUploader];
     v51[0] = MEMORY[0x277D85DD0];
     v51[1] = 3221225472;
     v51[2] = __70__MSASStateMachine__continueAddingAssetCollectionsDisposition_params___block_invoke;
     v51[3] = &unk_278E914B0;
-    v51[4] = v40;
+    v51[4] = selfCopy;
     v52 = obj;
     v53 = v23;
-    v54 = v24;
+    v54 = dictionary;
     v55 = v38;
     v56 = v41;
-    v26 = v24;
+    v26 = dictionary;
     v27 = v23;
-    [v25 registerAssetCollections:v52 completionBlock:v51];
+    [_assetUploader registerAssetCollections:v52 completionBlock:v51];
 
 LABEL_30:
   }
@@ -5476,30 +5476,30 @@ void __70__MSASStateMachine__continueAddingAssetCollectionsDisposition_params___
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (void)continueAddingAssetCollections:(id)a3 skipAssetCollections:(id)a4 toAlbum:(id)a5 info:(id)a6
+- (void)continueAddingAssetCollections:(id)collections skipAssetCollections:(id)assetCollections toAlbum:(id)album info:(id)info
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(MSASStateMachine *)self _createCopiedAssetsInAssetCollections:v10];
-  v15 = [(MSASStateMachine *)self workQueue];
+  collectionsCopy = collections;
+  assetCollectionsCopy = assetCollections;
+  albumCopy = album;
+  infoCopy = info;
+  v14 = [(MSASStateMachine *)self _createCopiedAssetsInAssetCollections:collectionsCopy];
+  workQueue = [(MSASStateMachine *)self workQueue];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __85__MSASStateMachine_continueAddingAssetCollections_skipAssetCollections_toAlbum_info___block_invoke;
   v21[3] = &unk_278E92048;
-  v22 = v11;
-  v23 = self;
-  v24 = v10;
+  v22 = assetCollectionsCopy;
+  selfCopy = self;
+  v24 = collectionsCopy;
   v25 = v14;
-  v26 = v12;
-  v27 = v13;
-  v16 = v13;
-  v17 = v12;
+  v26 = albumCopy;
+  v27 = infoCopy;
+  v16 = infoCopy;
+  v17 = albumCopy;
   v18 = v14;
-  v19 = v10;
-  v20 = v11;
-  dispatch_async(v15, v21);
+  v19 = collectionsCopy;
+  v20 = assetCollectionsCopy;
+  dispatch_async(workQueue, v21);
 }
 
 void __85__MSASStateMachine_continueAddingAssetCollections_skipAssetCollections_toAlbum_info___block_invoke(uint64_t a1)
@@ -5610,14 +5610,14 @@ void __85__MSASStateMachine_continueAddingAssetCollections_skipAssetCollections_
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_addAssetCollectionsDisposition:(int)a3 params:(id)a4
+- (void)_addAssetCollectionsDisposition:(int)disposition params:(id)params
 {
   v85 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [v6 objectForKey:@"assetCollections"];
-  v8 = [(MSASStateMachine *)self _albumForRequestFromParams:v6];
-  v9 = [v6 objectForKey:@"info"];
-  if (a3 == 2)
+  paramsCopy = params;
+  v7 = [paramsCopy objectForKey:@"assetCollections"];
+  v8 = [(MSASStateMachine *)self _albumForRequestFromParams:paramsCopy];
+  v9 = [paramsCopy objectForKey:@"info"];
+  if (disposition == 2)
   {
     v59 = 0u;
     v60 = 0u;
@@ -5647,47 +5647,47 @@ void __85__MSASStateMachine_continueAddingAssetCollections_skipAssetCollections_
       while (v21);
     }
 
-    v24 = [(MSASStateMachine *)self eventQueue];
+    eventQueue = [(MSASStateMachine *)self eventQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __59__MSASStateMachine__addAssetCollectionsDisposition_params___block_invoke_3;
     block[3] = &unk_278E92638;
     v54 = v19;
-    v55 = self;
+    selfCopy = self;
     v56 = v9;
-    dispatch_async(v24, block);
+    dispatch_async(eventQueue, block);
   }
 
-  else if (!a3)
+  else if (!disposition)
   {
-    v10 = [v6 objectForKey:@"commandRetryCount"];
-    v11 = [v10 intValue];
+    v10 = [paramsCopy objectForKey:@"commandRetryCount"];
+    intValue = [v10 intValue];
 
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138544130;
-      v82 = self;
+      selfCopy5 = self;
       v83 = 2048;
       *v84 = [v7 count];
       *&v84[8] = 2114;
       *&v84[10] = v8;
       *&v84[18] = 1024;
-      *&v84[20] = v11;
+      *&v84[20] = intValue;
       _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%{public}@: Adding %ld asset collections to album %{public}@ retry %d.", buf, 0x26u);
     }
 
     self->_startOfUpload = CFAbsoluteTimeGetCurrent();
-    v12 = [(MSASStateMachine *)self protocol];
-    v13 = [v12 stopHandlerBlock];
-    [(MSASStateMachine *)self _setStopHandlerBlock:v13];
+    protocol = [(MSASStateMachine *)self protocol];
+    stopHandlerBlock = [protocol stopHandlerBlock];
+    [(MSASStateMachine *)self _setStopHandlerBlock:stopHandlerBlock];
 
-    if (v11 < 4)
+    if (intValue < 4)
     {
-      v45 = self;
+      selfCopy3 = self;
       v46 = v9;
       v47 = v8;
       v48 = v7;
-      v49 = v6;
+      v49 = paramsCopy;
       v71 = 0u;
       v72 = 0u;
       v69 = 0u;
@@ -5713,8 +5713,8 @@ void __85__MSASStateMachine_continueAddingAssetCollections_skipAssetCollections_
             v66 = 0u;
             v67 = 0u;
             v68 = 0u;
-            v29 = [v26 assets];
-            v30 = [v29 countByEnumeratingWithState:&v65 objects:v79 count:16];
+            assets = [v26 assets];
+            v30 = [assets countByEnumeratingWithState:&v65 objects:v79 count:16];
             if (v30)
             {
               v31 = v30;
@@ -5725,20 +5725,20 @@ void __85__MSASStateMachine_continueAddingAssetCollections_skipAssetCollections_
                 {
                   if (*v66 != v32)
                   {
-                    objc_enumerationMutation(v29);
+                    objc_enumerationMutation(assets);
                   }
 
                   v34 = *(*(&v65 + 1) + 8 * k);
-                  v35 = [v34 path];
+                  path = [v34 path];
 
-                  if (v35)
+                  if (path)
                   {
-                    v36 = [v34 path];
-                    [v28 addObject:v36];
+                    path2 = [v34 path];
+                    [v28 addObject:path2];
                   }
                 }
 
-                v31 = [v29 countByEnumeratingWithState:&v65 objects:v79 count:16];
+                v31 = [assets countByEnumeratingWithState:&v65 objects:v79 count:16];
               }
 
               while (v31);
@@ -5758,21 +5758,21 @@ void __85__MSASStateMachine_continueAddingAssetCollections_skipAssetCollections_
         while (v51);
       }
 
-      v37 = [(MSASStateMachine *)v45 eventQueue];
+      eventQueue2 = [(MSASStateMachine *)selfCopy3 eventQueue];
       v61[0] = MEMORY[0x277D85DD0];
       v61[1] = 3221225472;
       v61[2] = __59__MSASStateMachine__addAssetCollectionsDisposition_params___block_invoke_2;
       v61[3] = &unk_278E92660;
-      v61[4] = v45;
+      v61[4] = selfCopy3;
       v62 = obj;
       v8 = v47;
       v63 = v47;
       v9 = v46;
       v64 = v46;
-      dispatch_async(v37, v61);
+      dispatch_async(eventQueue2, v61);
 
       v7 = v48;
-      v6 = v49;
+      paramsCopy = v49;
     }
 
     else
@@ -5780,9 +5780,9 @@ void __85__MSASStateMachine_continueAddingAssetCollections_skipAssetCollections_
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138544130;
-        v82 = self;
+        selfCopy5 = self;
         v83 = 1024;
-        *v84 = v11;
+        *v84 = intValue;
         *&v84[4] = 2114;
         *&v84[6] = v7;
         *&v84[14] = 2114;
@@ -5790,39 +5790,39 @@ void __85__MSASStateMachine_continueAddingAssetCollections_skipAssetCollections_
         _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%{public}@: Retried %d times to add asset collections %{public}@ to album %{public}@.", buf, 0x26u);
       }
 
-      v14 = [(MSASStateMachine *)self _assetCollectionFailedError];
+      _assetCollectionFailedError = [(MSASStateMachine *)self _assetCollectionFailedError];
       if ([v7 count] < 2)
       {
         [(MSASModelBase *)self->_model beginTransaction];
-        v38 = [v7 firstObject];
+        firstObject = [v7 firstObject];
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
         {
           *buf = 138543874;
-          v82 = self;
+          selfCopy5 = self;
           v83 = 2114;
-          *v84 = v38;
+          *v84 = firstObject;
           *&v84[8] = 2114;
           *&v84[10] = v8;
           _os_log_error_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%{public}@: Giving up uploading asset collections %{public}@ to album %{public}@.", buf, 0x20u);
         }
 
         model = self->_model;
-        v40 = [v38 GUID];
-        [(MSASPersonModel *)model requeuePendingAssetCollectionGUID:v40];
+        gUID = [firstObject GUID];
+        [(MSASPersonModel *)model requeuePendingAssetCollectionGUID:gUID];
 
-        [(MSASStateMachine *)self _deleteAssetFilesInAssetCollection:v38];
-        v41 = [(MSASStateMachine *)self eventQueue];
+        [(MSASStateMachine *)self _deleteAssetFilesInAssetCollection:firstObject];
+        eventQueue3 = [(MSASStateMachine *)self eventQueue];
         v73[0] = MEMORY[0x277D85DD0];
         v73[1] = 3221225472;
         v73[2] = __59__MSASStateMachine__addAssetCollectionsDisposition_params___block_invoke;
         v73[3] = &unk_278E92688;
         v73[4] = self;
-        v74 = v38;
+        v74 = firstObject;
         v75 = v8;
         v76 = v9;
-        v77 = v14;
-        v17 = v38;
-        dispatch_async(v41, v73);
+        v77 = _assetCollectionFailedError;
+        v17 = firstObject;
+        dispatch_async(eventQueue3, v73);
 
         assetUploader = self->_assetUploader;
         v43 = [MEMORY[0x277CBEA60] arrayWithObject:v17];
@@ -5903,27 +5903,27 @@ void __59__MSASStateMachine__addAssetCollectionsDisposition_params___block_invok
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addAssetCollections:(id)a3 toAlbum:(id)a4 info:(id)a5
+- (void)addAssetCollections:(id)collections toAlbum:(id)album info:(id)info
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(MSASStateMachine *)self _createCopiedAssetsInAssetCollections:v8];
-  v12 = [(MSASStateMachine *)self workQueue];
+  collectionsCopy = collections;
+  albumCopy = album;
+  infoCopy = info;
+  v11 = [(MSASStateMachine *)self _createCopiedAssetsInAssetCollections:collectionsCopy];
+  workQueue = [(MSASStateMachine *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __53__MSASStateMachine_addAssetCollections_toAlbum_info___block_invoke;
   block[3] = &unk_278E92688;
-  v18 = v8;
-  v19 = self;
-  v20 = v9;
+  v18 = collectionsCopy;
+  selfCopy = self;
+  v20 = albumCopy;
   v21 = v11;
-  v22 = v10;
-  v13 = v10;
+  v22 = infoCopy;
+  v13 = infoCopy;
   v14 = v11;
-  v15 = v9;
-  v16 = v8;
-  dispatch_async(v12, block);
+  v15 = albumCopy;
+  v16 = collectionsCopy;
+  dispatch_async(workQueue, block);
 }
 
 void __53__MSASStateMachine_addAssetCollections_toAlbum_info___block_invoke(uint64_t a1)
@@ -5994,17 +5994,17 @@ void __53__MSASStateMachine_addAssetCollections_toAlbum_info___block_invoke(uint
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_createCopiedAssetsInAssetCollections:(id)a3
+- (id)_createCopiedAssetsInAssetCollections:(id)collections
 {
   v49 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v22 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v3, "count")}];
-  v27 = [MEMORY[0x277CCAA00] defaultManager];
+  collectionsCopy = collections;
+  v22 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(collectionsCopy, "count")}];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  obj = v3;
+  obj = collectionsCopy;
   v23 = [obj countByEnumeratingWithState:&v35 objects:v48 count:16];
   if (v23)
   {
@@ -6026,8 +6026,8 @@ void __53__MSASStateMachine_addAssetCollections_toAlbum_info___block_invoke(uint
         v33 = 0u;
         v34 = 0u;
         v24 = v5;
-        v26 = [v5 assets];
-        v6 = [v26 countByEnumeratingWithState:&v31 objects:v47 count:16];
+        assets = [v5 assets];
+        v6 = [assets countByEnumeratingWithState:&v31 objects:v47 count:16];
         if (v6)
         {
           v7 = v6;
@@ -6038,22 +6038,22 @@ void __53__MSASStateMachine_addAssetCollections_toAlbum_info___block_invoke(uint
             {
               if (*v32 != v29)
               {
-                objc_enumerationMutation(v26);
+                objc_enumerationMutation(assets);
               }
 
               v9 = *(*(&v31 + 1) + 8 * i);
-              v10 = [v9 path];
-              if (v10)
+              path = [v9 path];
+              if (path)
               {
-                v11 = [(MSASStateMachine *)self personID];
-                v12 = MSPathAlbumSharingAssetsDirForPersonID(v11);
-                v13 = [MEMORY[0x277CCACA8] MSMakeUUID];
-                v14 = [v12 stringByAppendingPathComponent:v13];
-                v15 = [v10 pathExtension];
-                v16 = [v14 stringByAppendingPathExtension:v15];
+                personID = [(MSASStateMachine *)self personID];
+                v12 = MSPathAlbumSharingAssetsDirForPersonID(personID);
+                mSMakeUUID = [MEMORY[0x277CCACA8] MSMakeUUID];
+                v14 = [v12 stringByAppendingPathComponent:mSMakeUUID];
+                pathExtension = [path pathExtension];
+                v16 = [v14 stringByAppendingPathExtension:pathExtension];
 
                 v30 = 0;
-                LODWORD(v14) = [v27 copyItemAtPath:v10 toPath:v16 error:&v30];
+                LODWORD(v14) = [defaultManager copyItemAtPath:path toPath:v16 error:&v30];
                 v17 = v30;
                 if (v14)
                 {
@@ -6063,9 +6063,9 @@ void __53__MSASStateMachine_addAssetCollections_toAlbum_info___block_invoke(uint
                 else if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
                 {
                   *buf = 138544130;
-                  v40 = self;
+                  selfCopy = self;
                   v41 = 2112;
-                  v42 = v10;
+                  v42 = path;
                   v43 = 2112;
                   v44 = v16;
                   v45 = 2114;
@@ -6075,7 +6075,7 @@ void __53__MSASStateMachine_addAssetCollections_toAlbum_info___block_invoke(uint
               }
             }
 
-            v7 = [v26 countByEnumeratingWithState:&v31 objects:v47 count:16];
+            v7 = [assets countByEnumeratingWithState:&v31 objects:v47 count:16];
           }
 
           while (v7);
@@ -6097,15 +6097,15 @@ void __53__MSASStateMachine_addAssetCollections_toAlbum_info___block_invoke(uint
   return v22;
 }
 
-- (void)_updateAlbumDisposition:(int)a3 params:(id)a4
+- (void)_updateAlbumDisposition:(int)disposition params:(id)params
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [(MSASStateMachine *)self _albumForRequestFromParams:v6];
-  v8 = [v6 objectForKey:@"info"];
-  if (a3 == 2)
+  paramsCopy = params;
+  v7 = [(MSASStateMachine *)self _albumForRequestFromParams:paramsCopy];
+  v8 = [paramsCopy objectForKey:@"info"];
+  if (disposition == 2)
   {
-    v15 = [(MSASStateMachine *)self eventQueue];
+    eventQueue = [(MSASStateMachine *)self eventQueue];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __51__MSASStateMachine__updateAlbumDisposition_params___block_invoke_3;
@@ -6113,40 +6113,40 @@ void __53__MSASStateMachine_addAssetCollections_toAlbum_info___block_invoke(uint
     v17[4] = self;
     v18 = v7;
     v19 = v8;
-    dispatch_async(v15, v17);
+    dispatch_async(eventQueue, v17);
   }
 
-  else if (!a3)
+  else if (!disposition)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v26 = self;
+      selfCopy = self;
       v27 = 2114;
       v28 = v7;
       _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%{public}@: Updating album: %{public}@", buf, 0x16u);
     }
 
-    v9 = [(MSASStateMachine *)self protocol];
-    v10 = [v9 stopHandlerBlock];
-    [(MSASStateMachine *)self _setStopHandlerBlock:v10];
+    protocol = [(MSASStateMachine *)self protocol];
+    stopHandlerBlock = [protocol stopHandlerBlock];
+    [(MSASStateMachine *)self _setStopHandlerBlock:stopHandlerBlock];
 
     objc_initWeak(buf, self);
-    v11 = [(MSASStateMachine *)self delegate];
-    v12 = [v7 GUID];
-    v13 = [v11 MSASStateMachineDidRequestAlbumURLStringForAlbumWithGUID:v12 info:v8];
+    delegate = [(MSASStateMachine *)self delegate];
+    gUID = [v7 GUID];
+    v13 = [delegate MSASStateMachineDidRequestAlbumURLStringForAlbumWithGUID:gUID info:v8];
 
-    v14 = [(MSASStateMachine *)self protocol];
+    protocol2 = [(MSASStateMachine *)self protocol];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __51__MSASStateMachine__updateAlbumDisposition_params___block_invoke;
     v20[3] = &unk_278E911E0;
     v20[4] = self;
     objc_copyWeak(&v24, buf);
-    v21 = v6;
+    v21 = paramsCopy;
     v22 = v7;
     v23 = v8;
-    [v14 updateAlbum:v22 albumURLString:v13 completionBlock:v20];
+    [protocol2 updateAlbum:v22 albumURLString:v13 completionBlock:v20];
 
     objc_destroyWeak(&v24);
     objc_destroyWeak(buf);
@@ -6296,22 +6296,22 @@ void __51__MSASStateMachine__updateAlbumDisposition_params___block_invoke_2_241(
   [v6 MSASStateMachine:v7 didFinishUpdatingAlbum:*(a1 + 32) info:*(a1 + 40) error:*(a1 + 48)];
 }
 
-- (void)updateAlbum:(id)a3 updateAlbumFlags:(int)a4 info:(id)a5
+- (void)updateAlbum:(id)album updateAlbumFlags:(int)flags info:(id)info
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(MSASStateMachine *)self workQueue];
+  albumCopy = album;
+  infoCopy = info;
+  workQueue = [(MSASStateMachine *)self workQueue];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __54__MSASStateMachine_updateAlbum_updateAlbumFlags_info___block_invoke;
   v13[3] = &unk_278E91D70;
-  v14 = v8;
-  v15 = v9;
-  v17 = a4;
-  v16 = self;
-  v11 = v9;
-  v12 = v8;
-  dispatch_async(v10, v13);
+  v14 = albumCopy;
+  v15 = infoCopy;
+  flagsCopy = flags;
+  selfCopy = self;
+  v11 = infoCopy;
+  v12 = albumCopy;
+  dispatch_async(workQueue, v13);
 }
 
 void __54__MSASStateMachine_updateAlbum_updateAlbumFlags_info___block_invoke(uint64_t a1)
@@ -6342,15 +6342,15 @@ void __54__MSASStateMachine_updateAlbum_updateAlbumFlags_info___block_invoke(uin
   [*(a1 + 48) workQueueRetryOutstandingActivities];
 }
 
-- (void)_createAlbumDisposition:(int)a3 params:(id)a4
+- (void)_createAlbumDisposition:(int)disposition params:(id)params
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [(MSASStateMachine *)self _albumForRequestFromParams:v6];
-  v8 = [v6 objectForKey:@"info"];
-  if (a3 == 2)
+  paramsCopy = params;
+  v7 = [(MSASStateMachine *)self _albumForRequestFromParams:paramsCopy];
+  v8 = [paramsCopy objectForKey:@"info"];
+  if (disposition == 2)
   {
-    v12 = [(MSASStateMachine *)self eventQueue];
+    eventQueue = [(MSASStateMachine *)self eventQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __51__MSASStateMachine__createAlbumDisposition_params___block_invoke_3;
@@ -6358,26 +6358,26 @@ void __54__MSASStateMachine_updateAlbum_updateAlbumFlags_info___block_invoke(uin
     block[4] = self;
     v15 = v7;
     v16 = v8;
-    dispatch_async(v12, block);
+    dispatch_async(eventQueue, block);
   }
 
-  else if (!a3)
+  else if (!disposition)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v22 = self;
+      selfCopy = self;
       v23 = 2114;
       v24 = v7;
       _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%{public}@: Creating album: %{public}@", buf, 0x16u);
     }
 
-    v9 = [(MSASStateMachine *)self protocol];
-    v10 = [v9 stopHandlerBlock];
-    [(MSASStateMachine *)self _setStopHandlerBlock:v10];
+    protocol = [(MSASStateMachine *)self protocol];
+    stopHandlerBlock = [protocol stopHandlerBlock];
+    [(MSASStateMachine *)self _setStopHandlerBlock:stopHandlerBlock];
 
     objc_initWeak(buf, self);
-    v11 = [(MSASStateMachine *)self protocol];
+    protocol2 = [(MSASStateMachine *)self protocol];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __51__MSASStateMachine__createAlbumDisposition_params___block_invoke;
@@ -6386,7 +6386,7 @@ void __54__MSASStateMachine_updateAlbum_updateAlbumFlags_info___block_invoke(uin
     objc_copyWeak(&v20, buf);
     v18 = v7;
     v19 = v8;
-    [v11 createAlbum:v18 completionBlock:v17];
+    [protocol2 createAlbum:v18 completionBlock:v17];
 
     objc_destroyWeak(&v20);
     objc_destroyWeak(buf);
@@ -6539,21 +6539,21 @@ void __51__MSASStateMachine__createAlbumDisposition_params___block_invoke_2_235(
   [v6 MSASStateMachine:v7 didFinishCreatingAlbum:*(a1 + 32) info:*(a1 + 40) error:*(a1 + 48)];
 }
 
-- (void)createAlbum:(id)a3 info:(id)a4
+- (void)createAlbum:(id)album info:(id)info
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MSASStateMachine *)self workQueue];
+  albumCopy = album;
+  infoCopy = info;
+  workQueue = [(MSASStateMachine *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __37__MSASStateMachine_createAlbum_info___block_invoke;
   block[3] = &unk_278E92638;
-  v12 = v6;
-  v13 = v7;
-  v14 = self;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = albumCopy;
+  v13 = infoCopy;
+  selfCopy = self;
+  v9 = infoCopy;
+  v10 = albumCopy;
+  dispatch_async(workQueue, block);
 }
 
 void __37__MSASStateMachine_createAlbum_info___block_invoke(uint64_t a1)
@@ -6581,19 +6581,19 @@ void __37__MSASStateMachine_createAlbum_info___block_invoke(uint64_t a1)
   [*(a1 + 48) workQueueRetryOutstandingActivities];
 }
 
-- (void)_deleteCommentDisposition:(int)a3 params:(id)a4
+- (void)_deleteCommentDisposition:(int)disposition params:(id)params
 {
   v46 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v19 = [v6 objectForKey:@"comment"];
-  v7 = [v6 objectForKey:@"assetCollection"];
-  v8 = [(MSASStateMachine *)self _albumForRequestFromParams:v6];
-  v9 = [v6 objectForKey:@"info"];
-  v10 = [v6 objectForKey:@"error"];
+  paramsCopy = params;
+  v19 = [paramsCopy objectForKey:@"comment"];
+  v7 = [paramsCopy objectForKey:@"assetCollection"];
+  v8 = [(MSASStateMachine *)self _albumForRequestFromParams:paramsCopy];
+  v9 = [paramsCopy objectForKey:@"info"];
+  v10 = [paramsCopy objectForKey:@"error"];
   v11 = v10;
-  if (a3 == 2)
+  if (disposition == 2)
   {
-    v13 = [(MSASStateMachine *)self eventQueue];
+    eventQueue = [(MSASStateMachine *)self eventQueue];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __53__MSASStateMachine__deleteCommentDisposition_params___block_invoke_2_230;
@@ -6603,14 +6603,14 @@ void __37__MSASStateMachine_createAlbum_info___block_invoke(uint64_t a1)
     v22 = v7;
     v23 = v8;
     v24 = v9;
-    dispatch_async(v13, v20);
+    dispatch_async(eventQueue, v20);
   }
 
-  else if (!a3)
+  else if (!disposition)
   {
     if (v10)
     {
-      v12 = [(MSASStateMachine *)self eventQueue];
+      eventQueue2 = [(MSASStateMachine *)self eventQueue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __53__MSASStateMachine__deleteCommentDisposition_params___block_invoke;
@@ -6621,7 +6621,7 @@ void __37__MSASStateMachine_createAlbum_info___block_invoke(uint64_t a1)
       v35 = v8;
       v36 = v9;
       v37 = v11;
-      dispatch_async(v12, block);
+      dispatch_async(eventQueue2, block);
 
       [(MSASStateMachine *)self workQueueDidFinishCommand];
     }
@@ -6631,7 +6631,7 @@ void __37__MSASStateMachine_createAlbum_info___block_invoke(uint64_t a1)
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138544130;
-        v39 = self;
+        selfCopy = self;
         v40 = 2114;
         v41 = v19;
         v42 = 2114;
@@ -6642,23 +6642,23 @@ void __37__MSASStateMachine_createAlbum_info___block_invoke(uint64_t a1)
       }
 
       objc_initWeak(buf, self);
-      v14 = [(MSASStateMachine *)self delegate];
-      v15 = [v8 GUID];
-      v16 = [v14 MSASStateMachineDidRequestAlbumURLStringForAlbumWithGUID:v15 info:v9];
+      delegate = [(MSASStateMachine *)self delegate];
+      gUID = [v8 GUID];
+      v16 = [delegate MSASStateMachineDidRequestAlbumURLStringForAlbumWithGUID:gUID info:v9];
 
-      v17 = [(MSASStateMachine *)self protocol];
+      protocol = [(MSASStateMachine *)self protocol];
       v25[0] = MEMORY[0x277D85DD0];
       v25[1] = 3221225472;
       v25[2] = __53__MSASStateMachine__deleteCommentDisposition_params___block_invoke_227;
       v25[3] = &unk_278E91440;
       v25[4] = self;
       objc_copyWeak(&v31, buf);
-      v26 = v6;
+      v26 = paramsCopy;
       v27 = v8;
       v28 = v7;
       v29 = v19;
       v30 = v9;
-      [v17 deleteComment:v29 fromAssetCollection:v28 inAlbum:v27 albumURLString:v16 completionBlock:v25];
+      [protocol deleteComment:v29 fromAssetCollection:v28 inAlbum:v27 albumURLString:v16 completionBlock:v25];
 
       objc_destroyWeak(&v31);
       objc_destroyWeak(buf);
@@ -6834,27 +6834,27 @@ void __53__MSASStateMachine__deleteCommentDisposition_params___block_invoke_229(
   [v2 MSASStateMachine:v3 didFinishDeletingComment:*(a1 + 32) inAssetCollection:*(a1 + 40) inAlbum:*(a1 + 48) info:*(a1 + 56) error:0];
 }
 
-- (void)deleteComments:(id)a3 inAssetCollection:(id)a4 inAlbum:(id)a5 info:(id)a6
+- (void)deleteComments:(id)comments inAssetCollection:(id)collection inAlbum:(id)album info:(id)info
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(MSASStateMachine *)self workQueue];
+  commentsCopy = comments;
+  collectionCopy = collection;
+  albumCopy = album;
+  infoCopy = info;
+  workQueue = [(MSASStateMachine *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __66__MSASStateMachine_deleteComments_inAssetCollection_inAlbum_info___block_invoke;
   block[3] = &unk_278E92688;
   block[4] = self;
-  v20 = v10;
-  v21 = v11;
-  v22 = v12;
-  v23 = v13;
-  v15 = v13;
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
-  dispatch_async(v14, block);
+  v20 = commentsCopy;
+  v21 = collectionCopy;
+  v22 = albumCopy;
+  v23 = infoCopy;
+  v15 = infoCopy;
+  v16 = albumCopy;
+  v17 = collectionCopy;
+  v18 = commentsCopy;
+  dispatch_async(workQueue, block);
 }
 
 uint64_t __66__MSASStateMachine_deleteComments_inAssetCollection_inAlbum_info___block_invoke(uint64_t a1)
@@ -6946,33 +6946,33 @@ uint64_t __66__MSASStateMachine_deleteComments_inAssetCollection_inAlbum_info___
   return result;
 }
 
-- (void)_deleteAssetCollectionsDisposition:(int)a3 params:(id)a4
+- (void)_deleteAssetCollectionsDisposition:(int)disposition params:(id)params
 {
   v33 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [(MSASStateMachine *)self _albumForRequestFromParams:v6];
-  v8 = [v6 objectForKey:@"assetCollections"];
-  v9 = [v6 objectForKey:@"info"];
-  if (a3 == 2)
+  paramsCopy = params;
+  v7 = [(MSASStateMachine *)self _albumForRequestFromParams:paramsCopy];
+  v8 = [paramsCopy objectForKey:@"assetCollections"];
+  v9 = [paramsCopy objectForKey:@"info"];
+  if (disposition == 2)
   {
-    v15 = [(MSASStateMachine *)self eventQueue];
+    eventQueue = [(MSASStateMachine *)self eventQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __62__MSASStateMachine__deleteAssetCollectionsDisposition_params___block_invoke_3;
     block[3] = &unk_278E92660;
     v18 = v8;
-    v19 = self;
+    selfCopy = self;
     v20 = v7;
     v21 = v9;
-    dispatch_async(v15, block);
+    dispatch_async(eventQueue, block);
   }
 
-  else if (!a3)
+  else if (!disposition)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543874;
-      v28 = self;
+      selfCopy2 = self;
       v29 = 2048;
       v30 = [v8 count];
       v31 = 2114;
@@ -6980,18 +6980,18 @@ uint64_t __66__MSASStateMachine_deleteComments_inAssetCollection_inAlbum_info___
       _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%{public}@: Deleting %ld photos in album %{public}@", buf, 0x20u);
     }
 
-    v10 = [(MSASStateMachine *)self protocol];
-    v11 = [v10 stopHandlerBlock];
-    [(MSASStateMachine *)self _setStopHandlerBlock:v11];
+    protocol = [(MSASStateMachine *)self protocol];
+    stopHandlerBlock = [protocol stopHandlerBlock];
+    [(MSASStateMachine *)self _setStopHandlerBlock:stopHandlerBlock];
 
-    v12 = [(MSASStateMachine *)self _model];
-    [v12 removeAssetCollectionsFromUploadQueue:v8];
+    _model = [(MSASStateMachine *)self _model];
+    [_model removeAssetCollectionsFromUploadQueue:v8];
 
-    v13 = [(MSASStateMachine *)self _assetUploader];
-    [v13 cancelAssetCollections:v8];
+    _assetUploader = [(MSASStateMachine *)self _assetUploader];
+    [_assetUploader cancelAssetCollections:v8];
 
     objc_initWeak(buf, self);
-    v14 = [(MSASStateMachine *)self protocol];
+    protocol2 = [(MSASStateMachine *)self protocol];
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
     v22[2] = __62__MSASStateMachine__deleteAssetCollectionsDisposition_params___block_invoke;
@@ -7001,7 +7001,7 @@ uint64_t __66__MSASStateMachine_deleteComments_inAssetCollection_inAlbum_info___
     v23 = v8;
     v24 = v7;
     v25 = v9;
-    [v14 deleteAssetCollections:v23 inAlbum:v24 completionBlock:v22];
+    [protocol2 deleteAssetCollections:v23 inAlbum:v24 completionBlock:v22];
 
     objc_destroyWeak(&v26);
     objc_destroyWeak(buf);
@@ -7258,24 +7258,24 @@ void __62__MSASStateMachine__deleteAssetCollectionsDisposition_params___block_in
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deleteAssetCollections:(id)a3 inAlbum:(id)a4 info:(id)a5
+- (void)deleteAssetCollections:(id)collections inAlbum:(id)album info:(id)info
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(MSASStateMachine *)self workQueue];
+  collectionsCopy = collections;
+  albumCopy = album;
+  infoCopy = info;
+  workQueue = [(MSASStateMachine *)self workQueue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __56__MSASStateMachine_deleteAssetCollections_inAlbum_info___block_invoke;
   v15[3] = &unk_278E92660;
-  v16 = v9;
-  v17 = v8;
-  v18 = v10;
-  v19 = self;
-  v12 = v10;
-  v13 = v8;
-  v14 = v9;
-  dispatch_async(v11, v15);
+  v16 = albumCopy;
+  v17 = collectionsCopy;
+  v18 = infoCopy;
+  selfCopy = self;
+  v12 = infoCopy;
+  v13 = collectionsCopy;
+  v14 = albumCopy;
+  dispatch_async(workQueue, v15);
 }
 
 void __56__MSASStateMachine_deleteAssetCollections_inAlbum_info___block_invoke(uint64_t a1)
@@ -7309,15 +7309,15 @@ void __56__MSASStateMachine_deleteAssetCollections_inAlbum_info___block_invoke(u
   [*(a1 + 56) workQueueRetryOutstandingActivities];
 }
 
-- (void)_deleteAlbumDisposition:(int)a3 params:(id)a4
+- (void)_deleteAlbumDisposition:(int)disposition params:(id)params
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [(MSASStateMachine *)self _albumForRequestFromParams:v6];
-  v8 = [v6 objectForKey:@"info"];
-  if (a3 == 2)
+  paramsCopy = params;
+  v7 = [(MSASStateMachine *)self _albumForRequestFromParams:paramsCopy];
+  v8 = [paramsCopy objectForKey:@"info"];
+  if (disposition == 2)
   {
-    v12 = [(MSASStateMachine *)self eventQueue];
+    eventQueue = [(MSASStateMachine *)self eventQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __51__MSASStateMachine__deleteAlbumDisposition_params___block_invoke_3;
@@ -7325,26 +7325,26 @@ void __56__MSASStateMachine_deleteAssetCollections_inAlbum_info___block_invoke(u
     block[4] = self;
     v15 = v7;
     v16 = v8;
-    dispatch_async(v12, block);
+    dispatch_async(eventQueue, block);
   }
 
-  else if (!a3)
+  else if (!disposition)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v22 = self;
+      selfCopy = self;
       v23 = 2114;
       v24 = v7;
       _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%{public}@: Deleting album: %{public}@", buf, 0x16u);
     }
 
-    v9 = [(MSASStateMachine *)self protocol];
-    v10 = [v9 stopHandlerBlock];
-    [(MSASStateMachine *)self _setStopHandlerBlock:v10];
+    protocol = [(MSASStateMachine *)self protocol];
+    stopHandlerBlock = [protocol stopHandlerBlock];
+    [(MSASStateMachine *)self _setStopHandlerBlock:stopHandlerBlock];
 
     objc_initWeak(buf, self);
-    v11 = [(MSASStateMachine *)self protocol];
+    protocol2 = [(MSASStateMachine *)self protocol];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __51__MSASStateMachine__deleteAlbumDisposition_params___block_invoke;
@@ -7353,7 +7353,7 @@ void __56__MSASStateMachine_deleteAssetCollections_inAlbum_info___block_invoke(u
     objc_copyWeak(&v20, buf);
     v18 = v7;
     v19 = v8;
-    [v11 deleteAlbum:v18 completionBlock:v17];
+    [protocol2 deleteAlbum:v18 completionBlock:v17];
 
     objc_destroyWeak(&v20);
     objc_destroyWeak(buf);
@@ -7494,21 +7494,21 @@ void __51__MSASStateMachine__deleteAlbumDisposition_params___block_invoke_2_219(
   [v6 MSASStateMachine:v7 didFinishDeletingAlbum:*(a1 + 32) info:*(a1 + 40) error:*(a1 + 48)];
 }
 
-- (void)deleteAlbum:(id)a3 info:(id)a4
+- (void)deleteAlbum:(id)album info:(id)info
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MSASStateMachine *)self workQueue];
+  albumCopy = album;
+  infoCopy = info;
+  workQueue = [(MSASStateMachine *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __37__MSASStateMachine_deleteAlbum_info___block_invoke;
   block[3] = &unk_278E92638;
-  v12 = v6;
-  v13 = v7;
-  v14 = self;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = albumCopy;
+  v13 = infoCopy;
+  selfCopy = self;
+  v9 = infoCopy;
+  v10 = albumCopy;
+  dispatch_async(workQueue, block);
 }
 
 void __37__MSASStateMachine_deleteAlbum_info___block_invoke(uint64_t a1)
@@ -7536,21 +7536,21 @@ void __37__MSASStateMachine_deleteAlbum_info___block_invoke(uint64_t a1)
   [*(a1 + 48) workQueueRetryOutstandingActivities];
 }
 
-- (void)_setAssetCollectionSyncedStateDisposition:(int)a3 params:(id)a4
+- (void)_setAssetCollectionSyncedStateDisposition:(int)disposition params:(id)params
 {
   v45 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [v6 objectForKey:@"assetCollection"];
-  v8 = [(MSASStateMachine *)self _albumForRequestFromParams:v6];
-  v9 = [v6 objectForKey:@"assetCollectionState"];
-  v10 = [v6 objectForKey:@"info"];
+  paramsCopy = params;
+  v7 = [paramsCopy objectForKey:@"assetCollection"];
+  v8 = [(MSASStateMachine *)self _albumForRequestFromParams:paramsCopy];
+  v9 = [paramsCopy objectForKey:@"assetCollectionState"];
+  v10 = [paramsCopy objectForKey:@"info"];
   v33 = 0;
   v34 = &v33;
   v35 = 0x3032000000;
   v36 = __Block_byref_object_copy__4549;
   v37 = __Block_byref_object_dispose__4550;
   v38 = 0;
-  v11 = [(MSASStateMachine *)self eventQueue];
+  eventQueue = [(MSASStateMachine *)self eventQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __69__MSASStateMachine__setAssetCollectionSyncedStateDisposition_params___block_invoke;
@@ -7561,11 +7561,11 @@ void __37__MSASStateMachine_deleteAlbum_info___block_invoke(uint64_t a1)
   v30 = v12;
   v13 = v10;
   v31 = v13;
-  dispatch_sync(v11, block);
+  dispatch_sync(eventQueue, block);
 
-  if (a3 == 2)
+  if (disposition == 2)
   {
-    v18 = [(MSASStateMachine *)self eventQueue];
+    eventQueue2 = [(MSASStateMachine *)self eventQueue];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __69__MSASStateMachine__setAssetCollectionSyncedStateDisposition_params___block_invoke_3;
@@ -7574,15 +7574,15 @@ void __37__MSASStateMachine_deleteAlbum_info___block_invoke(uint64_t a1)
     v21 = v12;
     v22 = v8;
     v23 = v13;
-    dispatch_async(v18, v20);
+    dispatch_async(eventQueue2, v20);
   }
 
-  else if (!a3)
+  else if (!disposition)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       *buf = 138543874;
-      v40 = self;
+      selfCopy = self;
       v41 = 2114;
       v42 = v12;
       v43 = 2114;
@@ -7590,12 +7590,12 @@ void __37__MSASStateMachine_deleteAlbum_info___block_invoke(uint64_t a1)
       _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%{public}@: Setting synced state for asset collection %{public}@ in album %{public}@", buf, 0x20u);
     }
 
-    v14 = [(MSASStateMachine *)self protocol];
-    v15 = [v14 stopHandlerBlock];
-    [(MSASStateMachine *)self _setStopHandlerBlock:v15];
+    protocol = [(MSASStateMachine *)self protocol];
+    stopHandlerBlock = [protocol stopHandlerBlock];
+    [(MSASStateMachine *)self _setStopHandlerBlock:stopHandlerBlock];
 
     objc_initWeak(buf, self);
-    v16 = [(MSASStateMachine *)self protocol];
+    protocol2 = [(MSASStateMachine *)self protocol];
     v17 = v34[5];
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
@@ -7605,7 +7605,7 @@ void __37__MSASStateMachine_deleteAlbum_info___block_invoke(uint64_t a1)
     v25 = v12;
     v26 = v8;
     v27 = v13;
-    [v16 setAssetCollectionSyncedState:v9 forAssetCollection:v25 inAlbum:v26 assetCollectionStateCtag:v17 completionBlock:v24];
+    [protocol2 setAssetCollectionSyncedState:v9 forAssetCollection:v25 inAlbum:v26 assetCollectionStateCtag:v17 completionBlock:v24];
 
     objc_destroyWeak(&v28);
     objc_destroyWeak(buf);
@@ -7783,27 +7783,27 @@ void __69__MSASStateMachine__setAssetCollectionSyncedStateDisposition_params___b
   [v2 MSASStateMachine:*(a1 + 32) didFinishSettingSyncedStateForAssetCollection:*(a1 + 40) inAlbum:*(a1 + 48) assetStateCtag:*(a1 + 56) info:*(a1 + 64) error:0];
 }
 
-- (void)setAssetCollectionSyncedState:(id)a3 forAssetCollection:(id)a4 album:(id)a5 info:(id)a6
+- (void)setAssetCollectionSyncedState:(id)state forAssetCollection:(id)collection album:(id)album info:(id)info
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(MSASStateMachine *)self workQueue];
+  stateCopy = state;
+  collectionCopy = collection;
+  albumCopy = album;
+  infoCopy = info;
+  workQueue = [(MSASStateMachine *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __80__MSASStateMachine_setAssetCollectionSyncedState_forAssetCollection_album_info___block_invoke;
   block[3] = &unk_278E92688;
   block[4] = self;
-  v20 = v11;
-  v21 = v12;
-  v22 = v10;
-  v23 = v13;
-  v15 = v13;
-  v16 = v10;
-  v17 = v12;
-  v18 = v11;
-  dispatch_async(v14, block);
+  v20 = collectionCopy;
+  v21 = albumCopy;
+  v22 = stateCopy;
+  v23 = infoCopy;
+  v15 = infoCopy;
+  v16 = stateCopy;
+  v17 = albumCopy;
+  v18 = collectionCopy;
+  dispatch_async(workQueue, block);
 }
 
 void __80__MSASStateMachine_setAssetCollectionSyncedState_forAssetCollection_album_info___block_invoke(uint64_t a1)
@@ -7860,20 +7860,20 @@ void __80__MSASStateMachine_setAssetCollectionSyncedState_forAssetCollection_alb
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_setAlbumSyncedStateDisposition:(int)a3 params:(id)a4
+- (void)_setAlbumSyncedStateDisposition:(int)disposition params:(id)params
 {
   v44 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [(MSASStateMachine *)self _albumForRequestFromParams:v6];
-  v8 = [v6 objectForKey:@"albumState"];
-  v9 = [v6 objectForKey:@"info"];
+  paramsCopy = params;
+  v7 = [(MSASStateMachine *)self _albumForRequestFromParams:paramsCopy];
+  v8 = [paramsCopy objectForKey:@"albumState"];
+  v9 = [paramsCopy objectForKey:@"info"];
   v34 = 0;
   v35 = &v34;
   v36 = 0x3032000000;
   v37 = __Block_byref_object_copy__4549;
   v38 = __Block_byref_object_dispose__4550;
   v39 = 0;
-  v10 = [(MSASStateMachine *)self eventQueue];
+  eventQueue = [(MSASStateMachine *)self eventQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __59__MSASStateMachine__setAlbumSyncedStateDisposition_params___block_invoke;
@@ -7884,11 +7884,11 @@ void __80__MSASStateMachine_setAssetCollectionSyncedState_forAssetCollection_alb
   v31 = v11;
   v12 = v9;
   v32 = v12;
-  dispatch_sync(v10, block);
+  dispatch_sync(eventQueue, block);
 
-  if (a3 == 2)
+  if (disposition == 2)
   {
-    v17 = [(MSASStateMachine *)self eventQueue];
+    eventQueue2 = [(MSASStateMachine *)self eventQueue];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __59__MSASStateMachine__setAlbumSyncedStateDisposition_params___block_invoke_2_209;
@@ -7896,28 +7896,28 @@ void __80__MSASStateMachine_setAssetCollectionSyncedState_forAssetCollection_alb
     v20[4] = self;
     v21 = v11;
     v22 = v12;
-    dispatch_async(v17, v20);
+    dispatch_async(eventQueue2, v20);
   }
 
-  else if (!a3)
+  else if (!disposition)
   {
     if (v35[5])
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543618;
-        v41 = self;
+        selfCopy2 = self;
         v42 = 2114;
         v43 = v11;
         _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%{public}@: Setting synced state for album %{public}@", buf, 0x16u);
       }
 
-      v13 = [(MSASStateMachine *)self protocol];
-      v14 = [v13 stopHandlerBlock];
-      [(MSASStateMachine *)self _setStopHandlerBlock:v14];
+      protocol = [(MSASStateMachine *)self protocol];
+      stopHandlerBlock = [protocol stopHandlerBlock];
+      [(MSASStateMachine *)self _setStopHandlerBlock:stopHandlerBlock];
 
       objc_initWeak(buf, self);
-      v15 = [(MSASStateMachine *)self protocol];
+      protocol2 = [(MSASStateMachine *)self protocol];
       v16 = v35[5];
       v26[0] = MEMORY[0x277D85DD0];
       v26[1] = 3221225472;
@@ -7926,7 +7926,7 @@ void __80__MSASStateMachine_setAssetCollectionSyncedState_forAssetCollection_alb
       objc_copyWeak(&v29, buf);
       v27 = v11;
       v28 = v12;
-      [v15 setAlbumSyncedState:v8 forAlbum:v27 albumStateCtag:v16 completionBlock:v26];
+      [protocol2 setAlbumSyncedState:v8 forAlbum:v27 albumStateCtag:v16 completionBlock:v26];
 
       objc_destroyWeak(&v29);
       objc_destroyWeak(buf);
@@ -7937,13 +7937,13 @@ void __80__MSASStateMachine_setAssetCollectionSyncedState_forAssetCollection_alb
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
-        v41 = self;
+        selfCopy2 = self;
         v42 = 2114;
         v43 = v11;
         _os_log_error_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%{public}@: Not setting synced state for album %{public}@ because we don't have a state ctag.", buf, 0x16u);
       }
 
-      v18 = [(MSASStateMachine *)self eventQueue];
+      eventQueue3 = [(MSASStateMachine *)self eventQueue];
       v23[0] = MEMORY[0x277D85DD0];
       v23[1] = 3221225472;
       v23[2] = __59__MSASStateMachine__setAlbumSyncedStateDisposition_params___block_invoke_205;
@@ -7951,7 +7951,7 @@ void __80__MSASStateMachine_setAssetCollectionSyncedState_forAssetCollection_alb
       v23[4] = self;
       v24 = v11;
       v25 = v12;
-      dispatch_async(v18, v23);
+      dispatch_async(eventQueue3, v23);
 
       [(MSASStateMachine *)self workQueueDidFinishCommand];
     }
@@ -8129,24 +8129,24 @@ void __59__MSASStateMachine__setAlbumSyncedStateDisposition_params___block_invok
   [v2 MSASStateMachine:*(a1 + 32) didFinishSettingSyncedStateForAlbum:*(a1 + 40) info:*(a1 + 48) error:*(a1 + 56) newAlbumStateCtag:*(a1 + 64)];
 }
 
-- (void)setAlbumSyncedState:(id)a3 forAlbum:(id)a4 info:(id)a5
+- (void)setAlbumSyncedState:(id)state forAlbum:(id)album info:(id)info
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(MSASStateMachine *)self workQueue];
+  stateCopy = state;
+  albumCopy = album;
+  infoCopy = info;
+  workQueue = [(MSASStateMachine *)self workQueue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __54__MSASStateMachine_setAlbumSyncedState_forAlbum_info___block_invoke;
   v15[3] = &unk_278E92660;
   v15[4] = self;
-  v16 = v9;
-  v17 = v8;
-  v18 = v10;
-  v12 = v10;
-  v13 = v8;
-  v14 = v9;
-  dispatch_async(v11, v15);
+  v16 = albumCopy;
+  v17 = stateCopy;
+  v18 = infoCopy;
+  v12 = infoCopy;
+  v13 = stateCopy;
+  v14 = albumCopy;
+  dispatch_async(workQueue, v15);
 }
 
 void __54__MSASStateMachine_setAlbumSyncedState_forAlbum_info___block_invoke(uint64_t a1)
@@ -8193,15 +8193,15 @@ void __54__MSASStateMachine_setAlbumSyncedState_forAlbum_info___block_invoke(uin
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_checkForAlbumSyncedStateDisposition:(int)a3 params:(id)a4
+- (void)_checkForAlbumSyncedStateDisposition:(int)disposition params:(id)params
 {
   v39 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [(MSASStateMachine *)self _albumForRequestFromParams:v6];
-  v8 = [v6 objectForKey:@"info"];
-  if (a3 == 2)
+  paramsCopy = params;
+  v7 = [(MSASStateMachine *)self _albumForRequestFromParams:paramsCopy];
+  v8 = [paramsCopy objectForKey:@"info"];
+  if (disposition == 2)
   {
-    v19 = [(MSASStateMachine *)self eventQueue];
+    eventQueue = [(MSASStateMachine *)self eventQueue];
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __64__MSASStateMachine__checkForAlbumSyncedStateDisposition_params___block_invoke_3_199;
@@ -8209,7 +8209,7 @@ void __54__MSASStateMachine_setAlbumSyncedState_forAlbum_info___block_invoke(uin
     v21[4] = self;
     v22 = v7;
     v23 = v8;
-    dispatch_async(v19, v21);
+    dispatch_async(eventQueue, v21);
 
     v17 = &v22;
     v18 = &v23;
@@ -8218,7 +8218,7 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if (!a3)
+  if (!disposition)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
     {
@@ -8229,11 +8229,11 @@ LABEL_7:
       _os_log_debug_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG, "%{public}@: Checking for album synced state changes in album %{public}@", location, 0x16u);
     }
 
-    v9 = [(MSASStateMachine *)self protocol];
-    v10 = [v9 stopHandlerBlock];
-    [(MSASStateMachine *)self _setStopHandlerBlock:v10];
+    protocol = [(MSASStateMachine *)self protocol];
+    stopHandlerBlock = [protocol stopHandlerBlock];
+    [(MSASStateMachine *)self _setStopHandlerBlock:stopHandlerBlock];
 
-    v11 = [(MSASStateMachine *)self eventQueue];
+    eventQueue2 = [(MSASStateMachine *)self eventQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __64__MSASStateMachine__checkForAlbumSyncedStateDisposition_params___block_invoke;
@@ -8243,10 +8243,10 @@ LABEL_7:
     v34 = v12;
     v13 = v8;
     v35 = v13;
-    dispatch_async(v11, block);
+    dispatch_async(eventQueue2, block);
 
     objc_initWeak(location, self);
-    v14 = [(MSASStateMachine *)self protocol];
+    protocol2 = [(MSASStateMachine *)self protocol];
     v29[0] = MEMORY[0x277D85DD0];
     v29[1] = 3221225472;
     v29[2] = __64__MSASStateMachine__checkForAlbumSyncedStateDisposition_params___block_invoke_2;
@@ -8263,9 +8263,9 @@ LABEL_7:
     v24[3] = &unk_278E91390;
     objc_copyWeak(&v28, location);
     v25 = v15;
-    v26 = self;
+    selfCopy = self;
     v27 = v16;
-    [v14 getAlbumSyncedStateForAlbum:v25 assetCollectionStateBlock:v29 completionBlock:v24];
+    [protocol2 getAlbumSyncedStateForAlbum:v25 assetCollectionStateBlock:v29 completionBlock:v24];
 
     objc_destroyWeak(&v28);
     objc_destroyWeak(&v32);
@@ -8428,21 +8428,21 @@ void __64__MSASStateMachine__checkForAlbumSyncedStateDisposition_params___block_
   [v2 MSASStateMachine:v3 didFindAssetCollectionSyncedState:*(a1 + 32) forAssetCollectionGUID:*(a1 + 40) inAlbum:*(a1 + 48) assetCollectionStateCtag:*(a1 + 56) info:*(a1 + 64)];
 }
 
-- (void)checkForAlbumSyncedStateChangesInAlbums:(id)a3 info:(id)a4
+- (void)checkForAlbumSyncedStateChangesInAlbums:(id)albums info:(id)info
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MSASStateMachine *)self workQueue];
+  albumsCopy = albums;
+  infoCopy = info;
+  workQueue = [(MSASStateMachine *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __65__MSASStateMachine_checkForAlbumSyncedStateChangesInAlbums_info___block_invoke;
   block[3] = &unk_278E92638;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = albumsCopy;
+  v13 = infoCopy;
+  v9 = infoCopy;
+  v10 = albumsCopy;
+  dispatch_async(workQueue, block);
 }
 
 uint64_t __65__MSASStateMachine_checkForAlbumSyncedStateChangesInAlbums_info___block_invoke(uint64_t a1)
@@ -8520,57 +8520,57 @@ uint64_t __65__MSASStateMachine_checkForAlbumSyncedStateChangesInAlbums_info___b
   return result;
 }
 
-- (void)_checkForCommentChangesDisposition:(int)a3 params:(id)a4
+- (void)_checkForCommentChangesDisposition:(int)disposition params:(id)params
 {
   v43 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [v6 objectForKey:@"commentsChange"];
-  v8 = [v6 objectForKey:@"albumGUID"];
-  v9 = [(MSASStateMachine *)self delegate];
-  v10 = [v9 albumWithGUID:v8];
+  paramsCopy = params;
+  v7 = [paramsCopy objectForKey:@"commentsChange"];
+  v8 = [paramsCopy objectForKey:@"albumGUID"];
+  delegate = [(MSASStateMachine *)self delegate];
+  v10 = [delegate albumWithGUID:v8];
 
-  v11 = [v10 clientOrgKey];
-  if (v11)
+  clientOrgKey = [v10 clientOrgKey];
+  if (clientOrgKey)
   {
     [v10 clientOrgKey];
   }
 
   else
   {
-    [v6 objectForKey:@"clientOrgKey"];
+    [paramsCopy objectForKey:@"clientOrgKey"];
   }
   v23 = ;
 
-  v12 = [v6 objectForKey:@"info"];
-  v13 = [v6 objectForKey:@"error"];
+  v12 = [paramsCopy objectForKey:@"info"];
+  v13 = [paramsCopy objectForKey:@"error"];
   v14 = v13;
-  if (a3 == 2)
+  if (disposition == 2)
   {
-    v16 = [(MSASStateMachine *)self eventQueue];
+    eventQueue = [(MSASStateMachine *)self eventQueue];
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
     v24[2] = __62__MSASStateMachine__checkForCommentChangesDisposition_params___block_invoke_4;
     v24[3] = &unk_278E92638;
     v25 = v7;
-    v26 = self;
+    selfCopy = self;
     v27 = v12;
-    dispatch_async(v16, v24);
+    dispatch_async(eventQueue, v24);
   }
 
-  else if (!a3)
+  else if (!disposition)
   {
     if (v13)
     {
-      v15 = [(MSASStateMachine *)self eventQueue];
+      eventQueue2 = [(MSASStateMachine *)self eventQueue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __62__MSASStateMachine__checkForCommentChangesDisposition_params___block_invoke;
       block[3] = &unk_278E92660;
       v35 = v7;
-      v36 = self;
+      selfCopy2 = self;
       v37 = v12;
       v38 = v14;
-      dispatch_async(v15, block);
+      dispatch_async(eventQueue2, block);
 
       [(MSASStateMachine *)self workQueueDidFinishCommand];
     }
@@ -8580,32 +8580,32 @@ uint64_t __65__MSASStateMachine_checkForAlbumSyncedStateChangesInAlbums_info___b
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
         *buf = 138543618;
-        v40 = self;
+        selfCopy3 = self;
         v41 = 2114;
         v42 = v8;
         _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%{public}@: Checking for comment changes in album %{public}@,", buf, 0x16u);
       }
 
-      v17 = [(MSASStateMachine *)self protocol];
-      v18 = [v17 stopHandlerBlock];
-      [(MSASStateMachine *)self _setStopHandlerBlock:v18];
+      protocol = [(MSASStateMachine *)self protocol];
+      stopHandlerBlock = [protocol stopHandlerBlock];
+      [(MSASStateMachine *)self _setStopHandlerBlock:stopHandlerBlock];
 
       objc_initWeak(buf, self);
-      v19 = [(MSASStateMachine *)self delegate];
-      v20 = [v19 MSASStateMachineDidRequestAlbumURLStringForAlbumWithGUID:v8 info:v12];
+      delegate2 = [(MSASStateMachine *)self delegate];
+      v20 = [delegate2 MSASStateMachineDidRequestAlbumURLStringForAlbumWithGUID:v8 info:v12];
 
-      v21 = [(MSASStateMachine *)self protocol];
+      protocol2 = [(MSASStateMachine *)self protocol];
       v28[0] = MEMORY[0x277D85DD0];
       v28[1] = 3221225472;
       v28[2] = __62__MSASStateMachine__checkForCommentChangesDisposition_params___block_invoke_188;
       v28[3] = &unk_278E91318;
       v28[4] = self;
       objc_copyWeak(&v33, buf);
-      v29 = v6;
+      v29 = paramsCopy;
       v30 = v8;
       v31 = v7;
       v32 = v12;
-      [v21 getCommentChanges:v31 inAlbumWithGUID:v30 withClientOrgKey:v23 albumURLString:v20 completionBlock:v28];
+      [protocol2 getCommentChanges:v31 inAlbumWithGUID:v30 withClientOrgKey:v23 albumURLString:v20 completionBlock:v28];
 
       objc_destroyWeak(&v33);
       objc_destroyWeak(buf);
@@ -8946,24 +8946,24 @@ void __62__MSASStateMachine__checkForCommentChangesDisposition_params___block_in
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)checkForCommentChanges:(id)a3 inAlbumWithGUID:(id)a4 withClientOrgKey:(id)a5
+- (void)checkForCommentChanges:(id)changes inAlbumWithGUID:(id)d withClientOrgKey:(id)key
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(MSASStateMachine *)self workQueue];
+  changesCopy = changes;
+  dCopy = d;
+  keyCopy = key;
+  workQueue = [(MSASStateMachine *)self workQueue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __76__MSASStateMachine_checkForCommentChanges_inAlbumWithGUID_withClientOrgKey___block_invoke;
   v15[3] = &unk_278E92660;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_async(v11, v15);
+  v16 = changesCopy;
+  v17 = dCopy;
+  v18 = keyCopy;
+  v12 = keyCopy;
+  v13 = dCopy;
+  v14 = changesCopy;
+  dispatch_async(workQueue, v15);
 }
 
 void __76__MSASStateMachine_checkForCommentChanges_inAlbumWithGUID_withClientOrgKey___block_invoke(uint64_t a1)
@@ -9012,20 +9012,20 @@ void __76__MSASStateMachine_checkForCommentChanges_inAlbumWithGUID_withClientOrg
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_checkForAssetCollectionUpdatesDisposition:(int)a3 params:(id)a4
+- (void)_checkForAssetCollectionUpdatesDisposition:(int)disposition params:(id)params
 {
   v49 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [(MSASStateMachine *)self _albumForRequestFromParams:v6];
-  v8 = [v6 objectForKey:@"assetCollections"];
-  v9 = [v6 objectForKey:@"info"];
-  v10 = [v6 objectForKey:@"error"];
-  v11 = [v6 objectForKey:@"commandWasRequeued"];
-  v12 = [v11 BOOLValue];
+  paramsCopy = params;
+  v7 = [(MSASStateMachine *)self _albumForRequestFromParams:paramsCopy];
+  v8 = [paramsCopy objectForKey:@"assetCollections"];
+  v9 = [paramsCopy objectForKey:@"info"];
+  v10 = [paramsCopy objectForKey:@"error"];
+  v11 = [paramsCopy objectForKey:@"commandWasRequeued"];
+  bOOLValue = [v11 BOOLValue];
 
-  if (a3 == 2)
+  if (disposition == 2)
   {
-    v14 = [(MSASStateMachine *)self eventQueue];
+    eventQueue = [(MSASStateMachine *)self eventQueue];
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
     v25[2] = __70__MSASStateMachine__checkForAssetCollectionUpdatesDisposition_params___block_invoke_2_185;
@@ -9034,14 +9034,14 @@ void __76__MSASStateMachine_checkForCommentChanges_inAlbumWithGUID_withClientOrg
     v26 = v8;
     v27 = v7;
     v28 = v9;
-    dispatch_async(v14, v25);
+    dispatch_async(eventQueue, v25);
   }
 
-  else if (!a3)
+  else if (!disposition)
   {
     if (v10)
     {
-      v13 = [(MSASStateMachine *)self eventQueue];
+      eventQueue2 = [(MSASStateMachine *)self eventQueue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __70__MSASStateMachine__checkForAssetCollectionUpdatesDisposition_params___block_invoke;
@@ -9051,7 +9051,7 @@ void __76__MSASStateMachine_checkForCommentChanges_inAlbumWithGUID_withClientOrg
       v40 = v7;
       v41 = v9;
       v42 = v10;
-      dispatch_async(v13, block);
+      dispatch_async(eventQueue2, block);
 
       [(MSASStateMachine *)self workQueueDidFinishCommand];
     }
@@ -9061,23 +9061,23 @@ void __76__MSASStateMachine_checkForCommentChanges_inAlbumWithGUID_withClientOrg
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
         v15 = [v8 count];
-        v16 = [v7 GUID];
+        gUID = [v7 GUID];
         *buf = 138543874;
-        v44 = self;
+        selfCopy = self;
         v45 = 2048;
         v46 = v15;
         v47 = 2114;
-        v48 = v16;
+        v48 = gUID;
         _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%{public}@: Getting metadata for %ld photos in album %{public}@.", buf, 0x20u);
       }
 
-      v17 = [(MSASStateMachine *)self protocol];
-      v18 = [v17 stopHandlerBlock];
-      [(MSASStateMachine *)self _setStopHandlerBlock:v18];
+      protocol = [(MSASStateMachine *)self protocol];
+      stopHandlerBlock = [protocol stopHandlerBlock];
+      [(MSASStateMachine *)self _setStopHandlerBlock:stopHandlerBlock];
 
-      if ((v12 & 1) == 0)
+      if ((bOOLValue & 1) == 0)
       {
-        v19 = [(MSASStateMachine *)self eventQueue];
+        eventQueue3 = [(MSASStateMachine *)self eventQueue];
         v34[0] = MEMORY[0x277D85DD0];
         v34[1] = 3221225472;
         v34[2] = __70__MSASStateMachine__checkForAssetCollectionUpdatesDisposition_params___block_invoke_178;
@@ -9086,25 +9086,25 @@ void __76__MSASStateMachine_checkForCommentChanges_inAlbumWithGUID_withClientOrg
         v35 = v8;
         v36 = v7;
         v37 = v9;
-        dispatch_async(v19, v34);
+        dispatch_async(eventQueue3, v34);
       }
 
       objc_initWeak(buf, self);
-      v20 = [(MSASStateMachine *)self delegate];
-      v21 = [v7 GUID];
-      v22 = [v20 MSASStateMachineDidRequestAlbumURLStringForAlbumWithGUID:v21 info:v9];
+      delegate = [(MSASStateMachine *)self delegate];
+      gUID2 = [v7 GUID];
+      v22 = [delegate MSASStateMachineDidRequestAlbumURLStringForAlbumWithGUID:gUID2 info:v9];
 
-      v23 = [(MSASStateMachine *)self protocol];
+      protocol2 = [(MSASStateMachine *)self protocol];
       v29[0] = MEMORY[0x277D85DD0];
       v29[1] = 3221225472;
       v29[2] = __70__MSASStateMachine__checkForAssetCollectionUpdatesDisposition_params___block_invoke_2;
       v29[3] = &unk_278E91290;
       v29[4] = self;
       objc_copyWeak(&v33, buf);
-      v30 = v6;
+      v30 = paramsCopy;
       v31 = v7;
       v32 = v9;
-      [v23 getAssetCollections:v8 inAlbum:v31 albumURLString:v22 completionBlock:v29];
+      [protocol2 getAssetCollections:v8 inAlbum:v31 albumURLString:v22 completionBlock:v29];
 
       objc_destroyWeak(&v33);
       objc_destroyWeak(buf);
@@ -9267,24 +9267,24 @@ void __70__MSASStateMachine__checkForAssetCollectionUpdatesDisposition_params___
   [v2 MSASStateMachine:v3 didFinishUpdatingAssetCollections:*(a1 + 32) inAlbum:*(a1 + 40) info:*(a1 + 48) error:*(a1 + 56)];
 }
 
-- (void)checkForAssetCollectionUpdates:(id)a3 inAlbum:(id)a4 info:(id)a5
+- (void)checkForAssetCollectionUpdates:(id)updates inAlbum:(id)album info:(id)info
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(MSASStateMachine *)self workQueue];
+  updatesCopy = updates;
+  albumCopy = album;
+  infoCopy = info;
+  workQueue = [(MSASStateMachine *)self workQueue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __64__MSASStateMachine_checkForAssetCollectionUpdates_inAlbum_info___block_invoke;
   v15[3] = &unk_278E92660;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_async(v11, v15);
+  v16 = updatesCopy;
+  v17 = albumCopy;
+  v18 = infoCopy;
+  v12 = infoCopy;
+  v13 = albumCopy;
+  v14 = updatesCopy;
+  dispatch_async(workQueue, v15);
 }
 
 void __64__MSASStateMachine_checkForAssetCollectionUpdates_inAlbum_info___block_invoke(uint64_t a1)
@@ -9334,21 +9334,21 @@ void __64__MSASStateMachine_checkForAssetCollectionUpdates_inAlbum_info___block_
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)validateInvitationForAlbum:(id)a3 completionBlock:(id)a4
+- (void)validateInvitationForAlbum:(id)album completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MSASStateMachine *)self workQueue];
+  albumCopy = album;
+  blockCopy = block;
+  workQueue = [(MSASStateMachine *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __63__MSASStateMachine_validateInvitationForAlbum_completionBlock___block_invoke;
   block[3] = &unk_278E91E38;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = albumCopy;
+  v13 = blockCopy;
+  v9 = blockCopy;
+  v10 = albumCopy;
+  dispatch_async(workQueue, block);
 }
 
 void __63__MSASStateMachine_validateInvitationForAlbum_completionBlock___block_invoke(uint64_t a1)
@@ -9391,24 +9391,24 @@ void __63__MSASStateMachine_validateInvitationForAlbum_completionBlock___block_i
   dispatch_async(v6, block);
 }
 
-- (void)acceptInvitationWithToken:(id)a3 info:(id)a4 completionBlock:(id)a5
+- (void)acceptInvitationWithToken:(id)token info:(id)info completionBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(MSASStateMachine *)self workQueue];
+  tokenCopy = token;
+  infoCopy = info;
+  blockCopy = block;
+  workQueue = [(MSASStateMachine *)self workQueue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __67__MSASStateMachine_acceptInvitationWithToken_info_completionBlock___block_invoke;
   v15[3] = &unk_278E916F0;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v9;
-  v13 = v10;
-  v14 = v8;
-  dispatch_async(v11, v15);
+  v16 = tokenCopy;
+  v17 = infoCopy;
+  v18 = blockCopy;
+  v12 = infoCopy;
+  v13 = blockCopy;
+  v14 = tokenCopy;
+  dispatch_async(workQueue, v15);
 }
 
 void __67__MSASStateMachine_acceptInvitationWithToken_info_completionBlock___block_invoke(uint64_t a1)
@@ -9451,15 +9451,15 @@ void __67__MSASStateMachine_acceptInvitationWithToken_info_completionBlock___blo
   dispatch_async(v4, block);
 }
 
-- (void)_markAsSpamInvitationForTokenDisposition:(int)a3 params:(id)a4
+- (void)_markAsSpamInvitationForTokenDisposition:(int)disposition params:(id)params
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [v6 objectForKeyedSubscript:@"info"];
-  v8 = [v6 objectForKeyedSubscript:@"invitationToken"];
-  if (a3 == 2)
+  paramsCopy = params;
+  v7 = [paramsCopy objectForKeyedSubscript:@"info"];
+  v8 = [paramsCopy objectForKeyedSubscript:@"invitationToken"];
+  if (disposition == 2)
   {
-    v12 = [(MSASStateMachine *)self eventQueue];
+    eventQueue = [(MSASStateMachine *)self eventQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __68__MSASStateMachine__markAsSpamInvitationForTokenDisposition_params___block_invoke_3;
@@ -9467,35 +9467,35 @@ void __67__MSASStateMachine_acceptInvitationWithToken_info_completionBlock___blo
     block[4] = self;
     v15 = v8;
     v16 = v7;
-    dispatch_async(v12, block);
+    dispatch_async(eventQueue, block);
   }
 
-  else if (!a3)
+  else if (!disposition)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v23 = self;
+      selfCopy = self;
       v24 = 2114;
       v25 = v8;
       _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%{public}@: Marking as spam invitation for token %{public}@", buf, 0x16u);
     }
 
-    v9 = [(MSASStateMachine *)self protocol];
-    v10 = [v9 stopHandlerBlock];
-    [(MSASStateMachine *)self _setStopHandlerBlock:v10];
+    protocol = [(MSASStateMachine *)self protocol];
+    stopHandlerBlock = [protocol stopHandlerBlock];
+    [(MSASStateMachine *)self _setStopHandlerBlock:stopHandlerBlock];
 
     objc_initWeak(buf, self);
-    v11 = [(MSASStateMachine *)self protocol];
+    protocol2 = [(MSASStateMachine *)self protocol];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __68__MSASStateMachine__markAsSpamInvitationForTokenDisposition_params___block_invoke;
     v17[3] = &unk_278E91210;
     objc_copyWeak(&v21, buf);
     v18 = v8;
-    v19 = self;
+    selfCopy2 = self;
     v20 = v7;
-    [v11 markAsSpamInvitationForToken:v18 completionBlock:v17];
+    [protocol2 markAsSpamInvitationForToken:v18 completionBlock:v17];
 
     objc_destroyWeak(&v21);
     objc_destroyWeak(buf);
@@ -9619,21 +9619,21 @@ void __68__MSASStateMachine__markAsSpamInvitationForTokenDisposition_params___bl
   [v6 MSASStateMachine:v7 didFinishMarkingAsSpamInvitationForToken:*(a1 + 32) info:*(a1 + 40) error:*(a1 + 48)];
 }
 
-- (void)markAsSpamInvitationForToken:(id)a3 info:(id)a4
+- (void)markAsSpamInvitationForToken:(id)token info:(id)info
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MSASStateMachine *)self workQueue];
+  tokenCopy = token;
+  infoCopy = info;
+  workQueue = [(MSASStateMachine *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __54__MSASStateMachine_markAsSpamInvitationForToken_info___block_invoke;
   block[3] = &unk_278E92638;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = tokenCopy;
+  v13 = infoCopy;
+  v9 = infoCopy;
+  v10 = tokenCopy;
+  dispatch_async(workQueue, block);
 }
 
 void __54__MSASStateMachine_markAsSpamInvitationForToken_info___block_invoke(uint64_t a1)
@@ -9662,16 +9662,16 @@ void __54__MSASStateMachine_markAsSpamInvitationForToken_info___block_invoke(uin
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_markAsSpamInvitationForAlbumDisposition:(int)a3 params:(id)a4
+- (void)_markAsSpamInvitationForAlbumDisposition:(int)disposition params:(id)params
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [v6 objectForKeyedSubscript:@"album"];
-  v8 = [v6 objectForKeyedSubscript:@"info"];
-  v9 = [v6 objectForKeyedSubscript:@"sharingRelationshipGUID"];
-  if (a3 == 2)
+  paramsCopy = params;
+  v7 = [paramsCopy objectForKeyedSubscript:@"album"];
+  v8 = [paramsCopy objectForKeyedSubscript:@"info"];
+  v9 = [paramsCopy objectForKeyedSubscript:@"sharingRelationshipGUID"];
+  if (disposition == 2)
   {
-    v13 = [(MSASStateMachine *)self eventQueue];
+    eventQueue = [(MSASStateMachine *)self eventQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __68__MSASStateMachine__markAsSpamInvitationForAlbumDisposition_params___block_invoke_3;
@@ -9680,36 +9680,36 @@ void __54__MSASStateMachine_markAsSpamInvitationForToken_info___block_invoke(uin
     v16 = v7;
     v17 = v9;
     v18 = v8;
-    dispatch_async(v13, block);
+    dispatch_async(eventQueue, block);
   }
 
-  else if (!a3)
+  else if (!disposition)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v26 = self;
+      selfCopy = self;
       v27 = 2114;
       v28 = v7;
       _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%{public}@: Marking as spam invitation for album %{public}@", buf, 0x16u);
     }
 
-    v10 = [(MSASStateMachine *)self protocol];
-    v11 = [v10 stopHandlerBlock];
-    [(MSASStateMachine *)self _setStopHandlerBlock:v11];
+    protocol = [(MSASStateMachine *)self protocol];
+    stopHandlerBlock = [protocol stopHandlerBlock];
+    [(MSASStateMachine *)self _setStopHandlerBlock:stopHandlerBlock];
 
     objc_initWeak(buf, self);
-    v12 = [(MSASStateMachine *)self protocol];
+    protocol2 = [(MSASStateMachine *)self protocol];
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __68__MSASStateMachine__markAsSpamInvitationForAlbumDisposition_params___block_invoke;
     v19[3] = &unk_278E911E0;
     objc_copyWeak(&v24, buf);
     v20 = v7;
-    v21 = self;
+    selfCopy2 = self;
     v22 = v9;
     v23 = v8;
-    [v12 markAsSpamInvitationForAlbum:v20 completionBlock:v19];
+    [protocol2 markAsSpamInvitationForAlbum:v20 completionBlock:v19];
 
     objc_destroyWeak(&v24);
     objc_destroyWeak(buf);
@@ -9836,24 +9836,24 @@ void __68__MSASStateMachine__markAsSpamInvitationForAlbumDisposition_params___bl
   [v6 MSASStateMachine:v7 didFinishMarkingAsSpamInvitationForAlbum:*(a1 + 32) invitationGUID:*(a1 + 40) info:*(a1 + 48) error:0];
 }
 
-- (void)markAsSpamInvitationForAlbum:(id)a3 invitationGUID:(id)a4 info:(id)a5
+- (void)markAsSpamInvitationForAlbum:(id)album invitationGUID:(id)d info:(id)info
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(MSASStateMachine *)self workQueue];
+  albumCopy = album;
+  dCopy = d;
+  infoCopy = info;
+  workQueue = [(MSASStateMachine *)self workQueue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __69__MSASStateMachine_markAsSpamInvitationForAlbum_invitationGUID_info___block_invoke;
   v15[3] = &unk_278E92660;
   v15[4] = self;
-  v16 = v8;
-  v17 = v10;
-  v18 = v9;
-  v12 = v9;
-  v13 = v10;
-  v14 = v8;
-  dispatch_async(v11, v15);
+  v16 = albumCopy;
+  v17 = infoCopy;
+  v18 = dCopy;
+  v12 = dCopy;
+  v13 = infoCopy;
+  v14 = albumCopy;
+  dispatch_async(workQueue, v15);
 }
 
 void __69__MSASStateMachine_markAsSpamInvitationForAlbum_invitationGUID_info___block_invoke(uint64_t a1)
@@ -9884,15 +9884,15 @@ void __69__MSASStateMachine_markAsSpamInvitationForAlbum_invitationGUID_info___b
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_unsubscribeFromAlbumDisposition:(int)a3 params:(id)a4
+- (void)_unsubscribeFromAlbumDisposition:(int)disposition params:(id)params
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [(MSASStateMachine *)self _albumForRequestFromParams:v6];
-  v8 = [v6 objectForKey:@"info"];
-  if (a3 == 2)
+  paramsCopy = params;
+  v7 = [(MSASStateMachine *)self _albumForRequestFromParams:paramsCopy];
+  v8 = [paramsCopy objectForKey:@"info"];
+  if (disposition == 2)
   {
-    v12 = [(MSASStateMachine *)self eventQueue];
+    eventQueue = [(MSASStateMachine *)self eventQueue];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __60__MSASStateMachine__unsubscribeFromAlbumDisposition_params___block_invoke_3;
@@ -9900,36 +9900,36 @@ void __69__MSASStateMachine_markAsSpamInvitationForAlbum_invitationGUID_info___b
     v14[4] = self;
     v15 = v7;
     v16 = v8;
-    dispatch_async(v12, v14);
+    dispatch_async(eventQueue, v14);
   }
 
-  else if (!a3)
+  else if (!disposition)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v23 = self;
+      selfCopy = self;
       v24 = 2114;
       v25 = v7;
       _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%{public}@: Unsubscribing from album %{public}@", buf, 0x16u);
     }
 
-    v9 = [(MSASStateMachine *)self protocol];
-    v10 = [v9 stopHandlerBlock];
-    [(MSASStateMachine *)self _setStopHandlerBlock:v10];
+    protocol = [(MSASStateMachine *)self protocol];
+    stopHandlerBlock = [protocol stopHandlerBlock];
+    [(MSASStateMachine *)self _setStopHandlerBlock:stopHandlerBlock];
 
     objc_initWeak(buf, self);
-    v11 = [(MSASStateMachine *)self protocol];
+    protocol2 = [(MSASStateMachine *)self protocol];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __60__MSASStateMachine__unsubscribeFromAlbumDisposition_params___block_invoke;
     v17[3] = &unk_278E911E0;
     v17[4] = self;
     objc_copyWeak(&v21, buf);
-    v18 = v6;
+    v18 = paramsCopy;
     v19 = v7;
     v20 = v8;
-    [v11 unsubscribeFromAlbum:v19 completionBlock:v17];
+    [protocol2 unsubscribeFromAlbum:v19 completionBlock:v17];
 
     objc_destroyWeak(&v21);
     objc_destroyWeak(buf);
@@ -10081,21 +10081,21 @@ void __60__MSASStateMachine__unsubscribeFromAlbumDisposition_params___block_invo
   [v6 MSASStateMachine:v7 didFinishUnsubscribingFromAlbum:*(a1 + 32) info:*(a1 + 40) error:0];
 }
 
-- (void)unsubscribeFromAlbum:(id)a3 info:(id)a4
+- (void)unsubscribeFromAlbum:(id)album info:(id)info
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MSASStateMachine *)self workQueue];
+  albumCopy = album;
+  infoCopy = info;
+  workQueue = [(MSASStateMachine *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __46__MSASStateMachine_unsubscribeFromAlbum_info___block_invoke;
   block[3] = &unk_278E92638;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = albumCopy;
+  v13 = infoCopy;
+  v9 = infoCopy;
+  v10 = albumCopy;
+  dispatch_async(workQueue, block);
 }
 
 void __46__MSASStateMachine_unsubscribeFromAlbum_info___block_invoke(uint64_t a1)
@@ -10136,15 +10136,15 @@ void __46__MSASStateMachine_unsubscribeFromAlbum_info___block_invoke(uint64_t a1
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_subscribeToAlbumDisposition:(int)a3 params:(id)a4
+- (void)_subscribeToAlbumDisposition:(int)disposition params:(id)params
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [(MSASStateMachine *)self _albumForRequestFromParams:v6];
-  v8 = [v6 objectForKey:@"info"];
-  if (a3 == 2)
+  paramsCopy = params;
+  v7 = [(MSASStateMachine *)self _albumForRequestFromParams:paramsCopy];
+  v8 = [paramsCopy objectForKey:@"info"];
+  if (disposition == 2)
   {
-    v12 = [(MSASStateMachine *)self eventQueue];
+    eventQueue = [(MSASStateMachine *)self eventQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __56__MSASStateMachine__subscribeToAlbumDisposition_params___block_invoke_3;
@@ -10152,26 +10152,26 @@ void __46__MSASStateMachine_unsubscribeFromAlbum_info___block_invoke(uint64_t a1
     block[4] = self;
     v15 = v7;
     v16 = v8;
-    dispatch_async(v12, block);
+    dispatch_async(eventQueue, block);
   }
 
-  else if (!a3)
+  else if (!disposition)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v22 = self;
+      selfCopy = self;
       v23 = 2114;
       v24 = v7;
       _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%{public}@: Subscribing to album %{public}@", buf, 0x16u);
     }
 
-    v9 = [(MSASStateMachine *)self protocol];
-    v10 = [v9 stopHandlerBlock];
-    [(MSASStateMachine *)self _setStopHandlerBlock:v10];
+    protocol = [(MSASStateMachine *)self protocol];
+    stopHandlerBlock = [protocol stopHandlerBlock];
+    [(MSASStateMachine *)self _setStopHandlerBlock:stopHandlerBlock];
 
     objc_initWeak(buf, self);
-    v11 = [(MSASStateMachine *)self protocol];
+    protocol2 = [(MSASStateMachine *)self protocol];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __56__MSASStateMachine__subscribeToAlbumDisposition_params___block_invoke;
@@ -10180,7 +10180,7 @@ void __46__MSASStateMachine_unsubscribeFromAlbum_info___block_invoke(uint64_t a1
     objc_copyWeak(&v20, buf);
     v18 = v7;
     v19 = v8;
-    [v11 subscribeToAlbum:v18 completionBlock:v17];
+    [protocol2 subscribeToAlbum:v18 completionBlock:v17];
 
     objc_destroyWeak(&v20);
     objc_destroyWeak(buf);
@@ -10326,21 +10326,21 @@ void __56__MSASStateMachine__subscribeToAlbumDisposition_params___block_invoke_2
   [v6 MSASStateMachine:v7 didFinishSubscribingToAlbum:*(a1 + 32) info:*(a1 + 40) error:0];
 }
 
-- (void)subscribeToAlbum:(id)a3 info:(id)a4
+- (void)subscribeToAlbum:(id)album info:(id)info
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MSASStateMachine *)self workQueue];
+  albumCopy = album;
+  infoCopy = info;
+  workQueue = [(MSASStateMachine *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __42__MSASStateMachine_subscribeToAlbum_info___block_invoke;
   block[3] = &unk_278E92638;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = albumCopy;
+  v13 = infoCopy;
+  v9 = infoCopy;
+  v10 = albumCopy;
+  dispatch_async(workQueue, block);
 }
 
 void __42__MSASStateMachine_subscribeToAlbum_info___block_invoke(uint64_t a1)
@@ -10381,17 +10381,17 @@ void __42__MSASStateMachine_subscribeToAlbum_info___block_invoke(uint64_t a1)
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_getAccessControlsDisposition:(int)a3 params:(id)a4
+- (void)_getAccessControlsDisposition:(int)disposition params:(id)params
 {
   v36 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [(MSASStateMachine *)self _albumForRequestFromParams:v6];
-  v8 = [v6 objectForKey:@"info"];
-  v9 = [v6 objectForKey:@"error"];
+  paramsCopy = params;
+  v7 = [(MSASStateMachine *)self _albumForRequestFromParams:paramsCopy];
+  v8 = [paramsCopy objectForKey:@"info"];
+  v9 = [paramsCopy objectForKey:@"error"];
   v10 = v9;
-  if (a3 == 2)
+  if (disposition == 2)
   {
-    v12 = [(MSASStateMachine *)self eventQueue];
+    eventQueue = [(MSASStateMachine *)self eventQueue];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __57__MSASStateMachine__getAccessControlsDisposition_params___block_invoke_2_153;
@@ -10399,14 +10399,14 @@ void __42__MSASStateMachine_subscribeToAlbum_info___block_invoke(uint64_t a1)
     v20[4] = self;
     v21 = v7;
     v22 = v8;
-    dispatch_async(v12, v20);
+    dispatch_async(eventQueue, v20);
   }
 
-  else if (!a3)
+  else if (!disposition)
   {
     if (v9)
     {
-      v11 = [(MSASStateMachine *)self eventQueue];
+      eventQueue2 = [(MSASStateMachine *)self eventQueue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __57__MSASStateMachine__getAccessControlsDisposition_params___block_invoke;
@@ -10415,7 +10415,7 @@ void __42__MSASStateMachine_subscribeToAlbum_info___block_invoke(uint64_t a1)
       v29 = v7;
       v30 = v8;
       v31 = v10;
-      dispatch_async(v11, block);
+      dispatch_async(eventQueue2, block);
 
       [(MSASStateMachine *)self workQueueDidFinishCommand];
     }
@@ -10425,32 +10425,32 @@ void __42__MSASStateMachine_subscribeToAlbum_info___block_invoke(uint64_t a1)
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
         *buf = 138543618;
-        v33 = self;
+        selfCopy = self;
         v34 = 2114;
         v35 = v7;
         _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%{public}@: Retrieving access controls for album %{public}@", buf, 0x16u);
       }
 
-      v13 = [(MSASStateMachine *)self protocol];
-      v14 = [v13 stopHandlerBlock];
-      [(MSASStateMachine *)self _setStopHandlerBlock:v14];
+      protocol = [(MSASStateMachine *)self protocol];
+      stopHandlerBlock = [protocol stopHandlerBlock];
+      [(MSASStateMachine *)self _setStopHandlerBlock:stopHandlerBlock];
 
       objc_initWeak(buf, self);
-      v15 = [(MSASStateMachine *)self delegate];
-      v16 = [v7 GUID];
-      v17 = [v15 MSASStateMachineDidRequestAlbumURLStringForAlbumWithGUID:v16 info:v8];
+      delegate = [(MSASStateMachine *)self delegate];
+      gUID = [v7 GUID];
+      v17 = [delegate MSASStateMachineDidRequestAlbumURLStringForAlbumWithGUID:gUID info:v8];
 
-      v18 = [(MSASStateMachine *)self protocol];
+      protocol2 = [(MSASStateMachine *)self protocol];
       v23[0] = MEMORY[0x277D85DD0];
       v23[1] = 3221225472;
       v23[2] = __57__MSASStateMachine__getAccessControlsDisposition_params___block_invoke_149;
       v23[3] = &unk_278E91188;
       v23[4] = self;
       objc_copyWeak(&v27, buf);
-      v24 = v6;
+      v24 = paramsCopy;
       v25 = v7;
       v26 = v8;
-      [v18 getSharingInfoForAlbum:v25 albumURLString:v17 completionBlock:v23];
+      [protocol2 getSharingInfoForAlbum:v25 albumURLString:v17 completionBlock:v23];
 
       objc_destroyWeak(&v27);
       objc_destroyWeak(buf);
@@ -10604,21 +10604,21 @@ void __57__MSASStateMachine__getAccessControlsDisposition_params___block_invoke_
   [v2 MSASStateMachine:v3 didFinishGettingAccessControls:*(a1 + 32) forAlbum:*(a1 + 40) info:*(a1 + 48) error:0];
 }
 
-- (void)getAccessControlsForAlbums:(id)a3 info:(id)a4
+- (void)getAccessControlsForAlbums:(id)albums info:(id)info
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MSASStateMachine *)self workQueue];
+  albumsCopy = albums;
+  infoCopy = info;
+  workQueue = [(MSASStateMachine *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __52__MSASStateMachine_getAccessControlsForAlbums_info___block_invoke;
   block[3] = &unk_278E92638;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = albumsCopy;
+  v13 = infoCopy;
+  v9 = infoCopy;
+  v10 = albumsCopy;
+  dispatch_async(workQueue, block);
 }
 
 uint64_t __52__MSASStateMachine_getAccessControlsForAlbums_info___block_invoke(uint64_t a1)
@@ -10696,16 +10696,16 @@ uint64_t __52__MSASStateMachine_getAccessControlsForAlbums_info___block_invoke(u
   return result;
 }
 
-- (void)_didFinishCheckingUpdatesInAlbumsDisposition:(int)a3 params:(id)a4
+- (void)_didFinishCheckingUpdatesInAlbumsDisposition:(int)disposition params:(id)params
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [v6 objectForKey:@"albums"];
-  v8 = [v6 objectForKey:@"info"];
+  paramsCopy = params;
+  v7 = [paramsCopy objectForKey:@"albums"];
+  v8 = [paramsCopy objectForKey:@"info"];
 
-  if (a3 == 2)
+  if (disposition == 2)
   {
-    v12 = [(MSASStateMachine *)self eventQueue];
+    eventQueue = [(MSASStateMachine *)self eventQueue];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __72__MSASStateMachine__didFinishCheckingUpdatesInAlbumsDisposition_params___block_invoke_2;
@@ -10715,24 +10715,24 @@ uint64_t __52__MSASStateMachine_getAccessControlsForAlbums_info___block_invoke(u
     v15 = v7;
     v11 = &v16;
     v16 = v8;
-    dispatch_async(v12, v14);
+    dispatch_async(eventQueue, v14);
 
 LABEL_7:
     goto LABEL_8;
   }
 
-  if (!a3)
+  if (!disposition)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       *buf = 138543618;
-      v21 = self;
+      selfCopy = self;
       v22 = 2048;
       v23 = [v7 count];
       _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%{public}@: Finished checking for updates for %ld albums.", buf, 0x16u);
     }
 
-    v9 = [(MSASStateMachine *)self eventQueue];
+    eventQueue2 = [(MSASStateMachine *)self eventQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __72__MSASStateMachine__didFinishCheckingUpdatesInAlbumsDisposition_params___block_invoke;
@@ -10742,7 +10742,7 @@ LABEL_7:
     v18 = v7;
     v11 = &v19;
     v19 = v8;
-    dispatch_async(v9, block);
+    dispatch_async(eventQueue2, block);
 
     [(MSASStateMachine *)self workQueueDidFinishCommand];
     goto LABEL_7;
@@ -10765,22 +10765,22 @@ void __72__MSASStateMachine__didFinishCheckingUpdatesInAlbumsDisposition_params_
   [v2 MSASStateMachine:*(a1 + 32) didFinishCheckingForUpdatesInAlbums:*(a1 + 40) info:*(a1 + 48)];
 }
 
-- (void)_checkForUpdatesInAlbumDisposition:(int)a3 params:(id)a4
+- (void)_checkForUpdatesInAlbumDisposition:(int)disposition params:(id)params
 {
   v44 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [v6 objectForKey:@"resetSync"];
-  v8 = [v7 BOOLValue];
+  paramsCopy = params;
+  v7 = [paramsCopy objectForKey:@"resetSync"];
+  bOOLValue = [v7 BOOLValue];
 
-  v9 = [(MSASStateMachine *)self _albumForRequestFromParams:v6];
-  v10 = [v6 objectForKey:@"info"];
-  v11 = [v6 objectForKey:@"error"];
-  v12 = [v6 objectForKey:@"commandWasRequeued"];
-  v13 = [v12 BOOLValue];
+  v9 = [(MSASStateMachine *)self _albumForRequestFromParams:paramsCopy];
+  v10 = [paramsCopy objectForKey:@"info"];
+  v11 = [paramsCopy objectForKey:@"error"];
+  v12 = [paramsCopy objectForKey:@"commandWasRequeued"];
+  bOOLValue2 = [v12 BOOLValue];
 
-  if (a3 == 2)
+  if (disposition == 2)
   {
-    v15 = [(MSASStateMachine *)self eventQueue];
+    eventQueue = [(MSASStateMachine *)self eventQueue];
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
     v24[2] = __62__MSASStateMachine__checkForUpdatesInAlbumDisposition_params___block_invoke_3_146;
@@ -10788,14 +10788,14 @@ void __72__MSASStateMachine__didFinishCheckingUpdatesInAlbumsDisposition_params_
     v24[4] = self;
     v25 = v9;
     v26 = v10;
-    dispatch_async(v15, v24);
+    dispatch_async(eventQueue, v24);
   }
 
-  else if (!a3)
+  else if (!disposition)
   {
     if (v11)
     {
-      v14 = [(MSASStateMachine *)self eventQueue];
+      eventQueue2 = [(MSASStateMachine *)self eventQueue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __62__MSASStateMachine__checkForUpdatesInAlbumDisposition_params___block_invoke;
@@ -10804,7 +10804,7 @@ void __72__MSASStateMachine__didFinishCheckingUpdatesInAlbumsDisposition_params_
       v38 = v9;
       v39 = v10;
       v40 = v11;
-      dispatch_async(v14, block);
+      dispatch_async(eventQueue2, block);
 
       [(MSASStateMachine *)self workQueueDidFinishCommand];
     }
@@ -10826,13 +10826,13 @@ void __72__MSASStateMachine__didFinishCheckingUpdatesInAlbumsDisposition_params_
         _os_log_debug_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG, "%{public}@: Checking for update in album %{public}@", location, 0x16u);
       }
 
-      v16 = [(MSASStateMachine *)self protocol];
-      v17 = [v16 stopHandlerBlock];
-      [(MSASStateMachine *)self _setStopHandlerBlock:v17];
+      protocol = [(MSASStateMachine *)self protocol];
+      stopHandlerBlock = [protocol stopHandlerBlock];
+      [(MSASStateMachine *)self _setStopHandlerBlock:stopHandlerBlock];
 
-      if ((v13 & 1) == 0)
+      if ((bOOLValue2 & 1) == 0)
       {
-        v18 = [(MSASStateMachine *)self eventQueue];
+        eventQueue3 = [(MSASStateMachine *)self eventQueue];
         v32[0] = MEMORY[0x277D85DD0];
         v32[1] = 3221225472;
         v32[2] = __62__MSASStateMachine__checkForUpdatesInAlbumDisposition_params___block_invoke_140;
@@ -10840,25 +10840,25 @@ void __72__MSASStateMachine__didFinishCheckingUpdatesInAlbumsDisposition_params_
         v32[4] = self;
         v33 = v9;
         v34 = v35;
-        dispatch_async(v18, v32);
+        dispatch_async(eventQueue3, v32);
       }
 
       objc_initWeak(location, self);
-      v19 = [(MSASStateMachine *)self delegate];
-      v20 = [v9 GUID];
-      v21 = [v19 MSASStateMachineDidRequestAlbumURLStringForAlbumWithGUID:v20 info:v10];
+      delegate = [(MSASStateMachine *)self delegate];
+      gUID = [v9 GUID];
+      v21 = [delegate MSASStateMachineDidRequestAlbumURLStringForAlbumWithGUID:gUID info:v10];
 
-      v22 = [(MSASStateMachine *)self protocol];
+      protocol2 = [(MSASStateMachine *)self protocol];
       v27[0] = MEMORY[0x277D85DD0];
       v27[1] = 3221225472;
       v27[2] = __62__MSASStateMachine__checkForUpdatesInAlbumDisposition_params___block_invoke_2;
       v27[3] = &unk_278E91160;
       v27[4] = self;
       objc_copyWeak(&v31, location);
-      v28 = v6;
+      v28 = paramsCopy;
       v29 = v9;
       v30 = v35;
-      [v22 albumSummaryAlbum:v29 albumURLString:v21 resetSync:v8 completionBlock:v27];
+      [protocol2 albumSummaryAlbum:v29 albumURLString:v21 resetSync:bOOLValue completionBlock:v27];
 
       objc_destroyWeak(&v31);
       objc_destroyWeak(location);
@@ -11209,22 +11209,22 @@ void __62__MSASStateMachine__checkForUpdatesInAlbumDisposition_params___block_in
   [v6 MSASStateMachine:v7 didFinishCheckingForUpdatesInAlbum:*(a1 + 32) info:*(*(*(a1 + 64) + 8) + 40) error:*(a1 + 56)];
 }
 
-- (void)checkForUpdatesInAlbums:(id)a3 resetSync:(BOOL)a4 info:(id)a5
+- (void)checkForUpdatesInAlbums:(id)albums resetSync:(BOOL)sync info:(id)info
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(MSASStateMachine *)self workQueue];
+  albumsCopy = albums;
+  infoCopy = info;
+  workQueue = [(MSASStateMachine *)self workQueue];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __59__MSASStateMachine_checkForUpdatesInAlbums_resetSync_info___block_invoke;
   v13[3] = &unk_278E91D20;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v16 = a4;
-  v11 = v9;
-  v12 = v8;
-  dispatch_async(v10, v13);
+  v14 = albumsCopy;
+  v15 = infoCopy;
+  syncCopy = sync;
+  v11 = infoCopy;
+  v12 = albumsCopy;
+  dispatch_async(workQueue, v13);
 }
 
 void __59__MSASStateMachine_checkForUpdatesInAlbums_resetSync_info___block_invoke(uint64_t a1)
@@ -11323,39 +11323,39 @@ void __59__MSASStateMachine_checkForUpdatesInAlbums_resetSync_info___block_invok
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_checkForChangesDisposition:(int)a3 params:(id)a4
+- (void)_checkForChangesDisposition:(int)disposition params:(id)params
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [v6 objectForKey:@"info"];
-  if (a3 == 2)
+  paramsCopy = params;
+  v7 = [paramsCopy objectForKey:@"info"];
+  if (disposition == 2)
   {
-    v14 = [(MSASStateMachine *)self eventQueue];
+    eventQueue = [(MSASStateMachine *)self eventQueue];
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __55__MSASStateMachine__checkForChangesDisposition_params___block_invoke_3;
     v19[3] = &unk_278E927C8;
     v19[4] = self;
     v20 = v7;
-    dispatch_async(v14, v19);
+    dispatch_async(eventQueue, v19);
   }
 
-  else if (!a3)
+  else if (!disposition)
   {
-    v8 = [v6 objectForKey:@"resetSync"];
-    v9 = [v8 BOOLValue];
+    v8 = [paramsCopy objectForKey:@"resetSync"];
+    bOOLValue = [v8 BOOLValue];
 
-    if (v9)
+    if (bOOLValue)
     {
-      v10 = [(MSASStateMachine *)self _model];
-      [v10 deletePersistentValueWithKey:@"rootCtag"];
+      _model = [(MSASStateMachine *)self _model];
+      [_model deletePersistentValueWithKey:@"rootCtag"];
     }
 
-    v11 = [(MSASStateMachine *)self rootCtagToCheckForChanges];
-    if (v11 && ([(MSASStateMachine *)self migrationCtagToCheckForChanges], (v12 = objc_claimAutoreleasedReturnValue()) != 0))
+    rootCtagToCheckForChanges = [(MSASStateMachine *)self rootCtagToCheckForChanges];
+    if (rootCtagToCheckForChanges && ([(MSASStateMachine *)self migrationCtagToCheckForChanges], (v12 = objc_claimAutoreleasedReturnValue()) != 0))
     {
 
-      v11 = 0;
+      rootCtagToCheckForChanges = 0;
       v13 = 1;
     }
 
@@ -11364,21 +11364,21 @@ void __59__MSASStateMachine_checkForUpdatesInAlbums_resetSync_info___block_invok
       v13 = 0;
     }
 
-    v15 = [(MSASStateMachine *)self protocol];
-    v16 = [v15 stopHandlerBlock];
-    [(MSASStateMachine *)self _setStopHandlerBlock:v16];
+    protocol = [(MSASStateMachine *)self protocol];
+    stopHandlerBlock = [protocol stopHandlerBlock];
+    [(MSASStateMachine *)self _setStopHandlerBlock:stopHandlerBlock];
 
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       *buf = 138543618;
-      v26 = self;
+      selfCopy = self;
       v27 = 1024;
-      v28 = v9;
+      v28 = bOOLValue;
       _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%{public}@: Checking for album list updates. Reset sync: %d", buf, 0x12u);
     }
 
     objc_initWeak(buf, self);
-    v17 = [(MSASStateMachine *)self protocol];
+    protocol2 = [(MSASStateMachine *)self protocol];
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __55__MSASStateMachine__checkForChangesDisposition_params___block_invoke;
@@ -11387,7 +11387,7 @@ void __59__MSASStateMachine_checkForUpdatesInAlbums_resetSync_info___block_invok
     v22 = v7;
     objc_copyWeak(&v23, buf);
     v24 = v13;
-    [v17 getChangesRootCtag:v11 migrationCtag:0 completionBlock:v21];
+    [protocol2 getChangesRootCtag:rootCtagToCheckForChanges migrationCtag:0 completionBlock:v21];
 
     objc_destroyWeak(&v23);
     objc_destroyWeak(buf);
@@ -11679,19 +11679,19 @@ void __55__MSASStateMachine__checkForChangesDisposition_params___block_invoke_2_
   [v2 didReceiveAuthSuccessForPersonID:v4];
 }
 
-- (void)checkForChangesResetSync:(BOOL)a3 info:(id)a4
+- (void)checkForChangesResetSync:(BOOL)sync info:(id)info
 {
-  v6 = a4;
-  v7 = [(MSASStateMachine *)self workQueue];
+  infoCopy = info;
+  workQueue = [(MSASStateMachine *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __50__MSASStateMachine_checkForChangesResetSync_info___block_invoke;
   block[3] = &unk_278E91060;
-  v11 = a3;
+  syncCopy = sync;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
-  dispatch_async(v7, block);
+  v10 = infoCopy;
+  v8 = infoCopy;
+  dispatch_async(workQueue, block);
 }
 
 uint64_t __50__MSASStateMachine_checkForChangesResetSync_info___block_invoke(uint64_t a1)
@@ -11760,13 +11760,13 @@ uint64_t __50__MSASStateMachine_checkForChangesResetSync_info___block_invoke(uin
 - (void)checkForChangesIfMissingRootCtag
 {
   v7 = *MEMORY[0x277D85DE8];
-  v3 = [(MSASStateMachine *)self rootCtagToCheckForChanges];
-  if (!v3)
+  rootCtagToCheckForChanges = [(MSASStateMachine *)self rootCtagToCheckForChanges];
+  if (!rootCtagToCheckForChanges)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
       v5 = 138543362;
-      v6 = self;
+      selfCopy = self;
       _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%{public}@: checking for changes because there is no root ctag.", &v5, 0xCu);
     }
 
@@ -11860,28 +11860,28 @@ void __34__MSASStateMachine__canceledError__block_invoke()
   _canceledError_error = v1;
 }
 
-- (void)_getAlbumURLDisposition:(int)a3 params:(id)a4
+- (void)_getAlbumURLDisposition:(int)disposition params:(id)params
 {
-  v6 = a4;
-  v7 = [v6 objectForKey:@"albumGUID"];
-  v8 = [v6 objectForKey:@"assetCollectionGUID"];
-  v9 = [v6 objectForKey:@"command"];
-  v10 = [v6 objectForKey:@"params"];
+  paramsCopy = params;
+  v7 = [paramsCopy objectForKey:@"albumGUID"];
+  v8 = [paramsCopy objectForKey:@"assetCollectionGUID"];
+  v9 = [paramsCopy objectForKey:@"command"];
+  v10 = [paramsCopy objectForKey:@"params"];
 
-  if (a3 == 2)
+  if (disposition == 2)
   {
     v12 = [v10 mutableCopy];
-    v13 = [(MSASStateMachine *)self _canceledError];
-    [v12 setObject:v13 forKey:@"error"];
+    _canceledError = [(MSASStateMachine *)self _canceledError];
+    [v12 setObject:_canceledError forKey:@"error"];
 
-    v14 = [(MSASStateMachine *)self _model];
-    v15 = [(MSASStateMachine *)self personID];
-    [v14 enqueueCommandAtHeadOfQueue:v9 params:v12 personID:v15 albumGUID:v7 assetCollectionGUID:v8];
+    _model = [(MSASStateMachine *)self _model];
+    personID = [(MSASStateMachine *)self personID];
+    [_model enqueueCommandAtHeadOfQueue:v9 params:v12 personID:personID albumGUID:v7 assetCollectionGUID:v8];
   }
 
-  else if (!a3)
+  else if (!disposition)
   {
-    v11 = [(MSASStateMachine *)self protocol];
+    protocol = [(MSASStateMachine *)self protocol];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __51__MSASStateMachine__getAlbumURLDisposition_params___block_invoke;
@@ -11891,7 +11891,7 @@ void __34__MSASStateMachine__canceledError__block_invoke()
     v18 = v9;
     v19 = v7;
     v20 = v8;
-    [v11 getAlbumURLForAlbumWithGUID:v19 completionBlock:v16];
+    [protocol getAlbumURLForAlbumWithGUID:v19 completionBlock:v16];
   }
 }
 
@@ -11980,22 +11980,22 @@ void __51__MSASStateMachine__getAlbumURLDisposition_params___block_invoke_2(uint
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_URLReauthFailureWithUnderlyingError:(id)a3
+- (id)_URLReauthFailureWithUnderlyingError:(id)error
 {
   v3 = MEMORY[0x277CCA9B8];
-  v4 = a3;
+  errorCopy = error;
   v5 = MSCFCopyLocalizedString(@"ERROR_STATE_CANNOT_REQUEUE_AFTER_URL");
-  v6 = [v3 MSErrorWithDomain:@"MSASStateMachineErrorDomain" code:4 description:v5 underlyingError:v4];
+  v6 = [v3 MSErrorWithDomain:@"MSASStateMachineErrorDomain" code:4 description:v5 underlyingError:errorCopy];
 
   return v6;
 }
 
-- (void)_actionDidFinishWithError:(id)a3 album:(id)a4
+- (void)_actionDidFinishWithError:(id)error album:(id)album
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 MSContainsErrorWithDomain:@"MSASProtocolErrorDomain" code:22])
+  errorCopy = error;
+  albumCopy = album;
+  if ([errorCopy MSContainsErrorWithDomain:@"MSASProtocolErrorDomain" code:22])
   {
     v8 = _os_feature_enabled_impl();
     v9 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR);
@@ -12006,28 +12006,28 @@ void __51__MSASStateMachine__getAlbumURLDisposition_params___block_invoke_2(uint
         goto LABEL_8;
       }
 
-      v12 = [v6 MSVerboseDescription];
+      mSVerboseDescription = [errorCopy MSVerboseDescription];
       *buf = 138543618;
-      v18 = self;
+      selfCopy2 = self;
       v19 = 2114;
-      v20 = v12;
+      v20 = mSVerboseDescription;
       _os_log_error_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%{public}@: Encountered fatal error. Not retrying. Error: %{public}@", buf, 0x16u);
       goto LABEL_6;
     }
 
     if (v9)
     {
-      v14 = [v7 GUID];
-      v15 = [v6 MSVerboseDescription];
+      gUID = [albumCopy GUID];
+      mSVerboseDescription2 = [errorCopy MSVerboseDescription];
       *buf = 138543874;
-      v18 = self;
+      selfCopy2 = self;
       v19 = 2114;
-      v20 = v14;
+      v20 = gUID;
       v21 = 2114;
-      v22 = v15;
+      v22 = mSVerboseDescription2;
       _os_log_error_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%{public}@: Encountered invalid/missing clientOrgKey error. Fetching new clientOrgKey for album: %{public}@. Not retrying. Error: %{public}@", buf, 0x20u);
 
-      if (!v7)
+      if (!albumCopy)
       {
         goto LABEL_8;
       }
@@ -12035,17 +12035,17 @@ void __51__MSASStateMachine__getAlbumURLDisposition_params___block_invoke_2(uint
       goto LABEL_5;
     }
 
-    if (v7)
+    if (albumCopy)
     {
 LABEL_5:
-      [v7 setClientOrgKey:0];
-      v10 = [(MSASStateMachine *)self delegate];
-      v11 = [v7 GUID];
-      [v10 setClientOrgKey:0 forAlbumWithGUID:v11];
+      [albumCopy setClientOrgKey:0];
+      delegate = [(MSASStateMachine *)self delegate];
+      gUID2 = [albumCopy GUID];
+      [delegate setClientOrgKey:0 forAlbumWithGUID:gUID2];
 
-      v16 = v7;
-      v12 = [MEMORY[0x277CBEA60] arrayWithObjects:&v16 count:1];
-      [(MSASStateMachine *)self checkForUpdatesInAlbums:v12 resetSync:0 info:0];
+      v16 = albumCopy;
+      mSVerboseDescription = [MEMORY[0x277CBEA60] arrayWithObjects:&v16 count:1];
+      [(MSASStateMachine *)self checkForUpdatesInAlbums:mSVerboseDescription resetSync:0 info:0];
 LABEL_6:
     }
   }
@@ -12055,20 +12055,20 @@ LABEL_8:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)workQueueEndCommandWithError:(id)a3 command:(id)a4 params:(id)a5 albumGUID:(id)a6 assetCollectionGUID:(id)a7
+- (BOOL)workQueueEndCommandWithError:(id)error command:(id)command params:(id)params albumGUID:(id)d assetCollectionGUID:(id)iD
 {
   v57 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if ([v12 MSContainsErrorWithDomain:@"MSASStateMachineErrorDomain" code:0])
+  errorCopy = error;
+  commandCopy = command;
+  paramsCopy = params;
+  dCopy = d;
+  iDCopy = iD;
+  if ([errorCopy MSContainsErrorWithDomain:@"MSASStateMachineErrorDomain" code:0])
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v52 = self;
+      selfCopy10 = self;
       _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%{public}@: Command was cancelled.", buf, 0xCu);
     }
 
@@ -12076,12 +12076,12 @@ LABEL_8:
     goto LABEL_17;
   }
 
-  if ([v12 MSContainsErrorWithDomain:@"MSASStateMachineErrorDomain" code:1])
+  if ([errorCopy MSContainsErrorWithDomain:@"MSASStateMachineErrorDomain" code:1])
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v52 = self;
+      selfCopy10 = self;
       _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%{public}@: Command was stopped. Not removing from the command queue.", buf, 0xCu);
     }
 
@@ -12089,83 +12089,83 @@ LABEL_8:
     goto LABEL_17;
   }
 
-  if ([v12 MSIsTemporaryNetworkError])
+  if ([errorCopy MSIsTemporaryNetworkError])
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v52 = self;
+      selfCopy10 = self;
       _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%{public}@: Encountered temporary network problems.", buf, 0xCu);
     }
 
 LABEL_16:
-    [(MSASStateMachine *)self workQueueDidFailToFinishCommandDueToTemporaryError:v12];
+    [(MSASStateMachine *)self workQueueDidFailToFinishCommandDueToTemporaryError:errorCopy];
 LABEL_17:
     v18 = 1;
     goto LABEL_18;
   }
 
-  if ([v12 MSIsAuthError])
+  if ([errorCopy MSIsAuthError])
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
-      v42 = [v12 MSVerboseDescription];
+      mSVerboseDescription = [errorCopy MSVerboseDescription];
       *buf = 138543618;
-      v52 = self;
+      selfCopy10 = self;
       v53 = 2114;
-      v54 = v42;
+      v54 = mSVerboseDescription;
       _os_log_error_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%{public}@: Received authentication error: %{public}@", buf, 0x16u);
     }
 
-    v17 = [(MSASStateMachine *)self eventQueue];
+    eventQueue = [(MSASStateMachine *)self eventQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __94__MSASStateMachine_workQueueEndCommandWithError_command_params_albumGUID_assetCollectionGUID___block_invoke;
     block[3] = &unk_278E926D8;
     block[4] = self;
-    dispatch_async(v17, block);
+    dispatch_async(eventQueue, block);
 
     goto LABEL_16;
   }
 
-  if (v13 && [v12 MSContainsErrorWithDomain:@"MSASProtocolErrorDomain" code:18])
+  if (commandCopy && [errorCopy MSContainsErrorWithDomain:@"MSASProtocolErrorDomain" code:18])
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
-      v43 = [v12 MSVerboseDescription];
+      mSVerboseDescription2 = [errorCopy MSVerboseDescription];
       *buf = 138543618;
-      v52 = self;
+      selfCopy10 = self;
       v53 = 2114;
-      v54 = v43;
+      v54 = mSVerboseDescription2;
       _os_log_error_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%{public}@: Encountered visitor authentication failure. Getting new album URL and retrying command. Error: %{public}@", buf, 0x16u);
     }
 
-    v21 = [MEMORY[0x277CBEB38] dictionary];
-    v22 = v21;
-    if (v15)
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    v22 = dictionary;
+    if (dCopy)
     {
-      [v21 setObject:v15 forKey:@"albumGUID"];
+      [dictionary setObject:dCopy forKey:@"albumGUID"];
     }
 
-    if (v16)
+    if (iDCopy)
     {
-      [v22 setObject:v16 forKey:@"assetCollectionGUID"];
+      [v22 setObject:iDCopy forKey:@"assetCollectionGUID"];
     }
 
-    [v22 setObject:v13 forKey:@"command"];
-    if (v14)
+    [v22 setObject:commandCopy forKey:@"command"];
+    if (paramsCopy)
     {
-      [v22 setObject:v14 forKey:@"params"];
+      [v22 setObject:paramsCopy forKey:@"params"];
     }
 
     v23 = NSStringFromSelector(sel__getAlbumURLDisposition_params_);
-    v24 = [(MSASStateMachine *)self personID];
-    [(MSASStateMachine *)self workQueueDidFinishCommandByReplacingCurrentCommandWithCommand:v23 params:v22 personID:v24 albumGUID:v15 assetCollectionGUID:0];
+    personID = [(MSASStateMachine *)self personID];
+    [(MSASStateMachine *)self workQueueDidFinishCommandByReplacingCurrentCommandWithCommand:v23 params:v22 personID:personID albumGUID:dCopy assetCollectionGUID:0];
 
     goto LABEL_17;
   }
 
-  if ([v12 MSContainsErrorWithDomain:@"MSASProtocolErrorDomain" code:22])
+  if ([errorCopy MSContainsErrorWithDomain:@"MSASProtocolErrorDomain" code:22])
   {
     v25 = _os_feature_enabled_impl();
     v26 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR);
@@ -12173,25 +12173,25 @@ LABEL_17:
     {
       if (v26)
       {
-        v44 = [v12 MSVerboseDescription];
+        mSVerboseDescription3 = [errorCopy MSVerboseDescription];
         *buf = 138543874;
-        v52 = self;
+        selfCopy10 = self;
         v53 = 2114;
-        v54 = v15;
+        v54 = dCopy;
         v55 = 2114;
-        v56 = v44;
+        v56 = mSVerboseDescription3;
         _os_log_error_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%{public}@: Encountered invalid/missing clientOrgKey error. Fetching new clientOrgKey for album: %{public}@. Not retrying. Error: %{public}@", buf, 0x20u);
       }
 
-      v27 = [v14 objectForKeyedSubscript:@"album"];
-      v28 = v27;
+      v27 = [paramsCopy objectForKeyedSubscript:@"album"];
+      mSVerboseDescription4 = v27;
       if (v27)
       {
         [v27 setClientOrgKey:0];
-        v29 = [(MSASStateMachine *)self delegate];
-        [v29 setClientOrgKey:0 forAlbumWithGUID:v15];
+        delegate = [(MSASStateMachine *)self delegate];
+        [delegate setClientOrgKey:0 forAlbumWithGUID:dCopy];
 
-        v50 = v28;
+        v50 = mSVerboseDescription4;
         v30 = [MEMORY[0x277CBEA60] arrayWithObjects:&v50 count:1];
         [(MSASStateMachine *)self checkForUpdatesInAlbums:v30 resetSync:0 info:0];
       }
@@ -12205,11 +12205,11 @@ LABEL_17:
     }
 
 LABEL_41:
-    v28 = [v12 MSVerboseDescription];
+    mSVerboseDescription4 = [errorCopy MSVerboseDescription];
     *buf = 138543618;
-    v52 = self;
+    selfCopy10 = self;
     v53 = 2114;
-    v54 = v28;
+    v54 = mSVerboseDescription4;
     _os_log_error_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%{public}@: Encountered fatal error. Not retrying. Error: %{public}@", buf, 0x16u);
 LABEL_36:
 
@@ -12218,7 +12218,7 @@ LABEL_50:
     goto LABEL_18;
   }
 
-  if ([v12 MSIsFatal])
+  if ([errorCopy MSIsFatal])
   {
     if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
@@ -12229,16 +12229,16 @@ LABEL_50:
   }
 
   v31 = [(NSDictionary *)self->_currentCommandParams objectForKey:@"errorCount"];
-  v32 = [v31 intValue];
+  intValue = [v31 intValue];
 
-  v33 = (v32 + 1);
+  v33 = (intValue + 1);
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
-    v45 = [v12 MSVerboseDescription];
+    mSVerboseDescription5 = [errorCopy MSVerboseDescription];
     *buf = 138543874;
-    v52 = self;
+    selfCopy10 = self;
     v53 = 2114;
-    v54 = v45;
+    v54 = mSVerboseDescription5;
     v55 = 1024;
     LODWORD(v56) = v33;
     _os_log_error_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%{public}@: Encountered error: %{public}@. This command has encountered %d errors so far.", buf, 0x1Cu);
@@ -12249,7 +12249,7 @@ LABEL_50:
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v52 = self;
+      selfCopy10 = self;
       _os_log_error_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%{public}@: Giving up.", buf, 0xCu);
     }
 
@@ -12259,30 +12259,30 @@ LABEL_50:
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v52 = self;
+    selfCopy10 = self;
     _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%{public}@: Retrying.", buf, 0xCu);
   }
 
-  v34 = [(MSASStateMachine *)self memberQueue];
+  memberQueue = [(MSASStateMachine *)self memberQueue];
   v48[0] = MEMORY[0x277D85DD0];
   v48[1] = 3221225472;
   v48[2] = __94__MSASStateMachine_workQueueEndCommandWithError_command_params_albumGUID_assetCollectionGUID___block_invoke_94;
   v48[3] = &unk_278E926D8;
   v48[4] = self;
-  dispatch_barrier_sync(v34, v48);
+  dispatch_barrier_sync(memberQueue, v48);
 
   v35 = [(NSDictionary *)self->_currentCommandParams mutableCopy];
   v36 = [MEMORY[0x277CCABB0] numberWithInt:v33];
   [v35 setObject:v36 forKey:@"errorCount"];
 
   [(MSASPersonModel *)self->_model setParams:v35 forCommandWithIdentifier:self->_currentCommandID];
-  v37 = [(MSASStateMachine *)self eventQueue];
+  eventQueue2 = [(MSASStateMachine *)self eventQueue];
   v47[0] = MEMORY[0x277D85DD0];
   v47[1] = 3221225472;
   v47[2] = __94__MSASStateMachine_workQueueEndCommandWithError_command_params_albumGUID_assetCollectionGUID___block_invoke_2;
   v47[3] = &unk_278E926D8;
   v47[4] = self;
-  dispatch_async(v37, v47);
+  dispatch_async(eventQueue2, v47);
 
   currentCommandParams = self->_currentCommandParams;
   self->_currentCommandParams = 0;
@@ -12296,13 +12296,13 @@ LABEL_50:
   v18 = 1;
   self->_commandState = 1;
   [(MSASStateMachine *)self workQueueUpdateNextActivityDate];
-  v41 = [(MSASStateMachine *)self workQueue];
+  workQueue = [(MSASStateMachine *)self workQueue];
   v46[0] = MEMORY[0x277D85DD0];
   v46[1] = 3221225472;
   v46[2] = __94__MSASStateMachine_workQueueEndCommandWithError_command_params_albumGUID_assetCollectionGUID___block_invoke_3;
   v46[3] = &unk_278E926D8;
   v46[4] = self;
-  dispatch_async(v41, v46);
+  dispatch_async(workQueue, v46);
 
 LABEL_18:
   v19 = *MEMORY[0x277D85DE8];
@@ -12333,7 +12333,7 @@ void __94__MSASStateMachine_workQueueEndCommandWithError_command_params_albumGUI
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     *buf = 138543362;
-    v12 = self;
+    selfCopy = self;
     _os_log_debug_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG, "%{public}@: Command finished because it was cancelled.", buf, 0xCu);
   }
 
@@ -12348,21 +12348,21 @@ void __94__MSASStateMachine_workQueueEndCommandWithError_command_params_albumGUI
   self->_stopHandlerBlock = 0;
 
   [(MSASStateMachine *)self workQueueUpdateNextActivityDate];
-  v6 = [(MSASStateMachine *)self eventQueue];
+  eventQueue = [(MSASStateMachine *)self eventQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __62__MSASStateMachine_workQueueDidFinishCommandDueToCancellation__block_invoke;
   block[3] = &unk_278E926D8;
   block[4] = self;
-  dispatch_async(v6, block);
+  dispatch_async(eventQueue, block);
 
-  v7 = [(MSASStateMachine *)self postCommandCompletionBlock];
+  postCommandCompletionBlock = [(MSASStateMachine *)self postCommandCompletionBlock];
 
-  if (v7)
+  if (postCommandCompletionBlock)
   {
-    v8 = [(MSASStateMachine *)self postCommandCompletionBlock];
+    postCommandCompletionBlock2 = [(MSASStateMachine *)self postCommandCompletionBlock];
     [(MSASStateMachine *)self setPostCommandCompletionBlock:0];
-    v8[2](v8);
+    postCommandCompletionBlock2[2](postCommandCompletionBlock2);
   }
 
   v9 = *MEMORY[0x277D85DE8];
@@ -12385,7 +12385,7 @@ void __62__MSASStateMachine_workQueueDidFinishCommandDueToCancellation__block_in
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     *buf = 138543362;
-    v12 = self;
+    selfCopy = self;
     _os_log_debug_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG, "%{public}@: Leaving command in queue.", buf, 0xCu);
   }
 
@@ -12400,21 +12400,21 @@ void __62__MSASStateMachine_workQueueDidFinishCommandDueToCancellation__block_in
   self->_stopHandlerBlock = 0;
 
   [(MSASStateMachine *)self workQueueUpdateNextActivityDate];
-  v6 = [(MSASStateMachine *)self eventQueue];
+  eventQueue = [(MSASStateMachine *)self eventQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __68__MSASStateMachine_workQueueDidFinishCommandByLeavingCommandInQueue__block_invoke;
   block[3] = &unk_278E926D8;
   block[4] = self;
-  dispatch_async(v6, block);
+  dispatch_async(eventQueue, block);
 
-  v7 = [(MSASStateMachine *)self workQueue];
+  workQueue = [(MSASStateMachine *)self workQueue];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __68__MSASStateMachine_workQueueDidFinishCommandByLeavingCommandInQueue__block_invoke_2;
   v9[3] = &unk_278E926D8;
   v9[4] = self;
-  dispatch_async(v7, v9);
+  dispatch_async(workQueue, v9);
 
   v8 = *MEMORY[0x277D85DE8];
 }
@@ -12441,23 +12441,23 @@ uint64_t __68__MSASStateMachine_workQueueDidFinishCommandByLeavingCommandInQueue
   return [v4 workQueueCheckForNextCommand];
 }
 
-- (void)workQueueDidFailToFinishCommandDueToTemporaryError:(id)a3
+- (void)workQueueDidFailToFinishCommandDueToTemporaryError:(id)error
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   if (self->_commandState != 2)
   {
     __assert_rtn("[MSASStateMachine workQueueDidFailToFinishCommandDueToTemporaryError:]", "MSASStateMachine.m", 1136, "_commandState == kMSASCommandStatePerformingCommand");
   }
 
-  v5 = v4;
+  v5 = errorCopy;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
-    v13 = [v5 MSVerboseDescription];
+    mSVerboseDescription = [v5 MSVerboseDescription];
     *buf = 138543618;
-    v16 = self;
+    selfCopy = self;
     v17 = 2114;
-    v18 = v13;
+    v18 = mSVerboseDescription;
     _os_log_debug_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG, "%{public}@: Encountered temporary error. Will retry later. Error: %{public}@", buf, 0x16u);
   }
 
@@ -12472,21 +12472,21 @@ uint64_t __68__MSASStateMachine_workQueueDidFinishCommandByLeavingCommandInQueue
   self->_stopHandlerBlock = 0;
 
   [(MSASStateMachine *)self workQueueUpdateNextActivityDate];
-  v9 = [(MSASStateMachine *)self eventQueue];
+  eventQueue = [(MSASStateMachine *)self eventQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __71__MSASStateMachine_workQueueDidFailToFinishCommandDueToTemporaryError___block_invoke;
   block[3] = &unk_278E926D8;
   block[4] = self;
-  dispatch_async(v9, block);
+  dispatch_async(eventQueue, block);
 
-  v10 = [(MSASStateMachine *)self postCommandCompletionBlock];
+  postCommandCompletionBlock = [(MSASStateMachine *)self postCommandCompletionBlock];
 
-  if (v10)
+  if (postCommandCompletionBlock)
   {
-    v11 = [(MSASStateMachine *)self postCommandCompletionBlock];
+    postCommandCompletionBlock2 = [(MSASStateMachine *)self postCommandCompletionBlock];
     [(MSASStateMachine *)self setPostCommandCompletionBlock:0];
-    v11[2](v11);
+    postCommandCompletionBlock2[2](postCommandCompletionBlock2);
   }
 
   v12 = *MEMORY[0x277D85DE8];
@@ -12498,40 +12498,40 @@ void __71__MSASStateMachine_workQueueDidFailToFinishCommandDueToTemporaryError__
   [WeakRetained releaseBusy];
 }
 
-- (void)workQueueDidFinishCommandByReplacingCurrentCommandWithCommand:(id)a3 params:(id)a4 personID:(id)a5 albumGUID:(id)a6 assetCollectionGUID:(id)a7
+- (void)workQueueDidFinishCommandByReplacingCurrentCommandWithCommand:(id)command params:(id)params personID:(id)d albumGUID:(id)iD assetCollectionGUID:(id)uID
 {
   v41 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  commandCopy = command;
+  paramsCopy = params;
+  dCopy = d;
+  iDCopy = iD;
+  uIDCopy = uID;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     *buf = 138543618;
-    v38 = self;
+    selfCopy = self;
     v39 = 2114;
-    v40 = v12;
+    v40 = commandCopy;
     _os_log_debug_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG, "%{public}@: Command will be replaced by command: %{public}@", buf, 0x16u);
   }
 
-  v17 = [(MSASModelBase *)self->_model dbQueue];
+  dbQueue = [(MSASModelBase *)self->_model dbQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __128__MSASStateMachine_workQueueDidFinishCommandByReplacingCurrentCommandWithCommand_params_personID_albumGUID_assetCollectionGUID___block_invoke;
   block[3] = &unk_278E92048;
   block[4] = self;
-  v32 = v12;
-  v33 = v13;
-  v34 = v14;
-  v35 = v15;
-  v36 = v16;
-  v18 = v16;
-  v19 = v15;
-  v20 = v14;
-  v21 = v13;
-  v22 = v12;
-  dispatch_barrier_sync(v17, block);
+  v32 = commandCopy;
+  v33 = paramsCopy;
+  v34 = dCopy;
+  v35 = iDCopy;
+  v36 = uIDCopy;
+  v18 = uIDCopy;
+  v19 = iDCopy;
+  v20 = dCopy;
+  v21 = paramsCopy;
+  v22 = commandCopy;
+  dispatch_barrier_sync(dbQueue, block);
 
   self->_commandState = 1;
   currentCommandParams = self->_currentCommandParams;
@@ -12544,21 +12544,21 @@ void __71__MSASStateMachine_workQueueDidFailToFinishCommandDueToTemporaryError__
   self->_stopHandlerBlock = 0;
 
   [(MSASStateMachine *)self workQueueUpdateNextActivityDate];
-  v26 = [(MSASStateMachine *)self eventQueue];
+  eventQueue = [(MSASStateMachine *)self eventQueue];
   v30[0] = MEMORY[0x277D85DD0];
   v30[1] = 3221225472;
   v30[2] = __128__MSASStateMachine_workQueueDidFinishCommandByReplacingCurrentCommandWithCommand_params_personID_albumGUID_assetCollectionGUID___block_invoke_2;
   v30[3] = &unk_278E926D8;
   v30[4] = self;
-  dispatch_async(v26, v30);
+  dispatch_async(eventQueue, v30);
 
-  v27 = [(MSASStateMachine *)self workQueue];
+  workQueue = [(MSASStateMachine *)self workQueue];
   v29[0] = MEMORY[0x277D85DD0];
   v29[1] = 3221225472;
   v29[2] = __128__MSASStateMachine_workQueueDidFinishCommandByReplacingCurrentCommandWithCommand_params_personID_albumGUID_assetCollectionGUID___block_invoke_3;
   v29[3] = &unk_278E926D8;
   v29[4] = self;
-  dispatch_async(v27, v29);
+  dispatch_async(workQueue, v29);
 
   v28 = *MEMORY[0x277D85DE8];
 }
@@ -12603,13 +12603,13 @@ uint64_t __128__MSASStateMachine_workQueueDidFinishCommandByReplacingCurrentComm
   }
 
   self->_commandState = 1;
-  v3 = [(MSASStateMachine *)self eventQueue];
+  eventQueue = [(MSASStateMachine *)self eventQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __45__MSASStateMachine_workQueueDidFinishCommand__block_invoke;
   block[3] = &unk_278E926D8;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(eventQueue, block);
 
   [(MSASPersonModel *)self->_model removeCommandIdentifier:self->_currentCommandID];
   currentCommandParams = self->_currentCommandParams;
@@ -12622,13 +12622,13 @@ uint64_t __128__MSASStateMachine_workQueueDidFinishCommandByReplacingCurrentComm
   self->_stopHandlerBlock = 0;
 
   [(MSASStateMachine *)self workQueueUpdateNextActivityDate];
-  v7 = [(MSASStateMachine *)self workQueue];
+  workQueue = [(MSASStateMachine *)self workQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __45__MSASStateMachine_workQueueDidFinishCommand__block_invoke_2;
   v8[3] = &unk_278E926D8;
   v8[4] = self;
-  dispatch_async(v7, v8);
+  dispatch_async(workQueue, v8);
 }
 
 void __45__MSASStateMachine_workQueueDidFinishCommand__block_invoke(uint64_t a1)
@@ -12663,7 +12663,7 @@ uint64_t __45__MSASStateMachine_workQueueDidFinishCommand__block_invoke_2(uint64
     v36 = 0;
     v5 = [(MSASPersonModel *)model commandAtHeadOfQueueOutParams:&v36 outCommandIdentifier:&self->_currentCommandID outPersonID:&v35 outAlbumGUID:0 outAssetCollectionGUID:0];
     v6 = v36;
-    v3 = v36;
+    eventQueue4 = v36;
     v7 = v35;
     objc_storeStrong(&self->_currentCommand, v5);
     objc_storeStrong(&self->_currentCommandParams, v6);
@@ -12672,17 +12672,17 @@ uint64_t __45__MSASStateMachine_workQueueDidFinishCommand__block_invoke_2(uint64
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
         *buf = 138543362;
-        v39 = self;
+        selfCopy4 = self;
         _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%{public}@: No more commands to perform.", buf, 0xCu);
       }
 
-      v17 = [(MSASStateMachine *)self eventQueue];
+      eventQueue = [(MSASStateMachine *)self eventQueue];
       v34[0] = MEMORY[0x277D85DD0];
       v34[1] = 3221225472;
       v34[2] = __47__MSASStateMachine_workQueuePerformNextCommand__block_invoke_82;
       v34[3] = &unk_278E926D8;
       v34[4] = self;
-      dispatch_async(v17, v34);
+      dispatch_async(eventQueue, v34);
 
       currentCommandParams = self->_currentCommandParams;
       self->_currentCommandParams = 0;
@@ -12711,7 +12711,7 @@ LABEL_9:
           if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
           {
             *buf = 138543618;
-            v39 = self;
+            selfCopy4 = self;
             v40 = 2114;
             v41 = v7;
             _os_log_error_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%{public}@: Retrieved command for personID %{public}@, but Shared Photo Stream has been disabled. Skipping.", buf, 0x16u);
@@ -12719,17 +12719,17 @@ LABEL_9:
 
           [(MSASPersonModel *)self->_model removeCommandIdentifier:self->_currentCommandID];
           self->_commandState = 1;
-          v13 = [(MSASStateMachine *)self eventQueue];
+          eventQueue2 = [(MSASStateMachine *)self eventQueue];
           v33[0] = MEMORY[0x277D85DD0];
           v33[1] = 3221225472;
           v33[2] = __47__MSASStateMachine_workQueuePerformNextCommand__block_invoke_85;
           v33[3] = &unk_278E926D8;
           v33[4] = self;
-          dispatch_async(v13, v33);
+          dispatch_async(eventQueue2, v33);
 
           [(MSASStateMachine *)self workQueueUpdateNextActivityDate];
-          v14 = [(MSASStateMachine *)self workQueue];
-          v15 = v14;
+          workQueue = [(MSASStateMachine *)self workQueue];
+          v15 = workQueue;
           v32[0] = MEMORY[0x277D85DD0];
           v32[1] = 3221225472;
           v32[2] = __47__MSASStateMachine_workQueuePerformNextCommand__block_invoke_2;
@@ -12742,8 +12742,8 @@ LABEL_9:
 
       else
       {
-        v20 = [v10 personIDsEnabledForAlbumSharing];
-        v21 = [v20 containsObject:v7];
+        personIDsEnabledForAlbumSharing = [v10 personIDsEnabledForAlbumSharing];
+        v21 = [personIDsEnabledForAlbumSharing containsObject:v7];
 
         if ((v21 & 1) == 0)
         {
@@ -12759,10 +12759,10 @@ LABEL_9:
       if (objc_opt_respondsToSelector())
       {
         v24 = [(NSDictionary *)self->_currentCommandParams objectForKey:@"commandRetryCount"];
-        v25 = [v24 intValue];
+        intValue = [v24 intValue];
 
         v26 = [(NSDictionary *)self->_currentCommandParams mutableCopy];
-        v27 = [MEMORY[0x277CCABB0] numberWithInt:(v25 + 1)];
+        v27 = [MEMORY[0x277CCABB0] numberWithInt:(intValue + 1)];
         [v26 setObject:v27 forKey:@"commandRetryCount"];
 
         [(MSASPersonModel *)self->_model setParams:v26 forCommandWithIdentifier:self->_currentCommandID];
@@ -12776,7 +12776,7 @@ LABEL_23:
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v39 = self;
+      selfCopy4 = self;
       v40 = 2114;
       v41 = v5;
       _os_log_error_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%{public}@: Unknown command: %{public}@. Skipping.", buf, 0x16u);
@@ -12784,17 +12784,17 @@ LABEL_23:
 
     [(MSASPersonModel *)self->_model removeCommandIdentifier:self->_currentCommandID];
     self->_commandState = 1;
-    v28 = [(MSASStateMachine *)self eventQueue];
+    eventQueue3 = [(MSASStateMachine *)self eventQueue];
     v31[0] = MEMORY[0x277D85DD0];
     v31[1] = 3221225472;
     v31[2] = __47__MSASStateMachine_workQueuePerformNextCommand__block_invoke_86;
     v31[3] = &unk_278E926D8;
     v31[4] = self;
-    dispatch_async(v28, v31);
+    dispatch_async(eventQueue3, v31);
 
     [(MSASStateMachine *)self workQueueUpdateNextActivityDate];
-    v14 = [(MSASStateMachine *)self workQueue];
-    v15 = v14;
+    workQueue = [(MSASStateMachine *)self workQueue];
+    v15 = workQueue;
     v30[0] = MEMORY[0x277D85DD0];
     v30[1] = 3221225472;
     v30[2] = __47__MSASStateMachine_workQueuePerformNextCommand__block_invoke_2_87;
@@ -12802,7 +12802,7 @@ LABEL_23:
     v30[4] = self;
     v16 = v30;
 LABEL_22:
-    dispatch_async(v14, v16);
+    dispatch_async(workQueue, v16);
 
     goto LABEL_23;
   }
@@ -12810,17 +12810,17 @@ LABEL_22:
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v39 = self;
+    selfCopy4 = self;
     _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%{public}@: Not performing any more commands because we're shutting down.", buf, 0xCu);
   }
 
-  v3 = [(MSASStateMachine *)self eventQueue];
+  eventQueue4 = [(MSASStateMachine *)self eventQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __47__MSASStateMachine_workQueuePerformNextCommand__block_invoke;
   block[3] = &unk_278E926D8;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(eventQueue4, block);
 LABEL_24:
 
   v29 = *MEMORY[0x277D85DE8];
@@ -12866,18 +12866,18 @@ void __47__MSASStateMachine_workQueuePerformNextCommand__block_invoke_86(uint64_
     v22 = __Block_byref_object_copy__4549;
     v23 = __Block_byref_object_dispose__4550;
     v24 = 0;
-    v3 = [(MSASStateMachine *)self memberQueue];
+    memberQueue = [(MSASStateMachine *)self memberQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __48__MSASStateMachine_workQueueCheckForNextCommand__block_invoke;
     block[3] = &unk_278E92700;
     block[4] = self;
     block[5] = &buf;
-    dispatch_sync(v3, block);
+    dispatch_sync(memberQueue, block);
 
     v4 = *(*(&buf + 1) + 40);
-    v5 = [MEMORY[0x277CBEAA8] date];
-    LODWORD(v4) = [v4 compare:v5] == 1;
+    date = [MEMORY[0x277CBEAA8] date];
+    LODWORD(v4) = [v4 compare:date] == 1;
 
     if (v4)
     {
@@ -12885,7 +12885,7 @@ void __47__MSASStateMachine_workQueuePerformNextCommand__block_invoke_86(uint64_
       {
         v6 = *(*(&buf + 1) + 40);
         *v16 = 138543618;
-        v17 = self;
+        selfCopy2 = self;
         v18 = 2114;
         v19 = v6;
         v7 = MEMORY[0x277D86220];
@@ -12899,17 +12899,17 @@ LABEL_12:
     else
     {
       v10 = MSASPlatform();
-      v11 = [v10 MSASIsAllowedToTransferMetadata];
+      mSASIsAllowedToTransferMetadata = [v10 MSASIsAllowedToTransferMetadata];
 
-      if (v11)
+      if (mSASIsAllowedToTransferMetadata)
       {
-        v12 = [(MSASStateMachine *)self eventQueue];
+        eventQueue = [(MSASStateMachine *)self eventQueue];
         v14[0] = MEMORY[0x277D85DD0];
         v14[1] = 3221225472;
         v14[2] = __48__MSASStateMachine_workQueueCheckForNextCommand__block_invoke_81;
         v14[3] = &unk_278E926D8;
         v14[4] = self;
-        dispatch_async(v12, v14);
+        dispatch_async(eventQueue, v14);
 
         self->_commandState = 2;
         [(MSASStateMachine *)self workQueuePerformNextCommand];
@@ -12918,7 +12918,7 @@ LABEL_12:
       else if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
       {
         *v16 = 138543362;
-        v17 = self;
+        selfCopy2 = self;
         v7 = MEMORY[0x277D86220];
         v8 = "%{public}@: Not allowed to transfer metadata at this time. Try again later.";
         v9 = 12;
@@ -12966,7 +12966,7 @@ void __48__MSASStateMachine_workQueueCheckForNextCommand__block_invoke_81(uint64
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
     {
       v4 = 138543362;
-      v5 = self;
+      selfCopy = self;
       _os_log_debug_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG, "%{public}@: Retrying outstanding activities.", &v4, 0xCu);
     }
 
@@ -12982,25 +12982,25 @@ void __48__MSASStateMachine_workQueueCheckForNextCommand__block_invoke_81(uint64
 
 - (void)retryOutstandingActivities
 {
-  v3 = [(MSASStateMachine *)self workQueue];
+  workQueue = [(MSASStateMachine *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __46__MSASStateMachine_retryOutstandingActivities__block_invoke;
   block[3] = &unk_278E926D8;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(workQueue, block);
 }
 
 - (BOOL)hasEnqueuedActivities
 {
-  v3 = [(MSASStateMachine *)self _model];
-  if ([v3 countOfEnqueuedCommands] <= 0)
+  _model = [(MSASStateMachine *)self _model];
+  if ([_model countOfEnqueuedCommands] <= 0)
   {
-    v5 = [(MSASStateMachine *)self _model];
-    if ([v5 assetCollectionsInUploadQueue] <= 0)
+    _model2 = [(MSASStateMachine *)self _model];
+    if ([_model2 assetCollectionsInUploadQueue] <= 0)
     {
-      v6 = [(MSASStateMachine *)self _model];
-      v4 = [v6 hasItemsForDownloadCountFocusAlbumGUID:0 focusAssetCollectionGUID:0];
+      _model3 = [(MSASStateMachine *)self _model];
+      v4 = [_model3 hasItemsForDownloadCountFocusAlbumGUID:0 focusAssetCollectionGUID:0];
     }
 
     else
@@ -13019,40 +13019,40 @@ void __48__MSASStateMachine_workQueueCheckForNextCommand__block_invoke_81(uint64
 
 - (BOOL)isInRetryState
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(MSASStateMachine *)self memberQueue];
+  memberQueue = [(MSASStateMachine *)self memberQueue];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __34__MSASStateMachine_isInRetryState__block_invoke;
   v5[3] = &unk_278E92700;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(memberQueue, v5);
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
-- (void)setPersistentObject:(id)a3 forKey:(id)a4
+- (void)setPersistentObject:(id)object forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MSASStateMachine *)self workQueue];
+  objectCopy = object;
+  keyCopy = key;
+  workQueue = [(MSASStateMachine *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __47__MSASStateMachine_setPersistentObject_forKey___block_invoke;
   block[3] = &unk_278E92638;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = objectCopy;
+  v13 = keyCopy;
+  v9 = keyCopy;
+  v10 = objectCopy;
+  dispatch_async(workQueue, block);
 }
 
 void __47__MSASStateMachine_setPersistentObject_forKey___block_invoke(uint64_t a1)
@@ -13061,27 +13061,27 @@ void __47__MSASStateMachine_setPersistentObject_forKey___block_invoke(uint64_t a
   [v2 setPersistentObject:*(a1 + 40) forKey:*(a1 + 48)];
 }
 
-- (id)persistentObjectForKey:(id)a3
+- (id)persistentObjectForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(MSASStateMachine *)self _model];
-  v6 = [v5 persistentObjectForKey:v4];
+  keyCopy = key;
+  _model = [(MSASStateMachine *)self _model];
+  v6 = [_model persistentObjectForKey:keyCopy];
 
   return v6;
 }
 
-- (void)MSBackoffManagerDidUpdateNextExpiryDate:(id)a3
+- (void)MSBackoffManagerDidUpdateNextExpiryDate:(id)date
 {
-  v4 = a3;
-  v5 = [(MSASStateMachine *)self workQueue];
+  dateCopy = date;
+  workQueue = [(MSASStateMachine *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __60__MSASStateMachine_MSBackoffManagerDidUpdateNextExpiryDate___block_invoke;
   v7[3] = &unk_278E927C8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = dateCopy;
+  v6 = dateCopy;
+  dispatch_async(workQueue, v7);
 }
 
 void __60__MSASStateMachine_MSBackoffManagerDidUpdateNextExpiryDate___block_invoke(uint64_t a1)
@@ -13207,25 +13207,25 @@ void __60__MSASStateMachine_MSBackoffManagerDidUpdateNextExpiryDate___block_invo
 - (void)workQueueUpdateNextActivityDate
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = [(MSASStateMachine *)self latestNextActivityDate];
+  latestNextActivityDate = [(MSASStateMachine *)self latestNextActivityDate];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     *buf = 138543618;
-    v10 = self;
+    selfCopy = self;
     v11 = 2114;
-    v12 = v3;
+    v12 = latestNextActivityDate;
     _os_log_debug_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG, "%{public}@: Computed next activity date: %{public}@", buf, 0x16u);
   }
 
-  v4 = [(MSASStateMachine *)self eventQueue];
+  eventQueue = [(MSASStateMachine *)self eventQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __51__MSASStateMachine_workQueueUpdateNextActivityDate__block_invoke;
   v7[3] = &unk_278E927C8;
   v7[4] = self;
-  v8 = v3;
-  v5 = v3;
-  dispatch_async(v4, v7);
+  v8 = latestNextActivityDate;
+  v5 = latestNextActivityDate;
+  dispatch_async(eventQueue, v7);
 
   v6 = *MEMORY[0x277D85DE8];
 }
@@ -13250,7 +13250,7 @@ void __51__MSASStateMachine_workQueueUpdateNextActivityDate__block_invoke(uint64
   v14 = __Block_byref_object_copy__4549;
   v15 = __Block_byref_object_dispose__4550;
   v16 = 0;
-  v3 = [(MSASStateMachine *)self memberQueue];
+  memberQueue = [(MSASStateMachine *)self memberQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __50__MSASStateMachine_serverCommunicationBackoffDate__block_invoke;
@@ -13258,7 +13258,7 @@ void __51__MSASStateMachine_workQueueUpdateNextActivityDate__block_invoke(uint64
   block[4] = self;
   block[5] = &v17;
   block[6] = &v11;
-  dispatch_sync(v3, block);
+  dispatch_sync(memberQueue, block);
 
   v4 = v18[5];
   v5 = v12[5];
@@ -13319,7 +13319,7 @@ uint64_t __50__MSASStateMachine_serverCommunicationBackoffDate__block_invoke(voi
   v16 = __Block_byref_object_copy__4549;
   v17 = __Block_byref_object_dispose__4550;
   v18 = 0;
-  v3 = [(MSASStateMachine *)self memberQueue];
+  memberQueue = [(MSASStateMachine *)self memberQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __42__MSASStateMachine_latestNextActivityDate__block_invoke;
@@ -13327,7 +13327,7 @@ uint64_t __50__MSASStateMachine_serverCommunicationBackoffDate__block_invoke(voi
   block[4] = self;
   block[5] = &v19;
   block[6] = &v13;
-  dispatch_sync(v3, block);
+  dispatch_sync(memberQueue, block);
 
   if ([(MSASPersonModel *)self->_model countOfEnqueuedCommands]< 1)
   {
@@ -13342,13 +13342,13 @@ uint64_t __50__MSASStateMachine_serverCommunicationBackoffDate__block_invoke(voi
   v5 = v4;
   if ([(MSASPersonModel *)self->_model assetsInDownloadQueue]|| [(MSASPersonModel *)self->_model assetCollectionsInUploadQueue])
   {
-    v6 = v14[5];
-    if (!v6)
+    distantPast = v14[5];
+    if (!distantPast)
     {
-      v6 = [MEMORY[0x277CBEAA8] distantPast];
+      distantPast = [MEMORY[0x277CBEAA8] distantPast];
     }
 
-    v7 = v6;
+    v7 = distantPast;
     v8 = v5;
     v9 = v8;
     if (!v7 || v8)
@@ -13534,28 +13534,28 @@ void __70__MSASStateMachine__sendGetServerSideConfigurationDisposition_params___
 
 - (void)workQueueRefreshServerSideConfig
 {
-  v5 = [(MSASStateMachine *)self _model];
+  _model = [(MSASStateMachine *)self _model];
   v3 = NSStringFromSelector(sel__sendGetServerSideConfigurationDisposition_params_);
-  v4 = [(MSASStateMachine *)self personID];
-  [v5 enqueueCommand:v3 params:0 personID:v4 albumGUID:0 assetCollectionGUID:0];
+  personID = [(MSASStateMachine *)self personID];
+  [_model enqueueCommand:v3 params:0 personID:personID albumGUID:0 assetCollectionGUID:0];
 }
 
 - (void)refreshServerSideConfig
 {
-  v3 = [(MSASStateMachine *)self workQueue];
+  workQueue = [(MSASStateMachine *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __43__MSASStateMachine_refreshServerSideConfig__block_invoke;
   block[3] = &unk_278E926D8;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(workQueue, block);
 }
 
-- (void)serverSideQueueSetServerSideConfiguration:(id)a3
+- (void)serverSideQueueSetServerSideConfiguration:(id)configuration
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(MSASStateMachine *)self _serverSideConfigDictionaryByApplyingDefaultsToDictionary:v4];
+  configurationCopy = configuration;
+  v5 = [(MSASStateMachine *)self _serverSideConfigDictionaryByApplyingDefaultsToDictionary:configurationCopy];
   serverSideConfiguration = self->_serverSideConfiguration;
   self->_serverSideConfiguration = v5;
 
@@ -13563,24 +13563,24 @@ void __70__MSASStateMachine__sendGetServerSideConfigurationDisposition_params___
   {
     v7 = self->_serverSideConfiguration;
     *buf = 138543874;
-    v13 = self;
+    selfCopy = self;
     v14 = 2114;
-    v15 = v4;
+    v15 = configurationCopy;
     v16 = 2114;
     v17 = v7;
     _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "%{public}@: Setting server-side configuration.\nOriginal server config: %{public}@\nAfter applying defaults: %{public}@", buf, 0x20u);
   }
 
-  v8 = [(MSASStateMachine *)self _model];
-  [v8 setPersistentObject:v4 forKey:@"serverSideConfig"];
+  _model = [(MSASStateMachine *)self _model];
+  [_model setPersistentObject:configurationCopy forKey:@"serverSideConfig"];
 
-  v9 = [(MSASStateMachine *)self eventQueue];
+  eventQueue = [(MSASStateMachine *)self eventQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __62__MSASStateMachine_serverSideQueueSetServerSideConfiguration___block_invoke;
   block[3] = &unk_278E926D8;
   block[4] = self;
-  dispatch_async(v9, block);
+  dispatch_async(eventQueue, block);
 
   v10 = *MEMORY[0x277D85DE8];
 }
@@ -13592,18 +13592,18 @@ void __62__MSASStateMachine_serverSideQueueSetServerSideConfiguration___block_in
   [v3 sendServerSideConfigurationDidChangeNotificationForPersonID:v2];
 }
 
-- (void)setServerSideConfiguration:(id)a3
+- (void)setServerSideConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(MSASStateMachine *)self serverSideConfigQueue];
+  configurationCopy = configuration;
+  serverSideConfigQueue = [(MSASStateMachine *)self serverSideConfigQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __47__MSASStateMachine_setServerSideConfiguration___block_invoke;
   v7[3] = &unk_278E927C8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = configurationCopy;
+  v6 = configurationCopy;
+  dispatch_async(serverSideConfigQueue, v7);
 }
 
 - (id)serverSideQueueServerSideConfiguration
@@ -13612,8 +13612,8 @@ void __62__MSASStateMachine_serverSideQueueSetServerSideConfiguration___block_in
   serverSideConfiguration = self->_serverSideConfiguration;
   if (!serverSideConfiguration)
   {
-    v4 = [(MSASStateMachine *)self _model];
-    v5 = [v4 persistentObjectForKey:@"serverSideConfig"];
+    _model = [(MSASStateMachine *)self _model];
+    v5 = [_model persistentObjectForKey:@"serverSideConfig"];
 
     if (!v5)
     {
@@ -13629,7 +13629,7 @@ void __62__MSASStateMachine_serverSideQueueSetServerSideConfiguration___block_in
     {
       v14 = self->_serverSideConfiguration;
       v15 = 138543874;
-      v16 = self;
+      selfCopy = self;
       v17 = 2114;
       v18 = v5;
       v19 = 2114;
@@ -13637,8 +13637,8 @@ void __62__MSASStateMachine_serverSideQueueSetServerSideConfiguration___block_in
       _os_log_debug_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG, "%{public}@: Reading persisted server-side config from disk.\nRaw config: %{public}@\nAfter applying defaults: %{public}@", &v15, 0x20u);
     }
 
-    v9 = [(MSASStateMachine *)self _model];
-    v10 = [v9 persistentStringForKey:@"serverSideConfigVersion"];
+    _model2 = [(MSASStateMachine *)self _model];
+    v10 = [_model2 persistentStringForKey:@"serverSideConfigVersion"];
     v11 = self->_serverSideConfigurationVersion;
     self->_serverSideConfigurationVersion = v10;
 
@@ -13658,14 +13658,14 @@ void __62__MSASStateMachine_serverSideQueueSetServerSideConfiguration___block_in
   v10 = __Block_byref_object_copy__4549;
   v11 = __Block_byref_object_dispose__4550;
   v12 = 0;
-  v3 = [(MSASStateMachine *)self serverSideConfigQueue];
+  serverSideConfigQueue = [(MSASStateMachine *)self serverSideConfigQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __50__MSASStateMachine_serverSideConfigurationVersion__block_invoke;
   v6[3] = &unk_278E92700;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(serverSideConfigQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -13681,14 +13681,14 @@ void __62__MSASStateMachine_serverSideQueueSetServerSideConfiguration___block_in
   v10 = __Block_byref_object_copy__4549;
   v11 = __Block_byref_object_dispose__4550;
   v12 = 0;
-  v3 = [(MSASStateMachine *)self serverSideConfigQueue];
+  serverSideConfigQueue = [(MSASStateMachine *)self serverSideConfigQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __43__MSASStateMachine_serverSideConfiguration__block_invoke;
   v6[3] = &unk_278E92700;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(serverSideConfigQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -13706,17 +13706,17 @@ uint64_t __43__MSASStateMachine_serverSideConfiguration__block_invoke(uint64_t a
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)_serverSideConfigDictionaryByApplyingDefaultsToDictionary:(id)a3
+- (id)_serverSideConfigDictionaryByApplyingDefaultsToDictionary:(id)dictionary
 {
   v3 = _serverSideConfigDictionaryByApplyingDefaultsToDictionary__onceToken;
-  v4 = a3;
+  dictionaryCopy = dictionary;
   if (v3 != -1)
   {
     dispatch_once(&_serverSideConfigDictionaryByApplyingDefaultsToDictionary__onceToken, &__block_literal_global_4659);
   }
 
   v5 = [_serverSideConfigDictionaryByApplyingDefaultsToDictionary__defaults mutableCopy];
-  [v5 addEntriesFromDictionary:v4];
+  [v5 addEntriesFromDictionary:dictionaryCopy];
 
   return v5;
 }
@@ -13740,17 +13740,17 @@ void __78__MSASStateMachine__serverSideConfigDictionaryByApplyingDefaultsToDicti
   _serverSideConfigDictionaryByApplyingDefaultsToDictionary__defaults = v10;
 }
 
-- (void)_cancelOutstandingCommandsDisposition:(int)a3 params:(id)a4
+- (void)_cancelOutstandingCommandsDisposition:(int)disposition params:(id)params
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [v6 objectForKey:@"albumGUID"];
-  v8 = [v6 objectForKey:@"assetCollectionGUID"];
+  paramsCopy = params;
+  v7 = [paramsCopy objectForKey:@"albumGUID"];
+  v8 = [paramsCopy objectForKey:@"assetCollectionGUID"];
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
-    v18 = self;
+    selfCopy = self;
     v19 = 2114;
     v20 = v7;
     v21 = 2114;
@@ -13758,7 +13758,7 @@ void __78__MSASStateMachine__serverSideConfigDictionaryByApplyingDefaultsToDicti
     _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%{public}@: Canceling outstanding operations for album GUID %{public}@, asset collection GUID %{public}@.", buf, 0x20u);
   }
 
-  v9 = [(MSASStateMachine *)self _assetUploader];
+  _assetUploader = [(MSASStateMachine *)self _assetUploader];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __65__MSASStateMachine__cancelOutstandingCommandsDisposition_params___block_invoke;
@@ -13766,10 +13766,10 @@ void __78__MSASStateMachine__serverSideConfigDictionaryByApplyingDefaultsToDicti
   v13[4] = self;
   v14 = v7;
   v15 = v8;
-  v16 = a3;
+  dispositionCopy = disposition;
   v10 = v8;
   v11 = v7;
-  [v9 stopCompletionBlock:v13];
+  [_assetUploader stopCompletionBlock:v13];
 
   v12 = *MEMORY[0x277D85DE8];
 }
@@ -14031,42 +14031,42 @@ LABEL_19:
   v41 = *MEMORY[0x277D85DE8];
 }
 
-- (void)cancelOutstandingCommandsForAssetCollectionWithGUID:(id)a3
+- (void)cancelOutstandingCommandsForAssetCollectionWithGUID:(id)d
 {
-  v4 = a3;
-  v5 = [(MSASStateMachine *)self _model];
+  dCopy = d;
+  _model = [(MSASStateMachine *)self _model];
   v6 = NSStringFromSelector(sel__cancelOutstandingCommandsDisposition_params_);
-  v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{v4, @"assetCollectionGUID", 0}];
+  v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{dCopy, @"assetCollectionGUID", 0}];
 
-  [v5 enqueueCommandAtHeadOfQueue:v6 params:v7 personID:0 albumGUID:0 assetCollectionGUID:0];
+  [_model enqueueCommandAtHeadOfQueue:v6 params:v7 personID:0 albumGUID:0 assetCollectionGUID:0];
 
   [(MSASStateMachine *)self retryOutstandingActivities];
 }
 
-- (void)cancelOutstandingCommandsForAlbumWithGUID:(id)a3
+- (void)cancelOutstandingCommandsForAlbumWithGUID:(id)d
 {
-  v4 = a3;
-  v5 = [(MSASStateMachine *)self _model];
+  dCopy = d;
+  _model = [(MSASStateMachine *)self _model];
   v6 = NSStringFromSelector(sel__cancelOutstandingCommandsDisposition_params_);
-  v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{v4, @"albumGUID", 0}];
+  v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{dCopy, @"albumGUID", 0}];
 
-  [v5 enqueueCommandAtHeadOfQueue:v6 params:v7 personID:0 albumGUID:0 assetCollectionGUID:0];
+  [_model enqueueCommandAtHeadOfQueue:v6 params:v7 personID:0 albumGUID:0 assetCollectionGUID:0];
 
   [(MSASStateMachine *)self retryOutstandingActivities];
 }
 
-- (void)setFocusAssetCollectionGUID:(id)a3
+- (void)setFocusAssetCollectionGUID:(id)d
 {
-  v4 = a3;
-  v5 = [(MSASStateMachine *)self workQueue];
+  dCopy = d;
+  workQueue = [(MSASStateMachine *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __48__MSASStateMachine_setFocusAssetCollectionGUID___block_invoke;
   v7[3] = &unk_278E927C8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = dCopy;
+  v6 = dCopy;
+  dispatch_async(workQueue, v7);
 }
 
 uint64_t __48__MSASStateMachine_setFocusAssetCollectionGUID___block_invoke(uint64_t a1)
@@ -14079,18 +14079,18 @@ uint64_t __48__MSASStateMachine_setFocusAssetCollectionGUID___block_invoke(uint6
   return [v3 setFocusAssetCollectionGUID:v2];
 }
 
-- (void)setFocusAlbumGUID:(id)a3
+- (void)setFocusAlbumGUID:(id)d
 {
-  v4 = a3;
-  v5 = [(MSASStateMachine *)self workQueue];
+  dCopy = d;
+  workQueue = [(MSASStateMachine *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __38__MSASStateMachine_setFocusAlbumGUID___block_invoke;
   v7[3] = &unk_278E927C8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = dCopy;
+  v6 = dCopy;
+  dispatch_async(workQueue, v7);
 }
 
 uint64_t __38__MSASStateMachine_setFocusAlbumGUID___block_invoke(uint64_t a1)
@@ -14108,8 +14108,8 @@ uint64_t __38__MSASStateMachine_setFocusAlbumGUID___block_invoke(uint64_t a1)
   v12 = *MEMORY[0x277D85DE8];
   if (_os_feature_enabled_impl())
   {
-    v3 = [(MSASStateMachine *)self delegate];
-    v4 = [v3 persistentStringForKey:@"migrationMarker"];
+    delegate = [(MSASStateMachine *)self delegate];
+    v4 = [delegate persistentStringForKey:@"migrationMarker"];
 
     if (v4 && [v4 isEqualToString:@"pendingMigration"])
     {
@@ -14117,7 +14117,7 @@ uint64_t __38__MSASStateMachine_setFocusAlbumGUID___block_invoke(uint64_t a1)
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
       {
         v8 = 138543618;
-        v9 = self;
+        selfCopy = self;
         v10 = 2114;
         v11 = v5;
         _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%{public}@: Fetched migrationCtag: %{public}@", &v8, 0x16u);
@@ -14143,13 +14143,13 @@ uint64_t __38__MSASStateMachine_setFocusAlbumGUID___block_invoke(uint64_t a1)
 - (id)rootCtagToCheckForChanges
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [(MSASStateMachine *)self _model];
-  v4 = [v3 persistentStringForKey:@"rootCtag"];
+  _model = [(MSASStateMachine *)self _model];
+  v4 = [_model persistentStringForKey:@"rootCtag"];
 
   v5 = [(MSASStateMachine *)self persistentObjectForKey:@"rootCtagRetries"];
-  v6 = [v5 unsignedIntegerValue];
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
 
-  if (v6 < 6)
+  if (unsignedIntegerValue < 6)
   {
     v7 = v4;
   }
@@ -14160,7 +14160,7 @@ uint64_t __38__MSASStateMachine_setFocusAlbumGUID___block_invoke(uint64_t a1)
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
       v10 = 138544130;
-      v11 = self;
+      selfCopy = self;
       v12 = 2048;
       v13 = 5;
       v14 = 2114;
@@ -14180,13 +14180,13 @@ uint64_t __38__MSASStateMachine_setFocusAlbumGUID___block_invoke(uint64_t a1)
 
 - (void)setRootCtagFromPendingRootCtag
 {
-  v3 = [(MSASStateMachine *)self workQueue];
+  workQueue = [(MSASStateMachine *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __50__MSASStateMachine_setRootCtagFromPendingRootCtag__block_invoke;
   block[3] = &unk_278E926D8;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(workQueue, block);
 }
 
 uint64_t __50__MSASStateMachine_setRootCtagFromPendingRootCtag__block_invoke(uint64_t a1)
@@ -14211,39 +14211,39 @@ uint64_t __50__MSASStateMachine_setRootCtagFromPendingRootCtag__block_invoke(uin
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)setPendingRootCtag:(id)a3
+- (void)setPendingRootCtag:(id)ctag
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  ctagCopy = ctag;
   v5 = [(MSASStateMachine *)self persistentObjectForKey:@"rootCtagRetries"];
-  v6 = [v5 unsignedIntegerValue];
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
 
-  if (v6)
+  if (unsignedIntegerValue)
   {
     v7 = [(MSASStateMachine *)self persistentObjectForKey:@"pendingRootCtag"];
-    if (([v4 isEqualToString:v7] & 1) == 0)
+    if (([ctagCopy isEqualToString:v7] & 1) == 0)
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
       {
         v11 = 138543874;
-        v12 = self;
+        selfCopy = self;
         v13 = 2114;
-        v14 = v4;
+        v14 = ctagCopy;
         v15 = 2114;
         v16 = v7;
         _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%{public}@: Setting a new pending root ctag %{public}@ that is different from existing pending root ctag %{public}@.", &v11, 0x20u);
       }
 
-      [(MSASStateMachine *)self setPersistentObject:v4 forKey:@"pendingRootCtag"];
-      v6 = 0;
+      [(MSASStateMachine *)self setPersistentObject:ctagCopy forKey:@"pendingRootCtag"];
+      unsignedIntegerValue = 0;
     }
 
-    v8 = v6 + 1;
+    v8 = unsignedIntegerValue + 1;
   }
 
   else
   {
-    [(MSASStateMachine *)self setPersistentObject:v4 forKey:@"pendingRootCtag"];
+    [(MSASStateMachine *)self setPersistentObject:ctagCopy forKey:@"pendingRootCtag"];
     v8 = 1;
   }
 
@@ -14253,18 +14253,18 @@ uint64_t __50__MSASStateMachine_setRootCtagFromPendingRootCtag__block_invoke(uin
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setDaemon:(id)a3
+- (void)setDaemon:(id)daemon
 {
-  v4 = a3;
-  v5 = [(MSASStateMachine *)self workQueue];
+  daemonCopy = daemon;
+  workQueue = [(MSASStateMachine *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __30__MSASStateMachine_setDaemon___block_invoke;
   v7[3] = &unk_278E927C8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = daemonCopy;
+  v6 = daemonCopy;
+  dispatch_async(workQueue, v7);
 }
 
 uint64_t __30__MSASStateMachine_setDaemon___block_invoke(uint64_t a1)
@@ -14277,36 +14277,36 @@ uint64_t __30__MSASStateMachine_setDaemon___block_invoke(uint64_t a1)
   return [v3 setDaemon:v2];
 }
 
-- (void)workQueueCancelCompletionBlock:(id)a3
+- (void)workQueueCancelCompletionBlock:(id)block
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   if (self->_commandState == 2)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v16 = self;
+      selfCopy = self;
       _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%{public}@: Canceling current operation.", buf, 0xCu);
     }
 
-    v5 = [(MSASStateMachine *)self _stopHandlerBlock];
+    _stopHandlerBlock = [(MSASStateMachine *)self _stopHandlerBlock];
 
-    if (v5)
+    if (_stopHandlerBlock)
     {
-      v6 = [(MSASStateMachine *)self _stopHandlerBlock];
-      v7 = [(MSASStateMachine *)self _canceledError];
-      (v6)[2](v6, v7);
+      _stopHandlerBlock2 = [(MSASStateMachine *)self _stopHandlerBlock];
+      _canceledError = [(MSASStateMachine *)self _canceledError];
+      (_stopHandlerBlock2)[2](_stopHandlerBlock2, _canceledError);
     }
   }
 
-  v8 = [(MSASStateMachine *)self eventQueue];
+  eventQueue = [(MSASStateMachine *)self eventQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __51__MSASStateMachine_workQueueCancelCompletionBlock___block_invoke;
   block[3] = &unk_278E926D8;
   block[4] = self;
-  dispatch_async(v8, block);
+  dispatch_async(eventQueue, block);
 
   [(MSASStateMachine *)self workQueueCancelAllCommandsFilteredByAlbumGUID:0 assetCollectionGUID:0];
   assetUploader = self->_assetUploader;
@@ -14315,8 +14315,8 @@ uint64_t __30__MSASStateMachine_setDaemon___block_invoke(uint64_t a1)
   v12[2] = __51__MSASStateMachine_workQueueCancelCompletionBlock___block_invoke_2;
   v12[3] = &unk_278E927A0;
   v12[4] = self;
-  v13 = v4;
-  v10 = v4;
+  v13 = blockCopy;
+  v10 = blockCopy;
   [(MSASAssetTransferer *)assetUploader cancelCompletionBlock:v12];
 
   v11 = *MEMORY[0x277D85DE8];
@@ -14380,28 +14380,28 @@ void __51__MSASStateMachine_workQueueCancelCompletionBlock___block_invoke_5(uint
   [v3 releaseBusy];
 }
 
-- (void)workQueueCancelAllCommandsFilteredByAlbumGUID:(id)a3 assetCollectionGUID:(id)a4
+- (void)workQueueCancelAllCommandsFilteredByAlbumGUID:(id)d assetCollectionGUID:(id)iD
 {
   v35 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  iDCopy = iD;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
-    v30 = self;
+    selfCopy2 = self;
     v31 = 2114;
-    v32 = v6;
+    v32 = dCopy;
     v33 = 2114;
-    v34 = v7;
+    v34 = iDCopy;
     _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%{public}@: Cancelling all commands. Filter album GUID: %{public}@, filter asset collection GUID %{public}@", buf, 0x20u);
   }
 
   v28 = 0;
-  v8 = [(MSASStateMachine *)self _model];
+  _model = [(MSASStateMachine *)self _model];
   v26 = 0;
   v27 = 0;
   v25 = 0;
-  v9 = [v8 commandAtHeadOfQueueOutParams:&v27 outCommandIdentifier:&v28 outPersonID:0 outAlbumGUID:&v26 outAssetCollectionGUID:&v25];
+  v9 = [_model commandAtHeadOfQueueOutParams:&v27 outCommandIdentifier:&v28 outPersonID:0 outAlbumGUID:&v26 outAssetCollectionGUID:&v25];
   v21 = v27;
   v10 = v26;
   v11 = v25;
@@ -14411,9 +14411,9 @@ void __51__MSASStateMachine_workQueueCancelCompletionBlock___block_invoke_5(uint
     v22 = 0;
     v12 = v10;
     v13 = v11;
-    while (!v6 || v12 && [v6 isEqualToString:v12])
+    while (!dCopy || v12 && [dCopy isEqualToString:v12])
     {
-      if (!v7)
+      if (!iDCopy)
       {
         goto LABEL_14;
       }
@@ -14425,10 +14425,10 @@ void __51__MSASStateMachine_workQueueCancelCompletionBlock___block_invoke_5(uint
       }
 
 LABEL_18:
-      v18 = [(MSASStateMachine *)self _model];
+      _model2 = [(MSASStateMachine *)self _model];
       v23 = v13;
       v24 = v12;
-      v19 = [v18 commandWithMinimumIdentifier:v28 + 1 outParams:0 outCommandIdentifier:&v28 outPersonID:0 outAlbumGUID:&v24 outAssetCollectionGUID:&v23];
+      v19 = [_model2 commandWithMinimumIdentifier:v28 + 1 outParams:0 outCommandIdentifier:&v28 outPersonID:0 outAlbumGUID:&v24 outAssetCollectionGUID:&v23];
       v10 = v24;
 
       v11 = v23;
@@ -14441,7 +14441,7 @@ LABEL_18:
       }
     }
 
-    if (!v7)
+    if (!iDCopy)
     {
       goto LABEL_18;
     }
@@ -14453,7 +14453,7 @@ LABEL_18:
     }
 
 LABEL_13:
-    if ((v14 & [v7 isEqualToString:{v13, v21}]) == 1)
+    if ((v14 & [iDCopy isEqualToString:{v13, v21}]) == 1)
     {
 LABEL_14:
       v15 = NSSelectorFromString(v9);
@@ -14466,8 +14466,8 @@ LABEL_14:
         }
       }
 
-      v17 = [(MSASStateMachine *)self _model];
-      [v17 removeCommandIdentifier:v28];
+      _model3 = [(MSASStateMachine *)self _model];
+      [_model3 removeCommandIdentifier:v28];
 
       ++v22;
       goto LABEL_18;
@@ -14481,7 +14481,7 @@ LABEL_21:
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v30 = self;
+    selfCopy2 = self;
     v31 = 1024;
     LODWORD(v32) = v22;
     _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%{public}@: Cancelled %d commands.", buf, 0x12u);
@@ -14490,32 +14490,32 @@ LABEL_21:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)cancelCompletionBlock:(id)a3
+- (void)cancelCompletionBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(MSASStateMachine *)self workQueue];
+  blockCopy = block;
+  workQueue = [(MSASStateMachine *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __42__MSASStateMachine_cancelCompletionBlock___block_invoke;
   v7[3] = &unk_278E927A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = blockCopy;
+  v6 = blockCopy;
+  dispatch_async(workQueue, v7);
 }
 
-- (void)stopAssetDownloadsCompletionBlock:(id)a3
+- (void)stopAssetDownloadsCompletionBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(MSASStateMachine *)self workQueue];
+  blockCopy = block;
+  workQueue = [(MSASStateMachine *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __54__MSASStateMachine_stopAssetDownloadsCompletionBlock___block_invoke;
   v7[3] = &unk_278E927A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = blockCopy;
+  v6 = blockCopy;
+  dispatch_async(workQueue, v7);
 }
 
 void __54__MSASStateMachine_stopAssetDownloadsCompletionBlock___block_invoke(uint64_t a1)
@@ -14528,25 +14528,25 @@ void __54__MSASStateMachine_stopAssetDownloadsCompletionBlock___block_invoke(uin
   }
 }
 
-- (void)purgeEverythingCompletionBlock:(id)a3
+- (void)purgeEverythingCompletionBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(MSASStateMachine *)self _model];
-  [v5 purgeCompletionBlock:v4];
+  blockCopy = block;
+  _model = [(MSASStateMachine *)self _model];
+  [_model purgeCompletionBlock:blockCopy];
 }
 
-- (void)shutDownCompletionBlock:(id)a3
+- (void)shutDownCompletionBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(MSASStateMachine *)self workQueue];
+  blockCopy = block;
+  workQueue = [(MSASStateMachine *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __44__MSASStateMachine_shutDownCompletionBlock___block_invoke;
   v7[3] = &unk_278E927A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = blockCopy;
+  v6 = blockCopy;
+  dispatch_async(workQueue, v7);
 }
 
 void __44__MSASStateMachine_shutDownCompletionBlock___block_invoke(uint64_t a1)
@@ -14714,40 +14714,40 @@ void __44__MSASStateMachine_shutDownCompletionBlock___block_invoke_2_54(uint64_t
   dispatch_async(v2, v3);
 }
 
-- (void)_workQueueEmptyFileTransferQueuesCompletionBlock:(id)a3
+- (void)_workQueueEmptyFileTransferQueuesCompletionBlock:(id)block
 {
-  v11 = a3;
-  v4 = [(MSASStateMachine *)self _model];
-  v5 = [v4 itemsForDownloadCountFocusAlbumGUID:0 focusAssetCollectionGUID:0];
+  blockCopy = block;
+  _model = [(MSASStateMachine *)self _model];
+  v5 = [_model itemsForDownloadCountFocusAlbumGUID:0 focusAssetCollectionGUID:0];
 
   model = self->_model;
   self->_model = 0;
 
   if (!v5)
   {
-    v7 = [MEMORY[0x277CCAA00] defaultManager];
-    v8 = [(MSASStateMachine *)self personID];
-    v9 = MSPathAlbumSharingSubscribeMMCSLibraryForPersonID(v8);
-    [v7 removeItemAtPath:v9 error:0];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    personID = [(MSASStateMachine *)self personID];
+    v9 = MSPathAlbumSharingSubscribeMMCSLibraryForPersonID(personID);
+    [defaultManager removeItemAtPath:v9 error:0];
   }
 
-  v10 = v11;
-  if (v11)
+  v10 = blockCopy;
+  if (blockCopy)
   {
-    (*(v11 + 2))(v11);
-    v10 = v11;
+    (*(blockCopy + 2))(blockCopy);
+    v10 = blockCopy;
   }
 }
 
 - (void)start
 {
-  v3 = [(MSASStateMachine *)self eventQueue];
+  eventQueue = [(MSASStateMachine *)self eventQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __25__MSASStateMachine_start__block_invoke;
   block[3] = &unk_278E926D8;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(eventQueue, block);
 }
 
 void __25__MSASStateMachine_start__block_invoke(uint64_t a1)
@@ -14758,58 +14758,58 @@ void __25__MSASStateMachine_start__block_invoke(uint64_t a1)
 
 - (void)workQueueApplyServerSideConfiguration
 {
-  v30 = [(MSASStateMachine *)self serverSideConfiguration];
-  v3 = [v30 objectForKey:@"com.apple.sharedstreams.config.maxNumRetriesOnFailure.server"];
+  serverSideConfiguration = [(MSASStateMachine *)self serverSideConfiguration];
+  v3 = [serverSideConfiguration objectForKey:@"com.apple.sharedstreams.config.maxNumRetriesOnFailure.server"];
   -[MSASStateMachine setMaxMetadataRetryCount:](self, "setMaxMetadataRetryCount:", [v3 intValue]);
 
-  v4 = [(MSASStateMachine *)self _assetUploader];
-  v5 = [v30 objectForKey:@"com.apple.sharedstreams.config.maxUploadAssetBatchSize"];
-  [v4 setMaxBatchCount:{objc_msgSend(v5, "intValue")}];
+  _assetUploader = [(MSASStateMachine *)self _assetUploader];
+  v5 = [serverSideConfiguration objectForKey:@"com.apple.sharedstreams.config.maxUploadAssetBatchSize"];
+  [_assetUploader setMaxBatchCount:{objc_msgSend(v5, "intValue")}];
 
-  v6 = [(MSASStateMachine *)self _assetUploader];
-  v7 = [v30 objectForKey:@"com.apple.sharedstreams.config.maxNumRetriesOnFailure.content"];
-  [v6 setMaxRetryCount:{objc_msgSend(v7, "intValue")}];
+  _assetUploader2 = [(MSASStateMachine *)self _assetUploader];
+  v7 = [serverSideConfiguration objectForKey:@"com.apple.sharedstreams.config.maxNumRetriesOnFailure.content"];
+  [_assetUploader2 setMaxRetryCount:{objc_msgSend(v7, "intValue")}];
 
-  v8 = [(MSASStateMachine *)self _assetUploader];
-  v9 = [v30 objectForKey:@"com.apple.sharedstreams.config.maxMMCSTokenValidity"];
+  _assetUploader3 = [(MSASStateMachine *)self _assetUploader];
+  v9 = [serverSideConfiguration objectForKey:@"com.apple.sharedstreams.config.maxMMCSTokenValidity"];
   [v9 doubleValue];
-  [v8 setMaxMMCSTokenValidityTimeInterval:?];
+  [_assetUploader3 setMaxMMCSTokenValidityTimeInterval:?];
 
-  v10 = [(MSASStateMachine *)self _assetDownloader];
-  v11 = [v30 objectForKey:@"mme.sharedstreams.client.downloadMMCSBatchSize"];
-  [v10 setMaxBatchCount:{objc_msgSend(v11, "intValue")}];
+  _assetDownloader = [(MSASStateMachine *)self _assetDownloader];
+  v11 = [serverSideConfiguration objectForKey:@"mme.sharedstreams.client.downloadMMCSBatchSize"];
+  [_assetDownloader setMaxBatchCount:{objc_msgSend(v11, "intValue")}];
 
-  v12 = [(MSASStateMachine *)self _assetDownloader];
-  v13 = [v30 objectForKey:@"com.apple.sharedstreams.config.maxNumRetriesOnFailure.content"];
-  [v12 setMaxRetryCount:{objc_msgSend(v13, "intValue")}];
+  _assetDownloader2 = [(MSASStateMachine *)self _assetDownloader];
+  v13 = [serverSideConfiguration objectForKey:@"com.apple.sharedstreams.config.maxNumRetriesOnFailure.content"];
+  [_assetDownloader2 setMaxRetryCount:{objc_msgSend(v13, "intValue")}];
 
-  v14 = [(MSASStateMachine *)self _assetDownloader];
-  v15 = [v30 objectForKey:@"com.apple.sharedstreams.config.maxMMCSTokenValidity"];
+  _assetDownloader3 = [(MSASStateMachine *)self _assetDownloader];
+  v15 = [serverSideConfiguration objectForKey:@"com.apple.sharedstreams.config.maxMMCSTokenValidity"];
   [v15 doubleValue];
-  [v14 setMaxMMCSTokenValidityTimeInterval:?];
+  [_assetDownloader3 setMaxMMCSTokenValidityTimeInterval:?];
 
   v16 = MSASPlatform();
   if (objc_opt_respondsToSelector())
   {
-    v17 = [v30 objectForKey:@"com.apple.sharedstreams.config.switch.3G"];
+    v17 = [serverSideConfiguration objectForKey:@"com.apple.sharedstreams.config.switch.3G"];
     v18 = v17;
     v19 = v17 && ![v17 BOOLValue];
     [v16 setSuppressCellular:v19];
   }
 
-  v20 = [v30 objectForKey:@"com.apple.sharedstreams.config.dimensions.preview"];
+  v20 = [serverSideConfiguration objectForKey:@"com.apple.sharedstreams.config.dimensions.preview"];
   v21 = [MSImageScalingSpecification specificationWithSharedAlbumSpecificationString:v20];
   derivativeImageScalingSpecification = self->_derivativeImageScalingSpecification;
   self->_derivativeImageScalingSpecification = v21;
 
   [(MSImageScalingSpecification *)self->_derivativeImageScalingSpecification setAssetTypeFlags:2];
-  v23 = [v30 objectForKey:@"com.apple.sharedstreams.config.dimensions.thumbnail"];
+  v23 = [serverSideConfiguration objectForKey:@"com.apple.sharedstreams.config.dimensions.thumbnail"];
   v24 = [MSImageScalingSpecification specificationWithSharedAlbumSpecificationString:v23];
   thumbnailImageScalingSpecification = self->_thumbnailImageScalingSpecification;
   self->_thumbnailImageScalingSpecification = v24;
 
   [(MSImageScalingSpecification *)self->_thumbnailImageScalingSpecification setAssetTypeFlags:1];
-  v26 = [v30 objectForKey:@"com.apple.sharedstreams.config.videoderivatives"];
+  v26 = [serverSideConfiguration objectForKey:@"com.apple.sharedstreams.config.videoderivatives"];
   v27 = [MSVideoDerivativeSpecification videoDerivativeSpecificationsWithDictionaryArray:v26];
   v28 = [v27 mutableCopy];
 
@@ -14819,18 +14819,18 @@ void __25__MSASStateMachine_start__block_invoke(uint64_t a1)
   self->_derivativeSpecifications = v28;
 }
 
-- (MSASStateMachine)initWithPersonID:(id)a3 eventQueue:(id)a4
+- (MSASStateMachine)initWithPersonID:(id)d eventQueue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  queueCopy = queue;
   v80.receiver = self;
   v80.super_class = MSASStateMachine;
   v9 = [(MSASStateMachine *)&v80 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_personID, a3);
-    v11 = [[MSASPersonModel alloc] initWithPersonID:v7];
+    objc_storeStrong(&v9->_personID, d);
+    v11 = [[MSASPersonModel alloc] initWithPersonID:dCopy];
     model = v10->_model;
     v10->_model = v11;
 
@@ -14877,9 +14877,9 @@ void __25__MSASStateMachine_start__block_invoke(uint64_t a1)
     workQueue = v10->_workQueue;
     v10->_workQueue = v26;
 
-    if (v8)
+    if (queueCopy)
     {
-      v28 = v8;
+      v28 = queueCopy;
     }
 
     else
@@ -14898,14 +14898,14 @@ void __25__MSASStateMachine_start__block_invoke(uint64_t a1)
     memberQueue = v10->_memberQueue;
     v10->_memberQueue = v32;
 
-    v34 = [(MSASAssetTransferer *)[MSASAssetUploader alloc] initWithPersonID:v7];
+    v34 = [(MSASAssetTransferer *)[MSASAssetUploader alloc] initWithPersonID:dCopy];
     assetUploader = v10->_assetUploader;
     v10->_assetUploader = v34;
 
     [(MSASAssetTransferer *)v10->_assetUploader setDelegate:v10];
     [(MSASAssetTransferer *)v10->_assetUploader setModel:v10->_model];
     [(MSASAssetTransferer *)v10->_assetUploader setBackoffManager:v10->_MMCSBackoffManager];
-    v36 = [(MSASAssetTransferer *)[MSASAssetDownloader alloc] initWithPersonID:v7];
+    v36 = [(MSASAssetTransferer *)[MSASAssetDownloader alloc] initWithPersonID:dCopy];
     assetDownloader = v10->_assetDownloader;
     v10->_assetDownloader = v36;
 
@@ -14913,7 +14913,7 @@ void __25__MSASStateMachine_start__block_invoke(uint64_t a1)
     [(MSASAssetTransferer *)v10->_assetDownloader setModel:v10->_model];
     [(MSASAssetTransferer *)v10->_assetDownloader setBackoffManager:v10->_MMCSBackoffManager];
     objc_initWeak(&location, v10);
-    v38 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v39 = objc_alloc_init(MEMORY[0x277CCABD8]);
     v76[0] = MEMORY[0x277D85DD0];
     v76[1] = 3221225472;
@@ -14922,9 +14922,9 @@ void __25__MSASStateMachine_start__block_invoke(uint64_t a1)
     v40 = v10;
     v77 = v40;
     objc_copyWeak(&v78, &location);
-    v41 = [v38 addObserverForName:@"MSASAssetTransfererDidIdle" object:0 queue:v39 usingBlock:v76];
+    v41 = [defaultCenter addObserverForName:@"MSASAssetTransfererDidIdle" object:0 queue:v39 usingBlock:v76];
 
-    v42 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
     v43 = objc_alloc_init(MEMORY[0x277CCABD8]);
     v73[0] = MEMORY[0x277D85DD0];
     v73[1] = 3221225472;
@@ -14933,7 +14933,7 @@ void __25__MSASStateMachine_start__block_invoke(uint64_t a1)
     objc_copyWeak(&v75, &location);
     v44 = v40;
     v74 = v44;
-    v45 = [v42 addObserverForName:@"MSASServerSideConfigDidChangeNotification" object:0 queue:v43 usingBlock:v73];
+    v45 = [defaultCenter2 addObserverForName:@"MSASServerSideConfigDidChangeNotification" object:0 queue:v43 usingBlock:v73];
 
     v46 = v10->_workQueue;
     block[0] = MEMORY[0x277D85DD0];
@@ -14943,8 +14943,8 @@ void __25__MSASStateMachine_start__block_invoke(uint64_t a1)
     v47 = v44;
     v72 = v47;
     dispatch_sync(v46, block);
-    v48 = [MEMORY[0x277CCAB98] defaultCenter];
-    v49 = [MEMORY[0x277CCABD8] mainQueue];
+    defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+    mainQueue = [MEMORY[0x277CCABD8] mainQueue];
     v68[0] = MEMORY[0x277D85DD0];
     v68[1] = 3221225472;
     v68[2] = __48__MSASStateMachine_initWithPersonID_eventQueue___block_invoke_6;
@@ -14952,10 +14952,10 @@ void __25__MSASStateMachine_start__block_invoke(uint64_t a1)
     objc_copyWeak(&v70, &location);
     v50 = v47;
     v69 = v50;
-    v51 = [v48 addObserverForName:@"MSASPServerSideConfigurationDidChangeNotification" object:0 queue:v49 usingBlock:v68];
+    v51 = [defaultCenter3 addObserverForName:@"MSASPServerSideConfigurationDidChangeNotification" object:0 queue:mainQueue usingBlock:v68];
 
-    v52 = [MEMORY[0x277CCAB98] defaultCenter];
-    v53 = [MEMORY[0x277CCABD8] mainQueue];
+    defaultCenter4 = [MEMORY[0x277CCAB98] defaultCenter];
+    mainQueue2 = [MEMORY[0x277CCABD8] mainQueue];
     v65[0] = MEMORY[0x277D85DD0];
     v65[1] = 3221225472;
     v65[2] = __48__MSASStateMachine_initWithPersonID_eventQueue___block_invoke_44;
@@ -14963,23 +14963,23 @@ void __25__MSASStateMachine_start__block_invoke(uint64_t a1)
     objc_copyWeak(&v67, &location);
     v54 = v50;
     v66 = v54;
-    v55 = [v52 addObserverForName:@"MSASPDidReceiveRetryAfterNotification" object:0 queue:v53 usingBlock:v65];
+    v55 = [defaultCenter4 addObserverForName:@"MSASPDidReceiveRetryAfterNotification" object:0 queue:mainQueue2 usingBlock:v65];
 
     v56 = [(MSASStateMachine *)v54 persistentObjectForKey:@"focusAlbumGUID"];
     focusAlbumGUID = v54->_focusAlbumGUID;
     v54->_focusAlbumGUID = v56;
 
     v58 = v54->_focusAlbumGUID;
-    v59 = [(MSASStateMachine *)v54 _assetDownloader];
-    [v59 setFocusAlbumGUID:v58];
+    _assetDownloader = [(MSASStateMachine *)v54 _assetDownloader];
+    [_assetDownloader setFocusAlbumGUID:v58];
 
     v60 = [(MSASStateMachine *)v54 persistentObjectForKey:@"focusAssetCollectionGUID"];
     focusAssetCollectionGUID = v54->_focusAssetCollectionGUID;
     v54->_focusAssetCollectionGUID = v60;
 
     v62 = v54->_focusAssetCollectionGUID;
-    v63 = [(MSASStateMachine *)v54 _assetDownloader];
-    [v63 setFocusAssetCollectionGUID:v62];
+    _assetDownloader2 = [(MSASStateMachine *)v54 _assetDownloader];
+    [_assetDownloader2 setFocusAssetCollectionGUID:v62];
 
     objc_destroyWeak(&v67);
     objc_destroyWeak(&v70);
@@ -15162,14 +15162,14 @@ void __48__MSASStateMachine_initWithPersonID_eventQueue___block_invoke_2(uint64_
   v10 = __Block_byref_object_copy__4549;
   v11 = __Block_byref_object_dispose__4550;
   v12 = 0;
-  v3 = [(MSASStateMachine *)self memberQueue];
+  memberQueue = [(MSASStateMachine *)self memberQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __43__MSASStateMachine__metadataBackoffManager__block_invoke;
   v6[3] = &unk_278E92700;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(memberQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -15185,14 +15185,14 @@ void __48__MSASStateMachine_initWithPersonID_eventQueue___block_invoke_2(uint64_
   v10 = __Block_byref_object_copy__4549;
   v11 = __Block_byref_object_dispose__4550;
   v12 = 0;
-  v3 = [(MSASStateMachine *)self memberQueue];
+  memberQueue = [(MSASStateMachine *)self memberQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __36__MSASStateMachine_phoneInvitations__block_invoke;
   v6[3] = &unk_278E92700;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(memberQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -15226,14 +15226,14 @@ void __36__MSASStateMachine_phoneInvitations__block_invoke(uint64_t a1)
   v10 = __Block_byref_object_copy__4549;
   v11 = __Block_byref_object_dispose__4550;
   v12 = 0;
-  v3 = [(MSASStateMachine *)self memberQueue];
+  memberQueue = [(MSASStateMachine *)self memberQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __28__MSASStateMachine_protocol__block_invoke;
   v6[3] = &unk_278E92700;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(memberQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);

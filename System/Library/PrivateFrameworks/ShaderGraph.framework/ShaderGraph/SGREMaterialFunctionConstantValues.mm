@@ -2,9 +2,9 @@
 - (NSMutableDictionary)scalarFunctionConstants;
 - (NSMutableDictionary)vectorFunctionConstants;
 - (SGREMaterialFunctionConstantValues)init;
-- (SGREMaterialFunctionConstantValues)initWithScalarFunctionConstants:(id)a3 vectorFunctionConstants:(id)a4;
-- (void)setScalarFunctionConstants:(id)a3;
-- (void)setVectorFunctionConstants:(id)a3;
+- (SGREMaterialFunctionConstantValues)initWithScalarFunctionConstants:(id)constants vectorFunctionConstants:(id)functionConstants;
+- (void)setScalarFunctionConstants:(id)constants;
+- (void)setVectorFunctionConstants:(id)constants;
 @end
 
 @implementation SGREMaterialFunctionConstantValues
@@ -16,13 +16,13 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setScalarFunctionConstants:(id)a3
+- (void)setScalarFunctionConstants:(id)constants
 {
   v5 = OBJC_IVAR___SGREMaterialFunctionConstantValues_scalarFunctionConstants;
   swift_beginAccess();
   v6 = *(&self->super.isa + v5);
-  *(&self->super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.isa + v5) = constants;
+  constantsCopy = constants;
 }
 
 - (NSMutableDictionary)vectorFunctionConstants
@@ -32,16 +32,16 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setVectorFunctionConstants:(id)a3
+- (void)setVectorFunctionConstants:(id)constants
 {
   v5 = OBJC_IVAR___SGREMaterialFunctionConstantValues_vectorFunctionConstants;
   swift_beginAccess();
   v6 = *(&self->super.isa + v5);
-  *(&self->super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.isa + v5) = constants;
+  constantsCopy = constants;
 }
 
-- (SGREMaterialFunctionConstantValues)initWithScalarFunctionConstants:(id)a3 vectorFunctionConstants:(id)a4
+- (SGREMaterialFunctionConstantValues)initWithScalarFunctionConstants:(id)constants vectorFunctionConstants:(id)functionConstants
 {
   type metadata accessor for NSArray(0, &lazy cache variable for type metadata for NSNumber, 0x277CCABB0);
   v4 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();

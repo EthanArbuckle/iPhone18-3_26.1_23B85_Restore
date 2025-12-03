@@ -1,24 +1,24 @@
 @interface HMCharacteristicBatchRequest
-+ (id)characteristicBatchRequestWithReadRequests:(id)a3;
-+ (id)characteristicBatchRequestWithWriteRequests:(id)a3;
-- (HMCharacteristicBatchRequest)initWithBatchRequest:(id)a3;
++ (id)characteristicBatchRequestWithReadRequests:(id)requests;
++ (id)characteristicBatchRequestWithWriteRequests:(id)requests;
+- (HMCharacteristicBatchRequest)initWithBatchRequest:(id)request;
 - (id)requests;
-- (void)setCompletionHandler:(id)a3;
-- (void)setProgressHandler:(id)a3;
+- (void)setCompletionHandler:(id)handler;
+- (void)setProgressHandler:(id)handler;
 @end
 
 @implementation HMCharacteristicBatchRequest
 
-- (void)setProgressHandler:(id)a3
+- (void)setProgressHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __51__HMCharacteristicBatchRequest_setProgressHandler___block_invoke;
   v7[3] = &unk_1E7547A68;
-  v8 = v4;
+  v8 = handlerCopy;
   batchRequest = self->_batchRequest;
-  v6 = v4;
+  v6 = handlerCopy;
   [(HMBatchRequest *)batchRequest setProgressHandler:v7];
 }
 
@@ -85,16 +85,16 @@ void __51__HMCharacteristicBatchRequest_setProgressHandler___block_invoke(uint64
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setCompletionHandler:(id)a3
+- (void)setCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __53__HMCharacteristicBatchRequest_setCompletionHandler___block_invoke;
   v7[3] = &unk_1E75487B8;
-  v8 = v4;
+  v8 = handlerCopy;
   batchRequest = self->_batchRequest;
-  v6 = v4;
+  v6 = handlerCopy;
   [(HMBatchRequest *)batchRequest setCompletionHandler:v7];
 }
 
@@ -114,15 +114,15 @@ uint64_t __53__HMCharacteristicBatchRequest_setCompletionHandler___block_invoke(
   v22 = *MEMORY[0x1E69E9840];
   v2 = self->_batchRequest;
   v3 = MEMORY[0x1E695DF70];
-  v4 = [(HMBatchRequest *)v2 requests];
-  v5 = [v3 arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  requests = [(HMBatchRequest *)v2 requests];
+  v5 = [v3 arrayWithCapacity:{objc_msgSend(requests, "count")}];
 
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [(HMBatchRequest *)v2 requests];
-  v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  requests2 = [(HMBatchRequest *)v2 requests];
+  v7 = [requests2 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
     v8 = v7;
@@ -133,7 +133,7 @@ uint64_t __53__HMCharacteristicBatchRequest_setCompletionHandler___block_invoke(
       {
         if (*v18 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(requests2);
         }
 
         v11 = *(*(&v17 + 1) + 8 * i);
@@ -156,7 +156,7 @@ uint64_t __53__HMCharacteristicBatchRequest_setCompletionHandler___block_invoke(
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v8 = [requests2 countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v8);
@@ -168,32 +168,32 @@ uint64_t __53__HMCharacteristicBatchRequest_setCompletionHandler___block_invoke(
   return v14;
 }
 
-- (HMCharacteristicBatchRequest)initWithBatchRequest:(id)a3
+- (HMCharacteristicBatchRequest)initWithBatchRequest:(id)request
 {
-  v5 = a3;
+  requestCopy = request;
   v9.receiver = self;
   v9.super_class = HMCharacteristicBatchRequest;
   v6 = [(HMCharacteristicBatchRequest *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_batchRequest, a3);
+    objc_storeStrong(&v6->_batchRequest, request);
   }
 
   return v7;
 }
 
-+ (id)characteristicBatchRequestWithWriteRequests:(id)a3
++ (id)characteristicBatchRequestWithWriteRequests:(id)requests
 {
-  v3 = [HMBatchRequest batchRequestWithWriteRequests:a3];
+  v3 = [HMBatchRequest batchRequestWithWriteRequests:requests];
   v4 = [[HMCharacteristicBatchRequest alloc] initWithBatchRequest:v3];
 
   return v4;
 }
 
-+ (id)characteristicBatchRequestWithReadRequests:(id)a3
++ (id)characteristicBatchRequestWithReadRequests:(id)requests
 {
-  v3 = [HMBatchRequest batchRequestWithReadRequests:a3];
+  v3 = [HMBatchRequest batchRequestWithReadRequests:requests];
   v4 = [[HMCharacteristicBatchRequest alloc] initWithBatchRequest:v3];
 
   return v4;

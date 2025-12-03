@@ -1,39 +1,39 @@
 @interface SBHIconLayoutHidingAssertion
-- (BOOL)referencesIconInListModel:(id)a3;
+- (BOOL)referencesIconInListModel:(id)model;
 - (NSArray)icons;
-- (SBHIconLayoutHidingAssertion)initWithDelegate:(id)a3 icons:(id)a4 reason:(id)a5 options:(unint64_t)a6;
+- (SBHIconLayoutHidingAssertion)initWithDelegate:(id)delegate icons:(id)icons reason:(id)reason options:(unint64_t)options;
 - (SBHIconLayoutHidingAssertionDelegate)delegate;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
-- (void)addIcon:(id)a3;
+- (void)addIcon:(id)icon;
 - (void)dealloc;
 - (void)invalidate;
-- (void)setOptions:(unint64_t)a3;
+- (void)setOptions:(unint64_t)options;
 @end
 
 @implementation SBHIconLayoutHidingAssertion
 
-- (SBHIconLayoutHidingAssertion)initWithDelegate:(id)a3 icons:(id)a4 reason:(id)a5 options:(unint64_t)a6
+- (SBHIconLayoutHidingAssertion)initWithDelegate:(id)delegate icons:(id)icons reason:(id)reason options:(unint64_t)options
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  delegateCopy = delegate;
+  iconsCopy = icons;
+  reasonCopy = reason;
   v19.receiver = self;
   v19.super_class = SBHIconLayoutHidingAssertion;
   v13 = [(SBHIconLayoutHidingAssertion *)&v19 init];
   if (v13)
   {
-    v14 = [v11 mutableCopy];
+    v14 = [iconsCopy mutableCopy];
     icons = v13->_icons;
     v13->_icons = v14;
 
-    objc_storeWeak(&v13->_delegate, v10);
-    v16 = [v12 copy];
+    objc_storeWeak(&v13->_delegate, delegateCopy);
+    v16 = [reasonCopy copy];
     reason = v13->_reason;
     v13->_reason = v16;
 
-    v13->_options = a6;
+    v13->_options = options;
   }
 
   return v13;
@@ -42,7 +42,7 @@
 - (void)dealloc
 {
   v5 = *MEMORY[0x1E69E9840];
-  v2 = *a1;
+  v2 = *self;
   v3 = 138412290;
   v4 = v2;
   _os_log_fault_impl(&dword_1BEB18000, a2, OS_LOG_TYPE_FAULT, "SBHIconLayoutHidingAssertion deallocated but not invalidated! Reason: %@", &v3, 0xCu);
@@ -55,30 +55,30 @@
   return v2;
 }
 
-- (BOOL)referencesIconInListModel:(id)a3
+- (BOOL)referencesIconInListModel:(id)model
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __58__SBHIconLayoutHidingAssertion_referencesIconInListModel___block_invoke;
   v4[3] = &unk_1E808BFD8;
   v4[4] = self;
-  return [a3 directlyContainsIconPassingTest:v4];
+  return [model directlyContainsIconPassingTest:v4];
 }
 
-- (void)addIcon:(id)a3
+- (void)addIcon:(id)icon
 {
-  [(NSMutableSet *)self->_icons addObject:a3];
-  v4 = [(SBHIconLayoutHidingAssertion *)self delegate];
-  [v4 layoutHidingAssertionDidChange:self];
+  [(NSMutableSet *)self->_icons addObject:icon];
+  delegate = [(SBHIconLayoutHidingAssertion *)self delegate];
+  [delegate layoutHidingAssertionDidChange:self];
 }
 
-- (void)setOptions:(unint64_t)a3
+- (void)setOptions:(unint64_t)options
 {
-  if (self->_options != a3)
+  if (self->_options != options)
   {
-    self->_options = a3;
-    v5 = [(SBHIconLayoutHidingAssertion *)self delegate];
-    [v5 layoutHidingAssertionDidChange:self];
+    self->_options = options;
+    delegate = [(SBHIconLayoutHidingAssertion *)self delegate];
+    [delegate layoutHidingAssertionDidChange:self];
   }
 }
 
@@ -86,41 +86,41 @@
 {
   if (![(SBHIconLayoutHidingAssertion *)self isInvalidated])
   {
-    v3 = [(SBHIconLayoutHidingAssertion *)self delegate];
-    [v3 layoutHidingAssertionDidInvalidate:self];
+    delegate = [(SBHIconLayoutHidingAssertion *)self delegate];
+    [delegate layoutHidingAssertionDidInvalidate:self];
     [(SBHIconLayoutHidingAssertion *)self setInvalidated:1];
   }
 }
 
 - (id)succinctDescription
 {
-  v2 = [(SBHIconLayoutHidingAssertion *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBHIconLayoutHidingAssertion *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBHIconLayoutHidingAssertion *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBHIconLayoutHidingAssertion *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(SBHIconLayoutHidingAssertion *)self succinctDescriptionBuilder];
-  v5 = [(SBHIconLayoutHidingAssertion *)self icons];
-  v6 = [v4 appendObject:v5 withName:@"icons"];
+  succinctDescriptionBuilder = [(SBHIconLayoutHidingAssertion *)self succinctDescriptionBuilder];
+  icons = [(SBHIconLayoutHidingAssertion *)self icons];
+  v6 = [succinctDescriptionBuilder appendObject:icons withName:@"icons"];
 
-  v7 = [(SBHIconLayoutHidingAssertion *)self reason];
-  v8 = [v4 appendObject:v7 withName:@"reason"];
+  reason = [(SBHIconLayoutHidingAssertion *)self reason];
+  v8 = [succinctDescriptionBuilder appendObject:reason withName:@"reason"];
 
-  v9 = [(SBHIconLayoutHidingAssertion *)self delegate];
-  v10 = [v4 appendPointer:v9 withName:@"delegate"];
+  delegate = [(SBHIconLayoutHidingAssertion *)self delegate];
+  v10 = [succinctDescriptionBuilder appendPointer:delegate withName:@"delegate"];
 
-  return v4;
+  return succinctDescriptionBuilder;
 }
 
 - (SBHIconLayoutHidingAssertionDelegate)delegate

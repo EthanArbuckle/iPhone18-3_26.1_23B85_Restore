@@ -1,29 +1,29 @@
 @interface SiriSharedUIPlatterGlowView
-- (SiriSharedUIPlatterGlowView)initWithFrame:(CGRect)a3;
-- (id)_createILLayerWithPalette:(unint64_t)a3;
+- (SiriSharedUIPlatterGlowView)initWithFrame:(CGRect)frame;
+- (id)_createILLayerWithPalette:(unint64_t)palette;
 - (void)_createFadeLayerAnimation;
-- (void)_createSiriGlowToPlatter:(CGRect)a3;
-- (void)_setContinuousCornerRadius:(double)a3;
+- (void)_createSiriGlowToPlatter:(CGRect)platter;
+- (void)_setContinuousCornerRadius:(double)radius;
 - (void)_updateScreenSize;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
 - (void)cleanupViewHierarchy;
 - (void)dealloc;
 - (void)didMoveToSuperview;
 - (void)didMoveToWindow;
-- (void)setBounds:(CGRect)a3;
-- (void)setFrame:(CGRect)a3;
+- (void)setBounds:(CGRect)bounds;
+- (void)setFrame:(CGRect)frame;
 @end
 
 @implementation SiriSharedUIPlatterGlowView
 
 - (void)_updateScreenSize
 {
-  v3 = [(SiriSharedUIPlatterGlowView *)self _screen];
+  _screen = [(SiriSharedUIPlatterGlowView *)self _screen];
 
-  if (v3)
+  if (_screen)
   {
-    v4 = [(SiriSharedUIPlatterGlowView *)self _screen];
-    [v4 bounds];
+    _screen2 = [(SiriSharedUIPlatterGlowView *)self _screen];
+    [_screen2 bounds];
     v6 = v5;
     v8 = v7;
     v10 = v9;
@@ -43,9 +43,9 @@
   v4.receiver = self;
   v4.super_class = SiriSharedUIPlatterGlowView;
   [(SiriSharedUIPlatterGlowView *)&v4 didMoveToSuperview];
-  v3 = [(SiriSharedUIPlatterGlowView *)self superview];
+  superview = [(SiriSharedUIPlatterGlowView *)self superview];
 
-  if (v3)
+  if (superview)
   {
     [(SiriSharedUIPlatterGlowView *)self _updateScreenSize];
   }
@@ -56,9 +56,9 @@
   v4.receiver = self;
   v4.super_class = SiriSharedUIPlatterGlowView;
   [(SiriSharedUIPlatterGlowView *)&v4 didMoveToWindow];
-  v3 = [(SiriSharedUIPlatterGlowView *)self window];
+  window = [(SiriSharedUIPlatterGlowView *)self window];
 
-  if (v3)
+  if (window)
   {
     [(SiriSharedUIPlatterGlowView *)self _updateScreenSize];
     [(SiriSharedUIPlatterGlowView *)self _createFadeLayerAnimation];
@@ -79,8 +79,8 @@
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v3 = [(SiriSharedUIPlatterGlowView *)self subviews];
-  v4 = [v3 countByEnumeratingWithState:&v33 objects:v39 count:16];
+  subviews = [(SiriSharedUIPlatterGlowView *)self subviews];
+  v4 = [subviews countByEnumeratingWithState:&v33 objects:v39 count:16];
   if (v4)
   {
     v5 = v4;
@@ -92,14 +92,14 @@
       {
         if (*v34 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(subviews);
         }
 
         [*(*(&v33 + 1) + 8 * v7++) removeFromSuperview];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v33 objects:v39 count:16];
+      v5 = [subviews countByEnumeratingWithState:&v33 objects:v39 count:16];
     }
 
     while (v5);
@@ -139,10 +139,10 @@
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v13 = [(SiriSharedUIPlatterGlowView *)self layer];
-  v14 = [v13 sublayers];
+  layer = [(SiriSharedUIPlatterGlowView *)self layer];
+  sublayers = [layer sublayers];
 
-  v15 = [v14 countByEnumeratingWithState:&v25 objects:v37 count:16];
+  v15 = [sublayers countByEnumeratingWithState:&v25 objects:v37 count:16];
   if (v15)
   {
     v16 = v15;
@@ -154,14 +154,14 @@
       {
         if (*v26 != v17)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(sublayers);
         }
 
         [*(*(&v25 + 1) + 8 * v18++) removeFromSuperlayer];
       }
 
       while (v16 != v18);
-      v16 = [v14 countByEnumeratingWithState:&v25 objects:v37 count:16];
+      v16 = [sublayers countByEnumeratingWithState:&v25 objects:v37 count:16];
     }
 
     while (v16);
@@ -188,12 +188,12 @@
   [(SiriSharedUIPlatterGlowView *)self removeFromSuperview];
 }
 
-- (SiriSharedUIPlatterGlowView)initWithFrame:(CGRect)a3
+- (SiriSharedUIPlatterGlowView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v10.receiver = self;
   v10.super_class = SiriSharedUIPlatterGlowView;
   v7 = [(SiriSharedUIPlatterGlowView *)&v10 initWithFrame:?];
@@ -222,17 +222,17 @@
   [(SiriSharedUIPlatterGlowView *)&v5 dealloc];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v26 = *MEMORY[0x277D85DE8];
-  v8 = -a3.origin.x;
-  v9 = -a3.origin.y;
-  v10 = [(SiriSharedUIPlatterGlowView *)self window];
-  [v10 bounds];
+  v8 = -frame.origin.x;
+  v9 = -frame.origin.y;
+  window = [(SiriSharedUIPlatterGlowView *)self window];
+  [window bounds];
   v24.receiver = self;
   v24.super_class = SiriSharedUIPlatterGlowView;
   [(SiriSharedUIPlatterGlowView *)&v24 setFrame:v8, v9];
@@ -282,12 +282,12 @@
   }
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v17 = *MEMORY[0x277D85DE8];
   v12 = 0u;
   v13 = 0u;
@@ -320,7 +320,7 @@
   }
 }
 
-- (void)_setContinuousCornerRadius:(double)a3
+- (void)_setContinuousCornerRadius:(double)radius
 {
   v14 = *MEMORY[0x277D85DE8];
   v9 = 0u;
@@ -343,7 +343,7 @@
           objc_enumerationMutation(v4);
         }
 
-        [*(*(&v9 + 1) + 8 * v8++) setCornerRadius:{a3, v9}];
+        [*(*(&v9 + 1) + 8 * v8++) setCornerRadius:{radius, v9}];
       }
 
       while (v6 != v8);
@@ -354,15 +354,15 @@
   }
 }
 
-- (id)_createILLayerWithPalette:(unint64_t)a3
+- (id)_createILLayerWithPalette:(unint64_t)palette
 {
   v5 = objc_alloc_init(MEMORY[0x277D61A60]);
-  v6 = [(SiriSharedUIPlatterGlowView *)self window];
+  window = [(SiriSharedUIPlatterGlowView *)self window];
 
-  if (v6)
+  if (window)
   {
-    v7 = [(SiriSharedUIPlatterGlowView *)self window];
-    [v7 bounds];
+    window2 = [(SiriSharedUIPlatterGlowView *)self window];
+    [window2 bounds];
     v9 = v8;
     v11 = v10;
     v13 = v12;
@@ -371,21 +371,21 @@
     [v5 setFrame:{v9, v11, v13, v15}];
   }
 
-  [v5 setColorPalette:a3];
+  [v5 setColorPalette:palette];
   [v5 setMasksToBounds:0];
 
   return v5;
 }
 
-- (void)_createSiriGlowToPlatter:(CGRect)a3
+- (void)_createSiriGlowToPlatter:(CGRect)platter
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = platter.size.height;
+  width = platter.size.width;
+  y = platter.origin.y;
+  x = platter.origin.x;
   v74[1] = *MEMORY[0x277D85DE8];
-  v8 = [MEMORY[0x277D759A0] mainScreen];
-  [v8 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v10 = v9;
   v12 = v11;
   v14 = v13;
@@ -403,9 +403,9 @@
   systemLightView = self->_systemLightView;
   self->_systemLightView = v17;
 
-  v19 = [(_UIIntelligenceSystemLightView *)self->_systemLightView layer];
+  layer = [(_UIIntelligenceSystemLightView *)self->_systemLightView layer];
   colorLayer = self->_colorLayer;
-  self->_colorLayer = v19;
+  self->_colorLayer = layer;
 
   v21 = [(SiriSharedUIPlatterGlowView *)self _createILLayerWithPalette:500];
   noiseLayer = self->_noiseLayer;
@@ -444,8 +444,8 @@
   [v33 setBorderWidth:10.0];
   [v33 borderWidth];
   [v33 setBorderOffset:v34 * 0.5];
-  v35 = [MEMORY[0x277D75348] clearColor];
-  [v33 setBackgroundColor:{objc_msgSend(v35, "CGColor")}];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [v33 setBackgroundColor:{objc_msgSend(clearColor, "CGColor")}];
 
   v36 = [MEMORY[0x277D75348] colorWithWhite:1.0 alpha:1.0];
   [v33 setBorderColor:{objc_msgSend(v36, "CGColor")}];
@@ -463,8 +463,8 @@
   [v38 setBorderWidth:4.0];
   [v38 borderWidth];
   [v38 setBorderOffset:v39 * 0.5];
-  v40 = [MEMORY[0x277D75348] clearColor];
-  [v38 setBackgroundColor:{objc_msgSend(v40, "CGColor")}];
+  clearColor2 = [MEMORY[0x277D75348] clearColor];
+  [v38 setBackgroundColor:{objc_msgSend(clearColor2, "CGColor")}];
 
   v41 = [MEMORY[0x277D75348] colorWithWhite:1.0 alpha:1.0];
   [v38 setBorderColor:{objc_msgSend(v41, "CGColor")}];
@@ -519,21 +519,21 @@
   v54 = [MEMORY[0x277CCABB0] numberWithBool:1];
   [(CALayer *)v53 setValue:v54 forKey:@"allowsLimitedHeadroom"];
 
-  v55 = [MEMORY[0x277CD9EB0] layer];
+  layer2 = [MEMORY[0x277CD9EB0] layer];
   fadeLayer = self->_fadeLayer;
-  self->_fadeLayer = v55;
+  self->_fadeLayer = layer2;
 
   [(CAGradientLayer *)self->_fadeLayer setName:@"Fade In/Out Mask Layer"];
   [(CAGradientLayer *)self->_fadeLayer setFrame:x, y, width, height];
   [(CAGradientLayer *)self->_fadeLayer setMasksToBounds:0];
   [(CAGradientLayer *)self->_fadeLayer setAllowsHitTesting:0];
   [(CAGradientLayer *)self->_fadeLayer setType:*MEMORY[0x277CDA6A0]];
-  v57 = [MEMORY[0x277D75348] redColor];
-  v70[0] = [v57 CGColor];
-  v58 = [MEMORY[0x277D75348] redColor];
-  v70[1] = [v58 CGColor];
-  v59 = [MEMORY[0x277D75348] clearColor];
-  v70[2] = [v59 CGColor];
+  redColor = [MEMORY[0x277D75348] redColor];
+  v70[0] = [redColor CGColor];
+  redColor2 = [MEMORY[0x277D75348] redColor];
+  v70[1] = [redColor2 CGColor];
+  clearColor3 = [MEMORY[0x277D75348] clearColor];
+  v70[2] = [clearColor3 CGColor];
   v60 = [MEMORY[0x277CBEA60] arrayWithObjects:v70 count:3];
   [(CAGradientLayer *)self->_fadeLayer setColors:v60];
 
@@ -599,14 +599,14 @@
   [(CAGradientLayer *)self->_fadeLayer addAnimation:v11 forKey:@"opacityAnimation"];
 }
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
-  if (a4)
+  if (finished)
   {
     fadeLayer = self->_fadeLayer;
-    v6 = a3;
+    stopCopy = stop;
     v7 = [(CAGradientLayer *)fadeLayer animationForKey:@"opacityAnimation"];
-    v8 = [v6 isEqual:v7];
+    v8 = [stopCopy isEqual:v7];
 
     if (v8)
     {

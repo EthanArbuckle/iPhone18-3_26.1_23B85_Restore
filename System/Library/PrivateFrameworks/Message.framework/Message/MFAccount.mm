@@ -1,40 +1,40 @@
 @interface MFAccount
-+ (BOOL)_setBasicProperty:(id)a3 forKey:(id)a4 persistentAccount:(id)a5;
-+ (BOOL)accountIsManaged:(id)a3;
-+ (BOOL)accountIsPreventedFromSendingFromExternalProcesses:(id)a3;
-+ (BOOL)accountIsRestrictedFromTransfersToOtherAccounts:(id)a3;
-+ (BOOL)accountRestrictsRecentsSyncing:(id)a3;
++ (BOOL)_setBasicProperty:(id)property forKey:(id)key persistentAccount:(id)account;
++ (BOOL)accountIsManaged:(id)managed;
++ (BOOL)accountIsPreventedFromSendingFromExternalProcesses:(id)processes;
++ (BOOL)accountIsRestrictedFromTransfersToOtherAccounts:(id)accounts;
++ (BOOL)accountRestrictsRecentsSyncing:(id)syncing;
 + (BOOL)isSSLEditable;
-+ (id)_basicPropertyForKey:(id)a3 persistentAccount:(id)a4;
++ (id)_basicPropertyForKey:(id)key persistentAccount:(id)account;
 + (id)_newPersistentAccount;
-+ (id)accountPropertiesValueForKey:(id)a3 value:(id)a4;
-+ (id)accountWithPersistentAccount:(id)a3;
-+ (id)accountWithProperties:(id)a3;
++ (id)accountPropertiesValueForKey:(id)key value:(id)value;
++ (id)accountWithPersistentAccount:(id)account;
++ (id)accountWithProperties:(id)properties;
 + (id)authSchemesForAccountClass;
 + (id)releaseAllConnectionsScheduler;
 + (id)supportedDataclasses;
 - (ACAccount)parentAccount;
 - (ACAccount)persistentAccount;
 - (ACAccount)systemAccount;
-- (BOOL)_BOOLForAccountInfoKey:(id)a3 defaultValue:(BOOL)a4;
-- (BOOL)_connectAndAuthenticate:(id)a3;
-- (BOOL)_renewCredentialsWithOptions:(id)a3 completion:(id)a4;
-- (BOOL)_shouldTryDirectSSLConnectionOnPort:(unsigned int)a3;
+- (BOOL)_BOOLForAccountInfoKey:(id)key defaultValue:(BOOL)value;
+- (BOOL)_connectAndAuthenticate:(id)authenticate;
+- (BOOL)_renewCredentialsWithOptions:(id)options completion:(id)completion;
+- (BOOL)_shouldTryDirectSSLConnectionOnPort:(unsigned int)port;
 - (BOOL)canAuthenticateWithCurrentCredentials;
 - (BOOL)connectionsAreConstrained;
 - (BOOL)hasPasswordCredential;
 - (BOOL)isActive;
-- (BOOL)isEnabledForDataclass:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEnabledForDataclass:(id)dataclass;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)primaryiCloudAccount;
-- (BOOL)renewCredentialsWithOptions:(id)a3 completion:(id)a4;
-- (BOOL)shouldFetchACEDBInfoForError:(id)a3;
+- (BOOL)renewCredentialsWithOptions:(id)options completion:(id)completion;
+- (BOOL)shouldFetchACEDBInfoForError:(id)error;
 - (BOOL)supportsMailDrop;
 - (BOOL)usesSSL;
 - (Class)connectionClass;
 - (ECAuthenticationScheme)preferredAuthScheme;
-- (MFAccount)initWithPersistentAccount:(id)a3;
-- (MFAccount)initWithProperties:(id)a3;
+- (MFAccount)initWithPersistentAccount:(id)account;
+- (MFAccount)initWithProperties:(id)properties;
 - (NSDictionary)properties;
 - (NSString)description;
 - (NSString)displayName;
@@ -46,56 +46,56 @@
 - (NSString)sourceApplicationBundleIdentifier;
 - (NSString)uniqueID;
 - (id)_credential;
-- (id)_credentialCreateIfNecessary:(BOOL)a3 error:(id *)a4;
+- (id)_credentialCreateIfNecessary:(BOOL)necessary error:(id *)error;
 - (id)_newConnection;
-- (id)_objectForAccountInfoKey:(id)a3;
+- (id)_objectForAccountInfoKey:(id)key;
 - (id)_password;
-- (id)_passwordWithError:(id *)a3;
+- (id)_passwordWithError:(id *)error;
 - (id)_privacySafeDescription;
-- (id)accountPropertyForKey:(id)a3;
+- (id)accountPropertyForKey:(id)key;
 - (id)authenticatedConnection;
 - (id)clientCertificates;
-- (id)customDescriptionForError:(id)a3 authScheme:(id)a4 defaultDescription:(id)a5;
+- (id)customDescriptionForError:(id)error authScheme:(id)scheme defaultDescription:(id)description;
 - (id)defaultConnectionSettings;
 - (id)enabledDataclasses;
-- (id)inaccessiblePasswordErrorWithTitle:(id)a3;
+- (id)inaccessiblePasswordErrorWithTitle:(id)title;
 - (id)insecureConnectionSettings;
-- (id)loginDisabledErrorWithTitle:(id)a3;
-- (id)missingPasswordErrorWithTitle:(id)a3;
-- (id)nameForMailboxUid:(id)a3;
+- (id)loginDisabledErrorWithTitle:(id)title;
+- (id)missingPasswordErrorWithTitle:(id)title;
+- (id)nameForMailboxUid:(id)uid;
 - (id)secureConnectionSettings;
-- (id)valueInAccountPropertiesForKey:(id)a3;
-- (id)wrongPasswordOrUsernameErrorWithTitle:(id)a3;
+- (id)valueInAccountPropertiesForKey:(id)key;
+- (id)wrongPasswordOrUsernameErrorWithTitle:(id)title;
 - (unint64_t)credentialAccessibility;
 - (unint64_t)hash;
 - (unsigned)defaultPortNumber;
 - (unsigned)defaultSecurePortNumber;
 - (unsigned)portNumber;
 - (void)_queueAccountInfoDidChange;
-- (void)_setAccountProperties:(id)a3;
+- (void)_setAccountProperties:(id)properties;
 - (void)accountInfoDidChange;
-- (void)applySettingsAsDefault:(id)a3;
-- (void)persistentAccountDidChange:(id)a3 previousAccount:(id)a4;
-- (void)removeAccountPropertyForKey:(id)a3;
+- (void)applySettingsAsDefault:(id)default;
+- (void)persistentAccountDidChange:(id)change previousAccount:(id)account;
+- (void)removeAccountPropertyForKey:(id)key;
 - (void)removePersistentAccount;
-- (void)removeValueInAccountPropertiesForKey:(id)a3;
-- (void)reportAuthenticationError:(id)a3 authScheme:(id)a4;
+- (void)removeValueInAccountPropertiesForKey:(id)key;
+- (void)reportAuthenticationError:(id)error authScheme:(id)scheme;
 - (void)savePersistentAccount;
-- (void)setAccountProperty:(id)a3 forKey:(id)a4;
-- (void)setClientCertificates:(id)a3;
-- (void)setDisplayName:(id)a3;
-- (void)setDomain:(id)a3;
-- (void)setHostname:(id)a3;
+- (void)setAccountProperty:(id)property forKey:(id)key;
+- (void)setClientCertificates:(id)certificates;
+- (void)setDisplayName:(id)name;
+- (void)setDomain:(id)domain;
+- (void)setHostname:(id)hostname;
 - (void)setInvalidCredentialsError;
 - (void)setMissingPasswordError;
-- (void)setOAuth2Token:(id)a3 refreshToken:(id)a4;
-- (void)setPassword:(id)a3;
-- (void)setPersistentAccount:(id)a3;
-- (void)setPortNumber:(unsigned int)a3;
-- (void)setPreferredAuthScheme:(id)a3;
-- (void)setUsername:(id)a3;
-- (void)setUsesSSL:(BOOL)a3;
-- (void)setValueInAccountProperties:(id)a3 forKey:(id)a4;
+- (void)setOAuth2Token:(id)token refreshToken:(id)refreshToken;
+- (void)setPassword:(id)password;
+- (void)setPersistentAccount:(id)account;
+- (void)setPortNumber:(unsigned int)number;
+- (void)setPreferredAuthScheme:(id)scheme;
+- (void)setUsername:(id)username;
+- (void)setUsesSSL:(BOOL)l;
+- (void)setValueInAccountProperties:(id)properties forKey:(id)key;
 @end
 
 @implementation MFAccount
@@ -114,10 +114,10 @@
   v3 = [(MFAccount *)self _objectForAccountInfoKey:@"DisplayName"];
   if (!v3)
   {
-    v4 = [(MFAccount *)self username];
-    v5 = [(MFAccount *)self hostname];
-    v6 = v5;
-    if (!v5 || ([v5 isEqualToString:&stru_1F273A5E0] & 1) != 0)
+    username = [(MFAccount *)self username];
+    hostname = [(MFAccount *)self hostname];
+    v6 = hostname;
+    if (!hostname || ([hostname isEqualToString:&stru_1F273A5E0] & 1) != 0)
     {
       v3 = 0;
 LABEL_10:
@@ -125,11 +125,11 @@ LABEL_10:
       goto LABEL_11;
     }
 
-    if (v4 && ([v4 isEqualToString:&stru_1F273A5E0] & 1) == 0)
+    if (username && ([username isEqualToString:&stru_1F273A5E0] & 1) == 0)
     {
       v7 = MEMORY[0x1E696AEC0];
-      v8 = [objc_opt_class() accountTypeString];
-      v3 = [v7 stringWithFormat:@"%@:%@@%@", v8, v4, v6];
+      accountTypeString = [objc_opt_class() accountTypeString];
+      v3 = [v7 stringWithFormat:@"%@:%@@%@", accountTypeString, username, v6];
 
       if (!v3)
       {
@@ -162,17 +162,17 @@ LABEL_11:
 
 - (NSString)personaIdentifier
 {
-  v2 = [(MFAccount *)self baseAccount];
-  v3 = [v2 personaIdentifier];
+  baseAccount = [(MFAccount *)self baseAccount];
+  personaIdentifier = [baseAccount personaIdentifier];
 
-  return v3;
+  return personaIdentifier;
 }
 
 - (BOOL)primaryiCloudAccount
 {
-  v2 = [(MFAccount *)self persistentAccount];
-  v3 = [v2 parentAccount];
-  v4 = [v3 aa_isAccountClass:*MEMORY[0x1E698B760]];
+  persistentAccount = [(MFAccount *)self persistentAccount];
+  parentAccount = [persistentAccount parentAccount];
+  v4 = [parentAccount aa_isAccountClass:*MEMORY[0x1E698B760]];
 
   return v4;
 }
@@ -180,27 +180,27 @@ LABEL_11:
 - (NSString)uniqueID
 {
   v3 = *MEMORY[0x1E6959720];
-  v4 = [(MFAccount *)self _objectForAccountInfoKey:*MEMORY[0x1E6959720]];
-  if (!v4)
+  uUIDString = [(MFAccount *)self _objectForAccountInfoKey:*MEMORY[0x1E6959720]];
+  if (!uUIDString)
   {
-    v5 = [MEMORY[0x1E696AFB0] UUID];
-    v4 = [v5 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
 
     [(MFAccount *)self mf_lock];
-    [(MFAccount *)self setAccountProperty:v4 forKey:v3];
+    [(MFAccount *)self setAccountProperty:uUIDString forKey:v3];
     [(MFAccount *)self mf_unlock];
   }
 
-  return v4;
+  return uUIDString;
 }
 
 + (id)_newPersistentAccount
 {
   v18 = *MEMORY[0x1E69E9840];
-  v2 = [a1 accountTypeIdentifier];
+  accountTypeIdentifier = [self accountTypeIdentifier];
   v3 = +[MFAccountStore sharedAccountStore];
-  v4 = [v3 newPersistentAccountWithAccountTypeIdentifier:v2];
-  [v3 supportedDataclassesWithAccountTypeIdentifier:v2];
+  v4 = [v3 newPersistentAccountWithAccountTypeIdentifier:accountTypeIdentifier];
+  [v3 supportedDataclassesWithAccountTypeIdentifier:accountTypeIdentifier];
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
@@ -237,10 +237,10 @@ LABEL_11:
 
 - (NSString)ef_publicDescription
 {
-  v3 = [MEMORY[0x1E699B7B0] currentDevice];
-  v4 = [v3 isInternal];
+  currentDevice = [MEMORY[0x1E699B7B0] currentDevice];
+  isInternal = [currentDevice isInternal];
 
-  if (v4)
+  if (isInternal)
   {
     [(MFAccount *)self description];
   }
@@ -269,10 +269,10 @@ LABEL_11:
     v6 = MEMORY[0x1E696AEC0];
     v7 = objc_opt_class();
     v8 = MEMORY[0x1E699B858];
-    v9 = [(MFAccount *)self username];
-    v10 = [v8 ec_partiallyRedactedStringForAddress:v9];
-    v11 = [(MFAccount *)self hostname];
-    v4 = [v6 stringWithFormat:@"<%@ %p> %@ %@ ID=%@", v7, self, v10, v11, v5];
+    username = [(MFAccount *)self username];
+    v10 = [v8 ec_partiallyRedactedStringForAddress:username];
+    hostname = [(MFAccount *)self hostname];
+    v4 = [v6 stringWithFormat:@"<%@ %p> %@ %@ ID=%@", v7, self, v10, hostname, v5];
 
     if (v5)
     {
@@ -287,8 +287,8 @@ LABEL_11:
 
 - (unint64_t)hash
 {
-  v2 = [(MFAccount *)self uniqueID];
-  v3 = [v2 hash];
+  uniqueID = [(MFAccount *)self uniqueID];
+  v3 = [uniqueID hash];
 
   return v3;
 }
@@ -296,37 +296,37 @@ LABEL_11:
 - (NSString)parentAccountIdentifier
 {
   os_unfair_lock_lock(&self->_persistentAccountLock);
-  v3 = [(MFAccount *)self baseAccount];
-  v4 = [v3 systemAccount];
-  v5 = [v4 parentAccountIdentifier];
+  baseAccount = [(MFAccount *)self baseAccount];
+  systemAccount = [baseAccount systemAccount];
+  parentAccountIdentifier = [systemAccount parentAccountIdentifier];
 
   os_unfair_lock_unlock(&self->_persistentAccountLock);
 
-  return v5;
+  return parentAccountIdentifier;
 }
 
 - (void)accountInfoDidChange
 {
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  v3 = [(MFAccount *)self properties];
-  [v4 postNotificationName:@"AccountInfoDidChange" object:self userInfo:v3];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  properties = [(MFAccount *)self properties];
+  [defaultCenter postNotificationName:@"AccountInfoDidChange" object:self userInfo:properties];
 }
 
 - (NSDictionary)properties
 {
-  v3 = [(MFAccount *)self persistentAccount];
-  if (v3)
+  persistentAccount = [(MFAccount *)self persistentAccount];
+  if (persistentAccount)
   {
-    v4 = [(MFAccount *)self baseAccount];
-    v5 = [v4 properties];
+    baseAccount = [(MFAccount *)self baseAccount];
+    properties = [baseAccount properties];
   }
 
   else
   {
-    v5 = self->_unsavedAccountProperties;
+    properties = self->_unsavedAccountProperties;
   }
 
-  return v5;
+  return properties;
 }
 
 + (id)releaseAllConnectionsScheduler
@@ -348,15 +348,15 @@ void __43__MFAccount_releaseAllConnectionsScheduler__block_invoke()
   releaseAllConnectionsScheduler_scheduler = v0;
 }
 
-- (BOOL)shouldFetchACEDBInfoForError:(id)a3
+- (BOOL)shouldFetchACEDBInfoForError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 code];
-  v5 = [v3 domain];
-  v6 = [v5 isEqualToString:*MEMORY[0x1E696A798]];
+  errorCopy = error;
+  code = [errorCopy code];
+  domain = [errorCopy domain];
+  v6 = [domain isEqualToString:*MEMORY[0x1E696A798]];
 
-  v7 = 0x4601u >> (v4 - 51);
-  if ((v4 - 51) >= 0xF)
+  v7 = 0x4601u >> (code - 51);
+  if ((code - 51) >= 0xF)
   {
     LOBYTE(v7) = 0;
   }
@@ -371,18 +371,18 @@ void __43__MFAccount_releaseAllConnectionsScheduler__block_invoke()
     v8 = 0;
   }
 
-  v9 = [v3 domain];
-  v10 = [v9 isEqualToString:@"MFMessageErrorDomain"];
+  domain2 = [errorCopy domain];
+  v10 = [domain2 isEqualToString:@"MFMessageErrorDomain"];
 
   if (v10)
   {
-    v8 = v4 == 1034;
+    v8 = code == 1034;
   }
 
-  v11 = [v3 domain];
-  v12 = [v11 isEqualToString:*MEMORY[0x1E695AD78]];
+  domain3 = [errorCopy domain];
+  v12 = [domain3 isEqualToString:*MEMORY[0x1E695AD78]];
 
-  v13 = (v4 - 1) < 2;
+  v13 = (code - 1) < 2;
   if (!v12)
   {
     v13 = v8;
@@ -390,21 +390,21 @@ void __43__MFAccount_releaseAllConnectionsScheduler__block_invoke()
 
   if (v13)
   {
-    v14 = [objc_opt_class() shouldHealAccounts];
+    shouldHealAccounts = [objc_opt_class() shouldHealAccounts];
   }
 
   else
   {
-    v14 = 0;
+    shouldHealAccounts = 0;
   }
 
-  return v14;
+  return shouldHealAccounts;
 }
 
-+ (id)accountWithProperties:(id)a3
++ (id)accountWithProperties:(id)properties
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithProperties:v3];
+  propertiesCopy = properties;
+  v4 = [objc_alloc(objc_opt_class()) initWithProperties:propertiesCopy];
 
   return v4;
 }
@@ -420,7 +420,7 @@ void __43__MFAccount_releaseAllConnectionsScheduler__block_invoke()
   v5[1] = 3221225472;
   v5[2] = __39__MFAccount_authSchemesForAccountClass__block_invoke_2;
   v5[3] = &__block_descriptor_40_e32_B16__0__ECAuthenticationScheme_8l;
-  v5[4] = a1;
+  v5[4] = self;
   v3 = [authSchemesForAccountClass_knownSchemes ef_filter:v5];
 
   return v3;
@@ -433,13 +433,13 @@ void __39__MFAccount_authSchemesForAccountClass__block_invoke()
   authSchemesForAccountClass_knownSchemes = v0;
 }
 
-- (MFAccount)initWithProperties:(id)a3
+- (MFAccount)initWithProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   v5 = [(MFAccount *)self initWithPersistentAccount:0];
   if (v5)
   {
-    v6 = [v4 mutableCopy];
+    v6 = [propertiesCopy mutableCopy];
     v7 = v6;
     if (v6)
     {
@@ -453,8 +453,8 @@ void __39__MFAccount_authSchemesForAccountClass__block_invoke()
 
     v9 = v8;
 
-    v10 = [objc_opt_class() _accountClass];
-    [v9 setObject:v10 forKey:@"Class"];
+    _accountClass = [objc_opt_class() _accountClass];
+    [v9 setObject:_accountClass forKey:@"Class"];
 
     v5->_allowsTrustPrompt = 1;
     [(MFAccount *)v5 _setAccountProperties:v9];
@@ -463,12 +463,12 @@ void __39__MFAccount_authSchemesForAccountClass__block_invoke()
   return v5;
 }
 
-- (MFAccount)initWithPersistentAccount:(id)a3
+- (MFAccount)initWithPersistentAccount:(id)account
 {
-  v4 = a3;
-  if (!v4)
+  accountCopy = account;
+  if (!accountCopy)
   {
-    v4 = [objc_opt_class() _newPersistentAccount];
+    accountCopy = [objc_opt_class() _newPersistentAccount];
   }
 
   v14.receiver = self;
@@ -478,14 +478,14 @@ void __39__MFAccount_authSchemesForAccountClass__block_invoke()
   if (v5)
   {
     v5->_persistentAccountLock._os_unfair_lock_opaque = 0;
-    v7 = [MEMORY[0x1E699B1F8] accountWithSystemAccount:v4];
+    v7 = [MEMORY[0x1E699B1F8] accountWithSystemAccount:accountCopy];
     baseAccount = v6->_baseAccount;
     v6->_baseAccount = v7;
 
-    [(MFAccount *)v6 setPersistentAccount:v4];
+    [(MFAccount *)v6 setPersistentAccount:accountCopy];
     v9 = objc_alloc(MEMORY[0x1E699B7F0]);
-    v10 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
-    v11 = [v9 initWithObject:v10];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    v11 = [v9 initWithObject:weakObjectsHashTable];
     currentConnections = v6->_currentConnections;
     v6->_currentConnections = v11;
 
@@ -495,15 +495,15 @@ void __39__MFAccount_authSchemesForAccountClass__block_invoke()
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 uniqueID];
-    v6 = [(MFAccount *)self uniqueID];
-    v7 = [v5 isEqualToString:v6];
+    uniqueID = [equalCopy uniqueID];
+    uniqueID2 = [(MFAccount *)self uniqueID];
+    v7 = [uniqueID isEqualToString:uniqueID2];
   }
 
   else
@@ -514,26 +514,26 @@ void __39__MFAccount_authSchemesForAccountClass__block_invoke()
   return v7;
 }
 
-+ (id)accountWithPersistentAccount:(id)a3
++ (id)accountWithPersistentAccount:(id)account
 {
-  v3 = a3;
+  accountCopy = account;
   v4 = +[MFAccountStore sharedAccountStore];
-  v5 = [v4 existingAccountWithPersistentAccount:v3];
+  v5 = [v4 existingAccountWithPersistentAccount:accountCopy];
 
   return v5;
 }
 
-- (void)setPersistentAccount:(id)a3
+- (void)setPersistentAccount:(id)account
 {
-  v6 = a3;
-  if (v6 && self->_unsavedAccountProperties)
+  accountCopy = account;
+  if (accountCopy && self->_unsavedAccountProperties)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"Account.m" lineNumber:262 description:@"Cannot set persistent account on account with unsaved account properties"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"Account.m" lineNumber:262 description:@"Cannot set persistent account on account with unsaved account properties"];
   }
 
   persistentAccount = self->_persistentAccount;
-  if (persistentAccount != v6)
+  if (persistentAccount != accountCopy)
   {
     if (persistentAccount)
     {
@@ -542,13 +542,13 @@ void __39__MFAccount_authSchemesForAccountClass__block_invoke()
       if (v8)
       {
         objc_initWeak(&location, self);
-        v9 = [objc_opt_class() releaseAllConnectionsScheduler];
+        releaseAllConnectionsScheduler = [objc_opt_class() releaseAllConnectionsScheduler];
         v13[0] = MEMORY[0x1E69E9820];
         v13[1] = 3221225472;
         v13[2] = __34__MFAccount_setPersistentAccount___block_invoke;
         v13[3] = &unk_1E7AA20E0;
         objc_copyWeak(&v14, &location);
-        [v9 performBlock:v13];
+        [releaseAllConnectionsScheduler performBlock:v13];
 
         objc_destroyWeak(&v14);
         objc_destroyWeak(&location);
@@ -557,15 +557,15 @@ void __39__MFAccount_authSchemesForAccountClass__block_invoke()
 
     os_unfair_lock_lock(&self->_persistentAccountLock);
     v10 = self->_persistentAccount;
-    objc_storeStrong(&self->_persistentAccount, a3);
-    if (v6)
+    objc_storeStrong(&self->_persistentAccount, account);
+    if (accountCopy)
     {
-      v11 = [(MFAccount *)self baseAccount];
-      [v11 setSystemAccount:v6];
+      baseAccount = [(MFAccount *)self baseAccount];
+      [baseAccount setSystemAccount:accountCopy];
     }
 
     os_unfair_lock_unlock(&self->_persistentAccountLock);
-    [(MFAccount *)self persistentAccountDidChange:v6 previousAccount:v10];
+    [(MFAccount *)self persistentAccountDidChange:accountCopy previousAccount:v10];
   }
 }
 
@@ -575,9 +575,9 @@ void __34__MFAccount_setPersistentAccount___block_invoke(uint64_t a1)
   [WeakRetained releaseAllConnections];
 }
 
-- (void)persistentAccountDidChange:(id)a3 previousAccount:(id)a4
+- (void)persistentAccountDidChange:(id)change previousAccount:(id)account
 {
-  v4 = [(MFAccount *)self baseAccount:a3];
+  v4 = [(MFAccount *)self baseAccount:change];
   [v4 clearCache];
 }
 
@@ -596,13 +596,13 @@ void __34__MFAccount_setPersistentAccount___block_invoke(uint64_t a1)
 - (ACAccount)parentAccount
 {
   os_unfair_lock_lock(&self->_persistentAccountLock);
-  v3 = [(MFAccount *)self baseAccount];
-  v4 = [v3 systemAccount];
-  v5 = [v4 parentAccount];
+  baseAccount = [(MFAccount *)self baseAccount];
+  systemAccount = [baseAccount systemAccount];
+  parentAccount = [systemAccount parentAccount];
 
   os_unfair_lock_unlock(&self->_persistentAccountLock);
 
-  return v5;
+  return parentAccount;
 }
 
 - (NSString)description
@@ -617,13 +617,13 @@ void __34__MFAccount_setPersistentAccount___block_invoke(uint64_t a1)
   else
   {
     v5 = [(MFAccount *)self _objectForAccountInfoKey:@"DisplayName"];
-    v6 = [v5 ef_sha256Digest];
-    v7 = [v6 ef_hexString];
+    ef_sha256Digest = [v5 ef_sha256Digest];
+    ef_hexString = [ef_sha256Digest ef_hexString];
 
-    v8 = [(MFAccount *)self _privacySafeDescription];
-    v4 = [v8 stringByAppendingFormat:@" displayName=%@", v7];
+    _privacySafeDescription = [(MFAccount *)self _privacySafeDescription];
+    v4 = [_privacySafeDescription stringByAppendingFormat:@" displayName=%@", ef_hexString];
 
-    if (v5 && v7)
+    if (v5 && ef_hexString)
     {
       objc_storeStrong(&self->_cachedDescription, v4);
     }
@@ -634,24 +634,24 @@ void __34__MFAccount_setPersistentAccount___block_invoke(uint64_t a1)
   return v4;
 }
 
-- (id)accountPropertyForKey:(id)a3
+- (id)accountPropertyForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(MFAccount *)self persistentAccount];
-  if (v5)
+  keyCopy = key;
+  persistentAccount = [(MFAccount *)self persistentAccount];
+  if (persistentAccount)
   {
-    v6 = [objc_opt_class() _basicPropertyForKey:v4 persistentAccount:v5];
+    v6 = [objc_opt_class() _basicPropertyForKey:keyCopy persistentAccount:persistentAccount];
     if (v6)
     {
       goto LABEL_6;
     }
 
-    v7 = [v5 accountPropertyForKey:v4];
+    v7 = [persistentAccount accountPropertyForKey:keyCopy];
   }
 
   else
   {
-    v7 = [(NSMutableDictionary *)self->_unsavedAccountProperties objectForKey:v4];
+    v7 = [(NSMutableDictionary *)self->_unsavedAccountProperties objectForKey:keyCopy];
   }
 
   v6 = v7;
@@ -660,16 +660,16 @@ LABEL_6:
   return v6;
 }
 
-- (void)setAccountProperty:(id)a3 forKey:(id)a4
+- (void)setAccountProperty:(id)property forKey:(id)key
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [(MFAccount *)self persistentAccount];
-  if (v7)
+  propertyCopy = property;
+  keyCopy = key;
+  persistentAccount = [(MFAccount *)self persistentAccount];
+  if (persistentAccount)
   {
-    if (([objc_opt_class() _setBasicProperty:v11 forKey:v6 persistentAccount:v7] & 1) == 0)
+    if (([objc_opt_class() _setBasicProperty:propertyCopy forKey:keyCopy persistentAccount:persistentAccount] & 1) == 0)
     {
-      [v7 setAccountProperty:v11 forKey:v6];
+      [persistentAccount setAccountProperty:propertyCopy forKey:keyCopy];
     }
   }
 
@@ -685,52 +685,52 @@ LABEL_6:
       unsavedAccountProperties = self->_unsavedAccountProperties;
     }
 
-    [(NSMutableDictionary *)unsavedAccountProperties setValue:v11 forKey:v6];
+    [(NSMutableDictionary *)unsavedAccountProperties setValue:propertyCopy forKey:keyCopy];
   }
 }
 
-- (void)removeAccountPropertyForKey:(id)a3
+- (void)removeAccountPropertyForKey:(id)key
 {
-  v5 = a3;
-  v4 = [(MFAccount *)self persistentAccount];
-  if (v4)
+  keyCopy = key;
+  persistentAccount = [(MFAccount *)self persistentAccount];
+  if (persistentAccount)
   {
-    if (([objc_opt_class() _setBasicProperty:0 forKey:v5 persistentAccount:v4] & 1) == 0)
+    if (([objc_opt_class() _setBasicProperty:0 forKey:keyCopy persistentAccount:persistentAccount] & 1) == 0)
     {
-      [v4 setAccountProperty:0 forKey:v5];
+      [persistentAccount setAccountProperty:0 forKey:keyCopy];
     }
   }
 
   else
   {
-    [(NSMutableDictionary *)self->_unsavedAccountProperties removeObjectForKey:v5];
+    [(NSMutableDictionary *)self->_unsavedAccountProperties removeObjectForKey:keyCopy];
   }
 }
 
-+ (id)_basicPropertyForKey:(id)a3 persistentAccount:(id)a4
++ (id)_basicPropertyForKey:(id)key persistentAccount:(id)account
 {
-  v5 = a3;
-  v6 = a4;
+  keyCopy = key;
+  accountCopy = account;
   _MFLockGlobalLock();
-  if (v6)
+  if (accountCopy)
   {
-    if ([v5 isEqualToString:*MEMORY[0x1E6959720]])
+    if ([keyCopy isEqualToString:*MEMORY[0x1E6959720]])
     {
-      v7 = [v6 identifier];
+      identifier = [accountCopy identifier];
 LABEL_8:
-      v8 = v7;
+      v8 = identifier;
       goto LABEL_10;
     }
 
-    if ([v5 isEqualToString:@"Username"])
+    if ([keyCopy isEqualToString:@"Username"])
     {
-      v7 = [v6 username];
+      identifier = [accountCopy username];
       goto LABEL_8;
     }
 
-    if ([v5 isEqualToString:@"DisplayName"])
+    if ([keyCopy isEqualToString:@"DisplayName"])
     {
-      v7 = [v6 accountDescription];
+      identifier = [accountCopy accountDescription];
       goto LABEL_8;
     }
   }
@@ -742,33 +742,33 @@ LABEL_10:
   return v8;
 }
 
-+ (BOOL)_setBasicProperty:(id)a3 forKey:(id)a4 persistentAccount:(id)a5
++ (BOOL)_setBasicProperty:(id)property forKey:(id)key persistentAccount:(id)account
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v9)
+  propertyCopy = property;
+  keyCopy = key;
+  accountCopy = account;
+  if (accountCopy)
   {
     _MFLockGlobalLock();
-    if ([v8 isEqualToString:*MEMORY[0x1E6959720]])
+    if ([keyCopy isEqualToString:*MEMORY[0x1E6959720]])
     {
-      [v9 setIdentifier:v7];
+      [accountCopy setIdentifier:propertyCopy];
     }
 
-    else if ([v8 isEqualToString:@"Username"])
+    else if ([keyCopy isEqualToString:@"Username"])
     {
-      [v9 setUsername:v7];
+      [accountCopy setUsername:propertyCopy];
     }
 
     else
     {
-      if (![v8 isEqualToString:@"DisplayName"])
+      if (![keyCopy isEqualToString:@"DisplayName"])
       {
         v10 = 0;
         goto LABEL_10;
       }
 
-      [v9 setAccountDescription:v7];
+      [accountCopy setAccountDescription:propertyCopy];
     }
 
     v10 = 1;
@@ -783,11 +783,11 @@ LABEL_11:
   return v10;
 }
 
-- (void)_setAccountProperties:(id)a3
+- (void)_setAccountProperties:(id)properties
 {
   v25 = *MEMORY[0x1E69E9840];
-  v18 = a3;
-  v17 = [v18 mutableCopy];
+  propertiesCopy = properties;
+  v17 = [propertiesCopy mutableCopy];
   v4 = [v17 objectForKey:@"Password"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -803,8 +803,8 @@ LABEL_11:
   }
 
   [v17 removeObjectForKey:@"Password"];
-  v7 = [v18 objectForKey:@"OAuth2Token"];
-  v8 = [v18 objectForKey:@"OAuth2RefreshToken"];
+  v7 = [propertiesCopy objectForKey:@"OAuth2Token"];
+  v8 = [propertiesCopy objectForKey:@"OAuth2RefreshToken"];
   [(MFAccount *)self mf_lock];
   if (v7)
   {
@@ -813,7 +813,7 @@ LABEL_11:
 
   [(MFAccount *)self uniqueID];
 
-  v9 = [objc_opt_class() excludedAccountPropertyKeys];
+  excludedAccountPropertyKeys = [objc_opt_class() excludedAccountPropertyKeys];
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
@@ -833,7 +833,7 @@ LABEL_11:
         }
 
         v14 = *(*(&v20 + 1) + 8 * i);
-        if (([v9 containsObject:v14] & 1) == 0)
+        if (([excludedAccountPropertyKeys containsObject:v14] & 1) == 0)
         {
           v15 = [v10 objectForKey:v14];
           [(MFAccount *)self setAccountProperty:v15 forKey:v14];
@@ -856,77 +856,77 @@ LABEL_11:
   v16 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)accountPropertiesValueForKey:(id)a3 value:(id)a4
++ (id)accountPropertiesValueForKey:(id)key value:(id)value
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if ([v5 isEqual:@"EmailAddresses"])
+  keyCopy = key;
+  valueCopy = value;
+  v7 = valueCopy;
+  if ([keyCopy isEqual:@"EmailAddresses"])
   {
-    v7 = [MEMORY[0x1E69AD6F8] addressListFromEncodedString:v6];
+    v7 = [MEMORY[0x1E69AD6F8] addressListFromEncodedString:valueCopy];
   }
 
   return v7;
 }
 
-- (void)setValueInAccountProperties:(id)a3 forKey:(id)a4
+- (void)setValueInAccountProperties:(id)properties forKey:(id)key
 {
-  v7 = a3;
-  v6 = a4;
-  if ([v6 isEqual:@"Password"])
+  propertiesCopy = properties;
+  keyCopy = key;
+  if ([keyCopy isEqual:@"Password"])
   {
-    [(MFAccount *)self setPassword:v7];
+    [(MFAccount *)self setPassword:propertiesCopy];
   }
 
   else
   {
-    [(MFAccount *)self setAccountProperty:v7 forKey:v6];
+    [(MFAccount *)self setAccountProperty:propertiesCopy forKey:keyCopy];
   }
 
   [(MFAccount *)self _queueAccountInfoDidChange];
 }
 
-- (void)removeValueInAccountPropertiesForKey:(id)a3
+- (void)removeValueInAccountPropertiesForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   [(MFAccount *)self mf_lock];
-  [(MFAccount *)self removeAccountPropertyForKey:v4];
+  [(MFAccount *)self removeAccountPropertyForKey:keyCopy];
   [(MFAccount *)self mf_unlock];
 }
 
-- (id)valueInAccountPropertiesForKey:(id)a3
+- (id)valueInAccountPropertiesForKey:(id)key
 {
-  v4 = a3;
-  if ([v4 isEqual:@"SSLEnabled"])
+  keyCopy = key;
+  if ([keyCopy isEqual:@"SSLEnabled"])
   {
     v5 = [MEMORY[0x1E696AD98] numberWithBool:{-[MFAccount usesSSL](self, "usesSSL")}];
     goto LABEL_10;
   }
 
   [(MFAccount *)self mf_lock];
-  v5 = [(MFAccount *)self accountPropertyForKey:v4];
+  v5 = [(MFAccount *)self accountPropertyForKey:keyCopy];
   [(MFAccount *)self mf_unlock];
-  if ([v4 isEqual:@"Password"])
+  if ([keyCopy isEqual:@"Password"])
   {
-    v6 = [(MFAccount *)self password];
+    password = [(MFAccount *)self password];
     goto LABEL_5;
   }
 
-  if ([v4 isEqual:@"EmailAddresses"])
+  if ([keyCopy isEqual:@"EmailAddresses"])
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v9 = [v5 allKeys];
-      v7 = [v9 componentsJoinedByString:{@", "}];
+      allKeys = [v5 allKeys];
+      v7 = [allKeys componentsJoinedByString:{@", "}];
 
-      v5 = v9;
+      v5 = allKeys;
       goto LABEL_6;
     }
 
-    v6 = [v5 componentsJoinedByString:{@", "}];
+    password = [v5 componentsJoinedByString:{@", "}];
 LABEL_5:
-    v7 = v6;
+    v7 = password;
 LABEL_6:
 
     v5 = v7;
@@ -937,81 +937,81 @@ LABEL_10:
   return v5;
 }
 
-- (id)_objectForAccountInfoKey:(id)a3
+- (id)_objectForAccountInfoKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   [(MFAccount *)self mf_lock];
-  v5 = [(MFAccount *)self accountPropertyForKey:v4];
+  v5 = [(MFAccount *)self accountPropertyForKey:keyCopy];
   [(MFAccount *)self mf_unlock];
 
   return v5;
 }
 
-- (BOOL)_BOOLForAccountInfoKey:(id)a3 defaultValue:(BOOL)a4
+- (BOOL)_BOOLForAccountInfoKey:(id)key defaultValue:(BOOL)value
 {
-  v6 = a3;
+  keyCopy = key;
   [(MFAccount *)self mf_lock];
-  v7 = [(MFAccount *)self accountPropertyForKey:v6];
+  v7 = [(MFAccount *)self accountPropertyForKey:keyCopy];
   [(MFAccount *)self mf_unlock];
   if (v7)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
     {
-      a4 = [v7 BOOLValue];
+      value = [v7 BOOLValue];
     }
   }
 
-  return a4;
+  return value;
 }
 
 - (BOOL)isActive
 {
-  v2 = [(MFAccount *)self persistentAccount];
-  v3 = v2;
-  if (v2)
+  persistentAccount = [(MFAccount *)self persistentAccount];
+  v3 = persistentAccount;
+  if (persistentAccount)
   {
-    v4 = [v2 isActive];
+    isActive = [persistentAccount isActive];
   }
 
   else
   {
-    v4 = 1;
+    isActive = 1;
   }
 
-  return v4;
+  return isActive;
 }
 
-- (void)setDisplayName:(id)a3
+- (void)setDisplayName:(id)name
 {
-  v6 = a3;
-  v4 = [(MFAccount *)self displayName];
-  if (v4 != v6)
+  nameCopy = name;
+  displayName = [(MFAccount *)self displayName];
+  if (displayName != nameCopy)
   {
-    v5 = v4 ? v4 : &stru_1F273A5E0;
-    if (([(__CFString *)v6 isEqualToString:v5]& 1) == 0)
+    v5 = displayName ? displayName : &stru_1F273A5E0;
+    if (([(__CFString *)nameCopy isEqualToString:v5]& 1) == 0)
     {
       [(MFAccount *)self mf_lock];
-      [(MFAccount *)self setAccountProperty:v6 forKey:@"DisplayName"];
+      [(MFAccount *)self setAccountProperty:nameCopy forKey:@"DisplayName"];
       [(MFAccount *)self mf_unlock];
       [(MFAccount *)self _queueAccountInfoDidChange];
     }
   }
 }
 
-- (void)setUsername:(id)a3
+- (void)setUsername:(id)username
 {
-  v6 = a3;
-  v4 = [(MFAccount *)self username];
-  if (v4 != v6)
+  usernameCopy = username;
+  username = [(MFAccount *)self username];
+  if (username != usernameCopy)
   {
-    v5 = v4 ? v4 : &stru_1F273A5E0;
-    if (([(__CFString *)v6 isEqualToString:v5]& 1) == 0)
+    v5 = username ? username : &stru_1F273A5E0;
+    if (([(__CFString *)usernameCopy isEqualToString:v5]& 1) == 0)
     {
       [(MFAccount *)self mf_lock];
-      if (v6 && [(__CFString *)v6 length])
+      if (usernameCopy && [(__CFString *)usernameCopy length])
       {
-        [(MFAccount *)self setAccountProperty:v6 forKey:@"Username"];
+        [(MFAccount *)self setAccountProperty:usernameCopy forKey:@"Username"];
       }
 
       else
@@ -1026,26 +1026,26 @@ LABEL_10:
   }
 }
 
-- (void)setHostname:(id)a3
+- (void)setHostname:(id)hostname
 {
-  v8 = a3;
-  v4 = [(MFAccount *)self hostname];
-  if ([(__CFString *)v8 length])
+  hostnameCopy = hostname;
+  hostname = [(MFAccount *)self hostname];
+  if ([(__CFString *)hostnameCopy length])
   {
-    v5 = [(__CFString *)v8 mf_stringWithNoExtraSpaces];
+    mf_stringWithNoExtraSpaces = [(__CFString *)hostnameCopy mf_stringWithNoExtraSpaces];
 
-    v6 = v5;
+    v6 = mf_stringWithNoExtraSpaces;
   }
 
   else
   {
-    v6 = v8;
+    v6 = hostnameCopy;
   }
 
   v9 = v6;
-  if (v4 != v6)
+  if (hostname != v6)
   {
-    v7 = v4 ? v4 : &stru_1F273A5E0;
+    v7 = hostname ? hostname : &stru_1F273A5E0;
     if (([(__CFString *)v6 isEqualToString:v7]& 1) == 0)
     {
       [(MFAccount *)self mf_lock];
@@ -1066,10 +1066,10 @@ LABEL_10:
   }
 }
 
-+ (BOOL)accountIsManaged:(id)a3
++ (BOOL)accountIsManaged:(id)managed
 {
-  v3 = a3;
-  v4 = [v3 accountPropertyForKey:*MEMORY[0x1E6959790]];
+  managedCopy = managed;
+  v4 = [managedCopy accountPropertyForKey:*MEMORY[0x1E6959790]];
   if ([v4 length])
   {
     v5 = 1;
@@ -1077,7 +1077,7 @@ LABEL_10:
 
   else
   {
-    v6 = [v3 accountPropertyForKey:@"mcProfileUUID"];
+    v6 = [managedCopy accountPropertyForKey:@"mcProfileUUID"];
     if ([v6 length])
     {
       v5 = 1;
@@ -1085,7 +1085,7 @@ LABEL_10:
 
     else
     {
-      v7 = [v3 accountPropertyForKey:@"ManagedTag"];
+      v7 = [managedCopy accountPropertyForKey:@"ManagedTag"];
       v5 = [v7 length] != 0;
     }
   }
@@ -1093,28 +1093,28 @@ LABEL_10:
   return v5;
 }
 
-+ (BOOL)accountIsPreventedFromSendingFromExternalProcesses:(id)a3
++ (BOOL)accountIsPreventedFromSendingFromExternalProcesses:(id)processes
 {
-  v3 = [a3 accountPropertyForKey:@"MFRestrictSendingFromExternalProcesses"];
-  v4 = [v3 BOOLValue];
+  v3 = [processes accountPropertyForKey:@"MFRestrictSendingFromExternalProcesses"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-+ (BOOL)accountIsRestrictedFromTransfersToOtherAccounts:(id)a3
++ (BOOL)accountIsRestrictedFromTransfersToOtherAccounts:(id)accounts
 {
-  v3 = [a3 accountPropertyForKey:@"MFRestrictMessageTransfersToOtherAccounts"];
-  v4 = [v3 BOOLValue];
+  v3 = [accounts accountPropertyForKey:@"MFRestrictMessageTransfersToOtherAccounts"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-+ (BOOL)accountRestrictsRecentsSyncing:(id)a3
++ (BOOL)accountRestrictsRecentsSyncing:(id)syncing
 {
-  v3 = [a3 accountPropertyForKey:@"Prevent Recents Syncing"];
-  v4 = [v3 BOOLValue];
+  v3 = [syncing accountPropertyForKey:@"Prevent Recents Syncing"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)supportsMailDrop
@@ -1129,19 +1129,19 @@ LABEL_10:
 
 - (id)_credential
 {
-  v2 = [(MFAccount *)self baseAccount];
-  v3 = [v2 credential];
+  baseAccount = [(MFAccount *)self baseAccount];
+  credential = [baseAccount credential];
 
-  return v3;
+  return credential;
 }
 
-- (id)_credentialCreateIfNecessary:(BOOL)a3 error:(id *)a4
+- (id)_credentialCreateIfNecessary:(BOOL)necessary error:(id *)error
 {
-  v5 = a3;
+  necessaryCopy = necessary;
   v27 = *MEMORY[0x1E69E9840];
-  v7 = [(MFAccount *)self persistentAccount];
+  persistentAccount = [(MFAccount *)self persistentAccount];
   v20 = 0;
-  v8 = [v7 credentialWithError:&v20];
+  v8 = [persistentAccount credentialWithError:&v20];
   v9 = v20;
 
   if (v9)
@@ -1149,12 +1149,12 @@ LABEL_10:
     v10 = MFAccountsLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      v17 = [v9 ef_publicDescription];
-      v18 = v17;
+      ef_publicDescription = [v9 ef_publicDescription];
+      v18 = ef_publicDescription;
       v19 = "NOT ";
       *buf = 138412802;
-      v22 = self;
-      if (v5)
+      selfCopy = self;
+      if (necessaryCopy)
       {
         v19 = "";
       }
@@ -1162,34 +1162,34 @@ LABEL_10:
       v23 = 2080;
       v24 = v19;
       v25 = 2114;
-      v26 = v17;
+      v26 = ef_publicDescription;
       _os_log_error_impl(&dword_1B0389000, v10, OS_LOG_TYPE_ERROR, "Encountered error while fetching credential for %@ (will %screate new credential): %{public}@", buf, 0x20u);
     }
   }
 
-  if (!v8 && v5)
+  if (!v8 && necessaryCopy)
   {
     v11 = MFAccountsLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [(MFAccount *)self ef_publicDescription];
+      ef_publicDescription2 = [(MFAccount *)self ef_publicDescription];
       *buf = 138543362;
-      v22 = v12;
+      selfCopy = ef_publicDescription2;
       _os_log_impl(&dword_1B0389000, v11, OS_LOG_TYPE_DEFAULT, "Creating new credential for account %{public}@", buf, 0xCu);
     }
 
     v8 = objc_alloc_init(MEMORY[0x1E6959A30]);
     [(MFAccount *)self mf_lock];
-    v13 = [(MFAccount *)self persistentAccount];
-    [v13 setCredential:v8];
+    persistentAccount2 = [(MFAccount *)self persistentAccount];
+    [persistentAccount2 setCredential:v8];
 
     [(MFAccount *)self mf_unlock];
   }
 
-  if (a4 && !v8)
+  if (error && !v8)
   {
     v14 = v9;
-    *a4 = v9;
+    *error = v9;
   }
 
   v15 = *MEMORY[0x1E69E9840];
@@ -1197,16 +1197,16 @@ LABEL_10:
   return v8;
 }
 
-- (void)setPassword:(id)a3
+- (void)setPassword:(id)password
 {
-  v6 = a3;
-  v4 = [(MFAccount *)self baseAccount];
-  [v4 setPassword:v6];
+  passwordCopy = password;
+  baseAccount = [(MFAccount *)self baseAccount];
+  [baseAccount setPassword:passwordCopy];
 
-  if (v6 && [v6 length])
+  if (passwordCopy && [passwordCopy length])
   {
-    v5 = [(MFAccount *)self persistentAccount];
-    [v5 setAuthenticated:1];
+    persistentAccount = [(MFAccount *)self persistentAccount];
+    [persistentAccount setAuthenticated:1];
   }
 
   else
@@ -1221,35 +1221,35 @@ LABEL_10:
 
 - (id)_password
 {
-  v2 = [(MFAccount *)self baseAccount];
-  v3 = [v2 password];
+  baseAccount = [(MFAccount *)self baseAccount];
+  password = [baseAccount password];
 
-  return v3;
+  return password;
 }
 
-- (id)_passwordWithError:(id *)a3
+- (id)_passwordWithError:(id *)error
 {
-  v3 = [(MFAccount *)self _credentialCreateIfNecessary:0 error:a3];
-  v4 = [v3 password];
+  v3 = [(MFAccount *)self _credentialCreateIfNecessary:0 error:error];
+  password = [v3 password];
 
-  return v4;
+  return password;
 }
 
 - (NSString)password
 {
-  v3 = [(MFAccount *)self preferredAuthScheme];
-  v4 = v3;
-  if (v3 && ([v3 requiresPassword] & 1) != 0)
+  preferredAuthScheme = [(MFAccount *)self preferredAuthScheme];
+  v4 = preferredAuthScheme;
+  if (preferredAuthScheme && ([preferredAuthScheme requiresPassword] & 1) != 0)
   {
-    v5 = [(MFAccount *)self _password];
+    _password = [(MFAccount *)self _password];
   }
 
   else
   {
-    v5 = &stru_1F273A5E0;
+    _password = &stru_1F273A5E0;
   }
 
-  return v5;
+  return _password;
 }
 
 - (unint64_t)credentialAccessibility
@@ -1277,60 +1277,60 @@ LABEL_10:
 
 - (NSString)oauth2Token
 {
-  v2 = [(MFAccount *)self baseAccount];
-  v3 = [v2 oauthToken];
+  baseAccount = [(MFAccount *)self baseAccount];
+  oauthToken = [baseAccount oauthToken];
 
-  return v3;
+  return oauthToken;
 }
 
-- (void)setOAuth2Token:(id)a3 refreshToken:(id)a4
+- (void)setOAuth2Token:(id)token refreshToken:(id)refreshToken
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [(MFAccount *)self baseAccount];
-  [v7 setOAuth2Token:v8 refreshToken:v6];
+  tokenCopy = token;
+  refreshTokenCopy = refreshToken;
+  baseAccount = [(MFAccount *)self baseAccount];
+  [baseAccount setOAuth2Token:tokenCopy refreshToken:refreshTokenCopy];
 }
 
 - (NSString)sourceApplicationBundleIdentifier
 {
-  v2 = self->_sourceApplicationBundleIdentifier;
-  if (!v2)
+  sourceApplicationBundleIdentifier = self->_sourceApplicationBundleIdentifier;
+  if (!sourceApplicationBundleIdentifier)
   {
     v3 = MFUserAgent();
     if (v3 && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      v2 = [v3 sourceApplicationBundleIdentifier];
+      sourceApplicationBundleIdentifier = [v3 sourceApplicationBundleIdentifier];
     }
 
     else
     {
-      v2 = 0;
+      sourceApplicationBundleIdentifier = 0;
     }
   }
 
-  return v2;
+  return sourceApplicationBundleIdentifier;
 }
 
-- (BOOL)_renewCredentialsWithOptions:(id)a3 completion:(id)a4
+- (BOOL)_renewCredentialsWithOptions:(id)options completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MFAccount *)self accountForRenewingCredentials];
-  if (v8)
+  optionsCopy = options;
+  completionCopy = completion;
+  accountForRenewingCredentials = [(MFAccount *)self accountForRenewingCredentials];
+  if (accountForRenewingCredentials)
   {
     v9 = +[MFAccountStore sharedAccountStore];
-    v10 = [v9 persistentStore];
+    persistentStore = [v9 persistentStore];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __53__MFAccount__renewCredentialsWithOptions_completion___block_invoke;
     v12[3] = &unk_1E7AA2108;
-    v13 = v8;
-    v14 = v6;
-    v15 = v7;
-    [v10 renewCredentialsForAccount:v13 options:v14 completion:v12];
+    v13 = accountForRenewingCredentials;
+    v14 = optionsCopy;
+    v15 = completionCopy;
+    [persistentStore renewCredentialsForAccount:v13 options:v14 completion:v12];
   }
 
-  return v8 != 0;
+  return accountForRenewingCredentials != 0;
 }
 
 void __53__MFAccount__renewCredentialsWithOptions_completion___block_invoke(uint64_t a1, __CFString *a2, void *a3)
@@ -1404,14 +1404,14 @@ void __53__MFAccount__renewCredentialsWithOptions_completion___block_invoke(uint
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)renewCredentialsWithOptions:(id)a3 completion:(id)a4
+- (BOOL)renewCredentialsWithOptions:(id)options completion:(id)completion
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  optionsCopy = options;
+  completionCopy = completion;
+  if (optionsCopy)
   {
-    [MEMORY[0x1E695DF90] dictionaryWithDictionary:v6];
+    [MEMORY[0x1E695DF90] dictionaryWithDictionary:optionsCopy];
   }
 
   else
@@ -1441,11 +1441,11 @@ void __53__MFAccount__renewCredentialsWithOptions_completion___block_invoke(uint
   v13 = MFAccountsLog();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [(MFAccount *)self uniqueID];
+    uniqueID = [(MFAccount *)self uniqueID];
     v15 = [v8 objectForKeyedSubscript:*MEMORY[0x1E6959AA8]];
     v16 = [v8 objectForKeyedSubscript:*MEMORY[0x1E6959AA0]];
     v20 = 138543874;
-    v21 = v14;
+    v21 = uniqueID;
     v22 = 2114;
     v23 = v15;
     v24 = 2114;
@@ -1453,7 +1453,7 @@ void __53__MFAccount__renewCredentialsWithOptions_completion___block_invoke(uint
     _os_log_impl(&dword_1B0389000, v13, OS_LOG_TYPE_DEFAULT, "Renewing credential for account: %{public}@ with force:%{public}@ avoidUI:%{public}@", &v20, 0x20u);
   }
 
-  v17 = [(MFAccount *)self _renewCredentialsWithOptions:v8 completion:v7];
+  v17 = [(MFAccount *)self _renewCredentialsWithOptions:v8 completion:completionCopy];
   v18 = *MEMORY[0x1E69E9840];
   return v17;
 }
@@ -1526,34 +1526,34 @@ void __74__MFAccount_promptUserForWebLoginWithURL_shouldConfirm_completionHandle
 - (ACAccount)systemAccount
 {
   os_unfair_lock_lock(&self->_persistentAccountLock);
-  v3 = [(MFAccount *)self baseAccount];
-  v4 = [v3 systemAccount];
+  baseAccount = [(MFAccount *)self baseAccount];
+  systemAccount = [baseAccount systemAccount];
 
   os_unfair_lock_unlock(&self->_persistentAccountLock);
 
-  return v4;
+  return systemAccount;
 }
 
 - (BOOL)canAuthenticateWithCurrentCredentials
 {
-  v2 = [(MFAccount *)self authenticatedConnection];
-  v3 = v2 != 0;
+  authenticatedConnection = [(MFAccount *)self authenticatedConnection];
+  v3 = authenticatedConnection != 0;
 
   return v3;
 }
 
 - (BOOL)hasPasswordCredential
 {
-  v2 = [(MFAccount *)self preferredAuthScheme];
-  v3 = [v2 name];
-  if ([v3 isEqualToString:*MEMORY[0x1E699B1E8]])
+  preferredAuthScheme = [(MFAccount *)self preferredAuthScheme];
+  name = [preferredAuthScheme name];
+  if ([name isEqualToString:*MEMORY[0x1E699B1E8]])
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:&stru_1F273A5E0];
+    v4 = [name isEqualToString:&stru_1F273A5E0];
   }
 
   return v4;
@@ -1562,19 +1562,19 @@ void __74__MFAccount_promptUserForWebLoginWithURL_shouldConfirm_completionHandle
 - (unsigned)portNumber
 {
   v3 = [(MFAccount *)self _objectForAccountInfoKey:@"PortNumber"];
-  v4 = [v3 intValue];
+  intValue = [v3 intValue];
 
-  if (v4)
+  if (intValue)
   {
-    return v4;
+    return intValue;
   }
 
   if ([(MFAccount *)self usesSSL])
   {
-    v4 = [(MFAccount *)self defaultSecurePortNumber];
-    if (v4)
+    intValue = [(MFAccount *)self defaultSecurePortNumber];
+    if (intValue)
     {
-      return v4;
+      return intValue;
     }
   }
 
@@ -1595,28 +1595,28 @@ void __74__MFAccount_promptUserForWebLoginWithURL_shouldConfirm_completionHandle
   return [v2 defaultSecurePortNumber];
 }
 
-- (void)setPortNumber:(unsigned int)a3
+- (void)setPortNumber:(unsigned int)number
 {
-  if ([(MFAccount *)self portNumber]== a3)
+  if ([(MFAccount *)self portNumber]== number)
   {
     return;
   }
 
-  if (a3)
+  if (number)
   {
     if ([(MFAccount *)self usesSSL])
     {
-      v5 = [(MFAccount *)self defaultSecurePortNumber];
+      defaultSecurePortNumber = [(MFAccount *)self defaultSecurePortNumber];
     }
 
     else
     {
-      v5 = [(MFAccount *)self defaultPortNumber];
+      defaultSecurePortNumber = [(MFAccount *)self defaultPortNumber];
     }
 
-    v6 = v5;
+    v6 = defaultSecurePortNumber;
     [(MFAccount *)self mf_lock];
-    if (v6 != a3)
+    if (v6 != number)
     {
       v7 = EFStringWithInt();
       [(MFAccount *)self setAccountProperty:v7 forKey:@"PortNumber"];
@@ -1640,18 +1640,18 @@ LABEL_10:
 
 - (BOOL)usesSSL
 {
-  v3 = [objc_opt_class() usesSSL];
+  usesSSL = [objc_opt_class() usesSSL];
 
-  return [(MFAccount *)self _BOOLForAccountInfoKey:@"SSLEnabled" defaultValue:v3];
+  return [(MFAccount *)self _BOOLForAccountInfoKey:@"SSLEnabled" defaultValue:usesSSL];
 }
 
-- (void)setUsesSSL:(BOOL)a3
+- (void)setUsesSSL:(BOOL)l
 {
-  v3 = a3;
-  if ([(MFAccount *)self usesSSL]!= a3)
+  lCopy = l;
+  if ([(MFAccount *)self usesSSL]!= l)
   {
     [(MFAccount *)self mf_lock];
-    if (v3)
+    if (lCopy)
     {
       v5 = [MEMORY[0x1E696AD98] numberWithBool:1];
       [(MFAccount *)self setAccountProperty:v5 forKey:@"SSLEnabled"];
@@ -1671,34 +1671,34 @@ LABEL_10:
 
 + (BOOL)isSSLEditable
 {
-  v2 = [a1 predefinedValueForKey:@"SSLEnabledIsEditable"];
+  v2 = [self predefinedValueForKey:@"SSLEnabledIsEditable"];
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v4 = 1;
+    bOOLValue = 1;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
-- (void)setDomain:(id)a3
+- (void)setDomain:(id)domain
 {
-  v6 = a3;
-  v4 = [(MFAccount *)self domain];
-  if (v4 != v6)
+  domainCopy = domain;
+  domain = [(MFAccount *)self domain];
+  if (domain != domainCopy)
   {
-    v5 = v4 ? v4 : &stru_1F273A5E0;
-    if (([(__CFString *)v6 isEqualToString:v5]& 1) == 0)
+    v5 = domain ? domain : &stru_1F273A5E0;
+    if (([(__CFString *)domainCopy isEqualToString:v5]& 1) == 0)
     {
       [(MFAccount *)self mf_lock];
-      if (v6 && [(__CFString *)v6 length])
+      if (domainCopy && [(__CFString *)domainCopy length])
       {
-        [(MFAccount *)self setAccountProperty:v6 forKey:@"Domain"];
+        [(MFAccount *)self setAccountProperty:domainCopy forKey:@"Domain"];
       }
 
       else
@@ -1732,8 +1732,8 @@ LABEL_3:
 
   else
   {
-    v6 = [(MFAccount *)self hostname];
-    v4 = [MFMessageKeychainManager copyClientSSLIdentityForHostName:v6 error:0];
+    hostname = [(MFAccount *)self hostname];
+    v4 = [MFMessageKeychainManager copyClientSSLIdentityForHostName:hostname error:0];
 
     if (v4)
     {
@@ -1749,12 +1749,12 @@ LABEL_6:
   return v5;
 }
 
-- (void)setClientCertificates:(id)a3
+- (void)setClientCertificates:(id)certificates
 {
-  v7 = a3;
-  if ([v7 count])
+  certificatesCopy = certificates;
+  if ([certificatesCopy count])
   {
-    v4 = [v7 objectAtIndex:0];
+    v4 = [certificatesCopy objectAtIndex:0];
     v5 = CFGetTypeID(v4);
     if (v5 == SecIdentityGetTypeID())
     {
@@ -1790,19 +1790,19 @@ LABEL_6:
   return v5;
 }
 
-- (void)setPreferredAuthScheme:(id)a3
+- (void)setPreferredAuthScheme:(id)scheme
 {
-  v7 = a3;
-  v4 = [(MFAccount *)self preferredAuthScheme];
+  schemeCopy = scheme;
+  preferredAuthScheme = [(MFAccount *)self preferredAuthScheme];
 
-  v5 = v7;
-  if (v4 != v7)
+  v5 = schemeCopy;
+  if (preferredAuthScheme != schemeCopy)
   {
-    v6 = [v7 name];
+    name = [schemeCopy name];
     [(MFAccount *)self mf_lock];
-    if (v6)
+    if (name)
     {
-      [(MFAccount *)self setAccountProperty:v6 forKey:@"AuthenticationScheme"];
+      [(MFAccount *)self setAccountProperty:name forKey:@"AuthenticationScheme"];
     }
 
     else
@@ -1812,7 +1812,7 @@ LABEL_6:
 
     [(MFAccount *)self mf_unlock];
 
-    v5 = v7;
+    v5 = schemeCopy;
   }
 }
 
@@ -1821,13 +1821,13 @@ LABEL_6:
   v3 = objc_alloc_init([(MFAccount *)self connectionClass]);
   if (v3)
   {
-    v4 = [(MFAccount *)self currentConnections];
+    currentConnections = [(MFAccount *)self currentConnections];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __27__MFAccount__newConnection__block_invoke;
     v6[3] = &unk_1E7AA2158;
     v7 = v3;
-    [v4 performWhileLocked:v6];
+    [currentConnections performWhileLocked:v6];
   }
 
   return v3;
@@ -1835,22 +1835,22 @@ LABEL_6:
 
 - (Class)connectionClass
 {
-  v2 = [(MFAccount *)self preferredAuthScheme];
-  v3 = [v2 connectionClassForAccountClass:objc_opt_class()];
+  preferredAuthScheme = [(MFAccount *)self preferredAuthScheme];
+  v3 = [preferredAuthScheme connectionClassForAccountClass:objc_opt_class()];
 
   return v3;
 }
 
 - (id)authenticatedConnection
 {
-  v3 = [(MFAccount *)self _newConnection];
-  if (v3 && ![(MFAccount *)self _connectAndAuthenticate:v3])
+  _newConnection = [(MFAccount *)self _newConnection];
+  if (_newConnection && ![(MFAccount *)self _connectAndAuthenticate:_newConnection])
   {
 
-    v3 = 0;
+    _newConnection = 0;
   }
 
-  return v3;
+  return _newConnection;
 }
 
 - (BOOL)connectionsAreConstrained
@@ -1862,21 +1862,21 @@ LABEL_6:
   v17 = __Block_byref_object_copy_;
   v18 = __Block_byref_object_dispose_;
   v19 = 0;
-  v3 = [(MFAccount *)self currentConnections];
+  currentConnections = [(MFAccount *)self currentConnections];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __38__MFAccount_connectionsAreConstrained__block_invoke;
   v13[3] = &unk_1E7AA2180;
   v13[4] = &v14;
-  [v3 performWhileLocked:v13];
+  [currentConnections performWhileLocked:v13];
 
   v4 = v15[5];
   if (!v4)
   {
-    v9 = [MEMORY[0x1E699B828] external];
-    v10 = [v9 isConstrained];
+    external = [MEMORY[0x1E699B828] external];
+    isConstrained = [external isConstrained];
 
-    if (v10)
+    if (isConstrained)
     {
       goto LABEL_3;
     }
@@ -1895,10 +1895,10 @@ LABEL_3:
   v5 = MFAccountsLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(MFAccount *)self ef_publicDescription];
+    ef_publicDescription = [(MFAccount *)self ef_publicDescription];
     v7 = v15[5];
     *buf = 138543618;
-    v21 = v6;
+    v21 = ef_publicDescription;
     v22 = 2112;
     v23 = v7;
     _os_log_impl(&dword_1B0389000, v5, OS_LOG_TYPE_DEFAULT, "Connections constrained for account %{public}@ with connection %@", buf, 0x16u);
@@ -1960,17 +1960,17 @@ LABEL_11:
 {
   v3 = objc_alloc_init(MFConnectionSettings);
   [(MFConnectionSettings *)v3 setUsesSSL:[(MFAccount *)self usesSSL]];
-  v4 = [(MFAccount *)self hostname];
-  [(MFConnectionSettings *)v3 setHostname:v4];
+  hostname = [(MFAccount *)self hostname];
+  [(MFConnectionSettings *)v3 setHostname:hostname];
 
   [(MFConnectionSettings *)v3 setPortNumber:[(MFAccount *)self portNumber]];
-  v5 = [(MFAccount *)self certUIService];
-  [(MFConnectionSettings *)v3 setCertUIService:v5];
+  certUIService = [(MFAccount *)self certUIService];
+  [(MFConnectionSettings *)v3 setCertUIService:certUIService];
 
   if ([(MFConnectionSettings *)v3 usesSSL])
   {
-    v6 = [(MFAccount *)self clientCertificates];
-    [(MFConnectionSettings *)v3 setClientCertificates:v6];
+    clientCertificates = [(MFAccount *)self clientCertificates];
+    [(MFConnectionSettings *)v3 setClientCertificates:clientCertificates];
   }
 
   if ([(MFConnectionSettings *)v3 usesSSL])
@@ -1998,16 +1998,16 @@ LABEL_11:
 
   [(MFConnectionSettings *)v3 setConnectionServiceType:[(MFAccount *)self connectionServiceType]];
   [(MFConnectionSettings *)v3 setAllowsTrustPrompt:[(MFAccount *)self allowsTrustPrompt]];
-  v9 = [(MFAccount *)self uniqueID];
-  [(MFConnectionSettings *)v3 setAccountIdentifier:v9];
+  uniqueID = [(MFAccount *)self uniqueID];
+  [(MFConnectionSettings *)v3 setAccountIdentifier:uniqueID];
 
-  v10 = [(MFAccount *)self networkAccountIdentifier];
-  [(MFConnectionSettings *)v3 setNetworkAccountIdentifier:v10];
+  networkAccountIdentifier = [(MFAccount *)self networkAccountIdentifier];
+  [(MFConnectionSettings *)v3 setNetworkAccountIdentifier:networkAccountIdentifier];
 
-  v11 = [(MFAccount *)self sourceApplicationBundleIdentifier];
-  if ([v11 length])
+  sourceApplicationBundleIdentifier = [(MFAccount *)self sourceApplicationBundleIdentifier];
+  if ([sourceApplicationBundleIdentifier length])
   {
-    [(MFConnectionSettings *)v3 setSourceApplicationBundleIdentifier:v11];
+    [(MFConnectionSettings *)v3 setSourceApplicationBundleIdentifier:sourceApplicationBundleIdentifier];
   }
 
   [(MFConnectionSettings *)v3 setIsNonAppInitiated:1];
@@ -2015,21 +2015,21 @@ LABEL_11:
   return v3;
 }
 
-- (void)applySettingsAsDefault:(id)a3
+- (void)applySettingsAsDefault:(id)default
 {
-  v4 = a3;
-  -[MFAccount setUsesSSL:](self, "setUsesSSL:", [v4 usesSSL]);
-  -[MFAccount setPortNumber:](self, "setPortNumber:", [v4 portNumber]);
-  -[MFAccount setTryDirectSSL:](self, "setTryDirectSSL:", [v4 tryDirectSSL]);
+  defaultCopy = default;
+  -[MFAccount setUsesSSL:](self, "setUsesSSL:", [defaultCopy usesSSL]);
+  -[MFAccount setPortNumber:](self, "setPortNumber:", [defaultCopy portNumber]);
+  -[MFAccount setTryDirectSSL:](self, "setTryDirectSSL:", [defaultCopy tryDirectSSL]);
 }
 
 - (id)insecureConnectionSettings
 {
   v6[1] = *MEMORY[0x1E69E9840];
-  v2 = [(MFAccount *)self defaultConnectionSettings];
-  [v2 setUsesSSL:0];
-  [v2 setTryDirectSSL:0];
-  v6[0] = v2;
+  defaultConnectionSettings = [(MFAccount *)self defaultConnectionSettings];
+  [defaultConnectionSettings setUsesSSL:0];
+  [defaultConnectionSettings setTryDirectSSL:0];
+  v6[0] = defaultConnectionSettings;
   v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:1];
 
   v4 = *MEMORY[0x1E69E9840];
@@ -2040,11 +2040,11 @@ LABEL_11:
 - (id)secureConnectionSettings
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  v3 = [(MFAccount *)self defaultConnectionSettings];
-  [v3 setUsesSSL:1];
-  [v3 setTryDirectSSL:1];
-  [v3 setPortNumber:{-[MFAccount defaultSecurePortNumber](self, "defaultSecurePortNumber")}];
-  v7[0] = v3;
+  defaultConnectionSettings = [(MFAccount *)self defaultConnectionSettings];
+  [defaultConnectionSettings setUsesSSL:1];
+  [defaultConnectionSettings setTryDirectSSL:1];
+  [defaultConnectionSettings setPortNumber:{-[MFAccount defaultSecurePortNumber](self, "defaultSecurePortNumber")}];
+  v7[0] = defaultConnectionSettings;
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v7 count:1];
 
   v5 = *MEMORY[0x1E69E9840];
@@ -2052,67 +2052,67 @@ LABEL_11:
   return v4;
 }
 
-- (BOOL)_shouldTryDirectSSLConnectionOnPort:(unsigned int)a3
+- (BOOL)_shouldTryDirectSSLConnectionOnPort:(unsigned int)port
 {
-  v4 = [(MFAccount *)self defaultSecurePortNumber]== a3;
+  bOOLValue = [(MFAccount *)self defaultSecurePortNumber]== port;
   v5 = [(MFAccount *)self _objectForAccountInfoKey:@"SSLIsDirect"];
   v6 = v5;
   if (v5)
   {
-    v4 = [v5 BOOLValue];
+    bOOLValue = [v5 BOOLValue];
   }
 
-  return v4;
+  return bOOLValue;
 }
 
-- (id)customDescriptionForError:(id)a3 authScheme:(id)a4 defaultDescription:(id)a5
+- (id)customDescriptionForError:(id)error authScheme:(id)scheme defaultDescription:(id)description
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = v8;
+  errorCopy = error;
+  descriptionCopy = description;
+  v9 = descriptionCopy;
   if ([(MFAccount *)self credentialAccessibility]== 1)
   {
-    v9 = v8;
-    if ([v7 code] == 1032)
+    v9 = descriptionCopy;
+    if ([errorCopy code] == 1032)
     {
       v10 = MEMORY[0x1E696AEC0];
       v11 = MFLookupLocalizedString(@"NO_PASSWORD_PROVIDED_FOR_USER_FORMAT", @"No password provided for user “%@” on server “%@”.\n\nPlease go to Mail Account Settings and enter a password.", @"Message");
-      v12 = [(MFAccount *)self username];
-      v13 = [(MFAccount *)self hostname];
-      v9 = [v10 stringWithFormat:v11, v12, v13];
+      username = [(MFAccount *)self username];
+      hostname = [(MFAccount *)self hostname];
+      v9 = [v10 stringWithFormat:v11, username, hostname];
     }
   }
 
   return v9;
 }
 
-- (void)reportAuthenticationError:(id)a3 authScheme:(id)a4
+- (void)reportAuthenticationError:(id)error authScheme:(id)scheme
 {
-  v10 = a3;
-  v6 = a4;
+  errorCopy = error;
+  schemeCopy = scheme;
   v7 = +[MFActivityMonitor currentMonitor];
-  v8 = [v10 localizedDescription];
-  v9 = [(MFAccount *)self customDescriptionForError:v10 authScheme:v6 defaultDescription:v8];
+  localizedDescription = [errorCopy localizedDescription];
+  v9 = [(MFAccount *)self customDescriptionForError:errorCopy authScheme:schemeCopy defaultDescription:localizedDescription];
 
-  [v10 setLocalizedDescription:v9];
-  [v7 setError:v10];
+  [errorCopy setLocalizedDescription:v9];
+  [v7 setError:errorCopy];
 }
 
-- (BOOL)_connectAndAuthenticate:(id)a3
+- (BOOL)_connectAndAuthenticate:(id)authenticate
 {
-  v4 = a3;
-  v5 = [(MFAccount *)self preferredAuthScheme];
+  authenticateCopy = authenticate;
+  preferredAuthScheme = [(MFAccount *)self preferredAuthScheme];
   v6 = +[MFActivityMonitor currentMonitor];
-  if (([v6 shouldCancel] & 1) != 0 || !objc_msgSend(v4, "connectUsingFallbacksForAccount:", self))
+  if (([v6 shouldCancel] & 1) != 0 || !objc_msgSend(authenticateCopy, "connectUsingFallbacksForAccount:", self))
   {
     goto LABEL_6;
   }
 
-  if (([v4 authenticateUsingAccount:self] & 1) == 0)
+  if (([authenticateCopy authenticateUsingAccount:self] & 1) == 0)
   {
-    [v4 disconnect];
-    v8 = [v6 error];
-    [(MFAccount *)self reportAuthenticationError:v8 authScheme:v5];
+    [authenticateCopy disconnect];
+    error = [v6 error];
+    [(MFAccount *)self reportAuthenticationError:error authScheme:preferredAuthScheme];
 
 LABEL_6:
     v7 = 0;
@@ -2125,61 +2125,61 @@ LABEL_7:
   return v7;
 }
 
-- (id)nameForMailboxUid:(id)a3
+- (id)nameForMailboxUid:(id)uid
 {
-  v3 = [a3 name];
+  name = [uid name];
 
-  return v3;
+  return name;
 }
 
-- (id)missingPasswordErrorWithTitle:(id)a3
+- (id)missingPasswordErrorWithTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   v5 = MEMORY[0x1E696AEC0];
   v6 = MFLookupLocalizedString(@"NO_PASSWORD_PROVIDED_FOR_ACCOUNT_FORMAT", @"No password provided for “%@”.\n\nPlease go to Mail Account Settings and enter a password.", @"Message");
-  v7 = [(MFAccount *)self displayName];
-  v8 = [v5 stringWithFormat:v6, v7];
+  displayName = [(MFAccount *)self displayName];
+  v8 = [v5 stringWithFormat:v6, displayName];
 
-  v9 = [MFError errorWithDomain:@"MFMessageErrorDomain" code:1055 localizedDescription:v8 title:v4 userInfo:0];
+  v9 = [MFError errorWithDomain:@"MFMessageErrorDomain" code:1055 localizedDescription:v8 title:titleCopy userInfo:0];
 
   return v9;
 }
 
-- (id)wrongPasswordOrUsernameErrorWithTitle:(id)a3
+- (id)wrongPasswordOrUsernameErrorWithTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   v5 = MEMORY[0x1E696AEC0];
   v6 = MFLookupLocalizedString(@"MF_WRONG_PASSWORD_OR_USERNAME_PROVIDED_FOR_ACCOUNT_FORMAT", @"Wrong username and/or password provided for “%@”.\n\nPlease go to Mail Account Settings and enter the correct username and password.", @"Message");
-  v7 = [(MFAccount *)self displayName];
-  v8 = [v5 stringWithFormat:v6, v7];
+  displayName = [(MFAccount *)self displayName];
+  v8 = [v5 stringWithFormat:v6, displayName];
 
-  v9 = [MFError errorWithDomain:@"MFMessageErrorDomain" code:1056 localizedDescription:v8 title:v4 userInfo:0];
+  v9 = [MFError errorWithDomain:@"MFMessageErrorDomain" code:1056 localizedDescription:v8 title:titleCopy userInfo:0];
 
   return v9;
 }
 
-- (id)inaccessiblePasswordErrorWithTitle:(id)a3
+- (id)inaccessiblePasswordErrorWithTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   v5 = MEMORY[0x1E696AEC0];
   v6 = MFLookupLocalizedString(@"PASSWORD_INACCESSIBLE_FOR_ACCOUNT_FORMAT", @"The password for “%@” cannot be used at this time.", @"Message");
-  v7 = [(MFAccount *)self displayName];
-  v8 = [v5 stringWithFormat:v6, v7];
+  displayName = [(MFAccount *)self displayName];
+  v8 = [v5 stringWithFormat:v6, displayName];
 
-  v9 = [MFError errorWithDomain:@"MFMessageErrorDomain" code:1057 localizedDescription:v8 title:v4 userInfo:0];
+  v9 = [MFError errorWithDomain:@"MFMessageErrorDomain" code:1057 localizedDescription:v8 title:titleCopy userInfo:0];
 
   return v9;
 }
 
-- (id)loginDisabledErrorWithTitle:(id)a3
+- (id)loginDisabledErrorWithTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   v5 = MEMORY[0x1E696AEC0];
   v6 = MFLookupLocalizedString(@"LOGIN_DISABLED_FOR_ACCOUNT_FORMAT", @"Logins are disabled for “%@”.", @"Message");
-  v7 = [(MFAccount *)self displayName];
-  v8 = [v5 stringWithFormat:v6, v7];
+  displayName = [(MFAccount *)self displayName];
+  v8 = [v5 stringWithFormat:v6, displayName];
 
-  v9 = [MFError errorWithDomain:@"MFMessageErrorDomain" code:1060 localizedDescription:v8 title:v4 userInfo:0];
+  v9 = [MFError errorWithDomain:@"MFMessageErrorDomain" code:1060 localizedDescription:v8 title:titleCopy userInfo:0];
 
   return v9;
 }
@@ -2187,25 +2187,25 @@ LABEL_7:
 + (id)supportedDataclasses
 {
   v3 = +[MFAccountStore sharedAccountStore];
-  v4 = [a1 accountTypeIdentifier];
-  v5 = [v3 supportedDataclassesWithAccountTypeIdentifier:v4];
+  accountTypeIdentifier = [self accountTypeIdentifier];
+  v5 = [v3 supportedDataclassesWithAccountTypeIdentifier:accountTypeIdentifier];
 
   return v5;
 }
 
 - (id)enabledDataclasses
 {
-  v2 = [(MFAccount *)self baseAccount];
-  v3 = [v2 enabledDataclasses];
+  baseAccount = [(MFAccount *)self baseAccount];
+  enabledDataclasses = [baseAccount enabledDataclasses];
 
-  return v3;
+  return enabledDataclasses;
 }
 
-- (BOOL)isEnabledForDataclass:(id)a3
+- (BOOL)isEnabledForDataclass:(id)dataclass
 {
-  v4 = a3;
-  v5 = [(MFAccount *)self baseAccount];
-  v6 = [v5 isEnabledForDataclass:v4];
+  dataclassCopy = dataclass;
+  baseAccount = [(MFAccount *)self baseAccount];
+  v6 = [baseAccount isEnabledForDataclass:dataclassCopy];
 
   return v6;
 }

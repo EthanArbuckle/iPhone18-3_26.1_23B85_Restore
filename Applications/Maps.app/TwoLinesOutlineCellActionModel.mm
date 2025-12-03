@@ -1,40 +1,40 @@
 @interface TwoLinesOutlineCellActionModel
-- (BOOL)isEqual:(id)a3;
-- (TwoLinesOutlineCellActionModel)initWithButtonTitle1:(id)a3 buttonTitle2:(id)a4 delegate:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (TwoLinesOutlineCellActionModel)initWithButtonTitle1:(id)title1 buttonTitle2:(id)title2 delegate:(id)delegate;
 @end
 
 @implementation TwoLinesOutlineCellActionModel
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v13 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
-    v7 = [(TwoLinesOutlineCellActionModel *)v6 buttonTitle1];
-    v8 = v7;
-    if (v7 == self->_buttonTitle1 || [(NSString *)v7 isEqual:?])
+    buttonTitle1 = [(TwoLinesOutlineCellActionModel *)v6 buttonTitle1];
+    v8 = buttonTitle1;
+    if (buttonTitle1 == self->_buttonTitle1 || [(NSString *)buttonTitle1 isEqual:?])
     {
-      v9 = [(TwoLinesOutlineCellActionModel *)v6 buttonTitle2];
-      v10 = v9;
-      if (v9 == self->_buttonTitle2 || [(NSString *)v9 isEqual:?])
+      buttonTitle2 = [(TwoLinesOutlineCellActionModel *)v6 buttonTitle2];
+      v10 = buttonTitle2;
+      if (buttonTitle2 == self->_buttonTitle2 || [(NSString *)buttonTitle2 isEqual:?])
       {
-        v11 = [(TwoLinesOutlineCellActionModel *)v6 delegate];
-        v12 = v11;
-        if (v11 == self->_delegate)
+        delegate = [(TwoLinesOutlineCellActionModel *)v6 delegate];
+        v12 = delegate;
+        if (delegate == self->_delegate)
         {
           v13 = 1;
         }
 
         else
         {
-          v13 = [(TwoLinesOutlineCellActionViewDelegate *)v11 isEqual:?];
+          v13 = [(TwoLinesOutlineCellActionViewDelegate *)delegate isEqual:?];
         }
       }
 
@@ -58,25 +58,25 @@
   return v13;
 }
 
-- (TwoLinesOutlineCellActionModel)initWithButtonTitle1:(id)a3 buttonTitle2:(id)a4 delegate:(id)a5
+- (TwoLinesOutlineCellActionModel)initWithButtonTitle1:(id)title1 buttonTitle2:(id)title2 delegate:(id)delegate
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  title1Copy = title1;
+  title2Copy = title2;
+  delegateCopy = delegate;
   v17.receiver = self;
   v17.super_class = TwoLinesOutlineCellActionModel;
   v11 = [(TwoLinesOutlineCellActionModel *)&v17 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [title1Copy copy];
     buttonTitle1 = v11->_buttonTitle1;
     v11->_buttonTitle1 = v12;
 
-    v14 = [v9 copy];
+    v14 = [title2Copy copy];
     buttonTitle2 = v11->_buttonTitle2;
     v11->_buttonTitle2 = v14;
 
-    objc_storeStrong(&v11->_delegate, a5);
+    objc_storeStrong(&v11->_delegate, delegate);
   }
 
   return v11;

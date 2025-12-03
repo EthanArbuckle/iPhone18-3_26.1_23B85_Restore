@@ -11,9 +11,9 @@
   v2 = [(PAAccessRecordAccumulator *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     ongoingIntervals = v2->_ongoingIntervals;
-    v2->_ongoingIntervals = v3;
+    v2->_ongoingIntervals = dictionary;
 
     v5 = [MEMORY[0x1E695DFA8] set];
     seenEvents = v2->_seenEvents;

@@ -2,15 +2,15 @@
 - (BOOL)_loaded;
 - (BOOL)loaded;
 - (_TtC9PassKitUI29PKDashboardFinanceKitProvider)init;
-- (_TtC9PassKitUI29PKDashboardFinanceKitProvider)initWithPass:(id)a3;
-- (id)dashboardItemForIndex:(int64_t)a3;
+- (_TtC9PassKitUI29PKDashboardFinanceKitProvider)initWithPass:(id)pass;
+- (id)dashboardItemForIndex:(int64_t)index;
 - (int64_t)_transactionsCount;
 - (int64_t)transactionsCount;
-- (void)loadWithCompletionHandler:(id)a3;
-- (void)setLoaded:(BOOL)a3;
-- (void)setTransactionsCount:(int64_t)a3;
-- (void)set_loaded:(BOOL)a3;
-- (void)set_transactionsCount:(int64_t)a3;
+- (void)loadWithCompletionHandler:(id)handler;
+- (void)setLoaded:(BOOL)loaded;
+- (void)setTransactionsCount:(int64_t)count;
+- (void)set_loaded:(BOOL)set_loaded;
+- (void)set_transactionsCount:(int64_t)count;
 @end
 
 @implementation PKDashboardFinanceKitProvider
@@ -22,31 +22,31 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)set_transactionsCount:(int64_t)a3
+- (void)set_transactionsCount:(int64_t)count
 {
   v5 = OBJC_IVAR____TtC9PassKitUI29PKDashboardFinanceKitProvider__transactionsCount;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = count;
 }
 
 - (int64_t)transactionsCount
 {
   swift_getKeyPath();
   sub_1BD9936E8(&qword_1EBD5A270, type metadata accessor for PKDashboardFinanceKitProvider);
-  v3 = self;
+  selfCopy = self;
   sub_1BE04B594();
 
   v4 = OBJC_IVAR____TtC9PassKitUI29PKDashboardFinanceKitProvider__transactionsCount;
   swift_beginAccess();
-  v5 = *(&v3->super.isa + v4);
+  v5 = *(&selfCopy->super.isa + v4);
 
   return v5;
 }
 
-- (void)setTransactionsCount:(int64_t)a3
+- (void)setTransactionsCount:(int64_t)count
 {
-  v4 = self;
-  sub_1BD98D7D0(a3);
+  selfCopy = self;
+  sub_1BD98D7D0(count);
 }
 
 - (BOOL)_loaded
@@ -56,34 +56,34 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)set_loaded:(BOOL)a3
+- (void)set_loaded:(BOOL)set_loaded
 {
   v5 = OBJC_IVAR____TtC9PassKitUI29PKDashboardFinanceKitProvider__loaded;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = set_loaded;
 }
 
 - (BOOL)loaded
 {
   swift_getKeyPath();
   sub_1BD9936E8(&qword_1EBD5A270, type metadata accessor for PKDashboardFinanceKitProvider);
-  v3 = self;
+  selfCopy = self;
   sub_1BE04B594();
 
   v4 = OBJC_IVAR____TtC9PassKitUI29PKDashboardFinanceKitProvider__loaded;
   swift_beginAccess();
-  LOBYTE(v4) = *(&v3->super.isa + v4);
+  LOBYTE(v4) = *(&selfCopy->super.isa + v4);
 
   return v4;
 }
 
-- (void)setLoaded:(BOOL)a3
+- (void)setLoaded:(BOOL)loaded
 {
-  v4 = self;
-  sub_1BD98DE1C(a3);
+  selfCopy = self;
+  sub_1BD98DE1C(loaded);
 }
 
-- (_TtC9PassKitUI29PKDashboardFinanceKitProvider)initWithPass:(id)a3
+- (_TtC9PassKitUI29PKDashboardFinanceKitProvider)initWithPass:(id)pass
 {
   *(&self->super.isa + OBJC_IVAR____TtC9PassKitUI29PKDashboardFinanceKitProvider__transactions) = MEMORY[0x1E69E7CC0];
   v5 = OBJC_IVAR____TtC9PassKitUI29PKDashboardFinanceKitProvider__institution;
@@ -93,28 +93,28 @@
   v7(self + v5, 1, 1, v6);
   *(&self->super.isa + OBJC_IVAR____TtC9PassKitUI29PKDashboardFinanceKitProvider__transactionsCount) = 0;
   *(&self->super.isa + OBJC_IVAR____TtC9PassKitUI29PKDashboardFinanceKitProvider__loaded) = 0;
-  v8 = a3;
+  passCopy = pass;
   sub_1BE04B5C4();
-  *(&self->super.isa + OBJC_IVAR____TtC9PassKitUI29PKDashboardFinanceKitProvider_pass) = v8;
+  *(&self->super.isa + OBJC_IVAR____TtC9PassKitUI29PKDashboardFinanceKitProvider_pass) = passCopy;
   v10.receiver = self;
   v10.super_class = type metadata accessor for PKDashboardFinanceKitProvider();
   return [(PKDashboardFinanceKitProvider *)&v10 init];
 }
 
-- (id)dashboardItemForIndex:(int64_t)a3
+- (id)dashboardItemForIndex:(int64_t)index
 {
-  v4 = self;
-  v5 = sub_1BD98E4B4(a3);
+  selfCopy = self;
+  v5 = sub_1BD98E4B4(index);
 
   return v5;
 }
 
-- (void)loadWithCompletionHandler:(id)a3
+- (void)loadWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EBD3E580);
   MEMORY[0x1EEE9AC00](v5 - 8, v6);
   v8 = &v15 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
   *(v10 + 24) = self;
@@ -130,7 +130,7 @@
   v13[3] = 0;
   v13[4] = &unk_1BE107FA0;
   v13[5] = v12;
-  v14 = self;
+  selfCopy = self;
   sub_1BD992D04(0, 0, v8, &unk_1BE0C7F30, v13);
 }
 

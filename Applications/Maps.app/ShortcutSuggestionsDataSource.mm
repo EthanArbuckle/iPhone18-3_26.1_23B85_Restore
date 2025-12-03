@@ -1,32 +1,32 @@
 @interface ShortcutSuggestionsDataSource
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4;
-- (ShortcutSuggestionsDataSource)initWithTableView:(id)a3 updateLocation:(BOOL)a4;
-- (ShortcutSuggestionsDataSource)initWithTableView:(id)a3 updateLocation:(BOOL)a4 shortcutType:(int64_t)a5;
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4;
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path;
+- (ShortcutSuggestionsDataSource)initWithTableView:(id)view updateLocation:(BOOL)location;
+- (ShortcutSuggestionsDataSource)initWithTableView:(id)view updateLocation:(BOOL)location shortcutType:(int64_t)type;
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section;
 - (id)currentSuggestions;
-- (id)objectAtIndexPath:(id)a3;
+- (id)objectAtIndexPath:(id)path;
 - (id)shortcutManager;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)_loadContentAndSuggestionsOfType:(int64_t)a3;
-- (void)_updateSuggestions:(id)a3;
-- (void)didTapOnAccessoryView:(id)a3 withType:(int64_t)a4 object:(id)a5;
-- (void)setActive:(BOOL)a3;
-- (void)shortcutSelected:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)_loadContentAndSuggestionsOfType:(int64_t)type;
+- (void)_updateSuggestions:(id)suggestions;
+- (void)didTapOnAccessoryView:(id)view withType:(int64_t)type object:(id)object;
+- (void)setActive:(BOOL)active;
+- (void)shortcutSelected:(id)selected;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation ShortcutSuggestionsDataSource
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v10 = [(ShortcutSuggestionsDataSource *)self objectAtIndexPath:v6];
+  pathCopy = path;
+  viewCopy = view;
+  v10 = [(ShortcutSuggestionsDataSource *)self objectAtIndexPath:pathCopy];
   [(ShortcutSuggestionsDataSource *)self shortcutSelected:?];
-  [v7 deselectRowAtIndexPath:v6 animated:1];
-  v8 = [v7 cellForRowAtIndexPath:v6];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
+  v8 = [viewCopy cellForRowAtIndexPath:pathCopy];
 
   if ([v8 conformsToProtocol:&OBJC_PROTOCOL___AutocompleteCellAccessoryView])
   {
@@ -38,52 +38,52 @@
   }
 }
 
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path
 {
-  v4 = [a3 cellForRowAtIndexPath:a4];
+  v4 = [view cellForRowAtIndexPath:path];
   v5 = ![v4 conformsToProtocol:&OBJC_PROTOCOL___AutocompleteCellAccessoryView] || objc_msgSend(v4, "accessoryViewType") != 3;
 
   return v5;
 }
 
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section
 {
-  v5 = a3;
-  v6 = [v5 _maps_indexOfFirstNonEmptySection] == a4;
+  viewCopy = view;
+  v6 = [viewCopy _maps_indexOfFirstNonEmptySection] == section;
   v7 = +[NSBundle mainBundle];
   v8 = [v7 localizedStringForKey:@"[Shortcuts] Siri Suggestions" value:@"localized string not found" table:0];
-  [v5 bounds];
+  [viewCopy bounds];
   Width = CGRectGetWidth(v14);
-  v10 = [v5 traitCollection];
+  traitCollection = [viewCopy traitCollection];
 
-  [SectionHeaderTableViewHeaderFooterView heightWhenFirstNonEmptySection:v6 title:v8 actionTitle:0 availableWidth:v10 traitCollection:Width];
+  [SectionHeaderTableViewHeaderFooterView heightWhenFirstNonEmptySection:v6 title:v8 actionTitle:0 availableWidth:traitCollection traitCollection:Width];
   v12 = v11;
 
   return v12;
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  v5 = a3;
+  viewCopy = view;
   v6 = [SectionHeaderTableViewHeaderFooterView alloc];
   v7 = +[NSBundle mainBundle];
   v8 = [v7 localizedStringForKey:@"[Shortcuts] Siri Suggestions" value:@"localized string not found" table:0];
-  v9 = [v5 _maps_indexOfFirstNonEmptySection];
+  _maps_indexOfFirstNonEmptySection = [viewCopy _maps_indexOfFirstNonEmptySection];
 
-  v10 = [(SectionHeaderTableViewHeaderFooterView *)v6 initWithTitle:v8 isFirstNonEmptySection:v9 == a4];
-  [(SectionHeaderTableViewHeaderFooterView *)v10 setAccessibilityIdentifiersWithBaseString:@"SiriSuggestions"];
-  [(SectionHeaderTableViewHeaderFooterView *)v10 setShowsBottomHairline:0];
+  section = [(SectionHeaderTableViewHeaderFooterView *)v6 initWithTitle:v8 isFirstNonEmptySection:_maps_indexOfFirstNonEmptySection == section];
+  [(SectionHeaderTableViewHeaderFooterView *)section setAccessibilityIdentifiersWithBaseString:@"SiriSuggestions"];
+  [(SectionHeaderTableViewHeaderFooterView *)section setShowsBottomHairline:0];
 
-  return v10;
+  return section;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ShortcutSuggestionsDataSource *)self objectAtIndexPath:v6];
+  pathCopy = path;
+  viewCopy = view;
+  v8 = [(ShortcutSuggestionsDataSource *)self objectAtIndexPath:pathCopy];
   v9 = +[TwoLinesTableViewCell identifier];
-  v10 = [v7 dequeueReusableCellWithIdentifier:v9 forIndexPath:v6];
+  v10 = [viewCopy dequeueReusableCellWithIdentifier:v9 forIndexPath:pathCopy];
 
   v11 = [TwoLinesContentViewModelComposer cellModelForMapsSuggestionsShortcut:v8];
   [v10 setViewModel:v11];
@@ -105,21 +105,21 @@
   return v10;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(ShortcutSuggestionsDataSource *)self currentSuggestions:a3];
+  v4 = [(ShortcutSuggestionsDataSource *)self currentSuggestions:view];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (void)didTapOnAccessoryView:(id)a3 withType:(int64_t)a4 object:(id)a5
+- (void)didTapOnAccessoryView:(id)view withType:(int64_t)type object:(id)object
 {
-  v13 = a3;
-  v8 = a5;
-  if (a4 == 4 || a4 == 1)
+  viewCopy = view;
+  objectCopy = object;
+  if (type == 4 || type == 1)
   {
-    [(ShortcutSuggestionsDataSource *)self shortcutSelected:v8];
+    [(ShortcutSuggestionsDataSource *)self shortcutSelected:objectCopy];
     v9 = [UIButton buttonWithType:0];
     [v9 setBounds:{0.0, 0.0, 30.0, 30.0}];
     v10 = [UIImage systemImageNamed:@"checkmark"];
@@ -132,43 +132,43 @@
     [v9 setTintColor:v12];
 
     [v9 setAccessibilityIdentifier:@"AccessoryCheckmarkButton"];
-    [v13 setAccessoryView:v9];
+    [viewCopy setAccessoryView:v9];
   }
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  v3 = a3;
+  activeCopy = active;
   v5.receiver = self;
   v5.super_class = ShortcutSuggestionsDataSource;
   [(DataSource *)&v5 setActive:?];
-  if (v3)
+  if (activeCopy)
   {
     [(ShortcutSuggestionsDataSource *)self _loadContentAndSuggestionsOfType:self->shortcutType];
   }
 }
 
-- (void)shortcutSelected:(id)a3
+- (void)shortcutSelected:(id)selected
 {
-  v4 = a3;
-  v5 = [(DataSource *)self delegate];
-  [v5 dataSource:self itemTapped:v4];
+  selectedCopy = selected;
+  delegate = [(DataSource *)self delegate];
+  [delegate dataSource:self itemTapped:selectedCopy];
 }
 
-- (id)objectAtIndexPath:(id)a3
+- (id)objectAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(ShortcutSuggestionsDataSource *)self currentSuggestions];
-  v6 = [v5 copy];
+  pathCopy = path;
+  currentSuggestions = [(ShortcutSuggestionsDataSource *)self currentSuggestions];
+  v6 = [currentSuggestions copy];
 
-  if (([v4 row] & 0x8000000000000000) != 0 || (v7 = objc_msgSend(v4, "row"), v7 >= objc_msgSend(v6, "count")))
+  if (([pathCopy row] & 0x8000000000000000) != 0 || (v7 = objc_msgSend(pathCopy, "row"), v7 >= objc_msgSend(v6, "count")))
   {
     v8 = 0;
   }
 
   else
   {
-    v8 = [v6 objectAtIndexedSubscript:{objc_msgSend(v4, "row")}];
+    v8 = [v6 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
   }
 
   return v8;
@@ -184,96 +184,96 @@
 - (id)shortcutManager
 {
   v2 = MapsSuggestionsResourceDepotForMapsProcess();
-  v3 = [v2 oneFavorites];
+  oneFavorites = [v2 oneFavorites];
 
-  return v3;
+  return oneFavorites;
 }
 
-- (void)_updateSuggestions:(id)a3
+- (void)_updateSuggestions:(id)suggestions
 {
-  if (a3)
+  if (suggestions)
   {
-    v4 = a3;
+    suggestionsCopy = suggestions;
   }
 
   else
   {
-    v4 = &__NSArray0__struct;
+    suggestionsCopy = &__NSArray0__struct;
   }
 
-  v5 = [v4 copy];
+  v5 = [suggestionsCopy copy];
   suggestions = self->_suggestions;
   self->_suggestions = v5;
 
-  v7 = [(DataSource *)self delegate];
-  [v7 dataSourceUpdated:self];
+  delegate = [(DataSource *)self delegate];
+  [delegate dataSourceUpdated:self];
 }
 
-- (void)_loadContentAndSuggestionsOfType:(int64_t)a3
+- (void)_loadContentAndSuggestionsOfType:(int64_t)type
 {
   objc_initWeak(&location, self);
   if (+[_TtC4Maps18LibraryUIUtilities isMyPlacesEnabled])
   {
-    v5 = +[_TtC4Maps20MapsFavoritesManager sharedManager];
+    shortcutManager = +[_TtC4Maps20MapsFavoritesManager sharedManager];
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_100B3A5C0;
     v9[3] = &unk_10165F290;
     v6 = &v10;
     objc_copyWeak(&v10, &location);
-    [v5 proposePlacesForTypeWithType:a3 completionHandler:v9];
+    [shortcutManager proposePlacesForTypeWithType:type completionHandler:v9];
   }
 
   else
   {
-    v5 = [(ShortcutSuggestionsDataSource *)self shortcutManager];
+    shortcutManager = [(ShortcutSuggestionsDataSource *)self shortcutManager];
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_100B3A67C;
     v7[3] = &unk_10165F290;
     v6 = &v8;
     objc_copyWeak(&v8, &location);
-    [v5 proposeAdditionalShortcutsOfType:a3 handler:v7];
+    [shortcutManager proposeAdditionalShortcutsOfType:type handler:v7];
   }
 
   objc_destroyWeak(v6);
   objc_destroyWeak(&location);
 }
 
-- (ShortcutSuggestionsDataSource)initWithTableView:(id)a3 updateLocation:(BOOL)a4 shortcutType:(int64_t)a5
+- (ShortcutSuggestionsDataSource)initWithTableView:(id)view updateLocation:(BOOL)location shortcutType:(int64_t)type
 {
-  v6 = a4;
-  v8 = a3;
+  locationCopy = location;
+  viewCopy = view;
   v13.receiver = self;
   v13.super_class = ShortcutSuggestionsDataSource;
-  v9 = [(DataSource *)&v13 initWithTableView:v8 updateLocation:v6];
+  v9 = [(DataSource *)&v13 initWithTableView:viewCopy updateLocation:locationCopy];
   if (v9)
   {
-    [v8 setAccessibilityIdentifier:@"ShortcutSuggestionsTable"];
+    [viewCopy setAccessibilityIdentifier:@"ShortcutSuggestionsTable"];
     v10 = objc_opt_class();
     v11 = +[TwoLinesTableViewCell identifier];
-    [v8 registerClass:v10 forCellReuseIdentifier:v11];
+    [viewCopy registerClass:v10 forCellReuseIdentifier:v11];
 
-    v9->shortcutType = a5;
-    [(ShortcutSuggestionsDataSource *)v9 _loadContentAndSuggestionsOfType:a5];
+    v9->shortcutType = type;
+    [(ShortcutSuggestionsDataSource *)v9 _loadContentAndSuggestionsOfType:type];
   }
 
   return v9;
 }
 
-- (ShortcutSuggestionsDataSource)initWithTableView:(id)a3 updateLocation:(BOOL)a4
+- (ShortcutSuggestionsDataSource)initWithTableView:(id)view updateLocation:(BOOL)location
 {
-  v4 = a4;
-  v6 = a3;
+  locationCopy = location;
+  viewCopy = view;
   v11.receiver = self;
   v11.super_class = ShortcutSuggestionsDataSource;
-  v7 = [(DataSource *)&v11 initWithTableView:v6 updateLocation:v4];
+  v7 = [(DataSource *)&v11 initWithTableView:viewCopy updateLocation:locationCopy];
   if (v7)
   {
-    [v6 setAccessibilityIdentifier:@"ShortcutSuggestionsTable"];
+    [viewCopy setAccessibilityIdentifier:@"ShortcutSuggestionsTable"];
     v8 = objc_opt_class();
     v9 = +[TwoLinesTableViewCell identifier];
-    [v6 registerClass:v8 forCellReuseIdentifier:v9];
+    [viewCopy registerClass:v8 forCellReuseIdentifier:v9];
 
     [(ShortcutSuggestionsDataSource *)v7 _loadContentAndSuggestionsOfType:0];
   }

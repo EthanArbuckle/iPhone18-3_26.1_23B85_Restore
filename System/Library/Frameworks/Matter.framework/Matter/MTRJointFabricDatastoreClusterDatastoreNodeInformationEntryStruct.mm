@@ -1,6 +1,6 @@
 @interface MTRJointFabricDatastoreClusterDatastoreNodeInformationEntryStruct
 - (MTRJointFabricDatastoreClusterDatastoreNodeInformationEntryStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -28,17 +28,17 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRJointFabricDatastoreClusterDatastoreNodeInformationEntryStruct);
-  v5 = [(MTRJointFabricDatastoreClusterDatastoreNodeInformationEntryStruct *)self nodeID];
-  [(MTRJointFabricDatastoreClusterDatastoreNodeInformationEntryStruct *)v4 setNodeID:v5];
+  nodeID = [(MTRJointFabricDatastoreClusterDatastoreNodeInformationEntryStruct *)self nodeID];
+  [(MTRJointFabricDatastoreClusterDatastoreNodeInformationEntryStruct *)v4 setNodeID:nodeID];
 
-  v6 = [(MTRJointFabricDatastoreClusterDatastoreNodeInformationEntryStruct *)self friendlyName];
-  [(MTRJointFabricDatastoreClusterDatastoreNodeInformationEntryStruct *)v4 setFriendlyName:v6];
+  friendlyName = [(MTRJointFabricDatastoreClusterDatastoreNodeInformationEntryStruct *)self friendlyName];
+  [(MTRJointFabricDatastoreClusterDatastoreNodeInformationEntryStruct *)v4 setFriendlyName:friendlyName];
 
-  v7 = [(MTRJointFabricDatastoreClusterDatastoreNodeInformationEntryStruct *)self commissioningStatusEntry];
-  [(MTRJointFabricDatastoreClusterDatastoreNodeInformationEntryStruct *)v4 setCommissioningStatusEntry:v7];
+  commissioningStatusEntry = [(MTRJointFabricDatastoreClusterDatastoreNodeInformationEntryStruct *)self commissioningStatusEntry];
+  [(MTRJointFabricDatastoreClusterDatastoreNodeInformationEntryStruct *)v4 setCommissioningStatusEntry:commissioningStatusEntry];
 
   return v4;
 }

@@ -6,22 +6,22 @@
 + (double)highlightedCircleViewAlpha;
 + (double)outerCircleDiameter;
 + (double)unhighlightedCircleViewAlpha;
-+ (id)_stringCharacterForCharacter:(int64_t)a3;
-+ (int)_characterTypeForCharacter:(int64_t)a3;
-- (id)initForCharacter:(int64_t)a3;
++ (id)_stringCharacterForCharacter:(int64_t)character;
++ (int)_characterTypeForCharacter:(int64_t)character;
+- (id)initForCharacter:(int64_t)character;
 - (id)stringCharacter;
 - (int)characterType;
-- (void)setReduceTransparencyButtonColor:(id)a3;
+- (void)setReduceTransparencyButtonColor:(id)color;
 @end
 
 @implementation SBPasscodeNumberPadButton
 
 + (CGSize)defaultSize
 {
-  v2 = [a1 _isPortrait];
-  [MEMORY[0x1E69D3FE8] pinNumberPadButtonOuterCircleDiameter:v2];
+  _isPortrait = [self _isPortrait];
+  [MEMORY[0x1E69D3FE8] pinNumberPadButtonOuterCircleDiameter:_isPortrait];
   v4 = v3;
-  [MEMORY[0x1E69D3FE8] pinNumberPadButtonPaddingHeight:v2];
+  [MEMORY[0x1E69D3FE8] pinNumberPadButtonPaddingHeight:_isPortrait];
   v6 = v5;
   [MEMORY[0x1E69D3FE8] pinNumberPadButtonPaddingWidth];
   v8 = v4 + v7 * 2.0;
@@ -33,8 +33,8 @@
 
 + (BOOL)_isPortrait
 {
-  v2 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v2 bounds];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen bounds];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -54,26 +54,26 @@
 
 + (double)outerCircleDiameter
 {
-  v2 = [a1 _isPortrait];
+  _isPortrait = [self _isPortrait];
   v3 = MEMORY[0x1E69D3FE8];
 
-  [v3 pinNumberPadButtonOuterCircleDiameter:v2];
+  [v3 pinNumberPadButtonOuterCircleDiameter:_isPortrait];
   return result;
 }
 
 + (double)_numberPadButtonOuterCircleDiameter
 {
-  v2 = [a1 _isPortrait];
+  _isPortrait = [self _isPortrait];
   v3 = MEMORY[0x1E69D3FE8];
 
-  [v3 pinNumberPadButtonOuterCircleDiameter:v2];
+  [v3 pinNumberPadButtonOuterCircleDiameter:_isPortrait];
   return result;
 }
 
 + (UIEdgeInsets)paddingOutsideRing
 {
-  v2 = [a1 _isPortrait];
-  [MEMORY[0x1E69D3FE8] pinNumberPadButtonPaddingHeight:v2];
+  _isPortrait = [self _isPortrait];
+  [MEMORY[0x1E69D3FE8] pinNumberPadButtonPaddingHeight:_isPortrait];
   v4 = v3;
   [MEMORY[0x1E69D3FE8] pinNumberPadButtonPaddingWidth];
   v6 = v5;
@@ -87,60 +87,60 @@
   return result;
 }
 
-- (id)initForCharacter:(int64_t)a3
+- (id)initForCharacter:(int64_t)character
 {
   v14.receiver = self;
   v14.super_class = SBPasscodeNumberPadButton;
-  v3 = [(TPNumberPadButton *)&v14 initForCharacter:a3];
+  v3 = [(TPNumberPadButton *)&v14 initForCharacter:character];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 revealingRingView];
-    v6 = [MEMORY[0x1E69DC888] blackColor];
-    [v5 setColorInsideRing:v6];
+    revealingRingView = [v3 revealingRingView];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    [revealingRingView setColorInsideRing:blackColor];
 
-    v7 = [v4 revealingRingView];
-    v8 = [MEMORY[0x1E69DC888] blackColor];
-    [v7 setColorOutsideRing:v8];
+    revealingRingView2 = [v4 revealingRingView];
+    blackColor2 = [MEMORY[0x1E69DC888] blackColor];
+    [revealingRingView2 setColorOutsideRing:blackColor2];
 
-    v9 = [v4 revealingRingView];
-    [v9 setRevealAnimationDuration:0.0];
+    revealingRingView3 = [v4 revealingRingView];
+    [revealingRingView3 setRevealAnimationDuration:0.0];
 
-    v10 = [v4 revealingRingView];
-    [v10 setUnrevealAnimationDuration:0.392500013];
+    revealingRingView4 = [v4 revealingRingView];
+    [revealingRingView4 setUnrevealAnimationDuration:0.392500013];
 
-    v11 = [v4 layer];
-    LODWORD(v8) = [v11 disableUpdateMask];
+    layer = [v4 layer];
+    LODWORD(blackColor2) = [layer disableUpdateMask];
 
-    v12 = [v4 layer];
-    [v12 setDisableUpdateMask:v8 | 0x10];
+    layer2 = [v4 layer];
+    [layer2 setDisableUpdateMask:blackColor2 | 0x10];
   }
 
   return v4;
 }
 
-+ (int)_characterTypeForCharacter:(int64_t)a3
++ (int)_characterTypeForCharacter:(int64_t)character
 {
-  if (a3 > 0xC)
+  if (character > 0xC)
   {
     return 0;
   }
 
   else
   {
-    return dword_1A9B2AB10[a3];
+    return dword_1A9B2AB10[character];
   }
 }
 
 - (int)characterType
 {
   v3 = objc_opt_class();
-  v4 = [(TPNumberPadButton *)self character];
+  character = [(TPNumberPadButton *)self character];
 
-  return [v3 _characterTypeForCharacter:v4];
+  return [v3 _characterTypeForCharacter:character];
 }
 
-+ (id)_stringCharacterForCharacter:(int64_t)a3
++ (id)_stringCharacterForCharacter:(int64_t)character
 {
   if (_stringCharacterForCharacter____onceToken != -1)
   {
@@ -148,7 +148,7 @@
   }
 
   v4 = _stringCharacterForCharacter____map;
-  v5 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v5 = [MEMORY[0x1E696AD98] numberWithInteger:character];
   v6 = [v4 objectForKey:v5];
 
   return v6;
@@ -194,28 +194,28 @@ void __58__SBPasscodeNumberPadButton__stringCharacterForCharacter___block_invoke
 - (id)stringCharacter
 {
   v3 = objc_opt_class();
-  v4 = [(TPNumberPadButton *)self character];
+  character = [(TPNumberPadButton *)self character];
 
-  return [v3 _stringCharacterForCharacter:v4];
+  return [v3 _stringCharacterForCharacter:character];
 }
 
-- (void)setReduceTransparencyButtonColor:(id)a3
+- (void)setReduceTransparencyButtonColor:(id)color
 {
-  v5 = a3;
-  if (self->_reduceTransparencyButtonColor != v5)
+  colorCopy = color;
+  if (self->_reduceTransparencyButtonColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_reduceTransparencyButtonColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_reduceTransparencyButtonColor, color);
     [(TPNumberPadButton *)self setColor:self->_reduceTransparencyButtonColor];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
 + (double)unhighlightedCircleViewAlpha
 {
-  v2 = [a1 _shouldUseAlternativeCirlceViewAlphas];
+  _shouldUseAlternativeCirlceViewAlphas = [self _shouldUseAlternativeCirlceViewAlphas];
   result = 0.15;
-  if (v2)
+  if (_shouldUseAlternativeCirlceViewAlphas)
   {
     return 0.47;
   }
@@ -225,9 +225,9 @@ void __58__SBPasscodeNumberPadButton__stringCharacterForCharacter___block_invoke
 
 + (double)highlightedCircleViewAlpha
 {
-  v2 = [a1 _shouldUseAlternativeCirlceViewAlphas];
+  _shouldUseAlternativeCirlceViewAlphas = [self _shouldUseAlternativeCirlceViewAlphas];
   result = 0.65;
-  if (v2)
+  if (_shouldUseAlternativeCirlceViewAlphas)
   {
     return 0.9;
   }

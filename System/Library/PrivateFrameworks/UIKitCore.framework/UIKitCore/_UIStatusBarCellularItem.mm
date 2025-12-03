@@ -1,7 +1,7 @@
 @interface _UIStatusBarCellularItem
-+ (id)groupWithHighPriority:(int64_t)a3 lowPriority:(int64_t)a4 typeClass:(Class)a5 allowDualNetwork:(BOOL)a6;
-- (BOOL)_updateSignalView:(id)a3 withUpdate:(id)a4 entry:(id)a5 forceShowingDisabledSignalBars:(BOOL)a6;
-- (_UIStatusBarCellularItem)initWithIdentifier:(id)a3 statusBar:(id)a4;
++ (id)groupWithHighPriority:(int64_t)priority lowPriority:(int64_t)lowPriority typeClass:(Class)class allowDualNetwork:(BOOL)network;
+- (BOOL)_updateSignalView:(id)view withUpdate:(id)update entry:(id)entry forceShowingDisabledSignalBars:(BOOL)bars;
+- (_UIStatusBarCellularItem)initWithIdentifier:(id)identifier statusBar:(id)bar;
 - (_UIStatusBarCellularItemTypeStringProvider)typeStringProvider;
 - (_UIStatusBarCellularSignalView)signalView;
 - (_UIStatusBarImageView)callForwardingView;
@@ -9,30 +9,30 @@
 - (_UIStatusBarStringView)networkTypeView;
 - (_UIStatusBarStringView)rawStringView;
 - (_UIStatusBarStringView)serviceNameView;
-- (id)_backgroundColorForUpdate:(id)a3 entry:(id)a4;
-- (id)_fillColorForUpdate:(id)a3 entry:(id)a4;
-- (id)_stringForCellularType:(int64_t)a3;
-- (id)applyUpdate:(id)a3 toDisplayItem:(id)a4;
+- (id)_backgroundColorForUpdate:(id)update entry:(id)entry;
+- (id)_fillColorForUpdate:(id)update entry:(id)entry;
+- (id)_stringForCellularType:(int64_t)type;
+- (id)applyUpdate:(id)update toDisplayItem:(id)item;
 - (id)dependentEntryKeys;
-- (id)entryForDisplayItemWithIdentifier:(id)a3;
-- (id)viewForIdentifier:(id)a3;
+- (id)entryForDisplayItemWithIdentifier:(id)identifier;
+- (id)viewForIdentifier:(id)identifier;
 - (void)_create_callForwardingView;
 - (void)_create_networkTypeView;
 - (void)_create_rawStringView;
 - (void)_create_serviceNameView;
 - (void)_create_signalView;
 - (void)_create_warningView;
-- (void)prepareAnimation:(id)a3 forDisplayItem:(id)a4;
-- (void)setmarqueeServiceName:(BOOL)a3;
+- (void)prepareAnimation:(id)animation forDisplayItem:(id)item;
+- (void)setmarqueeServiceName:(BOOL)name;
 @end
 
 @implementation _UIStatusBarCellularItem
 
-- (_UIStatusBarCellularItem)initWithIdentifier:(id)a3 statusBar:(id)a4
+- (_UIStatusBarCellularItem)initWithIdentifier:(id)identifier statusBar:(id)bar
 {
   v6.receiver = self;
   v6.super_class = _UIStatusBarCellularItem;
-  v4 = [(_UIStatusBarItem *)&v6 initWithIdentifier:a3 statusBar:a4];
+  v4 = [(_UIStatusBarItem *)&v6 initWithIdentifier:identifier statusBar:bar];
   [(_UIStatusBarCellularItem *)v4 setShowsDisabledSignalBars:1];
   [(_UIStatusBarCellularItem *)v4 setMarqueeServiceName:1];
   return v4;
@@ -41,72 +41,72 @@
 - (id)dependentEntryKeys
 {
   v2 = MEMORY[0x1E695DFD8];
-  v3 = [(_UIStatusBarCellularItem *)self cellularDataEntryKey];
-  v4 = [v2 setWithObjects:{v3, 0}];
+  cellularDataEntryKey = [(_UIStatusBarCellularItem *)self cellularDataEntryKey];
+  v4 = [v2 setWithObjects:{cellularDataEntryKey, 0}];
 
   return v4;
 }
 
-- (id)_fillColorForUpdate:(id)a3 entry:(id)a4
+- (id)_fillColorForUpdate:(id)update entry:(id)entry
 {
-  v5 = a3;
-  if ([a4 lowDataModeActive])
+  updateCopy = update;
+  if ([entry lowDataModeActive])
   {
     v6 = +[UIColor systemYellowColor];
   }
 
   else
   {
-    v7 = [v5 styleAttributes];
-    v8 = [v7 imageTintColor];
-    v6 = [v8 colorWithAlphaComponent:1.0];
+    styleAttributes = [updateCopy styleAttributes];
+    imageTintColor = [styleAttributes imageTintColor];
+    v6 = [imageTintColor colorWithAlphaComponent:1.0];
   }
 
   return v6;
 }
 
-- (id)_backgroundColorForUpdate:(id)a3 entry:(id)a4
+- (id)_backgroundColorForUpdate:(id)update entry:(id)entry
 {
-  v5 = a3;
-  if ([a4 lowDataModeActive])
+  updateCopy = update;
+  if ([entry lowDataModeActive])
   {
-    v6 = +[UIColor systemYellowColor];
-    [v6 colorWithAlphaComponent:0.3];
+    styleAttributes = +[UIColor systemYellowColor];
+    [styleAttributes colorWithAlphaComponent:0.3];
   }
 
   else
   {
-    v6 = [v5 styleAttributes];
-    [v6 imageDimmedTintColor];
+    styleAttributes = [updateCopy styleAttributes];
+    [styleAttributes imageDimmedTintColor];
   }
   v7 = ;
 
   return v7;
 }
 
-- (BOOL)_updateSignalView:(id)a3 withUpdate:(id)a4 entry:(id)a5 forceShowingDisabledSignalBars:(BOOL)a6
+- (BOOL)_updateSignalView:(id)view withUpdate:(id)update entry:(id)entry forceShowingDisabledSignalBars:(BOOL)bars
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (([v11 styleAttributesChanged] & 1) != 0 || objc_msgSend(v11, "dataChanged"))
+  barsCopy = bars;
+  viewCopy = view;
+  updateCopy = update;
+  entryCopy = entry;
+  if (([updateCopy styleAttributesChanged] & 1) != 0 || objc_msgSend(updateCopy, "dataChanged"))
   {
-    v13 = [(_UIStatusBarCellularItem *)self _backgroundColorForUpdate:v11 entry:v12];
-    [v10 setInactiveColor:v13];
+    v13 = [(_UIStatusBarCellularItem *)self _backgroundColorForUpdate:updateCopy entry:entryCopy];
+    [viewCopy setInactiveColor:v13];
 
-    v14 = [(_UIStatusBarCellularItem *)self _fillColorForUpdate:v11 entry:v12];
-    [v10 setActiveColor:v14];
+    v14 = [(_UIStatusBarCellularItem *)self _fillColorForUpdate:updateCopy entry:entryCopy];
+    [viewCopy setActiveColor:v14];
   }
 
-  if (![v11 dataChanged])
+  if (![updateCopy dataChanged])
   {
     goto LABEL_27;
   }
 
-  if ([v12 isEnabled])
+  if ([entryCopy isEnabled])
   {
-    v15 = [v12 status] != 4;
+    v15 = [entryCopy status] != 4;
   }
 
   else
@@ -114,43 +114,43 @@
     v15 = 0;
   }
 
-  v16 = [v10 signalMode];
-  v17 = [v12 status];
-  if (v17 <= 1)
+  signalMode = [viewCopy signalMode];
+  status = [entryCopy status];
+  if (status <= 1)
   {
-    if (!v17)
+    if (!status)
     {
-      [v12 isBootstrapCellular];
+      [entryCopy isBootstrapCellular];
       goto LABEL_27;
     }
 
-    if (v17 == 1)
+    if (status == 1)
     {
-      v15 &= self->_showsDisabledSignalBars || v6;
-      if (self->_showsDisabledSignalBars || v6)
+      v15 &= self->_showsDisabledSignalBars || barsCopy;
+      if (self->_showsDisabledSignalBars || barsCopy)
       {
-        v16 = 0;
+        signalMode = 0;
       }
     }
   }
 
   else
   {
-    switch(v17)
+    switch(status)
     {
       case 2:
-        v16 = 0;
+        signalMode = 0;
         break;
       case 3:
-        v16 = 1;
+        signalMode = 1;
         break;
       case 5:
-        v16 = 2;
+        signalMode = 2;
         break;
     }
   }
 
-  if (![v12 isBootstrapCellular] || (v15 & 1) == 0)
+  if (![entryCopy isBootstrapCellular] || (v15 & 1) == 0)
   {
     if (v15)
     {
@@ -162,52 +162,52 @@ LABEL_27:
     goto LABEL_28;
   }
 
-  if ([v12 status] != 5)
+  if ([entryCopy status] != 5)
   {
     goto LABEL_27;
   }
 
 LABEL_25:
-  [v10 setSignalMode:v16];
-  [v10 setNumberOfActiveBars:{objc_msgSend(v12, "displayValue")}];
+  [viewCopy setSignalMode:signalMode];
+  [viewCopy setNumberOfActiveBars:{objc_msgSend(entryCopy, "displayValue")}];
   v18 = 1;
 LABEL_28:
 
   return v18;
 }
 
-- (id)entryForDisplayItemWithIdentifier:(id)a3
+- (id)entryForDisplayItemWithIdentifier:(id)identifier
 {
-  v4 = [(_UIStatusBarItem *)self statusBar];
-  v5 = [v4 currentAggregatedData];
-  v6 = [(_UIStatusBarCellularItem *)self cellularDataEntryKey];
-  v7 = [v5 valueForKey:v6];
+  statusBar = [(_UIStatusBarItem *)self statusBar];
+  currentAggregatedData = [statusBar currentAggregatedData];
+  cellularDataEntryKey = [(_UIStatusBarCellularItem *)self cellularDataEntryKey];
+  v7 = [currentAggregatedData valueForKey:cellularDataEntryKey];
 
   return v7;
 }
 
-- (id)applyUpdate:(id)a3 toDisplayItem:(id)a4
+- (id)applyUpdate:(id)update toDisplayItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
+  updateCopy = update;
+  itemCopy = item;
   v41.receiver = self;
   v41.super_class = _UIStatusBarCellularItem;
-  v8 = [(_UIStatusBarItem *)&v41 applyUpdate:v6 toDisplayItem:v7];
-  v9 = [v7 identifier];
-  v10 = [(_UIStatusBarCellularItem *)self entryForDisplayItemWithIdentifier:v9];
+  v8 = [(_UIStatusBarItem *)&v41 applyUpdate:updateCopy toDisplayItem:itemCopy];
+  identifier = [itemCopy identifier];
+  v10 = [(_UIStatusBarCellularItem *)self entryForDisplayItemWithIdentifier:identifier];
 
-  v11 = [v7 identifier];
-  v12 = [objc_opt_class() signalStrengthDisplayIdentifier];
+  identifier2 = [itemCopy identifier];
+  signalStrengthDisplayIdentifier = [objc_opt_class() signalStrengthDisplayIdentifier];
 
-  if (v11 != v12)
+  if (identifier2 != signalStrengthDisplayIdentifier)
   {
-    v13 = [v7 identifier];
-    v14 = [objc_opt_class() nameDisplayIdentifier];
+    identifier3 = [itemCopy identifier];
+    nameDisplayIdentifier = [objc_opt_class() nameDisplayIdentifier];
 
-    if (v13 == v14)
+    if (identifier3 == nameDisplayIdentifier)
     {
-      v26 = [v10 string];
-      if ([v7 isEnabled] && objc_msgSend(v26, "length"))
+      string = [v10 string];
+      if ([itemCopy isEnabled] && objc_msgSend(string, "length"))
       {
         v27 = [v10 isBootstrapCellular] ^ 1;
       }
@@ -217,85 +217,85 @@ LABEL_28:
         v27 = 0;
       }
 
-      [v7 setEnabled:v27];
-      if (![v7 isEnabled])
+      [itemCopy setEnabled:v27];
+      if (![itemCopy isEnabled])
       {
         goto LABEL_47;
       }
 
-      v28 = [(_UIStatusBarCellularItem *)self serviceNameView];
-      [v28 setText:v26];
-      v29 = [v10 crossfadeString];
-      [v28 setAlternateText:v29];
+      serviceNameView = [(_UIStatusBarCellularItem *)self serviceNameView];
+      [serviceNameView setText:string];
+      crossfadeString = [v10 crossfadeString];
+      [serviceNameView setAlternateText:crossfadeString];
 
-      [v28 setMarqueeRunning:1];
+      [serviceNameView setMarqueeRunning:1];
 LABEL_46:
 
 LABEL_47:
       goto LABEL_48;
     }
 
-    v15 = [v7 identifier];
-    v16 = [objc_opt_class() typeDisplayIdentifier];
+    identifier4 = [itemCopy identifier];
+    typeDisplayIdentifier = [objc_opt_class() typeDisplayIdentifier];
 
-    if (v15 != v16)
+    if (identifier4 != typeDisplayIdentifier)
     {
-      v17 = [v7 identifier];
-      v18 = [objc_opt_class() warningDisplayIdentifier];
+      identifier5 = [itemCopy identifier];
+      warningDisplayIdentifier = [objc_opt_class() warningDisplayIdentifier];
 
-      if (v17 == v18)
+      if (identifier5 == warningDisplayIdentifier)
       {
         if (!v10)
         {
           goto LABEL_48;
         }
 
-        v32 = [v7 isEnabled] && (objc_msgSend(v10, "status") == 4);
-        [v7 setEnabled:v32];
-        if (![v7 isEnabled])
+        v32 = [itemCopy isEnabled] && (objc_msgSend(v10, "status") == 4);
+        [itemCopy setEnabled:v32];
+        if (![itemCopy isEnabled])
         {
           goto LABEL_48;
         }
 
-        v35 = [(_UIStatusBarCellularItem *)self warningView];
-        v36 = [v35 image];
+        warningView = [(_UIStatusBarCellularItem *)self warningView];
+        image = [warningView image];
 
-        if (v36)
+        if (image)
         {
           goto LABEL_48;
         }
 
-        v26 = [UIImage systemImageNamed:@"exclamationmark.triangle.fill"];
-        v37 = [(_UIStatusBarCellularItem *)self warningView];
+        string = [UIImage systemImageNamed:@"exclamationmark.triangle.fill"];
+        warningView2 = [(_UIStatusBarCellularItem *)self warningView];
       }
 
       else
       {
-        v19 = [v7 identifier];
-        v20 = [objc_opt_class() callForwardingDisplayIdentifier];
+        identifier6 = [itemCopy identifier];
+        callForwardingDisplayIdentifier = [objc_opt_class() callForwardingDisplayIdentifier];
 
-        if (v19 != v20)
+        if (identifier6 != callForwardingDisplayIdentifier)
         {
-          v21 = [v7 identifier];
-          v22 = [objc_opt_class() rawDisplayIdentifier];
+          identifier7 = [itemCopy identifier];
+          rawDisplayIdentifier = [objc_opt_class() rawDisplayIdentifier];
 
-          if (v21 != v22 || !v10)
+          if (identifier7 != rawDisplayIdentifier || !v10)
           {
             goto LABEL_48;
           }
 
-          v23 = [v7 isEnabled] ? objc_msgSend(v10, "displayRawValue") : 0;
-          [v7 setEnabled:v23];
-          if (![v7 isEnabled])
+          v23 = [itemCopy isEnabled] ? objc_msgSend(v10, "displayRawValue") : 0;
+          [itemCopy setEnabled:v23];
+          if (![itemCopy isEnabled])
           {
             goto LABEL_48;
           }
 
-          v26 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%ld", objc_msgSend(v10, "rawValue")];
-          v34 = [(_UIStatusBarCellularItem *)self rawStringView];
+          string = [MEMORY[0x1E696AEC0] stringWithFormat:@"%ld", objc_msgSend(v10, "rawValue")];
+          rawStringView = [(_UIStatusBarCellularItem *)self rawStringView];
 LABEL_40:
-          v28 = v34;
-          [v34 setText:v26];
+          serviceNameView = rawStringView;
+          [rawStringView setText:string];
           goto LABEL_46;
         }
 
@@ -304,27 +304,27 @@ LABEL_40:
           goto LABEL_48;
         }
 
-        v33 = [v7 isEnabled] && -[_UIStatusBarCellularItem _showCallFowardingForEntry:](self, "_showCallFowardingForEntry:", v10);
-        [v7 setEnabled:v33];
-        if (![v7 isEnabled])
+        v33 = [itemCopy isEnabled] && -[_UIStatusBarCellularItem _showCallFowardingForEntry:](self, "_showCallFowardingForEntry:", v10);
+        [itemCopy setEnabled:v33];
+        if (![itemCopy isEnabled])
         {
           goto LABEL_48;
         }
 
-        v38 = [(_UIStatusBarCellularItem *)self callForwardingView];
-        v39 = [v38 image];
+        callForwardingView = [(_UIStatusBarCellularItem *)self callForwardingView];
+        image2 = [callForwardingView image];
 
-        if (v39)
+        if (image2)
         {
           goto LABEL_48;
         }
 
-        v26 = [UIImage systemImageNamed:@"phone.fill.arrow.right"];
-        v37 = [(_UIStatusBarCellularItem *)self callForwardingView];
+        string = [UIImage systemImageNamed:@"phone.fill.arrow.right"];
+        warningView2 = [(_UIStatusBarCellularItem *)self callForwardingView];
       }
 
-      v28 = v37;
-      [v37 setImage:v26];
+      serviceNameView = warningView2;
+      [warningView2 setImage:string];
       goto LABEL_46;
     }
 
@@ -335,10 +335,10 @@ LABEL_40:
 
     if ([v10 isEnabled])
     {
-      v26 = -[_UIStatusBarCellularItem _stringForCellularType:](self, "_stringForCellularType:", [v10 type]);
-      v30 = [v7 isEnabled];
+      string = -[_UIStatusBarCellularItem _stringForCellularType:](self, "_stringForCellularType:", [v10 type]);
+      isEnabled = [itemCopy isEnabled];
       v31 = 0;
-      if (v30 && v26)
+      if (isEnabled && string)
       {
         v31 = [v10 isBootstrapCellular] ^ 1;
       }
@@ -346,27 +346,27 @@ LABEL_40:
 
     else
     {
-      [v7 isEnabled];
-      v26 = 0;
+      [itemCopy isEnabled];
+      string = 0;
       v31 = 0;
     }
 
-    [v7 setEnabled:v31];
-    if (![v7 isEnabled])
+    [itemCopy setEnabled:v31];
+    if (![itemCopy isEnabled])
     {
       goto LABEL_47;
     }
 
-    v34 = [(_UIStatusBarCellularItem *)self networkTypeView];
+    rawStringView = [(_UIStatusBarCellularItem *)self networkTypeView];
     goto LABEL_40;
   }
 
-  v24 = [(_UIStatusBarCellularItem *)self signalView];
-  v25 = [(_UIStatusBarCellularItem *)self _updateSignalView:v24 withUpdate:v6 entry:v10 forceShowingDisabledSignalBars:0];
+  signalView = [(_UIStatusBarCellularItem *)self signalView];
+  v25 = [(_UIStatusBarCellularItem *)self _updateSignalView:signalView withUpdate:updateCopy entry:v10 forceShowingDisabledSignalBars:0];
 
-  if ([v6 dataChanged] && v10)
+  if ([updateCopy dataChanged] && v10)
   {
-    [v7 setEnabled:v25];
+    [itemCopy setEnabled:v25];
   }
 
 LABEL_48:
@@ -374,13 +374,13 @@ LABEL_48:
   return v8;
 }
 
-- (id)_stringForCellularType:(int64_t)a3
+- (id)_stringForCellularType:(int64_t)type
 {
   WeakRetained = objc_loadWeakRetained(&self->_typeStringProvider);
 
-  if (!WeakRetained || (v6 = objc_loadWeakRetained(&self->_typeStringProvider), [v6 stringForCellularType:a3 condensed:0], v7 = objc_claimAutoreleasedReturnValue(), v6, !v7))
+  if (!WeakRetained || (v6 = objc_loadWeakRetained(&self->_typeStringProvider), [v6 stringForCellularType:type condensed:0], v7 = objc_claimAutoreleasedReturnValue(), v6, !v7))
   {
-    switch(a3)
+    switch(type)
     {
       case 1:
         v8 = @"1x[statusBarDataNetwork]";
@@ -438,26 +438,26 @@ LABEL_19:
   return v7;
 }
 
-- (void)prepareAnimation:(id)a3 forDisplayItem:(id)a4
+- (void)prepareAnimation:(id)animation forDisplayItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 type] == 1)
+  animationCopy = animation;
+  itemCopy = item;
+  if ([animationCopy type] == 1)
   {
-    v8 = [v7 identifier];
-    v9 = [objc_opt_class() nameDisplayIdentifier];
+    identifier = [itemCopy identifier];
+    nameDisplayIdentifier = [objc_opt_class() nameDisplayIdentifier];
 
-    if (v8 == v9)
+    if (identifier == nameDisplayIdentifier)
     {
-      v10 = [(_UIStatusBarCellularItem *)self serviceNameView];
-      [v10 setMarqueeRunning:0];
+      serviceNameView = [(_UIStatusBarCellularItem *)self serviceNameView];
+      [serviceNameView setMarqueeRunning:0];
       v12[0] = MEMORY[0x1E69E9820];
       v12[1] = 3221225472;
       v12[2] = __60___UIStatusBarCellularItem_prepareAnimation_forDisplayItem___block_invoke;
       v12[3] = &unk_1E70F5DB8;
-      v13 = v10;
-      v11 = v10;
-      [v6 addCompletionHandler:v12];
+      v13 = serviceNameView;
+      v11 = serviceNameView;
+      [animationCopy addCompletionHandler:v12];
     }
   }
 }
@@ -608,15 +608,15 @@ LABEL_19:
   self->_rawStringView = v4;
 }
 
-- (void)setmarqueeServiceName:(BOOL)a3
+- (void)setmarqueeServiceName:(BOOL)name
 {
-  if (self->_marqueeServiceName != a3)
+  if (self->_marqueeServiceName != name)
   {
-    self->_marqueeServiceName = a3;
+    self->_marqueeServiceName = name;
     serviceNameView = self->_serviceNameView;
     if (serviceNameView)
     {
-      if (a3)
+      if (name)
       {
 
         [(UILabel *)serviceNameView setMarqueeEnabled:1];
@@ -633,66 +633,66 @@ LABEL_19:
   }
 }
 
-- (id)viewForIdentifier:(id)a3
+- (id)viewForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [objc_opt_class() signalStrengthDisplayIdentifier];
+  identifierCopy = identifier;
+  signalStrengthDisplayIdentifier = [objc_opt_class() signalStrengthDisplayIdentifier];
 
-  if (v5 == v4)
+  if (signalStrengthDisplayIdentifier == identifierCopy)
   {
-    v11 = [(_UIStatusBarCellularItem *)self signalView];
+    signalView = [(_UIStatusBarCellularItem *)self signalView];
   }
 
   else
   {
-    v6 = [objc_opt_class() nameDisplayIdentifier];
+    nameDisplayIdentifier = [objc_opt_class() nameDisplayIdentifier];
 
-    if (v6 == v4)
+    if (nameDisplayIdentifier == identifierCopy)
     {
-      v11 = [(_UIStatusBarCellularItem *)self serviceNameView];
+      signalView = [(_UIStatusBarCellularItem *)self serviceNameView];
     }
 
     else
     {
-      v7 = [objc_opt_class() typeDisplayIdentifier];
+      typeDisplayIdentifier = [objc_opt_class() typeDisplayIdentifier];
 
-      if (v7 == v4)
+      if (typeDisplayIdentifier == identifierCopy)
       {
-        v11 = [(_UIStatusBarCellularItem *)self networkTypeView];
+        signalView = [(_UIStatusBarCellularItem *)self networkTypeView];
       }
 
       else
       {
-        v8 = [objc_opt_class() warningDisplayIdentifier];
+        warningDisplayIdentifier = [objc_opt_class() warningDisplayIdentifier];
 
-        if (v8 == v4)
+        if (warningDisplayIdentifier == identifierCopy)
         {
-          v11 = [(_UIStatusBarCellularItem *)self warningView];
+          signalView = [(_UIStatusBarCellularItem *)self warningView];
         }
 
         else
         {
-          v9 = [objc_opt_class() callForwardingDisplayIdentifier];
+          callForwardingDisplayIdentifier = [objc_opt_class() callForwardingDisplayIdentifier];
 
-          if (v9 == v4)
+          if (callForwardingDisplayIdentifier == identifierCopy)
           {
-            v11 = [(_UIStatusBarCellularItem *)self callForwardingView];
+            signalView = [(_UIStatusBarCellularItem *)self callForwardingView];
           }
 
           else
           {
-            v10 = [objc_opt_class() rawDisplayIdentifier];
+            rawDisplayIdentifier = [objc_opt_class() rawDisplayIdentifier];
 
-            if (v10 == v4)
+            if (rawDisplayIdentifier == identifierCopy)
             {
-              v11 = [(_UIStatusBarCellularItem *)self rawStringView];
+              signalView = [(_UIStatusBarCellularItem *)self rawStringView];
             }
 
             else
             {
               v14.receiver = self;
               v14.super_class = _UIStatusBarCellularItem;
-              v11 = [(_UIStatusBarItem *)&v14 viewForIdentifier:v4];
+              signalView = [(_UIStatusBarItem *)&v14 viewForIdentifier:identifierCopy];
             }
           }
         }
@@ -700,7 +700,7 @@ LABEL_19:
     }
   }
 
-  v12 = v11;
+  v12 = signalView;
 
   return v12;
 }
@@ -712,36 +712,36 @@ LABEL_19:
   return WeakRetained;
 }
 
-+ (id)groupWithHighPriority:(int64_t)a3 lowPriority:(int64_t)a4 typeClass:(Class)a5 allowDualNetwork:(BOOL)a6
++ (id)groupWithHighPriority:(int64_t)priority lowPriority:(int64_t)lowPriority typeClass:(Class)class allowDualNetwork:(BOOL)network
 {
   v32[1] = *MEMORY[0x1E69E9840];
-  v8 = a3 - a4;
-  if (a3 <= a4)
+  v8 = priority - lowPriority;
+  if (priority <= lowPriority)
   {
-    v28 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v28 handleFailureInMethod:a2 object:a1 file:@"_UIStatusBarDisplayItemPlacementCellularGroup.m" lineNumber:35 description:@"The lowPriority should be smaller than the highPriority"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIStatusBarDisplayItemPlacementCellularGroup.m" lineNumber:35 description:@"The lowPriority should be smaller than the highPriority"];
   }
 
-  v9 = [a1 signalStrengthDisplayIdentifier];
-  v10 = [_UIStatusBarDisplayItemPlacement placementWithIdentifier:v9 priority:v8 + 6];
+  signalStrengthDisplayIdentifier = [self signalStrengthDisplayIdentifier];
+  v10 = [_UIStatusBarDisplayItemPlacement placementWithIdentifier:signalStrengthDisplayIdentifier priority:v8 + 6];
 
-  v11 = [a1 warningDisplayIdentifier];
-  v12 = [_UIStatusBarDisplayItemPlacement placementWithIdentifier:v11 priority:v8 + 8];
+  warningDisplayIdentifier = [self warningDisplayIdentifier];
+  v12 = [_UIStatusBarDisplayItemPlacement placementWithIdentifier:warningDisplayIdentifier priority:v8 + 8];
 
-  v13 = [a1 nameDisplayIdentifier];
-  v14 = [_UIStatusBarDisplayItemPlacement placementWithIdentifier:v13 priority:v8 + 2];
+  nameDisplayIdentifier = [self nameDisplayIdentifier];
+  v14 = [_UIStatusBarDisplayItemPlacement placementWithIdentifier:nameDisplayIdentifier priority:v8 + 2];
 
-  v15 = [(objc_class *)a5 typeDisplayIdentifier];
-  v16 = [_UIStatusBarDisplayItemPlacement placementWithIdentifier:v15 priority:v8 + 4];
+  typeDisplayIdentifier = [(objc_class *)class typeDisplayIdentifier];
+  v16 = [_UIStatusBarDisplayItemPlacement placementWithIdentifier:typeDisplayIdentifier priority:v8 + 4];
   v32[0] = v10;
   v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v32 count:1];
   v18 = [v16 requiringAnyPlacements:v17];
 
-  v19 = [a1 callForwardingDisplayIdentifier];
-  v20 = [_UIStatusBarDisplayItemPlacement placementWithIdentifier:v19 priority:2];
+  callForwardingDisplayIdentifier = [self callForwardingDisplayIdentifier];
+  v20 = [_UIStatusBarDisplayItemPlacement placementWithIdentifier:callForwardingDisplayIdentifier priority:2];
 
-  v21 = [a1 rawDisplayIdentifier];
-  v22 = [_UIStatusBarDisplayItemPlacement placementWithIdentifier:v21 priority:1];
+  rawDisplayIdentifier = [self rawDisplayIdentifier];
+  v22 = [_UIStatusBarDisplayItemPlacement placementWithIdentifier:rawDisplayIdentifier priority:1];
 
   v31[0] = v10;
   v31[1] = v12;
@@ -750,7 +750,7 @@ LABEL_19:
   v31[4] = v18;
   v31[5] = v20;
   v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:v31 count:6];
-  v24 = [(_UIStatusBarDisplayItemPlacementGroup *)_UIStatusBarDisplayItemPlacementCellularGroup groupWithPriority:a4 placements:v23];
+  v24 = [(_UIStatusBarDisplayItemPlacementGroup *)_UIStatusBarDisplayItemPlacementCellularGroup groupWithPriority:lowPriority placements:v23];
 
   [v24 setSignalStrengthPlacement:v10];
   [v24 setWarningPlacement:v12];

@@ -1,18 +1,18 @@
 @interface ObjcDiagnosticsReporter
 + (void)initAlertDelegate;
-+ (void)launchAppWith:(int64_t)a3 options:(id)a4 completion:(id)a5;
++ (void)launchAppWith:(int64_t)with options:(id)options completion:(id)completion;
 - (ObjcDiagnosticsReporter)init;
 @end
 
 @implementation ObjcDiagnosticsReporter
 
-+ (void)launchAppWith:(int64_t)a3 options:(id)a4 completion:(id)a5
++ (void)launchAppWith:(int64_t)with options:(id)options completion:(id)completion
 {
-  v7 = _Block_copy(a5);
+  v7 = _Block_copy(completion);
   ObjCClassMetadata = swift_getObjCClassMetadata();
   _Block_copy(v7);
-  v9 = a4;
-  sub_21DD70CD4(a3, v9, ObjCClassMetadata, v7);
+  optionsCopy = options;
+  sub_21DD70CD4(with, optionsCopy, ObjCClassMetadata, v7);
   _Block_release(v7);
   _Block_release(v7);
 }

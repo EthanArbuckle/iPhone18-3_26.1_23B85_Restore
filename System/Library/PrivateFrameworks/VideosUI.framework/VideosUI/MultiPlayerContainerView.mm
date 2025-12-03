@@ -1,38 +1,38 @@
 @interface MultiPlayerContainerView
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (void)layoutSubviews;
-- (void)onHoverWithGesture:(id)a3;
-- (void)singlePressWithGesture:(id)a3;
+- (void)onHoverWithGesture:(id)gesture;
+- (void)singlePressWithGesture:(id)gesture;
 @end
 
 @implementation MultiPlayerContainerView
 
-- (void)onHoverWithGesture:(id)a3
+- (void)onHoverWithGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = self;
+  gestureCopy = gesture;
+  selfCopy = self;
   v6 = OUTLINED_FUNCTION_1_26();
   sub_1E3FD9308(v6);
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E3FDB354();
 }
 
-- (void)singlePressWithGesture:(id)a3
+- (void)singlePressWithGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = self;
+  gestureCopy = gesture;
+  selfCopy = self;
   sub_1E3FDB9F0();
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = sub_1E3FDBDCC(v4);
+  beginCopy = begin;
+  selfCopy = self;
+  LOBYTE(self) = sub_1E3FDBDCC(beginCopy);
 
   return self & 1;
 }

@@ -13,21 +13,21 @@
   v3 = objc_alloc(MEMORY[0x277D75D18]);
   [(_TVRUIControlCenterSheetPresentationController *)self frameOfPresentedViewInContainerView];
   v4 = [v3 initWithFrame:?];
-  v5 = [MEMORY[0x277D75348] blackColor];
-  [v4 setBackgroundColor:v5];
+  blackColor = [MEMORY[0x277D75348] blackColor];
+  [v4 setBackgroundColor:blackColor];
 
   CCUIExpandedModuleContinuousCornerRadius();
   [v4 _setContinuousCornerRadius:?];
   [v4 setClipsToBounds:1];
-  v6 = [(_TVRUIControlCenterSheetPresentationController *)self containerView];
-  [v6 setMaskView:v4];
+  containerView = [(_TVRUIControlCenterSheetPresentationController *)self containerView];
+  [containerView setMaskView:v4];
 }
 
 - (CGRect)frameOfPresentedViewInContainerView
 {
-  v3 = [(_TVRUIControlCenterSheetPresentationController *)self presentingViewController];
-  v4 = [v3 view];
-  [v4 bounds];
+  presentingViewController = [(_TVRUIControlCenterSheetPresentationController *)self presentingViewController];
+  view = [presentingViewController view];
+  [view bounds];
   v6 = v5;
   v39 = v7;
   v40 = v5;
@@ -35,16 +35,16 @@
   v10 = v9;
   v12 = v11;
 
-  v13 = [(_TVRUIControlCenterSheetPresentationController *)self sourceViewController];
-  v14 = [v13 view];
+  sourceViewController = [(_TVRUIControlCenterSheetPresentationController *)self sourceViewController];
+  view2 = [sourceViewController view];
 
-  [v14 frame];
+  [view2 frame];
   v16 = v15;
   v18 = v17;
   v20 = v19;
   v22 = v21;
-  v23 = [(_TVRUIControlCenterSheetPresentationController *)self containerView];
-  [v23 convertRect:v14 fromView:{v16, v18, v20, v22}];
+  containerView = [(_TVRUIControlCenterSheetPresentationController *)self containerView];
+  [containerView convertRect:view2 fromView:{v16, v18, v20, v22}];
   v44 = v25;
   v45 = v24;
   v42 = v27;
@@ -80,8 +80,8 @@
   v51.size.width = v20;
   v51.size.height = v22;
   Height = CGRectGetHeight(v51);
-  v33 = [(_TVRUIControlCenterSheetPresentationController *)self layoutStyle];
-  if (v33 == 2)
+  layoutStyle = [(_TVRUIControlCenterSheetPresentationController *)self layoutStyle];
+  if (layoutStyle == 2)
   {
     v34 = v41;
   }
@@ -91,7 +91,7 @@
     v34 = v45;
   }
 
-  if (v33 != 2)
+  if (layoutStyle != 2)
   {
     v30 = v44;
     Width = v43;

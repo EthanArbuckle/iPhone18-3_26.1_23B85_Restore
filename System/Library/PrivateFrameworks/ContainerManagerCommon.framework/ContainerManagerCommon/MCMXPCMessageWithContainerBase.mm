@@ -1,7 +1,7 @@
 @interface MCMXPCMessageWithContainerBase
 - (MCMContainerIdentity)containerIdentity;
-- (MCMXPCMessageWithContainerBase)initWithXPCObject:(id)a3 context:(id)a4 error:(unint64_t *)a5;
-- (id)containerIdentityFromXPCObject:(id)a3 context:(id)a4 error:(unint64_t *)a5;
+- (MCMXPCMessageWithContainerBase)initWithXPCObject:(id)object context:(id)context error:(unint64_t *)error;
+- (id)containerIdentityFromXPCObject:(id)object context:(id)context error:(unint64_t *)error;
 - (unsigned)disposition;
 @end
 
@@ -20,28 +20,28 @@
   v8 = *MEMORY[0x1E69E9840];
   v7.receiver = self;
   v7.super_class = MCMXPCMessageWithContainerBase;
-  v3 = [(MCMXPCMessageBase *)&v7 disposition];
-  if (v3 == 1)
+  disposition = [(MCMXPCMessageBase *)&v7 disposition];
+  if (disposition == 1)
   {
-    v4 = [(MCMXPCMessageWithContainerBase *)self containerIdentity];
-    v3 = [v4 disposition];
+    containerIdentity = [(MCMXPCMessageWithContainerBase *)self containerIdentity];
+    disposition = [containerIdentity disposition];
   }
 
   v5 = *MEMORY[0x1E69E9840];
-  return v3;
+  return disposition;
 }
 
-- (id)containerIdentityFromXPCObject:(id)a3 context:(id)a4 error:(unint64_t *)a5
+- (id)containerIdentityFromXPCObject:(id)object context:(id)context error:(unint64_t *)error
 {
   v33[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  objectCopy = object;
+  contextCopy = context;
   v33[0] = 1;
-  v10 = [v9 clientIdentity];
-  uint64 = xpc_dictionary_get_uint64(v8, "Platform");
-  v12 = [v10 codeSignInfo];
-  v13 = [v12 identifier];
-  v14 = [(MCMXPCMessageBase *)self identifierFromXPCObject:v8 elseClientIdentifier:v13];
+  clientIdentity = [contextCopy clientIdentity];
+  uint64 = xpc_dictionary_get_uint64(objectCopy, "Platform");
+  codeSignInfo = [clientIdentity codeSignInfo];
+  identifier = [codeSignInfo identifier];
+  v14 = [(MCMXPCMessageBase *)self identifierFromXPCObject:objectCopy elseClientIdentifier:identifier];
 
   if (!v14)
   {
@@ -53,10 +53,10 @@
     goto LABEL_10;
   }
 
-  v15 = xpc_dictionary_get_uint64(v8, "ContainerClass");
-  v16 = [v9 globalConfiguration];
-  v17 = [v16 staticConfig];
-  v18 = [v17 configForContainerClass:v15];
+  v15 = xpc_dictionary_get_uint64(objectCopy, "ContainerClass");
+  globalConfiguration = [contextCopy globalConfiguration];
+  staticConfig = [globalConfiguration staticConfig];
+  v18 = [staticConfig configForContainerClass:v15];
 
   if (!v18)
   {
@@ -75,7 +75,7 @@
     v26 = 72;
 LABEL_10:
     v33[0] = v26;
-    if (!a5)
+    if (!error)
     {
       goto LABEL_13;
     }
@@ -84,20 +84,20 @@ LABEL_10:
   }
 
   v31 = uint64;
-  v30 = xpc_dictionary_get_BOOL(v8, "Transient");
+  v30 = xpc_dictionary_get_BOOL(objectCopy, "Transient");
   v19 = objc_opt_class();
-  v20 = [v9 userIdentityCache];
-  v21 = [(MCMXPCMessageBase *)self warnings];
+  userIdentityCache = [contextCopy userIdentityCache];
+  warnings = [(MCMXPCMessageBase *)self warnings];
   v32 = 0;
-  v22 = [v19 legacyUserIdentityForIdentifier:v14 targetUserIdentity:0 containerConfig:v18 clientIdentity:v10 userIdentityCache:v20 warnings:v21 error:&v32];
+  v22 = [v19 legacyUserIdentityForIdentifier:v14 targetUserIdentity:0 containerConfig:v18 clientIdentity:clientIdentity userIdentityCache:userIdentityCache warnings:warnings error:&v32];
   v23 = v32;
 
   if (v22)
   {
-    v24 = [v9 userIdentityCache];
-    v25 = [MCMContainerIdentity containerIdentityWithUserIdentity:v22 identifier:v14 containerConfig:v18 platform:v31 transient:v30 userIdentityCache:v24 error:v33];
+    userIdentityCache2 = [contextCopy userIdentityCache];
+    v25 = [MCMContainerIdentity containerIdentityWithUserIdentity:v22 identifier:v14 containerConfig:v18 platform:v31 transient:v30 userIdentityCache:userIdentityCache2 error:v33];
 
-    if (!a5)
+    if (!error)
     {
       goto LABEL_13;
     }
@@ -107,7 +107,7 @@ LABEL_10:
   {
     v25 = 0;
     v33[0] = [v23 type];
-    if (!a5)
+    if (!error)
     {
       goto LABEL_13;
     }
@@ -116,7 +116,7 @@ LABEL_10:
 LABEL_11:
   if (!v25)
   {
-    *a5 = v33[0];
+    *error = v33[0];
   }
 
 LABEL_13:
@@ -127,18 +127,18 @@ LABEL_13:
   return v27;
 }
 
-- (MCMXPCMessageWithContainerBase)initWithXPCObject:(id)a3 context:(id)a4 error:(unint64_t *)a5
+- (MCMXPCMessageWithContainerBase)initWithXPCObject:(id)object context:(id)context error:(unint64_t *)error
 {
   v17 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  objectCopy = object;
+  contextCopy = context;
   v16.receiver = self;
   v16.super_class = MCMXPCMessageWithContainerBase;
-  v10 = [(MCMXPCMessageBase *)&v16 initWithXPCObject:v8 context:v9 error:a5];
+  v10 = [(MCMXPCMessageBase *)&v16 initWithXPCObject:objectCopy context:contextCopy error:error];
   v11 = v10;
   if (v10)
   {
-    v12 = [(MCMXPCMessageWithContainerBase *)v10 containerIdentityFromXPCObject:v8 context:v9 error:a5];
+    v12 = [(MCMXPCMessageWithContainerBase *)v10 containerIdentityFromXPCObject:objectCopy context:contextCopy error:error];
     containerIdentity = v11->_containerIdentity;
     v11->_containerIdentity = v12;
 

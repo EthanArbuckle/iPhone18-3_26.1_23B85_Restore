@@ -1,35 +1,35 @@
 @interface TSDCanvasView
 - (BOOL)isInteractingWithLink;
 - (BOOL)mightHaveLinks;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (BOOL)willInteractWithLinkAtPoint:(CGPoint)a3;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (BOOL)willInteractWithLinkAtPoint:(CGPoint)point;
 - (TSDCanvasLayer)canvasLayer;
 - (TSDCanvasView)rootCanvasView;
 - (TSKScrollView)enclosingScrollView;
-- (id)_textImageFromRect:(CGRect)a3;
-- (id)actionForLayer:(id)a3 forKey:(id)a4;
-- (void)_requestTextItemConstrainedToLineAtPoint:(CGPoint)a3 resultHandler:(id)a4;
+- (id)_textImageFromRect:(CGRect)rect;
+- (id)actionForLayer:(id)layer forKey:(id)key;
+- (void)_requestTextItemConstrainedToLineAtPoint:(CGPoint)point resultHandler:(id)handler;
 - (void)cancelInteractionWithLink;
-- (void)setController:(id)a3;
-- (void)startInteractionWithLinkAtPoint:(CGPoint)a3;
-- (void)startLongInteractionWithLinkAtPoint:(CGPoint)a3;
-- (void)tapLinkAtPoint:(CGPoint)a3;
+- (void)setController:(id)controller;
+- (void)startInteractionWithLinkAtPoint:(CGPoint)point;
+- (void)startLongInteractionWithLinkAtPoint:(CGPoint)point;
+- (void)tapLinkAtPoint:(CGPoint)point;
 - (void)teardown;
-- (void)updateInteractionWithLinkAtPoint:(CGPoint)a3;
-- (void)validateInteractionWithLinkAtPoint:(CGPoint)a3;
+- (void)updateInteractionWithLinkAtPoint:(CGPoint)point;
+- (void)validateInteractionWithLinkAtPoint:(CGPoint)point;
 @end
 
 @implementation TSDCanvasView
 
-- (void)setController:(id)a3
+- (void)setController:(id)controller
 {
   if (!self->mController || (v5 = [MEMORY[0x277D6C290] currentHandler], v6 = objc_msgSend(MEMORY[0x277CCACA8], "stringWithUTF8String:", "-[TSDCanvasView setController:]"), objc_msgSend(v5, "handleFailureInFunction:file:lineNumber:description:", v6, objc_msgSend(MEMORY[0x277CCACA8], "stringWithUTF8String:", "/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDiOSCanvasView.m"), 38, @"shouldn't try to set canvasView's controller more than once"), !self->mController))
   {
-    self->mController = a3;
-    [(TSDCanvasLayer *)[(TSDCanvasView *)self canvasLayer] setController:a3];
-    v7 = [a3 layerHost];
+    self->mController = controller;
+    [(TSDCanvasLayer *)[(TSDCanvasView *)self canvasLayer] setController:controller];
+    layerHost = [controller layerHost];
 
-    [(TSDCanvasView *)self setLayerHost:v7];
+    [(TSDCanvasView *)self setLayerHost:layerHost];
   }
 }
 
@@ -61,26 +61,26 @@
 
 - (TSDCanvasView)rootCanvasView
 {
-  v2 = self;
-  v3 = [(TSDCanvasView *)self superview];
-  if (v3)
+  selfCopy = self;
+  superview = [(TSDCanvasView *)self superview];
+  if (superview)
   {
-    v4 = v3;
+    superview2 = superview;
     do
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v2 = v4;
+        selfCopy = superview2;
       }
 
-      v4 = [(TSDCanvasView *)v4 superview];
+      superview2 = [(TSDCanvasView *)superview2 superview];
     }
 
-    while (v4);
+    while (superview2);
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)mightHaveLinks
@@ -96,10 +96,10 @@
   return v3;
 }
 
-- (void)tapLinkAtPoint:(CGPoint)a3
+- (void)tapLinkAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   if (TSUSupportsTextInteraction())
   {
     mHyperLinkDelegate = self->mHyperLinkDelegate;
@@ -121,10 +121,10 @@
   return v3;
 }
 
-- (void)startInteractionWithLinkAtPoint:(CGPoint)a3
+- (void)startInteractionWithLinkAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   if (TSUSupportsTextInteraction())
   {
     mHyperLinkDelegate = self->mHyperLinkDelegate;
@@ -133,10 +133,10 @@
   }
 }
 
-- (void)updateInteractionWithLinkAtPoint:(CGPoint)a3
+- (void)updateInteractionWithLinkAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   if (TSUSupportsTextInteraction())
   {
     mHyperLinkDelegate = self->mHyperLinkDelegate;
@@ -145,10 +145,10 @@
   }
 }
 
-- (void)validateInteractionWithLinkAtPoint:(CGPoint)a3
+- (void)validateInteractionWithLinkAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   if (TSUSupportsTextInteraction())
   {
     mHyperLinkDelegate = self->mHyperLinkDelegate;
@@ -167,10 +167,10 @@
   }
 }
 
-- (void)startLongInteractionWithLinkAtPoint:(CGPoint)a3
+- (void)startLongInteractionWithLinkAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   if (TSUSupportsTextInteraction())
   {
     mHyperLinkDelegate = self->mHyperLinkDelegate;
@@ -179,10 +179,10 @@
   }
 }
 
-- (BOOL)willInteractWithLinkAtPoint:(CGPoint)a3
+- (BOOL)willInteractWithLinkAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v6 = TSUSupportsTextInteraction();
   if (v6)
   {
@@ -194,22 +194,22 @@
   return v6;
 }
 
-- (void)_requestTextItemConstrainedToLineAtPoint:(CGPoint)a3 resultHandler:(id)a4
+- (void)_requestTextItemConstrainedToLineAtPoint:(CGPoint)point resultHandler:(id)handler
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   if (TSUSupportsTextInteraction() && (objc_opt_respondsToSelector() & 1) != 0)
   {
     mHyperLinkDelegate = self->mHyperLinkDelegate;
 
-    [(UITextLinkInteraction *)mHyperLinkDelegate _requestTextItemConstrainedToLineAtPoint:a4 resultHandler:x, y];
+    [(UITextLinkInteraction *)mHyperLinkDelegate _requestTextItemConstrainedToLineAtPoint:handler resultHandler:x, y];
   }
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   [(TSDCanvasView *)self bounds];
   v8 = v7;
   v10 = v9;
@@ -239,25 +239,25 @@
   return CGRectContainsPoint(*&v20, *&v24);
 }
 
-- (id)actionForLayer:(id)a3 forKey:(id)a4
+- (id)actionForLayer:(id)layer forKey:(id)key
 {
-  if ([(TSDCanvasView *)self layer]== a3 && (v8 = [(TSDInteractiveCanvasController *)self->mController i_currentAnimation]) != 0)
+  if ([(TSDCanvasView *)self layer]== layer && (v8 = [(TSDInteractiveCanvasController *)self->mController i_currentAnimation]) != 0)
   {
 
-    return [v8 actionForLayer:a3 forKey:a4];
+    return [v8 actionForLayer:layer forKey:key];
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = TSDCanvasView;
-    return [(TSDCanvasView *)&v9 actionForLayer:a3 forKey:a4];
+    return [(TSDCanvasView *)&v9 actionForLayer:layer forKey:key];
   }
 }
 
-- (id)_textImageFromRect:(CGRect)a3
+- (id)_textImageFromRect:(CGRect)rect
 {
-  result = [(TSDInteractiveCanvasController *)self->mController textImageFromRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  result = [(TSDInteractiveCanvasController *)self->mController textImageFromRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   if (result)
   {
     v4 = result;

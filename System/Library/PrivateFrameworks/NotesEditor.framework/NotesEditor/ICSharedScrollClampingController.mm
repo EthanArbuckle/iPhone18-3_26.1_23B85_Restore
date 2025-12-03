@@ -1,19 +1,19 @@
 @interface ICSharedScrollClampingController
 - (BOOL)isClamped;
-- (BOOL)notificationObjectMatchesTextViewNote:(id)a3;
-- (ICSharedScrollClampingController)initWithTextView:(id)a3 listensToMergeNotifications:(BOOL)a4;
-- (ICSharedScrollClampingController)initWithTextView:(id)a3 listensToMergeNotifications:(BOOL)a4 clampingTurnOffDelay:(double)a5;
+- (BOOL)notificationObjectMatchesTextViewNote:(id)note;
+- (ICSharedScrollClampingController)initWithTextView:(id)view listensToMergeNotifications:(BOOL)notifications;
+- (ICSharedScrollClampingController)initWithTextView:(id)view listensToMergeNotifications:(BOOL)notifications clampingTurnOffDelay:(double)delay;
 - (ICTextView)textView;
 - (id)clampedYValue;
 - (void)clamp;
-- (void)contextDidSaveUserInitiatedChange:(id)a3;
-- (void)contextWillSaveUserInitiatedChange:(id)a3;
+- (void)contextDidSaveUserInitiatedChange:(id)change;
+- (void)contextWillSaveUserInitiatedChange:(id)change;
 - (void)dealloc;
-- (void)mergeRelatedOperationsDidEnd:(id)a3;
-- (void)mergeRelatedOperationsWillBegin:(id)a3;
-- (void)textStorageWillEndEditingNotification:(id)a3;
-- (void)topTextIndex:(unint64_t *)a3 topTextOffset:(double *)a4 topTextFragmentHeight:(double *)a5;
-- (void)unclampWithMergeUpdates:(BOOL)a3;
+- (void)mergeRelatedOperationsDidEnd:(id)end;
+- (void)mergeRelatedOperationsWillBegin:(id)begin;
+- (void)textStorageWillEndEditingNotification:(id)notification;
+- (void)topTextIndex:(unint64_t *)index topTextOffset:(double *)offset topTextFragmentHeight:(double *)height;
+- (void)unclampWithMergeUpdates:(BOOL)updates;
 @end
 
 @implementation ICSharedScrollClampingController
@@ -25,28 +25,28 @@
     goto LABEL_8;
   }
 
-  v3 = [(ICSharedScrollClampingController *)self scrollClampingTopTextIndex];
-  v4 = [(ICSharedScrollClampingController *)self textView];
-  v5 = [v4 textStorage];
-  v6 = [v5 length];
+  scrollClampingTopTextIndex = [(ICSharedScrollClampingController *)self scrollClampingTopTextIndex];
+  textView = [(ICSharedScrollClampingController *)self textView];
+  textStorage = [textView textStorage];
+  v6 = [textStorage length];
 
-  if (v3 >= v6)
+  if (scrollClampingTopTextIndex >= v6)
   {
     goto LABEL_8;
   }
 
   IsTextKit2Enabled = ICInternalSettingsIsTextKit2Enabled();
-  v8 = [(ICSharedScrollClampingController *)self textView];
-  v9 = v8;
+  textView2 = [(ICSharedScrollClampingController *)self textView];
+  v9 = textView2;
   if (IsTextKit2Enabled)
   {
-    v10 = [v8 textLayoutManager];
+    textLayoutManager = [textView2 textLayoutManager];
 
-    v11 = [v10 documentRange];
-    v12 = [v11 location];
-    v13 = [v10 locationFromLocation:v12 withOffset:{-[ICSharedScrollClampingController scrollClampingTopTextIndex](self, "scrollClampingTopTextIndex")}];
+    documentRange = [textLayoutManager documentRange];
+    location = [documentRange location];
+    layoutManager2 = [textLayoutManager locationFromLocation:location withOffset:{-[ICSharedScrollClampingController scrollClampingTopTextIndex](self, "scrollClampingTopTextIndex")}];
 
-    v14 = [v10 textLayoutFragmentForLocation:v13];
+    v14 = [textLayoutManager textLayoutFragmentForLocation:layoutManager2];
     [v14 layoutFragmentFrame];
     v16 = v15;
     v18 = v17;
@@ -54,12 +54,12 @@
 
   else
   {
-    v19 = [v8 layoutManager];
-    v20 = [v19 glyphIndexForCharacterAtIndex:{-[ICSharedScrollClampingController scrollClampingTopTextIndex](self, "scrollClampingTopTextIndex")}];
+    layoutManager = [textView2 layoutManager];
+    v20 = [layoutManager glyphIndexForCharacterAtIndex:{-[ICSharedScrollClampingController scrollClampingTopTextIndex](self, "scrollClampingTopTextIndex")}];
 
-    v10 = [(ICSharedScrollClampingController *)self textView];
-    v13 = [v10 layoutManager];
-    [v13 lineFragmentRectForGlyphAtIndex:v20 effectiveRange:0];
+    textLayoutManager = [(ICSharedScrollClampingController *)self textView];
+    layoutManager2 = [textLayoutManager layoutManager];
+    [layoutManager2 lineFragmentRectForGlyphAtIndex:v20 effectiveRange:0];
     v16 = v21;
     v18 = v22;
   }
@@ -87,18 +87,18 @@ LABEL_8:
     return 0;
   }
 
-  v3 = [(ICSharedScrollClampingController *)self scrollClampingTopTextIndex];
-  v4 = [(ICSharedScrollClampingController *)self textView];
-  v5 = [v4 textStorage];
-  v6 = v3 < [v5 length];
+  scrollClampingTopTextIndex = [(ICSharedScrollClampingController *)self scrollClampingTopTextIndex];
+  textView = [(ICSharedScrollClampingController *)self textView];
+  textStorage = [textView textStorage];
+  v6 = scrollClampingTopTextIndex < [textStorage length];
 
   return v6;
 }
 
-- (ICSharedScrollClampingController)initWithTextView:(id)a3 listensToMergeNotifications:(BOOL)a4
+- (ICSharedScrollClampingController)initWithTextView:(id)view listensToMergeNotifications:(BOOL)notifications
 {
-  v4 = a4;
-  v6 = a3;
+  notificationsCopy = notifications;
+  viewCopy = view;
   v15.receiver = self;
   v15.super_class = ICSharedScrollClampingController;
   v7 = [(ICSharedScrollClampingController *)&v15 init];
@@ -109,35 +109,35 @@ LABEL_8:
     [(ICSharedScrollClampingController *)v8 setScrollClampingTopOffsetFactor:0.0];
     [(ICSharedScrollClampingController *)v8 setScrollClampingTopOffsetLineFragmentHeight:0.0];
     [(ICSharedScrollClampingController *)v8 setScrollClampingStack:0];
-    objc_storeWeak(&v8->_textView, v6);
-    if (v4)
+    objc_storeWeak(&v8->_textView, viewCopy);
+    if (notificationsCopy)
     {
-      v9 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v9 addObserver:v8 selector:sel_mergeRelatedOperationsWillBegin_ name:*MEMORY[0x277D35D00] object:0];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter addObserver:v8 selector:sel_mergeRelatedOperationsWillBegin_ name:*MEMORY[0x277D35D00] object:0];
 
-      v10 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v10 addObserver:v8 selector:sel_mergeRelatedOperationsDidEnd_ name:*MEMORY[0x277D35CF8] object:0];
+      defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter2 addObserver:v8 selector:sel_mergeRelatedOperationsDidEnd_ name:*MEMORY[0x277D35CF8] object:0];
 
-      v11 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v11 addObserver:v8 selector:sel_contextWillSaveUserInitiatedChange_ name:*MEMORY[0x277D35CD0] object:0];
+      defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter3 addObserver:v8 selector:sel_contextWillSaveUserInitiatedChange_ name:*MEMORY[0x277D35CD0] object:0];
 
-      v12 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v12 addObserver:v8 selector:sel_contextDidSaveUserInitiatedChange_ name:*MEMORY[0x277D35CC8] object:0];
+      defaultCenter4 = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter4 addObserver:v8 selector:sel_contextDidSaveUserInitiatedChange_ name:*MEMORY[0x277D35CC8] object:0];
     }
 
-    v13 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v13 addObserver:v8 selector:sel_textStorageWillEndEditingNotification_ name:*MEMORY[0x277D36660] object:0];
+    defaultCenter5 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter5 addObserver:v8 selector:sel_textStorageWillEndEditingNotification_ name:*MEMORY[0x277D36660] object:0];
   }
 
   return v8;
 }
 
-- (ICSharedScrollClampingController)initWithTextView:(id)a3 listensToMergeNotifications:(BOOL)a4 clampingTurnOffDelay:(double)a5
+- (ICSharedScrollClampingController)initWithTextView:(id)view listensToMergeNotifications:(BOOL)notifications clampingTurnOffDelay:(double)delay
 {
-  result = [(ICSharedScrollClampingController *)self initWithTextView:a3 listensToMergeNotifications:a4];
-  if (a5 > 0.0 && result != 0)
+  result = [(ICSharedScrollClampingController *)self initWithTextView:view listensToMergeNotifications:notifications];
+  if (delay > 0.0 && result != 0)
   {
-    result->_scrollClampingTurnOffDelay = a5;
+    result->_scrollClampingTurnOffDelay = delay;
   }
 
   return result;
@@ -145,18 +145,18 @@ LABEL_8:
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = ICSharedScrollClampingController;
   [(ICSharedScrollClampingController *)&v4 dealloc];
 }
 
-- (void)topTextIndex:(unint64_t *)a3 topTextOffset:(double *)a4 topTextFragmentHeight:(double *)a5
+- (void)topTextIndex:(unint64_t *)index topTextOffset:(double *)offset topTextFragmentHeight:(double *)height
 {
-  v9 = [(ICSharedScrollClampingController *)self textView];
-  [v9 visibleTextRect];
+  textView = [(ICSharedScrollClampingController *)self textView];
+  [textView visibleTextRect];
   v11 = v10;
   v13 = v12;
   v15 = v14;
@@ -182,25 +182,25 @@ LABEL_8:
   v56.size.width = v15;
   v56.size.height = v17;
   v21 = CGRectGetMinY(v56);
-  v22 = [(ICSharedScrollClampingController *)self textView];
-  v51 = [v22 closestPositionToPoint:{MinX, MinY}];
+  textView2 = [(ICSharedScrollClampingController *)self textView];
+  v51 = [textView2 closestPositionToPoint:{MinX, MinY}];
 
-  v23 = [(ICSharedScrollClampingController *)self textView];
-  v24 = [v23 closestPositionToPoint:{MaxX, v21}];
+  textView3 = [(ICSharedScrollClampingController *)self textView];
+  v24 = [textView3 closestPositionToPoint:{MaxX, v21}];
 
-  v25 = [(ICSharedScrollClampingController *)self textView];
-  v26 = [(ICSharedScrollClampingController *)self textView];
-  v27 = [v26 beginningOfDocument];
-  v28 = [v25 offsetFromPosition:v27 toPosition:v51];
+  textView4 = [(ICSharedScrollClampingController *)self textView];
+  textView5 = [(ICSharedScrollClampingController *)self textView];
+  beginningOfDocument = [textView5 beginningOfDocument];
+  v28 = [textView4 offsetFromPosition:beginningOfDocument toPosition:v51];
 
-  v29 = [(ICSharedScrollClampingController *)self textView];
-  v30 = [(ICSharedScrollClampingController *)self textView];
-  v31 = [v30 beginningOfDocument];
-  v32 = [v29 offsetFromPosition:v31 toPosition:v24];
+  textView6 = [(ICSharedScrollClampingController *)self textView];
+  textView7 = [(ICSharedScrollClampingController *)self textView];
+  beginningOfDocument2 = [textView7 beginningOfDocument];
+  v32 = [textView6 offsetFromPosition:beginningOfDocument2 toPosition:v24];
 
-  v33 = [(ICSharedScrollClampingController *)self textView];
-  v34 = [v33 textStorage];
-  v35 = [v34 length];
+  textView8 = [(ICSharedScrollClampingController *)self textView];
+  textStorage = [textView8 textStorage];
+  v35 = [textStorage length];
 
   if (v28 < v35 && v32 < v35)
   {
@@ -214,33 +214,33 @@ LABEL_8:
       v36 = v28;
     }
 
-    *a3 = v36;
+    *index = v36;
     if (ICInternalSettingsIsTextKit2Enabled())
     {
-      v37 = *a3;
+      v37 = *index;
     }
 
     else
     {
-      v38 = [(ICSharedScrollClampingController *)self textView];
-      v39 = [v38 layoutManager];
-      v37 = [v39 glyphIndexForCharacterAtIndex:*a3];
+      textView9 = [(ICSharedScrollClampingController *)self textView];
+      layoutManager = [textView9 layoutManager];
+      v37 = [layoutManager glyphIndexForCharacterAtIndex:*index];
     }
 
     IsTextKit2Enabled = ICInternalSettingsIsTextKit2Enabled();
-    v41 = [(ICSharedScrollClampingController *)self textView];
-    v42 = v41;
+    textView10 = [(ICSharedScrollClampingController *)self textView];
+    v42 = textView10;
     if (IsTextKit2Enabled)
     {
-      [v41 ic_rectForRange:{v37, 0}];
+      [textView10 ic_rectForRange:{v37, 0}];
       v44 = v43;
       v46 = v45;
     }
 
     else
     {
-      v47 = [v41 layoutManager];
-      [v47 lineFragmentRectForGlyphAtIndex:v37 effectiveRange:0];
+      layoutManager2 = [textView10 layoutManager];
+      [layoutManager2 lineFragmentRectForGlyphAtIndex:v37 effectiveRange:0];
       v44 = v48;
       v46 = v49;
     }
@@ -251,24 +251,24 @@ LABEL_8:
       v50 = v46;
     }
 
-    *a4 = (v13 - v44) / v50;
-    *a5 = v46;
+    *offset = (v13 - v44) / v50;
+    *height = v46;
   }
 }
 
-- (void)mergeRelatedOperationsWillBegin:(id)a3
+- (void)mergeRelatedOperationsWillBegin:(id)begin
 {
-  v4 = a3;
+  beginCopy = begin;
   objc_opt_class();
-  v5 = [v4 object];
+  object = [beginCopy object];
 
   v10 = ICDynamicCast();
 
-  v6 = [(ICSharedScrollClampingController *)self textView];
-  v7 = [v6 editorContainer];
-  v8 = [v7 note];
+  textView = [(ICSharedScrollClampingController *)self textView];
+  editorContainer = [textView editorContainer];
+  note = [editorContainer note];
 
-  if (v10 == v8)
+  if (v10 == note)
   {
     userInitiatedSaveCount = self->_userInitiatedSaveCount;
     if (userInitiatedSaveCount <= 0)
@@ -283,22 +283,22 @@ LABEL_8:
   }
 }
 
-- (void)mergeRelatedOperationsDidEnd:(id)a3
+- (void)mergeRelatedOperationsDidEnd:(id)end
 {
-  v13 = a3;
+  endCopy = end;
   objc_opt_class();
-  v4 = [v13 object];
+  object = [endCopy object];
   v5 = ICDynamicCast();
 
-  v6 = [(ICSharedScrollClampingController *)self textView];
-  v7 = [v6 editorContainer];
-  v8 = [v7 note];
+  textView = [(ICSharedScrollClampingController *)self textView];
+  editorContainer = [textView editorContainer];
+  note = [editorContainer note];
 
-  if (v5 == v8)
+  if (v5 == note)
   {
     objc_opt_class();
-    v9 = [v13 userInfo];
-    v10 = [v9 objectForKeyedSubscript:*MEMORY[0x277D35C78]];
+    userInfo = [endCopy userInfo];
+    v10 = [userInfo objectForKeyedSubscript:*MEMORY[0x277D35C78]];
     v11 = ICDynamicCast();
 
     if (v11)
@@ -315,9 +315,9 @@ LABEL_8:
   }
 }
 
-- (void)contextWillSaveUserInitiatedChange:(id)a3
+- (void)contextWillSaveUserInitiatedChange:(id)change
 {
-  if ([(ICSharedScrollClampingController *)self notificationObjectMatchesTextViewNote:a3])
+  if ([(ICSharedScrollClampingController *)self notificationObjectMatchesTextViewNote:change])
   {
     objc_initWeak(&location, self);
     v4[0] = MEMORY[0x277D85DD0];
@@ -337,9 +337,9 @@ void __71__ICSharedScrollClampingController_contextWillSaveUserInitiatedChange__
   [WeakRetained setUserInitiatedSaveCount:{objc_msgSend(WeakRetained, "userInitiatedSaveCount") + 1}];
 }
 
-- (void)contextDidSaveUserInitiatedChange:(id)a3
+- (void)contextDidSaveUserInitiatedChange:(id)change
 {
-  if ([(ICSharedScrollClampingController *)self notificationObjectMatchesTextViewNote:a3])
+  if ([(ICSharedScrollClampingController *)self notificationObjectMatchesTextViewNote:change])
   {
     objc_initWeak(&location, self);
     v4[0] = MEMORY[0x277D85DD0];
@@ -359,27 +359,27 @@ void __70__ICSharedScrollClampingController_contextDidSaveUserInitiatedChange___
   [WeakRetained setUserInitiatedSaveCount:{objc_msgSend(WeakRetained, "userInitiatedSaveCount") - 1}];
 }
 
-- (BOOL)notificationObjectMatchesTextViewNote:(id)a3
+- (BOOL)notificationObjectMatchesTextViewNote:(id)note
 {
-  v4 = a3;
+  noteCopy = note;
   objc_opt_class();
-  v5 = [v4 object];
+  object = [noteCopy object];
 
   v6 = ICCheckedDynamicCast();
 
-  v7 = [(ICSharedScrollClampingController *)self textView];
-  v8 = [v7 editorContainer];
-  v9 = [v8 note];
-  v10 = [v9 objectID];
+  textView = [(ICSharedScrollClampingController *)self textView];
+  editorContainer = [textView editorContainer];
+  note = [editorContainer note];
+  objectID = [note objectID];
 
-  LOBYTE(v7) = [v6 isEqual:v10];
-  return v7;
+  LOBYTE(textView) = [v6 isEqual:objectID];
+  return textView;
 }
 
-- (void)textStorageWillEndEditingNotification:(id)a3
+- (void)textStorageWillEndEditingNotification:(id)notification
 {
-  v4 = a3;
-  v3 = v4;
+  notificationCopy = notification;
+  v3 = notificationCopy;
   performBlockOnMainThread();
 }
 
@@ -453,7 +453,7 @@ LABEL_9:
   [(ICSharedScrollClampingController *)self setScrollClampingStack:[(ICSharedScrollClampingController *)self scrollClampingStack]+ 1];
 }
 
-- (void)unclampWithMergeUpdates:(BOOL)a3
+- (void)unclampWithMergeUpdates:(BOOL)updates
 {
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
@@ -462,7 +462,7 @@ LABEL_9:
   aBlock[4] = self;
   v5 = _Block_copy(aBlock);
   [(ICSharedScrollClampingController *)self scrollClampingTurnOffDelay];
-  if (v6 > 0.0 && a3)
+  if (v6 > 0.0 && updates)
   {
     [(ICSharedScrollClampingController *)self scrollClampingTurnOffDelay];
     v8 = dispatch_time(0, (v7 * 1000000000.0));

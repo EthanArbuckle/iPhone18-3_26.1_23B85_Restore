@@ -1,11 +1,11 @@
 @interface FBSMutableSceneSettings
 - (id)ignoreOcclusionReasons;
-- (void)addPropagatedProperty:(SEL)a3;
-- (void)addPropagatedSetting:(id)a3;
-- (void)addPropagatedSettings:(id)a3;
-- (void)removePropagatedProperty:(SEL)a3;
-- (void)removePropagatedSetting:(id)a3;
-- (void)removePropagatedSettings:(id)a3;
+- (void)addPropagatedProperty:(SEL)property;
+- (void)addPropagatedSetting:(id)setting;
+- (void)addPropagatedSettings:(id)settings;
+- (void)removePropagatedProperty:(SEL)property;
+- (void)removePropagatedSetting:(id)setting;
+- (void)removePropagatedSettings:(id)settings;
 @end
 
 @implementation FBSMutableSceneSettings
@@ -25,63 +25,63 @@
   return ignoreOcclusionReasons;
 }
 
-- (void)addPropagatedProperty:(SEL)a3
+- (void)addPropagatedProperty:(SEL)property
 {
   v6 = objc_opt_class();
-  v7 = FBSSettingForSelector(v6, a3);
+  v7 = FBSSettingForSelector(v6, property);
   if (!v7)
   {
-    [(FBSMutableSceneSettings *)a3 addPropagatedProperty:a2];
+    [(FBSMutableSceneSettings *)property addPropagatedProperty:a2];
   }
 
   v8 = v7;
   [(FBSMutableSceneSettings *)self addPropagatedSetting:v7];
 }
 
-- (void)removePropagatedProperty:(SEL)a3
+- (void)removePropagatedProperty:(SEL)property
 {
   v6 = objc_opt_class();
-  v7 = FBSSettingForSelector(v6, a3);
+  v7 = FBSSettingForSelector(v6, property);
   if (!v7)
   {
-    [(FBSMutableSceneSettings *)a3 removePropagatedProperty:a2];
+    [(FBSMutableSceneSettings *)property removePropagatedProperty:a2];
   }
 
   v8 = v7;
   [(FBSMutableSceneSettings *)self removePropagatedSetting:v7];
 }
 
-- (void)addPropagatedSetting:(id)a3
+- (void)addPropagatedSetting:(id)setting
 {
-  v5 = a3;
-  if (!v5)
+  settingCopy = setting;
+  if (!settingCopy)
   {
     [FBSMutableSceneSettings addPropagatedSetting:a2];
   }
 
-  v7 = v5;
-  v6 = [MEMORY[0x1E695DFD8] setWithObject:v5];
+  v7 = settingCopy;
+  v6 = [MEMORY[0x1E695DFD8] setWithObject:settingCopy];
   [(FBSMutableSceneSettings *)self addPropagatedSettings:v6];
 }
 
-- (void)removePropagatedSetting:(id)a3
+- (void)removePropagatedSetting:(id)setting
 {
-  v5 = a3;
-  if (!v5)
+  settingCopy = setting;
+  if (!settingCopy)
   {
     [FBSMutableSceneSettings removePropagatedSetting:a2];
   }
 
-  v7 = v5;
-  v6 = [MEMORY[0x1E695DFD8] setWithObject:v5];
+  v7 = settingCopy;
+  v6 = [MEMORY[0x1E695DFD8] setWithObject:settingCopy];
   [(FBSMutableSceneSettings *)self removePropagatedSettings:v6];
 }
 
-- (void)addPropagatedSettings:(id)a3
+- (void)addPropagatedSettings:(id)settings
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if ([v5 count])
+  settingsCopy = settings;
+  if ([settingsCopy count])
   {
     v14 = a2;
     v6 = [(FBSSettings *)self valueForProperty:sel_propagatedSettings expectedClass:objc_opt_class()];
@@ -95,7 +95,7 @@
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v7 = v5;
+    v7 = settingsCopy;
     v8 = [v7 countByEnumeratingWithState:&v15 objects:v21 count:16];
     if (v8)
     {
@@ -124,17 +124,17 @@
 
           if (([(FBSSetting *)v12 isLocal]& 1) != 0)
           {
-            v13 = FBLogCommon();
-            if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+            name = FBLogCommon();
+            if (os_log_type_enabled(name, OS_LOG_TYPE_ERROR))
             {
-              [(FBSMutableSceneSettings *)v19 addPropagatedSettings:v12, &v20, v13];
+              [(FBSMutableSceneSettings *)v19 addPropagatedSettings:v12, &v20, name];
             }
           }
 
           else
           {
-            v13 = [(FBSSetting *)v12 name];
-            [v6 setObject:v12 forKey:v13];
+            name = [(FBSSetting *)v12 name];
+            [v6 setObject:v12 forKey:name];
           }
         }
 
@@ -146,11 +146,11 @@
   }
 }
 
-- (void)removePropagatedSettings:(id)a3
+- (void)removePropagatedSettings:(id)settings
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if ([v5 count])
+  settingsCopy = settings;
+  if ([settingsCopy count])
   {
     v6 = [(FBSSettings *)self valueForProperty:sel_propagatedSettings expectedClass:objc_opt_class()];
     if (v6)
@@ -159,7 +159,7 @@
       v17 = 0u;
       v14 = 0u;
       v15 = 0u;
-      v7 = v5;
+      v7 = settingsCopy;
       v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v8)
       {
@@ -186,8 +186,8 @@
               [FBSMutableSceneSettings removePropagatedSettings:a2];
             }
 
-            v13 = [(FBSSetting *)v12 name];
-            [v6 setObject:0 forKey:{v13, v14}];
+            name = [(FBSSetting *)v12 name];
+            [v6 setObject:0 forKey:{name, v14}];
           }
 
           v9 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];

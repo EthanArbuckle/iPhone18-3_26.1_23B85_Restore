@@ -1,11 +1,11 @@
 @interface NTKRichComplicationRectangularStandardBodyView
-+ (BOOL)handlesComplicationTemplate:(id)a3;
++ (BOOL)handlesComplicationTemplate:(id)template;
 - (NTKRichComplicationRectangularStandardBodyView)init;
 - (void)_editingDidEnd;
-- (void)_enumerateLabelsWithBlock:(id)a3;
-- (void)_handleTemplate:(id)a3 reason:(int64_t)a4;
+- (void)_enumerateLabelsWithBlock:(id)block;
+- (void)_handleTemplate:(id)template reason:(int64_t)reason;
 - (void)layoutSubviews;
-- (void)transitionToMonochromeWithFraction:(double)a3;
+- (void)transitionToMonochromeWithFraction:(double)fraction;
 - (void)updateMonochromeColor;
 @end
 
@@ -19,8 +19,8 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [(CDRichComplicationView *)v2 device];
-    ___LayoutConstants_block_invoke_12(v4, v4);
+    device = [(CDRichComplicationView *)v2 device];
+    ___LayoutConstants_block_invoke_12(device, device);
     v6 = v5;
     v8 = v7;
 
@@ -29,8 +29,8 @@
     line1Label = v3->_line1Label;
     v3->_line1Label = v10;
 
-    v12 = [MEMORY[0x277D75348] whiteColor];
-    [(CLKUIColoringLabel *)v3->_line1Label setTextColor:v12];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [(CLKUIColoringLabel *)v3->_line1Label setTextColor:whiteColor];
 
     v13 = [(NTKRichComplicationRectangularBaseView *)v3 _createAndAddColoringLabelWithFontSize:1 weight:v8 usesTextProviderTintColoring:v9];
     line2Label = v3->_line2Label;
@@ -48,8 +48,8 @@
   v20.receiver = self;
   v20.super_class = NTKRichComplicationRectangularStandardBodyView;
   [(NTKRichComplicationRectangularLargeHeadlineBaseView *)&v20 layoutSubviews];
-  v3 = [(CDRichComplicationView *)self device];
-  v4 = ___LayoutConstants_block_invoke_12(v3, v3);
+  device = [(CDRichComplicationView *)self device];
+  v4 = ___LayoutConstants_block_invoke_12(device, device);
 
   [(NTKRichComplicationRectangularStandardBodyView *)self bounds];
   v6 = v5;
@@ -59,8 +59,8 @@
   [(CLKUIColoringLabel *)self->_line1Label setMaxWidth:v9];
   [(CLKUIColoringLabel *)self->_line1Label sizeThatFits:v9, 0.0];
   v11 = v10;
-  v12 = [(CLKUIColoringLabel *)self->_line1Label font];
-  [v12 ascender];
+  font = [(CLKUIColoringLabel *)self->_line1Label font];
+  [font ascender];
   v14 = -(v13 - v4 * 2.0);
 
   if ([(CLKUIColoringLabel *)self->_line2Label isHidden])
@@ -70,30 +70,30 @@
     v21.size.width = v9;
     v21.size.height = v11;
     CGRectGetHeight(v21);
-    v15 = [(CLKUIColoringLabel *)self->_line1Label font];
-    [v15 lineHeight];
+    font2 = [(CLKUIColoringLabel *)self->_line1Label font];
+    [font2 lineHeight];
   }
 
-  v16 = [(CDRichComplicationView *)self device];
+  device2 = [(CDRichComplicationView *)self device];
   CLKPixelAlignRectForDevice();
   [(CLKUIColoringLabel *)self->_line1Label setFrame:?];
 
-  v17 = [(CLKUIColoringLabel *)self->_line2Label font];
-  [v17 ascender];
+  font3 = [(CLKUIColoringLabel *)self->_line2Label font];
+  [font3 ascender];
 
-  v18 = [(CLKUIColoringLabel *)self->_line2Label font];
-  [v18 lineHeight];
+  font4 = [(CLKUIColoringLabel *)self->_line2Label font];
+  [font4 lineHeight];
 
-  v19 = [(CDRichComplicationView *)self device];
+  device3 = [(CDRichComplicationView *)self device];
   CLKPixelAlignRectForDevice();
   [(CLKUIColoringLabel *)self->_line2Label setFrame:?];
 
   [(CLKUIColoringLabel *)self->_line2Label setMaxWidth:v9];
 }
 
-+ (BOOL)handlesComplicationTemplate:(id)a3
++ (BOOL)handlesComplicationTemplate:(id)template
 {
-  v3 = a3;
+  templateCopy = template;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -109,37 +109,37 @@
   return isKindOfClass & 1;
 }
 
-- (void)_handleTemplate:(id)a3 reason:(int64_t)a4
+- (void)_handleTemplate:(id)template reason:(int64_t)reason
 {
-  v14 = a3;
+  templateCopy = template;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v14 headerLabelData];
-    v7 = 0;
+    headerLabelData = [templateCopy headerLabelData];
+    headerImageProvider = 0;
   }
 
   else
   {
-    v7 = [v14 headerImageProvider];
-    v6 = 0;
+    headerImageProvider = [templateCopy headerImageProvider];
+    headerLabelData = 0;
   }
 
-  v8 = [v14 headerTextProvider];
-  [(NTKRichComplicationRectangularLargeHeadlineBaseView *)self _updateTemplateHeaderWithTextProvider:v8 imageProvider:v7 viewData:v6 reason:a4];
+  headerTextProvider = [templateCopy headerTextProvider];
+  [(NTKRichComplicationRectangularLargeHeadlineBaseView *)self _updateTemplateHeaderWithTextProvider:headerTextProvider imageProvider:headerImageProvider viewData:headerLabelData reason:reason];
 
-  v9 = [v14 body1TextProvider];
-  [(CLKUIColoringLabel *)self->_line1Label setTextProvider:v9];
+  body1TextProvider = [templateCopy body1TextProvider];
+  [(CLKUIColoringLabel *)self->_line1Label setTextProvider:body1TextProvider];
 
-  v10 = [v14 body2TextProvider];
+  body2TextProvider = [templateCopy body2TextProvider];
 
   line1Label = self->_line1Label;
-  if (v10)
+  if (body2TextProvider)
   {
     [(CLKUIColoringLabel *)line1Label setNumberOfLines:1];
-    v12 = [v14 body2TextProvider];
+    body2TextProvider2 = [templateCopy body2TextProvider];
     p_line2Label = &self->_line2Label;
-    [(CLKUIColoringLabel *)self->_line2Label setTextProvider:v12];
+    [(CLKUIColoringLabel *)self->_line2Label setTextProvider:body2TextProvider2];
   }
 
   else
@@ -149,18 +149,18 @@
     [(CLKUIColoringLabel *)self->_line2Label setTextProvider:0];
   }
 
-  [(CLKUIColoringLabel *)*p_line2Label setHidden:v10 == 0];
+  [(CLKUIColoringLabel *)*p_line2Label setHidden:body2TextProvider == 0];
   [(NTKRichComplicationRectangularStandardBodyView *)self setNeedsLayout];
 }
 
-- (void)_enumerateLabelsWithBlock:(id)a3
+- (void)_enumerateLabelsWithBlock:(id)block
 {
   v5.receiver = self;
   v5.super_class = NTKRichComplicationRectangularStandardBodyView;
-  v4 = a3;
-  [(NTKRichComplicationRectangularLargeHeadlineBaseView *)&v5 _enumerateLabelsWithBlock:v4];
-  v4[2](v4, self->_line1Label);
-  v4[2](v4, self->_line2Label);
+  blockCopy = block;
+  [(NTKRichComplicationRectangularLargeHeadlineBaseView *)&v5 _enumerateLabelsWithBlock:blockCopy];
+  blockCopy[2](blockCopy, self->_line1Label);
+  blockCopy[2](blockCopy, self->_line2Label);
 }
 
 - (void)_editingDidEnd
@@ -171,13 +171,13 @@
   [(CLKUIColoringLabel *)line2Label editingDidEnd];
 }
 
-- (void)transitionToMonochromeWithFraction:(double)a3
+- (void)transitionToMonochromeWithFraction:(double)fraction
 {
   v5.receiver = self;
   v5.super_class = NTKRichComplicationRectangularStandardBodyView;
   [(NTKRichComplicationRectangularLargeHeadlineBaseView *)&v5 transitionToMonochromeWithFraction:?];
-  [(CLKUIColoringLabel *)self->_line1Label transitionToMonochromeWithFraction:0 style:a3];
-  [(CLKUIColoringLabel *)self->_line2Label transitionToMonochromeWithFraction:0 style:a3];
+  [(CLKUIColoringLabel *)self->_line1Label transitionToMonochromeWithFraction:0 style:fraction];
+  [(CLKUIColoringLabel *)self->_line2Label transitionToMonochromeWithFraction:0 style:fraction];
 }
 
 - (void)updateMonochromeColor

@@ -2,74 +2,74 @@
 - (BOOL)_saveNavigationPathToDefaults;
 - (BOOL)_saveTransientNavigationPathToDefaults;
 - (BOOL)loadFromDefaults;
-- (BOOL)loadFromDefaultsAndSetSections:(id)a3;
-- (BOOL)presentOverlayBackgroundViewController:(id)a3;
+- (BOOL)loadFromDefaultsAndSetSections:(id)sections;
+- (BOOL)presentOverlayBackgroundViewController:(id)controller;
 - (BOOL)saveOrderingToDefaults;
 - (BOOL)saveToDefaults;
-- (BOOL)window:(id)a3 shouldAutorotateToInterfaceOrientation:(int64_t)a4;
+- (BOOL)window:(id)window shouldAutorotateToInterfaceOrientation:(int64_t)orientation;
 - (NSString)selectedIdentifier;
 - (SUPreviewOverlayViewController)_previewOverlayViewController;
 - (SUTabBarController)init;
-- (SUTabBarController)initWithClientInterface:(id)a3;
-- (id)_archivedContextsForViewController:(id)a3;
-- (id)_rootViewControllerForSection:(id)a3;
-- (id)_sectionForIdentifier:(id)a3;
-- (id)_sectionForType:(int64_t)a3;
-- (id)_sectionForViewController:(id)a3;
+- (SUTabBarController)initWithClientInterface:(id)interface;
+- (id)_archivedContextsForViewController:(id)controller;
+- (id)_rootViewControllerForSection:(id)section;
+- (id)_sectionForIdentifier:(id)identifier;
+- (id)_sectionForType:(int64_t)type;
+- (id)_sectionForViewController:(id)controller;
 - (id)_timingFunctionForAnimation;
-- (id)_viewControllerForContext:(id)a3;
+- (id)_viewControllerForContext:(id)context;
 - (id)rotatingFooterView;
 - (id)rotatingHeaderView;
 - (id)selectedViewController;
-- (id)viewControllerForSectionIdentifier:(id)a3;
-- (id)viewControllerForSectionType:(int64_t)a3;
-- (unint64_t)indexOfViewControllerWithSectionType:(int64_t)a3;
+- (id)viewControllerForSectionIdentifier:(id)identifier;
+- (id)viewControllerForSectionType:(int64_t)type;
+- (unint64_t)indexOfViewControllerWithSectionType:(int64_t)type;
 - (unint64_t)supportedInterfaceOrientations;
-- (void)_applicationDidChangeStatusBarFrame:(id)a3;
+- (void)_applicationDidChangeStatusBarFrame:(id)frame;
 - (void)_applyMoreListConfiguration;
 - (void)_beginReloadingUnderneathTransientViewController;
 - (void)_endReloadingUnderneathTransientViewController;
 - (void)_fixupTabBarSelection;
 - (void)_fixupViewControllers;
-- (void)_hidePreviewOverlayAnimated:(BOOL)a3;
-- (void)_longPressAction:(id)a3;
-- (void)_moveTransientViewController:(id)a3 toSectionWithIdentifier:(id)a4 asRoot:(BOOL)a5;
-- (void)_moveView:(id)a3 toView:(id)a4;
-- (void)_partnerChanged:(id)a3;
-- (void)_reloadViewControllersFromSections:(id)a3 animated:(BOOL)a4;
-- (void)_restoreArchivedContexts:(id)a3;
-- (void)_restoreArchivedTransientContexts:(id)a3;
-- (void)_restoreOverlayContexts:(id)a3;
-- (void)_setSelectedViewController:(id)a3;
-- (void)_setStoreBarStyle:(int64_t)a3;
-- (void)_showPreviewOverlay:(id)a3 animated:(BOOL)a4;
-- (void)_transitionSafeHandlePartnerChange:(id)a3;
+- (void)_hidePreviewOverlayAnimated:(BOOL)animated;
+- (void)_longPressAction:(id)action;
+- (void)_moveTransientViewController:(id)controller toSectionWithIdentifier:(id)identifier asRoot:(BOOL)root;
+- (void)_moveView:(id)view toView:(id)toView;
+- (void)_partnerChanged:(id)changed;
+- (void)_reloadViewControllersFromSections:(id)sections animated:(BOOL)animated;
+- (void)_restoreArchivedContexts:(id)contexts;
+- (void)_restoreArchivedTransientContexts:(id)contexts;
+- (void)_restoreOverlayContexts:(id)contexts;
+- (void)_setSelectedViewController:(id)controller;
+- (void)_setStoreBarStyle:(int64_t)style;
+- (void)_showPreviewOverlay:(id)overlay animated:(BOOL)animated;
+- (void)_transitionSafeHandlePartnerChange:(id)change;
 - (void)dealloc;
-- (void)didRotateFromInterfaceOrientation:(int64_t)a3;
+- (void)didRotateFromInterfaceOrientation:(int64_t)orientation;
 - (void)dismissOverlayBackgroundViewController;
 - (void)loadView;
-- (void)reloadSectionWithIdentifier:(id)a3 URL:(id)a4;
+- (void)reloadSectionWithIdentifier:(id)identifier URL:(id)l;
 - (void)resetToSystemDefaults;
 - (void)resetUserDefaults;
-- (void)scriptOverlayBackgroundDidDismiss:(id)a3;
+- (void)scriptOverlayBackgroundDidDismiss:(id)dismiss;
 - (void)selectDefaultSection;
-- (void)selectSectionOfType:(int64_t)a3;
-- (void)setMoreListSelectedImage:(id)a3 unselectedImage:(id)a4;
-- (void)setMoreListTitle:(id)a3;
-- (void)setSectionOrdering:(id)a3;
-- (void)setSections:(id)a3;
-- (void)setSelectedIdentifier:(id)a3;
-- (void)setTransientViewController:(id)a3 animated:(BOOL)a4;
-- (void)setViewControllers:(id)a3 animated:(BOOL)a4;
-- (void)tabBar:(id)a3 didEndCustomizingItems:(id)a4 changed:(BOOL)a5;
-- (void)tabBar:(id)a3 willEndCustomizingItems:(id)a4 changed:(BOOL)a5;
-- (void)tabBar:(id)a3 willShowCustomizationSheet:(id)a4 withNavigationBar:(id)a5;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)willAnimateRotationToInterfaceOrientation:(int64_t)a3 duration:(double)a4;
-- (void)willRotateToInterfaceOrientation:(int64_t)a3 duration:(double)a4;
+- (void)selectSectionOfType:(int64_t)type;
+- (void)setMoreListSelectedImage:(id)image unselectedImage:(id)unselectedImage;
+- (void)setMoreListTitle:(id)title;
+- (void)setSectionOrdering:(id)ordering;
+- (void)setSections:(id)sections;
+- (void)setSelectedIdentifier:(id)identifier;
+- (void)setTransientViewController:(id)controller animated:(BOOL)animated;
+- (void)setViewControllers:(id)controllers animated:(BOOL)animated;
+- (void)tabBar:(id)bar didEndCustomizingItems:(id)items changed:(BOOL)changed;
+- (void)tabBar:(id)bar willEndCustomizingItems:(id)items changed:(BOOL)changed;
+- (void)tabBar:(id)bar willShowCustomizationSheet:(id)sheet withNavigationBar:(id)navigationBar;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)willAnimateRotationToInterfaceOrientation:(int64_t)orientation duration:(double)duration;
+- (void)willRotateToInterfaceOrientation:(int64_t)orientation duration:(double)duration;
 @end
 
 @implementation SUTabBarController
@@ -81,40 +81,40 @@
   return [(SUTabBarController *)self initWithClientInterface:v3];
 }
 
-- (SUTabBarController)initWithClientInterface:(id)a3
+- (SUTabBarController)initWithClientInterface:(id)interface
 {
   v14.receiver = self;
   v14.super_class = SUTabBarController;
   v4 = [(SUTabBarController *)&v14 init];
   if (v4)
   {
-    v4->_clientInterface = a3;
+    v4->_clientInterface = interface;
     if ([objc_msgSend(MEMORY[0x1E69DC938] "currentDevice")] == 1)
     {
       [(SUTabBarController *)v4 _setMaximumNumberOfItems:9];
     }
 
-    v5 = [(SUTabBarController *)v4 tabBar];
-    v6 = [(SUUIAppearance *)[(SUClientInterface *)v4->_clientInterface appearance] tabBarAppearance];
-    if (v6)
+    tabBar = [(SUTabBarController *)v4 tabBar];
+    tabBarAppearance = [(SUUIAppearance *)[(SUClientInterface *)v4->_clientInterface appearance] tabBarAppearance];
+    if (tabBarAppearance)
     {
-      v7 = v6;
-      [v5 setBackgroundImage:{-[SUTabBarAppearance backgroundImage](v6, "backgroundImage")}];
-      [v5 _setSelectionIndicatorImage:{-[SUTabBarAppearance selectionIndicatorImage](v7, "selectionIndicatorImage")}];
+      v7 = tabBarAppearance;
+      [tabBar setBackgroundImage:{-[SUTabBarAppearance backgroundImage](tabBarAppearance, "backgroundImage")}];
+      [tabBar _setSelectionIndicatorImage:{-[SUTabBarAppearance selectionIndicatorImage](v7, "selectionIndicatorImage")}];
       [(SUTabBarAppearance *)v7 tabBarButtonWidth];
       if (v8 > 0.00000011920929)
       {
-        [v5 _setTabButtonWidth:?];
+        [tabBar _setTabButtonWidth:?];
         [(SUTabBarAppearance *)v7 tabBarButtonSpacing];
-        [v5 _setInterTabButtonSpacing:?];
+        [tabBar _setInterTabButtonSpacing:?];
       }
 
       if (([MEMORY[0x1E69DC668] shouldMakeUIForDefaultPNG] & 1) == 0)
       {
-        v9 = [(SUTabBarAppearance *)v7 dividerImage];
-        v10 = [(SUTabBarAppearance *)v7 selectedDividerImage];
-        [v5 _setDividerImage:v9 forLeftButtonState:0 rightButtonState:0];
-        [v5 _setDividerImage:v10 forLeftButtonState:1 rightButtonState:0];
+        dividerImage = [(SUTabBarAppearance *)v7 dividerImage];
+        selectedDividerImage = [(SUTabBarAppearance *)v7 selectedDividerImage];
+        [tabBar _setDividerImage:dividerImage forLeftButtonState:0 rightButtonState:0];
+        [tabBar _setDividerImage:selectedDividerImage forLeftButtonState:1 rightButtonState:0];
       }
     }
 
@@ -123,13 +123,13 @@
       v11 = objc_alloc_init(SUNavigationBarBackgroundView);
       v4->_tabBarBackdropView = v11;
       [(SUNavigationBarBackgroundView *)v11 setSeparatorOnTop:1];
-      [v5 _setBackgroundView:v4->_tabBarBackdropView];
-      [v5 setTranslucent:1];
+      [tabBar _setBackgroundView:v4->_tabBarBackdropView];
+      [tabBar setTranslucent:1];
     }
 
-    v12 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v12 addObserver:v4 selector:sel__applicationDidChangeStatusBarFrame_ name:*MEMORY[0x1E69DDAB8] object:0];
-    [v12 addObserver:v4 selector:sel__partnerChanged_ name:@"SUPartnerChangedNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v4 selector:sel__applicationDidChangeStatusBarFrame_ name:*MEMORY[0x1E69DDAB8] object:0];
+    [defaultCenter addObserver:v4 selector:sel__partnerChanged_ name:@"SUPartnerChangedNotification" object:0];
   }
 
   return v4;
@@ -138,9 +138,9 @@
 - (void)dealloc
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E69DDAB8] object:0];
-  [v3 removeObserver:self name:@"SUPartnerChangedNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DDAB8] object:0];
+  [defaultCenter removeObserver:self name:@"SUPartnerChangedNotification" object:0];
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
@@ -176,16 +176,16 @@
   [(SUTabBarController *)&v10 dealloc];
 }
 
-- (BOOL)loadFromDefaultsAndSetSections:(id)a3
+- (BOOL)loadFromDefaultsAndSetSections:(id)sections
 {
   v62 = *MEMORY[0x1E69E9840];
 
   self->_preloadedViewController = 0;
   self->_preloadedViewControllerIdentifier = 0;
   self->_preloadedViewControllerKey = 0;
-  v5 = [MEMORY[0x1E695E000] standardUserDefaults];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
   [MEMORY[0x1E696ACD0] setClass:objc_opt_class() forClassName:@"ISURLRequest"];
-  v6 = [v5 objectForKey:@"SUTransientNavigationPath"];
+  v6 = [standardUserDefaults objectForKey:@"SUTransientNavigationPath"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -196,19 +196,19 @@
     v10 = [v7 unarchivedObjectOfClasses:objc_msgSend(v8 fromData:"setWithObjects:" error:{v9, objc_opt_class(), 0), v6, &v54}];
     if (v54)
     {
-      v11 = [MEMORY[0x1E69D4938] sharedConfig];
-      v12 = [v11 shouldLog];
-      if ([v11 shouldLogToDisk])
+      mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+      shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+      if ([mEMORY[0x1E69D4938] shouldLogToDisk])
       {
-        v13 = v12 | 2;
+        v13 = shouldLog | 2;
       }
 
       else
       {
-        v13 = v12;
+        v13 = shouldLog;
       }
 
-      if (!os_log_type_enabled([v11 OSLogObject], OS_LOG_TYPE_ERROR))
+      if (!os_log_type_enabled([mEMORY[0x1E69D4938] OSLogObject], OS_LOG_TYPE_ERROR))
       {
         v13 &= 2u;
       }
@@ -244,7 +244,7 @@
 
   if (!self->_preloadedViewController)
   {
-    v18 = [v5 objectForKey:@"SUSectionNavigationPath"];
+    v18 = [standardUserDefaults objectForKey:@"SUSectionNavigationPath"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -256,19 +256,19 @@
       v21 = [v19 unarchivedObjectOfClasses:objc_msgSend(v20 fromData:"setWithArray:" error:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v57, 2)), v18, &v54}];
       if (v54)
       {
-        v22 = [MEMORY[0x1E69D4938] sharedConfig];
-        v23 = [v22 shouldLog];
-        if ([v22 shouldLogToDisk])
+        mEMORY[0x1E69D4938]2 = [MEMORY[0x1E69D4938] sharedConfig];
+        shouldLog2 = [mEMORY[0x1E69D4938]2 shouldLog];
+        if ([mEMORY[0x1E69D4938]2 shouldLogToDisk])
         {
-          v24 = v23 | 2;
+          v24 = shouldLog2 | 2;
         }
 
         else
         {
-          v24 = v23;
+          v24 = shouldLog2;
         }
 
-        if (!os_log_type_enabled([v22 OSLogObject], OS_LOG_TYPE_ERROR))
+        if (!os_log_type_enabled([mEMORY[0x1E69D4938]2 OSLogObject], OS_LOG_TYPE_ERROR))
         {
           v24 &= 2u;
         }
@@ -360,7 +360,7 @@ LABEL_42:
           v49 = 0u;
           v46 = 0u;
           v47 = 0u;
-          v35 = [a3 countByEnumeratingWithState:&v46 objects:v55 count:16];
+          v35 = [sections countByEnumeratingWithState:&v46 objects:v55 count:16];
           if (v35)
           {
             v36 = v35;
@@ -372,7 +372,7 @@ LABEL_42:
               {
                 if (*v47 != v38)
                 {
-                  objc_enumerationMutation(a3);
+                  objc_enumerationMutation(sections);
                 }
 
                 v40 = *(*(&v46 + 1) + 8 * j);
@@ -382,7 +382,7 @@ LABEL_42:
                 }
               }
 
-              v36 = [a3 countByEnumeratingWithState:&v46 objects:v55 count:16];
+              v36 = [sections countByEnumeratingWithState:&v46 objects:v55 count:16];
             }
 
             while (v36);
@@ -404,13 +404,13 @@ LABEL_42:
   if (objc_opt_isKindOfClass())
   {
     preloadedViewController = self->_preloadedViewController;
-    v42 = [(SUViewController *)preloadedViewController loadsWhenHidden];
+    loadsWhenHidden = [(SUViewController *)preloadedViewController loadsWhenHidden];
     [(SUViewController *)preloadedViewController setLoadsWhenHidden:1];
     [(SUViewController *)preloadedViewController reload];
-    [(SUViewController *)preloadedViewController setLoadsWhenHidden:v42];
+    [(SUViewController *)preloadedViewController setLoadsWhenHidden:loadsWhenHidden];
   }
 
-  [(SUTabBarController *)self setSections:a3, v44];
+  [(SUTabBarController *)self setSections:sections, v44];
   [(SUTabBarController *)self loadFromDefaults];
 
   self->_preloadedViewController = 0;
@@ -422,16 +422,16 @@ LABEL_42:
 - (BOOL)loadFromDefaults
 {
   v50[2] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695E000] standardUserDefaults];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
   [MEMORY[0x1E696ACD0] setClass:objc_opt_class() forClassName:@"ISURLRequest"];
-  v4 = [v3 objectForKey:@"SURootSections"];
+  v4 = [standardUserDefaults objectForKey:@"SURootSections"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     [(SUTabBarController *)self setSectionOrdering:v4];
   }
 
-  v5 = [v3 objectForKey:@"SUSectionNavigationPath"];
+  v5 = [standardUserDefaults objectForKey:@"SUSectionNavigationPath"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -443,19 +443,19 @@ LABEL_42:
     v8 = [v6 unarchivedObjectOfClasses:objc_msgSend(v7 fromData:"setWithArray:" error:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v50, 2)), v5, &v43}];
     if (v43)
     {
-      v9 = [MEMORY[0x1E69D4938] sharedConfig];
-      v10 = [v9 shouldLog];
-      if ([v9 shouldLogToDisk])
+      mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+      shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+      if ([mEMORY[0x1E69D4938] shouldLogToDisk])
       {
-        v11 = v10 | 2;
+        v11 = shouldLog | 2;
       }
 
       else
       {
-        v11 = v10;
+        v11 = shouldLog;
       }
 
-      if (!os_log_type_enabled([v9 OSLogObject], OS_LOG_TYPE_ERROR))
+      if (!os_log_type_enabled([mEMORY[0x1E69D4938] OSLogObject], OS_LOG_TYPE_ERROR))
       {
         v11 &= 2u;
       }
@@ -488,7 +488,7 @@ LABEL_42:
     }
   }
 
-  v16 = [v3 objectForKey:{@"SUOverlayContexts", v39}];
+  v16 = [standardUserDefaults objectForKey:{@"SUOverlayContexts", v39}];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -500,19 +500,19 @@ LABEL_42:
     v19 = [v17 unarchivedObjectOfClasses:objc_msgSend(v18 fromData:"setWithArray:" error:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v45, 2)), v16, &v43}];
     if (v43)
     {
-      v20 = [MEMORY[0x1E69D4938] sharedConfig];
-      v21 = [v20 shouldLog];
-      if ([v20 shouldLogToDisk])
+      mEMORY[0x1E69D4938]2 = [MEMORY[0x1E69D4938] sharedConfig];
+      shouldLog2 = [mEMORY[0x1E69D4938]2 shouldLog];
+      if ([mEMORY[0x1E69D4938]2 shouldLogToDisk])
       {
-        v22 = v21 | 2;
+        v22 = shouldLog2 | 2;
       }
 
       else
       {
-        v22 = v21;
+        v22 = shouldLog2;
       }
 
-      if (!os_log_type_enabled([v20 OSLogObject], OS_LOG_TYPE_ERROR))
+      if (!os_log_type_enabled([mEMORY[0x1E69D4938]2 OSLogObject], OS_LOG_TYPE_ERROR))
       {
         v22 &= 2u;
       }
@@ -552,7 +552,7 @@ LABEL_42:
     self->_ignoreTabReselection = 0;
   }
 
-  v27 = [v3 objectForKey:@"SUTransientNavigationPath"];
+  v27 = [standardUserDefaults objectForKey:@"SUTransientNavigationPath"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -564,19 +564,19 @@ LABEL_42:
     v30 = [v28 unarchivedObjectOfClasses:objc_msgSend(v29 fromData:"setWithArray:" error:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v44, 2)), v27, &v43}];
     if (v43)
     {
-      v31 = [MEMORY[0x1E69D4938] sharedConfig];
-      v32 = [v31 shouldLog];
-      if ([v31 shouldLogToDisk])
+      mEMORY[0x1E69D4938]3 = [MEMORY[0x1E69D4938] sharedConfig];
+      shouldLog3 = [mEMORY[0x1E69D4938]3 shouldLog];
+      if ([mEMORY[0x1E69D4938]3 shouldLogToDisk])
       {
-        v33 = v32 | 2;
+        v33 = shouldLog3 | 2;
       }
 
       else
       {
-        v33 = v32;
+        v33 = shouldLog3;
       }
 
-      if (!os_log_type_enabled([v31 OSLogObject], OS_LOG_TYPE_ERROR))
+      if (!os_log_type_enabled([mEMORY[0x1E69D4938]3 OSLogObject], OS_LOG_TYPE_ERROR))
       {
         v33 &= 2u;
       }
@@ -613,28 +613,28 @@ LABEL_42:
   return 1;
 }
 
-- (void)reloadSectionWithIdentifier:(id)a3 URL:(id)a4
+- (void)reloadSectionWithIdentifier:(id)identifier URL:(id)l
 {
-  [(SUTabBarController *)self setSelectedIdentifier:a3];
-  v6 = [(UITabBarController *)self selectedNavigationController];
-  if (v6 == [(SUTabBarController *)self moreNavigationController])
+  [(SUTabBarController *)self setSelectedIdentifier:identifier];
+  selectedNavigationController = [(UITabBarController *)self selectedNavigationController];
+  if (selectedNavigationController == [(SUTabBarController *)self moreNavigationController])
   {
-    v7 = [v6 viewControllers];
-    if ([v7 count] >= 3)
+    viewControllers = [selectedNavigationController viewControllers];
+    if ([viewControllers count] >= 3)
     {
-      [v6 popToViewController:objc_msgSend(v7 animated:{"objectAtIndex:", 1), 0}];
+      [selectedNavigationController popToViewController:objc_msgSend(viewControllers animated:{"objectAtIndex:", 1), 0}];
     }
   }
 
   else
   {
-    [v6 popToRootViewControllerAnimated:0];
+    [selectedNavigationController popToRootViewControllerAnimated:0];
   }
 
-  v8 = [objc_msgSend(v6 "viewControllers")];
-  if (a4 && (objc_opt_respondsToSelector() & 1) != 0)
+  v8 = [objc_msgSend(selectedNavigationController "viewControllers")];
+  if (l && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v9 = [objc_alloc(MEMORY[0x1E69D4A08]) initWithURL:a4];
+    v9 = [objc_alloc(MEMORY[0x1E69D4A08]) initWithURL:l];
     [v8 reloadWithURLRequestProperties:v9];
   }
 
@@ -649,32 +649,32 @@ LABEL_42:
 {
   [(SUTabBarController *)self resetUserDefaults];
   [(SUTabBarController *)self selectDefaultSection];
-  v3 = [(UITabBarController *)self selectedNavigationController];
+  selectedNavigationController = [(UITabBarController *)self selectedNavigationController];
 
-  [v3 popToRootViewControllerAnimated:0];
+  [selectedNavigationController popToRootViewControllerAnimated:0];
 }
 
 - (void)resetUserDefaults
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v2 removeObjectForKey:@"SUNavigationAccountID"];
-  [v2 removeObjectForKey:@"SURootSections"];
-  [v2 removeObjectForKey:@"SUSectionNavigationPath"];
-  [v2 removeObjectForKey:@"SUTransientNavigationPath"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults removeObjectForKey:@"SUNavigationAccountID"];
+  [standardUserDefaults removeObjectForKey:@"SURootSections"];
+  [standardUserDefaults removeObjectForKey:@"SUSectionNavigationPath"];
+  [standardUserDefaults removeObjectForKey:@"SUTransientNavigationPath"];
 
-  [v2 synchronize];
+  [standardUserDefaults synchronize];
 }
 
 - (BOOL)saveOrderingToDefaults
 {
   v16 = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v4 = [(SUTabBarController *)self viewControllers];
+  viewControllers = [(SUTabBarController *)self viewControllers];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [viewControllers countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -686,20 +686,20 @@ LABEL_42:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(viewControllers);
         }
 
-        v9 = [*(*(&v11 + 1) + 8 * v8) section];
-        if (([v9 isTransient] & 1) == 0 && objc_msgSend(v9, "identifier"))
+        section = [*(*(&v11 + 1) + 8 * v8) section];
+        if (([section isTransient] & 1) == 0 && objc_msgSend(section, "identifier"))
         {
-          [v3 addObject:{objc_msgSend(v9, "identifier")}];
+          [v3 addObject:{objc_msgSend(section, "identifier")}];
         }
 
         ++v8;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [viewControllers countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -713,15 +713,15 @@ LABEL_42:
 - (BOOL)saveToDefaults
 {
   v3 = [objc_msgSend(objc_msgSend(MEMORY[0x1E69D4890] "defaultStore")];
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
   if (v3)
   {
-    [v4 setObject:v3 forKey:@"SUNavigationAccountID"];
+    [standardUserDefaults setObject:v3 forKey:@"SUNavigationAccountID"];
   }
 
   else
   {
-    [v4 removeObjectForKey:@"SUNavigationAccountID"];
+    [standardUserDefaults removeObjectForKey:@"SUNavigationAccountID"];
   }
 
   if (![(SUTabBarController *)self saveOrderingToDefaults]|| ![(SUTabBarController *)self _saveNavigationPathToDefaults]|| ![(SUTabBarController *)self _saveTransientNavigationPathToDefaults])
@@ -729,23 +729,23 @@ LABEL_42:
     return 0;
   }
 
-  v5 = [MEMORY[0x1E695E000] standardUserDefaults];
+  standardUserDefaults2 = [MEMORY[0x1E695E000] standardUserDefaults];
 
-  return [v5 synchronize];
+  return [standardUserDefaults2 synchronize];
 }
 
 - (void)selectDefaultSection
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = [(SUTabBarController *)self viewControllers];
-  if ([v3 count])
+  viewControllers = [(SUTabBarController *)self viewControllers];
+  if ([viewControllers count])
   {
-    v4 = [v3 objectAtIndex:0];
+    v4 = [viewControllers objectAtIndex:0];
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    v5 = [viewControllers countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v5)
     {
       v6 = v5;
@@ -756,7 +756,7 @@ LABEL_42:
         {
           if (*v11 != v7)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(viewControllers);
           }
 
           v9 = *(*(&v10 + 1) + 8 * i);
@@ -767,7 +767,7 @@ LABEL_42:
           }
         }
 
-        v6 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v6 = [viewControllers countByEnumeratingWithState:&v10 objects:v14 count:16];
         if (v6)
         {
           continue;
@@ -782,15 +782,15 @@ LABEL_12:
   }
 }
 
-- (void)selectSectionOfType:(int64_t)a3
+- (void)selectSectionOfType:(int64_t)type
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = [(SUTabBarController *)self viewControllers];
+  viewControllers = [(SUTabBarController *)self viewControllers];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v6 = [viewControllers countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -801,23 +801,23 @@ LABEL_12:
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(viewControllers);
         }
 
-        v10 = [*(*(&v12 + 1) + 8 * i) section];
-        if ([v10 type] == a3)
+        section = [*(*(&v12 + 1) + 8 * i) section];
+        if ([section type] == type)
         {
-          v11 = [v10 identifier];
-          if (v11)
+          identifier = [section identifier];
+          if (identifier)
           {
-            [(SUTabBarController *)self setSelectedIdentifier:v11];
+            [(SUTabBarController *)self setSelectedIdentifier:identifier];
           }
 
           return;
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [viewControllers countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v7)
       {
         continue;
@@ -828,14 +828,14 @@ LABEL_12:
   }
 }
 
-- (void)setMoreListSelectedImage:(id)a3 unselectedImage:(id)a4
+- (void)setMoreListSelectedImage:(id)image unselectedImage:(id)unselectedImage
 {
   moreListSelectedImage = self->_moreListSelectedImage;
-  if (moreListSelectedImage == a3)
+  if (moreListSelectedImage == image)
   {
     p_moreListUnselectedImage = &self->_moreListUnselectedImage;
     moreListUnselectedImage = self->_moreListUnselectedImage;
-    if (moreListUnselectedImage == a4)
+    if (moreListUnselectedImage == unselectedImage)
     {
       return;
     }
@@ -844,46 +844,46 @@ LABEL_12:
   else
   {
 
-    self->_moreListSelectedImage = a3;
+    self->_moreListSelectedImage = image;
     p_moreListUnselectedImage = &self->_moreListUnselectedImage;
     moreListUnselectedImage = self->_moreListUnselectedImage;
-    if (moreListUnselectedImage == a4)
+    if (moreListUnselectedImage == unselectedImage)
     {
       goto LABEL_6;
     }
   }
 
-  *p_moreListUnselectedImage = a4;
+  *p_moreListUnselectedImage = unselectedImage;
 LABEL_6:
 
   [(SUTabBarController *)self _applyMoreListConfiguration];
 }
 
-- (void)setMoreListTitle:(id)a3
+- (void)setMoreListTitle:(id)title
 {
   moreListTitle = self->_moreListTitle;
-  if (moreListTitle != a3)
+  if (moreListTitle != title)
   {
 
-    self->_moreListTitle = a3;
+    self->_moreListTitle = title;
 
     [(SUTabBarController *)self _applyMoreListConfiguration];
   }
 }
 
-- (void)setSectionOrdering:(id)a3
+- (void)setSectionOrdering:(id)ordering
 {
   v36 = *MEMORY[0x1E69E9840];
-  v24 = [(SUTabBarController *)self selectedIdentifier];
+  selectedIdentifier = [(SUTabBarController *)self selectedIdentifier];
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v23 = self;
+  selfCopy = self;
   v6 = [-[SUTabBarController viewControllers](self "viewControllers")];
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  obj = a3;
-  v7 = [a3 countByEnumeratingWithState:&v30 objects:v35 count:16];
+  obj = ordering;
+  v7 = [ordering countByEnumeratingWithState:&v30 objects:v35 count:16];
   if (v7)
   {
     v8 = v7;
@@ -906,10 +906,10 @@ LABEL_6:
           while (1)
           {
             v15 = [v6 objectAtIndex:v14];
-            v16 = [v15 section];
-            if ([v16 identifier])
+            section = [v15 section];
+            if ([section identifier])
             {
-              if ([objc_msgSend(v16 "identifier")])
+              if ([objc_msgSend(section "identifier")])
               {
                 break;
               }
@@ -972,8 +972,8 @@ LABEL_13:
     while (v18);
   }
 
-  [(SUTabBarController *)v23 setViewControllers:v5];
-  [(SUTabBarController *)v23 setSelectedIdentifier:v24];
+  [(SUTabBarController *)selfCopy setViewControllers:v5];
+  [(SUTabBarController *)selfCopy setSelectedIdentifier:selectedIdentifier];
 }
 
 - (void)loadView
@@ -981,14 +981,14 @@ LABEL_13:
   v7.receiver = self;
   v7.super_class = SUTabBarController;
   [(SUTabBarController *)&v7 loadView];
-  v3 = [(SUTabBarController *)self view];
+  view = [(SUTabBarController *)self view];
   v4 = [SUHitTestView alloc];
-  [v3 frame];
+  [view frame];
   v5 = [(SUHitTestView *)v4 initWithFrame:?];
-  -[SUHitTestView setAutoresizingMask:](v5, "setAutoresizingMask:", [v3 autoresizingMask]);
+  -[SUHitTestView setAutoresizingMask:](v5, "setAutoresizingMask:", [view autoresizingMask]);
   [(SUHitTestView *)v5 bounds];
-  [v3 setFrame:?];
-  [(SUHitTestView *)v5 addSubview:v3];
+  [view setFrame:?];
+  [(SUHitTestView *)v5 addSubview:view];
   [(SUTabBarController *)self setView:v5];
   v6 = [objc_alloc(MEMORY[0x1E69DCC48]) initWithTarget:self action:sel__longPressAction_];
   [-[SUTabBarController tabBar](self "tabBar")];
@@ -1018,21 +1018,21 @@ LABEL_13:
   return [(SUTabBarController *)&v4 rotatingHeaderView];
 }
 
-- (id)_sectionForViewController:(id)a3
+- (id)_sectionForViewController:(id)controller
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = [(SUTabBarController *)self moreNavigationController];
-  if (v5 != a3 || [objc_msgSend(v5 "viewControllers")] < 2)
+  moreNavigationController = [(SUTabBarController *)self moreNavigationController];
+  if (moreNavigationController != controller || [objc_msgSend(moreNavigationController "viewControllers")] < 2)
   {
     return 0;
   }
 
-  v6 = [(SUTabBarController *)self viewControllers];
+  viewControllers = [(SUTabBarController *)self viewControllers];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  result = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  result = [viewControllers countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (result)
   {
     v8 = result;
@@ -1043,7 +1043,7 @@ LABEL_13:
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(viewControllers);
         }
 
         v11 = *(*(&v12 + 1) + 8 * i);
@@ -1054,7 +1054,7 @@ LABEL_13:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v8 = [viewControllers countByEnumeratingWithState:&v12 objects:v16 count:16];
       result = 0;
       if (v8)
       {
@@ -1068,45 +1068,45 @@ LABEL_13:
   return result;
 }
 
-- (void)_setSelectedViewController:(id)a3
+- (void)_setSelectedViewController:(id)controller
 {
   if ([(SUTabBarController *)self _isReloadingUnderneathTransientViewController])
   {
-    self->_preTransientSelectedViewController = a3;
+    self->_preTransientSelectedViewController = controller;
   }
 
   else
   {
-    v5 = [(SUTabBarController *)self selectedViewController];
-    v6 = [(SUTabBarController *)self transientViewController];
-    if (v6 && v6 != a3)
+    selectedViewController = [(SUTabBarController *)self selectedViewController];
+    transientViewController = [(SUTabBarController *)self transientViewController];
+    if (transientViewController && transientViewController != controller)
     {
-      self->_preTransientSelectedViewController = a3;
+      self->_preTransientSelectedViewController = controller;
     }
 
-    if (v5)
+    if (selectedViewController)
     {
-      if (v5 != a3)
+      if (selectedViewController != controller)
       {
-        v7 = [a3 ITunesStoreUIBarStyle];
-        if (v7 != self->_storeBarStyle)
+        iTunesStoreUIBarStyle = [controller ITunesStoreUIBarStyle];
+        if (iTunesStoreUIBarStyle != self->_storeBarStyle)
         {
-          v8 = v7;
+          v8 = iTunesStoreUIBarStyle;
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v9 = a3;
+            controllerCopy = controller;
           }
 
           else
           {
-            v9 = 0;
+            controllerCopy = 0;
           }
 
-          [v9 _setStoreBarStyle:v8 clientInterface:self->_clientInterface];
+          [controllerCopy _setStoreBarStyle:v8 clientInterface:self->_clientInterface];
           [(SUTabBarController *)self _setStoreBarStyle:v8];
-          v10 = [MEMORY[0x1E69DC668] sharedApplication];
-          v11 = [v10 statusBarStyle];
+          mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+          statusBarStyle = [mEMORY[0x1E69DC668] statusBarStyle];
           if (v8 == 1)
           {
             v12 = 0;
@@ -1114,22 +1114,22 @@ LABEL_13:
 
           else
           {
-            v12 = v11;
+            v12 = statusBarStyle;
             if (v8 == 2)
             {
               v12 = 1;
             }
           }
 
-          [v10 setStatusBarStyle:v12 animated:0];
+          [mEMORY[0x1E69DC668] setStatusBarStyle:v12 animated:0];
         }
       }
     }
 
     v13.receiver = self;
     v13.super_class = SUTabBarController;
-    [(SUTabBarController *)&v13 _setSelectedViewController:a3];
-    if (v5 == a3 && !self->_ignoreTabReselection)
+    [(SUTabBarController *)&v13 _setSelectedViewController:controller];
+    if (selectedViewController == controller && !self->_ignoreTabReselection)
     {
       [-[SUTabBarController selectedViewController](self "selectedViewController")];
     }
@@ -1140,18 +1140,18 @@ LABEL_13:
 {
   v5.receiver = self;
   v5.super_class = SUTabBarController;
-  v3 = [(SUTabBarController *)&v5 selectedViewController];
-  if (v3 == [(SUTabBarController *)self transientViewController])
+  selectedViewController = [(SUTabBarController *)&v5 selectedViewController];
+  if (selectedViewController == [(SUTabBarController *)self transientViewController])
   {
     return self->_preTransientSelectedViewController;
   }
 
-  return v3;
+  return selectedViewController;
 }
 
-- (void)setTransientViewController:(id)a3 animated:(BOOL)a4
+- (void)setTransientViewController:(id)controller animated:(BOOL)animated
 {
-  if (a3)
+  if (controller)
   {
     if (!self->_preTransientSelectedViewController)
     {
@@ -1171,25 +1171,25 @@ LABEL_13:
 
   v9.receiver = self;
   v9.super_class = SUTabBarController;
-  [(SUTabBarController *)&v9 setTransientViewController:a3 animated:0];
-  v6 = [(SUTabBarController *)self tabBar];
-  v7 = [v6 isUserInteractionEnabled];
-  if (!a3 && v7)
+  [(SUTabBarController *)&v9 setTransientViewController:controller animated:0];
+  tabBar = [(SUTabBarController *)self tabBar];
+  isUserInteractionEnabled = [tabBar isUserInteractionEnabled];
+  if (!controller && isUserInteractionEnabled)
   {
     if (self->_preTransientSelectedViewController)
     {
-      v8 = [v6 isLocked];
-      [v6 setLocked:0];
-      [v6 setSelectedItem:{-[UIViewController tabBarItem](self->_preTransientSelectedViewController, "tabBarItem")}];
-      [v6 setLocked:v8];
+      isLocked = [tabBar isLocked];
+      [tabBar setLocked:0];
+      [tabBar setSelectedItem:{-[UIViewController tabBarItem](self->_preTransientSelectedViewController, "tabBarItem")}];
+      [tabBar setLocked:isLocked];
     }
   }
 }
 
-- (void)setViewControllers:(id)a3 animated:(BOOL)a4
+- (void)setViewControllers:(id)controllers animated:(BOOL)animated
 {
-  v4 = a4;
-  if (self->_preTransientSelectedViewController && [a3 indexOfObjectIdenticalTo:?] == 0x7FFFFFFFFFFFFFFFLL)
+  animatedCopy = animated;
+  if (self->_preTransientSelectedViewController && [controllers indexOfObjectIdenticalTo:?] == 0x7FFFFFFFFFFFFFFFLL)
   {
     self->_preTransientSelectedViewController = 0;
   }
@@ -1197,7 +1197,7 @@ LABEL_13:
   self->_ignoreTabReselection = 1;
   v7.receiver = self;
   v7.super_class = SUTabBarController;
-  [(SUTabBarController *)&v7 setViewControllers:a3 animated:v4];
+  [(SUTabBarController *)&v7 setViewControllers:controllers animated:animatedCopy];
   [(SUTabBarController *)self _fixupViewControllers];
   self->_ignoreTabReselection = 0;
 }
@@ -1206,9 +1206,9 @@ LABEL_13:
 {
   if ([-[SUTabBarController viewControllers](self "viewControllers")])
   {
-    v3 = [(SUTabBarController *)self selectedViewController];
+    selectedViewController = [(SUTabBarController *)self selectedViewController];
 
-    return [v3 supportedInterfaceOrientations];
+    return [selectedViewController supportedInterfaceOrientations];
   }
 
   else if ([objc_msgSend(MEMORY[0x1E69DC938] "currentDevice")] == 1)
@@ -1227,72 +1227,72 @@ LABEL_13:
   }
 }
 
-- (void)tabBar:(id)a3 didEndCustomizingItems:(id)a4 changed:(BOOL)a5
+- (void)tabBar:(id)bar didEndCustomizingItems:(id)items changed:(BOOL)changed
 {
-  v5 = a5;
+  changedCopy = changed;
   if ([MEMORY[0x1E69DD000] instancesRespondToSelector:a2])
   {
     v11.receiver = self;
     v11.super_class = SUTabBarController;
-    [(SUTabBarController *)&v11 tabBar:a3 didEndCustomizingItems:a4 changed:v5];
+    [(SUTabBarController *)&v11 tabBar:bar didEndCustomizingItems:items changed:changedCopy];
   }
 
-  if (v5)
+  if (changedCopy)
   {
     [objc_msgSend(MEMORY[0x1E696AD88] "defaultCenter")];
   }
 
   if (![objc_msgSend(MEMORY[0x1E69DC938] "currentDevice")] && -[SUPreviewOverlayViewController isViewLoaded](self->_previewOverlayViewController, "isViewLoaded"))
   {
-    v9 = [(SUPreviewOverlayViewController *)self->_previewOverlayViewController view];
-    v10 = [(SUTabBarController *)self view];
-    if ([v9 superview] != v10)
+    view = [(SUPreviewOverlayViewController *)self->_previewOverlayViewController view];
+    view2 = [(SUTabBarController *)self view];
+    if ([view superview] != view2)
     {
-      [(SUTabBarController *)self _moveView:v9 toView:v10];
+      [(SUTabBarController *)self _moveView:view toView:view2];
     }
   }
 }
 
-- (void)tabBar:(id)a3 willEndCustomizingItems:(id)a4 changed:(BOOL)a5
+- (void)tabBar:(id)bar willEndCustomizingItems:(id)items changed:(BOOL)changed
 {
-  v5 = a5;
+  changedCopy = changed;
   if ([MEMORY[0x1E69DD000] instancesRespondToSelector:a2])
   {
     v9.receiver = self;
     v9.super_class = SUTabBarController;
-    [(SUTabBarController *)&v9 tabBar:a3 willEndCustomizingItems:a4 changed:v5];
+    [(SUTabBarController *)&v9 tabBar:bar willEndCustomizingItems:items changed:changedCopy];
   }
 
-  if (v5)
+  if (changedCopy)
   {
     [(SUTabBarController *)self _fixupViewControllers];
   }
 }
 
-- (void)tabBar:(id)a3 willShowCustomizationSheet:(id)a4 withNavigationBar:(id)a5
+- (void)tabBar:(id)bar willShowCustomizationSheet:(id)sheet withNavigationBar:(id)navigationBar
 {
   if (![objc_msgSend(MEMORY[0x1E69DC938] currentDevice])
   {
     if ([(SUPreviewOverlayViewController *)self->_previewOverlayViewController isViewLoaded])
     {
-      v8 = [a4 superview];
-      v9 = [(SUPreviewOverlayViewController *)self->_previewOverlayViewController view];
-      if ([v9 superview] != v8)
+      superview = [sheet superview];
+      view = [(SUPreviewOverlayViewController *)self->_previewOverlayViewController view];
+      if ([view superview] != superview)
       {
-        [(SUTabBarController *)self _moveView:v9 toView:v8];
-        [v8 insertSubview:v9 belowSubview:a4];
+        [(SUTabBarController *)self _moveView:view toView:superview];
+        [superview insertSubview:view belowSubview:sheet];
       }
     }
   }
 
-  v10 = [(SUClientInterface *)self->_clientInterface appearance];
+  appearance = [(SUClientInterface *)self->_clientInterface appearance];
 
-  [(SUUIAppearance *)v10 styleNavigationBar:a5];
+  [(SUUIAppearance *)appearance styleNavigationBar:navigationBar];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v16 = *MEMORY[0x1E69E9840];
   v11 = 0u;
   v12 = 0u;
@@ -1313,7 +1313,7 @@ LABEL_13:
           objc_enumerationMutation(overlayBackgroundViewControllers);
         }
 
-        [*(*(&v11 + 1) + 8 * i) viewDidAppear:v3];
+        [*(*(&v11 + 1) + 8 * i) viewDidAppear:appearCopy];
       }
 
       v7 = [(NSMutableArray *)overlayBackgroundViewControllers countByEnumeratingWithState:&v11 objects:v15 count:16];
@@ -1324,12 +1324,12 @@ LABEL_13:
 
   v10.receiver = self;
   v10.super_class = SUTabBarController;
-  [(SUTabBarController *)&v10 viewDidAppear:v3];
+  [(SUTabBarController *)&v10 viewDidAppear:appearCopy];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v16 = *MEMORY[0x1E69E9840];
   v11 = 0u;
   v12 = 0u;
@@ -1350,7 +1350,7 @@ LABEL_13:
           objc_enumerationMutation(overlayBackgroundViewControllers);
         }
 
-        [*(*(&v11 + 1) + 8 * i) viewDidDisappear:v3];
+        [*(*(&v11 + 1) + 8 * i) viewDidDisappear:disappearCopy];
       }
 
       v7 = [(NSMutableArray *)overlayBackgroundViewControllers countByEnumeratingWithState:&v11 objects:v15 count:16];
@@ -1361,12 +1361,12 @@ LABEL_13:
 
   v10.receiver = self;
   v10.super_class = SUTabBarController;
-  [(SUTabBarController *)&v10 viewDidDisappear:v3];
+  [(SUTabBarController *)&v10 viewDidDisappear:disappearCopy];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v16 = *MEMORY[0x1E69E9840];
   v11 = 0u;
   v12 = 0u;
@@ -1387,7 +1387,7 @@ LABEL_13:
           objc_enumerationMutation(overlayBackgroundViewControllers);
         }
 
-        [*(*(&v11 + 1) + 8 * i) viewWillAppear:v3];
+        [*(*(&v11 + 1) + 8 * i) viewWillAppear:appearCopy];
       }
 
       v7 = [(NSMutableArray *)overlayBackgroundViewControllers countByEnumeratingWithState:&v11 objects:v15 count:16];
@@ -1398,12 +1398,12 @@ LABEL_13:
 
   v10.receiver = self;
   v10.super_class = SUTabBarController;
-  [(SUTabBarController *)&v10 viewWillAppear:v3];
+  [(SUTabBarController *)&v10 viewWillAppear:appearCopy];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v16 = *MEMORY[0x1E69E9840];
   v11 = 0u;
   v12 = 0u;
@@ -1424,7 +1424,7 @@ LABEL_13:
           objc_enumerationMutation(overlayBackgroundViewControllers);
         }
 
-        [*(*(&v11 + 1) + 8 * i) viewWillDisappear:v3];
+        [*(*(&v11 + 1) + 8 * i) viewWillDisappear:disappearCopy];
       }
 
       v7 = [(NSMutableArray *)overlayBackgroundViewControllers countByEnumeratingWithState:&v11 objects:v15 count:16];
@@ -1435,10 +1435,10 @@ LABEL_13:
 
   v10.receiver = self;
   v10.super_class = SUTabBarController;
-  [(SUTabBarController *)&v10 viewWillDisappear:v3];
+  [(SUTabBarController *)&v10 viewWillDisappear:disappearCopy];
 }
 
-- (void)didRotateFromInterfaceOrientation:(int64_t)a3
+- (void)didRotateFromInterfaceOrientation:(int64_t)orientation
 {
   v16 = *MEMORY[0x1E69E9840];
   [objc_msgSend(-[SUTabBarController view](self "view")];
@@ -1461,7 +1461,7 @@ LABEL_13:
           objc_enumerationMutation(overlayBackgroundViewControllers);
         }
 
-        [*(*(&v11 + 1) + 8 * i) didRotateFromInterfaceOrientation:a3];
+        [*(*(&v11 + 1) + 8 * i) didRotateFromInterfaceOrientation:orientation];
       }
 
       v7 = [(NSMutableArray *)overlayBackgroundViewControllers countByEnumeratingWithState:&v11 objects:v15 count:16];
@@ -1477,10 +1477,10 @@ LABEL_13:
 
   v10.receiver = self;
   v10.super_class = SUTabBarController;
-  [(SUTabBarController *)&v10 didRotateFromInterfaceOrientation:a3];
+  [(SUTabBarController *)&v10 didRotateFromInterfaceOrientation:orientation];
 }
 
-- (void)willAnimateRotationToInterfaceOrientation:(int64_t)a3 duration:(double)a4
+- (void)willAnimateRotationToInterfaceOrientation:(int64_t)orientation duration:(double)duration
 {
   v18 = *MEMORY[0x1E69E9840];
   [objc_msgSend(-[SUTabBarController view](self "view")];
@@ -1503,7 +1503,7 @@ LABEL_13:
           objc_enumerationMutation(overlayBackgroundViewControllers);
         }
 
-        [*(*(&v13 + 1) + 8 * i) willAnimateRotationToInterfaceOrientation:a3 duration:a4];
+        [*(*(&v13 + 1) + 8 * i) willAnimateRotationToInterfaceOrientation:orientation duration:duration];
       }
 
       v9 = [(NSMutableArray *)overlayBackgroundViewControllers countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -1514,10 +1514,10 @@ LABEL_13:
 
   v12.receiver = self;
   v12.super_class = SUTabBarController;
-  [(SUTabBarController *)&v12 willAnimateRotationToInterfaceOrientation:a3 duration:a4];
+  [(SUTabBarController *)&v12 willAnimateRotationToInterfaceOrientation:orientation duration:duration];
 }
 
-- (void)willRotateToInterfaceOrientation:(int64_t)a3 duration:(double)a4
+- (void)willRotateToInterfaceOrientation:(int64_t)orientation duration:(double)duration
 {
   v18 = *MEMORY[0x1E69E9840];
   v13 = 0u;
@@ -1539,7 +1539,7 @@ LABEL_13:
           objc_enumerationMutation(overlayBackgroundViewControllers);
         }
 
-        [*(*(&v13 + 1) + 8 * i) willRotateToInterfaceOrientation:a3 duration:a4];
+        [*(*(&v13 + 1) + 8 * i) willRotateToInterfaceOrientation:orientation duration:duration];
       }
 
       v9 = [(NSMutableArray *)overlayBackgroundViewControllers countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -1550,10 +1550,10 @@ LABEL_13:
 
   v12.receiver = self;
   v12.super_class = SUTabBarController;
-  [(SUTabBarController *)&v12 willRotateToInterfaceOrientation:a3 duration:a4];
+  [(SUTabBarController *)&v12 willRotateToInterfaceOrientation:orientation duration:duration];
 }
 
-- (BOOL)window:(id)a3 shouldAutorotateToInterfaceOrientation:(int64_t)a4
+- (BOOL)window:(id)window shouldAutorotateToInterfaceOrientation:(int64_t)orientation
 {
   v23 = *MEMORY[0x1E69E9840];
   v21.receiver = self;
@@ -1561,10 +1561,10 @@ LABEL_13:
   v7 = [SUTabBarController window:sel_window_shouldAutorotateToInterfaceOrientation_ shouldAutorotateToInterfaceOrientation:?];
   v20.receiver = self;
   v20.super_class = SUTabBarController;
-  v8 = [(SUTabBarController *)&v20 selectedViewController];
+  selectedViewController = [(SUTabBarController *)&v20 selectedViewController];
   if (v7)
   {
-    v9 = v8 == 0;
+    v9 = selectedViewController == 0;
   }
 
   else
@@ -1574,7 +1574,7 @@ LABEL_13:
 
   if (!v9)
   {
-    v7 = [v8 window:a3 shouldAutorotateToInterfaceOrientation:a4];
+    v7 = [selectedViewController window:window shouldAutorotateToInterfaceOrientation:orientation];
   }
 
   v18 = 0u;
@@ -1598,7 +1598,7 @@ LABEL_13:
 
         if (v7)
         {
-          v7 = [*(*(&v16 + 1) + 8 * i) window:a3 shouldAutorotateToInterfaceOrientation:a4];
+          v7 = [*(*(&v16 + 1) + 8 * i) window:window shouldAutorotateToInterfaceOrientation:orientation];
         }
 
         else
@@ -1623,12 +1623,12 @@ LABEL_13:
 
 - (void)dismissOverlayBackgroundViewController
 {
-  v2 = [(SUTabBarController *)self overlayBackgroundViewController];
+  overlayBackgroundViewController = [(SUTabBarController *)self overlayBackgroundViewController];
 
-  [v2 dismissAnimated:1];
+  [overlayBackgroundViewController dismissAnimated:1];
 }
 
-- (BOOL)presentOverlayBackgroundViewController:(id)a3
+- (BOOL)presentOverlayBackgroundViewController:(id)controller
 {
   v5 = [(NSMutableArray *)self->_overlayBackgroundViewControllers containsObject:?];
   if ((v5 & 1) == 0)
@@ -1640,66 +1640,66 @@ LABEL_13:
       self->_overlayBackgroundViewControllers = overlayBackgroundViewControllers;
     }
 
-    v7 = [(NSMutableArray *)overlayBackgroundViewControllers lastObject];
-    [(SUTabBarController *)self addChildViewController:a3];
-    [(NSMutableArray *)self->_overlayBackgroundViewControllers addObject:a3];
-    [a3 setDelegate:self];
-    [v7 viewWillDisappear:0];
-    [a3 viewWillAppear:0];
-    v8 = [(SUTabBarController *)self view];
-    v9 = [a3 view];
-    [v8 bounds];
-    [v9 setFrame:?];
-    [v8 addSubview:v9];
+    lastObject = [(NSMutableArray *)overlayBackgroundViewControllers lastObject];
+    [(SUTabBarController *)self addChildViewController:controller];
+    [(NSMutableArray *)self->_overlayBackgroundViewControllers addObject:controller];
+    [controller setDelegate:self];
+    [lastObject viewWillDisappear:0];
+    [controller viewWillAppear:0];
+    view = [(SUTabBarController *)self view];
+    view2 = [controller view];
+    [view bounds];
+    [view2 setFrame:?];
+    [view addSubview:view2];
     if ([(SUPreviewOverlayViewController *)self->_previewOverlayViewController isViewLoaded])
     {
-      [v8 bringSubviewToFront:{-[SUPreviewOverlayViewController view](self->_previewOverlayViewController, "view")}];
+      [view bringSubviewToFront:{-[SUPreviewOverlayViewController view](self->_previewOverlayViewController, "view")}];
     }
 
-    [a3 viewDidAppear:0];
-    [v7 viewDidDisappear:0];
+    [controller viewDidAppear:0];
+    [lastObject viewDidDisappear:0];
   }
 
   return v5 ^ 1;
 }
 
-- (void)scriptOverlayBackgroundDidDismiss:(id)a3
+- (void)scriptOverlayBackgroundDidDismiss:(id)dismiss
 {
-  v8 = [(NSMutableArray *)self->_overlayBackgroundViewControllers lastObject];
-  if (v8 == a3)
+  lastObject = [(NSMutableArray *)self->_overlayBackgroundViewControllers lastObject];
+  if (lastObject == dismiss)
   {
     v6 = [(NSMutableArray *)self->_overlayBackgroundViewControllers count];
-    v5 = self;
+    selfCopy = self;
     if (v6 >= 2)
     {
-      v5 = [(NSMutableArray *)self->_overlayBackgroundViewControllers objectAtIndex:v6 - 2];
+      selfCopy = [(NSMutableArray *)self->_overlayBackgroundViewControllers objectAtIndex:v6 - 2];
     }
   }
 
   else
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
-  [(SUTabBarController *)v5 viewWillAppear:0];
-  v7 = a3;
-  [(NSMutableArray *)self->_overlayBackgroundViewControllers removeObjectIdenticalTo:a3];
-  [a3 setDelegate:0];
-  [(SUTabBarController *)self removeChildViewController:a3];
-  if ([a3 isViewLoaded])
+  [(SUTabBarController *)selfCopy viewWillAppear:0];
+  dismissCopy = dismiss;
+  [(NSMutableArray *)self->_overlayBackgroundViewControllers removeObjectIdenticalTo:dismiss];
+  [dismiss setDelegate:0];
+  [(SUTabBarController *)self removeChildViewController:dismiss];
+  if ([dismiss isViewLoaded])
   {
-    [a3 viewWillDisappear:0];
-    [objc_msgSend(a3 "view")];
-    [a3 viewDidDisappear:0];
+    [dismiss viewWillDisappear:0];
+    [objc_msgSend(dismiss "view")];
+    [dismiss viewDidDisappear:0];
   }
 
-  [(SUTabBarController *)v5 viewDidAppear:0];
+  [(SUTabBarController *)selfCopy viewDidAppear:0];
 }
 
-- (unint64_t)indexOfViewControllerWithSectionType:(int64_t)a3
+- (unint64_t)indexOfViewControllerWithSectionType:(int64_t)type
 {
-  v4 = [(SUTabBarController *)self viewControllers];
-  v5 = [v4 count];
+  viewControllers = [(SUTabBarController *)self viewControllers];
+  v5 = [viewControllers count];
   if (!v5)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
@@ -1707,7 +1707,7 @@ LABEL_13:
 
   v6 = v5;
   v7 = 0;
-  while ([objc_msgSend(objc_msgSend(v4 objectAtIndex:{v7), "section"), "type"}] != a3)
+  while ([objc_msgSend(objc_msgSend(viewControllers objectAtIndex:{v7), "section"), "type"}] != type)
   {
     if (v6 == ++v7)
     {
@@ -1725,34 +1725,34 @@ LABEL_13:
   return [v2 identifier];
 }
 
-- (void)setSections:(id)a3
+- (void)setSections:(id)sections
 {
   sections = self->_sections;
-  if (sections != a3)
+  if (sections != sections)
   {
 
-    v6 = a3;
-    self->_sections = v6;
+    sectionsCopy = sections;
+    self->_sections = sectionsCopy;
 
-    [(SUTabBarController *)self _reloadViewControllersFromSections:v6 animated:0];
+    [(SUTabBarController *)self _reloadViewControllersFromSections:sectionsCopy animated:0];
   }
 }
 
-- (void)setSelectedIdentifier:(id)a3
+- (void)setSelectedIdentifier:(id)identifier
 {
-  v5 = [(SUTabBarController *)self viewControllers];
-  v6 = [v5 count];
+  viewControllers = [(SUTabBarController *)self viewControllers];
+  v6 = [viewControllers count];
   if (v6)
   {
     v7 = v6;
     v8 = 0;
     while (1)
     {
-      v9 = [v5 objectAtIndex:v8];
-      v10 = [v9 section];
-      if ([v10 identifier])
+      v9 = [viewControllers objectAtIndex:v8];
+      section = [v9 section];
+      if ([section identifier])
       {
-        if ([a3 isEqualToString:{objc_msgSend(v10, "identifier")}])
+        if ([identifier isEqualToString:{objc_msgSend(section, "identifier")}])
         {
           break;
         }
@@ -1772,15 +1772,15 @@ LABEL_13:
   }
 }
 
-- (id)viewControllerForSectionIdentifier:(id)a3
+- (id)viewControllerForSectionIdentifier:(id)identifier
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = [(SUTabBarController *)self viewControllers];
+  viewControllers = [(SUTabBarController *)self viewControllers];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v6 = [viewControllers countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1791,12 +1791,12 @@ LABEL_13:
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(viewControllers);
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
-        v11 = [v10 section];
-        if (v11 && ([objc_msgSend(v11 "identifier")] & 1) != 0)
+        section = [v10 section];
+        if (section && ([objc_msgSend(section "identifier")] & 1) != 0)
         {
           if (v10)
           {
@@ -1811,7 +1811,7 @@ LABEL_13:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [viewControllers countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v7)
       {
         continue;
@@ -1824,15 +1824,15 @@ LABEL_13:
   return 0;
 }
 
-- (id)viewControllerForSectionType:(int64_t)a3
+- (id)viewControllerForSectionType:(int64_t)type
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = [(SUTabBarController *)self allViewControllers];
+  allViewControllers = [(SUTabBarController *)self allViewControllers];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [allViewControllers countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1843,18 +1843,18 @@ LABEL_3:
     {
       if (*v12 != v7)
       {
-        objc_enumerationMutation(v4);
+        objc_enumerationMutation(allViewControllers);
       }
 
       v9 = *(*(&v11 + 1) + 8 * v8);
-      if ([objc_msgSend(v9 "section")] == a3)
+      if ([objc_msgSend(v9 "section")] == type)
       {
         break;
       }
 
       if (v6 == ++v8)
       {
-        v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v6 = [allViewControllers countByEnumeratingWithState:&v11 objects:v15 count:16];
         if (v6)
         {
           goto LABEL_3;
@@ -1889,10 +1889,10 @@ LABEL_9:
   return [MEMORY[0x1E69793D0] functionWithControlPoints:v2 :v3 :v4 :v5];
 }
 
-- (void)_applicationDidChangeStatusBarFrame:(id)a3
+- (void)_applicationDidChangeStatusBarFrame:(id)frame
 {
-  v4 = [a3 userInfo];
-  [objc_msgSend(v4 objectForKey:{*MEMORY[0x1E69DDB90]), "CGRectValue"}];
+  userInfo = [frame userInfo];
+  [objc_msgSend(userInfo objectForKey:{*MEMORY[0x1E69DDB90]), "CGRectValue"}];
   v6 = v5;
   v8 = v7;
   [objc_msgSend(MEMORY[0x1E69DC668] "sharedApplication")];
@@ -1930,26 +1930,26 @@ LABEL_9:
         v19 = v18;
         v21 = v20;
         v23 = v22 - v13;
-        v24 = [(SUPreviewOverlayViewController *)self->_previewOverlayViewController view];
+        view = [(SUPreviewOverlayViewController *)self->_previewOverlayViewController view];
 
-        [v24 setFrame:{v17, v23, v19, v21}];
+        [view setFrame:{v17, v23, v19, v21}];
       }
     }
   }
 }
 
-- (void)_partnerChanged:(id)a3
+- (void)_partnerChanged:(id)changed
 {
   v4 = [MEMORY[0x1E69DD258] transitionSafePerformer:self];
 
-  [v4 _transitionSafeHandlePartnerChange:a3];
+  [v4 _transitionSafeHandlePartnerChange:changed];
 }
 
-- (void)_hidePreviewOverlayAnimated:(BOOL)a3
+- (void)_hidePreviewOverlayAnimated:(BOOL)animated
 {
   if (self->_previewOverlayViewController)
   {
-    v3 = a3;
+    animatedCopy = animated;
     if ([objc_msgSend(MEMORY[0x1E69DC938] "currentDevice")] == 1)
     {
       previewOverlayViewController = self->_previewOverlayViewController;
@@ -1958,21 +1958,21 @@ LABEL_9:
       v9[2] = __50__SUTabBarController__hidePreviewOverlayAnimated___block_invoke;
       v9[3] = &unk_1E8164348;
       v9[4] = self;
-      [(SUPreviewOverlayViewController *)previewOverlayViewController hideInViewController:self animated:v3 completionBlock:v9];
+      [(SUPreviewOverlayViewController *)previewOverlayViewController hideInViewController:self animated:animatedCopy completionBlock:v9];
     }
 
     else
     {
-      v6 = [(UITabBarController *)self selectedNavigationController];
+      selectedNavigationController = [(UITabBarController *)self selectedNavigationController];
       v7 = self->_previewOverlayViewController;
-      if (v6)
+      if (selectedNavigationController)
       {
         v8[0] = MEMORY[0x1E69E9820];
         v8[1] = 3221225472;
         v8[2] = __50__SUTabBarController__hidePreviewOverlayAnimated___block_invoke_2;
         v8[3] = &unk_1E8164348;
         v8[4] = self;
-        [(SUPreviewOverlayViewController *)v7 hideInNavigationController:v6 animated:v3 completionBlock:v8];
+        [(SUPreviewOverlayViewController *)v7 hideInNavigationController:selectedNavigationController animated:animatedCopy completionBlock:v8];
       }
 
       else
@@ -1991,44 +1991,44 @@ LABEL_9:
   return v2;
 }
 
-- (void)_setStoreBarStyle:(int64_t)a3
+- (void)_setStoreBarStyle:(int64_t)style
 {
-  if (self->_storeBarStyle != a3)
+  if (self->_storeBarStyle != style)
   {
-    self->_storeBarStyle = a3;
-    if (a3 == 1)
+    self->_storeBarStyle = style;
+    if (style == 1)
     {
-      v4 = [(SUClientInterface *)self->_clientInterface lightKeyColor];
+      lightKeyColor = [(SUClientInterface *)self->_clientInterface lightKeyColor];
       v5 = 10060;
     }
 
     else
     {
-      if (a3 != 2)
+      if (style != 2)
       {
         return;
       }
 
-      v4 = [(SUClientInterface *)self->_clientInterface darkKeyColor];
+      lightKeyColor = [(SUClientInterface *)self->_clientInterface darkKeyColor];
       v5 = 11050;
     }
 
     [(SUNavigationBarBackgroundView *)self->_tabBarBackdropView setBackdropStyle:v5];
-    if (v4)
+    if (lightKeyColor)
     {
-      v6 = [(SUTabBarController *)self tabBar];
+      tabBar = [(SUTabBarController *)self tabBar];
 
-      [v6 setInteractionTintColor:v4];
+      [tabBar setInteractionTintColor:lightKeyColor];
     }
   }
 }
 
-- (void)_showPreviewOverlay:(id)a3 animated:(BOOL)a4
+- (void)_showPreviewOverlay:(id)overlay animated:(BOOL)animated
 {
   previewOverlayViewController = self->_previewOverlayViewController;
-  if (previewOverlayViewController != a3)
+  if (previewOverlayViewController != overlay)
   {
-    v6 = a4;
+    animatedCopy = animated;
     if (previewOverlayViewController)
     {
       if ([(SUPreviewOverlayViewController *)previewOverlayViewController isViewLoaded])
@@ -2045,29 +2045,29 @@ LABEL_9:
       v8 = 0;
     }
 
-    v9 = a3;
-    self->_previewOverlayViewController = v9;
-    if (v9)
+    overlayCopy = overlay;
+    self->_previewOverlayViewController = overlayCopy;
+    if (overlayCopy)
     {
       if ([objc_msgSend(MEMORY[0x1E69DC938] "currentDevice")] == 1)
       {
         v10 = self->_previewOverlayViewController;
 
-        [(SUPreviewOverlayViewController *)v10 showInViewController:self animated:v6 completionBlock:0];
+        [(SUPreviewOverlayViewController *)v10 showInViewController:self animated:animatedCopy completionBlock:0];
       }
 
       else
       {
-        v11 = [(UITabBarController *)self selectedNavigationController];
-        if (v11)
+        selectedNavigationController = [(UITabBarController *)self selectedNavigationController];
+        if (selectedNavigationController)
         {
           v12[0] = MEMORY[0x1E69E9820];
           v12[1] = 3221225472;
           v12[2] = __51__SUTabBarController__showPreviewOverlay_animated___block_invoke;
           v12[3] = &unk_1E8164370;
           v12[4] = self;
-          v12[5] = a3;
-          [a3 showInNavigationController:v11 animated:v6 completionBlock:v12];
+          v12[5] = overlay;
+          [overlay showInNavigationController:selectedNavigationController animated:animatedCopy completionBlock:v12];
         }
       }
     }
@@ -2098,11 +2098,11 @@ uint64_t __51__SUTabBarController__showPreviewOverlay_animated___block_invoke(ui
   {
     if (moreListSelectedImage)
     {
-      v7 = [v4 tabBarItem];
+      tabBarItem = [v4 tabBarItem];
       v8 = self->_moreListSelectedImage;
       moreListUnselectedImage = self->_moreListUnselectedImage;
 
-      [v7 setFinishedSelectedImage:v8 withFinishedUnselectedImage:moreListUnselectedImage];
+      [tabBarItem setFinishedSelectedImage:v8 withFinishedUnselectedImage:moreListUnselectedImage];
       return;
     }
   }
@@ -2114,34 +2114,34 @@ uint64_t __51__SUTabBarController__showPreviewOverlay_animated___block_invoke(ui
 
   if (self->_moreListUnselectedImage)
   {
-    v10 = [v4 tabBarItem];
-    v11 = [(UIImage *)self->_moreListUnselectedImage _imageThatSuppressesAccessibilityHairlineThickening];
+    tabBarItem2 = [v4 tabBarItem];
+    _imageThatSuppressesAccessibilityHairlineThickening = [(UIImage *)self->_moreListUnselectedImage _imageThatSuppressesAccessibilityHairlineThickening];
 
-    [v10 setImage:v11];
+    [tabBarItem2 setImage:_imageThatSuppressesAccessibilityHairlineThickening];
   }
 }
 
-- (id)_archivedContextsForViewController:(id)a3
+- (id)_archivedContextsForViewController:(id)controller
 {
   v32 = *MEMORY[0x1E69E9840];
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [a3 viewControllers];
+    viewControllers = [controller viewControllers];
   }
 
   else
   {
-    v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:{a3, 0}];
+    viewControllers = [MEMORY[0x1E695DEC8] arrayWithObjects:{controller, 0}];
   }
 
-  v6 = v5;
+  v6 = viewControllers;
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v7 = [v5 countByEnumeratingWithState:&v23 objects:v31 count:16];
+  v7 = [viewControllers countByEnumeratingWithState:&v23 objects:v31 count:16];
   if (v7)
   {
     v8 = v7;
@@ -2155,11 +2155,11 @@ uint64_t __51__SUTabBarController__showPreviewOverlay_animated___block_invoke(ui
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v23 + 1) + 8 * i) copyArchivableContext];
-        if (v11)
+        copyArchivableContext = [*(*(&v23 + 1) + 8 * i) copyArchivableContext];
+        if (copyArchivableContext)
         {
-          v12 = v11;
-          [v4 addObject:v11];
+          v12 = copyArchivableContext;
+          [v4 addObject:copyArchivableContext];
         }
       }
 
@@ -2173,19 +2173,19 @@ uint64_t __51__SUTabBarController__showPreviewOverlay_animated___block_invoke(ui
   v13 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v4 requiringSecureCoding:1 error:&v22];
   if (v22)
   {
-    v14 = [MEMORY[0x1E69D4938] sharedConfig];
-    v15 = [v14 shouldLog];
-    if ([v14 shouldLogToDisk])
+    mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+    shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+    if ([mEMORY[0x1E69D4938] shouldLogToDisk])
     {
-      v16 = v15 | 2;
+      v16 = shouldLog | 2;
     }
 
     else
     {
-      v16 = v15;
+      v16 = shouldLog;
     }
 
-    if (!os_log_type_enabled([v14 OSLogObject], OS_LOG_TYPE_ERROR))
+    if (!os_log_type_enabled([mEMORY[0x1E69D4938] OSLogObject], OS_LOG_TYPE_ERROR))
     {
       v16 &= 2u;
     }
@@ -2233,25 +2233,25 @@ uint64_t __51__SUTabBarController__showPreviewOverlay_animated___block_invoke(ui
 
 - (void)_fixupTabBarSelection
 {
-  v3 = [(SUTabBarController *)self tabBar];
-  v4 = [v3 items];
-  v5 = [(SUTabBarController *)self selectedIndex];
-  if (v5 < [v4 count] && !-[SUTabBarController _isReloadingUnderneathTransientViewController](self, "_isReloadingUnderneathTransientViewController"))
+  tabBar = [(SUTabBarController *)self tabBar];
+  items = [tabBar items];
+  selectedIndex = [(SUTabBarController *)self selectedIndex];
+  if (selectedIndex < [items count] && !-[SUTabBarController _isReloadingUnderneathTransientViewController](self, "_isReloadingUnderneathTransientViewController"))
   {
-    v6 = [v3 isLocked];
-    [v3 setLocked:0];
-    [v3 setSelectedItem:{objc_msgSend(v4, "objectAtIndex:", -[SUTabBarController selectedIndex](self, "selectedIndex"))}];
+    isLocked = [tabBar isLocked];
+    [tabBar setLocked:0];
+    [tabBar setSelectedItem:{objc_msgSend(items, "objectAtIndex:", -[SUTabBarController selectedIndex](self, "selectedIndex"))}];
 
-    [v3 setLocked:v6];
+    [tabBar setLocked:isLocked];
   }
 }
 
 - (void)_fixupViewControllers
 {
-  v3 = [MEMORY[0x1E69DCCD8] transitionSafetyDelegate];
-  v4 = [(SUTabBarController *)self moreNavigationController];
+  transitionSafetyDelegate = [MEMORY[0x1E69DCCD8] transitionSafetyDelegate];
+  moreNavigationController = [(SUTabBarController *)self moreNavigationController];
   v5 = [-[SUTabBarController allViewControllers](self "allViewControllers")];
-  v6 = [v5 indexOfObjectIdenticalTo:v4];
+  v6 = [v5 indexOfObjectIdenticalTo:moreNavigationController];
   v7 = [v5 count];
   if (v7)
   {
@@ -2259,73 +2259,73 @@ uint64_t __51__SUTabBarController__showPreviewOverlay_animated___block_invoke(ui
     for (i = 0; i != v8; ++i)
     {
       v10 = [v5 objectAtIndex:i];
-      if (v10 != v4 && i > v6)
+      if (v10 != moreNavigationController && i > v6)
       {
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v11 = [v10 viewControllers];
-          if ([v11 count] >= 2)
+          viewControllers = [v10 viewControllers];
+          if ([viewControllers count] >= 2)
           {
-            [v10 setViewControllers:{objc_msgSend(v11, "subarrayWithRange:", 0, 1)}];
+            [v10 setViewControllers:{objc_msgSend(viewControllers, "subarrayWithRange:", 0, 1)}];
           }
         }
       }
 
-      [v10 setDelegate:v3];
+      [v10 setDelegate:transitionSafetyDelegate];
     }
   }
 
   [(SUTabBarController *)self _applyMoreListConfiguration];
 }
 
-- (void)_longPressAction:(id)a3
+- (void)_longPressAction:(id)action
 {
-  v6 = [a3 view];
-  [a3 removeTarget:self action:a2];
-  [v6 removeGestureRecognizer:a3];
+  view = [action view];
+  [action removeTarget:self action:a2];
+  [view removeGestureRecognizer:action];
   [-[SUTabBarController selectedViewController](self "selectedViewController")];
   v7 = [objc_alloc(MEMORY[0x1E69DCC48]) initWithTarget:self action:a2];
-  [v6 addGestureRecognizer:v7];
+  [view addGestureRecognizer:v7];
 }
 
-- (void)_moveTransientViewController:(id)a3 toSectionWithIdentifier:(id)a4 asRoot:(BOOL)a5
+- (void)_moveTransientViewController:(id)controller toSectionWithIdentifier:(id)identifier asRoot:(BOOL)root
 {
-  if ([(SUTabBarController *)self viewControllerForSectionIdentifier:a4])
+  if ([(SUTabBarController *)self viewControllerForSectionIdentifier:identifier])
   {
-    v8 = [(SUTabBarController *)self transientViewController];
-    v9 = a3;
-    for (i = a3 != 0; v9 && v9 != v8; i = v9 != 0)
+    transientViewController = [(SUTabBarController *)self transientViewController];
+    controllerCopy = controller;
+    for (i = controller != 0; controllerCopy && controllerCopy != transientViewController; i = controllerCopy != 0)
     {
-      v9 = [v9 parentViewController];
+      controllerCopy = [controllerCopy parentViewController];
     }
 
     if (i)
     {
-      v18 = v9;
+      v18 = controllerCopy;
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v11 = [v18 topViewController];
+        topViewController = [v18 topViewController];
       }
 
       else
       {
-        v11 = v18;
+        topViewController = v18;
       }
 
-      v19 = v11;
-      v12 = v11;
-      [(SUTabBarController *)self setSelectedIdentifier:a4];
+      v19 = topViewController;
+      v12 = topViewController;
+      [(SUTabBarController *)self setSelectedIdentifier:identifier];
       [(SUTabBarController *)self setTransientViewController:0];
-      v13 = [(UITabBarController *)self selectedNavigationController];
-      v14 = v13;
-      if (a5)
+      selectedNavigationController = [(UITabBarController *)self selectedNavigationController];
+      v14 = selectedNavigationController;
+      if (root)
       {
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v15 = [(SUTabBarController *)self _sectionForIdentifier:a4];
+          v15 = [(SUTabBarController *)self _sectionForIdentifier:identifier];
           [v19 setSection:v15];
           [objc_msgSend(v19 "_existingTabBarItem")];
         }
@@ -2350,33 +2350,33 @@ uint64_t __51__SUTabBarController__showPreviewOverlay_animated___block_invoke(ui
 
       else
       {
-        [v13 pushViewController:v19 animated:0];
+        [selectedNavigationController pushViewController:v19 animated:0];
       }
     }
   }
 }
 
-- (void)_moveView:(id)a3 toView:(id)a4
+- (void)_moveView:(id)view toView:(id)toView
 {
-  [a3 frame];
-  [a4 convertRect:objc_msgSend(a3 fromView:{"superview"), v6, v7, v8, v9}];
-  [a3 setFrame:?];
+  [view frame];
+  [toView convertRect:objc_msgSend(view fromView:{"superview"), v6, v7, v8, v9}];
+  [view setFrame:?];
 
-  [a4 addSubview:a3];
+  [toView addSubview:view];
 }
 
-- (void)_reloadViewControllersFromSections:(id)a3 animated:(BOOL)a4
+- (void)_reloadViewControllersFromSections:(id)sections animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v30 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v35 = [-[SUTabBarController viewControllers](self "viewControllers")];
   v8 = [v35 count];
-  v9 = [(SUTabBarController *)self moreNavigationController];
-  v28 = v4;
-  v25 = v9;
+  moreNavigationController = [(SUTabBarController *)self moreNavigationController];
+  v28 = animatedCopy;
+  v25 = moreNavigationController;
   v27 = v8;
-  if (v9)
+  if (moreNavigationController)
   {
     v29 = [-[SUTabBarController allViewControllers](self "allViewControllers")];
   }
@@ -2386,26 +2386,26 @@ uint64_t __51__SUTabBarController__showPreviewOverlay_animated___block_invoke(ui
     v29 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v10 = [(SUTabBarController *)self delegate];
+  delegate = [(SUTabBarController *)self delegate];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
-    v10 = 0;
+    delegate = 0;
   }
 
-  v34 = [+[SUNetworkObserver sharedInstance](SUNetworkObserver partnerIdentifier];
-  v11 = [a3 count];
+  partnerIdentifier = [+[SUNetworkObserver sharedInstance](SUNetworkObserver partnerIdentifier];
+  v11 = [sections count];
   if (v11 >= 1)
   {
     v12 = v11;
     v31 = 0;
-    v32 = a3;
+    sectionsCopy = sections;
     v13 = 0;
-    v33 = v10;
+    v33 = delegate;
     do
     {
-      v14 = [a3 objectAtIndex:v13];
-      v15 = [v14 partnerHeader];
-      if ((!v15 || -[NSString isEqualToString:](v34, "isEqualToString:", v15)) && (!v10 || [v10 tabBarController:self shouldShowSection:v14]))
+      v14 = [sections objectAtIndex:v13];
+      partnerHeader = [v14 partnerHeader];
+      if ((!partnerHeader || -[NSString isEqualToString:](partnerIdentifier, "isEqualToString:", partnerHeader)) && (!delegate || [delegate tabBarController:self shouldShowSection:v14]))
       {
         v16 = v7;
         v17 = [v35 count];
@@ -2462,8 +2462,8 @@ LABEL_17:
           [v30 addObject:v21];
         }
 
-        a3 = v32;
-        v10 = v33;
+        sections = sectionsCopy;
+        delegate = v33;
       }
 
       ++v13;
@@ -2474,9 +2474,9 @@ LABEL_17:
 
   if (![v7 count])
   {
-    v23 = [(SUViewControllerFactory *)[(SUClientInterface *)self->_clientInterface viewControllerFactory] newPlaceholderViewController];
-    [v23 setClientInterface:self->_clientInterface];
-    v24 = [[SUNavigationController alloc] initWithRootViewController:v23];
+    newPlaceholderViewController = [(SUViewControllerFactory *)[(SUClientInterface *)self->_clientInterface viewControllerFactory] newPlaceholderViewController];
+    [newPlaceholderViewController setClientInterface:self->_clientInterface];
+    v24 = [[SUNavigationController alloc] initWithRootViewController:newPlaceholderViewController];
     [(SUNavigationController *)v24 setClientInterface:self->_clientInterface];
     [v7 addObject:v24];
   }
@@ -2499,12 +2499,12 @@ LABEL_17:
   }
 }
 
-- (void)_restoreArchivedContexts:(id)a3
+- (void)_restoreArchivedContexts:(id)contexts
 {
-  v5 = [a3 count];
+  v5 = [contexts count];
   if (v5)
   {
-    v6 = [a3 objectAtIndex:0];
+    v6 = [contexts objectAtIndex:0];
   }
 
   else
@@ -2512,13 +2512,13 @@ LABEL_17:
     v6 = 0;
   }
 
-  v7 = [v6 sectionIdentifier];
-  if (v6 && !v7)
+  sectionIdentifier = [v6 sectionIdentifier];
+  if (v6 && !sectionIdentifier)
   {
-    v8 = [(SUTabBarController *)self moreNavigationController];
-    if (v8)
+    moreNavigationController = [(SUTabBarController *)self moreNavigationController];
+    if (moreNavigationController)
     {
-      v9 = v8;
+      v9 = moreNavigationController;
       if ([-[SUTabBarController allViewControllers](self "allViewControllers")] != 0x7FFFFFFFFFFFFFFFLL)
       {
 
@@ -2529,26 +2529,26 @@ LABEL_17:
     return;
   }
 
-  if (!v7)
+  if (!sectionIdentifier)
   {
     return;
   }
 
-  [(SUTabBarController *)self setSelectedIdentifier:v7];
-  v10 = [(UITabBarController *)self selectedNavigationController];
+  [(SUTabBarController *)self setSelectedIdentifier:sectionIdentifier];
+  selectedNavigationController = [(UITabBarController *)self selectedNavigationController];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     return;
   }
 
-  v11 = [v10 viewControllers];
+  viewControllers = [selectedNavigationController viewControllers];
   v15 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v12 = [v10 firstViewController];
-  if (v10 != [(SUTabBarController *)self moreNavigationController])
+  firstViewController = [selectedNavigationController firstViewController];
+  if (selectedNavigationController != [(SUTabBarController *)self moreNavigationController])
   {
     v13 = 1;
-    if (!v12)
+    if (!firstViewController)
     {
       goto LABEL_16;
     }
@@ -2556,33 +2556,33 @@ LABEL_17:
     goto LABEL_15;
   }
 
-  [v15 addObject:v12];
-  if ([v11 count] < 2)
+  [v15 addObject:firstViewController];
+  if ([viewControllers count] < 2)
   {
-    v12 = 0;
+    firstViewController = 0;
   }
 
   else
   {
-    v12 = [v11 objectAtIndex:1];
+    firstViewController = [viewControllers objectAtIndex:1];
   }
 
-  if ([a3 count] < 2)
+  if ([contexts count] < 2)
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = [a3 objectAtIndex:1];
+    v6 = [contexts objectAtIndex:1];
   }
 
   v13 = 2;
-  if (v12)
+  if (firstViewController)
   {
 LABEL_15:
-    [v12 restoreArchivableContext:v6];
-    [v15 addObject:v12];
+    [firstViewController restoreArchivableContext:v6];
+    [v15 addObject:firstViewController];
   }
 
 LABEL_16:
@@ -2590,7 +2590,7 @@ LABEL_16:
   {
     while (v5 - 1 != v13 || !self->_preloadedViewController || ![(NSString *)self->_preloadedViewControllerKey isEqualToString:@"SUSectionNavigationPath"])
     {
-      v14 = -[SUTabBarController _viewControllerForContext:](self, "_viewControllerForContext:", [a3 objectAtIndex:v13]);
+      v14 = -[SUTabBarController _viewControllerForContext:](self, "_viewControllerForContext:", [contexts objectAtIndex:v13]);
       if (v14)
       {
         goto LABEL_23;
@@ -2617,17 +2617,17 @@ LABEL_23:
   }
 
 LABEL_25:
-  [v10 setViewControllers:v15];
+  [selectedNavigationController setViewControllers:v15];
 }
 
-- (void)_restoreOverlayContexts:(id)a3
+- (void)_restoreOverlayContexts:(id)contexts
 {
   v15 = *MEMORY[0x1E69E9840];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v5 = [contexts countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -2639,37 +2639,37 @@ LABEL_25:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(contexts);
         }
 
-        v9 = [*(*(&v10 + 1) + 8 * v8) copyViewController];
+        copyViewController = [*(*(&v10 + 1) + 8 * v8) copyViewController];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          [(SUTabBarController *)self presentOverlayBackgroundViewController:v9];
+          [(SUTabBarController *)self presentOverlayBackgroundViewController:copyViewController];
         }
 
         ++v8;
       }
 
       while (v6 != v8);
-      v6 = [a3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [contexts countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)_restoreArchivedTransientContexts:(id)a3
+- (void)_restoreArchivedTransientContexts:(id)contexts
 {
   v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if ([a3 count])
+  if ([contexts count])
   {
     v5 = 0;
     while (1)
     {
-      v6 = [a3 objectAtIndex:v5];
-      if (v5 == [a3 count] - 1 && self->_preloadedViewController && -[NSString isEqualToString:](self->_preloadedViewControllerKey, "isEqualToString:", @"SUTransientNavigationPath"))
+      v6 = [contexts objectAtIndex:v5];
+      if (v5 == [contexts count] - 1 && self->_preloadedViewController && -[NSString isEqualToString:](self->_preloadedViewControllerKey, "isEqualToString:", @"SUTransientNavigationPath"))
       {
         break;
       }
@@ -2681,7 +2681,7 @@ LABEL_25:
       }
 
 LABEL_10:
-      if (++v5 >= [a3 count])
+      if (++v5 >= [contexts count])
       {
         goto LABEL_11;
       }
@@ -2710,9 +2710,9 @@ LABEL_11:
   }
 }
 
-- (id)_rootViewControllerForSection:(id)a3
+- (id)_rootViewControllerForSection:(id)section
 {
-  if (-[NSString isEqualToString:](self->_preloadedViewControllerIdentifier, "isEqualToString:", [a3 identifier]) && (preloadedViewController = self->_preloadedViewController) != 0)
+  if (-[NSString isEqualToString:](self->_preloadedViewControllerIdentifier, "isEqualToString:", [section identifier]) && (preloadedViewController = self->_preloadedViewController) != 0)
   {
     v6 = preloadedViewController;
 
@@ -2722,15 +2722,15 @@ LABEL_11:
 
   else
   {
-    v8 = [(SUTabBarController *)self delegate];
+    delegate = [(SUTabBarController *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      v9 = [v8 tabBarController:self rootViewControllerForSection:a3];
+      v9 = [delegate tabBarController:self rootViewControllerForSection:section];
     }
 
     else
     {
-      v9 = [(SUViewControllerFactory *)[(SUClientInterface *)self->_clientInterface viewControllerFactory] newStorePageViewControllerWithSection:a3];
+      v9 = [(SUViewControllerFactory *)[(SUClientInterface *)self->_clientInterface viewControllerFactory] newStorePageViewControllerWithSection:section];
     }
 
     v10 = v9;
@@ -2739,7 +2739,7 @@ LABEL_11:
       [v10 setClientInterface:self->_clientInterface];
     }
 
-    [v10 setTitle:{objc_msgSend(a3, "title")}];
+    [v10 setTitle:{objc_msgSend(section, "title")}];
     return v10;
   }
 }
@@ -2757,11 +2757,11 @@ LABEL_11:
 
 - (BOOL)_saveTransientNavigationPathToDefaults
 {
-  v3 = [(SUTabBarController *)self transientViewController];
+  transientViewController = [(SUTabBarController *)self transientViewController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [(SUTabBarController *)self _archivedContextsForViewController:v3];
+    v4 = [(SUTabBarController *)self _archivedContextsForViewController:transientViewController];
   }
 
   else
@@ -2773,7 +2773,7 @@ LABEL_11:
   return 1;
 }
 
-- (id)_sectionForIdentifier:(id)a3
+- (id)_sectionForIdentifier:(id)identifier
 {
   v16 = *MEMORY[0x1E69E9840];
   v11 = 0u;
@@ -2817,7 +2817,7 @@ LABEL_3:
   }
 }
 
-- (id)_sectionForType:(int64_t)a3
+- (id)_sectionForType:(int64_t)type
 {
   v16 = *MEMORY[0x1E69E9840];
   v11 = 0u;
@@ -2843,7 +2843,7 @@ LABEL_3:
     }
 
     v9 = *(*(&v11 + 1) + 8 * v8);
-    if ([v9 type] == a3)
+    if ([v9 type] == type)
     {
       return v9;
     }
@@ -2861,24 +2861,24 @@ LABEL_3:
   }
 }
 
-- (void)_transitionSafeHandlePartnerChange:(id)a3
+- (void)_transitionSafeHandlePartnerChange:(id)change
 {
   v17 = *MEMORY[0x1E69E9840];
   if ([(NSArray *)self->_sections count])
   {
-    v5 = [MEMORY[0x1E69D4938] sharedConfig];
-    v6 = [v5 shouldLog];
-    if ([v5 shouldLogToDisk])
+    mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+    shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+    if ([mEMORY[0x1E69D4938] shouldLogToDisk])
     {
-      v7 = v6 | 2;
+      v7 = shouldLog | 2;
     }
 
     else
     {
-      v7 = v6;
+      v7 = shouldLog;
     }
 
-    if (!os_log_type_enabled([v5 OSLogObject], OS_LOG_TYPE_DEBUG))
+    if (!os_log_type_enabled([mEMORY[0x1E69D4938] OSLogObject], OS_LOG_TYPE_DEBUG))
     {
       v7 &= 2u;
     }
@@ -2888,7 +2888,7 @@ LABEL_3:
       v13 = 138412546;
       v14 = objc_opt_class();
       v15 = 2112;
-      v16 = [a3 object];
+      object = [change object];
       LODWORD(v12) = 22;
       v11 = &v13;
       v8 = _os_log_send_and_compose_impl();
@@ -2908,26 +2908,26 @@ LABEL_3:
   }
 }
 
-- (id)_viewControllerForContext:(id)a3
+- (id)_viewControllerForContext:(id)context
 {
-  v5 = [(SUTabBarController *)self delegate];
+  delegate = [(SUTabBarController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v5 tabBarController:self viewControllerForContext:a3];
-    if (![v6 clientInterface])
+    copyViewController = [delegate tabBarController:self viewControllerForContext:context];
+    if (![copyViewController clientInterface])
     {
-      [v6 setClientInterface:self->_clientInterface];
+      [copyViewController setClientInterface:self->_clientInterface];
     }
   }
 
   else
   {
-    v6 = [a3 copyViewController];
-    [v6 setClientInterface:self->_clientInterface];
-    [v6 restoreArchivableContext:a3];
+    copyViewController = [context copyViewController];
+    [copyViewController setClientInterface:self->_clientInterface];
+    [copyViewController restoreArchivableContext:context];
   }
 
-  return v6;
+  return copyViewController;
 }
 
 @end

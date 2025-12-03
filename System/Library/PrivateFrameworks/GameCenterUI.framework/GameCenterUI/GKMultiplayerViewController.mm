@@ -3,11 +3,11 @@
 - (BOOL)allowPlayerCountSelection;
 - (BOOL)isButtonHeaderViewInNavigationTitleView;
 - (BOOL)isLoading;
-- (BOOL)isParticipantInvitedByLocalPlayer:(id)a3;
-- (BOOL)setupInvitesForSource:(unint64_t)a3 completion:(id)a4;
+- (BOOL)isParticipantInvitedByLocalPlayer:(id)player;
+- (BOOL)setupInvitesForSource:(unint64_t)source completion:(id)completion;
 - (GKDashboardNearbyBrowserDelegate)nearbyDelegate;
 - (GKMultiplayerViewController)init;
-- (GKMultiplayerViewController)initWithMatchRequest:(id)a3;
+- (GKMultiplayerViewController)initWithMatchRequest:(id)request;
 - (UIEdgeInsets)collectionViewContentInset;
 - (id)makeButtonHeaderView;
 - (id)makeDoubleHeaderView;
@@ -18,50 +18,50 @@
 - (void)addAutomatchPlayer;
 - (void)cancelButtonPressed;
 - (void)configureAutoBounce;
-- (void)configureDataSourceWithCompletionHandler:(id)a3;
+- (void)configureDataSourceWithCompletionHandler:(id)handler;
 - (void)configureMatchRequest;
-- (void)dataSource:(id)a3 didRefreshSections:(id)a4;
+- (void)dataSource:(id)source didRefreshSections:(id)sections;
 - (void)dealloc;
 - (void)determineInvitationType;
-- (void)didPickPlayers:(id)a3 messageGroups:(id)a4 source:(unint64_t)a5 completion:(id)a6;
-- (void)didTapRemoveParticipant:(id)a3;
+- (void)didPickPlayers:(id)players messageGroups:(id)groups source:(unint64_t)source completion:(id)completion;
+- (void)didTapRemoveParticipant:(id)participant;
 - (void)didUpdateParticipants;
 - (void)dismissPickerViewController;
-- (void)handleNewParticipantCount:(int64_t)a3;
-- (void)handleServiceUnavailable:(id)a3;
-- (void)inviteContactPlayers:(id)a3 source:(unint64_t)a4 completion:(id)a5;
+- (void)handleNewParticipantCount:(int64_t)count;
+- (void)handleServiceUnavailable:(id)unavailable;
+- (void)inviteContactPlayers:(id)players source:(unint64_t)source completion:(id)completion;
 - (void)inviteFriendsButtonPressed;
 - (void)layoutSubviews;
-- (void)loadShareURLWithContactPlayers:(id)a3 completion:(id)a4;
-- (void)localPlayerAcceptedGameInvite:(id)a3;
-- (void)multiplayerPicker:(id)a3 didPickPlayers:(id)a4 messageGroups:(id)a5 customMessage:(id)a6;
-- (void)multiplayerPickerDidCancel:(id)a3;
+- (void)loadShareURLWithContactPlayers:(id)players completion:(id)completion;
+- (void)localPlayerAcceptedGameInvite:(id)invite;
+- (void)multiplayerPicker:(id)picker didPickPlayers:(id)players messageGroups:(id)groups customMessage:(id)message;
+- (void)multiplayerPickerDidCancel:(id)cancel;
 - (void)performActionsForButtonStartGame;
-- (void)playersToInvite:(id)a3;
+- (void)playersToInvite:(id)invite;
 - (void)preparePlayerPicker;
 - (void)presentPlayerPicker;
 - (void)refreshHeaderAndFooterMaterials;
 - (void)removeAutomatchPlayer;
-- (void)removePlayer:(id)a3;
+- (void)removePlayer:(id)player;
 - (void)sendInvitesToPlayersInOriginalMatchRequest;
-- (void)setCanStartGroupActivities:(BOOL)a3;
-- (void)setInvitationType:(int64_t)a3;
-- (void)setShareURL:(id)a3;
-- (void)setShowCancelButton:(BOOL)a3;
+- (void)setCanStartGroupActivities:(BOOL)activities;
+- (void)setInvitationType:(int64_t)type;
+- (void)setShareURL:(id)l;
+- (void)setShowCancelButton:(BOOL)button;
 - (void)setViewNeedsLayout;
 - (void)setupCancelButton;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateCollectionViewContentInset;
 - (void)updateDataSourceInvitationEnabled;
 - (void)updateFooterButtonStates;
 - (void)updateHeaderFooterLayoutMargins;
 - (void)updateTitle;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 - (void)viewSafeAreaInsetsDidChange;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation GKMultiplayerViewController
@@ -77,14 +77,14 @@
   {
     v4->_showCancelButton = 1;
     v4->_addButtonEnabled = 1;
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v6 = *MEMORY[0x277D0B970];
-    v7 = [MEMORY[0x277D0C138] localPlayer];
-    [v5 addObserver:v4 selector:sel_localPlayerAcceptedGameInvite_ name:v6 object:v7];
+    localPlayer = [MEMORY[0x277D0C138] localPlayer];
+    [defaultCenter addObserver:v4 selector:sel_localPlayerAcceptedGameInvite_ name:v6 object:localPlayer];
 
     v8 = *MEMORY[0x277D0BD60];
-    v9 = [MEMORY[0x277D0C138] localPlayer];
-    [v5 addObserver:v4 selector:sel_playersToInvite_ name:v8 object:v9];
+    localPlayer2 = [MEMORY[0x277D0C138] localPlayer];
+    [defaultCenter addObserver:v4 selector:sel_playersToInvite_ name:v8 object:localPlayer2];
 
     [(GKMultiplayerViewController *)v4 setInvitationType:0];
   }
@@ -92,23 +92,23 @@
   return v4;
 }
 
-- (GKMultiplayerViewController)initWithMatchRequest:(id)a3
+- (GKMultiplayerViewController)initWithMatchRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = [(GKMultiplayerViewController *)self init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [requestCopy copy];
     matchRequest = v5->_matchRequest;
     v5->_matchRequest = v6;
 
-    v8 = [v4 copy];
+    v8 = [requestCopy copy];
     originalMatchRequest = v5->_originalMatchRequest;
     v5->_originalMatchRequest = v8;
 
     [(GKMultiplayerViewController *)v5 configureMatchRequest];
-    v10 = [(GKMatchRequest *)v5->_matchRequest inviteMessage];
-    v11 = [v10 copy];
+    inviteMessage = [(GKMatchRequest *)v5->_matchRequest inviteMessage];
+    v11 = [inviteMessage copy];
     defaultInvitationMessage = v5->_defaultInvitationMessage;
     v5->_defaultInvitationMessage = v11;
 
@@ -116,7 +116,7 @@
     participantsInvitedByLocalPlayer = v5->_participantsInvitedByLocalPlayer;
     v5->_participantsInvitedByLocalPlayer = v13;
 
-    if (v4)
+    if (requestCopy)
     {
       objc_initWeak(&location, v5);
       v15 = [GKBoopHandler alloc];
@@ -241,8 +241,8 @@ void __52__GKMultiplayerViewController_initWithMatchRequest___block_invoke_4(uin
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = GKMultiplayerViewController;
@@ -257,26 +257,26 @@ void __52__GKMultiplayerViewController_initWithMatchRequest___block_invoke_4(uin
     [(GKMatchRequest *)matchRequest removeLocalPlayerFromPlayersToInvite];
     if ([(GKMatchRequest *)self->_matchRequest defaultNumberOfPlayers])
     {
-      v4 = [(GKMatchRequest *)self->_matchRequest defaultNumberOfPlayers];
-      v5 = [(GKMatchRequest *)self->_matchRequest minPlayers];
+      defaultNumberOfPlayers = [(GKMatchRequest *)self->_matchRequest defaultNumberOfPlayers];
+      minPlayers = [(GKMatchRequest *)self->_matchRequest minPlayers];
       v6 = self->_matchRequest;
-      if (v4 >= v5)
+      if (defaultNumberOfPlayers >= minPlayers)
       {
-        v8 = [(GKMatchRequest *)v6 defaultNumberOfPlayers];
-        if (v8 <= [(GKMatchRequest *)self->_matchRequest maxPlayers])
+        defaultNumberOfPlayers2 = [(GKMatchRequest *)v6 defaultNumberOfPlayers];
+        if (defaultNumberOfPlayers2 <= [(GKMatchRequest *)self->_matchRequest maxPlayers])
         {
           return;
         }
 
-        v7 = [(GKMatchRequest *)self->_matchRequest maxPlayers];
+        maxPlayers = [(GKMatchRequest *)self->_matchRequest maxPlayers];
       }
 
       else
       {
-        v7 = [(GKMatchRequest *)v6 minPlayers];
+        maxPlayers = [(GKMatchRequest *)v6 minPlayers];
       }
 
-      v9 = v7;
+      v9 = maxPlayers;
       v10 = self->_matchRequest;
 
       [(GKMatchRequest *)v10 setDefaultNumberOfPlayers:v9];
@@ -286,20 +286,20 @@ void __52__GKMultiplayerViewController_initWithMatchRequest___block_invoke_4(uin
 
 - (void)sendInvitesToPlayersInOriginalMatchRequest
 {
-  v3 = [(GKMultiplayerViewController *)self originalMatchRequest];
-  v4 = [v3 recipients];
-  v5 = [v4 count];
+  originalMatchRequest = [(GKMultiplayerViewController *)self originalMatchRequest];
+  recipients = [originalMatchRequest recipients];
+  v5 = [recipients count];
 
   if (v5)
   {
     objc_initWeak(&location, self);
-    v6 = [(GKMultiplayerViewController *)self originalMatchRequest];
+    originalMatchRequest2 = [(GKMultiplayerViewController *)self originalMatchRequest];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __73__GKMultiplayerViewController_sendInvitesToPlayersInOriginalMatchRequest__block_invoke;
     v7[3] = &unk_279669FB8;
     objc_copyWeak(&v8, &location);
-    [v6 loadRecipientsWithCompletionHandler:v7];
+    [originalMatchRequest2 loadRecipientsWithCompletionHandler:v7];
 
     objc_destroyWeak(&v8);
     objc_destroyWeak(&location);
@@ -379,20 +379,20 @@ void __73__GKMultiplayerViewController_sendInvitesToPlayersInOriginalMatchReques
   v8[3] = &unk_279669FE0;
   objc_copyWeak(&v9, &location);
   [(GKMultiplayerFooterView *)v3 setInviteFriendsHandler:v8];
-  v4 = [(GKMultiplayerViewController *)self matchRequest];
+  matchRequest = [(GKMultiplayerViewController *)self matchRequest];
 
-  if (v4)
+  if (matchRequest)
   {
-    v5 = [(GKMultiplayerViewController *)self matchRequest];
-    [(GKMultiplayerFooterView *)v3 configureUsing:v5];
+    matchRequest2 = [(GKMultiplayerViewController *)self matchRequest];
+    [(GKMultiplayerFooterView *)v3 configureUsing:matchRequest2];
   }
 
-  v6 = [(GKMultiplayerViewController *)self matchRequest];
+  matchRequest3 = [(GKMultiplayerViewController *)self matchRequest];
 
-  if (v6)
+  if (matchRequest3)
   {
-    v7 = [(GKMultiplayerViewController *)self view];
-    [v7 addSubview:v3];
+    view = [(GKMultiplayerViewController *)self view];
+    [view addSubview:v3];
   }
 
   [(GKMultiplayerViewController *)self setFooterView:v3];
@@ -414,52 +414,52 @@ void __42__GKMultiplayerViewController_viewDidLoad__block_invoke_2(uint64_t a1)
   [WeakRetained inviteFriendsButtonPressed];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v17.receiver = self;
   v17.super_class = GKMultiplayerViewController;
-  [(GKCollectionViewController *)&v17 viewWillAppear:a3];
-  v4 = [(GKCollectionViewController *)self collectionView];
-  [v4 setBackgroundColor:0];
-  [v4 setOpaque:0];
-  v5 = 1;
-  [v4 setDirectionalLockEnabled:1];
-  [v4 setAlwaysBounceVertical:0];
-  [v4 setShowsHorizontalScrollIndicator:0];
-  [v4 setShowsVerticalScrollIndicator:0];
-  v6 = [(GKMultiplayerViewController *)self navigationController];
-  [v6 setNavigationBarHidden:-[GKMultiplayerViewController showNavigationBar](self animated:{"showNavigationBar") ^ 1, 0}];
+  [(GKCollectionViewController *)&v17 viewWillAppear:appear];
+  collectionView = [(GKCollectionViewController *)self collectionView];
+  [collectionView setBackgroundColor:0];
+  [collectionView setOpaque:0];
+  canStartGroupActivities = 1;
+  [collectionView setDirectionalLockEnabled:1];
+  [collectionView setAlwaysBounceVertical:0];
+  [collectionView setShowsHorizontalScrollIndicator:0];
+  [collectionView setShowsVerticalScrollIndicator:0];
+  navigationController = [(GKMultiplayerViewController *)self navigationController];
+  [navigationController setNavigationBarHidden:-[GKMultiplayerViewController showNavigationBar](self animated:{"showNavigationBar") ^ 1, 0}];
 
-  v7 = [(GKMultiplayerViewController *)self navigationController];
-  v8 = [v7 navigationBar];
-  v9 = [MEMORY[0x277D75348] whiteColor];
-  [v8 setTintColor:v9];
+  navigationController2 = [(GKMultiplayerViewController *)self navigationController];
+  navigationBar = [navigationController2 navigationBar];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  [navigationBar setTintColor:whiteColor];
 
   [(GKMultiplayerViewController *)self setViewNeedsLayout];
-  v10 = [(GKCollectionViewController *)self collectionView];
-  [v10 reloadData];
+  collectionView2 = [(GKCollectionViewController *)self collectionView];
+  [collectionView2 reloadData];
 
-  v11 = [(GKCollectionViewController *)self collectionView];
-  v12 = [v11 collectionViewLayout];
-  [v12 invalidateLayout];
+  collectionView3 = [(GKCollectionViewController *)self collectionView];
+  collectionViewLayout = [collectionView3 collectionViewLayout];
+  [collectionViewLayout invalidateLayout];
 
   if ([(GKMultiplayerViewController *)self matchmakingMode]!= 2)
   {
-    v5 = [(GKMultiplayerViewController *)self canStartGroupActivities];
+    canStartGroupActivities = [(GKMultiplayerViewController *)self canStartGroupActivities];
   }
 
-  v13 = [(GKMultiplayerViewController *)self footerView];
-  [v13 setInviteFriendsButtonHidden:v5];
+  footerView = [(GKMultiplayerViewController *)self footerView];
+  [footerView setInviteFriendsButtonHidden:canStartGroupActivities];
 
-  v14 = [(GKMultiplayerViewController *)self buttonHeaderView];
-  [v14 setBackgroundColor:0];
+  buttonHeaderView = [(GKMultiplayerViewController *)self buttonHeaderView];
+  [buttonHeaderView setBackgroundColor:0];
 
-  v15 = [(GKMultiplayerViewController *)self footerView];
-  [v15 setBackgroundColor:0];
+  footerView2 = [(GKMultiplayerViewController *)self footerView];
+  [footerView2 setBackgroundColor:0];
 
   [(GKMultiplayerViewController *)self configureAutoBounce];
-  v16 = [(GKMultiplayerViewController *)self boopHandler];
-  [v16 startNearbyDiscoveryWithCompletionHandler:&__block_literal_global_22];
+  boopHandler = [(GKMultiplayerViewController *)self boopHandler];
+  [boopHandler startNearbyDiscoveryWithCompletionHandler:&__block_literal_global_22];
 }
 
 void __46__GKMultiplayerViewController_viewWillAppear___block_invoke(uint64_t a1, void *a2)
@@ -495,12 +495,12 @@ void __46__GKMultiplayerViewController_viewWillAppear___block_invoke(uint64_t a1
 
 - (void)refreshHeaderAndFooterMaterials
 {
-  v3 = [(GKCollectionViewController *)self collectionView];
-  [v3 contentOffset];
+  collectionView = [(GKCollectionViewController *)self collectionView];
+  [collectionView contentOffset];
   v5 = v4;
 
-  v6 = [(GKCollectionViewController *)self collectionView];
-  [v6 contentInset];
+  collectionView2 = [(GKCollectionViewController *)self collectionView];
+  [collectionView2 contentInset];
   v8 = v7;
 
   objc_opt_class();
@@ -509,8 +509,8 @@ void __46__GKMultiplayerViewController_viewWillAppear___block_invoke(uint64_t a1
     [(UIView *)self->_buttonHeaderView wantsMaterialBackgroundWithScrollOffset:v5 + v8];
   }
 
-  v9 = [(GKCollectionViewController *)self collectionView];
-  [v9 contentSize];
+  collectionView3 = [(GKCollectionViewController *)self collectionView];
+  [collectionView3 contentSize];
   v11 = v10;
 
   footerView = self->_footerView;
@@ -538,8 +538,8 @@ void __46__GKMultiplayerViewController_viewWillAppear___block_invoke(uint64_t a1
 
 - (void)layoutSubviews
 {
-  v3 = [(GKMultiplayerViewController *)self view];
-  [v3 bounds];
+  view = [(GKMultiplayerViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -589,8 +589,8 @@ void __46__GKMultiplayerViewController_viewWillAppear___block_invoke(uint64_t a1
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(GKCollectionViewController *)self collectionView];
-  [v11 contentInset];
+  collectionView = [(GKCollectionViewController *)self collectionView];
+  [collectionView contentInset];
   if (v6 == v15 && v4 == v12 && v10 == v14)
   {
     v18 = v13;
@@ -605,28 +605,28 @@ void __46__GKMultiplayerViewController_viewWillAppear___block_invoke(uint64_t a1
   {
   }
 
-  v19 = [(GKCollectionViewController *)self collectionView];
-  [v19 setContentInset:{v4, v6, v8, v10}];
+  collectionView2 = [(GKCollectionViewController *)self collectionView];
+  [collectionView2 setContentInset:{v4, v6, v8, v10}];
 
-  v20 = [(GKCollectionViewController *)self collectionView];
-  [v20 setContentOffset:{-v6, -v4}];
+  collectionView3 = [(GKCollectionViewController *)self collectionView];
+  [collectionView3 setContentOffset:{-v6, -v4}];
 
-  v22 = [(GKCollectionViewController *)self collectionView];
-  v21 = [v22 collectionViewLayout];
-  [v21 invalidateLayout];
+  collectionView4 = [(GKCollectionViewController *)self collectionView];
+  collectionViewLayout = [collectionView4 collectionViewLayout];
+  [collectionViewLayout invalidateLayout];
 }
 
 - (void)updateHeaderFooterLayoutMargins
 {
-  v3 = [(GKMultiplayerViewController *)self view];
-  [v3 safeAreaInsets];
+  view = [(GKMultiplayerViewController *)self view];
+  [view safeAreaInsets];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
-  v12 = [(GKCollectionViewController *)self collectionView];
-  [_TtC12GameCenterUI33GKMultiplayerViewControllerLayout minimumContentInsetIn:v12];
+  collectionView = [(GKCollectionViewController *)self collectionView];
+  [_TtC12GameCenterUI33GKMultiplayerViewControllerLayout minimumContentInsetIn:collectionView];
   v14 = v13;
   v16 = v15;
   v18 = v17;
@@ -687,22 +687,22 @@ void __46__GKMultiplayerViewController_viewWillAppear___block_invoke(uint64_t a1
     return 0;
   }
 
-  v3 = [(GKMultiplayerViewController *)self navigationItem];
-  v4 = [v3 titleView];
-  v5 = v4 == self->_buttonHeaderView;
+  navigationItem = [(GKMultiplayerViewController *)self navigationItem];
+  titleView = [navigationItem titleView];
+  v5 = titleView == self->_buttonHeaderView;
 
   return v5;
 }
 
 - (UIEdgeInsets)collectionViewContentInset
 {
-  v3 = [(GKMultiplayerViewController *)self view];
-  [v3 safeAreaInsets];
+  view = [(GKMultiplayerViewController *)self view];
+  [view safeAreaInsets];
   v5 = v4;
   v7 = v6;
 
-  v8 = [(GKCollectionViewController *)self collectionView];
-  [_TtC12GameCenterUI33GKMultiplayerViewControllerLayout minimumContentInsetIn:v8];
+  collectionView = [(GKCollectionViewController *)self collectionView];
+  [_TtC12GameCenterUI33GKMultiplayerViewControllerLayout minimumContentInsetIn:collectionView];
   v10 = v9;
   v12 = v11;
   v14 = v13;
@@ -714,12 +714,12 @@ void __46__GKMultiplayerViewController_viewWillAppear___block_invoke(uint64_t a1
   v20 = v19;
   if ([(GKMultiplayerViewController *)self isButtonHeaderViewInNavigationTitleView])
   {
-    v21 = [(GKMultiplayerViewController *)self navigationController];
-    v22 = [v21 navigationBar];
+    navigationController = [(GKMultiplayerViewController *)self navigationController];
+    navigationBar = [navigationController navigationBar];
 
-    [v22 frame];
+    [navigationBar frame];
     v24 = v23;
-    [v22 frame];
+    [navigationBar frame];
     v18 = v24 + v25;
   }
 
@@ -752,11 +752,11 @@ void __46__GKMultiplayerViewController_viewWillAppear___block_invoke(uint64_t a1
   return result;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = GKMultiplayerViewController;
-  [(GKCollectionViewController *)&v4 viewDidAppear:a3];
+  [(GKCollectionViewController *)&v4 viewDidAppear:appear];
   [(GKMultiplayerViewController *)self setPlayerPickerViewController:0];
   if ([(GKMultiplayerViewController *)self invitationType]== 2)
   {
@@ -768,13 +768,13 @@ void __46__GKMultiplayerViewController_viewWillAppear___block_invoke(uint64_t a1
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = GKMultiplayerViewController;
-  [(GKCollectionViewController *)&v5 viewDidDisappear:a3];
-  v4 = [(GKMultiplayerViewController *)self boopHandler];
-  [v4 stopWithCompletionHandler:&__block_literal_global_137];
+  [(GKCollectionViewController *)&v5 viewDidDisappear:disappear];
+  boopHandler = [(GKMultiplayerViewController *)self boopHandler];
+  [boopHandler stopWithCompletionHandler:&__block_literal_global_137];
 }
 
 void __48__GKMultiplayerViewController_viewDidDisappear___block_invoke(uint64_t a1, void *a2)
@@ -813,58 +813,58 @@ void __48__GKMultiplayerViewController_viewDidDisappear___block_invoke(uint64_t 
   v2 = MEMORY[0x277CCACA8];
   v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"Subclasses must provide a valid pageId"];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter/Frameworks/GameCenterUI/iOS/Framework/GKMultiplayerViewController.m"];
-  v5 = [v4 lastPathComponent];
-  v6 = [v2 stringWithFormat:@"%@ (NO)\n[%s (%s:%d)]", v3, "-[GKMultiplayerViewController pageId]", objc_msgSend(v5, "UTF8String"), 500];
+  lastPathComponent = [v4 lastPathComponent];
+  v6 = [v2 stringWithFormat:@"%@ (NO)\n[%s (%s:%d)]", v3, "-[GKMultiplayerViewController pageId]", objc_msgSend(lastPathComponent, "UTF8String"), 500];
 
   [MEMORY[0x277CBEAD8] raise:@"GameKit Exception" format:{@"%@", v6}];
   return @"lobby";
 }
 
-- (void)configureDataSourceWithCompletionHandler:(id)a3
+- (void)configureDataSourceWithCompletionHandler:(id)handler
 {
   v51 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = [GKMultiplayerDataSource alloc];
-  v6 = [(GKMultiplayerViewController *)self pageId];
-  v7 = [(GKMultiplayerDataSource *)v5 initWithMetricsPageId:v6];
+  pageId = [(GKMultiplayerViewController *)self pageId];
+  v7 = [(GKMultiplayerDataSource *)v5 initWithMetricsPageId:pageId];
 
-  v8 = [(GKCollectionViewController *)self collectionView];
-  [(GKMultiplayerDataSource *)v7 configureCollectionView:v8];
+  collectionView = [(GKCollectionViewController *)self collectionView];
+  [(GKMultiplayerDataSource *)v7 configureCollectionView:collectionView];
 
   [(GKMultiplayerDataSource *)v7 setDelegate:self];
-  v9 = [(GKMultiplayerViewController *)self originalMatchRequest];
+  originalMatchRequest = [(GKMultiplayerViewController *)self originalMatchRequest];
 
-  if (v9)
+  if (originalMatchRequest)
   {
-    v10 = [(GKMultiplayerViewController *)self originalMatchRequest];
-    v11 = [v10 copy];
+    originalMatchRequest2 = [(GKMultiplayerViewController *)self originalMatchRequest];
+    v11 = [originalMatchRequest2 copy];
     matchRequest = self->_matchRequest;
     self->_matchRequest = v11;
 
     [(GKMultiplayerViewController *)self configureMatchRequest];
   }
 
-  v13 = [(GKMultiplayerViewController *)self matchRequest];
+  matchRequest = [(GKMultiplayerViewController *)self matchRequest];
 
-  if (v13)
+  if (matchRequest)
   {
-    v14 = [(GKMatchRequest *)self->_matchRequest recipients];
-    v15 = [v14 _gkGuestPlayersFromPlayers];
+    recipients = [(GKMatchRequest *)self->_matchRequest recipients];
+    _gkGuestPlayersFromPlayers = [recipients _gkGuestPlayersFromPlayers];
 
-    [(GKMultiplayerDataSource *)v7 addPlayers:v15 withStatus:7 replaceAutomatches:1 complete:0];
-    v16 = [(GKMultiplayerViewController *)self matchRequest];
-    -[GKMultiplayerDataSource setMinPlayers:](v7, "setMinPlayers:", [v16 minPlayers]);
+    [(GKMultiplayerDataSource *)v7 addPlayers:_gkGuestPlayersFromPlayers withStatus:7 replaceAutomatches:1 complete:0];
+    matchRequest2 = [(GKMultiplayerViewController *)self matchRequest];
+    -[GKMultiplayerDataSource setMinPlayers:](v7, "setMinPlayers:", [matchRequest2 minPlayers]);
 
-    v17 = [(GKMultiplayerViewController *)self matchRequest];
-    -[GKMultiplayerDataSource setMaxPlayers:](v7, "setMaxPlayers:", [v17 maxPlayers]);
+    matchRequest3 = [(GKMultiplayerViewController *)self matchRequest];
+    -[GKMultiplayerDataSource setMaxPlayers:](v7, "setMaxPlayers:", [matchRequest3 maxPlayers]);
 
-    v18 = [(GKMultiplayerViewController *)self matchRequest];
-    if ([v18 defaultNumberOfPlayersIsValid])
+    matchRequest4 = [(GKMultiplayerViewController *)self matchRequest];
+    if ([matchRequest4 defaultNumberOfPlayersIsValid])
     {
-      v19 = [(GKMultiplayerViewController *)self matchRequest];
-      v20 = [v19 defaultNumberOfPlayers];
+      matchRequest5 = [(GKMultiplayerViewController *)self matchRequest];
+      defaultNumberOfPlayers = [matchRequest5 defaultNumberOfPlayers];
 
-      if (v20)
+      if (defaultNumberOfPlayers)
       {
         if (!*MEMORY[0x277D0C2A0])
         {
@@ -875,14 +875,14 @@ void __48__GKMultiplayerViewController_viewDidDisappear___block_invoke(uint64_t 
         if (os_log_type_enabled(*MEMORY[0x277D0C2B0], OS_LOG_TYPE_INFO))
         {
           v23 = v22;
-          v24 = [(GKMultiplayerViewController *)self matchRequest];
+          matchRequest6 = [(GKMultiplayerViewController *)self matchRequest];
           *buf = 134217984;
-          v50 = [v24 defaultNumberOfPlayers];
+          defaultNumberOfPlayers2 = [matchRequest6 defaultNumberOfPlayers];
           _os_log_impl(&dword_24DE53000, v23, OS_LOG_TYPE_INFO, "set automatchPlayers by _matchRequest.defaultNumberOfPlayers  %lu. This is to respect what developers set.", buf, 0xCu);
         }
 
-        v25 = [(GKMultiplayerViewController *)self matchRequest];
-        v26 = [v25 defaultNumberOfPlayers];
+        matchRequest7 = [(GKMultiplayerViewController *)self matchRequest];
+        defaultNumberOfPlayers3 = [matchRequest7 defaultNumberOfPlayers];
         goto LABEL_23;
       }
     }
@@ -891,28 +891,28 @@ void __48__GKMultiplayerViewController_viewDidDisappear___block_invoke(uint64_t 
     {
     }
 
-    v27 = [(GKMultiplayerViewController *)self matchRequest];
-    v28 = [v27 defaultNumberOfPlayers];
+    matchRequest8 = [(GKMultiplayerViewController *)self matchRequest];
+    defaultNumberOfPlayers4 = [matchRequest8 defaultNumberOfPlayers];
 
-    if (!v28)
+    if (!defaultNumberOfPlayers4)
     {
-      v29 = [(GKMultiplayerViewController *)self matchRequest];
-      v30 = [v29 maxPlayers];
-      v31 = [(GKMultiplayerViewController *)self matchRequest];
-      [v31 setDefaultNumberOfPlayers:v30];
+      matchRequest9 = [(GKMultiplayerViewController *)self matchRequest];
+      maxPlayers = [matchRequest9 maxPlayers];
+      matchRequest10 = [(GKMultiplayerViewController *)self matchRequest];
+      [matchRequest10 setDefaultNumberOfPlayers:maxPlayers];
     }
 
-    v32 = [(GKMultiplayerViewController *)self matchRequest];
-    v33 = [v32 defaultNumberOfPlayers];
+    matchRequest11 = [(GKMultiplayerViewController *)self matchRequest];
+    defaultNumberOfPlayers5 = [matchRequest11 defaultNumberOfPlayers];
 
-    v34 = [MEMORY[0x277D0C1D8] shared];
-    v35 = [(GKMultiplayerViewController *)self game];
-    v36 = [v35 bundleIdentifier];
-    v37 = [v34 recentNumberOfPlayersForBundleID:v36];
+    mEMORY[0x277D0C1D8] = [MEMORY[0x277D0C1D8] shared];
+    game = [(GKMultiplayerViewController *)self game];
+    bundleIdentifier = [game bundleIdentifier];
+    v37 = [mEMORY[0x277D0C1D8] recentNumberOfPlayersForBundleID:bundleIdentifier];
 
     if (v37 <= 1)
     {
-      v38 = v33;
+      v38 = defaultNumberOfPlayers5;
     }
 
     else
@@ -920,54 +920,54 @@ void __48__GKMultiplayerViewController_viewDidDisappear___block_invoke(uint64_t 
       v38 = v37;
     }
 
-    v39 = [(GKMultiplayerViewController *)self matchRequest];
-    v40 = [v39 minPlayers];
+    matchRequest12 = [(GKMultiplayerViewController *)self matchRequest];
+    minPlayers = [matchRequest12 minPlayers];
 
-    v41 = [(GKMultiplayerViewController *)self matchRequest];
-    v25 = v41;
-    if (v38 >= v40)
+    matchRequest13 = [(GKMultiplayerViewController *)self matchRequest];
+    matchRequest7 = matchRequest13;
+    if (v38 >= minPlayers)
     {
-      v42 = [v41 maxPlayers];
+      maxPlayers2 = [matchRequest13 maxPlayers];
 
-      if (v38 <= v42)
+      if (v38 <= maxPlayers2)
       {
 LABEL_24:
-        -[GKMultiplayerDataSource setAutomatchPlayerCount:](v7, "setAutomatchPlayerCount:", v38 + ~[v15 count]);
+        -[GKMultiplayerDataSource setAutomatchPlayerCount:](v7, "setAutomatchPlayerCount:", v38 + ~[_gkGuestPlayersFromPlayers count]);
         [(GKMultiplayerDataSource *)v7 setImplicitAutomatchPlayerCount:[(GKMultiplayerDataSource *)v7 automatchPlayerCount]];
-        v43 = [(GKMultiplayerViewController *)self game];
-        [(GKMultiplayerDataSource *)v7 setGame:v43];
+        game2 = [(GKMultiplayerViewController *)self game];
+        [(GKMultiplayerDataSource *)v7 setGame:game2];
 
-        v44 = [(GKMultiplayerViewController *)self matchRequest];
+        matchRequest14 = [(GKMultiplayerViewController *)self matchRequest];
         v45[0] = MEMORY[0x277D85DD0];
         v45[1] = 3221225472;
         v45[2] = __72__GKMultiplayerViewController_configureDataSourceWithCompletionHandler___block_invoke;
         v45[3] = &unk_27966B6B0;
         v46 = v7;
-        v47 = self;
-        v48 = v4;
-        [v44 loadRecipientsWithCompletionHandler:v45];
+        selfCopy = self;
+        v48 = handlerCopy;
+        [matchRequest14 loadRecipientsWithCompletionHandler:v45];
 
         goto LABEL_25;
       }
 
-      v25 = [(GKMultiplayerViewController *)self matchRequest];
-      v26 = [v25 maxPlayers];
+      matchRequest7 = [(GKMultiplayerViewController *)self matchRequest];
+      defaultNumberOfPlayers3 = [matchRequest7 maxPlayers];
     }
 
     else
     {
-      v26 = [v41 minPlayers];
+      defaultNumberOfPlayers3 = [matchRequest13 minPlayers];
     }
 
 LABEL_23:
-    v38 = v26;
+    v38 = defaultNumberOfPlayers3;
 
     goto LABEL_24;
   }
 
-  if (v4)
+  if (handlerCopy)
   {
-    v4[2](v4);
+    handlerCopy[2](handlerCopy);
   }
 
 LABEL_25:
@@ -1042,29 +1042,29 @@ uint64_t __72__GKMultiplayerViewController_configureDataSourceWithCompletionHand
 
 - (void)updateTitle
 {
-  v3 = [(GKMultiplayerViewController *)self allowPlayerCountSelection];
-  v4 = [(GKMultiplayerViewController *)self buttonHeaderView];
+  allowPlayerCountSelection = [(GKMultiplayerViewController *)self allowPlayerCountSelection];
+  buttonHeaderView = [(GKMultiplayerViewController *)self buttonHeaderView];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  if (v3)
+  if (allowPlayerCountSelection)
   {
     if (isKindOfClass)
     {
       v6 = MEMORY[0x277CCACA8];
-      v7 = GKGameCenterUIFrameworkBundle();
-      v8 = GKGetLocalizedStringFromTableInBundle();
-      v9 = [(GKMultiplayerViewController *)self matchRequest];
-      v10 = [v9 minPlayers];
-      v11 = [(GKMultiplayerViewController *)self matchRequest];
-      v12 = [v6 stringWithFormat:v8, v10, objc_msgSend(v11, "maxPlayers")];
-      v13 = [(GKMultiplayerViewController *)self buttonHeaderView];
-      [v13 setSubtitleText:v12];
+      buttonHeaderView4 = GKGameCenterUIFrameworkBundle();
+      matchRequest3 = GKGetLocalizedStringFromTableInBundle();
+      matchRequest = [(GKMultiplayerViewController *)self matchRequest];
+      minPlayers = [matchRequest minPlayers];
+      matchRequest2 = [(GKMultiplayerViewController *)self matchRequest];
+      v12 = [v6 stringWithFormat:matchRequest3, minPlayers, objc_msgSend(matchRequest2, "maxPlayers")];
+      buttonHeaderView2 = [(GKMultiplayerViewController *)self buttonHeaderView];
+      [buttonHeaderView2 setSubtitleText:v12];
     }
 
     else
     {
-      v17 = [(GKMultiplayerViewController *)self buttonHeaderView];
+      buttonHeaderView3 = [(GKMultiplayerViewController *)self buttonHeaderView];
       objc_opt_class();
       v18 = objc_opt_isKindOfClass();
 
@@ -1073,11 +1073,11 @@ uint64_t __72__GKMultiplayerViewController_configureDataSourceWithCompletionHand
         goto LABEL_10;
       }
 
-      v7 = [(GKMultiplayerViewController *)self buttonHeaderView];
-      v8 = [(GKMultiplayerViewController *)self matchRequest];
-      v19 = [v8 minPlayers];
-      v9 = [(GKMultiplayerViewController *)self matchRequest];
-      [v7 updateCountWithMinPlayers:v19 maxPlayers:{objc_msgSend(v9, "maxPlayers")}];
+      buttonHeaderView4 = [(GKMultiplayerViewController *)self buttonHeaderView];
+      matchRequest3 = [(GKMultiplayerViewController *)self matchRequest];
+      minPlayers2 = [matchRequest3 minPlayers];
+      matchRequest = [(GKMultiplayerViewController *)self matchRequest];
+      [buttonHeaderView4 updateCountWithMinPlayers:minPlayers2 maxPlayers:{objc_msgSend(matchRequest, "maxPlayers")}];
     }
 
     goto LABEL_8;
@@ -1086,12 +1086,12 @@ uint64_t __72__GKMultiplayerViewController_configureDataSourceWithCompletionHand
   if (isKindOfClass)
   {
     v14 = MEMORY[0x277CCACA8];
-    v7 = GKGameCenterUIFrameworkBundle();
-    v8 = GKGetLocalizedStringFromTableInBundle();
-    v9 = [(GKMultiplayerViewController *)self matchRequest];
-    v15 = [v14 stringWithFormat:v8, objc_msgSend(v9, "minPlayers")];
-    v16 = [(GKMultiplayerViewController *)self buttonHeaderView];
-    [v16 setSubtitleText:v15];
+    buttonHeaderView4 = GKGameCenterUIFrameworkBundle();
+    matchRequest3 = GKGetLocalizedStringFromTableInBundle();
+    matchRequest = [(GKMultiplayerViewController *)self matchRequest];
+    v15 = [v14 stringWithFormat:matchRequest3, objc_msgSend(matchRequest, "minPlayers")];
+    buttonHeaderView5 = [(GKMultiplayerViewController *)self buttonHeaderView];
+    [buttonHeaderView5 setSubtitleText:v15];
 
 LABEL_8:
 LABEL_9:
@@ -1099,27 +1099,27 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v20 = [(GKMultiplayerViewController *)self buttonHeaderView];
+  buttonHeaderView6 = [(GKMultiplayerViewController *)self buttonHeaderView];
   objc_opt_class();
   v21 = objc_opt_isKindOfClass();
 
   if (v21)
   {
-    v7 = [(GKMultiplayerViewController *)self buttonHeaderView];
-    v22 = [(GKMultiplayerViewController *)self matchRequest];
-    v23 = [v22 minPlayers];
+    buttonHeaderView4 = [(GKMultiplayerViewController *)self buttonHeaderView];
+    matchRequest4 = [(GKMultiplayerViewController *)self matchRequest];
+    minPlayers3 = [matchRequest4 minPlayers];
 
-    v24 = [(GKMultiplayerViewController *)self multiplayerDataSource];
-    v25 = [v24 players];
-    v26 = [v25 count];
+    multiplayerDataSource = [(GKMultiplayerViewController *)self multiplayerDataSource];
+    players = [multiplayerDataSource players];
+    v26 = [players count];
 
-    if (v23 <= v26)
+    if (minPlayers3 <= v26)
     {
-      v23 = v26;
+      minPlayers3 = v26;
     }
 
-    v8 = [(GKMultiplayerViewController *)self matchRequest];
-    [v7 updateCountWithMinPlayers:v23 maxPlayers:{objc_msgSend(v8, "maxPlayers")}];
+    matchRequest3 = [(GKMultiplayerViewController *)self matchRequest];
+    [buttonHeaderView4 updateCountWithMinPlayers:minPlayers3 maxPlayers:{objc_msgSend(matchRequest3, "maxPlayers")}];
     goto LABEL_9;
   }
 
@@ -1128,36 +1128,36 @@ LABEL_10:
   [(GKMultiplayerViewController *)self updateStartGameButtonTitle];
 }
 
-- (void)setCanStartGroupActivities:(BOOL)a3
+- (void)setCanStartGroupActivities:(BOOL)activities
 {
-  if (self->_canStartGroupActivities != a3)
+  if (self->_canStartGroupActivities != activities)
   {
-    self->_canStartGroupActivities = a3;
+    self->_canStartGroupActivities = activities;
     [(GKMultiplayerViewController *)self updateTitle];
   }
 }
 
-- (void)setShowCancelButton:(BOOL)a3
+- (void)setShowCancelButton:(BOOL)button
 {
-  if (self->_showCancelButton != a3)
+  if (self->_showCancelButton != button)
   {
-    self->_showCancelButton = a3;
+    self->_showCancelButton = button;
     [(GKMultiplayerViewController *)self setupCancelButton];
   }
 }
 
 - (void)setupCancelButton
 {
-  v4 = [(GKMultiplayerViewController *)self navigationItem];
+  navigationItem = [(GKMultiplayerViewController *)self navigationItem];
   if (self->_showCancelButton)
   {
     v3 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:1 target:self action:sel_cancelButtonPressed];
-    [v4 setLeftBarButtonItem:v3];
+    [navigationItem setLeftBarButtonItem:v3];
   }
 
   else
   {
-    [v4 setLeftBarButtonItem:0];
+    [navigationItem setLeftBarButtonItem:0];
   }
 }
 
@@ -1165,9 +1165,9 @@ LABEL_10:
 {
   if (self->_addButtonEnabled)
   {
-    v5 = [(GKMultiplayerViewController *)self multiplayerDataSource];
-    v4 = [(GKMultiplayerViewController *)self multiplayerDataSource];
-    [v5 setAutomatchPlayerCount:objc_msgSend(v4 complete:{"automatchPlayerCount") + 1, 0}];
+    multiplayerDataSource = [(GKMultiplayerViewController *)self multiplayerDataSource];
+    multiplayerDataSource2 = [(GKMultiplayerViewController *)self multiplayerDataSource];
+    [multiplayerDataSource setAutomatchPlayerCount:objc_msgSend(multiplayerDataSource2 complete:{"automatchPlayerCount") + 1, 0}];
   }
 }
 
@@ -1175,27 +1175,27 @@ LABEL_10:
 {
   if (self->_addButtonEnabled)
   {
-    v5 = [(GKMultiplayerViewController *)self multiplayerDataSource];
-    v4 = [(GKMultiplayerViewController *)self multiplayerDataSource];
-    [v5 setAutomatchPlayerCount:objc_msgSend(v4 complete:{"automatchPlayerCount") - 1, 0}];
+    multiplayerDataSource = [(GKMultiplayerViewController *)self multiplayerDataSource];
+    multiplayerDataSource2 = [(GKMultiplayerViewController *)self multiplayerDataSource];
+    [multiplayerDataSource setAutomatchPlayerCount:objc_msgSend(multiplayerDataSource2 complete:{"automatchPlayerCount") - 1, 0}];
   }
 }
 
-- (void)removePlayer:(id)a3
+- (void)removePlayer:(id)player
 {
   v10[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(GKMultiplayerViewController *)self multiplayerDataSource];
-  v10[0] = v4;
+  playerCopy = player;
+  multiplayerDataSource = [(GKMultiplayerViewController *)self multiplayerDataSource];
+  v10[0] = playerCopy;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:1];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __44__GKMultiplayerViewController_removePlayer___block_invoke;
   v8[3] = &unk_279669E48;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  [v5 removePlayers:v6 complete:v8];
+  v9 = playerCopy;
+  v7 = playerCopy;
+  [multiplayerDataSource removePlayers:v6 complete:v8];
 }
 
 void __44__GKMultiplayerViewController_removePlayer___block_invoke(uint64_t a1)
@@ -1210,25 +1210,25 @@ void __44__GKMultiplayerViewController_removePlayer___block_invoke(uint64_t a1)
 
 - (int64_t)maxAvailablePlayers
 {
-  v2 = [(GKMultiplayerViewController *)self multiplayerDataSource];
-  v3 = [v2 maxAvailablePlayers];
+  multiplayerDataSource = [(GKMultiplayerViewController *)self multiplayerDataSource];
+  maxAvailablePlayers = [multiplayerDataSource maxAvailablePlayers];
 
-  return v3;
+  return maxAvailablePlayers;
 }
 
-- (void)loadShareURLWithContactPlayers:(id)a3 completion:(id)a4
+- (void)loadShareURLWithContactPlayers:(id)players completion:(id)completion
 {
-  if (a4)
+  if (completion)
   {
-    (*(a4 + 2))(a4, 0, 0);
+    (*(completion + 2))(completion, 0, 0);
   }
 }
 
 - (void)presentPlayerPicker
 {
   [(GKMultiplayerViewController *)self preparePlayerPicker];
-  v3 = [(GKMultiplayerViewController *)self playerPickerViewController];
-  [(GKMultiplayerViewController *)self willPresentPlayerPicker:v3];
+  playerPickerViewController = [(GKMultiplayerViewController *)self playerPickerViewController];
+  [(GKMultiplayerViewController *)self willPresentPlayerPicker:playerPickerViewController];
 
   if (!*MEMORY[0x277D0C2A0])
   {
@@ -1242,12 +1242,12 @@ void __44__GKMultiplayerViewController_removePlayer___block_invoke(uint64_t a1)
     _os_log_impl(&dword_24DE53000, v5, OS_LOG_TYPE_INFO, "Will present player picker view controller", buf, 2u);
   }
 
-  v6 = [MEMORY[0x277D0C1F8] reporter];
-  [v6 reportEvent:*MEMORY[0x277D0BE78] type:*MEMORY[0x277D0BBC8]];
+  reporter = [MEMORY[0x277D0C1F8] reporter];
+  [reporter reportEvent:*MEMORY[0x277D0BE78] type:*MEMORY[0x277D0BBC8]];
 
   v7 = objc_alloc(MEMORY[0x277D757A0]);
-  v8 = [(GKMultiplayerViewController *)self playerPickerViewController];
-  v9 = [v7 initWithRootViewController:v8];
+  playerPickerViewController2 = [(GKMultiplayerViewController *)self playerPickerViewController];
+  v9 = [v7 initWithRootViewController:playerPickerViewController2];
 
   if (GKIsXRUIIdiomShouldUsePadUI())
   {
@@ -1261,8 +1261,8 @@ void __44__GKMultiplayerViewController_removePlayer___block_invoke(uint64_t a1)
 
   [v9 setModalPresentationStyle:v10];
   [v9 setOverrideUserInterfaceStyle:2];
-  v11 = [v9 presentationController];
-  [v11 setDelegate:self];
+  presentationController = [v9 presentationController];
+  [presentationController setDelegate:self];
 
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
@@ -1274,46 +1274,46 @@ void __44__GKMultiplayerViewController_removePlayer___block_invoke(uint64_t a1)
 
 - (void)preparePlayerPicker
 {
-  v3 = [(GKMultiplayerViewController *)self maxAvailablePlayers];
-  v4 = [(GKMultiplayerViewController *)self multiplayerDataSource];
-  v6 = [v4 currentPlayers];
+  maxAvailablePlayers = [(GKMultiplayerViewController *)self maxAvailablePlayers];
+  multiplayerDataSource = [(GKMultiplayerViewController *)self multiplayerDataSource];
+  currentPlayers = [multiplayerDataSource currentPlayers];
 
-  v5 = [[GKDashboardMultiplayerPickerViewController alloc] initWithMaxSelectable:v3 hiddenPlayers:v6 nearbyOnly:[(GKMultiplayerViewController *)self matchmakingMode]== 1 pickerOrigin:1];
+  v5 = [[GKDashboardMultiplayerPickerViewController alloc] initWithMaxSelectable:maxAvailablePlayers hiddenPlayers:currentPlayers nearbyOnly:[(GKMultiplayerViewController *)self matchmakingMode]== 1 pickerOrigin:1];
   [(GKDashboardMultiplayerPickerViewController *)v5 setMultiplayerPickerDelegate:self];
   [(GKMultiplayerViewController *)self setPlayerPickerViewController:v5];
 }
 
-- (void)multiplayerPicker:(id)a3 didPickPlayers:(id)a4 messageGroups:(id)a5 customMessage:(id)a6
+- (void)multiplayerPicker:(id)picker didPickPlayers:(id)players messageGroups:(id)groups customMessage:(id)message
 {
   v9 = MEMORY[0x277D0C1F8];
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = [v9 reporter];
+  messageCopy = message;
+  groupsCopy = groups;
+  playersCopy = players;
+  reporter = [v9 reporter];
   v14 = *MEMORY[0x277D0BE78];
-  [v13 reportEvent:*MEMORY[0x277D0BE78] type:*MEMORY[0x277D0BBB0]];
+  [reporter reportEvent:*MEMORY[0x277D0BE78] type:*MEMORY[0x277D0BBB0]];
 
-  v15 = [MEMORY[0x277D0C1F8] reporter];
-  [v15 reportEvent:v14 type:*MEMORY[0x277D0BB98]];
+  reporter2 = [MEMORY[0x277D0C1F8] reporter];
+  [reporter2 reportEvent:v14 type:*MEMORY[0x277D0BB98]];
 
-  v16 = [(GKMultiplayerViewController *)self matchRequest];
-  [v16 setInviteMessage:v10];
+  matchRequest = [(GKMultiplayerViewController *)self matchRequest];
+  [matchRequest setInviteMessage:messageCopy];
 
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __92__GKMultiplayerViewController_multiplayerPicker_didPickPlayers_messageGroups_customMessage___block_invoke;
   v17[3] = &unk_2796699A8;
   v17[4] = self;
-  [(GKMultiplayerViewController *)self didPickPlayers:v12 messageGroups:v11 source:1 completion:v17];
+  [(GKMultiplayerViewController *)self didPickPlayers:playersCopy messageGroups:groupsCopy source:1 completion:v17];
 }
 
-- (void)didPickPlayers:(id)a3 messageGroups:(id)a4 source:(unint64_t)a5 completion:(id)a6
+- (void)didPickPlayers:(id)players messageGroups:(id)groups source:(unint64_t)source completion:(id)completion
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = a4;
-  v13 = [(GKMultiplayerViewController *)self multiplayerDataSource];
-  [v13 setSelectedMessageGroups:v12];
+  playersCopy = players;
+  completionCopy = completion;
+  groupsCopy = groups;
+  multiplayerDataSource = [(GKMultiplayerViewController *)self multiplayerDataSource];
+  [multiplayerDataSource setSelectedMessageGroups:groupsCopy];
 
   v14 = MEMORY[0x277D0C020];
   v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d %s", "GKMultiplayerViewController.m", 761, "-[GKMultiplayerViewController didPickPlayers:messageGroups:source:completion:]"];
@@ -1324,17 +1324,17 @@ void __44__GKMultiplayerViewController_removePlayer___block_invoke(uint64_t a1)
   v22[2] = __78__GKMultiplayerViewController_didPickPlayers_messageGroups_source_completion___block_invoke;
   v22[3] = &unk_279669A20;
   v22[4] = self;
-  v23 = v10;
-  v17 = v10;
+  v23 = playersCopy;
+  v17 = playersCopy;
   [v16 perform:v22];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __78__GKMultiplayerViewController_didPickPlayers_messageGroups_source_completion___block_invoke_4;
   v19[3] = &unk_27966B700;
-  v20 = v11;
-  v21 = a5;
+  v20 = completionCopy;
+  sourceCopy = source;
   v19[4] = self;
-  v18 = v11;
+  v18 = completionCopy;
   [v16 notifyOnMainQueueWithBlock:v19];
 }
 
@@ -1391,15 +1391,15 @@ void __78__GKMultiplayerViewController_didPickPlayers_messageGroups_source_compl
   [v3 setupInvitesForSource:v2 completion:v4];
 }
 
-- (void)multiplayerPickerDidCancel:(id)a3
+- (void)multiplayerPickerDidCancel:(id)cancel
 {
-  v4 = [MEMORY[0x277D0C1F8] reporter];
-  [v4 reportEvent:*MEMORY[0x277D0BE78] type:*MEMORY[0x277D0BB88]];
+  reporter = [MEMORY[0x277D0C1F8] reporter];
+  [reporter reportEvent:*MEMORY[0x277D0BE78] type:*MEMORY[0x277D0BB88]];
 
-  v5 = [(GKMultiplayerViewController *)self playerPickerViewController];
-  v6 = [v5 presentingViewController];
+  playerPickerViewController = [(GKMultiplayerViewController *)self playerPickerViewController];
+  presentingViewController = [playerPickerViewController presentingViewController];
 
-  if (v6)
+  if (presentingViewController)
   {
 
     [(GKMultiplayerViewController *)self dismissPickerViewController];
@@ -1408,8 +1408,8 @@ void __78__GKMultiplayerViewController_didPickPlayers_messageGroups_source_compl
 
 - (void)dismissPickerViewController
 {
-  v3 = [(GKMultiplayerViewController *)self playerPickerViewController];
-  [v3 setSupportsNearby:0];
+  playerPickerViewController = [(GKMultiplayerViewController *)self playerPickerViewController];
+  [playerPickerViewController setSupportsNearby:0];
 
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
@@ -1436,13 +1436,13 @@ uint64_t __58__GKMultiplayerViewController_dismissPickerViewController__block_in
 
 - (BOOL)allowPlayerCountSelection
 {
-  v3 = [(GKMultiplayerViewController *)self matchRequest];
-  if (v3)
+  matchRequest = [(GKMultiplayerViewController *)self matchRequest];
+  if (matchRequest)
   {
-    v4 = [(GKMultiplayerViewController *)self matchRequest];
-    v5 = [v4 maxPlayers];
-    v6 = [(GKMultiplayerViewController *)self matchRequest];
-    v7 = v5 > [v6 minPlayers];
+    matchRequest2 = [(GKMultiplayerViewController *)self matchRequest];
+    maxPlayers = [matchRequest2 maxPlayers];
+    matchRequest3 = [(GKMultiplayerViewController *)self matchRequest];
+    v7 = maxPlayers > [matchRequest3 minPlayers];
   }
 
   else
@@ -1453,35 +1453,35 @@ uint64_t __58__GKMultiplayerViewController_dismissPickerViewController__block_in
   return v7;
 }
 
-- (void)setInvitationType:(int64_t)a3
+- (void)setInvitationType:(int64_t)type
 {
-  if (self->_invitationType != a3)
+  if (self->_invitationType != type)
   {
-    self->_invitationType = a3;
+    self->_invitationType = type;
     [(GKMultiplayerViewController *)self updateDataSourceInvitationEnabled];
   }
 }
 
 - (void)updateDataSourceInvitationEnabled
 {
-  v3 = [(GKMultiplayerViewController *)self invitationType];
-  if ((v3 - 1) >= 2)
+  invitationType = [(GKMultiplayerViewController *)self invitationType];
+  if ((invitationType - 1) >= 2)
   {
-    if (v3)
+    if (invitationType)
     {
       return;
     }
 
-    v4 = [(GKMultiplayerViewController *)self isInSetupMode];
+    isInSetupMode = [(GKMultiplayerViewController *)self isInSetupMode];
   }
 
   else
   {
-    v4 = 0;
+    isInSetupMode = 0;
   }
 
-  v5 = [(GKMultiplayerViewController *)self multiplayerDataSource];
-  [v5 setInvitingEnabled:v4];
+  multiplayerDataSource = [(GKMultiplayerViewController *)self multiplayerDataSource];
+  [multiplayerDataSource setInvitingEnabled:isInSetupMode];
 }
 
 - (void)determineInvitationType
@@ -1489,8 +1489,8 @@ uint64_t __58__GKMultiplayerViewController_dismissPickerViewController__block_in
   [(GKMultiplayerViewController *)self setInvitationType:0];
   if ([(GKMultiplayerViewController *)self matchmakingMode]== 2)
   {
-    v3 = [(GKMultiplayerViewController *)self footerView];
-    [v3 setInviteFriendsButtonHidden:1];
+    footerView = [(GKMultiplayerViewController *)self footerView];
+    [footerView setInviteFriendsButtonHidden:1];
 
     if ([(GKMultiplayerViewController *)self allowPlayerCountSelection])
     {
@@ -1508,14 +1508,14 @@ uint64_t __58__GKMultiplayerViewController_dismissPickerViewController__block_in
 
 - (void)inviteFriendsButtonPressed
 {
-  v3 = [(GKMultiplayerViewController *)self multiplayerDataSource];
-  [v3 revertFailedPlayers];
+  multiplayerDataSource = [(GKMultiplayerViewController *)self multiplayerDataSource];
+  [multiplayerDataSource revertFailedPlayers];
 
-  v4 = [(GKMultiplayerViewController *)self footerView];
-  [v4 setStartGameButtonEnabled:0];
+  footerView = [(GKMultiplayerViewController *)self footerView];
+  [footerView setStartGameButtonEnabled:0];
 
-  v5 = [(GKMultiplayerViewController *)self footerView];
-  [v5 setInviteFriendsButtonEnabled:0];
+  footerView2 = [(GKMultiplayerViewController *)self footerView];
+  [footerView2 setInviteFriendsButtonEnabled:0];
 
   [(GKMultiplayerViewController *)self presentPlayerPicker];
 }
@@ -1523,26 +1523,26 @@ uint64_t __58__GKMultiplayerViewController_dismissPickerViewController__block_in
 - (id)preferredFocusEnvironments
 {
   v7[2] = *MEMORY[0x277D85DE8];
-  v3 = [(GKMultiplayerViewController *)self footerView];
-  v7[0] = v3;
-  v4 = [(GKCollectionViewController *)self collectionView];
-  v7[1] = v4;
+  footerView = [(GKMultiplayerViewController *)self footerView];
+  v7[0] = footerView;
+  collectionView = [(GKCollectionViewController *)self collectionView];
+  v7[1] = collectionView;
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v7 count:2];
 
   return v5;
 }
 
-- (BOOL)setupInvitesForSource:(unint64_t)a3 completion:(id)a4
+- (BOOL)setupInvitesForSource:(unint64_t)source completion:(id)completion
 {
   v47 = *MEMORY[0x277D85DE8];
-  v34 = a4;
-  v5 = [(GKMultiplayerViewController *)self multiplayerDataSource];
-  [v5 revertFailedPlayers];
+  completionCopy = completion;
+  multiplayerDataSource = [(GKMultiplayerViewController *)self multiplayerDataSource];
+  [multiplayerDataSource revertFailedPlayers];
 
-  v6 = [(GKMultiplayerViewController *)self multiplayerDataSource];
-  v7 = [v6 playersToBeInvited];
+  multiplayerDataSource2 = [(GKMultiplayerViewController *)self multiplayerDataSource];
+  playersToBeInvited = [multiplayerDataSource2 playersToBeInvited];
 
-  v33 = [v7 count];
+  v33 = [playersToBeInvited count];
   if (v33)
   {
     if (!*MEMORY[0x277D0C2A0])
@@ -1554,27 +1554,27 @@ uint64_t __58__GKMultiplayerViewController_dismissPickerViewController__block_in
     if (os_log_type_enabled(*MEMORY[0x277D0C2B0], OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v46 = v7;
+      v46 = playersToBeInvited;
       _os_log_impl(&dword_24DE53000, v9, OS_LOG_TYPE_INFO, "Multiplayer - sendInvites, playersToInvite = %@", buf, 0xCu);
     }
 
-    v10 = [MEMORY[0x277D0C010] proxyForLocalPlayer];
-    v11 = [v10 utilityService];
+    proxyForLocalPlayer = [MEMORY[0x277D0C010] proxyForLocalPlayer];
+    utilityService = [proxyForLocalPlayer utilityService];
     v12 = MEMORY[0x277CCABB0];
-    v13 = [(GKMultiplayerViewController *)self matchRequest];
-    v14 = [v12 numberWithUnsignedInteger:{objc_msgSend(v13, "minPlayers")}];
+    matchRequest = [(GKMultiplayerViewController *)self matchRequest];
+    v14 = [v12 numberWithUnsignedInteger:{objc_msgSend(matchRequest, "minPlayers")}];
     v15 = MEMORY[0x277CCABB0];
-    v16 = [(GKMultiplayerViewController *)self matchRequest];
-    v17 = [v15 numberWithUnsignedInteger:{objc_msgSend(v16, "maxPlayers")}];
-    [v11 recordMatchStart:@"unknown" minPlayers:v14 maxPlayers:v17];
+    matchRequest2 = [(GKMultiplayerViewController *)self matchRequest];
+    v17 = [v15 numberWithUnsignedInteger:{objc_msgSend(matchRequest2, "maxPlayers")}];
+    [utilityService recordMatchStart:@"unknown" minPlayers:v14 maxPlayers:v17];
 
-    v18 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v7, "count")}];
-    v19 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v7, "count")}];
+    v18 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(playersToBeInvited, "count")}];
+    v19 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(playersToBeInvited, "count")}];
     v42 = 0u;
     v43 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v20 = v7;
+    v20 = playersToBeInvited;
     v21 = [v20 countByEnumeratingWithState:&v40 objects:v44 count:16];
     if (v21)
     {
@@ -1589,9 +1589,9 @@ uint64_t __58__GKMultiplayerViewController_dismissPickerViewController__block_in
           }
 
           v24 = *(*(&v40 + 1) + 8 * i);
-          v25 = [v24 contact];
+          contact = [v24 contact];
 
-          if (v25)
+          if (contact)
           {
             v26 = v19;
           }
@@ -1611,7 +1611,7 @@ uint64_t __58__GKMultiplayerViewController_dismissPickerViewController__block_in
     }
 
     objc_initWeak(buf, self);
-    v27 = [(GKMultiplayerViewController *)self multiplayerDataSource];
+    multiplayerDataSource3 = [(GKMultiplayerViewController *)self multiplayerDataSource];
     v35[0] = MEMORY[0x277D85DD0];
     v35[1] = 3221225472;
     v35[2] = __64__GKMultiplayerViewController_setupInvitesForSource_completion___block_invoke;
@@ -1622,8 +1622,8 @@ uint64_t __58__GKMultiplayerViewController_dismissPickerViewController__block_in
     v29 = v18;
     v37 = v29;
     v39[1] = v32;
-    v38 = v34;
-    [v27 setStatus:1 forPlayers:v20 complete:v35];
+    v38 = completionCopy;
+    [multiplayerDataSource3 setStatus:1 forPlayers:v20 complete:v35];
 
     objc_destroyWeak(v39);
     objc_destroyWeak(buf);
@@ -1651,8 +1651,8 @@ void __64__GKMultiplayerViewController_setupInvitesForSource_completion___block_
 
 - (void)performActionsForButtonStartGame
 {
-  v3 = [MEMORY[0x277D0C1F8] reporter];
-  [v3 reportEvent:*MEMORY[0x277D0BE78] type:*MEMORY[0x277D0BBD8]];
+  reporter = [MEMORY[0x277D0C1F8] reporter];
+  [reporter reportEvent:*MEMORY[0x277D0BE78] type:*MEMORY[0x277D0BBD8]];
 
   if (!*MEMORY[0x277D0C2A0])
   {
@@ -1673,35 +1673,35 @@ void __64__GKMultiplayerViewController_setupInvitesForSource_completion___block_
 {
   if (self->_matchRequest)
   {
-    v3 = [(GKMultiplayerFooterView *)self->_footerView isUserInteractionEnabled];
-    v4 = [MEMORY[0x277D0C1F8] reporter];
-    v5 = v4;
+    isUserInteractionEnabled = [(GKMultiplayerFooterView *)self->_footerView isUserInteractionEnabled];
+    reporter = [MEMORY[0x277D0C1F8] reporter];
+    v5 = reporter;
     v6 = MEMORY[0x277D0BB90];
-    if (v3)
+    if (isUserInteractionEnabled)
     {
       v6 = MEMORY[0x277D0BBC0];
     }
 
-    [v4 reportEvent:*MEMORY[0x277D0BE78] type:*v6];
+    [reporter reportEvent:*MEMORY[0x277D0BE78] type:*v6];
   }
 
-  v7 = [MEMORY[0x277D0BFA8] reporter];
-  v8 = [(GKMultiplayerViewController *)self pageId];
-  [v7 recordClickWithAction:@"dismiss" targetId:@"close" targetType:@"button" pageId:v8 pageType:@"multiplayer"];
+  reporter2 = [MEMORY[0x277D0BFA8] reporter];
+  pageId = [(GKMultiplayerViewController *)self pageId];
+  [reporter2 recordClickWithAction:@"dismiss" targetId:@"close" targetType:@"button" pageId:pageId pageType:@"multiplayer"];
 
-  v9 = [(GKMultiplayerViewController *)self footerView];
-  [v9 setStartGameButtonEnabled:0];
+  footerView = [(GKMultiplayerViewController *)self footerView];
+  [footerView setStartGameButtonEnabled:0];
 
-  v10 = [(GKMultiplayerViewController *)self footerView];
-  [v10 setInviteFriendsButtonEnabled:0];
+  footerView2 = [(GKMultiplayerViewController *)self footerView];
+  [footerView2 setInviteFriendsButtonEnabled:0];
 
   [(GKMultiplayerViewController *)self cancel];
 }
 
-- (void)inviteContactPlayers:(id)a3 source:(unint64_t)a4 completion:(id)a5
+- (void)inviteContactPlayers:(id)players source:(unint64_t)source completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  playersCopy = players;
+  completionCopy = completion;
   v10 = MEMORY[0x277D0C020];
   v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d %s", "GKMultiplayerViewController.m", 1001, "-[GKMultiplayerViewController inviteContactPlayers:source:completion:]"];
   v12 = [v10 dispatchGroupWithName:v11];
@@ -1722,13 +1722,13 @@ void __64__GKMultiplayerViewController_setupInvitesForSource_completion___block_
   v16[3] = &unk_27966B890;
   v16[4] = self;
   v20 = v23;
-  v13 = v9;
+  v13 = completionCopy;
   v19 = v13;
   v14 = v12;
   v17 = v14;
-  v15 = v8;
+  v15 = playersCopy;
   v18 = v15;
-  v21 = a4;
+  sourceCopy = source;
   [v14 notifyOnMainQueueWithBlock:v16];
 
   _Block_object_dispose(v23, 8);
@@ -2397,9 +2397,9 @@ void __70__GKMultiplayerViewController_inviteContactPlayers_source_completion___
   }
 }
 
-- (void)setShareURL:(id)a3
+- (void)setShareURL:(id)l
 {
-  objc_storeStrong(&self->_shareURL, a3);
+  objc_storeStrong(&self->_shareURL, l);
   v4 = 3;
   if (self->_shareURL)
   {
@@ -2409,16 +2409,16 @@ void __70__GKMultiplayerViewController_inviteContactPlayers_source_completion___
   self->_messagesInviteStatus = v4;
 }
 
-- (void)handleServiceUnavailable:(id)a3
+- (void)handleServiceUnavailable:(id)unavailable
 {
-  v4 = a3;
+  unavailableCopy = unavailable;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __56__GKMultiplayerViewController_handleServiceUnavailable___block_invoke;
   v6[3] = &unk_279669E48;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = unavailableCopy;
+  selfCopy = self;
+  v5 = unavailableCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -2456,67 +2456,67 @@ void __56__GKMultiplayerViewController_handleServiceUnavailable___block_invoke_3
   [v0 openICloudSettings];
 }
 
-- (void)localPlayerAcceptedGameInvite:(id)a3
+- (void)localPlayerAcceptedGameInvite:(id)invite
 {
   [(GKMultiplayerViewController *)self setDidAcceptGameInvite:1];
 
   [(GKMultiplayerViewController *)self cancel];
 }
 
-- (void)playersToInvite:(id)a3
+- (void)playersToInvite:(id)invite
 {
   [(GKMultiplayerViewController *)self setDidAcceptGameInvite:1];
 
   [(GKMultiplayerViewController *)self cancel];
 }
 
-- (void)handleNewParticipantCount:(int64_t)a3
+- (void)handleNewParticipantCount:(int64_t)count
 {
-  v14 = [(GKMultiplayerViewController *)self multiplayerDataSource];
-  v5 = [v14 participants];
-  v6 = [v5 count];
+  multiplayerDataSource = [(GKMultiplayerViewController *)self multiplayerDataSource];
+  participants = [multiplayerDataSource participants];
+  v6 = [participants count];
 
-  if (v6 != a3)
+  if (v6 != count)
   {
-    v7 = [v14 players];
-    v8 = [v7 count];
+    players = [multiplayerDataSource players];
+    v8 = [players count];
 
-    v9 = a3 - v8;
-    if (a3 - v8 >= 0)
+    v9 = count - v8;
+    if (count - v8 >= 0)
     {
-      [v14 setAutomatchPlayerCount:v9 complete:0];
+      [multiplayerDataSource setAutomatchPlayerCount:v9 complete:0];
     }
 
-    v10 = [MEMORY[0x277D0C1D8] shared];
-    [v10 setRecentNumberOfPlayers:a3];
+    mEMORY[0x277D0C1D8] = [MEMORY[0x277D0C1D8] shared];
+    [mEMORY[0x277D0C1D8] setRecentNumberOfPlayers:count];
 
-    v11 = [MEMORY[0x277D0C1D8] shared];
-    v12 = [(GKMultiplayerViewController *)self game];
-    v13 = [v12 bundleIdentifier];
-    [v11 setRecentNumberOfPlayers:a3 forBundleID:v13];
+    mEMORY[0x277D0C1D8]2 = [MEMORY[0x277D0C1D8] shared];
+    game = [(GKMultiplayerViewController *)self game];
+    bundleIdentifier = [game bundleIdentifier];
+    [mEMORY[0x277D0C1D8]2 setRecentNumberOfPlayers:count forBundleID:bundleIdentifier];
   }
 }
 
-- (void)didTapRemoveParticipant:(id)a3
+- (void)didTapRemoveParticipant:(id)participant
 {
-  v4 = [a3 player];
-  [(GKMultiplayerViewController *)self removePlayer:v4];
+  player = [participant player];
+  [(GKMultiplayerViewController *)self removePlayer:player];
 }
 
-- (void)dataSource:(id)a3 didRefreshSections:(id)a4
+- (void)dataSource:(id)source didRefreshSections:(id)sections
 {
-  v6 = a3;
-  v7 = a4;
+  sourceCopy = source;
+  sectionsCopy = sections;
   if ([(GKMultiplayerViewController *)self isViewLoaded])
   {
-    v8 = [(GKMultiplayerViewController *)self view];
-    v9 = [v8 window];
+    view = [(GKMultiplayerViewController *)self view];
+    window = [view window];
 
-    if (v9)
+    if (window)
     {
-      v10 = [(GKMultiplayerViewController *)self buttonHeaderView];
+      buttonHeaderView = [(GKMultiplayerViewController *)self buttonHeaderView];
 
-      if (v10)
+      if (buttonHeaderView)
       {
         if ([(GKMultiplayerViewController *)self isLoading])
         {
@@ -2524,9 +2524,9 @@ void __56__GKMultiplayerViewController_handleServiceUnavailable___block_invoke_3
           block[1] = 3221225472;
           block[2] = __61__GKMultiplayerViewController_dataSource_didRefreshSections___block_invoke;
           block[3] = &unk_27966A9A8;
-          v13 = v6;
-          v14 = v7;
-          v15 = self;
+          v13 = sourceCopy;
+          v14 = sectionsCopy;
+          selfCopy = self;
           dispatch_async(MEMORY[0x277D85CD0], block);
         }
 
@@ -2534,7 +2534,7 @@ void __56__GKMultiplayerViewController_handleServiceUnavailable___block_invoke_3
         {
           v11.receiver = self;
           v11.super_class = GKMultiplayerViewController;
-          [(GKCollectionViewController *)&v11 dataSource:v6 didRefreshSections:v7];
+          [(GKCollectionViewController *)&v11 dataSource:sourceCopy didRefreshSections:sectionsCopy];
         }
       }
     }
@@ -2552,13 +2552,13 @@ id __61__GKMultiplayerViewController_dataSource_didRefreshSections___block_invok
 
 - (BOOL)isLoading
 {
-  v2 = [(GKCollectionViewController *)self loadingState];
+  loadingState = [(GKCollectionViewController *)self loadingState];
   v3 = 1;
-  if (v2)
+  if (loadingState)
   {
-    if (v2 != @"Initial" && v2 != @"LoadingState")
+    if (loadingState != @"Initial" && loadingState != @"LoadingState")
     {
-      v3 = v2 == @"RefreshingState";
+      v3 = loadingState == @"RefreshingState";
     }
   }
 
@@ -2567,35 +2567,35 @@ id __61__GKMultiplayerViewController_dataSource_didRefreshSections___block_invok
 
 - (int64_t)multiplayerCellLayoutMode
 {
-  v2 = [(GKMultiplayerViewController *)self viewControllerLayout];
-  v3 = [v2 cellLayoutMode];
+  viewControllerLayout = [(GKMultiplayerViewController *)self viewControllerLayout];
+  cellLayoutMode = [viewControllerLayout cellLayoutMode];
 
-  return v3;
+  return cellLayoutMode;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v17.receiver = self;
   v17.super_class = GKMultiplayerViewController;
-  [(GKCollectionViewController *)&v17 traitCollectionDidChange:v4];
-  v5 = [(GKMultiplayerViewController *)self traitCollection];
-  v6 = [v5 horizontalSizeClass];
-  if (v6 == [v4 horizontalSizeClass])
+  [(GKCollectionViewController *)&v17 traitCollectionDidChange:changeCopy];
+  traitCollection = [(GKMultiplayerViewController *)self traitCollection];
+  horizontalSizeClass = [traitCollection horizontalSizeClass];
+  if (horizontalSizeClass == [changeCopy horizontalSizeClass])
   {
-    v7 = [(GKMultiplayerViewController *)self traitCollection];
-    v8 = [v7 verticalSizeClass];
-    if (v8 == [v4 verticalSizeClass])
+    traitCollection2 = [(GKMultiplayerViewController *)self traitCollection];
+    verticalSizeClass = [traitCollection2 verticalSizeClass];
+    if (verticalSizeClass == [changeCopy verticalSizeClass])
     {
-      v9 = [(GKMultiplayerViewController *)self traitCollection];
-      v10 = [v9 layoutDirection];
-      if (v10 == [v4 layoutDirection])
+      traitCollection3 = [(GKMultiplayerViewController *)self traitCollection];
+      layoutDirection = [traitCollection3 layoutDirection];
+      if (layoutDirection == [changeCopy layoutDirection])
       {
-        v11 = [(GKMultiplayerViewController *)self traitCollection];
-        v12 = [v11 preferredContentSizeCategory];
-        v13 = [v4 preferredContentSizeCategory];
+        traitCollection4 = [(GKMultiplayerViewController *)self traitCollection];
+        preferredContentSizeCategory = [traitCollection4 preferredContentSizeCategory];
+        preferredContentSizeCategory2 = [changeCopy preferredContentSizeCategory];
 
-        if (v12 == v13)
+        if (preferredContentSizeCategory == preferredContentSizeCategory2)
         {
           goto LABEL_10;
         }
@@ -2607,12 +2607,12 @@ id __61__GKMultiplayerViewController_dataSource_didRefreshSections___block_invok
 
 LABEL_9:
   [(GKMultiplayerViewController *)self setViewNeedsLayout];
-  v14 = [(GKCollectionViewController *)self collectionView];
-  [v14 reloadData];
+  collectionView = [(GKCollectionViewController *)self collectionView];
+  [collectionView reloadData];
 
-  v15 = [(GKCollectionViewController *)self collectionView];
-  v16 = [v15 collectionViewLayout];
-  [v16 invalidateLayout];
+  collectionView2 = [(GKCollectionViewController *)self collectionView];
+  collectionViewLayout = [collectionView2 collectionViewLayout];
+  [collectionViewLayout invalidateLayout];
 
 LABEL_10:
   [(GKMultiplayerViewController *)self configureAutoBounce];
@@ -2620,72 +2620,72 @@ LABEL_10:
 
 - (void)configureAutoBounce
 {
-  v3 = [(GKMultiplayerViewController *)self traitCollection];
-  v4 = [v3 userInterfaceIdiom];
+  traitCollection = [(GKMultiplayerViewController *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v4)
+  if (userInterfaceIdiom)
   {
-    v5 = [(GKCollectionViewController *)self collectionView];
-    v6 = v5;
+    collectionView = [(GKCollectionViewController *)self collectionView];
+    v6 = collectionView;
   }
 
   else
   {
-    v7 = [(GKMultiplayerViewController *)self traitCollection];
-    v8 = [v7 verticalSizeClass];
+    traitCollection2 = [(GKMultiplayerViewController *)self traitCollection];
+    verticalSizeClass = [traitCollection2 verticalSizeClass];
 
-    v5 = [(GKCollectionViewController *)self collectionView];
-    v6 = v5;
-    if (v8 == 1)
+    collectionView = [(GKCollectionViewController *)self collectionView];
+    v6 = collectionView;
+    if (verticalSizeClass == 1)
     {
-      [v5 setAlwaysBounceVertical:0];
+      [collectionView setAlwaysBounceVertical:0];
       goto LABEL_6;
     }
   }
 
-  [v5 setAlwaysBounceVertical:1];
-  v8 = 0;
+  [collectionView setAlwaysBounceVertical:1];
+  verticalSizeClass = 0;
 LABEL_6:
 
-  v9 = [(GKCollectionViewController *)self collectionView];
-  [v9 setAlwaysBounceHorizontal:v8];
+  collectionView2 = [(GKCollectionViewController *)self collectionView];
+  [collectionView2 setAlwaysBounceHorizontal:verticalSizeClass];
 }
 
 - (void)didUpdateParticipants
 {
   v9[1] = *MEMORY[0x277D85DE8];
   [(GKMultiplayerViewController *)self updateFooterButtonStates];
-  v3 = [(GKMultiplayerViewController *)self buttonHeaderView];
+  buttonHeaderView = [(GKMultiplayerViewController *)self buttonHeaderView];
 
-  if (!v3)
+  if (!buttonHeaderView)
   {
     if ([(GKMultiplayerViewController *)self showNavigationBar])
     {
-      v4 = [(GKMultiplayerViewController *)self makeDoubleHeaderView];
+      makeDoubleHeaderView = [(GKMultiplayerViewController *)self makeDoubleHeaderView];
     }
 
     else
     {
-      v4 = [(GKMultiplayerViewController *)self makeButtonHeaderView];
-      [v4 applyGame:self->_game];
-      v5 = [(GKMultiplayerViewController *)self view];
-      [v5 addSubview:v4];
+      makeDoubleHeaderView = [(GKMultiplayerViewController *)self makeButtonHeaderView];
+      [makeDoubleHeaderView applyGame:self->_game];
+      view = [(GKMultiplayerViewController *)self view];
+      [view addSubview:makeDoubleHeaderView];
 
-      if (v4)
+      if (makeDoubleHeaderView)
       {
         v6 = objc_alloc_init(MEMORY[0x277D75500]);
-        v9[0] = v4;
+        v9[0] = makeDoubleHeaderView;
         v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
         [v6 setPreferredFocusEnvironments:v7];
 
-        v8 = [(GKMultiplayerViewController *)self view];
-        [v8 addLayoutGuide:v6];
+        view2 = [(GKMultiplayerViewController *)self view];
+        [view2 addLayoutGuide:v6];
 
-        [MEMORY[0x277CCAAD0] _gkInstallEdgeConstraintsForLayoutGuide:v6 containedWithinParentView:v4];
+        [MEMORY[0x277CCAAD0] _gkInstallEdgeConstraintsForLayoutGuide:v6 containedWithinParentView:makeDoubleHeaderView];
       }
     }
 
-    [(GKMultiplayerViewController *)self setButtonHeaderView:v4];
+    [(GKMultiplayerViewController *)self setButtonHeaderView:makeDoubleHeaderView];
   }
 
   [(GKMultiplayerViewController *)self updateTitle];
@@ -2696,20 +2696,20 @@ LABEL_6:
 {
   v29 = *MEMORY[0x277D85DE8];
   v3 = [(GKMultiplayerViewController *)self maxAvailablePlayers]> 0;
-  v4 = [(GKMultiplayerViewController *)self footerView];
-  [v4 setInviteFriendsButtonEnabled:v3];
+  footerView = [(GKMultiplayerViewController *)self footerView];
+  [footerView setInviteFriendsButtonEnabled:v3];
 
-  v5 = [(GKMultiplayerViewController *)self multiplayerDataSource];
-  v6 = [v5 participants];
-  v7 = [v6 count];
-  v8 = v7 >= [v5 minPlayers];
+  multiplayerDataSource = [(GKMultiplayerViewController *)self multiplayerDataSource];
+  participants = [multiplayerDataSource participants];
+  v7 = [participants count];
+  v8 = v7 >= [multiplayerDataSource minPlayers];
 
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v9 = [v5 participants];
-  v10 = [v9 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  participants2 = [multiplayerDataSource participants];
+  v10 = [participants2 countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v10)
   {
     v11 = v10;
@@ -2720,21 +2720,21 @@ LABEL_6:
       {
         if (*v25 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(participants2);
         }
 
         v14 = *(*(&v24 + 1) + 8 * i);
-        v15 = [v14 player];
-        v16 = [v15 isLocalPlayer];
+        player = [v14 player];
+        isLocalPlayer = [player isLocalPlayer];
 
-        if ((v16 & 1) == 0 && (-[GKMultiplayerViewController matchmakingMode](self, "matchmakingMode") == 3 || -[GKMultiplayerViewController matchmakingMode](self, "matchmakingMode") == 1 || [v14 type] != 1) && objc_msgSend(v14, "status") != 7 && objc_msgSend(v14, "status") != 21 && objc_msgSend(v14, "status") != 20)
+        if ((isLocalPlayer & 1) == 0 && (-[GKMultiplayerViewController matchmakingMode](self, "matchmakingMode") == 3 || -[GKMultiplayerViewController matchmakingMode](self, "matchmakingMode") == 1 || [v14 type] != 1) && objc_msgSend(v14, "status") != 7 && objc_msgSend(v14, "status") != 21 && objc_msgSend(v14, "status") != 20)
         {
           v8 = 0;
           goto LABEL_17;
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v24 objects:v28 count:16];
+      v11 = [participants2 countByEnumeratingWithState:&v24 objects:v28 count:16];
       if (v11)
       {
         continue;
@@ -2748,19 +2748,19 @@ LABEL_17:
 
   if ([(GKMultiplayerViewController *)self canStartWithMinimumPlayers])
   {
-    v17 = [(GKMultiplayerViewController *)self multiplayerDataSource];
-    v18 = [v17 readyPlayers];
-    v19 = [v18 count];
-    v20 = [(GKMultiplayerViewController *)self matchRequest];
-    LODWORD(v19) = v19 >= [v20 minPlayers];
+    multiplayerDataSource2 = [(GKMultiplayerViewController *)self multiplayerDataSource];
+    readyPlayers = [multiplayerDataSource2 readyPlayers];
+    v19 = [readyPlayers count];
+    matchRequest = [(GKMultiplayerViewController *)self matchRequest];
+    LODWORD(v19) = v19 >= [matchRequest minPlayers];
 
     v8 |= v19;
   }
 
-  v21 = [(GKMultiplayerViewController *)self matchRequest];
-  v22 = [v21 hasFutureRecipientProperties] ^ 1;
-  v23 = [(GKMultiplayerViewController *)self footerView];
-  [v23 setStartGameButtonEnabled:v22 & v8];
+  matchRequest2 = [(GKMultiplayerViewController *)self matchRequest];
+  v22 = [matchRequest2 hasFutureRecipientProperties] ^ 1;
+  footerView2 = [(GKMultiplayerViewController *)self footerView];
+  [footerView2 setStartGameButtonEnabled:v22 & v8];
 }
 
 - (id)makeButtonHeaderView
@@ -2774,27 +2774,27 @@ LABEL_17:
   v3 = _Block_copy(&v17);
   v4 = [_TtC12GameCenterUI29GKMultiplayerButtonHeaderView alloc];
   v5 = [(GKMultiplayerViewController *)self matchRequest:v17];
-  v6 = [v5 minPlayers];
+  minPlayers = [v5 minPlayers];
 
-  v7 = [(GKMultiplayerViewController *)self multiplayerDataSource];
-  v8 = [v7 players];
-  v9 = [v8 count];
+  multiplayerDataSource = [(GKMultiplayerViewController *)self multiplayerDataSource];
+  players = [multiplayerDataSource players];
+  v9 = [players count];
 
-  if (v6 <= v9)
+  if (minPlayers <= v9)
   {
     v10 = v9;
   }
 
   else
   {
-    v10 = v6;
+    v10 = minPlayers;
   }
 
-  v11 = [(GKMultiplayerViewController *)self matchRequest];
-  v12 = [v11 maxPlayers];
-  v13 = [(GKMultiplayerViewController *)self multiplayerDataSource];
-  v14 = [v13 participants];
-  v15 = -[GKMultiplayerButtonHeaderView initWithMinimumValue:maximumValue:initialValue:cancelButtonHandler:](v4, "initWithMinimumValue:maximumValue:initialValue:cancelButtonHandler:", v10, v12, [v14 count], v3);
+  matchRequest = [(GKMultiplayerViewController *)self matchRequest];
+  maxPlayers = [matchRequest maxPlayers];
+  multiplayerDataSource2 = [(GKMultiplayerViewController *)self multiplayerDataSource];
+  participants = [multiplayerDataSource2 participants];
+  v15 = -[GKMultiplayerButtonHeaderView initWithMinimumValue:maximumValue:initialValue:cancelButtonHandler:](v4, "initWithMinimumValue:maximumValue:initialValue:cancelButtonHandler:", v10, maxPlayers, [participants count], v3);
 
   objc_destroyWeak(&v21);
   objc_destroyWeak(&location);
@@ -2812,16 +2812,16 @@ void __51__GKMultiplayerViewController_makeButtonHeaderView__block_invoke(uint64
 {
   v3 = [_TtC12GameCenterUI26NavigationDoubleHeaderView alloc];
   v4 = [(NavigationDoubleHeaderView *)v3 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
-  v5 = [(GKGame *)self->_game name];
-  [(NavigationDoubleHeaderView *)v4 setTitleText:v5];
+  name = [(GKGame *)self->_game name];
+  [(NavigationDoubleHeaderView *)v4 setTitleText:name];
 
   [(GKMultiplayerViewController *)self updateTitle];
-  v6 = [(GKMultiplayerViewController *)self navigationItem];
-  [v6 setTitleView:v4];
+  navigationItem = [(GKMultiplayerViewController *)self navigationItem];
+  [navigationItem setTitleView:v4];
 
   v7 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:1 target:self action:sel_cancelButtonPressed];
-  v8 = [(GKMultiplayerViewController *)self navigationItem];
-  [v8 setRightBarButtonItem:v7];
+  navigationItem2 = [(GKMultiplayerViewController *)self navigationItem];
+  [navigationItem2 setRightBarButtonItem:v7];
 
   return v4;
 }
@@ -2833,29 +2833,29 @@ void __51__GKMultiplayerViewController_makeButtonHeaderView__block_invoke(uint64
     return 0;
   }
 
-  v4 = [MEMORY[0x277D0C1D8] shared];
-  v3 = [v4 multiplayerAllowedPlayerType] == 2;
+  mEMORY[0x277D0C1D8] = [MEMORY[0x277D0C1D8] shared];
+  v3 = [mEMORY[0x277D0C1D8] multiplayerAllowedPlayerType] == 2;
 
   return v3;
 }
 
-- (BOOL)isParticipantInvitedByLocalPlayer:(id)a3
+- (BOOL)isParticipantInvitedByLocalPlayer:(id)player
 {
-  v4 = a3;
-  v5 = [(GKMultiplayerViewController *)self participantsInvitedByLocalPlayer];
-  v6 = [v4 player];
+  playerCopy = player;
+  participantsInvitedByLocalPlayer = [(GKMultiplayerViewController *)self participantsInvitedByLocalPlayer];
+  player = [playerCopy player];
 
-  v7 = [v6 internal];
-  v8 = [v7 playerID];
-  v9 = [v5 containsObject:v8];
+  internal = [player internal];
+  playerID = [internal playerID];
+  v9 = [participantsInvitedByLocalPlayer containsObject:playerID];
 
   return v9;
 }
 
 - (void)setViewNeedsLayout
 {
-  v2 = [(GKMultiplayerViewController *)self view];
-  [v2 setNeedsLayout];
+  view = [(GKMultiplayerViewController *)self view];
+  [view setNeedsLayout];
 }
 
 - (GKDashboardNearbyBrowserDelegate)nearbyDelegate

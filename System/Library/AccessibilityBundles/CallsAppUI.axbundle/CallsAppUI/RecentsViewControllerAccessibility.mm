@@ -1,5 +1,5 @@
 @interface RecentsViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_axApplyLabels;
 - (void)viewDidLoad;
@@ -7,11 +7,11 @@
 
 @implementation RecentsViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CallsAppUI.RecentsViewController" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"CallsAppUI.RecentsViewController" hasSwiftField:@"filterButtonItem" withSwiftType:"UIBarButtonItem"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CallsAppUI.RecentsViewController" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"CallsAppUI.RecentsViewController" hasSwiftField:@"filterButtonItem" withSwiftType:"UIBarButtonItem"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

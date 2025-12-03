@@ -1,5 +1,5 @@
 @interface MOSuggestionStateOfMindAssetView
-- (_TtC16MomentsUIService32MOSuggestionStateOfMindAssetView)initWithFrame:(CGRect)a3;
+- (_TtC16MomentsUIService32MOSuggestionStateOfMindAssetView)initWithFrame:(CGRect)frame;
 - (void)handleTraitChange;
 - (void)layoutSubviews;
 @end
@@ -8,7 +8,7 @@
 
 - (void)handleTraitChange
 {
-  v2 = self;
+  selfCopy = self;
   MOSuggestionStateOfMindAssetView.handleTraitChange()();
 }
 
@@ -27,7 +27,7 @@
   }
 }
 
-- (_TtC16MomentsUIService32MOSuggestionStateOfMindAssetView)initWithFrame:(CGRect)a3
+- (_TtC16MomentsUIService32MOSuggestionStateOfMindAssetView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

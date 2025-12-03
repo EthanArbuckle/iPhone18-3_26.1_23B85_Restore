@@ -1,6 +1,6 @@
 @interface CAStateControllerUndo
-- (void)addElement:(id)a3;
-- (void)addTransition:(id)a3;
+- (void)addElement:(id)element;
+- (void)addTransition:(id)transition;
 - (void)dealloc;
 @end
 
@@ -15,7 +15,7 @@
   [(CAStateControllerUndo *)&v3 dealloc];
 }
 
-- (void)addTransition:(id)a3
+- (void)addTransition:(id)transition
 {
   transitions = self->_transitions;
   if (!transitions)
@@ -24,10 +24,10 @@
     self->_transitions = transitions;
   }
 
-  [(NSMutableArray *)transitions addObject:a3];
+  [(NSMutableArray *)transitions addObject:transition];
 }
 
-- (void)addElement:(id)a3
+- (void)addElement:(id)element
 {
   elements = self->_elements;
   if (!elements)
@@ -36,7 +36,7 @@
     self->_elements = elements;
   }
 
-  [(NSMutableArray *)elements addObject:a3];
+  [(NSMutableArray *)elements addObject:element];
 }
 
 @end

@@ -1,79 +1,79 @@
 @interface CNVCardLineSerializationStrategyImpl
-+ (id)serializerWithStorage:(id)a3;
-- (CNVCardLineSerializationStrategyImpl)initWithStorage:(id)a3;
-- (void)insertLine:(id)a3 atMarker:(id)a4;
-- (void)serializeLine:(id)a3;
-- (void)serializeOpaqueValue:(id)a3;
++ (id)serializerWithStorage:(id)storage;
+- (CNVCardLineSerializationStrategyImpl)initWithStorage:(id)storage;
+- (void)insertLine:(id)line atMarker:(id)marker;
+- (void)serializeLine:(id)line;
+- (void)serializeOpaqueValue:(id)value;
 @end
 
 @implementation CNVCardLineSerializationStrategyImpl
 
-+ (id)serializerWithStorage:(id)a3
++ (id)serializerWithStorage:(id)storage
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithStorage:v4];
+  storageCopy = storage;
+  v5 = [[self alloc] initWithStorage:storageCopy];
 
   return v5;
 }
 
-- (CNVCardLineSerializationStrategyImpl)initWithStorage:(id)a3
+- (CNVCardLineSerializationStrategyImpl)initWithStorage:(id)storage
 {
-  v5 = a3;
+  storageCopy = storage;
   v6 = [(CNVCardLineSerializationStrategyImpl *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_storage, a3);
+    objc_storeStrong(&v6->_storage, storage);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (void)serializeLine:(id)a3
+- (void)serializeLine:(id)line
 {
-  v9 = a3;
-  if ([v9 canSerializeWithStrategy:self])
+  lineCopy = line;
+  if ([lineCopy canSerializeWithStrategy:self])
   {
     [(CNVCardLineSerializationStrategyImpl *)self willSerializeValue];
-    v4 = [v9 groupingName];
-    [(CNVCardLineSerializationStrategyImpl *)self serializeGroupingName:v4];
+    groupingName = [lineCopy groupingName];
+    [(CNVCardLineSerializationStrategyImpl *)self serializeGroupingName:groupingName];
 
-    v5 = [v9 name];
-    [(CNVCardLineSerializationStrategyImpl *)self serializeName:v5];
+    name = [lineCopy name];
+    [(CNVCardLineSerializationStrategyImpl *)self serializeName:name];
 
-    v6 = [v9 parameters];
-    [(CNVCardLineSerializationStrategyImpl *)self serializeParameters:v6];
+    parameters = [lineCopy parameters];
+    [(CNVCardLineSerializationStrategyImpl *)self serializeParameters:parameters];
 
-    [v9 serializeValueWithStrategy:self];
+    [lineCopy serializeValueWithStrategy:self];
     [(CNVCardSerializationStorage *)self->_storage appendString:CNVCardLineDelimiter];
-    v7 = [v9 groupedLines];
-    v8 = [v9 groupingName];
-    [(CNVCardLineSerializationStrategyImpl *)self serializeGroupedLines:v7 withGroupingName:v8];
+    groupedLines = [lineCopy groupedLines];
+    groupingName2 = [lineCopy groupingName];
+    [(CNVCardLineSerializationStrategyImpl *)self serializeGroupedLines:groupedLines withGroupingName:groupingName2];
   }
 }
 
-- (void)serializeOpaqueValue:(id)a3
+- (void)serializeOpaqueValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   if (((*(*MEMORY[0x277CFBD00] + 16))() & 1) == 0)
   {
-    [(CNVCardSerializationStorage *)self->_storage appendData:v4];
+    [(CNVCardSerializationStorage *)self->_storage appendData:valueCopy];
     [(CNVCardSerializationStorage *)self->_storage appendString:CNVCardLineDelimiter];
   }
 }
 
-- (void)insertLine:(id)a3 atMarker:(id)a4
+- (void)insertLine:(id)line atMarker:(id)marker
 {
   v6 = MEMORY[0x277CCAB68];
-  v7 = a4;
-  v8 = a3;
-  v11 = [v6 string];
-  v9 = [CNVCardSerializationStorage storageWithString:v11];
+  markerCopy = marker;
+  lineCopy = line;
+  string = [v6 string];
+  v9 = [CNVCardSerializationStorage storageWithString:string];
   v10 = [objc_alloc(objc_opt_class()) initWithStorage:v9];
-  [v8 serializeWithStrategy:v10];
+  [lineCopy serializeWithStrategy:v10];
 
-  [(CNVCardSerializationStorage *)self->_storage insertString:v11 atMarker:v7];
+  [(CNVCardSerializationStorage *)self->_storage insertString:string atMarker:markerCopy];
 }
 
 @end

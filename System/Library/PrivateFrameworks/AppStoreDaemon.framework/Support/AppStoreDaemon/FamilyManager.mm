@@ -29,9 +29,9 @@
     [v9 addObserver:v2 selector:"_handleAccountChangedNotification" name:@"AccountStorePrimaryAccountDidChange" object:v10];
 
     v11 = +[ActiveAccountObserver activeAccount];
-    v12 = [v11 ams_DSID];
+    ams_DSID = [v11 ams_DSID];
     currentAccountDSID = v2->_currentAccountDSID;
-    v2->_currentAccountDSID = v12;
+    v2->_currentAccountDSID = ams_DSID;
   }
 
   return v2;

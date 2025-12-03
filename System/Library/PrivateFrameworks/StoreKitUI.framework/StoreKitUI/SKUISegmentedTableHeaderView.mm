@@ -1,20 +1,20 @@
 @interface SKUISegmentedTableHeaderView
 - (CGSize)sizeThatFits:(CGSize)result;
-- (SKUISegmentedTableHeaderView)initWithFrame:(CGRect)a3;
+- (SKUISegmentedTableHeaderView)initWithFrame:(CGRect)frame;
 - (id)_borderView;
 - (void)layoutSubviews;
-- (void)setHidesBorderView:(BOOL)a3;
-- (void)setSegmentedControl:(id)a3;
+- (void)setHidesBorderView:(BOOL)view;
+- (void)setSegmentedControl:(id)control;
 @end
 
 @implementation SKUISegmentedTableHeaderView
 
-- (SKUISegmentedTableHeaderView)initWithFrame:(CGRect)a3
+- (SKUISegmentedTableHeaderView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUISegmentedTableHeaderView initWithFrame:];
@@ -22,35 +22,35 @@
 
   v12.receiver = self;
   v12.super_class = SKUISegmentedTableHeaderView;
-  v8 = [(SKUISegmentedTableHeaderView *)&v12 initWithFrame:x, y, width, height];
-  if (v8)
+  height = [(SKUISegmentedTableHeaderView *)&v12 initWithFrame:x, y, width, height];
+  if (height)
   {
     v9 = [objc_alloc(MEMORY[0x277D75DE8]) initWithPrivateStyle:2010];
-    backdropView = v8->_backdropView;
-    v8->_backdropView = v9;
+    backdropView = height->_backdropView;
+    height->_backdropView = v9;
 
-    [(SKUISegmentedTableHeaderView *)v8 addSubview:v8->_backdropView];
+    [(SKUISegmentedTableHeaderView *)height addSubview:height->_backdropView];
   }
 
-  return v8;
+  return height;
 }
 
-- (void)setHidesBorderView:(BOOL)a3
+- (void)setHidesBorderView:(BOOL)view
 {
-  v3 = a3;
-  v4 = [(SKUISegmentedTableHeaderView *)self _borderView];
-  [v4 setHidden:v3];
+  viewCopy = view;
+  _borderView = [(SKUISegmentedTableHeaderView *)self _borderView];
+  [_borderView setHidden:viewCopy];
 }
 
-- (void)setSegmentedControl:(id)a3
+- (void)setSegmentedControl:(id)control
 {
-  v5 = a3;
+  controlCopy = control;
   segmentedControl = self->_segmentedControl;
-  v7 = v5;
-  if (segmentedControl != v5)
+  v7 = controlCopy;
+  if (segmentedControl != controlCopy)
   {
     [(UIView *)segmentedControl removeFromSuperview];
-    objc_storeStrong(&self->_segmentedControl, a3);
+    objc_storeStrong(&self->_segmentedControl, control);
     if (self->_segmentedControl)
     {
       [(SKUISegmentedTableHeaderView *)self addSubview:?];
@@ -72,12 +72,12 @@
     [(UIView *)self->_segmentedControl setFrame:15.0, floorf(v9), v4 + -15.0 + -15.0];
   }
 
-  v10 = [MEMORY[0x277D759A0] mainScreen];
-  [v10 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v12 = 1.0 / v11;
 
-  v13 = [(SKUISegmentedTableHeaderView *)self _borderView];
-  [v13 setFrame:{0.0, v6 - v12, v4, v12}];
+  _borderView = [(SKUISegmentedTableHeaderView *)self _borderView];
+  [_borderView setFrame:{0.0, v6 - v12, v4, v12}];
 }
 
 - (CGSize)sizeThatFits:(CGSize)result

@@ -13,27 +13,27 @@
 - (void)br_setEnabledForiCloudDesktop:()BRAdditions
 {
   v5 = *MEMORY[0x1E6959B58];
-  v6 = [a1 propertiesForDataclass:*MEMORY[0x1E6959B58]];
-  v8 = [v6 mutableCopy];
+  v6 = [self propertiesForDataclass:*MEMORY[0x1E6959B58]];
+  dictionary = [v6 mutableCopy];
 
-  if (!v8)
+  if (!dictionary)
   {
-    v8 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
   }
 
   v7 = [MEMORY[0x1E696AD98] numberWithBool:a3];
-  [v8 setObject:v7 forKeyedSubscript:BRAccountPropertyiCloudDesktopEnabled];
+  [dictionary setObject:v7 forKeyedSubscript:BRAccountPropertyiCloudDesktopEnabled];
 
-  [a1 setProperties:v8 forDataclass:v5];
+  [self setProperties:dictionary forDataclass:v5];
 }
 
 - (uint64_t)br_isEnabledForCloudDocs
 {
-  result = [a1 isEnabledForDataclass:*MEMORY[0x1E6959B58]];
+  result = [self isEnabledForDataclass:*MEMORY[0x1E6959B58]];
   if (result)
   {
 
-    return [a1 br_isCloudDocsMigrated];
+    return [self br_isCloudDocsMigrated];
   }
 
   return result;
@@ -41,10 +41,10 @@
 
 - (uint64_t)br_isEnabledForUbiquity
 {
-  result = [a1 isEnabledForDataclass:*MEMORY[0x1E6959B58]];
+  result = [self isEnabledForDataclass:*MEMORY[0x1E6959B58]];
   if (result)
   {
-    return [a1 aa_isUsingCloudDocs] ^ 1;
+    return [self aa_isUsingCloudDocs] ^ 1;
   }
 
   return result;
@@ -52,7 +52,7 @@
 
 - (__CFString)br_personaIdentifier
 {
-  v1 = [a1 accountPropertyForKey:*MEMORY[0x1E69597A0]];
+  v1 = [self accountPropertyForKey:*MEMORY[0x1E69597A0]];
   v2 = v1;
   if (v1)
   {
@@ -71,41 +71,41 @@
 
 - (BOOL)br_hasPersonaIdentifier
 {
-  v1 = [a1 br_personaIdentifier];
-  v2 = [v1 length] != 0;
+  br_personaIdentifier = [self br_personaIdentifier];
+  v2 = [br_personaIdentifier length] != 0;
 
   return v2;
 }
 
 - (uint64_t)br_isEligibleiCloudAccount
 {
-  v2 = [a1 accountType];
-  v3 = [v2 identifier];
-  if ([v3 isEqualToString:*MEMORY[0x1E69597F8]])
+  accountType = [self accountType];
+  identifier = [accountType identifier];
+  if ([identifier isEqualToString:*MEMORY[0x1E69597F8]])
   {
-    if ([a1 aa_isAccountClass:*MEMORY[0x1E698B760]])
+    if ([self aa_isAccountClass:*MEMORY[0x1E698B760]])
     {
-      v4 = 1;
+      isDataSeparatedAccount = 1;
     }
 
     else
     {
-      v4 = [a1 isDataSeparatedAccount];
+      isDataSeparatedAccount = [self isDataSeparatedAccount];
     }
   }
 
   else
   {
-    v4 = 0;
+    isDataSeparatedAccount = 0;
   }
 
-  return v4;
+  return isDataSeparatedAccount;
 }
 
 - (id)br_volumeUUID
 {
-  v1 = [a1 br_personaIdentifier];
-  v2 = [BRSpecialFolders volumeUUIDForPersona:v1];
+  br_personaIdentifier = [self br_personaIdentifier];
+  v2 = [BRSpecialFolders volumeUUIDForPersona:br_personaIdentifier];
 
   return v2;
 }

@@ -1,15 +1,15 @@
 @interface PXGTVFocusEffectView
-- (CGPoint)convertHostedChildCenter:(CGPoint)a3 fromGlobalLayer:(id)a4;
+- (CGPoint)convertHostedChildCenter:(CGPoint)center fromGlobalLayer:(id)layer;
 - (CGRect)clippingRect;
-- (PXGTVFocusEffectView)initWithFrame:(CGRect)a3;
-- (void)_handleSelectTap:(id)a3;
-- (void)_setSelectedState:(BOOL)a3;
-- (void)addHostedLayer:(id)a3;
-- (void)addHostedView:(id)a3;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
+- (PXGTVFocusEffectView)initWithFrame:(CGRect)frame;
+- (void)_handleSelectTap:(id)tap;
+- (void)_setSelectedState:(BOOL)state;
+- (void)addHostedLayer:(id)layer;
+- (void)addHostedView:(id)view;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setUserData:(id)a3;
+- (void)setUserData:(id)data;
 @end
 
 @implementation PXGTVFocusEffectView
@@ -27,15 +27,15 @@
   return result;
 }
 
-- (void)setUserData:(id)a3
+- (void)setUserData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   userData = self->_userData;
-  if (userData != v4)
+  if (userData != dataCopy)
   {
-    v9 = v4;
-    v6 = [(PXGTVFocusEffectViewConfiguration *)userData isEqual:v4];
-    v4 = v9;
+    v9 = dataCopy;
+    v6 = [(PXGTVFocusEffectViewConfiguration *)userData isEqual:dataCopy];
+    dataCopy = v9;
     if (!v6)
     {
       v7 = [(PXGTVFocusEffectViewConfiguration *)v9 copy];
@@ -43,18 +43,18 @@
       self->_userData = v7;
 
       [(PXGTVFocusEffectView *)self setNeedsLayout];
-      v4 = v9;
+      dataCopy = v9;
     }
   }
 }
 
-- (CGPoint)convertHostedChildCenter:(CGPoint)a3 fromGlobalLayer:(id)a4
+- (CGPoint)convertHostedChildCenter:(CGPoint)center fromGlobalLayer:(id)layer
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(PXGTVFocusEffectView *)self layer];
-  [v8 convertPoint:v7 fromLayer:{x, y}];
+  y = center.y;
+  x = center.x;
+  layerCopy = layer;
+  layer = [(PXGTVFocusEffectView *)self layer];
+  [layer convertPoint:layerCopy fromLayer:{x, y}];
   v10 = v9;
   v12 = v11;
 
@@ -65,55 +65,55 @@
   return result;
 }
 
-- (void)addHostedLayer:(id)a3
+- (void)addHostedLayer:(id)layer
 {
-  v16 = a3;
-  v5 = [(_UIStackedImageContainerView *)self->_stackedImageContainerView maskedOverlayView];
-  v6 = [v5 layer];
+  layerCopy = layer;
+  maskedOverlayView = [(_UIStackedImageContainerView *)self->_stackedImageContainerView maskedOverlayView];
+  layer = [maskedOverlayView layer];
 
-  if (!v6)
+  if (!layer)
   {
-    v13 = [MEMORY[0x277CCA890] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"PXGTVFocusEffectView.m" lineNumber:175 description:{@"Invalid parameter not satisfying: %@", @"_stackedImageContainerView.maskedOverlayView.layer != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGTVFocusEffectView.m" lineNumber:175 description:{@"Invalid parameter not satisfying: %@", @"_stackedImageContainerView.maskedOverlayView.layer != nil"}];
   }
 
-  v7 = [(_UIStackedImageContainerView *)self->_stackedImageContainerView maskedOverlayView];
-  v8 = [v7 layer];
-  [v8 addSublayer:v16];
+  maskedOverlayView2 = [(_UIStackedImageContainerView *)self->_stackedImageContainerView maskedOverlayView];
+  layer2 = [maskedOverlayView2 layer];
+  [layer2 addSublayer:layerCopy];
 
-  v9 = [v16 superlayer];
-  v10 = [(_UIStackedImageContainerView *)self->_stackedImageContainerView maskedOverlayView];
-  v11 = [v10 layer];
+  superlayer = [layerCopy superlayer];
+  maskedOverlayView3 = [(_UIStackedImageContainerView *)self->_stackedImageContainerView maskedOverlayView];
+  layer3 = [maskedOverlayView3 layer];
 
-  if (v9 != v11)
+  if (superlayer != layer3)
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"PXGTVFocusEffectView.m" lineNumber:177 description:{@"Invalid parameter not satisfying: %@", @"[sublayer superlayer] == _stackedImageContainerView.maskedOverlayView.layer"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXGTVFocusEffectView.m" lineNumber:177 description:{@"Invalid parameter not satisfying: %@", @"[sublayer superlayer] == _stackedImageContainerView.maskedOverlayView.layer"}];
   }
 
-  v12 = [v16 superlayer];
+  superlayer2 = [layerCopy superlayer];
 
-  if (!v12)
+  if (!superlayer2)
   {
-    v15 = [MEMORY[0x277CCA890] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"PXGTVFocusEffectView.m" lineNumber:178 description:{@"Invalid parameter not satisfying: %@", @"[sublayer superlayer] != nil"}];
+    currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"PXGTVFocusEffectView.m" lineNumber:178 description:{@"Invalid parameter not satisfying: %@", @"[sublayer superlayer] != nil"}];
   }
 }
 
-- (void)addHostedView:(id)a3
+- (void)addHostedView:(id)view
 {
   stackedImageContainerView = self->_stackedImageContainerView;
-  v4 = a3;
-  v5 = [(_UIStackedImageContainerView *)stackedImageContainerView maskedOverlayView];
-  [v5 addSubview:v4];
+  viewCopy = view;
+  maskedOverlayView = [(_UIStackedImageContainerView *)stackedImageContainerView maskedOverlayView];
+  [maskedOverlayView addSubview:viewCopy];
 }
 
-- (void)_setSelectedState:(BOOL)a3
+- (void)_setSelectedState:(BOOL)state
 {
-  v3 = a3;
+  stateCopy = state;
   if ([(PXGTVFocusEffectView *)self isFocused])
   {
-    if (v3)
+    if (stateCopy)
     {
       v5 = 9;
     }
@@ -142,16 +142,16 @@
   [(_UIStackedImageContainerView *)stackedImageContainerView setMaskedOverlayView:v5];
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v6 = a4;
+  coordinatorCopy = coordinator;
   v10.receiver = self;
   v10.super_class = PXGTVFocusEffectView;
-  [(PXGTVFocusEffectView *)&v10 didUpdateFocusInContext:a3 withAnimationCoordinator:v6];
+  [(PXGTVFocusEffectView *)&v10 didUpdateFocusInContext:context withAnimationCoordinator:coordinatorCopy];
   if ([(PXGTVFocusEffectView *)self isFocused])
   {
-    v7 = [(PXGTVFocusEffectView *)self superview];
-    [v7 bringSubviewToFront:self];
+    superview = [(PXGTVFocusEffectView *)self superview];
+    [superview bringSubviewToFront:self];
 
     v8 = 8;
   }
@@ -161,14 +161,14 @@
     v8 = 0;
   }
 
-  [(_UIStackedImageContainerView *)self->_stackedImageContainerView setControlState:v8 animated:1 focusAnimationCoordinator:v6];
+  [(_UIStackedImageContainerView *)self->_stackedImageContainerView setControlState:v8 animated:1 focusAnimationCoordinator:coordinatorCopy];
   [(PXGTVFocusEffectView *)self setNeedsLayout];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __73__PXGTVFocusEffectView_didUpdateFocusInContext_withAnimationCoordinator___block_invoke;
   v9[3] = &unk_2782ABE50;
   v9[4] = self;
-  [v6 addCoordinatedAnimations:v9 completion:0];
+  [coordinatorCopy addCoordinatedAnimations:v9 completion:0];
 }
 
 - (void)layoutSubviews
@@ -185,12 +185,12 @@
   [(_UIStackedImageContainerView *)stackedImageContainerView layoutIfNeeded];
 }
 
-- (void)_handleSelectTap:(id)a3
+- (void)_handleSelectTap:(id)tap
 {
-  v4 = [a3 state];
-  if ((v4 - 3) >= 2)
+  state = [tap state];
+  if ((state - 3) >= 2)
   {
-    if (v4 != 1)
+    if (state != 1)
     {
       return;
     }
@@ -206,11 +206,11 @@
   [(PXGTVFocusEffectView *)self _setSelectedState:v5];
 }
 
-- (PXGTVFocusEffectView)initWithFrame:(CGRect)a3
+- (PXGTVFocusEffectView)initWithFrame:(CGRect)frame
 {
   v21.receiver = self;
   v21.super_class = PXGTVFocusEffectView;
-  v3 = [(PXGTVFocusEffectView *)&v21 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PXGTVFocusEffectView *)&v21 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -238,8 +238,8 @@
       v17 = 0.0;
     }
 
-    v18 = [(_UIStackedImageContainerView *)v4->_stackedImageContainerView config];
-    [v18 setCornerRadius:v17];
+    config = [(_UIStackedImageContainerView *)v4->_stackedImageContainerView config];
+    [config setCornerRadius:v17];
 
     v19 = [objc_alloc(MEMORY[0x277D75708]) initWithTarget:v4 action:sel__handleSelectTap_];
     [v19 setMinimumPressDuration:0.0];

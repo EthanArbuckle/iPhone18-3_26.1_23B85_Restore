@@ -1,38 +1,38 @@
 @interface SXQuickLookComponentViewFactory
-- (SXQuickLookComponentViewFactory)initWithDOMObjectProvider:(id)a3 viewport:(id)a4 presentationDelegateProvider:(id)a5 componentStyleRendererFactory:(id)a6 fileProvider:(id)a7 quickLookModule:(id)a8;
-- (id)componentViewForComponent:(id)a3;
+- (SXQuickLookComponentViewFactory)initWithDOMObjectProvider:(id)provider viewport:(id)viewport presentationDelegateProvider:(id)delegateProvider componentStyleRendererFactory:(id)factory fileProvider:(id)fileProvider quickLookModule:(id)module;
+- (id)componentViewForComponent:(id)component;
 @end
 
 @implementation SXQuickLookComponentViewFactory
 
-- (SXQuickLookComponentViewFactory)initWithDOMObjectProvider:(id)a3 viewport:(id)a4 presentationDelegateProvider:(id)a5 componentStyleRendererFactory:(id)a6 fileProvider:(id)a7 quickLookModule:(id)a8
+- (SXQuickLookComponentViewFactory)initWithDOMObjectProvider:(id)provider viewport:(id)viewport presentationDelegateProvider:(id)delegateProvider componentStyleRendererFactory:(id)factory fileProvider:(id)fileProvider quickLookModule:(id)module
 {
-  v15 = a7;
-  v16 = a8;
+  fileProviderCopy = fileProvider;
+  moduleCopy = module;
   v20.receiver = self;
   v20.super_class = SXQuickLookComponentViewFactory;
-  v17 = [(SXComponentViewFactory *)&v20 initWithDOMObjectProvider:a3 viewport:a4 presentationDelegateProvider:a5 componentStyleRendererFactory:a6];
+  v17 = [(SXComponentViewFactory *)&v20 initWithDOMObjectProvider:provider viewport:viewport presentationDelegateProvider:delegateProvider componentStyleRendererFactory:factory];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_quickLookModule, a8);
-    objc_storeStrong(&v18->_fileProvider, a7);
+    objc_storeStrong(&v17->_quickLookModule, module);
+    objc_storeStrong(&v18->_fileProvider, fileProvider);
   }
 
   return v18;
 }
 
-- (id)componentViewForComponent:(id)a3
+- (id)componentViewForComponent:(id)component
 {
   v4 = [SXQuickLookComponentView alloc];
-  v5 = [(SXComponentViewFactory *)self DOMObjectProvider];
-  v6 = [(SXComponentViewFactory *)self viewport];
-  v7 = [(SXComponentViewFactory *)self presentationDelegateProvider];
-  v8 = [v7 presentationDelegate];
-  v9 = [(SXComponentViewFactory *)self componentStyleRendererFactory];
-  v10 = [(SXQuickLookComponentViewFactory *)self fileProvider];
-  v11 = [(SXQuickLookComponentViewFactory *)self quickLookModule];
-  v12 = [(SXQuickLookComponentView *)v4 initWithDOMObjectProvider:v5 viewport:v6 presentationDelegate:v8 componentStyleRendererFactory:v9 fileProvider:v10 quickLookModule:v11];
+  dOMObjectProvider = [(SXComponentViewFactory *)self DOMObjectProvider];
+  viewport = [(SXComponentViewFactory *)self viewport];
+  presentationDelegateProvider = [(SXComponentViewFactory *)self presentationDelegateProvider];
+  presentationDelegate = [presentationDelegateProvider presentationDelegate];
+  componentStyleRendererFactory = [(SXComponentViewFactory *)self componentStyleRendererFactory];
+  fileProvider = [(SXQuickLookComponentViewFactory *)self fileProvider];
+  quickLookModule = [(SXQuickLookComponentViewFactory *)self quickLookModule];
+  v12 = [(SXQuickLookComponentView *)v4 initWithDOMObjectProvider:dOMObjectProvider viewport:viewport presentationDelegate:presentationDelegate componentStyleRendererFactory:componentStyleRendererFactory fileProvider:fileProvider quickLookModule:quickLookModule];
 
   return v12;
 }

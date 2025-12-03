@@ -6,10 +6,10 @@
 
 - (id)previewActions
 {
-  v2 = [(DDPreviewNavigationController *)self visibleViewController];
+  visibleViewController = [(DDPreviewNavigationController *)self visibleViewController];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 performSelector:sel_previewActions withObject:0];
+    v3 = [visibleViewController performSelector:sel_previewActions withObject:0];
   }
 
   else

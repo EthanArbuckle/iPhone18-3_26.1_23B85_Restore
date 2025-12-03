@@ -1,13 +1,13 @@
 @interface VUIAppsGridViewController
 - (CGSize)iconSize;
 - (VUIAppsGridViewController)init;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
 - (void)layoutSubviews;
-- (void)setApps:(id)a3;
-- (void)setIconSize:(CGSize)a3;
-- (void)setTitle:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)setApps:(id)apps;
+- (void)setIconSize:(CGSize)size;
+- (void)setTitle:(id)title;
+- (void)viewDidAppear:(BOOL)appear;
 @end
 
 @implementation VUIAppsGridViewController
@@ -43,26 +43,26 @@
     titleLabel = v3->_titleLabel;
     v3->_titleLabel = v13;
 
-    v15 = [(VUIAppsGridViewController *)v3 view];
-    [v15 addSubview:v3->_collectionView];
+    view = [(VUIAppsGridViewController *)v3 view];
+    [view addSubview:v3->_collectionView];
 
-    v16 = [MEMORY[0x1E69DC938] currentDevice];
-    v17 = [v16 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v17 == 2)
+    if (userInterfaceIdiom == 2)
     {
-      v18 = [(VUIAppsGridViewController *)v3 view];
-      [v18 addSubview:v3->_titleLabel];
+      view2 = [(VUIAppsGridViewController *)v3 view];
+      [view2 addSubview:v3->_titleLabel];
 
       v19 = xmmword_1E4296B50;
     }
 
     else
     {
-      v20 = [MEMORY[0x1E69DC938] currentDevice];
-      v21 = [v20 userInterfaceIdiom];
+      currentDevice2 = [MEMORY[0x1E69DC938] currentDevice];
+      userInterfaceIdiom2 = [currentDevice2 userInterfaceIdiom];
 
-      if (v21 != 6)
+      if (userInterfaceIdiom2 != 6)
       {
 LABEL_7:
         [(VUIAppsGridViewController *)v3 layoutSubviews];
@@ -79,11 +79,11 @@ LABEL_7:
   return v3;
 }
 
-- (void)setApps:(id)a3
+- (void)setApps:(id)apps
 {
-  if (self->_apps != a3)
+  if (self->_apps != apps)
   {
-    v4 = [a3 copy];
+    v4 = [apps copy];
     apps = self->_apps;
     self->_apps = v4;
 
@@ -93,12 +93,12 @@ LABEL_7:
   }
 }
 
-- (void)setIconSize:(CGSize)a3
+- (void)setIconSize:(CGSize)size
 {
   width = self->_iconSize.width;
   height = self->_iconSize.height;
-  self->_iconSize = a3;
-  if (a3.width != width || a3.height != height)
+  self->_iconSize = size;
+  if (size.width != width || size.height != height)
   {
     [(VUIAppsGridViewController *)self layoutSubviews];
     collectionView = self->_collectionView;
@@ -116,20 +116,20 @@ LABEL_7:
   +[VUIAppCell contentInsets];
   v8 = v6 + v7;
   v11 = v10 + v9;
-  v12 = [MEMORY[0x1E69DC938] currentDevice];
-  v13 = [v12 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v13 == 6 || v13 == 0)
+  if (userInterfaceIdiom == 6 || userInterfaceIdiom == 0)
   {
-    v15 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v15 nativeBounds];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen nativeBounds];
     v17 = v16 * 0.19;
 
-    v18 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v18 scale];
+    mainScreen2 = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen2 scale];
     v20 = v17 / v19;
 
-    if (v13 == 6)
+    if (userInterfaceIdiom == 6)
     {
       v21 = 10.0;
     }
@@ -149,10 +149,10 @@ LABEL_7:
 
   else
   {
-    v61 = [MEMORY[0x1E69DC938] currentDevice];
-    v62 = [v61 userInterfaceIdiom];
+    currentDevice2 = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom2 = [currentDevice2 userInterfaceIdiom];
 
-    if (v62 == 2)
+    if (userInterfaceIdiom2 == 2)
     {
       width = v8 + p_iconSize->width;
       v22 = v11 + p_iconSize->height + 33.0;
@@ -194,100 +194,100 @@ LABEL_7:
   [(UILabel *)self->_titleLabel setTextAlignment:1];
   [(UILabel *)self->_titleLabel setMinimumScaleFactor:0.8];
   [(UILabel *)self->_titleLabel setAdjustsFontSizeToFitWidth:1];
-  v30 = [(VUIAppsGridViewController *)self view];
-  v31 = [MEMORY[0x1E69DC938] currentDevice];
-  v32 = [v31 userInterfaceIdiom];
+  view = [(VUIAppsGridViewController *)self view];
+  currentDevice3 = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom3 = [currentDevice3 userInterfaceIdiom];
 
-  if (v32 == 2)
+  if (userInterfaceIdiom3 == 2)
   {
     v33 = self->_titleLabel;
-    v34 = [MEMORY[0x1E69DC888] whiteColor];
-    [(UILabel *)v33 setTextColor:v34];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [(UILabel *)v33 setTextColor:whiteColor];
 
     [(UICollectionView *)self->_collectionView setBackgroundColor:0];
-    [v30 setBackgroundColor:0];
+    [view setBackgroundColor:0];
   }
 
   else
   {
     collectionView = self->_collectionView;
-    v36 = [MEMORY[0x1E69DC888] vui_primaryDynamicBackgroundColor];
-    [(UICollectionView *)collectionView setBackgroundColor:v36];
+    vui_primaryDynamicBackgroundColor = [MEMORY[0x1E69DC888] vui_primaryDynamicBackgroundColor];
+    [(UICollectionView *)collectionView setBackgroundColor:vui_primaryDynamicBackgroundColor];
 
-    v37 = [MEMORY[0x1E69DC888] vui_primaryDynamicBackgroundColor];
-    [v30 setBackgroundColor:v37];
+    vui_primaryDynamicBackgroundColor2 = [MEMORY[0x1E69DC888] vui_primaryDynamicBackgroundColor];
+    [view setBackgroundColor:vui_primaryDynamicBackgroundColor2];
   }
 
-  v38 = [MEMORY[0x1E69DC938] currentDevice];
-  v39 = [v38 userInterfaceIdiom];
+  currentDevice4 = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom4 = [currentDevice4 userInterfaceIdiom];
 
-  if (v39 == 2)
+  if (userInterfaceIdiom4 == 2)
   {
-    v40 = [(UILabel *)self->_titleLabel firstBaselineAnchor];
-    v41 = [v30 topAnchor];
-    v42 = [v40 constraintEqualToAnchor:v41 constant:v20];
+    firstBaselineAnchor = [(UILabel *)self->_titleLabel firstBaselineAnchor];
+    topAnchor = [view topAnchor];
+    v42 = [firstBaselineAnchor constraintEqualToAnchor:topAnchor constant:v20];
     [v42 setActive:1];
 
-    v43 = [(UILabel *)self->_titleLabel centerXAnchor];
-    v44 = [v30 centerXAnchor];
-    v45 = [v43 constraintEqualToAnchor:v44];
+    centerXAnchor = [(UILabel *)self->_titleLabel centerXAnchor];
+    centerXAnchor2 = [view centerXAnchor];
+    v45 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     [v45 setActive:1];
 
-    v46 = [(UICollectionView *)self->_collectionView topAnchor];
-    v47 = [(UILabel *)self->_titleLabel firstBaselineAnchor];
-    v48 = [v46 constraintEqualToAnchor:v47 constant:v25];
+    topAnchor2 = [(UICollectionView *)self->_collectionView topAnchor];
+    firstBaselineAnchor2 = [(UILabel *)self->_titleLabel firstBaselineAnchor];
+    v48 = [topAnchor2 constraintEqualToAnchor:firstBaselineAnchor2 constant:v25];
     [v48 setActive:1];
   }
 
   else
   {
-    v49 = [(UICollectionView *)self->_collectionView topAnchor];
-    v50 = [v30 topAnchor];
-    v51 = [v49 constraintEqualToAnchor:v50 constant:20.0];
+    topAnchor3 = [(UICollectionView *)self->_collectionView topAnchor];
+    topAnchor4 = [view topAnchor];
+    v51 = [topAnchor3 constraintEqualToAnchor:topAnchor4 constant:20.0];
     [v51 setActive:1];
 
-    v46 = [(VUIAppsGridViewController *)self navigationItem];
-    v47 = +[VUILocalizationManager sharedInstance];
-    v48 = [v47 localizedStringForKey:@"ACCESS_SEE_ALL_TITLE"];
-    [v46 setTitle:v48];
+    topAnchor2 = [(VUIAppsGridViewController *)self navigationItem];
+    firstBaselineAnchor2 = +[VUILocalizationManager sharedInstance];
+    v48 = [firstBaselineAnchor2 localizedStringForKey:@"ACCESS_SEE_ALL_TITLE"];
+    [topAnchor2 setTitle:v48];
   }
 
-  v52 = [(UICollectionView *)self->_collectionView bottomAnchor];
-  v53 = [v30 bottomAnchor];
-  v54 = [v52 constraintEqualToAnchor:v53 constant:0.0];
+  bottomAnchor = [(UICollectionView *)self->_collectionView bottomAnchor];
+  bottomAnchor2 = [view bottomAnchor];
+  v54 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:0.0];
   [v54 setActive:1];
 
-  v55 = [(UICollectionView *)self->_collectionView leadingAnchor];
-  v56 = [v30 leadingAnchor];
-  v57 = [v55 constraintEqualToAnchor:v56];
+  leadingAnchor = [(UICollectionView *)self->_collectionView leadingAnchor];
+  leadingAnchor2 = [view leadingAnchor];
+  v57 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v57 setActive:1];
 
-  v58 = [(UICollectionView *)self->_collectionView trailingAnchor];
-  v59 = [v30 trailingAnchor];
-  v60 = [v58 constraintEqualToAnchor:v59];
+  trailingAnchor = [(UICollectionView *)self->_collectionView trailingAnchor];
+  trailingAnchor2 = [view trailingAnchor];
+  v60 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [v60 setActive:1];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = VUIAppsGridViewController;
-  [(VUIAppsGridViewController *)&v4 viewDidAppear:a3];
+  [(VUIAppsGridViewController *)&v4 viewDidAppear:appear];
   [(UICollectionView *)self->_collectionView flashScrollIndicators];
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
   v5.receiver = self;
   v5.super_class = VUIAppsGridViewController;
-  v4 = a3;
-  [(VUIAppsGridViewController *)&v5 setTitle:v4];
-  [(UILabel *)self->_titleLabel setText:v4, v5.receiver, v5.super_class];
+  titleCopy = title;
+  [(VUIAppsGridViewController *)&v5 setTitle:titleCopy];
+  [(UILabel *)self->_titleLabel setText:titleCopy, v5.receiver, v5.super_class];
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  if (a4)
+  if (section)
   {
     return 0;
   }
@@ -298,12 +298,12 @@ LABEL_7:
   }
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = -[NSArray objectAtIndexedSubscript:](self->_apps, "objectAtIndexedSubscript:", [v6 row]);
-  v9 = [v7 dequeueReusableCellWithReuseIdentifier:@"cell" forIndexPath:v6];
+  pathCopy = path;
+  viewCopy = view;
+  v8 = -[NSArray objectAtIndexedSubscript:](self->_apps, "objectAtIndexedSubscript:", [pathCopy row]);
+  v9 = [viewCopy dequeueReusableCellWithReuseIdentifier:@"cell" forIndexPath:pathCopy];
 
   [v9 setIconSize:{self->_iconSize.width, self->_iconSize.height}];
   v10 = [v8 objectForKeyedSubscript:@"appIcon"];

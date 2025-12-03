@@ -1,42 +1,42 @@
 @interface SUUIStorePageCollectionViewLayout
-- (BOOL)_allowsBackdropDecorationForItemPinningConfiguration:(id)a3 atIndexPath:(id)a4;
-- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)a3;
-- (CGRect)_pinningFrameForStartingFrame:(CGRect)a3 itemPinningConfiguration:(id)a4 atIndexPath:(id)a5;
-- (CGRect)_targetFrameForStartingFrame:(CGRect)a3 itemPinningConfiguration:(id)a4 layoutInformation:(id)a5 atIndexPath:(id)a6 returningIsPinning:(BOOL *)a7;
+- (BOOL)_allowsBackdropDecorationForItemPinningConfiguration:(id)configuration atIndexPath:(id)path;
+- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)change;
+- (CGRect)_pinningFrameForStartingFrame:(CGRect)frame itemPinningConfiguration:(id)configuration atIndexPath:(id)path;
+- (CGRect)_targetFrameForStartingFrame:(CGRect)frame itemPinningConfiguration:(id)configuration layoutInformation:(id)information atIndexPath:(id)path returningIsPinning:(BOOL *)pinning;
 - (CGSize)collectionViewContentSize;
 - (SUUIStorePageCollectionViewLayout)init;
-- (UIEdgeInsets)_pinningContentInsetForItemPinningConfiguration:(id)a3 atIndexPath:(id)a4;
-- (id)_getCollectionViewUpdateItemForItemFromIndex:(int64_t)a3 initalLayout:(BOOL)a4;
+- (UIEdgeInsets)_pinningContentInsetForItemPinningConfiguration:(id)configuration atIndexPath:(id)path;
+- (id)_getCollectionViewUpdateItemForItemFromIndex:(int64_t)index initalLayout:(BOOL)layout;
 - (id)_indexPathsForBackgroundGradients;
 - (id)_indexPathsForPinningItems;
-- (id)_itemPinningConfigurationForItemAtIndexPath:(id)a3;
-- (id)_itemPinningLayoutInformationForItemAtIndexPath:(id)a3;
-- (id)_layoutAttributesForGradientDecorationViewAtIndexPath:(id)a3 currentAttributes:(id)a4;
-- (id)_layoutAttributesForPinnedBackdropDecorationViewAtIndexPath:(id)a3 pinningConfiguration:(id)a4 layoutInformation:(id)a5;
-- (id)finalLayoutAttributesForDisappearingItemAtIndexPath:(id)a3;
-- (id)initialLayoutAttributesForAppearingItemAtIndexPath:(id)a3;
-- (id)invalidationContextForBoundsChange:(CGRect)a3;
-- (id)layoutAttributesForDecorationViewOfKind:(id)a3 atIndexPath:(id)a4;
-- (id)layoutAttributesForElementsInRect:(CGRect)a3;
-- (id)layoutAttributesForItemAtIndexPath:(id)a3;
-- (id)layoutAttributesForUnpinnedItemAtIndexPath:(id)a3;
-- (id)pinnedLayoutAttributesForItemsInRect:(CGRect)a3;
+- (id)_itemPinningConfigurationForItemAtIndexPath:(id)path;
+- (id)_itemPinningLayoutInformationForItemAtIndexPath:(id)path;
+- (id)_layoutAttributesForGradientDecorationViewAtIndexPath:(id)path currentAttributes:(id)attributes;
+- (id)_layoutAttributesForPinnedBackdropDecorationViewAtIndexPath:(id)path pinningConfiguration:(id)configuration layoutInformation:(id)information;
+- (id)finalLayoutAttributesForDisappearingItemAtIndexPath:(id)path;
+- (id)initialLayoutAttributesForAppearingItemAtIndexPath:(id)path;
+- (id)invalidationContextForBoundsChange:(CGRect)change;
+- (id)layoutAttributesForDecorationViewOfKind:(id)kind atIndexPath:(id)path;
+- (id)layoutAttributesForElementsInRect:(CGRect)rect;
+- (id)layoutAttributesForItemAtIndexPath:(id)path;
+- (id)layoutAttributesForUnpinnedItemAtIndexPath:(id)path;
+- (id)pinnedLayoutAttributesForItemsInRect:(CGRect)rect;
 - (int64_t)_pinnedBackdropViewStyle;
-- (int64_t)_pinningGroupForItemPinningConfiguration:(id)a3 atIndexPath:(id)a4;
-- (int64_t)_pinningStyleForItemPinningConfiguration:(id)a3 atIndexPath:(id)a4;
-- (int64_t)_pinningTransitionStyleForItemPinningConfiguration:(id)a3 atIndexPath:(id)a4;
-- (void)_alginCellsToTop:(id)a3;
-- (void)_appendAdditionalLayoutAttributesForPinningItemsInRect:(CGRect)a3 toArray:(id)a4;
+- (int64_t)_pinningGroupForItemPinningConfiguration:(id)configuration atIndexPath:(id)path;
+- (int64_t)_pinningStyleForItemPinningConfiguration:(id)configuration atIndexPath:(id)path;
+- (int64_t)_pinningTransitionStyleForItemPinningConfiguration:(id)configuration atIndexPath:(id)path;
+- (void)_alginCellsToTop:(id)top;
+- (void)_appendAdditionalLayoutAttributesForPinningItemsInRect:(CGRect)rect toArray:(id)array;
 - (void)_calculatePinningLayoutInformation;
-- (void)_configureCellLayoutAttributes:(id)a3 forItemWithPinningConfiguration:(id)a4 layoutInformation:(id)a5 atIndexPath:(id)a6 allowPinning:(BOOL)a7 returningIsPinning:(BOOL *)a8;
+- (void)_configureCellLayoutAttributes:(id)attributes forItemWithPinningConfiguration:(id)configuration layoutInformation:(id)information atIndexPath:(id)path allowPinning:(BOOL)pinning returningIsPinning:(BOOL *)isPinning;
 - (void)_invalidatePinningLayoutInformation;
-- (void)_updateItemsLayoutForRect:(CGRect)a3;
-- (void)invalidateLayoutWithContext:(id)a3;
-- (void)prepareForCollectionViewUpdates:(id)a3;
+- (void)_updateItemsLayoutForRect:(CGRect)rect;
+- (void)invalidateLayoutWithContext:(id)context;
+- (void)prepareForCollectionViewUpdates:(id)updates;
 - (void)prepareLayout;
-- (void)setAllowsPinningTransitions:(BOOL)a3;
-- (void)setBackdropGroupName:(id)a3;
-- (void)setExpandChildPageSectionsIndexSet:(id)a3;
+- (void)setAllowsPinningTransitions:(BOOL)transitions;
+- (void)setBackdropGroupName:(id)name;
+- (void)setExpandChildPageSectionsIndexSet:(id)set;
 @end
 
 @implementation SUUIStorePageCollectionViewLayout
@@ -68,9 +68,9 @@
   return v3;
 }
 
-- (void)setExpandChildPageSectionsIndexSet:(id)a3
+- (void)setExpandChildPageSectionsIndexSet:(id)set
 {
-  v4 = [a3 copy];
+  v4 = [set copy];
   expandChildPageSectionsIndexSet = self->_expandChildPageSectionsIndexSet;
   self->_expandChildPageSectionsIndexSet = v4;
 
@@ -96,29 +96,29 @@
   return result;
 }
 
-- (id)initialLayoutAttributesForAppearingItemAtIndexPath:(id)a3
+- (id)initialLayoutAttributesForAppearingItemAtIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v29.receiver = self;
   v29.super_class = SUUIStorePageCollectionViewLayout;
-  v5 = [(SUUIStorePageCollectionViewLayout *)&v29 initialLayoutAttributesForAppearingItemAtIndexPath:v4];
+  v5 = [(SUUIStorePageCollectionViewLayout *)&v29 initialLayoutAttributesForAppearingItemAtIndexPath:pathCopy];
   expandChildPageSectionsIndexSet = self->_expandChildPageSectionsIndexSet;
-  if (expandChildPageSectionsIndexSet && -[NSIndexSet containsIndex:](expandChildPageSectionsIndexSet, "containsIndex:", [v4 section]) && self->_updateItems)
+  if (expandChildPageSectionsIndexSet && -[NSIndexSet containsIndex:](expandChildPageSectionsIndexSet, "containsIndex:", [pathCopy section]) && self->_updateItems)
   {
-    v7 = -[SUUIStorePageCollectionViewLayout _getCollectionViewUpdateItemForItemFromIndex:initalLayout:](self, "_getCollectionViewUpdateItemForItemFromIndex:initalLayout:", [v4 section], 1);
-    v8 = [v7 updateAction];
-    if (!v7 || v8)
+    v7 = -[SUUIStorePageCollectionViewLayout _getCollectionViewUpdateItemForItemFromIndex:initalLayout:](self, "_getCollectionViewUpdateItemForItemFromIndex:initalLayout:", [pathCopy section], 1);
+    updateAction = [v7 updateAction];
+    if (!v7 || updateAction)
     {
       goto LABEL_13;
     }
 
-    v9 = [(SUUIStorePageCollectionViewLayout *)self collectionView];
-    v10 = [(NSIndexSet *)self->_expandChildPageSectionsIndexSet firstIndex];
-    v11 = [v9 numberOfSections];
-    v12 = v11 - [(NSIndexSet *)self->_expandChildPageSectionsIndexSet count];
-    if (v10 >= v12)
+    collectionView = [(SUUIStorePageCollectionViewLayout *)self collectionView];
+    firstIndex = [(NSIndexSet *)self->_expandChildPageSectionsIndexSet firstIndex];
+    numberOfSections = [collectionView numberOfSections];
+    v12 = numberOfSections - [(NSIndexSet *)self->_expandChildPageSectionsIndexSet count];
+    if (firstIndex >= v12)
     {
-      v16 = [v9 numberOfItemsInSection:v12 - 1];
+      v16 = [collectionView numberOfItemsInSection:v12 - 1];
       v17 = 5.0;
       v15 = v12 - 1;
       if (v12 < 1)
@@ -137,13 +137,13 @@
 
     else
     {
-      v13 = [v9 numberOfItemsInSection:v10 - 1] - 1;
+      v13 = [collectionView numberOfItemsInSection:firstIndex - 1] - 1;
       v14 = MEMORY[0x277CCAA70];
-      v15 = v10 - 1;
+      v15 = firstIndex - 1;
     }
 
     v18 = [v14 indexPathForItem:v13 inSection:v15];
-    v19 = [v9 cellForItemAtIndexPath:v18];
+    v19 = [collectionView cellForItemAtIndexPath:v18];
 
     [v19 frame];
     v21 = v20;
@@ -165,29 +165,29 @@ LABEL_13:
   return v5;
 }
 
-- (id)finalLayoutAttributesForDisappearingItemAtIndexPath:(id)a3
+- (id)finalLayoutAttributesForDisappearingItemAtIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v28.receiver = self;
   v28.super_class = SUUIStorePageCollectionViewLayout;
-  v5 = [(SUUIStorePageCollectionViewLayout *)&v28 finalLayoutAttributesForDisappearingItemAtIndexPath:v4];
+  v5 = [(SUUIStorePageCollectionViewLayout *)&v28 finalLayoutAttributesForDisappearingItemAtIndexPath:pathCopy];
   expandChildPageSectionsIndexSet = self->_expandChildPageSectionsIndexSet;
-  if (expandChildPageSectionsIndexSet && -[NSIndexSet containsIndex:](expandChildPageSectionsIndexSet, "containsIndex:", [v4 section]) && self->_updateItems)
+  if (expandChildPageSectionsIndexSet && -[NSIndexSet containsIndex:](expandChildPageSectionsIndexSet, "containsIndex:", [pathCopy section]) && self->_updateItems)
   {
-    v7 = -[SUUIStorePageCollectionViewLayout _getCollectionViewUpdateItemForItemFromIndex:initalLayout:](self, "_getCollectionViewUpdateItemForItemFromIndex:initalLayout:", [v4 section], 0);
-    v8 = [v7 updateAction];
-    if (!v7 || v8 != 1)
+    v7 = -[SUUIStorePageCollectionViewLayout _getCollectionViewUpdateItemForItemFromIndex:initalLayout:](self, "_getCollectionViewUpdateItemForItemFromIndex:initalLayout:", [pathCopy section], 0);
+    updateAction = [v7 updateAction];
+    if (!v7 || updateAction != 1)
     {
       goto LABEL_13;
     }
 
-    v9 = [(SUUIStorePageCollectionViewLayout *)self collectionView];
-    v10 = [(NSIndexSet *)self->_expandChildPageSectionsIndexSet firstIndex];
-    v11 = [v9 numberOfSections];
-    if (v10 >= v11)
+    collectionView = [(SUUIStorePageCollectionViewLayout *)self collectionView];
+    firstIndex = [(NSIndexSet *)self->_expandChildPageSectionsIndexSet firstIndex];
+    numberOfSections = [collectionView numberOfSections];
+    if (firstIndex >= numberOfSections)
     {
-      v15 = v11;
-      v16 = [v9 numberOfItemsInSection:v11 - 1];
+      v15 = numberOfSections;
+      v16 = [collectionView numberOfItemsInSection:numberOfSections - 1];
       v17 = 0.0;
       v14 = v15 - 1;
       if (v15 < 1)
@@ -206,13 +206,13 @@ LABEL_13:
 
     else
     {
-      v12 = [v9 numberOfItemsInSection:v10 - 1] - 1;
+      v12 = [collectionView numberOfItemsInSection:firstIndex - 1] - 1;
       v13 = MEMORY[0x277CCAA70];
-      v14 = v10 - 1;
+      v14 = firstIndex - 1;
     }
 
     v18 = [v13 indexPathForItem:v12 inSection:v14];
-    v19 = [v9 cellForItemAtIndexPath:v18];
+    v19 = [collectionView cellForItemAtIndexPath:v18];
 
     [v19 frame];
     v21 = v20;
@@ -233,23 +233,23 @@ LABEL_13:
   return v5;
 }
 
-- (id)invalidationContextForBoundsChange:(CGRect)a3
+- (id)invalidationContextForBoundsChange:(CGRect)change
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = change.size.height;
+  width = change.size.width;
+  y = change.origin.y;
+  x = change.origin.x;
   v27.receiver = self;
   v27.super_class = SUUIStorePageCollectionViewLayout;
   v8 = [(UICollectionViewFlowLayout *)&v27 invalidationContextForBoundsChange:?];
-  v9 = [(SUUIStorePageCollectionViewLayout *)self collectionView];
-  [v9 bounds];
+  collectionView = [(SUUIStorePageCollectionViewLayout *)self collectionView];
+  [collectionView bounds];
   v11 = v10;
   v13 = v12;
   v15 = v14;
   v17 = v16;
 
-  v18 = [(UICollectionViewFlowLayout *)self scrollDirection];
+  scrollDirection = [(UICollectionViewFlowLayout *)self scrollDirection];
   v19 = y != v13;
   if (height == v17)
   {
@@ -274,13 +274,13 @@ LABEL_13:
     v22 = 1;
   }
 
-  if (v18)
+  if (scrollDirection)
   {
     v21 = 0;
     v22 = 0;
   }
 
-  if (v18 == 1)
+  if (scrollDirection == 1)
   {
     v23 = v19;
   }
@@ -290,7 +290,7 @@ LABEL_13:
     v23 = v21;
   }
 
-  if (v18 == 1)
+  if (scrollDirection == 1)
   {
     v24 = v20;
   }
@@ -304,21 +304,21 @@ LABEL_13:
   [v8 setInvalidateFlowLayoutDelegateMetrics:v24];
   if (([v8 invalidateEverything] & 1) == 0 && (objc_msgSend(v8, "invalidateDataSourceCounts") & 1) == 0)
   {
-    v25 = [(SUUIStorePageCollectionViewLayout *)self _indexPathsForPinningItems];
-    if ([v25 count])
+    _indexPathsForPinningItems = [(SUUIStorePageCollectionViewLayout *)self _indexPathsForPinningItems];
+    if ([_indexPathsForPinningItems count])
     {
-      [v8 invalidateItemsAtIndexPaths:v25];
-      [v8 invalidateDecorationElementsOfKind:0x286AED1E0 atIndexPaths:v25];
+      [v8 invalidateItemsAtIndexPaths:_indexPathsForPinningItems];
+      [v8 invalidateDecorationElementsOfKind:0x286AED1E0 atIndexPaths:_indexPathsForPinningItems];
     }
   }
 
   return v8;
 }
 
-- (void)invalidateLayoutWithContext:(id)a3
+- (void)invalidateLayoutWithContext:(id)context
 {
-  v4 = a3;
-  if (([v4 invalidateDataSourceCounts] & 1) != 0 || objc_msgSend(v4, "invalidateEverything"))
+  contextCopy = context;
+  if (([contextCopy invalidateDataSourceCounts] & 1) != 0 || objc_msgSend(contextCopy, "invalidateEverything"))
   {
     self->_hasValidPinnedBackdropViewStyle = 0;
     indexPathToItemPinningConfiguration = self->_indexPathToItemPinningConfiguration;
@@ -335,30 +335,30 @@ LABEL_13:
     [(SUUIStorePageCollectionViewLayout *)self _invalidatePinningLayoutInformation];
   }
 
-  if (([v4 invalidateFlowLayoutAttributes] & 1) != 0 || (objc_msgSend(v4, "invalidateFlowLayoutDelegateMetrics") & 1) != 0 || objc_msgSend(v4, "invalidateItemPinningLayoutInformation"))
+  if (([contextCopy invalidateFlowLayoutAttributes] & 1) != 0 || (objc_msgSend(contextCopy, "invalidateFlowLayoutDelegateMetrics") & 1) != 0 || objc_msgSend(contextCopy, "invalidateItemPinningLayoutInformation"))
   {
     [(SUUIStorePageCollectionViewLayout *)self _invalidatePinningLayoutInformation];
   }
 
-  if ([v4 invalidatePinnedBackdropViewStyle])
+  if ([contextCopy invalidatePinnedBackdropViewStyle])
   {
     self->_hasValidPinnedBackdropViewStyle = 0;
   }
 
   v8.receiver = self;
   v8.super_class = SUUIStorePageCollectionViewLayout;
-  [(UICollectionViewFlowLayout *)&v8 invalidateLayoutWithContext:v4];
+  [(UICollectionViewFlowLayout *)&v8 invalidateLayoutWithContext:contextCopy];
 }
 
-- (id)layoutAttributesForDecorationViewOfKind:(id)a3 atIndexPath:(id)a4
+- (id)layoutAttributesForDecorationViewOfKind:(id)kind atIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isEqualToString:0x286AED1E0])
+  kindCopy = kind;
+  pathCopy = path;
+  if ([kindCopy isEqualToString:0x286AED1E0])
   {
-    v8 = [(SUUIStorePageCollectionViewLayout *)self _itemPinningConfigurationForItemAtIndexPath:v7];
-    v9 = [(SUUIStorePageCollectionViewLayout *)self _itemPinningLayoutInformationForItemAtIndexPath:v7];
-    v10 = [(SUUIStorePageCollectionViewLayout *)self _layoutAttributesForPinnedBackdropDecorationViewAtIndexPath:v7 pinningConfiguration:v8 layoutInformation:v9];
+    v8 = [(SUUIStorePageCollectionViewLayout *)self _itemPinningConfigurationForItemAtIndexPath:pathCopy];
+    v9 = [(SUUIStorePageCollectionViewLayout *)self _itemPinningLayoutInformationForItemAtIndexPath:pathCopy];
+    v10 = [(SUUIStorePageCollectionViewLayout *)self _layoutAttributesForPinnedBackdropDecorationViewAtIndexPath:pathCopy pinningConfiguration:v8 layoutInformation:v9];
 
     if (v10)
     {
@@ -368,12 +368,12 @@ LABEL_13:
     goto LABEL_6;
   }
 
-  if (![v6 isEqualToString:0x286AFBAC0] || (+[UICollectionViewLayoutAttributes layoutAttributesForDecorationViewOfKind:withIndexPath:](SUUIGridViewGradientLayoutAttributes, "layoutAttributesForDecorationViewOfKind:withIndexPath:", 0x286AFBAC0, v7), (v10 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (![kindCopy isEqualToString:0x286AFBAC0] || (+[UICollectionViewLayoutAttributes layoutAttributesForDecorationViewOfKind:withIndexPath:](SUUIGridViewGradientLayoutAttributes, "layoutAttributesForDecorationViewOfKind:withIndexPath:", 0x286AFBAC0, pathCopy), (v10 = objc_claimAutoreleasedReturnValue()) == 0))
   {
 LABEL_6:
     v12.receiver = self;
     v12.super_class = SUUIStorePageCollectionViewLayout;
-    v10 = [(SUUIStorePageCollectionViewLayout *)&v12 layoutAttributesForDecorationViewOfKind:v6 atIndexPath:v7];
+    v10 = [(SUUIStorePageCollectionViewLayout *)&v12 layoutAttributesForDecorationViewOfKind:kindCopy atIndexPath:pathCopy];
   }
 
 LABEL_7:
@@ -381,12 +381,12 @@ LABEL_7:
   return v10;
 }
 
-- (id)layoutAttributesForElementsInRect:(CGRect)a3
+- (id)layoutAttributesForElementsInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v37 = *MEMORY[0x277D85DE8];
   ++self->_inLayoutAttributesForElementsCount;
   v35.receiver = self;
@@ -417,16 +417,16 @@ LABEL_7:
         }
 
         v15 = *(*(&v31 + 1) + 8 * i);
-        v16 = [v15 indexPath];
+        indexPath = [v15 indexPath];
         if (![v15 representedElementCategory])
         {
-          v17 = [(SUUIStorePageCollectionViewLayout *)self _indexPathsForPinningItems];
-          v18 = [v17 containsObject:v16];
+          _indexPathsForPinningItems = [(SUUIStorePageCollectionViewLayout *)self _indexPathsForPinningItems];
+          v18 = [_indexPathsForPinningItems containsObject:indexPath];
 
           if (v18)
           {
-            v19 = [(SUUIStorePageCollectionViewLayout *)self _itemPinningLayoutInformationForItemAtIndexPath:v16];
-            v20 = [(SUUIStorePageCollectionViewLayout *)self _itemPinningConfigurationForItemAtIndexPath:v16];
+            v19 = [(SUUIStorePageCollectionViewLayout *)self _itemPinningLayoutInformationForItemAtIndexPath:indexPath];
+            v20 = [(SUUIStorePageCollectionViewLayout *)self _itemPinningConfigurationForItemAtIndexPath:indexPath];
           }
 
           else
@@ -436,10 +436,10 @@ LABEL_7:
           }
 
           v30 = 0;
-          [(SUUIStorePageCollectionViewLayout *)self _configureCellLayoutAttributes:v15 forItemWithPinningConfiguration:v20 layoutInformation:v19 atIndexPath:v16 allowPinning:v18 returningIsPinning:&v30];
-          if (v30 == 1 && [(SUUIStorePageCollectionViewLayout *)self _allowsBackdropDecorationForItemPinningConfiguration:v20 atIndexPath:v16])
+          [(SUUIStorePageCollectionViewLayout *)self _configureCellLayoutAttributes:v15 forItemWithPinningConfiguration:v20 layoutInformation:v19 atIndexPath:indexPath allowPinning:v18 returningIsPinning:&v30];
+          if (v30 == 1 && [(SUUIStorePageCollectionViewLayout *)self _allowsBackdropDecorationForItemPinningConfiguration:v20 atIndexPath:indexPath])
           {
-            v21 = [(SUUIStorePageCollectionViewLayout *)self _layoutAttributesForPinnedBackdropDecorationViewAtIndexPath:v16 pinningConfiguration:v20 layoutInformation:v19];
+            v21 = [(SUUIStorePageCollectionViewLayout *)self _layoutAttributesForPinnedBackdropDecorationViewAtIndexPath:indexPath pinningConfiguration:v20 layoutInformation:v19];
             if (v21)
             {
               v22 = v29;
@@ -453,12 +453,12 @@ LABEL_7:
           }
         }
 
-        v23 = [(SUUIStorePageCollectionViewLayout *)self _indexPathsForBackgroundGradients];
-        v24 = [v23 containsObject:v16];
+        _indexPathsForBackgroundGradients = [(SUUIStorePageCollectionViewLayout *)self _indexPathsForBackgroundGradients];
+        v24 = [_indexPathsForBackgroundGradients containsObject:indexPath];
 
         if (v24)
         {
-          v25 = [(SUUIStorePageCollectionViewLayout *)self _layoutAttributesForGradientDecorationViewAtIndexPath:v16 currentAttributes:v15];
+          v25 = [(SUUIStorePageCollectionViewLayout *)self _layoutAttributesForGradientDecorationViewAtIndexPath:indexPath currentAttributes:v15];
           if (v25)
           {
             v26 = v29;
@@ -494,18 +494,18 @@ LABEL_7:
   return v10;
 }
 
-- (void)_alginCellsToTop:(id)a3
+- (void)_alginCellsToTop:(id)top
 {
   v59 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  topCopy = top;
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v7 = [(SUUIStorePageCollectionViewLayout *)self _indexPathsForPinningItems];
+  _indexPathsForPinningItems = [(SUUIStorePageCollectionViewLayout *)self _indexPathsForPinningItems];
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
-  v8 = v4;
+  v8 = topCopy;
   v9 = [v8 countByEnumeratingWithState:&v53 objects:v58 count:16];
   v47 = v5;
   if (v9)
@@ -522,8 +522,8 @@ LABEL_7:
         }
 
         v13 = *(*(&v53 + 1) + 8 * i);
-        v14 = [v13 indexPath];
-        v15 = [v7 containsObject:v14];
+        indexPath = [v13 indexPath];
+        v15 = [_indexPathsForPinningItems containsObject:indexPath];
 
         if ((v15 & 1) == 0 && ![v13 representedElementCategory])
         {
@@ -658,22 +658,22 @@ LABEL_13:
   }
 }
 
-- (id)layoutAttributesForItemAtIndexPath:(id)a3
+- (id)layoutAttributesForItemAtIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v12.receiver = self;
   v12.super_class = SUUIStorePageCollectionViewLayout;
-  v5 = [(UICollectionViewFlowLayout *)&v12 layoutAttributesForItemAtIndexPath:v4];
+  v5 = [(UICollectionViewFlowLayout *)&v12 layoutAttributesForItemAtIndexPath:pathCopy];
   v6 = v5;
   if (!self->_inLayoutAttributesForElementsCount && ![v5 representedElementCategory])
   {
-    v7 = [(SUUIStorePageCollectionViewLayout *)self _indexPathsForPinningItems];
-    v8 = [v7 containsObject:v4];
+    _indexPathsForPinningItems = [(SUUIStorePageCollectionViewLayout *)self _indexPathsForPinningItems];
+    v8 = [_indexPathsForPinningItems containsObject:pathCopy];
 
     if (v8)
     {
-      v9 = [(SUUIStorePageCollectionViewLayout *)self _itemPinningLayoutInformationForItemAtIndexPath:v4];
-      v10 = [(SUUIStorePageCollectionViewLayout *)self _itemPinningConfigurationForItemAtIndexPath:v4];
+      v9 = [(SUUIStorePageCollectionViewLayout *)self _itemPinningLayoutInformationForItemAtIndexPath:pathCopy];
+      v10 = [(SUUIStorePageCollectionViewLayout *)self _itemPinningConfigurationForItemAtIndexPath:pathCopy];
     }
 
     else
@@ -682,21 +682,21 @@ LABEL_13:
       v9 = 0;
     }
 
-    [(SUUIStorePageCollectionViewLayout *)self _configureCellLayoutAttributes:v6 forItemWithPinningConfiguration:v10 layoutInformation:v9 atIndexPath:v4 allowPinning:v8 returningIsPinning:0];
+    [(SUUIStorePageCollectionViewLayout *)self _configureCellLayoutAttributes:v6 forItemWithPinningConfiguration:v10 layoutInformation:v9 atIndexPath:pathCopy allowPinning:v8 returningIsPinning:0];
   }
 
   return v6;
 }
 
-- (void)prepareForCollectionViewUpdates:(id)a3
+- (void)prepareForCollectionViewUpdates:(id)updates
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  updatesCopy = updates;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [(NSArray *)v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v5 = [(NSArray *)updatesCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v5)
   {
     v6 = v5;
@@ -707,36 +707,36 @@ LABEL_13:
       {
         if (*v17 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(updatesCopy);
         }
 
         v9 = *(*(&v16 + 1) + 8 * i);
         [(SUUIStorePageCollectionViewLayout *)self _invalidatePinningLayoutInformation];
-        v10 = [v9 indexPathBeforeUpdate];
-        if (v10)
+        indexPathBeforeUpdate = [v9 indexPathBeforeUpdate];
+        if (indexPathBeforeUpdate)
         {
-          v11 = [(NSMapTable *)self->_indexPathToItemPinningConfiguration objectForKey:v10];
+          v11 = [(NSMapTable *)self->_indexPathToItemPinningConfiguration objectForKey:indexPathBeforeUpdate];
           if (v11)
           {
-            v12 = [v9 indexPathAfterUpdate];
-            [(NSMapTable *)self->_indexPathToItemPinningConfiguration removeObjectForKey:v10];
-            if (v12)
+            indexPathAfterUpdate = [v9 indexPathAfterUpdate];
+            [(NSMapTable *)self->_indexPathToItemPinningConfiguration removeObjectForKey:indexPathBeforeUpdate];
+            if (indexPathAfterUpdate)
             {
-              [(NSMapTable *)self->_indexPathToItemPinningConfiguration setObject:v11 forKey:v12];
+              [(NSMapTable *)self->_indexPathToItemPinningConfiguration setObject:v11 forKey:indexPathAfterUpdate];
             }
           }
         }
       }
 
-      v6 = [(NSArray *)v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v6 = [(NSArray *)updatesCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v6);
   }
 
   updateItems = self->_updateItems;
-  self->_updateItems = v4;
-  v14 = v4;
+  self->_updateItems = updatesCopy;
+  v14 = updatesCopy;
 
   v15.receiver = self;
   v15.super_class = SUUIStorePageCollectionViewLayout;
@@ -748,8 +748,8 @@ LABEL_13:
   v14.receiver = self;
   v14.super_class = SUUIStorePageCollectionViewLayout;
   [(UICollectionViewFlowLayout *)&v14 prepareLayout];
-  v3 = [(SUUIStorePageCollectionViewLayout *)self collectionView];
-  v4 = [v3 delegate];
+  collectionView = [(SUUIStorePageCollectionViewLayout *)self collectionView];
+  delegate = [collectionView delegate];
   *&self->_collectionViewDelegateFlags = *&self->_collectionViewDelegateFlags & 0xFE | objc_opt_respondsToSelector() & 1;
   if (objc_opt_respondsToSelector())
   {
@@ -806,29 +806,29 @@ LABEL_13:
   }
 
   *&self->_collectionViewDelegateFlags = *&self->_collectionViewDelegateFlags & 0xDF | v9;
-  v10 = [v3 backgroundColor];
+  backgroundColor = [collectionView backgroundColor];
   collectionViewBackgroundColor = self->_collectionViewBackgroundColor;
-  self->_collectionViewBackgroundColor = v10;
+  self->_collectionViewBackgroundColor = backgroundColor;
 
-  v12 = [(SUUIStorePageCollectionViewLayout *)self _indexPathsForPinningItems];
-  v13 = [(SUUIStorePageCollectionViewLayout *)self _indexPathsForBackgroundGradients];
+  _indexPathsForPinningItems = [(SUUIStorePageCollectionViewLayout *)self _indexPathsForPinningItems];
+  _indexPathsForBackgroundGradients = [(SUUIStorePageCollectionViewLayout *)self _indexPathsForBackgroundGradients];
 }
 
-- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)a3
+- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)change
 {
-  y = a3.origin.y;
+  y = change.origin.y;
   v10.receiver = self;
   v10.super_class = SUUIStorePageCollectionViewLayout;
-  if ([(UICollectionViewFlowLayout *)&v10 shouldInvalidateLayoutForBoundsChange:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height])
+  if ([(UICollectionViewFlowLayout *)&v10 shouldInvalidateLayoutForBoundsChange:change.origin.x, change.origin.y, change.size.width, change.size.height])
   {
     return 1;
   }
 
-  v6 = [(SUUIStorePageCollectionViewLayout *)self _indexPathsForPinningItems];
-  if ([v6 count])
+  _indexPathsForPinningItems = [(SUUIStorePageCollectionViewLayout *)self _indexPathsForPinningItems];
+  if ([_indexPathsForPinningItems count])
   {
-    v7 = [(SUUIStorePageCollectionViewLayout *)self collectionView];
-    [v7 bounds];
+    collectionView = [(SUUIStorePageCollectionViewLayout *)self collectionView];
+    [collectionView bounds];
     v5 = y != v8;
   }
 
@@ -840,46 +840,46 @@ LABEL_13:
   return v5;
 }
 
-- (void)_updateItemsLayoutForRect:(CGRect)a3
+- (void)_updateItemsLayoutForRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   if (self->_overrideContentWidth >= 0.00000011920929)
   {
-    v8 = [(SUUIStorePageCollectionViewLayout *)self collectionView];
-    [v8 setOverrideBoundsWidth:self->_overrideContentWidth];
+    collectionView = [(SUUIStorePageCollectionViewLayout *)self collectionView];
+    [collectionView setOverrideBoundsWidth:self->_overrideContentWidth];
     v9.receiver = self;
     v9.super_class = SUUIStorePageCollectionViewLayout;
     [(SUUIStorePageCollectionViewLayout *)&v9 _updateItemsLayoutForRect:x, y, width, height];
-    [v8 setOverrideBoundsWidth:0.0];
+    [collectionView setOverrideBoundsWidth:0.0];
   }
 
   else
   {
     v10.receiver = self;
     v10.super_class = SUUIStorePageCollectionViewLayout;
-    [(SUUIStorePageCollectionViewLayout *)&v10 _updateItemsLayoutForRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+    [(SUUIStorePageCollectionViewLayout *)&v10 _updateItemsLayoutForRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   }
 }
 
-- (id)layoutAttributesForUnpinnedItemAtIndexPath:(id)a3
+- (id)layoutAttributesForUnpinnedItemAtIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v12.receiver = self;
   v12.super_class = SUUIStorePageCollectionViewLayout;
-  v5 = [(UICollectionViewFlowLayout *)&v12 layoutAttributesForItemAtIndexPath:v4];
+  v5 = [(UICollectionViewFlowLayout *)&v12 layoutAttributesForItemAtIndexPath:pathCopy];
   v6 = v5;
   if (!self->_inLayoutAttributesForElementsCount && ![v5 representedElementCategory])
   {
-    v7 = [(SUUIStorePageCollectionViewLayout *)self _indexPathsForPinningItems];
-    v8 = [v7 containsObject:v4];
+    _indexPathsForPinningItems = [(SUUIStorePageCollectionViewLayout *)self _indexPathsForPinningItems];
+    v8 = [_indexPathsForPinningItems containsObject:pathCopy];
 
     if (v8)
     {
-      v9 = [(SUUIStorePageCollectionViewLayout *)self _itemPinningLayoutInformationForItemAtIndexPath:v4];
-      v10 = [(SUUIStorePageCollectionViewLayout *)self _itemPinningConfigurationForItemAtIndexPath:v4];
+      v9 = [(SUUIStorePageCollectionViewLayout *)self _itemPinningLayoutInformationForItemAtIndexPath:pathCopy];
+      v10 = [(SUUIStorePageCollectionViewLayout *)self _itemPinningConfigurationForItemAtIndexPath:pathCopy];
     }
 
     else
@@ -888,18 +888,18 @@ LABEL_13:
       v9 = 0;
     }
 
-    [(SUUIStorePageCollectionViewLayout *)self _configureCellLayoutAttributes:v6 forItemWithPinningConfiguration:v10 layoutInformation:v9 atIndexPath:v4 allowPinning:0 returningIsPinning:0];
+    [(SUUIStorePageCollectionViewLayout *)self _configureCellLayoutAttributes:v6 forItemWithPinningConfiguration:v10 layoutInformation:v9 atIndexPath:pathCopy allowPinning:0 returningIsPinning:0];
   }
 
   return v6;
 }
 
-- (id)pinnedLayoutAttributesForItemsInRect:(CGRect)a3
+- (id)pinnedLayoutAttributesForItemsInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v31 = *MEMORY[0x277D85DE8];
   ++self->_inLayoutAttributesForElementsCount;
   v29.receiver = self;
@@ -932,14 +932,14 @@ LABEL_13:
         v15 = *(*(&v25 + 1) + 8 * i);
         if (![v15 representedElementCategory])
         {
-          v16 = [v15 indexPath];
-          v17 = [(SUUIStorePageCollectionViewLayout *)self _indexPathsForPinningItems];
-          v18 = [v17 containsObject:v16];
+          indexPath = [v15 indexPath];
+          _indexPathsForPinningItems = [(SUUIStorePageCollectionViewLayout *)self _indexPathsForPinningItems];
+          v18 = [_indexPathsForPinningItems containsObject:indexPath];
 
           if (v18)
           {
-            v19 = [(SUUIStorePageCollectionViewLayout *)self _itemPinningLayoutInformationForItemAtIndexPath:v16];
-            v20 = [(SUUIStorePageCollectionViewLayout *)self _itemPinningConfigurationForItemAtIndexPath:v16];
+            v19 = [(SUUIStorePageCollectionViewLayout *)self _itemPinningLayoutInformationForItemAtIndexPath:indexPath];
+            v20 = [(SUUIStorePageCollectionViewLayout *)self _itemPinningConfigurationForItemAtIndexPath:indexPath];
           }
 
           else
@@ -949,11 +949,11 @@ LABEL_13:
           }
 
           v24 = 0;
-          [(SUUIStorePageCollectionViewLayout *)self _configureCellLayoutAttributes:v15 forItemWithPinningConfiguration:v20 layoutInformation:v19 atIndexPath:v16 allowPinning:v18 returningIsPinning:&v24];
+          [(SUUIStorePageCollectionViewLayout *)self _configureCellLayoutAttributes:v15 forItemWithPinningConfiguration:v20 layoutInformation:v19 atIndexPath:indexPath allowPinning:v18 returningIsPinning:&v24];
           if (v24 == 1)
           {
             [v15 frame];
-            [(SUUIStorePageCollectionViewLayout *)self _pinningFrameForStartingFrame:v20 itemPinningConfiguration:v16 atIndexPath:?];
+            [(SUUIStorePageCollectionViewLayout *)self _pinningFrameForStartingFrame:v20 itemPinningConfiguration:indexPath atIndexPath:?];
             [v15 setFrame:?];
             v21 = v23;
             if (!v23)
@@ -980,11 +980,11 @@ LABEL_13:
   return v23;
 }
 
-- (void)setAllowsPinningTransitions:(BOOL)a3
+- (void)setAllowsPinningTransitions:(BOOL)transitions
 {
-  if (self->_allowsPinningTransitions != a3)
+  if (self->_allowsPinningTransitions != transitions)
   {
-    self->_allowsPinningTransitions = a3;
+    self->_allowsPinningTransitions = transitions;
     [(SUUIStorePageCollectionViewLayout *)self _invalidatePinningLayoutInformation];
     v5 = objc_alloc_init([objc_opt_class() invalidationContextClass]);
     [v5 setInvalidateItemPinningLayoutInformation:1];
@@ -992,42 +992,42 @@ LABEL_13:
   }
 }
 
-- (void)setBackdropGroupName:(id)a3
+- (void)setBackdropGroupName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   backdropGroupName = self->_backdropGroupName;
-  if (backdropGroupName != v4)
+  if (backdropGroupName != nameCopy)
   {
-    v10 = v4;
-    backdropGroupName = [(NSString *)backdropGroupName isEqualToString:v4];
-    v4 = v10;
+    v10 = nameCopy;
+    backdropGroupName = [(NSString *)backdropGroupName isEqualToString:nameCopy];
+    nameCopy = v10;
     if ((backdropGroupName & 1) == 0)
     {
       v6 = [(NSString *)v10 copy];
       v7 = self->_backdropGroupName;
       self->_backdropGroupName = v6;
 
-      v8 = [(SUUIStorePageCollectionViewLayout *)self _indexPathsForPinningItems];
-      if ([v8 count])
+      _indexPathsForPinningItems = [(SUUIStorePageCollectionViewLayout *)self _indexPathsForPinningItems];
+      if ([_indexPathsForPinningItems count])
       {
         v9 = objc_alloc_init([objc_opt_class() invalidationContextClass]);
         [v9 setInvalidateItemPinningLayoutInformation:0];
         [v9 setInvalidateFlowLayoutDelegateMetrics:0];
         [v9 setInvalidateFlowLayoutAttributes:0];
-        [v9 invalidateDecorationElementsOfKind:0x286AED1E0 atIndexPaths:v8];
+        [v9 invalidateDecorationElementsOfKind:0x286AED1E0 atIndexPaths:_indexPathsForPinningItems];
         [(SUUIStorePageCollectionViewLayout *)self invalidateLayoutWithContext:v9];
       }
 
-      v4 = v10;
+      nameCopy = v10;
     }
   }
 
-  MEMORY[0x2821F96F8](backdropGroupName, v4);
+  MEMORY[0x2821F96F8](backdropGroupName, nameCopy);
 }
 
-- (BOOL)_allowsBackdropDecorationForItemPinningConfiguration:(id)a3 atIndexPath:(id)a4
+- (BOOL)_allowsBackdropDecorationForItemPinningConfiguration:(id)configuration atIndexPath:(id)path
 {
-  v4 = [(SUUIStorePageCollectionViewLayout *)self _pinningStyleForItemPinningConfiguration:a3 atIndexPath:a4];
+  v4 = [(SUUIStorePageCollectionViewLayout *)self _pinningStyleForItemPinningConfiguration:configuration atIndexPath:path];
   if (v4)
   {
     v5 = v4 == 3;
@@ -1041,14 +1041,14 @@ LABEL_13:
   return !v5;
 }
 
-- (void)_appendAdditionalLayoutAttributesForPinningItemsInRect:(CGRect)a3 toArray:(id)a4
+- (void)_appendAdditionalLayoutAttributesForPinningItemsInRect:(CGRect)rect toArray:(id)array
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v47 = *MEMORY[0x277D85DE8];
-  v33 = a4;
+  arrayCopy = array;
   [(SUUIStorePageCollectionViewLayout *)self _indexPathsForPinningItems];
   v41 = 0u;
   v42 = 0u;
@@ -1089,12 +1089,12 @@ LABEL_13:
         v49.size.height = height;
         if (CGRectIntersectsRect(v48, v49))
         {
-          v23 = self;
+          selfCopy = self;
           v39 = 0u;
           v40 = 0u;
           v37 = 0u;
           v38 = 0u;
-          v24 = v33;
+          v24 = arrayCopy;
           v25 = [v24 countByEnumeratingWithState:&v37 objects:v45 count:16];
           if (v25)
           {
@@ -1109,12 +1109,12 @@ LABEL_13:
                   objc_enumerationMutation(v24);
                 }
 
-                v29 = [*(*(&v37 + 1) + 8 * i) indexPath];
-                v30 = [v29 isEqual:v13];
+                indexPath = [*(*(&v37 + 1) + 8 * i) indexPath];
+                v30 = [indexPath isEqual:v13];
 
                 if (v30)
                 {
-                  self = v23;
+                  self = selfCopy;
                   goto LABEL_17;
                 }
               }
@@ -1129,8 +1129,8 @@ LABEL_13:
             }
           }
 
-          self = v23;
-          v36.receiver = v23;
+          self = selfCopy;
+          v36.receiver = selfCopy;
           v36.super_class = SUUIStorePageCollectionViewLayout;
           v31 = objc_msgSendSuper2(&v36, v32, v13);
           [v24 addObject:v31];
@@ -1154,13 +1154,13 @@ LABEL_17:
 - (void)_calculatePinningLayoutInformation
 {
   [(NSMapTable *)self->_indexPathToPinningLayoutInformation removeAllObjects];
-  v3 = [(SUUIStorePageCollectionViewLayout *)self collectionView];
-  [v3 bounds];
+  collectionView = [(SUUIStorePageCollectionViewLayout *)self collectionView];
+  [collectionView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(SUUIStorePageCollectionViewLayout *)self _indexPathsForPinningItems];
+  _indexPathsForPinningItems = [(SUUIStorePageCollectionViewLayout *)self _indexPathsForPinningItems];
   v34[0] = 0;
   v34[1] = v34;
   v34[2] = 0x4010000000;
@@ -1201,7 +1201,7 @@ LABEL_17:
   v20 = v31;
   v21 = v29;
   v22 = v27;
-  v14 = v12;
+  v14 = _indexPathsForPinningItems;
   v16 = v14;
   v23 = v5;
   v24 = v7;
@@ -1485,18 +1485,18 @@ LABEL_47:
 LABEL_60:
 }
 
-- (void)_configureCellLayoutAttributes:(id)a3 forItemWithPinningConfiguration:(id)a4 layoutInformation:(id)a5 atIndexPath:(id)a6 allowPinning:(BOOL)a7 returningIsPinning:(BOOL *)a8
+- (void)_configureCellLayoutAttributes:(id)attributes forItemWithPinningConfiguration:(id)configuration layoutInformation:(id)information atIndexPath:(id)path allowPinning:(BOOL)pinning returningIsPinning:(BOOL *)isPinning
 {
-  v9 = a7;
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = [(SUUIStorePageCollectionViewLayout *)self collectionView];
-  v19 = v18;
+  pinningCopy = pinning;
+  attributesCopy = attributes;
+  configurationCopy = configuration;
+  informationCopy = information;
+  pathCopy = path;
+  collectionView = [(SUUIStorePageCollectionViewLayout *)self collectionView];
+  v19 = collectionView;
   if (self->_rendersWithPerspective)
   {
-    [v18 bounds];
+    [collectionView bounds];
     x = v40.origin.x;
     y = v40.origin.y;
     width = v40.size.width;
@@ -1507,51 +1507,51 @@ LABEL_60:
     v41.size.width = width;
     v41.size.height = height;
     CGRectGetMidY(v41);
-    [v14 center];
+    [attributesCopy center];
     UIDistanceBetweenPoints();
-    [v14 setZIndex:-fabs(v24)];
+    [attributesCopy setZIndex:-fabs(v24)];
   }
 
   if ((*&self->_collectionViewDelegateFlags & 0x20) != 0)
   {
-    v25 = [v19 delegate];
-    [v25 collectionView:v19 layout:self willApplyLayoutAttributes:v14];
+    delegate = [v19 delegate];
+    [delegate collectionView:v19 layout:self willApplyLayoutAttributes:attributesCopy];
   }
 
   v39 = 0;
-  [v14 frame];
+  [attributesCopy frame];
   v30 = v26;
   v31 = v27;
   v32 = v28;
   v33 = v29;
-  if (v9)
+  if (pinningCopy)
   {
-    [(SUUIStorePageCollectionViewLayout *)self _targetFrameForStartingFrame:v15 itemPinningConfiguration:v16 layoutInformation:v17 atIndexPath:&v39 returningIsPinning:v26, v27, v28, v29];
+    [(SUUIStorePageCollectionViewLayout *)self _targetFrameForStartingFrame:configurationCopy itemPinningConfiguration:informationCopy layoutInformation:pathCopy atIndexPath:&v39 returningIsPinning:v26, v27, v28, v29];
     v30 = v34;
     v31 = v35;
     v32 = v36;
     v33 = v37;
     if (v39)
     {
-      [v14 setZIndex:{objc_msgSend(v17, "section") + 200}];
-      if ([(SUUIStorePageCollectionViewLayout *)self _allowsBackdropDecorationForItemPinningConfiguration:v15 atIndexPath:v17])
+      [attributesCopy setZIndex:{objc_msgSend(pathCopy, "section") + 200}];
+      if ([(SUUIStorePageCollectionViewLayout *)self _allowsBackdropDecorationForItemPinningConfiguration:configurationCopy atIndexPath:pathCopy])
       {
-        v38 = [MEMORY[0x277D75348] clearColor];
-        [v14 setBackgroundColor:v38];
+        clearColor = [MEMORY[0x277D75348] clearColor];
+        [attributesCopy setBackgroundColor:clearColor];
       }
     }
   }
 
-  [v14 setFrame:{v30, v31, v32, v33}];
-  if (a8)
+  [attributesCopy setFrame:{v30, v31, v32, v33}];
+  if (isPinning)
   {
-    *a8 = v39;
+    *isPinning = v39;
   }
 }
 
-- (id)_getCollectionViewUpdateItemForItemFromIndex:(int64_t)a3 initalLayout:(BOOL)a4
+- (id)_getCollectionViewUpdateItemForItemFromIndex:(int64_t)index initalLayout:(BOOL)layout
 {
-  v4 = a4;
+  layoutCopy = layout;
   v21 = *MEMORY[0x277D85DE8];
   v16 = 0u;
   v17 = 0u;
@@ -1573,7 +1573,7 @@ LABEL_60:
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
-        if (v4)
+        if (layoutCopy)
         {
           [v11 indexPathAfterUpdate];
         }
@@ -1583,9 +1583,9 @@ LABEL_60:
           [v11 indexPathBeforeUpdate];
         }
         v12 = ;
-        v13 = [v12 section];
+        section = [v12 section];
 
-        if (v13 == a3)
+        if (section == index)
         {
           v14 = v11;
           goto LABEL_14;
@@ -1612,9 +1612,9 @@ LABEL_14:
 {
   if (!self->_hasValidGradientIndexPaths)
   {
-    v3 = [(SUUIStorePageCollectionViewLayout *)self collectionView];
-    v4 = [v3 delegate];
-    v5 = [v4 indexPathsForGradientItemsInCollectionView:v3 layout:self];
+    collectionView = [(SUUIStorePageCollectionViewLayout *)self collectionView];
+    delegate = [collectionView delegate];
+    v5 = [delegate indexPathsForGradientItemsInCollectionView:collectionView layout:self];
     indexPathsForGradientItems = self->_indexPathsForGradientItems;
     if (indexPathsForGradientItems != v5 && ![(NSArray *)indexPathsForGradientItems isEqualToArray:v5])
     {
@@ -1636,12 +1636,12 @@ LABEL_14:
   v26 = *MEMORY[0x277D85DE8];
   if (!self->_hasValidIndexPathsForPinningItems)
   {
-    v3 = [(SUUIStorePageCollectionViewLayout *)self collectionView];
-    v4 = [v3 delegate];
-    v5 = v4;
+    collectionView = [(SUUIStorePageCollectionViewLayout *)self collectionView];
+    delegate = [collectionView delegate];
+    v5 = delegate;
     if (*&self->_collectionViewDelegateFlags)
     {
-      v6 = [v4 indexPathsForPinningItemsInCollectionView:v3 layout:self];
+      v6 = [delegate indexPathsForPinningItemsInCollectionView:collectionView layout:self];
     }
 
     else
@@ -1653,7 +1653,7 @@ LABEL_14:
     if (indexPathsForPinningItems != v6 && ![(NSArray *)indexPathsForPinningItems isEqualToArray:v6])
     {
       v19 = v5;
-      v20 = v3;
+      v20 = collectionView;
       v8 = self->_indexPathsForPinningItems;
       v9 = [(NSArray *)v6 copy];
       v10 = self->_indexPathsForPinningItems;
@@ -1692,7 +1692,7 @@ LABEL_14:
       }
 
       v5 = v19;
-      v3 = v20;
+      collectionView = v20;
     }
 
     self->_hasValidIndexPathsForPinningItems = 1;
@@ -1711,12 +1711,12 @@ LABEL_14:
   self->_hasValidPinningLayoutInformation = 0;
 }
 
-- (id)_itemPinningConfigurationForItemAtIndexPath:(id)a3
+- (id)_itemPinningConfigurationForItemAtIndexPath:(id)path
 {
-  v4 = a3;
-  if (v4)
+  pathCopy = path;
+  if (pathCopy)
   {
-    v5 = [(NSMapTable *)self->_indexPathToItemPinningConfiguration objectForKey:v4];
+    v5 = [(NSMapTable *)self->_indexPathToItemPinningConfiguration objectForKey:pathCopy];
     if (!v5)
     {
       v5 = objc_alloc_init(SUUIStorePageItemPinningConfiguration);
@@ -1730,7 +1730,7 @@ LABEL_14:
         indexPathToItemPinningConfiguration = self->_indexPathToItemPinningConfiguration;
       }
 
-      [(NSMapTable *)indexPathToItemPinningConfiguration setObject:v5 forKey:v4];
+      [(NSMapTable *)indexPathToItemPinningConfiguration setObject:v5 forKey:pathCopy];
     }
   }
 
@@ -1742,10 +1742,10 @@ LABEL_14:
   return v5;
 }
 
-- (id)_itemPinningLayoutInformationForItemAtIndexPath:(id)a3
+- (id)_itemPinningLayoutInformationForItemAtIndexPath:(id)path
 {
-  v4 = a3;
-  if (v4)
+  pathCopy = path;
+  if (pathCopy)
   {
     if (!self->_hasValidPinningLayoutInformation)
     {
@@ -1753,7 +1753,7 @@ LABEL_14:
       self->_hasValidPinningLayoutInformation = 1;
     }
 
-    v5 = [(NSMapTable *)self->_indexPathToPinningLayoutInformation objectForKey:v4];
+    v5 = [(NSMapTable *)self->_indexPathToPinningLayoutInformation objectForKey:pathCopy];
   }
 
   else
@@ -1764,15 +1764,15 @@ LABEL_14:
   return v5;
 }
 
-- (id)_layoutAttributesForPinnedBackdropDecorationViewAtIndexPath:(id)a3 pinningConfiguration:(id)a4 layoutInformation:(id)a5
+- (id)_layoutAttributesForPinnedBackdropDecorationViewAtIndexPath:(id)path pinningConfiguration:(id)configuration layoutInformation:(id)information
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(SUUIStorePageCollectionViewLayout *)self collectionView];
-  v12 = [(UICollectionViewLayoutAttributes *)SUUIStorePagePinnedBackdropLayoutAttributes layoutAttributesForDecorationViewOfKind:0x286AED1E0 withIndexPath:v8];
+  pathCopy = path;
+  configurationCopy = configuration;
+  informationCopy = information;
+  collectionView = [(SUUIStorePageCollectionViewLayout *)self collectionView];
+  v12 = [(UICollectionViewLayoutAttributes *)SUUIStorePagePinnedBackdropLayoutAttributes layoutAttributesForDecorationViewOfKind:0x286AED1E0 withIndexPath:pathCopy];
   [v12 setBackdropGroupName:self->_backdropGroupName];
-  if (![(SUUIStorePageCollectionViewLayout *)self _allowsBackdropDecorationForItemPinningConfiguration:v9 atIndexPath:v8])
+  if (![(SUUIStorePageCollectionViewLayout *)self _allowsBackdropDecorationForItemPinningConfiguration:configurationCopy atIndexPath:pathCopy])
   {
     v20 = 1;
     v14 = 0.0;
@@ -1780,31 +1780,31 @@ LABEL_14:
   }
 
   v41 = 0;
-  [v10 layoutAttributesFrame];
-  [(SUUIStorePageCollectionViewLayout *)self _targetFrameForStartingFrame:v9 itemPinningConfiguration:v10 layoutInformation:v8 atIndexPath:&v41 returningIsPinning:?];
+  [informationCopy layoutAttributesFrame];
+  [(SUUIStorePageCollectionViewLayout *)self _targetFrameForStartingFrame:configurationCopy itemPinningConfiguration:informationCopy layoutInformation:pathCopy atIndexPath:&v41 returningIsPinning:?];
   v13 = v41;
   v14 = 0.0;
   if (v41 == 1)
   {
-    [(SUUIStorePageCollectionViewLayout *)self _pinningFrameForStartingFrame:v9 itemPinningConfiguration:v8 atIndexPath:?];
+    [(SUUIStorePageCollectionViewLayout *)self _pinningFrameForStartingFrame:configurationCopy itemPinningConfiguration:pathCopy atIndexPath:?];
     [v12 setFrame:?];
     [v12 setZIndex:150];
-    v15 = [(SUUIStorePageCollectionViewLayout *)self _pinningTransitionStyleForItemPinningConfiguration:v9 atIndexPath:v8];
+    v15 = [(SUUIStorePageCollectionViewLayout *)self _pinningTransitionStyleForItemPinningConfiguration:configurationCopy atIndexPath:pathCopy];
     if (v15)
     {
       v16 = v15;
-      v17 = [(SUUIStorePageCollectionViewLayout *)self _pinnedBackdropViewStyle];
-      v18 = v17;
-      if (v17)
+      _pinnedBackdropViewStyle = [(SUUIStorePageCollectionViewLayout *)self _pinnedBackdropViewStyle];
+      v18 = _pinnedBackdropViewStyle;
+      if (_pinnedBackdropViewStyle)
       {
-        if (v17 == 2)
+        if (_pinnedBackdropViewStyle == 2)
         {
           v19 = 2030;
         }
 
         else
         {
-          if (v17 != 1)
+          if (_pinnedBackdropViewStyle != 1)
           {
             goto LABEL_13;
           }
@@ -1833,20 +1833,20 @@ LABEL_13:
         v14 = 1.0;
         if (!v18)
         {
-          [v11 _effectiveContentInset];
+          [collectionView _effectiveContentInset];
           v23 = v22;
-          [v11 contentOffset];
+          [collectionView contentOffset];
           v25 = v23 + v24;
           v40.receiver = self;
           v40.super_class = SUUIStorePageCollectionViewLayout;
-          v26 = [(UICollectionViewFlowLayout *)&v40 layoutAttributesForItemAtIndexPath:v8];
+          v26 = [(UICollectionViewFlowLayout *)&v40 layoutAttributesForItemAtIndexPath:pathCopy];
           [v26 frame];
-          [(SUUIStorePageCollectionViewLayout *)self _pinningFrameForStartingFrame:v9 itemPinningConfiguration:v8 atIndexPath:?];
+          [(SUUIStorePageCollectionViewLayout *)self _pinningFrameForStartingFrame:configurationCopy itemPinningConfiguration:pathCopy atIndexPath:?];
           v28 = v27;
           v30 = v29;
           v32 = v31;
           v34 = v33;
-          [v10 afterPinningLocationYAdditions];
+          [informationCopy afterPinningLocationYAdditions];
           v36 = v25 + v35;
           v43.origin.x = v28;
           v43.origin.y = v30;
@@ -1878,17 +1878,17 @@ LABEL_21:
   return v12;
 }
 
-- (id)_layoutAttributesForGradientDecorationViewAtIndexPath:(id)a3 currentAttributes:(id)a4
+- (id)_layoutAttributesForGradientDecorationViewAtIndexPath:(id)path currentAttributes:(id)attributes
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SUUIStorePageCollectionViewLayout *)self collectionView];
-  v9 = [v8 numberOfItemsInSection:{objc_msgSend(v6, "section")}];
-  v10 = [(SUUIStorePageCollectionViewLayout *)self layoutAttributesForDecorationViewOfKind:0x286AFBAC0 atIndexPath:v6];
-  [v8 bounds];
-  [v7 size];
+  pathCopy = path;
+  attributesCopy = attributes;
+  collectionView = [(SUUIStorePageCollectionViewLayout *)self collectionView];
+  v9 = [collectionView numberOfItemsInSection:{objc_msgSend(pathCopy, "section")}];
+  v10 = [(SUUIStorePageCollectionViewLayout *)self layoutAttributesForDecorationViewOfKind:0x286AFBAC0 atIndexPath:pathCopy];
+  [collectionView bounds];
+  [attributesCopy size];
   v12 = v11;
-  [v7 frame];
+  [attributesCopy frame];
   if (v9 >= 2)
   {
     v17 = v13;
@@ -1897,7 +1897,7 @@ LABEL_21:
     v20 = v16;
     for (i = 1; i != v9; ++i)
     {
-      v22 = [MEMORY[0x277CCAA70] indexPathForItem:i inSection:{objc_msgSend(v6, "section")}];
+      v22 = [MEMORY[0x277CCAA70] indexPathForItem:i inSection:{objc_msgSend(pathCopy, "section")}];
       v23 = [(SUUIStorePageCollectionViewLayout *)self layoutAttributesForItemAtIndexPath:v22];
 
       [v23 frame];
@@ -1925,13 +1925,13 @@ LABEL_21:
   }
 
   [v10 frame];
-  [v7 frame];
+  [attributesCopy frame];
   v31 = v30;
-  [v7 frame];
+  [attributesCopy frame];
   [v10 setFrame:v31];
   [v10 setZIndex:-1];
-  v32 = [v8 delegate];
-  v33 = [v32 backgroundColorForSection:{objc_msgSend(v6, "section")}];
+  delegate = [collectionView delegate];
+  v33 = [delegate backgroundColorForSection:{objc_msgSend(pathCopy, "section")}];
   v34 = [v33 copy];
 
   [v10 setGradientColor:v34];
@@ -1946,9 +1946,9 @@ LABEL_21:
   {
     self->_pinnedBackdropViewStyle = 0;
     v8 = 0.0;
-    v3 = [(SUUIStorePageCollectionViewLayout *)self collectionView];
-    v4 = [v3 backgroundColor];
-    v5 = [v4 getWhite:&v8 alpha:0];
+    collectionView = [(SUUIStorePageCollectionViewLayout *)self collectionView];
+    backgroundColor = [collectionView backgroundColor];
+    v5 = [backgroundColor getWhite:&v8 alpha:0];
 
     if (v5)
     {
@@ -1974,17 +1974,17 @@ LABEL_8:
   return self->_pinnedBackdropViewStyle;
 }
 
-- (UIEdgeInsets)_pinningContentInsetForItemPinningConfiguration:(id)a3 atIndexPath:(id)a4
+- (UIEdgeInsets)_pinningContentInsetForItemPinningConfiguration:(id)configuration atIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  if (([v6 hasValidPinningContentInset] & 1) == 0)
+  configurationCopy = configuration;
+  pathCopy = path;
+  if (([configurationCopy hasValidPinningContentInset] & 1) == 0)
   {
     if ((*&self->_collectionViewDelegateFlags & 2) != 0)
     {
-      v12 = [(SUUIStorePageCollectionViewLayout *)self collectionView];
-      v13 = [v12 delegate];
-      [v13 collectionView:v12 layout:self pinningContentInsetForItemAtIndexPath:v7];
+      collectionView = [(SUUIStorePageCollectionViewLayout *)self collectionView];
+      delegate = [collectionView delegate];
+      [delegate collectionView:collectionView layout:self pinningContentInsetForItemAtIndexPath:pathCopy];
       v8 = v14;
       v9 = v15;
       v10 = v16;
@@ -1999,10 +1999,10 @@ LABEL_8:
       v11 = *(MEMORY[0x277D768C8] + 24);
     }
 
-    [v6 setPinningContentInset:{v8, v9, v10, v11}];
+    [configurationCopy setPinningContentInset:{v8, v9, v10, v11}];
   }
 
-  [v6 pinningContentInset];
+  [configurationCopy pinningContentInset];
   v19 = v18;
   v21 = v20;
   v23 = v22;
@@ -2019,13 +2019,13 @@ LABEL_8:
   return result;
 }
 
-- (CGRect)_pinningFrameForStartingFrame:(CGRect)a3 itemPinningConfiguration:(id)a4 atIndexPath:(id)a5
+- (CGRect)_pinningFrameForStartingFrame:(CGRect)frame itemPinningConfiguration:(id)configuration atIndexPath:(id)path
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  [(SUUIStorePageCollectionViewLayout *)self _pinningContentInsetForItemPinningConfiguration:a4 atIndexPath:a5];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  [(SUUIStorePageCollectionViewLayout *)self _pinningContentInsetForItemPinningConfiguration:configuration atIndexPath:path];
   v10 = -v9;
   v13 = y - v12;
   v15 = width - (-v11 - v14);
@@ -2039,17 +2039,17 @@ LABEL_8:
   return result;
 }
 
-- (int64_t)_pinningStyleForItemPinningConfiguration:(id)a3 atIndexPath:(id)a4
+- (int64_t)_pinningStyleForItemPinningConfiguration:(id)configuration atIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  if (([v6 hasValidPinningStyle] & 1) == 0)
+  configurationCopy = configuration;
+  pathCopy = path;
+  if (([configurationCopy hasValidPinningStyle] & 1) == 0)
   {
     if ((*&self->_collectionViewDelegateFlags & 4) != 0)
     {
-      v9 = [(SUUIStorePageCollectionViewLayout *)self collectionView];
-      v10 = [v9 delegate];
-      v8 = [v10 collectionView:v9 layout:self pinningStyleForItemAtIndexPath:v7];
+      collectionView = [(SUUIStorePageCollectionViewLayout *)self collectionView];
+      delegate = [collectionView delegate];
+      v8 = [delegate collectionView:collectionView layout:self pinningStyleForItemAtIndexPath:pathCopy];
     }
 
     else
@@ -2057,25 +2057,25 @@ LABEL_8:
       v8 = 0;
     }
 
-    [v6 setPinningStyle:v8];
+    [configurationCopy setPinningStyle:v8];
   }
 
-  v11 = [v6 pinningStyle];
+  pinningStyle = [configurationCopy pinningStyle];
 
-  return v11;
+  return pinningStyle;
 }
 
-- (int64_t)_pinningGroupForItemPinningConfiguration:(id)a3 atIndexPath:(id)a4
+- (int64_t)_pinningGroupForItemPinningConfiguration:(id)configuration atIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  if (([v6 hasValidPinningGroup] & 1) == 0)
+  configurationCopy = configuration;
+  pathCopy = path;
+  if (([configurationCopy hasValidPinningGroup] & 1) == 0)
   {
     if ((*&self->_collectionViewDelegateFlags & 8) != 0)
     {
-      v9 = [(SUUIStorePageCollectionViewLayout *)self collectionView];
-      v10 = [v9 delegate];
-      v8 = [v10 collectionView:v9 layout:self pinningGroupForItemAtIndexPath:v7];
+      collectionView = [(SUUIStorePageCollectionViewLayout *)self collectionView];
+      delegate = [collectionView delegate];
+      v8 = [delegate collectionView:collectionView layout:self pinningGroupForItemAtIndexPath:pathCopy];
     }
 
     else
@@ -2083,27 +2083,27 @@ LABEL_8:
       v8 = 0;
     }
 
-    [v6 setPinningGroup:v8];
+    [configurationCopy setPinningGroup:v8];
   }
 
-  v11 = [v6 pinningGroup];
+  pinningGroup = [configurationCopy pinningGroup];
 
-  return v11;
+  return pinningGroup;
 }
 
-- (int64_t)_pinningTransitionStyleForItemPinningConfiguration:(id)a3 atIndexPath:(id)a4
+- (int64_t)_pinningTransitionStyleForItemPinningConfiguration:(id)configuration atIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  pathCopy = path;
   if (self->_allowsPinningTransitions)
   {
-    if (([v6 hasValidPinningTransitionStyle] & 1) == 0)
+    if (([configurationCopy hasValidPinningTransitionStyle] & 1) == 0)
     {
       if ((*&self->_collectionViewDelegateFlags & 0x10) != 0)
       {
-        v10 = [(SUUIStorePageCollectionViewLayout *)self collectionView];
-        v11 = [v10 delegate];
-        v8 = [v11 collectionView:v10 layout:self pinningTransitionStyleForItemAtIndexPath:v7];
+        collectionView = [(SUUIStorePageCollectionViewLayout *)self collectionView];
+        delegate = [collectionView delegate];
+        v8 = [delegate collectionView:collectionView layout:self pinningTransitionStyleForItemAtIndexPath:pathCopy];
       }
 
       else
@@ -2111,30 +2111,30 @@ LABEL_8:
         v8 = 0;
       }
 
-      [v6 setPinningTransitionStyle:v8];
+      [configurationCopy setPinningTransitionStyle:v8];
     }
 
-    v9 = [v6 pinningTransitionStyle];
+    pinningTransitionStyle = [configurationCopy pinningTransitionStyle];
   }
 
   else
   {
-    v9 = 0;
+    pinningTransitionStyle = 0;
   }
 
-  return v9;
+  return pinningTransitionStyle;
 }
 
-- (CGRect)_targetFrameForStartingFrame:(CGRect)a3 itemPinningConfiguration:(id)a4 layoutInformation:(id)a5 atIndexPath:(id)a6 returningIsPinning:(BOOL *)a7
+- (CGRect)_targetFrameForStartingFrame:(CGRect)frame itemPinningConfiguration:(id)configuration layoutInformation:(id)information atIndexPath:(id)path returningIsPinning:(BOOL *)pinning
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  [(SUUIStorePageCollectionViewLayout *)self _pinningContentInsetForItemPinningConfiguration:v15 atIndexPath:v17];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  configurationCopy = configuration;
+  informationCopy = information;
+  pathCopy = path;
+  [(SUUIStorePageCollectionViewLayout *)self _pinningContentInsetForItemPinningConfiguration:configurationCopy atIndexPath:pathCopy];
   v90 = x;
   v91 = width;
   v21 = x - v20;
@@ -2142,18 +2142,18 @@ LABEL_8:
   v24 = width - (-v19 - v20);
   v25 = height;
   v26 = height - (-v18 - v22);
-  v27 = [(SUUIStorePageCollectionViewLayout *)self collectionView];
-  [v27 contentOffset];
+  collectionView = [(SUUIStorePageCollectionViewLayout *)self collectionView];
+  [collectionView contentOffset];
   v29 = v28;
-  [v27 _effectiveContentInset];
+  [collectionView _effectiveContentInset];
   v31 = v29 + v30;
-  v32 = [(SUUIStorePageCollectionViewLayout *)self _pinningStyleForItemPinningConfiguration:v15 atIndexPath:v17];
+  v32 = [(SUUIStorePageCollectionViewLayout *)self _pinningStyleForItemPinningConfiguration:configurationCopy atIndexPath:pathCopy];
   v33 = 0;
   if (v32 <= 2)
   {
     if (v32 == 1)
     {
-      [v16 afterPinningLocationYAdditions];
+      [informationCopy afterPinningLocationYAdditions];
       v51 = v31 + v50;
       v99.origin.x = v21;
       v99.origin.y = v23;
@@ -2162,11 +2162,11 @@ LABEL_8:
       v52 = v51 - CGRectGetMinY(v99);
       if (v52 <= 0.00000011920929)
       {
-        v76 = [(SUUIStorePageCollectionViewLayout *)self _indexPathsForPinningItems];
-        v77 = v76;
+        _indexPathsForPinningItems = [(SUUIStorePageCollectionViewLayout *)self _indexPathsForPinningItems];
+        v77 = _indexPathsForPinningItems;
         v35 = v90;
         v34 = v91;
-        if (!v76 || (v78 = [v76 indexOfObject:v17], v78 == 0x7FFFFFFFFFFFFFFFLL) || (v79 = v78 - 1, v78 < 1) || v79 >= objc_msgSend(v77, "count"))
+        if (!_indexPathsForPinningItems || (v78 = [_indexPathsForPinningItems indexOfObject:pathCopy], v78 == 0x7FFFFFFFFFFFFFFFLL) || (v79 = v78 - 1, v78 < 1) || v79 >= objc_msgSend(v77, "count"))
         {
           v33 = 0;
         }
@@ -2186,7 +2186,7 @@ LABEL_8:
           }
         }
 
-        if (a7)
+        if (pinning)
         {
           goto LABEL_43;
         }
@@ -2204,7 +2204,7 @@ LABEL_8:
         goto LABEL_41;
       }
 
-      [v16 afterPinningLocationYAdditions];
+      [informationCopy afterPinningLocationYAdditions];
       v39 = v31 + v38;
       v96.origin.x = v21;
       v96.origin.y = v23;
@@ -2220,14 +2220,14 @@ LABEL_8:
       v41 = y + v40;
     }
 
-    [v16 availablePinningFrame];
+    [informationCopy availablePinningFrame];
     v54 = v53;
     v56 = v55;
     v87 = v58;
     v88 = v57;
     v35 = v90;
     v34 = v91;
-    [(SUUIStorePageCollectionViewLayout *)self _pinningFrameForStartingFrame:v15 itemPinningConfiguration:v17 atIndexPath:v90, v41, v91, v25];
+    [(SUUIStorePageCollectionViewLayout *)self _pinningFrameForStartingFrame:configurationCopy itemPinningConfiguration:pathCopy atIndexPath:v90, v41, v91, v25];
     MaxY = CGRectGetMaxY(v100);
     v60 = v54;
     v61 = v56;
@@ -2246,7 +2246,7 @@ LABEL_8:
       {
         if (y > v29)
         {
-          [v27 bounds];
+          [collectionView bounds];
           v36 = v29 + CGRectGetHeight(v92);
           v93.origin.x = v90;
           v93.origin.y = y;
@@ -2254,7 +2254,7 @@ LABEL_8:
           v93.size.height = v25;
           if (y > v36 - CGRectGetHeight(v93))
           {
-            [v27 bounds];
+            [collectionView bounds];
             v37 = v29 + CGRectGetHeight(v94);
             v95.origin.x = v90;
             v95.origin.y = y;
@@ -2269,20 +2269,20 @@ LABEL_8:
 
         v33 = 1;
         y = v29;
-        if (!a7)
+        if (!pinning)
         {
           goto LABEL_44;
         }
 
 LABEL_43:
-        *a7 = v33;
+        *pinning = v33;
         goto LABEL_44;
       }
 
       goto LABEL_42;
     }
 
-    [v16 beforePinningLocationYAdditions];
+    [informationCopy beforePinningLocationYAdditions];
     v48 = v31 + v47;
     v35 = v90;
     v34 = v91;
@@ -2295,7 +2295,7 @@ LABEL_43:
     {
       v33 = 0;
       y = y + v49;
-      if (!a7)
+      if (!pinning)
       {
         goto LABEL_44;
       }
@@ -2303,7 +2303,7 @@ LABEL_43:
       goto LABEL_43;
     }
 
-    [v16 afterPinningLocationYAdditions];
+    [informationCopy afterPinningLocationYAdditions];
     v66 = v31 + v65;
     v101.origin.x = v90;
     v101.origin.y = y;
@@ -2314,7 +2314,7 @@ LABEL_43:
     {
 LABEL_28:
       v33 = 0;
-      if (!a7)
+      if (!pinning)
       {
         goto LABEL_44;
       }
@@ -2323,12 +2323,12 @@ LABEL_28:
     }
 
     v41 = y + v67;
-    [v16 availablePinningFrame];
+    [informationCopy availablePinningFrame];
     v69 = v68;
     v71 = v70;
     v73 = v72;
     v75 = v74;
-    [(SUUIStorePageCollectionViewLayout *)self _pinningFrameForStartingFrame:v15 itemPinningConfiguration:v17 atIndexPath:v90, v41, v91, v25];
+    [(SUUIStorePageCollectionViewLayout *)self _pinningFrameForStartingFrame:configurationCopy itemPinningConfiguration:pathCopy atIndexPath:v90, v41, v91, v25];
     MaxY = CGRectGetMaxY(v102);
     v60 = v69;
     v61 = v71;
@@ -2350,7 +2350,7 @@ LABEL_21:
 
 LABEL_24:
     v33 = 1;
-    if (!a7)
+    if (!pinning)
     {
       goto LABEL_44;
     }
@@ -2358,7 +2358,7 @@ LABEL_24:
     goto LABEL_43;
   }
 
-  [v16 beforePinningLocationYAdditions];
+  [informationCopy beforePinningLocationYAdditions];
   v43 = v31 + v42;
   v97.origin.x = v21;
   v97.origin.y = v23;
@@ -2377,7 +2377,7 @@ LABEL_41:
   v35 = v90;
   v34 = v91;
 LABEL_42:
-  if (a7)
+  if (pinning)
   {
     goto LABEL_43;
   }

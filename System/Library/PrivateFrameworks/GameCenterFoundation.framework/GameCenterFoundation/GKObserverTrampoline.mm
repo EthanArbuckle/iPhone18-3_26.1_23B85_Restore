@@ -1,48 +1,48 @@
 @interface GKObserverTrampoline
-- (id)initObservingObject:(id)a3 keyPath:(id)a4 options:(unint64_t)a5 block:(id)a6;
+- (id)initObservingObject:(id)object keyPath:(id)path options:(unint64_t)options block:(id)block;
 - (void)cancelObservation;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation GKObserverTrampoline
 
-- (id)initObservingObject:(id)a3 keyPath:(id)a4 options:(unint64_t)a5 block:(id)a6
+- (id)initObservingObject:(id)object keyPath:(id)path options:(unint64_t)options block:(id)block
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  objectCopy = object;
+  pathCopy = path;
+  blockCopy = block;
   v21.receiver = self;
   v21.super_class = GKObserverTrampoline;
   v14 = [(GKObserverTrampoline *)&v21 init];
   if (v14)
   {
-    v15 = [v13 copy];
+    v15 = [blockCopy copy];
     block = v14->_block;
     v14->_block = v15;
 
-    v17 = [v12 copy];
+    v17 = [pathCopy copy];
     keyPath = v14->_keyPath;
     v14->_keyPath = v17;
 
-    v14->_options = a5;
-    objc_storeStrong(&v14->_observee, a3);
+    v14->_options = options;
+    objc_storeStrong(&v14->_observee, object);
     v19 = v14;
   }
 
   return v14;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v14 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (a6 == @"GKObserverTrampolineContext" && !self->_cancellationPredicate)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (context == @"GKObserverTrampolineContext" && !self->_cancellationPredicate)
   {
     block = self->_block;
-    v13 = [(GKObserverTrampoline *)self token];
-    block[2](block, v10, v11, v13);
+    token = [(GKObserverTrampoline *)self token];
+    block[2](block, objectCopy, changeCopy, token);
   }
 }
 

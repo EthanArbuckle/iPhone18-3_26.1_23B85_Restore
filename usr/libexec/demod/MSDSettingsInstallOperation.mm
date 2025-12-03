@@ -28,27 +28,27 @@
   v3 = sub_100063A54();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(MSDOperation *)self context];
-    v5 = [v4 identifier];
+    context = [(MSDOperation *)self context];
+    identifier = [context identifier];
     v14 = 136315394;
     v15 = "[MSDSettingsInstallOperation _applySettingToDevice]";
     v16 = 2114;
-    v17 = v5;
+    v17 = identifier;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%s - identifier %{public}@", &v14, 0x16u);
   }
 
-  v6 = [(MSDOperation *)self context];
-  v7 = [v6 identifier];
-  v8 = [v7 isEqual:@"locale"];
+  context2 = [(MSDOperation *)self context];
+  identifier2 = [context2 identifier];
+  v8 = [identifier2 isEqual:@"locale"];
 
   if (v8)
   {
     return [(MSDSettingsInstallOperation *)self _updateLocale];
   }
 
-  v10 = [(MSDOperation *)self context];
-  v11 = [v10 identifier];
-  v12 = [v11 isEqualToString:@"display"];
+  context3 = [(MSDOperation *)self context];
+  identifier3 = [context3 identifier];
+  v12 = [identifier3 isEqualToString:@"display"];
 
   if (v12)
   {
@@ -66,13 +66,13 @@
 
 - (BOOL)_updateLocale
 {
-  v3 = [(MSDOperation *)self context];
-  v4 = [v3 dataDict];
-  v5 = [v4 objectForKey:@"language"];
+  context = [(MSDOperation *)self context];
+  dataDict = [context dataDict];
+  v5 = [dataDict objectForKey:@"language"];
 
-  v6 = [(MSDOperation *)self context];
-  v7 = [v6 dataDict];
-  v8 = [v7 objectForKey:@"region"];
+  context2 = [(MSDOperation *)self context];
+  dataDict2 = [context2 dataDict];
+  v8 = [dataDict2 objectForKey:@"region"];
 
   if (v5 && v8)
   {
@@ -113,9 +113,9 @@
 
 - (BOOL)_saveDisplaySettings
 {
-  v2 = [(MSDOperation *)self context];
-  v3 = [v2 dataDict];
-  v4 = [v3 objectForKey:@"HDR"];
+  context = [(MSDOperation *)self context];
+  dataDict = [context dataDict];
+  v4 = [dataDict objectForKey:@"HDR"];
 
   if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
@@ -125,7 +125,7 @@
       v9 = 136315394;
       v10 = "[MSDSettingsInstallOperation _saveDisplaySettings]";
       v11 = 1024;
-      v12 = [v4 BOOLValue];
+      bOOLValue = [v4 BOOLValue];
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s - HDR setting:  %{BOOL}d", &v9, 0x12u);
     }
 

@@ -1,6 +1,6 @@
 @interface VOSDefaultSoundPack
 - (NSDictionary)eventToSoundFilenameMapping;
-- (id)soundAssetURLForOutputEvent:(id)a3;
+- (id)soundAssetURLForOutputEvent:(id)event;
 @end
 
 @implementation VOSDefaultSoundPack
@@ -303,20 +303,20 @@ void __50__VOSDefaultSoundPack_eventToSoundFilenameMapping__block_invoke()
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (id)soundAssetURLForOutputEvent:(id)a3
+- (id)soundAssetURLForOutputEvent:(id)event
 {
-  v4 = a3;
-  if ([v4 supportsSoundEffect])
+  eventCopy = event;
+  if ([eventCopy supportsSoundEffect])
   {
-    v5 = [(VOSDefaultSoundPack *)self eventToSoundFilenameMapping];
-    v6 = [v4 rawValue];
-    v7 = [v5 objectForKeyedSubscript:v6];
+    eventToSoundFilenameMapping = [(VOSDefaultSoundPack *)self eventToSoundFilenameMapping];
+    rawValue = [eventCopy rawValue];
+    v7 = [eventToSoundFilenameMapping objectForKeyedSubscript:rawValue];
 
-    v8 = [v7 pathExtension];
-    v9 = [v7 stringByDeletingPathExtension];
+    pathExtension = [v7 pathExtension];
+    stringByDeletingPathExtension = [v7 stringByDeletingPathExtension];
 
     v10 = VOSVoiceOverBundle();
-    v11 = [v10 URLForResource:v9 withExtension:v8 subdirectory:@"Sounds"];
+    v11 = [v10 URLForResource:stringByDeletingPathExtension withExtension:pathExtension subdirectory:@"Sounds"];
   }
 
   else

@@ -1,8 +1,8 @@
 @interface FaceIdAlertViewController
 - (LAUIPearlGlyphView)glyph;
 - (void)_shakeTitleLabel;
-- (void)dismissWithDelay:(double)a3 completion:(id)a4;
-- (void)setGlyph:(id)a3;
+- (void)dismissWithDelay:(double)delay completion:(id)completion;
+- (void)setGlyph:(id)glyph;
 - (void)shake;
 @end
 
@@ -15,10 +15,10 @@
   return WeakRetained;
 }
 
-- (void)setGlyph:(id)a3
+- (void)setGlyph:(id)glyph
 {
-  v5 = objc_storeWeak(&self->_glyph, a3);
-  if (a3)
+  v5 = objc_storeWeak(&self->_glyph, glyph);
+  if (glyph)
   {
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
@@ -115,8 +115,8 @@ id __38__FaceIdAlertViewController_setGlyph___block_invoke(uint64_t a1)
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 layer];
-    [v4 removeAllAnimations];
+    layer = [v2 layer];
+    [layer removeAllAnimations];
     v5 = [CASpringAnimation animationWithKeyPath:@"position.x"];
     [v5 setMass:1.20000005];
     [v5 setStiffness:1200.0];
@@ -131,13 +131,13 @@ id __38__FaceIdAlertViewController_setGlyph___block_invoke(uint64_t a1)
     [v5 setDuration:0.860000014];
     [v5 setVelocity:0.0];
     [v5 setFillMode:kCAFillModeBackwards];
-    [v4 position];
+    [layer position];
     v12 = v11 + 60.0;
     *&v12 = v12;
     v13 = [NSNumber numberWithFloat:v12];
     [v5 setFromValue:v13];
 
-    [v4 addAnimation:v5 forKey:@"position"];
+    [layer addAnimation:v5 forKey:@"position"];
     v14 = [CABasicAnimation animationWithKeyPath:@"position.x"];
     LODWORD(v15) = 1036831949;
     LODWORD(v16) = 0.25;
@@ -148,13 +148,13 @@ id __38__FaceIdAlertViewController_setGlyph___block_invoke(uint64_t a1)
 
     [v14 setDuration:0.0700000003];
     [v14 setFillMode:kCAFillModeBackwards];
-    [v4 position];
+    [layer position];
     v21 = v20 + -60.0;
     *&v21 = v21;
     v22 = [NSNumber numberWithFloat:v21];
     [v14 setFromValue:v22];
 
-    [v4 addAnimation:v14 forKey:@"force"];
+    [layer addAnimation:v14 forKey:@"force"];
   }
 }
 
@@ -205,7 +205,7 @@ id __45__FaceIdAlertViewController__shakeTitleLabel__block_invoke(uint64_t a1)
   return v5;
 }
 
-- (void)dismissWithDelay:(double)a3 completion:(id)a4
+- (void)dismissWithDelay:(double)delay completion:(id)completion
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
@@ -217,9 +217,9 @@ id __45__FaceIdAlertViewController__shakeTitleLabel__block_invoke(uint64_t a1)
   v6[2] = __57__FaceIdAlertViewController_dismissWithDelay_completion___block_invoke_2;
   v6[3] = &unk_1000AAC58;
   v6[4] = self;
-  v7 = a4;
-  v5 = v7;
-  [UIView animateWithDuration:2 delay:v8 options:v6 animations:0.2 completion:a3];
+  completionCopy = completion;
+  v5 = completionCopy;
+  [UIView animateWithDuration:2 delay:v8 options:v6 animations:0.2 completion:delay];
 }
 
 void __57__FaceIdAlertViewController_dismissWithDelay_completion___block_invoke(uint64_t a1)

@@ -1,18 +1,18 @@
 @interface EPSagaTransactionSendGraduateMessage
 - (EPTransactionDelegate)delegate;
-- (void)beginTransactionWithRoutingSlipEntry:(id)a3 serviceRegistry:(id)a4;
+- (void)beginTransactionWithRoutingSlipEntry:(id)entry serviceRegistry:(id)registry;
 @end
 
 @implementation EPSagaTransactionSendGraduateMessage
 
-- (void)beginTransactionWithRoutingSlipEntry:(id)a3 serviceRegistry:(id)a4
+- (void)beginTransactionWithRoutingSlipEntry:(id)entry serviceRegistry:(id)registry
 {
-  v7 = a3;
-  objc_storeStrong(&self->_routingSlipEntry, a3);
-  v8 = a4;
-  v9 = [v8 serviceFromClass:objc_opt_class()];
+  entryCopy = entry;
+  objc_storeStrong(&self->_routingSlipEntry, entry);
+  registryCopy = registry;
+  v9 = [registryCopy serviceFromClass:objc_opt_class()];
 
-  v10 = [v7 objectForKeyedSubscript:@"coreBluetoothID"];
+  v10 = [entryCopy objectForKeyedSubscript:@"coreBluetoothID"];
   v11 = nr_daemon_log();
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
 
@@ -32,7 +32,7 @@
   v15[2] = sub_1000724B4;
   v15[3] = &unk_100177410;
   v16 = v10;
-  v17 = self;
+  selfCopy = self;
   v14 = v10;
   [v9 sendGraduationRequestToIDSBTUUID:v14 withResponseBlock:v15];
 }

@@ -1,15 +1,15 @@
 @interface ReadResult
 - (_TtC19ProximityReaderCore10ReadResult)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ReadResult
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  ReadResult.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  ReadResult.encode(with:)(coderCopy);
 }
 
 - (_TtC19ProximityReaderCore10ReadResult)init

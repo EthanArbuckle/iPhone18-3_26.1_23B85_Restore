@@ -1,12 +1,12 @@
 @interface SILFlipBookTransitionPoint
-+ (id)parseTransitionPoints:(id)a3 :(id)a4 error:(id *)a5;
++ (id)parseTransitionPoints:(id)points :(id)a4 error:(id *)error;
 - (_TtC10SILManager26SILFlipBookTransitionPoint)init;
-- (id)init:(id)a3 :(unsigned __int16)a4 :(id)a5 error:(id *)a6;
+- (id)init:(id)init :(unsigned __int16)a4 :(id)a5 error:(id *)error;
 @end
 
 @implementation SILFlipBookTransitionPoint
 
-+ (id)parseTransitionPoints:(id)a3 :(id)a4 error:(id *)a5
++ (id)parseTransitionPoints:(id)points :(id)a4 error:(id *)error
 {
   type metadata accessor for FrameDesc();
   v5 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
@@ -20,7 +20,7 @@
   return v7.super.isa;
 }
 
-- (id)init:(id)a3 :(unsigned __int16)a4 :(id)a5 error:(id *)a6
+- (id)init:(id)init :(unsigned __int16)a4 :(id)a5 error:(id *)error
 {
   v6 = a4;
   type metadata accessor for FrameDesc();

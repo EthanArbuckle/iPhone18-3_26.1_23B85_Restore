@@ -1,7 +1,7 @@
 @interface _MFNTLMAuthenticator
-- (id)responseForServerData:(id)a3;
+- (id)responseForServerData:(id)data;
 - (void)dealloc;
-- (void)setAuthenticationState:(int64_t)a3;
+- (void)setAuthenticationState:(int64_t)state;
 @end
 
 @implementation _MFNTLMAuthenticator
@@ -18,12 +18,12 @@
   [(_MFNTLMAuthenticator *)&v3 dealloc];
 }
 
-- (void)setAuthenticationState:(int64_t)a3
+- (void)setAuthenticationState:(int64_t)state
 {
   v11.receiver = self;
   v11.super_class = _MFNTLMAuthenticator;
   [(ECSASLAuthenticator *)&v11 setAuthenticationState:?];
-  if (a3 == 1)
+  if (state == 1)
   {
     v5 = MFLogGeneral();
     if (!os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -47,7 +47,7 @@
     self->_ntlmError = 0;
     v8 = MFLogGeneral();
     v9 = os_log_type_enabled(v8, OS_LOG_TYPE_INFO);
-    if (a3 == 4)
+    if (state == 4)
     {
       if (!v9)
       {
@@ -75,18 +75,18 @@
   _os_log_impl(&dword_1B0389000, v7, OS_LOG_TYPE_INFO, v6, v10, 2u);
 }
 
-- (id)responseForServerData:(id)a3
+- (id)responseForServerData:(id)data
 {
   v22 = *MEMORY[0x1E69E9840];
   if (!self->_ntlmError)
   {
     if (self->_ntlmGeneratorRef)
     {
-      v5 = [(ECSASLAuthenticator *)self account];
-      v6 = [(ECAuthenticatableAccount *)v5 domain];
-      if (v6)
+      account = [(ECSASLAuthenticator *)self account];
+      domain = [(ECAuthenticatableAccount *)account domain];
+      if (domain)
       {
-        v7 = v6;
+        v7 = domain;
       }
 
       else
@@ -94,10 +94,10 @@
         v7 = &stru_1F273A5E0;
       }
 
-      v8 = [(ECAuthenticatableAccount *)v5 username];
-      if (v8)
+      username = [(ECAuthenticatableAccount *)account username];
+      if (username)
       {
-        v9 = v8;
+        v9 = username;
       }
 
       else
@@ -105,7 +105,7 @@
         v9 = &stru_1F273A5E0;
       }
 
-      [(ECAuthenticatableAccount *)v5 password];
+      [(ECAuthenticatableAccount *)account password];
       v10 = MFLogGeneral();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
@@ -122,7 +122,7 @@
 
     else
     {
-      if ([a3 length])
+      if ([data length])
       {
         v13 = MFLogGeneral();
         if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))

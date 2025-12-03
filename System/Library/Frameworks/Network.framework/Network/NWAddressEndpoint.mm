@@ -1,11 +1,11 @@
 @interface NWAddressEndpoint
-+ (id)endpointWithAddress:(const sockaddr *)a3;
-+ (id)endpointWithHostname:(id)a3 port:(id)a4;
++ (id)endpointWithAddress:(const sockaddr *)address;
++ (id)endpointWithHostname:(id)hostname port:(id)port;
 - (NSData)addressData;
 - (NSString)addressString;
 - (NSString)addressStringNoPort;
 - (const)address;
-- (id)descriptionWithIndent:(int)a3 showFullContent:(BOOL)a4;
+- (id)descriptionWithIndent:(int)indent showFullContent:(BOOL)content;
 - (id)ethernetAddress;
 - (unint64_t)addressFamily;
 @end
@@ -14,8 +14,8 @@
 
 - (id)ethernetAddress
 {
-  v2 = [(NWEndpoint *)self internalEndpoint];
-  ethernet_address = nw_endpoint_get_ethernet_address(v2);
+  internalEndpoint = [(NWEndpoint *)self internalEndpoint];
+  ethernet_address = nw_endpoint_get_ethernet_address(internalEndpoint);
 
   if (ethernet_address)
   {
@@ -32,11 +32,11 @@
 
 - (NSString)addressString
 {
-  v2 = [(NWEndpoint *)self internalEndpoint];
-  v3 = v2;
-  if (v2)
+  internalEndpoint = [(NWEndpoint *)self internalEndpoint];
+  v3 = internalEndpoint;
+  if (internalEndpoint)
   {
-    description = _nw_endpoint_get_description(v2);
+    description = _nw_endpoint_get_description(internalEndpoint);
   }
 
   else
@@ -66,11 +66,11 @@
   return v5;
 }
 
-+ (id)endpointWithAddress:(const sockaddr *)a3
++ (id)endpointWithAddress:(const sockaddr *)address
 {
   v28 = *MEMORY[0x1E69E9840];
-  address = nw_endpoint_create_address(a3);
-  v4 = address;
+  address = nw_endpoint_create_address(address);
+  addressCopy = address;
   if (!address)
   {
     pthread_once(&nwlog_legacy_init(void)::init_once, nwlog_legacy_init_once);
@@ -149,12 +149,12 @@
     goto LABEL_23;
   }
 
-  v5 = address;
-  v6 = _nw_endpoint_get_type(v5);
+  addressCopy2 = address;
+  v6 = _nw_endpoint_get_type(addressCopy2);
 
   if (v6 == 1)
   {
-    v7 = [NWEndpoint endpointWithInternalEndpoint:v5];
+    v7 = [NWEndpoint endpointWithInternalEndpoint:addressCopy2];
     goto LABEL_40;
   }
 
@@ -255,12 +255,12 @@ LABEL_40:
   return v7;
 }
 
-+ (id)endpointWithHostname:(id)a3 port:(id)a4
++ (id)endpointWithHostname:(id)hostname port:(id)port
 {
   v34 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  host = nw_endpoint_create_host([v5 UTF8String], objc_msgSend(v6, "UTF8String"));
+  hostnameCopy = hostname;
+  portCopy = port;
+  host = nw_endpoint_create_host([hostnameCopy UTF8String], objc_msgSend(portCopy, "UTF8String"));
   v8 = host;
   if (!host)
   {
@@ -355,7 +355,7 @@ LABEL_40:
   *buf = 136446466;
   v29 = "+[NWAddressEndpoint endpointWithHostname:port:]";
   v30 = 2114;
-  v31 = v5;
+  v31 = hostnameCopy;
   v13 = _os_log_send_and_compose_impl();
 
   type = OS_LOG_TYPE_ERROR;
@@ -373,7 +373,7 @@ LABEL_40:
         *buf = 136446466;
         v29 = "+[NWAddressEndpoint endpointWithHostname:port:]";
         v30 = 2114;
-        v31 = v5;
+        v31 = hostnameCopy;
         _os_log_impl(&dword_181A37000, v14, v17, "%{public}s NWAddressEndpoint created with non-address hostname %{public}@", buf, 0x16u);
       }
 
@@ -393,7 +393,7 @@ LABEL_36:
         *buf = 136446466;
         v29 = "+[NWAddressEndpoint endpointWithHostname:port:]";
         v30 = 2114;
-        v31 = v5;
+        v31 = hostnameCopy;
         _os_log_impl(&dword_181A37000, v14, v24, "%{public}s NWAddressEndpoint created with non-address hostname %{public}@, backtrace limit exceeded", buf, 0x16u);
       }
 
@@ -413,7 +413,7 @@ LABEL_36:
         *buf = 136446466;
         v29 = "+[NWAddressEndpoint endpointWithHostname:port:]";
         v30 = 2114;
-        v31 = v5;
+        v31 = hostnameCopy;
         _os_log_impl(&dword_181A37000, v14, v21, "%{public}s NWAddressEndpoint created with non-address hostname %{public}@, no backtrace", buf, 0x16u);
       }
 
@@ -425,7 +425,7 @@ LABEL_36:
       *buf = 136446722;
       v29 = "+[NWAddressEndpoint endpointWithHostname:port:]";
       v30 = 2114;
-      v31 = v5;
+      v31 = hostnameCopy;
       v32 = 2082;
       v33 = backtrace_string;
       _os_log_impl(&dword_181A37000, v14, v21, "%{public}s NWAddressEndpoint created with non-address hostname %{public}@, dumping backtrace:%{public}s", buf, 0x20u);
@@ -458,16 +458,16 @@ LABEL_40:
 
 - (unint64_t)addressFamily
 {
-  v2 = [(NWEndpoint *)self internalEndpoint];
-  address_family = nw_endpoint_get_address_family(v2);
+  internalEndpoint = [(NWEndpoint *)self internalEndpoint];
+  address_family = nw_endpoint_get_address_family(internalEndpoint);
 
   return address_family;
 }
 
 - (const)address
 {
-  v2 = [(NWEndpoint *)self internalEndpoint];
-  address = nw_endpoint_get_address(v2);
+  internalEndpoint = [(NWEndpoint *)self internalEndpoint];
+  address = nw_endpoint_get_address(internalEndpoint);
 
   return address;
 }
@@ -475,8 +475,8 @@ LABEL_40:
 - (NSString)addressStringNoPort
 {
   v7 = *MEMORY[0x1E69E9840];
-  v2 = [(NWEndpoint *)self internalEndpoint];
-  address = nw_endpoint_get_address(v2);
+  internalEndpoint = [(NWEndpoint *)self internalEndpoint];
+  address = nw_endpoint_get_address(internalEndpoint);
   if (address)
   {
     v4 = 0;
@@ -497,8 +497,8 @@ LABEL_40:
 - (NSData)addressData
 {
   v22 = *MEMORY[0x1E69E9840];
-  v2 = [(NWEndpoint *)self internalEndpoint];
-  address = nw_endpoint_get_address(v2);
+  internalEndpoint = [(NWEndpoint *)self internalEndpoint];
+  address = nw_endpoint_get_address(internalEndpoint);
 
   if (address)
   {
@@ -609,33 +609,33 @@ LABEL_15:
   return v4;
 }
 
-- (id)descriptionWithIndent:(int)a3 showFullContent:(BOOL)a4
+- (id)descriptionWithIndent:(int)indent showFullContent:(BOOL)content
 {
-  v4 = *&a3;
-  v6 = [(NWAddressEndpoint *)self ethernetAddress:*&a3];
-  v7 = [(NWEndpoint *)self parentEndpointDomain];
-  v8 = v7 | v6;
+  v4 = *&indent;
+  v6 = [(NWAddressEndpoint *)self ethernetAddress:*&indent];
+  parentEndpointDomain = [(NWEndpoint *)self parentEndpointDomain];
+  v8 = parentEndpointDomain | v6;
 
   if (v8)
   {
-    v9 = objc_alloc_init(MEMORY[0x1E696AD60]);
-    v10 = [(NWAddressEndpoint *)self addressString];
-    [v9 appendPrettyObject:v10 withName:@"address" indent:v4 showFullContent:1];
+    addressString2 = objc_alloc_init(MEMORY[0x1E696AD60]);
+    addressString = [(NWAddressEndpoint *)self addressString];
+    [addressString2 appendPrettyObject:addressString withName:@"address" indent:v4 showFullContent:1];
 
-    [v9 appendPrettyObject:v6 withName:@"ethernetAddress" indent:v4 showFullContent:1];
-    v11 = [(NWEndpoint *)self interface];
-    [v9 appendPrettyObject:v11 withName:@"interface" indent:v4 showFullContent:1];
+    [addressString2 appendPrettyObject:v6 withName:@"ethernetAddress" indent:v4 showFullContent:1];
+    interface = [(NWEndpoint *)self interface];
+    [addressString2 appendPrettyObject:interface withName:@"interface" indent:v4 showFullContent:1];
 
-    v12 = [(NWEndpoint *)self parentEndpointDomain];
-    [v9 appendPrettyObject:v12 withName:@"parentEndpointDomain" indent:v4 showFullContent:1];
+    parentEndpointDomain2 = [(NWEndpoint *)self parentEndpointDomain];
+    [addressString2 appendPrettyObject:parentEndpointDomain2 withName:@"parentEndpointDomain" indent:v4 showFullContent:1];
   }
 
   else
   {
-    v9 = [(NWAddressEndpoint *)self addressString];
+    addressString2 = [(NWAddressEndpoint *)self addressString];
   }
 
-  return v9;
+  return addressString2;
 }
 
 @end

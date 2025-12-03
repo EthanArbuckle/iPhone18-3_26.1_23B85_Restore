@@ -1,25 +1,25 @@
 @interface CSUCaptionPostProcessingHandler
-- (CSUCaptionPostProcessingHandler)initWithRuntimeParameters:(id)a3;
+- (CSUCaptionPostProcessingHandler)initWithRuntimeParameters:(id)parameters;
 - (CSUCaptionRuntimeParameters)runtimeParameters;
-- (id)_checkForBlockingTokens:(id)a3 blockingTokens:(id)a4;
-- (id)_excludeGenderReplacements:(id)a3 genderOption:(int)a4 error:(id *)a5;
-- (id)_excludeGenderTriggers:(id)a3 genderOption:(int)a4 error:(id *)a5;
-- (id)_replacements:(id)a3 genderOption:(int)a4;
-- (id)postProcessResults:(id)a3 genderOption:(int)a4 error:(id *)a5;
+- (id)_checkForBlockingTokens:(id)tokens blockingTokens:(id)blockingTokens;
+- (id)_excludeGenderReplacements:(id)replacements genderOption:(int)option error:(id *)error;
+- (id)_excludeGenderTriggers:(id)triggers genderOption:(int)option error:(id *)error;
+- (id)_replacements:(id)_replacements genderOption:(int)option;
+- (id)postProcessResults:(id)results genderOption:(int)option error:(id *)error;
 @end
 
 @implementation CSUCaptionPostProcessingHandler
 
-- (CSUCaptionPostProcessingHandler)initWithRuntimeParameters:(id)a3
+- (CSUCaptionPostProcessingHandler)initWithRuntimeParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   v13.receiver = self;
   v13.super_class = CSUCaptionPostProcessingHandler;
   v5 = [(CSUCaptionPostProcessingHandler *)&v13 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_runtimeParameters, v4);
+    objc_storeWeak(&v5->_runtimeParameters, parametersCopy);
     v10 = objc_msgSend_characterSetWithCharactersInString_(MEMORY[0x1E696AB08], v7, @" ", v8, v9);
     trimSet = v6->_trimSet;
     v6->_trimSet = v10;
@@ -28,18 +28,18 @@
   return v6;
 }
 
-- (id)_excludeGenderReplacements:(id)a3 genderOption:(int)a4 error:(id *)a5
+- (id)_excludeGenderReplacements:(id)replacements genderOption:(int)option error:(id *)error
 {
   v177 = *MEMORY[0x1E69E9840];
-  v148 = a3;
-  v156 = self;
+  replacementsCopy = replacements;
+  selfCopy = self;
   v11 = objc_msgSend_runtimeParameters(self, v7, v8, v9, v10);
   v16 = objc_msgSend_genderOption(v11, v12, v13, v14, v15);
 
-  if (a4 != 1 || v16)
+  if (option != 1 || v16)
   {
-    v141 = v148;
-    v140 = v148;
+    v141 = replacementsCopy;
+    v140 = replacementsCopy;
   }
 
   else
@@ -49,7 +49,7 @@
     v172 = 0u;
     v169 = 0u;
     v170 = 0u;
-    obj = v148;
+    obj = replacementsCopy;
     v22 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v21, &v169, v176, 16);
     if (v22)
     {
@@ -72,7 +72,7 @@
           v168 = 0u;
           v165 = 0u;
           v166 = 0u;
-          v38 = objc_msgSend_runtimeParameters(v156, v34, v35, v36, v37);
+          v38 = objc_msgSend_runtimeParameters(selfCopy, v34, v35, v36, v37);
           v43 = objc_msgSend_excludeGenderReplacements(v38, v39, v40, v41, v42);
 
           v49 = objc_msgSend_countByEnumeratingWithState_objects_count_(v43, v44, &v165, v175, 16);
@@ -110,7 +110,7 @@
           }
 
           v79 = objc_msgSend_mutableCopy(v27, v75, v76, v77, v78);
-          v84 = objc_msgSend_trimSet(v156, v80, v81, v82, v83);
+          v84 = objc_msgSend_trimSet(selfCopy, v80, v81, v82, v83);
           v88 = objc_msgSend_stringByTrimmingCharactersInSet_(v33, v85, v84, v86, v87);
           objc_msgSend_setObject_forKeyedSubscript_(v79, v89, v88, off_1EB54A2A8, v90);
 
@@ -154,7 +154,7 @@
           v160 = 0u;
           v157 = 0u;
           v158 = 0u;
-          v125 = objc_msgSend_runtimeParameters(v156, v121, v122, v123, v124);
+          v125 = objc_msgSend_runtimeParameters(selfCopy, v121, v122, v123, v124);
           v130 = objc_msgSend_genderedTokens(v125, v126, v127, v128, v129);
 
           v131 = v105;
@@ -180,9 +180,9 @@
                     sub_1AC1221E8(v142);
                   }
 
-                  if (a5)
+                  if (error)
                   {
-                    *a5 = objc_msgSend_errorWithCode_message_(CSUError, v143, 2, @"Found gender token, reporting error multiple-gender-words", v144);
+                    *error = objc_msgSend_errorWithCode_message_(CSUError, v143, 2, @"Found gender token, reporting error multiple-gender-words", v144);
                   }
 
                   v140 = 0;
@@ -214,7 +214,7 @@
     v140 = obja;
 LABEL_39:
 
-    v141 = v148;
+    v141 = replacementsCopy;
   }
 
   v145 = *MEMORY[0x1E69E9840];
@@ -222,28 +222,28 @@ LABEL_39:
   return v140;
 }
 
-- (id)_excludeGenderTriggers:(id)a3 genderOption:(int)a4 error:(id *)a5
+- (id)_excludeGenderTriggers:(id)triggers genderOption:(int)option error:(id *)error
 {
   v110 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v91 = self;
+  triggersCopy = triggers;
+  selfCopy = self;
   v13 = objc_msgSend_runtimeParameters(self, v9, v10, v11, v12);
   v18 = objc_msgSend_genderOption(v13, v14, v15, v16, v17);
 
-  if (a4 == 1 && v18 == 1)
+  if (option == 1 && v18 == 1)
   {
     v105 = 0u;
     v106 = 0u;
     v103 = 0u;
     v104 = 0u;
-    v19 = v8;
+    v19 = triggersCopy;
     v90 = v19;
     v85 = objc_msgSend_countByEnumeratingWithState_objects_count_(v19, v20, &v103, v109, 16);
     if (v85)
     {
-      v88 = v8;
+      v88 = triggersCopy;
       v89 = *v104;
-      v87 = a5;
+      errorCopy = error;
       do
       {
         v24 = 0;
@@ -265,7 +265,7 @@ LABEL_39:
           v102 = 0u;
           v99 = 0u;
           v100 = 0u;
-          v43 = objc_msgSend_runtimeParameters(v91, v39, v40, v41, v42);
+          v43 = objc_msgSend_runtimeParameters(selfCopy, v39, v40, v41, v42);
           v48 = objc_msgSend_excludeGenderTriggers(v43, v44, v45, v46, v47);
 
           v54 = objc_msgSend_countByEnumeratingWithState_objects_count_(v48, v49, &v99, v108, 16);
@@ -314,14 +314,14 @@ LABEL_31:
 
                     v80 = objc_msgSend_errorWithCode_message_(CSUError, v78, 2, @"Found trigger tokens, reporting error: Found-exclude-gender-trigger", v79);
                     v81 = v80;
-                    if (v87)
+                    if (errorCopy)
                     {
                       v82 = v80;
-                      *v87 = v81;
+                      *errorCopy = v81;
                     }
 
                     v76 = 0;
-                    v8 = v88;
+                    triggersCopy = v88;
                     goto LABEL_36;
                   }
 
@@ -365,7 +365,7 @@ LABEL_16:
           }
 
           v24 = v86 + 1;
-          v8 = v88;
+          triggersCopy = v88;
           v19 = v90;
         }
 
@@ -377,7 +377,7 @@ LABEL_16:
     }
   }
 
-  v76 = v8;
+  v76 = triggersCopy;
 LABEL_36:
 
   v83 = *MEMORY[0x1E69E9840];
@@ -385,22 +385,22 @@ LABEL_36:
   return v76;
 }
 
-- (id)_replacements:(id)a3 genderOption:(int)a4
+- (id)_replacements:(id)_replacements genderOption:(int)option
 {
   v146 = *MEMORY[0x1E69E9840];
-  v127 = a3;
+  _replacementsCopy = _replacements;
   v130 = objc_msgSend_array(MEMORY[0x1E695DF70], v5, v6, v7, v8);
   v135 = objc_msgSend_strongToStrongObjectsMapTable(MEMORY[0x1E696AD18], v9, v10, v11, v12);
   v142 = 0u;
   v143 = 0u;
   v140 = 0u;
   v141 = 0u;
-  obj = v127;
+  obj = _replacementsCopy;
   v131 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v13, &v140, v145, 16);
   if (v131)
   {
     v129 = *v141;
-    v17 = a4;
+    optionCopy = option;
     do
     {
       for (i = 0; i != v131; ++i)
@@ -441,7 +441,7 @@ LABEL_8:
             if (!v44)
             {
               v49 = objc_msgSend_genderOption(v42, v45, v46, v47, v48);
-              v54 = objc_msgSend_unsignedIntegerValue(v49, v50, v51, v52, v53) == v17;
+              v54 = objc_msgSend_unsignedIntegerValue(v49, v50, v51, v52, v53) == optionCopy;
 
               if (!v54)
               {
@@ -517,19 +517,19 @@ LABEL_8:
   return v130;
 }
 
-- (id)_checkForBlockingTokens:(id)a3 blockingTokens:(id)a4
+- (id)_checkForBlockingTokens:(id)tokens blockingTokens:(id)blockingTokens
 {
   v83 = *MEMORY[0x1E69E9840];
-  v56 = a3;
-  v60 = a4;
-  if (objc_msgSend_count(v60, v5, v6, v7, v8))
+  tokensCopy = tokens;
+  blockingTokensCopy = blockingTokens;
+  if (objc_msgSend_count(blockingTokensCopy, v5, v6, v7, v8))
   {
     v57 = objc_msgSend_array(MEMORY[0x1E695DF70], v9, v10, v11, v12);
     v76 = 0u;
     v77 = 0u;
     v74 = 0u;
     v75 = 0u;
-    obj = v56;
+    obj = tokensCopy;
     v61 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v13, &v74, v82, 16);
     if (v61)
     {
@@ -550,7 +550,7 @@ LABEL_8:
           v73 = 0u;
           v70 = 0u;
           v71 = 0u;
-          v65 = v60;
+          v65 = blockingTokensCopy;
           v20 = objc_msgSend_countByEnumeratingWithState_objects_count_(v65, v19, &v70, v81, 16);
           if (v20)
           {
@@ -707,7 +707,7 @@ LABEL_43:
 
   else
   {
-    v53 = v56;
+    v53 = tokensCopy;
   }
 
   v54 = *MEMORY[0x1E69E9840];
@@ -715,16 +715,16 @@ LABEL_43:
   return v53;
 }
 
-- (id)postProcessResults:(id)a3 genderOption:(int)a4 error:(id *)a5
+- (id)postProcessResults:(id)results genderOption:(int)option error:(id *)error
 {
   v93 = *MEMORY[0x1E69E9840];
-  v71 = a3;
+  resultsCopy = results;
   v79 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v87 = 0u;
   v88 = 0u;
   v85 = 0u;
   v86 = 0u;
-  obj = objc_msgSend_results(v71, v5, v6, v7, v8);
+  obj = objc_msgSend_results(resultsCopy, v5, v6, v7, v8);
   v14 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v9, &v85, v92, 16);
   if (v14)
   {
@@ -741,7 +741,7 @@ LABEL_43:
 
         v18 = *(*(&v85 + 1) + 8 * i);
         v90[0] = off_1EB54A2A8;
-        v19 = objc_msgSend_caption(v18, v10, v11, v12, v13, v71);
+        v19 = objc_msgSend_caption(v18, v10, v11, v12, v13, resultsCopy);
         v91[0] = v19;
         v90[1] = off_1EB54A2B0;
         v20 = MEMORY[0x1E696AD98];
@@ -762,16 +762,16 @@ LABEL_43:
   }
 
   v84 = 0;
-  v74 = objc_msgSend_postProcessCaptions_genderOption_error_(self, v35, v79, a4, &v84);
+  v74 = objc_msgSend_postProcessCaptions_genderOption_error_(self, v35, v79, option, &v84);
   v36 = v84;
   v76 = v36;
   if (v36)
   {
-    if (a5)
+    if (error)
     {
       v37 = v36;
       v38 = 0;
-      *a5 = v76;
+      *error = v76;
     }
 
     else

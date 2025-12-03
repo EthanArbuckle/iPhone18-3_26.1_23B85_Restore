@@ -1,37 +1,37 @@
 @interface OpticalFlowE5
-- (BOOL)buildLibraryForModel:(id)a3;
-- (BOOL)buildLibraryFromE5BundleForModel:(id)a3;
+- (BOOL)buildLibraryForModel:(id)model;
+- (BOOL)buildLibraryFromE5BundleForModel:(id)model;
 - (BOOL)checkInputResolutions;
 - (BOOL)getPortNames;
-- (BOOL)initializeModel:(id)a3;
+- (BOOL)initializeModel:(id)model;
 - (BOOL)setupAdaptationLayer;
-- (BOOL)switchUsageTo:(int64_t)a3;
-- (BOOL)upscaleFlowWithFlowAdaptationLayerFirstFrame:(__CVBuffer *)a3 secondFrame:(__CVBuffer *)a4 baseFlow:(__CVBuffer *)a5 destination:(__CVBuffer *)a6;
-- (OpticalFlowE5)initWithModel:(id)a3 usage:(int64_t)a4;
-- (id)createFP16TextureFromIOSurface:(__IOSurface *)a3 width:(int64_t)a4 height:(int64_t)a5 channels:(int64_t)a6;
+- (BOOL)switchUsageTo:(int64_t)to;
+- (BOOL)upscaleFlowWithFlowAdaptationLayerFirstFrame:(__CVBuffer *)frame secondFrame:(__CVBuffer *)secondFrame baseFlow:(__CVBuffer *)flow destination:(__CVBuffer *)destination;
+- (OpticalFlowE5)initWithModel:(id)model usage:(int64_t)usage;
+- (id)createFP16TextureFromIOSurface:(__IOSurface *)surface width:(int64_t)width height:(int64_t)height channels:(int64_t)channels;
 - (void)allocateBufferObjects;
 - (void)bindPorts;
 - (void)checkDefaults;
 - (void)dealloc;
-- (void)encodeConvertLinearBuffer:(__IOSurface *)a3 toPixelBuffer:(__CVBuffer *)a4;
-- (void)encodeCovnertPixelBuffer:(__CVBuffer *)a3 toLinearBuffer:(__IOSurface *)a4 toCommandBuffer:(id)a5;
-- (void)encodeUnormNormalize:(__CVBuffer *)a3 destination:(__CVBuffer *)a4 toCommandBuffer:(id)a5;
+- (void)encodeConvertLinearBuffer:(__IOSurface *)buffer toPixelBuffer:(__CVBuffer *)pixelBuffer;
+- (void)encodeCovnertPixelBuffer:(__CVBuffer *)buffer toLinearBuffer:(__IOSurface *)linearBuffer toCommandBuffer:(id)commandBuffer;
+- (void)encodeUnormNormalize:(__CVBuffer *)normalize destination:(__CVBuffer *)destination toCommandBuffer:(id)buffer;
 - (void)executeModel;
-- (void)opticalFlowFirstFrame:(__CVBuffer *)a3 secondFrame:(__CVBuffer *)a4 flow:(__CVBuffer *)a5;
-- (void)opticalFlowFirstFrame:(__CVBuffer *)a3 secondFrame:(__CVBuffer *)a4 originalFirst:(__CVBuffer *)a5 originalSecond:(__CVBuffer *)a6 flow:(__CVBuffer *)a7;
+- (void)opticalFlowFirstFrame:(__CVBuffer *)frame secondFrame:(__CVBuffer *)secondFrame flow:(__CVBuffer *)flow;
+- (void)opticalFlowFirstFrame:(__CVBuffer *)frame secondFrame:(__CVBuffer *)secondFrame originalFirst:(__CVBuffer *)first originalSecond:(__CVBuffer *)second flow:(__CVBuffer *)flow;
 - (void)releaseAdaptationLayerStorage;
 - (void)releaseBufferObjects;
-- (void)resetStream:(e5rt_execution_stream *)a3;
+- (void)resetStream:(e5rt_execution_stream *)stream;
 @end
 
 @implementation OpticalFlowE5
 
-- (OpticalFlowE5)initWithModel:(id)a3 usage:(int64_t)a4
+- (OpticalFlowE5)initWithModel:(id)model usage:(int64_t)usage
 {
-  v6 = a3;
+  modelCopy = model;
   v14.receiver = self;
   v14.super_class = OpticalFlowE5;
-  v7 = [(OpticalFlow *)&v14 initWithMode:a4];
+  v7 = [(OpticalFlow *)&v14 initWithMode:usage];
   if (!v7)
   {
     goto LABEL_7;
@@ -43,10 +43,10 @@
   }
 
   objc_storeStrong(&v7->_logger, createLogger_logger);
-  v7->super._usage = a4;
+  v7->super._usage = usage;
   [(OpticalFlow *)v7 setUseE5RT:1];
   [(OpticalFlowE5 *)v7 checkDefaults];
-  if (![(OpticalFlowE5 *)v7 initializeModel:v6])
+  if (![(OpticalFlowE5 *)v7 initializeModel:modelCopy])
   {
     if (os_log_type_enabled(v7->_logger, OS_LOG_TYPE_ERROR))
     {
@@ -147,7 +147,7 @@ LABEL_15:
   self->_deviceType = v5;
 }
 
-- (BOOL)switchUsageTo:(int64_t)a3
+- (BOOL)switchUsageTo:(int64_t)to
 {
   if (![(OpticalFlow *)self skipLastLevel])
   {
@@ -155,7 +155,7 @@ LABEL_15:
     [(OpticalFlow *)self setAdaptationLayerOnly:1];
   }
 
-  if (FRCGetNumberOfPixelsForUsage(a3) >> 10 >= 0x7E9)
+  if (FRCGetNumberOfPixelsForUsage(to) >> 10 >= 0x7E9)
   {
     [(OpticalFlow *)self setDownsampling:1];
   }
@@ -166,14 +166,14 @@ LABEL_15:
     v10 = 0;
     if ([(OpticalFlow *)self downsampling])
     {
-      QuarterSizeUsage = getQuarterSizeUsage(a3);
+      QuarterSizeUsage = getQuarterSizeUsage(to);
       FRCGetInputFrameSizeForUsage(QuarterSizeUsage, &v10, &v9);
       self->super._usage = QuarterSizeUsage;
     }
 
     else
     {
-      FRCGetInputFrameSizeForUsage(a3, &v10, &v9);
+      FRCGetInputFrameSizeForUsage(to, &v10, &v9);
     }
 
     self->_subsampledFirst = createPixelBuffer(v10, 3 * v9, 0x4C303068u, 0);
@@ -189,9 +189,9 @@ LABEL_15:
 
   v8.receiver = self;
   v8.super_class = OpticalFlowE5;
-  [(OpticalFlow *)&v8 switchUsageTo:a3];
-  v6 = [(OpticalFlowE5 *)self checkInputResolutions];
-  if (v6)
+  [(OpticalFlow *)&v8 switchUsageTo:to];
+  checkInputResolutions = [(OpticalFlowE5 *)self checkInputResolutions];
+  if (checkInputResolutions)
   {
     if ([(OpticalFlow *)self useAdaptationLayer])
     {
@@ -209,7 +209,7 @@ LABEL_15:
     [OpticalFlowE5 switchUsageTo:];
   }
 
-  return v6;
+  return checkInputResolutions;
 }
 
 - (void)dealloc
@@ -250,13 +250,13 @@ LABEL_15:
   [(OpticalFlow *)&v3 dealloc];
 }
 
-- (BOOL)initializeModel:(id)a3
+- (BOOL)initializeModel:(id)model
 {
   v44 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  modelCopy = model;
+  if (modelCopy)
   {
-    v5 = v4;
+    v5 = modelCopy;
   }
 
   else
@@ -264,9 +264,9 @@ LABEL_15:
     v5 = @"PWCNet_540p_lv2Flow_9x9corrANE";
   }
 
-  v6 = [(__CFString *)v5 stringByDeletingPathExtension];
+  stringByDeletingPathExtension = [(__CFString *)v5 stringByDeletingPathExtension];
 
-  if (![(OpticalFlowE5 *)self buildLibraryFromE5BundleForModel:v6]&& ![(OpticalFlowE5 *)self buildLibraryForModel:v6]&& os_log_type_enabled(self->_logger, OS_LOG_TYPE_ERROR))
+  if (![(OpticalFlowE5 *)self buildLibraryFromE5BundleForModel:stringByDeletingPathExtension]&& ![(OpticalFlowE5 *)self buildLibraryForModel:stringByDeletingPathExtension]&& os_log_type_enabled(self->_logger, OS_LOG_TYPE_ERROR))
   {
     [OpticalFlowE5 initializeModel:];
   }
@@ -295,7 +295,7 @@ LABEL_23:
     goto LABEL_29;
   }
 
-  v36 = v6;
+  v36 = stringByDeletingPathExtension;
   precompiled_compute_operation_with_options = e5rt_execution_stream_operation_create_precompiled_compute_operation_with_options();
   if (precompiled_compute_operation_with_options)
   {
@@ -410,9 +410,9 @@ LABEL_23:
   return 1;
 }
 
-- (BOOL)buildLibraryForModel:(id)a3
+- (BOOL)buildLibraryForModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   logger = self->_logger;
   if (os_log_type_enabled(logger, OS_LOG_TYPE_DEFAULT))
   {
@@ -421,8 +421,8 @@ LABEL_23:
   }
 
   v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-  v7 = [v6 pathForResource:v4 ofType:@"mlmodelc"];
-  if (v7 || ([v6 pathForResource:v4 ofType:@"mlpackage"], (v7 = objc_claimAutoreleasedReturnValue()) != 0))
+  v7 = [v6 pathForResource:modelCopy ofType:@"mlmodelc"];
+  if (v7 || ([v6 pathForResource:modelCopy ofType:@"mlpackage"], (v7 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v8 = v7;
   }
@@ -431,10 +431,10 @@ LABEL_23:
   {
     v16 = getInternalBundle(v6);
 
-    v17 = [v16 pathForResource:v4 ofType:@"mlmodelc"];
+    v17 = [v16 pathForResource:modelCopy ofType:@"mlmodelc"];
     if (!v17)
     {
-      v17 = [v16 pathForResource:v4 ofType:@"mlpackage"];
+      v17 = [v16 pathForResource:modelCopy ofType:@"mlpackage"];
     }
 
     v8 = v17;
@@ -493,13 +493,13 @@ LABEL_21:
   return v14 == 0;
 }
 
-- (BOOL)buildLibraryFromE5BundleForModel:(id)a3
+- (BOOL)buildLibraryFromE5BundleForModel:(id)model
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  modelCopy = model;
   v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-  v6 = [v4 stringByDeletingPathExtension];
-  v7 = [v5 pathForResource:v6 ofType:@"bundle" inDirectory:@"e5Bundles"];
+  stringByDeletingPathExtension = [modelCopy stringByDeletingPathExtension];
+  v7 = [v5 pathForResource:stringByDeletingPathExtension ofType:@"bundle" inDirectory:@"e5Bundles"];
 
   if (v7)
   {
@@ -508,8 +508,8 @@ LABEL_21:
 
   v8 = getInternalBundle(v5);
 
-  v9 = [v4 stringByDeletingPathExtension];
-  v7 = [v8 pathForResource:v9 ofType:@"bundle" inDirectory:@"e5Bundles"];
+  stringByDeletingPathExtension2 = [modelCopy stringByDeletingPathExtension];
+  v7 = [v8 pathForResource:stringByDeletingPathExtension2 ofType:@"bundle" inDirectory:@"e5Bundles"];
 
   if (v7)
   {
@@ -547,7 +547,7 @@ LABEL_4:
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     v15 = 138412290;
-    v16 = v4;
+    v16 = modelCopy;
     _os_log_impl(&dword_24A8C8000, v14, OS_LOG_TYPE_DEFAULT, "Pre-compiled E5 Bundle for %@ is not available. Switching to runtime compilation.", &v15, 0xCu);
   }
 
@@ -769,55 +769,55 @@ LABEL_13:
   }
 }
 
-- (void)opticalFlowFirstFrame:(__CVBuffer *)a3 secondFrame:(__CVBuffer *)a4 flow:(__CVBuffer *)a5
+- (void)opticalFlowFirstFrame:(__CVBuffer *)frame secondFrame:(__CVBuffer *)secondFrame flow:(__CVBuffer *)flow
 {
-  v9 = [(OpticalFlow *)self originalFirst];
-  v10 = [(OpticalFlow *)self originalSecond];
+  originalFirst = [(OpticalFlow *)self originalFirst];
+  originalSecond = [(OpticalFlow *)self originalSecond];
 
-  [(OpticalFlowE5 *)self opticalFlowFirstFrame:a3 secondFrame:a4 originalFirst:v9 originalSecond:v10 flow:a5];
+  [(OpticalFlowE5 *)self opticalFlowFirstFrame:frame secondFrame:secondFrame originalFirst:originalFirst originalSecond:originalSecond flow:flow];
 }
 
-- (void)opticalFlowFirstFrame:(__CVBuffer *)a3 secondFrame:(__CVBuffer *)a4 originalFirst:(__CVBuffer *)a5 originalSecond:(__CVBuffer *)a6 flow:(__CVBuffer *)a7
+- (void)opticalFlowFirstFrame:(__CVBuffer *)frame secondFrame:(__CVBuffer *)secondFrame originalFirst:(__CVBuffer *)first originalSecond:(__CVBuffer *)second flow:(__CVBuffer *)flow
 {
   if ([(OpticalFlow *)self bypassInputNormalization])
   {
     v13 = [(OpticalFlowE5 *)self rotationForBuffer:[(OpticalFlow *)self originalFirst]];
-    [(FRCScaler *)self->_scaler downScaleFrameSource:a5 destination:self->_subsampledBGRAFirst rotate:v13 waitForCompletion:0];
-    [(FRCScaler *)self->_scaler downScaleFrameSource:a6 destination:self->_subsampledBGRASecond rotate:v13 waitForCompletion:0];
+    [(FRCScaler *)self->_scaler downScaleFrameSource:first destination:self->_subsampledBGRAFirst rotate:v13 waitForCompletion:0];
+    [(FRCScaler *)self->_scaler downScaleFrameSource:second destination:self->_subsampledBGRASecond rotate:v13 waitForCompletion:0];
   }
 
-  v20 = [(MTLCommandQueue *)self->super._commandQueue commandBuffer];
+  commandBuffer = [(MTLCommandQueue *)self->super._commandQueue commandBuffer];
   if ([(OpticalFlow *)self bypassInputNormalization])
   {
     p_subsampledOriginalFirst = &self->_subsampledOriginalFirst;
-    [(OpticalFlowE5 *)self encodeUnormNormalize:self->_subsampledBGRAFirst destination:self->_subsampledOriginalFirst toCommandBuffer:v20];
+    [(OpticalFlowE5 *)self encodeUnormNormalize:self->_subsampledBGRAFirst destination:self->_subsampledOriginalFirst toCommandBuffer:commandBuffer];
     p_subsampledOriginalSecond = &self->_subsampledOriginalSecond;
-    [(OpticalFlowE5 *)self encodeUnormNormalize:self->_subsampledBGRASecond destination:self->_subsampledOriginalSecond toCommandBuffer:v20];
+    [(OpticalFlowE5 *)self encodeUnormNormalize:self->_subsampledBGRASecond destination:self->_subsampledOriginalSecond toCommandBuffer:commandBuffer];
 LABEL_7:
-    v18 = *p_subsampledOriginalFirst;
-    v17 = *p_subsampledOriginalSecond;
+    frameCopy = *p_subsampledOriginalFirst;
+    secondFrameCopy = *p_subsampledOriginalSecond;
     goto LABEL_8;
   }
 
-  v16 = [(OpticalFlow *)self downsampling];
-  v17 = a4;
-  v18 = a3;
-  if (v16 == 1)
+  downsampling = [(OpticalFlow *)self downsampling];
+  secondFrameCopy = secondFrame;
+  frameCopy = frame;
+  if (downsampling == 1)
   {
     p_subsampledOriginalFirst = &self->_subsampledFirst;
-    [(OpticalFlow *)self subsampleBuffer:a3 destination:self->_subsampledFirst toCommandBuffer:v20];
+    [(OpticalFlow *)self subsampleBuffer:frame destination:self->_subsampledFirst toCommandBuffer:commandBuffer];
     p_subsampledOriginalSecond = &self->_subsampledSecond;
-    [(OpticalFlow *)self subsampleBuffer:a4 destination:self->_subsampledSecond toCommandBuffer:v20];
+    [(OpticalFlow *)self subsampleBuffer:secondFrame destination:self->_subsampledSecond toCommandBuffer:commandBuffer];
     goto LABEL_7;
   }
 
 LABEL_8:
-  [(OpticalFlowE5 *)self encodeCovnertPixelBuffer:v18 toLinearBuffer:self->_firstFrameSurface toCommandBuffer:v20];
-  [(OpticalFlowE5 *)self encodeCovnertPixelBuffer:v17 toLinearBuffer:self->_secondFrameSurface toCommandBuffer:v20];
-  [v20 commit];
-  [v20 waitUntilScheduled];
+  [(OpticalFlowE5 *)self encodeCovnertPixelBuffer:frameCopy toLinearBuffer:self->_firstFrameSurface toCommandBuffer:commandBuffer];
+  [(OpticalFlowE5 *)self encodeCovnertPixelBuffer:secondFrameCopy toLinearBuffer:self->_secondFrameSurface toCommandBuffer:commandBuffer];
+  [commandBuffer commit];
+  [commandBuffer waitUntilScheduled];
   [(OpticalFlowE5 *)self executeModel];
-  if ([(OpticalFlow *)self useAdaptationLayer]|| (intermediateFlow = a7, [(OpticalFlow *)self upscaleFinalFlow]))
+  if ([(OpticalFlow *)self useAdaptationLayer]|| (intermediateFlow = flow, [(OpticalFlow *)self upscaleFinalFlow]))
   {
     intermediateFlow = self->_intermediateFlow;
   }
@@ -825,12 +825,12 @@ LABEL_8:
   [(OpticalFlowE5 *)self encodeConvertLinearBuffer:self->_outputSurface toPixelBuffer:intermediateFlow];
   if ([(OpticalFlow *)self useAdaptationLayer])
   {
-    [(OpticalFlowE5 *)self upscaleFlowWithFlowAdaptationLayerFirstFrame:a3 secondFrame:a4 baseFlow:intermediateFlow destination:a7];
+    [(OpticalFlowE5 *)self upscaleFlowWithFlowAdaptationLayerFirstFrame:frame secondFrame:secondFrame baseFlow:intermediateFlow destination:flow];
   }
 
   else if ([(OpticalFlow *)self upscaleFinalFlow])
   {
-    [(OpticalFlow *)self upscaleInputFlow:intermediateFlow outFlow:a7];
+    [(OpticalFlow *)self upscaleInputFlow:intermediateFlow outFlow:flow];
   }
 }
 
@@ -840,7 +840,7 @@ LABEL_8:
   v4[0] = 67109378;
   v4[1] = a2;
   v5 = 2080;
-  v6 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_24A8C8000, log, OS_LOG_TYPE_ERROR, "Execution failed. returned error = %u. msg = %s\n", v4, 0x12u);
   v3 = *MEMORY[0x277D85DE8];
 }
@@ -884,7 +884,7 @@ LABEL_7:
   }
 }
 
-- (void)resetStream:(e5rt_execution_stream *)a3
+- (void)resetStream:(e5rt_execution_stream *)stream
 {
   v3 = e5rt_execution_stream_reset();
   if (v3)
@@ -896,27 +896,27 @@ LABEL_7:
   }
 }
 
-- (void)encodeCovnertPixelBuffer:(__CVBuffer *)a3 toLinearBuffer:(__IOSurface *)a4 toCommandBuffer:(id)a5
+- (void)encodeCovnertPixelBuffer:(__CVBuffer *)buffer toLinearBuffer:(__IOSurface *)linearBuffer toCommandBuffer:(id)commandBuffer
 {
-  v8 = a5;
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
-  PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
-  v12 = [(OpticalFlow *)self device];
+  commandBufferCopy = commandBuffer;
+  Width = CVPixelBufferGetWidth(buffer);
+  Height = CVPixelBufferGetHeight(buffer);
+  PixelFormatType = CVPixelBufferGetPixelFormatType(buffer);
+  device = [(OpticalFlow *)self device];
   if (PixelFormatType == 1111970369)
   {
-    createRGBATextureFromCVPixelBuffer(a3, v12);
+    createRGBATextureFromCVPixelBuffer(buffer, device);
   }
 
   else
   {
-    createTexturesFromCVPixelBuffer(a3, v12, 1, 3uLL);
+    createTexturesFromCVPixelBuffer(buffer, device, 1, 3uLL);
   }
   v13 = ;
 
-  if (IOSurfaceGetPixelFormat(a4) == 1278226488)
+  if (IOSurfaceGetPixelFormat(linearBuffer) == 1278226488)
   {
-    v14 = [(OpticalFlowE5 *)self createFP16TextureFromIOSurface:a4 width:Width height:Height / 3 channels:3];
+    v14 = [(OpticalFlowE5 *)self createFP16TextureFromIOSurface:linearBuffer width:Width height:Height / 3 channels:3];
   }
 
   else
@@ -924,42 +924,42 @@ LABEL_7:
     v14 = 0;
   }
 
-  v15 = [v8 blitCommandEncoder];
-  v16 = [v14 width];
-  v17 = [v14 height];
+  blitCommandEncoder = [commandBufferCopy blitCommandEncoder];
+  width = [v14 width];
+  height = [v14 height];
   if ([v13 arrayLength])
   {
     v18 = 0;
     do
     {
       memset(v21, 0, sizeof(v21));
-      v20[0] = v16;
-      v20[1] = v17;
+      v20[0] = width;
+      v20[1] = height;
       v20[2] = 1;
       memset(v19, 0, sizeof(v19));
-      [v15 copyFromTexture:v13 sourceSlice:v18 sourceLevel:0 sourceOrigin:v21 sourceSize:v20 toTexture:v14 destinationSlice:v18 destinationLevel:0 destinationOrigin:v19];
+      [blitCommandEncoder copyFromTexture:v13 sourceSlice:v18 sourceLevel:0 sourceOrigin:v21 sourceSize:v20 toTexture:v14 destinationSlice:v18 destinationLevel:0 destinationOrigin:v19];
       ++v18;
     }
 
     while ([v13 arrayLength] > v18);
   }
 
-  [v15 endEncoding];
+  [blitCommandEncoder endEncoding];
 }
 
-- (void)encodeConvertLinearBuffer:(__IOSurface *)a3 toPixelBuffer:(__CVBuffer *)a4
+- (void)encodeConvertLinearBuffer:(__IOSurface *)buffer toPixelBuffer:(__CVBuffer *)pixelBuffer
 {
-  Width = CVPixelBufferGetWidth(a4);
-  Height = CVPixelBufferGetHeight(a4);
-  PixelFormatType = CVPixelBufferGetPixelFormatType(a4);
+  Width = CVPixelBufferGetWidth(pixelBuffer);
+  Height = CVPixelBufferGetHeight(pixelBuffer);
+  PixelFormatType = CVPixelBufferGetPixelFormatType(pixelBuffer);
   v10 = Height >> (PixelFormatType == 1278226536);
   if (PixelFormatType == 843264104 || (v10 >= 0x80 ? (v11 = ((v10 * Width) & 0x3F) == 0) : (v11 = 0), !v11 || Width <= 0x7F))
   {
-    v20 = CVPixelBufferGetBytesPerRow(a4) >> 1;
-    IOSurfaceLock(a3, 1u, 0);
-    CVPixelBufferLockBaseAddress(a4, 0);
-    BaseAddress = IOSurfaceGetBaseAddress(a3);
-    v22 = CVPixelBufferGetBaseAddress(a4);
+    v20 = CVPixelBufferGetBytesPerRow(pixelBuffer) >> 1;
+    IOSurfaceLock(buffer, 1u, 0);
+    CVPixelBufferLockBaseAddress(pixelBuffer, 0);
+    BaseAddress = IOSurfaceGetBaseAddress(buffer);
+    v22 = CVPixelBufferGetBaseAddress(pixelBuffer);
     if (PixelFormatType == 1278226536)
     {
       v23 = 0;
@@ -1029,56 +1029,56 @@ LABEL_7:
       while (v30 != v10);
     }
 
-    IOSurfaceUnlock(a3, 1u, 0);
+    IOSurfaceUnlock(buffer, 1u, 0);
 
-    CVPixelBufferUnlockBaseAddress(a4, 0);
+    CVPixelBufferUnlockBaseAddress(pixelBuffer, 0);
   }
 
   else
   {
-    v12 = [(MTLCommandQueue *)self->super._commandQueue commandBuffer];
-    v13 = [(OpticalFlowE5 *)self createFP16TextureFromIOSurface:a3 width:Width height:v10 channels:2];
-    v14 = [(OpticalFlow *)self device];
-    v15 = createTexturesFromCVPixelBuffer(a4, v14, 1, 2uLL);
+    commandBuffer = [(MTLCommandQueue *)self->super._commandQueue commandBuffer];
+    v13 = [(OpticalFlowE5 *)self createFP16TextureFromIOSurface:buffer width:Width height:v10 channels:2];
+    device = [(OpticalFlow *)self device];
+    v15 = createTexturesFromCVPixelBuffer(pixelBuffer, device, 1, 2uLL);
 
-    v16 = [v12 blitCommandEncoder];
-    v17 = [v15 width];
-    v18 = [v15 height];
+    blitCommandEncoder = [commandBuffer blitCommandEncoder];
+    width = [v15 width];
+    height = [v15 height];
     if ([v13 arrayLength])
     {
       v19 = 0;
       do
       {
         memset(v38, 0, sizeof(v38));
-        v37[0] = v17;
-        v37[1] = v18;
+        v37[0] = width;
+        v37[1] = height;
         v37[2] = 1;
         memset(v36, 0, sizeof(v36));
-        [v16 copyFromTexture:v13 sourceSlice:v19 sourceLevel:0 sourceOrigin:v38 sourceSize:v37 toTexture:v15 destinationSlice:v19 destinationLevel:0 destinationOrigin:v36];
+        [blitCommandEncoder copyFromTexture:v13 sourceSlice:v19 sourceLevel:0 sourceOrigin:v38 sourceSize:v37 toTexture:v15 destinationSlice:v19 destinationLevel:0 destinationOrigin:v36];
         ++v19;
       }
 
       while ([v13 arrayLength] > v19);
     }
 
-    [v16 endEncoding];
-    [v12 commit];
-    [v12 waitUntilCompleted];
+    [blitCommandEncoder endEncoding];
+    [commandBuffer commit];
+    [commandBuffer waitUntilCompleted];
   }
 }
 
-- (id)createFP16TextureFromIOSurface:(__IOSurface *)a3 width:(int64_t)a4 height:(int64_t)a5 channels:(int64_t)a6
+- (id)createFP16TextureFromIOSurface:(__IOSurface *)surface width:(int64_t)width height:(int64_t)height channels:(int64_t)channels
 {
-  v10 = [(OpticalFlow *)self device];
-  v11 = [v10 newBufferWithIOSurface:a3];
+  device = [(OpticalFlow *)self device];
+  v11 = [device newBufferWithIOSurface:surface];
 
-  v12 = 2 * a4 * a5;
-  v13 = [MEMORY[0x277CD7058] texture2DDescriptorWithPixelFormat:25 width:a4 height:a5 mipmapped:0];
+  v12 = 2 * width * height;
+  v13 = [MEMORY[0x277CD7058] texture2DDescriptorWithPixelFormat:25 width:width height:height mipmapped:0];
   [v13 setTextureType:3];
-  [v13 setArrayLength:a6];
+  [v13 setArrayLength:channels];
   [v13 setUsage:3];
   [v13 setStorageMode:0];
-  v14 = [v11 newLinearTextureWithDescriptor:v13 offset:0 bytesPerRow:2 * a4 bytesPerImage:v12];
+  v14 = [v11 newLinearTextureWithDescriptor:v13 offset:0 bytesPerRow:2 * width bytesPerImage:v12];
 
   return v14;
 }
@@ -1110,26 +1110,26 @@ LABEL_7:
   [(OpticalFlow *)self releaseIntermediateStageStorage:&self->_opticalFlowStorage];
 }
 
-- (BOOL)upscaleFlowWithFlowAdaptationLayerFirstFrame:(__CVBuffer *)a3 secondFrame:(__CVBuffer *)a4 baseFlow:(__CVBuffer *)a5 destination:(__CVBuffer *)a6
+- (BOOL)upscaleFlowWithFlowAdaptationLayerFirstFrame:(__CVBuffer *)frame secondFrame:(__CVBuffer *)secondFrame baseFlow:(__CVBuffer *)flow destination:(__CVBuffer *)destination
 {
   features = self->_features;
-  [(OpticalFlow *)self extractFeaturesFromImage:a3 outputFeatures:self->_features];
-  [(OpticalFlow *)self extractFeaturesFromImage:a4 outputFeatures:&features[1]];
-  [(OpticalFlow *)self adaptFlowFromFirstFeatures:features secondFeature:&features[1] storage:&self->_opticalFlowStorage inputFlow:a5 outputFlow:a6];
+  [(OpticalFlow *)self extractFeaturesFromImage:frame outputFeatures:self->_features];
+  [(OpticalFlow *)self extractFeaturesFromImage:secondFrame outputFeatures:&features[1]];
+  [(OpticalFlow *)self adaptFlowFromFirstFeatures:features secondFeature:&features[1] storage:&self->_opticalFlowStorage inputFlow:flow outputFlow:destination];
   return 0;
 }
 
-- (void)encodeUnormNormalize:(__CVBuffer *)a3 destination:(__CVBuffer *)a4 toCommandBuffer:(id)a5
+- (void)encodeUnormNormalize:(__CVBuffer *)normalize destination:(__CVBuffer *)destination toCommandBuffer:(id)buffer
 {
-  v8 = a5;
-  v9 = [(OpticalFlow *)self device];
-  v13 = createRGBATextureFromCVPixelBuffer(a3, v9);
+  bufferCopy = buffer;
+  device = [(OpticalFlow *)self device];
+  v13 = createRGBATextureFromCVPixelBuffer(normalize, device);
 
-  v10 = [(OpticalFlow *)self device];
-  v11 = createTexturesFromCVPixelBuffer(a4, v10, 1, 3uLL);
+  device2 = [(OpticalFlow *)self device];
+  v11 = createTexturesFromCVPixelBuffer(destination, device2, 1, 3uLL);
 
   LODWORD(v12) = 1.0;
-  [(Normalization *)self->_normalization encodeNormalizationToCommandBuffer:v8 source:v13 destination:v11 params:0.0, v12];
+  [(Normalization *)self->_normalization encodeNormalizationToCommandBuffer:bufferCopy source:v13 destination:v11 params:0.0, v12];
 }
 
 - (void)initWithModel:usage:.cold.2()

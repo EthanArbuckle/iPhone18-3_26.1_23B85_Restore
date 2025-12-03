@@ -19,7 +19,7 @@
   v5 = v3[4];
   __swift_project_boxed_opaque_existential_1(v3, v4);
   sub_2186C6148(0, &qword_280E8E3B0);
-  v9 = self;
+  selfCopy = self;
   v6 = sub_219BF66A4();
   v7 = swift_allocObject();
   swift_unknownObjectWeakInit();

@@ -1,15 +1,15 @@
 @interface PUILocationServicesAuthLevelCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation PUILocationServicesAuthLevelCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PUILocationServicesAuthLevelCell" hasInstanceMethod:@"location" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PUILocationUsageMixin" hasInstanceMethod:@"usage" withFullSignature:{"i", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PUILocationServicesAuthLevelCell" hasInstanceMethod:@"location" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PUILocationUsageMixin" hasInstanceMethod:@"usage" withFullSignature:{"i", 0}];
 }
 
 - (id)accessibilityLabel
@@ -18,19 +18,19 @@
   v4 = __UIAccessibilitySafeClass();
 
   v5 = [v4 safeValueForKey:@"usage"];
-  v6 = [v5 integerValue];
+  integerValue = [v5 integerValue];
 
   v7 = 0;
-  if (v6 > 2)
+  if (integerValue > 2)
   {
-    if (v6 == 4)
+    if (integerValue == 4)
     {
       v10 = @"tracking.geofence.enabled";
     }
 
     else
     {
-      if (v6 != 3)
+      if (integerValue != 3)
       {
         goto LABEL_11;
       }
@@ -41,7 +41,7 @@
     goto LABEL_10;
   }
 
-  if (v6 == 1)
+  if (integerValue == 1)
   {
     v10 = @"tracking.used.none.recently";
 LABEL_10:
@@ -49,7 +49,7 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if (v6 == 2)
+  if (integerValue == 2)
   {
     v8 = MEMORY[0x29EDBA0F8];
     v9 = accessibilityLocalizedString(@"tracking.used.recently");

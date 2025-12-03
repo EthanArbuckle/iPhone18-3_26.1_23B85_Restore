@@ -1,42 +1,42 @@
 @interface AVCaptureSystemLensSelector
 - (BOOL)changesVideoZoomFactor;
 - (NSDictionary)displayValuesByZoomFactorValue;
-- (id)_initWithDevice:(id)a3 action:(id)a4;
-- (id)_overlayUpdateWithVideoZoomFactor:(double)a3;
+- (id)_initWithDevice:(id)device action:(id)action;
+- (id)_overlayUpdateWithVideoZoomFactor:(double)factor;
 - (id)actionQueue;
 - (id)description;
 - (id)device;
 - (id)overlayControl;
 - (id)overlayUpdate;
 - (void)dealloc;
-- (void)enqueueActionWithUpdate:(id)a3;
+- (void)enqueueActionWithUpdate:(id)update;
 - (void)installObservers;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)removeObservers;
-- (void)setChangesVideoZoomFactor:(BOOL)a3;
-- (void)setDisplayValuesByZoomFactorValue:(id)a3;
+- (void)setChangesVideoZoomFactor:(BOOL)factor;
+- (void)setDisplayValuesByZoomFactorValue:(id)value;
 @end
 
 @implementation AVCaptureSystemLensSelector
 
-- (id)_initWithDevice:(id)a3 action:(id)a4
+- (id)_initWithDevice:(id)device action:(id)action
 {
   v9.receiver = self;
   v9.super_class = AVCaptureSystemLensSelector;
-  v6 = [(AVCaptureControl *)&v9 initSubclass];
-  if (v6)
+  initSubclass = [(AVCaptureControl *)&v9 initSubclass];
+  if (initSubclass)
   {
-    if ([a3 hasMediaType:*MEMORY[0x1E6987608]])
+    if ([device hasMediaType:*MEMORY[0x1E6987608]])
     {
-      v6[5] = a3;
-      v6[6] = [a4 copy];
-      *(v6 + 16) = 0;
-      *(v6 + 81) = 1;
+      initSubclass[5] = device;
+      initSubclass[6] = [action copy];
+      *(initSubclass + 16) = 0;
+      *(initSubclass + 81) = 1;
     }
 
     else
     {
-      v7 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector() userInfo:{0, objc_msgSend(a3, "localizedName")}];
+      v7 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector() userInfo:{0, objc_msgSend(device, "localizedName")}];
 
       if (AVCaptureShouldThrowForAPIViolations())
       {
@@ -48,7 +48,7 @@
     }
   }
 
-  return v6;
+  return initSubclass;
 }
 
 - (void)dealloc
@@ -92,17 +92,17 @@
   return [(AVCaptureSystemLensSelector *)self _overlayUpdateWithVideoZoomFactor:?];
 }
 
-- (id)_overlayUpdateWithVideoZoomFactor:(double)a3
+- (id)_overlayUpdateWithVideoZoomFactor:(double)factor
 {
   if (![(AVCaptureSystemLensSelector *)self changesVideoZoomFactor]&& [(AVCaptureDevice *)self->_device position]== AVCaptureDevicePositionFront)
   {
-    a3 = 0.0;
+    factor = 0.0;
   }
 
-  v5 = [(AVCaptureSystemLensSelector *)self overlayControl];
+  overlayControl = [(AVCaptureSystemLensSelector *)self overlayControl];
 
-  *&v6 = a3;
-  return [v5 updateWithFloatValue:v6];
+  *&v6 = factor;
+  return [overlayControl updateWithFloatValue:v6];
 }
 
 - (id)device
@@ -119,24 +119,24 @@
   return v2;
 }
 
-- (void)setDisplayValuesByZoomFactorValue:(id)a3
+- (void)setDisplayValuesByZoomFactorValue:(id)value
 {
   if (([(NSDictionary *)self->_displayValuesByZoomFactorValue isEqual:?]& 1) == 0)
   {
 
-    self->_displayValuesByZoomFactorValue = [a3 copy];
+    self->_displayValuesByZoomFactorValue = [value copy];
     os_unfair_lock_lock(&self->_actionLock);
 
     self->_overlayControl = 0;
     os_unfair_lock_unlock(&self->_actionLock);
-    v5 = [(AVCaptureControl *)self session];
-    if (v5)
+    session = [(AVCaptureControl *)self session];
+    if (session)
     {
-      if (![(AVCaptureSession *)v5 isBeingConfigured])
+      if (![(AVCaptureSession *)session isBeingConfigured])
       {
-        v6 = [(AVCaptureControl *)self overlay];
+        overlay = [(AVCaptureControl *)self overlay];
 
-        [(AVCaptureControlsOverlay *)v6 rebuildControls];
+        [(AVCaptureControlsOverlay *)overlay rebuildControls];
       }
     }
   }
@@ -150,12 +150,12 @@
   return changesVideoZoomFactor;
 }
 
-- (void)setChangesVideoZoomFactor:(BOOL)a3
+- (void)setChangesVideoZoomFactor:(BOOL)factor
 {
   os_unfair_lock_lock(&self->_actionLock);
   if (self->_action)
   {
-    self->_changesVideoZoomFactor = a3;
+    self->_changesVideoZoomFactor = factor;
 
     os_unfair_lock_unlock(&self->_actionLock);
   }
@@ -213,28 +213,28 @@
   os_unfair_lock_unlock(&self->_actionLock);
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   os_unfair_lock_lock(&self->_actionLock);
   observing = self->_observing;
   os_unfair_lock_unlock(&self->_actionLock);
-  if (AVCaptureSystemLensSelectorDeviceVideoZoomFactorChangedContext == a6 && self->_device == a4)
+  if (AVCaptureSystemLensSelectorDeviceVideoZoomFactorChangedContext == context && self->_device == object)
   {
-    v11 = [a5 objectForKeyedSubscript:*MEMORY[0x1E696A4F0]];
+    v11 = [change objectForKeyedSubscript:*MEMORY[0x1E696A4F0]];
     if (observing && v11 != 0)
     {
       [v11 floatValue];
       v14 = [(AVCaptureSystemLensSelector *)self _overlayUpdateWithVideoZoomFactor:v13];
-      v15 = [(AVCaptureControl *)self overlay];
+      overlay = [(AVCaptureControl *)self overlay];
 
-      [(AVCaptureControlsOverlay *)v15 updateControl:v14];
+      [(AVCaptureControlsOverlay *)overlay updateControl:v14];
     }
   }
 }
 
-- (void)enqueueActionWithUpdate:(id)a3
+- (void)enqueueActionWithUpdate:(id)update
 {
-  [a3 floatValue];
+  [update floatValue];
   v5 = v4;
   v6 = v4;
   if (![(AVCaptureSystemLensSelector *)self changesVideoZoomFactor])

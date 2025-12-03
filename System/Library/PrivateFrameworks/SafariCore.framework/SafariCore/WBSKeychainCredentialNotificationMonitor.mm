@@ -1,18 +1,18 @@
 @interface WBSKeychainCredentialNotificationMonitor
-- (WBSKeychainCredentialNotificationMonitor)initWithCoalescingInterval:(double)a3;
-- (id)addObserverWithBlock:(id)a3;
+- (WBSKeychainCredentialNotificationMonitor)initWithCoalescingInterval:(double)interval;
+- (id)addObserverWithBlock:(id)block;
 - (void)_cancelCoalescingTimer;
 - (void)_notifyKeybagUnlocked;
 - (void)_notifyKeychainUpdated;
 - (void)_notifyObservers;
 - (void)dealloc;
-- (void)removeObserverForToken:(id)a3;
+- (void)removeObserverForToken:(id)token;
 - (void)triggerExternalNotification;
 @end
 
 @implementation WBSKeychainCredentialNotificationMonitor
 
-- (WBSKeychainCredentialNotificationMonitor)initWithCoalescingInterval:(double)a3
+- (WBSKeychainCredentialNotificationMonitor)initWithCoalescingInterval:(double)interval
 {
   v19.receiver = self;
   v19.super_class = WBSKeychainCredentialNotificationMonitor;
@@ -42,10 +42,10 @@
     keybagUnlockStatusChangedToken = v4->_keybagUnlockStatusChangedToken;
     v4->_keybagUnlockStatusChangedToken = v9;
 
-    v11 = [MEMORY[0x1E696ABB0] defaultCenter];
-    [v11 addObserver:v4 selector:sel_notifyModernKeychainUpdated name:@"com.apple.security.shared-items-changed" object:0];
+    defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+    [defaultCenter addObserver:v4 selector:sel_notifyModernKeychainUpdated name:@"com.apple.security.shared-items-changed" object:0];
 
-    v4->_coalescingInterval = a3;
+    v4->_coalescingInterval = interval;
     v12 = v4;
     objc_destroyWeak(&v15);
     objc_destroyWeak(&v17);
@@ -91,20 +91,20 @@ void __71__WBSKeychainCredentialNotificationMonitor_initWithCoalescingInterval__
   [(WBSKeychainCredentialNotificationMonitor *)&v4 dealloc];
 }
 
-- (id)addObserverWithBlock:(id)a3
+- (id)addObserverWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AFB0] UUID];
+  blockCopy = block;
+  uUID = [MEMORY[0x1E696AFB0] UUID];
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __65__WBSKeychainCredentialNotificationMonitor_addObserverWithBlock___block_invoke;
   block[3] = &unk_1E7CF21E8;
   block[4] = self;
-  v7 = v5;
+  v7 = uUID;
   v11 = v7;
-  v12 = v4;
-  v8 = v4;
+  v12 = blockCopy;
+  v8 = blockCopy;
   dispatch_async(internalQueue, block);
 
   return v7;
@@ -126,17 +126,17 @@ void __65__WBSKeychainCredentialNotificationMonitor_addObserverWithBlock___block
   [*(*(a1 + 32) + 16) setObject:? forKeyedSubscript:?];
 }
 
-- (void)removeObserverForToken:(id)a3
+- (void)removeObserverForToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   internalQueue = self->_internalQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __67__WBSKeychainCredentialNotificationMonitor_removeObserverForToken___block_invoke;
   v7[3] = &unk_1E7CF0908;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = tokenCopy;
+  v6 = tokenCopy;
   dispatch_async(internalQueue, v7);
 }
 
@@ -181,7 +181,7 @@ uint64_t __71__WBSKeychainCredentialNotificationMonitor_triggerExternalNotificat
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     v5 = 134217984;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B8447000, v3, OS_LOG_TYPE_INFO, "Notification monitor <%p> notifying observers immediately that the keybag was unlocked", &v5, 0xCu);
   }
 
@@ -311,8 +311,8 @@ void __66__WBSKeychainCredentialNotificationMonitor__notifyKeychainUpdated__bloc
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(NSMutableDictionary *)self->_observers allValues];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  allValues = [(NSMutableDictionary *)self->_observers allValues];
+  v4 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = *v11;
@@ -323,22 +323,22 @@ void __66__WBSKeychainCredentialNotificationMonitor__notifyKeychainUpdated__bloc
       {
         if (*v11 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         (*(*(*(&v10 + 1) + 8 * v6++) + 16))();
       }
 
       while (v4 != v6);
-      v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v4);
   }
 
-  v7 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
   lastNotificationTime = self->_lastNotificationTime;
-  self->_lastNotificationTime = v7;
+  self->_lastNotificationTime = date;
 
   v9 = *MEMORY[0x1E69E9840];
 }

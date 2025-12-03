@@ -1,6 +1,6 @@
 @interface ASAuthorizationRequest
 - (ASAuthorizationRequest)init;
-- (ASAuthorizationRequest)initWithProvider:(id)a3;
+- (ASAuthorizationRequest)initWithProvider:(id)provider;
 @end
 
 @implementation ASAuthorizationRequest
@@ -12,16 +12,16 @@
   return 0;
 }
 
-- (ASAuthorizationRequest)initWithProvider:(id)a3
+- (ASAuthorizationRequest)initWithProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v9.receiver = self;
   v9.super_class = ASAuthorizationRequest;
   v6 = [(ASAuthorizationRequest *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_provider, a3);
+    objc_storeStrong(&v6->_provider, provider);
   }
 
   return v7;

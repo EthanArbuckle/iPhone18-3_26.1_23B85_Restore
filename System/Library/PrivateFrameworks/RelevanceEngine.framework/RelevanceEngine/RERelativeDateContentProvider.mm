@@ -1,37 +1,37 @@
 @interface RERelativeDateContentProvider
-+ (id)relativeDateContentProviderWithDate:(id)a3 style:(int64_t)a4 units:(unint64_t)a5;
-- (BOOL)isEqual:(id)a3;
-- (RERelativeDateContentProvider)initWithCoder:(id)a3;
-- (RERelativeDateContentProvider)initWithDate:(id)a3 style:(int64_t)a4 units:(unint64_t)a5;
++ (id)relativeDateContentProviderWithDate:(id)date style:(int64_t)style units:(unint64_t)units;
+- (BOOL)isEqual:(id)equal;
+- (RERelativeDateContentProvider)initWithCoder:(id)coder;
+- (RERelativeDateContentProvider)initWithDate:(id)date style:(int64_t)style units:(unint64_t)units;
 - (id)attributedStringRepresentation;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RERelativeDateContentProvider
 
-+ (id)relativeDateContentProviderWithDate:(id)a3 style:(int64_t)a4 units:(unint64_t)a5
++ (id)relativeDateContentProviderWithDate:(id)date style:(int64_t)style units:(unint64_t)units
 {
-  v7 = a3;
-  v8 = [[RERelativeDateContentProvider alloc] initWithDate:v7 style:a4 units:a5];
+  dateCopy = date;
+  v8 = [[RERelativeDateContentProvider alloc] initWithDate:dateCopy style:style units:units];
 
   return v8;
 }
 
-- (RERelativeDateContentProvider)initWithDate:(id)a3 style:(int64_t)a4 units:(unint64_t)a5
+- (RERelativeDateContentProvider)initWithDate:(id)date style:(int64_t)style units:(unint64_t)units
 {
-  v8 = a3;
+  dateCopy = date;
   v13.receiver = self;
   v13.super_class = RERelativeDateContentProvider;
   v9 = [(RERelativeDateContentProvider *)&v13 init];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [dateCopy copy];
     date = v9->_date;
     v9->_date = v10;
 
-    v9->_style = a4;
-    v9->_units = a5;
+    v9->_style = style;
+    v9->_units = units;
   }
 
   return v9;
@@ -43,15 +43,15 @@
   v4 = MEMORY[0x277CCABB0];
   [(NSDate *)self->_date timeIntervalSinceNow];
   v5 = [v4 numberWithDouble:?];
-  v6 = [v5 stringValue];
-  v7 = [v3 initWithString:v6];
+  stringValue = [v5 stringValue];
+  v7 = [v3 initWithString:stringValue];
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   date = self->_date;
   style = self->_style;
   units = self->_units;
@@ -59,25 +59,25 @@
   return [v4 initWithDate:date style:style units:units];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     if ([v5 units] == self->_units && objc_msgSend(v5, "style") == self->_style)
     {
-      v6 = [v5 date];
-      v7 = v6;
-      if (v6 == self->_date)
+      date = [v5 date];
+      v7 = date;
+      if (date == self->_date)
       {
         v8 = 1;
       }
 
       else
       {
-        v8 = [(NSDate *)v6 isEqual:?];
+        v8 = [(NSDate *)date isEqual:?];
       }
     }
 
@@ -95,29 +95,29 @@
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   date = self->_date;
-  v5 = a3;
-  [v5 encodeObject:date forKey:@"date"];
+  coderCopy = coder;
+  [coderCopy encodeObject:date forKey:@"date"];
   v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_units];
-  [v5 encodeObject:v6 forKey:@"units"];
+  [coderCopy encodeObject:v6 forKey:@"units"];
 
   v7 = [MEMORY[0x277CCABB0] numberWithInteger:self->_style];
-  [v5 encodeObject:v7 forKey:@"style"];
+  [coderCopy encodeObject:v7 forKey:@"style"];
 }
 
-- (RERelativeDateContentProvider)initWithCoder:(id)a3
+- (RERelativeDateContentProvider)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"date"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"units"];
-  v7 = [v6 unsignedIntegerValue];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"date"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"units"];
+  unsignedIntegerValue = [v6 unsignedIntegerValue];
 
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"style"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"style"];
 
-  v9 = [v8 unsignedIntegerValue];
-  v10 = [(RERelativeDateContentProvider *)self initWithDate:v5 style:v9 units:v7];
+  unsignedIntegerValue2 = [v8 unsignedIntegerValue];
+  v10 = [(RERelativeDateContentProvider *)self initWithDate:v5 style:unsignedIntegerValue2 units:unsignedIntegerValue];
 
   return v10;
 }

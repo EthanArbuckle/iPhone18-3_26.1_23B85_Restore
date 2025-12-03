@@ -1,22 +1,22 @@
 @interface ReadDataResponseWrapper
 - (NSString)description;
-- (id)copyWithZone:(void *)a3;
+- (id)copyWithZone:(void *)zone;
 - (int64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ReadDataResponseWrapper
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  ReadDataResponseWrapper.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  ReadDataResponseWrapper.encode(with:)(coderCopy);
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v3 = self;
+  selfCopy = self;
   ReadDataResponseWrapper.copy(with:)(v6);
 
   sub_18E158E00(v6, v6[3]);
@@ -27,7 +27,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   ReadDataResponseWrapper.description.getter();
 
   v3 = sub_18E1A7500();
@@ -37,7 +37,7 @@
 
 - (int64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   DataResponse = ReadDataResponseWrapper.hash.getter();
 
   return DataResponse;

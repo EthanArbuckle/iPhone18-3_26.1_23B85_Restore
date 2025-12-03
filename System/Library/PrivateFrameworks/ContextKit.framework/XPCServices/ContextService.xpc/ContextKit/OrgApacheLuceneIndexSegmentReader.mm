@@ -7,10 +7,10 @@
 - (id)getSegmentName;
 - (id)getTermVectorsReader;
 - (int)maxDoc;
-- (void)addCoreClosedListenerWithOrgApacheLuceneIndexLeafReader_CoreClosedListener:(id)a3;
+- (void)addCoreClosedListenerWithOrgApacheLuceneIndexLeafReader_CoreClosedListener:(id)listener;
 - (void)dealloc;
 - (void)doClose;
-- (void)removeCoreClosedListenerWithOrgApacheLuceneIndexLeafReader_CoreClosedListener:(id)a3;
+- (void)removeCoreClosedListenerWithOrgApacheLuceneIndexLeafReader_CoreClosedListener:(id)listener;
 @end
 
 @implementation OrgApacheLuceneIndexSegmentReader
@@ -136,9 +136,9 @@ LABEL_10:
     JreThrowNullPointerException();
   }
 
-  v5 = [(OrgApacheLuceneIndexSegmentInfo *)info maxDoc];
+  maxDoc = [(OrgApacheLuceneIndexSegmentInfo *)info maxDoc];
   numDocs = self->numDocs_;
-  v7 = v5 - (numDocs + [(OrgApacheLuceneIndexSegmentCommitInfo *)self->si_ getDelCount]);
+  v7 = maxDoc - (numDocs + [(OrgApacheLuceneIndexSegmentCommitInfo *)self->si_ getDelCount]);
 
   return [(OrgApacheLuceneIndexSegmentCommitInfo *)si toStringWithInt:v7];
 }
@@ -165,7 +165,7 @@ LABEL_10:
   return info->dir_;
 }
 
-- (void)addCoreClosedListenerWithOrgApacheLuceneIndexLeafReader_CoreClosedListener:(id)a3
+- (void)addCoreClosedListenerWithOrgApacheLuceneIndexLeafReader_CoreClosedListener:(id)listener
 {
   [(OrgApacheLuceneIndexIndexReader *)self ensureOpen];
   core = self->core_;
@@ -174,10 +174,10 @@ LABEL_10:
     JreThrowNullPointerException();
   }
 
-  [(OrgApacheLuceneIndexSegmentCoreReaders *)core addCoreClosedListenerWithOrgApacheLuceneIndexLeafReader_CoreClosedListener:a3];
+  [(OrgApacheLuceneIndexSegmentCoreReaders *)core addCoreClosedListenerWithOrgApacheLuceneIndexLeafReader_CoreClosedListener:listener];
 }
 
-- (void)removeCoreClosedListenerWithOrgApacheLuceneIndexLeafReader_CoreClosedListener:(id)a3
+- (void)removeCoreClosedListenerWithOrgApacheLuceneIndexLeafReader_CoreClosedListener:(id)listener
 {
   [(OrgApacheLuceneIndexIndexReader *)self ensureOpen];
   core = self->core_;
@@ -186,7 +186,7 @@ LABEL_10:
     JreThrowNullPointerException();
   }
 
-  [(OrgApacheLuceneIndexSegmentCoreReaders *)core removeCoreClosedListenerWithOrgApacheLuceneIndexLeafReader_CoreClosedListener:a3];
+  [(OrgApacheLuceneIndexSegmentCoreReaders *)core removeCoreClosedListenerWithOrgApacheLuceneIndexLeafReader_CoreClosedListener:listener];
 }
 
 - (void)dealloc

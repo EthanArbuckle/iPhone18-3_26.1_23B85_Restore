@@ -1,11 +1,11 @@
 @interface FICompoundNode
 - (BOOL)isPopulated;
 - (BOOL)isValid;
-- (BOOL)markAsUsed:(id *)a3;
+- (BOOL)markAsUsed:(id *)used;
 - (BOOL)requiresFPOperations;
-- (FICompoundNode)initWithFINodes:(id)a3;
-- (FICompoundNode)initWithNodes:(id)a3;
-- (FICompoundNode)initWithNodes:(id)a3 subject:(id)a4;
+- (FICompoundNode)initWithFINodes:(id)nodes;
+- (FICompoundNode)initWithNodes:(id)nodes;
+- (FICompoundNode)initWithNodes:(id)nodes subject:(id)subject;
 - (id).cxx_construct;
 - (id)copyProgress;
 - (id)downloadProgress;
@@ -20,8 +20,8 @@
 - (id)parent;
 - (id)shortDescription;
 - (id)source;
-- (unint64_t)nodeIs:(unint64_t)a3 error:(id *)a4;
-- (void)dispatchEvent:(id)a3 forObserver:(id)a4;
+- (unint64_t)nodeIs:(unint64_t)is error:(id *)error;
+- (void)dispatchEvent:(id)event forObserver:(id)observer;
 - (void)dispatchEvent:forObserver:;
 - (void)inlineProgressCancel;
 @end
@@ -38,40 +38,40 @@
 
 - (id)fileURL
 {
-  v3 = [(FICompoundNode *)self subjectNode];
-  if (v3)
+  subjectNode = [(FICompoundNode *)self subjectNode];
+  if (subjectNode)
   {
-    v4 = v3;
-    v5 = [v3 fileURL];
+    v4 = subjectNode;
+    fileURL = [subjectNode fileURL];
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = FICompoundNode;
-    v5 = [(FIDSNode *)&v7 fileURL];
+    fileURL = [(FIDSNode *)&v7 fileURL];
   }
 
-  return v5;
+  return fileURL;
 }
 
 - (id)fpDomain
 {
-  v3 = [(FICompoundNode *)self subjectNode];
-  if (v3)
+  subjectNode = [(FICompoundNode *)self subjectNode];
+  if (subjectNode)
   {
-    v4 = v3;
-    v5 = [v3 fpDomain];
+    v4 = subjectNode;
+    fpDomain = [subjectNode fpDomain];
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = FICompoundNode;
-    v5 = [(FIDSNode *)&v7 fpDomain];
+    fpDomain = [(FIDSNode *)&v7 fpDomain];
   }
 
-  return v5;
+  return fpDomain;
 }
 
 - (id)shortDescription
@@ -79,20 +79,20 @@
   v3 = MEMORY[0x1E696AEC0];
   v10.receiver = self;
   v10.super_class = FICompoundNode;
-  v4 = [(FIDSNode *)&v10 shortDescription];
-  v5 = [(FICompoundNode *)self subjectNode];
-  v6 = [v5 shortDescription];
-  v7 = [(FICompoundNode *)self nodes];
-  v8 = [v3 stringWithFormat:@"<%@ (%@, %ld sub-nodes)>", v4, v6, objc_msgSend(v7, "count")];
+  shortDescription = [(FIDSNode *)&v10 shortDescription];
+  subjectNode = [(FICompoundNode *)self subjectNode];
+  shortDescription2 = [subjectNode shortDescription];
+  nodes = [(FICompoundNode *)self nodes];
+  v8 = [v3 stringWithFormat:@"<%@ (%@, %ld sub-nodes)>", shortDescription, shortDescription2, objc_msgSend(nodes, "count")];
 
   return v8;
 }
 
 - (BOOL)isValid
 {
-  v2 = [(FICompoundNode *)self nodesWithSubject];
-  IDContainerIteratorAdaptor<NSArray<FINode *>>::NSForwardIterator<NSArray<FINode *>>::NSForwardIterator(v11, v2);
-  IDContainerIteratorAdaptor<NSArray<FINode *>>::IDContainerIteratorAdaptor(v10, -1, v2);
+  nodesWithSubject = [(FICompoundNode *)self nodesWithSubject];
+  IDContainerIteratorAdaptor<NSArray<FINode *>>::NSForwardIterator<NSArray<FINode *>>::NSForwardIterator(v11, nodesWithSubject);
+  IDContainerIteratorAdaptor<NSArray<FINode *>>::IDContainerIteratorAdaptor(v10, -1, nodesWithSubject);
   IDContainerIteratorAdaptor<NSArray<FINode *>>::NSForwardIterator<NSArray<FINode *>>::NSForwardIterator(&v13, v11);
   IDContainerIteratorAdaptor<NSArray<FINode *>>::NSForwardIterator<NSArray<FINode *>>::NSForwardIterator(v12, v10);
   while (1)
@@ -104,9 +104,9 @@
     }
 
     v4 = *(v14[1] + 8 * v17);
-    v5 = [v4 isValid];
+    isValid = [v4 isValid];
 
-    if ((v5 & 1) == 0)
+    if ((isValid & 1) == 0)
     {
       v8 = 0;
       v3 = v12[0];
@@ -140,46 +140,46 @@ LABEL_12:
 
 - (id)nodesWithSubject
 {
-  v3 = [(FICompoundNode *)self nodes];
-  v4 = [(FICompoundNode *)self subjectNode];
-  if (v4)
+  nodes = [(FICompoundNode *)self nodes];
+  subjectNode = [(FICompoundNode *)self subjectNode];
+  if (subjectNode)
   {
-    v5 = [v3 setByAddingObject:v4];
+    v5 = [nodes setByAddingObject:subjectNode];
 
-    v3 = v5;
+    nodes = v5;
   }
 
-  v6 = [v3 allObjects];
+  allObjects = [nodes allObjects];
 
-  return v6;
+  return allObjects;
 }
 
-- (FICompoundNode)initWithNodes:(id)a3
+- (FICompoundNode)initWithNodes:(id)nodes
 {
-  v4 = a3;
+  nodesCopy = nodes;
   v9.receiver = self;
   v9.super_class = FICompoundNode;
   v5 = [(FICustomNode *)&v9 init];
-  v6 = Copy<NSMutableArray<FILocalAppContainerNode *>>(v4);
+  v6 = Copy<NSMutableArray<FILocalAppContainerNode *>>(nodesCopy);
   nodes = v5->_nodes;
   v5->_nodes = v6;
 
   return v5;
 }
 
-- (FICompoundNode)initWithNodes:(id)a3 subject:(id)a4
+- (FICompoundNode)initWithNodes:(id)nodes subject:(id)subject
 {
-  v6 = a4;
-  v7 = [(FICompoundNode *)self initWithNodes:a3];
+  subjectCopy = subject;
+  v7 = [(FICompoundNode *)self initWithNodes:nodes];
   subjectNode = v7->_subjectNode;
-  v7->_subjectNode = v6;
+  v7->_subjectNode = subjectCopy;
 
   return v7;
 }
 
-- (FICompoundNode)initWithFINodes:(id)a3
+- (FICompoundNode)initWithFINodes:(id)nodes
 {
-  v4 = [MEMORY[0x1E695DFD8] setWithArray:a3];
+  v4 = [MEMORY[0x1E695DFD8] setWithArray:nodes];
   v5 = [(FICompoundNode *)self initWithNodes:v4];
 
   return v5;
@@ -187,49 +187,49 @@ LABEL_12:
 
 - (id)fpItem
 {
-  v3 = [(FICompoundNode *)self subjectNode];
-  if (v3)
+  subjectNode = [(FICompoundNode *)self subjectNode];
+  if (subjectNode)
   {
-    v4 = v3;
-    v5 = [v3 fpItem];
+    v4 = subjectNode;
+    fpItem = [subjectNode fpItem];
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = FICompoundNode;
-    v5 = [(FIDSNode *)&v7 fpItem];
+    fpItem = [(FIDSNode *)&v7 fpItem];
   }
 
-  return v5;
+  return fpItem;
 }
 
 - (id)fiDomain
 {
-  v3 = [(FICompoundNode *)self subjectNode];
-  if (v3)
+  subjectNode = [(FICompoundNode *)self subjectNode];
+  if (subjectNode)
   {
-    v4 = v3;
-    v5 = [v3 fiDomain];
+    v4 = subjectNode;
+    fiDomain = [subjectNode fiDomain];
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = FICompoundNode;
-    v5 = [(FIDSNode *)&v7 fiDomain];
+    fiDomain = [(FIDSNode *)&v7 fiDomain];
   }
 
-  return v5;
+  return fiDomain;
 }
 
 - (BOOL)requiresFPOperations
 {
-  v3 = [(FICompoundNode *)self subjectNode];
-  if (v3)
+  subjectNode = [(FICompoundNode *)self subjectNode];
+  if (subjectNode)
   {
-    v4 = v3;
-    v5 = [v3 requiresFPOperations];
+    v4 = subjectNode;
+    requiresFPOperations = [subjectNode requiresFPOperations];
   }
 
   else
@@ -239,37 +239,37 @@ LABEL_12:
     return [(FINode *)&v7 requiresFPOperations];
   }
 
-  return v5;
+  return requiresFPOperations;
 }
 
 - (id)enumeratorError
 {
   v19 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  v3 = [(FICompoundNode *)v2 subjectNode];
-  v4 = v3;
-  if (v3)
+  selfCopy = self;
+  subjectNode = [(FICompoundNode *)selfCopy subjectNode];
+  v4 = subjectNode;
+  if (subjectNode)
   {
-    v5 = [v3 enumeratorError];
+    enumeratorError = [subjectNode enumeratorError];
   }
 
   else
   {
-    v17.receiver = v2;
+    v17.receiver = selfCopy;
     v17.super_class = FICompoundNode;
-    v5 = [(FIDSNode *)&v17 enumeratorError];
+    enumeratorError = [(FIDSNode *)&v17 enumeratorError];
   }
 
-  v6 = v5;
+  enumeratorError2 = enumeratorError;
 
-  if (!v6)
+  if (!enumeratorError2)
   {
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v7 = [(FICompoundNode *)v2 nodes];
-    v8 = [v7 countByEnumeratingWithState:&v13 objects:v18 count:16];
+    nodes = [(FICompoundNode *)selfCopy nodes];
+    v8 = [nodes countByEnumeratingWithState:&v13 objects:v18 count:16];
     if (v8)
     {
       v9 = *v14;
@@ -279,18 +279,18 @@ LABEL_7:
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(nodes);
         }
 
-        v6 = [*(*(&v13 + 1) + 8 * v10) enumeratorError];
-        if (v6)
+        enumeratorError2 = [*(*(&v13 + 1) + 8 * v10) enumeratorError];
+        if (enumeratorError2)
         {
           break;
         }
 
         if (v8 == ++v10)
         {
-          v8 = [v7 countByEnumeratingWithState:&v13 objects:v18 count:16];
+          v8 = [nodes countByEnumeratingWithState:&v13 objects:v18 count:16];
           if (v8)
           {
             goto LABEL_7;
@@ -304,22 +304,22 @@ LABEL_7:
     else
     {
 LABEL_13:
-      v6 = 0;
+      enumeratorError2 = 0;
     }
   }
 
   v11 = *MEMORY[0x1E69E9840];
 
-  return v6;
+  return enumeratorError2;
 }
 
 - (void)inlineProgressCancel
 {
-  v3 = [(FICompoundNode *)self subjectNode];
-  v4 = v3;
-  if (v3)
+  subjectNode = [(FICompoundNode *)self subjectNode];
+  v4 = subjectNode;
+  if (subjectNode)
   {
-    [v3 inlineProgressCancel];
+    [subjectNode inlineProgressCancel];
   }
 
   else
@@ -329,9 +329,9 @@ LABEL_13:
     [(FIDSNode *)&v9 inlineProgressCancel];
   }
 
-  v5 = [(FICompoundNode *)self nodes];
-  IDContainerIteratorAdaptor<NSSet<FINode *>>::NSForwardIterator<NSSet<FINode *>>::NSForwardIterator(&obj, v5);
-  IDContainerIteratorAdaptor<NSSet<FINode *>>::IDContainerIteratorAdaptor(v10, -1, v5);
+  nodes = [(FICompoundNode *)self nodes];
+  IDContainerIteratorAdaptor<NSSet<FINode *>>::NSForwardIterator<NSSet<FINode *>>::NSForwardIterator(&obj, nodes);
+  IDContainerIteratorAdaptor<NSSet<FINode *>>::IDContainerIteratorAdaptor(v10, -1, nodes);
   while (obj != v10[0] || v16 != v10[16])
   {
     v6 = *(v12[1] + 8 * v15);
@@ -359,51 +359,51 @@ LABEL_13:
 
 - (id)downloadProgress
 {
-  v3 = [(FICompoundNode *)self subjectNode];
-  if (v3)
+  subjectNode = [(FICompoundNode *)self subjectNode];
+  if (subjectNode)
   {
-    v4 = v3;
-    v5 = [v3 downloadProgress];
+    v4 = subjectNode;
+    downloadProgress = [subjectNode downloadProgress];
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = FICompoundNode;
-    v5 = [(FIDSNode *)&v7 downloadProgress];
+    downloadProgress = [(FIDSNode *)&v7 downloadProgress];
   }
 
-  return v5;
+  return downloadProgress;
 }
 
 - (id)copyProgress
 {
-  v3 = [(FICompoundNode *)self subjectNode];
-  if (v3)
+  subjectNode = [(FICompoundNode *)self subjectNode];
+  if (subjectNode)
   {
-    v4 = v3;
-    v5 = [v3 copyProgress];
+    v4 = subjectNode;
+    copyProgress = [subjectNode copyProgress];
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = FICompoundNode;
-    v5 = [(FIDSNode *)&v7 copyProgress];
+    copyProgress = [(FIDSNode *)&v7 copyProgress];
   }
 
-  return v5;
+  return copyProgress;
 }
 
 - (BOOL)isPopulated
 {
-  v3 = [(FICompoundNode *)self subjectNode];
-  if (v3)
+  subjectNode = [(FICompoundNode *)self subjectNode];
+  if (subjectNode)
   {
-    v4 = [(FICompoundNode *)self subjectNode];
-    v5 = [v4 isPopulated];
+    subjectNode2 = [(FICompoundNode *)self subjectNode];
+    isPopulated = [subjectNode2 isPopulated];
 
-    if (v5)
+    if (isPopulated)
     {
       return 1;
     }
@@ -419,9 +419,9 @@ LABEL_13:
     }
   }
 
-  v7 = [(FICompoundNode *)self nodes];
-  IDContainerIteratorAdaptor<NSSet<FINode *>>::NSForwardIterator<NSSet<FINode *>>::NSForwardIterator(v16, v7);
-  IDContainerIteratorAdaptor<NSSet<FINode *>>::IDContainerIteratorAdaptor(v15, -1, v7);
+  nodes = [(FICompoundNode *)self nodes];
+  IDContainerIteratorAdaptor<NSSet<FINode *>>::NSForwardIterator<NSSet<FINode *>>::NSForwardIterator(v16, nodes);
+  IDContainerIteratorAdaptor<NSSet<FINode *>>::IDContainerIteratorAdaptor(v15, -1, nodes);
   IDContainerIteratorAdaptor<NSSet<FINode *>>::NSForwardIterator<NSSet<FINode *>>::NSForwardIterator(&v18, v16);
   IDContainerIteratorAdaptor<NSSet<FINode *>>::NSForwardIterator<NSSet<FINode *>>::NSForwardIterator(v17, v15);
   while (1)
@@ -433,9 +433,9 @@ LABEL_13:
     }
 
     v9 = *(v19[1] + 8 * v22);
-    v10 = [v9 isPopulated];
+    isPopulated2 = [v9 isPopulated];
 
-    if ((v10 & 1) == 0)
+    if ((isPopulated2 & 1) == 0)
     {
       v6 = 0;
       v8 = v17[0];
@@ -469,88 +469,88 @@ LABEL_16:
 
 - (id)fileParent
 {
-  v3 = [(FICompoundNode *)self subjectNode];
-  if (v3)
+  subjectNode = [(FICompoundNode *)self subjectNode];
+  if (subjectNode)
   {
-    v4 = v3;
-    v5 = [v3 fileParent];
+    v4 = subjectNode;
+    fileParent = [subjectNode fileParent];
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = FICompoundNode;
-    v5 = [(FIDSNode *)&v7 fileParent];
+    fileParent = [(FIDSNode *)&v7 fileParent];
   }
 
-  return v5;
+  return fileParent;
 }
 
 - (id)parent
 {
-  v3 = [(FICompoundNode *)self subjectNode];
-  if (v3)
+  subjectNode = [(FICompoundNode *)self subjectNode];
+  if (subjectNode)
   {
-    v4 = v3;
-    v5 = [v3 parent];
+    v4 = subjectNode;
+    parent = [subjectNode parent];
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = FICompoundNode;
-    v5 = [(FINode *)&v7 parent];
+    parent = [(FINode *)&v7 parent];
   }
 
-  return v5;
+  return parent;
 }
 
 - (id)source
 {
-  v3 = [(FICompoundNode *)self subjectNode];
-  if (!v3)
+  subjectNode = [(FICompoundNode *)self subjectNode];
+  if (!subjectNode)
   {
     v5.receiver = self;
     v5.super_class = FICompoundNode;
-    v3 = [(FINode *)&v5 source];
+    subjectNode = [(FINode *)&v5 source];
   }
 
-  return v3;
+  return subjectNode;
 }
 
-- (unint64_t)nodeIs:(unint64_t)a3 error:(id *)a4
+- (unint64_t)nodeIs:(unint64_t)is error:(id *)error
 {
-  v7 = [(FICompoundNode *)self subjectNode];
-  if (v7)
+  subjectNode = [(FICompoundNode *)self subjectNode];
+  if (subjectNode)
   {
-    v8 = v7;
-    v9 = [v7 nodeIs:a3 error:a4];
+    v8 = subjectNode;
+    v9 = [subjectNode nodeIs:is error:error];
   }
 
   else
   {
     v11.receiver = self;
     v11.super_class = FICompoundNode;
-    return [(FIDSNode *)&v11 nodeIs:a3 error:a4];
+    return [(FIDSNode *)&v11 nodeIs:is error:error];
   }
 
   return v9;
 }
 
-- (BOOL)markAsUsed:(id *)a3
+- (BOOL)markAsUsed:(id *)used
 {
-  v5 = [(FICompoundNode *)self subjectNode];
-  if (v5)
+  subjectNode = [(FICompoundNode *)self subjectNode];
+  if (subjectNode)
   {
-    v6 = v5;
-    v7 = [v5 markAsUsed:a3];
+    v6 = subjectNode;
+    v7 = [subjectNode markAsUsed:used];
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = FICompoundNode;
-    return [(FIDSNode *)&v9 markAsUsed:a3];
+    return [(FIDSNode *)&v9 markAsUsed:used];
   }
 
   return v7;
@@ -558,16 +558,16 @@ LABEL_16:
 
 - (id)longDescription
 {
-  v19 = [(FICompoundNode *)self subjectNode];
-  v18 = [(FICompoundNode *)self nodes];
-  if (algorithm_extras::contains<NSSet<FINode *> * {__strong},FINode * {__strong}>(&v18, &v19))
+  subjectNode = [(FICompoundNode *)self subjectNode];
+  nodes = [(FICompoundNode *)self nodes];
+  if (algorithm_extras::contains<NSSet<FINode *> * {__strong},FINode * {__strong}>(&nodes, &subjectNode))
   {
-    [v19 shortDescription];
+    [subjectNode shortDescription];
   }
 
   else
   {
-    [v19 longDescription];
+    [subjectNode longDescription];
   }
   v3 = ;
   v4 = CFStringCreateWithBytesNoCopy(*MEMORY[0x1E695E480], "\n\t", 2, 0x8000100u, 0, *MEMORY[0x1E695E498]);
@@ -576,17 +576,17 @@ LABEL_16:
   CFRetain(&stru_1F5F42870);
   TString::SetStringRefAsImmutable(&v16, v4);
   v5 = TRef<__CFString const*,TRetainReleasePolicy<__CFString const*>>::~TRef(&v21);
-  IDContainerIteratorAdaptor<NSSet<FINode *>>::NSForwardIterator<NSSet<FINode *>>::NSForwardIterator(v5, v18);
-  IDContainerIteratorAdaptor<NSSet<FINode *>>::IDContainerIteratorAdaptor(v20, -1, v18);
+  IDContainerIteratorAdaptor<NSSet<FINode *>>::NSForwardIterator<NSSet<FINode *>>::NSForwardIterator(v5, nodes);
+  IDContainerIteratorAdaptor<NSSet<FINode *>>::IDContainerIteratorAdaptor(v20, -1, nodes);
   theString = &stru_1F5F42870;
   CFRetain(&stru_1F5F42870);
   while (v21 != v20[0] || v26 != v20[16])
   {
     v6 = *(v22[1] + 8 * v25);
-    v7 = [v6 longDescription];
+    longDescription = [v6 longDescription];
     v27.fString.fRef = &stru_1F5F42870;
     CFRetain(&stru_1F5F42870);
-    TString::SetStringRefAsImmutable(&v27, v7);
+    TString::SetStringRefAsImmutable(&v27, longDescription);
 
     if (CFStringGetLength(theString) && CFStringGetLength(v27.fString.fRef))
     {
@@ -618,22 +618,22 @@ LABEL_16:
   v10 = MEMORY[0x1E696AEC0];
   v15.receiver = self;
   v15.super_class = FICompoundNode;
-  v11 = [(FINode *)&v15 longDescription];
-  v12 = [v18 count];
-  v13 = [v10 stringWithFormat:@"<%@ (%@, %ld sub-nodes):\n\t%@>", v11, v3, v12, theString];
+  longDescription2 = [(FINode *)&v15 longDescription];
+  v12 = [nodes count];
+  theString = [v10 stringWithFormat:@"<%@ (%@, %ld sub-nodes):\n\t%@>", longDescription2, v3, v12, theString];
 
   TRef<__CFString const*,TRetainReleasePolicy<__CFString const*>>::~TRef(&theString);
 
-  return v13;
+  return theString;
 }
 
-- (void)dispatchEvent:(id)a3 forObserver:(id)a4
+- (void)dispatchEvent:(id)event forObserver:(id)observer
 {
-  v6 = a4;
-  NodeEventFromNodeEventRef(a3, &v27);
-  v25 = self;
+  observerCopy = observer;
+  NodeEventFromNodeEventRef(event, &v27);
+  selfCopy = self;
   v26 = v27;
-  v7 = v25;
+  v7 = selfCopy;
   TNodeEventPtr::TNodeEventPtr(&location, 0);
   v8 = *TNodeEventPtr::operator->(&v27);
   if (v8 > 5)
@@ -650,7 +650,7 @@ LABEL_16:
           LOBYTE(v9[18].super.isa) = 1;
           if ((isa & 1) == 0)
           {
-            [FICompoundNode dispatchEvent:forObserver:]::$_6::operator()(&v25);
+            [FICompoundNode dispatchEvent:forObserver:]::$_6::operator()(&selfCopy);
           }
         }
       }
@@ -666,7 +666,7 @@ LABEL_16:
         objc_sync_enter(v9);
         if (!v9[16].super.isa)
         {
-          [FICompoundNode dispatchEvent:forObserver:]::$_6::operator()(&v25);
+          [FICompoundNode dispatchEvent:forObserver:]::$_6::operator()(&selfCopy);
         }
       }
 
@@ -689,7 +689,7 @@ LABEL_16:
 
         if (!v9[16].super.isa)
         {
-          [FICompoundNode dispatchEvent:forObserver:]::$_6::operator()(&v25);
+          [FICompoundNode dispatchEvent:forObserver:]::$_6::operator()(&selfCopy);
         }
       }
 
@@ -701,7 +701,7 @@ LABEL_14:
     objc_sync_enter(v9);
     if (!v9[16].super.isa)
     {
-      [FICompoundNode dispatchEvent:forObserver:]::$_6::operator()(&v25);
+      [FICompoundNode dispatchEvent:forObserver:]::$_6::operator()(&selfCopy);
     }
 
     goto LABEL_32;
@@ -721,29 +721,29 @@ LABEL_14:
       [(FINode *)v9 subjectNode];
       if (objc_claimAutoreleasedReturnValue())
       {
-        [FICompoundNode dispatchEvent:forObserver:]::$_6::operator()(&v25);
+        [FICompoundNode dispatchEvent:forObserver:]::$_6::operator()(&selfCopy);
       }
 
       goto LABEL_32;
     }
 
 LABEL_29:
-    [FICompoundNode dispatchEvent:forObserver:]::$_6::operator()(&v25);
+    [FICompoundNode dispatchEvent:forObserver:]::$_6::operator()(&selfCopy);
   }
 
   v9 = v7;
   objc_sync_enter(v9);
   v23 = *(TNodeEventPtr::operator->(&v27) + 8);
-  v11 = [(FINode *)v9 nodes];
-  v12 = MutableCopyAs<NSMutableSet<FINode *>,NSSet<FINode *>>(v11);
+  nodes = [(FINode *)v9 nodes];
+  v12 = MutableCopyAs<NSMutableSet<FINode *>,NSSet<FINode *>>(nodes);
 
   [v12 removeObject:v23];
   objc_storeStrong(&v9[20].super.isa, v12);
-  v13 = [(FINode *)v9 subjectNode];
+  subjectNode = [(FINode *)v9 subjectNode];
 
-  if (v13 == v23)
+  if (subjectNode == v23)
   {
-    [FICompoundNode dispatchEvent:forObserver:]::$_6::operator()(&v25);
+    [FICompoundNode dispatchEvent:forObserver:]::$_6::operator()(&selfCopy);
   }
 
   if (v9[16].super.isa)
@@ -780,7 +780,7 @@ LABEL_32:
   {
     v15.receiver = v7;
     v15.super_class = FICompoundNode;
-    [(FIDSNode *)&v15 dispatchEvent:location forObserver:v6];
+    [(FIDSNode *)&v15 dispatchEvent:location forObserver:observerCopy];
   }
 
   TNodeEventPtr::~TNodeEventPtr(&location);
@@ -791,8 +791,8 @@ LABEL_32:
 
 - (void)dispatchEvent:forObserver:
 {
-  v1 = a1 + 1;
-  v2 = TNodeFromFINode(*a1);
+  v1 = self + 1;
+  v2 = TNodeFromFINode(*self);
   v3 = *(TNodeEventPtr::operator->(v1) + 64);
   v8 = v3;
   if (v3)

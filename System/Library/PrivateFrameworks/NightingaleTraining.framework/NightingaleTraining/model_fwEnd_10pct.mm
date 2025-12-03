@@ -1,18 +1,18 @@
 @interface model_fwEnd_10pct
 + (id)URLOfModelInThisBundle;
-+ (void)loadContentsOfURL:(id)a3 configuration:(id)a4 completionHandler:(id)a5;
-+ (void)loadWithConfiguration:(id)a3 completionHandler:(id)a4;
-- (id)predictionFromFeatures:(id)a3 error:(id *)a4;
-- (id)predictionFromFeatures:(id)a3 options:(id)a4 error:(id *)a5;
-- (id)predictionFromIn:(id)a3 lstm_1_h_in:(id)a4 lstm_1_c_in:(id)a5 error:(id *)a6;
-- (id)predictionsFromInputs:(id)a3 options:(id)a4 error:(id *)a5;
++ (void)loadContentsOfURL:(id)l configuration:(id)configuration completionHandler:(id)handler;
++ (void)loadWithConfiguration:(id)configuration completionHandler:(id)handler;
+- (id)predictionFromFeatures:(id)features error:(id *)error;
+- (id)predictionFromFeatures:(id)features options:(id)options error:(id *)error;
+- (id)predictionFromIn:(id)in lstm_1_h_in:(id)lstm_1_h_in lstm_1_c_in:(id)lstm_1_c_in error:(id *)error;
+- (id)predictionsFromInputs:(id)inputs options:(id)options error:(id *)error;
 - (model_fwEnd_10pct)init;
-- (model_fwEnd_10pct)initWithConfiguration:(id)a3 error:(id *)a4;
-- (model_fwEnd_10pct)initWithContentsOfURL:(id)a3 configuration:(id)a4 error:(id *)a5;
-- (model_fwEnd_10pct)initWithContentsOfURL:(id)a3 error:(id *)a4;
-- (model_fwEnd_10pct)initWithMLModel:(id)a3;
-- (void)predictionFromFeatures:(id)a3 completionHandler:(id)a4;
-- (void)predictionFromFeatures:(id)a3 options:(id)a4 completionHandler:(id)a5;
+- (model_fwEnd_10pct)initWithConfiguration:(id)configuration error:(id *)error;
+- (model_fwEnd_10pct)initWithContentsOfURL:(id)l configuration:(id)configuration error:(id *)error;
+- (model_fwEnd_10pct)initWithContentsOfURL:(id)l error:(id *)error;
+- (model_fwEnd_10pct)initWithMLModel:(id)model;
+- (void)predictionFromFeatures:(id)features completionHandler:(id)handler;
+- (void)predictionFromFeatures:(id)features options:(id)options completionHandler:(id)handler;
 @end
 
 @implementation model_fwEnd_10pct
@@ -40,14 +40,14 @@
   return v4;
 }
 
-- (model_fwEnd_10pct)initWithMLModel:(id)a3
+- (model_fwEnd_10pct)initWithMLModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v10.receiver = self;
   v10.super_class = model_fwEnd_10pct;
   v6 = [(model_fwEnd_10pct *)&v10 init];
   v7 = v6;
-  if (v6 && (objc_storeStrong(&v6->_model, a3), v7->_model))
+  if (v6 && (objc_storeStrong(&v6->_model, model), v7->_model))
   {
     v8 = v7;
   }
@@ -62,103 +62,103 @@
 
 - (model_fwEnd_10pct)init
 {
-  v3 = [objc_opt_class() URLOfModelInThisBundle];
-  v4 = [(model_fwEnd_10pct *)self initWithContentsOfURL:v3 error:0];
+  uRLOfModelInThisBundle = [objc_opt_class() URLOfModelInThisBundle];
+  v4 = [(model_fwEnd_10pct *)self initWithContentsOfURL:uRLOfModelInThisBundle error:0];
 
   return v4;
 }
 
-- (model_fwEnd_10pct)initWithConfiguration:(id)a3 error:(id *)a4
+- (model_fwEnd_10pct)initWithConfiguration:(id)configuration error:(id *)error
 {
-  v6 = a3;
-  v7 = [objc_opt_class() URLOfModelInThisBundle];
-  v8 = [(model_fwEnd_10pct *)self initWithContentsOfURL:v7 configuration:v6 error:a4];
+  configurationCopy = configuration;
+  uRLOfModelInThisBundle = [objc_opt_class() URLOfModelInThisBundle];
+  v8 = [(model_fwEnd_10pct *)self initWithContentsOfURL:uRLOfModelInThisBundle configuration:configurationCopy error:error];
 
   return v8;
 }
 
-- (model_fwEnd_10pct)initWithContentsOfURL:(id)a3 error:(id *)a4
+- (model_fwEnd_10pct)initWithContentsOfURL:(id)l error:(id *)error
 {
-  v5 = [MEMORY[0x277CBFF20] modelWithContentsOfURL:a3 error:a4];
+  v5 = [MEMORY[0x277CBFF20] modelWithContentsOfURL:l error:error];
   if (v5)
   {
     self = [(model_fwEnd_10pct *)self initWithMLModel:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (model_fwEnd_10pct)initWithContentsOfURL:(id)a3 configuration:(id)a4 error:(id *)a5
+- (model_fwEnd_10pct)initWithContentsOfURL:(id)l configuration:(id)configuration error:(id *)error
 {
-  v6 = [MEMORY[0x277CBFF20] modelWithContentsOfURL:a3 configuration:a4 error:a5];
+  v6 = [MEMORY[0x277CBFF20] modelWithContentsOfURL:l configuration:configuration error:error];
   if (v6)
   {
     self = [(model_fwEnd_10pct *)self initWithMLModel:v6];
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-+ (void)loadWithConfiguration:(id)a3 completionHandler:(id)a4
++ (void)loadWithConfiguration:(id)configuration completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 URLOfModelInThisBundle];
-  [a1 loadContentsOfURL:v8 configuration:v7 completionHandler:v6];
+  handlerCopy = handler;
+  configurationCopy = configuration;
+  uRLOfModelInThisBundle = [self URLOfModelInThisBundle];
+  [self loadContentsOfURL:uRLOfModelInThisBundle configuration:configurationCopy completionHandler:handlerCopy];
 }
 
-+ (void)loadContentsOfURL:(id)a3 configuration:(id)a4 completionHandler:(id)a5
++ (void)loadContentsOfURL:(id)l configuration:(id)configuration completionHandler:(id)handler
 {
-  v7 = a5;
+  handlerCopy = handler;
   v8 = MEMORY[0x277CBFF20];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __71__model_fwEnd_10pct_loadContentsOfURL_configuration_completionHandler___block_invoke;
   v10[3] = &unk_2799AB420;
-  v11 = v7;
-  v9 = v7;
-  [v8 loadContentsOfURL:a3 configuration:a4 completionHandler:v10];
+  v11 = handlerCopy;
+  v9 = handlerCopy;
+  [v8 loadContentsOfURL:l configuration:configuration completionHandler:v10];
 }
 
-- (id)predictionFromFeatures:(id)a3 error:(id *)a4
+- (id)predictionFromFeatures:(id)features error:(id *)error
 {
   v6 = MEMORY[0x277CBFF68];
-  v7 = a3;
+  featuresCopy = features;
   v8 = objc_alloc_init(v6);
-  v9 = [(model_fwEnd_10pct *)self predictionFromFeatures:v7 options:v8 error:a4];
+  v9 = [(model_fwEnd_10pct *)self predictionFromFeatures:featuresCopy options:v8 error:error];
 
   return v9;
 }
 
-- (id)predictionFromFeatures:(id)a3 options:(id)a4 error:(id *)a5
+- (id)predictionFromFeatures:(id)features options:(id)options error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(model_fwEnd_10pct *)self model];
-  v11 = [v10 predictionFromFeatures:v9 options:v8 error:a5];
+  optionsCopy = options;
+  featuresCopy = features;
+  model = [(model_fwEnd_10pct *)self model];
+  v11 = [model predictionFromFeatures:featuresCopy options:optionsCopy error:error];
 
   if (v11)
   {
     v12 = [model_fwEnd_10pctOutput alloc];
     v13 = [v11 featureValueForName:@"out"];
-    v14 = [v13 multiArrayValue];
+    multiArrayValue = [v13 multiArrayValue];
     v15 = [v11 featureValueForName:@"lstm_1_h_out"];
-    v16 = [v15 multiArrayValue];
+    multiArrayValue2 = [v15 multiArrayValue];
     v17 = [v11 featureValueForName:@"lstm_1_c_out"];
-    v18 = [v17 multiArrayValue];
-    v19 = [(model_fwEnd_10pctOutput *)v12 initWithOut:v14 lstm_1_h_out:v16 lstm_1_c_out:v18];
+    multiArrayValue3 = [v17 multiArrayValue];
+    v19 = [(model_fwEnd_10pctOutput *)v12 initWithOut:multiArrayValue lstm_1_h_out:multiArrayValue2 lstm_1_c_out:multiArrayValue3];
   }
 
   else
@@ -169,54 +169,54 @@
   return v19;
 }
 
-- (void)predictionFromFeatures:(id)a3 completionHandler:(id)a4
+- (void)predictionFromFeatures:(id)features completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(model_fwEnd_10pct *)self model];
+  handlerCopy = handler;
+  featuresCopy = features;
+  model = [(model_fwEnd_10pct *)self model];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __62__model_fwEnd_10pct_predictionFromFeatures_completionHandler___block_invoke;
   v10[3] = &unk_2799AB448;
-  v11 = v6;
-  v9 = v6;
-  [v8 predictionFromFeatures:v7 completionHandler:v10];
+  v11 = handlerCopy;
+  v9 = handlerCopy;
+  [model predictionFromFeatures:featuresCopy completionHandler:v10];
 }
 
-- (void)predictionFromFeatures:(id)a3 options:(id)a4 completionHandler:(id)a5
+- (void)predictionFromFeatures:(id)features options:(id)options completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(model_fwEnd_10pct *)self model];
+  handlerCopy = handler;
+  optionsCopy = options;
+  featuresCopy = features;
+  model = [(model_fwEnd_10pct *)self model];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __70__model_fwEnd_10pct_predictionFromFeatures_options_completionHandler___block_invoke;
   v13[3] = &unk_2799AB448;
-  v14 = v8;
-  v12 = v8;
-  [v11 predictionFromFeatures:v10 options:v9 completionHandler:v13];
+  v14 = handlerCopy;
+  v12 = handlerCopy;
+  [model predictionFromFeatures:featuresCopy options:optionsCopy completionHandler:v13];
 }
 
-- (id)predictionFromIn:(id)a3 lstm_1_h_in:(id)a4 lstm_1_c_in:(id)a5 error:(id *)a6
+- (id)predictionFromIn:(id)in lstm_1_h_in:(id)lstm_1_h_in lstm_1_c_in:(id)lstm_1_c_in error:(id *)error
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [[model_fwEnd_10pctInput alloc] initWithIn:v12 lstm_1_h_in:v11 lstm_1_c_in:v10];
+  lstm_1_c_inCopy = lstm_1_c_in;
+  lstm_1_h_inCopy = lstm_1_h_in;
+  inCopy = in;
+  v13 = [[model_fwEnd_10pctInput alloc] initWithIn:inCopy lstm_1_h_in:lstm_1_h_inCopy lstm_1_c_in:lstm_1_c_inCopy];
 
-  v14 = [(model_fwEnd_10pct *)self predictionFromFeatures:v13 error:a6];
+  v14 = [(model_fwEnd_10pct *)self predictionFromFeatures:v13 error:error];
 
   return v14;
 }
 
-- (id)predictionsFromInputs:(id)a3 options:(id)a4 error:(id *)a5
+- (id)predictionsFromInputs:(id)inputs options:(id)options error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [objc_alloc(MEMORY[0x277CBFEB0]) initWithFeatureProviderArray:v8];
-  v11 = [(model_fwEnd_10pct *)self model];
-  v12 = [v11 predictionsFromBatch:v10 options:v9 error:a5];
+  inputsCopy = inputs;
+  optionsCopy = options;
+  v10 = [objc_alloc(MEMORY[0x277CBFEB0]) initWithFeatureProviderArray:inputsCopy];
+  model = [(model_fwEnd_10pct *)self model];
+  v12 = [model predictionsFromBatch:v10 options:optionsCopy error:error];
 
   if (v12)
   {
@@ -224,8 +224,8 @@
     if ([v12 count] >= 1)
     {
       v26 = v10;
-      v27 = v9;
-      v28 = v8;
+      v27 = optionsCopy;
+      v28 = inputsCopy;
       v29 = v12;
       v14 = 0;
       do
@@ -234,12 +234,12 @@
         v16 = [model_fwEnd_10pctOutput alloc];
         [v15 featureValueForName:@"out"];
         v18 = v17 = v13;
-        v19 = [v18 multiArrayValue];
+        multiArrayValue = [v18 multiArrayValue];
         v20 = [v15 featureValueForName:@"lstm_1_h_out"];
-        v21 = [v20 multiArrayValue];
+        multiArrayValue2 = [v20 multiArrayValue];
         v22 = [v15 featureValueForName:@"lstm_1_c_out"];
-        v23 = [v22 multiArrayValue];
-        v24 = [(model_fwEnd_10pctOutput *)v16 initWithOut:v19 lstm_1_h_out:v21 lstm_1_c_out:v23];
+        multiArrayValue3 = [v22 multiArrayValue];
+        v24 = [(model_fwEnd_10pctOutput *)v16 initWithOut:multiArrayValue lstm_1_h_out:multiArrayValue2 lstm_1_c_out:multiArrayValue3];
 
         v13 = v17;
         v12 = v29;
@@ -249,8 +249,8 @@
       }
 
       while (v14 < [v29 count]);
-      v9 = v27;
-      v8 = v28;
+      optionsCopy = v27;
+      inputsCopy = v28;
       v10 = v26;
     }
   }

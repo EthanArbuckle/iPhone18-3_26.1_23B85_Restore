@@ -1,6 +1,6 @@
 @interface MTRDataTypeAtomicAttributeStatusStruct
 - (MTRDataTypeAtomicAttributeStatusStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -24,14 +24,14 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRDataTypeAtomicAttributeStatusStruct);
-  v5 = [(MTRDataTypeAtomicAttributeStatusStruct *)self attributeID];
-  [(MTRDataTypeAtomicAttributeStatusStruct *)v4 setAttributeID:v5];
+  attributeID = [(MTRDataTypeAtomicAttributeStatusStruct *)self attributeID];
+  [(MTRDataTypeAtomicAttributeStatusStruct *)v4 setAttributeID:attributeID];
 
-  v6 = [(MTRDataTypeAtomicAttributeStatusStruct *)self statusCode];
-  [(MTRDataTypeAtomicAttributeStatusStruct *)v4 setStatusCode:v6];
+  statusCode = [(MTRDataTypeAtomicAttributeStatusStruct *)self statusCode];
+  [(MTRDataTypeAtomicAttributeStatusStruct *)v4 setStatusCode:statusCode];
 
   return v4;
 }

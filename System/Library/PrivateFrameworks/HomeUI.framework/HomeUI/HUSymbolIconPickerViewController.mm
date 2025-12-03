@@ -1,20 +1,20 @@
 @interface HUSymbolIconPickerViewController
 + (NSArray)sceneIconDescriptors;
 + (id)tintColors;
-+ (int64_t)indexOfIconDescriptor:(id)a3 inArray:(id)a4;
++ (int64_t)indexOfIconDescriptor:(id)descriptor inArray:(id)array;
 - (HUSymbolIconPickerDelegate)delegate;
-- (HUSymbolIconPickerViewController)initWithIconDescriptors:(id)a3 selectedIconDescriptor:(id)a4 selectedTintColor:(id)a5 delegate:(id)a6;
-- (id)_buildColorTintSectionWithEnvironment:(id)a3;
-- (id)_buildHeaderSectionWithEnvironment:(id)a3;
-- (id)_buildIconPickerSectionWithEnvironment:(id)a3;
-- (id)_layoutSectionForSection:(int64_t)a3 layoutEnvironment:(id)a4;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
-- (void)_cancel:(id)a3;
-- (void)_done:(id)a3;
+- (HUSymbolIconPickerViewController)initWithIconDescriptors:(id)descriptors selectedIconDescriptor:(id)descriptor selectedTintColor:(id)color delegate:(id)delegate;
+- (id)_buildColorTintSectionWithEnvironment:(id)environment;
+- (id)_buildHeaderSectionWithEnvironment:(id)environment;
+- (id)_buildIconPickerSectionWithEnvironment:(id)environment;
+- (id)_layoutSectionForSection:(int64_t)section layoutEnvironment:(id)environment;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
+- (void)_cancel:(id)_cancel;
+- (void)_done:(id)_done;
 - (void)applyTintColor;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
@@ -226,12 +226,12 @@ void __46__HUSymbolIconPickerViewController_tintColors__block_invoke()
   qword_27C837E98 = v10;
 }
 
-- (HUSymbolIconPickerViewController)initWithIconDescriptors:(id)a3 selectedIconDescriptor:(id)a4 selectedTintColor:(id)a5 delegate:(id)a6
+- (HUSymbolIconPickerViewController)initWithIconDescriptors:(id)descriptors selectedIconDescriptor:(id)descriptor selectedTintColor:(id)color delegate:(id)delegate
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  descriptorsCopy = descriptors;
+  descriptorCopy = descriptor;
+  colorCopy = color;
+  delegateCopy = delegate;
   objc_initWeak(&location, self);
   v15 = objc_alloc(MEMORY[0x277D752B8]);
   v24[0] = MEMORY[0x277D85DD0];
@@ -245,28 +245,28 @@ void __46__HUSymbolIconPickerViewController_tintColors__block_invoke()
   v17 = [(HUSymbolIconPickerViewController *)&v23 initWithCollectionViewLayout:v16];
   if (v17)
   {
-    if ([objc_opt_class() indexOfIconDescriptor:v12 inArray:v11] == 0x7FFFFFFFFFFFFFFFLL)
+    if ([objc_opt_class() indexOfIconDescriptor:descriptorCopy inArray:descriptorsCopy] == 0x7FFFFFFFFFFFFFFFLL)
     {
       v18 = objc_alloc(MEMORY[0x277D14728]);
       v19 = [v18 initWithSystemImageNamed:*MEMORY[0x277D141E0]];
 
-      v12 = v19;
+      descriptorCopy = v19;
     }
 
-    objc_storeStrong(&v17->_iconDescriptors, a3);
-    objc_storeStrong(&v17->_selectedIconDescriptor, v12);
-    v20 = v13;
-    if (!v13)
+    objc_storeStrong(&v17->_iconDescriptors, descriptors);
+    objc_storeStrong(&v17->_selectedIconDescriptor, descriptorCopy);
+    systemOrangeColor = colorCopy;
+    if (!colorCopy)
     {
-      v20 = [MEMORY[0x277D75348] systemOrangeColor];
+      systemOrangeColor = [MEMORY[0x277D75348] systemOrangeColor];
     }
 
-    objc_storeStrong(&v17->_selectedTintColor, v20);
-    if (!v13)
+    objc_storeStrong(&v17->_selectedTintColor, systemOrangeColor);
+    if (!colorCopy)
     {
     }
 
-    objc_storeWeak(&v17->_delegate, v14);
+    objc_storeWeak(&v17->_delegate, delegateCopy);
     v21 = _HULocalizedStringWithDefaultValue(@"HUIconPickerTitle", @"HUIconPickerTitle", 1);
     [(HUSymbolIconPickerViewController *)v17 setTitle:v21];
 
@@ -293,45 +293,45 @@ id __110__HUSymbolIconPickerViewController_initWithIconDescriptors_selectedIconD
   v21.receiver = self;
   v21.super_class = HUSymbolIconPickerViewController;
   [(HUSymbolIconPickerViewController *)&v21 viewDidLoad];
-  v3 = [(HUSymbolIconPickerViewController *)self collectionView];
-  [v3 setAllowsMultipleSelection:1];
+  collectionView = [(HUSymbolIconPickerViewController *)self collectionView];
+  [collectionView setAllowsMultipleSelection:1];
 
-  v4 = [MEMORY[0x277D75348] systemBackgroundColor];
-  v5 = [(HUSymbolIconPickerViewController *)self collectionView];
-  [v5 setBackgroundColor:v4];
+  systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+  collectionView2 = [(HUSymbolIconPickerViewController *)self collectionView];
+  [collectionView2 setBackgroundColor:systemBackgroundColor];
 
-  v6 = [(HUSymbolIconPickerViewController *)self collectionView];
-  [v6 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"header"];
+  collectionView3 = [(HUSymbolIconPickerViewController *)self collectionView];
+  [collectionView3 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"header"];
 
-  v7 = [(HUSymbolIconPickerViewController *)self collectionView];
-  [v7 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"colorTint"];
+  collectionView4 = [(HUSymbolIconPickerViewController *)self collectionView];
+  [collectionView4 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"colorTint"];
 
-  v8 = [(HUSymbolIconPickerViewController *)self collectionView];
-  [v8 registerClass:objc_opt_class() forSupplementaryViewOfKind:*MEMORY[0x277D767D0] withReuseIdentifier:@"colorTintSeparator"];
+  collectionView5 = [(HUSymbolIconPickerViewController *)self collectionView];
+  [collectionView5 registerClass:objc_opt_class() forSupplementaryViewOfKind:*MEMORY[0x277D767D0] withReuseIdentifier:@"colorTintSeparator"];
 
-  v9 = [(HUSymbolIconPickerViewController *)self collectionView];
-  [v9 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"icon"];
+  collectionView6 = [(HUSymbolIconPickerViewController *)self collectionView];
+  [collectionView6 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"icon"];
 
   v10 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:1 target:self action:sel__cancel_];
-  v11 = [(HUSymbolIconPickerViewController *)self navigationItem];
-  [v11 setLeftBarButtonItem:v10];
+  navigationItem = [(HUSymbolIconPickerViewController *)self navigationItem];
+  [navigationItem setLeftBarButtonItem:v10];
 
-  v12 = [(HUSymbolIconPickerViewController *)self navigationItem];
-  v13 = [v12 leftBarButtonItem];
-  [v13 setAccessibilityIdentifier:@"Home.Scene.ChooseIcon.Cancel"];
+  navigationItem2 = [(HUSymbolIconPickerViewController *)self navigationItem];
+  leftBarButtonItem = [navigationItem2 leftBarButtonItem];
+  [leftBarButtonItem setAccessibilityIdentifier:@"Home.Scene.ChooseIcon.Cancel"];
 
   v14 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:0 target:self action:sel__done_];
-  v15 = [(HUSymbolIconPickerViewController *)self navigationItem];
-  [v15 setRightBarButtonItem:v14];
+  navigationItem3 = [(HUSymbolIconPickerViewController *)self navigationItem];
+  [navigationItem3 setRightBarButtonItem:v14];
 
-  v16 = [(HUSymbolIconPickerViewController *)self selectedIconDescriptor];
-  v17 = [(HUSymbolIconPickerViewController *)self navigationItem];
-  v18 = [v17 rightBarButtonItem];
-  [v18 setEnabled:v16 != 0];
+  selectedIconDescriptor = [(HUSymbolIconPickerViewController *)self selectedIconDescriptor];
+  navigationItem4 = [(HUSymbolIconPickerViewController *)self navigationItem];
+  rightBarButtonItem = [navigationItem4 rightBarButtonItem];
+  [rightBarButtonItem setEnabled:selectedIconDescriptor != 0];
 
-  v19 = [(HUSymbolIconPickerViewController *)self navigationItem];
-  v20 = [v19 rightBarButtonItem];
-  [v20 setAccessibilityIdentifier:@"Home.Scene.ChooseIcon.Done"];
+  navigationItem5 = [(HUSymbolIconPickerViewController *)self navigationItem];
+  rightBarButtonItem2 = [navigationItem5 rightBarButtonItem];
+  [rightBarButtonItem2 setAccessibilityIdentifier:@"Home.Scene.ChooseIcon.Done"];
 }
 
 - (void)viewDidLayoutSubviews
@@ -339,37 +339,37 @@ id __110__HUSymbolIconPickerViewController_initWithIconDescriptors_selectedIconD
   v19.receiver = self;
   v19.super_class = HUSymbolIconPickerViewController;
   [(HUSymbolIconPickerViewController *)&v19 viewDidLayoutSubviews];
-  v3 = [(HUSymbolIconPickerViewController *)self selectedIconDescriptor];
-  if (v3)
+  selectedIconDescriptor = [(HUSymbolIconPickerViewController *)self selectedIconDescriptor];
+  if (selectedIconDescriptor)
   {
-    v4 = v3;
-    v5 = [(HUSymbolIconPickerViewController *)self collectionView];
-    v6 = [v5 indexPathsForSelectedItems];
-    v7 = [v6 count];
+    v4 = selectedIconDescriptor;
+    collectionView = [(HUSymbolIconPickerViewController *)self collectionView];
+    indexPathsForSelectedItems = [collectionView indexPathsForSelectedItems];
+    v7 = [indexPathsForSelectedItems count];
 
     if (!v7)
     {
       v8 = objc_opt_class();
-      v9 = [(HUSymbolIconPickerViewController *)self selectedIconDescriptor];
-      v10 = [(HUSymbolIconPickerViewController *)self iconDescriptors];
-      v11 = [v8 indexOfIconDescriptor:v9 inArray:v10];
+      selectedIconDescriptor2 = [(HUSymbolIconPickerViewController *)self selectedIconDescriptor];
+      iconDescriptors = [(HUSymbolIconPickerViewController *)self iconDescriptors];
+      v11 = [v8 indexOfIconDescriptor:selectedIconDescriptor2 inArray:iconDescriptors];
 
       if (v11 != 0x7FFFFFFFFFFFFFFFLL)
       {
-        v12 = [(HUSymbolIconPickerViewController *)self collectionView];
+        collectionView2 = [(HUSymbolIconPickerViewController *)self collectionView];
         v13 = [MEMORY[0x277CCAA70] indexPathForItem:v11 inSection:2];
-        [v12 selectItemAtIndexPath:v13 animated:0 scrollPosition:0];
+        [collectionView2 selectItemAtIndexPath:v13 animated:0 scrollPosition:0];
       }
 
-      v14 = [objc_opt_class() tintColors];
-      v15 = [(HUSymbolIconPickerViewController *)self selectedTintColor];
-      v16 = [v14 indexOfObject:v15];
+      tintColors = [objc_opt_class() tintColors];
+      selectedTintColor = [(HUSymbolIconPickerViewController *)self selectedTintColor];
+      v16 = [tintColors indexOfObject:selectedTintColor];
 
       if (v16 != 0x7FFFFFFFFFFFFFFFLL)
       {
-        v17 = [(HUSymbolIconPickerViewController *)self collectionView];
+        collectionView3 = [(HUSymbolIconPickerViewController *)self collectionView];
         v18 = [MEMORY[0x277CCAA70] indexPathForItem:v16 inSection:1];
-        [v17 selectItemAtIndexPath:v18 animated:0 scrollPosition:0];
+        [collectionView3 selectItemAtIndexPath:v18 animated:0 scrollPosition:0];
       }
     }
   }
@@ -377,57 +377,57 @@ id __110__HUSymbolIconPickerViewController_initWithIconDescriptors_selectedIconD
 
 - (void)applyTintColor
 {
-  v3 = [(HUSymbolIconPickerViewController *)self selectedTintColor];
+  selectedTintColor = [(HUSymbolIconPickerViewController *)self selectedTintColor];
 
-  if (v3)
+  if (selectedTintColor)
   {
     v4 = MEMORY[0x277D755D0];
-    v5 = [(HUSymbolIconPickerViewController *)self selectedTintColor];
-    v8 = [v4 configurationWithHierarchicalColor:v5];
+    selectedTintColor2 = [(HUSymbolIconPickerViewController *)self selectedTintColor];
+    v8 = [v4 configurationWithHierarchicalColor:selectedTintColor2];
 
-    v6 = [(HUSymbolIconPickerViewController *)self selectedIconDescriptor];
-    v7 = [v6 imageIconDescriptorWithUpdatedImageSymbolConfiguration:v8];
+    selectedIconDescriptor = [(HUSymbolIconPickerViewController *)self selectedIconDescriptor];
+    v7 = [selectedIconDescriptor imageIconDescriptorWithUpdatedImageSymbolConfiguration:v8];
     [(HUSymbolIconPickerViewController *)self setSelectedIconDescriptor:v7];
   }
 }
 
-+ (int64_t)indexOfIconDescriptor:(id)a3 inArray:(id)a4
++ (int64_t)indexOfIconDescriptor:(id)descriptor inArray:(id)array
 {
-  v5 = a3;
-  v6 = [a4 valueForKey:@"imageIdentifier"];
-  v7 = [v5 imageIdentifier];
+  descriptorCopy = descriptor;
+  v6 = [array valueForKey:@"imageIdentifier"];
+  imageIdentifier = [descriptorCopy imageIdentifier];
 
-  v8 = [v6 indexOfObject:v7];
+  v8 = [v6 indexOfObject:imageIdentifier];
   return v8;
 }
 
-- (void)_cancel:(id)a3
+- (void)_cancel:(id)_cancel
 {
-  v4 = [(HUSymbolIconPickerViewController *)self delegate];
-  [v4 iconPickerDidCancel:self];
+  delegate = [(HUSymbolIconPickerViewController *)self delegate];
+  [delegate iconPickerDidCancel:self];
 }
 
-- (void)_done:(id)a3
+- (void)_done:(id)_done
 {
-  v6 = [(HUSymbolIconPickerViewController *)self delegate];
-  v4 = [(HUSymbolIconPickerViewController *)self selectedIconDescriptor];
-  v5 = [(HUSymbolIconPickerViewController *)self selectedTintColor];
-  [v6 iconPicker:self didPickIcon:v4 withTintColor:v5];
+  delegate = [(HUSymbolIconPickerViewController *)self delegate];
+  selectedIconDescriptor = [(HUSymbolIconPickerViewController *)self selectedIconDescriptor];
+  selectedTintColor = [(HUSymbolIconPickerViewController *)self selectedTintColor];
+  [delegate iconPicker:self didPickIcon:selectedIconDescriptor withTintColor:selectedTintColor];
 }
 
-- (id)_layoutSectionForSection:(int64_t)a3 layoutEnvironment:(id)a4
+- (id)_layoutSectionForSection:(int64_t)section layoutEnvironment:(id)environment
 {
-  v6 = a4;
-  switch(a3)
+  environmentCopy = environment;
+  switch(section)
   {
     case 2:
-      v7 = [(HUSymbolIconPickerViewController *)self _buildIconPickerSectionWithEnvironment:v6];
+      v7 = [(HUSymbolIconPickerViewController *)self _buildIconPickerSectionWithEnvironment:environmentCopy];
       goto LABEL_7;
     case 1:
-      v7 = [(HUSymbolIconPickerViewController *)self _buildColorTintSectionWithEnvironment:v6];
+      v7 = [(HUSymbolIconPickerViewController *)self _buildColorTintSectionWithEnvironment:environmentCopy];
       goto LABEL_7;
     case 0:
-      v7 = [(HUSymbolIconPickerViewController *)self _buildHeaderSectionWithEnvironment:v6];
+      v7 = [(HUSymbolIconPickerViewController *)self _buildHeaderSectionWithEnvironment:environmentCopy];
 LABEL_7:
       v8 = v7;
       goto LABEL_9;
@@ -439,11 +439,11 @@ LABEL_9:
   return v8;
 }
 
-- (id)_buildHeaderSectionWithEnvironment:(id)a3
+- (id)_buildHeaderSectionWithEnvironment:(id)environment
 {
   v3 = MEMORY[0x277CFB860];
   v4 = MEMORY[0x277CFB870];
-  v5 = [MEMORY[0x277CFB840] fractionalWidthDimension:{a3, 1.0}];
+  v5 = [MEMORY[0x277CFB840] fractionalWidthDimension:{environment, 1.0}];
   v6 = [MEMORY[0x277CFB840] fractionalHeightDimension:1.0];
   v7 = [v4 sizeWithWidthDimension:v5 heightDimension:v6];
   v8 = [v3 itemWithLayoutSize:v7];
@@ -461,18 +461,18 @@ LABEL_9:
   return v14;
 }
 
-- (id)_buildColorTintSectionWithEnvironment:(id)a3
+- (id)_buildColorTintSectionWithEnvironment:(id)environment
 {
   v25[1] = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CFB870];
-  v4 = [MEMORY[0x277CFB840] absoluteDimension:{a3, 52.0}];
+  v4 = [MEMORY[0x277CFB840] absoluteDimension:{environment, 52.0}];
   v5 = [MEMORY[0x277CFB840] absoluteDimension:52.0];
   v6 = [v3 sizeWithWidthDimension:v4 heightDimension:v5];
 
   v7 = MEMORY[0x277CFB870];
   v8 = [MEMORY[0x277CFB840] fractionalWidthDimension:1.0];
-  v9 = [v6 heightDimension];
-  v10 = [v7 sizeWithWidthDimension:v8 heightDimension:v9];
+  heightDimension = [v6 heightDimension];
+  v10 = [v7 sizeWithWidthDimension:v8 heightDimension:heightDimension];
 
   v11 = [MEMORY[0x277CFB860] itemWithLayoutSize:v6];
   [v11 setContentInsets:{5.0, 5.0, 5.0, 5.0}];
@@ -502,18 +502,18 @@ LABEL_9:
   return v16;
 }
 
-- (id)_buildIconPickerSectionWithEnvironment:(id)a3
+- (id)_buildIconPickerSectionWithEnvironment:(id)environment
 {
   v18[1] = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CFB870];
-  v4 = [MEMORY[0x277CFB840] absoluteDimension:{a3, 45.0}];
+  v4 = [MEMORY[0x277CFB840] absoluteDimension:{environment, 45.0}];
   v5 = [MEMORY[0x277CFB840] absoluteDimension:45.0];
   v6 = [v3 sizeWithWidthDimension:v4 heightDimension:v5];
 
   v7 = MEMORY[0x277CFB870];
   v8 = [MEMORY[0x277CFB840] fractionalWidthDimension:1.0];
-  v9 = [v6 heightDimension];
-  v10 = [v7 sizeWithWidthDimension:v8 heightDimension:v9];
+  heightDimension = [v6 heightDimension];
+  v10 = [v7 sizeWithWidthDimension:v8 heightDimension:heightDimension];
 
   v11 = [MEMORY[0x277CFB860] itemWithLayoutSize:v6];
   v12 = MEMORY[0x277CFB850];
@@ -531,29 +531,29 @@ LABEL_9:
   return v16;
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v6 = a3;
-  if (a4)
+  viewCopy = view;
+  if (section)
   {
-    if (a4 == 2)
+    if (section == 2)
     {
-      v7 = [(HUSymbolIconPickerViewController *)self iconDescriptors];
+      iconDescriptors = [(HUSymbolIconPickerViewController *)self iconDescriptors];
     }
 
     else
     {
-      if (a4 != 1)
+      if (section != 1)
       {
         v9 = -1;
         goto LABEL_9;
       }
 
-      v7 = [objc_opt_class() tintColors];
+      iconDescriptors = [objc_opt_class() tintColors];
     }
 
-    v8 = v7;
-    v9 = [v7 count];
+    v8 = iconDescriptors;
+    v9 = [iconDescriptors count];
   }
 
   else
@@ -566,54 +566,54 @@ LABEL_9:
   return v9;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 section];
-  if (v8 == 2)
+  viewCopy = view;
+  pathCopy = path;
+  section = [pathCopy section];
+  if (section == 2)
   {
-    v16 = [v6 dequeueReusableCellWithReuseIdentifier:@"icon" forIndexPath:v7];
-    v17 = [(HUSymbolIconPickerViewController *)self iconDescriptors];
-    v18 = [v17 objectAtIndexedSubscript:{objc_msgSend(v7, "item")}];
-    v19 = [(HUSymbolIconPickerViewController *)self selectedTintColor];
-    [v16 setIconDescriptor:v18 andSelectedTintColor:v19];
+    v16 = [viewCopy dequeueReusableCellWithReuseIdentifier:@"icon" forIndexPath:pathCopy];
+    iconDescriptors = [(HUSymbolIconPickerViewController *)self iconDescriptors];
+    v18 = [iconDescriptors objectAtIndexedSubscript:{objc_msgSend(pathCopy, "item")}];
+    selectedTintColor = [(HUSymbolIconPickerViewController *)self selectedTintColor];
+    [v16 setIconDescriptor:v18 andSelectedTintColor:selectedTintColor];
 
     v9 = v16;
-    v14 = [(HUSymbolIconPickerViewController *)self iconDescriptors];
-    v15 = [v14 objectAtIndexedSubscript:{objc_msgSend(v7, "item")}];
-    v20 = [v15 imageIdentifier];
-    [v9 setAccessibilityIdentifier:v20];
+    iconDescriptors2 = [(HUSymbolIconPickerViewController *)self iconDescriptors];
+    accessibilityName = [iconDescriptors2 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "item")}];
+    imageIdentifier = [accessibilityName imageIdentifier];
+    [v9 setAccessibilityIdentifier:imageIdentifier];
 
     goto LABEL_7;
   }
 
-  if (v8 == 1)
+  if (section == 1)
   {
-    v11 = [v6 dequeueReusableCellWithReuseIdentifier:@"colorTint" forIndexPath:v7];
-    v12 = [objc_opt_class() tintColors];
-    v13 = [v12 objectAtIndexedSubscript:{objc_msgSend(v7, "item")}];
+    v11 = [viewCopy dequeueReusableCellWithReuseIdentifier:@"colorTint" forIndexPath:pathCopy];
+    tintColors = [objc_opt_class() tintColors];
+    v13 = [tintColors objectAtIndexedSubscript:{objc_msgSend(pathCopy, "item")}];
     [v11 setColor:v13];
 
     v9 = v11;
-    v14 = [v9 color];
-    v15 = [v14 accessibilityName];
-    [v9 setAccessibilityIdentifier:v15];
+    iconDescriptors2 = [v9 color];
+    accessibilityName = [iconDescriptors2 accessibilityName];
+    [v9 setAccessibilityIdentifier:accessibilityName];
 
 LABEL_7:
     goto LABEL_9;
   }
 
-  if (v8)
+  if (section)
   {
     v9 = 0;
   }
 
   else
   {
-    v9 = [v6 dequeueReusableCellWithReuseIdentifier:@"header" forIndexPath:v7];
-    v10 = [(HUSymbolIconPickerViewController *)self selectedIconDescriptor];
-    [v9 setIconDescriptor:v10];
+    v9 = [viewCopy dequeueReusableCellWithReuseIdentifier:@"header" forIndexPath:pathCopy];
+    selectedIconDescriptor = [(HUSymbolIconPickerViewController *)self selectedIconDescriptor];
+    [v9 setIconDescriptor:selectedIconDescriptor];
 
     [v9 setUserInteractionEnabled:0];
   }
@@ -623,34 +623,34 @@ LABEL_9:
   return v9;
 }
 
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (([v8 isEqualToString:*MEMORY[0x277D767D0]] & 1) == 0)
+  viewCopy = view;
+  kindCopy = kind;
+  pathCopy = path;
+  if (([kindCopy isEqualToString:*MEMORY[0x277D767D0]] & 1) == 0)
   {
-    NSLog(&cfstr_AskedForAViewF.isa, v8);
+    NSLog(&cfstr_AskedForAViewF.isa, kindCopy);
   }
 
-  v10 = [v7 dequeueReusableSupplementaryViewOfKind:v8 withReuseIdentifier:@"colorTintSeparator" forIndexPath:v9];
-  v11 = [MEMORY[0x277D75348] separatorColor];
-  [v10 setBackgroundColor:v11];
+  v10 = [viewCopy dequeueReusableSupplementaryViewOfKind:kindCopy withReuseIdentifier:@"colorTintSeparator" forIndexPath:pathCopy];
+  separatorColor = [MEMORY[0x277D75348] separatorColor];
+  [v10 setBackgroundColor:separatorColor];
 
   return v10;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 indexPathsForSelectedItems];
+  viewCopy = view;
+  pathCopy = path;
+  indexPathsForSelectedItems = [viewCopy indexPathsForSelectedItems];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v9 = [v8 countByEnumeratingWithState:&v28 objects:v33 count:16];
+  v9 = [indexPathsForSelectedItems countByEnumeratingWithState:&v28 objects:v33 count:16];
   if (v9)
   {
     v10 = v9;
@@ -661,62 +661,62 @@ LABEL_9:
       {
         if (*v29 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(indexPathsForSelectedItems);
         }
 
         v13 = *(*(&v28 + 1) + 8 * i);
-        if ([v7 compare:v13])
+        if ([pathCopy compare:v13])
         {
-          v14 = [v13 section];
-          if (v14 == [v7 section])
+          section = [v13 section];
+          if (section == [pathCopy section])
           {
-            [v6 deselectItemAtIndexPath:v13 animated:1];
+            [viewCopy deselectItemAtIndexPath:v13 animated:1];
           }
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v28 objects:v33 count:16];
+      v10 = [indexPathsForSelectedItems countByEnumeratingWithState:&v28 objects:v33 count:16];
     }
 
     while (v10);
   }
 
-  v15 = [v7 section];
-  if (v15 == 2)
+  section2 = [pathCopy section];
+  if (section2 == 2)
   {
-    v19 = [(HUSymbolIconPickerViewController *)self iconDescriptors];
-    v18 = [v19 objectAtIndexedSubscript:{objc_msgSend(v7, "item")}];
+    iconDescriptors = [(HUSymbolIconPickerViewController *)self iconDescriptors];
+    indexPathsForVisibleItems = [iconDescriptors objectAtIndexedSubscript:{objc_msgSend(pathCopy, "item")}];
 
     v20 = objc_alloc(MEMORY[0x277D14728]);
-    v21 = [v18 identifier];
-    v22 = [v18 imageSymbolConfiguration];
-    v23 = [v20 initWithSystemImageNamed:v21 configuration:v22];
+    identifier = [indexPathsForVisibleItems identifier];
+    imageSymbolConfiguration = [indexPathsForVisibleItems imageSymbolConfiguration];
+    v23 = [v20 initWithSystemImageNamed:identifier configuration:imageSymbolConfiguration];
     [(HUSymbolIconPickerViewController *)self setSelectedIconDescriptor:v23];
 
     [(HUSymbolIconPickerViewController *)self applyTintColor];
-    v24 = [(HUSymbolIconPickerViewController *)self navigationItem];
-    v25 = [v24 rightBarButtonItem];
-    [v25 setEnabled:1];
+    navigationItem = [(HUSymbolIconPickerViewController *)self navigationItem];
+    rightBarButtonItem = [navigationItem rightBarButtonItem];
+    [rightBarButtonItem setEnabled:1];
 
     goto LABEL_15;
   }
 
-  if (v15 == 1)
+  if (section2 == 1)
   {
-    v16 = [objc_opt_class() tintColors];
-    v17 = [v16 objectAtIndexedSubscript:{objc_msgSend(v7, "item")}];
+    tintColors = [objc_opt_class() tintColors];
+    v17 = [tintColors objectAtIndexedSubscript:{objc_msgSend(pathCopy, "item")}];
     [(HUSymbolIconPickerViewController *)self setSelectedTintColor:v17];
 
     [(HUSymbolIconPickerViewController *)self applyTintColor];
-    v18 = [v6 indexPathsForVisibleItems];
-    [v6 reconfigureItemsAtIndexPaths:v18];
+    indexPathsForVisibleItems = [viewCopy indexPathsForVisibleItems];
+    [viewCopy reconfigureItemsAtIndexPaths:indexPathsForVisibleItems];
 LABEL_15:
   }
 
   v26 = [MEMORY[0x277CCAA70] indexPathForItem:0 inSection:0];
   v32 = v26;
   v27 = [MEMORY[0x277CBEA60] arrayWithObjects:&v32 count:1];
-  [v6 reloadItemsAtIndexPaths:v27];
+  [viewCopy reloadItemsAtIndexPaths:v27];
 }
 
 - (HUSymbolIconPickerDelegate)delegate

@@ -1,11 +1,11 @@
 @interface AVAudioSessionXPCServer
 - (AVAudioSessionXPCServer)init;
-- (AVAudioSessionXPCServer)initWithDelegate:(id)a3;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (AVAudioSessionXPCServer)initWithDelegate:(id)delegate;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (id).cxx_construct;
 - (void)dealloc;
 - (void)init2;
-- (void)removeConnection:(id)a3;
+- (void)removeConnection:(id)connection;
 @end
 
 @implementation AVAudioSessionXPCServer
@@ -71,8 +71,8 @@
     v8 = *(v4 + 9);
     *(v4 + 9) = v7;
 
-    v9 = [*(v4 + 9) _queue];
-    label = dispatch_queue_get_label(v9);
+    _queue = [*(v4 + 9) _queue];
+    label = dispatch_queue_get_label(_queue);
     std::string::basic_string[abi:ne200100]<0>(buf, label);
     avas::CreateFixedPriorityDispatchQueue(buf, QOS_CLASS_USER_INTERACTIVE, &v18);
     if (v21 < 0)
@@ -81,8 +81,8 @@
     }
 
     [*(v4 + 9) _setQueue:v18];
-    v11 = [*(v4 + 9) endpoint];
-    avas::SetServerXPCListenerEndpoint(v11, v12);
+    endpoint = [*(v4 + 9) endpoint];
+    avas::SetServerXPCListenerEndpoint(endpoint, v12);
 
     objc_initWeak(buf, v4);
     v16 = MEMORY[0x277D85DD0];
@@ -117,11 +117,11 @@ AVAudioIONodeSessionDirectServer *__31__AVAudioSessionXPCServer_init__block_invo
   return v3;
 }
 
-- (AVAudioSessionXPCServer)initWithDelegate:(id)a3
+- (AVAudioSessionXPCServer)initWithDelegate:(id)delegate
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = *avas::server::gSessionServerLog(v5);
+  delegateCopy = delegate;
+  v6 = *avas::server::gSessionServerLog(delegateCopy);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
@@ -151,13 +151,13 @@ AVAudioIONodeSessionDirectServer *__31__AVAudioSessionXPCServer_init__block_invo
       }
     }
 
-    objc_storeStrong(v7 + 8, a3);
+    objc_storeStrong(v7 + 8, delegate);
     v10 = [objc_alloc(MEMORY[0x277CCAE98]) initWithMachServiceName:@"com.apple.audio.AudioSession"];
     v11 = *(v7 + 9);
     *(v7 + 9) = v10;
 
-    v12 = [*(v7 + 9) _queue];
-    label = dispatch_queue_get_label(v12);
+    _queue = [*(v7 + 9) _queue];
+    label = dispatch_queue_get_label(_queue);
     std::string::basic_string[abi:ne200100]<0>(buf, label);
     avas::CreateFixedPriorityDispatchQueue(buf, QOS_CLASS_USER_INTERACTIVE, &v21);
     if (v24 < 0)
@@ -166,8 +166,8 @@ AVAudioIONodeSessionDirectServer *__31__AVAudioSessionXPCServer_init__block_invo
     }
 
     [*(v7 + 9) _setQueue:v21];
-    v14 = [*(v7 + 9) endpoint];
-    avas::SetServerXPCListenerEndpoint(v14, v15);
+    endpoint = [*(v7 + 9) endpoint];
+    avas::SetServerXPCListenerEndpoint(endpoint, v15);
 
     objc_initWeak(buf, v7);
     v19 = MEMORY[0x277D85DD0];
@@ -254,7 +254,7 @@ AVAudioIONodeSessionDirectServer *__44__AVAudioSessionXPCServer_initWithDelegate
     v20 = 1024;
     v21 = 371;
     v22 = 2048;
-    v23 = self;
+    selfCopy = self;
     _os_log_impl(&dword_241701000, v11, OS_LOG_TYPE_DEFAULT, "%25s:%-5d Server %p deallocated", buf, 0x1Cu);
   }
 
@@ -264,15 +264,15 @@ AVAudioIONodeSessionDirectServer *__44__AVAudioSessionXPCServer_initWithDelegate
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  listenerCopy = listener;
+  connectionCopy = connection;
+  v8 = connectionCopy;
   if (self->_needsDefaultWorldInit)
   {
-    v9 = *avas::server::gSessionServerLog(v7);
+    v9 = *avas::server::gSessionServerLog(connectionCopy);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       LODWORD(buf[0].__r_.__value_.__l.__data_) = 136315394;
@@ -292,8 +292,8 @@ AVAudioIONodeSessionDirectServer *__44__AVAudioSessionXPCServer_initWithDelegate
 
   [(avas::server *)v8 setExportedInterface:self->_exportedInterface];
   [(avas::server *)v8 setRemoteObjectInterface:self->_callbackInterface];
-  v11 = [(avas::server *)v8 _queue];
-  label = dispatch_queue_get_label(v11);
+  _queue = [(avas::server *)v8 _queue];
+  label = dispatch_queue_get_label(_queue);
   std::string::basic_string[abi:ne200100]<0>(buf, label);
   avas::CreateFixedPriorityDispatchQueue(&buf[0].__r_.__value_.__l.__data_, QOS_CLASS_USER_INTERACTIVE, &v28);
   if (SHIBYTE(buf[0].__r_.__value_.__r.__words[2]) < 0)
@@ -305,7 +305,7 @@ AVAudioIONodeSessionDirectServer *__44__AVAudioSessionXPCServer_initWithDelegate
   LODWORD(buf[0].__r_.__value_.__l.__data_) = 0;
   memset(&buf[0].__r_.__value_.__r.__words[1], 0, 40);
   LODWORD(buf[0].__r_.__value_.__l.__data_) = [(avas::server *)v8 processIdentifier];
-  objc_storeStrong(&buf[0].__r_.__value_.__l.__size_, a4);
+  objc_storeStrong(&buf[0].__r_.__value_.__l.__size_, connection);
   v13 = [AVAudioSessionRemoteXPCClient alloc];
   data = buf[0].__r_.__value_.__l.__data_;
   v25 = buf[0].__r_.__value_.__l.__size_;
@@ -370,12 +370,12 @@ void __62__AVAudioSessionXPCServer_listener_shouldAcceptNewConnection___block_in
   [v3 setExportedObject:0];
 }
 
-- (void)removeConnection:(id)a3
+- (void)removeConnection:(id)connection
 {
   obj = self->_connections;
-  v5 = a3;
+  connectionCopy = connection;
   objc_sync_enter(obj);
-  [(NSMutableArray *)self->_connections removeObject:v5];
+  [(NSMutableArray *)self->_connections removeObject:connectionCopy];
 
   objc_sync_exit(obj);
 }

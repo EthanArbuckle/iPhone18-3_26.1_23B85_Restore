@@ -7,45 +7,45 @@
 - (BOOL)wasThrown;
 - (BOOL)writable;
 - (NSString)name;
-- (RWIProtocolRuntimePropertyDescriptor)initWithName:(id)a3;
+- (RWIProtocolRuntimePropertyDescriptor)initWithName:(id)name;
 - (RWIProtocolRuntimeRemoteObject)get;
 - (RWIProtocolRuntimeRemoteObject)set;
 - (RWIProtocolRuntimeRemoteObject)symbol;
 - (RWIProtocolRuntimeRemoteObject)value;
-- (void)setGet:(id)a3;
-- (void)setName:(id)a3;
-- (void)setSet:(id)a3;
-- (void)setSymbol:(id)a3;
-- (void)setValue:(id)a3;
+- (void)setGet:(id)get;
+- (void)setName:(id)name;
+- (void)setSet:(id)set;
+- (void)setSymbol:(id)symbol;
+- (void)setValue:(id)value;
 @end
 
 @implementation RWIProtocolRuntimePropertyDescriptor
 
-- (RWIProtocolRuntimePropertyDescriptor)initWithName:(id)a3
+- (RWIProtocolRuntimePropertyDescriptor)initWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v8.receiver = self;
   v8.super_class = RWIProtocolRuntimePropertyDescriptor;
   v5 = [(RWIProtocolJSONObject *)&v8 init];
   if (v5)
   {
-    if (!v4)
+    if (!nameCopy)
     {
       [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"required property '%@' cannot be nil", @"name"}];
     }
 
-    [(RWIProtocolRuntimePropertyDescriptor *)v5 setName:v4];
+    [(RWIProtocolRuntimePropertyDescriptor *)v5 setName:nameCopy];
     v6 = v5;
   }
 
   return v5;
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolRuntimePropertyDescriptor;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"name"];
+  [(RWIProtocolJSONObject *)&v3 setString:name forKey:@"name"];
 }
 
 - (NSString)name
@@ -57,11 +57,11 @@
   return v2;
 }
 
-- (void)setValue:(id)a3
+- (void)setValue:(id)value
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolRuntimePropertyDescriptor;
-  [(RWIProtocolJSONObject *)&v3 setObject:a3 forKey:@"value"];
+  [(RWIProtocolJSONObject *)&v3 setObject:value forKey:@"value"];
 }
 
 - (RWIProtocolRuntimeRemoteObject)value
@@ -126,11 +126,11 @@
   return [(RWIProtocolJSONObject *)&v3 BOOLForKey:@"writable"];
 }
 
-- (void)setGet:(id)a3
+- (void)setGet:(id)get
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolRuntimePropertyDescriptor;
-  [(RWIProtocolJSONObject *)&v3 setObject:a3 forKey:@"get"];
+  [(RWIProtocolJSONObject *)&v3 setObject:get forKey:@"get"];
 }
 
 - (RWIProtocolRuntimeRemoteObject)get
@@ -188,11 +188,11 @@
   return v7;
 }
 
-- (void)setSet:(id)a3
+- (void)setSet:(id)set
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolRuntimePropertyDescriptor;
-  [(RWIProtocolJSONObject *)&v3 setObject:a3 forKey:@"set"];
+  [(RWIProtocolJSONObject *)&v3 setObject:set forKey:@"set"];
 }
 
 - (RWIProtocolRuntimeRemoteObject)set
@@ -278,11 +278,11 @@
   return [(RWIProtocolJSONObject *)&v3 BOOLForKey:@"isOwn"];
 }
 
-- (void)setSymbol:(id)a3
+- (void)setSymbol:(id)symbol
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolRuntimePropertyDescriptor;
-  [(RWIProtocolJSONObject *)&v3 setObject:a3 forKey:@"symbol"];
+  [(RWIProtocolJSONObject *)&v3 setObject:symbol forKey:@"symbol"];
 }
 
 - (RWIProtocolRuntimeRemoteObject)symbol

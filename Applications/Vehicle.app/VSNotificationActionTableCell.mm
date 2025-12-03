@@ -1,20 +1,20 @@
 @interface VSNotificationActionTableCell
-- (_TtC7Vehicle29VSNotificationActionTableCell)initWithCoder:(id)a3;
-- (_TtC7Vehicle29VSNotificationActionTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (void)setHighlighted:(BOOL)a3 animated:(BOOL)a4;
+- (_TtC7Vehicle29VSNotificationActionTableCell)initWithCoder:(id)coder;
+- (_TtC7Vehicle29VSNotificationActionTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated;
 @end
 
 @implementation VSNotificationActionTableCell
 
-- (void)setHighlighted:(BOOL)a3 animated:(BOOL)a4
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated
 {
-  v6 = self;
-  sub_10001F920(a3, a4);
+  selfCopy = self;
+  sub_10001F920(highlighted, animated);
 }
 
-- (_TtC7Vehicle29VSNotificationActionTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC7Vehicle29VSNotificationActionTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = self + OBJC_IVAR____TtC7Vehicle29VSNotificationActionTableCell_notificationAction;
@@ -37,12 +37,12 @@
 
   v11.receiver = self;
   v11.super_class = type metadata accessor for VSNotificationActionTableCell();
-  v9 = [(VSTableCell *)&v11 initWithStyle:a3 reuseIdentifier:v7];
+  v9 = [(VSTableCell *)&v11 initWithStyle:style reuseIdentifier:v7];
 
   return v9;
 }
 
-- (_TtC7Vehicle29VSNotificationActionTableCell)initWithCoder:(id)a3
+- (_TtC7Vehicle29VSNotificationActionTableCell)initWithCoder:(id)coder
 {
   v4 = self + OBJC_IVAR____TtC7Vehicle29VSNotificationActionTableCell_notificationAction;
   *v4 = 0u;
@@ -51,8 +51,8 @@
   v4[48] = 0;
   v8.receiver = self;
   v8.super_class = type metadata accessor for VSNotificationActionTableCell();
-  v5 = a3;
-  v6 = [(VSTableCell *)&v8 initWithCoder:v5];
+  coderCopy = coder;
+  v6 = [(VSTableCell *)&v8 initWithCoder:coderCopy];
 
   if (v6)
   {

@@ -1,10 +1,10 @@
 @interface CMIMUCalManagerInternal
 - (CMIMUCalManagerInternal)init;
-- (void)_eraseStoreForParam:(int)a3;
-- (void)_insertEstimate:(const SensorParameterEstimate *)a3 intervalBeforeCurrentTimeSec:(double)a4;
-- (void)_insertImpact:(const DeviceImpactEvent *)a3;
-- (void)_readAndLogforParam:(int)a3;
-- (void)_sendCommand:(CMIMUCalTestCommand *)a3;
+- (void)_eraseStoreForParam:(int)param;
+- (void)_insertEstimate:(const SensorParameterEstimate *)estimate intervalBeforeCurrentTimeSec:(double)sec;
+- (void)_insertImpact:(const DeviceImpactEvent *)impact;
+- (void)_readAndLogforParam:(int)param;
+- (void)_sendCommand:(CMIMUCalTestCommand *)command;
 - (void)dealloc;
 @end
 
@@ -40,44 +40,44 @@
   [(CMIMUCalManagerInternal *)&v4 dealloc];
 }
 
-- (void)_sendCommand:(CMIMUCalTestCommand *)a3
+- (void)_sendCommand:(CMIMUCalTestCommand *)command
 {
   fPrivateQueue = self->fPrivateQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
-  v4 = *&a3->var0.var3[2];
-  v11 = *&a3->var0.var3[4];
-  v5 = *&a3->var1.var0;
-  v12 = *&a3->var0.var4;
+  v4 = *&command->var0.var3[2];
+  v11 = *&command->var0.var3[4];
+  v5 = *&command->var1.var0;
+  v12 = *&command->var0.var4;
   v13 = v5;
-  v6 = *a3->var0.var3;
-  v8 = *&a3->var0.var0;
+  v6 = *command->var0.var3;
+  v8 = *&command->var0.var0;
   v9 = v6;
   v7[2] = sub_19B6640B4;
   v7[3] = &unk_1E7533C00;
-  v14 = *&a3->var1.var2;
+  v14 = *&command->var1.var2;
   v10 = v4;
   v7[4] = self;
   dispatch_async(fPrivateQueue, v7);
 }
 
-- (void)_insertEstimate:(const SensorParameterEstimate *)a3 intervalBeforeCurrentTimeSec:(double)a4
+- (void)_insertEstimate:(const SensorParameterEstimate *)estimate intervalBeforeCurrentTimeSec:(double)sec
 {
-  v4 = *&a3->var3[4];
-  v6[2] = *&a3->var3[2];
+  v4 = *&estimate->var3[4];
+  v6[2] = *&estimate->var3[2];
   *v7 = v4;
-  *&v7[10] = *(&a3->var3[5] + 2);
-  v5 = *a3->var3;
-  v6[0] = *&a3->var0;
+  *&v7[10] = *(&estimate->var3[5] + 2);
+  v5 = *estimate->var3;
+  v6[0] = *&estimate->var0;
   v6[1] = v5;
   v9[0] = 0;
   v8 = 0;
   *(v9 + 6) = 0;
-  *(&v9[1] + 6) = a4;
+  *(&v9[1] + 6) = sec;
   objc_msgSend__sendCommand_(self, a2, v6);
 }
 
-- (void)_insertImpact:(const DeviceImpactEvent *)a3
+- (void)_insertImpact:(const DeviceImpactEvent *)impact
 {
   v14 = *MEMORY[0x1E69E9840];
   *&v13[16] = 0;
@@ -86,8 +86,8 @@
   v10 = 0u;
   v11 = 0u;
   v9 = 0u;
-  *&v13[10] = *&a3->var0;
-  *&v13[15] = *(&a3->var0 + 5);
+  *&v13[10] = *&impact->var0;
+  *&v13[15] = *(&impact->var0 + 5);
   v4[4] = *v13;
   v5 = *&v13[16];
   memset(v4, 0, 64);
@@ -98,10 +98,10 @@
   v3 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_eraseStoreForParam:(int)a3
+- (void)_eraseStoreForParam:(int)param
 {
   v3[0] = 0;
-  v3[1] = a3;
+  v3[1] = param;
   v4 = 0u;
   v5 = 0u;
   v6 = 0u;
@@ -112,10 +112,10 @@
   objc_msgSend__sendCommand_(self, a2, v3);
 }
 
-- (void)_readAndLogforParam:(int)a3
+- (void)_readAndLogforParam:(int)param
 {
   v3[0] = 0;
-  v3[1] = a3;
+  v3[1] = param;
   v4 = 0u;
   v5 = 0u;
   v6 = 0u;

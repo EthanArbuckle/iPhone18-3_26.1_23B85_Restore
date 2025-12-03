@@ -1,38 +1,38 @@
 @interface NCSchedulerViewCell
-+ (double)_widthForHour:(unint64_t)a3;
-+ (double)preferredHeightForText:(id)a3 width:(double)a4;
++ (double)_widthForHour:(unint64_t)hour;
++ (double)preferredHeightForText:(id)text width:(double)width;
 + (id)_drawingContext;
-- (NCSchedulerViewCell)initWithFrame:(CGRect)a3;
+- (NCSchedulerViewCell)initWithFrame:(CGRect)frame;
 - (NCSchedulerViewCellDelegate)delegate;
 - (double)_buttonSymbolSize;
-- (void)_buttonPressed:(id)a3;
-- (void)_timeChanged:(id)a3;
-- (void)configureWithSymbolName:(id)a3 symbolColor:(id)a4 title:(id)a5 timeOfDay:(id)a6 delegate:(id)a7 top:(BOOL)a8 bottom:(BOOL)a9;
+- (void)_buttonPressed:(id)pressed;
+- (void)_timeChanged:(id)changed;
+- (void)configureWithSymbolName:(id)name symbolColor:(id)color title:(id)title timeOfDay:(id)day delegate:(id)delegate top:(BOOL)top bottom:(BOOL)bottom;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 @end
 
 @implementation NCSchedulerViewCell
 
-+ (double)preferredHeightForText:(id)a3 width:(double)a4
++ (double)preferredHeightForText:(id)text width:(double)width
 {
   v26[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [a1 _font];
-  [a1 _widthForHour:0];
+  textCopy = text;
+  _font = [self _font];
+  [self _widthForHour:0];
   v9 = v8;
-  [a1 _widthForHour:12];
+  [self _widthForHour:12];
   if (v9 >= v10)
   {
     v10 = v9;
   }
 
-  v11 = fmax(a4 - v10 + -8.0 + -38.0, 0.0);
+  v11 = fmax(width - v10 + -8.0 + -38.0, 0.0);
   v25 = *MEMORY[0x277D740A8];
-  v26[0] = v7;
+  v26[0] = _font;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v26 forKeys:&v25 count:1];
-  v13 = [objc_opt_class() _drawingContext];
-  [v6 boundingRectWithSize:1 options:v12 attributes:v13 context:{v11, 0.0}];
+  _drawingContext = [objc_opt_class() _drawingContext];
+  [textCopy boundingRectWithSize:1 options:v12 attributes:_drawingContext context:{v11, 0.0}];
   v15 = v14;
   v17 = v16;
   v19 = v18;
@@ -51,17 +51,17 @@
   return v23;
 }
 
-- (void)configureWithSymbolName:(id)a3 symbolColor:(id)a4 title:(id)a5 timeOfDay:(id)a6 delegate:(id)a7 top:(BOOL)a8 bottom:(BOOL)a9
+- (void)configureWithSymbolName:(id)name symbolColor:(id)color title:(id)title timeOfDay:(id)day delegate:(id)delegate top:(BOOL)top bottom:(BOOL)bottom
 {
-  v9 = a8;
-  v15 = a9;
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v33 = v16;
-  v21 = v17;
+  topCopy = top;
+  bottomCopy2 = bottom;
+  nameCopy = name;
+  colorCopy = color;
+  titleCopy = title;
+  dayCopy = day;
+  delegateCopy = delegate;
+  v33 = nameCopy;
+  v21 = colorCopy;
   button = self->_button;
   if (v33 && v21)
   {
@@ -76,21 +76,21 @@
   }
 
   [(NSLayoutConstraint *)self->_labelLeadingConstraint setConstant:v23];
-  [(UILabel *)self->_label setText:v18];
-  if (v19)
+  [(UILabel *)self->_label setText:titleCopy];
+  if (dayCopy)
   {
-    v24 = [MEMORY[0x277CBEA80] currentCalendar];
-    v25 = [v19 hour];
-    v26 = [v19 minute];
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+    hour = [dayCopy hour];
+    minute = [dayCopy minute];
     [MEMORY[0x277CBEAA8] now];
-    v27 = v18;
-    v29 = v28 = v9;
-    v30 = [v24 dateBySettingHour:v25 minute:v26 second:0 ofDate:v29 options:0];
+    v27 = titleCopy;
+    v29 = v28 = topCopy;
+    v30 = [currentCalendar dateBySettingHour:hour minute:minute second:0 ofDate:v29 options:0];
 
     [(UIDatePicker *)self->_datePicker setDate:v30];
-    v9 = v28;
-    v18 = v27;
-    v15 = a9;
+    topCopy = v28;
+    titleCopy = v27;
+    bottomCopy2 = bottom;
     [(UIDatePicker *)self->_datePicker setHidden:0];
   }
 
@@ -99,7 +99,7 @@
     [(UIDatePicker *)self->_datePicker setHidden:1];
   }
 
-  if (v9)
+  if (topCopy)
   {
     v31 = 16.0;
   }
@@ -110,7 +110,7 @@
   }
 
   [(NSLayoutConstraint *)self->_backgroundViewTopConstraint setConstant:v31];
-  if (v15)
+  if (bottomCopy2)
   {
     v32 = 16.0;
   }
@@ -121,21 +121,21 @@
   }
 
   [(NSLayoutConstraint *)self->_backgroundViewBottomConstraint setConstant:v32];
-  [(UIView *)self->_bottomLineView setHidden:v15];
-  [(NCSchedulerViewCell *)self setDelegate:v20];
+  [(UIView *)self->_bottomLineView setHidden:bottomCopy2];
+  [(NCSchedulerViewCell *)self setDelegate:delegateCopy];
   [(NCSchedulerViewCell *)self setNeedsLayout];
 }
 
-- (NCSchedulerViewCell)initWithFrame:(CGRect)a3
+- (NCSchedulerViewCell)initWithFrame:(CGRect)frame
 {
   v148.receiver = self;
   v148.super_class = NCSchedulerViewCell;
-  v3 = [(NCSchedulerViewCell *)&v148 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(NCSchedulerViewCell *)&v148 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(NCSchedulerViewCell *)v3 traitCollection];
-    if ([v5 userInterfaceStyle] == 2)
+    traitCollection = [(NCSchedulerViewCell *)v3 traitCollection];
+    if ([traitCollection userInterfaceStyle] == 2)
     {
       [MEMORY[0x277D75348] systemGray5Color];
     }
@@ -146,8 +146,8 @@
     }
     v6 = ;
 
-    v7 = [(NCSchedulerViewCell *)v4 traitCollection];
-    if ([v7 userInterfaceStyle] == 2)
+    traitCollection2 = [(NCSchedulerViewCell *)v4 traitCollection];
+    if ([traitCollection2 userInterfaceStyle] == 2)
     {
       [MEMORY[0x277D75348] systemGray3Color];
     }
@@ -170,8 +170,8 @@
     [(UIView *)v4->_topCornersView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIView *)v4->_topCornersView _setContinuousCornerRadius:16.0];
     [(UIView *)v4->_topCornersView setBackgroundColor:v6];
-    v15 = [(NCSchedulerViewCell *)v4 contentView];
-    [v15 addSubview:v4->_topCornersView];
+    contentView = [(NCSchedulerViewCell *)v4 contentView];
+    [contentView addSubview:v4->_topCornersView];
 
     v16 = [objc_alloc(MEMORY[0x277D75D18]) initWithFrame:{v9, v10, v11, v12}];
     backgroundView = v4->_backgroundView;
@@ -179,8 +179,8 @@
 
     [(UIView *)v4->_backgroundView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIView *)v4->_backgroundView setBackgroundColor:v6];
-    v18 = [(NCSchedulerViewCell *)v4 contentView];
-    [v18 addSubview:v4->_backgroundView];
+    contentView2 = [(NCSchedulerViewCell *)v4 contentView];
+    [contentView2 addSubview:v4->_backgroundView];
 
     v19 = [objc_alloc(MEMORY[0x277D75D18]) initWithFrame:{v9, v10, v11, v12}];
     bottomCornersView = v4->_bottomCornersView;
@@ -189,8 +189,8 @@
     [(UIView *)v4->_bottomCornersView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIView *)v4->_bottomCornersView _setContinuousCornerRadius:16.0];
     [(UIView *)v4->_bottomCornersView setBackgroundColor:v6];
-    v21 = [(NCSchedulerViewCell *)v4 contentView];
-    [v21 addSubview:v4->_bottomCornersView];
+    contentView3 = [(NCSchedulerViewCell *)v4 contentView];
+    [contentView3 addSubview:v4->_bottomCornersView];
 
     v22 = [objc_alloc(MEMORY[0x277D75D18]) initWithFrame:{v9, v10, v11, v12}];
     bottomLineView = v4->_bottomLineView;
@@ -198,8 +198,8 @@
 
     [(UIView *)v4->_bottomLineView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIView *)v4->_bottomLineView setBackgroundColor:v146];
-    v24 = [(NCSchedulerViewCell *)v4 contentView];
-    [v24 addSubview:v4->_bottomLineView];
+    contentView4 = [(NCSchedulerViewCell *)v4 contentView];
+    [contentView4 addSubview:v4->_bottomLineView];
 
     v25 = +[NCSymbolButton button];
     button = v4->_button;
@@ -207,8 +207,8 @@
 
     [(NCSymbolButton *)v4->_button setTranslatesAutoresizingMaskIntoConstraints:0];
     [(NCSymbolButton *)v4->_button addTarget:v4 action:sel__buttonPressed_ forControlEvents:64];
-    v27 = [(NCSchedulerViewCell *)v4 contentView];
-    [v27 addSubview:v4->_button];
+    contentView5 = [(NCSchedulerViewCell *)v4 contentView];
+    [contentView5 addSubview:v4->_button];
 
     v28 = [objc_alloc(MEMORY[0x277D756B8]) initWithFrame:{v9, v10, v11, v12}];
     label = v4->_label;
@@ -216,22 +216,22 @@
 
     [(UILabel *)v4->_label setTranslatesAutoresizingMaskIntoConstraints:0];
     v30 = v4->_label;
-    v31 = [MEMORY[0x277D75348] labelColor];
-    [(UILabel *)v30 setHighlightedTextColor:v31];
+    labelColor = [MEMORY[0x277D75348] labelColor];
+    [(UILabel *)v30 setHighlightedTextColor:labelColor];
 
     v32 = v4->_label;
-    v33 = [MEMORY[0x277D75348] labelColor];
-    [(UILabel *)v32 setTextColor:v33];
+    labelColor2 = [MEMORY[0x277D75348] labelColor];
+    [(UILabel *)v32 setTextColor:labelColor2];
 
     [(UILabel *)v4->_label setNumberOfLines:0];
     v34 = v4->_label;
-    v35 = [objc_opt_class() _font];
-    [(UILabel *)v34 setFont:v35];
+    _font = [objc_opt_class() _font];
+    [(UILabel *)v34 setFont:_font];
 
     [(UILabel *)v4->_label setMinimumScaleFactor:0.5];
     [(UILabel *)v4->_label setAdjustsFontSizeToFitWidth:1];
-    v36 = [(NCSchedulerViewCell *)v4 contentView];
-    [v36 addSubview:v4->_label];
+    contentView6 = [(NCSchedulerViewCell *)v4 contentView];
+    [contentView6 addSubview:v4->_label];
 
     v37 = [objc_alloc(MEMORY[0x277D753E8]) initWithFrame:{v9, v10, v11, v12}];
     datePicker = v4->_datePicker;
@@ -242,171 +242,171 @@
     [(UIDatePicker *)v4->_datePicker setPreferredDatePickerStyle:3];
     [(UIDatePicker *)v4->_datePicker setClipsToBounds:1];
     [(UIDatePicker *)v4->_datePicker addTarget:v4 action:sel__timeChanged_ forControlEvents:0x40000];
-    v39 = [(NCSchedulerViewCell *)v4 contentView];
-    [v39 addSubview:v4->_datePicker];
+    contentView7 = [(NCSchedulerViewCell *)v4 contentView];
+    [contentView7 addSubview:v4->_datePicker];
 
     v40 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v41 = [(UIView *)v4->_topCornersView topAnchor];
-    v42 = [(NCSchedulerViewCell *)v4 contentView];
-    [v42 topAnchor];
+    topAnchor = [(UIView *)v4->_topCornersView topAnchor];
+    contentView8 = [(NCSchedulerViewCell *)v4 contentView];
+    [contentView8 topAnchor];
     v43 = v147 = v6;
-    v44 = [v41 constraintEqualToAnchor:v43];
+    v44 = [topAnchor constraintEqualToAnchor:v43];
     [v40 addObject:v44];
 
-    v45 = [(UIView *)v4->_topCornersView heightAnchor];
-    v46 = [v45 constraintEqualToConstant:32.0];
+    heightAnchor = [(UIView *)v4->_topCornersView heightAnchor];
+    v46 = [heightAnchor constraintEqualToConstant:32.0];
     [v40 addObject:v46];
 
-    v47 = [(UIView *)v4->_topCornersView leadingAnchor];
-    v48 = [(NCSchedulerViewCell *)v4 contentView];
-    v49 = [v48 leadingAnchor];
-    v50 = [v47 constraintEqualToAnchor:v49];
+    leadingAnchor = [(UIView *)v4->_topCornersView leadingAnchor];
+    contentView9 = [(NCSchedulerViewCell *)v4 contentView];
+    leadingAnchor2 = [contentView9 leadingAnchor];
+    v50 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     [v40 addObject:v50];
 
-    v51 = [(NCSchedulerViewCell *)v4 contentView];
-    v52 = [v51 trailingAnchor];
-    v53 = [(UIView *)v4->_topCornersView trailingAnchor];
-    v54 = [v52 constraintEqualToAnchor:v53];
+    contentView10 = [(NCSchedulerViewCell *)v4 contentView];
+    trailingAnchor = [contentView10 trailingAnchor];
+    trailingAnchor2 = [(UIView *)v4->_topCornersView trailingAnchor];
+    v54 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     [v40 addObject:v54];
 
-    v55 = [(UIView *)v4->_backgroundView topAnchor];
-    v56 = [(NCSchedulerViewCell *)v4 contentView];
-    v57 = [v56 topAnchor];
-    v58 = [v55 constraintEqualToAnchor:v57];
+    topAnchor2 = [(UIView *)v4->_backgroundView topAnchor];
+    contentView11 = [(NCSchedulerViewCell *)v4 contentView];
+    topAnchor3 = [contentView11 topAnchor];
+    v58 = [topAnchor2 constraintEqualToAnchor:topAnchor3];
     backgroundViewTopConstraint = v4->_backgroundViewTopConstraint;
     v4->_backgroundViewTopConstraint = v58;
 
     [v40 addObject:v4->_backgroundViewTopConstraint];
-    v60 = [(NCSchedulerViewCell *)v4 contentView];
-    v61 = [v60 bottomAnchor];
-    v62 = [(UIView *)v4->_backgroundView bottomAnchor];
-    v63 = [v61 constraintEqualToAnchor:v62];
+    contentView12 = [(NCSchedulerViewCell *)v4 contentView];
+    bottomAnchor = [contentView12 bottomAnchor];
+    bottomAnchor2 = [(UIView *)v4->_backgroundView bottomAnchor];
+    v63 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     backgroundViewBottomConstraint = v4->_backgroundViewBottomConstraint;
     v4->_backgroundViewBottomConstraint = v63;
 
     [v40 addObject:v4->_backgroundViewBottomConstraint];
-    v65 = [(UIView *)v4->_backgroundView leadingAnchor];
-    v66 = [(NCSchedulerViewCell *)v4 contentView];
-    v67 = [v66 leadingAnchor];
-    v68 = [v65 constraintEqualToAnchor:v67];
+    leadingAnchor3 = [(UIView *)v4->_backgroundView leadingAnchor];
+    contentView13 = [(NCSchedulerViewCell *)v4 contentView];
+    leadingAnchor4 = [contentView13 leadingAnchor];
+    v68 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     [v40 addObject:v68];
 
-    v69 = [(NCSchedulerViewCell *)v4 contentView];
-    v70 = [v69 trailingAnchor];
-    v71 = [(UIView *)v4->_backgroundView trailingAnchor];
-    v72 = [v70 constraintEqualToAnchor:v71];
+    contentView14 = [(NCSchedulerViewCell *)v4 contentView];
+    trailingAnchor3 = [contentView14 trailingAnchor];
+    trailingAnchor4 = [(UIView *)v4->_backgroundView trailingAnchor];
+    v72 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     [v40 addObject:v72];
 
-    v73 = [(NCSchedulerViewCell *)v4 contentView];
-    v74 = [v73 bottomAnchor];
-    v75 = [(UIView *)v4->_bottomCornersView bottomAnchor];
-    v76 = [v74 constraintEqualToAnchor:v75];
+    contentView15 = [(NCSchedulerViewCell *)v4 contentView];
+    bottomAnchor3 = [contentView15 bottomAnchor];
+    bottomAnchor4 = [(UIView *)v4->_bottomCornersView bottomAnchor];
+    v76 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
     [v40 addObject:v76];
 
-    v77 = [(UIView *)v4->_bottomCornersView heightAnchor];
-    v78 = [v77 constraintEqualToConstant:32.0];
+    heightAnchor2 = [(UIView *)v4->_bottomCornersView heightAnchor];
+    v78 = [heightAnchor2 constraintEqualToConstant:32.0];
     [v40 addObject:v78];
 
-    v79 = [(UIView *)v4->_bottomCornersView leadingAnchor];
-    v80 = [(NCSchedulerViewCell *)v4 contentView];
-    v81 = [v80 leadingAnchor];
-    v82 = [v79 constraintEqualToAnchor:v81];
+    leadingAnchor5 = [(UIView *)v4->_bottomCornersView leadingAnchor];
+    contentView16 = [(NCSchedulerViewCell *)v4 contentView];
+    leadingAnchor6 = [contentView16 leadingAnchor];
+    v82 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
     [v40 addObject:v82];
 
-    v83 = [(NCSchedulerViewCell *)v4 contentView];
-    v84 = [v83 trailingAnchor];
-    v85 = [(UIView *)v4->_bottomCornersView trailingAnchor];
-    v86 = [v84 constraintEqualToAnchor:v85];
+    contentView17 = [(NCSchedulerViewCell *)v4 contentView];
+    trailingAnchor5 = [contentView17 trailingAnchor];
+    trailingAnchor6 = [(UIView *)v4->_bottomCornersView trailingAnchor];
+    v86 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
     [v40 addObject:v86];
 
-    v87 = [(NCSchedulerViewCell *)v4 contentView];
-    v88 = [v87 bottomAnchor];
-    v89 = [(UIView *)v4->_bottomLineView bottomAnchor];
-    v90 = [v88 constraintEqualToAnchor:v89];
+    contentView18 = [(NCSchedulerViewCell *)v4 contentView];
+    bottomAnchor5 = [contentView18 bottomAnchor];
+    bottomAnchor6 = [(UIView *)v4->_bottomLineView bottomAnchor];
+    v90 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6];
     [v40 addObject:v90];
 
-    v91 = [(UIView *)v4->_bottomLineView heightAnchor];
-    v92 = [v91 constraintEqualToConstant:0.5];
+    heightAnchor3 = [(UIView *)v4->_bottomLineView heightAnchor];
+    v92 = [heightAnchor3 constraintEqualToConstant:0.5];
     [v40 addObject:v92];
 
-    v93 = [(UIView *)v4->_bottomLineView leadingAnchor];
-    v94 = [(NCSchedulerViewCell *)v4 contentView];
-    v95 = [v94 leadingAnchor];
-    v96 = [v93 constraintEqualToAnchor:v95 constant:16.0];
+    leadingAnchor7 = [(UIView *)v4->_bottomLineView leadingAnchor];
+    contentView19 = [(NCSchedulerViewCell *)v4 contentView];
+    leadingAnchor8 = [contentView19 leadingAnchor];
+    v96 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8 constant:16.0];
     [v40 addObject:v96];
 
-    v97 = [(NCSchedulerViewCell *)v4 contentView];
-    v98 = [v97 trailingAnchor];
-    v99 = [(UIView *)v4->_bottomLineView trailingAnchor];
-    v100 = [v98 constraintEqualToAnchor:v99];
+    contentView20 = [(NCSchedulerViewCell *)v4 contentView];
+    trailingAnchor7 = [contentView20 trailingAnchor];
+    trailingAnchor8 = [(UIView *)v4->_bottomLineView trailingAnchor];
+    v100 = [trailingAnchor7 constraintEqualToAnchor:trailingAnchor8];
     [v40 addObject:v100];
 
-    v101 = [(NCSymbolButton *)v4->_button topAnchor];
-    v102 = [(NCSchedulerViewCell *)v4 contentView];
-    v103 = [v102 topAnchor];
-    v104 = [v101 constraintEqualToAnchor:v103];
+    topAnchor4 = [(NCSymbolButton *)v4->_button topAnchor];
+    contentView21 = [(NCSchedulerViewCell *)v4 contentView];
+    topAnchor5 = [contentView21 topAnchor];
+    v104 = [topAnchor4 constraintEqualToAnchor:topAnchor5];
     [v40 addObject:v104];
 
-    v105 = [(NCSymbolButton *)v4->_button bottomAnchor];
-    v106 = [(NCSchedulerViewCell *)v4 contentView];
-    v107 = [v106 bottomAnchor];
-    v108 = [v105 constraintEqualToAnchor:v107];
+    bottomAnchor7 = [(NCSymbolButton *)v4->_button bottomAnchor];
+    contentView22 = [(NCSchedulerViewCell *)v4 contentView];
+    bottomAnchor8 = [contentView22 bottomAnchor];
+    v108 = [bottomAnchor7 constraintEqualToAnchor:bottomAnchor8];
     [v40 addObject:v108];
 
-    v109 = [(NCSymbolButton *)v4->_button widthAnchor];
-    v110 = [v109 constraintEqualToConstant:44.0];
+    widthAnchor = [(NCSymbolButton *)v4->_button widthAnchor];
+    v110 = [widthAnchor constraintEqualToConstant:44.0];
     [v40 addObject:v110];
 
-    v111 = [(NCSymbolButton *)v4->_button leadingAnchor];
-    v112 = [(NCSchedulerViewCell *)v4 contentView];
-    v113 = [v112 leadingAnchor];
-    v114 = [v111 constraintEqualToAnchor:v113 constant:-3.0];
+    leadingAnchor9 = [(NCSymbolButton *)v4->_button leadingAnchor];
+    contentView23 = [(NCSchedulerViewCell *)v4 contentView];
+    leadingAnchor10 = [contentView23 leadingAnchor];
+    v114 = [leadingAnchor9 constraintEqualToAnchor:leadingAnchor10 constant:-3.0];
     [v40 addObject:v114];
 
-    v115 = [(UILabel *)v4->_label leadingAnchor];
-    v116 = [(NCSchedulerViewCell *)v4 contentView];
-    v117 = [v116 leadingAnchor];
-    v118 = [v115 constraintEqualToAnchor:v117];
+    leadingAnchor11 = [(UILabel *)v4->_label leadingAnchor];
+    contentView24 = [(NCSchedulerViewCell *)v4 contentView];
+    leadingAnchor12 = [contentView24 leadingAnchor];
+    v118 = [leadingAnchor11 constraintEqualToAnchor:leadingAnchor12];
     labelLeadingConstraint = v4->_labelLeadingConstraint;
     v4->_labelLeadingConstraint = v118;
 
     [v40 addObject:v4->_labelLeadingConstraint];
-    v120 = [(UILabel *)v4->_label centerYAnchor];
-    v121 = [(NCSchedulerViewCell *)v4 contentView];
-    v122 = [v121 centerYAnchor];
-    v123 = [v120 constraintEqualToAnchor:v122];
+    centerYAnchor = [(UILabel *)v4->_label centerYAnchor];
+    contentView25 = [(NCSchedulerViewCell *)v4 contentView];
+    centerYAnchor2 = [contentView25 centerYAnchor];
+    v123 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     [v40 addObject:v123];
 
-    v124 = [(UILabel *)v4->_label topAnchor];
-    v125 = [(NCSchedulerViewCell *)v4 contentView];
-    v126 = [v125 topAnchor];
-    v127 = [v124 constraintGreaterThanOrEqualToAnchor:v126 constant:8.0];
+    topAnchor6 = [(UILabel *)v4->_label topAnchor];
+    contentView26 = [(NCSchedulerViewCell *)v4 contentView];
+    topAnchor7 = [contentView26 topAnchor];
+    v127 = [topAnchor6 constraintGreaterThanOrEqualToAnchor:topAnchor7 constant:8.0];
     [v40 addObject:v127];
 
-    v128 = [(NCSchedulerViewCell *)v4 contentView];
-    v129 = [v128 bottomAnchor];
-    v130 = [(UILabel *)v4->_label bottomAnchor];
-    v131 = [v129 constraintGreaterThanOrEqualToAnchor:v130 constant:8.0];
+    contentView27 = [(NCSchedulerViewCell *)v4 contentView];
+    bottomAnchor9 = [contentView27 bottomAnchor];
+    bottomAnchor10 = [(UILabel *)v4->_label bottomAnchor];
+    v131 = [bottomAnchor9 constraintGreaterThanOrEqualToAnchor:bottomAnchor10 constant:8.0];
     [v40 addObject:v131];
 
-    v132 = [(NCSchedulerViewCell *)v4 contentView];
-    v133 = [v132 trailingAnchor];
-    v134 = [(UILabel *)v4->_label trailingAnchor];
-    v135 = [v133 constraintEqualToAnchor:v134 constant:0.0];
+    contentView28 = [(NCSchedulerViewCell *)v4 contentView];
+    trailingAnchor9 = [contentView28 trailingAnchor];
+    trailingAnchor10 = [(UILabel *)v4->_label trailingAnchor];
+    v135 = [trailingAnchor9 constraintEqualToAnchor:trailingAnchor10 constant:0.0];
     labelTrailingConstraint = v4->_labelTrailingConstraint;
     v4->_labelTrailingConstraint = v135;
 
     [v40 addObject:v4->_labelTrailingConstraint];
-    v137 = [(UIDatePicker *)v4->_datePicker centerYAnchor];
-    v138 = [(NCSchedulerViewCell *)v4 contentView];
-    v139 = [v138 centerYAnchor];
-    v140 = [v137 constraintEqualToAnchor:v139];
+    centerYAnchor3 = [(UIDatePicker *)v4->_datePicker centerYAnchor];
+    contentView29 = [(NCSchedulerViewCell *)v4 contentView];
+    centerYAnchor4 = [contentView29 centerYAnchor];
+    v140 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
     [v40 addObject:v140];
 
-    v141 = [(NCSchedulerViewCell *)v4 contentView];
-    v142 = [v141 trailingAnchor];
-    v143 = [(UIDatePicker *)v4->_datePicker trailingAnchor];
-    v144 = [v142 constraintEqualToAnchor:v143 constant:0.0];
+    contentView30 = [(NCSchedulerViewCell *)v4 contentView];
+    trailingAnchor11 = [contentView30 trailingAnchor];
+    trailingAnchor12 = [(UIDatePicker *)v4->_datePicker trailingAnchor];
+    v144 = [trailingAnchor11 constraintEqualToAnchor:trailingAnchor12 constant:0.0];
     [v40 addObject:v144];
 
     [MEMORY[0x277CCAAD0] activateConstraints:v40];
@@ -461,17 +461,17 @@
   return v2;
 }
 
-+ (double)_widthForHour:(unint64_t)a3
++ (double)_widthForHour:(unint64_t)hour
 {
   v19[1] = *MEMORY[0x277D85DE8];
   v4 = objc_alloc_init(MEMORY[0x277CBEAB8]);
-  [v4 setHour:a3];
+  [v4 setHour:hour];
   [v4 setMinute:0];
-  v5 = [MEMORY[0x277CBEA80] currentCalendar];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
   v6 = objc_alloc_init(MEMORY[0x277CCA968]);
   v7 = MEMORY[0x277CCA968];
-  v8 = [MEMORY[0x277CBEAF8] currentLocale];
-  v9 = [v7 dateFormatFromTemplate:@"j" options:0 locale:v8];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  v9 = [v7 dateFormatFromTemplate:@"j" options:0 locale:currentLocale];
 
   v10 = @"jmm";
   if ([v9 rangeOfString:@"a"] != 0x7FFFFFFFFFFFFFFFLL && !objc_msgSend(v4, "minute"))
@@ -480,38 +480,38 @@
   }
 
   [v6 setLocalizedDateFormatFromTemplate:v10];
-  v11 = [v5 dateFromComponents:v4];
+  v11 = [currentCalendar dateFromComponents:v4];
   v12 = [v6 stringFromDate:v11];
   v18 = *MEMORY[0x277D740A8];
   v13 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76918]];
   v19[0] = v13;
   v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:&v18 count:1];
-  v15 = [objc_opt_class() _drawingContext];
-  [v12 boundingRectWithSize:1 options:v14 attributes:v15 context:{0.0, 0.0}];
+  _drawingContext = [objc_opt_class() _drawingContext];
+  [v12 boundingRectWithSize:1 options:v14 attributes:_drawingContext context:{0.0, 0.0}];
   Width = CGRectGetWidth(v20);
 
   return fmax(Width, 0.0) * 1.25;
 }
 
-- (void)_timeChanged:(id)a3
+- (void)_timeChanged:(id)changed
 {
-  v7 = [(NCSchedulerViewCell *)self delegate];
+  delegate = [(NCSchedulerViewCell *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [MEMORY[0x277CBEA80] currentCalendar];
-    v5 = [(UIDatePicker *)self->_datePicker date];
-    v6 = [v4 components:96 fromDate:v5];
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+    date = [(UIDatePicker *)self->_datePicker date];
+    v6 = [currentCalendar components:96 fromDate:date];
 
-    [v7 schedulerCell:self didChangeTime:v6];
+    [delegate schedulerCell:self didChangeTime:v6];
   }
 }
 
-- (void)_buttonPressed:(id)a3
+- (void)_buttonPressed:(id)pressed
 {
-  v4 = [(NCSchedulerViewCell *)self delegate];
+  delegate = [(NCSchedulerViewCell *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 schedulerCellButtonPressed:self];
+    [delegate schedulerCellButtonPressed:self];
   }
 }
 

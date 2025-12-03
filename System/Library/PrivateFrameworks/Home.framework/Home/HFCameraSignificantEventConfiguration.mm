@@ -1,31 +1,31 @@
 @interface HFCameraSignificantEventConfiguration
-+ (id)_configurationForCameraProfiles:(id)a3 eventTypesTransform:(id)a4 personFamiliarityOptionsTransform:(id)a5;
-+ (id)configurationForCameraProfilesNotificationSettings:(id)a3;
-+ (id)configurationWithEventTypes:(unint64_t)a3 personFamiliarityOptions:(unint64_t)a4;
-- (BOOL)containsConfiguration:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)_configurationForCameraProfiles:(id)profiles eventTypesTransform:(id)transform personFamiliarityOptionsTransform:(id)optionsTransform;
++ (id)configurationForCameraProfilesNotificationSettings:(id)settings;
++ (id)configurationWithEventTypes:(unint64_t)types personFamiliarityOptions:(unint64_t)options;
+- (BOOL)containsConfiguration:(id)configuration;
+- (BOOL)isEqual:(id)equal;
 - (id)localizationKey;
 - (id)localizedDescription;
 - (id)predicateRepresentation;
-- (void)addConfiguration:(id)a3;
-- (void)removeConfiguration:(id)a3;
+- (void)addConfiguration:(id)configuration;
+- (void)removeConfiguration:(id)configuration;
 @end
 
 @implementation HFCameraSignificantEventConfiguration
 
-+ (id)configurationWithEventTypes:(unint64_t)a3 personFamiliarityOptions:(unint64_t)a4
++ (id)configurationWithEventTypes:(unint64_t)types personFamiliarityOptions:(unint64_t)options
 {
-  v6 = objc_alloc_init(a1);
-  [v6 setEventTypes:a3];
-  [v6 setPersonFamiliarityOptions:a4];
+  v6 = objc_alloc_init(self);
+  [v6 setEventTypes:types];
+  [v6 setPersonFamiliarityOptions:options];
 
   return v6;
 }
 
-+ (id)configurationForCameraProfilesNotificationSettings:(id)a3
++ (id)configurationForCameraProfilesNotificationSettings:(id)settings
 {
-  v4 = [a3 na_filter:&__block_literal_global_43];
-  v5 = [a1 _configurationForCameraProfiles:v4 eventTypesTransform:&__block_literal_global_3_5 personFamiliarityOptionsTransform:&__block_literal_global_5_1];
+  v4 = [settings na_filter:&__block_literal_global_43];
+  v5 = [self _configurationForCameraProfiles:v4 eventTypesTransform:&__block_literal_global_3_5 personFamiliarityOptionsTransform:&__block_literal_global_5_1];
 
   return v5;
 }
@@ -65,57 +65,57 @@ uint64_t __89__HFCameraSignificantEventConfiguration_configurationForCameraProfi
   return v3;
 }
 
-- (BOOL)containsConfiguration:(id)a3
+- (BOOL)containsConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(HFCameraSignificantEventConfiguration *)self eventTypes];
-  if (([v4 eventTypes] & ~v5) != 0)
+  configurationCopy = configuration;
+  eventTypes = [(HFCameraSignificantEventConfiguration *)self eventTypes];
+  if (([configurationCopy eventTypes] & ~eventTypes) != 0)
   {
     v7 = 0;
   }
 
   else
   {
-    v6 = [(HFCameraSignificantEventConfiguration *)self personFamiliarityOptions];
-    v7 = ([v4 personFamiliarityOptions] & ~v6) == 0;
+    personFamiliarityOptions = [(HFCameraSignificantEventConfiguration *)self personFamiliarityOptions];
+    v7 = ([configurationCopy personFamiliarityOptions] & ~personFamiliarityOptions) == 0;
   }
 
   return v7;
 }
 
-- (void)addConfiguration:(id)a3
+- (void)addConfiguration:(id)configuration
 {
-  v4 = a3;
-  -[HFCameraSignificantEventConfiguration setEventTypes:](self, "setEventTypes:", [v4 eventTypes] | -[HFCameraSignificantEventConfiguration eventTypes](self, "eventTypes"));
-  v5 = [(HFCameraSignificantEventConfiguration *)self personFamiliarityOptions];
-  v6 = [v4 personFamiliarityOptions];
+  configurationCopy = configuration;
+  -[HFCameraSignificantEventConfiguration setEventTypes:](self, "setEventTypes:", [configurationCopy eventTypes] | -[HFCameraSignificantEventConfiguration eventTypes](self, "eventTypes"));
+  personFamiliarityOptions = [(HFCameraSignificantEventConfiguration *)self personFamiliarityOptions];
+  personFamiliarityOptions2 = [configurationCopy personFamiliarityOptions];
 
-  [(HFCameraSignificantEventConfiguration *)self setPersonFamiliarityOptions:v6 | v5];
+  [(HFCameraSignificantEventConfiguration *)self setPersonFamiliarityOptions:personFamiliarityOptions2 | personFamiliarityOptions];
 }
 
-- (void)removeConfiguration:(id)a3
+- (void)removeConfiguration:(id)configuration
 {
-  v4 = a3;
-  -[HFCameraSignificantEventConfiguration setEventTypes:](self, "setEventTypes:", -[HFCameraSignificantEventConfiguration eventTypes](self, "eventTypes") & ~[v4 eventTypes]);
-  v5 = [(HFCameraSignificantEventConfiguration *)self personFamiliarityOptions];
-  v6 = [v4 personFamiliarityOptions];
+  configurationCopy = configuration;
+  -[HFCameraSignificantEventConfiguration setEventTypes:](self, "setEventTypes:", -[HFCameraSignificantEventConfiguration eventTypes](self, "eventTypes") & ~[configurationCopy eventTypes]);
+  personFamiliarityOptions = [(HFCameraSignificantEventConfiguration *)self personFamiliarityOptions];
+  personFamiliarityOptions2 = [configurationCopy personFamiliarityOptions];
 
-  [(HFCameraSignificantEventConfiguration *)self setPersonFamiliarityOptions:v5 & ~v6];
+  [(HFCameraSignificantEventConfiguration *)self setPersonFamiliarityOptions:personFamiliarityOptions & ~personFamiliarityOptions2];
 }
 
 - (id)predicateRepresentation
 {
   v3 = MEMORY[0x277CD18C0];
-  v4 = [(HFCameraSignificantEventConfiguration *)self eventTypes];
-  v5 = [(HFCameraSignificantEventConfiguration *)self personFamiliarityOptions];
+  eventTypes = [(HFCameraSignificantEventConfiguration *)self eventTypes];
+  personFamiliarityOptions = [(HFCameraSignificantEventConfiguration *)self personFamiliarityOptions];
 
-  return [v3 predicateForSignificantEventTypes:v4 personFamiliarityOptions:v5];
+  return [v3 predicateForSignificantEventTypes:eventTypes personFamiliarityOptions:personFamiliarityOptions];
 }
 
 - (id)localizedDescription
 {
-  v2 = [(HFCameraSignificantEventConfiguration *)self localizationKey];
-  v3 = _HFLocalizedStringWithDefaultValue(v2, v2, 1);
+  localizationKey = [(HFCameraSignificantEventConfiguration *)self localizationKey];
+  v3 = _HFLocalizedStringWithDefaultValue(localizationKey, localizationKey, 1);
 
   return v3;
 }
@@ -136,11 +136,11 @@ uint64_t __89__HFCameraSignificantEventConfiguration_configurationForCameraProfi
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = v4;
+  v5 = equalCopy;
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
@@ -155,8 +155,8 @@ uint64_t __89__HFCameraSignificantEventConfiguration_configurationForCameraProfi
 
   if (v7 && (v8 = -[HFCameraSignificantEventConfiguration eventTypes](self, "eventTypes"), v8 == [v7 eventTypes]))
   {
-    v9 = [(HFCameraSignificantEventConfiguration *)self personFamiliarityOptions];
-    v10 = v9 == [v7 personFamiliarityOptions];
+    personFamiliarityOptions = [(HFCameraSignificantEventConfiguration *)self personFamiliarityOptions];
+    v10 = personFamiliarityOptions == [v7 personFamiliarityOptions];
   }
 
   else
@@ -167,30 +167,30 @@ uint64_t __89__HFCameraSignificantEventConfiguration_configurationForCameraProfi
   return v10;
 }
 
-+ (id)_configurationForCameraProfiles:(id)a3 eventTypesTransform:(id)a4 personFamiliarityOptionsTransform:(id)a5
++ (id)_configurationForCameraProfiles:(id)profiles eventTypesTransform:(id)transform personFamiliarityOptionsTransform:(id)optionsTransform
 {
   v36 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [MEMORY[0x277CCAB58] indexSet];
-  v12 = [MEMORY[0x277CCAB58] indexSet];
+  profilesCopy = profiles;
+  transformCopy = transform;
+  optionsTransformCopy = optionsTransform;
+  indexSet = [MEMORY[0x277CCAB58] indexSet];
+  indexSet2 = [MEMORY[0x277CCAB58] indexSet];
   v24 = MEMORY[0x277D85DD0];
   v25 = 3221225472;
   v26 = __127__HFCameraSignificantEventConfiguration__configurationForCameraProfiles_eventTypesTransform_personFamiliarityOptionsTransform___block_invoke;
   v27 = &unk_277DF5D38;
-  v13 = v11;
+  v13 = indexSet;
   v28 = v13;
-  v30 = v9;
-  v14 = v12;
+  v30 = transformCopy;
+  v14 = indexSet2;
   v29 = v14;
-  v31 = v10;
-  v15 = v10;
-  v16 = v9;
-  [v8 na_each:&v24];
+  v31 = optionsTransformCopy;
+  v15 = optionsTransformCopy;
+  v16 = transformCopy;
+  [profilesCopy na_each:&v24];
   if ([v13 count] == 1)
   {
-    v17 = [v13 firstIndex];
+    firstIndex = [v13 firstIndex];
   }
 
   else
@@ -201,16 +201,16 @@ uint64_t __89__HFCameraSignificantEventConfiguration_configurationForCameraProfi
       *buf = 138412546;
       v33 = v13;
       v34 = 2112;
-      v35 = v8;
+      v35 = profilesCopy;
       _os_log_error_impl(&dword_20D9BF000, v18, OS_LOG_TYPE_ERROR, "Mismatched HMCameraSignificantEventTypes:%@ for HMCameraProfiles:%@", buf, 0x16u);
     }
 
-    v17 = 1;
+    firstIndex = 1;
   }
 
   if ([v14 count] == 1)
   {
-    v19 = [v14 firstIndex];
+    firstIndex2 = [v14 firstIndex];
   }
 
   else
@@ -221,14 +221,14 @@ uint64_t __89__HFCameraSignificantEventConfiguration_configurationForCameraProfi
       *buf = 138412546;
       v33 = v14;
       v34 = 2112;
-      v35 = v8;
+      v35 = profilesCopy;
       _os_log_error_impl(&dword_20D9BF000, v20, OS_LOG_TYPE_ERROR, "Mismatched HMCameraSignificantEventPersonFamiliarityOptions:%@ for HMCameraProfiles:%@", buf, 0x16u);
     }
 
-    v19 = 7;
+    firstIndex2 = 7;
   }
 
-  v21 = [a1 configurationWithEventTypes:v17 personFamiliarityOptions:v19];
+  v21 = [self configurationWithEventTypes:firstIndex personFamiliarityOptions:firstIndex2];
 
   v22 = *MEMORY[0x277D85DE8];
 

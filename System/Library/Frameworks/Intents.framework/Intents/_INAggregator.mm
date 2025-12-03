@@ -1,36 +1,36 @@
 @interface _INAggregator
-+ (double)roundCount:(unint64_t)a3 toSignificantFigure:(unint64_t)a4;
-+ (id)_distributionKeyForVocabularyStringType:(int64_t)a3;
-+ (unint64_t)_singificantFigureForVocabularyStringType:(int64_t)a3;
-+ (void)logReceivedCount:(unint64_t)a3 ofVocabularyStringType:(int64_t)a4;
++ (double)roundCount:(unint64_t)count toSignificantFigure:(unint64_t)figure;
++ (id)_distributionKeyForVocabularyStringType:(int64_t)type;
++ (unint64_t)_singificantFigureForVocabularyStringType:(int64_t)type;
++ (void)logReceivedCount:(unint64_t)count ofVocabularyStringType:(int64_t)type;
 @end
 
 @implementation _INAggregator
 
-+ (void)logReceivedCount:(unint64_t)a3 ofVocabularyStringType:(int64_t)a4
++ (void)logReceivedCount:(unint64_t)count ofVocabularyStringType:(int64_t)type
 {
-  v7 = [a1 _distributionKeyForVocabularyStringType:a4];
+  v7 = [self _distributionKeyForVocabularyStringType:type];
   if (v7)
   {
-    [a1 roundCount:a3 toSignificantFigure:{objc_msgSend(a1, "_singificantFigureForVocabularyStringType:", a4)}];
+    [self roundCount:count toSignificantFigure:{objc_msgSend(self, "_singificantFigureForVocabularyStringType:", type)}];
     ADClientPushValueForDistributionKey();
   }
 
   ADClientAddValueForScalarKey();
 }
 
-+ (double)roundCount:(unint64_t)a3 toSignificantFigure:(unint64_t)a4
++ (double)roundCount:(unint64_t)count toSignificantFigure:(unint64_t)figure
 {
   v14 = *MEMORY[0x1E69E9840];
   v4 = 0.0;
-  if (a3)
+  if (count)
   {
-    if (a4)
+    if (figure)
     {
-      v6 = a3;
-      v7 = log10(a3);
-      v8 = __exp10(a4 - ceil(v7));
-      v4 = round(v8 * v6) / v8;
+      countCopy = count;
+      v7 = log10(count);
+      v8 = __exp10(figure - ceil(v7));
+      v4 = round(v8 * countCopy) / v8;
     }
 
     else
@@ -49,11 +49,11 @@
   return v4;
 }
 
-+ (id)_distributionKeyForVocabularyStringType:(int64_t)a3
++ (id)_distributionKeyForVocabularyStringType:(int64_t)type
 {
-  if ([a1 _canReportDistributionOfVocabularyStringType:?])
+  if ([self _canReportDistributionOfVocabularyStringType:?])
   {
-    v4 = _INStringFromVocabularyStringType(a3);
+    v4 = _INStringFromVocabularyStringType(type);
     v5 = [v4 stringByReplacingOccurrencesOfString:@"INVocabularyStringType" withString:@"com.apple.siri.UserVocabularyStringCount."];
   }
 
@@ -65,12 +65,12 @@
   return v5;
 }
 
-+ (unint64_t)_singificantFigureForVocabularyStringType:(int64_t)a3
++ (unint64_t)_singificantFigureForVocabularyStringType:(int64_t)type
 {
   result = 2;
-  if (a3 > 699)
+  if (type > 699)
   {
-    if ((a3 - 700) < 5 || a3 == 50003 || a3 == 50000)
+    if ((type - 700) < 5 || type == 50003 || type == 50000)
     {
       return 1;
     }
@@ -78,9 +78,9 @@
 
   else
   {
-    if (a3 <= 399)
+    if (type <= 399)
     {
-      if ((a3 - 300) >= 2 && a3 != 2 && a3 != 200)
+      if ((type - 300) >= 2 && type != 2 && type != 200)
       {
         return result;
       }
@@ -88,7 +88,7 @@
       return 1;
     }
 
-    if ((a3 - 400) < 2 || (a3 - 500) < 2)
+    if ((type - 400) < 2 || (type - 500) < 2)
     {
       return 1;
     }

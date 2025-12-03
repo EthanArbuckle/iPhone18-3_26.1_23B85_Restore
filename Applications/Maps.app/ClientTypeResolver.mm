@@ -1,31 +1,31 @@
 @interface ClientTypeResolver
-- (BOOL)hasObjectWithType:(int)a3;
-- (ClientTypeResolver)initWithCurrentLocation:(BOOL)a3 parkedCar:(BOOL)a4 personalizedItems:(BOOL)a5;
-- (id)sourceWithType:(int)a3;
-- (void)addSource:(id)a3;
+- (BOOL)hasObjectWithType:(int)type;
+- (ClientTypeResolver)initWithCurrentLocation:(BOOL)location parkedCar:(BOOL)car personalizedItems:(BOOL)items;
+- (id)sourceWithType:(int)type;
+- (void)addSource:(id)source;
 @end
 
 @implementation ClientTypeResolver
 
-- (id)sourceWithType:(int)a3
+- (id)sourceWithType:(int)type
 {
-  v3 = *&a3;
-  v4 = [(ClientTypeResolver *)self sources];
+  v3 = *&type;
+  sources = [(ClientTypeResolver *)self sources];
   v5 = [NSNumber numberWithInt:v3];
-  v6 = [v4 objectForKey:v5];
+  v6 = [sources objectForKey:v5];
 
   return v6;
 }
 
-- (void)addSource:(id)a3
+- (void)addSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [v4 knownTypes];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  knownTypes = [sourceCopy knownTypes];
+  v6 = [knownTypes countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -37,38 +37,38 @@
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(knownTypes);
         }
 
         v10 = *(*(&v12 + 1) + 8 * v9);
-        v11 = [(ClientTypeResolver *)self sources];
-        [v11 setObject:v4 forKey:v10];
+        sources = [(ClientTypeResolver *)self sources];
+        [sources setObject:sourceCopy forKey:v10];
 
         v9 = v9 + 1;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [knownTypes countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
   }
 }
 
-- (BOOL)hasObjectWithType:(int)a3
+- (BOOL)hasObjectWithType:(int)type
 {
-  v3 = *&a3;
+  v3 = *&type;
   v4 = [(ClientTypeResolver *)self sourceWithType:?];
   LOBYTE(v3) = [v4 hasObjectWithType:v3];
 
   return v3;
 }
 
-- (ClientTypeResolver)initWithCurrentLocation:(BOOL)a3 parkedCar:(BOOL)a4 personalizedItems:(BOOL)a5
+- (ClientTypeResolver)initWithCurrentLocation:(BOOL)location parkedCar:(BOOL)car personalizedItems:(BOOL)items
 {
-  v5 = a5;
-  v6 = a4;
-  v7 = a3;
+  itemsCopy = items;
+  carCopy = car;
+  locationCopy = location;
   v25.receiver = self;
   v25.super_class = ClientTypeResolver;
   v8 = [(ClientTypeResolver *)&v25 init];
@@ -81,9 +81,9 @@
   sources = v8->_sources;
   v8->_sources = v9;
 
-  if (!v7)
+  if (!locationCopy)
   {
-    if (!v6)
+    if (!carCopy)
     {
       goto LABEL_4;
     }
@@ -96,7 +96,7 @@ LABEL_8:
     v8->_parkedCarSource = v23;
 
     [(ClientTypeResolver *)v8 addSource:v8->_parkedCarSource];
-    if (!v5)
+    if (!itemsCopy)
     {
       return v8;
     }
@@ -111,13 +111,13 @@ LABEL_8:
   v8->_currentLocationSource = v19;
 
   [(ClientTypeResolver *)v8 addSource:v8->_currentLocationSource];
-  if (v6)
+  if (carCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_4:
-  if (v5)
+  if (itemsCopy)
   {
 LABEL_5:
     v11 = [ClientTypeResolverPersonalizedItemSource alloc];

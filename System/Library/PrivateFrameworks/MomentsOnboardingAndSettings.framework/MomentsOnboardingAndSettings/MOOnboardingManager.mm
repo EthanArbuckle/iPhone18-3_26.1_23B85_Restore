@@ -5,10 +5,10 @@
 - (unint64_t)extendedOnboardingFlowCompletionStatus;
 - (unint64_t)onboardingFlowCompletionStatus;
 - (unint64_t)onboardingFlowRefreshCompletionStatus;
-- (void)getExtendedOnboardingFlowRefreshCompletionStatus:(id)a3;
+- (void)getExtendedOnboardingFlowRefreshCompletionStatus:(id)status;
 - (void)onboardingFlowRefreshCompletionStatus;
-- (void)setDelegate:(id)a3;
-- (void)setOnboardingFlowCompletionStatus:(unint64_t)a3;
+- (void)setDelegate:(id)delegate;
+- (void)setOnboardingFlowCompletionStatus:(unint64_t)status;
 @end
 
 @implementation MOOnboardingManager
@@ -39,7 +39,7 @@
   block[1] = 3221225472;
   block[2] = __37__MOOnboardingManager_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_2 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_2, block);
@@ -61,21 +61,21 @@ uint64_t __37__MOOnboardingManager_sharedInstance__block_invoke(uint64_t a1)
 {
   self->hasCheckedOnboardingStatus = 1;
   v2 = +[MOOnboardingAndSettingsManager sharedInstance];
-  v3 = [v2 getOnboardingFlowCompletionStatus];
+  getOnboardingFlowCompletionStatus = [v2 getOnboardingFlowCompletionStatus];
 
-  return v3;
+  return getOnboardingFlowCompletionStatus;
 }
 
 - (unint64_t)extendedOnboardingFlowCompletionStatus
 {
   self->hasCheckedOnboardingStatus = 1;
   v2 = +[MOOnboardingAndSettingsManager sharedInstance];
-  v3 = [v2 getExtendedOnboardingFlowCompletionStatus];
+  getExtendedOnboardingFlowCompletionStatus = [v2 getExtendedOnboardingFlowCompletionStatus];
 
-  return v3;
+  return getExtendedOnboardingFlowCompletionStatus;
 }
 
-- (void)setOnboardingFlowCompletionStatus:(unint64_t)a3
+- (void)setOnboardingFlowCompletionStatus:(unint64_t)status
 {
   if (!self->hasCheckedOnboardingStatus)
   {
@@ -85,13 +85,13 @@ uint64_t __37__MOOnboardingManager_sharedInstance__block_invoke(uint64_t a1)
       [MOOnboardingManager setOnboardingFlowCompletionStatus:];
     }
 
-    v7 = [MEMORY[0x277CCA890] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"MOOnboardingManager.m" lineNumber:71 description:{@"Can't set onboarding status if you have not checked what it was before trying to set it (in %s:%d)", "-[MOOnboardingManager setOnboardingFlowCompletionStatus:]", 71}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MOOnboardingManager.m" lineNumber:71 description:{@"Can't set onboarding status if you have not checked what it was before trying to set it (in %s:%d)", "-[MOOnboardingManager setOnboardingFlowCompletionStatus:]", 71}];
   }
 
   self->hasSetOnboardingStatus = 1;
   v8 = +[MOOnboardingAndSettingsManager sharedInstance];
-  [v8 setOnboardingFlowCompletionStatus:a3];
+  [v8 setOnboardingFlowCompletionStatus:status];
 }
 
 - (unint64_t)onboardingFlowRefreshCompletionStatus
@@ -104,27 +104,27 @@ uint64_t __37__MOOnboardingManager_sharedInstance__block_invoke(uint64_t a1)
       [MOOnboardingManager onboardingFlowRefreshCompletionStatus];
     }
 
-    v5 = [MEMORY[0x277CCA890] currentHandler];
-    [v5 handleFailureInMethod:a2 object:self file:@"MOOnboardingManager.m" lineNumber:78 description:{@"Can't check onboarding refresh status if you have not changed onboarding status (in %s:%d)", "-[MOOnboardingManager onboardingFlowRefreshCompletionStatus]", 78}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MOOnboardingManager.m" lineNumber:78 description:{@"Can't check onboarding refresh status if you have not changed onboarding status (in %s:%d)", "-[MOOnboardingManager onboardingFlowRefreshCompletionStatus]", 78}];
   }
 
   v6 = +[MOOnboardingAndSettingsManager sharedInstance];
-  v7 = [v6 getOnboardingFlowRefreshCompletionStatus];
+  getOnboardingFlowRefreshCompletionStatus = [v6 getOnboardingFlowRefreshCompletionStatus];
 
-  return v7;
+  return getOnboardingFlowRefreshCompletionStatus;
 }
 
-- (void)getExtendedOnboardingFlowRefreshCompletionStatus:(id)a3
+- (void)getExtendedOnboardingFlowRefreshCompletionStatus:(id)status
 {
-  v4 = a3;
+  statusCopy = status;
   clientQueue = self->clientQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __72__MOOnboardingManager_getExtendedOnboardingFlowRefreshCompletionStatus___block_invoke;
   v7[3] = &unk_27991F2C8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = statusCopy;
+  v6 = statusCopy;
   dispatch_async(clientQueue, v7);
 }
 
@@ -140,16 +140,16 @@ uint64_t __72__MOOnboardingManager_getExtendedOnboardingFlowRefreshCompletionSta
 - (MOOnboardingManagerDelegate)delegate
 {
   v2 = +[MOOnboardingAndSettingsManager sharedInstance];
-  v3 = [v2 onboardingManagerDelegate];
+  onboardingManagerDelegate = [v2 onboardingManagerDelegate];
 
-  return v3;
+  return onboardingManagerDelegate;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v3 = a3;
+  delegateCopy = delegate;
   v4 = +[MOOnboardingAndSettingsManager sharedInstance];
-  [v4 setOnboardingManagerDelegate:v3];
+  [v4 setOnboardingManagerDelegate:delegateCopy];
 }
 
 - (void)setOnboardingFlowCompletionStatus:.cold.1()

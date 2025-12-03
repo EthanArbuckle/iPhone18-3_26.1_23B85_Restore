@@ -3,8 +3,8 @@
 - (SKSetupBase)skSetupObject;
 - (SKStepBasicConfigServer)init;
 - (void)_activate;
-- (void)_completeWithError:(id)a3;
-- (void)_handleRequestBasicConfig:(id)a3 responseHandler:(id)a4;
+- (void)_completeWithError:(id)error;
+- (void)_handleRequestBasicConfig:(id)config responseHandler:(id)handler;
 - (void)_invalidated;
 - (void)activate;
 - (void)invalidate;
@@ -19,26 +19,26 @@
   return WeakRetained;
 }
 
-- (void)_handleRequestBasicConfig:(id)a3 responseHandler:(id)a4
+- (void)_handleRequestBasicConfig:(id)config responseHandler:(id)handler
 {
-  v13 = a3;
-  v6 = a4;
+  configCopy = config;
+  handlerCopy = handler;
   if (gLogCategory_SKStepBasicConfigServer <= 30 && (gLogCategory_SKStepBasicConfigServer != -1 || _LogCategory_Initialize()))
   {
     v12 = CUPrintNSObjectOneLine();
     LogPrintF_safe();
   }
 
-  [(SKStepBasicConfigServer *)self setOutClientConfig:v13, v12];
-  v7 = [[SKEventBasicConfigUpdated alloc] initWithBasicConfig:v13];
+  [(SKStepBasicConfigServer *)self setOutClientConfig:configCopy, v12];
+  v7 = [[SKEventBasicConfigUpdated alloc] initWithBasicConfig:configCopy];
   WeakRetained = objc_loadWeakRetained(&self->_skSetupObject);
   [WeakRetained _reportEvent:v7];
 
-  v9 = [(SKStepBasicConfigServer *)self serverConfig];
-  v10 = v9;
-  if (v9)
+  serverConfig = [(SKStepBasicConfigServer *)self serverConfig];
+  v10 = serverConfig;
+  if (serverConfig)
   {
-    v11 = v9;
+    v11 = serverConfig;
   }
 
   else
@@ -46,13 +46,13 @@
     v11 = MEMORY[0x277CBEC10];
   }
 
-  (*(v6 + 2))(v6, v11, 0, 0, &__block_literal_global_16_2468);
+  (*(handlerCopy + 2))(handlerCopy, v11, 0, 0, &__block_literal_global_16_2468);
 }
 
-- (void)_completeWithError:(id)a3
+- (void)_completeWithError:(id)error
 {
-  v4 = a3;
-  if (v4)
+  errorCopy = error;
+  if (errorCopy)
   {
     if (gLogCategory_SKStepBasicConfigServer <= 90 && (gLogCategory_SKStepBasicConfigServer != -1 || _LogCategory_Initialize()))
     {
@@ -72,7 +72,7 @@
 
   if (v5)
   {
-    if (v4)
+    if (errorCopy)
     {
       v7 = 0;
     }
@@ -87,7 +87,7 @@
     v9[2] = __46__SKStepBasicConfigServer__completeWithError___block_invoke;
     v9[3] = &unk_279BB8838;
     v9[4] = self;
-    v10 = v4;
+    v10 = errorCopy;
     (v5)[2](v5, v7, 0, v10, v9);
   }
 }

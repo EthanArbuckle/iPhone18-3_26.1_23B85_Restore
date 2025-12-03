@@ -1,8 +1,8 @@
 @interface VUIShelfLayoutHelper
-- (CGRect)frameForHeaderInSection:(int64_t)a3;
-- (CGRect)frameForItemAtIndexPath:(id)a3;
-- (UIEdgeInsets)insetForSection:(int64_t)a3;
-- (VUIShelfLayoutHelper)initWithShelfViewLayout:(id)a3;
+- (CGRect)frameForHeaderInSection:(int64_t)section;
+- (CGRect)frameForItemAtIndexPath:(id)path;
+- (UIEdgeInsets)insetForSection:(int64_t)section;
+- (VUIShelfLayoutHelper)initWithShelfViewLayout:(id)layout;
 - (VUIShelfViewLayout)shelfViewLayout;
 - (void)_compute;
 - (void)_freeBuffers;
@@ -11,16 +11,16 @@
 
 @implementation VUIShelfLayoutHelper
 
-- (VUIShelfLayoutHelper)initWithShelfViewLayout:(id)a3
+- (VUIShelfLayoutHelper)initWithShelfViewLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   v8.receiver = self;
   v8.super_class = VUIShelfLayoutHelper;
   v5 = [(VUIShelfLayoutHelper *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_shelfViewLayout, v4);
+    objc_storeWeak(&v5->_shelfViewLayout, layoutCopy);
     [(VUIShelfLayoutHelper *)v6 _compute];
   }
 
@@ -35,13 +35,13 @@
   [(VUIShelfLayoutHelper *)&v3 dealloc];
 }
 
-- (CGRect)frameForHeaderInSection:(int64_t)a3
+- (CGRect)frameForHeaderInSection:(int64_t)section
 {
   p_x = MEMORY[0x1E695F058];
   headerFrames = self->_headerFrames;
   if (headerFrames)
   {
-    p_x = &headerFrames[a3].origin.x;
+    p_x = &headerFrames[section].origin.x;
   }
 
   v5 = *p_x;
@@ -55,13 +55,13 @@
   return result;
 }
 
-- (UIEdgeInsets)insetForSection:(int64_t)a3
+- (UIEdgeInsets)insetForSection:(int64_t)section
 {
   p_top = MEMORY[0x1E69DDCE0];
   sectionInsets = self->_sectionInsets;
   if (sectionInsets)
   {
-    p_top = &sectionInsets[a3].top;
+    p_top = &sectionInsets[section].top;
   }
 
   v5 = *p_top;
@@ -75,17 +75,17 @@
   return result;
 }
 
-- (CGRect)frameForItemAtIndexPath:(id)a3
+- (CGRect)frameForItemAtIndexPath:(id)path
 {
   cellFrames = self->_cellFrames;
   if (cellFrames)
   {
     sectionOffsets = self->_sectionOffsets;
-    v5 = a3;
-    v6 = sectionOffsets[[v5 section]];
-    v7 = [v5 item];
+    pathCopy = path;
+    v6 = sectionOffsets[[pathCopy section]];
+    item = [pathCopy item];
 
-    p_x = &cellFrames[v6 + v7].origin.x;
+    p_x = &cellFrames[v6 + item].origin.x;
   }
 
   else
@@ -106,39 +106,39 @@
 
 - (void)_compute
 {
-  v2 = self;
-  v126 = [(VUIShelfLayoutHelper *)self shelfViewLayout];
-  v3 = [v126 collectionView];
-  v4 = [v3 dataSource];
-  v5 = [v126 delegate];
+  selfCopy = self;
+  shelfViewLayout = [(VUIShelfLayoutHelper *)self shelfViewLayout];
+  collectionView = [shelfViewLayout collectionView];
+  dataSource = [collectionView dataSource];
+  delegate = [shelfViewLayout delegate];
   v6 = objc_opt_respondsToSelector();
   v113 = objc_opt_respondsToSelector();
   v7 = objc_opt_respondsToSelector();
-  v125 = v5;
+  v125 = delegate;
   v112 = objc_opt_respondsToSelector();
-  [v3 vuiBounds];
+  [collectionView vuiBounds];
   v9 = v8;
-  [v3 vuiContentInsets];
+  [collectionView vuiContentInsets];
   v11 = v10;
   v13 = v12;
-  [v126 itemSize];
+  [shelfViewLayout itemSize];
   v15 = v14;
   v17 = v16;
-  v18 = [v126 rowCount];
-  if (v18 <= 1)
+  rowCount = [shelfViewLayout rowCount];
+  if (rowCount <= 1)
   {
     v19 = 1;
   }
 
   else
   {
-    v19 = v18;
+    v19 = rowCount;
   }
 
-  v111 = [v126 prominentSectionIndex];
+  prominentSectionIndex = [shelfViewLayout prominentSectionIndex];
   if (v6)
   {
-    v20 = [v4 numberOfSectionsInCollectionView:v3];
+    v20 = [dataSource numberOfSectionsInCollectionView:collectionView];
   }
 
   else
@@ -146,14 +146,14 @@
     v20 = 1;
   }
 
-  [v126 minimumInteritemSpacing];
+  [shelfViewLayout minimumInteritemSpacing];
   v114 = v21;
-  [v126 minimumLineSpacing];
+  [shelfViewLayout minimumLineSpacing];
   v23 = v22;
   v24 = malloc_type_calloc(v20 + 1, 8uLL, 0x100004000313F17uLL);
   v25 = v24;
   v120 = v24;
-  v121 = v4;
+  v121 = dataSource;
   v123 = v20;
   v108 = v11;
   v109 = v9;
@@ -175,13 +175,13 @@
     v26 = 0;
     for (i = 0; i != v20; ++i)
     {
-      v28 = [v4 collectionView:v3 numberOfItemsInSection:i];
+      v28 = [dataSource collectionView:collectionView numberOfItemsInSection:i];
       v25[i] = v26;
       v26 += v28;
     }
 
     v25[v20] = v26;
-    v106 = v2;
+    v106 = selfCopy;
     if (v26 <= 0)
     {
       v110 = 0;
@@ -205,18 +205,18 @@
     v33 = v110;
     do
     {
-      v34 = [v121 collectionView:v3 numberOfItemsInSection:{v31, v106}];
+      v34 = [v121 collectionView:collectionView numberOfItemsInSection:{v31, v106}];
       if (v34)
       {
         v35 = v34;
         if (v112)
         {
-          [v125 collectionView:v3 layout:v126 insetForSectionAtIndex:v31];
+          [v125 collectionView:collectionView layout:shelfViewLayout insetForSectionAtIndex:v31];
         }
 
         else
         {
-          [v126 sectionInset];
+          [shelfViewLayout sectionInset];
         }
 
         v40 = v36;
@@ -225,12 +225,12 @@
         v43 = v39;
         if (v113)
         {
-          [v125 collectionView:v3 layout:v126 referenceSizeForHeaderInSection:v31];
+          [v125 collectionView:collectionView layout:shelfViewLayout referenceSizeForHeaderInSection:v31];
         }
 
         else
         {
-          [v126 headerReferenceSize];
+          [shelfViewLayout headerReferenceSize];
         }
 
         v30->top = v40;
@@ -270,7 +270,7 @@
           v115 = p_x;
           v117 = v30;
           v48 = 0;
-          v50 = v111 == 0x7FFFFFFFFFFFFFFFLL || v31 == v111;
+          v50 = prominentSectionIndex == 0x7FFFFFFFFFFFFFFFLL || v31 == prominentSectionIndex;
           do
           {
             v51 = [MEMORY[0x1E696AC88] indexPathForItem:v48 inSection:v31];
@@ -278,7 +278,7 @@
             v53 = v17;
             if (v7)
             {
-              [v125 collectionView:v3 layout:v126 sizeForItemAtIndexPath:{v51, v15, v17}];
+              [v125 collectionView:collectionView layout:shelfViewLayout sizeForItemAtIndexPath:{v51, v15, v17}];
             }
 
             v33->size.width = v52;
@@ -304,7 +304,7 @@
     }
 
     while (v31 != v20);
-    v2 = v106;
+    selfCopy = v106;
   }
 
   v56 = 0.0;
@@ -325,7 +325,7 @@
 
   if (v55 > 0.0)
   {
-    [v126 headerBottomMargin];
+    [shelfViewLayout headerBottomMargin];
   }
 
   v116 = v55;
@@ -338,11 +338,11 @@
     v65 = 0.0;
     while (1)
     {
-      v66 = [v121 collectionView:v3 numberOfItemsInSection:{v61, v106}];
+      v66 = [v121 collectionView:collectionView numberOfItemsInSection:{v61, v106}];
       if (v66)
       {
         v67 = v120[v61];
-        v69 = v111 == 0x7FFFFFFFFFFFFFFFLL || v61 == v111;
+        v69 = prominentSectionIndex == 0x7FFFFFFFFFFFFFFFLL || v61 == prominentSectionIndex;
         v70 = &v118[v61];
         right = v70->right;
         v72 = v64 + v70->left;
@@ -539,17 +539,17 @@ LABEL_106:
   }
 
   free(v54);
-  [(VUIShelfLayoutHelper *)v2 _freeBuffers];
-  v2->_sectionCount = v105;
-  v2->_sectionOffsets = v102;
-  v2->_cellFrames = v110;
-  v2->_headerFrames = v119;
-  v2->_sectionInsets = v118;
-  v2->_actualRowCount = v104;
-  v2->_tallestInsetTop = v124;
-  v2->_tallestInsetBottom = v122;
-  v2->_tallestHeaderHeight = v116;
-  v2->_tallestColumnHeight = v65;
+  [(VUIShelfLayoutHelper *)selfCopy _freeBuffers];
+  selfCopy->_sectionCount = v105;
+  selfCopy->_sectionOffsets = v102;
+  selfCopy->_cellFrames = v110;
+  selfCopy->_headerFrames = v119;
+  selfCopy->_sectionInsets = v118;
+  selfCopy->_actualRowCount = v104;
+  selfCopy->_tallestInsetTop = v124;
+  selfCopy->_tallestInsetBottom = v122;
+  selfCopy->_tallestHeaderHeight = v116;
+  selfCopy->_tallestColumnHeight = v65;
 }
 
 - (void)_freeBuffers

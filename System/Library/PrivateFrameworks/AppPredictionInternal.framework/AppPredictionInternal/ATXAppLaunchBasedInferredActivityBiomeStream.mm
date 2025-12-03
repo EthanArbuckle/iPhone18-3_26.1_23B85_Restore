@@ -1,8 +1,8 @@
 @interface ATXAppLaunchBasedInferredActivityBiomeStream
 - (ATXAppLaunchBasedInferredActivityBiomeStream)init;
-- (ATXAppLaunchBasedInferredActivityBiomeStream)initWithInferredModeSessionStream:(id)a3;
-- (id)sessionPublisherFromStartTime:(double)a3;
-- (id)transitionPublisherFromStartTime:(double)a3;
+- (ATXAppLaunchBasedInferredActivityBiomeStream)initWithInferredModeSessionStream:(id)stream;
+- (id)sessionPublisherFromStartTime:(double)time;
+- (id)transitionPublisherFromStartTime:(double)time;
 @end
 
 @implementation ATXAppLaunchBasedInferredActivityBiomeStream
@@ -15,24 +15,24 @@
   return v4;
 }
 
-- (ATXAppLaunchBasedInferredActivityBiomeStream)initWithInferredModeSessionStream:(id)a3
+- (ATXAppLaunchBasedInferredActivityBiomeStream)initWithInferredModeSessionStream:(id)stream
 {
-  v5 = a3;
+  streamCopy = stream;
   v9.receiver = self;
   v9.super_class = ATXAppLaunchBasedInferredActivityBiomeStream;
   v6 = [(ATXAppLaunchBasedInferredActivityBiomeStream *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_modeSessionStream, a3);
+    objc_storeStrong(&v6->_modeSessionStream, stream);
   }
 
   return v7;
 }
 
-- (id)sessionPublisherFromStartTime:(double)a3
+- (id)sessionPublisherFromStartTime:(double)time
 {
-  v3 = [(ATXAppLaunchInferredModeSessionBiomeStream *)self->_modeSessionStream publisherFromStartTime:a3];
+  v3 = [(ATXAppLaunchInferredModeSessionBiomeStream *)self->_modeSessionStream publisherFromStartTime:time];
   v4 = [v3 mapWithTransform:&__block_literal_global_77];
   v5 = [v4 mapWithTransform:&__block_literal_global_13];
 
@@ -56,9 +56,9 @@ id __78__ATXAppLaunchBasedInferredActivityBiomeStream_sessionPublisherFromStartT
   return v11;
 }
 
-- (id)transitionPublisherFromStartTime:(double)a3
+- (id)transitionPublisherFromStartTime:(double)time
 {
-  v3 = [(ATXAppLaunchBasedInferredActivityBiomeStream *)self sessionPublisherFromStartTime:a3];
+  v3 = [(ATXAppLaunchBasedInferredActivityBiomeStream *)self sessionPublisherFromStartTime:time];
   v4 = [_ATXUnifiedActivityStreamConversions transitionPublisherFromSessionPublisher:v3];
 
   return v4;

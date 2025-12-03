@@ -1,52 +1,52 @@
 @interface WebBookmarksServer
 + (id)sharedServer;
-- (BOOL)_connectionHasRequiredEntitlementForImportOrExport:(id)a3;
-- (BOOL)_exportsContentOfBookmarkFolder:(id)a3 collection:(id)a4 writer:(id)a5 error:(id *)a6;
+- (BOOL)_connectionHasRequiredEntitlementForImportOrExport:(id)export;
+- (BOOL)_exportsContentOfBookmarkFolder:(id)folder collection:(id)collection writer:(id)writer error:(id *)error;
 - (BOOL)_isCloudHistoryEnabled;
-- (BOOL)clientIsDefaultBrowserEntitledWithConnection:(id)a3 message:(id)a4;
+- (BOOL)clientIsDefaultBrowserEntitledWithConnection:(id)connection message:(id)message;
 - (WebBookmarksServer)init;
 - (id)_newWebsiteDataStore;
-- (void)_addToReadingListWithMessage:(id)a3 forConnection:(id)a4;
-- (void)_clearAllCloudTabDevicesForConnection:(id)a3;
+- (void)_addToReadingListWithMessage:(id)message forConnection:(id)connection;
+- (void)_clearAllCloudTabDevicesForConnection:(id)connection;
 - (void)_clearAllHistory;
 - (void)_clearAllScribbleEdits;
-- (void)_clearCloudTabsForCurrentDeviceForConnection:(id)a3;
-- (void)_clearHistoryVisitsAddedAfterDate:(id)a3 beforeDate:(id)a4 profiles:(id)a5 options:(int64_t)a6 clearAllSpotlightHistoryForProfile:(BOOL)a7;
-- (void)_connection:(id)a3 clearAllSafariHistoryWithMessage:(id)a4;
-- (void)_connection:(id)a3 clearHistoryWithMessage:(id)a4;
-- (void)_connection:(id)a3 computeNumberOfItemsToBeImportedWithMessage:(id)a4;
-- (void)_connection:(id)a3 deleteSafariAllWebSecurityOriginWithMessage:(id)a4;
-- (void)_connection:(id)a3 deleteSafariPersistentURLCacheStorage:(id)a4;
-- (void)_connection:(id)a3 deleteSafariWebSecurityOriginWithMessage:(id)a4;
-- (void)_connection:(id)a3 didToggleCloudTabsWithMessage:(id)a4;
-- (void)_connection:(id)a3 exportBookmarksWithMessage:(id)a4;
-- (void)_connection:(id)a3 exportHistoryWithMessage:(id)a4;
-- (void)_connection:(id)a3 getNumberOfHistorySitesToBeExportedWithMessage:(id)a4;
-- (void)_connection:(id)a3 getSafariDataUsageSummaryWithMessage:(id)a4;
-- (void)_connection:(id)a3 getSafariWebDataUsageWithMessage:(id)a4;
-- (void)_connection:(id)a3 importBookmarksWithMessage:(id)a4;
-- (void)_connection:(id)a3 importChromeExtensionsWithMessage:(id)a4;
-- (void)_connection:(id)a3 importChromeHistoryWithMessage:(id)a4;
-- (void)_connection:(id)a3 importCreditCardsWithMessage:(id)a4;
-- (void)_connection:(id)a3 importExtensionsWithMessage:(id)a4;
-- (void)_connection:(id)a3 importHistoryWithMessage:(id)a4;
-- (void)_connection:(id)a3 openSafariExportSettingsWithMessage:(id)a4;
-- (void)_connection:(id)a3 scanImportURLsWithMessage:(id)a4;
-- (void)_deleteDataForWebsiteDataRecord:(id)a3 matchingWebKitWebsiteDataRecords:(id)a4 websiteDataStore:(id)a5 completion:(id)a6;
-- (void)_deleteDataForWebsiteDataRecord:(id)a3 websiteDataStore:(id)a4 completion:(id)a5;
-- (void)_exportHistoryToURL:(id)a3 sandboxExtension:(id)a4 profileIdentifier:(id)a5 completionHandler:(id)a6;
-- (void)_generateWebsiteDataRecordsWithCompletion:(id)a3;
-- (void)_getSafariDataUsageSummaryWithWebsiteDataStore:(id)a3 completion:(id)a4;
-- (void)_importChromeExtensionsFromFileHandle:(id)a3 connection:(id)a4 completionHandler:(id)a5;
-- (void)_importCreditCardsFromFileHandle:(id)a3 connection:(id)a4 completionHandler:(id)a5;
-- (void)_importExtensionsFromFileHandle:(id)a3 connection:(id)a4 completionHandler:(id)a5;
-- (void)_importHistoryFromFileHandle:(id)a3 ageLimit:(double)a4 profileIdentifier:(id)a5 forChrome:(BOOL)a6 completionHandler:(id)a7;
-- (void)_logWarningWithMessage:(id)a3 connection:(id)a4;
-- (void)_performBlock:(id)a3 forAllDataStoresNeededForProfileIdentifiers:(id)a4 completion:(id)a5;
-- (void)_performBlock:(id)a3 forDataStores:(id)a4 completion:(id)a5;
-- (void)_scanImportURLs:(id)a3 sandboxExtensions:(id)a4 completionHandler:(id)a5;
+- (void)_clearCloudTabsForCurrentDeviceForConnection:(id)connection;
+- (void)_clearHistoryVisitsAddedAfterDate:(id)date beforeDate:(id)beforeDate profiles:(id)profiles options:(int64_t)options clearAllSpotlightHistoryForProfile:(BOOL)profile;
+- (void)_connection:(id)_connection clearAllSafariHistoryWithMessage:(id)message;
+- (void)_connection:(id)_connection clearHistoryWithMessage:(id)message;
+- (void)_connection:(id)_connection computeNumberOfItemsToBeImportedWithMessage:(id)message;
+- (void)_connection:(id)_connection deleteSafariAllWebSecurityOriginWithMessage:(id)message;
+- (void)_connection:(id)_connection deleteSafariPersistentURLCacheStorage:(id)storage;
+- (void)_connection:(id)_connection deleteSafariWebSecurityOriginWithMessage:(id)message;
+- (void)_connection:(id)_connection didToggleCloudTabsWithMessage:(id)message;
+- (void)_connection:(id)_connection exportBookmarksWithMessage:(id)message;
+- (void)_connection:(id)_connection exportHistoryWithMessage:(id)message;
+- (void)_connection:(id)_connection getNumberOfHistorySitesToBeExportedWithMessage:(id)message;
+- (void)_connection:(id)_connection getSafariDataUsageSummaryWithMessage:(id)message;
+- (void)_connection:(id)_connection getSafariWebDataUsageWithMessage:(id)message;
+- (void)_connection:(id)_connection importBookmarksWithMessage:(id)message;
+- (void)_connection:(id)_connection importChromeExtensionsWithMessage:(id)message;
+- (void)_connection:(id)_connection importChromeHistoryWithMessage:(id)message;
+- (void)_connection:(id)_connection importCreditCardsWithMessage:(id)message;
+- (void)_connection:(id)_connection importExtensionsWithMessage:(id)message;
+- (void)_connection:(id)_connection importHistoryWithMessage:(id)message;
+- (void)_connection:(id)_connection openSafariExportSettingsWithMessage:(id)message;
+- (void)_connection:(id)_connection scanImportURLsWithMessage:(id)message;
+- (void)_deleteDataForWebsiteDataRecord:(id)record matchingWebKitWebsiteDataRecords:(id)records websiteDataStore:(id)store completion:(id)completion;
+- (void)_deleteDataForWebsiteDataRecord:(id)record websiteDataStore:(id)store completion:(id)completion;
+- (void)_exportHistoryToURL:(id)l sandboxExtension:(id)extension profileIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)_generateWebsiteDataRecordsWithCompletion:(id)completion;
+- (void)_getSafariDataUsageSummaryWithWebsiteDataStore:(id)store completion:(id)completion;
+- (void)_importChromeExtensionsFromFileHandle:(id)handle connection:(id)connection completionHandler:(id)handler;
+- (void)_importCreditCardsFromFileHandle:(id)handle connection:(id)connection completionHandler:(id)handler;
+- (void)_importExtensionsFromFileHandle:(id)handle connection:(id)connection completionHandler:(id)handler;
+- (void)_importHistoryFromFileHandle:(id)handle ageLimit:(double)limit profileIdentifier:(id)identifier forChrome:(BOOL)chrome completionHandler:(id)handler;
+- (void)_logWarningWithMessage:(id)message connection:(id)connection;
+- (void)_performBlock:(id)block forAllDataStoresNeededForProfileIdentifiers:(id)identifiers completion:(id)completion;
+- (void)_performBlock:(id)block forDataStores:(id)stores completion:(id)completion;
+- (void)_scanImportURLs:(id)ls sandboxExtensions:(id)extensions completionHandler:(id)handler;
 - (void)dealloc;
-- (void)reportSevereError:(id)a3 completionHandler:(id)a4;
+- (void)reportSevereError:(id)error completionHandler:(id)handler;
 @end
 
 @implementation WebBookmarksServer
@@ -321,10 +321,10 @@
   return v3;
 }
 
-- (void)_addToReadingListWithMessage:(id)a3 forConnection:(id)a4
+- (void)_addToReadingListWithMessage:(id)message forConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  connectionCopy = connection;
   if (([(WBUFeatureManager *)self->_featureManager isReadingListAvailable]& 1) != 0)
   {
     v8 = +[LSApplicationWorkspace defaultWorkspace];
@@ -332,7 +332,7 @@
 
     if (v9)
     {
-      [(WebBookmarksServerReadingListHandler *)self->_readingListHandler handleAddToReadingListWithMessage:v6 forConnection:v7];
+      [(WebBookmarksServerReadingListHandler *)self->_readingListHandler handleAddToReadingListWithMessage:messageCopy forConnection:connectionCopy];
     }
 
     else
@@ -355,22 +355,22 @@
   }
 }
 
-- (void)_clearAllCloudTabDevicesForConnection:(id)a3
+- (void)_clearAllCloudTabDevicesForConnection:(id)connection
 {
   featureManager = self->_featureManager;
-  v14 = a3;
+  connectionCopy = connection;
   if (([(WBUFeatureManager *)featureManager isCloudTabsAvailable]& 1) == 0)
   {
-    [(WebBookmarksServer *)self _logWarningWithMessage:@"Ignoring request to clear cloud tab devices connection:because cloud tabs feature is currently disabled.", v14];
+    [(WebBookmarksServer *)self _logWarningWithMessage:@"Ignoring request to clear cloud tab devices connection:because cloud tabs feature is currently disabled.", connectionCopy];
     goto LABEL_5;
   }
 
-  v5 = [(CloudTabStore *)v14 hasBoolEntitlement:@"com.apple.private.safari.cloudtabs"];
+  v5 = [(CloudTabStore *)connectionCopy hasBoolEntitlement:@"com.apple.private.safari.cloudtabs"];
 
   if (v5)
   {
-    v14 = objc_alloc_init(CloudTabStore);
-    [(CloudTabStore *)v14 _clearAllDevices];
+    connectionCopy = objc_alloc_init(CloudTabStore);
+    [(CloudTabStore *)connectionCopy _clearAllDevices];
 LABEL_5:
 
     return;
@@ -383,22 +383,22 @@ LABEL_5:
   }
 }
 
-- (void)_clearCloudTabsForCurrentDeviceForConnection:(id)a3
+- (void)_clearCloudTabsForCurrentDeviceForConnection:(id)connection
 {
   featureManager = self->_featureManager;
-  v14 = a3;
+  connectionCopy = connection;
   if (([(WBUFeatureManager *)featureManager isCloudTabsAvailable]& 1) == 0)
   {
-    [(WebBookmarksServer *)self _logWarningWithMessage:@"Ignoring request to clear cloud tabs on this device connection:because cloud tabs feature is currently disabled", v14];
+    [(WebBookmarksServer *)self _logWarningWithMessage:@"Ignoring request to clear cloud tabs on this device connection:because cloud tabs feature is currently disabled", connectionCopy];
     goto LABEL_5;
   }
 
-  v5 = [(CloudTabStore *)v14 hasBoolEntitlement:@"com.apple.private.safari.cloudtabs"];
+  v5 = [(CloudTabStore *)connectionCopy hasBoolEntitlement:@"com.apple.private.safari.cloudtabs"];
 
   if (v5)
   {
-    v14 = objc_alloc_init(CloudTabStore);
-    [(CloudTabStore *)v14 clearTabsForCurrentDevice];
+    connectionCopy = objc_alloc_init(CloudTabStore);
+    [(CloudTabStore *)connectionCopy clearTabsForCurrentDevice];
 LABEL_5:
 
     return;
@@ -411,16 +411,16 @@ LABEL_5:
   }
 }
 
-- (void)_connection:(id)a3 didToggleCloudTabsWithMessage:(id)a4
+- (void)_connection:(id)_connection didToggleCloudTabsWithMessage:(id)message
 {
-  v6 = a3;
-  v7 = a4;
+  _connectionCopy = _connection;
+  messageCopy = message;
   if (([(WBUFeatureManager *)self->_featureManager isCloudTabsAvailable]& 1) != 0)
   {
-    if ([v6 hasBoolEntitlement:@"com.apple.private.safari.cloudtabs"])
+    if ([_connectionCopy hasBoolEntitlement:@"com.apple.private.safari.cloudtabs"])
     {
-      v8 = xpc_dictionary_get_BOOL(v7, kWebBookmarksEnabledKey);
-      v9 = xpc_dictionary_get_BOOL(v7, kWebBookmarksTerminateAfterUpdatingKey);
+      v8 = xpc_dictionary_get_BOOL(messageCopy, kWebBookmarksEnabledKey);
+      v9 = xpc_dictionary_get_BOOL(messageCopy, kWebBookmarksTerminateAfterUpdatingKey);
       v10 = +[NSUserDefaults safari_browserDefaults];
       [v10 setBool:v8 forKey:@"CloudTabsEnabled"];
       [v10 synchronize];
@@ -432,8 +432,8 @@ LABEL_5:
         v13 = +[WBCollectionConfiguration safariTabCollectionConfiguration];
         v14 = [v12 initWithConfiguration:v13 openDatabase:1];
 
-        v15 = [v14 browserState];
-        [(CloudTabStore *)v11 saveCurrentDeviceTabsFromBrowserState:v15];
+        browserState = [v14 browserState];
+        [(CloudTabStore *)v11 saveCurrentDeviceTabsFromBrowserState:browserState];
       }
 
       else
@@ -461,7 +461,7 @@ LABEL_5:
 
   else
   {
-    [(WebBookmarksServer *)self _logWarningWithMessage:@"Ignoring request to toggle cloud tabs connection:because cloud tabs feature is currently disabled", v6];
+    [(WebBookmarksServer *)self _logWarningWithMessage:@"Ignoring request to toggle cloud tabs connection:because cloud tabs feature is currently disabled", _connectionCopy];
   }
 }
 
@@ -484,9 +484,9 @@ LABEL_5:
   return v8;
 }
 
-- (void)_generateWebsiteDataRecordsWithCompletion:(id)a3
+- (void)_generateWebsiteDataRecordsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   +[NSMutableDictionary dictionary];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
@@ -504,18 +504,18 @@ LABEL_5:
   v9[2] = sub_100009AA8;
   v9[3] = &unk_100028BD8;
   v10 = v5;
-  v11 = v4;
-  v6 = v4;
+  v11 = completionCopy;
+  v6 = completionCopy;
   v7 = v5;
   v8 = v13;
   [(WebBookmarksServer *)self _performBlock:v12 forAllDataStoresNeededForProfileIdentifiers:0 completion:v9];
 }
 
-- (void)_connection:(id)a3 getSafariWebDataUsageWithMessage:(id)a4
+- (void)_connection:(id)_connection getSafariWebDataUsageWithMessage:(id)message
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 hasBoolEntitlement:@"com.apple.private.webbookmarks.settings"];
+  _connectionCopy = _connection;
+  messageCopy = message;
+  v8 = [_connectionCopy hasBoolEntitlement:@"com.apple.private.webbookmarks.settings"];
   v9 = sub_1000147E0();
   v10 = v9;
   if (v8)
@@ -533,8 +533,8 @@ LABEL_5:
     block[2] = sub_100009D28;
     block[3] = &unk_100029178;
     block[4] = self;
-    v20 = v7;
-    v21 = v6;
+    v20 = messageCopy;
+    v21 = _connectionCopy;
     dispatch_async(websiteDataUsageTaskQueue, block);
   }
 
@@ -544,18 +544,18 @@ LABEL_5:
   }
 }
 
-- (void)_deleteDataForWebsiteDataRecord:(id)a3 matchingWebKitWebsiteDataRecords:(id)a4 websiteDataStore:(id)a5 completion:(id)a6
+- (void)_deleteDataForWebsiteDataRecord:(id)record matchingWebKitWebsiteDataRecords:(id)records websiteDataStore:(id)store completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a6;
+  recordsCopy = records;
+  storeCopy = store;
+  completionCopy = completion;
   v11 = +[WKWebsiteDataStore safari_allDataTypes];
   v12 = sub_1000147E0();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     v13 = v12;
     *buf = 134217984;
-    v24 = [v8 count];
+    v24 = [recordsCopy count];
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Deleting %zu records", buf, 0xCu);
   }
 
@@ -563,32 +563,32 @@ LABEL_5:
   v18[1] = 3221225472;
   v18[2] = sub_10000A2E4;
   v18[3] = &unk_100029408;
-  v19 = v8;
-  v20 = v9;
+  v19 = recordsCopy;
+  v20 = storeCopy;
   v21 = v11;
-  v22 = v10;
+  v22 = completionCopy;
   v14 = v11;
-  v15 = v9;
-  v16 = v8;
-  v17 = v10;
+  v15 = storeCopy;
+  v16 = recordsCopy;
+  v17 = completionCopy;
   [v15 removeDataOfTypes:v14 forDataRecords:v16 completionHandler:v18];
 }
 
-- (void)_performBlock:(id)a3 forAllDataStoresNeededForProfileIdentifiers:(id)a4 completion:(id)a5
+- (void)_performBlock:(id)block forAllDataStoresNeededForProfileIdentifiers:(id)identifiers completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  blockCopy = block;
+  identifiersCopy = identifiers;
+  completionCopy = completion;
   v11 = +[NSMutableArray array];
-  if (v9 && ![v9 containsObject:WBAllWebsiteDataProfileIdentifier])
+  if (identifiersCopy && ![identifiersCopy containsObject:WBAllWebsiteDataProfileIdentifier])
   {
-    v27 = v10;
+    v27 = completionCopy;
     v30 = 0u;
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v18 = [v9 allObjects];
-    v19 = [v18 countByEnumeratingWithState:&v28 objects:v41 count:16];
+    allObjects = [identifiersCopy allObjects];
+    v19 = [allObjects countByEnumeratingWithState:&v28 objects:v41 count:16];
     if (v19)
     {
       v20 = v19;
@@ -600,38 +600,38 @@ LABEL_5:
         {
           if (*v29 != v21)
           {
-            objc_enumerationMutation(v18);
+            objc_enumerationMutation(allObjects);
           }
 
           v24 = *(*(&v28 + 1) + 8 * i);
           if ([v24 isEqualToString:v22])
           {
-            v25 = [(WebBookmarksServer *)self _newWebsiteDataStore];
+            _newWebsiteDataStore = [(WebBookmarksServer *)self _newWebsiteDataStore];
           }
 
           else
           {
-            v25 = [WKWebsiteDataStore safari_dataStoreWithoutCachingForProfileWithIdentifier:v24];
+            _newWebsiteDataStore = [WKWebsiteDataStore safari_dataStoreWithoutCachingForProfileWithIdentifier:v24];
           }
 
-          v26 = v25;
-          [v11 addObject:v25];
+          v26 = _newWebsiteDataStore;
+          [v11 addObject:_newWebsiteDataStore];
         }
 
-        v20 = [v18 countByEnumeratingWithState:&v28 objects:v41 count:16];
+        v20 = [allObjects countByEnumeratingWithState:&v28 objects:v41 count:16];
       }
 
       while (v20);
     }
 
-    v10 = v27;
-    [(WebBookmarksServer *)self _performBlock:v8 forDataStores:v11 completion:v27];
+    completionCopy = v27;
+    [(WebBookmarksServer *)self _performBlock:blockCopy forDataStores:v11 completion:v27];
   }
 
   else
   {
-    v12 = [(WebBookmarksServer *)self _newWebsiteDataStore];
-    [v11 addObject:v12];
+    _newWebsiteDataStore2 = [(WebBookmarksServer *)self _newWebsiteDataStore];
+    [v11 addObject:_newWebsiteDataStore2];
 
     v13 = dispatch_group_create();
     dispatch_group_enter(v13);
@@ -650,26 +650,26 @@ LABEL_5:
     block[2] = sub_10000A89C;
     block[3] = &unk_100029480;
     v33 = v15;
-    v34 = self;
-    v36 = v8;
+    selfCopy = self;
+    v36 = blockCopy;
     v35 = v14;
-    v37 = v10;
+    v37 = completionCopy;
     v17 = v15;
     dispatch_async(profilesWebsiteDataUsageTaskQueue, block);
   }
 }
 
-- (void)_performBlock:(id)a3 forDataStores:(id)a4 completion:(id)a5
+- (void)_performBlock:(id)block forDataStores:(id)stores completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v20 = a5;
+  blockCopy = block;
+  storesCopy = stores;
+  completionCopy = completion;
   v9 = dispatch_group_create();
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  obj = v8;
+  obj = storesCopy;
   v10 = [obj countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v10)
   {
@@ -695,7 +695,7 @@ LABEL_5:
         v25[2] = sub_10000AC28;
         v25[3] = &unk_100028BB0;
         v26 = v9;
-        v7[2](v7, v14, v25);
+        blockCopy[2](blockCopy, v14, v25);
 
         v13 = v13 + 1;
       }
@@ -713,29 +713,29 @@ LABEL_5:
   block[2] = sub_10000AC30;
   block[3] = &unk_100028BD8;
   v23 = v9;
-  v24 = v20;
-  v17 = v20;
+  v24 = completionCopy;
+  v17 = completionCopy;
   v18 = v9;
   dispatch_async(profilesWebsiteDataUsageTaskQueue, block);
 }
 
-- (void)_connection:(id)a3 deleteSafariWebSecurityOriginWithMessage:(id)a4
+- (void)_connection:(id)_connection deleteSafariWebSecurityOriginWithMessage:(id)message
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 hasBoolEntitlement:@"com.apple.private.webbookmarks.settings"])
+  _connectionCopy = _connection;
+  messageCopy = message;
+  if ([_connectionCopy hasBoolEntitlement:@"com.apple.private.webbookmarks.settings"])
   {
     xpc_transaction_begin();
-    v8 = sub_10000AE2C(v7);
-    [v6 sendMessage:v8];
+    v8 = sub_10000AE2C(messageCopy);
+    [_connectionCopy sendMessage:v8];
 
     websiteDataUsageTaskQueue = self->_websiteDataUsageTaskQueue;
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
     v18[2] = sub_10000AE78;
     v18[3] = &unk_100029150;
-    v19 = v7;
-    v20 = self;
+    v19 = messageCopy;
+    selfCopy = self;
     dispatch_async(websiteDataUsageTaskQueue, v18);
   }
 
@@ -749,34 +749,34 @@ LABEL_5:
   }
 }
 
-- (void)_deleteDataForWebsiteDataRecord:(id)a3 websiteDataStore:(id)a4 completion:(id)a5
+- (void)_deleteDataForWebsiteDataRecord:(id)record websiteDataStore:(id)store completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 domain];
+  recordCopy = record;
+  storeCopy = store;
+  completionCopy = completion;
+  domain = [recordCopy domain];
   v12 = +[WKWebsiteDataStore safari_allDataTypes];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_10000B334;
   v17[3] = &unk_1000294F8;
-  v18 = v11;
-  v19 = self;
-  v20 = v8;
-  v21 = v9;
-  v22 = v10;
-  v13 = v10;
-  v14 = v9;
-  v15 = v8;
-  v16 = v11;
+  v18 = domain;
+  selfCopy = self;
+  v20 = recordCopy;
+  v21 = storeCopy;
+  v22 = completionCopy;
+  v13 = completionCopy;
+  v14 = storeCopy;
+  v15 = recordCopy;
+  v16 = domain;
   [v14 fetchDataRecordsOfTypes:v12 completionHandler:v17];
 }
 
-- (void)_connection:(id)a3 deleteSafariAllWebSecurityOriginWithMessage:(id)a4
+- (void)_connection:(id)_connection deleteSafariAllWebSecurityOriginWithMessage:(id)message
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 hasBoolEntitlement:@"com.apple.private.webbookmarks.settings"];
+  _connectionCopy = _connection;
+  messageCopy = message;
+  v8 = [_connectionCopy hasBoolEntitlement:@"com.apple.private.webbookmarks.settings"];
   v9 = sub_1000147E0();
   v10 = v9;
   if (v8)
@@ -787,7 +787,7 @@ LABEL_5:
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Deleting all website data records", buf, 2u);
     }
 
-    v11 = xpc_dictionary_get_value(v7, kWebsiteProfileIdentifiersKey);
+    v11 = xpc_dictionary_get_value(messageCopy, kWebsiteProfileIdentifiersKey);
     v12 = v11;
     if (v11)
     {
@@ -811,8 +811,8 @@ LABEL_5:
     if ([v14 count] == 1)
     {
       xpc_transaction_begin();
-      v24 = sub_10000AE2C(v7);
-      [v6 sendMessage:v24];
+      v24 = sub_10000AE2C(messageCopy);
+      [_connectionCopy sendMessage:v24];
 
       websiteDataUsageTaskQueue = self->_websiteDataUsageTaskQueue;
       v26[0] = _NSConcreteStackBlock;
@@ -831,14 +831,14 @@ LABEL_5:
   }
 }
 
-- (void)_connection:(id)a3 deleteSafariPersistentURLCacheStorage:(id)a4
+- (void)_connection:(id)_connection deleteSafariPersistentURLCacheStorage:(id)storage
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 hasBoolEntitlement:@"com.apple.private.webbookmarks.settings"])
+  _connectionCopy = _connection;
+  storageCopy = storage;
+  if ([_connectionCopy hasBoolEntitlement:@"com.apple.private.webbookmarks.settings"])
   {
-    v7 = sub_10000AE2C(v6);
-    [v5 sendMessage:v7];
+    v7 = sub_10000AE2C(storageCopy);
+    [_connectionCopy sendMessage:v7];
 
     v8 = sub_1000147E0();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -862,11 +862,11 @@ LABEL_5:
   }
 }
 
-- (void)_connection:(id)a3 getSafariDataUsageSummaryWithMessage:(id)a4
+- (void)_connection:(id)_connection getSafariDataUsageSummaryWithMessage:(id)message
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 hasBoolEntitlement:@"com.apple.private.webbookmarks.settings"];
+  _connectionCopy = _connection;
+  messageCopy = message;
+  v8 = [_connectionCopy hasBoolEntitlement:@"com.apple.private.webbookmarks.settings"];
   v9 = sub_1000147E0();
   v10 = v9;
   if (v8)
@@ -883,9 +883,9 @@ LABEL_5:
     block[1] = 3221225472;
     block[2] = sub_10000BFB0;
     block[3] = &unk_100029178;
-    v20 = v7;
-    v21 = self;
-    v22 = v6;
+    v20 = messageCopy;
+    selfCopy = self;
+    v22 = _connectionCopy;
     dispatch_async(websiteDataUsageTaskQueue, block);
   }
 
@@ -895,10 +895,10 @@ LABEL_5:
   }
 }
 
-- (void)_getSafariDataUsageSummaryWithWebsiteDataStore:(id)a3 completion:(id)a4
+- (void)_getSafariDataUsageSummaryWithWebsiteDataStore:(id)store completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  storeCopy = store;
+  completionCopy = completion;
   v12[0] = 0;
   v12[1] = v12;
   v12[2] = 0x2020000000;
@@ -909,21 +909,21 @@ LABEL_5:
   v9[2] = sub_10000C3A0;
   v9[3] = &unk_1000295E8;
   v11 = v12;
-  v8 = v6;
+  v8 = completionCopy;
   v10 = v8;
-  [v5 _fetchDataRecordsOfTypes:v7 withOptions:1 completionHandler:v9];
+  [storeCopy _fetchDataRecordsOfTypes:v7 withOptions:1 completionHandler:v9];
 
   _Block_object_dispose(v12, 8);
 }
 
-- (void)_connection:(id)a3 clearAllSafariHistoryWithMessage:(id)a4
+- (void)_connection:(id)_connection clearAllSafariHistoryWithMessage:(id)message
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 hasBoolEntitlement:@"com.apple.private.webbookmarks.settings"])
+  _connectionCopy = _connection;
+  messageCopy = message;
+  if ([_connectionCopy hasBoolEntitlement:@"com.apple.private.webbookmarks.settings"])
   {
-    v8 = sub_10000AE2C(v7);
-    [v6 sendMessage:v8];
+    v8 = sub_10000AE2C(messageCopy);
+    [_connectionCopy sendMessage:v8];
 
     v9 = sub_100014574();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -963,24 +963,24 @@ LABEL_5:
   v5[3] = &unk_100029680;
   v6 = os_transaction_create();
   v7 = objc_alloc_init(WBSHistoryConnectionProxy);
-  v8 = self;
+  selfCopy = self;
   v3 = v7;
   v4 = v6;
   [v3 connectWithOptions:0 delegate:self completionHandler:v5];
 }
 
-- (void)_connection:(id)a3 clearHistoryWithMessage:(id)a4
+- (void)_connection:(id)_connection clearHistoryWithMessage:(id)message
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 hasBoolEntitlement:@"com.apple.private.webbookmarks.settings"])
+  _connectionCopy = _connection;
+  messageCopy = message;
+  if ([_connectionCopy hasBoolEntitlement:@"com.apple.private.webbookmarks.settings"])
   {
     v8 = &CacheDeleteRegisterInfoCallbacks_ptr;
-    v9 = [NSDate dateWithTimeIntervalSinceReferenceDate:xpc_dictionary_get_double(v7, kWebsiteStartDateKey)];
-    v29 = [NSDate dateWithTimeIntervalSinceReferenceDate:xpc_dictionary_get_double(v7, kWebsiteEndDateKey)];
-    int64 = xpc_dictionary_get_int64(v7, kWebsiteOptionsKey);
-    v28 = xpc_dictionary_get_BOOL(v7, kWebsiteClearAllSpotlightHistoryForProfileKey);
-    v11 = xpc_dictionary_get_value(v7, kWebsiteProfileIdentifiersKey);
+    v9 = [NSDate dateWithTimeIntervalSinceReferenceDate:xpc_dictionary_get_double(messageCopy, kWebsiteStartDateKey)];
+    v29 = [NSDate dateWithTimeIntervalSinceReferenceDate:xpc_dictionary_get_double(messageCopy, kWebsiteEndDateKey)];
+    int64 = xpc_dictionary_get_int64(messageCopy, kWebsiteOptionsKey);
+    v28 = xpc_dictionary_get_BOOL(messageCopy, kWebsiteClearAllSpotlightHistoryForProfileKey);
+    v11 = xpc_dictionary_get_value(messageCopy, kWebsiteProfileIdentifiersKey);
     v12 = v11;
     if (v11)
     {
@@ -1003,8 +1003,8 @@ LABEL_5:
       v14 = 0;
     }
 
-    v25 = sub_10000AE2C(v7);
-    [v6 sendMessage:v25];
+    v25 = sub_10000AE2C(messageCopy);
+    [_connectionCopy sendMessage:v25];
 
     v26 = sub_100014574();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
@@ -1021,9 +1021,9 @@ LABEL_5:
     }
 
     [(WebBookmarksServer *)self _clearHistoryVisitsAddedAfterDate:v9 beforeDate:v29 profiles:v14 options:int64 clearAllSpotlightHistoryForProfile:v28];
-    v27 = [v8[361] distantPast];
+    distantPast = [v8[361] distantPast];
 
-    if (v9 == v27)
+    if (v9 == distantPast)
     {
       [(WebBookmarksServer *)self _clearAllScribbleEdits];
     }
@@ -1039,19 +1039,19 @@ LABEL_5:
   }
 }
 
-- (void)_clearHistoryVisitsAddedAfterDate:(id)a3 beforeDate:(id)a4 profiles:(id)a5 options:(int64_t)a6 clearAllSpotlightHistoryForProfile:(BOOL)a7
+- (void)_clearHistoryVisitsAddedAfterDate:(id)date beforeDate:(id)beforeDate profiles:(id)profiles options:(int64_t)options clearAllSpotlightHistoryForProfile:(BOOL)profile
 {
-  v8 = a6;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
+  optionsCopy = options;
+  dateCopy = date;
+  beforeDateCopy = beforeDate;
+  profilesCopy = profiles;
   v15 = os_transaction_create();
   v16 = objc_alloc_init(WBSHistoryConnectionProxy);
   v45[0] = _NSConcreteStackBlock;
   v45[1] = 3221225472;
   v45[2] = sub_10000D2B8;
   v45[3] = &unk_100029570;
-  v17 = v12;
+  v17 = dateCopy;
   v46 = v17;
   v18 = objc_retainBlock(v45);
   v39[0] = _NSConcreteStackBlock;
@@ -1060,12 +1060,12 @@ LABEL_5:
   v39[3] = &unk_1000296F8;
   v19 = v16;
   v40 = v19;
-  v41 = self;
+  selfCopy = self;
   v20 = v17;
   v42 = v20;
-  v21 = v13;
+  v21 = beforeDateCopy;
   v43 = v21;
-  v44 = a7;
+  profileCopy = profile;
   v22 = objc_retainBlock(v39);
   v36[0] = _NSConcreteStackBlock;
   v36[1] = 3221225472;
@@ -1077,7 +1077,7 @@ LABEL_5:
   v24 = v15;
   v38 = v24;
   v25 = objc_retainBlock(v36);
-  if (v8)
+  if (optionsCopy)
   {
     v33[0] = _NSConcreteStackBlock;
     v33[1] = 3221225472;
@@ -1092,10 +1092,10 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  if ([v14 count])
+  if ([profilesCopy count])
   {
-    [(WebBookmarksServer *)self _performBlock:v18 forAllDataStoresNeededForProfileIdentifiers:v14 completion:&stru_1000297D8];
-    v26 = [v14 allObjects];
+    [(WebBookmarksServer *)self _performBlock:v18 forAllDataStoresNeededForProfileIdentifiers:profilesCopy completion:&stru_1000297D8];
+    allObjects = [profilesCopy allObjects];
     v31[0] = _NSConcreteStackBlock;
     v31[1] = 3221225472;
     v31[2] = sub_10000DC34;
@@ -1106,7 +1106,7 @@ LABEL_5:
     v29[2] = sub_10000DD00;
     v29[3] = &unk_100028D20;
     v30 = v25;
-    [v26 safari_enumerateAsynchronouslyOnQueue:&_dispatch_main_q enumerationBlock:v31 completionBlock:v29];
+    [allObjects safari_enumerateAsynchronouslyOnQueue:&_dispatch_main_q enumerationBlock:v31 completionBlock:v29];
 
     v27 = v32;
 LABEL_5:
@@ -1123,14 +1123,14 @@ LABEL_5:
 LABEL_6:
 }
 
-- (void)_connection:(id)a3 exportBookmarksWithMessage:(id)a4
+- (void)_connection:(id)_connection exportBookmarksWithMessage:(id)message
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(WebBookmarksServer *)self _connectionHasRequiredEntitlementForImportOrExport:v6])
+  _connectionCopy = _connection;
+  messageCopy = message;
+  if ([(WebBookmarksServer *)self _connectionHasRequiredEntitlementForImportOrExport:_connectionCopy])
   {
-    v8 = [NSString stringWithUTF8String:xpc_dictionary_get_string(v7, kWebBookmarksExportBookmarksSandboxExtensionKey)];
-    v9 = [NSString stringWithUTF8String:xpc_dictionary_get_string(v7, kWebBookmarksExportBookmarksURLKey)];
+    v8 = [NSString stringWithUTF8String:xpc_dictionary_get_string(messageCopy, kWebBookmarksExportBookmarksSandboxExtensionKey)];
+    v9 = [NSString stringWithUTF8String:xpc_dictionary_get_string(messageCopy, kWebBookmarksExportBookmarksURLKey)];
     v10 = [NSURL URLWithString:v9];
     [v8 UTF8String];
     v11 = sandbox_extension_consume();
@@ -1142,8 +1142,8 @@ LABEL_6:
         sub_100016BC4(v22);
       }
 
-      v23 = sub_10000AE2C(v7);
-      [v6 sendMessage:v23];
+      v23 = sub_10000AE2C(messageCopy);
+      [_connectionCopy sendMessage:v23];
     }
 
     else
@@ -1153,11 +1153,11 @@ LABEL_6:
       v30[2] = sub_10000E078;
       v30[3] = &unk_100029598;
       v33 = v11;
-      v31 = v6;
-      v32 = v7;
+      v31 = _connectionCopy;
+      v32 = messageCopy;
       v12 = objc_retainBlock(v30);
       v13 = +[WebBookmarkCollection safariBookmarkCollection];
-      v26 = [v13 rootBookmark];
+      rootBookmark = [v13 rootBookmark];
       v29 = 0;
       v14 = [[WBSNetscapeBookmarkFileWriter alloc] initWithURL:v10 error:&v29];
       v15 = v29;
@@ -1174,7 +1174,7 @@ LABEL_6:
       else
       {
         v28 = 0;
-        v17 = [(WebBookmarksServer *)self _exportsContentOfBookmarkFolder:v26 collection:v13 writer:v14 error:&v28];
+        v17 = [(WebBookmarksServer *)self _exportsContentOfBookmarkFolder:rootBookmark collection:v13 writer:v14 error:&v28];
         v18 = v28;
         v16 = v18;
         if (!v17 || v18)
@@ -1210,14 +1210,14 @@ LABEL_6:
   }
 }
 
-- (BOOL)_exportsContentOfBookmarkFolder:(id)a3 collection:(id)a4 writer:(id)a5 error:(id *)a6
+- (BOOL)_exportsContentOfBookmarkFolder:(id)folder collection:(id)collection writer:(id)writer error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  folderCopy = folder;
+  collectionCopy = collection;
+  writerCopy = writer;
   LOBYTE(v12) = 1;
-  v29 = v10;
-  v13 = [v10 listWithID:objc_msgSend(v9 skipOffset:"identifier") includeHidden:{0, 1}];
+  v29 = collectionCopy;
+  v13 = [collectionCopy listWithID:objc_msgSend(folderCopy skipOffset:"identifier") includeHidden:{0, 1}];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
@@ -1243,11 +1243,11 @@ LABEL_6:
         {
           if ([v18 isFolder])
           {
-            v19 = [v18 localizedTitle];
+            localizedTitle = [v18 localizedTitle];
             if ([v18 specialID])
             {
-              v20 = [v18 title];
-              v21 = [v11 openFolder:v19 identifier:v20 error:a6];
+              title = [v18 title];
+              v21 = [writerCopy openFolder:localizedTitle identifier:title error:error];
 
               if (!v21)
               {
@@ -1257,7 +1257,7 @@ LABEL_6:
 
             else
             {
-              v25 = [v11 openFolder:v19 identifier:0 error:a6];
+              v25 = [writerCopy openFolder:localizedTitle identifier:0 error:error];
 
               if ((v25 & 1) == 0)
               {
@@ -1265,7 +1265,7 @@ LABEL_6:
               }
             }
 
-            if (!-[WebBookmarksServer _exportsContentOfBookmarkFolder:collection:writer:error:](self, "_exportsContentOfBookmarkFolder:collection:writer:error:", v18, v29, v11, a6) || ([v11 closeFolderWithError:a6] & 1) == 0)
+            if (!-[WebBookmarksServer _exportsContentOfBookmarkFolder:collection:writer:error:](self, "_exportsContentOfBookmarkFolder:collection:writer:error:", v18, v29, writerCopy, error) || ([writerCopy closeFolderWithError:error] & 1) == 0)
             {
 LABEL_25:
               LOBYTE(v12) = 0;
@@ -1277,19 +1277,19 @@ LABEL_26:
 
           else
           {
-            if ([v9 isReadingListItem])
+            if ([folderCopy isReadingListItem])
             {
-              v22 = [v9 readingListDateLastViewed];
+              readingListDateLastViewed = [folderCopy readingListDateLastViewed];
             }
 
             else
             {
-              v22 = 0;
+              readingListDateLastViewed = 0;
             }
 
-            v23 = [v18 address];
-            v24 = [v18 localizedTitle];
-            v12 = [v11 appendURLString:v23 title:v24 dateOfLastVisitIfReadingListItem:v22 error:a6];
+            address = [v18 address];
+            localizedTitle2 = [v18 localizedTitle];
+            v12 = [writerCopy appendURLString:address title:localizedTitle2 dateOfLastVisitIfReadingListItem:readingListDateLastViewed error:error];
 
             if (!v12)
             {
@@ -1316,16 +1316,16 @@ LABEL_27:
   return v12;
 }
 
-- (void)_connection:(id)a3 exportHistoryWithMessage:(id)a4
+- (void)_connection:(id)_connection exportHistoryWithMessage:(id)message
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(WebBookmarksServer *)self _connectionHasRequiredEntitlementForImportOrExport:v6])
+  _connectionCopy = _connection;
+  messageCopy = message;
+  if ([(WebBookmarksServer *)self _connectionHasRequiredEntitlementForImportOrExport:_connectionCopy])
   {
-    v8 = [NSString stringWithUTF8String:xpc_dictionary_get_string(v7, kWebBookmarksHistoryExportSandboxExtensionKey)];
-    v9 = [NSString stringWithUTF8String:xpc_dictionary_get_string(v7, kWebBookmarksHistoryExportURLKey)];
+    v8 = [NSString stringWithUTF8String:xpc_dictionary_get_string(messageCopy, kWebBookmarksHistoryExportSandboxExtensionKey)];
+    v9 = [NSString stringWithUTF8String:xpc_dictionary_get_string(messageCopy, kWebBookmarksHistoryExportURLKey)];
     v10 = [NSURL URLWithString:v9];
-    v11 = [NSString stringWithCString:xpc_dictionary_get_string(v7 encoding:kWebsiteProfileIdentifiersKey), 1];
+    v11 = [NSString stringWithCString:xpc_dictionary_get_string(messageCopy encoding:kWebsiteProfileIdentifiersKey), 1];
     v12 = sub_1000148D8();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
@@ -1340,21 +1340,21 @@ LABEL_27:
     v13[1] = 3221225472;
     v13[2] = sub_10000E5C0;
     v13[3] = &unk_100029150;
-    v14 = v6;
-    v15 = v7;
+    v14 = _connectionCopy;
+    v15 = messageCopy;
     [(WebBookmarksServer *)self _exportHistoryToURL:v10 sandboxExtension:v8 profileIdentifier:v11 completionHandler:v13];
   }
 }
 
-- (void)_exportHistoryToURL:(id)a3 sandboxExtension:(id)a4 profileIdentifier:(id)a5 completionHandler:(id)a6
+- (void)_exportHistoryToURL:(id)l sandboxExtension:(id)extension profileIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = a4;
+  lCopy = l;
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  extensionCopy = extension;
   v14 = os_transaction_create();
   v15 = objc_alloc_init(WBSHistoryConnectionProxy);
-  [v13 UTF8String];
+  [extensionCopy UTF8String];
 
   v16 = sandbox_extension_consume();
   if (v16 == -1)
@@ -1365,7 +1365,7 @@ LABEL_27:
       sub_100016BC4(v22);
     }
 
-    v12[2](v12);
+    handlerCopy[2](handlerCopy);
   }
 
   else
@@ -1375,10 +1375,10 @@ LABEL_27:
     v31[2] = sub_10000E8C0;
     v31[3] = &unk_100029800;
     v33 = v16;
-    v32 = v12;
+    v32 = handlerCopy;
     v17 = objc_retainBlock(v31);
     v30 = 0;
-    v18 = [[WBSHistoryExporter alloc] initWithURL:v10 error:&v30];
+    v18 = [[WBSHistoryExporter alloc] initWithURL:lCopy error:&v30];
     v19 = v30;
     v20 = v19;
     if (!v18 || v19)
@@ -1395,12 +1395,12 @@ LABEL_27:
     else
     {
       v21 = +[NSMutableDictionary dictionary];
-      [v21 setObject:v11 forKeyedSubscript:WBSHistoryConnectionOptionDatabaseID];
+      [v21 setObject:identifierCopy forKeyedSubscript:WBSHistoryConnectionOptionDatabaseID];
       v24[0] = _NSConcreteStackBlock;
       v24[1] = 3221225472;
       v24[2] = sub_10000E904;
       v24[3] = &unk_100029850;
-      v25 = v11;
+      v25 = identifierCopy;
       v29 = v17;
       v26 = v18;
       v27 = v14;
@@ -1410,10 +1410,10 @@ LABEL_27:
   }
 }
 
-- (void)_connection:(id)a3 getNumberOfHistorySitesToBeExportedWithMessage:(id)a4
+- (void)_connection:(id)_connection getNumberOfHistorySitesToBeExportedWithMessage:(id)message
 {
-  v17 = a3;
-  xdict = a4;
+  _connectionCopy = _connection;
+  xdict = message;
   v18 = os_transaction_create();
   v40[0] = 0;
   v40[1] = v40;
@@ -1436,8 +1436,8 @@ LABEL_27:
     v9 = sub_1000148D8();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      v10 = [v20 safari_privacyPreservingDescription];
-      sub_100016D80(v10, buf, v9);
+      safari_privacyPreservingDescription = [v20 safari_privacyPreservingDescription];
+      sub_100016D80(safari_privacyPreservingDescription, buf, v9);
     }
   }
 
@@ -1466,7 +1466,7 @@ LABEL_27:
           v15 = *(*(&v34 + 1) + 8 * v14);
           v42 = v13;
           v43 = v15;
-          v16 = [NSDictionary dictionaryWithObjects:&v43 forKeys:&v42 count:1, v17];
+          _connectionCopy = [NSDictionary dictionaryWithObjects:&v43 forKeys:&v42 count:1, _connectionCopy];
           dispatch_group_enter(v5);
           v31[0] = _NSConcreteStackBlock;
           v31[1] = 3221225472;
@@ -1475,7 +1475,7 @@ LABEL_27:
           v31[4] = v15;
           v32 = v5;
           v33 = v40;
-          [v24 connectWithOptions:v16 delegate:self completionHandler:v31];
+          [v24 connectWithOptions:_connectionCopy delegate:self completionHandler:v31];
 
           v14 = v14 + 1;
         }
@@ -1493,7 +1493,7 @@ LABEL_27:
     block[3] = &unk_1000298C8;
     v26 = xdict;
     v30 = v40;
-    v27 = v17;
+    v27 = _connectionCopy;
     v28 = v18;
     v29 = v24;
     dispatch_group_notify(v5, &_dispatch_main_q, block);
@@ -1504,14 +1504,14 @@ LABEL_27:
   _Block_object_dispose(v40, 8);
 }
 
-- (void)_connection:(id)a3 scanImportURLsWithMessage:(id)a4
+- (void)_connection:(id)_connection scanImportURLsWithMessage:(id)message
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(WebBookmarksServer *)self _connectionHasRequiredEntitlementForImportOrExport:v6])
+  _connectionCopy = _connection;
+  messageCopy = message;
+  if ([(WebBookmarksServer *)self _connectionHasRequiredEntitlementForImportOrExport:_connectionCopy])
   {
     length = 0;
-    data = xpc_dictionary_get_data(v7, kWebBookmarksImportURLsKey, &length);
+    data = xpc_dictionary_get_data(messageCopy, kWebBookmarksImportURLsKey, &length);
     v9 = objc_opt_class();
     v10 = [NSData dataWithBytes:data length:length];
     v23 = 0;
@@ -1529,7 +1529,7 @@ LABEL_27:
 
     else
     {
-      v14 = xpc_dictionary_get_data(v7, kWebBookmarksImportSandboxExtensionsKey, &length);
+      v14 = xpc_dictionary_get_data(messageCopy, kWebBookmarksImportSandboxExtensionsKey, &length);
       v15 = objc_opt_class();
       v16 = [NSData dataWithBytes:v14 length:length];
       v22 = 0;
@@ -1551,31 +1551,31 @@ LABEL_27:
         v19[1] = 3221225472;
         v19[2] = sub_10000F368;
         v19[3] = &unk_1000298F0;
-        v20 = v7;
-        v21 = v6;
+        v20 = messageCopy;
+        v21 = _connectionCopy;
         [(WebBookmarksServer *)self _scanImportURLs:v11 sandboxExtensions:v17 completionHandler:v19];
       }
     }
   }
 }
 
-- (void)_scanImportURLs:(id)a3 sandboxExtensions:(id)a4 completionHandler:(id)a5
+- (void)_scanImportURLs:(id)ls sandboxExtensions:(id)extensions completionHandler:(id)handler
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  handlerCopy = handler;
+  extensionsCopy = extensions;
+  lsCopy = ls;
   v10 = objc_alloc_init(WBSBrowsingDataImportServiceProxy);
-  [v10 scanImportURLs:v9 sandboxExtensions:v8 completionHandler:v7];
+  [v10 scanImportURLs:lsCopy sandboxExtensions:extensionsCopy completionHandler:handlerCopy];
 }
 
-- (void)_connection:(id)a3 importBookmarksWithMessage:(id)a4
+- (void)_connection:(id)_connection importBookmarksWithMessage:(id)message
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(WebBookmarksServer *)self _connectionHasRequiredEntitlementForImportOrExport:v6])
+  _connectionCopy = _connection;
+  messageCopy = message;
+  if ([(WebBookmarksServer *)self _connectionHasRequiredEntitlementForImportOrExport:_connectionCopy])
   {
     v8 = [NSFileHandle alloc];
-    v9 = [v8 initWithFileDescriptor:xpc_dictionary_dup_fd(v7 closeOnDealloc:{kWebBookmarksImportBookmarksFileDescriptorKey), 1}];
+    v9 = [v8 initWithFileDescriptor:xpc_dictionary_dup_fd(messageCopy closeOnDealloc:{kWebBookmarksImportBookmarksFileDescriptorKey), 1}];
     v10 = objc_alloc_init(WBSBrowsingDataImportServiceProxy);
     v11 = [[WebBookmarkImportDelegate alloc] initWithCoordinator:self->_bookmarkLockCoordinator];
     ++self->_bookmarksFilesBeingImported;
@@ -1584,24 +1584,24 @@ LABEL_27:
     v13[2] = sub_10000F6A0;
     v13[3] = &unk_100029918;
     v13[4] = self;
-    v14 = v7;
+    v14 = messageCopy;
     v15 = v11;
-    v16 = v6;
+    v16 = _connectionCopy;
     v12 = v11;
     [v10 parseNetscapeBookmarkFromFileHandle:v9 delegate:v12 completionHandler:v13];
   }
 }
 
-- (void)_connection:(id)a3 importHistoryWithMessage:(id)a4
+- (void)_connection:(id)_connection importHistoryWithMessage:(id)message
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(WebBookmarksServer *)self _connectionHasRequiredEntitlementForImportOrExport:v6])
+  _connectionCopy = _connection;
+  messageCopy = message;
+  if ([(WebBookmarksServer *)self _connectionHasRequiredEntitlementForImportOrExport:_connectionCopy])
   {
     v8 = [NSFileHandle alloc];
-    v9 = [v8 initWithFileDescriptor:xpc_dictionary_dup_fd(v7 closeOnDealloc:{kWebBookmarksImportHistoryFileDescriptorKey), 1}];
-    v10 = xpc_dictionary_get_double(v7, kWebBookmarksImportHistoryAgeLimitKey);
-    v11 = [NSString stringWithCString:xpc_dictionary_get_string(v7 encoding:kWebsiteProfileIdentifiersKey), 1];
+    v9 = [v8 initWithFileDescriptor:xpc_dictionary_dup_fd(messageCopy closeOnDealloc:{kWebBookmarksImportHistoryFileDescriptorKey), 1}];
+    v10 = xpc_dictionary_get_double(messageCopy, kWebBookmarksImportHistoryAgeLimitKey);
+    v11 = [NSString stringWithCString:xpc_dictionary_get_string(messageCopy encoding:kWebsiteProfileIdentifiersKey), 1];
     v12 = sub_10001485C();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
@@ -1614,54 +1614,54 @@ LABEL_27:
     v13[1] = 3221225472;
     v13[2] = sub_10000F960;
     v13[3] = &unk_1000295C0;
-    v14 = v7;
-    v15 = v6;
+    v14 = messageCopy;
+    v15 = _connectionCopy;
     [(WebBookmarksServer *)self _importHistoryFromFileHandle:v9 ageLimit:v11 profileIdentifier:v13 completionHandler:v10];
   }
 }
 
-- (void)_importHistoryFromFileHandle:(id)a3 ageLimit:(double)a4 profileIdentifier:(id)a5 forChrome:(BOOL)a6 completionHandler:(id)a7
+- (void)_importHistoryFromFileHandle:(id)handle ageLimit:(double)limit profileIdentifier:(id)identifier forChrome:(BOOL)chrome completionHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a7;
+  handleCopy = handle;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v15 = os_transaction_create();
   v16 = objc_alloc_init(WBSHistoryConnectionProxy);
   v17 = +[NSMutableDictionary dictionary];
-  [v17 setObject:v13 forKeyedSubscript:WBSHistoryConnectionOptionDatabaseID];
+  [v17 setObject:identifierCopy forKeyedSubscript:WBSHistoryConnectionOptionDatabaseID];
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = sub_10000FB5C;
   v23[3] = &unk_100029990;
   v27 = v16;
-  v28 = v14;
-  v30 = a6;
-  v24 = v13;
-  v25 = v12;
-  v29 = a4;
+  v28 = handlerCopy;
+  chromeCopy = chrome;
+  v24 = identifierCopy;
+  v25 = handleCopy;
+  limitCopy = limit;
   v26 = v15;
   v18 = v16;
   v19 = v15;
-  v20 = v12;
-  v21 = v14;
-  v22 = v13;
+  v20 = handleCopy;
+  v21 = handlerCopy;
+  v22 = identifierCopy;
   [v18 connectWithOptions:v17 delegate:self completionHandler:v23];
 }
 
-- (void)_connection:(id)a3 importChromeExtensionsWithMessage:(id)a4
+- (void)_connection:(id)_connection importChromeExtensionsWithMessage:(id)message
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 hasBoolEntitlement:@"com.apple.private.webbookmarks.settings"])
+  _connectionCopy = _connection;
+  messageCopy = message;
+  if ([_connectionCopy hasBoolEntitlement:@"com.apple.private.webbookmarks.settings"])
   {
     v8 = [NSFileHandle alloc];
-    v9 = [v8 initWithFileDescriptor:xpc_dictionary_dup_fd(v7 closeOnDealloc:{kWebBookmarksImportChromeExtensionsFileDescriptorKey), 1}];
+    v9 = [v8 initWithFileDescriptor:xpc_dictionary_dup_fd(messageCopy closeOnDealloc:{kWebBookmarksImportChromeExtensionsFileDescriptorKey), 1}];
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
     v18[2] = sub_100010170;
     v18[3] = &unk_100029150;
-    v19 = v6;
-    v20 = v7;
+    v19 = _connectionCopy;
+    v20 = messageCopy;
     [(WebBookmarksServer *)self _importChromeExtensionsFromFileHandle:v9 connection:v19 completionHandler:v18];
   }
 
@@ -1675,33 +1675,33 @@ LABEL_27:
   }
 }
 
-- (void)_importChromeExtensionsFromFileHandle:(id)a3 connection:(id)a4 completionHandler:(id)a5
+- (void)_importChromeExtensionsFromFileHandle:(id)handle connection:(id)connection completionHandler:(id)handler
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  handlerCopy = handler;
+  connectionCopy = connection;
+  handleCopy = handle;
   v10 = objc_alloc_init(WBSBrowsingDataImportServiceProxy);
-  v11 = [[WebBookmarksExtensionsImporterDelgate alloc] initWithConnection:v8];
+  v11 = [[WebBookmarksExtensionsImporterDelgate alloc] initWithConnection:connectionCopy];
 
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1000102C4;
   v13[3] = &unk_1000299B8;
-  v14 = v7;
-  v12 = v7;
-  [v10 parseChromeExtensionsFromFileHandle:v9 delegate:v11 completionHandler:v13];
+  v14 = handlerCopy;
+  v12 = handlerCopy;
+  [v10 parseChromeExtensionsFromFileHandle:handleCopy delegate:v11 completionHandler:v13];
 }
 
-- (void)_connection:(id)a3 importChromeHistoryWithMessage:(id)a4
+- (void)_connection:(id)_connection importChromeHistoryWithMessage:(id)message
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 hasBoolEntitlement:@"com.apple.private.webbookmarks.settings"])
+  _connectionCopy = _connection;
+  messageCopy = message;
+  if ([_connectionCopy hasBoolEntitlement:@"com.apple.private.webbookmarks.settings"])
   {
     v8 = [NSFileHandle alloc];
-    v9 = [v8 initWithFileDescriptor:xpc_dictionary_dup_fd(v7 closeOnDealloc:{kWebBookmarksImportChromeHistoryFileDescriptorKey), 1}];
-    v10 = xpc_dictionary_get_double(v7, kWebBookmarksImportChromeHistoryAgeLimitKey);
-    v11 = [NSString stringWithCString:xpc_dictionary_get_string(v7 encoding:kWebsiteProfileIdentifiersKey), 1];
+    v9 = [v8 initWithFileDescriptor:xpc_dictionary_dup_fd(messageCopy closeOnDealloc:{kWebBookmarksImportChromeHistoryFileDescriptorKey), 1}];
+    v10 = xpc_dictionary_get_double(messageCopy, kWebBookmarksImportChromeHistoryAgeLimitKey);
+    v11 = [NSString stringWithCString:xpc_dictionary_get_string(messageCopy encoding:kWebsiteProfileIdentifiersKey), 1];
     v12 = sub_10001485C();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
@@ -1714,8 +1714,8 @@ LABEL_27:
     v21[1] = 3221225472;
     v21[2] = sub_100010540;
     v21[3] = &unk_1000295C0;
-    v22 = v7;
-    v23 = v6;
+    v22 = messageCopy;
+    v23 = _connectionCopy;
     [(WebBookmarksServer *)self _importChromeHistoryFromFileHandle:v9 ageLimit:v11 profileIdentifier:v21 completionHandler:v10];
   }
 
@@ -1729,20 +1729,20 @@ LABEL_27:
   }
 }
 
-- (void)_connection:(id)a3 importCreditCardsWithMessage:(id)a4
+- (void)_connection:(id)_connection importCreditCardsWithMessage:(id)message
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 hasBoolEntitlement:@"com.apple.private.webbookmarks.settings"])
+  _connectionCopy = _connection;
+  messageCopy = message;
+  if ([_connectionCopy hasBoolEntitlement:@"com.apple.private.webbookmarks.settings"])
   {
     v8 = [NSFileHandle alloc];
-    v9 = [v8 initWithFileDescriptor:xpc_dictionary_dup_fd(v7 closeOnDealloc:{kWebBookmarksImportCreditCardsFileDescriptorKey), 1}];
+    v9 = [v8 initWithFileDescriptor:xpc_dictionary_dup_fd(messageCopy closeOnDealloc:{kWebBookmarksImportCreditCardsFileDescriptorKey), 1}];
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
     v18[2] = sub_1000106F4;
     v18[3] = &unk_100029150;
-    v19 = v6;
-    v20 = v7;
+    v19 = _connectionCopy;
+    v20 = messageCopy;
     [(WebBookmarksServer *)self _importCreditCardsFromFileHandle:v9 connection:v19 completionHandler:v18];
   }
 
@@ -1756,77 +1756,77 @@ LABEL_27:
   }
 }
 
-- (void)_importCreditCardsFromFileHandle:(id)a3 connection:(id)a4 completionHandler:(id)a5
+- (void)_importCreditCardsFromFileHandle:(id)handle connection:(id)connection completionHandler:(id)handler
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  handlerCopy = handler;
+  connectionCopy = connection;
+  handleCopy = handle;
   v10 = objc_alloc_init(WBSBrowsingDataImportServiceProxy);
-  v11 = [[WebBookmarksCreditCardImporterDelgate alloc] initWithConnection:v8];
+  v11 = [[WebBookmarksCreditCardImporterDelgate alloc] initWithConnection:connectionCopy];
 
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100010848;
   v13[3] = &unk_1000299B8;
-  v14 = v7;
-  v12 = v7;
-  [v10 parseCreditCardJSONFromFileHandle:v9 delegate:v11 completionHandler:v13];
+  v14 = handlerCopy;
+  v12 = handlerCopy;
+  [v10 parseCreditCardJSONFromFileHandle:handleCopy delegate:v11 completionHandler:v13];
 }
 
-- (void)_connection:(id)a3 importExtensionsWithMessage:(id)a4
+- (void)_connection:(id)_connection importExtensionsWithMessage:(id)message
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(WebBookmarksServer *)self _connectionHasRequiredEntitlementForImportOrExport:v6])
+  _connectionCopy = _connection;
+  messageCopy = message;
+  if ([(WebBookmarksServer *)self _connectionHasRequiredEntitlementForImportOrExport:_connectionCopy])
   {
     v8 = [NSFileHandle alloc];
-    v9 = [v8 initWithFileDescriptor:xpc_dictionary_dup_fd(v7 closeOnDealloc:{kWebBookmarksImportExtensionsFileDescriptorKey), 1}];
+    v9 = [v8 initWithFileDescriptor:xpc_dictionary_dup_fd(messageCopy closeOnDealloc:{kWebBookmarksImportExtensionsFileDescriptorKey), 1}];
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_1000109D0;
     v10[3] = &unk_100029150;
-    v11 = v6;
-    v12 = v7;
+    v11 = _connectionCopy;
+    v12 = messageCopy;
     [(WebBookmarksServer *)self _importExtensionsFromFileHandle:v9 connection:v11 completionHandler:v10];
   }
 }
 
-- (void)_importExtensionsFromFileHandle:(id)a3 connection:(id)a4 completionHandler:(id)a5
+- (void)_importExtensionsFromFileHandle:(id)handle connection:(id)connection completionHandler:(id)handler
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  handlerCopy = handler;
+  connectionCopy = connection;
+  handleCopy = handle;
   v10 = objc_alloc_init(WBSBrowsingDataImportServiceProxy);
-  v11 = [[WebBookmarksExtensionsImporterDelgate alloc] initWithConnection:v8];
+  v11 = [[WebBookmarksExtensionsImporterDelgate alloc] initWithConnection:connectionCopy];
 
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100010B24;
   v13[3] = &unk_1000299B8;
-  v14 = v7;
-  v12 = v7;
-  [v10 parseExtensionsFromFileHandle:v9 delegate:v11 completionHandler:v13];
+  v14 = handlerCopy;
+  v12 = handlerCopy;
+  [v10 parseExtensionsFromFileHandle:handleCopy delegate:v11 completionHandler:v13];
 }
 
-- (void)_connection:(id)a3 computeNumberOfItemsToBeImportedWithMessage:(id)a4
+- (void)_connection:(id)_connection computeNumberOfItemsToBeImportedWithMessage:(id)message
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(WebBookmarksServer *)self _connectionHasRequiredEntitlementForImportOrExport:v6])
+  _connectionCopy = _connection;
+  messageCopy = message;
+  if ([(WebBookmarksServer *)self _connectionHasRequiredEntitlementForImportOrExport:_connectionCopy])
   {
     v8 = [NSFileHandle alloc];
-    v9 = [v8 initWithFileDescriptor:xpc_dictionary_dup_fd(v7 closeOnDealloc:{kWebBookmarksComputeNumberOfItemsToBeImportedFileDescriptorKey), 1}];
-    v10 = [NSString stringWithCString:xpc_dictionary_get_string(v7 encoding:kWebBookmarksComputeNumberOfItemsToBeImportedMetadataDataTypeKey), 1];
+    v9 = [v8 initWithFileDescriptor:xpc_dictionary_dup_fd(messageCopy closeOnDealloc:{kWebBookmarksComputeNumberOfItemsToBeImportedFileDescriptorKey), 1}];
+    v10 = [NSString stringWithCString:xpc_dictionary_get_string(messageCopy encoding:kWebBookmarksComputeNumberOfItemsToBeImportedMetadataDataTypeKey), 1];
     v11 = objc_alloc_init(WBSBrowsingDataImportServiceProxy);
     v12 = [[WebBookmarksImportCount alloc] initWithExportMetadataDataType:v10];
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = sub_100010EB0;
     v16[3] = &unk_100029630;
-    v17 = v7;
+    v17 = messageCopy;
     v13 = v12;
     v18 = v13;
-    v19 = v6;
+    v19 = _connectionCopy;
     v14 = objc_retainBlock(v16);
     if ([v10 isEqualToString:WBSHistoryExportDataType])
     {
@@ -1866,12 +1866,12 @@ LABEL_27:
   }
 }
 
-- (void)_connection:(id)a3 openSafariExportSettingsWithMessage:(id)a4
+- (void)_connection:(id)_connection openSafariExportSettingsWithMessage:(id)message
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 connection];
-  pid = xpc_connection_get_pid(v8);
+  _connectionCopy = _connection;
+  messageCopy = message;
+  connection = [_connectionCopy connection];
+  pid = xpc_connection_get_pid(connection);
 
   v10 = [RBSProcessIdentifier identifierWithPid:pid];
   v24 = 0;
@@ -1880,7 +1880,7 @@ LABEL_27:
 
   if (v12)
   {
-    v13 = sub_10000AE2C(v7);
+    v13 = sub_10000AE2C(messageCopy);
     v14 = v13;
     v15 = &kWebBookmarksOpenSafariExportSettingsFailedKey;
 LABEL_8:
@@ -1891,15 +1891,15 @@ LABEL_8:
 
   if (![v11 isApplication] || (objc_msgSend(v11, "currentState"), v16 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v16, "endowmentNamespaces"), v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v17, "containsObject:", FBSSceneVisibilityEndowmentNamespace), v17, v16, (v18 & 1) == 0))
   {
-    v13 = sub_10000AE2C(v7);
+    v13 = sub_10000AE2C(messageCopy);
     v14 = v13;
     v15 = &kWebBookmarksOpenSafariExportSettingsNotRunningForegroundKey;
     goto LABEL_8;
   }
 
-  if (![(WebBookmarksServer *)self clientIsDefaultBrowserEntitledWithConnection:v6 message:v7])
+  if (![(WebBookmarksServer *)self clientIsDefaultBrowserEntitledWithConnection:_connectionCopy message:messageCopy])
   {
-    v13 = sub_10000AE2C(v7);
+    v13 = sub_10000AE2C(messageCopy);
     v14 = v13;
     v15 = &kWebBookmarksOpenSafariExportSettingsMissingEntitlementKey;
     goto LABEL_8;
@@ -1909,23 +1909,23 @@ LABEL_8:
   v20 = [NSURL URLWithString:@"settings-navigation://com.apple.Settings.Apps/com.apple.mobilesafari?action=showExportSheet"];
   v21 = [v19 openSensitiveURL:v20 withOptions:0];
 
-  v13 = sub_10000AE2C(v7);
+  v13 = sub_10000AE2C(messageCopy);
   v14 = v13;
   v22 = kWebBookmarksOpenSafariExportSettingsFailedKey;
   v23 = v21 ^ 1;
 LABEL_9:
   xpc_dictionary_set_BOOL(v13, v22, v23);
-  [v6 sendMessage:v14];
+  [_connectionCopy sendMessage:v14];
 }
 
-- (BOOL)clientIsDefaultBrowserEntitledWithConnection:(id)a3 message:(id)a4
+- (BOOL)clientIsDefaultBrowserEntitledWithConnection:(id)connection message:(id)message
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 connection];
+  connectionCopy = connection;
+  messageCopy = message;
+  connection = [connectionCopy connection];
   xpc_connection_get_audit_token();
 
-  if (+[WBSFeatureAvailability isInternalInstall](WBSFeatureAvailability, "isInternalInstall") && xpc_dictionary_get_BOOL(v6, kWebBookmarksOpenSafariExportSettingsTestingModeKey) || ([v5 hasBoolEntitlement:@"com.apple.developer.web-browser"] & 1) != 0)
+  if (+[WBSFeatureAvailability isInternalInstall](WBSFeatureAvailability, "isInternalInstall") && xpc_dictionary_get_BOOL(messageCopy, kWebBookmarksOpenSafariExportSettingsTestingModeKey) || ([connectionCopy hasBoolEntitlement:@"com.apple.developer.web-browser"] & 1) != 0)
   {
     v8 = 1;
   }
@@ -1940,22 +1940,22 @@ LABEL_9:
 
 - (BOOL)_isCloudHistoryEnabled
 {
-  v2 = [(WBUFeatureManager *)self->_featureManager isCloudHistorySyncAvailable];
-  if (v2)
+  isCloudHistorySyncAvailable = [(WBUFeatureManager *)self->_featureManager isCloudHistorySyncAvailable];
+  if (isCloudHistorySyncAvailable)
   {
     v3 = objc_alloc_init(ACAccountStore);
-    v4 = [v3 aa_primaryAppleAccount];
-    v5 = [v4 isEnabledForDataclass:kAccountDataclassBookmarks];
+    aa_primaryAppleAccount = [v3 aa_primaryAppleAccount];
+    v5 = [aa_primaryAppleAccount isEnabledForDataclass:kAccountDataclassBookmarks];
 
-    LOBYTE(v2) = v5;
+    LOBYTE(isCloudHistorySyncAvailable) = v5;
   }
 
-  return v2;
+  return isCloudHistorySyncAvailable;
 }
 
-- (BOOL)_connectionHasRequiredEntitlementForImportOrExport:(id)a3
+- (BOOL)_connectionHasRequiredEntitlementForImportOrExport:(id)export
 {
-  v3 = [a3 hasBoolEntitlement:@"com.apple.private.webbookmarks.settings"];
+  v3 = [export hasBoolEntitlement:@"com.apple.private.webbookmarks.settings"];
   if ((v3 & 1) == 0)
   {
     v4 = sub_100014400();
@@ -1968,17 +1968,17 @@ LABEL_9:
   return v3;
 }
 
-- (void)_logWarningWithMessage:(id)a3 connection:(id)a4
+- (void)_logWarningWithMessage:(id)message connection:(id)connection
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6 && ([v6 connection], v8 = objc_claimAutoreleasedReturnValue(), pid = xpc_connection_get_pid(v8), v8, pid))
+  messageCopy = message;
+  connectionCopy = connection;
+  v7 = connectionCopy;
+  if (connectionCopy && ([connectionCopy connection], v8 = objc_claimAutoreleasedReturnValue(), pid = xpc_connection_get_pid(v8), v8, pid))
   {
     v10 = sub_100014400();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      sub_100017504(v5, pid, v10);
+      sub_100017504(messageCopy, pid, v10);
     }
   }
 
@@ -1992,17 +1992,17 @@ LABEL_9:
   }
 }
 
-- (void)reportSevereError:(id)a3 completionHandler:(id)a4
+- (void)reportSevereError:(id)error completionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
+  errorCopy = error;
+  handlerCopy = handler;
   v7 = sub_100014574();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
   {
     sub_1000175F4(v7);
   }
 
-  v6[2](v6);
+  handlerCopy[2](handlerCopy);
 }
 
 @end

@@ -1,27 +1,27 @@
 @interface EDRemoteContentPersistence
-+ (id)_remoteContentLinksTableSchemaWithName:(id)a3;
-+ (id)protectedTablesAndForeignKeysToResolve:(id *)a3;
-+ (id)tablesAndForeignKeysToResolve:(id *)a3 associationsToResolve:(id *)a4;
-- (BOOL)_addRemoteContentLinks:(id)a3 withDate:(id)a4 toTable:(id)a5 withConnection:(id)a6 newLinks:(id *)a7;
-- (BOOL)addRemoteContentLinks:(id)a3 newLinks:(id *)a4;
-- (BOOL)pruneAllRemoteContentLinksWithMinimumCount:(unint64_t)a3;
-- (BOOL)updateRequestCountForRemoteContentLinks:(id)a3 updateLastSeen:(BOOL)a4;
-- (EDRemoteContentPersistence)initWithDatabase:(id)a3 useAdditionalTable:(BOOL)a4;
-- (id)_getRemoteContentURLInfoForTable:(id)a3 orderedBy:(int64_t)a4 inReverseOrder:(BOOL)a5 limit:(int64_t)a6 connection:(id)a7 error:(id *)a8;
-- (id)getRemoteContentURLInfoOrderedBy:(int64_t)a3 inReverseOrder:(BOOL)a4 limit:(int64_t)a5 error:(id *)a6;
-- (id)remoteContentLinksBelowCount:(unint64_t)a3 limit:(unint64_t)a4;
-- (int64_t)_rowCountForTable:(id)a3;
++ (id)_remoteContentLinksTableSchemaWithName:(id)name;
++ (id)protectedTablesAndForeignKeysToResolve:(id *)resolve;
++ (id)tablesAndForeignKeysToResolve:(id *)resolve associationsToResolve:(id *)toResolve;
+- (BOOL)_addRemoteContentLinks:(id)links withDate:(id)date toTable:(id)table withConnection:(id)connection newLinks:(id *)newLinks;
+- (BOOL)addRemoteContentLinks:(id)links newLinks:(id *)newLinks;
+- (BOOL)pruneAllRemoteContentLinksWithMinimumCount:(unint64_t)count;
+- (BOOL)updateRequestCountForRemoteContentLinks:(id)links updateLastSeen:(BOOL)seen;
+- (EDRemoteContentPersistence)initWithDatabase:(id)database useAdditionalTable:(BOOL)table;
+- (id)_getRemoteContentURLInfoForTable:(id)table orderedBy:(int64_t)by inReverseOrder:(BOOL)order limit:(int64_t)limit connection:(id)connection error:(id *)error;
+- (id)getRemoteContentURLInfoOrderedBy:(int64_t)by inReverseOrder:(BOOL)order limit:(int64_t)limit error:(id *)error;
+- (id)remoteContentLinksBelowCount:(unint64_t)count limit:(unint64_t)limit;
+- (int64_t)_rowCountForTable:(id)table;
 - (unint64_t)_currentRowCount;
 - (unint64_t)_protectedRowCount;
-- (unint64_t)countOfLinksLastSeenSince:(id)a3;
+- (unint64_t)countOfLinksLastSeenSince:(id)since;
 - (unint64_t)countOfUnrequestedLinks;
-- (void)_decrementCurrentRowCountBy:(unint64_t)a3;
-- (void)_decrementProtectedRowCountBy:(unint64_t)a3;
-- (void)_incrementCurrentRowCountBy:(unint64_t)a3;
-- (void)_incrementProtectedRowCountBy:(unint64_t)a3;
+- (void)_decrementCurrentRowCountBy:(unint64_t)by;
+- (void)_decrementProtectedRowCountBy:(unint64_t)by;
+- (void)_incrementCurrentRowCountBy:(unint64_t)by;
+- (void)_incrementProtectedRowCountBy:(unint64_t)by;
 - (void)_initializeProtectedRowCount;
 - (void)_refillFromAdditionalTable;
-- (void)contentProtectionStateChanged:(int64_t)a3 previousState:(int64_t)a4;
+- (void)contentProtectionStateChanged:(int64_t)changed previousState:(int64_t)state;
 - (void)dealloc;
 - (void)test_tearDown;
 @end
@@ -33,14 +33,14 @@
   if ([(EDRemoteContentPersistence *)self useAdditionalTable])
   {
     v3 = [MEMORY[0x1E699B860] transactionWithDescription:@"com.apple.email.EDRemoteContentPersistence.refillFromAdditionalTable"];
-    v4 = [(EDRemoteContentPersistence *)self database];
+    database = [(EDRemoteContentPersistence *)self database];
     v5 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDRemoteContentPersistence _refillFromAdditionalTable]"];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __56__EDRemoteContentPersistence__refillFromAdditionalTable__block_invoke;
     v6[3] = &unk_1E8251CB8;
     v6[4] = self;
-    [v4 __performWriteWithCaller:v5 usingBlock:v6];
+    [database __performWriteWithCaller:v5 usingBlock:v6];
 
     [v3 invalidate];
   }
@@ -85,21 +85,21 @@ void ___ef_log_EDRemoteContentPersistence_block_invoke()
   _ef_log_EDRemoteContentPersistence_log = v0;
 }
 
-+ (id)tablesAndForeignKeysToResolve:(id *)a3 associationsToResolve:(id *)a4
++ (id)tablesAndForeignKeysToResolve:(id *)resolve associationsToResolve:(id *)toResolve
 {
   v9[1] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E695E0F0];
-  if (a3)
+  if (resolve)
   {
-    *a3 = MEMORY[0x1E695E0F0];
+    *resolve = MEMORY[0x1E695E0F0];
   }
 
-  if (a4)
+  if (toResolve)
   {
-    *a4 = v4;
+    *toResolve = v4;
   }
 
-  v5 = [a1 _remoteContentLinksTableSchemaWithName:@"remote_content_links"];
+  v5 = [self _remoteContentLinksTableSchemaWithName:@"remote_content_links"];
   v9[0] = v5;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
 
@@ -108,15 +108,15 @@ void ___ef_log_EDRemoteContentPersistence_block_invoke()
   return v6;
 }
 
-+ (id)protectedTablesAndForeignKeysToResolve:(id *)a3
++ (id)protectedTablesAndForeignKeysToResolve:(id *)resolve
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (resolve)
   {
-    *a3 = MEMORY[0x1E695E0F0];
+    *resolve = MEMORY[0x1E695E0F0];
   }
 
-  v3 = [a1 _remoteContentLinksTableSchemaWithName:@"additional_remote_content_links"];
+  v3 = [self _remoteContentLinksTableSchemaWithName:@"additional_remote_content_links"];
   v7[0] = v3;
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v7 count:1];
 
@@ -125,10 +125,10 @@ void ___ef_log_EDRemoteContentPersistence_block_invoke()
   return v4;
 }
 
-+ (id)_remoteContentLinksTableSchemaWithName:(id)a3
++ (id)_remoteContentLinksTableSchemaWithName:(id)name
 {
   v19[4] = *MEMORY[0x1E69E9840];
-  v15 = a3;
+  nameCopy = name;
   v3 = objc_alloc(MEMORY[0x1E699B958]);
   v4 = [MEMORY[0x1E699B8D0] textColumnWithName:@"url" collation:1 nullable:0];
   v19[0] = v4;
@@ -139,7 +139,7 @@ void ___ef_log_EDRemoteContentPersistence_block_invoke()
   v7 = [MEMORY[0x1E699B8D0] integerColumnWithName:@"last_request_date" nullable:0 defaultValue:&unk_1F45E6940];
   v19[3] = v7;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:4];
-  v9 = [v3 initWithName:v15 rowIDType:1 columns:v8];
+  v9 = [v3 initWithName:nameCopy rowIDType:1 columns:v8];
 
   v18 = @"url";
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v18 count:1];
@@ -160,18 +160,18 @@ void ___ef_log_EDRemoteContentPersistence_block_invoke()
   return v9;
 }
 
-- (EDRemoteContentPersistence)initWithDatabase:(id)a3 useAdditionalTable:(BOOL)a4
+- (EDRemoteContentPersistence)initWithDatabase:(id)database useAdditionalTable:(BOOL)table
 {
-  v4 = a4;
-  v7 = a3;
+  tableCopy = table;
+  databaseCopy = database;
   v28.receiver = self;
   v28.super_class = EDRemoteContentPersistence;
   v8 = [(EDRemoteContentPersistence *)&v28 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_database, a3);
-    v9->_useAdditionalTable = v4;
+    objc_storeStrong(&v8->_database, database);
+    v9->_useAdditionalTable = tableCopy;
     v10 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v11 = dispatch_queue_create("com.apple.email.EDRemoteContentPersistence.contentProtectionQueue", v10);
     contentProtectionQueue = v9->_contentProtectionQueue;
@@ -188,7 +188,7 @@ void ___ef_log_EDRemoteContentPersistence_block_invoke()
     [(NSBackgroundActivityScheduler *)v9->_analyticsScheduler setQualityOfService:9];
     [(NSBackgroundActivityScheduler *)v9->_analyticsScheduler setInterval:86400.0];
     [(NSBackgroundActivityScheduler *)v9->_analyticsScheduler setRepeats:1];
-    if (v4)
+    if (tableCopy)
     {
       v16 = xpc_dictionary_create(0, 0, 0);
       v17 = _os_feature_enabled_impl();
@@ -212,9 +212,9 @@ void ___ef_log_EDRemoteContentPersistence_block_invoke()
     v24[2] = __66__EDRemoteContentPersistence_initWithDatabase_useAdditionalTable___block_invoke;
     v24[3] = &unk_1E8256628;
     objc_copyWeak(&v25, &location);
-    v26 = v4;
+    v26 = tableCopy;
     [(NSBackgroundActivityScheduler *)v21 scheduleWithBlock:v24];
-    v22 = [(EDRemoteContentPersistence *)v9 contentProtectionQueue];
+    contentProtectionQueue = [(EDRemoteContentPersistence *)v9 contentProtectionQueue];
     EFRegisterContentProtectionObserver();
 
     objc_destroyWeak(&v25);
@@ -443,7 +443,7 @@ id __66__EDRemoteContentPersistence_initWithDatabase_useAdditionalTable___block_
   }
 }
 
-- (void)_incrementCurrentRowCountBy:(unint64_t)a3
+- (void)_incrementCurrentRowCountBy:(unint64_t)by
 {
   currentRowCount = self->_currentRowCount;
   if (currentRowCount == 0x7FFFFFFFFFFFFFFFLL)
@@ -453,11 +453,11 @@ id __66__EDRemoteContentPersistence_initWithDatabase_useAdditionalTable___block_
 
   else
   {
-    self->_currentRowCount = currentRowCount + a3;
+    self->_currentRowCount = currentRowCount + by;
   }
 }
 
-- (void)_decrementCurrentRowCountBy:(unint64_t)a3
+- (void)_decrementCurrentRowCountBy:(unint64_t)by
 {
   p_currentRowCount = &self->_currentRowCount;
   currentRowCount = self->_currentRowCount;
@@ -469,7 +469,7 @@ id __66__EDRemoteContentPersistence_initWithDatabase_useAdditionalTable___block_
 
   else
   {
-    v5 = currentRowCount - a3;
+    v5 = currentRowCount - by;
     *p_currentRowCount = v5;
     if (v5 < 0)
     {
@@ -484,7 +484,7 @@ id __66__EDRemoteContentPersistence_initWithDatabase_useAdditionalTable___block_
   }
 }
 
-- (void)_incrementProtectedRowCountBy:(unint64_t)a3
+- (void)_incrementProtectedRowCountBy:(unint64_t)by
 {
   protectedRowCount = self->_protectedRowCount;
   if (protectedRowCount == 0x7FFFFFFFFFFFFFFFLL)
@@ -494,11 +494,11 @@ id __66__EDRemoteContentPersistence_initWithDatabase_useAdditionalTable___block_
 
   else
   {
-    self->_protectedRowCount = protectedRowCount + a3;
+    self->_protectedRowCount = protectedRowCount + by;
   }
 }
 
-- (void)_decrementProtectedRowCountBy:(unint64_t)a3
+- (void)_decrementProtectedRowCountBy:(unint64_t)by
 {
   protectedRowCount = self->_protectedRowCount;
   if (protectedRowCount == 0x7FFFFFFFFFFFFFFFLL)
@@ -509,7 +509,7 @@ id __66__EDRemoteContentPersistence_initWithDatabase_useAdditionalTable___block_
 
   else
   {
-    v5 = protectedRowCount - a3;
+    v5 = protectedRowCount - by;
     self->_protectedRowCount = v5;
     if (v5 < 0)
     {
@@ -532,23 +532,23 @@ id __66__EDRemoteContentPersistence_initWithDatabase_useAdditionalTable___block_
   }
 }
 
-- (int64_t)_rowCountForTable:(id)a3
+- (int64_t)_rowCountForTable:(id)table
 {
-  v4 = a3;
+  tableCopy = table;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
   v16 = 0x7FFFFFFFFFFFFFFFLL;
-  v5 = [(EDRemoteContentPersistence *)self database];
+  database = [(EDRemoteContentPersistence *)self database];
   v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDRemoteContentPersistence _rowCountForTable:]"];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __48__EDRemoteContentPersistence__rowCountForTable___block_invoke;
   v10[3] = &unk_1E8250350;
-  v7 = v4;
+  v7 = tableCopy;
   v11 = v7;
   v12 = &v13;
-  [v5 __performReadWithCaller:v6 usingBlock:v10];
+  [database __performReadWithCaller:v6 usingBlock:v10];
 
   v8 = v14[3];
   _Block_object_dispose(&v13, 8);
@@ -582,9 +582,9 @@ void __48__EDRemoteContentPersistence__rowCountForTable___block_invoke_2(uint64_
   *a4 = 1;
 }
 
-- (BOOL)addRemoteContentLinks:(id)a3 newLinks:(id *)a4
+- (BOOL)addRemoteContentLinks:(id)links newLinks:(id *)newLinks
 {
-  v6 = a3;
+  linksCopy = links;
   v23 = 0;
   v24 = &v23;
   v25 = 0x2020000000;
@@ -595,23 +595,23 @@ void __48__EDRemoteContentPersistence__rowCountForTable___block_invoke_2(uint64_
   v20 = __Block_byref_object_copy__36;
   v21 = __Block_byref_object_dispose__36;
   v22 = 0;
-  v7 = [(EDRemoteContentPersistence *)self database];
+  database = [(EDRemoteContentPersistence *)self database];
   v8 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDRemoteContentPersistence addRemoteContentLinks:newLinks:]"];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __61__EDRemoteContentPersistence_addRemoteContentLinks_newLinks___block_invoke;
   v12[3] = &unk_1E8256650;
   v12[4] = self;
-  v9 = v6;
+  v9 = linksCopy;
   v13 = v9;
   v14 = &v23;
   v15 = &v17;
-  v16 = a4 != 0;
-  [v7 __performWriteWithCaller:v8 usingBlock:v12];
+  v16 = newLinks != 0;
+  [database __performWriteWithCaller:v8 usingBlock:v12];
 
-  if (a4)
+  if (newLinks)
   {
-    *a4 = v18[5];
+    *newLinks = v18[5];
   }
 
   v10 = *(v24 + 24);
@@ -699,15 +699,15 @@ LABEL_7:
   return v24;
 }
 
-- (BOOL)_addRemoteContentLinks:(id)a3 withDate:(id)a4 toTable:(id)a5 withConnection:(id)a6 newLinks:(id *)a7
+- (BOOL)_addRemoteContentLinks:(id)links withDate:(id)date toTable:(id)table withConnection:(id)connection newLinks:(id *)newLinks
 {
   v37 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v30 = a4;
-  v12 = a5;
-  v13 = a6;
-  v27 = a7;
-  if (a7)
+  linksCopy = links;
+  dateCopy = date;
+  tableCopy = table;
+  connectionCopy = connection;
+  newLinksCopy = newLinks;
+  if (newLinks)
   {
     v29 = objc_alloc_init(MEMORY[0x1E695DF70]);
   }
@@ -721,7 +721,7 @@ LABEL_7:
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  obj = v11;
+  obj = linksCopy;
   v14 = [obj countByEnumeratingWithState:&v31 objects:v36 count:16];
   if (v14)
   {
@@ -739,21 +739,21 @@ LABEL_7:
         v18 = objc_alloc(MEMORY[0x1E699B968]);
         v35 = @"url";
         v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v35 count:1];
-        v20 = [v18 initWithTable:v12 conflictTarget:v19];
+        v20 = [v18 initWithTable:tableCopy conflictTarget:v19];
 
-        v21 = [v17 absoluteString];
-        [v20 setObject:v21 forKeyedSubscript:@"url"];
+        absoluteString = [v17 absoluteString];
+        [v20 setObject:absoluteString forKeyedSubscript:@"url"];
 
-        [v20 setObject:v30 forKeyedSubscript:@"last_seen_date"];
-        [v13 clearLastInsertedDatabaseID];
-        if (([v13 executeUpsertStatement:v20 error:0] & 1) == 0)
+        [v20 setObject:dateCopy forKeyedSubscript:@"last_seen_date"];
+        [connectionCopy clearLastInsertedDatabaseID];
+        if (([connectionCopy executeUpsertStatement:v20 error:0] & 1) == 0)
         {
 
           v22 = 0;
           goto LABEL_16;
         }
 
-        if ([v13 lastInsertedDatabaseID])
+        if ([connectionCopy lastInsertedDatabaseID])
         {
           [v29 addObject:v17];
         }
@@ -773,40 +773,40 @@ LABEL_7:
 LABEL_16:
 
   v23 = v29;
-  if (v27)
+  if (newLinksCopy)
   {
     v24 = v29;
     v23 = v29;
-    *v27 = v29;
+    *newLinksCopy = v29;
   }
 
   v25 = *MEMORY[0x1E69E9840];
   return v22;
 }
 
-- (BOOL)updateRequestCountForRemoteContentLinks:(id)a3 updateLastSeen:(BOOL)a4
+- (BOOL)updateRequestCountForRemoteContentLinks:(id)links updateLastSeen:(BOOL)seen
 {
-  v6 = a3;
+  linksCopy = links;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
   v18 = 1;
-  v7 = [(EDRemoteContentPersistence *)self database];
+  database = [(EDRemoteContentPersistence *)self database];
   v8 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDRemoteContentPersistence updateRequestCountForRemoteContentLinks:updateLastSeen:]"];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __85__EDRemoteContentPersistence_updateRequestCountForRemoteContentLinks_updateLastSeen___block_invoke;
   v11[3] = &unk_1E8256678;
-  v9 = v6;
-  v14 = a4;
+  v9 = linksCopy;
+  seenCopy = seen;
   v12 = v9;
   v13 = &v15;
-  [v7 __performWriteWithCaller:v8 usingBlock:v11];
+  [database __performWriteWithCaller:v8 usingBlock:v11];
 
-  LOBYTE(v6) = *(v16 + 24);
+  LOBYTE(linksCopy) = *(v16 + 24);
   _Block_object_dispose(&v15, 8);
 
-  return v6;
+  return linksCopy;
 }
 
 uint64_t __85__EDRemoteContentPersistence_updateRequestCountForRemoteContentLinks_updateLastSeen___block_invoke(uint64_t a1, void *a2)
@@ -875,20 +875,20 @@ LABEL_3:
   return v13 & 1;
 }
 
-- (id)remoteContentLinksBelowCount:(unint64_t)a3 limit:(unint64_t)a4
+- (id)remoteContentLinksBelowCount:(unint64_t)count limit:(unint64_t)limit
 {
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v8 = [(EDRemoteContentPersistence *)self database];
+  database = [(EDRemoteContentPersistence *)self database];
   v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDRemoteContentPersistence remoteContentLinksBelowCount:limit:]"];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __65__EDRemoteContentPersistence_remoteContentLinksBelowCount_limit___block_invoke;
   v12[3] = &unk_1E8254A60;
-  v14 = a3;
-  v15 = a4;
+  countCopy = count;
+  limitCopy = limit;
   v10 = v7;
   v13 = v10;
-  [v8 __performReadWithCaller:v9 usingBlock:v12];
+  [database __performReadWithCaller:v9 usingBlock:v12];
 
   return v10;
 }
@@ -953,23 +953,23 @@ void __65__EDRemoteContentPersistence_remoteContentLinksBelowCount_limit___block
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (unint64_t)countOfLinksLastSeenSince:(id)a3
+- (unint64_t)countOfLinksLastSeenSince:(id)since
 {
-  v4 = a3;
+  sinceCopy = since;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
   v20 = 0;
-  v5 = [(EDRemoteContentPersistence *)self database];
+  database = [(EDRemoteContentPersistence *)self database];
   v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDRemoteContentPersistence countOfLinksLastSeenSince:]"];
   v11 = MEMORY[0x1E69E9820];
   v12 = 3221225472;
   v13 = __56__EDRemoteContentPersistence_countOfLinksLastSeenSince___block_invoke;
   v14 = &unk_1E8250350;
-  v7 = v4;
+  v7 = sinceCopy;
   v15 = v7;
   v16 = &v17;
-  [v5 __performReadWithCaller:v6 usingBlock:&v11];
+  [database __performReadWithCaller:v6 usingBlock:&v11];
 
   v8 = [(EDRemoteContentPersistence *)self _protectedRowCount:v11];
   v9 = v18[3];
@@ -1014,19 +1014,19 @@ void __56__EDRemoteContentPersistence_countOfLinksLastSeenSince___block_invoke_2
   v10 = &v9;
   v11 = 0x2020000000;
   v12 = 0;
-  v3 = [(EDRemoteContentPersistence *)self database];
+  database = [(EDRemoteContentPersistence *)self database];
   v4 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDRemoteContentPersistence countOfUnrequestedLinks]"];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __53__EDRemoteContentPersistence_countOfUnrequestedLinks__block_invoke;
   v8[3] = &unk_1E8251DA0;
   v8[4] = &v9;
-  [v3 __performReadWithCaller:v4 usingBlock:v8];
+  [database __performReadWithCaller:v4 usingBlock:v8];
 
-  v5 = [(EDRemoteContentPersistence *)self _protectedRowCount];
+  _protectedRowCount = [(EDRemoteContentPersistence *)self _protectedRowCount];
   v6 = v10[3];
   _Block_object_dispose(&v9, 8);
-  return v6 + v5;
+  return v6 + _protectedRowCount;
 }
 
 uint64_t __53__EDRemoteContentPersistence_countOfUnrequestedLinks__block_invoke(uint64_t a1, void *a2)
@@ -1059,13 +1059,13 @@ void __53__EDRemoteContentPersistence_countOfUnrequestedLinks__block_invoke_2(ui
   *a4 = 1;
 }
 
-- (BOOL)pruneAllRemoteContentLinksWithMinimumCount:(unint64_t)a3
+- (BOOL)pruneAllRemoteContentLinksWithMinimumCount:(unint64_t)count
 {
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
   v12 = 1;
-  v5 = [(EDRemoteContentPersistence *)self database];
+  database = [(EDRemoteContentPersistence *)self database];
   v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDRemoteContentPersistence pruneAllRemoteContentLinksWithMinimumCount:]"];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
@@ -1073,12 +1073,12 @@ void __53__EDRemoteContentPersistence_countOfUnrequestedLinks__block_invoke_2(ui
   v8[3] = &unk_1E82549F0;
   v8[4] = self;
   v8[5] = &v9;
-  v8[6] = a3;
-  [v5 __performWriteWithCaller:v6 usingBlock:v8];
+  v8[6] = count;
+  [database __performWriteWithCaller:v6 usingBlock:v8];
 
-  LOBYTE(v5) = *(v10 + 24);
+  LOBYTE(database) = *(v10 + 24);
   _Block_object_dispose(&v9, 8);
-  return v5;
+  return database;
 }
 
 uint64_t __73__EDRemoteContentPersistence_pruneAllRemoteContentLinksWithMinimumCount___block_invoke(uint64_t a1, void *a2)
@@ -1141,20 +1141,20 @@ id __73__EDRemoteContentPersistence_pruneAllRemoteContentLinksWithMinimumCount__
   return v7;
 }
 
-- (void)contentProtectionStateChanged:(int64_t)a3 previousState:(int64_t)a4
+- (void)contentProtectionStateChanged:(int64_t)changed previousState:(int64_t)state
 {
-  v6 = [(EDRemoteContentPersistence *)self contentProtectionQueue:a3];
+  v6 = [(EDRemoteContentPersistence *)self contentProtectionQueue:changed];
   dispatch_assert_queue_V2(v6);
 
-  v7 = [(EDRemoteContentPersistence *)self useAdditionalTable];
-  if (!a3 && v7)
+  useAdditionalTable = [(EDRemoteContentPersistence *)self useAdditionalTable];
+  if (!changed && useAdditionalTable)
   {
 
     [(EDRemoteContentPersistence *)self _refillFromAdditionalTable];
   }
 }
 
-- (id)getRemoteContentURLInfoOrderedBy:(int64_t)a3 inReverseOrder:(BOOL)a4 limit:(int64_t)a5 error:(id *)a6
+- (id)getRemoteContentURLInfoOrderedBy:(int64_t)by inReverseOrder:(BOOL)order limit:(int64_t)limit error:(id *)error
 {
   v34 = 0;
   v35 = &v34;
@@ -1174,7 +1174,7 @@ id __73__EDRemoteContentPersistence_pruneAllRemoteContentLinksWithMinimumCount__
   v25 = __Block_byref_object_copy__36;
   v26 = __Block_byref_object_dispose__36;
   v27 = 0;
-  v11 = [(EDRemoteContentPersistence *)self database];
+  database = [(EDRemoteContentPersistence *)self database];
   v12 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDRemoteContentPersistence getRemoteContentURLInfoOrderedBy:inReverseOrder:limit:error:]"];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
@@ -1182,18 +1182,18 @@ id __73__EDRemoteContentPersistence_pruneAllRemoteContentLinksWithMinimumCount__
   v20[3] = &unk_1E82566C8;
   v20[4] = self;
   v20[5] = &v28;
-  v21 = a4;
-  v20[8] = a3;
-  v20[9] = a5;
+  orderCopy = order;
+  v20[8] = by;
+  v20[9] = limit;
   v20[6] = &v34;
   v20[7] = &v22;
-  [v11 __performReadWithCaller:v12 usingBlock:v20];
+  [database __performReadWithCaller:v12 usingBlock:v20];
 
   if (v29[5])
   {
-    if (a6)
+    if (error)
     {
-      *a6 = 0;
+      *error = 0;
     }
 
     v13 = objc_alloc(MEMORY[0x1E699B848]);
@@ -1203,18 +1203,18 @@ id __73__EDRemoteContentPersistence_pruneAllRemoteContentLinksWithMinimumCount__
 
   else
   {
-    if (a6)
+    if (error)
     {
       v16 = v35[5];
       if (v16)
       {
-        *a6 = v16;
+        *error = v16;
       }
 
       else
       {
         v17 = [MEMORY[0x1E696ABC0] em_internalErrorWithReason:@"Failed to get remote content url info"];
-        *a6 = v17;
+        *error = v17;
       }
     }
 
@@ -1269,16 +1269,16 @@ uint64_t __90__EDRemoteContentPersistence_getRemoteContentURLInfoOrderedBy_inRev
   return 1;
 }
 
-- (id)_getRemoteContentURLInfoForTable:(id)a3 orderedBy:(int64_t)a4 inReverseOrder:(BOOL)a5 limit:(int64_t)a6 connection:(id)a7 error:(id *)a8
+- (id)_getRemoteContentURLInfoForTable:(id)table orderedBy:(int64_t)by inReverseOrder:(BOOL)order limit:(int64_t)limit connection:(id)connection error:(id *)error
 {
-  v11 = a5;
-  v13 = a3;
-  v14 = a7;
-  v15 = [objc_alloc(MEMORY[0x1E699B948]) initWithResultColumn:@"url" table:v13];
+  orderCopy = order;
+  tableCopy = table;
+  connectionCopy = connection;
+  v15 = [objc_alloc(MEMORY[0x1E699B948]) initWithResultColumn:@"url" table:tableCopy];
   [v15 addResultColumn:@"requests"];
   [v15 addResultColumn:@"last_seen_date"];
   [v15 addResultColumn:@"last_request_date"];
-  if (a4 >= 4)
+  if (by >= 4)
   {
     v16 = 0;
     v17 = 1;
@@ -1286,14 +1286,14 @@ uint64_t __90__EDRemoteContentPersistence_getRemoteContentURLInfoOrderedBy_inRev
 
   else
   {
-    v16 = off_1E82566E8[a4];
-    v17 = dword_1C6471F20[a4];
+    v16 = off_1E82566E8[by];
+    v17 = dword_1C6471F20[by];
   }
 
-  [v15 orderByColumn:v16 ascending:v17 != v11];
-  if (a6 != 0x7FFFFFFFFFFFFFFFLL)
+  [v15 orderByColumn:v16 ascending:v17 != orderCopy];
+  if (limit != 0x7FFFFFFFFFFFFFFFLL)
   {
-    [v15 setLimit:a6 & ~(a6 >> 63)];
+    [v15 setLimit:limit & ~(limit >> 63)];
   }
 
   v18 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -1303,7 +1303,7 @@ uint64_t __90__EDRemoteContentPersistence_getRemoteContentURLInfoOrderedBy_inRev
   v23[3] = &unk_1E8250300;
   v24 = v18;
   v19 = v18;
-  if ([v14 executeSelectStatement:v15 withBlock:v23 error:a8])
+  if ([connectionCopy executeSelectStatement:v15 withBlock:v23 error:error])
   {
     v20 = v19;
   }
@@ -1352,23 +1352,23 @@ void __111__EDRemoteContentPersistence__getRemoteContentURLInfoForTable_orderedB
 {
   if ((EFIsRunningUnitTests() & 1) == 0)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"EDRemoteContentPersistence.m" lineNumber:605 description:{@"%s can only be called from unit tests", "-[EDRemoteContentPersistence test_tearDown]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EDRemoteContentPersistence.m" lineNumber:605 description:{@"%s can only be called from unit tests", "-[EDRemoteContentPersistence test_tearDown]"}];
   }
 
-  v4 = [(EDRemoteContentPersistence *)self contentProtectionQueue];
+  contentProtectionQueue = [(EDRemoteContentPersistence *)self contentProtectionQueue];
 
-  if (v4)
+  if (contentProtectionQueue)
   {
     EFUnregisterContentProtectionObserver();
     objc_initWeak(&location, self);
-    v5 = [(EDRemoteContentPersistence *)self contentProtectionQueue];
+    contentProtectionQueue2 = [(EDRemoteContentPersistence *)self contentProtectionQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __43__EDRemoteContentPersistence_test_tearDown__block_invoke;
     block[3] = &unk_1E8250808;
     objc_copyWeak(&v8, &location);
-    dispatch_sync(v5, block);
+    dispatch_sync(contentProtectionQueue2, block);
 
     objc_destroyWeak(&v8);
     objc_destroyWeak(&location);

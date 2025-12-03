@@ -1,18 +1,18 @@
 @interface VUIActionLeaveGroupSession
-- (void)performWithTargetResponder:(id)a3 completionHandler:(id)a4;
+- (void)performWithTargetResponder:(id)responder completionHandler:(id)handler;
 @end
 
 @implementation VUIActionLeaveGroupSession
 
-- (void)performWithTargetResponder:(id)a3 completionHandler:(id)a4
+- (void)performWithTargetResponder:(id)responder completionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   +[VUIGroupActivitiesManagerObjC leaveSession];
-  v4 = v5;
-  if (v5)
+  v4 = handlerCopy;
+  if (handlerCopy)
   {
-    (*(v5 + 2))(v5, 1);
-    v4 = v5;
+    (*(handlerCopy + 2))(handlerCopy, 1);
+    v4 = handlerCopy;
   }
 }
 

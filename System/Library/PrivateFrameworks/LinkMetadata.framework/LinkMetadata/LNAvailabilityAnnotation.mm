@@ -2,30 +2,30 @@
 + (id)available;
 + (id)deprecated;
 + (id)unavailable;
-- (BOOL)isEqual:(id)a3;
-- (LNAvailabilityAnnotation)initWithCoder:(id)a3;
-- (LNAvailabilityAnnotation)initWithIntroducedVersion:(id)a3 deprecatedVersion:(id)a4 obsoletedVersion:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (LNAvailabilityAnnotation)initWithCoder:(id)coder;
+- (LNAvailabilityAnnotation)initWithIntroducedVersion:(id)version deprecatedVersion:(id)deprecatedVersion obsoletedVersion:(id)obsoletedVersion;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNAvailabilityAnnotation
 
 + (id)available
 {
-  v2 = [[a1 alloc] initWithIntroducedVersion:@"*" deprecatedVersion:0 obsoletedVersion:0];
+  v2 = [[self alloc] initWithIntroducedVersion:@"*" deprecatedVersion:0 obsoletedVersion:0];
 
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self != v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self != equalCopy)
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       LOBYTE(v12) = 0;
@@ -34,10 +34,10 @@ LABEL_27:
       goto LABEL_28;
     }
 
-    v7 = [(LNAvailabilityAnnotation *)self introducedVersion];
-    v8 = [(LNAvailabilityAnnotation *)v6 introducedVersion];
-    v9 = v7;
-    v10 = v8;
+    introducedVersion = [(LNAvailabilityAnnotation *)self introducedVersion];
+    introducedVersion2 = [(LNAvailabilityAnnotation *)v6 introducedVersion];
+    v9 = introducedVersion;
+    v10 = introducedVersion2;
     v11 = v10;
     if (v9 == v10)
     {
@@ -64,10 +64,10 @@ LABEL_26:
       }
     }
 
-    v16 = [(LNAvailabilityAnnotation *)self deprecatedVersion];
-    v17 = [(LNAvailabilityAnnotation *)v6 deprecatedVersion];
-    v14 = v16;
-    v18 = v17;
+    deprecatedVersion = [(LNAvailabilityAnnotation *)self deprecatedVersion];
+    deprecatedVersion2 = [(LNAvailabilityAnnotation *)v6 deprecatedVersion];
+    v14 = deprecatedVersion;
+    v18 = deprecatedVersion2;
     v13 = v18;
     if (v14 == v18)
     {
@@ -94,10 +94,10 @@ LABEL_25:
       }
     }
 
-    v21 = [(LNAvailabilityAnnotation *)self obsoletedVersion];
-    v22 = [(LNAvailabilityAnnotation *)v6 obsoletedVersion];
-    v20 = v21;
-    v23 = v22;
+    obsoletedVersion = [(LNAvailabilityAnnotation *)self obsoletedVersion];
+    obsoletedVersion2 = [(LNAvailabilityAnnotation *)v6 obsoletedVersion];
+    v20 = obsoletedVersion;
+    v23 = obsoletedVersion2;
     v19 = v23;
     if (v20 == v23)
     {
@@ -124,12 +124,12 @@ LABEL_28:
 
 - (unint64_t)hash
 {
-  v3 = [(LNAvailabilityAnnotation *)self introducedVersion];
-  v4 = [v3 hash];
-  v5 = [(LNAvailabilityAnnotation *)self deprecatedVersion];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(LNAvailabilityAnnotation *)self obsoletedVersion];
-  v8 = [v7 hash];
+  introducedVersion = [(LNAvailabilityAnnotation *)self introducedVersion];
+  v4 = [introducedVersion hash];
+  deprecatedVersion = [(LNAvailabilityAnnotation *)self deprecatedVersion];
+  v6 = [deprecatedVersion hash] ^ v4;
+  obsoletedVersion = [(LNAvailabilityAnnotation *)self obsoletedVersion];
+  v8 = [obsoletedVersion hash];
 
   return v6 ^ v8;
 }
@@ -139,57 +139,57 @@ LABEL_28:
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(LNAvailabilityAnnotation *)self introducedVersion];
-  v7 = [(LNAvailabilityAnnotation *)self deprecatedVersion];
-  v8 = [(LNAvailabilityAnnotation *)self obsoletedVersion];
-  v9 = [v3 stringWithFormat:@"<%@: %p, introduced: %@, deprecated: %@, obsoleted: %@>", v5, self, v6, v7, v8];
+  introducedVersion = [(LNAvailabilityAnnotation *)self introducedVersion];
+  deprecatedVersion = [(LNAvailabilityAnnotation *)self deprecatedVersion];
+  obsoletedVersion = [(LNAvailabilityAnnotation *)self obsoletedVersion];
+  v9 = [v3 stringWithFormat:@"<%@: %p, introduced: %@, deprecated: %@, obsoleted: %@>", v5, self, introducedVersion, deprecatedVersion, obsoletedVersion];
 
   return v9;
 }
 
-- (LNAvailabilityAnnotation)initWithCoder:(id)a3
+- (LNAvailabilityAnnotation)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"introducedVersion"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"deprecatedVersion"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"obsoletedVersion"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"introducedVersion"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"deprecatedVersion"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"obsoletedVersion"];
 
   v8 = [(LNAvailabilityAnnotation *)self initWithIntroducedVersion:v5 deprecatedVersion:v6 obsoletedVersion:v7];
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(LNAvailabilityAnnotation *)self introducedVersion];
-  [v4 encodeObject:v5 forKey:@"introducedVersion"];
+  coderCopy = coder;
+  introducedVersion = [(LNAvailabilityAnnotation *)self introducedVersion];
+  [coderCopy encodeObject:introducedVersion forKey:@"introducedVersion"];
 
-  v6 = [(LNAvailabilityAnnotation *)self deprecatedVersion];
-  [v4 encodeObject:v6 forKey:@"deprecatedVersion"];
+  deprecatedVersion = [(LNAvailabilityAnnotation *)self deprecatedVersion];
+  [coderCopy encodeObject:deprecatedVersion forKey:@"deprecatedVersion"];
 
-  v7 = [(LNAvailabilityAnnotation *)self obsoletedVersion];
-  [v4 encodeObject:v7 forKey:@"obsoletedVersion"];
+  obsoletedVersion = [(LNAvailabilityAnnotation *)self obsoletedVersion];
+  [coderCopy encodeObject:obsoletedVersion forKey:@"obsoletedVersion"];
 }
 
-- (LNAvailabilityAnnotation)initWithIntroducedVersion:(id)a3 deprecatedVersion:(id)a4 obsoletedVersion:(id)a5
+- (LNAvailabilityAnnotation)initWithIntroducedVersion:(id)version deprecatedVersion:(id)deprecatedVersion obsoletedVersion:(id)obsoletedVersion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  versionCopy = version;
+  deprecatedVersionCopy = deprecatedVersion;
+  obsoletedVersionCopy = obsoletedVersion;
   v20.receiver = self;
   v20.super_class = LNAvailabilityAnnotation;
   v11 = [(LNAvailabilityAnnotation *)&v20 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [versionCopy copy];
     introducedVersion = v11->_introducedVersion;
     v11->_introducedVersion = v12;
 
-    v14 = [v9 copy];
+    v14 = [deprecatedVersionCopy copy];
     deprecatedVersion = v11->_deprecatedVersion;
     v11->_deprecatedVersion = v14;
 
-    v16 = [v10 copy];
+    v16 = [obsoletedVersionCopy copy];
     obsoletedVersion = v11->_obsoletedVersion;
     v11->_obsoletedVersion = v16;
 
@@ -201,14 +201,14 @@ LABEL_28:
 
 + (id)unavailable
 {
-  v2 = [[a1 alloc] initWithIntroducedVersion:0 deprecatedVersion:0 obsoletedVersion:@"*"];
+  v2 = [[self alloc] initWithIntroducedVersion:0 deprecatedVersion:0 obsoletedVersion:@"*"];
 
   return v2;
 }
 
 + (id)deprecated
 {
-  v2 = [[a1 alloc] initWithIntroducedVersion:0 deprecatedVersion:@"*" obsoletedVersion:0];
+  v2 = [[self alloc] initWithIntroducedVersion:0 deprecatedVersion:@"*" obsoletedVersion:0];
 
   return v2;
 }

@@ -1,6 +1,6 @@
 @interface _UISearchTextFieldVisualStyle
 - (UISearchTextField)searchTextField;
-- (_UISearchTextFieldVisualStyle)initWithInstance:(id)a3;
+- (_UISearchTextFieldVisualStyle)initWithInstance:(id)instance;
 - (double)leftViewInset;
 @end
 
@@ -18,16 +18,16 @@
   return result;
 }
 
-- (_UISearchTextFieldVisualStyle)initWithInstance:(id)a3
+- (_UISearchTextFieldVisualStyle)initWithInstance:(id)instance
 {
-  v4 = a3;
+  instanceCopy = instance;
   v8.receiver = self;
   v8.super_class = _UISearchTextFieldVisualStyle;
   v5 = [(_UISearchTextFieldVisualStyle *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_searchTextField, v4);
+    objc_storeWeak(&v5->_searchTextField, instanceCopy);
   }
 
   return v6;

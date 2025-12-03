@@ -1,6 +1,6 @@
 @interface DriverKitSettingsViewController
-- (_TtC17DriverKitSettings31DriverKitSettingsViewController)initWithCoder:(id)a3;
-- (_TtC17DriverKitSettings31DriverKitSettingsViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC17DriverKitSettings31DriverKitSettingsViewController)initWithCoder:(id)coder;
+- (_TtC17DriverKitSettings31DriverKitSettingsViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
 @end
 
@@ -8,42 +8,42 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_3AA8();
 }
 
-- (_TtC17DriverKitSettings31DriverKitSettingsViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC17DriverKitSettings31DriverKitSettingsViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   ObjectType = swift_getObjectType();
-  if (a3)
+  if (name)
   {
     sub_4F40();
     *&self->PSViewController_opaque[OBJC_IVAR____TtC17DriverKitSettings31DriverKitSettingsViewController____lazy_storage___hostingController] = 0;
-    v8 = a4;
-    a3 = sub_4F30();
+    bundleCopy = bundle;
+    name = sub_4F30();
   }
 
   else
   {
     *&self->PSViewController_opaque[OBJC_IVAR____TtC17DriverKitSettings31DriverKitSettingsViewController____lazy_storage___hostingController] = 0;
-    v9 = a4;
+    bundleCopy2 = bundle;
   }
 
   v12.receiver = self;
   v12.super_class = ObjectType;
-  v10 = [(DriverKitSettingsViewController *)&v12 initWithNibName:a3 bundle:a4];
+  v10 = [(DriverKitSettingsViewController *)&v12 initWithNibName:name bundle:bundle];
 
   return v10;
 }
 
-- (_TtC17DriverKitSettings31DriverKitSettingsViewController)initWithCoder:(id)a3
+- (_TtC17DriverKitSettings31DriverKitSettingsViewController)initWithCoder:(id)coder
 {
   ObjectType = swift_getObjectType();
   *&self->PSViewController_opaque[OBJC_IVAR____TtC17DriverKitSettings31DriverKitSettingsViewController____lazy_storage___hostingController] = 0;
   v9.receiver = self;
   v9.super_class = ObjectType;
-  v6 = a3;
-  v7 = [(DriverKitSettingsViewController *)&v9 initWithCoder:v6];
+  coderCopy = coder;
+  v7 = [(DriverKitSettingsViewController *)&v9 initWithCoder:coderCopy];
 
   if (v7)
   {

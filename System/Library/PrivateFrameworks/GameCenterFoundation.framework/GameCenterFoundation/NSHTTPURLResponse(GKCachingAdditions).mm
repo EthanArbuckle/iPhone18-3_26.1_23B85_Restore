@@ -6,12 +6,12 @@
 
 - (double)_maxAge
 {
-  v1 = [a1 allHeaderFields];
-  v2 = [v1 objectForKey:@"Cache-Control"];
+  allHeaderFields = [self allHeaderFields];
+  v2 = [allHeaderFields objectForKey:@"Cache-Control"];
 
   if (v2)
   {
-    v3 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
     v20 = v2;
     v4 = [v2 componentsSeparatedByString:{@", "}];
     v5 = [v4 count];
@@ -23,7 +23,7 @@
       do
       {
         v9 = [v4 objectAtIndex:v7];
-        v10 = [v9 stringByTrimmingCharactersInSet:v3];
+        v10 = [v9 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
         v11 = [v10 componentsSeparatedByString:@"="];
         if ([v11 count] == 2)

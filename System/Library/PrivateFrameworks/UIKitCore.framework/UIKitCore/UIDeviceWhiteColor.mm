@@ -1,13 +1,13 @@
 @interface UIDeviceWhiteColor
 - (BOOL)_isDeepColor;
-- (BOOL)getHue:(double *)a3 saturation:(double *)a4 brightness:(double *)a5 alpha:(double *)a6;
-- (BOOL)getRed:(double *)a3 green:(double *)a4 blue:(double *)a5 alpha:(double *)a6;
-- (BOOL)getWhite:(double *)a3 alpha:(double *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)getHue:(double *)hue saturation:(double *)saturation brightness:(double *)brightness alpha:(double *)alpha;
+- (BOOL)getRed:(double *)red green:(double *)green blue:(double *)blue alpha:(double *)alpha;
+- (BOOL)getWhite:(double *)white alpha:(double *)alpha;
+- (BOOL)isEqual:(id)equal;
 - (CGColor)CGColor;
-- (UIDeviceWhiteColor)colorWithAlphaComponent:(double)a3;
-- (UIDeviceWhiteColor)initWithCGColor:(CGColor *)a3;
-- (UIDeviceWhiteColor)initWithWhite:(double)a3 alpha:(double)a4;
+- (UIDeviceWhiteColor)colorWithAlphaComponent:(double)component;
+- (UIDeviceWhiteColor)initWithCGColor:(CGColor *)color;
+- (UIDeviceWhiteColor)initWithWhite:(double)white alpha:(double)alpha;
 - (id)colorSpaceName;
 - (id)description;
 - (void)dealloc;
@@ -81,17 +81,17 @@
     v4 = ContextStack[3 * (*ContextStack - 1) + 1];
   }
 
-  v5 = [(UIDeviceWhiteColor *)self CGColor];
-  CGContextSetFillColorWithColor(v4, v5);
+  cGColor = [(UIDeviceWhiteColor *)self CGColor];
+  CGContextSetFillColorWithColor(v4, cGColor);
 
-  CGContextSetStrokeColorWithColor(v4, v5);
+  CGContextSetStrokeColorWithColor(v4, cGColor);
 }
 
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(UIDeviceWhiteColor *)self colorSpaceName];
-  v5 = [v3 stringWithFormat:@"%@ %g %g", v4, *&self->whiteComponent, *&self->alphaComponent];
+  colorSpaceName = [(UIDeviceWhiteColor *)self colorSpaceName];
+  v5 = [v3 stringWithFormat:@"%@ %g %g", colorSpaceName, *&self->whiteComponent, *&self->alphaComponent];
 
   return v5;
 }
@@ -109,9 +109,9 @@
     v4 = ContextStack[3 * (*ContextStack - 1) + 1];
   }
 
-  v5 = [(UIDeviceWhiteColor *)self CGColor];
+  cGColor = [(UIDeviceWhiteColor *)self CGColor];
 
-  CGContextSetFillColorWithColor(v4, v5);
+  CGContextSetFillColorWithColor(v4, cGColor);
 }
 
 - (void)setStroke
@@ -127,39 +127,39 @@
     v4 = ContextStack[3 * (*ContextStack - 1) + 1];
   }
 
-  v5 = [(UIDeviceWhiteColor *)self CGColor];
+  cGColor = [(UIDeviceWhiteColor *)self CGColor];
 
-  CGContextSetStrokeColorWithColor(v4, v5);
+  CGContextSetStrokeColorWithColor(v4, cGColor);
 }
 
-- (UIDeviceWhiteColor)initWithWhite:(double)a3 alpha:(double)a4
+- (UIDeviceWhiteColor)initWithWhite:(double)white alpha:(double)alpha
 {
   v7 = objc_opt_class();
   if (v7 == objc_opt_class())
   {
-    if (a3 == 1.0 && a4 == 1.0)
+    if (white == 1.0 && alpha == 1.0)
     {
       v15 = +[UIColor whiteColor];
     }
 
-    else if (a3 == 0.0 && a4 == 1.0)
+    else if (white == 0.0 && alpha == 1.0)
     {
       v15 = +[UIColor blackColor];
     }
 
-    else if (a3 == 0.0 && a4 == 0.0)
+    else if (white == 0.0 && alpha == 0.0)
     {
       v15 = +[UIColor clearColor];
     }
 
-    else if (a3 == 0.0 && a4 == 0.5)
+    else if (white == 0.0 && alpha == 0.5)
     {
       v15 = +[UIColor __halfTransparentBlackColor];
     }
 
     else
     {
-      if (a3 != 1.0 || a4 != 0.5)
+      if (white != 1.0 || alpha != 0.5)
       {
         goto LABEL_2;
       }
@@ -181,43 +181,43 @@ LABEL_2:
   v8 = [(UIDeviceWhiteColor *)&v17 init];
   if (v8)
   {
-    if (a3 > 2.0 || a3 < -1.0)
+    if (white > 2.0 || white < -1.0)
     {
       UIColorBreakForOutOfRangeColorComponents();
     }
 
     v10 = dyld_program_sdk_at_least();
     v11 = 0.0;
-    v12 = 1.0;
-    if (a3 <= 1.0)
+    alphaCopy = 1.0;
+    if (white <= 1.0)
     {
-      v13 = a3;
+      whiteCopy2 = white;
     }
 
     else
     {
-      v13 = 1.0;
+      whiteCopy2 = 1.0;
     }
 
-    if (a3 < 0.0)
+    if (white < 0.0)
     {
-      v13 = 0.0;
+      whiteCopy2 = 0.0;
     }
 
     if (v10)
     {
-      v13 = a3;
+      whiteCopy2 = white;
     }
 
-    v8->whiteComponent = v13;
-    if (a4 <= 1.0)
+    v8->whiteComponent = whiteCopy2;
+    if (alpha <= 1.0)
     {
-      v12 = a4;
+      alphaCopy = alpha;
     }
 
-    if (a4 >= 0.0)
+    if (alpha >= 0.0)
     {
-      v11 = v12;
+      v11 = alphaCopy;
     }
 
     v8->alphaComponent = v11;
@@ -226,14 +226,14 @@ LABEL_2:
   return v8;
 }
 
-- (UIDeviceWhiteColor)initWithCGColor:(CGColor *)a3
+- (UIDeviceWhiteColor)initWithCGColor:(CGColor *)color
 {
   v8.receiver = self;
   v8.super_class = UIDeviceWhiteColor;
   v4 = [(UIDeviceWhiteColor *)&v8 init];
   if (v4)
   {
-    Components = CGColorGetComponents(a3);
+    Components = CGColorGetComponents(color);
     v4->whiteComponent = *Components;
     v4->alphaComponent = Components[1];
     v6 = v4;
@@ -242,17 +242,17 @@ LABEL_2:
   return v4;
 }
 
-- (UIDeviceWhiteColor)colorWithAlphaComponent:(double)a3
+- (UIDeviceWhiteColor)colorWithAlphaComponent:(double)component
 {
-  v3 = 1.0;
-  if (a3 <= 1.0)
+  componentCopy = 1.0;
+  if (component <= 1.0)
   {
-    v3 = a3;
+    componentCopy = component;
   }
 
-  if (a3 >= 0.0)
+  if (component >= 0.0)
   {
-    v4 = v3;
+    v4 = componentCopy;
   }
 
   else
@@ -262,15 +262,15 @@ LABEL_2:
 
   if (v4 == self->alphaComponent)
   {
-    v5 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v5 = [[UIDeviceWhiteColor alloc] initWithWhite:self->whiteComponent alpha:v4];
+    selfCopy = [[UIDeviceWhiteColor alloc] initWithWhite:self->whiteComponent alpha:v4];
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (BOOL)_isDeepColor
@@ -289,26 +289,26 @@ LABEL_2:
   return whiteComponent != v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
     goto LABEL_15;
   }
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && ![(UIColor *)v4 _isDynamic])
+  if ((objc_opt_isKindOfClass() & 1) != 0 && ![(UIColor *)equalCopy _isDynamic])
   {
-    v6 = [(UIDeviceWhiteColor *)v4 colorSpaceName];
+    colorSpaceName = [(UIDeviceWhiteColor *)equalCopy colorSpaceName];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      if (self->whiteComponent == v4->whiteComponent)
+      if (self->whiteComponent == equalCopy->whiteComponent)
       {
         alphaComponent = self->alphaComponent;
-        v8 = v4->alphaComponent;
+        v8 = equalCopy->alphaComponent;
 LABEL_12:
         v5 = alphaComponent == v8;
 LABEL_14:
@@ -319,14 +319,14 @@ LABEL_14:
 
     else
     {
-      v9 = [(UIDeviceWhiteColor *)self colorSpaceName];
-      v10 = [v6 isEqualToString:v9];
+      colorSpaceName2 = [(UIDeviceWhiteColor *)self colorSpaceName];
+      v10 = [colorSpaceName isEqualToString:colorSpaceName2];
 
       if (v10)
       {
         v12 = 0.0;
         v13 = 0.0;
-        [(UIDeviceWhiteColor *)v4 getWhite:&v13 alpha:&v12];
+        [(UIDeviceWhiteColor *)equalCopy getWhite:&v13 alpha:&v12];
         if (self->whiteComponent == v13)
         {
           alphaComponent = self->alphaComponent;
@@ -346,66 +346,66 @@ LABEL_15:
   return v5;
 }
 
-- (BOOL)getWhite:(double *)a3 alpha:(double *)a4
+- (BOOL)getWhite:(double *)white alpha:(double *)alpha
 {
-  if (a3)
+  if (white)
   {
-    *a3 = self->whiteComponent;
+    *white = self->whiteComponent;
   }
 
-  if (a4)
+  if (alpha)
   {
-    *a4 = self->alphaComponent;
+    *alpha = self->alphaComponent;
   }
 
   return 1;
 }
 
-- (BOOL)getRed:(double *)a3 green:(double *)a4 blue:(double *)a5 alpha:(double *)a6
+- (BOOL)getRed:(double *)red green:(double *)green blue:(double *)blue alpha:(double *)alpha
 {
-  if (a3)
+  if (red)
   {
-    *a3 = self->whiteComponent;
+    *red = self->whiteComponent;
   }
 
-  if (a4)
+  if (green)
   {
-    *a4 = self->whiteComponent;
+    *green = self->whiteComponent;
   }
 
-  if (a5)
+  if (blue)
   {
-    *a5 = self->whiteComponent;
+    *blue = self->whiteComponent;
   }
 
-  if (a6)
+  if (alpha)
   {
-    *a6 = self->alphaComponent;
+    *alpha = self->alphaComponent;
   }
 
   return 1;
 }
 
-- (BOOL)getHue:(double *)a3 saturation:(double *)a4 brightness:(double *)a5 alpha:(double *)a6
+- (BOOL)getHue:(double *)hue saturation:(double *)saturation brightness:(double *)brightness alpha:(double *)alpha
 {
-  if (a3)
+  if (hue)
   {
-    *a3 = 0.0;
+    *hue = 0.0;
   }
 
-  if (a4)
+  if (saturation)
   {
-    *a4 = 0.0;
+    *saturation = 0.0;
   }
 
-  if (a5)
+  if (brightness)
   {
-    *a5 = self->whiteComponent;
+    *brightness = self->whiteComponent;
   }
 
-  if (a6)
+  if (alpha)
   {
-    *a6 = self->alphaComponent;
+    *alpha = self->alphaComponent;
   }
 
   return 1;

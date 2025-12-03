@@ -1,19 +1,19 @@
 @interface _CDInteractionAdvisorSimple
-+ (id)advisorSettingsForMatchingDisplayName:(id)a3 mechanism:(int64_t)a4 date:(id)a5 count:(int64_t)a6;
-+ (id)advisorSettingsForMatchingHandles:(id)a3 mechanism:(int64_t)a4 date:(id)a5 count:(int64_t)a6;
-+ (id)advisorSettingsForMatchingPersonID:(id)a3 mechanism:(int64_t)a4 date:(id)a5 count:(int64_t)a6;
++ (id)advisorSettingsForMatchingDisplayName:(id)name mechanism:(int64_t)mechanism date:(id)date count:(int64_t)count;
++ (id)advisorSettingsForMatchingHandles:(id)handles mechanism:(int64_t)mechanism date:(id)date count:(int64_t)count;
++ (id)advisorSettingsForMatchingPersonID:(id)d mechanism:(int64_t)mechanism date:(id)date count:(int64_t)count;
 - (_CDInteractionAdvisorSimple)initWithCoreDuetDaemon;
 - (_CDInteractionAdvisorSimple)initWithCoreDuetDatabase;
-- (_CDInteractionAdvisorSimple)initWithInteractionAdvisor:(id)a3;
-- (id)bestInteractionMatchingContactID:(id)a3 mechanism:(int64_t)a4;
-- (id)bestInteractionMatchingDisplayName:(id)a3 mechanism:(int64_t)a4;
-- (id)bestInteractionMatchingHandles:(id)a3 mechanism:(int64_t)a4;
-- (id)rankedInteractionsForDisplayName:(id)a3 mechanism:(int64_t)a4 count:(int64_t)a5;
-- (id)rankedInteractionsForDisplayName:(id)a3 mechanism:(int64_t)a4 count:(int64_t)a5 date:(id)a6;
-- (id)rankedInteractionsForHandles:(id)a3 mechanism:(int64_t)a4 count:(int64_t)a5;
-- (id)rankedInteractionsForHandles:(id)a3 mechanism:(int64_t)a4 count:(int64_t)a5 date:(id)a6;
-- (id)rankedInteractionsForPersonId:(id)a3 mechanism:(int64_t)a4 count:(int64_t)a5;
-- (id)rankedInteractionsForPersonId:(id)a3 mechanism:(int64_t)a4 count:(int64_t)a5 date:(id)a6;
+- (_CDInteractionAdvisorSimple)initWithInteractionAdvisor:(id)advisor;
+- (id)bestInteractionMatchingContactID:(id)d mechanism:(int64_t)mechanism;
+- (id)bestInteractionMatchingDisplayName:(id)name mechanism:(int64_t)mechanism;
+- (id)bestInteractionMatchingHandles:(id)handles mechanism:(int64_t)mechanism;
+- (id)rankedInteractionsForDisplayName:(id)name mechanism:(int64_t)mechanism count:(int64_t)count;
+- (id)rankedInteractionsForDisplayName:(id)name mechanism:(int64_t)mechanism count:(int64_t)count date:(id)date;
+- (id)rankedInteractionsForHandles:(id)handles mechanism:(int64_t)mechanism count:(int64_t)count;
+- (id)rankedInteractionsForHandles:(id)handles mechanism:(int64_t)mechanism count:(int64_t)count date:(id)date;
+- (id)rankedInteractionsForPersonId:(id)id mechanism:(int64_t)mechanism count:(int64_t)count;
+- (id)rankedInteractionsForPersonId:(id)id mechanism:(int64_t)mechanism count:(int64_t)count date:(id)date;
 @end
 
 @implementation _CDInteractionAdvisorSimple
@@ -35,191 +35,191 @@
     v5 = [_CDInteractionAdviceEngine interactionAdviceEngineWithStore:v4];
     self = [(_CDInteractionAdvisorSimple *)self initWithInteractionAdvisor:v5];
 
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (_CDInteractionAdvisorSimple)initWithInteractionAdvisor:(id)a3
+- (_CDInteractionAdvisorSimple)initWithInteractionAdvisor:(id)advisor
 {
-  v4 = a3;
+  advisorCopy = advisor;
   v8.receiver = self;
   v8.super_class = _CDInteractionAdvisorSimple;
   v5 = [(_CDInteractionAdvisorSimple *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(_CDInteractionAdvisorSimple *)v5 setInteractionAdvisor:v4];
+    [(_CDInteractionAdvisorSimple *)v5 setInteractionAdvisor:advisorCopy];
   }
 
   return v6;
 }
 
-- (id)bestInteractionMatchingHandles:(id)a3 mechanism:(int64_t)a4
+- (id)bestInteractionMatchingHandles:(id)handles mechanism:(int64_t)mechanism
 {
   v6 = MEMORY[0x1E695DF00];
-  v7 = a3;
-  v8 = [v6 date];
-  v9 = [(_CDInteractionAdvisorSimple *)self rankedInteractionsForHandles:v7 mechanism:a4 count:1 date:v8];
+  handlesCopy = handles;
+  date = [v6 date];
+  v9 = [(_CDInteractionAdvisorSimple *)self rankedInteractionsForHandles:handlesCopy mechanism:mechanism count:1 date:date];
 
-  v10 = [v9 firstObject];
+  firstObject = [v9 firstObject];
 
-  return v10;
+  return firstObject;
 }
 
-- (id)bestInteractionMatchingContactID:(id)a3 mechanism:(int64_t)a4
+- (id)bestInteractionMatchingContactID:(id)d mechanism:(int64_t)mechanism
 {
   v6 = MEMORY[0x1E695DF00];
-  v7 = a3;
-  v8 = [v6 date];
-  v9 = [(_CDInteractionAdvisorSimple *)self rankedInteractionsForPersonId:v7 mechanism:a4 count:1 date:v8];
+  dCopy = d;
+  date = [v6 date];
+  v9 = [(_CDInteractionAdvisorSimple *)self rankedInteractionsForPersonId:dCopy mechanism:mechanism count:1 date:date];
 
-  v10 = [v9 firstObject];
+  firstObject = [v9 firstObject];
 
-  return v10;
+  return firstObject;
 }
 
-- (id)bestInteractionMatchingDisplayName:(id)a3 mechanism:(int64_t)a4
+- (id)bestInteractionMatchingDisplayName:(id)name mechanism:(int64_t)mechanism
 {
   v6 = MEMORY[0x1E695DF00];
-  v7 = a3;
-  v8 = [v6 date];
-  v9 = [(_CDInteractionAdvisorSimple *)self rankedInteractionsForDisplayName:v7 mechanism:a4 count:1 date:v8];
+  nameCopy = name;
+  date = [v6 date];
+  v9 = [(_CDInteractionAdvisorSimple *)self rankedInteractionsForDisplayName:nameCopy mechanism:mechanism count:1 date:date];
 
-  v10 = [v9 firstObject];
+  firstObject = [v9 firstObject];
 
-  return v10;
+  return firstObject;
 }
 
-- (id)rankedInteractionsForHandles:(id)a3 mechanism:(int64_t)a4 count:(int64_t)a5
+- (id)rankedInteractionsForHandles:(id)handles mechanism:(int64_t)mechanism count:(int64_t)count
 {
   v8 = MEMORY[0x1E695DF00];
-  v9 = a3;
-  v10 = [v8 date];
-  v11 = [(_CDInteractionAdvisorSimple *)self rankedInteractionsForHandles:v9 mechanism:a4 count:a5 date:v10];
+  handlesCopy = handles;
+  date = [v8 date];
+  v11 = [(_CDInteractionAdvisorSimple *)self rankedInteractionsForHandles:handlesCopy mechanism:mechanism count:count date:date];
 
   return v11;
 }
 
-- (id)rankedInteractionsForHandles:(id)a3 mechanism:(int64_t)a4 count:(int64_t)a5 date:(id)a6
+- (id)rankedInteractionsForHandles:(id)handles mechanism:(int64_t)mechanism count:(int64_t)count date:(id)date
 {
-  v10 = a6;
-  v11 = a3;
-  v12 = [objc_opt_class() advisorSettingsForMatchingHandles:v11 mechanism:a4 date:v10 count:a5];
+  dateCopy = date;
+  handlesCopy = handles;
+  v12 = [objc_opt_class() advisorSettingsForMatchingHandles:handlesCopy mechanism:mechanism date:dateCopy count:count];
 
-  v13 = [(_CDInteractionAdvisorSimple *)self interactionAdvisor];
-  v14 = [v13 adviseInteractionsUsingSettings:v12];
+  interactionAdvisor = [(_CDInteractionAdvisorSimple *)self interactionAdvisor];
+  v14 = [interactionAdvisor adviseInteractionsUsingSettings:v12];
 
   return v14;
 }
 
-- (id)rankedInteractionsForPersonId:(id)a3 mechanism:(int64_t)a4 count:(int64_t)a5
+- (id)rankedInteractionsForPersonId:(id)id mechanism:(int64_t)mechanism count:(int64_t)count
 {
   v8 = MEMORY[0x1E695DF00];
-  v9 = a3;
-  v10 = [v8 date];
-  v11 = [(_CDInteractionAdvisorSimple *)self rankedInteractionsForPersonId:v9 mechanism:a4 count:a5 date:v10];
+  idCopy = id;
+  date = [v8 date];
+  v11 = [(_CDInteractionAdvisorSimple *)self rankedInteractionsForPersonId:idCopy mechanism:mechanism count:count date:date];
 
   return v11;
 }
 
-- (id)rankedInteractionsForPersonId:(id)a3 mechanism:(int64_t)a4 count:(int64_t)a5 date:(id)a6
+- (id)rankedInteractionsForPersonId:(id)id mechanism:(int64_t)mechanism count:(int64_t)count date:(id)date
 {
-  v10 = a6;
-  v11 = a3;
-  v12 = [objc_opt_class() advisorSettingsForMatchingPersonID:v11 mechanism:a4 date:v10 count:a5];
+  dateCopy = date;
+  idCopy = id;
+  v12 = [objc_opt_class() advisorSettingsForMatchingPersonID:idCopy mechanism:mechanism date:dateCopy count:count];
 
-  v13 = [(_CDInteractionAdvisorSimple *)self interactionAdvisor];
-  v14 = [v13 adviseInteractionsUsingSettings:v12];
+  interactionAdvisor = [(_CDInteractionAdvisorSimple *)self interactionAdvisor];
+  v14 = [interactionAdvisor adviseInteractionsUsingSettings:v12];
 
   return v14;
 }
 
-- (id)rankedInteractionsForDisplayName:(id)a3 mechanism:(int64_t)a4 count:(int64_t)a5
+- (id)rankedInteractionsForDisplayName:(id)name mechanism:(int64_t)mechanism count:(int64_t)count
 {
   v8 = MEMORY[0x1E695DF00];
-  v9 = a3;
-  v10 = [v8 date];
-  v11 = [(_CDInteractionAdvisorSimple *)self rankedInteractionsForDisplayName:v9 mechanism:a4 count:a5 date:v10];
+  nameCopy = name;
+  date = [v8 date];
+  v11 = [(_CDInteractionAdvisorSimple *)self rankedInteractionsForDisplayName:nameCopy mechanism:mechanism count:count date:date];
 
   return v11;
 }
 
-- (id)rankedInteractionsForDisplayName:(id)a3 mechanism:(int64_t)a4 count:(int64_t)a5 date:(id)a6
+- (id)rankedInteractionsForDisplayName:(id)name mechanism:(int64_t)mechanism count:(int64_t)count date:(id)date
 {
-  v10 = a6;
-  v11 = a3;
-  v12 = [objc_opt_class() advisorSettingsForMatchingDisplayName:v11 mechanism:a4 date:v10 count:a5];
+  dateCopy = date;
+  nameCopy = name;
+  v12 = [objc_opt_class() advisorSettingsForMatchingDisplayName:nameCopy mechanism:mechanism date:dateCopy count:count];
 
-  v13 = [(_CDInteractionAdvisorSimple *)self interactionAdvisor];
-  v14 = [v13 adviseInteractionsUsingSettings:v12];
+  interactionAdvisor = [(_CDInteractionAdvisorSimple *)self interactionAdvisor];
+  v14 = [interactionAdvisor adviseInteractionsUsingSettings:v12];
 
   return v14;
 }
 
-+ (id)advisorSettingsForMatchingHandles:(id)a3 mechanism:(int64_t)a4 date:(id)a5 count:(int64_t)a6
++ (id)advisorSettingsForMatchingHandles:(id)handles mechanism:(int64_t)mechanism date:(id)date count:(int64_t)count
 {
-  v9 = a5;
-  v10 = a3;
+  dateCopy = date;
+  handlesCopy = handles;
   v11 = +[_CDInteractionAdvisorSettings interactionAdvisorSettingsDefault];
-  [v11 setInteractionDate:v9];
+  [v11 setInteractionDate:dateCopy];
 
   v12 = MEMORY[0x1E695DFD8];
-  v13 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+  v13 = [MEMORY[0x1E696AD98] numberWithInteger:mechanism];
   v14 = [v12 setWithObject:v13];
   [v11 setConstrainMechanisms:v14];
 
-  v15 = [MEMORY[0x1E695DFD8] setWithArray:v10];
+  v15 = [MEMORY[0x1E695DFD8] setWithArray:handlesCopy];
 
   [v11 setConstrainIdentifiers:v15];
   [v11 setConsumerIdentifier:@"recency"];
-  [v11 setResultLimit:a6];
+  [v11 setResultLimit:count];
 
   return v11;
 }
 
-+ (id)advisorSettingsForMatchingPersonID:(id)a3 mechanism:(int64_t)a4 date:(id)a5 count:(int64_t)a6
++ (id)advisorSettingsForMatchingPersonID:(id)d mechanism:(int64_t)mechanism date:(id)date count:(int64_t)count
 {
-  v9 = a5;
-  v10 = a3;
+  dateCopy = date;
+  dCopy = d;
   v11 = +[_CDInteractionAdvisorSettings interactionAdvisorSettingsDefault];
-  [v11 setInteractionDate:v9];
+  [v11 setInteractionDate:dateCopy];
 
   v12 = MEMORY[0x1E695DFD8];
-  v13 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+  v13 = [MEMORY[0x1E696AD98] numberWithInteger:mechanism];
   v14 = [v12 setWithObject:v13];
   [v11 setConstrainMechanisms:v14];
 
-  v15 = [MEMORY[0x1E695DFD8] setWithObject:v10];
+  v15 = [MEMORY[0x1E695DFD8] setWithObject:dCopy];
 
   [v11 setConstrainPersonIds:v15];
   [v11 setConsumerIdentifier:@"recency"];
-  [v11 setResultLimit:a6];
+  [v11 setResultLimit:count];
 
   return v11;
 }
 
-+ (id)advisorSettingsForMatchingDisplayName:(id)a3 mechanism:(int64_t)a4 date:(id)a5 count:(int64_t)a6
++ (id)advisorSettingsForMatchingDisplayName:(id)name mechanism:(int64_t)mechanism date:(id)date count:(int64_t)count
 {
-  v9 = a5;
-  v10 = a3;
+  dateCopy = date;
+  nameCopy = name;
   v11 = +[_CDInteractionAdvisorSettings interactionAdvisorSettingsDefault];
-  [v11 setInteractionDate:v9];
+  [v11 setInteractionDate:dateCopy];
 
   v12 = MEMORY[0x1E695DFD8];
-  v13 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+  v13 = [MEMORY[0x1E696AD98] numberWithInteger:mechanism];
   v14 = [v12 setWithObject:v13];
   [v11 setConstrainMechanisms:v14];
 
-  [v11 setContactPrefix:v10];
+  [v11 setContactPrefix:nameCopy];
   [v11 setConsumerIdentifier:@"recency"];
-  [v11 setResultLimit:a6];
+  [v11 setResultLimit:count];
 
   return v11;
 }

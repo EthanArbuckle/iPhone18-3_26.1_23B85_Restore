@@ -1,14 +1,14 @@
 @interface ISURLRequest
-+ (id)requestWithURL:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (ISURLRequest)initWithCoder:(id)a3;
-- (ISURLRequest)initWithRequestProperties:(id)a3;
-- (ISURLRequest)initWithURL:(id)a3;
-- (ISURLRequest)initWithURLRequest:(id)a3;
++ (id)requestWithURL:(id)l;
+- (BOOL)isEqual:(id)equal;
+- (ISURLRequest)initWithCoder:(id)coder;
+- (ISURLRequest)initWithRequestProperties:(id)properties;
+- (ISURLRequest)initWithURL:(id)l;
+- (ISURLRequest)initWithURLRequest:(id)request;
 - (id)_initCommon;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)requestProperties;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ISURLRequest
@@ -32,62 +32,62 @@
   return v2;
 }
 
-- (ISURLRequest)initWithRequestProperties:(id)a3
+- (ISURLRequest)initWithRequestProperties:(id)properties
 {
-  v4 = a3;
-  v5 = [(ISURLRequest *)self _initCommon];
-  if (v5)
+  propertiesCopy = properties;
+  _initCommon = [(ISURLRequest *)self _initCommon];
+  if (_initCommon)
   {
-    v6 = [v4 mutableCopy];
-    properties = v5->_properties;
-    v5->_properties = v6;
+    v6 = [propertiesCopy mutableCopy];
+    properties = _initCommon->_properties;
+    _initCommon->_properties = v6;
   }
 
-  return v5;
+  return _initCommon;
 }
 
-- (ISURLRequest)initWithURLRequest:(id)a3
+- (ISURLRequest)initWithURLRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(ISURLRequest *)self _initCommon];
-  if (v5)
+  requestCopy = request;
+  _initCommon = [(ISURLRequest *)self _initCommon];
+  if (_initCommon)
   {
-    v6 = [objc_alloc(MEMORY[0x277D69BD0]) initWithURLRequest:v4];
-    properties = v5->_properties;
-    v5->_properties = v6;
+    v6 = [objc_alloc(MEMORY[0x277D69BD0]) initWithURLRequest:requestCopy];
+    properties = _initCommon->_properties;
+    _initCommon->_properties = v6;
   }
 
-  return v5;
+  return _initCommon;
 }
 
-- (ISURLRequest)initWithURL:(id)a3
+- (ISURLRequest)initWithURL:(id)l
 {
-  v4 = a3;
-  v5 = [(ISURLRequest *)self _initCommon];
-  v6 = v5;
-  if (v5)
+  lCopy = l;
+  _initCommon = [(ISURLRequest *)self _initCommon];
+  v6 = _initCommon;
+  if (_initCommon)
   {
-    [v5[2] setURL:v4];
+    [_initCommon[2] setURL:lCopy];
   }
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   lock = self->_lock;
-  v5 = a3;
+  coderCopy = coder;
   [(NSLock *)lock lock];
-  v6 = [v5 allowsKeyedCoding];
+  allowsKeyedCoding = [coderCopy allowsKeyedCoding];
   properties = self->_properties;
-  if (v6)
+  if (allowsKeyedCoding)
   {
-    [v5 encodeObject:properties forKey:@"properties"];
+    [coderCopy encodeObject:properties forKey:@"properties"];
   }
 
   else
   {
-    [v5 encodeObject:properties];
+    [coderCopy encodeObject:properties];
   }
 
   v8 = self->_lock;
@@ -95,70 +95,70 @@
   [(NSLock *)v8 unlock];
 }
 
-- (ISURLRequest)initWithCoder:(id)a3
+- (ISURLRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ISURLRequest *)self _initCommon];
-  if (v5)
+  coderCopy = coder;
+  _initCommon = [(ISURLRequest *)self _initCommon];
+  if (_initCommon)
   {
-    if (![v4 allowsKeyedCoding])
+    if (![coderCopy allowsKeyedCoding])
     {
-      v8 = [v4 decodeObject];
-      properties = v5->_properties;
-      v5->_properties = v8;
+      decodeObject = [coderCopy decodeObject];
+      properties = _initCommon->_properties;
+      _initCommon->_properties = decodeObject;
 LABEL_9:
 
       goto LABEL_10;
     }
 
-    if ([v4 containsValueForKey:@"properties"])
+    if ([coderCopy containsValueForKey:@"properties"])
     {
-      v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"properties"];
-      v7 = v5->_properties;
-      v5->_properties = v6;
+      v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"properties"];
+      v7 = _initCommon->_properties;
+      _initCommon->_properties = v6;
     }
 
     else
     {
-      -[SSMutableURLRequestProperties setAllowedRetryCount:](v5->_properties, "setAllowedRetryCount:", [v4 decodeIntegerForKey:@"retryCount"]);
-      -[SSMutableURLRequestProperties setCachePolicy:](v5->_properties, "setCachePolicy:", [v4 decodeIntegerForKey:@"cachePolicy"]);
-      v10 = v5->_properties;
-      v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"body"];
+      -[SSMutableURLRequestProperties setAllowedRetryCount:](_initCommon->_properties, "setAllowedRetryCount:", [coderCopy decodeIntegerForKey:@"retryCount"]);
+      -[SSMutableURLRequestProperties setCachePolicy:](_initCommon->_properties, "setCachePolicy:", [coderCopy decodeIntegerForKey:@"cachePolicy"]);
+      v10 = _initCommon->_properties;
+      v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"body"];
       [(SSMutableURLRequestProperties *)v10 setHTTPBody:v11];
 
-      v12 = v5->_properties;
+      v12 = _initCommon->_properties;
       v13 = MEMORY[0x277CBEB98];
       v14 = objc_opt_class();
       v15 = [v13 setWithObjects:{v14, objc_opt_class(), 0}];
-      v16 = [v4 decodeObjectOfClasses:v15 forKey:@"headers"];
+      v16 = [coderCopy decodeObjectOfClasses:v15 forKey:@"headers"];
       [(SSMutableURLRequestProperties *)v12 setHTTPHeaders:v16];
 
-      v17 = v5->_properties;
-      v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"method"];
+      v17 = _initCommon->_properties;
+      v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"method"];
       [(SSMutableURLRequestProperties *)v17 setHTTPMethod:v18];
 
-      v19 = v5->_properties;
+      v19 = _initCommon->_properties;
       v20 = MEMORY[0x277CBEB98];
       v21 = objc_opt_class();
       v22 = [v20 setWithObjects:{v21, objc_opt_class(), 0}];
-      v23 = [v4 decodeObjectOfClasses:v22 forKey:@"query"];
+      v23 = [coderCopy decodeObjectOfClasses:v22 forKey:@"query"];
       [(SSMutableURLRequestProperties *)v19 setRequestParameters:v23];
 
-      v24 = v5->_properties;
-      [v4 decodeDoubleForKey:@"timeout"];
+      v24 = _initCommon->_properties;
+      [coderCopy decodeDoubleForKey:@"timeout"];
       [(SSMutableURLRequestProperties *)v24 setTimeoutInterval:?];
     }
 
-    if ([v4 containsValueForKey:@"urls"])
+    if ([coderCopy containsValueForKey:@"urls"])
     {
-      -[SSMutableURLRequestProperties setExpectedContentLength:](v5->_properties, "setExpectedContentLength:", [v4 decodeInt64ForKey:@"expectedlength"]);
-      -[SSMutableURLRequestProperties setURLBagType:](v5->_properties, "setURLBagType:", [v4 decodeIntegerForKey:@"bagtype"]);
-      v25 = v5->_properties;
+      -[SSMutableURLRequestProperties setExpectedContentLength:](_initCommon->_properties, "setExpectedContentLength:", [coderCopy decodeInt64ForKey:@"expectedlength"]);
+      -[SSMutableURLRequestProperties setURLBagType:](_initCommon->_properties, "setURLBagType:", [coderCopy decodeIntegerForKey:@"bagtype"]);
+      v25 = _initCommon->_properties;
       v26 = MEMORY[0x277CBEB98];
       v27 = objc_opt_class();
       v28 = objc_opt_class();
       properties = [v26 setWithObjects:{v27, v28, objc_opt_class(), 0}];
-      v29 = [v4 decodeObjectOfClasses:properties forKey:@"urls"];
+      v29 = [coderCopy decodeObjectOfClasses:properties forKey:@"urls"];
       [(SSMutableURLRequestProperties *)v25 setURLs:v29];
 
       goto LABEL_9;
@@ -167,14 +167,14 @@ LABEL_9:
 
 LABEL_10:
 
-  return v5;
+  return _initCommon;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_opt_class() allocWithZone:a3];
+  v5 = [objc_opt_class() allocWithZone:zone];
   [(NSLock *)self->_lock lock];
-  v6 = [(SSMutableURLRequestProperties *)self->_properties mutableCopyWithZone:a3];
+  v6 = [(SSMutableURLRequestProperties *)self->_properties mutableCopyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
@@ -182,15 +182,15 @@ LABEL_10:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(ISURLRequest *)self requestProperties];
-    v6 = [v4 requestProperties];
-    v7 = [v5 isEqual:v6];
+    requestProperties = [(ISURLRequest *)self requestProperties];
+    requestProperties2 = [equalCopy requestProperties];
+    v7 = [requestProperties isEqual:requestProperties2];
   }
 
   else
@@ -201,10 +201,10 @@ LABEL_10:
   return v7;
 }
 
-+ (id)requestWithURL:(id)a3
++ (id)requestWithURL:(id)l
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithURL:v4];
+  lCopy = l;
+  v5 = [[self alloc] initWithURL:lCopy];
 
   return v5;
 }

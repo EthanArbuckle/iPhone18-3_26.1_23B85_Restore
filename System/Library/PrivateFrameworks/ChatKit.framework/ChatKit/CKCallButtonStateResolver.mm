@@ -1,42 +1,42 @@
 @interface CKCallButtonStateResolver
 - (id)callStateForCurrentConversation;
-- (id)updateCallStateForCallButton:(id)a3;
-- (void)_refreshIDSStatusWithCompletion:(id)a3;
-- (void)updateForConversation:(id)a3 completion:(id)a4;
+- (id)updateCallStateForCallButton:(id)button;
+- (void)_refreshIDSStatusWithCompletion:(id)completion;
+- (void)updateForConversation:(id)conversation completion:(id)completion;
 @end
 
 @implementation CKCallButtonStateResolver
 
-- (void)updateForConversation:(id)a3 completion:(id)a4
+- (void)updateForConversation:(id)conversation completion:(id)completion
 {
   v11 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  [(CKCallButtonStateResolver *)self setConversation:v6];
+  conversationCopy = conversation;
+  completionCopy = completion;
+  [(CKCallButtonStateResolver *)self setConversation:conversationCopy];
   v8 = IMLogHandleForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v9 = 134217984;
-    v10 = v6;
+    v10 = conversationCopy;
     _os_log_impl(&dword_19020E000, v8, OS_LOG_TYPE_INFO, "Configuring call state resolver for conversation <%p>.", &v9, 0xCu);
   }
 
-  [(CKCallButtonStateResolver *)self _refreshIDSStatusWithCompletion:v7];
+  [(CKCallButtonStateResolver *)self _refreshIDSStatusWithCompletion:completionCopy];
 }
 
-- (void)_refreshIDSStatusWithCompletion:(id)a3
+- (void)_refreshIDSStatusWithCompletion:(id)completion
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CKCallButtonStateResolver *)self conversation];
-  v6 = [v5 recipients];
-  v7 = [v6 __im_canonicalIDSAddressesFromEntities];
+  completionCopy = completion;
+  conversation = [(CKCallButtonStateResolver *)self conversation];
+  recipients = [conversation recipients];
+  __im_canonicalIDSAddressesFromEntities = [recipients __im_canonicalIDSAddressesFromEntities];
 
-  if ([v7 count])
+  if ([__im_canonicalIDSAddressesFromEntities count])
   {
     v8 = dispatch_group_create();
-    v9 = [(CKCallButtonStateResolver *)self conversation];
-    v10 = [CKFaceTimeUtilities isModernScreenSharingAvailable:v9];
+    conversation2 = [(CKCallButtonStateResolver *)self conversation];
+    v10 = [CKFaceTimeUtilities isModernScreenSharingAvailable:conversation2];
 
     if (v10)
     {
@@ -47,14 +47,14 @@
       v13[3] = &unk_1E72EEB58;
       v13[4] = self;
       v14 = v8;
-      [CKFaceTimeUtilities queryModernScreenSharingCapabilities:v7 completion:v13];
+      [CKFaceTimeUtilities queryModernScreenSharingCapabilities:__im_canonicalIDSAddressesFromEntities completion:v13];
     }
 
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __61__CKCallButtonStateResolver__refreshIDSStatusWithCompletion___block_invoke_77;
     block[3] = &unk_1E72EBDB8;
-    v12 = v4;
+    v12 = completionCopy;
     dispatch_group_notify(v8, MEMORY[0x1E69E96A0], block);
   }
 
@@ -66,7 +66,7 @@
       *buf = 136315394;
       v16 = "[CKCallButtonStateResolver _refreshIDSStatusWithCompletion:]";
       v17 = 2048;
-      v18 = [v7 count];
+      v18 = [__im_canonicalIDSAddressesFromEntities count];
       _os_log_impl(&dword_19020E000, v8, OS_LOG_TYPE_INFO, "%s early returning for addresses.count: %lu", buf, 0x16u);
     }
   }
@@ -100,14 +100,14 @@ uint64_t __61__CKCallButtonStateResolver__refreshIDSStatusWithCompletion___block
   return (*(*(a1 + 32) + 16))();
 }
 
-- (id)updateCallStateForCallButton:(id)a3
+- (id)updateCallStateForCallButton:(id)button
 {
-  v4 = a3;
-  v5 = [(CKCallButtonStateResolver *)self callStateForCurrentConversation];
-  v6 = v5;
-  if (v5)
+  buttonCopy = button;
+  callStateForCurrentConversation = [(CKCallButtonStateResolver *)self callStateForCurrentConversation];
+  v6 = callStateForCurrentConversation;
+  if (callStateForCurrentConversation)
   {
-    [v4 updateWithStyle:objc_msgSend(v5 availabilityForVideo:"callButtonStyle") audio:objc_msgSend(v5 telephony:"isFaceTimeVideoAvailable") screenSharing:{objc_msgSend(v5, "isFaceTimeAudioAvailable"), objc_msgSend(v5, "isTelephonyAvailable"), objc_msgSend(v5, "isScreenSharingAvailable")}];
+    [buttonCopy updateWithStyle:objc_msgSend(callStateForCurrentConversation availabilityForVideo:"callButtonStyle") audio:objc_msgSend(callStateForCurrentConversation telephony:"isFaceTimeVideoAvailable") screenSharing:{objc_msgSend(callStateForCurrentConversation, "isFaceTimeAudioAvailable"), objc_msgSend(callStateForCurrentConversation, "isTelephonyAvailable"), objc_msgSend(callStateForCurrentConversation, "isScreenSharingAvailable")}];
   }
 
   return v6;
@@ -115,11 +115,11 @@ uint64_t __61__CKCallButtonStateResolver__refreshIDSStatusWithCompletion___block
 
 - (id)callStateForCurrentConversation
 {
-  v3 = [(CKCallButtonStateResolver *)self conversation];
-  v4 = [v3 chat];
-  v5 = [v4 conversation];
+  conversation = [(CKCallButtonStateResolver *)self conversation];
+  chat = [conversation chat];
+  conversation2 = [chat conversation];
 
-  if (v5 && ([v5 state] != 3 ? (v6 = objc_msgSend(v5, "state") == 2) : (v6 = 1), v7 = objc_msgSend(MEMORY[0x1E69A5B78], "conversationIsVideoCall:", v5), v8 = objc_msgSend(MEMORY[0x1E69A5B78], "conversationIsAVLessSharePlay:", v5), v9 = objc_msgSend(v5, "state"), (objc_msgSend(v5, "isNearbySession") & 1) == 0))
+  if (conversation2 && ([conversation2 state] != 3 ? (v6 = objc_msgSend(conversation2, "state") == 2) : (v6 = 1), v7 = objc_msgSend(MEMORY[0x1E69A5B78], "conversationIsVideoCall:", conversation2), v8 = objc_msgSend(MEMORY[0x1E69A5B78], "conversationIsAVLessSharePlay:", conversation2), v9 = objc_msgSend(conversation2, "state"), (objc_msgSend(conversation2, "isNearbySession") & 1) == 0))
   {
     if (v6)
     {
@@ -167,41 +167,41 @@ uint64_t __61__CKCallButtonStateResolver__refreshIDSStatusWithCompletion___block
     v10 = 0;
   }
 
-  v15 = [v3 isGroupConversation];
-  v16 = [v3 chat];
-  v17 = [v16 supportsCapabilities:1024];
+  isGroupConversation = [conversation isGroupConversation];
+  chat2 = [conversation chat];
+  v17 = [chat2 supportsCapabilities:1024];
 
-  v18 = [CKFaceTimeUtilities isFaceTimeAudioAvailable:v3]& v17;
-  v19 = [CKFaceTimeUtilities isFaceTimeVideoAvailable:v3]& v17;
-  v20 = [v3 recipient];
-  v21 = [(CKCallButtonStateResolver *)self screenSharingCapabilities];
-  v22 = [CKFaceTimeUtilities isModernScreenSharingAvailableForEntity:v20 capabilities:v21];
+  v18 = [CKFaceTimeUtilities isFaceTimeAudioAvailable:conversation]& v17;
+  v19 = [CKFaceTimeUtilities isFaceTimeVideoAvailable:conversation]& v17;
+  recipient = [conversation recipient];
+  screenSharingCapabilities = [(CKCallButtonStateResolver *)self screenSharingCapabilities];
+  v22 = [CKFaceTimeUtilities isModernScreenSharingAvailableForEntity:recipient capabilities:screenSharingCapabilities];
 
-  if ((v15 & 1) == 0)
+  if ((isGroupConversation & 1) == 0)
   {
     if (v18)
     {
-      v23 = [v3 chat];
-      v18 = [v23 isSMS] ^ 1;
+      chat3 = [conversation chat];
+      v18 = [chat3 isSMS] ^ 1;
     }
 
     if (v19)
     {
-      v24 = [v3 chat];
-      v19 = [v24 isSMS] ^ 1;
+      chat4 = [conversation chat];
+      v19 = [chat4 isSMS] ^ 1;
     }
   }
 
-  v25 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v26 = [v25 isTranscriptSharingEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isTranscriptSharingEnabled = [mEMORY[0x1E69A8070] isTranscriptSharingEnabled];
 
-  if (v26)
+  if (isTranscriptSharingEnabled)
   {
-    v27 = [v3 chat];
-    v28 = [v27 isStewieSharingChat];
+    chat5 = [conversation chat];
+    isStewieSharingChat = [chat5 isStewieSharingChat];
 
-    v18 = (v28 ^ 1) & v18;
-    v19 = (v28 ^ 1) & v19;
+    v18 = (isStewieSharingChat ^ 1) & v18;
+    v19 = (isStewieSharingChat ^ 1) & v19;
   }
 
   v14 = [CKCallStateResult callStateResultWithButtonStyle:v10 isFaceTimeVideoAvailable:v19 isFaceTimeAudioAvailable:v18 isTelephonyAvailable:0 isScreenSharingAvailable:v22];

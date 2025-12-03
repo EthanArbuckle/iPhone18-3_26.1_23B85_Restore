@@ -1,13 +1,13 @@
 @interface CNContactListRemoveContactsFromGroupAction
-+ (id)actionForContact:(id)a3 configuration:(id)a4;
++ (id)actionForContact:(id)contact configuration:(id)configuration;
 + (id)descriptorForRequiredKeys;
 + (id)log;
 - (BOOL)editRequiresAuthorization;
-- (BOOL)editRequiresAuthorizationCheckForActions:(id)a3;
-- (CNContactListRemoveContactsFromGroupAction)initWithContacts:(id)a3 configuration:(id)a4 withConfirmation:(BOOL)a5;
+- (BOOL)editRequiresAuthorizationCheckForActions:(id)actions;
+- (CNContactListRemoveContactsFromGroupAction)initWithContacts:(id)contacts configuration:(id)configuration withConfirmation:(BOOL)confirmation;
 - (id)groupToRemoveFrom;
 - (void)performAction;
-- (void)performAuthorizedRemoveFromGroup:(id)a3;
+- (void)performAuthorizedRemoveFromGroup:(id)group;
 - (void)performUndoAction;
 - (void)showRemoveFromGroupFailureAlert;
 @end
@@ -17,19 +17,19 @@
 - (id)groupToRemoveFrom
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v3 = [(CNContactListAction *)self configuration];
-  v4 = [v3 contactStoreFilter];
-  v5 = [v4 groupIdentifiers];
-  v6 = [v5 allObjects];
-  v7 = [v6 firstObject];
+  configuration = [(CNContactListAction *)self configuration];
+  contactStoreFilter = [configuration contactStoreFilter];
+  groupIdentifiers = [contactStoreFilter groupIdentifiers];
+  allObjects = [groupIdentifiers allObjects];
+  firstObject = [allObjects firstObject];
 
-  v8 = [(CNContactListRemoveContactsFromGroupAction *)self contactStore];
+  contactStore = [(CNContactListRemoveContactsFromGroupAction *)self contactStore];
   v9 = MEMORY[0x1E695CEC0];
-  v23[0] = v7;
+  v23[0] = firstObject;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:1];
   v11 = [v9 predicateForGroupsWithIdentifiers:v10];
   v20 = 0;
-  v12 = [v8 groupsMatchingPredicate:v11 error:&v20];
+  v12 = [contactStore groupsMatchingPredicate:v11 error:&v20];
   v13 = v20;
 
   if (!v12)
@@ -52,7 +52,7 @@ LABEL_12:
 
   if ([v12 count] == 1)
   {
-    v14 = [v12 firstObject];
+    firstObject2 = [v12 firstObject];
     goto LABEL_8;
   }
 
@@ -68,29 +68,29 @@ LABEL_12:
 
 LABEL_7:
 
-  v14 = 0;
+  firstObject2 = 0;
 LABEL_8:
 
-  return v14;
+  return firstObject2;
 }
 
 - (void)performUndoAction
 {
-  v3 = [(CNContactListRemoveContactsFromGroupAction *)self actions];
-  [v3 _cn_each:&__block_literal_global_78];
+  actions = [(CNContactListRemoveContactsFromGroupAction *)self actions];
+  [actions _cn_each:&__block_literal_global_78];
 
-  v4 = [(CNContactListAction *)self delegate];
-  [v4 actionDidFinish:self];
+  delegate = [(CNContactListAction *)self delegate];
+  [delegate actionDidFinish:self];
 }
 
-- (BOOL)editRequiresAuthorizationCheckForActions:(id)a3
+- (BOOL)editRequiresAuthorizationCheckForActions:(id)actions
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __87__CNContactListRemoveContactsFromGroupAction_editRequiresAuthorizationCheckForActions___block_invoke;
   v4[3] = &unk_1E74E2958;
   v4[4] = self;
-  return [a3 _cn_any:v4];
+  return [actions _cn_any:v4];
 }
 
 uint64_t __87__CNContactListRemoveContactsFromGroupAction_editRequiresAuthorizationCheckForActions___block_invoke(uint64_t a1, void *a2)
@@ -106,11 +106,11 @@ uint64_t __87__CNContactListRemoveContactsFromGroupAction_editRequiresAuthorizat
 
 - (BOOL)editRequiresAuthorization
 {
-  v2 = self;
-  v3 = [(CNContactListRemoveContactsFromGroupAction *)self actions];
-  LOBYTE(v2) = [(CNContactListRemoveContactsFromGroupAction *)v2 editRequiresAuthorizationCheckForActions:v3];
+  selfCopy = self;
+  actions = [(CNContactListRemoveContactsFromGroupAction *)self actions];
+  LOBYTE(selfCopy) = [(CNContactListRemoveContactsFromGroupAction *)selfCopy editRequiresAuthorizationCheckForActions:actions];
 
-  return v2;
+  return selfCopy;
 }
 
 - (void)showRemoveFromGroupFailureAlert
@@ -122,34 +122,34 @@ uint64_t __87__CNContactListRemoveContactsFromGroupAction_editRequiresAuthorizat
   v7 = [v6 localizedStringForKey:@"DELETE_CARD_SHEET_FAILURE_ALERT_EXPLANATION" value:&stru_1F0CE7398 table:@"Localized"];
   v13 = [v3 alertControllerWithTitle:v5 message:v7 preferredStyle:1];
 
-  v8 = [(CNContactListRemoveContactsFromGroupAction *)self componentsFactory];
+  componentsFactory = [(CNContactListRemoveContactsFromGroupAction *)self componentsFactory];
   v9 = CNContactsUIBundle();
   v10 = [v9 localizedStringForKey:@"OK" value:&stru_1F0CE7398 table:@"Localized"];
-  v11 = [v8 alertActionWithTitle:v10 style:0 handler:0];
+  v11 = [componentsFactory alertActionWithTitle:v10 style:0 handler:0];
   [v13 addAction:v11];
 
-  v12 = [(CNContactListAction *)self delegate];
-  [v12 action:self presentViewController:v13];
+  delegate = [(CNContactListAction *)self delegate];
+  [delegate action:self presentViewController:v13];
 }
 
-- (void)performAuthorizedRemoveFromGroup:(id)a3
+- (void)performAuthorizedRemoveFromGroup:(id)group
 {
-  v4 = a3;
+  groupCopy = group;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
   v19 = __Block_byref_object_copy__13606;
   v20 = __Block_byref_object_dispose__13607;
   v21 = MEMORY[0x1E695E0F0];
-  v5 = [(CNContactListRemoveContactsFromGroupAction *)self actions];
+  actions = [(CNContactListRemoveContactsFromGroupAction *)self actions];
   v10 = MEMORY[0x1E69E9820];
   v11 = 3221225472;
   v12 = __79__CNContactListRemoveContactsFromGroupAction_performAuthorizedRemoveFromGroup___block_invoke;
   v13 = &unk_1E74E2930;
-  v6 = v4;
+  v6 = groupCopy;
   v14 = v6;
   v15 = &v16;
-  [v5 _cn_each:&v10];
+  [actions _cn_each:&v10];
 
   if (((*(*MEMORY[0x1E6996530] + 16))(*MEMORY[0x1E6996530], v17[5], v7, v8) & 1) == 0)
   {
@@ -177,18 +177,18 @@ void __79__CNContactListRemoveContactsFromGroupAction_performAuthorizedRemoveFro
 
 - (void)performAction
 {
-  v3 = [(CNContactListRemoveContactsFromGroupAction *)self groupToRemoveFrom];
+  groupToRemoveFrom = [(CNContactListRemoveContactsFromGroupAction *)self groupToRemoveFrom];
   if ([(CNContactListRemoveContactsFromGroupAction *)self confirmAction])
   {
     v4 = MEMORY[0x1E696AEC0];
     v5 = CNContactsUIBundle();
     v6 = [v5 localizedStringForKey:@"LIST_ACTION_REMOVE_CONTACT_FROM_LIST" value:&stru_1F0CE7398 table:@"Localized"];
-    v7 = [(CNContactListRemoveContactsFromGroupAction *)self originalContactCount];
-    v8 = [v3 name];
-    v9 = [v4 localizedStringWithFormat:v6, v7, v8];
+    originalContactCount = [(CNContactListRemoveContactsFromGroupAction *)self originalContactCount];
+    name = [groupToRemoveFrom name];
+    v9 = [v4 localizedStringWithFormat:v6, originalContactCount, name];
 
     v10 = [MEMORY[0x1E69DC650] alertControllerWithTitle:v9 message:0 preferredStyle:1];
-    v11 = [(CNContactListRemoveContactsFromGroupAction *)self componentsFactory];
+    componentsFactory = [(CNContactListRemoveContactsFromGroupAction *)self componentsFactory];
     v12 = CNContactsUIBundle();
     v13 = [v12 localizedStringForKey:@"LIST_ACTION_ALERT_ACTION_REMOVE_FROM_GROUP" value:&stru_1F0CE7398 table:@"Localized"];
     v20[0] = MEMORY[0x1E69E9820];
@@ -196,56 +196,56 @@ void __79__CNContactListRemoveContactsFromGroupAction_performAuthorizedRemoveFro
     v20[2] = __59__CNContactListRemoveContactsFromGroupAction_performAction__block_invoke;
     v20[3] = &unk_1E74E7308;
     v20[4] = self;
-    v21 = v3;
-    v14 = [v11 alertActionWithTitle:v13 style:2 handler:v20];
+    v21 = groupToRemoveFrom;
+    v14 = [componentsFactory alertActionWithTitle:v13 style:2 handler:v20];
     [v10 addAction:v14];
 
-    v15 = [(CNContactListRemoveContactsFromGroupAction *)self componentsFactory];
+    componentsFactory2 = [(CNContactListRemoveContactsFromGroupAction *)self componentsFactory];
     v16 = CNContactsUIBundle();
     v17 = [v16 localizedStringForKey:@"CANCEL" value:&stru_1F0CE7398 table:@"Localized"];
-    v18 = [v15 alertActionWithTitle:v17 style:1 handler:&__block_literal_global_65];
+    v18 = [componentsFactory2 alertActionWithTitle:v17 style:1 handler:&__block_literal_global_65];
     [v10 addAction:v18];
 
-    v19 = [(CNContactListAction *)self delegate];
-    [v19 action:self presentViewController:v10];
+    delegate = [(CNContactListAction *)self delegate];
+    [delegate action:self presentViewController:v10];
   }
 
   else
   {
-    [(CNContactListRemoveContactsFromGroupAction *)self performAuthorizedRemoveFromGroup:v3];
+    [(CNContactListRemoveContactsFromGroupAction *)self performAuthorizedRemoveFromGroup:groupToRemoveFrom];
   }
 }
 
-- (CNContactListRemoveContactsFromGroupAction)initWithContacts:(id)a3 configuration:(id)a4 withConfirmation:(BOOL)a5
+- (CNContactListRemoveContactsFromGroupAction)initWithContacts:(id)contacts configuration:(id)configuration withConfirmation:(BOOL)confirmation
 {
-  v8 = a3;
-  v9 = a4;
+  contactsCopy = contacts;
+  configurationCopy = configuration;
   v26.receiver = self;
   v26.super_class = CNContactListRemoveContactsFromGroupAction;
   v10 = [(CNContactListRemoveContactsFromGroupAction *)&v26 init];
   v11 = v10;
   if (v10)
   {
-    [(CNContactListAction *)v10 setConfiguration:v9];
-    v12 = [v9 environment];
-    v13 = [v12 componentsFactory];
+    [(CNContactListAction *)v10 setConfiguration:configurationCopy];
+    environment = [configurationCopy environment];
+    componentsFactory = [environment componentsFactory];
     componentsFactory = v11->_componentsFactory;
-    v11->_componentsFactory = v13;
+    v11->_componentsFactory = componentsFactory;
 
-    v15 = [v9 contactStore];
+    contactStore = [configurationCopy contactStore];
     contactStore = v11->_contactStore;
-    v11->_contactStore = v15;
+    v11->_contactStore = contactStore;
 
-    v11->_confirmAction = a5;
-    v11->_originalContactCount = [v8 count];
+    v11->_confirmAction = confirmation;
+    v11->_originalContactCount = [contactsCopy count];
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
     v22[2] = __94__CNContactListRemoveContactsFromGroupAction_initWithContacts_configuration_withConfirmation___block_invoke;
     v22[3] = &unk_1E74E3320;
     v17 = v11;
     v23 = v17;
-    v24 = v8;
-    v25 = v9;
+    v24 = contactsCopy;
+    v25 = configurationCopy;
     v18 = [v24 _cn_flatMap:v22];
     actions = v17->_actions;
     v17->_actions = v18;
@@ -310,18 +310,18 @@ id __94__CNContactListRemoveContactsFromGroupAction_initWithContacts_configurati
   return v4;
 }
 
-+ (id)actionForContact:(id)a3 configuration:(id)a4
++ (id)actionForContact:(id)contact configuration:(id)configuration
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v5 contactViewCache];
-  v8 = [v7 containerForContact:v6];
-  v9 = [v8 identifier];
+  configurationCopy = configuration;
+  contactCopy = contact;
+  contactViewCache = [configurationCopy contactViewCache];
+  v8 = [contactViewCache containerForContact:contactCopy];
+  identifier = [v8 identifier];
 
   v10 = [CNContactListRemoveContactFromGroupAction alloc];
-  v11 = [v5 contactStore];
+  contactStore = [configurationCopy contactStore];
 
-  v12 = [(CNContactListRemoveContactFromGroupAction *)v10 initWithContact:v6 contactStore:v11 containerIdentifier:v9];
+  v12 = [(CNContactListRemoveContactFromGroupAction *)v10 initWithContact:contactCopy contactStore:contactStore containerIdentifier:identifier];
 
   return v12;
 }

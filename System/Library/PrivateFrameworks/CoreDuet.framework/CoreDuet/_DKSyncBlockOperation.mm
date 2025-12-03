@@ -1,16 +1,16 @@
 @interface _DKSyncBlockOperation
-+ (id)blockOperationWithBlock:(id)a3;
-- (_DKSyncBlockOperation)initWithBlock:(id)a3;
++ (id)blockOperationWithBlock:(id)block;
+- (_DKSyncBlockOperation)initWithBlock:(id)block;
 - (id)executionBlocks;
-- (void)addExecutionBlock:(id)a3;
+- (void)addExecutionBlock:(id)block;
 - (void)main;
 @end
 
 @implementation _DKSyncBlockOperation
 
-- (_DKSyncBlockOperation)initWithBlock:(id)a3
+- (_DKSyncBlockOperation)initWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v12.receiver = self;
   v12.super_class = _DKSyncBlockOperation;
   v5 = [(_DKSyncOperation *)&v12 init];
@@ -22,10 +22,10 @@
     blocks = v6->_blocks;
     v6->_blocks = v7;
 
-    if (v4)
+    if (blockCopy)
     {
       v9 = v6->_blocks;
-      v10 = MEMORY[0x193B00C50](v4);
+      v10 = MEMORY[0x193B00C50](blockCopy);
       [(NSMutableArray *)v9 addObject:v10];
     }
   }
@@ -33,18 +33,18 @@
   return v6;
 }
 
-+ (id)blockOperationWithBlock:(id)a3
++ (id)blockOperationWithBlock:(id)block
 {
-  v4 = a3;
-  if (!v4)
+  blockCopy = block;
+  if (!blockCopy)
   {
-    [MEMORY[0x1E696AEC0] stringWithFormat:@"%@: block is nil", a1];
+    [MEMORY[0x1E696AEC0] stringWithFormat:@"%@: block is nil", self];
     v8 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:objc_claimAutoreleasedReturnValue() userInfo:0];
     objc_exception_throw(v8);
   }
 
-  v5 = v4;
-  v6 = [[_DKSyncBlockOperation alloc] initWithBlock:v4];
+  v5 = blockCopy;
+  v6 = [[_DKSyncBlockOperation alloc] initWithBlock:blockCopy];
 
   return v6;
 }
@@ -58,10 +58,10 @@
   return v3;
 }
 
-- (void)addExecutionBlock:(id)a3
+- (void)addExecutionBlock:(id)block
 {
-  v7 = a3;
-  if (!v7)
+  blockCopy = block;
+  if (!blockCopy)
   {
     [MEMORY[0x1E696AEC0] stringWithFormat:@"%@: block is nil", self];
 LABEL_10:
@@ -78,7 +78,7 @@ LABEL_10:
   [(_DKSyncBlockOperation *)self willChangeValueForKey:@"executionBlocks"];
   os_unfair_lock_lock(&self->super._state + 1);
   blocks = self->_blocks;
-  v5 = MEMORY[0x193B00C50](v7);
+  v5 = MEMORY[0x193B00C50](blockCopy);
   [(NSMutableArray *)blocks addObject:v5];
 
   os_unfair_lock_unlock(&self->super._state + 1);
@@ -87,8 +87,8 @@ LABEL_10:
 
 - (void)main
 {
-  v3 = [(_DKSyncBlockOperation *)self executionBlocks];
-  __DKSYNCBLOCKOPERATION_IS_CALLING_EXECUTION_BLOCKS__(v3);
+  executionBlocks = [(_DKSyncBlockOperation *)self executionBlocks];
+  __DKSYNCBLOCKOPERATION_IS_CALLING_EXECUTION_BLOCKS__(executionBlocks);
 
   os_unfair_lock_lock(&self->super._state + 1);
   blocks = self->_blocks;

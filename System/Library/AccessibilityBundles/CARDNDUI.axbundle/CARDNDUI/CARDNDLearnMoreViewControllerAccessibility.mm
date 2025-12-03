@@ -1,17 +1,17 @@
 @interface CARDNDLearnMoreViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)viewDidLoad;
 @end
 
 @implementation CARDNDLearnMoreViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"_CARLearnMoreViewController"];
-  [v3 validateClass:@"CARDNDLearnMoreViewController" isKindOfClass:@"_CARLearnMoreViewController"];
-  [v3 validateClass:@"_CARLearnMoreViewController" hasInstanceMethod:@"textView" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"_CARLearnMoreViewController"];
+  [validationsCopy validateClass:@"CARDNDLearnMoreViewController" isKindOfClass:@"_CARLearnMoreViewController"];
+  [validationsCopy validateClass:@"_CARLearnMoreViewController" hasInstanceMethod:@"textView" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

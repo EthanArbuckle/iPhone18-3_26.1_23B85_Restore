@@ -1,19 +1,19 @@
 @interface TSKChangeEntry
-- (TSKChangeEntry)initWithChangeSource:(id)a3 changes:(id)a4;
+- (TSKChangeEntry)initWithChangeSource:(id)source changes:(id)changes;
 - (void)dealloc;
 @end
 
 @implementation TSKChangeEntry
 
-- (TSKChangeEntry)initWithChangeSource:(id)a3 changes:(id)a4
+- (TSKChangeEntry)initWithChangeSource:(id)source changes:(id)changes
 {
   v8.receiver = self;
   v8.super_class = TSKChangeEntry;
   v6 = [(TSKChangeEntry *)&v8 init];
   if (v6)
   {
-    v6->mChangeSource = a3;
-    v6->mChanges = a4;
+    v6->mChangeSource = source;
+    v6->mChanges = changes;
   }
 
   return v6;

@@ -1,43 +1,43 @@
 @interface TUIGradientContentLabelCell
 - (BOOL)_usePadStyle;
-- (TUIGradientContentLabelCell)initWithFrame:(CGRect)a3;
+- (TUIGradientContentLabelCell)initWithFrame:(CGRect)frame;
 - (id)cellBackgroundColor;
 - (id)cellBackgroundImage;
-- (void)setCandidate:(id)a3;
-- (void)setPredictionPosition:(unint64_t)a3;
-- (void)setStyle:(id)a3;
+- (void)setCandidate:(id)candidate;
+- (void)setPredictionPosition:(unint64_t)position;
+- (void)setStyle:(id)style;
 @end
 
 @implementation TUIGradientContentLabelCell
 
 - (BOOL)_usePadStyle
 {
-  v2 = [MEMORY[0x1E69DC938] currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  return (v3 & 0xFFFFFFFFFFFFFFFBLL) == 1;
+  return (userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1;
 }
 
-- (void)setPredictionPosition:(unint64_t)a3
+- (void)setPredictionPosition:(unint64_t)position
 {
-  self->_predictionPosition = a3;
-  v4 = [(TUIGradientContentLabelCell *)self gradientLabel];
-  [v4 setPredictionPosition:a3];
+  self->_predictionPosition = position;
+  gradientLabel = [(TUIGradientContentLabelCell *)self gradientLabel];
+  [gradientLabel setPredictionPosition:position];
 }
 
 - (id)cellBackgroundImage
 {
-  v3 = [(TUIGradientContentLabelCell *)self isHighlighted];
-  v4 = [(TUICandidateBaseCell *)self style];
-  v5 = v4;
-  if (v3)
+  isHighlighted = [(TUIGradientContentLabelCell *)self isHighlighted];
+  style = [(TUICandidateBaseCell *)self style];
+  v5 = style;
+  if (isHighlighted)
   {
-    [v4 highlightedCellBackgroundImage];
+    [style highlightedCellBackgroundImage];
   }
 
   else
   {
-    [v4 cellBackgroundImage];
+    [style cellBackgroundImage];
   }
   v6 = ;
 
@@ -46,41 +46,41 @@
 
 - (id)cellBackgroundColor
 {
-  v3 = [(TUIGradientContentLabelCell *)self isHighlighted];
-  v4 = [(TUICandidateBaseCell *)self style];
-  v5 = v4;
-  if (v3)
+  isHighlighted = [(TUIGradientContentLabelCell *)self isHighlighted];
+  style = [(TUICandidateBaseCell *)self style];
+  v5 = style;
+  if (isHighlighted)
   {
-    [v4 highlightedBackgroundColor];
+    [style highlightedBackgroundColor];
   }
 
   else
   {
-    [v4 cellBackgroundColor];
+    [style cellBackgroundColor];
   }
   v6 = ;
 
   return v6;
 }
 
-- (void)setCandidate:(id)a3
+- (void)setCandidate:(id)candidate
 {
-  v14 = a3;
+  candidateCopy = candidate;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v14;
+    v4 = candidateCopy;
     gradientLabel = self->_gradientLabel;
     v6 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
     v7 = [v6 localizedStringInDeviceLanguageForKey:@"CREATE_POLL"];
     [(TUICandidateGradientContentLabel *)gradientLabel setPrimaryLabelText:v7];
 
-    v8 = [v4 shouldSuggestTitle];
+    shouldSuggestTitle = [v4 shouldSuggestTitle];
     v9 = self->_gradientLabel;
-    if (v8)
+    if (shouldSuggestTitle)
     {
-      v10 = [v4 candidate];
-      [(TUICandidateGradientContentLabel *)v9 setCaptionLabelText:v10];
+      candidate = [v4 candidate];
+      [(TUICandidateGradientContentLabel *)v9 setCaptionLabelText:candidate];
     }
 
     else
@@ -99,37 +99,37 @@
 
   else
   {
-    v11 = [v14 candidateProperty];
+    candidateProperty = [candidateCopy candidateProperty];
     v12 = self->_gradientLabel;
-    v13 = [v14 candidate];
-    [(TUICandidateGradientContentLabel *)v12 setPrimaryLabelText:v13];
+    candidate2 = [candidateCopy candidate];
+    [(TUICandidateGradientContentLabel *)v12 setPrimaryLabelText:candidate2];
 
     [(TUICandidateGradientContentLabel *)self->_gradientLabel setLightingEffectEnabled:1];
-    if (v11 == 2)
+    if (candidateProperty == 2)
     {
       [(TUIGradientContentLabelCell *)self setAccessibilityIdentifier:@"SmartReply"];
     }
   }
 }
 
-- (void)setStyle:(id)a3
+- (void)setStyle:(id)style
 {
-  if (a3)
+  if (style)
   {
-    v4 = a3;
-    v6 = [(TUIGradientContentLabelCell *)self gradientLabel];
-    v5 = [v4 textColor];
+    styleCopy = style;
+    gradientLabel = [(TUIGradientContentLabelCell *)self gradientLabel];
+    textColor = [styleCopy textColor];
 
-    [v6 setTextColor:v5];
+    [gradientLabel setTextColor:textColor];
   }
 }
 
-- (TUIGradientContentLabelCell)initWithFrame:(CGRect)a3
+- (TUIGradientContentLabelCell)initWithFrame:(CGRect)frame
 {
   v25[4] = *MEMORY[0x1E69E9840];
   v24.receiver = self;
   v24.super_class = TUIGradientContentLabelCell;
-  v3 = [(TUISuggestionCandidateCell *)&v24 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(TUISuggestionCandidateCell *)&v24 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [TUICandidateGradientContentLabel alloc];
@@ -159,21 +159,21 @@
       v8 = 0.0;
     }
 
-    v23 = [(TUICandidateGradientContentLabel *)v3->_gradientLabel leadingAnchor];
-    v22 = [(TUIGradientContentLabelCell *)v3 leadingAnchor];
-    v21 = [v23 constraintEqualToAnchor:v22];
+    leadingAnchor = [(TUICandidateGradientContentLabel *)v3->_gradientLabel leadingAnchor];
+    leadingAnchor2 = [(TUIGradientContentLabelCell *)v3 leadingAnchor];
+    v21 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v25[0] = v21;
-    v20 = [(TUICandidateGradientContentLabel *)v3->_gradientLabel trailingAnchor];
-    v9 = [(TUIGradientContentLabelCell *)v3 trailingAnchor];
-    v10 = [v20 constraintEqualToAnchor:v9];
+    trailingAnchor = [(TUICandidateGradientContentLabel *)v3->_gradientLabel trailingAnchor];
+    trailingAnchor2 = [(TUIGradientContentLabelCell *)v3 trailingAnchor];
+    v10 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v25[1] = v10;
-    v11 = [(TUICandidateGradientContentLabel *)v3->_gradientLabel topAnchor];
-    v12 = [(TUIGradientContentLabelCell *)v3 topAnchor];
-    v13 = [v11 constraintEqualToAnchor:v12 constant:v7];
+    topAnchor = [(TUICandidateGradientContentLabel *)v3->_gradientLabel topAnchor];
+    topAnchor2 = [(TUIGradientContentLabelCell *)v3 topAnchor];
+    v13 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:v7];
     v25[2] = v13;
-    v14 = [(TUICandidateGradientContentLabel *)v3->_gradientLabel bottomAnchor];
-    v15 = [(TUIGradientContentLabelCell *)v3 bottomAnchor];
-    v16 = [v14 constraintEqualToAnchor:v15 constant:v8];
+    bottomAnchor = [(TUICandidateGradientContentLabel *)v3->_gradientLabel bottomAnchor];
+    bottomAnchor2 = [(TUIGradientContentLabelCell *)v3 bottomAnchor];
+    v16 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:v8];
     v25[3] = v16;
     v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:4];
     [v19 activateConstraints:v17];

@@ -1,33 +1,33 @@
 @interface BWFigCaptureISPProcessingSession
 + (void)initialize;
-- (BWFigCaptureISPProcessingSession)initWithFigCaptureISPProcessingSession:(OpaqueFigCaptureISPProcessingSession *)a3 type:(int)a4;
-- (id)copyProperty:(__CFString *)a3 error:(int *)a4;
-- (id)getProperty:(__CFString *)a3 error:(int *)a4;
+- (BWFigCaptureISPProcessingSession)initWithFigCaptureISPProcessingSession:(OpaqueFigCaptureISPProcessingSession *)session type:(int)type;
+- (id)copyProperty:(__CFString *)property error:(int *)error;
+- (id)getProperty:(__CFString *)property error:(int *)error;
 - (int)flush;
 - (int)invalidate;
-- (int)prepareWithHandler:(id)a3;
-- (int)processBuffer:(__CVBuffer *)a3 refCon:(void *)a4 outputDescriptors:(id *)a5 numOutputDescriptors:(int)a6 parameters:(id)a7;
-- (int)setProperty:(__CFString *)a3 value:(id)a4;
+- (int)prepareWithHandler:(id)handler;
+- (int)processBuffer:(__CVBuffer *)buffer refCon:(void *)con outputDescriptors:(id *)descriptors numOutputDescriptors:(int)outputDescriptors parameters:(id)parameters;
+- (int)setProperty:(__CFString *)property value:(id)value;
 - (void)dealloc;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation BWFigCaptureISPProcessingSession
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = *off_1E798A2C8;
     sCacheableProperties_0 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v2 count:1];
   }
 }
 
-- (BWFigCaptureISPProcessingSession)initWithFigCaptureISPProcessingSession:(OpaqueFigCaptureISPProcessingSession *)a3 type:(int)a4
+- (BWFigCaptureISPProcessingSession)initWithFigCaptureISPProcessingSession:(OpaqueFigCaptureISPProcessingSession *)session type:(int)type
 {
-  v4 = self;
+  selfCopy = self;
   v10 = 0;
-  if (!a3)
+  if (!session)
   {
     goto LABEL_6;
   }
@@ -35,14 +35,14 @@
   v9.receiver = self;
   v9.super_class = BWFigCaptureISPProcessingSession;
   v7 = [(BWFigCaptureISPProcessingSession *)&v9 init];
-  v4 = v7;
+  selfCopy = v7;
   if (v7)
   {
     v7->_lock._os_unfair_lock_opaque = 0;
     v7->_cachedProperties = objc_alloc_init(MEMORY[0x1E695DF90]);
-    v4->_session = CFRetain(a3);
-    v4->_type = a4;
-    v4->_supportedProperties = [(BWFigCaptureISPProcessingSession *)v4 copyProperty:*off_1E798A2C8 error:&v10];
+    selfCopy->_session = CFRetain(session);
+    selfCopy->_type = type;
+    selfCopy->_supportedProperties = [(BWFigCaptureISPProcessingSession *)selfCopy copyProperty:*off_1E798A2C8 error:&v10];
     if (v10)
     {
       [BWFigCaptureISPProcessingSession initWithFigCaptureISPProcessingSession:type:];
@@ -52,7 +52,7 @@ LABEL_6:
     }
   }
 
-  return v4;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -69,7 +69,7 @@ LABEL_6:
   [(BWFigCaptureISPProcessingSession *)&v4 dealloc];
 }
 
-- (int)setProperty:(__CFString *)a3 value:(id)a4
+- (int)setProperty:(__CFString *)property value:(id)value
 {
   os_unfair_lock_lock(&self->_lock);
   if (self->_invalidated)
@@ -78,7 +78,7 @@ LABEL_6:
     goto LABEL_10;
   }
 
-  if ([-[NSMutableDictionary objectForKeyedSubscript:](self->_cachedProperties objectForKeyedSubscript:{a3), "isEqual:", a4}])
+  if ([-[NSMutableDictionary objectForKeyedSubscript:](self->_cachedProperties objectForKeyedSubscript:{property), "isEqual:", value}])
   {
 LABEL_4:
     v7 = 0;
@@ -93,12 +93,12 @@ LABEL_4:
     goto LABEL_10;
   }
 
-  v7 = v9(session, a3, a4);
+  v7 = v9(session, property, value);
   if (!v7)
   {
-    if ([sCacheableProperties_0 containsObject:a3])
+    if ([sCacheableProperties_0 containsObject:property])
     {
-      [(NSMutableDictionary *)self->_cachedProperties setObject:a4 forKeyedSubscript:a3];
+      [(NSMutableDictionary *)self->_cachedProperties setObject:value forKeyedSubscript:property];
     }
 
     goto LABEL_4;
@@ -109,7 +109,7 @@ LABEL_10:
   return v7;
 }
 
-- (id)copyProperty:(__CFString *)a3 error:(int *)a4
+- (id)copyProperty:(__CFString *)property error:(int *)error
 {
   v11 = 0;
   os_unfair_lock_lock(&self->_lock);
@@ -119,7 +119,7 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v11 = [(NSMutableDictionary *)self->_cachedProperties objectForKeyedSubscript:a3];
+  v11 = [(NSMutableDictionary *)self->_cachedProperties objectForKeyedSubscript:property];
   if (v11)
   {
     goto LABEL_4;
@@ -129,12 +129,12 @@ LABEL_10:
   v9 = *(*(CMBaseObjectGetVTable() + 8) + 48);
   if (v9)
   {
-    v7 = v9(session, a3, *MEMORY[0x1E695E480], &v11);
+    v7 = v9(session, property, *MEMORY[0x1E695E480], &v11);
     if (!v7)
     {
-      if ([sCacheableProperties_0 containsObject:a3])
+      if ([sCacheableProperties_0 containsObject:property])
       {
-        [(NSMutableDictionary *)self->_cachedProperties setObject:v11 forKeyedSubscript:a3];
+        [(NSMutableDictionary *)self->_cachedProperties setObject:v11 forKeyedSubscript:property];
       }
 
 LABEL_4:
@@ -149,22 +149,22 @@ LABEL_4:
 
 LABEL_10:
   os_unfair_lock_unlock(&self->_lock);
-  if (a4)
+  if (error)
   {
-    *a4 = v7;
+    *error = v7;
   }
 
   return v11;
 }
 
-- (id)getProperty:(__CFString *)a3 error:(int *)a4
+- (id)getProperty:(__CFString *)property error:(int *)error
 {
-  v4 = [(BWFigCaptureISPProcessingSession *)self copyProperty:a3 error:a4];
+  v4 = [(BWFigCaptureISPProcessingSession *)self copyProperty:property error:error];
 
   return v4;
 }
 
-- (int)prepareWithHandler:(id)a3
+- (int)prepareWithHandler:(id)handler
 {
   os_unfair_lock_lock(&self->_lock);
   if (self->_invalidated)
@@ -178,7 +178,7 @@ LABEL_10:
     v7 = *(*(CMBaseObjectGetVTable() + 16) + 8);
     if (v7)
     {
-      v5 = v7(session, a3);
+      v5 = v7(session, handler);
     }
 
     else
@@ -191,9 +191,9 @@ LABEL_10:
   return v5;
 }
 
-- (int)processBuffer:(__CVBuffer *)a3 refCon:(void *)a4 outputDescriptors:(id *)a5 numOutputDescriptors:(int)a6 parameters:(id)a7
+- (int)processBuffer:(__CVBuffer *)buffer refCon:(void *)con outputDescriptors:(id *)descriptors numOutputDescriptors:(int)outputDescriptors parameters:(id)parameters
 {
-  v8 = *&a6;
+  v8 = *&outputDescriptors;
   os_unfair_lock_lock(&self->_lock);
   if (self->_invalidated)
   {
@@ -206,7 +206,7 @@ LABEL_10:
     v15 = *(*(CMBaseObjectGetVTable() + 16) + 16);
     if (v15)
     {
-      v13 = v15(session, a4, a3, v8, a5, a7);
+      v13 = v15(session, con, buffer, v8, descriptors, parameters);
     }
 
     else
@@ -285,12 +285,12 @@ LABEL_10:
   return v3;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   os_unfair_lock_lock(&self->_lock);
   if (!self->_invalidated)
   {
-    self->_delegate = a3;
+    self->_delegate = delegate;
   }
 
   os_unfair_lock_unlock(&self->_lock);

@@ -7,10 +7,10 @@
 
 - (uint64_t)minimalFormInContext:()_NSCoreDataSQLPredicateCategories
 {
-  v5 = [a1 predicate];
-  v6 = [a1 collection];
-  v7 = [v5 minimalFormInContext:a3];
-  v8 = [v6 minimalFormInContext:a3];
+  predicate = [self predicate];
+  collection = [self collection];
+  v7 = [predicate minimalFormInContext:a3];
+  v8 = [collection minimalFormInContext:a3];
   if ([objc_msgSend(MEMORY[0x1E696AF08] "defaultInstance")])
   {
     return v8;
@@ -26,22 +26,22 @@
 
   else
   {
-    if (v7 == v5 && v8 == v6)
+    if (v7 == predicate && v8 == collection)
     {
-      return a1;
+      return self;
     }
 
-    if (v7 == v5)
+    if (v7 == predicate)
     {
-      v7 = [v5 copy];
+      v7 = [predicate copy];
     }
 
-    if (v8 == v6)
+    if (v8 == collection)
     {
-      v8 = [v6 copy];
+      v8 = [collection copy];
     }
 
-    v12 = [objc_msgSend(a1 "variableExpression")];
+    v12 = [objc_msgSend(self "variableExpression")];
     v13 = [objc_alloc(objc_opt_class()) initWithExpression:v8 usingIteratorExpression:v12 predicate:v7];
 
     return v13;
@@ -54,7 +54,7 @@
   v4 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v32 = 0;
   v26 = objc_alloc_init(MEMORY[0x1E696AAC8]);
-  v5 = [objc_msgSend(a1 "collection")];
+  v5 = [objc_msgSend(self "collection")];
   v6 = v5;
   if (v5)
   {
@@ -65,10 +65,10 @@
       goto LABEL_24;
     }
 
-    v7 = [v6 anyObject];
-    [v4 addObject:v7];
-    v8 = [objc_msgSend(a1 "variableExpression")];
-    v9 = [objc_msgSend(a1 "predicate")];
+    anyObject = [v6 anyObject];
+    [v4 addObject:anyObject];
+    v8 = [objc_msgSend(self "variableExpression")];
+    v9 = [objc_msgSend(self "predicate")];
     v10 = v9;
     if (v9)
     {
@@ -101,7 +101,7 @@ LABEL_6:
           break;
         }
 
-        [v4 addObject:{objc_msgSend(v14, "stringByReplacingOccurrencesOfString:withString:", v8, v7)}];
+        [v4 addObject:{objc_msgSend(v14, "stringByReplacingOccurrencesOfString:withString:", v8, anyObject)}];
         if (v16 != 0x7FFFFFFFFFFFFFFFLL && v16 != 0)
         {
           break;

@@ -1,15 +1,15 @@
 @interface PKPaymentSetupProductImageAssets
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
-- (void)setDigitalCardImage:(CGImage *)a3;
-- (void)setLogoImage:(CGImage *)a3;
-- (void)setPlasticCardImage:(CGImage *)a3;
-- (void)setThumbnailImage:(CGImage *)a3;
+- (void)setDigitalCardImage:(CGImage *)image;
+- (void)setLogoImage:(CGImage *)image;
+- (void)setPlasticCardImage:(CGImage *)image;
+- (void)setThumbnailImage:(CGImage *)image;
 @end
 
 @implementation PKPaymentSetupProductImageAssets
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[PKPaymentSetupProductImageAssets allocWithZone:?]];
   v4->_digitalCardImage = CGImageRetain(self->_digitalCardImage);
@@ -50,7 +50,7 @@
   [(PKPaymentSetupProductImageAssets *)&v7 dealloc];
 }
 
-- (void)setDigitalCardImage:(CGImage *)a3
+- (void)setDigitalCardImage:(CGImage *)image
 {
   digitalCardImage = self->_digitalCardImage;
   if (digitalCardImage)
@@ -59,13 +59,13 @@
     self->_digitalCardImage = 0;
   }
 
-  if (a3)
+  if (image)
   {
-    self->_digitalCardImage = CGImageRetain(a3);
+    self->_digitalCardImage = CGImageRetain(image);
   }
 }
 
-- (void)setPlasticCardImage:(CGImage *)a3
+- (void)setPlasticCardImage:(CGImage *)image
 {
   plasticCardImage = self->_plasticCardImage;
   if (plasticCardImage)
@@ -74,13 +74,13 @@
     self->_plasticCardImage = 0;
   }
 
-  if (a3)
+  if (image)
   {
-    self->_plasticCardImage = CGImageRetain(a3);
+    self->_plasticCardImage = CGImageRetain(image);
   }
 }
 
-- (void)setThumbnailImage:(CGImage *)a3
+- (void)setThumbnailImage:(CGImage *)image
 {
   thumbnailImage = self->_thumbnailImage;
   if (thumbnailImage)
@@ -89,13 +89,13 @@
     self->_thumbnailImage = 0;
   }
 
-  if (a3)
+  if (image)
   {
-    self->_thumbnailImage = CGImageRetain(a3);
+    self->_thumbnailImage = CGImageRetain(image);
   }
 }
 
-- (void)setLogoImage:(CGImage *)a3
+- (void)setLogoImage:(CGImage *)image
 {
   logoImage = self->_logoImage;
   if (logoImage)
@@ -104,9 +104,9 @@
     self->_logoImage = 0;
   }
 
-  if (a3)
+  if (image)
   {
-    self->_logoImage = CGImageRetain(a3);
+    self->_logoImage = CGImageRetain(image);
   }
 }
 

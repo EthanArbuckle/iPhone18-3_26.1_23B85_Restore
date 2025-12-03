@@ -7,25 +7,25 @@
 
 - (uint64_t)crsui_mapStyle
 {
-  v1 = [a1 _valueForTraitNamed:@"CRSUIMapStyleTraitName"];
+  v1 = [self _valueForTraitNamed:@"CRSUIMapStyleTraitName"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v2 = [v1 integerValue];
+    integerValue = [v1 integerValue];
   }
 
   else
   {
-    v2 = 0;
+    integerValue = 0;
   }
 
-  return v2;
+  return integerValue;
 }
 
 + (id)crsui_traitCollectionWithMapStyle:()CRSUITraits
 {
   v2 = [MEMORY[0x277CCABB0] numberWithInteger:?];
-  v3 = [a1 _traitCollectionWithValue:v2 forTraitNamed:@"CRSUIMapStyleTraitName"];
+  v3 = [self _traitCollectionWithValue:v2 forTraitNamed:@"CRSUIMapStyleTraitName"];
 
   return v3;
 }

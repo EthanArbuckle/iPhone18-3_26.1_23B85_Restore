@@ -1,6 +1,6 @@
 @interface WLKWatchListModificationResponse
 - (WLKWatchListModificationResponse)init;
-- (WLKWatchListModificationResponse)initWithDictionary:(id)a3;
+- (WLKWatchListModificationResponse)initWithDictionary:(id)dictionary;
 @end
 
 @implementation WLKWatchListModificationResponse
@@ -12,15 +12,15 @@
   return 0;
 }
 
-- (WLKWatchListModificationResponse)initWithDictionary:(id)a3
+- (WLKWatchListModificationResponse)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = WLKWatchListModificationResponse;
   v5 = [(WLKWatchListModificationResponse *)&v9 init];
   if (v5)
   {
-    v6 = [v4 wlk_dictionaryForKey:@"data"];
+    v6 = [dictionaryCopy wlk_dictionaryForKey:@"data"];
     if ([v6 wlk_BOOLForKey:@"alreadyOnList" defaultValue:0])
     {
       v7 = 1;

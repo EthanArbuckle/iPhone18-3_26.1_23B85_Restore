@@ -1,13 +1,13 @@
 @interface AWDWiFiDPSSnapshot
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDWiFiDPSSnapshot
@@ -37,65 +37,65 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   txCompletionSnapshotBE = self->_txCompletionSnapshotBE;
   if (txCompletionSnapshotBE)
   {
-    [v3 setObject:-[AWDWiFiDPSPerACTxCompletionSnapshot dictionaryRepresentation](txCompletionSnapshotBE forKey:{"dictionaryRepresentation"), @"txCompletionSnapshotBE"}];
+    [dictionary setObject:-[AWDWiFiDPSPerACTxCompletionSnapshot dictionaryRepresentation](txCompletionSnapshotBE forKey:{"dictionaryRepresentation"), @"txCompletionSnapshotBE"}];
   }
 
   txCompletionSnapshotBK = self->_txCompletionSnapshotBK;
   if (txCompletionSnapshotBK)
   {
-    [v3 setObject:-[AWDWiFiDPSPerACTxCompletionSnapshot dictionaryRepresentation](txCompletionSnapshotBK forKey:{"dictionaryRepresentation"), @"txCompletionSnapshotBK"}];
+    [dictionary setObject:-[AWDWiFiDPSPerACTxCompletionSnapshot dictionaryRepresentation](txCompletionSnapshotBK forKey:{"dictionaryRepresentation"), @"txCompletionSnapshotBK"}];
   }
 
   txCompletionSnapshotVO = self->_txCompletionSnapshotVO;
   if (txCompletionSnapshotVO)
   {
-    [v3 setObject:-[AWDWiFiDPSPerACTxCompletionSnapshot dictionaryRepresentation](txCompletionSnapshotVO forKey:{"dictionaryRepresentation"), @"txCompletionSnapshotVO"}];
+    [dictionary setObject:-[AWDWiFiDPSPerACTxCompletionSnapshot dictionaryRepresentation](txCompletionSnapshotVO forKey:{"dictionaryRepresentation"), @"txCompletionSnapshotVO"}];
   }
 
   txCompletionSnapshotVI = self->_txCompletionSnapshotVI;
   if (txCompletionSnapshotVI)
   {
-    [v3 setObject:-[AWDWiFiDPSPerACTxCompletionSnapshot dictionaryRepresentation](txCompletionSnapshotVI forKey:{"dictionaryRepresentation"), @"txCompletionSnapshotVI"}];
+    [dictionary setObject:-[AWDWiFiDPSPerACTxCompletionSnapshot dictionaryRepresentation](txCompletionSnapshotVI forKey:{"dictionaryRepresentation"), @"txCompletionSnapshotVI"}];
   }
 
   btSnapshot = self->_btSnapshot;
   if (btSnapshot)
   {
-    [v3 setObject:-[AWDWiFiDPSBTSnapshot dictionaryRepresentation](btSnapshot forKey:{"dictionaryRepresentation"), @"btSnapshot"}];
+    [dictionary setObject:-[AWDWiFiDPSBTSnapshot dictionaryRepresentation](btSnapshot forKey:{"dictionaryRepresentation"), @"btSnapshot"}];
   }
 
   awdlSnapshot = self->_awdlSnapshot;
   if (awdlSnapshot)
   {
-    [v3 setObject:-[AWDWiFiDPSAWDLSnapshot dictionaryRepresentation](awdlSnapshot forKey:{"dictionaryRepresentation"), @"awdlSnapshot"}];
+    [dictionary setObject:-[AWDWiFiDPSAWDLSnapshot dictionaryRepresentation](awdlSnapshot forKey:{"dictionaryRepresentation"), @"awdlSnapshot"}];
   }
 
   rc1Snapshot = self->_rc1Snapshot;
   if (rc1Snapshot)
   {
-    [v3 setObject:-[AWDWiFiUsageSnapshot dictionaryRepresentation](rc1Snapshot forKey:{"dictionaryRepresentation"), @"rc1Snapshot"}];
+    [dictionary setObject:-[AWDWiFiUsageSnapshot dictionaryRepresentation](rc1Snapshot forKey:{"dictionaryRepresentation"), @"rc1Snapshot"}];
   }
 
   rc2Snapshot = self->_rc2Snapshot;
   if (rc2Snapshot)
   {
-    [v3 setObject:-[AWDWiFiUsageSnapshot dictionaryRepresentation](rc2Snapshot forKey:{"dictionaryRepresentation"), @"rc2Snapshot"}];
+    [dictionary setObject:-[AWDWiFiUsageSnapshot dictionaryRepresentation](rc2Snapshot forKey:{"dictionaryRepresentation"), @"rc2Snapshot"}];
   }
 
   lteSnapshot = self->_lteSnapshot;
   if (lteSnapshot)
   {
-    [v3 setObject:-[AWDWiFiUsageSnapshot dictionaryRepresentation](lteSnapshot forKey:{"dictionaryRepresentation"), @"lteSnapshot"}];
+    [dictionary setObject:-[AWDWiFiUsageSnapshot dictionaryRepresentation](lteSnapshot forKey:{"dictionaryRepresentation"), @"lteSnapshot"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (self->_txCompletionSnapshotBE)
   {
@@ -144,106 +144,106 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if (self->_txCompletionSnapshotBE)
   {
-    [a3 setTxCompletionSnapshotBE:?];
+    [to setTxCompletionSnapshotBE:?];
   }
 
   if (self->_txCompletionSnapshotBK)
   {
-    [a3 setTxCompletionSnapshotBK:?];
+    [to setTxCompletionSnapshotBK:?];
   }
 
   if (self->_txCompletionSnapshotVO)
   {
-    [a3 setTxCompletionSnapshotVO:?];
+    [to setTxCompletionSnapshotVO:?];
   }
 
   if (self->_txCompletionSnapshotVI)
   {
-    [a3 setTxCompletionSnapshotVI:?];
+    [to setTxCompletionSnapshotVI:?];
   }
 
   if (self->_btSnapshot)
   {
-    [a3 setBtSnapshot:?];
+    [to setBtSnapshot:?];
   }
 
   if (self->_awdlSnapshot)
   {
-    [a3 setAwdlSnapshot:?];
+    [to setAwdlSnapshot:?];
   }
 
   if (self->_rc1Snapshot)
   {
-    [a3 setRc1Snapshot:?];
+    [to setRc1Snapshot:?];
   }
 
   if (self->_rc2Snapshot)
   {
-    [a3 setRc2Snapshot:?];
+    [to setRc2Snapshot:?];
   }
 
   if (self->_lteSnapshot)
   {
 
-    [a3 setLteSnapshot:?];
+    [to setLteSnapshot:?];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
 
-  v5[6] = [(AWDWiFiDPSPerACTxCompletionSnapshot *)self->_txCompletionSnapshotBE copyWithZone:a3];
-  v5[7] = [(AWDWiFiDPSPerACTxCompletionSnapshot *)self->_txCompletionSnapshotBK copyWithZone:a3];
+  v5[6] = [(AWDWiFiDPSPerACTxCompletionSnapshot *)self->_txCompletionSnapshotBE copyWithZone:zone];
+  v5[7] = [(AWDWiFiDPSPerACTxCompletionSnapshot *)self->_txCompletionSnapshotBK copyWithZone:zone];
 
-  v5[9] = [(AWDWiFiDPSPerACTxCompletionSnapshot *)self->_txCompletionSnapshotVO copyWithZone:a3];
-  v5[8] = [(AWDWiFiDPSPerACTxCompletionSnapshot *)self->_txCompletionSnapshotVI copyWithZone:a3];
+  v5[9] = [(AWDWiFiDPSPerACTxCompletionSnapshot *)self->_txCompletionSnapshotVO copyWithZone:zone];
+  v5[8] = [(AWDWiFiDPSPerACTxCompletionSnapshot *)self->_txCompletionSnapshotVI copyWithZone:zone];
 
-  v5[2] = [(AWDWiFiDPSBTSnapshot *)self->_btSnapshot copyWithZone:a3];
-  v5[1] = [(AWDWiFiDPSAWDLSnapshot *)self->_awdlSnapshot copyWithZone:a3];
+  v5[2] = [(AWDWiFiDPSBTSnapshot *)self->_btSnapshot copyWithZone:zone];
+  v5[1] = [(AWDWiFiDPSAWDLSnapshot *)self->_awdlSnapshot copyWithZone:zone];
 
-  v5[4] = [(AWDWiFiUsageSnapshot *)self->_rc1Snapshot copyWithZone:a3];
-  v5[5] = [(AWDWiFiUsageSnapshot *)self->_rc2Snapshot copyWithZone:a3];
+  v5[4] = [(AWDWiFiUsageSnapshot *)self->_rc1Snapshot copyWithZone:zone];
+  v5[5] = [(AWDWiFiUsageSnapshot *)self->_rc2Snapshot copyWithZone:zone];
 
-  v5[3] = [(AWDWiFiUsageSnapshot *)self->_lteSnapshot copyWithZone:a3];
+  v5[3] = [(AWDWiFiUsageSnapshot *)self->_lteSnapshot copyWithZone:zone];
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     txCompletionSnapshotBE = self->_txCompletionSnapshotBE;
-    if (!(txCompletionSnapshotBE | *(a3 + 6)) || (v5 = [(AWDWiFiDPSPerACTxCompletionSnapshot *)txCompletionSnapshotBE isEqual:?]) != 0)
+    if (!(txCompletionSnapshotBE | *(equal + 6)) || (v5 = [(AWDWiFiDPSPerACTxCompletionSnapshot *)txCompletionSnapshotBE isEqual:?]) != 0)
     {
       txCompletionSnapshotBK = self->_txCompletionSnapshotBK;
-      if (!(txCompletionSnapshotBK | *(a3 + 7)) || (v5 = [(AWDWiFiDPSPerACTxCompletionSnapshot *)txCompletionSnapshotBK isEqual:?]) != 0)
+      if (!(txCompletionSnapshotBK | *(equal + 7)) || (v5 = [(AWDWiFiDPSPerACTxCompletionSnapshot *)txCompletionSnapshotBK isEqual:?]) != 0)
       {
         txCompletionSnapshotVO = self->_txCompletionSnapshotVO;
-        if (!(txCompletionSnapshotVO | *(a3 + 9)) || (v5 = [(AWDWiFiDPSPerACTxCompletionSnapshot *)txCompletionSnapshotVO isEqual:?]) != 0)
+        if (!(txCompletionSnapshotVO | *(equal + 9)) || (v5 = [(AWDWiFiDPSPerACTxCompletionSnapshot *)txCompletionSnapshotVO isEqual:?]) != 0)
         {
           txCompletionSnapshotVI = self->_txCompletionSnapshotVI;
-          if (!(txCompletionSnapshotVI | *(a3 + 8)) || (v5 = [(AWDWiFiDPSPerACTxCompletionSnapshot *)txCompletionSnapshotVI isEqual:?]) != 0)
+          if (!(txCompletionSnapshotVI | *(equal + 8)) || (v5 = [(AWDWiFiDPSPerACTxCompletionSnapshot *)txCompletionSnapshotVI isEqual:?]) != 0)
           {
             btSnapshot = self->_btSnapshot;
-            if (!(btSnapshot | *(a3 + 2)) || (v5 = [(AWDWiFiDPSBTSnapshot *)btSnapshot isEqual:?]) != 0)
+            if (!(btSnapshot | *(equal + 2)) || (v5 = [(AWDWiFiDPSBTSnapshot *)btSnapshot isEqual:?]) != 0)
             {
               awdlSnapshot = self->_awdlSnapshot;
-              if (!(awdlSnapshot | *(a3 + 1)) || (v5 = [(AWDWiFiDPSAWDLSnapshot *)awdlSnapshot isEqual:?]) != 0)
+              if (!(awdlSnapshot | *(equal + 1)) || (v5 = [(AWDWiFiDPSAWDLSnapshot *)awdlSnapshot isEqual:?]) != 0)
               {
                 rc1Snapshot = self->_rc1Snapshot;
-                if (!(rc1Snapshot | *(a3 + 4)) || (v5 = [(AWDWiFiUsageSnapshot *)rc1Snapshot isEqual:?]) != 0)
+                if (!(rc1Snapshot | *(equal + 4)) || (v5 = [(AWDWiFiUsageSnapshot *)rc1Snapshot isEqual:?]) != 0)
                 {
                   rc2Snapshot = self->_rc2Snapshot;
-                  if (!(rc2Snapshot | *(a3 + 5)) || (v5 = [(AWDWiFiUsageSnapshot *)rc2Snapshot isEqual:?]) != 0)
+                  if (!(rc2Snapshot | *(equal + 5)) || (v5 = [(AWDWiFiUsageSnapshot *)rc2Snapshot isEqual:?]) != 0)
                   {
                     lteSnapshot = self->_lteSnapshot;
-                    if (lteSnapshot | *(a3 + 3))
+                    if (lteSnapshot | *(equal + 3))
                     {
 
                       LOBYTE(v5) = [(AWDWiFiUsageSnapshot *)lteSnapshot isEqual:?];
@@ -279,10 +279,10 @@
   return v9 ^ v10 ^ [(AWDWiFiUsageSnapshot *)self->_lteSnapshot hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   txCompletionSnapshotBE = self->_txCompletionSnapshotBE;
-  v6 = *(a3 + 6);
+  v6 = *(from + 6);
   if (txCompletionSnapshotBE)
   {
     if (v6)
@@ -297,7 +297,7 @@
   }
 
   txCompletionSnapshotBK = self->_txCompletionSnapshotBK;
-  v8 = *(a3 + 7);
+  v8 = *(from + 7);
   if (txCompletionSnapshotBK)
   {
     if (v8)
@@ -312,7 +312,7 @@
   }
 
   txCompletionSnapshotVO = self->_txCompletionSnapshotVO;
-  v10 = *(a3 + 9);
+  v10 = *(from + 9);
   if (txCompletionSnapshotVO)
   {
     if (v10)
@@ -327,7 +327,7 @@
   }
 
   txCompletionSnapshotVI = self->_txCompletionSnapshotVI;
-  v12 = *(a3 + 8);
+  v12 = *(from + 8);
   if (txCompletionSnapshotVI)
   {
     if (v12)
@@ -342,7 +342,7 @@
   }
 
   btSnapshot = self->_btSnapshot;
-  v14 = *(a3 + 2);
+  v14 = *(from + 2);
   if (btSnapshot)
   {
     if (v14)
@@ -357,7 +357,7 @@
   }
 
   awdlSnapshot = self->_awdlSnapshot;
-  v16 = *(a3 + 1);
+  v16 = *(from + 1);
   if (awdlSnapshot)
   {
     if (v16)
@@ -372,7 +372,7 @@
   }
 
   rc1Snapshot = self->_rc1Snapshot;
-  v18 = *(a3 + 4);
+  v18 = *(from + 4);
   if (rc1Snapshot)
   {
     if (v18)
@@ -387,7 +387,7 @@
   }
 
   rc2Snapshot = self->_rc2Snapshot;
-  v20 = *(a3 + 5);
+  v20 = *(from + 5);
   if (rc2Snapshot)
   {
     if (v20)
@@ -402,7 +402,7 @@
   }
 
   lteSnapshot = self->_lteSnapshot;
-  v22 = *(a3 + 3);
+  v22 = *(from + 3);
   if (lteSnapshot)
   {
     if (v22)

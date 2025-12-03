@@ -1,24 +1,24 @@
 @interface SubmitButtonContainer
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4;
-- (_TtC18ASMessagesProviderP33_9A283CDB21D4766BFE4A1C51D15B048821SubmitButtonContainer)initWithCoder:(id)a3;
-- (_TtC18ASMessagesProviderP33_9A283CDB21D4766BFE4A1C51D15B048821SubmitButtonContainer)initWithFrame:(CGRect)a3;
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in;
+- (_TtC18ASMessagesProviderP33_9A283CDB21D4766BFE4A1C51D15B048821SubmitButtonContainer)initWithCoder:(id)coder;
+- (_TtC18ASMessagesProviderP33_9A283CDB21D4766BFE4A1C51D15B048821SubmitButtonContainer)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation SubmitButtonContainer
 
-- (_TtC18ASMessagesProviderP33_9A283CDB21D4766BFE4A1C51D15B048821SubmitButtonContainer)initWithFrame:(CGRect)a3
+- (_TtC18ASMessagesProviderP33_9A283CDB21D4766BFE4A1C51D15B048821SubmitButtonContainer)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC18ASMessagesProviderP33_9A283CDB21D4766BFE4A1C51D15B048821SubmitButtonContainer_submitButton) = 0;
   v11.receiver = self;
   v11.super_class = type metadata accessor for SubmitButtonContainer();
-  v7 = [(SubmitButtonContainer *)&v11 initWithFrame:x, y, width, height];
+  height = [(SubmitButtonContainer *)&v11 initWithFrame:x, y, width, height];
   sub_BE70(0, &qword_93E540);
-  v8 = v7;
+  v8 = height;
   v9 = sub_76A080();
   [(SubmitButtonContainer *)v8 setBackgroundColor:v9];
 
@@ -26,7 +26,7 @@
   return v8;
 }
 
-- (_TtC18ASMessagesProviderP33_9A283CDB21D4766BFE4A1C51D15B048821SubmitButtonContainer)initWithCoder:(id)a3
+- (_TtC18ASMessagesProviderP33_9A283CDB21D4766BFE4A1C51D15B048821SubmitButtonContainer)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC18ASMessagesProviderP33_9A283CDB21D4766BFE4A1C51D15B048821SubmitButtonContainer_submitButton) = 0;
   result = sub_76A840();
@@ -34,10 +34,10 @@
   return result;
 }
 
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in
 {
   swift_unknownObjectRetain();
-  v5 = self;
+  selfCopy = self;
   v6 = sub_6D25A0();
   v8 = v7;
   v10 = v9;
@@ -57,7 +57,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_6CF9A0();
 }
 

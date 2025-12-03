@@ -1,42 +1,42 @@
 @interface HDCodableCDADocumentSample
-- (BOOL)applyToObject:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)applyToObject:(id)object;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (int)StringAsOmittedContent:(id)a3;
+- (int)StringAsOmittedContent:(id)content;
 - (int)omittedContent;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HDCodableCDADocumentSample
 
-- (BOOL)applyToObject:(id)a3
+- (BOOL)applyToObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(HDCodableCDADocumentSample *)self sample];
-    v6 = [v5 applyToObject:v4];
+    sample = [(HDCodableCDADocumentSample *)self sample];
+    v6 = [sample applyToObject:objectCopy];
     if (v6)
     {
-      v7 = [(HDCodableCDADocumentSample *)self omittedContent];
-      v8 = [(HDCodableCDADocumentSample *)self documentData];
-      v9 = [(HDCodableCDADocumentSample *)self title];
-      v10 = [(HDCodableCDADocumentSample *)self patientName];
-      v11 = [(HDCodableCDADocumentSample *)self authorName];
-      v12 = [(HDCodableCDADocumentSample *)self custodianName];
+      omittedContent = [(HDCodableCDADocumentSample *)self omittedContent];
+      documentData = [(HDCodableCDADocumentSample *)self documentData];
+      title = [(HDCodableCDADocumentSample *)self title];
+      patientName = [(HDCodableCDADocumentSample *)self patientName];
+      authorName = [(HDCodableCDADocumentSample *)self authorName];
+      custodianName = [(HDCodableCDADocumentSample *)self custodianName];
       v13 = 3;
-      if (v7 != 3)
+      if (omittedContent != 3)
       {
         v13 = 0;
       }
 
-      if (v7 == 2)
+      if (omittedContent == 2)
       {
         v14 = 2;
       }
@@ -46,7 +46,7 @@
         v14 = v13;
       }
 
-      [v4 _applyPropertiesWithOmittedFlags:v14 compressedDocumentData:v8 title:v9 patientName:v10 authorName:v11 custodianName:v12];
+      [objectCopy _applyPropertiesWithOmittedFlags:v14 compressedDocumentData:documentData title:title patientName:patientName authorName:authorName custodianName:custodianName];
     }
   }
 
@@ -71,20 +71,20 @@
   }
 }
 
-- (int)StringAsOmittedContent:(id)a3
+- (int)StringAsOmittedContent:(id)content
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"None"])
+  contentCopy = content;
+  if ([contentCopy isEqualToString:@"None"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"DocumentData"])
+  else if ([contentCopy isEqualToString:@"DocumentData"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Document"])
+  else if ([contentCopy isEqualToString:@"Document"])
   {
     v4 = 3;
   }
@@ -103,20 +103,20 @@
   v8.receiver = self;
   v8.super_class = HDCodableCDADocumentSample;
   v4 = [(HDCodableCDADocumentSample *)&v8 description];
-  v5 = [(HDCodableCDADocumentSample *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HDCodableCDADocumentSample *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   sample = self->_sample;
   if (sample)
   {
-    v5 = [(HDCodableSample *)sample dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"sample"];
+    dictionaryRepresentation = [(HDCodableSample *)sample dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"sample"];
   }
 
   if (*&self->_has)
@@ -132,141 +132,141 @@
       v7 = off_278625260[v6];
     }
 
-    [v3 setObject:v7 forKey:@"omittedContent"];
+    [dictionary setObject:v7 forKey:@"omittedContent"];
   }
 
   documentData = self->_documentData;
   if (documentData)
   {
-    [v3 setObject:documentData forKey:@"documentData"];
+    [dictionary setObject:documentData forKey:@"documentData"];
   }
 
   title = self->_title;
   if (title)
   {
-    [v3 setObject:title forKey:@"title"];
+    [dictionary setObject:title forKey:@"title"];
   }
 
   patientName = self->_patientName;
   if (patientName)
   {
-    [v3 setObject:patientName forKey:@"patientName"];
+    [dictionary setObject:patientName forKey:@"patientName"];
   }
 
   authorName = self->_authorName;
   if (authorName)
   {
-    [v3 setObject:authorName forKey:@"authorName"];
+    [dictionary setObject:authorName forKey:@"authorName"];
   }
 
   custodianName = self->_custodianName;
   if (custodianName)
   {
-    [v3 setObject:custodianName forKey:@"custodianName"];
+    [dictionary setObject:custodianName forKey:@"custodianName"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_sample)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
     omittedContent = self->_omittedContent;
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_documentData)
   {
     PBDataWriterWriteDataField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_title)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_patientName)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_authorName)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_custodianName)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_sample)
   {
-    [v4 setSample:?];
-    v4 = v5;
+    [toCopy setSample:?];
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 8) = self->_omittedContent;
-    *(v4 + 64) |= 1u;
+    *(toCopy + 8) = self->_omittedContent;
+    *(toCopy + 64) |= 1u;
   }
 
   if (self->_documentData)
   {
     [v5 setDocumentData:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_title)
   {
     [v5 setTitle:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_patientName)
   {
     [v5 setPatientName:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_authorName)
   {
     [v5 setAuthorName:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_custodianName)
   {
     [v5 setCustodianName:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(HDCodableSample *)self->_sample copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(HDCodableSample *)self->_sample copyWithZone:zone];
   v7 = *(v5 + 48);
   *(v5 + 48) = v6;
 
@@ -276,39 +276,39 @@
     *(v5 + 64) |= 1u;
   }
 
-  v8 = [(NSData *)self->_documentData copyWithZone:a3];
+  v8 = [(NSData *)self->_documentData copyWithZone:zone];
   v9 = *(v5 + 24);
   *(v5 + 24) = v8;
 
-  v10 = [(NSString *)self->_title copyWithZone:a3];
+  v10 = [(NSString *)self->_title copyWithZone:zone];
   v11 = *(v5 + 56);
   *(v5 + 56) = v10;
 
-  v12 = [(NSString *)self->_patientName copyWithZone:a3];
+  v12 = [(NSString *)self->_patientName copyWithZone:zone];
   v13 = *(v5 + 40);
   *(v5 + 40) = v12;
 
-  v14 = [(NSString *)self->_authorName copyWithZone:a3];
+  v14 = [(NSString *)self->_authorName copyWithZone:zone];
   v15 = *(v5 + 8);
   *(v5 + 8) = v14;
 
-  v16 = [(NSString *)self->_custodianName copyWithZone:a3];
+  v16 = [(NSString *)self->_custodianName copyWithZone:zone];
   v17 = *(v5 + 16);
   *(v5 + 16) = v16;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_19;
   }
 
   sample = self->_sample;
-  if (sample | *(v4 + 6))
+  if (sample | *(equalCopy + 6))
   {
     if (![(HDCodableSample *)sample isEqual:?])
     {
@@ -316,16 +316,16 @@
     }
   }
 
-  v6 = *(v4 + 64);
+  v6 = *(equalCopy + 64);
   if (*&self->_has)
   {
-    if ((*(v4 + 64) & 1) == 0 || self->_omittedContent != *(v4 + 8))
+    if ((*(equalCopy + 64) & 1) == 0 || self->_omittedContent != *(equalCopy + 8))
     {
       goto LABEL_19;
     }
   }
 
-  else if (*(v4 + 64))
+  else if (*(equalCopy + 64))
   {
 LABEL_19:
     v12 = 0;
@@ -333,13 +333,13 @@ LABEL_19:
   }
 
   documentData = self->_documentData;
-  if (documentData | *(v4 + 3) && ![(NSData *)documentData isEqual:?])
+  if (documentData | *(equalCopy + 3) && ![(NSData *)documentData isEqual:?])
   {
     goto LABEL_19;
   }
 
   title = self->_title;
-  if (title | *(v4 + 7))
+  if (title | *(equalCopy + 7))
   {
     if (![(NSString *)title isEqual:?])
     {
@@ -348,7 +348,7 @@ LABEL_19:
   }
 
   patientName = self->_patientName;
-  if (patientName | *(v4 + 5))
+  if (patientName | *(equalCopy + 5))
   {
     if (![(NSString *)patientName isEqual:?])
     {
@@ -357,7 +357,7 @@ LABEL_19:
   }
 
   authorName = self->_authorName;
-  if (authorName | *(v4 + 1))
+  if (authorName | *(equalCopy + 1))
   {
     if (![(NSString *)authorName isEqual:?])
     {
@@ -366,7 +366,7 @@ LABEL_19:
   }
 
   custodianName = self->_custodianName;
-  if (custodianName | *(v4 + 2))
+  if (custodianName | *(equalCopy + 2))
   {
     v12 = [(NSString *)custodianName isEqual:?];
   }
@@ -402,12 +402,12 @@ LABEL_20:
   return v7 ^ v9 ^ [(NSString *)self->_custodianName hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   sample = self->_sample;
-  v6 = *(v4 + 6);
-  v7 = v4;
+  v6 = *(fromCopy + 6);
+  v7 = fromCopy;
   if (sample)
   {
     if (!v6)
@@ -428,45 +428,45 @@ LABEL_20:
     sample = [(HDCodableCDADocumentSample *)self setSample:?];
   }
 
-  v4 = v7;
+  fromCopy = v7;
 LABEL_7:
-  if (*(v4 + 64))
+  if (*(fromCopy + 64))
   {
-    self->_omittedContent = *(v4 + 8);
+    self->_omittedContent = *(fromCopy + 8);
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     sample = [(HDCodableCDADocumentSample *)self setDocumentData:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 7))
+  if (*(fromCopy + 7))
   {
     sample = [(HDCodableCDADocumentSample *)self setTitle:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     sample = [(HDCodableCDADocumentSample *)self setPatientName:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     sample = [(HDCodableCDADocumentSample *)self setAuthorName:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     sample = [(HDCodableCDADocumentSample *)self setCustodianName:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  MEMORY[0x2821F96F8](sample, v4);
+  MEMORY[0x2821F96F8](sample, fromCopy);
 }
 
 @end

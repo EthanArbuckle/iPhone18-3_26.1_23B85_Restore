@@ -1,46 +1,46 @@
 @interface PKDashboardPassMessageImageDescriptorSymbol
-- (BOOL)isEqual:(id)a3;
-- (PKDashboardPassMessageImageDescriptorSymbol)initWithName:(id)a3 tintColor:(id)a4 backgroundColor:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (PKDashboardPassMessageImageDescriptorSymbol)initWithName:(id)name tintColor:(id)color backgroundColor:(id)backgroundColor;
 @end
 
 @implementation PKDashboardPassMessageImageDescriptorSymbol
 
-- (PKDashboardPassMessageImageDescriptorSymbol)initWithName:(id)a3 tintColor:(id)a4 backgroundColor:(id)a5
+- (PKDashboardPassMessageImageDescriptorSymbol)initWithName:(id)name tintColor:(id)color backgroundColor:(id)backgroundColor
 {
-  v9 = a3;
-  if (v9)
+  nameCopy = name;
+  if (nameCopy)
   {
     v14.receiver = self;
     v14.super_class = PKDashboardPassMessageImageDescriptorSymbol;
-    v10 = [(PKDashboardPassMessageImageDescriptor *)&v14 initWithType:1 tintColor:a4 backgroundColor:a5];
+    v10 = [(PKDashboardPassMessageImageDescriptor *)&v14 initWithType:1 tintColor:color backgroundColor:backgroundColor];
     v11 = v10;
     if (v10)
     {
-      objc_storeStrong(&v10->_name, a3);
+      objc_storeStrong(&v10->_name, name);
     }
 
     self = v11;
-    v12 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v12 = 0;
+    selfCopy = 0;
   }
 
-  return v12;
+  return selfCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
     v9.receiver = self;

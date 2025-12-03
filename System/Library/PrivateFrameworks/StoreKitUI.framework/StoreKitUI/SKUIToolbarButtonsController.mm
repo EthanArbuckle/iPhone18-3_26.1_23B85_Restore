@@ -1,16 +1,16 @@
 @interface SKUIToolbarButtonsController
-- (SKUIToolbarButtonsController)initWithToolbarViewElement:(id)a3;
-- (id)addButtonItemWithButtonViewElement:(id)a3;
-- (void)_buttonAction:(id)a3;
-- (void)_updateButtonItem:(id)a3 withButtonViewElement:(id)a4;
+- (SKUIToolbarButtonsController)initWithToolbarViewElement:(id)element;
+- (id)addButtonItemWithButtonViewElement:(id)element;
+- (void)_buttonAction:(id)action;
+- (void)_updateButtonItem:(id)item withButtonViewElement:(id)element;
 - (void)disconnectAllButtons;
 @end
 
 @implementation SKUIToolbarButtonsController
 
-- (SKUIToolbarButtonsController)initWithToolbarViewElement:(id)a3
+- (SKUIToolbarButtonsController)initWithToolbarViewElement:(id)element
 {
-  v5 = a3;
+  elementCopy = element;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIToolbarButtonsController initWithToolbarViewElement:];
@@ -22,19 +22,19 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_toolbarElement, a3);
+    objc_storeStrong(&v6->_toolbarElement, element);
   }
 
   return v7;
 }
 
-- (id)addButtonItemWithButtonViewElement:(id)a3
+- (id)addButtonItemWithButtonViewElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v5 = objc_alloc_init(MEMORY[0x277D751E0]);
   [v5 setAction:sel__buttonAction_];
   [v5 setTarget:self];
-  [(SKUIToolbarButtonsController *)self _updateButtonItem:v5 withButtonViewElement:v4];
+  [(SKUIToolbarButtonsController *)self _updateButtonItem:v5 withButtonViewElement:elementCopy];
   buttonItemElements = self->_buttonItemElements;
   if (!buttonItemElements)
   {
@@ -45,7 +45,7 @@
     buttonItemElements = self->_buttonItemElements;
   }
 
-  [(NSMapTable *)buttonItemElements setObject:v4 forKey:v5];
+  [(NSMapTable *)buttonItemElements setObject:elementCopy forKey:v5];
 
   return v5;
 }
@@ -86,29 +86,29 @@
   [(NSMapTable *)self->_buttonItemElements removeAllObjects];
 }
 
-- (void)_buttonAction:(id)a3
+- (void)_buttonAction:(id)action
 {
-  v3 = [(NSMapTable *)self->_buttonItemElements objectForKey:a3];
+  v3 = [(NSMapTable *)self->_buttonItemElements objectForKey:action];
   [v3 dispatchEventOfType:2 canBubble:1 isCancelable:1 extraInfo:0 completionBlock:0];
 }
 
-- (void)_updateButtonItem:(id)a3 withButtonViewElement:(id)a4
+- (void)_updateButtonItem:(id)item withButtonViewElement:(id)element
 {
-  v9 = a3;
-  v5 = a4;
-  [v9 setEnabled:{objc_msgSend(v5, "isEnabled")}];
-  [v9 setStyle:{2 * (objc_msgSend(v5, "buttonViewType") == 8)}];
-  v6 = [v5 buttonImage];
-  if (v6)
+  itemCopy = item;
+  elementCopy = element;
+  [itemCopy setEnabled:{objc_msgSend(elementCopy, "isEnabled")}];
+  [itemCopy setStyle:{2 * (objc_msgSend(elementCopy, "buttonViewType") == 8)}];
+  buttonImage = [elementCopy buttonImage];
+  if (buttonImage)
   {
     NSLog(&cfstr_ToolbarButtons.isa);
   }
 
   else
   {
-    v7 = [v5 buttonText];
-    v8 = [v7 string];
-    [v9 setTitle:v8];
+    buttonText = [elementCopy buttonText];
+    string = [buttonText string];
+    [itemCopy setTitle:string];
   }
 }
 

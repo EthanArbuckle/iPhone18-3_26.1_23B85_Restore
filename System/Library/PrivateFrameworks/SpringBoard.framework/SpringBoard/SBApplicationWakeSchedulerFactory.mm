@@ -1,14 +1,14 @@
 @interface SBApplicationWakeSchedulerFactory
-+ (id)newLegacyVOIPPeriodicWakeSchedulerForApplication:(id)a3;
++ (id)newLegacyVOIPPeriodicWakeSchedulerForApplication:(id)application;
 @end
 
 @implementation SBApplicationWakeSchedulerFactory
 
-+ (id)newLegacyVOIPPeriodicWakeSchedulerForApplication:(id)a3
++ (id)newLegacyVOIPPeriodicWakeSchedulerForApplication:(id)application
 {
-  v3 = a3;
+  applicationCopy = application;
   v4 = objc_alloc_init(SBLegacyVOIPRefreshWakeTracker);
-  v5 = [[SBApplicationWakeScheduler alloc] _initWithLifecycleTracker:v4 forApplication:v3];
+  v5 = [[SBApplicationWakeScheduler alloc] _initWithLifecycleTracker:v4 forApplication:applicationCopy];
 
   return v5;
 }

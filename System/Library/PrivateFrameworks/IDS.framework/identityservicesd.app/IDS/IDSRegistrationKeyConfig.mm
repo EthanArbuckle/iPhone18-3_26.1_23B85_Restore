@@ -1,7 +1,7 @@
 @interface IDSRegistrationKeyConfig
 - (void)dealloc;
-- (void)setPrivateKey:(__SecKey *)a3;
-- (void)setPublicKey:(__SecKey *)a3;
+- (void)setPrivateKey:(__SecKey *)key;
+- (void)setPublicKey:(__SecKey *)key;
 @end
 
 @implementation IDSRegistrationKeyConfig
@@ -27,10 +27,10 @@
   [(IDSRegistrationKeyConfig *)&v5 dealloc];
 }
 
-- (void)setPublicKey:(__SecKey *)a3
+- (void)setPublicKey:(__SecKey *)key
 {
   publicKey = self->_publicKey;
-  if (publicKey != a3)
+  if (publicKey != key)
   {
     if (publicKey)
     {
@@ -38,19 +38,19 @@
       self->_publicKey = 0;
     }
 
-    if (a3)
+    if (key)
     {
-      CFRetain(a3);
+      CFRetain(key);
     }
 
-    self->_publicKey = a3;
+    self->_publicKey = key;
   }
 }
 
-- (void)setPrivateKey:(__SecKey *)a3
+- (void)setPrivateKey:(__SecKey *)key
 {
   privateKey = self->_privateKey;
-  if (privateKey != a3)
+  if (privateKey != key)
   {
     if (privateKey)
     {
@@ -58,12 +58,12 @@
       self->_privateKey = 0;
     }
 
-    if (a3)
+    if (key)
     {
-      CFRetain(a3);
+      CFRetain(key);
     }
 
-    self->_privateKey = a3;
+    self->_privateKey = key;
   }
 }
 

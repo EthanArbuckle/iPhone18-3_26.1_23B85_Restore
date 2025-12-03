@@ -1,5 +1,5 @@
 @interface AppStoreReviewAMSRequirementsProvider
-- (void)checkPromptAllowed:(id)a3;
+- (void)checkPromptAllowed:(id)allowed;
 - (void)didAttemptPrompt;
 - (void)didForeground;
 @end
@@ -13,9 +13,9 @@
   _objc_release(self);
 }
 
-- (void)checkPromptAllowed:(id)a3
+- (void)checkPromptAllowed:(id)allowed
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(allowed);
   _objc_retain(self);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;

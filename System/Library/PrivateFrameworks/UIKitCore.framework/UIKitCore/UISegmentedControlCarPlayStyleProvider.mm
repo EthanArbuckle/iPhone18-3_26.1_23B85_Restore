@@ -1,10 +1,10 @@
 @interface UISegmentedControlCarPlayStyleProvider
-- (UIEdgeInsets)alignmentInsetsForControlSize:(int)a3 bounds:(CGRect)a4 traitCollection:(id)a5;
+- (UIEdgeInsets)alignmentInsetsForControlSize:(int)size bounds:(CGRect)bounds traitCollection:(id)collection;
 @end
 
 @implementation UISegmentedControlCarPlayStyleProvider
 
-- (UIEdgeInsets)alignmentInsetsForControlSize:(int)a3 bounds:(CGRect)a4 traitCollection:(id)a5
+- (UIEdgeInsets)alignmentInsetsForControlSize:(int)size bounds:(CGRect)bounds traitCollection:(id)collection
 {
   v5 = -4.0;
   v6 = 0.0;

@@ -1,8 +1,8 @@
 @interface SharedSettingsDiagnosticsInterface
 - (SharedSettingsDiagnosticsInterface)init;
-- (id)filterKeysForSettingsType:(id)a3;
-- (id)getDiagnosticsSystemReport:(id)a3;
-- (id)getSystemReportWithFilter:(id)a3;
+- (id)filterKeysForSettingsType:(id)type;
+- (id)getDiagnosticsSystemReport:(id)report;
+- (id)getSystemReportWithFilter:(id)filter;
 @end
 
 @implementation SharedSettingsDiagnosticsInterface
@@ -14,9 +14,9 @@
   return [(SharedSettingsDiagnosticsInterface *)&v3 init];
 }
 
-- (id)getSystemReportWithFilter:(id)a3
+- (id)getSystemReportWithFilter:(id)filter
 {
-  v3 = a3;
+  filterCopy = filter;
   v32 = 0;
   v33 = &v32;
   v34 = 0x3032000000;
@@ -26,16 +26,16 @@
   group = dispatch_group_create();
   v4 = [DKReportManager alloc];
   v23 = [v4 initWithBundleIdentifier:kDKDefaultBundleIdentifier];
-  if ([v3 count])
+  if ([filterCopy count])
   {
     v24 = +[NSMutableSet set];
     v30 = 0u;
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v5 = v3;
+    v5 = filterCopy;
     v6 = [v5 countByEnumeratingWithState:&v28 objects:v42 count:16];
-    v21 = v3;
+    v21 = filterCopy;
     if (v6)
     {
       v7 = 0;
@@ -93,7 +93,7 @@
       while (v6);
     }
 
-    v3 = v21;
+    filterCopy = v21;
     v15 = v24;
   }
 
@@ -112,7 +112,7 @@
   v26 = v16;
   v17 = v15;
   [v23 reportWithComponentPredicateManifest:v15 completion:v25];
-  v18 = v3;
+  v18 = filterCopy;
   dispatch_group_wait(v16, 0xFFFFFFFFFFFFFFFFLL);
   v19 = v33[5];
 
@@ -121,20 +121,20 @@
   return v19;
 }
 
-- (id)filterKeysForSettingsType:(id)a3
+- (id)filterKeysForSettingsType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Battery"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Battery"])
   {
     v4 = &off_10006B178;
   }
 
-  else if ([v3 isEqualToString:@"System"])
+  else if ([typeCopy isEqualToString:@"System"])
   {
     v4 = &off_10006B190;
   }
 
-  else if ([v3 isEqualToString:@"Storage"])
+  else if ([typeCopy isEqualToString:@"Storage"])
   {
     v4 = &off_10006B1A8;
   }
@@ -147,9 +147,9 @@
   return v4;
 }
 
-- (id)getDiagnosticsSystemReport:(id)a3
+- (id)getDiagnosticsSystemReport:(id)report
 {
-  v20 = a3;
+  reportCopy = report;
   v3 = [(SharedSettingsDiagnosticsInterface *)self getSystemReportWithFilter:?];
   if (v3)
   {
@@ -185,7 +185,7 @@
             if (v11)
             {
               v12 = v11;
-              if ([v20 count])
+              if ([reportCopy count])
               {
                 v13 = [(SharedSettingsDiagnosticsInterface *)self filterKeysForSettingsType:v12];
                 if ([v13 count])

@@ -1,34 +1,34 @@
 @interface CSDiagnosticReporter
 + (id)sharedInstance;
 - (CSDiagnosticReporter)init;
-- (void)submitAudioIssueReport:(id)a3 withError:(id)a4;
-- (void)submitDiagnosticReportWithType:(id)a3 withSubType:(id)a4 withDuration:(double)a5 withContext:(id)a6;
-- (void)submitDiagnosticReportWithType:(id)a3 withSubType:(id)a4 withSubTypeContext:(id)a5 withDuration:(double)a6 withContext:(id)a7;
+- (void)submitAudioIssueReport:(id)report withError:(id)error;
+- (void)submitDiagnosticReportWithType:(id)type withSubType:(id)subType withDuration:(double)duration withContext:(id)context;
+- (void)submitDiagnosticReportWithType:(id)type withSubType:(id)subType withSubTypeContext:(id)context withDuration:(double)duration withContext:(id)withContext;
 @end
 
 @implementation CSDiagnosticReporter
 
-- (void)submitDiagnosticReportWithType:(id)a3 withSubType:(id)a4 withSubTypeContext:(id)a5 withDuration:(double)a6 withContext:(id)a7
+- (void)submitDiagnosticReportWithType:(id)type withSubType:(id)subType withSubTypeContext:(id)context withDuration:(double)duration withContext:(id)withContext
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  typeCopy = type;
+  subTypeCopy = subType;
+  contextCopy = context;
+  withContextCopy = withContext;
   queue = self->_queue;
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __111__CSDiagnosticReporter_submitDiagnosticReportWithType_withSubType_withSubTypeContext_withDuration_withContext___block_invoke;
   v21[3] = &unk_1E865B8F0;
   v21[4] = self;
-  v22 = v12;
-  v23 = v13;
-  v24 = v14;
-  v26 = a6;
-  v25 = v15;
-  v17 = v15;
-  v18 = v14;
-  v19 = v13;
-  v20 = v12;
+  v22 = typeCopy;
+  v23 = subTypeCopy;
+  v24 = contextCopy;
+  durationCopy = duration;
+  v25 = withContextCopy;
+  v17 = withContextCopy;
+  v18 = contextCopy;
+  v19 = subTypeCopy;
+  v20 = typeCopy;
   dispatch_async(queue, v21);
 }
 
@@ -123,24 +123,24 @@ LABEL_6:
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)submitDiagnosticReportWithType:(id)a3 withSubType:(id)a4 withDuration:(double)a5 withContext:(id)a6
+- (void)submitDiagnosticReportWithType:(id)type withSubType:(id)subType withDuration:(double)duration withContext:(id)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  typeCopy = type;
+  subTypeCopy = subType;
+  contextCopy = context;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __92__CSDiagnosticReporter_submitDiagnosticReportWithType_withSubType_withDuration_withContext___block_invoke;
   block[3] = &unk_1E865B8C8;
   block[4] = self;
-  v18 = v10;
-  v21 = a5;
-  v19 = v11;
-  v20 = v12;
-  v14 = v12;
-  v15 = v11;
-  v16 = v10;
+  v18 = typeCopy;
+  durationCopy = duration;
+  v19 = subTypeCopy;
+  v20 = contextCopy;
+  v14 = contextCopy;
+  v15 = subTypeCopy;
+  v16 = typeCopy;
   dispatch_async(queue, block);
 }
 
@@ -234,17 +234,17 @@ LABEL_6:
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)submitAudioIssueReport:(id)a3 withError:(id)a4
+- (void)submitAudioIssueReport:(id)report withError:(id)error
 {
   v6 = MEMORY[0x1E696AEC0];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v7 domain];
-  v10 = [v7 code];
+  errorCopy = error;
+  reportCopy = report;
+  domain = [errorCopy domain];
+  code = [errorCopy code];
 
-  v11 = [v6 stringWithFormat:@"%@.%ld", v9, v10];
+  v11 = [v6 stringWithFormat:@"%@.%ld", domain, code];
 
-  [(CSDiagnosticReporter *)self submitDiagnosticReportWithType:@"Audio" withSubType:v8 withSubTypeContext:v11 withDuration:0 withContext:10.0];
+  [(CSDiagnosticReporter *)self submitDiagnosticReportWithType:@"Audio" withSubType:reportCopy withSubTypeContext:v11 withDuration:0 withContext:10.0];
 }
 
 - (CSDiagnosticReporter)init
@@ -262,7 +262,7 @@ LABEL_6:
   if (CSIsInternalBuild_isInternal != 1)
   {
 LABEL_10:
-    v10 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -300,10 +300,10 @@ LABEL_10:
     }
 
     self = v3;
-    v10 = self;
+    selfCopy = self;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 + (id)sharedInstance

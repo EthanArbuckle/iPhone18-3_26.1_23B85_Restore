@@ -1,21 +1,21 @@
 @interface CXSetAllowUplinkAudioInjectionAction
-- (CXSetAllowUplinkAudioInjectionAction)initWithCallUUID:(id)a3 willInject:(BOOL)a4;
-- (CXSetAllowUplinkAudioInjectionAction)initWithCoder:(id)a3;
+- (CXSetAllowUplinkAudioInjectionAction)initWithCallUUID:(id)d willInject:(BOOL)inject;
+- (CXSetAllowUplinkAudioInjectionAction)initWithCoder:(id)coder;
 - (id)customDescription;
-- (void)encodeWithCoder:(id)a3;
-- (void)updateCopy:(id)a3 withZone:(_NSZone *)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)updateCopy:(id)copy withZone:(_NSZone *)zone;
 @end
 
 @implementation CXSetAllowUplinkAudioInjectionAction
 
-- (CXSetAllowUplinkAudioInjectionAction)initWithCallUUID:(id)a3 willInject:(BOOL)a4
+- (CXSetAllowUplinkAudioInjectionAction)initWithCallUUID:(id)d willInject:(BOOL)inject
 {
   v6.receiver = self;
   v6.super_class = CXSetAllowUplinkAudioInjectionAction;
-  result = [(CXCallAction *)&v6 initWithCallUUID:a3];
+  result = [(CXCallAction *)&v6 initWithCallUUID:d];
   if (result)
   {
-    result->_inject = a4;
+    result->_inject = inject;
   }
 
   return result;
@@ -25,45 +25,45 @@
 {
   v5.receiver = self;
   v5.super_class = CXSetAllowUplinkAudioInjectionAction;
-  v3 = [(CXCallAction *)&v5 customDescription];
-  [v3 appendFormat:@" willInject=%d", -[CXSetAllowUplinkAudioInjectionAction willInject](self, "willInject")];
+  customDescription = [(CXCallAction *)&v5 customDescription];
+  [customDescription appendFormat:@" willInject=%d", -[CXSetAllowUplinkAudioInjectionAction willInject](self, "willInject")];
 
-  return v3;
+  return customDescription;
 }
 
-- (void)updateCopy:(id)a3 withZone:(_NSZone *)a4
+- (void)updateCopy:(id)copy withZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = CXSetAllowUplinkAudioInjectionAction;
-  v6 = a3;
-  [(CXAction *)&v7 updateCopy:v6 withZone:a4];
-  [v6 setInject:{-[CXSetAllowUplinkAudioInjectionAction willInject](self, "willInject", v7.receiver, v7.super_class)}];
+  copyCopy = copy;
+  [(CXAction *)&v7 updateCopy:copyCopy withZone:zone];
+  [copyCopy setInject:{-[CXSetAllowUplinkAudioInjectionAction willInject](self, "willInject", v7.receiver, v7.super_class)}];
 }
 
-- (CXSetAllowUplinkAudioInjectionAction)initWithCoder:(id)a3
+- (CXSetAllowUplinkAudioInjectionAction)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = CXSetAllowUplinkAudioInjectionAction;
-  v5 = [(CXCallAction *)&v8 initWithCoder:v4];
+  v5 = [(CXCallAction *)&v8 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = NSStringFromSelector(sel_willInject);
-    v5->_inject = [v4 decodeBoolForKey:v6];
+    v5->_inject = [coderCopy decodeBoolForKey:v6];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = CXSetAllowUplinkAudioInjectionAction;
-  v4 = a3;
-  [(CXCallAction *)&v7 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(CXCallAction *)&v7 encodeWithCoder:coderCopy];
   v5 = [(CXSetAllowUplinkAudioInjectionAction *)self willInject:v7.receiver];
   v6 = NSStringFromSelector(sel_willInject);
-  [v4 encodeBool:v5 forKey:v6];
+  [coderCopy encodeBool:v5 forKey:v6];
 }
 
 @end

@@ -1,25 +1,25 @@
 @interface NWStatsEntityMapperProcessWatcher
 - (NWStatsEntityMapperProcessWatcher)init;
-- (id)identifierForUUID:(id)a3 derivation:(int *)a4;
+- (id)identifierForUUID:(id)d derivation:(int *)derivation;
 - (id)stateDictionary;
 - (void)_uuidProcessNameMapPrune;
-- (void)noteUUID:(id)a3 forProcessName:(id)a4;
+- (void)noteUUID:(id)d forProcessName:(id)name;
 @end
 
 @implementation NWStatsEntityMapperProcessWatcher
 
-- (id)identifierForUUID:(id)a3 derivation:(int *)a4
+- (id)identifierForUUID:(id)d derivation:(int *)derivation
 {
-  v6 = a3;
-  v7 = self;
-  objc_sync_enter(v7);
-  if (v6)
+  dCopy = d;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (dCopy)
   {
-    v8 = [(NSMutableDictionary *)v7->_uuidProcessNameMap objectForKeyedSubscript:v6];
+    v8 = [(NSMutableDictionary *)selfCopy->_uuidProcessNameMap objectForKeyedSubscript:dCopy];
     if (v8)
     {
-      v9 = [MEMORY[0x277CBEAA8] date];
-      [v8 setObject:v9 forKeyedSubscript:@"timestamp"];
+      date = [MEMORY[0x277CBEAA8] date];
+      [v8 setObject:date forKeyedSubscript:@"timestamp"];
 
       v10 = MEMORY[0x277CCACA8];
       v11 = [v8 objectForKeyedSubscript:@"procName"];
@@ -31,7 +31,7 @@
       v12 = 0;
     }
 
-    if (!a4)
+    if (!derivation)
     {
       goto LABEL_12;
     }
@@ -39,26 +39,26 @@
 LABEL_9:
     if (v12)
     {
-      *a4 = 6;
+      *derivation = 6;
     }
 
     goto LABEL_12;
   }
 
-  if (!v7->_niluuidProcessName)
+  if (!selfCopy->_niluuidProcessName)
   {
     v12 = 0;
     goto LABEL_12;
   }
 
   v12 = [MEMORY[0x277CCACA8] stringWithString:?];
-  if (a4)
+  if (derivation)
   {
     goto LABEL_9;
   }
 
 LABEL_12:
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 
   return v12;
 }
@@ -91,21 +91,21 @@ LABEL_12:
   return v2;
 }
 
-- (void)noteUUID:(id)a3 forProcessName:(id)a4
+- (void)noteUUID:(id)d forProcessName:(id)name
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  objc_sync_enter(v8);
-  if (v6)
+  dCopy = d;
+  nameCopy = name;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (dCopy)
   {
-    if ([(NSMutableDictionary *)v8->_uuidProcessNameMap count]>= 0x65)
+    if ([(NSMutableDictionary *)selfCopy->_uuidProcessNameMap count]>= 0x65)
     {
-      [(NWStatsEntityMapperProcessWatcher *)v8 _uuidProcessNameMapPrune];
+      [(NWStatsEntityMapperProcessWatcher *)selfCopy _uuidProcessNameMapPrune];
     }
 
-    v9 = [(NSMutableDictionary *)v8->_uuidProcessNameMap objectForKeyedSubscript:v6];
+    v9 = [(NSMutableDictionary *)selfCopy->_uuidProcessNameMap objectForKeyedSubscript:dCopy];
 
     if (!v9)
     {
@@ -116,17 +116,17 @@ LABEL_12:
         if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412290;
-          v20 = v7;
+          v20 = nameCopy;
           _os_log_impl(&dword_25BA3A000, v13, OS_LOG_TYPE_ERROR, "Memory allocation failed for %@", buf, 0xCu);
         }
 
         goto LABEL_20;
       }
 
-      v11 = v7;
-      if (v8->_canonicalizedNames)
+      v11 = nameCopy;
+      if (selfCopy->_canonicalizedNames)
       {
-        v12 = [(NSSet *)v8->_daemonsWithStandardPrefixSet member:v11];
+        v12 = [(NSSet *)selfCopy->_daemonsWithStandardPrefixSet member:v11];
 
         if (v12)
         {
@@ -138,7 +138,7 @@ LABEL_12:
             *buf = 138412802;
             v20 = v11;
             v21 = 2112;
-            v22 = v6;
+            v22 = dCopy;
             v23 = 2112;
             v24 = v13;
             v15 = "Create canonical mapping for process %@, %@ -> %@";
@@ -150,11 +150,11 @@ LABEL_16:
           goto LABEL_17;
         }
 
-        v16 = [(NSDictionary *)v8->_daemonsWithNonStandardMappings objectForKeyedSubscript:v11];
+        v16 = [(NSDictionary *)selfCopy->_daemonsWithNonStandardMappings objectForKeyedSubscript:v11];
 
         if (v16)
         {
-          v13 = [(NSDictionary *)v8->_daemonsWithNonStandardMappings objectForKeyedSubscript:v11];
+          v13 = [(NSDictionary *)selfCopy->_daemonsWithNonStandardMappings objectForKeyedSubscript:v11];
 
           v14 = NStatGetLog();
           if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -162,7 +162,7 @@ LABEL_16:
             *buf = 138412802;
             v20 = v11;
             v21 = 2112;
-            v22 = v6;
+            v22 = dCopy;
             v23 = 2112;
             v24 = v13;
             v15 = "Create non-standard mapping for process %@, %@ -> %@";
@@ -173,10 +173,10 @@ LABEL_17:
 
 LABEL_19:
           [v10 setObject:v13 forKeyedSubscript:@"procName"];
-          v17 = [MEMORY[0x277CBEAA8] date];
-          [v10 setObject:v17 forKeyedSubscript:@"timestamp"];
+          date = [MEMORY[0x277CBEAA8] date];
+          [v10 setObject:date forKeyedSubscript:@"timestamp"];
 
-          [(NSMutableDictionary *)v8->_uuidProcessNameMap setObject:v10 forKeyedSubscript:v6];
+          [(NSMutableDictionary *)selfCopy->_uuidProcessNameMap setObject:v10 forKeyedSubscript:dCopy];
 LABEL_20:
 
           goto LABEL_21;
@@ -190,11 +190,11 @@ LABEL_20:
 
   else
   {
-    objc_storeStrong(&v8->_niluuidProcessName, a4);
+    objc_storeStrong(&selfCopy->_niluuidProcessName, name);
   }
 
 LABEL_21:
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
 
   v18 = *MEMORY[0x277D85DE8];
 }
@@ -202,12 +202,12 @@ LABEL_21:
 - (id)stateDictionary
 {
   v3 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [objc_alloc(MEMORY[0x277CBEAC0]) initWithDictionary:v4->_uuidProcessNameMap];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = [objc_alloc(MEMORY[0x277CBEAC0]) initWithDictionary:selfCopy->_uuidProcessNameMap];
   [v3 setObject:v5 forKeyedSubscript:@"ProcessNameMap"];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
   return v3;
 }

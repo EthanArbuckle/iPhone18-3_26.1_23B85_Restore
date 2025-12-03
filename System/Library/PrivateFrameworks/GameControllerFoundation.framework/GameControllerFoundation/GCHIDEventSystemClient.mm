@@ -1,27 +1,27 @@
 @interface GCHIDEventSystemClient
-- (BOOL)conformsToProtocol:(id)a3;
+- (BOOL)conformsToProtocol:(id)protocol;
 - (OS_dispatch_queue)eventQueue;
 - (OS_dispatch_queue)servicesQueue;
-- (id)registerEventHandler:(id)a3;
-- (id)registerServicesChangedHandler:(id)a3 notifyExisting:(BOOL)a4;
-- (id)registerServicesChangedObserver:(id)a3 notifyExisting:(BOOL)a4;
-- (id)serviceForRegistryID:(unint64_t)a3;
-- (id)unregisterServicesChangedObserver:(id)a3 notifyExisting:(BOOL)a4;
-- (uint64_t)_observationListForType:(uint64_t)a1;
-- (void)_onqueue_services:(uint64_t)a1 added:removed:;
+- (id)registerEventHandler:(id)handler;
+- (id)registerServicesChangedHandler:(id)handler notifyExisting:(BOOL)existing;
+- (id)registerServicesChangedObserver:(id)observer notifyExisting:(BOOL)existing;
+- (id)serviceForRegistryID:(unint64_t)d;
+- (id)unregisterServicesChangedObserver:(id)observer notifyExisting:(BOOL)existing;
+- (uint64_t)_observationListForType:(uint64_t)type;
+- (void)_onqueue_services:(uint64_t)_onqueue_services added:removed:;
 - (void)_servicesQueue;
 - (void)activate;
 - (void)dealloc;
 - (void)invalidate;
-- (void)registerEventObserver:(id)a3;
-- (void)setCancelHandler:(id)a3;
-- (void)setEventCallBack:(void *)a3 target:(void *)a4 context:(void *)a5;
-- (void)setEventQueue:(id)a3;
-- (void)setMatching:(id)a3;
-- (void)setMatchingMultiple:(id)a3;
-- (void)setServicesChangedCallback:(void *)a3 target:(void *)a4 context:(void *)a5;
-- (void)setServicesQueue:(id)a3;
-- (void)setServicesUpdatedAsynchronously:(BOOL)a3;
+- (void)registerEventObserver:(id)observer;
+- (void)setCancelHandler:(id)handler;
+- (void)setEventCallBack:(void *)back target:(void *)target context:(void *)context;
+- (void)setEventQueue:(id)queue;
+- (void)setMatching:(id)matching;
+- (void)setMatchingMultiple:(id)multiple;
+- (void)setServicesChangedCallback:(void *)callback target:(void *)target context:(void *)context;
+- (void)setServicesQueue:(id)queue;
+- (void)setServicesUpdatedAsynchronously:(BOOL)asynchronously;
 @end
 
 @implementation GCHIDEventSystemClient
@@ -166,12 +166,12 @@ void __34__GCHIDEventSystemClient_activate__block_invoke(uint64_t a1)
   }
 }
 
-- (void)setCancelHandler:(id)a3
+- (void)setCancelHandler:(id)handler
 {
   p_cancelled = &self->_cancelled;
   if ((atomic_load_explicit(&self->_cancelled, memory_order_acquire) & 1) == 0)
   {
-    objc_setProperty_atomic(self, a2, a3, 40);
+    objc_setProperty_atomic(self, a2, handler, 40);
     if (atomic_load_explicit(p_cancelled, memory_order_acquire))
     {
 
@@ -180,7 +180,7 @@ void __34__GCHIDEventSystemClient_activate__block_invoke(uint64_t a1)
   }
 }
 
-- (void)setServicesQueue:(id)a3
+- (void)setServicesQueue:(id)queue
 {
   v6 = atomic_load(&self->_activated);
   if (v6)
@@ -188,10 +188,10 @@ void __34__GCHIDEventSystemClient_activate__block_invoke(uint64_t a1)
     [GCHIDEventSystemClient setServicesQueue:];
   }
 
-  objc_setProperty_atomic(self, a2, a3, 24);
+  objc_setProperty_atomic(self, a2, queue, 24);
 }
 
-- (void)setServicesUpdatedAsynchronously:(BOOL)a3
+- (void)setServicesUpdatedAsynchronously:(BOOL)asynchronously
 {
   v5 = atomic_load(&self->_activated);
   if (v5)
@@ -199,7 +199,7 @@ void __34__GCHIDEventSystemClient_activate__block_invoke(uint64_t a1)
     [GCHIDEventSystemClient setServicesUpdatedAsynchronously:];
   }
 
-  self->_servicesUpdatedAsynchronously = a3;
+  self->_servicesUpdatedAsynchronously = asynchronously;
 }
 
 GCHIDServiceInfo *__46__GCHIDEventSystemClient_setMatchingMultiple___block_invoke(uint64_t a1, uint64_t a2)
@@ -221,30 +221,30 @@ GCHIDServiceInfo *__46__GCHIDEventSystemClient_setMatchingMultiple___block_invok
   return v7;
 }
 
-- (void)setMatching:(id)a3
+- (void)setMatching:(id)matching
 {
   v5[1] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (matching)
   {
-    v5[0] = a3;
-    a3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v5 count:1];
+    v5[0] = matching;
+    matching = [MEMORY[0x1E695DEC8] arrayWithObjects:v5 count:1];
   }
 
-  [(GCHIDEventSystemClient *)self setMatchingMultiple:a3];
+  [(GCHIDEventSystemClient *)self setMatchingMultiple:matching];
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (id)serviceForRegistryID:(unint64_t)a3
+- (id)serviceForRegistryID:(unint64_t)d
 {
   functions = self->_functions;
   if (functions)
   {
-    result = (functions->var7)(self->_client, a3);
+    result = (functions->var7)(self->_client, d);
   }
 
   else
   {
-    result = MEMORY[0x1E696CCE8](self->_client, a3);
+    result = MEMORY[0x1E696CCE8](self->_client, d);
   }
 
   if (result)
@@ -271,7 +271,7 @@ GCHIDServiceInfo *__46__GCHIDEventSystemClient_setMatchingMultiple___block_invok
   return result;
 }
 
-- (void)setServicesChangedCallback:(void *)a3 target:(void *)a4 context:(void *)a5
+- (void)setServicesChangedCallback:(void *)callback target:(void *)target context:(void *)context
 {
   v9 = atomic_load(&self->_activated);
   if (v9)
@@ -279,9 +279,9 @@ GCHIDServiceInfo *__46__GCHIDEventSystemClient_setMatchingMultiple___block_invok
     [GCHIDEventSystemClient setServicesChangedCallback:target:context:];
   }
 
-  self->_serviceObservations.var0.callback = a3;
-  self->_serviceObservations.var0.target = a4;
-  self->_serviceObservations.var0.context = a5;
+  self->_serviceObservations.var0.callback = callback;
+  self->_serviceObservations.var0.target = target;
+  self->_serviceObservations.var0.context = context;
 }
 
 void __72__GCHIDEventSystemClient_registerServicesChangedHandler_notifyExisting___block_invoke(uint64_t a1)
@@ -328,20 +328,20 @@ uint64_t __73__GCHIDEventSystemClient_registerServicesChangedObserver_notifyExis
   }
 }
 
-- (id)unregisterServicesChangedObserver:(id)a3 notifyExisting:(BOOL)a4
+- (id)unregisterServicesChangedObserver:(id)observer notifyExisting:(BOOL)existing
 {
-  if (a4)
+  if (existing)
   {
-    [(GCHIDEventSystemClient *)self unregisterServicesChangedObserver:v6 notifyExisting:a3, &v7];
+    [(GCHIDEventSystemClient *)self unregisterServicesChangedObserver:v6 notifyExisting:observer, &v7];
     return v7;
   }
 
   else
   {
 
-    v5 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
 
-    return [GCFuture futureWithResult:v5];
+    return [GCFuture futureWithResult:null];
   }
 }
 
@@ -369,7 +369,7 @@ uint64_t __75__GCHIDEventSystemClient_unregisterServicesChangedObserver_notifyEx
   return result;
 }
 
-- (void)setEventQueue:(id)a3
+- (void)setEventQueue:(id)queue
 {
   v5 = atomic_load(&self->_activated);
   if (v5)
@@ -377,10 +377,10 @@ uint64_t __75__GCHIDEventSystemClient_unregisterServicesChangedObserver_notifyEx
     [GCHIDEventSystemClient setEventQueue:];
   }
 
-  self->_eventQueue = a3;
+  self->_eventQueue = queue;
 }
 
-- (void)setEventCallBack:(void *)a3 target:(void *)a4 context:(void *)a5
+- (void)setEventCallBack:(void *)back target:(void *)target context:(void *)context
 {
   if (!self->_isEventMonitor)
   {
@@ -393,14 +393,14 @@ uint64_t __75__GCHIDEventSystemClient_unregisterServicesChangedObserver_notifyEx
     [GCHIDEventSystemClient setEventCallBack:target:context:];
   }
 
-  self->_eventObservations.var0.callback = a3;
-  self->_eventObservations.var0.target = a4;
-  self->_eventObservations.var0.context = a5;
+  self->_eventObservations.var0.callback = back;
+  self->_eventObservations.var0.target = target;
+  self->_eventObservations.var0.context = context;
 }
 
-- (BOOL)conformsToProtocol:(id)a3
+- (BOOL)conformsToProtocol:(id)protocol
 {
-  if (&unk_1F4E38D78 == a3 && !self->_isEventMonitor)
+  if (&unk_1F4E38D78 == protocol && !self->_isEventMonitor)
   {
     return 0;
   }
@@ -412,15 +412,15 @@ uint64_t __75__GCHIDEventSystemClient_unregisterServicesChangedObserver_notifyEx
   return [(GCHIDEventSystemClient *)&v6 conformsToProtocol:?];
 }
 
-- (uint64_t)_observationListForType:(uint64_t)a1
+- (uint64_t)_observationListForType:(uint64_t)type
 {
-  v2 = a1 + 120;
+  v2 = type + 120;
   if (a2 == 1)
   {
-    v2 = a1 + 72;
+    v2 = type + 72;
   }
 
-  if (a1)
+  if (type)
   {
     return v2;
   }
@@ -450,53 +450,53 @@ uint64_t __75__GCHIDEventSystemClient_unregisterServicesChangedObserver_notifyEx
 {
   if (self)
   {
-    v2 = self;
+    selfCopy = self;
     self = OUTLINED_FUNCTION_6(self, sel__servicesQueue);
     if (!self)
     {
-      return *(v2 + 2);
+      return *(selfCopy + 2);
     }
   }
 
   return self;
 }
 
-- (void)setMatchingMultiple:(id)a3
+- (void)setMatchingMultiple:(id)multiple
 {
-  v4 = self;
+  selfCopy = self;
   v173 = *MEMORY[0x1E69E9840];
   if (self)
   {
     self = OUTLINED_FUNCTION_6(self, sel__servicesQueue);
     if (!self)
     {
-      self = v4->_queue;
+      self = selfCopy->_queue;
     }
   }
 
   dispatch_assert_queue_V2(&self->super);
-  v4->_isModifyingMatchCriteria = 1;
-  functions = v4->_functions;
+  selfCopy->_isModifyingMatchCriteria = 1;
+  functions = selfCopy->_functions;
   if (functions)
   {
-    (functions->var6)(v4->_client, a3);
+    (functions->var6)(selfCopy->_client, multiple);
   }
 
   else
   {
-    MEMORY[0x1E696CD18](v4->_client, a3);
+    MEMORY[0x1E696CD18](selfCopy->_client, multiple);
   }
 
-  v4->_isModifyingMatchCriteria = 0;
-  v6 = v4->_functions;
+  selfCopy->_isModifyingMatchCriteria = 0;
+  v6 = selfCopy->_functions;
   if (v6)
   {
-    v7 = (v6->var8)(v4->_client);
+    v7 = (v6->var8)(selfCopy->_client);
   }
 
   else
   {
-    v7 = MEMORY[0x1E696CCF0](v4->_client);
+    v7 = MEMORY[0x1E696CCF0](selfCopy->_client);
   }
 
   v8 = v7;
@@ -504,7 +504,7 @@ uint64_t __75__GCHIDEventSystemClient_unregisterServicesChangedObserver_notifyEx
   v152 = 3221225472;
   v153 = __46__GCHIDEventSystemClient_setMatchingMultiple___block_invoke;
   v154 = &unk_1E84143B0;
-  v155 = v4;
+  v155 = selfCopy;
   v9 = [v7 gc_arrayByTransformingElementsUsingBlock:&v151];
   if (v9)
   {
@@ -524,7 +524,7 @@ uint64_t __75__GCHIDEventSystemClient_unregisterServicesChangedObserver_notifyEx
   v11 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithArray:v10];
   v12 = objc_opt_new();
   v13 = objc_opt_new();
-  services = v4->_services;
+  services = selfCopy->_services;
   v22 = OUTLINED_FUNCTION_8(v13, v15, v16, v17, v18, v19, v20, v21, v84, v88, v92, v96, v100, v104, v108, v112);
   if (v22)
   {
@@ -591,7 +591,7 @@ uint64_t __75__GCHIDEventSystemClient_unregisterServicesChangedObserver_notifyEx
         }
 
         v56 = *(v118 + 8 * v55);
-        v57 = [(NSSet *)v4->_services containsObject:v56];
+        v57 = [(NSSet *)selfCopy->_services containsObject:v56];
         if ((v57 & 1) == 0)
         {
           v57 = [v12 addObject:v56];
@@ -649,15 +649,15 @@ uint64_t __75__GCHIDEventSystemClient_unregisterServicesChangedObserver_notifyEx
     while (v82);
   }
 
-  [GCHIDEventSystemClient _onqueue_services:v4 added:? removed:?];
+  [GCHIDEventSystemClient _onqueue_services:selfCopy added:? removed:?];
 
   v83 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_onqueue_services:(uint64_t)a1 added:removed:
+- (void)_onqueue_services:(uint64_t)_onqueue_services added:removed:
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (_onqueue_services)
   {
     OUTLINED_FUNCTION_5_0();
     v3 = v2;
@@ -712,9 +712,9 @@ uint64_t __75__GCHIDEventSystemClient_unregisterServicesChangedObserver_notifyEx
   }
 }
 
-- (id)registerServicesChangedHandler:(id)a3 notifyExisting:(BOOL)a4
+- (id)registerServicesChangedHandler:(id)handler notifyExisting:(BOOL)existing
 {
-  v4 = a4;
+  existingCopy = existing;
   v7 = [__GCHIDSystemObservation alloc];
   if (v7)
   {
@@ -722,9 +722,9 @@ uint64_t __75__GCHIDEventSystemClient_unregisterServicesChangedObserver_notifyEx
     v13.super_class = __GCHIDSystemObservation;
     v8 = [(GCHIDEventSystemClient *)&v13 init];
     LOBYTE(v8->_functions) = 1;
-    v8->_queue = [a3 copy];
+    v8->_queue = [handler copy];
     BYTE2(v8->_functions) = 1;
-    if (v4)
+    if (existingCopy)
     {
       goto LABEL_3;
     }
@@ -735,7 +735,7 @@ LABEL_9:
   }
 
   v8 = 0;
-  if (!v4)
+  if (!existingCopy)
   {
     goto LABEL_9;
   }
@@ -756,12 +756,12 @@ LABEL_3:
   return v8;
 }
 
-- (id)registerServicesChangedObserver:(id)a3 notifyExisting:(BOOL)a4
+- (id)registerServicesChangedObserver:(id)observer notifyExisting:(BOOL)existing
 {
-  v4 = a4;
-  v6 = [[__GCHIDSystemObservation alloc] initWithServiceObserver:a3];
+  existingCopy = existing;
+  v6 = [[__GCHIDSystemObservation alloc] initWithServiceObserver:observer];
   v7 = v6;
-  if (v4)
+  if (existingCopy)
   {
     if (self && !OUTLINED_FUNCTION_6(self, sel__servicesQueue))
     {
@@ -772,7 +772,7 @@ LABEL_3:
     v13 = 3221225472;
     v14 = __73__GCHIDEventSystemClient_registerServicesChangedObserver_notifyExisting___block_invoke;
     v15 = &unk_1E8414400;
-    v16 = self;
+    selfCopy = self;
     v17 = v7;
     v9 = [GCFuture futureOnQueue:"futureOnQueue:withBlock:" withBlock:?];
   }
@@ -789,7 +789,7 @@ LABEL_3:
   return v10;
 }
 
-- (id)registerEventHandler:(id)a3
+- (id)registerEventHandler:(id)handler
 {
   if (!self->_isEventMonitor)
   {
@@ -803,7 +803,7 @@ LABEL_3:
     v8.super_class = __GCHIDSystemObservation;
     v6 = [(GCHIDEventSystemClient *)&v8 init];
     LOBYTE(v6->_functions) = 2;
-    v6->_queue = [a3 copy];
+    v6->_queue = [handler copy];
     BYTE2(v6->_functions) = 1;
   }
 
@@ -816,14 +816,14 @@ LABEL_3:
   return v6;
 }
 
-- (void)registerEventObserver:(id)a3
+- (void)registerEventObserver:(id)observer
 {
   if (!self->_isEventMonitor)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
-  v5 = [[__GCHIDSystemObservation alloc] initWithEventObserver:a3];
+  v5 = [[__GCHIDSystemObservation alloc] initWithEventObserver:observer];
   HIDObservationListAdd(self, v5);
 }
 

@@ -1,11 +1,11 @@
 @interface PublisherAnalyticsManager
-- (PublisherAnalyticsManager)initWithPublisherId:(id)a3 usingAttribution:(id)a4;
+- (PublisherAnalyticsManager)initWithPublisherId:(id)id usingAttribution:(id)attribution;
 - (void)cleanUp;
 - (void)logEvent;
-- (void)publisherCollectionTapped:(id)a3 atIndex:(unint64_t)a4 isCurrentlySaved:(BOOL)a5;
+- (void)publisherCollectionTapped:(id)tapped atIndex:(unint64_t)index isCurrentlySaved:(BOOL)saved;
 - (void)publisherCollectionsScrolledDown;
 - (void)publisherCollectionsScrolledUp;
-- (void)publisherFilterTappedWithValue:(id)a3 atIndex:(unint64_t)a4;
+- (void)publisherFilterTappedWithValue:(id)value atIndex:(unint64_t)index;
 - (void)publisherHeaderAppButtonTapped;
 - (void)publisherHeaderCloseButtonTapped;
 - (void)publisherHeaderShareButtonTapped;
@@ -65,39 +65,39 @@
   [(PublisherAnalyticsManager *)self logEvent];
 }
 
-- (void)publisherCollectionTapped:(id)a3 atIndex:(unint64_t)a4 isCurrentlySaved:(BOOL)a5
+- (void)publisherCollectionTapped:(id)tapped atIndex:(unint64_t)index isCurrentlySaved:(BOOL)saved
 {
-  v5 = a5;
-  v8 = a3;
+  savedCopy = saved;
+  tappedCopy = tapped;
   [(PublisherAnalyticsManager *)self cleanUp];
   self->event.action = 2099;
-  v9 = [v8 muid];
+  muid = [tappedCopy muid];
 
-  v10 = [NSNumber numberWithUnsignedLongLong:v9];
+  v10 = [NSNumber numberWithUnsignedLongLong:muid];
   collectionId = self->event.collectionId;
   self->event.collectionId = v10;
 
-  v12 = [NSNumber numberWithBool:v5];
+  v12 = [NSNumber numberWithBool:savedCopy];
   collectionCurrentlySaved = self->event.collectionCurrentlySaved;
   self->event.collectionCurrentlySaved = v12;
 
-  v14 = [NSNumber numberWithUnsignedInteger:a4];
+  v14 = [NSNumber numberWithUnsignedInteger:index];
   verticalIndex = self->event.verticalIndex;
   self->event.verticalIndex = v14;
 
   [(PublisherAnalyticsManager *)self logEvent];
 }
 
-- (void)publisherFilterTappedWithValue:(id)a3 atIndex:(unint64_t)a4
+- (void)publisherFilterTappedWithValue:(id)value atIndex:(unint64_t)index
 {
-  v6 = a3;
+  valueCopy = value;
   [(PublisherAnalyticsManager *)self cleanUp];
   self->event.action = 49;
   value = self->event.value;
-  self->event.value = v6;
-  v8 = v6;
+  self->event.value = valueCopy;
+  v8 = valueCopy;
 
-  v9 = [NSNumber numberWithUnsignedInteger:a4];
+  v9 = [NSNumber numberWithUnsignedInteger:index];
   horizontalIndex = self->event.horizontalIndex;
   self->event.horizontalIndex = v9;
 
@@ -133,9 +133,9 @@
   [(PublisherAnalyticsManager *)self cleanUp];
   self->event.action = 2170;
   v6 = [NSNumber numberWithInt:2103];
-  v3 = [(GEOCollectionPublisherAttribution *)self->_attribution applicationAdamId];
+  applicationAdamId = [(GEOCollectionPublisherAttribution *)self->_attribution applicationAdamId];
   v4 = 72;
-  if (!v3)
+  if (!applicationAdamId)
   {
     v4 = 80;
   }
@@ -152,8 +152,8 @@
   [(PublisherAnalyticsManager *)self cleanUp];
   self->event.action = 2097;
   v8 = [NSNumber numberWithInt:2103];
-  v3 = [(GEOCollectionPublisherAttribution *)self->_attribution applicationAdamId];
-  if (v3)
+  applicationAdamId = [(GEOCollectionPublisherAttribution *)self->_attribution applicationAdamId];
+  if (applicationAdamId)
   {
     v4 = 72;
   }
@@ -166,8 +166,8 @@
   [*(&self->super.isa + v4) addObject:v8];
 
   v5 = [NSNumber numberWithInt:2170];
-  v6 = [(GEOCollectionPublisherAttribution *)self->_attribution websiteURL];
-  if (v6)
+  websiteURL = [(GEOCollectionPublisherAttribution *)self->_attribution websiteURL];
+  if (websiteURL)
   {
     v7 = 72;
   }
@@ -187,9 +187,9 @@
   [(PublisherAnalyticsManager *)self cleanUp];
   self->event.action = 2103;
   v6 = [NSNumber numberWithInt:2170];
-  v3 = [(GEOCollectionPublisherAttribution *)self->_attribution websiteURL];
+  websiteURL = [(GEOCollectionPublisherAttribution *)self->_attribution websiteURL];
   v4 = 72;
-  if (!v3)
+  if (!websiteURL)
   {
     v4 = 80;
   }
@@ -209,10 +209,10 @@
   [(PublisherAnalyticsManager *)self logEvent];
 }
 
-- (PublisherAnalyticsManager)initWithPublisherId:(id)a3 usingAttribution:(id)a4
+- (PublisherAnalyticsManager)initWithPublisherId:(id)id usingAttribution:(id)attribution
 {
-  v6 = a3;
-  v7 = a4;
+  idCopy = id;
+  attributionCopy = attribution;
   v13.receiver = self;
   v13.super_class = PublisherAnalyticsManager;
   v8 = [(PublisherAnalyticsManager *)&v13 init];
@@ -220,11 +220,11 @@
   if (v8)
   {
     *&v8->event.target = 0xE00000105;
-    v10 = [[NSNumber alloc] initWithUnsignedLongLong:{objc_msgSend(v6, "muid")}];
+    v10 = [[NSNumber alloc] initWithUnsignedLongLong:{objc_msgSend(idCopy, "muid")}];
     publisherId = v9->event.publisherId;
     v9->event.publisherId = v10;
 
-    objc_storeStrong(&v9->_attribution, a4);
+    objc_storeStrong(&v9->_attribution, attribution);
   }
 
   return v9;

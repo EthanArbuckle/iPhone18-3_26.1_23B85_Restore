@@ -1,18 +1,18 @@
 @interface UIResizableView
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 @end
 
 @implementation UIResizableView
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v25 = *MEMORY[0x1E69E9840];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v3 = [(UIResizableView *)self subviews];
-  v4 = [v3 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  subviews = [(UIResizableView *)self subviews];
+  v4 = [subviews countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v4)
   {
     v5 = v4;
@@ -25,7 +25,7 @@
       {
         if (*v21 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(subviews);
         }
 
         [*(*(&v20 + 1) + 8 * i) frame];
@@ -42,7 +42,7 @@
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v5 = [subviews countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v5);

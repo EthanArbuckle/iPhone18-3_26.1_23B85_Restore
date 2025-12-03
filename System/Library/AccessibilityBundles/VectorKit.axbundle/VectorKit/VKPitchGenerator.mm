@@ -3,9 +3,9 @@
 + (id)defaultSoundFileURL;
 + (id)fourPitchesSoundFileArray;
 + (id)twoPitchesSoundFileArray;
-- (VKPitchGenerator)initWithPitchMode:(int64_t)a3 minDepth:(id)a4 maxDepth:(id)a5 minPtich:(id)a6 maxPitch:(id)a7 twoPitchesThreshold:(id)a8 fourPitchesThresholdArray:(id)a9;
-- (float)pitchForDepth:(int)a3;
-- (id)fileForDepthInUnit:(double)a3;
+- (VKPitchGenerator)initWithPitchMode:(int64_t)mode minDepth:(id)depth maxDepth:(id)maxDepth minPtich:(id)ptich maxPitch:(id)pitch twoPitchesThreshold:(id)threshold fourPitchesThresholdArray:(id)array;
+- (float)pitchForDepth:(int)depth;
+- (id)fileForDepthInUnit:(double)unit;
 @end
 
 @implementation VKPitchGenerator
@@ -66,34 +66,34 @@
   return v6;
 }
 
-- (VKPitchGenerator)initWithPitchMode:(int64_t)a3 minDepth:(id)a4 maxDepth:(id)a5 minPtich:(id)a6 maxPitch:(id)a7 twoPitchesThreshold:(id)a8 fourPitchesThresholdArray:(id)a9
+- (VKPitchGenerator)initWithPitchMode:(int64_t)mode minDepth:(id)depth maxDepth:(id)maxDepth minPtich:(id)ptich maxPitch:(id)pitch twoPitchesThreshold:(id)threshold fourPitchesThresholdArray:(id)array
 {
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v40 = a8;
-  v39 = a9;
+  depthCopy = depth;
+  maxDepthCopy = maxDepth;
+  ptichCopy = ptich;
+  pitchCopy = pitch;
+  thresholdCopy = threshold;
+  arrayCopy = array;
   v41.receiver = self;
   v41.super_class = VKPitchGenerator;
   v19 = [(VKPitchGenerator *)&v41 init];
   v20 = v19;
   if (v19)
   {
-    v19->_pitchMode = a3;
-    objc_storeStrong(&v19->_minPitch, a6);
-    objc_storeStrong(&v20->_maxPitch, a7);
-    objc_storeStrong(&v20->_twoPitchesThreshold, a8);
-    objc_storeStrong(&v20->_fourPitchesThresholdArray, a9);
-    if (v16 && v15 && v17 && v18)
+    v19->_pitchMode = mode;
+    objc_storeStrong(&v19->_minPitch, ptich);
+    objc_storeStrong(&v20->_maxPitch, pitch);
+    objc_storeStrong(&v20->_twoPitchesThreshold, threshold);
+    objc_storeStrong(&v20->_fourPitchesThresholdArray, array);
+    if (maxDepthCopy && depthCopy && ptichCopy && pitchCopy)
     {
-      [v18 floatValue];
+      [pitchCopy floatValue];
       v22 = v21;
-      [v17 floatValue];
+      [ptichCopy floatValue];
       v24 = v23;
-      [v15 floatValue];
+      [depthCopy floatValue];
       v26 = v25;
-      [v16 floatValue];
+      [maxDepthCopy floatValue];
       v28 = (v22 - v24) / (v27 - v26);
       *&v29 = v24 - (v28 * v27);
       v30 = [MEMORY[0x29EDBA070] numberWithFloat:v29];
@@ -123,7 +123,7 @@
   return v20;
 }
 
-- (float)pitchForDepth:(int)a3
+- (float)pitchForDepth:(int)depth
 {
   if (self->_pitchMode)
   {
@@ -147,14 +147,14 @@
   v10 = v9;
   [(NSNumber *)self->_slope floatValue];
   v12 = v11;
-  v13 = a3;
+  depthCopy = depth;
   [(NSNumber *)self->_intercept floatValue];
-  if (v10 <= (v14 + (v12 * a3)))
+  if (v10 <= (v14 + (v12 * depth)))
   {
     [(NSNumber *)self->_slope floatValue];
     v17 = v16;
     [(NSNumber *)self->_intercept floatValue];
-    v15 = v18 + (v17 * v13);
+    v15 = v18 + (v17 * depthCopy);
   }
 
   else
@@ -169,12 +169,12 @@
     [(NSNumber *)self->_slope floatValue];
     v23 = v22;
     [(NSNumber *)self->_intercept floatValue];
-    if (v21 <= (v24 + (v23 * v13)))
+    if (v21 <= (v24 + (v23 * depthCopy)))
     {
       [(NSNumber *)self->_slope floatValue];
       v26 = v25;
       [(NSNumber *)self->_intercept floatValue];
-      return v27 + (v26 * v13);
+      return v27 + (v26 * depthCopy);
     }
 
     minPitch = self->_minPitch;
@@ -189,9 +189,9 @@
   return result;
 }
 
-- (id)fileForDepthInUnit:(double)a3
+- (id)fileForDepthInUnit:(double)unit
 {
-  v4 = self;
+  selfCopy = self;
   pitchMode = self->_pitchMode;
   switch(pitchMode)
   {
@@ -202,11 +202,11 @@
         goto LABEL_13;
       }
 
-      v13 = [(NSArray *)fourPitchesThresholdArray lastObject];
-      [v13 doubleValue];
+      lastObject = [(NSArray *)fourPitchesThresholdArray lastObject];
+      [lastObject doubleValue];
       v15 = v14;
 
-      if (v15 >= a3)
+      if (v15 >= unit)
       {
         v19 = 0;
         v20 = &v19;
@@ -214,16 +214,16 @@
         v22 = __Block_byref_object_copy__4;
         v23 = __Block_byref_object_dispose__4;
         v24 = 0;
-        v17 = [v4 fourPitchesThresholdArray];
+        fourPitchesThresholdArray = [selfCopy fourPitchesThresholdArray];
         v18[0] = MEMORY[0x29EDCA5F8];
         v18[1] = 3221225472;
         v18[2] = __39__VKPitchGenerator_fileForDepthInUnit___block_invoke;
         v18[3] = &unk_29F318BD8;
-        *&v18[5] = a3;
+        *&v18[5] = unit;
         v18[4] = &v19;
-        [v17 enumerateObjectsUsingBlock:v18];
+        [fourPitchesThresholdArray enumerateObjectsUsingBlock:v18];
 
-        v4 = v20[5];
+        selfCopy = v20[5];
         _Block_object_dispose(&v19, 8);
 
         break;
@@ -243,25 +243,25 @@
       v8 = v7;
       v9 = +[VKPitchGenerator twoPitchesSoundFileArray];
       v10 = v9;
-      if (v8 >= a3)
+      if (v8 >= unit)
       {
-        v11 = [v9 firstObject];
+        firstObject = [v9 firstObject];
 LABEL_12:
-        v4 = v11;
+        selfCopy = firstObject;
 
         break;
       }
 
 LABEL_11:
-      v11 = [v9 lastObject];
+      firstObject = [v9 lastObject];
       goto LABEL_12;
     case 0:
 LABEL_13:
-      v4 = +[VKPitchGenerator defaultSoundFileURL];
+      selfCopy = +[VKPitchGenerator defaultSoundFileURL];
       break;
   }
 
-  return v4;
+  return selfCopy;
 }
 
 void __39__VKPitchGenerator_fileForDepthInUnit___block_invoke(uint64_t a1, void *a2, uint64_t a3, _BYTE *a4)

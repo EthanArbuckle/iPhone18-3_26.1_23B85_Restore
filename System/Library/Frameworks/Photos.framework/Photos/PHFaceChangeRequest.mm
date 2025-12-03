@@ -1,9 +1,9 @@
 @interface PHFaceChangeRequest
-+ (id)changeRequestForFace:(id)a3;
++ (id)changeRequestForFace:(id)face;
 + (id)creationRequestForFace;
-+ (void)deleteFaces:(id)a3;
-- (BOOL)_associateFace:(id)a3 withPersonInPhotoLibrary:(id)a4 error:(id *)a5;
-- (BOOL)applyMutationsToManagedObject:(id)a3 photoLibrary:(id)a4 error:(id *)a5;
++ (void)deleteFaces:(id)faces;
+- (BOOL)_associateFace:(id)face withPersonInPhotoLibrary:(id)library error:(id *)error;
+- (BOOL)applyMutationsToManagedObject:(id)object photoLibrary:(id)library error:(id *)error;
 - (BOOL)hasFaceMask;
 - (BOOL)hasSmile;
 - (BOOL)isHidden;
@@ -12,13 +12,13 @@
 - (BOOL)isLeftEyeClosed;
 - (BOOL)isRightEyeClosed;
 - (BOOL)manual;
-- (BOOL)validateInsertIntoPhotoLibrary:(id)a3 error:(id *)a4;
-- (BOOL)validateMutationsToManagedObject:(id)a3 error:(id *)a4;
+- (BOOL)validateInsertIntoPhotoLibrary:(id)library error:(id *)error;
+- (BOOL)validateMutationsToManagedObject:(id)object error:(id *)error;
 - (CGRect)gazeRect;
 - (NSString)groupingIdentifier;
 - (NSString)thumbnailIdentifier;
-- (PHFaceChangeRequest)initWithUUID:(id)a3 objectID:(id)a4;
-- (PHFaceChangeRequest)initWithXPCDict:(id)a3 request:(id)a4 clientAuthorization:(id)a5;
+- (PHFaceChangeRequest)initWithUUID:(id)d objectID:(id)iD;
+- (PHFaceChangeRequest)initWithXPCDict:(id)dict request:(id)request clientAuthorization:(id)authorization;
 - (PHObjectPlaceholder)placeholderForCreatedFace;
 - (double)blurScore;
 - (double)bodyCenterX;
@@ -37,9 +37,9 @@
 - (double)startTime;
 - (float)gazeAngle;
 - (float)gazeConfidence;
-- (id)_copyPersonWithPersonUUID:(id)a3 toLibrary:(id)a4 error:(id *)a5;
+- (id)_copyPersonWithPersonUUID:(id)d toLibrary:(id)library error:(id *)error;
 - (id)adjustmentVersion;
-- (id)createManagedObjectForInsertIntoPhotoLibrary:(id)a3 error:(id *)a4;
+- (id)createManagedObjectForInsertIntoPhotoLibrary:(id)library error:(id *)error;
 - (id)initForNewObject;
 - (int64_t)clusterSequenceNumber;
 - (int64_t)faceAlgorithmVersion;
@@ -64,83 +64,83 @@
 - (unsigned)sexType;
 - (unsigned)skintoneType;
 - (unsigned)smileType;
-- (void)associateFaceWithPersonUUID:(id)a3;
-- (void)encodeToXPCDict:(id)a3;
-- (void)setAdjustmentVersion:(id)a3;
-- (void)setAgeType:(unsigned __int16)a3;
-- (void)setBlurScore:(double)a3;
-- (void)setBodyCenterX:(double)a3;
-- (void)setBodyCenterY:(double)a3;
-- (void)setBodyHeight:(double)a3;
-- (void)setBodyWidth:(double)a3;
-- (void)setCenterX:(double)a3;
-- (void)setCenterY:(double)a3;
-- (void)setClusterSequenceNumber:(int64_t)a3;
-- (void)setDetectionTraits:(id)a3;
-- (void)setDetectionType:(signed __int16)a3;
-- (void)setDuration:(double)a3;
-- (void)setEthnicityType:(unsigned __int16)a3;
-- (void)setEyeMakeupType:(unsigned __int16)a3;
-- (void)setEyesState:(unsigned __int16)a3;
-- (void)setFaceAlgorithmVersion:(int64_t)a3;
-- (void)setFaceExpressionType:(unsigned __int16)a3;
-- (void)setFaceprint:(id)a3;
-- (void)setFacialHairType:(unsigned __int16)a3;
-- (void)setGazeAngle:(float)a3;
-- (void)setGazeCenterX:(double)a3;
-- (void)setGazeCenterY:(double)a3;
-- (void)setGazeConfidence:(float)a3;
-- (void)setGazeRect:(CGRect)a3;
-- (void)setGazeType:(unsigned __int16)a3;
-- (void)setGlassesType:(unsigned __int16)a3;
-- (void)setGroupingIdentifier:(id)a3;
-- (void)setHairColorType:(unsigned __int16)a3;
-- (void)setHairType:(unsigned __int16)a3;
-- (void)setHasFaceMask:(BOOL)a3;
-- (void)setHasSmile:(BOOL)a3;
-- (void)setHeadgearType:(unsigned __int16)a3;
-- (void)setHidden:(BOOL)a3;
-- (void)setInTrash:(BOOL)a3;
-- (void)setIsInVIPModel:(BOOL)a3;
-- (void)setLeftEyeClosed:(BOOL)a3;
-- (void)setLipMakeupType:(unsigned __int16)a3;
-- (void)setManual:(BOOL)a3;
-- (void)setNameSource:(int64_t)a3;
-- (void)setPoseType:(unsigned __int16)a3;
-- (void)setPoseYaw:(double)a3;
-- (void)setQuality:(double)a3;
-- (void)setQualityMeasure:(int64_t)a3;
-- (void)setRightEyeClosed:(BOOL)a3;
-- (void)setRoll:(double)a3;
-- (void)setSexType:(unsigned __int16)a3;
-- (void)setShouldClearFaceCropGenerationState:(BOOL)a3;
-- (void)setSize:(double)a3;
-- (void)setSkintoneType:(unsigned __int16)a3;
-- (void)setSmileType:(unsigned __int16)a3;
-- (void)setSourceHeight:(int64_t)a3;
-- (void)setSourceWidth:(int64_t)a3;
-- (void)setStartTime:(double)a3;
-- (void)setThumbnailIdentifier:(id)a3;
-- (void)setVuObservationID:(int64_t)a3;
+- (void)associateFaceWithPersonUUID:(id)d;
+- (void)encodeToXPCDict:(id)dict;
+- (void)setAdjustmentVersion:(id)version;
+- (void)setAgeType:(unsigned __int16)type;
+- (void)setBlurScore:(double)score;
+- (void)setBodyCenterX:(double)x;
+- (void)setBodyCenterY:(double)y;
+- (void)setBodyHeight:(double)height;
+- (void)setBodyWidth:(double)width;
+- (void)setCenterX:(double)x;
+- (void)setCenterY:(double)y;
+- (void)setClusterSequenceNumber:(int64_t)number;
+- (void)setDetectionTraits:(id)traits;
+- (void)setDetectionType:(signed __int16)type;
+- (void)setDuration:(double)duration;
+- (void)setEthnicityType:(unsigned __int16)type;
+- (void)setEyeMakeupType:(unsigned __int16)type;
+- (void)setEyesState:(unsigned __int16)state;
+- (void)setFaceAlgorithmVersion:(int64_t)version;
+- (void)setFaceExpressionType:(unsigned __int16)type;
+- (void)setFaceprint:(id)faceprint;
+- (void)setFacialHairType:(unsigned __int16)type;
+- (void)setGazeAngle:(float)angle;
+- (void)setGazeCenterX:(double)x;
+- (void)setGazeCenterY:(double)y;
+- (void)setGazeConfidence:(float)confidence;
+- (void)setGazeRect:(CGRect)rect;
+- (void)setGazeType:(unsigned __int16)type;
+- (void)setGlassesType:(unsigned __int16)type;
+- (void)setGroupingIdentifier:(id)identifier;
+- (void)setHairColorType:(unsigned __int16)type;
+- (void)setHairType:(unsigned __int16)type;
+- (void)setHasFaceMask:(BOOL)mask;
+- (void)setHasSmile:(BOOL)smile;
+- (void)setHeadgearType:(unsigned __int16)type;
+- (void)setHidden:(BOOL)hidden;
+- (void)setInTrash:(BOOL)trash;
+- (void)setIsInVIPModel:(BOOL)model;
+- (void)setLeftEyeClosed:(BOOL)closed;
+- (void)setLipMakeupType:(unsigned __int16)type;
+- (void)setManual:(BOOL)manual;
+- (void)setNameSource:(int64_t)source;
+- (void)setPoseType:(unsigned __int16)type;
+- (void)setPoseYaw:(double)yaw;
+- (void)setQuality:(double)quality;
+- (void)setQualityMeasure:(int64_t)measure;
+- (void)setRightEyeClosed:(BOOL)closed;
+- (void)setRoll:(double)roll;
+- (void)setSexType:(unsigned __int16)type;
+- (void)setShouldClearFaceCropGenerationState:(BOOL)state;
+- (void)setSize:(double)size;
+- (void)setSkintoneType:(unsigned __int16)type;
+- (void)setSmileType:(unsigned __int16)type;
+- (void)setSourceHeight:(int64_t)height;
+- (void)setSourceWidth:(int64_t)width;
+- (void)setStartTime:(double)time;
+- (void)setThumbnailIdentifier:(id)identifier;
+- (void)setVuObservationID:(int64_t)d;
 @end
 
 @implementation PHFaceChangeRequest
 
-- (void)setShouldClearFaceCropGenerationState:(BOOL)a3
+- (void)setShouldClearFaceCropGenerationState:(BOOL)state
 {
-  self->_shouldClearFaceCropGenerationState = a3;
-  if (a3)
+  self->_shouldClearFaceCropGenerationState = state;
+  if (state)
   {
     [(PHChangeRequest *)self didMutate];
   }
 }
 
-- (id)_copyPersonWithPersonUUID:(id)a3 toLibrary:(id)a4 error:(id *)a5
+- (id)_copyPersonWithPersonUUID:(id)d toLibrary:(id)library error:(id *)error
 {
   v40 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = [v9 managedObjectContext];
+  dCopy = d;
+  libraryCopy = library;
+  managedObjectContext = [libraryCopy managedObjectContext];
   associatedPersonLibraryURL = self->_associatedPersonLibraryURL;
   if (associatedPersonLibraryURL)
   {
@@ -180,15 +180,15 @@ LABEL_6:
   }
 
 LABEL_3:
-  v33 = a5;
-  v14 = v10;
-  v15 = [MEMORY[0x1E69BE4C8] newTransferOptionsForPersonFromSystemToSyndication];
-  [v15 setSkipContextSave:1];
-  v16 = [objc_alloc(MEMORY[0x1E69BE4C0]) initWithSourceLibrary:v12 destinationLibrary:v9 options:v15];
+  errorCopy = error;
+  v14 = managedObjectContext;
+  newTransferOptionsForPersonFromSystemToSyndication = [MEMORY[0x1E69BE4C8] newTransferOptionsForPersonFromSystemToSyndication];
+  [newTransferOptionsForPersonFromSystemToSyndication setSkipContextSave:1];
+  v16 = [objc_alloc(MEMORY[0x1E69BE4C0]) initWithSourceLibrary:v12 destinationLibrary:libraryCopy options:newTransferOptionsForPersonFromSystemToSyndication];
   v35[0] = 0;
-  v17 = [v16 transferPersonWithUuid:v8 error:v35];
+  v17 = [v16 transferPersonWithUuid:dCopy error:v35];
   v18 = v35[0];
-  v19 = v8;
+  v19 = dCopy;
   v20 = v18;
   if (v17)
   {
@@ -216,18 +216,18 @@ LABEL_3:
   }
 
   v27 = v23;
-  v10 = v14;
-  v8 = v21;
+  managedObjectContext = v14;
+  dCopy = v21;
   v13 = v32;
-  a5 = v34;
+  error = v34;
   if (!v22)
   {
 LABEL_15:
-    if (a5)
+    if (error)
     {
       v30 = v27;
       v22 = 0;
-      *a5 = v27;
+      *error = v27;
     }
 
     else
@@ -239,27 +239,27 @@ LABEL_15:
   return v22;
 }
 
-- (BOOL)_associateFace:(id)a3 withPersonInPhotoLibrary:(id)a4 error:(id *)a5
+- (BOOL)_associateFace:(id)face withPersonInPhotoLibrary:(id)library error:(id *)error
 {
   v38 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
+  faceCopy = face;
+  libraryCopy = library;
   if ((PLIsAssetsd() & 1) == 0)
   {
-    v30 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v30 handleFailureInMethod:a2 object:self file:@"PHFaceChangeRequest.m" lineNumber:423 description:{@"Invalid parameter not satisfying: %@", @"PLIsAssetsd()"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHFaceChangeRequest.m" lineNumber:423 description:{@"Invalid parameter not satisfying: %@", @"PLIsAssetsd()"}];
   }
 
   if (!self->_didSetAssociatedPersonUUID)
   {
-    v31 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v31 handleFailureInMethod:a2 object:self file:@"PHFaceChangeRequest.m" lineNumber:424 description:{@"Invalid parameter not satisfying: %@", @"_didSetAssociatedPersonUUID"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PHFaceChangeRequest.m" lineNumber:424 description:{@"Invalid parameter not satisfying: %@", @"_didSetAssociatedPersonUUID"}];
   }
 
   if (self->_associatedPersonUUID)
   {
-    v11 = [v10 managedObjectContext];
-    v12 = [MEMORY[0x1E69BE608] personWithUUID:self->_associatedPersonUUID inManagedObjectContext:v11];
+    managedObjectContext = [libraryCopy managedObjectContext];
+    v12 = [MEMORY[0x1E69BE608] personWithUUID:self->_associatedPersonUUID inManagedObjectContext:managedObjectContext];
     if (v12)
     {
       v13 = v12;
@@ -270,7 +270,7 @@ LABEL_15:
     {
       associatedPersonUUID = self->_associatedPersonUUID;
       v33 = 0;
-      v13 = [(PHFaceChangeRequest *)self _copyPersonWithPersonUUID:associatedPersonUUID toLibrary:v10 error:&v33];
+      v13 = [(PHFaceChangeRequest *)self _copyPersonWithPersonUUID:associatedPersonUUID toLibrary:libraryCopy error:&v33];
       v14 = v33;
       if (!v13)
       {
@@ -278,20 +278,20 @@ LABEL_16:
         v25 = PLPhotoKitGetLog();
         if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
         {
-          v26 = [v9 uuid];
+          uuid = [faceCopy uuid];
           v27 = self->_associatedPersonUUID;
           *buf = 138543618;
-          v35 = v26;
+          v35 = uuid;
           v36 = 2114;
           v37 = v27;
           _os_log_impl(&dword_19C86F000, v25, OS_LOG_TYPE_ERROR, "Unable to associate face %{public}@ with target person %{public}@ (person not found)", buf, 0x16u);
         }
 
-        if (a5)
+        if (error)
         {
           v28 = v14;
           v17 = 0;
-          *a5 = v14;
+          *error = v14;
         }
 
         else
@@ -305,27 +305,27 @@ LABEL_16:
 
     if ([v13 verifiedType] == -2)
     {
-      v19 = [v13 mergeTargetPerson];
+      mergeTargetPerson = [v13 mergeTargetPerson];
 
       v20 = PLPhotoKitGetLog();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
       {
-        v32 = v10;
+        v32 = libraryCopy;
         v21 = v14;
-        v22 = a5;
+        errorCopy = error;
         v23 = self->_associatedPersonUUID;
-        v24 = [v19 personUUID];
+        personUUID = [mergeTargetPerson personUUID];
         *buf = 138543618;
         v35 = v23;
-        a5 = v22;
+        error = errorCopy;
         v14 = v21;
-        v10 = v32;
+        libraryCopy = v32;
         v36 = 2114;
-        v37 = v24;
+        v37 = personUUID;
         _os_log_impl(&dword_19C86F000, v20, OS_LOG_TYPE_INFO, "Attempt to associate a face with a tombstone person %{public}@, will associate with merge target %{public}@", buf, 0x16u);
       }
 
-      if (!v19)
+      if (!mergeTargetPerson)
       {
         goto LABEL_16;
       }
@@ -333,10 +333,10 @@ LABEL_16:
 
     else
     {
-      v19 = v13;
+      mergeTargetPerson = v13;
     }
 
-    [v9 setAssociatedPerson:v19];
+    [faceCopy setAssociatedPerson:mergeTargetPerson];
 
     v17 = 1;
 LABEL_22:
@@ -347,49 +347,49 @@ LABEL_22:
   v15 = PLPhotoKitGetLog();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
   {
-    v16 = [v9 uuid];
+    uuid2 = [faceCopy uuid];
     *buf = 138543362;
-    v35 = v16;
+    v35 = uuid2;
     _os_log_impl(&dword_19C86F000, v15, OS_LOG_TYPE_INFO, "setting person relationship to nil for face %{public}@", buf, 0xCu);
   }
 
-  [v9 setAssociatedPerson:0];
+  [faceCopy setAssociatedPerson:0];
   v17 = 1;
 LABEL_23:
 
   return v17;
 }
 
-- (void)associateFaceWithPersonUUID:(id)a3
+- (void)associateFaceWithPersonUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   [(PHChangeRequest *)self didMutate];
   self->_didSetAssociatedPersonUUID = 1;
   associatedPersonUUID = self->_associatedPersonUUID;
-  self->_associatedPersonUUID = v4;
+  self->_associatedPersonUUID = dCopy;
 }
 
-- (void)setNameSource:(int64_t)a3
+- (void)setNameSource:(int64_t)source
 {
-  v3 = a3;
+  sourceCopy = source;
   [(PHChangeRequest *)self didMutate];
   self->_didSetNameSource = 1;
-  self->_nameSource = v3;
+  self->_nameSource = sourceCopy;
 }
 
-- (void)setDetectionTraits:(id)a3
+- (void)setDetectionTraits:(id)traits
 {
-  v5 = a3;
+  traitsCopy = traits;
   [(PHChangeRequest *)self didMutate];
-  v4 = v5;
+  array = traitsCopy;
   self->_didSetDetectionTraits = 1;
-  if (!v5)
+  if (!traitsCopy)
   {
-    v4 = [MEMORY[0x1E695DEC8] array];
+    array = [MEMORY[0x1E695DEC8] array];
   }
 
-  v6 = v4;
-  [(NSMutableArray *)self->_detectionTraits setArray:v4];
+  v6 = array;
+  [(NSMutableArray *)self->_detectionTraits setArray:array];
 }
 
 - (CGRect)gazeRect
@@ -402,12 +402,12 @@ LABEL_23:
   return result;
 }
 
-- (void)setGazeRect:(CGRect)a3
+- (void)setGazeRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   [(PHChangeRequest *)self didMutate];
   self->_didSetGazeRect = 1;
   self->_gazeRectString = [MEMORY[0x1E69BE3D0] stringFromGazeRect:{x, y, width, height}];
@@ -415,26 +415,26 @@ LABEL_23:
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setFaceprint:(id)a3
+- (void)setFaceprint:(id)faceprint
 {
-  v4 = a3;
+  faceprintCopy = faceprint;
   [(PHChangeRequest *)self didMutate];
   self->_didSetFaceprint = 1;
   faceprint = self->_faceprint;
-  self->_faceprint = v4;
+  self->_faceprint = faceprintCopy;
 }
 
-- (id)createManagedObjectForInsertIntoPhotoLibrary:(id)a3 error:(id *)a4
+- (id)createManagedObjectForInsertIntoPhotoLibrary:(id)library error:(id *)error
 {
   v15[1] = *MEMORY[0x1E69E9840];
   v6 = MEMORY[0x1E69BE3D0];
-  v7 = [a3 managedObjectContext];
-  v8 = [v6 insertInManagedObjectContext:v7];
+  managedObjectContext = [library managedObjectContext];
+  v8 = [v6 insertInManagedObjectContext:managedObjectContext];
 
-  if (!a4 || v8)
+  if (!error || v8)
   {
-    v12 = [(PHChangeRequest *)self uuid];
-    [v8 setUuid:v12];
+    uuid = [(PHChangeRequest *)self uuid];
+    [v8 setUuid:uuid];
   }
 
   else
@@ -444,38 +444,38 @@ LABEL_23:
     v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to create face"];
     v15[0] = v10;
     v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:&v14 count:1];
-    *a4 = [v9 ph_errorWithDomain:@"PHPhotosErrorDomain" code:-1 userInfo:v11];
+    *error = [v9 ph_errorWithDomain:@"PHPhotosErrorDomain" code:-1 userInfo:v11];
   }
 
   return v8;
 }
 
-- (BOOL)validateInsertIntoPhotoLibrary:(id)a3 error:(id *)a4
+- (BOOL)validateInsertIntoPhotoLibrary:(id)library error:(id *)error
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v5 = [(PHFaceChangeRequest *)self detectionType];
-  v6 = v5;
-  if (a4 && v5 == 2)
+  detectionType = [(PHFaceChangeRequest *)self detectionType];
+  v6 = detectionType;
+  if (error && detectionType == 2)
   {
     v7 = MEMORY[0x1E696ABC0];
     v10 = *MEMORY[0x1E696A278];
     v11[0] = @"PHDetectionTypePet is not a valid value to assign to PHFace.detectionType";
     v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
-    *a4 = [v7 ph_errorWithDomain:@"PHPhotosErrorDomain" code:3111 userInfo:v8];
+    *error = [v7 ph_errorWithDomain:@"PHPhotosErrorDomain" code:3111 userInfo:v8];
   }
 
   return v6 != 2;
 }
 
-- (BOOL)applyMutationsToManagedObject:(id)a3 photoLibrary:(id)a4 error:(id *)a5
+- (BOOL)applyMutationsToManagedObject:(id)object photoLibrary:(id)library error:(id *)error
 {
   v62 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 nameSource];
-  v10 = [(PHChangeRequest *)self helper];
+  objectCopy = object;
+  libraryCopy = library;
+  nameSource = [objectCopy nameSource];
+  helper = [(PHChangeRequest *)self helper];
   v59 = 0;
-  v11 = [v10 applyMutationsToManagedObject:v7 error:&v59];
+  v11 = [helper applyMutationsToManagedObject:objectCopy error:&v59];
   v12 = v59;
 
   if (!v11)
@@ -486,25 +486,25 @@ LABEL_23:
 
   if (self->_didSetNameSource)
   {
-    [v7 setEffectiveNameSource:self->_nameSource];
+    [objectCopy setEffectiveNameSource:self->_nameSource];
   }
 
-  if ([v7 effectiveNameSource] == 1 && v9 != 1)
+  if ([objectCopy effectiveNameSource] == 1 && nameSource != 1)
   {
-    [v7 setConfirmedFaceCropGenerationState:1];
+    [objectCopy setConfirmedFaceCropGenerationState:1];
   }
 
   if (self->_didSetDetectionTraits)
   {
     v13 = [MEMORY[0x1E695DFA8] set];
-    v14 = [v7 managedObjectContext];
+    managedObjectContext = [objectCopy managedObjectContext];
     v55 = 0u;
     v56 = 0u;
     v57 = 0u;
     v58 = 0u;
-    v48 = v7;
-    v15 = [v7 detectionTraits];
-    v16 = [v15 countByEnumeratingWithState:&v55 objects:v61 count:16];
+    v48 = objectCopy;
+    detectionTraits = [objectCopy detectionTraits];
+    v16 = [detectionTraits countByEnumeratingWithState:&v55 objects:v61 count:16];
     if (v16)
     {
       v17 = v16;
@@ -515,26 +515,26 @@ LABEL_23:
         {
           if (*v56 != v18)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(detectionTraits);
           }
 
-          [v14 deleteObject:*(*(&v55 + 1) + 8 * i)];
+          [managedObjectContext deleteObject:*(*(&v55 + 1) + 8 * i)];
         }
 
-        v17 = [v15 countByEnumeratingWithState:&v55 objects:v61 count:16];
+        v17 = [detectionTraits countByEnumeratingWithState:&v55 objects:v61 count:16];
       }
 
       while (v17);
     }
 
     v45 = v12;
-    v47 = v8;
+    v47 = libraryCopy;
 
     v53 = 0u;
     v54 = 0u;
     v51 = 0u;
     v52 = 0u;
-    v46 = self;
+    selfCopy = self;
     obj = self->_detectionTraits;
     v20 = [(NSMutableArray *)obj countByEnumeratingWithState:&v51 objects:v60 count:16];
     if (v20)
@@ -552,16 +552,16 @@ LABEL_23:
 
           v24 = *(*(&v51 + 1) + 8 * j);
           v25 = MEMORY[0x1E69BE3E8];
-          v26 = [v24 type];
-          v27 = [v24 value];
+          type = [v24 type];
+          value = [v24 value];
           [v24 score];
           v29 = v28;
           [v24 startTime];
           v31 = v30;
           [v24 duration];
           v33 = v32;
-          v34 = [v24 thumbnailIdentifier];
-          v35 = [v25 insertIntoManagedObjectContext:v14 type:v26 value:v27 score:v34 startTime:v29 duration:v31 thumbnailIdentifier:v33];
+          thumbnailIdentifier = [v24 thumbnailIdentifier];
+          v35 = [v25 insertIntoManagedObjectContext:managedObjectContext type:type value:value score:thumbnailIdentifier startTime:v29 duration:v31 thumbnailIdentifier:v33];
 
           [v13 addObject:v35];
         }
@@ -572,41 +572,41 @@ LABEL_23:
       while (v21);
     }
 
-    v7 = v48;
+    objectCopy = v48;
     [v48 setDetectionTraits:v13];
 
-    self = v46;
-    v8 = v47;
+    self = selfCopy;
+    libraryCopy = v47;
     v12 = v45;
   }
 
   if (self->_didSetFaceprint)
   {
-    [v7 removeFaceprint];
+    [objectCopy removeFaceprint];
     if (self->_faceprint)
     {
       v36 = MEMORY[0x1E69BE3E0];
-      v37 = [v7 managedObjectContext];
-      v38 = [v36 insertInManagedObjectContext:v37];
+      managedObjectContext2 = [objectCopy managedObjectContext];
+      v38 = [v36 insertInManagedObjectContext:managedObjectContext2];
 
-      [v38 setFace:v7];
-      v39 = [(PHFaceprint *)self->_faceprint faceprintData];
-      [v38 setData:v39];
+      [v38 setFace:objectCopy];
+      faceprintData = [(PHFaceprint *)self->_faceprint faceprintData];
+      [v38 setData:faceprintData];
 
       [v38 setFaceprintVersion:{-[PHFaceprint faceprintVersion](self->_faceprint, "faceprintVersion")}];
-      [v7 setFaceprint:v38];
+      [objectCopy setFaceprint:v38];
     }
   }
 
   if (self->_didSetAssociatedPersonUUID)
   {
     v50 = v12;
-    v40 = [(PHFaceChangeRequest *)self _associateFace:v7 withPersonInPhotoLibrary:v8 error:&v50];
+    v40 = [(PHFaceChangeRequest *)self _associateFace:objectCopy withPersonInPhotoLibrary:libraryCopy error:&v50];
     v41 = v50;
 
     if (self->_didSetGazeRect)
     {
-      [v7 setGazeRectString:self->_gazeRectString];
+      [objectCopy setGazeRectString:self->_gazeRectString];
       if (!v40)
       {
 LABEL_29:
@@ -626,38 +626,38 @@ LABEL_29:
 
   else if (self->_didSetGazeRect)
   {
-    [v7 setGazeRectString:self->_gazeRectString];
+    [objectCopy setGazeRectString:self->_gazeRectString];
   }
 
   if (self->_shouldClearFaceCropGenerationState)
   {
-    [v7 setConfirmedFaceCropGenerationState:0];
+    [objectCopy setConfirmedFaceCropGenerationState:0];
     v43 = [MEMORY[0x1E695DFD8] set];
-    [v7 setRejectedPersonsNeedingFaceCrops:v43];
+    [objectCopy setRejectedPersonsNeedingFaceCrops:v43];
   }
 
-  [v7 fixAssetRelationshipsForFaceTorsoOrTemporal];
-  [v7 fixPersonRelationshipsForFaceTorsoOrTemporal];
+  [objectCopy fixAssetRelationshipsForFaceTorsoOrTemporal];
+  [objectCopy fixPersonRelationshipsForFaceTorsoOrTemporal];
   v42 = 1;
 LABEL_38:
 
   return v42;
 }
 
-- (BOOL)validateMutationsToManagedObject:(id)a3 error:(id *)a4
+- (BOOL)validateMutationsToManagedObject:(id)object error:(id *)error
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(PHChangeRequest *)self helper];
+  objectCopy = object;
+  helper = [(PHChangeRequest *)self helper];
   v20 = 0;
-  v8 = [v7 validateMutationsToManagedObject:v6 error:&v20];
+  v8 = [helper validateMutationsToManagedObject:objectCopy error:&v20];
 
   v9 = v20;
   if (v8)
   {
-    v10 = [(PHChangeRequest *)self helper];
-    v11 = [v10 mutations];
-    v12 = [v11 objectForKeyedSubscript:@"detectionType"];
+    helper2 = [(PHChangeRequest *)self helper];
+    mutations = [helper2 mutations];
+    v12 = [mutations objectForKeyedSubscript:@"detectionType"];
     v13 = [v12 isEqual:&unk_1F102CFF8];
 
     if (!v13)
@@ -675,11 +675,11 @@ LABEL_38:
     v9 = v16;
   }
 
-  if (a4)
+  if (error)
   {
     v17 = v9;
     v18 = 0;
-    *a4 = v9;
+    *error = v9;
   }
 
   else
@@ -692,137 +692,137 @@ LABEL_8:
   return v18;
 }
 
-- (void)setThumbnailIdentifier:(id)a3
+- (void)setThumbnailIdentifier:(id)identifier
 {
-  v10 = a3;
-  v4 = [(PHChangeRequest *)self helper];
-  [v4 didMutate];
+  identifierCopy = identifier;
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v5 = [(PHChangeRequest *)self helper];
-  v6 = [v5 mutations];
-  v7 = v6;
-  if (v10)
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  v7 = mutations;
+  if (identifierCopy)
   {
-    [v6 setObject:v10 forKeyedSubscript:@"thumbnailIdentifier"];
+    [mutations setObject:identifierCopy forKeyedSubscript:@"thumbnailIdentifier"];
 
-    v8 = [(PHChangeRequest *)self helper];
-    v9 = [v8 nilMutations];
-    [v9 removeObject:@"thumbnailIdentifier"];
+    helper3 = [(PHChangeRequest *)self helper];
+    nilMutations = [helper3 nilMutations];
+    [nilMutations removeObject:@"thumbnailIdentifier"];
   }
 
   else
   {
-    [v6 removeObjectForKey:@"thumbnailIdentifier"];
+    [mutations removeObjectForKey:@"thumbnailIdentifier"];
 
-    v8 = [(PHChangeRequest *)self helper];
-    v9 = [v8 nilMutations];
-    [v9 addObject:@"thumbnailIdentifier"];
+    helper3 = [(PHChangeRequest *)self helper];
+    nilMutations = [helper3 nilMutations];
+    [nilMutations addObject:@"thumbnailIdentifier"];
   }
 }
 
 - (NSString)thumbnailIdentifier
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"thumbnailIdentifier"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"thumbnailIdentifier"];
 
   return v5;
 }
 
-- (void)setAdjustmentVersion:(id)a3
+- (void)setAdjustmentVersion:(id)version
 {
-  v10 = a3;
-  v4 = [(PHChangeRequest *)self helper];
-  [v4 didMutate];
+  versionCopy = version;
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v5 = [(PHChangeRequest *)self helper];
-  v6 = [v5 mutations];
-  v7 = v6;
-  if (v10)
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  v7 = mutations;
+  if (versionCopy)
   {
-    [v6 setObject:v10 forKeyedSubscript:@"adjustmentVersion"];
+    [mutations setObject:versionCopy forKeyedSubscript:@"adjustmentVersion"];
 
-    v8 = [(PHChangeRequest *)self helper];
-    v9 = [v8 nilMutations];
-    [v9 removeObject:@"adjustmentVersion"];
+    helper3 = [(PHChangeRequest *)self helper];
+    nilMutations = [helper3 nilMutations];
+    [nilMutations removeObject:@"adjustmentVersion"];
   }
 
   else
   {
-    [v6 removeObjectForKey:@"adjustmentVersion"];
+    [mutations removeObjectForKey:@"adjustmentVersion"];
 
-    v8 = [(PHChangeRequest *)self helper];
-    v9 = [v8 nilMutations];
-    [v9 addObject:@"adjustmentVersion"];
+    helper3 = [(PHChangeRequest *)self helper];
+    nilMutations = [helper3 nilMutations];
+    [nilMutations addObject:@"adjustmentVersion"];
   }
 }
 
 - (id)adjustmentVersion
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"adjustmentVersion"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"adjustmentVersion"];
 
   return v5;
 }
 
-- (void)setGroupingIdentifier:(id)a3
+- (void)setGroupingIdentifier:(id)identifier
 {
-  v10 = a3;
-  v4 = [(PHChangeRequest *)self helper];
-  [v4 didMutate];
+  identifierCopy = identifier;
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v5 = [(PHChangeRequest *)self helper];
-  v6 = [v5 mutations];
-  v7 = v6;
-  if (v10)
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  v7 = mutations;
+  if (identifierCopy)
   {
-    [v6 setObject:v10 forKeyedSubscript:@"groupingIdentifier"];
+    [mutations setObject:identifierCopy forKeyedSubscript:@"groupingIdentifier"];
 
-    v8 = [(PHChangeRequest *)self helper];
-    v9 = [v8 nilMutations];
-    [v9 removeObject:@"groupingIdentifier"];
+    helper3 = [(PHChangeRequest *)self helper];
+    nilMutations = [helper3 nilMutations];
+    [nilMutations removeObject:@"groupingIdentifier"];
   }
 
   else
   {
-    [v6 removeObjectForKey:@"groupingIdentifier"];
+    [mutations removeObjectForKey:@"groupingIdentifier"];
 
-    v8 = [(PHChangeRequest *)self helper];
-    v9 = [v8 nilMutations];
-    [v9 addObject:@"groupingIdentifier"];
+    helper3 = [(PHChangeRequest *)self helper];
+    nilMutations = [helper3 nilMutations];
+    [nilMutations addObject:@"groupingIdentifier"];
   }
 }
 
 - (NSString)groupingIdentifier
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"groupingIdentifier"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"groupingIdentifier"];
 
   return v5;
 }
 
-- (void)setDuration:(double)a3
+- (void)setDuration:(double)duration
 {
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 didMutate];
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v8 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-  v6 = [(PHChangeRequest *)self helper];
-  v7 = [v6 mutations];
-  [v7 setObject:v8 forKeyedSubscript:@"duration"];
+  v8 = [MEMORY[0x1E696AD98] numberWithDouble:duration];
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  [mutations setObject:v8 forKeyedSubscript:@"duration"];
 }
 
 - (double)duration
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"duration"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"duration"];
 
   [v5 doubleValue];
   v7 = v6;
@@ -830,23 +830,23 @@ LABEL_8:
   return v7;
 }
 
-- (void)setStartTime:(double)a3
+- (void)setStartTime:(double)time
 {
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 didMutate];
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v8 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-  v6 = [(PHChangeRequest *)self helper];
-  v7 = [v6 mutations];
-  [v7 setObject:v8 forKeyedSubscript:@"startTime"];
+  v8 = [MEMORY[0x1E696AD98] numberWithDouble:time];
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  [mutations setObject:v8 forKeyedSubscript:@"startTime"];
 }
 
 - (double)startTime
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"startTime"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"startTime"];
 
   [v5 doubleValue];
   v7 = v6;
@@ -854,24 +854,24 @@ LABEL_8:
   return v7;
 }
 
-- (void)setGazeConfidence:(float)a3
+- (void)setGazeConfidence:(float)confidence
 {
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 didMutate];
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  *&v6 = a3;
+  *&v6 = confidence;
   v9 = [MEMORY[0x1E696AD98] numberWithFloat:v6];
-  v7 = [(PHChangeRequest *)self helper];
-  v8 = [v7 mutations];
-  [v8 setObject:v9 forKeyedSubscript:@"gazeConfidence"];
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  [mutations setObject:v9 forKeyedSubscript:@"gazeConfidence"];
 }
 
 - (float)gazeConfidence
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"gazeConfidence"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"gazeConfidence"];
 
   [v5 floatValue];
   v7 = v6;
@@ -879,24 +879,24 @@ LABEL_8:
   return v7;
 }
 
-- (void)setGazeAngle:(float)a3
+- (void)setGazeAngle:(float)angle
 {
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 didMutate];
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  *&v6 = a3;
+  *&v6 = angle;
   v9 = [MEMORY[0x1E696AD98] numberWithFloat:v6];
-  v7 = [(PHChangeRequest *)self helper];
-  v8 = [v7 mutations];
-  [v8 setObject:v9 forKeyedSubscript:@"gazeAngle"];
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  [mutations setObject:v9 forKeyedSubscript:@"gazeAngle"];
 }
 
 - (float)gazeAngle
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"gazeAngle"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"gazeAngle"];
 
   [v5 floatValue];
   v7 = v6;
@@ -904,23 +904,23 @@ LABEL_8:
   return v7;
 }
 
-- (void)setGazeCenterY:(double)a3
+- (void)setGazeCenterY:(double)y
 {
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 didMutate];
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v8 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-  v6 = [(PHChangeRequest *)self helper];
-  v7 = [v6 mutations];
-  [v7 setObject:v8 forKeyedSubscript:@"gazeCenterY"];
+  v8 = [MEMORY[0x1E696AD98] numberWithDouble:y];
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  [mutations setObject:v8 forKeyedSubscript:@"gazeCenterY"];
 }
 
 - (double)gazeCenterY
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"gazeCenterY"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"gazeCenterY"];
 
   [v5 doubleValue];
   v7 = v6;
@@ -928,23 +928,23 @@ LABEL_8:
   return v7;
 }
 
-- (void)setGazeCenterX:(double)a3
+- (void)setGazeCenterX:(double)x
 {
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 didMutate];
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v8 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-  v6 = [(PHChangeRequest *)self helper];
-  v7 = [v6 mutations];
-  [v7 setObject:v8 forKeyedSubscript:@"gazeCenterX"];
+  v8 = [MEMORY[0x1E696AD98] numberWithDouble:x];
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  [mutations setObject:v8 forKeyedSubscript:@"gazeCenterX"];
 }
 
 - (double)gazeCenterX
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"gazeCenterX"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"gazeCenterX"];
 
   [v5 doubleValue];
   v7 = v6;
@@ -952,436 +952,436 @@ LABEL_8:
   return v7;
 }
 
-- (void)setGazeType:(unsigned __int16)a3
+- (void)setGazeType:(unsigned __int16)type
 {
-  v3 = a3;
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 didMutate];
+  typeCopy = type;
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:v3];
-  v6 = [(PHChangeRequest *)self helper];
-  v7 = [v6 mutations];
-  [v7 setObject:v8 forKeyedSubscript:@"gazeType"];
+  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:typeCopy];
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  [mutations setObject:v8 forKeyedSubscript:@"gazeType"];
 }
 
 - (unsigned)gazeType
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"gazeType"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"gazeType"];
 
-  LOWORD(v3) = [v5 intValue];
-  return v3;
+  LOWORD(helper) = [v5 intValue];
+  return helper;
 }
 
-- (void)setHasFaceMask:(BOOL)a3
+- (void)setHasFaceMask:(BOOL)mask
 {
-  v3 = a3;
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 didMutate];
+  maskCopy = mask;
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v8 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  v6 = [(PHChangeRequest *)self helper];
-  v7 = [v6 mutations];
-  [v7 setObject:v8 forKeyedSubscript:@"hasFaceMask"];
+  v8 = [MEMORY[0x1E696AD98] numberWithBool:maskCopy];
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  [mutations setObject:v8 forKeyedSubscript:@"hasFaceMask"];
 }
 
 - (BOOL)hasFaceMask
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"hasFaceMask"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"hasFaceMask"];
 
-  LOBYTE(v3) = [v5 BOOLValue];
-  return v3;
+  LOBYTE(helper) = [v5 BOOLValue];
+  return helper;
 }
 
-- (void)setEthnicityType:(unsigned __int16)a3
+- (void)setEthnicityType:(unsigned __int16)type
 {
-  v3 = a3;
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 didMutate];
+  typeCopy = type;
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:v3];
-  v6 = [(PHChangeRequest *)self helper];
-  v7 = [v6 mutations];
-  [v7 setObject:v8 forKeyedSubscript:@"ethnicityType"];
+  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:typeCopy];
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  [mutations setObject:v8 forKeyedSubscript:@"ethnicityType"];
 }
 
 - (unsigned)ethnicityType
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"ethnicityType"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"ethnicityType"];
 
-  LOWORD(v3) = [v5 intValue];
-  return v3;
+  LOWORD(helper) = [v5 intValue];
+  return helper;
 }
 
-- (void)setSkintoneType:(unsigned __int16)a3
+- (void)setSkintoneType:(unsigned __int16)type
 {
-  v3 = a3;
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 didMutate];
+  typeCopy = type;
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:v3];
-  v6 = [(PHChangeRequest *)self helper];
-  v7 = [v6 mutations];
-  [v7 setObject:v8 forKeyedSubscript:@"skintoneType"];
+  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:typeCopy];
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  [mutations setObject:v8 forKeyedSubscript:@"skintoneType"];
 }
 
 - (unsigned)skintoneType
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"skintoneType"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"skintoneType"];
 
-  LOWORD(v3) = [v5 intValue];
-  return v3;
+  LOWORD(helper) = [v5 intValue];
+  return helper;
 }
 
-- (void)setPoseType:(unsigned __int16)a3
+- (void)setPoseType:(unsigned __int16)type
 {
-  v3 = a3;
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 didMutate];
+  typeCopy = type;
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:v3];
-  v6 = [(PHChangeRequest *)self helper];
-  v7 = [v6 mutations];
-  [v7 setObject:v8 forKeyedSubscript:@"poseType"];
+  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:typeCopy];
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  [mutations setObject:v8 forKeyedSubscript:@"poseType"];
 }
 
 - (unsigned)poseType
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"poseType"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"poseType"];
 
-  LOWORD(v3) = [v5 intValue];
-  return v3;
+  LOWORD(helper) = [v5 intValue];
+  return helper;
 }
 
-- (void)setHairType:(unsigned __int16)a3
+- (void)setHairType:(unsigned __int16)type
 {
-  v3 = a3;
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 didMutate];
+  typeCopy = type;
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:v3];
-  v6 = [(PHChangeRequest *)self helper];
-  v7 = [v6 mutations];
-  [v7 setObject:v8 forKeyedSubscript:@"hairType"];
+  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:typeCopy];
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  [mutations setObject:v8 forKeyedSubscript:@"hairType"];
 }
 
 - (unsigned)hairType
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"hairType"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"hairType"];
 
-  LOWORD(v3) = [v5 intValue];
-  return v3;
+  LOWORD(helper) = [v5 intValue];
+  return helper;
 }
 
-- (void)setHeadgearType:(unsigned __int16)a3
+- (void)setHeadgearType:(unsigned __int16)type
 {
-  v3 = a3;
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 didMutate];
+  typeCopy = type;
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:v3];
-  v6 = [(PHChangeRequest *)self helper];
-  v7 = [v6 mutations];
-  [v7 setObject:v8 forKeyedSubscript:@"headgearType"];
+  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:typeCopy];
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  [mutations setObject:v8 forKeyedSubscript:@"headgearType"];
 }
 
 - (unsigned)headgearType
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"headgearType"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"headgearType"];
 
-  LOWORD(v3) = [v5 intValue];
-  return v3;
+  LOWORD(helper) = [v5 intValue];
+  return helper;
 }
 
-- (void)setFaceExpressionType:(unsigned __int16)a3
+- (void)setFaceExpressionType:(unsigned __int16)type
 {
-  v3 = a3;
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 didMutate];
+  typeCopy = type;
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:v3];
-  v6 = [(PHChangeRequest *)self helper];
-  v7 = [v6 mutations];
-  [v7 setObject:v8 forKeyedSubscript:@"faceExpressionType"];
+  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:typeCopy];
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  [mutations setObject:v8 forKeyedSubscript:@"faceExpressionType"];
 }
 
 - (unsigned)faceExpressionType
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"faceExpressionType"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"faceExpressionType"];
 
-  LOWORD(v3) = [v5 intValue];
-  return v3;
+  LOWORD(helper) = [v5 intValue];
+  return helper;
 }
 
-- (void)setLipMakeupType:(unsigned __int16)a3
+- (void)setLipMakeupType:(unsigned __int16)type
 {
-  v3 = a3;
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 didMutate];
+  typeCopy = type;
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:v3];
-  v6 = [(PHChangeRequest *)self helper];
-  v7 = [v6 mutations];
-  [v7 setObject:v8 forKeyedSubscript:@"lipMakeupType"];
+  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:typeCopy];
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  [mutations setObject:v8 forKeyedSubscript:@"lipMakeupType"];
 }
 
 - (unsigned)lipMakeupType
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"lipMakeupType"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"lipMakeupType"];
 
-  LOWORD(v3) = [v5 intValue];
-  return v3;
+  LOWORD(helper) = [v5 intValue];
+  return helper;
 }
 
-- (void)setEyeMakeupType:(unsigned __int16)a3
+- (void)setEyeMakeupType:(unsigned __int16)type
 {
-  v3 = a3;
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 didMutate];
+  typeCopy = type;
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:v3];
-  v6 = [(PHChangeRequest *)self helper];
-  v7 = [v6 mutations];
-  [v7 setObject:v8 forKeyedSubscript:@"eyeMakeupType"];
+  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:typeCopy];
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  [mutations setObject:v8 forKeyedSubscript:@"eyeMakeupType"];
 }
 
 - (unsigned)eyeMakeupType
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"eyeMakeupType"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"eyeMakeupType"];
 
-  LOWORD(v3) = [v5 intValue];
-  return v3;
+  LOWORD(helper) = [v5 intValue];
+  return helper;
 }
 
-- (void)setGlassesType:(unsigned __int16)a3
+- (void)setGlassesType:(unsigned __int16)type
 {
-  v3 = a3;
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 didMutate];
+  typeCopy = type;
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:v3];
-  v6 = [(PHChangeRequest *)self helper];
-  v7 = [v6 mutations];
-  [v7 setObject:v8 forKeyedSubscript:@"glassesType"];
+  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:typeCopy];
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  [mutations setObject:v8 forKeyedSubscript:@"glassesType"];
 }
 
 - (unsigned)glassesType
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"glassesType"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"glassesType"];
 
-  LOWORD(v3) = [v5 intValue];
-  return v3;
+  LOWORD(helper) = [v5 intValue];
+  return helper;
 }
 
-- (void)setHairColorType:(unsigned __int16)a3
+- (void)setHairColorType:(unsigned __int16)type
 {
-  v3 = a3;
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 didMutate];
+  typeCopy = type;
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:v3];
-  v6 = [(PHChangeRequest *)self helper];
-  v7 = [v6 mutations];
-  [v7 setObject:v8 forKeyedSubscript:@"hairColorType"];
+  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:typeCopy];
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  [mutations setObject:v8 forKeyedSubscript:@"hairColorType"];
 }
 
 - (unsigned)hairColorType
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"hairColorType"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"hairColorType"];
 
-  LOWORD(v3) = [v5 intValue];
-  return v3;
+  LOWORD(helper) = [v5 intValue];
+  return helper;
 }
 
-- (void)setFacialHairType:(unsigned __int16)a3
+- (void)setFacialHairType:(unsigned __int16)type
 {
-  v3 = a3;
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 didMutate];
+  typeCopy = type;
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:v3];
-  v6 = [(PHChangeRequest *)self helper];
-  v7 = [v6 mutations];
-  [v7 setObject:v8 forKeyedSubscript:@"facialHairType"];
+  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:typeCopy];
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  [mutations setObject:v8 forKeyedSubscript:@"facialHairType"];
 }
 
 - (unsigned)facialHairType
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"facialHairType"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"facialHairType"];
 
-  LOWORD(v3) = [v5 intValue];
-  return v3;
+  LOWORD(helper) = [v5 intValue];
+  return helper;
 }
 
-- (void)setSmileType:(unsigned __int16)a3
+- (void)setSmileType:(unsigned __int16)type
 {
-  v3 = a3;
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 didMutate];
+  typeCopy = type;
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:v3];
-  v6 = [(PHChangeRequest *)self helper];
-  v7 = [v6 mutations];
-  [v7 setObject:v8 forKeyedSubscript:@"smileType"];
+  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:typeCopy];
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  [mutations setObject:v8 forKeyedSubscript:@"smileType"];
 }
 
 - (unsigned)smileType
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"smileType"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"smileType"];
 
-  LOWORD(v3) = [v5 intValue];
-  return v3;
+  LOWORD(helper) = [v5 intValue];
+  return helper;
 }
 
-- (void)setEyesState:(unsigned __int16)a3
+- (void)setEyesState:(unsigned __int16)state
 {
-  v3 = a3;
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 didMutate];
+  stateCopy = state;
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:v3];
-  v6 = [(PHChangeRequest *)self helper];
-  v7 = [v6 mutations];
-  [v7 setObject:v8 forKeyedSubscript:@"eyesState"];
+  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:stateCopy];
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  [mutations setObject:v8 forKeyedSubscript:@"eyesState"];
 }
 
 - (unsigned)eyesState
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"eyesState"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"eyesState"];
 
-  LOWORD(v3) = [v5 intValue];
-  return v3;
+  LOWORD(helper) = [v5 intValue];
+  return helper;
 }
 
-- (void)setSexType:(unsigned __int16)a3
+- (void)setSexType:(unsigned __int16)type
 {
-  v3 = a3;
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 didMutate];
+  typeCopy = type;
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:v3];
-  v6 = [(PHChangeRequest *)self helper];
-  v7 = [v6 mutations];
-  [v7 setObject:v8 forKeyedSubscript:@"genderType"];
+  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:typeCopy];
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  [mutations setObject:v8 forKeyedSubscript:@"genderType"];
 }
 
 - (unsigned)sexType
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"genderType"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"genderType"];
 
-  LOWORD(v3) = [v5 intValue];
-  return v3;
+  LOWORD(helper) = [v5 intValue];
+  return helper;
 }
 
-- (void)setAgeType:(unsigned __int16)a3
+- (void)setAgeType:(unsigned __int16)type
 {
-  v3 = a3;
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 didMutate];
+  typeCopy = type;
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:v3];
-  v6 = [(PHChangeRequest *)self helper];
-  v7 = [v6 mutations];
-  [v7 setObject:v8 forKeyedSubscript:@"ageType"];
+  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:typeCopy];
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  [mutations setObject:v8 forKeyedSubscript:@"ageType"];
 }
 
 - (unsigned)ageType
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"ageType"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"ageType"];
 
-  LOWORD(v3) = [v5 intValue];
-  return v3;
+  LOWORD(helper) = [v5 intValue];
+  return helper;
 }
 
-- (void)setVuObservationID:(int64_t)a3
+- (void)setVuObservationID:(int64_t)d
 {
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 didMutate];
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v8 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  v6 = [(PHChangeRequest *)self helper];
-  v7 = [v6 mutations];
-  [v7 setObject:v8 forKeyedSubscript:@"vuObservationID"];
+  v8 = [MEMORY[0x1E696AD98] numberWithInteger:d];
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  [mutations setObject:v8 forKeyedSubscript:@"vuObservationID"];
 }
 
 - (int64_t)vuObservationID
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"vuObservationID"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"vuObservationID"];
 
-  v6 = [v5 integerValue];
-  return v6;
+  integerValue = [v5 integerValue];
+  return integerValue;
 }
 
-- (void)setQuality:(double)a3
+- (void)setQuality:(double)quality
 {
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 didMutate];
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v8 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-  v6 = [(PHChangeRequest *)self helper];
-  v7 = [v6 mutations];
-  [v7 setObject:v8 forKeyedSubscript:@"quality"];
+  v8 = [MEMORY[0x1E696AD98] numberWithDouble:quality];
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  [mutations setObject:v8 forKeyedSubscript:@"quality"];
 }
 
 - (double)quality
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"quality"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"quality"];
 
   [v5 doubleValue];
   v7 = v6;
@@ -1389,89 +1389,89 @@ LABEL_8:
   return v7;
 }
 
-- (void)setQualityMeasure:(int64_t)a3
+- (void)setQualityMeasure:(int64_t)measure
 {
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 didMutate];
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v8 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  v6 = [(PHChangeRequest *)self helper];
-  v7 = [v6 mutations];
-  [v7 setObject:v8 forKeyedSubscript:@"qualityMeasure"];
+  v8 = [MEMORY[0x1E696AD98] numberWithInteger:measure];
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  [mutations setObject:v8 forKeyedSubscript:@"qualityMeasure"];
 }
 
 - (int64_t)qualityMeasure
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"qualityMeasure"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"qualityMeasure"];
 
-  v6 = [v5 intValue];
-  return v6;
+  intValue = [v5 intValue];
+  return intValue;
 }
 
-- (void)setClusterSequenceNumber:(int64_t)a3
+- (void)setClusterSequenceNumber:(int64_t)number
 {
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 didMutate];
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v8 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  v6 = [(PHChangeRequest *)self helper];
-  v7 = [v6 mutations];
-  [v7 setObject:v8 forKeyedSubscript:@"clusterSequenceNumber"];
+  v8 = [MEMORY[0x1E696AD98] numberWithInteger:number];
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  [mutations setObject:v8 forKeyedSubscript:@"clusterSequenceNumber"];
 }
 
 - (int64_t)clusterSequenceNumber
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"clusterSequenceNumber"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"clusterSequenceNumber"];
 
-  v6 = [v5 intValue];
-  return v6;
+  intValue = [v5 intValue];
+  return intValue;
 }
 
-- (void)setFaceAlgorithmVersion:(int64_t)a3
+- (void)setFaceAlgorithmVersion:(int64_t)version
 {
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 didMutate];
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v8 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  v6 = [(PHChangeRequest *)self helper];
-  v7 = [v6 mutations];
-  [v7 setObject:v8 forKeyedSubscript:@"faceAlgorithmVersion"];
+  v8 = [MEMORY[0x1E696AD98] numberWithInteger:version];
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  [mutations setObject:v8 forKeyedSubscript:@"faceAlgorithmVersion"];
 }
 
 - (int64_t)faceAlgorithmVersion
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"faceAlgorithmVersion"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"faceAlgorithmVersion"];
 
-  v6 = [v5 intValue];
-  return v6;
+  intValue = [v5 intValue];
+  return intValue;
 }
 
-- (void)setPoseYaw:(double)a3
+- (void)setPoseYaw:(double)yaw
 {
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 didMutate];
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v8 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-  v6 = [(PHChangeRequest *)self helper];
-  v7 = [v6 mutations];
-  [v7 setObject:v8 forKeyedSubscript:@"poseYaw"];
+  v8 = [MEMORY[0x1E696AD98] numberWithDouble:yaw];
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  [mutations setObject:v8 forKeyedSubscript:@"poseYaw"];
 }
 
 - (double)poseYaw
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"poseYaw"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"poseYaw"];
 
   [v5 doubleValue];
   v7 = v6;
@@ -1479,69 +1479,69 @@ LABEL_8:
   return v7;
 }
 
-- (void)setRightEyeClosed:(BOOL)a3
+- (void)setRightEyeClosed:(BOOL)closed
 {
-  v3 = a3;
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 didMutate];
+  closedCopy = closed;
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v8 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  v6 = [(PHChangeRequest *)self helper];
-  v7 = [v6 mutations];
-  [v7 setObject:v8 forKeyedSubscript:@"isRightEyeClosed"];
+  v8 = [MEMORY[0x1E696AD98] numberWithBool:closedCopy];
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  [mutations setObject:v8 forKeyedSubscript:@"isRightEyeClosed"];
 }
 
 - (BOOL)isRightEyeClosed
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"isRightEyeClosed"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"isRightEyeClosed"];
 
-  LOBYTE(v3) = [v5 BOOLValue];
-  return v3;
+  LOBYTE(helper) = [v5 BOOLValue];
+  return helper;
 }
 
-- (void)setLeftEyeClosed:(BOOL)a3
+- (void)setLeftEyeClosed:(BOOL)closed
 {
-  v3 = a3;
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 didMutate];
+  closedCopy = closed;
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v8 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  v6 = [(PHChangeRequest *)self helper];
-  v7 = [v6 mutations];
-  [v7 setObject:v8 forKeyedSubscript:@"isLeftEyeClosed"];
+  v8 = [MEMORY[0x1E696AD98] numberWithBool:closedCopy];
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  [mutations setObject:v8 forKeyedSubscript:@"isLeftEyeClosed"];
 }
 
 - (BOOL)isLeftEyeClosed
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"isLeftEyeClosed"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"isLeftEyeClosed"];
 
-  LOBYTE(v3) = [v5 BOOLValue];
-  return v3;
+  LOBYTE(helper) = [v5 BOOLValue];
+  return helper;
 }
 
-- (void)setBlurScore:(double)a3
+- (void)setBlurScore:(double)score
 {
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 didMutate];
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v8 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-  v6 = [(PHChangeRequest *)self helper];
-  v7 = [v6 mutations];
-  [v7 setObject:v8 forKeyedSubscript:@"blurScore"];
+  v8 = [MEMORY[0x1E696AD98] numberWithDouble:score];
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  [mutations setObject:v8 forKeyedSubscript:@"blurScore"];
 }
 
 - (double)blurScore
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"blurScore"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"blurScore"];
 
   [v5 doubleValue];
   v7 = v6;
@@ -1549,138 +1549,138 @@ LABEL_8:
   return v7;
 }
 
-- (void)setHasSmile:(BOOL)a3
+- (void)setHasSmile:(BOOL)smile
 {
-  v3 = a3;
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 didMutate];
+  smileCopy = smile;
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v8 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  v6 = [(PHChangeRequest *)self helper];
-  v7 = [v6 mutations];
-  [v7 setObject:v8 forKeyedSubscript:@"hasSmile"];
+  v8 = [MEMORY[0x1E696AD98] numberWithBool:smileCopy];
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  [mutations setObject:v8 forKeyedSubscript:@"hasSmile"];
 }
 
 - (BOOL)hasSmile
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"hasSmile"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"hasSmile"];
 
-  LOBYTE(v3) = [v5 BOOLValue];
-  return v3;
+  LOBYTE(helper) = [v5 BOOLValue];
+  return helper;
 }
 
-- (void)setManual:(BOOL)a3
+- (void)setManual:(BOOL)manual
 {
-  v3 = a3;
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 didMutate];
+  manualCopy = manual;
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v8 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  v6 = [(PHChangeRequest *)self helper];
-  v7 = [v6 mutations];
-  [v7 setObject:v8 forKeyedSubscript:@"manual"];
+  v8 = [MEMORY[0x1E696AD98] numberWithBool:manualCopy];
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  [mutations setObject:v8 forKeyedSubscript:@"manual"];
 }
 
 - (BOOL)manual
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"manual"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"manual"];
 
-  LOBYTE(v3) = [v5 BOOLValue];
-  return v3;
+  LOBYTE(helper) = [v5 BOOLValue];
+  return helper;
 }
 
-- (void)setInTrash:(BOOL)a3
+- (void)setInTrash:(BOOL)trash
 {
-  v3 = a3;
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 didMutate];
+  trashCopy = trash;
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v8 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  v6 = [(PHChangeRequest *)self helper];
-  v7 = [v6 mutations];
-  [v7 setObject:v8 forKeyedSubscript:@"isInTrash"];
+  v8 = [MEMORY[0x1E696AD98] numberWithBool:trashCopy];
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  [mutations setObject:v8 forKeyedSubscript:@"isInTrash"];
 }
 
 - (BOOL)isInTrash
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"isInTrash"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"isInTrash"];
 
-  LOBYTE(v3) = [v5 BOOLValue];
-  return v3;
+  LOBYTE(helper) = [v5 BOOLValue];
+  return helper;
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
-  v3 = a3;
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 didMutate];
+  hiddenCopy = hidden;
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v8 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  v6 = [(PHChangeRequest *)self helper];
-  v7 = [v6 mutations];
-  [v7 setObject:v8 forKeyedSubscript:@"hidden"];
+  v8 = [MEMORY[0x1E696AD98] numberWithBool:hiddenCopy];
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  [mutations setObject:v8 forKeyedSubscript:@"hidden"];
 }
 
 - (BOOL)isHidden
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"hidden"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"hidden"];
 
-  LOBYTE(v3) = [v5 BOOLValue];
-  return v3;
+  LOBYTE(helper) = [v5 BOOLValue];
+  return helper;
 }
 
-- (void)setIsInVIPModel:(BOOL)a3
+- (void)setIsInVIPModel:(BOOL)model
 {
-  v3 = a3;
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 didMutate];
+  modelCopy = model;
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v8 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  v6 = [(PHChangeRequest *)self helper];
-  v7 = [v6 mutations];
-  [v7 setObject:v8 forKeyedSubscript:@"vipModelType"];
+  v8 = [MEMORY[0x1E696AD98] numberWithBool:modelCopy];
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  [mutations setObject:v8 forKeyedSubscript:@"vipModelType"];
 }
 
 - (BOOL)isInVIPModel
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"vipModelType"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"vipModelType"];
 
-  LOBYTE(v3) = [v5 BOOLValue];
-  return v3;
+  LOBYTE(helper) = [v5 BOOLValue];
+  return helper;
 }
 
-- (void)setRoll:(double)a3
+- (void)setRoll:(double)roll
 {
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 didMutate];
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v8 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-  v6 = [(PHChangeRequest *)self helper];
-  v7 = [v6 mutations];
-  [v7 setObject:v8 forKeyedSubscript:@"roll"];
+  v8 = [MEMORY[0x1E696AD98] numberWithDouble:roll];
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  [mutations setObject:v8 forKeyedSubscript:@"roll"];
 }
 
 - (double)roll
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"roll"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"roll"];
 
   [v5 doubleValue];
   v7 = v6;
@@ -1688,90 +1688,90 @@ LABEL_8:
   return v7;
 }
 
-- (void)setSourceHeight:(int64_t)a3
+- (void)setSourceHeight:(int64_t)height
 {
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 didMutate];
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v8 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  v6 = [(PHChangeRequest *)self helper];
-  v7 = [v6 mutations];
-  [v7 setObject:v8 forKeyedSubscript:@"sourceHeight"];
+  v8 = [MEMORY[0x1E696AD98] numberWithInteger:height];
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  [mutations setObject:v8 forKeyedSubscript:@"sourceHeight"];
 }
 
 - (int64_t)sourceHeight
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"sourceHeight"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"sourceHeight"];
 
-  v6 = [v5 intValue];
-  return v6;
+  intValue = [v5 intValue];
+  return intValue;
 }
 
-- (void)setSourceWidth:(int64_t)a3
+- (void)setSourceWidth:(int64_t)width
 {
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 didMutate];
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v8 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  v6 = [(PHChangeRequest *)self helper];
-  v7 = [v6 mutations];
-  [v7 setObject:v8 forKeyedSubscript:@"sourceWidth"];
+  v8 = [MEMORY[0x1E696AD98] numberWithInteger:width];
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  [mutations setObject:v8 forKeyedSubscript:@"sourceWidth"];
 }
 
 - (int64_t)sourceWidth
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"sourceWidth"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"sourceWidth"];
 
-  v6 = [v5 intValue];
-  return v6;
+  intValue = [v5 intValue];
+  return intValue;
 }
 
-- (void)setDetectionType:(signed __int16)a3
+- (void)setDetectionType:(signed __int16)type
 {
-  v3 = a3;
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 didMutate];
+  typeCopy = type;
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v8 = [MEMORY[0x1E696AD98] numberWithShort:v3];
-  v6 = [(PHChangeRequest *)self helper];
-  v7 = [v6 mutations];
-  [v7 setObject:v8 forKeyedSubscript:@"detectionType"];
+  v8 = [MEMORY[0x1E696AD98] numberWithShort:typeCopy];
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  [mutations setObject:v8 forKeyedSubscript:@"detectionType"];
 }
 
 - (signed)detectionType
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"detectionType"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"detectionType"];
 
-  LOWORD(v3) = [v5 intValue];
-  return v3;
+  LOWORD(helper) = [v5 intValue];
+  return helper;
 }
 
-- (void)setBodyHeight:(double)a3
+- (void)setBodyHeight:(double)height
 {
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 didMutate];
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v8 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-  v6 = [(PHChangeRequest *)self helper];
-  v7 = [v6 mutations];
-  [v7 setObject:v8 forKeyedSubscript:@"bodyHeight"];
+  v8 = [MEMORY[0x1E696AD98] numberWithDouble:height];
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  [mutations setObject:v8 forKeyedSubscript:@"bodyHeight"];
 }
 
 - (double)bodyHeight
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"bodyHeight"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"bodyHeight"];
 
   [v5 doubleValue];
   v7 = v6;
@@ -1779,23 +1779,23 @@ LABEL_8:
   return v7;
 }
 
-- (void)setBodyWidth:(double)a3
+- (void)setBodyWidth:(double)width
 {
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 didMutate];
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v8 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-  v6 = [(PHChangeRequest *)self helper];
-  v7 = [v6 mutations];
-  [v7 setObject:v8 forKeyedSubscript:@"bodyWidth"];
+  v8 = [MEMORY[0x1E696AD98] numberWithDouble:width];
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  [mutations setObject:v8 forKeyedSubscript:@"bodyWidth"];
 }
 
 - (double)bodyWidth
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"bodyWidth"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"bodyWidth"];
 
   [v5 doubleValue];
   v7 = v6;
@@ -1803,23 +1803,23 @@ LABEL_8:
   return v7;
 }
 
-- (void)setBodyCenterY:(double)a3
+- (void)setBodyCenterY:(double)y
 {
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 didMutate];
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v8 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-  v6 = [(PHChangeRequest *)self helper];
-  v7 = [v6 mutations];
-  [v7 setObject:v8 forKeyedSubscript:@"bodyCenterY"];
+  v8 = [MEMORY[0x1E696AD98] numberWithDouble:y];
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  [mutations setObject:v8 forKeyedSubscript:@"bodyCenterY"];
 }
 
 - (double)bodyCenterY
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"bodyCenterY"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"bodyCenterY"];
 
   [v5 doubleValue];
   v7 = v6;
@@ -1827,23 +1827,23 @@ LABEL_8:
   return v7;
 }
 
-- (void)setBodyCenterX:(double)a3
+- (void)setBodyCenterX:(double)x
 {
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 didMutate];
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v8 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-  v6 = [(PHChangeRequest *)self helper];
-  v7 = [v6 mutations];
-  [v7 setObject:v8 forKeyedSubscript:@"bodyCenterX"];
+  v8 = [MEMORY[0x1E696AD98] numberWithDouble:x];
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  [mutations setObject:v8 forKeyedSubscript:@"bodyCenterX"];
 }
 
 - (double)bodyCenterX
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"bodyCenterX"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"bodyCenterX"];
 
   [v5 doubleValue];
   v7 = v6;
@@ -1851,23 +1851,23 @@ LABEL_8:
   return v7;
 }
 
-- (void)setCenterY:(double)a3
+- (void)setCenterY:(double)y
 {
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 didMutate];
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v8 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-  v6 = [(PHChangeRequest *)self helper];
-  v7 = [v6 mutations];
-  [v7 setObject:v8 forKeyedSubscript:@"centerY"];
+  v8 = [MEMORY[0x1E696AD98] numberWithDouble:y];
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  [mutations setObject:v8 forKeyedSubscript:@"centerY"];
 }
 
 - (double)centerY
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"centerY"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"centerY"];
 
   [v5 doubleValue];
   v7 = v6;
@@ -1875,23 +1875,23 @@ LABEL_8:
   return v7;
 }
 
-- (void)setCenterX:(double)a3
+- (void)setCenterX:(double)x
 {
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 didMutate];
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v8 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-  v6 = [(PHChangeRequest *)self helper];
-  v7 = [v6 mutations];
-  [v7 setObject:v8 forKeyedSubscript:@"centerX"];
+  v8 = [MEMORY[0x1E696AD98] numberWithDouble:x];
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  [mutations setObject:v8 forKeyedSubscript:@"centerX"];
 }
 
 - (double)centerX
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"centerX"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"centerX"];
 
   [v5 doubleValue];
   v7 = v6;
@@ -1899,23 +1899,23 @@ LABEL_8:
   return v7;
 }
 
-- (void)setSize:(double)a3
+- (void)setSize:(double)size
 {
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 didMutate];
+  helper = [(PHChangeRequest *)self helper];
+  [helper didMutate];
 
-  v8 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-  v6 = [(PHChangeRequest *)self helper];
-  v7 = [v6 mutations];
-  [v7 setObject:v8 forKeyedSubscript:@"size"];
+  v8 = [MEMORY[0x1E696AD98] numberWithDouble:size];
+  helper2 = [(PHChangeRequest *)self helper];
+  mutations = [helper2 mutations];
+  [mutations setObject:v8 forKeyedSubscript:@"size"];
 }
 
 - (double)size
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 mutations];
-  v5 = [v4 objectForKey:@"size"];
+  helper = [(PHChangeRequest *)self helper];
+  mutations = [helper mutations];
+  v5 = [mutations objectForKey:@"size"];
 
   [v5 doubleValue];
   v7 = v6;
@@ -1925,20 +1925,20 @@ LABEL_8:
 
 - (PHObjectPlaceholder)placeholderForCreatedFace
 {
-  v3 = [(PHChangeRequest *)self helper];
-  v4 = [v3 placeholderForCreatedObjectWithClass:objc_opt_class() changeRequest:self];
+  helper = [(PHChangeRequest *)self helper];
+  v4 = [helper placeholderForCreatedObjectWithClass:objc_opt_class() changeRequest:self];
 
   return v4;
 }
 
-- (void)encodeToXPCDict:(id)a3
+- (void)encodeToXPCDict:(id)dict
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PHChangeRequest *)self helper];
-  [v5 encodeToXPCDict:v4];
+  dictCopy = dict;
+  helper = [(PHChangeRequest *)self helper];
+  [helper encodeToXPCDict:dictCopy];
 
-  xpc_dictionary_set_BOOL(v4, "didSetDetectionTraits", self->_didSetDetectionTraits);
+  xpc_dictionary_set_BOOL(dictCopy, "didSetDetectionTraits", self->_didSetDetectionTraits);
   if (self->_didSetDetectionTraits)
   {
     v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{-[NSMutableArray count](self->_detectionTraits, "count")}];
@@ -1961,8 +1961,8 @@ LABEL_8:
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v15 + 1) + 8 * i) propertyListRepresentation];
-          [v6 addObject:v12];
+          propertyListRepresentation = [*(*(&v15 + 1) + 8 * i) propertyListRepresentation];
+          [v6 addObject:propertyListRepresentation];
         }
 
         v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -1974,63 +1974,63 @@ LABEL_8:
     PLXPCDictionarySetArray();
   }
 
-  xpc_dictionary_set_BOOL(v4, "didSetFaceprint", self->_didSetFaceprint);
+  xpc_dictionary_set_BOOL(dictCopy, "didSetFaceprint", self->_didSetFaceprint);
   if (self->_didSetFaceprint)
   {
     faceprint = self->_faceprint;
     if (faceprint)
     {
-      v14 = [(PHFaceprint *)faceprint dictionaryRepresentation];
+      dictionaryRepresentation = [(PHFaceprint *)faceprint dictionaryRepresentation];
       PLXPCDictionarySetDictionary();
     }
   }
 
-  xpc_dictionary_set_BOOL(v4, "shouldClearFaceCropGenerationState", self->_shouldClearFaceCropGenerationState);
-  xpc_dictionary_set_BOOL(v4, "didSetAssociatedPersonUUID", self->_didSetAssociatedPersonUUID);
+  xpc_dictionary_set_BOOL(dictCopy, "shouldClearFaceCropGenerationState", self->_shouldClearFaceCropGenerationState);
+  xpc_dictionary_set_BOOL(dictCopy, "didSetAssociatedPersonUUID", self->_didSetAssociatedPersonUUID);
   if (self->_didSetAssociatedPersonUUID)
   {
     PLXPCDictionarySetString();
     PLXPCDictionarySetURL();
   }
 
-  xpc_dictionary_set_BOOL(v4, "didSetGazeRect", self->_didSetGazeRect);
+  xpc_dictionary_set_BOOL(dictCopy, "didSetGazeRect", self->_didSetGazeRect);
   if (self->_didSetGazeRect)
   {
     PLXPCDictionarySetString();
   }
 
-  xpc_dictionary_set_BOOL(v4, "didSetNameSource", self->_didSetNameSource);
+  xpc_dictionary_set_BOOL(dictCopy, "didSetNameSource", self->_didSetNameSource);
   if (self->_didSetNameSource)
   {
-    xpc_dictionary_set_int64(v4, "nameSource", self->_nameSource);
+    xpc_dictionary_set_int64(dictCopy, "nameSource", self->_nameSource);
   }
 }
 
-- (PHFaceChangeRequest)initWithXPCDict:(id)a3 request:(id)a4 clientAuthorization:(id)a5
+- (PHFaceChangeRequest)initWithXPCDict:(id)dict request:(id)request clientAuthorization:(id)authorization
 {
   v42 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dictCopy = dict;
+  requestCopy = request;
+  authorizationCopy = authorization;
   v40.receiver = self;
   v40.super_class = PHFaceChangeRequest;
   v11 = [(PHChangeRequest *)&v40 init];
   if (v11)
   {
-    v12 = [[PHChangeRequestHelper alloc] initWithXPCDict:v8 changeRequest:v11 request:v9 clientAuthorization:v10];
+    v12 = [[PHChangeRequestHelper alloc] initWithXPCDict:dictCopy changeRequest:v11 request:requestCopy clientAuthorization:authorizationCopy];
     helper = v11->super._helper;
     v11->super._helper = v12;
 
     if (v12)
     {
-      v11->_didSetDetectionTraits = xpc_dictionary_get_BOOL(v8, "didSetDetectionTraits");
-      v11->_didSetFaceprint = xpc_dictionary_get_BOOL(v8, "didSetFaceprint");
-      v11->_didSetAssociatedPersonUUID = xpc_dictionary_get_BOOL(v8, "didSetAssociatedPersonUUID");
-      v11->_didSetGazeRect = xpc_dictionary_get_BOOL(v8, "didSetGazeRect");
-      v11->_didSetNameSource = xpc_dictionary_get_BOOL(v8, "didSetNameSource");
+      v11->_didSetDetectionTraits = xpc_dictionary_get_BOOL(dictCopy, "didSetDetectionTraits");
+      v11->_didSetFaceprint = xpc_dictionary_get_BOOL(dictCopy, "didSetFaceprint");
+      v11->_didSetAssociatedPersonUUID = xpc_dictionary_get_BOOL(dictCopy, "didSetAssociatedPersonUUID");
+      v11->_didSetGazeRect = xpc_dictionary_get_BOOL(dictCopy, "didSetGazeRect");
+      v11->_didSetNameSource = xpc_dictionary_get_BOOL(dictCopy, "didSetNameSource");
       if (v11->_didSetDetectionTraits)
       {
-        v35 = v10;
+        v35 = authorizationCopy;
         v14 = PLArrayFromXPCDictionary();
         v15 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v14, "count")}];
         v36 = 0u;
@@ -2067,9 +2067,9 @@ LABEL_8:
         v23 = v15;
 
         [(PHChangeRequestHelper *)v11->super._helper setMutated:1];
-        [v9 recordUpdateRequest:v11];
+        [requestCopy recordUpdateRequest:v11];
 
-        v10 = v35;
+        authorizationCopy = v35;
       }
 
       if (v11->_didSetFaceprint)
@@ -2083,21 +2083,21 @@ LABEL_8:
         }
 
         [(PHChangeRequestHelper *)v11->super._helper setMutated:1];
-        [v9 recordUpdateRequest:v11];
+        [requestCopy recordUpdateRequest:v11];
       }
 
-      v27 = xpc_dictionary_get_BOOL(v8, "shouldClearFaceCropGenerationState");
+      v27 = xpc_dictionary_get_BOOL(dictCopy, "shouldClearFaceCropGenerationState");
       v11->_shouldClearFaceCropGenerationState = v27;
       if (v27)
       {
         [(PHChangeRequestHelper *)v11->super._helper setMutated:1];
-        [v9 recordUpdateRequest:v11];
+        [requestCopy recordUpdateRequest:v11];
       }
 
       if (v11->_didSetAssociatedPersonUUID)
       {
         [(PHChangeRequestHelper *)v11->super._helper setMutated:1];
-        [v9 recordUpdateRequest:v11];
+        [requestCopy recordUpdateRequest:v11];
         v28 = PLStringFromXPCDictionary();
         associatedPersonUUID = v11->_associatedPersonUUID;
         v11->_associatedPersonUUID = v28;
@@ -2110,7 +2110,7 @@ LABEL_8:
       if (v11->_didSetGazeRect)
       {
         [(PHChangeRequestHelper *)v11->super._helper setMutated:1];
-        [v9 recordUpdateRequest:v11];
+        [requestCopy recordUpdateRequest:v11];
         v32 = PLStringFromXPCDictionary();
         gazeRectString = v11->_gazeRectString;
         v11->_gazeRectString = v32;
@@ -2119,8 +2119,8 @@ LABEL_8:
       if (v11->_didSetNameSource)
       {
         [(PHChangeRequestHelper *)v11->super._helper setMutated:1];
-        [v9 recordUpdateRequest:v11];
-        v11->_nameSource = xpc_dictionary_get_int64(v8, "nameSource");
+        [requestCopy recordUpdateRequest:v11];
+        v11->_nameSource = xpc_dictionary_get_int64(dictCopy, "nameSource");
       }
     }
   }
@@ -2128,16 +2128,16 @@ LABEL_8:
   return v11;
 }
 
-- (PHFaceChangeRequest)initWithUUID:(id)a3 objectID:(id)a4
+- (PHFaceChangeRequest)initWithUUID:(id)d objectID:(id)iD
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v14.receiver = self;
   v14.super_class = PHFaceChangeRequest;
   v8 = [(PHChangeRequest *)&v14 init];
   if (v8)
   {
-    v9 = [[PHChangeRequestHelper alloc] initWithUUID:v6 objectID:v7 changeRequest:v8];
+    v9 = [[PHChangeRequestHelper alloc] initWithUUID:dCopy objectID:iDCopy changeRequest:v8];
     helper = v8->super._helper;
     v8->super._helper = v9;
 
@@ -2168,15 +2168,15 @@ LABEL_8:
   return v2;
 }
 
-+ (void)deleteFaces:(id)a3
++ (void)deleteFaces:(id)faces
 {
-  v5 = a3;
-  v4 = [(PHObjectDeleteRequest *)PHFaceDeleteRequest deleteRequestsForObjects:v5 ofType:objc_opt_class() forSelector:a2];
+  facesCopy = faces;
+  v4 = [(PHObjectDeleteRequest *)PHFaceDeleteRequest deleteRequestsForObjects:facesCopy ofType:objc_opt_class() forSelector:a2];
 }
 
-+ (id)changeRequestForFace:(id)a3
++ (id)changeRequestForFace:(id)face
 {
-  if (a3)
+  if (face)
   {
     v4 = [PHChangeRequestHelper changeRequestForObject:?];
   }
@@ -2191,9 +2191,9 @@ LABEL_8:
 
 + (id)creationRequestForFace
 {
-  v2 = [[PHFaceChangeRequest alloc] initForNewObject];
+  initForNewObject = [[PHFaceChangeRequest alloc] initForNewObject];
 
-  return v2;
+  return initForNewObject;
 }
 
 @end

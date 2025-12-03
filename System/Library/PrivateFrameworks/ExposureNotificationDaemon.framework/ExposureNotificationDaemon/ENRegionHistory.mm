@@ -1,27 +1,27 @@
 @interface ENRegionHistory
-- (ENRegionHistory)initWithCoder:(id)a3;
-- (ENRegionHistory)initWithRegionVisits:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (ENRegionHistory)initWithCoder:(id)coder;
+- (ENRegionHistory)initWithRegionVisits:(id)visits;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)getRegionVisits;
 - (id)getRegions;
-- (void)addRegionVisit:(id)a3;
-- (void)removeRegionVisit:(id)a3;
+- (void)addRegionVisit:(id)visit;
+- (void)removeRegionVisit:(id)visit;
 @end
 
 @implementation ENRegionHistory
 
-- (ENRegionHistory)initWithRegionVisits:(id)a3
+- (ENRegionHistory)initWithRegionVisits:(id)visits
 {
-  v4 = a3;
+  visitsCopy = visits;
   v9.receiver = self;
   v9.super_class = ENRegionHistory;
   v5 = [(ENRegionHistory *)&v9 init];
   if (v5)
   {
-    if (v4)
+    if (visitsCopy)
     {
-      v6 = [MEMORY[0x277CBEB10] arrayWithArray:v4];
+      v6 = [MEMORY[0x277CBEB10] arrayWithArray:visitsCopy];
     }
 
     else
@@ -36,70 +36,70 @@
   return v5;
 }
 
-- (void)addRegionVisit:(id)a3
+- (void)addRegionVisit:(id)visit
 {
-  v4 = a3;
-  if (!v4)
+  visitCopy = visit;
+  if (!visitCopy)
   {
     return;
   }
 
-  v28 = v4;
-  v5 = [(NSMutableArray *)self->_regionHistory lastObject];
-  v6 = [v5 region];
-  v7 = [v28 region];
-  v8 = [v6 isCountryCodeEqualToRegion:v7];
+  v28 = visitCopy;
+  lastObject = [(NSMutableArray *)self->_regionHistory lastObject];
+  region = [lastObject region];
+  region2 = [v28 region];
+  v8 = [region isCountryCodeEqualToRegion:region2];
 
   if (!v8)
   {
     goto LABEL_16;
   }
 
-  v9 = [v28 region];
-  v10 = [v9 subdivisionCode];
-  if (v10)
+  region3 = [v28 region];
+  subdivisionCode = [region3 subdivisionCode];
+  if (subdivisionCode)
   {
 
 LABEL_5:
-    v11 = [v5 region];
-    v12 = [v28 region];
-    if ([v11 isSubdivisionCodeEqualToRegion:v12])
+    region4 = [lastObject region];
+    region5 = [v28 region];
+    if ([region4 isSubdivisionCodeEqualToRegion:region5])
     {
 
 LABEL_7:
       [(NSMutableArray *)self->_regionHistory removeLastObject];
       v13 = objc_alloc(MEMORY[0x277CC5D08]);
-      v14 = [v28 region];
-      v15 = [v28 date];
-      v16 = [v5 date];
-      v17 = [v15 laterDate:v16];
-      v18 = [v13 initWithRegion:v14 date:v17];
+      region6 = [v28 region];
+      date = [v28 date];
+      date2 = [lastObject date];
+      v17 = [date laterDate:date2];
+      v18 = [v13 initWithRegion:region6 date:v17];
 
       v19 = v18;
       goto LABEL_17;
     }
 
-    v20 = [v5 region];
-    v21 = [v20 subdivisionCode];
-    if (v21)
+    region7 = [lastObject region];
+    subdivisionCode2 = [region7 subdivisionCode];
+    if (subdivisionCode2)
     {
     }
 
     else
     {
-      v24 = [v28 region];
-      v25 = [v24 subdivisionCode];
+      region8 = [v28 region];
+      subdivisionCode3 = [region8 subdivisionCode];
 
-      if (!v25)
+      if (!subdivisionCode3)
       {
         goto LABEL_7;
       }
     }
 
-    v26 = [v5 region];
-    v27 = [v26 subdivisionCode];
+    region9 = [lastObject region];
+    subdivisionCode4 = [region9 subdivisionCode];
 
-    if (!v27)
+    if (!subdivisionCode4)
     {
       [(NSMutableArray *)self->_regionHistory removeLastObject];
     }
@@ -117,10 +117,10 @@ LABEL_17:
     goto LABEL_19;
   }
 
-  v22 = [v5 region];
-  v23 = [v22 subdivisionCode];
+  region10 = [lastObject region];
+  subdivisionCode5 = [region10 subdivisionCode];
 
-  if (!v23)
+  if (!subdivisionCode5)
   {
     goto LABEL_5;
   }
@@ -128,9 +128,9 @@ LABEL_17:
 LABEL_19:
 }
 
-- (void)removeRegionVisit:(id)a3
+- (void)removeRegionVisit:(id)visit
 {
-  if (a3)
+  if (visit)
   {
     [(NSMutableArray *)self->_regionHistory removeObject:?];
   }
@@ -144,8 +144,8 @@ LABEL_19:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(ENRegionHistory *)self getRegionVisits];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  getRegionVisits = [(ENRegionHistory *)self getRegionVisits];
+  v5 = [getRegionVisits countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -156,14 +156,14 @@ LABEL_19:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(getRegionVisits);
         }
 
-        v9 = [*(*(&v13 + 1) + 8 * i) region];
-        [v3 addObject:v9];
+        region = [*(*(&v13 + 1) + 8 * i) region];
+        [v3 addObject:region];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [getRegionVisits countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
@@ -186,29 +186,29 @@ LABEL_19:
 - (id)description
 {
   v2 = MEMORY[0x277CCACA0];
-  v3 = [(ENRegionHistory *)self getRegionVisits];
-  v4 = [v3 componentsJoinedByString:@" | "];
+  getRegionVisits = [(ENRegionHistory *)self getRegionVisits];
+  v4 = [getRegionVisits componentsJoinedByString:@" | "];
   v5 = [v2 stringWithFormat:@"%@", v4];
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [ENRegionHistory alloc];
-  v5 = [(ENRegionHistory *)self getRegionVisits];
-  v6 = [(ENRegionHistory *)v4 initWithRegionVisits:v5];
+  getRegionVisits = [(ENRegionHistory *)self getRegionVisits];
+  v6 = [(ENRegionHistory *)v4 initWithRegionVisits:getRegionVisits];
 
   return v6;
 }
 
-- (ENRegionHistory)initWithCoder:(id)a3
+- (ENRegionHistory)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x277CBEB90];
-  v5 = a3;
+  coderCopy = coder;
   v6 = objc_opt_class();
   v7 = [v4 setWithObjects:{v6, objc_opt_class(), 0}];
-  v8 = [v5 decodeObjectOfClasses:v7 forKey:@"visits"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"visits"];
 
   v9 = [(ENRegionHistory *)self initWithRegionVisits:v8];
   return v9;

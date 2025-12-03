@@ -1,37 +1,37 @@
 @interface PencilInputCompletionProvider
-- (void)setQueryToComplete:(id)a3;
+- (void)setQueryToComplete:(id)complete;
 @end
 
 @implementation PencilInputCompletionProvider
 
-- (void)setQueryToComplete:(id)a3
+- (void)setQueryToComplete:(id)complete
 {
   v10[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 queryString];
-  if ([v5 length])
+  completeCopy = complete;
+  queryString = [completeCopy queryString];
+  if ([queryString length])
   {
     v6 = WBSUnifiedFieldInputTypeForString();
     if ((v6 - 1) < 2)
     {
-      v7 = [v5 safari_bestURLForUserTypedString];
+      safari_bestURLForUserTypedString = [queryString safari_bestURLForUserTypedString];
 LABEL_7:
-      v8 = [[PencilInputCompletionItem alloc] initWithUserQuery:v4 navigationURL:v7 searchQuery:v5];
+      v8 = [[PencilInputCompletionItem alloc] initWithUserQuery:completeCopy navigationURL:safari_bestURLForUserTypedString searchQuery:queryString];
       v10[0] = v8;
       v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:1];
-      [(CompletionProvider *)self setCompletions:v9 forString:v5];
+      [(CompletionProvider *)self setCompletions:v9 forString:queryString];
 
       goto LABEL_8;
     }
 
     if (v6 != 4)
     {
-      v7 = 0;
+      safari_bestURLForUserTypedString = 0;
       goto LABEL_7;
     }
   }
 
-  [(CompletionProvider *)self setCompletions:MEMORY[0x277CBEBF8] forString:v5];
+  [(CompletionProvider *)self setCompletions:MEMORY[0x277CBEBF8] forString:queryString];
 LABEL_8:
 }
 

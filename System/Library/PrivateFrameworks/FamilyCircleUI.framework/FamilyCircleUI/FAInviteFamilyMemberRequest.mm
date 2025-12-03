@@ -7,8 +7,8 @@
 
 - (id)_queryString
 {
-  v3 = [MEMORY[0x277CCAB50] URLQueryAllowedCharacterSet];
-  v4 = [v3 mutableCopy];
+  uRLQueryAllowedCharacterSet = [MEMORY[0x277CCAB50] URLQueryAllowedCharacterSet];
+  v4 = [uRLQueryAllowedCharacterSet mutableCopy];
 
   [v4 removeCharactersInString:@"+"];
   v5 = MEMORY[0x277CCACA8];
@@ -16,8 +16,8 @@
   v7 = [v5 stringWithFormat:@"inviteeEmail=%@", v6];
 
   inviteeShortName = self->_inviteeShortName;
-  v9 = [MEMORY[0x277CCA900] URLQueryAllowedCharacterSet];
-  v10 = [(NSString *)inviteeShortName stringByAddingPercentEncodingWithAllowedCharacters:v9];
+  uRLQueryAllowedCharacterSet2 = [MEMORY[0x277CCA900] URLQueryAllowedCharacterSet];
+  v10 = [(NSString *)inviteeShortName stringByAddingPercentEncodingWithAllowedCharacters:uRLQueryAllowedCharacterSet2];
 
   if (v10)
   {
@@ -27,8 +27,8 @@
   }
 
   inviteeCompositeName = self->_inviteeCompositeName;
-  v13 = [MEMORY[0x277CCA900] URLQueryAllowedCharacterSet];
-  v14 = [(NSString *)inviteeCompositeName stringByAddingPercentEncodingWithAllowedCharacters:v13];
+  uRLQueryAllowedCharacterSet3 = [MEMORY[0x277CCA900] URLQueryAllowedCharacterSet];
+  v14 = [(NSString *)inviteeCompositeName stringByAddingPercentEncodingWithAllowedCharacters:uRLQueryAllowedCharacterSet3];
 
   if (v14)
   {

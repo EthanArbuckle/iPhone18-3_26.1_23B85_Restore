@@ -1,32 +1,32 @@
 @interface _UISlideriOSFluidVisualElement
-- (BOOL)driver:(id)a3 shouldAdjustValueForProposedValue:(double)a4 adjustedValue:(double *)a5 startValue:(double *)a6 endValue:(double *)a7;
-- (BOOL)driver:(id)a3 shouldBeginAtPoint:(CGPoint)a4;
-- (CGRect)_modifiedTrackRect:(CGRect)a3;
-- (_UISlideriOSFluidVisualElement)initWithFrame:(CGRect)a3;
-- (id)_updatedConfigurationForTrackSize:(CGSize)a3;
-- (void)_setValue:(float)a3 minimum:(float)a4 maximum:(float)a5 animated:(BOOL)a6;
+- (BOOL)driver:(id)driver shouldAdjustValueForProposedValue:(double)value adjustedValue:(double *)adjustedValue startValue:(double *)startValue endValue:(double *)endValue;
+- (BOOL)driver:(id)driver shouldBeginAtPoint:(CGPoint)point;
+- (CGRect)_modifiedTrackRect:(CGRect)rect;
+- (_UISlideriOSFluidVisualElement)initWithFrame:(CGRect)frame;
+- (id)_updatedConfigurationForTrackSize:(CGSize)size;
+- (void)_setValue:(float)value minimum:(float)minimum maximum:(float)maximum animated:(BOOL)animated;
 - (void)_setupInteraction;
-- (void)_updateConfigurationForFrameChange:(BOOL)a3;
-- (void)_updateModelValue:(double)a3 sendAction:(BOOL)a4;
+- (void)_updateConfigurationForFrameChange:(BOOL)change;
+- (void)_updateModelValue:(double)value sendAction:(BOOL)action;
 - (void)didSetEnabled;
 - (void)didSetFluidTrackHidden;
 - (void)didSetSpeedMultiplier;
 - (void)didSetUserInteractionEnabled;
 - (void)didSetValues;
-- (void)setBounds:(CGRect)a3;
-- (void)setChangeWithVolumeButtons:(BOOL)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setSlider:(id)a3;
-- (void)setValue:(float)a3 animated:(BOOL)a4;
+- (void)setBounds:(CGRect)bounds;
+- (void)setChangeWithVolumeButtons:(BOOL)buttons;
+- (void)setFrame:(CGRect)frame;
+- (void)setSlider:(id)slider;
+- (void)setValue:(float)value animated:(BOOL)animated;
 @end
 
 @implementation _UISlideriOSFluidVisualElement
 
-- (_UISlideriOSFluidVisualElement)initWithFrame:(CGRect)a3
+- (_UISlideriOSFluidVisualElement)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = _UISlideriOSFluidVisualElement;
-  result = [(_UISlideriOSVisualElement *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  result = [(_UISlideriOSVisualElement *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (result)
   {
     v4 = MEMORY[0x1E695EFD0];
@@ -39,13 +39,13 @@
   return result;
 }
 
-- (void)setSlider:(id)a3
+- (void)setSlider:(id)slider
 {
-  v4 = a3;
+  sliderCopy = slider;
   if (self->_fluidInteraction)
   {
-    v5 = [(_UISlideriOSVisualElement *)self slider];
-    [v5 removeInteraction:self->_fluidInteraction];
+    slider = [(_UISlideriOSVisualElement *)self slider];
+    [slider removeInteraction:self->_fluidInteraction];
 
     fluidInteraction = self->_fluidInteraction;
     self->_fluidInteraction = 0;
@@ -53,16 +53,16 @@
 
   v7.receiver = self;
   v7.super_class = _UISlideriOSFluidVisualElement;
-  [(_UISlideriOSVisualElement *)&v7 setSlider:v4];
-  if (v4)
+  [(_UISlideriOSVisualElement *)&v7 setSlider:sliderCopy];
+  if (sliderCopy)
   {
     [(_UISlideriOSFluidVisualElement *)self _setupInteraction];
   }
 }
 
-- (id)_updatedConfigurationForTrackSize:(CGSize)a3
+- (id)_updatedConfigurationForTrackSize:(CGSize)size
 {
-  v4 = [_UIFluidSliderInteractionConfiguration configurationWithTrackSize:a3.width, a3.height];
+  v4 = [_UIFluidSliderInteractionConfiguration configurationWithTrackSize:size.width, size.height];
   v5 = v4;
   if (self->_changeWithVolumeButtons)
   {
@@ -75,8 +75,8 @@
   }
 
   [v4 setPreferredInputMethods:v6];
-  v7 = [(_UISlideriOSVisualElement *)self data];
-  [v7 sliderSpeedMultiplier];
+  data = [(_UISlideriOSVisualElement *)self data];
+  [data sliderSpeedMultiplier];
   [v5 setVelocityMultiplier:v8];
 
   return v5;
@@ -86,16 +86,16 @@
 {
   if (self->_fluidInteraction)
   {
-    v3 = [(_UISlideriOSVisualElement *)self slider];
-    [v3 removeInteraction:self->_fluidInteraction];
+    slider = [(_UISlideriOSVisualElement *)self slider];
+    [slider removeInteraction:self->_fluidInteraction];
 
     fluidInteraction = self->_fluidInteraction;
     self->_fluidInteraction = 0;
   }
 
-  v5 = [(_UISlideriOSVisualElement *)self slider];
+  slider2 = [(_UISlideriOSVisualElement *)self slider];
   [(UIView *)self bounds];
-  [v5 trackRectForBounds:?];
+  [slider2 trackRectForBounds:?];
   v7 = v6;
   v9 = v8;
 
@@ -111,18 +111,18 @@
   self->_fluidInteraction = v12;
 
   [(_UIFluidSliderInteraction *)self->_fluidInteraction _setDirectDrivingDelegate:self];
-  v14 = [(_UISlideriOSVisualElement *)self slider];
-  [v14 addInteraction:self->_fluidInteraction];
+  slider3 = [(_UISlideriOSVisualElement *)self slider];
+  [slider3 addInteraction:self->_fluidInteraction];
 }
 
-- (CGRect)_modifiedTrackRect:(CGRect)a3
+- (CGRect)_modifiedTrackRect:(CGRect)rect
 {
-  v3 = self->_trackBounds.size.width - a3.size.width;
-  v4 = self->_trackBounds.size.height - a3.size.height;
-  v7.origin.x = a3.origin.x - v3 * 0.5;
-  v7.size.width = a3.size.width + v3;
-  v7.origin.y = a3.origin.y - v4 * 0.5;
-  v7.size.height = a3.size.height + v4;
+  v3 = self->_trackBounds.size.width - rect.size.width;
+  v4 = self->_trackBounds.size.height - rect.size.height;
+  v7.origin.x = rect.origin.x - v3 * 0.5;
+  v7.size.width = rect.size.width + v3;
+  v7.origin.y = rect.origin.y - v4 * 0.5;
+  v7.size.height = rect.size.height + v4;
   v5 = *&self->_trackTransform.c;
   *&v6.a = *&self->_trackTransform.a;
   *&v6.c = v5;
@@ -130,16 +130,16 @@
   return CGRectApplyAffineTransform(v7, &v6);
 }
 
-- (void)_updateConfigurationForFrameChange:(BOOL)a3
+- (void)_updateConfigurationForFrameChange:(BOOL)change
 {
-  v5 = [(_UISlideriOSVisualElement *)self slider];
+  slider = [(_UISlideriOSVisualElement *)self slider];
   [(UIView *)self bounds];
-  [v5 trackRectForBounds:?];
+  [slider trackRectForBounds:?];
   v7 = v6;
   v9 = v8;
 
-  v10 = [(_UIFluidSliderInteraction *)self->_fluidInteraction configuration];
-  [v10 trackSize];
+  configuration = [(_UIFluidSliderInteraction *)self->_fluidInteraction configuration];
+  [configuration trackSize];
   v12 = v11;
   v14 = v13;
 
@@ -147,7 +147,7 @@
   {
     v16 = [(_UISlideriOSFluidVisualElement *)self _updatedConfigurationForTrackSize:v7, v9];
     v17 = v16;
-    if (a3)
+    if (change)
     {
       [(_UIFluidSliderInteraction *)self->_fluidInteraction setConfiguration:v16];
     }
@@ -165,29 +165,29 @@
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = _UISlideriOSFluidVisualElement;
-  [(_UISlideriOSVisualElement *)&v4 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(_UISlideriOSVisualElement *)&v4 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(_UISlideriOSFluidVisualElement *)self _updateConfigurationForFrameChange:+[UIView _isInAnimationBlockWithAnimationsEnabled]];
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
   v4.receiver = self;
   v4.super_class = _UISlideriOSFluidVisualElement;
-  [(_UISlideriOSVisualElement *)&v4 setBounds:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(_UISlideriOSVisualElement *)&v4 setBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   [(_UISlideriOSFluidVisualElement *)self _updateConfigurationForFrameChange:+[UIView _isInAnimationBlockWithAnimationsEnabled]];
 }
 
-- (void)setChangeWithVolumeButtons:(BOOL)a3
+- (void)setChangeWithVolumeButtons:(BOOL)buttons
 {
-  if (self->_changeWithVolumeButtons != a3)
+  if (self->_changeWithVolumeButtons != buttons)
   {
-    self->_changeWithVolumeButtons = a3;
-    v4 = [(_UISlideriOSVisualElement *)self slider];
-    if (v4)
+    self->_changeWithVolumeButtons = buttons;
+    slider = [(_UISlideriOSVisualElement *)self slider];
+    if (slider)
     {
       fluidInteraction = self->_fluidInteraction;
 
@@ -205,11 +205,11 @@
   v5.receiver = self;
   v5.super_class = _UISlideriOSFluidVisualElement;
   [(_UISlideriOSVisualElement *)&v5 didSetEnabled];
-  v3 = [(_UISlideriOSVisualElement *)self data];
-  if ([v3 isEnabled])
+  data = [(_UISlideriOSVisualElement *)self data];
+  if ([data isEnabled])
   {
-    v4 = [(_UISlideriOSVisualElement *)self data];
-    -[_UIFluidSliderInteraction setUserInteractionEnabled:](self->_fluidInteraction, "setUserInteractionEnabled:", [v4 isUserInteractionEnabled]);
+    data2 = [(_UISlideriOSVisualElement *)self data];
+    -[_UIFluidSliderInteraction setUserInteractionEnabled:](self->_fluidInteraction, "setUserInteractionEnabled:", [data2 isUserInteractionEnabled]);
   }
 
   else
@@ -220,11 +220,11 @@
 
 - (void)didSetUserInteractionEnabled
 {
-  v4 = [(_UISlideriOSVisualElement *)self data];
-  if ([v4 isEnabled])
+  data = [(_UISlideriOSVisualElement *)self data];
+  if ([data isEnabled])
   {
-    v3 = [(_UISlideriOSVisualElement *)self data];
-    -[_UIFluidSliderInteraction setUserInteractionEnabled:](self->_fluidInteraction, "setUserInteractionEnabled:", [v3 isUserInteractionEnabled]);
+    data2 = [(_UISlideriOSVisualElement *)self data];
+    -[_UIFluidSliderInteraction setUserInteractionEnabled:](self->_fluidInteraction, "setUserInteractionEnabled:", [data2 isUserInteractionEnabled]);
   }
 
   else
@@ -233,20 +233,20 @@
   }
 }
 
-- (BOOL)driver:(id)a3 shouldBeginAtPoint:(CGPoint)a4
+- (BOOL)driver:(id)driver shouldBeginAtPoint:(CGPoint)point
 {
-  x = a4.x;
-  v6 = [(_UISlideriOSVisualElement *)self data:a3];
-  v7 = [v6 isFluidTrackHidden];
+  x = point.x;
+  v6 = [(_UISlideriOSVisualElement *)self data:driver];
+  isFluidTrackHidden = [v6 isFluidTrackHidden];
 
-  if (!v7)
+  if (!isFluidTrackHidden)
   {
     return 1;
   }
 
-  v8 = [(_UISlideriOSVisualElement *)self slider];
+  slider = [(_UISlideriOSVisualElement *)self slider];
   [(UIView *)self bounds];
-  [v8 trackRectForBounds:?];
+  [slider trackRectForBounds:?];
   v10 = v9;
   v12 = v11;
   v14 = v13;
@@ -268,32 +268,32 @@
   return x < CGRectGetMinX(v19);
 }
 
-- (BOOL)driver:(id)a3 shouldAdjustValueForProposedValue:(double)a4 adjustedValue:(double *)a5 startValue:(double *)a6 endValue:(double *)a7
+- (BOOL)driver:(id)driver shouldAdjustValueForProposedValue:(double)value adjustedValue:(double *)adjustedValue startValue:(double *)startValue endValue:(double *)endValue
 {
   if (self && (*&self->super._sliderFlags & 8) != 0)
   {
-    v12 = [(_UISlideriOSVisualElement *)self slider];
-    v13 = [v12 _sliderConfiguration];
+    slider = [(_UISlideriOSVisualElement *)self slider];
+    _sliderConfiguration = [slider _sliderConfiguration];
 
     v17 = 0;
-    *&v14 = a4;
+    *&v14 = value;
     v16 = 0.0;
-    v7 = [v13 adjustPositionForTargetPosition:&v17 + 4 adjustedPosition:&v17 startPosition:&v16 endPosition:v14];
+    v7 = [_sliderConfiguration adjustPositionForTargetPosition:&v17 + 4 adjustedPosition:&v17 startPosition:&v16 endPosition:v14];
     if (v7)
     {
-      if (a5)
+      if (adjustedValue)
       {
-        *a5 = *(&v17 + 1);
+        *adjustedValue = *(&v17 + 1);
       }
 
-      if (a6)
+      if (startValue)
       {
-        *a6 = *&v17;
+        *startValue = *&v17;
       }
 
-      if (a7)
+      if (endValue)
       {
-        *a7 = v16;
+        *endValue = v16;
       }
     }
   }
@@ -308,8 +308,8 @@
 
 - (void)didSetFluidTrackHidden
 {
-  v3 = [(_UISlideriOSVisualElement *)self data];
-  if (v3 && (v4 = v3, -[_UISlideriOSVisualElement data](self, "data"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 isFluidTrackHidden], v5, v4, (v6 & 1) != 0))
+  data = [(_UISlideriOSVisualElement *)self data];
+  if (data && (v4 = data, -[_UISlideriOSVisualElement data](self, "data"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 isFluidTrackHidden], v5, v4, (v6 & 1) != 0))
   {
     v7 = 0;
     v8 = 0.0;
@@ -321,25 +321,25 @@
     v7 = 1;
   }
 
-  v9 = [(_UISlideriOSVisualElement *)self _minTrackClipView];
-  [v9 setAlpha:v8];
+  _minTrackClipView = [(_UISlideriOSVisualElement *)self _minTrackClipView];
+  [_minTrackClipView setAlpha:v8];
 
-  v10 = [(_UISlideriOSVisualElement *)self _maxTrackClipView];
-  [v10 setAlpha:v8];
+  _maxTrackClipView = [(_UISlideriOSVisualElement *)self _maxTrackClipView];
+  [_maxTrackClipView setAlpha:v8];
 
-  v11 = [(_UISlideriOSVisualElement *)self slider];
-  if ([v11 _isThumbEnabled])
+  slider = [(_UISlideriOSVisualElement *)self slider];
+  if ([slider _isThumbEnabled])
   {
-    v12 = [(_UISlideriOSVisualElement *)self data];
-    v13 = [v12 isMinimumTrackVisible];
+    data2 = [(_UISlideriOSVisualElement *)self data];
+    isMinimumTrackVisible = [data2 isMinimumTrackVisible];
   }
 
   else
   {
-    v13 = 0;
+    isMinimumTrackVisible = 0;
   }
 
-  if ((v7 & v13) != 0)
+  if ((v7 & isMinimumTrackVisible) != 0)
   {
     v14 = 1.0;
   }
@@ -349,23 +349,23 @@
     v14 = 0.0;
   }
 
-  v15 = [(_UISlideriOSVisualElement *)self thumbView];
-  [v15 setAlpha:v14];
+  thumbView = [(_UISlideriOSVisualElement *)self thumbView];
+  [thumbView setAlpha:v14];
 }
 
 - (void)didSetSpeedMultiplier
 {
-  v6 = [(_UIFluidSliderInteraction *)self->_fluidInteraction configuration];
-  v3 = [(_UISlideriOSVisualElement *)self data];
-  [v3 sliderSpeedMultiplier];
-  v5 = [v6 copyWithVelocityMultiplier:v4];
+  configuration = [(_UIFluidSliderInteraction *)self->_fluidInteraction configuration];
+  data = [(_UISlideriOSVisualElement *)self data];
+  [data sliderSpeedMultiplier];
+  v5 = [configuration copyWithVelocityMultiplier:v4];
   [(_UIFluidSliderInteraction *)self->_fluidInteraction setConfiguration:v5];
 }
 
-- (void)_setValue:(float)a3 minimum:(float)a4 maximum:(float)a5 animated:(BOOL)a6
+- (void)_setValue:(float)value minimum:(float)minimum maximum:(float)maximum animated:(BOOL)animated
 {
-  v8 = ((a3 - a4) / (a5 - a4));
-  if (a6)
+  v8 = ((value - minimum) / (maximum - minimum));
+  if (animated)
   {
     fluidInteraction = self->_fluidInteraction;
 
@@ -386,65 +386,65 @@
   }
 }
 
-- (void)_updateModelValue:(double)a3 sendAction:(BOOL)a4
+- (void)_updateModelValue:(double)value sendAction:(BOOL)action
 {
-  v4 = a4;
-  v7 = [(_UISlideriOSVisualElement *)self data];
-  [v7 minimumValue];
+  actionCopy = action;
+  data = [(_UISlideriOSVisualElement *)self data];
+  [data minimumValue];
   v9 = v8;
 
-  v10 = [(_UISlideriOSVisualElement *)self data];
-  [v10 maximumValue];
+  data2 = [(_UISlideriOSVisualElement *)self data];
+  [data2 maximumValue];
   v12 = v11 - v9;
 
-  v13 = v12 * a3 + v9;
-  v14 = [(_UISlideriOSVisualElement *)self data];
-  [v14 value];
+  v13 = v12 * value + v9;
+  data3 = [(_UISlideriOSVisualElement *)self data];
+  [data3 value];
   v16 = v15;
 
   if (v16 != v13)
   {
-    v17 = [(_UISlideriOSVisualElement *)self data];
+    data4 = [(_UISlideriOSVisualElement *)self data];
     *&v18 = v13;
-    [v17 setValue:v18];
+    [data4 setValue:v18];
 
     if ((self->_fluidUpdateSource & 7) != 0)
     {
       [(_UISlideriOSVisualElement *)self _bounceMinMaxValueImageViewsIfNeeded];
     }
 
-    if (v4)
+    if (actionCopy)
     {
-      v19 = [(_UISlideriOSVisualElement *)self slider];
-      [v19 sendActionsForControlEvents:4096];
+      slider = [(_UISlideriOSVisualElement *)self slider];
+      [slider sendActionsForControlEvents:4096];
     }
   }
 }
 
-- (void)setValue:(float)a3 animated:(BOOL)a4
+- (void)setValue:(float)value animated:(BOOL)animated
 {
-  v4 = a4;
-  v14 = [(_UISlideriOSVisualElement *)self data];
-  [v14 minimumValue];
+  animatedCopy = animated;
+  data = [(_UISlideriOSVisualElement *)self data];
+  [data minimumValue];
   v8 = v7;
-  v9 = [(_UISlideriOSVisualElement *)self data];
-  [v9 maximumValue];
+  data2 = [(_UISlideriOSVisualElement *)self data];
+  [data2 maximumValue];
   LODWORD(v11) = v10;
-  *&v12 = a3;
+  *&v12 = value;
   LODWORD(v13) = v8;
-  [(_UISlideriOSFluidVisualElement *)self _setValue:v4 minimum:v12 maximum:v13 animated:v11];
+  [(_UISlideriOSFluidVisualElement *)self _setValue:animatedCopy minimum:v12 maximum:v13 animated:v11];
 }
 
 - (void)didSetValues
 {
-  v13 = [(_UISlideriOSVisualElement *)self data];
-  [v13 value];
+  data = [(_UISlideriOSVisualElement *)self data];
+  [data value];
   v4 = v3;
-  v5 = [(_UISlideriOSVisualElement *)self data];
-  [v5 value];
+  data2 = [(_UISlideriOSVisualElement *)self data];
+  [data2 value];
   v7 = v6;
-  v8 = [(_UISlideriOSVisualElement *)self data];
-  [v8 value];
+  data3 = [(_UISlideriOSVisualElement *)self data];
+  [data3 value];
   LODWORD(v10) = v9;
   LODWORD(v11) = v4;
   LODWORD(v12) = v7;

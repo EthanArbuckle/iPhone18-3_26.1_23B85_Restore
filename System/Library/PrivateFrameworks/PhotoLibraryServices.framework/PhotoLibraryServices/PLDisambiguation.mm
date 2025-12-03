@@ -1,5 +1,5 @@
 @interface PLDisambiguation
-- (PLDisambiguation)initWithQueryTerm:(id)a3 disambiguationType:(unint64_t)a4 indexingCategories:(id)a5 maxNumberOfResults:(unint64_t)a6 matchOptions:(unint64_t)a7;
+- (PLDisambiguation)initWithQueryTerm:(id)term disambiguationType:(unint64_t)type indexingCategories:(id)categories maxNumberOfResults:(unint64_t)results matchOptions:(unint64_t)options;
 - (id)description;
 @end
 
@@ -8,30 +8,30 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(PLDisambiguation *)self queryTerm];
-  v5 = [(PLDisambiguation *)self disambiguationType];
-  if (v5 - 1 > 2)
+  queryTerm = [(PLDisambiguation *)self queryTerm];
+  disambiguationType = [(PLDisambiguation *)self disambiguationType];
+  if (disambiguationType - 1 > 2)
   {
     v6 = @"PLDisambiguationTypeUndefined";
   }
 
   else
   {
-    v6 = off_1E7571920[v5 - 1];
+    v6 = off_1E7571920[disambiguationType - 1];
   }
 
-  v7 = [v3 stringWithFormat:@"QueryTerm: %@, disambiguationType: %@", v4, v6];
+  v7 = [v3 stringWithFormat:@"QueryTerm: %@, disambiguationType: %@", queryTerm, v6];
 
   return v7;
 }
 
-- (PLDisambiguation)initWithQueryTerm:(id)a3 disambiguationType:(unint64_t)a4 indexingCategories:(id)a5 maxNumberOfResults:(unint64_t)a6 matchOptions:(unint64_t)a7
+- (PLDisambiguation)initWithQueryTerm:(id)term disambiguationType:(unint64_t)type indexingCategories:(id)categories maxNumberOfResults:(unint64_t)results matchOptions:(unint64_t)options
 {
-  v13 = a3;
-  v14 = a5;
-  if ([v13 length])
+  termCopy = term;
+  categoriesCopy = categories;
+  if ([termCopy length])
   {
-    if (a4)
+    if (type)
     {
       goto LABEL_3;
     }
@@ -39,17 +39,17 @@
 
   else
   {
-    v25 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v25 handleFailureInMethod:a2 object:self file:@"PLDisambiguation.m" lineNumber:17 description:{@"Invalid parameter not satisfying: %@", @"queryTerm.length > 0"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLDisambiguation.m" lineNumber:17 description:{@"Invalid parameter not satisfying: %@", @"queryTerm.length > 0"}];
 
-    if (a4)
+    if (type)
     {
       goto LABEL_3;
     }
   }
 
-  v26 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v26 handleFailureInMethod:a2 object:self file:@"PLDisambiguation.m" lineNumber:18 description:{@"Invalid parameter not satisfying: %@", @"disambiguationType != PLDisambiguationTypeUndefined"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLDisambiguation.m" lineNumber:18 description:{@"Invalid parameter not satisfying: %@", @"disambiguationType != PLDisambiguationTypeUndefined"}];
 
 LABEL_3:
   v27.receiver = self;
@@ -57,16 +57,16 @@ LABEL_3:
   v15 = [(PLDisambiguation *)&v27 init];
   if (v15)
   {
-    v16 = [v13 copy];
+    v16 = [termCopy copy];
     queryTerm = v15->_queryTerm;
     v15->_queryTerm = v16;
 
-    v15->_disambiguationType = a4;
-    v15->_maxNumberOfResults = a6;
-    v15->_matchOptions = a7;
-    if ([v14 count])
+    v15->_disambiguationType = type;
+    v15->_maxNumberOfResults = results;
+    v15->_matchOptions = options;
+    if ([categoriesCopy count])
     {
-      v18 = v14;
+      v18 = categoriesCopy;
       indexingCategories = v15->_indexingCategories;
       v15->_indexingCategories = v18;
 LABEL_13:
@@ -74,7 +74,7 @@ LABEL_13:
       goto LABEL_14;
     }
 
-    switch(a4)
+    switch(type)
     {
       case 1uLL:
         indexingCategories = objc_alloc_init(MEMORY[0x1E696AD50]);

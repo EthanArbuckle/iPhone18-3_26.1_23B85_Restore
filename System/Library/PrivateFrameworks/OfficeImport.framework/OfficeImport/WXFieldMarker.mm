@@ -1,7 +1,7 @@
 @interface WXFieldMarker
 + (id)fieldMarkerTypeEnumMap;
 + (void)fieldMarkerTypeEnumMap;
-+ (void)readFrom:(_xmlNode *)a3 to:(id)a4;
++ (void)readFrom:(_xmlNode *)from to:(id)to;
 @end
 
 @implementation WXFieldMarker
@@ -29,20 +29,20 @@ void __39__WXFieldMarker_fieldMarkerTypeEnumMap__block_invoke()
   +[WXFieldMarker fieldMarkerTypeEnumMap]::sFieldMarkerTypeEnumMap = v0;
 }
 
-+ (void)readFrom:(_xmlNode *)a3 to:(id)a4
++ (void)readFrom:(_xmlNode *)from to:(id)to
 {
-  v14 = a4;
-  Prop = xmlGetProp(a3, "fldCharType");
-  v7 = [a1 fieldMarkerTypeEnumMap];
+  toCopy = to;
+  Prop = xmlGetProp(from, "fldCharType");
+  fieldMarkerTypeEnumMap = [self fieldMarkerTypeEnumMap];
   v8 = [MEMORY[0x277CCACA8] tc_stringWithXmlString:Prop];
-  v9 = [v7 valueForString:v8];
+  v9 = [fieldMarkerTypeEnumMap valueForString:v8];
 
   if (v9 != -130883970)
   {
-    [v14 setFieldMarkerType:v9];
+    [toCopy setFieldMarkerType:v9];
     if (v9 == 19)
     {
-      v10 = OCXFirstChild(a3);
+      v10 = OCXFirstChild(from);
       v11 = v10;
       if (v10)
       {
@@ -50,7 +50,7 @@ void __39__WXFieldMarker_fieldMarkerTypeEnumMap__block_invoke()
         {
           v12 = [objc_alloc(MEMORY[0x277CCACA8]) tc_initWithContentOfXmlNode:v11];
           v13 = decodeBase64(v12);
-          [v14 setData:v13];
+          [toCopy setData:v13];
         }
       }
     }

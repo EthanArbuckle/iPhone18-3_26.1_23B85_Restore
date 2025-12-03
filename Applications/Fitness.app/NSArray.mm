@@ -1,20 +1,20 @@
 @interface NSArray
-- (id)safeObjectAtIndex:(unint64_t)a3;
+- (id)safeObjectAtIndex:(unint64_t)index;
 @end
 
 @implementation NSArray
 
-- (id)safeObjectAtIndex:(unint64_t)a3
+- (id)safeObjectAtIndex:(unint64_t)index
 {
-  if ([(NSArray *)self count]<= a3)
+  if ([(NSArray *)self count]<= index)
   {
-    NSLog(@"Index %lu is out of bounds for the array", a3);
+    NSLog(@"Index %lu is out of bounds for the array", index);
     v5 = 0;
   }
 
   else
   {
-    v5 = [(NSArray *)self objectAtIndexedSubscript:a3];
+    v5 = [(NSArray *)self objectAtIndexedSubscript:index];
   }
 
   return v5;

@@ -1,10 +1,10 @@
 @interface EDCoreAnalyticAccountMapperService
 + (OS_os_log)log;
-- (EDCoreAnalyticAccountMapperService)initWithAccountProvider:(id)a3;
+- (EDCoreAnalyticAccountMapperService)initWithAccountProvider:(id)provider;
 - (id)_allActiveMailAccounts;
 - (id)_convertMailAccountToAccountMapper;
 - (id)getFileNameURL;
-- (unint64_t)findAccountId:(id)a3;
+- (unint64_t)findAccountId:(id)id;
 - (unint64_t)numberOfActiveAccounts;
 - (void)_retrieveFromDisk;
 - (void)saveToDisk;
@@ -19,7 +19,7 @@
   block[1] = 3221225472;
   block[2] = __41__EDCoreAnalyticAccountMapperService_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_34 != -1)
   {
     dispatch_once(&log_onceToken_34, block);
@@ -38,16 +38,16 @@ void __41__EDCoreAnalyticAccountMapperService_log__block_invoke(uint64_t a1)
   log_log_34 = v1;
 }
 
-- (EDCoreAnalyticAccountMapperService)initWithAccountProvider:(id)a3
+- (EDCoreAnalyticAccountMapperService)initWithAccountProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v11.receiver = self;
   v11.super_class = EDCoreAnalyticAccountMapperService;
   v6 = [(EDCoreAnalyticAccountMapperService *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_accountsProvider, a3);
+    objc_storeStrong(&v6->_accountsProvider, provider);
     v8 = objc_alloc_init(MEMORY[0x1E696AD10]);
     lock = v7->_lock;
     v7->_lock = v8;
@@ -60,62 +60,62 @@ void __41__EDCoreAnalyticAccountMapperService_log__block_invoke(uint64_t a1)
 
 - (id)_convertMailAccountToAccountMapper
 {
-  v2 = [(EDCoreAnalyticAccountMapperService *)self _allActiveMailAccounts];
+  _allActiveMailAccounts = [(EDCoreAnalyticAccountMapperService *)self _allActiveMailAccounts];
   v3 = objc_alloc_init(EDCoreAnalyticAccountMapper);
-  v4 = [MEMORY[0x1E695DF00] date];
-  [(EDCoreAnalyticAccountMapper *)v3 setDate:v4];
+  date = [MEMORY[0x1E695DF00] date];
+  [(EDCoreAnalyticAccountMapper *)v3 setDate:date];
 
-  [(EDCoreAnalyticAccountMapper *)v3 setAccounts:v2];
+  [(EDCoreAnalyticAccountMapper *)v3 setAccounts:_allActiveMailAccounts];
 
   return v3;
 }
 
 - (void)validate
 {
-  v16 = [MEMORY[0x1E695DF00] date];
-  v3 = [(EDCoreAnalyticAccountMapperService *)self accountMapper];
-  if (!v3)
+  date = [MEMORY[0x1E695DF00] date];
+  accountMapper = [(EDCoreAnalyticAccountMapperService *)self accountMapper];
+  if (!accountMapper)
   {
     goto LABEL_3;
   }
 
-  v4 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v5 = [(EDCoreAnalyticAccountMapperService *)self accountMapper];
-  v6 = [v5 date];
-  v7 = [v4 isDate:v6 inSameDayAsDate:v16];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  accountMapper2 = [(EDCoreAnalyticAccountMapperService *)self accountMapper];
+  date2 = [accountMapper2 date];
+  v7 = [currentCalendar isDate:date2 inSameDayAsDate:date];
 
   if ((v7 & 1) == 0)
   {
 LABEL_3:
-    v8 = [(EDCoreAnalyticAccountMapperService *)self lock];
-    [v8 lock];
+    lock = [(EDCoreAnalyticAccountMapperService *)self lock];
+    [lock lock];
 
     [(EDCoreAnalyticAccountMapperService *)self _retrieveFromDisk];
-    v9 = [MEMORY[0x1E695DEE8] currentCalendar];
-    v10 = [(EDCoreAnalyticAccountMapperService *)self accountMapper];
-    v11 = [v10 date];
-    v12 = [v9 isDate:v11 inSameDayAsDate:v16];
+    currentCalendar2 = [MEMORY[0x1E695DEE8] currentCalendar];
+    accountMapper3 = [(EDCoreAnalyticAccountMapperService *)self accountMapper];
+    date3 = [accountMapper3 date];
+    v12 = [currentCalendar2 isDate:date3 inSameDayAsDate:date];
 
     if ((v12 & 1) == 0)
     {
-      v13 = [(EDCoreAnalyticAccountMapperService *)self _convertMailAccountToAccountMapper];
+      _convertMailAccountToAccountMapper = [(EDCoreAnalyticAccountMapperService *)self _convertMailAccountToAccountMapper];
       accountMapper = self->_accountMapper;
-      self->_accountMapper = v13;
+      self->_accountMapper = _convertMailAccountToAccountMapper;
 
       [(EDCoreAnalyticAccountMapperService *)self saveToDisk];
     }
 
-    v15 = [(EDCoreAnalyticAccountMapperService *)self lock];
-    [v15 unlock];
+    lock2 = [(EDCoreAnalyticAccountMapperService *)self lock];
+    [lock2 unlock];
   }
 }
 
-- (unint64_t)findAccountId:(id)a3
+- (unint64_t)findAccountId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   [(EDCoreAnalyticAccountMapperService *)self validate];
-  v5 = [(EDCoreAnalyticAccountMapperService *)self accountMapper];
-  v6 = [v5 indexOfAccountId:v4];
+  accountMapper = [(EDCoreAnalyticAccountMapperService *)self accountMapper];
+  v6 = [accountMapper indexOfAccountId:idCopy];
 
   return v6;
 }
@@ -123,9 +123,9 @@ LABEL_3:
 - (unint64_t)numberOfActiveAccounts
 {
   [(EDCoreAnalyticAccountMapperService *)self validate];
-  v3 = [(EDCoreAnalyticAccountMapperService *)self accountMapper];
-  v4 = [v3 accounts];
-  v5 = [v4 count];
+  accountMapper = [(EDCoreAnalyticAccountMapperService *)self accountMapper];
+  accounts = [accountMapper accounts];
+  v5 = [accounts count];
 
   return v5;
 }
@@ -134,7 +134,7 @@ LABEL_3:
 {
   v8 = *MEMORY[0x1E69E9840];
   v4 = 138412546;
-  v5 = a1;
+  selfCopy = self;
   v6 = 2112;
   v7 = a2;
   _os_log_error_impl(&dword_1C61EF000, log, OS_LOG_TYPE_ERROR, "[BlackPearl][AccountMapper] Failed to remove temporary read URL [%@] error [%@]", &v4, 0x16u);
@@ -143,7 +143,7 @@ LABEL_3:
 
 - (void)_retrieveFromDisk
 {
-  v5 = [(EDCoreAnalyticAccountMapperService *)self getFileNameURL];
+  getFileNameURL = [(EDCoreAnalyticAccountMapperService *)self getFileNameURL];
   v3 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:?];
   if (v3)
   {
@@ -157,8 +157,8 @@ LABEL_3:
 
 - (id)getFileNameURL
 {
-  v2 = [MEMORY[0x1E699AE20] mailDataDirectory];
-  v3 = [v2 URLByAppendingPathComponent:@"CAAccountMapper.plist"];
+  mailDataDirectory = [MEMORY[0x1E699AE20] mailDataDirectory];
+  v3 = [mailDataDirectory URLByAppendingPathComponent:@"CAAccountMapper.plist"];
 
   return v3;
 }
@@ -166,28 +166,28 @@ LABEL_3:
 - (id)_allActiveMailAccounts
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [(EDCoreAnalyticAccountMapperService *)self accountsProvider];
+  accountsProvider = [(EDCoreAnalyticAccountMapperService *)self accountsProvider];
 
-  if (v3)
+  if (accountsProvider)
   {
     v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v5 = [(EDCoreAnalyticAccountMapperService *)self accountsProvider];
-    v6 = [v5 mailAccounts];
+    accountsProvider2 = [(EDCoreAnalyticAccountMapperService *)self accountsProvider];
+    mailAccounts = [accountsProvider2 mailAccounts];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __60__EDCoreAnalyticAccountMapperService__allActiveMailAccounts__block_invoke;
     v15[3] = &unk_1E8251FD0;
     v7 = v4;
     v16 = v7;
-    [v6 enumerateObjectsUsingBlock:v15];
+    [mailAccounts enumerateObjectsUsingBlock:v15];
 
     v8 = [v7 sortedArrayUsingComparator:&__block_literal_global_22];
     v9 = +[EDCoreAnalyticAccountMapperService log];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [(EDCoreAnalyticAccountMapperService *)self accountsProvider];
-      v11 = [v10 mailAccounts];
-      v12 = [v11 count];
+      accountsProvider3 = [(EDCoreAnalyticAccountMapperService *)self accountsProvider];
+      mailAccounts2 = [accountsProvider3 mailAccounts];
+      v12 = [mailAccounts2 count];
       *buf = 138412546;
       v18 = v8;
       v19 = 2048;

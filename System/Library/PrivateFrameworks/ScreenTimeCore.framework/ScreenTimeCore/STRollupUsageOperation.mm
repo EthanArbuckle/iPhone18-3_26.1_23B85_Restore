@@ -1,32 +1,32 @@
 @interface STRollupUsageOperation
-- (BOOL)_purgeEmptyUsageInManagedObjectContext:(id)a3 error:(id *)a4;
-- (BOOL)_purgeUsageBlocksWithPredicate:(id)a3 inManagedObjectContext:(id)a4 error:(id *)a5;
-- (STRollupUsageOperation)initWithPersistenceController:(id)a3 genesisDate:(id)a4 duration:(int64_t)a5 isBackgroundTask:(BOOL)a6 isRecomputingUsage:(BOOL)a7;
+- (BOOL)_purgeEmptyUsageInManagedObjectContext:(id)context error:(id *)error;
+- (BOOL)_purgeUsageBlocksWithPredicate:(id)predicate inManagedObjectContext:(id)context error:(id *)error;
+- (STRollupUsageOperation)initWithPersistenceController:(id)controller genesisDate:(id)date duration:(int64_t)duration isBackgroundTask:(BOOL)task isRecomputingUsage:(BOOL)usage;
 - (id)_lastUsageItemStartDate;
-- (void)_persistUsageOperationDidFinish:(id)a3 inContext:(id)a4;
-- (void)_runWithManagedObjectContext:(id)a3 purgePredicate:(id)a4;
-- (void)_saveContextAndEndOperation:(id)a3;
+- (void)_persistUsageOperationDidFinish:(id)finish inContext:(id)context;
+- (void)_runWithManagedObjectContext:(id)context purgePredicate:(id)predicate;
+- (void)_saveContextAndEndOperation:(id)operation;
 - (void)cancel;
 - (void)main;
 @end
 
 @implementation STRollupUsageOperation
 
-- (STRollupUsageOperation)initWithPersistenceController:(id)a3 genesisDate:(id)a4 duration:(int64_t)a5 isBackgroundTask:(BOOL)a6 isRecomputingUsage:(BOOL)a7
+- (STRollupUsageOperation)initWithPersistenceController:(id)controller genesisDate:(id)date duration:(int64_t)duration isBackgroundTask:(BOOL)task isRecomputingUsage:(BOOL)usage
 {
-  v12 = a4;
+  dateCopy = date;
   v19.receiver = self;
   v19.super_class = STRollupUsageOperation;
-  v13 = [(STPersistenceOperation *)&v19 initWithPersistenceController:a3];
+  v13 = [(STPersistenceOperation *)&v19 initWithPersistenceController:controller];
   if (v13)
   {
-    v14 = [v12 copy];
+    v14 = [dateCopy copy];
     genesisDate = v13->_genesisDate;
     v13->_genesisDate = v14;
 
-    v13->_duration = a5;
-    v13->_isBackgroundTask = a6;
-    v13->_recomputingUsage = a7;
+    v13->_duration = duration;
+    v13->_isBackgroundTask = task;
+    v13->_recomputingUsage = usage;
     v16 = objc_opt_new();
     usageOperationQueue = v13->_usageOperationQueue;
     v13->_usageOperationQueue = v16;
@@ -43,8 +43,8 @@
   v4.receiver = self;
   v4.super_class = STRollupUsageOperation;
   [(STRollupUsageOperation *)&v4 cancel];
-  v3 = [(STRollupUsageOperation *)self usageOperationQueue];
-  [v3 cancelAllOperations];
+  usageOperationQueue = [(STRollupUsageOperation *)self usageOperationQueue];
+  [usageOperationQueue cancelAllOperations];
 }
 
 - (void)main
@@ -54,28 +54,28 @@
 
   state.opaque[0] = 0;
   state.opaque[1] = 0;
-  v4 = [(STOperation *)self activity];
-  os_activity_scope_enter(v4, &state);
+  activity = [(STOperation *)self activity];
+  os_activity_scope_enter(activity, &state);
 
-  v5 = [(STPersistenceOperation *)self persistenceController];
-  v6 = [v5 newBackgroundContext];
+  persistenceController = [(STPersistenceOperation *)self persistenceController];
+  newBackgroundContext = [persistenceController newBackgroundContext];
 
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100076A30;
   v8[3] = &unk_1001A3020;
   v8[4] = self;
-  v7 = v6;
+  v7 = newBackgroundContext;
   v9 = v7;
   [v7 performBlockAndWait:v8];
 
   os_activity_scope_leave(&state);
 }
 
-- (void)_runWithManagedObjectContext:(id)a3 purgePredicate:(id)a4
+- (void)_runWithManagedObjectContext:(id)context purgePredicate:(id)predicate
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  predicateCopy = predicate;
   v8 = +[STUserDeviceState fetchRequestMatchingLocalUserDeviceState];
   v32 = @"user";
   v9 = [NSArray arrayWithObjects:&v32 count:1];
@@ -95,43 +95,43 @@
       }
     }
 
-    v13 = [v10 firstObject];
-    if (v13)
+    firstObject = [v10 firstObject];
+    if (firstObject)
     {
       v29 = v11;
-      v14 = [(STRollupUsageOperation *)self _purgeUsageBlocksWithPredicate:v7 inManagedObjectContext:v6 error:&v29];
+      v14 = [(STRollupUsageOperation *)self _purgeUsageBlocksWithPredicate:predicateCopy inManagedObjectContext:contextCopy error:&v29];
       v15 = v29;
 
       if ((v14 & 1) == 0)
       {
-        v17 = STXPCSafeErrorFromCoreDataError();
-        [(STRollupUsageOperation *)self endOperationWithError:v17];
+        _lastUsageItemStartDate = STXPCSafeErrorFromCoreDataError();
+        [(STRollupUsageOperation *)self endOperationWithError:_lastUsageItemStartDate];
         v11 = v15;
         goto LABEL_15;
       }
 
       v28 = v15;
-      v16 = [(STRollupUsageOperation *)self _purgeEmptyUsageInManagedObjectContext:v6 error:&v28];
+      v16 = [(STRollupUsageOperation *)self _purgeEmptyUsageInManagedObjectContext:contextCopy error:&v28];
       v11 = v28;
 
       if (v16)
       {
-        v17 = [(STRollupUsageOperation *)self _lastUsageItemStartDate];
-        v27 = [(STRollupUsageOperation *)self referenceDate];
-        v25 = [(STRollupUsageOperation *)self duration];
+        _lastUsageItemStartDate = [(STRollupUsageOperation *)self _lastUsageItemStartDate];
+        referenceDate = [(STRollupUsageOperation *)self referenceDate];
+        duration = [(STRollupUsageOperation *)self duration];
         v26 = [STFetchUsageOperation alloc];
-        v18 = [(STRollupUsageOperation *)self genesisDate];
-        v24 = [v13 user];
-        v23 = -[STFetchUsageOperation initWithGenesisDate:lastStartDate:referenceDate:includeAggregateUsage:includeRemoteUsage:forceRemoteDeviceSync:duration:](v26, "initWithGenesisDate:lastStartDate:referenceDate:includeAggregateUsage:includeRemoteUsage:forceRemoteDeviceSync:duration:", v18, v17, v27, [v24 syncingEnabled], v25 != 1440, -[STRollupUsageOperation isBackgroundTask](self, "isBackgroundTask") ^ 1, v25);
+        genesisDate = [(STRollupUsageOperation *)self genesisDate];
+        user = [firstObject user];
+        v23 = -[STFetchUsageOperation initWithGenesisDate:lastStartDate:referenceDate:includeAggregateUsage:includeRemoteUsage:forceRemoteDeviceSync:duration:](v26, "initWithGenesisDate:lastStartDate:referenceDate:includeAggregateUsage:includeRemoteUsage:forceRemoteDeviceSync:duration:", genesisDate, _lastUsageItemStartDate, referenceDate, [user syncingEnabled], duration != 1440, -[STRollupUsageOperation isBackgroundTask](self, "isBackgroundTask") ^ 1, duration);
 
-        v19 = [[STPersistUsageOperation alloc] initWithManagedObjectContext:v6 fetchUsageOperation:v23 userDeviceState:v13 referenceDate:v27 duration:v25];
+        v19 = [[STPersistUsageOperation alloc] initWithManagedObjectContext:contextCopy fetchUsageOperation:v23 userDeviceState:firstObject referenceDate:referenceDate duration:duration];
         [(STPersistUsageOperation *)v19 addDependency:v23];
-        [(STPersistUsageOperation *)v19 addTarget:self selector:"_persistUsageOperationDidFinish:inContext:" forOperationEvents:6 userInfo:v6];
-        v20 = [(STRollupUsageOperation *)self usageOperationQueue];
+        [(STPersistUsageOperation *)v19 addTarget:self selector:"_persistUsageOperationDidFinish:inContext:" forOperationEvents:6 userInfo:contextCopy];
+        usageOperationQueue = [(STRollupUsageOperation *)self usageOperationQueue];
         v31[0] = v23;
         v31[1] = v19;
         v21 = [NSArray arrayWithObjects:v31 count:2];
-        [v20 addOperations:v21 waitUntilFinished:0];
+        [usageOperationQueue addOperations:v21 waitUntilFinished:0];
 
 LABEL_15:
         goto LABEL_16;
@@ -145,38 +145,38 @@ LABEL_15:
       v22 = [NSError errorWithDomain:STErrorDomain code:7 userInfo:0];
     }
 
-    v17 = v22;
+    _lastUsageItemStartDate = v22;
     [(STRollupUsageOperation *)self endOperationWithError:v22];
     goto LABEL_15;
   }
 
-  v13 = STXPCSafeErrorFromCoreDataError();
-  [(STRollupUsageOperation *)self endOperationWithError:v13];
+  firstObject = STXPCSafeErrorFromCoreDataError();
+  [(STRollupUsageOperation *)self endOperationWithError:firstObject];
 LABEL_16:
 }
 
-- (void)_persistUsageOperationDidFinish:(id)a3 inContext:(id)a4
+- (void)_persistUsageOperationDidFinish:(id)finish inContext:(id)context
 {
-  v7 = a4;
-  v6 = [a3 error];
-  if (v6)
+  contextCopy = context;
+  error = [finish error];
+  if (error)
   {
-    [(STRollupUsageOperation *)self endOperationWithError:v6];
+    [(STRollupUsageOperation *)self endOperationWithError:error];
   }
 
   else
   {
-    [(STRollupUsageOperation *)self _saveContextAndEndOperation:v7];
+    [(STRollupUsageOperation *)self _saveContextAndEndOperation:contextCopy];
   }
 }
 
-- (BOOL)_purgeUsageBlocksWithPredicate:(id)a3 inManagedObjectContext:(id)a4 error:(id *)a5
+- (BOOL)_purgeUsageBlocksWithPredicate:(id)predicate inManagedObjectContext:(id)context error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  predicateCopy = predicate;
+  contextCopy = context;
   v9 = +[STUsageBlock fetchRequest];
-  [v9 setPredicate:v7];
-  v10 = [v9 execute:a5];
+  [v9 setPredicate:predicateCopy];
+  v10 = [v9 execute:error];
   v11 = v10;
   if (v10)
   {
@@ -199,7 +199,7 @@ LABEL_16:
             objc_enumerationMutation(v11);
           }
 
-          [v8 deleteObject:*(*(&v17 + 1) + 8 * v15)];
+          [contextCopy deleteObject:*(*(&v17 + 1) + 8 * v15)];
           v15 = v15 + 1;
         }
 
@@ -214,9 +214,9 @@ LABEL_16:
   return v11 != 0;
 }
 
-- (BOOL)_purgeEmptyUsageInManagedObjectContext:(id)a3 error:(id *)a4
+- (BOOL)_purgeEmptyUsageInManagedObjectContext:(id)context error:(id *)error
 {
-  v6 = a3;
+  contextCopy = context;
   if ([(STRollupUsageOperation *)self isRecomputingUsage])
   {
     v7 = 1;
@@ -228,7 +228,7 @@ LABEL_16:
     v9 = [NSPredicate predicateWithFormat:@"(%K.@count == 0)", @"blocks"];
     [v8 setPredicate:v9];
 
-    v10 = [v8 execute:a4];
+    v10 = [v8 execute:error];
     v11 = v10;
     v7 = v10 != 0;
     if (v10)
@@ -264,7 +264,7 @@ LABEL_16:
                 objc_enumerationMutation(v15);
               }
 
-              [v6 deleteObject:*(*(&v21 + 1) + 8 * i)];
+              [contextCopy deleteObject:*(*(&v21 + 1) + 8 * i)];
             }
 
             v17 = [v15 countByEnumeratingWithState:&v21 objects:v25 count:16];
@@ -279,15 +279,15 @@ LABEL_16:
   return v7;
 }
 
-- (void)_saveContextAndEndOperation:(id)a3
+- (void)_saveContextAndEndOperation:(id)operation
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1000774D0;
   v4[3] = &unk_1001A3020;
   v4[4] = self;
-  v5 = a3;
-  v3 = v5;
+  operationCopy = operation;
+  v3 = operationCopy;
   [v3 performBlockAndWait:v4];
 }
 
@@ -319,10 +319,10 @@ LABEL_16:
     }
   }
 
-  v11 = [v8 firstObject];
-  v12 = [v11 startDate];
+  firstObject = [v8 firstObject];
+  startDate = [firstObject startDate];
 
-  return v12;
+  return startDate;
 }
 
 @end

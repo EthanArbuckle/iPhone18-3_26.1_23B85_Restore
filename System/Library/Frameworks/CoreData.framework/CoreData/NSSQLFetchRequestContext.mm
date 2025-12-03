@@ -1,52 +1,52 @@
 @interface NSSQLFetchRequestContext
-- (BOOL)executeRequestCore:(id *)a3;
+- (BOOL)executeRequestCore:(id *)core;
 - (NSFetchRequest)request;
-- (NSSQLFetchRequestContext)initWithRequest:(id)a3 context:(id)a4 sqlCore:(id)a5;
+- (NSSQLFetchRequestContext)initWithRequest:(id)request context:(id)context sqlCore:(id)core;
 - (NSSQLiteStatement)fetchStatement;
 - (id)_createStatement;
-- (id)createChildContextForNestedFetchRequest:(id)a3;
-- (id)inverseIsToOnePrefetchRequestForRelationshipNamed:(id)a3 onEntity:(id)a4;
-- (id)manyToManyPrefetchRequestsForRelationshipNamed:(id)a3 onEntity:(id)a4;
-- (id)manyToOnePrefetchRequestForRelationshipNamed:(id)a3 onEntity:(id)a4;
+- (id)createChildContextForNestedFetchRequest:(id)request;
+- (id)inverseIsToOnePrefetchRequestForRelationshipNamed:(id)named onEntity:(id)entity;
+- (id)manyToManyPrefetchRequestsForRelationshipNamed:(id)named onEntity:(id)entity;
+- (id)manyToOnePrefetchRequestForRelationshipNamed:(id)named onEntity:(id)entity;
 - (uint64_t)_fireFaultsForValue:(uint64_t)result;
 - (uint64_t)addObjectIDsToRegister:(uint64_t)result;
 - (uint64_t)addObjectsToAwaken:(uint64_t)result;
-- (void)_setupBindVariablesForCachedStatement:(void *)a3 usingValues:;
+- (void)_setupBindVariablesForCachedStatement:(void *)statement usingValues:;
 - (void)addFaultsThatWereFired:(void *)result;
 - (void)dealloc;
 - (void)executeEpilogue;
 - (void)executePrologue;
-- (void)setFetchStatement:(id)a3;
-- (void)visitPredicateExpression:(id)a3;
+- (void)setFetchStatement:(id)statement;
+- (void)visitPredicateExpression:(id)expression;
 @end
 
 @implementation NSSQLFetchRequestContext
 
 - (void)executePrologue
 {
-  v3 = [(NSFetchRequest *)[(NSSQLFetchRequestContext *)self request] predicate];
-  if (self && v3)
+  predicate = [(NSFetchRequest *)[(NSSQLFetchRequestContext *)self request] predicate];
+  if (self && predicate)
   {
-    [(NSPredicate *)v3 acceptVisitor:self flags:1];
+    [(NSPredicate *)predicate acceptVisitor:self flags:1];
   }
 
-  v4 = [(NSFetchRequest *)[(NSSQLFetchRequestContext *)self request] havingPredicate];
-  if (self && v4)
+  havingPredicate = [(NSFetchRequest *)[(NSSQLFetchRequestContext *)self request] havingPredicate];
+  if (self && havingPredicate)
   {
-    [(NSPredicate *)v4 acceptVisitor:self flags:1];
+    [(NSPredicate *)havingPredicate acceptVisitor:self flags:1];
   }
 
   [(NSSQLFetchRequestContext *)self request];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(NSFetchRequest *)[(NSSQLFetchRequestContext *)self request] substitutionVariables];
+    substitutionVariables = [(NSFetchRequest *)[(NSSQLFetchRequestContext *)self request] substitutionVariables];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __43__NSSQLFetchRequestContext_executePrologue__block_invoke;
     v6[3] = &unk_1E6EC2CD8;
     v6[4] = self;
-    [v5 enumerateKeysAndObjectsUsingBlock:v6];
+    [substitutionVariables enumerateKeysAndObjectsUsingBlock:v6];
   }
 }
 
@@ -59,16 +59,16 @@
 
 - (id)_createStatement
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     self = self->super._sqlCore;
   }
 
-  result = [(NSSQLiteAdapter *)[(NSSQLFetchRequestContext *)self adapter] newSelectStatementWithFetchRequestContext:v2 ignoreInheritance:v2->_isFaultRequest];
+  result = [(NSSQLiteAdapter *)[(NSSQLFetchRequestContext *)self adapter] newSelectStatementWithFetchRequestContext:selfCopy ignoreInheritance:selfCopy->_isFaultRequest];
   if (result)
   {
-    fetchPlan = v2->_fetchPlan;
+    fetchPlan = selfCopy->_fetchPlan;
     flags = fetchPlan->flags;
     if ((*&flags & 0x18) == 0x10)
     {
@@ -95,12 +95,12 @@
     return statement;
   }
 
-  v4 = [(NSSQLFetchRequestContext *)self request];
-  v5 = [(NSFetchRequest *)v4 _cachedInfoForRequestor:self->super._connection];
+  request = [(NSSQLFetchRequestContext *)self request];
+  v5 = [(NSFetchRequest *)request _cachedInfoForRequestor:self->super._connection];
   if (v5)
   {
     v6 = v5;
-    if (-[NSFetchRequest fetchLimit](v4, "fetchLimit") && ![-[NSFetchRequest substitutionVariables](v4 "substitutionVariables")])
+    if (-[NSFetchRequest fetchLimit](request, "fetchLimit") && ![-[NSFetchRequest substitutionVariables](request "substitutionVariables")])
     {
       v10 = *(v6 + 16);
       v8 = (v6 + 16);
@@ -157,23 +157,23 @@ LABEL_12:
     }
   }
 
-  v16 = [(NSSQLFetchRequestContext *)self _createStatement];
-  statement = v16;
-  self->_statement = v16;
-  if (!v16 || (cachedStatementInfo = v16->_cachedStatementInfo) == 0 || !cachedStatementInfo->_isIneligibleForCaching)
+  _createStatement = [(NSSQLFetchRequestContext *)self _createStatement];
+  statement = _createStatement;
+  self->_statement = _createStatement;
+  if (!_createStatement || (cachedStatementInfo = _createStatement->_cachedStatementInfo) == 0 || !cachedStatementInfo->_isIneligibleForCaching)
   {
     if ([(NSFetchRequest *)[(NSSQLFetchRequestContext *)self request] _isCachingFetchRequest])
     {
       self->_isUsingCachedStatement = 1;
-      v18 = [(NSSQLFetchRequestContext *)self request];
-      v19 = [(NSFetchRequest *)v18 _cachedInfoForRequestor:self->super._connection];
+      request2 = [(NSSQLFetchRequestContext *)self request];
+      v19 = [(NSFetchRequest *)request2 _cachedInfoForRequestor:self->super._connection];
       if (!v19)
       {
         v19 = [[NSCachedFetchRequestThunk alloc] initForConnection:self->super._connection];
-        [(NSFetchRequest *)v18 _cacheInfo:v19 forRequestor:self->super._connection];
+        [(NSFetchRequest *)request2 _cacheInfo:v19 forRequestor:self->super._connection];
       }
 
-      if (-[NSFetchRequest fetchLimit](v18, "fetchLimit") && ![-[NSFetchRequest substitutionVariables](v18 "substitutionVariables")])
+      if (-[NSFetchRequest fetchLimit](request2, "fetchLimit") && ![-[NSFetchRequest substitutionVariables](request2 "substitutionVariables")])
       {
         if (v19)
         {
@@ -291,38 +291,38 @@ LABEL_32:
   [(NSSQLStoreRequestContext *)&v4 dealloc];
 }
 
-- (NSSQLFetchRequestContext)initWithRequest:(id)a3 context:(id)a4 sqlCore:(id)a5
+- (NSSQLFetchRequestContext)initWithRequest:(id)request context:(id)context sqlCore:(id)core
 {
-  v7 = a3;
+  requestCopy = request;
   v59 = *MEMORY[0x1E69E9840];
   if (BYTE1(dword_1ED4BEEC8) != 1)
   {
     goto LABEL_6;
   }
 
-  if (![a3 fetchBatchSize])
+  if (![request fetchBatchSize])
   {
     goto LABEL_6;
   }
 
-  if ([v7 resultType] != 2)
+  if ([requestCopy resultType] != 2)
   {
     goto LABEL_6;
   }
 
-  if ([objc_msgSend(v7 "propertiesToGroupBy")])
+  if ([objc_msgSend(requestCopy "propertiesToGroupBy")])
   {
     goto LABEL_6;
   }
 
-  v9 = [v7 returnsDistinctResults];
-  if (v9)
+  returnsDistinctResults = [requestCopy returnsDistinctResults];
+  if (returnsDistinctResults)
   {
     goto LABEL_6;
   }
 
-  v26 = v9;
-  if (![objc_msgSend(v7 "propertiesToFetch")])
+  v26 = returnsDistinctResults;
+  if (![objc_msgSend(requestCopy "propertiesToFetch")])
   {
     v10 = 1;
     goto LABEL_7;
@@ -332,7 +332,7 @@ LABEL_32:
   v55 = 0u;
   v52 = 0u;
   v53 = 0u;
-  obj = [v7 propertiesToFetch];
+  obj = [requestCopy propertiesToFetch];
   v27 = [obj countByEnumeratingWithState:&v52 objects:v58 count:16];
   if (!v27)
   {
@@ -343,7 +343,7 @@ LABEL_56:
       if (os_log_type_enabled(LogStream, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v57 = v7;
+        v57 = requestCopy;
         _os_log_error_impl(&dword_18565F000, LogStream, OS_LOG_TYPE_ERROR, "CoreData: fault: Returning unbatched results for NSFetchRequest with NSDictionaryResultType and fetchBatchSize > 0 however propertiesToFetch does not include required 'self' or 'objectID' property: %@\n", buf, 0xCu);
       }
 
@@ -351,7 +351,7 @@ LABEL_56:
       if (os_log_type_enabled(v35, OS_LOG_TYPE_FAULT))
       {
         *buf = 138412290;
-        v57 = v7;
+        v57 = requestCopy;
         v36 = "CoreData: Returning unbatched results for NSFetchRequest with NSDictionaryResultType and fetchBatchSize > 0 however propertiesToFetch does not include required 'self' or 'objectID' property: %@";
 LABEL_71:
         _os_log_fault_impl(&dword_18565F000, v35, OS_LOG_TYPE_FAULT, v36, buf, 0xCu);
@@ -374,7 +374,7 @@ LABEL_71:
       if (v45)
       {
         *buf = 138412290;
-        v57 = v7;
+        v57 = requestCopy;
 LABEL_90:
         _os_log_error_impl(&dword_18565F000, v44, OS_LOG_TYPE_ERROR, "CoreData: error: Returning unbatched results for NSFetchRequest with NSDictionaryResultType and fetchBatchSize > 0 however propertiesToFetch does not include required 'self' or 'objectID' property: %@\n", buf, 0xCu);
       }
@@ -383,12 +383,12 @@ LABEL_90:
     else if (v45)
     {
       *buf = 138412290;
-      v57 = v7;
+      v57 = requestCopy;
       goto LABEL_90;
     }
 
 LABEL_83:
-    _NSCoreDataLog_console(1, "Returning unbatched results for NSFetchRequest with NSDictionaryResultType and fetchBatchSize > 0 however propertiesToFetch does not include required 'self' or 'objectID' property: %@", v7);
+    _NSCoreDataLog_console(1, "Returning unbatched results for NSFetchRequest with NSDictionaryResultType and fetchBatchSize > 0 however propertiesToFetch does not include required 'self' or 'objectID' property: %@", requestCopy);
 LABEL_86:
     objc_autoreleasePoolPop(v42);
     goto LABEL_6;
@@ -438,7 +438,7 @@ LABEL_88:
 
       _NSCoreDataLog_console(1, "Returning unbatched results for unsupported NSExpression in propertiesToFetch: %@", v32);
       objc_autoreleasePoolPop(v37);
-      [v7 setFetchBatchSize:0];
+      [requestCopy setFetchBatchSize:0];
       goto LABEL_6;
     }
 
@@ -479,7 +479,7 @@ LABEL_88:
         if (v48)
         {
           *buf = 138412290;
-          v57 = v7;
+          v57 = requestCopy;
 LABEL_92:
           _os_log_error_impl(&dword_18565F000, v47, OS_LOG_TYPE_ERROR, "CoreData: error: Returning unbatched results for NSFetchRequest with NSDictionaryResultType and fetchBatchSize > 0 however propertiesToFetch includes sentinel value 'isDeleted' property: %@\n", buf, 0xCu);
         }
@@ -488,12 +488,12 @@ LABEL_92:
       else if (v48)
       {
         *buf = 138412290;
-        v57 = v7;
+        v57 = requestCopy;
         goto LABEL_92;
       }
     }
 
-    _NSCoreDataLog_console(1, "Returning unbatched results for NSFetchRequest with NSDictionaryResultType and fetchBatchSize > 0 however propertiesToFetch includes sentinel value 'isDeleted' property: %@", v7);
+    _NSCoreDataLog_console(1, "Returning unbatched results for NSFetchRequest with NSDictionaryResultType and fetchBatchSize > 0 however propertiesToFetch includes sentinel value 'isDeleted' property: %@", requestCopy);
     goto LABEL_86;
   }
 
@@ -501,7 +501,7 @@ LABEL_92:
   if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412290;
-    v57 = v7;
+    v57 = requestCopy;
     _os_log_error_impl(&dword_18565F000, v41, OS_LOG_TYPE_ERROR, "CoreData: fault: Returning unbatched results for NSFetchRequest with NSDictionaryResultType and fetchBatchSize > 0 however propertiesToFetch includes sentinel value 'isDeleted' property: %@\n", buf, 0xCu);
   }
 
@@ -509,7 +509,7 @@ LABEL_92:
   if (os_log_type_enabled(v35, OS_LOG_TYPE_FAULT))
   {
     *buf = 138412290;
-    v57 = v7;
+    v57 = requestCopy;
     v36 = "CoreData: Returning unbatched results for NSFetchRequest with NSDictionaryResultType and fetchBatchSize > 0 however propertiesToFetch includes sentinel value 'isDeleted' property: %@";
     goto LABEL_71;
   }
@@ -517,7 +517,7 @@ LABEL_92:
 LABEL_6:
   v10 = 0;
 LABEL_7:
-  if (![v7 fetchBatchSize] || ((objc_msgSend(v7, "resultType") != 0) & ~v10) != 0 || objc_msgSend(v7, "allocationType") == 1 || objc_msgSend(v7, "allocationType") == 2)
+  if (![requestCopy fetchBatchSize] || ((objc_msgSend(requestCopy, "resultType") != 0) & ~v10) != 0 || objc_msgSend(requestCopy, "allocationType") == 1 || objc_msgSend(requestCopy, "allocationType") == 2)
   {
     v11 = 0;
     v12 = 0;
@@ -525,57 +525,57 @@ LABEL_7:
 
   else
   {
-    v25 = [v7 copy];
+    v25 = [requestCopy copy];
     v11 = 1;
     [v25 setResultType:1];
     [v25 setIncludesPropertyValues:0];
-    v12 = v7;
-    v7 = v25;
+    v12 = requestCopy;
+    requestCopy = v25;
   }
 
-  if ([v7 resultType] == 1)
+  if ([requestCopy resultType] == 1)
   {
     if (!v12)
     {
-      v12 = v7;
-      v7 = [v7 copy];
+      v12 = requestCopy;
+      requestCopy = [requestCopy copy];
     }
 
-    [v7 setPropertiesToFetch:0];
+    [requestCopy setPropertiesToFetch:0];
   }
 
   v51.receiver = self;
   v51.super_class = NSSQLFetchRequestContext;
-  v13 = [(NSSQLStoreRequestContext *)&v51 initWithRequest:v7 context:a4 sqlCore:a5];
+  v13 = [(NSSQLStoreRequestContext *)&v51 initWithRequest:requestCopy context:context sqlCore:core];
   if (v13)
   {
-    if (!a5)
+    if (!core)
     {
-      v49 = [0 externalDataReferencesDirectory];
+      externalDataReferencesDirectory = [0 externalDataReferencesDirectory];
       v15 = 0;
-      v13->_externalDataReferencesDirectory = v49;
+      v13->_externalDataReferencesDirectory = externalDataReferencesDirectory;
       goto LABEL_22;
     }
 
-    if ((*(a5 + 201) & 0x40) == 0)
+    if ((*(core + 201) & 0x40) == 0)
     {
-      v13->_externalDataReferencesDirectory = [a5 externalDataReferencesDirectory];
-      if (!atomic_load(a5 + 21))
+      v13->_externalDataReferencesDirectory = [core externalDataReferencesDirectory];
+      if (!atomic_load(core + 21))
       {
-        [a5 externalDataReferencesDirectory];
+        [core externalDataReferencesDirectory];
       }
 
-      v15 = atomic_load(a5 + 22);
+      v15 = atomic_load(core + 22);
 LABEL_22:
       v13->_externalDataLinksDirectory = v15;
     }
 
-    v13->_fileBackedFuturesDirectory = [a5 fileBackedFuturesDirectory];
-    if (a5)
+    v13->_fileBackedFuturesDirectory = [core fileBackedFuturesDirectory];
+    if (core)
     {
-      v13->_fileProtectionLevel = (*(a5 + 50) >> 2) & 7;
-      v13->_faultHandler = *(a5 + 6);
-      v16 = _sqlCoreLookupSQLEntityForEntityDescription(a5, [v7 entity]);
+      v13->_fileProtectionLevel = (*(core + 50) >> 2) & 7;
+      v13->_faultHandler = *(core + 6);
+      v16 = _sqlCoreLookupSQLEntityForEntityDescription(core, [requestCopy entity]);
     }
 
     else
@@ -592,22 +592,22 @@ LABEL_22:
     v13->_originalRequest = v12;
     v13->_shouldUseBatches = v11;
     v13->_fetchPlan = fetchPlanAllocateInitialize([(NSSQLFetchRequestContext *)v13 request], &v13->super._sqlCore->super, v13->super._context);
-    v18 = [v7 resultType];
-    v19 = [v7 returnsObjectsAsFaults];
-    if (v18 == 1)
+    resultType = [requestCopy resultType];
+    returnsObjectsAsFaults = [requestCopy returnsObjectsAsFaults];
+    if (resultType == 1)
     {
       v20 = 4;
     }
 
-    else if (v18 == 2)
+    else if (resultType == 2)
     {
       v20 = 16;
     }
 
     else
     {
-      v21 = v19;
-      v22 = [objc_msgSend(v7 "propertiesToFetch")];
+      v21 = returnsObjectsAsFaults;
+      v22 = [objc_msgSend(requestCopy "propertiesToFetch")];
       if (v21)
       {
         v20 = 0;
@@ -631,7 +631,7 @@ LABEL_22:
   return v13;
 }
 
-- (id)createChildContextForNestedFetchRequest:(id)a3
+- (id)createChildContextForNestedFetchRequest:(id)request
 {
   v5 = [NSSQLFetchRequestContext alloc];
   if (self)
@@ -656,7 +656,7 @@ LABEL_22:
   }
 
 LABEL_3:
-  v9 = [(NSSQLFetchRequestContext *)v5 initWithRequest:a3 context:context sqlCore:sqlCore];
+  v9 = [(NSSQLFetchRequestContext *)v5 initWithRequest:request context:context sqlCore:sqlCore];
   if (v9)
   {
     v9->_parentContext = self;
@@ -666,40 +666,40 @@ LABEL_3:
   return v9;
 }
 
-- (id)inverseIsToOnePrefetchRequestForRelationshipNamed:(id)a3 onEntity:(id)a4
+- (id)inverseIsToOnePrefetchRequestForRelationshipNamed:(id)named onEntity:(id)entity
 {
   if (self)
   {
     self = self->super._connection;
   }
 
-  v6 = [(NSSQLiteConnection *)self prefetchRequestCache];
+  prefetchRequestCache = [(NSSQLiteConnection *)self prefetchRequestCache];
 
-  return [(NSSQLitePrefetchRequestCache *)v6 inverseIsToOnePrefetchRequestForRelationshipNamed:a3 onEntity:a4];
+  return [(NSSQLitePrefetchRequestCache *)prefetchRequestCache inverseIsToOnePrefetchRequestForRelationshipNamed:named onEntity:entity];
 }
 
-- (id)manyToOnePrefetchRequestForRelationshipNamed:(id)a3 onEntity:(id)a4
+- (id)manyToOnePrefetchRequestForRelationshipNamed:(id)named onEntity:(id)entity
 {
   if (self)
   {
     self = self->super._connection;
   }
 
-  v6 = [(NSSQLiteConnection *)self prefetchRequestCache];
+  prefetchRequestCache = [(NSSQLiteConnection *)self prefetchRequestCache];
 
-  return [(NSSQLitePrefetchRequestCache *)v6 manyToOnePrefetchRequestForRelationshipNamed:a3 onEntity:a4];
+  return [(NSSQLitePrefetchRequestCache *)prefetchRequestCache manyToOnePrefetchRequestForRelationshipNamed:named onEntity:entity];
 }
 
-- (id)manyToManyPrefetchRequestsForRelationshipNamed:(id)a3 onEntity:(id)a4
+- (id)manyToManyPrefetchRequestsForRelationshipNamed:(id)named onEntity:(id)entity
 {
   if (self)
   {
     self = self->super._connection;
   }
 
-  v6 = [(NSSQLiteConnection *)self prefetchRequestCache];
+  prefetchRequestCache = [(NSSQLiteConnection *)self prefetchRequestCache];
 
-  return [(NSSQLitePrefetchRequestCache *)v6 manyToManyPrefetchRequestsForRelationshipNamed:a3 onEntity:a4];
+  return [(NSSQLitePrefetchRequestCache *)prefetchRequestCache manyToManyPrefetchRequestsForRelationshipNamed:named onEntity:entity];
 }
 
 - (uint64_t)addObjectIDsToRegister:(uint64_t)result
@@ -738,7 +738,7 @@ LABEL_3:
   return result;
 }
 
-- (void)_setupBindVariablesForCachedStatement:(void *)a3 usingValues:
+- (void)_setupBindVariablesForCachedStatement:(void *)statement usingValues:
 {
   v71 = *MEMORY[0x1E69E9840];
   if (a2 && (v4 = a2[7]) != 0)
@@ -753,7 +753,7 @@ LABEL_3:
     v54 = 0;
   }
 
-  v6 = [a2 bindVariables];
+  bindVariables = [a2 bindVariables];
   v55 = [v5 count];
   if (v55)
   {
@@ -764,7 +764,7 @@ LABEL_3:
       v8 = [v5 objectAtIndex:v7];
       v9 = v7 + 1;
       v10 = [v5 objectAtIndex:v9];
-      v11 = [a3 valueForKey:v8];
+      v11 = [statement valueForKey:v8];
       if (!v11)
       {
         v45 = MEMORY[0x1E695DF30];
@@ -784,13 +784,13 @@ LABEL_3:
         goto LABEL_75;
       }
 
-      v13 = [v12 constantValue];
-      if (([v13 isNSArray] & 1) != 0 || (objc_msgSend(v13, "isNSSet") & 1) != 0 || objc_msgSend(v13, "isNSOrderedSet"))
+      constantValue = [v12 constantValue];
+      if (([constantValue isNSArray] & 1) != 0 || (objc_msgSend(constantValue, "isNSSet") & 1) != 0 || objc_msgSend(constantValue, "isNSOrderedSet"))
       {
         goto LABEL_69;
       }
 
-      v14 = [v6 objectAtIndex:{objc_msgSend(v10, "unsignedIntegerValue")}];
+      v14 = [bindVariables objectAtIndex:{objc_msgSend(v10, "unsignedIntegerValue")}];
       if ([v14 sqlType] != 2)
       {
         goto LABEL_29;
@@ -799,27 +799,27 @@ LABEL_3:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v15 = v6;
-        v16 = [v13 objectID];
-        v17 = v16;
-        v18 = a1;
-        if (a1)
+        v15 = bindVariables;
+        objectID = [constantValue objectID];
+        v17 = objectID;
+        selfCopy = self;
+        if (self)
         {
-          a1 = *(a1 + 8);
+          self = *(self + 8);
         }
 
-        if (a1 == [v16 persistentStore])
+        if (self == [objectID persistentStore])
         {
-          v19 = [v17 _referenceData64];
+          _referenceData64 = [v17 _referenceData64];
         }
 
         else
         {
-          v19 = 0;
+          _referenceData64 = 0;
         }
 
-        a1 = v18;
-        v6 = v15;
+        self = selfCopy;
+        bindVariables = v15;
         v5 = v52;
       }
 
@@ -828,15 +828,15 @@ LABEL_3:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          v21 = [v13 longLongValue];
+          longLongValue = [constantValue longLongValue];
 LABEL_26:
-          v19 = v21;
+          _referenceData64 = longLongValue;
           goto LABEL_27;
         }
 
-        if (a1)
+        if (self)
         {
-          v20 = *(a1 + 8);
+          v20 = *(self + 8);
         }
 
         else
@@ -844,24 +844,24 @@ LABEL_26:
           v20 = 0;
         }
 
-        if (v20 == [v13 persistentStore])
+        if (v20 == [constantValue persistentStore])
         {
-          v21 = [v13 _referenceData64];
+          longLongValue = [constantValue _referenceData64];
           goto LABEL_26;
         }
 
-        v19 = 0;
+        _referenceData64 = 0;
       }
 
 LABEL_27:
       if (([v8 isEqual:@"FETCH_REQUEST_LIMIT_SUBSTITUTION"] & 1) == 0 && !objc_msgSend(v8, "isEqual:", @"FETCH_REQUEST_OFFSET_SUBSTITUTION"))
       {
-        [v14 setInt64:v19];
+        [v14 setInt64:_referenceData64];
         goto LABEL_30;
       }
 
 LABEL_29:
-      [v14 setValue:v13];
+      [v14 setValue:constantValue];
 LABEL_30:
       v7 = v9 + 1;
     }
@@ -869,8 +869,8 @@ LABEL_30:
     while (v7 < v55);
   }
 
-  v56 = [a2 bindIntarrays];
-  v53 = [v56 count];
+  bindIntarrays = [a2 bindIntarrays];
+  v53 = [bindIntarrays count];
   if (v53)
   {
     v22 = 0;
@@ -879,7 +879,7 @@ LABEL_30:
       v23 = [v54 objectAtIndex:v22];
       v24 = [v54 objectAtIndex:v22 + 1];
       v25 = [v54 objectAtIndex:v22 + 2];
-      v26 = [a3 valueForKey:v23];
+      v26 = [statement valueForKey:v23];
       if (!v26)
       {
         break;
@@ -899,8 +899,8 @@ LABEL_76:
         goto LABEL_77;
       }
 
-      v28 = [v27 constantValue];
-      if (([v28 isNSArray] & 1) == 0 && (objc_msgSend(v28, "isNSSet") & 1) == 0 && (objc_msgSend(v28, "isNSOrderedSet") & 1) == 0)
+      constantValue2 = [v27 constantValue];
+      if (([constantValue2 isNSArray] & 1) == 0 && (objc_msgSend(constantValue2, "isNSSet") & 1) == 0 && (objc_msgSend(constantValue2, "isNSOrderedSet") & 1) == 0)
       {
         v45 = MEMORY[0x1E695DF30];
         v46 = *MEMORY[0x1E695D940];
@@ -908,11 +908,11 @@ LABEL_76:
         goto LABEL_77;
       }
 
-      v29 = [v56 objectAtIndex:{objc_msgSend(v25, "unsignedIntegerValue")}];
-      if ([v28 count])
+      v29 = [bindIntarrays objectAtIndex:{objc_msgSend(v25, "unsignedIntegerValue")}];
+      if ([constantValue2 count])
       {
         memset(v62, 0, sizeof(v62));
-        if ([v28 countByEnumeratingWithState:v62 objects:v70 count:16])
+        if ([constantValue2 countByEnumeratingWithState:v62 objects:v70 count:16])
         {
           v30 = **(&v62[0] + 1);
         }
@@ -920,7 +920,7 @@ LABEL_76:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v32 = [_PFRoutines newArrayOfObjectIDsFromCollection:v28];
+          v32 = [_PFRoutines newArrayOfObjectIDsFromCollection:constantValue2];
         }
 
         else
@@ -934,7 +934,7 @@ LABEL_76:
             goto LABEL_77;
           }
 
-          v32 = v28;
+          v32 = constantValue2;
         }
 
         v31 = v32;
@@ -988,13 +988,13 @@ LABEL_76:
               {
 LABEL_67:
                 ClassName = object_getClassName(v36);
-                v43 = [v24 name];
+                name = [v24 name];
                 *buf = 138412802;
                 v64 = v36;
                 v65 = 2080;
                 v66 = ClassName;
                 v67 = 2112;
-                v68 = v43;
+                v68 = name;
                 _os_log_error_impl(&dword_18565F000, LogStream, OS_LOG_TYPE_ERROR, "CoreData: error: oid = %@ [oid class] = %s expecting entity %@\n", buf, 0x20u);
               }
             }
@@ -1008,7 +1008,7 @@ LABEL_69:
             v46 = *MEMORY[0x1E695D940];
             v47 = [MEMORY[0x1E696AEC0] stringWithFormat:@"bad substitution variable for %@, must not be a collection", v8];
 LABEL_77:
-            objc_exception_throw([v45 exceptionWithName:v46 reason:v47 userInfo:a3]);
+            objc_exception_throw([v45 exceptionWithName:v46 reason:v47 userInfo:statement]);
           }
         }
 
@@ -1039,10 +1039,10 @@ LABEL_61:
   v37 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setFetchStatement:(id)a3
+- (void)setFetchStatement:(id)statement
 {
   statement = self->_statement;
-  self->_statement = a3;
+  self->_statement = statement;
 }
 
 - (uint64_t)_fireFaultsForValue:(uint64_t)result
@@ -1071,35 +1071,35 @@ LABEL_61:
   return result;
 }
 
-- (void)visitPredicateExpression:(id)a3
+- (void)visitPredicateExpression:(id)expression
 {
-  v5 = [a3 expressionType];
-  if (v5)
+  expressionType = [expression expressionType];
+  if (expressionType)
   {
-    if (v5 == 3 || v5 == 4 && (sel_valueForKey_ == [a3 selector] || sel_valueForKeyPath_ == objc_msgSend(a3, "selector")))
+    if (expressionType == 3 || expressionType == 4 && (sel_valueForKey_ == [expression selector] || sel_valueForKeyPath_ == objc_msgSend(expression, "selector")))
     {
-      v6 = [a3 operand];
-      if (![v6 expressionType])
+      operand = [expression operand];
+      if (![operand expressionType])
       {
-        v7 = [v6 constantValue];
+        constantValue = [operand constantValue];
 
-        [(NSSQLFetchRequestContext *)self _fireFaultsForValue:v7];
+        [(NSSQLFetchRequestContext *)self _fireFaultsForValue:constantValue];
       }
     }
   }
 
   else
   {
-    v8 = [a3 constantValue];
-    if ((([v8 isNSArray] & 1) != 0 || (objc_msgSend(v8, "isNSSet") & 1) != 0 || objc_msgSend(v8, "isNSOrderedSet")) && (objc_opt_respondsToSelector() & 1) != 0 && objc_msgSend(v8, "isFault"))
+    constantValue2 = [expression constantValue];
+    if ((([constantValue2 isNSArray] & 1) != 0 || (objc_msgSend(constantValue2, "isNSSet") & 1) != 0 || objc_msgSend(constantValue2, "isNSOrderedSet")) && (objc_opt_respondsToSelector() & 1) != 0 && objc_msgSend(constantValue2, "isFault"))
     {
 
-      [v8 willRead];
+      [constantValue2 willRead];
     }
   }
 }
 
-- (BOOL)executeRequestCore:(id *)a3
+- (BOOL)executeRequestCore:(id *)core
 {
   [(NSSQLFetchRequestContext *)self fetchStatement];
   [(NSSQLStoreRequestContext *)self setResult:_executeFetchRequest(self)];
@@ -1109,9 +1109,9 @@ LABEL_61:
   }
 
   error = self->super._error;
-  if (error && a3)
+  if (error && core)
   {
-    *a3 = error;
+    *core = error;
   }
 
   return !self->super._exception && !self->super._error && [(NSSQLStoreRequestContext *)self result]!= 0;

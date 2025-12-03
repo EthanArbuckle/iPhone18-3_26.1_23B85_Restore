@@ -1,16 +1,16 @@
 @interface TSWPTrackedDeletion
-- (TSWPTrackedDeletion)initWithRange:(_NSRange)a3 changeSession:(id)a4;
+- (TSWPTrackedDeletion)initWithRange:(_NSRange)range changeSession:(id)session;
 - (_NSRange)insertedRange;
-- (void)performWithStorage:(id)a3 delta:(int64_t)a4 actionBuilder:(void *)a5 withFlags:(unsigned int)a6 replaceBlock:(id)a7;
+- (void)performWithStorage:(id)storage delta:(int64_t)delta actionBuilder:(void *)builder withFlags:(unsigned int)flags replaceBlock:(id)block;
 @end
 
 @implementation TSWPTrackedDeletion
 
-- (TSWPTrackedDeletion)initWithRange:(_NSRange)a3 changeSession:(id)a4
+- (TSWPTrackedDeletion)initWithRange:(_NSRange)range changeSession:(id)session
 {
-  length = a3.length;
-  location = a3.location;
-  v8 = a4;
+  length = range.length;
+  location = range.location;
+  sessionCopy = session;
   v19.receiver = self;
   v19.super_class = TSWPTrackedDeletion;
   v10 = [(TSWPTrackedDeletion *)&v19 init];
@@ -28,20 +28,20 @@
 
     v10->_range.location = location;
     v10->_range.length = length;
-    objc_storeStrong(&v10->_changeSession, a4);
+    objc_storeStrong(&v10->_changeSession, session);
   }
 
   return v10;
 }
 
-- (void)performWithStorage:(id)a3 delta:(int64_t)a4 actionBuilder:(void *)a5 withFlags:(unsigned int)a6 replaceBlock:(id)a7
+- (void)performWithStorage:(id)storage delta:(int64_t)delta actionBuilder:(void *)builder withFlags:(unsigned int)flags replaceBlock:(id)block
 {
-  v11 = a3;
-  v53 = a7;
+  storageCopy = storage;
+  blockCopy = block;
   location = self->_range.location;
-  if (a4)
+  if (delta)
   {
-    location += a4;
+    location += delta;
     self->_range.location = location;
   }
 
@@ -58,7 +58,7 @@
   v66[2] = sub_276E1D698;
   v66[3] = &unk_27A6F39A0;
   v66[4] = &v67;
-  objc_msgSend_enumerateSmartFieldsWithAttributeKind_inRange_usingBlock_(v11, v12, 7, location, length, v66);
+  objc_msgSend_enumerateSmartFieldsWithAttributeKind_inRange_usingBlock_(storageCopy, v12, 7, location, length, v66);
   v16 = v68;
   for (i = v68[6]; i != v16[7]; i += 24)
   {
@@ -66,7 +66,7 @@
     v19 = *(i + 8);
     v20 = *(i + 16);
     v23 = objc_msgSend_styleAttributeArrayKind(v18, v21, v22);
-    objc_msgSend_applyObject_toCharRange_forKind_actionBuilder_(v11, v24, 0, v19, v20, v23, a5);
+    objc_msgSend_applyObject_toCharRange_forKind_actionBuilder_(storageCopy, v24, 0, v19, v20, v23, builder);
 
     v16 = v68;
   }
@@ -83,18 +83,18 @@
   v58[2] = sub_276E1D848;
   v58[3] = &unk_27A6F39A0;
   v58[4] = &v59;
-  objc_msgSend_enumerateWithAttributeKind_inRange_usingBlock_(v11, v15, 14, location, length, v58);
+  objc_msgSend_enumerateWithAttributeKind_inRange_usingBlock_(storageCopy, v15, 14, location, length, v58);
   v27 = v60;
   for (j = v60[6]; j != v27[7]; j += 3)
   {
-    objc_msgSend_setDictationAndAutocorrection_forCharRange_actionBuilder_(v11, v25, 0, j[1], j[2], a5);
+    objc_msgSend_setDictationAndAutocorrection_forCharRange_actionBuilder_(storageCopy, v25, 0, j[1], j[2], builder);
     v27 = v60;
   }
 
-  v31 = objc_msgSend_deletionChangesTable(v11, v25, v26);
+  v31 = objc_msgSend_deletionChangesTable(storageCopy, v25, v26);
   if (v31)
   {
-    objc_msgSend_range(v11, v29, v30);
+    objc_msgSend_range(storageCopy, v29, v30);
     v57.location = NSExpandedRange();
     v57.length = v32;
     TSWPAttributeArray::begin(v31, &v57, &v55);
@@ -117,7 +117,7 @@
           break;
         }
 
-        v41 = objc_msgSend_context(v11, v39, v40);
+        v41 = objc_msgSend_context(storageCopy, v39, v40);
         v43 = objc_msgSend_copyWithContext_(v37, v42, v41);
 
         goto LABEL_17;
@@ -126,13 +126,13 @@
   }
 
   v44 = [TSWPChange alloc];
-  v37 = objc_msgSend_context(v11, v45, v46);
+  v37 = objc_msgSend_context(storageCopy, v45, v46);
   v43 = objc_msgSend_initWithContext_kind_session_(v44, v47, v37, 2, self->_changeSession);
 LABEL_17:
 
-  objc_msgSend_applyObject_toCharRange_forKind_actionBuilder_(v11, v48, v43, location, length, 16, a5);
+  objc_msgSend_applyObject_toCharRange_forKind_actionBuilder_(storageCopy, v48, v43, location, length, 16, builder);
   v51 = objc_msgSend_date(MEMORY[0x277CBEAA8], v49, v50);
-  objc_msgSend_applyObject_toCharRange_forKind_actionBuilder_(v11, v52, v51, location, length, 16, a5);
+  objc_msgSend_applyObject_toCharRange_forKind_actionBuilder_(storageCopy, v52, v51, location, length, 16, builder);
 
   _Block_object_dispose(&v59, 8);
   v57.location = v65;

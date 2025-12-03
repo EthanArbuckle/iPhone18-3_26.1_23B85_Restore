@@ -1,27 +1,27 @@
 @interface KVSpanMatcher
 + (id)indexMatcher;
-+ (id)itemMatcher:(id)a3 locale:(id)a4;
-+ (id)itemMatcher:(id)a3 tokenizer:(id)a4 error:(id *)a5;
-- (KVSpanMatcher)initWithSpanMatcher:(id)a3;
-- (id)_convertResults:(id)a3;
-- (id)matchSpans:(id)a3 error:(id *)a4;
-- (id)matchSpans:(id)a3 userId:(id)a4 error:(id *)a5;
++ (id)itemMatcher:(id)matcher locale:(id)locale;
++ (id)itemMatcher:(id)matcher tokenizer:(id)tokenizer error:(id *)error;
+- (KVSpanMatcher)initWithSpanMatcher:(id)matcher;
+- (id)_convertResults:(id)results;
+- (id)matchSpans:(id)spans error:(id *)error;
+- (id)matchSpans:(id)spans userId:(id)id error:(id *)error;
 @end
 
 @implementation KVSpanMatcher
 
-- (id)_convertResults:(id)a3
+- (id)_convertResults:(id)results
 {
   v43 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  resultsCopy = results;
   v4 = objc_alloc(MEMORY[0x277CBEB18]);
-  v10 = objc_msgSend_count(v3, v5, v6, v7, v8, v9);
+  v10 = objc_msgSend_count(resultsCopy, v5, v6, v7, v8, v9);
   v15 = objc_msgSend_initWithCapacity_(v4, v11, v10, v12, v13, v14);
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v16 = v3;
+  v16 = resultsCopy;
   v19 = objc_msgSend_countByEnumeratingWithState_objects_count_(v16, v17, &v38, v42, 16, v18);
   if (v19)
   {
@@ -56,52 +56,52 @@
   return v15;
 }
 
-- (id)matchSpans:(id)a3 userId:(id)a4 error:(id *)a5
+- (id)matchSpans:(id)spans userId:(id)id error:(id *)error
 {
   spanMatcher = self->_spanMatcher;
-  v9 = a4;
-  v15 = objc_msgSend_query(a3, v10, v11, v12, v13, v14);
-  v18 = objc_msgSend_matchSpans_userId_error_(spanMatcher, v16, v15, v9, a5, v17);
+  idCopy = id;
+  v15 = objc_msgSend_query(spans, v10, v11, v12, v13, v14);
+  v18 = objc_msgSend_matchSpans_userId_error_(spanMatcher, v16, v15, idCopy, error, v17);
 
   v23 = objc_msgSend__convertResults_(self, v19, v18, v20, v21, v22);
 
   return v23;
 }
 
-- (id)matchSpans:(id)a3 error:(id *)a4
+- (id)matchSpans:(id)spans error:(id *)error
 {
   spanMatcher = self->_spanMatcher;
-  v9 = objc_msgSend_query(a3, a2, a3, a4, v4, v5);
-  v13 = objc_msgSend_matchSpans_error_(spanMatcher, v10, v9, a4, v11, v12);
+  v9 = objc_msgSend_query(spans, a2, spans, error, v4, v5);
+  v13 = objc_msgSend_matchSpans_error_(spanMatcher, v10, v9, error, v11, v12);
 
   v18 = objc_msgSend__convertResults_(self, v14, v13, v15, v16, v17);
 
   return v18;
 }
 
-- (KVSpanMatcher)initWithSpanMatcher:(id)a3
+- (KVSpanMatcher)initWithSpanMatcher:(id)matcher
 {
-  v5 = a3;
+  matcherCopy = matcher;
   v9.receiver = self;
   v9.super_class = KVSpanMatcher;
   v6 = [(KVSpanMatcher *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_spanMatcher, a3);
+    objc_storeStrong(&v6->_spanMatcher, matcher);
   }
 
   return v7;
 }
 
-+ (id)itemMatcher:(id)a3 tokenizer:(id)a4 error:(id *)a5
++ (id)itemMatcher:(id)matcher tokenizer:(id)tokenizer error:(id *)error
 {
-  v7 = a4;
-  v8 = a3;
+  tokenizerCopy = tokenizer;
+  matcherCopy = matcher;
   v9 = sub_2559B35BC();
-  v15 = objc_msgSend_tokenizer(v7, v10, v11, v12, v13, v14);
+  v15 = objc_msgSend_tokenizer(tokenizerCopy, v10, v11, v12, v13, v14);
 
-  v18 = objc_msgSend_itemMatcher_tokenizer_error_(v9, v16, v8, v15, a5, v17);
+  v18 = objc_msgSend_itemMatcher_tokenizer_error_(v9, v16, matcherCopy, v15, error, v17);
 
   v19 = objc_alloc(objc_opt_class());
   v24 = objc_msgSend_initWithSpanMatcher_(v19, v20, v18, v21, v22, v23);
@@ -109,11 +109,11 @@
   return v24;
 }
 
-+ (id)itemMatcher:(id)a3 locale:(id)a4
++ (id)itemMatcher:(id)matcher locale:(id)locale
 {
   v37 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  matcherCopy = matcher;
+  localeCopy = locale;
   v30 = 0;
   v31 = &v30;
   v32 = 0x2050000000;
@@ -133,10 +133,10 @@
   v8 = v7;
   _Block_object_dispose(&v30, 8);
   v9 = [v7 alloc];
-  v14 = objc_msgSend_initWithLocale_(v9, v10, v6, v11, v12, v13);
+  v14 = objc_msgSend_initWithLocale_(v9, v10, localeCopy, v11, v12, v13);
   v15 = sub_2559B35BC();
   v29 = 0;
-  v18 = objc_msgSend_itemMatcher_tokenizer_error_(v15, v16, v5, v14, &v29, v17);
+  v18 = objc_msgSend_itemMatcher_tokenizer_error_(v15, v16, matcherCopy, v14, &v29, v17);
   v19 = v29;
   if (!v18)
   {

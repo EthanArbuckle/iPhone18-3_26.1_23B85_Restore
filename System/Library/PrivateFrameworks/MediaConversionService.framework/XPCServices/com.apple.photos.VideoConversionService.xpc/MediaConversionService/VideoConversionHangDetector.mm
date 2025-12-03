@@ -1,16 +1,16 @@
 @interface VideoConversionHangDetector
-- (VideoConversionHangDetector)initWithThresholdTimeInterval:(double)a3;
-- (void)updateCurrentProgress:(double)a3;
+- (VideoConversionHangDetector)initWithThresholdTimeInterval:(double)interval;
+- (void)updateCurrentProgress:(double)progress;
 @end
 
 @implementation VideoConversionHangDetector
 
-- (void)updateCurrentProgress:(double)a3
+- (void)updateCurrentProgress:(double)progress
 {
   v5 = +[NSDate date];
   v6 = v5;
   lastProgressTimestamp = self->_lastProgressTimestamp;
-  if (lastProgressTimestamp && self->_lastProgress >= a3)
+  if (lastProgressTimestamp && self->_lastProgress >= progress)
   {
     [(NSDate *)v5 timeIntervalSinceDate:?];
     self->_progressUnchangedTimeInterval = v8 + self->_progressUnchangedTimeInterval;
@@ -24,12 +24,12 @@
 
   self->_lastProgressTimestamp = v6;
 
-  self->_lastProgress = a3;
+  self->_lastProgress = progress;
 }
 
-- (VideoConversionHangDetector)initWithThresholdTimeInterval:(double)a3
+- (VideoConversionHangDetector)initWithThresholdTimeInterval:(double)interval
 {
-  if (a3 <= 0.0)
+  if (interval <= 0.0)
   {
     v7 = +[NSAssertionHandler currentHandler];
     [v7 handleFailureInMethod:a2 object:self file:@"VideoConversionService.m" lineNumber:44 description:{@"Invalid parameter not satisfying: %@", @"thresholdTimeInterval > 0"}];
@@ -40,7 +40,7 @@
   result = [(VideoConversionHangDetector *)&v8 init];
   if (result)
   {
-    result->_hangDetectionThresholdTimeInterval = a3;
+    result->_hangDetectionThresholdTimeInterval = interval;
   }
 
   return result;

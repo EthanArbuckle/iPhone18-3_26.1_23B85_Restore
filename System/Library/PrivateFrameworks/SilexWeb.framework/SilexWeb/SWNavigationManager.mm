@@ -1,14 +1,14 @@
 @interface SWNavigationManager
-- (BOOL)shouldPreviewRequest:(id)a3;
+- (BOOL)shouldPreviewRequest:(id)request;
 - (SWNavigationManager)init;
-- (id)previewViewControllerForRequest:(id)a3;
-- (unint64_t)actionForRequest:(id)a3;
-- (void)addObserver:(id)a3;
-- (void)commitViewController:(id)a3;
-- (void)registerHandler:(id)a3;
-- (void)registerHandler:(id)a3 extension:(id)a4;
-- (void)registerHandler:(id)a3 scheme:(id)a4;
-- (void)removeObserver:(id)a3;
+- (id)previewViewControllerForRequest:(id)request;
+- (unint64_t)actionForRequest:(id)request;
+- (void)addObserver:(id)observer;
+- (void)commitViewController:(id)controller;
+- (void)registerHandler:(id)handler;
+- (void)registerHandler:(id)handler extension:(id)extension;
+- (void)registerHandler:(id)handler scheme:(id)scheme;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation SWNavigationManager
@@ -20,17 +20,17 @@
   v2 = [(SWNavigationManager *)&v12 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     handlers = v2->_handlers;
-    v2->_handlers = v3;
+    v2->_handlers = array;
 
-    v5 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     schemeHandlers = v2->_schemeHandlers;
-    v2->_schemeHandlers = v5;
+    v2->_schemeHandlers = dictionary;
 
-    v7 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     extensionHandlers = v2->_extensionHandlers;
-    v2->_extensionHandlers = v7;
+    v2->_extensionHandlers = dictionary2;
 
     v9 = [MEMORY[0x1E695DFA8] set];
     observers = v2->_observers;
@@ -40,22 +40,22 @@
   return v2;
 }
 
-- (unint64_t)actionForRequest:(id)a3
+- (unint64_t)actionForRequest:(id)request
 {
   v38 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 URL];
-  v6 = [v5 pathExtension];
+  requestCopy = request;
+  v5 = [requestCopy URL];
+  pathExtension = [v5 pathExtension];
 
-  v7 = [v4 URL];
-  v8 = [v7 scheme];
+  v7 = [requestCopy URL];
+  scheme = [v7 scheme];
 
-  if (v6)
+  if (pathExtension)
   {
-    v9 = [(SWNavigationManager *)self extensionHandlers];
-    v10 = [v9 objectForKey:v6];
+    extensionHandlers = [(SWNavigationManager *)self extensionHandlers];
+    v10 = [extensionHandlers objectForKey:pathExtension];
 
-    v11 = [v10 handleRequest:v4];
+    v11 = [v10 handleRequest:requestCopy];
     if (v11)
     {
       goto LABEL_7;
@@ -67,12 +67,12 @@
     v11 = 0;
   }
 
-  if (v8)
+  if (scheme)
   {
-    v12 = [(SWNavigationManager *)self schemeHandlers];
-    v13 = [v12 objectForKey:v8];
+    schemeHandlers = [(SWNavigationManager *)self schemeHandlers];
+    v13 = [schemeHandlers objectForKey:scheme];
 
-    v11 = [v13 handleRequest:v4];
+    v11 = [v13 handleRequest:requestCopy];
   }
 
 LABEL_7:
@@ -83,8 +83,8 @@ LABEL_18:
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v14 = [(SWNavigationManager *)self observers];
-    v20 = [v14 countByEnumeratingWithState:&v28 objects:v36 count:16];
+    observers = [(SWNavigationManager *)self observers];
+    v20 = [observers countByEnumeratingWithState:&v28 objects:v36 count:16];
     if (v20)
     {
       v21 = v20;
@@ -96,18 +96,18 @@ LABEL_18:
         {
           if (*v29 != v22)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(observers);
           }
 
           v24 = *(*(&v28 + 1) + 8 * v23);
-          v25 = [v4 URL];
+          v25 = [requestCopy URL];
           [v24 handledNavigationWithURL:v25];
 
           ++v23;
         }
 
         while (v21 != v23);
-        v21 = [v14 countByEnumeratingWithState:&v28 objects:v36 count:16];
+        v21 = [observers countByEnumeratingWithState:&v28 objects:v36 count:16];
       }
 
       while (v21);
@@ -120,8 +120,8 @@ LABEL_18:
     v35 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v14 = [(SWNavigationManager *)self handlers];
-    v15 = [v14 countByEnumeratingWithState:&v32 objects:v37 count:16];
+    observers = [(SWNavigationManager *)self handlers];
+    v15 = [observers countByEnumeratingWithState:&v32 objects:v37 count:16];
     if (v15)
     {
       v16 = v15;
@@ -133,10 +133,10 @@ LABEL_18:
         {
           if (*v33 != v17)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(observers);
           }
 
-          v19 = [*(*(&v32 + 1) + 8 * v18) handleRequest:v4];
+          v19 = [*(*(&v32 + 1) + 8 * v18) handleRequest:requestCopy];
           if (v19)
           {
             v11 = v19;
@@ -148,7 +148,7 @@ LABEL_18:
         }
 
         while (v16 != v18);
-        v16 = [v14 countByEnumeratingWithState:&v32 objects:v37 count:16];
+        v16 = [observers countByEnumeratingWithState:&v32 objects:v37 count:16];
         if (v16)
         {
           continue;
@@ -165,28 +165,28 @@ LABEL_18:
   return v11;
 }
 
-- (BOOL)shouldPreviewRequest:(id)a3
+- (BOOL)shouldPreviewRequest:(id)request
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 URL];
-  v6 = [v5 pathExtension];
+  requestCopy = request;
+  v5 = [requestCopy URL];
+  pathExtension = [v5 pathExtension];
 
-  v7 = [v4 URL];
-  v8 = [v7 scheme];
+  v7 = [requestCopy URL];
+  scheme = [v7 scheme];
 
   v9 = &_OBJC_LABEL_PROTOCOL___TFAssembly;
-  if (v6)
+  if (pathExtension)
   {
-    v10 = [(SWNavigationManager *)self extensionHandlers];
-    v11 = [v10 objectForKey:v6];
+    extensionHandlers = [(SWNavigationManager *)self extensionHandlers];
+    v11 = [extensionHandlers objectForKey:pathExtension];
 
     if (objc_opt_respondsToSelector())
     {
-      v12 = [v11 previewViewControllerForRequest:v4];
+      v12 = [v11 previewViewControllerForRequest:requestCopy];
       if (v12)
       {
-        v13 = [[SWNavigationPreview alloc] initWithViewController:v12 navigationHandler:v11 URLRequest:v4];
+        v13 = [[SWNavigationPreview alloc] initWithViewController:v12 navigationHandler:v11 URLRequest:requestCopy];
       }
 
       else
@@ -211,17 +211,17 @@ LABEL_18:
     v13 = 0;
   }
 
-  if (v8)
+  if (scheme)
   {
-    v14 = [(SWNavigationManager *)self schemeHandlers];
-    v15 = [v14 objectForKey:v8];
+    schemeHandlers = [(SWNavigationManager *)self schemeHandlers];
+    v15 = [schemeHandlers objectForKey:scheme];
 
     if (objc_opt_respondsToSelector())
     {
-      v16 = [v15 previewViewControllerForRequest:v4];
+      v16 = [v15 previewViewControllerForRequest:requestCopy];
       if (v16)
       {
-        v13 = [[SWNavigationPreview alloc] initWithViewController:v16 navigationHandler:v15 URLRequest:v4];
+        v13 = [[SWNavigationPreview alloc] initWithViewController:v16 navigationHandler:v15 URLRequest:requestCopy];
       }
 
       else
@@ -243,12 +243,12 @@ LABEL_18:
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v17 = [(SWNavigationManager *)self handlers];
-    v13 = [v17 countByEnumeratingWithState:&v31 objects:v35 count:16];
+    handlers = [(SWNavigationManager *)self handlers];
+    v13 = [handlers countByEnumeratingWithState:&v31 objects:v35 count:16];
     if (v13)
     {
-      v29 = v6;
-      v30 = v8;
+      v29 = pathExtension;
+      v30 = scheme;
       v18 = *v32;
       while (2)
       {
@@ -259,17 +259,17 @@ LABEL_18:
         {
           if (*v32 != v18)
           {
-            objc_enumerationMutation(v17);
+            objc_enumerationMutation(handlers);
           }
 
           v22 = *(*(&v31 + 1) + 8 * v19);
           if (objc_opt_respondsToSelector())
           {
-            v23 = [v22 previewViewControllerForRequest:v4];
+            v23 = [v22 previewViewControllerForRequest:requestCopy];
             if (v23)
             {
               v24 = v23;
-              v13 = [[SWNavigationPreview alloc] initWithViewController:v23 navigationHandler:v22 URLRequest:v4];
+              v13 = [[SWNavigationPreview alloc] initWithViewController:v23 navigationHandler:v22 URLRequest:requestCopy];
 
               goto LABEL_30;
             }
@@ -279,7 +279,7 @@ LABEL_18:
         }
 
         while (v13 != v19);
-        v13 = [v17 countByEnumeratingWithState:&v31 objects:v35 count:16];
+        v13 = [handlers countByEnumeratingWithState:&v31 objects:v35 count:16];
         v9 = v20;
         if (v13)
         {
@@ -290,59 +290,59 @@ LABEL_18:
       }
 
 LABEL_30:
-      v6 = v29;
-      v8 = v30;
+      pathExtension = v29;
+      scheme = v30;
     }
   }
 
   [(SWNavigationManager *)self setCurrentPreview:v13, v29, v30];
-  v25 = [(SWNavigationManager *)self currentPreview];
-  v26 = v25 != 0;
+  currentPreview = [(SWNavigationManager *)self currentPreview];
+  v26 = currentPreview != 0;
 
   v27 = *MEMORY[0x1E69E9840];
   return v26;
 }
 
-- (id)previewViewControllerForRequest:(id)a3
+- (id)previewViewControllerForRequest:(id)request
 {
-  v4 = a3;
-  if (v4 && (-[SWNavigationManager currentPreview](self, "currentPreview"), v5 = objc_claimAutoreleasedReturnValue(), [v5 request], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v4, "isEqual:", v6), v6, v5, v7))
+  requestCopy = request;
+  if (requestCopy && (-[SWNavigationManager currentPreview](self, "currentPreview"), v5 = objc_claimAutoreleasedReturnValue(), [v5 request], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(requestCopy, "isEqual:", v6), v6, v5, v7))
   {
-    v8 = [(SWNavigationManager *)self currentPreview];
-    v9 = [v8 viewController];
+    currentPreview = [(SWNavigationManager *)self currentPreview];
+    viewController = [currentPreview viewController];
   }
 
   else
   {
-    v9 = 0;
+    viewController = 0;
   }
 
-  return v9;
+  return viewController;
 }
 
-- (void)commitViewController:(id)a3
+- (void)commitViewController:(id)controller
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(SWNavigationManager *)self currentPreview];
-  v6 = v5;
-  if (v4)
+  controllerCopy = controller;
+  currentPreview = [(SWNavigationManager *)self currentPreview];
+  v6 = currentPreview;
+  if (controllerCopy)
   {
-    v7 = [v5 viewController];
+    viewController = [currentPreview viewController];
 
-    if (v7 == v4)
+    if (viewController == controllerCopy)
     {
       [(SWNavigationManager *)self setCurrentPreview:0];
-      v8 = [v6 navigationHandler];
-      v9 = [v6 request];
-      [v8 commitViewController:v4 URLRequest:v9];
+      navigationHandler = [v6 navigationHandler];
+      request = [v6 request];
+      [navigationHandler commitViewController:controllerCopy URLRequest:request];
 
       v21 = 0u;
       v22 = 0u;
       v19 = 0u;
       v20 = 0u;
-      v10 = [(SWNavigationManager *)self observers];
-      v11 = [v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      observers = [(SWNavigationManager *)self observers];
+      v11 = [observers countByEnumeratingWithState:&v19 objects:v23 count:16];
       if (v11)
       {
         v12 = v11;
@@ -354,19 +354,19 @@ LABEL_30:
           {
             if (*v20 != v13)
             {
-              objc_enumerationMutation(v10);
+              objc_enumerationMutation(observers);
             }
 
             v15 = *(*(&v19 + 1) + 8 * v14);
-            v16 = [v6 request];
-            v17 = [v16 URL];
+            request2 = [v6 request];
+            v17 = [request2 URL];
             [v15 handledNavigationWithURL:v17];
 
             ++v14;
           }
 
           while (v12 != v14);
-          v12 = [v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
+          v12 = [observers countByEnumeratingWithState:&v19 objects:v23 count:16];
         }
 
         while (v12);
@@ -377,55 +377,55 @@ LABEL_30:
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)registerHandler:(id)a3
+- (void)registerHandler:(id)handler
 {
-  if (a3)
+  if (handler)
   {
-    v4 = a3;
-    v5 = [(SWNavigationManager *)self handlers];
-    [v5 addObject:v4];
+    handlerCopy = handler;
+    handlers = [(SWNavigationManager *)self handlers];
+    [handlers addObject:handlerCopy];
   }
 }
 
-- (void)registerHandler:(id)a3 scheme:(id)a4
+- (void)registerHandler:(id)handler scheme:(id)scheme
 {
-  if (a3 && a4)
+  if (handler && scheme)
   {
-    v6 = a4;
-    v7 = a3;
-    v8 = [(SWNavigationManager *)self schemeHandlers];
-    [v8 setObject:v7 forKey:v6];
+    schemeCopy = scheme;
+    handlerCopy = handler;
+    schemeHandlers = [(SWNavigationManager *)self schemeHandlers];
+    [schemeHandlers setObject:handlerCopy forKey:schemeCopy];
   }
 }
 
-- (void)registerHandler:(id)a3 extension:(id)a4
+- (void)registerHandler:(id)handler extension:(id)extension
 {
-  if (a3 && a4)
+  if (handler && extension)
   {
-    v6 = a4;
-    v7 = a3;
-    v8 = [(SWNavigationManager *)self extensionHandlers];
-    [v8 setObject:v7 forKey:v6];
+    extensionCopy = extension;
+    handlerCopy = handler;
+    extensionHandlers = [(SWNavigationManager *)self extensionHandlers];
+    [extensionHandlers setObject:handlerCopy forKey:extensionCopy];
   }
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
-    v4 = a3;
-    v5 = [(SWNavigationManager *)self observers];
-    [v5 addObject:v4];
+    observerCopy = observer;
+    observers = [(SWNavigationManager *)self observers];
+    [observers addObject:observerCopy];
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
-    v4 = a3;
-    v5 = [(SWNavigationManager *)self observers];
-    [v5 removeObject:v4];
+    observerCopy = observer;
+    observers = [(SWNavigationManager *)self observers];
+    [observers removeObject:observerCopy];
   }
 }
 

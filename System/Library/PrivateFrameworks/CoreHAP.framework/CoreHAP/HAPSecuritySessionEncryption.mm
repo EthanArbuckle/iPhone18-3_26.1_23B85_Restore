@@ -1,51 +1,51 @@
 @interface HAPSecuritySessionEncryption
 - (HAPSecuritySessionEncryption)init;
-- (HAPSecuritySessionEncryption)initWithInputKey:(id)a3 outputKey:(id)a4;
-- (id)decrypt:(const void *)a3 length:(unint64_t)a4 additionalAuthData:(const void *)a5 additionalAuthDataLength:(unint64_t)a6 authTagData:(const void *)a7 authTagDataLength:(unint64_t)a8 error:(id *)a9;
-- (id)decrypt:(id)a3 additionalAuthenticatedData:(id)a4 error:(id *)a5;
-- (id)encrypt:(id)a3 additionalAuthenticatedData:(id)a4;
+- (HAPSecuritySessionEncryption)initWithInputKey:(id)key outputKey:(id)outputKey;
+- (id)decrypt:(const void *)decrypt length:(unint64_t)length additionalAuthData:(const void *)data additionalAuthDataLength:(unint64_t)dataLength authTagData:(const void *)tagData authTagDataLength:(unint64_t)tagDataLength error:(id *)error;
+- (id)decrypt:(id)decrypt additionalAuthenticatedData:(id)data error:(id *)error;
+- (id)encrypt:(id)encrypt additionalAuthenticatedData:(id)data;
 @end
 
 @implementation HAPSecuritySessionEncryption
 
-- (id)decrypt:(const void *)a3 length:(unint64_t)a4 additionalAuthData:(const void *)a5 additionalAuthDataLength:(unint64_t)a6 authTagData:(const void *)a7 authTagDataLength:(unint64_t)a8 error:(id *)a9
+- (id)decrypt:(const void *)decrypt length:(unint64_t)length additionalAuthData:(const void *)data additionalAuthDataLength:(unint64_t)dataLength authTagData:(const void *)tagData authTagDataLength:(unint64_t)tagDataLength error:(id *)error
 {
-  if (a9)
+  if (error)
   {
-    *a9 = 0;
-    if (a8 != 16)
+    *error = 0;
+    if (tagDataLength != 16)
     {
-      [MEMORY[0x277CCA9B8] hmfErrorWithCode:3 userInfo:{0, a5, a6, a7}];
-      *a9 = v10 = 0;
+      [MEMORY[0x277CCA9B8] hmfErrorWithCode:3 userInfo:{0, data, dataLength, tagData}];
+      *error = v10 = 0;
       goto LABEL_20;
     }
   }
 
-  else if (a8 != 16)
+  else if (tagDataLength != 16)
   {
     v10 = 0;
     goto LABEL_20;
   }
 
-  v11 = [objc_alloc(MEMORY[0x277CBEB28]) initWithLength:a4];
-  v12 = [(HAPSecuritySessionEncryption *)self inputKey];
-  [v12 bytes];
-  v13 = [(HAPSecuritySessionEncryption *)self inputNonce];
-  [v13 bytes];
+  v11 = [objc_alloc(MEMORY[0x277CBEB28]) initWithLength:length];
+  inputKey = [(HAPSecuritySessionEncryption *)self inputKey];
+  [inputKey bytes];
+  inputNonce = [(HAPSecuritySessionEncryption *)self inputNonce];
+  [inputNonce bytes];
   v24 = v11;
   [v11 mutableBytes];
   v14 = chacha20_poly1305_decrypt_all_64x64();
 
-  v15 = [(HAPSecuritySessionEncryption *)self inputNonce];
-  v16 = [v15 mutableBytes];
-  v17 = [(HAPSecuritySessionEncryption *)self inputNonce];
-  v18 = [v17 length];
+  inputNonce2 = [(HAPSecuritySessionEncryption *)self inputNonce];
+  mutableBytes = [inputNonce2 mutableBytes];
+  inputNonce3 = [(HAPSecuritySessionEncryption *)self inputNonce];
+  v18 = [inputNonce3 length];
   if (v18)
   {
     v19 = v18 - 1;
     do
     {
-      if (++*v16++)
+      if (++*mutableBytes++)
       {
         v21 = 1;
       }
@@ -63,10 +63,10 @@
 
   if (v14)
   {
-    if (a9)
+    if (error)
     {
       HMErrorFromOSStatus(v14);
-      *a9 = v10 = 0;
+      *error = v10 = 0;
     }
 
     else
@@ -88,25 +88,25 @@ LABEL_20:
   return v10;
 }
 
-- (id)decrypt:(id)a3 additionalAuthenticatedData:(id)a4 error:(id *)a5
+- (id)decrypt:(id)decrypt additionalAuthenticatedData:(id)data error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if (a5)
+  decryptCopy = decrypt;
+  dataCopy = data;
+  if (error)
   {
-    *a5 = 0;
+    *error = 0;
   }
 
-  v10 = [v8 subdataWithRange:{objc_msgSend(v8, "length") - 16, 16}];
-  v30 = v8;
-  v11 = [v8 subdataWithRange:{0, objc_msgSend(v8, "length") - 16}];
+  v10 = [decryptCopy subdataWithRange:{objc_msgSend(decryptCopy, "length") - 16, 16}];
+  v30 = decryptCopy;
+  v11 = [decryptCopy subdataWithRange:{0, objc_msgSend(decryptCopy, "length") - 16}];
   v12 = [objc_alloc(MEMORY[0x277CBEB28]) initWithLength:{objc_msgSend(v11, "length")}];
-  v13 = [(HAPSecuritySessionEncryption *)self inputKey];
-  [v13 bytes];
-  v14 = [(HAPSecuritySessionEncryption *)self inputNonce];
-  [v14 bytes];
-  [v9 bytes];
-  [v9 length];
+  inputKey = [(HAPSecuritySessionEncryption *)self inputKey];
+  [inputKey bytes];
+  inputNonce = [(HAPSecuritySessionEncryption *)self inputNonce];
+  [inputNonce bytes];
+  [dataCopy bytes];
+  [dataCopy length];
   [v11 bytes];
   v29 = v11;
   [v11 length];
@@ -115,16 +115,16 @@ LABEL_20:
   [v10 bytes];
   v15 = chacha20_poly1305_decrypt_all_64x64();
 
-  v16 = [(HAPSecuritySessionEncryption *)self inputNonce];
-  v17 = [v16 mutableBytes];
-  v18 = [(HAPSecuritySessionEncryption *)self inputNonce];
-  v19 = [v18 length];
+  inputNonce2 = [(HAPSecuritySessionEncryption *)self inputNonce];
+  mutableBytes = [inputNonce2 mutableBytes];
+  inputNonce3 = [(HAPSecuritySessionEncryption *)self inputNonce];
+  v19 = [inputNonce3 length];
   if (v19)
   {
     v20 = v19 - 1;
     do
     {
-      if (++*v17++)
+      if (++*mutableBytes++)
       {
         v22 = 1;
       }
@@ -145,10 +145,10 @@ LABEL_20:
     v23 = [MEMORY[0x277CCA9B8] errorWithDomain:@"HAPErrorDomain" code:v15 userInfo:0];
     v24 = v30;
     v25 = v28;
-    if (a5)
+    if (error)
     {
       v23 = v23;
-      *a5 = v23;
+      *error = v23;
     }
 
     v26 = 0;
@@ -164,34 +164,34 @@ LABEL_20:
   return v26;
 }
 
-- (id)encrypt:(id)a3 additionalAuthenticatedData:(id)a4
+- (id)encrypt:(id)encrypt additionalAuthenticatedData:(id)data
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [objc_alloc(MEMORY[0x277CBEB28]) initWithLength:{objc_msgSend(v6, "length")}];
-  v9 = [(HAPSecuritySessionEncryption *)self outputKey];
-  [v9 bytes];
-  v10 = [(HAPSecuritySessionEncryption *)self outputNonce];
-  [v10 bytes];
-  [v7 bytes];
-  [v7 length];
-  [v6 bytes];
-  [v6 length];
+  encryptCopy = encrypt;
+  dataCopy = data;
+  v8 = [objc_alloc(MEMORY[0x277CBEB28]) initWithLength:{objc_msgSend(encryptCopy, "length")}];
+  outputKey = [(HAPSecuritySessionEncryption *)self outputKey];
+  [outputKey bytes];
+  outputNonce = [(HAPSecuritySessionEncryption *)self outputNonce];
+  [outputNonce bytes];
+  [dataCopy bytes];
+  [dataCopy length];
+  [encryptCopy bytes];
+  [encryptCopy length];
   [v8 mutableBytes];
   chacha20_poly1305_encrypt_all_64x64();
 
   [v8 appendBytes:v20 length:16];
-  v11 = [(HAPSecuritySessionEncryption *)self outputNonce];
-  v12 = [v11 mutableBytes];
-  v13 = [(HAPSecuritySessionEncryption *)self outputNonce];
-  v14 = [v13 length];
+  outputNonce2 = [(HAPSecuritySessionEncryption *)self outputNonce];
+  mutableBytes = [outputNonce2 mutableBytes];
+  outputNonce3 = [(HAPSecuritySessionEncryption *)self outputNonce];
+  v14 = [outputNonce3 length];
   if (v14)
   {
     v15 = v14 - 1;
     do
     {
-      if (++*v12++)
+      if (++*mutableBytes++)
       {
         v17 = 1;
       }
@@ -212,19 +212,19 @@ LABEL_20:
   return v8;
 }
 
-- (HAPSecuritySessionEncryption)initWithInputKey:(id)a3 outputKey:(id)a4
+- (HAPSecuritySessionEncryption)initWithInputKey:(id)key outputKey:(id)outputKey
 {
   v19 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  keyCopy = key;
+  outputKeyCopy = outputKey;
   v17.receiver = self;
   v17.super_class = HAPSecuritySessionEncryption;
   v9 = [(HAPSecuritySessionEncryption *)&v17 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_inputKey, a3);
-    objc_storeStrong(&v10->_outputKey, a4);
+    objc_storeStrong(&v9->_inputKey, key);
+    objc_storeStrong(&v10->_outputKey, outputKey);
     memset_s(__s, 8uLL, 0, 8uLL);
     v11 = [MEMORY[0x277CBEB28] dataWithBytes:__s length:8];
     inputNonce = v10->_inputNonce;

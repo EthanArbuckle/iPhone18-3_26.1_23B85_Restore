@@ -1,21 +1,21 @@
 @interface MPSGraphDepthwiseConvolution2DBaseOp
-- (MPSGraphDepthwiseConvolution2DBaseOp)initWithGraph:(id)a3 inputTensors:(id)a4 controlDependencies:(id)a5 descriptor:(id)a6 name:(id)a7;
+- (MPSGraphDepthwiseConvolution2DBaseOp)initWithGraph:(id)graph inputTensors:(id)tensors controlDependencies:(id)dependencies descriptor:(id)descriptor name:(id)name;
 @end
 
 @implementation MPSGraphDepthwiseConvolution2DBaseOp
 
-- (MPSGraphDepthwiseConvolution2DBaseOp)initWithGraph:(id)a3 inputTensors:(id)a4 controlDependencies:(id)a5 descriptor:(id)a6 name:(id)a7
+- (MPSGraphDepthwiseConvolution2DBaseOp)initWithGraph:(id)graph inputTensors:(id)tensors controlDependencies:(id)dependencies descriptor:(id)descriptor name:(id)name
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [v15 copy];
+  graphCopy = graph;
+  tensorsCopy = tensors;
+  dependenciesCopy = dependencies;
+  descriptorCopy = descriptor;
+  nameCopy = name;
+  v17 = [descriptorCopy copy];
   desc = self->_desc;
   self->_desc = v17;
 
-  v19 = [(MPSGraphOperation *)self initWithGraph:v12 inputTensors:v13 controlDependencies:v14 name:v16];
+  v19 = [(MPSGraphOperation *)self initWithGraph:graphCopy inputTensors:tensorsCopy controlDependencies:dependenciesCopy name:nameCopy];
   return v19;
 }
 

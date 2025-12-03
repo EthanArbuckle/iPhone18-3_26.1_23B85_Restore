@@ -1,7 +1,7 @@
 @interface VSDownloadMetrics
 + (double)_clockFactor;
 - (BOOL)endMetrics;
-- (VSDownloadMetrics)initWithVoiceName:(id)a3 languageCode:(id)a4 gender:(int64_t)a5;
+- (VSDownloadMetrics)initWithVoiceName:(id)name languageCode:(id)code gender:(int64_t)gender;
 - (double)downloadDuration;
 - (id)description;
 - (id)dictionaryMetrics;
@@ -86,26 +86,26 @@
 
 - (id)description
 {
-  v2 = [(VSDownloadMetrics *)self dictionaryMetrics];
-  v3 = [v2 description];
+  dictionaryMetrics = [(VSDownloadMetrics *)self dictionaryMetrics];
+  v3 = [dictionaryMetrics description];
 
   return v3;
 }
 
-- (VSDownloadMetrics)initWithVoiceName:(id)a3 languageCode:(id)a4 gender:(int64_t)a5
+- (VSDownloadMetrics)initWithVoiceName:(id)name languageCode:(id)code gender:(int64_t)gender
 {
   v15.receiver = self;
   v15.super_class = VSDownloadMetrics;
-  v7 = a4;
-  v8 = a3;
+  codeCopy = code;
+  nameCopy = name;
   v9 = [(VSDownloadMetrics *)&v15 init];
   v9->_downloadBeginTimestamp = mach_absolute_time();
   v10 = MEMORY[0x277CCACA8];
-  v11 = [VSVoiceAsset genderStringFromGender:a5];
-  v12 = [v10 stringWithFormat:@"%@:%@:%@", v7, v11, v8];
+  v11 = [VSVoiceAsset genderStringFromGender:gender];
+  nameCopy = [v10 stringWithFormat:@"%@:%@:%@", codeCopy, v11, nameCopy];
 
   voiceDownloadKey = v9->_voiceDownloadKey;
-  v9->_voiceDownloadKey = v12;
+  v9->_voiceDownloadKey = nameCopy;
 
   return v9;
 }

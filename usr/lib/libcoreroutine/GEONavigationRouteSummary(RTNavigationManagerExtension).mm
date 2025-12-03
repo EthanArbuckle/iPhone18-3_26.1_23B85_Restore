@@ -11,14 +11,14 @@
   v5 = a3;
   if (v5)
   {
-    v6 = [a1 destinationName];
-    if (v6 || ([v5 destinationName], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+    destinationName = [self destinationName];
+    if (destinationName || ([v5 destinationName], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v7 = [a1 destinationName];
-      v8 = [v5 destinationName];
-      v9 = [v7 isEqualToString:v8];
+      destinationName2 = [self destinationName];
+      destinationName3 = [v5 destinationName];
+      v9 = [destinationName2 isEqualToString:destinationName3];
 
-      if (v6)
+      if (destinationName)
       {
         goto LABEL_9;
       }
@@ -30,13 +30,13 @@
     }
 
 LABEL_9:
-    v11 = [a1 destination];
-    v12 = [v11 latLng];
-    if (!v12)
+    destination = [self destination];
+    latLng = [destination latLng];
+    if (!latLng)
     {
-      v30 = [v5 destination];
-      v13 = [v30 latLng];
-      if (!v13)
+      destination2 = [v5 destination];
+      latLng2 = [destination2 latLng];
+      if (!latLng2)
       {
         v29 = 0;
         v27 = 1;
@@ -47,16 +47,16 @@ LABEL_19:
         goto LABEL_20;
       }
 
-      v29 = v13;
+      v29 = latLng2;
     }
 
-    v14 = [a1 destination];
-    v15 = [v14 latLng];
-    [v15 lat];
+    destination3 = [self destination];
+    latLng3 = [destination3 latLng];
+    [latLng3 lat];
     v17 = v16;
-    v18 = [v5 destination];
-    v19 = [v18 latLng];
-    [v19 lat];
+    destination4 = [v5 destination];
+    latLng4 = [destination4 latLng];
+    [latLng4 lat];
     if (vabdd_f64(v17, v20) >= 2.22044605e-16)
     {
       v27 = 0;
@@ -64,22 +64,22 @@ LABEL_19:
 
     else
     {
-      v31 = [a1 destination];
-      [v31 latLng];
-      v21 = v32 = v14;
+      destination5 = [self destination];
+      [destination5 latLng];
+      v21 = v32 = destination3;
       [v21 lng];
       v23 = v22;
       [v5 destination];
       v24 = v33 = v9;
-      v25 = [v24 latLng];
-      [v25 lng];
+      latLng5 = [v24 latLng];
+      [latLng5 lng];
       v27 = vabdd_f64(v23, v26) < 2.22044605e-16;
 
       v9 = v33;
-      v14 = v32;
+      destination3 = v32;
     }
 
-    if (v12)
+    if (latLng)
     {
       goto LABEL_19;
     }
@@ -96,7 +96,7 @@ LABEL_20:
 - (uint64_t)isEqual:()RTNavigationManagerExtension
 {
   v4 = a3;
-  if (a1 == v4)
+  if (self == v4)
   {
     v5 = 1;
   }
@@ -106,7 +106,7 @@ LABEL_20:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [a1 isEqualToRouteSummary:v4];
+      v5 = [self isEqualToRouteSummary:v4];
     }
 
     else
@@ -121,8 +121,8 @@ LABEL_20:
 - (id)description
 {
   v23 = MEMORY[0x277CCACA8];
-  v25 = [a1 origin];
-  if ([v25 hasMapItemStorage])
+  origin = [self origin];
+  if ([origin hasMapItemStorage])
   {
     v2 = @"YES";
   }
@@ -133,16 +133,16 @@ LABEL_20:
   }
 
   v22 = v2;
-  v24 = [a1 origin];
-  v3 = [v24 latLng];
-  [v3 lat];
+  origin2 = [self origin];
+  latLng = [origin2 latLng];
+  [latLng lat];
   v5 = v4;
-  v6 = [a1 origin];
-  v7 = [v6 latLng];
-  [v7 lng];
+  origin3 = [self origin];
+  latLng2 = [origin3 latLng];
+  [latLng2 lng];
   v9 = v8;
-  v10 = [a1 destination];
-  if ([v10 hasMapItemStorage])
+  destination = [self destination];
+  if ([destination hasMapItemStorage])
   {
     v11 = @"YES";
   }
@@ -152,15 +152,15 @@ LABEL_20:
     v11 = @"NO";
   }
 
-  v12 = [a1 destinationName];
-  v13 = [a1 destination];
-  v14 = [v13 latLng];
-  [v14 lat];
+  destinationName = [self destinationName];
+  destination2 = [self destination];
+  latLng3 = [destination2 latLng];
+  [latLng3 lat];
   v16 = v15;
-  v17 = [a1 destination];
-  v18 = [v17 latLng];
-  [v18 lng];
-  v20 = [v23 stringWithFormat:@"origin, hasMapItem, %@, location, <%f, %f>, destination, hasMapItem, %@, name, %@, location, <%f, %f>", v22, v5, v9, v11, v12, v16, v19];
+  destination3 = [self destination];
+  latLng4 = [destination3 latLng];
+  [latLng4 lng];
+  v20 = [v23 stringWithFormat:@"origin, hasMapItem, %@, location, <%f, %f>, destination, hasMapItem, %@, name, %@, location, <%f, %f>", v22, v5, v9, v11, destinationName, v16, v19];
 
   return v20;
 }

@@ -1,29 +1,29 @@
 @interface SKEraseDisk
-- (id)createStateMachineWithError:(id *)a3;
+- (id)createStateMachineWithError:(id *)error;
 @end
 
 @implementation SKEraseDisk
 
-- (id)createStateMachineWithError:(id *)a3
+- (id)createStateMachineWithError:(id *)error
 {
-  v5 = [(SKEraseDisk *)self disk];
+  disk = [(SKEraseDisk *)self disk];
 
-  if (v5)
+  if (disk)
   {
     goto LABEL_3;
   }
 
   v6 = +[SKDaemonManager sharedManager];
-  v7 = [(SKEraseDisk *)self diskRepresentation];
-  v8 = [v6 knownDiskForDictionary:v7];
+  diskRepresentation = [(SKEraseDisk *)self diskRepresentation];
+  v8 = [v6 knownDiskForDictionary:diskRepresentation];
   [(SKEraseDisk *)self setDisk:v8];
 
-  v9 = [(SKEraseDisk *)self disk];
+  disk2 = [(SKEraseDisk *)self disk];
 
-  if (v9)
+  if (disk2)
   {
 LABEL_3:
-    v10 = [(SKEraseDisk *)self validateWithError:a3];
+    v10 = [(SKEraseDisk *)self validateWithError:error];
 
     if (v10)
     {
@@ -31,8 +31,8 @@ LABEL_3:
       v46 = 0u;
       v43 = 0u;
       v44 = 0u;
-      v11 = [(SKEraseDisk *)self descriptors];
-      v12 = [v11 countByEnumeratingWithState:&v43 objects:v48 count:16];
+      descriptors = [(SKEraseDisk *)self descriptors];
+      v12 = [descriptors countByEnumeratingWithState:&v43 objects:v48 count:16];
       if (v12)
       {
         v13 = v12;
@@ -43,13 +43,13 @@ LABEL_3:
           {
             if (*v44 != v14)
             {
-              objc_enumerationMutation(v11);
+              objc_enumerationMutation(descriptors);
             }
 
             v16 = *(*(&v43 + 1) + 8 * i);
-            v17 = [v16 filesystem];
-            v18 = [v16 name];
-            v19 = [v17 isValidName:v18 error:a3];
+            filesystem = [v16 filesystem];
+            name = [v16 name];
+            v19 = [filesystem isValidName:name error:error];
 
             if (!v19)
             {
@@ -58,7 +58,7 @@ LABEL_3:
             }
           }
 
-          v13 = [v11 countByEnumeratingWithState:&v43 objects:v48 count:16];
+          v13 = [descriptors countByEnumeratingWithState:&v43 objects:v48 count:16];
           if (v13)
           {
             continue;
@@ -120,9 +120,9 @@ LABEL_14:
 
   else
   {
-    v30 = [(SKEraseDisk *)self diskRepresentation];
-    v31 = [SKError errorWithCode:117 userInfo:v30];
-    v28 = [SKError nilWithError:v31 error:a3];
+    diskRepresentation2 = [(SKEraseDisk *)self diskRepresentation];
+    v31 = [SKError errorWithCode:117 userInfo:diskRepresentation2];
+    v28 = [SKError nilWithError:v31 error:error];
   }
 
   return v28;

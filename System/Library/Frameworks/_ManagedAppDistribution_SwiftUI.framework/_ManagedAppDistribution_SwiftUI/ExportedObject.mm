@@ -1,13 +1,13 @@
 @interface ExportedObject
-- (void)setWithManagedAppViewData:(id)a3 reply:(id)a4;
+- (void)setWithManagedAppViewData:(id)data reply:(id)reply;
 @end
 
 @implementation ExportedObject
 
-- (void)setWithManagedAppViewData:(id)a3 reply:(id)a4
+- (void)setWithManagedAppViewData:(id)data reply:(id)reply
 {
-  v5 = _Block_copy(a4);
-  v6 = a3;
+  v5 = _Block_copy(reply);
+  dataCopy = data;
 
   v7 = sub_23B7BB830();
   v9 = v8;

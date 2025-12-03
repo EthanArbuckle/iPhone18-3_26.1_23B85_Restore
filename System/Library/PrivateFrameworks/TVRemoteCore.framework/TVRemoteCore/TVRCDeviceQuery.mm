@@ -1,14 +1,14 @@
 @interface TVRCDeviceQuery
 + (id)_allDiscoveredDevices;
-+ (id)deviceForDeviceState:(id)a3;
-+ (void)_allDiscoveredDevicesDidUpdate:(id)a3;
-+ (void)_updateSuggestedDevices:(id)a3;
-+ (void)fetchActiveEndpointUIDWithCompletion:(id)a3;
-+ (void)getConnectionStatusToDeviceWithIdentifier:(id)a3 completion:(id)a4;
++ (id)deviceForDeviceState:(id)state;
++ (void)_allDiscoveredDevicesDidUpdate:(id)update;
++ (void)_updateSuggestedDevices:(id)devices;
++ (void)fetchActiveEndpointUIDWithCompletion:(id)completion;
++ (void)getConnectionStatusToDeviceWithIdentifier:(id)identifier completion:(id)completion;
 - (TVRCDeviceQueryDelegate)delegate;
 - (void)dealloc;
-- (void)fetchSuggestedDevicesWithResponse:(id)a3;
-- (void)startWithCompletionHandler:(id)a3;
+- (void)fetchSuggestedDevicesWithResponse:(id)response;
+- (void)startWithCompletionHandler:(id)handler;
 - (void)stop;
 @end
 
@@ -29,10 +29,10 @@
   return v2;
 }
 
-+ (void)_allDiscoveredDevicesDidUpdate:(id)a3
++ (void)_allDiscoveredDevicesDidUpdate:(id)update
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [a3 copy];
+  v3 = [update copy];
   v4 = qword_2804D74B0;
   qword_2804D74B0 = v3;
 
@@ -56,10 +56,10 @@
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
-        v11 = [v10 delegate];
+        delegate = [v10 delegate];
         if (objc_opt_respondsToSelector())
         {
-          [v11 deviceQueryDidUpdateDevices:v10];
+          [delegate deviceQueryDidUpdateDevices:v10];
         }
       }
 
@@ -72,10 +72,10 @@
   v12 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)_updateSuggestedDevices:(id)a3
++ (void)_updateSuggestedDevices:(id)devices
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  devicesCopy = devices;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -96,10 +96,10 @@
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v11 + 1) + 8 * v8) delegate];
+        delegate = [*(*(&v11 + 1) + 8 * v8) delegate];
         if (objc_opt_respondsToSelector())
         {
-          [v9 didUpdateSuggestedDevices:v3];
+          [delegate didUpdateSuggestedDevices:devicesCopy];
         }
 
         ++v8;
@@ -115,12 +115,12 @@
   v10 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)getConnectionStatusToDeviceWithIdentifier:(id)a3 completion:(id)a4
++ (void)getConnectionStatusToDeviceWithIdentifier:(id)identifier completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  identifierCopy = identifier;
   v7 = +[TVRCXPCClient sharedInstance];
-  [v7 getConnectionStatusToDeviceWithIdentifier:v6 response:v5];
+  [v7 getConnectionStatusToDeviceWithIdentifier:identifierCopy response:completionCopy];
 }
 
 - (void)dealloc
@@ -131,10 +131,10 @@
   [(TVRCDeviceQuery *)&v3 dealloc];
 }
 
-- (void)startWithCompletionHandler:(id)a3
+- (void)startWithCompletionHandler:(id)handler
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = _TVRCDeviceQueryLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -144,9 +144,9 @@
   v6 = _MergedGlobals;
   if (!_MergedGlobals)
   {
-    v7 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     v8 = _MergedGlobals;
-    _MergedGlobals = v7;
+    _MergedGlobals = weakObjectsHashTable;
 
     v6 = _MergedGlobals;
   }
@@ -155,7 +155,7 @@
   if ([_MergedGlobals count] == 1)
   {
     v9 = +[TVRCXPCClient sharedInstance];
-    [v9 beginDeviceQueryWithResponse:v4];
+    [v9 beginDeviceQueryWithResponse:handlerCopy];
 
     v10 = _TVRCDeviceQueryLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -170,9 +170,9 @@
     goto LABEL_13;
   }
 
-  if (v4)
+  if (handlerCopy)
   {
-    v4[2](v4, 1);
+    handlerCopy[2](handlerCopy, 1);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -196,17 +196,17 @@ LABEL_13:
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchSuggestedDevicesWithResponse:(id)a3
+- (void)fetchSuggestedDevicesWithResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   v5 = +[TVRCXPCClient sharedInstance];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __53__TVRCDeviceQuery_fetchSuggestedDevicesWithResponse___block_invoke;
   v7[3] = &unk_279D82BC8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = responseCopy;
+  v6 = responseCopy;
   [v5 getSuggestedDevicesWithResponse:v7];
 }
 
@@ -259,16 +259,16 @@ void __53__TVRCDeviceQuery_fetchSuggestedDevicesWithResponse___block_invoke(uint
   v14 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)fetchActiveEndpointUIDWithCompletion:(id)a3
++ (void)fetchActiveEndpointUIDWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = +[TVRCXPCClient sharedInstance];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __56__TVRCDeviceQuery_fetchActiveEndpointUIDWithCompletion___block_invoke;
   v6[3] = &unk_279D82BF0;
-  v7 = v3;
-  v5 = v3;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [v4 fetchActiveMREndpointUIDWithCompletion:v6];
 }
 
@@ -283,9 +283,9 @@ uint64_t __56__TVRCDeviceQuery_fetchActiveEndpointUIDWithCompletion___block_invo
   return result;
 }
 
-+ (id)deviceForDeviceState:(id)a3
++ (id)deviceForDeviceState:(id)state
 {
-  v3 = a3;
+  stateCopy = state;
   v4 = +[TVRCDeviceQuery _allDiscoveredDevices];
   v5 = _TVRCDeviceQueryLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -303,7 +303,7 @@ uint64_t __56__TVRCDeviceQuery_fetchActiveEndpointUIDWithCompletion___block_invo
   v9[1] = 3221225472;
   v9[2] = __40__TVRCDeviceQuery_deviceForDeviceState___block_invoke;
   v9[3] = &unk_279D82C18;
-  v6 = v3;
+  v6 = stateCopy;
   v10 = v6;
   v11 = &v12;
   [v4 enumerateObjectsUsingBlock:v9];

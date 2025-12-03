@@ -1,41 +1,41 @@
 @interface KNSlideBackgroundInfo
-+ (id)backgroundWithSlide:(id)a3 andGeometry:(id)a4;
++ (id)backgroundWithSlide:(id)slide andGeometry:(id)geometry;
 - (BOOL)isThemeContent;
 - (CGSize)minimumSize;
 - (KNAbstractSlide)slide;
 - (KNMotionBackground)motionBackground;
-- (KNSlideBackgroundInfo)initWithSlide:(id)a3 andGeometry:(id)a4;
+- (KNSlideBackgroundInfo)initWithSlide:(id)slide andGeometry:(id)geometry;
 - (TSDFill)fill;
 - (id)endCollectingChanges;
 - (void)beginCollectingChanges;
-- (void)clearBackPointerToParentInfoIfNeeded:(id)a3;
-- (void)wasAddedToDocumentRoot:(id)a3 dolcContext:(id)a4;
+- (void)clearBackPointerToParentInfoIfNeeded:(id)needed;
+- (void)wasAddedToDocumentRoot:(id)root dolcContext:(id)context;
 @end
 
 @implementation KNSlideBackgroundInfo
 
-+ (id)backgroundWithSlide:(id)a3 andGeometry:(id)a4
++ (id)backgroundWithSlide:(id)slide andGeometry:(id)geometry
 {
-  v5 = a4;
-  v6 = a3;
+  geometryCopy = geometry;
+  slideCopy = slide;
   v7 = [KNSlideBackgroundInfo alloc];
-  v9 = objc_msgSend_initWithSlide_andGeometry_(v7, v8, v6, v5);
+  v9 = objc_msgSend_initWithSlide_andGeometry_(v7, v8, slideCopy, geometryCopy);
 
   return v9;
 }
 
-- (KNSlideBackgroundInfo)initWithSlide:(id)a3 andGeometry:(id)a4
+- (KNSlideBackgroundInfo)initWithSlide:(id)slide andGeometry:(id)geometry
 {
-  v6 = a3;
-  v7 = a4;
+  slideCopy = slide;
+  geometryCopy = geometry;
   v19.receiver = self;
   v19.super_class = KNSlideBackgroundInfo;
   v8 = [(KNSlideBackgroundInfo *)&v19 init];
   v10 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_geometry, a4);
-    objc_storeWeak(&v10->_slide, v6);
+    objc_storeStrong(&v8->_geometry, geometry);
+    objc_storeWeak(&v10->_slide, slideCopy);
   }
 
   else
@@ -59,9 +59,9 @@
   return isThemeContent;
 }
 
-- (void)clearBackPointerToParentInfoIfNeeded:(id)a3
+- (void)clearBackPointerToParentInfoIfNeeded:(id)needed
 {
-  if (self->_parentInfo == a3)
+  if (self->_parentInfo == needed)
   {
     self->_parentInfo = 0;
   }
@@ -128,10 +128,10 @@
   return result;
 }
 
-- (void)wasAddedToDocumentRoot:(id)a3 dolcContext:(id)a4
+- (void)wasAddedToDocumentRoot:(id)root dolcContext:(id)context
 {
-  v34 = a3;
-  v7 = objc_msgSend_show(v34, v5, v6);
+  rootCopy = root;
+  v7 = objc_msgSend_show(rootCopy, v5, v6);
   objc_msgSend_size(v7, v8, v9);
   v11 = v10;
   v13 = v12;
@@ -143,7 +143,7 @@
   if (v11 != v20 || v13 != v22)
   {
     v24 = objc_alloc(MEMORY[0x277D802E8]);
-    v27 = objc_msgSend_show(v34, v25, v26);
+    v27 = objc_msgSend_show(rootCopy, v25, v26);
     objc_msgSend_size(v27, v28, v29);
     v32 = objc_msgSend_initWithSize_(v24, v30, v31);
 

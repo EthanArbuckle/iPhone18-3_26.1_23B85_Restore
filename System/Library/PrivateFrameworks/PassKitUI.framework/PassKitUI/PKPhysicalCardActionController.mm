@@ -1,39 +1,39 @@
 @interface PKPhysicalCardActionController
-- (PKPhysicalCardActionController)initWithAccountService:(id)a3 account:(id)a4 accountUser:(id)a5 delegate:(id)a6;
-- (id)_generatePaymentRequestWithSignatureRequest:(id)a3;
-- (id)presentationSceneIdentifierForPaymentAuthorizationCoordinator:(id)a3;
-- (void)_performAction:(id)a3 onPhysicalCard:(id)a4;
-- (void)_performApplePayTrustSignatureRequestWithSignature:(id)a3 completion:(id)a4;
-- (void)_presentApplePayTrustWithPaymentRequest:(id)a3 completion:(id)a4;
-- (void)_transitionToState:(int64_t)a3 withError:(id)a4;
-- (void)activatePhysicalCard:(id)a3 withActivationCode:(id)a4;
-- (void)activatePhysicalCardWithoutActivationCode:(id)a3;
-- (void)cancelPhysicalCard:(id)a3;
-- (void)disablePhysicalCard:(id)a3;
-- (void)enablePhysicalCard:(id)a3;
-- (void)paymentAuthorizationCoordinator:(id)a3 didAuthorizeApplePayTrustSignature:(id)a4 handler:(id)a5;
-- (void)paymentAuthorizationCoordinatorDidFinish:(id)a3;
-- (void)replacePhysicalCard:(id)a3 withReason:(unint64_t)a4;
+- (PKPhysicalCardActionController)initWithAccountService:(id)service account:(id)account accountUser:(id)user delegate:(id)delegate;
+- (id)_generatePaymentRequestWithSignatureRequest:(id)request;
+- (id)presentationSceneIdentifierForPaymentAuthorizationCoordinator:(id)coordinator;
+- (void)_performAction:(id)action onPhysicalCard:(id)card;
+- (void)_performApplePayTrustSignatureRequestWithSignature:(id)signature completion:(id)completion;
+- (void)_presentApplePayTrustWithPaymentRequest:(id)request completion:(id)completion;
+- (void)_transitionToState:(int64_t)state withError:(id)error;
+- (void)activatePhysicalCard:(id)card withActivationCode:(id)code;
+- (void)activatePhysicalCardWithoutActivationCode:(id)code;
+- (void)cancelPhysicalCard:(id)card;
+- (void)disablePhysicalCard:(id)card;
+- (void)enablePhysicalCard:(id)card;
+- (void)paymentAuthorizationCoordinator:(id)coordinator didAuthorizeApplePayTrustSignature:(id)signature handler:(id)handler;
+- (void)paymentAuthorizationCoordinatorDidFinish:(id)finish;
+- (void)replacePhysicalCard:(id)card withReason:(unint64_t)reason;
 @end
 
 @implementation PKPhysicalCardActionController
 
-- (PKPhysicalCardActionController)initWithAccountService:(id)a3 account:(id)a4 accountUser:(id)a5 delegate:(id)a6
+- (PKPhysicalCardActionController)initWithAccountService:(id)service account:(id)account accountUser:(id)user delegate:(id)delegate
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  serviceCopy = service;
+  accountCopy = account;
+  userCopy = user;
+  delegateCopy = delegate;
   v20.receiver = self;
   v20.super_class = PKPhysicalCardActionController;
   v15 = [(PKPhysicalCardActionController *)&v20 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_accountService, a3);
-    objc_storeStrong(&v16->_account, a4);
-    objc_storeStrong(&v16->_accountUser, a5);
-    objc_storeWeak(&v16->_delegate, v14);
+    objc_storeStrong(&v15->_accountService, service);
+    objc_storeStrong(&v16->_account, account);
+    objc_storeStrong(&v16->_accountUser, user);
+    objc_storeWeak(&v16->_delegate, delegateCopy);
     v17 = objc_alloc_init(MEMORY[0x1E69B8BE0]);
     paymentDevice = v16->_paymentDevice;
     v16->_paymentDevice = v17;
@@ -44,74 +44,74 @@
   return v16;
 }
 
-- (void)activatePhysicalCard:(id)a3 withActivationCode:(id)a4
+- (void)activatePhysicalCard:(id)card withActivationCode:(id)code
 {
-  v8 = a3;
-  v6 = a4;
-  if (v6 && [(PKPhysicalCardActionController *)self _canPerformActionWithState:self->_state])
+  cardCopy = card;
+  codeCopy = code;
+  if (codeCopy && [(PKPhysicalCardActionController *)self _canPerformActionWithState:self->_state])
   {
     v7 = [objc_alloc(MEMORY[0x1E69B9068]) initWithActionType:4];
-    [v7 setActivationCode:v6];
-    [(PKPhysicalCardActionController *)self _performAction:v7 onPhysicalCard:v8];
+    [v7 setActivationCode:codeCopy];
+    [(PKPhysicalCardActionController *)self _performAction:v7 onPhysicalCard:cardCopy];
   }
 }
 
-- (void)activatePhysicalCardWithoutActivationCode:(id)a3
+- (void)activatePhysicalCardWithoutActivationCode:(id)code
 {
-  v5 = a3;
+  codeCopy = code;
   if ([(PKPhysicalCardActionController *)self _canPerformActionWithState:self->_state])
   {
     v4 = [objc_alloc(MEMORY[0x1E69B9068]) initWithActionType:4];
-    [(PKPhysicalCardActionController *)self _performAction:v4 onPhysicalCard:v5];
+    [(PKPhysicalCardActionController *)self _performAction:v4 onPhysicalCard:codeCopy];
   }
 }
 
-- (void)enablePhysicalCard:(id)a3
+- (void)enablePhysicalCard:(id)card
 {
-  v5 = a3;
+  cardCopy = card;
   if ([(PKPhysicalCardActionController *)self _canPerformActionWithState:self->_state])
   {
     v4 = [objc_alloc(MEMORY[0x1E69B9068]) initWithActionType:1];
-    [(PKPhysicalCardActionController *)self _performAction:v4 onPhysicalCard:v5];
+    [(PKPhysicalCardActionController *)self _performAction:v4 onPhysicalCard:cardCopy];
   }
 }
 
-- (void)disablePhysicalCard:(id)a3
+- (void)disablePhysicalCard:(id)card
 {
-  v5 = a3;
+  cardCopy = card;
   if ([(PKPhysicalCardActionController *)self _canPerformActionWithState:self->_state])
   {
     v4 = [objc_alloc(MEMORY[0x1E69B9068]) initWithActionType:2];
-    [(PKPhysicalCardActionController *)self _performAction:v4 onPhysicalCard:v5];
+    [(PKPhysicalCardActionController *)self _performAction:v4 onPhysicalCard:cardCopy];
   }
 }
 
-- (void)cancelPhysicalCard:(id)a3
+- (void)cancelPhysicalCard:(id)card
 {
-  v5 = a3;
+  cardCopy = card;
   if ([(PKPhysicalCardActionController *)self _canPerformActionWithState:self->_state])
   {
     v4 = [objc_alloc(MEMORY[0x1E69B9068]) initWithActionType:3];
-    [(PKPhysicalCardActionController *)self _performAction:v4 onPhysicalCard:v5];
+    [(PKPhysicalCardActionController *)self _performAction:v4 onPhysicalCard:cardCopy];
   }
 }
 
-- (void)replacePhysicalCard:(id)a3 withReason:(unint64_t)a4
+- (void)replacePhysicalCard:(id)card withReason:(unint64_t)reason
 {
-  v7 = a3;
+  cardCopy = card;
   if ([(PKPhysicalCardActionController *)self _canPerformActionWithState:self->_state])
   {
     v6 = [objc_alloc(MEMORY[0x1E69B9068]) initWithActionType:5];
-    [v6 setReason:a4];
-    [(PKPhysicalCardActionController *)self _performAction:v6 onPhysicalCard:v7];
+    [v6 setReason:reason];
+    [(PKPhysicalCardActionController *)self _performAction:v6 onPhysicalCard:cardCopy];
   }
 }
 
-- (void)paymentAuthorizationCoordinatorDidFinish:(id)a3
+- (void)paymentAuthorizationCoordinatorDidFinish:(id)finish
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (self->_authorizationCoordinator == v4)
+  finishCopy = finish;
+  if (self->_authorizationCoordinator == finishCopy)
   {
     v5 = PKLogFacilityTypeGetObject();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -119,7 +119,7 @@
       *buf = 136315394;
       v9 = "[PKPhysicalCardActionController paymentAuthorizationCoordinatorDidFinish:]";
       v10 = 2048;
-      v11 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1BD026000, v5, OS_LOG_TYPE_DEFAULT, "%s %p: paymentAuthorizationCoordinatorDidFinish: callback called.", buf, 0x16u);
     }
 
@@ -128,7 +128,7 @@
     v6[2] = __75__PKPhysicalCardActionController_paymentAuthorizationCoordinatorDidFinish___block_invoke;
     v6[3] = &unk_1E8010A10;
     v6[4] = self;
-    v7 = v4;
+    v7 = finishCopy;
     dispatch_async(MEMORY[0x1E69E96A0], v6);
   }
 }
@@ -182,7 +182,7 @@ void __75__PKPhysicalCardActionController_paymentAuthorizationCoordinatorDidFini
   *(v7 + 32) = 0;
 }
 
-- (id)presentationSceneIdentifierForPaymentAuthorizationCoordinator:(id)a3
+- (id)presentationSceneIdentifierForPaymentAuthorizationCoordinator:(id)coordinator
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
@@ -198,16 +198,16 @@ void __75__PKPhysicalCardActionController_paymentAuthorizationCoordinatorDidFini
   return v5;
 }
 
-- (void)paymentAuthorizationCoordinator:(id)a3 didAuthorizeApplePayTrustSignature:(id)a4 handler:(id)a5
+- (void)paymentAuthorizationCoordinator:(id)coordinator didAuthorizeApplePayTrustSignature:(id)signature handler:(id)handler
 {
-  v7 = a5;
+  handlerCopy = handler;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __109__PKPhysicalCardActionController_paymentAuthorizationCoordinator_didAuthorizeApplePayTrustSignature_handler___block_invoke;
   v9[3] = &unk_1E8010AD8;
-  v10 = v7;
-  v8 = v7;
-  [(PKPhysicalCardActionController *)self _performApplePayTrustSignatureRequestWithSignature:a4 completion:v9];
+  v10 = handlerCopy;
+  v8 = handlerCopy;
+  [(PKPhysicalCardActionController *)self _performApplePayTrustSignatureRequestWithSignature:signature completion:v9];
 }
 
 void __109__PKPhysicalCardActionController_paymentAuthorizationCoordinator_didAuthorizeApplePayTrustSignature_handler___block_invoke(uint64_t a1, int a2)
@@ -216,18 +216,18 @@ void __109__PKPhysicalCardActionController_paymentAuthorizationCoordinator_didAu
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)_performAction:(id)a3 onPhysicalCard:(id)a4
+- (void)_performAction:(id)action onPhysicalCard:(id)card
 {
-  v6 = a3;
-  v7 = a4;
+  actionCopy = action;
+  cardCopy = card;
   [(PKPhysicalCardActionController *)self _transitionToState:1 withError:0];
-  v8 = [v6 actionType];
+  actionType = [actionCopy actionType];
   paymentDevice = self->_paymentDevice;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __64__PKPhysicalCardActionController__performAction_onPhysicalCard___block_invoke;
   v13[3] = &unk_1E80205E8;
-  if (v8 == 5)
+  if (actionType == 5)
   {
     v10 = 251;
   }
@@ -238,10 +238,10 @@ void __109__PKPhysicalCardActionController_paymentAuthorizationCoordinator_didAu
   }
 
   v13[4] = self;
-  v14 = v6;
-  v15 = v7;
-  v11 = v7;
-  v12 = v6;
+  v14 = actionCopy;
+  v15 = cardCopy;
+  v11 = cardCopy;
+  v12 = actionCopy;
   [(PKPaymentDevice *)paymentDevice paymentDeviceMetadataFields:v10 completion:v13];
 }
 
@@ -310,11 +310,11 @@ uint64_t __64__PKPhysicalCardActionController__performAction_onPhysicalCard___bl
   return result;
 }
 
-- (void)_performApplePayTrustSignatureRequestWithSignature:(id)a3 completion:(id)a4
+- (void)_performApplePayTrustSignatureRequestWithSignature:(id)signature completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  signatureCopy = signature;
+  completionCopy = completion;
+  v8 = completionCopy;
   lastActionRequest = self->_lastActionRequest;
   if (lastActionRequest)
   {
@@ -324,13 +324,13 @@ uint64_t __64__PKPhysicalCardActionController__performAction_onPhysicalCard___bl
     v11[2] = __96__PKPhysicalCardActionController__performApplePayTrustSignatureRequestWithSignature_completion___block_invoke;
     v11[3] = &unk_1E8020610;
     v11[4] = self;
-    v12 = v7;
-    [(PKAccountService *)accountService completePhysicalCardActionRequest:lastActionRequest withSignature:v6 completion:v11];
+    v12 = completionCopy;
+    [(PKAccountService *)accountService completePhysicalCardActionRequest:lastActionRequest withSignature:signatureCopy completion:v11];
   }
 
-  else if (v7)
+  else if (completionCopy)
   {
-    (*(v7 + 2))(v7, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
@@ -372,20 +372,20 @@ uint64_t __96__PKPhysicalCardActionController__performApplePayTrustSignatureRequ
   return result;
 }
 
-- (id)_generatePaymentRequestWithSignatureRequest:(id)a3
+- (id)_generatePaymentRequestWithSignatureRequest:(id)request
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (request)
   {
     v3 = MEMORY[0x1E696AB90];
-    v4 = a3;
-    v5 = [v3 zero];
-    v6 = PKCurrencyAmountCreate(v5, *MEMORY[0x1E69BBB38]);
+    requestCopy = request;
+    zero = [v3 zero];
+    v6 = PKCurrencyAmountCreate(zero, *MEMORY[0x1E69BBB38]);
 
     v7 = objc_alloc_init(MEMORY[0x1E69B8D70]);
     [v7 setRequestType:4];
-    v8 = [v6 currency];
-    [v7 setCurrencyCode:v8];
+    currency = [v6 currency];
+    [v7 setCurrencyCode:currency];
 
     [v7 setClientCallbackTimeout:65.0];
     [v7 setConfirmationStyle:1];
@@ -397,14 +397,14 @@ uint64_t __96__PKPhysicalCardActionController__performApplePayTrustSignatureRequ
 
     v11 = MEMORY[0x1E69B8E90];
     v12 = PKLocalizedFeatureString();
-    v13 = [v6 amount];
-    v14 = [v11 summaryItemWithLabel:v12 amount:v13];
+    amount = [v6 amount];
+    v14 = [v11 summaryItemWithLabel:v12 amount:amount];
     v17[0] = v14;
     v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:1];
     [v7 setPaymentSummaryItems:v15];
 
     [v7 setSuppressTotal:1];
-    [v7 setApplePayTrustSignatureRequest:v4];
+    [v7 setApplePayTrustSignatureRequest:requestCopy];
   }
 
   else
@@ -415,14 +415,14 @@ uint64_t __96__PKPhysicalCardActionController__performApplePayTrustSignatureRequ
   return v7;
 }
 
-- (void)_presentApplePayTrustWithPaymentRequest:(id)a3 completion:(id)a4
+- (void)_presentApplePayTrustWithPaymentRequest:(id)request completion:(id)completion
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  requestCopy = request;
+  completionCopy = completion;
+  if (requestCopy)
   {
-    v8 = [objc_alloc(MEMORY[0x1E69B8B60]) initWithPaymentRequest:v6];
+    v8 = [objc_alloc(MEMORY[0x1E69B8B60]) initWithPaymentRequest:requestCopy];
     authorizationCoordinator = self->_authorizationCoordinator;
     self->_authorizationCoordinator = v8;
 
@@ -435,7 +435,7 @@ uint64_t __96__PKPhysicalCardActionController__performApplePayTrustSignatureRequ
       v12[1] = 3221225472;
       v12[2] = __85__PKPhysicalCardActionController__presentApplePayTrustWithPaymentRequest_completion___block_invoke;
       v12[3] = &unk_1E8010AD8;
-      v13 = v7;
+      v13 = completionCopy;
       [(PKPaymentAuthorizationCoordinator *)v10 presentWithCompletion:v12];
 
       goto LABEL_9;
@@ -447,16 +447,16 @@ uint64_t __96__PKPhysicalCardActionController__performApplePayTrustSignatureRequ
       *buf = 136315650;
       v15 = "[PKPhysicalCardActionController _presentApplePayTrustWithPaymentRequest:completion:]";
       v16 = 2048;
-      v17 = self;
+      selfCopy = self;
       v18 = 2048;
-      v19 = v6;
+      v19 = requestCopy;
       _os_log_impl(&dword_1BD026000, v11, OS_LOG_TYPE_DEFAULT, "%s %p: PKPaymentAuthorizationCoordinator could not be instantiated with paymentRequest: %p.", buf, 0x20u);
     }
   }
 
-  if (v7)
+  if (completionCopy)
   {
-    (*(v7 + 2))(v7, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 
 LABEL_9:
@@ -473,21 +473,21 @@ uint64_t __85__PKPhysicalCardActionController__presentApplePayTrustWithPaymentRe
   return result;
 }
 
-- (void)_transitionToState:(int64_t)a3 withError:(id)a4
+- (void)_transitionToState:(int64_t)state withError:(id)error
 {
   v14 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if (self->_state != a3)
+  errorCopy = error;
+  if (self->_state != state)
   {
-    self->_state = a3;
-    if (a3 > 3)
+    self->_state = state;
+    if (state > 3)
     {
       v7 = 0;
     }
 
     else
     {
-      v7 = off_1E8020630[a3];
+      v7 = off_1E8020630[state];
     }
 
     v8 = PKLogFacilityTypeGetObject();
@@ -496,12 +496,12 @@ uint64_t __85__PKPhysicalCardActionController__presentApplePayTrustWithPaymentRe
       v10 = 138412546;
       v11 = v7;
       v12 = 2112;
-      v13 = v6;
+      v13 = errorCopy;
       _os_log_impl(&dword_1BD026000, v8, OS_LOG_TYPE_DEFAULT, "PKPhysicalCardController transitioning to state: %@, error: %@", &v10, 0x16u);
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained physicalCardActionController:self didChangeToState:a3 withError:v6];
+    [WeakRetained physicalCardActionController:self didChangeToState:state withError:errorCopy];
   }
 }
 

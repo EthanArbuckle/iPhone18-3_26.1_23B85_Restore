@@ -1,27 +1,27 @@
 @interface TPSSystemVersionUpdateValidation
-- (BOOL)validateLastMajorSystemVersionUpdateSinceTimeInterval:(double)a3 desiredOrder:(int64_t)a4;
-- (void)validateWithCompletion:(id)a3;
+- (BOOL)validateLastMajorSystemVersionUpdateSinceTimeInterval:(double)interval desiredOrder:(int64_t)order;
+- (void)validateWithCompletion:(id)completion;
 @end
 
 @implementation TPSSystemVersionUpdateValidation
 
-- (void)validateWithCompletion:(id)a3
+- (void)validateWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(TPSTargetingValidation *)self value];
-  v6 = [v5 TPSSafeIntegerForKey:@"type"];
+  completionCopy = completion;
+  value = [(TPSTargetingValidation *)self value];
+  v6 = [value TPSSafeIntegerForKey:@"type"];
 
-  v7 = [(TPSTargetingValidation *)self value];
-  [v7 TPSSafeDoubleForKey:@"interval"];
+  value2 = [(TPSTargetingValidation *)self value];
+  [value2 TPSSafeDoubleForKey:@"interval"];
   v9 = v8;
 
-  v10 = [(TPSTargetingValidation *)self value];
-  v11 = [v10 TPSSafeIntegerForKey:@"order"];
+  value3 = [(TPSTargetingValidation *)self value];
+  v11 = [value3 TPSSafeIntegerForKey:@"order"];
 
   if (v6)
   {
-    v12 = [MEMORY[0x277D71778] targeting];
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    targeting = [MEMORY[0x277D71778] targeting];
+    if (os_log_type_enabled(targeting, OS_LOG_TYPE_ERROR))
     {
       [TPSSystemVersionUpdateValidation validateWithCompletion:v6];
     }
@@ -34,44 +34,44 @@
     v13 = [(TPSSystemVersionUpdateValidation *)self validateLastMajorSystemVersionUpdateSinceTimeInterval:v11 desiredOrder:v9];
   }
 
-  v14 = [MEMORY[0x277D71778] targeting];
-  if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
+  targeting2 = [MEMORY[0x277D71778] targeting];
+  if (os_log_type_enabled(targeting2, OS_LOG_TYPE_DEBUG))
   {
-    [(TPSDictationLanguageValidation *)self validateWithCompletion:v13, v14];
+    [(TPSDictationLanguageValidation *)self validateWithCompletion:v13, targeting2];
   }
 
-  v4[2](v4, v13, 0);
+  completionCopy[2](completionCopy, v13, 0);
 }
 
-- (BOOL)validateLastMajorSystemVersionUpdateSinceTimeInterval:(double)a3 desiredOrder:(int64_t)a4
+- (BOOL)validateLastMajorSystemVersionUpdateSinceTimeInterval:(double)interval desiredOrder:(int64_t)order
 {
-  v6 = [MEMORY[0x277D716E8] sharedInstance];
-  v7 = [v6 lastMajorVersionUpdateDate];
+  mEMORY[0x277D716E8] = [MEMORY[0x277D716E8] sharedInstance];
+  lastMajorVersionUpdateDate = [mEMORY[0x277D716E8] lastMajorVersionUpdateDate];
 
-  if (v7)
+  if (lastMajorVersionUpdateDate)
   {
-    if ((a4 - 2) > 0xFFFFFFFFFFFFFFFCLL)
+    if ((order - 2) > 0xFFFFFFFFFFFFFFFCLL)
     {
-      v11 = [MEMORY[0x277CBEAA8] date];
-      v12 = [v7 dateByAddingTimeInterval:a3];
-      v10 = [v11 compare:v12] == a4;
+      date = [MEMORY[0x277CBEAA8] date];
+      v12 = [lastMajorVersionUpdateDate dateByAddingTimeInterval:interval];
+      v10 = [date compare:v12] == order;
 
       goto LABEL_11;
     }
 
-    v8 = [MEMORY[0x277D71778] targeting];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    targeting = [MEMORY[0x277D71778] targeting];
+    if (os_log_type_enabled(targeting, OS_LOG_TYPE_ERROR))
     {
-      [TPSSystemVersionUpdateValidation validateLastMajorSystemVersionUpdateSinceTimeInterval:a4 desiredOrder:?];
+      [TPSSystemVersionUpdateValidation validateLastMajorSystemVersionUpdateSinceTimeInterval:order desiredOrder:?];
     }
   }
 
   else
   {
-    v9 = [MEMORY[0x277D71778] targeting];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    targeting2 = [MEMORY[0x277D71778] targeting];
+    if (os_log_type_enabled(targeting2, OS_LOG_TYPE_ERROR))
     {
-      [TPSSystemVersionUpdateValidation validateLastMajorSystemVersionUpdateSinceTimeInterval:v9 desiredOrder:?];
+      [TPSSystemVersionUpdateValidation validateLastMajorSystemVersionUpdateSinceTimeInterval:targeting2 desiredOrder:?];
     }
   }
 

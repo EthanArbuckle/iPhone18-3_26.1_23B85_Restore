@@ -1,14 +1,14 @@
 @interface HMDCameraSnapshotLocalSession
-- (void)addMessage:(id)a3;
+- (void)addMessage:(id)message;
 @end
 
 @implementation HMDCameraSnapshotLocalSession
 
-- (void)addMessage:(id)a3
+- (void)addMessage:(id)message
 {
-  v4 = a3;
-  v5 = [(HMDCameraSnapshotSession *)self sessionMessages];
-  [v5 addObject:v4];
+  messageCopy = message;
+  sessionMessages = [(HMDCameraSnapshotSession *)self sessionMessages];
+  [sessionMessages addObject:messageCopy];
 }
 
 @end

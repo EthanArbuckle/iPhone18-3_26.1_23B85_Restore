@@ -1,16 +1,16 @@
 @interface GKOnDeviceMultiplayerGameListCacheObject
 - (id)bundleIDs;
 - (id)multiplayerGames;
-- (void)updateWithServerRepresentation:(id)a3 expirationDate:(id)a4;
+- (void)updateWithServerRepresentation:(id)representation expirationDate:(id)date;
 @end
 
 @implementation GKOnDeviceMultiplayerGameListCacheObject
 
 - (id)bundleIDs
 {
-  v2 = [(GKOnDeviceMultiplayerGameListCacheObject *)self entries];
-  v3 = [v2 array];
-  v4 = [v3 _gkMapWithBlock:&stru_100367DB0];
+  entries = [(GKOnDeviceMultiplayerGameListCacheObject *)self entries];
+  array = [entries array];
+  v4 = [array _gkMapWithBlock:&stru_100367DB0];
 
   if (!os_log_GKGeneral)
   {
@@ -31,39 +31,39 @@
 - (id)multiplayerGames
 {
   v3 = objc_alloc_init(NSMutableArray);
-  v4 = [(GKOnDeviceMultiplayerGameListCacheObject *)self entries];
-  v5 = [v4 array];
+  entries = [(GKOnDeviceMultiplayerGameListCacheObject *)self entries];
+  array = [entries array];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100134E68;
   v8[3] = &unk_100367DD8;
   v6 = v3;
   v9 = v6;
-  [v5 enumerateObjectsUsingBlock:v8];
+  [array enumerateObjectsUsingBlock:v8];
 
   return v6;
 }
 
-- (void)updateWithServerRepresentation:(id)a3 expirationDate:(id)a4
+- (void)updateWithServerRepresentation:(id)representation expirationDate:(id)date
 {
-  v6 = a3;
-  v7 = a4;
+  representationCopy = representation;
+  dateCopy = date;
   v8 = dispatch_get_current_queue();
   if (dispatch_queue_get_specific(v8, @"com.apple.gamed.cachequeue") != @"com.apple.gamed.cachequeue")
   {
     v9 = +[NSThread callStackSymbols];
     v10 = [NSString stringWithFormat:@"%s not invoked on managed object context queue at %@", "[GKOnDeviceMultiplayerGameListCacheObject updateWithServerRepresentation:expirationDate:]", v9];
     v11 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter_Daemons/Frameworks/GameCenterFoundation/gamed/GKCacheObject.m"];
-    v12 = [v11 lastPathComponent];
-    v13 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_queueContext == (__bridge const void * _Nonnull)GKCacheQueueID)\n[%s (%s:%d)]", v10, "-[GKOnDeviceMultiplayerGameListCacheObject updateWithServerRepresentation:expirationDate:]", [v12 UTF8String], 3562);
+    lastPathComponent = [v11 lastPathComponent];
+    v13 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_queueContext == (__bridge const void * _Nonnull)GKCacheQueueID)\n[%s (%s:%d)]", v10, "-[GKOnDeviceMultiplayerGameListCacheObject updateWithServerRepresentation:expirationDate:]", [lastPathComponent UTF8String], 3562);
 
     [NSException raise:@"GameKit Exception" format:@"%@", v13];
   }
 
   v15.receiver = self;
   v15.super_class = GKOnDeviceMultiplayerGameListCacheObject;
-  [(GKExpiringCacheObject *)&v15 updateWithServerRepresentation:v6 expirationDate:v7];
-  v14 = [v6 objectForKeyedSubscript:@"game-features"];
+  [(GKExpiringCacheObject *)&v15 updateWithServerRepresentation:representationCopy expirationDate:dateCopy];
+  v14 = [representationCopy objectForKeyedSubscript:@"game-features"];
   [(GKListCacheObject *)self updateEntriesWithRepresentations:v14 entryForRepresentation:&stru_100367DF8 reuseEntriesByIndex:1];
 }
 

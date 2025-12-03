@@ -1,8 +1,8 @@
 @interface GKSConnectivitySettings
-+ (BOOL)isFeatureDisabledByExceptionKey:(id)a3;
-+ (BOOL)isFeatureEnabledForStorebagKey:(id)a3 exceptionKey:(id)a4 userDefaultKey:(__CFString *)a5 featureFlagDomain:(char *)a6 featureFlagName:(char *)a7;
-+ (BOOL)isFeatureEnabledForStorebagKey:(id)a3 userDefaultKey:(__CFString *)a4 featureFlagDomain:(char *)a5 featureFlagName:(char *)a6;
-+ (BOOL)isFeatureEnabledForStorebagKey:(id)a3 userDefaultKey:(__CFString *)a4 featureFlagDomain:(char *)a5 featureFlagName:(char *)a6 normalizedRandom:(double)a7;
++ (BOOL)isFeatureDisabledByExceptionKey:(id)key;
++ (BOOL)isFeatureEnabledForStorebagKey:(id)key exceptionKey:(id)exceptionKey userDefaultKey:(__CFString *)defaultKey featureFlagDomain:(char *)domain featureFlagName:(char *)name;
++ (BOOL)isFeatureEnabledForStorebagKey:(id)key userDefaultKey:(__CFString *)defaultKey featureFlagDomain:(char *)domain featureFlagName:(char *)name;
++ (BOOL)isFeatureEnabledForStorebagKey:(id)key userDefaultKey:(__CFString *)defaultKey featureFlagDomain:(char *)domain featureFlagName:(char *)name normalizedRandom:(double)random;
 + (BOOL)supportiRATRecommendation;
 + (BOOL)supportsEVSCodec;
 + (BOOL)supportsHEVCEncoding;
@@ -20,14 +20,14 @@
 + (double)getShortTermValueWeightA;
 + (double)getShortTermValueWeightB;
 + (double)getShortTermValueWeightC;
-+ (double)getThresholdForSwitch:(unsigned int)a3;
-+ (id)getAddressForService:(id)a3;
++ (double)getThresholdForSwitch:(unsigned int)switch;
++ (id)getAddressForService:(id)service;
 + (id)getAllSettings;
-+ (id)getClientOption:(id)a3;
-+ (id)getStorebagValueForStorebagKey:(id)a3 userDefaultKey:(__CFString *)a4 defaultValue:(id)a5 isDoubleType:(BOOL)a6;
-+ (id)getStorebagValueStorebagKey:(id)a3 defaultValue:(id)a4;
-+ (id)getTestGroupPermutations:(unsigned __int8)a3;
-+ (id)getVCRCSeverBagConfigWithKey:(id)a3;
++ (id)getClientOption:(id)option;
++ (id)getStorebagValueForStorebagKey:(id)key userDefaultKey:(__CFString *)defaultKey defaultValue:(id)value isDoubleType:(BOOL)type;
++ (id)getStorebagValueStorebagKey:(id)key defaultValue:(id)value;
++ (id)getTestGroupPermutations:(unsigned __int8)permutations;
++ (id)getVCRCSeverBagConfigWithKey:(id)key;
 + (int)getAdaptiveLearningState;
 + (int)getDecryptionMKMRecoveryInterval;
 + (int)getDecryptionTimeoutInterval;
@@ -37,22 +37,22 @@
 + (int)getNewSessionJoiningInterval;
 + (int)getRateControllerType;
 + (int)getShortTermHistoryLength;
-+ (int)getWRMRSSIThresholdValue:(int)a3;
++ (int)getWRMRSSIThresholdValue:(int)value;
 + (tagIPPORT)getCachedIPPort;
-+ (tagIPPORT)getIPPortForService:(id)a3;
++ (tagIPPORT)getIPPortForService:(id)service;
 + (unsigned)getAbTestMasterLocalSwitches;
 + (unsigned)getAbTestingState;
-+ (void)clearAllSettingsWithRefreshIntervalInSeconds:(int)a3;
++ (void)clearAllSettingsWithRefreshIntervalInSeconds:(int)seconds;
 + (void)getAdaptiveLearningState;
-+ (void)setAddress:(id)a3 forService:(id)a4;
-+ (void)setClientOptions:(id)a3;
-+ (void)setServerAddresses:(id)a3;
++ (void)setAddress:(id)address forService:(id)service;
++ (void)setClientOptions:(id)options;
++ (void)setServerAddresses:(id)addresses;
 - (void)dealloc;
 @end
 
 @implementation GKSConnectivitySettings
 
-+ (void)setAddress:(id)a3 forService:(id)a4
++ (void)setAddress:(id)address forService:(id)service
 {
   v19 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -68,9 +68,9 @@
       v13 = 1024;
       v14 = 477;
       v15 = 2112;
-      v16 = a4;
+      serviceCopy = service;
       v17 = 2112;
-      v18 = a3;
+      addressCopy = address;
       _os_log_impl(&dword_1DB56E000, v7, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d GKSConnSettings: %@ => %@", &v9, 0x30u);
     }
   }
@@ -83,12 +83,12 @@
     g_Settings = v8;
   }
 
-  [v8 setObject:a3 forKeyedSubscript:a4];
+  [v8 setObject:address forKeyedSubscript:service];
   pthread_mutex_unlock(&g_xGKSConnectivitySettings);
   [objc_msgSend(MEMORY[0x1E696AD88] "defaultCenter")];
 }
 
-+ (void)setServerAddresses:(id)a3
++ (void)setServerAddresses:(id)addresses
 {
   v19 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -104,7 +104,7 @@
       v15 = 1024;
       v16 = 500;
       v17 = 2112;
-      v18 = a3;
+      addressesCopy = addresses;
       _os_log_impl(&dword_1DB56E000, v5, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d GKSConnSettings: set server: %@", &v11, 0x26u);
     }
   }
@@ -144,20 +144,20 @@
 
   if (g_bSpecialAllocForHeapInspection)
   {
-    v10 = [a3 copyGKSDeep];
-    [g_Settings addEntriesFromDictionary:v10];
+    copyGKSDeep = [addresses copyGKSDeep];
+    [g_Settings addEntriesFromDictionary:copyGKSDeep];
   }
 
   else
   {
-    [g_Settings addEntriesFromDictionary:{a3, *&v9}];
+    [g_Settings addEntriesFromDictionary:{addresses, *&v9}];
   }
 
   pthread_mutex_unlock(&g_xGKSConnectivitySettings);
   [objc_msgSend(MEMORY[0x1E696AD88] "defaultCenter")];
 }
 
-+ (void)setClientOptions:(id)a3
++ (void)setClientOptions:(id)options
 {
   v15 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -173,7 +173,7 @@
       v11 = 1024;
       v12 = 537;
       v13 = 2112;
-      v14 = a3;
+      optionsCopy = options;
       _os_log_impl(&dword_1DB56E000, v5, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d GKSConnSettings: set client: %@", &v7, 0x26u);
     }
   }
@@ -186,20 +186,20 @@
     g_Settings = v6;
   }
 
-  [v6 addEntriesFromDictionary:a3];
+  [v6 addEntriesFromDictionary:options];
   pthread_mutex_unlock(&g_xGKSConnectivitySettings);
   [objc_msgSend(MEMORY[0x1E696AD88] "defaultCenter")];
 }
 
-+ (id)getClientOption:(id)a3
++ (id)getClientOption:(id)option
 {
   pthread_mutex_lock(&g_xGKSConnectivitySettings);
-  v4 = [g_Settings objectForKeyedSubscript:a3];
+  v4 = [g_Settings objectForKeyedSubscript:option];
   if (!v4)
   {
-    if ([a3 compare:@"staticnattypefromcarrierbundle"])
+    if ([option compare:@"staticnattypefromcarrierbundle"])
     {
-      if ([a3 compare:@"keepalivetimeoutfromcarrierbundle"])
+      if ([option compare:@"keepalivetimeoutfromcarrierbundle"])
       {
         v4 = 0;
         goto LABEL_8;
@@ -216,7 +216,7 @@
     }
 
     v4 = [v5 numberWithInt:v6];
-    [g_Settings setObject:v4 forKeyedSubscript:a3];
+    [g_Settings setObject:v4 forKeyedSubscript:option];
   }
 
 LABEL_8:
@@ -224,10 +224,10 @@ LABEL_8:
   return v4;
 }
 
-+ (id)getAddressForService:(id)a3
++ (id)getAddressForService:(id)service
 {
   pthread_mutex_lock(&g_xGKSConnectivitySettings);
-  v4 = [g_Settings objectForKeyedSubscript:a3];
+  v4 = [g_Settings objectForKeyedSubscript:service];
   pthread_mutex_unlock(&g_xGKSConnectivitySettings);
   return v4;
 }
@@ -343,7 +343,7 @@ void __42__GKSConnectivitySettings_getCachedIPPort__block_invoke()
   }
 }
 
-+ (tagIPPORT)getIPPortForService:(id)a3
++ (tagIPPORT)getIPPortForService:(id)service
 {
   v41 = *MEMORY[0x1E69E9840];
   v4 = objc_alloc_init(MEMORY[0x1E696AAC8]);
@@ -362,9 +362,9 @@ void __42__GKSConnectivitySettings_getCachedIPPort__block_invoke()
       goto LABEL_43;
     }
 
-    if (a3)
+    if (service)
     {
-      v22 = [objc_msgSend(a3 "description")];
+      v22 = [objc_msgSend(service "description")];
     }
 
     else
@@ -388,7 +388,7 @@ LABEL_42:
 
   v6 = v5;
   pthread_mutex_lock(&g_xGKSConnectivitySettings);
-  v7 = [g_Settings objectForKeyedSubscript:a3];
+  v7 = [g_Settings objectForKeyedSubscript:service];
   pthread_mutex_unlock(&g_xGKSConnectivitySettings);
   if (!v7)
   {
@@ -405,9 +405,9 @@ LABEL_42:
       goto LABEL_43;
     }
 
-    if (a3)
+    if (service)
     {
-      v24 = [objc_msgSend(a3 "description")];
+      v24 = [objc_msgSend(service "description")];
     }
 
     else
@@ -460,7 +460,7 @@ LABEL_42:
     atoi(v11 + 1);
     if (MakeIPPORTWithHostnameIPv4Only())
     {
-      if ([a3 isEqualToString:@"gk-commnat-main0-name"])
+      if ([service isEqualToString:@"gk-commnat-main0-name"])
       {
         pthread_mutex_lock(&g_xGKSConnectivitySettings);
         v13 = g_cachedCommNATServer;
@@ -543,9 +543,9 @@ LABEL_31:
     v30 = *MEMORY[0x1E6986650];
     if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
     {
-      if (a3)
+      if (service)
       {
-        v31 = [objc_msgSend(a3 "description")];
+        v31 = [objc_msgSend(service "description")];
       }
 
       else
@@ -584,12 +584,12 @@ LABEL_44:
   return v2;
 }
 
-+ (void)clearAllSettingsWithRefreshIntervalInSeconds:(int)a3
++ (void)clearAllSettingsWithRefreshIntervalInSeconds:(int)seconds
 {
   v24 = *MEMORY[0x1E69E9840];
   v4 = micro();
-  v5 = a3;
-  v6 = *&g_cacheClearTime + a3;
+  secondsCopy = seconds;
+  v6 = *&g_cacheClearTime + seconds;
   ErrorLogLevelForModule = VRTraceGetErrorLogLevelForModule();
   if (v4 <= v6)
   {
@@ -606,7 +606,7 @@ LABEL_44:
         v16 = 1024;
         v17 = 696;
         v18 = 1024;
-        v19 = (*&g_cacheClearTime + v5 - v4);
+        secondsCopy2 = (*&g_cacheClearTime + secondsCopy - v4);
         v20 = 2048;
         v21 = g_cacheClearTime;
         v22 = 2048;
@@ -631,7 +631,7 @@ LABEL_44:
         v16 = 1024;
         v17 = 690;
         v18 = 1024;
-        v19 = a3;
+        secondsCopy2 = seconds;
         v20 = 2048;
         v21 = g_cacheClearTime;
         v22 = 2048;
@@ -653,7 +653,7 @@ LABEL_44:
   v8 = 0;
   if (VCCarrierBundle_QueryCarrierBundleValueForKey(@"StaticNATType", &v8))
   {
-    v2 = [v8 intValue];
+    intValue = [v8 intValue];
     if (VRTraceGetErrorLogLevelForModule() >= 7)
     {
       v3 = VRTraceErrorLogLevelToCSTR();
@@ -667,7 +667,7 @@ LABEL_44:
         v13 = 1024;
         v14 = 712;
         v15 = 1024;
-        v16 = v2;
+        v16 = intValue;
         _os_log_impl(&dword_1DB56E000, v4, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Read key 'StaticNATType' from carrier bundle: 0x%08x", buf, 0x22u);
       }
     }
@@ -696,7 +696,7 @@ LABEL_44:
     return 0;
   }
 
-  return v2;
+  return intValue;
 }
 
 + (int)getKeepAliveTimeoutFromCarrierBundle
@@ -705,15 +705,15 @@ LABEL_44:
   v10 = 0;
   if (VCCarrierBundle_QueryCarrierBundleValueForKey(@"ConnectivityKeepAliveTimeout", &v10))
   {
-    v2 = [v10 intValue];
-    if (v2 <= 5)
+    intValue = [v10 intValue];
+    if (intValue <= 5)
     {
       v3 = 5;
     }
 
     else
     {
-      v3 = v2;
+      v3 = intValue;
     }
 
     if (v3 >= 120)
@@ -782,7 +782,7 @@ LABEL_14:
   if (v2)
   {
     v3 = v2;
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
     if (VRTraceGetErrorLogLevelForModule() >= 7)
     {
       v5 = VRTraceErrorLogLevelToCSTR();
@@ -796,7 +796,7 @@ LABEL_14:
         v14 = 1024;
         v15 = 754;
         v16 = 2080;
-        v17 = [objc_msgSend(v3 "description")];
+        uTF8String = [objc_msgSend(v3 "description")];
         _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d value %s", &v10, 0x26u);
       }
     }
@@ -817,7 +817,7 @@ LABEL_14:
         v14 = 1024;
         v15 = 756;
         v16 = 2080;
-        v17 = [@"vc-enable-hevc-v2" UTF8String];
+        uTF8String = [@"vc-enable-hevc-v2" UTF8String];
         _os_log_impl(&dword_1DB56E000, v8, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d %s is not present!", &v10, 0x26u);
       }
     }
@@ -825,7 +825,7 @@ LABEL_14:
     return 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 + (BOOL)supportsEVSCodec
@@ -835,7 +835,7 @@ LABEL_14:
   if (v2)
   {
     v3 = v2;
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
     if (VRTraceGetErrorLogLevelForModule() >= 7)
     {
       v5 = VRTraceErrorLogLevelToCSTR();
@@ -849,7 +849,7 @@ LABEL_14:
         v14 = 1024;
         v15 = 773;
         v16 = 2080;
-        v17 = [objc_msgSend(v3 "description")];
+        uTF8String = [objc_msgSend(v3 "description")];
         _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d value %s", &v10, 0x26u);
       }
     }
@@ -870,7 +870,7 @@ LABEL_14:
         v14 = 1024;
         v15 = 775;
         v16 = 2080;
-        v17 = [@"vc-enable-evs-audio-codec" UTF8String];
+        uTF8String = [@"vc-enable-evs-audio-codec" UTF8String];
         _os_log_impl(&dword_1DB56E000, v8, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d %s is not present!", &v10, 0x26u);
       }
     }
@@ -878,7 +878,7 @@ LABEL_14:
     return 1;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 + (BOOL)supportsRedAudio
@@ -888,7 +888,7 @@ LABEL_14:
   if (v2)
   {
     v3 = v2;
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
     if (VRTraceGetErrorLogLevelForModule() >= 7)
     {
       v5 = VRTraceErrorLogLevelToCSTR();
@@ -902,7 +902,7 @@ LABEL_14:
         v14 = 1024;
         v15 = 792;
         v16 = 2080;
-        v17 = [objc_msgSend(v3 "description")];
+        uTF8String = [objc_msgSend(v3 "description")];
         _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d value %s", &v10, 0x26u);
       }
     }
@@ -923,7 +923,7 @@ LABEL_14:
         v14 = 1024;
         v15 = 794;
         v16 = 2080;
-        v17 = [@"vc-enable-red-audio" UTF8String];
+        uTF8String = [@"vc-enable-red-audio" UTF8String];
         _os_log_impl(&dword_1DB56E000, v8, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d %s is not present!", &v10, 0x26u);
       }
     }
@@ -931,7 +931,7 @@ LABEL_14:
     return 1;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 + (BOOL)supportiRATRecommendation
@@ -940,7 +940,7 @@ LABEL_14:
   v2 = [+[GKSConnectivitySettings getAllSettings](GKSConnectivitySettings "getAllSettings")];
   if (v2)
   {
-    v3 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
     if (VRTraceGetErrorLogLevelForModule() >= 7)
     {
       v4 = VRTraceErrorLogLevelToCSTR();
@@ -949,7 +949,7 @@ LABEL_14:
       {
         v6 = "NOT ";
         v10 = 136315906;
-        if (v3)
+        if (bOOLValue)
         {
           v6 = "";
         }
@@ -960,7 +960,7 @@ LABEL_14:
         v14 = 1024;
         v15 = 809;
         v16 = 2080;
-        v17 = v6;
+        uTF8String = v6;
         _os_log_impl(&dword_1DB56E000, v5, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d storebag shows we do %s support iRAT recommendation", &v10, 0x26u);
       }
     }
@@ -981,15 +981,15 @@ LABEL_14:
         v14 = 1024;
         v15 = 811;
         v16 = 2080;
-        v17 = [@"vc-enable-irat-recommendation" UTF8String];
+        uTF8String = [@"vc-enable-irat-recommendation" UTF8String];
         _os_log_impl(&dword_1DB56E000, v8, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d storebag does not have %s, enable iRAT recommendation support by default", &v10, 0x26u);
       }
     }
 
-    LOBYTE(v3) = 1;
+    LOBYTE(bOOLValue) = 1;
   }
 
-  return v3;
+  return bOOLValue;
 }
 
 + (int)getRateControllerType
@@ -998,7 +998,7 @@ LABEL_14:
   v2 = [+[GKSConnectivitySettings getAllSettings](GKSConnectivitySettings "getAllSettings")];
   if (v2)
   {
-    v3 = [v2 intValue];
+    intValue = [v2 intValue];
     if (VRTraceGetErrorLogLevelForModule() >= 7)
     {
       v4 = VRTraceErrorLogLevelToCSTR();
@@ -1012,7 +1012,7 @@ LABEL_14:
         v13 = 1024;
         v14 = 825;
         v15 = 1024;
-        LODWORD(v16) = v3;
+        LODWORD(uTF8String) = intValue;
         _os_log_impl(&dword_1DB56E000, v5, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d storebag shows we should use rate controller type %d", &v9, 0x22u);
       }
     }
@@ -1033,7 +1033,7 @@ LABEL_14:
         v13 = 1024;
         v14 = 827;
         v15 = 2080;
-        v16 = [@"vc-rate-controller-type" UTF8String];
+        uTF8String = [@"vc-rate-controller-type" UTF8String];
         _os_log_impl(&dword_1DB56E000, v7, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d storebag does not have %s, select both rate controller type by default", &v9, 0x26u);
       }
     }
@@ -1041,7 +1041,7 @@ LABEL_14:
     return 1;
   }
 
-  return v3;
+  return intValue;
 }
 
 + (int)getDecryptionTimeoutInterval
@@ -1050,7 +1050,7 @@ LABEL_14:
   v2 = [+[GKSConnectivitySettings getAllSettings](GKSConnectivitySettings "getAllSettings")];
   if (v2)
   {
-    v3 = [v2 intValue];
+    intValue = [v2 intValue];
     if (VRTraceGetErrorLogLevelForModule() >= 7)
     {
       v4 = VRTraceErrorLogLevelToCSTR();
@@ -1066,7 +1066,7 @@ LABEL_14:
         v15 = 2112;
         v16 = @"vc-decryption-timeout-interval";
         v17 = 1024;
-        v18 = v3;
+        v18 = intValue;
         v6 = " [%s] %s:%d storebag value for '%@' is '%d'";
 LABEL_8:
         _os_log_impl(&dword_1DB56E000, v5, OS_LOG_TYPE_DEFAULT, v6, &v9, 0x2Cu);
@@ -1083,7 +1083,7 @@ LABEL_8:
 
     v7 = VRTraceErrorLogLevelToCSTR();
     v5 = *MEMORY[0x1E6986650];
-    v3 = 30;
+    intValue = 30;
     if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
     {
       v9 = 136316162;
@@ -1101,7 +1101,7 @@ LABEL_8:
     }
   }
 
-  return v3;
+  return intValue;
 }
 
 + (int)getDecryptionMKMRecoveryInterval
@@ -1110,7 +1110,7 @@ LABEL_8:
   v2 = [+[GKSConnectivitySettings getAllSettings](GKSConnectivitySettings "getAllSettings")];
   if (v2)
   {
-    v3 = [v2 intValue];
+    intValue = [v2 intValue];
     if (VRTraceGetErrorLogLevelForModule() >= 7)
     {
       v4 = VRTraceErrorLogLevelToCSTR();
@@ -1126,7 +1126,7 @@ LABEL_8:
         v15 = 2112;
         v16 = @"vc-decryption-mkm-recovery-interval";
         v17 = 1024;
-        v18 = v3;
+        v18 = intValue;
         v6 = " [%s] %s:%d storebag value for '%@' is '%d'";
 LABEL_8:
         _os_log_impl(&dword_1DB56E000, v5, OS_LOG_TYPE_DEFAULT, v6, &v9, 0x2Cu);
@@ -1143,7 +1143,7 @@ LABEL_8:
 
     v7 = VRTraceErrorLogLevelToCSTR();
     v5 = *MEMORY[0x1E6986650];
-    v3 = 10;
+    intValue = 10;
     if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
     {
       v9 = 136316162;
@@ -1161,7 +1161,7 @@ LABEL_8:
     }
   }
 
-  return v3;
+  return intValue;
 }
 
 + (int)getNewSessionJoiningInterval
@@ -1170,7 +1170,7 @@ LABEL_8:
   v2 = [+[GKSConnectivitySettings getAllSettings](GKSConnectivitySettings "getAllSettings")];
   if (v2)
   {
-    v3 = [v2 intValue];
+    intValue = [v2 intValue];
     if (VRTraceGetErrorLogLevelForModule() >= 7)
     {
       v4 = VRTraceErrorLogLevelToCSTR();
@@ -1186,7 +1186,7 @@ LABEL_8:
         v15 = 2112;
         v16 = @"vc-new-session-joining-interval";
         v17 = 1024;
-        v18 = v3;
+        v18 = intValue;
         v6 = " [%s] %s:%d storebag value for '%@' is '%d'";
 LABEL_8:
         _os_log_impl(&dword_1DB56E000, v5, OS_LOG_TYPE_DEFAULT, v6, &v9, 0x2Cu);
@@ -1203,7 +1203,7 @@ LABEL_8:
 
     v7 = VRTraceErrorLogLevelToCSTR();
     v5 = *MEMORY[0x1E6986650];
-    v3 = 120;
+    intValue = 120;
     if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
     {
       v9 = 136316162;
@@ -1221,7 +1221,7 @@ LABEL_8:
     }
   }
 
-  return v3;
+  return intValue;
 }
 
 + (int)getAdaptiveLearningState
@@ -1231,7 +1231,7 @@ LABEL_8:
   AppIntegerValue = CFPreferencesGetAppIntegerValue(@"useAdaptiveLearningForFaceTime", @"com.apple.VideoConference", &keyExistsAndHasValidFormat);
   if (keyExistsAndHasValidFormat)
   {
-    v3 = AppIntegerValue;
+    intValue = AppIntegerValue;
     if (VRTraceGetErrorLogLevelForModule() >= 8)
     {
       v4 = VRTraceErrorLogLevelToCSTR();
@@ -1250,7 +1250,7 @@ LABEL_8:
           v26 = 2080;
           v27 = "+[GKSConnectivitySettings getAdaptiveLearningState]";
           v28 = 1024;
-          LODWORD(v29) = v3;
+          LODWORD(v29) = intValue;
           v7 = " [%s] %s:%d %s: Read key 'useAdaptiveLearningForFaceTime' from user defaults: %d";
           v8 = v5;
           v9 = 44;
@@ -1298,7 +1298,7 @@ LABEL_18:
     v13 = [+[GKSConnectivitySettings getAllSettings](GKSConnectivitySettings "getAllSettings")];
     if (v13)
     {
-      v3 = [v13 intValue];
+      intValue = [v13 intValue];
       if (VRTraceGetErrorLogLevelForModule() >= 7)
       {
         v14 = VRTraceErrorLogLevelToCSTR();
@@ -1316,7 +1316,7 @@ LABEL_18:
           v28 = 2112;
           v29 = @"vc-adaptive-learning-enabled";
           v30 = 1024;
-          v31 = v3;
+          v31 = intValue;
           v7 = " [%s] %s:%d %s: found storebag value '%@'=%d";
           v8 = v15;
           v9 = 54;
@@ -1353,7 +1353,7 @@ LABEL_18:
     }
   }
 
-  return v3;
+  return intValue;
 }
 
 + (int)getShortTermHistoryLength
@@ -1362,7 +1362,7 @@ LABEL_18:
   v2 = [+[GKSConnectivitySettings getAllSettings](GKSConnectivitySettings "getAllSettings")];
   if (v2)
   {
-    v3 = [v2 intValue];
+    intValue = [v2 intValue];
     if (VRTraceGetErrorLogLevelForModule() >= 7)
     {
       v4 = VRTraceErrorLogLevelToCSTR();
@@ -1380,7 +1380,7 @@ LABEL_18:
         v17 = 2112;
         v18 = @"vc-short-term-history-length";
         v19 = 1024;
-        v20 = v3;
+        v20 = intValue;
         v6 = " [%s] %s:%d %s: found storebag value '%@'=%d";
 LABEL_8:
         _os_log_impl(&dword_1DB56E000, v5, OS_LOG_TYPE_DEFAULT, v6, &v9, 0x36u);
@@ -1397,7 +1397,7 @@ LABEL_8:
 
     v7 = VRTraceErrorLogLevelToCSTR();
     v5 = *MEMORY[0x1E6986650];
-    v3 = 5;
+    intValue = 5;
     if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
     {
       v9 = 136316418;
@@ -1417,7 +1417,7 @@ LABEL_8:
     }
   }
 
-  return v3;
+  return intValue;
 }
 
 + (int)getLongTermHistoryLength
@@ -1426,7 +1426,7 @@ LABEL_8:
   v2 = [+[GKSConnectivitySettings getAllSettings](GKSConnectivitySettings "getAllSettings")];
   if (v2)
   {
-    v3 = [v2 intValue];
+    intValue = [v2 intValue];
     if (VRTraceGetErrorLogLevelForModule() >= 7)
     {
       v4 = VRTraceErrorLogLevelToCSTR();
@@ -1444,7 +1444,7 @@ LABEL_8:
         v17 = 2112;
         v18 = @"vc-long-term-history-length";
         v19 = 1024;
-        v20 = v3;
+        v20 = intValue;
         v6 = " [%s] %s:%d %s: found storebag value '%@'=%d";
 LABEL_8:
         _os_log_impl(&dword_1DB56E000, v5, OS_LOG_TYPE_DEFAULT, v6, &v9, 0x36u);
@@ -1461,7 +1461,7 @@ LABEL_8:
 
     v7 = VRTraceErrorLogLevelToCSTR();
     v5 = *MEMORY[0x1E6986650];
-    v3 = 30;
+    intValue = 30;
     if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
     {
       v9 = 136316418;
@@ -1481,7 +1481,7 @@ LABEL_8:
     }
   }
 
-  return v3;
+  return intValue;
 }
 
 + (double)getAdaptiveLearningA
@@ -2177,7 +2177,7 @@ LABEL_8:
   return v4;
 }
 
-+ (int)getWRMRSSIThresholdValue:(int)a3
++ (int)getWRMRSSIThresholdValue:(int)value
 {
   v23 = *MEMORY[0x1E69E9840];
   v4 = [+[GKSConnectivitySettings getAllSettings](GKSConnectivitySettings "getAllSettings")];
@@ -2187,7 +2187,7 @@ LABEL_8:
     v6 = [v4 componentsSeparatedByString:{@", "}];
     if ([v6 count])
     {
-      a3 = [objc_msgSend(v6 objectAtIndexedSubscript:{arc4random_uniform(objc_msgSend(v6, "count"))), "intValue"}];
+      value = [objc_msgSend(v6 objectAtIndexedSubscript:{arc4random_uniform(objc_msgSend(v6, "count"))), "intValue"}];
     }
 
     if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -2207,7 +2207,7 @@ LABEL_8:
         v21 = 2112;
         *v22 = v5;
         *&v22[8] = 1024;
-        *&v22[10] = a3;
+        *&v22[10] = value;
         v9 = " [%s] %s:%d Found storebag value '%@'=%@, using threshold value %d";
 LABEL_12:
         _os_log_impl(&dword_1DB56E000, v8, OS_LOG_TYPE_DEFAULT, v9, &v13, 0x36u);
@@ -2220,7 +2220,7 @@ LABEL_12:
     v10 = [CFSTR(""-80 -80];
     if ([v10 count])
     {
-      a3 = [objc_msgSend(v10 objectAtIndexedSubscript:{arc4random_uniform(objc_msgSend(v10, "count"))), "intValue"}];
+      value = [objc_msgSend(v10 objectAtIndexedSubscript:{arc4random_uniform(objc_msgSend(v10, "count"))), "intValue"}];
     }
 
     if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -2238,7 +2238,7 @@ LABEL_12:
         v19 = 2112;
         v20 = @"vc-wrm-rssi-threshold-distribution";
         v21 = 1024;
-        *v22 = a3;
+        *v22 = value;
         *&v22[4] = 2112;
         *&v22[6] = v10;
         v9 = " [%s] %s:%d Storebag does not have %@, using threshold value %d from default distribution %@";
@@ -2247,21 +2247,21 @@ LABEL_12:
     }
   }
 
-  return a3;
+  return value;
 }
 
-+ (double)getThresholdForSwitch:(unsigned int)a3
++ (double)getThresholdForSwitch:(unsigned int)switch
 {
   v76 = *MEMORY[0x1E69E9840];
   v4 = 0xAAAAAAAAAAAAAAAALL;
   v5 = NAN;
-  if (a3 < 0x8000)
+  if (switch < 0x8000)
   {
-    if (a3 <= 127)
+    if (switch <= 127)
     {
-      if (a3 <= 7)
+      if (switch <= 7)
       {
-        if (a3 == 1)
+        if (switch == 1)
         {
           v31 = @"vc-prefer-relay-over-p2p-threshold";
           v30 = @"preferRelayOverP2PThreshold";
@@ -2272,7 +2272,7 @@ LABEL_12:
         {
           v3 = 1.0;
           v63 = @"highFecEnableThreshold";
-          if (a3 == 4)
+          if (switch == 4)
           {
             v5 = 0.0;
           }
@@ -2282,12 +2282,12 @@ LABEL_12:
             v63 = 0xAAAAAAAAAAAAAAAALL;
           }
 
-          if (a3 == 4)
+          if (switch == 4)
           {
             v4 = @"vc-high-fec-enable-threshold";
           }
 
-          if (a3 == 2)
+          if (switch == 2)
           {
             v22 = 1.0;
           }
@@ -2297,7 +2297,7 @@ LABEL_12:
             v22 = v5;
           }
 
-          if (a3 == 2)
+          if (switch == 2)
           {
             v30 = @"alwaysOnAudioRedundancyEnableThreshold";
           }
@@ -2307,7 +2307,7 @@ LABEL_12:
             v30 = v63;
           }
 
-          if (a3 == 2)
+          if (switch == 2)
           {
             v31 = @"vc-always-on-audio-redundancy-enable-threshold";
           }
@@ -2326,7 +2326,7 @@ LABEL_12:
       v3 = 0.0;
       v32 = @"vc-fast-media-duplication-enable-threshold";
       v33 = @"fastMediaDuplicationEnableThreshold";
-      if (a3 == 64)
+      if (switch == 64)
       {
         v34 = 1.0;
       }
@@ -2336,13 +2336,13 @@ LABEL_12:
         v34 = NAN;
       }
 
-      if (a3 != 64)
+      if (switch != 64)
       {
         v33 = 0xAAAAAAAAAAAAAAAALL;
         v32 = 0xAAAAAAAAAAAAAAAALL;
       }
 
-      if (a3 != 32)
+      if (switch != 32)
       {
         v3 = v34;
         v15 = v33;
@@ -2351,7 +2351,7 @@ LABEL_12:
 
       v19 = @"lowFpsVideoEnableThreshold";
       v35 = @"vplrFecEnableThreshold";
-      if (a3 == 16)
+      if (switch == 16)
       {
         v5 = 1.0;
       }
@@ -2361,12 +2361,12 @@ LABEL_12:
         v35 = 0xAAAAAAAAAAAAAAAALL;
       }
 
-      if (a3 == 16)
+      if (switch == 16)
       {
         v4 = @"vc-vplr-fec-enable-threshold";
       }
 
-      if (a3 == 8)
+      if (switch == 8)
       {
         v5 = 1.0;
       }
@@ -2376,13 +2376,13 @@ LABEL_12:
         v19 = v35;
       }
 
-      if (a3 == 8)
+      if (switch == 8)
       {
         v4 = @"vc-low-fps-video-enable-threshold";
       }
 
-      v21 = a3 <= 31;
-      if (a3 <= 31)
+      v21 = switch <= 31;
+      if (switch <= 31)
       {
         v22 = v5;
       }
@@ -2395,14 +2395,14 @@ LABEL_12:
 
     else
     {
-      if (a3 > 2047)
+      if (switch > 2047)
       {
         v6 = @"vc-heif-hevc-live-photos-enable-threshold";
         v7 = @"heifHevcLivePhotosEnableThreshold";
         v3 = 1.0;
         v46 = @"vc-wifi-low-tier-redundancy-enable-threshold";
         v47 = @"wifiLowTierRedundancyEnableThreshold";
-        if (a3 == 0x4000)
+        if (switch == 0x4000)
         {
           v10 = 1.0;
         }
@@ -2412,13 +2412,13 @@ LABEL_12:
           v10 = NAN;
         }
 
-        if (a3 != 0x4000)
+        if (switch != 0x4000)
         {
           v47 = 0xAAAAAAAAAAAAAAAALL;
           v46 = 0xAAAAAAAAAAAAAAAALL;
         }
 
-        if (a3 == 0x2000)
+        if (switch == 0x2000)
         {
           v10 = 1.0;
         }
@@ -2428,14 +2428,14 @@ LABEL_12:
           v7 = v47;
         }
 
-        if (a3 != 0x2000)
+        if (switch != 0x2000)
         {
           v6 = v46;
         }
 
         v11 = @"hevcWifiTiersEnableThreshold";
         v48 = @"viewpointCorrectionEnableThreshold";
-        if (a3 == 4096)
+        if (switch == 4096)
         {
           v5 = 1.0;
         }
@@ -2445,12 +2445,12 @@ LABEL_12:
           v48 = 0xAAAAAAAAAAAAAAAALL;
         }
 
-        if (a3 == 4096)
+        if (switch == 4096)
         {
           v4 = @"vc-viewpoint-correction-enable-threshold";
         }
 
-        if (a3 == 2048)
+        if (switch == 2048)
         {
           v5 = 1.0;
         }
@@ -2460,12 +2460,12 @@ LABEL_12:
           v11 = v48;
         }
 
-        if (a3 == 2048)
+        if (switch == 2048)
         {
           v4 = @"vc-hevc-wifi-tiers-enable-threshold";
         }
 
-        v13 = a3 < 0x2000;
+        v13 = switch < 0x2000;
         goto LABEL_175;
       }
 
@@ -2474,7 +2474,7 @@ LABEL_12:
       v3 = 1.0;
       v16 = @"vc-allow-bursty-loss-ramp-down-enable-threshold";
       v17 = @"allowBurstyLossRampDownEnableThreshold";
-      if (a3 == 1024)
+      if (switch == 1024)
       {
         v18 = 1.0;
       }
@@ -2484,13 +2484,13 @@ LABEL_12:
         v18 = NAN;
       }
 
-      if (a3 != 1024)
+      if (switch != 1024)
       {
         v17 = 0xAAAAAAAAAAAAAAAALL;
         v16 = 0xAAAAAAAAAAAAAAAALL;
       }
 
-      if (a3 == 512)
+      if (switch == 512)
       {
         v18 = 1.0;
       }
@@ -2500,14 +2500,14 @@ LABEL_12:
         v15 = v17;
       }
 
-      if (a3 != 512)
+      if (switch != 512)
       {
         v14 = v16;
       }
 
       v19 = @"iRATRtpEnableThreshold";
       v20 = @"preWarmCellEnableThreshold";
-      if (a3 == 256)
+      if (switch == 256)
       {
         v5 = 1.0;
       }
@@ -2517,12 +2517,12 @@ LABEL_12:
         v20 = 0xAAAAAAAAAAAAAAAALL;
       }
 
-      if (a3 == 256)
+      if (switch == 256)
       {
         v4 = @"vc-pre-warm-cell-enable-threshold";
       }
 
-      if (a3 == 128)
+      if (switch == 128)
       {
         v5 = 1.0;
       }
@@ -2532,13 +2532,13 @@ LABEL_12:
         v19 = v20;
       }
 
-      if (a3 == 128)
+      if (switch == 128)
       {
         v4 = @"vc-iRAT-rtp-enable-threshold";
       }
 
-      v21 = a3 <= 511;
-      if (a3 <= 511)
+      v21 = switch <= 511;
+      if (switch <= 511)
       {
         v22 = v5;
       }
@@ -2572,16 +2572,16 @@ LABEL_12:
     goto LABEL_184;
   }
 
-  if (a3 < 0x800000)
+  if (switch < 0x800000)
   {
-    if (a3 >= 0x80000)
+    if (switch >= 0x80000)
     {
       v6 = @"vc-wifi-assist-duplication-enable-threshold";
       v7 = @"wifiAssistDuplicationEnableThreshold";
       v3 = 1.0;
       v36 = @"vc-wifi-assist-budget-status-enable-threshold";
       v37 = @"wifiAssistBudgetStatusEnableThreshold";
-      if (a3 == 0x400000)
+      if (switch == 0x400000)
       {
         v10 = 1.0;
       }
@@ -2591,13 +2591,13 @@ LABEL_12:
         v10 = NAN;
       }
 
-      if (a3 != 0x400000)
+      if (switch != 0x400000)
       {
         v37 = 0xAAAAAAAAAAAAAAAALL;
         v36 = 0xAAAAAAAAAAAAAAAALL;
       }
 
-      if (a3 == 0x200000)
+      if (switch == 0x200000)
       {
         v10 = 1.0;
       }
@@ -2607,14 +2607,14 @@ LABEL_12:
         v7 = v37;
       }
 
-      if (a3 != 0x200000)
+      if (switch != 0x200000)
       {
         v6 = v36;
       }
 
       v11 = @"secureMessagingEnableThreshold";
       v38 = @"disableSIPEnableThreshold";
-      if (a3 == 0x100000)
+      if (switch == 0x100000)
       {
         v5 = 1.0;
       }
@@ -2624,12 +2624,12 @@ LABEL_12:
         v38 = 0xAAAAAAAAAAAAAAAALL;
       }
 
-      if (a3 == 0x100000)
+      if (switch == 0x100000)
       {
         v4 = @"vc-disable-SIP-enable-threshold";
       }
 
-      if (a3 == 0x80000)
+      if (switch == 0x80000)
       {
         v5 = 1.0;
       }
@@ -2639,12 +2639,12 @@ LABEL_12:
         v11 = v38;
       }
 
-      if (a3 == 0x80000)
+      if (switch == 0x80000)
       {
         v4 = @"vc-secure-messaging-enable-threshold";
       }
 
-      v13 = a3 < 0x200000;
+      v13 = switch < 0x200000;
     }
 
     else
@@ -2654,7 +2654,7 @@ LABEL_12:
       v3 = 1.0;
       v8 = @"vc-updated-AFRC-header-enable-threshold";
       v9 = @"updatedAFRCHeaderEnableThreshold";
-      if (a3 == 0x40000)
+      if (switch == 0x40000)
       {
         v10 = 1.0;
       }
@@ -2664,13 +2664,13 @@ LABEL_12:
         v10 = NAN;
       }
 
-      if (a3 != 0x40000)
+      if (switch != 0x40000)
       {
         v9 = 0xAAAAAAAAAAAAAAAALL;
         v8 = 0xAAAAAAAAAAAAAAAALL;
       }
 
-      if (a3 == 0x20000)
+      if (switch == 0x20000)
       {
         v10 = 1.0;
       }
@@ -2680,14 +2680,14 @@ LABEL_12:
         v7 = v9;
       }
 
-      if (a3 != 0x20000)
+      if (switch != 0x20000)
       {
         v6 = v8;
       }
 
       v11 = @"cellularLowTierRedundancyEnableThreshold";
       v12 = @"iRATMetricsEnableThreshold";
-      if (a3 == 0x10000)
+      if (switch == 0x10000)
       {
         v5 = 1.0;
       }
@@ -2697,12 +2697,12 @@ LABEL_12:
         v12 = 0xAAAAAAAAAAAAAAAALL;
       }
 
-      if (a3 == 0x10000)
+      if (switch == 0x10000)
       {
         v4 = @"vc-iRAT-metrics-enable-threshold";
       }
 
-      if (a3 == 0x8000)
+      if (switch == 0x8000)
       {
         v5 = 1.0;
       }
@@ -2712,12 +2712,12 @@ LABEL_12:
         v11 = v12;
       }
 
-      if (a3 == 0x8000)
+      if (switch == 0x8000)
       {
         v4 = @"vc-cellular-low-tier-redundancy-enable-threshold";
       }
 
-      v13 = a3 < 0x20000;
+      v13 = switch < 0x20000;
     }
 
 LABEL_175:
@@ -2754,13 +2754,13 @@ LABEL_175:
     goto LABEL_184;
   }
 
-  if (a3 > 0x7FFFFFF)
+  if (switch > 0x7FFFFFF)
   {
     v39 = @"vc-media-driven-duplication-enable-threshold";
     v3 = 0.0;
     v40 = @"vc-ab-testing-use-rtt-for-fir-throttling";
     v41 = @"useRTTForFIRThrottling";
-    if (a3 == 0x40000000)
+    if (switch == 0x40000000)
     {
       v42 = 0.0;
     }
@@ -2770,13 +2770,13 @@ LABEL_175:
       v42 = NAN;
     }
 
-    if (a3 != 0x40000000)
+    if (switch != 0x40000000)
     {
       v41 = 0xAAAAAAAAAAAAAAAALL;
       v40 = 0xAAAAAAAAAAAAAAAALL;
     }
 
-    if (a3 == 0x20000000)
+    if (switch == 0x20000000)
     {
       v43 = @"mediaDrivenDuplicationEnableThreshold";
     }
@@ -2787,13 +2787,13 @@ LABEL_175:
       v43 = v41;
     }
 
-    if (a3 != 0x20000000)
+    if (switch != 0x20000000)
     {
       v39 = v40;
     }
 
     v44 = @"wrmRSSIThresholdEnableThreshold";
-    if (a3 == 0x10000000)
+    if (switch == 0x10000000)
     {
       v5 = 1.0;
     }
@@ -2803,12 +2803,12 @@ LABEL_175:
       v44 = 0xAAAAAAAAAAAAAAAALL;
     }
 
-    if (a3 == 0x10000000)
+    if (switch == 0x10000000)
     {
       v4 = @"vc-wrm-rssi-threshold-enable-threshold";
     }
 
-    if (a3 == 0x8000000)
+    if (switch == 0x8000000)
     {
       v5 = 1.0;
       v45 = @"iRATDuplicationEnableThreshold";
@@ -2819,12 +2819,12 @@ LABEL_175:
       v45 = v44;
     }
 
-    if (a3 == 0x8000000)
+    if (switch == 0x8000000)
     {
       v4 = @"vc-iRAT-duplication-enable-threshold";
     }
 
-    if (a3 <= 0x1FFFFFFF)
+    if (switch <= 0x1FFFFFFF)
     {
       v22 = v5;
     }
@@ -2834,7 +2834,7 @@ LABEL_175:
       v22 = v3;
     }
 
-    if (a3 <= 0x1FFFFFFF)
+    if (switch <= 0x1FFFFFFF)
     {
       v30 = v45;
     }
@@ -2844,7 +2844,7 @@ LABEL_175:
       v30 = v43;
     }
 
-    if (a3 <= 0x1FFFFFFF)
+    if (switch <= 0x1FFFFFFF)
     {
       v31 = v4;
     }
@@ -2862,14 +2862,14 @@ LABEL_175:
     v24 = @"vc-video-jb-enable-threshold-v2";
     v25 = @"videoJBEnableThreshold";
     v26 = 0.0;
-    if (a3 != 0x4000000)
+    if (switch != 0x4000000)
     {
       v26 = NAN;
       v25 = 0xAAAAAAAAAAAAAAAALL;
       v24 = 0xAAAAAAAAAAAAAAAALL;
     }
 
-    if (a3 == 0x2000000)
+    if (switch == 0x2000000)
     {
       v26 = 1.0;
       v27 = @"duplicationEnhancementEnableThreshold";
@@ -2880,14 +2880,14 @@ LABEL_175:
       v27 = v25;
     }
 
-    if (a3 != 0x2000000)
+    if (switch != 0x2000000)
     {
       v23 = v24;
     }
 
     v28 = @"wifiAssistStatusBarEnableThreshold";
     v29 = @"lowNetworkModeEnableThreshold";
-    if (a3 == 0x1000000)
+    if (switch == 0x1000000)
     {
       v5 = 1.0;
     }
@@ -2897,12 +2897,12 @@ LABEL_175:
       v29 = 0xAAAAAAAAAAAAAAAALL;
     }
 
-    if (a3 == 0x1000000)
+    if (switch == 0x1000000)
     {
       v4 = @"vc-low-network-mode-enable-threshold";
     }
 
-    if (a3 == 0x800000)
+    if (switch == 0x800000)
     {
       v5 = 1.0;
     }
@@ -2912,12 +2912,12 @@ LABEL_175:
       v28 = v29;
     }
 
-    if (a3 == 0x800000)
+    if (switch == 0x800000)
     {
       v4 = @"vc-wifi-assist-status-bar-enable-threshold";
     }
 
-    if (a3 <= 0x1FFFFFF)
+    if (switch <= 0x1FFFFFF)
     {
       v22 = v5;
     }
@@ -2927,7 +2927,7 @@ LABEL_175:
       v22 = v26;
     }
 
-    if (a3 <= 0x1FFFFFF)
+    if (switch <= 0x1FFFFFF)
     {
       v30 = v28;
     }
@@ -2937,7 +2937,7 @@ LABEL_175:
       v30 = v27;
     }
 
-    if (a3 <= 0x1FFFFFF)
+    if (switch <= 0x1FFFFFF)
     {
       v31 = v4;
     }
@@ -2949,11 +2949,11 @@ LABEL_175:
   }
 
 LABEL_184:
-  v49 = [+[GKSConnectivitySettings getAllSettings](GKSConnectivitySettings getAllSettings];
-  if (v49)
+  getAllSettings = [+[GKSConnectivitySettings getAllSettings](GKSConnectivitySettings getAllSettings];
+  if (getAllSettings)
   {
-    v50 = v49;
-    [v49 doubleValue];
+    v50 = getAllSettings;
+    [getAllSettings doubleValue];
     [VCDefaults getDoubleValueForKey:v30 defaultValue:?];
     v52 = v51;
     if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -3129,16 +3129,16 @@ LABEL_191:
   return IntValueForKey;
 }
 
-+ (id)getTestGroupPermutations:(unsigned __int8)a3
++ (id)getTestGroupPermutations:(unsigned __int8)permutations
 {
   v22 = *MEMORY[0x1E69E9840];
-  if (a3 > 4u)
+  if (permutations > 4u)
   {
     return &stru_1F570E008;
   }
 
-  v3 = off_1E85F49C0[a3];
-  v4 = off_1E85F49E8[a3];
+  v3 = off_1E85F49C0[permutations];
+  v4 = off_1E85F49E8[permutations];
   v5 = [+[GKSConnectivitySettings getAllSettings](GKSConnectivitySettings "getAllSettings")];
   ErrorLogLevelForModule = VRTraceGetErrorLogLevelForModule();
   if (v5)
@@ -3308,7 +3308,7 @@ LABEL_8:
   return v4;
 }
 
-+ (id)getVCRCSeverBagConfigWithKey:(id)a3
++ (id)getVCRCSeverBagConfigWithKey:(id)key
 {
   v24 = *MEMORY[0x1E69E9840];
   v4 = [+[GKSConnectivitySettings getAllSettings](GKSConnectivitySettings "getAllSettings")];
@@ -3328,7 +3328,7 @@ LABEL_8:
         v18 = 1024;
         v19 = 1447;
         v20 = 2112;
-        v21 = a3;
+        keyCopy2 = key;
         v22 = 2112;
         v23 = v4;
         v8 = " [%s] %s:%d storebag map value for '%@' is '%@'";
@@ -3353,7 +3353,7 @@ LABEL_8:
       v18 = 1024;
       v19 = 1449;
       v20 = 2112;
-      v21 = a3;
+      keyCopy2 = key;
       v8 = " [%s] %s:%d storebag does not have '%@'";
       v9 = v12;
       v10 = 38;
@@ -3364,33 +3364,33 @@ LABEL_8:
   return v4;
 }
 
-+ (id)getStorebagValueForStorebagKey:(id)a3 userDefaultKey:(__CFString *)a4 defaultValue:(id)a5 isDoubleType:(BOOL)a6
++ (id)getStorebagValueForStorebagKey:(id)key userDefaultKey:(__CFString *)defaultKey defaultValue:(id)value isDoubleType:(BOOL)type
 {
-  v6 = a6;
+  typeCopy = type;
   v35 = *MEMORY[0x1E69E9840];
   v10 = [+[GKSConnectivitySettings getAllSettings](GKSConnectivitySettings "getAllSettings")];
   v11 = v10;
   if (v10)
   {
-    a5 = v10;
+    value = v10;
   }
 
-  if (a4)
+  if (defaultKey)
   {
     v12 = MEMORY[0x1E696AD98];
-    if (v6)
+    if (typeCopy)
     {
-      [a5 doubleValue];
-      [VCDefaults getDoubleValueForKey:a4 defaultValue:?];
+      [value doubleValue];
+      [VCDefaults getDoubleValueForKey:defaultKey defaultValue:?];
       v13 = [v12 numberWithDouble:?];
     }
 
     else
     {
-      v13 = [MEMORY[0x1E696AD98] numberWithLong:{+[VCDefaults integerValueForKey:defaultValue:](VCDefaults, "integerValueForKey:defaultValue:", a4, objc_msgSend(a5, "intValue"))}];
+      v13 = [MEMORY[0x1E696AD98] numberWithLong:{+[VCDefaults integerValueForKey:defaultValue:](VCDefaults, "integerValueForKey:defaultValue:", defaultKey, objc_msgSend(value, "intValue"))}];
     }
 
-    a5 = v13;
+    value = v13;
   }
 
   ErrorLogLevelForModule = VRTraceGetErrorLogLevelForModule();
@@ -3409,11 +3409,11 @@ LABEL_8:
         v27 = 1024;
         v28 = 1471;
         v29 = 2112;
-        v30 = a3;
+        keyCopy2 = key;
         v31 = 2112;
-        v32 = v11;
+        valueCopy2 = v11;
         v33 = 2112;
-        v34 = a5;
+        valueCopy = value;
         v17 = " [%s] %s:%d Found storebag value '%@'=%@, using %@";
         v18 = v16;
         v19 = 58;
@@ -3436,9 +3436,9 @@ LABEL_15:
       v27 = 1024;
       v28 = 1473;
       v29 = 2112;
-      v30 = a3;
+      keyCopy2 = key;
       v31 = 2112;
-      v32 = a5;
+      valueCopy2 = value;
       v17 = " [%s] %s:%d Storebag does not have %@, using %@";
       v18 = v21;
       v19 = 48;
@@ -3446,21 +3446,21 @@ LABEL_15:
     }
   }
 
-  return a5;
+  return value;
 }
 
-+ (BOOL)isFeatureEnabledForStorebagKey:(id)a3 userDefaultKey:(__CFString *)a4 featureFlagDomain:(char *)a5 featureFlagName:(char *)a6
++ (BOOL)isFeatureEnabledForStorebagKey:(id)key userDefaultKey:(__CFString *)defaultKey featureFlagDomain:(char *)domain featureFlagName:(char *)name
 {
   v11 = arc4random() / 4294967300.0;
 
-  return [a1 isFeatureEnabledForStorebagKey:a3 userDefaultKey:a4 featureFlagDomain:a5 featureFlagName:a6 normalizedRandom:v11];
+  return [self isFeatureEnabledForStorebagKey:key userDefaultKey:defaultKey featureFlagDomain:domain featureFlagName:name normalizedRandom:v11];
 }
 
-+ (BOOL)isFeatureEnabledForStorebagKey:(id)a3 userDefaultKey:(__CFString *)a4 featureFlagDomain:(char *)a5 featureFlagName:(char *)a6 normalizedRandom:(double)a7
++ (BOOL)isFeatureEnabledForStorebagKey:(id)key userDefaultKey:(__CFString *)defaultKey featureFlagDomain:(char *)domain featureFlagName:(char *)name normalizedRandom:(double)random
 {
   v37 = *MEMORY[0x1E69E9840];
   keyExistsAndHasValidFormat = 0;
-  AppBooleanValue = CFPreferencesGetAppBooleanValue(a4, @"com.apple.VideoConference", &keyExistsAndHasValidFormat);
+  AppBooleanValue = CFPreferencesGetAppBooleanValue(defaultKey, @"com.apple.VideoConference", &keyExistsAndHasValidFormat);
   v12 = [+[GKSConnectivitySettings getAllSettings](GKSConnectivitySettings "getAllSettings")];
   if (keyExistsAndHasValidFormat)
   {
@@ -3477,7 +3477,7 @@ LABEL_15:
   {
     [v14 doubleValue];
     v16 = v15;
-    v13 = v15 > a7;
+    v13 = v15 > random;
     if (VRTraceGetErrorLogLevelForModule() >= 7)
     {
       v17 = VRTraceErrorLogLevelToCSTR();
@@ -3491,13 +3491,13 @@ LABEL_15:
         v29 = 1024;
         v30 = 1549;
         v31 = 2112;
-        v32 = a3;
+        keyCopy2 = key;
         v33 = 2112;
-        v34 = v14;
+        domainCopy = v14;
         v35 = 1024;
-        *v36 = v16 > a7;
+        *v36 = v16 > random;
         *&v36[4] = 2048;
-        *&v36[6] = a7;
+        *&v36[6] = random;
         v19 = " [%s] %s:%d Found storebag value '%@'=%@, result=%d, normalizedRandom=%1.4f";
         v20 = v18;
 LABEL_13:
@@ -3525,11 +3525,11 @@ LABEL_13:
       v29 = 1024;
       v30 = 1551;
       v31 = 2112;
-      v32 = a3;
+      keyCopy2 = key;
       v33 = 2080;
-      v34 = a5;
+      domainCopy = domain;
       v35 = 2080;
-      *v36 = a6;
+      *v36 = name;
       *&v36[8] = 1024;
       *&v36[10] = 1;
       v19 = " [%s] %s:%d Storebag does not have %@, using feature flag domain=%s name=%s value=%d";
@@ -3541,7 +3541,7 @@ LABEL_13:
   return v13;
 }
 
-+ (id)getStorebagValueStorebagKey:(id)a3 defaultValue:(id)a4
++ (id)getStorebagValueStorebagKey:(id)key defaultValue:(id)value
 {
   v23 = *MEMORY[0x1E69E9840];
   v6 = [+[GKSConnectivitySettings getAllSettings](GKSConnectivitySettings "getAllSettings")];
@@ -3561,9 +3561,9 @@ LABEL_13:
         v17 = 1024;
         v18 = 1563;
         v19 = 2112;
-        v20 = a3;
+        keyCopy2 = key;
         v21 = 2112;
-        v22 = v6;
+        valueCopy = v6;
         _os_log_impl(&dword_1DB56E000, v9, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Found storebag value '%@'=%@", &v13, 0x30u);
       }
     }
@@ -3584,14 +3584,14 @@ LABEL_13:
         v17 = 1024;
         v18 = 1566;
         v19 = 2112;
-        v20 = a3;
+        keyCopy2 = key;
         v21 = 2112;
-        v22 = a4;
+        valueCopy = value;
         _os_log_impl(&dword_1DB56E000, v11, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Storebag does not have %@, using %@", &v13, 0x30u);
       }
     }
 
-    return a4;
+    return value;
   }
 
   return v6;
@@ -3605,7 +3605,7 @@ LABEL_13:
   [(GKSConnectivitySettings *)&v2 dealloc];
 }
 
-+ (BOOL)isFeatureDisabledByExceptionKey:(id)a3
++ (BOOL)isFeatureDisabledByExceptionKey:(id)key
 {
   v51 = *MEMORY[0x1E69E9840];
   v4 = [+[GKSConnectivitySettings getAllSettings](GKSConnectivitySettings "getAllSettings")];
@@ -3660,7 +3660,7 @@ LABEL_13:
                     v37 = 1024;
                     v38 = 1500;
                     v39 = 2112;
-                    v40 = a3;
+                    keyCopy = key;
                     v41 = 2112;
                     v42 = v5;
                     v43 = 2112;
@@ -3699,12 +3699,12 @@ LABEL_13:
   return v29;
 }
 
-+ (BOOL)isFeatureEnabledForStorebagKey:(id)a3 exceptionKey:(id)a4 userDefaultKey:(__CFString *)a5 featureFlagDomain:(char *)a6 featureFlagName:(char *)a7
++ (BOOL)isFeatureEnabledForStorebagKey:(id)key exceptionKey:(id)exceptionKey userDefaultKey:(__CFString *)defaultKey featureFlagDomain:(char *)domain featureFlagName:(char *)name
 {
   v41 = *MEMORY[0x1E69E9840];
   v13 = arc4random();
   keyExistsAndHasValidFormat = 0;
-  AppBooleanValue = CFPreferencesGetAppBooleanValue(a5, @"com.apple.VideoConference", &keyExistsAndHasValidFormat);
+  AppBooleanValue = CFPreferencesGetAppBooleanValue(defaultKey, @"com.apple.VideoConference", &keyExistsAndHasValidFormat);
   v15 = [+[GKSConnectivitySettings getAllSettings](GKSConnectivitySettings "getAllSettings")];
   if (keyExistsAndHasValidFormat)
   {
@@ -3713,7 +3713,7 @@ LABEL_13:
   }
 
   v16 = v15;
-  if ([a1 isFeatureDisabledByExceptionKey:a4])
+  if ([self isFeatureDisabledByExceptionKey:exceptionKey])
   {
     LOBYTE(v13) = 0;
     return v13;
@@ -3737,7 +3737,7 @@ LABEL_13:
         v36 = 1024;
         OUTLINED_FUNCTION_1_2();
         v37 = v21;
-        v38 = v16;
+        domainCopy = v16;
         v39 = v22;
         *v40 = v23;
         *&v40[4] = 2048;
@@ -3766,9 +3766,9 @@ LABEL_10:
         v36 = 1024;
         OUTLINED_FUNCTION_1_2();
         v37 = v28;
-        v38 = a6;
+        domainCopy = domain;
         v39 = v28;
-        *v40 = a7;
+        *v40 = name;
         *&v40[8] = v29;
         *&v40[10] = v13;
         v24 = " [%s] %s:%d Storebag does not have %@, using feature flag domain=%s name=%s value=%d";

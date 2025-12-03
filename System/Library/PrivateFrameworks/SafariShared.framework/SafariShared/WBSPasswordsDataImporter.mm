@@ -1,23 +1,23 @@
 @interface WBSPasswordsDataImporter
-+ (int64_t)importCredential:(id)a3;
-+ (int64_t)importCredential:(id)a3 savedAccountStore:(id)a4;
-- (id)_remoteObjectProxyAndSandboxExtensionForFileURL:(id)a3;
-- (void)computeNumberOfCredentialsToBeImportedFromCSVWithFileURL:(id)a3 completionHandler:(id)a4;
-- (void)fetchLooksLikePasswordsCSVFile:(id)a3 completionHandler:(id)a4;
-- (void)importFromCSVWithFileURL:(id)a3 progressHandler:(id)a4;
++ (int64_t)importCredential:(id)credential;
++ (int64_t)importCredential:(id)credential savedAccountStore:(id)store;
+- (id)_remoteObjectProxyAndSandboxExtensionForFileURL:(id)l;
+- (void)computeNumberOfCredentialsToBeImportedFromCSVWithFileURL:(id)l completionHandler:(id)handler;
+- (void)fetchLooksLikePasswordsCSVFile:(id)file completionHandler:(id)handler;
+- (void)importFromCSVWithFileURL:(id)l progressHandler:(id)handler;
 @end
 
 @implementation WBSPasswordsDataImporter
 
-- (id)_remoteObjectProxyAndSandboxExtensionForFileURL:(id)a3
+- (id)_remoteObjectProxyAndSandboxExtensionForFileURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = +[WBSCredentialExtractionHelperConnectionManager sharedManager];
   v6 = [v5 credentialExtractionHelperConnectionRequestedByClient:self];
   connectionToCredentialExtractionService = self->_connectionToCredentialExtractionService;
   self->_connectionToCredentialExtractionService = v6;
 
-  [v4 fileSystemRepresentation];
+  [lCopy fileSystemRepresentation];
   v8 = sandbox_extension_issue_file();
   if (v8)
   {
@@ -31,7 +31,7 @@
     v12 = WBS_LOG_CHANNEL_PREFIXKeychain();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      [(WBSPasswordsDataImporter *)v4 _remoteObjectProxyAndSandboxExtensionForFileURL:v12];
+      [(WBSPasswordsDataImporter *)lCopy _remoteObjectProxyAndSandboxExtensionForFileURL:v12];
     }
 
     v11 = 0;
@@ -50,51 +50,51 @@ void __76__WBSPasswordsDataImporter__remoteObjectProxyAndSandboxExtensionForFile
   }
 }
 
-- (void)fetchLooksLikePasswordsCSVFile:(id)a3 completionHandler:(id)a4
+- (void)fetchLooksLikePasswordsCSVFile:(id)file completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WBSPasswordsDataImporter *)self _remoteObjectProxyAndSandboxExtensionForFileURL:v6];
+  fileCopy = file;
+  handlerCopy = handler;
+  v8 = [(WBSPasswordsDataImporter *)self _remoteObjectProxyAndSandboxExtensionForFileURL:fileCopy];
   v9 = v8;
   if (v8)
   {
-    v10 = [v8 first];
-    v11 = [v9 second];
+    first = [v8 first];
+    second = [v9 second];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __77__WBSPasswordsDataImporter_fetchLooksLikePasswordsCSVFile_completionHandler___block_invoke;
     v12[3] = &unk_1E7FC5790;
-    v13 = v7;
-    [v10 fetchLooksLikePasswordsCSVFile:v6 sandboxExtension:v11 completionHandler:v12];
+    v13 = handlerCopy;
+    [first fetchLooksLikePasswordsCSVFile:fileCopy sandboxExtension:second completionHandler:v12];
   }
 
   else
   {
-    (*(v7 + 2))(v7, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 }
 
-- (void)computeNumberOfCredentialsToBeImportedFromCSVWithFileURL:(id)a3 completionHandler:(id)a4
+- (void)computeNumberOfCredentialsToBeImportedFromCSVWithFileURL:(id)l completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WBSPasswordsDataImporter *)self _remoteObjectProxyAndSandboxExtensionForFileURL:v6];
+  lCopy = l;
+  handlerCopy = handler;
+  v8 = [(WBSPasswordsDataImporter *)self _remoteObjectProxyAndSandboxExtensionForFileURL:lCopy];
   v9 = v8;
   if (v8)
   {
-    v10 = [v8 first];
-    v11 = [v9 second];
+    first = [v8 first];
+    second = [v9 second];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __103__WBSPasswordsDataImporter_computeNumberOfCredentialsToBeImportedFromCSVWithFileURL_completionHandler___block_invoke;
     v12[3] = &unk_1E7FC57B8;
-    v13 = v7;
-    [v10 fetchExtractedCredentialsFromCSVFile:v6 sandboxExtension:v11 completionHandler:v12];
+    v13 = handlerCopy;
+    [first fetchExtractedCredentialsFromCSVFile:lCopy sandboxExtension:second completionHandler:v12];
   }
 
   else
   {
-    (*(v7 + 2))(v7, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 }
 
@@ -105,10 +105,10 @@ void __103__WBSPasswordsDataImporter_computeNumberOfCredentialsToBeImportedFromC
   (*(v4 + 16))(v4, [a2 count], v5);
 }
 
-- (void)importFromCSVWithFileURL:(id)a3 progressHandler:(id)a4
+- (void)importFromCSVWithFileURL:(id)l progressHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  handlerCopy = handler;
   v21 = 0;
   v22 = &v21;
   v23 = 0x5812000000;
@@ -117,22 +117,22 @@ void __103__WBSPasswordsDataImporter_computeNumberOfCredentialsToBeImportedFromC
   v26 = "1";
   v27 = 0u;
   v28 = 0u;
-  v29 = 0;
+  array = 0;
   *(&v28 + 1) = [MEMORY[0x1E695DF70] array];
-  v29 = [MEMORY[0x1E695DF70] array];
-  v8 = [(WBSPasswordsDataImporter *)self _remoteObjectProxyAndSandboxExtensionForFileURL:v6];
+  array = [MEMORY[0x1E695DF70] array];
+  v8 = [(WBSPasswordsDataImporter *)self _remoteObjectProxyAndSandboxExtensionForFileURL:lCopy];
   v9 = v8;
   if (v8)
   {
-    v10 = [v8 first];
-    v11 = [v9 second];
+    first = [v8 first];
+    second = [v9 second];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __69__WBSPasswordsDataImporter_importFromCSVWithFileURL_progressHandler___block_invoke;
     v14[3] = &unk_1E7FC57E0;
-    v15 = v7;
+    v15 = handlerCopy;
     v16 = &v21;
-    [v10 fetchExtractedCredentialsFromCSVFile:v6 sandboxExtension:v11 completionHandler:v14];
+    [first fetchExtractedCredentialsFromCSVFile:lCopy sandboxExtension:second completionHandler:v14];
   }
 
   else
@@ -143,7 +143,7 @@ void __103__WBSPasswordsDataImporter_computeNumberOfCredentialsToBeImportedFromC
     v18 = v22[8];
     v19 = v13;
     v20 = v12[10];
-    (*(v7 + 2))(v7, 2, &v17, 0);
+    (*(handlerCopy + 2))(handlerCopy, 2, &v17, 0);
   }
 
   _Block_object_dispose(&v21, 8);
@@ -235,47 +235,47 @@ LABEL_13:
 LABEL_16:
 }
 
-+ (int64_t)importCredential:(id)a3
++ (int64_t)importCredential:(id)credential
 {
   v4 = MEMORY[0x1E69C8A38];
-  v5 = a3;
-  v6 = [v4 sharedStore];
-  v7 = [a1 importCredential:v5 savedAccountStore:v6];
+  credentialCopy = credential;
+  sharedStore = [v4 sharedStore];
+  v7 = [self importCredential:credentialCopy savedAccountStore:sharedStore];
 
   return v7;
 }
 
-+ (int64_t)importCredential:(id)a3 savedAccountStore:(id)a4
++ (int64_t)importCredential:(id)credential savedAccountStore:(id)store
 {
-  v5 = a3;
-  v79 = a4;
-  v6 = [v5 title];
-  if (v6)
+  credentialCopy = credential;
+  storeCopy = store;
+  title = [credentialCopy title];
+  if (title)
   {
 
     goto LABEL_4;
   }
 
-  v7 = [v5 url];
+  v7 = [credentialCopy url];
 
   if (v7)
   {
 LABEL_4:
-    v8 = [v5 url];
+    v8 = [credentialCopy url];
     if (v8)
     {
       v9 = MEMORY[0x1E695AC58];
-      v10 = [v5 url];
-      v11 = [v9 safari_HTMLFormProtectionSpaceForURL:v10];
+      v10 = [credentialCopy url];
+      protectionSpaceForNewStandalonePassword = [v9 safari_HTMLFormProtectionSpaceForURL:v10];
     }
 
     else
     {
-      v11 = [MEMORY[0x1E69C8A38] protectionSpaceForNewStandalonePassword];
+      protectionSpaceForNewStandalonePassword = [MEMORY[0x1E69C8A38] protectionSpaceForNewStandalonePassword];
     }
 
-    v12 = [v5 urlCredentialWithPersistence:3];
-    v78 = v11;
+    v12 = [credentialCopy urlCredentialWithPersistence:3];
+    v78 = protectionSpaceForNewStandalonePassword;
     if (v12)
     {
       v13 = v12;
@@ -283,7 +283,7 @@ LABEL_4:
 
     else
     {
-      v13 = [v5 encryptedURLCredentialWithPersistence:3];
+      v13 = [credentialCopy encryptedURLCredentialWithPersistence:3];
       if (!v13)
       {
         v27 = 0;
@@ -293,11 +293,11 @@ LABEL_75:
       }
     }
 
-    v14 = [v5 url];
+    v14 = [credentialCopy url];
 
     v15 = objc_alloc(MEMORY[0x1E69C8A58]);
-    v16 = [v13 user];
-    v17 = [v15 initWithString:v16 matchingType:1];
+    user = [v13 user];
+    v17 = [v15 initWithString:user matchingType:1];
 
     v18 = objc_alloc(MEMORY[0x1E69C8A30]);
     v19 = v18;
@@ -305,8 +305,8 @@ LABEL_75:
     {
       v28 = [v18 initWithURL:0 options:64 userNameQuery:v17 passkeyCredentialIdentifier:0 associatedDomainsManager:0 webFrameIdentifier:0];
       v29 = objc_alloc(MEMORY[0x1E69C8A58]);
-      v30 = [v5 title];
-      v31 = [v29 initWithString:v30 matchingType:1];
+      title2 = [credentialCopy title];
+      v31 = [v29 initWithString:title2 matchingType:1];
       [v28 setTitleQuery:v31];
 
       v87 = 0;
@@ -320,19 +320,19 @@ LABEL_75:
       v85[2] = __63__WBSPasswordsDataImporter_importCredential_savedAccountStore___block_invoke_3;
       v85[3] = &unk_1E7FC5808;
       v85[4] = &v87;
-      [v79 getSavedAccountsMatchingCriteria:v28 withSynchronousCompletionHandler:v85];
-      v32 = [v88[5] exactMatches];
+      [storeCopy getSavedAccountsMatchingCriteria:v28 withSynchronousCompletionHandler:v85];
+      exactMatches = [v88[5] exactMatches];
       v83[0] = MEMORY[0x1E69E9820];
       v83[1] = 3221225472;
       v83[2] = __63__WBSPasswordsDataImporter_importCredential_savedAccountStore___block_invoke_4;
       v83[3] = &unk_1E7FC5850;
-      v84 = v5;
-      v33 = [v32 safari_mapAndFilterObjectsUsingBlock:v83];
-      v34 = [v33 firstObject];
+      v84 = credentialCopy;
+      v33 = [exactMatches safari_mapAndFilterObjectsUsingBlock:v83];
+      firstObject = [v33 firstObject];
 
       _Block_object_dispose(&v87, 8);
       v27 = 2;
-      if (!v34)
+      if (!firstObject)
       {
         goto LABEL_19;
       }
@@ -340,7 +340,7 @@ LABEL_75:
       goto LABEL_74;
     }
 
-    v20 = [v5 url];
+    v20 = [credentialCopy url];
     v21 = [v19 initWithURL:v20 options:16 userNameQuery:v17 passkeyCredentialIdentifier:0 associatedDomainsManager:0 webFrameIdentifier:0];
 
     v87 = 0;
@@ -354,16 +354,16 @@ LABEL_75:
     v86[2] = __63__WBSPasswordsDataImporter_importCredential_savedAccountStore___block_invoke;
     v86[3] = &unk_1E7FC5808;
     v86[4] = &v87;
-    [v79 getSavedAccountsMatchingCriteria:v21 withSynchronousCompletionHandler:v86];
-    v22 = [v88[5] exactMatches];
-    v23 = [v22 safari_mapAndFilterObjectsUsingBlock:&__block_literal_global_16];
-    v24 = [v23 firstObject];
+    [storeCopy getSavedAccountsMatchingCriteria:v21 withSynchronousCompletionHandler:v86];
+    exactMatches2 = [v88[5] exactMatches];
+    v23 = [exactMatches2 safari_mapAndFilterObjectsUsingBlock:&__block_literal_global_16];
+    firstObject2 = [v23 firstObject];
 
-    if (v24 && ([v24 credentialTypes] & 1) != 0)
+    if (firstObject2 && ([firstObject2 credentialTypes] & 1) != 0)
     {
-      v38 = [v24 password];
-      v39 = [v5 password];
-      v40 = [v38 isEqualToString:v39];
+      password = [firstObject2 password];
+      password2 = [credentialCopy password];
+      v40 = [password isEqualToString:password2];
 
       v25 = 0;
       if ((v40 & 1) == 0)
@@ -392,17 +392,17 @@ LABEL_15:
 
       v27 = 1;
 LABEL_19:
-      [v79 removeDontSaveMarkerForProtectionSpace:v11];
-      if ([v11 port])
+      [storeCopy removeDontSaveMarkerForProtectionSpace:protectionSpaceForNewStandalonePassword];
+      if ([protectionSpaceForNewStandalonePassword port])
       {
         v35 = MEMORY[0x1E696AEC0];
-        v36 = [v11 host];
-        v37 = [v35 stringWithFormat:@"%@:%ld", v36, objc_msgSend(v11, "port")];
+        host = [protectionSpaceForNewStandalonePassword host];
+        host2 = [v35 stringWithFormat:@"%@:%ld", host, objc_msgSend(protectionSpaceForNewStandalonePassword, "port")];
       }
 
       else
       {
-        v37 = [v11 host];
+        host2 = [protectionSpaceForNewStandalonePassword host];
       }
 
       v87 = 0;
@@ -413,8 +413,8 @@ LABEL_19:
       v92 = 0;
       v41 = dispatch_group_create();
       dispatch_group_enter(v41);
-      v42 = [v13 user];
-      v43 = [v13 password];
+      user2 = [v13 user];
+      password3 = [v13 password];
       v44 = *MEMORY[0x1E69C8C68];
       v80[0] = MEMORY[0x1E69E9820];
       v80[1] = 3221225472;
@@ -423,7 +423,7 @@ LABEL_19:
       v82 = &v87;
       v45 = v41;
       v81 = v45;
-      [v79 saveUser:v42 password:v43 forUserTypedSite:v37 customTitle:0 notesEntry:0 groupID:v44 completionHandler:v80];
+      [storeCopy saveUser:user2 password:password3 forUserTypedSite:host2 customTitle:0 notesEntry:0 groupID:v44 completionHandler:v80];
 
       v46 = dispatch_time(0, 30000000000);
       if (dispatch_group_wait(v45, v46) || v88[5])
@@ -444,61 +444,61 @@ LABEL_19:
       }
 
 LABEL_31:
-      v48 = [v5 otpAuthURL];
+      otpAuthURL = [credentialCopy otpAuthURL];
 
-      v49 = [v5 notesEntry];
-      v50 = [v49 length];
+      notesEntry = [credentialCopy notesEntry];
+      v50 = [notesEntry length];
 
-      v51 = [v5 title];
-      v52 = [v51 length];
+      title3 = [credentialCopy title];
+      v52 = [title3 length];
 
       if (v52)
       {
-        v77 = [v5 url];
-        v53 = [v77 host];
-        v54 = [v53 safari_highLevelDomainFromHost];
-        v55 = [v5 user];
-        v56 = [MEMORY[0x1E695DF70] array];
-        v57 = v56;
-        if (v54)
+        v77 = [credentialCopy url];
+        host3 = [v77 host];
+        safari_highLevelDomainFromHost = [host3 safari_highLevelDomainFromHost];
+        user3 = [credentialCopy user];
+        array = [MEMORY[0x1E695DF70] array];
+        v57 = array;
+        if (safari_highLevelDomainFromHost)
         {
-          [v56 addObject:v54];
+          [array addObject:safari_highLevelDomainFromHost];
         }
 
-        if (v55)
+        if (user3)
         {
-          [v57 addObject:v55];
+          [v57 addObject:user3];
         }
 
-        if ([v54 length] && objc_msgSend(v55, "length"))
+        if ([safari_highLevelDomainFromHost length] && objc_msgSend(user3, "length"))
         {
-          v58 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@ (%@)", v54, v55];
+          v58 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@ (%@)", safari_highLevelDomainFromHost, user3];
           [v57 addObject:v58];
         }
 
-        v76 = v48;
-        if ([v53 length] && objc_msgSend(v55, "length"))
+        v76 = otpAuthURL;
+        if ([host3 length] && objc_msgSend(user3, "length"))
         {
-          v59 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@ (%@)", v53, v55];
+          v59 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@ (%@)", host3, user3];
           [v57 addObject:v59];
         }
 
-        v60 = (v50 | v48) != 0;
+        v60 = (v50 | otpAuthURL) != 0;
         v75 = v50;
-        v61 = [v77 absoluteString];
-        if (v61)
+        absoluteString = [v77 absoluteString];
+        if (absoluteString)
         {
-          [v57 addObject:v61];
+          [v57 addObject:absoluteString];
         }
 
-        v62 = [v5 title];
-        v63 = [v57 containsObject:v62];
+        title4 = [credentialCopy title];
+        v63 = [v57 containsObject:title4];
 
         v64 = v63 ^ 1;
-        LOBYTE(v62) = v64 | v60;
+        LOBYTE(title4) = v64 | v60;
 
-        v48 = v76;
-        if ((v62 & 1) == 0)
+        otpAuthURL = v76;
+        if ((title4 & 1) == 0)
         {
           goto LABEL_54;
         }
@@ -506,7 +506,7 @@ LABEL_31:
 
       else
       {
-        if (!(v50 | v48))
+        if (!(v50 | otpAuthURL))
         {
 LABEL_54:
           v27 = 2;
@@ -518,43 +518,43 @@ LABEL_54:
       }
 
       v65 = v64;
-      v66 = [v79 savedAccountWithAllMetadataForURLCredential:v13 protectionSpace:v78];
+      v66 = [storeCopy savedAccountWithAllMetadataForURLCredential:v13 protectionSpace:v78];
       if (!v66)
       {
-        v66 = [v79 savedAccountForURLCredential:v13 protectionSpace:v78];
+        v66 = [storeCopy savedAccountForURLCredential:v13 protectionSpace:v78];
       }
 
-      if (v48)
+      if (otpAuthURL)
       {
         v67 = objc_alloc(MEMORY[0x1E69C8A60]);
-        v68 = [v5 otpAuthURL];
-        v69 = [v67 initWithOTPAuthURL:v68];
+        otpAuthURL2 = [credentialCopy otpAuthURL];
+        notesEntry2 = [v67 initWithOTPAuthURL:otpAuthURL2];
 
-        v70 = [v66 totpGenerators];
-        v71 = [v70 firstObject];
+        totpGenerators = [v66 totpGenerators];
+        firstObject3 = [totpGenerators firstObject];
 
-        if (v71)
+        if (firstObject3)
         {
-          if (([v71 generatesIdenticalCodesToGenerator:v69] & 1) == 0)
+          if (([firstObject3 generatesIdenticalCodesToGenerator:notesEntry2] & 1) == 0)
           {
             goto LABEL_62;
           }
         }
 
-        else if (v69)
+        else if (notesEntry2)
         {
-          [v79 saveTOTPGenerator:v69 forSavedAccount:v66 completionHandler:&__block_literal_global_25_0];
+          [storeCopy saveTOTPGenerator:notesEntry2 forSavedAccount:v66 completionHandler:&__block_literal_global_25_0];
         }
       }
 
       if (v75)
       {
-        v69 = [v5 notesEntry];
-        v72 = [v66 notesEntry];
-        v71 = v72;
-        if (v72)
+        notesEntry2 = [credentialCopy notesEntry];
+        notesEntry3 = [v66 notesEntry];
+        firstObject3 = notesEntry3;
+        if (notesEntry3)
         {
-          if (([v72 isEqualToString:v69] & 1) == 0)
+          if (([notesEntry3 isEqualToString:notesEntry2] & 1) == 0)
           {
 LABEL_62:
             v27 = 1;
@@ -564,8 +564,8 @@ LABEL_62:
 
         else
         {
-          v73 = [v5 notesEntry];
-          [v79 saveNotesEntry:v73 forSavedAccount:v66 completionHandler:&__block_literal_global_27_1];
+          notesEntry4 = [credentialCopy notesEntry];
+          [storeCopy saveNotesEntry:notesEntry4 forSavedAccount:v66 completionHandler:&__block_literal_global_27_1];
         }
       }
 
@@ -577,11 +577,11 @@ LABEL_73:
         goto LABEL_74;
       }
 
-      v69 = [v5 title];
-      v71 = [v66 customTitle];
-      if ([v71 length])
+      notesEntry2 = [credentialCopy title];
+      firstObject3 = [v66 customTitle];
+      if ([firstObject3 length])
       {
-        if ([v71 isEqualToString:v69])
+        if ([firstObject3 isEqualToString:notesEntry2])
         {
           v27 = 2;
         }
@@ -594,7 +594,7 @@ LABEL_73:
 
       else
       {
-        [v79 saveCustomTitle:v69 forSavedAccount:v66 completionHandler:&__block_literal_global_29_0];
+        [storeCopy saveCustomTitle:notesEntry2 forSavedAccount:v66 completionHandler:&__block_literal_global_29_0];
         v27 = 2;
       }
 
@@ -605,7 +605,7 @@ LABEL_72:
 
     v27 = 1;
 LABEL_74:
-    v11 = v78;
+    protectionSpaceForNewStandalonePassword = v78;
     goto LABEL_75;
   }
 

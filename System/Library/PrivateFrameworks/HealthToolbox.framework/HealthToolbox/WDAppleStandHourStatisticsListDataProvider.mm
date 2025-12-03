@@ -1,33 +1,33 @@
 @interface WDAppleStandHourStatisticsListDataProvider
-- (WDAppleStandHourStatisticsListDataProvider)initWithDisplayType:(id)a3 profile:(id)a4;
+- (WDAppleStandHourStatisticsListDataProvider)initWithDisplayType:(id)type profile:(id)profile;
 - (id)sampleTypes;
-- (id)secondaryTextForObject:(id)a3;
-- (id)textForObject:(id)a3;
-- (id)titleForSection:(unint64_t)a3;
-- (id)viewControllerForItemAtIndexPath:(id)a3;
+- (id)secondaryTextForObject:(id)object;
+- (id)textForObject:(id)object;
+- (id)titleForSection:(unint64_t)section;
+- (id)viewControllerForItemAtIndexPath:(id)path;
 - (void)_callUpdateHandler;
-- (void)_removeSamplesInDateRange:(id)a3;
+- (void)_removeSamplesInDateRange:(id)range;
 - (void)deleteAllData;
-- (void)deleteObjectsAtIndexPath:(id)a3 healthStore:(id)a4 options:(unint64_t)a5 completion:(id)a6;
-- (void)removeObjectAtIndex:(unint64_t)a3 forSection:(unint64_t)a4 sectionRemoved:(BOOL *)a5;
+- (void)deleteObjectsAtIndexPath:(id)path healthStore:(id)store options:(unint64_t)options completion:(id)completion;
+- (void)removeObjectAtIndex:(unint64_t)index forSection:(unint64_t)section sectionRemoved:(BOOL *)removed;
 @end
 
 @implementation WDAppleStandHourStatisticsListDataProvider
 
-- (WDAppleStandHourStatisticsListDataProvider)initWithDisplayType:(id)a3 profile:(id)a4
+- (WDAppleStandHourStatisticsListDataProvider)initWithDisplayType:(id)type profile:(id)profile
 {
-  v6 = a4;
+  profileCopy = profile;
   v18.receiver = self;
   v18.super_class = WDAppleStandHourStatisticsListDataProvider;
-  v7 = [(WDSampleListDataProvider *)&v18 initWithDisplayType:a3 profile:v6];
+  v7 = [(WDSampleListDataProvider *)&v18 initWithDisplayType:type profile:profileCopy];
   v8 = v7;
   if (v7)
   {
-    v9 = [(WDSampleListDataProvider *)v7 displayType];
-    v10 = [v6 unitController];
-    v11 = [(WDSampleListDataProvider *)v8 displayType];
-    v12 = [v10 unitForDisplayType:v11];
-    v13 = [v9 hk_valueFormatterForUnit:v12];
+    displayType = [(WDSampleListDataProvider *)v7 displayType];
+    unitController = [profileCopy unitController];
+    displayType2 = [(WDSampleListDataProvider *)v8 displayType];
+    v12 = [unitController unitForDisplayType:displayType2];
+    v13 = [displayType hk_valueFormatterForUnit:v12];
     valueFormatter = v8->_valueFormatter;
     v8->_valueFormatter = v13;
 
@@ -41,36 +41,36 @@
 
 - (void)_callUpdateHandler
 {
-  v3 = [(WDSampleListDataProvider *)self samples];
-  v4 = [v3 allSamples];
+  samples = [(WDSampleListDataProvider *)self samples];
+  allSamples = [samples allSamples];
 
-  if ([v4 count])
+  if ([allSamples count])
   {
-    v5 = [v4 firstObject];
-    v6 = [v5 startDate];
+    firstObject = [allSamples firstObject];
+    startDate = [firstObject startDate];
 
-    v7 = [v4 lastObject];
-    v8 = [v7 endDate];
+    lastObject = [allSamples lastObject];
+    endDate = [lastObject endDate];
 
-    v9 = [MEMORY[0x277CBEA80] currentCalendar];
-    v10 = [v9 startOfDayForDate:v6];
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+    v10 = [currentCalendar startOfDayForDate:startDate];
 
-    v11 = [MEMORY[0x277CBEA80] currentCalendar];
-    v12 = [v11 hk_startOfTomorrowForDate:v8];
+    currentCalendar2 = [MEMORY[0x277CBEA80] currentCalendar];
+    v12 = [currentCalendar2 hk_startOfTomorrowForDate:endDate];
 
     v13 = objc_alloc_init(MEMORY[0x277CBEAB8]);
     [v13 setDay:1];
     v14 = MEMORY[0x277CCDE30];
-    v15 = [(WDSampleListDataProvider *)self samples];
-    v16 = [v15 allSamples];
+    samples2 = [(WDSampleListDataProvider *)self samples];
+    allSamples2 = [samples2 allSamples];
     v17 = HKCalendarDateTransformNone();
-    v18 = [v14 calculateTotalDurationsWithTimePeriods:v16 startDate:v10 endDate:v12 intervalComponents:v13 startOfDayTransform:v17];
+    v18 = [v14 calculateTotalDurationsWithTimePeriods:allSamples2 startDate:v10 endDate:v12 intervalComponents:v13 startOfDayTransform:v17];
     v19 = [v18 mutableCopy];
     totalsByTimePeriod = self->_totalsByTimePeriod;
     self->_totalsByTimePeriod = v19;
 
-    v21 = [(NSMutableDictionary *)self->_totalsByTimePeriod allKeys];
-    v22 = [v21 mutableCopy];
+    allKeys = [(NSMutableDictionary *)self->_totalsByTimePeriod allKeys];
+    v22 = [allKeys mutableCopy];
     orderedTimePeriods = self->_orderedTimePeriods;
     self->_orderedTimePeriods = v22;
 
@@ -104,9 +104,9 @@ uint64_t __64__WDAppleStandHourStatisticsListDataProvider__callUpdateHandler__bl
 - (id)sampleTypes
 {
   v7[1] = *MEMORY[0x277D85DE8];
-  v2 = [(WDSampleListDataProvider *)self displayType];
-  v3 = [v2 sampleType];
-  v7[0] = v3;
+  displayType = [(WDSampleListDataProvider *)self displayType];
+  sampleType = [displayType sampleType];
+  v7[0] = sampleType;
   v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v7 count:1];
 
   v5 = *MEMORY[0x277D85DE8];
@@ -114,13 +114,13 @@ uint64_t __64__WDAppleStandHourStatisticsListDataProvider__callUpdateHandler__bl
   return v4;
 }
 
-- (id)titleForSection:(unint64_t)a3
+- (id)titleForSection:(unint64_t)section
 {
   if ([(NSMutableArray *)self->_orderedTimePeriods count])
   {
-    v4 = [(WDSampleListDataProvider *)self unitController];
-    v5 = [(WDSampleListDataProvider *)self displayType];
-    v6 = [v4 localizedDisplayNameForDisplayType:v5];
+    unitController = [(WDSampleListDataProvider *)self unitController];
+    displayType = [(WDSampleListDataProvider *)self displayType];
+    v6 = [unitController localizedDisplayNameForDisplayType:displayType];
   }
 
   else
@@ -131,51 +131,51 @@ uint64_t __64__WDAppleStandHourStatisticsListDataProvider__callUpdateHandler__bl
   return v6;
 }
 
-- (id)textForObject:(id)a3
+- (id)textForObject:(id)object
 {
-  v4 = [(NSMutableDictionary *)self->_totalsByTimePeriod objectForKeyedSubscript:a3];
+  v4 = [(NSMutableDictionary *)self->_totalsByTimePeriod objectForKeyedSubscript:object];
   valueFormatter = self->_valueFormatter;
-  v6 = [(WDSampleListDataProvider *)self displayType];
-  v7 = [(WDSampleListDataProvider *)self unitController];
-  v8 = [(HKDisplayTypeValueFormatter *)valueFormatter stringFromValue:v4 displayType:v6 unitController:v7];
+  displayType = [(WDSampleListDataProvider *)self displayType];
+  unitController = [(WDSampleListDataProvider *)self unitController];
+  v8 = [(HKDisplayTypeValueFormatter *)valueFormatter stringFromValue:v4 displayType:displayType unitController:unitController];
 
   return v8;
 }
 
-- (id)secondaryTextForObject:(id)a3
+- (id)secondaryTextForObject:(id)object
 {
   dateFormatter = self->_dateFormatter;
-  v4 = [a3 startDate];
-  v5 = [(NSDateFormatter *)dateFormatter stringFromDate:v4];
+  startDate = [object startDate];
+  v5 = [(NSDateFormatter *)dateFormatter stringFromDate:startDate];
 
   return v5;
 }
 
-- (void)removeObjectAtIndex:(unint64_t)a3 forSection:(unint64_t)a4 sectionRemoved:(BOOL *)a5
+- (void)removeObjectAtIndex:(unint64_t)index forSection:(unint64_t)section sectionRemoved:(BOOL *)removed
 {
-  v7 = [(NSMutableArray *)self->_orderedTimePeriods objectAtIndexedSubscript:a3, a4, a5];
-  [(NSMutableArray *)self->_orderedTimePeriods removeObjectAtIndex:a3];
-  [(NSMutableDictionary *)self->_totalsByTimePeriod removeObjectForKey:v7];
-  [(WDAppleStandHourStatisticsListDataProvider *)self _removeSamplesInDateRange:v7];
+  removed = [(NSMutableArray *)self->_orderedTimePeriods objectAtIndexedSubscript:index, section, removed];
+  [(NSMutableArray *)self->_orderedTimePeriods removeObjectAtIndex:index];
+  [(NSMutableDictionary *)self->_totalsByTimePeriod removeObjectForKey:removed];
+  [(WDAppleStandHourStatisticsListDataProvider *)self _removeSamplesInDateRange:removed];
 }
 
-- (void)_removeSamplesInDateRange:(id)a3
+- (void)_removeSamplesInDateRange:(id)range
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 startDate];
-  v23 = v4;
-  v6 = [v4 endDate];
+  rangeCopy = range;
+  startDate = [rangeCopy startDate];
+  v23 = rangeCopy;
+  endDate = [rangeCopy endDate];
   v24 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v22 = self;
-  v7 = [(WDSampleListDataProvider *)self samples];
-  v8 = [v7 allSamples];
+  selfCopy = self;
+  samples = [(WDSampleListDataProvider *)self samples];
+  allSamples = [samples allSamples];
 
-  v9 = [v8 countByEnumeratingWithState:&v25 objects:v29 count:16];
+  v9 = [allSamples countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v9)
   {
     v10 = v9;
@@ -186,14 +186,14 @@ uint64_t __64__WDAppleStandHourStatisticsListDataProvider__callUpdateHandler__bl
       {
         if (*v26 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(allSamples);
         }
 
         v13 = *(*(&v25 + 1) + 8 * i);
-        v14 = [v13 startDate];
+        startDate2 = [v13 startDate];
         IsLargerOrEqual = HKUIObjectIsLargerOrEqual();
 
-        v16 = [v13 startDate];
+        startDate3 = [v13 startDate];
         IsSmaller = HKUIObjectIsSmaller();
 
         if (IsLargerOrEqual)
@@ -208,19 +208,19 @@ uint64_t __64__WDAppleStandHourStatisticsListDataProvider__callUpdateHandler__bl
 
         if (!v18)
         {
-          v19 = [v13 UUID];
-          [v24 addObject:v19];
+          uUID = [v13 UUID];
+          [v24 addObject:uUID];
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v25 objects:v29 count:16];
+      v10 = [allSamples countByEnumeratingWithState:&v25 objects:v29 count:16];
     }
 
     while (v10);
   }
 
-  v20 = [(WDSampleListDataProvider *)v22 samples];
-  [v20 removeSamplesWithUUIDs:v24];
+  samples2 = [(WDSampleListDataProvider *)selfCopy samples];
+  [samples2 removeSamplesWithUUIDs:v24];
 
   v21 = *MEMORY[0x277D85DE8];
 }
@@ -234,28 +234,28 @@ uint64_t __64__WDAppleStandHourStatisticsListDataProvider__callUpdateHandler__bl
   [(NSMutableDictionary *)self->_totalsByTimePeriod removeAllObjects];
 }
 
-- (void)deleteObjectsAtIndexPath:(id)a3 healthStore:(id)a4 options:(unint64_t)a5 completion:(id)a6
+- (void)deleteObjectsAtIndexPath:(id)path healthStore:(id)store options:(unint64_t)options completion:(id)completion
 {
-  v6 = a5;
-  v10 = a6;
+  optionsCopy = options;
+  completionCopy = completion;
   orderedTimePeriods = self->_orderedTimePeriods;
-  v12 = a4;
-  v13 = -[NSMutableArray objectAtIndexedSubscript:](orderedTimePeriods, "objectAtIndexedSubscript:", [a3 row]);
-  v14 = [(WDSampleListDataProvider *)self displayType];
-  v15 = [v14 sampleType];
+  storeCopy = store;
+  v13 = -[NSMutableArray objectAtIndexedSubscript:](orderedTimePeriods, "objectAtIndexedSubscript:", [path row]);
+  displayType = [(WDSampleListDataProvider *)self displayType];
+  sampleType = [displayType sampleType];
 
   v16 = MEMORY[0x277CCD838];
-  v17 = [v13 startDate];
-  v18 = [v13 endDate];
-  v19 = [v16 predicateForSamplesWithStartDate:v17 endDate:v18 options:1];
+  startDate = [v13 startDate];
+  endDate = [v13 endDate];
+  v19 = [v16 predicateForSamplesWithStartDate:startDate endDate:endDate options:1];
 
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __102__WDAppleStandHourStatisticsListDataProvider_deleteObjectsAtIndexPath_healthStore_options_completion___block_invoke;
   v21[3] = &unk_2796E7010;
-  v22 = v10;
-  v20 = v10;
-  [v12 deleteObjectsOfType:v15 predicate:v19 options:v6 & 2 withCompletion:v21];
+  v22 = completionCopy;
+  v20 = completionCopy;
+  [storeCopy deleteObjectsOfType:sampleType predicate:v19 options:optionsCopy & 2 withCompletion:v21];
 }
 
 uint64_t __102__WDAppleStandHourStatisticsListDataProvider_deleteObjectsAtIndexPath_healthStore_options_completion___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, uint64_t a4)
@@ -269,31 +269,31 @@ uint64_t __102__WDAppleStandHourStatisticsListDataProvider_deleteObjectsAtIndexP
   return result;
 }
 
-- (id)viewControllerForItemAtIndexPath:(id)a3
+- (id)viewControllerForItemAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(WDSampleListDataProvider *)self displayType];
-  v6 = [(WDSampleListDataProvider *)self profile];
-  v7 = [(WDSampleListDataProvider *)self unitController];
-  v8 = [v5 wd_listViewControllerDataProviderWithProfile:v6 unitController:v7 isHierarchical:0];
+  pathCopy = path;
+  displayType = [(WDSampleListDataProvider *)self displayType];
+  profile = [(WDSampleListDataProvider *)self profile];
+  unitController = [(WDSampleListDataProvider *)self unitController];
+  v8 = [displayType wd_listViewControllerDataProviderWithProfile:profile unitController:unitController isHierarchical:0];
 
   orderedTimePeriods = self->_orderedTimePeriods;
-  v10 = [v4 row];
+  v10 = [pathCopy row];
 
   v11 = [(NSMutableArray *)orderedTimePeriods objectAtIndexedSubscript:v10];
   v12 = MEMORY[0x277CCD838];
-  v13 = [v11 startDate];
-  v14 = [v11 endDate];
-  v15 = [v12 predicateForSamplesWithStartDate:v13 endDate:v14 options:0];
+  startDate = [v11 startDate];
+  endDate = [v11 endDate];
+  v15 = [v12 predicateForSamplesWithStartDate:startDate endDate:endDate options:0];
 
-  v16 = [(WDSampleListDataProvider *)self defaultQueryPredicate];
+  defaultQueryPredicate = [(WDSampleListDataProvider *)self defaultQueryPredicate];
   v17 = HKUIPredicateMatchingPredicates();
 
   [v8 setDefaultQueryPredicate:v17];
   v18 = [WDDataListViewController alloc];
-  v19 = [(WDSampleListDataProvider *)self displayType];
-  v20 = [(WDSampleListDataProvider *)self profile];
-  v21 = [(WDDataListViewController *)v18 initWithDisplayType:v19 profile:v20 dataProvider:v8 usingInsetStyling:1];
+  displayType2 = [(WDSampleListDataProvider *)self displayType];
+  profile2 = [(WDSampleListDataProvider *)self profile];
+  v21 = [(WDDataListViewController *)v18 initWithDisplayType:displayType2 profile:profile2 dataProvider:v8 usingInsetStyling:1];
 
   return v21;
 }

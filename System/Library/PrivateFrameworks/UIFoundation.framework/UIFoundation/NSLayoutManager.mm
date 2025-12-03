@@ -13,9 +13,9 @@
 - (CGGlyph)CGGlyphAtIndex:(NSUInteger)glyphIndex;
 - (CGGlyph)CGGlyphAtIndex:(NSUInteger)glyphIndex isValidIndex:(BOOL *)isValidIndex;
 - (CGPoint)locationForGlyphAtIndex:(NSUInteger)glyphIndex;
-- (CGRect)_boundingRectForGlyphRange:(_NSRange)a3 inTextContainer:(id)a4 fast:(BOOL)a5 fullLineRectsOnly:(BOOL)a6;
+- (CGRect)_boundingRectForGlyphRange:(_NSRange)range inTextContainer:(id)container fast:(BOOL)fast fullLineRectsOnly:(BOOL)only;
 - (CGRect)_currentAttachmentRect;
-- (CGRect)_rectArrayForRange:(_NSRange)a3 withinSelectionRange:(_NSRange)a4 rangeIsCharRange:(BOOL)a5 singleRectOnly:(BOOL)a6 fullLineRectsOnly:(BOOL)a7 inTextContainer:(id)a8 rectCount:(unint64_t *)a9 rangeWithinContainer:(_NSRange *)a10 glyphsDrawOutsideLines:(BOOL *)a11 rectArray:(CGRect *)a12 rectArrayCapacity:(unint64_t)a13;
+- (CGRect)_rectArrayForRange:(_NSRange)range withinSelectionRange:(_NSRange)selectionRange rangeIsCharRange:(BOOL)charRange singleRectOnly:(BOOL)only fullLineRectsOnly:(BOOL)rectsOnly inTextContainer:(id)container rectCount:(unint64_t *)count rangeWithinContainer:(_NSRange *)self0 glyphsDrawOutsideLines:(BOOL *)self1 rectArray:(CGRect *)self2 rectArrayCapacity:(unint64_t)self3;
 - (CGRect)boundingRectForGlyphRange:(NSRange)glyphRange inTextContainer:(NSTextContainer *)container;
 - (CGRect)extraLineFragmentRect;
 - (CGRect)extraLineFragmentUsedRect;
@@ -23,8 +23,8 @@
 - (CGRect)lineFragmentRectForGlyphAtIndex:(NSUInteger)glyphIndex effectiveRange:(NSRangePointer)effectiveGlyphRange withoutAdditionalLayout:(BOOL)flag;
 - (CGRect)lineFragmentUsedRectForGlyphAtIndex:(NSUInteger)glyphIndex effectiveRange:(NSRangePointer)effectiveGlyphRange;
 - (CGRect)lineFragmentUsedRectForGlyphAtIndex:(NSUInteger)glyphIndex effectiveRange:(NSRangePointer)effectiveGlyphRange withoutAdditionalLayout:(BOOL)flag;
-- (CGRect)lineFragmentUsedRectForGlyphAtIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4 allowLayout:(BOOL)a5;
-- (CGRect)prepareLayoutForBoundingRect:(CGRect)a3 textContainer:(id)a4;
+- (CGRect)lineFragmentUsedRectForGlyphAtIndex:(unint64_t)index effectiveRange:(_NSRange *)range allowLayout:(BOOL)layout;
+- (CGRect)prepareLayoutForBoundingRect:(CGRect)rect textContainer:(id)container;
 - (CGRect)usedRectForTextContainer:(NSTextContainer *)container;
 - (CGSize)attachmentSizeForGlyphAtIndex:(NSUInteger)glyphIndex;
 - (NSDictionary)temporaryAttributesAtCharacterIndex:(NSUInteger)charIndex effectiveRange:(NSRangePointer)effectiveCharRange;
@@ -60,107 +60,107 @@
 - (NSUInteger)glyphIndexForCharacterAtIndex:(NSUInteger)charIndex;
 - (NSUInteger)glyphIndexForPoint:(CGPoint)point inTextContainer:(NSTextContainer *)container fractionOfDistanceThroughGlyph:(CGFloat *)partialFraction;
 - (NSUInteger)numberOfGlyphs;
-- (_NSRange)_characterRangeCurrentlyInAndAfterContainer:(id)a3;
-- (_NSRange)_exactGlyphRangeForCharacterRange:(_NSRange)a3;
-- (_NSRange)_extendedCharRangeForInvalidation:(_NSRange)a3 editedCharRange:(_NSRange)a4;
-- (_NSRange)_firstPassGlyphRangeForBoundingRect:(CGRect)a3 inTextContainer:(id)a4 hintGlyphRange:(_NSRange)a5 okToFillHoles:(BOOL)a6;
-- (_NSRange)_firstPassGlyphRangeForBoundingRect:(CGRect)a3 inTextContainer:(id)a4 okToFillHoles:(BOOL)a5;
-- (_NSRange)_glyphRangeForBoundingRect:(CGRect)a3 inTextContainer:(id)a4 fast:(BOOL)a5 okToFillHoles:(BOOL)a6;
-- (_NSRange)_glyphRangeForCharacterRange:(_NSRange)a3 actualCharacterRange:(_NSRange *)a4 okToFillHoles:(BOOL)a5;
-- (_NSRange)_primitiveCharacterRangeForGlyphRange:(_NSRange)a3;
-- (_NSRange)_primitiveGlyphRangeForCharacterRange:(_NSRange)a3;
-- (_NSRange)rangeOfCharacterClusterAtIndex:(unint64_t)a3 type:(int64_t)a4;
-- (_NSStoredContainerUsage)_validatedStoredUsageForTextContainerAtIndex:(unint64_t)a3;
-- (char)_packedGlyphs:(unint64_t)a3 range:(_NSRange)a4 length:(unint64_t *)a5;
-- (double)baselineOffsetForGlyphAtIndex:(unint64_t)a3;
+- (_NSRange)_characterRangeCurrentlyInAndAfterContainer:(id)container;
+- (_NSRange)_exactGlyphRangeForCharacterRange:(_NSRange)range;
+- (_NSRange)_extendedCharRangeForInvalidation:(_NSRange)invalidation editedCharRange:(_NSRange)range;
+- (_NSRange)_firstPassGlyphRangeForBoundingRect:(CGRect)rect inTextContainer:(id)container hintGlyphRange:(_NSRange)range okToFillHoles:(BOOL)holes;
+- (_NSRange)_firstPassGlyphRangeForBoundingRect:(CGRect)rect inTextContainer:(id)container okToFillHoles:(BOOL)holes;
+- (_NSRange)_glyphRangeForBoundingRect:(CGRect)rect inTextContainer:(id)container fast:(BOOL)fast okToFillHoles:(BOOL)holes;
+- (_NSRange)_glyphRangeForCharacterRange:(_NSRange)range actualCharacterRange:(_NSRange *)characterRange okToFillHoles:(BOOL)holes;
+- (_NSRange)_primitiveCharacterRangeForGlyphRange:(_NSRange)range;
+- (_NSRange)_primitiveGlyphRangeForCharacterRange:(_NSRange)range;
+- (_NSRange)rangeOfCharacterClusterAtIndex:(unint64_t)index type:(int64_t)type;
+- (_NSStoredContainerUsage)_validatedStoredUsageForTextContainerAtIndex:(unint64_t)index;
+- (char)_packedGlyphs:(unint64_t)glyphs range:(_NSRange)range length:(unint64_t *)length;
+- (double)baselineOffsetForGlyphAtIndex:(unint64_t)index;
 - (id)_containerDescription;
-- (id)_glyphDescriptionForGlyphRange:(_NSRange)a3;
+- (id)_glyphDescriptionForGlyphRange:(_NSRange)range;
 - (id)_glyphHoleDescription;
-- (id)_insertionPointHelperForGlyphAtIndex:(unint64_t)a3;
+- (id)_insertionPointHelperForGlyphAtIndex:(unint64_t)index;
 - (id)_layoutHoleDescription;
-- (id)_lineFragmentDescriptionForGlyphRange:(_NSRange)a3 includeGlyphLocations:(BOOL)a4;
-- (id)_stringForLoggingLineFragmentForGlyphAtIndex:(int64_t)a3;
+- (id)_lineFragmentDescriptionForGlyphRange:(_NSRange)range includeGlyphLocations:(BOOL)locations;
+- (id)_stringForLoggingLineFragmentForGlyphAtIndex:(int64_t)index;
 - (id)delegate;
 - (id)description;
-- (id)destinationTextContainerForRange:(_NSRange)a3 inTextContainer:(id)a4;
-- (id)layoutFragmentsForReplacingCharactersInRange:(_NSRange)a3 withAttributedString:(id)a4 rect:(CGRect)a5 textContainer:(id)a6;
-- (id)linkAttributesForAttributes:(id)a3 forCharacterAtIndex:(unint64_t)a4;
-- (id)linkAttributesForLink:(id)a3 forCharacterAtIndex:(unint64_t)a4;
-- (id)renderingColorForDocumentColor:(id)a3;
-- (id)selectedTextAttributesForCharacterAtIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4;
+- (id)destinationTextContainerForRange:(_NSRange)range inTextContainer:(id)container;
+- (id)layoutFragmentsForReplacingCharactersInRange:(_NSRange)range withAttributedString:(id)string rect:(CGRect)rect textContainer:(id)container;
+- (id)linkAttributesForAttributes:(id)attributes forCharacterAtIndex:(unint64_t)index;
+- (id)linkAttributesForLink:(id)link forCharacterAtIndex:(unint64_t)index;
+- (id)renderingColorForDocumentColor:(id)color;
+- (id)selectedTextAttributesForCharacterAtIndex:(unint64_t)index effectiveRange:(_NSRange *)range;
 - (id)temporaryAttribute:(NSAttributedStringKey)attrName atCharacterIndex:(NSUInteger)location effectiveRange:(NSRangePointer)range;
 - (id)temporaryAttribute:(NSAttributedStringKey)attrName atCharacterIndex:(NSUInteger)location longestEffectiveRange:(NSRangePointer)range inRange:(NSRange)rangeLimit;
 - (id)underlineColorForSpelling;
 - (id)underlineColorForTextAlternatives;
-- (int64_t)getLineFragmentInsertionPointArraysForCharacterAtIndex:(unint64_t)a3 inDisplayOrder:(BOOL)a4 positions:(double *)a5 characterIndexes:(unint64_t *)a6 count:(unint64_t *)a7 alternatePositions:(double *)a8 characterIndexes:(unint64_t *)a9 count:(unint64_t *)a10;
-- (unint64_t)_glyphIndexForCharacterIndex:(unint64_t)a3 startOfRange:(BOOL)a4 okToFillHoles:(BOOL)a5 considerNulls:(BOOL)a6;
-- (unint64_t)_indexOfFirstGlyphInTextContainer:(id)a3 okToFillHoles:(BOOL)a4;
-- (unint64_t)_smallEncodingGlyphIndexForCharacterIndex:(unint64_t)a3 startOfRange:(BOOL)a4 okToFillHoles:(BOOL)a5 considerNulls:(BOOL)a6;
-- (unsigned)_glyphAtIndex:(unint64_t)a3 characterIndex:(unint64_t *)a4 glyphInscription:(unint64_t *)a5 isValidIndex:(BOOL *)a6;
+- (int64_t)getLineFragmentInsertionPointArraysForCharacterAtIndex:(unint64_t)index inDisplayOrder:(BOOL)order positions:(double *)positions characterIndexes:(unint64_t *)indexes count:(unint64_t *)count alternatePositions:(double *)alternatePositions characterIndexes:(unint64_t *)characterIndexes count:(unint64_t *)self0;
+- (unint64_t)_glyphIndexForCharacterIndex:(unint64_t)index startOfRange:(BOOL)range okToFillHoles:(BOOL)holes considerNulls:(BOOL)nulls;
+- (unint64_t)_indexOfFirstGlyphInTextContainer:(id)container okToFillHoles:(BOOL)holes;
+- (unint64_t)_smallEncodingGlyphIndexForCharacterIndex:(unint64_t)index startOfRange:(BOOL)range okToFillHoles:(BOOL)holes considerNulls:(BOOL)nulls;
+- (unsigned)_glyphAtIndex:(unint64_t)index characterIndex:(unint64_t *)characterIndex glyphInscription:(unint64_t *)inscription isValidIndex:(BOOL *)validIndex;
 - (void)_clearTemporaryAttributes;
-- (void)_clearTemporaryAttributesForCharacterRange:(_NSRange)a3 changeInLength:(int64_t)a4;
+- (void)_clearTemporaryAttributesForCharacterRange:(_NSRange)range changeInLength:(int64_t)length;
 - (void)_commonInit;
-- (void)_doLayoutWithFullContainerStartingAtGlyphIndex:(unint64_t)a3 nextGlyphIndex:(unint64_t *)a4;
-- (void)_drawBackgroundForGlyphRange:(_NSRange)a3 atPoint:(CGPoint)a4;
-- (void)_drawGlyphsForGlyphRange:(_NSRange)a3 atPoint:(CGPoint)a4;
-- (void)_drawLineForGlyphRange:(_NSRange)a3 inContext:(CGContext *)a4 from:(double)a5 to:(double)a6 at:(double)a7 thickness:(double)a8 lineOrigin:(CGPoint)a9 breakForDescenders:(BOOL)a10 flipped:(BOOL)a11;
-- (void)_drawLineForGlyphRange:(_NSRange)a3 type:(int64_t)a4 baselineOffset:(double)a5 lineFragmentRect:(CGRect)a6 lineFragmentGlyphRange:(_NSRange)a7 containerOrigin:(CGPoint)a8 isStrikethrough:(BOOL)a9;
-- (void)_fillGlyphHoleAtIndex:(unint64_t)a3 desiredNumberOfCharacters:(unint64_t)a4;
-- (void)_fillGlyphHoleForCharacterRange:(_NSRange)a3 startGlyphIndex:(unint64_t)a4 desiredNumberOfCharacters:(unint64_t)a5;
-- (void)_fillLayoutHoleAtIndex:(unint64_t)a3 desiredNumberOfLines:(unint64_t)a4;
-- (void)_fillLayoutHoleForCharacterRange:(_NSRange)a3 desiredNumberOfLines:(unint64_t)a4 isSoft:(BOOL)a5;
+- (void)_doLayoutWithFullContainerStartingAtGlyphIndex:(unint64_t)index nextGlyphIndex:(unint64_t *)glyphIndex;
+- (void)_drawBackgroundForGlyphRange:(_NSRange)range atPoint:(CGPoint)point;
+- (void)_drawGlyphsForGlyphRange:(_NSRange)range atPoint:(CGPoint)point;
+- (void)_drawLineForGlyphRange:(_NSRange)range inContext:(CGContext *)context from:(double)from to:(double)to at:(double)at thickness:(double)thickness lineOrigin:(CGPoint)origin breakForDescenders:(BOOL)self0 flipped:(BOOL)self1;
+- (void)_drawLineForGlyphRange:(_NSRange)range type:(int64_t)type baselineOffset:(double)offset lineFragmentRect:(CGRect)rect lineFragmentGlyphRange:(_NSRange)glyphRange containerOrigin:(CGPoint)origin isStrikethrough:(BOOL)strikethrough;
+- (void)_fillGlyphHoleAtIndex:(unint64_t)index desiredNumberOfCharacters:(unint64_t)characters;
+- (void)_fillGlyphHoleForCharacterRange:(_NSRange)range startGlyphIndex:(unint64_t)index desiredNumberOfCharacters:(unint64_t)characters;
+- (void)_fillLayoutHoleAtIndex:(unint64_t)index desiredNumberOfLines:(unint64_t)lines;
+- (void)_fillLayoutHoleForCharacterRange:(_NSRange)range desiredNumberOfLines:(unint64_t)lines isSoft:(BOOL)soft;
 - (void)_firstTextViewChanged;
 - (void)_forceDisplayToBeCorrectForViewsWithUnlaidGlyphs;
-- (void)_growCachedRectArrayToSize:(unint64_t)a3;
-- (void)_insertGlyphs:(unsigned int *)a3 elasticAttributes:(BOOL *)a4 count:(unint64_t)a5 atGlyphIndex:(unint64_t)a6 characterIndex:(unint64_t)a7;
+- (void)_growCachedRectArrayToSize:(unint64_t)size;
+- (void)_insertGlyphs:(unsigned int *)glyphs elasticAttributes:(BOOL *)attributes count:(unint64_t)count atGlyphIndex:(unint64_t)index characterIndex:(unint64_t)characterIndex;
 - (void)_invalidateDisplayIfNeeded;
-- (void)_invalidateGlyphsForCharacterRange:(_NSRange)a3 editedCharacterRange:(_NSRange)a4 changeInLength:(int64_t)a5 actualCharacterRange:(_NSRange *)a6;
-- (void)_invalidateGlyphsForExtendedCharacterRange:(_NSRange)a3 changeInLength:(int64_t)a4 includeBlocks:(BOOL)a5;
+- (void)_invalidateGlyphsForCharacterRange:(_NSRange)range editedCharacterRange:(_NSRange)characterRange changeInLength:(int64_t)length actualCharacterRange:(_NSRange *)actualCharacterRange;
+- (void)_invalidateGlyphsForExtendedCharacterRange:(_NSRange)range changeInLength:(int64_t)length includeBlocks:(BOOL)blocks;
 - (void)_invalidateInsertionPoint;
-- (void)_invalidateLayoutForExtendedCharacterRange:(_NSRange)a3 isSoft:(BOOL)a4 invalidateUsage:(BOOL)a5;
-- (void)_invalidateUsageForTextContainersInRange:(_NSRange)a3;
-- (void)_lineGlyphRange:(_NSRange)a3 type:(int64_t)a4 lineFragmentRect:(CGRect)a5 lineFragmentGlyphRange:(_NSRange)a6 containerOrigin:(CGPoint)a7 isStrikethrough:(BOOL)a8;
-- (void)_markSelfAsDirtyForBackgroundLayout:(id)a3;
-- (void)_noteFirstTextViewVisibleCharacterRangeIfAfterIndex:(unint64_t)a3;
-- (void)_primitiveInvalidateDisplayForGlyphRange:(_NSRange)a3;
-- (void)_recalculateUsageForTextContainerAtIndex:(unint64_t)a3;
-- (void)_resizeTextViewForTextContainer:(id)a3;
-- (void)_setAlwaysDrawsActive:(BOOL)a3;
-- (void)_setCurrentAttachmentRect:(CGRect)a3 index:(unint64_t)a4;
-- (void)_setDrawsDebugBaselines:(BOOL)a3;
-- (void)_setDrawsUnderlinesLikeWebKit:(BOOL)a3;
-- (void)_setExtraLineFragmentRect:(CGRect)a3 usedRect:(CGRect)a4 textContainer:(id)a5;
-- (void)_setForcesTrackingFloor:(BOOL)a3;
-- (void)_setGlyphsPerLineEstimate:(unint64_t)a3 offsetPerLineEstimate:(double)a4;
-- (void)_setHasSeenRightToLeft:(BOOL)a3;
-- (void)_setHyphenationFactor:(double)a3;
-- (void)_setMirrorsTextAlignment:(BOOL)a3;
-- (void)_setNeedToFlushGlyph:(BOOL)a3;
-- (void)_setRowArrayCache:(id)a3;
-- (void)_setTextContainer:(id)a3 forGlyphRange:(_NSRange)a4;
-- (void)_showAttachmentCell:(id)a3 inRect:(CGRect)a4 characterIndex:(unint64_t)a5;
-- (void)_showCGGlyphs:(const unsigned __int16 *)a3 positions:(const CGPoint *)a4 count:(int64_t)a5 font:(id)a6 textMatrix:(CGAffineTransform *)a7 attributes:(id)a8 inContext:(CGContext *)a9;
-- (void)_simpleDeleteGlyphsInRange:(_NSRange)a3;
-- (void)_simpleInsertGlyph:(unsigned int)a3 atGlyphIndex:(unint64_t)a4 characterIndex:(unint64_t)a5 elastic:(BOOL)a6;
-- (void)_updateUsageForTextContainer:(id)a3 addingUsedRect:(CGRect)a4;
+- (void)_invalidateLayoutForExtendedCharacterRange:(_NSRange)range isSoft:(BOOL)soft invalidateUsage:(BOOL)usage;
+- (void)_invalidateUsageForTextContainersInRange:(_NSRange)range;
+- (void)_lineGlyphRange:(_NSRange)range type:(int64_t)type lineFragmentRect:(CGRect)rect lineFragmentGlyphRange:(_NSRange)glyphRange containerOrigin:(CGPoint)origin isStrikethrough:(BOOL)strikethrough;
+- (void)_markSelfAsDirtyForBackgroundLayout:(id)layout;
+- (void)_noteFirstTextViewVisibleCharacterRangeIfAfterIndex:(unint64_t)index;
+- (void)_primitiveInvalidateDisplayForGlyphRange:(_NSRange)range;
+- (void)_recalculateUsageForTextContainerAtIndex:(unint64_t)index;
+- (void)_resizeTextViewForTextContainer:(id)container;
+- (void)_setAlwaysDrawsActive:(BOOL)active;
+- (void)_setCurrentAttachmentRect:(CGRect)rect index:(unint64_t)index;
+- (void)_setDrawsDebugBaselines:(BOOL)baselines;
+- (void)_setDrawsUnderlinesLikeWebKit:(BOOL)kit;
+- (void)_setExtraLineFragmentRect:(CGRect)rect usedRect:(CGRect)usedRect textContainer:(id)container;
+- (void)_setForcesTrackingFloor:(BOOL)floor;
+- (void)_setGlyphsPerLineEstimate:(unint64_t)estimate offsetPerLineEstimate:(double)lineEstimate;
+- (void)_setHasSeenRightToLeft:(BOOL)left;
+- (void)_setHyphenationFactor:(double)factor;
+- (void)_setMirrorsTextAlignment:(BOOL)alignment;
+- (void)_setNeedToFlushGlyph:(BOOL)glyph;
+- (void)_setRowArrayCache:(id)cache;
+- (void)_setTextContainer:(id)container forGlyphRange:(_NSRange)range;
+- (void)_showAttachmentCell:(id)cell inRect:(CGRect)rect characterIndex:(unint64_t)index;
+- (void)_showCGGlyphs:(const unsigned __int16 *)glyphs positions:(const CGPoint *)positions count:(int64_t)count font:(id)font textMatrix:(CGAffineTransform *)matrix attributes:(id)attributes inContext:(CGContext *)context;
+- (void)_simpleDeleteGlyphsInRange:(_NSRange)range;
+- (void)_simpleInsertGlyph:(unsigned int)glyph atGlyphIndex:(unint64_t)index characterIndex:(unint64_t)characterIndex elastic:(BOOL)elastic;
+- (void)_updateUsageForTextContainer:(id)container addingUsedRect:(CGRect)rect;
 - (void)addTemporaryAttribute:(NSAttributedStringKey)attrName value:(id)value forCharacterRange:(NSRange)charRange;
 - (void)addTemporaryAttributes:(NSDictionary *)attrs forCharacterRange:(NSRange)charRange;
 - (void)addTextContainer:(NSTextContainer *)container;
-- (void)beginScrollingForView:(id)a3 textContainer:(id)a4;
-- (void)coordinateAccess:(id)a3;
+- (void)beginScrollingForView:(id)view textContainer:(id)container;
+- (void)coordinateAccess:(id)access;
 - (void)dealloc;
 - (void)deleteGlyphsInRange:(NSRange)glyphRange;
-- (void)drawSpellingUnderlineForGlyphRange:(_NSRange)a3 spellingState:(int64_t)a4 inGlyphRange:(_NSRange)a5 lineFragmentRect:(CGRect)a6 lineFragmentGlyphRange:(_NSRange)a7 containerOrigin:(CGPoint)a8;
-- (void)encodeWithCoder:(id)a3;
-- (void)endScrollingForView:(id)a3 textContainer:(id)a4;
+- (void)drawSpellingUnderlineForGlyphRange:(_NSRange)range spellingState:(int64_t)state inGlyphRange:(_NSRange)glyphRange lineFragmentRect:(CGRect)rect lineFragmentGlyphRange:(_NSRange)fragmentGlyphRange containerOrigin:(CGPoint)origin;
+- (void)encodeWithCoder:(id)coder;
+- (void)endScrollingForView:(id)view textContainer:(id)container;
 - (void)ensureLayoutForBoundingRect:(CGRect)bounds inTextContainer:(NSTextContainer *)container;
 - (void)ensureLayoutForCharacterRange:(NSRange)charRange;
 - (void)ensureLayoutForTextContainer:(NSTextContainer *)container;
-- (void)enumerateEnclosingRectsForCharacterRange:(_NSRange)a3 withinSelectedCharacterRange:(_NSRange)a4 inTextContainer:(id)a5 usingBlock:(id)a6;
+- (void)enumerateEnclosingRectsForCharacterRange:(_NSRange)range withinSelectedCharacterRange:(_NSRange)characterRange inTextContainer:(id)container usingBlock:(id)block;
 - (void)enumerateEnclosingRectsForGlyphRange:(NSRange)glyphRange withinSelectedGlyphRange:(NSRange)selectedRange inTextContainer:(NSTextContainer *)textContainer usingBlock:(void *)block;
 - (void)enumerateLineFragmentsForGlyphRange:(NSRange)glyphRange usingBlock:(void *)block;
 - (void)fillBackgroundRectArray:(const CGRect *)rectArray count:(NSUInteger)rectCount forCharacterRange:(NSRange)charRange color:(UIColor *)color;
-- (void)fillMarkedBackgroundRectArray:(const CGRect *)a3 count:(unint64_t)a4 forCharacterRange:(_NSRange)a5 color:(id)a6;
+- (void)fillMarkedBackgroundRectArray:(const CGRect *)array count:(unint64_t)count forCharacterRange:(_NSRange)range color:(id)color;
 - (void)finalize;
 - (void)getFirstUnlaidCharacterIndex:(NSUInteger *)charIndex glyphIndex:(NSUInteger *)glyphIndex;
 - (void)insertGlyphs:(const NSGlyph *)glyphs length:(NSUInteger)length forStartingGlyphAtIndex:(NSUInteger)glyphIndex characterIndex:(NSUInteger)charIndex;
@@ -174,47 +174,47 @@
 - (void)replaceGlyphAtIndex:(NSUInteger)glyphIndex withGlyph:(NSGlyph)newGlyph;
 - (void)replaceTextStorage:(NSTextStorage *)newTextStorage;
 - (void)setAllowsNonContiguousLayout:(BOOL)allowsNonContiguousLayout;
-- (void)setAllowsOriginalFontMetricsOverride:(BOOL)a3;
-- (void)setApplicationFrameworkContext:(int64_t)a3;
+- (void)setAllowsOriginalFontMetricsOverride:(BOOL)override;
+- (void)setApplicationFrameworkContext:(int64_t)context;
 - (void)setBackgroundLayoutEnabled:(BOOL)backgroundLayoutEnabled;
 - (void)setBoundsRect:(NSRect)rect forTextBlock:(NSTextBlock *)block glyphRange:(NSRange)glyphRange;
 - (void)setCharacterIndex:(NSUInteger)charIndex forGlyphAtIndex:(NSUInteger)glyphIndex;
 - (void)setDelegate:(id)delegate;
 - (void)setDrawsOutsideLineFragment:(BOOL)flag forGlyphAtIndex:(NSUInteger)glyphIndex;
-- (void)setFlipsIfNeeded:(BOOL)a3;
+- (void)setFlipsIfNeeded:(BOOL)needed;
 - (void)setGlyphGenerator:(NSGlyphGenerator *)glyphGenerator;
 - (void)setGlyphs:(const CGGlyph *)glyphs properties:(const NSGlyphProperty *)props characterIndexes:(const NSUInteger *)charIndexes font:(UIFont *)aFont forGlyphRange:(NSRange)glyphRange;
-- (void)setIgnoresViewTransformations:(BOOL)a3;
+- (void)setIgnoresViewTransformations:(BOOL)transformations;
 - (void)setIntAttribute:(NSInteger)attributeTag value:(NSInteger)val forGlyphAtIndex:(NSUInteger)glyphIndex;
 - (void)setLayoutRect:(NSRect)rect forTextBlock:(NSTextBlock *)block glyphRange:(NSRange)glyphRange;
 - (void)setLimitsLayoutForSuspiciousContents:(BOOL)limitsLayoutForSuspiciousContents;
-- (void)setLineFragmentRect:(CGRect)a3 forGlyphRange:(_NSRange)a4 usedRect:(CGRect)a5 baselineOffset:(double)a6;
 - (void)setLineFragmentRect:(CGRect)fragmentRect forGlyphRange:(NSRange)glyphRange usedRect:(CGRect)usedRect;
-- (void)setLocation:(CGPoint)a3 forStartOfGlyphRange:(_NSRange)a4 coalesceRuns:(BOOL)a5;
+- (void)setLineFragmentRect:(CGRect)rect forGlyphRange:(_NSRange)range usedRect:(CGRect)usedRect baselineOffset:(double)offset;
 - (void)setLocation:(CGPoint)location forStartOfGlyphRange:(NSRange)glyphRange;
+- (void)setLocation:(CGPoint)location forStartOfGlyphRange:(_NSRange)range coalesceRuns:(BOOL)runs;
 - (void)setLocations:(NSPointArray)locations startingGlyphIndexes:(NSUInteger *)glyphIndexes count:(NSUInteger)count forGlyphRange:(NSRange)glyphRange;
-- (void)setParagraphArbitrator:(id)a3;
+- (void)setParagraphArbitrator:(id)arbitrator;
 - (void)setShowsControlCharacters:(BOOL)showsControlCharacters;
 - (void)setShowsInvisibleCharacters:(BOOL)showsInvisibleCharacters;
-- (void)setStyleEffectConfiguration:(id)a3;
-- (void)setSynchronizesAlignmentToDirection:(BOOL)a3;
+- (void)setStyleEffectConfiguration:(id)configuration;
+- (void)setSynchronizesAlignmentToDirection:(BOOL)direction;
 - (void)setTemporaryAttributes:(NSDictionary *)attrs forCharacterRange:(NSRange)charRange;
 - (void)setTextStorage:(NSTextStorage *)textStorage;
 - (void)setTypesetter:(NSTypesetter *)typesetter;
 - (void)setTypesetterBehavior:(NSTypesetterBehavior)typesetterBehavior;
-- (void)setUnderlineColorForSpelling:(id)a3;
-- (void)setUnderlineColorForTextAlternatives:(id)a3;
+- (void)setUnderlineColorForSpelling:(id)spelling;
+- (void)setUnderlineColorForTextAlternatives:(id)alternatives;
 - (void)setUsesDefaultHyphenation:(BOOL)usesDefaultHyphenation;
 - (void)setUsesFontLeading:(BOOL)usesFontLeading;
 - (void)setUsesScreenFonts:(BOOL)usesScreenFonts;
-- (void)setViewProvider:(id)a3 forTextAttachment:(id)a4 characterIndex:(unint64_t)a5;
-- (void)showAttachment:(id)a3 inRect:(CGRect)a4 textContainer:(id)a5 characterIndex:(unint64_t)a6;
+- (void)setViewProvider:(id)provider forTextAttachment:(id)attachment characterIndex:(unint64_t)index;
+- (void)showAttachment:(id)attachment inRect:(CGRect)rect textContainer:(id)container characterIndex:(unint64_t)index;
 - (void)showAttachmentCell:(NSCell *)cell inRect:(NSRect)rect characterIndex:(NSUInteger)attachmentIndex;
 - (void)showCGGlyphs:(const CGGlyph *)glyphs positions:(const CGPoint *)positions count:(NSInteger)glyphCount font:(UIFont *)font textMatrix:(CGAffineTransform *)textMatrix attributes:(NSDictionary *)attributes inContext:(CGContextRef)CGContext;
 - (void)showCGGlyphs:(const CGGlyph *)glyphs positions:(const CGPoint *)positions count:(NSUInteger)glyphCount font:(UIFont *)font matrix:(CGAffineTransform *)textMatrix attributes:(NSDictionary *)attributes inContext:(CGContextRef)graphicsContext;
 - (void)textContainerChangedGeometry:(NSTextContainer *)container;
 - (void)textContainerChangedTextView:(NSTextContainer *)container;
-- (void)textContainerChangedTextView:(id)a3 fromTextView:(id)a4;
+- (void)textContainerChangedTextView:(id)view fromTextView:(id)textView;
 - (void)textStorage:(NSTextStorage *)str edited:(NSTextStorageEditedOptions)editedMask range:(NSRange)newCharRange changeInLength:(NSInteger)delta invalidatedRange:(NSRange)invalidatedCharRange;
 @end
 
@@ -222,18 +222,18 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
-    v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-    [a1 setVersion:1];
-    if ([v3 objectForKey:@"NSUsesScreenFonts"])
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    [self setVersion:1];
+    if ([standardUserDefaults objectForKey:@"NSUsesScreenFonts"])
     {
-      __NSUsesScreenFonts = [v3 BOOLForKey:@"NSUsesScreenFonts"];
+      __NSUsesScreenFonts = [standardUserDefaults BOOLForKey:@"NSUsesScreenFonts"];
     }
 
-    if ([v3 objectForKey:@"NSIgnoresViewTransformations"])
+    if ([standardUserDefaults objectForKey:@"NSIgnoresViewTransformations"])
     {
-      v4 = [v3 BOOLForKey:@"NSIgnoresViewTransformations"];
+      v4 = [standardUserDefaults BOOLForKey:@"NSIgnoresViewTransformations"];
     }
 
     else
@@ -242,37 +242,37 @@
     }
 
     __NSIgnoresViewTransformations = v4;
-    if ([v3 objectForKey:@"NSTextShowsInvisibleCharacters"])
+    if ([standardUserDefaults objectForKey:@"NSTextShowsInvisibleCharacters"])
     {
-      __NSShowsInvisibleCharacters = [v3 BOOLForKey:@"NSTextShowsInvisibleCharacters"];
+      __NSShowsInvisibleCharacters = [standardUserDefaults BOOLForKey:@"NSTextShowsInvisibleCharacters"];
     }
 
-    if ([v3 objectForKey:@"NSTextShowsControlCharacters"])
+    if ([standardUserDefaults objectForKey:@"NSTextShowsControlCharacters"])
     {
-      __NSShowsControlCharacters = [v3 BOOLForKey:@"NSTextShowsControlCharacters"];
+      __NSShowsControlCharacters = [standardUserDefaults BOOLForKey:@"NSTextShowsControlCharacters"];
     }
 
-    if ([v3 objectForKey:@"NSTextAllowsNonContiguousLayout"])
+    if ([standardUserDefaults objectForKey:@"NSTextAllowsNonContiguousLayout"])
     {
-      __NSAllowsNonContiguousLayout = [v3 BOOLForKey:@"NSTextAllowsNonContiguousLayout"];
+      __NSAllowsNonContiguousLayout = [standardUserDefaults BOOLForKey:@"NSTextAllowsNonContiguousLayout"];
     }
 
-    if ([v3 objectForKey:@"NSTextBackgroundLayoutEnabled"])
+    if ([standardUserDefaults objectForKey:@"NSTextBackgroundLayoutEnabled"])
     {
-      __NSBackgroundLayoutEnabled = [v3 BOOLForKey:@"NSTextBackgroundLayoutEnabled"];
+      __NSBackgroundLayoutEnabled = [standardUserDefaults BOOLForKey:@"NSTextBackgroundLayoutEnabled"];
     }
 
-    __NSFillBackgroundRectArray = [a1 instanceMethodForSelector:sel_fillBackgroundRectArray_count_forCharacterRange_color_];
-    __NSShowCGGlyphsIMP = [a1 instanceMethodForSelector:sel_showCGGlyphs_positions_count_font_matrix_attributes_inContext_];
-    __NSForcesOldShowGlyphs = [v3 BOOLForKey:@"NSLayoutManagerForcesShowPackedGlyphs"];
+    __NSFillBackgroundRectArray = [self instanceMethodForSelector:sel_fillBackgroundRectArray_count_forCharacterRange_color_];
+    __NSShowCGGlyphsIMP = [self instanceMethodForSelector:sel_showCGGlyphs_positions_count_font_matrix_attributes_inContext_];
+    __NSForcesOldShowGlyphs = [standardUserDefaults BOOLForKey:@"NSLayoutManagerForcesShowPackedGlyphs"];
   }
 }
 
-- (void)_showCGGlyphs:(const unsigned __int16 *)a3 positions:(const CGPoint *)a4 count:(int64_t)a5 font:(id)a6 textMatrix:(CGAffineTransform *)a7 attributes:(id)a8 inContext:(CGContext *)a9
+- (void)_showCGGlyphs:(const unsigned __int16 *)glyphs positions:(const CGPoint *)positions count:(int64_t)count font:(id)font textMatrix:(CGAffineTransform *)matrix attributes:(id)attributes inContext:(CGContext *)context
 {
-  v9 = MEMORY[0x1EEE9AC00](self, a2, a3, a4, a5, a6, a7, a8);
+  v9 = MEMORY[0x1EEE9AC00](self, a2, glyphs, positions, count, font, matrix, attributes);
   v43 = *MEMORY[0x1E69E9840];
-  if (!a9)
+  if (!context)
   {
     return;
   }
@@ -291,9 +291,9 @@
   *&v42.c = v23;
   *&v42.tx = v14[2];
   CGAffineTransformInvert(&v41, &v42);
-  v24 = [v20 textStorage];
-  v25 = [v24 cuiCatalog];
-  v39 = [v20 styleEffectConfiguration];
+  textStorage = [v20 textStorage];
+  cuiCatalog = [textStorage cuiCatalog];
+  styleEffectConfiguration = [v20 styleEffectConfiguration];
   if (v18 >= 257)
   {
     v26 = NSZoneMalloc(0, 16 * v18);
@@ -327,31 +327,31 @@ LABEL_5:
     while (v28);
   }
 
-  CGContextSetTextPosition(a9, *v19, v19[1]);
+  CGContextSetTextPosition(context, *v19, v19[1]);
   v32 = [v16 objectForKey:@"NSTextEffect"];
-  if (!v25 && ((objc_opt_respondsToSelector() & 1) == 0 || (v25 = [v20[13] layoutManager:v20 effectiveCUICatalogForTextEffect:v32]) == 0))
+  if (!cuiCatalog && ((objc_opt_respondsToSelector() & 1) == 0 || (cuiCatalog = [v20[13] layoutManager:v20 effectiveCUICatalogForTextEffect:v32]) == 0))
   {
     [v20 delegate];
     if (objc_opt_respondsToSelector())
     {
-      v25 = [objc_msgSend(v20 "delegate")];
+      cuiCatalog = [objc_msgSend(v20 "delegate")];
     }
 
     else
     {
-      v25 = 0;
+      cuiCatalog = 0;
     }
   }
 
   v33 = [__NSTextAppearanceEffectContext alloc];
   v34 = [v16 objectForKeyedSubscript:@"NSColor"];
-  v35 = [v20 applicationFrameworkContext];
-  LOBYTE(v38) = [v24 _usesSimpleTextEffects];
-  v36 = [(__NSTextAppearanceEffectContext *)v33 initWithTextEffectName:v32 catalog:v25 styleEffectConfiguration:v39 font:v17 color:v34 applicationFrameworkContext:v35 useSimplifiedEffect:v38];
+  applicationFrameworkContext = [v20 applicationFrameworkContext];
+  LOBYTE(v38) = [textStorage _usesSimpleTextEffects];
+  v36 = [(__NSTextAppearanceEffectContext *)v33 initWithTextEffectName:v32 catalog:cuiCatalog styleEffectConfiguration:styleEffectConfiguration font:v17 color:v34 applicationFrameworkContext:applicationFrameworkContext useSimplifiedEffect:v38];
   v37 = v36;
   if (v36)
   {
-    [(__NSTextAppearanceEffectContext *)v36 drawGlyphs:v40 positions:v26 count:v18 context:a9];
+    [(__NSTextAppearanceEffectContext *)v36 drawGlyphs:v40 positions:v26 count:v18 context:context];
   }
 
   else
@@ -365,24 +365,24 @@ LABEL_5:
   }
 }
 
-- (void)_showAttachmentCell:(id)a3 inRect:(CGRect)a4 characterIndex:(unint64_t)a5
+- (void)_showAttachmentCell:(id)cell inRect:(CGRect)rect characterIndex:(unint64_t)index
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  x = a4.origin.x;
-  v9 = a4.origin.y - a4.size.height;
-  if (a5 == 0x7FFFFFFFFFFFFFFFLL)
+  height = rect.size.height;
+  width = rect.size.width;
+  x = rect.origin.x;
+  v9 = rect.origin.y - rect.size.height;
+  if (index == 0x7FFFFFFFFFFFFFFFLL)
   {
 LABEL_2:
 
-    [a3 drawWithFrame:0 inView:{x, v9, width, height}];
+    [cell drawWithFrame:0 inView:{x, v9, width, height}];
     return;
   }
 
   if (objc_opt_respondsToSelector())
   {
 
-    [a3 drawWithFrame:0 inView:a5 characterIndex:self layoutManager:{x, v9, width, height}];
+    [cell drawWithFrame:0 inView:index characterIndex:self layoutManager:{x, v9, width, height}];
   }
 
   else
@@ -392,24 +392,24 @@ LABEL_2:
       goto LABEL_2;
     }
 
-    [a3 drawWithFrame:0 inView:a5 characterIndex:{x, v9, width, height}];
+    [cell drawWithFrame:0 inView:index characterIndex:{x, v9, width, height}];
   }
 }
 
-- (void)drawSpellingUnderlineForGlyphRange:(_NSRange)a3 spellingState:(int64_t)a4 inGlyphRange:(_NSRange)a5 lineFragmentRect:(CGRect)a6 lineFragmentGlyphRange:(_NSRange)a7 containerOrigin:(CGPoint)a8
+- (void)drawSpellingUnderlineForGlyphRange:(_NSRange)range spellingState:(int64_t)state inGlyphRange:(_NSRange)glyphRange lineFragmentRect:(CGRect)rect lineFragmentGlyphRange:(_NSRange)fragmentGlyphRange containerOrigin:(CGPoint)origin
 {
-  length = a5.length;
-  location = a5.location;
-  v11 = a3.length;
-  y = a8.y;
-  x = a8.x;
-  height = a6.size.height;
-  v15 = a6.origin.y;
-  v16 = a6.origin.x;
-  v17 = a3.location;
+  length = glyphRange.length;
+  location = glyphRange.location;
+  v11 = range.length;
+  y = origin.y;
+  x = origin.x;
+  height = rect.size.height;
+  v15 = rect.origin.y;
+  v16 = rect.origin.x;
+  v17 = range.location;
   v122 = *MEMORY[0x1E69E9840];
-  v19 = [(objc_class *)+[NSTextGraphicsContextProvider graphicsContextForApplicationFrameworkContext:a6.origin.x], "graphicsContextForApplicationFrameworkContext:", [(NSLayoutManager *)self applicationFrameworkContext]];
-  v20 = [v19 CGContext];
+  v19 = [(objc_class *)+[NSTextGraphicsContextProvider graphicsContextForApplicationFrameworkContext:rect.origin.x], "graphicsContextForApplicationFrameworkContext:", [(NSLayoutManager *)self applicationFrameworkContext]];
+  cGContext = [v19 CGContext];
   [(NSTypesetter *)[(NSLayoutManager *)self typesetter] baselineOffsetInLayoutManager:self glyphIndex:v17];
   v22 = v21;
   v115 = [(NSLayoutManager *)self textContainerForGlyphAtIndex:v17 effectiveRange:0];
@@ -434,31 +434,31 @@ LABEL_2:
   }
 
   v24 = [(NSLayoutManager *)self applicationFrameworkContext]== 2;
-  v25 = [(NSLayoutManager *)self applicationFrameworkContext];
+  applicationFrameworkContext = [(NSLayoutManager *)self applicationFrameworkContext];
   v26 = 1;
-  if (a4 == 3)
+  if (state == 3)
   {
     v26 = 2;
   }
 
-  if (a4 == 1)
+  if (state == 1)
   {
     v26 = 0x80;
   }
 
-  if (v25 == 1)
+  if (applicationFrameworkContext == 1)
   {
-    LOBYTE(a4) = v26;
+    LOBYTE(state) = v26;
   }
 
-  if (v20)
+  if (cGContext)
   {
-    if ((a4 & 0x83) != 0)
+    if ((state & 0x83) != 0)
     {
       v27 = location + length;
       if (v17 + v11 >= location + length)
       {
-        CGContextGetCTM(&v121, v20);
+        CGContextGetCTM(&v121, cGContext);
         a = v121.a;
         b = v121.b;
         c = v121.c;
@@ -501,11 +501,11 @@ LABEL_2:
         v119 = v24;
         if (drawSpellingUnderlineForGlyphRange_spellingState_inGlyphRange_lineFragmentRect_lineFragmentGlyphRange_containerOrigin__colorOncePredicate == -1)
         {
-          if ((a4 & 1) == 0)
+          if ((state & 1) == 0)
           {
 LABEL_25:
             v38 = &drawSpellingUnderlineForGlyphRange_spellingState_inGlyphRange_lineFragmentRect_lineFragmentGlyphRange_containerOrigin__correctionPatternColor;
-            if ((a4 & 0x80) == 0)
+            if ((state & 0x80) == 0)
             {
               v38 = &drawSpellingUnderlineForGlyphRange_spellingState_inGlyphRange_lineFragmentRect_lineFragmentGlyphRange_containerOrigin__grammarPatternColor;
             }
@@ -518,7 +518,7 @@ LABEL_25:
         else
         {
           dispatch_once(&drawSpellingUnderlineForGlyphRange_spellingState_inGlyphRange_lineFragmentRect_lineFragmentGlyphRange_containerOrigin__colorOncePredicate, block);
-          if ((a4 & 1) == 0)
+          if ((state & 1) == 0)
           {
             goto LABEL_25;
           }
@@ -600,9 +600,9 @@ LABEL_30:
         else
         {
           v45 = v39;
-          if (v27 >= a7.location + a7.length)
+          if (v27 >= fragmentGlyphRange.location + fragmentGlyphRange.length)
           {
-            [(NSLayoutManager *)self lineFragmentUsedRectForGlyphAtIndex:a7.location effectiveRange:0];
+            [(NSLayoutManager *)self lineFragmentUsedRectForGlyphAtIndex:fragmentGlyphRange.location effectiveRange:0];
             v53 = v51 + v52;
             [(NSTextContainer *)v115 lineFragmentPadding];
             v48 = 0;
@@ -617,22 +617,22 @@ LABEL_30:
               v105 = [(NSLayoutManager *)self characterIndexForGlyphAtIndex:v27 - 1];
               [(NSLayoutManager *)self locationForGlyphAtIndex:v27 - 1];
               v107 = v75;
-              v76 = [(NSTextStorage *)self->_textStorage attribute:@"NSFont" atIndex:v105 effectiveRange:0];
+              verticalFont = [(NSTextStorage *)self->_textStorage attribute:@"NSFont" atIndex:v105 effectiveRange:0];
               v77 = [(NSTextStorage *)self->_textStorage attribute:@"CTVerticalForms" atIndex:v105 effectiveRange:0];
-              if (!v76)
+              if (!verticalFont)
               {
-                v76 = NSDefaultFont();
+                verticalFont = NSDefaultFont();
               }
 
               if (([v77 BOOLValue] & 1) != 0 || !v77 && -[NSTextContainer layoutOrientation](v115, "layoutOrientation"))
               {
-                v76 = [v76 verticalFont];
+                verticalFont = [verticalFont verticalFont];
               }
 
               v47 = v107 - v44;
-              if (v76)
+              if (verticalFont)
               {
-                [v76 advancementForGlyph:{-[NSLayoutManager glyphAtIndex:](self, "glyphAtIndex:", v27 - 1)}];
+                [verticalFont advancementForGlyph:{-[NSLayoutManager glyphAtIndex:](self, "glyphAtIndex:", v27 - 1)}];
                 v48 = 0;
                 v47 = v47 + v104;
               }
@@ -650,9 +650,9 @@ LABEL_30:
               v48 = 1;
             }
 
-            if (v27 + 1 >= a7.location + a7.length)
+            if (v27 + 1 >= fragmentGlyphRange.location + fragmentGlyphRange.length)
             {
-              [(NSLayoutManager *)self lineFragmentUsedRectForGlyphAtIndex:a7.location effectiveRange:0];
+              [(NSLayoutManager *)self lineFragmentUsedRectForGlyphAtIndex:fragmentGlyphRange.location effectiveRange:0];
               v106 = v22;
               v66 = height;
               v67 = v15;
@@ -782,7 +782,7 @@ LABEL_30:
           v99 = v94 + v95 - v98;
         }
 
-        CGContextSaveGState(v20);
+        CGContextSaveGState(cGContext);
         if (v45)
         {
           v100 = v37;
@@ -795,18 +795,18 @@ LABEL_30:
 
         if (v100 == 1)
         {
-          v101 = __NSGetColorForSpellingState(a4);
+          v101 = __NSGetColorForSpellingState(state);
           if (v101)
           {
             v102 = v101;
             *&v121.a = xmmword_18E8561E0;
-            CGContextSetLineDash(v20, 0.0, &v121.a, 2uLL);
+            CGContextSetLineDash(cGContext, 0.0, &v121.a, 2uLL);
             v103 = v86 + v99;
-            CGContextMoveToPoint(v20, v93, v103);
-            CGContextAddLineToPoint(v20, v92 + v93, v103);
-            CGContextSetLineWidth(v20, 2.0);
+            CGContextMoveToPoint(cGContext, v93, v103);
+            CGContextAddLineToPoint(cGContext, v92 + v93, v103);
+            CGContextSetLineWidth(cGContext, 2.0);
             [-[NSLayoutManager renderingColorForDocumentColor:](self renderingColorForDocumentColor:{v102), "set"}];
-            CGContextStrokePath(v20);
+            CGContextStrokePath(cGContext);
           }
         }
 
@@ -816,14 +816,14 @@ LABEL_30:
           CGAffineTransformInvert(&v121, &v120);
           phasea = vaddq_f64(*&v121.tx, vmlaq_n_f64(vmulq_n_f64(*&v121.c, v109 + v110 * v99 + v112 * v93), *&v121.a, v108 + v82 * v99 + v111 * v93));
           [-[NSLayoutManager renderingColorForDocumentColor:](self renderingColorForDocumentColor:{v45), "set"}];
-          CGContextSetPatternPhase(v20, phasea);
+          CGContextSetPatternPhase(cGContext, phasea);
           if (CGContextGetCompositeOperation() == 2)
           {
             v123.origin.x = v93;
             v123.origin.y = v99;
             v123.size.width = v92;
             v123.size.height = v86;
-            CGContextFillRect(v20, v123);
+            CGContextFillRect(cGContext, v123);
           }
 
           else
@@ -833,12 +833,12 @@ LABEL_30:
             v124.origin.y = v99;
             v124.size.width = v92;
             v124.size.height = v86;
-            CGContextFillRect(v20, v124);
+            CGContextFillRect(cGContext, v124);
             CGContextSetCompositeOperation();
           }
         }
 
-        CGContextRestoreGState(v20);
+        CGContextRestoreGState(cGContext);
       }
     }
   }
@@ -889,36 +889,36 @@ id __151__NSLayoutManager_OtherSupport__drawSpellingUnderlineForGlyphRange_spell
   return result;
 }
 
-- (void)_drawLineForGlyphRange:(_NSRange)a3 inContext:(CGContext *)a4 from:(double)a5 to:(double)a6 at:(double)a7 thickness:(double)a8 lineOrigin:(CGPoint)a9 breakForDescenders:(BOOL)a10 flipped:(BOOL)a11
+- (void)_drawLineForGlyphRange:(_NSRange)range inContext:(CGContext *)context from:(double)from to:(double)to at:(double)at thickness:(double)thickness lineOrigin:(CGPoint)origin breakForDescenders:(BOOL)self0 flipped:(BOOL)self1
 {
-  v11 = a8;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  if (a10)
+  thicknessCopy = thickness;
+  toCopy2 = to;
+  fromCopy = from;
+  contextCopy2 = context;
+  if (descenders)
   {
-    v17 = a11;
-    y = a9.y;
-    x = a9.x;
-    length = a3.length;
-    location = a3.location;
-    CGContextMoveToPoint(a4, a5, a7);
-    v22 = [(NSTextStorage *)self->_textStorage string];
+    flippedCopy = flipped;
+    y = origin.y;
+    x = origin.x;
+    length = range.length;
+    location = range.location;
+    CGContextMoveToPoint(context, from, at);
+    string = [(NSTextStorage *)self->_textStorage string];
     v63 = xmmword_18E856180;
-    v23 = a7 - y;
-    v62 = v11;
-    if (!v17)
+    v23 = at - y;
+    v62 = thicknessCopy;
+    if (!flippedCopy)
     {
-      v23 = y - a7;
+      v23 = y - at;
     }
 
     if (location < location + length)
     {
-      v24 = v22;
+      v24 = string;
       v57 = x;
-      v25 = 0;
-      v60 = v23 + v11 * -0.5;
-      v59 = v60 + v11;
+      _backingCGSFont = 0;
+      v60 = v23 + thicknessCopy * -0.5;
+      v59 = v60 + thicknessCopy;
       v26 = 0.0;
       v27 = 0.0;
       v28 = 0.0;
@@ -929,7 +929,7 @@ id __151__NSLayoutManager_OtherSupport__drawSpellingUnderlineForGlyphRange_spell
         {
           v31 = [(NSTextStorage *)self->_textStorage attributesAtIndex:v29 effectiveRange:&v63];
           v32 = [v31 objectForKey:@"NSFont"];
-          v25 = [v32 _backingCGSFont];
+          _backingCGSFont = [v32 _backingCGSFont];
           [v32 pointSize];
           v28 = v33;
           v34 = [v31 objectForKey:@"NSExpansion"];
@@ -954,7 +954,7 @@ id __151__NSLayoutManager_OtherSupport__drawSpellingUnderlineForGlyphRange_spell
         v40 = v39;
         v42 = v41;
         v43 = [v24 characterAtIndex:v29];
-        if (v25)
+        if (_backingCGSFont)
         {
           if (v28 > 0.0 && v27 == 0.0 && v26 == 0.0 && ((v43 + 1280) >> 7) <= 0x66u)
           {
@@ -962,7 +962,7 @@ id __151__NSLayoutManager_OtherSupport__drawSpellingUnderlineForGlyphRange_spell
             {
               if (![(NSLayoutManager *)self notShownAttributeForGlyphAtIndex:location])
               {
-                UnitsPerEm = CGFontGetUnitsPerEm(v25);
+                UnitsPerEm = CGFontGetUnitsPerEm(_backingCGSFont);
                 info[0] = *MEMORY[0x1E695EFF8];
                 info[1] = info[0];
                 v45 = UnitsPerEm;
@@ -986,19 +986,19 @@ id __151__NSLayoutManager_OtherSupport__drawSpellingUnderlineForGlyphRange_spell
                     CGPathRelease(v47);
                     v50 = v57 + v40;
                     v51 = v50 + v49 - v62;
-                    if (v51 > v14 + v62 * 0.75)
+                    if (v51 > fromCopy + v62 * 0.75)
                     {
-                      CGContextAddLineToPoint(a4, v51, a7);
-                      CGContextStrokePath(a4);
-                      v14 = v51;
+                      CGContextAddLineToPoint(context, v51, at);
+                      CGContextStrokePath(context);
+                      fromCopy = v51;
                     }
 
-                    if (v50 + v28 * *(&v48 + 1) / v45 + v62 > v14)
+                    if (v50 + v28 * *(&v48 + 1) / v45 + v62 > fromCopy)
                     {
-                      v14 = v50 + v28 * *(&v48 + 1) / v45 + v62;
+                      fromCopy = v50 + v28 * *(&v48 + 1) / v45 + v62;
                     }
 
-                    CGContextMoveToPoint(a4, v14, a7);
+                    CGContextMoveToPoint(context, fromCopy, at);
                   }
                 }
               }
@@ -1013,49 +1013,49 @@ id __151__NSLayoutManager_OtherSupport__drawSpellingUnderlineForGlyphRange_spell
       while (length);
     }
 
-    v11 = v62;
-    v15 = a4;
-    v13 = a6;
+    thicknessCopy = v62;
+    contextCopy2 = context;
+    toCopy2 = to;
     goto LABEL_38;
   }
 
-  if (![(NSLayoutManager *)self _drawsUnderlinesLikeWebKit:a3.location])
+  if (![(NSLayoutManager *)self _drawsUnderlinesLikeWebKit:range.location])
   {
-    CGContextMoveToPoint(v15, v14, a7);
+    CGContextMoveToPoint(contextCopy2, fromCopy, at);
 LABEL_38:
-    if (vabdd_f64(v13, v14) > v11 * 0.75)
+    if (vabdd_f64(toCopy2, fromCopy) > thicknessCopy * 0.75)
     {
-      CGContextAddLineToPoint(v15, v13, a7);
-      CGContextStrokePath(v15);
+      CGContextAddLineToPoint(contextCopy2, toCopy2, at);
+      CGContextStrokePath(contextCopy2);
     }
 
     return;
   }
 
   StrokeColorAsColor = CGContextGetStrokeColorAsColor();
-  CGContextSetFillColorWithColor(v15, StrokeColorAsColor);
-  v54 = v14;
-  v55 = a7;
-  v56 = v11;
+  CGContextSetFillColorWithColor(contextCopy2, StrokeColorAsColor);
+  v54 = fromCopy;
+  atCopy = at;
+  v56 = thicknessCopy;
 
-  v53 = v13 - v14;
-  CGContextFillRect(v15, *&v54);
+  v53 = toCopy2 - fromCopy;
+  CGContextFillRect(contextCopy2, *&v54);
 }
 
-- (void)_drawLineForGlyphRange:(_NSRange)a3 type:(int64_t)a4 baselineOffset:(double)a5 lineFragmentRect:(CGRect)a6 lineFragmentGlyphRange:(_NSRange)a7 containerOrigin:(CGPoint)a8 isStrikethrough:(BOOL)a9
+- (void)_drawLineForGlyphRange:(_NSRange)range type:(int64_t)type baselineOffset:(double)offset lineFragmentRect:(CGRect)rect lineFragmentGlyphRange:(_NSRange)glyphRange containerOrigin:(CGPoint)origin isStrikethrough:(BOOL)strikethrough
 {
-  v9 = a9;
-  length = a7.length;
-  location = a7.location;
-  v12 = a3.length;
-  y = a8.y;
-  x = a8.x;
-  height = a6.size.height;
-  v15 = a6.origin.y;
-  v215 = a6.origin.x;
-  v17 = a3.location;
+  strikethroughCopy = strikethrough;
+  length = glyphRange.length;
+  location = glyphRange.location;
+  v12 = range.length;
+  y = origin.y;
+  x = origin.x;
+  height = rect.size.height;
+  v15 = rect.origin.y;
+  v215 = rect.origin.x;
+  v17 = range.location;
   v240 = *MEMORY[0x1E69E9840];
-  v19 = [(NSLayoutManager *)self textContainerForGlyphAtIndex:a3.location effectiveRange:0, a5, a6.origin.x, a6.origin.y, a6.size.width];
+  v19 = [(NSLayoutManager *)self textContainerForGlyphAtIndex:range.location effectiveRange:0, offset, rect.origin.x, rect.origin.y, rect.size.width];
   __asm { FMOV            V0.2D, #3.0 }
 
   *lengths = _Q0;
@@ -1069,13 +1069,13 @@ LABEL_38:
   v219 = [(NSLayoutManager *)self characterRangeForGlyphRange:location actualGlyphRange:length, 0];
   v220 = v25;
   v26 = @"NSStrikethrough";
-  if (!v9)
+  if (!strikethroughCopy)
   {
     v26 = @"NSUnderline";
   }
 
   v211 = v26;
-  if (v9)
+  if (strikethroughCopy)
   {
     v27 = &NSStrikethroughColorAttributeName;
   }
@@ -1086,24 +1086,24 @@ LABEL_38:
   }
 
   v28 = [(objc_class *)+[NSTextGraphicsContextProvider textGraphicsContextProviderClass](NSTextGraphicsContextProvider graphicsContextForApplicationFrameworkContext:"graphicsContextForApplicationFrameworkContext:", [(NSLayoutManager *)self applicationFrameworkContext]];
-  v29 = [v28 CGContext];
+  cGContext = [v28 CGContext];
   v236 = 0;
-  v223 = [(NSLayoutManager *)self _drawsUnderlinesLikeWebKit];
+  _drawsUnderlinesLikeWebKit = [(NSLayoutManager *)self _drawsUnderlinesLikeWebKit];
   v218 = v19;
-  v222 = [(NSTextContainer *)v19 layoutOrientation];
-  CGContextGetCTM(&v235, v29);
+  layoutOrientation = [(NSTextContainer *)v19 layoutOrientation];
+  CGContextGetCTM(&v235, cGContext);
   a = v235.a;
   b = v235.b;
   c = v235.c;
   d = v235.d;
-  v34 = [v28 isDrawingToScreen];
-  v35 = 1;
+  isDrawingToScreen = [v28 isDrawingToScreen];
+  isFlipped = 1;
   if (v28 && (*&self->_lmFlags & 0x10000000) != 0)
   {
-    v35 = [v28 isFlipped];
+    isFlipped = [v28 isFlipped];
   }
 
-  v221 = a4 & 7;
+  v221 = type & 7;
   if (_drawLineForGlyphRange_type_baselineOffset_lineFragmentRect_lineFragmentGlyphRange_containerOrigin_isStrikethrough__onceToken != -1)
   {
     [NSLayoutManager(OtherSupport) _drawLineForGlyphRange:type:baselineOffset:lineFragmentRect:lineFragmentGlyphRange:containerOrigin:isStrikethrough:];
@@ -1116,18 +1116,18 @@ LABEL_38:
     _NSUnderlineNonWhiteSet = [_NSUnderlineWhiteSet invertedSet];
   }
 
-  if ((a4 & 7) != 0)
+  if ((type & 7) != 0)
   {
     v213 = v36;
     v37 = *v27;
-    if (!v34 || (v38 = [(NSLayoutManager *)self temporaryAttribute:v37 atCharacterIndex:v23 effectiveRange:0]) == 0)
+    if (!isDrawingToScreen || (v38 = [(NSLayoutManager *)self temporaryAttribute:v37 atCharacterIndex:v23 effectiveRange:0]) == 0)
     {
       v38 = [(NSTextStorage *)self->_textStorage attribute:v37 atIndex:v23 effectiveRange:0];
     }
 
     v212 = v221;
     v39 = -v15;
-    if (v35)
+    if (isFlipped)
     {
       v39 = v15;
     }
@@ -1136,11 +1136,11 @@ LABEL_38:
     [(NSLayoutManager *)self lineFragmentUsedRectForGlyphAtIndex:v17 effectiveRange:0];
     v43 = v41 + v42;
     _NF = v41 + v42 < v15 + height;
-    v45 = a5 - (v15 + height - (v41 + v42));
+    offsetCopy2 = offset - (v15 + height - (v41 + v42));
     v46 = v43 - v15;
     if (v43 >= v15 + height)
     {
-      v45 = a5;
+      offsetCopy2 = offset;
     }
 
     if (!_NF)
@@ -1155,12 +1155,12 @@ LABEL_38:
 
     else
     {
-      v45 = a5;
+      offsetCopy2 = offset;
       v47 = height;
     }
 
     v48 = -(b * c);
-    v49 = v45;
+    v49 = offsetCopy2;
     v50 = fabs(v48 + a * d);
     v51 = sqrt(v50);
     if (v50 <= 0.001)
@@ -1186,15 +1186,15 @@ LABEL_38:
     v54 = v47 - v49;
     v224 = v47;
     v55 = v49 - v47;
-    if (v35)
+    if (isFlipped)
     {
       v55 = v47 - v49;
     }
 
     v228 = v40;
     i = v40 + v55;
-    v214 = v9;
-    if (v9)
+    v214 = strikethroughCopy;
+    if (strikethroughCopy)
     {
       v234 = 0uLL;
       v232 = 0;
@@ -1203,12 +1203,12 @@ LABEL_38:
       if (!v220)
       {
 LABEL_92:
-        v82 = [(NSTextStorage *)self->_textStorage attribute:@"NSFont" atIndex:v57 effectiveRange:0];
+        verticalFont = [(NSTextStorage *)self->_textStorage attribute:@"NSFont" atIndex:v57 effectiveRange:0];
         v83 = 0.0;
-        if (v82)
+        if (verticalFont)
         {
           v84 = [(NSTextStorage *)self->_textStorage attribute:@"CTVerticalForms" atIndex:v57 effectiveRange:0];
-          v85 = [v84 BOOLValue];
+          bOOLValue = [v84 BOOLValue];
           if (v84)
           {
             v86 = 1;
@@ -1216,16 +1216,16 @@ LABEL_92:
 
           else
           {
-            v86 = v222 == 0;
+            v86 = layoutOrientation == 0;
           }
 
           v87 = v86;
-          if (v85 || (v87 & 1) == 0)
+          if (bOOLValue || (v87 & 1) == 0)
           {
-            v82 = [v82 verticalFont];
+            verticalFont = [verticalFont verticalFont];
           }
 
-          [(NSLayoutManager *)self defaultLineHeightForFont:v82];
+          [(NSLayoutManager *)self defaultLineHeightForFont:verticalFont];
           if (v88 <= v224)
           {
             v89 = v88;
@@ -1237,9 +1237,9 @@ LABEL_92:
           }
 
           v90 = 0.0;
-          if (([v82 isVertical] & 1) == 0)
+          if (([verticalFont isVertical] & 1) == 0)
           {
-            [v82 xHeight];
+            [verticalFont xHeight];
             v90 = v91 * 0.5;
           }
 
@@ -1276,12 +1276,12 @@ LABEL_92:
           while (v94 < v93.location + v93.length);
         }
 
-        if (v223)
+        if (_drawsUnderlinesLikeWebKit)
         {
-          [(NSLayoutManager *)self defaultBaselineOffsetForFont:v82];
+          [(NSLayoutManager *)self defaultBaselineOffsetForFont:verticalFont];
           v97 = v228 + (2 * v96 / 3);
           memset(&v235, 0, sizeof(v235));
-          CGContextGetUserSpaceToDeviceSpaceTransform(&v235, v29);
+          CGContextGetUserSpaceToDeviceSpaceTransform(&v235, cGContext);
           v98 = 1.0;
           if (v52 < 0.400000006)
           {
@@ -1299,14 +1299,14 @@ LABEL_92:
           v103 = v52;
           v104 = fmaxf(roundf(v103), 1.0);
           v105 = v221;
-          v65 = a4 & 0x3000;
+          v65 = type & 0x3000;
           v54 = v90;
         }
 
         else
         {
           v106 = v224 - v83 - v49;
-          if (!v35)
+          if (!isFlipped)
           {
             v106 = -v106;
           }
@@ -1317,18 +1317,18 @@ LABEL_92:
           v104 = v52 * v212 * v92;
           if (v52 * v90 <= 1.0)
           {
-            v65 = a4 & 0x3000;
+            v65 = type & 0x3000;
           }
 
           else
           {
-            v65 = a4 & 0x3000;
+            v65 = type & 0x3000;
             if (v104 > 0.35)
             {
               v108 = vcvtpd_s64_f64(v104);
               v104 = ceil(v104);
               v109 = -v52;
-              if (!v35)
+              if (!isFlipped)
               {
                 v109 = v52;
               }
@@ -1351,8 +1351,8 @@ LABEL_92:
 LABEL_230:
         v68 = v104 / v52;
 LABEL_231:
-        v170 = (a4 >> 8) & 7;
-        if (!v223)
+        v170 = (type >> 8) & 7;
+        if (!_drawsUnderlinesLikeWebKit)
         {
           if (v68 <= 0.0)
           {
@@ -1366,7 +1366,7 @@ LABEL_231:
             v172 = v54;
           }
 
-          if (!v35)
+          if (!isFlipped)
           {
             v172 = -v172;
           }
@@ -1426,7 +1426,7 @@ LABEL_231:
           v186 = v213;
 LABEL_274:
           v187 = [(NSLayoutManager *)self rectArrayForGlyphRange:v17 withinSelectedGlyphRange:range2 inTextContainer:0x7FFFFFFFFFFFFFFFLL rectCount:0, v218, &v236];
-          if (v223)
+          if (_drawsUnderlinesLikeWebKit)
           {
             if (v52 < 1.0 && v38)
             {
@@ -1439,7 +1439,7 @@ LABEL_274:
               [-[NSLayoutManager renderingColorForDocumentColor:](self renderingColorForDocumentColor:{objc_msgSend(getNSColorClass[0](), "colorWithRed:green:blue:alpha:", v235.a, v231.a, context.a, v188)), "set"}];
             }
 
-            CGContextSetShouldAntialias(v29, 0);
+            CGContextSetShouldAntialias(cGContext, 0);
           }
 
           else if (v38)
@@ -1447,15 +1447,15 @@ LABEL_274:
             [-[NSLayoutManager renderingColorForDocumentColor:](self renderingColorForDocumentColor:{v38), "set"}];
           }
 
-          CGContextSetLineWidth(v29, v68);
+          CGContextSetLineWidth(cGContext, v68);
           v189 = v236;
           if (v236)
           {
             v190 = 0;
             v191 = v187;
-            v192 = v186 & !v223;
+            v192 = v186 & !_drawsUnderlinesLikeWebKit;
             v193 = v215 + x;
-            v194 = !v9;
+            v194 = !strikethroughCopy;
             p_width = &v191->size.width;
             do
             {
@@ -1482,17 +1482,17 @@ LABEL_274:
               [(NSLayoutManager *)self locationForGlyphAtIndex:v226];
               if (v174 >= 2)
               {
-                CGContextSetLineDash(v29, v197 - v201, lengths, v174);
+                CGContextSetLineDash(cGContext, v197 - v201, lengths, v174);
               }
 
               v202 = i;
-              if ((a4 & 8) != 0)
+              if ((type & 8) != 0)
               {
-                [(NSLayoutManager *)self _drawLineForGlyphRange:v17 inContext:range2 from:v29 to:v192 & v194 at:v35 thickness:v197 lineOrigin:v200 breakForDescenders:i - v68 flipped:v68, v193, v228];
+                [(NSLayoutManager *)self _drawLineForGlyphRange:v17 inContext:range2 from:cGContext to:v192 & v194 at:isFlipped thickness:v197 lineOrigin:v200 breakForDescenders:i - v68 flipped:v68, v193, v228];
                 v202 = v68 + i;
               }
 
-              [(NSLayoutManager *)self _drawLineForGlyphRange:v17 inContext:range2 from:v29 to:v192 & v194 at:v35 thickness:v197 lineOrigin:v200 breakForDescenders:v202 flipped:v68, v193, v228];
+              [(NSLayoutManager *)self _drawLineForGlyphRange:v17 inContext:range2 from:cGContext to:v192 & v194 at:isFlipped thickness:v197 lineOrigin:v200 breakForDescenders:v202 flipped:v68, v193, v228];
               v189 = v236;
               p_width += 4;
             }
@@ -1524,7 +1524,7 @@ LABEL_262:
 LABEL_272:
             v38 = v179;
             v186 = v213;
-            v9 = v214;
+            strikethroughCopy = v214;
             goto LABEL_274;
           }
         }
@@ -1545,8 +1545,8 @@ LABEL_272:
 
         else
         {
-          v203 = [(NSTextStorage *)self->_textStorage string];
-          [v203 rangeOfCharacterFromSet:_NSUnderlineNonWhiteSet options:0 range:{v180, v219 + v220 - v180}];
+          string = [(NSTextStorage *)self->_textStorage string];
+          [string rangeOfCharacterFromSet:_NSUnderlineNonWhiteSet options:0 range:{v180, v219 + v220 - v180}];
           v185 = v204 != 0;
         }
 
@@ -1554,12 +1554,12 @@ LABEL_272:
       }
 
       v210 = v38;
-      v58 = [(NSTextStorage *)self->_textStorage string];
+      string2 = [(NSTextStorage *)self->_textStorage string];
       v59 = [objc_msgSend(MEMORY[0x1E696AB08] "whitespaceAndNewlineCharacterSet")];
       if (v216)
       {
-        v60 = v58;
-        v61 = [v58 rangeOfCharacterFromSet:v59 options:0 range:v23];
+        v60 = string2;
+        v61 = [string2 rangeOfCharacterFromSet:v59 options:0 range:v23];
         v63 = v62 != 0;
         if (v62)
         {
@@ -1579,7 +1579,7 @@ LABEL_272:
 
       else
       {
-        v60 = v58;
+        v60 = string2;
         v63 = 0;
         v57 = v23;
       }
@@ -1592,7 +1592,7 @@ LABEL_272:
           v57 = v79 + v78 - 1;
 LABEL_91:
           v38 = v210;
-          v9 = v214;
+          strikethroughCopy = v214;
           goto LABEL_92;
         }
       }
@@ -1612,9 +1612,9 @@ LABEL_87:
 
     v234 = 0uLL;
     extraData = self->_extraData;
-    if ((a4 & 0x3000) != 0)
+    if ((type & 0x3000) != 0)
     {
-      v65 = a4 & 0x3000;
+      v65 = type & 0x3000;
     }
 
     else
@@ -1622,18 +1622,18 @@ LABEL_87:
       v65 = 4096;
     }
 
-    if ((a4 & 0x3000) == 0 && v222)
+    if ((type & 0x3000) == 0 && layoutOrientation)
     {
       if (_drawLineForGlyphRange_type_baselineOffset_lineFragmentRect_lineFragmentGlyphRange_containerOrigin_isStrikethrough__minimumEdgeUnderline < 0)
       {
         v113 = v47 - v49;
-        v114 = [MEMORY[0x1E695DF58] preferredLanguages];
+        preferredLanguages = [MEMORY[0x1E695DF58] preferredLanguages];
         _drawLineForGlyphRange_type_baselineOffset_lineFragmentRect_lineFragmentGlyphRange_containerOrigin_isStrikethrough__minimumEdgeUnderline = 1;
-        v115 = [v114 count];
+        v115 = [preferredLanguages count];
         v54 = v113;
         if (v115)
         {
-          v116 = [objc_msgSend(v114 objectAtIndex:{0), "hasPrefix:", @"zh"}];
+          v116 = [objc_msgSend(preferredLanguages objectAtIndex:{0), "hasPrefix:", @"zh"}];
           v54 = v113;
           if (v116)
           {
@@ -1669,7 +1669,7 @@ LABEL_87:
     v235.b = 0.0;
     v231.a = 0.0;
     v231.b = 0.0;
-    v207 = [(NSTextStorage *)self->_textStorage string];
+    string3 = [(NSTextStorage *)self->_textStorage string];
     context.a = 0.0;
     context.b = 0.0;
     v71 = self->_firstTextView;
@@ -1714,7 +1714,7 @@ LABEL_75:
       goto LABEL_137;
     }
 
-    v76 = [v207 characterAtIndex:v75 - 1];
+    v76 = [string3 characterAtIndex:v75 - 1];
     v75 = v234;
     if (v76 > 132)
     {
@@ -1728,14 +1728,14 @@ LABEL_75:
     {
       if (v76 == 13)
       {
-        if (v75 >= [v207 length])
+        if (v75 >= [string3 length])
         {
           v75 = v234;
         }
 
         else
         {
-          v77 = [v207 characterAtIndex:v75];
+          v77 = [string3 characterAtIndex:v75];
           v75 = v234;
           if (v77 == 10)
           {
@@ -1766,9 +1766,9 @@ LABEL_137:
           v117 = [NSTextStorage attribute:"attribute:atIndex:effectiveRange:" atIndex:@"NSFont" effectiveRange:?];
           if (v117)
           {
-            v118 = v117;
+            verticalFont2 = v117;
             v119 = [(NSTextStorage *)self->_textStorage attribute:@"CTVerticalForms" atIndex:*&v235.a effectiveRange:0];
-            v120 = [v119 BOOLValue];
+            bOOLValue2 = [v119 BOOLValue];
             if (v119)
             {
               v121 = 1;
@@ -1776,20 +1776,20 @@ LABEL_137:
 
             else
             {
-              v121 = v222 == 0;
+              v121 = layoutOrientation == 0;
             }
 
             v122 = v121;
-            if (v120 || (v122 & 1) == 0)
+            if (bOOLValue2 || (v122 & 1) == 0)
             {
-              v118 = [v118 verticalFont];
+              verticalFont2 = [verticalFont2 verticalFont];
             }
 
-            [v118 descender];
+            [verticalFont2 descender];
             v124 = v123;
-            [v118 _leading];
+            [verticalFont2 _leading];
             v126 = ceil(v124 - v125) * 5.3636991;
-            [v118 underlineThickness];
+            [verticalFont2 underlineThickness];
             if (v127 <= 0.0)
             {
               v127 = v126 * -0.0440277313;
@@ -1801,11 +1801,11 @@ LABEL_137:
             }
 
             v128 = v126 * 0.0880554625;
-            if ([v118 isVertical])
+            if ([verticalFont2 isVertical])
             {
-              [v118 ascender];
+              [verticalFont2 ascender];
               v130 = v129;
-              [v118 descender];
+              [verticalFont2 descender];
               if (v130 == -v131)
               {
                 v128 = v126 - v68;
@@ -1889,7 +1889,7 @@ LABEL_137:
       v52 = v208;
       v54 = v206;
 LABEL_174:
-      v9 = 0;
+      strikethroughCopy = 0;
       if (v65 != 0x2000)
       {
         if (v65 == 4096)
@@ -1905,13 +1905,13 @@ LABEL_174:
           }
 
           v143 = -v70;
-          if (v35)
+          if (isFlipped)
           {
             v143 = v70;
           }
 
           i = i - v143;
-          if (!v223)
+          if (!_drawsUnderlinesLikeWebKit)
           {
             v151 = -(v52 * v142);
             v152 = v52 * v49;
@@ -1923,7 +1923,7 @@ LABEL_174:
 
             v105 = v221;
             v104 = v52 * v68 * v212;
-            if ((a4 & 8) != 0)
+            if ((type & 8) != 0)
             {
               if (v152 < 4.0 || (v160 = v104 * 0.75, v160 <= 0.35))
               {
@@ -1937,7 +1937,7 @@ LABEL_174:
                 v162 = v160 + -0.5;
                 v104 = ceil(v160 + -0.5);
                 v163 = vcvtpd_s64_f64(v162);
-                if (v35)
+                if (isFlipped)
                 {
                   v164 = -v52;
                 }
@@ -1975,7 +1975,7 @@ LABEL_174:
                   v104 = v104 + -1.0;
                 }
 
-                if (v35)
+                if (isFlipped)
                 {
                   v154 = -v52;
                 }
@@ -2015,7 +2015,7 @@ LABEL_174:
 
           memset(&v235, 0, sizeof(v235));
           v144 = v142;
-          CGContextGetUserSpaceToDeviceSpaceTransform(&v235, v29);
+          CGContextGetUserSpaceToDeviceSpaceTransform(&v235, cGContext);
           v145 = 1.0;
           if (v52 < 0.400000006)
           {
@@ -2063,19 +2063,19 @@ uint64_t __148__NSLayoutManager_OtherSupport___drawLineForGlyphRange_type_baseli
   return result;
 }
 
-- (void)_lineGlyphRange:(_NSRange)a3 type:(int64_t)a4 lineFragmentRect:(CGRect)a5 lineFragmentGlyphRange:(_NSRange)a6 containerOrigin:(CGPoint)a7 isStrikethrough:(BOOL)a8
+- (void)_lineGlyphRange:(_NSRange)range type:(int64_t)type lineFragmentRect:(CGRect)rect lineFragmentGlyphRange:(_NSRange)glyphRange containerOrigin:(CGPoint)origin isStrikethrough:(BOOL)strikethrough
 {
-  length = a6.length;
-  location = a6.location;
-  v10 = a3.length;
-  y = a7.y;
-  x = a7.x;
-  height = a5.size.height;
-  width = a5.size.width;
-  v15 = a5.origin.y;
-  v16 = a5.origin.x;
-  v17 = a3.location;
-  v65 = [(NSTextStorage *)self->_textStorage string];
+  length = glyphRange.length;
+  location = glyphRange.location;
+  v10 = range.length;
+  y = origin.y;
+  x = origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  v15 = rect.origin.y;
+  v16 = rect.origin.x;
+  v17 = range.location;
+  string = [(NSTextStorage *)self->_textStorage string];
   if (!_NSUnderlineWhiteSet)
   {
     _NSUnderlineWhiteSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
@@ -2098,7 +2098,7 @@ uint64_t __148__NSLayoutManager_OtherSupport___drawLineForGlyphRange_type_baseli
     v59 = length;
     while (1)
     {
-      v29 = [v65 rangeOfCharacterFromSet:_NSUnderlineWhiteSet options:0 range:{v27, v28}];
+      v29 = [string rangeOfCharacterFromSet:_NSUnderlineWhiteSet options:0 range:{v27, v28}];
       v30 = v29;
       v64 = v23;
       if (v31)
@@ -2112,7 +2112,7 @@ uint64_t __148__NSLayoutManager_OtherSupport___drawLineForGlyphRange_type_baseli
           v36 = v29 - v33;
           while (1)
           {
-            v37 = [v65 characterAtIndex:v30 + v34];
+            v37 = [string characterAtIndex:v30 + v34];
             if (v37 == 160 || ![_NSUnderlineWhiteSet characterIsMember:v37])
             {
               break;
@@ -2214,13 +2214,13 @@ LABEL_29:
       {
         v51 = v26;
         v38 = v34 + v30;
-        [v65 rangeOfCharacterFromSet:_NSUnderlineNonWhiteSet options:0 range:{v58, v34 + v30 - v58}];
+        [string rangeOfCharacterFromSet:_NSUnderlineNonWhiteSet options:0 range:{v58, v34 + v30 - v58}];
         v53 = v52;
-        [v65 rangeOfCharacterFromSet:_NSUnderlineNonWhiteSet options:0 range:{v30, v57 - v30}];
+        [string rangeOfCharacterFromSet:_NSUnderlineNonWhiteSet options:0 range:{v30, v57 - v30}];
         if (v53)
         {
           v23 = v64;
-          if ((a4 & 0x8000) == 0 && v54)
+          if ((type & 0x8000) == 0 && v54)
           {
             v26 = v51;
             goto LABEL_46;
@@ -2232,15 +2232,15 @@ LABEL_29:
             v23 = v51 + v64 - v38;
             v28 = v27 + v28 - v38;
             v25 = v62;
-            if (!a8)
+            if (!strikethrough)
             {
 LABEL_50:
-              [(NSLayoutManager *)self drawUnderlineForGlyphRange:v50 underlineType:v49 baselineOffset:a4 lineFragmentRect:v25 lineFragmentGlyphRange:length containerOrigin:v20, v16, v15, width, height, x, y];
+              [(NSLayoutManager *)self drawUnderlineForGlyphRange:v50 underlineType:v49 baselineOffset:type lineFragmentRect:v25 lineFragmentGlyphRange:length containerOrigin:v20, v16, v15, width, height, x, y];
               goto LABEL_51;
             }
 
 LABEL_39:
-            [(NSLayoutManager *)self drawStrikethroughForGlyphRange:v50 strikethroughType:v49 baselineOffset:a4 lineFragmentRect:v25 lineFragmentGlyphRange:length containerOrigin:v20, v16, v15, width, height, x, y];
+            [(NSLayoutManager *)self drawStrikethroughForGlyphRange:v50 strikethroughType:v49 baselineOffset:type lineFragmentRect:v25 lineFragmentGlyphRange:length containerOrigin:v20, v16, v15, width, height, x, y];
 LABEL_51:
             v26 = v38;
             goto LABEL_52;
@@ -2276,7 +2276,7 @@ LABEL_33:
         v38 = v26 + v64;
         v23 = 0;
 LABEL_38:
-        if (!a8)
+        if (!strikethrough)
         {
           goto LABEL_50;
         }
@@ -2302,16 +2302,16 @@ LABEL_52:
         if (v23)
         {
           v56 = [(NSLayoutManager *)self glyphRangeForCharacterRange:v26 actualCharacterRange:v23, 0];
-          if (a8)
+          if (strikethrough)
           {
 
-            [(NSLayoutManager *)self drawStrikethroughForGlyphRange:v56 strikethroughType:v55 baselineOffset:a4 lineFragmentRect:v25 lineFragmentGlyphRange:length containerOrigin:v20, v16, v15, width, height, x, y];
+            [(NSLayoutManager *)self drawStrikethroughForGlyphRange:v56 strikethroughType:v55 baselineOffset:type lineFragmentRect:v25 lineFragmentGlyphRange:length containerOrigin:v20, v16, v15, width, height, x, y];
           }
 
           else
           {
 
-            [(NSLayoutManager *)self drawUnderlineForGlyphRange:v56 underlineType:v55 baselineOffset:a4 lineFragmentRect:v25 lineFragmentGlyphRange:length containerOrigin:v20, v16, v15, width, height, x, y];
+            [(NSLayoutManager *)self drawUnderlineForGlyphRange:v56 underlineType:v55 baselineOffset:type lineFragmentRect:v25 lineFragmentGlyphRange:length containerOrigin:v20, v16, v15, width, height, x, y];
           }
         }
 
@@ -2357,17 +2357,17 @@ uint64_t __52__NSLayoutManager_NSPrivate___defaultLinkAttributes__block_invoke()
   return result;
 }
 
-- (id)linkAttributesForLink:(id)a3 forCharacterAtIndex:(unint64_t)a4
+- (id)linkAttributesForLink:(id)link forCharacterAtIndex:(unint64_t)index
 {
-  v7 = [(NSLayoutManager *)self delegate];
-  if (((objc_opt_respondsToSelector() & 1) == 0 || (result = [v7 layoutManager:self linkAttributesForLink:a3 forCharacterAtIndex:a4]) == 0) && ((objc_opt_respondsToSelector() & 1) == 0 || (result = objc_msgSend(self->_firstTextView, "linkAttributesForLink:forCharacterAtIndex:", a3, a4)) == 0))
+  delegate = [(NSLayoutManager *)self delegate];
+  if (((objc_opt_respondsToSelector() & 1) == 0 || (result = [delegate layoutManager:self linkAttributesForLink:link forCharacterAtIndex:index]) == 0) && ((objc_opt_respondsToSelector() & 1) == 0 || (result = objc_msgSend(self->_firstTextView, "linkAttributesForLink:forCharacterAtIndex:", link, index)) == 0))
   {
     result = [self->_firstTextView linkTextAttributes];
     if (!result)
     {
-      v9 = [(NSAttributedString *)[(NSLayoutManager *)self textStorage] _isStringDrawingTextStorage];
+      _isStringDrawingTextStorage = [(NSAttributedString *)[(NSLayoutManager *)self textStorage] _isStringDrawingTextStorage];
       v10 = objc_opt_class();
-      if (v9)
+      if (_isStringDrawingTextStorage)
       {
 
         return [v10 _defaultLinkAttributesForLabel];
@@ -2384,35 +2384,35 @@ uint64_t __52__NSLayoutManager_NSPrivate___defaultLinkAttributes__block_invoke()
   return result;
 }
 
-- (id)linkAttributesForAttributes:(id)a3 forCharacterAtIndex:(unint64_t)a4
+- (id)linkAttributesForAttributes:(id)attributes forCharacterAtIndex:(unint64_t)index
 {
-  v7 = [(NSLayoutManager *)self delegate];
-  if ((objc_opt_respondsToSelector() & 1) == 0 || (result = [v7 layoutManager:self linkAttributesForAttributes:a3 forCharacterAtIndex:a4]) == 0)
+  delegate = [(NSLayoutManager *)self delegate];
+  if ((objc_opt_respondsToSelector() & 1) == 0 || (result = [delegate layoutManager:self linkAttributesForAttributes:attributes forCharacterAtIndex:index]) == 0)
   {
-    v9 = [a3 objectForKeyedSubscript:@"NSLink"];
+    v9 = [attributes objectForKeyedSubscript:@"NSLink"];
 
-    return [(NSLayoutManager *)self linkAttributesForLink:v9 forCharacterAtIndex:a4];
+    return [(NSLayoutManager *)self linkAttributesForLink:v9 forCharacterAtIndex:index];
   }
 
   return result;
 }
 
-- (void)_setRowArrayCache:(id)a3
+- (void)_setRowArrayCache:(id)cache
 {
   v3 = *(self->_extraData + 52);
-  if (v3 != a3)
+  if (v3 != cache)
   {
 
-    *(self->_extraData + 52) = a3;
+    *(self->_extraData + 52) = cache;
   }
 }
 
-- (_NSRange)_extendedCharRangeForInvalidation:(_NSRange)a3 editedCharRange:(_NSRange)a4
+- (_NSRange)_extendedCharRangeForInvalidation:(_NSRange)invalidation editedCharRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v6 = self;
-  v7 = [(NSLayoutManager *)self _blockRowRangeForCharRange:a4.location, a4.length];
+  length = invalidation.length;
+  location = invalidation.location;
+  selfCopy = self;
+  v7 = [(NSLayoutManager *)self _blockRowRangeForCharRange:range.location, range.length];
   v109.length = v8;
   v106.location = location;
   v106.length = length;
@@ -2421,10 +2421,10 @@ uint64_t __52__NSLayoutManager_NSPrivate___defaultLinkAttributes__block_invoke()
   v9 = NSUnionRange(v106, v109);
   v10 = v9.location;
   v11 = v9.length;
-  v12 = [(NSTextStorage *)v6->_textStorage string];
-  v13 = [v12 length];
+  string = [(NSTextStorage *)selfCopy->_textStorage string];
+  v13 = [string length];
   v14 = 64;
-  lmFlags = v6->_lmFlags;
+  lmFlags = selfCopy->_lmFlags;
   v16 = 16;
   if ((*&lmFlags & 0x2000000) == 0)
   {
@@ -2438,7 +2438,7 @@ uint64_t __52__NSLayoutManager_NSPrivate___defaultLinkAttributes__block_invoke()
   }
 
   v17 = v13;
-  typesetter = v6->_typesetter;
+  typesetter = selfCopy->_typesetter;
   v105[0] = 0;
   v105[1] = 0;
   v104 = 0;
@@ -2450,37 +2450,37 @@ uint64_t __52__NSLayoutManager_NSPrivate___defaultLinkAttributes__block_invoke()
   v99 = 0;
   if ((*&lmFlags & 0x40000000) != 0)
   {
-    extraData = v6->_extraData;
+    extraData = selfCopy->_extraData;
     v99 = v13;
     firstUnlaidGlyphIndex = *(extraData[26] + 8);
   }
 
   else
   {
-    firstUnlaidCharIndex = v6->_firstUnlaidCharIndex;
-    if (firstUnlaidCharIndex == 0x7FFFFFFFFFFFFFFFLL || v6->_firstUnlaidGlyphIndex == 0x7FFFFFFFFFFFFFFFLL)
+    firstUnlaidCharIndex = selfCopy->_firstUnlaidCharIndex;
+    if (firstUnlaidCharIndex == 0x7FFFFFFFFFFFFFFFLL || selfCopy->_firstUnlaidGlyphIndex == 0x7FFFFFFFFFFFFFFFLL)
     {
-      [(NSLayoutManager *)v6 getFirstUnlaidCharacterIndex:&v99 glyphIndex:&firstUnlaidGlyphIndex];
+      [(NSLayoutManager *)selfCopy getFirstUnlaidCharacterIndex:&v99 glyphIndex:&firstUnlaidGlyphIndex];
     }
 
     else
     {
-      firstUnlaidGlyphIndex = v6->_firstUnlaidGlyphIndex;
+      firstUnlaidGlyphIndex = selfCopy->_firstUnlaidGlyphIndex;
       v99 = firstUnlaidCharIndex;
     }
   }
 
-  v21 = [(NSTypesetter *)typesetter attributedString];
-  textStorage = v6->_textStorage;
+  attributedString = [(NSTypesetter *)typesetter attributedString];
+  textStorage = selfCopy->_textStorage;
   *(&v101 + 1) = v17;
   *&v102[0] = v9.location;
-  if (v21 != textStorage)
+  if (attributedString != textStorage)
   {
     typesetter = 0;
   }
 
-  *&v101 = v12;
-  v95 = v12;
+  *&v101 = string;
+  v95 = string;
   v91 = v7;
   if (v17 <= v9.location)
   {
@@ -2500,13 +2500,13 @@ uint64_t __52__NSLayoutManager_NSPrivate___defaultLinkAttributes__block_invoke()
   }
 
   *&v100 = v23;
-  [v12 getUid("getCharacters:v102 + 8 range:{v9.location, v23}")];
+  [string getUid("getCharacters:v102 + 8 range:{v9.location, v23}")];
   WORD4(v103) = WORD4(v102[0]);
   *(&v100 + 1) = 1;
   if (v9.location)
   {
 LABEL_18:
-    if (v9.location == [v12 length])
+    if (v9.location == [string length])
     {
       v24 = *(&v100 + 1);
       if (*(&v100 + 1) < 2uLL)
@@ -2560,7 +2560,7 @@ LABEL_44:
       }
 
       v31 = *(&v100 + 1) + *&v102[0];
-      if (v31 < [v12 length] && objc_msgSend(v12, "characterAtIndex:", v31) == 10)
+      if (v31 < [string length] && objc_msgSend(string, "characterAtIndex:", v31) == 10)
       {
         goto LABEL_48;
       }
@@ -2612,7 +2612,7 @@ LABEL_86:
           }
 
 LABEL_62:
-          if ((*(&v6->super.isa + v14 + 3) & 2) != 0)
+          if ((*(&selfCopy->super.isa + v14 + 3) & 2) != 0)
           {
             goto LABEL_76;
           }
@@ -2622,13 +2622,13 @@ LABEL_62:
             goto LABEL_76;
           }
 
-          v47 = [(NSLayoutManager *)v6 _glyphIndexForCharacterIndex:v10 startOfRange:1 okToFillHoles:0 considerNulls:1];
+          v47 = [(NSLayoutManager *)selfCopy _glyphIndexForCharacterIndex:v10 startOfRange:1 okToFillHoles:0 considerNulls:1];
           if (v47 >= firstUnlaidGlyphIndex)
           {
             goto LABEL_76;
           }
 
-          v48 = _NSLayoutTreeLineFragmentRectForGlyphAtIndex(v6, v47, v105);
+          v48 = _NSLayoutTreeLineFragmentRectForGlyphAtIndex(selfCopy, v47, v105);
           v52 = v48;
           v53 = v49;
           v54 = v50;
@@ -2687,7 +2687,7 @@ LABEL_76:
             if (*&v102[0])
             {
               v59 = typesetter;
-              v60 = v6;
+              v60 = selfCopy;
               v61 = v14;
               if (*&v102[0] >= 0x20uLL)
               {
@@ -2710,7 +2710,7 @@ LABEL_76:
               v17 = v63;
               v68 = v62;
               v14 = v61;
-              v6 = v60;
+              selfCopy = v60;
               typesetter = v59;
               [v65 v66];
               v58 = *(v102 + *(&v100 + 1) + 3);
@@ -2831,7 +2831,7 @@ LABEL_87:
     if (v10 + v11 < v17)
     {
 LABEL_102:
-      v72 = *(&v6->super.isa + v14);
+      v72 = *(&selfCopy->super.isa + v14);
       v73 = v69 + 30000;
       if (v69 + 30000 >= v17)
       {
@@ -2953,7 +2953,7 @@ LABEL_136:
     }
   }
 
-  v83 = [(NSLayoutManager *)v6 _blockRowRangeForCharRange:v10 completeRows:v11, &v104];
+  v83 = [(NSLayoutManager *)selfCopy _blockRowRangeForCharRange:v10 completeRows:v11, &v104];
   v85 = v84;
   v107.location = v10;
   v107.length = v11;
@@ -2964,7 +2964,7 @@ LABEL_136:
   length = v86.length;
   if ((v104 & 1) == 0)
   {
-    v111.location = [(NSLayoutManager *)v6 _blockRangeForCharRange:v83, v85];
+    v111.location = [(NSLayoutManager *)selfCopy _blockRangeForCharRange:v83, v85];
     v111.length = v87;
     v88 = NSUnionRange(v86, v111);
     location = v88.location;
@@ -2992,7 +2992,7 @@ LABEL_140:
   }
 }
 
-- (void)_fillGlyphHoleAtIndex:(unint64_t)a3 desiredNumberOfCharacters:(unint64_t)a4
+- (void)_fillGlyphHoleAtIndex:(unint64_t)index desiredNumberOfCharacters:(unint64_t)characters
 {
   v9 = 0;
   v10 = 0;
@@ -3003,37 +3003,37 @@ LABEL_140:
     v5 = 0x2000;
   }
 
-  if (!a4)
+  if (!characters)
   {
-    a4 = **(self->_extraData + 26);
+    characters = **(self->_extraData + 26);
   }
 
-  if (a4 <= v5)
+  if (characters <= v5)
   {
-    v6 = v5;
+    charactersCopy = v5;
   }
 
   else
   {
-    v6 = a4;
+    charactersCopy = characters;
   }
 
-  _NSGlyphTreeGetFirstHoleAfterGlyphIndex(self, 0, v6, &v9, &v8, &v10);
+  _NSGlyphTreeGetFirstHoleAfterGlyphIndex(self, 0, charactersCopy, &v9, &v8, &v10);
   v7 = v8;
-  if (v8 > v6)
+  if (v8 > charactersCopy)
   {
-    v8 = v6;
-    v7 = v6;
+    v8 = charactersCopy;
+    v7 = charactersCopy;
   }
 
   [(NSLayoutManager *)self _fillGlyphHoleForCharacterRange:v9 startGlyphIndex:v7 desiredNumberOfCharacters:v10, v7];
 }
 
-- (void)_fillGlyphHoleForCharacterRange:(_NSRange)a3 startGlyphIndex:(unint64_t)a4 desiredNumberOfCharacters:(unint64_t)a5
+- (void)_fillGlyphHoleForCharacterRange:(_NSRange)range startGlyphIndex:(unint64_t)index desiredNumberOfCharacters:(unint64_t)characters
 {
-  length = a3.length;
-  location = a3.location;
-  v17 = 0;
+  length = range.length;
+  location = range.location;
+  indexCopy = 0;
   v18 = 0;
   v19 = 0;
   if ((*&self->_lmFlags & 0x8000000) != 0)
@@ -3047,8 +3047,8 @@ LABEL_140:
   }
 
   extraData = self->_extraData;
-  v11 = [(NSAttributedString *)[(NSLayoutManager *)self textStorage] _isStringDrawingTextStorage];
-  if (!v11 && !extraData[7])
+  _isStringDrawingTextStorage = [(NSAttributedString *)[(NSLayoutManager *)self textStorage] _isStringDrawingTextStorage];
+  if (!_isStringDrawingTextStorage && !extraData[7])
   {
     v12 = [objc_msgSend(MEMORY[0x1E696AE68] allocWithZone:{-[NSLayoutManager zone](self, "zone")), "init"}];
     v13 = 0;
@@ -3059,15 +3059,15 @@ LABEL_140:
   }
 
   [extraData[7] lock];
-  v14 = [(NSTextStorage *)self->_textStorage _lockForReading];
+  _lockForReading = [(NSTextStorage *)self->_textStorage _lockForReading];
   if ((*&self->_lmFlags & 0x30000) == 0x10000 && [(NSTextStorage *)self->_textStorage _isEditing])
   {
-    if (v14)
+    if (_lockForReading)
     {
       [(NSTextStorage *)self->_textStorage _unlock];
     }
 
-    if (!v11)
+    if (!_isStringDrawingTextStorage)
     {
       [*(self->_extraData + 7) unlock];
     }
@@ -3080,80 +3080,80 @@ LABEL_140:
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:{@"*** layout manager %p reentrant glyph generation problem.", self}];
   }
 
-  if (a5)
+  if (characters)
   {
-    v15 = a5;
+    charactersCopy = characters;
   }
 
   else
   {
-    v15 = length;
+    charactersCopy = length;
   }
 
-  if (v15 <= v9)
+  if (charactersCopy <= v9)
   {
-    v15 = v9;
+    charactersCopy = v9;
   }
 
   self->_cachedLocationNominalGlyphRange = xmmword_18E856180;
-  self->_newlyFilledGlyphRange.location = a4;
+  self->_newlyFilledGlyphRange.location = index;
   self->_newlyFilledGlyphRange.length = 0;
-  if (length >= v15)
+  if (length >= charactersCopy)
   {
-    length = v15;
+    length = charactersCopy;
   }
 
   *&self->_lmFlags |= 0x80000u;
   [(NSTextStorage *)self->_textStorage _setForceFixAttributes:1];
-  v17 = a4;
+  indexCopy = index;
   v18 = location;
-  [(NSGlyphGenerator *)[(NSLayoutManager *)self glyphGenerator] generateGlyphsForGlyphStorage:self desiredNumberOfCharacters:length glyphIndex:&v17 characterIndex:&v18];
+  [(NSGlyphGenerator *)[(NSLayoutManager *)self glyphGenerator] generateGlyphsForGlyphStorage:self desiredNumberOfCharacters:length glyphIndex:&indexCopy characterIndex:&v18];
   v19 = v18 - location;
   [(NSTextStorage *)self->_textStorage _setForceFixAttributes:0];
   *&self->_lmFlags &= ~0x80000u;
   self->_newlyFilledGlyphRange = xmmword_18E856180;
-  if (v14)
+  if (_lockForReading)
   {
     [(NSTextStorage *)self->_textStorage _unlock];
   }
 
-  if (!v11)
+  if (!_isStringDrawingTextStorage)
   {
     [*(self->_extraData + 7) unlock];
   }
 }
 
-- (void)_doLayoutWithFullContainerStartingAtGlyphIndex:(unint64_t)a3 nextGlyphIndex:(unint64_t *)a4
+- (void)_doLayoutWithFullContainerStartingAtGlyphIndex:(unint64_t)index nextGlyphIndex:(unint64_t *)glyphIndex
 {
   v7 = *(self->_extraData + 26);
-  v8 = *(v7 + 8);
+  indexCopy = *(v7 + 8);
   v9 = MEMORY[0x1E696AA80];
   if ((*(v7 + 56) & 1) == 0)
   {
     [(NSLayoutManager *)self _setExtraLineFragmentRect:0 usedRect:*MEMORY[0x1E696AA80] textContainer:*(MEMORY[0x1E696AA80] + 8), *(MEMORY[0x1E696AA80] + 16), *(MEMORY[0x1E696AA80] + 24), *MEMORY[0x1E696AA80], *(MEMORY[0x1E696AA80] + 8), *(MEMORY[0x1E696AA80] + 16), *(MEMORY[0x1E696AA80] + 24)];
   }
 
-  if (v8 <= a3)
+  if (indexCopy <= index)
   {
-    v8 = a3;
+    indexCopy = index;
   }
 
   else
   {
-    [(NSLayoutManager *)self _setTextContainer:0 forGlyphRange:a3, v8 - a3];
-    [(NSLayoutManager *)self setLineFragmentRect:a3 forGlyphRange:v8 - a3 usedRect:*v9, v9[1], v9[2], v9[3], *v9, v9[1], v9[2], v9[3]];
-    [(NSLayoutManager *)self setLocation:a3 forStartOfGlyphRange:v8 - a3, *MEMORY[0x1E696AA78], *(MEMORY[0x1E696AA78] + 8)];
+    [(NSLayoutManager *)self _setTextContainer:0 forGlyphRange:index, indexCopy - index];
+    [(NSLayoutManager *)self setLineFragmentRect:index forGlyphRange:indexCopy - index usedRect:*v9, v9[1], v9[2], v9[3], *v9, v9[1], v9[2], v9[3]];
+    [(NSLayoutManager *)self setLocation:index forStartOfGlyphRange:indexCopy - index, *MEMORY[0x1E696AA78], *(MEMORY[0x1E696AA78] + 8)];
     v10 = *(self->_extraData + 23);
     if (v10)
     {
-      _NSRemoveTextBlocksStartingAtGlyphIndex(v10, a3);
+      _NSRemoveTextBlocksStartingAtGlyphIndex(v10, index);
     }
   }
 
-  *a4 = v8;
+  *glyphIndex = indexCopy;
 }
 
-- (void)_noteFirstTextViewVisibleCharacterRangeIfAfterIndex:(unint64_t)a3
+- (void)_noteFirstTextViewVisibleCharacterRangeIfAfterIndex:(unint64_t)index
 {
   [self->_firstTextView visibleRect];
   v6 = v5;
@@ -3178,7 +3178,7 @@ LABEL_140:
       v22 = [(NSLayoutManager *)self _primitiveCharacterRangeForGlyphRange:v19, v20];
       if (v23)
       {
-        v24 = v22 >= a3;
+        v24 = v22 >= index;
       }
 
       else
@@ -3202,16 +3202,16 @@ LABEL_140:
   }
 }
 
-- (void)_fillLayoutHoleForCharacterRange:(_NSRange)a3 desiredNumberOfLines:(unint64_t)a4 isSoft:(BOOL)a5
+- (void)_fillLayoutHoleForCharacterRange:(_NSRange)range desiredNumberOfLines:(unint64_t)lines isSoft:(BOOL)soft
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   range2 = [(NSTextStorage *)self->_textStorage length];
   v150 = 0;
   v151[0] = 0;
   extraData = self->_extraData;
-  v147 = [(NSAttributedString *)[(NSLayoutManager *)self textStorage] _isStringDrawingTextStorage];
-  if (!v147 && !extraData[7])
+  _isStringDrawingTextStorage = [(NSAttributedString *)[(NSLayoutManager *)self textStorage] _isStringDrawingTextStorage];
+  if (!_isStringDrawingTextStorage && !extraData[7])
   {
     v11 = [objc_msgSend(MEMORY[0x1E696AE68] allocWithZone:{-[NSLayoutManager zone](self, "zone")), "init"}];
     v12 = 0;
@@ -3222,20 +3222,20 @@ LABEL_140:
   }
 
   [extraData[7] lock];
-  v146 = [(NSTextStorage *)self->_textStorage _lockForReading];
-  if (!a5 && (*(&self->_lmFlags + 3) & 0x40) != 0 && self->_firstTextView && !*(self->_extraData + 45))
+  _lockForReading = [(NSTextStorage *)self->_textStorage _lockForReading];
+  if (!soft && (*(&self->_lmFlags + 3) & 0x40) != 0 && self->_firstTextView && !*(self->_extraData + 45))
   {
     [(NSLayoutManager *)self _noteFirstTextViewVisibleCharacterRangeIfAfterIndex:location];
   }
 
   if ((*&self->_lmFlags & 0x30000) == 0x10000 && [(NSTextStorage *)self->_textStorage _isEditing])
   {
-    if (v146)
+    if (_lockForReading)
     {
       [(NSTextStorage *)self->_textStorage _unlock];
     }
 
-    if (!v147)
+    if (!_isStringDrawingTextStorage)
     {
       [*(self->_extraData + 7) unlock];
     }
@@ -3335,9 +3335,9 @@ LABEL_22:
       [(NSLayoutManager *)self _invalidateGlyphsForExtendedCharacterRange:v18 changeInLength:v17 includeBlocks:0, 0];
     }
 
-    v27 = [(NSTypesetter *)[(NSLayoutManager *)self typesetter] layoutCharactersInRange:location forLayoutManager:length maximumNumberOfLineFragments:self, a4];
+    lines = [(NSTypesetter *)[(NSLayoutManager *)self typesetter] layoutCharactersInRange:location forLayoutManager:length maximumNumberOfLineFragments:self, lines];
     v29 = v28;
-    v137 = v27;
+    v137 = lines;
     v30 = [(NSLayoutManager *)self _primitiveGlyphRangeForCharacterRange:?];
     v32 = v31;
     v141 = v30;
@@ -3725,11 +3725,11 @@ LABEL_123:
       goto LABEL_166;
     }
 
-    v100 = [(NSTextStorage *)self->_textStorage string];
+    string = [(NSTextStorage *)self->_textStorage string];
     if (range2)
     {
-      v101 = v100;
-      v102 = [v100 characterAtIndex:range2 - 1];
+      v101 = string;
+      v102 = [string characterAtIndex:range2 - 1];
       if (v102 > 132)
       {
         if ((v102 - 8232) >= 2 && v102 != 133)
@@ -3755,11 +3755,11 @@ LABEL_123:
 
   v94 = *(v93[26] + 8);
   v95 = [(NSMutableArray *)self->_textContainers count];
-  v96 = [(NSTextStorage *)self->_textStorage string];
+  string2 = [(NSTextStorage *)self->_textStorage string];
   if (range2)
   {
-    v97 = v96;
-    v98 = [v96 characterAtIndex:range2 - 1];
+    v97 = string2;
+    v98 = [string2 characterAtIndex:range2 - 1];
     if (v98 > 132)
     {
       if ((v98 - 8232) >= 2 && v98 != 133)
@@ -3914,7 +3914,7 @@ LABEL_166:
 
   v125 = [(NSTextStorage *)self->_textStorage length];
   v126 = *(*(self->_extraData + 26) + 8);
-  v127 = [(NSTextStorage *)self->_textStorage string];
+  string3 = [(NSTextStorage *)self->_textStorage string];
   if ((v119 & 1) == 0)
   {
     v120 = 0;
@@ -3923,8 +3923,8 @@ LABEL_166:
       goto LABEL_198;
     }
 
-    v128 = v127;
-    v129 = [v127 characterAtIndex:v125 - 1];
+    v128 = string3;
+    v129 = [string3 characterAtIndex:v125 - 1];
     v120 = 0;
     if (v129 > 132)
     {
@@ -4060,12 +4060,12 @@ LABEL_223:
   }
 
 LABEL_228:
-  if (v146)
+  if (_lockForReading)
   {
     [(NSTextStorage *)self->_textStorage _unlock];
   }
 
-  if (!v147)
+  if (!_isStringDrawingTextStorage)
   {
     [*(self->_extraData + 7) unlock];
   }
@@ -4076,68 +4076,68 @@ LABEL_228:
   }
 }
 
-- (void)_fillLayoutHoleAtIndex:(unint64_t)a3 desiredNumberOfLines:(unint64_t)a4
+- (void)_fillLayoutHoleAtIndex:(unint64_t)index desiredNumberOfLines:(unint64_t)lines
 {
   v9 = 0;
   v10 = 0;
   v8 = 0;
-  if (100 * a4 <= 0x400)
+  if (100 * lines <= 0x400)
   {
     v6 = 1024;
   }
 
   else
   {
-    v6 = 100 * a4;
+    v6 = 100 * lines;
   }
 
   _NSLayoutTreeGetFirstHoleAfterGlyphIndexWithLength(self, 0, v6, &v10, &v9);
   v7 = _NSGlyphTreeCharacterIndexForGlyphAtIndex(self, v10);
   [-[NSTextStorage string](self->_textStorage "string")];
-  [(NSLayoutManager *)self _fillLayoutHoleForCharacterRange:v7 desiredNumberOfLines:v8 - v7 isSoft:a4, 0];
+  [(NSLayoutManager *)self _fillLayoutHoleForCharacterRange:v7 desiredNumberOfLines:v8 - v7 isSoft:lines, 0];
 }
 
-- (unint64_t)_smallEncodingGlyphIndexForCharacterIndex:(unint64_t)a3 startOfRange:(BOOL)a4 okToFillHoles:(BOOL)a5 considerNulls:(BOOL)a6
+- (unint64_t)_smallEncodingGlyphIndexForCharacterIndex:(unint64_t)index startOfRange:(BOOL)range okToFillHoles:(BOOL)holes considerNulls:(BOOL)nulls
 {
-  if (a5)
+  if (holes)
   {
-    _NSFastFillAllGlyphHolesForCharacterRange(self, a3, 1uLL);
+    _NSFastFillAllGlyphHolesForCharacterRange(self, index, 1uLL);
   }
 
-  return _NSGlyphTreeGlyphIndexForCharacterAtIndex(self, a3);
+  return _NSGlyphTreeGlyphIndexForCharacterAtIndex(self, index);
 }
 
-- (unint64_t)_glyphIndexForCharacterIndex:(unint64_t)a3 startOfRange:(BOOL)a4 okToFillHoles:(BOOL)a5 considerNulls:(BOOL)a6
+- (unint64_t)_glyphIndexForCharacterIndex:(unint64_t)index startOfRange:(BOOL)range okToFillHoles:(BOOL)holes considerNulls:(BOOL)nulls
 {
-  if (a5)
+  if (holes)
   {
-    _NSFastFillAllGlyphHolesForCharacterRange(self, a3, 1uLL);
+    _NSFastFillAllGlyphHolesForCharacterRange(self, index, 1uLL);
   }
 
-  return _NSGlyphTreeGlyphIndexForCharacterAtIndex(self, a3);
+  return _NSGlyphTreeGlyphIndexForCharacterAtIndex(self, index);
 }
 
-- (_NSRange)_glyphRangeForCharacterRange:(_NSRange)a3 actualCharacterRange:(_NSRange *)a4 okToFillHoles:(BOOL)a5
+- (_NSRange)_glyphRangeForCharacterRange:(_NSRange)range actualCharacterRange:(_NSRange *)characterRange okToFillHoles:(BOOL)holes
 {
-  v5 = a5;
-  length = a3.length;
-  location = a3.location;
-  if (a5)
+  holesCopy = holes;
+  length = range.length;
+  location = range.location;
+  if (holes)
   {
-    _NSFastFillAllGlyphHolesForCharacterRange(self, a3.location, a3.length + 1);
+    _NSFastFillAllGlyphHolesForCharacterRange(self, range.location, range.length + 1);
   }
 
-  v10 = _NSGlyphTreeGlyphRangeForCharacterRange(self, location, length, v5, 1, 1, a4);
+  v10 = _NSGlyphTreeGlyphRangeForCharacterRange(self, location, length, holesCopy, 1, 1, characterRange);
   result.length = v11;
   result.location = v10;
   return result;
 }
 
-- (_NSRange)_exactGlyphRangeForCharacterRange:(_NSRange)a3
+- (_NSRange)_exactGlyphRangeForCharacterRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  _NSFastFillAllGlyphHolesForCharacterRange(self, a3.location, 1uLL);
+  length = range.length;
+  location = range.location;
+  _NSFastFillAllGlyphHolesForCharacterRange(self, range.location, 1uLL);
   if (length >= 2)
   {
     _NSFastFillAllGlyphHolesForCharacterRange(self, length + location - 1, 2uLL);
@@ -4149,11 +4149,11 @@ LABEL_228:
   return result;
 }
 
-- (_NSRange)_primitiveCharacterRangeForGlyphRange:(_NSRange)a3
+- (_NSRange)_primitiveCharacterRangeForGlyphRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v6 = _NSGlyphTreeCharacterIndexForGlyphAtIndex(self, a3.location);
+  length = range.length;
+  location = range.location;
+  v6 = _NSGlyphTreeCharacterIndexForGlyphAtIndex(self, range.location);
   v7 = _NSGlyphTreeCharacterIndexForGlyphAtIndex(self, location + length);
   v8 = [(NSTextStorage *)self->_textStorage length];
   if (v6 >= v8)
@@ -4194,10 +4194,10 @@ LABEL_228:
   return result;
 }
 
-- (_NSRange)_primitiveGlyphRangeForCharacterRange:(_NSRange)a3
+- (_NSRange)_primitiveGlyphRangeForCharacterRange:(_NSRange)range
 {
-  location = a3.location;
-  v5 = a3.location + a3.length;
+  location = range.location;
+  v5 = range.location + range.length;
   v6 = [(NSTextStorage *)self->_textStorage length];
   if (location >= v6)
   {
@@ -4313,13 +4313,13 @@ LABEL_15:
   _inBackgroundLayout = 0;
 }
 
-- (void)_markSelfAsDirtyForBackgroundLayout:(id)a3
+- (void)_markSelfAsDirtyForBackgroundLayout:(id)layout
 {
   if ([(NSMutableArray *)self->_textContainers count])
   {
-    v4 = [(NSLayoutManager *)self applicationFrameworkContext];
+    applicationFrameworkContext = [(NSLayoutManager *)self applicationFrameworkContext];
     lmFlags = self->_lmFlags;
-    if (v4 == 2)
+    if (applicationFrameworkContext == 2)
     {
       if ((*&lmFlags & 0x40000104) == 4 && [MEMORY[0x1E696AF00] isMainThread])
       {
@@ -4332,8 +4332,8 @@ LABEL_15:
     {
       self->_lmFlags = (*&lmFlags | 0x80000000);
       extraData = self->_extraData;
-      v7 = [(NSAttributedString *)[(NSLayoutManager *)self textStorage] _isStringDrawingTextStorage];
-      if (!v7 && !extraData[7])
+      _isStringDrawingTextStorage = [(NSAttributedString *)[(NSLayoutManager *)self textStorage] _isStringDrawingTextStorage];
+      if (!_isStringDrawingTextStorage && !extraData[7])
       {
         v8 = [objc_msgSend(MEMORY[0x1E696AE68] allocWithZone:{-[NSLayoutManager zone](self, "zone")), "init"}];
         v9 = 0;
@@ -4350,7 +4350,7 @@ LABEL_15:
         [(NSLayoutManager *)self _fillLayoutHoleAtIndex:0 desiredNumberOfLines:0x7FFFFFFFFFFFFFFFLL];
       }
 
-      if (!v7)
+      if (!_isStringDrawingTextStorage)
       {
         [*(self->_extraData + 7) unlock];
       }
@@ -4485,26 +4485,26 @@ LABEL_29:
   return v3;
 }
 
-- (id)_lineFragmentDescriptionForGlyphRange:(_NSRange)a3 includeGlyphLocations:(BOOL)a4
+- (id)_lineFragmentDescriptionForGlyphRange:(_NSRange)range includeGlyphLocations:(BOOL)locations
 {
-  v4 = a4;
-  length = a3.length;
-  location = a3.location;
+  locationsCopy = locations;
+  length = range.length;
+  location = range.location;
   v41.receiver = self;
   v41.super_class = NSLayoutManager;
   v8 = [MEMORY[0x1E696AD60] stringWithFormat:@"%@\n", -[NSLayoutManager description](&v41, sel_description)];
   v40.location = 0;
   v40.length = 0;
-  v9 = [(NSTextStorage *)self->_textStorage string];
+  string = [(NSTextStorage *)self->_textStorage string];
   if (location < location + length)
   {
-    v10 = v9;
+    v10 = string;
     v11 = 0;
-    v36 = v4;
+    v36 = locationsCopy;
     v37 = location + length;
     do
     {
-      v12 = v4;
+      v12 = locationsCopy;
       v13 = v11;
       v14 = _NSLayoutTreeLineFragmentRectForGlyphAtIndex(self, location, &v40);
       v16 = v15;
@@ -4513,7 +4513,7 @@ LABEL_29:
       v21 = _NSLayoutTreeLineFragmentUsedRectForGlyphAtIndex(self, location, 0);
       v38 = v13;
       v35 = v13;
-      v4 = v12;
+      locationsCopy = v12;
       [v8 appendFormat:@"Line %lu: glyph range {%lu, %lu}, bounds {{%.2f, %.2f}, {%.2f, %.2f}}, usedRect {{%.2f, %.2f}, {%.2f, %.2f}}\n", v35, v40.location, v40.length, *&v14, v16, v18, v20, *&v21, v22, v23, v24];
       v25 = v37;
       if (v12)
@@ -4559,7 +4559,7 @@ LABEL_29:
         }
 
         [v8 replaceCharactersInRange:objc_msgSend(v8 withString:{"length") - 2, 2, @"\n"}];
-        v4 = v36;
+        locationsCopy = v36;
         v25 = v37;
       }
 
@@ -4573,20 +4573,20 @@ LABEL_29:
   return v8;
 }
 
-- (id)_glyphDescriptionForGlyphRange:(_NSRange)a3
+- (id)_glyphDescriptionForGlyphRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v21.receiver = self;
   v21.super_class = NSLayoutManager;
   v18 = [MEMORY[0x1E696AD60] stringWithFormat:@"%@\n", -[NSLayoutManager description](&v21, sel_description)];
-  v17 = [(NSTextStorage *)self->_textStorage string];
+  string = [(NSTextStorage *)self->_textStorage string];
   if (location < location + length)
   {
     do
     {
       v6 = _NSGlyphTreeCharacterIndexForGlyphAtIndex(self, location);
-      v7 = [v17 characterAtIndex:v6];
+      v7 = [string characterAtIndex:v6];
       v20 = _NSGlyphTreeGlyphAtIndex(self, location, 0);
       if ((v7 - 32) > 0x5E)
       {
@@ -4822,24 +4822,24 @@ LABEL_29:
   return v5;
 }
 
-- (void)_updateUsageForTextContainer:(id)a3 addingUsedRect:(CGRect)a4
+- (void)_updateUsageForTextContainer:(id)container addingUsedRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   value = 0;
   extraData = self->_extraData;
-  if (extraData[10] != a3)
+  if (extraData[10] != container)
   {
-    CFDictionaryGetValueIfPresent(extraData[11], a3, &value);
+    CFDictionaryGetValueIfPresent(extraData[11], container, &value);
   }
 
   ValueAtIndex = CFStorageGetValueAtIndex();
   if ((*(ValueAtIndex + 64) & 1) == 0)
   {
     v12 = ValueAtIndex;
-    v13 = [a3 textView];
+    textView = [container textView];
     v14 = *v12;
     v15 = *(v12 + 8);
     v16 = *(v12 + 16);
@@ -4862,7 +4862,7 @@ LABEL_29:
     *(v12 + 16) = width;
     *(v12 + 24) = height;
     *(v12 + 64) = *(v12 + 64) & 0xFFFFFFFB | (4 * (*(*(self->_extraData + 30) + 56) & 1));
-    if (v13)
+    if (textView)
     {
       v24.origin.x = v14;
       v24.origin.y = v15;
@@ -4874,20 +4874,20 @@ LABEL_29:
       v25.size.height = height;
       if (!NSEqualRects(v24, v25) || (*(&self->_lmFlags + 3) & 0x40) == 0 && (v18 & 4) != 0 && (*(v12 + 64) & 4) == 0)
       {
-        [(NSLayoutManager *)self _resizeTextViewForTextContainer:a3];
+        [(NSLayoutManager *)self _resizeTextViewForTextContainer:container];
       }
 
-      [v13 invalidateTextContainerOrigin];
+      [textView invalidateTextContainerOrigin];
     }
   }
 }
 
-- (void)_invalidateUsageForTextContainersInRange:(_NSRange)a3
+- (void)_invalidateUsageForTextContainersInRange:(_NSRange)range
 {
-  if (a3.length)
+  if (range.length)
   {
-    v3 = -a3.length;
-    v4 = a3.length + a3.location - 1;
+    v3 = -range.length;
+    v4 = range.length + range.location - 1;
     do
     {
       ValueAtIndex = CFStorageGetValueAtIndex();
@@ -4899,12 +4899,12 @@ LABEL_29:
   }
 }
 
-- (void)_recalculateUsageForTextContainerAtIndex:(unint64_t)a3
+- (void)_recalculateUsageForTextContainerAtIndex:(unint64_t)index
 {
   v5 = [(NSMutableArray *)self->_textContainers objectAtIndex:?];
   ValueAtIndex = CFStorageGetValueAtIndex();
-  v48 = [(NSTextContainer *)v5 textView];
-  v7 = [(NSTextStorage *)self->_textStorage string];
+  textView = [(NSTextContainer *)v5 textView];
+  string = [(NSTextStorage *)self->_textStorage string];
   v8 = [(NSLayoutManager *)self _indexOfFirstGlyphInTextContainer:v5 okToFillHoles:0];
   v9 = [(NSTextStorage *)self->_textStorage length];
   if ((*(&self->_lmFlags + 3) & 0x40) != 0)
@@ -4928,7 +4928,7 @@ LABEL_29:
   {
     if (v9)
     {
-      v10 = [v7 characterAtIndex:v9 - 1];
+      v10 = [string characterAtIndex:v9 - 1];
       if (v10 > 132)
       {
         if ((v10 - 8232) >= 2 && v10 != 133)
@@ -4940,7 +4940,7 @@ LABEL_29:
       else
       {
         v11 = v10 == 10 || v10 == 12;
-        if (!v11 && (v10 != 13 || v9 < [v7 length] && objc_msgSend(v7, "characterAtIndex:", v9) == 10))
+        if (!v11 && (v10 != 13 || v9 < [string length] && objc_msgSend(string, "characterAtIndex:", v9) == 10))
         {
           goto LABEL_37;
         }
@@ -4993,7 +4993,7 @@ LABEL_29:
       v19 = 0x7FFFFFFFFFFFFFFFLL;
     }
 
-    if (v19 <= a3)
+    if (v19 <= index)
     {
 LABEL_63:
       if (self->_textStorage)
@@ -5104,19 +5104,19 @@ LABEL_55:
     --self->_textViewResizeDisableStack;
   }
 
-  if (v48)
+  if (textView)
   {
     [(NSLayoutManager *)self _resizeTextViewForTextContainer:v5];
-    [(NSTextView *)v48 invalidateTextContainerOrigin];
+    [(NSTextView *)textView invalidateTextContainerOrigin];
   }
 }
 
-- (_NSStoredContainerUsage)_validatedStoredUsageForTextContainerAtIndex:(unint64_t)a3
+- (_NSStoredContainerUsage)_validatedStoredUsageForTextContainerAtIndex:(unint64_t)index
 {
   ValueAtIndex = CFStorageGetValueAtIndex();
   if (*(ValueAtIndex + 64))
   {
-    [(NSLayoutManager *)self _recalculateUsageForTextContainerAtIndex:a3];
+    [(NSLayoutManager *)self _recalculateUsageForTextContainerAtIndex:index];
   }
 
   return ValueAtIndex;
@@ -5154,18 +5154,18 @@ LABEL_55:
   }
 }
 
-- (void)_resizeTextViewForTextContainer:(id)a3
+- (void)_resizeTextViewForTextContainer:(id)container
 {
   value[0] = 0;
   extraData = self->_extraData;
-  if (extraData[10] == a3)
+  if (extraData[10] == container)
   {
     v6 = 0;
   }
 
   else
   {
-    if (!CFDictionaryGetValueIfPresent(extraData[11], a3, value))
+    if (!CFDictionaryGetValueIfPresent(extraData[11], container, value))
     {
       return;
     }
@@ -5177,20 +5177,20 @@ LABEL_55:
     }
   }
 
-  v7 = [a3 textView];
-  if (!v7)
+  textView = [container textView];
+  if (!textView)
   {
     return;
   }
 
-  if (self->_textViewResizeDisableStack || (v9 = v7, [(NSLayoutManager *)self hasNonContiguousLayout]) && [(NSLayoutManager *)self isScrolling])
+  if (self->_textViewResizeDisableStack || (v9 = textView, [(NSLayoutManager *)self hasNonContiguousLayout]) && [(NSLayoutManager *)self isScrolling])
   {
     ValueAtIndex = CFStorageGetValueAtIndex();
     *(ValueAtIndex + 64) |= 2u;
     return;
   }
 
-  v10 = [v9 superview];
+  superview = [v9 superview];
   [v9 frame];
   v12 = v11;
   v14 = v13;
@@ -5198,7 +5198,7 @@ LABEL_55:
   [v9 textContainerOrigin];
   v16 = v15;
   v18 = v17;
-  [a3 textContainerInsetsForView:v9];
+  [container textContainerInsetsForView:v9];
   v20 = v19;
   v22 = v21;
   v24 = v23;
@@ -5223,7 +5223,7 @@ LABEL_55:
   aRect = *(v27 + 56);
   v31 = v22 + v26;
   v32 = *(v27 + 24);
-  [v9 convertSize:v10 toView:{v31 + v30, v20 + v24 + v32}];
+  [v9 convertSize:superview toView:{v31 + v30, v20 + v24 + v32}];
   v34 = v33;
   v36 = v35;
   v109 = v32;
@@ -5286,7 +5286,7 @@ LABEL_16:
   height = v115.height;
   v114.width = v12;
   v114.height = v14;
-  if (!NSEqualSizes(v114, v115) && v10)
+  if (!NSEqualSizes(v114, v115) && superview)
   {
     [v9 visibleRect];
     v46 = v44;
@@ -5321,7 +5321,7 @@ LABEL_48:
       v74 = v42;
       v75 = v43;
       [v9 frame];
-      [v9 convertRect:v10 fromView:v12 + v76];
+      [v9 convertRect:superview fromView:v12 + v76];
       v62 = v74;
       v63 = v75;
       v64 = v46;
@@ -5340,7 +5340,7 @@ LABEL_48:
         v102 = v49;
         v99 = v48;
         v100 = v50;
-        [v9 convertRect:v10 fromView:{v48, v14 + v49, v50, v51 - v14}];
+        [v9 convertRect:superview fromView:{v48, v14 + v49, v50, v51 - v14}];
         v124.origin.x = v103;
         v124.origin.y = v104;
         v124.size.width = bRect;
@@ -5370,7 +5370,7 @@ LABEL_48:
         goto LABEL_49;
       }
 
-      [v9 convertRect:v10 fromView:{v12 + v52, v49, v50 - v12, v51}];
+      [v9 convertRect:superview fromView:{v12 + v52, v49, v50 - v12, v51}];
       v62 = v103;
       v63 = v104;
       v64 = bRect;
@@ -5469,10 +5469,10 @@ LABEL_49:
   }
 }
 
-- (void)_growCachedRectArrayToSize:(unint64_t)a3
+- (void)_growCachedRectArrayToSize:(unint64_t)size
 {
   cachedRectArrayCapacity = self->_cachedRectArrayCapacity;
-  if (cachedRectArrayCapacity < a3)
+  if (cachedRectArrayCapacity < size)
   {
     cachedRectArray = self->_cachedRectArray;
     if (cachedRectArray)
@@ -5491,78 +5491,78 @@ LABEL_49:
   }
 }
 
-- (CGRect)_rectArrayForRange:(_NSRange)a3 withinSelectionRange:(_NSRange)a4 rangeIsCharRange:(BOOL)a5 singleRectOnly:(BOOL)a6 fullLineRectsOnly:(BOOL)a7 inTextContainer:(id)a8 rectCount:(unint64_t *)a9 rangeWithinContainer:(_NSRange *)a10 glyphsDrawOutsideLines:(BOOL *)a11 rectArray:(CGRect *)a12 rectArrayCapacity:(unint64_t)a13
+- (CGRect)_rectArrayForRange:(_NSRange)range withinSelectionRange:(_NSRange)selectionRange rangeIsCharRange:(BOOL)charRange singleRectOnly:(BOOL)only fullLineRectsOnly:(BOOL)rectsOnly inTextContainer:(id)container rectCount:(unint64_t *)count rangeWithinContainer:(_NSRange *)self0 glyphsDrawOutsideLines:(BOOL *)self1 rectArray:(CGRect *)self2 rectArrayCapacity:(unint64_t)self3
 {
-  v255 = a6;
-  v237 = a5;
-  length = a4.length;
-  location = a4.location;
-  range1 = a3.length;
-  v14 = a3.location;
-  v15 = self;
-  v16 = a9;
+  onlyCopy = only;
+  charRangeCopy = charRange;
+  length = selectionRange.length;
+  location = selectionRange.location;
+  range1 = range.length;
+  v14 = range.location;
+  selfCopy = self;
+  countCopy7 = count;
   v261 = 0;
-  v18 = (*&self->_lmFlags & 0x20) == 0 && a12 == 0;
+  v18 = (*&self->_lmFlags & 0x20) == 0 && array == 0;
   v240 = v18;
   v260.location = 0;
   v260.length = 0;
-  v19 = [(NSTextStorage *)self->_textStorage string];
-  extraData = v15->_extraData;
+  string = [(NSTextStorage *)self->_textStorage string];
+  extraData = selfCopy->_extraData;
   if (!extraData[26] || !extraData[30])
   {
-    *a9 = 0;
+    *count = 0;
     result = 0;
-    if (a11)
+    if (lines)
     {
-      *a11 = 0;
+      *lines = 0;
     }
 
     return result;
   }
 
-  v21 = v19;
-  if ((*&v15->_lmFlags & 0x40) == 0)
+  v21 = string;
+  if ((*&selfCopy->_lmFlags & 0x40) == 0)
   {
-    ++v15->_displayInvalidationDisableStack;
+    ++selfCopy->_displayInvalidationDisableStack;
   }
 
   if (v240)
   {
-    v228 = 0;
-    *&v15->_lmFlags |= 0x20u;
+    data = 0;
+    *&selfCopy->_lmFlags |= 0x20u;
   }
 
-  else if (a12)
+  else if (array)
   {
-    v228 = 0;
+    data = 0;
   }
 
   else
   {
-    v228 = [MEMORY[0x1E695DF88] data];
+    data = [MEMORY[0x1E695DF88] data];
   }
 
-  v23 = v14;
-  if (v237)
+  range1 = v14;
+  if (charRangeCopy)
   {
-    v23 = [(NSLayoutManager *)v15 _primitiveGlyphRangeForCharacterRange:v14, range1];
+    range1 = [(NSLayoutManager *)selfCopy _primitiveGlyphRangeForCharacterRange:v14, range1];
   }
 
-  if ((*(&v15->_lmFlags + 3) & 0x40) != 0)
+  if ((*(&selfCopy->_lmFlags + 3) & 0x40) != 0)
   {
-    firstUnlaidGlyphIndex = *(*(v15->_extraData + 26) + 8);
+    firstUnlaidGlyphIndex = *(*(selfCopy->_extraData + 26) + 8);
   }
 
-  else if (v15->_firstUnlaidCharIndex == 0x7FFFFFFFFFFFFFFFLL || (firstUnlaidGlyphIndex = v15->_firstUnlaidGlyphIndex, firstUnlaidGlyphIndex == 0x7FFFFFFFFFFFFFFFLL))
+  else if (selfCopy->_firstUnlaidCharIndex == 0x7FFFFFFFFFFFFFFFLL || (firstUnlaidGlyphIndex = selfCopy->_firstUnlaidGlyphIndex, firstUnlaidGlyphIndex == 0x7FFFFFFFFFFFFFFFLL))
   {
-    [(NSLayoutManager *)v15 getFirstUnlaidCharacterIndex:0 glyphIndex:&v261];
+    [(NSLayoutManager *)selfCopy getFirstUnlaidCharacterIndex:0 glyphIndex:&v261];
     firstUnlaidGlyphIndex = v261;
     goto LABEL_26;
   }
 
   v261 = firstUnlaidGlyphIndex;
 LABEL_26:
-  v25 = [(NSLayoutManager *)v15 _indexOfFirstGlyphInTextContainer:a8 okToFillHoles:0];
+  v25 = [(NSLayoutManager *)selfCopy _indexOfFirstGlyphInTextContainer:container okToFillHoles:0];
   if (v25 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v26 = firstUnlaidGlyphIndex;
@@ -5573,12 +5573,12 @@ LABEL_26:
     v26 = v25;
   }
 
-  if (v23 > v26)
+  if (range1 > v26)
   {
-    v26 = v23;
+    v26 = range1;
   }
 
-  if ((*(&v15->_lmFlags + 3) & 0x40) != 0)
+  if ((*(&selfCopy->_lmFlags + 3) & 0x40) != 0)
   {
     v27 = v261;
   }
@@ -5586,16 +5586,16 @@ LABEL_26:
   else
   {
     v27 = v261;
-    if (*(*(v15->_extraData + 30) + 56))
+    if (*(*(selfCopy->_extraData + 30) + 56))
     {
       goto LABEL_37;
     }
   }
 
-  if (v23 == v27)
+  if (range1 == v27)
   {
-    v27 = v23;
-    v26 = v23;
+    v27 = range1;
+    v26 = range1;
   }
 
 LABEL_37:
@@ -5610,15 +5610,15 @@ LABEL_37:
   }
 
   value[0] = 0;
-  v29 = v15->_extraData;
-  if (v29[10] == a8)
+  v29 = selfCopy->_extraData;
+  if (v29[10] == container)
   {
     v223 = 0;
   }
 
   else
   {
-    ValueIfPresent = CFDictionaryGetValueIfPresent(v29[11], a8, value);
+    ValueIfPresent = CFDictionaryGetValueIfPresent(v29[11], container, value);
     v31 = value[0];
     if (!ValueIfPresent)
     {
@@ -5628,9 +5628,9 @@ LABEL_37:
     v223 = v31;
   }
 
-  *a9 = 0;
-  _NSFastFillAllLayoutHolesForGlyphRange(v15, v28, 1uLL);
-  if (v28 >= *(*(v15->_extraData + 26) + 8))
+  *count = 0;
+  _NSFastFillAllLayoutHolesForGlyphRange(selfCopy, v28, 1uLL);
+  if (v28 >= *(*(selfCopy->_extraData + 26) + 8))
   {
     v260.location = v28;
     v260.length = 0;
@@ -5639,14 +5639,14 @@ LABEL_37:
 
   else
   {
-    _NSLayoutTreeLineFragmentRectForGlyphAtIndex(v15, v28, &v260);
+    _NSLayoutTreeLineFragmentRectForGlyphAtIndex(selfCopy, v28, &v260);
     v32 = v260.location;
   }
 
-  v220 = a10;
+  withinContainerCopy = withinContainer;
   if (v32)
   {
-    v33 = _NSGlyphTreeCharacterIndexForGlyphAtIndex(v15, v32 - 1);
+    v33 = _NSGlyphTreeCharacterIndexForGlyphAtIndex(selfCopy, v32 - 1);
     if (v33 >= [v21 length])
     {
       goto LABEL_62;
@@ -5671,10 +5671,10 @@ LABEL_37:
       }
 
 LABEL_62:
-      if (v260.location == v28 && -[NSLayoutManager applicationFrameworkContext](v15, "applicationFrameworkContext") == 2 && [v15->_firstTextView selectionAffinity] == 1)
+      if (v260.location == v28 && -[NSLayoutManager applicationFrameworkContext](selfCopy, "applicationFrameworkContext") == 2 && [selfCopy->_firstTextView selectionAffinity] == 1)
       {
-        _NSFastFillAllLayoutHolesForGlyphRange(v15, v28 - 1, 1uLL);
-        _NSLayoutTreeLineFragmentRectForGlyphAtIndex(v15, v28 - 1, &v260);
+        _NSFastFillAllLayoutHolesForGlyphRange(selfCopy, v28 - 1, 1uLL);
+        _NSLayoutTreeLineFragmentRectForGlyphAtIndex(selfCopy, v28 - 1, &v260);
       }
 
       v35 = 0;
@@ -5695,12 +5695,12 @@ LABEL_62:
 LABEL_67:
   v244 = v21;
   v38 = v260.location;
-  if (v260.location >= *(*(v15->_extraData + 26) + 8))
+  if (v260.location >= *(*(selfCopy->_extraData + 26) + 8))
   {
     LOBYTE(v39) = 0;
     v170 = 0;
-    v257 = a12;
-    v171 = a11;
+    arrayCopy2 = array;
+    linesCopy3 = lines;
     v40 = range1;
     goto LABEL_379;
   }
@@ -5708,19 +5708,19 @@ LABEL_67:
   v221 = location;
   v226 = 0;
   v39 = 0;
-  __n = 32 * a13;
-  v257 = a12;
+  __n = 32 * capacity;
+  arrayCopy2 = array;
   v40 = range1;
-  v231 = v15;
+  v231 = selfCopy;
   while (1)
   {
     v41 = v38;
-    if (v237)
+    if (charRangeCopy)
     {
-      v41 = _NSGlyphTreeCharacterIndexForGlyphAtIndex(v15, v38);
+      v41 = _NSGlyphTreeCharacterIndexForGlyphAtIndex(selfCopy, v38);
     }
 
-    if (v40 || (v35 & 1) == 0 && [v15->_firstTextView selectionAffinity])
+    if (v40 || (v35 & 1) == 0 && [selfCopy->_firstTextView selectionAffinity])
     {
       if (v41 >= v40 + v14)
       {
@@ -5735,30 +5735,30 @@ LABEL_67:
       goto LABEL_371;
     }
 
-    if ((*(&v15->_lmFlags + 3) & 0x40) == 0)
+    if ((*(&selfCopy->_lmFlags + 3) & 0x40) == 0)
     {
-      _NSFastFillAllLayoutHolesForGlyphRange(v15, v38, 1uLL);
+      _NSFastFillAllLayoutHolesForGlyphRange(selfCopy, v38, 1uLL);
     }
 
-    v42 = _NSLayoutTreeLineFragmentRectForGlyphAtIndex(v15, v38, &v260);
+    v42 = _NSLayoutTreeLineFragmentRectForGlyphAtIndex(selfCopy, v38, &v260);
     v254 = v43;
     v242 = v45;
     v243 = v44;
     v46 = v260.location;
     range1a = v40;
-    if ((*(&v15->_lmFlags + 3) & 0x40) != 0)
+    if ((*(&selfCopy->_lmFlags + 3) & 0x40) != 0)
     {
-      v50 = [(NSMutableArray *)v15->_textContainers objectAtIndex:0];
+      v50 = [(NSMutableArray *)selfCopy->_textContainers objectAtIndex:0];
     }
 
-    else if ([(NSRunStorage *)v15->_containerRuns count]<= v46)
+    else if ([(NSRunStorage *)selfCopy->_containerRuns count]<= v46)
     {
       v50 = 0;
     }
 
     else
     {
-      containerRuns = v15->_containerRuns;
+      containerRuns = selfCopy->_containerRuns;
       _NSBlockNumberForIndex(containerRuns, v46, 0);
       v49 = 0;
       if (containerRuns->_gapBlockIndex <= v48)
@@ -5769,11 +5769,11 @@ LABEL_67:
       v50 = *&containerRuns->_runs->var1[(containerRuns->_elementSize + 8) * (v49 + v48)];
     }
 
-    v51 = _NSGlyphTreeCharacterIndexForGlyphAtIndex(v15, v46);
+    v51 = _NSGlyphTreeCharacterIndexForGlyphAtIndex(selfCopy, v46);
     v52 = v51;
-    if (!(BYTE4(v226) & 1 | (v50 != a8)))
+    if (!(BYTE4(v226) & 1 | (v50 != container)))
     {
-      if (v237)
+      if (charRangeCopy)
       {
         if (v51 > v14)
         {
@@ -5803,17 +5803,17 @@ LABEL_93:
 
     else
     {
-      v54 = v14;
-      if (v237)
+      range1a = v14;
+      if (charRangeCopy)
       {
-        v54 = [(NSLayoutManager *)v15 _primitiveGlyphRangeForCharacterRange:v14, range1a];
+        range1a = [(NSLayoutManager *)selfCopy _primitiveGlyphRangeForCharacterRange:v14, range1a];
       }
 
-      v53 = v35 & 1 | (range1a != 0) || [v15->_firstTextView selectionAffinity] != 1 ? v54 < v260.length + v260.location : v54 <= v260.length + v260.location;
+      v53 = v35 & 1 | (range1a != 0) || [selfCopy->_firstTextView selectionAffinity] != 1 ? range1a < v260.length + v260.location : range1a <= v260.length + v260.location;
     }
 
     value[0] = 0;
-    v55 = v15->_extraData;
+    v55 = selfCopy->_extraData;
     if (v55[10] != v50)
     {
       v56 = CFDictionaryGetValueIfPresent(v55[11], v50, value);
@@ -5836,14 +5836,14 @@ LABEL_93:
       v224 = v39;
       v58 = v260.location;
       v59 = v260.length;
-      [a8 lineFragmentPadding];
+      [container lineFragmentPadding];
       v61 = v60;
-      v62 = _NSLayoutTreeLineFragmentUsedRectForGlyphAtIndex(v15, v260.location, 0);
+      v62 = _NSLayoutTreeLineFragmentUsedRectForGlyphAtIndex(selfCopy, v260.location, 0);
       v233 = v63;
       v65 = v64;
-      if (v237)
+      if (charRangeCopy)
       {
-        v66 = [(NSLayoutManager *)v15 _primitiveGlyphRangeForCharacterRange:v14, range1a, v62];
+        v66 = [(NSLayoutManager *)selfCopy _primitiveGlyphRangeForCharacterRange:v14, range1a, v62];
         v68 = v66;
         v40 = v67;
         if (v221 == 0x7FFFFFFFFFFFFFFFLL)
@@ -5854,7 +5854,7 @@ LABEL_93:
 
         else
         {
-          v232 = [(NSLayoutManager *)v15 _primitiveGlyphRangeForCharacterRange:v221, length];
+          v232 = [(NSLayoutManager *)selfCopy _primitiveGlyphRangeForCharacterRange:v221, length];
           v69 = v71;
         }
       }
@@ -5902,15 +5902,15 @@ LABEL_93:
       }
 
       v75 = v59 + v58;
-      if ((*(&v15->_lmFlags + 3) & 2) != 0)
+      if ((*(&selfCopy->_lmFlags + 3) & 2) != 0)
       {
-        cachedRectArray = v257;
+        cachedRectArray = arrayCopy2;
         if (v73 && v75 > v72.location)
         {
           do
           {
             v77 = v75 - 1;
-            if (([(NSLayoutManager *)v15 propertyForGlyphAtIndex:v75 - 1, v220]& 4) == 0)
+            if (([(NSLayoutManager *)selfCopy propertyForGlyphAtIndex:v75 - 1, withinContainerCopy]& 4) == 0)
             {
               break;
             }
@@ -5924,14 +5924,14 @@ LABEL_93:
 
       else
       {
-        cachedRectArray = v257;
+        cachedRectArray = arrayCopy2;
       }
 
       if (v68 == 0x7FFFFFFFFFFFFFFFLL)
       {
 LABEL_129:
-        v257 = cachedRectArray;
-        v39 = _NSLayoutTreeLineFragmentDrawsOutsideLineForGlyphAtIndex(v15, v260.location) | v224;
+        arrayCopy2 = cachedRectArray;
+        v39 = _NSLayoutTreeLineFragmentDrawsOutsideLineForGlyphAtIndex(selfCopy, v260.location) | v224;
         v40 = range1a;
         goto LABEL_130;
       }
@@ -5940,7 +5940,7 @@ LABEL_129:
       v229 = v233 + v65;
       v245 = v42 + v61;
       v241 = v42 + v61 + v243 + v61 * -2.0;
-      v82 = v237;
+      v82 = charRangeCopy;
       if (!range1a)
       {
         v82 = 0;
@@ -5953,7 +5953,7 @@ LABEL_129:
       while (1)
       {
         v258 = cachedRectArray;
-        if ((*(&v15->_lmFlags + 3) & 2) == 0)
+        if ((*(&selfCopy->_lmFlags + 3) & 2) == 0)
         {
           v83 = 0;
 LABEL_151:
@@ -5962,7 +5962,7 @@ LABEL_151:
         }
 
         v83 = 0;
-        if (a7)
+        if (rectsOnly)
         {
           goto LABEL_151;
         }
@@ -5970,7 +5970,7 @@ LABEL_151:
         v84 = v73;
         if (v260.length)
         {
-          v91 = [(NSLayoutManager *)v15 intAttribute:2 forGlyphAtIndex:v68 - (v68 >= v260.location + v260.length)];
+          v91 = [(NSLayoutManager *)selfCopy intAttribute:2 forGlyphAtIndex:v68 - (v68 >= v260.location + v260.length)];
           v83 = v91 & 1;
           if (!v73)
           {
@@ -5985,14 +5985,14 @@ LABEL_151:
             v84 = 1;
             do
             {
-              if (([(NSLayoutManager *)v15 intAttribute:2 forGlyphAtIndex:v68 + v84, v220]- v91))
+              if (([(NSLayoutManager *)selfCopy intAttribute:2 forGlyphAtIndex:v68 + v84, withinContainerCopy]- v91))
               {
                 if (v68 + v84 + 1 != v260.length + v260.location)
                 {
                   goto LABEL_172;
                 }
 
-                v92 = _NSGlyphTreeCharacterIndexForGlyphAtIndex(v15, v68 + v84);
+                v92 = _NSGlyphTreeCharacterIndexForGlyphAtIndex(selfCopy, v68 + v84);
                 v93 = [v244 characterAtIndex:v92];
                 if (v93 > 132)
                 {
@@ -6056,7 +6056,7 @@ LABEL_172:
 LABEL_152:
         v85 = v84 + v68;
         v256 = v84 + v68;
-        if (!a7)
+        if (!rectsOnly)
         {
           v96 = v260.length + v260.location;
           if (v260.location <= v232)
@@ -6088,9 +6088,9 @@ LABEL_189:
           }
 
           v102 = v85 != v96 || v96 == 0;
-          if (!v102 && [(NSTextStorage *)v15->_textStorage length])
+          if (!v102 && [(NSTextStorage *)selfCopy->_textStorage length])
           {
-            v103 = _NSGlyphTreeCharacterIndexForGlyphAtIndex(v15, v260.location + v260.length - 1);
+            v103 = _NSGlyphTreeCharacterIndexForGlyphAtIndex(selfCopy, v260.location + v260.length - 1);
             v104 = [v244 characterAtIndex:v103];
             v101 = 0;
             if (v104 > 132)
@@ -6150,11 +6150,11 @@ LABEL_214:
                 }
 
                 v249 = v108;
-                v110 = _NSGlyphTreeCharacterIndexForGlyphAtIndex(v15, v260.location);
-                v111 = _insertionPointHelperForCharacterAtIndex(v15, v110);
-                v112.location = [(NSLayoutManager *)v15 characterRangeForGlyphRange:v68 actualGlyphRange:v84, 0];
+                v110 = _NSGlyphTreeCharacterIndexForGlyphAtIndex(selfCopy, v260.location);
+                v111 = _insertionPointHelperForCharacterAtIndex(selfCopy, v110);
+                v112.location = [(NSLayoutManager *)selfCopy characterRangeForGlyphRange:v68 actualGlyphRange:v84, 0];
                 v113.location = v112.location;
-                if (v237)
+                if (charRangeCopy)
                 {
                   v114 = v14;
                 }
@@ -6165,7 +6165,7 @@ LABEL_214:
                 }
 
                 v112.location = v14;
-                if (v237)
+                if (charRangeCopy)
                 {
                   v115 = 0;
                 }
@@ -6244,7 +6244,7 @@ LABEL_214:
 
                   if (altCount)
                   {
-                    v15 = v231;
+                    selfCopy = v231;
                     if (logicalAltPositions && logicalAltCharIndexes)
                     {
                       v127 = 0;
@@ -6277,7 +6277,7 @@ LABEL_214:
                   else
                   {
                     v109 = v90;
-                    v15 = v231;
+                    selfCopy = v231;
                   }
 
                   goto LABEL_320;
@@ -6301,7 +6301,7 @@ LABEL_254:
                     {
                       v129 = logicalCharIndexes + 1;
                       v130 = 1;
-                      v131 = count;
+                      countCopy2 = count;
                       v132 = logicalLeftBoundaries;
                       v123 = v241;
                       do
@@ -6327,23 +6327,23 @@ LABEL_254:
                         ++v132;
                         ++v129;
                         ++v130;
-                        --v131;
+                        --countCopy2;
                       }
 
-                      while (v131);
+                      while (countCopy2);
                     }
                   }
 
                   if (v249)
                   {
-                    v16 = a9;
+                    countCopy7 = count;
                     cachedRectArray = v258;
                     v100 = v247;
                     goto LABEL_289;
                   }
 
                   v128 = *&v231->_lmFlags & 0x2000000;
-                  v16 = a9;
+                  countCopy7 = count;
                   cachedRectArray = v258;
                   v100 = v247;
                 }
@@ -6432,7 +6432,7 @@ LABEL_306:
                           if (v147 >= count)
                           {
                             v109 = v241;
-                            v15 = v231;
+                            selfCopy = v231;
                             v14 = v234;
                             cachedRectArray = v258;
                             goto LABEL_320;
@@ -6445,7 +6445,7 @@ LABEL_306:
                     }
 
                     v109 = v241;
-                    v15 = v231;
+                    selfCopy = v231;
 LABEL_319:
                     v14 = v234;
 LABEL_320:
@@ -6492,7 +6492,7 @@ LABEL_292:
                     {
                       v139 = logicalCharIndexes + 1;
                       v140 = 1;
-                      v141 = count;
+                      countCopy5 = count;
                       v142 = logicalRightBoundaries;
                       v109 = v245;
                       do
@@ -6518,22 +6518,22 @@ LABEL_292:
                         ++v142;
                         ++v139;
                         ++v140;
-                        --v141;
+                        --countCopy5;
                       }
 
-                      while (v141);
+                      while (countCopy5);
                     }
                   }
 
                   if (!v247)
                   {
                     v138 = *&v231->_lmFlags & 0x2000000;
-                    v16 = a9;
+                    countCopy7 = count;
                     cachedRectArray = v258;
                     goto LABEL_306;
                   }
 
-                  v16 = a9;
+                  countCopy7 = count;
                   cachedRectArray = v258;
                 }
 
@@ -6543,7 +6543,7 @@ LABEL_292:
                 }
 
 LABEL_304:
-                v15 = v231;
+                selfCopy = v231;
                 goto LABEL_319;
               }
             }
@@ -6565,10 +6565,10 @@ LABEL_213:
         v90 = v42;
         cachedRectArray = v258;
 LABEL_325:
-        if (*v16 && (v255 || ((v154 = &cachedRectArray[*v16], x = v154[-1].origin.x, y = v154[-1].origin.y, width = v154[-1].size.width, height = v154[-1].size.height, v90 == x) ? (v159 = v88 == width) : (v159 = 0), v159 && (v87 != y + height ? (v163 = y == v87 + v89) : (v163 = 1), v163 || (v269.origin.y = v87, v269.size.height = v89, v269.origin.x = v90, v269.size.width = v88, NSIntersectsRect(v269, v154[-1])))) || (v87 == y ? (v160 = v89 == height) : (v160 = 0), v160 && (v90 != x + width ? (v164 = x == v88 + v90) : (v164 = 1), v164 || (v270.origin.x = v90, v270.origin.y = v87, v270.size.width = v88, v270.size.height = v89, v271.origin.x = x, v271.origin.y = y, v271.size.width = width, v271.size.height = height, NSIntersectsRect(v270, v271))))))
+        if (*countCopy7 && (onlyCopy || ((v154 = &cachedRectArray[*countCopy7], x = v154[-1].origin.x, y = v154[-1].origin.y, width = v154[-1].size.width, height = v154[-1].size.height, v90 == x) ? (v159 = v88 == width) : (v159 = 0), v159 && (v87 != y + height ? (v163 = y == v87 + v89) : (v163 = 1), v163 || (v269.origin.y = v87, v269.size.height = v89, v269.origin.x = v90, v269.size.width = v88, NSIntersectsRect(v269, v154[-1])))) || (v87 == y ? (v160 = v89 == height) : (v160 = 0), v160 && (v90 != x + width ? (v164 = x == v88 + v90) : (v164 = 1), v164 || (v270.origin.x = v90, v270.origin.y = v87, v270.size.width = v88, v270.size.height = v89, v271.origin.x = x, v271.origin.y = y, v271.size.width = width, v271.size.height = height, NSIntersectsRect(v270, v271))))))
         {
-          v149 = *v16;
-          v150 = &cachedRectArray[*v16];
+          v149 = *countCopy7;
+          v150 = &cachedRectArray[*countCopy7];
           v150[-1].origin.x = NSLMUnionRect(v150[-1].origin.x, v150[-1].origin.y, v150[-1].size.width, v150[-1].size.height, v90, v87, v88, v89);
           v150[-1].origin.y = v151;
           v150[-1].size.width = v152;
@@ -6577,41 +6577,41 @@ LABEL_325:
 
         else
         {
-          v161 = *v16 + 1;
-          *v16 = v161;
+          v161 = *countCopy7 + 1;
+          *countCopy7 = v161;
           if (v240)
           {
-            [(NSLayoutManager *)v15 _growCachedRectArrayToSize:?];
-            cachedRectArray = v15->_cachedRectArray;
+            [(NSLayoutManager *)selfCopy _growCachedRectArrayToSize:?];
+            cachedRectArray = selfCopy->_cachedRectArray;
           }
 
-          else if (a12)
+          else if (array)
           {
-            if (v161 > a13)
+            if (v161 > capacity)
             {
-              v162 = [MEMORY[0x1E695DF88] data];
-              [v162 setLength:32 * *v16];
-              v228 = v162;
-              cachedRectArray = [v162 mutableBytes];
-              memcpy(cachedRectArray, a12, __n);
+              data2 = [MEMORY[0x1E695DF88] data];
+              [data2 setLength:32 * *countCopy7];
+              data = data2;
+              cachedRectArray = [data2 mutableBytes];
+              memcpy(cachedRectArray, array, __n);
             }
           }
 
           else
           {
-            [v228 setLength:32 * v161];
-            cachedRectArray = [v228 mutableBytes];
+            [data setLength:32 * v161];
+            cachedRectArray = [data mutableBytes];
           }
 
-          v149 = *v16;
-          v165 = &cachedRectArray[*v16];
+          v149 = *countCopy7;
+          v165 = &cachedRectArray[*countCopy7];
           v165[-1].origin.x = v90;
           v165[-1].origin.y = v87;
           v165[-1].size.width = v88;
           v165[-1].size.height = v89;
         }
 
-        if ((v86 | v255))
+        if ((v86 | onlyCopy))
         {
           v42 = v238;
           v166 = v256;
@@ -6620,34 +6620,34 @@ LABEL_325:
         else
         {
           v167 = v149 + 1;
-          *v16 = v149 + 1;
+          *countCopy7 = v149 + 1;
           v42 = v238;
           v166 = v256;
           if (v240)
           {
-            [(NSLayoutManager *)v15 _growCachedRectArrayToSize:?];
-            cachedRectArray = v15->_cachedRectArray;
+            [(NSLayoutManager *)selfCopy _growCachedRectArrayToSize:?];
+            cachedRectArray = selfCopy->_cachedRectArray;
           }
 
-          else if (a12)
+          else if (array)
           {
-            if (v167 > a13)
+            if (v167 > capacity)
             {
-              v168 = [MEMORY[0x1E695DF88] data];
-              [v168 setLength:32 * *v16];
-              v228 = v168;
-              cachedRectArray = [v168 mutableBytes];
-              memcpy(cachedRectArray, a12, __n);
+              data3 = [MEMORY[0x1E695DF88] data];
+              [data3 setLength:32 * *countCopy7];
+              data = data3;
+              cachedRectArray = [data3 mutableBytes];
+              memcpy(cachedRectArray, array, __n);
             }
           }
 
           else
           {
-            [v228 setLength:32 * v167];
-            cachedRectArray = [v228 mutableBytes];
+            [data setLength:32 * v167];
+            cachedRectArray = [data mutableBytes];
           }
 
-          v169 = &cachedRectArray[*v16];
+          v169 = &cachedRectArray[*countCopy7];
           v169[-1].origin.x = v246;
           v169[-1].origin.y = v250;
           v169[-1].size.width = v252;
@@ -6671,7 +6671,7 @@ LABEL_325:
 
 LABEL_130:
     v38 = v260.length + v260.location;
-    v78 = _NSGlyphTreeCharacterIndexForGlyphAtIndex(v15, v260.length + v260.location - 1);
+    v78 = _NSGlyphTreeCharacterIndexForGlyphAtIndex(selfCopy, v260.length + v260.location - 1);
     v79 = [v244 characterAtIndex:v78];
     v35 = 1;
     if (v79 > 132)
@@ -6701,24 +6701,24 @@ LABEL_130:
 
     v35 = 0;
 LABEL_142:
-    if ((*(&v15->_lmFlags + 3) & 0x40) == 0)
+    if ((*(&selfCopy->_lmFlags + 3) & 0x40) == 0)
     {
-      _NSFastFillAllGlyphHolesForGlyphRange(v15, v38, 1uLL);
+      _NSFastFillAllGlyphHolesForGlyphRange(selfCopy, v38, 1uLL);
     }
 
-    if (v38 >= *(*(v15->_extraData + 26) + 8))
+    if (v38 >= *(*(selfCopy->_extraData + 26) + 8))
     {
 LABEL_370:
       v170 = 0;
 LABEL_371:
-      v171 = a11;
+      linesCopy3 = lines;
       goto LABEL_379;
     }
   }
 
   v40 = range1a;
   v172 = range1a + v14;
-  if (v237)
+  if (charRangeCopy)
   {
     if (v52 <= v172)
     {
@@ -6735,12 +6735,12 @@ LABEL_377:
   }
 
   v170 = 1;
-  v171 = a11;
+  linesCopy3 = lines;
 LABEL_379:
-  if (v220)
+  if (withinContainerCopy)
   {
     v174 = 0x7FFFFFFFFFFFFFFFLL;
-    if (*v16)
+    if (*countCopy7)
     {
       v174 = v14;
       v175 = v40;
@@ -6751,11 +6751,11 @@ LABEL_379:
       v175 = 0;
     }
 
-    v220->location = v174;
-    v220->length = v175;
+    withinContainerCopy->location = v174;
+    withinContainerCopy->length = v175;
   }
 
-  if (*v16 | v40)
+  if (*countCopy7 | v40)
   {
     v170 = 1;
   }
@@ -6765,11 +6765,11 @@ LABEL_379:
     goto LABEL_431;
   }
 
-  v176 = [(NSTextStorage *)v15->_textStorage length];
-  v177 = *(*(v15->_extraData + 26) + 8);
+  v176 = [(NSTextStorage *)selfCopy->_textStorage length];
+  v177 = *(*(selfCopy->_extraData + 26) + 8);
   v259 = 0;
-  [a8 lineFragmentPadding];
-  v179 = v237 ? v176 : v177;
+  [container lineFragmentPadding];
+  v179 = charRangeCopy ? v176 : v177;
   if (v14 != v179)
   {
     goto LABEL_431;
@@ -6790,8 +6790,8 @@ LABEL_379:
     }
 
 LABEL_416:
-    v193 = _NSLayoutTreeLineFragmentRectForGlyphAtIndex(v15, v177 - 1, &v260);
-    v194 = _NSLayoutTreeLineFragmentUsedRectForGlyphAtIndex(v15, v177 - 1, 0);
+    v193 = _NSLayoutTreeLineFragmentRectForGlyphAtIndex(selfCopy, v177 - 1, &v260);
+    v194 = _NSLayoutTreeLineFragmentUsedRectForGlyphAtIndex(selfCopy, v177 - 1, 0);
     v185 = v195;
     v187 = v196;
     v191 = v194 + v197 - v180;
@@ -6803,8 +6803,8 @@ LABEL_416:
       goto LABEL_447;
     }
 
-    v198 = _NSGlyphTreeCharacterIndexForGlyphAtIndex(v15, v260.location);
-    v199 = _insertionPointHelperForCharacterAtIndex(v15, v198);
+    v198 = _NSGlyphTreeCharacterIndexForGlyphAtIndex(selfCopy, v260.location);
+    v199 = _insertionPointHelperForCharacterAtIndex(selfCopy, v198);
     v200 = 0;
     if (v199)
     {
@@ -6856,35 +6856,35 @@ LABEL_416:
             }
 
 LABEL_447:
-            v216 = *v16 + v202;
-            *v16 = v216;
+            v216 = *countCopy7 + v202;
+            *countCopy7 = v216;
             if (v240)
             {
-              [(NSLayoutManager *)v15 _growCachedRectArrayToSize:?];
-              v217 = v15->_cachedRectArray;
+              [(NSLayoutManager *)selfCopy _growCachedRectArrayToSize:?];
+              mutableBytes = selfCopy->_cachedRectArray;
             }
 
-            else if (a12)
+            else if (array)
             {
-              v217 = v257;
-              if (v216 > a13)
+              mutableBytes = arrayCopy2;
+              if (v216 > capacity)
               {
-                v218 = [MEMORY[0x1E695DF88] data];
-                [v218 setLength:32 * *v16];
-                v217 = [v218 mutableBytes];
-                memcpy(v217, a12, 32 * a13);
+                data4 = [MEMORY[0x1E695DF88] data];
+                [data4 setLength:32 * *countCopy7];
+                mutableBytes = [data4 mutableBytes];
+                memcpy(mutableBytes, array, 32 * capacity);
               }
             }
 
             else
             {
-              [v228 setLength:32 * v216];
-              v217 = [v228 mutableBytes];
+              [data setLength:32 * v216];
+              mutableBytes = [data mutableBytes];
             }
 
-            v213 = *v16;
-            v257 = v217;
-            v219 = &v217[*v16 - v202];
+            v213 = *countCopy7;
+            arrayCopy2 = mutableBytes;
+            v219 = &mutableBytes[*countCopy7 - v202];
             v219->origin.x = v207;
             *&v219->origin.y = v185;
             v219->size.width = 0.0;
@@ -6915,27 +6915,27 @@ LABEL_447:
   }
 
 LABEL_403:
-  if (v15->_textStorage && !v15->_extraLineFragmentContainer)
+  if (selfCopy->_textStorage && !selfCopy->_extraLineFragmentContainer)
   {
-    [(NSTypesetter *)[(NSLayoutManager *)v15 typesetter] layoutGlyphsInLayoutManager:v15 startingAtGlyphIndex:v177 maxNumberOfLineFragments:1 nextGlyphIndex:&v259];
+    [(NSTypesetter *)[(NSLayoutManager *)selfCopy typesetter] layoutGlyphsInLayoutManager:selfCopy startingAtGlyphIndex:v177 maxNumberOfLineFragments:1 nextGlyphIndex:&v259];
   }
 
-  if (v15->_extraLineFragmentContainer == a8)
+  if (selfCopy->_extraLineFragmentContainer == container)
   {
     *value = 0u;
     v263 = 0u;
-    _NSLayoutTreeGetExtraLineFragmentRect(v15, value, 0);
+    _NSLayoutTreeGetExtraLineFragmentRect(selfCopy, value, 0);
     v182 = value[0];
     v183 = *&v263;
     *value = 0u;
     v263 = 0u;
-    _NSLayoutTreeGetExtraLineFragmentRect(v15, 0, value);
+    _NSLayoutTreeGetExtraLineFragmentRect(selfCopy, 0, value);
     v184 = value[0];
     v185 = value[1];
     v187 = *(&v263 + 1);
     v186 = *&v263;
-    v188 = *v16 + 1;
-    *v16 = v188;
+    v188 = *countCopy7 + 1;
+    *countCopy7 = v188;
     v189 = *&v184 + v186;
     v190 = v180 + *&v184;
     if (v189 == *&v182 + v183)
@@ -6950,30 +6950,30 @@ LABEL_403:
 
     if (v240)
     {
-      [(NSLayoutManager *)v15 _growCachedRectArrayToSize:?];
-      v257 = v15->_cachedRectArray;
+      [(NSLayoutManager *)selfCopy _growCachedRectArrayToSize:?];
+      arrayCopy2 = selfCopy->_cachedRectArray;
     }
 
-    else if (a12)
+    else if (array)
     {
-      if (v188 > a13)
+      if (v188 > capacity)
       {
-        v192 = [MEMORY[0x1E695DF88] data];
-        [v192 setLength:32 * *v16];
-        v257 = [v192 mutableBytes];
-        memcpy(v257, a12, 32 * a13);
+        data5 = [MEMORY[0x1E695DF88] data];
+        [data5 setLength:32 * *countCopy7];
+        arrayCopy2 = [data5 mutableBytes];
+        memcpy(arrayCopy2, array, 32 * capacity);
       }
     }
 
     else
     {
-      [v228 setLength:32 * v188];
-      v257 = [v228 mutableBytes];
+      [data setLength:32 * v188];
+      arrayCopy2 = [data mutableBytes];
     }
 
-    v213 = *v16;
+    v213 = *countCopy7;
 LABEL_430:
-    v214 = &v257[v213];
+    v214 = &arrayCopy2[v213];
     v214[-1].origin.x = v191;
     *&v214[-1].origin.y = v185;
     v214[-1].size.width = 0.0;
@@ -6981,37 +6981,37 @@ LABEL_430:
   }
 
 LABEL_431:
-  lmFlags = v15->_lmFlags;
+  lmFlags = selfCopy->_lmFlags;
   if ((*&lmFlags & 0x40) == 0)
   {
-    if (!v15->_displayInvalidationDisableStack)
+    if (!selfCopy->_displayInvalidationDisableStack)
     {
       goto LABEL_435;
     }
 
-    if (!--v15->_displayInvalidationDisableStack)
+    if (!--selfCopy->_displayInvalidationDisableStack)
     {
-      lmFlags = v15->_lmFlags;
+      lmFlags = selfCopy->_lmFlags;
 LABEL_435:
-      v15->_lmFlags = (*&lmFlags | 0x40);
-      [(NSLayoutManager *)v15 _invalidateDisplayIfNeeded];
-      *&v15->_lmFlags &= ~0x40u;
+      selfCopy->_lmFlags = (*&lmFlags | 0x40);
+      [(NSLayoutManager *)selfCopy _invalidateDisplayIfNeeded];
+      *&selfCopy->_lmFlags &= ~0x40u;
     }
   }
 
   if (v240)
   {
-    *&v15->_lmFlags &= ~0x20u;
+    *&selfCopy->_lmFlags &= ~0x20u;
   }
 
-  if (v171)
+  if (linesCopy3)
   {
-    *v171 = v39 & 1;
+    *linesCopy3 = v39 & 1;
   }
 
-  if (*v16)
+  if (*countCopy7)
   {
-    return v257;
+    return arrayCopy2;
   }
 
   else
@@ -7020,14 +7020,14 @@ LABEL_435:
   }
 }
 
-- (CGRect)_boundingRectForGlyphRange:(_NSRange)a3 inTextContainer:(id)a4 fast:(BOOL)a5 fullLineRectsOnly:(BOOL)a6
+- (CGRect)_boundingRectForGlyphRange:(_NSRange)range inTextContainer:(id)container fast:(BOOL)fast fullLineRectsOnly:(BOOL)only
 {
-  v6 = a4;
+  containerCopy = container;
   v110 = 0;
   v109 = 0;
   v108 = 0;
-  LOBYTE(v94) = a6;
-  v8 = [(NSLayoutManager *)self _rectArrayForRange:a3.location withinSelectionRange:a3.length rangeIsCharRange:0x7FFFFFFFFFFFFFFFLL singleRectOnly:0 fullLineRectsOnly:0 inTextContainer:1 rectCount:v94 rangeWithinContainer:a4 glyphsDrawOutsideLines:&v110, &v109, &v108];
+  LOBYTE(v94) = only;
+  v8 = [(NSLayoutManager *)self _rectArrayForRange:range.location withinSelectionRange:range.length rangeIsCharRange:0x7FFFFFFFFFFFFFFFLL singleRectOnly:0 fullLineRectsOnly:0 inTextContainer:1 rectCount:v94 rangeWithinContainer:container glyphsDrawOutsideLines:&v110, &v109, &v108];
   if (v110 != 1)
   {
     x = *MEMORY[0x1E696AA80];
@@ -7047,7 +7047,7 @@ LABEL_435:
   v14 = value.origin.y;
   size = value.size;
   extraData = self->_extraData;
-  if (((*(&self->_lmFlags + 3) & 0x40) != 0 || (*(extraData[30] + 56) & 1) == 0) && v109.length + v109.location == *(extraData[26] + 8) && self->_extraLineFragmentContainer == v6 && !NSIsEmptyRect(value))
+  if (((*(&self->_lmFlags + 3) & 0x40) != 0 || (*(extraData[30] + 56) & 1) == 0) && v109.length + v109.location == *(extraData[26] + 8) && self->_extraLineFragmentContainer == containerCopy && !NSIsEmptyRect(value))
   {
     x = NSLMUnionRect(x, y, width, height, v13, v14, size.width, size.height);
     y = v17;
@@ -7068,12 +7068,12 @@ LABEL_435:
 
     else
     {
-      v20 = v6;
+      v20 = containerCopy;
       location = v109.location;
       if ([(NSRunStorage *)self->_containerRuns count]<= location)
       {
         v25 = 0;
-        v6 = v20;
+        containerCopy = v20;
       }
 
       else
@@ -7090,14 +7090,14 @@ LABEL_435:
           v24 = 0;
         }
 
-        v6 = v20;
+        containerCopy = v20;
         v25 = *&containerRuns->_runs->var1[(containerRuns->_elementSize + 8) * (v24 + v23)];
       }
     }
 
-    v98 = [v25 layoutOrientation];
-    v95 = v6;
-    [(NSLayoutManager *)self _setCachedTextContainer:v6 isVertical:v98 != 0];
+    layoutOrientation = [v25 layoutOrientation];
+    v95 = containerCopy;
+    [(NSLayoutManager *)self _setCachedTextContainer:containerCopy isVertical:layoutOrientation != 0];
     if (v109.length)
     {
       v26 = v109.location;
@@ -7171,8 +7171,8 @@ LABEL_435:
                     v51 = NSDefaultFont();
                   }
 
-                  v53 = [v52 BOOLValue];
-                  if (v98)
+                  bOOLValue = [v52 BOOLValue];
+                  if (layoutOrientation)
                   {
                     v54 = v52 == 0;
                   }
@@ -7183,14 +7183,14 @@ LABEL_435:
                   }
 
                   v55 = v54;
-                  if ((v53 & 1) != 0 || (v56 = v51, v55))
+                  if ((bOOLValue & 1) != 0 || (verticalFont = v51, v55))
                   {
-                    v56 = [v51 verticalFont];
+                    verticalFont = [v51 verticalFont];
                   }
 
-                  if (v56)
+                  if (verticalFont)
                   {
-                    v51 = v56;
+                    v51 = verticalFont;
                   }
 
                   if ([v51 isVertical])
@@ -7307,12 +7307,12 @@ LABEL_59:
     }
 
     [(NSLayoutManager *)self _resetCachedTextContainer];
-    v6 = v95;
+    containerCopy = v95;
   }
 
   value.origin.x = 0.0;
   v87 = self->_extraData;
-  if (*(v87 + 10) == v6)
+  if (*(v87 + 10) == containerCopy)
   {
     v88 = 0.0;
 LABEL_74:
@@ -7325,7 +7325,7 @@ LABEL_74:
     goto LABEL_75;
   }
 
-  if (CFDictionaryGetValueIfPresent(*(v87 + 11), v6, &value))
+  if (CFDictionaryGetValueIfPresent(*(v87 + 11), containerCopy, &value))
   {
     v88 = value.origin.x;
     if (*&value.origin.x != 0x7FFFFFFFFFFFFFFFLL)
@@ -7346,15 +7346,15 @@ LABEL_75:
   return result;
 }
 
-- (_NSRange)_firstPassGlyphRangeForBoundingRect:(CGRect)a3 inTextContainer:(id)a4 hintGlyphRange:(_NSRange)a5 okToFillHoles:(BOOL)a6
+- (_NSRange)_firstPassGlyphRangeForBoundingRect:(CGRect)rect inTextContainer:(id)container hintGlyphRange:(_NSRange)range okToFillHoles:(BOOL)holes
 {
-  HIDWORD(bRect.origin.y) = a6;
-  length = a5.length;
-  location = a5.location;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  HIDWORD(bRect.origin.y) = holes;
+  length = range.length;
+  location = range.location;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   firstUnlaidGlyphIndex = 0;
   bRect.size.width = 0.0;
   bRect.size.height = 0.0;
@@ -7393,7 +7393,7 @@ LABEL_75:
       else
       {
         containerRuns = self->_containerRuns;
-        *&a3.origin.x = _NSBlockNumberForIndex(containerRuns, v17, 0).n128_u64[0];
+        *&rect.origin.x = _NSBlockNumberForIndex(containerRuns, v17, 0).n128_u64[0];
         v27 = 0;
         if (containerRuns->_gapBlockIndex <= v26)
         {
@@ -7403,7 +7403,7 @@ LABEL_75:
         v28 = *&containerRuns->_runs->var1[(containerRuns->_elementSize + 8) * (v27 + v26)];
       }
 
-      if (v28 != a4)
+      if (v28 != container)
       {
         goto LABEL_24;
       }
@@ -7448,7 +7448,7 @@ LABEL_19:
       }
     }
 
-    a3.origin.x = v20 + v24;
+    rect.origin.x = v20 + v24;
     if (v20 + v24 <= y)
     {
       goto LABEL_24;
@@ -7500,7 +7500,7 @@ LABEL_24:
       else
       {
         v40 = self->_containerRuns;
-        *&a3.origin.x = _NSBlockNumberForIndex(v40, location, 0).n128_u64[0];
+        *&rect.origin.x = _NSBlockNumberForIndex(v40, location, 0).n128_u64[0];
         v42 = 0;
         if (v40->_gapBlockIndex <= v41)
         {
@@ -7510,8 +7510,8 @@ LABEL_24:
         v43 = *&v40->_runs->var1[(v40->_elementSize + 8) * (v42 + v41)];
       }
 
-      v31 |= v43 == a4;
-      if (v43 == a4 && (v95.origin.x = v33, v95.origin.y = v35, v95.size.width = v37, v95.size.height = v39, v99.origin.x = x, v99.origin.y = y, v99.size.width = width, v99.size.height = height, NSIntersectsRect(v95, v99)))
+      v31 |= v43 == container;
+      if (v43 == container && (v95.origin.x = v33, v95.origin.y = v35, v95.size.width = v37, v95.size.height = v39, v99.origin.x = x, v99.origin.y = y, v99.size.width = width, v99.size.height = height, NSIntersectsRect(v95, v99)))
       {
         if (v14 == 0.0)
         {
@@ -7531,7 +7531,7 @@ LABEL_24:
 
       else
       {
-        v46 = v35 < y + height && v43 == a4;
+        v46 = v35 < y + height && v43 == container;
         if (((location < v32) & ~v31) == 0 && !v46)
         {
           break;
@@ -7551,7 +7551,7 @@ LABEL_24:
     while (location < v30);
   }
 
-  v47 = [(NSLayoutManager *)self _primitiveCharacterRangeForGlyphRange:*&v15, *&v14, a3.origin.x, *&x];
+  v47 = [(NSLayoutManager *)self _primitiveCharacterRangeForGlyphRange:*&v15, *&v14, rect.origin.x, *&x];
   v49 = v48;
   v51 = [(NSLayoutManager *)self _blockRangeForCharRange:v47, v48];
   if (v47 != v51 || v49 != v50)
@@ -7597,7 +7597,7 @@ LABEL_24:
           v70 = *&v67->_runs->var1[(v67->_elementSize + 8) * (v69 + v68)];
         }
 
-        if (v70 == a4)
+        if (v70 == container)
         {
           v96.origin.x = v60;
           v96.origin.y = v62;
@@ -7670,7 +7670,7 @@ LABEL_24:
           v84 = *&v81->_runs->var1[(v81->_elementSize + 8) * (v83 + v82)];
         }
 
-        if (v84 == a4)
+        if (v84 == container)
         {
           v97.origin.x = v74;
           v97.origin.y = v76;
@@ -7720,20 +7720,20 @@ LABEL_24:
   return result;
 }
 
-- (_NSRange)_firstPassGlyphRangeForBoundingRect:(CGRect)a3 inTextContainer:(id)a4 okToFillHoles:(BOOL)a5
+- (_NSRange)_firstPassGlyphRangeForBoundingRect:(CGRect)rect inTextContainer:(id)container okToFillHoles:(BOOL)holes
 {
-  v92 = a5;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  holesCopy = holes;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   value = 0;
   v97.location = 0;
   v97.length = 0;
   v96 = 0uLL;
   v10 = 0;
   v11 = 0;
-  if (!NSIsEmptyRect(a3))
+  if (!NSIsEmptyRect(rect))
   {
     firstUnlaidGlyphIndex = 0;
     if (self->_firstUnlaidCharIndex == 0x7FFFFFFFFFFFFFFFLL || self->_firstUnlaidGlyphIndex == 0x7FFFFFFFFFFFFFFFLL)
@@ -7746,9 +7746,9 @@ LABEL_24:
       firstUnlaidGlyphIndex = self->_firstUnlaidGlyphIndex;
     }
 
-    if (a4)
+    if (container)
     {
-      if (CFDictionaryGetValueIfPresent(*(self->_extraData + 12), a4, &value))
+      if (CFDictionaryGetValueIfPresent(*(self->_extraData + 12), container, &value))
       {
         v12 = value;
       }
@@ -7769,7 +7769,7 @@ LABEL_24:
       v13 = *(*(self->_extraData + 26) + 8);
     }
 
-    else if (v92)
+    else if (holesCopy)
     {
       _NSFastFillAllLayoutHolesForGlyphRange(self, v12, 1uLL);
       v94 = 0;
@@ -7827,8 +7827,8 @@ LABEL_24:
           v20 = *&containerRuns->_runs->var1[(containerRuns->_elementSize + 8) * (v18 + v17)];
         }
 
-        v21 = v20 == a4;
-        if (v20 == a4)
+        v21 = v20 == container;
+        if (v20 == container)
         {
           v24 = _NSLayoutTreeLineFragmentRectForGlyphAtIndex(self, v12, &v97);
           v26 = v25;
@@ -7957,7 +7957,7 @@ LABEL_24:
             break;
           }
 
-          if (v92 || (*(&self->_lmFlags + 3) & 0x40) != 0)
+          if (holesCopy || (*(&self->_lmFlags + 3) & 0x40) != 0)
           {
             [(NSLayoutManager *)self textContainerForGlyphAtIndex:v12 effectiveRange:&v96];
             v23 = v96.n128_u64[1];
@@ -7978,7 +7978,7 @@ LABEL_24:
           v12 = (v23 + v22);
         }
 
-        if (v92 && (*(&self->_lmFlags + 3) & 0x40) == 0)
+        if (holesCopy && (*(&self->_lmFlags + 3) & 0x40) == 0)
         {
           _NSFastFillAllLayoutHolesForGlyphRange(self, v12, 1uLL);
           v94 = 0;
@@ -8023,13 +8023,13 @@ LABEL_69:
 
     else
     {
-      v51 = [(NSLayoutManager *)self _glyphRangeForCharacterRange:v48 actualCharacterRange:v47 okToFillHoles:0, v92];
-      v52 = v51;
+      holesCopy = [(NSLayoutManager *)self _glyphRangeForCharacterRange:v48 actualCharacterRange:v47 okToFillHoles:0, holesCopy];
+      v52 = holesCopy;
       v54 = v53;
       v55 = v13;
-      if (v51 < v10)
+      if (holesCopy < v10)
       {
-        v56 = v51;
+        v56 = holesCopy;
         do
         {
           v57 = _NSLayoutTreeLineFragmentRectForGlyphAtIndex(self, v56, &v97);
@@ -8060,7 +8060,7 @@ LABEL_69:
             v13 = v55;
           }
 
-          if (v67 == a4)
+          if (v67 == container)
           {
             v104.origin.x = v57;
             v104.origin.y = v59;
@@ -8128,7 +8128,7 @@ LABEL_69:
               v71 = v81;
             }
 
-            if (v85 == a4)
+            if (v85 == container)
             {
               v105.origin.x = v72;
               v105.origin.y = v74;
@@ -8149,7 +8149,7 @@ LABEL_69:
             }
 
             v69 = v97.length + v97.location;
-            if (v92 && (*(&self->_lmFlags + 3) & 0x40) == 0)
+            if (holesCopy && (*(&self->_lmFlags + 3) & 0x40) == 0)
             {
               _NSFastFillAllLayoutHolesForGlyphRange(self, v97.length + v97.location, 1uLL);
               v94 = 0;
@@ -8171,23 +8171,23 @@ LABEL_69:
   return result;
 }
 
-- (_NSRange)_glyphRangeForBoundingRect:(CGRect)a3 inTextContainer:(id)a4 fast:(BOOL)a5 okToFillHoles:(BOOL)a6
+- (_NSRange)_glyphRangeForBoundingRect:(CGRect)rect inTextContainer:(id)container fast:(BOOL)fast okToFillHoles:(BOOL)holes
 {
-  v6 = a6;
-  v8 = a4;
-  height = a3.size.height;
-  y = a3.origin.y;
-  width = a3.size.width;
-  x = a3.origin.x;
+  holesCopy = holes;
+  containerCopy = container;
+  height = rect.size.height;
+  y = rect.origin.y;
+  width = rect.size.width;
+  x = rect.origin.x;
   firstUnlaidGlyphIndex = 0;
   value = 0;
   extraData = self->_extraData;
-  if (extraData[10] == a4)
+  if (extraData[10] == container)
   {
     v13 = 0;
   }
 
-  else if (!CFDictionaryGetValueIfPresent(extraData[11], a4, &value) || (v13 = value, value == 0x7FFFFFFFFFFFFFFFLL))
+  else if (!CFDictionaryGetValueIfPresent(extraData[11], container, &value) || (v13 = value, value == 0x7FFFFFFFFFFFFFFFLL))
   {
     v14 = 0;
     v15 = 0x7FFFFFFFFFFFFFFFLL;
@@ -8206,7 +8206,7 @@ LABEL_69:
 
   v16 = [(NSStorage *)self->_containerUsedRects elementAtIndex:v13];
   v17 = *(v16 + 14);
-  v127 = v8;
+  v127 = containerCopy;
   if (!v17)
   {
     goto LABEL_31;
@@ -8253,10 +8253,10 @@ LABEL_69:
       v23 = *&containerRuns->_runs->var1[(containerRuns->_elementSize + 8) * (v22 + v21)];
     }
 
-    v8 = v127;
+    containerCopy = v127;
   }
 
-  if (v23 == v8)
+  if (v23 == containerCopy)
   {
     goto LABEL_145;
   }
@@ -8287,29 +8287,29 @@ LABEL_69:
       v28 = *&v25->_runs->var1[(v25->_elementSize + 8) * (v27 + v26)];
     }
 
-    v8 = v127;
+    containerCopy = v127;
   }
 
-  if (v28 == v8)
+  if (v28 == containerCopy)
   {
 LABEL_145:
-    v29 = [(NSLayoutManager *)self _firstPassGlyphRangeForBoundingRect:v8 inTextContainer:*(v18 + 13) hintGlyphRange:*(v18 + 14) okToFillHoles:v6, x, y, width, height];
+    height = [(NSLayoutManager *)self _firstPassGlyphRangeForBoundingRect:containerCopy inTextContainer:*(v18 + 13) hintGlyphRange:*(v18 + 14) okToFillHoles:holesCopy, x, y, width, height];
   }
 
   else
   {
 LABEL_31:
-    v29 = [(NSLayoutManager *)self _firstPassGlyphRangeForBoundingRect:v8 inTextContainer:v6 okToFillHoles:x, y, width, height];
+    height = [(NSLayoutManager *)self _firstPassGlyphRangeForBoundingRect:containerCopy inTextContainer:holesCopy okToFillHoles:x, y, width, height];
   }
 
-  v15 = v29;
-  if (!a5)
+  v15 = height;
+  if (!fast)
   {
     v131 = v14;
     value = 0;
     v138 = 0;
-    v132 = [v8 layoutOrientation];
-    [(NSLayoutManager *)self _setCachedTextContainer:v8 isVertical:v132 != 0];
+    layoutOrientation = [containerCopy layoutOrientation];
+    [(NSLayoutManager *)self _setCachedTextContainer:containerCopy isVertical:layoutOrientation != 0];
     if (v15)
     {
       v30 = 0;
@@ -8339,10 +8339,10 @@ LABEL_31:
           }
 
           v36 = *&v33->_runs->var1[(v33->_elementSize + 8) * (v35 + v34)];
-          v8 = v127;
+          containerCopy = v127;
         }
 
-        if (v36 != v8)
+        if (v36 != containerCopy)
         {
           goto LABEL_88;
         }
@@ -8400,8 +8400,8 @@ LABEL_31:
                 v49 = NSDefaultFont();
               }
 
-              v51 = [v50 BOOLValue];
-              if (v132)
+              bOOLValue = [v50 BOOLValue];
+              if (layoutOrientation)
               {
                 v52 = v50 == 0;
               }
@@ -8412,14 +8412,14 @@ LABEL_31:
               }
 
               v53 = v52;
-              if ((v51 & 1) != 0 || (v54 = v49, v53))
+              if ((bOOLValue & 1) != 0 || (verticalFont = v49, v53))
               {
-                v54 = [v49 verticalFont];
+                verticalFont = [v49 verticalFont];
               }
 
-              if (v54)
+              if (verticalFont)
               {
-                v49 = v54;
+                v49 = verticalFont;
               }
 
               if ([v49 isVertical])
@@ -8493,7 +8493,7 @@ LABEL_79:
         v130 = value;
         v131 = v81;
 LABEL_82:
-        v8 = v127;
+        containerCopy = v127;
 LABEL_83:
         if (v31)
         {
@@ -8551,10 +8551,10 @@ LABEL_88:
           }
 
           v88 = *&v85->_runs->var1[(v85->_elementSize + 8) * (v87 + v86)];
-          v8 = v127;
+          containerCopy = v127;
         }
 
-        if (v88 != v8)
+        if (v88 != containerCopy)
         {
           break;
         }
@@ -8605,7 +8605,7 @@ LABEL_134:
             v82 = value + v138;
             if (v93 >= value + v138)
             {
-              v8 = v127;
+              containerCopy = v127;
               goto LABEL_138;
             }
           }
@@ -8627,8 +8627,8 @@ LABEL_134:
               v104 = NSDefaultFont();
             }
 
-            v106 = [v105 BOOLValue];
-            if (v132)
+            bOOLValue2 = [v105 BOOLValue];
+            if (layoutOrientation)
             {
               v107 = v105 == 0;
             }
@@ -8639,14 +8639,14 @@ LABEL_134:
             }
 
             v108 = v107;
-            if ((v106 & 1) != 0 || (v109 = v104, v108))
+            if ((bOOLValue2 & 1) != 0 || (verticalFont2 = v104, v108))
             {
-              v109 = [v104 verticalFont];
+              verticalFont2 = [v104 verticalFont];
             }
 
-            if (v109)
+            if (verticalFont2)
             {
-              v104 = v109;
+              v104 = verticalFont2;
             }
 
             if ([v104 isVertical])
@@ -8714,14 +8714,14 @@ LABEL_144:
   return result;
 }
 
-- (unint64_t)_indexOfFirstGlyphInTextContainer:(id)a3 okToFillHoles:(BOOL)a4
+- (unint64_t)_indexOfFirstGlyphInTextContainer:(id)container okToFillHoles:(BOOL)holes
 {
-  v4 = a4;
+  holesCopy = holes;
   v7 = 0x7FFFFFFFFFFFFFFFLL;
   value = 0x7FFFFFFFFFFFFFFFLL;
   firstUnlaidGlyphIndex = 0;
   *v38 = xmmword_18E856180;
-  if ((*(&self->_lmFlags + 3) & 0x40) != 0 && *(*(self->_extraData + 26) + 8) && [(NSMutableArray *)self->_textContainers objectAtIndex:0]== a3)
+  if ((*(&self->_lmFlags + 3) & 0x40) != 0 && *(*(self->_extraData + 26) + 8) && [(NSMutableArray *)self->_textContainers objectAtIndex:0]== container)
   {
     return 0;
   }
@@ -8745,9 +8745,9 @@ LABEL_144:
     }
   }
 
-  if (a3)
+  if (container)
   {
-    ValueIfPresent = CFDictionaryGetValueIfPresent(*(self->_extraData + 12), a3, &value);
+    ValueIfPresent = CFDictionaryGetValueIfPresent(*(self->_extraData + 12), container, &value);
     v8 = firstUnlaidGlyphIndex;
     if (ValueIfPresent)
     {
@@ -8757,7 +8757,7 @@ LABEL_144:
         return v7;
       }
 
-      CFDictionaryRemoveValue(*(self->_extraData + 12), a3);
+      CFDictionaryRemoveValue(*(self->_extraData + 12), container);
       v8 = firstUnlaidGlyphIndex;
     }
   }
@@ -8775,7 +8775,7 @@ LABEL_144:
     v10 = v8 - 1;
     if ([(NSRunStorage *)self->_containerRuns count]<= v8 - 1)
     {
-      if (!a3)
+      if (!container)
       {
         if (v38[0] >= firstUnlaidGlyphIndex)
         {
@@ -8806,7 +8806,7 @@ LABEL_144:
     v15 = *&containerRuns->_runs->var1[(containerRuns->_elementSize + 8) * (v13 + v12)];
   }
 
-  if (v15 == a3)
+  if (v15 == container)
   {
     goto LABEL_42;
   }
@@ -8853,7 +8853,7 @@ LABEL_27:
       }
     }
 
-    if (v15 != a3)
+    if (v15 != container)
     {
       goto LABEL_37;
     }
@@ -8869,9 +8869,9 @@ LABEL_42:
       v7 = 0x7FFFFFFFFFFFFFFFLL;
     }
 
-    if (v38[0] < firstUnlaidGlyphIndex && a3)
+    if (v38[0] < firstUnlaidGlyphIndex && container)
     {
-      CFDictionarySetValue(*(self->_extraData + 12), a3, v38[0]);
+      CFDictionarySetValue(*(self->_extraData + 12), container, v38[0]);
       return v38[0];
     }
 
@@ -8881,14 +8881,14 @@ LABEL_42:
 LABEL_37:
   v36 = 0;
   extraData = self->_extraData;
-  if (extraData[10] == a3)
+  if (extraData[10] == container)
   {
     v22 = 0;
   }
 
   else
   {
-    if (CFDictionaryGetValueIfPresent(extraData[11], a3, &v36))
+    if (CFDictionaryGetValueIfPresent(extraData[11], container, &v36))
     {
       v22 = v36;
     }
@@ -8943,7 +8943,7 @@ LABEL_37:
         v34 = *&v30->_runs->var1[(v30->_elementSize + 8) * (v32 + v31)];
       }
 
-      if (v34 == a3)
+      if (v34 == container)
       {
         break;
       }
@@ -8965,16 +8965,16 @@ LABEL_37:
       v7 = 0x7FFFFFFFFFFFFFFFLL;
     }
 
-    if (a3 && v29 < firstUnlaidGlyphIndex)
+    if (container && v29 < firstUnlaidGlyphIndex)
     {
-      CFDictionarySetValue(*(self->_extraData + 12), a3, v29);
+      CFDictionarySetValue(*(self->_extraData + 12), container, v29);
       return v29;
     }
 
     return v7;
   }
 
-  if (!v4)
+  if (!holesCopy)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
@@ -8982,7 +8982,7 @@ LABEL_37:
   v7 = (firstUnlaidGlyphIndex - 1);
   v36 = 0;
   v37 = 0;
-  if (v15 != a3)
+  if (v15 != container)
   {
     do
     {
@@ -9018,25 +9018,25 @@ LABEL_37:
       }
     }
 
-    while (v28 != a3);
+    while (v28 != container);
   }
 
-  if (a3)
+  if (container)
   {
-    CFDictionarySetValue(*(self->_extraData + 12), a3, v7);
+    CFDictionarySetValue(*(self->_extraData + 12), container, v7);
   }
 
   return v7;
 }
 
-- (void)_invalidateGlyphsForExtendedCharacterRange:(_NSRange)a3 changeInLength:(int64_t)a4 includeBlocks:(BOOL)a5
+- (void)_invalidateGlyphsForExtendedCharacterRange:(_NSRange)range changeInLength:(int64_t)length includeBlocks:(BOOL)blocks
 {
-  v5 = a5;
-  length = a3.length;
-  location = a3.location;
-  v10 = a3.length - a4;
-  v39 = a3.location;
-  v40 = a3.length - a4;
+  blocksCopy = blocks;
+  length = range.length;
+  location = range.location;
+  v10 = range.length - length;
+  v39 = range.location;
+  v40 = range.length - length;
   extraData = self->_extraData;
   v38 = (*(extraData[26] + 56) & 1) == 0 && (*(extraData[30] + 56) & 1) == 0;
   *&self->_lmFlags &= ~1u;
@@ -9045,23 +9045,23 @@ LABEL_37:
   _NSClearGlyphIndexForPointCache(self);
   self->_cachedLocationNominalGlyphRange = xmmword_18E856180;
   lmFlags = self->_lmFlags;
-  if (a4 <= 1)
+  if (length <= 1)
   {
     if ((*&lmFlags & 0x40000000) != 0 && self->_firstTextView && !*(self->_extraData + 45))
     {
       [(NSLayoutManager *)self _noteFirstTextViewVisibleCharacterRangeIfAfterIndex:location];
       if (*(self->_extraData + 45))
       {
-        *(self->_extraData + 44) += a4;
+        *(self->_extraData + 44) += length;
       }
 
-      if (a4)
+      if (length)
       {
         goto LABEL_23;
       }
     }
 
-    else if (a4)
+    else if (length)
     {
       goto LABEL_9;
     }
@@ -9085,7 +9085,7 @@ LABEL_9:
         v14 = *v13;
         if (v10 + location <= *v13)
         {
-          *v13 = v14 + a4;
+          *v13 = v14 + length;
         }
 
         else if (location <= v14)
@@ -9098,7 +9098,7 @@ LABEL_9:
   }
 
 LABEL_23:
-  if (!length || length == a4)
+  if (!length || length == length)
   {
     v23 = 0;
     *(self->_extraData + 24) = xmmword_18E856180;
@@ -9139,7 +9139,7 @@ LABEL_23:
 
   *(self->_extraData + 51) = v23;
 LABEL_34:
-  _NSGlyphTreePrepareToInvalidateGlyphsForCharacterRange(self, location, v10, a4);
+  _NSGlyphTreePrepareToInvalidateGlyphsForCharacterRange(self, location, v10, length);
   p_cachedFontCharRange = &self->_cachedFontCharRange;
   v42.location = location;
   v42.length = v10;
@@ -9150,7 +9150,7 @@ LABEL_34:
 
   else if (p_cachedFontCharRange->location > location)
   {
-    p_cachedFontCharRange->location += a4;
+    p_cachedFontCharRange->location += length;
   }
 
   v29 = _NSGlyphTreeGlyphRangeForCharacterRange(self, location, v10, 0, 0, 1, &v39);
@@ -9168,7 +9168,7 @@ LABEL_34:
   if (v25)
   {
     [(NSRunStorage *)self->_containerRuns removeElementsInRange:v29 coalesceRuns:v25, 1];
-    if (v5)
+    if (blocksCopy)
     {
       v32 = *(self->_extraData + 23);
       if (v32)
@@ -9183,7 +9183,7 @@ LABEL_34:
   v34 = v33 - v39;
   if (v33 == v39)
   {
-    if (v5)
+    if (blocksCopy)
     {
       goto LABEL_53;
     }
@@ -9192,7 +9192,7 @@ LABEL_34:
   }
 
   [(NSRunStorage *)self->_containerRuns insertElement:&v41 range:v29 coalesceRuns:v34, 1];
-  if (!v5)
+  if (!blocksCopy)
   {
 LABEL_51:
     v36 = *(self->_extraData + 23);
@@ -9211,7 +9211,7 @@ LABEL_51:
   }
 
 LABEL_53:
-  _NSGlyphTreeInvalidateGlyphsForCharacterRange(self, v39, v40, a4, 0, v26, v27, v28, v37);
+  _NSGlyphTreeInvalidateGlyphsForCharacterRange(self, v39, v40, length, 0, v26, v27, v28, v37);
   if ((*(*(self->_extraData + 26) + 56) & 2) == 0)
   {
     *&self->_lmFlags &= 0xF5EFFFFC;
@@ -9223,11 +9223,11 @@ LABEL_53:
   }
 }
 
-- (void)_invalidateLayoutForExtendedCharacterRange:(_NSRange)a3 isSoft:(BOOL)a4 invalidateUsage:(BOOL)a5
+- (void)_invalidateLayoutForExtendedCharacterRange:(_NSRange)range isSoft:(BOOL)soft invalidateUsage:(BOOL)usage
 {
-  v56 = a5;
-  length = a3.length;
-  location = a3.location;
+  usageCopy = usage;
+  length = range.length;
+  location = range.location;
   extraData = self->_extraData;
   v57 = (*(extraData[26] + 56) & 1) == 0 && (*(extraData[30] + 56) & 1) == 0;
   firstUnlaidGlyphIndex = 0;
@@ -9243,14 +9243,14 @@ LABEL_53:
   self->_firstUnlaidGlyphIndex = 0x7FFFFFFFFFFFFFFFLL;
   if (v10)
   {
-    a4 &= (location != 0) | ~a4 | (length == 0);
+    soft &= (location != 0) | ~soft | (length == 0);
   }
 
   self->_firstUnlaidCharIndex = 0x7FFFFFFFFFFFFFFFLL;
   _NSClearGlyphIndexForPointCache(self);
   self->_cachedLocationNominalGlyphRange = xmmword_18E856180;
-  v58 = a4;
-  if (!a4)
+  softCopy = soft;
+  if (!soft)
   {
     if ((*(&self->_lmFlags + 3) & 0x40) != 0 && self->_firstTextView && !*(self->_extraData + 45))
     {
@@ -9291,7 +9291,7 @@ LABEL_53:
 
           v24 = *&containerRuns->_runs->var1[(containerRuns->_elementSize + 8) * (v23 + v22)];
           length = v20;
-          a4 = v58;
+          soft = softCopy;
         }
 
         *(self->_extraData + 51) = v24;
@@ -9314,8 +9314,8 @@ LABEL_53:
     }
   }
 
-  _NSLayoutTreeInvalidateLayoutForCharacterRange(self, location, length, a4, v11, v12, v13, v14, v53);
-  if ((*(&self->_lmFlags + 3) & 0x40) == 0 || (location + length < v55 ? (v25 = 1) : (v25 = a4), !v25))
+  _NSLayoutTreeInvalidateLayoutForCharacterRange(self, location, length, soft, v11, v12, v13, v14, v53);
+  if ((*(&self->_lmFlags + 3) & 0x40) == 0 || (location + length < v55 ? (v25 = 1) : (v25 = soft), !v25))
   {
     _NSLayoutTreeSetExtraLineFragmentRect(self, *MEMORY[0x1E696AA80], *(MEMORY[0x1E696AA80] + 8), *(MEMORY[0x1E696AA80] + 16), *(MEMORY[0x1E696AA80] + 24), *MEMORY[0x1E696AA80], *(MEMORY[0x1E696AA80] + 8), *(MEMORY[0x1E696AA80] + 16), *(MEMORY[0x1E696AA80] + 24));
     self->_extraLineFragmentContainer = 0;
@@ -9382,7 +9382,7 @@ LABEL_53:
     if (v36 != 0x7FFFFFFFFFFFFFFFLL)
     {
       v38 = v37;
-      if (v56)
+      if (usageCopy)
       {
         [(NSLayoutManager *)self _invalidateUsageForTextContainersInRange:v36, v37 - v36];
       }
@@ -9406,7 +9406,7 @@ LABEL_53:
     if (v32)
     {
       v33 = v32;
-      if (v56)
+      if (usageCopy)
       {
         [(NSLayoutManager *)self _invalidateUsageForTextContainersInRange:0, v32];
       }
@@ -9418,7 +9418,7 @@ LABEL_53:
     }
   }
 
-  if (!v58 && (*(self->_extraData + 23) || [(NSRunStorage *)self->_containerRuns count]))
+  if (!softCopy && (*(self->_extraData + 23) || [(NSRunStorage *)self->_containerRuns count]))
   {
     v40 = _NSGlyphTreeGlyphIndexForCharacterAtIndex(self, location);
     v41 = _NSGlyphTreeGlyphIndexForCharacterAtIndex(self, location + length) - v40;
@@ -9503,10 +9503,10 @@ LABEL_53:
           objc_enumerationMutation(textContainers);
         }
 
-        v8 = [*(*(&v20 + 1) + 8 * i) textView];
-        if (v8)
+        textView = [*(*(&v20 + 1) + 8 * i) textView];
+        if (textView)
         {
-          v9 = v8;
+          v9 = textView;
           goto LABEL_11;
         }
       }
@@ -9527,17 +9527,17 @@ LABEL_11:
   {
     if (objc_opt_respondsToSelector())
     {
-      v10 = [self->_firstTextView delegate];
+      delegate = [self->_firstTextView delegate];
     }
 
     else
     {
-      v10 = 0;
+      delegate = 0;
     }
 
     firstTextView = self->_firstTextView;
     *(self->_extraData + 22) = xmmword_18E856180;
-    if (v10)
+    if (delegate)
     {
       if ([firstTextView layoutManager] == self && (objc_opt_respondsToSelector() & 1) != 0)
       {
@@ -9547,7 +9547,7 @@ LABEL_11:
       self->_firstTextView = objc_storeWeak(&self->_firstTextView, v9);
       if (objc_opt_respondsToSelector())
       {
-        [self->_firstTextView setDelegate:v10];
+        [self->_firstTextView setDelegate:delegate];
       }
 
       if (self->_firstTextView)
@@ -9615,18 +9615,18 @@ LABEL_34:
   }
 }
 
-- (void)_drawBackgroundForGlyphRange:(_NSRange)a3 atPoint:(CGPoint)a4
+- (void)_drawBackgroundForGlyphRange:(_NSRange)range atPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  length = a3.length;
-  location = a3.location;
-  v8 = self;
+  y = point.y;
+  x = point.x;
+  length = range.length;
+  location = range.location;
+  selfCopy = self;
   v9 = [(objc_class *)+[NSTextGraphicsContextProvider textGraphicsContextProviderClass](NSTextGraphicsContextProvider graphicsContextForApplicationFrameworkContext:"graphicsContextForApplicationFrameworkContext:", [(NSLayoutManager *)self applicationFrameworkContext]];
   c = [v9 CGContext];
   v118 = xmmword_18E856180;
-  v10 = [v9 isDrawingToScreen];
-  if ((*(&v8->_lmFlags + 3) & 0x10) != 0)
+  isDrawingToScreen = [v9 isDrawingToScreen];
+  if ((*(&selfCopy->_lmFlags + 3) & 0x10) != 0)
   {
     v114 = [v9 isFlipped] ^ 1;
   }
@@ -9637,32 +9637,32 @@ LABEL_34:
   }
 
   v11 = _os_feature_enabled_impl();
-  v12 = [(NSLayoutManager *)v8 applicationFrameworkContext];
-  v13 = [(NSTextStorage *)v8->_textStorage _lockForReading];
+  applicationFrameworkContext = [(NSLayoutManager *)selfCopy applicationFrameworkContext];
+  _lockForReading = [(NSTextStorage *)selfCopy->_textStorage _lockForReading];
   if (length)
   {
-    v107 = v13;
+    v107 = _lockForReading;
     v120.location = 0;
     v120.length = 0;
     v119.location = 0;
     v119.length = 0;
     v117 = 0;
-    _NSFastFillAllLayoutHolesForGlyphRange(v8, location, length);
-    v14 = [(NSLayoutManager *)v8 characterRangeForGlyphRange:location actualGlyphRange:length, 0];
+    _NSFastFillAllLayoutHolesForGlyphRange(selfCopy, location, length);
+    v14 = [(NSLayoutManager *)selfCopy characterRangeForGlyphRange:location actualGlyphRange:length, 0];
     v16 = v15;
-    if ((*(&v8->_lmFlags + 3) & 0x40) != 0)
+    if ((*(&selfCopy->_lmFlags + 3) & 0x40) != 0)
     {
-      v108 = [(NSMutableArray *)v8->_textContainers objectAtIndex:0];
+      v108 = [(NSMutableArray *)selfCopy->_textContainers objectAtIndex:0];
     }
 
-    else if ([(NSRunStorage *)v8->_containerRuns count]<= location)
+    else if ([(NSRunStorage *)selfCopy->_containerRuns count]<= location)
     {
       v108 = 0;
     }
 
     else
     {
-      containerRuns = v8->_containerRuns;
+      containerRuns = selfCopy->_containerRuns;
       _NSBlockNumberForIndex(containerRuns, location, 0);
       v19 = 0;
       if (containerRuns->_gapBlockIndex <= v18)
@@ -9677,16 +9677,16 @@ LABEL_34:
     CGContextSetShouldAntialias(c, 0);
     range2 = v14;
     range2_8 = v14 + v16;
-    p_isa = &v8->super.isa;
+    p_isa = &selfCopy->super.isa;
     v109 = v11;
     if (v14 < v14 + v16)
     {
       v110 = v16;
-      v105 = v10;
-      v106 = v12;
+      v105 = isDrawingToScreen;
+      v106 = applicationFrameworkContext;
       while (1)
       {
-        v21 = [-[NSTextStorage attribute:atIndex:longestEffectiveRange:inRange:](v8->_textStorage attribute:@"NSParagraphStyle" atIndex:v14 longestEffectiveRange:&v120 inRange:{range2, v110), "textBlocks"}];
+        v21 = [-[NSTextStorage attribute:atIndex:longestEffectiveRange:inRange:](selfCopy->_textStorage attribute:@"NSParagraphStyle" atIndex:v14 longestEffectiveRange:&v120 inRange:{range2, v110), "textBlocks"}];
         if (v21)
         {
           v22 = v21;
@@ -9701,13 +9701,13 @@ LABEL_44:
         v14 = v120.length + v120.location;
         if (v120.length + v120.location >= range2_8)
         {
-          v56 = 0;
+          v110 = 0;
           v57 = range2;
           v11 = v109;
           do
           {
-            v58 = [v8->_firstTextView markedRange];
-            v61 = v57 < v58 || v57 - v58 >= v59;
+            markedRange = [selfCopy->_firstTextView markedRange];
+            v61 = v57 < markedRange || v57 - markedRange >= v59;
             if ((v61 | v11))
             {
               v64 = v118;
@@ -9715,7 +9715,7 @@ LABEL_44:
               {
                 v67 = range2;
                 v66 = v110;
-                v56 = [(NSTextStorage *)v8->_textStorage attribute:@"NSBackgroundColor" atIndex:v57 longestEffectiveRange:&v118 inRange:range2, v110];
+                v110 = [(NSTextStorage *)selfCopy->_textStorage attribute:@"NSBackgroundColor" atIndex:v57 longestEffectiveRange:&v118 inRange:range2, v110];
                 v64 = v118;
               }
 
@@ -9729,16 +9729,16 @@ LABEL_44:
               v123.length = v66;
               v68 = NSIntersectionRange(v64, v123);
               v120 = v68;
-              if ((v105 & 1) != 0 || (v69 = v56, (*(v8->_extraData + 449) & 0x10) != 0))
+              if ((v105 & 1) != 0 || (v69 = v110, (*(selfCopy->_extraData + 449) & 0x10) != 0))
               {
-                v70 = [(NSLayoutManager *)v8 temporaryAttributesAtCharacterIndex:v57 longestEffectiveRange:&v119 inRange:v68.location, v68.length];
-                if ((*(v8->_extraData + 449) & 0x10) != 0)
+                v70 = [(NSLayoutManager *)selfCopy temporaryAttributesAtCharacterIndex:v57 longestEffectiveRange:&v119 inRange:v68.location, v68.length];
+                if ((*(selfCopy->_extraData + 449) & 0x10) != 0)
                 {
-                  v70 = [-[NSLayoutManager delegate](v8 "delegate")];
+                  v70 = [-[NSLayoutManager delegate](selfCopy "delegate")];
                 }
 
                 v120 = NSIntersectionRange(v120, v119);
-                v69 = v56;
+                v69 = v110;
                 if (v70)
                 {
                   v71 = [(NSDictionary *)v70 objectForKey:@"NSBackgroundColor"];
@@ -9749,7 +9749,7 @@ LABEL_44:
 
                   else
                   {
-                    v69 = v56;
+                    v69 = v110;
                   }
                 }
               }
@@ -9759,8 +9759,8 @@ LABEL_44:
               {
                 if (([v69 isEqual:0] & 1) == 0)
                 {
-                  [-[NSLayoutManager renderingColorForDocumentColor:](v8 renderingColorForDocumentColor:{v69), "set"}];
-                  v72 = [(NSLayoutManager *)v8 rectArrayForCharacterRange:v120.location withinSelectedCharacterRange:v120.length inTextContainer:0x7FFFFFFFFFFFFFFFLL rectCount:0, v108, &v117];
+                  [-[NSLayoutManager renderingColorForDocumentColor:](selfCopy renderingColorForDocumentColor:{v69), "set"}];
+                  v72 = [(NSLayoutManager *)selfCopy rectArrayForCharacterRange:v120.location withinSelectedCharacterRange:v120.length inTextContainer:0x7FFFFFFFFFFFFFFFLL rectCount:0, v108, &v117];
                   if (v117)
                   {
                     v73 = v72;
@@ -9785,7 +9785,7 @@ LABEL_44:
                     }
 
                     while (v74);
-                    [NSLayoutManager fillBackgroundRectArray:v8 count:"fillBackgroundRectArray:count:forCharacterRange:color:" forCharacterRange:v72 color:?];
+                    [NSLayoutManager fillBackgroundRectArray:selfCopy count:"fillBackgroundRectArray:count:forCharacterRange:color:" forCharacterRange:v72 color:?];
                   }
                 }
               }
@@ -9795,13 +9795,13 @@ LABEL_44:
 
             else
             {
-              v62 = [v8->_firstTextView markedRange];
-              v57 = v62 + v63;
+              markedRange2 = [selfCopy->_firstTextView markedRange];
+              v57 = markedRange2 + v63;
             }
           }
 
           while (v57 < range2_8);
-          v12 = v106;
+          applicationFrameworkContext = v106;
           v16 = v110;
           goto LABEL_80;
         }
@@ -9815,7 +9815,7 @@ LABEL_44:
 
       else
       {
-        v25 = [-[NSTextStorage attribute:atIndex:effectiveRange:](v8->_textStorage attribute:@"NSParagraphStyle" atIndex:v14 - 1 effectiveRange:{0), "textBlocks"}];
+        v25 = [-[NSTextStorage attribute:atIndex:effectiveRange:](selfCopy->_textStorage attribute:@"NSParagraphStyle" atIndex:v14 - 1 effectiveRange:{0), "textBlocks"}];
         v26 = v25;
         if (v25)
         {
@@ -9839,16 +9839,16 @@ LABEL_25:
 
         else
         {
-          v32 = [(NSLayoutManager *)v8 glyphRangeForCharacterRange:v14 actualCharacterRange:1, 0];
+          v32 = [(NSLayoutManager *)selfCopy glyphRangeForCharacterRange:v14 actualCharacterRange:1, 0];
           v116.location = 0;
           v116.length = 0;
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v33 = [v30 table];
-            if (!v31 || (v34 = [v26 objectAtIndex:v28], objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || v33 != objc_msgSend(v34, "table"))
+            table = [v30 table];
+            if (!v31 || (v34 = [v26 objectAtIndex:v28], objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || table != objc_msgSend(v34, "table"))
             {
-              [p_isa boundsRectForTextBlock:v33 atIndex:v32 effectiveRange:&v116];
+              [p_isa boundsRectForTextBlock:table atIndex:v32 effectiveRange:&v116];
               if (v116.length)
               {
                 v39 = v35;
@@ -9858,13 +9858,13 @@ LABEL_25:
                 if (!NSIsEmptyRect(*&v35))
                 {
                   v43 = [p_isa characterRangeForGlyphRange:v116.location actualGlyphRange:{v116.length, 0}];
-                  [v33 drawBackgroundWithFrame:0 inView:v43 characterRange:v44 layoutManager:{p_isa, x + v39, y + v40, v41, v42}];
+                  [table drawBackgroundWithFrame:0 inView:v43 characterRange:v44 layoutManager:{p_isa, x + v39, y + v40, v41, v42}];
                 }
               }
             }
           }
 
-          v8 = p_isa;
+          selfCopy = p_isa;
           [p_isa boundsRectForTextBlock:v30 atIndex:v32 effectiveRange:&v116];
           if (v116.length)
           {
@@ -9901,11 +9901,11 @@ LABEL_80:
       goto LABEL_124;
     }
 
-    v77 = [p_isa[13] markedRange];
+    markedRange3 = [p_isa[13] markedRange];
     v79 = v78;
     if (objc_opt_respondsToSelector())
     {
-      v80 = [p_isa[13] attributedSubstringForMarkedRange];
+      attributedSubstringForMarkedRange = [p_isa[13] attributedSubstringForMarkedRange];
       if (!v79)
       {
 LABEL_124:
@@ -9921,14 +9921,14 @@ LABEL_124:
 
     else
     {
-      v80 = 0;
+      attributedSubstringForMarkedRange = 0;
       if (!v79)
       {
         goto LABEL_124;
       }
     }
 
-    v122.location = v77;
+    v122.location = markedRange3;
     v122.length = v79;
     v124.location = range2;
     v124.length = v16;
@@ -9938,24 +9938,24 @@ LABEL_124:
       goto LABEL_124;
     }
 
-    if (v80)
+    if (attributedSubstringForMarkedRange)
     {
-      v81 = [v80 length];
+      v81 = [attributedSubstringForMarkedRange length];
       if (v120.length)
       {
         v82 = v81;
         v83 = v120.location;
         do
         {
-          v84 = [v80 attribute:@"NSBackgroundColor" atIndex:v83 - v77 longestEffectiveRange:&v119 inRange:{0, v82}];
-          if (!((v84 != 0) | v11 & 1))
+          _markedTextBackgroundColor = [attributedSubstringForMarkedRange attribute:@"NSBackgroundColor" atIndex:v83 - markedRange3 longestEffectiveRange:&v119 inRange:{0, v82}];
+          if (!((_markedTextBackgroundColor != 0) | v11 & 1))
           {
-            v84 = [getNSColorClass_0[0]() _markedTextBackgroundColor];
+            _markedTextBackgroundColor = [getNSColorClass_0[0]() _markedTextBackgroundColor];
           }
 
           v116.location = 0;
           v116.length = 0;
-          v85 = [v80 attribute:NSMarkedClauseSegmentAttributeName atIndex:v120.location - v77 longestEffectiveRange:&v116 inRange:{0, v82}];
+          v85 = [attributedSubstringForMarkedRange attribute:NSMarkedClauseSegmentAttributeName atIndex:v120.location - markedRange3 longestEffectiveRange:&v116 inRange:{0, v82}];
           v86 = v119;
           if (v85)
           {
@@ -9963,15 +9963,15 @@ LABEL_124:
             v119.length = v86.length;
           }
 
-          v86.location += v77;
+          v86.location += markedRange3;
           v119.location = v86.location;
           v88 = NSIntersectionRange(v86, v120);
           v87 = v88.length;
           v119 = v88;
-          if (v84)
+          if (_markedTextBackgroundColor)
           {
-            [objc_msgSend(p_isa renderingColorForDocumentColor:{v84), "set"}];
-            v89 = [p_isa rectArrayForCharacterRange:v119.location withinSelectedCharacterRange:v119.length inTextContainer:v77 rectCount:{v79, v108, &v117}];
+            [objc_msgSend(p_isa renderingColorForDocumentColor:{_markedTextBackgroundColor), "set"}];
+            v89 = [p_isa rectArrayForCharacterRange:v119.location withinSelectedCharacterRange:v119.length inTextContainer:markedRange3 rectCount:{v79, v108, &v117}];
             if (v117)
             {
               v90 = v89;
@@ -10041,39 +10041,39 @@ LABEL_124:
 
     if (objc_opt_respondsToSelector())
     {
-      v98 = [p_isa[13] markedTextAttributes];
+      markedTextAttributes = [p_isa[13] markedTextAttributes];
     }
 
     else
     {
-      v98 = 0;
+      markedTextAttributes = 0;
     }
 
-    v99 = [v98 objectForKey:@"NSBackgroundColor"];
-    if (!v99 && v12 != 2)
+    _markedTextBackgroundColor2 = [markedTextAttributes objectForKey:@"NSBackgroundColor"];
+    if (!_markedTextBackgroundColor2 && applicationFrameworkContext != 2)
     {
       if ((objc_opt_respondsToSelector() & 1) == 0)
       {
         goto LABEL_124;
       }
 
-      v99 = [objc_msgSend(p_isa[13] "markedTextStyle")];
-      if (v99)
+      _markedTextBackgroundColor2 = [objc_msgSend(p_isa[13] "markedTextStyle")];
+      if (_markedTextBackgroundColor2)
       {
         goto LABEL_117;
       }
 
-      v99 = [getNSColorClass_0[0]() _markedTextBackgroundColor];
+      _markedTextBackgroundColor2 = [getNSColorClass_0[0]() _markedTextBackgroundColor];
     }
 
-    if (!v99)
+    if (!_markedTextBackgroundColor2)
     {
       goto LABEL_124;
     }
 
 LABEL_117:
-    [objc_msgSend(p_isa renderingColorForDocumentColor:{v99), "set"}];
-    v100 = [p_isa rectArrayForCharacterRange:v120.location withinSelectedCharacterRange:v120.length inTextContainer:v77 rectCount:{v79, v108, &v117}];
+    [objc_msgSend(p_isa renderingColorForDocumentColor:{_markedTextBackgroundColor2), "set"}];
+    v100 = [p_isa rectArrayForCharacterRange:v120.location withinSelectedCharacterRange:v120.length inTextContainer:markedRange3 rectCount:{v79, v108, &v117}];
     if (v117)
     {
       v101 = v100;
@@ -10104,21 +10104,21 @@ LABEL_117:
     goto LABEL_124;
   }
 
-  if (v13)
+  if (_lockForReading)
   {
-    textStorage = v8->_textStorage;
+    textStorage = selfCopy->_textStorage;
 
     [(NSTextStorage *)textStorage _unlock];
   }
 }
 
-- (id)selectedTextAttributesForCharacterAtIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4
+- (id)selectedTextAttributesForCharacterAtIndex:(unint64_t)index effectiveRange:(_NSRange *)range
 {
-  if (a4)
+  if (range)
   {
     v7 = [(NSTextStorage *)self->_textStorage length];
-    a4->location = 0;
-    a4->length = v7;
+    range->location = 0;
+    range->length = v7;
   }
 
   if (![(NSLayoutManager *)self delegate])
@@ -10132,19 +10132,19 @@ LABEL_117:
     return 0;
   }
 
-  v8 = [(NSLayoutManager *)self delegate];
+  delegate = [(NSLayoutManager *)self delegate];
 
-  return [v8 layoutManager:self shouldUseSelectedTextAttributes:0 atCharacterIndex:a3 effectiveRange:a4];
+  return [delegate layoutManager:self shouldUseSelectedTextAttributes:0 atCharacterIndex:index effectiveRange:range];
 }
 
-- (char)_packedGlyphs:(unint64_t)a3 range:(_NSRange)a4 length:(unint64_t *)a5
+- (char)_packedGlyphs:(unint64_t)glyphs range:(_NSRange)range length:(unint64_t *)length
 {
-  length = a4.length;
-  location = a4.location;
-  v9 = 2 * a4.length + 2;
+  length = range.length;
+  location = range.location;
+  v9 = 2 * range.length + 2;
   if (self->_glyphBufferSize < v9)
   {
-    self->_glyphBuffer = NSReallocateCollectable(self->_glyphBuffer, 2 * a4.length + 2, 0);
+    self->_glyphBuffer = NSReallocateCollectable(self->_glyphBuffer, 2 * range.length + 2, 0);
     if (!self->_glyphBuffer)
     {
       [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695DA18] format:{@"*** %@, _getGlyphBuffer(): NSZoneMalloc failed!", objc_opt_class()}];
@@ -10160,17 +10160,17 @@ LABEL_117:
   }
 
   PackedGlyphsInRange = _NSGlyphTreeGetPackedGlyphsInRange(self, location, length, glyphBuffer);
-  if (a5)
+  if (length)
   {
-    *a5 = 2 * PackedGlyphsInRange;
+    *length = 2 * PackedGlyphsInRange;
   }
 
   return glyphBuffer;
 }
 
-- (void)_drawGlyphsForGlyphRange:(_NSRange)a3 atPoint:(CGPoint)a4
+- (void)_drawGlyphsForGlyphRange:(_NSRange)range atPoint:(CGPoint)point
 {
-  v6 = (MEMORY[0x1EEE9AC00])(self, a2, a3.location, a3.length);
+  v6 = (MEMORY[0x1EEE9AC00])(self, a2, range.location, range.length);
   v303 = v7;
   v282 = v6;
   v353 = *MEMORY[0x1E69E9840];
@@ -10179,11 +10179,11 @@ LABEL_117:
   {
     v9 = v5;
     v10 = v4;
-    v265 = [*(v4 + 8) _lockForReading];
+    _lockForReading = [*(v4 + 8) _lockForReading];
     v267 = _os_feature_enabled_impl();
     v331 = v10;
     v11 = -[objc_class graphicsContextForApplicationFrameworkContext:](+[NSTextGraphicsContextProvider textGraphicsContextProviderClass](NSTextGraphicsContextProvider, "textGraphicsContextProviderClass"), "graphicsContextForApplicationFrameworkContext:", [v10 applicationFrameworkContext]);
-    v12 = [v11 CGContext];
+    cGContext = [v11 CGContext];
     v346 = xmmword_18E856180;
     range2 = xmmword_18E856180;
     v344 = xmmword_18E856180;
@@ -10200,12 +10200,12 @@ LABEL_117:
       v333 = 0;
     }
 
-    v13 = [v10 _drawsDebugBaselines];
+    _drawsDebugBaselines = [v10 _drawsDebugBaselines];
     v14 = 0.0;
-    if (v13)
+    if (_drawsDebugBaselines)
     {
       memset(v351, 0, 48);
-      CGContextGetCTM(v351, v12);
+      CGContextGetCTM(v351, cGContext);
       v15 = fabs(v351[0].a * v351[0].d - v351[0].b * v351[0].c);
       v16 = 1.0 / sqrt(v15);
       if (v15 <= 0.001)
@@ -10255,33 +10255,33 @@ LABEL_117:
       v23 = *(v20[7] + (v20[2] + 8) * (v22 + v21) + 8);
     }
 
-    v24 = [v23 layoutOrientation];
-    [v10 _setCachedTextContainer:v23 isVertical:v24 != 0];
-    v284 = v24;
+    layoutOrientation = [v23 layoutOrientation];
+    [v10 _setCachedTextContainer:v23 isVertical:layoutOrientation != 0];
+    v284 = layoutOrientation;
     v25 = *(v10 + 104);
-    c = v12;
+    c = cGContext;
     v283 = v11;
-    v261 = v13;
+    v261 = _drawsDebugBaselines;
     v260 = v14;
     v328 = v19;
     v266 = v23;
     if (v25)
     {
-      v26 = [v25 markedRange];
+      markedRange = [v25 markedRange];
       v28 = v27;
       if (NSIntersectsRange() && (objc_opt_respondsToSelector() & 1) != 0)
       {
-        v271 = [*(v10 + 104) attributedSubstringForMarkedRange];
+        attributedSubstringForMarkedRange = [*(v10 + 104) attributedSubstringForMarkedRange];
       }
 
       else
       {
-        v271 = 0;
+        attributedSubstringForMarkedRange = 0;
       }
 
       if (objc_opt_respondsToSelector())
       {
-        v29 = [*(v10 + 104) selectedRange];
+        selectedRange = [*(v10 + 104) selectedRange];
         v31 = v30;
         v32 = v9;
         v33 = v28;
@@ -10293,18 +10293,18 @@ LABEL_117:
         v32 = v9;
         v34 = 0;
         v33 = v28;
-        v29 = 0x7FFFFFFFFFFFFFFFLL;
+        selectedRange = 0x7FFFFFFFFFFFFFFFLL;
       }
     }
 
     else
     {
       v32 = v9;
-      v271 = 0;
+      attributedSubstringForMarkedRange = 0;
       v34 = 0;
       v33 = 0;
-      v29 = 0x7FFFFFFFFFFFFFFFLL;
-      v26 = 0x7FFFFFFFFFFFFFFFLL;
+      selectedRange = 0x7FFFFFFFFFFFFFFFLL;
+      markedRange = 0x7FFFFFFFFFFFFFFFLL;
     }
 
     v274 = 0;
@@ -10317,8 +10317,8 @@ LABEL_117:
     v304 = 0;
     v323 = 0;
     v317 = 0;
-    v36 = 0;
-    v327 = 0;
+    isVertical = 0;
+    brownColor = 0;
     v308 = 0;
     v315 = 0;
     v309 = 0;
@@ -10362,10 +10362,10 @@ LABEL_117:
     aRect = *(MEMORY[0x1E696AA80] + 24);
     bRect = aRect;
     v281 = v33;
-    v301 = v26;
-    v270 = v26 + v33;
-    v277 = v29;
-    v272 = v29 + v34;
+    v301 = markedRange;
+    v270 = markedRange + v33;
+    v277 = selectedRange;
+    v272 = selectedRange + v34;
     v280 = 0x7FFFFFFFFFFFFFFFLL;
     range1 = v34;
     v263 = 0x7FFFFFFFFFFFFFFFLL;
@@ -10433,7 +10433,7 @@ LABEL_117:
         }
 
         v50 = [v332 objectForKey:@"CTVerticalForms"];
-        v51 = [v50 BOOLValue];
+        bOOLValue = [v50 BOOLValue];
         if (v284)
         {
           v52 = v50 == 0;
@@ -10451,22 +10451,22 @@ LABEL_117:
 
         else
         {
-          v53 = v51;
+          v53 = bOOLValue;
         }
 
-        v54 = v49;
+        verticalFont = v49;
         if (v53 == 1)
         {
-          v54 = [v49 verticalFont];
+          verticalFont = [v49 verticalFont];
         }
 
-        if (!v54)
+        if (!verticalFont)
         {
-          v54 = v49;
+          verticalFont = v49;
         }
 
-        v323 = v54;
-        v36 = [v54 isVertical];
+        v323 = verticalFont;
+        isVertical = [verticalFont isVertical];
         if (v323)
         {
           [v323 _textMatrixTransformForContext:v283];
@@ -10548,15 +10548,15 @@ LABEL_161:
         v110 = v346.length;
         if (v302 && length)
         {
-          v111 = [v302 integerValue];
-          if (v111 <= 0)
+          integerValue = [v302 integerValue];
+          if (integerValue <= 0)
           {
-            v112 = -(-v111 & 3);
+            v112 = -(-integerValue & 3);
           }
 
           else
           {
-            v112 = v111 & 3;
+            v112 = integerValue & 3;
           }
 
           v113 = _NSLayoutTreeLineFragmentUsedRectForGlyphAtIndex(v331, location, 0);
@@ -10812,12 +10812,12 @@ LABEL_226:
 
           if (!v275)
           {
-            v172 = [getNSColorClass_0[0]() blackColor];
+            blackColor = [getNSColorClass_0[0]() blackColor];
             if (v277 == 0x7FFFFFFFFFFFFFFFLL || !NSIntersectsRange())
             {
-              if (v327 && ([v327 isEqual:v172] & 1) == 0)
+              if (brownColor && ([brownColor isEqual:blackColor] & 1) == 0)
               {
-                v275 = [v327 colorWithAlphaComponent:0.8];
+                v275 = [brownColor colorWithAlphaComponent:0.8];
               }
 
               else
@@ -10828,10 +10828,10 @@ LABEL_226:
 
             else
             {
-              v173 = v327;
-              if (!v327)
+              v173 = brownColor;
+              if (!brownColor)
               {
-                v173 = v172;
+                v173 = blackColor;
               }
 
               v275 = v173;
@@ -10860,15 +10860,15 @@ LABEL_226:
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v175 = [v295 BOOLValue];
+              bOOLValue2 = [v295 BOOLValue];
             }
 
             else
             {
-              v175 = v112 != 1;
+              bOOLValue2 = v112 != 1;
             }
 
-            -[__NSLMMarkedTextUnderlineRenderer processMarkedTextUnderlineStartX:endX:yPosition:underlineColor:selected:](v274, [v331 renderingColorForDocumentColor:v275], v175, v161, v138, y);
+            -[__NSLMMarkedTextUnderlineRenderer processMarkedTextUnderlineStartX:endX:yPosition:underlineColor:selected:](v274, [v331 renderingColorForDocumentColor:v275], bOOLValue2, v161, v138, y);
           }
 
           else
@@ -10896,18 +10896,18 @@ LABEL_226:
         v179 = v303 + v276;
         if (v299)
         {
-          v180 = [v299 attachmentCell];
+          attachmentCell = [v299 attachmentCell];
           [v331 attachmentSizeForGlyphAtIndex:location];
           v183 = v181;
           v184 = v182;
-          if (v180)
+          if (attachmentCell)
           {
-            [v331 showAttachmentCell:v180 inRect:v328 characterIndex:{v108, v179, v181, v182}];
+            [v331 showAttachmentCell:attachmentCell inRect:v328 characterIndex:{v108, v179, v181, v182}];
           }
 
           else
           {
-            [objc_msgSend(v331 renderingColorForDocumentColor:{v327), "set"}];
+            [objc_msgSend(v331 renderingColorForDocumentColor:{brownColor), "set"}];
             [v331 showAttachment:v299 inRect:v266 textContainer:v328 characterIndex:{v108, v179, v183, v184}];
           }
 
@@ -10988,7 +10988,7 @@ LABEL_226:
               v300 = v203;
               v340.f64[0] = v108;
               v340.f64[1] = v179;
-              if (v36)
+              if (isVertical)
               {
                 [(__CTFont *)v203 getVerticalOriginTranslations:&v347 forCGGlyphs:&glyphs count:1];
                 v205 = v348;
@@ -11012,7 +11012,7 @@ LABEL_226:
           }
 
           [v323 getAdvancements:&v349 forCGGlyphs:v195 count:v202];
-          if (v36)
+          if (isVertical)
           {
             [v323 getVerticalOriginTranslations:&v347 forCGGlyphs:v195 count:v202];
           }
@@ -11024,7 +11024,7 @@ LABEL_226:
           {
             v194->a = v108;
             v194->b = v179;
-            if (v36)
+            if (isVertical)
             {
               v208 = *v206;
               if (!v333)
@@ -11101,7 +11101,7 @@ LABEL_319:
           }
 
           v215 = (v214 & 1) != 0 || [v331 glyphAtIndex:v193] != 0;
-          [objc_msgSend(v331 renderingColorForDocumentColor:{v327), "set"}];
+          [objc_msgSend(v331 renderingColorForDocumentColor:{brownColor), "set"}];
           if ((v293 & 7) != 0 && v215)
           {
             CGContextSaveGState(c);
@@ -11192,10 +11192,10 @@ LABEL_319:
             }
           }
 
-          v229 = v332;
+          dictionary = v332;
           if (!v332)
           {
-            v229 = [MEMORY[0x1E695DF20] dictionary];
+            dictionary = [MEMORY[0x1E695DF20] dictionary];
           }
 
           characters.a = v319;
@@ -11203,7 +11203,7 @@ LABEL_319:
           characters.c = v223;
           characters.d = v222;
           *&characters.tx = v338;
-          [v331 showCGGlyphs:v352 positions:v351 count:(v195 - v352) >> 1 font:v323 matrix:&characters attributes:v229 inContext:c];
+          [v331 showCGGlyphs:v352 positions:v351 count:(v195 - v352) >> 1 font:v323 matrix:&characters attributes:dictionary inContext:c];
           if (v300)
           {
             CGContextSaveGState(c);
@@ -11213,7 +11213,7 @@ LABEL_319:
             characters.c = v223;
             characters.d = v222;
             *&characters.tx = v338;
-            [v331 showCGGlyphs:&glyphs positions:&v340 count:1 font:v300 matrix:&characters attributes:v229 inContext:c];
+            [v331 showCGGlyphs:&glyphs positions:&v340 count:1 font:v300 matrix:&characters attributes:dictionary inContext:c];
             CGContextRestoreGState(c);
           }
 
@@ -11374,7 +11374,7 @@ LABEL_396:
           v258 = (*(v10 + 240) + 168);
           *v258 = 0;
           v258[1] = 0;
-          if (v265)
+          if (_lockForReading)
           {
             [*(v10 + 8) _unlock];
           }
@@ -11403,19 +11403,19 @@ LABEL_396:
 
       if ((*(*(v10 + 240) + 449) & 0x10) != 0)
       {
-        v62 = [v10 delegate];
-        v35 = [v62 layoutManager:v10 shouldUseTemporaryAttributes:v35 forDrawingToScreen:1 atCharacterIndex:v346.location effectiveRange:&v344];
+        delegate = [v10 delegate];
+        v35 = [delegate layoutManager:v10 shouldUseTemporaryAttributes:v35 forDrawingToScreen:1 atCharacterIndex:v346.location effectiveRange:&v344];
       }
     }
 
-    if (!v35 || (v346 = NSIntersectionRange(v346, v344), (v327 = [v35 objectForKey:@"NSColor"]) == 0))
+    if (!v35 || (v346 = NSIntersectionRange(v346, v344), (brownColor = [v35 objectForKey:@"NSColor"]) == 0))
     {
-      v327 = [v332 objectForKey:@"NSColor"];
+      brownColor = [v332 objectForKey:@"NSColor"];
     }
 
     if (v317)
     {
-      v327 = [getNSColorClass_0[0]() brownColor];
+      brownColor = [getNSColorClass_0[0]() brownColor];
       if ([v317 count] == 1)
       {
         v63 = [objc_msgSend(v317 objectAtIndex:{0), "unsignedIntegerValue"}];
@@ -11423,13 +11423,13 @@ LABEL_396:
         {
           if (v63 == 1)
           {
-            v327 = [getNSColorClass_0[0]() redColor];
+            brownColor = [getNSColorClass_0[0]() redColor];
           }
         }
 
         else
         {
-          v327 = [getNSColorClass_0[0]() blueColor];
+          brownColor = [getNSColorClass_0[0]() blueColor];
         }
       }
     }
@@ -11445,7 +11445,7 @@ LABEL_396:
       v309 = [v332 objectForKey:@"NSUnderlineColor"];
     }
 
-    v65 = [v332 objectForKey:@"NSStrikethrough"];
+    integerValue3 = [v332 objectForKey:@"NSStrikethrough"];
     if ((((v35 && (v307 = [v35 objectForKey:@"NSStrikethroughColor"]) != 0 || (v307 = objc_msgSend(v332, "objectForKey:", @"NSStrikethroughColor"), v35)) && (v314 = objc_msgSend(v35, "objectForKey:", @"NSShadow")) != 0 || (v314 = objc_msgSend(v332, "objectForKey:", @"NSShadow"), v35)) && (v316 = objc_msgSend(v35, "objectForKey:", @"NSStrokeWidth")) != 0 || (v316 = objc_msgSend(v332, "objectForKey:", @"NSStrokeWidth"), v35)) && (v66 = objc_msgSend(v35, "objectForKey:", @"NSObliqueness")) != 0 || (v66 = objc_msgSend(v332, "objectForKey:", @"NSObliqueness")) != 0)
     {
       v292 = v66;
@@ -11483,10 +11483,10 @@ LABEL_396:
         goto LABEL_129;
       }
 
-      if (v271 && v68 < [v271 length])
+      if (attributedSubstringForMarkedRange && v68 < [attributedSubstringForMarkedRange length])
       {
         *&v351[0].a = 0uLL;
-        v69 = [v271 attribute:@"NSColor" atIndex:v68 effectiveRange:v351];
+        v69 = [attributedSubstringForMarkedRange attribute:@"NSColor" atIndex:v68 effectiveRange:v351];
         if (v69)
         {
           if (*&v351[0].b < v346.length)
@@ -11494,10 +11494,10 @@ LABEL_396:
             v346.length = *&v351[0].b;
           }
 
-          v327 = v69;
+          brownColor = v69;
         }
 
-        v302 = [v271 attribute:@"NSUnderline" atIndex:v68 effectiveRange:v351];
+        v302 = [attributedSubstringForMarkedRange attribute:@"NSUnderline" atIndex:v68 effectiveRange:v351];
         if (v302)
         {
           if (*&v351[0].b < v346.length)
@@ -11505,13 +11505,13 @@ LABEL_396:
             v346.length = *&v351[0].b;
           }
 
-          v275 = [v271 attribute:@"NSUnderlineColor" atIndex:v68 effectiveRange:v351];
+          v275 = [attributedSubstringForMarkedRange attribute:@"NSUnderlineColor" atIndex:v68 effectiveRange:v351];
           if (v275 && *&v351[0].b < v346.length)
           {
             v346.length = *&v351[0].b;
           }
 
-          if ([v271 attribute:NSMarkedClauseSegmentAttributeName atIndex:v68 effectiveRange:v351])
+          if ([attributedSubstringForMarkedRange attribute:NSMarkedClauseSegmentAttributeName atIndex:v68 effectiveRange:v351])
           {
             v358.length = *&v351[0].b;
             v358.location = *&v351[0].a + v301;
@@ -11520,7 +11520,7 @@ LABEL_396:
             v346 = NSIntersectionRange(v346, v358);
           }
 
-          v295 = [v271 attribute:@"NSMarkedTextSelectionAttributeName" atIndex:v68 effectiveRange:0];
+          v295 = [attributedSubstringForMarkedRange attribute:@"NSMarkedTextSelectionAttributeName" atIndex:v68 effectiveRange:0];
         }
 
         else
@@ -11531,18 +11531,18 @@ LABEL_396:
 LABEL_129:
         if (v315)
         {
-          v70 = [v315 integerValue];
+          integerValue2 = [v315 integerValue];
         }
 
         else
         {
-          v70 = 0;
+          integerValue2 = 0;
         }
 
         v71 = [objc_msgSend(v35 objectForKey:{@"NSUnderline", "integerValue"}];
-        if (v65)
+        if (integerValue3)
         {
-          v65 = [v65 integerValue];
+          integerValue3 = [integerValue3 integerValue];
         }
 
         v72 = [objc_msgSend(v35 objectForKey:{@"NSStrikethrough", "integerValue"}];
@@ -11553,10 +11553,10 @@ LABEL_129:
         v74 = [v35 objectForKey:@"NSTextAlternatives"];
         if (v73)
         {
-          v75 = [*(v331 + 8) string];
+          string = [*(v331 + 8) string];
           v76 = v346.location;
           v77 = [*(v331 + 8) length];
-          v78 = [v75 rangeOfString:v73 options:8 range:{v76, v77 - v346.location}];
+          v78 = [string rangeOfString:v73 options:8 range:{v76, v77 - v346.location}];
           v80 = v79;
           if (v79)
           {
@@ -11570,8 +11570,8 @@ LABEL_129:
                 {
                   v349 = 0;
                   v347 = 0.0;
-                  v83 = [*(v331 + 8) string];
-                  [v83 getParagraphStart:&v349 end:0 contentsEnd:&v347 forRange:{v346.location, v346.length}];
+                  string2 = [*(v331 + 8) string];
+                  [string2 getParagraphStart:&v349 end:0 contentsEnd:&v347 forRange:{v346.location, v346.length}];
                   v280 = v349;
                   v82 = *&v347 - v349;
                 }
@@ -11624,11 +11624,11 @@ LABEL_129:
 LABEL_146:
         if (v74)
         {
-          v84 = [*(v10 + 8) string];
-          v85 = [v74 primaryString];
+          string3 = [*(v10 + 8) string];
+          primaryString = [v74 primaryString];
           v86 = v346.location;
           v87 = [*(v10 + 8) length];
-          v88 = [v84 rangeOfString:v85 options:8 range:{v86, v87 - v346.location}];
+          v88 = [string3 rangeOfString:primaryString options:8 range:{v86, v87 - v346.location}];
           v90 = v89;
           if (v89)
           {
@@ -11644,8 +11644,8 @@ LABEL_146:
                 {
                   v349 = 0;
                   v347 = 0.0;
-                  v94 = [*(v331 + 8) string];
-                  [v94 getParagraphStart:&v349 end:0 contentsEnd:&v347 forRange:{v346.location, v346.length}];
+                  string4 = [*(v331 + 8) string];
+                  [string4 getParagraphStart:&v349 end:0 contentsEnd:&v347 forRange:{v346.location, v346.length}];
                   v92 = v349;
                   v93 = *&v347 - v349;
                 }
@@ -11672,17 +11672,17 @@ LABEL_146:
           }
         }
 
-        if (!v327)
+        if (!brownColor)
         {
-          v327 = [getNSColorClass_0[0]() blackColor];
+          brownColor = [getNSColorClass_0[0]() blackColor];
           v10 = v331;
         }
 
         v96 = _NSGlyphTreeGlyphRangeForCharacterRange(v10, v346.location, v346.length, 1, 1, 1, &v346);
         length = v97;
         location = v96;
-        v293 = v71 | v70;
-        v291 = v72 | v65;
+        v293 = v71 | integerValue2;
+        v291 = v72 | integerValue3;
         goto LABEL_161;
       }
     }
@@ -11701,23 +11701,23 @@ uint64_t __63__NSLayoutManager_NSPrivate___drawGlyphsForGlyphRange_atPoint___blo
   return result;
 }
 
-- (unsigned)_glyphAtIndex:(unint64_t)a3 characterIndex:(unint64_t *)a4 glyphInscription:(unint64_t *)a5 isValidIndex:(BOOL *)a6
+- (unsigned)_glyphAtIndex:(unint64_t)index characterIndex:(unint64_t *)characterIndex glyphInscription:(unint64_t *)inscription isValidIndex:(BOOL *)validIndex
 {
-  v9 = a3;
+  indexCopy = index;
   v15 = 0;
-  _NSFastFillAllGlyphHolesForGlyphRange(self, a3, 1uLL);
-  v11 = _NSGlyphTreeGlyphAtIndex(self, v9, &v15);
+  _NSFastFillAllGlyphHolesForGlyphRange(self, index, 1uLL);
+  v11 = _NSGlyphTreeGlyphAtIndex(self, indexCopy, &v15);
   if (v15)
   {
-    v12 = v9;
-    if (a4)
+    v12 = indexCopy;
+    if (characterIndex)
     {
-      v12 = _NSGlyphTreeCharacterIndexForGlyphAtIndex(self, v9);
+      v12 = _NSGlyphTreeCharacterIndexForGlyphAtIndex(self, indexCopy);
     }
 
-    if (a5)
+    if (inscription)
     {
-      v13 = _NSGlyphTreeIntAttributeForGlyphAtIndex(self, v9, 5);
+      v13 = _NSGlyphTreeIntAttributeForGlyphAtIndex(self, indexCopy, 5);
     }
 
     else
@@ -11725,8 +11725,8 @@ uint64_t __63__NSLayoutManager_NSPrivate___drawGlyphsForGlyphRange_atPoint___blo
       v13 = 0;
     }
 
-    v9 = v12;
-    if (a4)
+    indexCopy = v12;
+    if (characterIndex)
     {
       goto LABEL_10;
     }
@@ -11735,29 +11735,29 @@ uint64_t __63__NSLayoutManager_NSPrivate___drawGlyphsForGlyphRange_atPoint___blo
   else
   {
     v13 = 0;
-    if (a4)
+    if (characterIndex)
     {
 LABEL_10:
-      *a4 = v9;
+      *characterIndex = indexCopy;
     }
   }
 
-  if (a5)
+  if (inscription)
   {
-    *a5 = v13;
+    *inscription = v13;
   }
 
-  if (a6)
+  if (validIndex)
   {
-    *a6 = v15;
+    *validIndex = v15;
   }
 
   return v11;
 }
 
-- (void)_setNeedToFlushGlyph:(BOOL)a3
+- (void)_setNeedToFlushGlyph:(BOOL)glyph
 {
-  if (a3)
+  if (glyph)
   {
     v3 = 0x8000000;
   }
@@ -11770,24 +11770,24 @@ LABEL_10:
   self->_lmFlags = (*&self->_lmFlags & 0xF7FFFFFF | v3);
 }
 
-- (void)_simpleInsertGlyph:(unsigned int)a3 atGlyphIndex:(unint64_t)a4 characterIndex:(unint64_t)a5 elastic:(BOOL)a6
+- (void)_simpleInsertGlyph:(unsigned int)glyph atGlyphIndex:(unint64_t)index characterIndex:(unint64_t)characterIndex elastic:(BOOL)elastic
 {
   v9 = 0;
-  [(NSRunStorage *)self->_containerRuns insertElement:&v9 range:a4 coalesceRuns:1, 1];
+  [(NSRunStorage *)self->_containerRuns insertElement:&v9 range:index coalesceRuns:1, 1];
   v8 = *(self->_extraData + 23);
   if (v8)
   {
-    _NSInsertGlyphRangeInTextBlocks(v8, a4, 1);
+    _NSInsertGlyphRangeInTextBlocks(v8, index, 1);
   }
 }
 
-- (void)_simpleDeleteGlyphsInRange:(_NSRange)a3
+- (void)_simpleDeleteGlyphsInRange:(_NSRange)range
 {
-  if (a3.length)
+  if (range.length)
   {
-    length = a3.length;
-    location = a3.location;
-    [(NSRunStorage *)self->_containerRuns removeElementsInRange:a3.location coalesceRuns:a3.length, 1];
+    length = range.length;
+    location = range.location;
+    [(NSRunStorage *)self->_containerRuns removeElementsInRange:range.location coalesceRuns:range.length, 1];
     v6 = *(self->_extraData + 23);
     if (v6)
     {
@@ -11797,15 +11797,15 @@ LABEL_10:
   }
 }
 
-- (void)_insertGlyphs:(unsigned int *)a3 elasticAttributes:(BOOL *)a4 count:(unint64_t)a5 atGlyphIndex:(unint64_t)a6 characterIndex:(unint64_t)a7
+- (void)_insertGlyphs:(unsigned int *)glyphs elasticAttributes:(BOOL *)attributes count:(unint64_t)count atGlyphIndex:(unint64_t)index characterIndex:(unint64_t)characterIndex
 {
-  v7 = a6;
-  v8 = a5;
-  _NSGlyphTreeInsertGlyphs(self, a7, a6, a5, a3);
-  for (; v8; --v8)
+  indexCopy = index;
+  countCopy = count;
+  _NSGlyphTreeInsertGlyphs(self, characterIndex, index, count, glyphs);
+  for (; countCopy; --countCopy)
   {
-    v15 = *a4++;
-    _NSGlyphTreeSetIntAttributeForGlyphAtIndex(self, v7++, 1, v15, v11, v12, v13, v14, v17);
+    v15 = *attributes++;
+    _NSGlyphTreeSetIntAttributeForGlyphAtIndex(self, indexCopy++, 1, v15, v11, v12, v13, v14, v17);
   }
 
   lmFlags = self->_lmFlags;
@@ -11828,11 +11828,11 @@ LABEL_10:
   return result;
 }
 
-- (void)_setCurrentAttachmentRect:(CGRect)a3 index:(unint64_t)a4
+- (void)_setCurrentAttachmentRect:(CGRect)rect index:(unint64_t)index
 {
   extraData = self->_extraData;
-  *(extraData + 16) = a3;
-  *(extraData + 6) = a4;
+  *(extraData + 16) = rect;
+  *(extraData + 6) = index;
 }
 
 - (void)_clearTemporaryAttributes
@@ -11866,16 +11866,16 @@ uint64_t __55__NSLayoutManager_NSPrivate___clearTemporaryAttributes__block_invok
   return result;
 }
 
-- (void)_clearTemporaryAttributesForCharacterRange:(_NSRange)a3 changeInLength:(int64_t)a4
+- (void)_clearTemporaryAttributesForCharacterRange:(_NSRange)range changeInLength:(int64_t)length
 {
   v31 = *MEMORY[0x1E69E9840];
   extraData = self->_extraData;
   v5 = *(extraData + 9);
   if (v5)
   {
-    length = a3.length;
-    location = a3.location;
-    v9 = a3.length - a4;
+    length = range.length;
+    location = range.location;
+    v9 = range.length - length;
     v34.length = [*(extraData + 9) count];
     v33.location = location;
     v33.length = v9;
@@ -11963,24 +11963,24 @@ uint64_t __55__NSLayoutManager_NSPrivate___clearTemporaryAttributes__block_invok
 
       if (location <= v20)
       {
-        v22 = length;
+        lengthCopy = length;
       }
 
       else
       {
-        v22 = location + length - v20;
+        lengthCopy = location + length - v20;
       }
 
       v23 = +[NSAttributeDictionary emptyAttributeDictionary];
 
-      [v5 insertObject:v23 range:{v21, v22}];
+      [v5 insertObject:v23 range:{v21, lengthCopy}];
     }
   }
 }
 
-- (void)setAllowsOriginalFontMetricsOverride:(BOOL)a3
+- (void)setAllowsOriginalFontMetricsOverride:(BOOL)override
 {
-  if (a3)
+  if (override)
   {
     v3 = 512;
   }
@@ -11993,9 +11993,9 @@ uint64_t __55__NSLayoutManager_NSPrivate___clearTemporaryAttributes__block_invok
   self->_lmFlags = (*&self->_lmFlags & 0xFFFFFDFF | v3);
 }
 
-- (void)_setHasSeenRightToLeft:(BOOL)a3
+- (void)_setHasSeenRightToLeft:(BOOL)left
 {
-  if (a3)
+  if (left)
   {
     v3 = 0x2000000;
   }
@@ -12008,9 +12008,9 @@ uint64_t __55__NSLayoutManager_NSPrivate___clearTemporaryAttributes__block_invok
   self->_lmFlags = (*&self->_lmFlags & 0xFDFFFFFF | v3);
 }
 
-- (void)setFlipsIfNeeded:(BOOL)a3
+- (void)setFlipsIfNeeded:(BOOL)needed
 {
-  if (a3)
+  if (needed)
   {
     v3 = 0x10000000;
   }
@@ -12023,25 +12023,25 @@ uint64_t __55__NSLayoutManager_NSPrivate___clearTemporaryAttributes__block_invok
   self->_lmFlags = (*&self->_lmFlags & 0xEFFFFFFF | v3);
 }
 
-- (void)setLineFragmentRect:(CGRect)a3 forGlyphRange:(_NSRange)a4 usedRect:(CGRect)a5 baselineOffset:(double)a6
+- (void)setLineFragmentRect:(CGRect)rect forGlyphRange:(_NSRange)range usedRect:(CGRect)usedRect baselineOffset:(double)offset
 {
-  location = a4.location;
-  [(NSLayoutManager *)self setLineFragmentRect:a4.location forGlyphRange:a4.length usedRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height, a5.origin.x, a5.origin.y, a5.size.width, a5.size.height];
+  location = range.location;
+  [(NSLayoutManager *)self setLineFragmentRect:range.location forGlyphRange:range.length usedRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height, usedRect.origin.x, usedRect.origin.y, usedRect.size.width, usedRect.size.height];
 
-  [(NSLayoutManager *)self setBaselineOffset:location forGlyphAtIndex:a6];
+  [(NSLayoutManager *)self setBaselineOffset:location forGlyphAtIndex:offset];
 }
 
-- (double)baselineOffsetForGlyphAtIndex:(unint64_t)a3
+- (double)baselineOffsetForGlyphAtIndex:(unint64_t)index
 {
   v4 = 0.0;
-  _NSLayoutTreeGetBaselineOffsetForGlyphAtIndex(self, a3, &v4);
+  _NSLayoutTreeGetBaselineOffsetForGlyphAtIndex(self, index, &v4);
   return v4;
 }
 
-- (void)setIgnoresViewTransformations:(BOOL)a3
+- (void)setIgnoresViewTransformations:(BOOL)transformations
 {
   lmFlags = self->_lmFlags;
-  if (a3)
+  if (transformations)
   {
     if ((*&lmFlags & 0x4000000) != 0)
     {
@@ -12076,9 +12076,9 @@ uint64_t __55__NSLayoutManager_NSPrivate___clearTemporaryAttributes__block_invok
   }
 }
 
-- (void)_setAlwaysDrawsActive:(BOOL)a3
+- (void)_setAlwaysDrawsActive:(BOOL)active
 {
-  if (a3)
+  if (active)
   {
     v3 = 0x8000;
   }
@@ -12091,7 +12091,7 @@ uint64_t __55__NSLayoutManager_NSPrivate___clearTemporaryAttributes__block_invok
   *(self->_extraData + 112) = *(self->_extraData + 112) & 0xFFFF7FFF | v3;
 }
 
-- (id)_insertionPointHelperForGlyphAtIndex:(unint64_t)a3
+- (id)_insertionPointHelperForGlyphAtIndex:(unint64_t)index
 {
   v196[256] = *MEMORY[0x1E69E9840];
   v193 = 0;
@@ -12100,8 +12100,8 @@ uint64_t __55__NSLayoutManager_NSPrivate___clearTemporaryAttributes__block_invok
   v192 = 0;
   v189 = 0;
   v190 = 0;
-  v5 = [(NSTextStorage *)self->_textStorage string];
-  v6 = _NSLayoutTreeLineFragmentRectForGlyphAtIndex(self, a3, &v193);
+  string = [(NSTextStorage *)self->_textStorage string];
+  v6 = _NSLayoutTreeLineFragmentRectForGlyphAtIndex(self, index, &v193);
   v7 = _NSLayoutTreeLineFragmentUsedRectForGlyphAtIndex(self, v193, 0);
   v9 = v8;
   v10 = [(NSLayoutManager *)self characterRangeForGlyphRange:v193 actualGlyphRange:v194, 0];
@@ -12173,7 +12173,7 @@ uint64_t __55__NSLayoutManager_NSPrivate___clearTemporaryAttributes__block_invok
       goto LABEL_179;
     }
 
-    v185 = v5;
+    v185 = string;
     v27 = 0;
     v28 = 0;
     v29 = 0;
@@ -12350,7 +12350,7 @@ LABEL_41:
             v57 = NSDefaultFont();
           }
 
-          v59 = [v58 BOOLValue];
+          bOOLValue = [v58 BOOLValue];
           if (v58)
           {
             v60 = 1;
@@ -12363,14 +12363,14 @@ LABEL_41:
 
           v61 = !v60;
           v30 = v187;
-          if ((v59 & 1) != 0 || (v62 = v57, v61))
+          if ((bOOLValue & 1) != 0 || (verticalFont = v57, v61))
           {
-            v62 = [v57 verticalFont];
+            verticalFont = [v57 verticalFont];
           }
 
-          if (v62)
+          if (verticalFont)
           {
-            v63 = v62;
+            v63 = verticalFont;
           }
 
           else
@@ -12611,17 +12611,17 @@ LABEL_132:
         if ((v99 & 1) == 0)
         {
           v101 = [(NSTextStorage *)self->_textStorage attribute:@"NSParagraphStyle" atIndex:v177 effectiveRange:0];
-          v102 = v101;
+          defaultParagraphStyle = v101;
           if (!v101 || (HasRightToLeftBaseWritingDirectionAtIndex = [v101 baseWritingDirection], HasRightToLeftBaseWritingDirectionAtIndex == -1))
           {
-            v103 = [v176 textView];
+            textView = [v176 textView];
             if (objc_opt_respondsToSelector())
             {
-              v102 = [v103 defaultParagraphStyle];
+              defaultParagraphStyle = [textView defaultParagraphStyle];
             }
 
             v24 = v184;
-            if (!v102 || (HasRightToLeftBaseWritingDirectionAtIndex = [v102 baseWritingDirection], HasRightToLeftBaseWritingDirectionAtIndex == -1))
+            if (!defaultParagraphStyle || (HasRightToLeftBaseWritingDirectionAtIndex = [defaultParagraphStyle baseWritingDirection], HasRightToLeftBaseWritingDirectionAtIndex == -1))
             {
               HasRightToLeftBaseWritingDirectionAtIndex = _NSStringHasRightToLeftBaseWritingDirectionAtIndex(v37, v177, 0, [(__CFString *)v37 length]);
             }
@@ -13119,61 +13119,61 @@ LABEL_179:
   return v20;
 }
 
-- (int64_t)getLineFragmentInsertionPointArraysForCharacterAtIndex:(unint64_t)a3 inDisplayOrder:(BOOL)a4 positions:(double *)a5 characterIndexes:(unint64_t *)a6 count:(unint64_t *)a7 alternatePositions:(double *)a8 characterIndexes:(unint64_t *)a9 count:(unint64_t *)a10
+- (int64_t)getLineFragmentInsertionPointArraysForCharacterAtIndex:(unint64_t)index inDisplayOrder:(BOOL)order positions:(double *)positions characterIndexes:(unint64_t *)indexes count:(unint64_t *)count alternatePositions:(double *)alternatePositions characterIndexes:(unint64_t *)characterIndexes count:(unint64_t *)self0
 {
-  v14 = a4;
-  v15 = _insertionPointHelperForCharacterAtIndex(self, a3);
+  orderCopy = order;
+  v15 = _insertionPointHelperForCharacterAtIndex(self, index);
   if (v15)
   {
     v16 = v15;
     result = v15->_writingDirection;
-    if (a5)
+    if (positions)
     {
       v18 = 48;
-      if (v14)
+      if (orderCopy)
       {
         v18 = 80;
       }
 
-      *a5 = *(&v16->super.isa + v18);
+      *positions = *(&v16->super.isa + v18);
     }
 
-    if (a6)
+    if (indexes)
     {
       v19 = 72;
-      if (v14)
+      if (orderCopy)
       {
         v19 = 88;
       }
 
-      *a6 = *(&v16->super.isa + v19);
+      *indexes = *(&v16->super.isa + v19);
     }
 
-    if (a7)
+    if (count)
     {
-      *a7 = v16->_count;
+      *count = v16->_count;
     }
 
-    if (a8)
+    if (alternatePositions)
     {
       v20 = 96;
-      if (v14)
+      if (orderCopy)
       {
         v20 = 112;
       }
 
-      *a8 = *(&v16->super.isa + v20);
+      *alternatePositions = *(&v16->super.isa + v20);
     }
 
-    if (a9)
+    if (characterIndexes)
     {
       v21 = 104;
-      if (v14)
+      if (orderCopy)
       {
         v21 = 120;
       }
 
-      *a9 = *(&v16->super.isa + v21);
+      *characterIndexes = *(&v16->super.isa + v21);
     }
 
     if (a10)
@@ -13186,29 +13186,29 @@ LABEL_33:
 
   else
   {
-    if (a5)
+    if (positions)
     {
-      *a5 = 0;
+      *positions = 0;
     }
 
-    if (a6)
+    if (indexes)
     {
-      *a6 = 0;
+      *indexes = 0;
     }
 
-    if (a7)
+    if (count)
     {
-      *a7 = 0;
+      *count = 0;
     }
 
-    if (a8)
+    if (alternatePositions)
     {
-      *a8 = 0;
+      *alternatePositions = 0;
     }
 
-    if (a9)
+    if (characterIndexes)
     {
-      *a9 = 0;
+      *characterIndexes = 0;
     }
 
     altCount = 0;
@@ -13222,14 +13222,14 @@ LABEL_33:
   return result;
 }
 
-- (void)_setDrawsUnderlinesLikeWebKit:(BOOL)a3
+- (void)_setDrawsUnderlinesLikeWebKit:(BOOL)kit
 {
   extraData = self->_extraData;
   v8 = extraData[112];
-  if (((((v8 & 0x20000) == 0) ^ a3) & 1) == 0)
+  if (((((v8 & 0x20000) == 0) ^ kit) & 1) == 0)
   {
     v12 = v3;
-    if (a3)
+    if (kit)
     {
       v10 = 0x20000;
     }
@@ -13246,14 +13246,14 @@ LABEL_33:
   }
 }
 
-- (void)_setDrawsDebugBaselines:(BOOL)a3
+- (void)_setDrawsDebugBaselines:(BOOL)baselines
 {
   extraData = self->_extraData;
   v8 = extraData[112];
-  if (((((v8 & 0x40000) == 0) ^ a3) & 1) == 0)
+  if (((((v8 & 0x40000) == 0) ^ baselines) & 1) == 0)
   {
     v12 = v3;
-    if (a3)
+    if (baselines)
     {
       v10 = 0x40000;
     }
@@ -13270,9 +13270,9 @@ LABEL_33:
   }
 }
 
-- (void)_setMirrorsTextAlignment:(BOOL)a3
+- (void)_setMirrorsTextAlignment:(BOOL)alignment
 {
-  if (a3)
+  if (alignment)
   {
     v3 = 0x80000;
   }
@@ -13285,9 +13285,9 @@ LABEL_33:
   *(self->_extraData + 112) = *(self->_extraData + 112) & 0xFFF7FFFF | v3;
 }
 
-- (void)_setForcesTrackingFloor:(BOOL)a3
+- (void)_setForcesTrackingFloor:(BOOL)floor
 {
-  if (a3)
+  if (floor)
   {
     v3 = 0x100000;
   }
@@ -13300,26 +13300,26 @@ LABEL_33:
   *(self->_extraData + 112) = *(self->_extraData + 112) & 0xFFEFFFFF | v3;
 }
 
-- (void)showAttachment:(id)a3 inRect:(CGRect)a4 textContainer:(id)a5 characterIndex:(unint64_t)a6
+- (void)showAttachment:(id)attachment inRect:(CGRect)rect textContainer:(id)container characterIndex:(unint64_t)index
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v14 = [a3 attachmentCell];
-  if (v14)
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  attachmentCell = [attachment attachmentCell];
+  if (attachmentCell)
   {
 
-    [(NSLayoutManager *)self showAttachmentCell:v14 inRect:a6 characterIndex:x, y, width, height];
+    [(NSLayoutManager *)self showAttachmentCell:attachmentCell inRect:index characterIndex:x, y, width, height];
   }
 
   else
   {
-    if (a3)
+    if (attachment)
     {
-      [a3 lineLayoutPadding];
+      [attachment lineLayoutPadding];
       v16 = v15;
-      v17 = [(NSLayoutManager *)self applicationFrameworkContext];
+      applicationFrameworkContext = [(NSLayoutManager *)self applicationFrameworkContext];
       if (v16 != 0.0)
       {
         v40.origin.x = x;
@@ -13336,15 +13336,15 @@ LABEL_33:
 
     else
     {
-      v17 = [(NSLayoutManager *)self applicationFrameworkContext];
+      applicationFrameworkContext = [(NSLayoutManager *)self applicationFrameworkContext];
     }
 
-    if ([a3 usesTextAttachmentView] && (v18 = objc_msgSend(a5, "textView")) != 0 && (v19 = v18, v20 = objc_msgSend(a3, "viewProviderForParentView:characterIndex:layoutManager:", v18, a6, self), (v21 = objc_msgSend(v20, "view")) != 0))
+    if ([attachment usesTextAttachmentView] && (v18 = objc_msgSend(container, "textView")) != 0 && (v19 = v18, v20 = objc_msgSend(attachment, "viewProviderForParentView:characterIndex:layoutManager:", v18, index, self), (v21 = objc_msgSend(v20, "view")) != 0))
     {
       v22 = v21;
       [v19 contentScaleFactor];
       (softLinkUIRectIntegralWithScale[0])(x, y - height, width, height, v23);
-      [a3 placeView:v22 withFrame:v19 inParentView:a6 characterIndex:self layoutManager:?];
+      [attachment placeView:v22 withFrame:v19 inParentView:index characterIndex:self layoutManager:?];
       v24 = *(self->_extraData + 55);
       if (!v24)
       {
@@ -13363,19 +13363,19 @@ LABEL_33:
 
     else
     {
-      v26 = [a3 imageForBounds:a5 textContainer:a6 characterIndex:{x, y, width, height}];
-      v27 = [a3 image];
-      if (v17 == 2)
+      v26 = [attachment imageForBounds:container textContainer:index characterIndex:{x, y, width, height}];
+      image = [attachment image];
+      if (applicationFrameworkContext == 2)
       {
-        v28 = v27;
-        if (v26 == v27)
+        v28 = image;
+        if (v26 == image)
         {
-          if ([v27 conformsToProtocol:&unk_1F01F0D38])
+          if ([image conformsToProtocol:&unk_1F01F0D38])
           {
-            v29 = [objc_msgSend(objc_msgSend(a5 "layoutManager")];
+            v29 = [objc_msgSend(objc_msgSend(container "layoutManager")];
             if ([v28 willProvideAdaptedImageForPresentation])
             {
-              v26 = [v28 imageForBounds:v29 attributes:0 location:a5 textContainer:{x, y, width, height}];
+              v26 = [v28 imageForBounds:v29 attributes:0 location:container textContainer:{x, y, width, height}];
             }
           }
         }
@@ -13406,17 +13406,17 @@ LABEL_33:
   }
 }
 
-- (_NSRange)rangeOfCharacterClusterAtIndex:(unint64_t)a3 type:(int64_t)a4
+- (_NSRange)rangeOfCharacterClusterAtIndex:(unint64_t)index type:(int64_t)type
 {
-  v5 = [(NSTextStorage *)self->_textStorage string];
+  string = [(NSTextStorage *)self->_textStorage string];
   RangeOfCharacterClusterAtIndex = CFStringGetRangeOfCharacterClusterAtIndex();
   v8 = v7;
   v12 = RangeOfCharacterClusterAtIndex;
   v13 = v7;
   if (v7 == 2)
   {
-    CharacterAtIndex = CFStringGetCharacterAtIndex(v5, RangeOfCharacterClusterAtIndex);
-    if (((CFStringGetCharacterAtIndex(v5, RangeOfCharacterClusterAtIndex + 1) + (CharacterAtIndex << 10)) & 0x7FFFFE0) == 0x361CDE0)
+    CharacterAtIndex = CFStringGetCharacterAtIndex(string, RangeOfCharacterClusterAtIndex);
+    if (((CFStringGetCharacterAtIndex(string, RangeOfCharacterClusterAtIndex + 1) + (CharacterAtIndex << 10)) & 0x7FFFFE0) == 0x361CDE0)
     {
       [(NSLayoutManager *)self glyphRangeForCharacterRange:RangeOfCharacterClusterAtIndex actualCharacterRange:2, &v12];
       RangeOfCharacterClusterAtIndex = v12;
@@ -13436,16 +13436,16 @@ LABEL_33:
   return result;
 }
 
-- (void)_setExtraLineFragmentRect:(CGRect)a3 usedRect:(CGRect)a4 textContainer:(id)a5
+- (void)_setExtraLineFragmentRect:(CGRect)rect usedRect:(CGRect)usedRect textContainer:(id)container
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v10 = a3.size.height;
-  v11 = a3.size.width;
-  v12 = a3.origin.y;
-  v13 = a3.origin.x;
+  height = usedRect.size.height;
+  width = usedRect.size.width;
+  y = usedRect.origin.y;
+  x = usedRect.origin.x;
+  v10 = rect.size.height;
+  v11 = rect.size.width;
+  v12 = rect.origin.y;
+  v13 = rect.origin.x;
   if (self->_extraLineFragmentContainer)
   {
     memset(&v19, 0, sizeof(v19));
@@ -13480,8 +13480,8 @@ LABEL_33:
 
 LABEL_9:
   _NSLayoutTreeSetExtraLineFragmentRect(self, v13, v12, v11, v10, x, y, width, height);
-  self->_extraLineFragmentContainer = a5;
-  if (a5)
+  self->_extraLineFragmentContainer = container;
+  if (container)
   {
     v20.origin.x = v13;
     v20.origin.y = v12;
@@ -13489,89 +13489,89 @@ LABEL_9:
     v20.size.height = v10;
     if (!NSIsEmptyRect(v20))
     {
-      [(NSLayoutManager *)self _updateUsageForTextContainer:a5 addingUsedRect:x, y, width, height];
+      [(NSLayoutManager *)self _updateUsageForTextContainer:container addingUsedRect:x, y, width, height];
       [(NSLayoutManager *)self invalidateDisplayForCharacterRange:[(NSTextStorage *)self->_textStorage length], 0];
-      if ([a5 textView])
+      if ([container textView])
       {
         if (![(NSTextStorage *)self->_textStorage length])
         {
-          v18 = [a5 textView];
-          [v18 bounds];
-          [v18 setNeedsDisplayInRect:1 avoidAdditionalLayout:?];
+          textView = [container textView];
+          [textView bounds];
+          [textView setNeedsDisplayInRect:1 avoidAdditionalLayout:?];
         }
       }
     }
   }
 }
 
-- (void)_setTextContainer:(id)a3 forGlyphRange:(_NSRange)a4
+- (void)_setTextContainer:(id)container forGlyphRange:(_NSRange)range
 {
-  v24 = a3;
-  if (a4.length)
+  containerCopy = container;
+  if (range.length)
   {
-    length = a4.length;
-    location = a4.location;
+    length = range.length;
+    location = range.location;
     v23 = 0uLL;
     containerRuns = self->_containerRuns;
-    *&v14 = _NSBlockNumberForIndex(containerRuns, a4.location, &v23).n128_u64[0];
+    *&v14 = _NSBlockNumberForIndex(containerRuns, range.location, &v23).n128_u64[0];
     v15 = 0;
     if (containerRuns->_gapBlockIndex <= v9)
     {
       v15 = containerRuns->_maxBlocks - containerRuns->_numBlocks;
     }
 
-    if (&containerRuns->_runs->var1[(containerRuns->_elementSize + 8) * (v15 + v9)] != a3 || v23.n128_u64[1] + v23.n128_u64[0] < location + length)
+    if (&containerRuns->_runs->var1[(containerRuns->_elementSize + 8) * (v15 + v9)] != container || v23.n128_u64[1] + v23.n128_u64[0] < location + length)
     {
-      [(NSRunStorage *)self->_containerRuns replaceElementsInRange:location withElement:length coalesceRuns:&v24, 1, v14];
+      [(NSRunStorage *)self->_containerRuns replaceElementsInRange:location withElement:length coalesceRuns:&containerCopy, 1, v14];
     }
 
     _NSLayoutTreeInvalidateLayoutForGlyphRange(self, location, length, 0, v10, v11, v12, v13, v21);
-    if (v24)
+    if (containerCopy)
     {
       _NSGlyphTreeResetLayoutAttributesForGlyphsInRange(self, location, length, v16, v17, v18, v19, v20, v22);
     }
   }
 }
 
-- (void)setParagraphArbitrator:(id)a3
+- (void)setParagraphArbitrator:(id)arbitrator
 {
   v4 = *(self->_extraData + 53);
-  if (v4 != a3)
+  if (v4 != arbitrator)
   {
     v6 = v4;
-    if (a3)
+    if (arbitrator)
     {
-      v5 = a3;
+      arbitratorCopy = arbitrator;
     }
 
     else
     {
-      v5 = [[NSParagraphArbitrator alloc] initWithAttributedString:0 range:0x7FFFFFFFFFFFFFFFLL, 0];
+      arbitratorCopy = [[NSParagraphArbitrator alloc] initWithAttributedString:0 range:0x7FFFFFFFFFFFFFFFLL, 0];
     }
 
-    *(self->_extraData + 53) = v5;
+    *(self->_extraData + 53) = arbitratorCopy;
   }
 }
 
-- (void)setStyleEffectConfiguration:(id)a3
+- (void)setStyleEffectConfiguration:(id)configuration
 {
   extraData = self->_extraData;
-  if (extraData[54] != a3)
+  if (extraData[54] != configuration)
   {
     v4 = extraData[54];
-    *(self->_extraData + 54) = [a3 copy];
+    *(self->_extraData + 54) = [configuration copy];
   }
 }
 
-- (void)setViewProvider:(id)a3 forTextAttachment:(id)a4 characterIndex:(unint64_t)a5
+- (void)setViewProvider:(id)provider forTextAttachment:(id)attachment characterIndex:(unint64_t)index
 {
-  if (a3)
+  if (provider)
   {
-    [(NSLayoutManager *)self addTemporaryAttribute:@"NSViewTextAttachmentCellHelper" value:a3 forCharacterRange:a5, 1];
+    [(NSLayoutManager *)self addTemporaryAttribute:@"NSViewTextAttachmentCellHelper" value:provider forCharacterRange:index, 1];
   }
 }
 
-- (void)beginScrollingForView:(id)a3 textContainer:(id)a4
+- (void)beginScrollingForView:(id)view textContainer:(id)container
 {
   if (beginScrollingForView_textContainer__onceToken != -1)
   {
@@ -13600,12 +13600,12 @@ uint64_t __66__NSLayoutManager_NSPrivate__beginScrollingForView_textContainer___
   return result;
 }
 
-- (void)endScrollingForView:(id)a3 textContainer:(id)a4
+- (void)endScrollingForView:(id)view textContainer:(id)container
 {
   *(self->_extraData + 112) &= ~0x200000u;
   if ([(NSLayoutManager *)self hasNonContiguousLayout])
   {
-    [a3 bounds];
+    [view bounds];
     v8 = v7;
     v10 = v9;
     v12 = v11;
@@ -13637,7 +13637,7 @@ uint64_t __66__NSLayoutManager_NSPrivate__beginScrollingForView_textContainer___
       }
     }
 
-    [a3 bounds];
+    [view bounds];
     v33.origin.x = v20;
     v33.origin.y = v21;
     v33.size.width = v22;
@@ -13648,17 +13648,17 @@ uint64_t __66__NSLayoutManager_NSPrivate__beginScrollingForView_textContainer___
     v31.size.height = v14;
     if (NSEqualRects(v31, v33))
     {
-      [a3 visibleRect];
+      [view visibleRect];
       x = v32.origin.x;
       y = v32.origin.y;
       width = v32.size.width;
       height = v32.size.height;
       if (!NSIsEmptyRect(v32))
       {
-        v28 = [(NSLayoutManager *)self glyphRangeForBoundingRectWithoutAdditionalLayout:a4 inTextContainer:x, y, width, height];
+        height = [(NSLayoutManager *)self glyphRangeForBoundingRectWithoutAdditionalLayout:container inTextContainer:x, y, width, height];
         if (v29)
         {
-          [(NSLayoutManager *)self _primitiveInvalidateDisplayForGlyphRange:v28, v29];
+          [(NSLayoutManager *)self _primitiveInvalidateDisplayForGlyphRange:height, v29];
         }
       }
     }
@@ -13668,12 +13668,12 @@ uint64_t __66__NSLayoutManager_NSPrivate__beginScrollingForView_textContainer___
   *(self->_extraData + 63) = v30;
 }
 
-- (CGRect)prepareLayoutForBoundingRect:(CGRect)a3 textContainer:(id)a4
+- (CGRect)prepareLayoutForBoundingRect:(CGRect)rect textContainer:(id)container
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v10 = ![(NSLayoutManager *)self isScrolling];
   if (prepareLayoutForBoundingRect_textContainer__onceToken != -1)
   {
@@ -13683,13 +13683,13 @@ uint64_t __66__NSLayoutManager_NSPrivate__beginScrollingForView_textContainer___
   p_extraData = &self->_extraData;
   while ((*(*(self->_extraData + 30) + 56) & 1) != 0)
   {
-    v12 = [(NSLayoutManager *)self glyphRangeForBoundingRect:a4 inTextContainer:x, y, width, height];
-    v13 = v12;
+    height = [(NSLayoutManager *)self glyphRangeForBoundingRect:container inTextContainer:x, y, width, height];
+    v13 = height;
     v15 = v14;
     v29 = 0;
     if ((*&self->_lmFlags & 0x40000000) != 0)
     {
-      v16 = v12;
+      v16 = height;
     }
 
     else
@@ -13719,7 +13719,7 @@ uint64_t __66__NSLayoutManager_NSPrivate__beginScrollingForView_textContainer___
 
   if ([(NSLayoutManager *)self hasNonContiguousLayout]&& (v10 & 1) != 0)
   {
-    v18 = [(NSLayoutManager *)self isScrolling];
+    isScrolling = [(NSLayoutManager *)self isScrolling];
     *(*p_extraData + 112) &= ~0x200000u;
     v19 = [(NSMutableArray *)self->_textContainers count];
     v20 = [(NSMutableArray *)self->_textContainers count];
@@ -13747,7 +13747,7 @@ uint64_t __66__NSLayoutManager_NSPrivate__beginScrollingForView_textContainer___
 
     [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
     *(*p_extraData + 63) = v23;
-    if (v18)
+    if (isScrolling)
     {
       v24 = 0x200000;
     }
@@ -13797,10 +13797,10 @@ uint64_t __73__NSLayoutManager_NSPrivate__prepareLayoutForBoundingRect_textConta
   }
 }
 
-- (void)setUnderlineColorForTextAlternatives:(id)a3
+- (void)setUnderlineColorForTextAlternatives:(id)alternatives
 {
-  v4 = a3 != 0;
-  objc_setAssociatedObject(self, sel_underlineColorForTextAlternatives, a3, 0x301);
+  v4 = alternatives != 0;
+  objc_setAssociatedObject(self, sel_underlineColorForTextAlternatives, alternatives, 0x301);
   *(self->_extraData + 112) = *(self->_extraData + 112) & 0xFFBFFFFF | (v4 << 22);
 }
 
@@ -13817,24 +13817,24 @@ uint64_t __73__NSLayoutManager_NSPrivate__prepareLayoutForBoundingRect_textConta
   }
 }
 
-- (void)setUnderlineColorForSpelling:(id)a3
+- (void)setUnderlineColorForSpelling:(id)spelling
 {
-  v4 = a3 != 0;
-  objc_setAssociatedObject(self, sel_underlineColorForSpelling, a3, 0x301);
+  v4 = spelling != 0;
+  objc_setAssociatedObject(self, sel_underlineColorForSpelling, spelling, 0x301);
   *(self->_extraData + 112) = *(self->_extraData + 112) & 0xFFBFFFFF | (v4 << 22);
 }
 
-- (void)setApplicationFrameworkContext:(int64_t)a3
+- (void)setApplicationFrameworkContext:(int64_t)context
 {
-  if (!a3)
+  if (!context)
   {
-    LOBYTE(a3) = _NSTextScalingTypeForCurrentEnvironment();
+    LOBYTE(context) = _NSTextScalingTypeForCurrentEnvironment();
   }
 
-  *(self->_extraData + 112) = *(self->_extraData + 112) & 0xFC7FFFFF | ((a3 & 7) << 23);
+  *(self->_extraData + 112) = *(self->_extraData + 112) & 0xFC7FFFFF | ((context & 7) << 23);
 }
 
-- (id)renderingColorForDocumentColor:(id)a3
+- (id)renderingColorForDocumentColor:(id)color
 {
   v5 = *(self->_extraData + 112);
   if ((v5 & 0x8000000) == 0)
@@ -13849,7 +13849,7 @@ uint64_t __73__NSLayoutManager_NSPrivate__prepareLayoutForBoundingRect_textConta
 LABEL_4:
     if ((v5 & 0x10000000) != 0)
     {
-      result = [self->_firstTextView renderingColorForDocumentColor:a3];
+      result = [self->_firstTextView renderingColorForDocumentColor:color];
     }
 
     else
@@ -13860,64 +13860,64 @@ LABEL_4:
 
   if (!result)
   {
-    return a3;
+    return color;
   }
 
   return result;
 }
 
-- (void)fillMarkedBackgroundRectArray:(const CGRect *)a3 count:(unint64_t)a4 forCharacterRange:(_NSRange)a5 color:(id)a6
+- (void)fillMarkedBackgroundRectArray:(const CGRect *)array count:(unint64_t)count forCharacterRange:(_NSRange)range color:(id)color
 {
-  v6 = a4;
+  countCopy = count;
   if ((*(self->_extraData + 451) & 0x20) != 0)
   {
-    if (a4)
+    if (count)
     {
-      v8 = [-[objc_class graphicsContextForApplicationFrameworkContext:](+[NSTextGraphicsContextProvider textGraphicsContextProviderClass](NSTextGraphicsContextProvider textGraphicsContextProviderClass];
-      CGContextSaveGState(v8);
-      CGContextSetShouldAntialias(v8, 1);
-      p_size = &a3->size;
+      textGraphicsContextProviderClass = [-[objc_class graphicsContextForApplicationFrameworkContext:](+[NSTextGraphicsContextProvider textGraphicsContextProviderClass](NSTextGraphicsContextProvider textGraphicsContextProviderClass];
+      CGContextSaveGState(textGraphicsContextProviderClass);
+      CGContextSetShouldAntialias(textGraphicsContextProviderClass, 1);
+      p_size = &array->size;
       do
       {
         v12 = *&p_size[-1].width;
         p_size += 2;
         v10 = CGPathCreateWithRoundedRect(v12, 3.0, 3.0, 0);
-        CGContextAddPath(v8, v10);
-        CGContextFillPath(v8);
+        CGContextAddPath(textGraphicsContextProviderClass, v10);
+        CGContextFillPath(textGraphicsContextProviderClass);
         CGPathRelease(v10);
-        --v6;
+        --countCopy;
       }
 
-      while (v6);
+      while (countCopy);
 
-      CGContextRestoreGState(v8);
+      CGContextRestoreGState(textGraphicsContextProviderClass);
     }
   }
 
   else
   {
 
-    [(NSLayoutManager *)self fillBackgroundRectArray:a3 count:a4 forCharacterRange:a5.location color:a5.length, a6];
+    [(NSLayoutManager *)self fillBackgroundRectArray:array count:count forCharacterRange:range.location color:range.length, color];
   }
 }
 
-- (id)_stringForLoggingLineFragmentForGlyphAtIndex:(int64_t)a3
+- (id)_stringForLoggingLineFragmentForGlyphAtIndex:(int64_t)index
 {
-  if ([(NSLayoutManager *)self numberOfGlyphs]<= a3)
+  if ([(NSLayoutManager *)self numberOfGlyphs]<= index)
   {
-    [(NSLayoutManager(NSLayoutManager_Debugging) *)a2 _stringForLoggingLineFragmentForGlyphAtIndex:a3];
+    [(NSLayoutManager(NSLayoutManager_Debugging) *)a2 _stringForLoggingLineFragmentForGlyphAtIndex:index];
   }
 
-  [(NSLayoutManager *)self ensureLayoutForGlyphRange:a3, 1];
-  v6 = [MEMORY[0x1E696AD60] stringWithFormat:@"Line Fragment @ %ld", a3];
+  [(NSLayoutManager *)self ensureLayoutForGlyphRange:index, 1];
+  index = [MEMORY[0x1E696AD60] stringWithFormat:@"Line Fragment @ %ld", index];
   v28.location = 0;
   v28.length = 0;
-  [(NSLayoutManager *)self lineFragmentRectForGlyphAtIndex:a3 effectiveRange:&v28];
+  [(NSLayoutManager *)self lineFragmentRectForGlyphAtIndex:index effectiveRange:&v28];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  [(NSLayoutManager *)self lineFragmentUsedRectForGlyphAtIndex:a3 effectiveRange:0];
+  [(NSLayoutManager *)self lineFragmentUsedRectForGlyphAtIndex:index effectiveRange:0];
   v16 = v15;
   v18 = v17;
   v20 = v19;
@@ -13932,15 +13932,15 @@ LABEL_4:
   v31.origin.y = v18;
   v31.size.width = v20;
   v31.size.height = v22;
-  [v6 appendFormat:@", glyph range %@, rects %@/%@", v23, v24, NSStringFromRect(v31)];
+  [index appendFormat:@", glyph range %@, rects %@/%@", v23, v24, NSStringFromRect(v31)];
   for (i = v28.location; i < v28.length + v28.location; ++i)
   {
     v26 = [(NSLayoutManager *)self CGGlyphAtIndex:i];
     [(NSLayoutManager *)self locationForGlyphAtIndex:i];
-    [v6 appendFormat:@"\n %ld: %hu %@", i, v26, NSStringFromPoint(v29)];
+    [index appendFormat:@"\n %ld: %hu %@", i, v26, NSStringFromPoint(v29)];
   }
 
-  return v6;
+  return index;
 }
 
 - (void)_commonInit
@@ -14078,34 +14078,34 @@ uint64_t __26__NSLayoutManager_dealloc__block_invoke(uint64_t a1, void *a2)
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  if ([a3 allowsKeyedCoding])
+  if ([coder allowsKeyedCoding])
   {
     lmFlags = self->_lmFlags;
     v6 = *&lmFlags & 4 | (*&lmFlags >> 22) & 3 | (*&lmFlags >> 7) & 0x18 | (32 * ((*&lmFlags >> 4) & 1)) | (*&lmFlags >> 18) & 0x40 | (*&lmFlags >> 22) & 0x80 | (*&lmFlags >> 13) & 0x100;
     v7 = (*(self->_extraData + 112) >> 17) & 0x200;
-    [a3 encodeObject:self->_textStorage forKey:@"NSTextStorage"];
-    [a3 encodeObject:self->_textContainers forKey:@"NSTextContainers"];
+    [coder encodeObject:self->_textStorage forKey:@"NSTextStorage"];
+    [coder encodeObject:self->_textContainers forKey:@"NSTextContainers"];
     extraData = self->_extraData;
     v9 = extraData[24];
     if (v9 != 0.0)
     {
       *&v9 = v9;
-      [a3 encodeFloat:@"NSHyphenationFactor" forKey:v9];
+      [coder encodeFloat:@"NSHyphenationFactor" forKey:v9];
       extraData = self->_extraData;
     }
 
     v10 = v6 | v7;
     if ((*(extraData + 451) & 0x40) != 0)
     {
-      [a3 encodeBool:1 forKey:@"NSUsesDefaultHyphenation"];
+      [coder encodeBool:1 forKey:@"NSUsesDefaultHyphenation"];
     }
 
-    [a3 encodeInt:v10 ^ 0x20u forKey:@"NSLMFlags"];
-    v11 = [(NSLayoutManager *)self delegate];
+    [coder encodeInt:v10 ^ 0x20u forKey:@"NSLMFlags"];
+    delegate = [(NSLayoutManager *)self delegate];
 
-    [a3 encodeConditionalObject:v11 forKey:@"NSDelegate"];
+    [coder encodeConditionalObject:delegate forKey:@"NSDelegate"];
   }
 
   else
@@ -14258,14 +14258,14 @@ uint64_t __26__NSLayoutManager_dealloc__block_invoke(uint64_t a1, void *a2)
 
     else
     {
-      v34 = [v28 isSimpleRectangularTextContainer];
+      isSimpleRectangularTextContainer = [v28 isSimpleRectangularTextContainer];
       v35 = v30 >= 10000000.0;
       if (v30 <= 0.0)
       {
         v35 = 1;
       }
 
-      if ((v34 & v35) != 0)
+      if ((isSimpleRectangularTextContainer & v35) != 0)
       {
         v36 = 0x40000000;
       }
@@ -14635,7 +14635,7 @@ uint64_t __34__NSLayoutManager_setTextStorage___block_invoke(uint64_t a1, void *
   *(*p_extraData + 112) = *(*p_extraData + 112) & 0xF7FFFFFF | v10;
 }
 
-- (_NSRange)_characterRangeCurrentlyInAndAfterContainer:(id)a3
+- (_NSRange)_characterRangeCurrentlyInAndAfterContainer:(id)container
 {
   v5 = [(NSTextStorage *)self->_textStorage length];
   if (v5)
@@ -14643,16 +14643,16 @@ uint64_t __34__NSLayoutManager_setTextStorage___block_invoke(uint64_t a1, void *
     v6 = v5;
     v7 = [(NSMutableArray *)self->_textContainers count];
     v8 = v7;
-    if (a3)
+    if (container)
     {
       value = 0;
       extraData = self->_extraData;
-      if (extraData[10] == a3)
+      if (extraData[10] == container)
       {
         v10 = 0;
       }
 
-      else if (CFDictionaryGetValueIfPresent(extraData[11], a3, &value))
+      else if (CFDictionaryGetValueIfPresent(extraData[11], container, &value))
       {
         v10 = value;
       }
@@ -14728,7 +14728,7 @@ uint64_t __34__NSLayoutManager_setTextStorage___block_invoke(uint64_t a1, void *
 {
   v7 = [(NSTextStorage *)self->_textStorage length];
   v8 = [(NSMutableArray *)self->_textContainers count];
-  v9 = [(NSTextContainer *)container textView];
+  textView = [(NSTextContainer *)container textView];
   if (v8 < index)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695DA20] format:{@"*** %@: container index %lu is beyond the range of containers (count %lu)", _NSFullMethodName(), index, v8}];
@@ -14743,7 +14743,7 @@ uint64_t __34__NSLayoutManager_setTextStorage___block_invoke(uint64_t a1, void *
       goto LABEL_20;
     }
 
-    v14 = self;
+    selfCopy2 = self;
     v15 = 0;
     v16 = 0;
     goto LABEL_18;
@@ -14757,11 +14757,11 @@ LABEL_15:
       [(NSLayoutManager *)self _invalidateGlyphsForExtendedCharacterRange:v8 changeInLength:v7, 0];
     }
 
-    v14 = self;
+    selfCopy2 = self;
     v15 = v8;
     v16 = v7;
 LABEL_18:
-    [(NSLayoutManager *)v14 _invalidateLayoutForExtendedCharacterRange:v15 isSoft:v16, 0];
+    [(NSLayoutManager *)selfCopy2 _invalidateLayoutForExtendedCharacterRange:v15 isSoft:v16, 0];
     goto LABEL_19;
   }
 
@@ -14832,14 +14832,14 @@ LABEL_20:
   lmFlags = self->_lmFlags;
   if (v25 == 1 && (*&lmFlags & 0x20000000) != 0)
   {
-    v30 = [v26 isSimpleRectangularTextContainer];
+    isSimpleRectangularTextContainer = [v26 isSimpleRectangularTextContainer];
     v31 = v28 >= 10000000.0;
     if (v28 <= 0.0)
     {
       v31 = 1;
     }
 
-    if ((v30 & v31) != 0)
+    if ((isSimpleRectangularTextContainer & v31) != 0)
     {
       v32 = 0x40000000;
     }
@@ -14865,7 +14865,7 @@ LABEL_20:
   }
 
   [(NSTextContainer *)container setLayoutManager:self];
-  if (v9)
+  if (textView)
   {
     [(NSLayoutManager *)self _firstTextViewChanged];
   }
@@ -14901,7 +14901,7 @@ LABEL_20:
   }
 
   v7 = [(NSMutableArray *)self->_textContainers objectAtIndex:index];
-  v8 = [(NSTextContainer *)v7 textView];
+  textView = [(NSTextContainer *)v7 textView];
   v9 = [(NSLayoutManager *)self _characterRangeCurrentlyInAndAfterContainer:v7];
   v11 = v10;
   *&self->_lmFlags &= ~1u;
@@ -14928,14 +14928,14 @@ LABEL_20:
   v19 = self->_lmFlags;
   if (v15 == 1 && (*&v19 & 0x20000000) != 0)
   {
-    v20 = [v16 isSimpleRectangularTextContainer];
+    isSimpleRectangularTextContainer = [v16 isSimpleRectangularTextContainer];
     v21 = v18 >= 10000000.0;
     if (v18 <= 0.0)
     {
       v21 = 1;
     }
 
-    if ((v20 & v21) != 0)
+    if ((isSimpleRectangularTextContainer & v21) != 0)
     {
       v22 = 0x40000000;
     }
@@ -15004,7 +15004,7 @@ LABEL_28:
     }
   }
 
-  if (v8)
+  if (textView)
   {
     [(NSLayoutManager *)self _firstTextViewChanged];
     v24 = self->_lmFlags;
@@ -15060,26 +15060,26 @@ LABEL_9:
   [(NSLayoutManager *)self _invalidateInsertionPoint];
 }
 
-- (void)textContainerChangedTextView:(id)a3 fromTextView:(id)a4
+- (void)textContainerChangedTextView:(id)view fromTextView:(id)textView
 {
   [(NSLayoutManager *)self textContainerChangedTextView:?];
-  if ([a3 textView] != a4)
+  if ([view textView] != textView)
   {
-    v7 = [MEMORY[0x1E695DF90] dictionary];
-    v8 = v7;
-    if (a4)
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    v8 = dictionary;
+    if (textView)
     {
-      [v7 setObject:a4 forKey:@"_NSOldTextView"];
+      [dictionary setObject:textView forKey:@"_NSOldTextView"];
     }
 
-    if ([a3 textView])
+    if ([view textView])
     {
-      [v8 setObject:objc_msgSend(a3 forKey:{"textView"), @"_NSNewTextView"}];
+      [v8 setObject:objc_msgSend(view forKey:{"textView"), @"_NSNewTextView"}];
     }
 
-    v9 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
 
-    [v9 postNotificationName:@"_NSLayoutManagerObservedTextViewChangeNotification" object:self userInfo:v8];
+    [defaultCenter postNotificationName:@"_NSLayoutManagerObservedTextViewChangeNotification" object:self userInfo:v8];
   }
 }
 
@@ -15133,14 +15133,14 @@ LABEL_9:
 
   else
   {
-    v19 = [v12 isSimpleRectangularTextContainer];
+    isSimpleRectangularTextContainer = [v12 isSimpleRectangularTextContainer];
     v20 = v15 >= 10000000.0;
     if (v15 <= 0.0)
     {
       v20 = 1;
     }
 
-    if ((v19 & v20) != 0)
+    if ((isSimpleRectangularTextContainer & v20) != 0)
     {
       v21 = 0x40000000;
     }
@@ -15174,11 +15174,11 @@ LABEL_9:
   }
 }
 
-- (void)_setGlyphsPerLineEstimate:(unint64_t)a3 offsetPerLineEstimate:(double)a4
+- (void)_setGlyphsPerLineEstimate:(unint64_t)estimate offsetPerLineEstimate:(double)lineEstimate
 {
   v7 = [(NSTextStorage *)self->_textStorage length];
-  _NSLayoutTreeSetGlyphsPerLineEstimate(self, a3);
-  _NSLayoutTreeSetOffsetPerLineEstimate(self, a4);
+  _NSLayoutTreeSetGlyphsPerLineEstimate(self, estimate);
+  _NSLayoutTreeSetOffsetPerLineEstimate(self, lineEstimate);
 
   [(NSLayoutManager *)self _invalidateLayoutForExtendedCharacterRange:0 isSoft:v7, 0];
 }
@@ -15315,14 +15315,14 @@ LABEL_9:
   }
 }
 
-- (void)_setHyphenationFactor:(double)a3
+- (void)_setHyphenationFactor:(double)factor
 {
   v5 = [(NSTextStorage *)self->_textStorage length];
   extraData = self->_extraData;
-  if (extraData[24] != a3)
+  if (extraData[24] != factor)
   {
     v7 = v5;
-    extraData[24] = a3;
+    extraData[24] = factor;
     if (v5)
     {
       [(NSLayoutManager *)self invalidateGlyphsForCharacterRange:0 changeInLength:v5 actualCharacterRange:0, 0];
@@ -15385,26 +15385,26 @@ LABEL_9:
   }
 }
 
-- (void)_invalidateGlyphsForCharacterRange:(_NSRange)a3 editedCharacterRange:(_NSRange)a4 changeInLength:(int64_t)a5 actualCharacterRange:(_NSRange *)a6
+- (void)_invalidateGlyphsForCharacterRange:(_NSRange)range editedCharacterRange:(_NSRange)characterRange changeInLength:(int64_t)length actualCharacterRange:(_NSRange *)actualCharacterRange
 {
-  length = a4.length;
-  location = a4.location;
-  v10 = a3.length;
-  v11 = a3.location;
-  v13 = [(NSTextStorage *)self->_textStorage string];
+  length = characterRange.length;
+  location = characterRange.location;
+  v10 = range.length;
+  v11 = range.location;
+  string = [(NSTextStorage *)self->_textStorage string];
   v14 = [(NSLayoutManager *)self _extendedCharRangeForInvalidation:v11 editedCharRange:v10, location, length];
   v16 = v14;
   v17 = *(self->_extraData + 45);
-  if (a6)
+  if (actualCharacterRange)
   {
-    a6->location = v14;
-    a6->length = v15;
+    actualCharacterRange->location = v14;
+    actualCharacterRange->length = v15;
   }
 
-  [(NSLayoutManager *)self _invalidateGlyphsForExtendedCharacterRange:v14 changeInLength:v15, a5];
-  if (a5 == 1 && length == 1 && *(self->_extraData + 45))
+  [(NSLayoutManager *)self _invalidateGlyphsForExtendedCharacterRange:v14 changeInLength:v15, length];
+  if (length == 1 && length == 1 && *(self->_extraData + 45))
   {
-    v18 = [v13 characterAtIndex:location];
+    v18 = [string characterAtIndex:location];
     if (v18 > 132)
     {
       if ((v18 - 8232) >= 2 && v18 != 133)
@@ -15424,7 +15424,7 @@ LABEL_17:
       }
     }
 
-    else if (v18 != 10 && v18 != 12 && (v18 != 13 || location + 1 < [v13 length] && objc_msgSend(v13, "characterAtIndex:", location + 1) == 10))
+    else if (v18 != 10 && v18 != 12 && (v18 != 13 || location + 1 < [string length] && objc_msgSend(string, "characterAtIndex:", location + 1) == 10))
     {
       goto LABEL_17;
     }
@@ -15519,11 +15519,11 @@ LABEL_9:
   }
 }
 
-- (void)_primitiveInvalidateDisplayForGlyphRange:(_NSRange)a3
+- (void)_primitiveInvalidateDisplayForGlyphRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  if (a3.length)
+  length = range.length;
+  location = range.location;
+  if (range.length)
   {
     v208 = 0uLL;
     v6 = *(self->_extraData + 55);
@@ -15593,25 +15593,25 @@ LABEL_9:
       v18 = _NSLayoutTreeLineFragmentRectForGlyphAtIndex(self, location - 1, 0);
       v20 = v19;
       v22 = v21;
-      v23 = [v17 textView];
-      if (v23)
+      textView = [v17 textView];
+      if (textView)
       {
         [v17 textContainerOrigin];
         v25 = v24;
-        [v23 bounds];
+        [textView bounds];
         v27 = v26;
         v29 = v28;
         v30 = v22 + v20 + v25;
         v33 = v31 + v32 - v30;
-        [v23 setNeedsDisplayInRect:1 avoidAdditionalLayout:{v26, v30}];
-        v200(v199, v23, v27, v30, v29, v33);
+        [textView setNeedsDisplayInRect:1 avoidAdditionalLayout:{v26, v30}];
+        v200(v199, textView, v27, v30, v29, v33);
       }
     }
 
     if ((*(&self->_lmFlags + 3) & 0x40) != 0 || ((v34 = [(NSRunStorage *)self->_containerRuns count], v35 = location + length - 1, v34 <= v35) ? (v39 = 0) : ((v36 = self->_containerRuns, _NSBlockNumberForIndex(v36, v35, 0), v36->_gapBlockIndex <= v37) ? (v38 = v36->_maxBlocks - v36->_numBlocks) : (v38 = 0), v39 = *&v36->_runs->var1[(v36->_elementSize + 8) * (v38 + v37)]), v13 == v39))
     {
-      v11 = [v13 textView];
-      if (v11)
+      textView2 = [v13 textView];
+      if (textView2)
       {
         if ((*&self->_lmFlags & 0x40000000) != 0 && !*(self->_extraData + 23))
         {
@@ -15620,14 +15620,14 @@ LABEL_9:
           v64 = _NSLayoutTreeLineFragmentRectForGlyphAtIndex(self, location + length - 1, 0);
           v66 = v65;
           v68 = v67;
-          [v11 bounds];
+          [textView2 bounds];
           v70 = v69;
           v72 = v71;
           [v13 textContainerOrigin];
           v74 = v63 + v73;
           v75 = v66 + v68 - v63;
-          [v11 setNeedsDisplayInRect:1 avoidAdditionalLayout:{v70, v74, v72, v75}];
-          v200(v199, v11, v70, v74, v72, v75);
+          [textView2 setNeedsDisplayInRect:1 avoidAdditionalLayout:{v70, v74, v72, v75}];
+          v200(v199, textView2, v70, v74, v72, v75);
         }
 
         else
@@ -15687,8 +15687,8 @@ LABEL_9:
             }
           }
 
-          [v11 setNeedsDisplayInRect:1 avoidAdditionalLayout:{v194 + v44, v192 + v46, v48, v50}];
-          v200(v199, v11, v194 + v44, v192 + v46, v48, v50);
+          [textView2 setNeedsDisplayInRect:1 avoidAdditionalLayout:{v194 + v44, v192 + v46, v48, v50}];
+          v200(v199, textView2, v194 + v44, v192 + v46, v48, v50);
         }
       }
     }
@@ -15758,11 +15758,11 @@ LABEL_9:
 
         if (v82 != v61)
         {
-          v83 = [v61 textView];
-          v84 = v83;
-          if (v83)
+          textView3 = [v61 textView];
+          v84 = textView3;
+          if (textView3)
           {
-            [v83 bounds];
+            [textView3 bounds];
             v193 = v86;
             v195 = v85;
             [(NSLayoutManager *)self _boundingRectForGlyphRange:v76 inTextContainer:v77 - v76 fast:v61 fullLineRectsOnly:(*&self->_lmFlags & 2) == 0, 1];
@@ -15848,8 +15848,8 @@ LABEL_9:
       }
 
       while (v198 + v197 >= location && v198 + v197 - location < length);
-      v11 = [v61 textView];
-      if (v11)
+      textView2 = [v61 textView];
+      if (textView2)
       {
         v209.length = v77 - v76;
         v209.location = v76;
@@ -15911,8 +15911,8 @@ LABEL_9:
         [v61 textContainerOrigin];
         v128 = v112 + v127;
         v130 = v114 + v129;
-        [v11 setNeedsDisplayInRect:1 avoidAdditionalLayout:{v128, v130, v116, v118}];
-        v200(v199, v11, v128, v130, v116, v118);
+        [textView2 setNeedsDisplayInRect:1 avoidAdditionalLayout:{v128, v130, v116, v118}];
+        v200(v199, textView2, v128, v130, v116, v118);
       }
     }
 
@@ -15920,14 +15920,14 @@ LABEL_9:
     {
       v131 = [(NSLayoutManager *)self characterRangeForGlyphRange:location actualGlyphRange:length, 0];
       v133 = v132;
-      v134 = [(NSLayoutManager *)self textStorage];
+      textStorage = [(NSLayoutManager *)self textStorage];
       v196[0] = MEMORY[0x1E69E9820];
       v196[1] = 3221225472;
       v196[2] = __60__NSLayoutManager__primitiveInvalidateDisplayForGlyphRange___block_invoke_3;
       v196[3] = &unk_1E72673A8;
       v196[4] = self;
       v196[5] = &v204;
-      [(NSTextStorage *)v134 enumerateAttribute:@"NSAttachment" inRange:v131 options:v133 usingBlock:0x100000, v196];
+      [(NSTextStorage *)textStorage enumerateAttribute:@"NSAttachment" inRange:v131 options:v133 usingBlock:0x100000, v196];
       [MEMORY[0x1E6979518] begin];
       [MEMORY[0x1E6979518] setDisableActions:1];
       [*(*(&v204 + 1) + 40) enumerateObjectsUsingBlock:&__block_literal_global_14];
@@ -15940,7 +15940,7 @@ LABEL_9:
 
   else
   {
-    v11 = 0;
+    textView2 = 0;
   }
 
   v135 = location + length;
@@ -15949,13 +15949,13 @@ LABEL_9:
     extraLineFragmentContainer = self->_extraLineFragmentContainer;
     if (extraLineFragmentContainer)
     {
-      v137 = [(NSTextContainer *)extraLineFragmentContainer textView];
-      if (!v137)
+      textView4 = [(NSTextContainer *)extraLineFragmentContainer textView];
+      if (!textView4)
       {
         goto LABEL_94;
       }
 
-      v138 = v137;
+      v138 = textView4;
       v204 = 0u;
       v205 = 0u;
       _NSLayoutTreeGetExtraLineFragmentRect(self, &v204, 0);
@@ -15991,12 +15991,12 @@ LABEL_9:
       v151 = v150;
       v153 = v152;
       v155 = v154;
-      [v11 textContainerOrigin];
+      [textView2 textContainerOrigin];
       v157 = v149 + v156;
       v159 = v151 + v158 + v155;
-      [v11 bounds];
+      [textView2 bounds];
       v162 = v160 + v161 - v159;
-      [v11 visibleRect];
+      [textView2 visibleRect];
       v241.origin.x = v163;
       v241.origin.y = v164;
       v241.size.width = v165;
@@ -16006,7 +16006,7 @@ LABEL_9:
       v231.size.width = v153;
       v231.size.height = v162;
       *&v142 = NSIntersectionRect(v231, v241);
-      v146 = v11;
+      v146 = textView2;
     }
 
     [v146 setNeedsDisplayInRect:1 avoidAdditionalLayout:{v142, v144, v147, v145}];
@@ -16042,10 +16042,10 @@ LABEL_94:
       }
     }
 
-    v173 = [v172 textView];
-    if (v173)
+    textView5 = [v172 textView];
+    if (textView5)
     {
-      v174 = v173;
+      v174 = textView5;
       v176 = *MEMORY[0x1E696AA80];
       v175 = *(MEMORY[0x1E696AA80] + 8);
       v178 = *(MEMORY[0x1E696AA80] + 16);
@@ -16653,13 +16653,13 @@ LABEL_18:
     x = bounds.origin.x;
     do
     {
-      v10 = [(NSLayoutManager *)self glyphRangeForBoundingRect:container inTextContainer:x, y, width, height];
-      v11 = v10;
+      height = [(NSLayoutManager *)self glyphRangeForBoundingRect:container inTextContainer:x, y, width, height];
+      v11 = height;
       v13 = v12;
       v15 = 0;
       if ((*&self->_lmFlags & 0x40000000) != 0)
       {
-        v14 = v10;
+        v14 = height;
       }
 
       else
@@ -17090,12 +17090,12 @@ LABEL_26:
   [(NSLayoutManager *)self _updateUsageForTextContainer:v19 addingUsedRect:x, y, width, height];
 }
 
-- (void)setLocation:(CGPoint)a3 forStartOfGlyphRange:(_NSRange)a4 coalesceRuns:(BOOL)a5
+- (void)setLocation:(CGPoint)location forStartOfGlyphRange:(_NSRange)range coalesceRuns:(BOOL)runs
 {
-  length = a4.length;
-  location = a4.location;
-  y = a3.y;
-  x = a3.x;
+  length = range.length;
+  location = range.location;
+  y = location.y;
+  x = location.x;
   cachedLocationNominalGlyphRange = self->_cachedLocationNominalGlyphRange;
   v11.location = location;
   v11.length = length;
@@ -17500,9 +17500,9 @@ LABEL_7:
   return result;
 }
 
-- (CGRect)lineFragmentUsedRectForGlyphAtIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4 allowLayout:(BOOL)a5
+- (CGRect)lineFragmentUsedRectForGlyphAtIndex:(unint64_t)index effectiveRange:(_NSRange *)range allowLayout:(BOOL)layout
 {
-  [(NSLayoutManager *)self lineFragmentUsedRectForGlyphAtIndex:a3 effectiveRange:a4 withoutAdditionalLayout:!a5];
+  [(NSLayoutManager *)self lineFragmentUsedRectForGlyphAtIndex:index effectiveRange:range withoutAdditionalLayout:!layout];
   result.size.height = v8;
   result.size.width = v7;
   result.origin.y = v6;
@@ -17676,16 +17676,16 @@ LABEL_47:
         }
       }
 
-      v31 = [v28 verticalFont];
-      if (v31)
+      verticalFont = [v28 verticalFont];
+      if (verticalFont)
       {
-        v28 = v31;
+        v28 = verticalFont;
       }
 
-      v32 = [v28 isVertical];
+      isVertical = [v28 isVertical];
       if (v29)
       {
-        if (v32)
+        if (isVertical)
         {
           v33 = self->_cachedFontCharRange.location;
           if (v44 + v43 < self->_cachedFontCharRange.length + v33)
@@ -18389,7 +18389,7 @@ LABEL_33:
   v46 = 0;
   v43 = 0;
   v44 = 0;
-  v13 = [(NSTextStorage *)self->_textStorage string];
+  string = [(NSTextStorage *)self->_textStorage string];
   v41 = 0;
   v42 = 0;
   if (v12 >= v10)
@@ -18397,7 +18397,7 @@ LABEL_33:
     goto LABEL_94;
   }
 
-  v14 = v13;
+  v14 = string;
   [(NSLayoutManager *)self lineFragmentRectForGlyphAtIndex:v11 effectiveRange:&v41];
   if (!v42)
   {
@@ -19120,11 +19120,11 @@ LABEL_94:
 
 - (CGFloat)defaultLineHeightForFont:(NSFont *)theFont
 {
-  v4 = [(NSLayoutManager *)self usesFontLeading];
+  usesFontLeading = [(NSLayoutManager *)self usesFontLeading];
   [(UIFont *)theFont _defaultLineHeightForUILayout];
   v6 = v5;
   v7 = 0.0;
-  if (v4)
+  if (usesFontLeading)
   {
     [(UIFont *)theFont _leading];
   }
@@ -19155,9 +19155,9 @@ LABEL_94:
   self->_lmFlags = (*&self->_lmFlags & 0xFEFFFFFF | v3);
 }
 
-- (void)setSynchronizesAlignmentToDirection:(BOOL)a3
+- (void)setSynchronizesAlignmentToDirection:(BOOL)direction
 {
-  if (a3)
+  if (direction)
   {
     v3 = 0x200000;
   }
@@ -19256,20 +19256,20 @@ LABEL_94:
   }
 }
 
-- (void)enumerateEnclosingRectsForCharacterRange:(_NSRange)a3 withinSelectedCharacterRange:(_NSRange)a4 inTextContainer:(id)a5 usingBlock:(id)a6
+- (void)enumerateEnclosingRectsForCharacterRange:(_NSRange)range withinSelectedCharacterRange:(_NSRange)characterRange inTextContainer:(id)container usingBlock:(id)block
 {
   v14 = *MEMORY[0x1E69E9840];
   v12 = 0;
   v11 = 0;
   LOBYTE(v10) = 0;
-  v7 = [(NSLayoutManager *)self _rectArrayForRange:a3.location withinSelectionRange:a3.length rangeIsCharRange:a4.location singleRectOnly:a4.length fullLineRectsOnly:1 inTextContainer:0 rectCount:v10 rangeWithinContainer:a5 glyphsDrawOutsideLines:&v12 rectArray:0 rectArrayCapacity:0, v13, 64];
+  v7 = [(NSLayoutManager *)self _rectArrayForRange:range.location withinSelectionRange:range.length rangeIsCharRange:characterRange.location singleRectOnly:characterRange.length fullLineRectsOnly:1 inTextContainer:0 rectCount:v10 rangeWithinContainer:container glyphsDrawOutsideLines:&v12 rectArray:0 rectArrayCapacity:0, v13, 64];
   if (v12 >= 1)
   {
     p_x = &v7->origin.x;
     v9 = &v7[v12];
     do
     {
-      (*(a6 + 2))(a6, &v11, *p_x, p_x[1], p_x[2], p_x[3]);
+      (*(block + 2))(block, &v11, *p_x, p_x[1], p_x[2], p_x[3]);
       if (v11)
       {
         break;
@@ -19355,10 +19355,10 @@ uint64_t __73__NSLayoutManager_fillBackgroundRectArray_count_forCharacterRange_c
   width = rect.size.width;
   y = rect.origin.y;
   x = rect.origin.x;
-  v12 = [(NSCell *)cell attachment];
-  if (v12)
+  attachment = [(NSCell *)cell attachment];
+  if (attachment)
   {
-    [v12 lineLayoutPadding];
+    [attachment lineLayoutPadding];
     if (v13 != 0.0)
     {
       v14 = v13;
@@ -19377,36 +19377,36 @@ uint64_t __73__NSLayoutManager_fillBackgroundRectArray_count_forCharacterRange_c
   [(NSLayoutManager *)self _showAttachmentCell:cell inRect:attachmentIndex characterIndex:x, y, width, height];
 }
 
-- (void)coordinateAccess:(id)a3
+- (void)coordinateAccess:(id)access
 {
   [(NSTextStorage *)self->_textStorage _lockForWriting];
-  (*(a3 + 2))(a3, self);
+  (*(access + 2))(access, self);
   textStorage = self->_textStorage;
 
   [(NSTextStorage *)textStorage _unlock];
 }
 
-- (id)destinationTextContainerForRange:(_NSRange)a3 inTextContainer:(id)a4
+- (id)destinationTextContainerForRange:(_NSRange)range inTextContainer:(id)container
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   [(NSLayoutManager *)self delegate];
   if ((objc_opt_respondsToSelector() & 1) == 0 || (v8 = [-[NSLayoutManager delegate](self "delegate")]) == 0)
   {
     [(NSLayoutManager *)self textStorage];
     v9 = objc_alloc_init(objc_opt_class());
     v10 = objc_alloc_init(objc_opt_class());
-    [v10 setUsesFontLeading:{objc_msgSend(objc_msgSend(a4, "layoutManager"), "usesFontLeading")}];
-    [v10 setAllowsOriginalFontMetricsOverride:{objc_msgSend(objc_msgSend(a4, "layoutManager"), "allowsOriginalFontMetricsOverride")}];
-    [v10 setTypesetterBehavior:{objc_msgSend(objc_msgSend(a4, "layoutManager"), "typesetterBehavior")}];
+    [v10 setUsesFontLeading:{objc_msgSend(objc_msgSend(container, "layoutManager"), "usesFontLeading")}];
+    [v10 setAllowsOriginalFontMetricsOverride:{objc_msgSend(objc_msgSend(container, "layoutManager"), "allowsOriginalFontMetricsOverride")}];
+    [v10 setTypesetterBehavior:{objc_msgSend(objc_msgSend(container, "layoutManager"), "typesetterBehavior")}];
     v11 = objc_alloc(objc_opt_class());
-    [a4 size];
+    [container size];
     v8 = [v11 initWithSize:?];
-    [a4 lineFragmentPadding];
+    [container lineFragmentPadding];
     [v8 setLineFragmentPadding:?];
-    [v8 setExclusionPaths:{objc_msgSend(a4, "exclusionPaths")}];
-    [v8 setLineBreakMode:{objc_msgSend(a4, "lineBreakMode")}];
-    [v8 setMaximumNumberOfLines:{objc_msgSend(a4, "maximumNumberOfLines")}];
+    [v8 setExclusionPaths:{objc_msgSend(container, "exclusionPaths")}];
+    [v8 setLineBreakMode:{objc_msgSend(container, "lineBreakMode")}];
+    [v8 setMaximumNumberOfLines:{objc_msgSend(container, "maximumNumberOfLines")}];
     [v9 addLayoutManager:v10];
     [v10 addTextContainer:v8];
 
@@ -19416,16 +19416,16 @@ uint64_t __73__NSLayoutManager_fillBackgroundRectArray_count_forCharacterRange_c
   return v8;
 }
 
-- (id)layoutFragmentsForReplacingCharactersInRange:(_NSRange)a3 withAttributedString:(id)a4 rect:(CGRect)a5 textContainer:(id)a6
+- (id)layoutFragmentsForReplacingCharactersInRange:(_NSRange)range withAttributedString:(id)string rect:(CGRect)rect textContainer:(id)container
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  length = a3.length;
-  location = a3.location;
-  v15 = [MEMORY[0x1E695DF70] array];
-  if (length || [a4 length])
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  length = range.length;
+  location = range.location;
+  array = [MEMORY[0x1E695DF70] array];
+  if (length || [string length])
   {
     v16 = [(NSLayoutManager *)self glyphRangeForCharacterRange:location actualCharacterRange:length, 0];
     v18 = v17;
@@ -19435,7 +19435,7 @@ uint64_t __73__NSLayoutManager_fillBackgroundRectArray_count_forCharacterRange_c
     v232.location = v16;
     v232.length = v18;
     v20 = NSIntersectionRange(v232, v231);
-    if ((v20.length || [a4 length]) && (length || -[NSTextStorage length](-[NSLayoutManager textStorage](self, "textStorage"), "length") != location) && v19 == a6)
+    if ((v20.length || [string length]) && (length || -[NSTextStorage length](-[NSLayoutManager textStorage](self, "textStorage"), "length") != location) && v19 == container)
     {
       [(NSLayoutManager *)self lineFragmentRectForGlyphAtIndex:v20.location effectiveRange:0];
       v259.origin.x = x;
@@ -19446,20 +19446,20 @@ uint64_t __73__NSLayoutManager_fillBackgroundRectArray_count_forCharacterRange_c
       {
         v21 = [(NSLayoutManager *)self characterRangeForGlyphRange:v20.location actualGlyphRange:v20.length, 0];
         aRect_24 = v22;
-        v23 = [(NSTextStorage *)[(NSLayoutManager *)self textStorage] string];
+        string = [(NSTextStorage *)[(NSLayoutManager *)self textStorage] string];
         v230 = 0;
-        [(NSLayoutManager *)self boundingRectForGlyphRange:v20.location inTextContainer:v20.length, a6];
-        v25 = [(NSLayoutManager *)self glyphRangeForBoundingRectWithoutAdditionalLayout:a6 inTextContainer:x, y, width, height + v24];
+        [(NSLayoutManager *)self boundingRectForGlyphRange:v20.location inTextContainer:v20.length, container];
+        v25 = [(NSLayoutManager *)self glyphRangeForBoundingRectWithoutAdditionalLayout:container inTextContainer:x, y, width, height + v24];
         v27 = v26;
         v29 = [(NSLayoutManager *)self characterRangeForGlyphRange:v25 actualGlyphRange:v26, 0];
         v30 = v28;
         if (v25 > v231.location)
         {
-          [v23 getParagraphStart:&v230 end:0 contentsEnd:0 forRange:{v29, v28}];
+          [string getParagraphStart:&v230 end:0 contentsEnd:0 forRange:{v29, v28}];
           v31 = v230;
           if (v230 == v29)
           {
-            [v23 getParagraphStart:&v230 end:0 contentsEnd:0 forRange:{v29 - 1, 1}];
+            [string getParagraphStart:&v230 end:0 contentsEnd:0 forRange:{v29 - 1, 1}];
             v31 = v230;
           }
 
@@ -19479,12 +19479,12 @@ uint64_t __73__NSLayoutManager_fillBackgroundRectArray_count_forCharacterRange_c
 
         else
         {
-          [v23 getParagraphStart:0 end:0 contentsEnd:&v230 forRange:{v29 + v30 - 1, 1}];
+          [string getParagraphStart:0 end:0 contentsEnd:&v230 forRange:{v29 + v30 - 1, 1}];
           v34 = v230;
           v35 = aRect_24;
           if (v230 == v29 + v30)
           {
-            [v23 getParagraphStart:0 end:0 contentsEnd:&v230 forRange:{v29 + v30, 1}];
+            [string getParagraphStart:0 end:0 contentsEnd:&v230 forRange:{v29 + v30, 1}];
             v34 = v230;
           }
 
@@ -19501,22 +19501,22 @@ uint64_t __73__NSLayoutManager_fillBackgroundRectArray_count_forCharacterRange_c
         aRect_16 = v30 + v29;
         v214 = v30 + v29 - v36;
         v227 = [(NSLayoutManager *)self destinationTextContainerForRange:v36 inTextContainer:?];
-        v37 = [v227 layoutManager];
-        v38 = [v37 textStorage];
+        layoutManager = [v227 layoutManager];
+        textStorage = [layoutManager textStorage];
         v225 = v36;
-        if (a4)
+        if (string)
         {
-          [v38 replaceCharactersInRange:v21 withAttributedString:{v35, a4}];
+          [textStorage replaceCharactersInRange:v21 withAttributedString:{v35, string}];
         }
 
         else
         {
-          [v38 replaceCharactersInRange:v21 withString:{v35, &stru_1F01AD578}];
+          [textStorage replaceCharactersInRange:v21 withString:{v35, &stru_1F01AD578}];
         }
 
-        [v37 ensureLayoutForTextContainer:v227];
-        v213 = [a4 length];
-        v226 = v15;
+        [layoutManager ensureLayoutForTextContainer:v227];
+        v213 = [string length];
+        v226 = array;
         if (v21 > v29)
         {
           v39 = [(NSLayoutManager *)self glyphRangeForCharacterRange:v29 actualCharacterRange:v21 - v29, 0];
@@ -19539,21 +19539,21 @@ uint64_t __73__NSLayoutManager_fillBackgroundRectArray_count_forCharacterRange_c
           v244 = NSUnionRect(v243, v261);
           aRect = v244.size.height;
           aRect_8 = v244.origin.y;
-          [a6 size];
+          [container size];
           v211 = v55;
           [(NSLayoutManager *)self lineFragmentUsedRectForGlyphAtIndex:v50 effectiveRange:0];
           v57 = v56;
           v59 = v58;
           v61 = v60;
           v63 = v62;
-          v64 = [v37 glyphRangeForCharacterRange:v29 - v225 actualCharacterRange:{v21 - v29, 0}];
+          v64 = [layoutManager glyphRangeForCharacterRange:v29 - v225 actualCharacterRange:{v21 - v29, 0}];
           v66 = v65;
-          [v37 lineFragmentRectForGlyphAtIndex:v64 effectiveRange:0];
+          [layoutManager lineFragmentRectForGlyphAtIndex:v64 effectiveRange:0];
           v68 = v67;
           v70 = v69;
           v72 = v71;
           v74 = v73;
-          [v37 lineFragmentRectForGlyphAtIndex:v66 + v64 - 1 effectiveRange:0];
+          [layoutManager lineFragmentRectForGlyphAtIndex:v66 + v64 - 1 effectiveRange:0];
           v262.origin.x = v75;
           v262.origin.y = v76;
           v262.size.width = v77;
@@ -19567,7 +19567,7 @@ uint64_t __73__NSLayoutManager_fillBackgroundRectArray_count_forCharacterRange_c
           v80 = v246.size.height;
           [v227 size];
           v82 = v81;
-          [v37 lineFragmentUsedRectForGlyphAtIndex:v66 + v64 - 1 effectiveRange:0];
+          [layoutManager lineFragmentUsedRectForGlyphAtIndex:v66 + v64 - 1 effectiveRange:0];
           v263.origin.x = v83;
           v263.origin.y = v84;
           v263.size.width = v85;
@@ -19586,17 +19586,17 @@ uint64_t __73__NSLayoutManager_fillBackgroundRectArray_count_forCharacterRange_c
             v87 |= 4uLL;
           }
 
-          v88 = [[NSTextLayoutFragment alloc] initWithLayoutManager:self characterRange:v29 animationType:v21 - v29 boundingRect:v87, 0.0, aRect_8, v211, aRect];
-          if (([(NSTextLayoutFragment *)v88 animationType]& 1) != 0)
+          aRect = [[NSTextLayoutFragment alloc] initWithLayoutManager:self characterRange:v29 animationType:v21 - v29 boundingRect:v87, 0.0, aRect_8, v211, aRect];
+          if (([(NSTextLayoutFragment *)aRect animationType]& 1) != 0)
           {
-            -[NSTextLayoutFragment setDestinationTextStorage:](v88, "setDestinationTextStorage:", [v37 textStorage]);
-            [(NSTextLayoutFragment *)v88 setDestinationLayoutManager:v37];
-            [(NSTextLayoutFragment *)v88 setDestinationGlyphRange:v64, v66];
-            [(NSTextLayoutFragment *)v88 setDestinationVerticalDelta:-v79];
-            [(NSTextLayoutFragment *)v88 setDestinationBoundingRect:0.0, v79, v82, v80];
+            -[NSTextLayoutFragment setDestinationTextStorage:](aRect, "setDestinationTextStorage:", [layoutManager textStorage]);
+            [(NSTextLayoutFragment *)aRect setDestinationLayoutManager:layoutManager];
+            [(NSTextLayoutFragment *)aRect setDestinationGlyphRange:v64, v66];
+            [(NSTextLayoutFragment *)aRect setDestinationVerticalDelta:-v79];
+            [(NSTextLayoutFragment *)aRect setDestinationBoundingRect:0.0, v79, v82, v80];
           }
 
-          [v226 addObject:v88];
+          [v226 addObject:aRect];
 
           v35 = aRect_24;
         }
@@ -19627,7 +19627,7 @@ uint64_t __73__NSLayoutManager_fillBackgroundRectArray_count_forCharacterRange_c
           v106 = v105;
           v108 = v107;
           v110 = v109;
-          [a6 size];
+          [container size];
           v112 = v111;
         }
 
@@ -19647,9 +19647,9 @@ uint64_t __73__NSLayoutManager_fillBackgroundRectArray_count_forCharacterRange_c
         v212 = v113;
         v208 = v116;
         v209 = v115;
-        v117 = [v37 glyphRangeForCharacterRange:v21 - v225 actualCharacterRange:{objc_msgSend(a4, "length"), 0}];
+        v117 = [layoutManager glyphRangeForCharacterRange:v21 - v225 actualCharacterRange:{objc_msgSend(string, "length"), 0}];
         v119 = v118;
-        [v37 lineFragmentRectForGlyphAtIndex:v117 effectiveRange:0];
+        [layoutManager lineFragmentRectForGlyphAtIndex:v117 effectiveRange:0];
         v124 = v123;
         if (v119)
         {
@@ -19657,7 +19657,7 @@ uint64_t __73__NSLayoutManager_fillBackgroundRectArray_count_forCharacterRange_c
           v126 = v121;
           v127 = v122;
           v128 = v119 + v117 - 1;
-          [v37 lineFragmentRectForGlyphAtIndex:v128 effectiveRange:0];
+          [layoutManager lineFragmentRectForGlyphAtIndex:v128 effectiveRange:0];
           v265.origin.x = v129;
           v265.origin.y = v130;
           v265.size.width = v131;
@@ -19680,7 +19680,7 @@ uint64_t __73__NSLayoutManager_fillBackgroundRectArray_count_forCharacterRange_c
           v128 = v117 - 1;
         }
 
-        [v37 lineFragmentUsedRectForGlyphAtIndex:v128 effectiveRange:0];
+        [layoutManager lineFragmentUsedRectForGlyphAtIndex:v128 effectiveRange:0];
         v266.origin.x = v136;
         v266.origin.y = v137;
         v266.size.width = v138;
@@ -19689,7 +19689,7 @@ uint64_t __73__NSLayoutManager_fillBackgroundRectArray_count_forCharacterRange_c
         v252.origin.y = v106;
         v252.size.width = v108;
         v252.size.height = v110;
-        if (!NSEqualRects(v252, v266) || ([v37 lineFragmentUsedRectForGlyphAtIndex:v117 effectiveRange:0], v267.origin.x = v140, v267.origin.y = v141, v267.size.width = v142, v267.size.height = v143, v253.origin.y = v210, v253.origin.x = v212, v253.size.height = v208, v253.size.width = v209, v144 = 0, !NSEqualRects(v253, v267)))
+        if (!NSEqualRects(v252, v266) || ([layoutManager lineFragmentUsedRectForGlyphAtIndex:v117 effectiveRange:0], v267.origin.x = v140, v267.origin.y = v141, v267.size.width = v142, v267.size.height = v143, v253.origin.y = v210, v253.origin.x = v212, v253.size.height = v208, v253.size.width = v209, v144 = 0, !NSEqualRects(v253, v267)))
         {
           v144 = 1;
         }
@@ -19703,18 +19703,18 @@ uint64_t __73__NSLayoutManager_fillBackgroundRectArray_count_forCharacterRange_c
           v144 |= 4uLL;
         }
 
-        v145 = [[NSTextLayoutFragment alloc] initWithLayoutManager:self characterRange:v21 animationType:v35 boundingRect:v144, 0.0, aRect_24a, v112, aRect_8a];
-        if (([(NSTextLayoutFragment *)v145 animationType]& 1) != 0)
+        aRect_8a = [[NSTextLayoutFragment alloc] initWithLayoutManager:self characterRange:v21 animationType:v35 boundingRect:v144, 0.0, aRect_24a, v112, aRect_8a];
+        if (([(NSTextLayoutFragment *)aRect_8a animationType]& 1) != 0)
         {
-          -[NSTextLayoutFragment setDestinationTextStorage:](v145, "setDestinationTextStorage:", [v37 textStorage]);
-          [(NSTextLayoutFragment *)v145 setDestinationLayoutManager:v37];
-          [(NSTextLayoutFragment *)v145 setDestinationGlyphRange:v117, v119];
-          [(NSTextLayoutFragment *)v145 setDestinationVerticalDelta:-v124];
-          [(NSTextLayoutFragment *)v145 setDestinationBoundingRect:0.0, v124, v135, v133];
+          -[NSTextLayoutFragment setDestinationTextStorage:](aRect_8a, "setDestinationTextStorage:", [layoutManager textStorage]);
+          [(NSTextLayoutFragment *)aRect_8a setDestinationLayoutManager:layoutManager];
+          [(NSTextLayoutFragment *)aRect_8a setDestinationGlyphRange:v117, v119];
+          [(NSTextLayoutFragment *)aRect_8a setDestinationVerticalDelta:-v124];
+          [(NSTextLayoutFragment *)aRect_8a setDestinationBoundingRect:0.0, v124, v135, v133];
         }
 
-        v15 = v226;
-        [v226 addObject:v145];
+        array = v226;
+        [v226 addObject:aRect_8a];
 
         v146 = aRect_16 - (v21 + v35);
         if (aRect_16 != v21 + v35)
@@ -19740,31 +19740,31 @@ uint64_t __73__NSLayoutManager_fillBackgroundRectArray_count_forCharacterRange_c
           v255 = NSUnionRect(v254, v268);
           v162 = v255.origin.y;
           v163 = v255.size.height;
-          [a6 size];
+          [container size];
           v165 = v164;
           [(NSLayoutManager *)self lineFragmentUsedRectForGlyphAtIndex:v147 effectiveRange:0];
           aRect_16a = v167;
           aRect_24b = v166;
           v169 = v168;
           aRect_8b = v170;
-          v230 = [a4 length] + v21;
-          v171 = [v37 glyphRangeForCharacterRange:v230 - v225 actualCharacterRange:{v225 - v35 + v213 + v214 - v230, 0}];
+          v230 = [string length] + v21;
+          v171 = [layoutManager glyphRangeForCharacterRange:v230 - v225 actualCharacterRange:{v225 - v35 + v213 + v214 - v230, 0}];
           v173 = v172;
-          [v37 lineFragmentRectForGlyphAtIndex:v171 effectiveRange:&v228];
+          [layoutManager lineFragmentRectForGlyphAtIndex:v171 effectiveRange:&v228];
           v175 = v174;
           v177 = v176;
           v179 = v178;
           v181 = v180;
           if (v228 < v171)
           {
-            v182 = [MEMORY[0x1E696AB08] newlineCharacterSet];
-            v183 = [objc_msgSend(v37 "textStorage")];
-            if ([v182 longCharacterIsMember:{objc_msgSend(v183, "characterAtIndex:", v230 - v225)}])
+            newlineCharacterSet = [MEMORY[0x1E696AB08] newlineCharacterSet];
+            v183 = [objc_msgSend(layoutManager "textStorage")];
+            if ([newlineCharacterSet longCharacterIsMember:{objc_msgSend(v183, "characterAtIndex:", v230 - v225)}])
             {
               v184 = v171 + v173;
               v171 = v229 + v228;
               v173 = v184 - (v229 + v228);
-              [v37 lineFragmentRectForGlyphAtIndex:v229 + v228 effectiveRange:0];
+              [layoutManager lineFragmentRectForGlyphAtIndex:v229 + v228 effectiveRange:0];
               v175 = v185;
               v177 = v186;
               v179 = v187;
@@ -19772,7 +19772,7 @@ uint64_t __73__NSLayoutManager_fillBackgroundRectArray_count_forCharacterRange_c
             }
           }
 
-          [v37 lineFragmentRectForGlyphAtIndex:v173 + v171 - 1 effectiveRange:0];
+          [layoutManager lineFragmentRectForGlyphAtIndex:v173 + v171 - 1 effectiveRange:0];
           v269.origin.x = v189;
           v269.origin.y = v190;
           v269.size.width = v191;
@@ -19817,7 +19817,7 @@ uint64_t __73__NSLayoutManager_fillBackgroundRectArray_count_forCharacterRange_c
             v201 = v169;
           }
 
-          [v37 lineFragmentUsedRectForGlyphAtIndex:v171 effectiveRange:0];
+          [layoutManager lineFragmentUsedRectForGlyphAtIndex:v171 effectiveRange:0];
           v270.origin.x = v202;
           v270.origin.y = v203;
           v270.size.width = v204;
@@ -19826,28 +19826,28 @@ uint64_t __73__NSLayoutManager_fillBackgroundRectArray_count_forCharacterRange_c
           v258.origin.x = aRect_24b;
           v258.origin.y = v201;
           v258.size.height = aRect_8b;
-          v206 = [[NSTextLayoutFragment alloc] initWithLayoutManager:self characterRange:v21 + v35 animationType:v146 boundingRect:v200 | (!NSEqualRects(v258, v270) || !v198), 0.0, v162, v165, v163];
-          if ([(NSTextLayoutFragment *)v206 animationType])
+          v163 = [[NSTextLayoutFragment alloc] initWithLayoutManager:self characterRange:v21 + v35 animationType:v146 boundingRect:v200 | (!NSEqualRects(v258, v270) || !v198), 0.0, v162, v165, v163];
+          if ([(NSTextLayoutFragment *)v163 animationType])
           {
-            [(NSTextLayoutFragment *)v206 setDestinationBoundingRect:0.0, v193, v196, v194];
+            [(NSTextLayoutFragment *)v163 setDestinationBoundingRect:0.0, v193, v196, v194];
           }
 
-          v15 = v226;
-          if (([(NSTextLayoutFragment *)v206 animationType]& 1) != 0)
+          array = v226;
+          if (([(NSTextLayoutFragment *)v163 animationType]& 1) != 0)
           {
-            -[NSTextLayoutFragment setDestinationTextStorage:](v206, "setDestinationTextStorage:", [v37 textStorage]);
-            [(NSTextLayoutFragment *)v206 setDestinationLayoutManager:v37];
-            [(NSTextLayoutFragment *)v206 setDestinationGlyphRange:v171, v173];
-            [(NSTextLayoutFragment *)v206 setDestinationVerticalDelta:-v193];
+            -[NSTextLayoutFragment setDestinationTextStorage:](v163, "setDestinationTextStorage:", [layoutManager textStorage]);
+            [(NSTextLayoutFragment *)v163 setDestinationLayoutManager:layoutManager];
+            [(NSTextLayoutFragment *)v163 setDestinationGlyphRange:v171, v173];
+            [(NSTextLayoutFragment *)v163 setDestinationVerticalDelta:-v193];
           }
 
-          [v226 addObject:v206];
+          [v226 addObject:v163];
         }
       }
     }
   }
 
-  return v15;
+  return array;
 }
 
 @end

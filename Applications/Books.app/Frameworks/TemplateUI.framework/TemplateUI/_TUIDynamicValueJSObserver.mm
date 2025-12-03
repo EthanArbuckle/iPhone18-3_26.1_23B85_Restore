@@ -1,28 +1,28 @@
 @interface _TUIDynamicValueJSObserver
-- (_TUIDynamicValueJSObserver)initWithCoordinator:(id)a3 block:(id)a4 value:(id)a5;
+- (_TUIDynamicValueJSObserver)initWithCoordinator:(id)coordinator block:(id)block value:(id)value;
 - (id)value;
-- (void)dynamicChanged:(id)a3 transaction:(id)a4;
+- (void)dynamicChanged:(id)changed transaction:(id)transaction;
 @end
 
 @implementation _TUIDynamicValueJSObserver
 
-- (_TUIDynamicValueJSObserver)initWithCoordinator:(id)a3 block:(id)a4 value:(id)a5
+- (_TUIDynamicValueJSObserver)initWithCoordinator:(id)coordinator block:(id)block value:(id)value
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  coordinatorCopy = coordinator;
+  blockCopy = block;
+  valueCopy = value;
   v19.receiver = self;
   v19.super_class = _TUIDynamicValueJSObserver;
   v12 = [(_TUIDynamicValueJSObserver *)&v19 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_coordinator, a3);
-    v14 = [JSManagedValue managedValueWithValue:v10];
+    objc_storeStrong(&v12->_coordinator, coordinator);
+    v14 = [JSManagedValue managedValueWithValue:blockCopy];
     managedValue = v13->_managedValue;
     v13->_managedValue = v14;
 
-    v16 = [v11 instanceForObserver:v13];
+    v16 = [valueCopy instanceForObserver:v13];
     instance = v13->_instance;
     v13->_instance = v16;
   }
@@ -30,7 +30,7 @@
   return v13;
 }
 
-- (void)dynamicChanged:(id)a3 transaction:(id)a4
+- (void)dynamicChanged:(id)changed transaction:(id)transaction
 {
   coordinator = self->_coordinator;
   v5[0] = _NSConcreteStackBlock;
@@ -38,7 +38,7 @@
   v5[2] = sub_188438;
   v5[3] = &unk_25EB80;
   v5[4] = self;
-  [(TUITransactionCoordinating *)coordinator scheduleLayoutUpdateWithTransaction:a4 block:v5];
+  [(TUITransactionCoordinating *)coordinator scheduleLayoutUpdateWithTransaction:transaction block:v5];
 }
 
 - (id)value

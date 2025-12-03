@@ -1,14 +1,14 @@
 @interface CRLCanvasAutoscroll
-+ (void)startAutoscroll:(id)a3 unscaledPoint:(CGPoint)a4;
-- (BOOL)p_startAutoscroll:(id)a3 unscaledPoint:(CGPoint)a4 unscaledDistancePastVisibleRect:(double)a5 unscaledInset:(double)a6 directions:(int)a7 repeatInterval:(double)a8;
++ (void)startAutoscroll:(id)autoscroll unscaledPoint:(CGPoint)point;
+- (BOOL)p_startAutoscroll:(id)autoscroll unscaledPoint:(CGPoint)point unscaledDistancePastVisibleRect:(double)rect unscaledInset:(double)inset directions:(int)directions repeatInterval:(double)interval;
 - (CGPoint)adjustedUnscaledAutoscrollPoint;
 - (CGPoint)lastAutoscrollDelta;
 - (CGPoint)unscaledAutoscrollPoint;
-- (unint64_t)p_unscaledDeltaForCount:(unint64_t)a3;
+- (unint64_t)p_unscaledDeltaForCount:(unint64_t)count;
 - (void)dealloc;
 - (void)invalidate;
-- (void)p_autoscrollIfPossibleWithDelta:(unint64_t)a3;
-- (void)timerFired:(id)a3;
+- (void)p_autoscrollIfPossibleWithDelta:(unint64_t)delta;
+- (void)timerFired:(id)fired;
 @end
 
 @implementation CRLCanvasAutoscroll
@@ -21,17 +21,17 @@
   [(CRLCanvasAutoscroll *)&v3 dealloc];
 }
 
-+ (void)startAutoscroll:(id)a3 unscaledPoint:(CGPoint)a4
++ (void)startAutoscroll:(id)autoscroll unscaledPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v84 = a3;
-  v6 = [v84 icc];
+  y = point.y;
+  x = point.x;
+  autoscrollCopy = autoscroll;
+  v6 = [autoscrollCopy icc];
   [v6 viewScale];
   v8 = 20.0 / v7;
-  if (v84 && (objc_opt_respondsToSelector() & 1) != 0)
+  if (autoscrollCopy && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v84 unscaledStartAutoscrollThreshold];
+    [autoscrollCopy unscaledStartAutoscrollThreshold];
     v10 = v9;
     [v6 viewScale];
     v8 = v10 / v11;
@@ -47,31 +47,31 @@
   v86.y = y;
   if (CGRectContainsPoint(v88, v86) || ![v6 allowAutoscroll])
   {
-    v19 = [v84 autoscroll];
-    [v19 invalidate];
+    autoscroll = [autoscrollCopy autoscroll];
+    [autoscroll invalidate];
     goto LABEL_60;
   }
 
   v79 = v8;
   v82 = x;
   v83 = y;
-  v16 = [v84 autoscroll];
+  autoscroll2 = [autoscrollCopy autoscroll];
 
-  if (!v16)
+  if (!autoscroll2)
   {
     v17 = objc_alloc_init(CRLCanvasAutoscroll);
-    [v84 setAutoscroll:v17];
+    [autoscrollCopy setAutoscroll:v17];
   }
 
-  v18 = [v6 canvasView];
-  v19 = [v18 enclosingScrollView];
+  canvasView = [v6 canvasView];
+  autoscroll = [canvasView enclosingScrollView];
 
   [v6 contentOffset];
   v80 = v20;
   v81 = v21;
-  v22 = [v6 layerHost];
-  v23 = [v22 canvasView];
-  [v23 bounds];
+  layerHost = [v6 layerHost];
+  canvasView2 = [layerHost canvasView];
+  [canvasView2 bounds];
   v25 = v24;
   v27 = v26;
   v29 = v28;
@@ -83,26 +83,26 @@
   v75 = v36;
   v76 = v35;
 
-  [v19 scrollableAreaBounds];
+  [autoscroll scrollableAreaBounds];
   v38 = v37;
   v40 = v39;
-  [v19 scrollableAreaContentInsets];
+  [autoscroll scrollableAreaContentInsets];
   v43 = v38 - (v41 + v42);
   v46 = v40 - (v44 + v45);
   [v6 viewScale];
   v72 = sub_10011F340(v43, v46, 1.0 / v47);
   v74 = v48;
-  if (v84 && (objc_opt_respondsToSelector() & 1) != 0)
+  if (autoscrollCopy && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v49 = [v84 allowedAutoscrollDirections];
+    allowedAutoscrollDirections = [autoscrollCopy allowedAutoscrollDirections];
   }
 
   else
   {
-    v49 = 15;
+    allowedAutoscrollDirections = 15;
   }
 
-  v50 = [v6 allowNegativeAutoscroll];
+  allowNegativeAutoscroll = [v6 allowNegativeAutoscroll];
   v89.origin.x = v12;
   v89.origin.y = v13;
   v89.size.width = width;
@@ -120,10 +120,10 @@
 
   else
   {
-    v53 = v50;
+    v53 = allowNegativeAutoscroll;
   }
 
-  if ((v49 & 1) == 0 || (v82 < MinX ? (v54 = v53 == 0) : (v54 = 1), v54))
+  if ((allowedAutoscrollDirections & 1) == 0 || (v82 < MinX ? (v54 = v53 == 0) : (v54 = 1), v54))
   {
     v57 = 0;
     if (v80 >= 0.0)
@@ -133,11 +133,11 @@
 
     else
     {
-      v58 = v50;
+      v58 = allowNegativeAutoscroll;
     }
 
     v55 = 1;
-    if ((v49 & 2) == 0 || (v82 >= MaxX ? (v59 = v58 == 0) : (v59 = 1), v59))
+    if ((allowedAutoscrollDirections & 2) == 0 || (v82 >= MaxX ? (v59 = v58 == 0) : (v59 = 1), v59))
     {
       v56 = 0.0;
     }
@@ -196,10 +196,10 @@
 
   else
   {
-    v63 = v50;
+    v63 = allowNegativeAutoscroll;
   }
 
-  if ((v49 & 4) != 0 && v83 < MinY && v63 != 0)
+  if ((allowedAutoscrollDirections & 4) != 0 && v83 < MinY && v63 != 0)
   {
     v57 = v57 | 4;
     v96.origin.x = v12;
@@ -217,10 +217,10 @@
 
   else
   {
-    v66 = v50;
+    v66 = allowNegativeAutoscroll;
   }
 
-  if ((v49 & 8) != 0 && v83 >= MaxY && v66 != 0)
+  if ((allowedAutoscrollDirections & 8) != 0 && v83 >= MaxY && v66 != 0)
   {
     v97.origin.y = v77;
     v97.origin.x = v78;
@@ -250,37 +250,37 @@ LABEL_43:
   if ((v55 & 1) == 0)
   {
 LABEL_58:
-    v70 = [v6 editingCoordinator];
-    v71 = [v70 followCoordinator];
-    [v71 endFollowSessionForLocalParticipantWithShouldShowRefollowPlacard:1];
+    editingCoordinator = [v6 editingCoordinator];
+    followCoordinator = [editingCoordinator followCoordinator];
+    [followCoordinator endFollowSessionForLocalParticipantWithShouldShowRefollowPlacard:1];
 
-    v69 = [v84 autoscroll];
-    [v69 p_startAutoscroll:v84 unscaledPoint:v57 unscaledDistancePastVisibleRect:v82 unscaledInset:v83 directions:v56 repeatInterval:{v79, 0.035}];
+    autoscroll3 = [autoscrollCopy autoscroll];
+    [autoscroll3 p_startAutoscroll:autoscrollCopy unscaledPoint:v57 unscaledDistancePastVisibleRect:v82 unscaledInset:v83 directions:v56 repeatInterval:{v79, 0.035}];
     goto LABEL_59;
   }
 
-  v69 = [v84 autoscroll];
-  [v69 invalidate];
+  autoscroll3 = [autoscrollCopy autoscroll];
+  [autoscroll3 invalidate];
 LABEL_59:
 
 LABEL_60:
 }
 
-- (BOOL)p_startAutoscroll:(id)a3 unscaledPoint:(CGPoint)a4 unscaledDistancePastVisibleRect:(double)a5 unscaledInset:(double)a6 directions:(int)a7 repeatInterval:(double)a8
+- (BOOL)p_startAutoscroll:(id)autoscroll unscaledPoint:(CGPoint)point unscaledDistancePastVisibleRect:(double)rect unscaledInset:(double)inset directions:(int)directions repeatInterval:(double)interval
 {
-  v9 = *&a7;
-  y = a4.y;
-  x = a4.x;
-  v15 = a3;
+  v9 = *&directions;
+  y = point.y;
+  x = point.x;
+  autoscrollCopy = autoscroll;
   if (self->_timer)
   {
-    v16 = [(CRLCanvasAutoscroll *)self target];
-    if (v16 == v15 && ([(CRLCanvasAutoscroll *)self unscaledAutoscrollPoint], v23 == x) && v22 == y && [(CRLCanvasAutoscroll *)self directions]== v9)
+    target = [(CRLCanvasAutoscroll *)self target];
+    if (target == autoscrollCopy && ([(CRLCanvasAutoscroll *)self unscaledAutoscrollPoint], v23 == x) && v22 == y && [(CRLCanvasAutoscroll *)self directions]== v9)
     {
       [(CRLCanvasAutoscroll *)self repeatInterval];
       v25 = v24;
 
-      if (v25 == a8)
+      if (v25 == interval)
       {
 LABEL_31:
         v21 = 1;
@@ -294,7 +294,7 @@ LABEL_31:
   }
 
   v17 = objc_opt_respondsToSelector();
-  v18 = a8 == 0.0 || v9 == 0;
+  v18 = interval == 0.0 || v9 == 0;
   if (!v18 && (v17 & 1) != 0)
   {
     v19 = [[NSDate alloc] initWithTimeIntervalSinceNow:0.0];
@@ -338,7 +338,7 @@ LABEL_31:
         [CRLAssertionHandler handleFailureInFunction:v30 file:v31 lineNumber:170 isFatal:0 description:"This operation must only be performed on the main thread."];
       }
 
-      v32 = [[NSTimer alloc] initWithFireDate:v19 interval:self target:"timerFired:" selector:0 userInfo:1 repeats:a8];
+      v32 = [[NSTimer alloc] initWithFireDate:v19 interval:self target:"timerFired:" selector:0 userInfo:1 repeats:interval];
       v33 = self->_timer;
       self->_timer = v32;
 
@@ -351,13 +351,13 @@ LABEL_31:
       [(CRLCanvasAutoscroll *)self setCount:0];
     }
 
-    [(CRLCanvasAutoscroll *)self setTarget:v15];
+    [(CRLCanvasAutoscroll *)self setTarget:autoscrollCopy];
     [(CRLCanvasAutoscroll *)self setUnscaledAutoscrollPoint:x, y];
     [(CRLCanvasAutoscroll *)self setAdjustedUnscaledAutoscrollPoint:x, y];
     [(CRLCanvasAutoscroll *)self setDirections:v9];
-    [(CRLCanvasAutoscroll *)self setRepeatInterval:a8];
-    [(CRLCanvasAutoscroll *)self setUnscaledDistancePastVisibleRect:a5];
-    [(CRLCanvasAutoscroll *)self setUnscaledInset:a6];
+    [(CRLCanvasAutoscroll *)self setRepeatInterval:interval];
+    [(CRLCanvasAutoscroll *)self setUnscaledDistancePastVisibleRect:rect];
+    [(CRLCanvasAutoscroll *)self setUnscaledInset:inset];
 
     goto LABEL_31;
   }
@@ -387,8 +387,8 @@ LABEL_32:
     dispatch_async(&_dispatch_main_q, block);
   }
 
-  v7 = [(CRLCanvasAutoscroll *)self target];
-  [v7 autoscrollWillNotStart];
+  target = [(CRLCanvasAutoscroll *)self target];
+  [target autoscrollWillNotStart];
 
   [(CRLCanvasAutoscroll *)self setTarget:0];
   y = CGPointZero.y;
@@ -401,13 +401,13 @@ LABEL_32:
   [(CRLCanvasAutoscroll *)self setUnscaledInset:1.0];
 }
 
-- (unint64_t)p_unscaledDeltaForCount:(unint64_t)a3
+- (unint64_t)p_unscaledDeltaForCount:(unint64_t)count
 {
-  v5 = [(CRLCanvasAutoscroll *)self target];
-  if (v5 && (v6 = v5, [(CRLCanvasAutoscroll *)self target], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_opt_respondsToSelector(), v7, v6, (v8 & 1) != 0))
+  target = [(CRLCanvasAutoscroll *)self target];
+  if (target && (v6 = target, [(CRLCanvasAutoscroll *)self target], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_opt_respondsToSelector(), v7, v6, (v8 & 1) != 0))
   {
-    v9 = [(CRLCanvasAutoscroll *)self target];
-    v10 = [v9 maximumAutoscrollDeltaForCount:a3];
+    target2 = [(CRLCanvasAutoscroll *)self target];
+    v10 = [target2 maximumAutoscrollDeltaForCount:count];
 
     v11 = v10;
   }
@@ -421,35 +421,35 @@ LABEL_32:
   v13 = v12 - self->_lastFired;
   [(CRLCanvasAutoscroll *)self repeatInterval];
   result = (v11 * (v13 / v14));
-  if (a3 <= 0x18)
+  if (count <= 0x18)
   {
-    return ((1.0 / (26 - a3)) * result);
+    return ((1.0 / (26 - count)) * result);
   }
 
   return result;
 }
 
-- (void)timerFired:(id)a3
+- (void)timerFired:(id)fired
 {
   [(CRLCanvasAutoscroll *)self setCount:[(CRLCanvasAutoscroll *)self count]+ 1];
-  v4 = [(CRLCanvasAutoscroll *)self target];
-  if (v4)
+  target = [(CRLCanvasAutoscroll *)self target];
+  if (target)
   {
-    v5 = v4;
-    v6 = [(CRLCanvasAutoscroll *)self target];
+    v5 = target;
+    target2 = [(CRLCanvasAutoscroll *)self target];
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
     {
-      v8 = [(CRLCanvasAutoscroll *)self target];
-      v9 = [v8 allowedAutoscrollDirections];
+      target3 = [(CRLCanvasAutoscroll *)self target];
+      allowedAutoscrollDirections = [target3 allowedAutoscrollDirections];
 
-      v10 = [(CRLCanvasAutoscroll *)self directions];
-      if ((v10 & ~v9) != 0)
+      directions = [(CRLCanvasAutoscroll *)self directions];
+      if ((directions & ~allowedAutoscrollDirections) != 0)
       {
-        v11 = v10;
+        v11 = directions;
         [(CRLCanvasAutoscroll *)self setCount:0];
-        [(CRLCanvasAutoscroll *)self setDirections:v11 & v9];
+        [(CRLCanvasAutoscroll *)self setDirections:v11 & allowedAutoscrollDirections];
       }
     }
   }
@@ -459,38 +459,38 @@ LABEL_32:
   [(CRLCanvasAutoscroll *)self p_autoscrollIfPossibleWithDelta:v12];
 }
 
-- (void)p_autoscrollIfPossibleWithDelta:(unint64_t)a3
+- (void)p_autoscrollIfPossibleWithDelta:(unint64_t)delta
 {
-  v5 = [(CRLCanvasAutoscroll *)self directions];
-  v6 = [(CRLCanvasAutoscroll *)self target];
-  v85 = [v6 icc];
+  directions = [(CRLCanvasAutoscroll *)self directions];
+  target = [(CRLCanvasAutoscroll *)self target];
+  v85 = [target icc];
 
-  v7 = [v85 canvasView];
-  v8 = [v7 enclosingScrollView];
+  canvasView = [v85 canvasView];
+  enclosingScrollView = [canvasView enclosingScrollView];
   [v85 contentOffset];
   v83 = v10;
   v84 = v9;
-  v11 = [v85 layerHost];
-  v12 = [v11 canvasLayer];
-  [v12 contentInset];
+  layerHost = [v85 layerHost];
+  canvasLayer = [layerHost canvasLayer];
+  [canvasLayer contentInset];
   v14 = v13;
   v16 = v15;
 
   [v85 viewScale];
   v18 = v17;
-  v19 = [v85 layerHost];
-  v20 = [v19 canvasView];
-  [v20 bounds];
+  layerHost2 = [v85 layerHost];
+  canvasView2 = [layerHost2 canvasView];
+  [canvasView2 bounds];
   v21 = 1.0 / v18;
   v81 = sub_10011FFD8(v22, v23, v24, v25, 1.0 / v18);
   v82 = v26;
   v28 = v27;
   v30 = v29;
 
-  [v8 scrollableAreaBounds];
+  [enclosingScrollView scrollableAreaBounds];
   v32 = v31;
   v34 = v33;
-  [v8 scrollableAreaContentInsets];
+  [enclosingScrollView scrollableAreaContentInsets];
   v37 = v32 - (v35 + v36);
   v40 = v34 - (v38 + v39);
   [v85 viewScale];
@@ -498,27 +498,27 @@ LABEL_32:
   v79 = v43;
   v44 = sub_10011F340(v16, v14, v21);
   v80 = v45;
-  v46 = [(CRLCanvasAutoscroll *)self target];
-  if (v46 && (v47 = v46, [(CRLCanvasAutoscroll *)self target], v48 = objc_claimAutoreleasedReturnValue(), v49 = objc_opt_respondsToSelector(), v48, v47, (v49 & 1) != 0))
+  target2 = [(CRLCanvasAutoscroll *)self target];
+  if (target2 && (v47 = target2, [(CRLCanvasAutoscroll *)self target], v48 = objc_claimAutoreleasedReturnValue(), v49 = objc_opt_respondsToSelector(), v48, v47, (v49 & 1) != 0))
   {
-    v50 = [(CRLCanvasAutoscroll *)self target];
-    v51 = [v50 allowScrollingOutsideOfBounds];
+    target3 = [(CRLCanvasAutoscroll *)self target];
+    allowScrollingOutsideOfBounds = [target3 allowScrollingOutsideOfBounds];
   }
 
   else
   {
-    v51 = [v85 shouldCanvasScrollingSizeGrowToFitBoardContent];
+    allowScrollingOutsideOfBounds = [v85 shouldCanvasScrollingSizeGrowToFitBoardContent];
   }
 
-  if (v5)
+  if (directions)
   {
     v87.origin.x = v81;
     v87.origin.y = v82;
     v87.size.width = v28;
     v87.size.height = v30;
     MinX = CGRectGetMinX(v87);
-    v52 = v84 - a3;
-    if (v51)
+    v52 = v84 - delta;
+    if (allowScrollingOutsideOfBounds)
     {
       goto LABEL_12;
     }
@@ -532,16 +532,16 @@ LABEL_32:
       goto LABEL_20;
     }
 
-    v5 &= ~1u;
+    directions &= ~1u;
 LABEL_37:
     v52 = v84;
-    if ((v5 & 4) != 0)
+    if ((directions & 4) != 0)
     {
       goto LABEL_21;
     }
 
 LABEL_13:
-    if ((v5 & 8) == 0)
+    if ((directions & 8) == 0)
     {
       goto LABEL_30;
     }
@@ -551,8 +551,8 @@ LABEL_13:
     v89.size.width = v28;
     v89.size.height = v30;
     MaxY = CGRectGetMaxY(v89);
-    v60 = v83 + a3;
-    if ((v51 & 1) == 0)
+    v60 = v83 + delta;
+    if ((allowScrollingOutsideOfBounds & 1) == 0)
     {
       v61 = MaxY - v79;
       v54 = v85;
@@ -566,7 +566,7 @@ LABEL_27:
         goto LABEL_31;
       }
 
-      v5 &= 0xFFFFFFF3;
+      directions &= 0xFFFFFFF3;
       goto LABEL_30;
     }
 
@@ -580,15 +580,15 @@ LABEL_31:
     v75 = v74;
     [(CRLCanvasAutoscroll *)self lastAutoscrollDelta];
     [(CRLCanvasAutoscroll *)self setAdjustedUnscaledAutoscrollPoint:sub_10011F334(v73, v75, v76)];
-    v77 = [(CRLCanvasAutoscroll *)self target];
-    [v77 updateAfterAutoscroll:self];
+    target4 = [(CRLCanvasAutoscroll *)self target];
+    [target4 updateAfterAutoscroll:self];
 
     +[NSDate timeIntervalSinceReferenceDate];
     self->_lastFired = v78;
     goto LABEL_32;
   }
 
-  if ((v5 & 2) == 0)
+  if ((directions & 2) == 0)
   {
     v52 = v84;
     goto LABEL_12;
@@ -599,8 +599,8 @@ LABEL_31:
   v88.size.width = v28;
   v88.size.height = v30;
   MaxX = CGRectGetMaxX(v88);
-  v52 = v84 + a3;
-  if ((v51 & 1) == 0)
+  v52 = v84 + delta;
+  if ((allowScrollingOutsideOfBounds & 1) == 0)
   {
     v65 = MaxX - v42;
     v54 = v85;
@@ -611,7 +611,7 @@ LABEL_31:
       v57 = fminf(v66, v67);
 LABEL_20:
       v52 = v57;
-      if ((v5 & 4) != 0)
+      if ((directions & 4) != 0)
       {
         goto LABEL_21;
       }
@@ -619,21 +619,21 @@ LABEL_20:
       goto LABEL_13;
     }
 
-    v5 &= 0xFFFFFFFC;
+    directions &= 0xFFFFFFFC;
     goto LABEL_37;
   }
 
 LABEL_12:
   v54 = v85;
-  if ((v5 & 4) == 0)
+  if ((directions & 4) == 0)
   {
     goto LABEL_13;
   }
 
 LABEL_21:
-  v68 = [v54 shouldCanvasScrollingSizeGrowToFitBoardContent];
+  shouldCanvasScrollingSizeGrowToFitBoardContent = [v54 shouldCanvasScrollingSizeGrowToFitBoardContent];
   MinY = v80;
-  if (v68)
+  if (shouldCanvasScrollingSizeGrowToFitBoardContent)
   {
     v90.origin.x = v81;
     v90.origin.y = v82;
@@ -642,8 +642,8 @@ LABEL_21:
     MinY = CGRectGetMinY(v90);
   }
 
-  v60 = v83 - a3;
-  if (v51)
+  v60 = v83 - delta;
+  if (allowScrollingOutsideOfBounds)
   {
     goto LABEL_24;
   }
@@ -657,10 +657,10 @@ LABEL_21:
     goto LABEL_27;
   }
 
-  v5 &= ~4u;
+  directions &= ~4u;
 LABEL_30:
   v60 = v83;
-  if (v5)
+  if (directions)
   {
     goto LABEL_31;
   }

@@ -1,36 +1,36 @@
 @interface PeriodResolutionResult
-+ (id)confirmationRequiredWithPeriodToConfirm:(int64_t)a3;
-+ (id)successWithResolvedPeriod:(int64_t)a3;
-- (PeriodResolutionResult)initWithJSONDictionary:(id)a3 forIntent:(id)a4;
++ (id)confirmationRequiredWithPeriodToConfirm:(int64_t)confirm;
++ (id)successWithResolvedPeriod:(int64_t)period;
+- (PeriodResolutionResult)initWithJSONDictionary:(id)dictionary forIntent:(id)intent;
 @end
 
 @implementation PeriodResolutionResult
 
-+ (id)successWithResolvedPeriod:(int64_t)a3
++ (id)successWithResolvedPeriod:(int64_t)period
 {
   swift_getObjCClassMetadata();
-  v4 = sub_10000C468(a3);
+  v4 = sub_10000C468(period);
 
   return v4;
 }
 
-+ (id)confirmationRequiredWithPeriodToConfirm:(int64_t)a3
++ (id)confirmationRequiredWithPeriodToConfirm:(int64_t)confirm
 {
   swift_getObjCClassMetadata();
-  v4 = sub_10000C4F4(a3);
+  v4 = sub_10000C4F4(confirm);
 
   return v4;
 }
 
-- (PeriodResolutionResult)initWithJSONDictionary:(id)a3 forIntent:(id)a4
+- (PeriodResolutionResult)initWithJSONDictionary:(id)dictionary forIntent:(id)intent
 {
   sub_10000CD04();
-  v6 = a4;
+  intentCopy = intent;
   isa = sub_10000CCF4().super.isa;
 
   v10.receiver = self;
   v10.super_class = type metadata accessor for PeriodResolutionResult();
-  v8 = [(PeriodResolutionResult *)&v10 initWithJSONDictionary:isa forIntent:v6];
+  v8 = [(PeriodResolutionResult *)&v10 initWithJSONDictionary:isa forIntent:intentCopy];
 
   if (v8)
   {

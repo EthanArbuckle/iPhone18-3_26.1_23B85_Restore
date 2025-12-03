@@ -1,21 +1,21 @@
 @interface CKDServerConfigurationManager
 + (id)sharedManager;
-- (BOOL)_validateContainerServerInfo:(id)a3 requireUserIDs:(BOOL)a4 requireEnvironment:(BOOL)a5 error:(id *)a6;
-- (BOOL)systemAvailabilityChanged:(unint64_t)a3;
+- (BOOL)_validateContainerServerInfo:(id)info requireUserIDs:(BOOL)ds requireEnvironment:(BOOL)environment error:(id *)error;
+- (BOOL)systemAvailabilityChanged:(unint64_t)changed;
 - (CKDServerConfigurationManager)init;
 - (id)CKStatusReportArray;
-- (id)configurationForContainer:(id)a3;
+- (id)configurationForContainer:(id)container;
 - (id)lastKnownServerConfiguration;
-- (void)_fetchContainerSpecificInfoForOperation:(id)a3 requireUserIDs:(BOOL)a4 completionHandler:(id)a5;
-- (void)_fetchGlobalConfigForOperation:(id)a3 completionHandler:(id)a4;
+- (void)_fetchContainerSpecificInfoForOperation:(id)operation requireUserIDs:(BOOL)ds completionHandler:(id)handler;
+- (void)_fetchGlobalConfigForOperation:(id)operation completionHandler:(id)handler;
 - (void)_reallyDropAllConfigurations;
-- (void)_writeOutiCloudAppSiteAssociationData:(id)a3;
-- (void)configurationForOperation:(id)a3 completionHandler:(id)a4;
-- (void)containerServerInfoForOperation:(id)a3 requireUserIDs:(BOOL)a4 requireEnvironment:(BOOL)a5 completionHandler:(id)a6;
+- (void)_writeOutiCloudAppSiteAssociationData:(id)data;
+- (void)configurationForOperation:(id)operation completionHandler:(id)handler;
+- (void)containerServerInfoForOperation:(id)operation requireUserIDs:(BOOL)ds requireEnvironment:(BOOL)environment completionHandler:(id)handler;
 - (void)dealloc;
-- (void)expireConfigurationForContainer:(id)a3;
+- (void)expireConfigurationForContainer:(id)container;
 - (void)expireGlobalConfiguration;
-- (void)setGlobalConfiguration:(id)a3;
+- (void)setGlobalConfiguration:(id)configuration;
 - (void)wipeAllConfigurations;
 @end
 
@@ -33,15 +33,15 @@
   return v3;
 }
 
-- (BOOL)systemAvailabilityChanged:(unint64_t)a3
+- (BOOL)systemAvailabilityChanged:(unint64_t)changed
 {
-  v3 = a3;
-  if ((a3 & 2) != 0 && objc_msgSend_shouldDropAllConfigurations(self, a2, a3))
+  changedCopy = changed;
+  if ((changed & 2) != 0 && objc_msgSend_shouldDropAllConfigurations(self, a2, changed))
   {
     objc_msgSend__reallyDropAllConfigurations(self, v5, v6);
   }
 
-  return (v3 & 2) == 0;
+  return (changedCopy & 2) == 0;
 }
 
 - (CKDServerConfigurationManager)init
@@ -132,11 +132,11 @@
   [(CKDServerConfigurationManager *)&v4 dealloc];
 }
 
-- (void)_fetchGlobalConfigForOperation:(id)a3 completionHandler:(id)a4
+- (void)_fetchGlobalConfigForOperation:(id)operation completionHandler:(id)handler
 {
   v64 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  operationCopy = operation;
+  handlerCopy = handler;
   v8 = MEMORY[0x277CBC880];
   if (*MEMORY[0x277CBC880] != -1)
   {
@@ -147,11 +147,11 @@
   if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_DEBUG))
   {
     LODWORD(buf) = 134217984;
-    *(&buf + 4) = v6;
+    *(&buf + 4) = operationCopy;
     _os_log_debug_impl(&dword_22506F000, v9, OS_LOG_TYPE_DEBUG, "Fetching Global Configuration for operation %p", &buf, 0xCu);
   }
 
-  objc_msgSend_qualityOfService(v6, v10, v11);
+  objc_msgSend_qualityOfService(operationCopy, v10, v11);
   v12 = CKGetGlobalQueue();
   v52 = 0u;
   v53 = 0u;
@@ -172,7 +172,7 @@
         }
 
         v21 = *(*(&v50 + 1) + 8 * i);
-        if (objc_msgSend_isNetworkingBehaviorEquivalentForOperation_(v21, v17, v6))
+        if (objc_msgSend_isNetworkingBehaviorEquivalentForOperation_(v21, v17, operationCopy))
         {
           v18 = v21;
           goto LABEL_15;
@@ -210,7 +210,7 @@ LABEL_15:
     p_buf = &buf;
     v47[4] = self;
     v48 = v12;
-    objc_msgSend_spawnAndRunOperationOfClass_operationInfo_spawnQueue_operationConfigurationBlock_(v6, v28, v24, v23, v27, v47);
+    objc_msgSend_spawnAndRunOperationOfClass_operationInfo_spawnQueue_operationConfigurationBlock_(operationCopy, v28, v24, v23, v27, v47);
   }
 
   if (*v8 != -1)
@@ -225,7 +225,7 @@ LABEL_15:
     *v54 = 134218240;
     v55 = v40;
     v56 = 2048;
-    v57 = v6;
+    v57 = operationCopy;
     _os_log_debug_impl(&dword_22506F000, v29, OS_LOG_TYPE_DEBUG, "Waiting on global configuration operation %p for operation %p", v54, 0x16u);
   }
 
@@ -235,28 +235,28 @@ LABEL_15:
   v41[1] = 3221225472;
   v41[2] = sub_2253FD7F0;
   v41[3] = &unk_27854DBC0;
-  v45 = v7;
+  v45 = handlerCopy;
   v46 = &buf;
-  v42 = v6;
-  v43 = self;
+  v42 = operationCopy;
+  selfCopy = self;
   v44 = v12;
   v36 = v12;
-  v37 = v7;
-  v38 = v6;
+  v37 = handlerCopy;
+  v38 = operationCopy;
   dispatch_group_notify(v32, v35, v41);
 
   _Block_object_dispose(&buf, 8);
   v39 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_fetchContainerSpecificInfoForOperation:(id)a3 requireUserIDs:(BOOL)a4 completionHandler:(id)a5
+- (void)_fetchContainerSpecificInfoForOperation:(id)operation requireUserIDs:(BOOL)ds completionHandler:(id)handler
 {
   v71 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
-  objc_msgSend_qualityOfService(v7, v9, v10);
+  operationCopy = operation;
+  handlerCopy = handler;
+  objc_msgSend_qualityOfService(operationCopy, v9, v10);
   queue = CKGetGlobalQueue();
-  v13 = objc_msgSend_container(v7, v11, v12);
+  v13 = objc_msgSend_container(operationCopy, v11, v12);
   v14 = v13;
   if (v13)
   {
@@ -282,7 +282,7 @@ LABEL_15:
           }
 
           v26 = *(*(&v63 + 1) + 8 * i);
-          if (objc_msgSend_isNetworkingBehaviorEquivalentForOperation_(v26, v22, v7))
+          if (objc_msgSend_isNetworkingBehaviorEquivalentForOperation_(v26, v22, operationCopy))
           {
             v23 = v26;
             goto LABEL_12;
@@ -317,17 +317,17 @@ LABEL_12:
       v50[1] = 3221225472;
       v50[2] = sub_2253FDE74;
       v50[3] = &unk_27854DC60;
-      v56 = a4;
+      dsCopy = ds;
       v54 = &v57;
       v50[4] = self;
       v51 = v14;
       v55 = a2;
       v52 = v15;
       v53 = queue;
-      objc_msgSend_spawnAndRunOperationOfClass_operationInfo_spawnQueue_operationConfigurationBlock_(v7, v35, v31, v30, v34, v50);
+      objc_msgSend_spawnAndRunOperationOfClass_operationInfo_spawnQueue_operationConfigurationBlock_(operationCopy, v35, v31, v30, v34, v50);
     }
 
-    if (v8)
+    if (handlerCopy)
     {
       v36 = objc_msgSend_fetchContainerSpecificInfoCompletionHandlers(self, v27, v28);
       v38 = objc_msgSend_objectForKey_(v36, v37, v58[5]);
@@ -339,7 +339,7 @@ LABEL_12:
         objc_msgSend_setObject_forKey_(v42, v43, v38, v58[5]);
       }
 
-      v44 = _Block_copy(v8);
+      v44 = _Block_copy(handlerCopy);
       objc_msgSend_addObject_(v38, v45, v44);
     }
 
@@ -348,14 +348,14 @@ LABEL_12:
     goto LABEL_21;
   }
 
-  if (v8)
+  if (handlerCopy)
   {
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = sub_2253FDDEC;
     block[3] = &unk_2785456C8;
-    v69 = v8;
-    v68 = v7;
+    v69 = handlerCopy;
+    v68 = operationCopy;
     dispatch_async(queue, block);
 
     v15 = v69;
@@ -365,44 +365,44 @@ LABEL_21:
   v46 = *MEMORY[0x277D85DE8];
 }
 
-- (void)configurationForOperation:(id)a3 completionHandler:(id)a4
+- (void)configurationForOperation:(id)operation completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  objc_msgSend_qualityOfService(v6, v8, v9);
+  operationCopy = operation;
+  handlerCopy = handler;
+  objc_msgSend_qualityOfService(operationCopy, v8, v9);
   v10 = CKGetGlobalQueue();
   v13 = objc_msgSend_propertyQueue(self, v11, v12);
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = sub_2253FECF4;
   v17[3] = &unk_27854DCB0;
-  v18 = v6;
-  v19 = self;
+  v18 = operationCopy;
+  selfCopy = self;
   v20 = v10;
-  v21 = v7;
+  v21 = handlerCopy;
   v14 = v10;
-  v15 = v7;
-  v16 = v6;
+  v15 = handlerCopy;
+  v16 = operationCopy;
   dispatch_async(v13, v17);
 }
 
-- (void)containerServerInfoForOperation:(id)a3 requireUserIDs:(BOOL)a4 requireEnvironment:(BOOL)a5 completionHandler:(id)a6
+- (void)containerServerInfoForOperation:(id)operation requireUserIDs:(BOOL)ds requireEnvironment:(BOOL)environment completionHandler:(id)handler
 {
   v44 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a6;
-  objc_msgSend_qualityOfService(v10, v12, v13);
+  operationCopy = operation;
+  handlerCopy = handler;
+  objc_msgSend_qualityOfService(operationCopy, v12, v13);
   v14 = CKGetGlobalQueue();
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = sub_2253FF4C0;
   aBlock[3] = &unk_27854DCD8;
-  v15 = v11;
+  v15 = handlerCopy;
   v41 = v15;
   v16 = v14;
   v40 = v16;
   v17 = _Block_copy(aBlock);
-  v22 = objc_msgSend_container(v10, v18, v19);
+  v22 = objc_msgSend_container(operationCopy, v18, v19);
   if (v22)
   {
     v23 = objc_msgSend_propertyQueue(self, v20, v21);
@@ -412,10 +412,10 @@ LABEL_21:
     block[3] = &unk_27854DD28;
     block[4] = self;
     v34 = v22;
-    v37 = a4;
-    v38 = a5;
+    dsCopy = ds;
+    environmentCopy = environment;
     v36 = v17;
-    v35 = v10;
+    v35 = operationCopy;
     dispatch_async(v23, block);
   }
 
@@ -430,13 +430,13 @@ LABEL_21:
     if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_FAULT))
     {
       *buf = 138412290;
-      v43 = v10;
+      v43 = operationCopy;
       _os_log_fault_impl(&dword_22506F000, v24, OS_LOG_TYPE_FAULT, "Failed to get server info for container, operation unexpectedly missing container: %@ ", buf, 0xCu);
     }
 
     v27 = MEMORY[0x277CBC560];
     v28 = *MEMORY[0x277CBC120];
-    v29 = objc_msgSend_operationID(v10, v25, v26);
+    v29 = objc_msgSend_operationID(operationCopy, v25, v26);
     v31 = objc_msgSend_errorWithDomain_code_format_(v27, v30, v28, 1000, @"Failed to get server info for container, operation unexpectedly missing container: %@ ", v29);
 
     (*(v17 + 2))(v17, 0, v31);
@@ -445,26 +445,26 @@ LABEL_21:
   v32 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_validateContainerServerInfo:(id)a3 requireUserIDs:(BOOL)a4 requireEnvironment:(BOOL)a5 error:(id *)a6
+- (BOOL)_validateContainerServerInfo:(id)info requireUserIDs:(BOOL)ds requireEnvironment:(BOOL)environment error:(id *)error
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v12 = objc_msgSend_publicCloudDBURL(v9, v10, v11);
+  environmentCopy = environment;
+  dsCopy = ds;
+  infoCopy = info;
+  v12 = objc_msgSend_publicCloudDBURL(infoCopy, v10, v11);
   if (!v12)
   {
     goto LABEL_14;
   }
 
   v15 = v12;
-  v16 = objc_msgSend_publicShareServiceURL(v9, v13, v14);
+  v16 = objc_msgSend_publicShareServiceURL(infoCopy, v13, v14);
   if (!v16)
   {
     goto LABEL_13;
   }
 
   v19 = v16;
-  v20 = objc_msgSend_publicCodeServiceURL(v9, v17, v18);
+  v20 = objc_msgSend_publicCodeServiceURL(infoCopy, v17, v18);
   if (!v20)
   {
 LABEL_12:
@@ -474,7 +474,7 @@ LABEL_13:
   }
 
   v23 = v20;
-  v24 = objc_msgSend_publicMetricsServiceURL(v9, v21, v22);
+  v24 = objc_msgSend_publicMetricsServiceURL(infoCopy, v21, v22);
   if (!v24)
   {
 
@@ -482,29 +482,29 @@ LABEL_13:
   }
 
   v27 = v24;
-  v28 = objc_msgSend_publicDeviceServiceURL(v9, v25, v26);
+  v28 = objc_msgSend_publicDeviceServiceURL(infoCopy, v25, v26);
 
   if (!v28)
   {
 LABEL_14:
-    if (!a6)
+    if (!error)
     {
       goto LABEL_21;
     }
 
     objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v13, *MEMORY[0x277CBC120], 1000, @"Failed to validate container server info, missing one or more URLs");
 LABEL_16:
-    *a6 = v32 = 0;
+    *error = v32 = 0;
     goto LABEL_22;
   }
 
-  if (v8)
+  if (dsCopy)
   {
-    v30 = objc_msgSend_containerScopedUserID(v9, v13, v29);
+    v30 = objc_msgSend_containerScopedUserID(infoCopy, v13, v29);
 
     if (!v30)
     {
-      if (!a6)
+      if (!error)
       {
         goto LABEL_21;
       }
@@ -514,9 +514,9 @@ LABEL_16:
     }
   }
 
-  if (v7 && objc_msgSend_environment(v9, v13, v29) == -1)
+  if (environmentCopy && objc_msgSend_environment(infoCopy, v13, v29) == -1)
   {
-    if (a6)
+    if (error)
     {
       objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v31, *MEMORY[0x277CBC120], 1000, @"Failed to validate container server info, missing environment");
       goto LABEL_16;
@@ -563,19 +563,19 @@ LABEL_22:
   objc_msgSend_registerWatcher_(v6, v5, self);
 }
 
-- (void)_writeOutiCloudAppSiteAssociationData:(id)a3
+- (void)_writeOutiCloudAppSiteAssociationData:(id)data
 {
   v46 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (objc_msgSend_count(v3, v4, v5))
+  dataCopy = data;
+  if (objc_msgSend_count(dataCopy, v4, v5))
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
     v39 = 0u;
     v40 = 0u;
     v41 = 0u;
     v42 = 0u;
-    v38 = v3;
-    v7 = v3;
+    v38 = dataCopy;
+    v7 = dataCopy;
     v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(v7, v8, &v39, v45, 16);
     if (v9)
     {
@@ -648,7 +648,7 @@ LABEL_22:
       v35 = objc_msgSend_setWithObject_(MEMORY[0x277CBEB98], v33, @"com.apple.CloudKit.ShareBear");
       objc_msgSend_setAdditionalServiceDetailsForApplicationIdentifiers_usingContentsOfDictionary_completionHandler_(v34, v36, v35, v6, &unk_28385E8C0);
 
-      v3 = v38;
+      dataCopy = v38;
     }
 
     else
@@ -658,7 +658,7 @@ LABEL_22:
         dispatch_once(MEMORY[0x277CBC880], *MEMORY[0x277CBC878]);
       }
 
-      v3 = v38;
+      dataCopy = v38;
       v31 = *MEMORY[0x277CBC830];
       if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_DEBUG))
       {
@@ -672,16 +672,16 @@ LABEL_22:
   v37 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setGlobalConfiguration:(id)a3
+- (void)setGlobalConfiguration:(id)configuration
 {
-  v15 = a3;
-  objc_storeStrong(&self->_globalConfiguration, a3);
-  v7 = objc_msgSend_iCloudAppSiteAssociationData(v15, v5, v6);
+  configurationCopy = configuration;
+  objc_storeStrong(&self->_globalConfiguration, configuration);
+  v7 = objc_msgSend_iCloudAppSiteAssociationData(configurationCopy, v5, v6);
   v10 = objc_msgSend_count(v7, v8, v9);
 
   if (v10)
   {
-    v13 = objc_msgSend_iCloudAppSiteAssociationData(v15, v11, v12);
+    v13 = objc_msgSend_iCloudAppSiteAssociationData(configurationCopy, v11, v12);
     objc_msgSend__writeOutiCloudAppSiteAssociationData_(self, v14, v13);
   }
 }
@@ -697,34 +697,34 @@ LABEL_22:
   dispatch_async(v4, block);
 }
 
-- (id)configurationForContainer:(id)a3
+- (id)configurationForContainer:(id)container
 {
   v51 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  containerCopy = container;
   v7 = objc_msgSend_propertyQueue(self, v5, v6);
   dispatch_assert_queue_V2(v7);
 
-  v8 = sub_225081F2C(v4);
+  v8 = sub_225081F2C(containerCopy);
   v11 = objc_msgSend_containerSpecificInfos(self, v9, v10);
   v13 = objc_msgSend_objectForKey_(v11, v12, v8);
 
   if (!v13)
   {
-    v16 = objc_msgSend_deviceContext(v4, v14, v15);
+    v16 = objc_msgSend_deviceContext(containerCopy, v14, v15);
     v19 = objc_msgSend_supportsCaching(v16, v17, v18);
 
     if (v19)
     {
-      v22 = objc_msgSend_account(v4, v20, v21);
+      v22 = objc_msgSend_account(containerCopy, v20, v21);
       v25 = objc_msgSend_accountType(v22, v23, v24);
 
       v13 = 0;
       if (v25 <= 3 && v25 != 2)
       {
-        v28 = objc_msgSend_deviceContext(v4, v26, v27);
+        v28 = objc_msgSend_deviceContext(containerCopy, v26, v27);
         v31 = objc_msgSend_metadataCache(v28, v29, v30);
-        v34 = objc_msgSend_containerID(v4, v32, v33);
-        v37 = objc_msgSend_account(v4, v35, v36);
+        v34 = objc_msgSend_containerID(containerCopy, v32, v33);
+        v37 = objc_msgSend_account(containerCopy, v35, v36);
         v40 = objc_msgSend_accountID(v37, v38, v39);
         v13 = objc_msgSend_containerServerInfoForContainerID_accountID_(v31, v41, v34, v40);
 
@@ -760,14 +760,14 @@ LABEL_22:
   return v13;
 }
 
-- (void)expireConfigurationForContainer:(id)a3
+- (void)expireConfigurationForContainer:(id)container
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v7 = objc_msgSend_containerID(v4, v5, v6);
+  containerCopy = container;
+  v7 = objc_msgSend_containerID(containerCopy, v5, v6);
   if (v7)
   {
-    v8 = sub_225081F2C(v4);
+    v8 = sub_225081F2C(containerCopy);
     v11 = objc_msgSend_propertyQueue(self, v9, v10);
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
@@ -775,7 +775,7 @@ LABEL_22:
     v15[3] = &unk_2785463D0;
     v15[4] = self;
     v16 = v8;
-    v17 = v4;
+    v17 = containerCopy;
     v18 = v7;
     v12 = v8;
     dispatch_async(v11, v15);
@@ -792,7 +792,7 @@ LABEL_22:
     if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_FAULT))
     {
       *buf = 138412290;
-      v20 = v4;
+      v20 = containerCopy;
       _os_log_fault_impl(&dword_22506F000, v13, OS_LOG_TYPE_FAULT, "Failed to expire configuration for container, unable to determine containerID: %@ ", buf, 0xCu);
     }
   }

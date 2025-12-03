@@ -1,8 +1,8 @@
 @interface NSComparisonPredicate
 - (BOOL)cr_isInvalidComparisonPredicate;
-- (id)cr_sqlNameForFieldName:(id)a3;
-- (void)cr_addToClause:(id)a3 usingOperator:(id)a4 bindings:(id)a5;
-- (void)cr_processWithContext:(id)a3;
+- (id)cr_sqlNameForFieldName:(id)name;
+- (void)cr_addToClause:(id)clause usingOperator:(id)operator bindings:(id)bindings;
+- (void)cr_processWithContext:(id)context;
 @end
 
 @implementation NSComparisonPredicate
@@ -14,11 +14,11 @@
     sub_100019178();
   }
 
-  v3 = [(NSComparisonPredicate *)self predicateOperatorType];
+  predicateOperatorType = [(NSComparisonPredicate *)self predicateOperatorType];
   result = 0;
-  if (v3 <= NSEndsWithPredicateOperatorType)
+  if (predicateOperatorType <= NSEndsWithPredicateOperatorType)
   {
-    if (v3 < NSMatchesPredicateOperatorType)
+    if (predicateOperatorType < NSMatchesPredicateOperatorType)
     {
       return result;
     }
@@ -26,9 +26,9 @@
     return 1;
   }
 
-  if (v3 != NSInPredicateOperatorType && v3 != NSBetweenPredicateOperatorType)
+  if (predicateOperatorType != NSInPredicateOperatorType && predicateOperatorType != NSBetweenPredicateOperatorType)
   {
-    if (v3 == NSCustomSelectorPredicateOperatorType)
+    if (predicateOperatorType == NSCustomSelectorPredicateOperatorType)
     {
       return [qword_100034390 containsObject:{NSStringFromSelector(-[NSComparisonPredicate customSelector](self, "customSelector"))}] ^ 1;
     }
@@ -39,24 +39,24 @@
   return result;
 }
 
-- (void)cr_processWithContext:(id)a3
+- (void)cr_processWithContext:(id)context
 {
   if ([(NSComparisonPredicate *)self cr_isInvalidComparisonPredicate])
   {
     goto LABEL_6;
   }
 
-  v5 = [(NSComparisonPredicate *)self leftExpression];
-  v6 = [(NSComparisonPredicate *)self rightExpression];
-  if ([(NSExpression *)v5 expressionType]!= 3)
+  leftExpression = [(NSComparisonPredicate *)self leftExpression];
+  rightExpression = [(NSComparisonPredicate *)self rightExpression];
+  if ([(NSExpression *)leftExpression expressionType]!= 3)
   {
     goto LABEL_6;
   }
 
-  v7 = [(NSExpression *)v6 expressionType];
-  if (v7)
+  expressionType = [(NSExpression *)rightExpression expressionType];
+  if (expressionType)
   {
-    if (v7 != 14)
+    if (expressionType != 14)
     {
       goto LABEL_6;
     }
@@ -67,22 +67,22 @@
     goto LABEL_6;
   }
 
-  v8 = [(NSComparisonPredicate *)self predicateOperatorType];
-  v9 = [(NSExpression *)v5 cr_expressionValue];
-  v10 = [(NSExpression *)v6 cr_expressionValue];
+  predicateOperatorType = [(NSComparisonPredicate *)self predicateOperatorType];
+  cr_expressionValue = [(NSExpression *)leftExpression cr_expressionValue];
+  cr_expressionValue2 = [(NSExpression *)rightExpression cr_expressionValue];
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || !v9 || [(NSComparisonPredicate *)self cr_isInvalidOperatorType:v8 forKeyPath:v9])
+  if ((objc_opt_isKindOfClass() & 1) == 0 || !cr_expressionValue || [(NSComparisonPredicate *)self cr_isInvalidOperatorType:predicateOperatorType forKeyPath:cr_expressionValue])
   {
     goto LABEL_6;
   }
 
-  if (v8 == NSInPredicateOperatorType)
+  if (predicateOperatorType == NSInPredicateOperatorType)
   {
-    if ([v10 count])
+    if ([cr_expressionValue2 count])
     {
-      if (![@"kind" caseInsensitiveCompare:v9])
+      if (![@"kind" caseInsensitiveCompare:cr_expressionValue])
       {
-        [a3 setWantsGroups:{objc_msgSend(v10, "containsObject:", CRAddressKindGroup) | objc_msgSend(a3, "wantsGroups")}];
+        [context setWantsGroups:{objc_msgSend(cr_expressionValue2, "containsObject:", CRAddressKindGroup) | objc_msgSend(context, "wantsGroups")}];
       }
 
       goto LABEL_16;
@@ -90,33 +90,33 @@
 
 LABEL_6:
 
-    [a3 setHadError:1];
+    [context setHadError:1];
     return;
   }
 
 LABEL_16:
 
-  [a3 addPredicate:self forFieldName:v9];
+  [context addPredicate:self forFieldName:cr_expressionValue];
 }
 
-- (id)cr_sqlNameForFieldName:(id)a3
+- (id)cr_sqlNameForFieldName:(id)name
 {
-  v3 = sub_10000172C(a3);
+  v3 = sub_10000172C(name);
 
   return [v3 objectForKey:@"sql"];
 }
 
-- (void)cr_addToClause:(id)a3 usingOperator:(id)a4 bindings:(id)a5
+- (void)cr_addToClause:(id)clause usingOperator:(id)operator bindings:(id)bindings
 {
-  v9 = [(NSComparisonPredicate *)self leftExpression];
-  v10 = [(NSComparisonPredicate *)self rightExpression];
-  v11 = [(NSComparisonPredicate *)self predicateOperatorType];
-  v12 = v11;
-  if (v11 <= NSGreaterThanOrEqualToPredicateOperatorType)
+  leftExpression = [(NSComparisonPredicate *)self leftExpression];
+  rightExpression = [(NSComparisonPredicate *)self rightExpression];
+  predicateOperatorType = [(NSComparisonPredicate *)self predicateOperatorType];
+  v12 = predicateOperatorType;
+  if (predicateOperatorType <= NSGreaterThanOrEqualToPredicateOperatorType)
   {
-    if (v11 > NSLessThanOrEqualToPredicateOperatorType)
+    if (predicateOperatorType > NSLessThanOrEqualToPredicateOperatorType)
     {
-      if (v11 == NSGreaterThanPredicateOperatorType)
+      if (predicateOperatorType == NSGreaterThanPredicateOperatorType)
       {
         v13 = @"%@%@ > ?";
       }
@@ -127,9 +127,9 @@ LABEL_16:
       }
     }
 
-    else if (v11)
+    else if (predicateOperatorType)
     {
-      if (v11 != NSLessThanOrEqualToPredicateOperatorType)
+      if (predicateOperatorType != NSLessThanOrEqualToPredicateOperatorType)
       {
         goto LABEL_36;
       }
@@ -145,17 +145,17 @@ LABEL_16:
 
   else
   {
-    if (v11 > NSEndsWithPredicateOperatorType)
+    if (predicateOperatorType > NSEndsWithPredicateOperatorType)
     {
-      if (v11 == NSInPredicateOperatorType)
+      if (predicateOperatorType == NSInPredicateOperatorType)
       {
         v13 = CFSTR("%@%@ IN (?");
         goto LABEL_28;
       }
 
-      if (v11 != NSCustomSelectorPredicateOperatorType)
+      if (predicateOperatorType != NSCustomSelectorPredicateOperatorType)
       {
-        if (v11 == NSBetweenPredicateOperatorType)
+        if (predicateOperatorType == NSBetweenPredicateOperatorType)
         {
           v13 = @"%@%@ BETWEEN ? AND ?";
           goto LABEL_28;
@@ -165,8 +165,8 @@ LABEL_36:
         sub_10001918C();
       }
 
-      v14 = [(NSComparisonPredicate *)self customSelector];
-      if (sel_isEqual(v14, "tokenSearch:"))
+      customSelector = [(NSComparisonPredicate *)self customSelector];
+      if (sel_isEqual(customSelector, "tokenSearch:"))
       {
         v15 = 5;
         v16 = @"cpsearch";
@@ -174,9 +174,9 @@ LABEL_36:
 
       else
       {
-        if (!sel_isEqual(v14, "prefixSearch:"))
+        if (!sel_isEqual(customSelector, "prefixSearch:"))
         {
-          if (!sel_isEqual(v14, "phoneSearch:"))
+          if (!sel_isEqual(customSelector, "phoneSearch:"))
           {
             goto LABEL_36;
           }
@@ -195,14 +195,14 @@ LABEL_27:
       goto LABEL_28;
     }
 
-    if (v11 == NSEqualToPredicateOperatorType)
+    if (predicateOperatorType == NSEqualToPredicateOperatorType)
     {
       v13 = @"%@%@ == ?";
     }
 
     else
     {
-      if (v11 != NSNotEqualToPredicateOperatorType)
+      if (predicateOperatorType != NSNotEqualToPredicateOperatorType)
       {
         goto LABEL_36;
       }
@@ -212,28 +212,28 @@ LABEL_27:
   }
 
 LABEL_28:
-  [a3 appendFormat:v13, a4, -[NSComparisonPredicate cr_sqlNameForFieldName:](self, "cr_sqlNameForFieldName:", objc_msgSend(objc_msgSend(-[NSExpression cr_expressionValue](v9, "cr_expressionValue"), "componentsSeparatedByString:", @".", "objectAtIndex:", 0))];
+  [clause appendFormat:v13, operator, -[NSComparisonPredicate cr_sqlNameForFieldName:](self, "cr_sqlNameForFieldName:", objc_msgSend(objc_msgSend(-[NSExpression cr_expressionValue](leftExpression, "cr_expressionValue"), "componentsSeparatedByString:", @".", "objectAtIndex:", 0))];
   if (v12 == NSInPredicateOperatorType)
   {
-    v18 = [-[NSExpression cr_expressionValue](v10 "cr_expressionValue")];
+    v18 = [-[NSExpression cr_expressionValue](rightExpression "cr_expressionValue")];
     if (v18 >= 2)
     {
       v19 = v18 - 1;
       do
       {
-        [a3 appendString:{@", ?"}];
+        [clause appendString:{@", ?"}];
         --v19;
       }
 
       while (v19);
     }
 
-    [a3 appendString:@""]);
+    [clause appendString:@""]);
   }
 
-  v20 = [(NSExpression *)v10 cr_sqlBindings];
+  cr_sqlBindings = [(NSExpression *)rightExpression cr_sqlBindings];
 
-  [a5 addObjectsFromArray:v20];
+  [bindings addObjectsFromArray:cr_sqlBindings];
 }
 
 @end

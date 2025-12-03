@@ -1,10 +1,10 @@
 @interface _UITabBarPlatterView
-- (_TtC5UIKit20_UITabBarPlatterView)initWithCoder:(id)a3;
+- (_TtC5UIKit20_UITabBarPlatterView)initWithCoder:(id)coder;
 @end
 
 @implementation _UITabBarPlatterView
 
-- (_TtC5UIKit20_UITabBarPlatterView)initWithCoder:(id)a3
+- (_TtC5UIKit20_UITabBarPlatterView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC5UIKit20_UITabBarPlatterView_contentView;
   type metadata accessor for _UITabBarPlatterView.ContentView();

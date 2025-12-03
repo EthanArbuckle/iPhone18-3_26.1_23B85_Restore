@@ -1,10 +1,10 @@
 @interface SUScriptAccountManager
-+ (id)beginAccountManagerSessionForObject:(id)a3;
-+ (void)endAccountManagerSessionForObject:(id)a3;
++ (id)beginAccountManagerSessionForObject:(id)object;
++ (void)endAccountManagerSessionForObject:(id)object;
 - (NSArray)accounts;
 - (SUScriptAccountManager)init;
-- (id)accountForDSID:(id)a3;
-- (void)_dispatchEvent:(id)a3 forName:(id)a4;
+- (id)accountForDSID:(id)d;
+- (void)_dispatchEvent:(id)event forName:(id)name;
 - (void)_ntsReloadAccounts;
 - (void)dealloc;
 @end
@@ -19,9 +19,9 @@
   if (v2)
   {
     v2->_lock = objc_alloc_init(MEMORY[0x1E696AD10]);
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     [MEMORY[0x1E69D4890] defaultStore];
-    [v3 addObserver:v2 selector:sel__accountsChangedNotification_ name:*MEMORY[0x1E69D4A48] object:0];
+    [defaultCenter addObserver:v2 selector:sel__accountsChangedNotification_ name:*MEMORY[0x1E69D4A48] object:0];
   }
 
   return v2;
@@ -29,8 +29,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E69D4A48] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69D4A48] object:0];
 
   self->_accounts = 0;
   self->_lock = 0;
@@ -39,21 +39,21 @@
   [(SUScriptAccountManager *)&v4 dealloc];
 }
 
-+ (id)beginAccountManagerSessionForObject:(id)a3
++ (id)beginAccountManagerSessionForObject:(id)object
 {
   _os_nospin_lock_lock();
-  v5 = __SessionObjects;
+  weakObjectsHashTable = __SessionObjects;
   if (!__SessionObjects)
   {
-    v5 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
-    __SessionObjects = v5;
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    __SessionObjects = weakObjectsHashTable;
   }
 
-  [v5 addObject:a3];
+  [weakObjectsHashTable addObject:object];
   v6 = __SharedInstance_1;
   if (!__SharedInstance_1)
   {
-    v6 = objc_alloc_init(a1);
+    v6 = objc_alloc_init(self);
     __SharedInstance_1 = v6;
   }
 
@@ -62,12 +62,12 @@
   return v7;
 }
 
-+ (void)endAccountManagerSessionForObject:(id)a3
++ (void)endAccountManagerSessionForObject:(id)object
 {
   _os_nospin_lock_lock();
   if (__SessionObjects)
   {
-    [__SessionObjects removeObject:a3];
+    [__SessionObjects removeObject:object];
     if (![__SessionObjects count])
     {
 
@@ -78,15 +78,15 @@
   _os_nospin_lock_unlock();
 }
 
-- (id)accountForDSID:(id)a3
+- (id)accountForDSID:(id)d
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = [(SUScriptAccountManager *)self accounts];
+  accounts = [(SUScriptAccountManager *)self accounts];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(NSArray *)v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [(NSArray *)accounts countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (!v5)
   {
     return 0;
@@ -100,7 +100,7 @@ LABEL_3:
   {
     if (*v12 != v7)
     {
-      objc_enumerationMutation(v4);
+      objc_enumerationMutation(accounts);
     }
 
     v9 = *(*(&v11 + 1) + 8 * v8);
@@ -111,7 +111,7 @@ LABEL_3:
 
     if (v6 == ++v8)
     {
-      v6 = [(NSArray *)v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [(NSArray *)accounts countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v6)
       {
         goto LABEL_3;
@@ -131,24 +131,24 @@ LABEL_3:
   return v3;
 }
 
-- (void)_dispatchEvent:(id)a3 forName:(id)a4
+- (void)_dispatchEvent:(id)event forName:(id)name
 {
   v19 = *MEMORY[0x1E69E9840];
   _os_nospin_lock_lock();
   if (__SessionObjects)
   {
-    v7 = [__SessionObjects allObjects];
+    allObjects = [__SessionObjects allObjects];
     _os_nospin_lock_unlock();
-    if (v7)
+    if (allObjects)
     {
-      v17[0] = a3;
-      v17[1] = a4;
-      v8 = self;
+      v17[0] = event;
+      v17[1] = name;
+      selfCopy = self;
       v13 = 0u;
       v14 = 0u;
       v15 = 0u;
       v16 = 0u;
-      v9 = [v7 countByEnumeratingWithState:&v13 objects:v18 count:16];
+      v9 = [allObjects countByEnumeratingWithState:&v13 objects:v18 count:16];
       if (v9)
       {
         v10 = v9;
@@ -159,13 +159,13 @@ LABEL_3:
           {
             if (*v14 != v11)
             {
-              objc_enumerationMutation(v7);
+              objc_enumerationMutation(allObjects);
             }
 
             SUScriptObjectDispatchEventForName(*(*(&v13 + 1) + 8 * i), v17);
           }
 
-          v10 = [v7 countByEnumeratingWithState:&v13 objects:v18 count:16];
+          v10 = [allObjects countByEnumeratingWithState:&v13 objects:v18 count:16];
         }
 
         while (v10);
@@ -205,10 +205,10 @@ LABEL_3:
         }
 
         v10 = *(*(&v24 + 1) + 8 * i);
-        v11 = [v10 dsID];
-        if (v11)
+        dsID = [v10 dsID];
+        if (dsID)
         {
-          [v4 setObject:v10 forKey:v11];
+          [v4 setObject:v10 forKey:dsID];
         }
       }
 
@@ -238,8 +238,8 @@ LABEL_3:
         }
 
         v17 = *(*(&v20 + 1) + 8 * j);
-        v18 = [v17 uniqueIdentifier];
-        if (!v18 || (v19 = [v4 objectForKey:v18]) == 0)
+        uniqueIdentifier = [v17 uniqueIdentifier];
+        if (!uniqueIdentifier || (v19 = [v4 objectForKey:uniqueIdentifier]) == 0)
         {
           v19 = objc_alloc_init(SUScriptAccount);
         }

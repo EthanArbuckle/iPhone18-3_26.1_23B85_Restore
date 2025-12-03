@@ -1,5 +1,5 @@
 @interface CURangingPeer
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (unint64_t)hash;
 @end
 
@@ -12,10 +12,10 @@
   return v4 ^ [(NSString *)self->_deviceModel hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v12 = 1;
   }
@@ -25,11 +25,11 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       deviceAddress = self->_deviceAddress;
-      v7 = [(CURangingPeer *)v5 deviceAddress];
+      deviceAddress = [(CURangingPeer *)v5 deviceAddress];
       v8 = deviceAddress;
-      v9 = v7;
+      v9 = deviceAddress;
       v10 = v9;
       if (v8 == v9)
       {
@@ -51,9 +51,9 @@
       }
 
       deviceIRK = self->_deviceIRK;
-      v14 = [(CURangingPeer *)v5 deviceIRK];
+      deviceIRK = [(CURangingPeer *)v5 deviceIRK];
       v8 = deviceIRK;
-      v15 = v14;
+      v15 = deviceIRK;
       v10 = v15;
       if (v8 == v15)
       {
@@ -79,9 +79,9 @@ LABEL_20:
       }
 
       deviceModel = self->_deviceModel;
-      v18 = [(CURangingPeer *)v5 deviceModel];
+      deviceModel = [(CURangingPeer *)v5 deviceModel];
       v8 = deviceModel;
-      v19 = v18;
+      v19 = deviceModel;
       v10 = v19;
       if (v8 == v19)
       {

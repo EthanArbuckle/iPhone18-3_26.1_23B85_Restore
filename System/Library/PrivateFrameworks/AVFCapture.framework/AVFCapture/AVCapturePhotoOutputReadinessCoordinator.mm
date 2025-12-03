@@ -1,11 +1,11 @@
 @interface AVCapturePhotoOutputReadinessCoordinator
-+ (BOOL)_isOverlappingCaptureSupportedForPhotoSettings:(id)a3 autoDeferredPhotoDeliveryEnabled:(BOOL)a4 responsiveCaptureEnabled:(BOOL)a5;
-+ (int64_t)_captureReadinessFromReadinessState:(AVCapturePhotoOutputCaptureReadinessState *)a3;
++ (BOOL)_isOverlappingCaptureSupportedForPhotoSettings:(id)settings autoDeferredPhotoDeliveryEnabled:(BOOL)enabled responsiveCaptureEnabled:(BOOL)captureEnabled;
++ (int64_t)_captureReadinessFromReadinessState:(AVCapturePhotoOutputCaptureReadinessState *)state;
 - (AVCapturePhotoOutputReadinessCoordinator)initWithPhotoOutput:(AVCapturePhotoOutput *)photoOutput;
-- (void)_invokeDelegateCallbackWithBlock:(id)a3;
-- (void)_photoOutputDidUpdateCaptureReadinessState:(AVCapturePhotoOutputCaptureReadinessState *)a3;
-- (void)_setDelegate:(id)a3 queue:(id)a4;
-- (void)_updateCaptureReadinessWithDelegate:(id)a3;
+- (void)_invokeDelegateCallbackWithBlock:(id)block;
+- (void)_photoOutputDidUpdateCaptureReadinessState:(AVCapturePhotoOutputCaptureReadinessState *)state;
+- (void)_setDelegate:(id)delegate queue:(id)queue;
+- (void)_updateCaptureReadinessWithDelegate:(id)delegate;
 - (void)dealloc;
 - (void)startTrackingCaptureRequestUsingPhotoSettings:(AVCapturePhotoSettings *)settings;
 - (void)stopTrackingCaptureRequestUsingPhotoSettingsUniqueID:(int64_t)settingsUniqueID;
@@ -123,14 +123,14 @@ uint64_t __97__AVCapturePhotoOutputReadinessCoordinator_stopTrackingCaptureReque
   return result;
 }
 
-- (void)_setDelegate:(id)a3 queue:(id)a4
+- (void)_setDelegate:(id)delegate queue:(id)queue
 {
   delegateStorage = self->_delegateStorage;
-  if (a3)
+  if (delegate)
   {
-    v8 = [(AVWeakReferencingDelegateStorage *)delegateStorage delegate];
-    [(AVWeakReferencingDelegateStorage *)self->_delegateStorage setDelegate:a3 queue:a4];
-    if (v8 != a3)
+    delegate = [(AVWeakReferencingDelegateStorage *)delegateStorage delegate];
+    [(AVWeakReferencingDelegateStorage *)self->_delegateStorage setDelegate:delegate queue:queue];
+    if (delegate != delegate)
     {
       v9[0] = MEMORY[0x1E69E9820];
       v9[1] = 3221225472;
@@ -160,17 +160,17 @@ uint64_t __63__AVCapturePhotoOutputReadinessCoordinator__setDelegate_queue___blo
   return result;
 }
 
-- (void)_photoOutputDidUpdateCaptureReadinessState:(AVCapturePhotoOutputCaptureReadinessState *)a3
+- (void)_photoOutputDidUpdateCaptureReadinessState:(AVCapturePhotoOutputCaptureReadinessState *)state
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
-  v3 = *&a3->inflightNonOverlappingCaptureUniqueID;
-  v5 = *&a3->sessionIsRunning;
+  v3 = *&state->inflightNonOverlappingCaptureUniqueID;
+  v5 = *&state->sessionIsRunning;
   v4[2] = __87__AVCapturePhotoOutputReadinessCoordinator__photoOutputDidUpdateCaptureReadinessState___block_invoke;
   v4[3] = &unk_1E7876320;
   v4[4] = self;
   v6 = v3;
-  inflightUniqueIDWaitingForProcessing = a3->inflightUniqueIDWaitingForProcessing;
+  inflightUniqueIDWaitingForProcessing = state->inflightUniqueIDWaitingForProcessing;
   [(AVCapturePhotoOutputReadinessCoordinator *)self _invokeDelegateCallbackWithBlock:v4];
 }
 
@@ -200,18 +200,18 @@ uint64_t __87__AVCapturePhotoOutputReadinessCoordinator__photoOutputDidUpdateCap
   return [*(a1 + 32) _updateCaptureReadinessWithDelegate:a2];
 }
 
-+ (int64_t)_captureReadinessFromReadinessState:(AVCapturePhotoOutputCaptureReadinessState *)a3
++ (int64_t)_captureReadinessFromReadinessState:(AVCapturePhotoOutputCaptureReadinessState *)state
 {
-  if (a3->sessionIsRunning)
+  if (state->sessionIsRunning)
   {
-    numberOfPhotoCapturesInflight = a3->numberOfPhotoCapturesInflight;
+    numberOfPhotoCapturesInflight = state->numberOfPhotoCapturesInflight;
     v4 = 1;
     if (numberOfPhotoCapturesInflight > 1)
     {
       v4 = 2;
     }
 
-    if (a3->inflightNonOverlappingCaptureUniqueID < 1 || numberOfPhotoCapturesInflight <= 0)
+    if (state->inflightNonOverlappingCaptureUniqueID < 1 || numberOfPhotoCapturesInflight <= 0)
     {
       v6 = v4;
     }
@@ -224,16 +224,16 @@ uint64_t __87__AVCapturePhotoOutputReadinessCoordinator__photoOutputDidUpdateCap
 
   else
   {
-    numberOfPhotoCapturesInflight = a3->numberOfPhotoCapturesInflight;
+    numberOfPhotoCapturesInflight = state->numberOfPhotoCapturesInflight;
     v6 = 2 * (numberOfPhotoCapturesInflight > 0);
   }
 
-  if (a3->inflightUniqueIDWaitingForCapture >= 1 && numberOfPhotoCapturesInflight > 0)
+  if (state->inflightUniqueIDWaitingForCapture >= 1 && numberOfPhotoCapturesInflight > 0)
   {
     return 3;
   }
 
-  if (numberOfPhotoCapturesInflight <= 0 || a3->inflightUniqueIDWaitingForProcessing <= 0)
+  if (numberOfPhotoCapturesInflight <= 0 || state->inflightUniqueIDWaitingForProcessing <= 0)
   {
     return v6;
   }
@@ -244,30 +244,30 @@ uint64_t __87__AVCapturePhotoOutputReadinessCoordinator__photoOutputDidUpdateCap
   }
 }
 
-+ (BOOL)_isOverlappingCaptureSupportedForPhotoSettings:(id)a3 autoDeferredPhotoDeliveryEnabled:(BOOL)a4 responsiveCaptureEnabled:(BOOL)a5
++ (BOOL)_isOverlappingCaptureSupportedForPhotoSettings:(id)settings autoDeferredPhotoDeliveryEnabled:(BOOL)enabled responsiveCaptureEnabled:(BOOL)captureEnabled
 {
-  if (!a3)
+  if (!settings)
   {
     return 0;
   }
 
-  if ([a3 digitalFlashMode] > 0 || objc_msgSend(a3, "flashMode") == 1)
+  if ([settings digitalFlashMode] > 0 || objc_msgSend(settings, "flashMode") == 1)
   {
     return 0;
   }
 
-  v9 = [a3 maxPhotoDimensions];
-  v10 = ([a3 maxPhotoDimensions] >> 32) * v9;
+  maxPhotoDimensions = [settings maxPhotoDimensions];
+  v10 = ([settings maxPhotoDimensions] >> 32) * maxPhotoDimensions;
   result = v10 < 48000000;
-  if (!a4 && !a5 && v10 <= 47999999)
+  if (!enabled && !captureEnabled && v10 <= 47999999)
   {
-    return [a3 photoQualityPrioritization] != 3;
+    return [settings photoQualityPrioritization] != 3;
   }
 
   return result;
 }
 
-- (void)_invokeDelegateCallbackWithBlock:(id)a3
+- (void)_invokeDelegateCallbackWithBlock:(id)block
 {
   if (pthread_main_np())
   {
@@ -281,10 +281,10 @@ uint64_t __87__AVCapturePhotoOutputReadinessCoordinator__photoOutputDidUpdateCap
 
   delegateStorage = self->_delegateStorage;
 
-  [(AVWeakReferencingDelegateStorage *)delegateStorage invokeDelegateCallbackWithBlock:a3 synchronouslyIfDelegateQueueIsQueue:v5];
+  [(AVWeakReferencingDelegateStorage *)delegateStorage invokeDelegateCallbackWithBlock:block synchronouslyIfDelegateQueueIsQueue:v5];
 }
 
-- (void)_updateCaptureReadinessWithDelegate:(id)a3
+- (void)_updateCaptureReadinessWithDelegate:(id)delegate
 {
   autoDeferredPhotoDeliveryEnabled = self->_captureReadinessState.autoDeferredPhotoDeliveryEnabled;
   responsiveCaptureEnabled = self->_captureReadinessState.responsiveCaptureEnabled;
@@ -346,7 +346,7 @@ uint64_t __87__AVCapturePhotoOutputReadinessCoordinator__photoOutputDidUpdateCap
     [(AVCapturePhotoOutputReadinessCoordinator *)self didChangeValueForKey:@"captureReadiness"];
     if (objc_opt_respondsToSelector())
     {
-      [a3 readinessCoordinator:self captureReadinessDidChange:v17];
+      [delegate readinessCoordinator:self captureReadinessDidChange:v17];
     }
   }
 }

@@ -1,7 +1,7 @@
 @interface WFArchiveWriter
-- (BOOL)finishWithError:(id *)a3;
-- (BOOL)writeArchiveEntry:(id)a3 error:(id *)a4;
-- (WFArchiveWriter)initWithDestinationURL:(id)a3 format:(id)a4 error:(id *)a5;
+- (BOOL)finishWithError:(id *)error;
+- (BOOL)writeArchiveEntry:(id)entry error:(id *)error;
+- (WFArchiveWriter)initWithDestinationURL:(id)l format:(id)format error:(id *)error;
 - (void)dealloc;
 @end
 
@@ -15,26 +15,26 @@
   [(WFArchiveWriter *)&v3 dealloc];
 }
 
-- (BOOL)finishWithError:(id *)a3
+- (BOOL)finishWithError:(id *)error
 {
   v4 = archive_write_close();
   v5 = v4;
-  if (a3 && v4)
+  if (error && v4)
   {
-    *a3 = WFLastArchiveError();
+    *error = WFLastArchiveError();
   }
 
   return v5 == 0;
 }
 
-- (BOOL)writeArchiveEntry:(id)a3 error:(id *)a4
+- (BOOL)writeArchiveEntry:(id)entry error:(id *)error
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  [v5 entry];
+  entryCopy = entry;
+  [entryCopy entry];
   archive_write_header();
-  v6 = [v5 dataProvider];
-  if (v6)
+  dataProvider = [entryCopy dataProvider];
+  if (dataProvider)
   {
     v7 = getWFLibArchiveLogObject();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -47,7 +47,7 @@
       _os_log_impl(&dword_21E1BD000, v7, OS_LOG_TYPE_DEFAULT, "%s Writing archive entry for %@", &v19, 0x16u);
     }
 
-    v9 = v6[2](v6);
+    v9 = dataProvider[2](dataProvider);
     if (v9)
     {
       v10 = archive_entry_size();
@@ -76,9 +76,9 @@
         v14 += v15;
         if (archive_write_data() == -1)
         {
-          if (a4)
+          if (error)
           {
-            *a4 = WFLastArchiveError();
+            *error = WFLastArchiveError();
           }
 
           free(v13);
@@ -87,18 +87,18 @@
       }
 
       free(v13);
-      v17 = [v9 streamError];
+      streamError = [v9 streamError];
 
-      if (!v17)
+      if (!streamError)
       {
         [v9 close];
         v16 = 1;
         goto LABEL_21;
       }
 
-      if (a4)
+      if (error)
       {
-        *a4 = [v9 streamError];
+        *error = [v9 streamError];
       }
 
       [v9 close];
@@ -117,14 +117,14 @@ LABEL_21:
   return v16;
 }
 
-- (WFArchiveWriter)initWithDestinationURL:(id)a3 format:(id)a4 error:(id *)a5
+- (WFArchiveWriter)initWithDestinationURL:(id)l format:(id)format error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  if (!v9)
+  lCopy = l;
+  formatCopy = format;
+  if (!lCopy)
   {
-    v21 = [MEMORY[0x277CCA890] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"WFLibArchive.m" lineNumber:208 description:{@"Invalid parameter not satisfying: %@", @"fileURL"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFLibArchive.m" lineNumber:208 description:{@"Invalid parameter not satisfying: %@", @"fileURL"}];
   }
 
   v22.receiver = self;
@@ -136,7 +136,7 @@ LABEL_21:
   }
 
   v11->_archive = archive_write_new();
-  v12 = v10;
+  v12 = formatCopy;
   if (([v12 isEqualToString:@"gz"] & 1) != 0 || objc_msgSend(v12, "isEqualToString:", @"tar.gz"))
   {
     v13 = archive_write_set_compression_gzip();
@@ -176,8 +176,8 @@ LABEL_15:
   v16 = archive_write_set_format();
   if (!v16)
   {
-    v17 = [v9 path];
-    [v17 fileSystemRepresentation];
+    path = [lCopy path];
+    [path fileSystemRepresentation];
     v18 = archive_write_open_filename();
 
     if (!v18)
@@ -188,7 +188,7 @@ LABEL_15:
   }
 
 LABEL_21:
-  if (!a5)
+  if (!error)
   {
 LABEL_23:
     v19 = 0;
@@ -196,7 +196,7 @@ LABEL_23:
   }
 
   WFLastArchiveError();
-  *a5 = v19 = 0;
+  *error = v19 = 0;
 LABEL_24:
 
   return v19;

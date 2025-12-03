@@ -1,19 +1,19 @@
 @interface VideosExtrasLoadingView
-- (VideosExtrasLoadingView)initWithDocument:(id)a3 options:(id)a4 delegate:(id)a5;
+- (VideosExtrasLoadingView)initWithDocument:(id)document options:(id)options delegate:(id)delegate;
 - (void)_show;
 - (void)cancelCountdownToVisibility;
-- (void)documentDidUpdate:(id)a3;
+- (void)documentDidUpdate:(id)update;
 @end
 
 @implementation VideosExtrasLoadingView
 
-- (VideosExtrasLoadingView)initWithDocument:(id)a3 options:(id)a4 delegate:(id)a5
+- (VideosExtrasLoadingView)initWithDocument:(id)document options:(id)options delegate:(id)delegate
 {
   v29[2] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9)
+  documentCopy = document;
+  optionsCopy = options;
+  delegateCopy = delegate;
+  if (documentCopy)
   {
     v28.receiver = self;
     v28.super_class = VideosExtrasLoadingView;
@@ -22,36 +22,36 @@
     if (v12)
     {
       [(VideosExtrasLoadingView *)v12 setOpaque:0];
-      v14 = [MEMORY[0x1E69DC888] clearColor];
-      [p_isa setBackgroundColor:v14];
+      clearColor = [MEMORY[0x1E69DC888] clearColor];
+      [p_isa setBackgroundColor:clearColor];
 
       [p_isa setAutoresizingMask:18];
       [p_isa setTranslatesAutoresizingMaskIntoConstraints:1];
       [p_isa setHidden:1];
-      objc_storeWeak(p_isa + 54, v11);
-      objc_storeStrong(p_isa + 51, a3);
+      objc_storeWeak(p_isa + 54, delegateCopy);
+      objc_storeStrong(p_isa + 51, document);
       [p_isa[51] setDelegate:p_isa];
-      v15 = [v10 copy];
+      v15 = [optionsCopy copy];
       v16 = p_isa[52];
       p_isa[52] = v15;
 
-      v17 = [v9 templateElement];
+      templateElement = [documentCopy templateElement];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
       if (isKindOfClass)
       {
-        objc_storeStrong(p_isa + 51, a3);
-        objc_storeStrong(p_isa + 52, a4);
-        [v9 setDelegate:p_isa];
-        v19 = [v9 templateElement];
-        v20 = [v19 activityElement];
-        if (v20)
+        objc_storeStrong(p_isa + 51, document);
+        objc_storeStrong(p_isa + 52, options);
+        [documentCopy setDelegate:p_isa];
+        templateElement2 = [documentCopy templateElement];
+        activityElement = [templateElement2 activityElement];
+        if (activityElement)
         {
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v21 = [[VideosExtrasActivityIndicator alloc] initWithElement:v20];
+            v21 = [[VideosExtrasActivityIndicator alloc] initWithElement:activityElement];
             v22 = p_isa[53];
             p_isa[53] = v21;
 
@@ -71,15 +71,15 @@
     }
 
     self = p_isa;
-    v26 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v26 = 0;
+    selfCopy = 0;
   }
 
-  return v26;
+  return selfCopy;
 }
 
 - (void)cancelCountdownToVisibility
@@ -108,11 +108,11 @@ void __32__VideosExtrasLoadingView__show__block_invoke(uint64_t a1)
   [v2 setBackgroundColor:v3];
 }
 
-- (void)documentDidUpdate:(id)a3
+- (void)documentDidUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained loadingView:self documentDidUpdate:v4 options:self->_options];
+  [WeakRetained loadingView:self documentDidUpdate:updateCopy options:self->_options];
 }
 
 @end

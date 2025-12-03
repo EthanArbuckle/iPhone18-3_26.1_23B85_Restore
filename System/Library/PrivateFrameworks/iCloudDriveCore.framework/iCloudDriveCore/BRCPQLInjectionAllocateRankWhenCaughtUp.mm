@@ -1,18 +1,18 @@
 @interface BRCPQLInjectionAllocateRankWhenCaughtUp
-+ (id)_createInjectionWithCaughtUp:(BOOL)a3 fullSync:(BOOL)a4;
++ (id)_createInjectionWithCaughtUp:(BOOL)up fullSync:(BOOL)sync;
 @end
 
 @implementation BRCPQLInjectionAllocateRankWhenCaughtUp
 
-+ (id)_createInjectionWithCaughtUp:(BOOL)a3 fullSync:(BOOL)a4
++ (id)_createInjectionWithCaughtUp:(BOOL)up fullSync:(BOOL)sync
 {
-  if (a4)
+  if (sync)
   {
     v4 = "";
     v5 = 0;
   }
 
-  else if (a3)
+  else if (up)
   {
     v4 = " AND item_depth >= -1";
     v5 = 21;

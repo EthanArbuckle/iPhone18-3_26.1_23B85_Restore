@@ -1,22 +1,22 @@
 @interface SNAudioBufferList
-+ (void)unownedViewOfRecentFramesWithSourceBuffer:(id)a3 destinationBuffer:(id)a4 numberOfRecentFrames:(unsigned int)a5;
-- (SNAudioBufferList)initWithFormat:(id)a3;
++ (void)unownedViewOfRecentFramesWithSourceBuffer:(id)buffer destinationBuffer:(id)destinationBuffer numberOfRecentFrames:(unsigned int)frames;
+- (SNAudioBufferList)initWithFormat:(id)format;
 @end
 
 @implementation SNAudioBufferList
 
-- (SNAudioBufferList)initWithFormat:(id)a3
+- (SNAudioBufferList)initWithFormat:(id)format
 {
-  v4 = a3;
+  formatCopy = format;
   v14.receiver = self;
   v14.super_class = SNAudioBufferList;
   v5 = [(SNAudioBufferList *)&v14 init];
   if (v5)
   {
-    v6 = [v4 streamDescription];
-    v7 = *v6;
-    v8 = *(v6 + 16);
-    v13 = *(v6 + 32);
+    streamDescription = [formatCopy streamDescription];
+    v7 = *streamDescription;
+    v8 = *(streamDescription + 16);
+    v13 = *(streamDescription + 32);
     v12[0] = v7;
     v12[1] = v8;
     v9 = sub_1C9A5574C(v12);
@@ -31,11 +31,11 @@
   return v5;
 }
 
-+ (void)unownedViewOfRecentFramesWithSourceBuffer:(id)a3 destinationBuffer:(id)a4 numberOfRecentFrames:(unsigned int)a5
++ (void)unownedViewOfRecentFramesWithSourceBuffer:(id)buffer destinationBuffer:(id)destinationBuffer numberOfRecentFrames:(unsigned int)frames
 {
-  v6 = *(a4 + 1);
-  v18 = a3;
-  if ([v18 frameLength] < a5)
+  v6 = *(destinationBuffer + 1);
+  bufferCopy = buffer;
+  if ([bufferCopy frameLength] < frames)
   {
     v14 = "numberOfRecentFrames <= sourceBuffer.frameLength";
     v15 = 22;
@@ -44,7 +44,7 @@
     goto LABEL_12;
   }
 
-  v7 = [v18 audioBufferList];
+  audioBufferList = [bufferCopy audioBufferList];
   if (*v6)
   {
     v14 = "mBufferMemory == NULL";
@@ -55,10 +55,10 @@ LABEL_12:
     __assert_rtn(v17, v16, v15, v14);
   }
 
-  memcpy(v6 + 2, v7, (16 * *v7) | 8);
-  v8 = [v18 frameLength];
-  v9 = [v18 format];
-  v10 = [v9 streamDescription];
+  memcpy(v6 + 2, audioBufferList, (16 * *audioBufferList) | 8);
+  frameLength = [bufferCopy frameLength];
+  format = [bufferCopy format];
+  streamDescription = [format streamDescription];
   if (*v6)
   {
     __assert_rtn("VerifyNotTrashingOwnedBuffer", "CABufferList.h", 112, "mBufferMemory == NULL");
@@ -67,7 +67,7 @@ LABEL_12:
   v11 = *(v6 + 4);
   if (v11)
   {
-    v12 = *(v10 + 24) * (v8 - a5);
+    v12 = *(streamDescription + 24) * (frameLength - frames);
     v13 = v6 + 4;
     do
     {

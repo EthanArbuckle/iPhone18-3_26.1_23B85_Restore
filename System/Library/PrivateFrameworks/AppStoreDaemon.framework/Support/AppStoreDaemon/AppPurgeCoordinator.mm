@@ -1,7 +1,7 @@
 @interface AppPurgeCoordinator
 - (AppPurgeCoordinator)init;
-- (id)allPurgeablesForVolume:(id)a3 reason:(id)a4 client:(id)a5;
-- (int64_t)purgeForVolume:(id)a3 urgency:(int64_t)a4 desiredPurge:(id)a5 client:(id)a6;
+- (id)allPurgeablesForVolume:(id)volume reason:(id)reason client:(id)client;
+- (int64_t)purgeForVolume:(id)volume urgency:(int64_t)urgency desiredPurge:(id)purge client:(id)client;
 - (void)cacheInvalidated;
 @end
 
@@ -21,17 +21,17 @@
   return v3;
 }
 
-- (id)allPurgeablesForVolume:(id)a3 reason:(id)a4 client:(id)a5
+- (id)allPurgeablesForVolume:(id)volume reason:(id)reason client:(id)client
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  clientCopy = client;
+  reasonCopy = reason;
+  volumeCopy = volume;
   v11 = objc_alloc_init(_TtC9appstored6LogKey);
   sub_1001E9E5C(self, v11);
-  v12 = sub_1001ED230(self, v10, 1, v9, v8);
-  v13 = sub_1001ED230(self, v10, 2, v9, v8);
-  v14 = sub_1001ED230(self, v10, 3, v9, v8);
-  v15 = sub_1001ED230(self, v10, 4, v9, v8);
+  v12 = sub_1001ED230(self, volumeCopy, 1, reasonCopy, clientCopy);
+  v13 = sub_1001ED230(self, volumeCopy, 2, reasonCopy, clientCopy);
+  v14 = sub_1001ED230(self, volumeCopy, 3, reasonCopy, clientCopy);
+  v15 = sub_1001ED230(self, volumeCopy, 4, reasonCopy, clientCopy);
 
   v22[0] = &off_100546F48;
   v16 = [NSNumber numberWithLongLong:v12];
@@ -61,11 +61,11 @@
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "[%@] cacheInvalidated ", buf, 0xCu);
   }
 
-  v5 = self;
-  objc_sync_enter(v5);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v58 = v3;
-  v64 = v5;
-  if (v5)
+  v64 = selfCopy;
+  if (selfCopy)
   {
     v59 = +[NSMutableArray array];
     sub_10033643C();
@@ -96,31 +96,31 @@
         v10 = objc_autoreleasePoolPush();
         if (sub_1001E9C7C(v64, v9))
         {
-          v11 = [v9 VPNPlugins];
-          v12 = [v11 count] == 0;
+          vPNPlugins = [v9 VPNPlugins];
+          v12 = [vPNPlugins count] == 0;
 
           if (!v12)
           {
             v13 = ASDLogHandleForCategory();
             if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
             {
-              v14 = [v9 bundleIdentifier];
+              bundleIdentifier = [v9 bundleIdentifier];
               *v71 = 138412546;
               v72 = v58;
               v73 = 2114;
-              v74 = v14;
+              v74 = bundleIdentifier;
               _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "[%@] [%{public}@] Added deny listed app with VPN plugin", v71, 0x16u);
             }
 
             goto LABEL_13;
           }
 
-          v16 = [v9 driverExtensionPaths];
-          v17 = [v16 count] == 0;
+          driverExtensionPaths = [v9 driverExtensionPaths];
+          v17 = [driverExtensionPaths count] == 0;
 
           if (v17)
           {
-            v15 = [v9 entitlements];
+            entitlements = [v9 entitlements];
             v82 = 0u;
             v83 = 0u;
             memset(v81, 0, sizeof(v81));
@@ -138,26 +138,26 @@
                   }
 
                   v22 = *(*&v81[8] + 8 * j);
-                  v23 = [v9 bundleIdentifier];
-                  v24 = [v23 length] == 0;
+                  bundleIdentifier2 = [v9 bundleIdentifier];
+                  v24 = [bundleIdentifier2 length] == 0;
 
                   if (!v24)
                   {
-                    v25 = [v15 objectForKey:v22 ofClass:objc_opt_class()];
+                    v25 = [entitlements objectForKey:v22 ofClass:objc_opt_class()];
                     v26 = v25;
                     if (v25 && [v25 BOOLValue])
                     {
-                      v29 = [v9 bundleIdentifier];
-                      [(NSArray *)v59 addObject:v29];
+                      bundleIdentifier3 = [v9 bundleIdentifier];
+                      [(NSArray *)v59 addObject:bundleIdentifier3];
 
                       v28 = ASDLogHandleForCategory();
                       if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
                       {
-                        v30 = [v9 bundleIdentifier];
+                        bundleIdentifier4 = [v9 bundleIdentifier];
                         *v71 = v57;
                         v72 = v58;
                         v73 = 2114;
-                        v74 = v30;
+                        v74 = bundleIdentifier4;
                         v75 = 2114;
                         v76 = v22;
                         _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_INFO, "[%@] [%{public}@] Added to deny listed because of entitlement: %{public}@", v71, 0x20u);
@@ -166,21 +166,21 @@
                       goto LABEL_37;
                     }
 
-                    v27 = [v15 objectForKey:v22 ofClass:objc_opt_class()];
+                    v27 = [entitlements objectForKey:v22 ofClass:objc_opt_class()];
                     v28 = v27;
                     if (v27 && [v27 count])
                     {
-                      v31 = [v9 bundleIdentifier];
-                      [(NSArray *)v59 addObject:v31];
+                      bundleIdentifier5 = [v9 bundleIdentifier];
+                      [(NSArray *)v59 addObject:bundleIdentifier5];
 
                       v32 = ASDLogHandleForCategory();
                       if (os_log_type_enabled(v32, OS_LOG_TYPE_INFO))
                       {
-                        v33 = [v9 bundleIdentifier];
+                        bundleIdentifier6 = [v9 bundleIdentifier];
                         *v71 = v57;
                         v72 = v58;
                         v73 = 2114;
-                        v74 = v33;
+                        v74 = bundleIdentifier6;
                         v75 = 2114;
                         v76 = v22;
                         _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_INFO, "[%@] [%{public}@] Added to deny listed because of entitlement: %{public}@", v71, 0x20u);
@@ -208,18 +208,18 @@ LABEL_37:
             v13 = ASDLogHandleForCategory();
             if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
             {
-              v18 = [v9 bundleIdentifier];
+              bundleIdentifier7 = [v9 bundleIdentifier];
               *v71 = 138412546;
               v72 = v58;
               v73 = 2114;
-              v74 = v18;
+              v74 = bundleIdentifier7;
               _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "[%@] [%{public}@] Added deny listed app with DriverKit extension", v71, 0x16u);
             }
 
 LABEL_13:
 
-            v15 = [v9 bundleIdentifier];
-            [(NSArray *)v59 addObject:v15];
+            entitlements = [v9 bundleIdentifier];
+            [(NSArray *)v59 addObject:entitlements];
           }
 
 LABEL_38:
@@ -247,13 +247,13 @@ LABEL_42:
   v66 = v58;
   obja = objc_opt_new();
   v35 = +[NRPairedDeviceRegistry sharedInstance];
-  v36 = [v35 getPairedDevices];
+  getPairedDevices = [v35 getPairedDevices];
 
   v79 = 0u;
   v80 = 0u;
   v77 = 0u;
   v78 = 0u;
-  v63 = v36;
+  v63 = getPairedDevices;
   v37 = [v63 countByEnumeratingWithState:&v77 objects:buf count:16];
   if (v37)
   {
@@ -288,11 +288,11 @@ LABEL_42:
           v47 = ASDLogHandleForCategory();
           if (os_log_type_enabled(v47, OS_LOG_TYPE_ERROR))
           {
-            v48 = [v40 pairingID];
+            pairingID = [v40 pairingID];
             *v81 = 138412546;
             *&v81[4] = v66;
             *&v81[12] = 2114;
-            *&v81[14] = v48;
+            *&v81[14] = pairingID;
             _os_log_error_impl(&_mh_execute_header, v47, OS_LOG_TYPE_ERROR, "[%@] Timed out getting watch apps for %{public}@", v81, 0x16u);
           }
         }
@@ -327,9 +327,9 @@ LABEL_42:
   v64->_watchAppList = obja;
 
   v51 = +[MCProfileConnection sharedConnection];
-  v52 = [v51 managedAppBundleIDs];
+  managedAppBundleIDs = [v51 managedAppBundleIDs];
   managedBundleIDs = v64->_managedBundleIDs;
-  v64->_managedBundleIDs = v52;
+  v64->_managedBundleIDs = managedAppBundleIDs;
 
   if ([(NSArray *)v64->_managedBundleIDs count])
   {
@@ -348,45 +348,45 @@ LABEL_42:
   objc_sync_exit(v64);
 }
 
-- (int64_t)purgeForVolume:(id)a3 urgency:(int64_t)a4 desiredPurge:(id)a5 client:(id)a6
+- (int64_t)purgeForVolume:(id)volume urgency:(int64_t)urgency desiredPurge:(id)purge client:(id)client
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  volumeCopy = volume;
+  purgeCopy = purge;
+  clientCopy = client;
   objc_opt_class();
   objc_opt_self();
   if (sub_1003D3E2C(AppDefaultsManager, @"OffloadUnusedApps", 0) && (sub_1003BBF50(), v13 = objc_claimAutoreleasedReturnValue(), v14 = [v13 isHRNMode], v13, (v14 & 1) == 0))
   {
     v16 = [[KeepAlive alloc] initWithName:@"com.apple.appstored.purge"];
     v17 = objc_alloc_init(_TtC9appstored6LogKey);
-    v18 = [v11 longLongValue];
+    longLongValue = [purgeCopy longLongValue];
     v19 = ASDLogHandleForCategory();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138413058;
       v33 = v17;
       v34 = 2048;
-      v35 = v18;
+      v35 = longLongValue;
       v36 = 2048;
-      v37 = a4;
+      urgencyCopy = urgency;
       v38 = 2114;
-      v39 = v12;
+      v39 = clientCopy;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "[%@] Offload started with desired purged: %{bytes}ld urgency: %ld for client: %{public}@", buf, 0x2Au);
     }
 
-    v20 = [[ASDPurgeAppsRequestOptions alloc] initWithVolume:v10 urgency:a4];
+    v20 = [[ASDPurgeAppsRequestOptions alloc] initWithVolume:volumeCopy urgency:urgency];
     [v20 setApps:0];
-    [v20 setDesiredPurgeAmount:v11];
+    [v20 setDesiredPurgeAmount:purgeCopy];
     [v20 setOffloadOnly:1];
-    v21 = sub_1001EC7EC(self, v20, v17, v12);
-    v22 = [v21 purgedApps];
-    v23 = [v22 count];
+    v21 = sub_1001EC7EC(self, v20, v17, clientCopy);
+    purgedApps = [v21 purgedApps];
+    v23 = [purgedApps count];
 
     if (v23)
     {
-      v24 = [v21 purgedApps];
-      [v24 count];
-      [v11 longValue];
+      purgedApps2 = [v21 purgedApps];
+      [purgedApps2 count];
+      [purgeCopy longValue];
       [v21 purgedSize];
       ASDDebugLog();
     }
@@ -394,34 +394,34 @@ LABEL_42:
     v25 = ASDLogHandleForCategory();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
     {
-      v31 = [v21 purgedApps];
-      v26 = [v31 count];
+      purgedApps3 = [v21 purgedApps];
+      v26 = [purgedApps3 count];
       v27 = v16;
-      v28 = [v11 longValue];
-      v29 = [v21 purgedSize];
+      longValue = [purgeCopy longValue];
+      purgedSize = [v21 purgedSize];
       *buf = 138413314;
       v33 = v17;
       v34 = 2048;
       v35 = v26;
       v36 = 2048;
-      v37 = v28;
+      urgencyCopy = longValue;
       v16 = v27;
       v38 = 2048;
-      v39 = v29;
+      v39 = purgedSize;
       v40 = 2114;
-      v41 = v12;
+      v41 = clientCopy;
       _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "[%@] Offload complete with offloaded apps: %ld desired purged: %{bytes}ld total purged: %{bytes}ld for client: %{public}@", buf, 0x34u);
     }
 
-    v15 = [v21 purgedSize];
+    purgedSize2 = [v21 purgedSize];
   }
 
   else
   {
-    v15 = 0;
+    purgedSize2 = 0;
   }
 
-  return v15;
+  return purgedSize2;
 }
 
 @end

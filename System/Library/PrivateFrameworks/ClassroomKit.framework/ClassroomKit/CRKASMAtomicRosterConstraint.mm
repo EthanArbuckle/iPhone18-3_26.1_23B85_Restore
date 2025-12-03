@@ -1,25 +1,25 @@
 @interface CRKASMAtomicRosterConstraint
-+ (id)constraintWithRosterEvaluator:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isFulfilledByRoster:(id)a3;
-- (CRKASMAtomicRosterConstraint)initWithIdentifier:(id)a3 rosterEvaluator:(id)a4;
++ (id)constraintWithRosterEvaluator:(id)evaluator;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isFulfilledByRoster:(id)roster;
+- (CRKASMAtomicRosterConstraint)initWithIdentifier:(id)identifier rosterEvaluator:(id)evaluator;
 - (unint64_t)hash;
 @end
 
 @implementation CRKASMAtomicRosterConstraint
 
-- (CRKASMAtomicRosterConstraint)initWithIdentifier:(id)a3 rosterEvaluator:(id)a4
+- (CRKASMAtomicRosterConstraint)initWithIdentifier:(id)identifier rosterEvaluator:(id)evaluator
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  evaluatorCopy = evaluator;
   v14.receiver = self;
   v14.super_class = CRKASMAtomicRosterConstraint;
   v9 = [(CRKASMAtomicRosterConstraint *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_identifier, a3);
-    v11 = MEMORY[0x245D3AAD0](v8);
+    objc_storeStrong(&v9->_identifier, identifier);
+    v11 = MEMORY[0x245D3AAD0](evaluatorCopy);
     rosterEvaluator = v10->_rosterEvaluator;
     v10->_rosterEvaluator = v11;
   }
@@ -27,37 +27,37 @@
   return v10;
 }
 
-+ (id)constraintWithRosterEvaluator:(id)a3
++ (id)constraintWithRosterEvaluator:(id)evaluator
 {
-  v4 = a3;
-  v5 = [a1 alloc];
-  v6 = [MEMORY[0x277CCAD78] UUID];
-  v7 = [v5 initWithIdentifier:v6 rosterEvaluator:v4];
+  evaluatorCopy = evaluator;
+  v5 = [self alloc];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  v7 = [v5 initWithIdentifier:uUID rosterEvaluator:evaluatorCopy];
 
   return v7;
 }
 
-- (BOOL)isFulfilledByRoster:(id)a3
+- (BOOL)isFulfilledByRoster:(id)roster
 {
-  v4 = a3;
-  v5 = [(CRKASMAtomicRosterConstraint *)self rosterEvaluator];
-  v6 = (v5)[2](v5, v4);
+  rosterCopy = roster;
+  rosterEvaluator = [(CRKASMAtomicRosterConstraint *)self rosterEvaluator];
+  v6 = (rosterEvaluator)[2](rosterEvaluator, rosterCopy);
 
   return v6;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(CRKASMAtomicRosterConstraint *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(CRKASMAtomicRosterConstraint *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  equalCopy = equal;
   v5 = [@"identifier" componentsSeparatedByString:{@", "}];
   v6 = [v5 mutableCopy];
 
@@ -69,10 +69,10 @@
   v29 = v7;
   [v7 enumerateObjectsUsingBlock:v28];
 
-  v8 = self;
-  v9 = v4;
+  selfCopy = self;
+  v9 = equalCopy;
   v10 = v7;
-  if (v8 == v9)
+  if (selfCopy == v9)
   {
     v21 = 1;
   }
@@ -101,7 +101,7 @@
 
           v16 = *(*(&v24 + 1) + 8 * i);
           v17 = v9;
-          v18 = [(CRKASMAtomicRosterConstraint *)v8 valueForKey:v16];
+          v18 = [(CRKASMAtomicRosterConstraint *)selfCopy valueForKey:v16];
           v19 = [(CRKASMAtomicRosterConstraint *)v17 valueForKey:v16];
 
           if (v18 | v19)

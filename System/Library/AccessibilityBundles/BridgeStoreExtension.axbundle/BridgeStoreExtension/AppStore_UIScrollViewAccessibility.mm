@@ -6,8 +6,8 @@
 
 - (BOOL)_accessibilityOnlyComparesByXAxis
 {
-  v3 = [(AppStore_UIScrollViewAccessibility *)self accessibilityIdentifier];
-  v4 = [v3 isEqualToString:@"AXHorizontalShelfView"];
+  accessibilityIdentifier = [(AppStore_UIScrollViewAccessibility *)self accessibilityIdentifier];
+  v4 = [accessibilityIdentifier isEqualToString:@"AXHorizontalShelfView"];
 
   if (v4)
   {

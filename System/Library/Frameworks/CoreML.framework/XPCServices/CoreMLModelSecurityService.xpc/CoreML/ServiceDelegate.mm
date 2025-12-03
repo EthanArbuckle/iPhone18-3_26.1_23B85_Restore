@@ -1,28 +1,28 @@
 @interface ServiceDelegate
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 @end
 
 @implementation ServiceDelegate
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v4 = a4;
+  connectionCopy = connection;
   v5 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___CoreMLModelSecurityProtocol];
-  [v4 setExportedInterface:v5];
+  [connectionCopy setExportedInterface:v5];
 
   v6 = objc_opt_new();
-  v7 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"com.apple.CoreMLModelSecurity.%lu", [v4 hash]);
+  v7 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"com.apple.CoreMLModelSecurity.%lu", [connectionCopy hash]);
   [v7 UTF8String];
   v8 = os_transaction_create();
   [v6 setTxn:v8];
 
-  [v4 setExportedObject:v6];
+  [connectionCopy setExportedObject:v6];
   v9 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___CoreMLModelSecurityServiceToClientProtocol];
-  [v4 setRemoteObjectInterface:v9];
+  [connectionCopy setRemoteObjectInterface:v9];
 
-  v10 = [v4 synchronousRemoteObjectProxyWithErrorHandler:&stru_100010308];
+  v10 = [connectionCopy synchronousRemoteObjectProxyWithErrorHandler:&stru_100010308];
   [v6 setClientProxy:v10];
-  [v4 resume];
+  [connectionCopy resume];
 
   return 1;
 }

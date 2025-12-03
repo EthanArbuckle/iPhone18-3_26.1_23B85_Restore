@@ -1,26 +1,26 @@
 @interface DSSharingType
 + (void)initialize;
-- (BOOL)isEqual:(id)a3;
-- (DSSharingType)initWithSource:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (DSSharingType)initWithSource:(id)source;
 - (NSArray)allPeople;
 - (NSArray)sortedPeople;
 - (NSString)displayName;
 - (NSString)localizedDetailText;
-- (id)valueForKey:(id)a3;
+- (id)valueForKey:(id)key;
 - (int64_t)score;
 - (unint64_t)hash;
-- (void)addPerson:(id)a3;
-- (void)removePerson:(id)a3;
-- (void)stopAllSharingOnQueue:(id)a3 completion:(id)a4;
-- (void)stopSharingPeople:(id)a3 queue:(id)a4 completion:(id)a5;
-- (void)stopSharingWithPeople:(id)a3 asParticipantsOnQueue:(id)a4 completion:(id)a5;
+- (void)addPerson:(id)person;
+- (void)removePerson:(id)person;
+- (void)stopAllSharingOnQueue:(id)queue completion:(id)completion;
+- (void)stopSharingPeople:(id)people queue:(id)queue completion:(id)completion;
+- (void)stopSharingWithPeople:(id)people asParticipantsOnQueue:(id)queue completion:(id)completion;
 @end
 
 @implementation DSSharingType
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     DSLogSharingType = os_log_create("com.apple.DigitalSeparation", "DSSharingType");
 
@@ -28,16 +28,16 @@
   }
 }
 
-- (DSSharingType)initWithSource:(id)a3
+- (DSSharingType)initWithSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v9.receiver = self;
   v9.super_class = DSSharingType;
   v5 = [(DSSharingType *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    [(DSSharingType *)v5 setSource:v4];
+    [(DSSharingType *)v5 setSource:sourceCopy];
     v7 = objc_alloc_init(MEMORY[0x277CBEB40]);
     [(DSSharingType *)v6 setPeople:v7];
   }
@@ -45,45 +45,45 @@
   return v6;
 }
 
-- (void)addPerson:(id)a3
+- (void)addPerson:(id)person
 {
-  v4 = a3;
-  v5 = [(DSSharingType *)self people];
-  [v5 addObject:v4];
+  personCopy = person;
+  people = [(DSSharingType *)self people];
+  [people addObject:personCopy];
 }
 
-- (void)removePerson:(id)a3
+- (void)removePerson:(id)person
 {
-  v4 = a3;
-  v5 = [(DSSharingType *)self people];
-  [v5 removeObject:v4];
+  personCopy = person;
+  people = [(DSSharingType *)self people];
+  [people removeObject:personCopy];
 }
 
 - (int64_t)score
 {
-  v2 = [(DSSharingType *)self source];
-  v3 = [v2 name];
-  v4 = [DSSourceDescriptor sourceDescriptorForSource:v3];
-  v5 = [v4 priority];
+  source = [(DSSharingType *)self source];
+  name = [source name];
+  v4 = [DSSourceDescriptor sourceDescriptorForSource:name];
+  priority = [v4 priority];
 
-  return v5;
+  return priority;
 }
 
 - (NSString)displayName
 {
-  v2 = [(DSSharingType *)self source];
-  v3 = [v2 name];
-  v4 = [DSSourceDescriptor sourceDescriptorForSource:v3];
-  v5 = [v4 localizedName];
+  source = [(DSSharingType *)self source];
+  name = [source name];
+  v4 = [DSSourceDescriptor sourceDescriptorForSource:name];
+  localizedName = [v4 localizedName];
 
-  return v5;
+  return localizedName;
 }
 
 - (NSString)localizedDetailText
 {
-  v3 = [(DSSharingType *)self source];
-  v4 = [v3 name];
-  v5 = [DSSourceDescriptor sourceDescriptorForSource:v4];
+  source = [(DSSharingType *)self source];
+  name = [source name];
+  v5 = [DSSourceDescriptor sourceDescriptorForSource:name];
 
   v6 = [v5 localizedDetailTextByType:self];
 
@@ -92,17 +92,17 @@
 
 - (unint64_t)hash
 {
-  v2 = [(DSSharingType *)self source];
-  v3 = [v2 name];
-  v4 = [v3 hash];
+  source = [(DSSharingType *)self source];
+  name = [source name];
+  v4 = [name hash];
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v9 = 1;
   }
@@ -112,11 +112,11 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(DSSharingType *)self source];
-      v6 = [v5 name];
-      v7 = [(DSSharingType *)v4 source];
-      v8 = [v7 name];
-      v9 = [v6 isEqualToString:v8];
+      source = [(DSSharingType *)self source];
+      name = [source name];
+      source2 = [(DSSharingType *)equalCopy source];
+      name2 = [source2 name];
+      v9 = [name isEqualToString:name2];
     }
 
     else
@@ -128,25 +128,25 @@
   return v9;
 }
 
-- (id)valueForKey:(id)a3
+- (id)valueForKey:(id)key
 {
-  if ([a3 isEqualToString:@"displayName"])
+  if ([key isEqualToString:@"displayName"])
   {
-    v4 = [(DSSharingType *)self displayName];
+    displayName = [(DSSharingType *)self displayName];
   }
 
   else
   {
-    v4 = 0;
+    displayName = 0;
   }
 
-  return v4;
+  return displayName;
 }
 
 - (NSArray)sortedPeople
 {
-  v2 = [(DSSharingType *)self people];
-  v3 = [v2 sortedArrayUsingComparator:&__block_literal_global_0];
+  people = [(DSSharingType *)self people];
+  v3 = [people sortedArrayUsingComparator:&__block_literal_global_0];
 
   return v3;
 }
@@ -182,20 +182,20 @@ uint64_t __29__DSSharingType_sortedPeople__block_invoke(uint64_t a1, void *a2, v
 
 - (NSArray)allPeople
 {
-  v2 = [(DSSharingType *)self people];
-  v3 = [v2 array];
+  people = [(DSSharingType *)self people];
+  array = [people array];
 
-  return v3;
+  return array;
 }
 
-- (void)stopAllSharingOnQueue:(id)a3 completion:(id)a4
+- (void)stopAllSharingOnQueue:(id)queue completion:(id)completion
 {
   v33 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(DSSharingType *)self source];
-  v9 = [v8 name];
-  v10 = [DSRestrictionStore isSourceRestricted:v9];
+  queueCopy = queue;
+  completionCopy = completion;
+  source = [(DSSharingType *)self source];
+  name = [source name];
+  v10 = [DSRestrictionStore isSourceRestricted:name];
 
   if (v10)
   {
@@ -203,9 +203,9 @@ uint64_t __29__DSSharingType_sortedPeople__block_invoke(uint64_t a1, void *a2, v
     if (os_log_type_enabled(DSLogSharingType, OS_LOG_TYPE_INFO))
     {
       v12 = v11;
-      v13 = [v8 name];
+      name2 = [source name];
       *buf = 138412290;
-      v32 = v13;
+      v32 = name2;
       _os_log_impl(&dword_248C40000, v12, OS_LOG_TYPE_INFO, "Cannot reset %@ due to restrictions", buf, 0xCu);
     }
 
@@ -213,9 +213,9 @@ uint64_t __29__DSSharingType_sortedPeople__block_invoke(uint64_t a1, void *a2, v
     block[1] = 3221225472;
     block[2] = __50__DSSharingType_stopAllSharingOnQueue_completion___block_invoke;
     block[3] = &unk_278F72600;
-    v30 = v7;
-    v29 = v8;
-    dispatch_async(v6, block);
+    v30 = completionCopy;
+    v29 = source;
+    dispatch_async(queueCopy, block);
   }
 
   else
@@ -230,16 +230,16 @@ uint64_t __29__DSSharingType_sortedPeople__block_invoke(uint64_t a1, void *a2, v
       _os_signpost_emit_with_name_impl(&dword_248C40000, v16, OS_SIGNPOST_INTERVAL_BEGIN, v14, "stopAll", " enableTelemetry=YES ", buf, 2u);
     }
 
-    v17 = [(DSSharingType *)self people];
-    v18 = [v17 copy];
+    people = [(DSSharingType *)self people];
+    v18 = [people copy];
 
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __50__DSSharingType_stopAllSharingOnQueue_completion___block_invoke_312;
     v21[3] = &unk_278F72678;
-    v22 = v8;
-    v23 = v6;
-    v25 = v7;
+    v22 = source;
+    v23 = queueCopy;
+    v25 = completionCopy;
     v19 = v18;
     v24 = v19;
     objc_copyWeak(v26, &location);
@@ -376,15 +376,15 @@ void __50__DSSharingType_stopAllSharingOnQueue_completion___block_invoke_317(uin
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)stopSharingWithPeople:(id)a3 asParticipantsOnQueue:(id)a4 completion:(id)a5
+- (void)stopSharingWithPeople:(id)people asParticipantsOnQueue:(id)queue completion:(id)completion
 {
   v50 = *MEMORY[0x277D85DE8];
-  v28 = a3;
-  queue = a4;
-  v30 = a5;
-  v8 = [(DSSharingType *)self source];
-  v9 = [v8 name];
-  v10 = [DSRestrictionStore isSourceRestricted:v9];
+  peopleCopy = people;
+  queue = queue;
+  completionCopy = completion;
+  source = [(DSSharingType *)self source];
+  name = [source name];
+  v10 = [DSRestrictionStore isSourceRestricted:name];
 
   if (v10)
   {
@@ -392,9 +392,9 @@ void __50__DSSharingType_stopAllSharingOnQueue_completion___block_invoke_317(uin
     if (os_log_type_enabled(DSLogSharingType, OS_LOG_TYPE_INFO))
     {
       v12 = v11;
-      v13 = [v8 name];
+      name2 = [source name];
       *buf = 138412290;
-      v46 = v13;
+      v46 = name2;
       _os_log_impl(&dword_248C40000, v12, OS_LOG_TYPE_INFO, "Cannot reset %@ due to restrictions", buf, 0xCu);
     }
 
@@ -402,21 +402,21 @@ void __50__DSSharingType_stopAllSharingOnQueue_completion___block_invoke_317(uin
     block[1] = 3221225472;
     block[2] = __72__DSSharingType_stopSharingWithPeople_asParticipantsOnQueue_completion___block_invoke;
     block[3] = &unk_278F72600;
-    v44 = v30;
-    v43 = v8;
+    v44 = completionCopy;
+    v43 = source;
     dispatch_async(queue, block);
 
-    v14 = v44;
+    array = v44;
   }
 
   else
   {
-    v14 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v40 = 0u;
     v41 = 0u;
     v38 = 0u;
     v39 = 0u;
-    v15 = v28;
+    v15 = peopleCopy;
     v16 = [v15 countByEnumeratingWithState:&v38 objects:v49 count:16];
     if (v16)
     {
@@ -432,9 +432,9 @@ void __50__DSSharingType_stopAllSharingOnQueue_completion___block_invoke_317(uin
           }
 
           v19 = *(*(&v38 + 1) + 8 * v18);
-          v20 = [v8 name];
-          v21 = [v19 participationForSourceName:v20];
-          [v14 addObjectsFromArray:v21];
+          name3 = [source name];
+          v21 = [v19 participationForSourceName:name3];
+          [array addObjectsFromArray:v21];
 
           ++v18;
         }
@@ -459,11 +459,11 @@ void __50__DSSharingType_stopAllSharingOnQueue_completion___block_invoke_317(uin
     v25 = DSLogSharingType;
     if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
     {
-      v26 = [v8 name];
+      name4 = [source name];
       *buf = 138478083;
-      v46 = v14;
+      v46 = array;
       v47 = 2114;
-      v48 = v26;
+      v48 = name4;
       _os_log_impl(&dword_248C40000, v25, OS_LOG_TYPE_INFO, "Stopping sharing of participants %{private}@ from source %{public}@", buf, 0x16u);
     }
 
@@ -471,13 +471,13 @@ void __50__DSSharingType_stopAllSharingOnQueue_completion___block_invoke_317(uin
     v31[1] = 3221225472;
     v31[2] = __72__DSSharingType_stopSharingWithPeople_asParticipantsOnQueue_completion___block_invoke_319;
     v31[3] = &unk_278F72678;
-    v32 = v8;
-    v33 = queue;
-    v35 = v30;
+    v32 = source;
+    queueCopy = queue;
+    v35 = completionCopy;
     v34 = v15;
     objc_copyWeak(v36, &location);
     v36[1] = v22;
-    [v32 stopSharingWithParticipants:v14 completion:v31];
+    [v32 stopSharingWithParticipants:array completion:v31];
     objc_destroyWeak(v36);
 
     objc_destroyWeak(&location);
@@ -609,32 +609,32 @@ void __72__DSSharingType_stopSharingWithPeople_asParticipantsOnQueue_completion_
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)stopSharingPeople:(id)a3 queue:(id)a4 completion:(id)a5
+- (void)stopSharingPeople:(id)people queue:(id)queue completion:(id)completion
 {
   v47 = *MEMORY[0x277D85DE8];
-  v21 = a3;
-  v8 = a4;
-  v20 = a5;
-  v9 = [(DSSharingType *)self source];
+  peopleCopy = people;
+  queueCopy = queue;
+  completionCopy = completion;
+  source = [(DSSharingType *)self source];
   if (objc_opt_respondsToSelector())
   {
-    [(DSSharingType *)self stopSharingWithPeople:v21 asParticipantsOnQueue:v8 completion:v20];
+    [(DSSharingType *)self stopSharingWithPeople:peopleCopy asParticipantsOnQueue:queueCopy completion:completionCopy];
   }
 
   else
   {
-    v25 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v10 = dispatch_group_create();
     v37 = 0u;
     v38 = 0u;
     v39 = 0u;
     v40 = 0u;
-    obj = v21;
+    obj = peopleCopy;
     v11 = [obj countByEnumeratingWithState:&v37 objects:v46 count:16];
     if (v11)
     {
       v24 = *v38;
-      v22 = v8;
+      v22 = queueCopy;
       do
       {
         for (i = 0; i != v11; ++i)
@@ -649,31 +649,31 @@ void __72__DSSharingType_stopSharingWithPeople_asParticipantsOnQueue_completion_
           v14 = DSLogSharingType;
           if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
           {
-            v15 = [(DSSharingType *)self source];
-            v16 = [v15 name];
+            source2 = [(DSSharingType *)self source];
+            name = [source2 name];
             *buf = 138478083;
             v42 = v13;
             v43 = 2114;
-            v44 = v16;
+            v44 = name;
             _os_log_impl(&dword_248C40000, v14, OS_LOG_TYPE_INFO, "Stopping sharing of %{private}@ from source %{public}@", buf, 0x16u);
 
-            v8 = v22;
+            queueCopy = v22;
           }
 
           dispatch_group_enter(v10);
-          v45 = v9;
+          v45 = source;
           v17 = [MEMORY[0x277CBEA60] arrayWithObjects:&v45 count:1];
           v29[0] = MEMORY[0x277D85DD0];
           v29[1] = 3221225472;
           v29[2] = __52__DSSharingType_stopSharingPeople_queue_completion___block_invoke;
           v29[3] = &unk_278F726A0;
-          v30 = v9;
+          v30 = source;
           v31 = v13;
-          v32 = v25;
-          v33 = self;
+          v32 = array;
+          selfCopy = self;
           objc_copyWeak(&v35, &location);
           v34 = v10;
-          [v13 stopSharingSources:v17 queue:v8 completion:v29];
+          [v13 stopSharingSources:v17 queue:queueCopy completion:v29];
 
           objc_destroyWeak(&v35);
           objc_destroyWeak(&location);
@@ -689,10 +689,10 @@ void __72__DSSharingType_stopSharingWithPeople_asParticipantsOnQueue_completion_
     block[1] = 3221225472;
     block[2] = __52__DSSharingType_stopSharingPeople_queue_completion___block_invoke_324;
     block[3] = &unk_278F726C8;
-    v27 = v25;
-    v28 = v20;
-    v18 = v25;
-    dispatch_group_notify(v10, v8, block);
+    v27 = array;
+    v28 = completionCopy;
+    v18 = array;
+    dispatch_group_notify(v10, queueCopy, block);
   }
 
   v19 = *MEMORY[0x277D85DE8];

@@ -1,10 +1,10 @@
 @interface ML3MusicLibraryResourcesManagerContext
 + (id)contextForAutoupdatingSharedLibrary;
-+ (id)contextForMultiUserDaemonLibraryWithAccountInfo:(id)a3 accountChangeObserver:(id)a4;
-+ (id)contextForMultiUserFrameworkLibraryWithService:(id)a3;
-+ (id)contextForSingleUserLibraryWithAccountInfo:(id)a3;
-+ (id)contextForSingleUserLibraryWithLibraryContainerIdentifier:(id)a3;
-- (id)_initWithResourcesService:(id)a3 accountInfo:(id)a4 libraryContainerIdentifier:(id)a5 accountChangeObserver:(id)a6 supportsMultiUsers:(BOOL)a7 runningInDaemon:(BOOL)a8;
++ (id)contextForMultiUserDaemonLibraryWithAccountInfo:(id)info accountChangeObserver:(id)observer;
++ (id)contextForMultiUserFrameworkLibraryWithService:(id)service;
++ (id)contextForSingleUserLibraryWithAccountInfo:(id)info;
++ (id)contextForSingleUserLibraryWithLibraryContainerIdentifier:(id)identifier;
+- (id)_initWithResourcesService:(id)service accountInfo:(id)info libraryContainerIdentifier:(id)identifier accountChangeObserver:(id)observer supportsMultiUsers:(BOOL)users runningInDaemon:(BOOL)daemon;
 @end
 
 @implementation ML3MusicLibraryResourcesManagerContext
@@ -45,29 +45,29 @@
   v9 = 0;
   v8 = 0;
 LABEL_13:
-  v11 = [[a1 alloc] _initWithResourcesService:v10 accountInfo:v8 libraryContainerIdentifier:0 accountChangeObserver:v9 supportsMultiUsers:v4 runningInDaemon:v5 != 0];
+  v11 = [[self alloc] _initWithResourcesService:v10 accountInfo:v8 libraryContainerIdentifier:0 accountChangeObserver:v9 supportsMultiUsers:v4 runningInDaemon:v5 != 0];
 
   return v11;
 }
 
-- (id)_initWithResourcesService:(id)a3 accountInfo:(id)a4 libraryContainerIdentifier:(id)a5 accountChangeObserver:(id)a6 supportsMultiUsers:(BOOL)a7 runningInDaemon:(BOOL)a8
+- (id)_initWithResourcesService:(id)service accountInfo:(id)info libraryContainerIdentifier:(id)identifier accountChangeObserver:(id)observer supportsMultiUsers:(BOOL)users runningInDaemon:(BOOL)daemon
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
+  serviceCopy = service;
+  infoCopy = info;
+  identifierCopy = identifier;
+  observerCopy = observer;
   v24.receiver = self;
   v24.super_class = ML3MusicLibraryResourcesManagerContext;
   v19 = [(ML3MusicLibraryResourcesManagerContext *)&v24 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_resourcesService, a3);
-    objc_storeStrong(&v20->_accountInfo, a4);
-    objc_storeStrong(&v20->_accountChangeObserver, a6);
-    v20->_multiUserSupported = a7;
-    v20->_runningInDaemon = a8;
-    v21 = [v17 copy];
+    objc_storeStrong(&v19->_resourcesService, service);
+    objc_storeStrong(&v20->_accountInfo, info);
+    objc_storeStrong(&v20->_accountChangeObserver, observer);
+    v20->_multiUserSupported = users;
+    v20->_runningInDaemon = daemon;
+    v21 = [identifierCopy copy];
     libraryContainerIdentifier = v20->_libraryContainerIdentifier;
     v20->_libraryContainerIdentifier = v21;
   }
@@ -75,35 +75,35 @@ LABEL_13:
   return v20;
 }
 
-+ (id)contextForMultiUserDaemonLibraryWithAccountInfo:(id)a3 accountChangeObserver:(id)a4
++ (id)contextForMultiUserDaemonLibraryWithAccountInfo:(id)info accountChangeObserver:(id)observer
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] _initWithResourcesService:0 accountInfo:v7 libraryContainerIdentifier:0 accountChangeObserver:v6 supportsMultiUsers:1 runningInDaemon:1];
+  observerCopy = observer;
+  infoCopy = info;
+  v8 = [[self alloc] _initWithResourcesService:0 accountInfo:infoCopy libraryContainerIdentifier:0 accountChangeObserver:observerCopy supportsMultiUsers:1 runningInDaemon:1];
 
   return v8;
 }
 
-+ (id)contextForMultiUserFrameworkLibraryWithService:(id)a3
++ (id)contextForMultiUserFrameworkLibraryWithService:(id)service
 {
-  v4 = a3;
-  v5 = [[a1 alloc] _initWithResourcesService:v4 accountInfo:0 libraryContainerIdentifier:0 accountChangeObserver:0 supportsMultiUsers:1 runningInDaemon:0];
+  serviceCopy = service;
+  v5 = [[self alloc] _initWithResourcesService:serviceCopy accountInfo:0 libraryContainerIdentifier:0 accountChangeObserver:0 supportsMultiUsers:1 runningInDaemon:0];
 
   return v5;
 }
 
-+ (id)contextForSingleUserLibraryWithLibraryContainerIdentifier:(id)a3
++ (id)contextForSingleUserLibraryWithLibraryContainerIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [[a1 alloc] _initWithResourcesService:0 accountInfo:0 libraryContainerIdentifier:v4 accountChangeObserver:0 supportsMultiUsers:0 runningInDaemon:0];
+  identifierCopy = identifier;
+  v5 = [[self alloc] _initWithResourcesService:0 accountInfo:0 libraryContainerIdentifier:identifierCopy accountChangeObserver:0 supportsMultiUsers:0 runningInDaemon:0];
 
   return v5;
 }
 
-+ (id)contextForSingleUserLibraryWithAccountInfo:(id)a3
++ (id)contextForSingleUserLibraryWithAccountInfo:(id)info
 {
-  v4 = a3;
-  v5 = [[a1 alloc] _initWithResourcesService:0 accountInfo:v4 libraryContainerIdentifier:0 accountChangeObserver:0 supportsMultiUsers:0 runningInDaemon:0];
+  infoCopy = info;
+  v5 = [[self alloc] _initWithResourcesService:0 accountInfo:infoCopy libraryContainerIdentifier:0 accountChangeObserver:0 supportsMultiUsers:0 runningInDaemon:0];
 
   return v5;
 }

@@ -1,8 +1,8 @@
 @interface PMSafariStreamlinedStrongPasswordViewController
-- (PMSafariStreamlinedStrongPasswordViewController)initWithCoder:(id)a3;
-- (PMSafariStreamlinedStrongPasswordViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (PMSafariStreamlinedStrongPasswordViewController)initWithCoder:(id)coder;
+- (PMSafariStreamlinedStrongPasswordViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (PMSafariStreamlinedStrongPasswordViewControllerDelegate)delegate;
-- (id)initForSafariWithURL:(id)a3 userName:(id)a4;
+- (id)initForSafariWithURL:(id)l userName:(id)name;
 - (void)loadView;
 @end
 
@@ -15,7 +15,7 @@
   return Strong;
 }
 
-- (id)initForSafariWithURL:(id)a3 userName:(id)a4
+- (id)initForSafariWithURL:(id)l userName:(id)name
 {
   v4 = sub_21CB80BE4();
   v5 = *(*(v4 - 8) + 64);
@@ -28,7 +28,7 @@
   return v10;
 }
 
-- (PMSafariStreamlinedStrongPasswordViewController)initWithCoder:(id)a3
+- (PMSafariStreamlinedStrongPasswordViewController)initWithCoder:(id)coder
 {
   swift_unknownObjectWeakInit();
   v4 = (self + OBJC_IVAR___PMSafariStreamlinedStrongPasswordViewController__presentationSource);
@@ -57,11 +57,11 @@
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   PMSafariStreamlinedStrongPasswordViewController.loadView()();
 }
 
-- (PMSafariStreamlinedStrongPasswordViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (PMSafariStreamlinedStrongPasswordViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

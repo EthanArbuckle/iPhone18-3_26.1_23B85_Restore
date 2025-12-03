@@ -1,17 +1,17 @@
 @interface PKTextInputSingleElementFinder
-- (void)_finishSingleElementSearchIfReadyAtPosition:(CGPoint)a3 coordinateSpace:(id)a4 candidates:(id)a5 completion:(id)a6;
-- (void)findSingleElementAtPosition:(CGPoint)a3 coordinateSpace:(id)a4 completion:(id)a5;
-- (void)findSingleElementCloseToPosition:(CGPoint)a3 coordinateSpace:(id)a4 completion:(id)a5;
+- (void)_finishSingleElementSearchIfReadyAtPosition:(CGPoint)position coordinateSpace:(id)space candidates:(id)candidates completion:(id)completion;
+- (void)findSingleElementAtPosition:(CGPoint)position coordinateSpace:(id)space completion:(id)completion;
+- (void)findSingleElementCloseToPosition:(CGPoint)position coordinateSpace:(id)space completion:(id)completion;
 @end
 
 @implementation PKTextInputSingleElementFinder
 
-- (void)findSingleElementCloseToPosition:(CGPoint)a3 coordinateSpace:(id)a4 completion:(id)a5
+- (void)findSingleElementCloseToPosition:(CGPoint)position coordinateSpace:(id)space completion:(id)completion
 {
-  y = a3.y;
-  x = a3.x;
-  v9 = a4;
-  v10 = a5;
+  y = position.y;
+  x = position.x;
+  spaceCopy = space;
+  completionCopy = completion;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __94__PKTextInputSingleElementFinder_findSingleElementCloseToPosition_coordinateSpace_completion___block_invoke;
@@ -19,14 +19,14 @@
   v21 = x;
   v22 = y;
   v18[4] = self;
-  v19 = v9;
-  v20 = v10;
+  v19 = spaceCopy;
+  v20 = completionCopy;
   v11 = *MEMORY[0x1E695F050];
   v12 = *(MEMORY[0x1E695F050] + 8);
   v13 = *(MEMORY[0x1E695F050] + 16);
   v14 = *(MEMORY[0x1E695F050] + 24);
-  v15 = v10;
-  v16 = v9;
+  v15 = completionCopy;
+  v16 = spaceCopy;
   [(PKTextInputElementsFinder *)self _findAvailableTextInputElementsWithReusableElements:v16 referenceHitPoint:1u referenceSearchArea:v18 referenceCoordSpace:x nearPointOnly:y completion:v11, v12, v13, v14];
   if (self)
   {
@@ -52,12 +52,12 @@ _BYTE *__94__PKTextInputSingleElementFinder_findSingleElementCloseToPosition_coo
   return result;
 }
 
-- (void)findSingleElementAtPosition:(CGPoint)a3 coordinateSpace:(id)a4 completion:(id)a5
+- (void)findSingleElementAtPosition:(CGPoint)position coordinateSpace:(id)space completion:(id)completion
 {
-  y = a3.y;
-  x = a3.x;
-  v9 = a4;
-  v10 = a5;
+  y = position.y;
+  x = position.x;
+  spaceCopy = space;
+  completionCopy = completion;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __89__PKTextInputSingleElementFinder_findSingleElementAtPosition_coordinateSpace_completion___block_invoke;
@@ -65,10 +65,10 @@ _BYTE *__94__PKTextInputSingleElementFinder_findSingleElementCloseToPosition_coo
   v16 = x;
   v17 = y;
   v13[4] = self;
-  v14 = v9;
-  v15 = v10;
-  v11 = v10;
-  v12 = v9;
+  v14 = spaceCopy;
+  v15 = completionCopy;
+  v11 = completionCopy;
+  v12 = spaceCopy;
   [(PKTextInputSingleElementFinder *)self findSingleElementCloseToPosition:v12 coordinateSpace:v13 completion:x, y];
 }
 
@@ -144,20 +144,20 @@ LABEL_12:
   }
 }
 
-- (void)_finishSingleElementSearchIfReadyAtPosition:(CGPoint)a3 coordinateSpace:(id)a4 candidates:(id)a5 completion:(id)a6
+- (void)_finishSingleElementSearchIfReadyAtPosition:(CGPoint)position coordinateSpace:(id)space candidates:(id)candidates completion:(id)completion
 {
-  y = a3.y;
-  x = a3.x;
+  y = position.y;
+  x = position.x;
   v58 = *MEMORY[0x1E69E9840];
-  v11 = a4;
-  obj = a5;
-  v12 = a5;
-  v50 = a6;
+  spaceCopy = space;
+  obj = candidates;
+  candidatesCopy = candidates;
+  completionCopy = completion;
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
-  v13 = [v12 countByEnumeratingWithState:&v53 objects:v57 count:16];
+  v13 = [candidatesCopy countByEnumeratingWithState:&v53 objects:v57 count:16];
   if (v13)
   {
     v14 = v13;
@@ -172,15 +172,15 @@ LABEL_12:
       {
         if (*v54 != v16)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(candidatesCopy);
         }
 
         v19 = *(*(&v53 + 1) + 8 * i);
-        v20 = [(PKTextInputElement *)v19 coordinateSpace];
-        if (v20)
+        coordinateSpace = [(PKTextInputElement *)v19 coordinateSpace];
+        if (coordinateSpace)
         {
-          v21 = [(PKTextInputElement *)v19 frame];
-          v25 = PK_convertRectFromCoordinateSpaceToCoordinateSpace(v20, v11, v21, v22, v23, v24);
+          frame = [(PKTextInputElement *)v19 frame];
+          v25 = PK_convertRectFromCoordinateSpaceToCoordinateSpace(coordinateSpace, spaceCopy, frame, v22, v23, v24);
           v27 = v26;
           v29 = v28;
           v31 = v30;
@@ -227,7 +227,7 @@ LABEL_12:
               v37 = 0;
             }
 
-            v38 = PK_convertRectFromCoordinateSpaceToCoordinateSpace(v11, v20, x, y, v52, v51);
+            v38 = PK_convertRectFromCoordinateSpaceToCoordinateSpace(spaceCopy, coordinateSpace, x, y, v52, v51);
             v40 = [(PKTextInputElement *)v19 shouldBeginAtLocation:v38, v39];
             if (!v15 || !v40 || !v37)
             {
@@ -254,7 +254,7 @@ LABEL_25:
 LABEL_26:
       }
 
-      v14 = [v12 countByEnumeratingWithState:&v53 objects:v57 count:{16, obj}];
+      v14 = [candidatesCopy countByEnumeratingWithState:&v53 objects:v57 count:{16, obj}];
       if (!v14)
       {
         if (self)
@@ -279,13 +279,13 @@ LABEL_29:
   pendingElementContainerReplies = self->super.__pendingElementContainerReplies;
 LABEL_30:
   v43 = [(NSMutableSet *)pendingElementContainerReplies count];
-  v44 = [(PKTextInputElement *)v15 referenceView];
-  v45 = [v44 window];
+  referenceView = [(PKTextInputElement *)v15 referenceView];
+  window = [referenceView window];
 
-  if (!v43 && v15 && v45)
+  if (!v43 && v15 && window)
   {
-    v46 = PK_convertRectFromCoordinateSpaceToCoordinateSpace(v11, v45, x, y, *MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8));
-    if ([(PKTextInputElementsFinder *)v46 _anyOtherWindowAboveWindow:v47 position:PKTextInputElementsFinder, v45])
+    v46 = PK_convertRectFromCoordinateSpaceToCoordinateSpace(spaceCopy, window, x, y, *MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8));
+    if ([(PKTextInputElementsFinder *)v46 _anyOtherWindowAboveWindow:v47 position:PKTextInputElementsFinder, window])
     {
 
       v15 = 0;
@@ -300,9 +300,9 @@ LABEL_30:
   objc_storeStrong(&self->_candidateElements, obja);
   objc_storeStrong(&self->_foundElement, v15);
   self->_finished = 1;
-  if (v50)
+  if (completionCopy)
   {
-    v50[2](v50);
+    completionCopy[2](completionCopy);
   }
 
 LABEL_38:

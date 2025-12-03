@@ -1,19 +1,19 @@
 @interface SXTextTangierTextLayout
-- (BOOL)drawableAttachment:(id)a3 withLayout:(id)a4 shouldPositionIterativelyInColumn:(id)a5;
+- (BOOL)drawableAttachment:(id)attachment withLayout:(id)layout shouldPositionIterativelyInColumn:(id)column;
 - (CGSize)maxSize;
 - (__CFLocale)hyphenationLocale;
 - (double)baselineForLastLine;
 - (double)lineHeightGuessForFirstLine;
-- (id)attachedLayoutsInLayout:(id)a3 anchored:(BOOL)a4;
-- (id)layoutForInlineDrawable:(id)a3;
-- (id)validatedLayoutForAnchoredDrawable:(id)a3;
-- (id)validatedLayoutForAttachedDrawable:(id)a3;
-- (void)addAttachmentLayout:(id)a3;
-- (void)drawableAttachment:(id)a3 didFinalizePosition:(CGPoint)a4;
-- (void)drawableAttachment:(id)a3 willStartNewIterationWithIndex:(unint64_t)a4;
+- (id)attachedLayoutsInLayout:(id)layout anchored:(BOOL)anchored;
+- (id)layoutForInlineDrawable:(id)drawable;
+- (id)validatedLayoutForAnchoredDrawable:(id)drawable;
+- (id)validatedLayoutForAttachedDrawable:(id)drawable;
+- (void)addAttachmentLayout:(id)layout;
+- (void)drawableAttachment:(id)attachment didFinalizePosition:(CGPoint)position;
+- (void)drawableAttachment:(id)attachment willStartNewIterationWithIndex:(unint64_t)index;
 - (void)invalidate;
 - (void)invalidateTextLayout;
-- (void)startedIterativePositioningProcessForDrawableAttachment:(id)a3;
+- (void)startedIterativePositioningProcessForDrawableAttachment:(id)attachment;
 - (void)validate;
 @end
 
@@ -21,16 +21,16 @@
 
 - (double)lineHeightGuessForFirstLine
 {
-  v3 = [(TSWPLayout *)self columns];
-  v4 = [v3 firstObject];
+  columns = [(TSWPLayout *)self columns];
+  firstObject = [columns firstObject];
 
-  v5 = [(TSDLayout *)self info];
-  v6 = [v5 characterStyleAtCharIndex:0 effectiveRange:0];
+  info = [(TSDLayout *)self info];
+  v6 = [info characterStyleAtCharIndex:0 effectiveRange:0];
 
-  v7 = [(TSDLayout *)self info];
-  v8 = [v7 paragraphStyleAtCharIndex:0 effectiveRange:0];
+  info2 = [(TSDLayout *)self info];
+  v8 = [info2 paragraphStyleAtCharIndex:0 effectiveRange:0];
 
-  [v4 scaleTextPercent];
+  [firstObject scaleTextPercent];
   FontForStyle = TSWPFastCreateFontForStyle();
   v18 = 0u;
   v19 = 0u;
@@ -49,11 +49,11 @@
 
 - (double)baselineForLastLine
 {
-  v3 = [(TSWPLayout *)self columns];
-  v4 = [v3 objectAtIndex:0];
+  columns = [(TSWPLayout *)self columns];
+  v4 = [columns objectAtIndex:0];
 
-  v5 = [(TSDLayout *)self info];
-  v6 = [v5 length];
+  info = [(TSDLayout *)self info];
+  v6 = [info length];
 
   if (v4)
   {
@@ -65,47 +65,47 @@
 
 - (__CFLocale)hyphenationLocale
 {
-  v2 = [(TSDLayout *)self info];
-  v3 = [v2 locale];
+  info = [(TSDLayout *)self info];
+  locale = [info locale];
+
+  return locale;
+}
+
+- (id)validatedLayoutForAnchoredDrawable:(id)drawable
+{
+  v3 = [(SXTextTangierTextLayout *)self validatedLayoutForAttachedDrawable:drawable];
 
   return v3;
 }
 
-- (id)validatedLayoutForAnchoredDrawable:(id)a3
+- (id)layoutForInlineDrawable:(id)drawable
 {
-  v3 = [(SXTextTangierTextLayout *)self validatedLayoutForAttachedDrawable:a3];
+  v3 = [(SXTextTangierTextLayout *)self validatedLayoutForAttachedDrawable:drawable];
 
   return v3;
 }
 
-- (id)layoutForInlineDrawable:(id)a3
+- (void)addAttachmentLayout:(id)layout
 {
-  v3 = [(SXTextTangierTextLayout *)self validatedLayoutForAttachedDrawable:a3];
+  layoutCopy = layout;
+  parent = [layoutCopy parent];
 
-  return v3;
-}
-
-- (void)addAttachmentLayout:(id)a3
-{
-  v8 = a3;
-  v4 = [v8 parent];
-
-  if (v4 != self)
+  if (parent != self)
   {
-    [(TSDAbstractLayout *)self addChild:v8];
-    v5 = [(SXTextTangierTextLayout *)self addedChildren];
+    [(TSDAbstractLayout *)self addChild:layoutCopy];
+    addedChildren = [(SXTextTangierTextLayout *)self addedChildren];
 
-    if (!v5)
+    if (!addedChildren)
     {
       v6 = objc_alloc_init(MEMORY[0x1E695DFA8]);
       [(SXTextTangierTextLayout *)self setAddedChildren:v6];
     }
 
-    v7 = [(SXTextTangierTextLayout *)self addedChildren];
-    [v7 addObject:v8];
+    addedChildren2 = [(SXTextTangierTextLayout *)self addedChildren];
+    [addedChildren2 addObject:layoutCopy];
   }
 
-  [v8 updateChildrenFromInfo];
+  [layoutCopy updateChildrenFromInfo];
 }
 
 - (void)validate
@@ -135,8 +135,8 @@
   v11 = 0u;
   v8 = 0u;
   v9 = 0u;
-  v3 = [(SXTextTangierTextLayout *)self addedChildren];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v13 count:16];
+  addedChildren = [(SXTextTangierTextLayout *)self addedChildren];
+  v4 = [addedChildren countByEnumeratingWithState:&v8 objects:v13 count:16];
   if (v4)
   {
     v5 = *v9;
@@ -147,35 +147,35 @@
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(addedChildren);
         }
 
         [*(*(&v8 + 1) + 8 * v6++) removeFromParent];
       }
 
       while (v4 != v6);
-      v4 = [v3 countByEnumeratingWithState:&v8 objects:v13 count:16];
+      v4 = [addedChildren countByEnumeratingWithState:&v8 objects:v13 count:16];
     }
 
     while (v4);
   }
 
-  v7 = [(SXTextTangierTextLayout *)self addedChildren];
-  [v7 removeAllObjects];
+  addedChildren2 = [(SXTextTangierTextLayout *)self addedChildren];
+  [addedChildren2 removeAllObjects];
 }
 
-- (id)attachedLayoutsInLayout:(id)a3 anchored:(BOOL)a4
+- (id)attachedLayoutsInLayout:(id)layout anchored:(BOOL)anchored
 {
-  v4 = a4;
+  anchoredCopy = anchored;
   v21 = *MEMORY[0x1E69E9840];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v15 = a3;
-  v5 = [v15 children];
+  layoutCopy = layout;
+  children = [layoutCopy children];
   v6 = 0;
-  v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v7 = [children countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = *v17;
@@ -185,7 +185,7 @@
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(children);
         }
 
         objc_opt_class();
@@ -193,10 +193,10 @@
         v11 = v10;
         if (v10)
         {
-          v12 = [v10 info];
-          v13 = [v12 owningAttachment];
+          info = [v10 info];
+          owningAttachment = [info owningAttachment];
 
-          if (v13 && [v13 isDrawable] && objc_msgSend(v13, "isAnchored") == v4)
+          if (owningAttachment && [owningAttachment isDrawable] && objc_msgSend(owningAttachment, "isAnchored") == anchoredCopy)
           {
             if (v6)
             {
@@ -211,7 +211,7 @@
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v7 = [children countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v7);
@@ -220,15 +220,15 @@
   return v6;
 }
 
-- (id)validatedLayoutForAttachedDrawable:(id)a3
+- (id)validatedLayoutForAttachedDrawable:(id)drawable
 {
-  v4 = a3;
-  v5 = [(TSDLayout *)self layoutController];
-  v6 = [v5 layoutForInfo:v4];
+  drawableCopy = drawable;
+  layoutController = [(TSDLayout *)self layoutController];
+  v6 = [layoutController layoutForInfo:drawableCopy];
 
   if (!v6)
   {
-    v6 = [objc_alloc(objc_msgSend(v4 "layoutClass"))];
+    v6 = [objc_alloc(objc_msgSend(drawableCopy "layoutClass"))];
     if (!v6)
     {
       goto LABEL_6;
@@ -239,8 +239,8 @@
 
   if ((v6[*MEMORY[0x1E69D5748]] & 3) != 0)
   {
-    v7 = [(TSDLayout *)self layoutController];
-    [v7 validateLayoutWithDependencies:v6];
+    layoutController2 = [(TSDLayout *)self layoutController];
+    [layoutController2 validateLayoutWithDependencies:v6];
   }
 
 LABEL_6:
@@ -248,68 +248,68 @@ LABEL_6:
   return v6;
 }
 
-- (void)startedIterativePositioningProcessForDrawableAttachment:(id)a3
+- (void)startedIterativePositioningProcessForDrawableAttachment:(id)attachment
 {
-  v6 = a3;
+  attachmentCopy = attachment;
   objc_opt_class();
-  v3 = [v6 drawable];
+  drawable = [attachmentCopy drawable];
   v4 = TSUDynamicCast();
 
   if (v4)
   {
-    v5 = [v4 exclusionPath];
-    [(SXTextExclusionPath *)v5 callStartBlock];
+    exclusionPath = [v4 exclusionPath];
+    [(SXTextExclusionPath *)exclusionPath callStartBlock];
   }
 }
 
-- (void)drawableAttachment:(id)a3 willStartNewIterationWithIndex:(unint64_t)a4
+- (void)drawableAttachment:(id)attachment willStartNewIterationWithIndex:(unint64_t)index
 {
-  v13 = a3;
+  attachmentCopy = attachment;
   objc_opt_class();
-  v5 = [v13 drawable];
+  drawable = [attachmentCopy drawable];
   v6 = TSUDynamicCast();
 
   if (v6)
   {
     objc_opt_class();
-    v7 = [(TSDLayout *)self layoutController];
-    v8 = [v7 layoutForInfo:v6];
+    layoutController = [(TSDLayout *)self layoutController];
+    v8 = [layoutController layoutForInfo:v6];
     v9 = TSUDynamicCast();
 
-    v10 = [v6 exclusionPath];
+    exclusionPath = [v6 exclusionPath];
     [v9 frame];
-    [(SXTextExclusionPath *)v10 adjustYPositionWithCurrentPosition:v11, v12];
+    [(SXTextExclusionPath *)exclusionPath adjustYPositionWithCurrentPosition:v11, v12];
   }
 }
 
-- (void)drawableAttachment:(id)a3 didFinalizePosition:(CGPoint)a4
+- (void)drawableAttachment:(id)attachment didFinalizePosition:(CGPoint)position
 {
-  y = a4.y;
-  x = a4.x;
-  v11 = a3;
+  y = position.y;
+  x = position.x;
+  attachmentCopy = attachment;
   objc_opt_class();
-  v6 = [v11 drawable];
+  drawable = [attachmentCopy drawable];
   v7 = TSUDynamicCast();
 
   if (v7)
   {
-    v8 = [v7 exclusionPath];
-    [(SXTextExclusionPath *)v8 setActualPosition:y];
+    exclusionPath = [v7 exclusionPath];
+    [(SXTextExclusionPath *)exclusionPath setActualPosition:y];
 
-    v9 = [v7 exclusionPath];
-    [(SXTextExclusionPath *)v9 callCompletionBlock];
+    exclusionPath2 = [v7 exclusionPath];
+    [(SXTextExclusionPath *)exclusionPath2 callCompletionBlock];
   }
 }
 
-- (BOOL)drawableAttachment:(id)a3 withLayout:(id)a4 shouldPositionIterativelyInColumn:(id)a5
+- (BOOL)drawableAttachment:(id)attachment withLayout:(id)layout shouldPositionIterativelyInColumn:(id)column
 {
-  v6 = a5;
-  [a4 frame];
+  columnCopy = column;
+  [layout frame];
   v8 = v7;
-  [v6 frameBounds];
-  LOBYTE(a4) = v8 <= v9 * 0.9;
+  [columnCopy frameBounds];
+  LOBYTE(layout) = v8 <= v9 * 0.9;
 
-  return a4;
+  return layout;
 }
 
 - (CGSize)maxSize

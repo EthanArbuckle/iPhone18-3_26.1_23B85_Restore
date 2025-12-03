@@ -1,30 +1,30 @@
 @interface CECIOCECInterface
-+ (id)interfaceWithIOCECInterface:(__IOCECInterface *)a3 listener:(id)a4;
++ (id)interfaceWithIOCECInterface:(__IOCECInterface *)interface listener:(id)listener;
 - ($D1819ED0CAECE69E625AEC8AD7BCEE3A)attributes;
-- (BOOL)errorIsNack:(id)a3;
-- (BOOL)sendFrame:(CECFrame *)a3 withRetryCount:(unsigned __int8)a4 error:(id *)a5;
-- (BOOL)setHardwareAddressMask:(unsigned __int16)a3 error:(id *)a4;
-- (CECIOCECInterface)initWithIOCECInterface:(__IOCECInterface *)a3 listener:(id)a4;
+- (BOOL)errorIsNack:(id)nack;
+- (BOOL)sendFrame:(CECFrame *)frame withRetryCount:(unsigned __int8)count error:(id *)error;
+- (BOOL)setHardwareAddressMask:(unsigned __int16)mask error:(id *)error;
+- (CECIOCECInterface)initWithIOCECInterface:(__IOCECInterface *)interface listener:(id)listener;
 - (id)properties;
 - (void)_close;
-- (void)_interfaceTerminated:(__IOCECInterface *)a3;
+- (void)_interfaceTerminated:(__IOCECInterface *)terminated;
 - (void)_open;
 - (void)dealloc;
-- (void)scheduleWithDispatchQueue:(id)a3;
-- (void)setAttributes:(id *)a3;
-- (void)unscheduleFromDispatchQueue:(id)a3;
+- (void)scheduleWithDispatchQueue:(id)queue;
+- (void)setAttributes:(id *)attributes;
+- (void)unscheduleFromDispatchQueue:(id)queue;
 @end
 
 @implementation CECIOCECInterface
 
-+ (id)interfaceWithIOCECInterface:(__IOCECInterface *)a3 listener:(id)a4
++ (id)interfaceWithIOCECInterface:(__IOCECInterface *)interface listener:(id)listener
 {
-  v4 = [[CECIOCECInterface alloc] initWithIOCECInterface:a3 listener:a4];
+  v4 = [[CECIOCECInterface alloc] initWithIOCECInterface:interface listener:listener];
 
   return v4;
 }
 
-- (CECIOCECInterface)initWithIOCECInterface:(__IOCECInterface *)a3 listener:(id)a4
+- (CECIOCECInterface)initWithIOCECInterface:(__IOCECInterface *)interface listener:(id)listener
 {
   if (gLogCategory_CoreRCInterface <= 50 && (gLogCategory_CoreRCInterface != -1 || _LogCategory_Initialize()))
   {
@@ -36,11 +36,11 @@
   v7 = [(CECIOCECInterface *)&v10 init];
   if (v7)
   {
-    v8 = a4;
-    v7->_listener = v8;
-    if (v8 && (v7->_iocecInterface = a3) != 0)
+    listenerCopy = listener;
+    v7->_listener = listenerCopy;
+    if (listenerCopy && (v7->_iocecInterface = interface) != 0)
     {
-      CFRetain(a3);
+      CFRetain(interface);
     }
 
     else
@@ -76,20 +76,20 @@
 
 - (void)_open
 {
-  v3 = [(CECIOCECInterface *)self serialQueue];
+  serialQueue = [(CECIOCECInterface *)self serialQueue];
   if (gLogCategory_CoreRCInterface <= 40 && (gLogCategory_CoreRCInterface != -1 || _LogCategory_Initialize()))
   {
     sub_1FD4(self);
   }
 
-  if (!self->_isOpen && self->_iocecInterface && v3 != 0)
+  if (!self->_isOpen && self->_iocecInterface && serialQueue != 0)
   {
     v5 = IOCECInterfaceOpenReceiveQueue();
     if (gLogCategory_CoreRCInterface <= 40 && (gLogCategory_CoreRCInterface != -1 || _LogCategory_Initialize()))
     {
       v13 = "[CECIOCECInterface _open]";
       v14 = v5;
-      v12 = self;
+      selfCopy = self;
       LogPrintF();
     }
 
@@ -129,7 +129,7 @@ LABEL_17:
     v6[2] = v7;
     v6[3] = &unk_41A8;
     v6[4] = self;
-    [(CECIOCECInterface *)self dispatchAsyncHighPriority:v12, v13, v14];
+    [(CECIOCECInterface *)self dispatchAsyncHighPriority:selfCopy, v13, v14];
   }
 }
 
@@ -166,14 +166,14 @@ LABEL_17:
   }
 }
 
-- (BOOL)errorIsNack:(id)a3
+- (BOOL)errorIsNack:(id)nack
 {
-  if (a3)
+  if (nack)
   {
-    v4 = [objc_msgSend(a3 "domain")];
+    v4 = [objc_msgSend(nack "domain")];
     if (v4)
     {
-      LOBYTE(v4) = [a3 code] == -535724032;
+      LOBYTE(v4) = [nack code] == -535724032;
     }
   }
 
@@ -185,17 +185,17 @@ LABEL_17:
   return v4;
 }
 
-- (BOOL)sendFrame:(CECFrame *)a3 withRetryCount:(unsigned __int8)a4 error:(id *)a5
+- (BOOL)sendFrame:(CECFrame *)frame withRetryCount:(unsigned __int8)count error:(id *)error
 {
   v7 = -536870206;
   __dst = 0uLL;
   v13 = 0;
   if (self->_isOpen)
   {
-    v8 = *(a3 + 16);
+    v8 = *(frame + 16);
     if ((v8 & 0x1Fu) - 17 >= 0xFFFFFFF0)
     {
-      memcpy(&__dst, a3, v8 & 0x1F);
+      memcpy(&__dst, frame, v8 & 0x1F);
       v13 = v13 & 0xF0 | (v8 - 1) & 0xF;
       iocecInterface = self->_iocecInterface;
       v7 = IOCECInterfaceSendFrame();
@@ -211,14 +211,14 @@ LABEL_17:
     v7 = -536870195;
   }
 
-  if (!a5)
+  if (!error)
   {
     return 0;
   }
 
   v11 = [NSError errorWithDomain:NSMachErrorDomain code:v7 userInfo:0];
   result = 0;
-  *a5 = v11;
+  *error = v11;
   return result;
 }
 
@@ -267,19 +267,19 @@ LABEL_17:
   return self;
 }
 
-- (void)setAttributes:(id *)a3
+- (void)setAttributes:(id *)attributes
 {
-  *&self->_attributes.address = *&a3->var0;
-  v3 = *&a3->var6[22];
-  v5 = *&a3->var5[6];
-  v4 = *&a3->var5[22];
-  *&self->_attributes.uuid[6] = *&a3->var6[6];
+  *&self->_attributes.address = *&attributes->var0;
+  v3 = *&attributes->var6[22];
+  v5 = *&attributes->var5[6];
+  v4 = *&attributes->var5[22];
+  *&self->_attributes.uuid[6] = *&attributes->var6[6];
   *&self->_attributes.uuid[22] = v3;
   *&self->_attributes.modelName[6] = v5;
   *&self->_attributes.modelName[22] = v4;
 }
 
-- (BOOL)setHardwareAddressMask:(unsigned __int16)a3 error:(id *)a4
+- (BOOL)setHardwareAddressMask:(unsigned __int16)mask error:(id *)error
 {
   if (self->_isOpen)
   {
@@ -297,22 +297,22 @@ LABEL_17:
     LogPrintF();
   }
 
-  if (v6 && a4)
+  if (v6 && error)
   {
-    *a4 = [NSError errorWithDomain:NSMachErrorDomain code:v6 userInfo:0];
+    *error = [NSError errorWithDomain:NSMachErrorDomain code:v6 userInfo:0];
   }
 
   return v6 == 0;
 }
 
-- (void)_interfaceTerminated:(__IOCECInterface *)a3
+- (void)_interfaceTerminated:(__IOCECInterface *)terminated
 {
   if (gLogCategory_CoreRCInterface <= 40 && (gLogCategory_CoreRCInterface != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
   }
 
-  if (self->_iocecInterface == a3)
+  if (self->_iocecInterface == terminated)
   {
     listener = self->_listener;
 
@@ -320,35 +320,35 @@ LABEL_17:
   }
 }
 
-- (void)scheduleWithDispatchQueue:(id)a3
+- (void)scheduleWithDispatchQueue:(id)queue
 {
   if (gLogCategory_CoreRCInterface <= 40 && (gLogCategory_CoreRCInterface != -1 || _LogCategory_Initialize()))
   {
     v6 = "[CECIOCECInterface scheduleWithDispatchQueue:]";
-    v7 = a3;
-    v5 = self;
+    queueCopy = queue;
+    selfCopy = self;
     LogPrintF();
   }
 
-  if (![(CECIOCECInterface *)self serialQueue:v5])
+  if (![(CECIOCECInterface *)self serialQueue:selfCopy])
   {
-    [(CECIOCECInterface *)self setSerialQueue:a3];
+    [(CECIOCECInterface *)self setSerialQueue:queue];
 
     [(CECIOCECInterface *)self _open];
   }
 }
 
-- (void)unscheduleFromDispatchQueue:(id)a3
+- (void)unscheduleFromDispatchQueue:(id)queue
 {
   if (gLogCategory_CoreRCInterface <= 40 && (gLogCategory_CoreRCInterface != -1 || _LogCategory_Initialize()))
   {
     v6 = "[CECIOCECInterface unscheduleFromDispatchQueue:]";
-    v7 = a3;
-    v5 = self;
+    queueCopy = queue;
+    selfCopy = self;
     LogPrintF();
   }
 
-  if ([(CECIOCECInterface *)self serialQueue:v5]== a3)
+  if ([(CECIOCECInterface *)self serialQueue:selfCopy]== queue)
   {
     [(CECIOCECInterface *)self _close];
 

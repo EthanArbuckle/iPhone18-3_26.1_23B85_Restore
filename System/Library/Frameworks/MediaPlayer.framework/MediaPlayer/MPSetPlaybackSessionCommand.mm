@@ -1,48 +1,48 @@
 @interface MPSetPlaybackSessionCommand
 - (id)_mediaRemoteCommandInfoOptions;
-- (void)setCurrentPlaybackSessionIdentifier:(id)a3;
-- (void)setExportableSessionTypes:(id)a3;
-- (void)setRequirements:(id)a3;
-- (void)setSupportedSessionTypes:(id)a3;
+- (void)setCurrentPlaybackSessionIdentifier:(id)identifier;
+- (void)setExportableSessionTypes:(id)types;
+- (void)setRequirements:(id)requirements;
+- (void)setSupportedSessionTypes:(id)types;
 @end
 
 @implementation MPSetPlaybackSessionCommand
 
 - (id)_mediaRemoteCommandInfoOptions
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSString *)self->_currentPlaybackSessionIdentifier length])
   {
-    [v3 setObject:self->_currentPlaybackSessionIdentifier forKeyedSubscript:*MEMORY[0x1E69B0CA0]];
+    [dictionary setObject:self->_currentPlaybackSessionIdentifier forKeyedSubscript:*MEMORY[0x1E69B0CA0]];
   }
 
   if ([(NSArray *)self->_exportableSessionTypes count])
   {
-    [v3 setObject:self->_exportableSessionTypes forKeyedSubscript:*MEMORY[0x1E69B0C48]];
+    [dictionary setObject:self->_exportableSessionTypes forKeyedSubscript:*MEMORY[0x1E69B0C48]];
   }
 
   if ([(NSArray *)self->_supportedSessionTypes count])
   {
-    [v3 setObject:self->_supportedSessionTypes forKeyedSubscript:*MEMORY[0x1E69B0D50]];
+    [dictionary setObject:self->_supportedSessionTypes forKeyedSubscript:*MEMORY[0x1E69B0D50]];
   }
 
   if ([(NSDictionary *)self->_requirements count])
   {
-    [v3 setObject:self->_requirements forKeyedSubscript:*MEMORY[0x1E69B0CB0]];
+    [dictionary setObject:self->_requirements forKeyedSubscript:*MEMORY[0x1E69B0CB0]];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)setRequirements:(id)a3
+- (void)setRequirements:(id)requirements
 {
-  v4 = a3;
+  requirementsCopy = requirements;
   requirements = self->_requirements;
-  if (requirements != v4)
+  if (requirements != requirementsCopy)
   {
-    v9 = v4;
-    v6 = [(NSDictionary *)requirements isEqual:v4];
-    v4 = v9;
+    v9 = requirementsCopy;
+    v6 = [(NSDictionary *)requirements isEqual:requirementsCopy];
+    requirementsCopy = v9;
     if ((v6 & 1) == 0)
     {
       v7 = [(NSDictionary *)v9 copy];
@@ -50,17 +50,17 @@
       self->_requirements = v7;
 
       [(MPRemoteCommand *)self notifyPropagatablePropertyChanged];
-      v4 = v9;
+      requirementsCopy = v9;
     }
   }
 }
 
-- (void)setSupportedSessionTypes:(id)a3
+- (void)setSupportedSessionTypes:(id)types
 {
-  v6 = a3;
+  typesCopy = types;
   if (([(NSArray *)self->_supportedSessionTypes isEqual:?]& 1) == 0)
   {
-    v4 = [v6 copy];
+    v4 = [typesCopy copy];
     supportedSessionTypes = self->_supportedSessionTypes;
     self->_supportedSessionTypes = v4;
 
@@ -68,12 +68,12 @@
   }
 }
 
-- (void)setExportableSessionTypes:(id)a3
+- (void)setExportableSessionTypes:(id)types
 {
-  v6 = a3;
+  typesCopy = types;
   if (([(NSArray *)self->_exportableSessionTypes isEqual:?]& 1) == 0)
   {
-    v4 = [v6 copy];
+    v4 = [typesCopy copy];
     exportableSessionTypes = self->_exportableSessionTypes;
     self->_exportableSessionTypes = v4;
 
@@ -81,12 +81,12 @@
   }
 }
 
-- (void)setCurrentPlaybackSessionIdentifier:(id)a3
+- (void)setCurrentPlaybackSessionIdentifier:(id)identifier
 {
-  v6 = a3;
+  identifierCopy = identifier;
   if (([(NSString *)self->_currentPlaybackSessionIdentifier isEqual:?]& 1) == 0)
   {
-    v4 = [v6 copy];
+    v4 = [identifierCopy copy];
     currentPlaybackSessionIdentifier = self->_currentPlaybackSessionIdentifier;
     self->_currentPlaybackSessionIdentifier = v4;
 

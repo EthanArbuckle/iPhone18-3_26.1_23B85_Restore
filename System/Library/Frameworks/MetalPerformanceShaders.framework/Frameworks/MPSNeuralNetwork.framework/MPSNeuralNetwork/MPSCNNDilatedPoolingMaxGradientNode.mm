@@ -1,6 +1,6 @@
 @interface MPSCNNDilatedPoolingMaxGradientNode
 + (MPSCNNDilatedPoolingMaxGradientNode)nodeWithSourceGradient:(MPSNNImageNode *)sourceGradient sourceImage:(MPSNNImageNode *)sourceImage gradientState:(MPSNNGradientStateNode *)gradientState kernelWidth:(NSUInteger)kernelWidth kernelHeight:(NSUInteger)kernelHeight strideInPixelsX:(NSUInteger)strideInPixelsX strideInPixelsY:(NSUInteger)strideInPixelsY dilationRateX:(NSUInteger)dilationRateX dilationRateY:(NSUInteger)dilationRateY;
-- (MPSCNNDilatedPoolingMaxGradientNode)initWithGradientImages:(id)a3 forwardFilter:(id)a4;
+- (MPSCNNDilatedPoolingMaxGradientNode)initWithGradientImages:(id)images forwardFilter:(id)filter;
 - (MPSCNNDilatedPoolingMaxGradientNode)initWithSourceGradient:(MPSNNImageNode *)sourceGradient sourceImage:(MPSNNImageNode *)sourceImage gradientState:(MPSNNGradientStateNode *)gradientState kernelWidth:(NSUInteger)kernelWidth kernelHeight:(NSUInteger)kernelHeight strideInPixelsX:(NSUInteger)strideInPixelsX strideInPixelsY:(NSUInteger)strideInPixelsY dilationRateX:(NSUInteger)dilationRateX dilationRateY:(NSUInteger)dilationRateY;
 @end
 
@@ -8,7 +8,7 @@
 
 + (MPSCNNDilatedPoolingMaxGradientNode)nodeWithSourceGradient:(MPSNNImageNode *)sourceGradient sourceImage:(MPSNNImageNode *)sourceImage gradientState:(MPSNNGradientStateNode *)gradientState kernelWidth:(NSUInteger)kernelWidth kernelHeight:(NSUInteger)kernelHeight strideInPixelsX:(NSUInteger)strideInPixelsX strideInPixelsY:(NSUInteger)strideInPixelsY dilationRateX:(NSUInteger)dilationRateX dilationRateY:(NSUInteger)dilationRateY
 {
-  v17 = [a1 alloc];
+  v17 = [self alloc];
   v19 = objc_msgSend_initWithSourceGradient_sourceImage_gradientState_kernelWidth_kernelHeight_strideInPixelsX_strideInPixelsY_dilationRateX_dilationRateY_(v17, v18, sourceGradient, sourceImage, gradientState, kernelWidth, kernelHeight, strideInPixelsX, strideInPixelsY, dilationRateX, dilationRateY);
 
   return v19;
@@ -28,7 +28,7 @@
   return result;
 }
 
-- (MPSCNNDilatedPoolingMaxGradientNode)initWithGradientImages:(id)a3 forwardFilter:(id)a4
+- (MPSCNNDilatedPoolingMaxGradientNode)initWithGradientImages:(id)images forwardFilter:(id)filter
 {
   objc_opt_class();
   objc_opt_isKindOfClass();
@@ -37,17 +37,17 @@
   {
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
-    v10 = a4;
+    filterCopy = filter;
     MTLReportFailure();
   }
 
   v11.receiver = self;
   v11.super_class = MPSCNNDilatedPoolingMaxGradientNode;
-  result = [(MPSCNNPoolingGradientNode *)&v11 initWithGradientImages:a3 forwardFilter:a4, v9, v10];
+  result = [(MPSCNNPoolingGradientNode *)&v11 initWithGradientImages:images forwardFilter:filter, v9, filterCopy];
   if (result)
   {
-    result->_dilationRateX = *(a4 + 11);
-    result->_dilationRateY = *(a4 + 12);
+    result->_dilationRateX = *(filter + 11);
+    result->_dilationRateY = *(filter + 12);
   }
 
   return result;

@@ -1,8 +1,8 @@
 @interface IDSSysdiagnoseLogCollector
 + (id)sharedInstance;
 - (IDSSysdiagnoseLogCollector)init;
-- (void)_collectSysdiagnoseLog:(id)a3;
-- (void)collectSysdiagnoseLog:(id)a3;
+- (void)_collectSysdiagnoseLog:(id)log;
+- (void)collectSysdiagnoseLog:(id)log;
 @end
 
 @implementation IDSSysdiagnoseLogCollector
@@ -33,17 +33,17 @@
   return v3;
 }
 
-- (void)collectSysdiagnoseLog:(id)a3
+- (void)collectSysdiagnoseLog:(id)log
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E69A60F0] sharedInstance];
-  v6 = [v5 isInternalInstall];
+  logCopy = log;
+  mEMORY[0x1E69A60F0] = [MEMORY[0x1E69A60F0] sharedInstance];
+  isInternalInstall = [mEMORY[0x1E69A60F0] isInternalInstall];
 
   v7 = _IDSIsLoggingProfileInstalled();
-  if ((v6 & 1) != 0 || v7)
+  if ((isInternalInstall & 1) != 0 || v7)
   {
-    [(IDSSysdiagnoseLogCollector *)self _collectSysdiagnoseLog:v4];
+    [(IDSSysdiagnoseLogCollector *)self _collectSysdiagnoseLog:logCopy];
   }
 
   else
@@ -54,13 +54,13 @@
     v12[0] = v8;
     v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:&v11 count:1];
     v10 = [MEMORY[0x1E696ABC0] errorWithDomain:@"IDSSysdiagnoseLogCollectorErrorDomain" code:-1 userInfo:v9];
-    v4[2](v4, v10);
+    logCopy[2](logCopy, v10);
   }
 }
 
-- (void)_collectSysdiagnoseLog:(id)a3
+- (void)_collectSysdiagnoseLog:(id)log
 {
-  v3 = a3;
+  logCopy = log;
   mach_service = xpc_connection_create_mach_service("com.apple.sysdiagnose.service.xpc", 0, 0);
   if (mach_service)
   {
@@ -78,7 +78,7 @@
       handler[1] = 3221225472;
       handler[2] = sub_1A7CB5088;
       handler[3] = &unk_1E77E2AB0;
-      v9 = v3;
+      v9 = logCopy;
       xpc_connection_send_message_with_reply(mach_service, v6, v7, handler);
     }
   }

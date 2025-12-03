@@ -1,26 +1,26 @@
 @interface SUUIMediaSocialAdminPermissionsOperation
-- (SUUIMediaSocialAdminPermissionsOperation)initWithClientContext:(id)a3;
-- (id)_authorsWithResponseDictionary:(id)a3;
-- (id)_lookupResponseForMissingAuthors:(id)a3 error:(id *)a4;
+- (SUUIMediaSocialAdminPermissionsOperation)initWithClientContext:(id)context;
+- (id)_authorsWithResponseDictionary:(id)dictionary;
+- (id)_lookupResponseForMissingAuthors:(id)authors error:(id *)error;
 - (id)outputBlock;
 - (void)main;
-- (void)setOutputBlock:(id)a3;
+- (void)setOutputBlock:(id)block;
 @end
 
 @implementation SUUIMediaSocialAdminPermissionsOperation
 
-- (SUUIMediaSocialAdminPermissionsOperation)initWithClientContext:(id)a3
+- (SUUIMediaSocialAdminPermissionsOperation)initWithClientContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v10.receiver = self;
   v10.super_class = SUUIMediaSocialAdminPermissionsOperation;
   v6 = [(SSVOperation *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_clientContext, a3);
-    v8 = [(SUUIClientContext *)v7->_clientContext URLBag];
-    [(SSVComplexOperation *)v7 configureWithURLBag:v8];
+    objc_storeStrong(&v6->_clientContext, context);
+    uRLBag = [(SUUIClientContext *)v7->_clientContext URLBag];
+    [(SSVComplexOperation *)v7 configureWithURLBag:uRLBag];
   }
 
   return v7;
@@ -57,16 +57,16 @@ uint64_t __55__SUUIMediaSocialAdminPermissionsOperation_outputBlock__block_invok
   return MEMORY[0x2821F96F8](v2, v4);
 }
 
-- (void)setOutputBlock:(id)a3
+- (void)setOutputBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __59__SUUIMediaSocialAdminPermissionsOperation_setOutputBlock___block_invoke;
   v6[3] = &unk_2798F6030;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = blockCopy;
+  v5 = blockCopy;
   [(SSVOperation *)self dispatchAsync:v6];
 }
 
@@ -95,8 +95,8 @@ void *__59__SUUIMediaSocialAdminPermissionsOperation_setOutputBlock___block_invo
   v28 = __Block_byref_object_copy__1;
   v29 = __Block_byref_object_dispose__2;
   v30 = 0;
-  v3 = [(SSVComplexOperation *)self URLBagDictionary];
-  v4 = [v3 objectForKey:*MEMORY[0x277D6A670]];
+  uRLBagDictionary = [(SSVComplexOperation *)self URLBagDictionary];
+  v4 = [uRLBagDictionary objectForKey:*MEMORY[0x277D6A670]];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -116,8 +116,8 @@ void *__59__SUUIMediaSocialAdminPermissionsOperation_setOutputBlock___block_invo
     v7 = [objc_alloc(MEMORY[0x277CBAB50]) initWithURL:v6];
     SSVAddMediaSocialHeadersToURLRequest();
     v8 = [(SSVComplexOperation *)self newLoadURLOperationWithRequest:v7];
-    v9 = [MEMORY[0x277D69D48] consumer];
-    [v8 setDataConsumer:v9];
+    consumer = [MEMORY[0x277D69D48] consumer];
+    [v8 setDataConsumer:consumer];
 
     v19 = 0;
     v20 = &v19;
@@ -145,8 +145,8 @@ void *__59__SUUIMediaSocialAdminPermissionsOperation_setOutputBlock___block_invo
 
     if (!v26[5] && ![v10 count])
     {
-      v12 = [v8 URLResponse];
-      if ([v12 statusCode] == 403)
+      uRLResponse = [v8 URLResponse];
+      if ([uRLResponse statusCode] == 403)
       {
         v13 = 3;
       }
@@ -172,11 +172,11 @@ void *__59__SUUIMediaSocialAdminPermissionsOperation_setOutputBlock___block_invo
     v26[5] = v11;
   }
 
-  v16 = [(SUUIMediaSocialAdminPermissionsOperation *)self outputBlock];
-  v17 = v16;
-  if (v16)
+  outputBlock = [(SUUIMediaSocialAdminPermissionsOperation *)self outputBlock];
+  v17 = outputBlock;
+  if (outputBlock)
   {
-    (*(v16 + 16))(v16, v10, v26[5]);
+    (*(outputBlock + 16))(outputBlock, v10, v26[5]);
   }
 
   _Block_object_dispose(&v25, 8);
@@ -211,25 +211,25 @@ LABEL_5:
 LABEL_6:
 }
 
-- (id)_authorsWithResponseDictionary:(id)a3
+- (id)_authorsWithResponseDictionary:(id)dictionary
 {
   v73 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
-  v6 = [v4 objectForKey:@"permissions"];
+  dictionaryCopy = dictionary;
+  array = [MEMORY[0x277CBEB18] array];
+  v6 = [dictionaryCopy objectForKey:@"permissions"];
   if (!v6)
   {
-    v6 = [v4 objectForKey:@"persmissions"];
+    v6 = [dictionaryCopy objectForKey:@"persmissions"];
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v4 objectForKey:@"storePlatformData"];
+    v7 = [dictionaryCopy objectForKey:@"storePlatformData"];
     objc_opt_class();
-    v53 = v4;
-    v54 = v5;
-    v50 = self;
+    v53 = dictionaryCopy;
+    v54 = array;
+    selfCopy = self;
     v51 = v7;
     if (objc_opt_isKindOfClass())
     {
@@ -289,28 +289,28 @@ LABEL_6:
           if (objc_opt_isKindOfClass())
           {
             v17 = [[SUUIMediaSocialAuthor alloc] initWithAuthorDictionary:v16];
-            v18 = [(SUUIMediaSocialAuthor *)v17 identifier];
-            if (v18)
+            identifier = [(SUUIMediaSocialAuthor *)v17 identifier];
+            if (identifier)
             {
-              v19 = [v57 objectForKey:v18];
+              v19 = [v57 objectForKey:identifier];
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
                 v20 = [objc_alloc(MEMORY[0x277D69B40]) initWithLookupDictionary:v19];
-                v21 = [v20 artwork];
-                v22 = [v21 lastObject];
+                artwork = [v20 artwork];
+                lastObject = [artwork lastObject];
 
-                v23 = [v20 displayName];
-                [(SUUIMediaSocialAuthor *)v17 setName:v23];
+                displayName = [v20 displayName];
+                [(SUUIMediaSocialAuthor *)v17 setName:displayName];
 
-                v24 = [v22 URLWithHeight:125 width:125];
+                v24 = [lastObject URLWithHeight:125 width:125];
                 [(SUUIMediaSocialAuthor *)v17 setThumbnailImageURL:v24];
 
                 v10 = v56;
                 [(SUUIMediaSocialAuthor *)v17 setStorePlatformData:v19];
               }
 
-              v25 = [(SUUIMediaSocialAuthor *)v17 name:v50];
+              v25 = [(SUUIMediaSocialAuthor *)v17 name:selfCopy];
               v26 = [v25 length];
 
               if (!v26)
@@ -331,7 +331,7 @@ LABEL_6:
 
     if ([v55 count])
     {
-      v27 = [(SUUIMediaSocialAdminPermissionsOperation *)v50 _lookupResponseForMissingAuthors:v55 error:0];
+      v27 = [(SUUIMediaSocialAdminPermissionsOperation *)selfCopy _lookupResponseForMissingAuthors:v55 error:0];
       v62 = 0u;
       v63 = 0u;
       v64 = 0u;
@@ -352,20 +352,20 @@ LABEL_6:
             }
 
             v33 = *(*(&v62 + 1) + 8 * j);
-            v34 = [v33 identifier];
-            v35 = [v27 itemForKey:v34];
+            identifier2 = [v33 identifier];
+            v35 = [v27 itemForKey:identifier2];
 
-            v36 = [v35 artwork];
-            v37 = [v36 lastObject];
+            artwork2 = [v35 artwork];
+            lastObject2 = [artwork2 lastObject];
 
-            v38 = [v35 displayName];
-            [v33 setName:v38];
+            displayName2 = [v35 displayName];
+            [v33 setName:displayName2];
 
-            v39 = [v37 URL];
+            v39 = [lastObject2 URL];
             [v33 setThumbnailImageURL:v39];
 
-            v40 = [v35 lookupDictionary];
-            [v33 setStorePlatformData:v40];
+            lookupDictionary = [v35 lookupDictionary];
+            [v33 setStorePlatformData:lookupDictionary];
           }
 
           v30 = [v28 countByEnumeratingWithState:&v62 objects:v71 count:16];
@@ -383,7 +383,7 @@ LABEL_6:
     v59 = 0u;
     v41 = v10;
     v42 = [v41 countByEnumeratingWithState:&v58 objects:v70 count:16];
-    v5 = v54;
+    array = v54;
     if (v42)
     {
       v43 = v42;
@@ -398,8 +398,8 @@ LABEL_6:
           }
 
           v46 = *(*(&v58 + 1) + 8 * k);
-          v47 = [v46 name];
-          v48 = [v47 length];
+          name = [v46 name];
+          v48 = [name length];
 
           if (v48)
           {
@@ -414,16 +414,16 @@ LABEL_6:
     }
 
     v6 = v52;
-    v4 = v53;
+    dictionaryCopy = v53;
   }
 
-  return v5;
+  return array;
 }
 
-- (id)_lookupResponseForMissingAuthors:(id)a3 error:(id *)a4
+- (id)_lookupResponseForMissingAuthors:(id)authors error:(id *)error
 {
   v40 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  authorsCopy = authors;
   v33 = 0;
   v34 = &v33;
   v35 = 0x3032000000;
@@ -437,9 +437,9 @@ LABEL_6:
   v31 = __Block_byref_object_dispose__2;
   v32 = 0;
   v7 = objc_alloc(MEMORY[0x277D69CE8]);
-  v8 = [(SUUIClientContext *)self->_clientContext URLBag];
-  v9 = [v8 existingBagDictionary];
-  v10 = [v7 initWithBagDictionary:v9];
+  uRLBag = [(SUUIClientContext *)self->_clientContext URLBag];
+  existingBagDictionary = [uRLBag existingBagDictionary];
+  v10 = [v7 initWithBagDictionary:existingBagDictionary];
 
   v11 = [objc_alloc(MEMORY[0x277D69CF0]) initWithPlatformContext:v10];
   [v11 setKeyProfile:*MEMORY[0x277D6A2C8]];
@@ -452,7 +452,7 @@ LABEL_6:
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v14 = v6;
+  v14 = authorsCopy;
   v15 = [v14 countByEnumeratingWithState:&v23 objects:v39 count:16];
   if (v15)
   {
@@ -466,8 +466,8 @@ LABEL_6:
           objc_enumerationMutation(v14);
         }
 
-        v18 = [*(*(&v23 + 1) + 8 * i) identifier];
-        [v13 addObject:v18];
+        identifier = [*(*(&v23 + 1) + 8 * i) identifier];
+        [v13 addObject:identifier];
       }
 
       v15 = [v14 countByEnumeratingWithState:&v23 objects:v39 count:16];
@@ -486,9 +486,9 @@ LABEL_6:
   [v11 setResponseBlock:v22];
   [(SSVOperation *)self runChildOperation:v11];
   v19 = v28[5];
-  if (a4 && !v19)
+  if (error && !v19)
   {
-    *a4 = v34[5];
+    *error = v34[5];
     v19 = v28[5];
   }
 

@@ -1,24 +1,24 @@
 @interface CRKStudentdBackedInstructordTransportProvider
-- (CRKStudentdBackedInstructordTransportProvider)initWithStudentDaemonProxy:(id)a3 classroomAppBundleURL:(id)a4 instructordBundleIdentifier:(id)a5;
-- (void)fetchTransportOperationDidFinish:(id)a3 completion:(id)a4;
-- (void)fetchTransportWithCompletion:(id)a3;
+- (CRKStudentdBackedInstructordTransportProvider)initWithStudentDaemonProxy:(id)proxy classroomAppBundleURL:(id)l instructordBundleIdentifier:(id)identifier;
+- (void)fetchTransportOperationDidFinish:(id)finish completion:(id)completion;
+- (void)fetchTransportWithCompletion:(id)completion;
 @end
 
 @implementation CRKStudentdBackedInstructordTransportProvider
 
-- (CRKStudentdBackedInstructordTransportProvider)initWithStudentDaemonProxy:(id)a3 classroomAppBundleURL:(id)a4 instructordBundleIdentifier:(id)a5
+- (CRKStudentdBackedInstructordTransportProvider)initWithStudentDaemonProxy:(id)proxy classroomAppBundleURL:(id)l instructordBundleIdentifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  proxyCopy = proxy;
+  lCopy = l;
+  identifierCopy = identifier;
   v17.receiver = self;
   v17.super_class = CRKStudentdBackedInstructordTransportProvider;
   v11 = [(CRKStudentdBackedInstructordTransportProvider *)&v17 init];
   if (v11)
   {
-    if (v8)
+    if (proxyCopy)
     {
-      v12 = v8;
+      v12 = proxyCopy;
     }
 
     else
@@ -29,61 +29,61 @@
     studentDaemonProxy = v11->_studentDaemonProxy;
     v11->_studentDaemonProxy = v12;
 
-    v14 = [v10 copy];
+    v14 = [identifierCopy copy];
     instructordBundleIdentifier = v11->_instructordBundleIdentifier;
     v11->_instructordBundleIdentifier = v14;
 
-    objc_storeStrong(&v11->_classroomAppBundleURL, a4);
+    objc_storeStrong(&v11->_classroomAppBundleURL, l);
   }
 
   return v11;
 }
 
-- (void)fetchTransportWithCompletion:(id)a3
+- (void)fetchTransportWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v11 = objc_opt_new();
-  v5 = [(CRKStudentdBackedInstructordTransportProvider *)self classroomAppBundleURL];
-  [v11 setClassroomAppBundleURL:v5];
+  classroomAppBundleURL = [(CRKStudentdBackedInstructordTransportProvider *)self classroomAppBundleURL];
+  [v11 setClassroomAppBundleURL:classroomAppBundleURL];
 
-  v6 = [(CRKStudentdBackedInstructordTransportProvider *)self instructordBundleIdentifier];
-  [v11 setInstructordBundleIdentifier:v6];
+  instructordBundleIdentifier = [(CRKStudentdBackedInstructordTransportProvider *)self instructordBundleIdentifier];
+  [v11 setInstructordBundleIdentifier:instructordBundleIdentifier];
 
-  v7 = [(CRKStudentdBackedInstructordTransportProvider *)self studentDaemonProxy];
-  v8 = [v7 operationForRequest:v11];
+  studentDaemonProxy = [(CRKStudentdBackedInstructordTransportProvider *)self studentDaemonProxy];
+  v8 = [studentDaemonProxy operationForRequest:v11];
 
-  v9 = MEMORY[0x245D3AAD0](v4);
+  v9 = MEMORY[0x245D3AAD0](completionCopy);
   [v8 addTarget:self selector:sel_fetchTransportOperationDidFinish_completion_ forOperationEvents:6 userInfo:v9];
 
-  v10 = [MEMORY[0x277CF9540] crk_backgroundQueue];
-  [v10 addOperation:v8];
+  crk_backgroundQueue = [MEMORY[0x277CF9540] crk_backgroundQueue];
+  [crk_backgroundQueue addOperation:v8];
 }
 
-- (void)fetchTransportOperationDidFinish:(id)a3 completion:(id)a4
+- (void)fetchTransportOperationDidFinish:(id)finish completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 error];
+  completionCopy = completion;
+  finishCopy = finish;
+  error = [finishCopy error];
 
-  if (v7)
+  if (error)
   {
-    v12 = [v6 error];
+    error2 = [finishCopy error];
 
-    v5[2](v5, 0, v12);
+    completionCopy[2](completionCopy, 0, error2);
   }
 
   else
   {
-    v12 = [v6 resultObject];
+    error2 = [finishCopy resultObject];
 
     v8 = objc_alloc(MEMORY[0x277CCAE80]);
-    v9 = [v12 endpoint];
-    v10 = [v8 initWithListenerEndpoint:v9];
+    endpoint = [error2 endpoint];
+    v10 = [v8 initWithListenerEndpoint:endpoint];
 
     v11 = [objc_alloc(MEMORY[0x277CF95B8]) initWithXPCConnection:v10];
-    (v5)[2](v5, v11, 0);
+    (completionCopy)[2](completionCopy, v11, 0);
 
-    v5 = v10;
+    completionCopy = v10;
   }
 }
 

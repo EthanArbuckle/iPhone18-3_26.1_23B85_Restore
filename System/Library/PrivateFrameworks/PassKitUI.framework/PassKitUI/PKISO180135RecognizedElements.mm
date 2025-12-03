@@ -2,7 +2,7 @@
 - (BOOL)isDisplayOnly;
 - (NSSet)dataElements;
 - (PKISO180135RecognizedElements)init;
-- (PKISO180135RecognizedElements)initWithDocumentType:(id)a3 documentElements:(id)a4;
+- (PKISO180135RecognizedElements)initWithDocumentType:(id)type documentElements:(id)elements;
 @end
 
 @implementation PKISO180135RecognizedElements
@@ -19,13 +19,13 @@
 
 - (BOOL)isDisplayOnly
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PKISO180135RecognizedElements.isDisplayOnly.getter();
 
   return v3;
 }
 
-- (PKISO180135RecognizedElements)initWithDocumentType:(id)a3 documentElements:(id)a4
+- (PKISO180135RecognizedElements)initWithDocumentType:(id)type documentElements:(id)elements
 {
   v4 = sub_1BE052434();
   v6 = v5;

@@ -8,7 +8,7 @@
 {
   if (a7)
   {
-    *a7 = [NUError unsupportedError:@"extractDataToDictionary is not available" object:a1];
+    *a7 = [NUError unsupportedError:@"extractDataToDictionary is not available" object:self];
   }
 
   return 0;

@@ -1,11 +1,11 @@
 @interface PanacheView
-- (_TtC7Panache11PanacheView)initWithCoder:(id)a3;
-- (_TtC7Panache11PanacheView)initWithFrame:(CGRect)a3;
+- (_TtC7Panache11PanacheView)initWithCoder:(id)coder;
+- (_TtC7Panache11PanacheView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation PanacheView
 
-- (_TtC7Panache11PanacheView)initWithCoder:(id)a3
+- (_TtC7Panache11PanacheView)initWithCoder:(id)coder
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -21,7 +21,7 @@
   return result;
 }
 
-- (_TtC7Panache11PanacheView)initWithFrame:(CGRect)a3
+- (_TtC7Panache11PanacheView)initWithFrame:(CGRect)frame
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();

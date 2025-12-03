@@ -1,17 +1,17 @@
 @interface SBCoverSheetPositionView
 - (CGPoint)_simulatedTouchLocationForProgress;
 - (CGRect)boundsForPositioning;
-- (CGRect)boundsForPositioningWithTransformMode:(int64_t)a3;
+- (CGRect)boundsForPositioningWithTransformMode:(int64_t)mode;
 - (CGRect)frameForPositioning;
-- (CGRect)positionContentForTouchAtLocation:(CGPoint)a3;
-- (CGRect)positionContentForTouchAtLocation:(CGPoint)a3 withVelocity:(CGPoint)a4 transformMode:(int64_t)a5 forPresentationValue:(BOOL)a6;
-- (SBCoverSheetPositionView)initWithFrame:(CGRect)a3;
+- (CGRect)positionContentForTouchAtLocation:(CGPoint)location;
+- (CGRect)positionContentForTouchAtLocation:(CGPoint)location withVelocity:(CGPoint)velocity transformMode:(int64_t)mode forPresentationValue:(BOOL)value;
+- (SBCoverSheetPositionView)initWithFrame:(CGRect)frame;
 - (SBCoverSheetPositionViewDelegate)delegate;
 - (void)_createContentView;
-- (void)resetContentScalingAnimated:(BOOL)a3;
+- (void)resetContentScalingAnimated:(BOOL)animated;
 - (void)resumePositionBasedScaling;
-- (void)setDelegate:(id)a3;
-- (void)setFrame:(CGRect)a3;
+- (void)setDelegate:(id)delegate;
+- (void)setFrame:(CGRect)frame;
 @end
 
 @implementation SBCoverSheetPositionView
@@ -53,11 +53,11 @@
   return result;
 }
 
-- (SBCoverSheetPositionView)initWithFrame:(CGRect)a3
+- (SBCoverSheetPositionView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = SBCoverSheetPositionView;
-  v3 = [(SBCoverSheetPositionView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SBCoverSheetPositionView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -109,9 +109,9 @@
   }
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained != obj)
@@ -121,12 +121,12 @@
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(SBCoverSheetPositionView *)self frame];
   v9 = v8;
   v11 = v10;
@@ -156,12 +156,12 @@
   }
 }
 
-- (CGRect)boundsForPositioningWithTransformMode:(int64_t)a3
+- (CGRect)boundsForPositioningWithTransformMode:(int64_t)mode
 {
   v5 = CSFeatureEnabled();
   [(UIView *)self->_contentView bounds];
   v10 = v9;
-  if (a3 != 2 && v5)
+  if (mode != 2 && v5)
   {
     [(UIView *)self->_contentView bounds];
     v8 = v11 * 0.5;
@@ -177,9 +177,9 @@
   return result;
 }
 
-- (CGRect)positionContentForTouchAtLocation:(CGPoint)a3
+- (CGRect)positionContentForTouchAtLocation:(CGPoint)location
 {
-  [(SBCoverSheetPositionView *)self positionContentForTouchAtLocation:1 withVelocity:0 transformMode:a3.x forPresentationValue:a3.y, 0.0, 0.0];
+  [(SBCoverSheetPositionView *)self positionContentForTouchAtLocation:1 withVelocity:0 transformMode:location.x forPresentationValue:location.y, 0.0, 0.0];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -187,14 +187,14 @@
   return result;
 }
 
-- (CGRect)positionContentForTouchAtLocation:(CGPoint)a3 withVelocity:(CGPoint)a4 transformMode:(int64_t)a5 forPresentationValue:(BOOL)a6
+- (CGRect)positionContentForTouchAtLocation:(CGPoint)location withVelocity:(CGPoint)velocity transformMode:(int64_t)mode forPresentationValue:(BOOL)value
 {
-  v6 = a6;
-  y = a4.y;
-  v9 = a3.y;
-  if (a5 == 2 && self->_ignoringPositionChanges)
+  valueCopy = value;
+  y = velocity.y;
+  v9 = location.y;
+  if (mode == 2 && self->_ignoringPositionChanges)
   {
-    [(SBCoverSheetPositionView *)self boundsForPositioningWithTransformMode:2, a3.x, a3.y, a4.x];
+    [(SBCoverSheetPositionView *)self boundsForPositioningWithTransformMode:2, location.x, location.y, velocity.x];
     x = v11;
     v14 = v13;
     width = v15;
@@ -203,7 +203,7 @@
 
   else
   {
-    [(SBCoverSheetPositionView *)self boundsForPositioning:a3.x];
+    [(SBCoverSheetPositionView *)self boundsForPositioning:location.x];
     v20 = v19;
     v66 = *(MEMORY[0x277CBF2C0] + 16);
     v67 = *MEMORY[0x277CBF2C0];
@@ -212,7 +212,7 @@
     v65 = *(MEMORY[0x277CBF2C0] + 32);
     *&v79.tx = v65;
     v21 = MEMORY[0x277CBF348];
-    if (a5 == 2)
+    if (mode == 2)
     {
       v64 = *(MEMORY[0x277CBF348] + 8);
       v22 = v19 - v9;
@@ -239,7 +239,7 @@
       SBScreenScale();
       BSFloatRoundForScale();
       v27 = v26;
-      [(SBCoverSheetPositionView *)self boundsForPositioningWithTransformMode:a5];
+      [(SBCoverSheetPositionView *)self boundsForPositioningWithTransformMode:mode];
       v64 = y;
       v63 = 1.0;
       height = v28;
@@ -254,7 +254,7 @@
     v18 = height;
     if (CSFeatureEnabled())
     {
-      if (a5 == 2)
+      if (mode == 2)
       {
         [(SBCoverSheetPositionView *)self boundsForPositioningWithTransformMode:2];
         v34 = v34 + v35 * -0.25 * (1.0 - fmin(fmax(v63, 0.0), 1.0));
@@ -271,7 +271,7 @@
     IsIdentity = CGAffineTransformIsIdentity(&v73);
     [(UIView *)self->_contentView center];
     v40 = v34 == v39 && v32 == v38;
-    if (v6)
+    if (valueCopy)
     {
       if (!IsIdentity)
       {
@@ -369,9 +369,9 @@
   return result;
 }
 
-- (void)resetContentScalingAnimated:(BOOL)a3
+- (void)resetContentScalingAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if (CSFeatureEnabled())
   {
     contentView = self->_contentView;
@@ -390,7 +390,7 @@
       self->_ignoringPositionChanges = 1;
       [(SBCoverSheetPositionView *)self boundsForPositioningWithTransformMode:2];
       UIRectGetCenter();
-      if (v3)
+      if (animatedCopy)
       {
         v10[0] = MEMORY[0x277D85DD0];
         v10[1] = 3221225472;

@@ -1,5 +1,5 @@
 @interface _SVXStoreDemoMutation
-- (_SVXStoreDemoMutation)initWithBaseModel:(id)a3;
+- (_SVXStoreDemoMutation)initWithBaseModel:(id)model;
 - (id)generate;
 @end
 
@@ -39,14 +39,14 @@ LABEL_5:
     if ((*&self->_mutationFlags & 4) != 0)
     {
 LABEL_8:
-      v9 = self->_languageCode;
+      languageCode = self->_languageCode;
       goto LABEL_11;
     }
   }
 
-  v9 = [(SVXStoreDemo *)self->_baseModel languageCode];
+  languageCode = [(SVXStoreDemo *)self->_baseModel languageCode];
 LABEL_11:
-  v10 = v9;
+  v10 = languageCode;
   if ((*&self->_mutationFlags & 8) != 0)
   {
     gender = self->_gender;
@@ -79,16 +79,16 @@ LABEL_17:
   return v7;
 }
 
-- (_SVXStoreDemoMutation)initWithBaseModel:(id)a3
+- (_SVXStoreDemoMutation)initWithBaseModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v9.receiver = self;
   v9.super_class = _SVXStoreDemoMutation;
   v6 = [(_SVXStoreDemoMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_baseModel, a3);
+    objc_storeStrong(&v6->_baseModel, model);
   }
 
   return v7;

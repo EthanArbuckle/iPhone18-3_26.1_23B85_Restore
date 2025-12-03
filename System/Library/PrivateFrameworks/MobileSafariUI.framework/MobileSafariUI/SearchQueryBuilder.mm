@@ -1,117 +1,117 @@
 @interface SearchQueryBuilder
-+ (id)searchQueryBuilderWithQuery:(id)a3 forPrivateBrowsing:(BOOL)a4;
-+ (id)searchQueryBuilderWithXWebSearchURL:(id)a3 forPrivateBrowsing:(BOOL)a4;
-- (SearchQueryBuilder)initWithQueryString:(id)a3 forPrivateBrowsing:(BOOL)a4;
-- (SearchQueryBuilder)initWithSearchEngineInfo:(id)a3 queryString:(id)a4;
-- (SearchQueryBuilder)initWithXWebSearchURL:(id)a3 forPrivateBrowsing:(BOOL)a4;
++ (id)searchQueryBuilderWithQuery:(id)query forPrivateBrowsing:(BOOL)browsing;
++ (id)searchQueryBuilderWithXWebSearchURL:(id)l forPrivateBrowsing:(BOOL)browsing;
+- (SearchQueryBuilder)initWithQueryString:(id)string forPrivateBrowsing:(BOOL)browsing;
+- (SearchQueryBuilder)initWithSearchEngineInfo:(id)info queryString:(id)string;
+- (SearchQueryBuilder)initWithXWebSearchURL:(id)l forPrivateBrowsing:(BOOL)browsing;
 @end
 
 @implementation SearchQueryBuilder
 
-- (SearchQueryBuilder)initWithSearchEngineInfo:(id)a3 queryString:(id)a4
+- (SearchQueryBuilder)initWithSearchEngineInfo:(id)info queryString:(id)string
 {
-  v7 = a3;
-  v8 = a4;
+  infoCopy = info;
+  stringCopy = string;
   v13.receiver = self;
   v13.super_class = SearchQueryBuilder;
   v9 = [(SearchQueryBuilder *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->queryString, a4);
-    objc_storeStrong(&v10->engineInfo, a3);
+    objc_storeStrong(&v9->queryString, string);
+    objc_storeStrong(&v10->engineInfo, info);
     v11 = v10;
   }
 
   return v10;
 }
 
-- (SearchQueryBuilder)initWithQueryString:(id)a3 forPrivateBrowsing:(BOOL)a4
+- (SearchQueryBuilder)initWithQueryString:(id)string forPrivateBrowsing:(BOOL)browsing
 {
-  v4 = a4;
+  browsingCopy = browsing;
   v6 = MEMORY[0x277CDB8A8];
-  v7 = a3;
-  v8 = [v6 sharedInstance];
-  v9 = [v8 defaultSearchEngineForPrivateBrowsing:v4];
-  v10 = [(SearchQueryBuilder *)self initWithSearchEngineInfo:v9 queryString:v7];
+  stringCopy = string;
+  sharedInstance = [v6 sharedInstance];
+  v9 = [sharedInstance defaultSearchEngineForPrivateBrowsing:browsingCopy];
+  v10 = [(SearchQueryBuilder *)self initWithSearchEngineInfo:v9 queryString:stringCopy];
 
   return v10;
 }
 
-- (SearchQueryBuilder)initWithXWebSearchURL:(id)a3 forPrivateBrowsing:(BOOL)a4
+- (SearchQueryBuilder)initWithXWebSearchURL:(id)l forPrivateBrowsing:(BOOL)browsing
 {
-  v4 = a4;
-  v6 = a3;
-  if ([v6 safari_isXWebSearchURL])
+  browsingCopy = browsing;
+  lCopy = l;
+  if ([lCopy safari_isXWebSearchURL])
   {
-    v7 = [v6 query];
-    v8 = [v7 stringByRemovingPercentEncoding];
+    query = [lCopy query];
+    stringByRemovingPercentEncoding = [query stringByRemovingPercentEncoding];
 
-    if (v8)
+    if (stringByRemovingPercentEncoding)
     {
-      v9 = [MEMORY[0x277CDB8A8] sharedInstance];
-      v10 = [v6 host];
-      if (v10)
+      mEMORY[0x277CDB8A8] = [MEMORY[0x277CDB8A8] sharedInstance];
+      host = [lCopy host];
+      if (host)
       {
-        v11 = v10;
-        v12 = [v9 engineInfoForScriptName:v10];
+        v11 = host;
+        v12 = [mEMORY[0x277CDB8A8] engineInfoForScriptName:host];
       }
 
       else
       {
-        v14 = [MEMORY[0x277CBEBD0] safari_browserSharedDefaults];
-        v15 = v14;
+        safari_browserSharedDefaults = [MEMORY[0x277CBEBD0] safari_browserSharedDefaults];
+        v15 = safari_browserSharedDefaults;
         v16 = MEMORY[0x277D29278];
-        if (!v4)
+        if (!browsingCopy)
         {
           v16 = MEMORY[0x277D29290];
         }
 
-        v11 = [v14 stringForKey:*v16];
+        v11 = [safari_browserSharedDefaults stringForKey:*v16];
 
-        v12 = [v9 engineInfoFor:v11];
+        v12 = [mEMORY[0x277CDB8A8] engineInfoFor:v11];
       }
 
       v17 = v12;
       if (!v12)
       {
-        v18 = [MEMORY[0x277CDB8A8] sharedInstance];
-        v17 = [v18 defaultSearchEngineForPrivateBrowsing:v4];
+        mEMORY[0x277CDB8A8]2 = [MEMORY[0x277CDB8A8] sharedInstance];
+        v17 = [mEMORY[0x277CDB8A8]2 defaultSearchEngineForPrivateBrowsing:browsingCopy];
       }
 
-      self = [(SearchQueryBuilder *)self initWithSearchEngineInfo:v17 queryString:v8];
+      self = [(SearchQueryBuilder *)self initWithSearchEngineInfo:v17 queryString:stringByRemovingPercentEncoding];
 
-      v13 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v13 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v13 = 0;
+    selfCopy = 0;
   }
 
-  return v13;
+  return selfCopy;
 }
 
-+ (id)searchQueryBuilderWithQuery:(id)a3 forPrivateBrowsing:(BOOL)a4
++ (id)searchQueryBuilderWithQuery:(id)query forPrivateBrowsing:(BOOL)browsing
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = [[SearchQueryBuilder alloc] initWithQueryString:v5 forPrivateBrowsing:v4];
+  browsingCopy = browsing;
+  queryCopy = query;
+  v6 = [[SearchQueryBuilder alloc] initWithQueryString:queryCopy forPrivateBrowsing:browsingCopy];
 
   return v6;
 }
 
-+ (id)searchQueryBuilderWithXWebSearchURL:(id)a3 forPrivateBrowsing:(BOOL)a4
++ (id)searchQueryBuilderWithXWebSearchURL:(id)l forPrivateBrowsing:(BOOL)browsing
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = [[SearchQueryBuilder alloc] initWithXWebSearchURL:v5 forPrivateBrowsing:v4];
+  browsingCopy = browsing;
+  lCopy = l;
+  v6 = [[SearchQueryBuilder alloc] initWithXWebSearchURL:lCopy forPrivateBrowsing:browsingCopy];
 
   return v6;
 }

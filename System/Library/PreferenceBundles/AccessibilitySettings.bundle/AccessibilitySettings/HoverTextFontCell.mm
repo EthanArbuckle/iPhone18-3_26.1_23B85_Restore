@@ -1,31 +1,31 @@
 @interface HoverTextFontCell
-+ (double)heightForFontName:(id)a3;
-- (HoverTextFontCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
++ (double)heightForFontName:(id)name;
+- (HoverTextFontCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
 - (void)_updateLabel;
 @end
 
 @implementation HoverTextFontCell
 
-+ (double)heightForFontName:(id)a3
++ (double)heightForFontName:(id)name
 {
-  v3 = a3;
-  v4 = [UIFont fontWithName:v3 size:17.0];
-  [v3 _legacy_sizeWithFont:v4];
+  nameCopy = name;
+  v4 = [UIFont fontWithName:nameCopy size:17.0];
+  [nameCopy _legacy_sizeWithFont:v4];
   v6 = v5;
 
   return v6;
 }
 
-- (HoverTextFontCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (HoverTextFontCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
   v12.receiver = self;
   v12.super_class = HoverTextFontCell;
-  v7 = a5;
-  v8 = [(HoverTextFontCell *)&v12 initWithStyle:a3 reuseIdentifier:a4 specifier:v7];
-  [(HoverTextFontCell *)v8 setSpecifier:v7, v12.receiver, v12.super_class];
+  specifierCopy = specifier;
+  v8 = [(HoverTextFontCell *)&v12 initWithStyle:style reuseIdentifier:identifier specifier:specifierCopy];
+  [(HoverTextFontCell *)v8 setSpecifier:specifierCopy, v12.receiver, v12.super_class];
 
-  v9 = [(HoverTextFontCell *)v8 textLabel];
-  [v9 setNumberOfLines:0];
+  textLabel = [(HoverTextFontCell *)v8 textLabel];
+  [textLabel setNumberOfLines:0];
 
   v10 = +[NSNotificationCenter defaultCenter];
   [v10 addObserver:v8 selector:"_fontSizeChange:" name:UIContentSizeCategoryDidChangeNotification object:0];
@@ -36,41 +36,41 @@
 
 - (void)_updateLabel
 {
-  v3 = [(HoverTextFontCell *)self specifier];
-  v22 = [v3 propertyForKey:PSIDKey];
+  specifier = [(HoverTextFontCell *)self specifier];
+  v22 = [specifier propertyForKey:PSIDKey];
 
-  v4 = [(HoverTextFontCell *)self textLabel];
-  v5 = [(HoverTextFontCell *)self specifier];
-  v6 = [v5 propertyForKey:PSTitleKey];
+  textLabel = [(HoverTextFontCell *)self textLabel];
+  specifier2 = [(HoverTextFontCell *)self specifier];
+  v6 = [specifier2 propertyForKey:PSTitleKey];
   if (v6)
   {
-    [v4 setText:v6];
+    [textLabel setText:v6];
   }
 
   else
   {
-    v7 = [(HoverTextFontCell *)self specifier];
-    v8 = [v7 name];
-    [v4 setText:v8];
+    specifier3 = [(HoverTextFontCell *)self specifier];
+    name = [specifier3 name];
+    [textLabel setText:name];
   }
 
   if ([v22 isEqualToString:@"Helvetica-Bold"])
   {
     v9 = settingsLocString(@"HOVER_TEXT_TEXT_STYLE_DEFAULT_CHOICE", @"Accessibility");
-    v10 = [(HoverTextFontCell *)self specifier];
-    v11 = [v10 name];
-    v12 = [NSString stringWithFormat:v9, v11];
-    [v4 setText:v12];
+    specifier4 = [(HoverTextFontCell *)self specifier];
+    name2 = [specifier4 name];
+    v12 = [NSString stringWithFormat:v9, name2];
+    [textLabel setText:v12];
   }
 
-  v13 = [v4 text];
+  text = [textLabel text];
 
-  if (v13)
+  if (text)
   {
     v14 = _CTFontCreateWithNameAndSymbolicTraits();
     v15 = CTFontCopyCharacterSet(v14);
-    v16 = [v4 text];
-    v17 = CFCharacterSetCreateWithCharactersInString(kCFAllocatorDefault, v16);
+    text2 = [textLabel text];
+    v17 = CFCharacterSetCreateWithCharactersInString(kCFAllocatorDefault, text2);
 
     if (v15 && v17)
     {
@@ -81,7 +81,7 @@
         v20 = v19;
 
         v21 = [UIFont fontWithName:v22 size:0 traits:v20];
-        [v4 setFont:v21];
+        [textLabel setFont:v21];
       }
     }
 
@@ -98,7 +98,7 @@ LABEL_13:
         CFRelease(v14);
       }
 
-      [v4 sizeToFit];
+      [textLabel sizeToFit];
       goto LABEL_18;
     }
 

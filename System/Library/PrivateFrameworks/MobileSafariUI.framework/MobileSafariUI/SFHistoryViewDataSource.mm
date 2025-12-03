@@ -1,34 +1,34 @@
 @interface SFHistoryViewDataSource
-- (SFHistoryViewDataSource)initWithHistory:(id)a3;
+- (SFHistoryViewDataSource)initWithHistory:(id)history;
 - (SFHistoryViewDataSourceDelegate)delegate;
 - (TabGroupProvider)tabGroupProvider;
 - (id)_browsingSessions;
-- (id)_filteredHistorySessionsForPredicate:(id)a3;
-- (void)_filterUsingPredicate:(id)a3;
-- (void)_removeIgnoredSiriSuggestedSiteRecordsForHistoryItems:(id)a3;
+- (id)_filteredHistorySessionsForPredicate:(id)predicate;
+- (void)_filterUsingPredicate:(id)predicate;
+- (void)_removeIgnoredSiriSuggestedSiteRecordsForHistoryItems:(id)items;
 - (void)_saveChangesToCloudHistory;
 - (void)_updateIfNeeded;
 - (void)dealloc;
-- (void)deleteHistoryItems:(id)a3 completionHandler:(id)a4;
+- (void)deleteHistoryItems:(id)items completionHandler:(id)handler;
 - (void)saveChangesToCloudHistorySoon;
-- (void)searchWithText:(id)a3;
+- (void)searchWithText:(id)text;
 @end
 
 @implementation SFHistoryViewDataSource
 
-- (SFHistoryViewDataSource)initWithHistory:(id)a3
+- (SFHistoryViewDataSource)initWithHistory:(id)history
 {
-  v5 = a3;
+  historyCopy = history;
   v27.receiver = self;
   v27.super_class = SFHistoryViewDataSource;
   v6 = [(SFHistoryViewDataSource *)&v27 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_history, a3);
-    v8 = [MEMORY[0x277CBEB70] orderedSet];
+    objc_storeStrong(&v6->_history, history);
+    orderedSet = [MEMORY[0x277CBEB70] orderedSet];
     unfilteredSessions = v7->_unfilteredSessions;
-    v7->_unfilteredSessions = v8;
+    v7->_unfilteredSessions = orderedSet;
 
     v10 = dispatch_queue_create("com.apple.mobilesafari.SFHistoryViewDataSource", 0);
     filteringQueue = v7->_filteringQueue;
@@ -49,10 +49,10 @@
     v24 = &unk_2781D4C88;
     v17 = v7;
     v25 = v17;
-    v26 = v5;
+    v26 = historyCopy;
     [v26 performBlockAfterHistoryHasLoaded:&v21];
-    v18 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v18 addObserver:v17 selector:sel_historyChanged_ name:*MEMORY[0x277D4A238] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v17 selector:sel_historyChanged_ name:*MEMORY[0x277D4A238] object:0];
 
     v19 = v17;
   }
@@ -86,17 +86,17 @@ uint64_t __43__SFHistoryViewDataSource_initWithHistory___block_invoke_2(uint64_t
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:*MEMORY[0x277D4A238]];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:*MEMORY[0x277D4A238]];
 
   v4.receiver = self;
   v4.super_class = SFHistoryViewDataSource;
   [(SFHistoryViewDataSource *)&v4 dealloc];
 }
 
-- (void)_filterUsingPredicate:(id)a3
+- (void)_filterUsingPredicate:(id)predicate
 {
-  v4 = a3;
+  predicateCopy = predicate;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -107,7 +107,7 @@ uint64_t __43__SFHistoryViewDataSource_initWithHistory___block_invoke_2(uint64_t
   block[2] = __49__SFHistoryViewDataSource__filterUsingPredicate___block_invoke;
   block[3] = &unk_2781D5870;
   block[4] = self;
-  v6 = v4;
+  v6 = predicateCopy;
   v8 = v6;
   v9 = &v10;
   dispatch_sync(filteringQueue, block);
@@ -175,15 +175,15 @@ uint64_t __42__SFHistoryViewDataSource__updateIfNeeded__block_invoke_2(uint64_t 
   return [v3 _updateIfNeeded];
 }
 
-- (id)_filteredHistorySessionsForPredicate:(id)a3
+- (id)_filteredHistorySessionsForPredicate:(id)predicate
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SFHistoryViewDataSource *)self _browsingSessions];
-  v6 = v5;
-  if (v4)
+  predicateCopy = predicate;
+  _browsingSessions = [(SFHistoryViewDataSource *)self _browsingSessions];
+  v6 = _browsingSessions;
+  if (predicateCopy)
   {
-    v7 = [MEMORY[0x277CBEB40] orderedSet];
+    orderedSet = [MEMORY[0x277CBEB40] orderedSet];
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
@@ -205,14 +205,14 @@ uint64_t __42__SFHistoryViewDataSource__updateIfNeeded__block_invoke_2(uint64_t 
           }
 
           v13 = *(*(&v20 + 1) + 8 * i);
-          v14 = [v13 historyItems];
-          v15 = [v14 array];
-          v16 = [v15 filteredArrayUsingPredicate:v4];
+          historyItems = [v13 historyItems];
+          array = [historyItems array];
+          v16 = [array filteredArrayUsingPredicate:predicateCopy];
 
           if ([v16 count])
           {
             v17 = [v13 filteredSessionWithItems:v16];
-            [v7 addObject:v17];
+            [orderedSet addObject:v17];
           }
         }
 
@@ -227,10 +227,10 @@ uint64_t __42__SFHistoryViewDataSource__updateIfNeeded__block_invoke_2(uint64_t 
 
   else
   {
-    v7 = v5;
+    orderedSet = _browsingSessions;
   }
 
-  return v7;
+  return orderedSet;
 }
 
 - (id)_browsingSessions
@@ -239,14 +239,14 @@ uint64_t __42__SFHistoryViewDataSource__updateIfNeeded__block_invoke_2(uint64_t 
   unfilteredSessions = self->_unfilteredSessions;
   if (unfilteredSessions)
   {
-    v4 = unfilteredSessions;
+    orderedSet = unfilteredSessions;
   }
 
   else
   {
-    v4 = [MEMORY[0x277CBEB40] orderedSet];
-    v6 = [(WBSHistorySessionController *)self->_sessionController orderedSessions];
-    if ([v6 count])
+    orderedSet = [MEMORY[0x277CBEB40] orderedSet];
+    orderedSessions = [(WBSHistorySessionController *)self->_sessionController orderedSessions];
+    if ([orderedSessions count])
     {
       v17[0] = 0;
       v17[1] = v17;
@@ -267,10 +267,10 @@ uint64_t __42__SFHistoryViewDataSource__updateIfNeeded__block_invoke_2(uint64_t 
       v11[4] = self;
       v13 = v17;
       v14 = v15;
-      v7 = v4;
+      v7 = orderedSet;
       v12 = v7;
-      [v6 enumerateObjectsUsingBlock:v11];
-      objc_storeStrong(p_unfilteredSessions, v4);
+      [orderedSessions enumerateObjectsUsingBlock:v11];
+      objc_storeStrong(p_unfilteredSessions, orderedSet);
       v8 = v12;
       v9 = v7;
 
@@ -279,7 +279,7 @@ uint64_t __42__SFHistoryViewDataSource__updateIfNeeded__block_invoke_2(uint64_t 
     }
   }
 
-  return v4;
+  return orderedSet;
 }
 
 void __44__SFHistoryViewDataSource__browsingSessions__block_invoke(uint64_t a1, void *a2, unint64_t a3)
@@ -394,13 +394,13 @@ void __44__SFHistoryViewDataSource__browsingSessions__block_invoke(uint64_t a1, 
   }
 }
 
-- (void)deleteHistoryItems:(id)a3 completionHandler:(id)a4
+- (void)deleteHistoryItems:(id)items completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  itemsCopy = items;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v8 = v7;
+    v8 = handlerCopy;
   }
 
   else
@@ -408,8 +408,8 @@ void __44__SFHistoryViewDataSource__browsingSessions__block_invoke(uint64_t a1, 
     v8 = &__block_literal_global_7;
   }
 
-  [(SFHistoryViewDataSource *)self _removeIgnoredSiriSuggestedSiteRecordsForHistoryItems:v6];
-  v9 = [MEMORY[0x277CBEB98] setWithArray:v6];
+  [(SFHistoryViewDataSource *)self _removeIgnoredSiriSuggestedSiteRecordsForHistoryItems:itemsCopy];
+  v9 = [MEMORY[0x277CBEB98] setWithArray:itemsCopy];
   v10 = MEMORY[0x277CCAC30];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
@@ -425,16 +425,16 @@ void __44__SFHistoryViewDataSource__browsingSessions__block_invoke(uint64_t a1, 
   block[3] = &unk_2781D5430;
   block[4] = self;
   v21 = v12;
-  v22 = v6;
+  v22 = itemsCopy;
   v23 = v8;
   v14 = v8;
-  v15 = v6;
+  v15 = itemsCopy;
   v16 = v12;
   dispatch_async(filteringQueue, block);
   v17 = [v15 safari_mapObjectsUsingBlock:&__block_literal_global_19];
   v18 = MEMORY[0x277D49F28];
-  v19 = [(WBSHistory *)self->_history profileLocalIdentifier];
-  [v18 deleteUsageHistoryForURLs:v17 profileIdentifier:v19 completionHandler:0];
+  profileLocalIdentifier = [(WBSHistory *)self->_history profileLocalIdentifier];
+  [v18 deleteUsageHistoryForURLs:v17 profileIdentifier:profileLocalIdentifier completionHandler:0];
 }
 
 void __64__SFHistoryViewDataSource_deleteHistoryItems_completionHandler___block_invoke_3(uint64_t a1)
@@ -494,15 +494,15 @@ uint64_t __64__SFHistoryViewDataSource_deleteHistoryItems_completionHandler___bl
   [v2 saveChangesToCloudHistoryStore];
 }
 
-- (void)searchWithText:(id)a3
+- (void)searchWithText:(id)text
 {
-  v4 = a3;
-  v5 = [History lowercaseStringTrimmedForHistorySearch:v4];
+  textCopy = text;
+  v5 = [History lowercaseStringTrimmedForHistorySearch:textCopy];
   if ([v5 length])
   {
     if ((WBSIsEqual() & 1) == 0)
     {
-      v6 = [v4 copy];
+      v6 = [textCopy copy];
       searchText = self->_searchText;
       self->_searchText = v6;
 
@@ -514,7 +514,7 @@ uint64_t __64__SFHistoryViewDataSource_deleteHistoryItems_completionHandler___bl
       v19[3] = &unk_2781D6038;
       v10 = v8;
       v20 = v10;
-      v21 = v4;
+      v21 = textCopy;
       v11 = [v9 predicateWithBlock:v19];
       objc_initWeak(&location, self);
       siriHistorySearch = self->_siriHistorySearch;
@@ -613,17 +613,17 @@ uint64_t __42__SFHistoryViewDataSource_searchWithText___block_invoke_4(uint64_t 
   return v4;
 }
 
-- (void)_removeIgnoredSiriSuggestedSiteRecordsForHistoryItems:(id)a3
+- (void)_removeIgnoredSiriSuggestedSiteRecordsForHistoryItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   ignoredSiriSuggestedSitesQueue = self->_ignoredSiriSuggestedSitesQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __81__SFHistoryViewDataSource__removeIgnoredSiriSuggestedSiteRecordsForHistoryItems___block_invoke;
   v7[3] = &unk_2781D4C88;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = itemsCopy;
+  v6 = itemsCopy;
   dispatch_async(ignoredSiriSuggestedSitesQueue, v7);
 }
 

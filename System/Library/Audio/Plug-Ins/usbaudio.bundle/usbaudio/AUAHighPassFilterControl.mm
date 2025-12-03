@@ -1,13 +1,13 @@
 @interface AUAHighPassFilterControl
-- (_TtC9AUASDCore24AUAHighPassFilterControl)initWithIsSettable:(BOOL)a3 forElement:(unsigned int)a4 inScope:(unsigned int)a5 withPlugin:(id)a6 andObjectClassID:(unsigned int)a7;
-- (void)selectionDidChange:(id)a3;
+- (_TtC9AUASDCore24AUAHighPassFilterControl)initWithIsSettable:(BOOL)settable forElement:(unsigned int)element inScope:(unsigned int)scope withPlugin:(id)plugin andObjectClassID:(unsigned int)d;
+- (void)selectionDidChange:(id)change;
 @end
 
 @implementation AUAHighPassFilterControl
 
-- (void)selectionDidChange:(id)a3
+- (void)selectionDidChange:(id)change
 {
-  if (a3)
+  if (change)
   {
     sub_10001EBA8(0, &qword_100175788, ASDSelectorValue_ptr);
     v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
@@ -18,11 +18,11 @@
     v4 = 0;
   }
 
-  v5 = self;
+  selfCopy = self;
   sub_1000C73AC(v4);
 }
 
-- (_TtC9AUASDCore24AUAHighPassFilterControl)initWithIsSettable:(BOOL)a3 forElement:(unsigned int)a4 inScope:(unsigned int)a5 withPlugin:(id)a6 andObjectClassID:(unsigned int)a7
+- (_TtC9AUASDCore24AUAHighPassFilterControl)initWithIsSettable:(BOOL)settable forElement:(unsigned int)element inScope:(unsigned int)scope withPlugin:(id)plugin andObjectClassID:(unsigned int)d
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

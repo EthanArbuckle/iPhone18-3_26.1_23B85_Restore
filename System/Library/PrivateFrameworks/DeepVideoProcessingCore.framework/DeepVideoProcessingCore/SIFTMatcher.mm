@@ -1,14 +1,14 @@
 @interface SIFTMatcher
 - (BOOL)setupMetal;
-- (SIFTMatcher)initWithDevice:(id)a3 commmandQueue:(id)a4;
-- (int)findMatchesBetweenDescriptor:(id)a3 objectCount:(int)a4 toTargetDescriptor:(id)a5 targetCount:(int)a6 matches:(id)a7;
-- (int)findMatchesBetweenDescriptorEarlyExist:(id)a3 objectCount:(int)a4 keypt1:(id)a5 toTargetDescriptor:(id)a6 targetCount:(int)a7 keypt2:(id)a8 filteredIndex:(id)a9 matches:(id)a10;
-- (int)sortMatchingPair:(id)a3 matchCount:(int)a4;
-- (int64_t)encodeBestMatchFromFlow:(id)a3 im1:(id)a4 im2:(id)a5 matches:(id)a6 angle:(_regional_flow_directions *)a7 matchCount:(id)a8 flipFlowValue:(BOOL)a9 commandBuffer:(id)a10;
-- (int64_t)findMatchesFromFlow:(id)a3 im1:(id)a4 im2:(id)a5 matches:(id)a6 background_angle:(_regional_flow_directions *)a7 matchCount:(id)a8 flipFlowValue:(BOOL)a9 commandBuffer:(id)a10;
+- (SIFTMatcher)initWithDevice:(id)device commmandQueue:(id)queue;
+- (int)findMatchesBetweenDescriptor:(id)descriptor objectCount:(int)count toTargetDescriptor:(id)targetDescriptor targetCount:(int)targetCount matches:(id)matches;
+- (int)findMatchesBetweenDescriptorEarlyExist:(id)exist objectCount:(int)count keypt1:(id)keypt1 toTargetDescriptor:(id)descriptor targetCount:(int)targetCount keypt2:(id)keypt2 filteredIndex:(id)index matches:(id)self0;
+- (int)sortMatchingPair:(id)pair matchCount:(int)count;
+- (int64_t)encodeBestMatchFromFlow:(id)flow im1:(id)im1 im2:(id)im2 matches:(id)matches angle:(_regional_flow_directions *)angle matchCount:(id)count flipFlowValue:(BOOL)value commandBuffer:(id)self0;
+- (int64_t)findMatchesFromFlow:(id)flow im1:(id)im1 im2:(id)im2 matches:(id)matches background_angle:(_regional_flow_directions *)background_angle matchCount:(id)count flipFlowValue:(BOOL)value commandBuffer:(id)self0;
 - (void)dealloc;
-- (void)encodeBestMatchEarlyExist:(id)a3 objectCount:(int)a4 keypt1:(id)a5 toTargetDescriptor:(id)a6 targetCount:(int)a7 keypt2:(id)a8 filteredIndex:(id)a9 matches:(id)a10 commandBuffer:(id)a11;
-- (void)filterClosedKptPairFromKpt1:(id)a3 kpt2:(id)a4 count1:(int)a5 count2:(int)a6 filteredIndex:(id)a7 commandBuffer:(id)a8;
+- (void)encodeBestMatchEarlyExist:(id)exist objectCount:(int)count keypt1:(id)keypt1 toTargetDescriptor:(id)descriptor targetCount:(int)targetCount keypt2:(id)keypt2 filteredIndex:(id)index matches:(id)self0 commandBuffer:(id)self1;
+- (void)filterClosedKptPairFromKpt1:(id)kpt1 kpt2:(id)kpt2 count1:(int)count1 count2:(int)count2 filteredIndex:(id)index commandBuffer:(id)buffer;
 @end
 
 @implementation SIFTMatcher
@@ -23,34 +23,34 @@
   [(SIFTMatcher *)&v4 dealloc];
 }
 
-- (void)filterClosedKptPairFromKpt1:(id)a3 kpt2:(id)a4 count1:(int)a5 count2:(int)a6 filteredIndex:(id)a7 commandBuffer:(id)a8
+- (void)filterClosedKptPairFromKpt1:(id)kpt1 kpt2:(id)kpt2 count1:(int)count1 count2:(int)count2 filteredIndex:(id)index commandBuffer:(id)buffer
 {
-  v24 = a5;
-  v13 = a7;
-  v14 = a4;
-  v15 = a3;
-  v16 = [a8 computeCommandEncoder];
-  v17 = v16;
-  if (a6 >= 10000)
+  count1Copy = count1;
+  indexCopy = index;
+  kpt2Copy = kpt2;
+  kpt1Copy = kpt1;
+  computeCommandEncoder = [buffer computeCommandEncoder];
+  v17 = computeCommandEncoder;
+  if (count2 >= 10000)
   {
-    v18 = 10000;
+    count2Copy = 10000;
   }
 
   else
   {
-    v18 = a6;
+    count2Copy = count2;
   }
 
-  v23 = v18;
-  [v16 setComputePipelineState:self->_filterClosePairKernel];
-  [v17 setBytes:&v24 length:4 atIndex:0];
+  v23 = count2Copy;
+  [computeCommandEncoder setComputePipelineState:self->_filterClosePairKernel];
+  [v17 setBytes:&count1Copy length:4 atIndex:0];
   [v17 setBytes:&v23 length:4 atIndex:1];
-  [v17 setBuffer:v15 offset:0 atIndex:2];
+  [v17 setBuffer:kpt1Copy offset:0 atIndex:2];
 
-  [v17 setBuffer:v14 offset:0 atIndex:3];
-  [v17 setBuffer:v13 offset:0 atIndex:4];
+  [v17 setBuffer:kpt2Copy offset:0 atIndex:3];
+  [v17 setBuffer:indexCopy offset:0 atIndex:4];
 
-  v21 = (v24 + 255) >> 8;
+  v21 = (count1Copy + 255) >> 8;
   v22 = vdupq_n_s64(1uLL);
   v19 = vdupq_n_s64(0x10uLL);
   v20 = 1;
@@ -58,39 +58,39 @@
   [v17 endEncoding];
 }
 
-- (void)encodeBestMatchEarlyExist:(id)a3 objectCount:(int)a4 keypt1:(id)a5 toTargetDescriptor:(id)a6 targetCount:(int)a7 keypt2:(id)a8 filteredIndex:(id)a9 matches:(id)a10 commandBuffer:(id)a11
+- (void)encodeBestMatchEarlyExist:(id)exist objectCount:(int)count keypt1:(id)keypt1 toTargetDescriptor:(id)descriptor targetCount:(int)targetCount keypt2:(id)keypt2 filteredIndex:(id)index matches:(id)self0 commandBuffer:(id)self1
 {
-  v27 = a4;
-  v15 = a10;
-  v16 = a9;
-  v17 = a6;
-  v18 = a3;
-  v19 = [a11 computeCommandEncoder];
-  v20 = v19;
-  if (a7 >= 10000)
+  countCopy = count;
+  matchesCopy = matches;
+  indexCopy = index;
+  descriptorCopy = descriptor;
+  existCopy = exist;
+  computeCommandEncoder = [buffer computeCommandEncoder];
+  v20 = computeCommandEncoder;
+  if (targetCount >= 10000)
   {
-    v21 = 10000;
+    targetCountCopy = 10000;
   }
 
   else
   {
-    v21 = a7;
+    targetCountCopy = targetCount;
   }
 
-  v26 = v21;
-  [v19 setComputePipelineState:self->_findBestMatchEarlyExist];
-  [v20 setBuffer:v18 offset:0 atIndex:0];
+  v26 = targetCountCopy;
+  [computeCommandEncoder setComputePipelineState:self->_findBestMatchEarlyExist];
+  [v20 setBuffer:existCopy offset:0 atIndex:0];
 
-  [v20 setBuffer:v17 offset:0 atIndex:1];
-  [v20 setBuffer:v15 offset:0 atIndex:2];
+  [v20 setBuffer:descriptorCopy offset:0 atIndex:1];
+  [v20 setBuffer:matchesCopy offset:0 atIndex:2];
 
   [v20 setBuffer:self->matchCount offset:0 atIndex:3];
-  [v20 setBytes:&v27 length:4 atIndex:4];
+  [v20 setBytes:&countCopy length:4 atIndex:4];
   [v20 setBytes:&v26 length:4 atIndex:5];
   [v20 setBytes:&self->ratio length:4 atIndex:6];
-  [v20 setBuffer:v16 offset:0 atIndex:7];
+  [v20 setBuffer:indexCopy offset:0 atIndex:7];
 
-  v24 = (v27 + 31) >> 5;
+  v24 = (countCopy + 31) >> 5;
   v25 = vdupq_n_s64(1uLL);
   v22 = 32;
   v23 = xmmword_2487C3978;
@@ -98,69 +98,69 @@
   [v20 endEncoding];
 }
 
-- (int)findMatchesBetweenDescriptorEarlyExist:(id)a3 objectCount:(int)a4 keypt1:(id)a5 toTargetDescriptor:(id)a6 targetCount:(int)a7 keypt2:(id)a8 filteredIndex:(id)a9 matches:(id)a10
+- (int)findMatchesBetweenDescriptorEarlyExist:(id)exist objectCount:(int)count keypt1:(id)keypt1 toTargetDescriptor:(id)descriptor targetCount:(int)targetCount keypt2:(id)keypt2 filteredIndex:(id)index matches:(id)self0
 {
-  v13 = *&a4;
-  v15 = self;
+  v13 = *&count;
+  selfCopy = self;
   matchCount = self->matchCount;
-  v25 = a10;
-  v17 = a9;
-  v18 = a8;
-  v24 = a6;
-  v19 = a5;
-  v20 = a3;
+  matchesCopy = matches;
+  indexCopy = index;
+  keypt2Copy = keypt2;
+  descriptorCopy = descriptor;
+  keypt1Copy = keypt1;
+  existCopy = exist;
   *[(MTLBuffer *)matchCount contents]= 0;
-  v21 = [(MTLCommandQueue *)v15->super._commandQueue commandBuffer];
-  v22 = [v21 blitCommandEncoder];
-  [v22 fillBuffer:v17 range:0 value:{objc_msgSend(v17, "length"), 0}];
-  [v22 endEncoding];
-  [(SIFTMatcher *)v15 filterClosedKptPairFromKpt1:v19 kpt2:v18 count1:v13 count2:a7 filteredIndex:v17 commandBuffer:v21];
-  [(SIFTMatcher *)v15 encodeBestMatchEarlyExist:v20 objectCount:v13 keypt1:v19 toTargetDescriptor:v24 targetCount:a7 keypt2:v18 filteredIndex:v17 matches:v25 commandBuffer:v21];
+  commandBuffer = [(MTLCommandQueue *)selfCopy->super._commandQueue commandBuffer];
+  blitCommandEncoder = [commandBuffer blitCommandEncoder];
+  [blitCommandEncoder fillBuffer:indexCopy range:0 value:{objc_msgSend(indexCopy, "length"), 0}];
+  [blitCommandEncoder endEncoding];
+  [(SIFTMatcher *)selfCopy filterClosedKptPairFromKpt1:keypt1Copy kpt2:keypt2Copy count1:v13 count2:targetCount filteredIndex:indexCopy commandBuffer:commandBuffer];
+  [(SIFTMatcher *)selfCopy encodeBestMatchEarlyExist:existCopy objectCount:v13 keypt1:keypt1Copy toTargetDescriptor:descriptorCopy targetCount:targetCount keypt2:keypt2Copy filteredIndex:indexCopy matches:matchesCopy commandBuffer:commandBuffer];
 
-  [v21 commit];
-  [(VEMetalBase *)v15 commandBufferWait:v21 flag:1];
-  LODWORD(v15) = [(SIFTMatcher *)v15 sortMatchingPair:v25 matchCount:*[(MTLBuffer *)v15->matchCount contents]];
+  [commandBuffer commit];
+  [(VEMetalBase *)selfCopy commandBufferWait:commandBuffer flag:1];
+  LODWORD(selfCopy) = [(SIFTMatcher *)selfCopy sortMatchingPair:matchesCopy matchCount:*[(MTLBuffer *)selfCopy->matchCount contents]];
 
-  return v15;
+  return selfCopy;
 }
 
-- (int64_t)findMatchesFromFlow:(id)a3 im1:(id)a4 im2:(id)a5 matches:(id)a6 background_angle:(_regional_flow_directions *)a7 matchCount:(id)a8 flipFlowValue:(BOOL)a9 commandBuffer:(id)a10
+- (int64_t)findMatchesFromFlow:(id)flow im1:(id)im1 im2:(id)im2 matches:(id)matches background_angle:(_regional_flow_directions *)background_angle matchCount:(id)count flipFlowValue:(BOOL)value commandBuffer:(id)self0
 {
-  v17 = a8;
-  v18 = a10;
-  v19 = a8;
-  v20 = a6;
-  v21 = a5;
-  v22 = a4;
-  v23 = a3;
-  *[v19 contents] = 0;
-  v27 = *a7;
-  LOBYTE(v26) = a9;
-  v24 = [(SIFTMatcher *)self encodeBestMatchFromFlow:v23 im1:v22 im2:v21 matches:v20 angle:&v27 matchCount:v19 flipFlowValue:v26 commandBuffer:v18];
+  countCopy = count;
+  bufferCopy = buffer;
+  countCopy2 = count;
+  matchesCopy = matches;
+  im2Copy = im2;
+  im1Copy = im1;
+  flowCopy = flow;
+  *[countCopy2 contents] = 0;
+  v27 = *background_angle;
+  LOBYTE(v26) = value;
+  v24 = [(SIFTMatcher *)self encodeBestMatchFromFlow:flowCopy im1:im1Copy im2:im2Copy matches:matchesCopy angle:&v27 matchCount:countCopy2 flipFlowValue:v26 commandBuffer:bufferCopy];
 
   return v24;
 }
 
-- (int)sortMatchingPair:(id)a3 matchCount:(int)a4
+- (int)sortMatchingPair:(id)pair matchCount:(int)count
 {
-  v5 = [a3 contents];
-  qsort(v5, a4, 0xCuLL, comp_match);
-  if (a4 < 2)
+  contents = [pair contents];
+  qsort(contents, count, 0xCuLL, comp_match);
+  if (count < 2)
   {
     return 1;
   }
 
   LODWORD(v6) = 0;
-  v7 = a4;
-  v8 = (v5 + 12);
-  v9 = v7 - 1;
+  countCopy = count;
+  v8 = (contents + 12);
+  v9 = countCopy - 1;
   do
   {
-    if (comp_match(&v5[12 * v6], v8))
+    if (comp_match(&contents[12 * v6], v8))
     {
       v6 = v6 + 1;
       v10 = *v8;
-      v11 = &v5[12 * v6];
+      v11 = &contents[12 * v6];
       *(v11 + 2) = *(v8 + 8);
       *v11 = v10;
     }
@@ -173,56 +173,56 @@
   return v6 + 1;
 }
 
-- (int)findMatchesBetweenDescriptor:(id)a3 objectCount:(int)a4 toTargetDescriptor:(id)a5 targetCount:(int)a6 matches:(id)a7
+- (int)findMatchesBetweenDescriptor:(id)descriptor objectCount:(int)count toTargetDescriptor:(id)targetDescriptor targetCount:(int)targetCount matches:(id)matches
 {
-  v26 = a4;
+  countCopy = count;
   matchCount = self->matchCount;
-  v12 = a7;
-  v13 = a5;
-  v14 = a3;
+  matchesCopy = matches;
+  targetDescriptorCopy = targetDescriptor;
+  descriptorCopy = descriptor;
   *[(MTLBuffer *)matchCount contents]= 0;
-  v15 = [(MTLCommandQueue *)self->super._commandQueue commandBuffer];
-  v16 = [v15 computeCommandEncoder];
-  v17 = v16;
-  if (a6 >= 10000)
+  commandBuffer = [(MTLCommandQueue *)self->super._commandQueue commandBuffer];
+  computeCommandEncoder = [commandBuffer computeCommandEncoder];
+  v17 = computeCommandEncoder;
+  if (targetCount >= 10000)
   {
-    v18 = 10000;
+    targetCountCopy = 10000;
   }
 
   else
   {
-    v18 = a6;
+    targetCountCopy = targetCount;
   }
 
-  v25 = v18;
-  [v16 setComputePipelineState:self->_findBestMatch];
-  [v17 setBuffer:v14 offset:0 atIndex:0];
+  v25 = targetCountCopy;
+  [computeCommandEncoder setComputePipelineState:self->_findBestMatch];
+  [v17 setBuffer:descriptorCopy offset:0 atIndex:0];
 
-  [v17 setBuffer:v13 offset:0 atIndex:1];
-  [v17 setBuffer:v12 offset:0 atIndex:2];
+  [v17 setBuffer:targetDescriptorCopy offset:0 atIndex:1];
+  [v17 setBuffer:matchesCopy offset:0 atIndex:2];
 
   [v17 setBuffer:self->matchCount offset:0 atIndex:3];
-  [v17 setBytes:&v26 length:4 atIndex:4];
+  [v17 setBytes:&countCopy length:4 atIndex:4];
   [v17 setBytes:&v25 length:4 atIndex:5];
   [v17 setBytes:&self->ratio length:4 atIndex:6];
-  v23 = (v26 + 31) >> 5;
+  v23 = (countCopy + 31) >> 5;
   v24 = vdupq_n_s64(1uLL);
   v21 = 32;
   v22 = xmmword_2487C3978;
   [v17 dispatchThreadgroups:&v23 threadsPerThreadgroup:&v21];
   [v17 endEncoding];
-  [v15 commit];
-  [(VEMetalBase *)self commandBufferWait:v15 flag:1];
+  [commandBuffer commit];
+  [(VEMetalBase *)self commandBufferWait:commandBuffer flag:1];
   v19 = *[(MTLBuffer *)self->matchCount contents];
 
   return v19;
 }
 
-- (SIFTMatcher)initWithDevice:(id)a3 commmandQueue:(id)a4
+- (SIFTMatcher)initWithDevice:(id)device commmandQueue:(id)queue
 {
   v14.receiver = self;
   v14.super_class = SIFTMatcher;
-  v4 = [(VEMetalBase *)&v14 initWithDevice:a3 commmandQueue:a4];
+  v4 = [(VEMetalBase *)&v14 initWithDevice:device commmandQueue:queue];
   if (!v4)
   {
     goto LABEL_6;
@@ -291,35 +291,35 @@ LABEL_4:
   return 1;
 }
 
-- (int64_t)encodeBestMatchFromFlow:(id)a3 im1:(id)a4 im2:(id)a5 matches:(id)a6 angle:(_regional_flow_directions *)a7 matchCount:(id)a8 flipFlowValue:(BOOL)a9 commandBuffer:(id)a10
+- (int64_t)encodeBestMatchFromFlow:(id)flow im1:(id)im1 im2:(id)im2 matches:(id)matches angle:(_regional_flow_directions *)angle matchCount:(id)count flipFlowValue:(BOOL)value commandBuffer:(id)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a8;
-  v21 = v20;
+  flowCopy = flow;
+  im1Copy = im1;
+  im2Copy = im2;
+  matchesCopy = matches;
+  countCopy = count;
+  v21 = countCopy;
   v22 = 9;
-  if (v17 && v18 && v19 && v20)
+  if (im1Copy && im2Copy && matchesCopy && countCopy)
   {
-    v23 = [a10 computeCommandEncoder];
-    v24 = v23;
-    if (v23)
+    computeCommandEncoder = [buffer computeCommandEncoder];
+    v24 = computeCommandEncoder;
+    if (computeCommandEncoder)
     {
-      [v23 setComputePipelineState:self->_flow_find_match_kernel];
-      v31 = a9;
-      v25 = [v17 width];
-      v30 = v25 / [v16 width];
-      [v24 setBuffer:v19 offset:0 atIndex:0];
+      [computeCommandEncoder setComputePipelineState:self->_flow_find_match_kernel];
+      valueCopy = value;
+      width = [im1Copy width];
+      v30 = width / [flowCopy width];
+      [v24 setBuffer:matchesCopy offset:0 atIndex:0];
       [v24 setBuffer:v21 offset:0 atIndex:1];
-      [v24 setBytes:a7 length:20 atIndex:2];
-      [v24 setBytes:&v31 length:4 atIndex:3];
+      [v24 setBytes:angle length:20 atIndex:2];
+      [v24 setBytes:&valueCopy length:4 atIndex:3];
       [v24 setBytes:&v30 length:4 atIndex:4];
-      [v24 setTexture:v16 atIndex:0];
-      [v24 setTexture:v17 atIndex:1];
-      [v24 setTexture:v18 atIndex:2];
-      v29[0] = ([v16 width] + 15) >> 4;
-      v29[1] = ([v16 height] + 15) >> 4;
+      [v24 setTexture:flowCopy atIndex:0];
+      [v24 setTexture:im1Copy atIndex:1];
+      [v24 setTexture:im2Copy atIndex:2];
+      v29[0] = ([flowCopy width] + 15) >> 4;
+      v29[1] = ([flowCopy height] + 15) >> 4;
       v29[2] = 1;
       v27 = vdupq_n_s64(0x10uLL);
       v28 = 1;

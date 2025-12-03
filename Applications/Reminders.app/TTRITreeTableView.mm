@@ -1,13 +1,13 @@
 @interface TTRITreeTableView
-- (_TtC9Reminders17TTRITreeTableView)initWithCoder:(id)a3;
-- (_TtC9Reminders17TTRITreeTableView)initWithFrame:(CGRect)a3 style:(int64_t)a4;
-- (id)contextMenuInteraction:(id)a3 configuration:(id)a4 dismissalPreviewForItemWithIdentifier:(id)a5;
-- (id)contextMenuInteraction:(id)a3 configuration:(id)a4 highlightPreviewForItemWithIdentifier:(id)a5;
+- (_TtC9Reminders17TTRITreeTableView)initWithCoder:(id)coder;
+- (_TtC9Reminders17TTRITreeTableView)initWithFrame:(CGRect)frame style:(int64_t)style;
+- (id)contextMenuInteraction:(id)interaction configuration:(id)configuration dismissalPreviewForItemWithIdentifier:(id)identifier;
+- (id)contextMenuInteraction:(id)interaction configuration:(id)configuration highlightPreviewForItemWithIdentifier:(id)identifier;
 @end
 
 @implementation TTRITreeTableView
 
-- (id)contextMenuInteraction:(id)a3 configuration:(id)a4 highlightPreviewForItemWithIdentifier:(id)a5
+- (id)contextMenuInteraction:(id)interaction configuration:(id)configuration highlightPreviewForItemWithIdentifier:(id)identifier
 {
   v7 = self + OBJC_IVAR____TtC9Reminders17TTRITreeTableView_contextMenuDelegate;
   if (swift_unknownObjectWeakLoadStrong())
@@ -15,9 +15,9 @@
     v8 = *(v7 + 1);
     swift_getObjectType();
     v9 = *(v8 + 8);
-    v10 = a4;
+    configurationCopy = configuration;
     swift_unknownObjectRetain();
-    v11 = self;
+    selfCopy = self;
     v12 = v9();
     swift_unknownObjectRelease();
 
@@ -32,7 +32,7 @@
   return v12;
 }
 
-- (id)contextMenuInteraction:(id)a3 configuration:(id)a4 dismissalPreviewForItemWithIdentifier:(id)a5
+- (id)contextMenuInteraction:(id)interaction configuration:(id)configuration dismissalPreviewForItemWithIdentifier:(id)identifier
 {
   v7 = self + OBJC_IVAR____TtC9Reminders17TTRITreeTableView_contextMenuDelegate;
   if (swift_unknownObjectWeakLoadStrong())
@@ -40,9 +40,9 @@
     v8 = *(v7 + 1);
     swift_getObjectType();
     v9 = *(v8 + 16);
-    v10 = a4;
+    configurationCopy = configuration;
     swift_unknownObjectRetain();
-    v11 = self;
+    selfCopy = self;
     v12 = v9();
     swift_unknownObjectRelease();
 
@@ -57,27 +57,27 @@
   return v12;
 }
 
-- (_TtC9Reminders17TTRITreeTableView)initWithFrame:(CGRect)a3 style:(int64_t)a4
+- (_TtC9Reminders17TTRITreeTableView)initWithFrame:(CGRect)frame style:(int64_t)style
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   *&self->contextMenuDelegate[OBJC_IVAR____TtC9Reminders17TTRITreeTableView_contextMenuDelegate] = 0;
   swift_unknownObjectWeakInit();
   v11.receiver = self;
   v11.super_class = type metadata accessor for TTRITreeTableView();
-  return [(TTRITreeTableView *)&v11 initWithFrame:a4 style:x, y, width, height];
+  return [(TTRITreeTableView *)&v11 initWithFrame:style style:x, y, width, height];
 }
 
-- (_TtC9Reminders17TTRITreeTableView)initWithCoder:(id)a3
+- (_TtC9Reminders17TTRITreeTableView)initWithCoder:(id)coder
 {
   *&self->contextMenuDelegate[OBJC_IVAR____TtC9Reminders17TTRITreeTableView_contextMenuDelegate] = 0;
   swift_unknownObjectWeakInit();
   v8.receiver = self;
   v8.super_class = type metadata accessor for TTRITreeTableView();
-  v5 = a3;
-  v6 = [(TTRITreeTableView *)&v8 initWithCoder:v5];
+  coderCopy = coder;
+  v6 = [(TTRITreeTableView *)&v8 initWithCoder:coderCopy];
 
   if (v6)
   {

@@ -1,21 +1,21 @@
 @interface _UIHighlightView
-- (_UIHighlightView)initWithFrame:(CGRect)a3;
+- (_UIHighlightView)initWithFrame:(CGRect)frame;
 - (void)cleanUp;
-- (void)drawRect:(CGRect)a3;
-- (void)setColor:(id)a3;
-- (void)setCornerRadii:(id)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setFrames:(id)a3 boundaryRect:(CGRect)a4;
-- (void)setQuads:(id)a3 boundaryRect:(CGRect)a4;
+- (void)drawRect:(CGRect)rect;
+- (void)setColor:(id)color;
+- (void)setCornerRadii:(id)radii;
+- (void)setFrame:(CGRect)frame;
+- (void)setFrames:(id)frames boundaryRect:(CGRect)rect;
+- (void)setQuads:(id)quads boundaryRect:(CGRect)rect;
 @end
 
 @implementation _UIHighlightView
 
-- (_UIHighlightView)initWithFrame:(CGRect)a3
+- (_UIHighlightView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = _UIHighlightView;
-  v3 = [(UIView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -36,38 +36,38 @@
   self->_innerQuads = 0;
 }
 
-- (void)setColor:(id)a3
+- (void)setColor:(id)color
 {
-  v5 = a3;
-  if (self->_color != v5)
+  colorCopy = color;
+  if (self->_color != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_color, a3);
-    v5 = v6;
+    v6 = colorCopy;
+    objc_storeStrong(&self->_color, color);
+    colorCopy = v6;
   }
 }
 
-- (void)setCornerRadii:(id)a3
+- (void)setCornerRadii:(id)radii
 {
-  v5 = a3;
-  if (self->_cornerRadii != v5)
+  radiiCopy = radii;
+  if (self->_cornerRadii != radiiCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_cornerRadii, a3);
-    v5 = v6;
+    v6 = radiiCopy;
+    objc_storeStrong(&self->_cornerRadii, radii);
+    radiiCopy = v6;
   }
 }
 
-- (void)setFrames:(id)a3 boundaryRect:(CGRect)a4
+- (void)setFrames:(id)frames boundaryRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v63 = *MEMORY[0x1E69E9840];
-  v9 = a3;
+  framesCopy = frames;
   [(_UIHighlightView *)self cleanUp];
-  if (v9 && [v9 count])
+  if (framesCopy && [framesCopy count])
   {
     v10 = *MEMORY[0x1E695F058];
     v11 = *(MEMORY[0x1E695F058] + 8);
@@ -88,7 +88,7 @@
   v60 = 0u;
   v57 = 0u;
   v58 = 0u;
-  v14 = v9;
+  v14 = framesCopy;
   v15 = [v14 countByEnumeratingWithState:&v57 objects:v62 count:16];
   if (v15)
   {
@@ -237,16 +237,16 @@
   }
 }
 
-- (void)setQuads:(id)a3 boundaryRect:(CGRect)a4
+- (void)setQuads:(id)quads boundaryRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v50 = *MEMORY[0x1E69E9840];
-  v9 = a3;
+  quadsCopy = quads;
   [(_UIHighlightView *)self cleanUp];
-  if (!v9 || ![v9 count])
+  if (!quadsCopy || ![quadsCopy count])
   {
     [(_UIHighlightView *)self setFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   }
@@ -255,7 +255,7 @@
   v47 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v10 = v9;
+  v10 = quadsCopy;
   v11 = [v10 countByEnumeratingWithState:&v44 objects:v49 count:16];
   if (v11)
   {
@@ -445,26 +445,26 @@
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(_UIHighlightView *)self cleanUp];
   v8.receiver = self;
   v8.super_class = _UIHighlightView;
   [(UIView *)&v8 setFrame:x, y, width, height];
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   v89 = *MEMORY[0x1E69E9840];
   if (self->_innerBounds || self->_innerQuads)
   {
     if (self->_invertHighlight)
     {
-      v4 = [UIBezierPath bezierPath:a3.origin.x];
+      v4 = [UIBezierPath bezierPath:rect.origin.x];
       [(UIView *)self bounds];
       [v4 appendBezierPathWithRect:?];
       v5 = [UIColor colorWithRed:0.101960784 green:0.101960784 blue:0.101960784 alpha:0.3];
@@ -514,8 +514,8 @@ LABEL_24:
       else
       {
         v8 = self->_cornerRadii;
-        v9 = [(NSArray *)v8 firstObject];
-        [v9 CGSizeValue];
+        firstObject = [(NSArray *)v8 firstObject];
+        [firstObject CGSizeValue];
         v11 = v10;
 
         v85 = 0u;
@@ -561,29 +561,29 @@ LABEL_24:
 
     else
     {
-      v22 = [(NSMutableArray *)self->_innerQuads objectEnumerator];
-      v23 = [v22 nextObject];
-      if (v23)
+      objectEnumerator = [(NSMutableArray *)self->_innerQuads objectEnumerator];
+      nextObject = [objectEnumerator nextObject];
+      if (nextObject)
       {
-        v24 = v23;
+        nextObject5 = nextObject;
         do
         {
-          [v24 CGPointValue];
+          [nextObject5 CGPointValue];
           v26 = v25;
           v28 = v27;
-          v29 = [v22 nextObject];
+          nextObject2 = [objectEnumerator nextObject];
 
-          [v29 CGPointValue];
+          [nextObject2 CGPointValue];
           v31 = v30;
           v33 = v32;
-          v34 = [v22 nextObject];
+          nextObject3 = [objectEnumerator nextObject];
 
-          [v34 CGPointValue];
+          [nextObject3 CGPointValue];
           v36 = v35;
           v38 = v37;
-          v39 = [v22 nextObject];
+          nextObject4 = [objectEnumerator nextObject];
 
-          [v39 CGPointValue];
+          [nextObject4 CGPointValue];
           v41 = v40;
           v43 = v42;
           v44 = +[UIBezierPath bezierPath];
@@ -594,10 +594,10 @@ LABEL_24:
           [v44 closePath];
           [v6 appendBezierPath:v44];
 
-          v24 = [v22 nextObject];
+          nextObject5 = [objectEnumerator nextObject];
         }
 
-        while (v24);
+        while (nextObject5);
       }
     }
 
@@ -627,23 +627,23 @@ LABEL_24:
       CGContextSetBlendMode(v52, kCGBlendModeClear);
       v54 = *MEMORY[0x1E695EFF8];
       v55 = *(MEMORY[0x1E695EFF8] + 8);
-      v56 = [(UIView *)self _screen];
-      [v56 bounds];
+      _screen = [(UIView *)self _screen];
+      [_screen bounds];
       v58 = v57;
       v60 = v59;
 
-      v61 = [(UIView *)self window];
-      v62 = __UIStatusBarManagerForWindow(v61);
+      window = [(UIView *)self window];
+      v62 = __UIStatusBarManagerForWindow(window);
       [v62 statusBarHeight];
       v64 = v63;
 
-      v65 = [(UIView *)self window];
-      v66 = [v65 windowScene];
-      v67 = [v66 _interfaceOrientation];
+      window2 = [(UIView *)self window];
+      windowScene = [window2 windowScene];
+      _interfaceOrientation = [windowScene _interfaceOrientation];
 
       v68 = v58 - v64;
       v69 = v54 + v64;
-      if (v67 == 4)
+      if (_interfaceOrientation == 4)
       {
         v70 = v58 - v64;
       }
@@ -653,12 +653,12 @@ LABEL_24:
         v70 = v58;
       }
 
-      if (v67 != 4)
+      if (_interfaceOrientation != 4)
       {
         v69 = v54;
       }
 
-      if (v67 == 3)
+      if (_interfaceOrientation == 3)
       {
         v71 = v54;
       }
@@ -670,7 +670,7 @@ LABEL_24:
       }
 
       v72 = v55 + v64;
-      if (v67 == 2)
+      if (_interfaceOrientation == 2)
       {
         v73 = v60 - v64;
       }
@@ -680,7 +680,7 @@ LABEL_24:
         v73 = v60;
       }
 
-      if (v67 == 1)
+      if (_interfaceOrientation == 1)
       {
         v73 = v60 - v64;
       }
@@ -690,7 +690,7 @@ LABEL_24:
         v72 = v55;
       }
 
-      if (v67 <= 2)
+      if (_interfaceOrientation <= 2)
       {
         v74 = v58;
       }
@@ -700,7 +700,7 @@ LABEL_24:
         v74 = v68;
       }
 
-      if (v67 <= 2)
+      if (_interfaceOrientation <= 2)
       {
         v75 = v54;
       }
@@ -736,7 +736,7 @@ LABEL_24:
 
   else
   {
-    [(UIColor *)self->_color set:a3.origin.x];
+    [(UIColor *)self->_color set:rect.origin.x];
     [(UIView *)self bounds];
     v78 = [UIBezierPath roundedRectBezierPath:"roundedRectBezierPath:withRoundedCorners:withCornerRadius:" withRoundedCorners:-1 withCornerRadius:?];
     [v78 fill];

@@ -13,17 +13,17 @@
     [NSString(CACHelpers) cac_stringByFilteringPunctuation];
   }
 
-  v2 = [a1 componentsSeparatedByCharactersInSet:cac_stringByFilteringPunctuation___punctuationSet];
+  v2 = [self componentsSeparatedByCharactersInSet:cac_stringByFilteringPunctuation___punctuationSet];
   v3 = [v2 componentsJoinedByString:&stru_287BD8610];
 
   if ([v3 length])
   {
-    a1 = v3;
+    self = v3;
   }
 
-  v4 = a1;
+  selfCopy = self;
 
-  return a1;
+  return self;
 }
 
 - (id)cac_stringByCollapsingWhitespace
@@ -33,34 +33,34 @@
     [NSString(CACHelpers) cac_stringByCollapsingWhitespace];
   }
 
-  v2 = [cac_stringByCollapsingWhitespace___regex stringByReplacingMatchesInString:a1 options:0 range:0 withTemplate:{objc_msgSend(a1, "length"), @" "}];
-  v3 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-  v4 = [v2 stringByTrimmingCharactersInSet:v3];
+  v2 = [cac_stringByCollapsingWhitespace___regex stringByReplacingMatchesInString:self options:0 range:0 withTemplate:{objc_msgSend(self, "length"), @" "}];
+  whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+  v4 = [v2 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
   return v4;
 }
 
 - (id)cac_stringByPreparingForAX
 {
-  v2 = [a1 stringByReplacingOccurrencesOfString:@"feat." withString:@"featuring"];
-  v3 = [a1 stringByReplacingOccurrencesOfString:@"" withString:@"Apple"];
+  v2 = [self stringByReplacingOccurrencesOfString:@"feat." withString:@"featuring"];
+  v3 = [self stringByReplacingOccurrencesOfString:@"" withString:@"Apple"];
 
-  v4 = [v3 cac_stringByCollapsingWhitespace];
+  cac_stringByCollapsingWhitespace = [v3 cac_stringByCollapsingWhitespace];
 
-  v5 = [v4 cac_stringByFilteringPunctuation];
+  cac_stringByFilteringPunctuation = [cac_stringByCollapsingWhitespace cac_stringByFilteringPunctuation];
 
-  v6 = [v5 cac_stringByCollapsingWhitespace];
+  cac_stringByCollapsingWhitespace2 = [cac_stringByFilteringPunctuation cac_stringByCollapsingWhitespace];
 
-  if ([v6 length])
+  if ([cac_stringByCollapsingWhitespace2 length])
   {
-    v7 = [v6 substringWithRange:{0, 1}];
-    v8 = [v7 uppercaseString];
-    v9 = [v6 stringByReplacingCharactersInRange:0 withString:{1, v8}];
+    v7 = [cac_stringByCollapsingWhitespace2 substringWithRange:{0, 1}];
+    uppercaseString = [v7 uppercaseString];
+    v9 = [cac_stringByCollapsingWhitespace2 stringByReplacingCharactersInRange:0 withString:{1, uppercaseString}];
 
-    v6 = v9;
+    cac_stringByCollapsingWhitespace2 = v9;
   }
 
-  return v6;
+  return cac_stringByCollapsingWhitespace2;
 }
 
 @end

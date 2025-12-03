@@ -1,24 +1,24 @@
 @interface UIPrintPanelNavigationController
-- (void)pushViewController:(id)a3 animated:(BOOL)a4;
+- (void)pushViewController:(id)controller animated:(BOOL)animated;
 @end
 
 @implementation UIPrintPanelNavigationController
 
-- (void)pushViewController:(id)a3 animated:(BOOL)a4
+- (void)pushViewController:(id)controller animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
+  animatedCopy = animated;
+  controllerCopy = controller;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v7 = [(UIPrintPanelNavigationController *)self view];
-    v8 = [v7 window];
-    [v8 endEditing:1];
+    view = [(UIPrintPanelNavigationController *)self view];
+    window = [view window];
+    [window endEditing:1];
   }
 
   v9.receiver = self;
   v9.super_class = UIPrintPanelNavigationController;
-  [(UIPrintPanelNavigationController *)&v9 pushViewController:v6 animated:v4];
+  [(UIPrintPanelNavigationController *)&v9 pushViewController:controllerCopy animated:animatedCopy];
 }
 
 @end

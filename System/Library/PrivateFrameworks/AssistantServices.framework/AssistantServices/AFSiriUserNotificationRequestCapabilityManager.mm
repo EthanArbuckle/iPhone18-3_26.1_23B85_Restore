@@ -1,39 +1,39 @@
 @interface AFSiriUserNotificationRequestCapabilityManager
-+ (BOOL)supportedByApplicationWithBundleID:(id)a3;
-+ (Class)_classForPlatform:(int64_t)a3;
++ (BOOL)supportedByApplicationWithBundleID:(id)d;
++ (Class)_classForPlatform:(int64_t)platform;
 + (id)sharedManager;
 - (BOOL)hasEligibleSetup;
 - (BOOL)requestCanBeHandled;
-- (id)_initWithPlatform:(int64_t)a3;
-- (void)fetchEligibleSetupStateWithCompletion:(id)a3;
-- (void)fetchRequestCanBeHandledStateWithCompletion:(id)a3;
-- (void)notifyObserversOfCurrentEligibleSetupState:(BOOL)a3 onPlatform:(int64_t)a4;
-- (void)notifyObserversOfCurrentRequestCanBeHandledState:(BOOL)a3 onPlatform:(int64_t)a4;
-- (void)provider:(id)a3 availableAnnouncementRequestTypesChanged:(unint64_t)a4;
-- (void)provider:(id)a3 eligibleAnnouncementRequestTypesChanged:(unint64_t)a4;
+- (id)_initWithPlatform:(int64_t)platform;
+- (void)fetchEligibleSetupStateWithCompletion:(id)completion;
+- (void)fetchRequestCanBeHandledStateWithCompletion:(id)completion;
+- (void)notifyObserversOfCurrentEligibleSetupState:(BOOL)state onPlatform:(int64_t)platform;
+- (void)notifyObserversOfCurrentRequestCanBeHandledState:(BOOL)state onPlatform:(int64_t)platform;
+- (void)provider:(id)provider availableAnnouncementRequestTypesChanged:(unint64_t)changed;
+- (void)provider:(id)provider eligibleAnnouncementRequestTypesChanged:(unint64_t)changed;
 @end
 
 @implementation AFSiriUserNotificationRequestCapabilityManager
 
-- (void)provider:(id)a3 availableAnnouncementRequestTypesChanged:(unint64_t)a4
+- (void)provider:(id)provider availableAnnouncementRequestTypesChanged:(unint64_t)changed
 {
-  v4 = a4;
-  v6 = [objc_opt_class() platform];
+  changedCopy = changed;
+  platform = [objc_opt_class() platform];
 
-  [(AFSiriUserNotificationRequestCapabilityManager *)self notifyObserversOfCurrentRequestCanBeHandledState:v4 & 1 onPlatform:v6];
+  [(AFSiriUserNotificationRequestCapabilityManager *)self notifyObserversOfCurrentRequestCanBeHandledState:changedCopy & 1 onPlatform:platform];
 }
 
-- (void)provider:(id)a3 eligibleAnnouncementRequestTypesChanged:(unint64_t)a4
+- (void)provider:(id)provider eligibleAnnouncementRequestTypesChanged:(unint64_t)changed
 {
-  v4 = a4;
-  v6 = [objc_opt_class() platform];
+  changedCopy = changed;
+  platform = [objc_opt_class() platform];
 
-  [(AFSiriUserNotificationRequestCapabilityManager *)self notifyObserversOfCurrentEligibleSetupState:v4 & 1 onPlatform:v6];
+  [(AFSiriUserNotificationRequestCapabilityManager *)self notifyObserversOfCurrentEligibleSetupState:changedCopy & 1 onPlatform:platform];
 }
 
-- (void)notifyObserversOfCurrentRequestCanBeHandledState:(BOOL)a3 onPlatform:(int64_t)a4
+- (void)notifyObserversOfCurrentRequestCanBeHandledState:(BOOL)state onPlatform:(int64_t)platform
 {
-  v5 = a3;
+  stateCopy = state;
   v7 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
   {
@@ -44,7 +44,7 @@
     v23 = 2048;
     v24 = [(NSHashTable *)observers count];
     v25 = 1024;
-    v26 = v5;
+    v26 = stateCopy;
     _os_log_debug_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEBUG, "%s Notifying %lu observers, request can be handled? %d", buf, 0x1Cu);
   }
 
@@ -71,12 +71,12 @@
         v13 = *(*(&v16 + 1) + 8 * v12);
         if (objc_opt_respondsToSelector())
         {
-          [v13 requestCanBeHandledChanged:v5 onPlatform:{a4, v16}];
+          [v13 requestCanBeHandledChanged:stateCopy onPlatform:{platform, v16}];
         }
 
-        if (a4 == 1)
+        if (platform == 1)
         {
-          [v13 requestCanBeHandledChanged:v5];
+          [v13 requestCanBeHandledChanged:stateCopy];
         }
 
         v12 = v12 + 1;
@@ -90,9 +90,9 @@
   }
 }
 
-- (void)notifyObserversOfCurrentEligibleSetupState:(BOOL)a3 onPlatform:(int64_t)a4
+- (void)notifyObserversOfCurrentEligibleSetupState:(BOOL)state onPlatform:(int64_t)platform
 {
-  v5 = a3;
+  stateCopy = state;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -116,12 +116,12 @@
         v11 = *(*(&v12 + 1) + 8 * v10);
         if (objc_opt_respondsToSelector())
         {
-          [v11 hasEligibleSetupChanged:v5 onPlatform:{a4, v12}];
+          [v11 hasEligibleSetupChanged:stateCopy onPlatform:{platform, v12}];
         }
 
-        if (a4 == 1)
+        if (platform == 1)
         {
-          [v11 hasEligibleSetupChanged:v5];
+          [v11 hasEligibleSetupChanged:stateCopy];
         }
 
         v10 = v10 + 1;
@@ -214,11 +214,11 @@
   return v4 & 1;
 }
 
-- (void)fetchRequestCanBeHandledStateWithCompletion:(id)a3
+- (void)fetchRequestCanBeHandledStateWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  completionCopy = completion;
+  v5 = completionCopy;
+  if (completionCopy)
   {
     queue = self->_queue;
     v7[0] = _NSConcreteStackBlock;
@@ -226,7 +226,7 @@
     v7[2] = sub_10023ADA8;
     v7[3] = &unk_10051E038;
     v7[4] = self;
-    v8 = v4;
+    v8 = completionCopy;
     dispatch_async(queue, v7);
   }
 }
@@ -271,7 +271,7 @@
     v9 = v8;
     v19 = v4;
     v16 = v9;
-    v17 = self;
+    selfCopy = self;
     [(AFSiriUserNotificationRequestCapabilityManager *)self fetchEligibleSetupStateWithCompletion:v15];
     v10 = dispatch_time(0, 2000000000);
     v11 = dispatch_group_wait(v7, v10);
@@ -308,11 +308,11 @@
   return v4 & 1;
 }
 
-- (void)fetchEligibleSetupStateWithCompletion:(id)a3
+- (void)fetchEligibleSetupStateWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  completionCopy = completion;
+  v5 = completionCopy;
+  if (completionCopy)
   {
     queue = self->_queue;
     v7[0] = _NSConcreteStackBlock;
@@ -320,12 +320,12 @@
     v7[2] = sub_10023B324;
     v7[3] = &unk_10051E038;
     v7[4] = self;
-    v8 = v4;
+    v8 = completionCopy;
     dispatch_async(queue, v7);
   }
 }
 
-- (id)_initWithPlatform:(int64_t)a3
+- (id)_initWithPlatform:(int64_t)platform
 {
   v14.receiver = self;
   v14.super_class = AFSiriUserNotificationRequestCapabilityManager;
@@ -342,11 +342,11 @@
     observers = v4->_observers;
     v4->_observers = v8;
 
-    v10 = [objc_opt_class() _classForPlatform:a3];
+    v10 = [objc_opt_class() _classForPlatform:platform];
     v4->_platform = [v10 platform];
-    v11 = [v10 provider];
+    provider = [v10 provider];
     capabilityProvider = v4->_capabilityProvider;
-    v4->_capabilityProvider = v11;
+    v4->_capabilityProvider = provider;
 
     [(AFAnnouncementRequestCapabilityProviding *)v4->_capabilityProvider addDelegate:v4];
   }
@@ -354,9 +354,9 @@
   return v4;
 }
 
-+ (BOOL)supportedByApplicationWithBundleID:(id)a3
++ (BOOL)supportedByApplicationWithBundleID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   if (AFIsInternalInstall() && _AFPreferencesSpokenNotificationShouldAnnounceAllNotifications())
   {
     v4 = AFSiriLogContextConnection;
@@ -373,7 +373,7 @@
   else
   {
     v5 = 1;
-    v6 = [AFSiriAnnouncementRequestCapabilityManager supportedAnnouncementTypesForBundleId:v3 onPlatform:1];
+    v6 = [AFSiriAnnouncementRequestCapabilityManager supportedAnnouncementTypesForBundleId:dCopy onPlatform:1];
     if (([v6 containsObject:&off_100533CF8] & 1) == 0)
     {
       v5 = [v6 containsObject:&off_100533D10];
@@ -383,7 +383,7 @@
   return v5;
 }
 
-+ (Class)_classForPlatform:(int64_t)a3
++ (Class)_classForPlatform:(int64_t)platform
 {
   IsValid = AFSiriAnnouncementPlatformGetIsValid();
   if ((IsValid & 1) == 0)
@@ -400,14 +400,14 @@ LABEL_12:
     v7 = 136315394;
     v8 = "+[AFSiriUserNotificationRequestCapabilityManager _classForPlatform:]";
     v9 = 2048;
-    v10 = a3;
+    platformCopy = platform;
     _os_log_error_impl(&_mh_execute_header, v5, OS_LOG_TYPE_ERROR, "%s platform %li is not valid, using headphones provider.", &v7, 0x16u);
     goto LABEL_7;
   }
 
-  if (a3 <= 5)
+  if (platform <= 5)
   {
-    if (((1 << a3) & 0x1A) != 0)
+    if (((1 << platform) & 0x1A) != 0)
     {
       goto LABEL_7;
     }
@@ -432,7 +432,7 @@ LABEL_8:
   block[1] = 3221225472;
   block[2] = sub_10023B7D4;
   block[3] = &unk_10051E200;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100590658 != -1)
   {
     dispatch_once(&qword_100590658, block);

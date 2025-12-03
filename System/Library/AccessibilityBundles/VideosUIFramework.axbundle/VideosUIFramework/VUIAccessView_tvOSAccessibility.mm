@@ -1,5 +1,5 @@
 @interface VUIAccessView_tvOSAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityHeaderElements;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)layoutSubviews;
@@ -7,11 +7,11 @@
 
 @implementation VUIAccessView_tvOSAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"VUIAccessView_tvOS" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
-  [v3 validateClass:@"VUIAccessView_tvOS" hasInstanceVariable:@"_bodyLabel" withType:"UILabel"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"VUIAccessView_tvOS" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"VUIAccessView_tvOS" hasInstanceVariable:@"_bodyLabel" withType:"UILabel"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -23,9 +23,9 @@
   v3 = [(VUIAccessView_tvOSAccessibility *)self safeValueForKey:@"_titleLabel"];
   v4 = __UIAccessibilityCastAsClass();
 
-  v5 = [v4 accessibilityTraits];
+  accessibilityTraits = [v4 accessibilityTraits];
   v6 = *MEMORY[0x29EDC7F80];
-  [v4 setAccessibilityTraits:*MEMORY[0x29EDC7F80] | v5];
+  [v4 setAccessibilityTraits:*MEMORY[0x29EDC7F80] | accessibilityTraits];
   objc_opt_class();
   v7 = [(VUIAccessView_tvOSAccessibility *)self safeValueForKey:@"_bodyLabel"];
   v8 = __UIAccessibilityCastAsClass();

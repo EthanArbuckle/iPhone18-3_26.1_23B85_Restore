@@ -1,275 +1,275 @@
 @interface ICMutableMusicSubscriptionStatus
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setCellularOperatorName:(id)a3;
-- (void)setExpirationDate:(id)a3;
-- (void)setInitialPurchaseTimestamp:(id)a3;
-- (void)setPartner:(id)a3;
-- (void)setPhoneNumber:(id)a3;
-- (void)setServiceBeginsTimestamp:(id)a3;
-- (void)setSessionIdentifier:(id)a3;
-- (void)setStudentExpirationDate:(id)a3;
-- (void)setStudentVerificationId:(id)a3;
-- (void)setStudentVerifier:(id)a3;
-- (void)setTermsStatusList:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setCellularOperatorName:(id)name;
+- (void)setExpirationDate:(id)date;
+- (void)setInitialPurchaseTimestamp:(id)timestamp;
+- (void)setPartner:(id)partner;
+- (void)setPhoneNumber:(id)number;
+- (void)setServiceBeginsTimestamp:(id)timestamp;
+- (void)setSessionIdentifier:(id)identifier;
+- (void)setStudentExpirationDate:(id)date;
+- (void)setStudentVerificationId:(id)id;
+- (void)setStudentVerifier:(id)verifier;
+- (void)setTermsStatusList:(id)list;
 @end
 
 @implementation ICMutableMusicSubscriptionStatus
 
-- (void)setSessionIdentifier:(id)a3
+- (void)setSessionIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   sessionIdentifier = self->super._sessionIdentifier;
-  if (sessionIdentifier != v4)
+  if (sessionIdentifier != identifierCopy)
   {
-    v8 = v4;
-    sessionIdentifier = [(NSString *)sessionIdentifier isEqual:v4];
-    v4 = v8;
+    v8 = identifierCopy;
+    sessionIdentifier = [(NSString *)sessionIdentifier isEqual:identifierCopy];
+    identifierCopy = v8;
     if ((sessionIdentifier & 1) == 0)
     {
       v6 = [(NSString *)v8 copy];
       v7 = self->super._sessionIdentifier;
       self->super._sessionIdentifier = v6;
 
-      v4 = v8;
+      identifierCopy = v8;
     }
   }
 
-  MEMORY[0x1EEE66BB8](sessionIdentifier, v4);
+  MEMORY[0x1EEE66BB8](sessionIdentifier, identifierCopy);
 }
 
-- (void)setCellularOperatorName:(id)a3
+- (void)setCellularOperatorName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   cellularOperatorName = self->super._cellularOperatorName;
-  if (cellularOperatorName != v4)
+  if (cellularOperatorName != nameCopy)
   {
-    v8 = v4;
-    cellularOperatorName = [(NSString *)cellularOperatorName isEqual:v4];
-    v4 = v8;
+    v8 = nameCopy;
+    cellularOperatorName = [(NSString *)cellularOperatorName isEqual:nameCopy];
+    nameCopy = v8;
     if ((cellularOperatorName & 1) == 0)
     {
       v6 = [(NSString *)v8 copy];
       v7 = self->super._cellularOperatorName;
       self->super._cellularOperatorName = v6;
 
-      v4 = v8;
+      nameCopy = v8;
     }
   }
 
-  MEMORY[0x1EEE66BB8](cellularOperatorName, v4);
+  MEMORY[0x1EEE66BB8](cellularOperatorName, nameCopy);
 }
 
-- (void)setPhoneNumber:(id)a3
+- (void)setPhoneNumber:(id)number
 {
-  v4 = a3;
+  numberCopy = number;
   phoneNumber = self->super._phoneNumber;
-  if (phoneNumber != v4)
+  if (phoneNumber != numberCopy)
   {
-    v8 = v4;
-    phoneNumber = [(NSString *)phoneNumber isEqual:v4];
-    v4 = v8;
+    v8 = numberCopy;
+    phoneNumber = [(NSString *)phoneNumber isEqual:numberCopy];
+    numberCopy = v8;
     if ((phoneNumber & 1) == 0)
     {
       v6 = [(NSString *)v8 copy];
       v7 = self->super._phoneNumber;
       self->super._phoneNumber = v6;
 
-      v4 = v8;
+      numberCopy = v8;
     }
   }
 
-  MEMORY[0x1EEE66BB8](phoneNumber, v4);
+  MEMORY[0x1EEE66BB8](phoneNumber, numberCopy);
 }
 
-- (void)setTermsStatusList:(id)a3
+- (void)setTermsStatusList:(id)list
 {
-  v4 = a3;
+  listCopy = list;
   termsStatusList = self->super._termsStatusList;
-  if (termsStatusList != v4)
+  if (termsStatusList != listCopy)
   {
-    v8 = v4;
-    termsStatusList = [(NSArray *)termsStatusList isEqual:v4];
-    v4 = v8;
+    v8 = listCopy;
+    termsStatusList = [(NSArray *)termsStatusList isEqual:listCopy];
+    listCopy = v8;
     if ((termsStatusList & 1) == 0)
     {
       v6 = [(NSArray *)v8 copy];
       v7 = self->super._termsStatusList;
       self->super._termsStatusList = v6;
 
-      v4 = v8;
+      listCopy = v8;
     }
   }
 
-  MEMORY[0x1EEE66BB8](termsStatusList, v4);
+  MEMORY[0x1EEE66BB8](termsStatusList, listCopy);
 }
 
-- (void)setPartner:(id)a3
+- (void)setPartner:(id)partner
 {
-  v4 = a3;
+  partnerCopy = partner;
   partner = self->super._partner;
-  if (partner != v4)
+  if (partner != partnerCopy)
   {
-    v8 = v4;
-    partner = [(NSString *)partner isEqual:v4];
-    v4 = v8;
+    v8 = partnerCopy;
+    partner = [(NSString *)partner isEqual:partnerCopy];
+    partnerCopy = v8;
     if ((partner & 1) == 0)
     {
       v6 = [(NSString *)v8 copy];
       v7 = self->super._partner;
       self->super._partner = v6;
 
-      v4 = v8;
+      partnerCopy = v8;
     }
   }
 
-  MEMORY[0x1EEE66BB8](partner, v4);
+  MEMORY[0x1EEE66BB8](partner, partnerCopy);
 }
 
-- (void)setServiceBeginsTimestamp:(id)a3
+- (void)setServiceBeginsTimestamp:(id)timestamp
 {
-  v9 = a3;
+  timestampCopy = timestamp;
   v4 = self->super._serviceBeginsTimestamp;
   serviceBeginsTimestamp = v4;
-  if (v4 != v9)
+  if (v4 != timestampCopy)
   {
-    v6 = [(NSDate *)v4 isEqual:v9];
+    v6 = [(NSDate *)v4 isEqual:timestampCopy];
 
-    v7 = v9;
+    v7 = timestampCopy;
     if (v6)
     {
       goto LABEL_5;
     }
 
-    v8 = v9;
+    v8 = timestampCopy;
     serviceBeginsTimestamp = self->super._serviceBeginsTimestamp;
     self->super._serviceBeginsTimestamp = v8;
   }
 
-  v7 = v9;
+  v7 = timestampCopy;
 LABEL_5:
 }
 
-- (void)setInitialPurchaseTimestamp:(id)a3
+- (void)setInitialPurchaseTimestamp:(id)timestamp
 {
-  v9 = a3;
+  timestampCopy = timestamp;
   v4 = self->super._initialPurchaseTimestamp;
   initialPurchaseTimestamp = v4;
-  if (v4 != v9)
+  if (v4 != timestampCopy)
   {
-    v6 = [(NSDate *)v4 isEqual:v9];
+    v6 = [(NSDate *)v4 isEqual:timestampCopy];
 
-    v7 = v9;
+    v7 = timestampCopy;
     if (v6)
     {
       goto LABEL_5;
     }
 
-    v8 = v9;
+    v8 = timestampCopy;
     initialPurchaseTimestamp = self->super._initialPurchaseTimestamp;
     self->super._initialPurchaseTimestamp = v8;
   }
 
-  v7 = v9;
+  v7 = timestampCopy;
 LABEL_5:
 }
 
-- (void)setExpirationDate:(id)a3
+- (void)setExpirationDate:(id)date
 {
-  v9 = a3;
+  dateCopy = date;
   v4 = self->super._expirationDate;
   expirationDate = v4;
-  if (v4 != v9)
+  if (v4 != dateCopy)
   {
-    v6 = [(NSDate *)v4 isEqual:v9];
+    v6 = [(NSDate *)v4 isEqual:dateCopy];
 
-    v7 = v9;
+    v7 = dateCopy;
     if (v6)
     {
       goto LABEL_5;
     }
 
-    v8 = v9;
+    v8 = dateCopy;
     expirationDate = self->super._expirationDate;
     self->super._expirationDate = v8;
   }
 
-  v7 = v9;
+  v7 = dateCopy;
 LABEL_5:
 }
 
-- (void)setStudentVerifier:(id)a3
+- (void)setStudentVerifier:(id)verifier
 {
-  v4 = a3;
+  verifierCopy = verifier;
   studentVerifier = self->super._studentVerifier;
-  if (studentVerifier != v4)
+  if (studentVerifier != verifierCopy)
   {
-    v8 = v4;
-    studentVerifier = [(NSString *)studentVerifier isEqual:v4];
-    v4 = v8;
+    v8 = verifierCopy;
+    studentVerifier = [(NSString *)studentVerifier isEqual:verifierCopy];
+    verifierCopy = v8;
     if ((studentVerifier & 1) == 0)
     {
       v6 = [(NSString *)v8 copy];
       v7 = self->super._studentVerifier;
       self->super._studentVerifier = v6;
 
-      v4 = v8;
+      verifierCopy = v8;
     }
   }
 
-  MEMORY[0x1EEE66BB8](studentVerifier, v4);
+  MEMORY[0x1EEE66BB8](studentVerifier, verifierCopy);
 }
 
-- (void)setStudentVerificationId:(id)a3
+- (void)setStudentVerificationId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   studentVerificationId = self->super._studentVerificationId;
-  if (studentVerificationId != v4)
+  if (studentVerificationId != idCopy)
   {
-    v8 = v4;
-    studentVerificationId = [(NSString *)studentVerificationId isEqual:v4];
-    v4 = v8;
+    v8 = idCopy;
+    studentVerificationId = [(NSString *)studentVerificationId isEqual:idCopy];
+    idCopy = v8;
     if ((studentVerificationId & 1) == 0)
     {
       v6 = [(NSString *)v8 copy];
       v7 = self->super._studentVerificationId;
       self->super._studentVerificationId = v6;
 
-      v4 = v8;
+      idCopy = v8;
     }
   }
 
-  MEMORY[0x1EEE66BB8](studentVerificationId, v4);
+  MEMORY[0x1EEE66BB8](studentVerificationId, idCopy);
 }
 
-- (void)setStudentExpirationDate:(id)a3
+- (void)setStudentExpirationDate:(id)date
 {
-  v9 = a3;
+  dateCopy = date;
   v4 = self->super._studentExpirationDate;
   studentExpirationDate = v4;
-  if (v4 != v9)
+  if (v4 != dateCopy)
   {
-    v6 = [(NSDate *)v4 isEqual:v9];
+    v6 = [(NSDate *)v4 isEqual:dateCopy];
 
-    v7 = v9;
+    v7 = dateCopy;
     if (v6)
     {
       goto LABEL_5;
     }
 
-    v8 = v9;
+    v8 = dateCopy;
     studentExpirationDate = self->super._studentExpirationDate;
     self->super._studentExpirationDate = v8;
   }
 
-  v7 = v9;
+  v7 = dateCopy;
 LABEL_5:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [[ICMusicSubscriptionStatus alloc] _init];
-  [(ICMusicSubscriptionStatus *)self _copySubscriptionStatusPropertiesToStatus:v5 withZone:a3];
-  return v5;
+  _init = [[ICMusicSubscriptionStatus alloc] _init];
+  [(ICMusicSubscriptionStatus *)self _copySubscriptionStatusPropertiesToStatus:_init withZone:zone];
+  return _init;
 }
 
 @end

@@ -1,21 +1,21 @@
 @interface NUScheduledQueue
 - (NUScheduledQueue)init;
-- (void)_dispatchItemsThrough:(unint64_t)a3;
-- (void)_scheduleTimer:(unint64_t)a3;
+- (void)_dispatchItemsThrough:(unint64_t)through;
+- (void)_scheduleTimer:(unint64_t)timer;
 - (void)_timerFired;
 - (void)dealloc;
-- (void)dispatchAfter:(double)a3 queue:(id)a4 block:(id)a5;
-- (void)dispatchAt:(unint64_t)a3 queue:(id)a4 block:(id)a5;
+- (void)dispatchAfter:(double)after queue:(id)queue block:(id)block;
+- (void)dispatchAt:(unint64_t)at queue:(id)queue block:(id)block;
 @end
 
 @implementation NUScheduledQueue
 
-- (void)dispatchAt:(unint64_t)a3 queue:(id)a4 block:(id)a5
+- (void)dispatchAt:(unint64_t)at queue:(id)queue block:(id)block
 {
   v53 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
-  if (!v8)
+  queueCopy = queue;
+  blockCopy = block;
+  if (!queueCopy)
   {
     v14 = NUAssertLogger_29870();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -36,8 +36,8 @@
         v28 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v29 = MEMORY[0x1E696AF00];
         v30 = v28;
-        v31 = [v29 callStackSymbols];
-        v32 = [v31 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v29 callStackSymbols];
+        v32 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v50 = v28;
         v51 = 2114;
@@ -48,8 +48,8 @@
 
     else if (v18)
     {
-      v19 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v20 = [v19 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v20 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v50 = v20;
       _os_log_error_impl(&dword_1C0184000, v17, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -58,8 +58,8 @@
     _NUAssertFailHandler("[NUScheduledQueue dispatchAt:queue:block:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Render/NUScheduledQueue.m", 152, @"Invalid parameter not satisfying: %s", v33, v34, v35, v36, "queue != nil");
   }
 
-  v10 = v9;
-  if (!v9)
+  v10 = blockCopy;
+  if (!blockCopy)
   {
     v21 = NUAssertLogger_29870();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -80,8 +80,8 @@
         v37 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v38 = MEMORY[0x1E696AF00];
         v39 = v37;
-        v40 = [v38 callStackSymbols];
-        v41 = [v40 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v38 callStackSymbols];
+        v41 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v50 = v37;
         v51 = 2114;
@@ -92,8 +92,8 @@
 
     else if (v25)
     {
-      v26 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v27 = [v26 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v27 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v50 = v27;
       _os_log_error_impl(&dword_1C0184000, v24, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -102,7 +102,7 @@
     _NUAssertFailHandler("[NUScheduledQueue dispatchAt:queue:block:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Render/NUScheduledQueue.m", 153, @"Invalid parameter not satisfying: %s", v42, v43, v44, v45, "block != nil");
   }
 
-  v11 = [[NUScheduledItem alloc] initWithScheduledTime:a3 queue:v8 block:v9];
+  v11 = [[NUScheduledItem alloc] initWithScheduledTime:at queue:queueCopy block:blockCopy];
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -110,7 +110,7 @@
   block[3] = &unk_1E810B750;
   block[4] = self;
   v47 = v11;
-  v48 = a3;
+  atCopy = at;
   v13 = v11;
   dispatch_sync(queue, block);
 }
@@ -131,19 +131,19 @@ void __43__NUScheduledQueue_dispatchAt_queue_block___block_invoke(uint64_t a1)
   }
 }
 
-- (void)dispatchAfter:(double)a3 queue:(id)a4 block:(id)a5
+- (void)dispatchAfter:(double)after queue:(id)queue block:(id)block
 {
-  v8 = a5;
-  v9 = a4;
-  [(NUScheduledQueue *)self dispatchAt:NUDispatchSeconds(a3) queue:v9 block:v8];
+  blockCopy = block;
+  queueCopy = queue;
+  [(NUScheduledQueue *)self dispatchAt:NUDispatchSeconds(after) queue:queueCopy block:blockCopy];
 }
 
-- (void)_dispatchItemsThrough:(unint64_t)a3
+- (void)_dispatchItemsThrough:(unint64_t)through
 {
   if ([(NSMutableArray *)self->_items count])
   {
-    v5 = [(NSMutableArray *)self->_items firstObject];
-    [v5 dispatch];
+    firstObject = [(NSMutableArray *)self->_items firstObject];
+    [firstObject dispatch];
 
     v6 = [(NSMutableArray *)self->_items count];
     if (v6 < 2)
@@ -158,7 +158,7 @@ void __43__NUScheduledQueue_dispatchAt_queue_block___block_invoke(uint64_t a1)
       while (1)
       {
         v9 = [(NSMutableArray *)self->_items objectAtIndexedSubscript:v8];
-        if ([v9 scheduledTime] > a3)
+        if ([v9 scheduledTime] > through)
         {
           break;
         }
@@ -178,11 +178,11 @@ LABEL_9:
     [(NSMutableArray *)self->_items removeObjectsInRange:0, v8];
   }
 
-  v10 = [(NSMutableArray *)self->_items firstObject];
-  v11 = v10;
-  if (v10)
+  firstObject2 = [(NSMutableArray *)self->_items firstObject];
+  v11 = firstObject2;
+  if (firstObject2)
   {
-    -[NUScheduledQueue _scheduleTimer:](self, "_scheduleTimer:", [v10 scheduledTime]);
+    -[NUScheduledQueue _scheduleTimer:](self, "_scheduleTimer:", [firstObject2 scheduledTime]);
   }
 
   else
@@ -199,12 +199,12 @@ LABEL_9:
   [(NUScheduledQueue *)self _dispatchItemsThrough:v4];
 }
 
-- (void)_scheduleTimer:(unint64_t)a3
+- (void)_scheduleTimer:(unint64_t)timer
 {
   timer = self->_timer;
   [(NUScheduledQueue *)self timerLeeway];
 
-  dispatch_source_set_timer(timer, a3, 0xFFFFFFFFFFFFFFFFLL, (v5 * 1000000000.0));
+  dispatch_source_set_timer(timer, timer, 0xFFFFFFFFFFFFFFFFLL, (v5 * 1000000000.0));
 }
 
 - (void)dealloc

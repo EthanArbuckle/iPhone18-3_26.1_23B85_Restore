@@ -1,6 +1,6 @@
 @interface PRSWallpaperObserverState
 - (PRSWallpaperObserverState)init;
-- (id)_initWithSelectedLock:(id)a3 selectedHome:(id)a4 activeLock:(id)a5 activeHome:(id)a6;
+- (id)_initWithSelectedLock:(id)lock selectedHome:(id)home activeLock:(id)activeLock activeHome:(id)activeHome;
 - (id)description;
 @end
 
@@ -23,7 +23,7 @@
     v14 = 2114;
     v15 = v10;
     v16 = 2048;
-    v17 = self;
+    selfCopy = self;
     v18 = 2114;
     v19 = @"PRSWallpaperObserver.m";
     v20 = 1024;
@@ -39,22 +39,22 @@
   return result;
 }
 
-- (id)_initWithSelectedLock:(id)a3 selectedHome:(id)a4 activeLock:(id)a5 activeHome:(id)a6
+- (id)_initWithSelectedLock:(id)lock selectedHome:(id)home activeLock:(id)activeLock activeHome:(id)activeHome
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  lockCopy = lock;
+  homeCopy = home;
+  activeLockCopy = activeLock;
+  activeHomeCopy = activeHome;
   v18.receiver = self;
   v18.super_class = PRSWallpaperObserverState;
   v15 = [(PRSWallpaperObserverState *)&v18 init];
   p_isa = &v15->super.isa;
   if (v15)
   {
-    objc_storeStrong(&v15->_selectedLock, a3);
-    objc_storeStrong(p_isa + 2, a4);
-    objc_storeStrong(p_isa + 3, a5);
-    objc_storeStrong(p_isa + 4, a6);
+    objc_storeStrong(&v15->_selectedLock, lock);
+    objc_storeStrong(p_isa + 2, home);
+    objc_storeStrong(p_isa + 3, activeLock);
+    objc_storeStrong(p_isa + 4, activeHome);
   }
 
   return p_isa;
@@ -65,15 +65,15 @@
   v15 = MEMORY[0x1E696AEC0];
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(PRSPosterConfiguration *)self->_selectedLock _path];
-  v6 = [v5 serverIdentity];
-  v7 = [(PRSPosterConfiguration *)self->_selectedHome _path];
-  v8 = [v7 serverIdentity];
-  v9 = [(PRSPosterConfiguration *)self->_activeLock _path];
-  v10 = [v9 serverIdentity];
-  v11 = [(PRSPosterConfiguration *)self->_activeHome _path];
-  v12 = [v11 serverIdentity];
-  v13 = [v15 stringWithFormat:@"<%@:%p sl=%@ sh=%@ al=%@ ah=%@>", v4, self, v6, v8, v10, v12];
+  _path = [(PRSPosterConfiguration *)self->_selectedLock _path];
+  serverIdentity = [_path serverIdentity];
+  _path2 = [(PRSPosterConfiguration *)self->_selectedHome _path];
+  serverIdentity2 = [_path2 serverIdentity];
+  _path3 = [(PRSPosterConfiguration *)self->_activeLock _path];
+  serverIdentity3 = [_path3 serverIdentity];
+  _path4 = [(PRSPosterConfiguration *)self->_activeHome _path];
+  serverIdentity4 = [_path4 serverIdentity];
+  v13 = [v15 stringWithFormat:@"<%@:%p sl=%@ sh=%@ al=%@ ah=%@>", v4, self, serverIdentity, serverIdentity2, serverIdentity3, serverIdentity4];
 
   return v13;
 }

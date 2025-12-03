@@ -1,8 +1,8 @@
 @interface MTRApplicationLauncherClusterStopAppParams
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3;
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader;
 - (MTRApplicationLauncherClusterStopAppParams)init;
-- (id)_encodeAsDataValue:(id *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_encodeAsDataValue:(id *)value;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -29,17 +29,17 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRApplicationLauncherClusterStopAppParams);
-  v5 = [(MTRApplicationLauncherClusterStopAppParams *)self application];
-  [(MTRApplicationLauncherClusterStopAppParams *)v4 setApplication:v5];
+  application = [(MTRApplicationLauncherClusterStopAppParams *)self application];
+  [(MTRApplicationLauncherClusterStopAppParams *)v4 setApplication:application];
 
-  v6 = [(MTRApplicationLauncherClusterStopAppParams *)self timedInvokeTimeoutMs];
-  [(MTRApplicationLauncherClusterStopAppParams *)v4 setTimedInvokeTimeoutMs:v6];
+  timedInvokeTimeoutMs = [(MTRApplicationLauncherClusterStopAppParams *)self timedInvokeTimeoutMs];
+  [(MTRApplicationLauncherClusterStopAppParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
-  v7 = [(MTRApplicationLauncherClusterStopAppParams *)self serverSideProcessingTimeout];
-  [(MTRApplicationLauncherClusterStopAppParams *)v4 setServerSideProcessingTimeout:v7];
+  serverSideProcessingTimeout = [(MTRApplicationLauncherClusterStopAppParams *)self serverSideProcessingTimeout];
+  [(MTRApplicationLauncherClusterStopAppParams *)v4 setServerSideProcessingTimeout:serverSideProcessingTimeout];
 
   return v4;
 }
@@ -54,26 +54,26 @@
   return v6;
 }
 
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader
 {
   v26[0] = 0;
   v25[0] = 0;
   v25[1] = 0;
   v24 = v25;
-  v5 = [(MTRApplicationLauncherClusterStopAppParams *)self application];
+  application = [(MTRApplicationLauncherClusterStopAppParams *)self application];
 
-  if (v5)
+  if (application)
   {
     v26[0] = 1;
     v28 = 0uLL;
     v27 = 0;
-    v6 = [(MTRApplicationLauncherClusterStopAppParams *)self application];
-    v7 = [v6 catalogVendorID];
-    LOWORD(v27) = [v7 unsignedShortValue];
+    application2 = [(MTRApplicationLauncherClusterStopAppParams *)self application];
+    catalogVendorID = [application2 catalogVendorID];
+    LOWORD(v27) = [catalogVendorID unsignedShortValue];
 
-    v8 = [(MTRApplicationLauncherClusterStopAppParams *)self application];
-    v9 = [v8 applicationID];
-    sub_238DB9BD8(v18, [v9 UTF8String], objc_msgSend(v9, "lengthOfBytesUsingEncoding:", 4));
+    application3 = [(MTRApplicationLauncherClusterStopAppParams *)self application];
+    applicationID = [application3 applicationID];
+    sub_238DB9BD8(v18, [applicationID UTF8String], objc_msgSend(applicationID, "lengthOfBytesUsingEncoding:", 4));
 
     v28 = v18[0];
   }
@@ -97,8 +97,8 @@
 
     else
     {
-      sub_238DD2F90(a3, &v23);
-      v10 = sub_2393C7114(a3, 21, 256);
+      sub_238DD2F90(reader, &v23);
+      v10 = sub_2393C7114(reader, 21, 256);
       v13 = v17;
       v12 = v10;
     }
@@ -126,19 +126,19 @@
   return result;
 }
 
-- (id)_encodeAsDataValue:(id *)a3
+- (id)_encodeAsDataValue:(id *)value
 {
   v5 = sub_2393C5AAC(v12);
   v13 = 0;
   v7 = [(MTRApplicationLauncherClusterStopAppParams *)self _encodeToTLVReader:v12, v5];
   if (v7)
   {
-    if (a3)
+    if (value)
     {
       v8 = sub_23921C1E4(MTRError, v7, v6);
       v9 = 0;
 LABEL_7:
-      *a3 = v8;
+      *value = v8;
       goto LABEL_9;
     }
 
@@ -149,7 +149,7 @@ LABEL_7:
   {
     v10 = sub_238EE60DC(v12, 0);
     v9 = v10;
-    if (a3 && !v10)
+    if (value && !v10)
     {
       v8 = sub_23921C1E4(MTRError, 0x7BD400000003, "/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/zap-generated/MTRCommandPayloadsObjc.mm");
       goto LABEL_7;

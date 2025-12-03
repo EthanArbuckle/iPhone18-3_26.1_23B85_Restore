@@ -3,25 +3,25 @@
 - (CAShapeLayer)shapeLayer;
 - (CGPoint)maxPoint;
 - (CGPoint)minPoint;
-- (FMMapDragRadiusView)initWithCoder:(id)a3;
-- (FMMapDragRadiusView)initWithFrame:(CGRect)a3;
+- (FMMapDragRadiusView)initWithCoder:(id)coder;
+- (FMMapDragRadiusView)initWithFrame:(CGRect)frame;
 - (double)currentHandleDistance;
 - (double)currentHandleDistanceNormalized;
 - (double)maximumRadiusNormalized;
 - (double)minimumInMeters;
 - (double)minimumRadiusNormalized;
-- (id)bezierPathWithEndPoint:(CGPoint)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (id)shapeLayerWithEndPoint:(CGPoint)a3;
-- (void)_axSetCustomRadius:(double)a3;
-- (void)addHandleForAnnotation:(id)a3;
-- (void)animateHandleIn:(BOOL)a3;
-- (void)drawRect:(CGRect)a3;
-- (void)handlePan:(id)a3;
+- (id)bezierPathWithEndPoint:(CGPoint)point;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (id)shapeLayerWithEndPoint:(CGPoint)point;
+- (void)_axSetCustomRadius:(double)radius;
+- (void)addHandleForAnnotation:(id)annotation;
+- (void)animateHandleIn:(BOOL)in;
+- (void)drawRect:(CGRect)rect;
+- (void)handlePan:(id)pan;
 - (void)hideCircleAfterDelay;
 - (void)initialize;
 - (void)popAnimateHandle;
-- (void)removeHandle:(BOOL)a3;
+- (void)removeHandle:(BOOL)handle;
 @end
 
 @implementation FMMapDragRadiusView
@@ -38,19 +38,19 @@
   v10 = [v3 initWithImage:v6 highlightedImage:v9];
   [(FMMapDragRadiusView *)self setHandleImageView:v10];
 
-  v11 = [(FMMapDragRadiusView *)self handleImageView];
-  v12 = [v11 layer];
-  [v12 setZPosition:50.0];
+  handleImageView = [(FMMapDragRadiusView *)self handleImageView];
+  layer = [handleImageView layer];
+  [layer setZPosition:50.0];
 
   v13 = [[UIPanGestureRecognizer alloc] initWithTarget:self action:"handlePan:"];
   [(FMMapDragRadiusView *)self addGestureRecognizer:v13];
 }
 
-- (FMMapDragRadiusView)initWithCoder:(id)a3
+- (FMMapDragRadiusView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = FMMapDragRadiusView;
-  v3 = [(FMMapDragRadiusView *)&v6 initWithCoder:a3];
+  v3 = [(FMMapDragRadiusView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -60,11 +60,11 @@
   return v4;
 }
 
-- (FMMapDragRadiusView)initWithFrame:(CGRect)a3
+- (FMMapDragRadiusView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = FMMapDragRadiusView;
-  v3 = [(FMMapDragRadiusView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(FMMapDragRadiusView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -76,24 +76,24 @@
 
 - (void)popAnimateHandle
 {
-  v2 = [(FMMapDragRadiusView *)self handleImageView];
-  v3 = [v2 layer];
+  handleImageView = [(FMMapDragRadiusView *)self handleImageView];
+  layer = [handleImageView layer];
 
   v4 = [CAKeyframeAnimation animationWithKeyPath:@"transform"];
   [v4 setDuration:0.349999994];
   memset(&v26, 0, sizeof(v26));
-  if (v3)
+  if (layer)
   {
-    [v3 transform];
+    [layer transform];
     CATransform3DScale(&v26, &v25, 0.5, 0.5, 1.0);
     memset(&v25, 0, sizeof(v25));
-    [v3 transform];
+    [layer transform];
     CATransform3DScale(&v25, &v24, 1.20000005, 1.20000005, 1.0);
     memset(&v24, 0, sizeof(v24));
-    [v3 transform];
+    [layer transform];
     CATransform3DScale(&v24, &v23, 0.899999976, 0.899999976, 1.0);
     memset(&v23, 0, sizeof(v23));
-    [v3 transform];
+    [layer transform];
   }
 
   else
@@ -138,17 +138,17 @@
   [v4 setTimingFunctions:v21];
   [v4 setFillMode:kCAFillModeForwards];
   [v4 setRemovedOnCompletion:0];
-  [v3 addAnimation:v4 forKey:@"transform"];
+  [layer addAnimation:v4 forKey:@"transform"];
 }
 
-- (id)bezierPathWithEndPoint:(CGPoint)a3
+- (id)bezierPathWithEndPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(FMMapDragRadiusView *)self mapView];
-  v7 = [(FMMapDragRadiusView *)self annotation];
-  [v7 coordinate];
-  [v6 convertCoordinate:self toPointToView:?];
+  y = point.y;
+  x = point.x;
+  mapView = [(FMMapDragRadiusView *)self mapView];
+  annotation = [(FMMapDragRadiusView *)self annotation];
+  [annotation coordinate];
+  [mapView convertCoordinate:self toPointToView:?];
   v9 = v8;
   v11 = v10;
 
@@ -189,34 +189,34 @@
   return shapeLayer;
 }
 
-- (id)shapeLayerWithEndPoint:(CGPoint)a3
+- (id)shapeLayerWithEndPoint:(CGPoint)point
 {
-  v4 = [(FMMapDragRadiusView *)self bezierPathWithEndPoint:a3.x, a3.y];
-  v5 = [(FMMapDragRadiusView *)self shapeLayer];
-  [v5 setPath:{objc_msgSend(v4, "CGPath")}];
-  v6 = [v5 superlayer];
+  v4 = [(FMMapDragRadiusView *)self bezierPathWithEndPoint:point.x, point.y];
+  shapeLayer = [(FMMapDragRadiusView *)self shapeLayer];
+  [shapeLayer setPath:{objc_msgSend(v4, "CGPath")}];
+  superlayer = [shapeLayer superlayer];
 
-  if (!v6)
+  if (!superlayer)
   {
-    v7 = [(FMMapDragRadiusView *)self layer];
-    [v7 addSublayer:v5];
+    layer = [(FMMapDragRadiusView *)self layer];
+    [layer addSublayer:shapeLayer];
   }
 
-  return v5;
+  return shapeLayer;
 }
 
-- (void)animateHandleIn:(BOOL)a3
+- (void)animateHandleIn:(BOOL)in
 {
-  v3 = a3;
-  v5 = [(FMMapDragRadiusView *)self annotation];
-  v6 = [v5 overlay];
-  [v6 boundingMapRect];
+  inCopy = in;
+  annotation = [(FMMapDragRadiusView *)self annotation];
+  overlay = [annotation overlay];
+  [overlay boundingMapRect];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  v15 = [(FMMapDragRadiusView *)self mapView];
-  [v15 visibleMapRect];
+  mapView = [(FMMapDragRadiusView *)self mapView];
+  [mapView visibleMapRect];
   v63.origin.x = v16;
   v63.origin.y = v17;
   v63.size.width = v18;
@@ -229,30 +229,30 @@
 
   if (v20)
   {
-    v21 = [(FMMapDragRadiusView *)self mapView];
-    v22 = [(FMMapDragRadiusView *)self annotation];
-    [v22 coordinate];
-    [v21 convertCoordinate:self toPointToView:?];
+    mapView2 = [(FMMapDragRadiusView *)self mapView];
+    annotation2 = [(FMMapDragRadiusView *)self annotation];
+    [annotation2 coordinate];
+    [mapView2 convertCoordinate:self toPointToView:?];
     v24 = v23;
     v26 = v25;
 
-    v27 = [(FMMapDragRadiusView *)self handleImageView];
-    [v27 setCenter:{floor(v24), floor(v26)}];
+    handleImageView = [(FMMapDragRadiusView *)self handleImageView];
+    [handleImageView setCenter:{floor(v24), floor(v26)}];
 
-    v28 = [(FMMapDragRadiusView *)self handleImageView];
-    [(FMMapDragRadiusView *)self addSubview:v28];
+    handleImageView2 = [(FMMapDragRadiusView *)self handleImageView];
+    [(FMMapDragRadiusView *)self addSubview:handleImageView2];
 
-    v29 = [(FMMapDragRadiusView *)self annotation];
-    v30 = [v29 overlay];
-    [v30 boundingMapRect];
+    annotation3 = [(FMMapDragRadiusView *)self annotation];
+    overlay2 = [annotation3 overlay];
+    [overlay2 boundingMapRect];
     v60 = MKCoordinateRegionForMapRect(v59);
     latitude = v60.center.latitude;
     longitude = v60.center.longitude;
     latitudeDelta = v60.span.latitudeDelta;
     longitudeDelta = v60.span.longitudeDelta;
 
-    v35 = [(FMMapDragRadiusView *)self mapView];
-    [v35 convertRegion:self toRectToView:{latitude, longitude, latitudeDelta, longitudeDelta}];
+    mapView3 = [(FMMapDragRadiusView *)self mapView];
+    [mapView3 convertRegion:self toRectToView:{latitude, longitude, latitudeDelta, longitudeDelta}];
     v37 = v36;
     v39 = v38;
     v41 = v40;
@@ -268,12 +268,12 @@
     v62.size.width = v41;
     v62.size.height = v43;
     MidY = CGRectGetMidY(v62);
-    v46 = [(FMMapDragRadiusView *)self handleImageView];
-    v53 = v46;
+    handleImageView3 = [(FMMapDragRadiusView *)self handleImageView];
+    handleImageView4 = handleImageView3;
     if (v44 - v24 >= 12.0)
     {
       v47 = floor(MidY);
-      [v46 setAlpha:1.0];
+      [handleImageView3 setAlpha:1.0];
 
       [(FMMapDragRadiusView *)self frame];
       v57.width = v48;
@@ -284,7 +284,7 @@
       v51 = [(FMMapDragRadiusView *)self shapeLayerWithEndPoint:v44, v47];
       CGContextRestoreGState(CurrentContext);
       UIGraphicsEndImageContext();
-      if (v3)
+      if (inCopy)
       {
         v52 = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
         [v52 setDuration:0.35];
@@ -308,88 +308,88 @@
         return;
       }
 
-      v53 = [(FMMapDragRadiusView *)self handleImageView];
-      [v53 setCenter:{v44, v47}];
+      handleImageView4 = [(FMMapDragRadiusView *)self handleImageView];
+      [handleImageView4 setCenter:{v44, v47}];
     }
 
     else
     {
-      [v46 setAlpha:0.0];
+      [handleImageView3 setAlpha:0.0];
     }
   }
 }
 
-- (void)addHandleForAnnotation:(id)a3
+- (void)addHandleForAnnotation:(id)annotation
 {
-  v9 = a3;
-  v4 = [(FMMapDragRadiusView *)self isDragging];
-  v5 = v9;
-  if (v9)
+  annotationCopy = annotation;
+  isDragging = [(FMMapDragRadiusView *)self isDragging];
+  v5 = annotationCopy;
+  if (annotationCopy)
   {
-    if ((v4 & 1) == 0)
+    if ((isDragging & 1) == 0)
     {
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
-      v5 = v9;
+      v5 = annotationCopy;
       if (isKindOfClass)
       {
-        v7 = [(FMMapDragRadiusView *)self annotation];
-        v8 = v7 != v9;
+        annotation = [(FMMapDragRadiusView *)self annotation];
+        v8 = annotation != annotationCopy;
 
-        [(FMMapDragRadiusView *)self setAnnotation:v9];
+        [(FMMapDragRadiusView *)self setAnnotation:annotationCopy];
         [(FMMapDragRadiusView *)self animateHandleIn:v8];
-        v5 = v9;
+        v5 = annotationCopy;
       }
     }
   }
 }
 
-- (void)removeHandle:(BOOL)a3
+- (void)removeHandle:(BOOL)handle
 {
-  v3 = a3;
+  handleCopy = handle;
   if (![(FMMapDragRadiusView *)self isDragging])
   {
-    if (v3)
+    if (handleCopy)
     {
-      v5 = [(FMMapDragRadiusView *)self annotation];
-      [v5 setDidZoomOnSelection:0];
+      annotation = [(FMMapDragRadiusView *)self annotation];
+      [annotation setDidZoomOnSelection:0];
 
       [(FMMapDragRadiusView *)self setAnnotation:0];
     }
 
-    v6 = [(FMMapDragRadiusView *)self handleImageView];
-    [v6 removeFromSuperview];
+    handleImageView = [(FMMapDragRadiusView *)self handleImageView];
+    [handleImageView removeFromSuperview];
 
-    v7 = [(FMMapDragRadiusView *)self shapeLayer];
-    [v7 removeFromSuperlayer];
+    shapeLayer = [(FMMapDragRadiusView *)self shapeLayer];
+    [shapeLayer removeFromSuperlayer];
   }
 
   [(FMMapDragRadiusView *)self setNeedsDisplay];
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   v50.receiver = self;
   v50.super_class = FMMapDragRadiusView;
-  [(FMMapDragRadiusView *)&v50 drawRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(FMMapDragRadiusView *)&v50 drawRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   if ([(FMMapDragRadiusView *)self isDragging])
   {
-    v4 = [(FMMapDragRadiusView *)self mapView];
-    v5 = [(FMMapDragRadiusView *)self annotation];
-    [v5 coordinate];
-    [v4 convertCoordinate:self toPointToView:?];
+    mapView = [(FMMapDragRadiusView *)self mapView];
+    annotation = [(FMMapDragRadiusView *)self annotation];
+    [annotation coordinate];
+    [mapView convertCoordinate:self toPointToView:?];
     v7 = v6;
     v9 = v8;
 
-    v10 = [(FMMapDragRadiusView *)self handleImageView];
-    [v10 center];
+    handleImageView = [(FMMapDragRadiusView *)self handleImageView];
+    [handleImageView center];
     v12 = v11 - v7;
 
-    v13 = [(FMMapDragRadiusView *)self handleImageView];
-    [v13 center];
+    handleImageView2 = [(FMMapDragRadiusView *)self handleImageView];
+    [handleImageView2 center];
     v15 = v14 - (v12 + v12);
-    v16 = [(FMMapDragRadiusView *)self handleImageView];
-    [v16 center];
+    handleImageView3 = [(FMMapDragRadiusView *)self handleImageView];
+    [handleImageView3 center];
     v18 = v17 - v12;
 
     v19 = +[UIColor fmfOrangeColor];
@@ -480,8 +480,8 @@
     v43 = [NSDictionary dictionaryWithObjects:v52 forKeys:v51 count:3];
     [v36 drawInRect:v43 withAttributes:{x, y, width, height}];
 
-    v44 = [(FMMapDragRadiusView *)self handleImageView];
-    [v44 center];
+    handleImageView4 = [(FMMapDragRadiusView *)self handleImageView];
+    [handleImageView4 center];
     v46 = v45;
     v48 = v47;
 
@@ -489,12 +489,12 @@
   }
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = [(FMMapDragRadiusView *)self handleImageView];
-  [v7 frame];
+  y = test.y;
+  x = test.x;
+  handleImageView = [(FMMapDragRadiusView *)self handleImageView];
+  [handleImageView frame];
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -508,27 +508,27 @@
   v21.y = y;
   if (CGRectContainsPoint(v22, v21) && (-[FMMapDragRadiusView handleImageView](self, "handleImageView"), v16 = objc_claimAutoreleasedReturnValue(), [v16 superview], v17 = objc_claimAutoreleasedReturnValue(), v17, v16, v17))
   {
-    v18 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v18 = 0;
+    selfCopy = 0;
   }
 
-  return v18;
+  return selfCopy;
 }
 
-- (void)handlePan:(id)a3
+- (void)handlePan:(id)pan
 {
-  v29 = a3;
-  v4 = [v29 state];
-  if ((v4 - 3) < 2)
+  panCopy = pan;
+  state = [panCopy state];
+  if ((state - 3) < 2)
   {
-    v7 = [(FMMapDragRadiusView *)self handleImageView];
-    [v7 setHighlighted:0];
+    handleImageView = [(FMMapDragRadiusView *)self handleImageView];
+    [handleImageView setHighlighted:0];
 
-    [v29 locationInView:self];
+    [panCopy locationInView:self];
     v9 = v8;
     [(FMMapDragRadiusView *)self minPoint];
     if (v9 > v10)
@@ -558,12 +558,12 @@
       v26 = 241401.0;
     }
 
-    v27 = [(FMMapDragRadiusView *)self annotation];
-    [v27 setCustomRadius:v26];
+    annotation = [(FMMapDragRadiusView *)self annotation];
+    [annotation setCustomRadius:v26];
 
     [(FMMapDragRadiusView *)self performSelector:"hideCircleAfterDelay" withObject:0 afterDelay:0.05];
-    v28 = [(FMMapDragRadiusView *)self delegate];
-    [v28 didStopDraggingHandle:self];
+    delegate = [(FMMapDragRadiusView *)self delegate];
+    [delegate didStopDraggingHandle:self];
 
     [(FMMapDragRadiusView *)self popAnimateHandle];
 LABEL_21:
@@ -571,9 +571,9 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  if (v4 == 2)
+  if (state == 2)
   {
-    [v29 locationInView:self];
+    [panCopy locationInView:self];
     v14 = v13;
     [(FMMapDragRadiusView *)self minPoint];
     v16 = v15;
@@ -599,8 +599,8 @@ LABEL_21:
       v19 = v18;
     }
 
-    v20 = [(FMMapDragRadiusView *)self handleImageView];
-    [v20 frame];
+    handleImageView2 = [(FMMapDragRadiusView *)self handleImageView];
+    [handleImageView2 frame];
     v31.size.width = 24.0;
     v31.size.height = 24.0;
     v31.origin.x = v19;
@@ -609,30 +609,30 @@ LABEL_21:
     y = v32.origin.y;
     width = v32.size.width;
     height = v32.size.height;
-    v25 = [(FMMapDragRadiusView *)self handleImageView];
-    [v25 setFrame:{x, y, width, height}];
+    handleImageView3 = [(FMMapDragRadiusView *)self handleImageView];
+    [handleImageView3 setFrame:{x, y, width, height}];
 
     goto LABEL_21;
   }
 
-  if (v4 == 1)
+  if (state == 1)
   {
     [(FMMapDragRadiusView *)self setIsDragging:1];
-    v5 = [(FMMapDragRadiusView *)self handleImageView];
-    [v5 setHighlighted:1];
+    handleImageView4 = [(FMMapDragRadiusView *)self handleImageView];
+    [handleImageView4 setHighlighted:1];
 
     [(FMMapDragRadiusView *)self setNeedsDisplay];
-    v6 = [(FMMapDragRadiusView *)self delegate];
-    [v6 willStartDraggingHandle:self];
+    delegate2 = [(FMMapDragRadiusView *)self delegate];
+    [delegate2 willStartDraggingHandle:self];
   }
 
 LABEL_22:
 }
 
-- (void)_axSetCustomRadius:(double)a3
+- (void)_axSetCustomRadius:(double)radius
 {
-  v4 = [(FMMapDragRadiusView *)self annotation];
-  [v4 setCustomRadius:a3];
+  annotation = [(FMMapDragRadiusView *)self annotation];
+  [annotation setCustomRadius:radius];
 }
 
 - (double)minimumInMeters
@@ -655,8 +655,8 @@ LABEL_22:
 
 - (CGPoint)minPoint
 {
-  v3 = [(FMMapDragRadiusView *)self annotation];
-  [v3 coordinate];
+  annotation = [(FMMapDragRadiusView *)self annotation];
+  [annotation coordinate];
   v5 = MKMapPointsPerMeterAtLatitude(v4);
 
   if ([(FMMapDragRadiusView *)self usesMetric])
@@ -669,15 +669,15 @@ LABEL_22:
     v6 = 91.44;
   }
 
-  v7 = [(FMMapDragRadiusView *)self annotation];
-  [v7 coordinate];
+  annotation2 = [(FMMapDragRadiusView *)self annotation];
+  [annotation2 coordinate];
   v8 = MKMapPointForCoordinate(v17);
 
   v18.x = v8.x + v5 * v6;
   v18.y = v8.y;
   v9 = MKCoordinateForMapPoint(v18);
-  v10 = [(FMMapDragRadiusView *)self mapView];
-  [v10 convertCoordinate:self toPointToView:{v9.latitude, v9.longitude}];
+  mapView = [(FMMapDragRadiusView *)self mapView];
+  [mapView convertCoordinate:self toPointToView:{v9.latitude, v9.longitude}];
   v12 = v11;
   v14 = v13;
 
@@ -690,8 +690,8 @@ LABEL_22:
 
 - (CGPoint)maxPoint
 {
-  v3 = [(FMMapDragRadiusView *)self annotation];
-  [v3 coordinate];
+  annotation = [(FMMapDragRadiusView *)self annotation];
+  [annotation coordinate];
   v5 = MKMapPointsPerMeterAtLatitude(v4);
 
   if ([(FMMapDragRadiusView *)self usesMetric])
@@ -704,15 +704,15 @@ LABEL_22:
     v6 = 241401.6;
   }
 
-  v7 = [(FMMapDragRadiusView *)self annotation];
-  [v7 coordinate];
+  annotation2 = [(FMMapDragRadiusView *)self annotation];
+  [annotation2 coordinate];
   v8 = MKMapPointForCoordinate(v17);
 
   v18.x = v8.x + v5 * v6;
   v18.y = v8.y;
   v9 = MKCoordinateForMapPoint(v18);
-  v10 = [(FMMapDragRadiusView *)self mapView];
-  [v10 convertCoordinate:self toPointToView:{v9.latitude, v9.longitude}];
+  mapView = [(FMMapDragRadiusView *)self mapView];
+  [mapView convertCoordinate:self toPointToView:{v9.latitude, v9.longitude}];
   v12 = v11;
   v14 = v13;
 
@@ -727,9 +727,9 @@ LABEL_22:
 {
   [(FMMapDragRadiusView *)self currentHandleDistance];
   v4 = v3;
-  v5 = [(FMMapDragRadiusView *)self usesMetric];
+  usesMetric = [(FMMapDragRadiusView *)self usesMetric];
   v6 = v4 * 3.28084;
-  if (v5)
+  if (usesMetric)
   {
     v6 = v4;
   }
@@ -739,23 +739,23 @@ LABEL_22:
 
 - (double)currentHandleDistance
 {
-  v3 = [(FMMapDragRadiusView *)self handleImageView];
-  [v3 center];
+  handleImageView = [(FMMapDragRadiusView *)self handleImageView];
+  [handleImageView center];
   v5 = v4;
   v7 = v6;
 
-  v8 = [(FMMapDragRadiusView *)self mapView];
-  [v8 convertPoint:self toCoordinateFromView:{v5, v7}];
+  mapView = [(FMMapDragRadiusView *)self mapView];
+  [mapView convertPoint:self toCoordinateFromView:{v5, v7}];
   v10 = v9;
   v12 = v11;
 
   v13 = [[CLLocation alloc] initWithLatitude:v10 longitude:v12];
   v14 = [CLLocation alloc];
-  v15 = [(FMMapDragRadiusView *)self annotation];
-  [v15 coordinate];
+  annotation = [(FMMapDragRadiusView *)self annotation];
+  [annotation coordinate];
   v17 = v16;
-  v18 = [(FMMapDragRadiusView *)self annotation];
-  [v18 coordinate];
+  annotation2 = [(FMMapDragRadiusView *)self annotation];
+  [annotation2 coordinate];
   v19 = [v14 initWithLatitude:v17 longitude:?];
 
   [v13 distanceFromLocation:v19];
@@ -766,9 +766,9 @@ LABEL_22:
 
 - (double)maximumRadiusNormalized
 {
-  v2 = [(FMMapDragRadiusView *)self usesMetric];
+  usesMetric = [(FMMapDragRadiusView *)self usesMetric];
   result = 792000.0;
-  if (v2)
+  if (usesMetric)
   {
     return 241401.0;
   }
@@ -778,9 +778,9 @@ LABEL_22:
 
 - (double)minimumRadiusNormalized
 {
-  v2 = [(FMMapDragRadiusView *)self usesMetric];
+  usesMetric = [(FMMapDragRadiusView *)self usesMetric];
   result = 300.0;
-  if (v2)
+  if (usesMetric)
   {
     return 100.0;
   }

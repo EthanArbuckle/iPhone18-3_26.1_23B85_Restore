@@ -1,15 +1,15 @@
 @interface TSCH3DFillTextureCoordinates
 + (id)coordinates;
 - (TSCH3DFillTextureCoordinates)init;
-- (id)packageForRenderingLightingModel:(id)a3;
-- (void)addTexcoordsToProcessor:(id)a3 renderingLightingModel:(id)a4 texcoords:(id)a5;
+- (id)packageForRenderingLightingModel:(id)model;
+- (void)addTexcoordsToProcessor:(id)processor renderingLightingModel:(id)model texcoords:(id)texcoords;
 @end
 
 @implementation TSCH3DFillTextureCoordinates
 
 + (id)coordinates
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
@@ -21,10 +21,10 @@
   return [(TSCH3DFillTextureCoordinates *)&v3 init];
 }
 
-- (id)packageForRenderingLightingModel:(id)a3
+- (id)packageForRenderingLightingModel:(id)model
 {
-  v4 = a3;
-  if (!v4)
+  modelCopy = model;
+  if (!modelCopy)
   {
     v8 = MEMORY[0x277D81150];
     v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v3, v5, v6, v7, "[TSCH3DFillTextureCoordinates packageForRenderingLightingModel:]");
@@ -34,19 +34,19 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v19, v20, v21, v22);
   }
 
-  v23 = objc_msgSend_lightingModel(v4, v3, v5, v6, v7);
+  v23 = objc_msgSend_lightingModel(modelCopy, v3, v5, v6, v7);
   v28 = objc_msgSend_materials(v23, v24, v25, v26, v27);
 
   return v28;
 }
 
-- (void)addTexcoordsToProcessor:(id)a3 renderingLightingModel:(id)a4 texcoords:(id)a5
+- (void)addTexcoordsToProcessor:(id)processor renderingLightingModel:(id)model texcoords:(id)texcoords
 {
-  v89 = a3;
-  v8 = a4;
-  v87 = self;
-  v88 = a5;
-  v85 = objc_msgSend_packageForRenderingLightingModel_(self, v9, v10, v11, v12, v8);
+  processorCopy = processor;
+  modelCopy = model;
+  selfCopy = self;
+  texcoordsCopy = texcoords;
+  v85 = objc_msgSend_packageForRenderingLightingModel_(self, v9, v10, v11, v12, modelCopy);
   v90 = objc_msgSend_materialEnumerator(v85, v13, v14, v15, v16);
   v20 = 0.0;
   while (1)
@@ -100,14 +100,14 @@
         v64 = NSStringFromSelector(a2);
         v69 = objc_msgSend_defaultShaderVariables(v26, v65, v66, v67, v68);
         v74 = objc_msgSend_texcoords(v69, v70, v71, v72, v73);
-        NSLog(&cfstr_PAddingTexcoor.isa, v63, v87, v64, v74);
+        NSLog(&cfstr_PAddingTexcoor.isa, v63, selfCopy, v64, v74);
       }
 
       v75 = objc_msgSend_defaultShaderVariables(v26, v33, v35, v36, v37);
       v80 = objc_msgSend_texcoords(v75, v76, v77, v78, v79);
       v91 = 0uLL;
       v92 = 0;
-      objc_msgSend_attribute_resource_specs_(v89, v81, v82, v83, v84, v80, v88, &v91);
+      objc_msgSend_attribute_resource_specs_(processorCopy, v81, v82, v83, v84, v80, texcoordsCopy, &v91);
     }
   }
 }

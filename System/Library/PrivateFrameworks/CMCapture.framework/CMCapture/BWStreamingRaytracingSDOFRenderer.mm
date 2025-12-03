@@ -1,36 +1,36 @@
 @interface BWStreamingRaytracingSDOFRenderer
-- (BWStreamingRaytracingSDOFRenderer)initWithCaptureDevice:(id)a3 commandQueue:(id)a4 smartStyleRenderingEnabled:(BOOL)a5 squareAspectRatioConfigEnabled:(BOOL)a6;
-- (CMTime)_getSampleBufferPresentationTimeStamp:(uint64_t)a3@<X8>;
-- (id)disparityTextureFromCacheUsingPixelBuffer:(uint64_t)a1;
-- (int)prepareForRenderingWithParameters:(id)a3 inputVideoFormat:(id)a4 inputMediaPropertiesByAttachedMediaKey:(id)a5;
-- (uint64_t)_loadAndConfigureSmartStyleBundle:(uint64_t)a1;
-- (uint64_t)_runSmartStyleIntegrate:(uint64_t)a1;
+- (BWStreamingRaytracingSDOFRenderer)initWithCaptureDevice:(id)device commandQueue:(id)queue smartStyleRenderingEnabled:(BOOL)enabled squareAspectRatioConfigEnabled:(BOOL)configEnabled;
+- (CMTime)_getSampleBufferPresentationTimeStamp:(uint64_t)stamp@<X8>;
+- (id)disparityTextureFromCacheUsingPixelBuffer:(uint64_t)buffer;
+- (int)prepareForRenderingWithParameters:(id)parameters inputVideoFormat:(id)format inputMediaPropertiesByAttachedMediaKey:(id)key;
+- (uint64_t)_loadAndConfigureSmartStyleBundle:(uint64_t)bundle;
+- (uint64_t)_runSmartStyleIntegrate:(uint64_t)integrate;
 - (uint64_t)disparityTextureDescriptorsWithDepthVideoFormat:(uint64_t)result;
 - (void)dealloc;
-- (void)renderUsingParameters:(id)a3 inputPixelBuffer:(__CVBuffer *)a4 inputSampleBuffer:(opaqueCMSampleBuffer *)a5 originalPixelBuffer:(__CVBuffer *)a6 processedPixelBuffer:(__CVBuffer *)a7 completionHandler:(id)a8;
+- (void)renderUsingParameters:(id)parameters inputPixelBuffer:(__CVBuffer *)buffer inputSampleBuffer:(opaqueCMSampleBuffer *)sampleBuffer originalPixelBuffer:(__CVBuffer *)pixelBuffer processedPixelBuffer:(__CVBuffer *)processedPixelBuffer completionHandler:(id)handler;
 @end
 
 @implementation BWStreamingRaytracingSDOFRenderer
 
-- (BWStreamingRaytracingSDOFRenderer)initWithCaptureDevice:(id)a3 commandQueue:(id)a4 smartStyleRenderingEnabled:(BOOL)a5 squareAspectRatioConfigEnabled:(BOOL)a6
+- (BWStreamingRaytracingSDOFRenderer)initWithCaptureDevice:(id)device commandQueue:(id)queue smartStyleRenderingEnabled:(BOOL)enabled squareAspectRatioConfigEnabled:(BOOL)configEnabled
 {
-  v6 = a6;
-  v7 = a5;
+  configEnabledCopy = configEnabled;
+  enabledCopy = enabled;
   v14.receiver = self;
   v14.super_class = BWStreamingRaytracingSDOFRenderer;
   v10 = [(BWStreamingRaytracingSDOFRenderer *)&v14 init];
   if (v10)
   {
-    v11 = [[BWVideoDepthInferenceConfiguration alloc] initWithConcurrencyWidth:1 videoDepthLayout:0 captureDevice:a3 backpressureEvent:0];
+    v11 = [[BWVideoDepthInferenceConfiguration alloc] initWithConcurrencyWidth:1 videoDepthLayout:0 captureDevice:device backpressureEvent:0];
     [(BWVideoDepthInferenceConfiguration *)v11 networkBias];
     v10->_networkBias = v12;
-    v10->_captureDevice = a3;
-    v10->_commandQueue = a4;
+    v10->_captureDevice = device;
+    v10->_commandQueue = queue;
     v10->_portTypeProvidingTuningParameters = [(BWVideoDepthInferenceConfiguration *)v11 portType];
-    v10->_smartStyleRenderingEnabled = v7;
-    if (v7)
+    v10->_smartStyleRenderingEnabled = enabledCopy;
+    if (enabledCopy)
     {
-      [(BWStreamingRaytracingSDOFRenderer *)v10 _loadAndConfigureSmartStyleBundle:v6];
+      [(BWStreamingRaytracingSDOFRenderer *)v10 _loadAndConfigureSmartStyleBundle:configEnabledCopy];
     }
   }
 
@@ -50,17 +50,17 @@
   [(BWStreamingRaytracingSDOFRenderer *)&v4 dealloc];
 }
 
-- (void)renderUsingParameters:(id)a3 inputPixelBuffer:(__CVBuffer *)a4 inputSampleBuffer:(opaqueCMSampleBuffer *)a5 originalPixelBuffer:(__CVBuffer *)a6 processedPixelBuffer:(__CVBuffer *)a7 completionHandler:(id)a8
+- (void)renderUsingParameters:(id)parameters inputPixelBuffer:(__CVBuffer *)buffer inputSampleBuffer:(opaqueCMSampleBuffer *)sampleBuffer originalPixelBuffer:(__CVBuffer *)pixelBuffer processedPixelBuffer:(__CVBuffer *)processedPixelBuffer completionHandler:(id)handler
 {
   if (*MEMORY[0x1E695FF58] == 1)
   {
     kdebug_trace();
   }
 
-  v13 = CMGetAttachment(a5, *off_1E798A3C8, 0);
+  v13 = CMGetAttachment(sampleBuffer, *off_1E798A3C8, 0);
   if ((renderUsingParameters_inputPixelBuffer_inputSampleBuffer_originalPixelBuffer_processedPixelBuffer_completionHandler__ptRenderStateIsConfigured & 1) == 0)
   {
-    PixelFormatType = CVPixelBufferGetPixelFormatType(a4);
+    PixelFormatType = CVPixelBufferGetPixelFormatType(buffer);
     if (FigCapturePixelFormatIsTenBit(PixelFormatType))
     {
       v15 = 10;
@@ -79,8 +79,8 @@
     renderUsingParameters_inputPixelBuffer_inputSampleBuffer_originalPixelBuffer_processedPixelBuffer_completionHandler__ptRenderStateIsConfigured = 1;
   }
 
-  AttachedMedia = BWSampleBufferGetAttachedMedia(a5, @"Depth");
-  v18 = CMGetAttachment(a5, @"CinematicVideoCinematographyMetadata", 0);
+  AttachedMedia = BWSampleBufferGetAttachedMedia(sampleBuffer, @"Depth");
+  v18 = CMGetAttachment(sampleBuffer, @"CinematicVideoCinematographyMetadata", 0);
   v19 = v18;
   if (v18)
   {
@@ -132,9 +132,9 @@ LABEL_14:
   v51 = _Q0;
   v56 = _Q0;
   FigCFDictionaryGetCGRectIfPresent();
-  -[PTRenderRequest setSourceColor:](self->_ptRenderRequest, "setSourceColor:", [getPTTextureClass() createFromPixelbuffer:a4 device:-[FigMetalContext device](self->_metalContext textureCache:"device") read:self->_textureCache write:{1, 0}]);
+  -[PTRenderRequest setSourceColor:](self->_ptRenderRequest, "setSourceColor:", [getPTTextureClass() createFromPixelbuffer:buffer device:-[FigMetalContext device](self->_metalContext textureCache:"device") read:self->_textureCache write:{1, 0}]);
   [(PTRenderRequest *)self->_ptRenderRequest setSourceDisparity:disparityTextureWhileWaitingForCamera];
-  -[PTRenderRequest setDestinationColor:](self->_ptRenderRequest, "setDestinationColor:", [getPTTextureClass() createFromPixelbuffer:a7 device:-[FigMetalContext device](self->_metalContext textureCache:"device") read:self->_textureCache write:{1, 1}]);
+  -[PTRenderRequest setDestinationColor:](self->_ptRenderRequest, "setDestinationColor:", [getPTTextureClass() createFromPixelbuffer:processedPixelBuffer device:-[FigMetalContext device](self->_metalContext textureCache:"device") read:self->_textureCache write:{1, 1}]);
   [(PTRenderRequest *)self->_ptRenderRequest setRenderState:self->_ptRenderState];
   [(PTRenderRequest *)self->_ptRenderRequest setTotalSensorCropRectSize:v58];
   *&v27 = [objc_msgSend(v13 objectForKeyedSubscript:{*off_1E798B2D8), "intValue"}];
@@ -172,8 +172,8 @@ LABEL_14:
 
   [(PTRenderRequest *)self->_ptRenderRequest setVisCropFactor:_D0];
   [(PTRenderRequest *)self->_ptRenderRequest setVisCropFactorPreview:COERCE_DOUBLE(vcvt_f32_f64(vdivq_f64(v51, v56)))];
-  Width = CVPixelBufferGetWidth(a4);
-  Height = CVPixelBufferGetHeight(a4);
+  Width = CVPixelBufferGetWidth(buffer);
+  Height = CVPixelBufferGetHeight(buffer);
   alignment = self->_alignment;
   v36 = v54 * Width;
   v37 = FigCaptureFloorFloatToMultipleOf(alignment.width, v36);
@@ -207,9 +207,9 @@ LABEL_14:
   v53[2] = v46;
   v53[3] = v47 + v44;
   [(PTRenderRequest *)ptRenderRequest setScissorRect:v53];
-  if (self->_smartStyleRenderingEnabled && (BWSmartStyleRenderingShouldBeBypassed(a5) & 1) == 0)
+  if (self->_smartStyleRenderingEnabled && (BWSmartStyleRenderingShouldBeBypassed(sampleBuffer) & 1) == 0)
   {
-    [(PTRenderRequest *)self->_ptRenderRequest setIntegratedStyleCoefficientsTextureArray:[(BWStreamingRaytracingSDOFRenderer *)self _runSmartStyleIntegrate:a5]];
+    [(PTRenderRequest *)self->_ptRenderRequest setIntegratedStyleCoefficientsTextureArray:[(BWStreamingRaytracingSDOFRenderer *)self _runSmartStyleIntegrate:sampleBuffer]];
   }
 
   if (!self->_disparityTextureWhileWaitingForCamera)
@@ -223,7 +223,7 @@ LABEL_14:
     v52[1] = 3221225472;
     v52[2] = __153__BWStreamingRaytracingSDOFRenderer_renderUsingParameters_inputPixelBuffer_inputSampleBuffer_originalPixelBuffer_processedPixelBuffer_completionHandler___block_invoke;
     v52[3] = &unk_1E7998320;
-    v52[4] = a8;
+    v52[4] = handler;
     [v49 addCompletedHandler:v52];
     [v49 commit];
     return;
@@ -231,7 +231,7 @@ LABEL_14:
 
   [BWStreamingRaytracingSDOFRenderer renderUsingParameters:inputPixelBuffer:inputSampleBuffer:originalPixelBuffer:processedPixelBuffer:completionHandler:];
 LABEL_36:
-  (*(a8 + 2))(a8, 0, 0);
+  (*(handler + 2))(handler, 0, 0);
 }
 
 uint64_t __153__BWStreamingRaytracingSDOFRenderer_renderUsingParameters_inputPixelBuffer_inputSampleBuffer_originalPixelBuffer_processedPixelBuffer_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -251,13 +251,13 @@ uint64_t __153__BWStreamingRaytracingSDOFRenderer_renderUsingParameters_inputPix
   return v4();
 }
 
-- (CMTime)_getSampleBufferPresentationTimeStamp:(uint64_t)a3@<X8>
+- (CMTime)_getSampleBufferPresentationTimeStamp:(uint64_t)stamp@<X8>
 {
   if (result)
   {
     v5 = MEMORY[0x1E6960C70];
-    *a3 = *MEMORY[0x1E6960C70];
-    *(a3 + 16) = *(v5 + 16);
+    *stamp = *MEMORY[0x1E6960C70];
+    *(stamp + 16) = *(v5 + 16);
     if (target)
     {
       v6 = CMGetAttachment(target, *off_1E798A3C8, 0);
@@ -265,13 +265,13 @@ uint64_t __153__BWStreamingRaytracingSDOFRenderer_renderUsingParameters_inputPix
       {
         v9 = [v7 objectForKeyedSubscript:v8];
 
-        return CMTimeMakeFromDictionary(a3, v9);
+        return CMTimeMakeFromDictionary(stamp, v9);
       }
 
       else
       {
 
-        return CMSampleBufferGetPresentationTimeStamp(a3, target);
+        return CMSampleBufferGetPresentationTimeStamp(stamp, target);
       }
     }
 
@@ -283,36 +283,36 @@ uint64_t __153__BWStreamingRaytracingSDOFRenderer_renderUsingParameters_inputPix
 
   else
   {
-    *a3 = 0;
-    *(a3 + 8) = 0;
-    *(a3 + 16) = 0;
+    *stamp = 0;
+    *(stamp + 8) = 0;
+    *(stamp + 16) = 0;
   }
 
   return result;
 }
 
-- (uint64_t)_loadAndConfigureSmartStyleBundle:(uint64_t)a1
+- (uint64_t)_loadAndConfigureSmartStyleBundle:(uint64_t)bundle
 {
-  if (!a1)
+  if (!bundle)
   {
     return 0;
   }
 
   v4 = BWLoadProcessorBundle(@"SmartStyle", 1);
-  if (!v4 || (v5 = [v4 classNamed:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"CMISmartStyleProcessorInputOutputV%d", 1)}], (*(a1 + 120) = v5) == 0) || (v6 = objc_msgSend(v4, "classNamed:", objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"CMISmartStyleProcessorV%d", 1)), (*(a1 + 128) = v6) == 0) || (v7 = objc_msgSend([v6 alloc], "initWithOptionalMetalCommandQueue:", *(a1 + 96)), (*(a1 + 112) = v7) == 0) || ((objc_msgSend(v7, "setInstanceLabel:", @"StreamingSDOF"), v8 = objc_msgSend(*(a1 + 128), "getSmartStyleCoefficientsFilterType:", @"iir"), *(a1 + 136) = v8, v9 = *(a1 + 128), !a2) ? (v10 = objc_msgSend(v9, "getDefaultProcessorConfigurationForStreamingWithFilterType:", v8)) : (v10 = objc_msgSend(v9, "getDefaultProcessorConfigurationForStreamingSquareAspectRatioWithFilterType:", v8)), objc_msgSend(*(a1 + 112), "setConfiguration:", v10), !objc_msgSend(*(a1 + 112), "configuration")))
+  if (!v4 || (v5 = [v4 classNamed:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"CMISmartStyleProcessorInputOutputV%d", 1)}], (*(bundle + 120) = v5) == 0) || (v6 = objc_msgSend(v4, "classNamed:", objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"CMISmartStyleProcessorV%d", 1)), (*(bundle + 128) = v6) == 0) || (v7 = objc_msgSend([v6 alloc], "initWithOptionalMetalCommandQueue:", *(bundle + 96)), (*(bundle + 112) = v7) == 0) || ((objc_msgSend(v7, "setInstanceLabel:", @"StreamingSDOF"), v8 = objc_msgSend(*(bundle + 128), "getSmartStyleCoefficientsFilterType:", @"iir"), *(bundle + 136) = v8, v9 = *(bundle + 128), !a2) ? (v10 = objc_msgSend(v9, "getDefaultProcessorConfigurationForStreamingWithFilterType:", v8)) : (v10 = objc_msgSend(v9, "getDefaultProcessorConfigurationForStreamingSquareAspectRatioWithFilterType:", v8)), objc_msgSend(*(bundle + 112), "setConfiguration:", v10), !objc_msgSend(*(bundle + 112), "configuration")))
   {
     v12 = 4294954510;
 LABEL_17:
 
-    *(a1 + 112) = 0;
+    *(bundle + 112) = 0;
     return v12;
   }
 
-  *(a1 + 152) = [*(a1 + 128) getRequiredFilteredCoefficientsPixelBufferPoolSizeForFilterType:*(a1 + 136)];
-  v11 = [*(a1 + 112) setup];
-  if (v11)
+  *(bundle + 152) = [*(bundle + 128) getRequiredFilteredCoefficientsPixelBufferPoolSizeForFilterType:*(bundle + 136)];
+  setup = [*(bundle + 112) setup];
+  if (setup)
   {
-    v12 = v11;
+    v12 = setup;
     fig_log_get_emitter();
     OUTLINED_FUNCTION_2_65();
 LABEL_16:
@@ -320,7 +320,7 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  v12 = [*(a1 + 112) prepareToProcess:2];
+  v12 = [*(bundle + 112) prepareToProcess:2];
   if (v12)
   {
     fig_log_get_emitter();
@@ -331,7 +331,7 @@ LABEL_16:
   return v12;
 }
 
-- (int)prepareForRenderingWithParameters:(id)a3 inputVideoFormat:(id)a4 inputMediaPropertiesByAttachedMediaKey:(id)a5
+- (int)prepareForRenderingWithParameters:(id)parameters inputVideoFormat:(id)format inputMediaPropertiesByAttachedMediaKey:(id)key
 {
   if (self->_metalContext)
   {
@@ -357,7 +357,7 @@ LABEL_16:
 
   v10 = [objc_alloc(getPTRenderRequestClass()) init];
   self->_ptRenderRequest = v10;
-  if (!v10 || (v11 = [a5 objectForKeyedSubscript:@"Depth"]) == 0)
+  if (!v10 || (v11 = [key objectForKeyedSubscript:@"Depth"]) == 0)
   {
     fig_log_get_emitter();
     OUTLINED_FUNCTION_1_11();
@@ -368,8 +368,8 @@ LABEL_28:
     goto LABEL_24;
   }
 
-  v12 = [v11 resolvedVideoFormat];
-  v13 = [(BWStreamingRaytracingSDOFRenderer *)self disparityTextureDescriptorsWithDepthVideoFormat:v12];
+  resolvedVideoFormat = [v11 resolvedVideoFormat];
+  v13 = [(BWStreamingRaytracingSDOFRenderer *)self disparityTextureDescriptorsWithDepthVideoFormat:resolvedVideoFormat];
   if (v13)
   {
     v22 = v13;
@@ -384,15 +384,15 @@ LABEL_28:
   v14 = [-[NSDictionary objectForKeyedSubscript:](-[BWFigVideoCaptureDevice sensorIDDictionaryByPortType](self->_captureDevice "sensorIDDictionaryByPortType")];
   if (v14)
   {
-    v15 = [v14 intValue];
+    intValue = [v14 intValue];
   }
 
   else
   {
-    v15 = [getPTRenderPipelineClass() latestVersion];
+    intValue = [getPTRenderPipelineClass() latestVersion];
   }
 
-  v16 = [objc_alloc(getPTRenderPipelineDescriptorClass()) initWithDevice:-[FigMetalContext device](self->_metalContext version:"device") colorSize:v15 disparitySize:{objc_msgSend(a4, "width"), objc_msgSend(a4, "height"), objc_msgSend(v12, "width"), objc_msgSend(v12, "height")}];
+  v16 = [objc_alloc(getPTRenderPipelineDescriptorClass()) initWithDevice:-[FigMetalContext device](self->_metalContext version:"device") colorSize:intValue disparitySize:{objc_msgSend(format, "width"), objc_msgSend(format, "height"), objc_msgSend(resolvedVideoFormat, "width"), objc_msgSend(resolvedVideoFormat, "height")}];
   v17 = v16;
   if (!v16 || ([v16 setDebugRendering:0], v18 = objc_msgSend(objc_alloc(getPTRenderPipelineClass()), "initWithDescriptor:", v17), (self->_ptRenderPipeline = v18) == 0) || (v19 = -[PTRenderPipeline createRenderStateWithQuality:](v18, "createRenderStateWithQuality:", 0), (self->_ptRenderState = v19) == 0))
   {
@@ -404,9 +404,9 @@ LABEL_27:
   }
 
   self->_alignment = 0x200000002;
-  if (FigCapturePixelFormatGetCompressionType([a4 pixelFormat]))
+  if (FigCapturePixelFormatGetCompressionType([format pixelFormat]))
   {
-    self->_alignment = FigCapturePixelFormatTileAlignment([a4 pixelFormat]);
+    self->_alignment = FigCapturePixelFormatTileAlignment([format pixelFormat]);
   }
 
   if (!self->_smartStyleRenderingEnabled || !self->_smartStyleCoefficientsFilterType)
@@ -416,7 +416,7 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  v20 = [a5 objectForKeyedSubscript:0x1F21AB070];
+  v20 = [key objectForKeyedSubscript:0x1F21AB070];
   if (!v20)
   {
     goto LABEL_27;
@@ -463,16 +463,16 @@ LABEL_24:
   return result;
 }
 
-- (id)disparityTextureFromCacheUsingPixelBuffer:(uint64_t)a1
+- (id)disparityTextureFromCacheUsingPixelBuffer:(uint64_t)buffer
 {
-  if (!a1)
+  if (!buffer)
   {
     return 0;
   }
 
   image = 0;
-  v3 = *(a1 + 40);
-  if (!v3 || (v4 = *(a1 + 48)) == 0)
+  v3 = *(buffer + 40);
+  if (!v3 || (v4 = *(buffer + 48)) == 0)
   {
     fig_log_get_emitter();
     OUTLINED_FUNCTION_1_11();
@@ -486,8 +486,8 @@ LABEL_15:
   v11[0] = *MEMORY[0x1E6966010];
   v12[0] = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v4, "usage")}];
   v11[1] = *MEMORY[0x1E6966008];
-  v12[1] = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(*(a1 + 48), "storageMode")}];
-  if (CVMetalTextureCacheCreateTextureFromImage(v6, v3, a2, [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:v11 count:2], objc_msgSend(*(a1 + 48), "pixelFormat"), objc_msgSend(*(a1 + 48), "width"), objc_msgSend(*(a1 + 48), "height"), 0, &image))
+  v12[1] = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(*(buffer + 48), "storageMode")}];
+  if (CVMetalTextureCacheCreateTextureFromImage(v6, v3, a2, [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:v11 count:2], objc_msgSend(*(buffer + 48), "pixelFormat"), objc_msgSend(*(buffer + 48), "width"), objc_msgSend(*(buffer + 48), "height"), 0, &image))
   {
     fig_log_get_emitter();
     OUTLINED_FUNCTION_1_6();
@@ -524,9 +524,9 @@ LABEL_8:
   return v8;
 }
 
-- (uint64_t)_runSmartStyleIntegrate:(uint64_t)a1
+- (uint64_t)_runSmartStyleIntegrate:(uint64_t)integrate
 {
-  if (!a1)
+  if (!integrate)
   {
     return 0;
   }
@@ -587,7 +587,7 @@ LABEL_26:
 
   [(opaqueCMSampleBuffer *)v13 setInputUnstyledThumbnailPixelBuffer:v10];
   [(opaqueCMSampleBuffer *)AttachedMedia setInputMetadataDict:v5];
-  if (!*(a1 + 136))
+  if (!*(integrate + 136))
   {
     [(opaqueCMSampleBuffer *)AttachedMedia setInputStyleCoefficientsPixelBuffer:v12];
     goto LABEL_16;
@@ -595,38 +595,38 @@ LABEL_26:
 
   v44 = 0uLL;
   v45 = 0;
-  [(BWStreamingRaytracingSDOFRenderer *)sbuf _getSampleBufferPresentationTimeStamp:a1, &v44];
+  [(BWStreamingRaytracingSDOFRenderer *)sbuf _getSampleBufferPresentationTimeStamp:integrate, &v44];
   if ((BYTE12(v44) & 1) == 0)
   {
 LABEL_27:
-    v35 = 0;
+    outputIntegratedStyleCoefficientsTexture = 0;
     goto LABEL_18;
   }
 
-  v14 = [*(a1 + 112) utilities];
-  *&v22 = OUTLINED_FUNCTION_3_59(v14, v15, v16, v17, v18, v19, v20, v21, v37, v39, v41, v42, v43, v44).n128_u64[0];
+  utilities = [*(integrate + 112) utilities];
+  *&v22 = OUTLINED_FUNCTION_3_59(utilities, v15, v16, v17, v18, v19, v20, v21, v37, v39, v41, v42, v43, v44).n128_u64[0];
   if ([v23 enqueueCoefficientsForFiltering:v12 withMetadata:v5 pts:{&v41, v22}])
   {
     goto LABEL_23;
   }
 
-  v24 = [*(a1 + 144) newPixelBuffer];
-  if (!v24)
+  newPixelBuffer = [*(integrate + 144) newPixelBuffer];
+  if (!newPixelBuffer)
   {
     fig_log_get_emitter();
     OUTLINED_FUNCTION_1_11();
     goto LABEL_26;
   }
 
-  v25 = v24;
-  v26 = [*(a1 + 112) utilities];
-  *&v33 = OUTLINED_FUNCTION_3_59(v26, v27, v28, v29, *(a1 + 136), v30, v31, v32, v38, v40, v41, v42, v43, v44).n128_u64[0];
+  v25 = newPixelBuffer;
+  utilities2 = [*(integrate + 112) utilities];
+  *&v33 = OUTLINED_FUNCTION_3_59(utilities2, v27, v28, v29, *(integrate + 136), v30, v31, v32, v38, v40, v41, v42, v43, v44).n128_u64[0];
   [v34 filterCoefficientsForFrameWithMetadata:v5 pts:&v41 filterType:v33 toPixelBuffer:?];
   [(opaqueCMSampleBuffer *)AttachedMedia setInputStyleCoefficientsPixelBuffer:v25];
   CFRelease(v25);
 LABEL_16:
-  [*(a1 + 112) setInputOutput:AttachedMedia];
-  if ([*(a1 + 112) process])
+  [*(integrate + 112) setInputOutput:AttachedMedia];
+  if ([*(integrate + 112) process])
   {
 LABEL_23:
     fig_log_get_emitter();
@@ -634,10 +634,10 @@ LABEL_23:
     goto LABEL_26;
   }
 
-  v35 = [*(a1 + 112) outputIntegratedStyleCoefficientsTexture];
+  outputIntegratedStyleCoefficientsTexture = [*(integrate + 112) outputIntegratedStyleCoefficientsTexture];
 LABEL_18:
 
-  return v35;
+  return outputIntegratedStyleCoefficientsTexture;
 }
 
 - (uint64_t)renderUsingParameters:inputPixelBuffer:inputSampleBuffer:originalPixelBuffer:processedPixelBuffer:completionHandler:.cold.1()

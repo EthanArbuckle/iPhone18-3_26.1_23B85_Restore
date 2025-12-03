@@ -1,23 +1,23 @@
 @interface HDAudioAnalyticsBucketedExposureResult
-- (HDAudioAnalyticsBucketedExposureResult)initWithLEQ:(id)a3 duration:(id)a4 dose:(id)a5;
+- (HDAudioAnalyticsBucketedExposureResult)initWithLEQ:(id)q duration:(id)duration dose:(id)dose;
 @end
 
 @implementation HDAudioAnalyticsBucketedExposureResult
 
-- (HDAudioAnalyticsBucketedExposureResult)initWithLEQ:(id)a3 duration:(id)a4 dose:(id)a5
+- (HDAudioAnalyticsBucketedExposureResult)initWithLEQ:(id)q duration:(id)duration dose:(id)dose
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  qCopy = q;
+  durationCopy = duration;
+  doseCopy = dose;
   v15.receiver = self;
   v15.super_class = HDAudioAnalyticsBucketedExposureResult;
   v11 = [(HDAudioAnalyticsBucketedExposureResult *)&v15 init];
   v12 = v11;
   if (v11)
   {
-    [(HDAudioAnalyticsBucketedExposureResult *)v11 setAudioExposureLEQ:v8];
-    [(HDAudioAnalyticsBucketedExposureResult *)v12 setAudioExposureDuration:v9];
-    [(HDAudioAnalyticsBucketedExposureResult *)v12 setAudioExposureDose:v10];
+    [(HDAudioAnalyticsBucketedExposureResult *)v11 setAudioExposureLEQ:qCopy];
+    [(HDAudioAnalyticsBucketedExposureResult *)v12 setAudioExposureDuration:durationCopy];
+    [(HDAudioAnalyticsBucketedExposureResult *)v12 setAudioExposureDose:doseCopy];
     v13 = v12;
   }
 

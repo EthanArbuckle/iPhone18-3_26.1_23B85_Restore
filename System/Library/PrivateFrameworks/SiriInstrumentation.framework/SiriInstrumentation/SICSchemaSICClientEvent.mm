@@ -1,33 +1,33 @@
 @interface SICSchemaSICClientEvent
-+ (id)getInnerTypeStringByTag:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)getInnerTypeStringByTag:(unint64_t)tag;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (SICSchemaSICClientEvent)initWithDictionary:(id)a3;
-- (SICSchemaSICClientEvent)initWithJSON:(id)a3;
+- (SICSchemaSICClientEvent)initWithDictionary:(id)dictionary;
+- (SICSchemaSICClientEvent)initWithJSON:(id)n;
 - (SICSchemaSICInvocationContext)siriInCallInvocationContext;
 - (SISchemaInstrumentationMessage)innerEvent;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)getComponentId;
 - (id)qualifiedMessageName;
 - (id)suppressMessageUnderConditions;
 - (int)componentName;
 - (void)deleteSiriInCallInvocationContext;
-- (void)setSiriInCallInvocationContext:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setSiriInCallInvocationContext:(id)context;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SICSchemaSICClientEvent
 
-- (SICSchemaSICClientEvent)initWithDictionary:(id)a3
+- (SICSchemaSICClientEvent)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = SICSchemaSICClientEvent;
   v5 = [(SICSchemaSICClientEvent *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"eventMetadata"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"eventMetadata"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -35,7 +35,7 @@
       [(SICSchemaSICClientEvent *)v5 setEventMetadata:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"siriInCallInvocationContext"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"siriInCallInvocationContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -49,30 +49,30 @@
   return v5;
 }
 
-- (SICSchemaSICClientEvent)initWithJSON:(id)a3
+- (SICSchemaSICClientEvent)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SICSchemaSICClientEvent *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SICSchemaSICClientEvent *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SICSchemaSICClientEvent *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -85,72 +85,72 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_eventMetadata)
   {
-    v4 = [(SICSchemaSICClientEvent *)self eventMetadata];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    eventMetadata = [(SICSchemaSICClientEvent *)self eventMetadata];
+    dictionaryRepresentation = [eventMetadata dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"eventMetadata"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"eventMetadata"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"eventMetadata"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"eventMetadata"];
     }
   }
 
   if (self->_siriInCallInvocationContext)
   {
-    v7 = [(SICSchemaSICClientEvent *)self siriInCallInvocationContext];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    siriInCallInvocationContext = [(SICSchemaSICClientEvent *)self siriInCallInvocationContext];
+    dictionaryRepresentation2 = [siriInCallInvocationContext dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"siriInCallInvocationContext"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"siriInCallInvocationContext"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"siriInCallInvocationContext"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"siriInCallInvocationContext"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_13;
   }
 
   whichEvent_Type = self->_whichEvent_Type;
-  if (whichEvent_Type != [v4 whichEvent_Type])
+  if (whichEvent_Type != [equalCopy whichEvent_Type])
   {
     goto LABEL_13;
   }
 
-  v6 = [(SICSchemaSICClientEvent *)self eventMetadata];
-  v7 = [v4 eventMetadata];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(SICSchemaSICClientEvent *)self eventMetadata];
+  eventMetadata2 = [equalCopy eventMetadata];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_12;
   }
 
-  v8 = [(SICSchemaSICClientEvent *)self eventMetadata];
-  if (v8)
+  eventMetadata3 = [(SICSchemaSICClientEvent *)self eventMetadata];
+  if (eventMetadata3)
   {
-    v9 = v8;
-    v10 = [(SICSchemaSICClientEvent *)self eventMetadata];
-    v11 = [v4 eventMetadata];
-    v12 = [v10 isEqual:v11];
+    v9 = eventMetadata3;
+    eventMetadata4 = [(SICSchemaSICClientEvent *)self eventMetadata];
+    eventMetadata5 = [equalCopy eventMetadata];
+    v12 = [eventMetadata4 isEqual:eventMetadata5];
 
     if (!v12)
     {
@@ -162,12 +162,12 @@
   {
   }
 
-  v6 = [(SICSchemaSICClientEvent *)self siriInCallInvocationContext];
-  v7 = [v4 siriInCallInvocationContext];
-  if ((v6 != 0) != (v7 == 0))
+  eventMetadata = [(SICSchemaSICClientEvent *)self siriInCallInvocationContext];
+  eventMetadata2 = [equalCopy siriInCallInvocationContext];
+  if ((eventMetadata != 0) != (eventMetadata2 == 0))
   {
-    v13 = [(SICSchemaSICClientEvent *)self siriInCallInvocationContext];
-    if (!v13)
+    siriInCallInvocationContext = [(SICSchemaSICClientEvent *)self siriInCallInvocationContext];
+    if (!siriInCallInvocationContext)
     {
 
 LABEL_16:
@@ -175,10 +175,10 @@ LABEL_16:
       goto LABEL_14;
     }
 
-    v14 = v13;
-    v15 = [(SICSchemaSICClientEvent *)self siriInCallInvocationContext];
-    v16 = [v4 siriInCallInvocationContext];
-    v17 = [v15 isEqual:v16];
+    v14 = siriInCallInvocationContext;
+    siriInCallInvocationContext2 = [(SICSchemaSICClientEvent *)self siriInCallInvocationContext];
+    siriInCallInvocationContext3 = [equalCopy siriInCallInvocationContext];
+    v17 = [siriInCallInvocationContext2 isEqual:siriInCallInvocationContext3];
 
     if (v17)
     {
@@ -198,22 +198,22 @@ LABEL_14:
   return v18;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(SICSchemaSICClientEvent *)self eventMetadata];
+  toCopy = to;
+  eventMetadata = [(SICSchemaSICClientEvent *)self eventMetadata];
 
-  if (v4)
+  if (eventMetadata)
   {
-    v5 = [(SICSchemaSICClientEvent *)self eventMetadata];
+    eventMetadata2 = [(SICSchemaSICClientEvent *)self eventMetadata];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(SICSchemaSICClientEvent *)self siriInCallInvocationContext];
+  siriInCallInvocationContext = [(SICSchemaSICClientEvent *)self siriInCallInvocationContext];
 
-  if (v6)
+  if (siriInCallInvocationContext)
   {
-    v7 = [(SICSchemaSICClientEvent *)self siriInCallInvocationContext];
+    siriInCallInvocationContext2 = [(SICSchemaSICClientEvent *)self siriInCallInvocationContext];
     PBDataWriterWriteSubmessage();
   }
 }
@@ -243,16 +243,16 @@ LABEL_14:
   return v3;
 }
 
-- (void)setSiriInCallInvocationContext:(id)a3
+- (void)setSiriInCallInvocationContext:(id)context
 {
   v3 = 101;
-  if (!a3)
+  if (!context)
   {
     v3 = 0;
   }
 
   self->_whichEvent_Type = v3;
-  objc_storeStrong(&self->_siriInCallInvocationContext, a3);
+  objc_storeStrong(&self->_siriInCallInvocationContext, context);
 }
 
 - (id)qualifiedMessageName
@@ -268,26 +268,26 @@ LABEL_14:
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v13.receiver = self;
   v13.super_class = SICSchemaSICClientEvent;
-  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:v4];
-  v6 = [(SICSchemaSICClientEvent *)self eventMetadata];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:policyCopy];
+  eventMetadata = [(SICSchemaSICClientEvent *)self eventMetadata];
+  v7 = [eventMetadata applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(SICSchemaSICClientEvent *)self deleteEventMetadata];
   }
 
-  v9 = [(SICSchemaSICClientEvent *)self siriInCallInvocationContext];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  siriInCallInvocationContext = [(SICSchemaSICClientEvent *)self siriInCallInvocationContext];
+  v10 = [siriInCallInvocationContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(SICSchemaSICClientEvent *)self deleteSiriInCallInvocationContext];
   }
@@ -305,27 +305,27 @@ LABEL_14:
 
 - (int)componentName
 {
-  v3 = [(SICSchemaSICClientEvent *)self eventMetadata];
-  v4 = [v3 sicId];
+  eventMetadata = [(SICSchemaSICClientEvent *)self eventMetadata];
+  sicId = [eventMetadata sicId];
 
-  if (v4 && ([v4 value], (v5 = objc_claimAutoreleasedReturnValue()) != 0) && (v6 = v5, objc_msgSend(v4, "value"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "length"), v7, v6, v8))
+  if (sicId && ([sicId value], (v5 = objc_claimAutoreleasedReturnValue()) != 0) && (v6 = v5, objc_msgSend(sicId, "value"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "length"), v7, v6, v8))
   {
     v9 = 29;
   }
 
   else
   {
-    v10 = [(SICSchemaSICClientEvent *)self eventMetadata];
-    v11 = [v10 requestId];
+    eventMetadata2 = [(SICSchemaSICClientEvent *)self eventMetadata];
+    requestId = [eventMetadata2 requestId];
 
-    if (v11)
+    if (requestId)
     {
-      v12 = [v11 value];
-      if (v12)
+      value = [requestId value];
+      if (value)
       {
-        v13 = v12;
-        v14 = [v11 value];
-        v9 = [v14 length] != 0;
+        v13 = value;
+        value2 = [requestId value];
+        v9 = [value2 length] != 0;
       }
 
       else
@@ -333,13 +333,13 @@ LABEL_14:
         v9 = 0;
       }
 
-      v4 = v11;
+      sicId = requestId;
     }
 
     else
     {
       v9 = 0;
-      v4 = 0;
+      sicId = 0;
     }
   }
 
@@ -348,17 +348,17 @@ LABEL_14:
 
 - (id)getComponentId
 {
-  v3 = [(SICSchemaSICClientEvent *)self eventMetadata];
-  v4 = [v3 sicId];
+  eventMetadata = [(SICSchemaSICClientEvent *)self eventMetadata];
+  sicId = [eventMetadata sicId];
 
-  if (v4)
+  if (sicId)
   {
-    v5 = [v4 value];
-    if (v5)
+    value = [sicId value];
+    if (value)
     {
-      v6 = v5;
-      v7 = [v4 value];
-      v8 = [v7 length];
+      v6 = value;
+      value2 = [sicId value];
+      v8 = [value2 length];
 
       if (v8)
       {
@@ -367,34 +367,34 @@ LABEL_14:
     }
   }
 
-  v9 = [(SICSchemaSICClientEvent *)self eventMetadata];
-  v10 = [v9 requestId];
+  eventMetadata2 = [(SICSchemaSICClientEvent *)self eventMetadata];
+  requestId = [eventMetadata2 requestId];
 
-  if (v10)
+  if (requestId)
   {
-    v11 = [v10 value];
-    if (!v11)
+    value3 = [requestId value];
+    if (!value3)
     {
       goto LABEL_10;
     }
 
-    v12 = [v10 value];
-    v13 = [v12 length];
+    value4 = [requestId value];
+    v13 = [value4 length];
 
     if (v13)
     {
-      v4 = v10;
+      sicId = requestId;
 LABEL_8:
-      v11 = v4;
-      v10 = v11;
+      value3 = sicId;
+      requestId = value3;
       goto LABEL_10;
     }
   }
 
-  v11 = 0;
+  value3 = 0;
 LABEL_10:
 
-  return v11;
+  return value3;
 }
 
 - (SISchemaInstrumentationMessage)innerEvent
@@ -412,9 +412,9 @@ LABEL_10:
   return v3;
 }
 
-+ (id)getInnerTypeStringByTag:(unint64_t)a3
++ (id)getInnerTypeStringByTag:(unint64_t)tag
 {
-  if (a3 == 101)
+  if (tag == 101)
   {
     return @"siriInCallInvocationContext";
   }

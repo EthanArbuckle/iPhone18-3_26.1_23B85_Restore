@@ -1,27 +1,27 @@
 @interface HSRecordingStage
-- (BOOL)_copyDataTo:(Writable *)a3;
-- (BOOL)_encodeFrame:(Frame *)a3;
-- (BOOL)_enumerateEncoders:(id)a3;
-- (BOOL)copyDataTo:(Writable *)a3;
+- (BOOL)_copyDataTo:(Writable *)to;
+- (BOOL)_encodeFrame:(Frame *)frame;
+- (BOOL)_enumerateEncoders:(id)encoders;
+- (BOOL)copyDataTo:(Writable *)to;
 - (BOOL)recording;
 - (HSRecordingStage)init;
 - (id).cxx_construct;
 - (id)data;
 - (unint64_t)_size;
 - (unint64_t)size;
-- (void)_encodeHeaderFrames:(void *)a3;
-- (void)_recordConsumeFrame:(id)a3;
+- (void)_encodeHeaderFrames:(void *)frames;
+- (void)_recordConsumeFrame:(id)frame;
 - (void)_recordStateFrame;
 - (void)_reset;
-- (void)_rotateEncoders:(void *)a3;
+- (void)_rotateEncoders:(void *)encoders;
 - (void)_startRecording;
 - (void)_stopRecording;
 - (void)data;
 - (void)dealloc;
-- (void)handleConsume:(id)a3;
+- (void)handleConsume:(id)consume;
 - (void)reset;
-- (void)setDestination:(shared_ptr<HSUtil:(unint64_t)a4 :IO::Writable>)a3 maxSize:;
-- (void)setRecording:(BOOL)a3;
+- (void)setDestination:(shared_ptr<HSUtil:(unint64_t)destination :IO::Writable>)a3 maxSize:;
+- (void)setRecording:(BOOL)recording;
 @end
 
 @implementation HSRecordingStage
@@ -56,7 +56,7 @@
   [(HSStage *)&v3 dealloc];
 }
 
-- (void)setDestination:(shared_ptr<HSUtil:(unint64_t)a4 :IO::Writable>)a3 maxSize:
+- (void)setDestination:(shared_ptr<HSUtil:(unint64_t)destination :IO::Writable>)a3 maxSize:
 {
   cntrl = a3.__cntrl_;
   ptr = a3.__ptr_;
@@ -117,18 +117,18 @@
 
 - (BOOL)recording
 {
-  v2 = self;
+  selfCopy = self;
   HSUtil::ObjectLock::ObjectLock(v4, self);
-  LOBYTE(v2) = v2->_state.recording;
+  LOBYTE(selfCopy) = selfCopy->_state.recording;
   HSUtil::ObjectLock::~ObjectLock(v4);
-  return v2;
+  return selfCopy;
 }
 
-- (void)setRecording:(BOOL)a3
+- (void)setRecording:(BOOL)recording
 {
-  v3 = a3;
+  recordingCopy = recording;
   HSUtil::ObjectLock::ObjectLock(v5, self);
-  if (v3)
+  if (recordingCopy)
   {
     if (!self->_state.recording)
     {
@@ -154,9 +154,9 @@
 - (unint64_t)size
 {
   HSUtil::ObjectLock::ObjectLock(v5, self);
-  v3 = [(HSRecordingStage *)self _size];
+  _size = [(HSRecordingStage *)self _size];
   HSUtil::ObjectLock::~ObjectLock(v5);
-  return v3;
+  return _size;
 }
 
 - (id)data
@@ -185,10 +185,10 @@
   return v3;
 }
 
-- (BOOL)copyDataTo:(Writable *)a3
+- (BOOL)copyDataTo:(Writable *)to
 {
   HSUtil::ObjectLock::ObjectLock(v7, self);
-  v5 = [(HSRecordingStage *)self _copyDataTo:a3];
+  v5 = [(HSRecordingStage *)self _copyDataTo:to];
   if (!v5)
   {
     basename_r("/Library/Caches/com.apple.xbs/Sources/HIDSensingPipeline/HIDSensingPipeline/HSRecordingStage.mm", v8);
@@ -202,20 +202,20 @@
   return v5;
 }
 
-- (void)handleConsume:(id)a3
+- (void)handleConsume:(id)consume
 {
-  v4 = a3;
+  consumeCopy = consume;
   if (self->_state.recording)
   {
-    [(HSRecordingStage *)self _recordConsumeFrame:v4];
+    [(HSRecordingStage *)self _recordConsumeFrame:consumeCopy];
   }
 
   v5.receiver = self;
   v5.super_class = HSRecordingStage;
-  [(HSStage *)&v5 handleConsume:v4];
+  [(HSStage *)&v5 handleConsume:consumeCopy];
 }
 
-- (void)_rotateEncoders:(void *)a3
+- (void)_rotateEncoders:(void *)encoders
 {
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
@@ -250,7 +250,7 @@
   *(v8 + 96) = 0u;
   *(v8 + 112) = 0u;
   *(v8 + 128) = 0;
-  [(HSRecordingStage *)self _encodeHeaderFrames:a3];
+  [(HSRecordingStage *)self _encodeHeaderFrames:encoders];
 }
 
 - (void)_startRecording
@@ -279,9 +279,9 @@
   p_state->currentEncoder = 0;
 }
 
-- (BOOL)_enumerateEncoders:(id)a3
+- (BOOL)_enumerateEncoders:(id)encoders
 {
-  v4 = a3;
+  encodersCopy = encoders;
   p_state = &self->_state;
   currentEncoder = self->_state.currentEncoder;
   v7 = 8 * currentEncoder + 8;
@@ -294,7 +294,7 @@
       break;
     }
 
-    v9 = (v4)[2](v4, &begin[v7]);
+    v9 = (encodersCopy)[2](encodersCopy, &begin[v7]);
     v7 += 8;
     if ((v9 & 1) == 0)
     {
@@ -307,7 +307,7 @@
   v12 = 0;
   do
   {
-    v10 = (v4)[2](v4, p_state->encoders.__begin_ + v11);
+    v10 = (encodersCopy)[2](encodersCopy, p_state->encoders.__begin_ + v11);
     if ((v10 & 1) == 0)
     {
       break;
@@ -323,7 +323,7 @@ LABEL_8:
   return v10;
 }
 
-- (BOOL)_copyDataTo:(Writable *)a3
+- (BOOL)_copyDataTo:(Writable *)to
 {
   if (self->_state.encoders.__begin_ == self->_state.encoders.__end_)
   {
@@ -339,7 +339,7 @@ LABEL_8:
   v5[2] = __32__HSRecordingStage__copyDataTo___block_invoke;
   v5[3] = &unk_10A340;
   v5[4] = v6;
-  v5[5] = a3;
+  v5[5] = to;
   v3 = [(HSRecordingStage *)self _enumerateEncoders:v5];
   _Block_object_dispose(v6, 8);
   return v3;
@@ -400,14 +400,14 @@ uint64_t __32__HSRecordingStage__copyDataTo___block_invoke(uint64_t a1, Readable
   _os_log_error_impl(v1, v2, v3, v4, v5, 0xCu);
 }
 
-- (void)_recordConsumeFrame:(id)a3
+- (void)_recordConsumeFrame:(id)frame
 {
-  v4 = a3;
+  frameCopy = frame;
   v7 = 3;
   v8 = 0;
   v9 = 0;
   v6 = off_10A558;
-  v10 = v4;
+  v10 = frameCopy;
   if (![(HSRecordingStage *)self _encodeFrame:&v6])
   {
     [(HSRecordingStage *)self _rotateEncoders:0];
@@ -419,7 +419,7 @@ uint64_t __32__HSRecordingStage__copyDataTo___block_invoke(uint64_t a1, Readable
   }
 }
 
-- (void)_encodeHeaderFrames:(void *)a3
+- (void)_encodeHeaderFrames:(void *)frames
 {
   HSRecordingTypes::HeaderFrame::HeaderFrame(v9);
   if (![(HSRecordingStage *)self _encodeFrame:v9])
@@ -429,9 +429,9 @@ uint64_t __32__HSRecordingStage__copyDataTo___block_invoke(uint64_t a1, Readable
 LABEL_9:
   }
 
-  if (a3)
+  if (frames)
   {
-    if (![(HSRecordingStage *)self _encodeFrame:a3])
+    if (![(HSRecordingStage *)self _encodeFrame:frames])
     {
       exception = __cxa_allocate_exception(0x10uLL);
       std::runtime_error::runtime_error(exception, "failed to encode state frame");
@@ -453,7 +453,7 @@ LABEL_9:
   }
 }
 
-- (BOOL)_encodeFrame:(Frame *)a3
+- (BOOL)_encodeFrame:(Frame *)frame
 {
   p_state = &self->_state;
   v4 = *(self->_state.encoders.__begin_ + self->_state.currentEncoder);
@@ -461,7 +461,7 @@ LABEL_9:
   v6 = (v4 + 2);
   if (!*(v4 + 4))
   {
-    v7 = HSRecordingTypes::Frame::encode(a3, v6);
+    v7 = HSRecordingTypes::Frame::encode(frame, v6);
     if (!*v6 && (v7 & 1) == 0)
     {
       *v6 = 10;

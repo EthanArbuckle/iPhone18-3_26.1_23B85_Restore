@@ -1,29 +1,29 @@
 @interface _UIContentUnavailableWrapperView
-- (BOOL)_canApplyConfigurationToExistingContentView:(id)a3;
+- (BOOL)_canApplyConfigurationToExistingContentView:(id)view;
 - (UIEdgeInsets)_concreteDefaultLayoutMargins;
 - (UIViewController)viewController;
-- (_UIContentUnavailableWrapperView)initWithViewController:(id)a3;
-- (id)_contentScrollViewForView:(id)a3;
-- (void)_replaceContentViewWithViewForConfiguration:(id)a3;
+- (_UIContentUnavailableWrapperView)initWithViewController:(id)controller;
+- (id)_contentScrollViewForView:(id)view;
+- (void)_replaceContentViewWithViewForConfiguration:(id)configuration;
 - (void)_updateBackgroundView;
-- (void)_updateBackgroundViewHandlersForPreviousContentView:(id)a3 newContentView:(id)a4;
+- (void)_updateBackgroundViewHandlersForPreviousContentView:(id)view newContentView:(id)contentView;
 - (void)reconfigureContentScrollView;
-- (void)setConfiguration:(id)a3;
+- (void)setConfiguration:(id)configuration;
 @end
 
 @implementation _UIContentUnavailableWrapperView
 
-- (_UIContentUnavailableWrapperView)initWithViewController:(id)a3
+- (_UIContentUnavailableWrapperView)initWithViewController:(id)controller
 {
-  v5 = [a3 view];
-  [v5 bounds];
+  view = [controller view];
+  [view bounds];
   v10.receiver = self;
   v10.super_class = _UIContentUnavailableWrapperView;
   v6 = [(UIView *)&v10 initWithFrame:?];
 
   if (v6)
   {
-    objc_storeWeak(&v6->_viewController, a3);
+    objc_storeWeak(&v6->_viewController, controller);
     v7 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:2];
     parentScrollViews = v6->_parentScrollViews;
     v6->_parentScrollViews = v7;
@@ -32,19 +32,19 @@
   return v6;
 }
 
-- (void)setConfiguration:(id)a3
+- (void)setConfiguration:(id)configuration
 {
   if ([(_UIContentUnavailableWrapperView *)self _canApplyConfigurationToExistingContentView:?])
   {
-    [(_UIContentViewInternal *)self->_viewForConfiguration setConfiguration:a3];
+    [(_UIContentViewInternal *)self->_viewForConfiguration setConfiguration:configuration];
 
     [(_UIContentUnavailableWrapperView *)self reconfigureContentScrollView];
   }
 
-  else if (a3)
+  else if (configuration)
   {
-    v5 = [a3 makeContentView];
-    [(_UIContentUnavailableWrapperView *)self _replaceContentViewWithViewForConfiguration:v5];
+    makeContentView = [configuration makeContentView];
+    [(_UIContentUnavailableWrapperView *)self _replaceContentViewWithViewForConfiguration:makeContentView];
   }
 
   else
@@ -54,41 +54,41 @@
   }
 }
 
-- (void)_replaceContentViewWithViewForConfiguration:(id)a3
+- (void)_replaceContentViewWithViewForConfiguration:(id)configuration
 {
-  if (a3)
+  if (configuration)
   {
     if (objc_opt_respondsToSelector())
     {
-      v6 = [a3 _wrappedContentView];
-      if (!v6)
+      configurationCopy = [configuration _wrappedContentView];
+      if (!configurationCopy)
       {
-        v7 = [MEMORY[0x1E696AAA8] currentHandler];
-        v8 = [a3 configuration];
-        [v7 handleFailureInMethod:a2 object:self file:@"_UIContentUnavailableWrapperView.m" lineNumber:68 description:{@"Configuration returned a nil content view: %@", v8}];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        configuration = [configuration configuration];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"_UIContentUnavailableWrapperView.m" lineNumber:68 description:{@"Configuration returned a nil content view: %@", configuration}];
 
-        v6 = 0;
+        configurationCopy = 0;
       }
     }
 
     else
     {
-      v6 = a3;
+      configurationCopy = configuration;
     }
 
-    if (([v6 translatesAutoresizingMaskIntoConstraints] & 1) == 0)
+    if (([configurationCopy translatesAutoresizingMaskIntoConstraints] & 1) == 0)
     {
-      v16 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v16 handleFailureInMethod:a2 object:self file:@"_UIContentUnavailableWrapperView.m" lineNumber:69 description:{@"The content view returned from the content unavailable configuration must have translatesAutoresizingMaskIntoConstraints enabled: %@", v6}];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"_UIContentUnavailableWrapperView.m" lineNumber:69 description:{@"The content view returned from the content unavailable configuration must have translatesAutoresizingMaskIntoConstraints enabled: %@", configurationCopy}];
     }
 
     v24[0] = MEMORY[0x1E69E9820];
     v24[1] = 3221225472;
     v24[2] = __80___UIContentUnavailableWrapperView__replaceContentViewWithViewForConfiguration___block_invoke;
     v24[3] = &unk_1E70F35B8;
-    v9 = v6;
+    v9 = configurationCopy;
     v25 = v9;
-    v26 = self;
+    selfCopy = self;
     [UIView performWithoutAnimation:v24];
   }
 
@@ -100,7 +100,7 @@
   v10 = self->_viewForConfiguration;
   v11 = self->_contentView;
   WeakRetained = objc_loadWeakRetained(&self->_viewController);
-  objc_storeStrong(&self->_viewForConfiguration, a3);
+  objc_storeStrong(&self->_viewForConfiguration, configuration);
   objc_storeStrong(&self->_contentView, v9);
   v13 = +[UIView _isInAnimationBlockWithAnimationsEnabled];
   v14 = v13;
@@ -142,11 +142,11 @@
   [(_UIContentUnavailableWrapperView *)self reconfigureContentScrollView];
 }
 
-- (void)_updateBackgroundViewHandlersForPreviousContentView:(id)a3 newContentView:(id)a4
+- (void)_updateBackgroundViewHandlersForPreviousContentView:(id)view newContentView:(id)contentView
 {
   if (objc_opt_respondsToSelector())
   {
-    [a3 _setContainerBackgroundViewDidChangeHandler:0];
+    [view _setContainerBackgroundViewDidChangeHandler:0];
   }
 
   if (objc_opt_respondsToSelector())
@@ -157,7 +157,7 @@
     v9 = __103___UIContentUnavailableWrapperView__updateBackgroundViewHandlersForPreviousContentView_newContentView___block_invoke;
     v10 = &unk_1E70F5A28;
     objc_copyWeak(&v11, &location);
-    [a4 _setContainerBackgroundViewDidChangeHandler:&v7];
+    [contentView _setContainerBackgroundViewDidChangeHandler:&v7];
     objc_destroyWeak(&v11);
     objc_destroyWeak(&location);
   }
@@ -171,25 +171,25 @@
   v4 = self->_contentView;
   if (v4 && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v5 = [(UIView *)v4 _containerBackgroundView];
+    _containerBackgroundView = [(UIView *)v4 _containerBackgroundView];
   }
 
   else
   {
-    v5 = 0;
+    _containerBackgroundView = 0;
   }
 
-  objc_storeStrong(&self->_backgroundView, v5);
+  objc_storeStrong(&self->_backgroundView, _containerBackgroundView);
   if (+[UIView _isInAnimationBlockWithAnimationsEnabled])
   {
-    if (v5)
+    if (_containerBackgroundView)
     {
       v9[0] = MEMORY[0x1E69E9820];
       v9[1] = 3221225472;
       v9[2] = __57___UIContentUnavailableWrapperView__updateBackgroundView__block_invoke;
       v9[3] = &unk_1E70F35B8;
-      v10 = v5;
-      v11 = self;
+      v10 = _containerBackgroundView;
+      selfCopy = self;
       [UIView performWithoutAnimation:v9];
     }
 
@@ -201,40 +201,40 @@
     v8 = v6;
     [UIView _addCompletionWithPosition:v7];
     [(UIView *)v6 setAlpha:0.0];
-    [v5 setAlpha:1.0];
+    [_containerBackgroundView setAlpha:1.0];
   }
 
   else
   {
     [(UIView *)v3 removeFromSuperview];
-    if (v5)
+    if (_containerBackgroundView)
     {
       [(UIView *)self bounds];
-      [v5 setFrame:?];
-      [v5 setAutoresizingMask:18];
-      [(UIView *)self insertSubview:v5 atIndex:0];
+      [_containerBackgroundView setFrame:?];
+      [_containerBackgroundView setAutoresizingMask:18];
+      [(UIView *)self insertSubview:_containerBackgroundView atIndex:0];
     }
   }
 }
 
-- (BOOL)_canApplyConfigurationToExistingContentView:(id)a3
+- (BOOL)_canApplyConfigurationToExistingContentView:(id)view
 {
-  v5 = [(_UIContentViewInternal *)self->_viewForConfiguration configuration];
-  v6 = v5;
+  configuration = [(_UIContentViewInternal *)self->_viewForConfiguration configuration];
+  v6 = configuration;
   v7 = 0;
-  if (!a3 || !v5)
+  if (!view || !configuration)
   {
     goto LABEL_21;
   }
 
   viewForConfiguration = self->_viewForConfiguration;
-  v9 = a3;
+  viewCopy = view;
   v10 = viewForConfiguration;
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
-    v13 = [(_UIContentViewInternal *)v10 configuration];
+    configuration2 = [(_UIContentViewInternal *)v10 configuration];
 
-    v14 = v13;
+    v14 = configuration2;
     if (v14)
     {
       if (objc_opt_respondsToSelector())
@@ -255,7 +255,7 @@
       v15 = 0;
     }
 
-    v17 = v9;
+    v17 = viewCopy;
     if (objc_opt_respondsToSelector())
     {
       [v17 _wrappedConfigurationIdentifier];
@@ -279,7 +279,7 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  v11 = [(_UIContentViewInternal *)v10 supportsConfiguration:v9];
+  v11 = [(_UIContentViewInternal *)v10 supportsConfiguration:viewCopy];
 
   if (!v11)
   {
@@ -289,7 +289,7 @@ LABEL_20:
 LABEL_5:
   if (+[UIView _isInAnimationBlockWithAnimationsEnabled]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v12 = v9;
+    v12 = viewCopy;
     v7 = v6[7] == v12[7];
   }
 
@@ -308,28 +308,28 @@ LABEL_21:
   if (!self->_isConfiguringContentScrollView)
   {
     self->_isConfiguringContentScrollView = 1;
-    v4 = [(_UIContentUnavailableWrapperView *)self contentView];
-    v5 = [(_UIContentUnavailableWrapperView *)self viewController];
+    contentView = [(_UIContentUnavailableWrapperView *)self contentView];
+    viewController = [(_UIContentUnavailableWrapperView *)self viewController];
     v6 = self->_contentScrollView;
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
     if (isKindOfClass)
     {
-      v8 = v4;
-      v9 = [v8 _scrollView];
-      if (!v9)
+      v8 = contentView;
+      _scrollView = [v8 _scrollView];
+      if (!_scrollView)
       {
-        v18 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v18 handleFailureInMethod:a2 object:self file:@"_UIContentUnavailableWrapperView.m" lineNumber:220 description:@"Expected UIContentUnavailableView to return a scroll view for its _UIContentUnavailableWrapperView"];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"_UIContentUnavailableWrapperView.m" lineNumber:220 description:@"Expected UIContentUnavailableView to return a scroll view for its _UIContentUnavailableWrapperView"];
       }
 
-      v19 = [v8 shouldReparentScrollViewPanGestureRecognizer];
+      shouldReparentScrollViewPanGestureRecognizer = [v8 shouldReparentScrollViewPanGestureRecognizer];
     }
 
     else
     {
-      v9 = [(_UIContentUnavailableWrapperView *)self _contentScrollViewForView:v4];
-      v19 = 0;
+      _scrollView = [(_UIContentUnavailableWrapperView *)self _contentScrollViewForView:contentView];
+      shouldReparentScrollViewPanGestureRecognizer = 0;
     }
 
     v20[0] = MEMORY[0x1E69E9820];
@@ -337,58 +337,58 @@ LABEL_21:
     v10 = __64___UIContentUnavailableWrapperView_reconfigureContentScrollView__block_invoke;
     v21 = __64___UIContentUnavailableWrapperView_reconfigureContentScrollView__block_invoke;
     v22 = &unk_1E70F8C30;
-    v23 = self;
-    v11 = v5;
+    selfCopy = self;
+    v11 = viewController;
     v24 = v11;
     v12 = v6;
     v13 = v12;
     v25 = v12;
     v26 = isKindOfClass & 1;
-    if (v12 != v9)
+    if (v12 != _scrollView)
     {
       __64___UIContentUnavailableWrapperView_reconfigureContentScrollView__block_invoke_2(v12, v12);
       v10 = v21;
     }
 
-    v14 = v10(v20, v9, 1);
-    if ((v14 & v21(v20, v9, 4)) != 0)
+    v14 = v10(v20, _scrollView, 1);
+    if ((v14 & v21(v20, _scrollView, 4)) != 0)
     {
       v15 = 0;
     }
 
     else
     {
-      v15 = v9;
+      v15 = _scrollView;
     }
 
     [v11 _setInternalContentScrollView:v15];
-    objc_storeStrong(&self->_contentScrollView, v9);
-    if (v9)
+    objc_storeStrong(&self->_contentScrollView, _scrollView);
+    if (_scrollView)
     {
-      if (v19)
+      if (shouldReparentScrollViewPanGestureRecognizer)
       {
-        v16 = [v11 view];
+        view = [v11 view];
       }
 
       else
       {
-        v16 = v9;
+        view = _scrollView;
       }
 
-      v17 = v16;
-      __64___UIContentUnavailableWrapperView_reconfigureContentScrollView__block_invoke_2(v9, v16);
+      v17 = view;
+      __64___UIContentUnavailableWrapperView_reconfigureContentScrollView__block_invoke_2(_scrollView, view);
     }
 
     self->_isConfiguringContentScrollView = 0;
   }
 }
 
-- (id)_contentScrollViewForView:(id)a3
+- (id)_contentScrollViewForView:(id)view
 {
   v30 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (view)
   {
-    [a3 frame];
+    [view frame];
     v6 = v5;
     v8 = v7;
     v10 = v9;
@@ -404,12 +404,12 @@ LABEL_21:
     v32.size.height = v12;
     if (CGRectEqualToRect(v32, v33))
     {
-      if ([a3 _canHostViewControllerContentScrollView])
+      if ([view _canHostViewControllerContentScrollView])
       {
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v17 = a3;
+          viewCopy = view;
           goto LABEL_16;
         }
 
@@ -417,8 +417,8 @@ LABEL_21:
         v28 = 0u;
         v25 = 0u;
         v26 = 0u;
-        v18 = [a3 subviews];
-        v19 = [v18 countByEnumeratingWithState:&v25 objects:v29 count:16];
+        subviews = [view subviews];
+        v19 = [subviews countByEnumeratingWithState:&v25 objects:v29 count:16];
         if (v19)
         {
           v20 = v19;
@@ -429,19 +429,19 @@ LABEL_21:
             {
               if (*v26 != v21)
               {
-                objc_enumerationMutation(v18);
+                objc_enumerationMutation(subviews);
               }
 
               v23 = [(_UIContentUnavailableWrapperView *)self _contentScrollViewForView:*(*(&v25 + 1) + 8 * i)];
               if (v23)
               {
-                v17 = v23;
+                viewCopy = v23;
 
                 goto LABEL_16;
               }
             }
 
-            v20 = [v18 countByEnumeratingWithState:&v25 objects:v29 count:16];
+            v20 = [subviews countByEnumeratingWithState:&v25 objects:v29 count:16];
             if (v20)
             {
               continue;
@@ -454,10 +454,10 @@ LABEL_21:
     }
   }
 
-  v17 = 0;
+  viewCopy = 0;
 LABEL_16:
 
-  return v17;
+  return viewCopy;
 }
 
 - (UIEdgeInsets)_concreteDefaultLayoutMargins

@@ -1,35 +1,35 @@
 @interface MLPSeqDataBatch
-- (MLPSeqDataBatch)initWithDataBatch:(id)a3 batchSize:(unint64_t)a4 network:(id)a5;
+- (MLPSeqDataBatch)initWithDataBatch:(id)batch batchSize:(unint64_t)size network:(id)network;
 @end
 
 @implementation MLPSeqDataBatch
 
-- (MLPSeqDataBatch)initWithDataBatch:(id)a3 batchSize:(unint64_t)a4 network:(id)a5
+- (MLPSeqDataBatch)initWithDataBatch:(id)batch batchSize:(unint64_t)size network:(id)network
 {
-  v125 = a3;
-  v129 = a5;
+  batchCopy = batch;
+  networkCopy = network;
   v137.receiver = self;
   v137.super_class = MLPSeqDataBatch;
   v11 = [(MLPSeqDataBatch *)&v137 init];
   if (v11)
   {
-    v12 = objc_msgSend_deviceHandler(v129, v8, v9, v10);
+    v12 = objc_msgSend_deviceHandler(networkCopy, v8, v9, v10);
     v123 = objc_msgSend_device(v12, v13, v14, v15);
 
-    v19 = objc_msgSend_layers(v129, v16, v17, v18);
+    v19 = objc_msgSend_layers(networkCopy, v16, v17, v18);
     v122 = objc_msgSend_firstObject(v19, v20, v21, v22);
 
-    v26 = objc_msgSend_layers(v129, v23, v24, v25);
+    v26 = objc_msgSend_layers(networkCopy, v23, v24, v25);
     v124 = objc_msgSend_lastObject(v26, v27, v28, v29);
 
-    v132 = objc_msgSend_objectForKeyedSubscript_(v125, v30, MLPModelSampleDataBatchOfSequencesKey, v31);
+    v132 = objc_msgSend_objectForKeyedSubscript_(batchCopy, v30, MLPModelSampleDataBatchOfSequencesKey, v31);
     v128 = objc_msgSend_array(MEMORY[0x1E695DF70], v32, v33, v34);
     v127 = objc_msgSend_array(MEMORY[0x1E695DF70], v35, v36, v37);
     v38 = MEMORY[0x1E6974468];
     v42 = objc_msgSend_outputChannels(v124, v39, v40, v41);
     v121 = objc_msgSend_imageDescriptorWithChannelFormat_width_height_featureChannels_(v38, v43, 4, 1, 1, v42);
     v130 = v11;
-    if (a4)
+    if (size)
     {
       v46 = 0;
       v131 = 0;
@@ -61,7 +61,7 @@
         v131 = 16 * v56 + 16;
         memcpy(0, 0, v55);
 
-        if (a4 == ++v46)
+        if (size == ++v46)
         {
           break;
         }
@@ -205,7 +205,7 @@
           v133 = 0;
         }
 
-        v102 = objc_msgSend_deviceHandler(v129, v63, v64, v65);
+        v102 = objc_msgSend_deviceHandler(networkCopy, v63, v64, v65);
         v104 = objc_msgSend_weightMatrixWithRows_columns_stdDev_initialValues_columnMajor_(v102, v103, v133 >> 2, 1, 0, 0, 0.0);
 
         objc_msgSend_addObject_(v128, v105, v104, v106);

@@ -11,15 +11,15 @@
     v5.receiver = self;
     v5.super_class = PLDisplayIOReportAODStats;
     self = [(PLIOReportStats *)&v5 initWithGroup:@"DCP" andSubGroup:@"aod stats"];
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 @end

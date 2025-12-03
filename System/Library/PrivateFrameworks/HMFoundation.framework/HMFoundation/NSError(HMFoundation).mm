@@ -9,10 +9,10 @@
 - (id)shortDescription
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [a1 domain];
-  v4 = [a1 code];
-  v5 = [a1 localizedDescription];
-  v6 = [v2 stringWithFormat:@"Error Domain=%@ Code=%ld %@", v3, v4, v5];
+  domain = [self domain];
+  code = [self code];
+  localizedDescription = [self localizedDescription];
+  v6 = [v2 stringWithFormat:@"Error Domain=%@ Code=%ld %@", domain, code, localizedDescription];
 
   return v6;
 }

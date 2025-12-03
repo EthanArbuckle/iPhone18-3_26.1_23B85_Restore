@@ -1,7 +1,7 @@
 @interface CRTest_8185_Patch
-- (BOOL)shouldRun:(id)a3;
+- (BOOL)shouldRun:(id)run;
 - (CRTest_8185_Patch)init;
-- (void)run:(id)a3 withContext:(id)a4;
+- (void)run:(id)run withContext:(id)context;
 @end
 
 @implementation CRTest_8185_Patch
@@ -19,8 +19,8 @@
     if (os_variant_has_internal_content())
     {
       v4 = [[CRUserDefaults alloc] initWithSuiteName:@"com.apple.corerepaird.test"];
-      v5 = [(CRTest *)v3 name];
-      v6 = [v4 dictionaryForKey:v5];
+      name = [(CRTest *)v3 name];
+      v6 = [v4 dictionaryForKey:name];
       [(CRTest *)v3 setOverrides:v6];
     }
   }
@@ -28,39 +28,39 @@
   return v3;
 }
 
-- (BOOL)shouldRun:(id)a3
+- (BOOL)shouldRun:(id)run
 {
-  v4 = a3;
+  runCopy = run;
   v12.receiver = self;
   v12.super_class = CRTest_8185_Patch;
-  if (-[CRTest shouldRun:](&v12, "shouldRun:", v4) && ([v4 partSPC], v5 = objc_claimAutoreleasedReturnValue(), v5, v5) && +[CRDeviceMap supportPeCoNet](CRDeviceMap, "supportPeCoNet"))
+  if (-[CRTest shouldRun:](&v12, "shouldRun:", runCopy) && ([runCopy partSPC], v5 = objc_claimAutoreleasedReturnValue(), v5, v5) && +[CRDeviceMap supportPeCoNet](CRDeviceMap, "supportPeCoNet"))
   {
-    v6 = [v4 partSPC];
-    if ([v6 containsObject:@"IPHONE COMP CAMERA"])
+    partSPC = [runCopy partSPC];
+    if ([partSPC containsObject:@"IPHONE COMP CAMERA"])
     {
       v7 = 1;
     }
 
     else
     {
-      v9 = [v4 partSPC];
-      if ([v9 containsObject:@"IPHONE COMP RCAM"])
+      partSPC2 = [runCopy partSPC];
+      if ([partSPC2 containsObject:@"IPHONE COMP RCAM"])
       {
         v7 = 1;
       }
 
       else
       {
-        v10 = [v4 partSPC];
-        if ([v10 containsObject:@"IPAD REAR CAMERA"])
+        partSPC3 = [runCopy partSPC];
+        if ([partSPC3 containsObject:@"IPAD REAR CAMERA"])
         {
           v7 = 1;
         }
 
         else
         {
-          v11 = [v4 partSPC];
-          v7 = [v11 containsObject:@"IPHONE ENCLOSURE"];
+          partSPC4 = [runCopy partSPC];
+          v7 = [partSPC4 containsObject:@"IPHONE ENCLOSURE"];
         }
       }
     }
@@ -74,72 +74,72 @@
   return v7 & 1;
 }
 
-- (void)run:(id)a3 withContext:(id)a4
+- (void)run:(id)run withContext:(id)context
 {
-  v6 = a4;
-  v7 = a3;
+  contextCopy = context;
+  runCopy = run;
   v8 = objc_opt_new();
   [v8 setObject:&__kCFBooleanTrue forKeyedSubscript:@"enableStagedSeal"];
   [v8 setObject:&__kCFBooleanTrue forKeyedSubscript:@"ignoreStagedData"];
   [v8 setObject:&__kCFBooleanTrue forKeyedSubscript:@"skipStageEAN"];
-  v9 = [v6 serialNumber];
+  serialNumber = [contextCopy serialNumber];
 
-  if (v9)
+  if (serialNumber)
   {
-    v10 = [v6 serialNumber];
-    [v8 setObject:v10 forKeyedSubscript:@"KGBSerialNumber"];
+    serialNumber2 = [contextCopy serialNumber];
+    [v8 setObject:serialNumber2 forKeyedSubscript:@"KGBSerialNumber"];
   }
 
-  v11 = [v6 partSPC];
-  if (v11)
+  partSPC = [contextCopy partSPC];
+  if (partSPC)
   {
-    v12 = v11;
-    v13 = [v6 partSPC];
-    v14 = [v13 count];
+    v12 = partSPC;
+    partSPC2 = [contextCopy partSPC];
+    v14 = [partSPC2 count];
 
     if (v14)
     {
-      v15 = [v6 partSPC];
-      v16 = [v15 componentsJoinedByString:{@", "}];
+      partSPC3 = [contextCopy partSPC];
+      v16 = [partSPC3 componentsJoinedByString:{@", "}];
       [v8 setObject:v16 forKeyedSubscript:@"partSPC"];
     }
   }
 
-  v17 = [v6 rik];
+  v17 = [contextCopy rik];
 
   if (v17)
   {
-    v18 = [v6 rik];
+    v18 = [contextCopy rik];
     [v8 setObject:v18 forKeyedSubscript:@"keyBlob"];
   }
 
-  v19 = [v6 patchItems];
-  if (v19)
+  patchItems = [contextCopy patchItems];
+  if (patchItems)
   {
-    v20 = v19;
-    v21 = [v6 patchItems];
-    v22 = [v21 count];
+    v20 = patchItems;
+    patchItems2 = [contextCopy patchItems];
+    v22 = [patchItems2 count];
 
     if (v22)
     {
-      v23 = [v6 patchItems];
-      [v8 setObject:v23 forKeyedSubscript:@"patchItems"];
+      patchItems3 = [contextCopy patchItems];
+      [v8 setObject:patchItems3 forKeyedSubscript:@"patchItems"];
     }
   }
 
-  v24 = [(CRTest *)self overrides];
+  overrides = [(CRTest *)self overrides];
 
-  if (v24)
+  if (overrides)
   {
-    v25 = [(CRTest *)self overrides];
-    [v8 addEntriesFromDictionary:v25];
+    overrides2 = [(CRTest *)self overrides];
+    [v8 addEntriesFromDictionary:overrides2];
   }
 
   v28 = @"parameters";
   v29 = v8;
   v26 = [NSDictionary dictionaryWithObjects:&v29 forKeys:&v28 count:1];
-  v27 = [(CRTest *)self testId];
-  [v7 startTest:v27 parameters:v26];
+  testId = [(CRTest *)self testId];
+  [runCopy startTest:testId parameters:v26];
 }
 
 @end

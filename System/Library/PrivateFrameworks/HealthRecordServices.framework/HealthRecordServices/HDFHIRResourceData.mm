@@ -1,12 +1,12 @@
 @interface HDFHIRResourceData
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HDFHIRResourceData)init;
-- (HDFHIRResourceData)initWithCoder:(id)a3;
-- (HDFHIRResourceData)initWithData:(id)a3 sourceURL:(id)a4 FHIRVersion:(id)a5;
-- (id)JSONDictionaryWithError:(id *)a3;
+- (HDFHIRResourceData)initWithCoder:(id)coder;
+- (HDFHIRResourceData)initWithData:(id)data sourceURL:(id)l FHIRVersion:(id)version;
+- (id)JSONDictionaryWithError:(id *)error;
 - (id)debugDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HDFHIRResourceData
@@ -21,25 +21,25 @@
   return 0;
 }
 
-- (HDFHIRResourceData)initWithData:(id)a3 sourceURL:(id)a4 FHIRVersion:(id)a5
+- (HDFHIRResourceData)initWithData:(id)data sourceURL:(id)l FHIRVersion:(id)version
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dataCopy = data;
+  lCopy = l;
+  versionCopy = version;
   v19.receiver = self;
   v19.super_class = HDFHIRResourceData;
   v11 = [(HDFHIRResourceData *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [dataCopy copy];
     data = v11->_data;
     v11->_data = v12;
 
-    v14 = [v9 copy];
+    v14 = [lCopy copy];
     sourceURL = v11->_sourceURL;
     v11->_sourceURL = v14;
 
-    v16 = [v10 copy];
+    v16 = [versionCopy copy];
     FHIRVersion = v11->_FHIRVersion;
     v11->_FHIRVersion = v16;
   }
@@ -47,38 +47,38 @@
   return v11;
 }
 
-- (id)JSONDictionaryWithError:(id *)a3
+- (id)JSONDictionaryWithError:(id *)error
 {
   data = self->_data;
   if (data)
   {
-    v5 = [MEMORY[0x277CCAAA0] hk_JSONObjectFromFHIRData:data options:0 error:a3];
+    v5 = [MEMORY[0x277CCAAA0] hk_JSONObjectFromFHIRData:data options:0 error:error];
   }
 
   else
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a3 code:3 description:@"nil data provided"];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:3 description:@"nil data provided"];
     v5 = 0;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   data = self->_data;
-  v5 = a3;
-  [v5 encodeObject:data forKey:@"Data"];
-  [v5 encodeObject:self->_sourceURL forKey:@"SourceURL"];
-  [v5 encodeObject:self->_FHIRVersion forKey:@"FHIRVersion"];
+  coderCopy = coder;
+  [coderCopy encodeObject:data forKey:@"Data"];
+  [coderCopy encodeObject:self->_sourceURL forKey:@"SourceURL"];
+  [coderCopy encodeObject:self->_FHIRVersion forKey:@"FHIRVersion"];
 }
 
-- (HDFHIRResourceData)initWithCoder:(id)a3
+- (HDFHIRResourceData)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Data"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SourceURL"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"FHIRVersion"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Data"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SourceURL"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"FHIRVersion"];
   v8 = v7;
   if (v5)
   {
@@ -92,17 +92,17 @@
 
   if (v9)
   {
-    [v4 hrs_failWithCocoaValueNotFoundError];
-    v10 = 0;
+    [coderCopy hrs_failWithCocoaValueNotFoundError];
+    selfCopy = 0;
   }
 
   else
   {
     self = [(HDFHIRResourceData *)self initWithData:v5 sourceURL:v6 FHIRVersion:v7];
-    v10 = self;
+    selfCopy = self;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 - (unint64_t)hash
@@ -112,10 +112,10 @@
   return v4 ^ [(HKFHIRVersion *)self->_FHIRVersion hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     LOBYTE(FHIRVersion) = 1;
   }
@@ -125,22 +125,22 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       data = self->_data;
-      v7 = [(HDFHIRResourceData *)v5 data];
-      if (data != v7)
+      data = [(HDFHIRResourceData *)v5 data];
+      if (data != data)
       {
-        v8 = [(HDFHIRResourceData *)v5 data];
-        if (!v8)
+        data2 = [(HDFHIRResourceData *)v5 data];
+        if (!data2)
         {
           LOBYTE(FHIRVersion) = 0;
           goto LABEL_27;
         }
 
-        v9 = v8;
+        v9 = data2;
         v10 = self->_data;
-        v11 = [(HDFHIRResourceData *)v5 data];
-        if (![(NSData *)v10 isEqual:v11])
+        data3 = [(HDFHIRResourceData *)v5 data];
+        if (![(NSData *)v10 isEqual:data3])
         {
           LOBYTE(FHIRVersion) = 0;
 LABEL_26:
@@ -148,13 +148,13 @@ LABEL_26:
           goto LABEL_27;
         }
 
-        v27 = v11;
+        v27 = data3;
         v28 = v9;
       }
 
       sourceURL = self->_sourceURL;
-      v14 = [(HDFHIRResourceData *)v5 sourceURL];
-      if (sourceURL != v14)
+      sourceURL = [(HDFHIRResourceData *)v5 sourceURL];
+      if (sourceURL != sourceURL)
       {
         FHIRVersion = [(HDFHIRResourceData *)v5 sourceURL];
         if (!FHIRVersion)
@@ -163,17 +163,17 @@ LABEL_26:
         }
 
         v15 = self->_sourceURL;
-        v16 = [(HDFHIRResourceData *)v5 sourceURL];
+        sourceURL2 = [(HDFHIRResourceData *)v5 sourceURL];
         v17 = v15;
-        v18 = v16;
-        if (([(NSURL *)v17 isEqual:v16]& 1) == 0)
+        v18 = sourceURL2;
+        if (([(NSURL *)v17 isEqual:sourceURL2]& 1) == 0)
         {
 
           LOBYTE(FHIRVersion) = 0;
 LABEL_25:
-          v11 = v27;
+          data3 = v27;
           v9 = v28;
-          if (data != v7)
+          if (data != data)
           {
             goto LABEL_26;
           }
@@ -188,19 +188,19 @@ LABEL_27:
       }
 
       FHIRVersion = self->_FHIRVersion;
-      v19 = [(HDFHIRResourceData *)v5 FHIRVersion];
-      LOBYTE(FHIRVersion) = FHIRVersion == v19;
+      fHIRVersion = [(HDFHIRResourceData *)v5 FHIRVersion];
+      LOBYTE(FHIRVersion) = FHIRVersion == fHIRVersion;
       if (!FHIRVersion)
       {
-        v20 = [(HDFHIRResourceData *)v5 FHIRVersion];
-        if (v20)
+        fHIRVersion2 = [(HDFHIRResourceData *)v5 FHIRVersion];
+        if (fHIRVersion2)
         {
-          v21 = v20;
+          v21 = fHIRVersion2;
           FHIRVersion = self->_FHIRVersion;
-          v22 = [(HDFHIRResourceData *)v5 FHIRVersion];
-          LOBYTE(FHIRVersion) = [FHIRVersion isEqual:v22];
+          fHIRVersion3 = [(HDFHIRResourceData *)v5 FHIRVersion];
+          LOBYTE(FHIRVersion) = [FHIRVersion isEqual:fHIRVersion3];
 
-          if (sourceURL != v14)
+          if (sourceURL != sourceURL)
           {
           }
 
@@ -208,7 +208,7 @@ LABEL_27:
         }
       }
 
-      if (sourceURL == v14)
+      if (sourceURL == sourceURL)
       {
 LABEL_22:
 
@@ -216,10 +216,10 @@ LABEL_22:
       }
 
 LABEL_20:
-      v11 = v27;
+      data3 = v27;
 
       v9 = v28;
-      if (data == v7)
+      if (data == data)
       {
         goto LABEL_27;
       }

@@ -1,12 +1,12 @@
 @interface TransitRouteStepCell
-+ (id)cellWithRoute:(id)a3 sign:(id)a4;
-- (TransitRouteStepCell)initWithRoute:(id)a3 sign:(id)a4;
++ (id)cellWithRoute:(id)route sign:(id)sign;
+- (TransitRouteStepCell)initWithRoute:(id)route sign:(id)sign;
 - (TransitSteppingCameraFramer)cameraFramer;
 - (id)instructionStringsArray;
 - (id)routeStep;
 - (id)snapshotBlock;
-- (int64_t)signIndexForSign:(id)a3;
-- (int64_t)signIndexForStepIndex:(int64_t)a3;
+- (int64_t)signIndexForSign:(id)sign;
+- (int64_t)signIndexForStepIndex:(int64_t)index;
 - (unint64_t)numberOfSteps;
 @end
 
@@ -30,61 +30,61 @@
 - (id)instructionStringsArray
 {
   v3 = objc_alloc_init(NSMutableArray);
-  v4 = [(TransitRouteStepCell *)self sign];
-  v5 = [v4 hasValidInstructions];
+  sign = [(TransitRouteStepCell *)self sign];
+  hasValidInstructions = [sign hasValidInstructions];
 
-  if (v5)
+  if (hasValidInstructions)
   {
     v27 = NSFontAttributeName;
     v6 = [UIFont systemFontOfSize:13.5];
     v28 = v6;
     v7 = [NSDictionary dictionaryWithObjects:&v28 forKeys:&v27 count:1];
 
-    v8 = [(TransitRouteStepCell *)self sign];
-    v9 = [v8 majorFormattedInstruction];
+    sign2 = [(TransitRouteStepCell *)self sign];
+    majorFormattedInstruction = [sign2 majorFormattedInstruction];
 
-    if (v9)
+    if (majorFormattedInstruction)
     {
-      v10 = [(TransitRouteStepCell *)self sign];
-      v11 = [v10 majorFormattedInstruction];
-      v12 = [NSAttributedString _mapkit_attributedStringForComposedString:v11 defaultAttributes:v7];
-      v13 = [v12 string];
+      sign3 = [(TransitRouteStepCell *)self sign];
+      majorFormattedInstruction2 = [sign3 majorFormattedInstruction];
+      v12 = [NSAttributedString _mapkit_attributedStringForComposedString:majorFormattedInstruction2 defaultAttributes:v7];
+      string = [v12 string];
 
-      if (v13)
+      if (string)
       {
-        [v3 addObject:v13];
+        [v3 addObject:string];
       }
     }
 
-    v14 = [(TransitRouteStepCell *)self sign];
-    v15 = [v14 minorFormattedInstruction];
+    sign4 = [(TransitRouteStepCell *)self sign];
+    minorFormattedInstruction = [sign4 minorFormattedInstruction];
 
-    if (v15)
+    if (minorFormattedInstruction)
     {
-      v16 = [(TransitRouteStepCell *)self sign];
-      v17 = [v16 minorFormattedInstruction];
-      v18 = [NSAttributedString _mapkit_attributedStringForComposedString:v17 defaultAttributes:v7];
-      v19 = [v18 string];
+      sign5 = [(TransitRouteStepCell *)self sign];
+      minorFormattedInstruction2 = [sign5 minorFormattedInstruction];
+      v18 = [NSAttributedString _mapkit_attributedStringForComposedString:minorFormattedInstruction2 defaultAttributes:v7];
+      string2 = [v18 string];
 
-      if (v19)
+      if (string2)
       {
-        [v3 addObject:v19];
+        [v3 addObject:string2];
       }
     }
 
-    v20 = [(TransitRouteStepCell *)self sign];
-    v21 = [v20 tertiaryFormattedInstruction];
+    sign6 = [(TransitRouteStepCell *)self sign];
+    tertiaryFormattedInstruction = [sign6 tertiaryFormattedInstruction];
 
-    if (v21)
+    if (tertiaryFormattedInstruction)
     {
-      v22 = [(TransitRouteStepCell *)self sign];
-      v23 = [v22 tertiaryFormattedInstruction];
-      v24 = [NSAttributedString _mapkit_attributedStringForComposedString:v23 defaultAttributes:v7];
-      v25 = [v24 string];
+      sign7 = [(TransitRouteStepCell *)self sign];
+      tertiaryFormattedInstruction2 = [sign7 tertiaryFormattedInstruction];
+      v24 = [NSAttributedString _mapkit_attributedStringForComposedString:tertiaryFormattedInstruction2 defaultAttributes:v7];
+      string3 = [v24 string];
 
-      if (v25)
+      if (string3)
       {
-        [v3 addObject:v25];
+        [v3 addObject:string3];
       }
     }
   }
@@ -94,17 +94,17 @@
 
 - (unint64_t)numberOfSteps
 {
-  v2 = [(GEOComposedRoute *)self->super._route steppingSigns];
-  v3 = [v2 count];
+  steppingSigns = [(GEOComposedRoute *)self->super._route steppingSigns];
+  v3 = [steppingSigns count];
 
   return v3;
 }
 
-- (int64_t)signIndexForStepIndex:(int64_t)a3
+- (int64_t)signIndexForStepIndex:(int64_t)index
 {
-  v5 = [(RouteStepCell *)self route];
-  v6 = [v5 steppingSigns];
-  v7 = [v6 count];
+  route = [(RouteStepCell *)self route];
+  steppingSigns = [route steppingSigns];
+  v7 = [steppingSigns count];
 
   if (!v7)
   {
@@ -114,22 +114,22 @@
   v8 = 0;
   while (1)
   {
-    v9 = [(RouteStepCell *)self route];
-    v10 = [v9 steppingSigns];
-    v11 = [v10 objectAtIndexedSubscript:v8];
+    route2 = [(RouteStepCell *)self route];
+    steppingSigns2 = [route2 steppingSigns];
+    v11 = [steppingSigns2 objectAtIndexedSubscript:v8];
 
-    v12 = [v11 stepIndexRange];
+    stepIndexRange = [v11 stepIndexRange];
     v14 = v13;
 
-    if (a3 >= v12 && a3 - v12 < v14)
+    if (index >= stepIndexRange && index - stepIndexRange < v14)
     {
       break;
     }
 
     ++v8;
-    v15 = [(RouteStepCell *)self route];
-    v16 = [v15 steppingSigns];
-    v17 = [v16 count];
+    route3 = [(RouteStepCell *)self route];
+    steppingSigns3 = [route3 steppingSigns];
+    v17 = [steppingSigns3 count];
 
     if (v8 >= v17)
     {
@@ -140,32 +140,32 @@
   return v8;
 }
 
-- (int64_t)signIndexForSign:(id)a3
+- (int64_t)signIndexForSign:(id)sign
 {
-  v4 = a3;
-  v5 = [v4 step];
+  signCopy = sign;
+  step = [signCopy step];
 
-  if (v5)
+  if (step)
   {
-    v6 = [v4 step];
+    step2 = [signCopy step];
   }
 
   else
   {
-    v7 = [v4 segment];
+    segment = [signCopy segment];
 
-    if (!v7)
+    if (!segment)
     {
       v10 = 0x7FFFFFFFFFFFFFFFLL;
       goto LABEL_6;
     }
 
-    v8 = [v4 segment];
-    v9 = [v8 steps];
-    v6 = [v9 firstObject];
+    segment2 = [signCopy segment];
+    steps = [segment2 steps];
+    step2 = [steps firstObject];
   }
 
-  v10 = -[TransitRouteStepCell signIndexForStepIndex:](self, "signIndexForStepIndex:", [v6 stepIndex]);
+  v10 = -[TransitRouteStepCell signIndexForStepIndex:](self, "signIndexForStepIndex:", [step2 stepIndex]);
 
 LABEL_6:
   return v10;
@@ -173,23 +173,23 @@ LABEL_6:
 
 - (id)routeStep
 {
-  v3 = [(TransitRouteStepCell *)self sign];
-  v4 = [v3 step];
+  sign = [(TransitRouteStepCell *)self sign];
+  step = [sign step];
 
-  if (v4)
+  if (step)
   {
-    v5 = [(TransitRouteStepCell *)self sign];
-    v6 = [v5 step];
+    sign2 = [(TransitRouteStepCell *)self sign];
+    step2 = [sign2 step];
   }
 
   else
   {
-    v5 = [(RouteStepCell *)self route];
-    v7 = [(TransitRouteStepCell *)self sign];
-    v6 = [v5 stepAtIndex:{objc_msgSend(v7, "stepIndexRange")}];
+    sign2 = [(RouteStepCell *)self route];
+    sign3 = [(TransitRouteStepCell *)self sign];
+    step2 = [sign2 stepAtIndex:{objc_msgSend(sign3, "stepIndexRange")}];
   }
 
-  return v6;
+  return step2;
 }
 
 - (TransitSteppingCameraFramer)cameraFramer
@@ -207,30 +207,30 @@ LABEL_6:
   return cameraFramer;
 }
 
-- (TransitRouteStepCell)initWithRoute:(id)a3 sign:(id)a4
+- (TransitRouteStepCell)initWithRoute:(id)route sign:(id)sign
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(TransitRouteStepCell *)self sign];
-  v9 = [(TransitRouteStepCell *)self signIndexForSign:v8];
+  signCopy = sign;
+  routeCopy = route;
+  sign = [(TransitRouteStepCell *)self sign];
+  v9 = [(TransitRouteStepCell *)self signIndexForSign:sign];
 
   v12.receiver = self;
   v12.super_class = TransitRouteStepCell;
-  v10 = [(RouteStepCell *)&v12 initWithRoute:v7 stepIndex:v9 mapType:104];
+  v10 = [(RouteStepCell *)&v12 initWithRoute:routeCopy stepIndex:v9 mapType:104];
 
   if (v10)
   {
-    [(TransitRouteStepCell *)v10 setSign:v6];
+    [(TransitRouteStepCell *)v10 setSign:signCopy];
   }
 
   return v10;
 }
 
-+ (id)cellWithRoute:(id)a3 sign:(id)a4
++ (id)cellWithRoute:(id)route sign:(id)sign
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithRoute:v7 sign:v6];
+  signCopy = sign;
+  routeCopy = route;
+  v8 = [[self alloc] initWithRoute:routeCopy sign:signCopy];
 
   return v8;
 }

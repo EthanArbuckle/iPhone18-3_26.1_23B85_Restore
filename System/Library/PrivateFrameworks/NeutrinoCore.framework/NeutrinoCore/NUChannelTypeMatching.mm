@@ -1,7 +1,7 @@
 @interface NUChannelTypeMatching
-- (BOOL)match:(id)a3;
+- (BOOL)match:(id)match;
 - (NUChannelTypeMatching)init;
-- (NUChannelTypeMatching)initWithChannelType:(int64_t)a3;
+- (NUChannelTypeMatching)initWithChannelType:(int64_t)type;
 - (id)description;
 @end
 
@@ -10,35 +10,35 @@
 - (id)description
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [(NUChannelTypeMatching *)self channelType];
-  if ((v3 - 1) > 4)
+  channelType = [(NUChannelTypeMatching *)self channelType];
+  if ((channelType - 1) > 4)
   {
     v4 = @"???";
   }
 
   else
   {
-    v4 = off_1E8109B18[v3 - 1];
+    v4 = off_1E8109B18[channelType - 1];
   }
 
   return [v2 stringWithFormat:@"TYPE[%@]", v4];
 }
 
-- (BOOL)match:(id)a3
+- (BOOL)match:(id)match
 {
-  v4 = a3;
-  v5 = [v4 type];
-  if (v5 == [(NUChannelTypeMatching *)self channelType])
+  matchCopy = match;
+  type = [matchCopy type];
+  if (type == [(NUChannelTypeMatching *)self channelType])
   {
     v6 = 1;
   }
 
-  else if ([v4 type] == 4)
+  else if ([matchCopy type] == 4)
   {
-    v7 = [v4 format];
-    v8 = [v7 itemFormat];
-    v9 = [v8 channelType];
-    v6 = v9 == [(NUChannelTypeMatching *)self channelType];
+    format = [matchCopy format];
+    itemFormat = [format itemFormat];
+    channelType = [itemFormat channelType];
+    v6 = channelType == [(NUChannelTypeMatching *)self channelType];
   }
 
   else
@@ -49,10 +49,10 @@
   return v6;
 }
 
-- (NUChannelTypeMatching)initWithChannelType:(int64_t)a3
+- (NUChannelTypeMatching)initWithChannelType:(int64_t)type
 {
   v26 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!type)
   {
     v5 = NUAssertLogger_4187();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -73,8 +73,8 @@
         v12 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v13 = MEMORY[0x1E696AF00];
         v14 = v12;
-        v15 = [v13 callStackSymbols];
-        v16 = [v15 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v13 callStackSymbols];
+        v16 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v23 = v12;
         v24 = 2114;
@@ -85,8 +85,8 @@
 
     else if (v9)
     {
-      v10 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v11 = [v10 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v11 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v23 = v11;
       _os_log_error_impl(&dword_1C0184000, v8, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -98,7 +98,7 @@
   v21.receiver = self;
   v21.super_class = NUChannelTypeMatching;
   result = [(NUChannelTypeMatching *)&v21 init];
-  result->_channelType = a3;
+  result->_channelType = type;
   return result;
 }
 
@@ -148,8 +148,8 @@ LABEL_8:
     {
       v12 = MEMORY[0x1E696AF00];
       v13 = v11;
-      v14 = [v12 callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v12 callStackSymbols];
+      v15 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v30 = v15;
       _os_log_error_impl(&dword_1C0184000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -165,8 +165,8 @@ LABEL_8:
     v18 = MEMORY[0x1E696AF00];
     v19 = specific;
     v20 = v16;
-    v21 = [v18 callStackSymbols];
-    v22 = [v21 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v18 callStackSymbols];
+    v22 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v30 = specific;
     v31 = 2114;

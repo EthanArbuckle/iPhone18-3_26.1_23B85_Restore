@@ -1,14 +1,14 @@
 @interface CommLimitsResponseListener
-- (void)didReceiveResponse:(id)a3;
+- (void)didReceiveResponse:(id)response;
 @end
 
 @implementation CommLimitsResponseListener
 
-- (void)didReceiveResponse:(id)a3
+- (void)didReceiveResponse:(id)response
 {
-  v3 = a3;
+  responseCopy = response;
 
-  sub_1000215F8(v3);
+  sub_1000215F8(responseCopy);
 }
 
 @end

@@ -1,63 +1,63 @@
 @interface EKUITextSendingManager
-+ (BOOL)canSendMessageToRecipientsOnEvent:(id)a3;
++ (BOOL)canSendMessageToRecipientsOnEvent:(id)event;
 + (BOOL)messagingAvailable;
-+ (id)addressesForRecipientsOnEvent:(id)a3;
-+ (void)getPhone:(id *)a3 andEmail:(id *)a4 forContact:(id)a5;
-- (EKUITextSendingManager)initWithEvent:(id)a3;
-- (void)messageComposeViewController:(id)a3 didFinishWithResult:(int64_t)a4;
-- (void)setupControllerWithAddresses:(id)a3;
++ (id)addressesForRecipientsOnEvent:(id)event;
++ (void)getPhone:(id *)phone andEmail:(id *)email forContact:(id)contact;
+- (EKUITextSendingManager)initWithEvent:(id)event;
+- (void)messageComposeViewController:(id)controller didFinishWithResult:(int64_t)result;
+- (void)setupControllerWithAddresses:(id)addresses;
 @end
 
 @implementation EKUITextSendingManager
 
-+ (void)getPhone:(id *)a3 andEmail:(id *)a4 forContact:(id)a5
++ (void)getPhone:(id *)phone andEmail:(id *)email forContact:(id)contact
 {
-  v7 = a5;
-  v17 = v7;
-  if (a3)
+  contactCopy = contact;
+  v17 = contactCopy;
+  if (phone)
   {
-    v8 = [v7 phoneNumbers];
-    v9 = [v8 count];
+    phoneNumbers = [contactCopy phoneNumbers];
+    v9 = [phoneNumbers count];
 
-    v7 = v17;
+    contactCopy = v17;
     if (v9)
     {
-      v10 = [v17 phoneNumbers];
-      v11 = [v10 objectAtIndexedSubscript:0];
+      phoneNumbers2 = [v17 phoneNumbers];
+      v11 = [phoneNumbers2 objectAtIndexedSubscript:0];
 
-      v12 = [v11 value];
-      *a3 = [v12 stringValue];
+      value = [v11 value];
+      *phone = [value stringValue];
 
-      v7 = v17;
+      contactCopy = v17;
     }
   }
 
-  if (a4)
+  if (email)
   {
-    v13 = [v17 emailAddresses];
-    v14 = [v13 count];
+    emailAddresses = [v17 emailAddresses];
+    v14 = [emailAddresses count];
 
-    v7 = v17;
+    contactCopy = v17;
     if (v14)
     {
-      v15 = [v17 emailAddresses];
-      v16 = [v15 objectAtIndexedSubscript:0];
+      emailAddresses2 = [v17 emailAddresses];
+      v16 = [emailAddresses2 objectAtIndexedSubscript:0];
 
-      *a4 = [v16 value];
+      *email = [v16 value];
 
-      v7 = v17;
+      contactCopy = v17;
     }
   }
 }
 
-+ (id)addressesForRecipientsOnEvent:(id)a3
++ (id)addressesForRecipientsOnEvent:(id)event
 {
   v3 = MEMORY[0x1E695DF70];
-  v4 = a3;
-  v5 = [v3 array];
-  v6 = [EKUICommunicationUtilities attendeesIgnoringMe:v4];
+  eventCopy = event;
+  array = [v3 array];
+  v6 = [EKUICommunicationUtilities attendeesIgnoringMe:eventCopy];
 
-  v10 = v5;
+  v10 = array;
   v7 = v6;
   CalendarFoundationPerformBlockOnSharedContactStore();
   v8 = v10;
@@ -161,18 +161,18 @@ LABEL_16:
 
 + (BOOL)messagingAvailable
 {
-  v2 = [EKWeakLinkClass() defaultCapabilitiesManager];
-  v3 = [v2 isMadridConfigured];
+  defaultCapabilitiesManager = [EKWeakLinkClass() defaultCapabilitiesManager];
+  isMadridConfigured = [defaultCapabilitiesManager isMadridConfigured];
 
-  return v3;
+  return isMadridConfigured;
 }
 
-+ (BOOL)canSendMessageToRecipientsOnEvent:(id)a3
++ (BOOL)canSendMessageToRecipientsOnEvent:(id)event
 {
-  v4 = a3;
-  if ([v4 hasAttendees] && objc_msgSend(a1, "messagingAvailable"))
+  eventCopy = event;
+  if ([eventCopy hasAttendees] && objc_msgSend(self, "messagingAvailable"))
   {
-    v5 = [a1 addressesForRecipientsOnEvent:v4];
+    v5 = [self addressesForRecipientsOnEvent:eventCopy];
     v6 = [v5 count] != 0;
   }
 
@@ -184,40 +184,40 @@ LABEL_16:
   return v6;
 }
 
-- (EKUITextSendingManager)initWithEvent:(id)a3
+- (EKUITextSendingManager)initWithEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v8.receiver = self;
   v8.super_class = EKUITextSendingManager;
   v5 = [(EKUITextSendingManager *)&v8 init];
   if (v5)
   {
-    v6 = [objc_opt_class() addressesForRecipientsOnEvent:v4];
+    v6 = [objc_opt_class() addressesForRecipientsOnEvent:eventCopy];
     [(EKUITextSendingManager *)v5 setupControllerWithAddresses:v6];
   }
 
   return v5;
 }
 
-- (void)setupControllerWithAddresses:(id)a3
+- (void)setupControllerWithAddresses:(id)addresses
 {
-  v6 = a3;
+  addressesCopy = addresses;
   v4 = objc_alloc_init(+[CalendarMessageUIProxy MFMessageComposeViewControllerClass]);
   composeViewController = self->_composeViewController;
   self->_composeViewController = v4;
 
   [(MFMessageComposeViewController *)self->_composeViewController setMessageComposeDelegate:self];
-  [(MFMessageComposeViewController *)self->_composeViewController setRecipients:v6];
+  [(MFMessageComposeViewController *)self->_composeViewController setRecipients:addressesCopy];
 }
 
-- (void)messageComposeViewController:(id)a3 didFinishWithResult:(int64_t)a4
+- (void)messageComposeViewController:(id)controller didFinishWithResult:(int64_t)result
 {
-  v6 = [(EKUITextSendingManager *)self messageSendingComplete];
+  messageSendingComplete = [(EKUITextSendingManager *)self messageSendingComplete];
 
-  if (v6)
+  if (messageSendingComplete)
   {
-    v7 = [(EKUITextSendingManager *)self messageSendingComplete];
-    v7[2](v7, a4 == 1);
+    messageSendingComplete2 = [(EKUITextSendingManager *)self messageSendingComplete];
+    messageSendingComplete2[2](messageSendingComplete2, result == 1);
   }
 }
 

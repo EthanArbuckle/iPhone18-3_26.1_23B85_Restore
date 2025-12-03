@@ -1,12 +1,12 @@
 @interface WFAppPickerParameter
 - (WFAppListProvider)appListProvider;
-- (WFAppPickerParameter)initWithDefinition:(id)a3;
+- (WFAppPickerParameter)initWithDefinition:(id)definition;
 - (id)appEnumerator;
-- (id)enumeration:(id)a3 accessoryIconForPossibleState:(id)a4;
-- (id)enumeration:(id)a3 accessoryImageForPossibleState:(id)a4;
-- (id)enumeration:(id)a3 localizedLabelForPossibleState:(id)a4;
-- (id)stateForRecord:(id)a3;
-- (void)loadPossibleStatesForEnumeration:(id)a3 searchTerm:(id)a4 completionHandler:(id)a5;
+- (id)enumeration:(id)enumeration accessoryIconForPossibleState:(id)state;
+- (id)enumeration:(id)enumeration accessoryImageForPossibleState:(id)state;
+- (id)enumeration:(id)enumeration localizedLabelForPossibleState:(id)state;
+- (id)stateForRecord:(id)record;
+- (void)loadPossibleStatesForEnumeration:(id)enumeration searchTerm:(id)term completionHandler:(id)handler;
 @end
 
 @implementation WFAppPickerParameter
@@ -18,26 +18,26 @@
   return WeakRetained;
 }
 
-- (id)stateForRecord:(id)a3
+- (id)stateForRecord:(id)record
 {
   v4 = MEMORY[0x1E696E720];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithApplicationRecord:v5];
+  recordCopy = record;
+  v6 = [[v4 alloc] initWithApplicationRecord:recordCopy];
 
   if ([(WFAppPickerParameter *)self useLegacyIdentifiers])
   {
-    v7 = [v6 bundleIdentifier];
-    v8 = [WFInterchangeAppRegistry legacyAppIdentifierForBundleIdentifier:v7];
+    bundleIdentifier = [v6 bundleIdentifier];
+    v8 = [WFInterchangeAppRegistry legacyAppIdentifierForBundleIdentifier:bundleIdentifier];
 
     v9 = objc_alloc(MEMORY[0x1E696E720]);
-    v10 = [v6 localizedName];
-    v11 = [v6 extensionBundleIdentifier];
-    v12 = [v6 counterpartIdentifiers];
-    v13 = [v6 teamIdentifier];
-    v14 = [v6 supportedIntents];
-    v15 = [v6 bundleURL];
-    v16 = [v6 documentTypes];
-    v17 = [v9 initWithLocalizedName:v10 bundleIdentifier:v8 extensionBundleIdentifier:v11 counterpartIdentifiers:v12 teamIdentifier:v13 supportedIntents:v14 bundleURL:v15 documentTypes:v16];
+    localizedName = [v6 localizedName];
+    extensionBundleIdentifier = [v6 extensionBundleIdentifier];
+    counterpartIdentifiers = [v6 counterpartIdentifiers];
+    teamIdentifier = [v6 teamIdentifier];
+    supportedIntents = [v6 supportedIntents];
+    bundleURL = [v6 bundleURL];
+    documentTypes = [v6 documentTypes];
+    v17 = [v9 initWithLocalizedName:localizedName bundleIdentifier:v8 extensionBundleIdentifier:extensionBundleIdentifier counterpartIdentifiers:counterpartIdentifiers teamIdentifier:teamIdentifier supportedIntents:supportedIntents bundleURL:bundleURL documentTypes:documentTypes];
 
     v6 = v17;
   }
@@ -47,38 +47,38 @@
   return v18;
 }
 
-- (id)enumeration:(id)a3 accessoryImageForPossibleState:(id)a4
+- (id)enumeration:(id)enumeration accessoryImageForPossibleState:(id)state
 {
-  v5 = a3;
-  v6 = a4;
-  if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  enumerationCopy = enumeration;
+  stateCopy = state;
+  if (stateCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v8 = +[WFInterchangeAppRegistry sharedRegistry];
-    v9 = [v6 value];
-    v10 = [v9 bundleIdentifier];
-    v11 = [v8 appWithIdentifier:v10];
-    v7 = [v11 icon];
+    value = [stateCopy value];
+    bundleIdentifier = [value bundleIdentifier];
+    v11 = [v8 appWithIdentifier:bundleIdentifier];
+    icon = [v11 icon];
   }
 
   else
   {
-    v7 = 0;
+    icon = 0;
   }
 
-  return v7;
+  return icon;
 }
 
-- (id)enumeration:(id)a3 accessoryIconForPossibleState:(id)a4
+- (id)enumeration:(id)enumeration accessoryIconForPossibleState:(id)state
 {
-  if (a4)
+  if (state)
   {
     v4 = MEMORY[0x1E69E0960];
-    v5 = a4;
+    stateCopy = state;
     v6 = [v4 alloc];
-    v7 = [v5 value];
+    value = [stateCopy value];
 
-    v8 = [v7 bundleIdentifier];
-    v9 = [v6 initWithBundleIdentifier:v8];
+    bundleIdentifier = [value bundleIdentifier];
+    v9 = [v6 initWithBundleIdentifier:bundleIdentifier];
   }
 
   else
@@ -89,33 +89,33 @@
   return v9;
 }
 
-- (id)enumeration:(id)a3 localizedLabelForPossibleState:(id)a4
+- (id)enumeration:(id)enumeration localizedLabelForPossibleState:(id)state
 {
-  if (a4)
+  if (state)
   {
-    v4 = [a4 value];
-    v5 = [v4 localizedName];
+    value = [state value];
+    localizedName = [value localizedName];
   }
 
   else
   {
-    v5 = 0;
+    localizedName = 0;
   }
 
-  return v5;
+  return localizedName;
 }
 
-- (void)loadPossibleStatesForEnumeration:(id)a3 searchTerm:(id)a4 completionHandler:(id)a5
+- (void)loadPossibleStatesForEnumeration:(id)enumeration searchTerm:(id)term completionHandler:(id)handler
 {
-  v6 = a5;
+  handlerCopy = handler;
   v7 = dispatch_get_global_queue(25, 0);
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __86__WFAppPickerParameter_loadPossibleStatesForEnumeration_searchTerm_completionHandler___block_invoke;
   v9[3] = &unk_1E837E1F8;
   v9[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = handlerCopy;
+  v8 = handlerCopy;
   dispatch_async(v7, v9);
 }
 
@@ -245,26 +245,26 @@ void __86__WFAppPickerParameter_loadPossibleStatesForEnumeration_searchTerm_comp
 
 - (id)appEnumerator
 {
-  v2 = [(WFAppPickerParameter *)self appListProvider];
-  v3 = [v2 appEnumerator];
+  appListProvider = [(WFAppPickerParameter *)self appListProvider];
+  appEnumerator = [appListProvider appEnumerator];
 
-  if (!v3)
+  if (!appEnumerator)
   {
-    v3 = WFInstalledAppsEnumerator();
+    appEnumerator = WFInstalledAppsEnumerator();
   }
 
-  return v3;
+  return appEnumerator;
 }
 
-- (WFAppPickerParameter)initWithDefinition:(id)a3
+- (WFAppPickerParameter)initWithDefinition:(id)definition
 {
-  v4 = a3;
+  definitionCopy = definition;
   v15.receiver = self;
   v15.super_class = WFAppPickerParameter;
-  v5 = [(WFDynamicEnumerationParameter *)&v15 initWithDefinition:v4];
+  v5 = [(WFDynamicEnumerationParameter *)&v15 initWithDefinition:definitionCopy];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"AppSearchType"];
+    v6 = [definitionCopy objectForKey:@"AppSearchType"];
     v7 = objc_opt_class();
     v8 = WFEnforceClass_29964(v6, v7);
 
@@ -278,7 +278,7 @@ void __86__WFAppPickerParameter_loadPossibleStatesForEnumeration_searchTerm_comp
       if (![v8 isEqualToString:@"OpenIn"])
       {
 LABEL_7:
-        v10 = [v4 objectForKey:@"UseLegacyIdentifiers"];
+        v10 = [definitionCopy objectForKey:@"UseLegacyIdentifiers"];
         v11 = objc_opt_class();
         v12 = WFEnforceClass_29964(v10, v11);
         v5->_useLegacyIdentifiers = [v12 BOOLValue];

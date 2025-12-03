@@ -1,24 +1,24 @@
 @interface _UIStatusBarSystemNavigationItemButton
 - (BOOL)shouldLayoutImageOnRight;
-- (CGRect)imageRectForContentRect:(CGRect)a3;
-- (CGRect)titleRectForContentRect:(CGRect)a3;
+- (CGRect)imageRectForContentRect:(CGRect)rect;
+- (CGRect)titleRectForContentRect:(CGRect)rect;
 @end
 
 @implementation _UIStatusBarSystemNavigationItemButton
 
 - (BOOL)shouldLayoutImageOnRight
 {
-  v2 = [(UIView *)self superview];
-  v3 = [v2 _shouldLayoutImageOnRight];
+  superview = [(UIView *)self superview];
+  _shouldLayoutImageOnRight = [superview _shouldLayoutImageOnRight];
 
-  return v3;
+  return _shouldLayoutImageOnRight;
 }
 
-- (CGRect)imageRectForContentRect:(CGRect)a3
+- (CGRect)imageRectForContentRect:(CGRect)rect
 {
   v18.receiver = self;
   v18.super_class = _UIStatusBarSystemNavigationItemButton;
-  [(UIButton *)&v18 imageRectForContentRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(UIButton *)&v18 imageRectForContentRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   v5 = v4;
   v7 = v6;
   if ([(_UIStatusBarSystemNavigationItemButton *)self shouldLayoutImageOnRight])
@@ -26,12 +26,12 @@
     [(UIView *)self bounds];
   }
 
-  v8 = [objc_opt_self() mainScreen];
-  UIRoundToScreenScale(v8);
+  mainScreen = [objc_opt_self() mainScreen];
+  UIRoundToScreenScale(mainScreen);
   v10 = v9;
 
-  v11 = [objc_opt_self() mainScreen];
-  UIRoundToScreenScale(v11);
+  mainScreen2 = [objc_opt_self() mainScreen];
+  UIRoundToScreenScale(mainScreen2);
   v13 = v12;
 
   v14 = v10;
@@ -45,12 +45,12 @@
   return result;
 }
 
-- (CGRect)titleRectForContentRect:(CGRect)a3
+- (CGRect)titleRectForContentRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v23.receiver = self;
   v23.super_class = _UIStatusBarSystemNavigationItemButton;
   [(UIButton *)&v23 titleRectForContentRect:?];
@@ -68,8 +68,8 @@
     v15 = v9;
   }
 
-  v16 = [objc_opt_self() mainScreen];
-  UIRoundToScreenScale(v16);
+  mainScreen = [objc_opt_self() mainScreen];
+  UIRoundToScreenScale(mainScreen);
   v18 = v17;
 
   v19 = 0.0;

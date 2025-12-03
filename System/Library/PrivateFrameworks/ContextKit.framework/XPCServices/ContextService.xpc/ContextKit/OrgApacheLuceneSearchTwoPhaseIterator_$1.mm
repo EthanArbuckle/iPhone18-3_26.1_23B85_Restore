@@ -26,9 +26,9 @@
     JreThrowNullPointerException();
   }
 
-  v4 = [(OrgApacheLuceneSearchDocIdSetIterator *)v3 nextDoc];
+  nextDoc = [(OrgApacheLuceneSearchDocIdSetIterator *)v3 nextDoc];
 
-  return sub_10013B220(self, v4);
+  return sub_10013B220(self, nextDoc);
 }
 
 - (int64_t)cost

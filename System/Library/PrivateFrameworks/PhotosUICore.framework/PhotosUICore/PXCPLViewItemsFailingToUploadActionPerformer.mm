@@ -17,7 +17,7 @@
     _os_log_impl(&dword_1A3C1C000, v4, OS_LOG_TYPE_DEFAULT, "Will navigate to: %{public}@", &v7, 0xCu);
   }
 
-  v5 = [MEMORY[0x1E69DC668] sharedApplication];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
   *&v7 = MEMORY[0x1E69E9820];
   *(&v7 + 1) = 3221225472;
   v8 = ___NavigateToCollection_block_invoke;
@@ -25,7 +25,7 @@
   v10 = @"FailedToUploadItemsAlbum";
   v11 = v3;
   v6 = v3;
-  [v5 px_navigateToCollectionSubtype:216 completionHandler:&v7];
+  [mEMORY[0x1E69DC668] px_navigateToCollectionSubtype:216 completionHandler:&v7];
 }
 
 @end

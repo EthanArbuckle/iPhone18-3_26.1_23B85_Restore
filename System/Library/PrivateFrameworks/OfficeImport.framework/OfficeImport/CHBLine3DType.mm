@@ -1,21 +1,21 @@
 @interface CHBLine3DType
-+ (id)chdChartTypeWithState:(id)a3;
++ (id)chdChartTypeWithState:(id)state;
 @end
 
 @implementation CHBLine3DType
 
-+ (id)chdChartTypeWithState:(id)a3
++ (id)chdChartTypeWithState:(id)state
 {
-  v3 = a3;
+  stateCopy = state;
   v4 = [CHDLine3DType alloc];
-  v5 = [v3 chart];
-  v6 = [(CHDLine3DType *)v4 initWithChart:v5];
+  chart = [stateCopy chart];
+  v6 = [(CHDLine3DType *)v4 initWithChart:chart];
 
-  [CHBLineType readWithState:v3 chartType:v6];
-  v7 = [v3 xlCurrentPlot];
-  if (v7)
+  [CHBLineType readWithState:stateCopy chartType:v6];
+  xlCurrentPlot = [stateCopy xlCurrentPlot];
+  if (xlCurrentPlot)
   {
-    v8 = *(v7 + 8);
+    v8 = *(xlCurrentPlot + 8);
     if (v8)
     {
       [(CHDLine3DType *)v6 setGapDepth:*(v8 + 26)];

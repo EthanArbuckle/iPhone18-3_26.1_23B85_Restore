@@ -1,33 +1,33 @@
 @interface MTLGPUDebugBlitCommandEncoder
-- (void)copyIndirectCommandBuffer:(id)a3 sourceRange:(_NSRange)a4 destination:(id)a5 destinationIndex:(unint64_t)a6;
+- (void)copyIndirectCommandBuffer:(id)buffer sourceRange:(_NSRange)range destination:(id)destination destinationIndex:(unint64_t)index;
 @end
 
 @implementation MTLGPUDebugBlitCommandEncoder
 
-- (void)copyIndirectCommandBuffer:(id)a3 sourceRange:(_NSRange)a4 destination:(id)a5 destinationIndex:(unint64_t)a6
+- (void)copyIndirectCommandBuffer:(id)buffer sourceRange:(_NSRange)range destination:(id)destination destinationIndex:(unint64_t)index
 {
-  length = a4.length;
-  location = a4.location;
-  if ([a3 internalICBBuffer])
+  length = range.length;
+  location = range.location;
+  if ([buffer internalICBBuffer])
   {
-    v12 = [a3 commandByteStride];
-    v13 = v12 * location + 16;
-    v22 = v12 * a6 + 16;
-    v23 = a6;
-    v14 = v12 * length;
+    commandByteStride = [buffer commandByteStride];
+    v13 = commandByteStride * location + 16;
+    v22 = commandByteStride * index + 16;
+    indexCopy = index;
+    v14 = commandByteStride * length;
     baseObject = self->super.super.super._baseObject;
-    v16 = [a3 internalICBBuffer];
-    v17 = [a5 internalICBBuffer];
+    internalICBBuffer = [buffer internalICBBuffer];
+    internalICBBuffer2 = [destination internalICBBuffer];
     v18 = v14;
-    a6 = v23;
-    [(MTLToolsObject *)baseObject copyFromBuffer:v16 sourceOffset:v13 toBuffer:v17 destinationOffset:v22 size:v18];
+    index = indexCopy;
+    [(MTLToolsObject *)baseObject copyFromBuffer:internalICBBuffer sourceOffset:v13 toBuffer:internalICBBuffer2 destinationOffset:v22 size:v18];
   }
 
   v19 = self->super.super.super._baseObject;
-  v20 = [a3 baseObject];
-  v21 = [a5 baseObject];
+  baseObject = [buffer baseObject];
+  baseObject2 = [destination baseObject];
 
-  [(MTLToolsObject *)v19 copyIndirectCommandBuffer:v20 sourceRange:location destination:length destinationIndex:v21, a6];
+  [(MTLToolsObject *)v19 copyIndirectCommandBuffer:baseObject sourceRange:location destination:length destinationIndex:baseObject2, index];
 }
 
 @end

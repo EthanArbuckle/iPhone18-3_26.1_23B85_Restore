@@ -1,43 +1,43 @@
 @interface CalendarEventViewController
-- (_TtC17PromotedContentUI27CalendarEventViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)eventEditViewController:(id)a3 didCompleteWithAction:(int64_t)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (_TtC17PromotedContentUI27CalendarEventViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)eventEditViewController:(id)controller didCompleteWithAction:(int64_t)action;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation CalendarEventViewController
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C19B798C();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_1C19B8144(a3);
+  selfCopy = self;
+  sub_1C19B8144(appear);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_1C19B87CC(a3);
+  selfCopy = self;
+  sub_1C19B87CC(disappear);
 }
 
-- (_TtC17PromotedContentUI27CalendarEventViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC17PromotedContentUI27CalendarEventViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)eventEditViewController:(id)a3 didCompleteWithAction:(int64_t)a4
+- (void)eventEditViewController:(id)controller didCompleteWithAction:(int64_t)action
 {
-  v6 = a3;
-  v7 = self;
-  sub_1C19B9478(a4);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_1C19B9478(action);
 }
 
 @end

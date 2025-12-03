@@ -1,15 +1,15 @@
 @interface TPPdfHyperlinkController
-+ (id)URLWithDestinationName:(id)a3;
-+ (id)destinationFromSectionURL:(id)a3;
-- (BOOL)isDestination:(id)a3;
++ (id)URLWithDestinationName:(id)name;
++ (id)destinationFromSectionURL:(id)l;
+- (BOOL)isDestination:(id)destination;
 - (CGRect)canvasRect;
-- (TPPdfHyperlinkController)initWithDocumentRoot:(id)a3;
-- (id)destinationFromUrl:(id)a3;
+- (TPPdfHyperlinkController)initWithDocumentRoot:(id)root;
+- (id)destinationFromUrl:(id)url;
 @end
 
 @implementation TPPdfHyperlinkController
 
-- (TPPdfHyperlinkController)initWithDocumentRoot:(id)a3
+- (TPPdfHyperlinkController)initWithDocumentRoot:(id)root
 {
   v4.receiver = self;
   v4.super_class = TPPdfHyperlinkController;
@@ -29,10 +29,10 @@
   return result;
 }
 
-+ (id)destinationFromSectionURL:(id)a3
++ (id)destinationFromSectionURL:(id)l
 {
-  v3 = a3;
-  v9 = objc_msgSend_absoluteString(v3, v4, v5, v6, v7, v8);
+  lCopy = l;
+  v9 = objc_msgSend_absoluteString(lCopy, v4, v5, v6, v7, v8);
   v10 = *MEMORY[0x277D80FF0];
   if ((objc_msgSend_hasPrefix_(v9, v11, v12, v13, v14, v15, *MEMORY[0x277D80FF0]) & 1) == 0)
   {
@@ -62,7 +62,7 @@
     v62 = MEMORY[0x277D81150];
     v63 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v57, v58, v59, v60, v61, "+[TPPdfHyperlinkController destinationFromSectionURL:]");
     v69 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v64, v65, v66, v67, v68, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/pages/Classes/TPPdfHyperlinkController.m");
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v62, v70, v71, v72, v73, v74, v63, v69, 93, 0, "No destination returned for URL: %@", v3);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v62, v70, v71, v72, v73, v74, v63, v69, 93, 0, "No destination returned for URL: %@", lCopy);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v75, v76, v77, v78, v79);
   }
@@ -70,9 +70,9 @@
   return v50;
 }
 
-- (BOOL)isDestination:(id)a3
+- (BOOL)isDestination:(id)destination
 {
-  v7 = objc_msgSend_absoluteString(a3, a2, v3, v4, v5, v6);
+  v7 = objc_msgSend_absoluteString(destination, a2, v3, v4, v5, v6);
   if (objc_msgSend_hasPrefix_(v7, v8, v9, v10, v11, v12, *MEMORY[0x277D80FE8]))
   {
     hasPrefix = 1;
@@ -86,10 +86,10 @@
   return hasPrefix;
 }
 
-- (id)destinationFromUrl:(id)a3
+- (id)destinationFromUrl:(id)url
 {
-  v3 = a3;
-  v9 = objc_msgSend_absoluteString(v3, v4, v5, v6, v7, v8);
+  urlCopy = url;
+  v9 = objc_msgSend_absoluteString(urlCopy, v4, v5, v6, v7, v8);
   if (objc_msgSend_hasPrefix_(v9, v10, v11, v12, v13, v14, *MEMORY[0x277D80FE8]))
   {
     v20 = objc_msgSend_stringByRemovingPercentEncoding(v9, v15, v16, v17, v18, v19);
@@ -98,7 +98,7 @@
 
   else if (objc_msgSend_hasPrefix_(v9, v15, v16, v17, v18, v19, *MEMORY[0x277D80FF0]))
   {
-    v26 = objc_msgSend_destinationFromSectionURL_(TPPdfHyperlinkController, v27, v28, v29, v30, v31, v3);
+    v26 = objc_msgSend_destinationFromSectionURL_(TPPdfHyperlinkController, v27, v28, v29, v30, v31, urlCopy);
   }
 
   else
@@ -115,14 +115,14 @@
   return v26;
 }
 
-+ (id)URLWithDestinationName:(id)a3
++ (id)URLWithDestinationName:(id)name
 {
   v3 = MEMORY[0x277CBEBC0];
   v4 = *MEMORY[0x277D80FE8];
   v5 = MEMORY[0x277CCA900];
-  v6 = a3;
+  nameCopy = name;
   v12 = objc_msgSend_URLFragmentAllowedCharacterSet(v5, v7, v8, v9, v10, v11);
-  v18 = objc_msgSend_stringByAddingPercentEncodingWithAllowedCharacters_(v6, v13, v14, v15, v16, v17, v12);
+  v18 = objc_msgSend_stringByAddingPercentEncodingWithAllowedCharacters_(nameCopy, v13, v14, v15, v16, v17, v12);
 
   v24 = objc_msgSend_stringByAppendingString_(v4, v19, v20, v21, v22, v23, v18);
   v30 = objc_msgSend_URLWithString_(v3, v25, v26, v27, v28, v29, v24);

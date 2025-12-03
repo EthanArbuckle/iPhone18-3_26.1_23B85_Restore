@@ -9,7 +9,7 @@
 {
   v2[0] = 0;
   v2[1] = 0;
-  [a1 getValue:v2];
+  [self getValue:v2];
   return *v2;
 }
 
@@ -17,7 +17,7 @@
 {
   *v5 = a2;
   *&v5[1] = a3;
-  v3 = [a1 valueWithBytes:v5 objCType:"{?=dd}"];
+  v3 = [self valueWithBytes:v5 objCType:"{?=dd}"];
 
   return v3;
 }

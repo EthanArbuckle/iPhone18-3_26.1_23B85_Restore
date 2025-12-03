@@ -1,63 +1,63 @@
 @interface RTHintStore
-+ (BOOL)batchInsertHintsDictionary:(id)a3 context:(id)a4 error:(id *)a5;
-+ (id)fetchRequestForHintEnumerationOptions:(id)a3 error:(id *)a4;
-+ (id)predicateForSourceFilter:(id)a3;
-- (id)fetchRequestFromOptions:(id)a3 offset:(unint64_t)a4 error:(id *)a5;
-- (void)_clearHintsForSourceFilter:(id)a3 handler:(id)a4;
-- (void)_fetchHintStatsNearLocation:(id)a3 handler:(id)a4;
-- (void)_purgeHintsPredating:(id)a3 handler:(id)a4;
-- (void)_regenerateLOIHintsWithHandler:(id)a3;
-- (void)clearHintsForSourceFilter:(id)a3 handler:(id)a4;
-- (void)clearWithHandler:(id)a3;
-- (void)enumerateStoredHintsWithOptions:(id)a3 usingBlock:(id)a4;
-- (void)fetchHintStatsNearLocation:(id)a3 handler:(id)a4;
-- (void)fetchIsHintNearLocation:(id)a3 withHandler:(id)a4;
-- (void)purgeHintsPredating:(id)a3 handler:(id)a4;
-- (void)regenerateLOIHintsWithHandler:(id)a3;
++ (BOOL)batchInsertHintsDictionary:(id)dictionary context:(id)context error:(id *)error;
++ (id)fetchRequestForHintEnumerationOptions:(id)options error:(id *)error;
++ (id)predicateForSourceFilter:(id)filter;
+- (id)fetchRequestFromOptions:(id)options offset:(unint64_t)offset error:(id *)error;
+- (void)_clearHintsForSourceFilter:(id)filter handler:(id)handler;
+- (void)_fetchHintStatsNearLocation:(id)location handler:(id)handler;
+- (void)_purgeHintsPredating:(id)predating handler:(id)handler;
+- (void)_regenerateLOIHintsWithHandler:(id)handler;
+- (void)clearHintsForSourceFilter:(id)filter handler:(id)handler;
+- (void)clearWithHandler:(id)handler;
+- (void)enumerateStoredHintsWithOptions:(id)options usingBlock:(id)block;
+- (void)fetchHintStatsNearLocation:(id)location handler:(id)handler;
+- (void)fetchIsHintNearLocation:(id)location withHandler:(id)handler;
+- (void)purgeHintsPredating:(id)predating handler:(id)handler;
+- (void)regenerateLOIHintsWithHandler:(id)handler;
 @end
 
 @implementation RTHintStore
 
-- (void)clearWithHandler:(id)a3
+- (void)clearWithHandler:(id)handler
 {
   v6[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   v6[0] = objc_opt_class();
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v6 count:1];
-  [(RTStore *)self removeAll:v5 handler:v4];
+  [(RTStore *)self removeAll:v5 handler:handlerCopy];
 }
 
-- (void)clearHintsForSourceFilter:(id)a3 handler:(id)a4
+- (void)clearHintsForSourceFilter:(id)filter handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  filterCopy = filter;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __49__RTHintStore_clearHintsForSourceFilter_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = filterCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = filterCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_clearHintsForSourceFilter:(id)a3 handler:(id)a4
+- (void)_clearHintsForSourceFilter:(id)filter handler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [objc_opt_class() predicateForSourceFilter:v7];
+  handlerCopy = handler;
+  filterCopy = filter;
+  v8 = [objc_opt_class() predicateForSourceFilter:filterCopy];
 
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __50__RTHintStore__clearHintsForSourceFilter_handler___block_invoke;
   aBlock[3] = &unk_2788C4F38;
   v13 = v8;
-  v14 = self;
-  v15 = v6;
-  v9 = v6;
+  selfCopy = self;
+  v15 = handlerCopy;
+  v9 = handlerCopy;
   v10 = v8;
   v11 = _Block_copy(aBlock);
   [(RTStore *)self _performBlock:v11 contextType:0 errorHandler:v9];
@@ -76,25 +76,25 @@ void __50__RTHintStore__clearHintsForSourceFilter_handler___block_invoke(void *a
   [v6 executeDeleteRequests:v7 context:v3 handler:a1[6]];
 }
 
-- (void)regenerateLOIHintsWithHandler:(id)a3
+- (void)regenerateLOIHintsWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __45__RTHintStore_regenerateLOIHintsWithHandler___block_invoke;
   v7[3] = &unk_2788C4938;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)_regenerateLOIHintsWithHandler:(id)a3
+- (void)_regenerateLOIHintsWithHandler:(id)handler
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -113,8 +113,8 @@ void __50__RTHintStore__clearHintsForSourceFilter_handler___block_invoke(void *a
   v8[2] = __46__RTHintStore__regenerateLOIHintsWithHandler___block_invoke;
   v8[3] = &unk_2788C51C8;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = handlerCopy;
+  v7 = handlerCopy;
   [(RTHintStore *)self clearHintsForSourceFilter:v6 handler:v8];
 }
 
@@ -258,10 +258,10 @@ void __46__RTHintStore__regenerateLOIHintsWithHandler___block_invoke_30(uint64_t
   }
 }
 
-+ (BOOL)batchInsertHintsDictionary:(id)a3 context:(id)a4 error:(id *)a5
++ (BOOL)batchInsertHintsDictionary:(id)dictionary context:(id)context error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  dictionaryCopy = dictionary;
+  contextCopy = context;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -272,15 +272,15 @@ void __46__RTHintStore__regenerateLOIHintsWithHandler___block_invoke_30(uint64_t
   v13[1] = 3221225472;
   v13[2] = __56__RTHintStore_batchInsertHintsDictionary_context_error___block_invoke;
   v13[3] = &unk_2788C51F0;
-  v9 = v7;
+  v9 = dictionaryCopy;
   v14 = v9;
-  v10 = v8;
+  v10 = contextCopy;
   v15 = v10;
   v16 = &v17;
   [v10 performBlockAndWait:v13];
-  if (a5)
+  if (error)
   {
-    *a5 = v18[5];
+    *error = v18[5];
   }
 
   v11 = v18[5] == 0;
@@ -302,11 +302,11 @@ void __56__RTHintStore_batchInsertHintsDictionary_context_error___block_invoke(v
   objc_storeStrong((v6 + 40), obj);
 }
 
-+ (id)predicateForSourceFilter:(id)a3
++ (id)predicateForSourceFilter:(id)filter
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (v3)
+  filterCopy = filter;
+  if (filterCopy)
   {
     v4 = objc_opt_new();
     v5 = -1;
@@ -314,18 +314,18 @@ void __56__RTHintStore_batchInsertHintsDictionary_context_error___block_invoke(v
     do
     {
       v7 = objc_autoreleasePoolPush();
-      if (([v3 integerValue] & (1 << (v5 + 1))) != 0)
+      if (([filterCopy integerValue] & (1 << (v5 + 1))) != 0)
       {
         if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
         {
           v8 = _rt_log_facility_get_os_log(RTLogFacilityLearnedLocationStore);
           if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
           {
-            v10 = [v3 integerValue];
+            integerValue = [filterCopy integerValue];
             *buf = 134218240;
             v14 = v5;
             v15 = 2048;
-            v16 = v10;
+            v16 = integerValue;
             _os_log_debug_impl(&dword_2304B3000, v8, OS_LOG_TYPE_DEBUG, "Setting up predicate for hintSource, %ld, sourceFilter, %ld", buf, 0x16u);
           }
         }
@@ -350,25 +350,25 @@ void __56__RTHintStore_batchInsertHintsDictionary_context_error___block_invoke(v
   return v11;
 }
 
-+ (id)fetchRequestForHintEnumerationOptions:(id)a3 error:(id *)a4
++ (id)fetchRequestForHintEnumerationOptions:(id)options error:(id *)error
 {
   v42[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  optionsCopy = options;
   v6 = +[RTHintMO fetchRequest];
-  v7 = [objc_alloc(MEMORY[0x277CCAC98]) initWithKey:@"date" ascending:{objc_msgSend(v5, "ascending")}];
+  v7 = [objc_alloc(MEMORY[0x277CCAC98]) initWithKey:@"date" ascending:{objc_msgSend(optionsCopy, "ascending")}];
   v42[0] = v7;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v42 count:1];
   [v6 setSortDescriptors:v8];
 
-  v9 = [v5 referenceLocation];
+  referenceLocation = [optionsCopy referenceLocation];
 
-  if (v9 && ([v5 referenceLocation], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "distance"), v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "doubleValue"), v39 = 0, v12 = objc_msgSend(v6, "setupBoundingBoxFetchRequestForLocation:distance:entityCanBeLocationShifted:locationShifter:resultExpansionPredicates:resultFilteringPredicates:error:", v10, 0, 0, 0, 0, &v39), v9 = v39, v11, v10, (v12 & 1) == 0))
+  if (referenceLocation && ([optionsCopy referenceLocation], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(optionsCopy, "distance"), v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "doubleValue"), v39 = 0, v12 = objc_msgSend(v6, "setupBoundingBoxFetchRequestForLocation:distance:entityCanBeLocationShifted:locationShifter:resultExpansionPredicates:resultFilteringPredicates:error:", v10, 0, 0, 0, 0, &v39), referenceLocation = v39, v11, v10, (v12 & 1) == 0))
   {
-    if (a4)
+    if (error)
     {
-      v22 = v9;
+      v22 = referenceLocation;
       v23 = 0;
-      *a4 = v9;
+      *error = referenceLocation;
     }
 
     else
@@ -379,23 +379,23 @@ void __56__RTHintStore_batchInsertHintsDictionary_context_error___block_invoke(v
 
   else
   {
-    v13 = [v5 sourceFilter];
+    sourceFilter = [optionsCopy sourceFilter];
 
-    if (v13)
+    if (sourceFilter)
     {
       v14 = objc_opt_class();
-      v15 = [v5 sourceFilter];
-      v16 = [v14 predicateForSourceFilter:v15];
+      sourceFilter2 = [optionsCopy sourceFilter];
+      v16 = [v14 predicateForSourceFilter:sourceFilter2];
 
       if (v16)
       {
-        v17 = [v6 predicate];
+        predicate = [v6 predicate];
 
-        if (v17)
+        if (predicate)
         {
           v18 = MEMORY[0x277CCA920];
-          v19 = [v6 predicate];
-          v41[0] = v19;
+          predicate2 = [v6 predicate];
+          v41[0] = predicate2;
           v41[1] = v16;
           v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v41 count:2];
           v21 = [v18 andPredicateWithSubpredicates:v20];
@@ -409,24 +409,24 @@ void __56__RTHintStore_batchInsertHintsDictionary_context_error___block_invoke(v
       }
     }
 
-    v24 = [v5 dateInterval];
+    dateInterval = [optionsCopy dateInterval];
 
-    if (v24)
+    if (dateInterval)
     {
       v25 = MEMORY[0x277CCAC30];
-      v26 = [v5 dateInterval];
-      v27 = [v26 startDate];
-      v28 = [v5 dateInterval];
-      v29 = [v28 endDate];
-      v30 = [v25 predicateWithFormat:@"%K >= %@ AND %K <= %@", @"date", v27, @"date", v29];
+      dateInterval2 = [optionsCopy dateInterval];
+      startDate = [dateInterval2 startDate];
+      dateInterval3 = [optionsCopy dateInterval];
+      endDate = [dateInterval3 endDate];
+      v30 = [v25 predicateWithFormat:@"%K >= %@ AND %K <= %@", @"date", startDate, @"date", endDate];
 
-      v31 = [v6 predicate];
+      predicate3 = [v6 predicate];
 
-      if (v31)
+      if (predicate3)
       {
         v32 = MEMORY[0x277CCA920];
-        v33 = [v6 predicate];
-        v40[0] = v33;
+        predicate4 = [v6 predicate];
+        v40[0] = predicate4;
         v40[1] = v30;
         v34 = [MEMORY[0x277CBEA60] arrayWithObjects:v40 count:2];
         v35 = [v32 andPredicateWithSubpredicates:v34];
@@ -439,17 +439,17 @@ void __56__RTHintStore_batchInsertHintsDictionary_context_error___block_invoke(v
       }
     }
 
-    if ([v5 batchSize])
+    if ([optionsCopy batchSize])
     {
-      v36 = [v5 batchSize];
-      if (v36 >= 0x400)
+      batchSize = [optionsCopy batchSize];
+      if (batchSize >= 0x400)
       {
         v37 = 1024;
       }
 
       else
       {
-        v37 = v36;
+        v37 = batchSize;
       }
     }
 
@@ -466,22 +466,22 @@ void __56__RTHintStore_batchInsertHintsDictionary_context_error___block_invoke(v
   return v23;
 }
 
-- (void)enumerateStoredHintsWithOptions:(id)a3 usingBlock:(id)a4
+- (void)enumerateStoredHintsWithOptions:(id)options usingBlock:(id)block
 {
   v26[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  optionsCopy = options;
+  blockCopy = block;
+  if (blockCopy)
   {
     v22 = 0;
-    if (v7)
+    if (optionsCopy)
     {
       v21 = 0;
-      v9 = [objc_opt_class() fetchRequestForHintEnumerationOptions:v7 error:&v21];
+      v9 = [objc_opt_class() fetchRequestForHintEnumerationOptions:optionsCopy error:&v21];
       v10 = v21;
       if (v10)
       {
-        v8[2](v8, 0, v10, &v22);
+        blockCopy[2](blockCopy, 0, v10, &v22);
       }
 
       *buf = 0;
@@ -493,8 +493,8 @@ void __56__RTHintStore_batchInsertHintsDictionary_context_error___block_invoke(v
       aBlock[2] = __58__RTHintStore_enumerateStoredHintsWithOptions_usingBlock___block_invoke;
       aBlock[3] = &unk_2788C5218;
       v20 = buf;
-      v18 = v7;
-      v19 = v8;
+      v18 = optionsCopy;
+      v19 = blockCopy;
       v11 = _Block_copy(aBlock);
       [(RTStore *)self enumerateType:objc_opt_class() fetchRequest:v9 enumerationBlock:v11];
 
@@ -520,7 +520,7 @@ void __56__RTHintStore_batchInsertHintsDictionary_context_error___block_invoke(v
         _os_log_error_impl(&dword_2304B3000, v15, OS_LOG_TYPE_ERROR, "%@, error, %@", buf, 0x16u);
       }
 
-      v8[2](v8, 0, v10, &v22);
+      blockCopy[2](blockCopy, 0, v10, &v22);
     }
   }
 
@@ -564,12 +564,12 @@ void __58__RTHintStore_enumerateStoredHintsWithOptions_usingBlock___block_invoke
   }
 }
 
-- (void)_purgeHintsPredating:(id)a3 handler:(id)a4
+- (void)_purgeHintsPredating:(id)predating handler:(id)handler
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  predatingCopy = predating;
+  handlerCopy = handler;
+  if (predatingCopy)
   {
     v12 = @"date";
     v11 = objc_opt_class();
@@ -577,7 +577,7 @@ void __58__RTHintStore_enumerateStoredHintsWithOptions_usingBlock___block_invoke
     v13[0] = v8;
     v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:&v12 count:1];
 
-    [(RTStore *)self purgePredating:v6 predicateMappings:v9 handler:v7];
+    [(RTStore *)self purgePredating:predatingCopy predicateMappings:v9 handler:handlerCopy];
   }
 
   else
@@ -591,31 +591,31 @@ void __58__RTHintStore_enumerateStoredHintsWithOptions_usingBlock___block_invoke
   }
 }
 
-- (void)purgeHintsPredating:(id)a3 handler:(id)a4
+- (void)purgeHintsPredating:(id)predating handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  predatingCopy = predating;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __43__RTHintStore_purgeHintsPredating_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = predatingCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = predatingCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_fetchHintStatsNearLocation:(id)a3 handler:(id)a4
+- (void)_fetchHintStatsNearLocation:(id)location handler:(id)handler
 {
   v35[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  locationCopy = location;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    if (v7)
+    if (locationCopy)
     {
       *buf = 0;
       v29 = buf;
@@ -623,17 +623,17 @@ void __58__RTHintStore_enumerateStoredHintsWithOptions_usingBlock___block_invoke
       v31 = __Block_byref_object_copy__8;
       v32 = __Block_byref_object_dispose__8;
       v33 = 0;
-      v9 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
       aBlock[0] = MEMORY[0x277D85DD0];
       aBlock[1] = 3221225472;
       aBlock[2] = __51__RTHintStore__fetchHintStatsNearLocation_handler___block_invoke;
       aBlock[3] = &unk_2788C5240;
-      v23 = v7;
-      v10 = v8;
+      v23 = locationCopy;
+      v10 = handlerCopy;
       v25 = v10;
       v26 = buf;
       v27 = a2;
-      v11 = v9;
+      v11 = dictionary;
       v24 = v11;
       v12 = _Block_copy(aBlock);
       v20[0] = MEMORY[0x277D85DD0];
@@ -657,7 +657,7 @@ void __58__RTHintStore_enumerateStoredHintsWithOptions_usingBlock___block_invoke
       v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v35 forKeys:&v34 count:1];
       v19 = [v14 errorWithDomain:*MEMORY[0x277D01448] code:7 userInfo:v18];
 
-      (*(v8 + 2))(v8, 0, v19);
+      (*(handlerCopy + 2))(handlerCopy, 0, v19);
     }
   }
 
@@ -774,26 +774,26 @@ void __51__RTHintStore__fetchHintStatsNearLocation_handler___block_invoke(uint64
   }
 }
 
-- (void)fetchHintStatsNearLocation:(id)a3 handler:(id)a4
+- (void)fetchHintStatsNearLocation:(id)location handler:(id)handler
 {
   v22[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  locationCopy = location;
+  handlerCopy = handler;
+  v9 = handlerCopy;
+  if (locationCopy)
   {
-    v10 = [(RTNotifier *)self queue];
+    queue = [(RTNotifier *)self queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __50__RTHintStore_fetchHintStatsNearLocation_handler___block_invoke;
     block[3] = &unk_2788C4500;
     block[4] = self;
-    v19 = v7;
+    v19 = locationCopy;
     v20 = v9;
-    dispatch_async(v10, block);
+    dispatch_async(queue, block);
   }
 
-  else if (v8)
+  else if (handlerCopy)
   {
     v11 = MEMORY[0x277CCA9B8];
     v12 = *MEMORY[0x277D01448];
@@ -809,16 +809,16 @@ void __51__RTHintStore__fetchHintStatsNearLocation_handler___block_invoke(uint64
   }
 }
 
-- (void)fetchIsHintNearLocation:(id)a3 withHandler:(id)a4
+- (void)fetchIsHintNearLocation:(id)location withHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __51__RTHintStore_fetchIsHintNearLocation_withHandler___block_invoke;
   v8[3] = &unk_2788C5268;
-  v9 = v6;
-  v7 = v6;
-  [(RTHintStore *)self fetchHintStatsNearLocation:a3 handler:v8];
+  v9 = handlerCopy;
+  v7 = handlerCopy;
+  [(RTHintStore *)self fetchHintStatsNearLocation:location handler:v8];
 }
 
 void __51__RTHintStore_fetchIsHintNearLocation_withHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -830,12 +830,12 @@ void __51__RTHintStore_fetchIsHintNearLocation_withHandler___block_invoke(uint64
   (*(v4 + 16))(v4, [v6 integerValue] > 0, v5);
 }
 
-- (id)fetchRequestFromOptions:(id)a3 offset:(unint64_t)a4 error:(id *)a5
+- (id)fetchRequestFromOptions:(id)options offset:(unint64_t)offset error:(id *)error
 {
   v28[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = v7;
-  if (!a5)
+  optionsCopy = options;
+  v8 = optionsCopy;
+  if (!error)
   {
     v13 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -847,7 +847,7 @@ void __51__RTHintStore_fetchIsHintNearLocation_withHandler___block_invoke(uint64
     goto LABEL_13;
   }
 
-  if (v7)
+  if (optionsCopy)
   {
     v9 = objc_opt_class();
     if (![v9 isEqual:objc_opt_class()])
@@ -865,7 +865,7 @@ void __51__RTHintStore_fetchIsHintNearLocation_withHandler___block_invoke(uint64
       v22 = [v19 errorWithDomain:v20 code:7 userInfo:v21];
 
       v23 = v22;
-      *a5 = v22;
+      *error = v22;
 
       goto LABEL_13;
     }
@@ -876,14 +876,14 @@ void __51__RTHintStore_fetchIsHintNearLocation_withHandler___block_invoke(uint64
     if (v11)
     {
       v12 = v11;
-      *a5 = v12;
+      *error = v12;
 
 LABEL_13:
       v10 = 0;
       goto LABEL_14;
     }
 
-    [v10 setFetchOffset:a4];
+    [v10 setFetchOffset:offset];
   }
 
   else
@@ -896,7 +896,7 @@ LABEL_13:
     }
 
     _RTErrorInvalidParameterCreate(@"options");
-    *a5 = v10 = 0;
+    *error = v10 = 0;
   }
 
 LABEL_14:

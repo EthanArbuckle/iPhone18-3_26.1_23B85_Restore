@@ -1,10 +1,10 @@
 @interface HMDAssistantSettingsConnection
 + (id)logCategory;
-- (HMDAssistantSettingsConnection)initWithScheduler:(id)a3;
+- (HMDAssistantSettingsConnection)initWithScheduler:(id)scheduler;
 - (HMDAssistantSettingsConnectionDataSource)dataSource;
-- (id)connectionForEndpointUUID:(id)a3;
-- (id)deleteSiriHistoryOperationWithConnection:(id)a3;
-- (void)deleteSiriHistoryWithEndpointUUID:(id)a3 completionHandler:(id)a4;
+- (id)connectionForEndpointUUID:(id)d;
+- (id)deleteSiriHistoryOperationWithConnection:(id)connection;
+- (void)deleteSiriHistoryWithEndpointUUID:(id)d completionHandler:(id)handler;
 @end
 
 @implementation HMDAssistantSettingsConnection
@@ -16,20 +16,20 @@
   return WeakRetained;
 }
 
-- (id)deleteSiriHistoryOperationWithConnection:(id)a3
+- (id)deleteSiriHistoryOperationWithConnection:(id)connection
 {
-  v3 = a3;
-  v4 = [[HMDAppleMediaAccessoryDeleteSiriHistoryOperation alloc] initWithSettingsConnection:v3];
+  connectionCopy = connection;
+  v4 = [[HMDAppleMediaAccessoryDeleteSiriHistoryOperation alloc] initWithSettingsConnection:connectionCopy];
 
   return v4;
 }
 
-- (id)connectionForEndpointUUID:(id)a3
+- (id)connectionForEndpointUUID:(id)d
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
   {
@@ -44,13 +44,13 @@
   return 0;
 }
 
-- (void)deleteSiriHistoryWithEndpointUUID:(id)a3 completionHandler:(id)a4
+- (void)deleteSiriHistoryWithEndpointUUID:(id)d completionHandler:(id)handler
 {
   v36 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  handlerCopy = handler;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -58,16 +58,16 @@
     *buf = 138543618;
     v31 = v11;
     v32 = 2112;
-    v33 = v6;
+    v33 = dCopy;
     _os_log_impl(&dword_229538000, v10, OS_LOG_TYPE_INFO, "%{public}@Deleting siri history for endpoint with uuid: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v8);
-  v12 = [(HMDAssistantSettingsConnection *)v9 dataSource];
-  v13 = [v12 connectionForEndpointUUID:v6];
+  dataSource = [(HMDAssistantSettingsConnection *)selfCopy dataSource];
+  v13 = [dataSource connectionForEndpointUUID:dCopy];
   if (v13)
   {
-    v14 = [v12 deleteSiriHistoryOperationWithConnection:v13];
+    v14 = [dataSource deleteSiriHistoryOperationWithConnection:v13];
     if (v14)
     {
       objc_initWeak(buf, v14);
@@ -76,11 +76,11 @@
       v27[2] = __86__HMDAssistantSettingsConnection_deleteSiriHistoryWithEndpointUUID_completionHandler___block_invoke;
       v27[3] = &unk_278687BF8;
       objc_copyWeak(&v29, buf);
-      v27[4] = v9;
-      v28 = v7;
+      v27[4] = selfCopy;
+      v28 = handlerCopy;
       [v14 setCompletionBlock:v27];
-      v15 = [(HMDAssistantSettingsConnection *)v9 scheduler];
-      v16 = [v15 performOperation:v14];
+      scheduler = [(HMDAssistantSettingsConnection *)selfCopy scheduler];
+      v16 = [scheduler performOperation:v14];
 
       objc_destroyWeak(&v29);
       objc_destroyWeak(buf);
@@ -89,7 +89,7 @@
     else
     {
       v21 = objc_autoreleasePoolPush();
-      v22 = v9;
+      v22 = selfCopy;
       v23 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
       {
@@ -97,15 +97,15 @@
         *buf = 138543874;
         v31 = v24;
         v32 = 2112;
-        v33 = v6;
+        v33 = dCopy;
         v34 = 2112;
-        v35 = v12;
+        v35 = dataSource;
         _os_log_impl(&dword_229538000, v23, OS_LOG_TYPE_ERROR, "%{public}@Failed to get a delete operation for endpoint uuid: %@ datasource: %@", buf, 0x20u);
       }
 
       objc_autoreleasePoolPop(v21);
       v25 = [MEMORY[0x277CCA9B8] hmfErrorWithCode:15];
-      (*(v7 + 2))(v7, v25);
+      (*(handlerCopy + 2))(handlerCopy, v25);
 
       v14 = 0;
     }
@@ -114,7 +114,7 @@
   else
   {
     v17 = objc_autoreleasePoolPush();
-    v18 = v9;
+    v18 = selfCopy;
     v19 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
@@ -122,15 +122,15 @@
       *buf = 138543874;
       v31 = v20;
       v32 = 2112;
-      v33 = v6;
+      v33 = dCopy;
       v34 = 2112;
-      v35 = v12;
+      v35 = dataSource;
       _os_log_impl(&dword_229538000, v19, OS_LOG_TYPE_ERROR, "%{public}@Failed to get a connection for endpoint uuid: %@ datasource: %@", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v17);
     v14 = [MEMORY[0x277CCA9B8] hmfErrorWithCode:15];
-    (*(v7 + 2))(v7, v14);
+    (*(handlerCopy + 2))(handlerCopy, v14);
   }
 
   v26 = *MEMORY[0x277D85DE8];
@@ -172,16 +172,16 @@ void __86__HMDAssistantSettingsConnection_deleteSiriHistoryWithEndpointUUID_comp
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDAssistantSettingsConnection)initWithScheduler:(id)a3
+- (HMDAssistantSettingsConnection)initWithScheduler:(id)scheduler
 {
-  v5 = a3;
+  schedulerCopy = scheduler;
   v9.receiver = self;
   v9.super_class = HMDAssistantSettingsConnection;
   v6 = [(HMDAssistantSettingsConnection *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_scheduler, a3);
+    objc_storeStrong(&v6->_scheduler, scheduler);
   }
 
   return v7;

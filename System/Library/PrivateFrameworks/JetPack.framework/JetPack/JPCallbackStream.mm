@@ -1,14 +1,14 @@
 @interface JPCallbackStream
-- (JPCallbackStream)initWithReadCallback:(id)a3 seekForwardCallback:(id)a4 seekToEndCallback:(id)a5;
+- (JPCallbackStream)initWithReadCallback:(id)callback seekForwardCallback:(id)forwardCallback seekToEndCallback:(id)endCallback;
 @end
 
 @implementation JPCallbackStream
 
-- (JPCallbackStream)initWithReadCallback:(id)a3 seekForwardCallback:(id)a4 seekToEndCallback:(id)a5
+- (JPCallbackStream)initWithReadCallback:(id)callback seekForwardCallback:(id)forwardCallback seekToEndCallback:(id)endCallback
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  callbackCopy = callback;
+  forwardCallbackCopy = forwardCallback;
+  endCallbackCopy = endCallback;
   JetPackStreamCreate();
 }
 

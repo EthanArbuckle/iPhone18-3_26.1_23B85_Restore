@@ -1,17 +1,17 @@
 @interface MPFrameManager
 + (id)sharedManager;
-+ (void)loadFrameManagerWithPaths:(id)a3;
++ (void)loadFrameManagerWithPaths:(id)paths;
 + (void)releaseSharedManager;
-- (MPFrameManager)initWithPaths:(id)a3;
+- (MPFrameManager)initWithPaths:(id)paths;
 - (id)allCategoryIDs;
-- (id)attributesForFrameID:(id)a3 andPresetID:(id)a4;
-- (id)categoryIDsForFrameID:(id)a3;
-- (id)constraintsForFramesMatchingList:(id)a3 andCriteria:(id)a4;
-- (id)framesForCategoryID:(id)a3;
-- (id)localizedCategoryNameFromCategoryID:(id)a3;
-- (id)localizedFrameNameForFrameID:(id)a3;
-- (id)randomFrameFromList:(id)a3 abidingWithConstraints:(id)a4;
-- (id)versionOfFrameID:(id)a3;
+- (id)attributesForFrameID:(id)d andPresetID:(id)iD;
+- (id)categoryIDsForFrameID:(id)d;
+- (id)constraintsForFramesMatchingList:(id)list andCriteria:(id)criteria;
+- (id)framesForCategoryID:(id)d;
+- (id)localizedCategoryNameFromCategoryID:(id)d;
+- (id)localizedFrameNameForFrameID:(id)d;
+- (id)randomFrameFromList:(id)list abidingWithConstraints:(id)constraints;
+- (id)versionOfFrameID:(id)d;
 - (void)dealloc;
 @end
 
@@ -22,13 +22,13 @@
   result = qword_1EF2D0;
   if (!qword_1EF2D0)
   {
-    objc_sync_enter(a1);
+    objc_sync_enter(self);
     if (!qword_1EF2D0)
     {
       qword_1EF2D0 = [[MPFrameManager alloc] initWithPaths:0];
     }
 
-    objc_sync_exit(a1);
+    objc_sync_exit(self);
     return qword_1EF2D0;
   }
 
@@ -39,11 +39,11 @@
 {
   if (qword_1EF2D0)
   {
-    objc_sync_enter(a1);
+    objc_sync_enter(self);
 
     qword_1EF2D0 = 0;
 
-    objc_sync_exit(a1);
+    objc_sync_exit(self);
   }
 }
 
@@ -122,30 +122,30 @@
   return v3;
 }
 
-- (id)versionOfFrameID:(id)a3
+- (id)versionOfFrameID:(id)d
 {
-  v3 = [(NSMutableDictionary *)self->mFrames objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->mFrames objectForKey:d];
 
   return [v3 objectForKey:@"version"];
 }
 
-- (id)localizedFrameNameForFrameID:(id)a3
+- (id)localizedFrameNameForFrameID:(id)d
 {
   result = [-[NSMutableDictionary objectForKey:](self->mFrames "objectForKey:{"objectForKey:", @"localizedFrameName"}")];
   if (!result)
   {
-    return a3;
+    return d;
   }
 
   return result;
 }
 
-- (id)localizedCategoryNameFromCategoryID:(id)a3
+- (id)localizedCategoryNameFromCategoryID:(id)d
 {
   v5 = [(NSMutableDictionary *)self->mCategories objectForKey:?];
   if (!v5)
   {
-    v7 = [(MPFrameManager *)self framesForCategoryID:a3];
+    v7 = [(MPFrameManager *)self framesForCategoryID:d];
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
@@ -153,7 +153,7 @@
     v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (!v8)
     {
-      return a3;
+      return d;
     }
 
     v9 = v8;
@@ -181,7 +181,7 @@ LABEL_6:
           goto LABEL_6;
         }
 
-        return a3;
+        return d;
       }
     }
   }
@@ -189,14 +189,14 @@ LABEL_6:
   return v5;
 }
 
-- (id)categoryIDsForFrameID:(id)a3
+- (id)categoryIDsForFrameID:(id)d
 {
-  v3 = [objc_msgSend(-[NSMutableDictionary objectForKey:](self->mFrames objectForKey:{a3), "objectForKey:", @"categories", "copy"}];
+  v3 = [objc_msgSend(-[NSMutableDictionary objectForKey:](self->mFrames objectForKey:{d), "objectForKey:", @"categories", "copy"}];
 
   return v3;
 }
 
-- (id)framesForCategoryID:(id)a3
+- (id)framesForCategoryID:(id)d
 {
   v5 = +[NSMutableSet set];
   v13 = 0u;
@@ -219,7 +219,7 @@ LABEL_6:
         }
 
         v11 = *(*(&v13 + 1) + 8 * i);
-        if (([-[MPFrameManager categoryIDsForFrameID:](self categoryIDsForFrameID:{v11), "containsObject:", a3}] & 1) != 0 || objc_msgSend(a3, "isEqualToString:", @"all"))
+        if (([-[MPFrameManager categoryIDsForFrameID:](self categoryIDsForFrameID:{v11), "containsObject:", d}] & 1) != 0 || objc_msgSend(d, "isEqualToString:", @"all"))
         {
           [v5 addObject:v11];
         }
@@ -234,11 +234,11 @@ LABEL_6:
   return v5;
 }
 
-- (id)attributesForFrameID:(id)a3 andPresetID:(id)a4
+- (id)attributesForFrameID:(id)d andPresetID:(id)iD
 {
-  v5 = [-[NSMutableDictionary objectForKey:](self->mFrames objectForKey:{a3), "objectForKey:", @"presets"}];
+  v5 = [-[NSMutableDictionary objectForKey:](self->mFrames objectForKey:{d), "objectForKey:", @"presets"}];
   objc_sync_enter(v5);
-  v6 = [v5 objectForKey:a4];
+  v6 = [v5 objectForKey:iD];
   if (!v6)
   {
     v6 = [v5 objectForKey:@"Default"];
@@ -253,7 +253,7 @@ LABEL_6:
   return v6;
 }
 
-+ (void)loadFrameManagerWithPaths:(id)a3
++ (void)loadFrameManagerWithPaths:(id)paths
 {
   if (qword_1EF2D0)
   {
@@ -261,22 +261,22 @@ LABEL_6:
     qword_1EF2D0 = 0;
   }
 
-  qword_1EF2D0 = [[MPFrameManager alloc] initWithPaths:a3];
+  qword_1EF2D0 = [[MPFrameManager alloc] initWithPaths:paths];
 }
 
-- (id)randomFrameFromList:(id)a3 abidingWithConstraints:(id)a4
+- (id)randomFrameFromList:(id)list abidingWithConstraints:(id)constraints
 {
-  if (a4)
+  if (constraints)
   {
-    v6 = +[NSMutableArray array];
+    allKeys = +[NSMutableArray array];
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v22 = [a3 countByEnumeratingWithState:&v27 objects:v32 count:16];
+    v22 = [list countByEnumeratingWithState:&v27 objects:v32 count:16];
     if (v22)
     {
-      v20 = v6;
+      v20 = allKeys;
       v21 = *v28;
       do
       {
@@ -284,16 +284,16 @@ LABEL_6:
         {
           if (*v28 != v21)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(list);
           }
 
           v8 = *(*(&v27 + 1) + 8 * i);
-          v9 = [a3 objectForKey:v8];
+          v9 = [list objectForKey:v8];
           v23 = 0u;
           v24 = 0u;
           v25 = 0u;
           v26 = 0u;
-          v10 = [a4 countByEnumeratingWithState:&v23 objects:v31 count:16];
+          v10 = [constraints countByEnumeratingWithState:&v23 objects:v31 count:16];
           if (v10)
           {
             v11 = v10;
@@ -304,13 +304,13 @@ LABEL_9:
             {
               if (*v24 != v12)
               {
-                objc_enumerationMutation(a4);
+                objc_enumerationMutation(constraints);
               }
 
               v14 = *(*(&v23 + 1) + 8 * v13);
               if ([v9 objectForKey:v14])
               {
-                [objc_msgSend(a4 objectForKey:{v14), "floatValue"}];
+                [objc_msgSend(constraints objectForKey:{v14), "floatValue"}];
                 v16 = v15;
                 v17 = NSRangeFromString([v9 objectForKey:v14]);
                 if (v16 < v17.location || v16 - v17.location >= v17.length)
@@ -321,7 +321,7 @@ LABEL_9:
 
               if (v11 == ++v13)
               {
-                v11 = [a4 countByEnumeratingWithState:&v23 objects:v31 count:16];
+                v11 = [constraints countByEnumeratingWithState:&v23 objects:v31 count:16];
                 if (v11)
                 {
                   goto LABEL_9;
@@ -341,42 +341,42 @@ LABEL_21:
           [v20 addObject:v8];
         }
 
-        v22 = [a3 countByEnumeratingWithState:&v27 objects:v32 count:16];
+        v22 = [list countByEnumeratingWithState:&v27 objects:v32 count:16];
       }
 
       while (v22);
-      v6 = v20;
+      allKeys = v20;
     }
   }
 
   else
   {
-    v6 = [a3 allKeys];
+    allKeys = [list allKeys];
   }
 
-  result = [v6 count];
+  result = [allKeys count];
   if (result)
   {
-    return [v6 objectAtIndex:rand() % result];
+    return [allKeys objectAtIndex:rand() % result];
   }
 
   return result;
 }
 
-- (id)constraintsForFramesMatchingList:(id)a3 andCriteria:(id)a4
+- (id)constraintsForFramesMatchingList:(id)list andCriteria:(id)criteria
 {
   v22 = +[NSMutableDictionary dictionary];
-  if (!a4)
+  if (!criteria)
   {
     return 0;
   }
 
-  if (!a3)
+  if (!list)
   {
-    a3 = [(MPFrameManager *)self allFrameIDs];
+    list = [(MPFrameManager *)self allFrameIDs];
   }
 
-  if (![a3 count])
+  if (![list count])
   {
     return 0;
   }
@@ -386,7 +386,7 @@ LABEL_21:
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v6 = [a3 countByEnumeratingWithState:&v35 objects:v41 count:16];
+  v6 = [list countByEnumeratingWithState:&v35 objects:v41 count:16];
   if (v6)
   {
     v7 = v6;
@@ -397,13 +397,13 @@ LABEL_21:
       {
         if (*v36 != v8)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(list);
         }
 
         [obj addObject:*(*(&v35 + 1) + 8 * i)];
       }
 
-      v7 = [a3 countByEnumeratingWithState:&v35 objects:v41 count:16];
+      v7 = [list countByEnumeratingWithState:&v35 objects:v41 count:16];
     }
 
     while (v7);
@@ -434,7 +434,7 @@ LABEL_21:
         v28 = 0u;
         v29 = 0u;
         v30 = 0u;
-        v16 = [a4 countByEnumeratingWithState:&v27 objects:v39 count:16];
+        v16 = [criteria countByEnumeratingWithState:&v27 objects:v39 count:16];
         if (v16)
         {
           v17 = v16;
@@ -445,7 +445,7 @@ LABEL_19:
           {
             if (*v28 != v18)
             {
-              objc_enumerationMutation(a4);
+              objc_enumerationMutation(criteria);
             }
 
             v20 = *(*(&v27 + 1) + 8 * v19);
@@ -456,7 +456,7 @@ LABEL_19:
 
             if (v17 == ++v19)
             {
-              v17 = [a4 countByEnumeratingWithState:&v27 objects:v39 count:16];
+              v17 = [criteria countByEnumeratingWithState:&v27 objects:v39 count:16];
               if (v17)
               {
                 goto LABEL_19;
@@ -485,7 +485,7 @@ LABEL_27:
   return v23;
 }
 
-- (MPFrameManager)initWithPaths:(id)a3
+- (MPFrameManager)initWithPaths:(id)paths
 {
   v57.receiver = self;
   v57.super_class = MPFrameManager;
@@ -498,9 +498,9 @@ LABEL_27:
     v44 = +[NSFileManager defaultManager];
     v6 = +[NSMutableArray array];
     v7 = v6;
-    if (a3)
+    if (paths)
     {
-      [v6 addObjectsFromArray:a3];
+      [v6 addObjectsFromArray:paths];
     }
 
     else

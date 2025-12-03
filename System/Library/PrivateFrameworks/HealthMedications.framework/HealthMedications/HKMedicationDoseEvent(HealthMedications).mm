@@ -24,16 +24,16 @@
 {
   if (a3 && a4)
   {
-    v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_%@", a4, a3];
+    uUIDString = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_%@", a4, a3];
   }
 
   else
   {
-    v5 = [MEMORY[0x277CCAD78] UUID];
-    v4 = [v5 UUIDString];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
   }
 
-  return v4;
+  return uUIDString;
 }
 
 @end

@@ -1,6 +1,6 @@
 @interface SATapToRadar
 + (BOOL)isTTREnabled;
-+ (BOOL)shouldOpenRadar:(BOOL)a3;
++ (BOOL)shouldOpenRadar:(BOOL)radar;
 + (void)updateLastTTRNotificationDate;
 @end
 
@@ -9,9 +9,9 @@
 + (BOOL)isTTREnabled
 {
   v2 = [SARunTimeDataManager runTimeDataObjectForKey:@"enableTTRNotification"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 + (void)updateLastTTRNotificationDate
@@ -20,7 +20,7 @@
   [SARunTimeDataManager setRunTimeDataObject:v2 forKey:@"lastTTRNotificationDate"];
 }
 
-+ (BOOL)shouldOpenRadar:(BOOL)a3
++ (BOOL)shouldOpenRadar:(BOOL)radar
 {
   arc4random_uniform(0x3E8u);
   v4 = +[SATapToRadar getLastTTRNotificationDate];
@@ -41,7 +41,7 @@ LABEL_10:
     }
   }
 
-  if (!a3 && !+[SATapToRadar isTTREnabled])
+  if (!radar && !+[SATapToRadar isTTREnabled])
   {
     v9 = SALog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))

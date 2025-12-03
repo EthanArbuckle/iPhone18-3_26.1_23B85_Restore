@@ -2,44 +2,44 @@
 - (BOOL)accessibilityPerformEscape;
 - (BOOL)accessibilityPerformMagicTap;
 - (NSArray)keyCommands;
-- (_TtC11WeatherMaps25InteractiveViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)accessibilityModelOverlayKeyForMapView:(id)a3;
-- (id)mapView:(id)a3 rendererForOverlay:(id)a4;
-- (id)mapView:(id)a3 viewForAnnotation:(id)a4;
-- (void)didHoverMap:(id)a3;
+- (_TtC11WeatherMaps25InteractiveViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)accessibilityModelOverlayKeyForMapView:(id)view;
+- (id)mapView:(id)view rendererForOverlay:(id)overlay;
+- (id)mapView:(id)view viewForAnnotation:(id)annotation;
+- (void)didHoverMap:(id)map;
 - (void)didMoveToBackground;
 - (void)didMoveToForeground;
-- (void)didMoveToParentViewController:(id)a3;
-- (void)didTapMap:(id)a3;
+- (void)didMoveToParentViewController:(id)controller;
+- (void)didTapMap:(id)map;
 - (void)dismissFromKeyboard;
-- (void)handleVoiceOverStatusDidChangeWithNotification:(id)a3;
+- (void)handleVoiceOverStatusDidChangeWithNotification:(id)notification;
 - (void)mapGestureDidChange;
-- (void)mapView:(id)a3 didSelectAnnotationView:(id)a4;
-- (void)mapView:(id)a3 regionDidChangeAnimated:(BOOL)a4;
-- (void)mapView:(id)a3 requestedAccessibilityModelForLocation:(id)a4 completion:(id)a5;
-- (void)mapViewDidChangeVisibleRegion:(id)a3;
+- (void)mapView:(id)view didSelectAnnotationView:(id)annotationView;
+- (void)mapView:(id)view regionDidChangeAnimated:(BOOL)animated;
+- (void)mapView:(id)view requestedAccessibilityModelForLocation:(id)location completion:(id)completion;
+- (void)mapViewDidChangeVisibleRegion:(id)region;
 - (void)selectAirQualityOverlay;
 - (void)selectPrecipitationOverlay;
 - (void)selectTemperatureOverlay;
 - (void)selectWindOverlay;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)zoomIn;
 - (void)zoomOut;
 @end
 
 @implementation InteractiveViewController
 
-- (void)handleVoiceOverStatusDidChangeWithNotification:(id)a3
+- (void)handleVoiceOverStatusDidChangeWithNotification:(id)notification
 {
   v4 = sub_220FBFDC0();
   v5 = *(v4 - 8);
   MEMORY[0x28223BE20](v4, v6);
   v8 = &v10 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_220FBFD90();
-  v9 = self;
+  selfCopy = self;
   sub_220EF92F0();
 
   (*(v5 + 8))(v8, v4);
@@ -47,39 +47,39 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_220EF9500();
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_220EFAE98(a3);
+  selfCopy = self;
+  sub_220EFAE98(disappear);
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_220EFAF64();
 }
 
-- (void)didMoveToParentViewController:(id)a3
+- (void)didMoveToParentViewController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   sub_220EFB79C();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
+  changeCopy = change;
+  selfCopy = self;
   sub_220EFB8BC();
 }
 
 - (BOOL)accessibilityPerformEscape
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_220EFBC50();
 
   return v3 & 1;
@@ -87,7 +87,7 @@
 
 - (BOOL)accessibilityPerformMagicTap
 {
-  v2 = self;
+  selfCopy = self;
   sub_220EFBCD4();
   v4 = v3;
 
@@ -96,39 +96,39 @@
 
 - (void)didMoveToBackground
 {
-  v2 = self;
+  selfCopy = self;
   sub_220EFC1CC();
 }
 
 - (void)didMoveToForeground
 {
-  v2 = self;
+  selfCopy = self;
   sub_220EFC2D8();
 }
 
 - (void)mapGestureDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_220EFD440();
 }
 
-- (void)didTapMap:(id)a3
+- (void)didTapMap:(id)map
 {
-  v4 = a3;
-  v5 = self;
-  sub_220EFD660(v4);
+  mapCopy = map;
+  selfCopy = self;
+  sub_220EFD660(mapCopy);
 }
 
-- (void)didHoverMap:(id)a3
+- (void)didHoverMap:(id)map
 {
-  v4 = a3;
-  v5 = self;
-  sub_220EFD9B4(v4);
+  mapCopy = map;
+  selfCopy = self;
+  sub_220EFD9B4(mapCopy);
 }
 
 - (NSArray)keyCommands
 {
-  v2 = self;
+  selfCopy = self;
   sub_220EFF778();
 
   sub_220E1966C(0, &qword_27CF9EBC8);
@@ -139,81 +139,81 @@
 
 - (void)selectTemperatureOverlay
 {
-  v2 = self;
+  selfCopy = self;
   sub_220EFFA18(4u);
 }
 
 - (void)selectPrecipitationOverlay
 {
-  v2 = self;
+  selfCopy = self;
   sub_220EFFA18(0);
 }
 
 - (void)selectAirQualityOverlay
 {
-  v2 = self;
+  selfCopy = self;
   sub_220EFFA18(3u);
 }
 
 - (void)selectWindOverlay
 {
-  v2 = self;
+  selfCopy = self;
   sub_220EFFA18(5u);
 }
 
 - (void)zoomIn
 {
-  v2 = self;
+  selfCopy = self;
   sub_220EFFB40(sub_220F32618);
 }
 
 - (void)zoomOut
 {
-  v2 = self;
+  selfCopy = self;
   sub_220EFFB40(sub_220F327D8);
 }
 
 - (void)dismissFromKeyboard
 {
-  v2 = self;
+  selfCopy = self;
   sub_220EFFC60();
 }
 
-- (_TtC11WeatherMaps25InteractiveViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC11WeatherMaps25InteractiveViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_220FC2700();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   sub_220EFFD08();
 }
 
-- (void)mapViewDidChangeVisibleRegion:(id)a3
+- (void)mapViewDidChangeVisibleRegion:(id)region
 {
-  v4 = a3;
-  v5 = self;
-  sub_220F01CAC(v4);
+  regionCopy = region;
+  selfCopy = self;
+  sub_220F01CAC(regionCopy);
 }
 
-- (id)mapView:(id)a3 rendererForOverlay:(id)a4
+- (id)mapView:(id)view rendererForOverlay:(id)overlay
 {
-  v6 = a3;
+  viewCopy = view;
   swift_unknownObjectRetain();
-  v7 = self;
-  v8 = sub_220F01D58(v7, a4);
+  selfCopy = self;
+  v8 = sub_220F01D58(selfCopy, overlay);
 
   swift_unknownObjectRelease();
 
   return v8;
 }
 
-- (id)mapView:(id)a3 viewForAnnotation:(id)a4
+- (id)mapView:(id)view viewForAnnotation:(id)annotation
 {
-  v5 = a3;
+  viewCopy = view;
   swift_unknownObjectRetain();
-  v6 = self;
+  selfCopy = self;
   v7 = sub_220F01DFC();
 
   swift_unknownObjectRelease();
@@ -221,35 +221,35 @@
   return v7;
 }
 
-- (void)mapView:(id)a3 regionDidChangeAnimated:(BOOL)a4
+- (void)mapView:(id)view regionDidChangeAnimated:(BOOL)animated
 {
-  v5 = a3;
-  v6 = self;
-  sub_220F01EE4(v5);
+  viewCopy = view;
+  selfCopy = self;
+  sub_220F01EE4(viewCopy);
 }
 
-- (void)mapView:(id)a3 didSelectAnnotationView:(id)a4
+- (void)mapView:(id)view didSelectAnnotationView:(id)annotationView
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  viewCopy = view;
+  annotationViewCopy = annotationView;
+  selfCopy = self;
   sub_220F0222C();
 }
 
-- (void)mapView:(id)a3 requestedAccessibilityModelForLocation:(id)a4 completion:(id)a5
+- (void)mapView:(id)view requestedAccessibilityModelForLocation:(id)location completion:(id)completion
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(completion);
   *(swift_allocObject() + 16) = v8;
-  v9 = a3;
-  v10 = a4;
-  v11 = self;
+  viewCopy = view;
+  locationCopy = location;
+  selfCopy = self;
   sub_220F0333C();
 }
 
-- (id)accessibilityModelOverlayKeyForMapView:(id)a3
+- (id)accessibilityModelOverlayKeyForMapView:(id)view
 {
-  v4 = a3;
-  v5 = self;
+  viewCopy = view;
+  selfCopy = self;
   sub_220F035E4();
   v7 = v6;
 

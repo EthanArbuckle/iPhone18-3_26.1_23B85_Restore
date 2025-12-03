@@ -1,17 +1,17 @@
 @interface AMSUIWebSafariPageModel
-- (AMSUIWebSafariPageModel)initWithJSObject:(id)a3 context:(id)a4;
+- (AMSUIWebSafariPageModel)initWithJSObject:(id)object context:(id)context;
 - (CGSize)windowSize;
 - (NSString)description;
-- (id)createViewControllerForContainer:(id)a3;
+- (id)createViewControllerForContainer:(id)container;
 @end
 
 @implementation AMSUIWebSafariPageModel
 
-- (AMSUIWebSafariPageModel)initWithJSObject:(id)a3 context:(id)a4
+- (AMSUIWebSafariPageModel)initWithJSObject:(id)object context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  objectCopy = object;
+  contextCopy = context;
+  if (objectCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v40.receiver = self;
     v40.super_class = AMSUIWebSafariPageModel;
@@ -19,23 +19,23 @@
     v10 = v9;
     if (v9)
     {
-      objc_storeStrong(&v9->_context, a4);
-      v11 = [AMSUIWebModel backgroundColorFromPageModel:v6];
+      objc_storeStrong(&v9->_context, context);
+      v11 = [AMSUIWebModel backgroundColorFromPageModel:objectCopy];
       backgroundColor = v10->_backgroundColor;
       v10->_backgroundColor = v11;
 
-      v13 = [AMSUIWebModel impressionEventFromPageModel:v6 context:v7];
+      v13 = [AMSUIWebModel impressionEventFromPageModel:objectCopy context:contextCopy];
       impressionEvent = v10->_impressionEvent;
       v10->_impressionEvent = v13;
 
-      v15 = [AMSUIWebModel navigationBarFromPageModel:v6 context:v7];
+      v15 = [AMSUIWebModel navigationBarFromPageModel:objectCopy context:contextCopy];
       navigationBar = v10->_navigationBar;
       v10->_navigationBar = v15;
 
-      [AMSUIWebModel windowSizeFromPageModel:v6];
+      [AMSUIWebModel windowSizeFromPageModel:objectCopy];
       v10->_windowSize.width = v17;
       v10->_windowSize.height = v18;
-      v19 = [v6 objectForKeyedSubscript:@"callbackScheme"];
+      v19 = [objectCopy objectForKeyedSubscript:@"callbackScheme"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -50,7 +50,7 @@
       callbackScheme = v10->_callbackScheme;
       v10->_callbackScheme = v20;
 
-      v22 = [v6 objectForKeyedSubscript:@"data"];
+      v22 = [objectCopy objectForKeyedSubscript:@"data"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -65,10 +65,10 @@
       data = v10->_data;
       v10->_data = v23;
 
-      v25 = [v6 objectForKeyedSubscript:@"hideToolbar"];
+      v25 = [objectCopy objectForKeyedSubscript:@"hideToolbar"];
       if (objc_opt_respondsToSelector())
       {
-        v26 = [v6 objectForKeyedSubscript:@"hideToolbar"];
+        v26 = [objectCopy objectForKeyedSubscript:@"hideToolbar"];
         v10->_hideToolBar = [v26 BOOLValue];
       }
 
@@ -77,7 +77,7 @@
         v10->_hideToolBar = 0;
       }
 
-      v27 = [v6 objectForKeyedSubscript:@"loadingPage"];
+      v27 = [objectCopy objectForKeyedSubscript:@"loadingPage"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -89,14 +89,14 @@
         v28 = 0;
       }
 
-      v29 = [[AMSUIWebLoadingPageModel alloc] initWithJSObject:v28 context:v7];
+      v29 = [[AMSUIWebLoadingPageModel alloc] initWithJSObject:v28 context:contextCopy];
       loadingModel = v10->_loadingModel;
       v10->_loadingModel = v29;
 
-      v31 = [v6 objectForKeyedSubscript:@"hideShareButton"];
+      v31 = [objectCopy objectForKeyedSubscript:@"hideShareButton"];
       if (objc_opt_respondsToSelector())
       {
-        v32 = [v6 objectForKeyedSubscript:@"hideShareButton"];
+        v32 = [objectCopy objectForKeyedSubscript:@"hideShareButton"];
         v10->_showShareButton = [v32 BOOLValue] ^ 1;
       }
 
@@ -105,10 +105,10 @@
         v10->_showShareButton = 1;
       }
 
-      v33 = [v6 objectForKeyedSubscript:@"hideRefreshButton"];
+      v33 = [objectCopy objectForKeyedSubscript:@"hideRefreshButton"];
       if (objc_opt_respondsToSelector())
       {
-        v34 = [v6 objectForKeyedSubscript:@"hideRefreshButton"];
+        v34 = [objectCopy objectForKeyedSubscript:@"hideRefreshButton"];
         v10->_hideRefreshButton = [v34 BOOLValue];
       }
 
@@ -117,7 +117,7 @@
         v10->_hideRefreshButton = 0;
       }
 
-      v35 = [v6 objectForKeyedSubscript:@"url"];
+      v35 = [objectCopy objectForKeyedSubscript:@"url"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -138,15 +138,15 @@
     }
 
     self = v10;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 - (NSString)description
@@ -195,52 +195,52 @@
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v28 forKeys:v27 count:4];
   v8 = [v7 mutableCopy];
 
-  v9 = [(AMSUIWebSafariPageModel *)self backgroundColor];
+  backgroundColor = [(AMSUIWebSafariPageModel *)self backgroundColor];
 
-  if (v9)
+  if (backgroundColor)
   {
-    v10 = [(AMSUIWebSafariPageModel *)self backgroundColor];
-    [v8 setObject:v10 forKey:@"backgroundColor"];
+    backgroundColor2 = [(AMSUIWebSafariPageModel *)self backgroundColor];
+    [v8 setObject:backgroundColor2 forKey:@"backgroundColor"];
   }
 
-  v11 = [(AMSUIWebSafariPageModel *)self callbackScheme];
+  callbackScheme = [(AMSUIWebSafariPageModel *)self callbackScheme];
 
-  if (v11)
+  if (callbackScheme)
   {
-    v12 = [(AMSUIWebSafariPageModel *)self callbackScheme];
-    [v8 setObject:v12 forKey:@"callbackScheme"];
+    callbackScheme2 = [(AMSUIWebSafariPageModel *)self callbackScheme];
+    [v8 setObject:callbackScheme2 forKey:@"callbackScheme"];
   }
 
-  v13 = [(AMSUIWebSafariPageModel *)self data];
+  data = [(AMSUIWebSafariPageModel *)self data];
 
-  if (v13)
+  if (data)
   {
-    v14 = [(AMSUIWebSafariPageModel *)self data];
-    [v8 setObject:v14 forKey:@"data"];
+    data2 = [(AMSUIWebSafariPageModel *)self data];
+    [v8 setObject:data2 forKey:@"data"];
   }
 
-  v15 = [(AMSUIWebSafariPageModel *)self impressionEvent];
+  impressionEvent = [(AMSUIWebSafariPageModel *)self impressionEvent];
 
-  if (v15)
+  if (impressionEvent)
   {
-    v16 = [(AMSUIWebSafariPageModel *)self impressionEvent];
-    [v8 setObject:v16 forKey:@"impressionEvent"];
+    impressionEvent2 = [(AMSUIWebSafariPageModel *)self impressionEvent];
+    [v8 setObject:impressionEvent2 forKey:@"impressionEvent"];
   }
 
-  v17 = [(AMSUIWebSafariPageModel *)self loadingModel];
+  loadingModel = [(AMSUIWebSafariPageModel *)self loadingModel];
 
-  if (v17)
+  if (loadingModel)
   {
-    v18 = [(AMSUIWebSafariPageModel *)self loadingModel];
-    [v8 setObject:v18 forKey:@"loadingModel"];
+    loadingModel2 = [(AMSUIWebSafariPageModel *)self loadingModel];
+    [v8 setObject:loadingModel2 forKey:@"loadingModel"];
   }
 
-  v19 = [(AMSUIWebSafariPageModel *)self navigationBar];
+  navigationBar = [(AMSUIWebSafariPageModel *)self navigationBar];
 
-  if (v19)
+  if (navigationBar)
   {
-    v20 = [(AMSUIWebSafariPageModel *)self navigationBar];
-    [v8 setObject:v20 forKey:@"navigationBar"];
+    navigationBar2 = [(AMSUIWebSafariPageModel *)self navigationBar];
+    [v8 setObject:navigationBar2 forKey:@"navigationBar"];
   }
 
   v21 = [(AMSUIWebSafariPageModel *)self URL];
@@ -248,8 +248,8 @@
   if (v21)
   {
     v22 = [(AMSUIWebSafariPageModel *)self URL];
-    v23 = [v22 absoluteString];
-    [v8 setObject:v23 forKey:@"URL"];
+    absoluteString = [v22 absoluteString];
+    [v8 setObject:absoluteString forKey:@"URL"];
   }
 
   v24 = [v8 description];
@@ -259,13 +259,13 @@
   return v24;
 }
 
-- (id)createViewControllerForContainer:(id)a3
+- (id)createViewControllerForContainer:(id)container
 {
-  v4 = [a3 containedViewController];
+  containedViewController = [container containedViewController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = containedViewController;
   }
 
   else
@@ -278,18 +278,18 @@
     goto LABEL_8;
   }
 
-  v6 = [v5 originalURL];
-  if (!v6)
+  originalURL = [v5 originalURL];
+  if (!originalURL)
   {
     goto LABEL_8;
   }
 
-  v7 = v6;
+  v7 = originalURL;
   v8 = [(AMSUIWebSafariPageModel *)self URL];
-  v9 = [v8 absoluteString];
-  v10 = [v5 originalURL];
-  v11 = [v10 absoluteString];
-  v12 = [v9 isEqualToString:v11];
+  absoluteString = [v8 absoluteString];
+  originalURL2 = [v5 originalURL];
+  absoluteString2 = [originalURL2 absoluteString];
+  v12 = [absoluteString isEqualToString:absoluteString2];
 
   if (v12)
   {
@@ -300,8 +300,8 @@
   {
 LABEL_8:
     v14 = [AMSUIWebSafariViewController alloc];
-    v15 = [(AMSUIWebSafariPageModel *)self context];
-    v13 = [(AMSUIWebSafariViewController *)v14 initWithContext:v15];
+    context = [(AMSUIWebSafariPageModel *)self context];
+    v13 = [(AMSUIWebSafariViewController *)v14 initWithContext:context];
   }
 
   return v13;

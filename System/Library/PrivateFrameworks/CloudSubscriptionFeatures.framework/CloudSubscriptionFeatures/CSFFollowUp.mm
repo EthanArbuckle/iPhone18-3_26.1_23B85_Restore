@@ -6,8 +6,8 @@
 + (NSDictionary)persistentDomain;
 + (NSString)userDefaultsKey;
 + (NSUserDefaults)defaults;
-+ (void)setHasEngagedWithCFU:(BOOL)a3;
-+ (void)setHasEngagedWithCFUDate:(id)a3;
++ (void)setHasEngagedWithCFU:(BOOL)u;
++ (void)setHasEngagedWithCFUDate:(id)date;
 @end
 
 @implementation CSFFollowUp
@@ -21,23 +21,23 @@
 
 + (BOOL)hasDSID
 {
-  v2 = [MEMORY[0x1E6959A40] defaultStore];
-  v3 = [v2 aa_primaryAppleAccount];
-  v4 = [v3 aa_personID];
-  v5 = v4 != 0;
+  defaultStore = [MEMORY[0x1E6959A40] defaultStore];
+  aa_primaryAppleAccount = [defaultStore aa_primaryAppleAccount];
+  aa_personID = [aa_primaryAppleAccount aa_personID];
+  v5 = aa_personID != 0;
 
   return v5;
 }
 
 + (NSString)userDefaultsKey
 {
-  v2 = [MEMORY[0x1E6959A40] defaultStore];
-  v3 = [v2 aa_primaryAppleAccount];
-  v4 = [v3 aa_personID];
+  defaultStore = [MEMORY[0x1E6959A40] defaultStore];
+  aa_primaryAppleAccount = [defaultStore aa_primaryAppleAccount];
+  aa_personID = [aa_primaryAppleAccount aa_personID];
 
-  if (v4)
+  if (aa_personID)
   {
-    v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasEngaged.%@", v4];
+    v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"hasEngaged.%@", aa_personID];
   }
 
   else
@@ -126,11 +126,11 @@ LABEL_18:
   return v6;
 }
 
-+ (void)setHasEngagedWithCFU:(BOOL)a3
++ (void)setHasEngagedWithCFU:(BOOL)u
 {
   v5 = _CSFGetLogSystem();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
-  if (a3)
+  if (u)
   {
     if (v6)
     {
@@ -139,7 +139,7 @@ LABEL_18:
     }
 
     v5 = [MEMORY[0x1E695DF00] now];
-    [a1 setHasEngagedWithCFUDate:v5];
+    [self setHasEngagedWithCFUDate:v5];
   }
 
   else if (v6)
@@ -195,16 +195,16 @@ LABEL_11:
   return v5;
 }
 
-+ (void)setHasEngagedWithCFUDate:(id)a3
++ (void)setHasEngagedWithCFUDate:(id)date
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  dateCopy = date;
   v4 = +[CSFFollowUp defaults];
   v5 = +[CSFFollowUp userDefaultsKey];
-  [v4 setObject:v3 forKey:v5];
+  [v4 setObject:dateCopy forKey:v5];
 
   v6 = objc_alloc_init(MEMORY[0x1E696AC80]);
-  v7 = [v6 stringFromDate:v3];
+  v7 = [v6 stringFromDate:dateCopy];
 
   v8 = _CSFGetLogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -228,8 +228,8 @@ LABEL_11:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [v2 allKeys];
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v17 count:16];
+  allKeys = [v2 allKeys];
+  v4 = [allKeys countByEnumeratingWithState:&v11 objects:v17 count:16];
   if (v4)
   {
     v5 = *v12;
@@ -239,7 +239,7 @@ LABEL_11:
       {
         if (*v12 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allKeys);
         }
 
         v7 = *(*(&v11 + 1) + 8 * i);
@@ -260,7 +260,7 @@ LABEL_11:
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v11 objects:v17 count:16];
+      v4 = [allKeys countByEnumeratingWithState:&v11 objects:v17 count:16];
       if (v4)
       {
         continue;

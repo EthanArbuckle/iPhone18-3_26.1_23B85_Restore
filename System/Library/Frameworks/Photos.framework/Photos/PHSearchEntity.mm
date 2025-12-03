@@ -1,46 +1,46 @@
 @interface PHSearchEntity
 + (id)entityKeyMap;
-- (PHSearchEntity)initWithNodeContainer:(id)a3 photoLibrary:(id)a4;
+- (PHSearchEntity)initWithNodeContainer:(id)container photoLibrary:(id)library;
 @end
 
 @implementation PHSearchEntity
 
-- (PHSearchEntity)initWithNodeContainer:(id)a3 photoLibrary:(id)a4
+- (PHSearchEntity)initWithNodeContainer:(id)container photoLibrary:(id)library
 {
   v23[3] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  containerCopy = container;
   v23[0] = MEMORY[0x1E695E110];
   v22[0] = @"deleted";
   v22[1] = @"uuid";
-  v7 = a4;
-  v8 = [v6 uuid];
-  v23[1] = v8;
+  libraryCopy = library;
+  uuid = [containerCopy uuid];
+  v23[1] = uuid;
   v22[2] = @"objectID";
-  v9 = [v6 sourceNode];
-  v10 = [v9 objectID];
-  v23[2] = v10;
+  sourceNode = [containerCopy sourceNode];
+  objectID = [sourceNode objectID];
+  v23[2] = objectID;
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:v22 count:3];
 
   v21.receiver = self;
   v21.super_class = PHSearchEntity;
-  v12 = [(PHObject *)&v21 initWithFetchDictionary:v11 propertyHint:2 photoLibrary:v7];
+  v12 = [(PHObject *)&v21 initWithFetchDictionary:v11 propertyHint:2 photoLibrary:libraryCopy];
 
   if (v12)
   {
-    v13 = [v6 label];
+    label = [containerCopy label];
     label = v12->_label;
-    v12->_label = v13;
+    v12->_label = label;
 
-    v15 = [v6 identifier];
+    identifier = [containerCopy identifier];
     searchEntityIdentifier = v12->_searchEntityIdentifier;
-    v12->_searchEntityIdentifier = v15;
+    v12->_searchEntityIdentifier = identifier;
 
-    v12->_type = [v6 type];
-    [v6 rankingScore];
+    v12->_type = [containerCopy type];
+    [containerCopy rankingScore];
     v12->_rankingScore = v17;
-    v18 = [v6 synonyms];
+    synonyms = [containerCopy synonyms];
     synonyms = v12->_synonyms;
-    v12->_synonyms = v18;
+    v12->_synonyms = synonyms;
   }
 
   return v12;

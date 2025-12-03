@@ -9,17 +9,17 @@
 {
   if ((+[DABehaviorOptions useThunderhillBetaServers]& 1) != 0)
   {
-    v3 = @"webdav.beta.facebook.com";
+    host = @"webdav.beta.facebook.com";
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = MobileCalDAVFacebookDaemonAccount;
-    v3 = [(MobileCalDAVFacebookDaemonAccount *)&v5 host];
+    host = [(MobileCalDAVFacebookDaemonAccount *)&v5 host];
   }
 
-  return v3;
+  return host;
 }
 
 - (BOOL)_rem_updateAccountProperties
@@ -28,9 +28,9 @@
   v4 = _CPLog_to_os_log_type[4];
   if (os_log_type_enabled(v3, v4))
   {
-    v5 = [(MobileCalDAVFacebookDaemonAccount *)self accountDescription];
+    accountDescription = [(MobileCalDAVFacebookDaemonAccount *)self accountDescription];
     *buf = 138412290;
-    v9 = v5;
+    v9 = accountDescription;
     _os_log_impl(&dword_0, v3, v4, "XXXXXXXXX: remindd.DataAccess should disable add/modify/delete calendars for Facebook CalDAV account: %@.", buf, 0xCu);
   }
 

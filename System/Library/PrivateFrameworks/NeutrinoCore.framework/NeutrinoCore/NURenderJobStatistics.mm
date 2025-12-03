@@ -1,8 +1,8 @@
 @interface NURenderJobStatistics
 + (NSMutableDictionary)history;
-+ (id)aggregateStatistics:(id)a3;
-+ (void)addStatisticsToHistory:(id)a3 forJob:(id)a4 wasCanceled:(BOOL)a5;
-+ (void)recordJobCreatedToHistory:(id)a3;
++ (id)aggregateStatistics:(id)statistics;
++ (void)addStatisticsToHistory:(id)history forJob:(id)job wasCanceled:(BOOL)canceled;
++ (void)recordJobCreatedToHistory:(id)history;
 - (NSString)description;
 - (double)completeDuration;
 - (double)completeLatency;
@@ -15,8 +15,8 @@
 - (double)renderLatency;
 - (double)replyLatency;
 - (double)totalDuration;
-- (void)renderJob:(id)a3 didRunStage:(int64_t)a4;
-- (void)renderJob:(id)a3 willRunStage:(int64_t)a4;
+- (void)renderJob:(id)job didRunStage:(int64_t)stage;
+- (void)renderJob:(id)job willRunStage:(int64_t)stage;
 @end
 
 @implementation NURenderJobStatistics
@@ -26,8 +26,8 @@
   v29 = *MEMORY[0x1E69E9840];
   v3 = [objc_alloc(MEMORY[0x1E696AD60]) initWithCapacity:2048];
   v4 = objc_opt_class();
-  v5 = [(NURenderJobStatistics *)self dependencies];
-  [v3 appendFormat:@"<%@:%p dependencies:%lu compiled: %s ", v4, self, objc_msgSend(v5, "count"), "Release"];
+  dependencies = [(NURenderJobStatistics *)self dependencies];
+  [v3 appendFormat:@"<%@:%p dependencies:%lu compiled: %s ", v4, self, objc_msgSend(dependencies, "count"), "Release"];
 
   [v3 appendFormat:@"{\n"];
   [(NURenderJobStatistics *)self prepareLatency];
@@ -368,16 +368,16 @@ char *__36__NURenderJobStatistics_description__block_invoke(char *a1, long doubl
   return result;
 }
 
-- (void)renderJob:(id)a3 didRunStage:(int64_t)a4
+- (void)renderJob:(id)job didRunStage:(int64_t)stage
 {
   v47 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  jobCopy = job;
   v7 = NUAbsoluteTime();
-  if (a4 <= 3)
+  if (stage <= 3)
   {
-    if (a4)
+    if (stage)
     {
-      if (a4 == 1)
+      if (stage == 1)
       {
         [(NURenderJobStatistics *)self setDidPrepareTime:v7];
         if (_NULogOnceToken != -1)
@@ -393,7 +393,7 @@ char *__36__NURenderJobStatistics_description__block_invoke(char *a1, long doubl
           v11 = v10;
           [(NURenderJobStatistics *)self willPrepareTime];
           *buf = 134218240;
-          v44 = v6;
+          v44 = jobCopy;
           v45 = 2048;
           v46 = v11 - v12;
           v13 = "job %p didPrepare %0.4f s";
@@ -449,8 +449,8 @@ LABEL_26:
         v33 = MEMORY[0x1E696AF00];
         v34 = specific;
         v35 = v27;
-        v36 = [v33 callStackSymbols];
-        [v36 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v33 callStackSymbols];
+        [callStackSymbols componentsJoinedByString:@"\n"];
         v37 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
         *buf = 138543618;
         v44 = specific;
@@ -469,8 +469,8 @@ LABEL_32:
     {
       v39 = MEMORY[0x1E696AF00];
       v40 = v38;
-      v41 = [v39 callStackSymbols];
-      v42 = [v41 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [v39 callStackSymbols];
+      v42 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v44 = v42;
       _os_log_error_impl(&dword_1C0184000, v40, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -479,7 +479,7 @@ LABEL_32:
     goto LABEL_32;
   }
 
-  if (a4 == 4)
+  if (stage == 4)
   {
     [(NURenderJobStatistics *)self setDidRenderTime:v7];
     if (_NULogOnceToken != -1)
@@ -495,7 +495,7 @@ LABEL_32:
       v25 = v24;
       [(NURenderJobStatistics *)self willRenderTime];
       *buf = 134218240;
-      v44 = v6;
+      v44 = jobCopy;
       v45 = 2048;
       v46 = v25 - v26;
       v13 = "job %p didRender %0.4f s";
@@ -503,7 +503,7 @@ LABEL_32:
     }
   }
 
-  else if (a4 == 5)
+  else if (stage == 5)
   {
     [(NURenderJobStatistics *)self setDidCompleteTime:v7];
     if (_NULogOnceToken != -1)
@@ -519,7 +519,7 @@ LABEL_32:
       v16 = v15;
       [(NURenderJobStatistics *)self willCompleteTime];
       *buf = 134218240;
-      v44 = v6;
+      v44 = jobCopy;
       v45 = 2048;
       v46 = v16 - v17;
       v13 = "job %p didComplete %0.4f s";
@@ -530,19 +530,19 @@ LABEL_32:
 LABEL_33:
 }
 
-- (void)renderJob:(id)a3 willRunStage:(int64_t)a4
+- (void)renderJob:(id)job willRunStage:(int64_t)stage
 {
   v32 = *MEMORY[0x1E69E9840];
   v6 = NUAbsoluteTime();
-  if (a4 <= 4)
+  if (stage <= 4)
   {
-    if (a4 == 1)
+    if (stage == 1)
     {
 
       [(NURenderJobStatistics *)self setWillPrepareTime:v6];
     }
 
-    else if (a4 == 4)
+    else if (stage == 4)
     {
 
       [(NURenderJobStatistics *)self setWillRenderTime:v6];
@@ -551,9 +551,9 @@ LABEL_33:
     return;
   }
 
-  if (a4 != 5)
+  if (stage != 5)
   {
-    if (a4 != 6)
+    if (stage != 6)
     {
       return;
     }
@@ -600,8 +600,8 @@ LABEL_22:
         v18 = MEMORY[0x1E696AF00];
         v19 = specific;
         v20 = v12;
-        v21 = [v18 callStackSymbols];
-        v22 = [v21 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v18 callStackSymbols];
+        v22 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v29 = specific;
         v30 = 2114;
@@ -619,8 +619,8 @@ LABEL_28:
     {
       v24 = MEMORY[0x1E696AF00];
       v25 = v23;
-      v26 = [v24 callStackSymbols];
-      v27 = [v26 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [v24 callStackSymbols];
+      v27 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v29 = v27;
       _os_log_error_impl(&dword_1C0184000, v25, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -632,11 +632,11 @@ LABEL_28:
   [(NURenderJobStatistics *)self setWillCompleteTime:v6];
 }
 
-+ (id)aggregateStatistics:(id)a3
++ (id)aggregateStatistics:(id)statistics
 {
   v86 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (!v3)
+  statisticsCopy = statistics;
+  if (!statisticsCopy)
   {
     v45 = NUAssertLogger_24345();
     if (os_log_type_enabled(v45, OS_LOG_TYPE_ERROR))
@@ -657,8 +657,8 @@ LABEL_28:
         v59 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v60 = MEMORY[0x1E696AF00];
         v61 = v59;
-        v62 = [v60 callStackSymbols];
-        v63 = [v62 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v60 callStackSymbols];
+        v63 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v83 = v59;
         v84 = 2114;
@@ -669,8 +669,8 @@ LABEL_28:
 
     else if (v49)
     {
-      v50 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v51 = [v50 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v51 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v83 = v51;
       _os_log_error_impl(&dword_1C0184000, v48, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -679,8 +679,8 @@ LABEL_28:
     _NUAssertFailHandler("+[NURenderJobStatistics aggregateStatistics:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Render/NURenderJob.m", 1902, @"Invalid parameter not satisfying: %s", v64, v65, v66, v67, "stats != nil");
   }
 
-  v4 = v3;
-  if (![v3 count])
+  v4 = statisticsCopy;
+  if (![statisticsCopy count])
   {
     v52 = NUAssertLogger_24345();
     if (os_log_type_enabled(v52, OS_LOG_TYPE_ERROR))
@@ -701,8 +701,8 @@ LABEL_28:
         v68 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v69 = MEMORY[0x1E696AF00];
         v70 = v68;
-        v71 = [v69 callStackSymbols];
-        v72 = [v71 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v69 callStackSymbols];
+        v72 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v83 = v68;
         v84 = 2114;
@@ -713,8 +713,8 @@ LABEL_28:
 
     else if (v56)
     {
-      v57 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v58 = [v57 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v58 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v83 = v58;
       _os_log_error_impl(&dword_1C0184000, v55, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -820,46 +820,46 @@ LABEL_28:
   return v5;
 }
 
-+ (void)recordJobCreatedToHistory:(id)a3
++ (void)recordJobCreatedToHistory:(id)history
 {
-  v6 = a3;
+  historyCopy = history;
   v3 = +[NURenderJobStatistics history];
-  v4 = [v3 objectForKeyedSubscript:v6];
+  v4 = [v3 objectForKeyedSubscript:historyCopy];
 
   if (!v4)
   {
-    v4 = [[NURenderJobStatisticsHistory alloc] initHistoryForJobsWithName:v6 rollingHistoryMaxSize:50];
+    v4 = [[NURenderJobStatisticsHistory alloc] initHistoryForJobsWithName:historyCopy rollingHistoryMaxSize:50];
     v5 = +[NURenderJobStatistics history];
-    [v5 setObject:v4 forKeyedSubscript:v6];
+    [v5 setObject:v4 forKeyedSubscript:historyCopy];
   }
 
   [v4 recordJobCreated];
 }
 
-+ (void)addStatisticsToHistory:(id)a3 forJob:(id)a4 wasCanceled:(BOOL)a5
++ (void)addStatisticsToHistory:(id)history forJob:(id)job wasCanceled:(BOOL)canceled
 {
-  v5 = a5;
-  v18 = a3;
-  v7 = a4;
+  canceledCopy = canceled;
+  historyCopy = history;
+  jobCopy = job;
   v8 = +[NURenderJobStatistics history];
-  v9 = [v7 request];
-  v10 = [v9 name];
-  v11 = [v8 objectForKeyedSubscript:v10];
+  request = [jobCopy request];
+  name = [request name];
+  v11 = [v8 objectForKeyedSubscript:name];
 
   if (!v11)
   {
     v12 = [NURenderJobStatisticsHistory alloc];
-    v13 = [v7 request];
-    v14 = [v13 name];
-    v11 = [(NURenderJobStatisticsHistory *)v12 initHistoryForJobsWithName:v14 rollingHistoryMaxSize:50];
+    request2 = [jobCopy request];
+    name2 = [request2 name];
+    v11 = [(NURenderJobStatisticsHistory *)v12 initHistoryForJobsWithName:name2 rollingHistoryMaxSize:50];
 
     v15 = +[NURenderJobStatistics history];
-    v16 = [v7 request];
-    v17 = [v16 name];
-    [v15 setObject:v11 forKeyedSubscript:v17];
+    request3 = [jobCopy request];
+    name3 = [request3 name];
+    [v15 setObject:v11 forKeyedSubscript:name3];
   }
 
-  [v11 addStatisticsToHistory:v18 wasCanceled:v5];
+  [v11 addStatisticsToHistory:historyCopy wasCanceled:canceledCopy];
 }
 
 + (NSMutableDictionary)history

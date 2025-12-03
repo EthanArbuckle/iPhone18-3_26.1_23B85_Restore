@@ -1,20 +1,20 @@
 @interface UIView
-+ (void)sss_animateWithAnimationParameters:(id)a3 animations:(id)a4 completion:(id)a5;
++ (void)sss_animateWithAnimationParameters:(id)parameters animations:(id)animations completion:(id)completion;
 - (void)_sss_setConcentricCornerMaskingConfiguration;
 - (void)_sss_setGlassBackground;
-- (void)sss_setFrameUnanimating:(CGRect)a3;
-- (void)sss_setFrameUnanimatingIfChangingFromCGSizeZero:(CGRect)a3;
-- (void)sss_setFrameUnanimatingLayingOut:(CGRect)a3;
+- (void)sss_setFrameUnanimating:(CGRect)unanimating;
+- (void)sss_setFrameUnanimatingIfChangingFromCGSizeZero:(CGRect)zero;
+- (void)sss_setFrameUnanimatingLayingOut:(CGRect)out;
 @end
 
 @implementation UIView
 
-- (void)sss_setFrameUnanimatingIfChangingFromCGSizeZero:(CGRect)a3
+- (void)sss_setFrameUnanimatingIfChangingFromCGSizeZero:(CGRect)zero
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = zero.size.height;
+  width = zero.size.width;
+  y = zero.origin.y;
+  x = zero.origin.x;
   [(UIView *)self frame];
   v13.origin.x = x;
   v13.origin.y = y;
@@ -37,12 +37,12 @@
   }
 }
 
-- (void)sss_setFrameUnanimating:(CGRect)a3
+- (void)sss_setFrameUnanimating:(CGRect)unanimating
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = unanimating.size.height;
+  width = unanimating.size.width;
+  y = unanimating.origin.y;
+  x = unanimating.origin.x;
   [(UIView *)self frame];
   v10.origin.x = x;
   v10.origin.y = y;
@@ -63,12 +63,12 @@
   }
 }
 
-- (void)sss_setFrameUnanimatingLayingOut:(CGRect)a3
+- (void)sss_setFrameUnanimatingLayingOut:(CGRect)out
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = out.size.height;
+  width = out.size.width;
+  y = out.origin.y;
+  x = out.origin.x;
   [(UIView *)self frame];
   v10.origin.x = x;
   v10.origin.y = y;
@@ -89,20 +89,20 @@
   }
 }
 
-+ (void)sss_animateWithAnimationParameters:(id)a3 animations:(id)a4 completion:(id)a5
++ (void)sss_animateWithAnimationParameters:(id)parameters animations:(id)animations completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  parametersCopy = parameters;
+  animationsCopy = animations;
+  completionCopy = completion;
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
   v21[2] = sub_100030230;
   v21[3] = &unk_1000BAC78;
-  v10 = v7;
+  v10 = parametersCopy;
   v22 = v10;
-  v11 = v8;
+  v11 = animationsCopy;
   v23 = v11;
-  v12 = v9;
+  v12 = completionCopy;
   v24 = v12;
   v13 = objc_retainBlock(v21);
   if ([v10 animationReason])
@@ -111,11 +111,11 @@
     minimum = v25.minimum;
     maximum = v25.maximum;
     preferred = v25.preferred;
-    v17 = [v10 animationReason];
+    animationReason = [v10 animationReason];
     *&v18 = minimum;
     *&v19 = maximum;
     *&v20 = preferred;
-    [UIView _modifyAnimationsWithPreferredFrameRateRange:v17 | 0x160000u updateReason:v13 animations:v18, v19, v20];
+    [UIView _modifyAnimationsWithPreferredFrameRateRange:animationReason | 0x160000u updateReason:v13 animations:v18, v19, v20];
   }
 
   else
@@ -128,7 +128,7 @@
 {
   v3 = type metadata accessor for _Glass._GlassVariant();
   __chkstk_darwin(v3 - 8);
-  v4 = self;
+  selfCopy = self;
   static _Glass._GlassVariant.regular.getter();
   v5[3] = type metadata accessor for _Glass();
   v5[4] = &protocol witness table for _Glass;
@@ -147,7 +147,7 @@
   v8 = &v12 - v7;
   v9 = type metadata accessor for _UICornerMaskingConfiguration.CornerStyle();
   (*(*(v9 - 8) + 56))(v5, 1, 1, v9);
-  v10 = self;
+  selfCopy = self;
   static _UICornerMaskingConfiguration.containerConcentric(symmetric:fallbackStyle:)();
   sub_1000561A4(v5);
   v11 = type metadata accessor for _UICornerMaskingConfiguration();

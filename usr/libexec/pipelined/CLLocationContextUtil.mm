@@ -1,24 +1,24 @@
 @interface CLLocationContextUtil
-+ (int64_t)getContextFromVenueBounds:(const void *)a3;
++ (int64_t)getContextFromVenueBounds:(const void *)bounds;
 @end
 
 @implementation CLLocationContextUtil
 
-+ (int64_t)getContextFromVenueBounds:(const void *)a3
++ (int64_t)getContextFromVenueBounds:(const void *)bounds
 {
-  if ((*(a3 + 104) & 8) != 0)
+  if ((*(bounds + 104) & 8) != 0)
   {
-    v9 = *(a3 + 24);
+    v9 = *(bounds + 24);
 
-    return [a1 convertFromProtoContext:v9];
+    return [self convertFromProtoContext:v9];
   }
 
   else
   {
-    v3 = *(a3 + 6);
+    v3 = *(bounds + 6);
     if (v3)
     {
-      v4 = *(a3 + 2);
+      v4 = *(bounds + 2);
       for (i = 8 * v3; i; i -= 8)
       {
         v6 = *v4;

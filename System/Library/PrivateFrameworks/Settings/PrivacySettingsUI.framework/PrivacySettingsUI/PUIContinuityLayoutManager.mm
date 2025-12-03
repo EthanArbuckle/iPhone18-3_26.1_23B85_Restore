@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = __44__PUIContinuityLayoutManager_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken != -1)
   {
     dispatch_once(&sharedInstance_onceToken, block);
@@ -58,21 +58,21 @@ uint64_t __44__PUIContinuityLayoutManager_sharedInstance__block_invoke(uint64_t 
 
 - (void)createContinuityDisplayMonitor
 {
-  v3 = [MEMORY[0x277D0AD20] configurationForContinuityDisplay];
+  configurationForContinuityDisplay = [MEMORY[0x277D0AD20] configurationForContinuityDisplay];
   objc_initWeak(&location, self);
   v7 = MEMORY[0x277D85DD0];
   v8 = 3221225472;
   v9 = __60__PUIContinuityLayoutManager_createContinuityDisplayMonitor__block_invoke;
   v10 = &unk_279BA19D8;
   objc_copyWeak(&v11, &location);
-  [v3 setTransitionHandler:&v7];
+  [configurationForContinuityDisplay setTransitionHandler:&v7];
   monitor = self->_monitor;
   if (monitor)
   {
     [(FBSDisplayLayoutMonitor *)monitor invalidate:v7];
   }
 
-  v5 = [MEMORY[0x277D0AD08] monitorWithConfiguration:{v3, v7, v8, v9, v10}];
+  v5 = [MEMORY[0x277D0AD08] monitorWithConfiguration:{configurationForContinuityDisplay, v7, v8, v9, v10}];
   v6 = self->_monitor;
   self->_monitor = v5;
 

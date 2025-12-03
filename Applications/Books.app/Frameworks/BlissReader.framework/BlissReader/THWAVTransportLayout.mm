@@ -71,9 +71,9 @@
       [(THWAVTransportUI *)[(THWAVTransportController *)[(THWAVTransportLayout *)self transportController] transportUI] setLayoutRect:v5, v7, v9, v11];
       [(THWAVTransportUI *)[(THWAVTransportController *)[(THWAVTransportLayout *)self transportController] transportUI] willLayout];
       [(THWAVTransportUI *)[(THWAVTransportController *)[(THWAVTransportLayout *)self transportController] transportUI] layout];
-      v16 = [(THWAVTransportController *)[(THWAVTransportLayout *)self transportController] transportUI];
+      transportUI = [(THWAVTransportController *)[(THWAVTransportLayout *)self transportController] transportUI];
 
-      [(THWAVTransportUI *)v16 didLayout];
+      [(THWAVTransportUI *)transportUI didLayout];
     }
   }
 }

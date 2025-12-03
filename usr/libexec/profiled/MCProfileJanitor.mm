@@ -17,13 +17,13 @@
 
   v3 = +[NSMutableDictionary dictionary];
   v4 = +[MCManifest sharedManifest];
-  v5 = [v4 allInstalledProfileIdentifiers];
+  allInstalledProfileIdentifiers = [v4 allInstalledProfileIdentifiers];
   v35 = +[NSDate date];
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  obj = v5;
+  obj = allInstalledProfileIdentifiers;
   v6 = [obj countByEnumeratingWithState:&v41 objects:v48 count:16];
   if (v6)
   {
@@ -44,11 +44,11 @@
         v13 = v12;
         if (v12)
         {
-          v14 = [v12 removalDate];
-          v15 = v14;
-          if (v14)
+          removalDate = [v12 removalDate];
+          v15 = removalDate;
+          if (removalDate)
           {
-            v16 = [v14 earlierDate:v35];
+            v16 = [removalDate earlierDate:v35];
 
             if (v16 == v15)
             {
@@ -135,7 +135,7 @@
     v3 = v34;
   }
 
-  [a1 _removeExpiredProvisioningProfiles];
+  [self _removeExpiredProvisioningProfiles];
   v32 = _MCLogObjects[0];
   if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_INFO))
   {
@@ -262,17 +262,17 @@
         v10 = v9;
         if (v9)
         {
-          v11 = [v9 removalDate];
-          v12 = v11;
+          removalDate = [v9 removalDate];
+          v12 = removalDate;
           v13 = v27;
           if (!v27[5])
           {
             goto LABEL_11;
           }
 
-          if (v11)
+          if (removalDate)
           {
-            v14 = [v11 earlierDate:?];
+            v14 = [removalDate earlierDate:?];
             v15 = v14 == v12;
 
             if (v15)

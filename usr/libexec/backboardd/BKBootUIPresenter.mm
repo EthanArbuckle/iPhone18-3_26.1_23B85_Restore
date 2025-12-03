@@ -1,23 +1,23 @@
 @interface BKBootUIPresenter
 + (id)sharedInstance;
-- (BKBootUIPresenter)initWithSystemAppSentinel:(id)a3 alternateSystemAppManager:(id)a4 firstBootDetector:(id)a5 bootUIOverlayVendor:(id)a6 renderOverlayManager:(id)a7;
+- (BKBootUIPresenter)initWithSystemAppSentinel:(id)sentinel alternateSystemAppManager:(id)manager firstBootDetector:(id)detector bootUIOverlayVendor:(id)vendor renderOverlayManager:(id)overlayManager;
 - (BOOL)isShowingBootUI;
-- (BOOL)sustainOverlayForReason:(id)a3;
+- (BOOL)sustainOverlayForReason:(id)reason;
 - (NSString)description;
-- (void)_queue_acquireActivityAssertionForReason:(id)a3 generation:(unint64_t)a4 continuation:(id)a5;
-- (void)_queue_addOverlayForReason:(id)a3;
+- (void)_queue_acquireActivityAssertionForReason:(id)reason generation:(unint64_t)generation continuation:(id)continuation;
+- (void)_queue_addOverlayForReason:(id)reason;
 - (void)_queue_addUnderlay;
-- (void)_queue_continueAddingOverlayForReason:(id)a3 generation:(unint64_t)a4;
-- (void)_queue_removeOverlayWithAnimationSettings:(id)a3;
+- (void)_queue_continueAddingOverlayForReason:(id)reason generation:(unint64_t)generation;
+- (void)_queue_removeOverlayWithAnimationSettings:(id)settings;
 - (void)_queue_removeUnderlay;
-- (void)_queue_setScreenOwnerPID:(int)a3;
-- (void)_queue_updateOverlayForReason:(id)a3;
+- (void)_queue_setScreenOwnerPID:(int)d;
+- (void)_queue_updateOverlayForReason:(id)reason;
 - (void)dealloc;
-- (void)dismissOverlayWithAnimationSettings:(id)a3 requstedByPID:(int)a4;
-- (void)firstBootDetectorDidFinishFirstBoot:(id)a3;
-- (void)systemShellChangedWithPrimary:(id)a3;
-- (void)systemShellDidFinishLaunching:(id)a3;
-- (void)unsustainOverlayForReason:(id)a3;
+- (void)dismissOverlayWithAnimationSettings:(id)settings requstedByPID:(int)d;
+- (void)firstBootDetectorDidFinishFirstBoot:(id)boot;
+- (void)systemShellChangedWithPrimary:(id)primary;
+- (void)systemShellDidFinishLaunching:(id)launching;
+- (void)unsustainOverlayForReason:(id)reason;
 @end
 
 @implementation BKBootUIPresenter
@@ -46,9 +46,9 @@
   queue = self->_queue;
   BSDispatchQueueAssert();
   v4 = +[BKSDefaults localDefaults];
-  v5 = [v4 hideAppleLogoOnLaunch];
+  hideAppleLogoOnLaunch = [v4 hideAppleLogoOnLaunch];
 
-  if (v5)
+  if (hideAppleLogoOnLaunch)
   {
     v6 = sub_1000524BC();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -90,9 +90,9 @@
   }
 }
 
-- (void)_queue_addOverlayForReason:(id)a3
+- (void)_queue_addOverlayForReason:(id)reason
 {
-  v5 = a3;
+  reasonCopy = reason;
   queue = self->_queue;
   BSDispatchQueueAssert();
   addOverlayGeneration = self->_addOverlayGeneration;
@@ -108,9 +108,9 @@
 
   self->_addOverlayGeneration = v8;
   v9 = +[BKSDefaults localDefaults];
-  v10 = [v9 hideAppleLogoOnLaunch];
+  hideAppleLogoOnLaunch = [v9 hideAppleLogoOnLaunch];
 
-  if (v10)
+  if (hideAppleLogoOnLaunch)
   {
     v11 = sub_1000524BC();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -118,7 +118,7 @@
       *buf = 67109378;
       *v21 = v8;
       *&v21[4] = 2114;
-      *&v21[6] = v5;
+      *&v21[6] = reasonCopy;
       v12 = "addOverlay(%d-%{public}@): Not showing the boot UI overlay because we were told to hide it";
 LABEL_10:
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, v12, buf, 0x12u);
@@ -136,7 +136,7 @@ LABEL_10:
       *buf = 67109378;
       *v21 = v8;
       *&v21[4] = 2114;
-      *&v21[6] = v5;
+      *&v21[6] = reasonCopy;
       v12 = "addOverlay(%d-%{public}@): Overlay pending or already in place";
       goto LABEL_10;
     }
@@ -159,7 +159,7 @@ LABEL_11:
       *&v21[8] = 2114;
       *&v21[10] = v16;
       v22 = 2048;
-      v23 = self;
+      selfCopy = self;
       v24 = 2114;
       v25 = @"BKBootUIPresenter.m";
       v26 = 1024;
@@ -180,17 +180,17 @@ LABEL_11:
   v17[2] = sub_10009C804;
   v17[3] = &unk_1000FD260;
   v17[4] = self;
-  v18 = v5;
+  v18 = reasonCopy;
   v19 = v8;
   [(BKBootUIPresenter *)self _queue_acquireActivityAssertionForReason:v18 generation:v8 continuation:v17];
 
 LABEL_12:
 }
 
-- (void)_queue_acquireActivityAssertionForReason:(id)a3 generation:(unint64_t)a4 continuation:(id)a5
+- (void)_queue_acquireActivityAssertionForReason:(id)reason generation:(unint64_t)generation continuation:(id)continuation
 {
-  v9 = a3;
-  v10 = a5;
+  reasonCopy = reason;
+  continuationCopy = continuation;
   queue = self->_queue;
   BSDispatchQueueAssert();
   v12 = [[SWSystemActivityAssertion alloc] initWithIdentifier:@"BKBootUIPresenter"];
@@ -207,7 +207,7 @@ LABEL_12:
       *&v32[8] = 2114;
       *&v32[10] = v24;
       v33 = 2048;
-      v34 = self;
+      selfCopy = self;
       v35 = 2114;
       v36 = @"BKBootUIPresenter.m";
       v37 = 1024;
@@ -228,9 +228,9 @@ LABEL_12:
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109378;
-    *v32 = a4;
+    *v32 = generation;
     *&v32[4] = 2114;
-    *&v32[6] = v9;
+    *&v32[6] = reasonCopy;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "addOverlay(%d-%{public}@): waiting for activity assertion", buf, 0x12u);
   }
 
@@ -243,20 +243,20 @@ LABEL_12:
   v25[2] = sub_10009CC78;
   v25[3] = &unk_1000FD210;
   v30 = v16;
-  v28 = v10;
-  v29 = a4;
-  v26 = v9;
+  v28 = continuationCopy;
+  generationCopy = generation;
+  v26 = reasonCopy;
   v27 = v13;
   v18 = v13;
-  v19 = v10;
-  v20 = v9;
+  v19 = continuationCopy;
+  v20 = reasonCopy;
   [(SWSystemActivityAssertion *)systemActivityAssertion acquireWithTimeout:v25 handler:16.0];
 }
 
-- (void)_queue_continueAddingOverlayForReason:(id)a3 generation:(unint64_t)a4
+- (void)_queue_continueAddingOverlayForReason:(id)reason generation:(unint64_t)generation
 {
-  v4 = a4;
-  v6 = a3;
+  generationCopy = generation;
+  reasonCopy = reason;
   queue = self->_queue;
   BSDispatchQueueAssert();
   systemActivityAssertion = self->_systemActivityAssertion;
@@ -267,9 +267,9 @@ LABEL_12:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v15 = 67109378;
-      v16 = v4;
+      v16 = generationCopy;
       v17 = 2114;
-      v18 = v6;
+      v18 = reasonCopy;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "addOverlay(%d-%{public}@): Adding the overlay", &v15, 0x12u);
     }
 
@@ -279,8 +279,8 @@ LABEL_12:
     self->_overlay = v12;
 
     [(BKDisplayRenderOverlay *)self->_overlay setAnimates:1];
-    v14 = [(BKDisplayRenderOverlay *)self->_overlay descriptor];
-    [v14 _setInterstitial:1];
+    descriptor = [(BKDisplayRenderOverlay *)self->_overlay descriptor];
+    [descriptor _setInterstitial:1];
 
     [(BKDisplayRenderOverlayManager *)self->_renderOverlayManager applyOverlay:self->_overlay withAnimationSettings:0];
   }
@@ -290,17 +290,17 @@ LABEL_12:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       v15 = 67109378;
-      v16 = v4;
+      v16 = generationCopy;
       v17 = 2114;
-      v18 = v6;
+      v18 = reasonCopy;
       _os_log_error_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "addOverlay(%d-%{public}@): canceled adding overlay", &v15, 0x12u);
     }
   }
 }
 
-- (void)_queue_removeOverlayWithAnimationSettings:(id)a3
+- (void)_queue_removeOverlayWithAnimationSettings:(id)settings
 {
-  v4 = a3;
+  settingsCopy = settings;
   queue = self->_queue;
   BSDispatchQueueAssert();
   if (self->_systemActivityAssertion)
@@ -315,7 +315,7 @@ LABEL_12:
     overlay = self->_overlay;
     if (overlay)
     {
-      [(BKDisplayRenderOverlayManager *)self->_renderOverlayManager removeOverlay:overlay withAnimationSettings:v4];
+      [(BKDisplayRenderOverlayManager *)self->_renderOverlayManager removeOverlay:overlay withAnimationSettings:settingsCopy];
       v8 = self->_overlay;
       self->_overlay = 0;
     }
@@ -326,14 +326,14 @@ LABEL_12:
   }
 }
 
-- (void)_queue_updateOverlayForReason:(id)a3
+- (void)_queue_updateOverlayForReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   queue = self->_queue;
   BSDispatchQueueAssert();
-  v6 = [(BKSystemShellSentinel *)self->_systemAppSentinel systemShellState];
-  v7 = v6;
-  if (!v6)
+  systemShellState = [(BKSystemShellSentinel *)self->_systemAppSentinel systemShellState];
+  v7 = systemShellState;
+  if (!systemShellState)
   {
     v48 = 0;
     v8 = 0;
@@ -359,7 +359,7 @@ LABEL_31:
     goto LABEL_33;
   }
 
-  v8 = *(v6 + 16);
+  v8 = *(systemShellState + 16);
   if (*(v7 + 8) == 1)
   {
     v9 = sub_1000524BC();
@@ -397,7 +397,7 @@ LABEL_7:
   {
     v16 = v15;
     v17 = *v50;
-    v47 = v4;
+    v47 = reasonCopy;
     while (2)
     {
       for (i = 0; i != v16; i = i + 1)
@@ -424,15 +424,15 @@ LABEL_7:
 
           v30 = v19;
           v8 = v30;
-          v4 = v47;
+          reasonCopy = v47;
           goto LABEL_24;
         }
 
         screenOwnerBundleIdentifier = self->_screenOwnerBundleIdentifier;
         if (screenOwnerBundleIdentifier)
         {
-          v22 = [v19 bundleIdentifier];
-          v23 = [(NSString *)screenOwnerBundleIdentifier isEqual:v22];
+          bundleIdentifier = [v19 bundleIdentifier];
+          v23 = [(NSString *)screenOwnerBundleIdentifier isEqual:bundleIdentifier];
 
           if (v23)
           {
@@ -446,9 +446,9 @@ LABEL_7:
 
             v25 = v19;
             self->_screenOwnerPID = [v25 pid];
-            v26 = [v25 bundleIdentifier];
+            bundleIdentifier2 = [v25 bundleIdentifier];
             v27 = self->_screenOwnerBundleIdentifier;
-            self->_screenOwnerBundleIdentifier = v26;
+            self->_screenOwnerBundleIdentifier = bundleIdentifier2;
 
             v8 = v25;
           }
@@ -456,7 +456,7 @@ LABEL_7:
       }
 
       v16 = [v9 countByEnumeratingWithState:&v49 objects:v55 count:16];
-      v4 = v47;
+      reasonCopy = v47;
       if (v16)
       {
         continue;
@@ -469,8 +469,8 @@ LABEL_7:
 LABEL_24:
 
   v31 = self->_screenOwnerBundleIdentifier;
-  v32 = [v8 bundleIdentifier];
-  LOBYTE(v31) = [(NSString *)v31 isEqual:v32];
+  bundleIdentifier3 = [v8 bundleIdentifier];
+  LOBYTE(v31) = [(NSString *)v31 isEqual:bundleIdentifier3];
 
   if (v31)
   {
@@ -484,11 +484,11 @@ LABEL_24:
     if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
     {
       v34 = self->_screenOwnerBundleIdentifier;
-      v35 = [v8 bundleIdentifier];
+      bundleIdentifier4 = [v8 bundleIdentifier];
       *buf = 138543618;
       *v54 = v34;
       *&v54[8] = 2114;
-      *&v54[10] = v35;
+      *&v54[10] = bundleIdentifier4;
       _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_DEFAULT, "updateOverlay: Screen owner missing (expected:%{public}@) got:%{public}@", buf, 0x16u);
     }
 
@@ -545,7 +545,7 @@ LABEL_34:
       if (os_log_type_enabled(v45, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        *v54 = v4;
+        *v54 = reasonCopy;
         _os_log_impl(&_mh_execute_header, v45, OS_LOG_TYPE_DEFAULT, "updateOverlay: Not dismissing because overlay has been sustained by the system app: %{public}@ ", buf, 0xCu);
       }
 
@@ -558,7 +558,7 @@ LABEL_34:
       if (os_log_type_enabled(v46, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        *v54 = v4;
+        *v54 = reasonCopy;
         _os_log_impl(&_mh_execute_header, v46, OS_LOG_TYPE_DEFAULT, "updateOverlay: Dismissing overlay: %{public}@ ", buf, 0xCu);
       }
 
@@ -568,13 +568,13 @@ LABEL_34:
 
   else
   {
-    [(BKBootUIPresenter *)self _queue_addOverlayForReason:v4];
+    [(BKBootUIPresenter *)self _queue_addOverlayForReason:reasonCopy];
   }
 }
 
-- (void)_queue_setScreenOwnerPID:(int)a3
+- (void)_queue_setScreenOwnerPID:(int)d
 {
-  self->_screenOwnerPID = a3;
+  self->_screenOwnerPID = d;
   [(BKSystemShellSentinel *)self->_systemAppSentinel systemShells];
   v18 = 0u;
   v19 = 0u;
@@ -595,10 +595,10 @@ LABEL_34:
         }
 
         v10 = *(*(&v18 + 1) + 8 * i);
-        if ([v10 pid] == a3)
+        if ([v10 pid] == d)
         {
-          v13 = [v10 bundleIdentifier];
-          v14 = [v13 copy];
+          bundleIdentifier = [v10 bundleIdentifier];
+          v14 = [bundleIdentifier copy];
           screenOwnerBundleIdentifier = self->_screenOwnerBundleIdentifier;
           self->_screenOwnerBundleIdentifier = v14;
 
@@ -627,72 +627,72 @@ LABEL_11:
   {
     v17 = self->_screenOwnerBundleIdentifier;
     *buf = 67109378;
-    v23 = a3;
+    dCopy = d;
     v24 = 2114;
     v25 = v17;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "screen owner is now pid:%d (%{public}@)", buf, 0x12u);
   }
 }
 
-- (void)systemShellChangedWithPrimary:(id)a3
+- (void)systemShellChangedWithPrimary:(id)primary
 {
-  v4 = a3;
+  primaryCopy = primary;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10009D86C;
   v7[3] = &unk_1000FD128;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = primaryCopy;
+  selfCopy = self;
+  v6 = primaryCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)systemShellDidFinishLaunching:(id)a3
+- (void)systemShellDidFinishLaunching:(id)launching
 {
-  v4 = a3;
+  launchingCopy = launching;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10009D9E0;
   v7[3] = &unk_1000FD128;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = launchingCopy;
+  selfCopy = self;
+  v6 = launchingCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)firstBootDetectorDidFinishFirstBoot:(id)a3
+- (void)firstBootDetectorDidFinishFirstBoot:(id)boot
 {
-  v4 = a3;
+  bootCopy = boot;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10009DB54;
   v7[3] = &unk_1000FD128;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = bootCopy;
+  selfCopy = self;
+  v6 = bootCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)unsustainOverlayForReason:(id)a3
+- (void)unsustainOverlayForReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10009DD04;
   v7[3] = &unk_1000FD128;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = reasonCopy;
+  v6 = reasonCopy;
   dispatch_sync(queue, v7);
 }
 
-- (BOOL)sustainOverlayForReason:(id)a3
+- (BOOL)sustainOverlayForReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -703,9 +703,9 @@ LABEL_11:
   block[2] = sub_10009DEFC;
   block[3] = &unk_1000FD1C8;
   block[4] = self;
-  v9 = v4;
+  v9 = reasonCopy;
   v10 = &v11;
-  v6 = v4;
+  v6 = reasonCopy;
   dispatch_sync(queue, block);
   LOBYTE(queue) = *(v12 + 24);
 
@@ -713,18 +713,18 @@ LABEL_11:
   return queue;
 }
 
-- (void)dismissOverlayWithAnimationSettings:(id)a3 requstedByPID:(int)a4
+- (void)dismissOverlayWithAnimationSettings:(id)settings requstedByPID:(int)d
 {
-  v6 = a3;
+  settingsCopy = settings;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10009E0C4;
   block[3] = &unk_1000FD1A0;
-  v11 = a4;
+  dCopy = d;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = settingsCopy;
+  v8 = settingsCopy;
   dispatch_sync(queue, block);
 }
 
@@ -750,15 +750,15 @@ LABEL_11:
 - (NSString)description
 {
   v3 = [BSDescriptionBuilder builderWithObject:self];
-  v4 = [(BKDisplayRenderOverlay *)self->_overlay succinctDescription];
-  v5 = [v3 appendObject:v4 withName:@"_overlay" skipIfNil:1];
+  succinctDescription = [(BKDisplayRenderOverlay *)self->_overlay succinctDescription];
+  v5 = [v3 appendObject:succinctDescription withName:@"_overlay" skipIfNil:1];
 
-  v6 = [(BKDisplayRenderOverlay *)self->_underlay succinctDescription];
-  v7 = [v3 appendObject:v6 withName:@"_underlay" skipIfNil:1];
+  succinctDescription2 = [(BKDisplayRenderOverlay *)self->_underlay succinctDescription];
+  v7 = [v3 appendObject:succinctDescription2 withName:@"_underlay" skipIfNil:1];
 
-  v8 = [v3 build];
+  build = [v3 build];
 
-  return v8;
+  return build;
 }
 
 - (void)dealloc
@@ -776,7 +776,7 @@ LABEL_11:
       v20 = 2114;
       v21 = v8;
       v22 = 2048;
-      v23 = self;
+      selfCopy3 = self;
       v24 = 2114;
       v25 = @"BKBootUIPresenter.m";
       v26 = 1024;
@@ -805,7 +805,7 @@ LABEL_11:
       v20 = 2114;
       v21 = v12;
       v22 = 2048;
-      v23 = self;
+      selfCopy3 = self;
       v24 = 2114;
       v25 = @"BKBootUIPresenter.m";
       v26 = 1024;
@@ -834,7 +834,7 @@ LABEL_11:
       v20 = 2114;
       v21 = v16;
       v22 = 2048;
-      v23 = self;
+      selfCopy3 = self;
       v24 = 2114;
       v25 = @"BKBootUIPresenter.m";
       v26 = 1024;
@@ -858,22 +858,22 @@ LABEL_11:
   [(BKBootUIPresenter *)&v17 dealloc];
 }
 
-- (BKBootUIPresenter)initWithSystemAppSentinel:(id)a3 alternateSystemAppManager:(id)a4 firstBootDetector:(id)a5 bootUIOverlayVendor:(id)a6 renderOverlayManager:(id)a7
+- (BKBootUIPresenter)initWithSystemAppSentinel:(id)sentinel alternateSystemAppManager:(id)manager firstBootDetector:(id)detector bootUIOverlayVendor:(id)vendor renderOverlayManager:(id)overlayManager
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  sentinelCopy = sentinel;
+  detectorCopy = detector;
+  vendorCopy = vendor;
+  overlayManagerCopy = overlayManager;
   v37.receiver = self;
   v37.super_class = BKBootUIPresenter;
   v16 = [(BKBootUIPresenter *)&v37 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_systemAppSentinel, a3);
-    objc_storeStrong(&v17->_bootUIOverlayVendor, a6);
-    objc_storeStrong(&v17->_renderOverlayManager, a7);
-    objc_storeStrong(&v17->_firstBootDetector, a5);
+    objc_storeStrong(&v16->_systemAppSentinel, sentinel);
+    objc_storeStrong(&v17->_bootUIOverlayVendor, vendor);
+    objc_storeStrong(&v17->_renderOverlayManager, overlayManager);
+    objc_storeStrong(&v17->_firstBootDetector, detector);
     v18 = objc_opt_class();
     v19 = NSStringFromClass(v18);
     SerialWithQoS = BSDispatchQueueCreateSerialWithQoS();

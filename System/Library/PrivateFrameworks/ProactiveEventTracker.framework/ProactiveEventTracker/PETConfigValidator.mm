@@ -1,16 +1,16 @@
 @interface PETConfigValidator
-+ (BOOL)_groupConfigIsValid:(id)a3;
-+ (BOOL)_messageConfigIsValid:(id)a3;
-+ (BOOL)configIsValid:(id)a3;
++ (BOOL)_groupConfigIsValid:(id)valid;
++ (BOOL)_messageConfigIsValid:(id)valid;
++ (BOOL)configIsValid:(id)valid;
 @end
 
 @implementation PETConfigValidator
 
-+ (BOOL)_messageConfigIsValid:(id)a3
++ (BOOL)_messageConfigIsValid:(id)valid
 {
   v54 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"device_sampling"];
+  validCopy = valid;
+  v4 = [validCopy objectForKeyedSubscript:@"device_sampling"];
   if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -24,7 +24,7 @@
 
   else
   {
-    v5 = [v3 objectForKeyedSubscript:@"device_sampling_seed"];
+    v5 = [validCopy objectForKeyedSubscript:@"device_sampling_seed"];
     if (v5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -38,7 +38,7 @@
 
     else
     {
-      v6 = [v3 objectForKeyedSubscript:@"message_sampling"];
+      v6 = [validCopy objectForKeyedSubscript:@"message_sampling"];
       if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
       {
         if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -52,7 +52,7 @@
 
       else
       {
-        v7 = [v3 objectForKeyedSubscript:@"sig_figs"];
+        v7 = [validCopy objectForKeyedSubscript:@"sig_figs"];
         if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
         {
           if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -66,7 +66,7 @@
 
         else
         {
-          v8 = [v3 objectForKeyedSubscript:@"aggregated"];
+          v8 = [validCopy objectForKeyedSubscript:@"aggregated"];
           if (v8 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
           {
             if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -80,7 +80,7 @@
 
           else
           {
-            v9 = [v3 objectForKeyedSubscript:@"field_whitelist"];
+            v9 = [validCopy objectForKeyedSubscript:@"field_whitelist"];
             if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
             {
               if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -142,7 +142,7 @@
                 }
               }
 
-              v16 = [v3 objectForKeyedSubscript:@"hist_buckets"];
+              v16 = [validCopy objectForKeyedSubscript:@"hist_buckets"];
               if (v16 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
               {
                 if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -208,7 +208,7 @@ LABEL_62:
                   }
                 }
 
-                v23 = [v3 objectForKeyedSubscript:@"nested_fields"];
+                v23 = [validCopy objectForKeyedSubscript:@"nested_fields"];
                 if (v23 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
                 {
                   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -314,11 +314,11 @@ LABEL_83:
   return v30;
 }
 
-+ (BOOL)_groupConfigIsValid:(id)a3
++ (BOOL)_groupConfigIsValid:(id)valid
 {
   v30 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"device_sampling"];
+  validCopy = valid;
+  v4 = [validCopy objectForKeyedSubscript:@"device_sampling"];
   if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -332,7 +332,7 @@ LABEL_83:
 
   else
   {
-    v5 = [v3 objectForKeyedSubscript:@"device_sampling_seed"];
+    v5 = [validCopy objectForKeyedSubscript:@"device_sampling_seed"];
     if (v5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -346,7 +346,7 @@ LABEL_83:
 
     else
     {
-      v6 = [v3 objectForKeyedSubscript:@"message_sampling"];
+      v6 = [validCopy objectForKeyedSubscript:@"message_sampling"];
       if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
       {
         if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -360,7 +360,7 @@ LABEL_83:
 
       else
       {
-        v7 = [v3 objectForKeyedSubscript:@"sampling_limit"];
+        v7 = [validCopy objectForKeyedSubscript:@"sampling_limit"];
         if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
         {
           if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -374,7 +374,7 @@ LABEL_83:
 
         else
         {
-          v8 = [v3 objectForKeyedSubscript:@"sig_figs"];
+          v8 = [validCopy objectForKeyedSubscript:@"sig_figs"];
           if (v8 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
           {
             if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -388,7 +388,7 @@ LABEL_83:
 
           else
           {
-            v9 = [v3 objectForKeyedSubscript:@"aggregated"];
+            v9 = [validCopy objectForKeyedSubscript:@"aggregated"];
             if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
             {
               if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -402,7 +402,7 @@ LABEL_83:
 
             else
             {
-              v10 = [v3 objectForKeyedSubscript:@"message_whitelist"];
+              v10 = [validCopy objectForKeyedSubscript:@"message_whitelist"];
               if (v10 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
               {
                 if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -423,8 +423,8 @@ LABEL_83:
                 v24 = 0u;
                 v25 = 0u;
                 v21 = v10;
-                v11 = [v10 allValues];
-                v12 = [v11 countByEnumeratingWithState:&v24 objects:v29 count:16];
+                allValues = [v10 allValues];
+                v12 = [allValues countByEnumeratingWithState:&v24 objects:v29 count:16];
                 if (v12)
                 {
                   v13 = v12;
@@ -436,7 +436,7 @@ LABEL_83:
                     {
                       if (*v25 != v14)
                       {
-                        objc_enumerationMutation(v11);
+                        objc_enumerationMutation(allValues);
                       }
 
                       v16 = *(*(&v24 + 1) + 8 * i);
@@ -462,7 +462,7 @@ LABEL_83:
                       }
                     }
 
-                    v13 = [v11 countByEnumeratingWithState:&v24 objects:v29 count:16];
+                    v13 = [allValues countByEnumeratingWithState:&v24 objects:v29 count:16];
                     v17 = 1;
                     v7 = v20;
                     if (v13)
@@ -496,11 +496,11 @@ LABEL_51:
   return v17;
 }
 
-+ (BOOL)configIsValid:(id)a3
++ (BOOL)configIsValid:(id)valid
 {
   v26 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"version"];
+  validCopy = valid;
+  v4 = [validCopy objectForKeyedSubscript:@"version"];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -521,7 +521,7 @@ LABEL_24:
     goto LABEL_16;
   }
 
-  v6 = [v3 objectForKeyedSubscript:@"message_groups"];
+  v6 = [validCopy objectForKeyedSubscript:@"message_groups"];
   objc_opt_class();
   v7 = objc_opt_isKindOfClass();
 
@@ -538,13 +538,13 @@ LABEL_24:
     goto LABEL_24;
   }
 
-  v8 = [v3 objectForKeyedSubscript:@"message_groups"];
+  v8 = [validCopy objectForKeyedSubscript:@"message_groups"];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v9 = [v8 allValues];
-  v10 = [v9 countByEnumeratingWithState:&v20 objects:v25 count:16];
+  allValues = [v8 allValues];
+  v10 = [allValues countByEnumeratingWithState:&v20 objects:v25 count:16];
   if (v10)
   {
     v11 = v10;
@@ -555,7 +555,7 @@ LABEL_24:
       {
         if (*v21 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(allValues);
         }
 
         v14 = *(*(&v20 + 1) + 8 * i);
@@ -579,7 +579,7 @@ LABEL_20:
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v20 objects:v25 count:16];
+      v11 = [allValues countByEnumeratingWithState:&v20 objects:v25 count:16];
       v15 = 1;
       if (v11)
       {

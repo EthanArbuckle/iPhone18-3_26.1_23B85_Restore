@@ -1,21 +1,21 @@
 @interface ForwardDmShader
-- (id)getComputePipeLineStateForDevice:(id)a3 Library:(id)a4;
-- (id)getComputePipeLineStateForDevice:(id)a3 Library:(id)a4 Constants:(BOOL *)a5 ConstantNumber:(unsigned int)a6 input:(char)a7 output:(char)a8;
-- (id)initShaderWithName:(id)a3;
+- (id)getComputePipeLineStateForDevice:(id)device Library:(id)library;
+- (id)getComputePipeLineStateForDevice:(id)device Library:(id)library Constants:(BOOL *)constants ConstantNumber:(unsigned int)number input:(char)input output:(char)output;
+- (id)initShaderWithName:(id)name;
 @end
 
 @implementation ForwardDmShader
 
-- (id)initShaderWithName:(id)a3
+- (id)initShaderWithName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   v10.receiver = self;
   v10.super_class = ForwardDmShader;
   v6 = [(ForwardDmShader *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_computeKernelName, a3);
+    objc_storeStrong(&v6->_computeKernelName, name);
     computePipeline = v7->_computePipeline;
     v7->_computePipeline = 0;
 
@@ -25,50 +25,50 @@
   return v7;
 }
 
-- (id)getComputePipeLineStateForDevice:(id)a3 Library:(id)a4
+- (id)getComputePipeLineStateForDevice:(id)device Library:(id)library
 {
-  v4 = [(ForwardDmShader *)self getComputePipeLineStateForDevice:a3 Library:a4 Constants:0 ConstantNumber:0];
+  v4 = [(ForwardDmShader *)self getComputePipeLineStateForDevice:device Library:library Constants:0 ConstantNumber:0];
 
   return v4;
 }
 
-- (id)getComputePipeLineStateForDevice:(id)a3 Library:(id)a4 Constants:(BOOL *)a5 ConstantNumber:(unsigned int)a6 input:(char)a7 output:(char)a8
+- (id)getComputePipeLineStateForDevice:(id)device Library:(id)library Constants:(BOOL *)constants ConstantNumber:(unsigned int)number input:(char)input output:(char)output
 {
   v53 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v44 = a7;
-  v43 = a8;
+  deviceCopy = device;
+  libraryCopy = library;
+  inputCopy = input;
+  outputCopy = output;
   computePipeline = self->_computePipeline;
   if (computePipeline)
   {
-    if (self->_inputFormat == a7 && self->_outputFormat == a8 || (self->_computePipeline = 0, computePipeline, self->_inputFormat = a7, self->_outputFormat = a8, (computePipeline = self->_computePipeline) != 0))
+    if (self->_inputFormat == input && self->_outputFormat == output || (self->_computePipeline = 0, computePipeline, self->_inputFormat = input, self->_outputFormat = output, (computePipeline = self->_computePipeline) != 0))
     {
       v17 = computePipeline;
       goto LABEL_47;
     }
   }
 
-  if (a6)
+  if (number)
   {
     v18 = objc_opt_new();
     v19 = 0;
     do
     {
-      [v18 setConstantValue:&a5[v19] type:53 atIndex:v19];
+      [v18 setConstantValue:&constants[v19] type:53 atIndex:v19];
       ++v19;
     }
 
-    while (a6 != v19);
-    if (v44 != 38 || v43 != 6)
+    while (number != v19);
+    if (inputCopy != 38 || outputCopy != 6)
     {
-      [v18 setConstantValue:&v44 type:45 atIndex:a6];
-      [v18 setConstantValue:&v43 type:45 atIndex:a6 + 1];
+      [v18 setConstantValue:&inputCopy type:45 atIndex:number];
+      [v18 setConstantValue:&outputCopy type:45 atIndex:number + 1];
     }
 
     computeKernelName = self->_computeKernelName;
     v42 = 0;
-    v22 = [v15 newFunctionWithName:computeKernelName constantValues:v18 error:&v42];
+    v22 = [libraryCopy newFunctionWithName:computeKernelName constantValues:v18 error:&v42];
     v23 = v42;
     v24 = v23;
     if (!v22 || v23)
@@ -88,7 +88,7 @@
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
         {
           v28 = self->_computeKernelName;
-          v29 = [v24 localizedDescription];
+          localizedDescription = [v24 localizedDescription];
           *buf = 134218754;
           v46 = WORD1(v27);
           v47 = 2080;
@@ -96,7 +96,7 @@
           v49 = 2112;
           v50 = v28;
           v51 = 2112;
-          v52 = v29;
+          v52 = localizedDescription;
           _os_log_impl(&dword_250836000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [1.450.54] #%04llx %s : ERROR: Failed creating a new function: %@ with error: %@", buf, 0x2Au);
         }
 
@@ -106,13 +106,13 @@
       else if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
       {
         v34 = self->_computeKernelName;
-        v35 = [v24 localizedDescription];
+        localizedDescription2 = [v24 localizedDescription];
         *buf = 136315650;
         v46 = "[ForwardDmShader getComputePipeLineStateForDevice:Library:Constants:ConstantNumber:input:output:]";
         v47 = 2112;
         v48 = v34;
         v49 = 2112;
-        v50 = v35;
+        v50 = localizedDescription2;
         _os_log_impl(&dword_250836000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [1.450.54] %s : ERROR: Failed creating a new function: %@ with error: %@", buf, 0x20u);
       }
 
@@ -124,7 +124,7 @@
 
   else
   {
-    v22 = [v15 newFunctionWithName:self->_computeKernelName];
+    v22 = [libraryCopy newFunctionWithName:self->_computeKernelName];
     if (!v22)
     {
       if (!enableLogInstance)
@@ -181,7 +181,7 @@ LABEL_42:
   [v25 setThreadGroupSizeIsMultipleOfThreadExecutionWidth:1];
   [v25 setComputeFunction:v22];
   v41 = 0;
-  v17 = [v14 newComputePipelineStateWithDescriptor:v25 error:&v41];
+  v17 = [deviceCopy newComputePipelineStateWithDescriptor:v25 error:&v41];
   v26 = v41;
   v24 = v26;
   if (!v17 || v26)
@@ -191,13 +191,13 @@ LABEL_42:
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
       {
         v38 = self->_computeKernelName;
-        v39 = [v24 localizedDescription];
+        localizedDescription3 = [v24 localizedDescription];
         *buf = 136315650;
         v46 = "[ForwardDmShader getComputePipeLineStateForDevice:Library:Constants:ConstantNumber:input:output:]";
         v47 = 2112;
         v48 = v38;
         v49 = 2112;
-        v50 = v39;
+        v50 = localizedDescription3;
         _os_log_impl(&dword_250836000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [1.450.54] %s : ERROR: Failed to create forward DM Kernel: %@ with error: %@", buf, 0x20u);
       }
 
@@ -217,7 +217,7 @@ LABEL_42:
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
       v31 = self->_computeKernelName;
-      v32 = [v24 localizedDescription];
+      localizedDescription4 = [v24 localizedDescription];
       *buf = 134218754;
       v46 = WORD1(v30);
       v47 = 2080;
@@ -225,7 +225,7 @@ LABEL_42:
       v49 = 2112;
       v50 = v31;
       v51 = 2112;
-      v52 = v32;
+      v52 = localizedDescription4;
       _os_log_impl(&dword_250836000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, " [1.450.54] #%04llx %s : ERROR: Failed to create forward DM Kernel: %@ with error: %@", buf, 0x2Au);
     }
 

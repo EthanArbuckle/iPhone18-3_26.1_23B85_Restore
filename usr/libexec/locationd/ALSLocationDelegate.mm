@@ -1,19 +1,19 @@
 @interface ALSLocationDelegate
-- (ALSLocationDelegate)initWithRequester:(void *)a3;
+- (ALSLocationDelegate)initWithRequester:(void *)requester;
 - (void)dealloc;
-- (void)finished:(id)a3;
-- (void)populateLocationFromTower:(id)a3 location:(CLDaemonLocation *)a4 timeReceived:(double)a5;
-- (void)processCells:(id)a3 inRange:(_NSRange)a4 timeReceived:(double)a5 requestType:(int)a6 tag:(int)a7;
-- (void)processScdmaCells:(id)a3 inRange:(_NSRange)a4 timeReceived:(double)a5 requestType:(int)a6 tag:(int)a7;
-- (void)processWireless:(id)a3 inRange:(_NSRange)a4 timeReceived:(double)a5 requestType:(int)a6 tag:(int)a7 surroundingWifiBands:(const void *)a8;
-- (void)requester:(id)a3 didFailWithError:(id)a4;
-- (void)requester:(id)a3 didReceiveResponse:(id)a4 forRequest:(id)a5;
-- (void)requesterDidFinish:(id)a3;
+- (void)finished:(id)finished;
+- (void)populateLocationFromTower:(id)tower location:(CLDaemonLocation *)location timeReceived:(double)received;
+- (void)processCells:(id)cells inRange:(_NSRange)range timeReceived:(double)received requestType:(int)type tag:(int)tag;
+- (void)processScdmaCells:(id)cells inRange:(_NSRange)range timeReceived:(double)received requestType:(int)type tag:(int)tag;
+- (void)processWireless:(id)wireless inRange:(_NSRange)range timeReceived:(double)received requestType:(int)type tag:(int)tag surroundingWifiBands:(const void *)bands;
+- (void)requester:(id)requester didFailWithError:(id)error;
+- (void)requester:(id)requester didReceiveResponse:(id)response forRequest:(id)request;
+- (void)requesterDidFinish:(id)finish;
 @end
 
 @implementation ALSLocationDelegate
 
-- (ALSLocationDelegate)initWithRequester:(void *)a3
+- (ALSLocationDelegate)initWithRequester:(void *)requester
 {
   v6.receiver = self;
   v6.super_class = ALSLocationDelegate;
@@ -21,7 +21,7 @@
   if (v4)
   {
     v4->fRequestersWithOutstandingRequests = objc_alloc_init(NSMutableSet);
-    v4->fRequester = a3;
+    v4->fRequester = requester;
   }
 
   return v4;
@@ -62,19 +62,19 @@
   [(ALSLocationDelegate *)&v8 dealloc];
 }
 
-- (void)requester:(id)a3 didReceiveResponse:(id)a4 forRequest:(id)a5
+- (void)requester:(id)requester didReceiveResponse:(id)response forRequest:(id)request
 {
   Current = CFAbsoluteTimeGetCurrent();
-  v9 = [a4 cellTowers];
-  v48 = [a4 scdmaCellTowers];
-  v10 = [a4 cdmaCellTowers];
-  v11 = [a4 lteCellTowers];
-  v46 = [a4 nr5GCellTowers];
-  v12 = [a4 wirelessAPs];
-  [a3 timestamp];
+  cellTowers = [response cellTowers];
+  scdmaCellTowers = [response scdmaCellTowers];
+  cdmaCellTowers = [response cdmaCellTowers];
+  lteCellTowers = [response lteCellTowers];
+  nr5GCellTowers = [response nr5GCellTowers];
+  wirelessAPs = [response wirelessAPs];
+  [requester timestamp];
   v14 = Current - v13;
-  v47 = v12;
-  if ([v12 count])
+  v47 = wirelessAPs;
+  if ([wirelessAPs count])
   {
     if (qword_1025D4620 != -1)
     {
@@ -85,13 +85,13 @@
     if (os_log_type_enabled(qword_1025D4628, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67240960;
-      *&buf[4] = [a3 tag];
+      *&buf[4] = [requester tag];
       *&buf[8] = 2050;
       *&buf[10] = v14;
       v60 = 2050;
-      v61 = [v12 count];
+      v61 = [wirelessAPs count];
       v62 = 1026;
-      v63 = [a3 type];
+      type = [requester type];
       _os_log_impl(dword_100000000, v15, OS_LOG_TYPE_DEFAULT, "@AlsFlow, reply, tag, %{public}d, wifi, rtt, %{public}.1f, aps, %{public}lu, type, %{public}d", buf, 0x22u);
     }
 
@@ -104,13 +104,13 @@
       }
 
       LODWORD(__p) = 67240960;
-      HIDWORD(__p) = [a3 tag];
+      HIDWORD(__p) = [requester tag];
       *v56 = 2050;
       *&v56[2] = v14;
       *&v56[10] = 2050;
-      *&v56[12] = [v12 count];
+      *&v56[12] = [wirelessAPs count];
       v57 = 1026;
-      v58 = [a3 type];
+      type2 = [requester type];
       v43 = _os_log_send_and_compose_impl();
       sub_100152C7C("Generic", 1, 0, 2, "[ALSLocationDelegate requester:didReceiveResponse:forRequest:]", "%s\n", v43);
       if (v43 != buf)
@@ -120,34 +120,34 @@
     }
   }
 
-  if ([v9 count] || objc_msgSend(v10, "count") || objc_msgSend(v11, "count") || objc_msgSend(v48, "count") || objc_msgSend(v46, "count"))
+  if ([cellTowers count] || objc_msgSend(cdmaCellTowers, "count") || objc_msgSend(lteCellTowers, "count") || objc_msgSend(scdmaCellTowers, "count") || objc_msgSend(nr5GCellTowers, "count"))
   {
-    v16 = [v9 count];
-    v17 = [v10 count];
-    v18 = [v11 count];
-    v19 = [v48 count];
-    v20 = v17 + v16 + v18 + v19 + [v46 count];
-    if (v20 == [v9 count])
+    v16 = [cellTowers count];
+    v17 = [cdmaCellTowers count];
+    v18 = [lteCellTowers count];
+    v19 = [scdmaCellTowers count];
+    v20 = v17 + v16 + v18 + v19 + [nr5GCellTowers count];
+    if (v20 == [cellTowers count])
     {
       v21 = "gsm";
     }
 
-    else if (v20 == [v11 count])
+    else if (v20 == [lteCellTowers count])
     {
       v21 = "lte";
     }
 
-    else if (v20 == [v10 count])
+    else if (v20 == [cdmaCellTowers count])
     {
       v21 = "cdma";
     }
 
-    else if (v20 == [v48 count])
+    else if (v20 == [scdmaCellTowers count])
     {
       v21 = "scdma";
     }
 
-    else if (v20 == [v46 count])
+    else if (v20 == [nr5GCellTowers count])
     {
       v21 = "nr";
     }
@@ -165,7 +165,7 @@
     v22 = qword_1025D4628;
     if (os_log_type_enabled(qword_1025D4628, OS_LOG_TYPE_DEFAULT))
     {
-      v23 = [a3 tag];
+      v23 = [requester tag];
       *buf = 67240962;
       *&buf[4] = v23;
       *&buf[8] = 2050;
@@ -173,7 +173,7 @@
       v60 = 2082;
       v61 = v21;
       v62 = 1026;
-      v63 = v20;
+      type = v20;
       _os_log_impl(dword_100000000, v22, OS_LOG_TYPE_DEFAULT, "@AlsFlow, reply, tag, %{public}d, cell, rtt, %{public}.1f, %{public}s, %{public}d", buf, 0x22u);
     }
 
@@ -186,13 +186,13 @@
       }
 
       LODWORD(__p) = 67240962;
-      HIDWORD(__p) = [a3 tag];
+      HIDWORD(__p) = [requester tag];
       *v56 = 2050;
       *&v56[2] = v14;
       *&v56[10] = 2082;
       *&v56[12] = v21;
       v57 = 1026;
-      v58 = v20;
+      type2 = v20;
       v42 = _os_log_send_and_compose_impl();
       sub_100152C7C("Generic", 1, 0, 2, "[ALSLocationDelegate requester:didReceiveResponse:forRequest:]", "%s\n", v42);
       if (v42 != buf)
@@ -212,54 +212,54 @@
     operator delete(*buf);
   }
 
-  if ([v10 count])
+  if ([cdmaCellTowers count])
   {
     fRequester = self->fRequester;
     v52[0] = _NSConcreteStackBlock;
     v52[1] = 3221225472;
     v52[2] = sub_1006413E0;
     v52[3] = &unk_10245AFB0;
-    v52[4] = v10;
+    v52[4] = cdmaCellTowers;
     v52[5] = self;
-    v52[6] = a3;
+    v52[6] = requester;
     *&v52[7] = Current;
-    sub_100641360(fRequester, [a3 type], objc_msgSend(a3, "tag"), v52);
+    sub_100641360(fRequester, [requester type], objc_msgSend(requester, "tag"), v52);
   }
 
-  if ([v11 count])
+  if ([lteCellTowers count])
   {
     v25 = self->fRequester;
     v51[0] = _NSConcreteStackBlock;
     v51[1] = 3221225472;
     v51[2] = sub_100641E30;
     v51[3] = &unk_10245AFB0;
-    v51[4] = v11;
+    v51[4] = lteCellTowers;
     v51[5] = self;
-    v51[6] = a3;
+    v51[6] = requester;
     *&v51[7] = Current;
-    sub_100641360(v25, [a3 type], objc_msgSend(a3, "tag"), v51);
+    sub_100641360(v25, [requester type], objc_msgSend(requester, "tag"), v51);
   }
 
-  if ([v46 count])
+  if ([nr5GCellTowers count])
   {
     v26 = self->fRequester;
     v50[0] = _NSConcreteStackBlock;
     v50[1] = 3221225472;
     v50[2] = sub_100642554;
     v50[3] = &unk_10245AFB0;
-    v50[4] = v46;
+    v50[4] = nr5GCellTowers;
     v50[5] = self;
-    v50[6] = a3;
+    v50[6] = requester;
     *&v50[7] = Current;
-    sub_100641360(v26, [a3 type], objc_msgSend(a3, "tag"), v50);
+    sub_100641360(v26, [requester type], objc_msgSend(requester, "tag"), v50);
   }
 
-  if ([v48 count])
+  if ([scdmaCellTowers count])
   {
-    -[ALSLocationDelegate processScdmaCells:inRange:timeReceived:requestType:tag:](self, "processScdmaCells:inRange:timeReceived:requestType:tag:", v48, 0, [v48 count], objc_msgSend(a3, "type"), objc_msgSend(a3, "tag"), Current);
+    -[ALSLocationDelegate processScdmaCells:inRange:timeReceived:requestType:tag:](self, "processScdmaCells:inRange:timeReceived:requestType:tag:", scdmaCellTowers, 0, [scdmaCellTowers count], objc_msgSend(requester, "type"), objc_msgSend(requester, "tag"), Current);
   }
 
-  if ([v9 count])
+  if ([cellTowers count])
   {
     if (qword_1025D4620 != -1)
     {
@@ -269,7 +269,7 @@
     v27 = qword_1025D4628;
     if (os_log_type_enabled(qword_1025D4628, OS_LOG_TYPE_DEBUG))
     {
-      v28 = [v9 count];
+      v28 = [cellTowers count];
       *buf = 134349056;
       *&buf[4] = v28;
       _os_log_impl(dword_100000000, v27, OS_LOG_TYPE_DEBUG, "AlsCell, gsm, unbatched, %{public}lu", buf, 0xCu);
@@ -277,10 +277,10 @@
 
     if (sub_10000A100(121, 2))
     {
-      sub_1018F0AD0(v9);
+      sub_1018F0AD0(cellTowers);
     }
 
-    -[ALSLocationDelegate processCells:inRange:timeReceived:requestType:tag:](self, "processCells:inRange:timeReceived:requestType:tag:", v9, 0, [v9 count], objc_msgSend(a3, "type"), objc_msgSend(a3, "tag"), Current);
+    -[ALSLocationDelegate processCells:inRange:timeReceived:requestType:tag:](self, "processCells:inRange:timeReceived:requestType:tag:", cellTowers, 0, [cellTowers count], objc_msgSend(requester, "type"), objc_msgSend(requester, "tag"), Current);
   }
 
   if ([v47 count])
@@ -288,11 +288,11 @@
     __p = 0;
     *v56 = 0;
     *&v56[8] = 0;
-    if (![a3 type] && objc_msgSend(a5, "surroundingWifiBandsCount"))
+    if (![requester type] && objc_msgSend(request, "surroundingWifiBandsCount"))
     {
-      for (i = 0; i < [a5 surroundingWifiBandsCount]; ++i)
+      for (i = 0; i < [request surroundingWifiBandsCount]; ++i)
       {
-        v32 = [a5 surroundingWifiBandsAtIndex:i];
+        v32 = [request surroundingWifiBandsAtIndex:i];
         v33 = *v56;
         if (*v56 >= *&v56[8])
         {
@@ -377,7 +377,7 @@
       }
     }
 
-    -[ALSLocationDelegate processWireless:inRange:timeReceived:requestType:tag:surroundingWifiBands:](self, "processWireless:inRange:timeReceived:requestType:tag:surroundingWifiBands:", v47, 0, [v47 count], objc_msgSend(a3, "type"), objc_msgSend(a3, "tag"), &__p, Current);
+    -[ALSLocationDelegate processWireless:inRange:timeReceived:requestType:tag:surroundingWifiBands:](self, "processWireless:inRange:timeReceived:requestType:tag:surroundingWifiBands:", v47, 0, [v47 count], objc_msgSend(requester, "type"), objc_msgSend(requester, "tag"), &__p, Current);
     if (__p)
     {
       *v56 = __p;
@@ -386,7 +386,7 @@
   }
 }
 
-- (void)requesterDidFinish:(id)a3
+- (void)requesterDidFinish:(id)finish
 {
   p_fRequestersWithOutstandingRequests = &self->fRequestersWithOutstandingRequests;
   if (([(NSMutableSet *)self->fRequestersWithOutstandingRequests containsObject:?]& 1) != 0)
@@ -398,13 +398,13 @@
       operator delete(*__p);
     }
 
-    v6 = [a3 downloadPayloadSize];
+    downloadPayloadSize = [finish downloadPayloadSize];
     (*(qword_1026584A8 + 16))(&qword_1026584A8);
-    dword_1026584D4 += v6;
+    dword_1026584D4 += downloadPayloadSize;
     (*(qword_1026584A8 + 24))(&qword_1026584A8);
-    [a3 setFinished:1];
-    [(ALSLocationDelegate *)self finished:a3];
-    [(NSMutableSet *)self->fRequestersWithOutstandingRequests removeObject:a3];
+    [finish setFinished:1];
+    [(ALSLocationDelegate *)self finished:finish];
+    [(NSMutableSet *)self->fRequestersWithOutstandingRequests removeObject:finish];
     if (qword_1025D4860 != -1)
     {
       sub_1018F1154();
@@ -415,7 +415,7 @@
     {
       v8 = [(NSMutableSet *)*p_fRequestersWithOutstandingRequests count];
       *__p = 134218240;
-      *&__p[4] = v6;
+      *&__p[4] = downloadPayloadSize;
       v11 = 2048;
       v12 = v8;
       _os_log_impl(dword_100000000, v7, OS_LOG_TYPE_INFO, "AlsRequester, didFinish, payload, %lu, outstanding, %ld", __p, 0x16u);
@@ -423,7 +423,7 @@
 
     if (sub_10000A100(121, 2))
     {
-      sub_1018F117C(p_fRequestersWithOutstandingRequests, v6);
+      sub_1018F117C(p_fRequestersWithOutstandingRequests, downloadPayloadSize);
     }
   }
 
@@ -448,7 +448,7 @@
   }
 }
 
-- (void)requester:(id)a3 didFailWithError:(id)a4
+- (void)requester:(id)requester didFailWithError:(id)error
 {
   if (([(NSMutableSet *)self->fRequestersWithOutstandingRequests containsObject:?]& 1) != 0)
   {
@@ -460,30 +460,30 @@
     v7 = qword_1025D4628;
     if (os_log_type_enabled(qword_1025D4628, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [a3 tag];
+      v8 = [requester tag];
       Current = CFAbsoluteTimeGetCurrent();
-      [a3 timestamp];
+      [requester timestamp];
       *buf = 67240704;
       *&buf[4] = v8;
       v34 = 2050;
       v35 = Current - v10;
       v36 = 2050;
-      v37 = [a4 code];
+      code = [error code];
       _os_log_impl(dword_100000000, v7, OS_LOG_TYPE_DEFAULT, "@AlsFlow, reply, tag, %{public}d, error, rtt, %{public}.1lf, code, %{public}ld", buf, 0x1Cu);
     }
 
     if (sub_10000A100(121, 2))
     {
-      sub_1018F1394(a3, a4);
+      sub_1018F1394(requester, error);
     }
 
-    v11 = [a3 type];
-    if (v11 == 1)
+    type = [requester type];
+    if (type == 1)
     {
-      sub_100643664(self->fRequester, [a3 type], objc_msgSend(a3, "tag"));
+      sub_100643664(self->fRequester, [requester type], objc_msgSend(requester, "tag"));
     }
 
-    else if (v11)
+    else if (type)
     {
       if (qword_1025D48A0 != -1)
       {
@@ -493,7 +493,7 @@
       v13 = qword_1025D48A8;
       if (os_log_type_enabled(qword_1025D48A8, OS_LOG_TYPE_FAULT))
       {
-        v14 = [a3 tag];
+        v14 = [requester tag];
         *buf = 67240192;
         *&buf[4] = v14;
         _os_log_impl(dword_100000000, v13, OS_LOG_TYPE_FAULT, "query: received error for unknown requester type (tag %{public}d)", buf, 8u);
@@ -501,23 +501,23 @@
 
       if (sub_10000A100(121, 0))
       {
-        sub_1018F1524(a3);
+        sub_1018F1524(requester);
       }
     }
 
     else
     {
-      sub_1006435E4(self->fRequester, [a3 type], objc_msgSend(a3, "tag"));
+      sub_1006435E4(self->fRequester, [requester type], objc_msgSend(requester, "tag"));
     }
 
     sub_10000EC00(buf, "didFailWithError");
     sub_100C43164(&qword_1026584A8, buf, *(self->fRequester + 118));
-    if (SBYTE3(v37) < 0)
+    if (SBYTE3(code) < 0)
     {
       operator delete(*buf);
     }
 
-    [(NSMutableSet *)self->fRequestersWithOutstandingRequests removeObject:a3];
+    [(NSMutableSet *)self->fRequestersWithOutstandingRequests removeObject:requester];
     if (qword_1025D4860 != -1)
     {
       sub_1018F1154();
@@ -526,8 +526,8 @@
     v15 = qword_1025D4868;
     if (os_log_type_enabled(qword_1025D4868, OS_LOG_TYPE_INFO))
     {
-      sub_1000238CC([a4 domain], buf);
-      v16 = SBYTE3(v37);
+      sub_1000238CC([error domain], buf);
+      v16 = SBYTE3(code);
       v17 = *buf;
       v18 = [(NSMutableSet *)self->fRequestersWithOutstandingRequests count];
       v19 = buf;
@@ -541,7 +541,7 @@
       v26 = 2048;
       v27 = v18;
       _os_log_impl(dword_100000000, v15, OS_LOG_TYPE_INFO, "AlsRequester, didFailWithError, code, %s, outstanding, %ld", v25, 0x16u);
-      if (SBYTE3(v37) < 0)
+      if (SBYTE3(code) < 0)
       {
         operator delete(*buf);
       }
@@ -550,7 +550,7 @@
     if (sub_10000A100(121, 2))
     {
       sub_1018F1634(buf);
-      sub_1000238CC([a4 domain], v25);
+      sub_1000238CC([error domain], v25);
       v20 = v28;
       v21 = *v25;
       v22 = [(NSMutableSet *)self->fRequestersWithOutstandingRequests count];
@@ -599,7 +599,7 @@
   }
 }
 
-- (void)finished:(id)a3
+- (void)finished:(id)finished
 {
   if (qword_1025D4860 != -1)
   {
@@ -620,58 +620,58 @@
     sub_1018F195C(&self->super.isa);
   }
 
-  if (([a3 processingCellTowers] & 1) == 0 && (objc_msgSend(a3, "processingWirelessAPs") & 1) == 0)
+  if (([finished processingCellTowers] & 1) == 0 && (objc_msgSend(finished, "processingWirelessAPs") & 1) == 0)
   {
-    if ([a3 finished])
+    if ([finished finished])
     {
-      sub_100643818(self->fRequester, [a3 type], objc_msgSend(a3, "tag"));
+      sub_100643818(self->fRequester, [finished type], objc_msgSend(finished, "tag"));
     }
   }
 }
 
-- (void)populateLocationFromTower:(id)a3 location:(CLDaemonLocation *)a4 timeReceived:(double)a5
+- (void)populateLocationFromTower:(id)tower location:(CLDaemonLocation *)location timeReceived:(double)received
 {
-  if (a3 && a4)
+  if (tower && location)
   {
-    v8 = [a3 accuracy];
-    v9 = [a3 accuracy];
-    v10 = v9;
-    if (v8 > 999999)
+    accuracy = [tower accuracy];
+    accuracy2 = [tower accuracy];
+    v10 = accuracy2;
+    if (accuracy > 999999)
     {
-      v10 = v9 / 1000000.0;
+      v10 = accuracy2 / 1000000.0;
     }
 
-    *(&a4->coordinate.longitude + 4) = v10;
-    *(&a4->courseAccuracy + 4) = a5;
-    *(&a4->suitability + 1) = [a3 latitude] / 100000000.0;
-    *(&a4->coordinate.latitude + 4) = [a3 longitude] / 100000000.0;
-    HIDWORD(a4->rawCourse) = 1;
-    if ([a3 hasAltitude] && objc_msgSend(a3, "hasVerticalAccuracy"))
+    *(&location->coordinate.longitude + 4) = v10;
+    *(&location->courseAccuracy + 4) = received;
+    *(&location->suitability + 1) = [tower latitude] / 100000000.0;
+    *(&location->coordinate.latitude + 4) = [tower longitude] / 100000000.0;
+    HIDWORD(location->rawCourse) = 1;
+    if ([tower hasAltitude] && objc_msgSend(tower, "hasVerticalAccuracy"))
     {
-      *(&a4->horizontalAccuracy + 4) = [a3 altitude];
-      *(&a4->altitude + 4) = [a3 verticalAccuracy];
+      *(&location->horizontalAccuracy + 4) = [tower altitude];
+      *(&location->altitude + 4) = [tower verticalAccuracy];
     }
 
-    if ([a3 hasConfidence])
+    if ([tower hasConfidence])
     {
-      v11 = [a3 confidence];
+      confidence = [tower confidence];
     }
 
     else
     {
-      v11 = 70;
+      confidence = 70;
     }
 
-    HIDWORD(a4->timestamp) = v11;
+    HIDWORD(location->timestamp) = confidence;
   }
 }
 
-- (void)processCells:(id)a3 inRange:(_NSRange)a4 timeReceived:(double)a5 requestType:(int)a6 tag:(int)a7
+- (void)processCells:(id)cells inRange:(_NSRange)range timeReceived:(double)received requestType:(int)type tag:(int)tag
 {
-  if (a4.length)
+  if (range.length)
   {
-    length = a4.length;
-    location = a4.location;
+    length = range.length;
+    location = range.location;
     if (qword_1025D4620 != -1)
     {
       sub_1018F0A94();
@@ -697,21 +697,21 @@
     v16[3] = &unk_1024651A8;
     v16[6] = location;
     v16[7] = length;
-    v16[4] = a3;
+    v16[4] = cells;
     v16[5] = self;
-    v17 = a6;
-    v18 = a7;
-    *&v16[8] = a5;
-    sub_100641360(fRequester, a6, a7, v16);
+    typeCopy = type;
+    tagCopy = tag;
+    *&v16[8] = received;
+    sub_100641360(fRequester, type, tag, v16);
   }
 }
 
-- (void)processScdmaCells:(id)a3 inRange:(_NSRange)a4 timeReceived:(double)a5 requestType:(int)a6 tag:(int)a7
+- (void)processScdmaCells:(id)cells inRange:(_NSRange)range timeReceived:(double)received requestType:(int)type tag:(int)tag
 {
-  if (a4.length)
+  if (range.length)
   {
-    length = a4.length;
-    location = a4.location;
+    length = range.length;
+    location = range.location;
     if (qword_1025D4620 != -1)
     {
       sub_1018F0A94();
@@ -737,19 +737,19 @@
     v16[3] = &unk_1024651A8;
     v16[6] = location;
     v16[7] = length;
-    v16[4] = a3;
+    v16[4] = cells;
     v16[5] = self;
-    v17 = a6;
-    v18 = a7;
-    *&v16[8] = a5;
-    sub_100641360(fRequester, a6, a7, v16);
+    typeCopy = type;
+    tagCopy = tag;
+    *&v16[8] = received;
+    sub_100641360(fRequester, type, tag, v16);
   }
 }
 
-- (void)processWireless:(id)a3 inRange:(_NSRange)a4 timeReceived:(double)a5 requestType:(int)a6 tag:(int)a7 surroundingWifiBands:(const void *)a8
+- (void)processWireless:(id)wireless inRange:(_NSRange)range timeReceived:(double)received requestType:(int)type tag:(int)tag surroundingWifiBands:(const void *)bands
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   p_info = &OBJC_METACLASS___CLMotionHintLoggerAdapter.info;
   if (qword_1025D4620 != -1)
   {
@@ -782,10 +782,10 @@
       __asm { FMOV            V0.2D, #-1.0 }
 
       v100 = _Q0;
-      v98 = a3;
+      wirelessCopy = wireless;
       do
       {
-        v19 = [a3 objectAtIndex:location];
+        v19 = [wireless objectAtIndex:location];
         sub_1000238CC([v19 macID], buf);
         v106 = sub_100196E8C(buf);
         if (SHIBYTE(v139) < 0)
@@ -1003,7 +1003,7 @@
           }
 
           *&__p[20] = v20;
-          *&__p[76] = a5;
+          *&__p[76] = received;
           *&__p[4] = [objc_msgSend(v19 "location")] / 100000000.0;
           *&__p[12] = [objc_msgSend(v19 "location")] / 100000000.0;
           DWORD1(v133) = 1;
@@ -1105,14 +1105,14 @@
             v152 = 1026;
             v153 = *&v134[24];
             v154 = 1026;
-            v155 = a6;
+            typeCopy = type;
             _os_log_impl(dword_100000000, v35, OS_LOG_TYPE_DEBUG, "AlsWifi, valid, location, %{sensitive}s, %{public}lu, %{sensitive}s, score, %{public}d, channel, %{public}d, alt, %{public}.2lf, reach, %{public}d, hasInfoMask, %{public}d, infoMask, 0x%{public}x, numHarvestTraces, %{public}d, type, %{public}d", buf, 0x54u);
             if (SHIBYTE(v104.__r_.__value_.__r.__words[2]) < 0)
             {
               operator delete(v104.__r_.__value_.__l.__data_);
             }
 
-            a3 = v98;
+            wireless = wirelessCopy;
             p_info = (&OBJC_METACLASS___CLMotionHintLoggerAdapter + 32);
             if ((v113[23] & 0x80000000) != 0)
             {
@@ -1171,14 +1171,14 @@
             v126 = 1026;
             v127 = *&v134[24];
             v128 = 1026;
-            v129 = a6;
+            typeCopy2 = type;
             v85 = _os_log_send_and_compose_impl();
             if (v103 < 0)
             {
               operator delete(v101[0]);
             }
 
-            a3 = v98;
+            wireless = wirelessCopy;
             p_info = (&OBJC_METACLASS___CLMotionHintLoggerAdapter + 32);
             if (SHIBYTE(v104.__r_.__value_.__r.__words[2]) < 0)
             {
@@ -1290,9 +1290,9 @@
       while (length);
     }
 
-    v87 = *a8;
-    v86 = *(a8 + 1);
-    if (*a8 == v86)
+    v87 = *bands;
+    v86 = *(bands + 1);
+    if (*bands == v86)
     {
       v93 = 0;
     }
@@ -1390,7 +1390,7 @@ LABEL_107:
     }
 
 LABEL_127:
-    sub_100645734(self->fRequester, &__src, &v107, a6, a7, v93);
+    sub_100645734(self->fRequester, &__src, &v107, type, tag, v93);
     if (v107)
     {
       v108 = v107;

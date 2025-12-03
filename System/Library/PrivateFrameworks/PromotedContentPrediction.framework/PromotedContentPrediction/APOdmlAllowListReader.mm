@@ -1,18 +1,18 @@
 @interface APOdmlAllowListReader
 - (id)nextLine;
-- (id)openForReadingContentsOfURL:(id)a3;
+- (id)openForReadingContentsOfURL:(id)l;
 - (id)readFile;
 - (void)dealloc;
-- (void)setFile:(__sFILE *)a3;
+- (void)setFile:(__sFILE *)file;
 @end
 
 @implementation APOdmlAllowListReader
 
-- (id)openForReadingContentsOfURL:(id)a3
+- (id)openForReadingContentsOfURL:(id)l
 {
   v32 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v8 = objc_msgSend_fileSystemRepresentation(a3, v6, v7);
+  lCopy = l;
+  v8 = objc_msgSend_fileSystemRepresentation(l, v6, v7);
   v9 = fopen(v8, "r");
   if (!v9)
   {
@@ -224,7 +224,7 @@ LABEL_17:
   return v13;
 }
 
-- (void)setFile:(__sFILE *)a3
+- (void)setFile:(__sFILE *)file
 {
   file = self->_file;
   if (file)
@@ -232,7 +232,7 @@ LABEL_17:
     fclose(file);
   }
 
-  self->_file = a3;
+  self->_file = file;
 }
 
 @end

@@ -1,7 +1,7 @@
 @interface SSSScreenshotView
-+ (CGAffineTransform)_transformToConvertFromRect:(SEL)a3 toRect:(CGRect)a4;
-+ (CGRect)_scaledAndCenteredRect:(CGRect)a3 withinRect:(CGRect)a4;
-+ (void)_zoomToRectWithinContentInsetBounds:(CGRect)a3 scrollView:(id)a4 animated:(BOOL)a5;
++ (CGAffineTransform)_transformToConvertFromRect:(SEL)rect toRect:(CGRect)toRect;
++ (CGRect)_scaledAndCenteredRect:(CGRect)rect withinRect:(CGRect)withinRect;
++ (void)_zoomToRectWithinContentInsetBounds:(CGRect)bounds scrollView:(id)view animated:(BOOL)animated;
 - ($0AC6E346AE4835514AAA8AC86D8F4844)_viewState;
 - (AKController)akController;
 - (BOOL)_layoutPDFViewVerticalContentInsetToMatchImageView;
@@ -10,7 +10,7 @@
 - (BOOL)isCropped;
 - (BOOL)isShowingVICard;
 - (BOOL)isVICardFullScreen;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (BOOL)screenshotEditsSnapshotted;
 - (BOOL)shouldFlash;
 - (CGRect)cropOverlayViewRectInWindow;
@@ -18,7 +18,7 @@
 - (CGRect)rectToCenterAboveKeyboard;
 - (NSString)vsGlyph;
 - (NSString)vsGlyphFilled;
-- (SSSScreenshotView)initWithFrame:(CGRect)a3;
+- (SSSScreenshotView)initWithFrame:(CGRect)frame;
 - (SSSScreenshotViewDelegate)delegate;
 - (UIActivity)visionKitFeedbackActivity;
 - (UIView)contentSnapshot;
@@ -27,94 +27,94 @@
 - (VKCImageAnalysis)currentImageAnalysis;
 - (id)_actionInfoViewIfExists;
 - (id)_currentOverlayController;
-- (id)_findTextViewFirstResponderUnderView:(id)a3;
+- (id)_findTextViewFirstResponderUnderView:(id)view;
 - (id)_imageAnalysisAaBarButtonItemIfExists;
 - (id)_imageAnalysisAaButtonIfExists;
 - (id)_omnibarContainerViewIfExists;
 - (id)_visualSearchCornerViewIfExists;
 - (id)currentCropController;
 - (id)currentView;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (id)modelModificationInfo;
 - (id)screenshotRepresentationAKControllerForPDF;
 - (id)undoManager;
 - (id)viewModificationInfo;
 - (int64_t)_numberOfDrawingStrokesInScreenshot;
 - (int64_t)currentPDFPage;
-- (int64_t)screenshotPDFPageIndex:(id)a3;
+- (int64_t)screenshotPDFPageIndex:(id)index;
 - (void)_commitCropControllerInflightEdits;
-- (void)_goToPDFPage:(unint64_t)a3 rect:(CGRect)a4 force:(BOOL)a5;
+- (void)_goToPDFPage:(unint64_t)page rect:(CGRect)rect force:(BOOL)force;
 - (void)_handleTap;
 - (void)_layoutPDFViewToMatchImageViewIfNeeded;
 - (void)_layoutUpdateCropControllers;
 - (void)_logEditsInScreenshotForAnalytics;
-- (void)_prepareGesturesForOverlayController:(id)a3;
+- (void)_prepareGesturesForOverlayController:(id)controller;
 - (void)_stopFlash;
 - (void)_updateGestures;
 - (void)adjustPDFPositioningToMatchImageIfNecessary;
 - (void)cancelCrop;
 - (void)cleanUpAfterGestureScreenshotBasedAnimation;
 - (void)commitInflightEdits;
-- (void)cropController:(id)a3 changedToCropRect:(CGRect)a4;
-- (void)cropControllerCropRectDidChange:(id)a3;
+- (void)cropController:(id)controller changedToCropRect:(CGRect)rect;
+- (void)cropControllerCropRectDidChange:(id)change;
 - (void)dealloc;
 - (void)deselectAllAnnotations;
 - (void)dismissVISheetIfNecessary;
 - (void)doneCrop;
 - (void)enterCrop;
-- (void)finishPreparingForFullscreenExperienceWithIsCurrentScreenshot:(BOOL)a3;
+- (void)finishPreparingForFullscreenExperienceWithIsCurrentScreenshot:(BOOL)screenshot;
 - (void)flash;
-- (void)imageView:(id)a3 isDraggingVISheetDidChange:(BOOL)a4;
-- (void)imageView:(id)a3 requestsUpdateToInteractionMode:(unint64_t)a4;
-- (void)imageView:(id)a3 startEditingOpacityInAccessoryView:(id)a4;
-- (void)imageView:(id)a3 viCardIsPresentedDidChange:(BOOL)a4;
-- (void)imageViewDidLoadImage:(id)a3;
-- (void)imageViewDidUpdateInteraction:(id)a3 withAnalysis:(id)a4;
+- (void)imageView:(id)view isDraggingVISheetDidChange:(BOOL)change;
+- (void)imageView:(id)view requestsUpdateToInteractionMode:(unint64_t)mode;
+- (void)imageView:(id)view startEditingOpacityInAccessoryView:(id)accessoryView;
+- (void)imageView:(id)view viCardIsPresentedDidChange:(BOOL)change;
+- (void)imageViewDidLoadImage:(id)image;
+- (void)imageViewDidUpdateInteraction:(id)interaction withAnalysis:(id)analysis;
 - (void)layoutSubviews;
-- (void)pageChanged:(id)a3;
-- (void)pdfView:(id)a3 startEditingOpacityInAccessoryView:(id)a4;
+- (void)pageChanged:(id)changed;
+- (void)pdfView:(id)view startEditingOpacityInAccessoryView:(id)accessoryView;
 - (void)prepareForFullscreenExperience;
 - (void)prepareForGestureScreenshotBasedAnimation;
-- (void)promoteViewValueToModelValueForKey:(unint64_t)a3;
+- (void)promoteViewValueToModelValueForKey:(unint64_t)key;
 - (void)redo;
-- (void)requireAllOtherGestureRecognizersToFailBeforeGestureRecognizer:(id)a3;
-- (void)requireGestureRecognizerToFailBeforeAllOtherGestureRecognizers:(id)a3;
+- (void)requireAllOtherGestureRecognizersToFailBeforeGestureRecognizer:(id)recognizer;
+- (void)requireGestureRecognizerToFailBeforeAllOtherGestureRecognizers:(id)recognizers;
 - (void)resetCrop;
 - (void)revert;
 - (void)safeAreaInsetsDidChange;
-- (void)screenshot:(id)a3 didHaveChangeOnPage:(unint64_t)a4;
-- (void)screenshotDeletePDFPage:(int64_t)a3;
-- (void)screenshotDidHaveUndoStackChanged:(id)a3;
+- (void)screenshot:(id)screenshot didHaveChangeOnPage:(unint64_t)page;
+- (void)screenshotDeletePDFPage:(int64_t)page;
+- (void)screenshotDidHaveUndoStackChanged:(id)changed;
 - (void)screenshotDidReceivePDFData;
-- (void)screenshotDidRevert:(id)a3;
-- (void)screenshotInsertPDFPage:(id)a3 pageIndex:(int64_t)a4;
-- (void)setAnnotationsEnabled:(BOOL)a3;
-- (void)setBorderStyle:(int64_t)a3;
-- (void)setCropHandlesFadedOut:(BOOL)a3;
-- (void)setEditMode:(int64_t)a3;
-- (void)setExtent:(CGRect)a3;
-- (void)setGesturesEnabled:(BOOL)a3;
-- (void)setInteractionMode:(unint64_t)a3;
-- (void)setIsBeingRemoved:(BOOL)a3;
+- (void)screenshotDidRevert:(id)revert;
+- (void)screenshotInsertPDFPage:(id)page pageIndex:(int64_t)index;
+- (void)setAnnotationsEnabled:(BOOL)enabled;
+- (void)setBorderStyle:(int64_t)style;
+- (void)setCropHandlesFadedOut:(BOOL)out;
+- (void)setEditMode:(int64_t)mode;
+- (void)setExtent:(CGRect)extent;
+- (void)setGesturesEnabled:(BOOL)enabled;
+- (void)setInteractionMode:(unint64_t)mode;
+- (void)setIsBeingRemoved:(BOOL)removed;
 - (void)setNeedsLayout;
-- (void)setRulerHostingView:(id)a3;
-- (void)setScreenshot:(id)a3;
-- (void)setScreenshotEditsSnapshotted:(BOOL)a3 inTransition:(BOOL)a4 currentScreenshot:(BOOL)a5;
-- (void)setState:(unint64_t)a3;
-- (void)setUseTrilinearMinificationFilter:(BOOL)a3;
-- (void)setUsesOriginalImageAspectRatio:(BOOL)a3;
+- (void)setRulerHostingView:(id)view;
+- (void)setScreenshot:(id)screenshot;
+- (void)setScreenshotEditsSnapshotted:(BOOL)snapshotted inTransition:(BOOL)transition currentScreenshot:(BOOL)screenshot;
+- (void)setState:(unint64_t)state;
+- (void)setUseTrilinearMinificationFilter:(BOOL)filter;
+- (void)setUsesOriginalImageAspectRatio:(BOOL)ratio;
 - (void)undo;
-- (void)updateForFrame:(CGRect)a3;
-- (void)updatePaletteVisibilityIfNecessary:(BOOL)a3;
+- (void)updateForFrame:(CGRect)frame;
+- (void)updatePaletteVisibilityIfNecessary:(BOOL)necessary;
 @end
 
 @implementation SSSScreenshotView
 
-- (SSSScreenshotView)initWithFrame:(CGRect)a3
+- (SSSScreenshotView)initWithFrame:(CGRect)frame
 {
   v24.receiver = self;
   v24.super_class = SSSScreenshotView;
-  v3 = [(SSSScreenshotView *)&v24 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SSSScreenshotView *)&v24 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [v3 setClipsToBounds:0];
   v4 = objc_alloc_init(SSSScreenshotBorderView);
   v5 = *(v3 + 42);
@@ -133,11 +133,11 @@
 
   [*(v3 + 34) setAccessibilityIdentifier:@"Screenshots-PDF-View"];
   [*(v3 + 34) setDelegate:v3];
-  v10 = [*(v3 + 18) overlayController];
-  [v10 setDelegate:v3];
+  overlayController = [*(v3 + 18) overlayController];
+  [overlayController setDelegate:v3];
 
-  v11 = [*(v3 + 34) overlayController];
-  [v11 setDelegate:v3];
+  overlayController2 = [*(v3 + 34) overlayController];
+  [overlayController2 setDelegate:v3];
 
   v12 = objc_alloc_init(SSSCropController);
   v13 = *(v3 + 10);
@@ -145,11 +145,11 @@
 
   [*(v3 + 10) setNumberOfTouchesRequiredForPanningCrop:2];
   [*(v3 + 10) setDelegate:v3];
-  v14 = [*(v3 + 10) cropView];
-  [v14 setHidden:*(v3 + 154) != 0];
+  cropView = [*(v3 + 10) cropView];
+  [cropView setHidden:*(v3 + 154) != 0];
 
-  v15 = [*(v3 + 10) cropView];
-  [v3 addSubview:v15];
+  cropView2 = [*(v3 + 10) cropView];
+  [v3 addSubview:cropView2];
 
   v16 = objc_alloc_init(SSSCropController);
   v17 = *(v3 + 26);
@@ -158,11 +158,11 @@
   [*(v3 + 26) setNumberOfTouchesRequiredForPanningCrop:2];
   [*(v3 + 26) setDelegate:v3];
   [*(v3 + 26) setEditMode:1];
-  v18 = [*(v3 + 26) cropView];
-  [v18 setHidden:*(v3 + 154) == 0];
+  cropView3 = [*(v3 + 26) cropView];
+  [cropView3 setHidden:*(v3 + 154) == 0];
 
-  v19 = [*(v3 + 26) cropView];
-  [v3 addSubview:v19];
+  cropView4 = [*(v3 + 26) cropView];
+  [v3 addSubview:cropView4];
 
   v20 = [[UITapGestureRecognizer alloc] initWithTarget:v3 action:"_handleTap"];
   v21 = *(v3 + 58);
@@ -177,55 +177,55 @@
 
 - (void)dealloc
 {
-  v3 = [(SSSScreenshotView *)self undoManager];
-  [v3 removeAllActions];
+  undoManager = [(SSSScreenshotView *)self undoManager];
+  [undoManager removeAllActions];
 
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 removeObserver:self];
 
-  v5 = [*(&self->_imageCropController + 2) overlayController];
-  [v5 logDidEndEditingWithOverlay];
+  overlayController = [*(&self->_imageCropController + 2) overlayController];
+  [overlayController logDidEndEditingWithOverlay];
 
-  v6 = [*(&self->_pdfCropController + 2) overlayController];
-  [v6 logDidEndEditingWithOverlay];
+  overlayController2 = [*(&self->_pdfCropController + 2) overlayController];
+  [overlayController2 logDidEndEditingWithOverlay];
 
   v7.receiver = self;
   v7.super_class = SSSScreenshotView;
   [(SSSScreenshotView *)&v7 dealloc];
 }
 
-- (void)setBorderStyle:(int64_t)a3
+- (void)setBorderStyle:(int64_t)style
 {
-  if ([(SSSScreenshotView *)self borderStyle]!= a3)
+  if ([(SSSScreenshotView *)self borderStyle]!= style)
   {
     v5 = *(&self->_screenshotPDFView + 2);
 
-    [v5 setBorderStyle:a3];
+    [v5 setBorderStyle:style];
   }
 }
 
-- (void)setUseTrilinearMinificationFilter:(BOOL)a3
+- (void)setUseTrilinearMinificationFilter:(BOOL)filter
 {
-  if (BYTE5(self->_lastScreenshotImageViewFrameInScreen.size.height) != a3)
+  if (BYTE5(self->_lastScreenshotImageViewFrameInScreen.size.height) != filter)
   {
-    BYTE5(self->_lastScreenshotImageViewFrameInScreen.size.height) = a3;
+    BYTE5(self->_lastScreenshotImageViewFrameInScreen.size.height) = filter;
     [(SSSScreenshotView *)self setNeedsLayout];
   }
 }
 
-- (void)setScreenshot:(id)a3
+- (void)setScreenshot:(id)screenshot
 {
-  v5 = a3;
+  screenshotCopy = screenshot;
   [*(&self->_flashView + 2) setRepresentation:0];
-  objc_storeStrong((&self->_flashView + 2), a3);
+  objc_storeStrong((&self->_flashView + 2), screenshot);
   [*(&self->_flashView + 2) setRepresentation:self];
-  [*(&self->_imageCropController + 2) setScreenshot:v5];
-  [*(&self->_pdfCropController + 2) setScreenshot:v5];
+  [*(&self->_imageCropController + 2) setScreenshot:screenshotCopy];
+  [*(&self->_pdfCropController + 2) setScreenshot:screenshotCopy];
   [(SSSScreenshotView *)self setNeedsLayout];
-  v6 = [(SSSScreenshotView *)self screenshot];
-  v7 = [v6 environmentDescription];
+  screenshot = [(SSSScreenshotView *)self screenshot];
+  environmentDescription = [screenshot environmentDescription];
 
-  if ([v7 presentationMode] == 3)
+  if ([environmentDescription presentationMode] == 3)
   {
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
@@ -245,11 +245,11 @@
   [(SSSScreenshotView *)self setNeedsLayout];
 }
 
-- (void)setInteractionMode:(unint64_t)a3
+- (void)setInteractionMode:(unint64_t)mode
 {
-  if (*(&self->_state + 2) != a3)
+  if (*(&self->_state + 2) != mode)
   {
-    *(&self->_state + 2) = a3;
+    *(&self->_state + 2) = mode;
     [*(&self->_imageCropController + 2) setInteractionMode:?];
 
     [(SSSScreenshotView *)self _layoutUpdateCropControllers];
@@ -258,26 +258,26 @@
 
 - (id)undoManager
 {
-  v3 = [(SSSScreenshotView *)self screenshot];
-  v4 = [v3 undoManagerForEditMode:{-[SSSScreenshotView _viewState](self, "_viewState")}];
+  screenshot = [(SSSScreenshotView *)self screenshot];
+  v4 = [screenshot undoManagerForEditMode:{-[SSSScreenshotView _viewState](self, "_viewState")}];
 
   return v4;
 }
 
-- (void)screenshotDidHaveUndoStackChanged:(id)a3
+- (void)screenshotDidHaveUndoStackChanged:(id)changed
 {
   [*(&self->_imageCropController + 2) clearImageAnalysisTextSelection];
-  v4 = [(SSSScreenshotView *)self delegate];
-  [v4 screenshotViewUndoStackChanged:self];
+  delegate = [(SSSScreenshotView *)self delegate];
+  [delegate screenshotViewUndoStackChanged:self];
 
-  v5 = [(SSSScreenshotView *)self currentView];
-  [v5 updateUndoState];
+  currentView = [(SSSScreenshotView *)self currentView];
+  [currentView updateUndoState];
 
-  v6 = [(SSSScreenshotView *)self modelModificationInfo];
-  v7 = v6;
-  if (v6)
+  modelModificationInfo = [(SSSScreenshotView *)self modelModificationInfo];
+  v7 = modelModificationInfo;
+  if (modelModificationInfo)
   {
-    [v6 cropInfo];
+    [modelModificationInfo cropInfo];
   }
 
   else
@@ -290,8 +290,8 @@
   v12 = v11;
   v14 = v13;
 
-  v15 = [(SSSScreenshotView *)self currentCropController];
-  [v15 cropRect];
+  currentCropController = [(SSSScreenshotView *)self currentCropController];
+  [currentCropController cropRect];
   v16 = SSRectEqualToRect();
 
   if (v16)
@@ -319,50 +319,50 @@
   }
 }
 
-- (void)screenshotDidRevert:(id)a3
+- (void)screenshotDidRevert:(id)revert
 {
-  [(SSSScreenshotView *)self screenshotDidHaveUndoStackChanged:a3];
-  v4 = [(SSSScreenshotView *)self delegate];
-  [v4 screenshotViewUndoStackChanged:self];
+  [(SSSScreenshotView *)self screenshotDidHaveUndoStackChanged:revert];
+  delegate = [(SSSScreenshotView *)self delegate];
+  [delegate screenshotViewUndoStackChanged:self];
 
   [(SSSScreenshotView *)self setNeedsLayout];
 }
 
-- (void)screenshot:(id)a3 didHaveChangeOnPage:(unint64_t)a4
+- (void)screenshot:(id)screenshot didHaveChangeOnPage:(unint64_t)page
 {
-  [(SSSScreenshotView *)self _goToPDFPage:a4 rect:0 force:CGRectNull.origin.x, CGRectNull.origin.y, CGRectNull.size.width, CGRectNull.size.height];
-  v5 = [(SSSScreenshotView *)self delegate];
-  [v5 screenshotViewUndoStackChanged:self];
+  [(SSSScreenshotView *)self _goToPDFPage:page rect:0 force:CGRectNull.origin.x, CGRectNull.origin.y, CGRectNull.size.width, CGRectNull.size.height];
+  delegate = [(SSSScreenshotView *)self delegate];
+  [delegate screenshotViewUndoStackChanged:self];
 }
 
-- (void)_goToPDFPage:(unint64_t)a3 rect:(CGRect)a4 force:(BOOL)a5
+- (void)_goToPDFPage:(unint64_t)page rect:(CGRect)rect force:(BOOL)force
 {
-  v5 = a5;
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v48 = [*(&self->_pdfCropController + 2) _pdfView];
-  v12 = [v48 document];
-  if ([v12 pageCount])
+  forceCopy = force;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  _pdfView = [*(&self->_pdfCropController + 2) _pdfView];
+  document = [_pdfView document];
+  if ([document pageCount])
   {
-    v13 = fmin(fmax(a3, 0.0), ([v12 pageCount] - 1));
-    v14 = [v48 currentPage];
-    v15 = [v12 indexForPage:v14];
+    v13 = fmin(fmax(page, 0.0), ([document pageCount] - 1));
+    currentPage = [_pdfView currentPage];
+    v15 = [document indexForPage:currentPage];
 
-    v16 = [v12 pageAtIndex:v13];
-    [v48 layoutDocumentView];
+    v16 = [document pageAtIndex:v13];
+    [_pdfView layoutDocumentView];
     v50.origin.x = x;
     v50.origin.y = y;
     v50.size.width = width;
     v50.size.height = height;
     if (CGRectIsEmpty(v50))
     {
-      if (!v5 || v13 && [v12 pageCount] - 1 != v13)
+      if (!forceCopy || v13 && [document pageCount] - 1 != v13)
       {
         if (v15 != v13)
         {
-          [v48 goToPage:v16];
+          [_pdfView goToPage:v16];
           [*(&self->_pdfCropController + 2) updateViewState];
         }
 
@@ -370,60 +370,60 @@
       }
 
       [v16 boundsForBox:1];
-      [v48 convertRect:v16 fromPage:?];
+      [_pdfView convertRect:v16 fromPage:?];
       v18 = v17;
       v20 = v19;
       v22 = v21;
       v24 = v23;
-      v25 = [v48 documentView];
-      [v48 convertRect:v25 toView:{v18, v20, v22, v24}];
+      documentView = [_pdfView documentView];
+      [_pdfView convertRect:documentView toView:{v18, v20, v22, v24}];
       v27 = v26;
       v29 = v28;
 
-      v30 = [v48 documentScrollView];
-      [v30 contentInset];
+      documentScrollView = [_pdfView documentScrollView];
+      [documentScrollView contentInset];
       v32 = v31;
-      [v48 pageBreakMargins];
+      [_pdfView pageBreakMargins];
       v34 = v29 - (v32 + v33);
 
-      v35 = [v48 documentScrollView];
-      [v35 contentSize];
+      documentScrollView2 = [_pdfView documentScrollView];
+      [documentScrollView2 contentSize];
       v37 = v36;
-      [v35 bounds];
-      [v35 setContentOffset:1 animated:{v27, fmin(v34, v37 - v38)}];
+      [documentScrollView2 bounds];
+      [documentScrollView2 setContentOffset:1 animated:{v27, fmin(v34, v37 - v38)}];
       [*(&self->_pdfCropController + 2) updateViewState];
     }
 
     else
     {
-      [v48 convertRect:v16 fromPage:{x, y, width, height}];
+      [_pdfView convertRect:v16 fromPage:{x, y, width, height}];
       v40 = v39;
       v42 = v41;
       v44 = v43;
       v46 = v45;
       v47 = objc_opt_class();
-      v35 = [v48 documentScrollView];
-      [v47 _zoomToRectWithinContentInsetBounds:v35 scrollView:0 animated:{v40, v42, v44, v46}];
+      documentScrollView2 = [_pdfView documentScrollView];
+      [v47 _zoomToRectWithinContentInsetBounds:documentScrollView2 scrollView:0 animated:{v40, v42, v44, v46}];
     }
 
 LABEL_9:
   }
 }
 
-- (void)setUsesOriginalImageAspectRatio:(BOOL)a3
+- (void)setUsesOriginalImageAspectRatio:(BOOL)ratio
 {
-  if (BYTE6(self->_lastScreenshotImageViewFrameInScreen.size.height) != a3)
+  if (BYTE6(self->_lastScreenshotImageViewFrameInScreen.size.height) != ratio)
   {
-    BYTE6(self->_lastScreenshotImageViewFrameInScreen.size.height) = a3;
+    BYTE6(self->_lastScreenshotImageViewFrameInScreen.size.height) = ratio;
     [(SSSScreenshotView *)self setNeedsLayout];
   }
 }
 
-- (void)setIsBeingRemoved:(BOOL)a3
+- (void)setIsBeingRemoved:(BOOL)removed
 {
-  if (self->_hasEnteredFullPageCropBefore != a3)
+  if (self->_hasEnteredFullPageCropBefore != removed)
   {
-    self->_hasEnteredFullPageCropBefore = a3;
+    self->_hasEnteredFullPageCropBefore = removed;
     [*(&self->_imageCropController + 2) setIsBeingRemoved:?];
   }
 }
@@ -433,28 +433,28 @@ LABEL_9:
   v5.receiver = self;
   v5.super_class = SSSScreenshotView;
   [(SSSScreenshotView *)&v5 setNeedsLayout];
-  v3 = [*(&self->super._ss_vi2EnabledCacheIsValid + 1) cropView];
-  [v3 setNeedsLayout];
+  cropView = [*(&self->super._ss_vi2EnabledCacheIsValid + 1) cropView];
+  [cropView setNeedsLayout];
 
-  v4 = [*(&self->_screenshotImageView + 2) cropView];
-  [v4 setNeedsLayout];
+  cropView2 = [*(&self->_screenshotImageView + 2) cropView];
+  [cropView2 setNeedsLayout];
 }
 
 - (void)screenshotDidReceivePDFData
 {
-  v3 = [(SSSScreenshotView *)self window];
-  v5 = [v3 firstResponder];
+  window = [(SSSScreenshotView *)self window];
+  firstResponder = [window firstResponder];
 
   [*(&self->_pdfCropController + 2) setupPDFData];
   if ([(SSSScreenshotView *)self editMode]== 1)
   {
-    v4 = [(SSSScreenshotView *)self currentView];
-    [v4 setOverlayControllerActive:1];
+    currentView = [(SSSScreenshotView *)self currentView];
+    [currentView setOverlayControllerActive:1];
   }
 
-  if (([v5 isFirstResponder] & 1) == 0)
+  if (([firstResponder isFirstResponder] & 1) == 0)
   {
-    [v5 becomeFirstResponder];
+    [firstResponder becomeFirstResponder];
   }
 
   [(SSSScreenshotView *)self adjustPDFPositioningToMatchImageIfNecessary];
@@ -462,36 +462,36 @@ LABEL_9:
 
 - (id)screenshotRepresentationAKControllerForPDF
 {
-  v2 = [*(&self->_pdfCropController + 2) _pdfView];
-  v3 = [v2 document];
-  v4 = [v3 akController];
+  _pdfView = [*(&self->_pdfCropController + 2) _pdfView];
+  document = [_pdfView document];
+  akController = [document akController];
 
-  return v4;
+  return akController;
 }
 
-- (int64_t)screenshotPDFPageIndex:(id)a3
+- (int64_t)screenshotPDFPageIndex:(id)index
 {
-  v4 = a3;
-  v5 = [(SSSScreenshotView *)self _internalPDFView];
-  v6 = [v5 document];
-  v7 = [v6 indexForPage:v4];
+  indexCopy = index;
+  _internalPDFView = [(SSSScreenshotView *)self _internalPDFView];
+  document = [_internalPDFView document];
+  v7 = [document indexForPage:indexCopy];
 
   return v7;
 }
 
-- (void)screenshotDeletePDFPage:(int64_t)a3
+- (void)screenshotDeletePDFPage:(int64_t)page
 {
-  v5 = [(SSSScreenshotView *)self _internalPDFView];
-  v4 = [v5 document];
-  [v4 removePageAtIndex:a3];
+  _internalPDFView = [(SSSScreenshotView *)self _internalPDFView];
+  document = [_internalPDFView document];
+  [document removePageAtIndex:page];
 }
 
-- (void)screenshotInsertPDFPage:(id)a3 pageIndex:(int64_t)a4
+- (void)screenshotInsertPDFPage:(id)page pageIndex:(int64_t)index
 {
-  v6 = a3;
-  v8 = [(SSSScreenshotView *)self _internalPDFView];
-  v7 = [v8 document];
-  [v7 insertPage:v6 atIndex:a4];
+  pageCopy = page;
+  _internalPDFView = [(SSSScreenshotView *)self _internalPDFView];
+  document = [_internalPDFView document];
+  [document insertPage:pageCopy atIndex:index];
 }
 
 - (void)_layoutUpdateCropControllers
@@ -531,8 +531,8 @@ LABEL_10:
   [*(&self->super._ss_vi2EnabledCacheIsValid + 1) setCropEnabled:v3 & v4];
   [*(&self->_screenshotImageView + 2) setCropEnabled:v5];
   v6 = *(&self->_delegate + 2);
-  v7 = [*(&self->super._ss_vi2EnabledCacheIsValid + 1) cropView];
-  v8 = v7;
+  cropView = [*(&self->super._ss_vi2EnabledCacheIsValid + 1) cropView];
+  v8 = cropView;
   v9 = v6 == 0;
   v10 = v6 == 0;
   v11 = !v9;
@@ -546,29 +546,29 @@ LABEL_10:
     v12 = 26;
   }
 
-  [v7 setHidden:v11];
+  [cropView setHidden:v11];
 
-  v13 = [*(&self->_screenshotImageView + 2) cropView];
-  [v13 setHidden:v10];
+  cropView2 = [*(&self->_screenshotImageView + 2) cropView];
+  [cropView2 setHidden:v10];
 
-  v14 = [*(&self->super.super.super.super.isa + v12) cropView];
+  cropView3 = [*(&self->super.super.super.super.isa + v12) cropView];
   [(SSSScreenshotView *)self bounds];
-  [v14 sss_setFrameUnanimatingIfChangingFromCGSizeZero:?];
+  [cropView3 sss_setFrameUnanimatingIfChangingFromCGSizeZero:?];
 
   v15 = *(&self->super._ss_vi2EnabledCacheIsValid + 1);
-  v16 = [(SSSScreenshotView *)self screenshot];
-  v17 = [v16 snapUnitRects];
-  [v15 setSnapRects:v17];
+  screenshot = [(SSSScreenshotView *)self screenshot];
+  snapUnitRects = [screenshot snapUnitRects];
+  [v15 setSnapRects:snapUnitRects];
 
   v18 = *(&self->_screenshotImageView + 2);
-  v19 = [(SSSScreenshotView *)self screenshot];
-  v20 = [v19 snapUnitRects];
-  [v18 setSnapRects:v20];
+  screenshot2 = [(SSSScreenshotView *)self screenshot];
+  snapUnitRects2 = [screenshot2 snapUnitRects];
+  [v18 setSnapRects:snapUnitRects2];
 
   if ([(SSSScreenshotView *)self state]== 1)
   {
-    v21 = [(SSSScreenshotView *)self akController];
-    if ([v21 onlyDrawWithApplePencil])
+    akController = [(SSSScreenshotView *)self akController];
+    if ([akController onlyDrawWithApplePencil])
     {
       v22 = 1;
     }
@@ -587,9 +587,9 @@ LABEL_10:
 
 - (void)layoutSubviews
 {
-  v3 = [(SSSScreenshotView *)self screenshot];
+  screenshot = [(SSSScreenshotView *)self screenshot];
 
-  if (!v3)
+  if (!screenshot)
   {
     return;
   }
@@ -602,8 +602,8 @@ LABEL_10:
   v57 = 0;
   v55 = 0u;
   v56 = 0u;
-  v12 = [(SSSScreenshotView *)self traitCollection];
-  sub_10000F490(v12, &v55);
+  traitCollection = [(SSSScreenshotView *)self traitCollection];
+  sub_10000F490(traitCollection, &v55);
 
   v13 = +[UIColor systemBlueColor];
   [(SSSScreenshotView *)self setInteractionTintColor:v13];
@@ -617,13 +617,13 @@ LABEL_10:
 
   [*(&self->_imageCropController + 2) setUseTrilinearMinificationFilter:{-[SSSScreenshotView useTrilinearMinificationFilter](self, "useTrilinearMinificationFilter")}];
   v14 = *(&self->_imageCropController + 2);
-  v15 = [(SSSScreenshotView *)self viewModificationInfo];
-  [v15 vellumOpacity];
+  viewModificationInfo = [(SSSScreenshotView *)self viewModificationInfo];
+  [viewModificationInfo vellumOpacity];
   [v14 setVellumOpacity:?];
 
   v16 = *(&self->_pdfCropController + 2);
-  v17 = [(SSSScreenshotView *)self viewModificationInfo];
-  [v17 vellumOpacity];
+  viewModificationInfo2 = [(SSSScreenshotView *)self viewModificationInfo];
+  [viewModificationInfo2 vellumOpacity];
   [v16 setVellumOpacity:?];
 
   v18 = 0.0;
@@ -665,11 +665,11 @@ LABEL_10:
   [*(&self->_screenshotPDFView + 2) setFrame:{v5, v7, v9, v11}];
   if ([(SSSScreenshotView *)self state]== 1)
   {
-    v24 = [(SSSScreenshotView *)self modelModificationInfo];
-    v25 = v24;
-    if (v24)
+    modelModificationInfo = [(SSSScreenshotView *)self modelModificationInfo];
+    v25 = modelModificationInfo;
+    if (modelModificationInfo)
     {
-      [v24 cropInfo];
+      [modelModificationInfo cropInfo];
     }
 
     else
@@ -733,16 +733,16 @@ LABEL_24:
     v37 = (&self->_tapGesture + 2);
     if (CGRectIsEmpty(*(&self->_tapGesture + 2)) || (BYTE3(self->_lastScreenshotImageViewFrameInScreen.size.height) & 1) == 0)
     {
-      v38 = [(SSSScreenshotView *)self window];
+      window = [(SSSScreenshotView *)self window];
       [*(&self->_imageCropController + 2) bounds];
-      [v38 convertRect:*(&self->_imageCropController + 2) fromView:?];
+      [window convertRect:*(&self->_imageCropController + 2) fromView:?];
       v40 = v39;
       v42 = v41;
       v44 = v43;
       v46 = v45;
 
-      v47 = [(SSSScreenshotView *)self window];
-      [v47 convertRect:0 toWindow:{v40, v42, v44, v46}];
+      window2 = [(SSSScreenshotView *)self window];
+      [window2 convertRect:0 toWindow:{v40, v42, v44, v46}];
       *v37 = v48;
       v37[1] = v49;
       v37[2] = v50;
@@ -757,8 +757,8 @@ LABEL_24:
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v3 = [*(&self->super._ss_vi2EnabledCacheIsValid + 1) gestureRecognizers];
-  v4 = [v3 countByEnumeratingWithState:&v21 objects:v26 count:16];
+  gestureRecognizers = [*(&self->super._ss_vi2EnabledCacheIsValid + 1) gestureRecognizers];
+  v4 = [gestureRecognizers countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v4)
   {
     v5 = v4;
@@ -770,7 +770,7 @@ LABEL_24:
       {
         if (*v22 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(gestureRecognizers);
         }
 
         [*(*(&v21 + 1) + 8 * v7) setAllowedTouchTypes:&off_1000BE780];
@@ -778,7 +778,7 @@ LABEL_24:
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v21 objects:v26 count:16];
+      v5 = [gestureRecognizers countByEnumeratingWithState:&v21 objects:v26 count:16];
     }
 
     while (v5);
@@ -788,8 +788,8 @@ LABEL_24:
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v8 = [*(&self->_screenshotImageView + 2) gestureRecognizers];
-  v9 = [v8 countByEnumeratingWithState:&v17 objects:v25 count:16];
+  gestureRecognizers2 = [*(&self->_screenshotImageView + 2) gestureRecognizers];
+  v9 = [gestureRecognizers2 countByEnumeratingWithState:&v17 objects:v25 count:16];
   if (v9)
   {
     v10 = v9;
@@ -801,7 +801,7 @@ LABEL_24:
       {
         if (*v18 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(gestureRecognizers2);
         }
 
         [*(*(&v17 + 1) + 8 * v12) setAllowedTouchTypes:&off_1000BE780];
@@ -809,7 +809,7 @@ LABEL_24:
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v17 objects:v25 count:16];
+      v10 = [gestureRecognizers2 countByEnumeratingWithState:&v17 objects:v25 count:16];
     }
 
     while (v10);
@@ -826,19 +826,19 @@ LABEL_24:
     v13 = 0;
   }
 
-  v14 = [*(&self->_pdfCropController + 2) overlayController];
-  [v14 setGesturesEnabled:v13];
+  overlayController = [*(&self->_pdfCropController + 2) overlayController];
+  [overlayController setGesturesEnabled:v13];
 
   v15 = [(SSSScreenshotView *)self annotationsEnabled]&& ![(SSSScreenshotView *)self editMode]&& [(SSSScreenshotView *)self interactionMode]== 1;
-  v16 = [*(&self->_imageCropController + 2) overlayController];
-  [v16 setGesturesEnabled:v15];
+  overlayController2 = [*(&self->_imageCropController + 2) overlayController];
+  [overlayController2 setGesturesEnabled:v15];
 }
 
-- (void)updateForFrame:(CGRect)a3
+- (void)updateForFrame:(CGRect)frame
 {
   if ((BYTE3(self->_lastScreenshotImageViewFrameInScreen.size.height) & 1) == 0)
   {
-    [(SSSScreenshotView *)self bounds:a3.origin.x];
+    [(SSSScreenshotView *)self bounds:frame.origin.x];
     v6 = v5;
     v8 = v7;
     v10 = v9;
@@ -860,18 +860,18 @@ LABEL_24:
   IsEmpty = CGRectIsEmpty(v38);
   if (!IsEmpty)
   {
-    v5 = [*(&self->_pdfCropController + 2) _pdfView];
-    v6 = [v5 documentScrollView];
+    _pdfView = [*(&self->_pdfCropController + 2) _pdfView];
+    documentScrollView = [_pdfView documentScrollView];
 
-    v7 = [(SSSScreenshotView *)self window];
-    [v7 convertRect:0 fromWindow:{*v3, v3[1], v3[2], v3[3]}];
+    window = [(SSSScreenshotView *)self window];
+    [window convertRect:0 fromWindow:{*v3, v3[1], v3[2], v3[3]}];
     v9 = v8;
     v11 = v10;
     v13 = v12;
     v15 = v14;
 
-    v16 = [(SSSScreenshotView *)self window];
-    [v16 convertRect:v6 toView:{v9, v11, v13, v15}];
+    window2 = [(SSSScreenshotView *)self window];
+    [window2 convertRect:documentScrollView toView:{v9, v11, v13, v15}];
     v18 = v17;
     rect = v17;
     v20 = v19;
@@ -879,7 +879,7 @@ LABEL_24:
     v24 = v23;
 
     [(SSSScreenshotView *)self bounds];
-    [(SSSScreenshotView *)self convertRect:v6 toView:?];
+    [(SSSScreenshotView *)self convertRect:documentScrollView toView:?];
     v26 = v25;
     v28 = v27;
     v30 = v29;
@@ -903,7 +903,7 @@ LABEL_24:
     v42.origin.y = v20;
     v42.size.width = v22;
     v42.size.height = v24;
-    [v6 setContentInset:{v34, 0.0, MaxY - CGRectGetMaxY(v42), 0.0}];
+    [documentScrollView setContentInset:{v34, 0.0, MaxY - CGRectGetMaxY(v42), 0.0}];
   }
 
   return !IsEmpty;
@@ -913,18 +913,18 @@ LABEL_24:
 {
   if ((BYTE2(self->_lastScreenshotImageViewFrameInScreen.size.height) & 1) == 0)
   {
-    v3 = [(SSSScreenshotView *)self screenshot];
-    v4 = [v3 pdfData];
+    screenshot = [(SSSScreenshotView *)self screenshot];
+    pdfData = [screenshot pdfData];
 
-    if (v4)
+    if (pdfData)
     {
       if ([(SSSScreenshotView *)self _layoutPDFViewVerticalContentInsetToMatchImageView])
       {
-        v5 = [(SSSScreenshotView *)self screenshot];
-        v6 = [v5 visiblePDFPageWhenScreenshotted];
+        screenshot2 = [(SSSScreenshotView *)self screenshot];
+        visiblePDFPageWhenScreenshotted = [screenshot2 visiblePDFPageWhenScreenshotted];
 
-        v7 = [(SSSScreenshotView *)self screenshot];
-        [v7 visiblePDFRectWhenScreenshotted];
+        screenshot3 = [(SSSScreenshotView *)self screenshot];
+        [screenshot3 visiblePDFRectWhenScreenshotted];
         v9 = v8;
         v11 = v10;
         v13 = v12;
@@ -940,30 +940,30 @@ LABEL_24:
         v31.size.height = v15;
         if (CGRectEqualToRect(v31, v32))
         {
-          v16 = [*(&self->_pdfCropController + 2) _pdfView];
-          [v16 layoutDocumentView];
-          v17 = [v16 document];
-          v18 = [v17 pageAtIndex:v6];
+          _pdfView = [*(&self->_pdfCropController + 2) _pdfView];
+          [_pdfView layoutDocumentView];
+          document = [_pdfView document];
+          v18 = [document pageAtIndex:visiblePDFPageWhenScreenshotted];
 
           [v18 boundsForBox:0];
-          [v16 convertRect:v18 fromPage:?];
+          [_pdfView convertRect:v18 fromPage:?];
           v20 = v19;
           v22 = v21;
           v24 = v23;
           v26 = v25;
           v27 = objc_opt_class();
-          v28 = [v16 documentScrollView];
-          [v27 _zoomToRectWithinContentInsetBounds:v28 scrollView:0 animated:{v20, v22, v24, v26}];
+          documentScrollView = [_pdfView documentScrollView];
+          [v27 _zoomToRectWithinContentInsetBounds:documentScrollView scrollView:0 animated:{v20, v22, v24, v26}];
         }
 
         else
         {
-          [(SSSScreenshotView *)self _goToPDFPage:v6 rect:0 force:v9, v11, v13, v15];
+          [(SSSScreenshotView *)self _goToPDFPage:visiblePDFPageWhenScreenshotted rect:0 force:v9, v11, v13, v15];
         }
 
         v29 = +[NSNotificationCenter defaultCenter];
-        v30 = [(SSSScreenshotView *)self _internalPDFView];
-        [v29 addObserver:self selector:"pageChanged:" name:PDFViewPageChangedNotification object:v30];
+        _internalPDFView = [(SSSScreenshotView *)self _internalPDFView];
+        [v29 addObserver:self selector:"pageChanged:" name:PDFViewPageChangedNotification object:_internalPDFView];
 
         BYTE2(self->_lastScreenshotImageViewFrameInScreen.size.height) = 1;
       }
@@ -971,12 +971,12 @@ LABEL_24:
   }
 }
 
-- (void)setRulerHostingView:(id)a3
+- (void)setRulerHostingView:(id)view
 {
   v4 = *(&self->_pdfCropController + 2);
-  v5 = a3;
-  [v4 setRulerHostView:v5];
-  [*(&self->_imageCropController + 2) setRulerHostView:v5];
+  viewCopy = view;
+  [v4 setRulerHostView:viewCopy];
+  [*(&self->_imageCropController + 2) setRulerHostView:viewCopy];
 }
 
 - (void)safeAreaInsetsDidChange
@@ -1000,17 +1000,17 @@ LABEL_24:
   return result;
 }
 
-+ (CGAffineTransform)_transformToConvertFromRect:(SEL)a3 toRect:(CGRect)a4
++ (CGAffineTransform)_transformToConvertFromRect:(SEL)rect toRect:(CGRect)toRect
 {
-  height = a4.size.height;
+  height = toRect.size.height;
   rect = a5.size.height;
   width = a5.size.width;
   y = a5.origin.y;
   x = a5.origin.x;
-  v8 = a4.size.height;
-  v9 = a4.size.width;
-  v10 = a4.origin.y;
-  v11 = a4.origin.x;
+  v8 = toRect.size.height;
+  v9 = toRect.size.width;
+  v10 = toRect.origin.y;
+  v11 = toRect.origin.x;
   v13 = CGRectGetWidth(a5);
   v24.origin.x = v11;
   v24.origin.y = v10;
@@ -1056,18 +1056,18 @@ LABEL_24:
   return result;
 }
 
-+ (CGRect)_scaledAndCenteredRect:(CGRect)a3 withinRect:(CGRect)a4
++ (CGRect)_scaledAndCenteredRect:(CGRect)rect withinRect:(CGRect)withinRect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3.size.height;
-  v9 = a3.size.width;
-  v10 = a3.origin.y;
-  v18 = a3.origin.y;
-  v11 = a3.origin.x;
-  v19 = CGRectGetWidth(a4);
+  height = withinRect.size.height;
+  width = withinRect.size.width;
+  y = withinRect.origin.y;
+  x = withinRect.origin.x;
+  v8 = rect.size.height;
+  v9 = rect.size.width;
+  v10 = rect.origin.y;
+  v18 = rect.origin.y;
+  v11 = rect.origin.x;
+  v19 = CGRectGetWidth(withinRect);
   v22.origin.x = v11;
   v22.origin.y = v10;
   v22.size.width = v9;
@@ -1098,57 +1098,57 @@ LABEL_24:
   return result;
 }
 
-+ (void)_zoomToRectWithinContentInsetBounds:(CGRect)a3 scrollView:(id)a4 animated:(BOOL)a5
++ (void)_zoomToRectWithinContentInsetBounds:(CGRect)bounds scrollView:(id)view animated:(BOOL)animated
 {
-  v5 = a5;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v11 = a4;
-  [v11 frame];
+  animatedCopy = animated;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  viewCopy = view;
+  [viewCopy frame];
   v13 = v12;
   v15 = v14;
   v17 = v16;
   v19 = v18;
-  [v11 contentInset];
-  [a1 _scaledAndCenteredRect:x withinRect:{y, width, height, v13 + v20, v15 + v21, v17 - (v20 + v22), v19 - (v21 + v23)}];
+  [viewCopy contentInset];
+  [self _scaledAndCenteredRect:x withinRect:{y, width, height, v13 + v20, v15 + v21, v17 - (v20 + v22), v19 - (v21 + v23)}];
   memset(&v24[1], 0, sizeof(CGAffineTransform));
-  [a1 _transformToConvertFromRect:? toRect:?];
-  [v11 frame];
+  [self _transformToConvertFromRect:? toRect:?];
+  [viewCopy frame];
   v24[0] = v24[1];
   v26 = CGRectApplyAffineTransform(v25, v24);
-  [v11 zoomToRect:v5 animated:{v26.origin.x, v26.origin.y, v26.size.width, v26.size.height}];
+  [viewCopy zoomToRect:animatedCopy animated:{v26.origin.x, v26.origin.y, v26.size.width, v26.size.height}];
 }
 
-- (void)setState:(unint64_t)a3
+- (void)setState:(unint64_t)state
 {
-  if (*(&self->_screenshot + 2) != a3)
+  if (*(&self->_screenshot + 2) != state)
   {
-    *(&self->_screenshot + 2) = a3;
+    *(&self->_screenshot + 2) = state;
     [(SSSScreenshotView *)self _stopFlash];
-    [*(&self->super._ss_vi2EnabledCacheIsValid + 1) setState:a3];
-    [*(&self->_imageCropController + 2) setState:a3];
+    [*(&self->super._ss_vi2EnabledCacheIsValid + 1) setState:state];
+    [*(&self->_imageCropController + 2) setState:state];
 
     [(SSSScreenshotView *)self setNeedsLayout];
   }
 }
 
-- (void)cropController:(id)a3 changedToCropRect:(CGRect)a4
+- (void)cropController:(id)controller changedToCropRect:(CGRect)rect
 {
-  width = a4.size.width;
-  height = a4.size.height;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  width = rect.size.width;
+  height = rect.size.height;
+  y = rect.origin.y;
+  x = rect.origin.x;
   [*(&self->_imageCropController + 2) clearImageAnalysisTextSelection];
   v23 = 0u;
   v24 = 0u;
   v22 = 0u;
-  v5 = [(SSSScreenshotView *)self modelModificationInfo];
-  v6 = v5;
-  if (v5)
+  modelModificationInfo = [(SSSScreenshotView *)self modelModificationInfo];
+  v6 = modelModificationInfo;
+  if (modelModificationInfo)
   {
-    [v5 cropInfo];
+    [modelModificationInfo cropInfo];
   }
 
   else
@@ -1164,36 +1164,36 @@ LABEL_24:
   v8.f64[1] = height;
   v23 = vmulq_f64(v7, v22);
   v24 = vmulq_f64(v8, v22);
-  v9 = [(SSSScreenshotView *)self screenshot];
-  v10 = [v9 environmentDescription];
-  [v10 imageScale];
+  screenshot = [(SSSScreenshotView *)self screenshot];
+  environmentDescription = [screenshot environmentDescription];
+  [environmentDescription imageScale];
 
   SSRoundRectToScale();
   v23.f64[0] = v11;
   v23.f64[1] = v12;
   v24.f64[0] = v13;
   v24.f64[1] = v14;
-  v15 = [(SSSScreenshotView *)self viewModificationInfo];
+  viewModificationInfo = [(SSSScreenshotView *)self viewModificationInfo];
   v21[0] = v22;
   v21[1] = v23;
   v21[2] = v24;
-  [v15 setCropInfo:v21];
+  [viewModificationInfo setCropInfo:v21];
 
   [(SSSScreenshotView *)self promoteViewValueToModelValueForKey:0];
   v16 = +[SSStatisticsManager sharedStatisticsManager];
   [v16 fullscreenExperienceHadCropEvent];
 }
 
-- (void)cropControllerCropRectDidChange:(id)a3
+- (void)cropControllerCropRectDidChange:(id)change
 {
   v4 = os_log_create("com.apple.screenshotservices", "Editing");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(SSSScreenshotView *)self modelModificationInfo];
-    v6 = v5;
-    if (v5)
+    modelModificationInfo = [(SSSScreenshotView *)self modelModificationInfo];
+    v6 = modelModificationInfo;
+    if (modelModificationInfo)
     {
-      [v5 cropInfo];
+      [modelModificationInfo cropInfo];
       v8 = v14;
       v7 = v13;
       v10 = v16;
@@ -1214,8 +1214,8 @@ LABEL_24:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "User did crop to %@", buf, 0xCu);
   }
 
-  v12 = [(SSSScreenshotView *)self delegate];
-  [v12 screenshotViewCropDidChange:self];
+  delegate = [(SSSScreenshotView *)self delegate];
+  [delegate screenshotViewCropDidChange:self];
 
   if ([(SSSScreenshotView *)self shouldReanalyzeImageForCurrentInteractionMode])
   {
@@ -1226,8 +1226,8 @@ LABEL_24:
 - (void)commitInflightEdits
 {
   [(SSSScreenshotView *)self _commitCropControllerInflightEdits];
-  v3 = [(SSSScreenshotView *)self akController];
-  [v3 commitEditing];
+  akController = [(SSSScreenshotView *)self akController];
+  [akController commitEditing];
 }
 
 - (void)_commitCropControllerInflightEdits
@@ -1249,8 +1249,8 @@ LABEL_24:
 
 - (void)_handleTap
 {
-  v3 = [(SSSScreenshotView *)self delegate];
-  [v3 screenshotViewTapped:self];
+  delegate = [(SSSScreenshotView *)self delegate];
+  [delegate screenshotViewTapped:self];
 }
 
 - (void)prepareForFullscreenExperience
@@ -1259,25 +1259,25 @@ LABEL_24:
   {
     BYTE2(self->_borderView) = 1;
     v4 = *(&self->_pdfCropController + 2);
-    v5 = [(SSSScreenshotView *)self screenshot];
-    [v4 setScreenshot:v5];
+    screenshot = [(SSSScreenshotView *)self screenshot];
+    [v4 setScreenshot:screenshot];
 
     v6 = *(&self->_imageCropController + 2);
-    v7 = [(SSSScreenshotView *)self screenshot];
-    [v6 setScreenshot:v7];
+    screenshot2 = [(SSSScreenshotView *)self screenshot];
+    [v6 setScreenshot:screenshot2];
 
     if ([*(&self->_pdfCropController + 2) didFailToWritePDFToURL])
     {
       [(SSSScreenshotView *)self setDidFailToWritePDFToURL:1];
-      v8 = [(SSSScreenshotView *)self delegate];
-      [v8 screenshotViewDidFailToWritePDFToURL:self];
+      delegate = [(SSSScreenshotView *)self delegate];
+      [delegate screenshotViewDidFailToWritePDFToURL:self];
     }
 
-    v9 = [*(&self->_pdfCropController + 2) overlayController];
-    [(SSSScreenshotView *)self _prepareGesturesForOverlayController:v9];
+    overlayController = [*(&self->_pdfCropController + 2) overlayController];
+    [(SSSScreenshotView *)self _prepareGesturesForOverlayController:overlayController];
 
-    v10 = [*(&self->_imageCropController + 2) overlayController];
-    [(SSSScreenshotView *)self _prepareGesturesForOverlayController:v10];
+    overlayController2 = [*(&self->_imageCropController + 2) overlayController];
+    [(SSSScreenshotView *)self _prepareGesturesForOverlayController:overlayController2];
 
     [(SSSScreenshotView *)self setNeedsLayout];
     v11 = *(&self->super._ss_vi2EnabledCacheIsValid + 1);
@@ -1286,18 +1286,18 @@ LABEL_24:
   }
 }
 
-- (void)finishPreparingForFullscreenExperienceWithIsCurrentScreenshot:(BOOL)a3
+- (void)finishPreparingForFullscreenExperienceWithIsCurrentScreenshot:(BOOL)screenshot
 {
   if ((BYTE3(self->_borderView) & 1) == 0)
   {
-    v3 = a3;
+    screenshotCopy = screenshot;
     BYTE3(self->_borderView) = 1;
     [*(&self->_pdfCropController + 2) setOverlayControllerActive:0];
     [*(&self->_imageCropController + 2) setOverlayControllerActive:1];
-    if (v3)
+    if (screenshotCopy)
     {
-      v5 = [(SSSScreenshotView *)self delegate];
-      [v5 screenshotView:self requestsUpdateToInteractionMode:{-[SSSScreenshotView interactionMode](self, "interactionMode")}];
+      delegate = [(SSSScreenshotView *)self delegate];
+      [delegate screenshotView:self requestsUpdateToInteractionMode:{-[SSSScreenshotView interactionMode](self, "interactionMode")}];
     }
   }
 }
@@ -1306,49 +1306,49 @@ LABEL_24:
 {
   if ((_os_feature_enabled_impl() & 1) != 0 || _os_feature_enabled_impl())
   {
-    v3 = [(SSSScreenshotView *)self currentView];
-    [v3 deselectAllAnnotations];
+    currentView = [(SSSScreenshotView *)self currentView];
+    [currentView deselectAllAnnotations];
   }
 
-  v5 = [(SSSScreenshotView *)self akController];
-  v4 = [v5 modelController];
-  [v4 deselectAllAnnotations];
+  akController = [(SSSScreenshotView *)self akController];
+  modelController = [akController modelController];
+  [modelController deselectAllAnnotations];
 }
 
-- (void)imageViewDidUpdateInteraction:(id)a3 withAnalysis:(id)a4
+- (void)imageViewDidUpdateInteraction:(id)interaction withAnalysis:(id)analysis
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SSSScreenshotView *)self delegate];
-  [v8 screenshotView:self didUpdateInteraction:v7 withAnalysis:v6];
+  analysisCopy = analysis;
+  interactionCopy = interaction;
+  delegate = [(SSSScreenshotView *)self delegate];
+  [delegate screenshotView:self didUpdateInteraction:interactionCopy withAnalysis:analysisCopy];
 }
 
-- (void)imageView:(id)a3 requestsUpdateToInteractionMode:(unint64_t)a4
+- (void)imageView:(id)view requestsUpdateToInteractionMode:(unint64_t)mode
 {
-  v6 = [(SSSScreenshotView *)self delegate];
-  [v6 screenshotView:self requestsUpdateToInteractionMode:a4];
+  delegate = [(SSSScreenshotView *)self delegate];
+  [delegate screenshotView:self requestsUpdateToInteractionMode:mode];
 }
 
-- (void)imageViewDidLoadImage:(id)a3
+- (void)imageViewDidLoadImage:(id)image
 {
   [*(&self->_imageCropController + 2) setInhibitImageAnalysis:0];
-  v4 = [*(&self->_imageCropController + 2) drawingGestureRecognizer];
-  if (v4)
+  drawingGestureRecognizer = [*(&self->_imageCropController + 2) drawingGestureRecognizer];
+  if (drawingGestureRecognizer)
   {
-    v6 = v4;
-    v5 = [(SSSScreenshotView *)self delegate];
-    [v5 screenshotView:self hasHighPriorityGesture:v6];
+    v6 = drawingGestureRecognizer;
+    delegate = [(SSSScreenshotView *)self delegate];
+    [delegate screenshotView:self hasHighPriorityGesture:v6];
 
-    v4 = v6;
+    drawingGestureRecognizer = v6;
   }
 }
 
-- (void)imageView:(id)a3 viCardIsPresentedDidChange:(BOOL)a4
+- (void)imageView:(id)view viCardIsPresentedDidChange:(BOOL)change
 {
-  if (a4)
+  if (change)
   {
-    v6 = [(SSSScreenshotView *)self delegate];
-    [v6 screenshotViewDidInvokeVICard:self];
+    delegate = [(SSSScreenshotView *)self delegate];
+    [delegate screenshotViewDidInvokeVICard:self];
   }
 
   v7 = dispatch_time(0, 50000000);
@@ -1357,36 +1357,36 @@ LABEL_24:
   v8[2] = sub_100007740;
   v8[3] = &unk_1000BA0B8;
   v8[4] = self;
-  v9 = a4;
+  changeCopy = change;
   dispatch_after(v7, &_dispatch_main_q, v8);
 }
 
-- (void)imageView:(id)a3 isDraggingVISheetDidChange:(BOOL)a4
+- (void)imageView:(id)view isDraggingVISheetDidChange:(BOOL)change
 {
-  v4 = a4;
-  v6 = [(SSSScreenshotView *)self delegate];
-  [v6 screenshotView:self isDraggingVISheetDidChange:v4];
+  changeCopy = change;
+  delegate = [(SSSScreenshotView *)self delegate];
+  [delegate screenshotView:self isDraggingVISheetDidChange:changeCopy];
 }
 
-- (void)imageView:(id)a3 startEditingOpacityInAccessoryView:(id)a4
+- (void)imageView:(id)view startEditingOpacityInAccessoryView:(id)accessoryView
 {
-  v5 = a4;
-  v6 = [(SSSScreenshotView *)self delegate];
-  [v6 screenshotView:self startEditingOpacityInAccessoryView:v5];
+  accessoryViewCopy = accessoryView;
+  delegate = [(SSSScreenshotView *)self delegate];
+  [delegate screenshotView:self startEditingOpacityInAccessoryView:accessoryViewCopy];
 }
 
-- (void)pdfView:(id)a3 startEditingOpacityInAccessoryView:(id)a4
+- (void)pdfView:(id)view startEditingOpacityInAccessoryView:(id)accessoryView
 {
-  v5 = a4;
-  v6 = [(SSSScreenshotView *)self delegate];
-  [v6 screenshotView:self startEditingOpacityInAccessoryView:v5];
+  accessoryViewCopy = accessoryView;
+  delegate = [(SSSScreenshotView *)self delegate];
+  [delegate screenshotView:self startEditingOpacityInAccessoryView:accessoryViewCopy];
 }
 
-- (void)setCropHandlesFadedOut:(BOOL)a3
+- (void)setCropHandlesFadedOut:(BOOL)out
 {
-  if (self->_hasCroppedImageView != a3)
+  if (self->_hasCroppedImageView != out)
   {
-    self->_hasCroppedImageView = a3;
+    self->_hasCroppedImageView = out;
     [(SSSScreenshotView *)self setNeedsLayout];
   }
 }
@@ -1394,23 +1394,23 @@ LABEL_24:
 - (void)flash
 {
   [(SSSScreenshotView *)self _stopFlash];
-  v3 = [(SSSScreenshotView *)self screenshot];
-  v4 = [v3 environmentDescription];
+  screenshot = [(SSSScreenshotView *)self screenshot];
+  environmentDescription = [screenshot environmentDescription];
 
-  if ([v4 presentationMode] == 3)
+  if ([environmentDescription presentationMode] == 3)
   {
-    v5 = [v4 externalFlashLayerRenderID];
-    v6 = [v4 externalFlashLayerContextID];
-    if (v5)
+    externalFlashLayerRenderID = [environmentDescription externalFlashLayerRenderID];
+    externalFlashLayerContextID = [environmentDescription externalFlashLayerContextID];
+    if (externalFlashLayerRenderID)
     {
-      v7 = v6;
-      if (v6)
+      v7 = externalFlashLayerContextID;
+      if (externalFlashLayerContextID)
       {
         v8 = objc_alloc_init(SSSPortalView);
         v9 = *&self->_isShowingVICard;
         *&self->_isShowingVICard = v8;
 
-        [*&self->_isShowingVICard setSourceLayerRenderId:v5];
+        [*&self->_isShowingVICard setSourceLayerRenderId:externalFlashLayerRenderID];
         [*&self->_isShowingVICard setSourceContextId:v7];
         [*&self->_isShowingVICard setHidesSourceView:1];
         [*&self->_isShowingVICard setMatchesAlpha:1];
@@ -1441,10 +1441,10 @@ LABEL_24:
 
   else
   {
-    v14 = [(SSSScreenshotView *)self screenshot];
-    v15 = [v14 environmentDescription];
-    v16 = [v15 serviceOptions];
-    v17 = [v16 flashStyle];
+    screenshot2 = [(SSSScreenshotView *)self screenshot];
+    environmentDescription2 = [screenshot2 environmentDescription];
+    serviceOptions = [environmentDescription2 serviceOptions];
+    flashStyle = [serviceOptions flashStyle];
 
     if (_SSScreenshotsRedesign2025Enabled())
     {
@@ -1453,7 +1453,7 @@ LABEL_24:
 
     else
     {
-      v18 = v17 != 0;
+      v18 = flashStyle != 0;
     }
 
     v19 = [SSFlashView flashViewForStyle:v18];
@@ -1462,8 +1462,8 @@ LABEL_24:
 
     if (_SSScreenshotsRedesign2025Enabled() && (_SSPIPExperienceEnabled() & 1) == 0)
     {
-      v21 = [(SSSScreenshotView *)self traitCollection];
-      [v21 displayCornerRadius];
+      traitCollection = [(SSSScreenshotView *)self traitCollection];
+      [traitCollection displayCornerRadius];
       [*&self->_isShowingVICard _setContinuousCornerRadius:?];
 
       [*&self->_isShowingVICard setClipsToBounds:1];
@@ -1484,12 +1484,12 @@ LABEL_24:
 
 - (BOOL)shouldFlash
 {
-  v2 = [(SSSScreenshotView *)self screenshot];
-  v3 = [v2 environmentDescription];
+  screenshot = [(SSSScreenshotView *)self screenshot];
+  environmentDescription = [screenshot environmentDescription];
 
-  if ([v3 presentationMode] == 3)
+  if ([environmentDescription presentationMode] == 3)
   {
-    if (![v3 externalFlashLayerRenderID] || !objc_msgSend(v3, "externalFlashLayerContextID"))
+    if (![environmentDescription externalFlashLayerRenderID] || !objc_msgSend(environmentDescription, "externalFlashLayerContextID"))
     {
       goto LABEL_9;
     }
@@ -1497,7 +1497,7 @@ LABEL_24:
     goto LABEL_6;
   }
 
-  if ([v3 presentationMode] == 1)
+  if ([environmentDescription presentationMode] == 1)
   {
 LABEL_6:
     v4 = 1;
@@ -1511,7 +1511,7 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v4 = [v3 presentationMode] == 2;
+  v4 = [environmentDescription presentationMode] == 2;
 LABEL_10:
 
   return v4;
@@ -1526,43 +1526,43 @@ LABEL_10:
   [(SSSScreenshotView *)self setNeedsLayout];
 }
 
-- (void)setScreenshotEditsSnapshotted:(BOOL)a3 inTransition:(BOOL)a4 currentScreenshot:(BOOL)a5
+- (void)setScreenshotEditsSnapshotted:(BOOL)snapshotted inTransition:(BOOL)transition currentScreenshot:(BOOL)screenshot
 {
-  v5 = a5;
-  v6 = a4;
-  v7 = a3;
-  if (![(SSSScreenshotView *)self screenshotEditsSnapshotted]&& v7 && ![(SSSScreenshotView *)self isBeingRemoved])
+  screenshotCopy = screenshot;
+  transitionCopy = transition;
+  snapshottedCopy = snapshotted;
+  if (![(SSSScreenshotView *)self screenshotEditsSnapshotted]&& snapshottedCopy && ![(SSSScreenshotView *)self isBeingRemoved])
   {
     [(SSSScreenshotView *)self _logEditsInScreenshotForAnalytics];
     v9 = +[SSSScreenshotManager sharedScreenshotManager];
-    v10 = [(SSSScreenshotView *)self screenshot];
-    [v9 saveEditsToScreenshotIfNecessary:v10 inTransition:v6];
+    screenshot = [(SSSScreenshotView *)self screenshot];
+    [v9 saveEditsToScreenshotIfNecessary:screenshot inTransition:transitionCopy];
   }
 
-  v11 = [*(&self->_imageCropController + 2) screenshotEditsSnapshotted];
-  if ((!v6 || v5) && v11 != v7)
+  screenshotEditsSnapshotted = [*(&self->_imageCropController + 2) screenshotEditsSnapshotted];
+  if ((!transitionCopy || screenshotCopy) && screenshotEditsSnapshotted != snapshottedCopy)
   {
-    [*(&self->_imageCropController + 2) setScreenshotEditsSnapshotted:v7];
-    v12 = [(SSSScreenshotView *)self screenshot];
-    v13 = [v12 pdfData];
+    [*(&self->_imageCropController + 2) setScreenshotEditsSnapshotted:snapshottedCopy];
+    screenshot2 = [(SSSScreenshotView *)self screenshot];
+    pdfData = [screenshot2 pdfData];
 
-    if (v13)
+    if (pdfData)
     {
       v14 = *(&self->_pdfCropController + 2);
 
-      [v14 setScreenshotEditsSnapshotted:v7];
+      [v14 setScreenshotEditsSnapshotted:snapshottedCopy];
     }
   }
 }
 
 - (void)_logEditsInScreenshotForAnalytics
 {
-  v3 = [(SSSScreenshotView *)self _numberOfDrawingStrokesInScreenshot];
-  v4 = [(SSSScreenshotView *)self screenshot];
-  if ([v4 hasEverBeenEditedForMode:0] && objc_msgSend(*(&self->_imageCropController + 2), "didDrawPenStroke"))
+  _numberOfDrawingStrokesInScreenshot = [(SSSScreenshotView *)self _numberOfDrawingStrokesInScreenshot];
+  screenshot = [(SSSScreenshotView *)self screenshot];
+  if ([screenshot hasEverBeenEditedForMode:0] && objc_msgSend(*(&self->_imageCropController + 2), "didDrawPenStroke"))
   {
 
-    if (!v3)
+    if (!_numberOfDrawingStrokesInScreenshot)
     {
       v5 = +[SSStatisticsManager sharedStatisticsManager];
       [v5 didAccidentallyDraw];
@@ -1582,33 +1582,33 @@ LABEL_10:
   {
   }
 
-  v7 = [(SSSScreenshotView *)self screenshot];
-  if ([v7 hasEverBeenEditedForMode:0])
+  screenshot2 = [(SSSScreenshotView *)self screenshot];
+  if ([screenshot2 hasEverBeenEditedForMode:0])
   {
-    v8 = [*(&self->_imageCropController + 2) didDrawPenStroke];
+    didDrawPenStroke = [*(&self->_imageCropController + 2) didDrawPenStroke];
 
-    if (!v8)
+    if (!didDrawPenStroke)
     {
       goto LABEL_13;
     }
 
     v9 = +[SSStatisticsManager sharedStatisticsManager];
-    [v9 drewStrokes:v3];
+    [v9 drewStrokes:_numberOfDrawingStrokesInScreenshot];
 
-    v7 = os_log_create("com.apple.screenshotservices", "Editing");
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+    screenshot2 = os_log_create("com.apple.screenshotservices", "Editing");
+    if (os_log_type_enabled(screenshot2, OS_LOG_TYPE_DEFAULT))
     {
       v16 = 134217984;
-      v17 = v3;
-      _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Saving Edits to screenshot: User drew %lu strokes", &v16, 0xCu);
+      v17 = _numberOfDrawingStrokesInScreenshot;
+      _os_log_impl(&_mh_execute_header, screenshot2, OS_LOG_TYPE_DEFAULT, "Saving Edits to screenshot: User drew %lu strokes", &v16, 0xCu);
     }
   }
 
 LABEL_13:
-  v10 = [(SSSScreenshotView *)self screenshot];
-  v11 = [v10 modelModificationInfo];
-  v12 = [v11 annotations];
-  v13 = [v12 count];
+  screenshot3 = [(SSSScreenshotView *)self screenshot];
+  modelModificationInfo = [screenshot3 modelModificationInfo];
+  annotations = [modelModificationInfo annotations];
+  v13 = [annotations count];
 
   v14 = +[SSStatisticsManager sharedStatisticsManager];
   [v14 logTotalAnnotations:v13];
@@ -1624,10 +1624,10 @@ LABEL_13:
 
 - (int64_t)_numberOfDrawingStrokesInScreenshot
 {
-  v16 = [(SSSScreenshotView *)self screenshot];
-  v2 = [v16 modelModificationInfo];
-  v3 = [v2 annotations];
-  v4 = [v3 count];
+  screenshot = [(SSSScreenshotView *)self screenshot];
+  modelModificationInfo = [screenshot modelModificationInfo];
+  annotations = [modelModificationInfo annotations];
+  v4 = [annotations count];
 
   if (v4)
   {
@@ -1635,10 +1635,10 @@ LABEL_13:
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v5 = [v16 modelModificationInfo];
-    v6 = [v5 annotations];
+    modelModificationInfo2 = [screenshot modelModificationInfo];
+    annotations2 = [modelModificationInfo2 annotations];
 
-    v7 = [v6 countByEnumeratingWithState:&v17 objects:v26 count:16];
+    v7 = [annotations2 countByEnumeratingWithState:&v17 objects:v26 count:16];
     if (v7)
     {
       v8 = *v18;
@@ -1648,7 +1648,7 @@ LABEL_13:
         {
           if (*v18 != v8)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(annotations2);
           }
 
           v10 = *(*(&v17 + 1) + 8 * i);
@@ -1673,15 +1673,15 @@ LABEL_13:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v13 = [v10 drawing];
-            v14 = [v13 strokes];
-            v7 = [v14 count];
+            drawing = [v10 drawing];
+            strokes = [drawing strokes];
+            v7 = [strokes count];
 
             goto LABEL_14;
           }
         }
 
-        v7 = [v6 countByEnumeratingWithState:&v17 objects:v26 count:16];
+        v7 = [annotations2 countByEnumeratingWithState:&v17 objects:v26 count:16];
         if (v7)
         {
           continue;
@@ -1704,29 +1704,29 @@ LABEL_14:
 
 - (BOOL)screenshotEditsSnapshotted
 {
-  v2 = [(SSSScreenshotView *)self currentView];
-  v3 = [v2 screenshotEditsSnapshotted];
+  currentView = [(SSSScreenshotView *)self currentView];
+  screenshotEditsSnapshotted = [currentView screenshotEditsSnapshotted];
 
-  return v3;
+  return screenshotEditsSnapshotted;
 }
 
 - (AKController)akController
 {
-  v2 = [(SSSScreenshotView *)self _currentOverlayController];
-  v3 = [v2 annotationKitController];
+  _currentOverlayController = [(SSSScreenshotView *)self _currentOverlayController];
+  annotationKitController = [_currentOverlayController annotationKitController];
 
-  return v3;
+  return annotationKitController;
 }
 
-- (id)_findTextViewFirstResponderUnderView:(id)a3
+- (id)_findTextViewFirstResponderUnderView:(id)view
 {
   if ([(SSSScreenshotView *)self _isAncestorOfFirstResponder])
   {
-    v4 = [(SSSScreenshotView *)self firstResponder];
+    firstResponder = [(SSSScreenshotView *)self firstResponder];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = firstResponder;
     }
 
     else
@@ -1745,8 +1745,8 @@ LABEL_14:
 
 - (CGRect)rectToCenterAboveKeyboard
 {
-  v3 = [(SSSScreenshotView *)self _currentOverlayController];
-  [v3 rectToCenterAboveKeyboard];
+  _currentOverlayController = [(SSSScreenshotView *)self _currentOverlayController];
+  [_currentOverlayController rectToCenterAboveKeyboard];
   x = v4;
   v7 = v6;
   v9 = v8;
@@ -1765,8 +1765,8 @@ LABEL_14:
   v33.size.height = height;
   if (!CGRectEqualToRect(v30, v33))
   {
-    v15 = [(SSSScreenshotView *)self currentView];
-    [(SSSScreenshotView *)self convertRect:v15 fromView:x, v7, v9, v11];
+    currentView = [(SSSScreenshotView *)self currentView];
+    [(SSSScreenshotView *)self convertRect:currentView fromView:x, v7, v9, v11];
     x = v16;
     v7 = v17;
     v9 = v18;
@@ -1811,15 +1811,15 @@ LABEL_14:
   return result;
 }
 
-- (void)_prepareGesturesForOverlayController:(id)a3
+- (void)_prepareGesturesForOverlayController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [v4 gestureRecognizers];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  gestureRecognizers = [controllerCopy gestureRecognizers];
+  v6 = [gestureRecognizers countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1831,7 +1831,7 @@ LABEL_14:
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(gestureRecognizers);
         }
 
         [(SSSScreenshotView *)self addGestureRecognizer:*(*(&v14 + 1) + 8 * v9)];
@@ -1839,34 +1839,34 @@ LABEL_14:
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [gestureRecognizers countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v7);
   }
 
-  v10 = [v4 panGestureRecognizer];
-  v11 = [v4 rotationGestureRecognizer];
-  v12 = [*(&self->super._ss_vi2EnabledCacheIsValid + 1) panGestureRecognizer];
-  v13 = [*(&self->super._ss_vi2EnabledCacheIsValid + 1) pinchGestureRecognizer];
-  if (v10)
+  panGestureRecognizer = [controllerCopy panGestureRecognizer];
+  rotationGestureRecognizer = [controllerCopy rotationGestureRecognizer];
+  panGestureRecognizer2 = [*(&self->super._ss_vi2EnabledCacheIsValid + 1) panGestureRecognizer];
+  pinchGestureRecognizer = [*(&self->super._ss_vi2EnabledCacheIsValid + 1) pinchGestureRecognizer];
+  if (panGestureRecognizer)
   {
-    [v12 requireGestureRecognizerToFail:v10];
-    [v13 requireGestureRecognizerToFail:v10];
+    [panGestureRecognizer2 requireGestureRecognizerToFail:panGestureRecognizer];
+    [pinchGestureRecognizer requireGestureRecognizerToFail:panGestureRecognizer];
   }
 
-  if (v11)
+  if (rotationGestureRecognizer)
   {
-    [v12 requireGestureRecognizerToFail:v11];
-    [v13 requireGestureRecognizerToFail:v11];
+    [panGestureRecognizer2 requireGestureRecognizerToFail:rotationGestureRecognizer];
+    [pinchGestureRecognizer requireGestureRecognizerToFail:rotationGestureRecognizer];
   }
 }
 
-- (void)setAnnotationsEnabled:(BOOL)a3
+- (void)setAnnotationsEnabled:(BOOL)enabled
 {
-  if (self->_hasPositionedPDFViewToMatchImageView != a3)
+  if (self->_hasPositionedPDFViewToMatchImageView != enabled)
   {
-    self->_hasPositionedPDFViewToMatchImageView = a3;
+    self->_hasPositionedPDFViewToMatchImageView = enabled;
     [*(&self->_imageCropController + 2) setAnnotationsEnabled:?];
 
     [(SSSScreenshotView *)self setNeedsLayout];
@@ -1875,43 +1875,43 @@ LABEL_14:
 
 - (id)_currentOverlayController
 {
-  v2 = [(SSSScreenshotView *)self currentView];
-  v3 = [v2 overlayController];
+  currentView = [(SSSScreenshotView *)self currentView];
+  overlayController = [currentView overlayController];
 
-  return v3;
+  return overlayController;
 }
 
-- (void)updatePaletteVisibilityIfNecessary:(BOOL)a3
+- (void)updatePaletteVisibilityIfNecessary:(BOOL)necessary
 {
-  v3 = a3;
-  v4 = [(SSSScreenshotView *)self currentView];
-  [v4 updatePaletteVisibilityIfNecessary:v3];
+  necessaryCopy = necessary;
+  currentView = [(SSSScreenshotView *)self currentView];
+  [currentView updatePaletteVisibilityIfNecessary:necessaryCopy];
 }
 
 - (UIView)viewContainingScreenshotContents
 {
-  v2 = [(SSSScreenshotView *)self currentView];
-  v3 = [v2 viewWithScreenshotImage];
+  currentView = [(SSSScreenshotView *)self currentView];
+  viewWithScreenshotImage = [currentView viewWithScreenshotImage];
 
-  return v3;
+  return viewWithScreenshotImage;
 }
 
 - (UIViewController)viewControllerForOverlayPresentations
 {
-  v3 = [(SSSScreenshotView *)self delegate];
-  v4 = [v3 viewControllerForPresentationsFromScreenshotView:self];
+  delegate = [(SSSScreenshotView *)self delegate];
+  v4 = [delegate viewControllerForPresentationsFromScreenshotView:self];
 
   return v4;
 }
 
 - (UIView)contentSnapshot
 {
-  v3 = [(SSSScreenshotView *)self screenshot];
-  v4 = [v3 modelModificationInfo];
-  v5 = v4;
-  if (v4)
+  screenshot = [(SSSScreenshotView *)self screenshot];
+  modelModificationInfo = [screenshot modelModificationInfo];
+  v5 = modelModificationInfo;
+  if (modelModificationInfo)
   {
-    [v4 cropInfo];
+    [modelModificationInfo cropInfo];
     v6 = v14;
     v7 = v13;
     v8 = v16;
@@ -1926,79 +1926,79 @@ LABEL_14:
     v7 = 0.0;
   }
 
-  v10 = [(SSSScreenshotView *)self currentView];
-  v11 = [v10 resizableSnapshotViewFromRect:1 afterScreenUpdates:v7 withCapInsets:{v6, v9, v8, UIEdgeInsetsZero.top, UIEdgeInsetsZero.left, UIEdgeInsetsZero.bottom, UIEdgeInsetsZero.right}];
+  currentView = [(SSSScreenshotView *)self currentView];
+  v11 = [currentView resizableSnapshotViewFromRect:1 afterScreenUpdates:v7 withCapInsets:{v6, v9, v8, UIEdgeInsetsZero.top, UIEdgeInsetsZero.left, UIEdgeInsetsZero.bottom, UIEdgeInsetsZero.right}];
 
   return v11;
 }
 
-- (void)requireAllOtherGestureRecognizersToFailBeforeGestureRecognizer:(id)a3
+- (void)requireAllOtherGestureRecognizersToFailBeforeGestureRecognizer:(id)recognizer
 {
-  v4 = a3;
-  v5 = [(SSSScreenshotView *)self delegate];
-  [v5 screenshotView:self hasHighPriorityGesture:v4];
+  recognizerCopy = recognizer;
+  delegate = [(SSSScreenshotView *)self delegate];
+  [delegate screenshotView:self hasHighPriorityGesture:recognizerCopy];
 }
 
-- (void)requireGestureRecognizerToFailBeforeAllOtherGestureRecognizers:(id)a3
+- (void)requireGestureRecognizerToFailBeforeAllOtherGestureRecognizers:(id)recognizers
 {
-  v4 = a3;
-  v5 = [(SSSScreenshotView *)self delegate];
-  [v5 screenshotView:self noLongerHasHighPriorityGesture:v4];
+  recognizersCopy = recognizers;
+  delegate = [(SSSScreenshotView *)self delegate];
+  [delegate screenshotView:self noLongerHasHighPriorityGesture:recognizersCopy];
 }
 
-- (void)setGesturesEnabled:(BOOL)a3
+- (void)setGesturesEnabled:(BOOL)enabled
 {
-  if (HIBYTE(self->_lastScreenshotImageViewFrameInScreen.size.height) != a3)
+  if (HIBYTE(self->_lastScreenshotImageViewFrameInScreen.size.height) != enabled)
   {
-    HIBYTE(self->_lastScreenshotImageViewFrameInScreen.size.height) = a3;
+    HIBYTE(self->_lastScreenshotImageViewFrameInScreen.size.height) = enabled;
     [(SSSScreenshotView *)self setNeedsLayout];
   }
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(SSSScreenshotView *)self currentView];
-  [v8 convertPoint:self fromView:{x, y}];
+  y = inside.y;
+  x = inside.x;
+  eventCopy = event;
+  currentView = [(SSSScreenshotView *)self currentView];
+  [currentView convertPoint:self fromView:{x, y}];
   v10 = v9;
   v12 = v11;
 
-  v13 = [(SSSScreenshotView *)self currentView];
-  v14 = [v13 pointInside:v7 withEvent:{v10, v12}];
+  currentView2 = [(SSSScreenshotView *)self currentView];
+  v14 = [currentView2 pointInside:eventCopy withEvent:{v10, v12}];
 
-  v15 = [(SSSScreenshotView *)self editMode];
+  editMode = [(SSSScreenshotView *)self editMode];
   v16 = &OBJC_IVAR___SSSScreenshotView__pdfCropController;
-  if (!v15)
+  if (!editMode)
   {
     v16 = &OBJC_IVAR___SSSScreenshotView__imageCropController;
   }
 
-  v17 = [*(&self->super.super.super.super.isa + *v16) cropView];
-  [v17 convertPoint:self fromView:{x, y}];
-  v18 = [v17 pointInside:v7 withEvent:?];
+  cropView = [*(&self->super.super.super.super.isa + *v16) cropView];
+  [cropView convertPoint:self fromView:{x, y}];
+  v18 = [cropView pointInside:eventCopy withEvent:?];
   v21.receiver = self;
   v21.super_class = SSSScreenshotView;
-  v19 = v14 & [(SSSScreenshotView *)&v21 pointInside:v7 withEvent:x, y]| v18;
+  v19 = v14 & [(SSSScreenshotView *)&v21 pointInside:eventCopy withEvent:x, y]| v18;
 
   return v19 & 1;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
   if ([(SSSScreenshotView *)self state]== 1 && [(SSSScreenshotView *)self editMode]== 1)
   {
-    v8 = [*(&self->_pdfCropController + 2) _pdfView];
-    [(SSSScreenshotView *)self convertPoint:v8 toView:x, y];
+    _pdfView = [*(&self->_pdfCropController + 2) _pdfView];
+    [(SSSScreenshotView *)self convertPoint:_pdfView toView:x, y];
     v10 = v9;
     v12 = v11;
 
-    v13 = [*(&self->_pdfCropController + 2) _pdfView];
-    v14 = [v13 hitTest:v7 withEvent:{v10, v12}];
+    _pdfView2 = [*(&self->_pdfCropController + 2) _pdfView];
+    v14 = [_pdfView2 hitTest:eventCopy withEvent:{v10, v12}];
   }
 
   else
@@ -2007,48 +2007,48 @@ LABEL_14:
     {
       v17.receiver = self;
       v17.super_class = SSSScreenshotView;
-      v15 = [(SSSScreenshotView *)&v17 hitTest:v7 withEvent:x, y];
+      selfCopy = [(SSSScreenshotView *)&v17 hitTest:eventCopy withEvent:x, y];
     }
 
     else
     {
-      v15 = self;
+      selfCopy = self;
     }
 
-    v14 = v15;
+    v14 = selfCopy;
   }
 
   return v14;
 }
 
-- (void)setEditMode:(int64_t)a3
+- (void)setEditMode:(int64_t)mode
 {
-  if (*(&self->_delegate + 2) != a3)
+  if (*(&self->_delegate + 2) != mode)
   {
-    *(&self->_delegate + 2) = a3;
+    *(&self->_delegate + 2) = mode;
     v5 = (&self->_imageCropController + 2);
     [*(&self->_imageCropController + 2) clearImageAnalysisTextSelection];
-    [*(&self->_screenshotImageView + 2) setEditMode:a3];
-    if (a3 == 2)
+    [*(&self->_screenshotImageView + 2) setEditMode:mode];
+    if (mode == 2)
     {
       BYTE4(self->_lastScreenshotImageViewFrameInScreen.size.height) = 1;
     }
 
-    else if (a3 == 1 && BYTE4(self->_lastScreenshotImageViewFrameInScreen.size.height) == 1)
+    else if (mode == 1 && BYTE4(self->_lastScreenshotImageViewFrameInScreen.size.height) == 1)
     {
       [(SSSScreenshotView *)self _layoutPDFViewVerticalContentInsetToMatchImageView];
-      v6 = [*(&self->_pdfCropController + 2) _pdfView];
-      v7 = [v6 documentScrollView];
+      _pdfView = [*(&self->_pdfCropController + 2) _pdfView];
+      documentScrollView = [_pdfView documentScrollView];
 
-      [v7 contentInset];
-      [v7 setContentInset:{fmax(v8, 118.0)}];
+      [documentScrollView contentInset];
+      [documentScrollView setContentInset:{fmax(v8, 118.0)}];
     }
 
-    v9 = [*(&self->super._ss_vi2EnabledCacheIsValid + 1) cropView];
-    [v9 setHidden:*(&self->_delegate + 2) != 0];
+    cropView = [*(&self->super._ss_vi2EnabledCacheIsValid + 1) cropView];
+    [cropView setHidden:*(&self->_delegate + 2) != 0];
 
-    v10 = [*(&self->_screenshotImageView + 2) cropView];
-    [v10 setHidden:*(&self->_delegate + 2) == 0];
+    cropView2 = [*(&self->_screenshotImageView + 2) cropView];
+    [cropView2 setHidden:*(&self->_delegate + 2) == 0];
 
     if (!*(&self->_delegate + 2))
     {
@@ -2056,11 +2056,11 @@ LABEL_14:
     }
 
     [*v5 setOverlayControllerActive:0];
-    v11 = [(SSSScreenshotView *)self currentView];
-    [v11 setOverlayControllerActive:1];
+    currentView = [(SSSScreenshotView *)self currentView];
+    [currentView setOverlayControllerActive:1];
 
-    v12 = [(SSSScreenshotView *)self screenshot];
-    [v12 setLastViewEditMode:a3];
+    screenshot = [(SSSScreenshotView *)self screenshot];
+    [screenshot setLastViewEditMode:mode];
 
     [(SSSScreenshotView *)self setNeedsLayout];
   }
@@ -2077,116 +2077,116 @@ LABEL_14:
 
 - (void)enterCrop
 {
-  v3 = [(SSSScreenshotView *)self currentCropController];
-  [v3 enterCrop];
+  currentCropController = [(SSSScreenshotView *)self currentCropController];
+  [currentCropController enterCrop];
 
   [(SSSScreenshotView *)self setNeedsLayout];
 }
 
 - (void)resetCrop
 {
-  v3 = [(SSSScreenshotView *)self currentCropController];
-  [v3 resetCrop];
+  currentCropController = [(SSSScreenshotView *)self currentCropController];
+  [currentCropController resetCrop];
 
   [(SSSScreenshotView *)self setNeedsLayout];
 }
 
 - (void)doneCrop
 {
-  v3 = [(SSSScreenshotView *)self currentCropController];
-  [v3 doneCrop];
+  currentCropController = [(SSSScreenshotView *)self currentCropController];
+  [currentCropController doneCrop];
 
   [(SSSScreenshotView *)self setNeedsLayout];
 }
 
 - (void)cancelCrop
 {
-  v3 = [(SSSScreenshotView *)self currentCropController];
-  [v3 cancelCrop];
+  currentCropController = [(SSSScreenshotView *)self currentCropController];
+  [currentCropController cancelCrop];
 
   [(SSSScreenshotView *)self setNeedsLayout];
 }
 
 - (BOOL)isCropped
 {
-  v2 = [(SSSScreenshotView *)self currentCropController];
-  v3 = [v2 isCropped];
+  currentCropController = [(SSSScreenshotView *)self currentCropController];
+  isCropped = [currentCropController isCropped];
 
-  return v3;
+  return isCropped;
 }
 
 - (id)_imageAnalysisAaButtonIfExists
 {
   if (*(&self->_delegate + 2))
   {
-    v3 = 0;
+    analysisButton = 0;
   }
 
   else
   {
-    v4 = [*(&self->_imageCropController + 2) imageInteraction];
-    v3 = [v4 analysisButton];
+    imageInteraction = [*(&self->_imageCropController + 2) imageInteraction];
+    analysisButton = [imageInteraction analysisButton];
   }
 
-  v5 = [*(&self->_imageCropController + 2) imageInteraction];
-  [v5 setAnalysisButtonPrefersDarkGlyphWhenSelected:1];
+  imageInteraction2 = [*(&self->_imageCropController + 2) imageInteraction];
+  [imageInteraction2 setAnalysisButtonPrefersDarkGlyphWhenSelected:1];
 
   v6 = +[UIColor whiteColor];
-  [v3 setTintColor:v6];
+  [analysisButton setTintColor:v6];
 
-  return v3;
+  return analysisButton;
 }
 
 - (id)_imageAnalysisAaBarButtonItemIfExists
 {
   if (*(&self->_delegate + 2))
   {
-    v2 = 0;
+    analysisBarButtonItem = 0;
   }
 
   else
   {
-    v3 = [*(&self->_imageCropController + 2) imageInteraction];
-    v2 = [v3 analysisBarButtonItem];
+    imageInteraction = [*(&self->_imageCropController + 2) imageInteraction];
+    analysisBarButtonItem = [imageInteraction analysisBarButtonItem];
   }
 
-  return v2;
+  return analysisBarButtonItem;
 }
 
 - (id)_visualSearchCornerViewIfExists
 {
-  v3 = [(SSSScreenshotView *)self traitCollection];
-  v4 = [v3 userInterfaceIdiom];
+  traitCollection = [(SSSScreenshotView *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (_SSQuickActionsEnabled() && v4 || *(&self->_delegate + 2))
+  if (_SSQuickActionsEnabled() && userInterfaceIdiom || *(&self->_delegate + 2))
   {
-    v5 = 0;
+    visualSearchCornerView = 0;
   }
 
   else
   {
-    v7 = [*(&self->_imageCropController + 2) imageInteraction];
-    v5 = [v7 visualSearchCornerView];
+    imageInteraction = [*(&self->_imageCropController + 2) imageInteraction];
+    visualSearchCornerView = [imageInteraction visualSearchCornerView];
   }
 
-  return v5;
+  return visualSearchCornerView;
 }
 
 - (id)_actionInfoViewIfExists
 {
   if (_SSQuickActionsEnabled() && ![(_SSSVI2View *)self _ss_vi2Enabled])
   {
-    v4 = [*(&self->_imageCropController + 2) imageInteraction];
-    v5 = v4;
+    imageInteraction = [*(&self->_imageCropController + 2) imageInteraction];
+    v5 = imageInteraction;
     if (*(&self->_delegate + 2))
     {
-      v3 = 0;
+      customLayoutActionInfoView = 0;
     }
 
     else
     {
-      v3 = [v4 customLayoutActionInfoView];
-      if (v3)
+      customLayoutActionInfoView = [imageInteraction customLayoutActionInfoView];
+      if (customLayoutActionInfoView)
       {
         [v5 setActionInfoEdgeInsets:{UIEdgeInsetsZero.top, UIEdgeInsetsZero.left, UIEdgeInsetsZero.bottom, UIEdgeInsetsZero.right}];
         [v5 setPreferredQuickActionButtonHeight:35.0];
@@ -2198,41 +2198,41 @@ LABEL_14:
 
   else
   {
-    v3 = 0;
+    customLayoutActionInfoView = 0;
   }
 
-  return v3;
+  return customLayoutActionInfoView;
 }
 
 - (id)_omnibarContainerViewIfExists
 {
   if ([(_SSSVI2View *)self _ss_vi2Enabled])
   {
-    v3 = [*(&self->_imageCropController + 2) imageInteraction];
+    imageInteraction = [*(&self->_imageCropController + 2) imageInteraction];
     if ((objc_opt_respondsToSelector() & 1) != 0 && !*(&self->_delegate + 2))
     {
-      v4 = [v3 omnibarContainerView];
-      if (v4)
+      omnibarContainerView = [imageInteraction omnibarContainerView];
+      if (omnibarContainerView)
       {
-        [v3 setActionInfoEdgeInsets:{UIEdgeInsetsZero.top, UIEdgeInsetsZero.left, UIEdgeInsetsZero.bottom, UIEdgeInsetsZero.right}];
-        [v3 setPreferredQuickActionButtonHeight:35.0];
-        [v3 setActionInfoLiveTextButtonDisabled:1];
-        [v3 setActionInfoVisualSearchCornerViewDisabled:1];
+        [imageInteraction setActionInfoEdgeInsets:{UIEdgeInsetsZero.top, UIEdgeInsetsZero.left, UIEdgeInsetsZero.bottom, UIEdgeInsetsZero.right}];
+        [imageInteraction setPreferredQuickActionButtonHeight:35.0];
+        [imageInteraction setActionInfoLiveTextButtonDisabled:1];
+        [imageInteraction setActionInfoVisualSearchCornerViewDisabled:1];
       }
     }
 
     else
     {
-      v4 = 0;
+      omnibarContainerView = 0;
     }
   }
 
   else
   {
-    v4 = 0;
+    omnibarContainerView = 0;
   }
 
-  return v4;
+  return omnibarContainerView;
 }
 
 - (int64_t)currentPDFPage
@@ -2250,20 +2250,20 @@ LABEL_14:
 
 - ($0AC6E346AE4835514AAA8AC86D8F4844)_viewState
 {
-  v3 = [(SSSScreenshotView *)self editMode];
-  v4 = [(SSSScreenshotView *)self currentPDFPage];
-  v5 = v3;
-  result.var1 = v4;
+  editMode = [(SSSScreenshotView *)self editMode];
+  currentPDFPage = [(SSSScreenshotView *)self currentPDFPage];
+  v5 = editMode;
+  result.var1 = currentPDFPage;
   result.var0 = v5;
   return result;
 }
 
-- (void)pageChanged:(id)a3
+- (void)pageChanged:(id)changed
 {
-  v4 = [(SSSScreenshotView *)self editMode];
-  v5 = [*(&self->_pdfCropController + 2) currentPDFPage];
-  v6 = [(SSSScreenshotView *)self screenshot];
-  v7 = [v6 modelModificationInfoForState:{v4, v5}];
+  editMode = [(SSSScreenshotView *)self editMode];
+  currentPDFPage = [*(&self->_pdfCropController + 2) currentPDFPage];
+  screenshot = [(SSSScreenshotView *)self screenshot];
+  v7 = [screenshot modelModificationInfoForState:{editMode, currentPDFPage}];
   v8 = v7;
   if (v7)
   {
@@ -2315,68 +2315,68 @@ LABEL_14:
 
 - (id)viewModificationInfo
 {
-  v3 = [(SSSScreenshotView *)self screenshot];
-  v4 = [(SSSScreenshotView *)self _viewState];
-  v6 = [v3 viewModificationInfoForState:{v4, v5}];
+  screenshot = [(SSSScreenshotView *)self screenshot];
+  _viewState = [(SSSScreenshotView *)self _viewState];
+  v6 = [screenshot viewModificationInfoForState:{_viewState, v5}];
 
   return v6;
 }
 
 - (id)modelModificationInfo
 {
-  v3 = [(SSSScreenshotView *)self screenshot];
-  v4 = [(SSSScreenshotView *)self _viewState];
-  v6 = [v3 modelModificationInfoForState:{v4, v5}];
+  screenshot = [(SSSScreenshotView *)self screenshot];
+  _viewState = [(SSSScreenshotView *)self _viewState];
+  v6 = [screenshot modelModificationInfoForState:{_viewState, v5}];
 
   return v6;
 }
 
-- (void)promoteViewValueToModelValueForKey:(unint64_t)a3
+- (void)promoteViewValueToModelValueForKey:(unint64_t)key
 {
-  v7 = [(SSSScreenshotView *)self screenshot];
-  v5 = [(SSSScreenshotView *)self _viewState];
-  [v7 promoteViewValueToModelValueForKey:a3 forState:{v5, v6}];
+  screenshot = [(SSSScreenshotView *)self screenshot];
+  _viewState = [(SSSScreenshotView *)self _viewState];
+  [screenshot promoteViewValueToModelValueForKey:key forState:{_viewState, v6}];
 }
 
 - (void)undo
 {
-  v5 = [(SSSScreenshotView *)self screenshot];
-  v3 = [(SSSScreenshotView *)self _viewState];
-  [v5 undoForViewState:{v3, v4}];
+  screenshot = [(SSSScreenshotView *)self screenshot];
+  _viewState = [(SSSScreenshotView *)self _viewState];
+  [screenshot undoForViewState:{_viewState, v4}];
 }
 
 - (void)redo
 {
-  v5 = [(SSSScreenshotView *)self screenshot];
-  v3 = [(SSSScreenshotView *)self _viewState];
-  [v5 redoForViewState:{v3, v4}];
+  screenshot = [(SSSScreenshotView *)self screenshot];
+  _viewState = [(SSSScreenshotView *)self _viewState];
+  [screenshot redoForViewState:{_viewState, v4}];
 }
 
 - (BOOL)canUndo
 {
-  v2 = self;
-  v3 = [(SSSScreenshotView *)self screenshot];
-  v4 = [(SSSScreenshotView *)v2 _viewState];
-  LOBYTE(v2) = [v3 canUndoForViewState:{v4, v5}];
+  selfCopy = self;
+  screenshot = [(SSSScreenshotView *)self screenshot];
+  _viewState = [(SSSScreenshotView *)selfCopy _viewState];
+  LOBYTE(selfCopy) = [screenshot canUndoForViewState:{_viewState, v5}];
 
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)canRedo
 {
-  v2 = self;
-  v3 = [(SSSScreenshotView *)self screenshot];
-  v4 = [(SSSScreenshotView *)v2 _viewState];
-  LOBYTE(v2) = [v3 canRedoForViewState:{v4, v5}];
+  selfCopy = self;
+  screenshot = [(SSSScreenshotView *)self screenshot];
+  _viewState = [(SSSScreenshotView *)selfCopy _viewState];
+  LOBYTE(selfCopy) = [screenshot canRedoForViewState:{_viewState, v5}];
 
-  return v2;
+  return selfCopy;
 }
 
 - (void)revert
 {
-  v5 = [(SSSScreenshotView *)self screenshot];
-  v3 = [(SSSScreenshotView *)self _viewState];
-  [v5 revertForViewState:{v3, v4}];
+  screenshot = [(SSSScreenshotView *)self screenshot];
+  _viewState = [(SSSScreenshotView *)self _viewState];
+  [screenshot revertForViewState:{_viewState, v4}];
 }
 
 - (void)prepareForGestureScreenshotBasedAnimation
@@ -2403,56 +2403,56 @@ LABEL_14:
 {
   if ([(SSSScreenshotView *)self editMode])
   {
-    v3 = 0;
+    analysis = 0;
   }
 
   else
   {
-    v4 = [*(&self->_imageCropController + 2) imageInteraction];
-    v3 = [v4 analysis];
+    imageInteraction = [*(&self->_imageCropController + 2) imageInteraction];
+    analysis = [imageInteraction analysis];
   }
 
-  return v3;
+  return analysis;
 }
 
 - (NSString)vsGlyph
 {
-  v2 = [*(&self->_imageCropController + 2) imageInteraction];
-  v3 = [v2 visualSearchResultItems];
-  v4 = [v3 firstObject];
-  v5 = [v4 infoButtonGlyphName];
+  imageInteraction = [*(&self->_imageCropController + 2) imageInteraction];
+  visualSearchResultItems = [imageInteraction visualSearchResultItems];
+  firstObject = [visualSearchResultItems firstObject];
+  infoButtonGlyphName = [firstObject infoButtonGlyphName];
 
-  return v5;
+  return infoButtonGlyphName;
 }
 
 - (NSString)vsGlyphFilled
 {
-  v2 = [*(&self->_imageCropController + 2) imageInteraction];
-  v3 = [v2 visualSearchResultItems];
-  v4 = [v3 firstObject];
-  v5 = [v4 filledInfoButtonGlyphName];
+  imageInteraction = [*(&self->_imageCropController + 2) imageInteraction];
+  visualSearchResultItems = [imageInteraction visualSearchResultItems];
+  firstObject = [visualSearchResultItems firstObject];
+  filledInfoButtonGlyphName = [firstObject filledInfoButtonGlyphName];
 
-  return v5;
+  return filledInfoButtonGlyphName;
 }
 
 - (void)dismissVISheetIfNecessary
 {
-  v2 = [*(&self->_imageCropController + 2) imageInteraction];
-  [v2 dismissVisualIntelligenceSheetIfNecessary];
+  imageInteraction = [*(&self->_imageCropController + 2) imageInteraction];
+  [imageInteraction dismissVisualIntelligenceSheetIfNecessary];
 }
 
 - (BOOL)isShowingVICard
 {
-  v2 = [*(&self->_imageCropController + 2) imageInteraction];
-  v3 = [v2 isVisualIntelligenceSheetVisible];
+  imageInteraction = [*(&self->_imageCropController + 2) imageInteraction];
+  isVisualIntelligenceSheetVisible = [imageInteraction isVisualIntelligenceSheetVisible];
 
-  return v3;
+  return isVisualIntelligenceSheetVisible;
 }
 
 - (BOOL)isVICardFullScreen
 {
-  v2 = [*(&self->_imageCropController + 2) imageInteraction];
-  [v2 currentVisualIntelligenceSheetProgress];
+  imageInteraction = [*(&self->_imageCropController + 2) imageInteraction];
+  [imageInteraction currentVisualIntelligenceSheetProgress];
   v4 = v3 > 0.75;
 
   return v4;
@@ -2462,15 +2462,15 @@ LABEL_14:
 {
   if (*(&self->_delegate + 2))
   {
-    v4 = 0;
+    visionKitFeedbackActivity = 0;
   }
 
   else
   {
-    v4 = [*(&self->_imageCropController + 2) visionKitFeedbackActivity];
+    visionKitFeedbackActivity = [*(&self->_imageCropController + 2) visionKitFeedbackActivity];
   }
 
-  return v4;
+  return visionKitFeedbackActivity;
 }
 
 - (CGRect)cropOverlayViewRectInWindow
@@ -2483,12 +2483,12 @@ LABEL_14:
   return result;
 }
 
-- (void)setExtent:(CGRect)a3
+- (void)setExtent:(CGRect)extent
 {
-  *(&self->_editMode + 2) = *&a3.origin.x;
-  *(&self->_extent.origin.x + 2) = a3.origin.y;
-  *(&self->_extent.origin.y + 2) = a3.size.width;
-  *(&self->_extent.size.width + 2) = a3.size.height;
+  *(&self->_editMode + 2) = *&extent.origin.x;
+  *(&self->_extent.origin.x + 2) = extent.origin.y;
+  *(&self->_extent.origin.y + 2) = extent.size.width;
+  *(&self->_extent.size.width + 2) = extent.size.height;
 }
 
 - (SSSScreenshotViewDelegate)delegate

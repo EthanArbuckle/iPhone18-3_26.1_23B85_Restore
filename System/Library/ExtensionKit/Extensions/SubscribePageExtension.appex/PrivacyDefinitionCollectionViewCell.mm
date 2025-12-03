@@ -1,12 +1,12 @@
 @interface PrivacyDefinitionCollectionViewCell
-- (_TtC22SubscribePageExtension35PrivacyDefinitionCollectionViewCell)initWithCoder:(id)a3;
+- (_TtC22SubscribePageExtension35PrivacyDefinitionCollectionViewCell)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 @end
 
 @implementation PrivacyDefinitionCollectionViewCell
 
-- (_TtC22SubscribePageExtension35PrivacyDefinitionCollectionViewCell)initWithCoder:(id)a3
+- (_TtC22SubscribePageExtension35PrivacyDefinitionCollectionViewCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC22SubscribePageExtension35PrivacyDefinitionCollectionViewCell_itemLayoutContext;
   v5 = sub_1007469A4();
@@ -18,7 +18,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_10014A1E4();
 }
 

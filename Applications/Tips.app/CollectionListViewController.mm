@@ -1,33 +1,33 @@
 @interface CollectionListViewController
 + (NSString)defaultNavigationTitle;
-- (CollectionListViewController)initWithAppController:(id)a3;
-- (CollectionListViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (CollectionListViewController)initWithViewModel:(id)a3;
+- (CollectionListViewController)initWithAppController:(id)controller;
+- (CollectionListViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (CollectionListViewController)initWithViewModel:(id)model;
 - (id)supportArticleURLHandler;
-- (void)analyticsIncreaseCountViewForCollectionsView:(id)a3;
-- (void)analyticsIncreaseCountViewForCollectionsViewDelay:(id)a3;
+- (void)analyticsIncreaseCountViewForCollectionsView:(id)view;
+- (void)analyticsIncreaseCountViewForCollectionsViewDelay:(id)delay;
 - (void)applicationWillEnterBackground;
 - (void)cancelAnalyticsIncreaseCountViewForCollectionsViewDelay;
 - (void)dealloc;
-- (void)didPresentSearchController:(id)a3;
+- (void)didPresentSearchController:(id)controller;
 - (void)loadView;
-- (void)searchBarTextDidEndEditing:(id)a3;
-- (void)searchWithSearchQuery:(id)a3;
-- (void)setSupportArticleURLHandler:(id)a3;
-- (void)setViewModel:(id)a3;
-- (void)updateSearchResultsForSearchController:(id)a3;
+- (void)searchBarTextDidEndEditing:(id)editing;
+- (void)searchWithSearchQuery:(id)query;
+- (void)setSupportArticleURLHandler:(id)handler;
+- (void)setViewModel:(id)model;
+- (void)updateSearchResultsForSearchController:(id)controller;
 - (void)viewDidLoad;
-- (void)willDismissSearchController:(id)a3;
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4;
+- (void)willDismissSearchController:(id)controller;
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation CollectionListViewController
 
-- (void)setViewModel:(id)a3
+- (void)setViewModel:(id)model
 {
   v4 = *(self + OBJC_IVAR___CollectionListViewController_viewModel);
-  *(self + OBJC_IVAR___CollectionListViewController_viewModel) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___CollectionListViewController_viewModel) = model;
+  modelCopy = model;
 }
 
 + (NSString)defaultNavigationTitle
@@ -64,9 +64,9 @@
   return v3;
 }
 
-- (void)setSupportArticleURLHandler:(id)a3
+- (void)setSupportArticleURLHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = v4;
@@ -85,107 +85,107 @@
   v9 = *(self + OBJC_IVAR___CollectionListViewController_supportArticleURLHandler + 8);
   *v7 = v6;
   v7[1] = v4;
-  v10 = self;
+  selfCopy = self;
   sub_10001E970(v8);
 }
 
 - (void)dealloc
 {
-  v2 = self;
-  [(CollectionListViewController *)v2 cancelAnalyticsIncreaseCountViewForCollectionsViewDelay];
-  v3 = [objc_opt_self() defaultCenter];
-  [v3 removeObserver:v2 name:UIApplicationWillEnterForegroundNotification object:0];
-  [v3 removeObserver:v2 name:UIApplicationDidEnterBackgroundNotification object:0];
+  selfCopy = self;
+  [(CollectionListViewController *)selfCopy cancelAnalyticsIncreaseCountViewForCollectionsViewDelay];
+  defaultCenter = [objc_opt_self() defaultCenter];
+  [defaultCenter removeObserver:selfCopy name:UIApplicationWillEnterForegroundNotification object:0];
+  [defaultCenter removeObserver:selfCopy name:UIApplicationDidEnterBackgroundNotification object:0];
 
-  v4.receiver = v2;
+  v4.receiver = selfCopy;
   v4.super_class = type metadata accessor for CollectionListViewController();
   [(TPSViewController *)&v4 dealloc];
 }
 
-- (CollectionListViewController)initWithViewModel:(id)a3
+- (CollectionListViewController)initWithViewModel:(id)model
 {
-  v4 = a3;
-  v5 = sub_10001E56C(a3);
+  modelCopy = model;
+  v5 = sub_10001E56C(model);
 
   return v5;
 }
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   sub_10001C088();
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_10001C470();
 }
 
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator
 {
   v6.receiver = self;
   v6.super_class = type metadata accessor for CollectionListViewController();
-  [(CollectionListViewController *)&v6 willTransitionToTraitCollection:a3 withTransitionCoordinator:a4];
+  [(CollectionListViewController *)&v6 willTransitionToTraitCollection:collection withTransitionCoordinator:coordinator];
 }
 
 - (void)applicationWillEnterBackground
 {
-  v2 = self;
-  [(CollectionListViewController *)v2 cancelAnalyticsIncreaseCountViewForCollectionsViewDelay];
-  *(v2 + OBJC_IVAR___CollectionListViewController_canIncreaseViewCount) = 0;
+  selfCopy = self;
+  [(CollectionListViewController *)selfCopy cancelAnalyticsIncreaseCountViewForCollectionsViewDelay];
+  *(selfCopy + OBJC_IVAR___CollectionListViewController_canIncreaseViewCount) = 0;
 }
 
-- (CollectionListViewController)initWithAppController:(id)a3
+- (CollectionListViewController)initWithAppController:(id)controller
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (CollectionListViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (CollectionListViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)searchWithSearchQuery:(id)a3
+- (void)searchWithSearchQuery:(id)query
 {
-  v4 = a3;
-  v5 = self;
-  sub_10001D838(v4);
+  queryCopy = query;
+  selfCopy = self;
+  sub_10001D838(queryCopy);
 }
 
-- (void)updateSearchResultsForSearchController:(id)a3
+- (void)updateSearchResultsForSearchController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
-  sub_10001DED8(v4);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_10001DED8(controllerCopy);
 }
 
-- (void)didPresentSearchController:(id)a3
+- (void)didPresentSearchController:(id)controller
 {
   *(self + OBJC_IVAR___CollectionListViewController_searchActive) = 1;
-  v3 = self;
+  selfCopy = self;
   sub_10001D1E0();
 }
 
-- (void)willDismissSearchController:(id)a3
+- (void)willDismissSearchController:(id)controller
 {
   *(self + OBJC_IVAR___CollectionListViewController_searchActive) = 0;
   v3 = *(self + OBJC_IVAR___CollectionListViewController_searchResultsViewModel);
-  v5 = self;
+  selfCopy = self;
   v4 = v3;
   dispatch thunk of SearchResultsViewModel.reset()();
 
   sub_10001D1E0();
 }
 
-- (void)searchBarTextDidEndEditing:(id)a3
+- (void)searchBarTextDidEndEditing:(id)editing
 {
-  v4 = a3;
-  v5 = self;
+  editingCopy = editing;
+  selfCopy = self;
   sub_10001E70C();
 }
 
@@ -193,23 +193,23 @@
 {
   v3 = objc_opt_self();
   v4 = objc_allocWithZone(TPSViewSourceProxy);
-  v6 = self;
+  selfCopy = self;
   v5 = [v4 init];
-  [v3 cancelPreviousPerformRequestsWithTarget:v6 selector:"analyticsIncreaseCountViewForCollectionsView:" object:v5];
+  [v3 cancelPreviousPerformRequestsWithTarget:selfCopy selector:"analyticsIncreaseCountViewForCollectionsView:" object:v5];
 }
 
-- (void)analyticsIncreaseCountViewForCollectionsViewDelay:(id)a3
+- (void)analyticsIncreaseCountViewForCollectionsViewDelay:(id)delay
 {
-  v4 = a3;
-  v5 = self;
-  sub_10001E1F4(v4);
+  delayCopy = delay;
+  selfCopy = self;
+  sub_10001E1F4(delayCopy);
 }
 
-- (void)analyticsIncreaseCountViewForCollectionsView:(id)a3
+- (void)analyticsIncreaseCountViewForCollectionsView:(id)view
 {
-  v4 = a3;
-  v5 = self;
-  sub_10001E360(v4);
+  viewCopy = view;
+  selfCopy = self;
+  sub_10001E360(viewCopy);
 }
 
 @end

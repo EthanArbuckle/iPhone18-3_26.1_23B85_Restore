@@ -7,34 +7,34 @@
 + (BOOL)supportBargeIn;
 + (BOOL)supportPremiumAssets;
 + (BOOL)supportRemoteDarwinVoiceTrigger;
-+ (double)VTMachAbsoluteTimeGetTimeInterval:(unint64_t)a3;
++ (double)VTMachAbsoluteTimeGetTimeInterval:(unint64_t)interval;
 + (double)systemUpTime;
-+ (id)convertToShortLPCMBufFromFloatLPCMBuf:(id)a3;
++ (id)convertToShortLPCMBufFromFloatLPCMBuf:(id)buf;
 + (id)deviceProductType;
 + (id)deviceProductVersion;
 + (id)deviceSoftwareVersion;
-+ (id)getAssetHashFromConfigPath:(id)a3;
-+ (id)sanitizeEventInfoForLogging:(id)a3;
-+ (unint64_t)deviceCategoryForDeviceProductType:(id)a3;
++ (id)getAssetHashFromConfigPath:(id)path;
++ (id)sanitizeEventInfoForLogging:(id)logging;
++ (unint64_t)deviceCategoryForDeviceProductType:(id)type;
 @end
 
 @implementation VTUtilities
 
-+ (id)convertToShortLPCMBufFromFloatLPCMBuf:(id)a3
++ (id)convertToShortLPCMBufFromFloatLPCMBuf:(id)buf
 {
-  v3 = a3;
-  v4 = [v3 length];
+  bufCopy = buf;
+  v4 = [bufCopy length];
   v5 = v4 >> 2;
   v12 = 1191181824;
   __C = 1.0;
   __B = -1.0;
-  v6 = [objc_alloc(MEMORY[0x277CBEB28]) initWithLength:v4 & 0xFFFFFFFFFFFFFFFCLL];
+  0xFFFFFFFFFFFFFFFCLL = [objc_alloc(MEMORY[0x277CBEB28]) initWithLength:v4 & 0xFFFFFFFFFFFFFFFCLL];
   v7 = [objc_alloc(MEMORY[0x277CBEB28]) initWithLength:2 * v5];
-  v8 = [v3 bytes];
+  bytes = [bufCopy bytes];
 
-  vDSP_vclip(v8, 1, &__B, &__C, [v6 bytes], 1, v5);
-  MEMORY[0x223DF29D0]([v6 bytes], 1, &v12, objc_msgSend(v6, "bytes"), 1, v5);
-  vDSP_vfix16([v6 bytes], 1, objc_msgSend(v7, "bytes"), 1, v5);
+  vDSP_vclip(bytes, 1, &__B, &__C, [0xFFFFFFFFFFFFFFFCLL bytes], 1, v5);
+  MEMORY[0x223DF29D0]([0xFFFFFFFFFFFFFFFCLL bytes], 1, &v12, objc_msgSend(0xFFFFFFFFFFFFFFFCLL, "bytes"), 1, v5);
+  vDSP_vfix16([0xFFFFFFFFFFFFFFFCLL bytes], 1, objc_msgSend(v7, "bytes"), 1, v5);
 
   return v7;
 }
@@ -56,16 +56,16 @@ uint64_t __24__VTUtilities_isTorpedo__block_invoke()
   return result;
 }
 
-+ (double)VTMachAbsoluteTimeGetTimeInterval:(unint64_t)a3
++ (double)VTMachAbsoluteTimeGetTimeInterval:(unint64_t)interval
 {
   if (VTMachAbsoluteTimeGetTimeInterval__onceToken != -1)
   {
-    v4 = a3;
+    intervalCopy = interval;
     dispatch_once(&VTMachAbsoluteTimeGetTimeInterval__onceToken, &__block_literal_global_168);
-    a3 = v4;
+    interval = intervalCopy;
   }
 
-  return *&VTMachAbsoluteTimeGetTimeInterval__rate * a3 / 1000000000.0;
+  return *&VTMachAbsoluteTimeGetTimeInterval__rate * interval / 1000000000.0;
 }
 
 double __49__VTUtilities_VTMachAbsoluteTimeGetTimeInterval___block_invoke()
@@ -82,49 +82,49 @@ double __49__VTUtilities_VTMachAbsoluteTimeGetTimeInterval___block_invoke()
   return result;
 }
 
-+ (id)getAssetHashFromConfigPath:(id)a3
++ (id)getAssetHashFromConfigPath:(id)path
 {
-  v3 = a3;
-  v4 = [v3 rangeOfString:@"com_apple_MobileAsset_VoiceTriggerAssets/"];
+  pathCopy = path;
+  v4 = [pathCopy rangeOfString:@"com_apple_MobileAsset_VoiceTriggerAssets/"];
   v6 = v5;
-  v7 = [v3 rangeOfString:@".asset"];
+  v7 = [pathCopy rangeOfString:@".asset"];
   v9 = @"nohash";
   if (v6 && v8)
   {
-    v9 = [v3 substringWithRange:{v4 + v6, v7 - (v4 + v6)}];
+    v9 = [pathCopy substringWithRange:{v4 + v6, v7 - (v4 + v6)}];
   }
 
   return v9;
 }
 
-+ (unint64_t)deviceCategoryForDeviceProductType:(id)a3
++ (unint64_t)deviceCategoryForDeviceProductType:(id)type
 {
   v9 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  typeCopy = type;
   if (deviceCategoryForDeviceProductType__onceToken != -1)
   {
     dispatch_once(&deviceCategoryForDeviceProductType__onceToken, &__block_literal_global_61);
   }
 
-  if ([deviceCategoryForDeviceProductType__nonAopDeviceSet containsObject:v3])
+  if ([deviceCategoryForDeviceProductType__nonAopDeviceSet containsObject:typeCopy])
   {
     v4 = 1;
   }
 
   else
   {
-    if ([deviceCategoryForDeviceProductType__macOsDeviceSet containsObject:v3])
+    if ([deviceCategoryForDeviceProductType__macOsDeviceSet containsObject:typeCopy])
     {
       goto LABEL_6;
     }
 
-    if ([v3 containsString:@"iPad"] & 1) != 0 || (objc_msgSend(v3, "containsString:", @"iPhone"))
+    if ([typeCopy containsString:@"iPad"] & 1) != 0 || (objc_msgSend(typeCopy, "containsString:", @"iPhone"))
     {
       v4 = 2;
       goto LABEL_10;
     }
 
-    if ([v3 containsString:@"Mac"])
+    if ([typeCopy containsString:@"Mac"])
     {
 LABEL_6:
       v4 = 3;
@@ -136,7 +136,7 @@ LABEL_6:
       if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_DEFAULT))
       {
         v7 = 138412290;
-        v8 = v3;
+        v8 = typeCopy;
         _os_log_impl(&dword_223A31000, v6, OS_LOG_TYPE_DEFAULT, "Unknown Device category for deviceProduceType: %@", &v7, 0xCu);
       }
 
@@ -344,16 +344,16 @@ uint64_t __22__VTUtilities_isNonUI__block_invoke()
   return result;
 }
 
-+ (id)sanitizeEventInfoForLogging:(id)a3
++ (id)sanitizeEventInfoForLogging:(id)logging
 {
-  v4 = a3;
-  if (v4)
+  loggingCopy = logging;
+  if (loggingCopy)
   {
     v17[0] = 0;
     v17[1] = v17;
     v17[2] = 0x2020000000;
     v17[3] = 0xBFF0000000000000;
-    v5 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v6 = [MEMORY[0x277CBEB98] setWithArray:&unk_283715428];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
@@ -362,10 +362,10 @@ uint64_t __22__VTUtilities_isNonUI__block_invoke()
     v7 = v6;
     v13 = v7;
     v15 = v17;
-    v8 = v5;
+    v8 = dictionary;
     v14 = v8;
-    v16 = a1;
-    [v4 enumerateKeysAndObjectsUsingBlock:v12];
+    selfCopy = self;
+    [loggingCopy enumerateKeysAndObjectsUsingBlock:v12];
     v9 = v14;
     v10 = v8;
 

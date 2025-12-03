@@ -2,7 +2,7 @@
 - (BOOL)shouldDefer;
 - (NSString)description;
 - (unsigned)backFillID;
-- (void)completeWithStatus:(int)a3;
+- (void)completeWithStatus:(int)status;
 @end
 
 @implementation MFBackFillMessageBodyScheduler.Request
@@ -33,10 +33,10 @@
   return v4;
 }
 
-- (void)completeWithStatus:(int)a3
+- (void)completeWithStatus:(int)status
 {
   MEMORY[0x1E69E5928](self);
-  sub_1B06C9DEC(a3);
+  sub_1B06C9DEC(status);
   MEMORY[0x1E69E5920](self);
 }
 

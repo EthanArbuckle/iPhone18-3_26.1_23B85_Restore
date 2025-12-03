@@ -4,16 +4,16 @@
 - (NSMutableArray)completionBlocks;
 - (id)animations;
 - (id)completion;
-- (void)addAnimations:(id)a3;
-- (void)addCompletion:(id)a3;
+- (void)addAnimations:(id)animations;
+- (void)addCompletion:(id)completion;
 @end
 
 @implementation UIDragInteractionContextImpl
 
 - (id)animations
 {
-  v2 = [(UIDragInteractionContextImpl *)self animationBlocks];
-  v3 = [v2 copy];
+  animationBlocks = [(UIDragInteractionContextImpl *)self animationBlocks];
+  v3 = [animationBlocks copy];
 
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -63,8 +63,8 @@ void __42__UIDragInteractionContextImpl_animations__block_invoke(uint64_t a1)
 
 - (id)completion
 {
-  v2 = [(UIDragInteractionContextImpl *)self completionBlocks];
-  v3 = [v2 copy];
+  completionBlocks = [(UIDragInteractionContextImpl *)self completionBlocks];
+  v3 = [completionBlocks copy];
 
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -142,32 +142,32 @@ void __42__UIDragInteractionContextImpl_completion__block_invoke(uint64_t a1)
   return completionBlocks;
 }
 
-- (void)addAnimations:(id)a3
+- (void)addAnimations:(id)animations
 {
-  aBlock = a3;
+  aBlock = animations;
   if (!aBlock)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"UIDragInteraction.m" lineNumber:230 description:{@"Invalid parameter not satisfying: %@", @"animations"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIDragInteraction.m" lineNumber:230 description:{@"Invalid parameter not satisfying: %@", @"animations"}];
   }
 
-  v5 = [(UIDragInteractionContextImpl *)self animationBlocks];
+  animationBlocks = [(UIDragInteractionContextImpl *)self animationBlocks];
   v6 = _Block_copy(aBlock);
-  [v5 addObject:v6];
+  [animationBlocks addObject:v6];
 }
 
-- (void)addCompletion:(id)a3
+- (void)addCompletion:(id)completion
 {
-  aBlock = a3;
+  aBlock = completion;
   if (!aBlock)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"UIDragInteraction.m" lineNumber:235 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIDragInteraction.m" lineNumber:235 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
   }
 
-  v5 = [(UIDragInteractionContextImpl *)self completionBlocks];
+  completionBlocks = [(UIDragInteractionContextImpl *)self completionBlocks];
   v6 = _Block_copy(aBlock);
-  [v5 addObject:v6];
+  [completionBlocks addObject:v6];
 }
 
 - (CAPoint3D)initialLocation

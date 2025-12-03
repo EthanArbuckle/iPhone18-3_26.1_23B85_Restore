@@ -1,20 +1,20 @@
 @interface SBPanSystemGestureRecognizer
-- (SBPanSystemGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
+- (SBPanSystemGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
 - (void)dealloc;
 - (void)invalidateNoHysterisisCancellationTimer;
 - (void)reset;
-- (void)setState:(int64_t)a3;
+- (void)setState:(int64_t)state;
 - (void)setupNoHysterisisCancellationTimerIfNeeded;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
 @end
 
 @implementation SBPanSystemGestureRecognizer
 
-- (SBPanSystemGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (SBPanSystemGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
   v5.receiver = self;
   v5.super_class = SBPanSystemGestureRecognizer;
-  result = [(SBPanSystemGestureRecognizer *)&v5 initWithTarget:a3 action:a4];
+  result = [(SBPanSystemGestureRecognizer *)&v5 initWithTarget:target action:action];
   if (result)
   {
     result->_failsPastMaximumPressDurationWithoutHysteresis = 0;
@@ -42,22 +42,22 @@
   self->_initialTouchReceived = 0;
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
-  v5 = [(SBPanSystemGestureRecognizer *)self failsPastMaximumPressDurationWithoutHysteresis];
-  if (a3 == 1 && v5)
+  failsPastMaximumPressDurationWithoutHysteresis = [(SBPanSystemGestureRecognizer *)self failsPastMaximumPressDurationWithoutHysteresis];
+  if (state == 1 && failsPastMaximumPressDurationWithoutHysteresis)
   {
     BSContinuousMachTimeNow();
     v7 = v6 - self->_initialTouchReceivedTime;
     [(SBPanSystemGestureRecognizer *)self maximumPressDuration];
     if (v7 >= v8)
     {
-      a3 = 5;
+      state = 5;
     }
 
     else
     {
-      a3 = 1;
+      state = 1;
     }
   }
 
@@ -71,26 +71,26 @@
 
   v11.receiver = self;
   v11.super_class = SBPanSystemGestureRecognizer;
-  [(SBPanSystemGestureRecognizer *)&v11 setState:a3];
+  [(SBPanSystemGestureRecognizer *)&v11 setState:state];
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v6 = a3;
+  beganCopy = began;
   v10.receiver = self;
   v10.super_class = SBPanSystemGestureRecognizer;
-  [(SBPanSystemGestureRecognizer *)&v10 touchesBegan:v6 withEvent:a4];
+  [(SBPanSystemGestureRecognizer *)&v10 touchesBegan:beganCopy withEvent:event];
   if (!self->_initialTouchReceived)
   {
     self->_initialTouchReceived = 1;
     BSContinuousMachTimeNow();
     self->_initialTouchReceivedTime = v7;
     [(SBPanSystemGestureRecognizer *)self setupNoHysterisisCancellationTimerIfNeeded];
-    v8 = [(SBPanSystemGestureRecognizer *)self delegate];
+    delegate = [(SBPanSystemGestureRecognizer *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      v9 = [v6 anyObject];
-      [v8 panSystemGestureRecognizer:self didReceiveInitialTouch:v9];
+      anyObject = [beganCopy anyObject];
+      [delegate panSystemGestureRecognizer:self didReceiveInitialTouch:anyObject];
     }
   }
 }
@@ -114,8 +114,8 @@
     noHysterisisCancellationTimer = self->_noHysterisisCancellationTimer;
     self->_noHysterisisCancellationTimer = v6;
 
-    v8 = [MEMORY[0x277CBEB88] currentRunLoop];
-    [v8 addTimer:self->_noHysterisisCancellationTimer forMode:*MEMORY[0x277CBE738]];
+    currentRunLoop = [MEMORY[0x277CBEB88] currentRunLoop];
+    [currentRunLoop addTimer:self->_noHysterisisCancellationTimer forMode:*MEMORY[0x277CBE738]];
 
     objc_destroyWeak(&v10);
     objc_destroyWeak(&location);

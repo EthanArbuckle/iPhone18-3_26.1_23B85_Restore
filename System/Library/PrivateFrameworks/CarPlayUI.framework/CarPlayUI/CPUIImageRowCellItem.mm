@@ -1,22 +1,22 @@
 @interface CPUIImageRowCellItem
 - (CGSize)intrinsicContentSize;
-- (CPUIImageRowCellItem)initWithFrame:(CGRect)a3;
-- (void)_handleContentSizeCategoryChanged:(id)a3;
-- (void)_updateArtworkBorderColorWithTraitCollection:(int64_t)a3;
-- (void)_updateLabelsContentSizeCategory:(id)a3;
-- (void)configureWithArtwork:(id)a3 title:(id)a4 subtitle:(id)a5 imageSize:(double)a6 fallbackImage:(id)a7 enabled:(BOOL)a8;
-- (void)configureWithConfiguration:(id)a3 imageSize:(double)a4 fallbackImage:(id)a5;
+- (CPUIImageRowCellItem)initWithFrame:(CGRect)frame;
+- (void)_handleContentSizeCategoryChanged:(id)changed;
+- (void)_updateArtworkBorderColorWithTraitCollection:(int64_t)collection;
+- (void)_updateLabelsContentSizeCategory:(id)category;
+- (void)configureWithArtwork:(id)artwork title:(id)title subtitle:(id)subtitle imageSize:(double)size fallbackImage:(id)image enabled:(BOOL)enabled;
+- (void)configureWithConfiguration:(id)configuration imageSize:(double)size fallbackImage:(id)image;
 - (void)prepareForReuse;
 @end
 
 @implementation CPUIImageRowCellItem
 
-- (CPUIImageRowCellItem)initWithFrame:(CGRect)a3
+- (CPUIImageRowCellItem)initWithFrame:(CGRect)frame
 {
   v50[1] = *MEMORY[0x277D85DE8];
   v47.receiver = self;
   v47.super_class = CPUIImageRowCellItem;
-  v3 = [(CPUIImageRowCellItem *)&v47 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CPUIImageRowCellItem *)&v47 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -28,21 +28,21 @@
     [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
     [v5 setContentHorizontalAlignment:3];
     [v5 setContentVerticalAlignment:3];
-    v6 = [v5 imageView];
-    [v6 setContentMode:2];
+    imageView = [v5 imageView];
+    [imageView setContentMode:2];
 
-    v7 = [v5 imageView];
-    [v7 setClipsToBounds:1];
+    imageView2 = [v5 imageView];
+    [imageView2 setClipsToBounds:1];
 
-    v8 = [v5 imageView];
-    [v8 _setContinuousCornerRadius:5.0];
+    imageView3 = [v5 imageView];
+    [imageView3 _setContinuousCornerRadius:5.0];
 
-    v9 = [(CPUIImageRowCellItem *)v4 traitCollection];
-    -[CPUIImageRowCellItem _updateArtworkBorderColorWithTraitCollection:](v4, "_updateArtworkBorderColorWithTraitCollection:", [v9 userInterfaceStyle]);
+    traitCollection = [(CPUIImageRowCellItem *)v4 traitCollection];
+    -[CPUIImageRowCellItem _updateArtworkBorderColorWithTraitCollection:](v4, "_updateArtworkBorderColorWithTraitCollection:", [traitCollection userInterfaceStyle]);
 
-    v10 = [v5 imageView];
-    v11 = [v10 layer];
-    [v11 setBorderWidth:0.5];
+    imageView4 = [v5 imageView];
+    layer = [imageView4 layer];
+    [layer setBorderWidth:0.5];
 
     v50[0] = objc_opt_class();
     v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v50 count:1];
@@ -56,16 +56,16 @@
     v14 = [(CPUIImageRowCellItem *)v13 registerForTraitChanges:v12 withHandler:v45];
 
     [(CPUIImageRowCellItem *)v13 setButton:v5];
-    v15 = [(CPUIImageRowCellItem *)v13 button];
-    [v15 setAccessibilityIdentifier:@"CPListImageRowItemImage"];
+    button = [(CPUIImageRowCellItem *)v13 button];
+    [button setAccessibilityIdentifier:@"CPListImageRowItemImage"];
 
     [(CPUIImageRowCellItem *)v13 addArrangedSubview:v5];
     [(CPUIImageRowCellItem *)v13 setCustomSpacing:v5 afterView:4.0];
     v16 = MEMORY[0x277CCAAD0];
-    v17 = [v5 heightAnchor];
+    heightAnchor = [v5 heightAnchor];
     v43 = v5;
-    v18 = [v5 widthAnchor];
-    v19 = [v17 constraintEqualToAnchor:v18];
+    widthAnchor = [v5 widthAnchor];
+    v19 = [heightAnchor constraintEqualToAnchor:widthAnchor];
     v49 = v19;
     v20 = [MEMORY[0x277CBEA60] arrayWithObjects:&v49 count:1];
     [v16 activateConstraints:v20];
@@ -76,8 +76,8 @@
     [(CPUIImageRowCellItem *)v13 setContentHuggingPriority:0 forAxis:v22];
     if (_os_feature_enabled_impl())
     {
-      v23 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v23 addObserver:v13 selector:sel__handleContentSizeCategoryChanged_ name:*MEMORY[0x277D767B8] object:0];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter addObserver:v13 selector:sel__handleContentSizeCategoryChanged_ name:*MEMORY[0x277D767B8] object:0];
     }
 
     v24 = objc_alloc(MEMORY[0x277D75D18]);
@@ -85,26 +85,26 @@
     [v25 setTranslatesAutoresizingMaskIntoConstraints:0];
     v42 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:v13 action:sel__handleTapGestureRecognizer];
     [v25 addGestureRecognizer:v42];
-    v26 = [MEMORY[0x277D75348] clearColor];
-    [v25 setBackgroundColor:v26];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [v25 setBackgroundColor:clearColor];
 
     [(CPUIImageRowCellItem *)v13 insertSubview:v25 atIndex:0];
     v36 = MEMORY[0x277CCAAD0];
-    v41 = [v25 leadingAnchor];
-    v40 = [(CPUIImageRowCellItem *)v13 leadingAnchor];
-    v39 = [v41 constraintEqualToAnchor:v40];
+    leadingAnchor = [v25 leadingAnchor];
+    leadingAnchor2 = [(CPUIImageRowCellItem *)v13 leadingAnchor];
+    v39 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v48[0] = v39;
-    v38 = [v25 trailingAnchor];
-    v37 = [(CPUIImageRowCellItem *)v13 trailingAnchor];
-    v27 = [v38 constraintEqualToAnchor:v37];
+    trailingAnchor = [v25 trailingAnchor];
+    trailingAnchor2 = [(CPUIImageRowCellItem *)v13 trailingAnchor];
+    v27 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v48[1] = v27;
-    v28 = [v25 topAnchor];
-    v29 = [(CPUIImageRowCellItem *)v13 topAnchor];
-    v30 = [v28 constraintEqualToAnchor:v29];
+    topAnchor = [v25 topAnchor];
+    topAnchor2 = [(CPUIImageRowCellItem *)v13 topAnchor];
+    v30 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v48[2] = v30;
-    v31 = [v25 bottomAnchor];
-    v32 = [(CPUIImageRowCellItem *)v13 bottomAnchor];
-    v33 = [v31 constraintEqualToAnchor:v32];
+    bottomAnchor = [v25 bottomAnchor];
+    bottomAnchor2 = [(CPUIImageRowCellItem *)v13 bottomAnchor];
+    v33 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v48[3] = v33;
     v34 = [MEMORY[0x277CBEA60] arrayWithObjects:v48 count:4];
     [v36 activateConstraints:v34];
@@ -132,58 +132,58 @@ void __38__CPUIImageRowCellItem_initWithFrame___block_invoke(uint64_t a1, void *
   return result;
 }
 
-- (void)configureWithConfiguration:(id)a3 imageSize:(double)a4 fallbackImage:(id)a5
+- (void)configureWithConfiguration:(id)configuration imageSize:(double)size fallbackImage:(id)image
 {
-  v8 = a5;
-  v9 = a3;
-  v12 = [v9 artworkCatalog];
-  v10 = [v9 title];
-  v11 = [v9 subtitle];
+  imageCopy = image;
+  configurationCopy = configuration;
+  artworkCatalog = [configurationCopy artworkCatalog];
+  title = [configurationCopy title];
+  subtitle = [configurationCopy subtitle];
 
-  [(CPUIImageRowCellItem *)self configureWithArtwork:v12 title:v10 subtitle:v11 imageSize:v8 fallbackImage:a4];
+  [(CPUIImageRowCellItem *)self configureWithArtwork:artworkCatalog title:title subtitle:subtitle imageSize:imageCopy fallbackImage:size];
 }
 
-- (void)configureWithArtwork:(id)a3 title:(id)a4 subtitle:(id)a5 imageSize:(double)a6 fallbackImage:(id)a7 enabled:(BOOL)a8
+- (void)configureWithArtwork:(id)artwork title:(id)title subtitle:(id)subtitle imageSize:(double)size fallbackImage:(id)image enabled:(BOOL)enabled
 {
-  v8 = a8;
+  enabledCopy = enabled;
   v67[1] = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a7;
-  v18 = [(CPUIImageRowCellItem *)self button];
-  v19 = [v18 artworkCatalog];
+  artworkCopy = artwork;
+  titleCopy = title;
+  subtitleCopy = subtitle;
+  imageCopy = image;
+  button = [(CPUIImageRowCellItem *)self button];
+  artworkCatalog = [button artworkCatalog];
 
-  if (!v19 || ([v19 isEqual:v14] & 1) == 0 && (objc_msgSend(v19, "isArtworkVisuallyIdenticalToCatalog:", v14) & 1) == 0)
+  if (!artworkCatalog || ([artworkCatalog isEqual:artworkCopy] & 1) == 0 && (objc_msgSend(artworkCatalog, "isArtworkVisuallyIdenticalToCatalog:", artworkCopy) & 1) == 0)
   {
-    v20 = [(CPUIImageRowCellItem *)self button];
-    [v20 setImage:v17 forState:0];
+    button2 = [(CPUIImageRowCellItem *)self button];
+    [button2 setImage:imageCopy forState:0];
 
-    v21 = [(CPUIImageRowCellItem *)self traitCollection];
-    -[CPUIImageRowCellItem _updateArtworkBorderColorWithTraitCollection:](self, "_updateArtworkBorderColorWithTraitCollection:", [v21 userInterfaceStyle]);
+    traitCollection = [(CPUIImageRowCellItem *)self traitCollection];
+    -[CPUIImageRowCellItem _updateArtworkBorderColorWithTraitCollection:](self, "_updateArtworkBorderColorWithTraitCollection:", [traitCollection userInterfaceStyle]);
 
-    [v14 setFittingSize:{a6, a6}];
-    v22 = [(CPUIImageRowCellItem *)self traitCollection];
-    [v22 displayScale];
-    [v14 setDestinationScale:?];
+    [artworkCopy setFittingSize:{size, size}];
+    traitCollection2 = [(CPUIImageRowCellItem *)self traitCollection];
+    [traitCollection2 displayScale];
+    [artworkCopy setDestinationScale:?];
 
     v23 = objc_opt_class();
     v24 = NSStringFromClass(v23);
-    [v14 setCacheIdentifier:v24 forCacheReference:self];
+    [artworkCopy setCacheIdentifier:v24 forCacheReference:self];
 
-    v25 = [(CPUIImageRowCellItem *)self button];
+    button3 = [(CPUIImageRowCellItem *)self button];
     v62[0] = MEMORY[0x277D85DD0];
     v62[1] = 3221225472;
     v62[2] = __92__CPUIImageRowCellItem_configureWithArtwork_title_subtitle_imageSize_fallbackImage_enabled___block_invoke;
     v62[3] = &unk_278D9C2B0;
-    v63 = v17;
-    v64 = self;
-    [v14 setDestination:v25 configurationBlock:v62];
+    v63 = imageCopy;
+    selfCopy = self;
+    [artworkCopy setDestination:button3 configurationBlock:v62];
   }
 
-  if (v15)
+  if (titleCopy)
   {
-    v26 = v16 == 0;
+    v26 = subtitleCopy == 0;
   }
 
   else
@@ -192,37 +192,37 @@ void __38__CPUIImageRowCellItem_initWithFrame___block_invoke(uint64_t a1, void *
   }
 
   v27 = v26;
-  if (!v15)
+  if (!titleCopy)
   {
-    v51 = [(CPUIImageRowCellItem *)self label];
-    [v51 removeFromSuperview];
+    label = [(CPUIImageRowCellItem *)self label];
+    [label removeFromSuperview];
 
-    v52 = [(CPUIImageRowCellItem *)self label];
-    [(CPUIImageRowCellItem *)self removeArrangedSubview:v52];
+    label2 = [(CPUIImageRowCellItem *)self label];
+    [(CPUIImageRowCellItem *)self removeArrangedSubview:label2];
 
     [(CPUIImageRowCellItem *)self setLabel:0];
 LABEL_22:
-    v53 = [(CPUIImageRowCellItem *)self subtitleLabel];
-    [v53 removeFromSuperview];
+    subtitleLabel = [(CPUIImageRowCellItem *)self subtitleLabel];
+    [subtitleLabel removeFromSuperview];
 
-    v54 = [(CPUIImageRowCellItem *)self subtitleLabel];
-    [(CPUIImageRowCellItem *)self removeArrangedSubview:v54];
+    subtitleLabel2 = [(CPUIImageRowCellItem *)self subtitleLabel];
+    [(CPUIImageRowCellItem *)self removeArrangedSubview:subtitleLabel2];
 
     [(CPUIImageRowCellItem *)self setSubtitleLabel:0];
     goto LABEL_23;
   }
 
-  v28 = [(CPUIImageRowCellItem *)self button];
-  [v28 setAccessibilityLabel:v15];
+  button4 = [(CPUIImageRowCellItem *)self button];
+  [button4 setAccessibilityLabel:titleCopy];
 
-  v67[0] = v15;
+  v67[0] = titleCopy;
   v29 = [MEMORY[0x277CBEA60] arrayWithObjects:v67 count:1];
-  v30 = [(CPUIImageRowCellItem *)self button];
-  [v30 setAccessibilityUserInputLabels:v29];
+  button5 = [(CPUIImageRowCellItem *)self button];
+  [button5 setAccessibilityUserInputLabels:v29];
 
-  v31 = [(CPUIImageRowCellItem *)self label];
+  label3 = [(CPUIImageRowCellItem *)self label];
 
-  if (!v31)
+  if (!label3)
   {
     v32 = objc_opt_new();
     label = self->_label;
@@ -232,17 +232,17 @@ LABEL_22:
     v34 = [MEMORY[0x277D74300] systemFontOfSize:10.0 weight:*MEMORY[0x277D74410]];
     [(CPUITopAlignedLabel *)self->_label setFont:v34];
 
-    v35 = [MEMORY[0x277D75348] labelColor];
-    [(CPUITopAlignedLabel *)self->_label setTextColor:v35];
+    labelColor = [MEMORY[0x277D75348] labelColor];
+    [(CPUITopAlignedLabel *)self->_label setTextColor:labelColor];
 
     LODWORD(v36) = 1036831949;
     [(CPUITopAlignedLabel *)self->_label _setHyphenationFactor:v36];
-    v37 = [(CPUIImageRowCellItem *)self label];
-    [(CPUIImageRowCellItem *)self addArrangedSubview:v37];
+    label4 = [(CPUIImageRowCellItem *)self label];
+    [(CPUIImageRowCellItem *)self addArrangedSubview:label4];
   }
 
-  v38 = [(CPUIImageRowCellItem *)self label];
-  [v38 setText:v15];
+  label5 = [(CPUIImageRowCellItem *)self label];
+  [label5 setText:titleCopy];
 
   if (v27)
   {
@@ -254,23 +254,23 @@ LABEL_22:
     v39 = 1;
   }
 
-  v40 = [(CPUIImageRowCellItem *)self label];
-  [v40 setNumberOfLines:v39];
+  label6 = [(CPUIImageRowCellItem *)self label];
+  [label6 setNumberOfLines:v39];
 
-  v41 = [(CPUIImageRowCellItem *)self label];
-  [v41 setAccessibilityIdentifier:@"CPListImageRowItemImageTitle"];
+  label7 = [(CPUIImageRowCellItem *)self label];
+  [label7 setAccessibilityIdentifier:@"CPListImageRowItemImageTitle"];
 
-  v42 = [(CPUIImageRowCellItem *)self label];
-  [v42 setEnabled:v8];
+  label8 = [(CPUIImageRowCellItem *)self label];
+  [label8 setEnabled:enabledCopy];
 
   if (v27)
   {
     goto LABEL_22;
   }
 
-  v43 = [(CPUIImageRowCellItem *)self subtitleLabel];
+  subtitleLabel3 = [(CPUIImageRowCellItem *)self subtitleLabel];
 
-  if (!v43)
+  if (!subtitleLabel3)
   {
     v44 = objc_opt_new();
     subtitleLabel = self->_subtitleLabel;
@@ -281,31 +281,31 @@ LABEL_22:
     v46 = [MEMORY[0x277D74300] systemFontOfSize:10.0 weight:*MEMORY[0x277D74418]];
     [(UILabel *)self->_subtitleLabel setFont:v46];
 
-    v47 = [MEMORY[0x277D75348] secondaryLabelColor];
-    [(UILabel *)self->_subtitleLabel setTextColor:v47];
+    secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+    [(UILabel *)self->_subtitleLabel setTextColor:secondaryLabelColor];
 
-    [(UILabel *)self->_subtitleLabel setEnabled:v8];
-    v48 = [(CPUIImageRowCellItem *)self subtitleLabel];
-    [(CPUIImageRowCellItem *)self addArrangedSubview:v48];
+    [(UILabel *)self->_subtitleLabel setEnabled:enabledCopy];
+    subtitleLabel4 = [(CPUIImageRowCellItem *)self subtitleLabel];
+    [(CPUIImageRowCellItem *)self addArrangedSubview:subtitleLabel4];
   }
 
-  v49 = [(CPUIImageRowCellItem *)self subtitleLabel];
-  [v49 setText:v16];
+  subtitleLabel5 = [(CPUIImageRowCellItem *)self subtitleLabel];
+  [subtitleLabel5 setText:subtitleCopy];
 
-  v50 = [(CPUIImageRowCellItem *)self subtitleLabel];
-  [v50 setAccessibilityIdentifier:@"CPListImageRowItemImageSubtitle"];
+  subtitleLabel6 = [(CPUIImageRowCellItem *)self subtitleLabel];
+  [subtitleLabel6 setAccessibilityIdentifier:@"CPListImageRowItemImageSubtitle"];
 
 LABEL_23:
-  v55 = [(CPUIImageRowCellItem *)self traitCollection];
-  v56 = [v55 preferredContentSizeCategory];
-  [(CPUIImageRowCellItem *)self _updateLabelsContentSizeCategory:v56];
+  traitCollection3 = [(CPUIImageRowCellItem *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection3 preferredContentSizeCategory];
+  [(CPUIImageRowCellItem *)self _updateLabelsContentSizeCategory:preferredContentSizeCategory];
 
-  [(CPUIOutsetHighlightButton *)self->_button setEnabled:v8];
-  if (v15)
+  [(CPUIOutsetHighlightButton *)self->_button setEnabled:enabledCopy];
+  if (titleCopy)
   {
     if (v27)
     {
-      v65 = v15;
+      v65 = titleCopy;
       v57 = MEMORY[0x277CBEA60];
       v58 = &v65;
       v59 = 1;
@@ -313,22 +313,22 @@ LABEL_23:
 
     else
     {
-      v66[0] = v15;
-      v66[1] = v16;
+      v66[0] = titleCopy;
+      v66[1] = subtitleCopy;
       v57 = MEMORY[0x277CBEA60];
       v58 = v66;
       v59 = 2;
     }
 
-    v60 = [v57 arrayWithObjects:v58 count:v59];
-    v61 = [(CPUIImageRowCellItem *)self button];
-    [v61 setAccessibilityUserInputLabels:v60];
+    button7 = [v57 arrayWithObjects:v58 count:v59];
+    button6 = [(CPUIImageRowCellItem *)self button];
+    [button6 setAccessibilityUserInputLabels:button7];
   }
 
   else
   {
-    v60 = [(CPUIImageRowCellItem *)self button];
-    [v60 setAccessibilityUserInputLabels:MEMORY[0x277CBEBF8]];
+    button7 = [(CPUIImageRowCellItem *)self button];
+    [button7 setAccessibilityUserInputLabels:MEMORY[0x277CBEBF8]];
   }
 
   [(CPUIImageRowCellItem *)self invalidateIntrinsicContentSize];
@@ -349,13 +349,13 @@ void __92__CPUIImageRowCellItem_configureWithArtwork_title_subtitle_imageSize_fa
 
 - (void)prepareForReuse
 {
-  v2 = [(CPUIImageRowCellItem *)self button];
-  [v2 clearArtworkCatalogs];
+  button = [(CPUIImageRowCellItem *)self button];
+  [button clearArtworkCatalogs];
 }
 
-- (void)_updateArtworkBorderColorWithTraitCollection:(int64_t)a3
+- (void)_updateArtworkBorderColorWithTraitCollection:(int64_t)collection
 {
-  v4 = vdup_n_s32(a3 == 2);
+  v4 = vdup_n_s32(collection == 2);
   v5.i64[0] = v4.u32[0];
   v5.i64[1] = v4.u32[1];
   v6 = vbslq_s8(vcltzq_s64(vshlq_n_s64(v5, 0x3FuLL)), xmmword_2431E24B0, xmmword_2431E24A0);
@@ -364,24 +364,24 @@ void __92__CPUIImageRowCellItem_configureWithArtwork_title_subtitle_imageSize_fa
   v13 = v6;
   v7 = CGColorSpaceCreateWithName(*MEMORY[0x277CBF4B8]);
   v8 = CGColorCreate(v7, components);
-  v9 = [(CPUIImageRowCellItem *)self button];
-  v10 = [v9 imageView];
-  v11 = [v10 layer];
-  [v11 setBorderColor:v8];
+  button = [(CPUIImageRowCellItem *)self button];
+  imageView = [button imageView];
+  layer = [imageView layer];
+  [layer setBorderColor:v8];
 }
 
-- (void)_updateLabelsContentSizeCategory:(id)a3
+- (void)_updateLabelsContentSizeCategory:(id)category
 {
-  v7 = a3;
+  categoryCopy = category;
   if (_os_feature_enabled_impl())
   {
     v4 = 13.0;
-    if (([v7 isEqualToString:*MEMORY[0x277D76828]] & 1) == 0)
+    if (([categoryCopy isEqualToString:*MEMORY[0x277D76828]] & 1) == 0)
     {
       v4 = 15.0;
-      if (([v7 isEqualToString:*MEMORY[0x277D76820]] & 1) == 0)
+      if (([categoryCopy isEqualToString:*MEMORY[0x277D76820]] & 1) == 0)
       {
-        if ([v7 isEqualToString:*MEMORY[0x277D76818]])
+        if ([categoryCopy isEqualToString:*MEMORY[0x277D76818]])
         {
           v4 = 17.0;
         }
@@ -401,10 +401,10 @@ void __92__CPUIImageRowCellItem_configureWithArtwork_title_subtitle_imageSize_fa
   }
 }
 
-- (void)_handleContentSizeCategoryChanged:(id)a3
+- (void)_handleContentSizeCategoryChanged:(id)changed
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277D76850]];
+  userInfo = [changed userInfo];
+  v5 = [userInfo objectForKeyedSubscript:*MEMORY[0x277D76850]];
 
   [(CPUIImageRowCellItem *)self _updateLabelsContentSizeCategory:v5];
 }

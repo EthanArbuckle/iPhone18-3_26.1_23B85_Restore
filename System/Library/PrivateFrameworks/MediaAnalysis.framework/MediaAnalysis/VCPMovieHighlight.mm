@@ -1,16 +1,16 @@
 @interface VCPMovieHighlight
 - ($AFC8CF76A46F37F9FB23C20884F4FD99)timerange;
 - (CGRect)bestPlaybackCrop;
-- (VCPMovieHighlight)initWithTimeRange:(id *)a3;
+- (VCPMovieHighlight)initWithTimeRange:(id *)range;
 - (void)checkAutoPlayable;
-- (void)copyScoresFrom:(id)a3;
-- (void)mergeSegment:(id)a3;
-- (void)setTimerange:(id *)a3;
+- (void)copyScoresFrom:(id)from;
+- (void)mergeSegment:(id)segment;
+- (void)setTimerange:(id *)timerange;
 @end
 
 @implementation VCPMovieHighlight
 
-- (VCPMovieHighlight)initWithTimeRange:(id *)a3
+- (VCPMovieHighlight)initWithTimeRange:(id *)range
 {
   v11.receiver = self;
   v11.super_class = VCPMovieHighlight;
@@ -18,9 +18,9 @@
   v5 = v4;
   if (v4)
   {
-    v6 = *&a3->var0.var0;
-    v7 = *&a3->var0.var3;
-    *(v4 + 168) = *&a3->var1.var1;
+    v6 = *&range->var0.var0;
+    v7 = *&range->var0.var3;
+    *(v4 + 168) = *&range->var1.var1;
     *(v4 + 152) = v7;
     *(v4 + 136) = v6;
     v8 = *(MEMORY[0x1E695F050] + 16);
@@ -32,17 +32,17 @@
   return v5;
 }
 
-- (void)mergeSegment:(id)a3
+- (void)mergeSegment:(id)segment
 {
-  v4 = a3;
+  segmentCopy = segment;
   score = self->_score;
   time.start = self->_timerange.duration;
   Seconds = CMTimeGetSeconds(&time.start);
-  [v4 score];
+  [segmentCopy score];
   v8 = v7;
-  if (v4)
+  if (segmentCopy)
   {
-    [v4 timerange];
+    [segmentCopy timerange];
   }
 
   else
@@ -52,9 +52,9 @@
 
   lhs.start = time.duration;
   v9 = CMTimeGetSeconds(&lhs.start);
-  if (v4)
+  if (segmentCopy)
   {
-    [v4 timerange];
+    [segmentCopy timerange];
   }
 
   else
@@ -71,9 +71,9 @@
   *&lhs.start.value = *&self->_timerange.start.value;
   *&lhs.start.epoch = v11;
   *&lhs.duration.timescale = *&self->_timerange.duration.timescale;
-  if (v4)
+  if (segmentCopy)
   {
-    [v4 timerange];
+    [segmentCopy timerange];
   }
 
   else
@@ -102,11 +102,11 @@
     *&lhs.start.value = *&self->_timerange.duration.value;
     lhs.start.epoch = self->_timerange.duration.epoch;
     v17 = CMTimeGetSeconds(&lhs.start);
-    [v4 averageScore];
+    [segmentCopy averageScore];
     v19 = v18;
-    if (v4)
+    if (segmentCopy)
     {
-      [v4 timerange];
+      [segmentCopy timerange];
     }
 
     else
@@ -121,65 +121,65 @@
   self->_averageScore = v20;
   if (v12 >= v13)
   {
-    v21 = self->_descriptor;
+    descriptor = self->_descriptor;
   }
 
   else
   {
-    v21 = [v4 descriptor];
+    descriptor = [segmentCopy descriptor];
   }
 
   descriptor = self->_descriptor;
-  self->_descriptor = v21;
+  self->_descriptor = descriptor;
 
   [(VCPVideoKeyFrame *)self->_keyFrame score];
   v24 = v23;
-  v25 = [v4 keyFrame];
-  [v25 score];
+  keyFrame = [segmentCopy keyFrame];
+  [keyFrame score];
   if (v24 >= v26)
   {
-    v27 = self->_keyFrame;
+    keyFrame2 = self->_keyFrame;
   }
 
   else
   {
-    v27 = [v4 keyFrame];
+    keyFrame2 = [segmentCopy keyFrame];
   }
 
   keyFrame = self->_keyFrame;
-  self->_keyFrame = v27;
+  self->_keyFrame = keyFrame2;
 
-  self->_isAutoPlayable |= [v4 isAutoPlayable];
+  self->_isAutoPlayable |= [segmentCopy isAutoPlayable];
 }
 
-- (void)copyScoresFrom:(id)a3
+- (void)copyScoresFrom:(id)from
 {
-  v16 = a3;
-  [v16 score];
+  fromCopy = from;
+  [fromCopy score];
   self->_score = v4;
-  [v16 averageScore];
+  [fromCopy averageScore];
   self->_averageScore = v5;
-  [v16 junkScore];
+  [fromCopy junkScore];
   self->_junkScore = v6;
-  [v16 qualityScore];
+  [fromCopy qualityScore];
   self->_qualityScore = v7;
-  [v16 expressionScore];
+  [fromCopy expressionScore];
   self->_expressionScore = v8;
-  [v16 actionScore];
+  [fromCopy actionScore];
   self->_actionScore = v9;
-  [v16 voiceScore];
+  [fromCopy voiceScore];
   self->_voiceScore = v10;
-  [v16 humanActionScore];
+  [fromCopy humanActionScore];
   self->_humanActionScore = v11;
-  [v16 humanPoseScore];
+  [fromCopy humanPoseScore];
   self->_humanPoseScore = v12;
-  self->_isAutoPlayable = [v16 isAutoPlayable];
-  self->_isSettlingOK = [v16 isSettlingOK];
-  [v16 autoplayScore];
+  self->_isAutoPlayable = [fromCopy isAutoPlayable];
+  self->_isSettlingOK = [fromCopy isSettlingOK];
+  [fromCopy autoplayScore];
   self->_autoplayScore = v13;
-  [v16 motionScore];
+  [fromCopy motionScore];
   self->_motionScore = v14;
-  [v16 exposureChangeScore];
+  [fromCopy exposureChangeScore];
   self->_exposureChangeScore = v15;
 }
 
@@ -208,11 +208,11 @@
   return self;
 }
 
-- (void)setTimerange:(id *)a3
+- (void)setTimerange:(id *)timerange
 {
-  v3 = *&a3->var0.var0;
-  v4 = *&a3->var0.var3;
-  *&self->_timerange.duration.timescale = *&a3->var1.var1;
+  v3 = *&timerange->var0.var0;
+  v4 = *&timerange->var0.var3;
+  *&self->_timerange.duration.timescale = *&timerange->var1.var1;
   *&self->_timerange.start.epoch = v4;
   *&self->_timerange.start.value = v3;
 }

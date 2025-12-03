@@ -1,6 +1,6 @@
 @interface FTCheckForSpeechRequest
-- (FTCheckForSpeechRequest)initWithFlatbuffData:(id)a3 root:(const CheckForSpeechRequest *)a4 verify:(BOOL)a5;
-- (Offset<siri::speech::schema_fb::CheckForSpeechRequest>)addObjectToBuffer:(void *)a3;
+- (FTCheckForSpeechRequest)initWithFlatbuffData:(id)data root:(const CheckForSpeechRequest *)root verify:(BOOL)verify;
+- (Offset<siri::speech::schema_fb::CheckForSpeechRequest>)addObjectToBuffer:(void *)buffer;
 - (id)flatbuffData;
 - (int64_t)end_speech_time;
 - (int64_t)start_speech_time;
@@ -8,10 +8,10 @@
 
 @implementation FTCheckForSpeechRequest
 
-- (FTCheckForSpeechRequest)initWithFlatbuffData:(id)a3 root:(const CheckForSpeechRequest *)a4 verify:(BOOL)a5
+- (FTCheckForSpeechRequest)initWithFlatbuffData:(id)data root:(const CheckForSpeechRequest *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v25.receiver = self;
   v25.super_class = FTCheckForSpeechRequest;
   v10 = [(FTCheckForSpeechRequest *)&v25 init];
@@ -20,35 +20,35 @@
     goto LABEL_13;
   }
 
-  if (!v9 || ![v9 length])
+  if (!dataCopy || ![dataCopy length])
   {
     goto LABEL_14;
   }
 
-  objc_storeStrong(&v10->_data, a3);
-  if (!a4)
+  objc_storeStrong(&v10->_data, data);
+  if (!root)
   {
-    v11 = [(NSData *)v10->_data bytes];
-    a4 = v11 + *v11;
+    bytes = [(NSData *)v10->_data bytes];
+    root = bytes + *bytes;
   }
 
-  v10->_root = a4;
-  if (!v5)
+  v10->_root = root;
+  if (!verifyCopy)
   {
     goto LABEL_13;
   }
 
-  v12 = [(NSData *)v10->_data bytes];
+  bytes2 = [(NSData *)v10->_data bytes];
   v13 = [(NSData *)v10->_data length];
   root = v10->_root;
-  if (root < v12 || root > v12 + v13)
+  if (root < bytes2 || root > bytes2 + v13)
   {
     goto LABEL_14;
   }
 
-  v16 = [(NSData *)v10->_data bytes];
+  bytes3 = [(NSData *)v10->_data bytes];
   v17 = [(NSData *)v10->_data length];
-  v21[0] = v16;
+  v21[0] = bytes3;
   v21[1] = v17;
   v22 = xmmword_233005E20;
   v23 = 0;
@@ -104,17 +104,17 @@ LABEL_13:
   }
 }
 
-- (Offset<siri::speech::schema_fb::CheckForSpeechRequest>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::CheckForSpeechRequest>)addObjectToBuffer:(void *)buffer
 {
-  v5 = [(FTCheckForSpeechRequest *)self start_speech_time];
-  v6 = [(FTCheckForSpeechRequest *)self end_speech_time];
-  *(a3 + 70) = 1;
-  v7 = *(a3 + 10);
-  v8 = *(a3 + 8) - *(a3 + 12);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned long long>(a3, 4, v5, 0);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned long long>(a3, 6, v6, 0);
+  start_speech_time = [(FTCheckForSpeechRequest *)self start_speech_time];
+  end_speech_time = [(FTCheckForSpeechRequest *)self end_speech_time];
+  *(buffer + 70) = 1;
+  v7 = *(buffer + 10);
+  v8 = *(buffer + 8) - *(buffer + 12);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned long long>(buffer, 4, start_speech_time, 0);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned long long>(buffer, 6, end_speech_time, 0);
 
-  return apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(a3, v8 + v7);
+  return apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(buffer, v8 + v7);
 }
 
 - (id)flatbuffData

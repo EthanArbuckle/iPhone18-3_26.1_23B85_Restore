@@ -1,29 +1,29 @@
 @interface WiFiLocaleManager
-+ (id)getStringOfLocaleSource:(int)a3;
-- (BOOL)isDefaultCountryCode:(id)a3;
++ (id)getStringOfLocaleSource:(int)source;
+- (BOOL)isDefaultCountryCode:(id)code;
 - (BOOL)shouldDetermineNewLocale;
 - (WiFiLocaleManager)init;
 - (WiFiLocaleManagerDelegate)delegate;
-- (id)applySetCountryCodeExceptions:(id)a3;
-- (id)getLocaleFromLocation:(id)a3;
+- (id)applySetCountryCodeExceptions:(id)exceptions;
+- (id)getLocaleFromLocation:(id)location;
 - (id)getLocaleFromMcc;
 - (id)getLocaleFromMultiple80211d;
 - (id)getLocaleFromPeer;
 - (id)getLocaleFromRemoteClient;
 - (id)getLocaleFromTimezone;
 - (id)getLocaleFromUserDefaults;
-- (id)getLocaleUsingBoundingBoxes:(id)a3;
-- (id)getLocaleUsingGeoLocationCache:(id)a3;
-- (id)getLocaleUsingReverseGeocoder:(id)a3;
+- (id)getLocaleUsingBoundingBoxes:(id)boxes;
+- (id)getLocaleUsingGeoLocationCache:(id)cache;
+- (id)getLocaleUsingReverseGeocoder:(id)geocoder;
 - (id)getRestrictedCountryCodeFromRegionInfo;
 - (id)getRestrictedCountryCodeFromTimezone;
 - (unsigned)getNetworkReachability;
 - (void)dealloc;
-- (void)determineAndSetLocale:(unsigned __int8)a3;
+- (void)determineAndSetLocale:(unsigned __int8)locale;
 - (void)didChangeAuthorizationStatus;
-- (void)didFailWithError:(id)a3;
-- (void)didUpdateLocations:(id)a3;
-- (void)setLocaleTestParams:(id)a3;
+- (void)didFailWithError:(id)error;
+- (void)didUpdateLocations:(id)locations;
+- (void)setLocaleTestParams:(id)params;
 @end
 
 @implementation WiFiLocaleManager
@@ -41,11 +41,11 @@ uint64_t __25__WiFiLocaleManager_init__block_invoke(uint64_t a1)
 
 - (BOOL)shouldDetermineNewLocale
 {
-  v2 = self;
-  v3 = [(WiFiLocaleManager *)self localeCountryCode];
-  LOBYTE(v2) = [(WiFiLocaleManager *)v2 isDefaultCountryCode:v3];
+  selfCopy = self;
+  localeCountryCode = [(WiFiLocaleManager *)self localeCountryCode];
+  LOBYTE(selfCopy) = [(WiFiLocaleManager *)selfCopy isDefaultCountryCode:localeCountryCode];
 
-  return v2;
+  return selfCopy;
 }
 
 - (WiFiLocaleManagerDelegate)delegate
@@ -75,37 +75,37 @@ uint64_t __25__WiFiLocaleManager_init__block_invoke(uint64_t a1)
     v4 = objc_alloc_init(MEMORY[0x277CCA968]);
     [(WiFiLocaleManager *)v3 setDateFormatter:v4];
 
-    v5 = [(WiFiLocaleManager *)v3 dateFormatter];
-    [v5 setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+    dateFormatter = [(WiFiLocaleManager *)v3 dateFormatter];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
 
     v6 = dispatch_queue_create("WiFiLocaleManager", 0);
     [(WiFiLocaleManager *)v3 setQueue:v6];
 
-    v7 = [(WiFiLocaleManager *)v3 queue];
-    v8 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, v7);
+    queue = [(WiFiLocaleManager *)v3 queue];
+    v8 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, queue);
     [(WiFiLocaleManager *)v3 setLocaleTimer:v8];
 
-    v9 = [(WiFiLocaleManager *)v3 localeTimer];
+    localeTimer = [(WiFiLocaleManager *)v3 localeTimer];
     handler[0] = MEMORY[0x277D85DD0];
     handler[1] = 3221225472;
     handler[2] = __25__WiFiLocaleManager_init__block_invoke;
     handler[3] = &unk_2789C6630;
     v10 = v3;
     v18 = v10;
-    dispatch_source_set_event_handler(v9, handler);
+    dispatch_source_set_event_handler(localeTimer, handler);
 
-    v11 = [(WiFiLocaleManager *)v10 localeTimer];
+    localeTimer2 = [(WiFiLocaleManager *)v10 localeTimer];
     v12 = dispatch_time(0, 1000000000);
-    dispatch_source_set_timer(v11, v12, 0x1BF08EB000uLL, 0);
+    dispatch_source_set_timer(localeTimer2, v12, 0x1BF08EB000uLL, 0);
 
-    v13 = [(WiFiLocaleManager *)v10 localeTimer];
-    dispatch_activate(v13);
+    localeTimer3 = [(WiFiLocaleManager *)v10 localeTimer];
+    dispatch_activate(localeTimer3);
 
     v14 = +[WiFiLocationManager sharedWiFiLocationManager];
     [(WiFiLocaleManager *)v10 setLocationManager:v14];
 
-    v15 = [(WiFiLocaleManager *)v10 locationManager];
-    [v15 setDelegate:v10];
+    locationManager = [(WiFiLocaleManager *)v10 locationManager];
+    [locationManager setDelegate:v10];
 
     [(WiFiLocaleManager *)v10 setIsWaitingForLocationUpdate:0];
   }
@@ -118,19 +118,19 @@ uint64_t __25__WiFiLocaleManager_init__block_invoke(uint64_t a1)
   [(WiFiLocaleManager *)self setTestHost11d:0];
   [(WiFiLocaleManager *)self setTestPeer:0];
   [(WiFiLocaleManager *)self setLocationManager:0];
-  v3 = [(WiFiLocaleManager *)self localeTimer];
+  localeTimer = [(WiFiLocaleManager *)self localeTimer];
 
-  if (v3)
+  if (localeTimer)
   {
-    v4 = [(WiFiLocaleManager *)self localeTimer];
-    dispatch_source_cancel(v4);
+    localeTimer2 = [(WiFiLocaleManager *)self localeTimer];
+    dispatch_source_cancel(localeTimer2);
 
     [(WiFiLocaleManager *)self setLocaleTimer:0];
   }
 
-  v5 = [(WiFiLocaleManager *)self queue];
+  queue = [(WiFiLocaleManager *)self queue];
 
-  if (v5)
+  if (queue)
   {
     [(WiFiLocaleManager *)self setQueue:0];
   }
@@ -140,28 +140,28 @@ uint64_t __25__WiFiLocaleManager_init__block_invoke(uint64_t a1)
   [(WiFiLocaleManager *)&v6 dealloc];
 }
 
-- (void)determineAndSetLocale:(unsigned __int8)a3
+- (void)determineAndSetLocale:(unsigned __int8)locale
 {
-  v5 = [(WiFiLocaleManager *)self queue];
+  queue = [(WiFiLocaleManager *)self queue];
 
-  if (v5)
+  if (queue)
   {
-    v6 = [(WiFiLocaleManager *)self queue];
+    queue2 = [(WiFiLocaleManager *)self queue];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __43__WiFiLocaleManager_determineAndSetLocale___block_invoke;
     v7[3] = &unk_2789C6688;
     v7[4] = self;
-    v8 = a3;
-    dispatch_async(v6, v7);
+    localeCopy = locale;
+    dispatch_async(queue2, v7);
   }
 }
 
-- (BOOL)isDefaultCountryCode:(id)a3
+- (BOOL)isDefaultCountryCode:(id)code
 {
-  v3 = a3;
-  v4 = v3 == 0;
-  if (![v3 caseInsensitiveCompare:&stru_28487EF20] || !objc_msgSend(v3, "caseInsensitiveCompare:", @"X0") || !objc_msgSend(v3, "caseInsensitiveCompare:", @"X2") || !objc_msgSend(v3, "caseInsensitiveCompare:", @"X3") || !objc_msgSend(v3, "caseInsensitiveCompare:", @"XZ"))
+  codeCopy = code;
+  v4 = codeCopy == 0;
+  if (![codeCopy caseInsensitiveCompare:&stru_28487EF20] || !objc_msgSend(codeCopy, "caseInsensitiveCompare:", @"X0") || !objc_msgSend(codeCopy, "caseInsensitiveCompare:", @"X2") || !objc_msgSend(codeCopy, "caseInsensitiveCompare:", @"X3") || !objc_msgSend(codeCopy, "caseInsensitiveCompare:", @"XZ"))
   {
     v4 = 1;
   }
@@ -169,21 +169,21 @@ uint64_t __25__WiFiLocaleManager_init__block_invoke(uint64_t a1)
   return v4;
 }
 
-- (void)setLocaleTestParams:(id)a3
+- (void)setLocaleTestParams:(id)params
 {
-  v4 = a3;
-  v5 = [(WiFiLocaleManager *)self queue];
+  paramsCopy = params;
+  queue = [(WiFiLocaleManager *)self queue];
 
-  if (v5)
+  if (queue)
   {
-    v6 = [(WiFiLocaleManager *)self queue];
+    queue2 = [(WiFiLocaleManager *)self queue];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __41__WiFiLocaleManager_setLocaleTestParams___block_invoke;
     v7[3] = &unk_2789C6608;
-    v8 = v4;
-    v9 = self;
-    dispatch_async(v6, v7);
+    v8 = paramsCopy;
+    selfCopy = self;
+    dispatch_async(queue2, v7);
   }
 }
 
@@ -424,59 +424,59 @@ LABEL_29:
 - (id)getLocaleFromRemoteClient
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = [(WiFiLocaleManager *)self delegate];
+  delegate = [(WiFiLocaleManager *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(WiFiLocaleManager *)self delegate];
-    v6 = [v5 getRemoteClientCountryCode];
+    delegate2 = [(WiFiLocaleManager *)self delegate];
+    getRemoteClientCountryCode = [delegate2 getRemoteClientCountryCode];
   }
 
   else
   {
-    v6 = 0;
+    getRemoteClientCountryCode = 0;
   }
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = v6;
+    v10 = getRemoteClientCountryCode;
     _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Locale from authorized client: <%@>", &v9, 0xCu);
   }
 
   v7 = *MEMORY[0x277D85DE8];
 
-  return v6;
+  return getRemoteClientCountryCode;
 }
 
 - (id)getLocaleFromMultiple80211d
 {
   v34 = *MEMORY[0x277D85DE8];
   v29 = 0;
-  v3 = [(WiFiLocaleManager *)self testHost11d];
+  testHost11d = [(WiFiLocaleManager *)self testHost11d];
 
-  if (!v3)
+  if (!testHost11d)
   {
-    v9 = [(WiFiLocaleManager *)self delegate];
+    delegate = [(WiFiLocaleManager *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      v10 = [(WiFiLocaleManager *)self testUserDefaults];
-      if (!v10)
+      testUserDefaults = [(WiFiLocaleManager *)self testUserDefaults];
+      if (!testUserDefaults)
       {
 
         goto LABEL_23;
       }
 
-      v11 = v10;
-      v12 = [(WiFiLocaleManager *)self testUserDefaults];
-      v13 = [v12 caseInsensitiveCompare:@"OFF"];
+      v11 = testUserDefaults;
+      testUserDefaults2 = [(WiFiLocaleManager *)self testUserDefaults];
+      v13 = [testUserDefaults2 caseInsensitiveCompare:@"OFF"];
 
       if (!v13)
       {
 LABEL_23:
-        v17 = [(WiFiLocaleManager *)self delegate];
-        v8 = [v17 get80211dCountryCodes:&v29];
+        delegate2 = [(WiFiLocaleManager *)self delegate];
+        v8 = [delegate2 get80211dCountryCodes:&v29];
 
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
         {
@@ -490,10 +490,10 @@ LABEL_23:
 
         if (v29 >= 3)
         {
-          v19 = [v8 objectEnumerator];
-          v7 = [v19 nextObject];
+          objectEnumerator = [v8 objectEnumerator];
+          nextObject = [objectEnumerator nextObject];
           v21 = 0;
-          if (v7)
+          if (nextObject)
           {
             v22 = 0;
             v23 = 0;
@@ -503,11 +503,11 @@ LABEL_23:
             do
             {
               v25 = v23;
-              v23 = [v8 countForObject:{v7, v28}];
+              v23 = [v8 countForObject:{nextObject, v28}];
               if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 138412546;
-                v31 = v7;
+                v31 = nextObject;
                 v32 = 2048;
                 v33 = v23;
                 _os_log_impl(&dword_2332D7000, v24, OS_LOG_TYPE_DEFAULT, "Country <%@> IE count %lu", buf, 0x16u);
@@ -520,7 +520,7 @@ LABEL_23:
 
               else
               {
-                v26 = v7;
+                v26 = nextObject;
 
                 if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
                 {
@@ -533,20 +533,20 @@ LABEL_23:
                 v21 = v26;
               }
 
-              v27 = [v19 nextObject];
+              nextObject2 = [objectEnumerator nextObject];
 
-              v7 = v27;
+              nextObject = nextObject2;
             }
 
-            while (v27);
+            while (nextObject2);
             if (v23 == v22)
             {
-              v7 = 0;
+              nextObject = 0;
             }
 
             else
             {
-              v7 = [v21 copy];
+              nextObject = [v21 copy];
             }
           }
 
@@ -565,18 +565,18 @@ LABEL_23:
     goto LABEL_19;
   }
 
-  v4 = [(WiFiLocaleManager *)self testHost11d];
-  v5 = [v4 caseInsensitiveCompare:@"OFF"];
+  testHost11d2 = [(WiFiLocaleManager *)self testHost11d];
+  v5 = [testHost11d2 caseInsensitiveCompare:@"OFF"];
 
   if (v5)
   {
-    v6 = [(WiFiLocaleManager *)self testHost11d];
-    v7 = [v6 copy];
+    testHost11d3 = [(WiFiLocaleManager *)self testHost11d];
+    nextObject = [testHost11d3 copy];
 
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v31 = v7;
+      v31 = nextObject;
       _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Using testHost11d [%@]", buf, 0xCu);
     }
 
@@ -592,16 +592,16 @@ LABEL_23:
 
   v8 = 0;
 LABEL_13:
-  v7 = 0;
+  nextObject = 0;
 LABEL_14:
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v31 = v7;
+    v31 = nextObject;
     _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Locale from multiple 80211d info: <%@>", buf, 0xCu);
   }
 
-  v14 = v7;
+  v14 = nextObject;
 
 LABEL_19:
   v15 = *MEMORY[0x277D85DE8];
@@ -612,17 +612,17 @@ LABEL_19:
 - (id)getLocaleFromPeer
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [(WiFiLocaleManager *)self testPeer];
+  testPeer = [(WiFiLocaleManager *)self testPeer];
 
-  if (!v3)
+  if (!testPeer)
   {
-    v8 = [(WiFiLocaleManager *)self delegate];
+    delegate = [(WiFiLocaleManager *)self delegate];
     v9 = objc_opt_respondsToSelector();
 
     if (v9)
     {
-      v10 = [(WiFiLocaleManager *)self delegate];
-      v7 = [v10 getPeerCountryCode];
+      delegate2 = [(WiFiLocaleManager *)self delegate];
+      getPeerCountryCode = [delegate2 getPeerCountryCode];
 
       goto LABEL_10;
     }
@@ -630,8 +630,8 @@ LABEL_19:
     goto LABEL_9;
   }
 
-  v4 = [(WiFiLocaleManager *)self testPeer];
-  v5 = [v4 caseInsensitiveCompare:@"OFF"];
+  testPeer2 = [(WiFiLocaleManager *)self testPeer];
+  v5 = [testPeer2 caseInsensitiveCompare:@"OFF"];
 
   if (!v5)
   {
@@ -642,17 +642,17 @@ LABEL_19:
     }
 
 LABEL_9:
-    v7 = 0;
+    getPeerCountryCode = 0;
     goto LABEL_10;
   }
 
-  v6 = [(WiFiLocaleManager *)self testPeer];
-  v7 = [v6 copy];
+  testPeer3 = [(WiFiLocaleManager *)self testPeer];
+  getPeerCountryCode = [testPeer3 copy];
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138412290;
-    v14 = v7;
+    v14 = getPeerCountryCode;
     _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Using testPeer [%@]", &v13, 0xCu);
   }
 
@@ -660,41 +660,41 @@ LABEL_10:
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138412290;
-    v14 = v7;
+    v14 = getPeerCountryCode;
     _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Locale from peer: <%@>", &v13, 0xCu);
   }
 
   v11 = *MEMORY[0x277D85DE8];
 
-  return v7;
+  return getPeerCountryCode;
 }
 
 - (id)getLocaleFromTimezone
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = [(WiFiLocaleManager *)self getRestrictedCountryCodeFromTimezone];
-  v4 = [(WiFiLocaleManager *)self getRestrictedCountryCodeFromRegionInfo];
+  getRestrictedCountryCodeFromTimezone = [(WiFiLocaleManager *)self getRestrictedCountryCodeFromTimezone];
+  getRestrictedCountryCodeFromRegionInfo = [(WiFiLocaleManager *)self getRestrictedCountryCodeFromRegionInfo];
   testTimeZoneCC = self->_testTimeZoneCC;
   if (testTimeZoneCC)
   {
     v6 = testTimeZoneCC;
 
     v7 = self->_testTimeZoneCC;
-    v4 = v7;
-    v3 = v6;
+    getRestrictedCountryCodeFromRegionInfo = v7;
+    getRestrictedCountryCodeFromTimezone = v6;
   }
 
   v8 = 0;
-  if (v3 && v4)
+  if (getRestrictedCountryCodeFromTimezone && getRestrictedCountryCodeFromRegionInfo)
   {
-    if ([v3 compare:v4 options:1])
+    if ([getRestrictedCountryCodeFromTimezone compare:getRestrictedCountryCodeFromRegionInfo options:1])
     {
       v8 = @"XZ";
     }
 
     else
     {
-      v8 = v3;
+      v8 = getRestrictedCountryCodeFromTimezone;
     }
   }
 
@@ -714,27 +714,27 @@ LABEL_10:
 - (id)getLocaleFromUserDefaults
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [(WiFiLocaleManager *)self testUserDefaults];
+  testUserDefaults = [(WiFiLocaleManager *)self testUserDefaults];
 
-  if (!v3)
+  if (!testUserDefaults)
   {
-    v8 = [(WiFiLocaleManager *)self delegate];
+    delegate = [(WiFiLocaleManager *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      v9 = [(WiFiLocaleManager *)self testHost11d];
-      if (!v9)
+      testHost11d = [(WiFiLocaleManager *)self testHost11d];
+      if (!testHost11d)
       {
 
 LABEL_19:
-        v15 = [(WiFiLocaleManager *)self delegate];
-        v7 = [v15 getCountryCodeFromUserDefaults];
+        delegate2 = [(WiFiLocaleManager *)self delegate];
+        getCountryCodeFromUserDefaults = [delegate2 getCountryCodeFromUserDefaults];
 
         goto LABEL_13;
       }
 
-      v10 = v9;
-      v11 = [(WiFiLocaleManager *)self testHost11d];
-      v12 = [v11 caseInsensitiveCompare:@"OFF"];
+      v10 = testHost11d;
+      testHost11d2 = [(WiFiLocaleManager *)self testHost11d];
+      v12 = [testHost11d2 caseInsensitiveCompare:@"OFF"];
 
       if (!v12)
       {
@@ -747,12 +747,12 @@ LABEL_19:
     }
 
 LABEL_12:
-    v7 = 0;
+    getCountryCodeFromUserDefaults = 0;
     goto LABEL_13;
   }
 
-  v4 = [(WiFiLocaleManager *)self testUserDefaults];
-  v5 = [v4 caseInsensitiveCompare:@"OFF"];
+  testUserDefaults2 = [(WiFiLocaleManager *)self testUserDefaults];
+  v5 = [testUserDefaults2 caseInsensitiveCompare:@"OFF"];
 
   if (!v5)
   {
@@ -765,13 +765,13 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  v6 = [(WiFiLocaleManager *)self testUserDefaults];
-  v7 = [v6 copy];
+  testUserDefaults3 = [(WiFiLocaleManager *)self testUserDefaults];
+  getCountryCodeFromUserDefaults = [testUserDefaults3 copy];
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     v16 = 138412290;
-    v17 = v7;
+    v17 = getCountryCodeFromUserDefaults;
     _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Using user defaults [%@]", &v16, 0xCu);
   }
 
@@ -779,42 +779,42 @@ LABEL_13:
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     v16 = 138412290;
-    v17 = v7;
+    v17 = getCountryCodeFromUserDefaults;
     _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Locale from user defaults <%@>", &v16, 0xCu);
   }
 
   v13 = *MEMORY[0x277D85DE8];
 
-  return v7;
+  return getCountryCodeFromUserDefaults;
 }
 
-- (id)applySetCountryCodeExceptions:(id)a3
+- (id)applySetCountryCodeExceptions:(id)exceptions
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = v3;
-  if (![(__CFString *)v3 caseInsensitiveCompare:@"EU"])
+  exceptionsCopy = exceptions;
+  v4 = exceptionsCopy;
+  if (![(__CFString *)exceptionsCopy caseInsensitiveCompare:@"EU"])
   {
 
     v4 = @"DE";
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
       v7 = 138412546;
-      v8 = v3;
+      v8 = exceptionsCopy;
       v9 = 2112;
       v10 = @"DE";
       _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Switching locale %@ => %@", &v7, 0x16u);
     }
   }
 
-  if (![(__CFString *)v3 caseInsensitiveCompare:@"IR"]|| ![(__CFString *)v3 caseInsensitiveCompare:@"KP"])
+  if (![(__CFString *)exceptionsCopy caseInsensitiveCompare:@"IR"]|| ![(__CFString *)exceptionsCopy caseInsensitiveCompare:@"KP"])
   {
 
     v4 = &stru_28487EF20;
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
       v7 = 138412546;
-      v8 = v3;
+      v8 = exceptionsCopy;
       v9 = 2112;
       v10 = &stru_28487EF20;
       _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Switching locale %@ => %@", &v7, 0x16u);
@@ -844,27 +844,27 @@ uint64_t __43__WiFiLocaleManager_setCountryCode_source___block_invoke(uint64_t a
 
 - (void)didChangeAuthorizationStatus
 {
-  v3 = [(WiFiLocaleManager *)self queue];
+  queue = [(WiFiLocaleManager *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __49__WiFiLocaleManager_didChangeAuthorizationStatus__block_invoke;
   block[3] = &unk_2789C6630;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
-- (void)didUpdateLocations:(id)a3
+- (void)didUpdateLocations:(id)locations
 {
-  v4 = a3;
-  v5 = [(WiFiLocaleManager *)self queue];
+  locationsCopy = locations;
+  queue = [(WiFiLocaleManager *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __40__WiFiLocaleManager_didUpdateLocations___block_invoke;
   v7[3] = &unk_2789C6608;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = locationsCopy;
+  v6 = locationsCopy;
+  dispatch_async(queue, v7);
 }
 
 void __40__WiFiLocaleManager_didUpdateLocations___block_invoke(uint64_t a1)
@@ -975,15 +975,15 @@ LABEL_23:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didFailWithError:(id)a3
+- (void)didFailWithError:(id)error
 {
-  v4 = [(WiFiLocaleManager *)self queue];
+  queue = [(WiFiLocaleManager *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __38__WiFiLocaleManager_didFailWithError___block_invoke;
   block[3] = &unk_2789C6630;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(queue, block);
 }
 
 void __38__WiFiLocaleManager_didFailWithError___block_invoke(uint64_t a1)
@@ -1100,39 +1100,39 @@ LABEL_16:
   return v2;
 }
 
-- (id)getLocaleUsingGeoLocationCache:(id)a3
+- (id)getLocaleUsingGeoLocationCache:(id)cache
 {
-  v3 = a3;
+  cacheCopy = cache;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
   v24 = __Block_byref_object_copy_;
   v25 = __Block_byref_object_dispose_;
   v26 = 0;
-  if (v3)
+  if (cacheCopy)
   {
     v4 = dispatch_semaphore_create(0);
-    [v3 coordinate];
+    [cacheCopy coordinate];
     v6 = v5;
-    [v3 coordinate];
+    [cacheCopy coordinate];
     v8 = [objc_alloc(MEMORY[0x277D0EB78]) initWithGEOCoordinate:{v6, v7}];
     if (v8)
     {
-      [v3 altitude];
+      [cacheCopy altitude];
       [v8 setAltitude:v9];
-      [v3 horizontalAccuracy];
+      [cacheCopy horizontalAccuracy];
       [v8 setHorizontalAccuracy:?];
-      [v3 verticalAccuracy];
+      [cacheCopy verticalAccuracy];
       [v8 setVerticalAccuracy:?];
-      v10 = [v3 referenceFrame];
-      if (v10 == 1)
+      referenceFrame = [cacheCopy referenceFrame];
+      if (referenceFrame == 1)
       {
         v11 = 1;
       }
 
       else
       {
-        v11 = 2 * (v10 == 2);
+        v11 = 2 * (referenceFrame == 2);
       }
 
       [v8 setReferenceFrame:v11];
@@ -1348,16 +1348,16 @@ LABEL_44:
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (id)getLocaleUsingReverseGeocoder:(id)a3
+- (id)getLocaleUsingReverseGeocoder:(id)geocoder
 {
-  v4 = a3;
+  geocoderCopy = geocoder;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = __Block_byref_object_copy_;
   v17 = __Block_byref_object_dispose_;
   v18 = 0;
-  if (v4)
+  if (geocoderCopy)
   {
     if ([(WiFiLocaleManager *)self getNetworkReachability])
     {
@@ -1372,7 +1372,7 @@ LABEL_44:
         v12 = &v13;
         v7 = v6;
         v11 = v7;
-        [v5 reverseGeocodeLocation:v4 completionHandler:v10];
+        [v5 reverseGeocodeLocation:geocoderCopy completionHandler:v10];
         dispatch_semaphore_wait(v7, 0xFFFFFFFFFFFFFFFFLL);
         v8 = v14[5];
 
@@ -1466,15 +1466,15 @@ LABEL_7:
 - (id)getRestrictedCountryCodeFromTimezone
 {
   v13 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CBEBB0] defaultTimeZone];
-  v3 = v2;
-  if (v2)
+  defaultTimeZone = [MEMORY[0x277CBEBB0] defaultTimeZone];
+  v3 = defaultTimeZone;
+  if (defaultTimeZone)
   {
     v4 = &v12 + 8;
     while (1)
     {
-      v5 = [v3 name];
-      v6 = [v5 compare:*(v4 - 1) options:1];
+      name = [v3 name];
+      v6 = [name compare:*(v4 - 1) options:1];
 
       if (!v6)
       {
@@ -1485,16 +1485,16 @@ LABEL_7:
       v4 += 16;
       if (!v7)
       {
-        v2 = 0;
+        defaultTimeZone = 0;
         goto LABEL_7;
       }
     }
 
-    v2 = [*v4 copy];
+    defaultTimeZone = [*v4 copy];
   }
 
 LABEL_7:
-  v8 = v2;
+  v8 = defaultTimeZone;
 
   for (i = 72; i != -8; i -= 8)
   {
@@ -1505,16 +1505,16 @@ LABEL_7:
   return v8;
 }
 
-+ (id)getStringOfLocaleSource:(int)a3
++ (id)getStringOfLocaleSource:(int)source
 {
-  if (a3 > 7)
+  if (source > 7)
   {
     return @"unknown";
   }
 
   else
   {
-    return off_2789C67C0[a3];
+    return off_2789C67C0[source];
   }
 }
 
@@ -1549,7 +1549,7 @@ LABEL_7:
     {
       if (!MEMORY[0x282209FB0] || (ctServerConnectionRef = self->_ctServerConnectionRef, v9 = _CTServerConnectionCopyISOForMCC(), !v9))
       {
-        v10 = [0 uppercaseString];
+        uppercaseString = [0 uppercaseString];
         goto LABEL_26;
       }
 
@@ -1604,14 +1604,14 @@ LABEL_24:
   }
 
 LABEL_25:
-  v10 = 0;
+  uppercaseString = 0;
 LABEL_26:
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
     *&buf[4] = cf;
     *&buf[12] = 2112;
-    *&buf[14] = v10;
+    *&buf[14] = uppercaseString;
     _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Locale from MCC [%@]: <%@>", buf, 0x16u);
   }
 
@@ -1622,15 +1622,15 @@ LABEL_26:
 
   v14 = *MEMORY[0x277D85DE8];
 
-  return v10;
+  return uppercaseString;
 }
 
-- (id)getLocaleFromLocation:(id)a3
+- (id)getLocaleFromLocation:(id)location
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  locationCopy = location;
   v4 = getenv("__OSINSTALL_ENVIRONMENT");
-  if (v3)
+  if (locationCopy)
   {
     v5 = v4;
     if (v4)
@@ -1680,13 +1680,13 @@ LABEL_3:
   return v6;
 }
 
-- (id)getLocaleUsingBoundingBoxes:(id)a3
+- (id)getLocaleUsingBoundingBoxes:(id)boxes
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  boxesCopy = boxes;
+  v4 = boxesCopy;
+  if (boxesCopy)
   {
-    [v3 coordinate];
+    [boxesCopy coordinate];
     v6 = v5;
     [v4 coordinate];
     v8 = &qword_27DE0B210;

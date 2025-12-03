@@ -1,11 +1,11 @@
 @interface _PFSQLiteSnapshotWrapper
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 - (id)mutableCopy;
 - (uint64_t)data;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)initWithData:(void *)a1;
+- (void)initWithData:(void *)data;
 @end
 
 @implementation _PFSQLiteSnapshotWrapper
@@ -45,14 +45,14 @@
   [(_PFSQLiteSnapshotWrapper *)&v4 dealloc];
 }
 
-- (void)initWithData:(void *)a1
+- (void)initWithData:(void *)data
 {
-  if (!a1)
+  if (!data)
   {
     return 0;
   }
 
-  v7.receiver = a1;
+  v7.receiver = data;
   v7.super_class = _PFSQLiteSnapshotWrapper;
   v3 = objc_msgSendSuper2(&v7, sel_init);
   if (v3)
@@ -98,15 +98,15 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
   objc_opt_class();
-  return (objc_opt_isKindOfClass() & 1) != 0 && [(_PFSQLiteSnapshotWrapper *)self compare:a3]== 0;
+  return (objc_opt_isKindOfClass() & 1) != 0 && [(_PFSQLiteSnapshotWrapper *)self compare:equal]== 0;
 }
 
 - (id)description

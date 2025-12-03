@@ -1,9 +1,9 @@
 @interface CKRecipientGenerator
 + (id)sharedRecipientGenerator;
-- (id)recipientWithAddress:(id)a3;
-- (id)recipientWithContact:(id)a3;
-- (id)recipientWithContactProperty:(id)a3;
-- (void)getAddressForContact:(id)a3 address:(id *)a4 kind:(unint64_t *)a5;
+- (id)recipientWithAddress:(id)address;
+- (id)recipientWithContact:(id)contact;
+- (id)recipientWithContactProperty:(id)property;
+- (void)getAddressForContact:(id)contact address:(id *)address kind:(unint64_t *)kind;
 @end
 
 @implementation CKRecipientGenerator
@@ -31,11 +31,11 @@ void __48__CKRecipientGenerator_sharedRecipientGenerator__block_invoke()
   [v2 setSearchABPropertyTypes:v3];
 }
 
-- (id)recipientWithContact:(id)a3
+- (id)recipientWithContact:(id)contact
 {
   v9 = 0;
   v10 = 5;
-  [(CKRecipientGenerator *)self getAddressForContact:a3 address:&v9 kind:&v10];
+  [(CKRecipientGenerator *)self getAddressForContact:contact address:&v9 kind:&v10];
   v3 = v9;
   v4 = +[CKRecipientGenerator sharedRecipientGenerator];
   v5 = [v4 recipientWithAddress:v3];
@@ -54,19 +54,19 @@ void __48__CKRecipientGenerator_sharedRecipientGenerator__block_invoke()
   return v5;
 }
 
-- (void)getAddressForContact:(id)a3 address:(id *)a4 kind:(unint64_t *)a5
+- (void)getAddressForContact:(id)contact address:(id *)address kind:(unint64_t *)kind
 {
-  v17 = a3;
-  v7 = [v17 phoneNumbers];
-  v8 = [v7 count];
+  contactCopy = contact;
+  phoneNumbers = [contactCopy phoneNumbers];
+  v8 = [phoneNumbers count];
 
   if (v8)
   {
-    v9 = [v17 phoneNumbers];
-    v10 = [v9 firstObject];
+    phoneNumbers2 = [contactCopy phoneNumbers];
+    firstObject = [phoneNumbers2 firstObject];
 
-    v11 = [v10 value];
-    v12 = [v11 stringValue];
+    value = [firstObject value];
+    stringValue = [value stringValue];
 
     v13 = 1;
 LABEL_5:
@@ -74,58 +74,58 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v14 = [v17 emailAddresses];
-  v12 = [v14 count];
+  emailAddresses = [contactCopy emailAddresses];
+  stringValue = [emailAddresses count];
 
-  if (v12)
+  if (stringValue)
   {
-    v15 = [v17 emailAddresses];
-    v10 = [v15 firstObject];
+    emailAddresses2 = [contactCopy emailAddresses];
+    firstObject = [emailAddresses2 firstObject];
 
-    v12 = [v10 value];
+    stringValue = [firstObject value];
     v13 = 0;
     goto LABEL_5;
   }
 
   v13 = 5;
 LABEL_6:
-  v16 = v12;
-  *a4 = v12;
-  *a5 = v13;
+  v16 = stringValue;
+  *address = stringValue;
+  *kind = v13;
 }
 
-- (id)recipientWithContactProperty:(id)a3
+- (id)recipientWithContactProperty:(id)property
 {
-  v3 = a3;
-  v4 = [v3 key];
+  propertyCopy = property;
+  v4 = [propertyCopy key];
   v5 = [v4 isEqualToString:*MEMORY[0x1E695C208]];
 
   if (v5)
   {
-    v6 = [v3 value];
+    value = [propertyCopy value];
   }
 
   else
   {
-    v7 = [v3 key];
+    v7 = [propertyCopy key];
     v8 = [v7 isEqualToString:*MEMORY[0x1E695C330]];
 
     if (v8)
     {
-      v9 = [v3 value];
-      v6 = [v9 stringValue];
+      value2 = [propertyCopy value];
+      value = [value2 stringValue];
     }
 
     else
     {
-      v6 = 0;
+      value = 0;
     }
   }
 
-  if ([v6 length])
+  if ([value length])
   {
     v10 = +[CKRecipientGenerator sharedRecipientGenerator];
-    v11 = [v10 recipientWithAddress:v6];
+    v11 = [v10 recipientWithAddress:value];
   }
 
   else
@@ -136,16 +136,16 @@ LABEL_6:
   return v11;
 }
 
-- (id)recipientWithAddress:(id)a3
+- (id)recipientWithAddress:(id)address
 {
   v25 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (v3)
+  addressCopy = address;
+  if (addressCopy)
   {
-    v4 = [MEMORY[0x1E69A7FD0] sharedInstance];
-    v5 = [v4 fetchCNContactForHandleWithID:v3];
+    mEMORY[0x1E69A7FD0] = [MEMORY[0x1E69A7FD0] sharedInstance];
+    v5 = [mEMORY[0x1E69A7FD0] fetchCNContactForHandleWithID:addressCopy];
 
-    v6 = MEMORY[0x193AF5D40](v3);
+    v6 = MEMORY[0x193AF5D40](addressCopy);
     if (v6)
     {
       v7 = 1;
@@ -162,8 +162,8 @@ LABEL_6:
     }
 
     v10 = IMStripFormattingFromAddress();
-    v11 = [MEMORY[0x1E69A5A80] sharedInstance];
-    v12 = [v11 __ck_bestAccountForAddress:v10];
+    mEMORY[0x1E69A5A80] = [MEMORY[0x1E69A5A80] sharedInstance];
+    v12 = [mEMORY[0x1E69A5A80] __ck_bestAccountForAddress:v10];
 
     v13 = [v12 imHandleWithID:v10];
     if (CKIsRunningInFullCKClient() || CKIsRunningUnitTests())
@@ -173,7 +173,7 @@ LABEL_6:
 
     else
     {
-      v14 = [objc_alloc(MEMORY[0x1E6996408]) initWithContact:v5 address:v3 kind:v7];
+      v14 = [objc_alloc(MEMORY[0x1E6996408]) initWithContact:v5 address:addressCopy kind:v7];
     }
 
     v9 = v14;
@@ -194,7 +194,7 @@ LABEL_6:
       if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
       {
         v19 = 138412802;
-        v20 = v3;
+        v20 = addressCopy;
         v21 = 2112;
         v22 = v13;
         v23 = 2112;

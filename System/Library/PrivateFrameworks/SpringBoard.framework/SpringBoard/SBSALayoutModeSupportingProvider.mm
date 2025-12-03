@@ -1,15 +1,15 @@
 @interface SBSALayoutModeSupportingProvider
-- (id)preferencesFromContext:(id)a3;
-- (void)_transitionToLayoutModeIfNecessary:(int64_t)a3 customLayoutCustomizingOptions:(int64_t)a4 context:(id)a5;
+- (id)preferencesFromContext:(id)context;
+- (void)_transitionToLayoutModeIfNecessary:(int64_t)necessary customLayoutCustomizingOptions:(int64_t)options context:(id)context;
 @end
 
 @implementation SBSALayoutModeSupportingProvider
 
-- (id)preferencesFromContext:(id)a3
+- (id)preferencesFromContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = objc_opt_class();
-  v6 = v4;
+  v6 = contextCopy;
   if (v5)
   {
     if (objc_opt_isKindOfClass())
@@ -30,27 +30,27 @@
 
   v8 = v7;
 
-  v9 = [v8 elementContexts];
-  v10 = [v9 count];
-  if (v10)
+  elementContexts = [v8 elementContexts];
+  systemApertureCustomLayout = [elementContexts count];
+  if (systemApertureCustomLayout)
   {
-    v11 = [v9 bs_firstObjectPassingTest:&__block_literal_global_349];
+    v11 = [elementContexts bs_firstObjectPassingTest:&__block_literal_global_349];
     v12 = v11;
     if (v11)
     {
-      v10 = [v11 systemApertureCustomLayout];
+      systemApertureCustomLayout = [v11 systemApertureCustomLayout];
       v13 = 3;
     }
 
-    else if (v10 == 1 && ([v9 sbsa_onlyObjectOrNil], v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "layoutMode"), v14, v15 != 1))
+    else if (systemApertureCustomLayout == 1 && ([elementContexts sbsa_onlyObjectOrNil], v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "layoutMode"), v14, v15 != 1))
     {
-      v10 = 0;
+      systemApertureCustomLayout = 0;
       v13 = 2;
     }
 
     else
     {
-      v10 = 0;
+      systemApertureCustomLayout = 0;
       v13 = 1;
     }
   }
@@ -60,7 +60,7 @@
     v13 = 0;
   }
 
-  [(SBSALayoutModeSupportingProvider *)self _transitionToLayoutModeIfNecessary:v13 customLayoutCustomizingOptions:v10 context:v8];
+  [(SBSALayoutModeSupportingProvider *)self _transitionToLayoutModeIfNecessary:v13 customLayoutCustomizingOptions:systemApertureCustomLayout context:v8];
   v18.receiver = self;
   v18.super_class = SBSALayoutModeSupportingProvider;
   v16 = [(SBSABasePreferencesProvider *)&v18 preferencesFromContext:v8];
@@ -77,25 +77,25 @@ BOOL __59__SBSALayoutModeSupportingProvider_preferencesFromContext___block_invok
   return SBSABehavesLikeCustom(v3, v4);
 }
 
-- (void)_transitionToLayoutModeIfNecessary:(int64_t)a3 customLayoutCustomizingOptions:(int64_t)a4 context:(id)a5
+- (void)_transitionToLayoutModeIfNecessary:(int64_t)necessary customLayoutCustomizingOptions:(int64_t)options context:(id)context
 {
   v36 = *MEMORY[0x277D85DE8];
-  v9 = a5;
+  contextCopy = context;
   WeakRetained = objc_loadWeakRetained(&self->_activeTransitionProvider);
   v11 = objc_loadWeakRetained(&self->_elementRemovalTransitionProvider);
-  v12 = [(SBSALayoutModeSupportingProvider *)self _firstElementLayoutModeSupportingProvider];
-  v13 = v12;
-  if ((a3 - 1) < 3)
+  _firstElementLayoutModeSupportingProvider = [(SBSALayoutModeSupportingProvider *)self _firstElementLayoutModeSupportingProvider];
+  v13 = _firstElementLayoutModeSupportingProvider;
+  if ((necessary - 1) < 3)
   {
     if (v11)
     {
       v14 = SBLogSystemAperturePreferencesStackElements();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
       {
-        v28 = [v9 queryIteration];
+        queryIteration = [contextCopy queryIteration];
         v29 = SAUIStringFromElementViewLayoutMode();
         *buf = 134349570;
-        v31 = v28;
+        v31 = queryIteration;
         v32 = 2112;
         v33 = v29;
         v34 = 2112;
@@ -107,13 +107,13 @@ BOOL __59__SBSALayoutModeSupportingProvider_preferencesFromContext___block_invok
       objc_storeWeak(&self->_elementRemovalTransitionProvider, 0);
     }
 
-    if (v13 && SBSALayoutModeAndCustomLayoutOptionBehavesLikeTargetLayoutMode(a3, a4, [v13 supportedElementLayoutMode]))
+    if (v13 && SBSALayoutModeAndCustomLayoutOptionBehavesLikeTargetLayoutMode(necessary, options, [v13 supportedElementLayoutMode]))
     {
       v15 = v13;
-      v16 = [v9 preferences];
-      v17 = [v16 isCollisionImminent];
+      preferences = [contextCopy preferences];
+      isCollisionImminent = [preferences isCollisionImminent];
 
-      if (!v17)
+      if (!isCollisionImminent)
       {
 LABEL_22:
 
@@ -124,9 +124,9 @@ LABEL_22:
       v18 = SBLogSystemAperturePreferencesStackElements();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
       {
-        v27 = [v9 queryIteration];
+        queryIteration2 = [contextCopy queryIteration];
         *buf = 134349570;
-        v31 = v27;
+        v31 = queryIteration2;
         v32 = 2112;
         v33 = v15;
         v34 = 2112;
@@ -144,12 +144,12 @@ LABEL_22:
     v19 = SBLogSystemAperturePreferencesStackElements();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
     {
-      [SBSALayoutModeSupportingProvider _transitionToLayoutModeIfNecessary:v9 customLayoutCustomizingOptions:v19 context:?];
+      [SBSALayoutModeSupportingProvider _transitionToLayoutModeIfNecessary:contextCopy customLayoutCustomizingOptions:v19 context:?];
     }
 
-    v20 = [(SBSAElementRemovalTransitionProvider *)WeakRetained targetElementLayoutMode];
+    targetElementLayoutMode = [(SBSAElementRemovalTransitionProvider *)WeakRetained targetElementLayoutMode];
     v21 = [(SBSAElementRemovalTransitionProvider *)WeakRetained isInitialized]^ 1;
-    if (v20 == a3)
+    if (targetElementLayoutMode == necessary)
     {
       LOBYTE(v21) = 1;
     }
@@ -162,7 +162,7 @@ LABEL_22:
       v23 = SBLogSystemAperturePreferencesStackElements();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
       {
-        [SBSALayoutModeSupportingProvider _transitionToLayoutModeIfNecessary:v9 customLayoutCustomizingOptions:v22 context:v23];
+        [SBSALayoutModeSupportingProvider _transitionToLayoutModeIfNecessary:contextCopy customLayoutCustomizingOptions:v22 context:v23];
       }
 
       [(SBSAElementRemovalTransitionProvider *)WeakRetained removeFromParentProvider];
@@ -172,11 +172,11 @@ LABEL_22:
     goto LABEL_22;
   }
 
-  if ((a3 + 1) <= 1)
+  if ((necessary + 1) <= 1)
   {
-    if (v12)
+    if (_firstElementLayoutModeSupportingProvider)
     {
-      if ([v12 supportedElementLayoutMode] <= 0)
+      if ([_firstElementLayoutModeSupportingProvider supportedElementLayoutMode] <= 0)
       {
         [SBSALayoutModeSupportingProvider _transitionToLayoutModeIfNecessary:a2 customLayoutCustomizingOptions:self context:?];
       }

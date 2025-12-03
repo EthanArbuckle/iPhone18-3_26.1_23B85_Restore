@@ -17,7 +17,7 @@
   v14 = a3;
   v15 = a4;
   v16 = a5;
-  v38.receiver = a1;
+  v38.receiver = self;
   v38.super_class = &off_28488EEE8;
   v17 = objc_msgSendSuper2(&v38, sel_init);
   v18 = v17;
@@ -29,14 +29,14 @@
     [v18 setModelVersion:v16];
     [v18 setTaskHint:a6];
     [v18 setEndOfUtterance:a8];
-    v19 = [MEMORY[0x277CBEB18] array];
-    [v18 setTranscriptions:v19];
+    array = [MEMORY[0x277CBEB18] array];
+    [v18 setTranscriptions:array];
     v36 = 0u;
     v37 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v20 = [v14 nBestResults];
-    v21 = [v20 countByEnumeratingWithState:&v34 objects:v39 count:16];
+    nBestResults = [v14 nBestResults];
+    v21 = [nBestResults countByEnumeratingWithState:&v34 objects:v39 count:16];
     if (v21)
     {
       v22 = v21;
@@ -48,17 +48,17 @@
         {
           if (*v35 != v23)
           {
-            objc_enumerationMutation(v20);
+            objc_enumerationMutation(nBestResults);
           }
 
           v25 = [v18 _transcriptionWithResult:*(*(&v34 + 1) + 8 * v24) locale:v15];
-          [v19 addObject:v25];
+          [array addObject:v25];
 
           ++v24;
         }
 
         while (v22 != v24);
-        v22 = [v20 countByEnumeratingWithState:&v34 objects:v39 count:16];
+        v22 = [nBestResults countByEnumeratingWithState:&v34 objects:v39 count:16];
       }
 
       while (v22);
@@ -72,8 +72,8 @@
     }
 
     v28 = objc_alloc(MEMORY[0x277CE1B98]);
-    v29 = [v14 recognition];
-    v30 = [v28 initWithRecognition:v29 wordConfidenceThreshold:v26];
+    recognition = [v14 recognition];
+    v30 = [v28 initWithRecognition:recognition wordConfidenceThreshold:v26];
     [v18 setBestRecognitionAlternatives:v30];
 
     v31 = v18;
@@ -89,7 +89,7 @@
   v12 = a3;
   v13 = a4;
   v14 = a5;
-  v22.receiver = a1;
+  v22.receiver = self;
   v22.super_class = &off_28488EEE8;
   v15 = objc_msgSendSuper2(&v22, sel_init);
   v16 = v15;
@@ -116,7 +116,7 @@
 {
   v15[1] = *MEMORY[0x277D85DE8];
   v6 = a3;
-  v14.receiver = a1;
+  v14.receiver = self;
   v14.super_class = &off_28488EEE8;
   v7 = objc_msgSendSuper2(&v14, sel_init);
   v8 = v7;
@@ -142,7 +142,7 @@
   v14 = a5;
   v15 = a4;
   v16 = a3;
-  v17 = [[a1 alloc] initWithPackage:v16 locale:v15 modelVersion:v14 taskHint:a6 isFinal:a7 endOfUtterance:a8];
+  v17 = [[self alloc] initWithPackage:v16 locale:v15 modelVersion:v14 taskHint:a6 isFinal:a7 endOfUtterance:a8];
 
   return v17;
 }
@@ -152,7 +152,7 @@
   v12 = a5;
   v13 = a4;
   v14 = a3;
-  v15 = [[a1 alloc] initWithPackage:v14 locale:v13 modelVersion:v12 taskHint:a6 isFinal:a7 endOfUtterance:0];
+  v15 = [[self alloc] initWithPackage:v14 locale:v13 modelVersion:v12 taskHint:a6 isFinal:a7 endOfUtterance:0];
 
   return v15;
 }
@@ -162,7 +162,7 @@
   v12 = a5;
   v13 = a4;
   v14 = a3;
-  v15 = [[a1 alloc] initWithResult:v14 locale:v13 modelVersion:v12 taskHint:a6 isFinal:a7];
+  v15 = [[self alloc] initWithResult:v14 locale:v13 modelVersion:v12 taskHint:a6 isFinal:a7];
 
   return v15;
 }
@@ -170,7 +170,7 @@
 + (id)emptyResultWithLocale:()Daemon isFinal:
 {
   v6 = a3;
-  v7 = [[a1 alloc] initEmptyResultWithLocale:v6 isFinal:a4];
+  v7 = [[self alloc] initEmptyResultWithLocale:v6 isFinal:a4];
 
   return v7;
 }
@@ -180,13 +180,13 @@
   v39 = *MEMORY[0x277D85DE8];
   v6 = a3;
   v33 = a4;
-  v7 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v8 = [v6 tokens];
-  v9 = [v8 countByEnumeratingWithState:&v34 objects:v38 count:16];
+  tokens = [v6 tokens];
+  v9 = [tokens countByEnumeratingWithState:&v34 objects:v38 count:16];
   if (v9)
   {
     v10 = v9;
@@ -200,7 +200,7 @@
       {
         if (*v35 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(tokens);
         }
 
         v16 = *(*(&v34 + 1) + 8 * i);
@@ -220,21 +220,21 @@
 
         if ([v16 hasSpaceBefore])
         {
-          [v7 appendString:@" "];
+          [string appendString:@" "];
         }
 
-        v21 = [v16 tokenName];
-        [v7 appendString:v21];
+        tokenName = [v16 tokenName];
+        [string appendString:tokenName];
 
         if ([v16 hasSpaceAfter])
         {
-          [v7 appendString:@" "];
+          [string appendString:@" "];
         }
 
         v14 = v14 + v18;
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v34 objects:v38 count:16];
+      v10 = [tokens countByEnumeratingWithState:&v34 objects:v38 count:16];
     }
 
     while (v10);
@@ -247,25 +247,25 @@
     v14 = 0.0;
   }
 
-  v22 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-  v23 = [v7 stringByTrimmingCharactersInSet:v22];
+  whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+  v23 = [string stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
-  if ([a1 taskHint] == 10)
+  if ([self taskHint] == 10)
   {
     v24 = [MEMORY[0x277CE1AB0] trimPrependingPunctuation:v23 locale:v33];
 
     v23 = v24;
   }
 
-  if ([a1 isFinal])
+  if ([self isFinal])
   {
-    v25 = [v6 tokens];
-    v26 = [v25 count];
+    tokens2 = [v6 tokens];
+    v26 = [tokens2 count];
 
     if (v26)
     {
-      v27 = [v6 tokens];
-      v28 = v14 / [v27 count];
+      tokens3 = [v6 tokens];
+      v28 = v14 / [tokens3 count];
     }
 
     else

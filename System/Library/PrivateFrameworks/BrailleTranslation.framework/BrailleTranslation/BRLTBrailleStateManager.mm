@@ -1,59 +1,59 @@
 @interface BRLTBrailleStateManager
-- (BOOL)_deleteBrailleCharSilently:(BOOL)a3;
-- (BOOL)_generateBrailleBuffer:(BOOL)a3;
+- (BOOL)_deleteBrailleCharSilently:(BOOL)silently;
+- (BOOL)_generateBrailleBuffer:(BOOL)buffer;
 - (BOOL)_selectionIsValidForDelete;
 - (BOOL)_selectionIsValidForInsert;
-- (BOOL)_setBrailleSelection:(_NSRange)a3 newScriptLocation:(unint64_t *)a4;
+- (BOOL)_setBrailleSelection:(_NSRange)selection newScriptLocation:(unint64_t *)location;
 - (BOOL)deleteBrailleChar;
 - (BOOL)deleteBrailleCharSilently;
 - (BOOL)forwardDeleteBrailleChar;
 - (BOOL)forwardDeleteBrailleCharSilently;
-- (BRLTBrailleStateManager)initWithDelegate:(id)a3 translationDelegate:(id)a4;
-- (_NSRange)_brailleRangeForTextRange:(_NSRange)a3 textPositions:(id)a4 brailleLength:(unint64_t)a5;
-- (_NSRange)_textRangeForBrailleRange:(_NSRange)a3 textPositions:(id)a4 scriptLength:(int64_t)a5;
-- (_NSRange)backwardEditingAtomForScriptString:(id)a3;
+- (BRLTBrailleStateManager)initWithDelegate:(id)delegate translationDelegate:(id)translationDelegate;
+- (_NSRange)_brailleRangeForTextRange:(_NSRange)range textPositions:(id)positions brailleLength:(unint64_t)length;
+- (_NSRange)_textRangeForBrailleRange:(_NSRange)range textPositions:(id)positions scriptLength:(int64_t)length;
+- (_NSRange)backwardEditingAtomForScriptString:(id)string;
 - (_NSRange)brailleFocus;
-- (_NSRange)brailleRangeForScriptRange:(_NSRange)a3;
+- (_NSRange)brailleRangeForScriptRange:(_NSRange)range;
 - (_NSRange)brailleSelection;
 - (_NSRange)brailleSuggestion;
-- (_NSRange)deleteMergeAtomForScriptString:(id)a3;
-- (_NSRange)forwardEditingAtomForScriptString:(id)a3;
+- (_NSRange)deleteMergeAtomForScriptString:(id)string;
+- (_NSRange)forwardEditingAtomForScriptString:(id)string;
 - (_NSRange)scriptEditingRange;
-- (_NSRange)scriptRangeForBrailleRange:(_NSRange)a3;
-- (_NSRange)scriptRangeOfBrailleCellRepresentingCharacterAtScriptIndex:(unint64_t)a3;
+- (_NSRange)scriptRangeForBrailleRange:(_NSRange)range;
+- (_NSRange)scriptRangeOfBrailleCellRepresentingCharacterAtScriptIndex:(unint64_t)index;
 - (id)brailleDisplayString;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)outputScriptString;
 - (id)translationDelegate;
-- (unint64_t)brailleLocationForScriptLocation:(unint64_t)a3;
-- (unint64_t)scriptLocationForBrailleLocation:(unint64_t)a3;
-- (void)insertBrailleChar:(id)a3 modifiers:(id)a4;
-- (void)insertBrailleChar:(id)a3 modifiers:(id)a4 silently:(BOOL)a5;
-- (void)setBrailleSelection:(_NSRange)a3 needsForwardToScreenReader:(BOOL *)a4 newScriptLocation:(unint64_t *)a5;
-- (void)setDelegate:(id)a3;
-- (void)setInputTranslationMode:(unint64_t)a3;
-- (void)setOutputTranslationMode:(unint64_t)a3;
-- (void)setScriptString:(id)a3;
-- (void)setTranslationDelegate:(id)a3;
+- (unint64_t)brailleLocationForScriptLocation:(unint64_t)location;
+- (unint64_t)scriptLocationForBrailleLocation:(unint64_t)location;
+- (void)insertBrailleChar:(id)char modifiers:(id)modifiers;
+- (void)insertBrailleChar:(id)char modifiers:(id)modifiers silently:(BOOL)silently;
+- (void)setBrailleSelection:(_NSRange)selection needsForwardToScreenReader:(BOOL *)reader newScriptLocation:(unint64_t *)location;
+- (void)setDelegate:(id)delegate;
+- (void)setInputTranslationMode:(unint64_t)mode;
+- (void)setOutputTranslationMode:(unint64_t)mode;
+- (void)setScriptString:(id)string;
+- (void)setTranslationDelegate:(id)delegate;
 - (void)translate;
-- (void)translateForced:(BOOL)a3;
+- (void)translateForced:(BOOL)forced;
 @end
 
 @implementation BRLTBrailleStateManager
 
-- (BRLTBrailleStateManager)initWithDelegate:(id)a3 translationDelegate:(id)a4
+- (BRLTBrailleStateManager)initWithDelegate:(id)delegate translationDelegate:(id)translationDelegate
 {
   v15.receiver = self;
   v15.super_class = BRLTBrailleStateManager;
-  v5 = a4;
-  v6 = a3;
+  translationDelegateCopy = translationDelegate;
+  delegateCopy = delegate;
   v7 = [(BRLTBrailleStateManager *)&v15 init];
   v8 = objc_alloc_init(BRLTBrailleBuffer);
   v9 = *(v7 + 2);
   *(v7 + 2) = v8;
 
-  objc_storeWeak(v7 + 27, v6);
-  objc_storeWeak(v7 + 28, v5);
+  objc_storeWeak(v7 + 27, delegateCopy);
+  objc_storeWeak(v7 + 28, translationDelegateCopy);
 
   *(v7 + 10) = xmmword_241E38B50;
   *(v7 + 11) = xmmword_241E38B50;
@@ -63,31 +63,31 @@
   v11 = *(v7 + 31);
   *(v7 + 31) = v10;
 
-  v12 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v13 = *(v7 + 32);
-  *(v7 + 32) = v12;
+  *(v7 + 32) = array;
 
   return v7;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   apiLock = self->_apiLock;
-  v5 = a3;
+  delegateCopy = delegate;
   [(NSRecursiveLock *)apiLock lock];
-  objc_storeWeak(&self->_delegate, v5);
+  objc_storeWeak(&self->_delegate, delegateCopy);
 
   v6 = self->_apiLock;
 
   [(NSRecursiveLock *)v6 unlock];
 }
 
-- (void)setTranslationDelegate:(id)a3
+- (void)setTranslationDelegate:(id)delegate
 {
   apiLock = self->_apiLock;
-  v5 = a3;
+  delegateCopy = delegate;
   [(NSRecursiveLock *)apiLock lock];
-  objc_storeWeak(&self->_translationDelegate, v5);
+  objc_storeWeak(&self->_translationDelegate, delegateCopy);
 
   v6 = self->_apiLock;
 
@@ -101,15 +101,15 @@
   return WeakRetained;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_opt_class() allocWithZone:a3];
+  v5 = [objc_opt_class() allocWithZone:zone];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v7 = objc_loadWeakRetained(&self->_translationDelegate);
   v8 = [v5 initWithDelegate:WeakRetained translationDelegate:v7];
 
   objc_storeStrong((v8 + 8), self->_scriptString);
-  v9 = [(BRLTBrailleBuffer *)self->_brailleBuffer copyWithZone:a3];
+  v9 = [(BRLTBrailleBuffer *)self->_brailleBuffer copyWithZone:zone];
   v10 = *(v8 + 16);
   *(v8 + 16) = v9;
 
@@ -138,18 +138,18 @@
   return v8;
 }
 
-- (void)setScriptString:(id)a3
+- (void)setScriptString:(id)string
 {
-  v5 = a3;
+  stringCopy = string;
   [(NSRecursiveLock *)self->_apiLock lock];
-  v6 = [v5 string];
+  string = [stringCopy string];
   p_scriptString = &self->_scriptString;
-  v8 = [(BRLTScriptString *)self->_scriptString string];
-  if ([v6 isEqual:v8])
+  string2 = [(BRLTScriptString *)self->_scriptString string];
+  if ([string isEqual:string2])
   {
-    v9 = [v5 selection];
+    selection = [stringCopy selection];
     v11 = v10;
-    v14 = v9 != [(BRLTScriptString *)*p_scriptString selection]|| v11 != v12;
+    v14 = selection != [(BRLTScriptString *)*p_scriptString selection]|| v11 != v12;
   }
 
   else
@@ -157,7 +157,7 @@
     v14 = 1;
   }
 
-  v15 = self->_pendingScriptSelection.location != 0x7FFFFFFFFFFFFFFFLL && ([v5 selection] != self->_pendingScriptSelection.location || v16 != self->_pendingScriptSelection.length);
+  v15 = self->_pendingScriptSelection.location != 0x7FFFFFFFFFFFFFFFLL && ([stringCopy selection] != self->_pendingScriptSelection.location || v16 != self->_pendingScriptSelection.length);
   if (!v14 && !v15 && !self->_scriptDirty)
   {
     v27 = BRLTLog();
@@ -167,7 +167,7 @@
       _os_log_impl(&dword_241DFD000, v27, OS_LOG_TYPE_INFO, "setScriptString: not processing the input since it is identical to the current script string.", buf, 2u);
     }
 
-    v28 = [v5 copy];
+    v28 = [stringCopy copy];
     scriptString = self->_scriptString;
     self->_scriptString = v28;
 
@@ -183,22 +183,22 @@
   if (CFAbsoluteTimeGetCurrent() - self->_lastScriptStringOutputTime >= 5.0)
   {
 LABEL_23:
-    v19 = [v5 string];
-    v20 = [(BRLTScriptString *)*p_scriptString string];
-    if ([v19 isEqualToString:v20] && objc_msgSend(v5, "selection") == self->_pendingScriptSelection.location && v21 == self->_pendingScriptSelection.length)
+    string3 = [stringCopy string];
+    string4 = [(BRLTScriptString *)*p_scriptString string];
+    if ([string3 isEqualToString:string4] && objc_msgSend(stringCopy, "selection") == self->_pendingScriptSelection.location && v21 == self->_pendingScriptSelection.length)
     {
-      v22 = [v5 textFormattingRanges];
-      v23 = [(BRLTScriptString *)*p_scriptString textFormattingRanges];
-      v24 = v23;
-      if (v22 == v23)
+      textFormattingRanges = [stringCopy textFormattingRanges];
+      textFormattingRanges2 = [(BRLTScriptString *)*p_scriptString textFormattingRanges];
+      v24 = textFormattingRanges2;
+      if (textFormattingRanges == textFormattingRanges2)
       {
 
         goto LABEL_34;
       }
 
-      v25 = [v5 textFormattingRanges];
-      v26 = [(BRLTScriptString *)*p_scriptString textFormattingRanges];
-      v31 = [v25 isEqual:v26];
+      textFormattingRanges3 = [stringCopy textFormattingRanges];
+      textFormattingRanges4 = [(BRLTScriptString *)*p_scriptString textFormattingRanges];
+      v31 = [textFormattingRanges3 isEqual:textFormattingRanges4];
 
       if (v31)
       {
@@ -210,7 +210,7 @@ LABEL_23:
     {
     }
 
-    objc_storeStrong(&self->_scriptString, a3);
+    objc_storeStrong(&self->_scriptString, string);
     self->_scriptDirty = 1;
     self->_pendingScriptSelection = xmmword_241E38B50;
     [(BRLTBrailleStateManager *)self translate];
@@ -229,7 +229,7 @@ LABEL_34:
   v33[2] = __43__BRLTBrailleStateManager_setScriptString___block_invoke;
   v33[3] = &unk_278D20B28;
   v33[4] = self;
-  v34 = v5;
+  v34 = stringCopy;
   v35 = buf;
   [(NSMutableArray *)runningScriptStringHistory enumerateObjectsUsingBlock:v33];
   if (*(v37 + 3) == 0x7FFFFFFFFFFFFFFFLL)
@@ -270,26 +270,26 @@ void __43__BRLTBrailleStateManager_setScriptString___block_invoke(void *a1, void
 LABEL_5:
 }
 
-- (void)insertBrailleChar:(id)a3 modifiers:(id)a4
+- (void)insertBrailleChar:(id)char modifiers:(id)modifiers
 {
   apiLock = self->_apiLock;
-  v7 = a4;
-  v8 = a3;
+  modifiersCopy = modifiers;
+  charCopy = char;
   [(NSRecursiveLock *)apiLock lock];
-  [(BRLTBrailleStateManager *)self insertBrailleChar:v8 modifiers:v7 silently:0];
+  [(BRLTBrailleStateManager *)self insertBrailleChar:charCopy modifiers:modifiersCopy silently:0];
 
   v9 = self->_apiLock;
 
   [(NSRecursiveLock *)v9 unlock];
 }
 
-- (void)insertBrailleChar:(id)a3 modifiers:(id)a4 silently:(BOOL)a5
+- (void)insertBrailleChar:(id)char modifiers:(id)modifiers silently:(BOOL)silently
 {
-  v16 = a3;
-  v8 = a4;
+  charCopy = char;
+  modifiersCopy = modifiers;
   [(NSRecursiveLock *)self->_apiLock lock];
   [(BRLTBrailleStateManager *)self _generateBrailleBufferForInsert];
-  [(BRLTBrailleBuffer *)self->_brailleBuffer insertBrailleChar:v16 modifiers:v8 inputMode:self->_inputTranslationMode];
+  [(BRLTBrailleBuffer *)self->_brailleBuffer insertBrailleChar:charCopy modifiers:modifiersCopy inputMode:self->_inputTranslationMode];
   location = self->_brailleSelection.location;
   if (location != 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -310,43 +310,43 @@ LABEL_5:
   }
 
   self->_brailleDirty = 1;
-  if (!a5)
+  if (!silently)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained brailleDisplayInsertedCharacter:v16 modifiers:v8];
+    [WeakRetained brailleDisplayInsertedCharacter:charCopy modifiers:modifiersCopy];
   }
 
   v14 = objc_loadWeakRetained(&self->_delegate);
-  v15 = [(BRLTBrailleStateManager *)self brailleDisplayString];
-  [v14 brailleDisplayStringDidChange:v15 brailleSelection:self->_brailleSelection.location brailleUIOptions:self->_brailleSelection.length modifiers:{0, v8}];
+  brailleDisplayString = [(BRLTBrailleStateManager *)self brailleDisplayString];
+  [v14 brailleDisplayStringDidChange:brailleDisplayString brailleSelection:self->_brailleSelection.location brailleUIOptions:self->_brailleSelection.length modifiers:{0, modifiersCopy}];
 
   [(NSRecursiveLock *)self->_apiLock unlock];
 }
 
-- (_NSRange)forwardEditingAtomForScriptString:(id)a3
+- (_NSRange)forwardEditingAtomForScriptString:(id)string
 {
   if (self->_inputTranslationMode == 2)
   {
-    v3 = [a3 selection];
+    selection = [string selection];
   }
 
   else
   {
-    v3 = [a3 forwardEditingAtom];
+    selection = [string forwardEditingAtom];
   }
 
   result.length = v4;
-  result.location = v3;
+  result.location = selection;
   return result;
 }
 
-- (_NSRange)backwardEditingAtomForScriptString:(id)a3
+- (_NSRange)backwardEditingAtomForScriptString:(id)string
 {
-  v4 = a3;
-  v5 = v4;
+  stringCopy = string;
+  v5 = stringCopy;
   if (self->_inputTranslationMode == 2)
   {
-    if ([v4 selection])
+    if ([stringCopy selection])
     {
       [v5 selection];
       if (!v6)
@@ -357,15 +357,15 @@ LABEL_5:
       }
     }
 
-    v7 = [v5 selection];
+    selection = [v5 selection];
   }
 
   else
   {
-    v7 = [v4 backwardEditingAtom];
+    selection = [stringCopy backwardEditingAtom];
   }
 
-  v9 = v7;
+  v9 = selection;
   v10 = v8;
 LABEL_7:
 
@@ -376,33 +376,33 @@ LABEL_7:
   return result;
 }
 
-- (_NSRange)deleteMergeAtomForScriptString:(id)a3
+- (_NSRange)deleteMergeAtomForScriptString:(id)string
 {
   if (self->_inputTranslationMode == 2)
   {
-    v3 = [(BRLTBrailleStateManager *)self backwardEditingAtomForScriptString:a3];
+    deleteMergeAtom = [(BRLTBrailleStateManager *)self backwardEditingAtomForScriptString:string];
   }
 
   else
   {
-    v3 = [a3 deleteMergeAtom];
+    deleteMergeAtom = [string deleteMergeAtom];
   }
 
   result.length = v4;
-  result.location = v3;
+  result.location = deleteMergeAtom;
   return result;
 }
 
 - (BOOL)_selectionIsValidForDelete
 {
-  v3 = [(BRLTBrailleBuffer *)self->_brailleBuffer brailleString];
-  v4 = [v3 length];
+  brailleString = [(BRLTBrailleBuffer *)self->_brailleBuffer brailleString];
+  v4 = [brailleString length];
 
   if (v4)
   {
     location = self->_activeBrailleEditingRegion.location;
-    v6 = [(BRLTBrailleBuffer *)self->_brailleBuffer brailleString];
-    v7 = [v6 length];
+    brailleString2 = [(BRLTBrailleBuffer *)self->_brailleBuffer brailleString];
+    v7 = [brailleString2 length];
 
     v8 = self->_brailleSelection.location;
     if (location != 0x7FFFFFFFFFFFFFFELL && location + 1 <= v8)
@@ -432,8 +432,8 @@ LABEL_7:
 
 - (BOOL)_selectionIsValidForInsert
 {
-  v3 = [(BRLTBrailleBuffer *)self->_brailleBuffer brailleString];
-  v4 = [v3 length];
+  brailleString = [(BRLTBrailleBuffer *)self->_brailleBuffer brailleString];
+  v4 = [brailleString length];
 
   if (!v4)
   {
@@ -449,8 +449,8 @@ LABEL_7:
   }
 
   v5 = self->_activeBrailleEditingRegion.location;
-  v6 = [(BRLTBrailleBuffer *)self->_brailleBuffer brailleString];
-  v7 = [v6 length];
+  brailleString2 = [(BRLTBrailleBuffer *)self->_brailleBuffer brailleString];
+  v7 = [brailleString2 length];
 
   result = 0;
   if (v5 != 0x7FFFFFFFFFFFFFFFLL)
@@ -466,14 +466,14 @@ LABEL_7:
   return result;
 }
 
-- (BOOL)_generateBrailleBuffer:(BOOL)a3
+- (BOOL)_generateBrailleBuffer:(BOOL)buffer
 {
-  v3 = a3;
+  bufferCopy = buffer;
   v41 = *MEMORY[0x277D85DE8];
-  v5 = [(BRLTBrailleBuffer *)self->_brailleBuffer brailleString];
-  v6 = [v5 length];
+  brailleString = [(BRLTBrailleBuffer *)self->_brailleBuffer brailleString];
+  v6 = [brailleString length];
   v7 = v6;
-  if (v3)
+  if (bufferCopy)
   {
     if (v6 && [(BRLTBrailleBuffer *)self->_brailleBuffer cursor])
     {
@@ -529,8 +529,8 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  v12 = [(BRLTBrailleBuffer *)self->_brailleBuffer brailleString];
-  v13 = [v12 length];
+  brailleString2 = [(BRLTBrailleBuffer *)self->_brailleBuffer brailleString];
+  v13 = [brailleString2 length];
 
   if (v13)
   {
@@ -539,20 +539,20 @@ LABEL_16:
 
   if (self->_inputTranslationMode == self->_outputTranslationMode)
   {
-    v17 = [(BRLTBrailleString *)self->_staticBrailleString brailleChars];
-    v18 = [v17 subarrayWithRange:{self->_activeBrailleEditingRegion.location, self->_activeBrailleEditingRegion.length}];
+    brailleChars = [(BRLTBrailleString *)self->_staticBrailleString brailleChars];
+    brailleChars2 = [brailleChars subarrayWithRange:{self->_activeBrailleEditingRegion.location, self->_activeBrailleEditingRegion.length}];
   }
 
   else
   {
-    v19 = [(BRLTScriptString *)self->_scriptString string];
-    v17 = [v19 substringWithRange:{self->_activeScriptEditingRegion.location, self->_activeScriptEditingRegion.length}];
+    string = [(BRLTScriptString *)self->_scriptString string];
+    brailleChars = [string substringWithRange:{self->_activeScriptEditingRegion.location, self->_activeScriptEditingRegion.length}];
 
     WeakRetained = objc_loadWeakRetained(&self->_translationDelegate);
-    v21 = [WeakRetained printBrailleForText:v17 language:0 mode:self->_inputTranslationMode textPositionsRange:0x7FFFFFFFFFFFFFFFLL locations:0 textFormattingRanges:{0, 0}];
+    v21 = [WeakRetained printBrailleForText:brailleChars language:0 mode:self->_inputTranslationMode textPositionsRange:0x7FFFFFFFFFFFFFFFLL locations:0 textFormattingRanges:{0, 0}];
 
     v22 = [[BRLTBrailleString alloc] initWithUnicode:v21];
-    v18 = [(BRLTBrailleString *)v22 brailleChars];
+    brailleChars2 = [(BRLTBrailleString *)v22 brailleChars];
   }
 
   location = self->_activeBrailleEditingRegion.location;
@@ -560,7 +560,7 @@ LABEL_16:
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v24 = v18;
+  v24 = brailleChars2;
   v25 = [v24 countByEnumeratingWithState:&v36 objects:v40 count:16];
   if (v25)
   {
@@ -607,8 +607,8 @@ LABEL_16:
 
   brailleBuffer = self->_brailleBuffer;
   v32 = self->_brailleSelection.location - self->_activeBrailleEditingRegion.location;
-  v33 = [(BRLTBrailleBuffer *)brailleBuffer brailleString];
-  v34 = [v33 length];
+  brailleString3 = [(BRLTBrailleBuffer *)brailleBuffer brailleString];
+  v34 = [brailleString3 length];
 
   if (v32 >= v34)
   {
@@ -643,10 +643,10 @@ LABEL_17:
   return v3;
 }
 
-- (BOOL)_deleteBrailleCharSilently:(BOOL)a3
+- (BOOL)_deleteBrailleCharSilently:(BOOL)silently
 {
-  v5 = [(BRLTBrailleBuffer *)self->_brailleBuffer brailleString];
-  if ([v5 length])
+  brailleString = [(BRLTBrailleBuffer *)self->_brailleBuffer brailleString];
+  if ([brailleString length])
   {
 
     goto LABEL_4;
@@ -672,8 +672,8 @@ LABEL_4:
     {
       self->_brailleDirty = 1;
 LABEL_15:
-      v15 = [(BRLTBrailleBuffer *)self->_brailleBuffer brailleString];
-      v16 = [v15 length];
+      brailleString2 = [(BRLTBrailleBuffer *)self->_brailleBuffer brailleString];
+      v16 = [brailleString2 length];
 
       if (!v16)
       {
@@ -684,21 +684,21 @@ LABEL_15:
       goto LABEL_20;
     }
 
-    v9 = [(BRLTBrailleBuffer *)self->_brailleBuffer brailleString];
-    if ([v9 length])
+    brailleString3 = [(BRLTBrailleBuffer *)self->_brailleBuffer brailleString];
+    if ([brailleString3 length])
     {
-      v10 = [(BRLTBrailleBuffer *)self->_brailleBuffer cursor];
+      cursor = [(BRLTBrailleBuffer *)self->_brailleBuffer cursor];
 
-      if (v10)
+      if (cursor)
       {
-        v11 = [(BRLTBrailleBuffer *)self->_brailleBuffer brailleString];
-        v12 = [v11 brailleChars];
-        v13 = [v12 objectAtIndex:{-[BRLTBrailleBuffer cursor](self->_brailleBuffer, "cursor") - 1}];
+        brailleString4 = [(BRLTBrailleBuffer *)self->_brailleBuffer brailleString];
+        brailleChars = [brailleString4 brailleChars];
+        v13 = [brailleChars objectAtIndex:{-[BRLTBrailleBuffer cursor](self->_brailleBuffer, "cursor") - 1}];
 
         [(BRLTBrailleBuffer *)self->_brailleBuffer deleteBrailleChar];
         --self->_brailleSelection.location;
         self->_brailleDirty = 1;
-        if (!a3)
+        if (!silently)
         {
           WeakRetained = objc_loadWeakRetained(&self->_delegate);
           [WeakRetained brailleDisplayDeletedCharacter:v13];
@@ -715,8 +715,8 @@ LABEL_15:
     v8 = 0;
 LABEL_20:
     v17 = objc_loadWeakRetained(&self->_delegate);
-    v18 = [(BRLTBrailleStateManager *)self brailleDisplayString];
-    [v17 brailleDisplayStringDidChange:v18 brailleSelection:self->_brailleSelection.location brailleUIOptions:self->_brailleSelection.length modifiers:{0, 0}];
+    brailleDisplayString = [(BRLTBrailleStateManager *)self brailleDisplayString];
+    [v17 brailleDisplayStringDidChange:brailleDisplayString brailleSelection:self->_brailleSelection.location brailleUIOptions:self->_brailleSelection.length modifiers:{0, 0}];
 
     return v8;
   }
@@ -740,15 +740,15 @@ LABEL_20:
   return v3;
 }
 
-- (void)setBrailleSelection:(_NSRange)a3 needsForwardToScreenReader:(BOOL *)a4 newScriptLocation:(unint64_t *)a5
+- (void)setBrailleSelection:(_NSRange)selection needsForwardToScreenReader:(BOOL *)reader newScriptLocation:(unint64_t *)location
 {
-  length = a3.length;
-  location = a3.location;
+  length = selection.length;
+  location = selection.location;
   [(NSRecursiveLock *)self->_apiLock lock];
-  v10 = [(BRLTBrailleStateManager *)self _setBrailleSelection:location newScriptLocation:length, a5];
-  if (a4)
+  location = [(BRLTBrailleStateManager *)self _setBrailleSelection:location newScriptLocation:length, location];
+  if (reader)
   {
-    *a4 = v10;
+    *reader = location;
   }
 
   apiLock = self->_apiLock;
@@ -756,35 +756,35 @@ LABEL_20:
   [(NSRecursiveLock *)apiLock unlock];
 }
 
-- (BOOL)_setBrailleSelection:(_NSRange)a3 newScriptLocation:(unint64_t *)a4
+- (BOOL)_setBrailleSelection:(_NSRange)selection newScriptLocation:(unint64_t *)location
 {
-  length = a3.length;
-  location = a3.location;
-  v8 = [(BRLTBrailleStateManager *)self brailleDisplayString];
-  v9 = [v8 length];
+  length = selection.length;
+  location = selection.location;
+  brailleDisplayString = [(BRLTBrailleStateManager *)self brailleDisplayString];
+  v9 = [brailleDisplayString length];
 
   if (location > v9)
   {
-    v10 = [(BRLTBrailleStateManager *)self brailleDisplayString];
-    location = [v10 length];
+    brailleDisplayString2 = [(BRLTBrailleStateManager *)self brailleDisplayString];
+    location = [brailleDisplayString2 length];
   }
 
   self->_brailleSelection.location = location;
   self->_brailleSelection.length = length;
   WeakRetained = objc_loadWeakRetained(&self->_translationDelegate);
-  v12 = [(BRLTBrailleStateManager *)self brailleDisplayString];
-  v13 = [v12 unicode];
+  brailleDisplayString3 = [(BRLTBrailleStateManager *)self brailleDisplayString];
+  unicode = [brailleDisplayString3 unicode];
   outputTranslationMode = self->_outputTranslationMode;
   v48 = 0;
-  v15 = [WeakRetained textForPrintBraille:v13 language:0 mode:outputTranslationMode locations:&v48];
+  v15 = [WeakRetained textForPrintBraille:unicode language:0 mode:outputTranslationMode locations:&v48];
   v16 = v48;
 
   v17 = -[BRLTBrailleStateManager _textRangeForBrailleRange:textPositions:scriptLength:](self, "_textRangeForBrailleRange:textPositions:scriptLength:", self->_brailleSelection.location, self->_brailleSelection.length, v16, [v15 length]);
   v19 = v18;
   if ([(BRLTBrailleStateManager *)self _selectionIsValidForInsert]&& [(BRLTBrailleStateManager *)self _selectionIsValidForDelete])
   {
-    v20 = [(BRLTBrailleBuffer *)self->_brailleBuffer brailleString];
-    v21 = [v20 length];
+    brailleString = [(BRLTBrailleBuffer *)self->_brailleBuffer brailleString];
+    v21 = [brailleString length];
 
     if (v21)
     {
@@ -810,19 +810,19 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  v46 = a4;
+  locationCopy = location;
   v23 = [BRLTScriptString alloc];
-  v24 = [(BRLTScriptString *)self->_scriptString string];
-  v25 = [(BRLTScriptString *)v23 initWithString:v24 selection:v17, v19];
+  string = [(BRLTScriptString *)self->_scriptString string];
+  v25 = [(BRLTScriptString *)v23 initWithString:string selection:v17, v19];
 
-  v26 = [(BRLTScriptString *)self->_scriptString string];
-  v27 = [v26 length];
+  string2 = [(BRLTScriptString *)self->_scriptString string];
+  v27 = [string2 length];
 
   v28 = objc_loadWeakRetained(&self->_translationDelegate);
-  v29 = [(BRLTScriptString *)self->_scriptString string];
+  string3 = [(BRLTScriptString *)self->_scriptString string];
   v30 = self->_outputTranslationMode;
   v47 = 0;
-  v31 = [v28 printBrailleForText:v29 language:0 mode:v30 textPositionsRange:0 locations:v27 textFormattingRanges:{&v47, 0}];
+  v31 = [v28 printBrailleForText:string3 language:0 mode:v30 textPositionsRange:0 locations:v27 textFormattingRanges:{&v47, 0}];
   v32 = v47;
 
   self->_scriptForwardEditingRegion.location = [(BRLTBrailleStateManager *)self forwardEditingAtomForScriptString:v25];
@@ -853,30 +853,30 @@ LABEL_11:
   }
 
   v22 = 1;
-  a4 = v46;
+  location = locationCopy;
 LABEL_15:
   self->_pendingScriptSelection.location = v17;
   self->_pendingScriptSelection.length = v19;
-  if (a4)
+  if (location)
   {
-    *a4 = v17;
+    *location = v17;
   }
 
   v43 = objc_loadWeakRetained(&self->_delegate);
-  v44 = [(BRLTBrailleStateManager *)self brailleDisplayString];
-  [v43 brailleDisplayStringDidChange:v44 brailleSelection:self->_brailleSelection.location brailleUIOptions:self->_brailleSelection.length modifiers:{0, 0}];
+  brailleDisplayString4 = [(BRLTBrailleStateManager *)self brailleDisplayString];
+  [v43 brailleDisplayStringDidChange:brailleDisplayString4 brailleSelection:self->_brailleSelection.location brailleUIOptions:self->_brailleSelection.length modifiers:{0, 0}];
 
   return v22;
 }
 
-- (_NSRange)_textRangeForBrailleRange:(_NSRange)a3 textPositions:(id)a4 scriptLength:(int64_t)a5
+- (_NSRange)_textRangeForBrailleRange:(_NSRange)range textPositions:(id)positions scriptLength:(int64_t)length
 {
-  length = a3.length;
-  location = a3.location;
-  v8 = a4;
-  v9 = [v8 bytes];
-  v10 = [v8 length];
-  v11 = 0x7FFFFFFFFFFFFFFFLL;
+  length = range.length;
+  location = range.location;
+  positionsCopy = positions;
+  bytes = [positionsCopy bytes];
+  v10 = [positionsCopy length];
+  lengthCopy2 = 0x7FFFFFFFFFFFFFFFLL;
   if (v10 < 8)
   {
     goto LABEL_15;
@@ -884,52 +884,52 @@ LABEL_15:
 
   v12 = 0;
   v13 = location + length;
-  v14 = 0x7FFFFFFFFFFFFFFFLL;
+  lengthCopy = 0x7FFFFFFFFFFFFFFFLL;
   do
   {
-    v15 = *(v9 + 8 * v12);
-    if (v14 == 0x7FFFFFFFFFFFFFFFLL && v15 >= location)
+    v15 = *(bytes + 8 * v12);
+    if (lengthCopy == 0x7FFFFFFFFFFFFFFFLL && v15 >= location)
     {
-      v14 = v12;
+      lengthCopy = v12;
     }
 
-    if (v11 == 0x7FFFFFFFFFFFFFFFLL && v15 >= v13)
+    if (lengthCopy2 == 0x7FFFFFFFFFFFFFFFLL && v15 >= v13)
     {
-      v11 = v12;
+      lengthCopy2 = v12;
     }
 
     ++v12;
   }
 
   while (v10 >> 3 != v12);
-  if (v14 == 0x7FFFFFFFFFFFFFFFLL)
+  if (lengthCopy == 0x7FFFFFFFFFFFFFFFLL)
   {
 LABEL_15:
-    v14 = a5;
+    lengthCopy = length;
   }
 
-  if (v11 == 0x7FFFFFFFFFFFFFFFLL)
+  if (lengthCopy2 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v11 = a5;
+    lengthCopy2 = length;
   }
 
-  v18 = v11 - v14;
+  v18 = lengthCopy2 - lengthCopy;
 
-  v19 = v14;
+  v19 = lengthCopy;
   v20 = v18;
   result.length = v20;
   result.location = v19;
   return result;
 }
 
-- (_NSRange)_brailleRangeForTextRange:(_NSRange)a3 textPositions:(id)a4 brailleLength:(unint64_t)a5
+- (_NSRange)_brailleRangeForTextRange:(_NSRange)range textPositions:(id)positions brailleLength:(unint64_t)length
 {
-  length = a3.length;
-  location = a3.location;
-  v8 = a4;
-  v9 = [v8 bytes];
-  v10 = [v8 length];
-  v11 = 0x7FFFFFFFFFFFFFFFLL;
+  length = range.length;
+  location = range.location;
+  positionsCopy = positions;
+  bytes = [positionsCopy bytes];
+  v10 = [positionsCopy length];
+  lengthCopy2 = 0x7FFFFFFFFFFFFFFFLL;
   if (v10 < 8)
   {
     goto LABEL_15;
@@ -937,38 +937,38 @@ LABEL_15:
 
   v12 = 0;
   v13 = location + length;
-  v14 = 0x7FFFFFFFFFFFFFFFLL;
+  lengthCopy = 0x7FFFFFFFFFFFFFFFLL;
   do
   {
-    v15 = *(v9 + 8 * v12);
-    if (v14 == 0x7FFFFFFFFFFFFFFFLL && v15 >= location)
+    v15 = *(bytes + 8 * v12);
+    if (lengthCopy == 0x7FFFFFFFFFFFFFFFLL && v15 >= location)
     {
-      v14 = v12;
+      lengthCopy = v12;
     }
 
-    if (v11 == 0x7FFFFFFFFFFFFFFFLL && v15 >= v13)
+    if (lengthCopy2 == 0x7FFFFFFFFFFFFFFFLL && v15 >= v13)
     {
-      v11 = v12;
+      lengthCopy2 = v12;
     }
 
     ++v12;
   }
 
   while (v10 >> 3 != v12);
-  if (v14 == 0x7FFFFFFFFFFFFFFFLL)
+  if (lengthCopy == 0x7FFFFFFFFFFFFFFFLL)
   {
 LABEL_15:
-    v14 = a5;
+    lengthCopy = length;
   }
 
-  if (v11 == 0x7FFFFFFFFFFFFFFFLL)
+  if (lengthCopy2 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v11 = a5;
+    lengthCopy2 = length;
   }
 
-  v18 = v11 - v14;
+  v18 = lengthCopy2 - lengthCopy;
 
-  v19 = v14;
+  v19 = lengthCopy;
   v20 = v18;
   result.length = v20;
   result.location = v19;
@@ -984,9 +984,9 @@ LABEL_15:
   [(NSRecursiveLock *)apiLock unlock];
 }
 
-- (void)translateForced:(BOOL)a3
+- (void)translateForced:(BOOL)forced
 {
-  if (a3)
+  if (forced)
   {
     self->_scriptDirty = 1;
   }
@@ -999,31 +999,31 @@ LABEL_15:
   [(NSRecursiveLock *)self->_apiLock lock];
   if (!self->_brailleDirty)
   {
-    v3 = self->_staticBrailleString;
+    brailleString = self->_staticBrailleString;
     goto LABEL_6;
   }
 
   if (!self->_editable || self->_activeBrailleEditingRegion.location == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v3 = [(BRLTBrailleBuffer *)self->_brailleBuffer brailleString];
+    brailleString = [(BRLTBrailleBuffer *)self->_brailleBuffer brailleString];
 LABEL_6:
-    v4 = v3;
+    v4 = brailleString;
     goto LABEL_7;
   }
 
-  v10 = [(BRLTBrailleString *)self->_staticBrailleString brailleChars];
-  v11 = [v10 mutableCopy];
+  brailleChars = [(BRLTBrailleString *)self->_staticBrailleString brailleChars];
+  v11 = [brailleChars mutableCopy];
 
-  v12 = [(BRLTBrailleBuffer *)self->_brailleBuffer brailleString];
-  v13 = [v12 brailleChars];
-  [v11 replaceObjectsInRange:self->_activeBrailleEditingRegion.location withObjectsFromArray:{self->_activeBrailleEditingRegion.length, v13}];
+  brailleString2 = [(BRLTBrailleBuffer *)self->_brailleBuffer brailleString];
+  brailleChars2 = [brailleString2 brailleChars];
+  [v11 replaceObjectsInRange:self->_activeBrailleEditingRegion.location withObjectsFromArray:{self->_activeBrailleEditingRegion.length, brailleChars2}];
 
   v4 = [[BRLTBrailleString alloc] initWithBrailleChars:v11];
 LABEL_7:
   if (self->_isTerminalOutput)
   {
-    v5 = [(BRLTBrailleString *)v4 unicode];
-    v6 = [@"⠿⠀" stringByAppendingString:v5];
+    unicode = [(BRLTBrailleString *)v4 unicode];
+    v6 = [@"⠿⠀" stringByAppendingString:unicode];
     v7 = [v6 stringByAppendingString:@"⠀⠿"];
 
     v8 = [[BRLTBrailleString alloc] initWithUnicode:v7];
@@ -1074,8 +1074,8 @@ LABEL_7:
 - (_NSRange)scriptEditingRange
 {
   [(NSRecursiveLock *)self->_apiLock lock];
-  v3 = [(BRLTBrailleBuffer *)self->_brailleBuffer brailleString];
-  v4 = [v3 length];
+  brailleString = [(BRLTBrailleBuffer *)self->_brailleBuffer brailleString];
+  v4 = [brailleString length];
 
   if (v4)
   {
@@ -1097,10 +1097,10 @@ LABEL_7:
   return result;
 }
 
-- (unint64_t)scriptLocationForBrailleLocation:(unint64_t)a3
+- (unint64_t)scriptLocationForBrailleLocation:(unint64_t)location
 {
   [(NSRecursiveLock *)self->_apiLock lock];
-  if (self->_editable && (length = self->_activeBrailleEditingRegion.length) != 0 && ((location = self->_activeBrailleEditingRegion.location, v8 = a3 >= location, v7 = a3 - location, v8) ? (v8 = v7 >= length) : (v8 = 1), !v8))
+  if (self->_editable && (length = self->_activeBrailleEditingRegion.length) != 0 && ((location = self->_activeBrailleEditingRegion.location, v8 = location >= location, v7 = location - location, v8) ? (v8 = v7 >= length) : (v8 = 1), !v8))
   {
     [(NSRecursiveLock *)self->_apiLock unlock];
     return self->_activeBrailleEditingRegion.location;
@@ -1109,79 +1109,79 @@ LABEL_7:
   else if (self->_brailleDirty)
   {
     WeakRetained = objc_loadWeakRetained(&self->_translationDelegate);
-    v10 = [(BRLTBrailleStateManager *)self brailleDisplayString];
-    v11 = [v10 unicode];
+    brailleDisplayString = [(BRLTBrailleStateManager *)self brailleDisplayString];
+    unicode = [brailleDisplayString unicode];
     outputTranslationMode = self->_outputTranslationMode;
     v26 = 0;
-    v13 = [WeakRetained textForPrintBraille:v11 language:0 mode:outputTranslationMode locations:&v26];
+    v13 = [WeakRetained textForPrintBraille:unicode language:0 mode:outputTranslationMode locations:&v26];
     v14 = v26;
 
-    v24 = -[BRLTBrailleStateManager _textRangeForBrailleRange:textPositions:scriptLength:](self, "_textRangeForBrailleRange:textPositions:scriptLength:", a3, 0, v14, [v13 length]);
+    v24 = -[BRLTBrailleStateManager _textRangeForBrailleRange:textPositions:scriptLength:](self, "_textRangeForBrailleRange:textPositions:scriptLength:", location, 0, v14, [v13 length]);
     [(NSRecursiveLock *)self->_apiLock unlock];
   }
 
   else
   {
-    v15 = [(BRLTScriptString *)self->_scriptString string];
-    v16 = [v15 length];
+    string = [(BRLTScriptString *)self->_scriptString string];
+    v16 = [string length];
 
     v17 = objc_loadWeakRetained(&self->_translationDelegate);
-    v18 = [(BRLTScriptString *)self->_scriptString string];
+    string2 = [(BRLTScriptString *)self->_scriptString string];
     v19 = self->_outputTranslationMode;
     v27 = 0;
-    v20 = [v17 printBrailleForText:v18 language:0 mode:v19 textPositionsRange:0 locations:v16 textFormattingRanges:{&v27, 0}];
+    v20 = [v17 printBrailleForText:string2 language:0 mode:v19 textPositionsRange:0 locations:v16 textFormattingRanges:{&v27, 0}];
     v21 = v27;
 
-    if (a3 >= [v21 length] >> 3)
+    if (location >= [v21 length] >> 3)
     {
       [(NSRecursiveLock *)self->_apiLock unlock];
-      v23 = [(BRLTScriptString *)self->_scriptString string];
-      v24 = [v23 length];
+      string3 = [(BRLTScriptString *)self->_scriptString string];
+      v24 = [string3 length];
     }
 
     else
     {
-      v22 = [v21 bytes];
+      bytes = [v21 bytes];
       [(NSRecursiveLock *)self->_apiLock unlock];
-      v24 = *(v22 + 8 * a3);
+      v24 = *(bytes + 8 * location);
     }
   }
 
   return v24;
 }
 
-- (unint64_t)brailleLocationForScriptLocation:(unint64_t)a3
+- (unint64_t)brailleLocationForScriptLocation:(unint64_t)location
 {
   [(NSRecursiveLock *)self->_apiLock lock];
   WeakRetained = objc_loadWeakRetained(&self->_translationDelegate);
-  v6 = [(BRLTBrailleString *)self->_staticBrailleString unicode];
+  unicode = [(BRLTBrailleString *)self->_staticBrailleString unicode];
   outputTranslationMode = self->_outputTranslationMode;
   v14 = 0;
-  v8 = [WeakRetained textForPrintBraille:v6 language:0 mode:outputTranslationMode locations:&v14];
+  v8 = [WeakRetained textForPrintBraille:unicode language:0 mode:outputTranslationMode locations:&v14];
   v9 = v14;
 
-  v10 = [(BRLTBrailleStateManager *)self brailleDisplayString];
-  v11 = [v10 unicode];
-  v12 = -[BRLTBrailleStateManager _brailleRangeForTextRange:textPositions:brailleLength:](self, "_brailleRangeForTextRange:textPositions:brailleLength:", a3, 0, v9, [v11 length]);
+  brailleDisplayString = [(BRLTBrailleStateManager *)self brailleDisplayString];
+  unicode2 = [brailleDisplayString unicode];
+  v12 = -[BRLTBrailleStateManager _brailleRangeForTextRange:textPositions:brailleLength:](self, "_brailleRangeForTextRange:textPositions:brailleLength:", location, 0, v9, [unicode2 length]);
 
   [(NSRecursiveLock *)self->_apiLock unlock];
   return v12;
 }
 
-- (_NSRange)brailleRangeForScriptRange:(_NSRange)a3
+- (_NSRange)brailleRangeForScriptRange:(_NSRange)range
 {
-  location = a3.location;
-  [(NSRecursiveLock *)self->_apiLock lock:a3.location];
+  location = range.location;
+  [(NSRecursiveLock *)self->_apiLock lock:range.location];
   WeakRetained = objc_loadWeakRetained(&self->_translationDelegate);
-  v6 = [(BRLTBrailleString *)self->_staticBrailleString unicode];
+  unicode = [(BRLTBrailleString *)self->_staticBrailleString unicode];
   outputTranslationMode = self->_outputTranslationMode;
   v18 = 0;
-  v8 = [WeakRetained textForPrintBraille:v6 language:0 mode:outputTranslationMode locations:&v18];
+  v8 = [WeakRetained textForPrintBraille:unicode language:0 mode:outputTranslationMode locations:&v18];
   v9 = v18;
 
-  v10 = [(BRLTBrailleStateManager *)self brailleDisplayString];
-  v11 = [v10 unicode];
-  v12 = -[BRLTBrailleStateManager _brailleRangeForTextRange:textPositions:brailleLength:](self, "_brailleRangeForTextRange:textPositions:brailleLength:", location, 0, v9, [v11 length]);
+  brailleDisplayString = [(BRLTBrailleStateManager *)self brailleDisplayString];
+  unicode2 = [brailleDisplayString unicode];
+  v12 = -[BRLTBrailleStateManager _brailleRangeForTextRange:textPositions:brailleLength:](self, "_brailleRangeForTextRange:textPositions:brailleLength:", location, 0, v9, [unicode2 length]);
   v14 = v13;
 
   if (self->_editable)
@@ -1208,10 +1208,10 @@ LABEL_7:
   return result;
 }
 
-- (_NSRange)scriptRangeForBrailleRange:(_NSRange)a3
+- (_NSRange)scriptRangeForBrailleRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   [(NSRecursiveLock *)self->_apiLock lock];
   v6 = [(BRLTBrailleStateManager *)self scriptLocationForBrailleLocation:location];
   v7 = [(BRLTBrailleStateManager *)self scriptLocationForBrailleLocation:location + length];
@@ -1223,19 +1223,19 @@ LABEL_7:
   return result;
 }
 
-- (_NSRange)scriptRangeOfBrailleCellRepresentingCharacterAtScriptIndex:(unint64_t)a3
+- (_NSRange)scriptRangeOfBrailleCellRepresentingCharacterAtScriptIndex:(unint64_t)index
 {
   [(NSRecursiveLock *)self->_apiLock lock];
   WeakRetained = objc_loadWeakRetained(&self->_translationDelegate);
-  v6 = [(BRLTBrailleString *)self->_staticBrailleString unicode];
+  unicode = [(BRLTBrailleString *)self->_staticBrailleString unicode];
   outputTranslationMode = self->_outputTranslationMode;
   v21 = 0;
-  v8 = [WeakRetained textForPrintBraille:v6 language:0 mode:outputTranslationMode locations:&v21];
+  v8 = [WeakRetained textForPrintBraille:unicode language:0 mode:outputTranslationMode locations:&v21];
   v9 = v21;
 
-  v10 = [v9 bytes];
+  bytes = [v9 bytes];
   v11 = [v9 length] >> 3;
-  if (v11 <= a3)
+  if (v11 <= index)
   {
     [(NSRecursiveLock *)self->_apiLock unlock];
     v18 = 0;
@@ -1245,12 +1245,12 @@ LABEL_7:
   else
   {
     v12 = 0;
-    v13 = *(v10 + 8 * a3);
+    v13 = *(bytes + 8 * index);
     v14 = 0x7FFFFFFFFFFFFFFFLL;
     v15 = 0x7FFFFFFFFFFFFFFFLL;
     do
     {
-      v16 = *(v10 + 8 * v12);
+      v16 = *(bytes + 8 * v12);
       if (v15 == 0x7FFFFFFFFFFFFFFFLL)
       {
         if (v16 == v13)
@@ -1299,22 +1299,22 @@ LABEL_7:
   return result;
 }
 
-- (void)setOutputTranslationMode:(unint64_t)a3
+- (void)setOutputTranslationMode:(unint64_t)mode
 {
-  if (self->_outputTranslationMode != a3)
+  if (self->_outputTranslationMode != mode)
   {
-    self->_outputTranslationMode = a3;
+    self->_outputTranslationMode = mode;
     self->_scriptDirty = 1;
   }
 }
 
-- (void)setInputTranslationMode:(unint64_t)a3
+- (void)setInputTranslationMode:(unint64_t)mode
 {
-  if (self->_inputTranslationMode != a3)
+  if (self->_inputTranslationMode != mode)
   {
-    self->_inputTranslationMode = a3;
-    v4 = [(BRLTBrailleBuffer *)self->_brailleBuffer brailleString];
-    v5 = [v4 length];
+    self->_inputTranslationMode = mode;
+    brailleString = [(BRLTBrailleBuffer *)self->_brailleBuffer brailleString];
+    v5 = [brailleString length];
 
     if (v5)
     {

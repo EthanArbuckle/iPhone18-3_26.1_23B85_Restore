@@ -1,9 +1,9 @@
 @interface NTKAnalogVideoFace
 + (id)_complicationSlotDescriptors;
 + (id)_orderedComplicationSlots;
-- (id)_optionAtIndex:(unint64_t)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (unint64_t)_indexOfOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)a3 slot:(id)a4;
+- (id)_optionAtIndex:(unint64_t)index forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (unint64_t)_indexOfOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)mode slot:(id)slot;
 @end
 
 @implementation NTKAnalogVideoFace
@@ -11,7 +11,7 @@
 + (id)_complicationSlotDescriptors
 {
   v13[3] = *MEMORY[0x277D85DE8];
-  v2 = NTKAllUtilitySmallComplicationTypes(a1, a2);
+  v2 = NTKAllUtilitySmallComplicationTypes(self, a2);
   v3 = NTKAllUtilityLargeComplicationTypes();
   v12[0] = @"top-left";
   v4 = NTKComplicationTypeRankedListWithDefaultTypes(&unk_28418B320);
@@ -41,30 +41,30 @@
   return v2;
 }
 
-- (unint64_t)_indexOfOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (unint64_t)_indexOfOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v7 = a3;
-  v8 = [(NTKAnalogVideoFace *)self _optionClassForCustomEditMode:a4];
-  v9 = [(NTKFace *)self device];
-  v10 = [(objc_class *)v8 indexOfOption:v7 forDevice:v9];
+  optionCopy = option;
+  v8 = [(NTKAnalogVideoFace *)self _optionClassForCustomEditMode:mode];
+  device = [(NTKFace *)self device];
+  v10 = [(objc_class *)v8 indexOfOption:optionCopy forDevice:device];
 
   return v10;
 }
 
-- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v5 = [(NTKAnalogVideoFace *)self _optionClassForCustomEditMode:a3, a4];
-  v6 = [(NTKFace *)self device];
-  v7 = [(objc_class *)v5 numberOfOptionsForDevice:v6];
+  slot = [(NTKAnalogVideoFace *)self _optionClassForCustomEditMode:mode, slot];
+  device = [(NTKFace *)self device];
+  v7 = [(objc_class *)slot numberOfOptionsForDevice:device];
 
   return v7;
 }
 
-- (id)_optionAtIndex:(unint64_t)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (id)_optionAtIndex:(unint64_t)index forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v7 = [(NTKAnalogVideoFace *)self _optionClassForCustomEditMode:a4];
-  v8 = [(NTKFace *)self device];
-  v9 = [(objc_class *)v7 optionAtIndex:a3 forDevice:v8];
+  v7 = [(NTKAnalogVideoFace *)self _optionClassForCustomEditMode:mode];
+  device = [(NTKFace *)self device];
+  v9 = [(objc_class *)v7 optionAtIndex:index forDevice:device];
 
   return v9;
 }

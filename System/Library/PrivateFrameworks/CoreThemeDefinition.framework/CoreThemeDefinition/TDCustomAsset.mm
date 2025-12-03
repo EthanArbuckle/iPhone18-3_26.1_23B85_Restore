@@ -1,13 +1,13 @@
 @interface TDCustomAsset
-- (CGSize)sourceImageSizeWithDocument:(id)a3;
-- (id)sourceImageWithDocument:(id)a3;
+- (CGSize)sourceImageSizeWithDocument:(id)document;
+- (id)sourceImageWithDocument:(id)document;
 @end
 
 @implementation TDCustomAsset
 
-- (CGSize)sourceImageSizeWithDocument:(id)a3
+- (CGSize)sourceImageSizeWithDocument:(id)document
 {
-  v3 = [objc_msgSend(a3 "customAssetProvider")];
+  v3 = [objc_msgSend(document "customAssetProvider")];
 
   [v3 customAssetSize];
   result.height = v5;
@@ -15,9 +15,9 @@
   return result;
 }
 
-- (id)sourceImageWithDocument:(id)a3
+- (id)sourceImageWithDocument:(id)document
 {
-  v3 = [objc_msgSend(objc_msgSend(a3 "customAssetProvider")];
+  v3 = [objc_msgSend(objc_msgSend(document "customAssetProvider")];
   v4 = [MEMORY[0x277D02678] imageWithCGImage:v3];
   CGImageRelease(v3);
   return v4;

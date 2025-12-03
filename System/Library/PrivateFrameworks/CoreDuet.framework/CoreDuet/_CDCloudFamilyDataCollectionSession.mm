@@ -1,57 +1,57 @@
 @interface _CDCloudFamilyDataCollectionSession
 + (void)generateNewSession;
-- (_CDCloudFamilyDataCollectionSession)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (uint64_t)isValidForCollectionDate:(uint64_t)a1;
-- (void)encodeWithCoder:(id)a3;
-- (void)initWithIdentifier:(void *)a3 salt:(void *)a4 latestStartDate:(void *)a5 lastCollectionDate:(uint64_t)a6 batchNumber:;
-- (void)subsequentSessionWithlatestStartDate:(void *)a3 lastCollectionDate:;
+- (_CDCloudFamilyDataCollectionSession)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (uint64_t)isValidForCollectionDate:(uint64_t)date;
+- (void)encodeWithCoder:(id)coder;
+- (void)initWithIdentifier:(void *)identifier salt:(void *)salt latestStartDate:(void *)date lastCollectionDate:(uint64_t)collectionDate batchNumber:;
+- (void)subsequentSessionWithlatestStartDate:(void *)date lastCollectionDate:;
 @end
 
 @implementation _CDCloudFamilyDataCollectionSession
 
-- (void)initWithIdentifier:(void *)a3 salt:(void *)a4 latestStartDate:(void *)a5 lastCollectionDate:(uint64_t)a6 batchNumber:
+- (void)initWithIdentifier:(void *)identifier salt:(void *)salt latestStartDate:(void *)date lastCollectionDate:(uint64_t)collectionDate batchNumber:
 {
   v11 = a2;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  if (a1)
+  identifierCopy = identifier;
+  saltCopy = salt;
+  dateCopy = date;
+  if (self)
   {
-    v24.receiver = a1;
+    v24.receiver = self;
     v24.super_class = _CDCloudFamilyDataCollectionSession;
-    a1 = objc_msgSendSuper2(&v24, sel_init);
-    if (a1)
+    self = objc_msgSendSuper2(&v24, sel_init);
+    if (self)
     {
       v15 = [v11 copy];
-      v16 = a1[1];
-      a1[1] = v15;
+      v16 = self[1];
+      self[1] = v15;
 
-      v17 = [v12 copy];
-      v18 = a1[2];
-      a1[2] = v17;
+      v17 = [identifierCopy copy];
+      v18 = self[2];
+      self[2] = v17;
 
-      v19 = [v13 copy];
-      v20 = a1[3];
-      a1[3] = v19;
+      v19 = [saltCopy copy];
+      v20 = self[3];
+      self[3] = v19;
 
-      v21 = [v14 copy];
-      v22 = a1[4];
-      a1[4] = v21;
+      v21 = [dateCopy copy];
+      v22 = self[4];
+      self[4] = v21;
 
-      a1[5] = a6;
+      self[5] = collectionDate;
     }
   }
 
-  return a1;
+  return self;
 }
 
 + (void)generateNewSession
 {
   v0 = objc_alloc(objc_opt_self());
-  v1 = [MEMORY[0x1E696AFB0] UUID];
-  v2 = [v1 UUIDString];
-  v3 = [v2 lowercaseString];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
+  lowercaseString = [uUIDString lowercaseString];
   v4 = [MEMORY[0x1E695DF88] dataWithLength:32];
   if (SecRandomCopyBytes(*MEMORY[0x1E697B308], 0x20uLL, [v4 mutableBytes]))
   {
@@ -63,56 +63,56 @@
     v5 = [MEMORY[0x1E695DEF0] dataWithData:v4];
   }
 
-  v6 = [(_CDCloudFamilyDataCollectionSession *)v0 initWithIdentifier:v3 salt:v5 latestStartDate:0 lastCollectionDate:0 batchNumber:1];
+  v6 = [(_CDCloudFamilyDataCollectionSession *)v0 initWithIdentifier:lowercaseString salt:v5 latestStartDate:0 lastCollectionDate:0 batchNumber:1];
 
   return v6;
 }
 
-- (void)subsequentSessionWithlatestStartDate:(void *)a3 lastCollectionDate:
+- (void)subsequentSessionWithlatestStartDate:(void *)date lastCollectionDate:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  dateCopy = date;
+  if (self)
   {
     if (!v5)
     {
-      v7 = a1[3];
+      v7 = self[3];
       v8 = v7;
       if (v7)
       {
-        v9 = v7;
+        distantPast = v7;
       }
 
       else
       {
-        v9 = [MEMORY[0x1E695DF00] distantPast];
+        distantPast = [MEMORY[0x1E695DF00] distantPast];
       }
 
-      v5 = v9;
+      v5 = distantPast;
     }
 
     v10 = objc_alloc(objc_opt_class());
-    v11 = a1[1];
-    v12 = a1[2];
-    v13 = a1[5];
+    v11 = self[1];
+    v12 = self[2];
+    v13 = self[5];
     v14 = v11;
     v15 = OUTLINED_FUNCTION_65_0();
-    a1 = [(_CDCloudFamilyDataCollectionSession *)v15 initWithIdentifier:v16 salt:v12 latestStartDate:v5 lastCollectionDate:v6 batchNumber:v17];
+    self = [(_CDCloudFamilyDataCollectionSession *)v15 initWithIdentifier:v16 salt:v12 latestStartDate:v5 lastCollectionDate:dateCopy batchNumber:v17];
   }
 
-  return a1;
+  return self;
 }
 
-- (uint64_t)isValidForCollectionDate:(uint64_t)a1
+- (uint64_t)isValidForCollectionDate:(uint64_t)date
 {
   v3 = a2;
-  if (a1)
+  if (date)
   {
-    v4 = *(a1 + 24);
+    v4 = *(date + 24);
     if (v4)
     {
       v5 = v4;
-      v6 = [v3 compare:*(a1 + 24)] != -1;
+      v6 = [v3 compare:*(date + 24)] != -1;
     }
 
     else
@@ -120,11 +120,11 @@
       v6 = 1;
     }
 
-    v7 = *(a1 + 32);
+    v7 = *(date + 32);
     if (v7)
     {
       v8 = v7;
-      v9 = [v3 compare:*(a1 + 32)];
+      v9 = [v3 compare:*(date + 32)];
 
       if (v9 == -1)
       {
@@ -132,31 +132,31 @@
       }
     }
 
-    if (*(a1 + 8) && *(a1 + 16))
+    if (*(date + 8) && *(date + 16))
     {
-      if (*(a1 + 40))
+      if (*(date + 40))
       {
-        a1 = v6;
+        date = v6;
       }
 
       else
       {
-        a1 = 0;
+        date = 0;
       }
     }
 
     else
     {
-      a1 = 0;
+      date = 0;
     }
   }
 
-  return a1;
+  return date;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [_CDCloudFamilyDataCollectionSession allocWithZone:a3];
+  v4 = [_CDCloudFamilyDataCollectionSession allocWithZone:zone];
   if (self)
   {
     v5 = self->_identifier;
@@ -180,19 +180,19 @@
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v8 = v4;
+  coderCopy = coder;
+  v8 = coderCopy;
   if (self)
   {
-    [v4 encodeObject:self->_identifier forKey:@"identifier"];
+    [coderCopy encodeObject:self->_identifier forKey:@"identifier"];
     salt = self->_salt;
   }
 
   else
   {
-    [v4 encodeObject:0 forKey:@"identifier"];
+    [coderCopy encodeObject:0 forKey:@"identifier"];
     salt = 0;
   }
 
@@ -223,14 +223,14 @@
   [v8 encodeInteger:batchNumber forKey:@"batchNumber"];
 }
 
-- (_CDCloudFamilyDataCollectionSession)initWithCoder:(id)a3
+- (_CDCloudFamilyDataCollectionSession)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"salt"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"latestStartDate"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastCollectionDate"];
-  v9 = [v4 decodeIntegerForKey:@"batchNumber"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"salt"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"latestStartDate"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastCollectionDate"];
+  v9 = [coderCopy decodeIntegerForKey:@"batchNumber"];
 
   v10 = [(_CDCloudFamilyDataCollectionSession *)self initWithIdentifier:v5 salt:v6 latestStartDate:v7 lastCollectionDate:v8 batchNumber:v9];
   return v10;

@@ -1,10 +1,10 @@
 @interface MastheadView
-- (_TtC8StocksUI12MastheadView)initWithCoder:(id)a3;
+- (_TtC8StocksUI12MastheadView)initWithCoder:(id)coder;
 @end
 
 @implementation MastheadView
 
-- (_TtC8StocksUI12MastheadView)initWithCoder:(id)a3
+- (_TtC8StocksUI12MastheadView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC8StocksUI12MastheadView_appNameLabel;
   *(&self->super.super.super.super.isa + v4) = [objc_allocWithZone(MEMORY[0x277D756B8]) initWithFrame_];

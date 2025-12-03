@@ -12,7 +12,7 @@
   v2 = *(&self->super.isa + OBJC_IVAR____TtC17identityservicesd39IDSGroupEncryptionKeyMaterialController_state);
   v3 = v2 + *(*v2 + class metadata base offset for ManagedBuffer + 16);
   v4 = (*(*v2 + 48) + 3) & 0x1FFFFFFFCLL;
-  v5 = self;
+  selfCopy = self;
 
   os_unfair_lock_lock((v2 + v4));
   v6 = *(type metadata accessor for IDSGroupEncryptionKeyMaterialController.State(0) + 44);
@@ -26,7 +26,7 @@
 
   os_unfair_lock_unlock((v2 + v4));
 
-  v7.receiver = v5;
+  v7.receiver = selfCopy;
   v7.super_class = type metadata accessor for IDSGroupEncryptionKeyMaterialController(0);
   [(IDSGroupEncryptionKeyMaterialController *)&v7 dealloc];
 }
@@ -41,7 +41,7 @@
   __chkstk_darwin(v6);
   v9 = &v16 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   v10 = *((swift_isaMask & self->super.isa) + 0x118);
-  v11 = self;
+  selfCopy = self;
   v10();
   if ((*(v7 + 48))(v5, 1, v6) == 1)
   {
@@ -67,7 +67,7 @@
 {
   v2 = *(&self->super.isa + OBJC_IVAR____TtC17identityservicesd39IDSGroupEncryptionKeyMaterialController_state);
   v3 = (*(*v2 + 48) + 3) & 0x1FFFFFFFCLL;
-  v4 = self;
+  selfCopy = self;
   os_unfair_lock_lock((v2 + v3));
   sub_100715C08();
   os_unfair_lock_unlock((v2 + v3));

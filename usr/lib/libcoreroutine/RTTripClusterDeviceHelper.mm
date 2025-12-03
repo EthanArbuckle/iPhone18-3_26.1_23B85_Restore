@@ -1,8 +1,8 @@
 @interface RTTripClusterDeviceHelper
-+ (id)currentDevicePredicateWithPropertyName:(id)a3 inManagedObjectContext:(id)a4;
++ (id)currentDevicePredicateWithPropertyName:(id)name inManagedObjectContext:(id)context;
 + (id)getDeviceHelperInstance;
 - (RTTripClusterDeviceHelper)init;
-- (RTTripClusterDeviceHelper)initWithDefaultsManager:(id)a3 platform:(id)a4;
+- (RTTripClusterDeviceHelper)initWithDefaultsManager:(id)manager platform:(id)platform;
 @end
 
 @implementation RTTripClusterDeviceHelper
@@ -12,7 +12,7 @@
   v2 = deviceHelperInstance;
   if (!deviceHelperInstance)
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___RTTripClusterDeviceHelper;
     v3 = [objc_msgSendSuper2(&v6 alloc)];
     v4 = deviceHelperInstance;
@@ -24,15 +24,15 @@
   return v2;
 }
 
-- (RTTripClusterDeviceHelper)initWithDefaultsManager:(id)a3 platform:(id)a4
+- (RTTripClusterDeviceHelper)initWithDefaultsManager:(id)manager platform:(id)platform
 {
   v33 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
+  managerCopy = manager;
+  platformCopy = platform;
+  v9 = platformCopy;
   if (self)
   {
-    if (v8)
+    if (platformCopy)
     {
       self->_currentDeviceOnly = 0;
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -67,9 +67,9 @@
     }
   }
 
-  if (self && v7)
+  if (self && managerCopy)
   {
-    v17 = [v7 objectForKey:@"RTDefaultsTripClusterCurrentDeviceOverride"];
+    v17 = [managerCopy objectForKey:@"RTDefaultsTripClusterCurrentDeviceOverride"];
     v18 = v17;
     if (v17)
     {
@@ -109,19 +109,19 @@
   return result;
 }
 
-+ (id)currentDevicePredicateWithPropertyName:(id)a3 inManagedObjectContext:(id)a4
++ (id)currentDevicePredicateWithPropertyName:(id)name inManagedObjectContext:(id)context
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  nameCopy = name;
+  contextCopy = context;
+  v8 = contextCopy;
   v9 = 0;
-  if (v6 && v7)
+  if (nameCopy && contextCopy)
   {
-    v10 = [a1 getDeviceHelperInstance];
-    v11 = [v10 currentDeviceOnly];
+    getDeviceHelperInstance = [self getDeviceHelperInstance];
+    currentDeviceOnly = [getDeviceHelperInstance currentDeviceOnly];
 
-    if (v11)
+    if (currentDeviceOnly)
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
@@ -137,9 +137,9 @@
       }
 
       v15 = MEMORY[0x277CCAC30];
-      v16 = [v8 currentDevice];
-      v17 = [v16 identifier];
-      v9 = [v15 predicateWithFormat:@"(%K.%K == %@)", v6, @"identifier", v17];
+      currentDevice = [v8 currentDevice];
+      identifier = [currentDevice identifier];
+      v9 = [v15 predicateWithFormat:@"(%K.%K == %@)", nameCopy, @"identifier", identifier];
     }
 
     else

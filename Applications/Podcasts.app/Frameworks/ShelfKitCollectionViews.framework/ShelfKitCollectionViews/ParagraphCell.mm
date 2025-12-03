@@ -1,18 +1,18 @@
 @interface ParagraphCell
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3;
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes;
 - (void)layoutSubviews;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation ParagraphCell
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v6.receiver = self;
   v6.super_class = swift_getObjectType();
-  v4 = a3;
+  changeCopy = change;
   v5 = v6.receiver;
-  [(ParagraphCell *)&v6 traitCollectionDidChange:v4];
+  [(ParagraphCell *)&v6 traitCollectionDidChange:changeCopy];
   sub_29BF0C();
   [v5 setNeedsUpdateConstraints];
 }
@@ -37,15 +37,15 @@
   }
 }
 
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes
 {
   ObjectType = swift_getObjectType();
-  v6 = a3;
-  v7 = self;
-  [(ParagraphCell *)v7 layoutIfNeeded];
-  v10.receiver = v7;
+  attributesCopy = attributes;
+  selfCopy = self;
+  [(ParagraphCell *)selfCopy layoutIfNeeded];
+  v10.receiver = selfCopy;
   v10.super_class = ObjectType;
-  v8 = [(ParagraphCell *)&v10 preferredLayoutAttributesFittingAttributes:v6];
+  v8 = [(ParagraphCell *)&v10 preferredLayoutAttributesFittingAttributes:attributesCopy];
 
   return v8;
 }

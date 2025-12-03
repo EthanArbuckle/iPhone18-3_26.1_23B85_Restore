@@ -1,97 +1,97 @@
 @interface RPFileTransferSession
-- (BOOL)_activateAndReturnError:(id *)a3;
-- (BOOL)_activateSourceAndReturnError:(id *)a3;
-- (BOOL)_activateTargetAndReturnError:(id *)a3;
-- (BOOL)_largeFileReceiveTaskUpdateSHA256CtxFromFileItem:(id)a3 length:(unint64_t)a4 error:(id *)a5;
-- (BOOL)_prepareItem:(id)a3 error:(id *)a4;
-- (BOOL)_readFD:(int)a3 buffer:(char *)a4 size:(unint64_t)a5 error:(id *)a6;
-- (BOOL)_smallFilesReceiveTaskFileItem:(id)a3 error:(id *)a4;
-- (BOOL)_truncateFD:(int)a3 size:(int64_t)a4 error:(id *)a5;
-- (BOOL)_writeFD:(int)a3 buffer:(const char *)a4 size:(unint64_t)a5 error:(id *)a6;
-- (BOOL)prepareTemplateAndReturnError:(id *)a3;
+- (BOOL)_activateAndReturnError:(id *)error;
+- (BOOL)_activateSourceAndReturnError:(id *)error;
+- (BOOL)_activateTargetAndReturnError:(id *)error;
+- (BOOL)_largeFileReceiveTaskUpdateSHA256CtxFromFileItem:(id)item length:(unint64_t)length error:(id *)error;
+- (BOOL)_prepareItem:(id)item error:(id *)error;
+- (BOOL)_readFD:(int)d buffer:(char *)buffer size:(unint64_t)size error:(id *)error;
+- (BOOL)_smallFilesReceiveTaskFileItem:(id)item error:(id *)error;
+- (BOOL)_truncateFD:(int)d size:(int64_t)size error:(id *)error;
+- (BOOL)_writeFD:(int)d buffer:(const char *)buffer size:(unint64_t)size error:(id *)error;
+- (BOOL)prepareTemplateAndReturnError:(id *)error;
 - (RPFileTransferSession)init;
-- (RPFileTransferSession)initWithCoder:(id)a3;
-- (id)_compressData:(id)a3 error:(id *)a4;
-- (id)_decompressAndDecodeData:(id)a3 originalSize:(unint64_t)a4 error:(id *)a5;
-- (id)_decompressData:(id)a3 originalSize:(unint64_t)a4 error:(id *)a5;
-- (id)_encodeAndCompressObject:(id)a3 originalSize:(unint64_t *)a4 error:(id *)a5;
+- (RPFileTransferSession)initWithCoder:(id)coder;
+- (id)_compressData:(id)data error:(id *)error;
+- (id)_decompressAndDecodeData:(id)data originalSize:(unint64_t)size error:(id *)error;
+- (id)_decompressData:(id)data originalSize:(unint64_t)size error:(id *)error;
+- (id)_encodeAndCompressObject:(id)object originalSize:(unint64_t *)size error:(id *)error;
 - (id)_ioQueueDequeue;
 - (id)_largeFileSendTaskCreate;
-- (id)_modTimeForFileWithPath:(const char *)a3 error:(id *)a4;
-- (id)_readPath:(const char *)a3 size:(unint64_t)a4 error:(id *)a5;
+- (id)_modTimeForFileWithPath:(const char *)path error:(id *)error;
+- (id)_readPath:(const char *)path size:(unint64_t)size error:(id *)error;
 - (id)_smallFilesSendTaskCreate;
-- (id)_smallFilesSendTaskReadItem:(id)a3 error:(id *)a4;
-- (id)descriptionWithLevel:(int)a3;
+- (id)_smallFilesSendTaskReadItem:(id)item error:(id *)error;
+- (id)descriptionWithLevel:(int)level;
 - (id)resumeStateDict;
-- (int)_openReadFileItem:(id)a3 error:(id *)a4;
-- (int)_openReadPath:(const char *)a3 error:(id *)a4;
-- (int)_openWritePath:(id)a3 size:(int64_t)a4 truncate:(BOOL)a5 error:(id *)a6;
-- (void)_completeItem:(id)a3 error:(id)a4;
-- (void)_completeItemDirect:(id)a3 error:(id)a4;
+- (int)_openReadFileItem:(id)item error:(id *)error;
+- (int)_openReadPath:(const char *)path error:(id *)error;
+- (int)_openWritePath:(id)path size:(int64_t)size truncate:(BOOL)truncate error:(id *)error;
+- (void)_completeItem:(id)item error:(id)error;
+- (void)_completeItemDirect:(id)direct error:(id)error;
 - (void)_controlCnxRetryIfNeeded;
 - (void)_controlCnxStartIfNeeded;
 - (void)_debugSetup;
 - (void)_debugUpdate;
-- (void)_handleDeviceFound:(id)a3;
-- (void)_handleDeviceLost:(id)a3;
+- (void)_handleDeviceFound:(id)found;
+- (void)_handleDeviceLost:(id)lost;
 - (void)_handleDevicesCoalesced;
-- (void)_handleIncomingConnectionEnded:(id)a3;
-- (void)_handleIncomingConnectionStarted:(id)a3;
+- (void)_handleIncomingConnectionEnded:(id)ended;
+- (void)_handleIncomingConnectionStarted:(id)started;
 - (void)_invalidate;
 - (void)_invalidated;
-- (void)_largeFileReceiveRequest:(id)a3 responseHandler:(id)a4;
-- (void)_largeFileReceiveTaskInvalidate:(id)a3;
-- (void)_largeFileReceiveTaskRespond:(id)a3 error:(id)a4 complete:(BOOL)a5 responseHandler:(id)a6;
-- (void)_largeFileReceiveTaskRun:(id)a3 data:(id)a4 sendFlags:(unsigned int)a5 responseHandler:(id)a6;
-- (void)_largeFileSendTaskEnd:(id)a3 error:(id)a4;
-- (void)_largeFileSendTaskFailed:(id)a3 error:(id)a4;
-- (void)_largeFileSendTaskResponse:(id)a3 error:(id)a4 end:(BOOL)a5 xid:(unsigned int)a6;
-- (void)_largeFileSendTaskSend:(id)a3 data:(id)a4 end:(BOOL)a5 xid:(unsigned int)a6;
-- (void)_largeFileSendTaskStart:(id)a3;
-- (void)_metricAddFileSize:(int64_t)a3;
+- (void)_largeFileReceiveRequest:(id)request responseHandler:(id)handler;
+- (void)_largeFileReceiveTaskInvalidate:(id)invalidate;
+- (void)_largeFileReceiveTaskRespond:(id)respond error:(id)error complete:(BOOL)complete responseHandler:(id)handler;
+- (void)_largeFileReceiveTaskRun:(id)run data:(id)data sendFlags:(unsigned int)flags responseHandler:(id)handler;
+- (void)_largeFileSendTaskEnd:(id)end error:(id)error;
+- (void)_largeFileSendTaskFailed:(id)failed error:(id)error;
+- (void)_largeFileSendTaskResponse:(id)response error:(id)error end:(BOOL)end xid:(unsigned int)xid;
+- (void)_largeFileSendTaskSend:(id)send data:(id)data end:(BOOL)end xid:(unsigned int)xid;
+- (void)_largeFileSendTaskStart:(id)start;
+- (void)_metricAddFileSize:(int64_t)size;
 - (void)_prefsChanged;
 - (void)_processFinish;
-- (void)_processReceivedItem:(id)a3 responseHandler:(id)a4;
-- (void)_processReceivedItems:(id)a3 responseHandler:(id)a4;
-- (void)_receivedEventID:(id)a3 event:(id)a4 options:(id)a5;
-- (void)_receivedPeerUpdate:(id)a3;
-- (void)_receivedRequestID:(id)a3 request:(id)a4 options:(id)a5 responseHandler:(id)a6;
-- (void)_reportCompletion:(id)a3;
+- (void)_processReceivedItem:(id)item responseHandler:(id)handler;
+- (void)_processReceivedItems:(id)items responseHandler:(id)handler;
+- (void)_receivedEventID:(id)d event:(id)event options:(id)options;
+- (void)_receivedPeerUpdate:(id)update;
+- (void)_receivedRequestID:(id)d request:(id)request options:(id)options responseHandler:(id)handler;
+- (void)_reportCompletion:(id)completion;
 - (void)_reportDataTransferred;
 - (void)_reportProgressControlState;
 - (void)_requestResumeStateFromReceiver;
-- (void)_resumeStateReceiveRequest:(id)a3 responseHandler:(id)a4;
+- (void)_resumeStateReceiveRequest:(id)request responseHandler:(id)handler;
 - (void)_scheduleItems;
-- (void)_smallFilesReceiveRequest:(id)a3 responseHandler:(id)a4;
-- (void)_smallFilesReceiveTaskComplete:(id)a3 error:(id)a4 responseHandler:(id)a5;
-- (void)_smallFilesReceiveTaskRun:(id)a3 responseHandler:(id)a4;
-- (void)_smallFilesSendTaskEnd:(id)a3 error:(id)a4;
-- (void)_smallFilesSendTaskRun:(id)a3;
+- (void)_smallFilesReceiveRequest:(id)request responseHandler:(id)handler;
+- (void)_smallFilesReceiveTaskComplete:(id)complete error:(id)error responseHandler:(id)handler;
+- (void)_smallFilesReceiveTaskRun:(id)run responseHandler:(id)handler;
+- (void)_smallFilesSendTaskEnd:(id)end error:(id)error;
+- (void)_smallFilesSendTaskRun:(id)run;
 - (void)_startProgressReportTimer;
 - (void)_stopProgressReportTimer;
-- (void)_updateIfNeededWithBlock:(id)a3;
-- (void)_updateLargeFilesTaskResumeState:(id)a3 data:(id)a4 sendFlags:(unsigned int)a5 error:(id)a6 complete:(BOOL)a7;
-- (void)_updateSmallFilesTaskResumeState:(id)a3 error:(id)a4;
+- (void)_updateIfNeededWithBlock:(id)block;
+- (void)_updateLargeFilesTaskResumeState:(id)state data:(id)data sendFlags:(unsigned int)flags error:(id)error complete:(BOOL)complete;
+- (void)_updateSmallFilesTaskResumeState:(id)state error:(id)error;
 - (void)_updateWiFi;
 - (void)activate;
-- (void)addItem:(id)a3;
-- (void)addItems:(id)a3;
+- (void)addItem:(id)item;
+- (void)addItems:(id)items;
 - (void)dealloc;
-- (void)deregisterEventID:(id)a3;
-- (void)deregisterRequestID:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)deregisterEventID:(id)d;
+- (void)deregisterRequestID:(id)d;
+- (void)encodeWithCoder:(id)coder;
 - (void)finish;
 - (void)invalidate;
-- (void)registerEventID:(id)a3 options:(id)a4 handler:(id)a5;
-- (void)registerRequestID:(id)a3 options:(id)a4 handler:(id)a5;
-- (void)sendEventID:(id)a3 event:(id)a4 destinationID:(id)a5 options:(id)a6 completion:(id)a7;
-- (void)sendRequestID:(id)a3 request:(id)a4 destinationID:(id)a5 options:(id)a6 responseHandler:(id)a7;
-- (void)setDebugFlags:(unint64_t)a3;
-- (void)setFlags:(unsigned int)a3;
-- (void)setLabel:(id)a3;
-- (void)setLargeFileBufferBytes:(unint64_t)a3;
-- (void)setMaxLargeFileTasks:(unint64_t)a3;
-- (void)setMaxSmallFileTasks:(unint64_t)a3;
+- (void)registerEventID:(id)d options:(id)options handler:(id)handler;
+- (void)registerRequestID:(id)d options:(id)options handler:(id)handler;
+- (void)sendEventID:(id)d event:(id)event destinationID:(id)iD options:(id)options completion:(id)completion;
+- (void)sendRequestID:(id)d request:(id)request destinationID:(id)iD options:(id)options responseHandler:(id)handler;
+- (void)setDebugFlags:(unint64_t)flags;
+- (void)setFlags:(unsigned int)flags;
+- (void)setLabel:(id)label;
+- (void)setLargeFileBufferBytes:(unint64_t)bytes;
+- (void)setMaxLargeFileTasks:(unint64_t)tasks;
+- (void)setMaxSmallFileTasks:(unint64_t)tasks;
 @end
 
 @implementation RPFileTransferSession
@@ -121,9 +121,9 @@
   return v3;
 }
 
-- (RPFileTransferSession)initWithCoder:(id)a3
+- (RPFileTransferSession)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v18.receiver = self;
   v18.super_class = RPFileTransferSession;
   v5 = [(RPFileTransferSession *)&v18 init];
@@ -143,7 +143,7 @@
       v6->_flags = v19;
     }
 
-    v8 = v4;
+    v8 = coderCopy;
     if ([v8 containsValueForKey:@"lFlBufB"])
     {
       v6->_largeFileBufferBytes = [v8 decodeInt64ForKey:@"lFlBufB"];
@@ -187,71 +187,71 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   flags = self->_flags;
-  v14 = v4;
+  v14 = coderCopy;
   if (flags)
   {
-    [v4 encodeInt64:flags forKey:@"flags"];
-    v4 = v14;
+    [coderCopy encodeInt64:flags forKey:@"flags"];
+    coderCopy = v14;
   }
 
   largeFileBufferBytes = self->_largeFileBufferBytes;
   if (largeFileBufferBytes)
   {
     [v14 encodeInt64:largeFileBufferBytes forKey:@"lFlBufB"];
-    v4 = v14;
+    coderCopy = v14;
   }
 
   maxLargeFileTasks = self->_maxLargeFileTasks;
   if (maxLargeFileTasks)
   {
     [v14 encodeInt64:maxLargeFileTasks forKey:@"lFlMxTs"];
-    v4 = v14;
+    coderCopy = v14;
   }
 
   peerPublicKey = self->_peerPublicKey;
   if (peerPublicKey)
   {
     [v14 encodeObject:peerPublicKey forKey:@"peerPK"];
-    v4 = v14;
+    coderCopy = v14;
   }
 
   selfPublicKey = self->_selfPublicKey;
   if (selfPublicKey)
   {
     [v14 encodeObject:selfPublicKey forKey:@"selfPK"];
-    v4 = v14;
+    coderCopy = v14;
   }
 
   selfSecretKey = self->_selfSecretKey;
   if (selfSecretKey)
   {
     [v14 encodeObject:selfSecretKey forKey:@"selfSK"];
-    v4 = v14;
+    coderCopy = v14;
   }
 
   maxSmallFileTasks = self->_maxSmallFileTasks;
   if (maxSmallFileTasks)
   {
     [v14 encodeInt64:maxSmallFileTasks forKey:@"sFlMxTs"];
-    v4 = v14;
+    coderCopy = v14;
   }
 
   serviceType = self->_serviceType;
   if (serviceType)
   {
     [v14 encodeObject:serviceType forKey:@"srvTy"];
-    v4 = v14;
+    coderCopy = v14;
   }
 
   targetID = self->_targetID;
   if (targetID)
   {
     [v14 encodeObject:targetID forKey:@"targetID"];
-    v4 = v14;
+    coderCopy = v14;
   }
 }
 
@@ -280,7 +280,7 @@
   [(RPFileTransferSession *)&v7 dealloc];
 }
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
   NSAppendPrintF();
   v4 = 0;
@@ -355,7 +355,7 @@
   return v5;
 }
 
-- (void)setDebugFlags:(unint64_t)a3
+- (void)setDebugFlags:(unint64_t)flags
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -363,17 +363,17 @@
   v4[2] = __39__RPFileTransferSession_setDebugFlags___block_invoke;
   v4[3] = &unk_1E7C934B0;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = flags;
   dispatch_async(dispatchQueue, v4);
 }
 
-- (void)setFlags:(unsigned int)a3
+- (void)setFlags:(unsigned int)flags
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __34__RPFileTransferSession_setFlags___block_invoke;
   v3[3] = &unk_1E7C94280;
-  v4 = a3;
+  flagsCopy = flags;
   v3[4] = self;
   [(RPFileTransferSession *)self _updateIfNeededWithBlock:v3];
 }
@@ -424,18 +424,18 @@ LABEL_8:
   return v1 != v3;
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  objc_storeStrong(&self->_label, a3);
-  v5 = a3;
-  v4 = v5;
-  [v5 UTF8String];
+  objc_storeStrong(&self->_label, label);
+  labelCopy = label;
+  v4 = labelCopy;
+  [labelCopy UTF8String];
   LogCategoryReplaceF();
 }
 
-- (void)setLargeFileBufferBytes:(unint64_t)a3
+- (void)setLargeFileBufferBytes:(unint64_t)bytes
 {
-  if (self->_largeFileBufferBytes != a3)
+  if (self->_largeFileBufferBytes != bytes)
   {
     var0 = self->_ucat->var0;
     if (var0 <= 30)
@@ -456,12 +456,12 @@ LABEL_8:
   }
 
 LABEL_6:
-  self->_largeFileBufferBytes = a3;
+  self->_largeFileBufferBytes = bytes;
 }
 
-- (void)setMaxLargeFileTasks:(unint64_t)a3
+- (void)setMaxLargeFileTasks:(unint64_t)tasks
 {
-  if (self->_maxLargeFileTasks != a3)
+  if (self->_maxLargeFileTasks != tasks)
   {
     var0 = self->_ucat->var0;
     if (var0 <= 30)
@@ -482,12 +482,12 @@ LABEL_6:
   }
 
 LABEL_6:
-  self->_maxLargeFileTasks = a3;
+  self->_maxLargeFileTasks = tasks;
 }
 
-- (void)setMaxSmallFileTasks:(unint64_t)a3
+- (void)setMaxSmallFileTasks:(unint64_t)tasks
 {
-  if (self->_maxSmallFileTasks != a3)
+  if (self->_maxSmallFileTasks != tasks)
   {
     var0 = self->_ucat->var0;
     if (var0 <= 30)
@@ -508,7 +508,7 @@ LABEL_6:
   }
 
 LABEL_6:
-  self->_maxSmallFileTasks = a3;
+  self->_maxSmallFileTasks = tasks;
 }
 
 - (id)resumeStateDict
@@ -523,7 +523,7 @@ LABEL_6:
   return resumeState;
 }
 
-- (BOOL)prepareTemplateAndReturnError:(id *)a3
+- (BOOL)prepareTemplateAndReturnError:(id *)error
 {
   v22 = *MEMORY[0x1E69E9840];
   if (![(NSData *)self->_selfPublicKey length]|| ![(NSData *)self->_selfSecretKey length])
@@ -600,21 +600,21 @@ LABEL_17:
 
 - (void)activate
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_activateCalled)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_activateCalled)
   {
-    v2->_activateCalled = 1;
-    dispatchQueue = v2->_dispatchQueue;
+    selfCopy->_activateCalled = 1;
+    dispatchQueue = selfCopy->_dispatchQueue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __33__RPFileTransferSession_activate__block_invoke;
     block[3] = &unk_1E7C92CE8;
-    block[4] = v2;
+    block[4] = selfCopy;
     dispatch_async(dispatchQueue, block);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 void __33__RPFileTransferSession_activate__block_invoke(uint64_t a1)
@@ -685,7 +685,7 @@ LABEL_8:
 LABEL_12:
 }
 
-- (BOOL)_activateAndReturnError:(id *)a3
+- (BOOL)_activateAndReturnError:(id *)error
 {
   v5 = self->_targetID;
   if (v5)
@@ -695,10 +695,10 @@ LABEL_12:
     v6 = self->_selfPublicKey;
     if (!self->_selfPublicKey)
     {
-      if (a3)
+      if (error)
       {
         RPErrorF();
-        *a3 = v31 = 0;
+        *error = v31 = 0;
       }
 
       else
@@ -712,10 +712,10 @@ LABEL_12:
     v7 = self->_selfSecretKey;
     if (!self->_selfSecretKey)
     {
-      if (a3)
+      if (error)
       {
         RPErrorF();
-        *a3 = v31 = 0;
+        *error = v31 = 0;
       }
 
       else
@@ -733,10 +733,10 @@ LABEL_12:
     v9 = self->_peerPublicKey;
     if (!self->_peerPublicKey)
     {
-      if (a3)
+      if (error)
       {
         RPErrorF();
-        *a3 = v31 = 0;
+        *error = v31 = 0;
       }
 
       else
@@ -752,21 +752,21 @@ LABEL_12:
     v10 = objc_alloc_init(RPIdentity);
     [(RPIdentity *)v10 setEdPKData:v9];
     objc_storeStrong(&self->_peerIdentity, v10);
-    v11 = self->_receiveFileParentPath;
-    if (!v11)
+    path = self->_receiveFileParentPath;
+    if (!path)
     {
       v12 = self->_temporaryDirectoryURL;
       if (!v12)
       {
-        v13 = [MEMORY[0x1E696AC08] defaultManager];
+        defaultManager = [MEMORY[0x1E696AC08] defaultManager];
         v36 = 0;
-        v14 = [v13 URLForDirectory:13 inDomain:1 appropriateForURL:0 create:1 error:&v36];
+        v14 = [defaultManager URLForDirectory:13 inDomain:1 appropriateForURL:0 create:1 error:&v36];
         v15 = v36;
 
         if (!v14)
         {
-          [(RPFileTransferSession *)a3 _activateAndReturnError:v15];
-          v11 = 0;
+          [(RPFileTransferSession *)error _activateAndReturnError:v15];
+          path = 0;
           goto LABEL_38;
         }
 
@@ -776,8 +776,8 @@ LABEL_12:
       v16 = [(NSString *)self->_targetID stringByAppendingString:@".rpftd"];
       v17 = [(NSURL *)v12 URLByAppendingPathComponent:v16 isDirectory:1];
 
-      v11 = [v17 path];
-      objc_storeStrong(&self->_receiveFileParentPath, v11);
+      path = [v17 path];
+      objc_storeStrong(&self->_receiveFileParentPath, path);
     }
 
     var0 = self->_ucat->var0;
@@ -819,7 +819,7 @@ LABEL_14:
 
     if ((self->_flags & 1) == 0)
     {
-      if (![(RPFileTransferSession *)self _activateSourceAndReturnError:a3])
+      if (![(RPFileTransferSession *)self _activateSourceAndReturnError:error])
       {
         goto LABEL_38;
       }
@@ -844,7 +844,7 @@ LABEL_22:
       goto LABEL_23;
     }
 
-    if ([(RPFileTransferSession *)self _activateTargetAndReturnError:a3])
+    if ([(RPFileTransferSession *)self _activateTargetAndReturnError:error])
     {
       goto LABEL_18;
     }
@@ -854,10 +854,10 @@ LABEL_38:
     goto LABEL_19;
   }
 
-  if (a3)
+  if (error)
   {
     RPErrorF();
-    *a3 = v31 = 0;
+    *error = v31 = 0;
   }
 
   else
@@ -1173,21 +1173,21 @@ LABEL_13:
   v11 = CFPrefs_GetInt64();
   if ((v11 - 1001) >= 0xFFFFFFFFFFFFFC18)
   {
-    v12 = v11;
+    maxLargeFileTasks = v11;
   }
 
   else
   {
-    v12 = 3;
+    maxLargeFileTasks = 3;
   }
 
-  if ([(RPFileTransferSession *)self maxLargeFileTasks:v35]> v12)
+  if ([(RPFileTransferSession *)self maxLargeFileTasks:v35]> maxLargeFileTasks)
   {
-    v12 = [(RPFileTransferSession *)self maxLargeFileTasks];
+    maxLargeFileTasks = [(RPFileTransferSession *)self maxLargeFileTasks];
   }
 
   prefLargeFileMaxOutstanding = self->_prefLargeFileMaxOutstanding;
-  if (v12 != prefLargeFileMaxOutstanding)
+  if (maxLargeFileTasks != prefLargeFileMaxOutstanding)
   {
     v14 = self->_ucat->var0;
     if (v14 <= 30)
@@ -1204,12 +1204,12 @@ LABEL_13:
       }
 
       v36 = prefLargeFileMaxOutstanding;
-      v38 = v12;
+      v38 = maxLargeFileTasks;
       LogPrintF();
     }
 
 LABEL_34:
-    self->_prefLargeFileMaxOutstanding = v12;
+    self->_prefLargeFileMaxOutstanding = maxLargeFileTasks;
   }
 
   v15 = CFPrefs_GetInt64();
@@ -1334,10 +1334,10 @@ LABEL_72:
   }
 }
 
-- (void)_reportCompletion:(id)a3
+- (void)_reportCompletion:(id)completion
 {
   v61[26] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   metricLastFileCompletionTicks = self->_metricLastFileCompletionTicks;
   if (!metricLastFileCompletionTicks)
   {
@@ -1395,14 +1395,14 @@ LABEL_72:
   [(RPFileTransferProgress *)self->_progressCurrent setBytesPerSecond:v11];
   [(RPFileTransferProgress *)self->_progressCurrent setRemainingSeconds:0.0];
   [(RPFileTransferProgress *)self->_progressCurrent setCurrentFilename:0];
-  [(RPFileTransferProgress *)self->_progressCurrent setError:v4];
+  [(RPFileTransferProgress *)self->_progressCurrent setError:completionCopy];
   [(RPFileTransferProgress *)self->_progressCurrent setTransferredByteCount:self->_metricTotalBytes];
   [(RPFileTransferProgress *)self->_progressCurrent setTotalByteCount:self->_metricTotalBytes];
   [(RPFileTransferProgress *)self->_progressCurrent setTransferredFileCount:self->_metricTotalFiles];
   [(RPFileTransferProgress *)self->_progressCurrent setTotalFileCount:self->_metricTotalFiles];
   [(RPFileTransferSession *)self _reportProgressType:20];
   var0 = self->_ucat->var0;
-  if (!v4)
+  if (!completionCopy)
   {
     if (var0 > 30)
     {
@@ -1441,7 +1441,7 @@ LABEL_72:
     v18 = self->_ucat;
 LABEL_18:
     v39 = v16;
-    v40 = v4;
+    v40 = completionCopy;
     v37 = self->_metricTotalBytes / 1000000.0;
     v38 = v11 / 1000000.0;
     metricTotalFiles = self->_metricTotalFiles;
@@ -1454,7 +1454,7 @@ LABEL_26:
   if (v19)
   {
     v59 = v19;
-    (*(v19 + 2))(v19, v4);
+    (*(v19 + 2))(v19, completionCopy);
     completionHandler = self->_completionHandler;
     self->_completionHandler = 0;
 
@@ -1472,23 +1472,23 @@ LABEL_26:
     v61[0] = v21;
     v60[0] = @"type";
     v60[1] = @"errD";
-    v22 = [v4 domain];
-    v57 = v22;
+    domain = [completionCopy domain];
+    v57 = domain;
     v23 = &stru_1F2ED6FB8;
-    if (v22)
+    if (domain)
     {
-      v23 = v22;
+      v23 = domain;
     }
 
     v61[1] = v23;
     v60[2] = @"errC";
-    v56 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v4, "code")}];
+    v56 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(completionCopy, "code")}];
     v61[2] = v56;
     v60[3] = @"totB";
     v55 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:10000000 * (self->_metricTotalBytes / 0x989680)];
     v61[3] = v55;
     v60[4] = @"totF";
-    v58 = v4;
+    v58 = completionCopy;
     v54 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:100 * (self->_metricTotalFiles / 0x64)];
     v61[4] = v54;
     v60[5] = @"totS";
@@ -1557,7 +1557,7 @@ LABEL_26:
     v33 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v61 forKeys:v60 count:26];
     CUMetricsLogEx();
 
-    v4 = v58;
+    completionCopy = v58;
     v19 = v59;
   }
 
@@ -1706,57 +1706,57 @@ _BYTE *__50__RPFileTransferSession__startProgressReportTimer__block_invoke(uint6
   }
 }
 
-- (void)_updateIfNeededWithBlock:(id)a3
+- (void)_updateIfNeededWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if ((v4[2](v4) & 1) != 0 && v5->_activateCalled)
+  blockCopy = block;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ((blockCopy[2](blockCopy) & 1) != 0 && selfCopy->_activateCalled)
   {
-    dispatchQueue = v5->_dispatchQueue;
+    dispatchQueue = selfCopy->_dispatchQueue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __50__RPFileTransferSession__updateIfNeededWithBlock___block_invoke;
     block[3] = &unk_1E7C92CE8;
-    block[4] = v5;
+    block[4] = selfCopy;
     dispatch_async(dispatchQueue, block);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)_updateWiFi
 {
   v25[1] = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
-  flags = v2->_flags;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  flags = selfCopy->_flags;
   if ((flags & 8) != 0)
   {
-    objc_sync_exit(v2);
+    objc_sync_exit(selfCopy);
   }
 
   else
   {
     if ((flags & 4) == 0)
     {
-      objc_sync_exit(v2);
+      objc_sync_exit(selfCopy);
 
       goto LABEL_10;
     }
 
-    v5 = [(RPConnection *)v2->_controlCnx linkType];
-    objc_sync_exit(v2);
+    linkType = [(RPConnection *)selfCopy->_controlCnx linkType];
+    objc_sync_exit(selfCopy);
 
-    if (v5 != 4)
+    if (linkType != 4)
     {
 LABEL_10:
-      if (![(CUWiFiManager *)v2->_wifiManager infraDisabled])
+      if (![(CUWiFiManager *)selfCopy->_wifiManager infraDisabled])
       {
         goto LABEL_35;
       }
 
-      var0 = v2->_ucat->var0;
+      var0 = selfCopy->_ucat->var0;
       if (var0 > 30)
       {
         goto LABEL_21;
@@ -1769,20 +1769,20 @@ LABEL_10:
           goto LABEL_21;
         }
 
-        ucat = v2->_ucat;
+        ucat = selfCopy->_ucat;
       }
 
       LogPrintF();
 LABEL_21:
-      [(CUWiFiManager *)v2->_wifiManager setInfraDisabled:0];
+      [(CUWiFiManager *)selfCopy->_wifiManager setInfraDisabled:0];
       v8 = 0;
       goto LABEL_22;
     }
   }
 
-  if (([(CUWiFiManager *)v2->_wifiManager infraDisabled]& 1) == 0)
+  if (([(CUWiFiManager *)selfCopy->_wifiManager infraDisabled]& 1) == 0)
   {
-    v4 = v2->_ucat->var0;
+    v4 = selfCopy->_ucat->var0;
     if (v4 <= 30)
     {
       if (v4 != -1)
@@ -1794,14 +1794,14 @@ LABEL_8:
 
       if (_LogCategory_Initialize())
       {
-        v21 = v2->_ucat;
+        v21 = selfCopy->_ucat;
         goto LABEL_8;
       }
     }
   }
 
 LABEL_15:
-  wifiManager = v2->_wifiManager;
+  wifiManager = selfCopy->_wifiManager;
   if (wifiManager)
   {
     if (([(CUWiFiManager *)wifiManager infraDisabled]& 1) != 0)
@@ -1811,24 +1811,24 @@ LABEL_15:
     }
 
     v8 = 1;
-    [(CUWiFiManager *)v2->_wifiManager setInfraDisabled:1];
+    [(CUWiFiManager *)selfCopy->_wifiManager setInfraDisabled:1];
   }
 
   else
   {
     v9 = objc_alloc_init(MEMORY[0x1E6999558]);
-    v10 = v2->_wifiManager;
-    v2->_wifiManager = v9;
+    v10 = selfCopy->_wifiManager;
+    selfCopy->_wifiManager = v9;
 
-    [(CUWiFiManager *)v2->_wifiManager setDispatchQueue:v2->_dispatchQueue];
-    [(CUWiFiManager *)v2->_wifiManager setLabel:@"RPFile"];
+    [(CUWiFiManager *)selfCopy->_wifiManager setDispatchQueue:selfCopy->_dispatchQueue];
+    [(CUWiFiManager *)selfCopy->_wifiManager setLabel:@"RPFile"];
     v8 = 1;
-    [(CUWiFiManager *)v2->_wifiManager setInfraDisabled:1];
-    [(CUWiFiManager *)v2->_wifiManager activateWithCompletion:0];
+    [(CUWiFiManager *)selfCopy->_wifiManager setInfraDisabled:1];
+    [(CUWiFiManager *)selfCopy->_wifiManager activateWithCompletion:0];
   }
 
 LABEL_22:
-  if (v2->_controlCnx && (v2->_flags & 1) != 0)
+  if (selfCopy->_controlCnx && (selfCopy->_flags & 1) != 0)
   {
     if (v8)
     {
@@ -1845,20 +1845,20 @@ LABEL_22:
     v25[0] = v12;
     v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v25 forKeys:&v24 count:1];
 
-    [(RPConnection *)v2->_controlCnx sendEncryptedEventID:@"_ftPU" event:v13 options:0 completion:0];
+    [(RPConnection *)selfCopy->_controlCnx sendEncryptedEventID:@"_ftPU" event:v13 options:0 completion:0];
   }
 
 LABEL_28:
-  if (!v8 || (v14 = v2->_flags, (v14 & 1) != 0) || !v2->_peerInfraWiFiDisabled)
+  if (!v8 || (v14 = selfCopy->_flags, (v14 & 1) != 0) || !selfCopy->_peerInfraWiFiDisabled)
   {
 LABEL_35:
-    p_controlCnx = &v2->_controlCnx;
-    if (![(RPConnection *)v2->_controlCnx trafficFlags])
+    p_controlCnx = &selfCopy->_controlCnx;
+    if (![(RPConnection *)selfCopy->_controlCnx trafficFlags])
     {
       goto LABEL_42;
     }
 
-    v17 = v2->_ucat->var0;
+    v17 = selfCopy->_ucat->var0;
     if (v17 <= 30)
     {
       if (v17 == -1)
@@ -1868,7 +1868,7 @@ LABEL_35:
           goto LABEL_40;
         }
 
-        v20 = v2->_ucat;
+        v20 = selfCopy->_ucat;
       }
 
       LogPrintF();
@@ -1883,7 +1883,7 @@ LABEL_41:
 
   if ((v14 & 2) != 0)
   {
-    v15 = v2->_ucat->var0;
+    v15 = selfCopy->_ucat->var0;
     if (v15 <= 30)
     {
       if (v15 == -1)
@@ -1893,14 +1893,14 @@ LABEL_41:
           goto LABEL_44;
         }
 
-        v23 = v2->_ucat;
+        v23 = selfCopy->_ucat;
       }
 
       LogPrintF();
     }
 
 LABEL_44:
-    p_controlCnx = &v2->_controlCnx;
+    p_controlCnx = &selfCopy->_controlCnx;
     v18 = 1024;
     goto LABEL_41;
   }
@@ -1979,9 +1979,9 @@ LABEL_7:
   }
 }
 
-- (void)_metricAddFileSize:(int64_t)a3
+- (void)_metricAddFileSize:(int64_t)size
 {
-  if (a3 >= 10000)
+  if (size >= 10000)
   {
     v3 = 1;
     v4 = 2;
@@ -1989,32 +1989,32 @@ LABEL_7:
     v6 = 4;
     v7 = 5;
     v8 = 6;
-    if (a3 >= 0x2540BE400)
+    if (size >= 0x2540BE400)
     {
       v8 = 7;
     }
 
-    if (a3 >= 0x3B9ACA00)
+    if (size >= 0x3B9ACA00)
     {
       v7 = v8;
     }
 
-    if (a3 >= 0x5F5E100)
+    if (size >= 0x5F5E100)
     {
       v6 = v7;
     }
 
-    if (a3 >= 0x989680)
+    if (size >= 0x989680)
     {
       v5 = v6;
     }
 
-    if (a3 >= 0xF4240)
+    if (size >= 0xF4240)
     {
       v4 = v5;
     }
 
-    if (a3 >> 5 >= 0xC35)
+    if (size >> 5 >= 0xC35)
     {
       v3 = v4;
     }
@@ -2028,12 +2028,12 @@ LABEL_7:
   ++self->_metricFileSizeBuckets[v3];
 }
 
-- (void)registerEventID:(id)a3 options:(id)a4 handler:(id)a5
+- (void)registerEventID:(id)d options:(id)options handler:(id)handler
 {
-  v19 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(NSMutableDictionary *)self->_registeredEvents objectForKeyedSubscript:v19];
+  dCopy = d;
+  optionsCopy = options;
+  handlerCopy = handler;
+  v10 = [(NSMutableDictionary *)self->_registeredEvents objectForKeyedSubscript:dCopy];
 
   var0 = self->_ucat->var0;
   if (!v10)
@@ -2050,15 +2050,15 @@ LABEL_7:
         ucat = self->_ucat;
       }
 
-      v18 = v19;
+      v18 = dCopy;
       LogPrintF();
     }
 
 LABEL_11:
     v13 = objc_alloc_init(RPEventRegistration);
-    [(RPEventRegistration *)v13 setEventID:v19];
-    [(RPEventRegistration *)v13 setOptions:v8];
-    [(RPEventRegistration *)v13 setHandler:v9];
+    [(RPEventRegistration *)v13 setEventID:dCopy];
+    [(RPEventRegistration *)v13 setOptions:optionsCopy];
+    [(RPEventRegistration *)v13 setHandler:handlerCopy];
     registeredEvents = self->_registeredEvents;
     if (!registeredEvents)
     {
@@ -2069,7 +2069,7 @@ LABEL_11:
       registeredEvents = self->_registeredEvents;
     }
 
-    [(NSMutableDictionary *)registeredEvents setObject:v13 forKeyedSubscript:v19, v18];
+    [(NSMutableDictionary *)registeredEvents setObject:v13 forKeyedSubscript:dCopy, v18];
 
     goto LABEL_14;
   }
@@ -2094,24 +2094,24 @@ LABEL_4:
 LABEL_14:
 }
 
-- (void)deregisterEventID:(id)a3
+- (void)deregisterEventID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   var0 = self->_ucat->var0;
-  v9 = v4;
+  v9 = dCopy;
   if (var0 <= 30)
   {
     if (var0 != -1)
     {
 LABEL_3:
-      v8 = v4;
+      v8 = dCopy;
       LogPrintF();
-      v4 = v9;
+      dCopy = v9;
       goto LABEL_5;
     }
 
     v6 = _LogCategory_Initialize();
-    v4 = v9;
+    dCopy = v9;
     if (v6)
     {
       ucat = self->_ucat;
@@ -2120,29 +2120,29 @@ LABEL_3:
   }
 
 LABEL_5:
-  [(NSMutableDictionary *)self->_registeredEvents setObject:0 forKeyedSubscript:v4, v8];
+  [(NSMutableDictionary *)self->_registeredEvents setObject:0 forKeyedSubscript:dCopy, v8];
 }
 
-- (void)sendEventID:(id)a3 event:(id)a4 destinationID:(id)a5 options:(id)a6 completion:(id)a7
+- (void)sendEventID:(id)d event:(id)event destinationID:(id)iD options:(id)options completion:(id)completion
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  v14 = a7;
+  dCopy = d;
+  eventCopy = event;
+  optionsCopy = options;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __76__RPFileTransferSession_sendEventID_event_destinationID_options_completion___block_invoke;
   block[3] = &unk_1E7C942D0;
   block[4] = self;
-  v21 = v11;
-  v23 = v13;
-  v24 = v14;
-  v22 = v12;
-  v16 = v13;
-  v17 = v12;
-  v18 = v14;
-  v19 = v11;
+  v21 = dCopy;
+  v23 = optionsCopy;
+  v24 = completionCopy;
+  v22 = eventCopy;
+  v16 = optionsCopy;
+  v17 = eventCopy;
+  v18 = completionCopy;
+  v19 = dCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -2184,24 +2184,24 @@ LABEL_7:
 LABEL_10:
 }
 
-- (void)_receivedEventID:(id)a3 event:(id)a4 options:(id)a5
+- (void)_receivedEventID:(id)d event:(id)event options:(id)options
 {
-  v13 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v13 isEqual:@"_ftPU"])
+  dCopy = d;
+  eventCopy = event;
+  optionsCopy = options;
+  if ([dCopy isEqual:@"_ftPU"])
   {
-    [(RPFileTransferSession *)self _receivedPeerUpdate:v8];
+    [(RPFileTransferSession *)self _receivedPeerUpdate:eventCopy];
   }
 
   else
   {
-    v10 = [(NSMutableDictionary *)self->_registeredEvents objectForKeyedSubscript:v13];
-    v11 = [v10 handler];
-    v12 = v11;
-    if (v11)
+    v10 = [(NSMutableDictionary *)self->_registeredEvents objectForKeyedSubscript:dCopy];
+    handler = [v10 handler];
+    v12 = handler;
+    if (handler)
     {
-      (*(v11 + 16))(v11, v8, v9);
+      (*(handler + 16))(handler, eventCopy, optionsCopy);
     }
 
     else
@@ -2211,7 +2211,7 @@ LABEL_10:
   }
 }
 
-- (void)_receivedPeerUpdate:(id)a3
+- (void)_receivedPeerUpdate:(id)update
 {
   v4 = CFDictionaryGetInt64Ranged() & 0xC;
   v5 = v4 != 0;
@@ -2258,12 +2258,12 @@ LABEL_11:
   }
 }
 
-- (void)registerRequestID:(id)a3 options:(id)a4 handler:(id)a5
+- (void)registerRequestID:(id)d options:(id)options handler:(id)handler
 {
-  v19 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(NSMutableDictionary *)self->_registeredRequests objectForKeyedSubscript:v19];
+  dCopy = d;
+  optionsCopy = options;
+  handlerCopy = handler;
+  v10 = [(NSMutableDictionary *)self->_registeredRequests objectForKeyedSubscript:dCopy];
 
   var0 = self->_ucat->var0;
   if (!v10)
@@ -2280,15 +2280,15 @@ LABEL_11:
         ucat = self->_ucat;
       }
 
-      v18 = v19;
+      v18 = dCopy;
       LogPrintF();
     }
 
 LABEL_11:
     v13 = objc_alloc_init(RPRequestRegistration);
-    [(RPRequestRegistration *)v13 setRequestID:v19];
-    [(RPRequestRegistration *)v13 setOptions:v8];
-    [(RPRequestRegistration *)v13 setHandler:v9];
+    [(RPRequestRegistration *)v13 setRequestID:dCopy];
+    [(RPRequestRegistration *)v13 setOptions:optionsCopy];
+    [(RPRequestRegistration *)v13 setHandler:handlerCopy];
     registeredRequests = self->_registeredRequests;
     if (!registeredRequests)
     {
@@ -2299,7 +2299,7 @@ LABEL_11:
       registeredRequests = self->_registeredRequests;
     }
 
-    [(NSMutableDictionary *)registeredRequests setObject:v13 forKeyedSubscript:v19, v18];
+    [(NSMutableDictionary *)registeredRequests setObject:v13 forKeyedSubscript:dCopy, v18];
 
     goto LABEL_14;
   }
@@ -2324,24 +2324,24 @@ LABEL_4:
 LABEL_14:
 }
 
-- (void)deregisterRequestID:(id)a3
+- (void)deregisterRequestID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   var0 = self->_ucat->var0;
-  v9 = v4;
+  v9 = dCopy;
   if (var0 <= 30)
   {
     if (var0 != -1)
     {
 LABEL_3:
-      v8 = v4;
+      v8 = dCopy;
       LogPrintF();
-      v4 = v9;
+      dCopy = v9;
       goto LABEL_5;
     }
 
     v6 = _LogCategory_Initialize();
-    v4 = v9;
+    dCopy = v9;
     if (v6)
     {
       ucat = self->_ucat;
@@ -2350,29 +2350,29 @@ LABEL_3:
   }
 
 LABEL_5:
-  [(NSMutableDictionary *)self->_registeredRequests setObject:0 forKeyedSubscript:v4, v8];
+  [(NSMutableDictionary *)self->_registeredRequests setObject:0 forKeyedSubscript:dCopy, v8];
 }
 
-- (void)sendRequestID:(id)a3 request:(id)a4 destinationID:(id)a5 options:(id)a6 responseHandler:(id)a7
+- (void)sendRequestID:(id)d request:(id)request destinationID:(id)iD options:(id)options responseHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  v14 = a7;
+  dCopy = d;
+  requestCopy = request;
+  optionsCopy = options;
+  handlerCopy = handler;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __85__RPFileTransferSession_sendRequestID_request_destinationID_options_responseHandler___block_invoke;
   block[3] = &unk_1E7C942D0;
   block[4] = self;
-  v21 = v11;
-  v23 = v13;
-  v24 = v14;
-  v22 = v12;
-  v16 = v13;
-  v17 = v12;
-  v18 = v14;
-  v19 = v11;
+  v21 = dCopy;
+  v23 = optionsCopy;
+  v24 = handlerCopy;
+  v22 = requestCopy;
+  v16 = optionsCopy;
+  v17 = requestCopy;
+  v18 = handlerCopy;
+  v19 = dCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -2410,34 +2410,34 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)_receivedRequestID:(id)a3 request:(id)a4 options:(id)a5 responseHandler:(id)a6
+- (void)_receivedRequestID:(id)d request:(id)request options:(id)options responseHandler:(id)handler
 {
-  v19 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if ([v19 isEqual:@"_ftSm"])
+  dCopy = d;
+  requestCopy = request;
+  optionsCopy = options;
+  handlerCopy = handler;
+  if ([dCopy isEqual:@"_ftSm"])
   {
-    [(RPFileTransferSession *)self _smallFilesReceiveRequest:v10 responseHandler:v12];
+    [(RPFileTransferSession *)self _smallFilesReceiveRequest:requestCopy responseHandler:handlerCopy];
     goto LABEL_15;
   }
 
-  if ([v19 isEqual:@"_ftLg"])
+  if ([dCopy isEqual:@"_ftLg"])
   {
-    [(RPFileTransferSession *)self _largeFileReceiveRequest:v10 responseHandler:v12];
+    [(RPFileTransferSession *)self _largeFileReceiveRequest:requestCopy responseHandler:handlerCopy];
     goto LABEL_15;
   }
 
-  if ([v19 isEqual:@"_ftRs"])
+  if ([dCopy isEqual:@"_ftRs"])
   {
-    [(RPFileTransferSession *)self _resumeStateReceiveRequest:v10 responseHandler:v12];
+    [(RPFileTransferSession *)self _resumeStateReceiveRequest:requestCopy responseHandler:handlerCopy];
     goto LABEL_15;
   }
 
-  v13 = [(NSMutableDictionary *)self->_registeredRequests objectForKeyedSubscript:v19];
-  v14 = [v13 handler];
-  v15 = v14;
-  if (!v14)
+  v13 = [(NSMutableDictionary *)self->_registeredRequests objectForKeyedSubscript:dCopy];
+  handler = [v13 handler];
+  v15 = handler;
+  if (!handler)
   {
     v16 = RPErrorF();
     var0 = self->_ucat->var0;
@@ -2457,18 +2457,18 @@ LABEL_8:
     }
 
 LABEL_13:
-    (*(v12 + 2))(v12, 0, 0, v16);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, v16);
 
     goto LABEL_14;
   }
 
-  (*(v14 + 16))(v14, v10, v11, v12);
+  (*(handler + 16))(handler, requestCopy, optionsCopy, handlerCopy);
 LABEL_14:
 
 LABEL_15:
 }
 
-- (BOOL)_activateSourceAndReturnError:(id *)a3
+- (BOOL)_activateSourceAndReturnError:(id *)error
 {
   [(RPFileTransferSession *)self _updateWiFi];
   v4 = objc_alloc_init(MEMORY[0x1E6999478]);
@@ -2584,17 +2584,17 @@ void *__55__RPFileTransferSession__activateSourceAndReturnError___block_invoke_4
   return result;
 }
 
-- (void)_handleDeviceFound:(id)a3
+- (void)_handleDeviceFound:(id)found
 {
-  v5 = a3;
+  foundCopy = found;
   var0 = self->_ucat->var0;
-  v17 = v5;
+  v17 = foundCopy;
   if (var0 <= 20)
   {
     if (var0 == -1)
     {
       v7 = _LogCategory_Initialize();
-      v5 = v17;
+      foundCopy = v17;
       if (!v7)
       {
         goto LABEL_5;
@@ -2606,14 +2606,14 @@ void *__55__RPFileTransferSession__activateSourceAndReturnError___block_invoke_4
     v15 = CUDescriptionWithLevel();
     LogPrintF();
 
-    v5 = v17;
+    foundCopy = v17;
   }
 
 LABEL_5:
-  v8 = [v5 identifierStr];
-  v9 = [v8 UTF8String];
+  identifierStr = [foundCopy identifierStr];
+  uTF8String = [identifierStr UTF8String];
 
-  if (v9)
+  if (uTF8String)
   {
     if ([(NSString *)self->_targetID UTF8String])
     {
@@ -2639,24 +2639,24 @@ LABEL_5:
         }
 
 LABEL_12:
-        objc_storeStrong(&self->_bonjourDevice, a3);
+        objc_storeStrong(&self->_bonjourDevice, found);
         [(CUCoalescer *)self->_bonjourCoalescer trigger];
       }
     }
   }
 }
 
-- (void)_handleDeviceLost:(id)a3
+- (void)_handleDeviceLost:(id)lost
 {
-  v4 = a3;
+  lostCopy = lost;
   var0 = self->_ucat->var0;
-  v17 = v4;
+  v17 = lostCopy;
   if (var0 <= 20)
   {
     if (var0 == -1)
     {
       v6 = _LogCategory_Initialize();
-      v4 = v17;
+      lostCopy = v17;
       if (!v6)
       {
         goto LABEL_5;
@@ -2668,14 +2668,14 @@ LABEL_12:
     v15 = CUDescriptionWithLevel();
     LogPrintF();
 
-    v4 = v17;
+    lostCopy = v17;
   }
 
 LABEL_5:
-  v7 = [v4 identifierStr];
-  v8 = [v7 UTF8String];
+  identifierStr = [lostCopy identifierStr];
+  uTF8String = [identifierStr UTF8String];
 
-  if (v8)
+  if (uTF8String)
   {
     if ([(NSString *)self->_targetID UTF8String])
     {
@@ -2902,7 +2902,7 @@ void *__49__RPFileTransferSession__controlCnxStartIfNeeded__block_invoke_4(uint6
   return result;
 }
 
-- (BOOL)_activateTargetAndReturnError:(id *)a3
+- (BOOL)_activateTargetAndReturnError:(id *)error
 {
   v27[1] = *MEMORY[0x1E69E9840];
   [(RPFileTransferSession *)self _updateWiFi];
@@ -2913,20 +2913,20 @@ void *__49__RPFileTransferSession__controlCnxStartIfNeeded__block_invoke_4(uint6
     {
       if (self->_receiveFileParentPath)
       {
-        v6 = [(RPFileTransferSession *)self targetID];
+        targetID = [(RPFileTransferSession *)self targetID];
 
-        if (v6)
+        if (targetID)
         {
           v7 = MEMORY[0x1E696AEC0];
-          v8 = [(RPFileTransferSession *)self targetID];
-          v9 = [v7 stringWithFormat:@"%@-state.rptfd", v8];
+          targetID2 = [(RPFileTransferSession *)self targetID];
+          v9 = [v7 stringWithFormat:@"%@-state.rptfd", targetID2];
 
-          v10 = [(NSString *)self->_receiveFileParentPath stringByStandardizingPath];
-          [(RPFileTransferResumeState *)v5 setOutputPath:v10];
+          stringByStandardizingPath = [(NSString *)self->_receiveFileParentPath stringByStandardizingPath];
+          [(RPFileTransferResumeState *)v5 setOutputPath:stringByStandardizingPath];
 
           v11 = [(NSString *)self->_receiveFileParentPath stringByAppendingPathComponent:v9];
-          v12 = [v11 stringByStandardizingPath];
-          [(RPFileTransferResumeState *)v5 setStateFilePath:v12];
+          stringByStandardizingPath2 = [v11 stringByStandardizingPath];
+          [(RPFileTransferResumeState *)v5 setStateFilePath:stringByStandardizingPath2];
 
           [(RPFileTransferResumeState *)v5 setUcat:self->_ucat];
           [(RPFileTransferResumeState *)v5 setFlushInterval:self->_resumeStateFlushInterval];
@@ -2934,7 +2934,7 @@ void *__49__RPFileTransferSession__controlCnxStartIfNeeded__block_invoke_4(uint6
           if (![(RPFileTransferResumeState *)v5 isEmpty])
           {
             v13 = *MEMORY[0x1E69E9858];
-            v23 = [(RPFileTransferSession *)self targetID];
+            targetID3 = [(RPFileTransferSession *)self targetID];
             FPrintF();
           }
 
@@ -2944,7 +2944,7 @@ void *__49__RPFileTransferSession__controlCnxStartIfNeeded__block_invoke_4(uint6
           goto LABEL_8;
         }
 
-        if (a3)
+        if (error)
         {
           goto LABEL_20;
         }
@@ -2955,19 +2955,19 @@ LABEL_21:
         goto LABEL_13;
       }
 
-      if (!a3)
+      if (!error)
       {
         goto LABEL_21;
       }
     }
 
-    else if (!a3)
+    else if (!error)
     {
       goto LABEL_21;
     }
 
 LABEL_20:
-    *a3 = RPErrorF();
+    *error = RPErrorF();
     goto LABEL_21;
   }
 
@@ -2992,7 +2992,7 @@ LABEL_8:
   v18 = v17 == 0;
   if (v17)
   {
-    [RPFileTransferSession _activateTargetAndReturnError:a3];
+    [RPFileTransferSession _activateTargetAndReturnError:error];
   }
 
   else
@@ -3004,7 +3004,7 @@ LABEL_8:
       [v19 setAdvertiseFlags:0x100000];
     }
 
-    [v19 setDispatchQueue:{self->_dispatchQueue, v23}];
+    [v19 setDispatchQueue:{self->_dispatchQueue, targetID3}];
     [v19 setDomain:@"local."];
     [v19 setLabel:@"RPFile"];
     [v19 setName:self->_targetID];
@@ -3035,9 +3035,9 @@ void *__55__RPFileTransferSession__activateTargetAndReturnError___block_invoke_2
   return result;
 }
 
-- (void)_handleIncomingConnectionStarted:(id)a3
+- (void)_handleIncomingConnectionStarted:(id)started
 {
-  v4 = a3;
+  startedCopy = started;
   v5 = objc_alloc_init(RPConnection);
   v6 = v5;
   if (self->_prefCompress)
@@ -3056,9 +3056,9 @@ void *__55__RPFileTransferSession__activateTargetAndReturnError___block_invoke_2
   v10 = [v7 initWithFormat:@"RPFileCnx-%@-In-%u", targetID, v9];
   [(RPConnection *)v6 setLabel:v10];
 
-  [(RPConnection *)v6 setTcpConnection:v4];
-  v11 = [(RPConnection *)v6 label];
-  [v4 setLabel:v11];
+  [(RPConnection *)v6 setTcpConnection:startedCopy];
+  label = [(RPConnection *)v6 label];
+  [startedCopy setLabel:label];
 
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
@@ -3136,24 +3136,24 @@ uint64_t __58__RPFileTransferSession__handleIncomingConnectionStarted___block_in
   return result;
 }
 
-- (void)_handleIncomingConnectionEnded:(id)a3
+- (void)_handleIncomingConnectionEnded:(id)ended
 {
-  v4 = a3;
+  endedCopy = ended;
   var0 = self->_ucat->var0;
-  v13 = v4;
+  v13 = endedCopy;
   if (var0 <= 30)
   {
     if (var0 != -1)
     {
 LABEL_3:
-      v12 = v4;
+      v12 = endedCopy;
       LogPrintF();
-      v4 = v13;
+      endedCopy = v13;
       goto LABEL_5;
     }
 
     v6 = _LogCategory_Initialize();
-    v4 = v13;
+    endedCopy = v13;
     if (v6)
     {
       ucat = self->_ucat;
@@ -3162,7 +3162,7 @@ LABEL_3:
   }
 
 LABEL_5:
-  [(NSMutableSet *)self->_connections removeObject:v4, v12];
+  [(NSMutableSet *)self->_connections removeObject:endedCopy, v12];
   controlCnx = self->_controlCnx;
   if (controlCnx == v13)
   {
@@ -3172,8 +3172,8 @@ LABEL_5:
   [(RPFileTransferSession *)self _reportProgressControlState];
   if (!self->_controlCnx && !self->_invalidateCalled)
   {
-    v8 = [(NSMutableSet *)self->_connections anyObject];
-    if (!v8)
+    anyObject = [(NSMutableSet *)self->_connections anyObject];
+    if (!anyObject)
     {
 LABEL_15:
 
@@ -3197,7 +3197,7 @@ LABEL_15:
     }
 
 LABEL_14:
-    objc_storeStrong(&self->_controlCnx, v8);
+    objc_storeStrong(&self->_controlCnx, anyObject);
     [(RPFileTransferSession *)self _reportProgressControlState];
     goto LABEL_15;
   }
@@ -3205,9 +3205,9 @@ LABEL_14:
 LABEL_16:
 }
 
-- (void)addItem:(id)a3
+- (void)addItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v13[0] = 0;
   v13[1] = v13;
   v13[2] = 0x3032000000;
@@ -3215,7 +3215,7 @@ LABEL_16:
   v13[4] = __Block_byref_object_dispose__3;
   v14 = 0;
   obj = 0;
-  v5 = [(RPFileTransferSession *)self _prepareItem:v4 error:&obj];
+  v5 = [(RPFileTransferSession *)self _prepareItem:itemCopy error:&obj];
   objc_storeStrong(&v14, obj);
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -3223,10 +3223,10 @@ LABEL_16:
   block[2] = __33__RPFileTransferSession_addItem___block_invoke;
   block[3] = &unk_1E7C94458;
   v11 = v5;
-  v9 = v4;
+  v9 = itemCopy;
   v10 = v13;
   block[4] = self;
-  v7 = v4;
+  v7 = itemCopy;
   dispatch_async(dispatchQueue, block);
 
   _Block_object_dispose(v13, 8);
@@ -3325,14 +3325,14 @@ LABEL_18:
   [v19 _scheduleItems];
 }
 
-- (void)addItems:(id)a3
+- (void)addItems:(id)items
 {
   v23 = *MEMORY[0x1E69E9840];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v4 = [a3 copy];
+  v4 = [items copy];
   v5 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v5)
   {
@@ -3584,17 +3584,17 @@ LABEL_45:
   v39 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_prepareItem:(id)a3 error:(id *)a4
+- (BOOL)_prepareItem:(id)item error:(id *)error
 {
-  v6 = a3;
-  [v6 setCompleted:0];
-  [v6 setError:0];
-  [v6 setFileID:{atomic_fetch_add(&self->_fileIDLastSend, 1uLL) + 1}];
-  v7 = [v6 itemURL];
-  v8 = [v7 fileSystemRepresentation];
-  if (!v8)
+  itemCopy = item;
+  [itemCopy setCompleted:0];
+  [itemCopy setError:0];
+  [itemCopy setFileID:{atomic_fetch_add(&self->_fileIDLastSend, 1uLL) + 1}];
+  itemURL = [itemCopy itemURL];
+  fileSystemRepresentation = [itemURL fileSystemRepresentation];
+  if (!fileSystemRepresentation)
   {
-    if (a4)
+    if (error)
     {
       goto LABEL_15;
     }
@@ -3603,13 +3603,13 @@ LABEL_45:
   }
 
   memset(&v15, 0, sizeof(v15));
-  if (stat(v8, &v15) && (!*__error() || *__error()))
+  if (stat(fileSystemRepresentation, &v15) && (!*__error() || *__error()))
   {
-    if (a4)
+    if (error)
     {
 LABEL_15:
       RPErrorF();
-      *a4 = v13 = 0;
+      *error = v13 = 0;
       goto LABEL_18;
     }
 
@@ -3619,9 +3619,9 @@ LABEL_20:
   }
 
   st_size = v15.st_size;
-  [v6 setFileSize:v15.st_size];
-  v10 = [v6 metadata];
-  if (v10)
+  [itemCopy setFileSize:v15.st_size];
+  metadata = [itemCopy metadata];
+  if (metadata)
   {
     v11 = OPACKEstimateEncodedSize();
   }
@@ -3631,14 +3631,14 @@ LABEL_20:
     v11 = 0;
   }
 
-  [v6 setMetadataSize:v11];
+  [itemCopy setMetadataSize:v11];
   v12 = st_size + v11;
   if (__CFADD__(st_size, v11) || ((v12 >= 0xFFFFFFFFFFFFFF38) << 63) >> 63 != v12 >= 0xFFFFFFFFFFFFFF38)
   {
-    if (a4)
+    if (error)
     {
       RPErrorF();
-      *a4 = v13 = 0;
+      *error = v13 = 0;
     }
 
     else
@@ -3649,7 +3649,7 @@ LABEL_20:
 
   else
   {
-    [v6 setEstimatedSize:v12 + 200];
+    [itemCopy setEstimatedSize:v12 + 200];
     v13 = 1;
   }
 
@@ -3667,8 +3667,8 @@ LABEL_18:
 
   if ([(RPFileTransferSession *)self isResumable]&& ([(RPFileTransferSession *)self flags]& 1) == 0)
   {
-    v3 = [(RPFileTransferSession *)self resumeState];
-    if (!v3)
+    resumeState = [(RPFileTransferSession *)self resumeState];
+    if (!resumeState)
     {
       v35 = *MEMORY[0x1E69E9840];
 
@@ -3676,10 +3676,10 @@ LABEL_18:
       return;
     }
 
-    v4 = v3;
-    v5 = [v3 isPlaceholder];
+    v4 = resumeState;
+    isPlaceholder = [resumeState isPlaceholder];
 
-    if (v5)
+    if (isPlaceholder)
     {
       goto LABEL_43;
     }
@@ -3723,19 +3723,19 @@ LABEL_18:
             {
               v15 = self->_ucat;
 LABEL_15:
-              v36 = [v11 taskID];
+              taskID = [v11 taskID];
               LogPrintF();
             }
           }
 
-          v14 = [v11 queue];
+          queue = [v11 queue];
           block[0] = MEMORY[0x1E69E9820];
           block[1] = 3221225472;
           block[2] = __39__RPFileTransferSession__scheduleItems__block_invoke;
           block[3] = &unk_1E7C92D80;
           block[4] = self;
           block[5] = v11;
-          dispatch_async(v14, block);
+          dispatch_async(queue, block);
         }
 
         ++v10;
@@ -3790,19 +3790,19 @@ LABEL_15:
           {
             v26 = self->_ucat;
 LABEL_30:
-            v36 = [v22 taskID];
+            taskID = [v22 taskID];
             LogPrintF();
           }
         }
 
-        v25 = [v22 queue];
+        queue2 = [v22 queue];
         v39[0] = MEMORY[0x1E69E9820];
         v39[1] = 3221225472;
         v39[2] = __39__RPFileTransferSession__scheduleItems__block_invoke_2;
         v39[3] = &unk_1E7C92D80;
         v39[4] = self;
         v39[5] = v22;
-        dispatch_async(v25, v39);
+        dispatch_async(queue2, v39);
       }
 
       ++v21;
@@ -3818,42 +3818,42 @@ LABEL_37:
 
   while ([(NSMutableSet *)self->_smallFilesSendTasks count]< self->_maxSmallFileTasks)
   {
-    v28 = [(RPFileTransferSession *)self _smallFilesSendTaskCreate];
-    if (!v28)
+    _smallFilesSendTaskCreate = [(RPFileTransferSession *)self _smallFilesSendTaskCreate];
+    if (!_smallFilesSendTaskCreate)
     {
       break;
     }
 
-    v29 = v28;
-    [(NSMutableSet *)self->_smallFilesSendTasks addObject:v28];
-    v30 = [v29 queue];
+    v29 = _smallFilesSendTaskCreate;
+    [(NSMutableSet *)self->_smallFilesSendTasks addObject:_smallFilesSendTaskCreate];
+    queue3 = [v29 queue];
     v38[0] = MEMORY[0x1E69E9820];
     v38[1] = 3221225472;
     v38[2] = __39__RPFileTransferSession__scheduleItems__block_invoke_3;
     v38[3] = &unk_1E7C92D80;
     v38[4] = self;
     v38[5] = v29;
-    dispatch_async(v30, v38);
+    dispatch_async(queue3, v38);
   }
 
   while ([(NSMutableSet *)self->_largeFileSendTasks count]< self->_maxLargeFileTasks)
   {
-    v31 = [(RPFileTransferSession *)self _largeFileSendTaskCreate];
-    if (!v31)
+    _largeFileSendTaskCreate = [(RPFileTransferSession *)self _largeFileSendTaskCreate];
+    if (!_largeFileSendTaskCreate)
     {
       break;
     }
 
-    v32 = v31;
-    [(NSMutableSet *)self->_largeFileSendTasks addObject:v31];
-    v33 = [v32 queue];
+    v32 = _largeFileSendTaskCreate;
+    [(NSMutableSet *)self->_largeFileSendTasks addObject:_largeFileSendTaskCreate];
+    queue4 = [v32 queue];
     v37[0] = MEMORY[0x1E69E9820];
     v37[1] = 3221225472;
     v37[2] = __39__RPFileTransferSession__scheduleItems__block_invoke_4;
     v37[3] = &unk_1E7C92D80;
     v37[4] = self;
     v37[5] = v32;
-    dispatch_async(v33, v37);
+    dispatch_async(queue4, v37);
   }
 
 LABEL_43:
@@ -3870,8 +3870,8 @@ LABEL_43:
   v5 = v3;
 
   v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v7 = [(RPFileTransferSession *)self targetID];
-  [v6 setValue:v7 forKey:@"_i"];
+  targetID = [(RPFileTransferSession *)self targetID];
+  [v6 setValue:targetID forKey:@"_i"];
 
   controlCnx = self->_controlCnx;
   v9[0] = MEMORY[0x1E69E9820];
@@ -3984,23 +3984,23 @@ LABEL_26:
   [*(a1 + 32) _scheduleItems];
 }
 
-- (void)_completeItem:(id)a3 error:(id)a4
+- (void)_completeItem:(id)item error:(id)error
 {
-  [(RPFileTransferSession *)self _completeItemDirect:a3 error:a4];
+  [(RPFileTransferSession *)self _completeItemDirect:item error:error];
 
   [(RPFileTransferSession *)self _processFinish];
 }
 
-- (void)_completeItemDirect:(id)a3 error:(id)a4
+- (void)_completeItemDirect:(id)direct error:(id)error
 {
-  v19 = a3;
-  v6 = a4;
-  v7 = [v19 completionHandler];
-  if (v7)
+  directCopy = direct;
+  errorCopy = error;
+  completionHandler = [directCopy completionHandler];
+  if (completionHandler)
   {
-    [v19 setCompletionHandler:0];
+    [directCopy setCompletionHandler:0];
     var0 = self->_ucat->var0;
-    if (v6)
+    if (errorCopy)
     {
       if (var0 <= 90)
       {
@@ -4015,9 +4015,9 @@ LABEL_26:
           v11 = self->_ucat;
         }
 
-        v9 = [v19 itemURL];
-        v17 = v9;
-        v18 = v6;
+        itemURL = [directCopy itemURL];
+        v17 = itemURL;
+        v18 = errorCopy;
         goto LABEL_9;
       }
     }
@@ -4035,36 +4035,36 @@ LABEL_26:
         v16 = self->_ucat;
       }
 
-      v9 = [v19 itemURL];
-      v17 = v9;
+      itemURL = [directCopy itemURL];
+      v17 = itemURL;
 LABEL_9:
       LogPrintF();
     }
 
 LABEL_13:
-    (v7)[2](v7, v6);
+    (completionHandler)[2](completionHandler, errorCopy);
   }
 
-  if (([v19 completed] & 1) == 0)
+  if (([directCopy completed] & 1) == 0)
   {
-    [v19 setCompleted:1];
+    [directCopy setCompleted:1];
     self->_metricLastFileCompletionTicks = mach_absolute_time();
-    if (!v6)
+    if (!errorCopy)
     {
-      v13 = [v19 fileSize];
-      v14 = [v19 metadataSize];
+      fileSize = [directCopy fileSize];
+      metadataSize = [directCopy metadataSize];
       v15 = vdupq_n_s64(1uLL);
-      v15.i64[0] = v14 + v13;
+      v15.i64[0] = metadataSize + fileSize;
       *&self->_metricTotalBytes = vaddq_s64(v15, *&self->_metricTotalBytes);
     }
   }
 }
 
-- (void)_processReceivedItem:(id)a3 responseHandler:(id)a4
+- (void)_processReceivedItem:(id)item responseHandler:(id)handler
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  handlerCopy = handler;
   v8 = _Block_copy(self->_receivedItemHandler);
   if (v8)
   {
@@ -4073,8 +4073,8 @@ LABEL_13:
     v15[2] = __62__RPFileTransferSession__processReceivedItem_responseHandler___block_invoke;
     v15[3] = &unk_1E7C93470;
     v15[4] = self;
-    v16 = v7;
-    v8[2](v8, v6, v15);
+    v16 = handlerCopy;
+    v8[2](v8, itemCopy, v15);
   }
 
   else
@@ -4082,21 +4082,21 @@ LABEL_13:
     v9 = _Block_copy(self->_receivedItemsHandler);
     if (v9)
     {
-      v17[0] = v6;
+      v17[0] = itemCopy;
       v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:1];
       v13[0] = MEMORY[0x1E69E9820];
       v13[1] = 3221225472;
       v13[2] = __62__RPFileTransferSession__processReceivedItem_responseHandler___block_invoke_3;
       v13[3] = &unk_1E7C93470;
       v13[4] = self;
-      v14 = v7;
+      v14 = handlerCopy;
       v9[2](v9, v10, v13);
     }
 
     else
     {
       v11 = RPErrorF();
-      (*(v7 + 2))(v7, 0, 0, v11);
+      (*(handlerCopy + 2))(handlerCopy, 0, 0, v11);
     }
   }
 
@@ -4163,11 +4163,11 @@ uint64_t __62__RPFileTransferSession__processReceivedItem_responseHandler___bloc
   return (*(*(a1 + 40) + 16))(*(a1 + 40), v1, 0);
 }
 
-- (void)_processReceivedItems:(id)a3 responseHandler:(id)a4
+- (void)_processReceivedItems:(id)items responseHandler:(id)handler
 {
   v33 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  itemsCopy = items;
+  handlerCopy = handler;
   v8 = _Block_copy(self->_receivedItemsHandler);
   if (v8)
   {
@@ -4176,8 +4176,8 @@ uint64_t __62__RPFileTransferSession__processReceivedItem_responseHandler___bloc
     v30[2] = __63__RPFileTransferSession__processReceivedItems_responseHandler___block_invoke;
     v30[3] = &unk_1E7C93470;
     v30[4] = self;
-    v31 = v7;
-    v8[2](v8, v6, v30);
+    v31 = handlerCopy;
+    v8[2](v8, itemsCopy, v30);
   }
 
   else
@@ -4185,7 +4185,7 @@ uint64_t __62__RPFileTransferSession__processReceivedItem_responseHandler___bloc
     v9 = _Block_copy(self->_receivedItemHandler);
     if (v9)
     {
-      v18 = v7;
+      v18 = handlerCopy;
       v28[0] = 0;
       v28[1] = v28;
       v28[2] = 0x3032000000;
@@ -4197,7 +4197,7 @@ uint64_t __62__RPFileTransferSession__processReceivedItem_responseHandler___bloc
       v25 = 0u;
       v26 = 0u;
       v27 = 0u;
-      obj = v6;
+      obj = itemsCopy;
       v11 = [obj countByEnumeratingWithState:&v24 objects:v32 count:16];
       if (v11)
       {
@@ -4228,7 +4228,7 @@ uint64_t __62__RPFileTransferSession__processReceivedItem_responseHandler___bloc
         while (v11);
       }
 
-      v7 = v18;
+      handlerCopy = v18;
       dispatchQueue = self->_dispatchQueue;
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
@@ -4244,7 +4244,7 @@ uint64_t __62__RPFileTransferSession__processReceivedItem_responseHandler___bloc
     else
     {
       v16 = RPErrorF();
-      (*(v7 + 2))(v7, 0, 0, v16);
+      (*(handlerCopy + 2))(handlerCopy, 0, 0, v16);
     }
   }
 
@@ -4394,9 +4394,9 @@ LABEL_5:
       }
 
       v9 = *(*(&v19 + 1) + 8 * i);
-      v10 = [v9 estimatedSize];
-      v11 = prefSmallFilesMaxBytes - v10;
-      if (prefSmallFilesMaxBytes >= v10)
+      estimatedSize = [v9 estimatedSize];
+      v11 = prefSmallFilesMaxBytes - estimatedSize;
+      if (prefSmallFilesMaxBytes >= estimatedSize)
       {
         if (!v6)
         {
@@ -4423,8 +4423,8 @@ LABEL_5:
 
     v5 = objc_alloc_init(RPFileTransferSmallFilesTask);
     [(RPFileTransferSmallFilesTask *)v5 setFileItems:v6];
-    v12 = [(RPFileTransferSession *)self _ioQueueDequeue];
-    [(RPFileTransferSmallFilesTask *)v5 setQueue:v12];
+    _ioQueueDequeue = [(RPFileTransferSession *)self _ioQueueDequeue];
+    [(RPFileTransferSmallFilesTask *)v5 setQueue:_ioQueueDequeue];
 
     ++self->_taskIDLast;
     [(RPFileTransferSmallFilesTask *)v5 setTaskID:?];
@@ -4460,17 +4460,17 @@ LABEL_21:
   return v5;
 }
 
-- (void)_smallFilesSendTaskRun:(id)a3
+- (void)_smallFilesSendTaskRun:(id)run
 {
   v60 = *MEMORY[0x1E69E9840];
-  v37 = a3;
+  runCopy = run;
   v38 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
-  v4 = [v37 fileItems];
-  v5 = [v4 countByEnumeratingWithState:&v51 objects:v59 count:16];
+  fileItems = [runCopy fileItems];
+  v5 = [fileItems countByEnumeratingWithState:&v51 objects:v59 count:16];
   if (v5)
   {
     v6 = v5;
@@ -4481,20 +4481,20 @@ LABEL_21:
       {
         if (*v52 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(fileItems);
         }
 
         v9 = *(*(&v51 + 1) + 8 * i);
         if ([(RPFileTransferSession *)self isResumable])
         {
-          v10 = [(RPFileTransferSession *)self resumeState];
-          v11 = [v9 filename];
-          v12 = [v10 finishedFileWithFileName:v11];
+          resumeState = [(RPFileTransferSession *)self resumeState];
+          filename = [v9 filename];
+          v12 = [resumeState finishedFileWithFileName:filename];
 
           if (v12)
           {
             v13 = *MEMORY[0x1E69E9858];
-            v35 = [v12 fileName];
+            fileName = [v12 fileName];
             FPrintF();
 
             goto LABEL_13;
@@ -4504,7 +4504,7 @@ LABEL_21:
         v50 = 0;
         v12 = [(RPFileTransferSession *)self _smallFilesSendTaskReadItem:v9 error:&v50];
         v14 = v50;
-        v10 = v14;
+        resumeState = v14;
         if (v12)
         {
           [v38 addObject:v12];
@@ -4526,7 +4526,7 @@ LABEL_21:
 LABEL_13:
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v51 objects:v59 count:16];
+      v6 = [fileItems countByEnumeratingWithState:&v51 objects:v59 count:16];
     }
 
     while (v6);
@@ -4544,7 +4544,7 @@ LABEL_13:
     v45[4] = v38;
     v45[5] = self;
     dispatch_async(v18, v45);
-    v19 = v37;
+    v19 = runCopy;
     if (!self->_compressionEnabled)
     {
       goto LABEL_27;
@@ -4562,7 +4562,7 @@ LABEL_13:
       v58[0] = v20;
       v57[0] = &unk_1F2EEC758;
       v57[1] = @"_i";
-      v23 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(v37, "taskID")}];
+      v23 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(runCopy, "taskID")}];
       v58[1] = v23;
       v57[2] = &unk_1F2EEC770;
       v24 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:v44];
@@ -4570,7 +4570,7 @@ LABEL_13:
       v25 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v58 forKeys:v57 count:3];
 
       v16 = v38;
-      v19 = v37;
+      v19 = runCopy;
 
       if (v25)
       {
@@ -4593,7 +4593,7 @@ LABEL_28:
 
 LABEL_27:
       v55[0] = @"_i";
-      v29 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(v19, "taskID", v35, v36)}];
+      v29 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(v19, "taskID", fileName, v36)}];
       v55[1] = &unk_1F2EEC788;
       v56[0] = v29;
       v56[1] = v16;
@@ -4622,7 +4622,7 @@ LABEL_27:
           v34 = self->_ucat;
         }
 
-        v35 = [v37 taskID];
+        fileName = [runCopy taskID];
         v36 = v22;
         LogPrintF();
       }
@@ -4637,10 +4637,10 @@ LABEL_26:
   v46[1] = 3221225472;
   v46[2] = __48__RPFileTransferSession__smallFilesSendTaskRun___block_invoke_2;
   v46[3] = &unk_1E7C92D80;
-  v19 = v37;
+  v19 = runCopy;
   v46[4] = self;
-  v47 = v37;
-  v26 = v37;
+  v47 = runCopy;
+  v26 = runCopy;
   dispatch_async(v18, v46);
 
 LABEL_29:
@@ -4772,46 +4772,46 @@ void __48__RPFileTransferSession__smallFilesSendTaskRun___block_invoke_2_431(uin
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_smallFilesSendTaskReadItem:(id)a3 error:(id *)a4
+- (id)_smallFilesSendTaskReadItem:(id)item error:(id *)error
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 itemURL];
-  v8 = [v7 fileSystemRepresentation];
+  itemCopy = item;
+  itemURL = [itemCopy itemURL];
+  fileSystemRepresentation = [itemURL fileSystemRepresentation];
 
-  if (v8)
+  if (fileSystemRepresentation)
   {
-    v9 = -[RPFileTransferSession _readPath:size:error:](self, "_readPath:size:error:", v8, [v6 fileSize], a4);
+    v9 = -[RPFileTransferSession _readPath:size:error:](self, "_readPath:size:error:", fileSystemRepresentation, [itemCopy fileSize], error);
     v10 = v9;
     if (v9)
     {
       CC_SHA256([v9 bytes], objc_msgSend(v9, "length"), md);
       v11 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytes:md length:32];
-      [v6 setSha256HashData:v11];
+      [itemCopy setSha256HashData:v11];
       v12 = objc_alloc_init(MEMORY[0x1E695DF90]);
       [v12 setObject:v10 forKeyedSubscript:&unk_1F2EEC7A0];
       [v12 setObject:v11 forKeyedSubscript:@"_s2"];
-      v13 = [v6 filename];
-      if (v13)
+      filename = [itemCopy filename];
+      if (filename)
       {
-        [v12 setObject:v13 forKeyedSubscript:&unk_1F2EEC7B8];
+        [v12 setObject:filename forKeyedSubscript:&unk_1F2EEC7B8];
       }
 
-      v14 = [v6 fileSize];
-      if (v14)
+      fileSize = [itemCopy fileSize];
+      if (fileSize)
       {
-        v15 = [MEMORY[0x1E696AD98] numberWithLongLong:v14];
+        v15 = [MEMORY[0x1E696AD98] numberWithLongLong:fileSize];
         [v12 setObject:v15 forKeyedSubscript:&unk_1F2EEC7D0];
       }
 
-      v16 = [v6 metadata];
-      if (v16)
+      metadata = [itemCopy metadata];
+      if (metadata)
       {
-        [v12 setObject:v16 forKeyedSubscript:&unk_1F2EEC7E8];
+        [v12 setObject:metadata forKeyedSubscript:&unk_1F2EEC7E8];
       }
 
       v24 = 0;
-      v17 = [(RPFileTransferSession *)self _modTimeForFileWithPath:v8 error:&v24];
+      v17 = [(RPFileTransferSession *)self _modTimeForFileWithPath:fileSystemRepresentation error:&v24];
       v18 = v24;
       v19 = v18;
       if (v17)
@@ -4820,11 +4820,11 @@ void __48__RPFileTransferSession__smallFilesSendTaskRun___block_invoke_2_431(uin
         v20 = v12;
       }
 
-      else if (a4)
+      else if (error)
       {
         v23 = v18;
         v20 = 0;
-        *a4 = v19;
+        *error = v19;
       }
 
       else
@@ -4839,10 +4839,10 @@ void __48__RPFileTransferSession__smallFilesSendTaskRun___block_invoke_2_431(uin
     }
   }
 
-  else if (a4)
+  else if (error)
   {
     RPErrorF();
-    *a4 = v20 = 0;
+    *error = v20 = 0;
   }
 
   else
@@ -4855,14 +4855,14 @@ void __48__RPFileTransferSession__smallFilesSendTaskRun___block_invoke_2_431(uin
   return v20;
 }
 
-- (void)_smallFilesSendTaskEnd:(id)a3 error:(id)a4
+- (void)_smallFilesSendTaskEnd:(id)end error:(id)error
 {
   v34 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (([(NSMutableSet *)self->_smallFilesSendTasks containsObject:v6]& 1) != 0)
+  endCopy = end;
+  errorCopy = error;
+  if (([(NSMutableSet *)self->_smallFilesSendTasks containsObject:endCopy]& 1) != 0)
   {
-    if (!self->_invalidateCalled && [v7 code] == -71143)
+    if (!self->_invalidateCalled && [errorCopy code] == -71143)
     {
       var0 = self->_ucat->var0;
       if (var0 <= 90)
@@ -4870,9 +4870,9 @@ void __48__RPFileTransferSession__smallFilesSendTaskRun___block_invoke_2_431(uin
         if (var0 != -1)
         {
 LABEL_6:
-          v27 = [v6 taskID];
+          taskID = [endCopy taskID];
           LogPrintF();
-          [v6 setNeedsRetry:{1, v27, v7}];
+          [endCopy setNeedsRetry:{1, taskID, errorCopy}];
           goto LABEL_33;
         }
 
@@ -4884,12 +4884,12 @@ LABEL_6:
         }
       }
 
-      [v6 setNeedsRetry:{1, v26, v28}];
+      [endCopy setNeedsRetry:{1, taskID2, v28}];
       goto LABEL_33;
     }
 
     v10 = self->_ucat->var0;
-    if (v7)
+    if (errorCopy)
     {
       if (v10 <= 90)
       {
@@ -4904,8 +4904,8 @@ LABEL_6:
           v14 = self->_ucat;
         }
 
-        v26 = [v6 taskID];
-        v28 = v7;
+        taskID2 = [endCopy taskID];
+        v28 = errorCopy;
         goto LABEL_17;
       }
     }
@@ -4923,7 +4923,7 @@ LABEL_6:
         v24 = self->_ucat;
       }
 
-      v26 = [v6 taskID];
+      taskID2 = [endCopy taskID];
 LABEL_17:
       LogPrintF();
     }
@@ -4933,8 +4933,8 @@ LABEL_23:
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v16 = [v6 fileItems];
-    v17 = [v16 countByEnumeratingWithState:&v29 objects:v33 count:16];
+    fileItems = [endCopy fileItems];
+    v17 = [fileItems countByEnumeratingWithState:&v29 objects:v33 count:16];
     if (v17)
     {
       v18 = v17;
@@ -4945,22 +4945,22 @@ LABEL_23:
         {
           if (*v30 != v19)
           {
-            objc_enumerationMutation(v16);
+            objc_enumerationMutation(fileItems);
           }
 
-          [(RPFileTransferSession *)self _completeItemDirect:*(*(&v29 + 1) + 8 * i) error:v7];
+          [(RPFileTransferSession *)self _completeItemDirect:*(*(&v29 + 1) + 8 * i) error:errorCopy];
         }
 
-        v18 = [v16 countByEnumeratingWithState:&v29 objects:v33 count:16];
+        v18 = [fileItems countByEnumeratingWithState:&v29 objects:v33 count:16];
       }
 
       while (v18);
     }
 
-    [(NSMutableSet *)self->_smallFilesSendTasks removeObject:v6];
+    [(NSMutableSet *)self->_smallFilesSendTasks removeObject:endCopy];
     [(RPFileTransferSession *)self _processFinish];
-    v21 = [v6 queue];
-    [(RPFileTransferSession *)self _ioQueueEnqueue:v21];
+    queue = [endCopy queue];
+    [(RPFileTransferSession *)self _ioQueueEnqueue:queue];
 
     [(RPFileTransferSession *)self _scheduleItems];
     goto LABEL_33;
@@ -4980,7 +4980,7 @@ LABEL_23:
       v12 = self->_ucat;
     }
 
-    [v6 taskID];
+    [endCopy taskID];
     LogPrintF();
   }
 
@@ -4989,14 +4989,14 @@ LABEL_33:
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_smallFilesReceiveRequest:(id)a3 responseHandler:(id)a4
+- (void)_smallFilesReceiveRequest:(id)request responseHandler:(id)handler
 {
   v67 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v44 = v5;
+  requestCopy = request;
+  handlerCopy = handler;
+  v44 = requestCopy;
   v43 = NSDictionaryGetNSNumber();
-  v7 = [v43 unsignedLongLongValue];
+  unsignedLongLongValue = [v43 unsignedLongLongValue];
   v60 = 0;
   v61 = &v60;
   v62 = 0x3032000000;
@@ -5008,10 +5008,10 @@ LABEL_33:
   aBlock[2] = __67__RPFileTransferSession__smallFilesReceiveRequest_responseHandler___block_invoke;
   aBlock[3] = &unk_1E7C94520;
   v58 = &v60;
-  v59 = v7;
+  v59 = unsignedLongLongValue;
   aBlock[4] = self;
-  v39 = v7;
-  v40 = v6;
+  v39 = unsignedLongLongValue;
+  v40 = handlerCopy;
   v57 = v40;
   v38 = _Block_copy(aBlock);
   if (self->_fileWritesOutstanding >= 0x32)
@@ -5138,10 +5138,10 @@ LABEL_8:
           [v46 addObject:v17];
           if ([(RPFileTransferSession *)self isResumable])
           {
-            v23 = [(RPFileTransferSession *)self resumeState];
+            resumeState = [(RPFileTransferSession *)self resumeState];
             v24 = [[RPFileTransferResumeStateItem alloc] initWithFileTransferRequestDict:v16];
-            [v23 addActiveFile:v24];
-            [v23 scheduleStateFileFlush];
+            [resumeState addActiveFile:v24];
+            [resumeState scheduleStateFileFlush];
           }
         }
 
@@ -5169,13 +5169,13 @@ LABEL_8:
 LABEL_33:
         v28 = objc_alloc_init(RPFileTransferSmallFilesTask);
         [(RPFileTransferSmallFilesTask *)v28 setFileItems:v46];
-        v30 = [(RPFileTransferSession *)self _ioQueueDequeue];
-        [(RPFileTransferSmallFilesTask *)v28 setQueue:v30];
+        _ioQueueDequeue = [(RPFileTransferSession *)self _ioQueueDequeue];
+        [(RPFileTransferSmallFilesTask *)v28 setQueue:_ioQueueDequeue];
 
         [(RPFileTransferSmallFilesTask *)v28 setTaskID:v39];
         [(NSMutableDictionary *)self->_smallFilesReceiveTasks setObject:v28 forKeyedSubscript:v43];
         ++self->_fileWritesOutstanding;
-        v31 = [(RPFileTransferSmallFilesTask *)v28 queue];
+        queue = [(RPFileTransferSmallFilesTask *)v28 queue];
         block[0] = MEMORY[0x1E69E9820];
         block[1] = 3221225472;
         block[2] = __67__RPFileTransferSession__smallFilesReceiveRequest_responseHandler___block_invoke_2;
@@ -5183,7 +5183,7 @@ LABEL_33:
         block[4] = self;
         block[5] = v28;
         v49 = v40;
-        dispatch_async(v31, block);
+        dispatch_async(queue, block);
 
 LABEL_34:
         goto LABEL_35;
@@ -5243,17 +5243,17 @@ LABEL_7:
   return v6();
 }
 
-- (void)_smallFilesReceiveTaskRun:(id)a3 responseHandler:(id)a4
+- (void)_smallFilesReceiveTaskRun:(id)run responseHandler:(id)handler
 {
   v32 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  runCopy = run;
+  handlerCopy = handler;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v8 = [v6 fileItems];
-  v9 = [v8 countByEnumeratingWithState:&v27 objects:v31 count:16];
+  fileItems = [runCopy fileItems];
+  v9 = [fileItems countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v9)
   {
     v10 = v9;
@@ -5266,7 +5266,7 @@ LABEL_3:
     {
       if (*v28 != v12)
       {
-        objc_enumerationMutation(v8);
+        objc_enumerationMutation(fileItems);
       }
 
       v15 = *(*(&v27 + 1) + 8 * v13);
@@ -5283,7 +5283,7 @@ LABEL_3:
       v14 = v11;
       if (v10 == v13)
       {
-        v10 = [v8 countByEnumeratingWithState:&v27 objects:v31 count:16];
+        v10 = [fileItems countByEnumeratingWithState:&v27 objects:v31 count:16];
         if (v10)
         {
           goto LABEL_3;
@@ -5305,32 +5305,32 @@ LABEL_3:
   block[2] = __67__RPFileTransferSession__smallFilesReceiveTaskRun_responseHandler___block_invoke;
   block[3] = &unk_1E7C92F38;
   block[4] = self;
-  v23 = v6;
+  v23 = runCopy;
   v24 = v11;
-  v25 = v7;
-  v18 = v7;
+  v25 = handlerCopy;
+  v18 = handlerCopy;
   v19 = v11;
-  v20 = v6;
+  v20 = runCopy;
   dispatch_async(dispatchQueue, block);
 
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_smallFilesReceiveTaskFileItem:(id)a3 error:(id *)a4
+- (BOOL)_smallFilesReceiveTaskFileItem:(id)item error:(id *)error
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 sha256HashData];
-  if ([v7 length] == 32)
+  itemCopy = item;
+  sha256HashData = [itemCopy sha256HashData];
+  if ([sha256HashData length] == 32)
   {
-    v8 = [v6 fileData];
-    [v6 setFileData:0];
-    CC_SHA256([v8 bytes], objc_msgSend(v8, "length"), md);
-    v9 = v7;
-    v10 = [v7 bytes];
-    if (*md == *v10 && v24 == v10[1] && v25 == v10[2] && v26 == v10[3])
+    fileData = [itemCopy fileData];
+    [itemCopy setFileData:0];
+    CC_SHA256([fileData bytes], objc_msgSend(fileData, "length"), md);
+    v9 = sha256HashData;
+    bytes = [sha256HashData bytes];
+    if (*md == *bytes && v24 == bytes[1] && v25 == bytes[2] && v26 == bytes[3])
     {
-      v14 = -[RPFileTransferSession _openWriteFileItem:size:error:](self, "_openWriteFileItem:size:error:", v6, [v8 length], a4);
+      v14 = -[RPFileTransferSession _openWriteFileItem:size:error:](self, "_openWriteFileItem:size:error:", itemCopy, [fileData length], error);
       v15 = v14;
       if ((v14 & 0x80000000) == 0)
       {
@@ -5341,10 +5341,10 @@ LABEL_3:
         v22 = v14;
         v16 = _Block_copy(aBlock);
         v18 = 1;
-        if ([v8 length])
+        if ([fileData length])
         {
-          v17 = v8;
-          if (!-[RPFileTransferSession _writeFD:buffer:size:error:](self, "_writeFD:buffer:size:error:", v15, [v8 bytes], objc_msgSend(v8, "length"), a4))
+          v17 = fileData;
+          if (!-[RPFileTransferSession _writeFD:buffer:size:error:](self, "_writeFD:buffer:size:error:", v15, [fileData bytes], objc_msgSend(fileData, "length"), error))
           {
             v18 = 0;
           }
@@ -5356,10 +5356,10 @@ LABEL_3:
       }
     }
 
-    else if (a4)
+    else if (error)
     {
       RPErrorF();
-      *a4 = v18 = 0;
+      *error = v18 = 0;
 LABEL_18:
 
       goto LABEL_19;
@@ -5369,10 +5369,10 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  if (a4)
+  if (error)
   {
     RPErrorF();
-    *a4 = v18 = 0;
+    *error = v18 = 0;
   }
 
   else
@@ -5386,19 +5386,19 @@ LABEL_19:
   return v18;
 }
 
-- (void)_smallFilesReceiveTaskComplete:(id)a3 error:(id)a4 responseHandler:(id)a5
+- (void)_smallFilesReceiveTaskComplete:(id)complete error:(id)error responseHandler:(id)handler
 {
   v48 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 taskID];
+  completeCopy = complete;
+  errorCopy = error;
+  handlerCopy = handler;
+  taskID = [completeCopy taskID];
   smallFilesReceiveTasks = self->_smallFilesReceiveTasks;
-  v13 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v11];
+  v13 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:taskID];
   [(NSMutableDictionary *)smallFilesReceiveTasks setObject:0 forKeyedSubscript:v13];
 
-  v14 = [v8 queue];
-  [(RPFileTransferSession *)self _ioQueueEnqueue:v14];
+  queue = [completeCopy queue];
+  [(RPFileTransferSession *)self _ioQueueEnqueue:queue];
 
   --self->_fileWritesOutstanding;
   if (self->_invalidateCalled)
@@ -5421,21 +5421,21 @@ LABEL_19:
 
 LABEL_23:
     v25 = RPErrorF();
-    (*(v10 + 2))(v10, 0, 0, v25);
-    [(RPFileTransferSession *)self _updateSmallFilesTaskResumeState:v8 error:v25];
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, v25);
+    [(RPFileTransferSession *)self _updateSmallFilesTaskResumeState:completeCopy error:v25];
 LABEL_35:
 
     goto LABEL_36;
   }
 
-  if (!v9)
+  if (!errorCopy)
   {
-    v17 = [v8 fileItems];
+    fileItems = [completeCopy fileItems];
     v42 = 0u;
     v43 = 0u;
     v44 = 0u;
     v45 = 0u;
-    v18 = [v17 countByEnumeratingWithState:&v42 objects:v47 count:16];
+    v18 = [fileItems countByEnumeratingWithState:&v42 objects:v47 count:16];
     if (v18)
     {
       v19 = v18;
@@ -5446,30 +5446,30 @@ LABEL_35:
         {
           if (*v43 != v20)
           {
-            objc_enumerationMutation(v17);
+            objc_enumerationMutation(fileItems);
           }
 
           v22 = *(*(&v42 + 1) + 8 * i);
           if ([v22 fileSize] < 1)
           {
-            v23 = 0;
+            fileSize = 0;
           }
 
           else
           {
-            v23 = [v22 fileSize];
+            fileSize = [v22 fileSize];
           }
 
-          *&self->_progressCurrentBytes = vaddq_s64(*&self->_progressCurrentBytes, vdupq_n_s64(v23));
+          *&self->_progressCurrentBytes = vaddq_s64(*&self->_progressCurrentBytes, vdupq_n_s64(fileSize));
         }
 
-        v19 = [v17 countByEnumeratingWithState:&v42 objects:v47 count:16];
+        v19 = [fileItems countByEnumeratingWithState:&v42 objects:v47 count:16];
       }
 
       while (v19);
     }
 
-    *&self->_progressCurrentFiles = vaddq_s64(*&self->_progressCurrentFiles, vdupq_n_s64([v17 count]));
+    *&self->_progressCurrentFiles = vaddq_s64(*&self->_progressCurrentFiles, vdupq_n_s64([fileItems count]));
     self->_progressDirty = 1;
     v24 = self->_ucat->var0;
     if (v24 > 9)
@@ -5487,18 +5487,18 @@ LABEL_35:
       v36 = self->_ucat;
     }
 
-    v37 = v11;
+    v37 = taskID;
     LogPrintF();
 LABEL_27:
-    v26 = [v8 fileItems];
-    [(RPFileTransferSession *)self _processReceivedItems:v26 responseHandler:v10];
+    fileItems2 = [completeCopy fileItems];
+    [(RPFileTransferSession *)self _processReceivedItems:fileItems2 responseHandler:handlerCopy];
 
-    [(RPFileTransferSession *)self _updateSmallFilesTaskResumeState:v8 error:0];
+    [(RPFileTransferSession *)self _updateSmallFilesTaskResumeState:completeCopy error:0];
     v40 = 0u;
     v41 = 0u;
     v38 = 0u;
     v39 = 0u;
-    v25 = v17;
+    v25 = fileItems;
     v27 = [v25 countByEnumeratingWithState:&v38 objects:v46 count:16];
     if (v27)
     {
@@ -5514,8 +5514,8 @@ LABEL_27:
           }
 
           v31 = *(*(&v38 + 1) + 8 * j);
-          v32 = [v31 fileSize];
-          self->_metricTotalBytes += [v31 metadataSize] + v32;
+          fileSize2 = [v31 fileSize];
+          self->_metricTotalBytes += [v31 metadataSize] + fileSize2;
         }
 
         v28 = [v25 countByEnumeratingWithState:&v38 objects:v46 count:16];
@@ -5546,27 +5546,27 @@ LABEL_27:
   }
 
 LABEL_25:
-  (*(v10 + 2))(v10, 0, 0, v9);
-  [(RPFileTransferSession *)self _updateSmallFilesTaskResumeState:v8 error:v9];
+  (*(handlerCopy + 2))(handlerCopy, 0, 0, errorCopy);
+  [(RPFileTransferSession *)self _updateSmallFilesTaskResumeState:completeCopy error:errorCopy];
 LABEL_36:
 
   v33 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_updateSmallFilesTaskResumeState:(id)a3 error:(id)a4
+- (void)_updateSmallFilesTaskResumeState:(id)state error:(id)error
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  stateCopy = state;
+  errorCopy = error;
   if ([(RPFileTransferSession *)self isResumable])
   {
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v19 = v6;
-    v8 = [v6 fileItems];
-    v9 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
+    v19 = stateCopy;
+    fileItems = [stateCopy fileItems];
+    v9 = [fileItems countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v9)
     {
       v10 = v9;
@@ -5578,44 +5578,44 @@ LABEL_36:
         {
           if (*v21 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(fileItems);
           }
 
           v13 = *(*(&v20 + 1) + 8 * v12);
-          v14 = [(RPFileTransferSession *)self resumeState];
-          v15 = [v13 filename];
-          v16 = [v14 activeFileWithFileName:v15];
+          resumeState = [(RPFileTransferSession *)self resumeState];
+          filename = [v13 filename];
+          v16 = [resumeState activeFileWithFileName:filename];
 
           if (v16)
           {
-            if (v7)
+            if (errorCopy)
             {
-              v17 = 0;
+              fileSize = 0;
             }
 
             else
             {
-              v17 = [v13 fileSize];
+              fileSize = [v13 fileSize];
             }
 
-            [v16 setBytesWritten:v17];
-            [v16 setError:v7];
-            [v14 removeActiveFile:v16];
-            [v14 addFinishedFile:v16];
-            [v14 scheduleStateFileFlush];
+            [v16 setBytesWritten:fileSize];
+            [v16 setError:errorCopy];
+            [resumeState removeActiveFile:v16];
+            [resumeState addFinishedFile:v16];
+            [resumeState scheduleStateFileFlush];
           }
 
           ++v12;
         }
 
         while (v10 != v12);
-        v10 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
+        v10 = [fileItems countByEnumeratingWithState:&v20 objects:v24 count:16];
       }
 
       while (v10);
     }
 
-    v6 = v19;
+    stateCopy = v19;
   }
 
   v18 = *MEMORY[0x1E69E9840];
@@ -5678,8 +5678,8 @@ LABEL_16:
     [(RPFileTransferLargeFileSendTask *)v9 setFileFD:0xFFFFFFFFLL];
     [(RPFileTransferLargeFileSendTask *)v9 setFileOffset:0];
     [(RPFileTransferLargeFileSendTask *)v9 setFileItem:v10];
-    v11 = [(RPFileTransferSession *)self _ioQueueDequeue];
-    [(RPFileTransferLargeFileSendTask *)v9 setQueue:v11];
+    _ioQueueDequeue = [(RPFileTransferSession *)self _ioQueueDequeue];
+    [(RPFileTransferLargeFileSendTask *)v9 setQueue:_ioQueueDequeue];
 
     ++self->_taskIDLast;
     [(RPFileTransferLargeFileSendTask *)v9 setTaskID:?];
@@ -5715,17 +5715,17 @@ LABEL_17:
   return v9;
 }
 
-- (void)_largeFileSendTaskStart:(id)a3
+- (void)_largeFileSendTaskStart:(id)start
 {
-  v4 = a3;
+  startCopy = start;
   v42 = 0;
   v43 = &v42;
   v44 = 0x3032000000;
   v45 = __Block_byref_object_copy__3;
   v46 = __Block_byref_object_dispose__3;
   v47 = 0;
-  v5 = [v4 fileItem];
-  v6 = [v5 itemURL];
+  fileItem = [startCopy fileItem];
+  itemURL = [fileItem itemURL];
 
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -5733,19 +5733,19 @@ LABEL_17:
   aBlock[3] = &unk_1E7C94568;
   v41 = &v42;
   aBlock[4] = self;
-  aBlock[5] = v6;
-  v7 = v4;
+  aBlock[5] = itemURL;
+  v7 = startCopy;
   v40 = v7;
   v8 = _Block_copy(aBlock);
   v7[8] = 0;
-  v9 = [v7 fileItem];
-  *(v7 + 3) = [v9 fileSize];
+  fileItem2 = [v7 fileItem];
+  *(v7 + 3) = [fileItem2 fileSize];
 
   *(v7 + 4) = 0;
   *(v7 + 8) = 0;
   ++*(v7 + 35);
-  v10 = [v6 fileSystemRepresentation];
-  if (!v10)
+  fileSystemRepresentation = [itemURL fileSystemRepresentation];
+  if (!fileSystemRepresentation)
   {
     v29 = RPErrorF();
     v30 = v43[5];
@@ -5754,29 +5754,29 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  v11 = [v7 fileItem];
-  if ([v11 fileSize] < 1)
+  fileItem3 = [v7 fileItem];
+  if ([fileItem3 fileSize] < 1)
   {
-    v13 = 0;
+    fileSize = 0;
   }
 
   else
   {
-    v12 = [v7 fileItem];
-    v13 = [v12 fileSize];
+    fileItem4 = [v7 fileItem];
+    fileSize = [fileItem4 fileSize];
   }
 
   if ([(RPFileTransferSession *)self isResumable])
   {
-    v14 = [(RPFileTransferSession *)self resumeState];
-    v15 = [v7 fileItem];
-    v16 = [v15 filename];
-    v17 = [v14 finishedFileWithFileName:v16];
+    resumeState = [(RPFileTransferSession *)self resumeState];
+    fileItem5 = [v7 fileItem];
+    filename = [fileItem5 filename];
+    v17 = [resumeState finishedFileWithFileName:filename];
 
     if (v17)
     {
       v18 = *MEMORY[0x1E69E9858];
-      v31 = [v17 fileName];
+      fileName = [v17 fileName];
       FPrintF();
 
       dispatchQueue = self->_dispatchQueue;
@@ -5791,26 +5791,26 @@ LABEL_17:
       goto LABEL_17;
     }
 
-    v21 = [v7 fileItem];
-    v22 = [v21 filename];
-    v23 = [v14 activeFileWithFileName:v22];
+    fileItem6 = [v7 fileItem];
+    filename2 = [fileItem6 filename];
+    v23 = [resumeState activeFileWithFileName:filename2];
 
     if (v23)
     {
-      v24 = [v23 fileOffset];
-      v20 = [v23 bytesWritten] + v24;
+      fileOffset = [v23 fileOffset];
+      v20 = [v23 bytesWritten] + fileOffset;
       if (v20)
       {
-        v25 = [v6 path];
-        v33 = [v23 sourceFileItemUsable:v25];
+        path = [itemURL path];
+        v33 = [v23 sourceFileItemUsable:path];
 
         if (v33)
         {
           v34 = *MEMORY[0x1E69E9858];
-          v32 = [v23 fileName];
+          fileName2 = [v23 fileName];
           FPrintF();
 
-          [v7 setFileOffset:{v20, v32, v20}];
+          [v7 setFileOffset:{v20, fileName2, v20}];
         }
       }
     }
@@ -5833,11 +5833,11 @@ LABEL_17:
   v36[3] = &unk_1E7C94590;
   v36[4] = self;
   v36[5] = v20;
-  v36[6] = v13;
+  v36[6] = fileSize;
   dispatch_async(v26, v36);
   v27 = v43;
   obj = v43[5];
-  v28 = [(RPFileTransferSession *)self _openReadPath:v10 error:&obj];
+  v28 = [(RPFileTransferSession *)self _openReadPath:fileSystemRepresentation error:&obj];
   objc_storeStrong(v27 + 5, obj);
   if ((v28 & 0x80000000) == 0)
   {
@@ -5901,28 +5901,28 @@ void *__49__RPFileTransferSession__largeFileSendTaskStart___block_invoke_3(void 
   return result;
 }
 
-- (void)_largeFileSendTaskSend:(id)a3 data:(id)a4 end:(BOOL)a5 xid:(unsigned int)a6
+- (void)_largeFileSendTaskSend:(id)send data:(id)data end:(BOOL)end xid:(unsigned int)xid
 {
-  v7 = a5;
+  endCopy = end;
   v52 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
+  sendCopy = send;
+  dataCopy = data;
   v12 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v13 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(v10, "taskID")}];
+  v13 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(sendCopy, "taskID")}];
   [v12 setObject:v13 forKeyedSubscript:@"_i"];
 
-  if (v11)
+  if (dataCopy)
   {
     if (!self->_compressionEnabled)
     {
 LABEL_11:
-      [v12 setObject:v11 forKeyedSubscript:{&unk_1F2EEC7A0, v41, v42}];
+      [v12 setObject:dataCopy forKeyedSubscript:{&unk_1F2EEC7A0, taskID, v42}];
       goto LABEL_12;
     }
 
-    v14 = [v11 length];
+    v14 = [dataCopy length];
     v50 = 0;
-    v15 = [(RPFileTransferSession *)self _compressData:v11 error:&v50];
+    v15 = [(RPFileTransferSession *)self _compressData:dataCopy error:&v50];
     v16 = v50;
     v17 = v16;
     if (v15)
@@ -5956,7 +5956,7 @@ LABEL_11:
           v40 = self->_ucat;
         }
 
-        v41 = [v10 taskID];
+        taskID = [sendCopy taskID];
         v42 = v17;
         LogPrintF();
       }
@@ -5968,50 +5968,50 @@ LABEL_10:
   }
 
 LABEL_12:
-  v21 = [v10 fileItem];
-  v22 = v21;
-  if ((v10[32] & 1) == 0)
+  fileItem = [sendCopy fileItem];
+  v22 = fileItem;
+  if ((sendCopy[32] & 1) == 0)
   {
-    v23 = [v21 filename];
-    if (v23)
+    filename = [fileItem filename];
+    if (filename)
     {
-      [v12 setObject:v23 forKeyedSubscript:&unk_1F2EEC7B8];
+      [v12 setObject:filename forKeyedSubscript:&unk_1F2EEC7B8];
     }
 
-    v24 = [v22 fileSize];
-    if (v24)
+    fileSize = [v22 fileSize];
+    if (fileSize)
     {
-      v25 = [MEMORY[0x1E696AD98] numberWithLongLong:v24];
+      v25 = [MEMORY[0x1E696AD98] numberWithLongLong:fileSize];
       [v12 setObject:v25 forKeyedSubscript:&unk_1F2EEC7D0];
     }
 
-    v26 = [v22 metadata];
-    if (v26)
+    metadata = [v22 metadata];
+    if (metadata)
     {
-      [v12 setObject:v26 forKeyedSubscript:&unk_1F2EEC7E8];
+      [v12 setObject:metadata forKeyedSubscript:&unk_1F2EEC7E8];
     }
 
-    v27 = [v10 fileOffset];
-    if (v27)
+    fileOffset = [sendCopy fileOffset];
+    if (fileOffset)
     {
-      v28 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v27];
+      v28 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:fileOffset];
       [v12 setObject:v28 forKeyedSubscript:@"_fOff"];
     }
 
-    v29 = [v22 itemURL];
-    v30 = [v29 fileSystemRepresentation];
+    itemURL = [v22 itemURL];
+    fileSystemRepresentation = [itemURL fileSystemRepresentation];
 
     v49 = 0;
-    v31 = [(RPFileTransferSession *)self _modTimeForFileWithPath:v30 error:&v49];
+    v31 = [(RPFileTransferSession *)self _modTimeForFileWithPath:fileSystemRepresentation error:&v49];
     v32 = v49;
     if (v31)
     {
       [v12 addEntriesFromDictionary:v31];
     }
 
-    *(v10 + 8) |= 1u;
+    *(sendCopy + 8) |= 1u;
 
-    if (!v7)
+    if (!endCopy)
     {
       v33 = 1;
       goto LABEL_29;
@@ -6019,11 +6019,11 @@ LABEL_12:
 
     v33 = 3;
 LABEL_27:
-    CC_SHA256_Final(md, (v10 + 36));
+    CC_SHA256_Final(md, (sendCopy + 36));
     v34 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytes:md length:32];
     [v22 setSha256HashData:v34];
     [v12 setObject:v34 forKeyedSubscript:@"_s2"];
-    *(v10 + 8) |= 2u;
+    *(sendCopy + 8) |= 2u;
 
 LABEL_29:
     v35 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v33];
@@ -6032,27 +6032,27 @@ LABEL_29:
     goto LABEL_30;
   }
 
-  if (v7)
+  if (endCopy)
   {
     v33 = 2;
     goto LABEL_27;
   }
 
 LABEL_30:
-  atomic_fetch_add(v10 + 4, 1u);
+  atomic_fetch_add(sendCopy + 4, 1u);
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __61__RPFileTransferSession__largeFileSendTaskSend_data_end_xid___block_invoke;
   block[3] = &unk_1E7C94608;
   block[4] = self;
-  v44 = v10;
+  v44 = sendCopy;
   v45 = v12;
-  v46 = v11;
-  v48 = v7;
-  v47 = a6;
-  v37 = v11;
-  v38 = v10;
+  v46 = dataCopy;
+  v48 = endCopy;
+  xidCopy = xid;
+  v37 = dataCopy;
+  v38 = sendCopy;
   dispatch_async(dispatchQueue, block);
 
   v39 = *MEMORY[0x1E69E9840];
@@ -6119,36 +6119,36 @@ void __61__RPFileTransferSession__largeFileSendTaskSend_data_end_xid___block_inv
   [*(a1 + 32) _largeFileSendTaskResponse:*(a1 + 48) error:v6 end:*(a1 + 60) xid:*(a1 + 56)];
 }
 
-- (void)_largeFileSendTaskFailed:(id)a3 error:(id)a4
+- (void)_largeFileSendTaskFailed:(id)failed error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  if ((v6[8] & 1) == 0)
+  failedCopy = failed;
+  errorCopy = error;
+  if ((failedCopy[8] & 1) == 0)
   {
-    v6[8] = 1;
+    failedCopy[8] = 1;
     dispatchQueue = self->_dispatchQueue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __56__RPFileTransferSession__largeFileSendTaskFailed_error___block_invoke;
     block[3] = &unk_1E7C93BC0;
     block[4] = self;
-    v10 = v6;
-    v11 = v7;
+    v10 = failedCopy;
+    v11 = errorCopy;
     dispatch_async(dispatchQueue, block);
   }
 }
 
-- (void)_largeFileSendTaskResponse:(id)a3 error:(id)a4 end:(BOOL)a5 xid:(unsigned int)a6
+- (void)_largeFileSendTaskResponse:(id)response error:(id)error end:(BOOL)end xid:(unsigned int)xid
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  v12 = v11;
+  endCopy = end;
+  responseCopy = response;
+  errorCopy = error;
+  v12 = errorCopy;
   if (self->_invalidateCalled)
   {
-    if (v11)
+    if (errorCopy)
     {
-      if (!v7)
+      if (!endCopy)
       {
         goto LABEL_10;
       }
@@ -6157,19 +6157,19 @@ void __61__RPFileTransferSession__largeFileSendTaskSend_data_end_xid___block_inv
     else
     {
       v12 = RPErrorF();
-      if (!v7)
+      if (!endCopy)
       {
 LABEL_10:
-        v16 = [v10 queue];
+        queue = [responseCopy queue];
         v23[0] = MEMORY[0x1E69E9820];
         v23[1] = 3221225472;
         v23[2] = __66__RPFileTransferSession__largeFileSendTaskResponse_error_end_xid___block_invoke;
         v23[3] = &unk_1E7C93BC0;
         v23[4] = self;
-        v24 = v10;
+        v24 = responseCopy;
         v25 = v12;
         v14 = v12;
-        dispatch_async(v16, v23);
+        dispatch_async(queue, v23);
 
         v15 = v24;
 LABEL_11:
@@ -6179,9 +6179,9 @@ LABEL_11:
     }
   }
 
-  else if (!v7)
+  else if (!endCopy)
   {
-    v13 = [v10 queue];
+    queue2 = [responseCopy queue];
     if (!v12)
     {
       v17[0] = MEMORY[0x1E69E9820];
@@ -6189,9 +6189,9 @@ LABEL_11:
       v17[2] = __66__RPFileTransferSession__largeFileSendTaskResponse_error_end_xid___block_invoke_3;
       v17[3] = &unk_1E7C94630;
       v17[4] = self;
-      v18 = v10;
-      v19 = a6;
-      dispatch_async(v13, v17);
+      v18 = responseCopy;
+      xidCopy = xid;
+      dispatch_async(queue2, v17);
 
       goto LABEL_12;
     }
@@ -6201,25 +6201,25 @@ LABEL_11:
     block[2] = __66__RPFileTransferSession__largeFileSendTaskResponse_error_end_xid___block_invoke_2;
     block[3] = &unk_1E7C93BC0;
     block[4] = self;
-    v21 = v10;
+    v21 = responseCopy;
     v22 = v12;
     v14 = v12;
-    dispatch_async(v13, block);
+    dispatch_async(queue2, block);
 
     v15 = v21;
     goto LABEL_11;
   }
 
-  [(RPFileTransferSession *)self _largeFileSendTaskEnd:v10 error:v12];
+  [(RPFileTransferSession *)self _largeFileSendTaskEnd:responseCopy error:v12];
 
 LABEL_12:
 }
 
-- (void)_largeFileSendTaskEnd:(id)a3 error:(id)a4
+- (void)_largeFileSendTaskEnd:(id)end error:(id)error
 {
-  v24 = a3;
-  v6 = a4;
-  v7 = v24[3];
+  endCopy = end;
+  errorCopy = error;
+  v7 = endCopy[3];
   if ((v7 & 0x80000000) == 0)
   {
     if (close(v7) && *__error())
@@ -6227,7 +6227,7 @@ LABEL_12:
       __error();
     }
 
-    v24[3] = -1;
+    endCopy[3] = -1;
   }
 
   if (([(NSMutableSet *)self->_largeFileSendTasks containsObject:?]& 1) == 0)
@@ -6249,15 +6249,15 @@ LABEL_12:
       v12 = self->_ucat;
     }
 
-    [v24 taskID];
+    [endCopy taskID];
     LogPrintF();
     goto LABEL_31;
   }
 
-  if (self->_invalidateCalled || [v6 code] != -71143)
+  if (self->_invalidateCalled || [errorCopy code] != -71143)
   {
     v10 = self->_ucat->var0;
-    if (v6)
+    if (errorCopy)
     {
       if (v10 <= 90)
       {
@@ -6272,8 +6272,8 @@ LABEL_12:
           v14 = self->_ucat;
         }
 
-        v21 = [v24 taskID];
-        v23 = v6;
+        taskID = [endCopy taskID];
+        v23 = errorCopy;
         goto LABEL_22;
       }
     }
@@ -6291,19 +6291,19 @@ LABEL_12:
         v19 = self->_ucat;
       }
 
-      v21 = [v24 taskID];
+      taskID = [endCopy taskID];
 LABEL_22:
       LogPrintF();
     }
 
 LABEL_28:
-    v16 = [v24 fileItem];
-    [(RPFileTransferSession *)self _completeItemDirect:v16 error:v6];
+    fileItem = [endCopy fileItem];
+    [(RPFileTransferSession *)self _completeItemDirect:fileItem error:errorCopy];
 
-    [(NSMutableSet *)self->_largeFileSendTasks removeObject:v24];
+    [(NSMutableSet *)self->_largeFileSendTasks removeObject:endCopy];
     [(RPFileTransferSession *)self _processFinish];
-    v17 = [v24 queue];
-    [(RPFileTransferSession *)self _ioQueueEnqueue:v17];
+    queue = [endCopy queue];
+    [(RPFileTransferSession *)self _ioQueueEnqueue:queue];
 
     [(RPFileTransferSession *)self _scheduleItems];
     goto LABEL_31;
@@ -6315,9 +6315,9 @@ LABEL_28:
     if (v8 != -1)
     {
 LABEL_11:
-      v22 = [v24 taskID];
+      taskID2 = [endCopy taskID];
       LogPrintF();
-      [v24 setNeedsRetry:{1, v22, v6}];
+      [endCopy setNeedsRetry:{1, taskID2, errorCopy}];
       goto LABEL_31;
     }
 
@@ -6329,14 +6329,14 @@ LABEL_11:
     }
   }
 
-  [v24 setNeedsRetry:{1, v21, v23}];
+  [endCopy setNeedsRetry:{1, taskID, v23}];
 LABEL_31:
 }
 
-- (void)_largeFileReceiveRequest:(id)a3 responseHandler:(id)a4
+- (void)_largeFileReceiveRequest:(id)request responseHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   v8 = NSDictionaryGetNSNumber();
   v65 = 0;
   v66 = &v65;
@@ -6351,7 +6351,7 @@ LABEL_31:
   v64 = &v65;
   aBlock[4] = self;
   aBlock[5] = v8;
-  v9 = v7;
+  v9 = handlerCopy;
   v63 = v9;
   v10 = _Block_copy(aBlock);
   if (!v8 || self->_fileWritesOutstanding >= 0x32)
@@ -6414,13 +6414,13 @@ LABEL_31:
       v18 = CFDictionaryGetCFDataOfLength();
       if (v18)
       {
-        v19 = [v17 fileItem];
-        [v19 setSha256HashData:v18];
+        fileItem = [v17 fileItem];
+        [fileItem setSha256HashData:v18];
       }
     }
 
     ++self->_fileWritesOutstanding;
-    v20 = [v17 queue];
+    queue = [v17 queue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __66__RPFileTransferSession__largeFileReceiveRequest_responseHandler___block_invoke_3;
@@ -6431,7 +6431,7 @@ LABEL_31:
     v53 = v21;
     v55 = Int64Ranged;
     v54 = v9;
-    dispatch_async(v20, block);
+    dispatch_async(queue, block);
 
     if ((Int64Ranged & 2) != 0)
     {
@@ -6506,10 +6506,10 @@ LABEL_21:
 
   if ([(RPFileTransferSession *)self isResumable])
   {
-    v27 = [(RPFileTransferSession *)self resumeState];
-    v28 = [[RPFileTransferResumeStateItem alloc] initWithFileTransferRequestDict:v6];
-    [v27 addActiveFile:v28];
-    [v27 scheduleStateFileFlush];
+    resumeState = [(RPFileTransferSession *)self resumeState];
+    v28 = [[RPFileTransferResumeStateItem alloc] initWithFileTransferRequestDict:requestCopy];
+    [resumeState addActiveFile:v28];
+    [resumeState scheduleStateFileFlush];
   }
 
   v29 = self->_ucat->var0;
@@ -6538,13 +6538,13 @@ LABEL_38:
   v31 = objc_alloc_init(RPFileTransferLargeFileReceiveTask);
   [(RPFileTransferLargeFileReceiveTask *)v31 setFileFD:0xFFFFFFFFLL];
   [(RPFileTransferLargeFileReceiveTask *)v31 setFileItem:v23];
-  v32 = [(RPFileTransferSession *)self _ioQueueDequeue];
-  [(RPFileTransferLargeFileReceiveTask *)v31 setQueue:v32];
+  _ioQueueDequeue = [(RPFileTransferSession *)self _ioQueueDequeue];
+  [(RPFileTransferLargeFileReceiveTask *)v31 setQueue:_ioQueueDequeue];
 
   -[RPFileTransferLargeFileReceiveTask setTaskID:](v31, "setTaskID:", [v8 unsignedLongLongValue]);
   [(NSMutableDictionary *)self->_largeFileReceiveTasks setObject:v31 forKeyedSubscript:v8];
   ++self->_fileWritesOutstanding;
-  v33 = [(RPFileTransferLargeFileReceiveTask *)v31 queue];
+  queue2 = [(RPFileTransferLargeFileReceiveTask *)v31 queue];
   v56[0] = MEMORY[0x1E69E9820];
   v56[1] = 3221225472;
   v56[2] = __66__RPFileTransferSession__largeFileReceiveRequest_responseHandler___block_invoke_2;
@@ -6557,7 +6557,7 @@ LABEL_38:
   v34 = v23;
   v9 = v47;
   v58 = v47;
-  dispatch_async(v33, v56);
+  dispatch_async(queue2, v56);
 
   v10 = v48;
   if ((Int64Ranged & 2) == 0)
@@ -6613,23 +6613,23 @@ LABEL_7:
   return v6();
 }
 
-- (void)_resumeStateReceiveRequest:(id)a3 responseHandler:(id)a4
+- (void)_resumeStateReceiveRequest:(id)request responseHandler:(id)handler
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  handlerCopy = handler;
   if ([(RPFileTransferSession *)self isResumable])
   {
-    v6 = [(RPFileTransferSession *)self resumeState];
-    if ([v6 isEmpty])
+    resumeState = [(RPFileTransferSession *)self resumeState];
+    if ([resumeState isEmpty])
     {
       v7 = 0;
     }
 
     else
     {
-      v8 = [v6 dictionaryRepresentation];
+      dictionaryRepresentation = [resumeState dictionaryRepresentation];
       v10 = @"resumeState";
-      v11[0] = v8;
+      v11[0] = dictionaryRepresentation;
       v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
     }
   }
@@ -6639,59 +6639,59 @@ LABEL_7:
     v7 = 0;
   }
 
-  (*(v5 + 2))(v5, v7, 0, 0);
+  (*(handlerCopy + 2))(handlerCopy, v7, 0, 0);
 
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_largeFileReceiveTaskRun:(id)a3 data:(id)a4 sendFlags:(unsigned int)a5 responseHandler:(id)a6
+- (void)_largeFileReceiveTaskRun:(id)run data:(id)data sendFlags:(unsigned int)flags responseHandler:(id)handler
 {
   v114 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  if ((a5 & 1) == 0)
+  runCopy = run;
+  dataCopy = data;
+  handlerCopy = handler;
+  if ((flags & 1) == 0)
   {
     goto LABEL_32;
   }
 
-  v13 = [v10 fileItem];
-  if ([v13 fileSize] < 1)
+  fileItem = [runCopy fileItem];
+  if ([fileItem fileSize] < 1)
   {
     queue = 0;
   }
 
   else
   {
-    v14 = [v10 fileItem];
-    queue = [v14 fileSize];
+    fileItem2 = [runCopy fileItem];
+    queue = [fileItem2 fileSize];
   }
 
-  CC_SHA256_Init((v10 + 12));
+  CC_SHA256_Init((runCopy + 12));
   if (![(RPFileTransferSession *)self isResumable])
   {
     goto LABEL_11;
   }
 
-  v15 = [(RPFileTransferSession *)self resumeState];
-  v16 = [v10 fileItem];
-  v17 = [v16 filename];
-  v18 = [v15 activeFileWithFileName:v17];
+  resumeState = [(RPFileTransferSession *)self resumeState];
+  fileItem3 = [runCopy fileItem];
+  filename = [fileItem3 filename];
+  v18 = [resumeState activeFileWithFileName:filename];
 
   if (!v18)
   {
 
 LABEL_11:
-    v19 = 0;
+    fileOffset = 0;
     goto LABEL_12;
   }
 
-  v19 = [v18 fileOffset];
+  fileOffset = [v18 fileOffset];
 
-  if (v19)
+  if (fileOffset)
   {
     v109 = 0;
-    v20 = [(RPFileTransferSession *)self _largeFileReceiveTaskUpdateSHA256CtxFromFileItem:v10 length:v19 error:&v109];
+    v20 = [(RPFileTransferSession *)self _largeFileReceiveTaskUpdateSHA256CtxFromFileItem:runCopy length:fileOffset error:&v109];
     v21 = v109;
     v22 = v21;
     if (!v20)
@@ -6702,11 +6702,11 @@ LABEL_11:
       block[2] = __81__RPFileTransferSession__largeFileReceiveTaskRun_data_sendFlags_responseHandler___block_invoke;
       block[3] = &unk_1E7C92F10;
       block[4] = self;
-      v104 = v10;
+      v104 = runCopy;
       v105 = v22;
-      v107 = v12;
-      v106 = v11;
-      v108 = a5;
+      v107 = handlerCopy;
+      v106 = dataCopy;
+      flagsCopy = flags;
       v40 = v22;
       dispatch_async(dispatchQueue, block);
 
@@ -6723,7 +6723,7 @@ LABEL_52:
 LABEL_12:
   v23 = 1;
 LABEL_13:
-  v24 = *(v10 + 2);
+  v24 = *(runCopy + 2);
   if ((v24 & 0x80000000) == 0)
   {
     if (close(v24) && *__error())
@@ -6731,12 +6731,12 @@ LABEL_13:
       __error();
     }
 
-    *(v10 + 2) = -1;
+    *(runCopy + 2) = -1;
   }
 
-  v25 = [v10 fileItem];
+  fileItem4 = [runCopy fileItem];
   v102 = 0;
-  v26 = -[RPFileTransferSession _openWriteFileItem:size:truncate:error:](self, "_openWriteFileItem:size:truncate:error:", v25, [v11 length], v23, &v102);
+  v26 = -[RPFileTransferSession _openWriteFileItem:size:truncate:error:](self, "_openWriteFileItem:size:truncate:error:", fileItem4, [dataCopy length], v23, &v102);
   v27 = v102;
 
   if ((v26 & 0x80000000) != 0)
@@ -6748,15 +6748,15 @@ LABEL_13:
     v96[3] = &unk_1E7C92F10;
     v96[4] = self;
     v32 = &v97;
-    v97 = v10;
+    v97 = runCopy;
     v33 = &v98;
     v34 = v27;
     v98 = v34;
     v35 = &v100;
-    v100 = v12;
+    v100 = handlerCopy;
     v36 = &v99;
-    v99 = v11;
-    v101 = a5;
+    v99 = dataCopy;
+    flagsCopy2 = flags;
     v37 = v96;
     v38 = v31;
 LABEL_29:
@@ -6765,14 +6765,14 @@ LABEL_29:
     goto LABEL_53;
   }
 
-  [v10 setFileFD:v26];
+  [runCopy setFileFD:v26];
   if ((v23 & 1) == 0)
   {
     v95 = v27;
-    v28 = [(RPFileTransferSession *)self _truncateFD:v26 size:v19 error:&v95];
+    v28 = [(RPFileTransferSession *)self _truncateFD:v26 size:fileOffset error:&v95];
     v29 = v95;
 
-    if (v28 && lseek(v26, v19, 0) == -1)
+    if (v28 && lseek(v26, fileOffset, 0) == -1)
     {
       if (*__error())
       {
@@ -6793,15 +6793,15 @@ LABEL_29:
       v89[3] = &unk_1E7C92F10;
       v89[4] = self;
       v32 = &v90;
-      v90 = v10;
+      v90 = runCopy;
       v33 = &v91;
       v34 = v29;
       v91 = v34;
       v35 = &v93;
-      v93 = v12;
+      v93 = handlerCopy;
       v36 = &v92;
-      v92 = v11;
-      v94 = a5;
+      v92 = dataCopy;
+      flagsCopy3 = flags;
       v37 = v89;
       v38 = queuea;
       goto LABEL_29;
@@ -6816,12 +6816,12 @@ LABEL_29:
   v88[2] = __81__RPFileTransferSession__largeFileReceiveTaskRun_data_sendFlags_responseHandler___block_invoke_4;
   v88[3] = &unk_1E7C94590;
   v88[4] = self;
-  v88[5] = v19;
+  v88[5] = fileOffset;
   v88[6] = queue;
   dispatch_async(v43, v88);
 
 LABEL_32:
-  if ((*(v10 + 2) & 0x80000000) != 0)
+  if ((*(runCopy + 2) & 0x80000000) != 0)
   {
     v48 = RPErrorF();
     v49 = self->_dispatchQueue;
@@ -6830,24 +6830,24 @@ LABEL_32:
     v82[2] = __81__RPFileTransferSession__largeFileReceiveTaskRun_data_sendFlags_responseHandler___block_invoke_5;
     v82[3] = &unk_1E7C92F10;
     v82[4] = self;
-    v83 = v10;
+    v83 = runCopy;
     v84 = v48;
-    v86 = v12;
-    v85 = v11;
-    v87 = a5;
+    v86 = handlerCopy;
+    v85 = dataCopy;
+    flagsCopy4 = flags;
     dispatch_async(v49, v82);
 
     goto LABEL_53;
   }
 
-  v44 = [v11 length];
+  v44 = [dataCopy length];
   if (!v44)
   {
     goto LABEL_36;
   }
 
   v81 = 0;
-  v45 = -[RPFileTransferSession _writeFD:buffer:size:error:](self, "_writeFD:buffer:size:error:", [v10 fileFD], objc_msgSend(v11, "bytes"), v44, &v81);
+  v45 = -[RPFileTransferSession _writeFD:buffer:size:error:](self, "_writeFD:buffer:size:error:", [runCopy fileFD], objc_msgSend(dataCopy, "bytes"), v44, &v81);
   v46 = v81;
   if (!v45)
   {
@@ -6857,11 +6857,11 @@ LABEL_32:
     v75[2] = __81__RPFileTransferSession__largeFileReceiveTaskRun_data_sendFlags_responseHandler___block_invoke_6;
     v75[3] = &unk_1E7C92F10;
     v75[4] = self;
-    v76 = v10;
+    v76 = runCopy;
     v77 = v46;
-    v79 = v12;
-    v78 = v11;
-    v80 = a5;
+    v79 = handlerCopy;
+    v78 = dataCopy;
+    flagsCopy5 = flags;
     v40 = v46;
     dispatch_async(v58, v75);
 
@@ -6869,16 +6869,16 @@ LABEL_32:
     goto LABEL_52;
   }
 
-  CC_SHA256_Update((v10 + 12), [v11 bytes], objc_msgSend(v11, "length"));
+  CC_SHA256_Update((runCopy + 12), [dataCopy bytes], objc_msgSend(dataCopy, "length"));
 
 LABEL_36:
-  if ((a5 & 2) != 0)
+  if ((flags & 2) != 0)
   {
-    CC_SHA256_Final(md, (v10 + 12));
-    v50 = [v10 fileItem];
-    v51 = [v50 sha256HashData];
+    CC_SHA256_Final(md, (runCopy + 12));
+    fileItem5 = [runCopy fileItem];
+    sha256HashData = [fileItem5 sha256HashData];
 
-    if ([v51 length] != 32 || ((v52 = objc_msgSend(v51, "bytes"), *md == *v52) ? (v53 = v111 == v52[1]) : (v53 = 0), v53 ? (v54 = v112 == v52[2]) : (v54 = 0), v54 ? (v55 = v113 == v52[3]) : (v55 = 0), !v55))
+    if ([sha256HashData length] != 32 || ((v52 = objc_msgSend(sha256HashData, "bytes"), *md == *v52) ? (v53 = v111 == v52[1]) : (v53 = 0), v53 ? (v54 = v112 == v52[2]) : (v54 = 0), v54 ? (v55 = v113 == v52[3]) : (v55 = 0), !v55))
     {
       v56 = RPErrorF();
       v57 = self->_dispatchQueue;
@@ -6887,11 +6887,11 @@ LABEL_36:
       v69[2] = __81__RPFileTransferSession__largeFileReceiveTaskRun_data_sendFlags_responseHandler___block_invoke_7;
       v69[3] = &unk_1E7C92F10;
       v69[4] = self;
-      v70 = v10;
+      v70 = runCopy;
       v71 = v56;
-      v73 = v12;
-      v72 = v11;
-      v74 = a5;
+      v73 = handlerCopy;
+      v72 = dataCopy;
+      flagsCopy6 = flags;
       dispatch_async(v57, v69);
 
       goto LABEL_53;
@@ -6905,11 +6905,11 @@ LABEL_36:
   v62[3] = &unk_1E7C946A8;
   v62[4] = self;
   v66 = v44;
-  v67 = a5;
-  v68 = (a5 & 2) >> 1;
-  v63 = v10;
-  v65 = v12;
-  v64 = v11;
+  flagsCopy7 = flags;
+  v68 = (flags & 2) >> 1;
+  v63 = runCopy;
+  v65 = handlerCopy;
+  v64 = dataCopy;
   dispatch_async(v47, v62);
 
 LABEL_53:
@@ -7054,22 +7054,22 @@ uint64_t __81__RPFileTransferSession__largeFileReceiveTaskRun_data_sendFlags_res
   return [v10 _updateLargeFilesTaskResumeState:v11 data:v12 sendFlags:v13 error:0 complete:v14];
 }
 
-- (BOOL)_largeFileReceiveTaskUpdateSHA256CtxFromFileItem:(id)a3 length:(unint64_t)a4 error:(id *)a5
+- (BOOL)_largeFileReceiveTaskUpdateSHA256CtxFromFileItem:(id)item length:(unint64_t)length error:(id *)error
 {
-  v19 = a5;
-  v21 = a3;
-  v7 = [v21 fileItem];
+  errorCopy = error;
+  itemCopy = item;
+  fileItem = [itemCopy fileItem];
   v25 = 0;
-  v8 = [(RPFileTransferSession *)self _openReadFileItem:v7 error:&v25];
+  v8 = [(RPFileTransferSession *)self _openReadFileItem:fileItem error:&v25];
   v9 = v25;
 
   if ((v8 & 0x80000000) != 0)
   {
-    if (v19)
+    if (errorCopy)
     {
       v18 = v9;
       v12 = 0;
-      *v19 = v9;
+      *errorCopy = v9;
     }
 
     else
@@ -7087,9 +7087,9 @@ uint64_t __81__RPFileTransferSession__largeFileReceiveTaskRun_data_sendFlags_res
     v24 = v8;
     v20 = _Block_copy(aBlock);
     v10 = 0;
-    if (self->_largeFileBufferBytes >= a4)
+    if (self->_largeFileBufferBytes >= length)
     {
-      largeFileBufferBytes = a4;
+      largeFileBufferBytes = length;
     }
 
     else
@@ -7099,37 +7099,37 @@ uint64_t __81__RPFileTransferSession__largeFileReceiveTaskRun_data_sendFlags_res
 
     while (1)
     {
-      v12 = a4 <= v10;
-      if (a4 <= v10)
+      v12 = length <= v10;
+      if (length <= v10)
       {
         break;
       }
 
       v13 = objc_autoreleasePoolPush();
-      if (largeFileBufferBytes >= a4 - v10)
+      if (largeFileBufferBytes >= length - v10)
       {
-        largeFileBufferBytes = a4 - v10;
+        largeFileBufferBytes = length - v10;
       }
 
       v22 = v9;
-      v14 = [(RPFileTransferSession *)self _readFD:v8 size:largeFileBufferBytes error:&v22, v19];
+      errorCopy = [(RPFileTransferSession *)self _readFD:v8 size:largeFileBufferBytes error:&v22, errorCopy];
       v16 = v22;
 
-      if (v14)
+      if (errorCopy)
       {
-        CC_SHA256_Update((v21 + 12), [v14 bytes], objc_msgSend(v14, "length"));
+        CC_SHA256_Update((itemCopy + 12), [errorCopy bytes], objc_msgSend(errorCopy, "length"));
         v10 += largeFileBufferBytes;
       }
 
-      else if (v19)
+      else if (errorCopy)
       {
         v15 = v16;
-        *v19 = v16;
+        *errorCopy = v16;
       }
 
       objc_autoreleasePoolPop(v13);
       v9 = v16;
-      if (!v14)
+      if (!errorCopy)
       {
         goto LABEL_15;
       }
@@ -7145,18 +7145,18 @@ LABEL_15:
   return v12;
 }
 
-- (void)_largeFileReceiveTaskRespond:(id)a3 error:(id)a4 complete:(BOOL)a5 responseHandler:(id)a6
+- (void)_largeFileReceiveTaskRespond:(id)respond error:(id)error complete:(BOOL)complete responseHandler:(id)handler
 {
-  v7 = a5;
-  v23 = a3;
-  v10 = a4;
-  v11 = a6;
-  v12 = v11;
-  if (!v7)
+  completeCopy = complete;
+  respondCopy = respond;
+  errorCopy = error;
+  handlerCopy = handler;
+  v12 = handlerCopy;
+  if (!completeCopy)
   {
-    if (!v10)
+    if (!errorCopy)
     {
-      (*(v11 + 2))(v11, MEMORY[0x1E695E0F8], 0, 0);
+      (*(handlerCopy + 2))(handlerCopy, MEMORY[0x1E695E0F8], 0, 0);
       goto LABEL_15;
     }
 
@@ -7177,18 +7177,18 @@ LABEL_15:
       v20 = self->_ucat;
     }
 
-    v21 = [v23 taskID];
-    v22 = v10;
+    taskID = [respondCopy taskID];
+    v22 = errorCopy;
     LogPrintF();
 LABEL_13:
-    (v12)[2](v12, 0, 0, v10);
+    (v12)[2](v12, 0, 0, errorCopy);
     goto LABEL_14;
   }
 
   v13 = self->_ucat->var0;
   if (v13 <= 10)
   {
-    v14 = v23;
+    v14 = respondCopy;
     if (v13 == -1)
     {
       v16 = self->_ucat;
@@ -7198,30 +7198,30 @@ LABEL_13:
       }
 
       v19 = self->_ucat;
-      v14 = v23;
+      v14 = respondCopy;
     }
 
-    v21 = [v14 taskID];
+    taskID = [v14 taskID];
     LogPrintF();
   }
 
 LABEL_11:
-  v17 = [v23 fileItem];
-  [(RPFileTransferSession *)self _processReceivedItem:v17 responseHandler:v12];
+  fileItem = [respondCopy fileItem];
+  [(RPFileTransferSession *)self _processReceivedItem:fileItem responseHandler:v12];
 
 LABEL_14:
-  [(RPFileTransferSession *)self _largeFileReceiveTaskInvalidate:v23, v21, v22];
+  [(RPFileTransferSession *)self _largeFileReceiveTaskInvalidate:respondCopy, taskID, v22];
 LABEL_15:
   --self->_fileWritesOutstanding;
 }
 
-- (void)_largeFileReceiveTaskInvalidate:(id)a3
+- (void)_largeFileReceiveTaskInvalidate:(id)invalidate
 {
-  v13 = a3;
-  v4 = [v13 fileFD];
-  if ((v4 & 0x80000000) == 0)
+  invalidateCopy = invalidate;
+  fileFD = [invalidateCopy fileFD];
+  if ((fileFD & 0x80000000) == 0)
   {
-    if (close(v4))
+    if (close(fileFD))
     {
       if (*__error())
       {
@@ -7243,9 +7243,9 @@ LABEL_15:
         if (var0 != -1)
         {
 LABEL_9:
-          v11 = [v13 taskID];
+          taskID = [invalidateCopy taskID];
           LogPrintF();
-          [v13 setFileFD:{0xFFFFFFFFLL, v11, v5}];
+          [invalidateCopy setFileFD:{0xFFFFFFFFLL, taskID, v5}];
           goto LABEL_12;
         }
 
@@ -7259,26 +7259,26 @@ LABEL_9:
     }
 
 LABEL_11:
-    [v13 setFileFD:{0xFFFFFFFFLL, v10, v12}];
+    [invalidateCopy setFileFD:{0xFFFFFFFFLL, v10, v12}];
   }
 
 LABEL_12:
-  v8 = [v13 queue];
-  [(RPFileTransferSession *)self _ioQueueEnqueue:v8];
+  queue = [invalidateCopy queue];
+  [(RPFileTransferSession *)self _ioQueueEnqueue:queue];
 }
 
-- (void)_updateLargeFilesTaskResumeState:(id)a3 data:(id)a4 sendFlags:(unsigned int)a5 error:(id)a6 complete:(BOOL)a7
+- (void)_updateLargeFilesTaskResumeState:(id)state data:(id)data sendFlags:(unsigned int)flags error:(id)error complete:(BOOL)complete
 {
-  v8 = a5;
-  v17 = a3;
-  v11 = a4;
-  v12 = a6;
+  flagsCopy = flags;
+  stateCopy = state;
+  dataCopy = data;
+  errorCopy = error;
   if ([(RPFileTransferSession *)self isResumable])
   {
-    v13 = [(RPFileTransferSession *)self resumeState];
-    v14 = [v17 fileItem];
-    v15 = [v14 filename];
-    v16 = [v13 activeFileWithFileName:v15];
+    resumeState = [(RPFileTransferSession *)self resumeState];
+    fileItem = [stateCopy fileItem];
+    filename = [fileItem filename];
+    v16 = [resumeState activeFileWithFileName:filename];
 
     if (!v16)
     {
@@ -7287,40 +7287,40 @@ LABEL_13:
       goto LABEL_14;
     }
 
-    if (v12)
+    if (errorCopy)
     {
-      if ([v12 code] == -71143 || objc_msgSend(v12, "code") == -6753 || objc_msgSend(v12, "code") == -6722)
+      if ([errorCopy code] == -71143 || objc_msgSend(errorCopy, "code") == -6753 || objc_msgSend(errorCopy, "code") == -6722)
       {
-        [v16 setBytesWritten:{objc_msgSend(v16, "bytesWritten") + objc_msgSend(v11, "length")}];
+        [v16 setBytesWritten:{objc_msgSend(v16, "bytesWritten") + objc_msgSend(dataCopy, "length")}];
 LABEL_12:
-        [v13 scheduleStateFileFlush];
+        [resumeState scheduleStateFileFlush];
         goto LABEL_13;
       }
 
-      [v16 setError:v12];
+      [v16 setError:errorCopy];
     }
 
     else
     {
-      [v16 setBytesWritten:{objc_msgSend(v16, "bytesWritten") + objc_msgSend(v11, "length")}];
-      if ((v8 & 2) == 0)
+      [v16 setBytesWritten:{objc_msgSend(v16, "bytesWritten") + objc_msgSend(dataCopy, "length")}];
+      if ((flagsCopy & 2) == 0)
       {
         goto LABEL_12;
       }
     }
 
-    [v13 removeActiveFile:v16];
-    [v13 addFinishedFile:v16];
+    [resumeState removeActiveFile:v16];
+    [resumeState addFinishedFile:v16];
     goto LABEL_12;
   }
 
 LABEL_14:
 }
 
-- (id)_compressData:(id)a3 error:(id *)a4
+- (id)_compressData:(id)data error:(id *)error
 {
-  v5 = a3;
-  v6 = [v5 length];
+  dataCopy = data;
+  v6 = [dataCopy length];
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -7333,7 +7333,7 @@ LABEL_14:
     aBlock[3] = &unk_1E7C946D0;
     aBlock[4] = &v15;
     v7 = _Block_copy(aBlock);
-    v8 = compression_encode_buffer(v16[3], v6, [v5 bytes], v6, 0, COMPRESSION_LZ4);
+    v8 = compression_encode_buffer(v16[3], v6, [dataCopy bytes], v6, 0, COMPRESSION_LZ4);
     if (v8)
     {
       v9 = objc_alloc(MEMORY[0x1E695DEF0]);
@@ -7345,28 +7345,28 @@ LABEL_14:
         v12 = v10;
       }
 
-      else if (a4)
+      else if (error)
       {
-        *a4 = RPErrorF();
+        *error = RPErrorF();
       }
     }
 
     else
     {
       v11 = 0;
-      if (a4)
+      if (error)
       {
-        *a4 = 0;
+        *error = 0;
       }
     }
 
     v7[2](v7);
   }
 
-  else if (a4)
+  else if (error)
   {
     RPErrorF();
-    *a4 = v11 = 0;
+    *error = v11 = 0;
   }
 
   else
@@ -7388,13 +7388,13 @@ void __45__RPFileTransferSession__compressData_error___block_invoke(uint64_t a1)
   }
 }
 
-- (id)_decompressData:(id)a3 originalSize:(unint64_t)a4 error:(id *)a5
+- (id)_decompressData:(id)data originalSize:(unint64_t)size error:(id *)error
 {
-  v7 = a3;
+  dataCopy = data;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
-  v18 = malloc_type_malloc(a4, 0x100004077774924uLL);
+  v18 = malloc_type_malloc(size, 0x100004077774924uLL);
   if (v16[3])
   {
     aBlock[0] = MEMORY[0x1E69E9820];
@@ -7403,10 +7403,10 @@ void __45__RPFileTransferSession__compressData_error___block_invoke(uint64_t a1)
     aBlock[3] = &unk_1E7C946D0;
     aBlock[4] = &v15;
     v8 = _Block_copy(aBlock);
-    if (compression_decode_buffer(v16[3], a4, [v7 bytes], objc_msgSend(v7, "length"), 0, COMPRESSION_LZ4) == a4)
+    if (compression_decode_buffer(v16[3], size, [dataCopy bytes], objc_msgSend(dataCopy, "length"), 0, COMPRESSION_LZ4) == size)
     {
       v9 = objc_alloc(MEMORY[0x1E695DEF0]);
-      v10 = [v9 initWithBytesNoCopy:v16[3] length:a4 freeWhenDone:1];
+      v10 = [v9 initWithBytesNoCopy:v16[3] length:size freeWhenDone:1];
       v11 = v10;
       if (v10)
       {
@@ -7414,16 +7414,16 @@ void __45__RPFileTransferSession__compressData_error___block_invoke(uint64_t a1)
         v12 = v10;
       }
 
-      else if (a5)
+      else if (error)
       {
-        *a5 = RPErrorF();
+        *error = RPErrorF();
       }
     }
 
-    else if (a5)
+    else if (error)
     {
       RPErrorF();
-      *a5 = v11 = 0;
+      *error = v11 = 0;
     }
 
     else
@@ -7434,10 +7434,10 @@ void __45__RPFileTransferSession__compressData_error___block_invoke(uint64_t a1)
     v8[2](v8);
   }
 
-  else if (a5)
+  else if (error)
   {
     RPErrorF();
-    *a5 = v11 = 0;
+    *error = v11 = 0;
   }
 
   else
@@ -7459,14 +7459,14 @@ void __60__RPFileTransferSession__decompressData_originalSize_error___block_invo
   }
 }
 
-- (id)_encodeAndCompressObject:(id)a3 originalSize:(unint64_t *)a4 error:(id *)a5
+- (id)_encodeAndCompressObject:(id)object originalSize:(unint64_t *)size error:(id *)error
 {
   v15 = 0;
-  v8 = MEMORY[0x1B8C9E170](a3, 0, &v15);
+  v8 = MEMORY[0x1B8C9E170](object, 0, &v15);
   v9 = v8;
   if (!v8)
   {
-    if (a5)
+    if (error)
     {
       goto LABEL_12;
     }
@@ -7477,11 +7477,11 @@ void __60__RPFileTransferSession__decompressData_originalSize_error___block_invo
   v10 = [v8 length];
   if (!v10)
   {
-    if (a5)
+    if (error)
     {
 LABEL_12:
       RPErrorF();
-      *a5 = v12 = 0;
+      *error = v12 = 0;
       goto LABEL_6;
     }
 
@@ -7490,8 +7490,8 @@ LABEL_13:
     goto LABEL_6;
   }
 
-  *a4 = v10;
-  v11 = [(RPFileTransferSession *)self _compressData:v9 error:a5];
+  *size = v10;
+  v11 = [(RPFileTransferSession *)self _compressData:v9 error:error];
   v12 = v11;
   if (v11)
   {
@@ -7505,18 +7505,18 @@ LABEL_6:
 
 - (id)_ioQueueDequeue
 {
-  v3 = [(NSMutableArray *)self->_ioQueues popFirstObject];
-  if (!v3)
+  popFirstObject = [(NSMutableArray *)self->_ioQueues popFirstObject];
+  if (!popFirstObject)
   {
     v4 = self->_metricTotalIOQueues + 1;
     self->_metricTotalIOQueues = v4;
     targetID = self->_targetID;
     v13 = v4;
     v5 = NSPrintF();
-    v6 = [v5 UTF8String];
+    uTF8String = [v5 UTF8String];
 
     v7 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v3 = dispatch_queue_create(v6, v7);
+    popFirstObject = dispatch_queue_create(uTF8String, v7);
 
     var0 = self->_ucat->var0;
     if (var0 <= 30)
@@ -7539,26 +7539,26 @@ LABEL_4:
 
 LABEL_6:
 
-  return v3;
+  return popFirstObject;
 }
 
-- (int)_openReadFileItem:(id)a3 error:(id *)a4
+- (int)_openReadFileItem:(id)item error:(id *)error
 {
-  v6 = a3;
-  v7 = [(NSString *)self->_receiveFileParentPath stringByStandardizingPath];
-  if (v7)
+  itemCopy = item;
+  stringByStandardizingPath = [(NSString *)self->_receiveFileParentPath stringByStandardizingPath];
+  if (stringByStandardizingPath)
   {
-    v8 = [v6 filename];
-    if (v8)
+    filename = [itemCopy filename];
+    if (filename)
     {
-      v9 = [v7 stringByAppendingPathComponent:v8];
-      v10 = [v9 stringByStandardizingPath];
+      v9 = [stringByStandardizingPath stringByAppendingPathComponent:filename];
+      stringByStandardizingPath2 = [v9 stringByStandardizingPath];
 
-      if (([v10 hasPrefix:v7] & 1) == 0)
+      if (([stringByStandardizingPath2 hasPrefix:stringByStandardizingPath] & 1) == 0)
       {
-        if (a4)
+        if (error)
         {
-          *a4 = RPErrorF();
+          *error = RPErrorF();
         }
 
         v11 = -1;
@@ -7569,21 +7569,21 @@ LABEL_6:
     else
     {
       v12 = atomic_fetch_add(&self->_fileIDLastReceive, 1uLL) + 1;
-      v10 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@/%llu.rpftf", v7, v12];
+      stringByStandardizingPath2 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@/%llu.rpftf", stringByStandardizingPath, v12];
     }
 
-    v13 = [objc_alloc(MEMORY[0x1E695DFF8]) initFileURLWithPath:v10 isDirectory:0];
-    [v6 setItemURL:v13];
+    v13 = [objc_alloc(MEMORY[0x1E695DFF8]) initFileURLWithPath:stringByStandardizingPath2 isDirectory:0];
+    [itemCopy setItemURL:v13];
 
-    v11 = -[RPFileTransferSession _openReadPath:error:](self, "_openReadPath:error:", [v10 fileSystemRepresentation], a4);
+    v11 = -[RPFileTransferSession _openReadPath:error:](self, "_openReadPath:error:", [stringByStandardizingPath2 fileSystemRepresentation], error);
 LABEL_9:
 
     goto LABEL_10;
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = RPErrorF();
+    *error = RPErrorF();
   }
 
   v11 = -1;
@@ -7592,14 +7592,14 @@ LABEL_10:
   return v11;
 }
 
-- (int)_openReadPath:(const char *)a3 error:(id *)a4
+- (int)_openReadPath:(const char *)path error:(id *)error
 {
-  v6 = open(a3, 0);
+  v6 = open(path, 0);
   if (v6 < 0 && (!*__error() || *__error()))
   {
-    if (a4)
+    if (error)
     {
-      *a4 = RPErrorF();
+      *error = RPErrorF();
     }
 
     return -1;
@@ -7664,14 +7664,14 @@ LABEL_16:
   return v6;
 }
 
-- (int)_openWritePath:(id)a3 size:(int64_t)a4 truncate:(BOOL)a5 error:(id *)a6
+- (int)_openWritePath:(id)path size:(int64_t)size truncate:(BOOL)truncate error:(id *)error
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = [v10 UTF8String];
-  if (!v11)
+  truncateCopy = truncate;
+  pathCopy = path;
+  uTF8String = [pathCopy UTF8String];
+  if (!uTF8String)
   {
-    if (!a6)
+    if (!error)
     {
       goto LABEL_13;
     }
@@ -7679,15 +7679,15 @@ LABEL_16:
     goto LABEL_12;
   }
 
-  v12 = v11;
-  if (v7)
+  v12 = uTF8String;
+  if (truncateCopy)
   {
-    v13 = open(v11, 1537, 384);
+    v13 = open(uTF8String, 1537, 384);
   }
 
   else
   {
-    v13 = open(v11, 513, 384);
+    v13 = open(uTF8String, 513, 384);
   }
 
   v14 = v13;
@@ -7698,15 +7698,15 @@ LABEL_16:
       v15 = *__error();
       if (v15 == 2)
       {
-        v16 = [v10 stringByDeletingLastPathComponent];
-        v17 = [MEMORY[0x1E696AC08] defaultManager];
+        stringByDeletingLastPathComponent = [pathCopy stringByDeletingLastPathComponent];
+        defaultManager = [MEMORY[0x1E696AC08] defaultManager];
         v32 = 0;
-        v18 = [v17 createDirectoryAtPath:v16 withIntermediateDirectories:1 attributes:0 error:&v32];
+        v18 = [defaultManager createDirectoryAtPath:stringByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:&v32];
         v19 = v32;
 
         if ((v18 & 1) == 0)
         {
-          [RPFileTransferSession _openWritePath:a6 size:v16 truncate:v19 error:?];
+          [RPFileTransferSession _openWritePath:error size:stringByDeletingLastPathComponent truncate:v19 error:?];
           goto LABEL_13;
         }
 
@@ -7736,7 +7736,7 @@ LABEL_16:
       }
     }
 
-    if (!a6)
+    if (!error)
     {
 LABEL_13:
       v14 = -1;
@@ -7744,12 +7744,12 @@ LABEL_13:
     }
 
 LABEL_12:
-    *a6 = RPErrorF();
+    *error = RPErrorF();
     goto LABEL_13;
   }
 
 LABEL_19:
-  if (a4 < 1)
+  if (size < 1)
   {
     goto LABEL_45;
   }
@@ -7828,7 +7828,7 @@ LABEL_34:
   }
 
 LABEL_38:
-  v31[2] = a4;
+  v31[2] = size;
   v31[3] = 0;
   v31[0] = 0x300000002;
   v31[1] = 0;
@@ -7865,27 +7865,27 @@ void __44__RPFileTransferSession__readFD_size_error___block_invoke(uint64_t a1)
   }
 }
 
-- (BOOL)_readFD:(int)a3 buffer:(char *)a4 size:(unint64_t)a5 error:(id *)a6
+- (BOOL)_readFD:(int)d buffer:(char *)buffer size:(unint64_t)size error:(id *)error
 {
-  if (!a5)
+  if (!size)
   {
     return 1;
   }
 
-  v7 = a5;
+  sizeCopy = size;
   while (1)
   {
-    v10 = read(a3, a4, v7);
+    v10 = read(d, buffer, sizeCopy);
     if (v10 >= 1)
     {
-      a4 += v10;
-      v7 -= v10;
+      buffer += v10;
+      sizeCopy -= v10;
       goto LABEL_8;
     }
 
     if (!v10)
     {
-      if (a6)
+      if (error)
       {
         goto LABEL_14;
       }
@@ -7899,45 +7899,45 @@ void __44__RPFileTransferSession__readFD_size_error___block_invoke(uint64_t a1)
     }
 
 LABEL_8:
-    if (!v7)
+    if (!sizeCopy)
     {
       return 1;
     }
   }
 
-  if (a6)
+  if (error)
   {
 LABEL_14:
     v12 = RPErrorF();
     v13 = v12;
     result = 0;
-    *a6 = v12;
+    *error = v12;
     return result;
   }
 
   return 0;
 }
 
-- (BOOL)_writeFD:(int)a3 buffer:(const char *)a4 size:(unint64_t)a5 error:(id *)a6
+- (BOOL)_writeFD:(int)d buffer:(const char *)buffer size:(unint64_t)size error:(id *)error
 {
-  if (!a5)
+  if (!size)
   {
     return 1;
   }
 
-  v7 = a5;
+  sizeCopy = size;
   while (1)
   {
-    v10 = write(a3, a4, v7);
+    v10 = write(d, buffer, sizeCopy);
     if (v10 < 1)
     {
       break;
     }
 
-    a4 += v10;
-    v7 -= v10;
+    buffer += v10;
+    sizeCopy -= v10;
 LABEL_7:
-    if (!v7)
+    if (!sizeCopy)
     {
       return 1;
     }
@@ -7948,7 +7948,7 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  if (!a6)
+  if (!error)
   {
     return 0;
   }
@@ -7956,18 +7956,18 @@ LABEL_7:
   v12 = RPErrorF();
   v13 = v12;
   result = 0;
-  *a6 = v12;
+  *error = v12;
   return result;
 }
 
-- (BOOL)_truncateFD:(int)a3 size:(int64_t)a4 error:(id *)a5
+- (BOOL)_truncateFD:(int)d size:(int64_t)size error:(id *)error
 {
-  v6 = ftruncate(a3, a4);
+  v6 = ftruncate(d, size);
   if (v6)
   {
     if (!*__error())
     {
-      if (!a5)
+      if (!error)
       {
         return v6 == 0;
       }
@@ -7976,23 +7976,23 @@ LABEL_7:
     }
 
     v7 = *__error();
-    if (a5)
+    if (error)
     {
 LABEL_4:
-      *a5 = RPErrorF();
+      *error = RPErrorF();
     }
   }
 
   return v6 == 0;
 }
 
-- (id)_modTimeForFileWithPath:(const char *)a3 error:(id *)a4
+- (id)_modTimeForFileWithPath:(const char *)path error:(id *)error
 {
   v13[2] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (path)
   {
     memset(&v11, 0, sizeof(v11));
-    if (!stat(a3, &v11) || *__error() && !*__error())
+    if (!stat(path, &v11) || *__error() && !*__error())
     {
       tv_nsec = v11.st_mtimespec.tv_nsec;
       v12[0] = @"_fMt";
@@ -8006,17 +8006,17 @@ LABEL_4:
       goto LABEL_6;
     }
 
-    if (a4)
+    if (error)
     {
       goto LABEL_10;
     }
   }
 
-  else if (a4)
+  else if (error)
   {
 LABEL_10:
     RPErrorF();
-    *a4 = v8 = 0;
+    *error = v8 = 0;
     goto LABEL_6;
   }
 
@@ -8030,13 +8030,13 @@ LABEL_6:
 - (void)_reportProgressControlState
 {
   controlState = self->_controlState;
-  v4 = [(RPConnection *)self->_controlCnx state];
-  if (v4 == controlState)
+  state = [(RPConnection *)self->_controlCnx state];
+  if (state == controlState)
   {
     return;
   }
 
-  v5 = v4;
+  v5 = state;
   OUTLINED_FUNCTION_1_2();
   if (v8 ^ v9 | v7)
   {
@@ -8109,7 +8109,7 @@ LABEL_16:
     *(&self->super.isa + v15) = v16 + 1;
     if (self->_prefCompress)
     {
-      v17 = [(RPConnection *)self->_controlCnx appInfoPeer];
+      appInfoPeer = [(RPConnection *)self->_controlCnx appInfoPeer];
       Int64 = CFDictionaryGetInt64();
 
       v19 = (Int64 >> 8) & 1;
@@ -8248,7 +8248,7 @@ LABEL_55:
       v14 = 3221225472;
       v15 = __36__RPFileTransferSession__debugSetup__block_invoke;
       v16 = &unk_1E7C942A8;
-      v17 = self;
+      selfCopy = self;
       notify_register_dispatch("com.apple.rapport.ftdebug", v4, v5, handler);
       debugNotifyToken = self->_debugNotifyToken;
       state64 = 0;
@@ -8372,7 +8372,7 @@ LABEL_7:
     v18 = __49__RPFileTransferSession__controlCnxStartIfNeeded__block_invoke_4;
     v19 = &unk_1E7C94398;
     v20 = v8;
-    v21 = self;
+    selfCopy = self;
     [(RPConnection *)v8 setStateChangedHandler:v16];
     [(RPConnection *)v8 activate];
 
@@ -8380,9 +8380,9 @@ LABEL_7:
   }
 }
 
-- (id)_decompressAndDecodeData:(id)a3 originalSize:(unint64_t)a4 error:(id *)a5
+- (id)_decompressAndDecodeData:(id)data originalSize:(unint64_t)size error:(id *)error
 {
-  v6 = [(RPFileTransferSession *)self _decompressData:a3 originalSize:a4 error:?];
+  v6 = [(RPFileTransferSession *)self _decompressData:data originalSize:size error:?];
   if (v6)
   {
     v7 = OPACKDecodeData();
@@ -8392,9 +8392,9 @@ LABEL_7:
       v9 = v7;
     }
 
-    else if (a5)
+    else if (error)
     {
-      *a5 = RPErrorF();
+      *error = RPErrorF();
     }
   }
 
@@ -8406,30 +8406,30 @@ LABEL_7:
   return v8;
 }
 
-- (id)_readPath:(const char *)a3 size:(unint64_t)a4 error:(id *)a5
+- (id)_readPath:(const char *)path size:(unint64_t)size error:(id *)error
 {
-  if (a4)
+  if (size)
   {
-    v8 = [(RPFileTransferSession *)self _openReadPath:a3 error:a5];
+    v8 = [(RPFileTransferSession *)self _openReadPath:path error:error];
     if ((v8 & 0x80000000) != 0)
     {
-      v10 = 0;
+      data = 0;
     }
 
     else
     {
       v9 = v8;
-      v10 = [(RPFileTransferSession *)self _readFD:v8 size:a4 error:a5];
+      data = [(RPFileTransferSession *)self _readFD:v8 size:size error:error];
       close(v9);
     }
   }
 
   else
   {
-    v10 = [MEMORY[0x1E695DEF0] data];
+    data = [MEMORY[0x1E695DEF0] data];
   }
 
-  return v10;
+  return data;
 }
 
 - (void)_activateAndReturnError:(void *)a1 .cold.1(void *a1, void *a2)

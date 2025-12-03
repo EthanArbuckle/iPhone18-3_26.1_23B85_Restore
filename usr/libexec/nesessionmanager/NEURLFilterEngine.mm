@@ -2,31 +2,31 @@
 - (BOOL)isActive;
 - (NEURLFilterEngine)init;
 - (id)getPrefilterTag;
-- (void)fetchConnectionWithCompletionHandler:(id)a3;
+- (void)fetchConnectionWithCompletionHandler:(id)handler;
 - (void)fetchFilterServerParameters;
 - (void)getPrefilter;
 - (void)resetCache;
-- (void)setConfiguration:(id)a3 completionHandler:(id)a4;
-- (void)startFilterWithCompletionHandler:(id)a3;
+- (void)setConfiguration:(id)configuration completionHandler:(id)handler;
+- (void)startFilterWithCompletionHandler:(id)handler;
 - (void)stopFilter;
 @end
 
 @implementation NEURLFilterEngine
 
-- (void)setConfiguration:(id)a3 completionHandler:(id)a4
+- (void)setConfiguration:(id)configuration completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  handlerCopy = handler;
   v8 = sub_1000A4834(self);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000A48C0;
   block[3] = &unk_1000EB2E8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = configurationCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = configurationCopy;
   dispatch_async(v8, block);
 }
 
@@ -83,17 +83,17 @@
   dispatch_async(v3, block);
 }
 
-- (void)fetchConnectionWithCompletionHandler:(id)a3
+- (void)fetchConnectionWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = sub_1000A4834(self);
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000A50F8;
   v7[3] = &unk_1000EB310;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(v5, v7);
 }
 
@@ -108,17 +108,17 @@
   dispatch_async(v3, block);
 }
 
-- (void)startFilterWithCompletionHandler:(id)a3
+- (void)startFilterWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = sub_1000A4834(self);
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000A7950;
   v7[3] = &unk_1000EB310;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(v5, v7);
 }
 

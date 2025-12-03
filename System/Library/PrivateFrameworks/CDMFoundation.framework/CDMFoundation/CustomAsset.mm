@@ -1,44 +1,44 @@
 @interface CustomAsset
-- (CustomAsset)initWithCoder:(id)a3;
-- (CustomAsset)initWithPath:(id)a3;
+- (CustomAsset)initWithCoder:(id)coder;
+- (CustomAsset)initWithPath:(id)path;
 - (NSString)description;
 - (id)getAssetLocale;
 - (id)toDictionary;
-- (void)appendPathWithServiceAssetFolder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)appendPathWithServiceAssetFolder:(id)folder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CustomAsset
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   path = self->_path;
-  v5 = a3;
-  [v5 encodeObject:path forKey:@"path"];
-  [v5 encodeObject:self->_version forKey:@"version"];
-  [v5 encodeObject:self->_assetMetadata forKey:@"assetMetadata"];
+  coderCopy = coder;
+  [coderCopy encodeObject:path forKey:@"path"];
+  [coderCopy encodeObject:self->_version forKey:@"version"];
+  [coderCopy encodeObject:self->_assetMetadata forKey:@"assetMetadata"];
 }
 
-- (CustomAsset)initWithCoder:(id)a3
+- (CustomAsset)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = CustomAsset;
   v5 = [(CustomAsset *)&v16 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"path"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"path"];
     path = v5->_path;
     v5->_path = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"version"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"version"];
     version = v5->_version;
     v5->_version = v8;
 
     v10 = MEMORY[0x1E695DFD8];
     v11 = objc_opt_class();
     v12 = [v10 setWithObjects:{v11, objc_opt_class(), 0}];
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"assetMetadata"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"assetMetadata"];
     assetMetadata = v5->_assetMetadata;
     v5->_assetMetadata = v13;
   }
@@ -61,7 +61,7 @@
   return 0;
 }
 
-- (void)appendPathWithServiceAssetFolder:(id)a3
+- (void)appendPathWithServiceAssetFolder:(id)folder
 {
   v7 = *MEMORY[0x1E69E9840];
   v3 = CDMOSLoggerForCategory(0);
@@ -82,14 +82,14 @@
   v5 = NSStringFromClass(v4);
   [v3 setObject:v5 forKey:@"type"];
 
-  v6 = [(CustomAsset *)self getAssetPath];
-  [v3 setObject:v6 forKey:@"path"];
+  getAssetPath = [(CustomAsset *)self getAssetPath];
+  [v3 setObject:getAssetPath forKey:@"path"];
 
-  v7 = [(CustomAsset *)self getAssetVersion];
-  [v3 setObject:v7 forKey:@"version"];
+  getAssetVersion = [(CustomAsset *)self getAssetVersion];
+  [v3 setObject:getAssetVersion forKey:@"version"];
 
-  v8 = [(CustomAsset *)self getAssetMetadata];
-  [v3 setObject:v8 forKey:@"asset_metadata"];
+  getAssetMetadata = [(CustomAsset *)self getAssetMetadata];
+  [v3 setObject:getAssetMetadata forKey:@"asset_metadata"];
 
   return v3;
 }
@@ -97,24 +97,24 @@
 - (NSString)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(CustomAsset *)self getAssetPath];
-  v5 = [(CustomAsset *)self getAssetVersion];
-  v6 = [(CustomAsset *)self getAssetMetadata];
-  v7 = [v3 stringWithFormat:@"[Custom asset] - Asset path: %@, Asset version: %@, Asset metadata: %@.", v4, v5, v6];
+  getAssetPath = [(CustomAsset *)self getAssetPath];
+  getAssetVersion = [(CustomAsset *)self getAssetVersion];
+  getAssetMetadata = [(CustomAsset *)self getAssetMetadata];
+  v7 = [v3 stringWithFormat:@"[Custom asset] - Asset path: %@, Asset version: %@, Asset metadata: %@.", getAssetPath, getAssetVersion, getAssetMetadata];
 
   return v7;
 }
 
-- (CustomAsset)initWithPath:(id)a3
+- (CustomAsset)initWithPath:(id)path
 {
-  v5 = a3;
+  pathCopy = path;
   v13.receiver = self;
   v13.super_class = CustomAsset;
   v6 = [(CustomAsset *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_path, a3);
+    objc_storeStrong(&v6->_path, path);
     v8 = [CDMAssetsUtils loadAssetMetadataFromAsset:v7->_path];
     assetMetadata = v7->_assetMetadata;
     v7->_assetMetadata = v8;

@@ -1,35 +1,35 @@
 @interface TUConversationActivityContext
 + (id)mediaContextIdentifiers;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToActivityContext:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToActivityContext:(id)context;
 - (BOOL)isMedia;
 - (NSString)analyticsIdentifier;
-- (TUConversationActivityContext)initWithCoder:(id)a3;
-- (TUConversationActivityContext)initWithContextIdentifier:(id)a3 actionDescription:(id)a4 ongoingDescription:(id)a5 completedDescription:(id)a6;
-- (id)copyWithZone:(_NSZone *)a3;
+- (TUConversationActivityContext)initWithCoder:(id)coder;
+- (TUConversationActivityContext)initWithContextIdentifier:(id)identifier actionDescription:(id)description ongoingDescription:(id)ongoingDescription completedDescription:(id)completedDescription;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TUConversationActivityContext
 
-- (TUConversationActivityContext)initWithContextIdentifier:(id)a3 actionDescription:(id)a4 ongoingDescription:(id)a5 completedDescription:(id)a6
+- (TUConversationActivityContext)initWithContextIdentifier:(id)identifier actionDescription:(id)description ongoingDescription:(id)ongoingDescription completedDescription:(id)completedDescription
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  identifierCopy = identifier;
+  descriptionCopy = description;
+  ongoingDescriptionCopy = ongoingDescription;
+  completedDescriptionCopy = completedDescription;
   v18.receiver = self;
   v18.super_class = TUConversationActivityContext;
   v15 = [(TUConversationActivityContext *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_typedIdentifier, a3);
-    objc_storeStrong(&v16->_actionDescription, a4);
-    objc_storeStrong(&v16->_ongoingDescription, a5);
-    objc_storeStrong(&v16->_completedDescription, a6);
+    objc_storeStrong(&v15->_typedIdentifier, identifier);
+    objc_storeStrong(&v16->_actionDescription, description);
+    objc_storeStrong(&v16->_ongoingDescription, ongoingDescription);
+    objc_storeStrong(&v16->_completedDescription, completedDescription);
   }
 
   return v16;
@@ -37,80 +37,80 @@
 
 - (id)description
 {
-  v2 = [(TUConversationActivityContext *)self typedIdentifier];
-  v3 = [v2 copy];
+  typedIdentifier = [(TUConversationActivityContext *)self typedIdentifier];
+  v3 = [typedIdentifier copy];
 
   return v3;
 }
 
 - (NSString)analyticsIdentifier
 {
-  v3 = [(TUConversationActivityContext *)self typedIdentifier];
-  v4 = [v3 isEqualToString:@"CPGroupActivityListenTogetherContext"];
+  typedIdentifier = [(TUConversationActivityContext *)self typedIdentifier];
+  v4 = [typedIdentifier isEqualToString:@"CPGroupActivityListenTogetherContext"];
 
   if (v4)
   {
     return @"listenTogether";
   }
 
-  v6 = [(TUConversationActivityContext *)self typedIdentifier];
-  v7 = [v6 isEqualToString:@"CPGroupActivityWatchTogetherContext"];
+  typedIdentifier2 = [(TUConversationActivityContext *)self typedIdentifier];
+  v7 = [typedIdentifier2 isEqualToString:@"CPGroupActivityWatchTogetherContext"];
 
   if (v7)
   {
     return @"watchTogether";
   }
 
-  v8 = [(TUConversationActivityContext *)self typedIdentifier];
-  v9 = [v8 isEqualToString:@"CPGroupActivityWorkoutTogetherContext"];
+  typedIdentifier3 = [(TUConversationActivityContext *)self typedIdentifier];
+  v9 = [typedIdentifier3 isEqualToString:@"CPGroupActivityWorkoutTogetherContext"];
 
   if (v9)
   {
     return @"workoutTogether";
   }
 
-  v10 = [(TUConversationActivityContext *)self typedIdentifier];
-  v11 = [v10 isEqualToString:@"CPGroupActivityPlayTogetherContext"];
+  typedIdentifier4 = [(TUConversationActivityContext *)self typedIdentifier];
+  v11 = [typedIdentifier4 isEqualToString:@"CPGroupActivityPlayTogetherContext"];
 
   if (v11)
   {
     return @"playTogether";
   }
 
-  v12 = [(TUConversationActivityContext *)self typedIdentifier];
-  v13 = [v12 isEqualToString:@"CPGroupActivityShopTogetherContext"];
+  typedIdentifier5 = [(TUConversationActivityContext *)self typedIdentifier];
+  v13 = [typedIdentifier5 isEqualToString:@"CPGroupActivityShopTogetherContext"];
 
   if (v13)
   {
     return @"shopTogether";
   }
 
-  v14 = [(TUConversationActivityContext *)self typedIdentifier];
-  v15 = [v14 isEqualToString:@"CPGroupActivityReadTogetherContext"];
+  typedIdentifier6 = [(TUConversationActivityContext *)self typedIdentifier];
+  v15 = [typedIdentifier6 isEqualToString:@"CPGroupActivityReadTogetherContext"];
 
   if (v15)
   {
     return @"readTogether";
   }
 
-  v16 = [(TUConversationActivityContext *)self typedIdentifier];
-  v17 = [v16 isEqualToString:@"CPGroupActivityExploreTogetherContext"];
+  typedIdentifier7 = [(TUConversationActivityContext *)self typedIdentifier];
+  v17 = [typedIdentifier7 isEqualToString:@"CPGroupActivityExploreTogetherContext"];
 
   if (v17)
   {
     return @"exploreTogether";
   }
 
-  v18 = [(TUConversationActivityContext *)self typedIdentifier];
-  v19 = [v18 isEqualToString:@"CPGroupActivityLearnTogetherContext"];
+  typedIdentifier8 = [(TUConversationActivityContext *)self typedIdentifier];
+  v19 = [typedIdentifier8 isEqualToString:@"CPGroupActivityLearnTogetherContext"];
 
   if (v19)
   {
     return @"learnTogether";
   }
 
-  v20 = [(TUConversationActivityContext *)self typedIdentifier];
-  v21 = [v20 isEqualToString:@"CPGroupActivityCreateTogetherContext"];
+  typedIdentifier9 = [(TUConversationActivityContext *)self typedIdentifier];
+  v21 = [typedIdentifier9 isEqualToString:@"CPGroupActivityCreateTogetherContext"];
 
   if (v21)
   {
@@ -125,9 +125,9 @@
 
 - (BOOL)isMedia
 {
-  v3 = [objc_opt_class() mediaContextIdentifiers];
-  v4 = [(TUConversationActivityContext *)self typedIdentifier];
-  v5 = [v3 containsObject:v4];
+  mediaContextIdentifiers = [objc_opt_class() mediaContextIdentifiers];
+  typedIdentifier = [(TUConversationActivityContext *)self typedIdentifier];
+  v5 = [mediaContextIdentifiers containsObject:typedIdentifier];
 
   return v5;
 }
@@ -151,33 +151,33 @@ uint64_t __56__TUConversationActivityContext_mediaContextIdentifiers__block_invo
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TUConversationActivityContext *)self isEqualToActivityContext:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TUConversationActivityContext *)self isEqualToActivityContext:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToActivityContext:(id)a3
+- (BOOL)isEqualToActivityContext:(id)context
 {
-  v4 = a3;
-  v5 = [(TUConversationActivityContext *)self typedIdentifier];
-  v6 = [v4 typedIdentifier];
-  if ([v5 isEqual:v6])
+  contextCopy = context;
+  typedIdentifier = [(TUConversationActivityContext *)self typedIdentifier];
+  typedIdentifier2 = [contextCopy typedIdentifier];
+  if ([typedIdentifier isEqual:typedIdentifier2])
   {
-    v7 = [(TUConversationActivityContext *)self actionDescription];
-    v8 = [v4 actionDescription];
-    if ([v7 isEqual:v8])
+    actionDescription = [(TUConversationActivityContext *)self actionDescription];
+    actionDescription2 = [contextCopy actionDescription];
+    if ([actionDescription isEqual:actionDescription2])
     {
-      v9 = [(TUConversationActivityContext *)self ongoingDescription];
-      v10 = [v4 ongoingDescription];
-      if ([v9 isEqual:v10])
+      ongoingDescription = [(TUConversationActivityContext *)self ongoingDescription];
+      ongoingDescription2 = [contextCopy ongoingDescription];
+      if ([ongoingDescription isEqual:ongoingDescription2])
       {
-        v11 = [(TUConversationActivityContext *)self completedDescription];
-        v12 = [v4 completedDescription];
-        v13 = [v11 isEqual:v12];
+        completedDescription = [(TUConversationActivityContext *)self completedDescription];
+        completedDescription2 = [contextCopy completedDescription];
+        v13 = [completedDescription isEqual:completedDescription2];
       }
 
       else
@@ -202,105 +202,105 @@ uint64_t __56__TUConversationActivityContext_mediaContextIdentifiers__block_invo
 
 - (unint64_t)hash
 {
-  v3 = [(TUConversationActivityContext *)self typedIdentifier];
-  v4 = [v3 hash];
-  v5 = [(TUConversationActivityContext *)self actionDescription];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(TUConversationActivityContext *)self ongoingDescription];
-  v8 = [v7 hash];
-  v9 = [(TUConversationActivityContext *)self completedDescription];
-  v10 = v8 ^ [v9 hash];
+  typedIdentifier = [(TUConversationActivityContext *)self typedIdentifier];
+  v4 = [typedIdentifier hash];
+  actionDescription = [(TUConversationActivityContext *)self actionDescription];
+  v6 = [actionDescription hash] ^ v4;
+  ongoingDescription = [(TUConversationActivityContext *)self ongoingDescription];
+  v8 = [ongoingDescription hash];
+  completedDescription = [(TUConversationActivityContext *)self completedDescription];
+  v10 = v8 ^ [completedDescription hash];
 
   return v6 ^ v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(TUConversationActivityContext *)self typedIdentifier];
-  v6 = [(TUConversationActivityContext *)self actionDescription];
-  v7 = [(TUConversationActivityContext *)self ongoingDescription];
-  v8 = [(TUConversationActivityContext *)self completedDescription];
-  v9 = [v4 initWithContextIdentifier:v5 actionDescription:v6 ongoingDescription:v7 completedDescription:v8];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  typedIdentifier = [(TUConversationActivityContext *)self typedIdentifier];
+  actionDescription = [(TUConversationActivityContext *)self actionDescription];
+  ongoingDescription = [(TUConversationActivityContext *)self ongoingDescription];
+  completedDescription = [(TUConversationActivityContext *)self completedDescription];
+  v9 = [v4 initWithContextIdentifier:typedIdentifier actionDescription:actionDescription ongoingDescription:ongoingDescription completedDescription:completedDescription];
 
   return v9;
 }
 
-- (TUConversationActivityContext)initWithCoder:(id)a3
+- (TUConversationActivityContext)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
   v6 = NSStringFromSelector(sel_typedIdentifier);
-  v7 = [v4 decodeObjectOfClass:v5 forKey:v6];
+  v7 = [coderCopy decodeObjectOfClass:v5 forKey:v6];
 
   if (v7)
   {
     v8 = objc_opt_class();
     v9 = NSStringFromSelector(sel_actionDescription);
-    v10 = [v4 decodeObjectOfClass:v8 forKey:v9];
+    v10 = [coderCopy decodeObjectOfClass:v8 forKey:v9];
 
     if (v10)
     {
       v11 = objc_opt_class();
       v12 = NSStringFromSelector(sel_ongoingDescription);
-      v13 = [v4 decodeObjectOfClass:v11 forKey:v12];
+      v13 = [coderCopy decodeObjectOfClass:v11 forKey:v12];
 
       if (v13)
       {
         v14 = objc_opt_class();
         v15 = NSStringFromSelector(sel_completedDescription);
-        v16 = [v4 decodeObjectOfClass:v14 forKey:v15];
+        v16 = [coderCopy decodeObjectOfClass:v14 forKey:v15];
 
         if (v16)
         {
           self = [(TUConversationActivityContext *)self initWithContextIdentifier:v7 actionDescription:v10 ongoingDescription:v13 completedDescription:v16];
-          v17 = self;
+          selfCopy = self;
         }
 
         else
         {
-          v17 = 0;
+          selfCopy = 0;
         }
       }
 
       else
       {
-        v17 = 0;
+        selfCopy = 0;
       }
     }
 
     else
     {
-      v17 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v17 = 0;
+    selfCopy = 0;
   }
 
-  return v17;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(TUConversationActivityContext *)self typedIdentifier];
+  coderCopy = coder;
+  typedIdentifier = [(TUConversationActivityContext *)self typedIdentifier];
   v6 = NSStringFromSelector(sel_typedIdentifier);
-  [v4 encodeObject:v5 forKey:v6];
+  [coderCopy encodeObject:typedIdentifier forKey:v6];
 
-  v7 = [(TUConversationActivityContext *)self actionDescription];
+  actionDescription = [(TUConversationActivityContext *)self actionDescription];
   v8 = NSStringFromSelector(sel_actionDescription);
-  [v4 encodeObject:v7 forKey:v8];
+  [coderCopy encodeObject:actionDescription forKey:v8];
 
-  v9 = [(TUConversationActivityContext *)self ongoingDescription];
+  ongoingDescription = [(TUConversationActivityContext *)self ongoingDescription];
   v10 = NSStringFromSelector(sel_ongoingDescription);
-  [v4 encodeObject:v9 forKey:v10];
+  [coderCopy encodeObject:ongoingDescription forKey:v10];
 
-  v12 = [(TUConversationActivityContext *)self completedDescription];
+  completedDescription = [(TUConversationActivityContext *)self completedDescription];
   v11 = NSStringFromSelector(sel_completedDescription);
-  [v4 encodeObject:v12 forKey:v11];
+  [coderCopy encodeObject:completedDescription forKey:v11];
 }
 
 @end

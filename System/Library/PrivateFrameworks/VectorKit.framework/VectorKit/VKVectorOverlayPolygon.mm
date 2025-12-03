@@ -1,7 +1,7 @@
 @interface VKVectorOverlayPolygon
-- (VKVectorOverlayPolygon)initWithMapPoints:(id *)a3 count:(unint64_t)a4;
+- (VKVectorOverlayPolygon)initWithMapPoints:(id *)points count:(unint64_t)count;
 - (id).cxx_construct;
-- (shared_ptr<geo::Polygon2<double>>)simplifiedGeometryAtZoomLevel:(unsigned __int8)a3;
+- (shared_ptr<geo::Polygon2<double>>)simplifiedGeometryAtZoomLevel:(unsigned __int8)level;
 @end
 
 @implementation VKVectorOverlayPolygon
@@ -15,14 +15,14 @@
   return self;
 }
 
-- (shared_ptr<geo::Polygon2<double>>)simplifiedGeometryAtZoomLevel:(unsigned __int8)a3
+- (shared_ptr<geo::Polygon2<double>>)simplifiedGeometryAtZoomLevel:(unsigned __int8)level
 {
-  v4 = a3;
+  levelCopy = level;
   v6 = v3;
-  v35 = a3;
+  levelCopy2 = level;
   os_unfair_lock_lock(&self->_simplifiedGeometryCacheLock._lock);
   ptr = self->_simplifiedGeometryCache.__ptr_;
-  v8 = std::__hash_table<std::__hash_value_type<gms::PropertyKey,BOOL>,std::__unordered_map_hasher<gms::PropertyKey,std::__hash_value_type<gms::PropertyKey,BOOL>,std::hash<gms::PropertyKey>,std::equal_to<gms::PropertyKey>,true>,std::__unordered_map_equal<gms::PropertyKey,std::__hash_value_type<gms::PropertyKey,BOOL>,std::equal_to<gms::PropertyKey>,std::hash<gms::PropertyKey>,true>,std::allocator<std::__hash_value_type<gms::PropertyKey,BOOL>>>::find<gms::PropertyKey>(ptr + 1, v4);
+  v8 = std::__hash_table<std::__hash_value_type<gms::PropertyKey,BOOL>,std::__unordered_map_hasher<gms::PropertyKey,std::__hash_value_type<gms::PropertyKey,BOOL>,std::hash<gms::PropertyKey>,std::equal_to<gms::PropertyKey>,true>,std::__unordered_map_equal<gms::PropertyKey,std::__hash_value_type<gms::PropertyKey,BOOL>,std::equal_to<gms::PropertyKey>,std::hash<gms::PropertyKey>,true>,std::allocator<std::__hash_value_type<gms::PropertyKey,BOOL>>>::find<gms::PropertyKey>(ptr + 1, levelCopy);
   if (!v8)
   {
     goto LABEL_8;
@@ -50,9 +50,9 @@
   if (ptr + 6 == v9)
   {
 LABEL_8:
-    if (v4 <= 0x12)
+    if (levelCopy <= 0x12)
     {
-      v16 = (1 << (19 - v4)) / *MEMORY[0x1E69A1690];
+      v16 = (1 << (19 - levelCopy)) / *MEMORY[0x1E69A1690];
     }
 
     else
@@ -125,9 +125,9 @@ LABEL_8:
   return result;
 }
 
-- (VKVectorOverlayPolygon)initWithMapPoints:(id *)a3 count:(unint64_t)a4
+- (VKVectorOverlayPolygon)initWithMapPoints:(id *)points count:(unint64_t)count
 {
-  if (a4)
+  if (count)
   {
     v5.receiver = self;
     v5.super_class = VKVectorOverlayPolygon;

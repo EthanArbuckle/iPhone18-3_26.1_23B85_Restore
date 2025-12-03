@@ -1,34 +1,34 @@
 @interface TSCEReferenceValue
 + (id)emptyReferenceValue;
-- (BOOL)asBoolean:(id)a3 functionSpec:(id)a4 argumentIndex:(int)a5 outError:(id *)a6;
-- (BOOL)asStrictBoolean:(id)a3 functionSpec:(id)a4 argumentIndex:(int)a5 outError:(id *)a6;
+- (BOOL)asBoolean:(id)boolean functionSpec:(id)spec argumentIndex:(int)index outError:(id *)error;
+- (BOOL)asStrictBoolean:(id)boolean functionSpec:(id)spec argumentIndex:(int)index outError:(id *)error;
 - (BOOL)isRange;
 - (TSCEAnyRef)anyRef;
 - (TSCEFormat)format;
-- (TSCEFormat)formatWithContext:(SEL)a3;
+- (TSCEFormat)formatWithContext:(SEL)context;
 - (TSCERangeCoordinate)range;
 - (TSCERangeRef)rangeRef;
 - (TSCEReferenceValue)init;
-- (TSCEReferenceValue)initWithContext:(id)a3 rangeRef:(const TSCERangeRef *)a4 preserveFlags:(const TSUPreserveFlags *)a5 cacheValue:(id)a6 wasFetchedWithRichTextAttributes:(BOOL)a7;
-- (TSCEReferenceValue)initWithContext:(id)a3 tableUID:(const TSKUIDStruct *)a4 rangeCoord:(const TSCERangeCoordinate *)a5 preserveFlags:(const TSUPreserveFlags *)a6 isOutputOfAFunction:(BOOL)a7;
-- (TSCEReferenceValue)initWithContext:(id)a3 tableUID:(const TSKUIDStruct *)a4 relativeCellCoord:(const TSCERelativeCellCoordinate *)a5 preserveFlags:(const TSUPreserveFlags *)a6;
-- (TSCEReferenceValue)initWithContext:(id)a3 tableUID:(const TSKUIDStruct *)a4 relativeRangeCoord:(const TSCERelativeRangeCoordinate *)a5 preserveFlags:(const TSUPreserveFlags *)a6;
-- (TSCEReferenceValue)initWithEvalRef:(id)a3 hostCell:(const TSUCellCoord *)a4 preserveFlags:(const TSUPreserveFlags *)a5 permitsAccessInsideMergeRegions:(BOOL)a6 isOutputOfAFunction:(BOOL)a7;
-- (TSCERichTextStorage)asRichTextStorage:(SEL)a3 functionSpec:(id)a4 argumentIndex:(id)a5 outError:(int)a6;
+- (TSCEReferenceValue)initWithContext:(id)context rangeRef:(const TSCERangeRef *)ref preserveFlags:(const TSUPreserveFlags *)flags cacheValue:(id)value wasFetchedWithRichTextAttributes:(BOOL)attributes;
+- (TSCEReferenceValue)initWithContext:(id)context tableUID:(const TSKUIDStruct *)d rangeCoord:(const TSCERangeCoordinate *)coord preserveFlags:(const TSUPreserveFlags *)flags isOutputOfAFunction:(BOOL)function;
+- (TSCEReferenceValue)initWithContext:(id)context tableUID:(const TSKUIDStruct *)d relativeCellCoord:(const TSCERelativeCellCoordinate *)coord preserveFlags:(const TSUPreserveFlags *)flags;
+- (TSCEReferenceValue)initWithContext:(id)context tableUID:(const TSKUIDStruct *)d relativeRangeCoord:(const TSCERelativeRangeCoordinate *)coord preserveFlags:(const TSUPreserveFlags *)flags;
+- (TSCEReferenceValue)initWithEvalRef:(id)ref hostCell:(const TSUCellCoord *)cell preserveFlags:(const TSUPreserveFlags *)flags permitsAccessInsideMergeRegions:(BOOL)regions isOutputOfAFunction:(BOOL)function;
+- (TSCERichTextStorage)asRichTextStorage:(SEL)storage functionSpec:(id)spec argumentIndex:(id)index outError:(int)error;
 - (TSKUIDStruct)tableUID;
-- (char)deepType:(id)a3 outError:(id *)a4;
-- (id)asDate:(id)a3 functionSpec:(id)a4 argumentIndex:(int)a5 outError:(id *)a6;
-- (id)asGrid:(id)a3 functionSpec:(id)a4 argumentIndex:(int)a5 applyPreferredFormat:(BOOL)a6 outError:(id *)a7;
-- (id)asNumber:(id)a3 functionSpec:(id)a4 argumentIndex:(int)a5 outError:(id *)a6;
-- (id)asRawString:(id)a3 functionSpec:(id)a4 argumentIndex:(int)a5 outError:(id *)a6;
-- (id)asReference:(id)a3 functionSpec:(id)a4 argumentIndex:(int)a5 outError:(id *)a6;
-- (id)asString:(id)a3 functionSpec:(id)a4 argumentIndex:(int)a5 outError:(id *)a6;
-- (id)canonicalKeyStringForLocale:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (char)deepType:(id)type outError:(id *)error;
+- (id)asDate:(id)date functionSpec:(id)spec argumentIndex:(int)index outError:(id *)error;
+- (id)asGrid:(id)grid functionSpec:(id)spec argumentIndex:(int)index applyPreferredFormat:(BOOL)format outError:(id *)error;
+- (id)asNumber:(id)number functionSpec:(id)spec argumentIndex:(int)index outError:(id *)error;
+- (id)asRawString:(id)string functionSpec:(id)spec argumentIndex:(int)index outError:(id *)error;
+- (id)asReference:(id)reference functionSpec:(id)spec argumentIndex:(int)index outError:(id *)error;
+- (id)asString:(id)string functionSpec:(id)spec argumentIndex:(int)index outError:(id *)error;
+- (id)canonicalKeyStringForLocale:(id)locale;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)errorWithContext:(id)a3;
-- (id)intersectionWithHostCellRef:(TSCECellRef *)a3 rangeContext:(unsigned __int8)a4 evaluationContext:(id)a5;
-- (id)referredToValue:(id)a3 fetchRichTextAttributesIfPlainText:(BOOL)a4;
+- (id)errorWithContext:(id)context;
+- (id)intersectionWithHostCellRef:(TSCECellRef *)ref rangeContext:(unsigned __int8)context evaluationContext:(id)evaluationContext;
+- (id)referredToValue:(id)value fetchRichTextAttributesIfPlainText:(BOOL)text;
 @end
 
 @implementation TSCEReferenceValue
@@ -58,7 +58,7 @@
   return v3;
 }
 
-- (TSCEReferenceValue)initWithContext:(id)a3 tableUID:(const TSKUIDStruct *)a4 rangeCoord:(const TSCERangeCoordinate *)a5 preserveFlags:(const TSUPreserveFlags *)a6 isOutputOfAFunction:(BOOL)a7
+- (TSCEReferenceValue)initWithContext:(id)context tableUID:(const TSKUIDStruct *)d rangeCoord:(const TSCERangeCoordinate *)coord preserveFlags:(const TSUPreserveFlags *)flags isOutputOfAFunction:(BOOL)function
 {
   v43.receiver = self;
   v43.super_class = TSCEReferenceValue;
@@ -69,11 +69,11 @@
     evalRef = v12->_evalRef;
     v12->_evalRef = 0;
 
-    v13->_hostCell = *objc_msgSend_containingCell(a3, v15, v16, v17, v18);
-    v13->_preserveFlags = a6->_flags;
-    v13->_isOutputOfAFunction = a7;
+    v13->_hostCell = *objc_msgSend_containingCell(context, v15, v16, v17, v18);
+    v13->_preserveFlags = flags->_flags;
+    v13->_isOutputOfAFunction = function;
     v13->_permitsAccessInsideMergeRegions = 0;
-    if (*a4 == 0)
+    if (*d == 0)
     {
       v23 = MEMORY[0x277D81150];
       v24 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v19, "[TSCEReferenceValue initWithContext:tableUID:rangeCoord:preserveFlags:isOutputOfAFunction:]", v21, v22);
@@ -83,12 +83,12 @@
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v30, v31, v32, v33);
     }
 
-    v34 = objc_msgSend_calcEngine(a3, v19, v20, v21, v22);
-    v38 = objc_msgSend_tableResolverForTableUID_(v34, v35, a4, v36, v37);
+    v34 = objc_msgSend_calcEngine(context, v19, v20, v21, v22);
+    v38 = objc_msgSend_tableResolverForTableUID_(v34, v35, d, v36, v37);
 
     if (v38)
     {
-      v40 = objc_msgSend_makeReferenceWithTopLeft_bottomRight_preserveFlags_(v38, v39, a5, &a5->_bottomRight, a6);
+      v40 = objc_msgSend_makeReferenceWithTopLeft_bottomRight_preserveFlags_(v38, v39, coord, &coord->_bottomRight, flags);
       v41 = v13->_evalRef;
       v13->_evalRef = v40;
     }
@@ -97,10 +97,10 @@
   return v13;
 }
 
-- (TSCEReferenceValue)initWithContext:(id)a3 rangeRef:(const TSCERangeRef *)a4 preserveFlags:(const TSUPreserveFlags *)a5 cacheValue:(id)a6 wasFetchedWithRichTextAttributes:(BOOL)a7
+- (TSCEReferenceValue)initWithContext:(id)context rangeRef:(const TSCERangeRef *)ref preserveFlags:(const TSUPreserveFlags *)flags cacheValue:(id)value wasFetchedWithRichTextAttributes:(BOOL)attributes
 {
-  v47 = a7;
-  v48 = a6;
+  attributesCopy = attributes;
+  valueCopy = value;
   v50.receiver = self;
   v50.super_class = TSCEReferenceValue;
   v11 = [(TSCEValue *)&v50 init];
@@ -110,11 +110,11 @@
     evalRef = v11->_evalRef;
     v11->_evalRef = 0;
 
-    v12->_hostCell = *objc_msgSend_containingCell(a3, v14, v15, v16, v17);
-    v12->_preserveFlags = a5->_flags;
+    v12->_hostCell = *objc_msgSend_containingCell(context, v14, v15, v16, v17);
+    v12->_preserveFlags = flags->_flags;
     v12->_isOutputOfAFunction = 0;
     v12->_permitsAccessInsideMergeRegions = 0;
-    if (*&a4->_tableUID == 0)
+    if (*&ref->_tableUID == 0)
     {
       v22 = MEMORY[0x277D81150];
       v23 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v18, "[TSCEReferenceValue initWithContext:rangeRef:preserveFlags:cacheValue:wasFetchedWithRichTextAttributes:]", v20, v21);
@@ -124,25 +124,25 @@
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v29, v30, v31, v32);
     }
 
-    v33 = objc_msgSend_calcEngine(a3, v18, v19, v20, v21);
-    v37 = objc_msgSend_tableResolverForTableUID_(v33, v34, &a4->_tableUID, v35, v36);
+    v33 = objc_msgSend_calcEngine(context, v18, v19, v20, v21);
+    v37 = objc_msgSend_tableResolverForTableUID_(v33, v34, &ref->_tableUID, v35, v36);
 
     if (v37)
     {
-      range = a4->range;
-      v41 = objc_msgSend_makeReferenceWithTopLeft_bottomRight_preserveFlags_(v37, v38, &range, &range._bottomRight, a5);
+      range = ref->range;
+      v41 = objc_msgSend_makeReferenceWithTopLeft_bottomRight_preserveFlags_(v37, v38, &range, &range._bottomRight, flags);
       v42 = v12->_evalRef;
       v12->_evalRef = v41;
     }
 
-    objc_msgSend_setCachedValue_(v12->_evalRef, v38, v48, v39, v40);
-    objc_msgSend_setCachedValueWasFetchedWithRichTextAttributes_(v12->_evalRef, v43, v47, v44, v45);
+    objc_msgSend_setCachedValue_(v12->_evalRef, v38, valueCopy, v39, v40);
+    objc_msgSend_setCachedValueWasFetchedWithRichTextAttributes_(v12->_evalRef, v43, attributesCopy, v44, v45);
   }
 
   return v12;
 }
 
-- (TSCEReferenceValue)initWithContext:(id)a3 tableUID:(const TSKUIDStruct *)a4 relativeRangeCoord:(const TSCERelativeRangeCoordinate *)a5 preserveFlags:(const TSUPreserveFlags *)a6
+- (TSCEReferenceValue)initWithContext:(id)context tableUID:(const TSKUIDStruct *)d relativeRangeCoord:(const TSCERelativeRangeCoordinate *)coord preserveFlags:(const TSUPreserveFlags *)flags
 {
   v60.receiver = self;
   v60.super_class = TSCEReferenceValue;
@@ -153,11 +153,11 @@
     evalRef = v10->_evalRef;
     v10->_evalRef = 0;
 
-    v11->_hostCell = *objc_msgSend_containingCell(a3, v13, v14, v15, v16);
-    v11->_preserveFlags = a6->_flags;
+    v11->_hostCell = *objc_msgSend_containingCell(context, v13, v14, v15, v16);
+    v11->_preserveFlags = flags->_flags;
     v11->_isOutputOfAFunction = 0;
     v11->_permitsAccessInsideMergeRegions = 0;
-    if (*a4 == 0)
+    if (*d == 0)
     {
       v21 = MEMORY[0x277D81150];
       v22 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v17, "[TSCEReferenceValue initWithContext:tableUID:relativeRangeCoord:preserveFlags:]", v19, v20);
@@ -167,20 +167,20 @@
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v28, v29, v30, v31);
     }
 
-    v32 = objc_msgSend_calcEngine(a3, v17, v18, v19, v20);
-    v36 = objc_msgSend_tableResolverForTableUID_(v32, v33, a4, v34, v35);
+    v32 = objc_msgSend_calcEngine(context, v17, v18, v19, v20);
+    v36 = objc_msgSend_tableResolverForTableUID_(v32, v33, d, v34, v35);
 
     if (v36)
     {
-      v41 = *objc_msgSend_containingCell(a3, v37, v38, v39, v40);
-      var0 = a5->var0;
-      v58[0]._flags = a6->_flags & 3;
+      v41 = *objc_msgSend_containingCell(context, v37, v38, v39, v40);
+      var0 = coord->var0;
+      v58[0]._flags = flags->_flags & 3;
       v59 = TSCEMakeAbsoluteCellCoordinateFromRelativeCellCoordinate(v41, var0, v58, v43, v44);
-      v49 = *objc_msgSend_containingCell(a3, v45, v46, v47, v48);
-      var1 = a5->var1;
-      v57._flags = (a6->_flags >> 2) & 3;
+      v49 = *objc_msgSend_containingCell(context, v45, v46, v47, v48);
+      var1 = coord->var1;
+      v57._flags = (flags->_flags >> 2) & 3;
       *&v58[0]._flags = TSCEMakeAbsoluteCellCoordinateFromRelativeCellCoordinate(v49, var1, &v57, v51, v52);
-      v54 = objc_msgSend_makeReferenceWithTopLeft_bottomRight_preserveFlags_(v36, v53, &v59, v58, a6);
+      v54 = objc_msgSend_makeReferenceWithTopLeft_bottomRight_preserveFlags_(v36, v53, &v59, v58, flags);
       v55 = v11->_evalRef;
       v11->_evalRef = v54;
     }
@@ -189,7 +189,7 @@
   return v11;
 }
 
-- (TSCEReferenceValue)initWithContext:(id)a3 tableUID:(const TSKUIDStruct *)a4 relativeCellCoord:(const TSCERelativeCellCoordinate *)a5 preserveFlags:(const TSUPreserveFlags *)a6
+- (TSCEReferenceValue)initWithContext:(id)context tableUID:(const TSKUIDStruct *)d relativeCellCoord:(const TSCERelativeCellCoordinate *)coord preserveFlags:(const TSUPreserveFlags *)flags
 {
   v51.receiver = self;
   v51.super_class = TSCEReferenceValue;
@@ -200,11 +200,11 @@
     evalRef = v10->_evalRef;
     v10->_evalRef = 0;
 
-    v11->_hostCell = *objc_msgSend_containingCell(a3, v13, v14, v15, v16);
-    v11->_preserveFlags = a6->_flags;
+    v11->_hostCell = *objc_msgSend_containingCell(context, v13, v14, v15, v16);
+    v11->_preserveFlags = flags->_flags;
     v11->_isOutputOfAFunction = 0;
     v11->_permitsAccessInsideMergeRegions = 0;
-    if (*a4 == 0)
+    if (*d == 0)
     {
       v21 = MEMORY[0x277D81150];
       v22 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v17, "[TSCEReferenceValue initWithContext:tableUID:relativeCellCoord:preserveFlags:]", v19, v20);
@@ -214,16 +214,16 @@
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v28, v29, v30, v31);
     }
 
-    v32 = objc_msgSend_calcEngine(a3, v17, v18, v19, v20);
-    v36 = objc_msgSend_tableResolverForTableUID_(v32, v33, a4, v34, v35);
+    v32 = objc_msgSend_calcEngine(context, v17, v18, v19, v20);
+    v36 = objc_msgSend_tableResolverForTableUID_(v32, v33, d, v34, v35);
 
     if (v36)
     {
-      v41 = *a5;
-      flags = a6->_flags;
-      v43 = *objc_msgSend_containingCell(a3, v37, v38, v39, v40);
-      v50 = TSCEMakeAbsoluteCellCoordinateFromRelativeCellCoordinate(v43, (((flags & 1) << 56) | (((flags >> 1) & 1) << 48) | *&v41 & 0xFFFFFFFFFFFFLL), a6, v44, v45);
-      v47 = objc_msgSend_makeReferenceWithTopLeft_bottomRight_preserveFlags_(v36, v46, &v50, &v50, a6);
+      v41 = *coord;
+      flags = flags->_flags;
+      v43 = *objc_msgSend_containingCell(context, v37, v38, v39, v40);
+      v50 = TSCEMakeAbsoluteCellCoordinateFromRelativeCellCoordinate(v43, (((flags & 1) << 56) | (((flags >> 1) & 1) << 48) | *&v41 & 0xFFFFFFFFFFFFLL), flags, v44, v45);
+      v47 = objc_msgSend_makeReferenceWithTopLeft_bottomRight_preserveFlags_(v36, v46, &v50, &v50, flags);
       v48 = v11->_evalRef;
       v11->_evalRef = v47;
     }
@@ -232,30 +232,30 @@
   return v11;
 }
 
-- (TSCEReferenceValue)initWithEvalRef:(id)a3 hostCell:(const TSUCellCoord *)a4 preserveFlags:(const TSUPreserveFlags *)a5 permitsAccessInsideMergeRegions:(BOOL)a6 isOutputOfAFunction:(BOOL)a7
+- (TSCEReferenceValue)initWithEvalRef:(id)ref hostCell:(const TSUCellCoord *)cell preserveFlags:(const TSUPreserveFlags *)flags permitsAccessInsideMergeRegions:(BOOL)regions isOutputOfAFunction:(BOOL)function
 {
-  v13 = a3;
+  refCopy = ref;
   v17.receiver = self;
   v17.super_class = TSCEReferenceValue;
   v14 = [(TSCEValue *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_evalRef, a3);
-    v15->_hostCell = *a4;
-    v15->_preserveFlags = a5->_flags;
-    v15->_isOutputOfAFunction = a7;
-    v15->_permitsAccessInsideMergeRegions = a6;
+    objc_storeStrong(&v14->_evalRef, ref);
+    v15->_hostCell = *cell;
+    v15->_preserveFlags = flags->_flags;
+    v15->_isOutputOfAFunction = function;
+    v15->_permitsAccessInsideMergeRegions = regions;
   }
 
   return v15;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = TSCEReferenceValue;
-  v4 = [(TSCEValue *)&v6 copyWithZone:a3];
+  v4 = [(TSCEValue *)&v6 copyWithZone:zone];
   objc_storeStrong(v4 + 7, self->_evalRef);
   v4[8] = self->_hostCell;
   *(v4 + 72) = self->_preserveFlags._flags;
@@ -264,12 +264,12 @@
   return v4;
 }
 
-- (char)deepType:(id)a3 outError:(id *)a4
+- (char)deepType:(id)type outError:(id *)error
 {
-  if (!a3)
+  if (!type)
   {
     v13 = MEMORY[0x277D81150];
-    v14 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSCEReferenceValue deepType:outError:]", a4, v4);
+    v14 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSCEReferenceValue deepType:outError:]", error, v4);
     v18 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v15, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/calculationEngine/TSCEReferenceValue.mm", v16, v17);
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v13, v19, v14, v18, 243, 0, "TSCEReferenceType requires an EvaluationContext to perform deepType()");
 
@@ -280,17 +280,17 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v7 = objc_msgSend_referredToValue_fetchRichTextAttributesIfPlainText_(self, a2, a3, 0, v4);
+  v7 = objc_msgSend_referredToValue_fetchRichTextAttributesIfPlainText_(self, a2, type, 0, v4);
   v25 = 0;
-  v10 = objc_msgSend_deepType_outError_(v7, v8, a3, &v25, v9);
+  v10 = objc_msgSend_deepType_outError_(v7, v8, type, &v25, v9);
   v11 = v25;
 
   if (v11)
   {
-    if (a4)
+    if (error)
     {
       v12 = v11;
-      *a4 = v11;
+      *error = v11;
     }
 
     goto LABEL_6;
@@ -301,12 +301,12 @@ LABEL_7:
   return v10;
 }
 
-- (id)referredToValue:(id)a3 fetchRichTextAttributesIfPlainText:(BOOL)a4
+- (id)referredToValue:(id)value fetchRichTextAttributesIfPlainText:(BOOL)text
 {
-  v5 = a4;
-  hasCachedValue = objc_msgSend_hasCachedValue(self->_evalRef, a2, a3, a4, v4);
+  textCopy = text;
+  hasCachedValue = objc_msgSend_hasCachedValue(self->_evalRef, a2, value, text, v4);
   v13 = objc_msgSend_cachedValueWasFetchedWithRichTextAttributes(self->_evalRef, v9, v10, v11, v12);
-  if (!hasCachedValue || !(!v5 | v13))
+  if (!hasCachedValue || !(!textCopy | v13))
   {
     evalRef = self->_evalRef;
     if (!evalRef)
@@ -340,8 +340,8 @@ LABEL_7:
       {
 LABEL_10:
         permitsAccessInsideMergeRegions = self->_permitsAccessInsideMergeRegions;
-        v27 = objc_msgSend_inArrayMode(a3, v20, v21, v22, v23);
-        if (v5)
+        v27 = objc_msgSend_inArrayMode(value, v20, v21, v22, v23);
+        if (textCopy)
         {
           v30 = 2;
         }
@@ -354,17 +354,17 @@ LABEL_10:
         v31 = v30 | permitsAccessInsideMergeRegions;
         if (v27)
         {
-          objc_msgSend_valueForEvalContext_readOptions_(self->_evalRef, v28, a3, v31 | 4, v29);
+          objc_msgSend_valueForEvalContext_readOptions_(self->_evalRef, v28, value, v31 | 4, v29);
         }
 
         else
         {
-          objc_msgSend_valueForEvalContext_readOptions_(self->_evalRef, v28, a3, v31, v29);
+          objc_msgSend_valueForEvalContext_readOptions_(self->_evalRef, v28, value, v31, v29);
         }
         v32 = ;
         objc_msgSend_setCachedValue_(self->_evalRef, v33, v32, v34, v35);
 
-        objc_msgSend_setCachedValueWasFetchedWithRichTextAttributes_(self->_evalRef, v36, v5, v37, v38);
+        objc_msgSend_setCachedValueWasFetchedWithRichTextAttributes_(self->_evalRef, v36, textCopy, v37, v38);
       }
     }
 
@@ -390,7 +390,7 @@ LABEL_10:
       v49 = 0;
       v50 = 0;
       v51 = 0;
-      objc_msgSend_addCalculatedPrecedent_(a3, v20, &v45, v22, v23, v43, v44);
+      objc_msgSend_addCalculatedPrecedent_(value, v20, &v45, v22, v23, v43, v44);
     }
   }
 
@@ -413,20 +413,20 @@ LABEL_28:
   return v41;
 }
 
-- (id)intersectionWithHostCellRef:(TSCECellRef *)a3 rangeContext:(unsigned __int8)a4 evaluationContext:(id)a5
+- (id)intersectionWithHostCellRef:(TSCECellRef *)ref rangeContext:(unsigned __int8)context evaluationContext:(id)evaluationContext
 {
-  v5 = a4;
-  v8 = a5;
+  contextCopy = context;
+  evaluationContextCopy = evaluationContext;
   v9 = self->_evalRef;
   if (v9)
   {
     v11 = v9;
-    v12 = objc_msgSend_intersectionWithHostCellRef_rangeContext_evaluationContext_(v9, v10, a3, v5, v8);
+    v12 = objc_msgSend_intersectionWithHostCellRef_rangeContext_evaluationContext_(v9, v10, ref, contextCopy, evaluationContextCopy);
 
     if (v12)
     {
       v17 = [TSCEReferenceValue alloc];
-      v32[0] = a3->coordinate;
+      v32[0] = ref->coordinate;
       isOutputOfAFunction = objc_msgSend_initWithEvalRef_hostCell_preserveFlags_permitsAccessInsideMergeRegions_isOutputOfAFunction_(v17, v18, v12, v32, &self->_preserveFlags, self->_permitsAccessInsideMergeRegions, self->_isOutputOfAFunction);
     }
 
@@ -440,15 +440,15 @@ LABEL_28:
       isOutputOfAFunction = objc_msgSend_errorValue_(TSCEErrorValue, v28, v12, v29, v30);
     }
 
-    v20 = isOutputOfAFunction;
+    selfCopy = isOutputOfAFunction;
   }
 
   else
   {
-    v20 = self;
+    selfCopy = self;
   }
 
-  return v20;
+  return selfCopy;
 }
 
 - (TSKUIDStruct)tableUID
@@ -555,7 +555,7 @@ LABEL_28:
   return v19;
 }
 
-- (id)canonicalKeyStringForLocale:(id)a3
+- (id)canonicalKeyStringForLocale:(id)locale
 {
   v5 = MEMORY[0x277D81150];
   v6 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSCEReferenceValue canonicalKeyStringForLocale:]", v3, v4);
@@ -586,9 +586,9 @@ LABEL_28:
   return result;
 }
 
-- (TSCEFormat)formatWithContext:(SEL)a3
+- (TSCEFormat)formatWithContext:(SEL)context
 {
-  v7 = objc_msgSend_referredToValue_fetchRichTextAttributesIfPlainText_(self, a3, a4, 0, v4);
+  v7 = objc_msgSend_referredToValue_fetchRichTextAttributesIfPlainText_(self, context, a4, 0, v4);
   v12 = v7;
   if (v7)
   {
@@ -604,20 +604,20 @@ LABEL_28:
   return result;
 }
 
-- (id)asNumber:(id)a3 functionSpec:(id)a4 argumentIndex:(int)a5 outError:(id *)a6
+- (id)asNumber:(id)number functionSpec:(id)spec argumentIndex:(int)index outError:(id *)error
 {
-  v7 = *&a5;
-  if (!a6)
+  v7 = *&index;
+  if (!error)
   {
     v11 = MEMORY[0x277D81150];
-    v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSCEReferenceValue asNumber:functionSpec:argumentIndex:outError:]", a4, *&a5);
+    v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSCEReferenceValue asNumber:functionSpec:argumentIndex:outError:]", spec, *&index);
     v16 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v13, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/calculationEngine/TSCEReferenceValue.mm", v14, v15);
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v11, v17, v12, v16, 390, 0, "outError pointer is required for this API");
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v18, v19, v20, v21);
   }
 
-  v22 = objc_msgSend_referredToValue_fetchRichTextAttributesIfPlainText_(self, a2, a3, 0, *&a5);
+  v22 = objc_msgSend_referredToValue_fetchRichTextAttributesIfPlainText_(self, a2, number, 0, *&index);
   if (objc_msgSend_isNil(v22, v23, v24, v25, v26))
   {
     objc_msgSend_unitlessZero(TSCENumberValue, v27, v28, v29, v30);
@@ -625,88 +625,88 @@ LABEL_28:
 
   else
   {
-    objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v22, v27, a3, a4, v7, a6);
+    objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v22, v27, number, spec, v7, error);
   }
   v31 = ;
 
   return v31;
 }
 
-- (id)asDate:(id)a3 functionSpec:(id)a4 argumentIndex:(int)a5 outError:(id *)a6
+- (id)asDate:(id)date functionSpec:(id)spec argumentIndex:(int)index outError:(id *)error
 {
-  v7 = *&a5;
-  if (!a6)
+  v7 = *&index;
+  if (!error)
   {
     v11 = MEMORY[0x277D81150];
-    v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSCEReferenceValue asDate:functionSpec:argumentIndex:outError:]", a4, *&a5);
+    v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSCEReferenceValue asDate:functionSpec:argumentIndex:outError:]", spec, *&index);
     v16 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v13, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/calculationEngine/TSCEReferenceValue.mm", v14, v15);
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v11, v17, v12, v16, 404, 0, "outError pointer is required for this API");
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v18, v19, v20, v21);
   }
 
-  v22 = objc_msgSend_referredToValue_fetchRichTextAttributesIfPlainText_(self, a2, a3, 0, *&a5);
-  v24 = objc_msgSend_asDate_functionSpec_argumentIndex_outError_(v22, v23, a3, a4, v7, a6);
+  v22 = objc_msgSend_referredToValue_fetchRichTextAttributesIfPlainText_(self, a2, date, 0, *&index);
+  v24 = objc_msgSend_asDate_functionSpec_argumentIndex_outError_(v22, v23, date, spec, v7, error);
 
   return v24;
 }
 
-- (id)asString:(id)a3 functionSpec:(id)a4 argumentIndex:(int)a5 outError:(id *)a6
+- (id)asString:(id)string functionSpec:(id)spec argumentIndex:(int)index outError:(id *)error
 {
-  v7 = *&a5;
-  if (!a6)
+  v7 = *&index;
+  if (!error)
   {
     v11 = MEMORY[0x277D81150];
-    v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSCEReferenceValue asString:functionSpec:argumentIndex:outError:]", a4, *&a5);
+    v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSCEReferenceValue asString:functionSpec:argumentIndex:outError:]", spec, *&index);
     v16 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v13, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/calculationEngine/TSCEReferenceValue.mm", v14, v15);
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v11, v17, v12, v16, 414, 0, "outError pointer is required for this API");
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v18, v19, v20, v21);
   }
 
-  v22 = objc_msgSend_referredToValue_fetchRichTextAttributesIfPlainText_(self, a2, a3, 0, *&a5);
-  v24 = objc_msgSend_asString_functionSpec_argumentIndex_outError_(v22, v23, a3, a4, v7, a6);
+  v22 = objc_msgSend_referredToValue_fetchRichTextAttributesIfPlainText_(self, a2, string, 0, *&index);
+  v24 = objc_msgSend_asString_functionSpec_argumentIndex_outError_(v22, v23, string, spec, v7, error);
 
   return v24;
 }
 
-- (id)asRawString:(id)a3 functionSpec:(id)a4 argumentIndex:(int)a5 outError:(id *)a6
+- (id)asRawString:(id)string functionSpec:(id)spec argumentIndex:(int)index outError:(id *)error
 {
-  v7 = *&a5;
-  if (!a6)
+  v7 = *&index;
+  if (!error)
   {
     v11 = MEMORY[0x277D81150];
-    v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSCEReferenceValue asRawString:functionSpec:argumentIndex:outError:]", a4, *&a5);
+    v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSCEReferenceValue asRawString:functionSpec:argumentIndex:outError:]", spec, *&index);
     v16 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v13, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/calculationEngine/TSCEReferenceValue.mm", v14, v15);
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v11, v17, v12, v16, 424, 0, "outError pointer is required for this API");
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v18, v19, v20, v21);
   }
 
-  v22 = objc_msgSend_referredToValue_fetchRichTextAttributesIfPlainText_(self, a2, a3, 0, *&a5);
-  v24 = objc_msgSend_asRawString_functionSpec_argumentIndex_outError_(v22, v23, a3, a4, v7, a6);
+  v22 = objc_msgSend_referredToValue_fetchRichTextAttributesIfPlainText_(self, a2, string, 0, *&index);
+  v24 = objc_msgSend_asRawString_functionSpec_argumentIndex_outError_(v22, v23, string, spec, v7, error);
 
   return v24;
 }
 
-- (TSCERichTextStorage)asRichTextStorage:(SEL)a3 functionSpec:(id)a4 argumentIndex:(id)a5 outError:(int)a6
+- (TSCERichTextStorage)asRichTextStorage:(SEL)storage functionSpec:(id)spec argumentIndex:(id)index outError:(int)error
 {
-  v8 = *&a6;
+  v8 = *&error;
   if (!a7)
   {
     v13 = MEMORY[0x277D81150];
-    v26 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a3, "[TSCEReferenceValue asRichTextStorage:functionSpec:argumentIndex:outError:]", a5, *&a6);
+    v26 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], storage, "[TSCEReferenceValue asRichTextStorage:functionSpec:argumentIndex:outError:]", index, *&error);
     v17 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v14, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/calculationEngine/TSCEReferenceValue.mm", v15, v16);
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v13, v18, v26, v17, 434, 0, "outError pointer is required for this API");
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v19, v20, v21, v22);
   }
 
-  v23 = objc_msgSend_referredToValue_fetchRichTextAttributesIfPlainText_(self, a3, a4, 1, *&a6);
+  v23 = objc_msgSend_referredToValue_fetchRichTextAttributesIfPlainText_(self, storage, spec, 1, *&error);
   v27 = v23;
   if (v23)
   {
-    objc_msgSend_asRichTextStorage_functionSpec_argumentIndex_outError_(v23, v24, a4, a5, v8, a7);
+    objc_msgSend_asRichTextStorage_functionSpec_argumentIndex_outError_(v23, v24, spec, index, v8, a7);
   }
 
   else
@@ -719,20 +719,20 @@ LABEL_28:
   return result;
 }
 
-- (BOOL)asBoolean:(id)a3 functionSpec:(id)a4 argumentIndex:(int)a5 outError:(id *)a6
+- (BOOL)asBoolean:(id)boolean functionSpec:(id)spec argumentIndex:(int)index outError:(id *)error
 {
-  v7 = *&a5;
-  if (!a6)
+  v7 = *&index;
+  if (!error)
   {
     v11 = MEMORY[0x277D81150];
-    v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSCEReferenceValue asBoolean:functionSpec:argumentIndex:outError:]", a4, *&a5);
+    v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSCEReferenceValue asBoolean:functionSpec:argumentIndex:outError:]", spec, *&index);
     v16 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v13, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/calculationEngine/TSCEReferenceValue.mm", v14, v15);
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v11, v17, v12, v16, 444, 0, "outError pointer is required for this API");
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v18, v19, v20, v21);
   }
 
-  v22 = objc_msgSend_referredToValue_fetchRichTextAttributesIfPlainText_(self, a2, a3, 0, *&a5);
+  v22 = objc_msgSend_referredToValue_fetchRichTextAttributesIfPlainText_(self, a2, boolean, 0, *&index);
   if (objc_msgSend_isNil(v22, v23, v24, v25, v26))
   {
     v28 = 0;
@@ -740,26 +740,26 @@ LABEL_28:
 
   else
   {
-    v28 = objc_msgSend_asBoolean_functionSpec_argumentIndex_outError_(v22, v27, a3, a4, v7, a6);
+    v28 = objc_msgSend_asBoolean_functionSpec_argumentIndex_outError_(v22, v27, boolean, spec, v7, error);
   }
 
   return v28;
 }
 
-- (BOOL)asStrictBoolean:(id)a3 functionSpec:(id)a4 argumentIndex:(int)a5 outError:(id *)a6
+- (BOOL)asStrictBoolean:(id)boolean functionSpec:(id)spec argumentIndex:(int)index outError:(id *)error
 {
-  v7 = *&a5;
-  if (!a6)
+  v7 = *&index;
+  if (!error)
   {
     v11 = MEMORY[0x277D81150];
-    v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSCEReferenceValue asStrictBoolean:functionSpec:argumentIndex:outError:]", a4, *&a5);
+    v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSCEReferenceValue asStrictBoolean:functionSpec:argumentIndex:outError:]", spec, *&index);
     v16 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v13, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/calculationEngine/TSCEReferenceValue.mm", v14, v15);
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v11, v17, v12, v16, 458, 0, "outError pointer is required for this API");
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v18, v19, v20, v21);
   }
 
-  v22 = objc_msgSend_referredToValue_fetchRichTextAttributesIfPlainText_(self, a2, a3, 0, *&a5);
+  v22 = objc_msgSend_referredToValue_fetchRichTextAttributesIfPlainText_(self, a2, boolean, 0, *&index);
   if (objc_msgSend_isNil(v22, v23, v24, v25, v26))
   {
     v28 = 0;
@@ -767,27 +767,27 @@ LABEL_28:
 
   else
   {
-    v28 = objc_msgSend_asStrictBoolean_functionSpec_argumentIndex_outError_(v22, v27, a3, a4, v7, a6);
+    v28 = objc_msgSend_asStrictBoolean_functionSpec_argumentIndex_outError_(v22, v27, boolean, spec, v7, error);
   }
 
   return v28;
 }
 
-- (id)asGrid:(id)a3 functionSpec:(id)a4 argumentIndex:(int)a5 applyPreferredFormat:(BOOL)a6 outError:(id *)a7
+- (id)asGrid:(id)grid functionSpec:(id)spec argumentIndex:(int)index applyPreferredFormat:(BOOL)format outError:(id *)error
 {
-  v8 = a6;
-  v9 = *&a5;
-  if (!a7)
+  formatCopy = format;
+  v9 = *&index;
+  if (!error)
   {
     v13 = MEMORY[0x277D81150];
-    v14 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSCEReferenceValue asGrid:functionSpec:argumentIndex:applyPreferredFormat:outError:]", a4, *&a5);
+    v14 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSCEReferenceValue asGrid:functionSpec:argumentIndex:applyPreferredFormat:outError:]", spec, *&index);
     v18 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v15, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/calculationEngine/TSCEReferenceValue.mm", v16, v17);
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v13, v19, v14, v18, 473, 0, "outError pointer is required for this API");
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v20, v21, v22, v23);
   }
 
-  v24 = objc_msgSend_argumentSpecForIndex_(a4, a2, v9, a4, *&a5);
+  v24 = objc_msgSend_argumentSpecForIndex_(spec, a2, v9, spec, *&index);
   if (v24)
   {
     v29 = objc_msgSend_rangeContext(v24, v25, v26, v27, v28);
@@ -805,7 +805,7 @@ LABEL_28:
     {
       if (v29 == 1)
       {
-        v47 = objc_msgSend_asGrid_functionSpec_argumentIndex_applyPreferredFormat_outError_(v38, v43, a3, a4, v9, v8, a7);
+        v47 = objc_msgSend_asGrid_functionSpec_argumentIndex_applyPreferredFormat_outError_(v38, v43, grid, spec, v9, formatCopy, error);
       }
 
       else
@@ -819,23 +819,23 @@ LABEL_28:
         v82 = (v74 & 0xFFFF00000000) == 0x7FFF00000000 && v74 != 0x7FFFFFFF;
         if (v79 != 0x7FFFFFFF || (v79 & 0xFFFF00000000) == 0x7FFF00000000)
         {
-          objc_msgSend_apparentGridForRangeContext_tableUID_context_spansAllColumns_spansAllRows_(v87, v80, v29, v86, v85, a3, v82, 0);
+          objc_msgSend_apparentGridForRangeContext_tableUID_context_spansAllColumns_spansAllRows_(v87, v80, v29, v86, v85, grid, v82, 0);
         }
 
         else
         {
-          objc_msgSend_apparentGridForRangeContext_tableUID_context_spansAllColumns_spansAllRows_(v87, v80, v29, v86, v85, a3, v82, 1);
+          objc_msgSend_apparentGridForRangeContext_tableUID_context_spansAllColumns_spansAllRows_(v87, v80, v29, v86, v85, grid, v82, 1);
         }
 
-        v47 = objc_msgSend_asGrid_functionSpec_argumentIndex_applyPreferredFormat_outError_(v87, v84, a3, a4, v9, v8, a7);
+        v47 = objc_msgSend_asGrid_functionSpec_argumentIndex_applyPreferredFormat_outError_(v87, v84, grid, spec, v9, formatCopy, error);
       }
 
       goto LABEL_19;
     }
   }
 
-  v89[0] = a3;
-  v89[1] = a4;
+  v89[0] = grid;
+  v89[1] = spec;
   v90 = 0;
   v91 = v9;
   v92[0] = 0;
@@ -847,7 +847,7 @@ LABEL_28:
   inited = objc_msgSend_initWitRefValue_rangeContext_(v48, v49, self, v29, v50);
   v56 = objc_msgSend_permitsAccessInsideMergeRegions(self, v52, v53, v54, v55);
   objc_msgSend_setPermitsAccessInsideMergeRegions_(inited, v57, v56, v58, v59);
-  if (v8)
+  if (formatCopy)
   {
     if (inited)
     {
@@ -874,12 +874,12 @@ LABEL_19:
   return v47;
 }
 
-- (id)asReference:(id)a3 functionSpec:(id)a4 argumentIndex:(int)a5 outError:(id *)a6
+- (id)asReference:(id)reference functionSpec:(id)spec argumentIndex:(int)index outError:(id *)error
 {
-  if (!a6)
+  if (!error)
   {
     v7 = MEMORY[0x277D81150];
-    v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSCEReferenceValue asReference:functionSpec:argumentIndex:outError:]", a4, *&a5);
+    v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSCEReferenceValue asReference:functionSpec:argumentIndex:outError:]", spec, *&index);
     v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v9, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/calculationEngine/TSCEReferenceValue.mm", v10, v11);
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v7, v13, v8, v12, 515, 0, "outError pointer is required for this API");
 
@@ -889,10 +889,10 @@ LABEL_19:
   return self;
 }
 
-- (id)errorWithContext:(id)a3
+- (id)errorWithContext:(id)context
 {
-  v5 = objc_msgSend_referredToValue_fetchRichTextAttributesIfPlainText_(self, a2, a3, 0, v3);
-  v9 = objc_msgSend_errorWithContext_(v5, v6, a3, v7, v8);
+  v5 = objc_msgSend_referredToValue_fetchRichTextAttributesIfPlainText_(self, a2, context, 0, v3);
+  v9 = objc_msgSend_errorWithContext_(v5, v6, context, v7, v8);
 
   return v9;
 }

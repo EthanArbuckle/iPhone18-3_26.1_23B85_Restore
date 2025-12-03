@@ -1,22 +1,22 @@
 @interface PipZoomControl
-- (void)handlePinchWithSender:(id)a3;
-- (void)zoomControl:(id)a3 didChangeZoomFactor:(double)a4 interactionType:(int64_t)a5;
+- (void)handlePinchWithSender:(id)sender;
+- (void)zoomControl:(id)control didChangeZoomFactor:(double)factor interactionType:(int64_t)type;
 @end
 
 @implementation PipZoomControl
 
-- (void)handlePinchWithSender:(id)a3
+- (void)handlePinchWithSender:(id)sender
 {
-  v4 = a3;
-  v5 = self;
-  PipZoomControl.handlePinch(sender:)(v4);
+  senderCopy = sender;
+  selfCopy = self;
+  PipZoomControl.handlePinch(sender:)(senderCopy);
 }
 
-- (void)zoomControl:(id)a3 didChangeZoomFactor:(double)a4 interactionType:(int64_t)a5
+- (void)zoomControl:(id)control didChangeZoomFactor:(double)factor interactionType:(int64_t)type
 {
-  v7 = a3;
-  v8 = self;
-  PipZoomControl.zoomControl(_:didChangeZoomFactor:interactionType:)(a4);
+  controlCopy = control;
+  selfCopy = self;
+  PipZoomControl.zoomControl(_:didChangeZoomFactor:interactionType:)(factor);
 }
 
 @end

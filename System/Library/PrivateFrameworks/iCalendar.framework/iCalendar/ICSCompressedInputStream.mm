@@ -1,14 +1,14 @@
 @interface ICSCompressedInputStream
-- (ICSCompressedInputStream)initWithData:(id)a3;
+- (ICSCompressedInputStream)initWithData:(id)data;
 - (char)read;
 - (void)dealloc;
 @end
 
 @implementation ICSCompressedInputStream
 
-- (ICSCompressedInputStream)initWithData:(id)a3
+- (ICSCompressedInputStream)initWithData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
   v14.receiver = self;
   v14.super_class = ICSCompressedInputStream;
   v6 = [(ICSCompressedInputStream *)&v14 init];
@@ -23,14 +23,14 @@
     goto LABEL_3;
   }
 
-  objc_storeStrong(v7 + 6, a3);
+  objc_storeStrong(v7 + 6, data);
   *(v7 + 8) = 0;
   v9 = malloc_type_calloc(0x2000uLL, 1uLL, 0xA39BA119uLL);
   *(v7 + 7) = v9;
   *(v7 + 1) = v9;
   *(v7 + 2) = 0x2000;
-  *(v7 + 3) = [v5 bytes];
-  *(v7 + 4) = [v5 length];
+  *(v7 + 3) = [dataCopy bytes];
+  *(v7 + 4) = [dataCopy length];
   v10 = compression_stream_process((v7 + 8), 1);
   if (v10 == COMPRESSION_STATUS_OK)
   {

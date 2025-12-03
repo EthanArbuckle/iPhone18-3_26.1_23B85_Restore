@@ -1,50 +1,50 @@
 @interface SLGoogleAuthenticationPlugin
-+ (BOOL)supportsAccountType:(id)a3;
++ (BOOL)supportsAccountType:(id)type;
 - (id)_cancelButtonTitleForBadCredentialsAlert;
 - (id)_otherButtonTitleForBadCredentialsAlert;
-- (id)_titleForBadCredentialsAlertForAccount:(id)a3;
-- (id)credentialForAccount:(id)a3 client:(id)a4 store:(id)a5 error:(id *)a6;
-- (id)renewalIDsForAccount:(id)a3 accountStore:(id)a4 options:(id)a5;
-- (void)_displayBadCredentialsAlertForAccount:(id)a3 clientName:(id)a4 reason:(id)a5 accountStore:(id)a6 resetAuthenticatedOnAlertFailure:(BOOL)a7 handler:(id)a8;
-- (void)_migrateLegacyToken:(id)a3 account:(id)a4 password:(id)a5 completion:(id)a6;
-- (void)_refreshTokenForAccount:(id)a3 store:(id)a4 completion:(id)a5;
-- (void)renewCredentialsForAccount:(id)a3 accountStore:(id)a4 options:(id)a5 completion:(id)a6;
-- (void)showUserAlertWithTitle:(id)a3 message:(id)a4 cancelButtonTitle:(id)a5 otherButtonTitle:(id)a6 withCompletionBlock:(id)a7;
-- (void)verifyCredentialsForAccount:(id)a3 accountStore:(id)a4 options:(id)a5 completion:(id)a6;
+- (id)_titleForBadCredentialsAlertForAccount:(id)account;
+- (id)credentialForAccount:(id)account client:(id)client store:(id)store error:(id *)error;
+- (id)renewalIDsForAccount:(id)account accountStore:(id)store options:(id)options;
+- (void)_displayBadCredentialsAlertForAccount:(id)account clientName:(id)name reason:(id)reason accountStore:(id)store resetAuthenticatedOnAlertFailure:(BOOL)failure handler:(id)handler;
+- (void)_migrateLegacyToken:(id)token account:(id)account password:(id)password completion:(id)completion;
+- (void)_refreshTokenForAccount:(id)account store:(id)store completion:(id)completion;
+- (void)renewCredentialsForAccount:(id)account accountStore:(id)store options:(id)options completion:(id)completion;
+- (void)showUserAlertWithTitle:(id)title message:(id)message cancelButtonTitle:(id)buttonTitle otherButtonTitle:(id)otherButtonTitle withCompletionBlock:(id)block;
+- (void)verifyCredentialsForAccount:(id)account accountStore:(id)store options:(id)options completion:(id)completion;
 @end
 
 @implementation SLGoogleAuthenticationPlugin
 
-+ (BOOL)supportsAccountType:(id)a3
++ (BOOL)supportsAccountType:(id)type
 {
-  v3 = [a3 identifier];
-  v4 = [v3 isEqualToString:*MEMORY[0x29EDB8238]];
+  identifier = [type identifier];
+  v4 = [identifier isEqualToString:*MEMORY[0x29EDB8238]];
 
   return v4;
 }
 
-- (void)showUserAlertWithTitle:(id)a3 message:(id)a4 cancelButtonTitle:(id)a5 otherButtonTitle:(id)a6 withCompletionBlock:(id)a7
+- (void)showUserAlertWithTitle:(id)title message:(id)message cancelButtonTitle:(id)buttonTitle otherButtonTitle:(id)otherButtonTitle withCompletionBlock:(id)block
 {
-  v26 = a4;
-  v11 = a7;
+  messageCopy = message;
+  blockCopy = block;
   v12 = MEMORY[0x29EDB8E00];
   v13 = *MEMORY[0x29EDB9040];
   v14 = *MEMORY[0x29EDB9060];
   v15 = *MEMORY[0x29EDB9058];
   v16 = MEMORY[0x29EDB9F48];
-  v17 = a6;
-  v18 = a5;
-  v19 = a3;
+  otherButtonTitleCopy = otherButtonTitle;
+  buttonTitleCopy = buttonTitle;
+  titleCopy = title;
   v20 = [v16 bundleForClass:objc_opt_class()];
-  v21 = [v20 resourceURL];
-  v22 = [v12 dictionaryWithObjectsAndKeys:{v19, v13, v18, v14, v17, v15, v21, *MEMORY[0x29EDB9070], 0}];
+  resourceURL = [v20 resourceURL];
+  v22 = [v12 dictionaryWithObjectsAndKeys:{titleCopy, v13, buttonTitleCopy, v14, otherButtonTitleCopy, v15, resourceURL, *MEMORY[0x29EDB9070], 0}];
 
-  if (v26)
+  if (messageCopy)
   {
-    [v22 setObject:v26 forKey:*MEMORY[0x29EDB9048]];
+    [v22 setObject:messageCopy forKey:*MEMORY[0x29EDB9048]];
   }
 
-  v23 = [v11 copy];
+  v23 = [blockCopy copy];
 
   v30[0] = 0;
   v30[1] = v30;
@@ -63,12 +63,12 @@
   _Block_object_dispose(v30, 8);
 }
 
-- (id)credentialForAccount:(id)a3 client:(id)a4 store:(id)a5 error:(id *)a6
+- (id)credentialForAccount:(id)account client:(id)client store:(id)store error:(id *)error
 {
   v18 = *MEMORY[0x29EDCA608];
-  v8 = a3;
-  v9 = a4;
-  v10 = [v9 hasEntitlement:*MEMORY[0x29EDB83E0]];
+  accountCopy = account;
+  clientCopy = client;
+  v10 = [clientCopy hasEntitlement:*MEMORY[0x29EDB83E0]];
   v11 = _ACDLogSystem();
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
   if (v10)
@@ -76,11 +76,11 @@
     if (v12)
     {
       v16 = 138412290;
-      v17 = v9;
+      v17 = clientCopy;
       _os_log_impl(&dword_29C82D000, v11, OS_LOG_TYPE_DEFAULT, "%@ is entitled for all-account access. Returning Google credentials.", &v16, 0xCu);
     }
 
-    v13 = [MEMORY[0x29EDBDFF8] credentialForAccount:v8 clientID:0 error:a6];
+    v13 = [MEMORY[0x29EDBDFF8] credentialForAccount:accountCopy clientID:0 error:error];
   }
 
   else
@@ -88,7 +88,7 @@
     if (v12)
     {
       v16 = 138412290;
-      v17 = v9;
+      v17 = clientCopy;
       _os_log_impl(&dword_29C82D000, v11, OS_LOG_TYPE_DEFAULT, "%@ is a non-entitled client. No Google credential for you.", &v16, 0xCu);
     }
 
@@ -100,39 +100,39 @@
   return v13;
 }
 
-- (void)verifyCredentialsForAccount:(id)a3 accountStore:(id)a4 options:(id)a5 completion:(id)a6
+- (void)verifyCredentialsForAccount:(id)account accountStore:(id)store options:(id)options completion:(id)completion
 {
   v28 = *MEMORY[0x29EDCA608];
-  v7 = a3;
-  v8 = a6;
-  v9 = [v7 username];
-  if (!v9)
+  accountCopy = account;
+  completionCopy = completion;
+  username = [accountCopy username];
+  if (!username)
   {
     goto LABEL_10;
   }
 
-  v10 = v9;
-  v11 = [v7 credential];
-  v12 = [v11 credentialType];
-  if (![v12 isEqualToString:*MEMORY[0x29EDB82F0]])
+  v10 = username;
+  credential = [accountCopy credential];
+  credentialType = [credential credentialType];
+  if (![credentialType isEqualToString:*MEMORY[0x29EDB82F0]])
   {
     goto LABEL_9;
   }
 
-  v13 = [v7 credential];
-  v14 = [v13 oauthToken];
-  if (!v14)
+  credential2 = [accountCopy credential];
+  oauthToken = [credential2 oauthToken];
+  if (!oauthToken)
   {
 
 LABEL_9:
     goto LABEL_10;
   }
 
-  v15 = v14;
-  v16 = [v7 credential];
-  v17 = [v16 oauthRefreshToken];
+  v15 = oauthToken;
+  credential3 = [accountCopy credential];
+  oauthRefreshToken = [credential3 oauthRefreshToken];
 
-  if (!v17)
+  if (!oauthRefreshToken)
   {
 LABEL_10:
     v19 = MEMORY[0x29EDB9FA0];
@@ -142,7 +142,7 @@ LABEL_10:
     v21 = [MEMORY[0x29EDB8DC0] dictionaryWithObjects:&v25 forKeys:&v24 count:1];
     v22 = [v19 errorWithDomain:v20 code:3 userInfo:v21];
 
-    v8[2](v8, 0, v22);
+    completionCopy[2](completionCopy, 0, v22);
     goto LABEL_11;
   }
 
@@ -150,38 +150,38 @@ LABEL_10:
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v27 = v7;
+    v27 = accountCopy;
     _os_log_impl(&dword_29C82D000, v18, OS_LOG_TYPE_DEFAULT, "%@ is an OAuth account. we're good!", buf, 0xCu);
   }
 
-  (v8)[2](v8, v7, 0);
+  (completionCopy)[2](completionCopy, accountCopy, 0);
 LABEL_11:
 
   v23 = *MEMORY[0x29EDCA608];
 }
 
-- (id)renewalIDsForAccount:(id)a3 accountStore:(id)a4 options:(id)a5
+- (id)renewalIDsForAccount:(id)account accountStore:(id)store options:(id)options
 {
   v17[2] = *MEMORY[0x29EDCA608];
-  v6 = a3;
-  v7 = [a5 objectForKeyedSubscript:*MEMORY[0x29EDB8450]];
-  v8 = [v7 BOOLValue];
+  accountCopy = account;
+  v7 = [options objectForKeyedSubscript:*MEMORY[0x29EDB8450]];
+  bOOLValue = [v7 BOOLValue];
 
-  if (v8)
+  if (bOOLValue)
   {
     v9 = MEMORY[0x29EDBA0F8];
-    v10 = [v6 identifier];
-    v11 = [v9 stringWithFormat:@"%@.AvoidUI", v10];
+    identifier = [accountCopy identifier];
+    v11 = [v9 stringWithFormat:@"%@.AvoidUI", identifier];
     v17[0] = v11;
-    v12 = [v6 identifier];
-    v17[1] = v12;
+    identifier2 = [accountCopy identifier];
+    v17[1] = identifier2;
     v13 = [MEMORY[0x29EDB8D80] arrayWithObjects:v17 count:2];
   }
 
   else
   {
-    v10 = [v6 identifier];
-    v16 = v10;
+    identifier = [accountCopy identifier];
+    v16 = identifier;
     v13 = [MEMORY[0x29EDB8D80] arrayWithObjects:&v16 count:1];
   }
 
@@ -190,52 +190,52 @@ LABEL_11:
   return v13;
 }
 
-- (void)renewCredentialsForAccount:(id)a3 accountStore:(id)a4 options:(id)a5 completion:(id)a6
+- (void)renewCredentialsForAccount:(id)account accountStore:(id)store options:(id)options completion:(id)completion
 {
   v33 = *MEMORY[0x29EDCA608];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  accountCopy = account;
+  storeCopy = store;
+  optionsCopy = options;
+  completionCopy = completion;
   v14 = _ACDLogSystem();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v30 = v10;
+    v30 = accountCopy;
     v31 = 2114;
-    v32 = v12;
+    v32 = optionsCopy;
     _os_log_impl(&dword_29C82D000, v14, OS_LOG_TYPE_DEFAULT, "Google plugin got renewCredentialsForAccount: %@ options: %{public}@ completion:", buf, 0x16u);
   }
 
-  v15 = [v12 objectForKeyedSubscript:*MEMORY[0x29EDB8450]];
-  v16 = [v15 BOOLValue];
+  v15 = [optionsCopy objectForKeyedSubscript:*MEMORY[0x29EDB8450]];
+  bOOLValue = [v15 BOOLValue];
 
   v22[0] = MEMORY[0x29EDCA5F8];
   v22[1] = 3221225472;
   v22[2] = sub_29C82E8D8;
   v22[3] = &unk_29F327DC0;
-  v26 = v11;
-  v27 = v13;
-  v23 = v10;
-  v24 = v12;
-  v25 = self;
-  v28 = v16;
-  v17 = v11;
-  v18 = v12;
-  v19 = v13;
-  v20 = v10;
+  v26 = storeCopy;
+  v27 = completionCopy;
+  v23 = accountCopy;
+  v24 = optionsCopy;
+  selfCopy = self;
+  v28 = bOOLValue;
+  v17 = storeCopy;
+  v18 = optionsCopy;
+  v19 = completionCopy;
+  v20 = accountCopy;
   [(SLGoogleAuthenticationPlugin *)self _refreshTokenForAccount:v20 store:v17 completion:v22];
 
   v21 = *MEMORY[0x29EDCA608];
 }
 
-- (void)_refreshTokenForAccount:(id)a3 store:(id)a4 completion:(id)a5
+- (void)_refreshTokenForAccount:(id)account store:(id)store completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  accountCopy = account;
+  storeCopy = store;
+  completionCopy = completion;
   v32 = 0;
-  v11 = [MEMORY[0x29EDBDFF8] credentialForAccount:v8 clientID:0 error:&v32];
+  v11 = [MEMORY[0x29EDBDFF8] credentialForAccount:accountCopy clientID:0 error:&v32];
   v12 = v32;
   if (v11 && ([v11 oauthRefreshToken], v13 = objc_claimAutoreleasedReturnValue(), v13, v13))
   {
@@ -248,29 +248,29 @@ LABEL_11:
 
     v15 = objc_alloc_init(MEMORY[0x29EDBBD78]);
     v16 = MEMORY[0x29EDBBD68];
-    v17 = [v15 clientID];
-    v18 = [v11 oauthRefreshToken];
-    v19 = [v15 tokenURL];
-    v20 = [v16 urlRequestForClientID:v17 secret:0 refreshToken:v18 tokenURL:v19];
+    clientID = [v15 clientID];
+    oauthRefreshToken = [v11 oauthRefreshToken];
+    tokenURL = [v15 tokenURL];
+    password = [v16 urlRequestForClientID:clientID secret:0 refreshToken:oauthRefreshToken tokenURL:tokenURL];
 
-    v21 = [MEMORY[0x29EDBA138] ephemeralSessionConfiguration];
-    v22 = [MEMORY[0x29EDBA130] sessionWithConfiguration:v21];
+    ephemeralSessionConfiguration = [MEMORY[0x29EDBA138] ephemeralSessionConfiguration];
+    v22 = [MEMORY[0x29EDBA130] sessionWithConfiguration:ephemeralSessionConfiguration];
     v27[0] = MEMORY[0x29EDCA5F8];
     v27[1] = 3221225472;
     v27[2] = sub_29C82EFAC;
     v27[3] = &unk_29F327DE8;
     v28 = v11;
-    v29 = v8;
-    v30 = v10;
-    v23 = [v22 dataTaskWithRequest:v20 completionHandler:v27];
+    v29 = accountCopy;
+    v30 = completionCopy;
+    v23 = [v22 dataTaskWithRequest:password completionHandler:v27];
     [v23 resume];
   }
 
   else
   {
-    v15 = [v9 clientTokenForAccount:v8];
-    v20 = [v11 password];
-    if (v20)
+    v15 = [storeCopy clientTokenForAccount:accountCopy];
+    password = [v11 password];
+    if (password)
     {
       v24 = v15 == 0;
     }
@@ -284,59 +284,59 @@ LABEL_11:
     {
       if ([v12 code] == 10)
       {
-        v25 = v10;
+        v25 = completionCopy;
         v26 = 3;
       }
 
       else
       {
-        v25 = v10;
+        v25 = completionCopy;
         v26 = 0;
       }
 
-      (*(v10 + 2))(v25, v26, 0);
+      (*(completionCopy + 2))(v25, v26, 0);
     }
 
     else
     {
-      [(SLGoogleAuthenticationPlugin *)self _migrateLegacyToken:v15 account:v8 password:v20 completion:v10];
+      [(SLGoogleAuthenticationPlugin *)self _migrateLegacyToken:v15 account:accountCopy password:password completion:completionCopy];
     }
   }
 }
 
-- (void)_migrateLegacyToken:(id)a3 account:(id)a4 password:(id)a5 completion:(id)a6
+- (void)_migrateLegacyToken:(id)token account:(id)account password:(id)password completion:(id)completion
 {
-  v9 = a6;
+  completionCopy = completion;
   v10 = MEMORY[0x29EDBBD58];
-  v11 = a5;
-  v12 = a3;
-  v13 = [a4 username];
-  v14 = [v10 urlRequestForAuthTokenFromLegacyClientToken:v12 username:v13 password:v11];
+  passwordCopy = password;
+  tokenCopy = token;
+  username = [account username];
+  v14 = [v10 urlRequestForAuthTokenFromLegacyClientToken:tokenCopy username:username password:passwordCopy];
 
-  v15 = [MEMORY[0x29EDBA138] ephemeralSessionConfiguration];
-  v16 = [MEMORY[0x29EDBA130] sessionWithConfiguration:v15];
+  ephemeralSessionConfiguration = [MEMORY[0x29EDBA138] ephemeralSessionConfiguration];
+  v16 = [MEMORY[0x29EDBA130] sessionWithConfiguration:ephemeralSessionConfiguration];
   v20 = MEMORY[0x29EDCA5F8];
   v21 = 3221225472;
   v22 = sub_29C82F508;
   v23 = &unk_29F327E60;
   v24 = v16;
-  v25 = v9;
+  v25 = completionCopy;
   v17 = v16;
-  v18 = v9;
+  v18 = completionCopy;
   v19 = [v17 dataTaskWithRequest:v14 completionHandler:&v20];
   [v19 resume];
 }
 
-- (id)_titleForBadCredentialsAlertForAccount:(id)a3
+- (id)_titleForBadCredentialsAlertForAccount:(id)account
 {
   v3 = MEMORY[0x29EDBA0F8];
   v4 = MEMORY[0x29EDB9F48];
-  v5 = a3;
+  accountCopy = account;
   v6 = [v4 bundleForClass:objc_opt_class()];
   v7 = [v6 localizedStringForKey:@"GOOGLE_AUTH_ALERT_TITLE_IOS" value:&stru_2A23CA3E0 table:@"Localizable"];
-  v8 = [v5 username];
+  username = [accountCopy username];
 
-  v9 = [v3 stringWithFormat:v7, v8];
+  v9 = [v3 stringWithFormat:v7, username];
 
   return v9;
 }
@@ -357,29 +357,29 @@ LABEL_11:
   return v3;
 }
 
-- (void)_displayBadCredentialsAlertForAccount:(id)a3 clientName:(id)a4 reason:(id)a5 accountStore:(id)a6 resetAuthenticatedOnAlertFailure:(BOOL)a7 handler:(id)a8
+- (void)_displayBadCredentialsAlertForAccount:(id)account clientName:(id)name reason:(id)reason accountStore:(id)store resetAuthenticatedOnAlertFailure:(BOOL)failure handler:(id)handler
 {
-  v13 = a3;
-  v14 = a6;
-  v15 = a8;
-  v16 = a5;
-  v17 = [(SLGoogleAuthenticationPlugin *)self _titleForBadCredentialsAlertForAccount:v13];
-  v18 = [(SLGoogleAuthenticationPlugin *)self _otherButtonTitleForBadCredentialsAlert];
-  v19 = [(SLGoogleAuthenticationPlugin *)self _cancelButtonTitleForBadCredentialsAlert];
-  v20 = [(SLGoogleAuthenticationPlugin *)self _messageForBadCredentialsAlertWithReason:v16 account:v13];
+  accountCopy = account;
+  storeCopy = store;
+  handlerCopy = handler;
+  reasonCopy = reason;
+  v17 = [(SLGoogleAuthenticationPlugin *)self _titleForBadCredentialsAlertForAccount:accountCopy];
+  _otherButtonTitleForBadCredentialsAlert = [(SLGoogleAuthenticationPlugin *)self _otherButtonTitleForBadCredentialsAlert];
+  _cancelButtonTitleForBadCredentialsAlert = [(SLGoogleAuthenticationPlugin *)self _cancelButtonTitleForBadCredentialsAlert];
+  v20 = [(SLGoogleAuthenticationPlugin *)self _messageForBadCredentialsAlertWithReason:reasonCopy account:accountCopy];
 
   v24[0] = MEMORY[0x29EDCA5F8];
   v24[1] = 3221225472;
   v24[2] = sub_29C83006C;
   v24[3] = &unk_29F327EB0;
-  v28 = a7;
-  v25 = v13;
-  v26 = v14;
-  v27 = v15;
-  v21 = v15;
-  v22 = v14;
-  v23 = v13;
-  [(SLGoogleAuthenticationPlugin *)self showUserAlertWithTitle:v17 message:v20 cancelButtonTitle:v19 otherButtonTitle:v18 withCompletionBlock:v24];
+  failureCopy = failure;
+  v25 = accountCopy;
+  v26 = storeCopy;
+  v27 = handlerCopy;
+  v21 = handlerCopy;
+  v22 = storeCopy;
+  v23 = accountCopy;
+  [(SLGoogleAuthenticationPlugin *)self showUserAlertWithTitle:v17 message:v20 cancelButtonTitle:_cancelButtonTitleForBadCredentialsAlert otherButtonTitle:_otherButtonTitleForBadCredentialsAlert withCompletionBlock:v24];
 }
 
 @end

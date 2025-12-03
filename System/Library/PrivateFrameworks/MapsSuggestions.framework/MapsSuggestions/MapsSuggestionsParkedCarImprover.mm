@@ -1,25 +1,25 @@
 @interface MapsSuggestionsParkedCarImprover
-- (BOOL)improveEntry:(id)a3;
+- (BOOL)improveEntry:(id)entry;
 @end
 
 @implementation MapsSuggestionsParkedCarImprover
 
-- (BOOL)improveEntry:(id)a3
+- (BOOL)improveEntry:(id)entry
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  entryCopy = entry;
+  v5 = entryCopy;
+  if (entryCopy)
   {
-    if ([v4 type] == 7)
+    if ([entryCopy type] == 7)
     {
       v6 = MapsSuggestionsLocalizedParkedCarString();
       [(MapsSuggestionsBaseImprover *)self improveMyUndecoratedTitle:v6 forEntry:v5];
 
       [(MapsSuggestionsBaseImprover *)self improveMyUndecoratedSubtitle:v5 forEntry:?];
       v7 = [v5 stringForKey:@"MapsSuggestionsCoreRoutineLabel"];
-      v8 = [v5 geoMapItem];
-      v9 = ParkedCarLocationNameForMapItem(v8, v7);
+      geoMapItem = [v5 geoMapItem];
+      v9 = ParkedCarLocationNameForMapItem(geoMapItem, v7);
 
       if ([v9 length])
       {

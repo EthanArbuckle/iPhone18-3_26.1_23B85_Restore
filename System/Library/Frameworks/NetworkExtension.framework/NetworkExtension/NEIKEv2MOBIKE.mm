@@ -1,11 +1,11 @@
 @interface NEIKEv2MOBIKE
-- (id)initWithQueue:(void *)a3 tunnelProvider:;
+- (id)initWithQueue:(void *)queue tunnelProvider:;
 - (void)dealloc;
-- (void)initiateMOBIKE:(uint64_t)a3 pathStatus:(void *)a4 serverAddress:(char)a5 earlyDisconnect:;
+- (void)initiateMOBIKE:(uint64_t)e pathStatus:(void *)status serverAddress:(char)address earlyDisconnect:;
 - (void)mobikeDisconnect;
 - (void)mobikeStartWaitTimer;
 - (void)mobikeStopWaitTimer;
-- (void)startMOBIKE:(uint64_t)a1;
+- (void)startMOBIKE:(uint64_t)e;
 @end
 
 @implementation NEIKEv2MOBIKE
@@ -24,22 +24,22 @@
 
 - (void)mobikeStopWaitTimer
 {
-  if (a1 && objc_getProperty(a1, a2, 32, 1))
+  if (self && objc_getProperty(self, a2, 32, 1))
   {
-    Property = objc_getProperty(a1, v3, 32, 1);
+    Property = objc_getProperty(self, v3, 32, 1);
     dispatch_source_cancel(Property);
 
-    objc_setProperty_atomic(a1, v5, 0, 32);
+    objc_setProperty_atomic(self, v5, 0, 32);
   }
 }
 
-- (id)initWithQueue:(void *)a3 tunnelProvider:
+- (id)initWithQueue:(void *)queue tunnelProvider:
 {
   v17 = *MEMORY[0x1E69E9840];
   v6 = a2;
-  v7 = a3;
-  v8 = v7;
-  if (!a1)
+  queueCopy = queue;
+  v8 = queueCopy;
+  if (!self)
   {
     goto LABEL_6;
   }
@@ -51,7 +51,7 @@
     {
 LABEL_10:
 
-      a1 = 0;
+      self = 0;
       goto LABEL_6;
     }
 
@@ -63,7 +63,7 @@ LABEL_12:
     goto LABEL_10;
   }
 
-  if (!v7)
+  if (!queueCopy)
   {
     v12 = ne_log_obj();
     if (!os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
@@ -77,35 +77,35 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  v14.receiver = a1;
+  v14.receiver = self;
   v14.super_class = NEIKEv2MOBIKE;
   v9 = objc_msgSendSuper2(&v14, sel_init);
-  a1 = v9;
+  self = v9;
   if (v9)
   {
     objc_storeStrong(v9 + 5, a2);
-    objc_storeWeak(a1 + 3, v8);
+    objc_storeWeak(self + 3, v8);
   }
 
 LABEL_6:
 
   v10 = *MEMORY[0x1E69E9840];
-  return a1;
+  return self;
 }
 
 - (void)mobikeStartWaitTimer
 {
-  if (a1 && !objc_getProperty(a1, a2, 32, 1))
+  if (self && !objc_getProperty(self, a2, 32, 1))
   {
-    v4 = a1[10];
-    Property = objc_getProperty(a1, v3, 40, 1);
+    v4 = self[10];
+    Property = objc_getProperty(self, v3, 40, 1);
     if (v4)
     {
       v10[0] = MEMORY[0x1E69E9820];
       v10[1] = 3221225472;
       v10[2] = __37__NEIKEv2MOBIKE_mobikeStartWaitTimer__block_invoke_2;
       v10[3] = &unk_1E7F0B0E8;
-      v10[4] = a1;
+      v10[4] = self;
       v6 = v10;
       v7 = 10;
     }
@@ -116,13 +116,13 @@ LABEL_6:
       v11[1] = 3221225472;
       v11[2] = __37__NEIKEv2MOBIKE_mobikeStartWaitTimer__block_invoke;
       v11[3] = &unk_1E7F0B0E8;
-      v11[4] = a1;
+      v11[4] = self;
       v6 = v11;
       v7 = 2;
     }
 
     v8 = NECreateTimerSource(Property, v7, v6);
-    objc_setProperty_atomic(a1, v9, v8, 32);
+    objc_setProperty_atomic(self, v9, v8, 32);
   }
 }
 
@@ -164,9 +164,9 @@ void __37__NEIKEv2MOBIKE_mobikeStartWaitTimer__block_invoke_2(uint64_t a1, const
 
 - (void)mobikeDisconnect
 {
-  if (a1)
+  if (self)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 24));
+    WeakRetained = objc_loadWeakRetained((self + 24));
     if (WeakRetained)
     {
       v2 = WeakRetained;
@@ -191,21 +191,21 @@ void __31__NEIKEv2MOBIKE_mobikeReassert__block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (void)startMOBIKE:(uint64_t)a1
+- (void)startMOBIKE:(uint64_t)e
 {
   v27 = *MEMORY[0x1E69E9840];
   v3 = a2;
   v5 = v3;
-  if (a1)
+  if (e)
   {
     if (v3)
     {
-      *(a1 + 8) = 1;
-      *(a1 + 9) = 0;
-      if (*(a1 + 72) || (v6 = [objc_getProperty(a1 v4], v6 != objc_msgSend(objc_getProperty(a1, v7, 56, 1), "interfaceIndex")) || objc_getProperty(a1, v4, 16, 1))
+      *(e + 8) = 1;
+      *(e + 9) = 0;
+      if (*(e + 72) || (v6 = [objc_getProperty(e v4], v6 != objc_msgSend(objc_getProperty(e, v7, 56, 1), "interfaceIndex")) || objc_getProperty(e, v4, 16, 1))
       {
         v8 = 1;
-        Property = objc_getProperty(a1, v4, 16, 1);
+        Property = objc_getProperty(e, v4, 16, 1);
         v10 = @"0";
         if (Property)
         {
@@ -222,20 +222,20 @@ void __31__NEIKEv2MOBIKE_mobikeReassert__block_invoke(uint64_t a1, void *a2)
         v12 = 0;
       }
 
-      ++*(a1 + 72);
-      WeakRetained = objc_loadWeakRetained((a1 + 24));
+      ++*(e + 72);
+      WeakRetained = objc_loadWeakRetained((e + 24));
       if (WeakRetained)
       {
-        v15 = objc_getProperty(a1, v13, 48, 1);
-        objc_setProperty_atomic(a1, v16, v15, 56);
+        v15 = objc_getProperty(e, v13, 48, 1);
+        objc_setProperty_atomic(e, v16, v15, 56);
         v18 = objc_getProperty(WeakRetained, v17, 240, 1);
-        v20 = [objc_getProperty(a1 v19];
-        v22 = objc_getProperty(a1, v21, 40, 1);
+        v20 = [objc_getProperty(e v19];
+        v22 = objc_getProperty(e, v21, 40, 1);
         v24[0] = MEMORY[0x1E69E9820];
         v24[1] = 3221225472;
         v24[2] = __29__NEIKEv2MOBIKE_startMOBIKE___block_invoke;
         v24[3] = &unk_1E7F08990;
-        v24[4] = a1;
+        v24[4] = e;
         [v18 sendMOBIKEWithRetries:1 retryInterval:0 interfaceName:v20 invalidateTransport:v8 resetEndpoint:v12 callbackQueue:v22 callback:v24];
       }
     }
@@ -341,39 +341,39 @@ LABEL_18:
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)initiateMOBIKE:(uint64_t)a3 pathStatus:(void *)a4 serverAddress:(char)a5 earlyDisconnect:
+- (void)initiateMOBIKE:(uint64_t)e pathStatus:(void *)status serverAddress:(char)address earlyDisconnect:
 {
   v26 = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  if (a1)
+  statusCopy = status;
+  if (self)
   {
     v10 = ne_log_obj();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v20 = 134218498;
-      v21 = a3;
+      eCopy = e;
       v22 = 2048;
       v23 = a2;
       v24 = 2112;
-      v25 = v9;
+      v25 = statusCopy;
       _os_log_impl(&dword_1BA83C000, v10, OS_LOG_TYPE_DEFAULT, "initiate mobike - path status %ld ifIndex %lu server address %@", &v20, 0x20u);
     }
 
-    v12 = v9;
-    if (a2 && (v13 = [objc_alloc(MEMORY[0x1E6977E30]) initWithInterfaceIndex:a2], a2 = v13, v12) && a3 == 1 && v13)
+    v12 = statusCopy;
+    if (a2 && (v13 = [objc_alloc(MEMORY[0x1E6977E30]) initWithInterfaceIndex:a2], a2 = v13, v12) && e == 1 && v13)
     {
-      objc_setProperty_atomic(a1, v11, v13, 48);
-      objc_setProperty_atomic(a1, v14, v12, 80);
-      *(a1 + 9) = 1;
-      *(a1 + 64) = 1;
-      [(NEIKEv2MOBIKE *)a1 mobikeStopWaitTimer];
+      objc_setProperty_atomic(self, v11, v13, 48);
+      objc_setProperty_atomic(self, v14, v12, 80);
+      *(self + 9) = 1;
+      *(self + 64) = 1;
+      [(NEIKEv2MOBIKE *)self mobikeStopWaitTimer];
 
-      if ((*(a1 + 11) & 1) == 0)
+      if ((*(self + 11) & 1) == 0)
       {
-        *(a1 + 11) = a5;
+        *(self + 11) = address;
       }
 
-      if (*(a1 + 8))
+      if (*(self + 8))
       {
         v16 = ne_log_obj();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
@@ -385,17 +385,17 @@ LABEL_18:
 
       else
       {
-        [(NEIKEv2MOBIKE *)a1 startMOBIKE:v12];
+        [(NEIKEv2MOBIKE *)self startMOBIKE:v12];
       }
     }
 
     else
     {
-      objc_setProperty_atomic(a1, v11, 0, 48);
-      objc_setProperty_atomic(a1, v17, 0, 80);
-      *(a1 + 9) = 0;
-      *(a1 + 64) = 2;
-      [(NEIKEv2MOBIKE *)a1 mobikeStartWaitTimer];
+      objc_setProperty_atomic(self, v11, 0, 48);
+      objc_setProperty_atomic(self, v17, 0, 80);
+      *(self + 9) = 0;
+      *(self + 64) = 2;
+      [(NEIKEv2MOBIKE *)self mobikeStartWaitTimer];
     }
   }
 

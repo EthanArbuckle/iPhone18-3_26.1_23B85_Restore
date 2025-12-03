@@ -1,6 +1,6 @@
 @interface DatePickerTableViewCell
 - (CGSize)intrinsicContentSize;
-- (DatePickerTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (DatePickerTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)setupConstraints;
 @end
 
@@ -8,8 +8,8 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = [(DatePickerTableViewCell *)self datePicker];
-  [v2 intrinsicContentSize];
+  datePicker = [(DatePickerTableViewCell *)self datePicker];
+  [datePicker intrinsicContentSize];
   v4 = v3;
 
   v5 = UIViewNoIntrinsicMetric;
@@ -21,32 +21,32 @@
 
 - (void)setupConstraints
 {
-  v3 = [(DatePickerTableViewCell *)self datePicker];
-  [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
+  datePicker = [(DatePickerTableViewCell *)self datePicker];
+  [datePicker setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v4 = [(DatePickerTableViewCell *)self contentView];
-  v5 = [v4 topAnchor];
-  v6 = [(DatePickerTableViewCell *)self datePicker];
-  v7 = [v6 topAnchor];
-  v8 = [v5 constraintEqualToAnchor:v7];
+  contentView = [(DatePickerTableViewCell *)self contentView];
+  topAnchor = [contentView topAnchor];
+  datePicker2 = [(DatePickerTableViewCell *)self datePicker];
+  topAnchor2 = [datePicker2 topAnchor];
+  v8 = [topAnchor constraintEqualToAnchor:topAnchor2];
 
-  v9 = [(DatePickerTableViewCell *)self contentView];
-  v10 = [v9 bottomAnchor];
-  v11 = [(DatePickerTableViewCell *)self datePicker];
-  v12 = [v11 bottomAnchor];
-  v13 = [v10 constraintEqualToAnchor:v12];
+  contentView2 = [(DatePickerTableViewCell *)self contentView];
+  bottomAnchor = [contentView2 bottomAnchor];
+  datePicker3 = [(DatePickerTableViewCell *)self datePicker];
+  bottomAnchor2 = [datePicker3 bottomAnchor];
+  v13 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
 
-  v14 = [(DatePickerTableViewCell *)self contentView];
-  v15 = [v14 leadingAnchor];
-  v16 = [(DatePickerTableViewCell *)self datePicker];
-  v17 = [v16 leadingAnchor];
-  v18 = [v15 constraintEqualToAnchor:v17];
+  contentView3 = [(DatePickerTableViewCell *)self contentView];
+  leadingAnchor = [contentView3 leadingAnchor];
+  datePicker4 = [(DatePickerTableViewCell *)self datePicker];
+  leadingAnchor2 = [datePicker4 leadingAnchor];
+  v18 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
 
-  v19 = [(DatePickerTableViewCell *)self contentView];
-  v20 = [v19 trailingAnchor];
-  v21 = [(DatePickerTableViewCell *)self datePicker];
-  v22 = [v21 trailingAnchor];
-  v23 = [v20 constraintEqualToAnchor:v22];
+  contentView4 = [(DatePickerTableViewCell *)self contentView];
+  trailingAnchor = [contentView4 trailingAnchor];
+  datePicker5 = [(DatePickerTableViewCell *)self datePicker];
+  trailingAnchor2 = [datePicker5 trailingAnchor];
+  v23 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
 
   v25[0] = v8;
   v25[1] = v18;
@@ -56,11 +56,11 @@
   [NSLayoutConstraint activateConstraints:v24];
 }
 
-- (DatePickerTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (DatePickerTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v10.receiver = self;
   v10.super_class = DatePickerTableViewCell;
-  v4 = [(DatePickerTableViewCell *)&v10 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(DatePickerTableViewCell *)&v10 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = objc_opt_new();
@@ -68,9 +68,9 @@
     v4->_datePicker = v5;
 
     [(UIDatePicker *)v4->_datePicker setPreferredDatePickerStyle:3];
-    v7 = [(DatePickerTableViewCell *)v4 contentView];
-    v8 = [(DatePickerTableViewCell *)v4 datePicker];
-    [v7 addSubview:v8];
+    contentView = [(DatePickerTableViewCell *)v4 contentView];
+    datePicker = [(DatePickerTableViewCell *)v4 datePicker];
+    [contentView addSubview:datePicker];
 
     [(DatePickerTableViewCell *)v4 setupConstraints];
   }

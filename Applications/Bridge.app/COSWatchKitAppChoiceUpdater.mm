@@ -9,19 +9,19 @@
 
 - (BOOL)offerYorktown
 {
-  v2 = [UIApp setupController];
-  v3 = [v2 offerYorktownForCurrentPairing];
+  setupController = [UIApp setupController];
+  offerYorktownForCurrentPairing = [setupController offerYorktownForCurrentPairing];
 
-  return v3;
+  return offerYorktownForCurrentPairing;
 }
 
 - (void)updateAppConduitAboutAppInstallChoice
 {
-  v3 = [UIApp isEitherPhoneOrActiveWatchGreenTeaDevice];
+  isEitherPhoneOrActiveWatchGreenTeaDevice = [UIApp isEitherPhoneOrActiveWatchGreenTeaDevice];
   v4 = +[COSBackupManager sharedBackupManager];
-  v5 = [v4 didRestore];
+  didRestore = [v4 didRestore];
 
-  if (v5)
+  if (didRestore)
   {
     v6 = pbb_setup_log();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -35,7 +35,7 @@ LABEL_5:
     return;
   }
 
-  if (v3)
+  if (isEitherPhoneOrActiveWatchGreenTeaDevice)
   {
     v7 = pbb_setup_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -61,36 +61,36 @@ LABEL_5:
     }
 
     v8 = +[UIApplication sharedApplication];
-    v9 = [v8 bridgeController];
+    bridgeController = [v8 bridgeController];
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_1000D2D64;
     v11[3] = &unk_100269800;
     v11[4] = self;
-    [v9 checkApplicationInstallAllowedWithCompletion:v11];
+    [bridgeController checkApplicationInstallAllowedWithCompletion:v11];
   }
 }
 
 + (void)updateBuddyStageAboutPastAppInstallation
 {
-  v2 = [UIApp setupController];
-  [v2 updateActivelyPairingWatchBuddyStage:4];
+  setupController = [UIApp setupController];
+  [setupController updateActivelyPairingWatchBuddyStage:4];
 }
 
 - (void)informAppConduitToInstallAllApps
 {
-  v2 = [UIApp activeWatch];
+  activeWatch = [UIApp activeWatch];
   v3 = +[ACXDeviceConnection sharedDeviceConnection];
-  [v3 setAllExistingAppsShouldBeInstalled:1 forNewDevice:v2];
+  [v3 setAllExistingAppsShouldBeInstalled:1 forNewDevice:activeWatch];
 
   v4 = +[ACXDeviceConnection sharedDeviceConnection];
-  [v4 setAlwaysInstall:&__kCFBooleanTrue forDevice:v2];
+  [v4 setAlwaysInstall:&__kCFBooleanTrue forDevice:activeWatch];
 
   v5 = pbb_setup_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v2;
+    v8 = activeWatch;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "setAllExistingAppsShouldBeInstalled forNewDevice:%@", &v7, 0xCu);
   }
 
@@ -98,7 +98,7 @@ LABEL_5:
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v2;
+    v8 = activeWatch;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "setAlwaysInstall:1 forNewDevice:%@", &v7, 0xCu);
   }
 

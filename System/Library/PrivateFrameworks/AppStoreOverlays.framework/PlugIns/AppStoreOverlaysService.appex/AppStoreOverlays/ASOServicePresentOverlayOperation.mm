@@ -1,6 +1,6 @@
 @interface ASOServicePresentOverlayOperation
 + (id)log;
-- (ASOServicePresentOverlayOperation)initWithQueue:(id)a3 configuration:(id)a4 delegate:(id)a5;
+- (ASOServicePresentOverlayOperation)initWithQueue:(id)queue configuration:(id)configuration delegate:(id)delegate;
 - (ASOServicePresentationQueue)queue;
 - (void)cancel;
 - (void)finishExecuting;
@@ -22,20 +22,20 @@
   return v3;
 }
 
-- (ASOServicePresentOverlayOperation)initWithQueue:(id)a3 configuration:(id)a4 delegate:(id)a5
+- (ASOServicePresentOverlayOperation)initWithQueue:(id)queue configuration:(id)configuration delegate:(id)delegate
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  queueCopy = queue;
+  configurationCopy = configuration;
+  delegateCopy = delegate;
   v14.receiver = self;
   v14.super_class = ASOServicePresentOverlayOperation;
   v11 = [(ASOServicePresentOverlayOperation *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_queue, v8);
-    objc_storeStrong(&v12->_configuration, a4);
-    objc_storeStrong(&v12->_delegate, a5);
+    objc_storeWeak(&v11->_queue, queueCopy);
+    objc_storeStrong(&v12->_configuration, configuration);
+    objc_storeStrong(&v12->_delegate, delegate);
   }
 
   return v12;
@@ -52,9 +52,9 @@
 
   if (![(ASOServicePresentOverlayOperation *)self isFinished]&& ([(ASOServicePresentOverlayOperation *)self isCancelled]& 1) == 0)
   {
-    v4 = [(ASOServicePresentOverlayOperation *)self delegate];
+    delegate = [(ASOServicePresentOverlayOperation *)self delegate];
     v5 = [NSError errorWithDomain:@"ASOErrorDomain" code:4 userInfo:0];
-    [v4 remoteStoreOverlayDidFailToLoadWithError:v5];
+    [delegate remoteStoreOverlayDidFailToLoadWithError:v5];
   }
 
   v6.receiver = self;
@@ -77,12 +77,12 @@
 
   else
   {
-    v3 = [(ASOServicePresentOverlayOperation *)self queue];
-    v4 = [v3 delegate];
-    v5 = [(ASOServicePresentOverlayOperation *)self queue];
-    v6 = [(ASOServicePresentOverlayOperation *)self configuration];
-    v7 = [(ASOServicePresentOverlayOperation *)self delegate];
-    v8 = [v4 presentationQueue:v5 presentOverlayWithConfiguration:v6 delegate:v7];
+    queue = [(ASOServicePresentOverlayOperation *)self queue];
+    delegate = [queue delegate];
+    queue2 = [(ASOServicePresentOverlayOperation *)self queue];
+    configuration = [(ASOServicePresentOverlayOperation *)self configuration];
+    delegate2 = [(ASOServicePresentOverlayOperation *)self delegate];
+    v8 = [delegate presentationQueue:queue2 presentOverlayWithConfiguration:configuration delegate:delegate2];
 
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
@@ -99,7 +99,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     v4 = 138412290;
-    v5 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "Start executing present overlay operation: %@", &v4, 0xCu);
   }
 
@@ -114,7 +114,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     v4 = 138412290;
-    v5 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "Finish executing present overlay operation: %@", &v4, 0xCu);
   }
 

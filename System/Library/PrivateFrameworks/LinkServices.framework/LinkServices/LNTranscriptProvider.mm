@@ -1,13 +1,13 @@
 @interface LNTranscriptProvider
-+ (id)createStreamsWithStreamURL:(id)a3;
++ (id)createStreamsWithStreamURL:(id)l;
 - (LNTranscriptProvider)init;
 - (NSXPCConnection)connection;
-- (id)transcriptPublisherFromDate:(id)a3 error:(id *)a4;
-- (void)configureConnection:(id)a3;
+- (id)transcriptPublisherFromDate:(id)date error:(id *)error;
+- (void)configureConnection:(id)connection;
 - (void)dealloc;
-- (void)deleteAllRecordsWithReply:(id)a3;
-- (void)deleteRecordsWithMatchingPredicate:(id)a3 reply:(id)a4;
-- (void)donateWithActionRecord:(id)a3 reply:(id)a4;
+- (void)deleteAllRecordsWithReply:(id)reply;
+- (void)deleteRecordsWithMatchingPredicate:(id)predicate reply:(id)reply;
+- (void)donateWithActionRecord:(id)record reply:(id)reply;
 @end
 
 @implementation LNTranscriptProvider
@@ -39,14 +39,14 @@
   v10 = __Block_byref_object_copy__7818;
   v11 = __Block_byref_object_dispose__7819;
   v12 = 0;
-  v3 = [(LNTranscriptProvider *)self queue];
+  queue = [(LNTranscriptProvider *)self queue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __34__LNTranscriptProvider_connection__block_invoke;
   v6[3] = &unk_1E74B1598;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(queue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -82,17 +82,17 @@ void __34__LNTranscriptProvider_connection__block_invoke(uint64_t a1)
   [(LNTranscriptProvider *)&v3 dealloc];
 }
 
-- (void)deleteAllRecordsWithReply:(id)a3
+- (void)deleteAllRecordsWithReply:(id)reply
 {
-  v4 = a3;
-  v5 = [(LNTranscriptProvider *)self connection];
+  replyCopy = reply;
+  connection = [(LNTranscriptProvider *)self connection];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __50__LNTranscriptProvider_deleteAllRecordsWithReply___block_invoke;
   v11[3] = &unk_1E74B2848;
-  v6 = v4;
+  v6 = replyCopy;
   v12 = v6;
-  v7 = [v5 remoteObjectProxyWithErrorHandler:v11];
+  v7 = [connection remoteObjectProxyWithErrorHandler:v11];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __50__LNTranscriptProvider_deleteAllRecordsWithReply___block_invoke_28;
@@ -139,18 +139,18 @@ void __50__LNTranscriptProvider_deleteAllRecordsWithReply___block_invoke_28(uint
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)deleteRecordsWithMatchingPredicate:(id)a3 reply:(id)a4
+- (void)deleteRecordsWithMatchingPredicate:(id)predicate reply:(id)reply
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(LNTranscriptProvider *)self connection];
+  replyCopy = reply;
+  predicateCopy = predicate;
+  connection = [(LNTranscriptProvider *)self connection];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __65__LNTranscriptProvider_deleteRecordsWithMatchingPredicate_reply___block_invoke;
   v14[3] = &unk_1E74B2848;
-  v9 = v6;
+  v9 = replyCopy;
   v15 = v9;
-  v10 = [v8 remoteObjectProxyWithErrorHandler:v14];
+  v10 = [connection remoteObjectProxyWithErrorHandler:v14];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __65__LNTranscriptProvider_deleteRecordsWithMatchingPredicate_reply___block_invoke_26;
@@ -158,7 +158,7 @@ void __50__LNTranscriptProvider_deleteAllRecordsWithReply___block_invoke_28(uint
   v12[4] = self;
   v13 = v9;
   v11 = v9;
-  [v10 deleteRecordsWithMatchingPredicate:v7 reply:v12];
+  [v10 deleteRecordsWithMatchingPredicate:predicateCopy reply:v12];
 }
 
 void __65__LNTranscriptProvider_deleteRecordsWithMatchingPredicate_reply___block_invoke(uint64_t a1, void *a2)
@@ -228,9 +228,9 @@ void __84__LNTranscriptProvider_transcriptPublisherFromDate_toDate_maxEvents_rev
   *(v6 + 40) = v5;
 }
 
-- (id)transcriptPublisherFromDate:(id)a3 error:(id *)a4
+- (id)transcriptPublisherFromDate:(id)date error:(id *)error
 {
-  v6 = a3;
+  dateCopy = date;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -243,13 +243,13 @@ void __84__LNTranscriptProvider_transcriptPublisherFromDate_toDate_maxEvents_rev
   v18 = __Block_byref_object_copy__7818;
   v19 = __Block_byref_object_dispose__7819;
   v20 = 0;
-  v7 = [(LNTranscriptProvider *)self connection];
+  connection = [(LNTranscriptProvider *)self connection];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __58__LNTranscriptProvider_transcriptPublisherFromDate_error___block_invoke;
   v14[3] = &unk_1E74B2658;
   v14[4] = &v15;
-  v8 = [v7 synchronousRemoteObjectProxyWithErrorHandler:v14];
+  v8 = [connection synchronousRemoteObjectProxyWithErrorHandler:v14];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __58__LNTranscriptProvider_transcriptPublisherFromDate_error___block_invoke_22;
@@ -258,17 +258,17 @@ void __84__LNTranscriptProvider_transcriptPublisherFromDate_toDate_maxEvents_rev
   v13[5] = &v21;
   [v8 requestReadAccessWithReply:v13];
 
-  if (a4)
+  if (error)
   {
     v9 = v16[5];
     if (v9)
     {
-      *a4 = v9;
+      *error = v9;
     }
   }
 
   v10 = [v22[5] url];
-  v11 = [LNTranscriptProvider publisherForStream:v10 fromDate:v6 toDate:0 maxEvents:0 reversed:0];
+  v11 = [LNTranscriptProvider publisherForStream:v10 fromDate:dateCopy toDate:0 maxEvents:0 reversed:0];
 
   _Block_object_dispose(&v15, 8);
   _Block_object_dispose(&v21, 8);
@@ -359,36 +359,36 @@ void __70__LNTranscriptProvider_donateActionRecordData_writeImmediately_reply___
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)donateWithActionRecord:(id)a3 reply:(id)a4
+- (void)donateWithActionRecord:(id)record reply:(id)reply
 {
-  v6 = a4;
-  v7 = a3;
+  replyCopy = reply;
+  recordCopy = record;
   v8 = getLNLogCategoryExecution();
   v9 = v8;
-  if (a3 + 1 >= 2 && os_signpost_enabled(v8))
+  if (record + 1 >= 2 && os_signpost_enabled(v8))
   {
     *buf = 0;
-    _os_signpost_emit_with_name_impl(&dword_19763D000, v9, OS_SIGNPOST_INTERVAL_BEGIN, a3, "donating", "", buf, 2u);
+    _os_signpost_emit_with_name_impl(&dword_19763D000, v9, OS_SIGNPOST_INTERVAL_BEGIN, record, "donating", "", buf, 2u);
   }
 
-  v10 = [(LNTranscriptProvider *)self connection];
+  connection = [(LNTranscriptProvider *)self connection];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __53__LNTranscriptProvider_donateWithActionRecord_reply___block_invoke;
   v17[3] = &unk_1E74B2870;
-  v11 = v6;
+  v11 = replyCopy;
   v18 = v11;
-  v19 = a3;
-  v12 = [v10 remoteObjectProxyWithErrorHandler:v17];
+  recordCopy2 = record;
+  v12 = [connection remoteObjectProxyWithErrorHandler:v17];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __53__LNTranscriptProvider_donateWithActionRecord_reply___block_invoke_19;
   v14[3] = &unk_1E74B14D0;
   v15 = v11;
-  v16 = a3;
+  recordCopy3 = record;
   v14[4] = self;
   v13 = v11;
-  [v12 donateWithActionRecord:v7 reply:v14];
+  [v12 donateWithActionRecord:recordCopy reply:v14];
 }
 
 void __53__LNTranscriptProvider_donateWithActionRecord_reply___block_invoke(uint64_t a1, void *a2)
@@ -444,16 +444,16 @@ void __53__LNTranscriptProvider_donateWithActionRecord_reply___block_invoke_19(u
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)configureConnection:(id)a3
+- (void)configureConnection:(id)connection
 {
-  v4 = a3;
-  v5 = [objc_opt_class() xpcInterface];
-  [(NSXPCConnection *)self->_connection setRemoteObjectInterface:v5];
+  connectionCopy = connection;
+  xpcInterface = [objc_opt_class() xpcInterface];
+  [(NSXPCConnection *)self->_connection setRemoteObjectInterface:xpcInterface];
 
   objc_initWeak(&location, self);
   connection = self->_connection;
-  v7 = [(LNTranscriptProvider *)self queue];
-  [(NSXPCConnection *)connection _setQueue:v7];
+  queue = [(LNTranscriptProvider *)self queue];
+  [(NSXPCConnection *)connection _setQueue:queue];
 
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
@@ -509,14 +509,14 @@ void __44__LNTranscriptProvider_configureConnection___block_invoke_17(uint64_t a
   }
 }
 
-+ (id)createStreamsWithStreamURL:(id)a3
++ (id)createStreamsWithStreamURL:(id)l
 {
-  v3 = a3;
-  v4 = [v3 URLByDeletingLastPathComponent];
-  v5 = [v4 path];
+  lCopy = l;
+  uRLByDeletingLastPathComponent = [lCopy URLByDeletingLastPathComponent];
+  path = [uRLByDeletingLastPathComponent path];
 
-  v6 = [v3 lastPathComponent];
-  if ([v6 isEqualToString:@"Special"])
+  lastPathComponent = [lCopy lastPathComponent];
+  if ([lastPathComponent isEqualToString:@"Special"])
   {
     v7 = getLNLogCategoryGeneral();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
@@ -533,10 +533,10 @@ void __44__LNTranscriptProvider_configureConnection___block_invoke_17(uint64_t a
     v8 = 3;
   }
 
-  v9 = [MEMORY[0x1E698F130] newPrivateStreamDefaultConfigurationWithStoreBasePath:v5 protectionClass:v8];
+  v9 = [MEMORY[0x1E698F130] newPrivateStreamDefaultConfigurationWithStoreBasePath:path protectionClass:v8];
   v10 = objc_alloc(MEMORY[0x1E698F318]);
-  v11 = [v3 lastPathComponent];
-  v12 = [v10 initWithPrivateStreamIdentifier:v11 storeConfig:v9 eventDataClass:0];
+  lastPathComponent2 = [lCopy lastPathComponent];
+  v12 = [v10 initWithPrivateStreamIdentifier:lastPathComponent2 storeConfig:v9 eventDataClass:0];
 
   return v12;
 }

@@ -1,10 +1,10 @@
 @interface CSLPRFSelectedActionApplicationCompanionListController
 - (CSLPRFSelectedActionApplicationCompanionListController)init;
-- (id)_makeListItemSpecifier:(id)a3;
+- (id)_makeListItemSpecifier:(id)specifier;
 - (id)_settingsModel;
 - (id)specifiers;
 - (void)reloadSpecifiers;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -55,12 +55,12 @@
     [v4 addObject:self->_selectedActionApplicationGroupSpecifier];
     if (!self->_settingsModel)
     {
-      v7 = [(CSLPRFSelectedActionApplicationCompanionListController *)self _settingsModel];
+      _settingsModel = [(CSLPRFSelectedActionApplicationCompanionListController *)self _settingsModel];
       settingsModel = self->_settingsModel;
-      self->_settingsModel = v7;
+      self->_settingsModel = _settingsModel;
     }
 
-    v9 = [(CSLPRFStingConfiguration *)self->_stingConfiguration actionType];
+    actionType = [(CSLPRFStingConfiguration *)self->_stingConfiguration actionType];
     if ([(CSLPRFStingConfiguration *)self->_stingConfiguration actionType]== &dword_8 + 1)
     {
       v10 = 6;
@@ -68,7 +68,7 @@
 
     else
     {
-      v10 = v9;
+      v10 = actionType;
     }
 
     v11 = [(CSLPRFStingSettingsModel *)self->_settingsModel bundleIDsForActionType:v10];
@@ -96,14 +96,14 @@
           v18 = v17;
           if (v17)
           {
-            v19 = [v17 localizedName];
+            localizedName = [v17 localizedName];
 
-            if (v19)
+            if (localizedName)
             {
               v20 = [(CSLPRFSelectedActionApplicationCompanionListController *)self _makeListItemSpecifier:v18];
               [v4 addObject:v20];
-              v21 = [(CSLPRFStingConfiguration *)self->_stingConfiguration bundleID];
-              v22 = [v16 isEqualToString:v21];
+              bundleID = [(CSLPRFStingConfiguration *)self->_stingConfiguration bundleID];
+              v22 = [v16 isEqualToString:bundleID];
 
               if (v22)
               {
@@ -144,8 +144,8 @@
   model = self->_model;
   if (!model)
   {
-    v4 = [(CSLPRFSelectedActionApplicationCompanionListController *)self specifier];
-    v5 = [v4 propertyForKey:@"StingSettingsModel"];
+    specifier = [(CSLPRFSelectedActionApplicationCompanionListController *)self specifier];
+    v5 = [specifier propertyForKey:@"StingSettingsModel"];
     v6 = self->_model;
     self->_model = v5;
 
@@ -155,57 +155,57 @@
   return model;
 }
 
-- (id)_makeListItemSpecifier:(id)a3
+- (id)_makeListItemSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = [v4 localizedName];
-  v6 = [PSSpecifier preferenceSpecifierNamed:v5 target:self set:0 get:0 detail:0 cell:3 edit:0];
+  specifierCopy = specifier;
+  localizedName = [specifierCopy localizedName];
+  v6 = [PSSpecifier preferenceSpecifierNamed:localizedName target:self set:0 get:0 detail:0 cell:3 edit:0];
 
-  v7 = [v4 bundleIdentifier];
-  [v6 setProperty:v7 forKey:PSValueKey];
+  bundleIdentifier = [specifierCopy bundleIdentifier];
+  [v6 setProperty:bundleIdentifier forKey:PSValueKey];
 
-  v8 = [v4 bundleIdentifier];
-  [v6 setIdentifier:v8];
+  bundleIdentifier2 = [specifierCopy bundleIdentifier];
+  [v6 setIdentifier:bundleIdentifier2];
 
-  [v6 setApp:v4];
-  v9 = [v4 bundleIdentifier];
+  [v6 setApp:specifierCopy];
+  bundleIdentifier3 = [specifierCopy bundleIdentifier];
 
-  [v6 setProperty:v9 forKey:PSLazyIconAppID];
+  [v6 setProperty:bundleIdentifier3 forKey:PSLazyIconAppID];
   [v6 setProperty:&__kCFBooleanTrue forKey:PSLazyIconLoading];
   [v6 setProperty:objc_opt_class() forKey:PSCellClassKey];
 
   return v6;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CSLPRFSelectedActionApplicationCompanionListController *)self indexForIndexPath:v6];
+  pathCopy = path;
+  viewCopy = view;
+  v8 = [(CSLPRFSelectedActionApplicationCompanionListController *)self indexForIndexPath:pathCopy];
   v9 = [*&self->PSListController_opaque[OBJC_IVAR___PSListController__specifiers] objectAtIndex:v8];
   [(PSSpecifier *)self->_selectedActionApplicationGroupSpecifier setProperty:v9 forKey:PSRadioGroupCheckedSpecifierKey];
   v10 = [v9 propertyForKey:PSValueKey];
-  v11 = [(CSLPRFStingConfiguration *)self->_stingConfiguration actionType];
-  if (v11 == &dword_8 + 1 || v11 == &dword_4 + 2)
+  actionType = [(CSLPRFStingConfiguration *)self->_stingConfiguration actionType];
+  if (actionType == &dword_8 + 1 || actionType == &dword_4 + 2)
   {
     v13 = objc_alloc_init(CSLPRFStingConfigurationHistory);
     v14 = [v13 itemForWorkoutWithBundleID:v10];
-    v15 = [v14 actionType];
-    v16 = [v15 integerValue];
+    actionType2 = [v14 actionType];
+    integerValue = [actionType2 integerValue];
 
-    v17 = [v14 identifier];
+    identifier = [v14 identifier];
   }
 
   else
   {
-    v16 = v11;
-    v17 = 0;
+    integerValue = actionType;
+    identifier = 0;
   }
 
-  [(CSLPRFStingConfiguration *)self->_stingConfiguration setConfigurationForBundleID:v10 actionType:v16 identifier:v17 source:1];
+  [(CSLPRFStingConfiguration *)self->_stingConfiguration setConfigurationForBundleID:v10 actionType:integerValue identifier:identifier source:1];
   v18.receiver = self;
   v18.super_class = CSLPRFSelectedActionApplicationCompanionListController;
-  [(CSLPRFSelectedActionApplicationCompanionListController *)&v18 tableView:v7 didSelectRowAtIndexPath:v6];
+  [(CSLPRFSelectedActionApplicationCompanionListController *)&v18 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
 }
 
 @end

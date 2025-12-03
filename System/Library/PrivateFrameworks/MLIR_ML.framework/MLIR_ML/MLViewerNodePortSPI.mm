@@ -1,53 +1,53 @@
 @interface MLViewerNodePortSPI
-- (MLViewerNodePortSPI)initWithCoder:(id)a3;
-- (MLViewerNodePortSPI)initWithJSONDictionary:(id)a3;
-- (MLViewerNodePortSPI)initWithName:(id)a3 dataType:(unsigned int)a4 shape:(id)a5 valueRef:(unint64_t)a6 opaquePtr:(void *)a7;
+- (MLViewerNodePortSPI)initWithCoder:(id)coder;
+- (MLViewerNodePortSPI)initWithJSONDictionary:(id)dictionary;
+- (MLViewerNodePortSPI)initWithName:(id)name dataType:(unsigned int)type shape:(id)shape valueRef:(unint64_t)ref opaquePtr:(void *)ptr;
 - (id)jsonDictionary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MLViewerNodePortSPI
 
-- (MLViewerNodePortSPI)initWithName:(id)a3 dataType:(unsigned int)a4 shape:(id)a5 valueRef:(unint64_t)a6 opaquePtr:(void *)a7
+- (MLViewerNodePortSPI)initWithName:(id)name dataType:(unsigned int)type shape:(id)shape valueRef:(unint64_t)ref opaquePtr:(void *)ptr
 {
-  v13 = a3;
-  v14 = a5;
+  nameCopy = name;
+  shapeCopy = shape;
   v18.receiver = self;
   v18.super_class = MLViewerNodePortSPI;
   v15 = [(MLViewerNodePortSPI *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_name, a3);
-    v16->_dataType = a4;
-    objc_storeStrong(&v16->_shape, a5);
-    v16->_valueRef = a6;
-    v16->_opaquePtr = a7;
+    objc_storeStrong(&v15->_name, name);
+    v16->_dataType = type;
+    objc_storeStrong(&v16->_shape, shape);
+    v16->_valueRef = ref;
+    v16->_opaquePtr = ptr;
   }
 
   return v16;
 }
 
-- (MLViewerNodePortSPI)initWithJSONDictionary:(id)a3
+- (MLViewerNodePortSPI)initWithJSONDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = MLViewerNodePortSPI;
   v5 = [(MLViewerNodePortSPI *)&v13 init];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"name"];
+    v6 = [dictionaryCopy objectForKey:@"name"];
     name = v5->_name;
     v5->_name = v6;
 
-    v8 = [v4 objectForKey:@"dataType"];
+    v8 = [dictionaryCopy objectForKey:@"dataType"];
     v5->_dataType = [v8 unsignedIntValue];
 
-    v9 = [v4 objectForKey:@"shape"];
+    v9 = [dictionaryCopy objectForKey:@"shape"];
     shape = v5->_shape;
     v5->_shape = v9;
 
-    v11 = [v4 objectForKey:@"valueRef"];
+    v11 = [dictionaryCopy objectForKey:@"valueRef"];
     v5->_valueRef = [v11 unsignedIntValue];
   }
 
@@ -56,75 +56,75 @@
 
 - (id)jsonDictionary
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = [(MLViewerNodePortSPI *)self name];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  name = [(MLViewerNodePortSPI *)self name];
 
-  if (v4)
+  if (name)
   {
-    v5 = [(MLViewerNodePortSPI *)self name];
-    [v3 setObject:v5 forKey:@"name"];
+    name2 = [(MLViewerNodePortSPI *)self name];
+    [dictionary setObject:name2 forKey:@"name"];
   }
 
   v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{-[MLViewerNodePortSPI dataType](self, "dataType")}];
-  [v3 setObject:v6 forKey:@"dataType"];
+  [dictionary setObject:v6 forKey:@"dataType"];
 
-  v7 = [(MLViewerNodePortSPI *)self shape];
+  shape = [(MLViewerNodePortSPI *)self shape];
 
-  if (v7)
+  if (shape)
   {
-    v8 = [(MLViewerNodePortSPI *)self shape];
-    [v3 setObject:v8 forKey:@"shape"];
+    shape2 = [(MLViewerNodePortSPI *)self shape];
+    [dictionary setObject:shape2 forKey:@"shape"];
   }
 
   v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[MLViewerNodePortSPI valueRef](self, "valueRef")}];
-  [v3 setObject:v9 forKey:@"valueRef"];
+  [dictionary setObject:v9 forKey:@"valueRef"];
 
-  v10 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:v3];
+  v10 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:dictionary];
 
   return v10;
 }
 
-- (MLViewerNodePortSPI)initWithCoder:(id)a3
+- (MLViewerNodePortSPI)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = MLViewerNodePortSPI;
   v5 = [(MLViewerNodePortSPI *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
     name = v5->_name;
     v5->_name = v6;
 
-    v5->_dataType = [v4 decodeInt32ForKey:@"dataType"];
+    v5->_dataType = [coderCopy decodeInt32ForKey:@"dataType"];
     if (allowedClasses(void)::onceToken != -1)
     {
       [MLViewerNodePortSPI initWithCoder:];
     }
 
     v8 = allowedClasses(void)::allowedClasses;
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"shape"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"shape"];
     shape = v5->_shape;
     v5->_shape = v9;
 
-    v5->_valueRef = [v4 decodeIntegerForKey:@"valueRef"];
+    v5->_valueRef = [coderCopy decodeIntegerForKey:@"valueRef"];
     v11 = v5;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  v4 = [(MLViewerNodePortSPI *)self name];
-  [v6 encodeObject:v4 forKey:@"name"];
+  coderCopy = coder;
+  name = [(MLViewerNodePortSPI *)self name];
+  [coderCopy encodeObject:name forKey:@"name"];
 
-  v5 = [(MLViewerNodePortSPI *)self shape];
-  [v6 encodeObject:v5 forKey:@"shape"];
+  shape = [(MLViewerNodePortSPI *)self shape];
+  [coderCopy encodeObject:shape forKey:@"shape"];
 
-  [v6 encodeInt32:-[MLViewerNodePortSPI dataType](self forKey:{"dataType"), @"dataType"}];
-  [v6 encodeInteger:-[MLViewerNodePortSPI valueRef](self forKey:{"valueRef"), @"valueRef"}];
+  [coderCopy encodeInt32:-[MLViewerNodePortSPI dataType](self forKey:{"dataType"), @"dataType"}];
+  [coderCopy encodeInteger:-[MLViewerNodePortSPI valueRef](self forKey:{"valueRef"), @"valueRef"}];
 }
 
 @end

@@ -1,6 +1,6 @@
 @interface AudioFeedContentPrefetcher
 - (_TtC7NewsUI226AudioFeedContentPrefetcher)init;
-- (void)bundleSubscriptionDidSubscribe:(id)a3;
+- (void)bundleSubscriptionDidSubscribe:(id)subscribe;
 @end
 
 @implementation AudioFeedContentPrefetcher
@@ -12,7 +12,7 @@
   return result;
 }
 
-- (void)bundleSubscriptionDidSubscribe:(id)a3
+- (void)bundleSubscriptionDidSubscribe:(id)subscribe
 {
   v4 = objc_opt_self();
   v5 = swift_allocObject();
@@ -24,7 +24,7 @@
   v8[2] = sub_218793E0C;
   v8[3] = &block_descriptor_206;
   v6 = _Block_copy(v8);
-  v7 = self;
+  selfCopy = self;
 
   [v4 scheduleLowPriorityBlock_];
 

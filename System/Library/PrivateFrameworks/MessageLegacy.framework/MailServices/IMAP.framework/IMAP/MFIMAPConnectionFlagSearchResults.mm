@@ -1,10 +1,10 @@
 @interface MFIMAPConnectionFlagSearchResults
 - (MFIMAPConnectionFlagSearchResults)init;
-- (id)_indexSetFromUIDs:(id)a3;
-- (id)copyResponseForUID:(unint64_t)a3;
+- (id)_indexSetFromUIDs:(id)ds;
+- (id)copyResponseForUID:(unint64_t)d;
 - (id)description;
-- (unint64_t)_flagsForUID:(unint64_t)a3;
-- (void)cacheStateForUIDs:(id)a3 mask:(unint64_t)a4 existenceSetsFlag:(BOOL)a5;
+- (unint64_t)_flagsForUID:(unint64_t)d;
+- (void)cacheStateForUIDs:(id)ds mask:(unint64_t)mask existenceSetsFlag:(BOOL)flag;
 - (void)dealloc;
 @end
 
@@ -101,7 +101,7 @@
   return v3;
 }
 
-- (unint64_t)_flagsForUID:(unint64_t)a3
+- (unint64_t)_flagsForUID:(unint64_t)d
 {
   v34 = *MEMORY[0x277D85DE8];
   v28 = 0u;
@@ -126,15 +126,15 @@
 
         v11 = *(*(&v28 + 1) + 8 * i);
         v12 = [(NSMutableDictionary *)self->_uidsWithFlagMaskSet objectForKey:v11];
-        v13 = [v11 unsignedLongLongValue];
-        if ([v12 containsIndex:a3])
+        unsignedLongLongValue = [v11 unsignedLongLongValue];
+        if ([v12 containsIndex:d])
         {
-          v8 |= v13;
+          v8 |= unsignedLongLongValue;
         }
 
         else
         {
-          v8 &= ~v13;
+          v8 &= ~unsignedLongLongValue;
         }
       }
 
@@ -170,15 +170,15 @@
 
         v19 = *(*(&v24 + 1) + 8 * j);
         v20 = [(NSMutableDictionary *)self->_uidsWithoutFlagMaskSet objectForKey:v19];
-        v21 = [v19 unsignedLongLongValue];
-        if ([v20 containsIndex:a3])
+        unsignedLongLongValue2 = [v19 unsignedLongLongValue];
+        if ([v20 containsIndex:d])
         {
-          v8 &= ~v21;
+          v8 &= ~unsignedLongLongValue2;
         }
 
         else
         {
-          v8 |= v21;
+          v8 |= unsignedLongLongValue2;
         }
       }
 
@@ -192,15 +192,15 @@
   return v8;
 }
 
-- (id)_indexSetFromUIDs:(id)a3
+- (id)_indexSetFromUIDs:(id)ds
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = [MEMORY[0x277CCAB58] indexSet];
+  indexSet = [MEMORY[0x277CCAB58] indexSet];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [ds countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -212,30 +212,30 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(ds);
         }
 
-        [v4 addIndex:{objc_msgSend(*(*(&v11 + 1) + 8 * v8++), "integerValue")}];
+        [indexSet addIndex:{objc_msgSend(*(*(&v11 + 1) + 8 * v8++), "integerValue")}];
       }
 
       while (v6 != v8);
-      v6 = [a3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [ds countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
   }
 
   v9 = *MEMORY[0x277D85DE8];
-  return v4;
+  return indexSet;
 }
 
-- (void)cacheStateForUIDs:(id)a3 mask:(unint64_t)a4 existenceSetsFlag:(BOOL)a5
+- (void)cacheStateForUIDs:(id)ds mask:(unint64_t)mask existenceSetsFlag:(BOOL)flag
 {
-  v5 = a5;
-  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a4];
-  v9 = [(MFIMAPConnectionFlagSearchResults *)self _indexSetFromUIDs:a3];
+  flagCopy = flag;
+  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:mask];
+  v9 = [(MFIMAPConnectionFlagSearchResults *)self _indexSetFromUIDs:ds];
   v10 = 16;
-  if (v5)
+  if (flagCopy)
   {
     v10 = 8;
   }
@@ -253,7 +253,7 @@
   }
 
   v13 = 8;
-  if (v5)
+  if (flagCopy)
   {
     v13 = 16;
   }
@@ -263,15 +263,15 @@
   [v14 removeObjectForKey:v8];
 }
 
-- (id)copyResponseForUID:(unint64_t)a3
+- (id)copyResponseForUID:(unint64_t)d
 {
   v10[2] = *MEMORY[0x277D85DE8];
   v5 = objc_alloc_init(MFIMAPResponse);
   [(MFIMAPResponse *)v5 setResponseType:17];
   v6 = [[MFIMAPFetchResult alloc] initWithType:8];
   v7 = [[MFIMAPFetchResult alloc] initWithType:10];
-  [(MFIMAPFetchResult *)v6 setUid:a3];
-  [(MFIMAPFetchResult *)v7 setMessageFlags:[(MFIMAPConnectionFlagSearchResults *)self _flagsForUID:a3]];
+  [(MFIMAPFetchResult *)v6 setUid:d];
+  [(MFIMAPFetchResult *)v7 setMessageFlags:[(MFIMAPConnectionFlagSearchResults *)self _flagsForUID:d]];
   v10[0] = v6;
   v10[1] = v7;
   -[MFIMAPResponse setFetchResults:](v5, "setFetchResults:", [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:2]);

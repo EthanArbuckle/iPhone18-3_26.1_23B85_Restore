@@ -1,5 +1,5 @@
 @interface UAFEventHandler
-+ (void)handleSignal:(int)a3;
++ (void)handleSignal:(int)signal;
 + (void)setupSignalHandlers;
 - (UAFEventHandler)init;
 @end
@@ -22,14 +22,14 @@
   return v2;
 }
 
-+ (void)handleSignal:(int)a3
++ (void)handleSignal:(int)signal
 {
   v4 = +[UAFAssetSetManager getSerialQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100000FC4;
   block[3] = &unk_1000041D0;
-  v6 = a3;
+  signalCopy = signal;
   dispatch_sync(v4, block);
 }
 

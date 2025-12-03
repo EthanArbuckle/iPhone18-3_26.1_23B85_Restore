@@ -1,12 +1,12 @@
 @interface CAMTransientImageManager
 - (BOOL)isEmpty;
 - (CAMTransientImageManager)init;
-- (id)existingPairedVideoForUUID:(id)a3;
+- (id)existingPairedVideoForUUID:(id)d;
 - (id)existingPairedVideoUUIDs;
-- (id)insertPairedVideoWithConvertible:(id)a3 filterType:(int64_t)a4;
-- (void)_handleRequestTimeout:(id)a3;
-- (void)removePairedVideoForUUID:(id)a3;
-- (void)requestPairedVideoURLForUUID:(id)a3 resultHandler:(id)a4;
+- (id)insertPairedVideoWithConvertible:(id)convertible filterType:(int64_t)type;
+- (void)_handleRequestTimeout:(id)timeout;
+- (void)removePairedVideoForUUID:(id)d;
+- (void)requestPairedVideoURLForUUID:(id)d resultHandler:(id)handler;
 @end
 
 @implementation CAMTransientImageManager
@@ -34,59 +34,59 @@
 
 - (BOOL)isEmpty
 {
-  v2 = [(CAMTransientImageManager *)self _pairedVideosByPairedUUID];
-  v3 = [v2 count] == 0;
+  _pairedVideosByPairedUUID = [(CAMTransientImageManager *)self _pairedVideosByPairedUUID];
+  v3 = [_pairedVideosByPairedUUID count] == 0;
 
   return v3;
 }
 
 - (id)existingPairedVideoUUIDs
 {
-  v2 = [(CAMTransientImageManager *)self _pairedVideosByPairedUUID];
-  v3 = [v2 allKeys];
+  _pairedVideosByPairedUUID = [(CAMTransientImageManager *)self _pairedVideosByPairedUUID];
+  allKeys = [_pairedVideosByPairedUUID allKeys];
 
-  return v3;
+  return allKeys;
 }
 
-- (id)existingPairedVideoForUUID:(id)a3
+- (id)existingPairedVideoForUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(CAMTransientImageManager *)self _pairedVideosByPairedUUID];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  dCopy = d;
+  _pairedVideosByPairedUUID = [(CAMTransientImageManager *)self _pairedVideosByPairedUUID];
+  v6 = [_pairedVideosByPairedUUID objectForKeyedSubscript:dCopy];
 
   return v6;
 }
 
-- (id)insertPairedVideoWithConvertible:(id)a3 filterType:(int64_t)a4
+- (id)insertPairedVideoWithConvertible:(id)convertible filterType:(int64_t)type
 {
   v59 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 irisStillImageUUID];
-  v7 = [v5 persistenceURL];
+  convertibleCopy = convertible;
+  irisStillImageUUID = [convertibleCopy irisStillImageUUID];
+  persistenceURL = [convertibleCopy persistenceURL];
   memset(&v51, 0, sizeof(v51));
-  if (v5)
+  if (convertibleCopy)
   {
-    [v5 irisStillDisplayTime];
+    [convertibleCopy irisStillDisplayTime];
   }
 
-  if (v6 && v7 && (v51.flags & 1) != 0)
+  if (irisStillImageUUID && persistenceURL && (v51.flags & 1) != 0)
   {
-    v12 = [(CAMTransientImageManager *)self _pairedVideosByPairedUUID];
+    _pairedVideosByPairedUUID = [(CAMTransientImageManager *)self _pairedVideosByPairedUUID];
     v13 = [CAMTransientPairedVideo alloc];
     time = v51;
-    v11 = [(CAMTransientPairedVideo *)v13 initWithURL:v7 stillDisplayTime:&time filterType:a4];
-    [v12 setObject:v11 forKey:v6];
+    v11 = [(CAMTransientPairedVideo *)v13 initWithURL:persistenceURL stillDisplayTime:&time filterType:type];
+    [_pairedVideosByPairedUUID setObject:v11 forKey:irisStillImageUUID];
 
 LABEL_11:
-    v36 = v7;
-    v38 = v5;
-    v14 = [(CAMTransientImageManager *)self _activeRequestsByPairedUUID];
-    v15 = [v14 objectForKeyedSubscript:v6];
+    v36 = persistenceURL;
+    v38 = convertibleCopy;
+    _activeRequestsByPairedUUID = [(CAMTransientImageManager *)self _activeRequestsByPairedUUID];
+    v15 = [_activeRequestsByPairedUUID objectForKeyedSubscript:irisStillImageUUID];
 
     val = self;
-    v16 = [(CAMTransientImageManager *)self _activeRequestsByPairedUUID];
-    v37 = v6;
-    [v16 setObject:0 forKeyedSubscript:v6];
+    _activeRequestsByPairedUUID2 = [(CAMTransientImageManager *)self _activeRequestsByPairedUUID];
+    v37 = irisStillImageUUID;
+    [_activeRequestsByPairedUUID2 setObject:0 forKeyedSubscript:irisStillImageUUID];
 
     v49 = 0u;
     v50 = 0u;
@@ -113,8 +113,8 @@ LABEL_11:
 
           v22 = *(*(&v47 + 1) + 8 * i);
           [v22 setIsFinished:1];
-          v23 = [v22 resultHandler];
-          if (v23)
+          resultHandler = [v22 resultHandler];
+          if (resultHandler)
           {
             [v22 setResultHandler:0];
             if (v11)
@@ -125,14 +125,14 @@ LABEL_11:
               v26 = [v25 valueWithCMTime:&time];
               v27 = [v24 dictionaryWithObject:v26 forKey:v42];
 
-              v28 = [CAMEffectFilterManager ciFilterNameForFilterType:a4];
+              v28 = [CAMEffectFilterManager ciFilterNameForFilterType:type];
               if (v28)
               {
                 [v27 setObject:v28 forKeyedSubscript:v41];
               }
 
               v29 = [(CAMTransientPairedVideo *)v11 url];
-              (v23)[2](v23, v29, v27);
+              (resultHandler)[2](resultHandler, v29, v27);
             }
 
             else
@@ -146,7 +146,7 @@ LABEL_11:
               v55 = v32;
               v27 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v55 forKeys:&v54 count:1];
 
-              (v23)[2](v23, 0, v27);
+              (resultHandler)[2](resultHandler, 0, v27);
             }
           }
         }
@@ -164,15 +164,15 @@ LABEL_11:
     block[2] = __72__CAMTransientImageManager_insertPairedVideoWithConvertible_filterType___block_invoke;
     block[3] = &unk_1E76F7DC0;
     objc_copyWeak(&v46, &time);
-    v6 = v37;
+    irisStillImageUUID = v37;
     v45 = v37;
     dispatch_after(v33, MEMORY[0x1E69E96A0], block);
 
     objc_destroyWeak(&v46);
     objc_destroyWeak(&time);
 
-    v5 = v38;
-    v7 = v36;
+    convertibleCopy = v38;
+    persistenceURL = v36;
     goto LABEL_26;
   }
 
@@ -183,16 +183,16 @@ LABEL_11:
   if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
   {
     LODWORD(time.value) = 138543874;
-    *(&time.value + 4) = v6;
+    *(&time.value + 4) = irisStillImageUUID;
     LOWORD(time.flags) = 2114;
-    *(&time.flags + 2) = v7;
+    *(&time.flags + 2) = persistenceURL;
     HIWORD(time.epoch) = 2114;
     v58 = v9;
     _os_log_error_impl(&dword_1A3640000, v10, OS_LOG_TYPE_ERROR, "Unable to insert a paired video for an invalid UUID (%{public}@), invalid URL (%{public}@), or invalid still display time (%{public}@)", &time, 0x20u);
   }
 
   v11 = 0;
-  if (v6)
+  if (irisStillImageUUID)
   {
     goto LABEL_11;
   }
@@ -208,18 +208,18 @@ void __72__CAMTransientImageManager_insertPairedVideoWithConvertible_filterType_
   [WeakRetained removePairedVideoForUUID:*(a1 + 32)];
 }
 
-- (void)removePairedVideoForUUID:(id)a3
+- (void)removePairedVideoForUUID:(id)d
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v20 = [(CAMTransientImageManager *)self _pairedVideosByPairedUUID];
-  [v20 removeObjectForKey:v4];
-  v5 = [(CAMTransientImageManager *)self _activeRequestsByPairedUUID];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  dCopy = d;
+  _pairedVideosByPairedUUID = [(CAMTransientImageManager *)self _pairedVideosByPairedUUID];
+  [_pairedVideosByPairedUUID removeObjectForKey:dCopy];
+  _activeRequestsByPairedUUID = [(CAMTransientImageManager *)self _activeRequestsByPairedUUID];
+  v6 = [_activeRequestsByPairedUUID objectForKeyedSubscript:dCopy];
 
-  v7 = [(CAMTransientImageManager *)self _activeRequestsByPairedUUID];
-  v21 = v4;
-  [v7 setObject:0 forKeyedSubscript:v4];
+  _activeRequestsByPairedUUID2 = [(CAMTransientImageManager *)self _activeRequestsByPairedUUID];
+  v21 = dCopy;
+  [_activeRequestsByPairedUUID2 setObject:0 forKeyedSubscript:dCopy];
 
   v25 = 0u;
   v26 = 0u;
@@ -244,8 +244,8 @@ void __72__CAMTransientImageManager_insertPairedVideoWithConvertible_filterType_
 
         v14 = *(*(&v23 + 1) + 8 * i);
         [v14 setIsCanceled:1];
-        v15 = [v14 resultHandler];
-        if (v15)
+        resultHandler = [v14 resultHandler];
+        if (resultHandler)
         {
           [v14 setResultHandler:0];
           v16 = MEMORY[0x1E696ABC0];
@@ -257,7 +257,7 @@ void __72__CAMTransientImageManager_insertPairedVideoWithConvertible_filterType_
           v30 = v18;
           v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v30 forKeys:&v29 count:1];
 
-          (v15)[2](v15, 0, v19);
+          (resultHandler)[2](resultHandler, 0, v19);
         }
       }
 
@@ -268,12 +268,12 @@ void __72__CAMTransientImageManager_insertPairedVideoWithConvertible_filterType_
   }
 }
 
-- (void)requestPairedVideoURLForUUID:(id)a3 resultHandler:(id)a4
+- (void)requestPairedVideoURLForUUID:(id)d resultHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CAMTransientImageManager *)self _pairedVideosByPairedUUID];
-  v9 = [v8 objectForKeyedSubscript:v6];
+  dCopy = d;
+  handlerCopy = handler;
+  _pairedVideosByPairedUUID = [(CAMTransientImageManager *)self _pairedVideosByPairedUUID];
+  v9 = [_pairedVideosByPairedUUID objectForKeyedSubscript:dCopy];
 
   if (v9)
   {
@@ -290,24 +290,24 @@ void __72__CAMTransientImageManager_insertPairedVideoWithConvertible_filterType_
     }
 
     v15 = [v9 url];
-    v7[2](v7, v15, v13);
+    handlerCopy[2](handlerCopy, v15, v13);
   }
 
   else
   {
-    v16 = [(CAMTransientImageManager *)self _activeRequestsByPairedUUID];
-    v13 = [v16 objectForKeyedSubscript:v6];
+    _activeRequestsByPairedUUID = [(CAMTransientImageManager *)self _activeRequestsByPairedUUID];
+    v13 = [_activeRequestsByPairedUUID objectForKeyedSubscript:dCopy];
 
     if (!v13)
     {
       v13 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      v17 = [(CAMTransientImageManager *)self _activeRequestsByPairedUUID];
-      [v17 setObject:v13 forKeyedSubscript:v6];
+      _activeRequestsByPairedUUID2 = [(CAMTransientImageManager *)self _activeRequestsByPairedUUID];
+      [_activeRequestsByPairedUUID2 setObject:v13 forKeyedSubscript:dCopy];
     }
 
     v18 = objc_alloc_init(CAMTransientImageManagerRequest);
-    [(CAMTransientImageManagerRequest *)v18 setUuid:v6];
-    [(CAMTransientImageManagerRequest *)v18 setResultHandler:v7];
+    [(CAMTransientImageManagerRequest *)v18 setUuid:dCopy];
+    [(CAMTransientImageManagerRequest *)v18 setResultHandler:handlerCopy];
 
     [v13 addObject:v18];
     objc_initWeak(location, self);
@@ -332,22 +332,22 @@ void __71__CAMTransientImageManager_requestPairedVideoURLForUUID_resultHandler__
   [WeakRetained _handleRequestTimeout:*(a1 + 32)];
 }
 
-- (void)_handleRequestTimeout:(id)a3
+- (void)_handleRequestTimeout:(id)timeout
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (([v4 isCanceled] & 1) == 0 && (objc_msgSend(v4, "isFinished") & 1) == 0)
+  timeoutCopy = timeout;
+  if (([timeoutCopy isCanceled] & 1) == 0 && (objc_msgSend(timeoutCopy, "isFinished") & 1) == 0)
   {
-    [v4 setIsFinished:1];
-    v5 = [(CAMTransientImageManager *)self _activeRequestsByPairedUUID];
-    v6 = [v4 uuid];
-    v7 = [v5 objectForKeyedSubscript:v6];
+    [timeoutCopy setIsFinished:1];
+    _activeRequestsByPairedUUID = [(CAMTransientImageManager *)self _activeRequestsByPairedUUID];
+    uuid = [timeoutCopy uuid];
+    v7 = [_activeRequestsByPairedUUID objectForKeyedSubscript:uuid];
 
-    [v7 removeObject:v4];
-    v8 = [v4 resultHandler];
-    if (v8)
+    [v7 removeObject:timeoutCopy];
+    resultHandler = [timeoutCopy resultHandler];
+    if (resultHandler)
     {
-      [v4 setResultHandler:0];
+      [timeoutCopy setResultHandler:0];
       v15 = *MEMORY[0x1E69C49B0];
       v9 = MEMORY[0x1E696ABC0];
       v13 = *MEMORY[0x1E696A578];
@@ -357,7 +357,7 @@ void __71__CAMTransientImageManager_requestPairedVideoURLForUUID_resultHandler__
       v16[0] = v11;
       v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:&v15 count:1];
 
-      (v8)[2](v8, 0, v12);
+      (resultHandler)[2](resultHandler, 0, v12);
     }
   }
 }

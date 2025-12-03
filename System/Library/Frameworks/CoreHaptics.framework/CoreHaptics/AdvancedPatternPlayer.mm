@@ -1,34 +1,34 @@
 @interface AdvancedPatternPlayer
-- (AdvancedPatternPlayer)initWithRingtoneData:(id)a3 engine:(id)a4 error:(id *)a5;
-- (AdvancedPatternPlayer)initWithVibePatternDictionary:(id)a3 engine:(id)a4 error:(id *)a5;
-- (BOOL)activateChannelByIndex:(unint64_t)a3 atTime:(double)a4 error:(id *)a5;
-- (BOOL)cancelAndReturnError:(id *)a3;
-- (BOOL)doResumeAtTime:(double)a3 error:(id *)a4;
-- (BOOL)doStartFromPausedAtTime:(double)a3 error:(id *)a4;
-- (BOOL)doStartFromStoppedAtTime:(double)a3 error:(id *)a4;
-- (BOOL)earlyUnduckAudioAtTime:(double)a3 error:(id *)a4;
-- (BOOL)pauseAtTime:(double)a3 error:(id *)a4;
-- (BOOL)resumeAtTime:(double)a3 error:(id *)a4;
-- (BOOL)scheduleParameterCurve:(id)a3 atTime:(double)a4 error:(id *)a5;
-- (BOOL)seekToOffset:(double)a3 error:(id *)a4;
-- (BOOL)sendParameters:(id)a3 atTime:(double)a4 error:(id *)a5;
-- (BOOL)setVolume:(float)a3 atTime:(double)a4 error:(id *)a5;
-- (BOOL)startAtTime:(double)a3 error:(id *)a4;
-- (BOOL)stopAtTime:(double)a3 error:(id *)a4;
+- (AdvancedPatternPlayer)initWithRingtoneData:(id)data engine:(id)engine error:(id *)error;
+- (AdvancedPatternPlayer)initWithVibePatternDictionary:(id)dictionary engine:(id)engine error:(id *)error;
+- (BOOL)activateChannelByIndex:(unint64_t)index atTime:(double)time error:(id *)error;
+- (BOOL)cancelAndReturnError:(id *)error;
+- (BOOL)doResumeAtTime:(double)time error:(id *)error;
+- (BOOL)doStartFromPausedAtTime:(double)time error:(id *)error;
+- (BOOL)doStartFromStoppedAtTime:(double)time error:(id *)error;
+- (BOOL)earlyUnduckAudioAtTime:(double)time error:(id *)error;
+- (BOOL)pauseAtTime:(double)time error:(id *)error;
+- (BOOL)resumeAtTime:(double)time error:(id *)error;
+- (BOOL)scheduleParameterCurve:(id)curve atTime:(double)time error:(id *)error;
+- (BOOL)seekToOffset:(double)offset error:(id *)error;
+- (BOOL)sendParameters:(id)parameters atTime:(double)time error:(id *)error;
+- (BOOL)setVolume:(float)volume atTime:(double)time error:(id *)error;
+- (BOOL)startAtTime:(double)time error:(id *)error;
+- (BOOL)stopAtTime:(double)time error:(id *)error;
 - (double)patternDuration;
 - (double)seekOffset;
 - (float)volume;
 - (id).cxx_construct;
 - (id)completionHandler;
-- (void)clearExternalResources:(id)a3;
+- (void)clearExternalResources:(id)resources;
 - (void)clearSeekOffset;
 - (void)dealloc;
 - (void)finishInit;
-- (void)setCompletionHandler:(id)a3;
-- (void)setLoopEnd:(double)a3;
-- (void)setPlaybackRate:(float)a3;
-- (void)setSeekOffset:(double)a3;
-- (void)setVolume:(float)a3;
+- (void)setCompletionHandler:(id)handler;
+- (void)setLoopEnd:(double)end;
+- (void)setPlaybackRate:(float)rate;
+- (void)setSeekOffset:(double)offset;
+- (void)setVolume:(float)volume;
 @end
 
 @implementation AdvancedPatternPlayer
@@ -36,17 +36,17 @@
 - (void)finishInit
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [(AVHapticSequence *)self->_sequence eventBehavior];
+  eventBehavior = [(AVHapticSequence *)self->_sequence eventBehavior];
   WeakRetained = objc_loadWeakRetained(&self->super._engine);
-  v5 = [WeakRetained muteHapticsWhileRecordingAudio];
+  muteHapticsWhileRecordingAudio = [WeakRetained muteHapticsWhileRecordingAudio];
 
   v6 = 4;
-  if (v5)
+  if (muteHapticsWhileRecordingAudio)
   {
     v6 = 0;
   }
 
-  [(AVHapticSequence *)self->_sequence setEventBehavior:v6 | v3 & 0xFFFFFFFFFFFFFFFBLL];
+  [(AVHapticSequence *)self->_sequence setEventBehavior:v6 | eventBehavior & 0xFFFFFFFFFFFFFFFBLL];
   objc_initWeak(&location, self);
   if (kHAPIScope)
   {
@@ -158,7 +158,7 @@ LABEL_8:
     v12 = 2080;
     v13 = "[AdvancedPatternPlayer dealloc]";
     v14 = 2048;
-    v15 = self;
+    selfCopy = self;
     _os_log_impl(&dword_21569A000, v3, OS_LOG_TYPE_DEBUG, "%25s:%-5d %s: Destroying advanced player %p", buf, 0x26u);
   }
 
@@ -175,10 +175,10 @@ LABEL_8:
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)clearExternalResources:(id)a3
+- (void)clearExternalResources:(id)resources
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  resourcesCopy = resources;
   if (kHAPIScope)
   {
     if (*(kHAPIScope + 8))
@@ -206,20 +206,20 @@ LABEL_8:
     v8 = [(NSArray *)self->super._events objectAtIndexedSubscript:i];
     if (+[CHHapticEngine resourceIsRegistered:](CHHapticEngine, "resourceIsRegistered:", [v8 eventType]))
     {
-      v9 = [v8 eventType];
+      eventType = [v8 eventType];
       v11 = 0;
-      [v4 doUnregisterAudioResource:v9 fromPattern:1 error:&v11];
+      [resourcesCopy doUnregisterAudioResource:eventType fromPattern:1 error:&v11];
     }
   }
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)doStartFromStoppedAtTime:(double)a3 error:(id *)a4
+- (BOOL)doStartFromStoppedAtTime:(double)time error:(id *)error
 {
   v31 = *MEMORY[0x277D85DE8];
-  v7 = [(PatternPlayerBase *)self engine];
-  v8 = [v7 checkEngineStateOnStart:a4];
+  engine = [(PatternPlayerBase *)self engine];
+  v8 = [engine checkEngineStateOnStart:error];
 
   if ((v8 & 1) == 0)
   {
@@ -261,17 +261,17 @@ LABEL_8:
 
   sequence = self->_sequence;
   [(AdvancedPatternPlayer *)self seekOffset];
-  if ([(AVHapticSequence *)sequence playAtTime:a4 offset:a3 error:v15])
+  if ([(AVHapticSequence *)sequence playAtTime:error offset:time error:v15])
   {
     [(AdvancedPatternPlayer *)self setRunning];
     [(AdvancedPatternPlayer *)self clearSeekOffset];
-    v16 = [(PatternPlayerBase *)self engine];
-    v17 = [v16 notifyPlayerStarted:self atTime:a3];
+    engine2 = [(PatternPlayerBase *)self engine];
+    v17 = [engine2 notifyPlayerStarted:self atTime:time];
 
     WeakRetained = objc_loadWeakRetained(&self->super._engine);
-    v19 = [WeakRetained metrics];
-    v20 = [(PatternPlayerBase *)self patternID];
-    [v19 handleStartForPlayer:self time:1 isAdvanced:v20 patternID:a3];
+    metrics = [WeakRetained metrics];
+    patternID = [(PatternPlayerBase *)self patternID];
+    [metrics handleStartForPlayer:self time:1 isAdvanced:patternID patternID:time];
   }
 
   else
@@ -284,7 +284,7 @@ LABEL_12:
   return v17;
 }
 
-- (BOOL)doStartFromPausedAtTime:(double)a3 error:(id *)a4
+- (BOOL)doStartFromPausedAtTime:(double)time error:(id *)error
 {
   v25 = *MEMORY[0x277D85DE8];
   if (kHAPIScope)
@@ -319,20 +319,20 @@ LABEL_12:
 
   sequence = self->_sequence;
   [(AdvancedPatternPlayer *)self seekOffset];
-  v12 = [(AVHapticSequence *)sequence playAtTime:a4 offset:a3 error:v11];
+  v12 = [(AVHapticSequence *)sequence playAtTime:error offset:time error:v11];
   if (v12)
   {
     [(AdvancedPatternPlayer *)self setRunning];
     WeakRetained = objc_loadWeakRetained(&self->super._engine);
-    v14 = [WeakRetained metrics];
-    [v14 handleActionForPlayer:self action:2 time:1 isAdvanced:a3];
+    metrics = [WeakRetained metrics];
+    [metrics handleActionForPlayer:self action:2 time:1 isAdvanced:time];
   }
 
   v15 = *MEMORY[0x277D85DE8];
   return v12;
 }
 
-- (BOOL)doResumeAtTime:(double)a3 error:(id *)a4
+- (BOOL)doResumeAtTime:(double)time error:(id *)error
 {
   v24 = *MEMORY[0x277D85DE8];
   if (![(AdvancedPatternPlayer *)self paused])
@@ -372,17 +372,17 @@ LABEL_12:
 
   sequence = self->_sequence;
   [(AdvancedPatternPlayer *)self seekOffset];
-  v11 = [(AVHapticSequence *)sequence seekToTime:a4 error:?];
+  v11 = [(AVHapticSequence *)sequence seekToTime:error error:?];
   if (v11)
   {
 LABEL_10:
-    v11 = [(AVHapticSequence *)self->_sequence resumeAtTime:a4 error:a3];
+    v11 = [(AVHapticSequence *)self->_sequence resumeAtTime:error error:time];
     if (v11)
     {
       [(AdvancedPatternPlayer *)self setRunning];
       WeakRetained = objc_loadWeakRetained(&self->super._engine);
-      v13 = [WeakRetained metrics];
-      [v13 handleActionForPlayer:self action:2 time:1 isAdvanced:a3];
+      metrics = [WeakRetained metrics];
+      [metrics handleActionForPlayer:self action:2 time:1 isAdvanced:time];
 
       LOBYTE(v11) = 1;
     }
@@ -392,7 +392,7 @@ LABEL_10:
   return v11;
 }
 
-- (BOOL)startAtTime:(double)a3 error:(id *)a4
+- (BOOL)startAtTime:(double)time error:(id *)error
 {
   v32 = *MEMORY[0x277D85DE8];
   if (kHAPIScope)
@@ -419,16 +419,16 @@ LABEL_10:
     v26 = 2080;
     v27 = "[AdvancedPatternPlayer startAtTime:error:]";
     v28 = 2048;
-    v29 = self;
+    selfCopy = self;
     v30 = 2048;
-    v31 = a3;
+    timeCopy = time;
     _os_log_impl(&dword_21569A000, v7, OS_LOG_TYPE_INFO, "%25s:%-5d %s: Starting player %p at time %.3f", &v22, 0x30u);
   }
 
 LABEL_8:
-  if (a3 < 0.0)
+  if (time < 0.0)
   {
-    _Haptic_Check("/Library/Caches/com.apple.xbs/Sources/CoreHaptics/Source/CHHapticAdvancedPatternPlayer.mm", 220, "[AdvancedPatternPlayer startAtTime:error:]", "time >= 0.0", -4840, a4);
+    _Haptic_Check("/Library/Caches/com.apple.xbs/Sources/CoreHaptics/Source/CHHapticAdvancedPatternPlayer.mm", 220, "[AdvancedPatternPlayer startAtTime:error:]", "time >= 0.0", -4840, error);
 LABEL_19:
     v17 = 0;
     goto LABEL_27;
@@ -436,7 +436,7 @@ LABEL_19:
 
   if (!self->_sequence)
   {
-    _Haptic_Check("/Library/Caches/com.apple.xbs/Sources/CoreHaptics/Source/CHHapticAdvancedPatternPlayer.mm", 221, "[AdvancedPatternPlayer startAtTime:error:]", "_sequence != nil", -4812, a4);
+    _Haptic_Check("/Library/Caches/com.apple.xbs/Sources/CoreHaptics/Source/CHHapticAdvancedPatternPlayer.mm", 221, "[AdvancedPatternPlayer startAtTime:error:]", "_sequence != nil", -4812, error);
     goto LABEL_19;
   }
 
@@ -451,29 +451,29 @@ LABEL_19:
     _os_signpost_emit_with_name_impl(&dword_21569A000, v12, OS_SIGNPOST_INTERVAL_BEGIN, v10, "AdvancedPatternPlayer_startAtTime", " enableTelemetry=YES ", &v22, 2u);
   }
 
-  v13 = self;
-  objc_sync_enter(v13);
-  if ([(PatternPlayerBase *)v13 needsResetForAction:2]&& (v14 = [(AVHapticSequence *)self->_sequence resetAtTime:a4 error:a3], *&v15 = v13->_volume, [(AdvancedPatternPlayer *)v13 setVolume:v15], !v14))
+  selfCopy2 = self;
+  objc_sync_enter(selfCopy2);
+  if ([(PatternPlayerBase *)selfCopy2 needsResetForAction:2]&& (v14 = [(AVHapticSequence *)self->_sequence resetAtTime:error error:time], *&v15 = selfCopy2->_volume, [(AdvancedPatternPlayer *)selfCopy2 setVolume:v15], !v14))
   {
     v17 = 0;
   }
 
   else
   {
-    if ([(AdvancedPatternPlayer *)v13 paused])
+    if ([(AdvancedPatternPlayer *)selfCopy2 paused])
     {
-      v16 = [(AdvancedPatternPlayer *)v13 doStartFromPausedAtTime:a4 error:a3];
+      v16 = [(AdvancedPatternPlayer *)selfCopy2 doStartFromPausedAtTime:error error:time];
     }
 
     else
     {
-      v16 = [(AdvancedPatternPlayer *)v13 doStartFromStoppedAtTime:a4 error:a3];
+      v16 = [(AdvancedPatternPlayer *)selfCopy2 doStartFromStoppedAtTime:error error:time];
     }
 
     v17 = v16;
   }
 
-  objc_sync_exit(v13);
+  objc_sync_exit(selfCopy2);
 
   v18 = CALog::Scope::oslog(kHAPIScope);
   v19 = v18;
@@ -488,7 +488,7 @@ LABEL_27:
   return v17;
 }
 
-- (BOOL)stopAtTime:(double)a3 error:(id *)a4
+- (BOOL)stopAtTime:(double)time error:(id *)error
 {
   v37 = *MEMORY[0x277D85DE8];
   if (kHAPIScope)
@@ -515,16 +515,16 @@ LABEL_27:
     v31 = 2080;
     v32 = "[AdvancedPatternPlayer stopAtTime:error:]";
     v33 = 2048;
-    v34 = self;
+    selfCopy = self;
     v35 = 2048;
-    v36 = a3;
+    timeCopy = time;
     _os_log_impl(&dword_21569A000, v7, OS_LOG_TYPE_INFO, "%25s:%-5d %s: Stopping player %p at time %.3f", &v27, 0x30u);
   }
 
 LABEL_8:
-  if (a3 < 0.0)
+  if (time < 0.0)
   {
-    _Haptic_Check("/Library/Caches/com.apple.xbs/Sources/CoreHaptics/Source/CHHapticAdvancedPatternPlayer.mm", 243, "[AdvancedPatternPlayer stopAtTime:error:]", "time >= 0.0", -4840, a4);
+    _Haptic_Check("/Library/Caches/com.apple.xbs/Sources/CoreHaptics/Source/CHHapticAdvancedPatternPlayer.mm", 243, "[AdvancedPatternPlayer stopAtTime:error:]", "time >= 0.0", -4840, error);
 LABEL_26:
     LOBYTE(v17) = 0;
     goto LABEL_27;
@@ -532,7 +532,7 @@ LABEL_26:
 
   if (!self->_sequence)
   {
-    _Haptic_Check("/Library/Caches/com.apple.xbs/Sources/CoreHaptics/Source/CHHapticAdvancedPatternPlayer.mm", 244, "[AdvancedPatternPlayer stopAtTime:error:]", "_sequence != nil", -4812, a4);
+    _Haptic_Check("/Library/Caches/com.apple.xbs/Sources/CoreHaptics/Source/CHHapticAdvancedPatternPlayer.mm", 244, "[AdvancedPatternPlayer stopAtTime:error:]", "_sequence != nil", -4812, error);
     goto LABEL_26;
   }
 
@@ -548,10 +548,10 @@ LABEL_26:
     _os_signpost_emit_with_name_impl(&dword_21569A000, v12, OS_SIGNPOST_INTERVAL_BEGIN, v10, "AdvancedPatternPlayer_stopAtTime", " enableTelemetry=YES ", &v27, 2u);
   }
 
-  v14 = self;
-  objc_sync_enter(v14);
-  WeakRetained = objc_loadWeakRetained(&v14->super._engine);
-  v16 = [WeakRetained checkEngineRunning:a4];
+  selfCopy2 = self;
+  objc_sync_enter(selfCopy2);
+  WeakRetained = objc_loadWeakRetained(&selfCopy2->super._engine);
+  v16 = [WeakRetained checkEngineRunning:error];
 
   if ((v16 & 1) == 0)
   {
@@ -563,23 +563,23 @@ LABEL_26:
       _os_signpost_emit_with_name_impl(&dword_21569A000, v24, OS_SIGNPOST_INTERVAL_END, v10, "AdvancedPatternPlayer_stopAtTime", &unk_215703E5B, &v27, 2u);
     }
 
-    objc_sync_exit(v14);
+    objc_sync_exit(selfCopy2);
     goto LABEL_26;
   }
 
-  v17 = [(AVHapticSequence *)self->_sequence stopAtTime:a4 error:a3];
+  v17 = [(AVHapticSequence *)self->_sequence stopAtTime:error error:time];
   if (v17)
   {
-    v18 = [(PatternPlayerBase *)v14 engine];
-    [v18 notifyPlayerStopped:v14 atTime:a3];
+    engine = [(PatternPlayerBase *)selfCopy2 engine];
+    [engine notifyPlayerStopped:selfCopy2 atTime:time];
 
-    [(AdvancedPatternPlayer *)v14 resetState];
-    v19 = objc_loadWeakRetained(&v14->super._engine);
-    v20 = [v19 metrics];
-    [v20 handleActionForPlayer:v14 action:3 time:1 isAdvanced:a3];
+    [(AdvancedPatternPlayer *)selfCopy2 resetState];
+    v19 = objc_loadWeakRetained(&selfCopy2->super._engine);
+    metrics = [v19 metrics];
+    [metrics handleActionForPlayer:selfCopy2 action:3 time:1 isAdvanced:time];
   }
 
-  objc_sync_exit(v14);
+  objc_sync_exit(selfCopy2);
 
   v21 = CALog::Scope::oslog(kHAPIScope);
   v22 = v21;
@@ -594,17 +594,17 @@ LABEL_27:
   return v17;
 }
 
-- (BOOL)sendParameters:(id)a3 atTime:(double)a4 error:(id *)a5
+- (BOOL)sendParameters:(id)parameters atTime:(double)time error:(id *)error
 {
   v59 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  if (a4 < 0.0)
+  parametersCopy = parameters;
+  if (time < 0.0)
   {
     v9 = -4840;
     v10 = "time >= 0.0";
     v11 = 265;
 LABEL_27:
-    _Haptic_Check("/Library/Caches/com.apple.xbs/Sources/CoreHaptics/Source/CHHapticAdvancedPatternPlayer.mm", v11, "[AdvancedPatternPlayer sendParameters:atTime:error:]", v10, v9, a5);
+    _Haptic_Check("/Library/Caches/com.apple.xbs/Sources/CoreHaptics/Source/CHHapticAdvancedPatternPlayer.mm", v11, "[AdvancedPatternPlayer sendParameters:atTime:error:]", v10, v9, error);
     v36 = 0;
     goto LABEL_37;
   }
@@ -630,15 +630,15 @@ LABEL_27:
     _os_signpost_emit_with_name_impl(&dword_21569A000, v15, OS_SIGNPOST_INTERVAL_BEGIN, v13, "AdvancedPatternPlayer_sendParameters", " enableTelemetry=YES ", buf, 2u);
   }
 
-  v16 = [(PatternPlayerBase *)self engine];
-  [v16 currentTime];
-  v18 = v17 > a4;
+  engine = [(PatternPlayerBase *)self engine];
+  [engine currentTime];
+  v18 = v17 > time;
 
   if (v18)
   {
-    v19 = [(PatternPlayerBase *)self engine];
-    [v19 currentTime];
-    a4 = v20;
+    engine2 = [(PatternPlayerBase *)self engine];
+    [engine2 currentTime];
+    time = v20;
   }
 
   if (kHAPIScope)
@@ -658,24 +658,24 @@ LABEL_27:
           v53 = 2080;
           v54 = "[AdvancedPatternPlayer sendParameters:atTime:error:]";
           v55 = 2048;
-          v56 = self;
+          selfCopy = self;
           v57 = 2048;
-          v58 = a4;
+          timeCopy = time;
           _os_log_impl(&dword_21569A000, v22, OS_LOG_TYPE_DEBUG, "%25s:%-5d %s: Sending player %p parameters at time %.3f", buf, 0x30u);
         }
       }
     }
   }
 
-  if ([(PatternPlayerBase *)self needsResetForAction:1]&& ![(AVHapticSequence *)self->_sequence resetAtTime:a5 error:a4])
+  if ([(PatternPlayerBase *)self needsResetForAction:1]&& ![(AVHapticSequence *)self->_sequence resetAtTime:error error:time])
   {
     v36 = 0;
   }
 
   else
   {
-    v23 = [(PatternPlayerBase *)self engine];
-    v24 = [CHHapticPattern eventListFromEvents:0 parameters:v8 parameterCurves:0 engine:v23 privileged:0];
+    engine3 = [(PatternPlayerBase *)self engine];
+    v24 = [CHHapticPattern eventListFromEvents:0 parameters:parametersCopy parameterCurves:0 engine:engine3 privileged:0];
 
     v46 = 0u;
     v47 = 0u;
@@ -685,7 +685,7 @@ LABEL_27:
     v26 = [v25 countByEnumeratingWithState:&v44 objects:v48 count:16];
     if (v26)
     {
-      v41 = v8;
+      v41 = parametersCopy;
       v27 = *v45;
       while (2)
       {
@@ -698,13 +698,13 @@ LABEL_27:
 
           v29 = *(*(&v44 + 1) + 8 * i);
           sequence = self->_sequence;
-          v31 = [v29 paramType];
+          paramType = [v29 paramType];
           [v29 value];
           v33 = v32;
           [v29 time];
-          v35 = a4 + v34;
+          v35 = time + v34;
           LODWORD(v34) = v33;
-          if (![(AVHapticSequence *)sequence setParameter:v31 value:0 channel:a5 atTime:v34 error:v35])
+          if (![(AVHapticSequence *)sequence setParameter:paramType value:0 channel:error atTime:v34 error:v35])
           {
             v36 = 0;
             goto LABEL_29;
@@ -722,7 +722,7 @@ LABEL_27:
 
       v36 = 1;
 LABEL_29:
-      v8 = v41;
+      parametersCopy = v41;
     }
 
     else
@@ -744,10 +744,10 @@ LABEL_37:
   return v36;
 }
 
-- (BOOL)scheduleParameterCurve:(id)a3 atTime:(double)a4 error:(id *)a5
+- (BOOL)scheduleParameterCurve:(id)curve atTime:(double)time error:(id *)error
 {
   v18 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  curveCopy = curve;
   if (kHAPIScope)
   {
     v8 = *kHAPIScope;
@@ -775,37 +775,37 @@ LABEL_37:
   }
 
 LABEL_8:
-  if (a4 >= 0.0)
+  if (time >= 0.0)
   {
-    if (a5)
+    if (error)
     {
-      *a5 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.CoreHaptics" code:-4809 userInfo:0];
+      *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.CoreHaptics" code:-4809 userInfo:0];
     }
   }
 
   else
   {
-    _Haptic_Check("/Library/Caches/com.apple.xbs/Sources/CoreHaptics/Source/CHHapticAdvancedPatternPlayer.mm", 297, "[AdvancedPatternPlayer scheduleParameterCurve:atTime:error:]", "time >= 0.0", -4840, a5);
+    _Haptic_Check("/Library/Caches/com.apple.xbs/Sources/CoreHaptics/Source/CHHapticAdvancedPatternPlayer.mm", 297, "[AdvancedPatternPlayer scheduleParameterCurve:atTime:error:]", "time >= 0.0", -4840, error);
   }
 
   v10 = *MEMORY[0x277D85DE8];
   return 0;
 }
 
-- (BOOL)pauseAtTime:(double)a3 error:(id *)a4
+- (BOOL)pauseAtTime:(double)time error:(id *)error
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = self;
-  objc_sync_enter(v6);
-  WeakRetained = objc_loadWeakRetained(&v6->super._engine);
-  v8 = [WeakRetained checkEngineRunning:a4];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  WeakRetained = objc_loadWeakRetained(&selfCopy->super._engine);
+  v8 = [WeakRetained checkEngineRunning:error];
 
   if ((v8 & 1) == 0)
   {
     goto LABEL_18;
   }
 
-  if (![(AdvancedPatternPlayer *)v6 paused])
+  if (![(AdvancedPatternPlayer *)selfCopy paused])
   {
     if (kHAPIScope)
     {
@@ -831,24 +831,24 @@ LABEL_8:
       v23 = 2080;
       v24 = "[AdvancedPatternPlayer pauseAtTime:error:]";
       v25 = 2048;
-      v26 = v6;
+      v26 = selfCopy;
       v27 = 2048;
-      v28 = a3;
+      timeCopy = time;
       _os_log_impl(&dword_21569A000, v10, OS_LOG_TYPE_DEBUG, "%25s:%-5d %s: Pausing player %p at time %.3f", &v19, 0x30u);
     }
 
 LABEL_11:
-    if (a3 >= 0.0)
+    if (time >= 0.0)
     {
-      if (v6->_sequence)
+      if (selfCopy->_sequence)
       {
-        v15 = objc_loadWeakRetained(&v6->super._engine);
-        v16 = [v15 metrics];
-        [v16 handleActionForPlayer:v6 action:1 time:1 isAdvanced:a3];
+        v15 = objc_loadWeakRetained(&selfCopy->super._engine);
+        metrics = [v15 metrics];
+        [metrics handleActionForPlayer:selfCopy action:1 time:1 isAdvanced:time];
 
-        if ([(AVHapticSequence *)v6->_sequence pauseAtTime:a4 error:a3])
+        if ([(AVHapticSequence *)selfCopy->_sequence pauseAtTime:error error:time])
         {
-          [(AdvancedPatternPlayer *)v6 setPaused];
+          [(AdvancedPatternPlayer *)selfCopy setPaused];
           goto LABEL_3;
         }
 
@@ -869,33 +869,33 @@ LABEL_18:
       v14 = 311;
     }
 
-    _Haptic_Check("/Library/Caches/com.apple.xbs/Sources/CoreHaptics/Source/CHHapticAdvancedPatternPlayer.mm", v14, "[AdvancedPatternPlayer pauseAtTime:error:]", v13, v12, a4);
+    _Haptic_Check("/Library/Caches/com.apple.xbs/Sources/CoreHaptics/Source/CHHapticAdvancedPatternPlayer.mm", v14, "[AdvancedPatternPlayer pauseAtTime:error:]", v13, v12, error);
     goto LABEL_18;
   }
 
 LABEL_3:
   v9 = 1;
 LABEL_19:
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
 
   v17 = *MEMORY[0x277D85DE8];
   return v9;
 }
 
-- (BOOL)resumeAtTime:(double)a3 error:(id *)a4
+- (BOOL)resumeAtTime:(double)time error:(id *)error
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = self;
-  objc_sync_enter(v6);
-  WeakRetained = objc_loadWeakRetained(&v6->super._engine);
-  v8 = [WeakRetained checkEngineRunning:a4];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  WeakRetained = objc_loadWeakRetained(&selfCopy->super._engine);
+  v8 = [WeakRetained checkEngineRunning:error];
 
   if ((v8 & 1) == 0)
   {
     goto LABEL_17;
   }
 
-  if (![(AdvancedPatternPlayer *)v6 paused])
+  if (![(AdvancedPatternPlayer *)selfCopy paused])
   {
     v10 = 1;
     goto LABEL_18;
@@ -921,26 +921,26 @@ LABEL_8:
       v21 = 2080;
       v22 = "[AdvancedPatternPlayer resumeAtTime:error:]";
       v23 = 2048;
-      v24 = v6;
+      v24 = selfCopy;
       v25 = 2048;
-      v26 = a3;
+      timeCopy = time;
       _os_log_impl(&dword_21569A000, v9, OS_LOG_TYPE_DEBUG, "%25s:%-5d %s: Resuming player %p at time %.3f", &v17, 0x30u);
     }
   }
 
-  if (a3 < 0.0)
+  if (time < 0.0)
   {
     v12 = -4840;
     v13 = "time >= 0.0";
     v14 = 333;
 LABEL_16:
-    _Haptic_Check("/Library/Caches/com.apple.xbs/Sources/CoreHaptics/Source/CHHapticAdvancedPatternPlayer.mm", v14, "[AdvancedPatternPlayer resumeAtTime:error:]", v13, v12, a4);
+    _Haptic_Check("/Library/Caches/com.apple.xbs/Sources/CoreHaptics/Source/CHHapticAdvancedPatternPlayer.mm", v14, "[AdvancedPatternPlayer resumeAtTime:error:]", v13, v12, error);
 LABEL_17:
     v10 = 0;
     goto LABEL_18;
   }
 
-  if (!v6->_sequence)
+  if (!selfCopy->_sequence)
   {
     v12 = -4812;
     v13 = "_sequence != nil";
@@ -948,20 +948,20 @@ LABEL_17:
     goto LABEL_16;
   }
 
-  v10 = [(AdvancedPatternPlayer *)v6 doResumeAtTime:a4 error:a3];
+  v10 = [(AdvancedPatternPlayer *)selfCopy doResumeAtTime:error error:time];
 LABEL_18:
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
 
   v15 = *MEMORY[0x277D85DE8];
   return v10;
 }
 
-- (BOOL)seekToOffset:(double)a3 error:(id *)a4
+- (BOOL)seekToOffset:(double)offset error:(id *)error
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = self;
-  objc_sync_enter(v6);
-  if ([(AdvancedPatternPlayer *)v6 running]&& ![(AdvancedPatternPlayer *)v6 paused])
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([(AdvancedPatternPlayer *)selfCopy running]&& ![(AdvancedPatternPlayer *)selfCopy paused])
   {
     if (kHAPIScope)
     {
@@ -969,8 +969,8 @@ LABEL_18:
       if (!v10)
       {
 LABEL_18:
-        v9 = [(AVHapticSequence *)v6->_sequence seekToTime:a4 error:a3];
-        [(AdvancedPatternPlayer *)v6 clearSeekOffset];
+        v9 = [(AVHapticSequence *)selfCopy->_sequence seekToTime:error error:offset];
+        [(AdvancedPatternPlayer *)selfCopy clearSeekOffset];
         goto LABEL_19;
       }
     }
@@ -990,9 +990,9 @@ LABEL_18:
       v18 = 2080;
       v19 = "[AdvancedPatternPlayer seekToOffset:error:]";
       v20 = 2048;
-      v21 = v6;
+      v21 = selfCopy;
       v22 = 2048;
-      v23 = a3;
+      offsetCopy2 = offset;
       _os_log_impl(&dword_21569A000, v10, OS_LOG_TYPE_DEBUG, "%25s:%-5d %s: Seeking on player %p to offset %.2f", &v14, 0x30u);
     }
 
@@ -1019,23 +1019,23 @@ LABEL_7:
       v18 = 2080;
       v19 = "[AdvancedPatternPlayer seekToOffset:error:]";
       v20 = 2048;
-      v21 = v6;
+      v21 = selfCopy;
       v22 = 2048;
-      v23 = a3;
+      offsetCopy2 = offset;
       _os_log_impl(&dword_21569A000, v7, OS_LOG_TYPE_DEBUG, "%25s:%-5d %s: Caching player %p offset %.2f for later start/resume", &v14, 0x30u);
     }
   }
 
-  [(AdvancedPatternPlayer *)v6 setSeekOffset:a3];
+  [(AdvancedPatternPlayer *)selfCopy setSeekOffset:offset];
   v9 = 1;
 LABEL_19:
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
 
   v12 = *MEMORY[0x277D85DE8];
   return v9;
 }
 
-- (BOOL)cancelAndReturnError:(id *)a3
+- (BOOL)cancelAndReturnError:(id *)error
 {
   v17 = *MEMORY[0x277D85DE8];
   if (kHAPIScope)
@@ -1062,59 +1062,59 @@ LABEL_19:
     v13 = 2080;
     v14 = "[AdvancedPatternPlayer cancelAndReturnError:]";
     v15 = 2048;
-    v16 = self;
+    selfCopy = self;
     _os_log_impl(&dword_21569A000, v5, OS_LOG_TYPE_DEBUG, "%25s:%-5d %s: Cancelling commands for player %p immediately", &v9, 0x26u);
   }
 
 LABEL_8:
-  result = [(AVHapticSequence *)self->_sequence cancelAndReturnError:a3];
+  result = [(AVHapticSequence *)self->_sequence cancelAndReturnError:error];
   v8 = *MEMORY[0x277D85DE8];
   return result;
 }
 
 - (double)patternDuration
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(AdvancedPatternPlayer *)v2 paused];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  paused = [(AdvancedPatternPlayer *)selfCopy paused];
+  objc_sync_exit(selfCopy);
 
   v4 = 1800.0;
-  if (!v3 && ![(AVHapticSequence *)v2->_sequence loopingEnabled])
+  if (!paused && ![(AVHapticSequence *)selfCopy->_sequence loopingEnabled])
   {
-    patternDuration = v2->super._patternDuration;
-    [(AVHapticSequence *)v2->_sequence playbackRate];
+    patternDuration = selfCopy->super._patternDuration;
+    [(AVHapticSequence *)selfCopy->_sequence playbackRate];
     return patternDuration / v6;
   }
 
   return v4;
 }
 
-- (void)setLoopEnd:(double)a3
+- (void)setLoopEnd:(double)end
 {
-  if (a3 >= 0.0)
+  if (end >= 0.0)
   {
-    v3 = a3;
-    *&a3 = a3;
-    if ([(AVHapticSequence *)self->_sequence setLoopLength:0 error:a3])
+    endCopy = end;
+    *&end = end;
+    if ([(AVHapticSequence *)self->_sequence setLoopLength:0 error:end])
     {
-      self->_loopEnd = v3;
+      self->_loopEnd = endCopy;
     }
   }
 }
 
-- (void)setPlaybackRate:(float)a3
+- (void)setPlaybackRate:(float)rate
 {
-  if (a3 > 0.0)
+  if (rate > 0.0)
   {
     [(AVHapticSequence *)self->_sequence setPlaybackRate:?];
   }
 }
 
-- (void)setCompletionHandler:(id)a3
+- (void)setCompletionHandler:(id)handler
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   if (kHAPIScope)
   {
     v5 = *kHAPIScope;
@@ -1133,7 +1133,7 @@ LABEL_8:
   v7 = v5;
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    v8 = MEMORY[0x21606F540](v4);
+    v8 = MEMORY[0x21606F540](handlerCopy);
     *buf = 136315906;
     v18 = "CHHapticAdvancedPatternPlayer.mm";
     v19 = 1024;
@@ -1146,7 +1146,7 @@ LABEL_8:
   }
 
 LABEL_8:
-  v9 = MEMORY[0x21606F540](v4);
+  v9 = MEMORY[0x21606F540](handlerCopy);
   completionHandler = self->_completionHandler;
   self->_completionHandler = v9;
 
@@ -1156,9 +1156,9 @@ LABEL_8:
   v14[2] = __46__AdvancedPatternPlayer_setCompletionHandler___block_invoke;
   v14[3] = &unk_2781C9058;
   objc_copyWeak(&v16, buf);
-  v15 = v4;
+  v15 = handlerCopy;
   sequence = self->_sequence;
-  v12 = v4;
+  v12 = handlerCopy;
   [(AVHapticSequence *)sequence setCompletionHandler:v14];
 
   objc_destroyWeak(&v16);
@@ -1299,10 +1299,10 @@ LABEL_8:
   return v2;
 }
 
-- (AdvancedPatternPlayer)initWithRingtoneData:(id)a3 engine:(id)a4 error:(id *)a5
+- (AdvancedPatternPlayer)initWithRingtoneData:(id)data engine:(id)engine error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  dataCopy = data;
+  engineCopy = engine;
   v26.receiver = self;
   v26.super_class = AdvancedPatternPlayer;
   v10 = [(AdvancedPatternPlayer *)&v26 init];
@@ -1319,14 +1319,14 @@ LABEL_8:
       _os_signpost_emit_with_name_impl(&dword_21569A000, v14, OS_SIGNPOST_INTERVAL_BEGIN, v12, "AdvancedPatternPlayer_initWithRingtoneData", " enableTelemetry=YES ", v25, 2u);
     }
 
-    objc_storeWeak(&v10->super._engine, v9);
+    objc_storeWeak(&v10->super._engine, engineCopy);
     events = v10->super._events;
     v10->super._events = 0;
 
     v10->_volume = 1.0;
     v16 = [AVHapticSequence alloc];
-    v17 = [v9 player];
-    v18 = [(AVHapticSequence *)v16 initWithData:v8 player:v17 error:a5];
+    player = [engineCopy player];
+    v18 = [(AVHapticSequence *)v16 initWithData:dataCopy player:player error:error];
     sequence = v10->_sequence;
     v10->_sequence = v18;
 
@@ -1356,10 +1356,10 @@ LABEL_8:
   return v10;
 }
 
-- (AdvancedPatternPlayer)initWithVibePatternDictionary:(id)a3 engine:(id)a4 error:(id *)a5
+- (AdvancedPatternPlayer)initWithVibePatternDictionary:(id)dictionary engine:(id)engine error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  dictionaryCopy = dictionary;
+  engineCopy = engine;
   v26.receiver = self;
   v26.super_class = AdvancedPatternPlayer;
   v10 = [(AdvancedPatternPlayer *)&v26 init];
@@ -1376,7 +1376,7 @@ LABEL_8:
       _os_signpost_emit_with_name_impl(&dword_21569A000, v14, OS_SIGNPOST_INTERVAL_BEGIN, v12, "AdvancedPatternPlayer_initWithVibePatternDictionary", " enableTelemetry=YES ", v25, 2u);
     }
 
-    objc_storeWeak(&v10->super._engine, v9);
+    objc_storeWeak(&v10->super._engine, engineCopy);
     events = v10->super._events;
     v10->super._events = 0;
 
@@ -1389,8 +1389,8 @@ LABEL_8:
     v10->_volume = 1.0;
     v10->super._previousAction = 0;
     v16 = [AVHapticSequence alloc];
-    v17 = [v9 player];
-    v18 = [(AVHapticSequence *)v16 initWithDictionary:v8 player:v17 error:a5];
+    player = [engineCopy player];
+    v18 = [(AVHapticSequence *)v16 initWithDictionary:dictionaryCopy player:player error:error];
     sequence = v10->_sequence;
     v10->_sequence = v18;
 
@@ -1420,25 +1420,25 @@ LABEL_8:
   return v10;
 }
 
-- (BOOL)activateChannelByIndex:(unint64_t)a3 atTime:(double)a4 error:(id *)a5
+- (BOOL)activateChannelByIndex:(unint64_t)index atTime:(double)time error:(id *)error
 {
-  if (a4 >= 0.0)
+  if (time >= 0.0)
   {
     sequence = self->_sequence;
 
-    return [AVHapticSequence activateChannelByIndex:"activateChannelByIndex:atTime:error:" atTime:a3 error:?];
+    return [AVHapticSequence activateChannelByIndex:"activateChannelByIndex:atTime:error:" atTime:index error:?];
   }
 
   else
   {
-    _Haptic_Check("/Library/Caches/com.apple.xbs/Sources/CoreHaptics/Source/CHHapticAdvancedPatternPlayer.mm", 533, "[AdvancedPatternPlayer activateChannelByIndex:atTime:error:]", "time >= 0.0", -4840, a5);
+    _Haptic_Check("/Library/Caches/com.apple.xbs/Sources/CoreHaptics/Source/CHHapticAdvancedPatternPlayer.mm", 533, "[AdvancedPatternPlayer activateChannelByIndex:atTime:error:]", "time >= 0.0", -4840, error);
     return 0;
   }
 }
 
-- (BOOL)setVolume:(float)a3 atTime:(double)a4 error:(id *)a5
+- (BOOL)setVolume:(float)volume atTime:(double)time error:(id *)error
 {
-  if (a4 >= 0.0)
+  if (time >= 0.0)
   {
     sequence = self->_sequence;
 
@@ -1447,15 +1447,15 @@ LABEL_8:
 
   else
   {
-    _Haptic_Check("/Library/Caches/com.apple.xbs/Sources/CoreHaptics/Source/CHHapticAdvancedPatternPlayer.mm", 539, "[AdvancedPatternPlayer setVolume:atTime:error:]", "time >= 0.0", -4840, a5);
+    _Haptic_Check("/Library/Caches/com.apple.xbs/Sources/CoreHaptics/Source/CHHapticAdvancedPatternPlayer.mm", 539, "[AdvancedPatternPlayer setVolume:atTime:error:]", "time >= 0.0", -4840, error);
     return 0;
   }
 }
 
-- (BOOL)earlyUnduckAudioAtTime:(double)a3 error:(id *)a4
+- (BOOL)earlyUnduckAudioAtTime:(double)time error:(id *)error
 {
   v21 = *MEMORY[0x277D85DE8];
-  if (a3 >= 0.0)
+  if (time >= 0.0)
   {
     if (kHAPIScope)
     {
@@ -1463,7 +1463,7 @@ LABEL_8:
       if (!v8)
       {
 LABEL_10:
-        result = [(AVHapticSequence *)self->_sequence earlyUnduckAudioAtTime:a4 error:a3];
+        result = [(AVHapticSequence *)self->_sequence earlyUnduckAudioAtTime:error error:time];
         goto LABEL_11;
       }
     }
@@ -1483,16 +1483,16 @@ LABEL_10:
       v15 = 2080;
       v16 = "[AdvancedPatternPlayer earlyUnduckAudioAtTime:error:]";
       v17 = 2048;
-      v18 = self;
+      selfCopy = self;
       v19 = 2048;
-      v20 = a3;
+      timeCopy = time;
       _os_log_impl(&dword_21569A000, v8, OS_LOG_TYPE_DEBUG, "%25s:%-5d %s: Setting player %p to early unduck audio at time %.3f", &v11, 0x30u);
     }
 
     goto LABEL_10;
   }
 
-  _Haptic_Check("/Library/Caches/com.apple.xbs/Sources/CoreHaptics/Source/CHHapticAdvancedPatternPlayer.mm", 545, "[AdvancedPatternPlayer earlyUnduckAudioAtTime:error:]", "time >= 0.0", -4840, a4);
+  _Haptic_Check("/Library/Caches/com.apple.xbs/Sources/CoreHaptics/Source/CHHapticAdvancedPatternPlayer.mm", 545, "[AdvancedPatternPlayer earlyUnduckAudioAtTime:error:]", "time >= 0.0", -4840, error);
   result = 0;
 LABEL_11:
   v10 = *MEMORY[0x277D85DE8];
@@ -1501,19 +1501,19 @@ LABEL_11:
 
 - (float)volume
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  volume = v2->_volume;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  volume = selfCopy->_volume;
+  objc_sync_exit(selfCopy);
 
   return volume;
 }
 
-- (void)setVolume:(float)a3
+- (void)setVolume:(float)volume
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = self;
-  objc_sync_enter(v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   if (kHAPIScope)
   {
     v5 = *kHAPIScope;
@@ -1538,16 +1538,16 @@ LABEL_11:
     v20 = 2080;
     v21 = "[AdvancedPatternPlayer setVolume:]";
     v22 = 2048;
-    v23 = v4;
+    v23 = selfCopy;
     v24 = 2048;
-    v25 = a3;
+    volumeCopy2 = volume;
     _os_log_impl(&dword_21569A000, v5, OS_LOG_TYPE_DEBUG, "%25s:%-5d %s: Setting player %p audio and haptics volume to %.3f. Server will clamp volume argument to [0, 1]", buf, 0x30u);
   }
 
 LABEL_8:
-  sequence = v4->_sequence;
+  sequence = selfCopy->_sequence;
   v15 = 0;
-  *&v6 = a3;
+  *&v6 = volume;
   [(AVHapticSequence *)sequence setVolume:&v15 atTime:v6 error:0.0];
   v9 = v15;
   if (v9)
@@ -1570,7 +1570,7 @@ LABEL_8:
     v12 = v10;
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      v13 = [v9 localizedDescription];
+      localizedDescription = [v9 localizedDescription];
       *buf = 136316418;
       v17 = "CHHapticAdvancedPatternPlayer.mm";
       v18 = 1024;
@@ -1578,46 +1578,46 @@ LABEL_8:
       v20 = 2080;
       v21 = "[AdvancedPatternPlayer setVolume:]";
       v22 = 2048;
-      v23 = v4;
+      v23 = selfCopy;
       v24 = 2048;
-      v25 = a3;
+      volumeCopy2 = volume;
       v26 = 2112;
-      v27 = v13;
+      v27 = localizedDescription;
       _os_log_impl(&dword_21569A000, v12, OS_LOG_TYPE_ERROR, "%25s:%-5d %s: Error setting player %p audio and haptics volume to %.3f: %@", buf, 0x3Au);
     }
   }
 
   else
   {
-    v4->_volume = a3;
+    selfCopy->_volume = volume;
   }
 
 LABEL_17:
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
   v14 = *MEMORY[0x277D85DE8];
 }
 
 - (double)seekOffset
 {
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   val = 0.0;
-  if (v2->_seekOffset.__engaged_)
+  if (selfCopy->_seekOffset.__engaged_)
   {
-    val = v2->_seekOffset.var0.__val_;
+    val = selfCopy->_seekOffset.var0.__val_;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return val;
 }
 
-- (void)setSeekOffset:(double)a3
+- (void)setSeekOffset:(double)offset
 {
   obj = self;
   objc_sync_enter(obj);
-  obj->_seekOffset.var0.__val_ = a3;
+  obj->_seekOffset.var0.__val_ = offset;
   obj->_seekOffset.__engaged_ = 1;
   objc_sync_exit(obj);
 }

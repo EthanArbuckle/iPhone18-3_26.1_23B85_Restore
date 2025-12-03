@@ -1,38 +1,38 @@
 @interface MOVStreamOutputSettings
-+ (double)getQualitySetting:(StreamRecordingData *)a3;
-+ (id)addAdditionalCompressionProperties:(id)a3 recordingConfig:(id)a4;
-+ (id)audioSettings:(StreamRecordingData *)a3;
-+ (id)customEncoderSettings:(StreamRecordingData *)a3 frameRate:(double)a4 enableAVEHighPerformanceProfile:(BOOL)a5;
-+ (id)generalHEVCColorSettings:(StreamRecordingData *)a3 frameRate:(double)a4 enableAVEHighPerformanceProfile:(BOOL)a5;
-+ (id)h264Settings:(StreamRecordingData *)a3 frameRate:(double)a4 enableAVEHighPerformanceProfile:(BOOL)a5;
-+ (id)hevc10bitMonochromeLosslessSettings:(StreamRecordingData *)a3 frameRate:(double)a4 enableAVEHighPerformanceProfile:(BOOL)a5;
-+ (id)hevc10bitMonochromeSettings:(StreamRecordingData *)a3 frameRate:(double)a4 enableAVEHighPerformanceProfile:(BOOL)a5;
-+ (id)hevc8bitMonochromeLosslessSettings:(StreamRecordingData *)a3 frameRate:(double)a4 enableAVEHighPerformanceProfile:(BOOL)a5;
-+ (id)hevc8bitMonochromeSettings:(StreamRecordingData *)a3 frameRate:(double)a4 enableAVEHighPerformanceProfile:(BOOL)a5;
-+ (id)hevc8bitWithAlphaLosslessSettings:(StreamRecordingData *)a3 frameRate:(double)a4 enableAVEHighPerformanceProfile:(BOOL)a5;
-+ (id)hevc8bitWithAlphaSettings:(StreamRecordingData *)a3 frameRate:(double)a4 enableAVEHighPerformanceProfile:(BOOL)a5;
-+ (id)hevcColorLosslessSettings:(StreamRecordingData *)a3 frameRate:(double)a4 enableAVEHighPerformanceProfile:(BOOL)a5;
-+ (id)hevcColorSettings:(StreamRecordingData *)a3 frameRate:(double)a4 enableAVEHighPerformanceProfile:(BOOL)a5;
-+ (id)hevcColorSettingsLossless:(BOOL)a3 quality:(double)a4 bitsPerSecond:(unint64_t)a5 bitDepth10:(BOOL)a6 chromaSampling:(int64_t)a7 frameRate:(double)a8 dimensions:(id)a9 enableAVEHighPerformanceProfile:(BOOL)a10;
-+ (id)jpegSettings:(StreamRecordingData *)a3 frameRate:(double)a4;
-+ (id)outputSettingsForStream:(StreamRecordingData *)a3 defaultFrameRate:(double)a4 enableAVEHighPerformanceProfile:(BOOL)a5;
-+ (id)prores422Settings:(StreamRecordingData *)a3 frameRate:(double)a4;
-+ (id)prores4444Settings:(StreamRecordingData *)a3 frameRate:(double)a4;
-+ (id)proresRAWHQSettings:(StreamRecordingData *)a3 frameRate:(double)a4;
-+ (id)proresRAWSettings:(StreamRecordingData *)a3 frameRate:(double)a4;
-+ (id)slimSettings:(StreamRecordingData *)a3 frameRate:(double)a4;
-+ (int)encoderTypeFromStreamData:(StreamRecordingData *)a3;
-+ (int)matchDeprecatedType:(int)a3;
-+ (int64_t)chromaSamplingEncoding:(int)a3;
-+ (unint64_t)applyBitrateModifiersTo:(unint64_t)a3;
-+ (unint64_t)getBitsPerSecondForColorStream:(StreamRecordingData *)a3 frameRate:(double)a4;
++ (double)getQualitySetting:(StreamRecordingData *)setting;
++ (id)addAdditionalCompressionProperties:(id)properties recordingConfig:(id)config;
++ (id)audioSettings:(StreamRecordingData *)settings;
++ (id)customEncoderSettings:(StreamRecordingData *)settings frameRate:(double)rate enableAVEHighPerformanceProfile:(BOOL)profile;
++ (id)generalHEVCColorSettings:(StreamRecordingData *)settings frameRate:(double)rate enableAVEHighPerformanceProfile:(BOOL)profile;
++ (id)h264Settings:(StreamRecordingData *)settings frameRate:(double)rate enableAVEHighPerformanceProfile:(BOOL)profile;
++ (id)hevc10bitMonochromeLosslessSettings:(StreamRecordingData *)settings frameRate:(double)rate enableAVEHighPerformanceProfile:(BOOL)profile;
++ (id)hevc10bitMonochromeSettings:(StreamRecordingData *)settings frameRate:(double)rate enableAVEHighPerformanceProfile:(BOOL)profile;
++ (id)hevc8bitMonochromeLosslessSettings:(StreamRecordingData *)settings frameRate:(double)rate enableAVEHighPerformanceProfile:(BOOL)profile;
++ (id)hevc8bitMonochromeSettings:(StreamRecordingData *)settings frameRate:(double)rate enableAVEHighPerformanceProfile:(BOOL)profile;
++ (id)hevc8bitWithAlphaLosslessSettings:(StreamRecordingData *)settings frameRate:(double)rate enableAVEHighPerformanceProfile:(BOOL)profile;
++ (id)hevc8bitWithAlphaSettings:(StreamRecordingData *)settings frameRate:(double)rate enableAVEHighPerformanceProfile:(BOOL)profile;
++ (id)hevcColorLosslessSettings:(StreamRecordingData *)settings frameRate:(double)rate enableAVEHighPerformanceProfile:(BOOL)profile;
++ (id)hevcColorSettings:(StreamRecordingData *)settings frameRate:(double)rate enableAVEHighPerformanceProfile:(BOOL)profile;
++ (id)hevcColorSettingsLossless:(BOOL)lossless quality:(double)quality bitsPerSecond:(unint64_t)second bitDepth10:(BOOL)depth10 chromaSampling:(int64_t)sampling frameRate:(double)rate dimensions:(id)dimensions enableAVEHighPerformanceProfile:(BOOL)self0;
++ (id)jpegSettings:(StreamRecordingData *)settings frameRate:(double)rate;
++ (id)outputSettingsForStream:(StreamRecordingData *)stream defaultFrameRate:(double)rate enableAVEHighPerformanceProfile:(BOOL)profile;
++ (id)prores422Settings:(StreamRecordingData *)settings frameRate:(double)rate;
++ (id)prores4444Settings:(StreamRecordingData *)settings frameRate:(double)rate;
++ (id)proresRAWHQSettings:(StreamRecordingData *)settings frameRate:(double)rate;
++ (id)proresRAWSettings:(StreamRecordingData *)settings frameRate:(double)rate;
++ (id)slimSettings:(StreamRecordingData *)settings frameRate:(double)rate;
++ (int)encoderTypeFromStreamData:(StreamRecordingData *)data;
++ (int)matchDeprecatedType:(int)type;
++ (int64_t)chromaSamplingEncoding:(int)encoding;
++ (unint64_t)applyBitrateModifiersTo:(unint64_t)to;
++ (unint64_t)getBitsPerSecondForColorStream:(StreamRecordingData *)stream frameRate:(double)rate;
 - (MOVStreamOutputSettings)init;
-- (MOVStreamOutputSettings)initWithConfig:(id)a3;
-- (MOVStreamOutputSettings)initWithFrameRate:(double)a3;
-- (MOVStreamOutputSettings)initWithFrameRate:(double)a3 useCustomEncoderConfig:(BOOL)a4;
-- (MOVStreamOutputSettings)initWithSettings:(id)a3;
-- (id)initForVCPEncodingWithEncoderSpec:(id)a3 sessopnProperties:(id)a4;
-- (void)applyAdditionalCompressionPropertiesFromRecordingConfig:(id)a3;
+- (MOVStreamOutputSettings)initWithConfig:(id)config;
+- (MOVStreamOutputSettings)initWithFrameRate:(double)rate;
+- (MOVStreamOutputSettings)initWithFrameRate:(double)rate useCustomEncoderConfig:(BOOL)config;
+- (MOVStreamOutputSettings)initWithSettings:(id)settings;
+- (id)initForVCPEncodingWithEncoderSpec:(id)spec sessopnProperties:(id)properties;
+- (void)applyAdditionalCompressionPropertiesFromRecordingConfig:(id)config;
 @end
 
 @implementation MOVStreamOutputSettings
@@ -58,75 +58,75 @@
   return v3;
 }
 
-- (id)initForVCPEncodingWithEncoderSpec:(id)a3 sessopnProperties:(id)a4
+- (id)initForVCPEncodingWithEncoderSpec:(id)spec sessopnProperties:(id)properties
 {
-  v7 = a3;
-  v8 = a4;
+  specCopy = spec;
+  propertiesCopy = properties;
   v9 = [(MOVStreamOutputSettings *)self init];
   p_isa = &v9->super.isa;
   if (v9)
   {
     v9->_useAsVCPConfig = 1;
-    objc_storeStrong(&v9->_encoderSpecVCP, a3);
-    objc_storeStrong(p_isa + 6, a4);
+    objc_storeStrong(&v9->_encoderSpecVCP, spec);
+    objc_storeStrong(p_isa + 6, properties);
   }
 
   return p_isa;
 }
 
-- (MOVStreamOutputSettings)initWithSettings:(id)a3
+- (MOVStreamOutputSettings)initWithSettings:(id)settings
 {
-  v5 = a3;
+  settingsCopy = settings;
   v6 = [(MOVStreamOutputSettings *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_settings, a3);
+    objc_storeStrong(&v6->_settings, settings);
   }
 
   return v7;
 }
 
-- (MOVStreamOutputSettings)initWithConfig:(id)a3
+- (MOVStreamOutputSettings)initWithConfig:(id)config
 {
-  v5 = a3;
+  configCopy = config;
   v6 = [(MOVStreamOutputSettings *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_config, a3);
+    objc_storeStrong(&v6->_config, config);
     v7->_useCustomEncoderConfig = 1;
   }
 
   return v7;
 }
 
-- (MOVStreamOutputSettings)initWithFrameRate:(double)a3
+- (MOVStreamOutputSettings)initWithFrameRate:(double)rate
 {
   result = [(MOVStreamOutputSettings *)self init];
   if (result)
   {
-    result->_expectedFrameRate = a3;
+    result->_expectedFrameRate = rate;
   }
 
   return result;
 }
 
-- (MOVStreamOutputSettings)initWithFrameRate:(double)a3 useCustomEncoderConfig:(BOOL)a4
+- (MOVStreamOutputSettings)initWithFrameRate:(double)rate useCustomEncoderConfig:(BOOL)config
 {
   result = [(MOVStreamOutputSettings *)self init];
   if (result)
   {
-    result->_useCustomEncoderConfig = a4;
-    result->_expectedFrameRate = a3;
+    result->_useCustomEncoderConfig = config;
+    result->_expectedFrameRate = rate;
   }
 
   return result;
 }
 
-+ (int)encoderTypeFromStreamData:(StreamRecordingData *)a3
++ (int)encoderTypeFromStreamData:(StreamRecordingData *)data
 {
-  v3 = a3->var5;
+  v3 = data->var5;
   v4 = v3;
   if (!v3)
   {
@@ -134,28 +134,28 @@
   }
 
   v5 = [v3 objectForKey:@"StreamEncoderType"];
-  v6 = [v5 intValue];
+  intValue = [v5 intValue];
 
-  v7 = [objc_opt_class() matchDeprecatedType:v6];
+  v7 = [objc_opt_class() matchDeprecatedType:intValue];
   return v7;
 }
 
-+ (id)outputSettingsForStream:(StreamRecordingData *)a3 defaultFrameRate:(double)a4 enableAVEHighPerformanceProfile:(BOOL)a5
++ (id)outputSettingsForStream:(StreamRecordingData *)stream defaultFrameRate:(double)rate enableAVEHighPerformanceProfile:(BOOL)profile
 {
-  v5 = a5;
-  v8 = a3->var5;
+  profileCopy = profile;
+  v8 = stream->var5;
   if (!v8)
   {
     __assert_rtn("+[MOVStreamOutputSettings outputSettingsForStream:defaultFrameRate:enableAVEHighPerformanceProfile:]", "MOVStreamOutputSettings.mm", 134, "configuration");
   }
 
-  v9 = [objc_opt_class() encoderTypeFromStreamData:a3];
+  v9 = [objc_opt_class() encoderTypeFromStreamData:stream];
   v10 = [v8 objectForKey:@"ExpectedFrameRateForStream"];
   v11 = v10;
   if (v10)
   {
     [v10 doubleValue];
-    a4 = v12;
+    rate = v12;
   }
 
   v13 = v9 - 1;
@@ -163,48 +163,48 @@
   switch(v13)
   {
     case 0:
-      v16 = [MOVStreamOutputSettings slimSettings:a3 frameRate:a4];
+      v16 = [MOVStreamOutputSettings slimSettings:stream frameRate:rate];
       goto LABEL_25;
     case 3:
-      v15 = [MOVStreamOutputSettings hevc10bitMonochromeLosslessSettings:a3 frameRate:v5 enableAVEHighPerformanceProfile:a4];
+      v15 = [MOVStreamOutputSettings hevc10bitMonochromeLosslessSettings:stream frameRate:profileCopy enableAVEHighPerformanceProfile:rate];
       goto LABEL_6;
     case 4:
-      v15 = [MOVStreamOutputSettings hevc10bitMonochromeSettings:a3 frameRate:v5 enableAVEHighPerformanceProfile:a4];
+      v15 = [MOVStreamOutputSettings hevc10bitMonochromeSettings:stream frameRate:profileCopy enableAVEHighPerformanceProfile:rate];
       goto LABEL_6;
     case 5:
-      v15 = [MOVStreamOutputSettings hevc8bitMonochromeLosslessSettings:a3 frameRate:v5 enableAVEHighPerformanceProfile:a4];
+      v15 = [MOVStreamOutputSettings hevc8bitMonochromeLosslessSettings:stream frameRate:profileCopy enableAVEHighPerformanceProfile:rate];
       goto LABEL_6;
     case 6:
-      v15 = [MOVStreamOutputSettings hevc8bitMonochromeSettings:a3 frameRate:v5 enableAVEHighPerformanceProfile:a4];
+      v15 = [MOVStreamOutputSettings hevc8bitMonochromeSettings:stream frameRate:profileCopy enableAVEHighPerformanceProfile:rate];
       goto LABEL_6;
     case 7:
-      v16 = [MOVStreamOutputSettings h264Settings:a3 frameRate:v5 enableAVEHighPerformanceProfile:a4];
+      v16 = [MOVStreamOutputSettings h264Settings:stream frameRate:profileCopy enableAVEHighPerformanceProfile:rate];
       goto LABEL_25;
     case 8:
-      v15 = [MOVStreamOutputSettings hevcColorSettings:a3 frameRate:v5 enableAVEHighPerformanceProfile:a4];
+      v15 = [MOVStreamOutputSettings hevcColorSettings:stream frameRate:profileCopy enableAVEHighPerformanceProfile:rate];
       goto LABEL_6;
     case 9:
-      v15 = [MOVStreamOutputSettings hevc8bitWithAlphaLosslessSettings:a3 frameRate:v5 enableAVEHighPerformanceProfile:a4];
+      v15 = [MOVStreamOutputSettings hevc8bitWithAlphaLosslessSettings:stream frameRate:profileCopy enableAVEHighPerformanceProfile:rate];
       goto LABEL_6;
     case 10:
-      v15 = [MOVStreamOutputSettings hevc8bitWithAlphaSettings:a3 frameRate:v5 enableAVEHighPerformanceProfile:a4];
+      v15 = [MOVStreamOutputSettings hevc8bitWithAlphaSettings:stream frameRate:profileCopy enableAVEHighPerformanceProfile:rate];
       goto LABEL_6;
     case 11:
-      v15 = [MOVStreamOutputSettings hevcColorLosslessSettings:a3 frameRate:v5 enableAVEHighPerformanceProfile:a4];
+      v15 = [MOVStreamOutputSettings hevcColorLosslessSettings:stream frameRate:profileCopy enableAVEHighPerformanceProfile:rate];
       goto LABEL_6;
     case 13:
-      v16 = [MOVStreamOutputSettings prores4444Settings:a3 frameRate:a4];
+      v16 = [MOVStreamOutputSettings prores4444Settings:stream frameRate:rate];
       goto LABEL_25;
     case 14:
-      v16 = [MOVStreamOutputSettings prores422Settings:a3 frameRate:a4];
+      v16 = [MOVStreamOutputSettings prores422Settings:stream frameRate:rate];
       goto LABEL_25;
     case 15:
-      v16 = [MOVStreamOutputSettings audioSettings:a3];
+      v16 = [MOVStreamOutputSettings audioSettings:stream];
       goto LABEL_25;
     case 16:
       break;
     case 17:
-      v16 = [MOVStreamOutputSettings customEncoderSettings:a3 frameRate:v5 enableAVEHighPerformanceProfile:a4];
+      v16 = [MOVStreamOutputSettings customEncoderSettings:stream frameRate:profileCopy enableAVEHighPerformanceProfile:rate];
       goto LABEL_25;
     case 18:
     case 19:
@@ -216,19 +216,19 @@
     case 27:
     case 33:
     case 34:
-      v15 = [MOVStreamOutputSettings generalHEVCColorSettings:a3 frameRate:v5 enableAVEHighPerformanceProfile:a4];
+      v15 = [MOVStreamOutputSettings generalHEVCColorSettings:stream frameRate:profileCopy enableAVEHighPerformanceProfile:rate];
 LABEL_6:
       v14 = v15;
       [v15 applyAdditionalCompressionPropertiesFromRecordingConfig:v8];
       break;
     case 28:
-      v16 = [MOVStreamOutputSettings proresRAWSettings:a3 frameRate:a4];
+      v16 = [MOVStreamOutputSettings proresRAWSettings:stream frameRate:rate];
       goto LABEL_25;
     case 29:
-      v16 = [MOVStreamOutputSettings proresRAWHQSettings:a3 frameRate:a4];
+      v16 = [MOVStreamOutputSettings proresRAWHQSettings:stream frameRate:rate];
       goto LABEL_25;
     case 32:
-      v16 = [MOVStreamOutputSettings jpegSettings:a3 frameRate:a4];
+      v16 = [MOVStreamOutputSettings jpegSettings:stream frameRate:rate];
 LABEL_25:
       v14 = v16;
       break;
@@ -247,26 +247,26 @@ LABEL_25:
   return v14;
 }
 
-- (void)applyAdditionalCompressionPropertiesFromRecordingConfig:(id)a3
+- (void)applyAdditionalCompressionPropertiesFromRecordingConfig:(id)config
 {
-  v15 = a3;
-  v4 = [(MOVStreamOutputSettings *)self settings];
-  v5 = [v4 count];
+  configCopy = config;
+  settings = [(MOVStreamOutputSettings *)self settings];
+  v5 = [settings count];
 
   if (v5)
   {
-    v6 = [(MOVStreamOutputSettings *)self settings];
+    settings2 = [(MOVStreamOutputSettings *)self settings];
     v7 = *MEMORY[0x277CE6330];
-    v8 = [v6 objectForKey:*MEMORY[0x277CE6330]];
+    sessionProperties = [settings2 objectForKey:*MEMORY[0x277CE6330]];
 
-    v9 = [MOVStreamOutputSettings addAdditionalCompressionProperties:v8 recordingConfig:v15];
+    v9 = [MOVStreamOutputSettings addAdditionalCompressionProperties:sessionProperties recordingConfig:configCopy];
     if (v9)
     {
-      v10 = [(MOVStreamOutputSettings *)self settings];
-      v11 = [v10 mutableCopy];
+      settings3 = [(MOVStreamOutputSettings *)self settings];
+      config3 = [settings3 mutableCopy];
 
-      [v11 setObject:v9 forKey:v7];
-      v12 = [v11 copy];
+      [config3 setObject:v9 forKey:v7];
+      v12 = [config3 copy];
       [(MOVStreamOutputSettings *)self setSettings:v12];
 
 LABEL_7:
@@ -275,21 +275,21 @@ LABEL_7:
 
   else
   {
-    v13 = [(MOVStreamOutputSettings *)self config];
+    config = [(MOVStreamOutputSettings *)self config];
 
-    if (!v13)
+    if (!config)
     {
       goto LABEL_9;
     }
 
-    v14 = [(MOVStreamOutputSettings *)self config];
-    v8 = [v14 sessionProperties];
+    config2 = [(MOVStreamOutputSettings *)self config];
+    sessionProperties = [config2 sessionProperties];
 
-    v9 = [MOVStreamOutputSettings addAdditionalCompressionProperties:v8 recordingConfig:v15];
+    v9 = [MOVStreamOutputSettings addAdditionalCompressionProperties:sessionProperties recordingConfig:configCopy];
     if (v9)
     {
-      v11 = [(MOVStreamOutputSettings *)self config];
-      [v11 setSessionProperties:v9];
+      config3 = [(MOVStreamOutputSettings *)self config];
+      [config3 setSessionProperties:v9];
       goto LABEL_7;
     }
   }
@@ -297,9 +297,9 @@ LABEL_7:
 LABEL_9:
 }
 
-+ (id)customEncoderSettings:(StreamRecordingData *)a3 frameRate:(double)a4 enableAVEHighPerformanceProfile:(BOOL)a5
++ (id)customEncoderSettings:(StreamRecordingData *)settings frameRate:(double)rate enableAVEHighPerformanceProfile:(BOOL)profile
 {
-  v6 = [a3->var5 objectForKey:{@"CustomEncoderConfig", a5}];
+  v6 = [settings->var5 objectForKey:{@"CustomEncoderConfig", profile}];
   if (v6)
   {
     v7 = [[MOVStreamOutputSettings alloc] initWithConfig:v6];
@@ -307,7 +307,7 @@ LABEL_9:
 
   else
   {
-    v7 = [[MOVStreamOutputSettings alloc] initWithFrameRate:1 useCustomEncoderConfig:a4];
+    v7 = [[MOVStreamOutputSettings alloc] initWithFrameRate:1 useCustomEncoderConfig:rate];
   }
 
   v8 = v7;
@@ -315,18 +315,18 @@ LABEL_9:
   return v8;
 }
 
-+ (id)audioSettings:(StreamRecordingData *)a3
++ (id)audioSettings:(StreamRecordingData *)settings
 {
   v4 = objc_opt_new();
-  v5 = [a3->var5 objectForKey:@"AudioFormatObject"];
+  v5 = [settings->var5 objectForKey:@"AudioFormatObject"];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 settings];
-    [v4 addEntriesFromDictionary:v7];
+    settings = [v5 settings];
+    [v4 addEntriesFromDictionary:settings];
   }
 
-  v8 = [a3->var5 objectForKey:@"AdditionalAudioSettings"];
+  v8 = [settings->var5 objectForKey:@"AdditionalAudioSettings"];
   if ([v8 count])
   {
     [v4 addEntriesFromDictionary:v8];
@@ -347,46 +347,46 @@ LABEL_9:
   return v11;
 }
 
-+ (int64_t)chromaSamplingEncoding:(int)a3
++ (int64_t)chromaSamplingEncoding:(int)encoding
 {
-  if ((a3 - 21) > 0xE)
+  if ((encoding - 21) > 0xE)
   {
     return 0;
   }
 
   else
   {
-    return qword_25792F7B0[a3 - 21];
+    return qword_25792F7B0[encoding - 21];
   }
 }
 
-+ (id)generalHEVCColorSettings:(StreamRecordingData *)a3 frameRate:(double)a4 enableAVEHighPerformanceProfile:(BOOL)a5
++ (id)generalHEVCColorSettings:(StreamRecordingData *)settings frameRate:(double)rate enableAVEHighPerformanceProfile:(BOOL)profile
 {
-  v5 = a5;
-  Dimensions = CMVideoFormatDescriptionGetDimensions(a3->var0);
-  v9 = [objc_opt_class() getBitsPerSecondForColorStream:a3 frameRate:a4];
-  [objc_opt_class() getQualitySetting:a3];
+  profileCopy = profile;
+  Dimensions = CMVideoFormatDescriptionGetDimensions(settings->var0);
+  v9 = [objc_opt_class() getBitsPerSecondForColorStream:settings frameRate:rate];
+  [objc_opt_class() getQualitySetting:settings];
   v11 = v10;
-  v12 = [a3->var5 objectForKey:@"StreamEncoderType"];
-  v13 = [v12 intValue];
+  v12 = [settings->var5 objectForKey:@"StreamEncoderType"];
+  intValue = [v12 intValue];
 
-  v14 = [MOVStreamOutputSettings isLosslessColorEncoding:v13];
-  v15 = [MOVStreamOutputSettings chromaSamplingEncoding:v13];
-  v16 = [MOVStreamOutputSettings isBitDepth10Encoding:v13];
+  v14 = [MOVStreamOutputSettings isLosslessColorEncoding:intValue];
+  v15 = [MOVStreamOutputSettings chromaSamplingEncoding:intValue];
+  v16 = [MOVStreamOutputSettings isBitDepth10Encoding:intValue];
 
-  return [MOVStreamOutputSettings hevcColorSettingsLossless:v14 quality:v9 bitsPerSecond:v16 bitDepth10:v15 chromaSampling:Dimensions frameRate:v5 dimensions:v11 enableAVEHighPerformanceProfile:a4];
+  return [MOVStreamOutputSettings hevcColorSettingsLossless:v14 quality:v9 bitsPerSecond:v16 bitDepth10:v15 chromaSampling:Dimensions frameRate:profileCopy dimensions:v11 enableAVEHighPerformanceProfile:rate];
 }
 
-+ (id)hevcColorSettingsLossless:(BOOL)a3 quality:(double)a4 bitsPerSecond:(unint64_t)a5 bitDepth10:(BOOL)a6 chromaSampling:(int64_t)a7 frameRate:(double)a8 dimensions:(id)a9 enableAVEHighPerformanceProfile:(BOOL)a10
++ (id)hevcColorSettingsLossless:(BOOL)lossless quality:(double)quality bitsPerSecond:(unint64_t)second bitDepth10:(BOOL)depth10 chromaSampling:(int64_t)sampling frameRate:(double)rate dimensions:(id)dimensions enableAVEHighPerformanceProfile:(BOOL)self0
 {
-  v35 = a10;
-  v13 = a6;
-  v16 = a3;
+  profileCopy = profile;
+  depth10Copy = depth10;
+  losslessCopy = lossless;
   v39[2] = *MEMORY[0x277D85DE8];
-  [MOVStreamIOUtility deriveMaxKeyFrameIntervalFromFps:a8];
+  [MOVStreamIOUtility deriveMaxKeyFrameIntervalFromFps:rate];
   v18 = v17;
   v38[0] = *MEMORY[0x277CE6340];
-  v19 = [MEMORY[0x277CCABB0] numberWithDouble:a8];
+  v19 = [MEMORY[0x277CCABB0] numberWithDouble:rate];
   v39[0] = v19;
   v38[1] = *MEMORY[0x277CE6368];
   v20 = [MEMORY[0x277CCABB0] numberWithDouble:v18];
@@ -394,39 +394,39 @@ LABEL_9:
   v21 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v39 forKeys:v38 count:2];
   v22 = [v21 mutableCopy];
 
-  if (v16)
+  if (losslessCopy)
   {
     [v22 setObject:&unk_2868E3BA8 forKey:*MEMORY[0x277CE6398]];
   }
 
   else
   {
-    if (a4 >= 0.0)
+    if (quality >= 0.0)
     {
-      v23 = [MEMORY[0x277CCABB0] numberWithDouble:a4];
+      v23 = [MEMORY[0x277CCABB0] numberWithDouble:quality];
       [v22 setObject:v23 forKey:*MEMORY[0x277CE6398]];
     }
 
     else
     {
-      v23 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:a5];
+      v23 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:second];
       [v22 setObject:v23 forKey:*MEMORY[0x277CE62B0]];
     }
   }
 
   v24 = +[MOVStreamOptions sharedOptions];
-  v25 = [v24 disableFrameReordering];
+  disableFrameReordering = [v24 disableFrameReordering];
 
-  if (v25)
+  if (disableFrameReordering)
   {
     [v22 setObject:MEMORY[0x277CBEC28] forKey:@"AllowFrameReordering"];
   }
 
-  if (v13)
+  if (depth10Copy)
   {
-    if (a7 < 3)
+    if (sampling < 3)
     {
-      v26 = off_279848418[a7];
+      v26 = off_279848418[sampling];
       goto LABEL_18;
     }
 
@@ -435,16 +435,16 @@ LABEL_25:
     __assert_rtn("+[MOVStreamOutputSettings hevcColorSettingsLossless:quality:bitsPerSecond:bitDepth10:chromaSampling:frameRate:dimensions:enableAVEHighPerformanceProfile:]", "MOVStreamOutputSettings.mm", v34, "0");
   }
 
-  if (a7)
+  if (sampling)
   {
-    if (a7 == 2)
+    if (sampling == 2)
     {
       v26 = @"HEVC_Main444_AutoLevel";
     }
 
     else
     {
-      if (a7 != 1)
+      if (sampling != 1)
       {
         v34 = 499;
         goto LABEL_25;
@@ -462,7 +462,7 @@ LABEL_25:
 
 LABEL_18:
   [v22 setObject:v26 forKey:*MEMORY[0x277CE6390]];
-  if (v35)
+  if (profileCopy)
   {
     [v22 setObject:MEMORY[0x277CBEC28] forKey:*MEMORY[0x277CE25F0]];
     [v22 setObject:MEMORY[0x277CBEC28] forKey:*MEMORY[0x277CE25B0]];
@@ -474,10 +474,10 @@ LABEL_18:
   v28 = *MEMORY[0x277CE63C0];
   v36[0] = v27;
   v36[1] = v28;
-  v29 = [MEMORY[0x277CCABB0] numberWithInt:a9];
+  v29 = [MEMORY[0x277CCABB0] numberWithInt:dimensions];
   v37[1] = v29;
   v36[2] = *MEMORY[0x277CE6360];
-  v30 = [MEMORY[0x277CCABB0] numberWithInt:HIDWORD(*&a9)];
+  v30 = [MEMORY[0x277CCABB0] numberWithInt:HIDWORD(*&dimensions)];
   v36[3] = *MEMORY[0x277CE6330];
   v37[2] = v30;
   v37[3] = v22;
@@ -488,10 +488,10 @@ LABEL_18:
   return v32;
 }
 
-+ (id)proresRAWSettings:(StreamRecordingData *)a3 frameRate:(double)a4
++ (id)proresRAWSettings:(StreamRecordingData *)settings frameRate:(double)rate
 {
   v13[3] = *MEMORY[0x277D85DE8];
-  Dimensions = CMVideoFormatDescriptionGetDimensions(a3->var0);
+  Dimensions = CMVideoFormatDescriptionGetDimensions(settings->var0);
   v5 = *MEMORY[0x277CE62C8];
   v13[0] = @"aprn";
   v6 = *MEMORY[0x277CE63C0];
@@ -509,10 +509,10 @@ LABEL_18:
   return v10;
 }
 
-+ (id)proresRAWHQSettings:(StreamRecordingData *)a3 frameRate:(double)a4
++ (id)proresRAWHQSettings:(StreamRecordingData *)settings frameRate:(double)rate
 {
   v13[3] = *MEMORY[0x277D85DE8];
-  Dimensions = CMVideoFormatDescriptionGetDimensions(a3->var0);
+  Dimensions = CMVideoFormatDescriptionGetDimensions(settings->var0);
   v5 = *MEMORY[0x277CE62C8];
   v13[0] = @"aprh";
   v6 = *MEMORY[0x277CE63C0];
@@ -530,21 +530,21 @@ LABEL_18:
   return v10;
 }
 
-+ (id)prores4444Settings:(StreamRecordingData *)a3 frameRate:(double)a4
++ (id)prores4444Settings:(StreamRecordingData *)settings frameRate:(double)rate
 {
   v21[3] = *MEMORY[0x277D85DE8];
-  Dimensions = CMVideoFormatDescriptionGetDimensions(a3->var0);
-  var5 = a3->var5;
+  Dimensions = CMVideoFormatDescriptionGetDimensions(settings->var0);
+  var5 = settings->var5;
   if (var5 && ([var5 objectForKey:@"ProResEncodingQuality"], v7 = objc_claimAutoreleasedReturnValue(), v7, v7))
   {
-    v8 = [a3->var5 objectForKey:@"ProResEncodingQuality"];
-    v9 = [v8 intValue];
+    v8 = [settings->var5 objectForKey:@"ProResEncodingQuality"];
+    intValue = [v8 intValue];
 
     v10 = *MEMORY[0x277CE62F0];
     v11 = v10;
-    if (v9 != 1)
+    if (intValue != 1)
     {
-      if (v9)
+      if (intValue)
       {
         v19 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CCA5B0] reason:@"ProRes4444 only supports high and medium quality setting." userInfo:0];
         objc_exception_throw(v19);
@@ -576,30 +576,30 @@ LABEL_18:
   return v17;
 }
 
-+ (id)prores422Settings:(StreamRecordingData *)a3 frameRate:(double)a4
++ (id)prores422Settings:(StreamRecordingData *)settings frameRate:(double)rate
 {
   v21[3] = *MEMORY[0x277D85DE8];
-  Dimensions = CMVideoFormatDescriptionGetDimensions(a3->var0);
-  var5 = a3->var5;
+  Dimensions = CMVideoFormatDescriptionGetDimensions(settings->var0);
+  var5 = settings->var5;
   if (var5 && ([var5 objectForKey:@"ProResEncodingQuality"], v7 = objc_claimAutoreleasedReturnValue(), v7, v7))
   {
-    v8 = [a3->var5 objectForKey:@"ProResEncodingQuality"];
-    v9 = [v8 intValue];
+    v8 = [settings->var5 objectForKey:@"ProResEncodingQuality"];
+    intValue = [v8 intValue];
 
     v10 = *MEMORY[0x277CE62D0];
-    if (v9 == 3)
+    if (intValue == 3)
     {
       v11 = MEMORY[0x277CE62E8];
     }
 
-    else if (v9 == 2)
+    else if (intValue == 2)
     {
       v11 = MEMORY[0x277CE62E0];
     }
 
     else
     {
-      if (v9)
+      if (intValue)
       {
         goto LABEL_11;
       }
@@ -635,25 +635,25 @@ LABEL_11:
   return v18;
 }
 
-+ (id)hevc10bitMonochromeLosslessSettings:(StreamRecordingData *)a3 frameRate:(double)a4 enableAVEHighPerformanceProfile:(BOOL)a5
++ (id)hevc10bitMonochromeLosslessSettings:(StreamRecordingData *)settings frameRate:(double)rate enableAVEHighPerformanceProfile:(BOOL)profile
 {
-  v5 = a5;
+  profileCopy = profile;
   v31[2] = *MEMORY[0x277D85DE8];
   v8 = +[MOVStreamOptions sharedOptions];
-  v9 = [v8 force10bitMonoByVT];
+  force10bitMonoByVT = [v8 force10bitMonoByVT];
 
-  if (v9)
+  if (force10bitMonoByVT)
   {
-    v10 = [[MOVStreamOutputSettings alloc] initWithFrameRate:a4];
+    v10 = [[MOVStreamOutputSettings alloc] initWithFrameRate:rate];
   }
 
   else
   {
-    [MOVStreamIOUtility deriveMaxKeyFrameIntervalFromFps:a4];
+    [MOVStreamIOUtility deriveMaxKeyFrameIntervalFromFps:rate];
     v12 = v11;
-    Dimensions = CMVideoFormatDescriptionGetDimensions(a3->var0);
+    Dimensions = CMVideoFormatDescriptionGetDimensions(settings->var0);
     v30[0] = *MEMORY[0x277CE6340];
-    v14 = [MEMORY[0x277CCABB0] numberWithDouble:a4];
+    v14 = [MEMORY[0x277CCABB0] numberWithDouble:rate];
     v31[0] = v14;
     v30[1] = *MEMORY[0x277CE6368];
     v15 = [MEMORY[0x277CCABB0] numberWithDouble:v12];
@@ -683,7 +683,7 @@ LABEL_11:
 
     [v17 setObject:MEMORY[0x277CBEC28] forKey:@"AllowFrameReordering"];
     [v17 setObject:&unk_2868E3BA8 forKey:*MEMORY[0x277CE6398]];
-    if (v5)
+    if (profileCopy)
     {
       [v17 setObject:MEMORY[0x277CBEC28] forKey:*MEMORY[0x277CE25F0]];
       [v17 setObject:MEMORY[0x277CBEC28] forKey:*MEMORY[0x277CE25B0]];
@@ -710,11 +710,11 @@ LABEL_11:
   return v10;
 }
 
-+ (id)hevc10bitMonochromeSettings:(StreamRecordingData *)a3 frameRate:(double)a4 enableAVEHighPerformanceProfile:(BOOL)a5
++ (id)hevc10bitMonochromeSettings:(StreamRecordingData *)settings frameRate:(double)rate enableAVEHighPerformanceProfile:(BOOL)profile
 {
-  v5 = a5;
-  v7 = [objc_opt_class() getBitsPerSecondForColorStream:a3 frameRate:a4];
-  [objc_opt_class() getQualitySetting:a3];
+  profileCopy = profile;
+  v7 = [objc_opt_class() getBitsPerSecondForColorStream:settings frameRate:rate];
+  [objc_opt_class() getQualitySetting:settings];
   if (v8 >= 0.0)
   {
     [MOVStreamEncoderConfig monochrome10BitEncoderConfigUsingAVEWithQuality:?];
@@ -726,7 +726,7 @@ LABEL_11:
   }
   v9 = ;
   v10 = v9;
-  if (v5)
+  if (profileCopy)
   {
     [v9 enableAVEHighPerformanceProfile];
   }
@@ -736,19 +736,19 @@ LABEL_11:
   return v11;
 }
 
-+ (id)hevcColorLosslessSettings:(StreamRecordingData *)a3 frameRate:(double)a4 enableAVEHighPerformanceProfile:(BOOL)a5
++ (id)hevcColorLosslessSettings:(StreamRecordingData *)settings frameRate:(double)rate enableAVEHighPerformanceProfile:(BOOL)profile
 {
-  v5 = a5;
+  profileCopy = profile;
   v27[3] = *MEMORY[0x277D85DE8];
-  Dimensions = CMVideoFormatDescriptionGetDimensions(a3->var0);
-  [MOVStreamIOUtility deriveMaxKeyFrameIntervalFromFps:a4];
+  Dimensions = CMVideoFormatDescriptionGetDimensions(settings->var0);
+  [MOVStreamIOUtility deriveMaxKeyFrameIntervalFromFps:rate];
   v9 = v8;
   v10 = *MEMORY[0x277CE6398];
   v27[0] = &unk_2868E3BA8;
   v11 = *MEMORY[0x277CE6340];
   v26[0] = v10;
   v26[1] = v11;
-  v12 = [MEMORY[0x277CCABB0] numberWithDouble:a4];
+  v12 = [MEMORY[0x277CCABB0] numberWithDouble:rate];
   v27[1] = v12;
   v26[2] = *MEMORY[0x277CE6368];
   v13 = [MEMORY[0x277CCABB0] numberWithDouble:v9];
@@ -764,7 +764,7 @@ LABEL_11:
     [v15 setObject:MEMORY[0x277CBEC28] forKey:@"AllowFrameReordering"];
   }
 
-  if (v5)
+  if (profileCopy)
   {
     [v15 setObject:MEMORY[0x277CBEC28] forKey:*MEMORY[0x277CE25F0]];
     [v15 setObject:MEMORY[0x277CBEC28] forKey:*MEMORY[0x277CE25B0]];
@@ -790,11 +790,11 @@ LABEL_11:
   return v22;
 }
 
-+ (id)hevc8bitMonochromeLosslessSettings:(StreamRecordingData *)a3 frameRate:(double)a4 enableAVEHighPerformanceProfile:(BOOL)a5
++ (id)hevc8bitMonochromeLosslessSettings:(StreamRecordingData *)settings frameRate:(double)rate enableAVEHighPerformanceProfile:(BOOL)profile
 {
-  v5 = a5;
+  profileCopy = profile;
   v30[3] = *MEMORY[0x277D85DE8];
-  v7 = [a3->var11 createTrackFormatDescriptionFromStreamData:?];
+  v7 = [settings->var11 createTrackFormatDescriptionFromStreamData:?];
   Dimensions = CMVideoFormatDescriptionGetDimensions(v7);
   if (v7)
   {
@@ -802,23 +802,23 @@ LABEL_11:
   }
 
   v9 = +[MOVStreamOptions sharedOptions];
-  v10 = [v9 forceLossless8bitMonoByVT];
+  forceLossless8bitMonoByVT = [v9 forceLossless8bitMonoByVT];
 
-  if (v10)
+  if (forceLossless8bitMonoByVT)
   {
-    v11 = [[MOVStreamOutputSettings alloc] initWithFrameRate:a4];
+    v11 = [[MOVStreamOutputSettings alloc] initWithFrameRate:rate];
   }
 
   else
   {
-    [MOVStreamIOUtility deriveMaxKeyFrameIntervalFromFps:a4];
+    [MOVStreamIOUtility deriveMaxKeyFrameIntervalFromFps:rate];
     v13 = v12;
     v14 = *MEMORY[0x277CE6398];
     v30[0] = &unk_2868E3BA8;
     v15 = *MEMORY[0x277CE6340];
     v29[0] = v14;
     v29[1] = v15;
-    v16 = [MEMORY[0x277CCABB0] numberWithDouble:a4];
+    v16 = [MEMORY[0x277CCABB0] numberWithDouble:rate];
     v30[1] = v16;
     v29[2] = *MEMORY[0x277CE6368];
     v17 = [MEMORY[0x277CCABB0] numberWithDouble:v13];
@@ -835,7 +835,7 @@ LABEL_11:
     }
 
     [v19 setObject:*MEMORY[0x277CE29C0] forKey:*MEMORY[0x277CE6390]];
-    if (v5)
+    if (profileCopy)
     {
       [v19 setObject:MEMORY[0x277CBEC28] forKey:*MEMORY[0x277CE25F0]];
       [v19 setObject:MEMORY[0x277CBEC28] forKey:*MEMORY[0x277CE25B0]];
@@ -862,24 +862,24 @@ LABEL_11:
   return v11;
 }
 
-+ (id)hevc8bitMonochromeSettings:(StreamRecordingData *)a3 frameRate:(double)a4 enableAVEHighPerformanceProfile:(BOOL)a5
++ (id)hevc8bitMonochromeSettings:(StreamRecordingData *)settings frameRate:(double)rate enableAVEHighPerformanceProfile:(BOOL)profile
 {
-  v5 = a5;
+  profileCopy = profile;
   v32[2] = *MEMORY[0x277D85DE8];
-  v8 = [a3->var11 createTrackFormatDescriptionFromStreamData:?];
+  v8 = [settings->var11 createTrackFormatDescriptionFromStreamData:?];
   Dimensions = CMVideoFormatDescriptionGetDimensions(v8);
   if (v8)
   {
     CFRelease(v8);
   }
 
-  v10 = [objc_opt_class() getBitsPerSecondForColorStream:a3 frameRate:a4];
-  [objc_opt_class() getQualitySetting:a3];
+  v10 = [objc_opt_class() getBitsPerSecondForColorStream:settings frameRate:rate];
+  [objc_opt_class() getQualitySetting:settings];
   v12 = v11;
-  [MOVStreamIOUtility deriveMaxKeyFrameIntervalFromFps:a4];
+  [MOVStreamIOUtility deriveMaxKeyFrameIntervalFromFps:rate];
   v14 = v13;
   v31[0] = *MEMORY[0x277CE6340];
-  v15 = [MEMORY[0x277CCABB0] numberWithDouble:a4];
+  v15 = [MEMORY[0x277CCABB0] numberWithDouble:rate];
   v32[0] = v15;
   v31[1] = *MEMORY[0x277CE6368];
   v16 = [MEMORY[0x277CCABB0] numberWithDouble:v14];
@@ -900,14 +900,14 @@ LABEL_11:
   }
 
   v20 = +[MOVStreamOptions sharedOptions];
-  v21 = [v20 disableFrameReordering];
+  disableFrameReordering = [v20 disableFrameReordering];
 
-  if (v21)
+  if (disableFrameReordering)
   {
     [v18 setObject:MEMORY[0x277CBEC28] forKey:@"AllowFrameReordering"];
   }
 
-  if (v5)
+  if (profileCopy)
   {
     [v18 setObject:MEMORY[0x277CBEC28] forKey:*MEMORY[0x277CE25F0]];
     [v18 setObject:MEMORY[0x277CBEC28] forKey:*MEMORY[0x277CE25B0]];
@@ -934,18 +934,18 @@ LABEL_11:
   return v27;
 }
 
-+ (id)hevcColorSettings:(StreamRecordingData *)a3 frameRate:(double)a4 enableAVEHighPerformanceProfile:(BOOL)a5
++ (id)hevcColorSettings:(StreamRecordingData *)settings frameRate:(double)rate enableAVEHighPerformanceProfile:(BOOL)profile
 {
-  v5 = a5;
+  profileCopy = profile;
   v31[2] = *MEMORY[0x277D85DE8];
-  Dimensions = CMVideoFormatDescriptionGetDimensions(a3->var0);
-  v9 = [objc_opt_class() getBitsPerSecondForColorStream:a3 frameRate:a4];
-  [objc_opt_class() getQualitySetting:a3];
+  Dimensions = CMVideoFormatDescriptionGetDimensions(settings->var0);
+  v9 = [objc_opt_class() getBitsPerSecondForColorStream:settings frameRate:rate];
+  [objc_opt_class() getQualitySetting:settings];
   v11 = v10;
-  [MOVStreamIOUtility deriveMaxKeyFrameIntervalFromFps:a4];
+  [MOVStreamIOUtility deriveMaxKeyFrameIntervalFromFps:rate];
   v13 = v12;
   v30[0] = *MEMORY[0x277CE6340];
-  v14 = [MEMORY[0x277CCABB0] numberWithDouble:a4];
+  v14 = [MEMORY[0x277CCABB0] numberWithDouble:rate];
   v31[0] = v14;
   v30[1] = *MEMORY[0x277CE6368];
   v15 = [MEMORY[0x277CCABB0] numberWithDouble:v13];
@@ -966,14 +966,14 @@ LABEL_11:
   }
 
   v19 = +[MOVStreamOptions sharedOptions];
-  v20 = [v19 disableFrameReordering];
+  disableFrameReordering = [v19 disableFrameReordering];
 
-  if (v20)
+  if (disableFrameReordering)
   {
     [v17 setObject:MEMORY[0x277CBEC28] forKey:@"AllowFrameReordering"];
   }
 
-  if (v5)
+  if (profileCopy)
   {
     [v17 setObject:MEMORY[0x277CBEC28] forKey:*MEMORY[0x277CE25F0]];
     [v17 setObject:MEMORY[0x277CBEC28] forKey:*MEMORY[0x277CE25B0]];
@@ -999,15 +999,15 @@ LABEL_11:
   return v26;
 }
 
-+ (id)hevc8bitWithAlphaLosslessSettings:(StreamRecordingData *)a3 frameRate:(double)a4 enableAVEHighPerformanceProfile:(BOOL)a5
++ (id)hevc8bitWithAlphaLosslessSettings:(StreamRecordingData *)settings frameRate:(double)rate enableAVEHighPerformanceProfile:(BOOL)profile
 {
-  v5 = a5;
+  profileCopy = profile;
   v25[4] = *MEMORY[0x277D85DE8];
-  Dimensions = CMVideoFormatDescriptionGetDimensions(a3->var0);
-  [MOVStreamIOUtility deriveMaxKeyFrameIntervalFromFps:a4];
+  Dimensions = CMVideoFormatDescriptionGetDimensions(settings->var0);
+  [MOVStreamIOUtility deriveMaxKeyFrameIntervalFromFps:rate];
   v9 = v8;
   v24[0] = *MEMORY[0x277CE6340];
-  v10 = [MEMORY[0x277CCABB0] numberWithDouble:a4];
+  v10 = [MEMORY[0x277CCABB0] numberWithDouble:rate];
   v25[0] = v10;
   v24[1] = *MEMORY[0x277CE6368];
   v11 = [MEMORY[0x277CCABB0] numberWithDouble:v9];
@@ -1027,7 +1027,7 @@ LABEL_11:
     [v13 setObject:MEMORY[0x277CBEC28] forKey:@"AllowFrameReordering"];
   }
 
-  if (v5)
+  if (profileCopy)
   {
     [v13 setObject:MEMORY[0x277CBEC28] forKey:*MEMORY[0x277CE25F0]];
     [v13 setObject:MEMORY[0x277CBEC28] forKey:*MEMORY[0x277CE25B0]];
@@ -1053,18 +1053,18 @@ LABEL_11:
   return v20;
 }
 
-+ (id)hevc8bitWithAlphaSettings:(StreamRecordingData *)a3 frameRate:(double)a4 enableAVEHighPerformanceProfile:(BOOL)a5
++ (id)hevc8bitWithAlphaSettings:(StreamRecordingData *)settings frameRate:(double)rate enableAVEHighPerformanceProfile:(BOOL)profile
 {
-  v5 = a5;
+  profileCopy = profile;
   v31[3] = *MEMORY[0x277D85DE8];
-  Dimensions = CMVideoFormatDescriptionGetDimensions(a3->var0);
-  v9 = [objc_opt_class() getBitsPerSecondForColorStream:a3 frameRate:a4];
-  [objc_opt_class() getQualitySetting:a3];
+  Dimensions = CMVideoFormatDescriptionGetDimensions(settings->var0);
+  v9 = [objc_opt_class() getBitsPerSecondForColorStream:settings frameRate:rate];
+  [objc_opt_class() getQualitySetting:settings];
   v11 = v10;
-  [MOVStreamIOUtility deriveMaxKeyFrameIntervalFromFps:a4];
+  [MOVStreamIOUtility deriveMaxKeyFrameIntervalFromFps:rate];
   v13 = v12;
   v30[0] = *MEMORY[0x277CE6340];
-  v14 = [MEMORY[0x277CCABB0] numberWithDouble:a4];
+  v14 = [MEMORY[0x277CCABB0] numberWithDouble:rate];
   v31[0] = v14;
   v30[1] = *MEMORY[0x277CE6368];
   v15 = [MEMORY[0x277CCABB0] numberWithDouble:v13];
@@ -1087,14 +1087,14 @@ LABEL_11:
   }
 
   v19 = +[MOVStreamOptions sharedOptions];
-  v20 = [v19 disableFrameReordering];
+  disableFrameReordering = [v19 disableFrameReordering];
 
-  if (v20)
+  if (disableFrameReordering)
   {
     [v17 setObject:MEMORY[0x277CBEC28] forKey:@"AllowFrameReordering"];
   }
 
-  if (v5)
+  if (profileCopy)
   {
     [v17 setObject:MEMORY[0x277CBEC28] forKey:*MEMORY[0x277CE25F0]];
     [v17 setObject:MEMORY[0x277CBEC28] forKey:*MEMORY[0x277CE25B0]];
@@ -1120,18 +1120,18 @@ LABEL_11:
   return v26;
 }
 
-+ (id)h264Settings:(StreamRecordingData *)a3 frameRate:(double)a4 enableAVEHighPerformanceProfile:(BOOL)a5
++ (id)h264Settings:(StreamRecordingData *)settings frameRate:(double)rate enableAVEHighPerformanceProfile:(BOOL)profile
 {
-  v5 = a5;
+  profileCopy = profile;
   v31[2] = *MEMORY[0x277D85DE8];
-  Dimensions = CMVideoFormatDescriptionGetDimensions(a3->var0);
-  v9 = [objc_opt_class() getBitsPerSecondForColorStream:a3 frameRate:a4];
-  [objc_opt_class() getQualitySetting:a3];
+  Dimensions = CMVideoFormatDescriptionGetDimensions(settings->var0);
+  v9 = [objc_opt_class() getBitsPerSecondForColorStream:settings frameRate:rate];
+  [objc_opt_class() getQualitySetting:settings];
   v11 = v10;
-  [MOVStreamIOUtility deriveMaxKeyFrameIntervalFromFps:a4];
+  [MOVStreamIOUtility deriveMaxKeyFrameIntervalFromFps:rate];
   v13 = v12;
   v30[0] = *MEMORY[0x277CE6340];
-  v14 = [MEMORY[0x277CCABB0] numberWithDouble:a4];
+  v14 = [MEMORY[0x277CCABB0] numberWithDouble:rate];
   v31[0] = v14;
   v30[1] = *MEMORY[0x277CE6368];
   v15 = [MEMORY[0x277CCABB0] numberWithDouble:v13];
@@ -1152,14 +1152,14 @@ LABEL_11:
   }
 
   v19 = +[MOVStreamOptions sharedOptions];
-  v20 = [v19 disableFrameReordering];
+  disableFrameReordering = [v19 disableFrameReordering];
 
-  if (v20)
+  if (disableFrameReordering)
   {
     [v17 setObject:MEMORY[0x277CBEC28] forKey:@"AllowFrameReordering"];
   }
 
-  if (v5)
+  if (profileCopy)
   {
     [v17 setObject:MEMORY[0x277CBEC28] forKey:*MEMORY[0x277CE25F0]];
     [v17 setObject:MEMORY[0x277CBEC28] forKey:*MEMORY[0x277CE25B0]];
@@ -1185,10 +1185,10 @@ LABEL_11:
   return v26;
 }
 
-+ (id)slimSettings:(StreamRecordingData *)a3 frameRate:(double)a4
++ (id)slimSettings:(StreamRecordingData *)settings frameRate:(double)rate
 {
   v22[3] = *MEMORY[0x277D85DE8];
-  Dimensions = CMVideoFormatDescriptionGetDimensions(a3->var0);
+  Dimensions = CMVideoFormatDescriptionGetDimensions(settings->var0);
   v6 = *MEMORY[0x277CE62C8];
   v22[0] = @"slim";
   v7 = *MEMORY[0x277CE63C0];
@@ -1201,13 +1201,13 @@ LABEL_11:
   v22[2] = v9;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v22 forKeys:v21 count:3];
 
-  var5 = a3->var5;
+  var5 = settings->var5;
   if (var5)
   {
     v12 = [var5 objectForKey:@"UseSlimXCompression"];
-    v13 = [v12 BOOLValue];
+    bOOLValue = [v12 BOOLValue];
 
-    if (v13)
+    if (bOOLValue)
     {
       v14 = [v10 mutableCopy];
       v19 = @"InternalCodecType";
@@ -1225,10 +1225,10 @@ LABEL_11:
   return v17;
 }
 
-+ (id)jpegSettings:(StreamRecordingData *)a3 frameRate:(double)a4
++ (id)jpegSettings:(StreamRecordingData *)settings frameRate:(double)rate
 {
   v25[3] = *MEMORY[0x277D85DE8];
-  Dimensions = CMVideoFormatDescriptionGetDimensions(a3->var0);
+  Dimensions = CMVideoFormatDescriptionGetDimensions(settings->var0);
   v6 = *MEMORY[0x277CE62C8];
   v25[0] = *MEMORY[0x277CE6310];
   v7 = *MEMORY[0x277CE63C0];
@@ -1241,7 +1241,7 @@ LABEL_11:
   v25[2] = v9;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v25 forKeys:v24 count:3];
 
-  var5 = a3->var5;
+  var5 = settings->var5;
   if (var5)
   {
     v12 = [var5 objectForKey:@"EncodingQuality"];
@@ -1277,9 +1277,9 @@ LABEL_11:
   return v20;
 }
 
-+ (unint64_t)getBitsPerSecondForColorStream:(StreamRecordingData *)a3 frameRate:(double)a4
++ (unint64_t)getBitsPerSecondForColorStream:(StreamRecordingData *)stream frameRate:(double)rate
 {
-  v6 = a3->var5;
+  v6 = stream->var5;
   v7 = v6;
   if (v6 && ([v6 objectForKey:@"ColorStreamBitrate"], (v8 = objc_claimAutoreleasedReturnValue()) != 0))
   {
@@ -1288,19 +1288,19 @@ LABEL_11:
 
   else
   {
-    Dimensions = CMVideoFormatDescriptionGetDimensions(a3->var0);
+    Dimensions = CMVideoFormatDescriptionGetDimensions(stream->var0);
     v11 = [v7 objectForKey:@"StreamEncoderType"];
-    v12 = [v11 intValue];
+    intValue = [v11 intValue];
 
-    v9 = [objc_opt_class() applyBitrateModifiersTo:{+[MOVStreamIOUtility getDefaultBitrateForVideoDimension:atExpectedFramerate:forEncoderType:](MOVStreamIOUtility, "getDefaultBitrateForVideoDimension:atExpectedFramerate:forEncoderType:", Dimensions, v12, a4)}];
+    v9 = [objc_opt_class() applyBitrateModifiersTo:{+[MOVStreamIOUtility getDefaultBitrateForVideoDimension:atExpectedFramerate:forEncoderType:](MOVStreamIOUtility, "getDefaultBitrateForVideoDimension:atExpectedFramerate:forEncoderType:", Dimensions, intValue, rate)}];
   }
 
   return v9;
 }
 
-+ (double)getQualitySetting:(StreamRecordingData *)a3
++ (double)getQualitySetting:(StreamRecordingData *)setting
 {
-  v3 = a3->var5;
+  v3 = setting->var5;
   v4 = v3;
   v5 = -1.0;
   if (v3)
@@ -1318,64 +1318,64 @@ LABEL_11:
   return v5;
 }
 
-+ (unint64_t)applyBitrateModifiersTo:(unint64_t)a3
++ (unint64_t)applyBitrateModifiersTo:(unint64_t)to
 {
   v4 = +[MOVStreamOptions sharedOptions];
   [v4 bitrateMultiplier];
   v6 = v5;
 
   v7 = +[MOVStreamOptions sharedOptions];
-  v8 = [v7 bitrateOverride];
-  v9 = vcvtad_u64_f64(v6 * a3);
+  bitrateOverride = [v7 bitrateOverride];
+  v9 = vcvtad_u64_f64(v6 * to);
   if (v6 > 0.0)
   {
-    a3 = v9;
+    to = v9;
   }
 
-  if (v8)
+  if (bitrateOverride)
   {
-    return v8;
+    return bitrateOverride;
   }
 
   else
   {
-    return a3;
+    return to;
   }
 }
 
-+ (int)matchDeprecatedType:(int)a3
++ (int)matchDeprecatedType:(int)type
 {
-  if (a3 == 3)
+  if (type == 3)
   {
-    v3 = 4;
+    typeCopy = 4;
   }
 
   else
   {
-    v3 = a3;
+    typeCopy = type;
   }
 
-  if (a3 == 13)
+  if (type == 13)
   {
-    v3 = 1;
+    typeCopy = 1;
   }
 
-  if (a3 == 2)
+  if (type == 2)
   {
     return 1;
   }
 
   else
   {
-    return v3;
+    return typeCopy;
   }
 }
 
-+ (id)addAdditionalCompressionProperties:(id)a3 recordingConfig:(id)a4
++ (id)addAdditionalCompressionProperties:(id)properties recordingConfig:(id)config
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 objectForKey:@"AdditionalCompressionProperties"];
+  propertiesCopy = properties;
+  configCopy = config;
+  v7 = [configCopy objectForKey:@"AdditionalCompressionProperties"];
   if (v7)
   {
     v8 = v7;
@@ -1386,10 +1386,10 @@ LABEL_11:
     v8 = MEMORY[0x277CBEC10];
   }
 
-  v9 = [v5 mutableCopy];
+  v9 = [propertiesCopy mutableCopy];
   [v9 addEntriesFromDictionary:MEMORY[0x277CBEC10]];
   [v9 addEntriesFromDictionary:v8];
-  v10 = [v6 objectForKey:@"AllowFrameReordering"];
+  v10 = [configCopy objectForKey:@"AllowFrameReordering"];
   v11 = v10;
   if (v10)
   {

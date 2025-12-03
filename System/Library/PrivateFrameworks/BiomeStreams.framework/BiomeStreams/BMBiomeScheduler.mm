@@ -1,51 +1,51 @@
 @interface BMBiomeScheduler
-- (BMBiomeScheduler)initWithIdentifier:(id)a3 targetQueue:(id)a4;
-- (BMBiomeScheduler)initWithIdentifier:(id)a3 targetQueue:(id)a4 client:(id)a5;
-- (BMBiomeScheduler)initWithIdentifier:(id)a3 targetQueue:(id)a4 client:(id)a5 waking:(BOOL)a6;
-- (id)_publisherWithStreamIdentifier:(id)a3 storeEvent:(id)a4;
-- (id)_updatedPublisherForSubscription:(id)a3;
-- (void)_persistBookmarkForPublisher:(id)a3;
+- (BMBiomeScheduler)initWithIdentifier:(id)identifier targetQueue:(id)queue;
+- (BMBiomeScheduler)initWithIdentifier:(id)identifier targetQueue:(id)queue client:(id)client;
+- (BMBiomeScheduler)initWithIdentifier:(id)identifier targetQueue:(id)queue client:(id)client waking:(BOOL)waking;
+- (id)_publisherWithStreamIdentifier:(id)identifier storeEvent:(id)event;
+- (id)_updatedPublisherForSubscription:(id)subscription;
+- (void)_persistBookmarkForPublisher:(id)publisher;
 - (void)cancel;
-- (void)subscribeWithDSLGraph:(id)a3 forSubscriber:(id)a4;
-- (void)subscribeWithDSLGraph:(id)a3 publisherBlock:(id)a4;
+- (void)subscribeWithDSLGraph:(id)graph forSubscriber:(id)subscriber;
+- (void)subscribeWithDSLGraph:(id)graph publisherBlock:(id)block;
 @end
 
 @implementation BMBiomeScheduler
 
-- (BMBiomeScheduler)initWithIdentifier:(id)a3 targetQueue:(id)a4
+- (BMBiomeScheduler)initWithIdentifier:(id)identifier targetQueue:(id)queue
 {
-  v6 = a4;
-  v7 = a3;
+  queueCopy = queue;
+  identifierCopy = identifier;
   v8 = +[BMComputePublisherClient shared];
-  v9 = [(BMBiomeScheduler *)self initWithIdentifier:v7 targetQueue:v6 client:v8];
+  v9 = [(BMBiomeScheduler *)self initWithIdentifier:identifierCopy targetQueue:queueCopy client:v8];
 
   return v9;
 }
 
-- (BMBiomeScheduler)initWithIdentifier:(id)a3 targetQueue:(id)a4 client:(id)a5
+- (BMBiomeScheduler)initWithIdentifier:(id)identifier targetQueue:(id)queue client:(id)client
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [MEMORY[0x1E698E9D8] current];
-  v11 = [v10 isManagedByLaunchd];
+  identifierCopy = identifier;
+  queueCopy = queue;
+  clientCopy = client;
+  current = [MEMORY[0x1E698E9D8] current];
+  isManagedByLaunchd = [current isManagedByLaunchd];
 
-  v12 = [MEMORY[0x1E696AAE8] mainBundle];
-  v13 = [v12 bundleURL];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleURL = [mainBundle bundleURL];
   v26[0] = *MEMORY[0x1E695DB70];
   v14 = v26[0];
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:1];
   v25 = 0;
-  v16 = [v13 resourceValuesForKeys:v15 error:&v25];
+  v16 = [bundleURL resourceValuesForKeys:v15 error:&v25];
   v17 = v25;
 
   v18 = [v16 objectForKeyedSubscript:v14];
   v19 = v18;
   if (v17)
   {
-    v20 = __biome_log_for_category();
-    if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
+    bundleIdentifier = __biome_log_for_category();
+    if (os_log_type_enabled(bundleIdentifier, OS_LOG_TYPE_ERROR))
     {
       [BMBiomeScheduler initWithIdentifier:targetQueue:client:];
     }
@@ -55,46 +55,46 @@
 
   if ([v18 BOOLValue])
   {
-    v20 = [v12 bundleIdentifier];
-    v11 = [v20 isEqualToString:@"com.apple.springboard"];
+    bundleIdentifier = [mainBundle bundleIdentifier];
+    isManagedByLaunchd = [bundleIdentifier isEqualToString:@"com.apple.springboard"];
 LABEL_6:
   }
 
-  v21 = [(BMBiomeScheduler *)self initWithIdentifier:v7 targetQueue:v8 client:v9 waking:v11, self];
+  v21 = [(BMBiomeScheduler *)self initWithIdentifier:identifierCopy targetQueue:queueCopy client:clientCopy waking:isManagedByLaunchd, self];
 
   v22 = *MEMORY[0x1E69E9840];
   return v21;
 }
 
-- (BMBiomeScheduler)initWithIdentifier:(id)a3 targetQueue:(id)a4 client:(id)a5 waking:(BOOL)a6
+- (BMBiomeScheduler)initWithIdentifier:(id)identifier targetQueue:(id)queue client:(id)client waking:(BOOL)waking
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  identifierCopy = identifier;
+  queueCopy = queue;
+  clientCopy = client;
   v17.receiver = self;
   v17.super_class = BMBiomeScheduler;
   v13 = [(BMBiomeScheduler *)&v17 init];
   if (v13)
   {
-    v14 = [v10 copy];
+    v14 = [identifierCopy copy];
     identifier = v13->_identifier;
     v13->_identifier = v14;
 
-    objc_storeStrong(&v13->_queue, a4);
-    objc_storeStrong(&v13->_client, a5);
-    v13->_waking = a6;
+    objc_storeStrong(&v13->_queue, queue);
+    objc_storeStrong(&v13->_client, client);
+    v13->_waking = waking;
     v13->_lock._os_unfair_lock_opaque = 0;
   }
 
   return v13;
 }
 
-- (void)subscribeWithDSLGraph:(id)a3 forSubscriber:(id)a4
+- (void)subscribeWithDSLGraph:(id)graph forSubscriber:(id)subscriber
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  [v6 streamPublishers];
+  graphCopy = graph;
+  subscriberCopy = subscriber;
+  [graphCopy streamPublishers];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
@@ -132,28 +132,28 @@ LABEL_6:
   }
 
   v14 = [_BMBiomeXPCSchedulerInner alloc];
-  v15 = [(BMBiomeScheduler *)self identifier];
-  v16 = [(BMBiomeScheduler *)self client];
-  v17 = [(BMBiomeScheduler *)self queue];
-  v18 = [(_BMBiomeXPCSchedulerInner *)v14 initWithDownstream:v7 identifier:v15 graph:v6 client:v16 targetQueue:v17 waking:[(BMBiomeScheduler *)self waking]];
+  identifier = [(BMBiomeScheduler *)self identifier];
+  client = [(BMBiomeScheduler *)self client];
+  queue = [(BMBiomeScheduler *)self queue];
+  v18 = [(_BMBiomeXPCSchedulerInner *)v14 initWithDownstream:subscriberCopy identifier:identifier graph:graphCopy client:client targetQueue:queue waking:[(BMBiomeScheduler *)self waking]];
 
   if (self->_bookmarkStorage)
   {
     [(_BMBiomeXPCSchedulerInner *)v18 setBookmarkStorage:?];
   }
 
-  [v7 receiveSubscription:{v18, v20}];
+  [subscriberCopy receiveSubscription:{v18, v20}];
 LABEL_14:
 
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)subscribeWithDSLGraph:(id)a3 publisherBlock:(id)a4
+- (void)subscribeWithDSLGraph:(id)graph publisherBlock:(id)block
 {
   v37 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  [v7 streamPublishers];
+  graphCopy = graph;
+  blockCopy = block;
+  [graphCopy streamPublishers];
   v34 = 0u;
   v35 = 0u;
   v32 = 0u;
@@ -200,10 +200,10 @@ LABEL_14:
   aBlock[2] = __57__BMBiomeScheduler_subscribeWithDSLGraph_publisherBlock___block_invoke;
   aBlock[3] = &unk_1E6E54448;
   objc_copyWeak(&v30, &location);
-  v29 = v8;
+  v29 = blockCopy;
   v14 = _Block_copy(aBlock);
   os_unfair_lock_lock(&self->_lock);
-  objc_storeStrong(&self->_graph, a3);
+  objc_storeStrong(&self->_graph, graph);
   if (!self->_bookmarkStorage)
   {
     v15 = +[BMComputePublisherStorage bookmarkStorageForCurrentProcess];
@@ -211,26 +211,26 @@ LABEL_14:
     self->_bookmarkStorage = v15;
   }
 
-  v17 = [MEMORY[0x1E698E9D8] current];
-  v18 = [v17 identifier];
+  current = [MEMORY[0x1E698E9D8] current];
+  identifier = [current identifier];
 
   if (![(BMBiomeScheduler *)self waking])
   {
     v19 = self->_bookmarkStorage;
-    v20 = [(BMBiomeScheduler *)self identifier];
-    [(BMComputePublisherStorage *)v19 removeBookmarkFileForSubscriptionWithIdentifier:v20 client:v18];
+    identifier2 = [(BMBiomeScheduler *)self identifier];
+    [(BMComputePublisherStorage *)v19 removeBookmarkFileForSubscriptionWithIdentifier:identifier2 client:identifier];
   }
 
   v21 = [BMComputeSubscription alloc];
-  v22 = [(BMBiomeScheduler *)self identifier];
-  v23 = [(BMComputeSubscription *)v21 initWithIdentifier:v22 client:v18 waking:[(BMBiomeScheduler *)self waking] DSLGraph:v7 block:v14];
+  identifier3 = [(BMBiomeScheduler *)self identifier];
+  v23 = [(BMComputeSubscription *)v21 initWithIdentifier:identifier3 client:identifier waking:[(BMBiomeScheduler *)self waking] DSLGraph:graphCopy block:v14];
 
-  v24 = [(BMComputeSubscription *)v23 identifier];
-  [(BMBiomeScheduler *)self setSubscriptionIdentifier:v24];
+  identifier4 = [(BMComputeSubscription *)v23 identifier];
+  [(BMBiomeScheduler *)self setSubscriptionIdentifier:identifier4];
 
   os_unfair_lock_unlock(&self->_lock);
-  v25 = [(BMBiomeScheduler *)self client];
-  [v25 subscribe:v23];
+  client = [(BMBiomeScheduler *)self client];
+  [client subscribe:v23];
 
   objc_destroyWeak(&v30);
   objc_destroyWeak(&location);
@@ -342,24 +342,24 @@ void __57__BMBiomeScheduler_subscribeWithDSLGraph_publisherBlock___block_invoke_
 - (void)cancel
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(BMBiomeScheduler *)self subscriptionIdentifier];
-  v4 = [(BMBiomeScheduler *)self bpsPublisher];
+  subscriptionIdentifier = [(BMBiomeScheduler *)self subscriptionIdentifier];
+  bpsPublisher = [(BMBiomeScheduler *)self bpsPublisher];
   [(BMBiomeScheduler *)self setSubscriptionIdentifier:0];
   [(BMBiomeScheduler *)self setBpsPublisher:0];
-  v5 = [MEMORY[0x1E698E9D8] current];
-  v6 = [v5 identifier];
+  current = [MEMORY[0x1E698E9D8] current];
+  identifier = [current identifier];
 
-  [(BMComputePublisherStorage *)self->_bookmarkStorage removeBookmarkFileForSubscriptionWithIdentifier:v3 client:v6];
+  [(BMComputePublisherStorage *)self->_bookmarkStorage removeBookmarkFileForSubscriptionWithIdentifier:subscriptionIdentifier client:identifier];
   os_unfair_lock_unlock(&self->_lock);
-  if (v3)
+  if (subscriptionIdentifier)
   {
-    v7 = [(BMBiomeScheduler *)self client];
-    [v7 unsubscribeWithIdentifier:v3];
+    client = [(BMBiomeScheduler *)self client];
+    [client unsubscribeWithIdentifier:subscriptionIdentifier];
   }
 
-  if (v4)
+  if (bpsPublisher)
   {
-    [v4 reset];
+    [bpsPublisher reset];
   }
 
   v8 = __biome_log_for_category();
@@ -370,21 +370,21 @@ void __57__BMBiomeScheduler_subscribeWithDSLGraph_publisherBlock___block_invoke_
   }
 }
 
-- (id)_publisherWithStreamIdentifier:(id)a3 storeEvent:(id)a4
+- (id)_publisherWithStreamIdentifier:(id)identifier storeEvent:(id)event
 {
   v43 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  eventCopy = event;
   os_unfair_lock_assert_owner(&self->_lock);
   v38 = 0u;
   v39 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v31 = self;
-  v8 = [(BMBiomeScheduler *)self graph];
-  v9 = [v8 streamPublishers];
+  selfCopy = self;
+  graph = [(BMBiomeScheduler *)self graph];
+  streamPublishers = [graph streamPublishers];
 
-  v10 = [v9 countByEnumeratingWithState:&v36 objects:v42 count:16];
+  v10 = [streamPublishers countByEnumeratingWithState:&v36 objects:v42 count:16];
   if (v10)
   {
     v11 = v10;
@@ -395,38 +395,38 @@ void __57__BMBiomeScheduler_subscribeWithDSLGraph_publisherBlock___block_invoke_
       {
         if (*v37 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(streamPublishers);
         }
 
         v14 = *(*(&v36 + 1) + 8 * i);
-        v15 = [v14 identifier];
-        v16 = [v15 isEqualToString:v6];
+        identifier = [v14 identifier];
+        v16 = [identifier isEqualToString:identifierCopy];
 
         if (v16)
         {
-          v41 = v7;
+          v41 = eventCopy;
           v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v41 count:1];
           [v14 setBackingEvents:v17];
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v36 objects:v42 count:16];
+      v11 = [streamPublishers countByEnumeratingWithState:&v36 objects:v42 count:16];
     }
 
     while (v11);
   }
 
-  v18 = [(BMBiomeScheduler *)v31 graph];
-  v19 = [v18 bpsPublisher];
+  graph2 = [(BMBiomeScheduler *)selfCopy graph];
+  bpsPublisher = [graph2 bpsPublisher];
 
   v34 = 0u;
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v20 = [(BMBiomeScheduler *)v31 graph];
-  v21 = [v20 streamPublishers];
+  graph3 = [(BMBiomeScheduler *)selfCopy graph];
+  streamPublishers2 = [graph3 streamPublishers];
 
-  v22 = [v21 countByEnumeratingWithState:&v32 objects:v40 count:16];
+  v22 = [streamPublishers2 countByEnumeratingWithState:&v32 objects:v40 count:16];
   if (v22)
   {
     v23 = v22;
@@ -437,12 +437,12 @@ void __57__BMBiomeScheduler_subscribeWithDSLGraph_publisherBlock___block_invoke_
       {
         if (*v33 != v24)
         {
-          objc_enumerationMutation(v21);
+          objc_enumerationMutation(streamPublishers2);
         }
 
         v26 = *(*(&v32 + 1) + 8 * j);
-        v27 = [v26 identifier];
-        v28 = [v27 isEqualToString:v6];
+        identifier2 = [v26 identifier];
+        v28 = [identifier2 isEqualToString:identifierCopy];
 
         if (v28)
         {
@@ -450,7 +450,7 @@ void __57__BMBiomeScheduler_subscribeWithDSLGraph_publisherBlock___block_invoke_
         }
       }
 
-      v23 = [v21 countByEnumeratingWithState:&v32 objects:v40 count:16];
+      v23 = [streamPublishers2 countByEnumeratingWithState:&v32 objects:v40 count:16];
     }
 
     while (v23);
@@ -458,36 +458,36 @@ void __57__BMBiomeScheduler_subscribeWithDSLGraph_publisherBlock___block_invoke_
 
   v29 = *MEMORY[0x1E69E9840];
 
-  return v19;
+  return bpsPublisher;
 }
 
-- (id)_updatedPublisherForSubscription:(id)a3
+- (id)_updatedPublisherForSubscription:(id)subscription
 {
-  v4 = a3;
+  subscriptionCopy = subscription;
   os_unfair_lock_assert_owner(&self->_lock);
-  v5 = [(BMBiomeScheduler *)self bpsPublisher];
+  bpsPublisher = [(BMBiomeScheduler *)self bpsPublisher];
 
-  if (!v5)
+  if (!bpsPublisher)
   {
-    v6 = [(BMBiomeScheduler *)self graph];
-    v7 = [v6 bpsPublisher];
+    graph = [(BMBiomeScheduler *)self graph];
+    bpsPublisher2 = [graph bpsPublisher];
 
     bookmarkStorage = self->_bookmarkStorage;
     v28 = 0;
-    v9 = [v4 fetchBookmarkFromStorage:bookmarkStorage error:&v28];
+    v9 = [subscriptionCopy fetchBookmarkFromStorage:bookmarkStorage error:&v28];
     v10 = v28;
     v11 = v10;
     if (v9 && !v10)
     {
-      v12 = [v7 validateBookmarkNode:v9];
+      v12 = [bpsPublisher2 validateBookmarkNode:v9];
       if (v12)
       {
-        v13 = [MEMORY[0x1E698E9D8] current];
-        v14 = [v13 identifier];
+        current = [MEMORY[0x1E698E9D8] current];
+        identifier = [current identifier];
 
         v15 = self->_bookmarkStorage;
-        v16 = [v4 identifier];
-        [(BMComputePublisherStorage *)v15 removeBookmarkFileForSubscriptionWithIdentifier:v16 client:v14];
+        identifier2 = [subscriptionCopy identifier];
+        [(BMComputePublisherStorage *)v15 removeBookmarkFileForSubscriptionWithIdentifier:identifier2 client:identifier];
 
         v17 = __biome_log_for_category();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -497,7 +497,7 @@ void __57__BMBiomeScheduler_subscribeWithDSLGraph_publisherBlock___block_invoke_
 
         v18 = self->_bookmarkStorage;
         v27 = 0;
-        v19 = [v4 fetchBookmarkFromStorage:v18 error:&v27];
+        v19 = [subscriptionCopy fetchBookmarkFromStorage:v18 error:&v27];
         v11 = v27;
 
         v9 = v19;
@@ -524,8 +524,8 @@ void __57__BMBiomeScheduler_subscribeWithDSLGraph_publisherBlock___block_invoke_
       [_BMBiomeXPCSchedulerInner switchToUpdatedPublisher];
     }
 
-    [v7 applyBookmarkNode:v9];
-    v22 = [v7 startWithSubscriber:0];
+    [bpsPublisher2 applyBookmarkNode:v9];
+    v22 = [bpsPublisher2 startWithSubscriber:0];
     if (v22)
     {
       v23 = __biome_log_for_category();
@@ -537,7 +537,7 @@ void __57__BMBiomeScheduler_subscribeWithDSLGraph_publisherBlock___block_invoke_
 
     else
     {
-      [(BMBiomeScheduler *)self setBpsPublisher:v7];
+      [(BMBiomeScheduler *)self setBpsPublisher:bpsPublisher2];
       v23 = __biome_log_for_category();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
       {
@@ -552,23 +552,23 @@ void __57__BMBiomeScheduler_subscribeWithDSLGraph_publisherBlock___block_invoke_
     [BMBiomeScheduler _updatedPublisherForSubscription:v24];
   }
 
-  v25 = [(BMBiomeScheduler *)self bpsPublisher];
+  bpsPublisher3 = [(BMBiomeScheduler *)self bpsPublisher];
 
-  return v25;
+  return bpsPublisher3;
 }
 
-- (void)_persistBookmarkForPublisher:(id)a3
+- (void)_persistBookmarkForPublisher:(id)publisher
 {
-  v4 = a3;
+  publisherCopy = publisher;
   os_unfair_lock_assert_owner(&self->_lock);
-  if (v4 && [v4 conformsToProtocol:&unk_1EF30FAF0])
+  if (publisherCopy && [publisherCopy conformsToProtocol:&unk_1EF30FAF0])
   {
-    v5 = [v4 bookmarkNode];
+    bookmarkNode = [publisherCopy bookmarkNode];
     bookmarkStorage = self->_bookmarkStorage;
-    v7 = [(BMBiomeScheduler *)self identifier];
-    v8 = [MEMORY[0x1E698E9D8] current];
-    v9 = [v8 identifier];
-    [(BMComputePublisherStorage *)bookmarkStorage writeBookmark:v5 forSubscriptionWithIdentifier:v7 client:v9];
+    identifier = [(BMBiomeScheduler *)self identifier];
+    current = [MEMORY[0x1E698E9D8] current];
+    identifier2 = [current identifier];
+    [(BMComputePublisherStorage *)bookmarkStorage writeBookmark:bookmarkNode forSubscriptionWithIdentifier:identifier client:identifier2];
 
     v10 = __biome_log_for_category();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))

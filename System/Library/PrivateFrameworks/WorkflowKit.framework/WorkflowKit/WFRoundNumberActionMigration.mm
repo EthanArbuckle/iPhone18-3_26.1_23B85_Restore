@@ -1,16 +1,16 @@
 @interface WFRoundNumberActionMigration
-+ (BOOL)workflowNeedsMigration:(id)a3 fromClientVersion:(id)a4;
++ (BOOL)workflowNeedsMigration:(id)migration fromClientVersion:(id)version;
 - (void)migrateWorkflow;
 @end
 
 @implementation WFRoundNumberActionMigration
 
-+ (BOOL)workflowNeedsMigration:(id)a3 fromClientVersion:(id)a4
++ (BOOL)workflowNeedsMigration:(id)migration fromClientVersion:(id)version
 {
-  v5 = a3;
-  if (WFCompareBundleVersions(a4, @"900"))
+  migrationCopy = migration;
+  if (WFCompareBundleVersions(version, @"900"))
   {
-    HasActionsWithIdentifier = WFWorkflowHasActionsWithIdentifier(@"is.workflow.actions.round", v5);
+    HasActionsWithIdentifier = WFWorkflowHasActionsWithIdentifier(@"is.workflow.actions.round", migrationCopy);
   }
 
   else
@@ -23,7 +23,7 @@
 
 - (void)migrateWorkflow
 {
-  v2 = self;
+  selfCopy = self;
   v50 = *MEMORY[0x1E69E9840];
   v43 = 0u;
   v44 = 0u;
@@ -49,13 +49,13 @@
         }
 
         v8 = *(*(&v43 + 1) + 8 * v7);
-        v9 = [(WFWorkflowMigration *)v2 actionIdentifierKey];
-        v10 = [v8 objectForKey:v9];
+        actionIdentifierKey = [(WFWorkflowMigration *)selfCopy actionIdentifierKey];
+        v10 = [v8 objectForKey:actionIdentifierKey];
 
         if ([v10 isEqualToString:v5])
         {
-          v11 = [(WFWorkflowMigration *)v2 actionParametersKey];
-          v12 = [v8 objectForKeyedSubscript:v11];
+          actionParametersKey = [(WFWorkflowMigration *)selfCopy actionParametersKey];
+          v12 = [v8 objectForKeyedSubscript:actionParametersKey];
 
           v42 = [v12 objectForKeyedSubscript:@"WFRoundType"];
           v13 = [v42 isEqualToString:@"Left of Decimal"];
@@ -148,19 +148,19 @@ LABEL_28:
 
             else
             {
-              v28 = v2;
+              v28 = selfCopy;
               v29 = v5;
 
               v30 = [v12 objectForKey:@"WFRoundDecimalPlaces"];
-              v31 = [v30 integerValue];
-              if (v31 >= 0)
+              integerValue = [v30 integerValue];
+              if (integerValue >= 0)
               {
-                v32 = v31;
+                v32 = integerValue;
               }
 
               else
               {
-                v32 = -v31;
+                v32 = -integerValue;
               }
 
               v33 = [MEMORY[0x1E696AD98] numberWithInteger:v32];
@@ -189,7 +189,7 @@ LABEL_28:
               }
 
               v5 = v29;
-              v2 = v28;
+              selfCopy = v28;
               v4 = v39;
             }
 
@@ -232,7 +232,7 @@ LABEL_28:
     while (v4);
   }
 
-  [(WFWorkflowMigration *)v2 finish];
+  [(WFWorkflowMigration *)selfCopy finish];
   v38 = *MEMORY[0x1E69E9840];
 }
 

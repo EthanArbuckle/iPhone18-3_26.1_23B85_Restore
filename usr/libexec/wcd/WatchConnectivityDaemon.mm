@@ -1,82 +1,82 @@
 @interface WatchConnectivityDaemon
 + (id)sharedDaemon;
-- (BOOL)cellUsageAllowedForBundleID:(id)a3;
-- (BOOL)copyFile:(int)a3 to:(int)a4;
-- (BOOL)errorIfPreconditionsNotSatisfiedWithClientPairingID:(id)a3 error:(id *)a4;
-- (BOOL)fileTransferExistsForPairingID:(id)a3 identifier:(id)a4 applicationInfo:(id)a5;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (BOOL)listenerShouldAcceptNewConnection:(id)a3;
-- (BOOL)notifyIfFileTransferWithCommunicationID:(id)a3 pairingID:(id)a4 sendID:(id)a5 success:(BOOL)a6 error:(id)a7;
-- (BOOL)notifyIfUserInfoTransferWithCommunicationID:(id)a3 pairingID:(id)a4 sendID:(id)a5 success:(BOOL)a6 error:(id)a7;
-- (BOOL)privateListenerShouldAcceptNewConnection:(id)a3;
-- (BOOL)sendComplicationUserInfo:(id)a3 clientID:(id)a4 clientPairingID:(id)a5 identifier:(id)a6 errorHandler:(id)a7;
-- (BOOL)userInfoExistsForPairingID:(id)a3 identifier:(id)a4 applicationInfo:(id)a5;
+- (BOOL)cellUsageAllowedForBundleID:(id)d;
+- (BOOL)copyFile:(int)file to:(int)to;
+- (BOOL)errorIfPreconditionsNotSatisfiedWithClientPairingID:(id)d error:(id *)error;
+- (BOOL)fileTransferExistsForPairingID:(id)d identifier:(id)identifier applicationInfo:(id)info;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (BOOL)listenerShouldAcceptNewConnection:(id)connection;
+- (BOOL)notifyIfFileTransferWithCommunicationID:(id)d pairingID:(id)iD sendID:(id)sendID success:(BOOL)success error:(id)error;
+- (BOOL)notifyIfUserInfoTransferWithCommunicationID:(id)d pairingID:(id)iD sendID:(id)sendID success:(BOOL)success error:(id)error;
+- (BOOL)privateListenerShouldAcceptNewConnection:(id)connection;
+- (BOOL)sendComplicationUserInfo:(id)info clientID:(id)d clientPairingID:(id)iD identifier:(id)identifier errorHandler:(id)handler;
+- (BOOL)userInfoExistsForPairingID:(id)d identifier:(id)identifier applicationInfo:(id)info;
 - (IDSDevice)activeIDSDevice;
 - (NSString)state;
 - (WatchConnectivityDaemon)init;
-- (const)descriptionFromPayloadSendType:(unsigned __int16)a3;
-- (id)WCErrorForIDSError:(id)a3;
-- (id)applicationInfoForCommunicationID:(id)a3;
-- (id)complicationUserInfoPathInDataContainer:(id)a3 pairingID:(id)a4;
-- (id)createBackgroundAssertionTimerForIdentifier:(id)a3;
-- (id)createCLInUseTimerForIdentifier:(id)a3;
-- (id)createNewClientObjectWithCommunicationID:(id)a3 connection:(id)a4;
-- (id)dataFromUUIDString:(id)a3;
-- (id)moveFileToClientInbox:(id)a3 applicationInfo:(id)a4 pairingID:(id)a5 fileIdentifier:(id)a6 userInfoData:(id)a7 error:(id *)a8;
-- (id)moveUserInfoToClientInbox:(id)a3 applicationInfo:(id)a4 pairingID:(id)a5 userInfoIdentifier:(id)a6;
-- (id)pairingIDForIDSUniqueDeviceID:(id)a3;
-- (void)acquireBackgroundAssertionForIdentifier:(id)a3;
-- (void)addCounterpartClientCommunicationIdentifier:(id)a3;
-- (void)cancelSendWithIdentifier:(id)a3;
-- (void)cleanUpProcessAssertionForIdentifier:(id)a3;
-- (void)clientReachabilityDidChange:(id)a3;
-- (void)clientXPCConnectionDidDisconnect:(id)a3;
-- (void)dequeueContentForClient:(id)a3;
-- (void)dequeuePendingMessagesForCommunicationID:(id)a3;
-- (void)duetIdentifiersForCompanionAppID:(id)a3 withCompletionHandler:(id)a4;
+- (const)descriptionFromPayloadSendType:(unsigned __int16)type;
+- (id)WCErrorForIDSError:(id)error;
+- (id)applicationInfoForCommunicationID:(id)d;
+- (id)complicationUserInfoPathInDataContainer:(id)container pairingID:(id)d;
+- (id)createBackgroundAssertionTimerForIdentifier:(id)identifier;
+- (id)createCLInUseTimerForIdentifier:(id)identifier;
+- (id)createNewClientObjectWithCommunicationID:(id)d connection:(id)connection;
+- (id)dataFromUUIDString:(id)string;
+- (id)moveFileToClientInbox:(id)inbox applicationInfo:(id)info pairingID:(id)d fileIdentifier:(id)identifier userInfoData:(id)data error:(id *)error;
+- (id)moveUserInfoToClientInbox:(id)inbox applicationInfo:(id)info pairingID:(id)d userInfoIdentifier:(id)identifier;
+- (id)pairingIDForIDSUniqueDeviceID:(id)d;
+- (void)acquireBackgroundAssertionForIdentifier:(id)identifier;
+- (void)addCounterpartClientCommunicationIdentifier:(id)identifier;
+- (void)cancelSendWithIdentifier:(id)identifier;
+- (void)cleanUpProcessAssertionForIdentifier:(id)identifier;
+- (void)clientReachabilityDidChange:(id)change;
+- (void)clientXPCConnectionDidDisconnect:(id)disconnect;
+- (void)dequeueContentForClient:(id)client;
+- (void)dequeuePendingMessagesForCommunicationID:(id)d;
+- (void)duetIdentifiersForCompanionAppID:(id)d withCompletionHandler:(id)handler;
 - (void)flushReadyBlocks;
-- (void)handleAquiredAssertion:(id)a3 identifier:(id)a4;
+- (void)handleAquiredAssertion:(id)assertion identifier:(id)identifier;
 - (void)handleCounterpartDaemonDidStart;
-- (void)handleDaemonClientsInformation:(id)a3;
-- (void)handleIncomingFileURL:(id)a3 communicationID:(id)a4 pairingID:(id)a5 sendID:(id)a6 metadata:(id)a7;
-- (void)handleIncomingUserInfoTransferProto:(id)a3 communicationID:(id)a4 pairingID:(id)a5 sendID:(id)a6;
-- (void)handleIncomingUserInfoURL:(id)a3 communicationID:(id)a4 pairingID:(id)a5 sendID:(id)a6;
-- (void)handlePairedSyncComplicationsStartedAck:(id)a3 identifier:(id)a4;
-- (void)launchCompanionAppID:(id)a3 isInUse:(BOOL)a4 coreLocationData:(id)a5;
+- (void)handleDaemonClientsInformation:(id)information;
+- (void)handleIncomingFileURL:(id)l communicationID:(id)d pairingID:(id)iD sendID:(id)sendID metadata:(id)metadata;
+- (void)handleIncomingUserInfoTransferProto:(id)proto communicationID:(id)d pairingID:(id)iD sendID:(id)sendID;
+- (void)handleIncomingUserInfoURL:(id)l communicationID:(id)d pairingID:(id)iD sendID:(id)sendID;
+- (void)handlePairedSyncComplicationsStartedAck:(id)ack identifier:(id)identifier;
+- (void)launchCompanionAppID:(id)d isInUse:(BOOL)use coreLocationData:(id)data;
 - (void)loadPersistedClients;
-- (void)performBlockWhenReady:(id)a3;
-- (void)persistAppContext:(id)a3 applicationInfo:(id)a4 pairingID:(id)a5;
-- (void)persistFileTransferResult:(id)a3 pairingID:(id)a4 applicationInfo:(id)a5 identifier:(id)a6;
-- (void)persistUserInfoTransferResult:(id)a3 pairingID:(id)a4 applicationInfo:(id)a5 identifier:(id)a6;
-- (void)releaseCLInUseAssertionForIdentifier:(id)a3;
+- (void)performBlockWhenReady:(id)ready;
+- (void)persistAppContext:(id)context applicationInfo:(id)info pairingID:(id)d;
+- (void)persistFileTransferResult:(id)result pairingID:(id)d applicationInfo:(id)info identifier:(id)identifier;
+- (void)persistUserInfoTransferResult:(id)result pairingID:(id)d applicationInfo:(id)info identifier:(id)identifier;
+- (void)releaseCLInUseAssertionForIdentifier:(id)identifier;
 - (void)sendDaemonClientsInformation;
 - (void)sendDaemonDidStart;
-- (void)sendFirstUnlockAck:(id)a3;
-- (void)sendFirstUnlockRequest:(id)a3;
-- (void)sendFirstUnlockState:(id)a3;
+- (void)sendFirstUnlockAck:(id)ack;
+- (void)sendFirstUnlockRequest:(id)request;
+- (void)sendFirstUnlockState:(id)state;
 - (void)sendInstalledAppsChangedMessage;
-- (void)sendMessage:(id)a3 withIdentifier:(id)a4 isResponse:(BOOL)a5 clientID:(id)a6 clientPairingID:(id)a7 errorHandler:(id)a8;
-- (void)sendPairedSyncForComplicationsStartedWithIdentifier:(id)a3;
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7 context:(id)a8;
-- (void)service:(id)a3 account:(id)a4 incomingResourceAtURL:(id)a5 metadata:(id)a6 fromID:(id)a7 context:(id)a8;
-- (void)service:(id)a3 account:(id)a4 incomingUnhandledProtobuf:(id)a5 fromID:(id)a6 context:(id)a7;
-- (void)service:(id)a3 connectedDevicesChanged:(id)a4;
-- (void)service:(id)a3 context:(id)a4 performBlockWhenReady:(id)a5;
-- (void)service:(id)a3 devicesChanged:(id)a4;
-- (void)service:(id)a3 didSwitchActivePairedDevice:(id)a4 acknowledgementBlock:(id)a5;
-- (void)setCLTransientAuthorization:(id)a3 withCoreLocationData:(id)a4;
-- (void)storeComplicationUserInfoTransfer:(id)a3 applicationInfo:(id)a4 pairingID:(id)a5;
+- (void)sendMessage:(id)message withIdentifier:(id)identifier isResponse:(BOOL)response clientID:(id)d clientPairingID:(id)iD errorHandler:(id)handler;
+- (void)sendPairedSyncForComplicationsStartedWithIdentifier:(id)identifier;
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error context:(id)context;
+- (void)service:(id)service account:(id)account incomingResourceAtURL:(id)l metadata:(id)metadata fromID:(id)d context:(id)context;
+- (void)service:(id)service account:(id)account incomingUnhandledProtobuf:(id)protobuf fromID:(id)d context:(id)context;
+- (void)service:(id)service connectedDevicesChanged:(id)changed;
+- (void)service:(id)service context:(id)context performBlockWhenReady:(id)ready;
+- (void)service:(id)service devicesChanged:(id)changed;
+- (void)service:(id)service didSwitchActivePairedDevice:(id)device acknowledgementBlock:(id)block;
+- (void)setCLTransientAuthorization:(id)authorization withCoreLocationData:(id)data;
+- (void)storeComplicationUserInfoTransfer:(id)transfer applicationInfo:(id)info pairingID:(id)d;
 - (void)systemObserverActiveDeviceSwitchStarted;
-- (void)systemObserverAppDidTerminateForBundleID:(id)a3;
+- (void)systemObserverAppDidTerminateForBundleID:(id)d;
 - (void)systemObserverInitialSetUpComplete;
 - (void)systemObserverInstalledApplicationsChanged;
 - (void)systemObserverUpdatingInstalledApps;
-- (void)transferFile:(id)a3 withMetadata:(id)a4 identifier:(id)a5 forClient:(id)a6 destFilePath:(id)a7 errorHandler:(id)a8;
-- (void)transferUserInfo:(id)a3 withMetadata:(id)a4 identifier:(id)a5 clientID:(id)a6 clientPairingID:(id)a7 errorHandler:(id)a8;
-- (void)updateActiveDeviceConnectedForService:(id)a3;
+- (void)transferFile:(id)file withMetadata:(id)metadata identifier:(id)identifier forClient:(id)client destFilePath:(id)path errorHandler:(id)handler;
+- (void)transferUserInfo:(id)info withMetadata:(id)metadata identifier:(id)identifier clientID:(id)d clientPairingID:(id)iD errorHandler:(id)handler;
+- (void)updateActiveDeviceConnectedForService:(id)service;
 - (void)updateAllClientsWithValues;
-- (void)updateApplicationContext:(id)a3 clientID:(id)a4 clientPairingID:(id)a5 errorHandler:(id)a6;
-- (void)updateClientWithValues:(id)a3;
+- (void)updateApplicationContext:(id)context clientID:(id)d clientPairingID:(id)iD errorHandler:(id)handler;
+- (void)updateClientWithValues:(id)values;
 @end
 
 @implementation WatchConnectivityDaemon
@@ -87,7 +87,7 @@
   block[1] = 3221225472;
   block[2] = sub_100010204;
   block[3] = &unk_100048E08;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100054CB8 != -1)
   {
     dispatch_once(&qword_100054CB8, block);
@@ -196,11 +196,11 @@
 
 - (NSString)state
 {
-  v23 = [(WCDFirstUnlockManager *)self->_firstUnlockManager state];
+  state = [(WCDFirstUnlockManager *)self->_firstUnlockManager state];
   NSAppendPrintF();
   v3 = 0;
 
-  v4 = [(WCDPairedSyncManager *)self->_pairedSyncManager state];
+  state2 = [(WCDPairedSyncManager *)self->_pairedSyncManager state];
   NSAppendPrintF();
   v5 = v3;
 
@@ -212,7 +212,7 @@
   NSAppendPrintF();
   v8 = v7;
 
-  v9 = [(WatchConnectivityDaemon *)self idsService];
+  idsService = [(WatchConnectivityDaemon *)self idsService];
   NSAppendPrintF();
   v10 = v8;
 
@@ -245,8 +245,8 @@
   NSAppendPrintF();
   v19 = v18;
 
-  v20 = [(NSMutableDictionary *)self->_communicationIdentifierToClient allValues];
-  v31 = [v20 valueForKeyPath:@"@unionOfObjects.state"];
+  allValues = [(NSMutableDictionary *)self->_communicationIdentifierToClient allValues];
+  v31 = [allValues valueForKeyPath:@"@unionOfObjects.state"];
   NSAppendPrintF();
   v21 = v19;
 
@@ -257,10 +257,10 @@
 {
   v3 = +[NSFileManager defaultManager];
   v30 = +[WCDClient clientsStorageURL];
-  v4 = [v30 path];
+  path = [v30 path];
   v40 = 0;
   v31 = v3;
-  v5 = [v3 contentsOfDirectoryAtPath:v4 error:&v40];
+  v5 = [v3 contentsOfDirectoryAtPath:path error:&v40];
   v6 = v40;
 
   if (v5)
@@ -290,13 +290,13 @@
           }
 
           v12 = *(*(&v36 + 1) + 8 * v11);
-          v13 = [v12 stringByDeletingPathExtension];
-          v14 = [p_info + 91 sharedSystemMonitor];
-          v15 = [v14 applicationStateForBundleID:v13];
+          stringByDeletingPathExtension = [v12 stringByDeletingPathExtension];
+          sharedSystemMonitor = [p_info + 91 sharedSystemMonitor];
+          v15 = [sharedSystemMonitor applicationStateForBundleID:stringByDeletingPathExtension];
 
           if (v15 > 1)
           {
-            v22 = [(NSMutableDictionary *)self->_communicationIdentifierToClient objectForKeyedSubscript:v13];
+            v22 = [(NSMutableDictionary *)self->_communicationIdentifierToClient objectForKeyedSubscript:stringByDeletingPathExtension];
             if (v22)
             {
               v23 = v22;
@@ -304,18 +304,18 @@
               if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 138543362;
-                v42 = v13;
+                v42 = stringByDeletingPathExtension;
                 _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "client already exists %{public}@", buf, 0xCu);
               }
             }
 
             else
             {
-              v25 = [(WatchConnectivityDaemon *)self createNewClientObjectWithCommunicationID:v13 connection:0];
+              v25 = [(WatchConnectivityDaemon *)self createNewClientObjectWithCommunicationID:stringByDeletingPathExtension connection:0];
               if (v25)
               {
                 v23 = v25;
-                [(NSMutableDictionary *)self->_communicationIdentifierToClient setObject:v25 forKeyedSubscript:v13];
+                [(NSMutableDictionary *)self->_communicationIdentifierToClient setObject:v25 forKeyedSubscript:stringByDeletingPathExtension];
                 v26 = wc_log();
                 if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
                 {
@@ -333,7 +333,7 @@
                 if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
                 {
                   *buf = 138543362;
-                  v42 = v13;
+                  v42 = stringByDeletingPathExtension;
                   _os_log_error_impl(&_mh_execute_header, v23, OS_LOG_TYPE_ERROR, "failed to restore client for %{public}@", buf, 0xCu);
                 }
               }
@@ -343,7 +343,7 @@
           else
           {
             v16 = v9;
-            v17 = self;
+            selfCopy = self;
             v18 = p_info;
             v19 = [v30 URLByAppendingPathComponent:v12 isDirectory:0];
             v35 = v34;
@@ -354,7 +354,7 @@
             {
               v34 = v21;
               p_info = v18;
-              self = v17;
+              self = selfCopy;
               v9 = v16;
               v8 = v32;
               goto LABEL_24;
@@ -374,7 +374,7 @@
 
             v34 = v21;
             p_info = v18;
-            self = v17;
+            self = selfCopy;
             v9 = v16;
             v8 = v32;
           }
@@ -405,24 +405,24 @@ LABEL_24:
   }
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isEqual:self->_xpcListener])
+  listenerCopy = listener;
+  connectionCopy = connection;
+  if ([listenerCopy isEqual:self->_xpcListener])
   {
-    v8 = [(WatchConnectivityDaemon *)self listenerShouldAcceptNewConnection:v7];
+    v8 = [(WatchConnectivityDaemon *)self listenerShouldAcceptNewConnection:connectionCopy];
   }
 
   else
   {
-    if (![v6 isEqual:self->_xpcPrivateListener])
+    if (![listenerCopy isEqual:self->_xpcPrivateListener])
     {
       v9 = 0;
       goto LABEL_7;
     }
 
-    v8 = [(WatchConnectivityDaemon *)self privateListenerShouldAcceptNewConnection:v7];
+    v8 = [(WatchConnectivityDaemon *)self privateListenerShouldAcceptNewConnection:connectionCopy];
   }
 
   v9 = v8;
@@ -431,10 +431,10 @@ LABEL_7:
   return v9;
 }
 
-- (BOOL)listenerShouldAcceptNewConnection:(id)a3
+- (BOOL)listenerShouldAcceptNewConnection:(id)connection
 {
-  v4 = a3;
-  if ([v4 wc_connectionIsiOSExtension])
+  connectionCopy = connection;
+  if ([connectionCopy wc_connectionIsiOSExtension])
   {
     v5 = wc_log();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -443,19 +443,19 @@ LABEL_7:
     }
 
     v6 = +[WCXPCManager clientInterface];
-    [v4 setRemoteObjectInterface:v6];
+    [connectionCopy setRemoteObjectInterface:v6];
 
-    [v4 resume];
-    v7 = [v4 remoteObjectProxy];
-    [v7 invalidateConnection];
+    [connectionCopy resume];
+    remoteObjectProxy = [connectionCopy remoteObjectProxy];
+    [remoteObjectProxy invalidateConnection];
     goto LABEL_5;
   }
 
-  v7 = [v4 wc_connectionCommunicationID];
-  v8 = v7 != 0;
+  remoteObjectProxy = [connectionCopy wc_connectionCommunicationID];
+  v8 = remoteObjectProxy != 0;
   v9 = wc_log();
   v10 = v9;
-  if (!v7)
+  if (!remoteObjectProxy)
   {
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
@@ -467,29 +467,29 @@ LABEL_7:
 
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v4 wc_connectionBundleID];
+    wc_connectionBundleID = [connectionCopy wc_connectionBundleID];
     v15 = 138543618;
-    v16 = v11;
+    v16 = wc_connectionBundleID;
     v17 = 2114;
-    v18 = v7;
+    v18 = remoteObjectProxy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Accepting new connection from client with bundle ID %{public}@ and communicationID %{public}@", &v15, 0x16u);
   }
 
-  v12 = [(NSMutableDictionary *)self->_communicationIdentifierToClient objectForKeyedSubscript:v7];
+  v12 = [(NSMutableDictionary *)self->_communicationIdentifierToClient objectForKeyedSubscript:remoteObjectProxy];
   if (v12)
   {
     v10 = v12;
-    [v12 setConnection:v4];
+    [v12 setConnection:connectionCopy];
 LABEL_15:
 
     goto LABEL_16;
   }
 
-  v13 = [(WatchConnectivityDaemon *)self createNewClientObjectWithCommunicationID:v7 connection:v4];
+  v13 = [(WatchConnectivityDaemon *)self createNewClientObjectWithCommunicationID:remoteObjectProxy connection:connectionCopy];
   if (v13)
   {
     v10 = v13;
-    [(NSMutableDictionary *)self->_communicationIdentifierToClient setObject:v13 forKeyedSubscript:v7];
+    [(NSMutableDictionary *)self->_communicationIdentifierToClient setObject:v13 forKeyedSubscript:remoteObjectProxy];
     goto LABEL_15;
   }
 
@@ -500,22 +500,22 @@ LABEL_16:
   return v8;
 }
 
-- (id)createNewClientObjectWithCommunicationID:(id)a3 connection:(id)a4
+- (id)createNewClientObjectWithCommunicationID:(id)d connection:(id)connection
 {
-  v6 = a4;
-  v7 = a3;
+  connectionCopy = connection;
+  dCopy = d;
   v8 = wc_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v6 wc_connectionBundleID];
+    wc_connectionBundleID = [connectionCopy wc_connectionBundleID];
     v12 = 138543618;
-    v13 = v9;
+    v13 = wc_connectionBundleID;
     v14 = 2114;
-    v15 = v6;
+    v15 = connectionCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Creating new client %{public}@ with connection %{public}@", &v12, 0x16u);
   }
 
-  v10 = [[WCDClient alloc] initWithCommunicationID:v7 connection:v6];
+  v10 = [[WCDClient alloc] initWithCommunicationID:dCopy connection:connectionCopy];
   if (v10)
   {
     [(WCDClient *)v10 setDelegate:self];
@@ -526,17 +526,17 @@ LABEL_16:
   return v10;
 }
 
-- (BOOL)privateListenerShouldAcceptNewConnection:(id)a3
+- (BOOL)privateListenerShouldAcceptNewConnection:(id)connection
 {
-  v4 = a3;
-  if (([v4 wc_connectionHasEntitlement:WCPrivateServiceComplicationsManagerEntitlement] & 1) != 0 || objc_msgSend(v4, "wc_connectionHasEntitlement:", WCPrivateServiceTestToolEntitlement))
+  connectionCopy = connection;
+  if (([connectionCopy wc_connectionHasEntitlement:WCPrivateServiceComplicationsManagerEntitlement] & 1) != 0 || objc_msgSend(connectionCopy, "wc_connectionHasEntitlement:", WCPrivateServiceTestToolEntitlement))
   {
     v5 = wc_log();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [v4 wc_connectionBundleID];
+      wc_connectionBundleID = [connectionCopy wc_connectionBundleID];
       v13 = 138543362;
-      v14 = v6;
+      v14 = wc_connectionBundleID;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Accepting new private connection from client with bundle ID %{public}@", &v13, 0xCu);
     }
 
@@ -546,7 +546,7 @@ LABEL_16:
     self->_privateClient = v7;
     v9 = v7;
 
-    [(WCDPrivateClient *)v9 setConnection:v4];
+    [(WCDPrivateClient *)v9 setConnection:connectionCopy];
     [(WatchConnectivityDaemon *)self updateAllClientsWithValues];
     [(WatchConnectivityDaemon *)self dequeuePendingComplicationPings];
     v10 = 1;
@@ -557,7 +557,7 @@ LABEL_16:
     v11 = wc_log();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      sub_10002A908(v4);
+      sub_10002A908(connectionCopy);
     }
 
     v10 = 0;
@@ -566,9 +566,9 @@ LABEL_16:
   return v10;
 }
 
-- (void)dequeueContentForClient:(id)a3
+- (void)dequeueContentForClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   v5 = wc_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -577,33 +577,33 @@ LABEL_16:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}s", &v7, 0xCu);
   }
 
-  v6 = [v4 communicationID];
+  communicationID = [clientCopy communicationID];
 
-  [(WatchConnectivityDaemon *)self dequeuePendingMessagesForCommunicationID:v6];
+  [(WatchConnectivityDaemon *)self dequeuePendingMessagesForCommunicationID:communicationID];
 }
 
-- (void)clientXPCConnectionDidDisconnect:(id)a3
+- (void)clientXPCConnectionDidDisconnect:(id)disconnect
 {
-  v4 = a3;
+  disconnectCopy = disconnect;
   v5 = wc_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138543362;
-    v11 = v4;
+    v11 = disconnectCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}@", &v10, 0xCu);
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v4;
-    v7 = [v6 bundleID];
-    [(WatchConnectivityDaemon *)self releaseCLInUseAssertionForIdentifier:v7];
+    v6 = disconnectCopy;
+    bundleID = [v6 bundleID];
+    [(WatchConnectivityDaemon *)self releaseCLInUseAssertionForIdentifier:bundleID];
 
     privateClient = +[WCDIndexManager sharedManager];
-    v9 = [v6 applicationInfo];
+    applicationInfo = [v6 applicationInfo];
 
-    [privateClient clearCacheForApplication:v9];
+    [privateClient clearCacheForApplication:applicationInfo];
 LABEL_7:
 
     goto LABEL_8;
@@ -620,7 +620,7 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)clientReachabilityDidChange:(id)a3
+- (void)clientReachabilityDidChange:(id)change
 {
   v3 = wc_log();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -648,13 +648,13 @@ LABEL_8:
 - (void)systemObserverInstalledApplicationsChanged
 {
   v3 = +[WCDSystemMonitor sharedSystemMonitor];
-  v4 = [v3 applicationWorkspace];
-  v5 = [v4 iOSApplicationsContainingWatchApp];
-  v6 = [v5 bs_map:&stru_100048EF8];
+  applicationWorkspace = [v3 applicationWorkspace];
+  iOSApplicationsContainingWatchApp = [applicationWorkspace iOSApplicationsContainingWatchApp];
+  v6 = [iOSApplicationsContainingWatchApp bs_map:&stru_100048EF8];
 
-  v7 = [(WatchConnectivityDaemon *)self idsService];
-  v8 = [v6 allObjects];
-  [v7 updateSubServices:v8];
+  idsService = [(WatchConnectivityDaemon *)self idsService];
+  allObjects = [v6 allObjects];
+  [idsService updateSubServices:allObjects];
 
   v9 = wc_log();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -665,12 +665,12 @@ LABEL_8:
   }
 }
 
-- (void)systemObserverAppDidTerminateForBundleID:(id)a3
+- (void)systemObserverAppDidTerminateForBundleID:(id)d
 {
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
-    [(NSMutableDictionary *)self->_communicationIdentifierToClient removeObjectForKey:v4];
+    [(NSMutableDictionary *)self->_communicationIdentifierToClient removeObjectForKey:dCopy];
   }
 
   v5 = wc_log();
@@ -679,7 +679,7 @@ LABEL_8:
     communicationIdentifierToClient = self->_communicationIdentifierToClient;
     v7 = WCCompactStringFromCollection();
     v8 = 138543618;
-    v9 = v4;
+    v9 = dCopy;
     v10 = 2114;
     v11 = v7;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "removing client: %{public}@ from list of clients %{public}@", &v8, 0x16u);
@@ -701,9 +701,9 @@ LABEL_8:
 - (void)sendDaemonDidStart
 {
   v3 = +[WCDSystemMonitor sharedSystemMonitor];
-  v4 = [v3 watchConnectivityServiceAvailable];
+  watchConnectivityServiceAvailable = [v3 watchConnectivityServiceAvailable];
 
-  if (v4)
+  if (watchConnectivityServiceAvailable)
   {
     v5 = objc_opt_new();
     [v5 setObject:@"WCDPayloadSendTypeDaemonStarted" forKeyedSubscript:IDSSendMessageOptionQueueOneIdentifierKey];
@@ -714,14 +714,14 @@ LABEL_8:
     v7 = objc_opt_new();
     [v7 setVersion:1];
     v8 = [IDSProtobuf alloc];
-    v9 = [v7 data];
-    v10 = [v8 initWithProtobufData:v9 type:4 isResponse:0];
+    data = [v7 data];
+    v10 = [v8 initWithProtobufData:data type:4 isResponse:0];
 
-    v11 = [(WatchConnectivityDaemon *)self idsService];
+    idsService = [(WatchConnectivityDaemon *)self idsService];
     v12 = [NSSet setWithObject:IDSDefaultPairedDevice];
     v17 = 0;
     v18 = 0;
-    [v11 sendProtobuf:v10 toDestinations:v12 priority:300 options:v5 identifier:&v18 error:&v17];
+    [idsService sendProtobuf:v10 toDestinations:v12 priority:300 options:v5 identifier:&v18 error:&v17];
     v13 = v18;
     v14 = v17;
 
@@ -762,17 +762,17 @@ LABEL_8:
   }
 }
 
-- (void)handleDaemonClientsInformation:(id)a3
+- (void)handleDaemonClientsInformation:(id)information
 {
-  v4 = a3;
-  v5 = [v4 informationData];
+  informationCopy = information;
+  informationData = [informationCopy informationData];
 
-  if (v5)
+  if (informationData)
   {
-    v6 = [v4 informationData];
+    informationData2 = [informationCopy informationData];
     v12 = 0;
-    v7 = [NSPropertyListSerialization propertyListWithData:v6 options:0 format:0 error:&v12];
-    v5 = v12;
+    v7 = [NSPropertyListSerialization propertyListWithData:informationData2 options:0 format:0 error:&v12];
+    informationData = v12;
 
     if (v7)
     {
@@ -810,9 +810,9 @@ LABEL_11:
 - (void)sendInstalledAppsChangedMessage
 {
   v3 = +[WCDSystemMonitor sharedSystemMonitor];
-  v4 = [v3 watchConnectivityServiceAvailable];
+  watchConnectivityServiceAvailable = [v3 watchConnectivityServiceAvailable];
 
-  if (v4)
+  if (watchConnectivityServiceAvailable)
   {
     v5 = wc_log();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -830,14 +830,14 @@ LABEL_11:
     v8 = objc_opt_new();
     [v8 setVersion:1];
     v9 = [IDSProtobuf alloc];
-    v10 = [v8 data];
-    v11 = [v9 initWithProtobufData:v10 type:17 isResponse:0];
+    data = [v8 data];
+    v11 = [v9 initWithProtobufData:data type:17 isResponse:0];
 
-    v12 = [(WatchConnectivityDaemon *)self idsService];
+    idsService = [(WatchConnectivityDaemon *)self idsService];
     v13 = [NSSet setWithObject:IDSDefaultPairedDevice];
     v18 = 0;
     v19 = 0;
-    [v12 sendProtobuf:v11 toDestinations:v13 priority:300 options:v6 identifier:&v19 error:&v18];
+    [idsService sendProtobuf:v11 toDestinations:v13 priority:300 options:v6 identifier:&v19 error:&v18];
     v14 = v19;
     v15 = v18;
 
@@ -860,20 +860,20 @@ LABEL_11:
   }
 }
 
-- (void)addCounterpartClientCommunicationIdentifier:(id)a3
+- (void)addCounterpartClientCommunicationIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (![(NSSet *)self->_counterpartClientCommunicationIdentifiers containsObject:v4])
+  identifierCopy = identifier;
+  if (![(NSSet *)self->_counterpartClientCommunicationIdentifiers containsObject:identifierCopy])
   {
     v5 = wc_log();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 138543362;
-      v9 = v4;
+      v9 = identifierCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}@", &v8, 0xCu);
     }
 
-    v6 = [(NSSet *)self->_counterpartClientCommunicationIdentifiers setByAddingObject:v4];
+    v6 = [(NSSet *)self->_counterpartClientCommunicationIdentifiers setByAddingObject:identifierCopy];
     counterpartClientCommunicationIdentifiers = self->_counterpartClientCommunicationIdentifiers;
     self->_counterpartClientCommunicationIdentifiers = v6;
 
@@ -881,13 +881,13 @@ LABEL_11:
   }
 }
 
-- (void)sendFirstUnlockState:(id)a3
+- (void)sendFirstUnlockState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v5 = +[WCDSystemMonitor sharedSystemMonitor];
-  v6 = [v5 watchConnectivityServiceAvailable];
+  watchConnectivityServiceAvailable = [v5 watchConnectivityServiceAvailable];
 
-  if (v6)
+  if (watchConnectivityServiceAvailable)
   {
     v7 = objc_opt_new();
     [v7 setObject:@"WCDProtoCompanionFirstUnlockState" forKeyedSubscript:IDSSendMessageOptionQueueOneIdentifierKey];
@@ -895,14 +895,14 @@ LABEL_11:
     [v7 setObject:v8 forKeyedSubscript:IDSSendMessageOptionTimeoutKey];
 
     v9 = [IDSProtobuf alloc];
-    v10 = [v4 data];
-    v11 = [v9 initWithProtobufData:v10 type:10 isResponse:0];
+    data = [stateCopy data];
+    v11 = [v9 initWithProtobufData:data type:10 isResponse:0];
 
-    v12 = [(WatchConnectivityDaemon *)self insecureIDSService];
+    insecureIDSService = [(WatchConnectivityDaemon *)self insecureIDSService];
     v13 = [NSSet setWithObject:IDSDefaultPairedDevice];
     v19 = 0;
     v20 = 0;
-    v14 = [v12 sendProtobuf:v11 toDestinations:v13 priority:300 options:v7 identifier:&v20 error:&v19];
+    v14 = [insecureIDSService sendProtobuf:v11 toDestinations:v13 priority:300 options:v7 identifier:&v20 error:&v19];
     v15 = v20;
     v16 = v19;
 
@@ -925,13 +925,13 @@ LABEL_11:
   }
 }
 
-- (void)sendFirstUnlockRequest:(id)a3
+- (void)sendFirstUnlockRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = +[WCDSystemMonitor sharedSystemMonitor];
-  v6 = [v5 watchConnectivityServiceAvailable];
+  watchConnectivityServiceAvailable = [v5 watchConnectivityServiceAvailable];
 
-  if (v6)
+  if (watchConnectivityServiceAvailable)
   {
     v7 = objc_opt_new();
     [v7 setObject:@"WCDProtoCompanionFirstUnlockRequest" forKeyedSubscript:IDSSendMessageOptionQueueOneIdentifierKey];
@@ -939,14 +939,14 @@ LABEL_11:
     [v7 setObject:v8 forKeyedSubscript:IDSSendMessageOptionTimeoutKey];
 
     v9 = [IDSProtobuf alloc];
-    v10 = [v4 data];
-    v11 = [v9 initWithProtobufData:v10 type:11 isResponse:0];
+    data = [requestCopy data];
+    v11 = [v9 initWithProtobufData:data type:11 isResponse:0];
 
-    v12 = [(WatchConnectivityDaemon *)self insecureIDSService];
+    insecureIDSService = [(WatchConnectivityDaemon *)self insecureIDSService];
     v13 = [NSSet setWithObject:IDSDefaultPairedDevice];
     v19 = 0;
     v20 = 0;
-    v14 = [v12 sendProtobuf:v11 toDestinations:v13 priority:200 options:v7 identifier:&v20 error:&v19];
+    v14 = [insecureIDSService sendProtobuf:v11 toDestinations:v13 priority:200 options:v7 identifier:&v20 error:&v19];
     v15 = v20;
     v16 = v19;
 
@@ -969,13 +969,13 @@ LABEL_11:
   }
 }
 
-- (void)sendFirstUnlockAck:(id)a3
+- (void)sendFirstUnlockAck:(id)ack
 {
-  v4 = a3;
+  ackCopy = ack;
   v5 = +[WCDSystemMonitor sharedSystemMonitor];
-  v6 = [v5 watchConnectivityServiceAvailable];
+  watchConnectivityServiceAvailable = [v5 watchConnectivityServiceAvailable];
 
-  if (v6)
+  if (watchConnectivityServiceAvailable)
   {
     v7 = objc_opt_new();
     [v7 setObject:@"WCDProtoCompanionFirstUnlockAck" forKeyedSubscript:IDSSendMessageOptionQueueOneIdentifierKey];
@@ -983,14 +983,14 @@ LABEL_11:
     [v7 setObject:v8 forKeyedSubscript:IDSSendMessageOptionTimeoutKey];
 
     v9 = [IDSProtobuf alloc];
-    v10 = [v4 data];
-    v11 = [v9 initWithProtobufData:v10 type:12 isResponse:0];
+    data = [ackCopy data];
+    v11 = [v9 initWithProtobufData:data type:12 isResponse:0];
 
-    v12 = [(WatchConnectivityDaemon *)self insecureIDSService];
+    insecureIDSService = [(WatchConnectivityDaemon *)self insecureIDSService];
     v13 = [NSSet setWithObject:IDSDefaultPairedDevice];
     v19 = 0;
     v20 = 0;
-    v14 = [v12 sendProtobuf:v11 toDestinations:v13 priority:200 options:v7 identifier:&v20 error:&v19];
+    v14 = [insecureIDSService sendProtobuf:v11 toDestinations:v13 priority:200 options:v7 identifier:&v20 error:&v19];
     v15 = v20;
     v16 = v19;
 
@@ -1013,30 +1013,30 @@ LABEL_11:
   }
 }
 
-- (void)sendPairedSyncForComplicationsStartedWithIdentifier:(id)a3
+- (void)sendPairedSyncForComplicationsStartedWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = +[WCDSystemMonitor sharedSystemMonitor];
-  v6 = [v5 watchConnectivityServiceAvailable];
+  watchConnectivityServiceAvailable = [v5 watchConnectivityServiceAvailable];
 
-  if (v6)
+  if (watchConnectivityServiceAvailable)
   {
     v7 = objc_opt_new();
     [v7 setObject:@"WCDProtoPairedSyncComplicationsStarted" forKeyedSubscript:IDSSendMessageOptionQueueOneIdentifierKey];
-    v8 = [(WatchConnectivityDaemon *)self dataFromUUIDString:v4];
+    v8 = [(WatchConnectivityDaemon *)self dataFromUUIDString:identifierCopy];
 
     [v7 setObject:v8 forKeyedSubscript:IDSSendMessageOptionUUIDKey];
     v9 = objc_opt_new();
     [v9 setVersion:1];
     v10 = [IDSProtobuf alloc];
-    v11 = [v9 data];
-    v12 = [v10 initWithProtobufData:v11 type:15 isResponse:0];
+    data = [v9 data];
+    v12 = [v10 initWithProtobufData:data type:15 isResponse:0];
 
-    v13 = [(WatchConnectivityDaemon *)self insecureIDSService];
+    insecureIDSService = [(WatchConnectivityDaemon *)self insecureIDSService];
     v14 = [NSSet setWithObject:IDSDefaultPairedDevice];
     v22 = 0;
     v23 = 0;
-    v15 = [v13 sendProtobuf:v12 toDestinations:v14 priority:200 options:v7 identifier:&v23 error:&v22];
+    v15 = [insecureIDSService sendProtobuf:v12 toDestinations:v14 priority:200 options:v7 identifier:&v23 error:&v22];
     v16 = v23;
     v17 = v22;
 
@@ -1062,41 +1062,41 @@ LABEL_11:
   {
     pairedSyncManager = self->_pairedSyncManager;
     v21 = [NSError errorWithDomain:NSPOSIXErrorDomain code:19 userInfo:0];
-    [(WCDPairedSyncManager *)pairedSyncManager handlePotentialPairedSyncForComplicationsFailedWithIdentifier:v4 error:?];
+    [(WCDPairedSyncManager *)pairedSyncManager handlePotentialPairedSyncForComplicationsFailedWithIdentifier:identifierCopy error:?];
   }
 }
 
-- (void)handlePairedSyncComplicationsStartedAck:(id)a3 identifier:(id)a4
+- (void)handlePairedSyncComplicationsStartedAck:(id)ack identifier:(id)identifier
 {
-  v8 = a3;
-  v6 = a4;
-  if ([v8 hasSuccess])
+  ackCopy = ack;
+  identifierCopy = identifier;
+  if ([ackCopy hasSuccess])
   {
-    v7 = [v8 success];
+    success = [ackCopy success];
   }
 
   else
   {
-    v7 = 1;
+    success = 1;
   }
 
-  [(WCDPairedSyncManager *)self->_pairedSyncManager handlePairedSyncForComplicationsAckWithIdentifier:v6 success:v7];
+  [(WCDPairedSyncManager *)self->_pairedSyncManager handlePairedSyncForComplicationsAckWithIdentifier:identifierCopy success:success];
 }
 
-- (void)sendMessage:(id)a3 withIdentifier:(id)a4 isResponse:(BOOL)a5 clientID:(id)a6 clientPairingID:(id)a7 errorHandler:(id)a8
+- (void)sendMessage:(id)message withIdentifier:(id)identifier isResponse:(BOOL)response clientID:(id)d clientPairingID:(id)iD errorHandler:(id)handler
 {
-  v11 = a5;
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  responseCopy = response;
+  messageCopy = message;
+  identifierCopy = identifier;
+  dCopy = d;
+  iDCopy = iD;
+  handlerCopy = handler;
   v30 = 0;
-  v19 = [(WatchConnectivityDaemon *)self errorIfPreconditionsNotSatisfiedWithClientPairingID:v17 error:&v30];
+  v19 = [(WatchConnectivityDaemon *)self errorIfPreconditionsNotSatisfiedWithClientPairingID:iDCopy error:&v30];
   v20 = v30;
   if (v19)
   {
-    v18[2](v18, v20);
+    handlerCopy[2](handlerCopy, v20);
   }
 
   else
@@ -1107,17 +1107,17 @@ LABEL_11:
       v22 = "NO";
       *buf = 138544130;
       v33 = 2080;
-      v32 = v15;
-      if (v11)
+      v32 = identifierCopy;
+      if (responseCopy)
       {
         v22 = "YES";
       }
 
       v34 = v22;
       v35 = 2114;
-      v36 = v16;
+      v36 = dCopy;
       v37 = 2114;
-      v38 = v17;
+      v38 = iDCopy;
       _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "identifier: %{public}@, isResponse: %s, clientID: %{public}@, clientPairingID: %{public}@", buf, 0x2Au);
     }
 
@@ -1126,19 +1126,19 @@ LABEL_11:
     v23[1] = 3221225472;
     v23[2] = sub_100012CB0;
     v23[3] = &unk_100048F20;
-    v24 = v16;
-    v29 = v11;
-    v25 = v15;
-    v26 = self;
-    v27 = v14;
-    v28 = v18;
+    v24 = dCopy;
+    v29 = responseCopy;
+    v25 = identifierCopy;
+    selfCopy = self;
+    v27 = messageCopy;
+    v28 = handlerCopy;
     [(WatchConnectivityDaemon *)self duetIdentifiersForCompanionAppID:v24 withCompletionHandler:v23];
   }
 }
 
-- (void)dequeuePendingMessagesForCommunicationID:(id)a3
+- (void)dequeuePendingMessagesForCommunicationID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = wc_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1147,20 +1147,20 @@ LABEL_11:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}s", buf, 0xCu);
   }
 
-  v6 = [(NSMutableDictionary *)self->_communicationIdentifierToClient objectForKeyedSubscript:v4];
+  v6 = [(NSMutableDictionary *)self->_communicationIdentifierToClient objectForKeyedSubscript:dCopy];
   v7 = +[WCDSystemMonitor sharedSystemMonitor];
-  v8 = [v7 pairingID];
+  pairingID = [v7 pairingID];
 
-  if (v6 && v8)
+  if (v6 && pairingID)
   {
     v9 = objc_opt_new();
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v18 = self;
-    v19 = v4;
-    v10 = [(NSMutableDictionary *)self->_pendingMessageRequests objectForKeyedSubscript:v4];
+    selfCopy = self;
+    v19 = dCopy;
+    v10 = [(NSMutableDictionary *)self->_pendingMessageRequests objectForKeyedSubscript:dCopy];
     v11 = [v10 countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v11)
     {
@@ -1176,8 +1176,8 @@ LABEL_11:
           }
 
           v15 = *(*(&v20 + 1) + 8 * i);
-          v16 = [v15 pairingID];
-          v17 = [v16 isEqual:v8];
+          pairingID2 = [v15 pairingID];
+          v17 = [pairingID2 isEqual:pairingID];
 
           if (v17)
           {
@@ -1196,23 +1196,23 @@ LABEL_11:
       while (v12);
     }
 
-    v4 = v19;
-    [(NSMutableDictionary *)v18->_pendingMessageRequests setObject:v9 forKeyedSubscript:v19];
+    dCopy = v19;
+    [(NSMutableDictionary *)selfCopy->_pendingMessageRequests setObject:v9 forKeyedSubscript:v19];
   }
 }
 
-- (void)updateApplicationContext:(id)a3 clientID:(id)a4 clientPairingID:(id)a5 errorHandler:(id)a6
+- (void)updateApplicationContext:(id)context clientID:(id)d clientPairingID:(id)iD errorHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  contextCopy = context;
+  dCopy = d;
+  iDCopy = iD;
+  handlerCopy = handler;
   v33 = 0;
-  LODWORD(a6) = [(WatchConnectivityDaemon *)self errorIfPreconditionsNotSatisfiedWithClientPairingID:v12 error:&v33];
+  LODWORD(handler) = [(WatchConnectivityDaemon *)self errorIfPreconditionsNotSatisfiedWithClientPairingID:iDCopy error:&v33];
   v14 = v33;
-  if (a6)
+  if (handler)
   {
-    v13[2](v13, v14);
+    handlerCopy[2](handlerCopy, v14);
     v15 = v14;
   }
 
@@ -1222,32 +1222,32 @@ LABEL_11:
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v35 = v11;
+      v35 = dCopy;
       v36 = 2114;
-      v37 = v12;
+      v37 = iDCopy;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "clientID: %{public}@, clientPairingID: %{public}@", buf, 0x16u);
     }
 
     v17 = objc_opt_new();
-    [v17 setObject:v11 forKeyedSubscript:IDSSendMessageOptionQueueOneIdentifierKey];
-    v28 = v11;
-    [v17 setObject:v11 forKeyedSubscript:IDSSendMessageOptionSubServiceKey];
+    [v17 setObject:dCopy forKeyedSubscript:IDSSendMessageOptionQueueOneIdentifierKey];
+    v28 = dCopy;
+    [v17 setObject:dCopy forKeyedSubscript:IDSSendMessageOptionSubServiceKey];
     v18 = [NSNumber numberWithDouble:IDSMaxMessageTimeout];
     [v17 setObject:v18 forKeyedSubscript:IDSSendMessageOptionTimeoutKey];
 
     [v17 setObject:&__kCFBooleanTrue forKeyedSubscript:IDSSendMessageOptionNonWakingKey];
     [v17 setObject:&__kCFBooleanTrue forKeyedSubscript:IDSSendMessageOptionBypassDuetKey];
     v19 = [IDSProtobuf alloc];
-    v30 = v10;
-    v20 = [v10 data];
-    v21 = [v19 initWithProtobufData:v20 type:3 isResponse:0];
+    v30 = contextCopy;
+    data = [contextCopy data];
+    v21 = [v19 initWithProtobufData:data type:3 isResponse:0];
 
-    v22 = [(WatchConnectivityDaemon *)self idsService];
+    idsService = [(WatchConnectivityDaemon *)self idsService];
     v23 = [NSSet setWithObject:IDSDefaultPairedDevice];
     v31 = v14;
     v32 = 0;
     v29 = v21;
-    LODWORD(v21) = [v22 sendProtobuf:v21 toDestinations:v23 priority:200 options:v17 identifier:&v32 error:&v31];
+    LODWORD(v21) = [idsService sendProtobuf:v21 toDestinations:v23 priority:200 options:v17 identifier:&v32 error:&v31];
     v24 = v32;
     v15 = v31;
 
@@ -1262,7 +1262,7 @@ LABEL_11:
         _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "sent identifier: %{public}@", buf, 0xCu);
       }
 
-      v13[2](v13, 0);
+      handlerCopy[2](handlerCopy, 0);
     }
 
     else
@@ -1273,25 +1273,25 @@ LABEL_11:
       }
 
       v27 = [(WatchConnectivityDaemon *)self WCErrorForIDSError:v15];
-      v13[2](v13, v27);
+      handlerCopy[2](handlerCopy, v27);
     }
 
-    v10 = v30;
+    contextCopy = v30;
 
-    v11 = v28;
+    dCopy = v28;
   }
 }
 
-- (void)transferFile:(id)a3 withMetadata:(id)a4 identifier:(id)a5 forClient:(id)a6 destFilePath:(id)a7 errorHandler:(id)a8
+- (void)transferFile:(id)file withMetadata:(id)metadata identifier:(id)identifier forClient:(id)client destFilePath:(id)path errorHandler:(id)handler
 {
-  v14 = a3;
-  v36 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = [v16 communicationID];
-  v20 = [v16 clientCurrentPairingID];
+  fileCopy = file;
+  metadataCopy = metadata;
+  identifierCopy = identifier;
+  clientCopy = client;
+  pathCopy = path;
+  handlerCopy = handler;
+  communicationID = [clientCopy communicationID];
+  clientCurrentPairingID = [clientCopy clientCurrentPairingID];
   v48 = 0;
   v49 = &v48;
   v50 = 0x3032000000;
@@ -1299,22 +1299,22 @@ LABEL_11:
   v52 = sub_100013D5C;
   v53 = 0;
   obj = 0;
-  LODWORD(a8) = [(WatchConnectivityDaemon *)self errorIfPreconditionsNotSatisfiedWithClientPairingID:v20 error:&obj];
+  LODWORD(handler) = [(WatchConnectivityDaemon *)self errorIfPreconditionsNotSatisfiedWithClientPairingID:clientCurrentPairingID error:&obj];
   objc_storeStrong(&v53, obj);
-  if (!a8)
+  if (!handler)
   {
-    v21 = [v14 fileDescriptor];
-    v22 = v17;
-    fclonefileat(v21, -2, [v17 fileSystemRepresentation], 0);
+    fileDescriptor = [fileCopy fileDescriptor];
+    v22 = pathCopy;
+    fclonefileat(fileDescriptor, -2, [pathCopy fileSystemRepresentation], 0);
     v23 = wc_log();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v59 = v17;
+      v59 = pathCopy;
       _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "cloning or copying file to: %@", buf, 0xCu);
     }
 
-    if ([v17 checkResourceIsReachableAndReturnError:0])
+    if ([pathCopy checkResourceIsReachableAndReturnError:0])
     {
       goto LABEL_10;
     }
@@ -1326,8 +1326,8 @@ LABEL_11:
       _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "Failed to clone file, trying copying", buf, 2u);
     }
 
-    v25 = v17;
-    v26 = open([v17 fileSystemRepresentation], 1537, 384, v36);
+    v25 = pathCopy;
+    v26 = open([pathCopy fileSystemRepresentation], 1537, 384, metadataCopy);
     if (v26 == -1)
     {
       v29 = wc_log();
@@ -1343,11 +1343,11 @@ LABEL_11:
       v31 = [NSDictionary dictionaryWithObjects:&v57 forKeys:&v56 count:1];
       v32 = [NSError wcErrorWithCode:7001 userInfo:v31];
 
-      v18[2](v18, v32);
+      handlerCopy[2](handlerCopy, v32);
       goto LABEL_17;
     }
 
-    v27 = -[WatchConnectivityDaemon copyFile:to:](self, "copyFile:to:", [v14 fileDescriptor], v26);
+    v27 = -[WatchConnectivityDaemon copyFile:to:](self, "copyFile:to:", [fileCopy fileDescriptor], v26);
     close(v26);
     if (v27)
     {
@@ -1356,15 +1356,15 @@ LABEL_10:
       v37[1] = 3221225472;
       v37[2] = sub_100013D64;
       v37[3] = &unk_100048F48;
-      v38 = v19;
-      v39 = self;
-      v40 = v15;
-      v41 = v16;
-      v42 = v17;
-      v43 = v36;
+      v38 = communicationID;
+      selfCopy = self;
+      v40 = identifierCopy;
+      v41 = clientCopy;
+      v42 = pathCopy;
+      v43 = metadataCopy;
       v46 = &v48;
-      v45 = v18;
-      v44 = v14;
+      v45 = handlerCopy;
+      v44 = fileCopy;
       [(WatchConnectivityDaemon *)self duetIdentifiersForCompanionAppID:v38 withCompletionHandler:v37];
 
       v28 = v38;
@@ -1384,7 +1384,7 @@ LABEL_10:
       v34 = [NSDictionary dictionaryWithObjects:&v55 forKeys:&v54 count:1];
       v35 = [NSError wcErrorWithCode:7001 userInfo:v34];
 
-      v18[2](v18, v35);
+      handlerCopy[2](handlerCopy, v35);
     }
 
 LABEL_17:
@@ -1392,23 +1392,23 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  v18[2](v18, v49[5]);
+  handlerCopy[2](handlerCopy, v49[5]);
 LABEL_18:
   _Block_object_dispose(&v48, 8);
 }
 
-- (BOOL)copyFile:(int)a3 to:(int)a4
+- (BOOL)copyFile:(int)file to:(int)to
 {
   do
   {
-    v6 = read(a3, __buf, 0x1000uLL);
+    v6 = read(file, __buf, 0x1000uLL);
     if (v6 < 1)
     {
       return v6 == 0;
     }
   }
 
-  while (write(a4, __buf, v6) == v6);
+  while (write(to, __buf, v6) == v6);
   v7 = wc_log();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -1419,12 +1419,12 @@ LABEL_18:
   return 0;
 }
 
-- (void)cancelSendWithIdentifier:(id)a3
+- (void)cancelSendWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(WatchConnectivityDaemon *)self idsService];
+  identifierCopy = identifier;
+  idsService = [(WatchConnectivityDaemon *)self idsService];
   v10 = 0;
-  v6 = [v5 cancelIdentifier:v4 error:&v10];
+  v6 = [idsService cancelIdentifier:identifierCopy error:&v10];
   v7 = v10;
 
   v8 = wc_log();
@@ -1434,7 +1434,7 @@ LABEL_18:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v12 = v4;
+      v12 = identifierCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
     }
   }
@@ -1445,60 +1445,60 @@ LABEL_18:
   }
 }
 
-- (void)handleIncomingFileURL:(id)a3 communicationID:(id)a4 pairingID:(id)a5 sendID:(id)a6 metadata:(id)a7
+- (void)handleIncomingFileURL:(id)l communicationID:(id)d pairingID:(id)iD sendID:(id)sendID metadata:(id)metadata
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  lCopy = l;
+  dCopy = d;
+  iDCopy = iD;
+  sendIDCopy = sendID;
+  metadataCopy = metadata;
   v17 = wc_log();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
-    v18 = [v12 path];
+    path = [lCopy path];
     *buf = 138544386;
     v19 = "YES";
-    v31 = v18;
-    if (!v16)
+    v31 = path;
+    if (!metadataCopy)
     {
       v19 = "NO";
     }
 
     v32 = 2114;
-    v33 = v13;
+    v33 = dCopy;
     v34 = 2114;
-    v35 = v14;
+    v35 = iDCopy;
     v36 = 2114;
-    v37 = v15;
+    v37 = sendIDCopy;
     v38 = 2080;
     v39 = v19;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "fileURL: %{public}@, communicationID: %{public}@, pairingID: %{public}@, sendID: %{public}@, hasMetadata: %s", buf, 0x34u);
   }
 
-  v20 = [(WatchConnectivityDaemon *)self applicationInfoForCommunicationID:v13];
+  v20 = [(WatchConnectivityDaemon *)self applicationInfoForCommunicationID:dCopy];
   v21 = v20;
-  if (v14 && v13 && v20)
+  if (iDCopy && dCopy && v20)
   {
-    v22 = [v16 objectForKeyedSubscript:@"u"];
+    v22 = [metadataCopy objectForKeyedSubscript:@"u"];
     v29 = 0;
-    v23 = [(WatchConnectivityDaemon *)self moveFileToClientInbox:v12 applicationInfo:v21 pairingID:v14 fileIdentifier:v15 userInfoData:v22 error:&v29];
+    v23 = [(WatchConnectivityDaemon *)self moveFileToClientInbox:lCopy applicationInfo:v21 pairingID:iDCopy fileIdentifier:sendIDCopy userInfoData:v22 error:&v29];
     v24 = v29;
 
     if (v23)
     {
-      v28 = v15;
-      v25 = v12;
-      v26 = [(NSMutableDictionary *)self->_communicationIdentifierToClient objectForKeyedSubscript:v13];
-      [v26 handleIncomingFileWithPairingID:v14];
-      v27 = [v26 connection];
+      v28 = sendIDCopy;
+      v25 = lCopy;
+      v26 = [(NSMutableDictionary *)self->_communicationIdentifierToClient objectForKeyedSubscript:dCopy];
+      [v26 handleIncomingFileWithPairingID:iDCopy];
+      connection = [v26 connection];
 
-      if (!v27)
+      if (!connection)
       {
-        [(WatchConnectivityDaemon *)self notifyDuetOfPendingContentForCompanionAppID:v13 forComplication:0];
+        [(WatchConnectivityDaemon *)self notifyDuetOfPendingContentForCompanionAppID:dCopy forComplication:0];
       }
 
-      v12 = v25;
-      v15 = v28;
+      lCopy = v25;
+      sendIDCopy = v28;
     }
 
     else
@@ -1517,28 +1517,28 @@ LABEL_18:
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543874;
-      v31 = v13;
+      v31 = dCopy;
       v32 = 2114;
       v33 = v21;
       v34 = 2114;
-      v35 = v14;
+      v35 = iDCopy;
       _os_log_error_impl(&_mh_execute_header, v24, OS_LOG_TYPE_ERROR, "missing required values. communicationID: %{public}@, applicationInfo: %{public}@, pairingID: %{public}@", buf, 0x20u);
     }
   }
 }
 
-- (BOOL)fileTransferExistsForPairingID:(id)a3 identifier:(id)a4 applicationInfo:(id)a5
+- (BOOL)fileTransferExistsForPairingID:(id)d identifier:(id)identifier applicationInfo:(id)info
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  dCopy = d;
+  identifierCopy = identifier;
+  infoCopy = info;
   v10 = +[WCDSystemMonitor sharedSystemMonitor];
-  v11 = [v10 dataContainerURLForApplicationInfo:v9];
+  v11 = [v10 dataContainerURLForApplicationInfo:infoCopy];
 
-  if (v7 && v11)
+  if (dCopy && v11)
   {
     v12 = WCFileTransfersURLInContainer();
-    v13 = [v12 URLByAppendingPathComponent:v8 isDirectory:1];
+    v13 = [v12 URLByAppendingPathComponent:identifierCopy isDirectory:1];
 
     v14 = [v13 URLByAppendingPathComponent:WCFileTransferDataFileName isDirectory:0];
 
@@ -1559,22 +1559,22 @@ LABEL_18:
   return v15;
 }
 
-- (void)persistFileTransferResult:(id)a3 pairingID:(id)a4 applicationInfo:(id)a5 identifier:(id)a6
+- (void)persistFileTransferResult:(id)result pairingID:(id)d applicationInfo:(id)info identifier:(id)identifier
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  resultCopy = result;
+  dCopy = d;
+  infoCopy = info;
+  identifierCopy = identifier;
   v13 = +[WCDSystemMonitor sharedSystemMonitor];
-  v14 = [v13 dataContainerURLForApplicationInfo:v11];
+  v14 = [v13 dataContainerURLForApplicationInfo:infoCopy];
 
-  if (v10 && v14)
+  if (dCopy && v14)
   {
     v15 = WCFileTransfersURLInContainer();
     v16 = +[WCDIndexManager sharedManager];
-    v17 = [v16 fileResultsIndexForApplication:v11 pairingID:v10];
+    v17 = [v16 fileResultsIndexForApplication:infoCopy pairingID:dCopy];
 
-    v18 = [v15 URLByAppendingPathComponent:v12 isDirectory:1];
+    v18 = [v15 URLByAppendingPathComponent:identifierCopy isDirectory:1];
 
     v19 = +[NSFileManager defaultManager];
     v36 = 0;
@@ -1583,14 +1583,14 @@ LABEL_18:
 
     if (v20)
     {
-      v22 = [v17 addContentIdentifier:v12];
+      v22 = [v17 addContentIdentifier:identifierCopy];
       v23 = objc_opt_new();
       v24 = v23;
-      if (v9 | v22)
+      if (resultCopy | v22)
       {
-        if (v9)
+        if (resultCopy)
         {
-          v25 = v9;
+          v25 = resultCopy;
         }
 
         else
@@ -1620,14 +1620,14 @@ LABEL_18:
           {
             v30 = @"SUCCESS";
             *buf = 138543874;
-            if (v9)
+            if (resultCopy)
             {
-              v30 = v9;
+              v30 = resultCopy;
             }
 
-            v38 = v12;
+            v38 = identifierCopy;
             v39 = 2114;
-            v40 = v11;
+            v40 = infoCopy;
             v41 = 2114;
             v42 = v30;
             _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEFAULT, "id %{public}@: applicatio: %{public}@ result: %{public}@", buf, 0x20u);
@@ -1639,7 +1639,7 @@ LABEL_18:
         else
         {
           v17 = v31;
-          [v31 removeContentIdentifier:v12];
+          [v31 removeContentIdentifier:identifierCopy];
           v29 = wc_log();
           if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
           {
@@ -1680,88 +1680,88 @@ LABEL_18:
   }
 }
 
-- (BOOL)notifyIfFileTransferWithCommunicationID:(id)a3 pairingID:(id)a4 sendID:(id)a5 success:(BOOL)a6 error:(id)a7
+- (BOOL)notifyIfFileTransferWithCommunicationID:(id)d pairingID:(id)iD sendID:(id)sendID success:(BOOL)success error:(id)error
 {
-  v8 = a6;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
-  v16 = [(WatchConnectivityDaemon *)self applicationInfoForCommunicationID:v12];
-  v17 = [(WatchConnectivityDaemon *)self fileTransferExistsForPairingID:v13 identifier:v14 applicationInfo:v16];
+  successCopy = success;
+  dCopy = d;
+  iDCopy = iD;
+  sendIDCopy = sendID;
+  errorCopy = error;
+  v16 = [(WatchConnectivityDaemon *)self applicationInfoForCommunicationID:dCopy];
+  v17 = [(WatchConnectivityDaemon *)self fileTransferExistsForPairingID:iDCopy identifier:sendIDCopy applicationInfo:v16];
   if (v17)
   {
     v18 = wc_log();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
       v22 = 138543618;
-      v23 = v14;
+      v23 = sendIDCopy;
       v24 = 2114;
-      v25 = v12;
+      v25 = dCopy;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "sendID: %{public}@, communicationID: %{public}@ found valid file transfer", &v22, 0x16u);
     }
 
-    if (v8)
+    if (successCopy)
     {
       v19 = 0;
     }
 
     else
     {
-      v19 = v15;
+      v19 = errorCopy;
     }
 
-    [(WatchConnectivityDaemon *)self persistFileTransferResult:v19 pairingID:v13 applicationInfo:v16 identifier:v14];
-    v20 = [(NSMutableDictionary *)self->_communicationIdentifierToClient objectForKeyedSubscript:v12];
-    [v20 handleFileResultWithPairingID:v13];
+    [(WatchConnectivityDaemon *)self persistFileTransferResult:v19 pairingID:iDCopy applicationInfo:v16 identifier:sendIDCopy];
+    v20 = [(NSMutableDictionary *)self->_communicationIdentifierToClient objectForKeyedSubscript:dCopy];
+    [v20 handleFileResultWithPairingID:iDCopy];
   }
 
   return v17;
 }
 
-- (BOOL)sendComplicationUserInfo:(id)a3 clientID:(id)a4 clientPairingID:(id)a5 identifier:(id)a6 errorHandler:(id)a7
+- (BOOL)sendComplicationUserInfo:(id)info clientID:(id)d clientPairingID:(id)iD identifier:(id)identifier errorHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  infoCopy = info;
+  dCopy = d;
+  iDCopy = iD;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v17 = +[WCDPushKitManager sharedPushKitManager];
-  [v17 releaseAssertionForBundleID:v13];
+  [v17 releaseAssertionForBundleID:dCopy];
 
   v49 = 0;
-  LODWORD(v17) = [(WatchConnectivityDaemon *)self errorIfPreconditionsNotSatisfiedWithClientPairingID:v14 error:&v49];
+  LODWORD(v17) = [(WatchConnectivityDaemon *)self errorIfPreconditionsNotSatisfiedWithClientPairingID:iDCopy error:&v49];
   v18 = v49;
   if (v17)
   {
-    v16[2](v16, v18);
+    handlerCopy[2](handlerCopy, v18);
     v19 = 0;
   }
 
   else
   {
-    v45 = v12;
+    v45 = infoCopy;
     v20 = wc_log();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543874;
-      v51 = v13;
+      v51 = dCopy;
       v52 = 2114;
-      v53 = v15;
+      v53 = identifierCopy;
       v54 = 2114;
-      v55 = v14;
+      v55 = iDCopy;
       _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "clientID: %{public}@, identifier: %{public}@, clientPairingID: %{public}@", buf, 0x20u);
     }
 
     v21 = +[WCDSystemMonitor sharedSystemMonitor];
-    v22 = [v21 duetComplications];
+    duetComplications = [v21 duetComplications];
     v48 = v18;
-    v23 = [v22 admissionCheckOnComplication:v13 forRemote:1 error:&v48];
+    v23 = [duetComplications admissionCheckOnComplication:dCopy forRemote:1 error:&v48];
     v24 = v48;
 
     if (v23)
     {
-      v25 = [(WatchConnectivityDaemon *)self cellUsageAllowedForBundleID:v13];
+      v25 = [(WatchConnectivityDaemon *)self cellUsageAllowedForBundleID:dCopy];
       v26 = wc_log();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
       {
@@ -1774,15 +1774,15 @@ LABEL_18:
         *buf = 138412546;
         v51 = v27;
         v52 = 2112;
-        v53 = v13;
+        v53 = dCopy;
         _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "Cell %@allowed for complication push for %@", buf, 0x16u);
       }
 
-      v28 = [(__CFString *)v13 stringByAppendingString:@"-current-complication"];
+      v28 = [(__CFString *)dCopy stringByAppendingString:@"-current-complication"];
       v29 = objc_opt_new();
       v43 = v28;
       [v29 setObject:v28 forKeyedSubscript:IDSSendMessageOptionQueueOneIdentifierKey];
-      [v29 setObject:v13 forKeyedSubscript:IDSSendMessageOptionSubServiceKey];
+      [v29 setObject:dCopy forKeyedSubscript:IDSSendMessageOptionSubServiceKey];
       v30 = [NSNumber numberWithDouble:IDSMaxMessageTimeout];
       [v29 setObject:v30 forKeyedSubscript:IDSSendMessageOptionTimeoutKey];
 
@@ -1793,20 +1793,20 @@ LABEL_18:
         [v29 setObject:&__kCFBooleanTrue forKeyedSubscript:IDSSendMessageOptionNonCloudWakingKey];
       }
 
-      v44 = v15;
-      v31 = [(WatchConnectivityDaemon *)self dataFromUUIDString:v15];
+      v44 = identifierCopy;
+      v31 = [(WatchConnectivityDaemon *)self dataFromUUIDString:identifierCopy];
       [v29 setObject:v31 forKeyedSubscript:IDSSendMessageOptionUUIDKey];
 
       v32 = [IDSProtobuf alloc];
-      v33 = [v45 data];
-      v34 = [v32 initWithProtobufData:v33 type:9 isResponse:0];
+      data = [v45 data];
+      v34 = [v32 initWithProtobufData:data type:9 isResponse:0];
 
-      v35 = [(WatchConnectivityDaemon *)self idsService];
+      idsService = [(WatchConnectivityDaemon *)self idsService];
       v36 = [NSSet setWithObject:IDSDefaultPairedDevice];
       v46 = v24;
       v47 = 0;
       v42 = v34;
-      [v35 sendProtobuf:v34 toDestinations:v36 priority:200 options:v29 identifier:&v47 error:&v46];
+      [idsService sendProtobuf:v34 toDestinations:v36 priority:200 options:v29 identifier:&v47 error:&v46];
       v37 = v47;
       v18 = v46;
 
@@ -1820,7 +1820,7 @@ LABEL_18:
         }
 
         v39 = [(WatchConnectivityDaemon *)self WCErrorForIDSError:v18];
-        v16[2](v16, v39);
+        handlerCopy[2](handlerCopy, v39);
       }
 
       else if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
@@ -1830,7 +1830,7 @@ LABEL_18:
         _os_log_impl(&_mh_execute_header, v39, OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
       }
 
-      v15 = v44;
+      identifierCopy = v44;
 
       v19 = 1;
     }
@@ -1855,9 +1855,9 @@ LABEL_18:
         if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543618;
-          v51 = v13;
+          v51 = dCopy;
           v52 = 2114;
-          v53 = v15;
+          v53 = identifierCopy;
           _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "clientID: %{public}@, identifier: %{public}@, rejected by admissions check", buf, 0x16u);
         }
 
@@ -1865,40 +1865,40 @@ LABEL_18:
       }
     }
 
-    v12 = v45;
+    infoCopy = v45;
   }
 
   return v19;
 }
 
-- (void)handleIncomingUserInfoTransferProto:(id)a3 communicationID:(id)a4 pairingID:(id)a5 sendID:(id)a6
+- (void)handleIncomingUserInfoTransferProto:(id)proto communicationID:(id)d pairingID:(id)iD sendID:(id)sendID
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  protoCopy = proto;
+  dCopy = d;
+  iDCopy = iD;
+  sendIDCopy = sendID;
   v14 = wc_log();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [v10 transferIdentifier];
+    transferIdentifier = [protoCopy transferIdentifier];
     *buf = 138544130;
-    v27 = v11;
+    v27 = dCopy;
     v28 = 2114;
-    v29 = v12;
+    v29 = iDCopy;
     v30 = 2114;
-    v31 = v13;
+    v31 = sendIDCopy;
     v32 = 2114;
-    v33 = v15;
+    v33 = transferIdentifier;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "communicationID: %{public}@, pairingID: %{public}@, sendID: %{public}@, userInfoID: %{public}@", buf, 0x2Au);
   }
 
   v16 = [WCSessionUserInfoTransfer alloc];
-  v17 = [v10 transferIdentifier];
-  v18 = [v16 initWithTranferIdentifier:v17 complicationTransferIdentifier:v13 currentComplication:1];
+  transferIdentifier2 = [protoCopy transferIdentifier];
+  v18 = [v16 initWithTranferIdentifier:transferIdentifier2 complicationTransferIdentifier:sendIDCopy currentComplication:1];
 
-  v19 = [v10 clientData];
+  clientData = [protoCopy clientData];
   v25 = 0;
-  v20 = [v18 updateUserInfoData:v19 error:&v25];
+  v20 = [v18 updateUserInfoData:clientData error:&v25];
   v21 = v25;
 
   if ((v20 & 1) == 0)
@@ -1910,20 +1910,20 @@ LABEL_18:
     }
   }
 
-  v23 = [(WatchConnectivityDaemon *)self applicationInfoForCommunicationID:v11];
-  [(WatchConnectivityDaemon *)self storeComplicationUserInfoTransfer:v18 applicationInfo:v23 pairingID:v12];
-  v24 = [(NSMutableDictionary *)self->_communicationIdentifierToClient objectForKeyedSubscript:v11];
-  [v24 handleIncomingUserInfoWithPairingID:v12];
-  [(WatchConnectivityDaemon *)self handleComplicationPingForCommunicationIdentifier:v11];
+  v23 = [(WatchConnectivityDaemon *)self applicationInfoForCommunicationID:dCopy];
+  [(WatchConnectivityDaemon *)self storeComplicationUserInfoTransfer:v18 applicationInfo:v23 pairingID:iDCopy];
+  v24 = [(NSMutableDictionary *)self->_communicationIdentifierToClient objectForKeyedSubscript:dCopy];
+  [v24 handleIncomingUserInfoWithPairingID:iDCopy];
+  [(WatchConnectivityDaemon *)self handleComplicationPingForCommunicationIdentifier:dCopy];
 }
 
-- (BOOL)errorIfPreconditionsNotSatisfiedWithClientPairingID:(id)a3 error:(id *)a4
+- (BOOL)errorIfPreconditionsNotSatisfiedWithClientPairingID:(id)d error:(id *)error
 {
-  v5 = a3;
+  dCopy = d;
   v6 = +[WCDSystemMonitor sharedSystemMonitor];
-  v7 = [v6 watchConnectivityServiceAvailable];
+  watchConnectivityServiceAvailable = [v6 watchConnectivityServiceAvailable];
 
-  if (v7)
+  if (watchConnectivityServiceAvailable)
   {
     v8 = 0;
   }
@@ -1934,8 +1934,8 @@ LABEL_18:
   }
 
   v9 = +[WCDSystemMonitor sharedSystemMonitor];
-  v10 = [v9 pairingID];
-  v11 = [v5 isEqual:v10];
+  pairingID = [v9 pairingID];
+  v11 = [dCopy isEqual:pairingID];
 
   if ((v11 & 1) == 0)
   {
@@ -1944,29 +1944,29 @@ LABEL_18:
     v8 = v12;
   }
 
-  if (a4)
+  if (error)
   {
     v13 = v8;
-    *a4 = v8;
+    *error = v8;
   }
 
   return v8 != 0;
 }
 
-- (void)transferUserInfo:(id)a3 withMetadata:(id)a4 identifier:(id)a5 clientID:(id)a6 clientPairingID:(id)a7 errorHandler:(id)a8
+- (void)transferUserInfo:(id)info withMetadata:(id)metadata identifier:(id)identifier clientID:(id)d clientPairingID:(id)iD errorHandler:(id)handler
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  infoCopy = info;
+  metadataCopy = metadata;
+  identifierCopy = identifier;
+  dCopy = d;
+  iDCopy = iD;
+  handlerCopy = handler;
   v30 = 0;
-  v20 = [(WatchConnectivityDaemon *)self errorIfPreconditionsNotSatisfiedWithClientPairingID:v18 error:&v30];
+  v20 = [(WatchConnectivityDaemon *)self errorIfPreconditionsNotSatisfiedWithClientPairingID:iDCopy error:&v30];
   v21 = v30;
   if (v20)
   {
-    v19[2](v19, v21);
+    handlerCopy[2](handlerCopy, v21);
   }
 
   else
@@ -1975,11 +1975,11 @@ LABEL_18:
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543874;
-      v32 = v16;
+      v32 = identifierCopy;
       v33 = 2114;
-      v34 = v17;
+      v34 = dCopy;
       v35 = 2114;
-      v36 = v18;
+      v36 = iDCopy;
       _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "identifier: %{public}@, clientID: %{public}@, pairingID: %{public}@", buf, 0x20u);
     }
 
@@ -1987,51 +1987,51 @@ LABEL_18:
     v23[1] = 3221225472;
     v23[2] = sub_1000156D8;
     v23[3] = &unk_100048F70;
-    v24 = v17;
-    v25 = self;
-    v26 = v16;
-    v27 = v14;
-    v28 = v15;
-    v29 = v19;
+    v24 = dCopy;
+    selfCopy = self;
+    v26 = identifierCopy;
+    v27 = infoCopy;
+    v28 = metadataCopy;
+    v29 = handlerCopy;
     [(WatchConnectivityDaemon *)self duetIdentifiersForCompanionAppID:v24 withCompletionHandler:v23];
   }
 }
 
-- (void)handleIncomingUserInfoURL:(id)a3 communicationID:(id)a4 pairingID:(id)a5 sendID:(id)a6
+- (void)handleIncomingUserInfoURL:(id)l communicationID:(id)d pairingID:(id)iD sendID:(id)sendID
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  lCopy = l;
+  dCopy = d;
+  iDCopy = iD;
+  sendIDCopy = sendID;
   v14 = wc_log();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [v10 path];
+    path = [lCopy path];
     v21 = 138544130;
-    v22 = v15;
+    v22 = path;
     v23 = 2114;
-    v24 = v11;
+    v24 = dCopy;
     v25 = 2114;
-    v26 = v12;
+    v26 = iDCopy;
     v27 = 2114;
-    v28 = v13;
+    v28 = sendIDCopy;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "userInfoURL: %{public}@, communicationID: %{public}@, pairingID: %{public}@, sendID: %{public}@", &v21, 0x2Au);
   }
 
-  v16 = [(WatchConnectivityDaemon *)self applicationInfoForCommunicationID:v11];
+  v16 = [(WatchConnectivityDaemon *)self applicationInfoForCommunicationID:dCopy];
   v17 = v16;
-  if (v11 && v16)
+  if (dCopy && v16)
   {
-    v18 = [(WatchConnectivityDaemon *)self moveUserInfoToClientInbox:v10 applicationInfo:v16 pairingID:v12 userInfoIdentifier:v13];
+    v18 = [(WatchConnectivityDaemon *)self moveUserInfoToClientInbox:lCopy applicationInfo:v16 pairingID:iDCopy userInfoIdentifier:sendIDCopy];
     if (v18)
     {
-      v19 = [(NSMutableDictionary *)self->_communicationIdentifierToClient objectForKeyedSubscript:v11];
-      [v19 handleIncomingUserInfoWithPairingID:v12];
-      v20 = [v19 connection];
+      v19 = [(NSMutableDictionary *)self->_communicationIdentifierToClient objectForKeyedSubscript:dCopy];
+      [v19 handleIncomingUserInfoWithPairingID:iDCopy];
+      connection = [v19 connection];
 
-      if (!v20)
+      if (!connection)
       {
-        [(WatchConnectivityDaemon *)self notifyDuetOfPendingContentForCompanionAppID:v11 forComplication:0];
+        [(WatchConnectivityDaemon *)self notifyDuetOfPendingContentForCompanionAppID:dCopy forComplication:0];
       }
     }
   }
@@ -2042,17 +2042,17 @@ LABEL_18:
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
       v21 = 138543874;
-      v22 = v11;
+      v22 = dCopy;
       v23 = 2114;
       v24 = v17;
       v25 = 2114;
-      v26 = v12;
+      v26 = iDCopy;
       _os_log_error_impl(&_mh_execute_header, v18, OS_LOG_TYPE_ERROR, "missing required values. communicationID: %{public}@, application: %{public}@, pairingID: %{public}@", &v21, 0x20u);
     }
   }
 }
 
-- (id)complicationUserInfoPathInDataContainer:(id)a3 pairingID:(id)a4
+- (id)complicationUserInfoPathInDataContainer:(id)container pairingID:(id)d
 {
   v4 = WCTransferredUserInfoInboxURLInContainer();
   v5 = [v4 URLByAppendingPathComponent:WCComplicationUserInfoIDFileName isDirectory:0];
@@ -2064,45 +2064,45 @@ LABEL_18:
     v8 = [[NSString alloc] initWithData:v6 encoding:4];
     v9 = [v4 URLByAppendingPathComponent:v8 isDirectory:1];
     v10 = [v9 URLByAppendingPathComponent:WCUserInfoTransferObjectFileName isDirectory:0];
-    v11 = [v10 path];
+    path = [v10 path];
 
     v12 = wc_log();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v16 = v11;
+      v16 = path;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "loaded complication user info path %{public}@", buf, 0xCu);
     }
   }
 
   else
   {
-    v11 = 0;
+    path = 0;
   }
 
-  return v11;
+  return path;
 }
 
-- (BOOL)notifyIfUserInfoTransferWithCommunicationID:(id)a3 pairingID:(id)a4 sendID:(id)a5 success:(BOOL)a6 error:(id)a7
+- (BOOL)notifyIfUserInfoTransferWithCommunicationID:(id)d pairingID:(id)iD sendID:(id)sendID success:(BOOL)success error:(id)error
 {
-  v8 = a6;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
-  v16 = [(WatchConnectivityDaemon *)self applicationInfoForCommunicationID:v12];
-  if (v8)
+  successCopy = success;
+  dCopy = d;
+  iDCopy = iD;
+  sendIDCopy = sendID;
+  errorCopy = error;
+  v16 = [(WatchConnectivityDaemon *)self applicationInfoForCommunicationID:dCopy];
+  if (successCopy)
   {
     v17 = WCTransferIdentifierFromComplicationIdentifier();
-    if ([(WatchConnectivityDaemon *)self userInfoExistsForPairingID:v13 identifier:v17 applicationInfo:v16])
+    if ([(WatchConnectivityDaemon *)self userInfoExistsForPairingID:iDCopy identifier:v17 applicationInfo:v16])
     {
       v18 = wc_log();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
         v24 = 138543618;
-        v25 = v14;
+        v25 = sendIDCopy;
         v26 = 2114;
-        v27 = v12;
+        v27 = dCopy;
         _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "sendID: %{public}@, communicationID: %{public}@ found valid complication user info", &v24, 0x16u);
       }
 
@@ -2111,14 +2111,14 @@ LABEL_18:
     }
   }
 
-  if (![(WatchConnectivityDaemon *)self userInfoExistsForPairingID:v13 identifier:v14 applicationInfo:v16])
+  if (![(WatchConnectivityDaemon *)self userInfoExistsForPairingID:iDCopy identifier:sendIDCopy applicationInfo:v16])
   {
     v22 = 0;
-    v17 = v14;
+    v17 = sendIDCopy;
     goto LABEL_16;
   }
 
-  v17 = v14;
+  v17 = sendIDCopy;
 LABEL_9:
   v19 = wc_log();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
@@ -2126,23 +2126,23 @@ LABEL_9:
     v24 = 138543618;
     v25 = v17;
     v26 = 2114;
-    v27 = v12;
+    v27 = dCopy;
     _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "sendID: %{public}@, communicationID: %{public}@ found valid user info", &v24, 0x16u);
   }
 
-  if (v8)
+  if (successCopy)
   {
     v20 = 0;
   }
 
   else
   {
-    v20 = v15;
+    v20 = errorCopy;
   }
 
-  [(WatchConnectivityDaemon *)self persistUserInfoTransferResult:v20 pairingID:v13 applicationInfo:v16 identifier:v17];
-  v21 = [(NSMutableDictionary *)self->_communicationIdentifierToClient objectForKeyedSubscript:v12];
-  [v21 handleUserInfoResultWithPairingID:v13];
+  [(WatchConnectivityDaemon *)self persistUserInfoTransferResult:v20 pairingID:iDCopy applicationInfo:v16 identifier:v17];
+  v21 = [(NSMutableDictionary *)self->_communicationIdentifierToClient objectForKeyedSubscript:dCopy];
+  [v21 handleUserInfoResultWithPairingID:iDCopy];
 
   v22 = 1;
 LABEL_16:
@@ -2150,18 +2150,18 @@ LABEL_16:
   return v22;
 }
 
-- (BOOL)userInfoExistsForPairingID:(id)a3 identifier:(id)a4 applicationInfo:(id)a5
+- (BOOL)userInfoExistsForPairingID:(id)d identifier:(id)identifier applicationInfo:(id)info
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  dCopy = d;
+  identifierCopy = identifier;
+  infoCopy = info;
   v10 = +[WCDSystemMonitor sharedSystemMonitor];
-  v11 = [v10 dataContainerURLForApplicationInfo:v9];
+  v11 = [v10 dataContainerURLForApplicationInfo:infoCopy];
 
-  if (v7 && v11)
+  if (dCopy && v11)
   {
     v12 = WCUserInfoTransfersInContainer();
-    v13 = [v12 URLByAppendingPathComponent:v8 isDirectory:1];
+    v13 = [v12 URLByAppendingPathComponent:identifierCopy isDirectory:1];
 
     v14 = [v13 URLByAppendingPathComponent:WCUserInfoTransferObjectFileName isDirectory:0];
 
@@ -2182,22 +2182,22 @@ LABEL_16:
   return v15;
 }
 
-- (void)persistUserInfoTransferResult:(id)a3 pairingID:(id)a4 applicationInfo:(id)a5 identifier:(id)a6
+- (void)persistUserInfoTransferResult:(id)result pairingID:(id)d applicationInfo:(id)info identifier:(id)identifier
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  resultCopy = result;
+  dCopy = d;
+  infoCopy = info;
+  identifierCopy = identifier;
   v13 = +[WCDSystemMonitor sharedSystemMonitor];
-  v14 = [v13 dataContainerURLForApplicationInfo:v11];
+  v14 = [v13 dataContainerURLForApplicationInfo:infoCopy];
 
-  if (v10 && v14)
+  if (dCopy && v14)
   {
     v15 = WCUserInfoTransfersInContainer();
     v16 = +[WCDIndexManager sharedManager];
-    v17 = [v16 userInfoResultsIndexForApplication:v11 pairingID:v10];
+    v17 = [v16 userInfoResultsIndexForApplication:infoCopy pairingID:dCopy];
 
-    v18 = [v15 URLByAppendingPathComponent:v12 isDirectory:1];
+    v18 = [v15 URLByAppendingPathComponent:identifierCopy isDirectory:1];
 
     v19 = +[NSFileManager defaultManager];
     v36 = 0;
@@ -2206,14 +2206,14 @@ LABEL_16:
 
     if (v20)
     {
-      v22 = [v17 addContentIdentifier:v12];
+      v22 = [v17 addContentIdentifier:identifierCopy];
       v23 = objc_opt_new();
       v24 = v23;
-      if (v9 | v22)
+      if (resultCopy | v22)
       {
-        if (v9)
+        if (resultCopy)
         {
-          v25 = v9;
+          v25 = resultCopy;
         }
 
         else
@@ -2243,14 +2243,14 @@ LABEL_16:
           {
             v30 = @"SUCCESS";
             *buf = 138543874;
-            if (v9)
+            if (resultCopy)
             {
-              v30 = v9;
+              v30 = resultCopy;
             }
 
-            v38 = v12;
+            v38 = identifierCopy;
             v39 = 2114;
-            v40 = v11;
+            v40 = infoCopy;
             v41 = 2114;
             v42 = v30;
             _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEFAULT, "id %{public}@: application: %{public}@ result: %{public}@", buf, 0x20u);
@@ -2262,7 +2262,7 @@ LABEL_16:
         else
         {
           v17 = v31;
-          [v31 removeContentIdentifier:v12];
+          [v31 removeContentIdentifier:identifierCopy];
           v29 = wc_log();
           if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
           {
@@ -2303,23 +2303,23 @@ LABEL_16:
   }
 }
 
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7 context:(id)a8
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error context:(id)context
 {
-  v10 = a6;
-  v12 = a5;
-  v13 = a7;
-  v14 = a8;
-  v15 = [v14 serviceIdentifier];
+  successCopy = success;
+  identifierCopy = identifier;
+  errorCopy = error;
+  contextCopy = context;
+  serviceIdentifier = [contextCopy serviceIdentifier];
   v16 = wc_log();
   v17 = v16;
-  if (v10)
+  if (successCopy)
   {
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v36 = v12;
+      v36 = identifierCopy;
       v37 = 2114;
-      v38 = v15;
+      v38 = serviceIdentifier;
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "identifier: %{public}@, communicationID: %{public}@", buf, 0x16u);
     }
   }
@@ -2328,69 +2328,69 @@ LABEL_16:
   {
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
-      v28 = v13;
+      v28 = errorCopy;
       v27 = NSPrintF();
       *buf = 138543874;
-      v36 = v12;
+      v36 = identifierCopy;
       v37 = 2114;
-      v38 = v15;
+      v38 = serviceIdentifier;
       v39 = 2114;
       v40 = v27;
       _os_log_error_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "failed. identifier: %{public}@, communicationID: %{public}@ due to %{public}@", buf, 0x20u);
     }
 
-    v18 = [(WatchConnectivityDaemon *)self idsInsecureServiceIdentifier];
-    v19 = [v15 isEqual:v18];
+    idsInsecureServiceIdentifier = [(WatchConnectivityDaemon *)self idsInsecureServiceIdentifier];
+    v19 = [serviceIdentifier isEqual:idsInsecureServiceIdentifier];
 
     if (v19)
     {
-      [(WCDPairedSyncManager *)self->_pairedSyncManager handlePotentialPairedSyncForComplicationsFailedWithIdentifier:v12 error:v13];
+      [(WCDPairedSyncManager *)self->_pairedSyncManager handlePotentialPairedSyncForComplicationsFailedWithIdentifier:identifierCopy error:errorCopy];
     }
   }
 
-  v20 = [(WatchConnectivityDaemon *)self idsServiceIdentifier];
-  if ([v15 isEqual:v20])
+  idsServiceIdentifier = [(WatchConnectivityDaemon *)self idsServiceIdentifier];
+  if ([serviceIdentifier isEqual:idsServiceIdentifier])
   {
     goto LABEL_18;
   }
 
-  v21 = [(WatchConnectivityDaemon *)self idsInsecureServiceIdentifier];
-  v22 = [v15 isEqual:v21];
+  idsInsecureServiceIdentifier2 = [(WatchConnectivityDaemon *)self idsInsecureServiceIdentifier];
+  v22 = [serviceIdentifier isEqual:idsInsecureServiceIdentifier2];
 
   if ((v22 & 1) == 0)
   {
-    v23 = [v14 originalDestinationDevice];
-    v20 = [(WatchConnectivityDaemon *)self pairingIDForIDSUniqueDeviceID:v23];
+    originalDestinationDevice = [contextCopy originalDestinationDevice];
+    idsServiceIdentifier = [(WatchConnectivityDaemon *)self pairingIDForIDSUniqueDeviceID:originalDestinationDevice];
 
-    v24 = [(WatchConnectivityDaemon *)self WCErrorForIDSError:v13];
-    v25 = [(NSMutableDictionary *)self->_sendIdentifierToHandler objectForKeyedSubscript:v12];
+    v24 = [(WatchConnectivityDaemon *)self WCErrorForIDSError:errorCopy];
+    v25 = [(NSMutableDictionary *)self->_sendIdentifierToHandler objectForKeyedSubscript:identifierCopy];
     if (v25)
     {
       v26 = wc_log();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543618;
-        v36 = v12;
+        v36 = identifierCopy;
         v37 = 2114;
-        v38 = v15;
+        v38 = serviceIdentifier;
         _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "identifier: %{public}@, communicationID: %{public}@ has a completion handler, invoking it", buf, 0x16u);
       }
 
       (v25)[2](v25, v24);
-      [(NSMutableDictionary *)self->_sendIdentifierToHandler removeObjectForKey:v12];
+      [(NSMutableDictionary *)self->_sendIdentifierToHandler removeObjectForKey:identifierCopy];
     }
 
-    else if (v15)
+    else if (serviceIdentifier)
     {
       v29[0] = _NSConcreteStackBlock;
       v29[1] = 3221225472;
       v29[2] = sub_10001685C;
       v29[3] = &unk_100048F98;
       v29[4] = self;
-      v30 = v15;
-      v31 = v20;
-      v32 = v12;
-      v34 = v10;
+      v30 = serviceIdentifier;
+      v31 = idsServiceIdentifier;
+      v32 = identifierCopy;
+      v34 = successCopy;
       v33 = v24;
       [(WatchConnectivityDaemon *)self performBlockWhenReady:v29];
     }
@@ -2399,68 +2399,68 @@ LABEL_18:
   }
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingUnhandledProtobuf:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)service:(id)service account:(id)account incomingUnhandledProtobuf:(id)protobuf fromID:(id)d context:(id)context
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a7;
-  v14 = a6;
-  v15 = [v13 serviceIdentifier];
-  v16 = [v11 deviceForFromID:v14];
+  serviceCopy = service;
+  protobufCopy = protobuf;
+  contextCopy = context;
+  dCopy = d;
+  serviceIdentifier = [contextCopy serviceIdentifier];
+  v16 = [serviceCopy deviceForFromID:dCopy];
 
-  v17 = [v16 uniqueIDOverride];
+  uniqueIDOverride = [v16 uniqueIDOverride];
 
-  v18 = [(WatchConnectivityDaemon *)self pairingIDForIDSUniqueDeviceID:v17];
+  v18 = [(WatchConnectivityDaemon *)self pairingIDForIDSUniqueDeviceID:uniqueIDOverride];
   v19 = wc_log();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
     v20 = &stru_1000497E8;
-    if (v15)
+    if (serviceIdentifier)
     {
-      v20 = v15;
+      v20 = serviceIdentifier;
     }
 
     v59 = v20;
-    v62 = v17;
-    v21 = -[WatchConnectivityDaemon descriptionFromPayloadSendType:](self, "descriptionFromPayloadSendType:", [v12 type]);
-    v22 = self;
-    v23 = [v12 type];
-    v24 = [v12 data];
+    v62 = uniqueIDOverride;
+    v21 = -[WatchConnectivityDaemon descriptionFromPayloadSendType:](self, "descriptionFromPayloadSendType:", [protobufCopy type]);
+    selfCopy = self;
+    type = [protobufCopy type];
+    data = [protobufCopy data];
     *buf = 138544130;
     v85 = v59;
     v86 = 2080;
     v87 = v21;
     v88 = 1024;
-    v89 = v23;
-    self = v22;
+    v89 = type;
+    self = selfCopy;
     v90 = 2048;
-    v91 = [v24 length];
-    v17 = v62;
+    v91 = [data length];
+    uniqueIDOverride = v62;
     _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "communicationID: %{public}@, WCDPayloadSendType: %s (%d), protobufSize: %ld", buf, 0x26u);
   }
 
-  v25 = [v12 type];
-  if (v25 > 9)
+  type2 = [protobufCopy type];
+  if (type2 > 9)
   {
-    if (v25 <= 14)
+    if (type2 <= 14)
     {
-      switch(v25)
+      switch(type2)
       {
         case 10:
           firstUnlockManager = self->_firstUnlockManager;
-          [v12 data];
+          [protobufCopy data];
           v29 = v28 = v18;
           [(WCDFirstUnlockManager *)firstUnlockManager handleFirstUnlockState:v29];
           goto LABEL_38;
         case 11:
           v48 = self->_firstUnlockManager;
-          [v12 data];
+          [protobufCopy data];
           v29 = v28 = v18;
           [(WCDFirstUnlockManager *)v48 handleFirstUnlockRequest:v29];
           goto LABEL_38;
         case 12:
           v27 = self->_firstUnlockManager;
-          [v12 data];
+          [protobufCopy data];
           v29 = v28 = v18;
           [(WCDFirstUnlockManager *)v27 handleFirstUnlockAck:v29];
 LABEL_38:
@@ -2474,25 +2474,25 @@ LABEL_36:
       v29 = wc_log();
       if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
       {
-        sub_10002B4D0(v12);
+        sub_10002B4D0(protobufCopy);
       }
 
       goto LABEL_38;
     }
 
-    switch(v25)
+    switch(type2)
     {
       case 15:
-        v38 = [v13 outgoingResponseIdentifier];
-        [(WatchConnectivityDaemon *)self handlePairedSyncComplicationsStartedWithIdentifier:v38];
+        outgoingResponseIdentifier = [contextCopy outgoingResponseIdentifier];
+        [(WatchConnectivityDaemon *)self handlePairedSyncComplicationsStartedWithIdentifier:outgoingResponseIdentifier];
         break;
       case 16:
         v51 = [WCDProtoPairedSyncComplicationsStartedAck alloc];
-        v52 = [v12 data];
-        v38 = [(WCDProtoPairedSyncComplicationsStartedAck *)v51 initWithData:v52];
+        data2 = [protobufCopy data];
+        outgoingResponseIdentifier = [(WCDProtoPairedSyncComplicationsStartedAck *)v51 initWithData:data2];
 
-        v53 = [v13 incomingResponseIdentifier];
-        [(WatchConnectivityDaemon *)self handlePairedSyncComplicationsStartedAck:v38 identifier:v53];
+        incomingResponseIdentifier = [contextCopy incomingResponseIdentifier];
+        [(WatchConnectivityDaemon *)self handlePairedSyncComplicationsStartedAck:outgoingResponseIdentifier identifier:incomingResponseIdentifier];
 
         break;
       case 17:
@@ -2507,24 +2507,24 @@ LABEL_35:
     goto LABEL_39;
   }
 
-  if (v25 > 3)
+  if (type2 > 3)
   {
-    if (v25 != 4)
+    if (type2 != 4)
     {
-      if (v25 != 5)
+      if (type2 != 5)
       {
-        if (v25 == 9)
+        if (type2 == 9)
         {
           v65[0] = _NSConcreteStackBlock;
           v65[1] = 3221225472;
           v65[2] = sub_10001735C;
           v65[3] = &unk_100049038;
-          v66 = v12;
-          v67 = self;
-          v68 = v15;
+          v66 = protobufCopy;
+          selfCopy2 = self;
+          v68 = serviceIdentifier;
           v69 = v18;
-          v70 = v13;
-          [(WatchConnectivityDaemon *)self service:v11 context:v70 performBlockWhenReady:v65];
+          v70 = contextCopy;
+          [(WatchConnectivityDaemon *)self service:serviceCopy context:v70 performBlockWhenReady:v65];
 
           v26 = v66;
           goto LABEL_45;
@@ -2534,84 +2534,84 @@ LABEL_35:
       }
 
       v49 = [WCDProtoDaemonClientsInformation alloc];
-      v50 = [v12 data];
-      v38 = [(WCDProtoDaemonClientsInformation *)v49 initWithData:v50];
+      data3 = [protobufCopy data];
+      outgoingResponseIdentifier = [(WCDProtoDaemonClientsInformation *)v49 initWithData:data3];
 
-      [(WatchConnectivityDaemon *)self handleDaemonClientsInformation:v38];
+      [(WatchConnectivityDaemon *)self handleDaemonClientsInformation:outgoingResponseIdentifier];
       goto LABEL_35;
     }
 
     [(WatchConnectivityDaemon *)self handleCounterpartDaemonDidStart];
 LABEL_39:
-    [v11 sendAckForMessageWithContext:v13];
+    [serviceCopy sendAckForMessageWithContext:contextCopy];
     goto LABEL_46;
   }
 
-  if (v25 == 1)
+  if (type2 == 1)
   {
-    v63 = self;
+    selfCopy3 = self;
     v30 = [WCDProtoMessageRequest alloc];
-    v60 = v12;
-    v31 = [v12 data];
-    v32 = [(WCDProtoMessageRequest *)v30 initWithData:v31];
+    v60 = protobufCopy;
+    data4 = [protobufCopy data];
+    v32 = [(WCDProtoMessageRequest *)v30 initWithData:data4];
 
     v33 = [WCMessageRequest alloc];
-    v34 = [v13 outgoingResponseIdentifier];
-    v35 = [(WCDProtoMessageRequest *)v32 clientData];
-    v36 = [v33 initWithPairingID:v18 identifier:v34 data:v35 dictionaryMessage:-[WCDProtoMessageRequest dictionaryMessage](v32 expectsResponse:{"dictionaryMessage"), -[WCDProtoMessageRequest expectsResponse](v32, "expectsResponse")}];
+    outgoingResponseIdentifier2 = [contextCopy outgoingResponseIdentifier];
+    clientData = [(WCDProtoMessageRequest *)v32 clientData];
+    v36 = [v33 initWithPairingID:v18 identifier:outgoingResponseIdentifier2 data:clientData dictionaryMessage:-[WCDProtoMessageRequest dictionaryMessage](v32 expectsResponse:{"dictionaryMessage"), -[WCDProtoMessageRequest expectsResponse](v32, "expectsResponse")}];
 
     if ([(WCDProtoMessageRequest *)v32 hasIsInUse])
     {
-      v57 = [(WCDProtoMessageRequest *)v32 isInUse];
+      isInUse = [(WCDProtoMessageRequest *)v32 isInUse];
     }
 
     else
     {
-      v57 = 1;
+      isInUse = 1;
     }
 
-    v12 = v60;
+    protobufCopy = v60;
     v58 = v32;
     if ([(WCDProtoMessageRequest *)v32 hasCoreLocationData])
     {
-      v54 = [(WCDProtoMessageRequest *)v32 coreLocationData];
+      coreLocationData = [(WCDProtoMessageRequest *)v32 coreLocationData];
     }
 
     else
     {
-      v54 = 0;
+      coreLocationData = 0;
     }
 
     v79[0] = _NSConcreteStackBlock;
     v79[1] = 3221225472;
     v79[2] = sub_1000171F4;
     v79[3] = &unk_100048FC0;
-    v79[4] = v63;
+    v79[4] = selfCopy3;
     v80 = v36;
-    v83 = v57;
-    v81 = v15;
-    v82 = v54;
-    v55 = v54;
+    v83 = isInUse;
+    v81 = serviceIdentifier;
+    v82 = coreLocationData;
+    v55 = coreLocationData;
     v56 = v36;
-    [(WatchConnectivityDaemon *)v63 service:v11 context:v13 performBlockWhenReady:v79];
+    [(WatchConnectivityDaemon *)selfCopy3 service:serviceCopy context:contextCopy performBlockWhenReady:v79];
 
     v26 = v58;
     goto LABEL_45;
   }
 
-  if (v25 != 2)
+  if (type2 != 2)
   {
-    if (v25 == 3)
+    if (type2 == 3)
     {
       v71[0] = _NSConcreteStackBlock;
       v71[1] = 3221225472;
       v71[2] = sub_100017260;
       v71[3] = &unk_100049010;
-      v72 = v12;
-      v73 = self;
-      v74 = v15;
+      v72 = protobufCopy;
+      selfCopy4 = self;
+      v74 = serviceIdentifier;
       v75 = v18;
-      [(WatchConnectivityDaemon *)self service:v11 context:v13 performBlockWhenReady:v71];
+      [(WatchConnectivityDaemon *)self service:serviceCopy context:contextCopy performBlockWhenReady:v71];
 
       v26 = v72;
 LABEL_45:
@@ -2622,16 +2622,16 @@ LABEL_45:
     goto LABEL_36;
   }
 
-  v64 = self;
+  selfCopy5 = self;
   v39 = [WCDProtoMessageResponse alloc];
-  v61 = v12;
-  v40 = [v12 data];
-  v41 = [(WCDProtoMessageResponse *)v39 initWithData:v40];
+  v61 = protobufCopy;
+  data5 = [protobufCopy data];
+  v41 = [(WCDProtoMessageResponse *)v39 initWithData:data5];
 
   v42 = [WCMessageResponse alloc];
-  v43 = [v13 incomingResponseIdentifier];
-  v44 = [(WCDProtoMessageResponse *)v41 clientData];
-  v45 = [v42 initWithPairingID:v18 identifier:v43 data:v44 dictionaryMessage:{-[WCDProtoMessageResponse dictionaryMessage](v41, "dictionaryMessage")}];
+  incomingResponseIdentifier2 = [contextCopy incomingResponseIdentifier];
+  clientData2 = [(WCDProtoMessageResponse *)v41 clientData];
+  v45 = [v42 initWithPairingID:v18 identifier:incomingResponseIdentifier2 data:clientData2 dictionaryMessage:{-[WCDProtoMessageResponse dictionaryMessage](v41, "dictionaryMessage")}];
 
   if ([(WCDProtoMessageResponse *)v41 errorCode])
   {
@@ -2643,23 +2643,23 @@ LABEL_45:
   v76[1] = 3221225472;
   v76[2] = sub_100017208;
   v76[3] = &unk_100048FE8;
-  v76[4] = v64;
-  v77 = v15;
+  v76[4] = selfCopy5;
+  v77 = serviceIdentifier;
   v78 = v45;
   v47 = v45;
-  [(WatchConnectivityDaemon *)v64 service:v11 context:v13 performBlockWhenReady:v76];
+  [(WatchConnectivityDaemon *)selfCopy5 service:serviceCopy context:contextCopy performBlockWhenReady:v76];
 
-  v12 = v61;
+  protobufCopy = v61;
 LABEL_46:
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingResourceAtURL:(id)a5 metadata:(id)a6 fromID:(id)a7 context:(id)a8
+- (void)service:(id)service account:(id)account incomingResourceAtURL:(id)l metadata:(id)metadata fromID:(id)d context:(id)context
 {
-  v13 = a3;
-  v31 = a5;
-  v14 = a6;
-  v15 = a8;
-  v16 = a7;
+  serviceCopy = service;
+  lCopy = l;
+  metadataCopy = metadata;
+  contextCopy = context;
+  dCopy = d;
   v17 = wc_log();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
@@ -2668,43 +2668,43 @@ LABEL_46:
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "%{public}s", buf, 0xCu);
   }
 
-  v18 = [v15 serviceIdentifier];
-  v19 = [v15 outgoingResponseIdentifier];
-  v20 = [v13 deviceForFromID:v16];
+  serviceIdentifier = [contextCopy serviceIdentifier];
+  outgoingResponseIdentifier = [contextCopy outgoingResponseIdentifier];
+  v20 = [serviceCopy deviceForFromID:dCopy];
 
-  v21 = [v20 uniqueIDOverride];
+  uniqueIDOverride = [v20 uniqueIDOverride];
 
-  v22 = [(WatchConnectivityDaemon *)self pairingIDForIDSUniqueDeviceID:v21];
-  if (v14 && ([v14 objectForKeyedSubscript:@"t"], v23 = objc_claimAutoreleasedReturnValue(), v23, v23))
+  v22 = [(WatchConnectivityDaemon *)self pairingIDForIDSUniqueDeviceID:uniqueIDOverride];
+  if (metadataCopy && ([metadataCopy objectForKeyedSubscript:@"t"], v23 = objc_claimAutoreleasedReturnValue(), v23, v23))
   {
-    v30 = self;
-    v24 = v18;
-    v25 = [v14 objectForKeyedSubscript:@"t"];
-    v26 = [v25 integerValue];
+    selfCopy = self;
+    v24 = serviceIdentifier;
+    v25 = [metadataCopy objectForKeyedSubscript:@"t"];
+    integerValue = [v25 integerValue];
 
-    if (v26 == 2)
+    if (integerValue == 2)
     {
-      v27 = v31;
-      v18 = v24;
-      [(WatchConnectivityDaemon *)v30 handleIncomingUserInfoURL:v31 communicationID:v24 pairingID:v22 sendID:v19];
+      v27 = lCopy;
+      serviceIdentifier = v24;
+      [(WatchConnectivityDaemon *)selfCopy handleIncomingUserInfoURL:lCopy communicationID:v24 pairingID:v22 sendID:outgoingResponseIdentifier];
     }
 
     else
     {
-      v18 = v24;
-      if (v26 == 1)
+      serviceIdentifier = v24;
+      if (integerValue == 1)
       {
-        v27 = v31;
-        [(WatchConnectivityDaemon *)v30 handleIncomingFileURL:v31 communicationID:v24 pairingID:v22 sendID:v19 metadata:v14];
+        v27 = lCopy;
+        [(WatchConnectivityDaemon *)selfCopy handleIncomingFileURL:lCopy communicationID:v24 pairingID:v22 sendID:outgoingResponseIdentifier metadata:metadataCopy];
       }
 
       else
       {
         v29 = wc_log();
-        v27 = v31;
+        v27 = lCopy;
         if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
         {
-          sub_10002B558(v14, @"t");
+          sub_10002B558(metadataCopy, @"t");
         }
       }
     }
@@ -2718,15 +2718,15 @@ LABEL_46:
       sub_10002B5EC();
     }
 
-    v27 = v31;
+    v27 = lCopy;
   }
 
-  [v13 sendAckForMessageWithContext:v15];
+  [serviceCopy sendAckForMessageWithContext:contextCopy];
 }
 
-- (void)service:(id)a3 connectedDevicesChanged:(id)a4
+- (void)service:(id)service connectedDevicesChanged:(id)changed
 {
-  v5 = a3;
+  serviceCopy = service;
   v6 = wc_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -2735,12 +2735,12 @@ LABEL_46:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%{public}s", &v7, 0xCu);
   }
 
-  [(WatchConnectivityDaemon *)self updateActiveDeviceConnectedForService:v5];
+  [(WatchConnectivityDaemon *)self updateActiveDeviceConnectedForService:serviceCopy];
 }
 
-- (void)service:(id)a3 devicesChanged:(id)a4
+- (void)service:(id)service devicesChanged:(id)changed
 {
-  v5 = a3;
+  serviceCopy = service;
   v6 = wc_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -2749,87 +2749,87 @@ LABEL_46:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%{public}s", &v7, 0xCu);
   }
 
-  [(WatchConnectivityDaemon *)self updateActiveDeviceConnectedForService:v5];
+  [(WatchConnectivityDaemon *)self updateActiveDeviceConnectedForService:serviceCopy];
 }
 
-- (void)updateActiveDeviceConnectedForService:(id)a3
+- (void)updateActiveDeviceConnectedForService:(id)service
 {
-  v3 = a3;
+  serviceCopy = service;
   v5 = +[WCDSystemMonitor sharedSystemMonitor];
-  v4 = [v3 isActiveDeviceConnected];
+  isActiveDeviceConnected = [serviceCopy isActiveDeviceConnected];
 
-  [v5 setActiveDeviceConnected:v4];
+  [v5 setActiveDeviceConnected:isActiveDeviceConnected];
 }
 
-- (void)service:(id)a3 didSwitchActivePairedDevice:(id)a4 acknowledgementBlock:(id)a5
+- (void)service:(id)service didSwitchActivePairedDevice:(id)device acknowledgementBlock:(id)block
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
-  v11 = [(WatchConnectivityDaemon *)self idsService];
-  v12 = [v10 isEqual:v11];
+  deviceCopy = device;
+  blockCopy = block;
+  serviceCopy = service;
+  idsService = [(WatchConnectivityDaemon *)self idsService];
+  v12 = [serviceCopy isEqual:idsService];
 
   if (v12)
   {
-    v13 = [(WatchConnectivityDaemon *)self idsServiceIdentifier];
+    idsServiceIdentifier = [(WatchConnectivityDaemon *)self idsServiceIdentifier];
     v14 = +[WCDSystemMonitor sharedSystemMonitor];
     [v14 handleSwitchStartedByIDS];
   }
 
   else
   {
-    v13 = [(WatchConnectivityDaemon *)self idsInsecureServiceIdentifier];
+    idsServiceIdentifier = [(WatchConnectivityDaemon *)self idsInsecureServiceIdentifier];
   }
 
   v15 = wc_log();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
-    v16 = [v8 name];
+    name = [deviceCopy name];
     v17 = 138543618;
-    v18 = v13;
+    v18 = idsServiceIdentifier;
     v19 = 2114;
-    v20 = v16;
+    v20 = name;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "%{public}@ %{public}@. Acknowledging switch with IDS", &v17, 0x16u);
   }
 
-  v9[2](v9);
+  blockCopy[2](blockCopy);
 }
 
 - (IDSDevice)activeIDSDevice
 {
-  v2 = [(WatchConnectivityDaemon *)self idsService];
-  v3 = [v2 activeIDSDevice];
+  idsService = [(WatchConnectivityDaemon *)self idsService];
+  activeIDSDevice = [idsService activeIDSDevice];
 
-  return v3;
+  return activeIDSDevice;
 }
 
-- (void)launchCompanionAppID:(id)a3 isInUse:(BOOL)a4 coreLocationData:(id)a5
+- (void)launchCompanionAppID:(id)d isInUse:(BOOL)use coreLocationData:(id)data
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  useCopy = use;
+  dCopy = d;
+  dataCopy = data;
   v10 = wc_log();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v11 = "NO";
-    if (v6)
+    if (useCopy)
     {
       v11 = "YES";
     }
 
     *buf = 138543618;
-    v22 = v8;
+    v22 = dCopy;
     v23 = 2080;
     v24 = v11;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "companionAppIdentifier: %{public}@, isInUse: %s", buf, 0x16u);
   }
 
   v12 = +[AVSystemController sharedAVSystemController];
-  [v12 setAttribute:v8 forKey:AVSystemController_AllowAppToInitiatePlaybackTemporarilyAttribute error:0];
+  [v12 setAttribute:dCopy forKey:AVSystemController_AllowAppToInitiatePlaybackTemporarilyAttribute error:0];
 
-  if (v6)
+  if (useCopy)
   {
-    [(WatchConnectivityDaemon *)self setCLTransientAuthorization:v8 withCoreLocationData:v9];
+    [(WatchConnectivityDaemon *)self setCLTransientAuthorization:dCopy withCoreLocationData:dataCopy];
   }
 
   v13 = +[FBSSystemService sharedService];
@@ -2840,21 +2840,21 @@ LABEL_46:
   v16[1] = 3221225472;
   v16[2] = sub_100017C70;
   v16[3] = &unk_1000490B0;
-  v17 = v8;
-  v18 = self;
-  v15 = v8;
+  v17 = dCopy;
+  selfCopy = self;
+  v15 = dCopy;
   [v13 openApplication:v15 options:v14 withResult:v16];
 }
 
-- (void)acquireBackgroundAssertionForIdentifier:(id)a3
+- (void)acquireBackgroundAssertionForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
   v22 = 0;
   v5 = dispatch_semaphore_create(0);
-  v6 = [(NSMutableDictionary *)self->_companionAppAssertions objectForKeyedSubscript:v4];
+  v6 = [(NSMutableDictionary *)self->_companionAppAssertions objectForKeyedSubscript:identifierCopy];
 
   if (!v6)
   {
@@ -2866,7 +2866,7 @@ LABEL_46:
     v18 = &v19;
     v8 = v5;
     v17 = v8;
-    v9 = [v7 initWithBundleIdentifier:v4 flags:1 reason:16 name:@"WatchConnectivity Background Launch" withHandler:&v13];
+    v9 = [v7 initWithBundleIdentifier:identifierCopy flags:1 reason:16 name:@"WatchConnectivity Background Launch" withHandler:&v13];
     v10 = dispatch_time(0, 3000000000);
     if (dispatch_semaphore_wait(v8, v10))
     {
@@ -2879,7 +2879,7 @@ LABEL_46:
 
     if (*(v20 + 24) == 1)
     {
-      [(WatchConnectivityDaemon *)self handleAquiredAssertion:v9 identifier:v4, v13, v14, v15, v16];
+      [(WatchConnectivityDaemon *)self handleAquiredAssertion:v9 identifier:identifierCopy, v13, v14, v15, v16];
     }
 
     else
@@ -2895,10 +2895,10 @@ LABEL_46:
   _Block_object_dispose(&v19, 8);
 }
 
-- (void)cleanUpProcessAssertionForIdentifier:(id)a3
+- (void)cleanUpProcessAssertionForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_companionAppAssertions objectForKeyedSubscript:v4];
+  identifierCopy = identifier;
+  v5 = [(NSMutableDictionary *)self->_companionAppAssertions objectForKeyedSubscript:identifierCopy];
   v6 = v5;
   if (v5)
   {
@@ -2910,7 +2910,7 @@ LABEL_46:
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
         v13 = 138543362;
-        v14 = v4;
+        v14 = identifierCopy;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "companionAppIdentifier: %{public}@ removing old process assertion", &v13, 0xCu);
       }
 
@@ -2925,42 +2925,42 @@ LABEL_46:
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
         v13 = 138543362;
-        v14 = v4;
+        v14 = identifierCopy;
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "companionAppIdentifier: %{public}@ canceling old timer", &v13, 0xCu);
       }
 
       dispatch_source_cancel(v11);
     }
 
-    [(NSMutableDictionary *)self->_companionAppAssertions removeObjectForKey:v4];
+    [(NSMutableDictionary *)self->_companionAppAssertions removeObjectForKey:identifierCopy];
   }
 }
 
-- (void)handleAquiredAssertion:(id)a3 identifier:(id)a4
+- (void)handleAquiredAssertion:(id)assertion identifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  assertionCopy = assertion;
+  identifierCopy = identifier;
   v8 = wc_log();
   v9 = v8;
-  if (v6)
+  if (assertionCopy)
   {
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v19 = v7;
+      v19 = identifierCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "companionAppIdentifier: %{public}@, acquired process assertion", buf, 0xCu);
     }
 
-    v10 = [(WatchConnectivityDaemon *)self createBackgroundAssertionTimerForIdentifier:v7];
+    v10 = [(WatchConnectivityDaemon *)self createBackgroundAssertionTimerForIdentifier:identifierCopy];
     v9 = v10;
     if (v10)
     {
       v16[0] = @"process-assertion";
       v16[1] = @"process-assertion-timer";
-      v17[0] = v6;
+      v17[0] = assertionCopy;
       v17[1] = v10;
       v11 = [NSDictionary dictionaryWithObjects:v17 forKeys:v16 count:2];
-      [(NSMutableDictionary *)self->_companionAppAssertions setObject:v11 forKeyedSubscript:v7];
+      [(NSMutableDictionary *)self->_companionAppAssertions setObject:v11 forKeyedSubscript:identifierCopy];
 
       dispatch_resume(v9);
       objc_initWeak(buf, self->_companionAppAssertions);
@@ -2969,8 +2969,8 @@ LABEL_46:
       v13[2] = sub_100018488;
       v13[3] = &unk_100048D00;
       objc_copyWeak(&v15, buf);
-      v14 = v7;
-      [v6 setInvalidationHandler:v13];
+      v14 = identifierCopy;
+      [assertionCopy setInvalidationHandler:v13];
 
       objc_destroyWeak(&v15);
       objc_destroyWeak(buf);
@@ -2992,9 +2992,9 @@ LABEL_46:
   }
 }
 
-- (id)createBackgroundAssertionTimerForIdentifier:(id)a3
+- (id)createBackgroundAssertionTimerForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, &_dispatch_main_q);
   v6 = dispatch_time(0, 10000000000);
   dispatch_source_set_timer(v5, v6, 0xFFFFFFFFFFFFFFFFLL, 0);
@@ -3003,8 +3003,8 @@ LABEL_46:
   v9[2] = sub_1000185D4;
   v9[3] = &unk_100048AE8;
   v9[4] = self;
-  v10 = v4;
-  v7 = v4;
+  v10 = identifierCopy;
+  v7 = identifierCopy;
   dispatch_source_set_event_handler(v5, v9);
 
   return v5;
@@ -3016,8 +3016,8 @@ LABEL_46:
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(NSMutableDictionary *)self->_communicationIdentifierToClient allValues];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  allValues = [(NSMutableDictionary *)self->_communicationIdentifierToClient allValues];
+  v4 = [allValues countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -3029,7 +3029,7 @@ LABEL_46:
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         [(WatchConnectivityDaemon *)self updateClientWithValues:*(*(&v8 + 1) + 8 * v7)];
@@ -3037,48 +3037,48 @@ LABEL_46:
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [allValues countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
   }
 }
 
-- (void)updateClientWithValues:(id)a3
+- (void)updateClientWithValues:(id)values
 {
-  v8 = a3;
+  valuesCopy = values;
   v4 = +[WCDSystemMonitor sharedSystemMonitor];
-  v5 = [v4 initialSetUpComplete];
+  initialSetUpComplete = [v4 initialSetUpComplete];
 
-  if (v5)
+  if (initialSetUpComplete)
   {
     counterpartClientCommunicationIdentifiers = self->_counterpartClientCommunicationIdentifiers;
-    v7 = [v8 communicationID];
-    [v8 setCounterpartCanEstablishXPCConnection:{-[NSSet containsObject:](counterpartClientCommunicationIdentifiers, "containsObject:", v7)}];
+    communicationID = [valuesCopy communicationID];
+    [valuesCopy setCounterpartCanEstablishXPCConnection:{-[NSSet containsObject:](counterpartClientCommunicationIdentifiers, "containsObject:", communicationID)}];
 
-    [v8 setPrivileged:0];
+    [valuesCopy setPrivileged:0];
   }
 }
 
-- (const)descriptionFromPayloadSendType:(unsigned __int16)a3
+- (const)descriptionFromPayloadSendType:(unsigned __int16)type
 {
-  if ((a3 - 1) > 0x10)
+  if ((type - 1) > 0x10)
   {
     return "UNKNOWN";
   }
 
   else
   {
-    return off_100049120[(a3 - 1)];
+    return off_100049120[(type - 1)];
   }
 }
 
-- (id)dataFromUUIDString:(id)a3
+- (id)dataFromUUIDString:(id)string
 {
   v7[0] = 0;
   v7[1] = 0;
-  v3 = a3;
-  v4 = [[NSUUID alloc] initWithUUIDString:v3];
+  stringCopy = string;
+  v4 = [[NSUUID alloc] initWithUUIDString:stringCopy];
 
   [v4 getUUIDBytes:v7];
   v5 = [NSData dataWithBytes:v7 length:16];
@@ -3086,17 +3086,17 @@ LABEL_46:
   return v5;
 }
 
-- (id)pairingIDForIDSUniqueDeviceID:(id)a3
+- (id)pairingIDForIDSUniqueDeviceID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [(WatchConnectivityDaemon *)self idsService];
-  v6 = [v5 devices];
+  idsService = [(WatchConnectivityDaemon *)self idsService];
+  devices = [idsService devices];
 
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v7 = [devices countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = *v17;
@@ -3106,24 +3106,24 @@ LABEL_46:
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(devices);
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
-        v11 = [v10 uniqueIDOverride];
-        v12 = [v11 isEqual:v4];
+        uniqueIDOverride = [v10 uniqueIDOverride];
+        v12 = [uniqueIDOverride isEqual:dCopy];
 
         if (v12)
         {
           v13 = +[WCDSystemMonitor sharedSystemMonitor];
-          v14 = [v10 nsuuid];
-          v7 = [v13 pairingIDForBTUUID:v14];
+          nsuuid = [v10 nsuuid];
+          v7 = [v13 pairingIDForBTUUID:nsuuid];
 
           goto LABEL_11;
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v7 = [devices countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v7)
       {
         continue;
@@ -3138,13 +3138,13 @@ LABEL_11:
   return v7;
 }
 
-- (id)WCErrorForIDSError:(id)a3
+- (id)WCErrorForIDSError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  v5 = [v4 isEqual:IDSErrorDomain];
+  errorCopy = error;
+  domain = [errorCopy domain];
+  v5 = [domain isEqual:IDSErrorDomain];
 
-  v6 = v3;
+  v6 = errorCopy;
   v7 = v6;
   v8 = v6;
   if (!v5)
@@ -3161,19 +3161,19 @@ LABEL_11:
   v9 = v6;
   do
   {
-    v10 = [v9 code];
-    if (v10 <= 26)
+    code = [v9 code];
+    if (code <= 26)
     {
-      if (v10 == 18)
+      if (code == 18)
       {
         v26 = NSUnderlyingErrorKey;
         v27 = v7;
-        v11 = [NSDictionary dictionaryWithObjects:&v27 forKeys:&v26 count:1];
+        userInfo = [NSDictionary dictionaryWithObjects:&v27 forKeys:&v26 count:1];
         v12 = 7009;
         goto LABEL_14;
       }
 
-      if (v10 != 23)
+      if (code != 23)
       {
         goto LABEL_12;
       }
@@ -3181,21 +3181,21 @@ LABEL_11:
 LABEL_11:
       v24 = NSUnderlyingErrorKey;
       v25 = v7;
-      v11 = [NSDictionary dictionaryWithObjects:&v25 forKeys:&v24 count:1];
+      userInfo = [NSDictionary dictionaryWithObjects:&v25 forKeys:&v24 count:1];
       v12 = 7017;
       goto LABEL_14;
     }
 
-    if (v10 == 38)
+    if (code == 38)
     {
       goto LABEL_11;
     }
 
-    if (v10 != 27)
+    if (code != 27)
     {
 LABEL_12:
-      v11 = [v9 userInfo];
-      v13 = [v11 objectForKeyedSubscript:NSUnderlyingErrorKey];
+      userInfo = [v9 userInfo];
+      v13 = [userInfo objectForKeyedSubscript:NSUnderlyingErrorKey];
 
       v8 = 0;
       v9 = v13;
@@ -3204,10 +3204,10 @@ LABEL_12:
 
     v28 = NSUnderlyingErrorKey;
     v29 = v7;
-    v11 = [NSDictionary dictionaryWithObjects:&v29 forKeys:&v28 count:1];
+    userInfo = [NSDictionary dictionaryWithObjects:&v29 forKeys:&v28 count:1];
     v12 = 7015;
 LABEL_14:
-    v8 = [NSError wcErrorWithCode:v12 userInfo:v11];
+    v8 = [NSError wcErrorWithCode:v12 userInfo:userInfo];
 LABEL_15:
 
     if (v8)
@@ -3250,35 +3250,35 @@ LABEL_26:
   return v8;
 }
 
-- (id)applicationInfoForCommunicationID:(id)a3
+- (id)applicationInfoForCommunicationID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = +[WCDSystemMonitor sharedSystemMonitor];
-  v5 = [v4 applicationWorkspace];
-  v6 = [v5 applicationInfoForBundleIdentifier:v3 type:1 allowPlaceholder:1];
+  applicationWorkspace = [v4 applicationWorkspace];
+  v6 = [applicationWorkspace applicationInfoForBundleIdentifier:dCopy type:1 allowPlaceholder:1];
 
   return v6;
 }
 
-- (void)duetIdentifiersForCompanionAppID:(id)a3 withCompletionHandler:(id)a4
+- (void)duetIdentifiersForCompanionAppID:(id)d withCompletionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
+  dCopy = d;
+  handlerCopy = handler;
   v7 = +[WCDSystemMonitor sharedSystemMonitor];
-  v8 = [v7 applicationWorkspace];
-  v9 = [v8 applicationInfoForBundleIdentifier:v5 type:1];
+  applicationWorkspace = [v7 applicationWorkspace];
+  v9 = [applicationWorkspace applicationInfoForBundleIdentifier:dCopy type:1];
 
   if (v9)
   {
     v10 = objc_opt_new();
-    [v10 addObject:v5];
-    v11 = [v9 watchAppBundleIdentifier];
-    [v10 addObject:v11];
+    [v10 addObject:dCopy];
+    watchAppBundleIdentifier = [v9 watchAppBundleIdentifier];
+    [v10 addObject:watchAppBundleIdentifier];
 
-    v12 = [v9 watchExtensionBundleIdentifier];
-    if (v12)
+    watchExtensionBundleIdentifier = [v9 watchExtensionBundleIdentifier];
+    if (watchExtensionBundleIdentifier)
     {
-      [v10 addObject:v12];
+      [v10 addObject:watchExtensionBundleIdentifier];
     }
 
     v13 = wc_log();
@@ -3290,7 +3290,7 @@ LABEL_26:
     }
 
     v14 = [v10 copy];
-    v6[2](v6, v14);
+    handlerCopy[2](handlerCopy, v14);
   }
 
   else
@@ -3301,14 +3301,14 @@ LABEL_26:
       sub_10002B830();
     }
 
-    v6[2](v6, 0);
-    v10 = v6;
+    handlerCopy[2](handlerCopy, 0);
+    v10 = handlerCopy;
   }
 }
 
-- (BOOL)cellUsageAllowedForBundleID:(id)a3
+- (BOOL)cellUsageAllowedForBundleID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = _CTServerConnectionCreateOnTargetQueue();
   if (v4)
   {
@@ -3320,49 +3320,49 @@ LABEL_26:
   return v4;
 }
 
-- (id)moveFileToClientInbox:(id)a3 applicationInfo:(id)a4 pairingID:(id)a5 fileIdentifier:(id)a6 userInfoData:(id)a7 error:(id *)a8
+- (id)moveFileToClientInbox:(id)inbox applicationInfo:(id)info pairingID:(id)d fileIdentifier:(id)identifier userInfoData:(id)data error:(id *)error
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  inboxCopy = inbox;
+  infoCopy = info;
+  dCopy = d;
+  identifierCopy = identifier;
+  dataCopy = data;
   v18 = wc_log();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
-    v19 = [v13 path];
+    path = [inboxCopy path];
     v20 = "YES";
     *buf = 138544130;
-    v73 = v19;
-    if (!v17)
+    v73 = path;
+    if (!dataCopy)
     {
       v20 = "NO";
     }
 
     v74 = 2114;
-    v75 = v14;
+    v75 = infoCopy;
     v76 = 2114;
-    v77 = v16;
+    v77 = identifierCopy;
     v78 = 2080;
     v79 = v20;
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "incomingFileURL: %{public}@, application: %{public}@, fileIdentifier: %{public}@, hasUserInfoData: %s", buf, 0x2Au);
   }
 
-  v65 = v17;
+  v65 = dataCopy;
 
   v21 = +[WCDSystemMonitor sharedSystemMonitor];
-  v22 = [v21 dataContainerURLForApplicationInfo:v14];
+  v22 = [v21 dataContainerURLForApplicationInfo:infoCopy];
 
-  if (v15 && v22)
+  if (dCopy && v22)
   {
     v23 = WCTransferredFilesURLInContainer();
-    v24 = [v23 URLByAppendingPathComponent:v16 isDirectory:1];
+    v24 = [v23 URLByAppendingPathComponent:identifierCopy isDirectory:1];
 
-    v25 = [v13 lastPathComponent];
-    v63 = [v24 URLByAppendingPathComponent:v25 isDirectory:0];
+    lastPathComponent = [inboxCopy lastPathComponent];
+    v63 = [v24 URLByAppendingPathComponent:lastPathComponent isDirectory:0];
 
     v62 = WCSessionFilesURLInContainer();
-    v64 = [v62 URLByAppendingPathComponent:v16 isDirectory:1];
+    v64 = [v62 URLByAppendingPathComponent:identifierCopy isDirectory:1];
     if ([v63 checkResourceIsReachableAndReturnError:0])
     {
       v26 = wc_log();
@@ -3383,7 +3383,7 @@ LABEL_26:
 
     if (v30)
     {
-      v61 = a8;
+      errorCopy = error;
       v31 = +[NSFileManager defaultManager];
       v70 = v28;
       v32 = [v31 createDirectoryAtURL:v64 withIntermediateDirectories:1 attributes:0 error:&v70];
@@ -3393,14 +3393,14 @@ LABEL_26:
       {
         v34 = +[NSFileManager defaultManager];
         v69 = v33;
-        v35 = [v34 moveItemAtURL:v13 toURL:v63 error:&v69];
+        v35 = [v34 moveItemAtURL:inboxCopy toURL:v63 error:&v69];
         v28 = v69;
 
         if (v35)
         {
           v36 = [WCSessionFile alloc];
-          v37 = [v63 relativePath];
-          v27 = [v36 initWithIdentifier:v16 relativePath:v37];
+          relativePath = [v63 relativePath];
+          v27 = [v36 initWithIdentifier:identifierCopy relativePath:relativePath];
 
           if (v65)
           {
@@ -3411,20 +3411,20 @@ LABEL_26:
             v28 = v38;
           }
 
-          a8 = v61;
+          error = errorCopy;
           if (!v28)
           {
             v45 = +[WCDIndexManager sharedManager];
-            v46 = [v45 fileIndexForApplication:v14 pairingID:v15];
+            v46 = [v45 fileIndexForApplication:infoCopy pairingID:dCopy];
 
-            v47 = [v27 fileIdentifier];
-            v28 = [v46 addContentIdentifier:v47];
+            fileIdentifier = [v27 fileIdentifier];
+            v28 = [v46 addContentIdentifier:fileIdentifier];
 
             if (v28)
             {
               v59 = v46;
               v48 = wc_log();
-              a8 = v61;
+              error = errorCopy;
               if (os_log_type_enabled(v48, OS_LOG_TYPE_FAULT))
               {
                 sub_10002BB74();
@@ -3450,12 +3450,12 @@ LABEL_26:
                 v52 = wc_log();
                 if (os_log_type_enabled(v52, OS_LOG_TYPE_FAULT))
                 {
-                  v54 = [v58 path];
+                  path2 = [v58 path];
                   v55 = NSPrintF();
                   *buf = 138543874;
                   v73 = v27;
                   v74 = 2114;
-                  v75 = v54;
+                  v75 = path2;
                   v76 = 2114;
                   v77 = v55;
                   _os_log_fault_impl(&_mh_execute_header, v52, OS_LOG_TYPE_FAULT, "error archiving session file to path %{public}@ %{public}@ due to %{public}@", buf, 0x20u);
@@ -3463,14 +3463,14 @@ LABEL_26:
 
                 WCDeleteItemAtURL();
                 WCDeleteItemAtURL();
-                v53 = [v27 fileIdentifier];
+                fileIdentifier2 = [v27 fileIdentifier];
                 v46 = v60;
-                [v60 removeContentIdentifier:v53];
+                [v60 removeContentIdentifier:fileIdentifier2];
 
                 v27 = 0;
               }
 
-              a8 = v61;
+              error = errorCopy;
               v49 = v58;
             }
 
@@ -3510,7 +3510,7 @@ LABEL_26:
         v28 = v33;
       }
 
-      a8 = v61;
+      error = errorCopy;
       goto LABEL_34;
     }
 
@@ -3537,53 +3537,53 @@ LABEL_34:
   v28 = 0;
 LABEL_35:
 
-  if (a8)
+  if (error)
   {
     v43 = v28;
-    *a8 = v28;
+    *error = v28;
   }
 
   return v27;
 }
 
-- (id)moveUserInfoToClientInbox:(id)a3 applicationInfo:(id)a4 pairingID:(id)a5 userInfoIdentifier:(id)a6
+- (id)moveUserInfoToClientInbox:(id)inbox applicationInfo:(id)info pairingID:(id)d userInfoIdentifier:(id)identifier
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  inboxCopy = inbox;
+  infoCopy = info;
+  dCopy = d;
+  identifierCopy = identifier;
   v14 = wc_log();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [v10 path];
+    path = [inboxCopy path];
     *buf = 138544130;
-    v50 = v15;
+    v50 = path;
     v51 = 2114;
-    v52 = v11;
+    v52 = infoCopy;
     v53 = 2114;
-    v54 = v12;
+    v54 = dCopy;
     v55 = 2114;
-    v56 = v13;
+    v56 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "incomingUserInfoURL: %{public}@, application: %{public}@, pairingID: %{public}@, userInfoIdentifier: %{public}@", buf, 0x2Au);
   }
 
   v16 = +[WCDSystemMonitor sharedSystemMonitor];
-  v17 = [v16 dataContainerURLForApplicationInfo:v11];
+  v17 = [v16 dataContainerURLForApplicationInfo:infoCopy];
 
-  if (v12 && v17)
+  if (dCopy && v17)
   {
     v18 = WCTransferredUserInfoInboxURLInContainer();
     v19 = +[WCDIndexManager sharedManager];
-    v45 = [v19 userInfoIndexForApplication:v11 pairingID:v12];
+    v45 = [v19 userInfoIndexForApplication:infoCopy pairingID:dCopy];
 
-    v20 = [v18 URLByAppendingPathComponent:v13 isDirectory:1];
+    v20 = [v18 URLByAppendingPathComponent:identifierCopy isDirectory:1];
 
     v21 = [v20 URLByAppendingPathComponent:WCUserInfoTransferObjectFileName isDirectory:0];
-    v22 = [(WatchConnectivityDaemon *)self complicationUserInfoPathInDataContainer:v17 pairingID:v12];
+    v22 = [(WatchConnectivityDaemon *)self complicationUserInfoPathInDataContainer:v17 pairingID:dCopy];
     if (v22)
     {
-      v23 = [v21 path];
-      v24 = [v23 isEqual:v22];
+      path2 = [v21 path];
+      v24 = [path2 isEqual:v22];
 
       if (v24)
       {
@@ -3613,7 +3613,7 @@ LABEL_35:
       goto LABEL_28;
     }
 
-    v44 = v10;
+    v44 = inboxCopy;
     v28 = +[NSFileManager defaultManager];
     v48 = 0;
     v29 = [v28 createDirectoryAtURL:v20 withIntermediateDirectories:1 attributes:0 error:&v48];
@@ -3629,15 +3629,15 @@ LABEL_35:
 
       v27 = v21;
       v21 = 0;
-      v10 = v44;
+      inboxCopy = v44;
       goto LABEL_28;
     }
 
-    v10 = v44;
+    inboxCopy = v44;
     v27 = [[WCSessionUserInfoTransfer alloc] initWithProtoBufFileURL:v44];
     if (v27)
     {
-      v39 = [v45 addContentIdentifier:v13];
+      v39 = [v45 addContentIdentifier:identifierCopy];
 
       v26 = v39;
       if (!v39)
@@ -3657,7 +3657,7 @@ LABEL_35:
           v40 = v37;
           if (v36)
           {
-            v10 = v44;
+            inboxCopy = v44;
             v26 = v37;
             goto LABEL_27;
           }
@@ -3675,9 +3675,9 @@ LABEL_35:
           sub_10002BD40();
         }
 
-        [v45 removeContentIdentifier:v13];
+        [v45 removeContentIdentifier:identifierCopy];
         v21 = 0;
-        v10 = v44;
+        inboxCopy = v44;
         v26 = v40;
         v30 = v42;
         goto LABEL_27;
@@ -3729,27 +3729,27 @@ LABEL_29:
   return v21;
 }
 
-- (void)storeComplicationUserInfoTransfer:(id)a3 applicationInfo:(id)a4 pairingID:(id)a5
+- (void)storeComplicationUserInfoTransfer:(id)transfer applicationInfo:(id)info pairingID:(id)d
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  transferCopy = transfer;
+  infoCopy = info;
+  dCopy = d;
   v10 = wc_log();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
-    v49 = v7;
+    v49 = transferCopy;
     v50 = 2114;
-    v51 = v8;
+    v51 = infoCopy;
     v52 = 2114;
-    v53 = v9;
+    v53 = dCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "userInfoTransfer: %{public}@, application: %{public}@, pairingID: %{public}@", buf, 0x20u);
   }
 
   v11 = +[WCDSystemMonitor sharedSystemMonitor];
-  v12 = [v11 dataContainerURLForApplicationInfo:v8];
+  v12 = [v11 dataContainerURLForApplicationInfo:infoCopy];
 
-  if (!MGGetBoolAnswer() || ([v7 transferIdentifier], v13 = objc_claimAutoreleasedReturnValue(), v13, v13))
+  if (!MGGetBoolAnswer() || ([transferCopy transferIdentifier], v13 = objc_claimAutoreleasedReturnValue(), v13, v13))
   {
     v14 = wc_log();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_FAULT))
@@ -3762,15 +3762,15 @@ LABEL_29:
 
   WCDashboardLogJSON();
   [WCDRadarUserNotification showTapToRadarAlertWithMessage:@"You have hit <rdar://problem/33601638>. Please file a new WatchConnectivity bug with a co-sysdiagnose and relate the radar." forRadarIdentifier:@"33601638" oncePerBuild:1];
-  if (v9 && v12)
+  if (dCopy && v12)
   {
     v15 = WCTransferredUserInfoInboxURLInContainer();
     v43 = [v15 URLByAppendingPathComponent:WCComplicationUserInfoIDFileName isDirectory:0];
     v16 = +[WCDIndexManager sharedManager];
-    v17 = [v16 userInfoIndexForApplication:v8 pairingID:v9];
+    v17 = [v16 userInfoIndexForApplication:infoCopy pairingID:dCopy];
 
-    v18 = [v7 transferIdentifier];
-    v19 = [v15 URLByAppendingPathComponent:v18 isDirectory:1];
+    transferIdentifier = [transferCopy transferIdentifier];
+    v19 = [v15 URLByAppendingPathComponent:transferIdentifier isDirectory:1];
 
     v20 = [v19 URLByAppendingPathComponent:WCUserInfoTransferObjectFileName isDirectory:0];
     v21 = +[NSFileManager defaultManager];
@@ -3790,8 +3790,8 @@ LABEL_29:
       goto LABEL_33;
     }
 
-    v24 = [v7 transferIdentifier];
-    v14 = [v17 addContentIdentifier:v24];
+    transferIdentifier2 = [transferCopy transferIdentifier];
+    v14 = [v17 addContentIdentifier:transferIdentifier2];
 
     if (v14)
     {
@@ -3805,7 +3805,7 @@ LABEL_29:
     }
 
     v46 = 0;
-    v26 = [NSKeyedArchiver archivedDataWithRootObject:v7 requiringSecureCoding:1 error:&v46];
+    v26 = [NSKeyedArchiver archivedDataWithRootObject:transferCopy requiringSecureCoding:1 error:&v46];
     v25 = v46;
     v42 = v26;
     if (v26)
@@ -3817,8 +3817,8 @@ LABEL_29:
       {
         v38 = v28;
         WCDeleteItemAtURL();
-        v29 = [v7 transferIdentifier];
-        v30 = [v29 dataUsingEncoding:4];
+        transferIdentifier3 = [transferCopy transferIdentifier];
+        v30 = [transferIdentifier3 dataUsingEncoding:4];
 
         v44 = v38;
         log = v30;
@@ -3831,12 +3831,12 @@ LABEL_29:
           v32 = v31;
           if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
           {
-            v39 = [v7 transferIdentifier];
-            v36 = [v7 complicationTransferIdentifier];
+            transferIdentifier4 = [transferCopy transferIdentifier];
+            complicationTransferIdentifier = [transferCopy complicationTransferIdentifier];
             *buf = 138543618;
-            v49 = v39;
+            v49 = transferIdentifier4;
             v50 = 2114;
-            v51 = v36;
+            v51 = complicationTransferIdentifier;
             _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "persisted complication user info transfer id %{public}@ with complication/send ID %{public}@", buf, 0x16u);
           }
         }
@@ -3861,8 +3861,8 @@ LABEL_29:
       v14 = 0;
     }
 
-    v33 = [v7 transferIdentifier];
-    [v17 removeContentIdentifier:v33];
+    transferIdentifier5 = [transferCopy transferIdentifier];
+    [v17 removeContentIdentifier:transferIdentifier5];
 
     v34 = wc_log();
     if (!os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
@@ -3873,11 +3873,11 @@ LABEL_33:
       goto LABEL_7;
     }
 
-    v37 = [v20 path];
+    path = [v20 path];
     v40 = NSPrintF();
     log = v34;
     *buf = 138543618;
-    v49 = v37;
+    v49 = path;
     v50 = 2114;
     v51 = v40;
     _os_log_error_impl(&_mh_execute_header, v34, OS_LOG_TYPE_ERROR, "error moving user info file to inbox %{public}@ due to %{public}@", buf, 0x16u);
@@ -3896,27 +3896,27 @@ LABEL_31:
 LABEL_7:
 }
 
-- (void)persistAppContext:(id)a3 applicationInfo:(id)a4 pairingID:(id)a5
+- (void)persistAppContext:(id)context applicationInfo:(id)info pairingID:(id)d
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  contextCopy = context;
+  infoCopy = info;
+  dCopy = d;
   v10 = wc_log();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218498;
-    v24 = [v7 length];
+    v24 = [contextCopy length];
     v25 = 2114;
-    v26 = v8;
+    v26 = infoCopy;
     v27 = 2114;
-    v28 = v9;
+    v28 = dCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "appContextDataSize: %ld, application: %{public}@, pairingID: %{public}@", buf, 0x20u);
   }
 
   v11 = +[WCDSystemMonitor sharedSystemMonitor];
-  v12 = [v11 dataContainerURLForApplicationInfo:v8];
+  v12 = [v11 dataContainerURLForApplicationInfo:infoCopy];
 
-  if (v9 && v12)
+  if (dCopy && v12)
   {
     v13 = WCInboxAppContextFolderURLInContainer();
     v14 = [v13 URLByAppendingPathComponent:WCApplicationContextFileName isDirectory:0];
@@ -3928,7 +3928,7 @@ LABEL_7:
     if (v16)
     {
       v21 = v17;
-      v18 = [v7 writeToURL:v14 options:1073741825 error:&v21];
+      v18 = [contextCopy writeToURL:v14 options:1073741825 error:&v21];
       v19 = v21;
 
       if (v18)
@@ -3968,43 +3968,43 @@ LABEL_15:
 LABEL_16:
 }
 
-- (void)performBlockWhenReady:(id)a3
+- (void)performBlockWhenReady:(id)ready
 {
-  v9 = a3;
+  readyCopy = ready;
   v4 = +[WCDSystemMonitor sharedSystemMonitor];
-  v5 = [v4 initialSetUpComplete];
+  initialSetUpComplete = [v4 initialSetUpComplete];
 
-  if (v5)
+  if (initialSetUpComplete)
   {
-    v9[2]();
+    readyCopy[2]();
   }
 
   else
   {
     readyBlocks = self->_readyBlocks;
-    v7 = [v9 copy];
+    v7 = [readyCopy copy];
 
     v8 = objc_retainBlock(v7);
     [(NSMutableArray *)readyBlocks addObject:v8];
 
-    v9 = v7;
+    readyCopy = v7;
   }
 }
 
-- (void)service:(id)a3 context:(id)a4 performBlockWhenReady:(id)a5
+- (void)service:(id)service context:(id)context performBlockWhenReady:(id)ready
 {
-  v8 = a3;
-  v9 = a4;
+  serviceCopy = service;
+  contextCopy = context;
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10001A744;
   v13[3] = &unk_100049100;
-  v15 = v8;
-  v16 = a5;
-  v14 = v9;
-  v10 = v8;
-  v11 = v9;
-  v12 = v16;
+  v15 = serviceCopy;
+  readyCopy = ready;
+  v14 = contextCopy;
+  v10 = serviceCopy;
+  v11 = contextCopy;
+  v12 = readyCopy;
   [(WatchConnectivityDaemon *)self performBlockWhenReady:v13];
 }
 
@@ -4044,15 +4044,15 @@ LABEL_16:
   }
 }
 
-- (void)setCLTransientAuthorization:(id)a3 withCoreLocationData:(id)a4
+- (void)setCLTransientAuthorization:(id)authorization withCoreLocationData:(id)data
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 && v7)
+  authorizationCopy = authorization;
+  dataCopy = data;
+  v8 = dataCopy;
+  if (authorizationCopy && dataCopy)
   {
-    v9 = [(WatchConnectivityDaemon *)self locationManager];
-    v10 = [v9 _setClientTransientAuthorizationInfoForBundleId:v6 data:v8];
+    locationManager = [(WatchConnectivityDaemon *)self locationManager];
+    v10 = [locationManager _setClientTransientAuthorizationInfoForBundleId:authorizationCopy data:v8];
 
     if (!v10)
     {
@@ -4072,16 +4072,16 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  if (v6)
+  if (authorizationCopy)
   {
-    v12 = [(NSMutableDictionary *)self->_coreLocationAssertions objectForKeyedSubscript:v6];
+    v12 = [(NSMutableDictionary *)self->_coreLocationAssertions objectForKeyedSubscript:authorizationCopy];
 
     if (!v12)
     {
-      v10 = [CLInUseAssertion newAssertionForBundleIdentifier:v6 withReason:@"Location in use on paired watch by 3rd party app"];
+      v10 = [CLInUseAssertion newAssertionForBundleIdentifier:authorizationCopy withReason:@"Location in use on paired watch by 3rd party app"];
       if (v10)
       {
-        v13 = [(WatchConnectivityDaemon *)self createCLInUseTimerForIdentifier:v6];
+        v13 = [(WatchConnectivityDaemon *)self createCLInUseTimerForIdentifier:authorizationCopy];
         v11 = v13;
         if (v13)
         {
@@ -4090,14 +4090,14 @@ LABEL_6:
           v20[0] = v10;
           v20[1] = v13;
           v14 = [NSDictionary dictionaryWithObjects:v20 forKeys:v19 count:2];
-          [(NSMutableDictionary *)self->_coreLocationAssertions setObject:v14 forKeyedSubscript:v6];
+          [(NSMutableDictionary *)self->_coreLocationAssertions setObject:v14 forKeyedSubscript:authorizationCopy];
 
           dispatch_resume(v11);
           v15 = wc_log();
           if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
           {
             v17 = 138543362;
-            v18 = v6;
+            v18 = authorizationCopy;
             _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "%{public}@", &v17, 0xCu);
           }
         }
@@ -4130,10 +4130,10 @@ LABEL_6:
 LABEL_10:
 }
 
-- (void)releaseCLInUseAssertionForIdentifier:(id)a3
+- (void)releaseCLInUseAssertionForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_coreLocationAssertions objectForKeyedSubscript:v4];
+  identifierCopy = identifier;
+  v5 = [(NSMutableDictionary *)self->_coreLocationAssertions objectForKeyedSubscript:identifierCopy];
   v6 = v5;
   if (v5)
   {
@@ -4147,7 +4147,7 @@ LABEL_10:
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
         v12 = 138543362;
-        v13 = v4;
+        v13 = identifierCopy;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%{public}@", &v12, 0xCu);
       }
     }
@@ -4159,13 +4159,13 @@ LABEL_10:
       dispatch_source_cancel(v10);
     }
 
-    [(NSMutableDictionary *)self->_coreLocationAssertions removeObjectForKey:v4];
+    [(NSMutableDictionary *)self->_coreLocationAssertions removeObjectForKey:identifierCopy];
   }
 }
 
-- (id)createCLInUseTimerForIdentifier:(id)a3
+- (id)createCLInUseTimerForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, &_dispatch_main_q);
   v6 = dispatch_time(0, 40000000000);
   dispatch_source_set_timer(v5, v6, 0xFFFFFFFFFFFFFFFFLL, 0);
@@ -4174,8 +4174,8 @@ LABEL_10:
   v9[2] = sub_10001AD0C;
   v9[3] = &unk_100048AE8;
   v9[4] = self;
-  v10 = v4;
-  v7 = v4;
+  v10 = identifierCopy;
+  v7 = identifierCopy;
   dispatch_source_set_event_handler(v5, v9);
 
   return v5;

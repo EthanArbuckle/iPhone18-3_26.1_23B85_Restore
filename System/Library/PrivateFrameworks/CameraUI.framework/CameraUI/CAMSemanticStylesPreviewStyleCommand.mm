@@ -1,36 +1,36 @@
 @interface CAMSemanticStylesPreviewStyleCommand
-- (CAMSemanticStylesPreviewStyleCommand)initWithStyle:(id)a3;
-- (void)executeWithContext:(id)a3;
+- (CAMSemanticStylesPreviewStyleCommand)initWithStyle:(id)style;
+- (void)executeWithContext:(id)context;
 @end
 
 @implementation CAMSemanticStylesPreviewStyleCommand
 
-- (CAMSemanticStylesPreviewStyleCommand)initWithStyle:(id)a3
+- (CAMSemanticStylesPreviewStyleCommand)initWithStyle:(id)style
 {
-  v5 = a3;
+  styleCopy = style;
   v10.receiver = self;
   v10.super_class = CAMSemanticStylesPreviewStyleCommand;
   v6 = [(CAMCaptureCommand *)&v10 initWithSubcommands:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->__style, a3);
+    objc_storeStrong(&v6->__style, style);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (void)executeWithContext:(id)a3
+- (void)executeWithContext:(id)context
 {
-  v6 = [a3 currentVideoPreviewLayer];
-  v4 = [(CAMSemanticStylesPreviewStyleCommand *)self _style];
-  if ([v6 isSemanticStyleRenderingEnabled])
+  currentVideoPreviewLayer = [context currentVideoPreviewLayer];
+  _style = [(CAMSemanticStylesPreviewStyleCommand *)self _style];
+  if ([currentVideoPreviewLayer isSemanticStyleRenderingEnabled])
   {
-    if (!v4 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    if (!_style || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v5 = [v4 avSemanticStyle];
-      [v6 setSemanticStyle:v5 animated:0];
+      avSemanticStyle = [_style avSemanticStyle];
+      [currentVideoPreviewLayer setSemanticStyle:avSemanticStyle animated:0];
     }
   }
 }

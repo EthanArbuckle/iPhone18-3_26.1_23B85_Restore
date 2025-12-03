@@ -1,73 +1,73 @@
 @interface HFPresenceEventFormatter
-- (HFPresenceEventFormatter)initWithHome:(id)a3;
-- (HFPresenceEventFormatter)initWithOptions:(id)a3;
+- (HFPresenceEventFormatter)initWithHome:(id)home;
+- (HFPresenceEventFormatter)initWithOptions:(id)options;
 - (HFTriggerNaturalLanguageOptions)options;
-- (id)_formattedListForSelectedUsers:(id)a3 inHome:(id)a4;
-- (id)stringForPresenceEvent:(id)a3;
-- (id)stringForPresenceEventBuilder:(id)a3 actionsDescription:(id)a4;
+- (id)_formattedListForSelectedUsers:(id)users inHome:(id)home;
+- (id)stringForPresenceEvent:(id)event;
+- (id)stringForPresenceEventBuilder:(id)builder actionsDescription:(id)description;
 @end
 
 @implementation HFPresenceEventFormatter
 
-- (HFPresenceEventFormatter)initWithHome:(id)a3
+- (HFPresenceEventFormatter)initWithHome:(id)home
 {
-  v5 = a3;
+  homeCopy = home;
   v9.receiver = self;
   v9.super_class = HFPresenceEventFormatter;
   v6 = [(HFPresenceEventFormatter *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_home, a3);
+    objc_storeStrong(&v6->_home, home);
   }
 
   return v7;
 }
 
-- (HFPresenceEventFormatter)initWithOptions:(id)a3
+- (HFPresenceEventFormatter)initWithOptions:(id)options
 {
-  v4 = a3;
-  v5 = [v4 home];
-  v6 = [(HFPresenceEventFormatter *)self initWithHome:v5];
+  optionsCopy = options;
+  home = [optionsCopy home];
+  v6 = [(HFPresenceEventFormatter *)self initWithHome:home];
 
   if (v6)
   {
-    v6->_nameType = [v4 nameType];
-    objc_storeWeak(&v6->_options, v4);
+    v6->_nameType = [optionsCopy nameType];
+    objc_storeWeak(&v6->_options, optionsCopy);
   }
 
   return v6;
 }
 
-- (id)stringForPresenceEvent:(id)a3
+- (id)stringForPresenceEvent:(id)event
 {
-  v4 = a3;
-  v5 = [[HFPresenceEventBuilder alloc] initWithEvent:v4];
+  eventCopy = event;
+  v5 = [[HFPresenceEventBuilder alloc] initWithEvent:eventCopy];
 
   v6 = [(HFPresenceEventFormatter *)self stringForPresenceEventBuilder:v5];
 
   return v6;
 }
 
-- (id)stringForPresenceEventBuilder:(id)a3 actionsDescription:(id)a4
+- (id)stringForPresenceEventBuilder:(id)builder actionsDescription:(id)description
 {
   v71 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  builderCopy = builder;
+  descriptionCopy = description;
   v62 = MEMORY[0x277D85DD0];
   v63 = 3221225472;
   v64 = __77__HFPresenceEventFormatter_stringForPresenceEventBuilder_actionsDescription___block_invoke;
   v65 = &unk_277DF3568;
-  v8 = v6;
+  v8 = builderCopy;
   v66 = v8;
-  v9 = [v8 activationGranularity];
+  activationGranularity = [v8 activationGranularity];
   v10 = @"ActivationGranularityUser";
-  if (v9)
+  if (activationGranularity)
   {
     v10 = &stru_2824B1A78;
   }
 
-  if (v9 == 1)
+  if (activationGranularity == 1)
   {
     v10 = @"ActivationGranularityHome";
   }
@@ -79,14 +79,14 @@
   v60 = &unk_277DF3568;
   v12 = v8;
   v61 = v12;
-  v13 = [v12 locationEventType];
+  locationEventType = [v12 locationEventType];
   v14 = @"Arriving";
-  if (v13 != 1)
+  if (locationEventType != 1)
   {
     v14 = &stru_2824B1A78;
   }
 
-  if (v13 == 2)
+  if (locationEventType == 2)
   {
     v14 = @"Leaving";
   }
@@ -96,33 +96,33 @@
   v55[6] = 3221225472;
   v55[7] = __77__HFPresenceEventFormatter_stringForPresenceEventBuilder_actionsDescription___block_invoke_3;
   v55[8] = &unk_277DF3568;
-  v56 = self;
-  v16 = [(HFPresenceEventFormatter *)self style];
-  if (v16 == 1)
+  selfCopy = self;
+  style = [(HFPresenceEventFormatter *)self style];
+  if (style == 1)
   {
     v18 = @"HFPresenceEventActivationDescription";
   }
 
-  else if (v16)
+  else if (style)
   {
     v18 = &stru_2824B1A78;
   }
 
   else
   {
-    v17 = [(HFPresenceEventFormatter *)v56 nameType];
+    nameType = [(HFPresenceEventFormatter *)selfCopy nameType];
     v18 = @"HFPresenceTriggerNameFullSentence";
-    if (v17 == 1)
+    if (nameType == 1)
     {
       v18 = @"HFPresenceTriggerName";
     }
   }
 
   v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_%@_%@", v18, v11, v15];
-  v20 = [v12 users];
-  v21 = [v20 type];
+  users = [v12 users];
+  type = [users type];
 
-  if (!v21)
+  if (!type)
   {
     v55[0] = MEMORY[0x277D85DD0];
     v55[1] = 3221225472;
@@ -142,9 +142,9 @@
     goto LABEL_24;
   }
 
-  v22 = [v12 users];
-  v23 = [(HFPresenceEventFormatter *)self home];
-  v24 = [v22 resolveSelectedUsersWithHome:v23];
+  users2 = [v12 users];
+  home = [(HFPresenceEventFormatter *)self home];
+  v24 = [users2 resolveSelectedUsersWithHome:home];
   v25 = [v24 count];
 
   if (v25 == 2)
@@ -157,8 +157,8 @@
       v47[1] = 3221225472;
       v47[2] = __77__HFPresenceEventFormatter_stringForPresenceEventBuilder_actionsDescription___block_invoke_6;
       v47[3] = &unk_277DF3B08;
-      v48 = v7;
-      v49 = self;
+      v48 = descriptionCopy;
+      selfCopy2 = self;
       v50 = v12;
       v30 = _Block_copy(v47);
 
@@ -178,7 +178,7 @@ LABEL_26:
     aBlock[1] = 3221225472;
     aBlock[2] = __77__HFPresenceEventFormatter_stringForPresenceEventBuilder_actionsDescription___block_invoke_7;
     aBlock[3] = &unk_277DF3B30;
-    v45 = v7;
+    v45 = descriptionCopy;
     v46 = v25;
     v30 = _Block_copy(aBlock);
     v31 = v45;
@@ -187,10 +187,10 @@ LABEL_29:
     goto LABEL_30;
   }
 
-  v26 = [v12 users];
-  v27 = [v26 type];
+  users3 = [v12 users];
+  type2 = [users3 type];
 
-  if (v27 != 1)
+  if (type2 != 1)
   {
     v29 = [v19 stringByAppendingString:@"_SingleUser"];
 
@@ -198,8 +198,8 @@ LABEL_29:
     v51[1] = 3221225472;
     v51[2] = __77__HFPresenceEventFormatter_stringForPresenceEventBuilder_actionsDescription___block_invoke_5;
     v51[3] = &unk_277DF3B08;
-    v52 = v7;
-    v53 = self;
+    v52 = descriptionCopy;
+    selfCopy3 = self;
     v54 = v12;
     v30 = _Block_copy(v51);
 
@@ -213,7 +213,7 @@ LABEL_24:
 
   v30 = 0;
 LABEL_30:
-  if ([v7 length] && -[HFPresenceEventFormatter nameType](self, "nameType") == 2)
+  if ([descriptionCopy length] && -[HFPresenceEventFormatter nameType](self, "nameType") == 2)
   {
     v32 = [v29 stringByAppendingString:@"_WithAction"];
 
@@ -223,7 +223,7 @@ LABEL_30:
       v42[1] = 3221225472;
       v42[2] = __77__HFPresenceEventFormatter_stringForPresenceEventBuilder_actionsDescription___block_invoke_8;
       v42[3] = &unk_277DF3B58;
-      v43 = v7;
+      v43 = descriptionCopy;
       v30 = _Block_copy(v42);
     }
   }
@@ -252,8 +252,8 @@ LABEL_30:
   if (![(HFPresenceEventFormatter *)self nameType])
   {
     v36 = MEMORY[0x277CD1EC0];
-    v37 = [(HFPresenceEventFormatter *)self home];
-    v38 = [v36 hf_sanitizeTriggerName:v34 home:v37];
+    home2 = [(HFPresenceEventFormatter *)self home];
+    v38 = [v36 hf_sanitizeTriggerName:v34 home:home2];
 
     v34 = v38;
   }
@@ -444,24 +444,24 @@ id __77__HFPresenceEventFormatter_stringForPresenceEventBuilder_actionsDescripti
   return v2;
 }
 
-- (id)_formattedListForSelectedUsers:(id)a3 inHome:(id)a4
+- (id)_formattedListForSelectedUsers:(id)users inHome:(id)home
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[HFUserNameFormatter alloc] initWithHome:v5];
+  homeCopy = home;
+  usersCopy = users;
+  v7 = [[HFUserNameFormatter alloc] initWithHome:homeCopy];
   [(HFUserNameFormatter *)v7 setStyle:1];
-  v8 = [v6 resolveSelectedUsersWithHome:v5];
+  v8 = [usersCopy resolveSelectedUsersWithHome:homeCopy];
 
-  v9 = [v8 allObjects];
+  allObjects = [v8 allObjects];
   v17 = MEMORY[0x277D85DD0];
   v18 = 3221225472;
   v19 = __66__HFPresenceEventFormatter__formattedListForSelectedUsers_inHome___block_invoke;
   v20 = &unk_277DF3B80;
-  v21 = v5;
+  v21 = homeCopy;
   v22 = v7;
   v10 = v7;
-  v11 = v5;
-  v12 = [v9 na_map:&v17];
+  v11 = homeCopy;
+  v12 = [allObjects na_map:&v17];
   v13 = [v12 sortedArrayUsingSelector:{sel_localizedStandardCompare_, v17, v18, v19, v20}];
 
   if (_MergedGlobals_6 != -1)

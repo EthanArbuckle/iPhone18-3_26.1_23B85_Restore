@@ -1,32 +1,32 @@
 @interface MTEventDataProvider
 - (MTEventDataProviderDelegate)delegate;
 - (NSDictionary)knownFieldMethods;
-- (SEL)knownFieldAccessorForFieldName:(id)a3;
+- (SEL)knownFieldAccessorForFieldName:(id)name;
 - (id)flattenAdditionalData;
-- (id)knownFieldMethodsForKnownFields:(id)a3;
+- (id)knownFieldMethodsForKnownFields:(id)fields;
 - (id)knownFields;
-- (id)processMetricsData:(id)a3 performanceData:(id)a4;
-- (void)addFields:(id)a3;
-- (void)addFieldsWithBlock:(id)a3;
+- (id)processMetricsData:(id)data performanceData:(id)performanceData;
+- (void)addFields:(id)fields;
+- (void)addFieldsWithBlock:(id)block;
 @end
 
 @implementation MTEventDataProvider
 
-- (void)addFields:(id)a3
+- (void)addFields:(id)fields
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(MTEventDataProvider *)v5 additionalData];
-  v7 = [v6 mutableCopy];
+  fieldsCopy = fields;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  additionalData = [(MTEventDataProvider *)selfCopy additionalData];
+  array = [additionalData mutableCopy];
 
-  if (!v7)
+  if (!array)
   {
-    v7 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
   }
 
   v14 = &v15;
-  v8 = v4;
+  v8 = fieldsCopy;
   v9 = v8;
   if (v8)
   {
@@ -36,12 +36,12 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [v7 addObjectsFromArray:v10];
+        [array addObjectsFromArray:v10];
       }
 
       else
       {
-        [v7 addObject:v10];
+        [array addObject:v10];
       }
 
       v11 = v14++;
@@ -53,22 +53,22 @@
     while (v12);
   }
 
-  v13 = [v7 mt_condensedArray];
-  [(MTEventDataProvider *)v5 setAdditionalData:v13];
+  mt_condensedArray = [array mt_condensedArray];
+  [(MTEventDataProvider *)selfCopy setAdditionalData:mt_condensedArray];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)addFieldsWithBlock:(id)a3
+- (void)addFieldsWithBlock:(id)block
 {
-  v4 = MEMORY[0x259C9F5D0](a3, a2);
+  v4 = MEMORY[0x259C9F5D0](block, a2);
   [(MTEventDataProvider *)self addFields:v4, 0];
 }
 
 - (id)flattenAdditionalData
 {
-  v2 = [(MTEventDataProvider *)self additionalData];
-  v3 = [v2 mt_map:&__block_literal_global_19];
+  additionalData = [(MTEventDataProvider *)self additionalData];
+  v3 = [additionalData mt_map:&__block_literal_global_19];
 
   return v3;
 }
@@ -114,15 +114,15 @@ id __44__MTEventDataProvider_flattenAdditionalData__block_invoke(uint64_t a1, vo
 
 - (NSDictionary)knownFieldMethods
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_knownFieldMethods)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_knownFieldMethods)
   {
-    v3 = [(MTEventDataProvider *)v2 knownFields];
-    v4 = v3;
-    if (v3)
+    knownFields = [(MTEventDataProvider *)selfCopy knownFields];
+    v4 = knownFields;
+    if (knownFields)
     {
-      v5 = v3;
+      v5 = knownFields;
     }
 
     else
@@ -130,28 +130,28 @@ id __44__MTEventDataProvider_flattenAdditionalData__block_invoke(uint64_t a1, vo
       v5 = MEMORY[0x277CBEBF8];
     }
 
-    v6 = [(MTEventDataProvider *)v2 knownFieldMethodsForKnownFields:v5];
-    knownFieldMethods = v2->_knownFieldMethods;
-    v2->_knownFieldMethods = v6;
+    v6 = [(MTEventDataProvider *)selfCopy knownFieldMethodsForKnownFields:v5];
+    knownFieldMethods = selfCopy->_knownFieldMethods;
+    selfCopy->_knownFieldMethods = v6;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  v8 = v2->_knownFieldMethods;
+  v8 = selfCopy->_knownFieldMethods;
 
   return v8;
 }
 
-- (id)knownFieldMethodsForKnownFields:(id)a3
+- (id)knownFieldMethodsForKnownFields:(id)fields
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v27 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v4, "count")}];
+  fieldsCopy = fields;
+  v27 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(fieldsCopy, "count")}];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v5 = v4;
+  v5 = fieldsCopy;
   v6 = [v5 countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v6)
   {
@@ -173,8 +173,8 @@ id __44__MTEventDataProvider_flattenAdditionalData__block_invoke(uint64_t a1, vo
         {
           v12 = v11;
           v13 = [(MTEventDataProvider *)self methodSignatureForSelector:v11];
-          v14 = [v13 methodReturnType];
-          if (v14 && *v14 == 64 && !v14[1])
+          methodReturnType = [v13 methodReturnType];
+          if (methodReturnType && *methodReturnType == 64 && !methodReturnType[1])
           {
             v22 = [[MTKnownFieldMethod alloc] initWithIMP:[(MTEventDataProvider *)self methodForSelector:v12] accessor:v12];
             [v27 setObject:v22 forKey:v10];
@@ -206,34 +206,34 @@ id __44__MTEventDataProvider_flattenAdditionalData__block_invoke(uint64_t a1, vo
 
 - (id)knownFields
 {
-  v3 = [(MTEventDataProvider *)self delegate];
+  delegate = [(MTEventDataProvider *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(MTEventDataProvider *)self delegate];
-    v6 = [v5 knownFields];
+    delegate2 = [(MTEventDataProvider *)self delegate];
+    knownFields = [delegate2 knownFields];
   }
 
   else
   {
-    v6 = 0;
+    knownFields = 0;
   }
 
-  return v6;
+  return knownFields;
 }
 
-- (id)processMetricsData:(id)a3 performanceData:(id)a4
+- (id)processMetricsData:(id)data performanceData:(id)performanceData
 {
   v31 = *MEMORY[0x277D85DE8];
-  v25 = a3;
-  v6 = a4;
-  v7 = [(MTEventDataProvider *)self knownFields];
-  v8 = v7;
+  dataCopy = data;
+  performanceDataCopy = performanceData;
+  knownFields = [(MTEventDataProvider *)self knownFields];
+  v8 = knownFields;
   v9 = MEMORY[0x277CBEBF8];
-  if (v7)
+  if (knownFields)
   {
-    v9 = v7;
+    v9 = knownFields;
   }
 
   v10 = v9;
@@ -258,13 +258,13 @@ id __44__MTEventDataProvider_flattenAdditionalData__block_invoke(uint64_t a1, vo
         }
 
         v15 = *(*(&v26 + 1) + 8 * i);
-        v16 = [(MTEventDataProvider *)self knownFieldMethods];
-        v17 = [v16 objectForKeyedSubscript:v15];
+        knownFieldMethods = [(MTEventDataProvider *)self knownFieldMethods];
+        v17 = [knownFieldMethods objectForKeyedSubscript:v15];
 
         if (v17)
         {
           v18 = [v17 imp];
-          if (v6)
+          if (performanceDataCopy)
           {
             Current = CFAbsoluteTimeGetCurrent();
           }
@@ -274,11 +274,11 @@ id __44__MTEventDataProvider_flattenAdditionalData__block_invoke(uint64_t a1, vo
             Current = 0.0;
           }
 
-          v20 = v18(self, [v17 accessor], v25);
-          if (v6)
+          v20 = v18(self, [v17 accessor], dataCopy);
+          if (performanceDataCopy)
           {
             v21 = [MEMORY[0x277CCABB0] numberWithInteger:((CFAbsoluteTimeGetCurrent() - Current) * 1000000.0)];
-            [v6 setObject:v21 forKeyedSubscript:v15];
+            [performanceDataCopy setObject:v21 forKeyedSubscript:v15];
           }
 
           if (v20)
@@ -299,15 +299,15 @@ id __44__MTEventDataProvider_flattenAdditionalData__block_invoke(uint64_t a1, vo
   return v24;
 }
 
-- (SEL)knownFieldAccessorForFieldName:(id)a3
+- (SEL)knownFieldAccessorForFieldName:(id)name
 {
-  v3 = a3;
-  v4 = [v3 stringByAppendingString:@":"];
+  nameCopy = name;
+  v4 = [nameCopy stringByAppendingString:@":"];
   v5 = NSSelectorFromString(v4);
 
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
-    v5 = NSSelectorFromString(v3);
+    v5 = NSSelectorFromString(nameCopy);
     if ((objc_opt_respondsToSelector() & 1) == 0)
     {
       v5 = 0;

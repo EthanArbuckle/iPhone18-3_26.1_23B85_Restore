@@ -1,8 +1,8 @@
 @interface PKEditSinglePassViewController
-- (BOOL)handleDeletePassRequestWithPass:(id)a3 forViewController:(id)a4;
-- (PKEditSinglePassViewController)initWithGroup:(id)a3 pass:(id)a4;
-- (id)_barcodePassDetailsViewControllerForBarcodePass:(id)a3;
-- (id)_paymentPassDetailsViewControllerForPaymentPass:(id)a3;
+- (BOOL)handleDeletePassRequestWithPass:(id)pass forViewController:(id)controller;
+- (PKEditSinglePassViewController)initWithGroup:(id)group pass:(id)pass;
+- (id)_barcodePassDetailsViewControllerForBarcodePass:(id)pass;
+- (id)_paymentPassDetailsViewControllerForPaymentPass:(id)pass;
 - (void)_deletePassConfirmed;
 - (void)_deletePassPressed;
 - (void)_didPresentDetailViewController;
@@ -10,28 +10,28 @@
 - (void)disableDeleteButton;
 - (void)enableDeleteButton;
 - (void)passViewSetup;
-- (void)passWasUpdated:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)passWasUpdated:(id)updated;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation PKEditSinglePassViewController
 
-- (PKEditSinglePassViewController)initWithGroup:(id)a3 pass:(id)a4
+- (PKEditSinglePassViewController)initWithGroup:(id)group pass:(id)pass
 {
   v30[2] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  groupCopy = group;
+  passCopy = pass;
   v29.receiver = self;
   v29.super_class = PKEditSinglePassViewController;
   v9 = [(PKEditSinglePassViewController *)&v29 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_group, a3);
-    objc_storeStrong(&v10->_pass, a4);
+    objc_storeStrong(&v9->_group, group);
+    objc_storeStrong(&v10->_pass, pass);
     v10->_performanceTest = 0;
     v11 = _UISolariumFeatureFlagEnabled();
     v12 = objc_alloc(MEMORY[0x1E69DC708]);
@@ -62,11 +62,11 @@
     v10->_infoButton = v22;
 
     v24 = v10->_infoButton;
-    v25 = [MEMORY[0x1E69DC888] labelColor];
-    [(UIBarButtonItem *)v24 setTintColor:v25];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [(UIBarButtonItem *)v24 setTintColor:labelColor];
 
-    v26 = [(PKEditSinglePassViewController *)v10 navigationItem];
-    [v26 setRightBarButtonItem:v10->_infoButton];
+    navigationItem = [(PKEditSinglePassViewController *)v10 navigationItem];
+    [navigationItem setRightBarButtonItem:v10->_infoButton];
 
     v30[0] = v10->_flexibleSpace;
     v30[1] = v10->_deleteBarButton;
@@ -84,28 +84,28 @@
   v5.receiver = self;
   v5.super_class = PKEditSinglePassViewController;
   [(PKEditSinglePassViewController *)&v5 viewDidLoad];
-  v3 = [(PKEditSinglePassViewController *)self view];
-  v4 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  [v3 setBackgroundColor:v4];
+  view = [(PKEditSinglePassViewController *)self view];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  [view setBackgroundColor:systemBackgroundColor];
 
   [(PKEditSinglePassViewController *)self passViewSetup];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = PKEditSinglePassViewController;
-  [(PKEditSinglePassViewController *)&v5 viewWillAppear:a3];
+  [(PKEditSinglePassViewController *)&v5 viewWillAppear:appear];
   [(PKEditSinglePassViewController *)self enableDeleteButton];
-  v4 = [(PKEditSinglePassViewController *)self navigationController];
-  [v4 setToolbarHidden:0 animated:1];
+  navigationController = [(PKEditSinglePassViewController *)self navigationController];
+  [navigationController setToolbarHidden:0 animated:1];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = PKEditSinglePassViewController;
-  [(PKEditSinglePassViewController *)&v5 viewDidAppear:a3];
+  [(PKEditSinglePassViewController *)&v5 viewDidAppear:appear];
   performanceTest = self->_performanceTest;
   if (performanceTest == 1)
   {
@@ -123,13 +123,13 @@
   v28.receiver = self;
   v28.super_class = PKEditSinglePassViewController;
   [(PKEditSinglePassViewController *)&v28 viewWillLayoutSubviews];
-  v3 = [(PKEditSinglePassViewController *)self view];
-  [v3 bounds];
+  view = [(PKEditSinglePassViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  [v3 safeAreaInsets];
+  [view safeAreaInsets];
   v13 = v12;
   v15 = v14;
   v17 = v5 + v16;
@@ -159,13 +159,13 @@
 
 - (void)passViewSetup
 {
-  v3 = [(PKPass *)self->_pass localizedDescription];
-  [(PKEditSinglePassViewController *)self setTitle:v3];
+  localizedDescription = [(PKPass *)self->_pass localizedDescription];
+  [(PKEditSinglePassViewController *)self setTitle:localizedDescription];
 
-  v4 = [(PKEditSinglePassViewController *)self viewIfLoaded];
-  if (v4)
+  viewIfLoaded = [(PKEditSinglePassViewController *)self viewIfLoaded];
+  if (viewIfLoaded)
   {
-    v8 = v4;
+    v8 = viewIfLoaded;
     v5 = self->_passView;
     v6 = [[PKPassView alloc] initWithPass:self->_pass content:5];
     passView = self->_passView;
@@ -179,22 +179,22 @@
       [(PKPassView *)v5 removeFromSuperview];
     }
 
-    v4 = v8;
+    viewIfLoaded = v8;
   }
 }
 
-- (void)passWasUpdated:(id)a3
+- (void)passWasUpdated:(id)updated
 {
-  objc_storeStrong(&self->_pass, a3);
+  objc_storeStrong(&self->_pass, updated);
 
   [(PKEditSinglePassViewController *)self passViewSetup];
 }
 
-- (BOOL)handleDeletePassRequestWithPass:(id)a3 forViewController:(id)a4
+- (BOOL)handleDeletePassRequestWithPass:(id)pass forViewController:(id)controller
 {
-  v5 = a4;
+  controllerCopy = controller;
   [(PKEditSinglePassViewController *)self _deletePassConfirmed];
-  [v5 dismissViewControllerAnimated:1 completion:0];
+  [controllerCopy dismissViewControllerAnimated:1 completion:0];
 
   return 1;
 }
@@ -204,8 +204,8 @@
   v3 = PKLocalizedString(&cfstr_RemoveSheetCan.isa);
   v4 = PKLocalizedString(&cfstr_PassEditingDel_0.isa);
   v5 = [MEMORY[0x1E69DC650] alertControllerWithTitle:0 message:0 preferredStyle:0];
-  v6 = [v5 popoverPresentationController];
-  [v6 setSourceItem:self->_deleteBarButton];
+  popoverPresentationController = [v5 popoverPresentationController];
+  [popoverPresentationController setSourceItem:self->_deleteBarButton];
 
   v7 = [MEMORY[0x1E69DC648] actionWithTitle:v3 style:1 handler:0];
   [v5 addAction:v7];
@@ -225,17 +225,17 @@
 {
   MEMORY[0x1BFB41980](*MEMORY[0x1E69B9EA0], 0);
   [(PKEditSinglePassViewController *)self disableDeleteButton];
-  v3 = [MEMORY[0x1E69B8A58] sharedInstance];
-  [v3 removePass:self->_pass];
+  mEMORY[0x1E69B8A58] = [MEMORY[0x1E69B8A58] sharedInstance];
+  [mEMORY[0x1E69B8A58] removePass:self->_pass];
 }
 
 - (void)_moreButtonPressed
 {
-  v3 = [(PKPass *)self->_pass passType];
-  if (v3 == PKPassTypeSecureElement)
+  passType = [(PKPass *)self->_pass passType];
+  if (passType == PKPassTypeSecureElement)
   {
-    v6 = [(PKPass *)self->_pass paymentPass];
-    v4 = [(PKEditSinglePassViewController *)self _paymentPassDetailsViewControllerForPaymentPass:v6];
+    paymentPass = [(PKPass *)self->_pass paymentPass];
+    v4 = [(PKEditSinglePassViewController *)self _paymentPassDetailsViewControllerForPaymentPass:paymentPass];
 
     if (v4)
     {
@@ -252,7 +252,7 @@ LABEL_4:
     }
   }
 
-  else if (v3 == PKPassTypeBarcode)
+  else if (passType == PKPassTypeBarcode)
   {
     v4 = [(PKEditSinglePassViewController *)self _barcodePassDetailsViewControllerForBarcodePass:self->_pass];
     if (v4)
@@ -264,19 +264,19 @@ LABEL_4:
   [(PKEditSinglePassViewController *)self _didPresentDetailViewController];
 }
 
-- (id)_paymentPassDetailsViewControllerForPaymentPass:(id)a3
+- (id)_paymentPassDetailsViewControllerForPaymentPass:(id)pass
 {
-  if (a3)
+  if (pass)
   {
     v4 = MEMORY[0x1E69B8BD8];
-    v5 = a3;
-    v6 = [v4 defaultDataProvider];
+    passCopy = pass;
+    defaultDataProvider = [v4 defaultDataProvider];
     v7 = [PKPaymentPassDetailViewController alloc];
     group = self->_group;
-    v9 = [MEMORY[0x1E69B8EF8] sharedService];
-    v10 = [MEMORY[0x1E69B9020] sharedService];
+    mEMORY[0x1E69B8EF8] = [MEMORY[0x1E69B8EF8] sharedService];
+    mEMORY[0x1E69B9020] = [MEMORY[0x1E69B9020] sharedService];
     v11 = objc_alloc_init(MEMORY[0x1E69B8A60]);
-    v12 = [(PKPaymentPassDetailViewController *)v7 initWithPass:v5 group:group groupsController:0 webService:v9 peerPaymentWebService:v10 style:0 passLibraryDataProvider:v11 paymentServiceDataProvider:v6];
+    v12 = [(PKPaymentPassDetailViewController *)v7 initWithPass:passCopy group:group groupsController:0 webService:mEMORY[0x1E69B8EF8] peerPaymentWebService:mEMORY[0x1E69B9020] style:0 passLibraryDataProvider:v11 paymentServiceDataProvider:defaultDataProvider];
 
     [(PKPaymentPassDetailViewController *)v12 setDeleteOverrider:self];
     [(PKPaymentPassDetailViewController *)v12 setShowDoneButton:1];
@@ -290,12 +290,12 @@ LABEL_4:
   return v12;
 }
 
-- (id)_barcodePassDetailsViewControllerForBarcodePass:(id)a3
+- (id)_barcodePassDetailsViewControllerForBarcodePass:(id)pass
 {
-  if (a3)
+  if (pass)
   {
-    v4 = a3;
-    v5 = [[PKBarcodePassDetailViewController alloc] initWithPass:v4];
+    passCopy = pass;
+    v5 = [[PKBarcodePassDetailViewController alloc] initWithPass:passCopy];
 
     [(PKBarcodePassDetailViewController *)v5 setDeleteOverrider:self];
     [(PKBarcodePassDetailViewController *)v5 setShowCloseButton:1];
@@ -315,13 +315,13 @@ LABEL_4:
   if ((_UISolariumFeatureFlagEnabled() & 1) == 0)
   {
     deleteBarButton = self->_deleteBarButton;
-    v4 = [MEMORY[0x1E69DC888] redColor];
-    [(UIBarButtonItem *)deleteBarButton setTintColor:v4];
+    redColor = [MEMORY[0x1E69DC888] redColor];
+    [(UIBarButtonItem *)deleteBarButton setTintColor:redColor];
   }
 
-  v6 = [(PKEditSinglePassViewController *)self navigationController];
-  v5 = [v6 toolbar];
-  [v5 setNeedsLayout];
+  navigationController = [(PKEditSinglePassViewController *)self navigationController];
+  toolbar = [navigationController toolbar];
+  [toolbar setNeedsLayout];
 }
 
 - (void)disableDeleteButton
@@ -330,13 +330,13 @@ LABEL_4:
   if ((_UISolariumFeatureFlagEnabled() & 1) == 0)
   {
     deleteBarButton = self->_deleteBarButton;
-    v4 = [MEMORY[0x1E69DC888] tertiaryLabelColor];
-    [(UIBarButtonItem *)deleteBarButton setTintColor:v4];
+    tertiaryLabelColor = [MEMORY[0x1E69DC888] tertiaryLabelColor];
+    [(UIBarButtonItem *)deleteBarButton setTintColor:tertiaryLabelColor];
   }
 
-  v6 = [(PKEditSinglePassViewController *)self navigationController];
-  v5 = [v6 toolbar];
-  [v5 setNeedsLayout];
+  navigationController = [(PKEditSinglePassViewController *)self navigationController];
+  toolbar = [navigationController toolbar];
+  [toolbar setNeedsLayout];
 }
 
 - (void)_didPresentDetailViewController

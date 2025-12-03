@@ -1,29 +1,29 @@
 @interface PXVideoComparisonViewController
 - (NSString)inputVideoDescription;
-- (PXVideoComparisonViewController)initWithCoder:(id)a3;
-- (PXVideoComparisonViewController)initWithInputAsset:(id)a3;
-- (PXVideoComparisonViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (PXVideoComparisonViewController)initWithCoder:(id)coder;
+- (PXVideoComparisonViewController)initWithInputAsset:(id)asset;
+- (PXVideoComparisonViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)_exportInputVideo;
 - (void)_exportVariantVideo;
-- (void)_exportVariantVideoWithCompletionHandler:(id)a3;
+- (void)_exportVariantVideoWithCompletionHandler:(id)handler;
 - (void)_fileRadar;
-- (void)_handleActionButton:(id)a3;
-- (void)_handleResultButton:(id)a3;
-- (void)_handleSettingsButton:(id)a3;
-- (void)_handleSettingsDone:(id)a3;
+- (void)_handleActionButton:(id)button;
+- (void)_handleResultButton:(id)button;
+- (void)_handleSettingsButton:(id)button;
+- (void)_handleSettingsDone:(id)done;
 - (void)_hideProgressAndStatus;
 - (void)_prepareInputAndVariantVideos;
 - (void)_prepareVariantVideo;
 - (void)_reloadInputAndVariantVideos;
-- (void)_showAlertWithMessage:(id)a3;
+- (void)_showAlertWithMessage:(id)message;
 - (void)_showProgressAndStatus;
 - (void)_updateDisplayedPlayerItem;
-- (void)_updatePlayerItem:(id)a3 error:(id)a4;
-- (void)_updateProgress:(float)a3 status:(id)a4;
+- (void)_updatePlayerItem:(id)item error:(id)error;
+- (void)_updateProgress:(float)progress status:(id)status;
 - (void)invalidateInputAndVariantReferences;
-- (void)prepareVariantVideoForExportWithProgress:(id)a3 completion:(id)a4;
-- (void)prepareVariantVideoWithProgress:(id)a3 completion:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)prepareVariantVideoForExportWithProgress:(id)progress completion:(id)completion;
+- (void)prepareVariantVideoWithProgress:(id)progress completion:(id)completion;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
@@ -36,54 +36,54 @@
   [(PXVideoComparisonViewController *)self setInputVideoError:0];
   [(PXVideoComparisonViewController *)self setVariantPlayerItem:0];
   [(PXVideoComparisonViewController *)self setVariantVideoError:0];
-  v3 = [MEMORY[0x1E6978860] defaultManager];
-  [v3 cancelImageRequest:{-[PXVideoComparisonViewController videoRequestID](self, "videoRequestID")}];
+  defaultManager = [MEMORY[0x1E6978860] defaultManager];
+  [defaultManager cancelImageRequest:{-[PXVideoComparisonViewController videoRequestID](self, "videoRequestID")}];
 
   [(PXVideoComparisonViewController *)self setVideoRequestID:0];
 }
 
-- (void)prepareVariantVideoForExportWithProgress:(id)a3 completion:(id)a4
+- (void)prepareVariantVideoForExportWithProgress:(id)progress completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [MEMORY[0x1E696AAA8] currentHandler];
+  progressCopy = progress;
+  completionCopy = completion;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v10 = objc_opt_class();
   v11 = NSStringFromClass(v10);
-  [v9 handleFailureInMethod:a2 object:self file:@"PXVideoComparisonViewController.m" lineNumber:408 description:{@"Method %s is a responsibility of subclass %@", "-[PXVideoComparisonViewController prepareVariantVideoForExportWithProgress:completion:]", v11}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXVideoComparisonViewController.m" lineNumber:408 description:{@"Method %s is a responsibility of subclass %@", "-[PXVideoComparisonViewController prepareVariantVideoForExportWithProgress:completion:]", v11}];
 
   abort();
 }
 
-- (void)prepareVariantVideoWithProgress:(id)a3 completion:(id)a4
+- (void)prepareVariantVideoWithProgress:(id)progress completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [MEMORY[0x1E696AAA8] currentHandler];
+  progressCopy = progress;
+  completionCopy = completion;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v10 = objc_opt_class();
   v11 = NSStringFromClass(v10);
-  [v9 handleFailureInMethod:a2 object:self file:@"PXVideoComparisonViewController.m" lineNumber:404 description:{@"Method %s is a responsibility of subclass %@", "-[PXVideoComparisonViewController prepareVariantVideoWithProgress:completion:]", v11}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXVideoComparisonViewController.m" lineNumber:404 description:{@"Method %s is a responsibility of subclass %@", "-[PXVideoComparisonViewController prepareVariantVideoWithProgress:completion:]", v11}];
 
   abort();
 }
 
 - (NSString)inputVideoDescription
 {
-  v2 = [(PXVideoComparisonViewController *)self inputAsset];
-  v3 = [v2 debugDescription];
+  inputAsset = [(PXVideoComparisonViewController *)self inputAsset];
+  v3 = [inputAsset debugDescription];
 
   return v3;
 }
 
-- (void)_updatePlayerItem:(id)a3 error:(id)a4
+- (void)_updatePlayerItem:(id)item error:(id)error
 {
-  v11 = a4;
-  [(ISWrappedAVPlayer *)self->_videoPlayer replaceCurrentItemWithPlayerItem:a3];
+  errorCopy = error;
+  [(ISWrappedAVPlayer *)self->_videoPlayer replaceCurrentItemWithPlayerItem:item];
   LODWORD(v6) = 1.0;
   [(ISWrappedAVPlayer *)self->_videoPlayer setRate:v6];
-  v7 = v11;
-  if (v11)
+  v7 = errorCopy;
+  if (errorCopy)
   {
-    v8 = [v11 description];
+    v8 = [errorCopy description];
     v9 = v8;
     if (v8)
     {
@@ -97,7 +97,7 @@
 
     [(PXVideoComparisonViewController *)self _showAlertWithMessage:v10];
 
-    v7 = v11;
+    v7 = errorCopy;
   }
 }
 
@@ -105,24 +105,24 @@
 {
   if ([(UISegmentedControl *)self->_variantSegmentedControl selectedSegmentIndex])
   {
-    v4 = [(PXVideoComparisonViewController *)self variantPlayerItem];
+    variantPlayerItem = [(PXVideoComparisonViewController *)self variantPlayerItem];
     [(PXVideoComparisonViewController *)self variantVideoError];
   }
 
   else
   {
-    v4 = [(PXVideoComparisonViewController *)self inputPlayerItem];
+    variantPlayerItem = [(PXVideoComparisonViewController *)self inputPlayerItem];
     [(PXVideoComparisonViewController *)self inputVideoError];
   }
   v3 = ;
-  [(PXVideoComparisonViewController *)self _updatePlayerItem:v4 error:v3];
+  [(PXVideoComparisonViewController *)self _updatePlayerItem:variantPlayerItem error:v3];
 }
 
 - (void)_prepareVariantVideo
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(PXVideoComparisonViewController *)self variantVideoButtonsTitle];
-  v5 = [v3 stringWithFormat:@"Loading %@ Video", v4];
+  variantVideoButtonsTitle = [(PXVideoComparisonViewController *)self variantVideoButtonsTitle];
+  v5 = [v3 stringWithFormat:@"Loading %@ Video", variantVideoButtonsTitle];
 
   LODWORD(v6) = 0.5;
   [(PXVideoComparisonViewController *)self _updateProgress:v5 status:v6];
@@ -171,16 +171,16 @@ void __55__PXVideoComparisonViewController__prepareVariantVideo__block_invoke_2(
 - (void)_prepareInputAndVariantVideos
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(PXVideoComparisonViewController *)self inputVideoButtonsTitle];
-  v5 = [v3 stringWithFormat:@"Loading %@ Video", v4];
+  inputVideoButtonsTitle = [(PXVideoComparisonViewController *)self inputVideoButtonsTitle];
+  v5 = [v3 stringWithFormat:@"Loading %@ Video", inputVideoButtonsTitle];
 
   LODWORD(v6) = 1036831949;
   [(PXVideoComparisonViewController *)self _updateProgress:v5 status:v6];
-  v7 = [MEMORY[0x1E6978860] defaultManager];
-  [v7 cancelImageRequest:{-[PXVideoComparisonViewController videoRequestID](self, "videoRequestID")}];
+  defaultManager = [MEMORY[0x1E6978860] defaultManager];
+  [defaultManager cancelImageRequest:{-[PXVideoComparisonViewController videoRequestID](self, "videoRequestID")}];
 
-  v8 = [(PXVideoComparisonViewController *)self inputAsset];
-  [v8 fetchPropertySetsIfNeeded];
+  inputAsset = [(PXVideoComparisonViewController *)self inputAsset];
+  [inputAsset fetchPropertySetsIfNeeded];
   v9 = objc_alloc_init(MEMORY[0x1E6978B18]);
   [v9 setNetworkAccessAllowed:1];
   [v9 setVideoComplementAllowed:1];
@@ -190,14 +190,14 @@ void __55__PXVideoComparisonViewController__prepareVariantVideo__block_invoke_2(
   v15 = &v14;
   v16 = 0x2020000000;
   v17 = 0;
-  v10 = [MEMORY[0x1E6978860] defaultManager];
+  defaultManager2 = [MEMORY[0x1E6978860] defaultManager];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __64__PXVideoComparisonViewController__prepareInputAndVariantVideos__block_invoke;
   v12[3] = &unk_1E773DE08;
   v12[4] = &v14;
   objc_copyWeak(&v13, &location);
-  v11 = [v10 requestURLForVideo:v8 options:v9 resultHandler:v12];
+  v11 = [defaultManager2 requestURLForVideo:inputAsset options:v9 resultHandler:v12];
 
   *(v15 + 6) = v11;
   [(PXVideoComparisonViewController *)self setVideoRequestID:v11];
@@ -275,13 +275,13 @@ void __64__PXVideoComparisonViewController__prepareInputAndVariantVideos__block_
   [(PXVideoComparisonViewController *)self _prepareInputAndVariantVideos];
 }
 
-- (void)_updateProgress:(float)a3 status:(id)a4
+- (void)_updateProgress:(float)progress status:(id)status
 {
   progressView = self->_progressView;
-  v8 = a4;
-  *&v7 = a3;
+  statusCopy = status;
+  *&v7 = progress;
   [(UIProgressView *)progressView setProgress:v7];
-  [(UILabel *)self->_statusLabel setText:v8];
+  [(UILabel *)self->_statusLabel setText:statusCopy];
 }
 
 - (void)_showProgressAndStatus
@@ -322,12 +322,12 @@ uint64_t __57__PXVideoComparisonViewController__hideProgressAndStatus__block_inv
   return [v2 setAlpha:0.0];
 }
 
-- (void)_exportVariantVideoWithCompletionHandler:(id)a3
+- (void)_exportVariantVideoWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = MEMORY[0x1E696AEC0];
-  v6 = [(PXVideoComparisonViewController *)self variantVideoButtonsTitle];
-  v7 = [v5 stringWithFormat:@"Preparing %@ Video for Export", v6];
+  variantVideoButtonsTitle = [(PXVideoComparisonViewController *)self variantVideoButtonsTitle];
+  v7 = [v5 stringWithFormat:@"Preparing %@ Video for Export", variantVideoButtonsTitle];
 
   [(PXVideoComparisonViewController *)self _updateProgress:v7 status:0.0];
   [(PXVideoComparisonViewController *)self _showProgressAndStatus];
@@ -341,7 +341,7 @@ uint64_t __57__PXVideoComparisonViewController__hideProgressAndStatus__block_inv
   v9[1] = 3221225472;
   v9[2] = __76__PXVideoComparisonViewController__exportVariantVideoWithCompletionHandler___block_invoke_2;
   v9[3] = &unk_1E773DDE0;
-  v8 = v4;
+  v8 = handlerCopy;
   v10 = v8;
   objc_copyWeak(&v11, &location);
   [(PXVideoComparisonViewController *)self prepareVariantVideoForExportWithProgress:v12 completion:v9];
@@ -557,16 +557,16 @@ void __45__PXVideoComparisonViewController__fileRadar__block_invoke_2(uint64_t a
   [PXFeedbackTapToRadarUtilities fileRadarWithTitle:v8 description:&stru_1F1741150 classification:v12 componentID:v16 componentName:v20 componentVersion:v24 keyword:0 screenshotURLs:0 attachmentURLs:v26 includeSysDiagnose:v27 includeInternalRelease:v7 additionalExtensionIdentifiers:0 completionHandler:?];
 }
 
-- (void)_showAlertWithMessage:(id)a3
+- (void)_showAlertWithMessage:(id)message
 {
-  v5 = [MEMORY[0x1E69DC650] alertControllerWithTitle:@"Error" message:a3 preferredStyle:1];
+  v5 = [MEMORY[0x1E69DC650] alertControllerWithTitle:@"Error" message:message preferredStyle:1];
   v4 = [MEMORY[0x1E69DC648] actionWithTitle:@"OK" style:0 handler:0];
   [v5 addAction:v4];
 
   [(PXVideoComparisonViewController *)self presentViewController:v5 animated:1 completion:0];
 }
 
-- (void)_handleResultButton:(id)a3
+- (void)_handleResultButton:(id)button
 {
   if ([(UISegmentedControl *)self->_variantSegmentedControl selectedSegmentIndex])
   {
@@ -602,7 +602,7 @@ __CFString *__55__PXVideoComparisonViewController__handleResultButton___block_in
   }
 }
 
-- (void)_handleActionButton:(id)a3
+- (void)_handleActionButton:(id)button
 {
   v4 = [MEMORY[0x1E69DC650] alertControllerWithTitle:0 message:0 preferredStyle:0];
   v18[0] = MEMORY[0x1E69E9820];
@@ -614,8 +614,8 @@ __CFString *__55__PXVideoComparisonViewController__handleResultButton___block_in
   [v4 addAction:v5];
 
   v6 = MEMORY[0x1E696AEC0];
-  v7 = [(PXVideoComparisonViewController *)self inputVideoButtonsTitle];
-  v8 = [v6 stringWithFormat:@"Export %@ Video", v7];
+  inputVideoButtonsTitle = [(PXVideoComparisonViewController *)self inputVideoButtonsTitle];
+  v8 = [v6 stringWithFormat:@"Export %@ Video", inputVideoButtonsTitle];
 
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
@@ -626,8 +626,8 @@ __CFString *__55__PXVideoComparisonViewController__handleResultButton___block_in
   [v4 addAction:v9];
 
   v10 = MEMORY[0x1E696AEC0];
-  v11 = [(PXVideoComparisonViewController *)self variantVideoButtonsTitle];
-  v12 = [v10 stringWithFormat:@"Export %@ Video", v11];
+  variantVideoButtonsTitle = [(PXVideoComparisonViewController *)self variantVideoButtonsTitle];
+  v12 = [v10 stringWithFormat:@"Export %@ Video", variantVideoButtonsTitle];
 
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
@@ -637,10 +637,10 @@ __CFString *__55__PXVideoComparisonViewController__handleResultButton___block_in
   v13 = [MEMORY[0x1E69DC648] actionWithTitle:v12 style:0 handler:v16];
   [v4 addAction:v13];
 
-  v14 = [(PXVideoComparisonViewController *)self extraAlertAction];
-  if (v14)
+  extraAlertAction = [(PXVideoComparisonViewController *)self extraAlertAction];
+  if (extraAlertAction)
   {
-    [v4 addAction:v14];
+    [v4 addAction:extraAlertAction];
   }
 
   v15 = [MEMORY[0x1E69DC648] actionWithTitle:@"Cancel" style:1 handler:0];
@@ -649,7 +649,7 @@ __CFString *__55__PXVideoComparisonViewController__handleResultButton___block_in
   [(PXVideoComparisonViewController *)self presentViewController:v4 animated:1 completion:0];
 }
 
-- (void)_handleSettingsDone:(id)a3
+- (void)_handleSettingsDone:(id)done
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
@@ -659,29 +659,29 @@ __CFString *__55__PXVideoComparisonViewController__handleResultButton___block_in
   [(PXVideoComparisonViewController *)self dismissViewControllerAnimated:1 completion:v3];
 }
 
-- (void)_handleSettingsButton:(id)a3
+- (void)_handleSettingsButton:(id)button
 {
-  v4 = [(PXVideoComparisonViewController *)self settings];
-  if (v4)
+  settings = [(PXVideoComparisonViewController *)self settings];
+  if (settings)
   {
-    v8 = v4;
-    v5 = [objc_alloc(MEMORY[0x1E69C66C0]) initWithRootSettings:v4];
+    v8 = settings;
+    v5 = [objc_alloc(MEMORY[0x1E69C66C0]) initWithRootSettings:settings];
     v6 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:0 target:self action:sel__handleSettingsDone_];
     [v5 setDismissButton:v6];
 
-    v7 = [v5 presentationController];
-    [v7 setDelegate:self];
+    presentationController = [v5 presentationController];
+    [presentationController setDelegate:self];
 
     [(PXVideoComparisonViewController *)self presentViewController:v5 animated:1 completion:0];
-    v4 = v8;
+    settings = v8;
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = PXVideoComparisonViewController;
-  [(PXVideoComparisonViewController *)&v4 viewDidAppear:a3];
+  [(PXVideoComparisonViewController *)&v4 viewDidAppear:appear];
   [(PXVideoComparisonViewController *)self _reloadInputAndVariantVideos];
 }
 
@@ -695,44 +695,44 @@ __CFString *__55__PXVideoComparisonViewController__handleResultButton___block_in
   videoPlayer = self->_videoPlayer;
   self->_videoPlayer = v3;
 
-  v5 = [(PXVideoComparisonViewController *)self view];
-  v6 = [MEMORY[0x1E69DC888] blackColor];
-  [v5 setBackgroundColor:v6];
+  view = [(PXVideoComparisonViewController *)self view];
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
+  [view setBackgroundColor:blackColor];
 
   v7 = objc_alloc_init(PXVideoPlayerView);
   videoView = self->_videoView;
   self->_videoView = v7;
 
-  [v5 bounds];
+  [view bounds];
   [(PXVideoPlayerView *)self->_videoView setFrame:?];
   [(PXVideoPlayerView *)self->_videoView setAutoresizingMask:18];
   [(PXVideoPlayerView *)self->_videoView setVideoViewContentMode:1];
   [(PXVideoPlayerView *)self->_videoView setPlayer:self->_videoPlayer];
   v9 = self->_videoPlayer;
-  v10 = [MEMORY[0x1E69C1B18] sharedAmbientInstance];
-  [(ISWrappedAVPlayer *)v9 setWrappedAudioSession:v10];
+  mEMORY[0x1E69C1B18] = [MEMORY[0x1E69C1B18] sharedAmbientInstance];
+  [(ISWrappedAVPlayer *)v9 setWrappedAudioSession:mEMORY[0x1E69C1B18]];
 
-  [v5 addSubview:self->_videoView];
+  [view addSubview:self->_videoView];
   v11 = [objc_alloc(MEMORY[0x1E69DCE48]) initWithProgressViewStyle:0];
   progressView = self->_progressView;
   self->_progressView = v11;
 
-  [v5 addSubview:self->_progressView];
+  [view addSubview:self->_progressView];
   [(UIProgressView *)self->_progressView setTranslatesAutoresizingMaskIntoConstraints:0];
-  v13 = [(UIProgressView *)self->_progressView topAnchor];
-  v14 = [v5 safeAreaLayoutGuide];
-  v15 = [v14 topAnchor];
-  v16 = [v13 constraintEqualToAnchor:v15];
+  topAnchor = [(UIProgressView *)self->_progressView topAnchor];
+  safeAreaLayoutGuide = [view safeAreaLayoutGuide];
+  topAnchor2 = [safeAreaLayoutGuide topAnchor];
+  v16 = [topAnchor constraintEqualToAnchor:topAnchor2];
 
-  v17 = [(UIProgressView *)self->_progressView leftAnchor];
-  v18 = [v5 safeAreaLayoutGuide];
-  v19 = [v18 leftAnchor];
-  v20 = [v17 constraintEqualToAnchor:v19];
+  leftAnchor = [(UIProgressView *)self->_progressView leftAnchor];
+  safeAreaLayoutGuide2 = [view safeAreaLayoutGuide];
+  leftAnchor2 = [safeAreaLayoutGuide2 leftAnchor];
+  v20 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
 
-  v21 = [(UIProgressView *)self->_progressView rightAnchor];
-  v22 = [v5 safeAreaLayoutGuide];
-  v23 = [v22 rightAnchor];
-  v24 = [v21 constraintEqualToAnchor:v23];
+  rightAnchor = [(UIProgressView *)self->_progressView rightAnchor];
+  safeAreaLayoutGuide3 = [view safeAreaLayoutGuide];
+  rightAnchor2 = [safeAreaLayoutGuide3 rightAnchor];
+  v24 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
 
   v25 = MEMORY[0x1E696ACD8];
   v71[0] = v16;
@@ -747,23 +747,23 @@ __CFString *__55__PXVideoComparisonViewController__handleResultButton___block_in
   self->_statusBackgroundView = v27;
 
   [(UIVisualEffectView *)self->_statusBackgroundView setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v5 addSubview:self->_statusBackgroundView];
-  v29 = [(UIVisualEffectView *)self->_statusBackgroundView topAnchor];
-  v30 = [(UIProgressView *)self->_progressView bottomAnchor];
-  v31 = [v29 constraintEqualToAnchor:v30 constant:10.0];
+  [view addSubview:self->_statusBackgroundView];
+  topAnchor3 = [(UIVisualEffectView *)self->_statusBackgroundView topAnchor];
+  bottomAnchor = [(UIProgressView *)self->_progressView bottomAnchor];
+  v31 = [topAnchor3 constraintEqualToAnchor:bottomAnchor constant:10.0];
 
-  v32 = [(UIVisualEffectView *)self->_statusBackgroundView leftAnchor];
-  v33 = [v5 safeAreaLayoutGuide];
-  v34 = [v33 leftAnchor];
-  v35 = [v32 constraintEqualToAnchor:v34 constant:50.0];
+  leftAnchor3 = [(UIVisualEffectView *)self->_statusBackgroundView leftAnchor];
+  safeAreaLayoutGuide4 = [view safeAreaLayoutGuide];
+  leftAnchor4 = [safeAreaLayoutGuide4 leftAnchor];
+  v35 = [leftAnchor3 constraintEqualToAnchor:leftAnchor4 constant:50.0];
 
-  v36 = [(UIVisualEffectView *)self->_statusBackgroundView rightAnchor];
-  v37 = [v5 safeAreaLayoutGuide];
-  v38 = [v37 rightAnchor];
-  v39 = [v36 constraintEqualToAnchor:v38 constant:-50.0];
+  rightAnchor3 = [(UIVisualEffectView *)self->_statusBackgroundView rightAnchor];
+  safeAreaLayoutGuide5 = [view safeAreaLayoutGuide];
+  rightAnchor4 = [safeAreaLayoutGuide5 rightAnchor];
+  v39 = [rightAnchor3 constraintEqualToAnchor:rightAnchor4 constant:-50.0];
 
-  v40 = [(UIVisualEffectView *)self->_statusBackgroundView heightAnchor];
-  v41 = [v40 constraintEqualToConstant:40.0];
+  heightAnchor = [(UIVisualEffectView *)self->_statusBackgroundView heightAnchor];
+  v41 = [heightAnchor constraintEqualToConstant:40.0];
 
   v42 = MEMORY[0x1E696ACD8];
   v65 = v35;
@@ -780,22 +780,22 @@ __CFString *__55__PXVideoComparisonViewController__handleResultButton___block_in
   statusLabel = self->_statusLabel;
   self->_statusLabel = v44;
 
-  v46 = [MEMORY[0x1E69DC888] whiteColor];
-  [(UILabel *)self->_statusLabel setTextColor:v46];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  [(UILabel *)self->_statusLabel setTextColor:whiteColor];
 
   [(UILabel *)self->_statusLabel setTextAlignment:1];
   [(UILabel *)self->_statusLabel setAutoresizingMask:18];
   [(UIVisualEffectView *)self->_statusBackgroundView bounds];
   [(UILabel *)self->_statusLabel setFrame:?];
-  v47 = [(UIVisualEffectView *)self->_statusBackgroundView contentView];
-  [v47 addSubview:self->_statusLabel];
+  contentView = [(UIVisualEffectView *)self->_statusBackgroundView contentView];
+  [contentView addSubview:self->_statusLabel];
 
   v48 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:9 target:self action:sel__handleActionButton_];
   v49 = objc_alloc(MEMORY[0x1E69DCF38]);
-  v50 = [(PXVideoComparisonViewController *)self inputVideoButtonsTitle];
-  v69[0] = v50;
-  v51 = [(PXVideoComparisonViewController *)self variantVideoButtonsTitle];
-  v69[1] = v51;
+  inputVideoButtonsTitle = [(PXVideoComparisonViewController *)self inputVideoButtonsTitle];
+  v69[0] = inputVideoButtonsTitle;
+  variantVideoButtonsTitle = [(PXVideoComparisonViewController *)self variantVideoButtonsTitle];
+  v69[1] = variantVideoButtonsTitle;
   v52 = [MEMORY[0x1E695DEC8] arrayWithObjects:v69 count:2];
   v53 = [v49 initWithItems:v52];
   variantSegmentedControl = self->_variantSegmentedControl;
@@ -804,17 +804,17 @@ __CFString *__55__PXVideoComparisonViewController__handleResultButton___block_in
   [(UISegmentedControl *)self->_variantSegmentedControl setSelectedSegmentIndex:[(PXVideoComparisonViewController *)self useVariantVideoByDefaultInToggle]];
   [(UISegmentedControl *)self->_variantSegmentedControl addTarget:self action:sel__handleVariantSegmentedControl_ forControlEvents:4096];
   v55 = [objc_alloc(MEMORY[0x1E69DC708]) initWithCustomView:self->_variantSegmentedControl];
-  v56 = [(PXVideoComparisonViewController *)self navigationItem];
-  [v56 setRightBarButtonItem:v55];
+  navigationItem = [(PXVideoComparisonViewController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v55];
 
   v57 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:5 target:0 action:0];
-  v58 = [(PXVideoComparisonViewController *)self settings];
+  settings = [(PXVideoComparisonViewController *)self settings];
 
-  if (v58)
+  if (settings)
   {
     v59 = objc_alloc(MEMORY[0x1E69DC708]);
     v60 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"gear"];
-    v58 = [v59 initWithImage:v60 style:0 target:self action:sel__handleSettingsButton_];
+    settings = [v59 initWithImage:v60 style:0 target:self action:sel__handleSettingsButton_];
   }
 
   v61 = objc_alloc(MEMORY[0x1E69DC708]);
@@ -823,10 +823,10 @@ __CFString *__55__PXVideoComparisonViewController__handleResultButton___block_in
 
   v64 = objc_alloc_init(MEMORY[0x1E695DF70]);
   [v64 addObject:v48];
-  if (v58)
+  if (settings)
   {
     [v64 addObject:v57];
-    [v64 addObject:v58];
+    [v64 addObject:settings];
   }
 
   [v64 addObject:v57];
@@ -834,35 +834,35 @@ __CFString *__55__PXVideoComparisonViewController__handleResultButton___block_in
   [(PXVideoComparisonViewController *)self setToolbarItems:v64];
 }
 
-- (PXVideoComparisonViewController)initWithCoder:(id)a3
+- (PXVideoComparisonViewController)initWithCoder:(id)coder
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"PXVideoComparisonViewController.m" lineNumber:68 description:{@"%s is not available as initializer", "-[PXVideoComparisonViewController initWithCoder:]"}];
+  coderCopy = coder;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXVideoComparisonViewController.m" lineNumber:68 description:{@"%s is not available as initializer", "-[PXVideoComparisonViewController initWithCoder:]"}];
 
   abort();
 }
 
-- (PXVideoComparisonViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (PXVideoComparisonViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v9 handleFailureInMethod:a2 object:self file:@"PXVideoComparisonViewController.m" lineNumber:64 description:{@"%s is not available as initializer", "-[PXVideoComparisonViewController initWithNibName:bundle:]"}];
+  nameCopy = name;
+  bundleCopy = bundle;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXVideoComparisonViewController.m" lineNumber:64 description:{@"%s is not available as initializer", "-[PXVideoComparisonViewController initWithNibName:bundle:]"}];
 
   abort();
 }
 
-- (PXVideoComparisonViewController)initWithInputAsset:(id)a3
+- (PXVideoComparisonViewController)initWithInputAsset:(id)asset
 {
-  v5 = a3;
+  assetCopy = asset;
   v9.receiver = self;
   v9.super_class = PXVideoComparisonViewController;
   v6 = [(PXVideoComparisonViewController *)&v9 initWithNibName:0 bundle:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_inputAsset, a3);
+    objc_storeStrong(&v6->_inputAsset, asset);
     v7->_videoRequestID = 0;
     v7->_useVariantVideoByDefaultInToggle = 0;
   }

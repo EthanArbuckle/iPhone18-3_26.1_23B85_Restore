@@ -9,10 +9,10 @@
   v8 = a3;
   v9 = a4;
   v10 = a5;
-  v11 = [a1 assertion];
-  v12 = [v11 resolveWithExpectedRemoteDeviceIdentifier:v8 localDeviceIdentifier:v9 remoteDeviceIdentifier:v10];
+  assertion = [self assertion];
+  v12 = [assertion resolveWithExpectedRemoteDeviceIdentifier:v8 localDeviceIdentifier:v9 remoteDeviceIdentifier:v10];
   v13 = v12;
-  if (v11 == v12)
+  if (assertion == v12)
   {
     v14 = 0;
   }
@@ -20,29 +20,29 @@
   else
   {
     v14 = 1;
-    if (v11 && v12)
+    if (assertion && v12)
     {
-      v14 = [v11 isEqual:v12] ^ 1;
+      v14 = [assertion isEqual:v12] ^ 1;
     }
   }
 
-  v33 = v11;
-  v15 = [a1 source];
-  v16 = [v15 resolveWithExpectedRemoteDeviceIdentifier:v8 localDeviceIdentifier:v9 remoteDeviceIdentifier:v10];
+  v33 = assertion;
+  source = [self source];
+  v16 = [source resolveWithExpectedRemoteDeviceIdentifier:v8 localDeviceIdentifier:v9 remoteDeviceIdentifier:v10];
   v17 = v16;
-  if (v15 == v16)
+  if (source == v16)
   {
     v18 = 0;
   }
 
   else
   {
-    if (!v15 || !v16)
+    if (!source || !v16)
     {
       goto LABEL_12;
     }
 
-    v18 = [v15 isEqual:v16] ^ 1;
+    v18 = [source isEqual:v16] ^ 1;
   }
 
   if ((v14 | v18))
@@ -51,27 +51,27 @@ LABEL_12:
     v19 = v10;
     v20 = v8;
     v21 = objc_alloc(MEMORY[0x277D05968]);
-    v22 = [a1 invalidationDate];
-    v23 = [a1 details];
+    invalidationDate = [self invalidationDate];
+    details = [self details];
     v24 = v9;
-    v25 = [a1 reason];
-    v26 = [a1 reasonOverride];
+    reason = [self reason];
+    reasonOverride = [self reasonOverride];
     v27 = v21;
     v8 = v20;
     v10 = v19;
     v28 = v32;
-    v29 = v25;
+    v29 = reason;
     v9 = v24;
-    v30 = [v27 initWithAssertion:v32 invalidationDate:v22 details:v23 source:v17 reason:v29 reasonOverride:v26];
+    selfCopy = [v27 initWithAssertion:v32 invalidationDate:invalidationDate details:details source:v17 reason:v29 reasonOverride:reasonOverride];
 
     goto LABEL_14;
   }
 
-  v30 = a1;
+  selfCopy = self;
   v28 = v32;
 LABEL_14:
 
-  return v30;
+  return selfCopy;
 }
 
 @end

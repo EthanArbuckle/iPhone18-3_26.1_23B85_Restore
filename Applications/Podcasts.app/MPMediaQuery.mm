@@ -1,28 +1,28 @@
 @interface MPMediaQuery
-+ (id)mt_allItemsForPodcastsAppWithAdditionalFilterPredicate:(id)a3 includePendingDeletions:(BOOL)a4 disableSystemPredicates:(BOOL)a5;
++ (id)mt_allItemsForPodcastsAppWithAdditionalFilterPredicate:(id)predicate includePendingDeletions:(BOOL)deletions disableSystemPredicates:(BOOL)predicates;
 + (id)mt_iTunesUQuery;
 + (id)mt_podcastsQuery;
 @end
 
 @implementation MPMediaQuery
 
-+ (id)mt_allItemsForPodcastsAppWithAdditionalFilterPredicate:(id)a3 includePendingDeletions:(BOOL)a4 disableSystemPredicates:(BOOL)a5
++ (id)mt_allItemsForPodcastsAppWithAdditionalFilterPredicate:(id)predicate includePendingDeletions:(BOOL)deletions disableSystemPredicates:(BOOL)predicates
 {
-  v7 = a3;
+  predicateCopy = predicate;
   v8 = +[MPMediaQuery mt_podcastsQuery];
   v9 = v8;
-  if (v7)
+  if (predicateCopy)
   {
-    [v8 addFilterPredicate:v7];
+    [v8 addFilterPredicate:predicateCopy];
   }
 
   v26 = v9;
   v10 = [NSArray arrayWithObjects:&v26 count:1];
   v11 = +[MPMediaQuery mt_iTunesUQuery];
   v12 = v11;
-  if (v7)
+  if (predicateCopy)
   {
-    [v11 addFilterPredicate:v7];
+    [v11 addFilterPredicate:predicateCopy];
   }
 
   v13 = [v10 arrayByAddingObject:v12];
@@ -37,10 +37,10 @@
   v18[1] = 3221225472;
   v18[2] = sub_100068844;
   v18[3] = &unk_1004D8F88;
-  v19 = a5;
+  predicatesCopy = predicates;
   v18[4] = &v20;
   [v13 enumerateObjectsUsingBlock:v18];
-  if (!a4)
+  if (!deletions)
   {
     v14 = [v21[5] mt_filter:&stru_1004D8FC8];
     v15 = v21[5];

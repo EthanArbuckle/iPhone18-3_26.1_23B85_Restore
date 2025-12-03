@@ -1,10 +1,10 @@
 @interface TSCH3DTexturesMaterial
-+ (id)instanceWithArchive:(const void *)a3 unarchiver:(id)a4;
++ (id)instanceWithArchive:(const void *)archive unarchiver:(id)unarchiver;
 - (BOOL)hasCompleteData;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (TSCH3DTexturesMaterial)init;
-- (TSCH3DTexturesMaterial)initWithArchive:(const void *)a3 unarchiver:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (TSCH3DTexturesMaterial)initWithArchive:(const void *)archive unarchiver:(id)unarchiver;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)firstTexture;
 - (id)firstTiling;
 - (id)textures;
@@ -12,9 +12,9 @@
 - (id)variableTexture;
 - (tvec4<float>)color;
 - (unint64_t)hash;
-- (void)addTexture:(id)a3 tiling:(id)a4;
-- (void)saveToArchive:(void *)a3 archiver:(id)a4;
-- (void)setColor:(tvec4<float>)a3;
+- (void)addTexture:(id)texture tiling:(id)tiling;
+- (void)saveToArchive:(void *)archive archiver:(id)archiver;
+- (void)setColor:(tvec4<float>)color;
 @end
 
 @implementation TSCH3DTexturesMaterial
@@ -46,7 +46,7 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v92.receiver = self;
   v92.super_class = TSCH3DTexturesMaterial;
@@ -87,9 +87,9 @@
       do
       {
         v70 = objc_msgSend_objectAtIndexedSubscript_(self->_textures, v64, v66, v67, v68, v69);
-        v75 = objc_msgSend_copyWithZone_(v70, v71, v72, v73, v74, a3);
+        v75 = objc_msgSend_copyWithZone_(v70, v71, v72, v73, v74, zone);
         v80 = objc_msgSend_objectAtIndexedSubscript_(self->_tilings, v76, v77, v78, v79, v69);
-        v85 = objc_msgSend_copyWithZone_(v80, v81, v82, v83, v84, a3);
+        v85 = objc_msgSend_copyWithZone_(v80, v81, v82, v83, v84, zone);
         objc_msgSend_addTexture_tiling_(v91, v86, v87, v88, v89, v75, v85);
 
         ++v69;
@@ -102,10 +102,10 @@
   return v91;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     isEqual = 1;
   }
@@ -114,7 +114,7 @@
   {
     objc_opt_class();
     v5 = TSUSpecificCast();
-    if (v5 && (v34.receiver = self, v34.super_class = TSCH3DTexturesMaterial, [(TSCH3DMaterial *)&v34 isEqual:v4]) && ((v6 = v5[1], v7 = self->_color, v8 = v6, !(v7 | v8)) || (v13 = v8, v14 = objc_msgSend_isEqual_(v7, v9, v10, v11, v12, v8), v13, v7, v14)) && ((v15 = v5[2], v16 = self->_textures, v17 = v15, !(v16 | v17)) || (v22 = v17, v23 = objc_msgSend_isEqual_(v16, v18, v19, v20, v21, v17), v22, v16, v23)))
+    if (v5 && (v34.receiver = self, v34.super_class = TSCH3DTexturesMaterial, [(TSCH3DMaterial *)&v34 isEqual:equalCopy]) && ((v6 = v5[1], v7 = self->_color, v8 = v6, !(v7 | v8)) || (v13 = v8, v14 = objc_msgSend_isEqual_(v7, v9, v10, v11, v12, v8), v13, v7, v14)) && ((v15 = v5[2], v16 = self->_textures, v17 = v15, !(v16 | v17)) || (v22 = v17, v23 = objc_msgSend_isEqual_(v16, v18, v19, v20, v21, v17), v22, v16, v23)))
     {
       tilings = self->_tilings;
       v25 = v5[3];
@@ -173,9 +173,9 @@
   return result;
 }
 
-- (void)setColor:(tvec4<float>)a3
+- (void)setColor:(tvec4<float>)color
 {
-  v3 = *&a3.var0.var0;
+  v3 = *&color.var0.var0;
   v5 = [TSCH3DVector alloc];
   v10 = objc_msgSend_initWithVec4_(v5, v6, v7, v8, v9, v3);
   color = self->_color;
@@ -261,10 +261,10 @@ LABEL_12:
   return tilings;
 }
 
-- (void)addTexture:(id)a3 tiling:(id)a4
+- (void)addTexture:(id)texture tiling:(id)tiling
 {
-  v71 = a3;
-  v7 = a4;
+  textureCopy = texture;
+  tilingCopy = tiling;
   textures = self->_textures;
   if (!textures)
   {
@@ -278,7 +278,7 @@ LABEL_12:
   }
 
   v27 = textures;
-  v32 = objc_msgSend_arrayByAddingObject_(v27, v28, v29, v30, v31, v71);
+  v32 = objc_msgSend_arrayByAddingObject_(v27, v28, v29, v30, v31, textureCopy);
   v37 = objc_msgSend_copy(v32, v33, v34, v35, v36);
   v38 = self->_textures;
   self->_textures = v37;
@@ -296,7 +296,7 @@ LABEL_12:
   }
 
   v59 = tilings;
-  v64 = objc_msgSend_arrayByAddingObject_(v59, v60, v61, v62, v63, v7);
+  v64 = objc_msgSend_arrayByAddingObject_(v59, v60, v61, v62, v63, tilingCopy);
   v69 = objc_msgSend_copy(v64, v65, v66, v67, v68);
   v70 = self->_tilings;
   self->_tilings = v69;
@@ -332,38 +332,38 @@ LABEL_12:
   return v6;
 }
 
-+ (id)instanceWithArchive:(const void *)a3 unarchiver:(id)a4
++ (id)instanceWithArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v5 = a4;
+  unarchiverCopy = unarchiver;
   v6 = [TSCH3DTexturesMaterial alloc];
-  v11 = objc_msgSend_initWithArchive_unarchiver_(v6, v7, v8, v9, v10, a3, v5);
+  v11 = objc_msgSend_initWithArchive_unarchiver_(v6, v7, v8, v9, v10, archive, unarchiverCopy);
 
   return v11;
 }
 
-- (TSCH3DTexturesMaterial)initWithArchive:(const void *)a3 unarchiver:(id)a4
+- (TSCH3DTexturesMaterial)initWithArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v6 = a4;
+  unarchiverCopy = unarchiver;
   v54.receiver = self;
   v54.super_class = TSCH3DTexturesMaterial;
   v7 = [(TSCH3DTexturesMaterial *)&v54 init];
   if (v7)
   {
     v8 = [TSCH3DVector alloc];
-    if (*(a3 + 6))
+    if (*(archive + 6))
     {
-      v13 = objc_msgSend_initWithArchive_unarchiver_(v8, v9, v10, v11, v12, *(a3 + 6), v6);
+      v13 = objc_msgSend_initWithArchive_unarchiver_(v8, v9, v10, v11, v12, *(archive + 6), unarchiverCopy);
     }
 
     else
     {
-      v13 = objc_msgSend_initWithArchive_unarchiver_(v8, v9, v10, v11, v12, &qword_2812F15A8, v6);
+      v13 = objc_msgSend_initWithArchive_unarchiver_(v8, v9, v10, v11, v12, &qword_2812F15A8, unarchiverCopy);
     }
 
     color = v7->_color;
     v7->_color = v13;
 
-    v15 = *(a3 + 8);
+    v15 = *(archive + 8);
     v21 = objc_msgSend_arrayWithCapacity_(MEMORY[0x277CBEB18], v16, v17, v18, v19, v15);
     if (v15 >= 1)
     {
@@ -371,7 +371,7 @@ LABEL_12:
       do
       {
         v26 = [TSCH3DTSPImageDataTexture alloc];
-        v31 = objc_msgSend_initWithArchive_unarchiver_(v26, v27, v28, v29, v30, *(*(a3 + 5) + v25), v6);
+        v31 = objc_msgSend_initWithArchive_unarchiver_(v26, v27, v28, v29, v30, *(*(archive + 5) + v25), unarchiverCopy);
         objc_msgSend_addObject_(v21, v32, v33, v34, v35, v31);
 
         v25 += 8;
@@ -399,10 +399,10 @@ LABEL_12:
   return v7;
 }
 
-- (void)saveToArchive:(void *)a3 archiver:(id)a4
+- (void)saveToArchive:(void *)archive archiver:(id)archiver
 {
   v77 = *MEMORY[0x277D85DE8];
-  v71 = a4;
+  archiverCopy = archiver;
   color = self->_color;
   if (!color)
   {
@@ -415,21 +415,21 @@ LABEL_12:
     color = self->_color;
   }
 
-  *(a3 + 4) |= 1u;
-  v26 = *(a3 + 6);
+  *(archive + 4) |= 1u;
+  v26 = *(archive + 6);
   if (!v26)
   {
-    v27 = *(a3 + 1);
+    v27 = *(archive + 1);
     if (v27)
     {
       v27 = *(v27 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v26 = sub_276447FD4(v27);
-    *(a3 + 6) = v26;
+    *(archive + 6) = v26;
   }
 
-  objc_msgSend_saveToArchive_archiver_(color, v6, v7, v8, v9, v26, v71);
+  objc_msgSend_saveToArchive_archiver_(color, v6, v7, v8, v9, v26, archiverCopy);
   v74 = 0u;
   v75 = 0u;
   v72 = 0u;
@@ -461,36 +461,36 @@ LABEL_12:
           objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v52, v53, v54, v55);
         }
 
-        v56 = *(a3 + 5);
+        v56 = *(archive + 5);
         if (!v56)
         {
           goto LABEL_19;
         }
 
-        v57 = *(a3 + 8);
+        v57 = *(archive + 8);
         v58 = *v56;
         if (v57 < *v56)
         {
-          *(a3 + 8) = v57 + 1;
-          objc_msgSend_saveToArchive_archiver_(v35, v37, v38, v39, v40, *&v56[2 * v57 + 2], v71);
+          *(archive + 8) = v57 + 1;
+          objc_msgSend_saveToArchive_archiver_(v35, v37, v38, v39, v40, *&v56[2 * v57 + 2], archiverCopy);
           goto LABEL_21;
         }
 
-        if (v58 == *(a3 + 9))
+        if (v58 == *(archive + 9))
         {
 LABEL_19:
-          google::protobuf::internal::RepeatedPtrFieldBase::Reserve((a3 + 24));
-          v56 = *(a3 + 5);
+          google::protobuf::internal::RepeatedPtrFieldBase::Reserve((archive + 24));
+          v56 = *(archive + 5);
           v58 = *v56;
         }
 
         *v56 = v58 + 1;
-        v63 = sub_276447D58(*(a3 + 3));
-        v64 = *(a3 + 8);
-        v65 = *(a3 + 5) + 8 * v64;
-        *(a3 + 8) = v64 + 1;
+        v63 = sub_276447D58(*(archive + 3));
+        v64 = *(archive + 8);
+        v65 = *(archive + 5) + 8 * v64;
+        *(archive + 8) = v64 + 1;
         *(v65 + 8) = v63;
-        objc_msgSend_saveToArchive_archiver_(v35, v66, v67, v68, v69, v63, v71);
+        objc_msgSend_saveToArchive_archiver_(v35, v66, v67, v68, v69, v63, archiverCopy);
 LABEL_21:
         ++v34;
       }

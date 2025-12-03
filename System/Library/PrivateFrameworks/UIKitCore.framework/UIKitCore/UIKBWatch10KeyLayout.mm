@@ -1,22 +1,22 @@
 @interface UIKBWatch10KeyLayout
-- (CGRect)frameForGridKeyAt:(int64_t)a3 inRow:(int64_t)a4;
-- (CGRect)frameForLeftControlKeyAt:(int64_t)a3;
-- (CGRect)frameForRightControlKeyAt:(int64_t)a3;
+- (CGRect)frameForGridKeyAt:(int64_t)at inRow:(int64_t)row;
+- (CGRect)frameForLeftControlKeyAt:(int64_t)at;
+- (CGRect)frameForRightControlKeyAt:(int64_t)at;
 - (UIEdgeInsets)leftControlKeysInsets;
 - (UIEdgeInsets)rightControlKeysInsets;
-- (UIKBWatch10KeyLayout)initWithFrame:(CGRect)a3;
-- (id)layoutControlKeys:(int64_t)a3 in:(CGRect)a4;
+- (UIKBWatch10KeyLayout)initWithFrame:(CGRect)frame;
+- (id)layoutControlKeys:(int64_t)keys in:(CGRect)in;
 - (void)layout;
 @end
 
 @implementation UIKBWatch10KeyLayout
 
-- (UIKBWatch10KeyLayout)initWithFrame:(CGRect)a3
+- (UIKBWatch10KeyLayout)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v10.receiver = self;
   v10.super_class = UIKBWatch10KeyLayout;
   v7 = [(UIKBWatch10KeyLayout *)&v10 init];
@@ -37,9 +37,9 @@
   return v8;
 }
 
-- (CGRect)frameForLeftControlKeyAt:(int64_t)a3
+- (CGRect)frameForLeftControlKeyAt:(int64_t)at
 {
-  v3 = [(NSArray *)self->_leftControlKeyFrames objectAtIndexedSubscript:a3];
+  v3 = [(NSArray *)self->_leftControlKeyFrames objectAtIndexedSubscript:at];
   [v3 rectValue];
   v5 = v4;
   v7 = v6;
@@ -57,9 +57,9 @@
   return result;
 }
 
-- (CGRect)frameForRightControlKeyAt:(int64_t)a3
+- (CGRect)frameForRightControlKeyAt:(int64_t)at
 {
-  v3 = [(NSArray *)self->_rightControlKeyFrames objectAtIndexedSubscript:a3];
+  v3 = [(NSArray *)self->_rightControlKeyFrames objectAtIndexedSubscript:at];
   [v3 rectValue];
   v5 = v4;
   v7 = v6;
@@ -77,10 +77,10 @@
   return result;
 }
 
-- (CGRect)frameForGridKeyAt:(int64_t)a3 inRow:(int64_t)a4
+- (CGRect)frameForGridKeyAt:(int64_t)at inRow:(int64_t)row
 {
-  v5 = [(NSMutableArray *)self->_gridKeyFrames objectAtIndexedSubscript:a3];
-  v6 = [v5 objectAtIndexedSubscript:a4];
+  v5 = [(NSMutableArray *)self->_gridKeyFrames objectAtIndexedSubscript:at];
+  v6 = [v5 objectAtIndexedSubscript:row];
   [v6 rectValue];
   v8 = v7;
   v10 = v9;
@@ -102,13 +102,13 @@
 {
   [(UIKBWatch10KeyLayout *)self controlKeyWidthRatio];
   [(UIKBWatch10KeyLayout *)self gridColumns];
-  v3 = [objc_opt_self() mainScreen];
-  UIRoundToScreenScale(v3);
+  mainScreen = [objc_opt_self() mainScreen];
+  UIRoundToScreenScale(mainScreen);
   v5 = v4;
 
   [(UIKBWatch10KeyLayout *)self controlKeyWidthRatio];
-  v6 = [objc_opt_self() mainScreen];
-  UIRoundToScreenScale(v6);
+  mainScreen2 = [objc_opt_self() mainScreen];
+  UIRoundToScreenScale(mainScreen2);
   v8 = v7;
 
   x = self->_frame.origin.x;
@@ -125,8 +125,8 @@
   self->_gridKeyFrames = v19;
 
   [(UIKBWatch10KeyLayout *)self gridRows];
-  v21 = [objc_opt_self() mainScreen];
-  UIRoundToScreenScale(v21);
+  mainScreen3 = [objc_opt_self() mainScreen];
+  UIRoundToScreenScale(mainScreen3);
   v23 = v22;
 
   if ([(UIKBWatch10KeyLayout *)self gridColumns]>= 1)
@@ -171,17 +171,17 @@
   self->_rightControlKeyFrames = v35;
 }
 
-- (id)layoutControlKeys:(int64_t)a3 in:(CGRect)a4
+- (id)layoutControlKeys:(int64_t)keys in:(CGRect)in
 {
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  width = in.size.width;
+  y = in.origin.y;
+  x = in.origin.x;
   v8 = [MEMORY[0x1E695DF70] arrayWithCapacity:?];
-  v9 = [objc_opt_self() mainScreen];
-  UIRoundToScreenScale(v9);
+  mainScreen = [objc_opt_self() mainScreen];
+  UIRoundToScreenScale(mainScreen);
   v11 = v10;
 
-  if (a3 >= 1)
+  if (keys >= 1)
   {
     v12 = 0;
     do
@@ -196,7 +196,7 @@
       ++v12;
     }
 
-    while (a3 != v12);
+    while (keys != v12);
   }
 
   return v8;

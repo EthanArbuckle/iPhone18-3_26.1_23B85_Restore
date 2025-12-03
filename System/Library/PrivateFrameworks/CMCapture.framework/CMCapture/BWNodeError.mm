@@ -1,9 +1,9 @@
 @interface BWNodeError
-+ (id)newError:(int)a3 sourceNode:(id)a4;
-+ (id)newError:(int)a3 sourceNode:(id)a4 recordingSettings:(id)a5;
-+ (id)newError:(int)a3 sourceNode:(id)a4 stillImageSettings:(id)a5 metadata:(id)a6;
++ (id)newError:(int)error sourceNode:(id)node;
++ (id)newError:(int)error sourceNode:(id)node recordingSettings:(id)settings;
++ (id)newError:(int)error sourceNode:(id)node stillImageSettings:(id)settings metadata:(id)metadata;
 - (id)description;
-- (void)_initWithError:(void *)a3 sourceNode:(void *)a4 stillImageSettings:(void *)a5 recordingSettings:(void *)a6 metadata:;
+- (void)_initWithError:(void *)error sourceNode:(void *)node stillImageSettings:(void *)settings recordingSettings:(void *)recordingSettings metadata:;
 - (void)dealloc;
 @end
 
@@ -23,14 +23,14 @@
   return [v3 stringWithFormat:@"<%@ %p>: err:%d captureID:%lld, captureType=%@", v4, self, self->_errorCode, -[BWStillImageSettings settingsID](self->_stillImageSettings, "settingsID"), BWPhotoEncoderStringFromEncodingScheme(-[BWStillImageCaptureSettings captureType](-[BWStillImageSettings captureSettings](self->_stillImageSettings, "captureSettings"), "captureType"))];
 }
 
-- (void)_initWithError:(void *)a3 sourceNode:(void *)a4 stillImageSettings:(void *)a5 recordingSettings:(void *)a6 metadata:
+- (void)_initWithError:(void *)error sourceNode:(void *)node stillImageSettings:(void *)settings recordingSettings:(void *)recordingSettings metadata:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v14.receiver = a1;
+  v14.receiver = self;
   v14.super_class = BWNodeError;
   v11 = objc_msgSendSuper2(&v14, sel_init);
   v12 = v11;
@@ -38,34 +38,34 @@
   {
     v11[1] = (atomic_fetch_add_explicit(uniqueIDCount, 1u, memory_order_relaxed) + 1);
     *(v11 + 4) = a2;
-    v11[3] = [objc_msgSend(a3 "description")];
-    v12[4] = a4;
-    v12[5] = a5;
-    v12[6] = [a6 copy];
+    v11[3] = [objc_msgSend(error "description")];
+    v12[4] = node;
+    v12[5] = settings;
+    v12[6] = [recordingSettings copy];
   }
 
   return v12;
 }
 
-+ (id)newError:(int)a3 sourceNode:(id)a4
++ (id)newError:(int)error sourceNode:(id)node
 {
   v6 = [BWNodeError alloc];
 
-  return [(BWNodeError *)v6 _initWithError:a3 sourceNode:a4 stillImageSettings:0 recordingSettings:0 metadata:0];
+  return [(BWNodeError *)v6 _initWithError:error sourceNode:node stillImageSettings:0 recordingSettings:0 metadata:0];
 }
 
-+ (id)newError:(int)a3 sourceNode:(id)a4 stillImageSettings:(id)a5 metadata:(id)a6
++ (id)newError:(int)error sourceNode:(id)node stillImageSettings:(id)settings metadata:(id)metadata
 {
   v10 = [BWNodeError alloc];
 
-  return [(BWNodeError *)v10 _initWithError:a3 sourceNode:a4 stillImageSettings:a5 recordingSettings:0 metadata:a6];
+  return [(BWNodeError *)v10 _initWithError:error sourceNode:node stillImageSettings:settings recordingSettings:0 metadata:metadata];
 }
 
-+ (id)newError:(int)a3 sourceNode:(id)a4 recordingSettings:(id)a5
++ (id)newError:(int)error sourceNode:(id)node recordingSettings:(id)settings
 {
   v8 = [BWNodeError alloc];
 
-  return [(BWNodeError *)v8 _initWithError:a3 sourceNode:a4 stillImageSettings:0 recordingSettings:a5 metadata:0];
+  return [(BWNodeError *)v8 _initWithError:error sourceNode:node stillImageSettings:0 recordingSettings:settings metadata:0];
 }
 
 @end

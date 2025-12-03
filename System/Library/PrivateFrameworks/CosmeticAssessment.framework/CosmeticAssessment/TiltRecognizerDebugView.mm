@@ -1,12 +1,12 @@
 @interface TiltRecognizerDebugView
-- (_TtC18CosmeticAssessment23TiltRecognizerDebugView)initWithCoder:(id)a3;
-- (_TtC18CosmeticAssessment23TiltRecognizerDebugView)initWithFrame:(CGRect)a3;
-- (void)drawRect:(CGRect)a3;
+- (_TtC18CosmeticAssessment23TiltRecognizerDebugView)initWithCoder:(id)coder;
+- (_TtC18CosmeticAssessment23TiltRecognizerDebugView)initWithFrame:(CGRect)frame;
+- (void)drawRect:(CGRect)rect;
 @end
 
 @implementation TiltRecognizerDebugView
 
-- (_TtC18CosmeticAssessment23TiltRecognizerDebugView)initWithCoder:(id)a3
+- (_TtC18CosmeticAssessment23TiltRecognizerDebugView)initWithCoder:(id)coder
 {
   sub_247D1FEA8();
   sub_247D1FE98();
@@ -16,11 +16,11 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v4 = a3;
+  coderCopy = coder;
   sub_247C8A96C();
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   sub_247D1FEA8();
   sub_247D1FE98();
@@ -30,11 +30,11 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v4 = self;
+  selfCopy = self;
   sub_247C8AA60();
 }
 
-- (_TtC18CosmeticAssessment23TiltRecognizerDebugView)initWithFrame:(CGRect)a3
+- (_TtC18CosmeticAssessment23TiltRecognizerDebugView)initWithFrame:(CGRect)frame
 {
   sub_247D1FEA8();
   sub_247D1FE98();

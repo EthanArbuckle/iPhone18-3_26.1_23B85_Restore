@@ -1,29 +1,29 @@
 @interface CDDCloudKitScheduledActivity
 - (id)xpcActivityCriteria;
 - (unint64_t)activityType;
-- (void)populateFromCriteria:(id)a3;
-- (void)setActivityType:(unint64_t)a3;
+- (void)populateFromCriteria:(id)criteria;
+- (void)setActivityType:(unint64_t)type;
 @end
 
 @implementation CDDCloudKitScheduledActivity
 
 - (unint64_t)activityType
 {
-  v2 = [(CDDCloudKitScheduledActivity *)self activityTypeNum];
+  activityTypeNum = [(CDDCloudKitScheduledActivity *)self activityTypeNum];
 
-  return [v2 unsignedIntegerValue];
+  return [activityTypeNum unsignedIntegerValue];
 }
 
-- (void)setActivityType:(unint64_t)a3
+- (void)setActivityType:(unint64_t)type
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:type];
 
   [(CDDCloudKitScheduledActivity *)self setActivityTypeNum:v4];
 }
 
-- (void)populateFromCriteria:(id)a3
+- (void)populateFromCriteria:(id)criteria
 {
-  v4 = [a3 objectForKey:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithUTF8String:", *MEMORY[0x1E69E9DE0])}];
+  v4 = [criteria objectForKey:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithUTF8String:", *MEMORY[0x1E69E9DE0])}];
   if (v4 && (v5 = v4, xpc_BOOL_get_value(v4)))
   {
     if (!xpc_BOOL_get_value(v5))

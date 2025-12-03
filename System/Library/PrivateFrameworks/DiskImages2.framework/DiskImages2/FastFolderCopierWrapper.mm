@@ -1,7 +1,7 @@
 @interface FastFolderCopierWrapper
-- (BOOL)copyWithDstFolder:(id)a3 error:(id *)a4;
-- (BOOL)traverseSrcFolderWithError:(id *)a3;
-- (FastFolderCopierWrapper)initWithSrcFolder:(id)a3 parallelMode:(BOOL)a4 progress:(id)a5;
+- (BOOL)copyWithDstFolder:(id)folder error:(id *)error;
+- (BOOL)traverseSrcFolderWithError:(id *)error;
+- (FastFolderCopierWrapper)initWithSrcFolder:(id)folder parallelMode:(BOOL)mode progress:(id)progress;
 - (id).cxx_construct;
 - (id)copyWithDstFolder:error:;
 - (shared_ptr<BaseFolderCopier>)copier;
@@ -9,32 +9,32 @@
 - (unint64_t)folderSize;
 - (unint64_t)numFiles;
 - (void)copyWithDstFolder:error:;
-- (void)setCopier:(shared_ptr<BaseFolderCopier>)a3;
+- (void)setCopier:(shared_ptr<BaseFolderCopier>)copier;
 @end
 
 @implementation FastFolderCopierWrapper
 
-- (FastFolderCopierWrapper)initWithSrcFolder:(id)a3 parallelMode:(BOOL)a4 progress:(id)a5
+- (FastFolderCopierWrapper)initWithSrcFolder:(id)folder parallelMode:(BOOL)mode progress:(id)progress
 {
-  v6 = a4;
+  modeCopy = mode;
   v17 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  folderCopy = folder;
+  progressCopy = progress;
   v16.receiver = self;
   v16.super_class = FastFolderCopierWrapper;
   v10 = [(FastFolderCopierWrapper *)&v16 init];
   if (v10)
   {
-    objc_storeStrong(&v10->_progress, a5);
-    if (v6)
+    objc_storeStrong(&v10->_progress, progress);
+    if (modeCopy)
     {
-      v11 = v8;
-      [v8 fileSystemRepresentation];
+      v11 = folderCopy;
+      [folderCopy fileSystemRepresentation];
       std::allocate_shared[abi:ne200100]<ParallelFolderCopier,std::allocator<ParallelFolderCopier>,char const*,0>();
     }
 
-    v12 = v8;
-    [v8 fileSystemRepresentation];
+    v12 = folderCopy;
+    [folderCopy fileSystemRepresentation];
     std::allocate_shared[abi:ne200100]<SerialFolderCopier,std::allocator<SerialFolderCopier>,char const*,0>();
   }
 
@@ -124,7 +124,7 @@ void __67__FastFolderCopierWrapper_initWithSrcFolder_parallelMode_progress___blo
   return 0xCCCCCCCCCCCCCCCDLL * ((v2 - v3) >> 3);
 }
 
-- (BOOL)traverseSrcFolderWithError:(id *)a3
+- (BOOL)traverseSrcFolderWithError:(id *)error
 {
   [(FastFolderCopierWrapper *)self copier];
   BaseFolderCopier::traverseSrcFolder(v4);
@@ -136,22 +136,22 @@ void __67__FastFolderCopierWrapper_initWithSrcFolder_parallelMode_progress___blo
   return 1;
 }
 
-- (BOOL)copyWithDstFolder:(id)a3 error:(id *)a4
+- (BOOL)copyWithDstFolder:(id)folder error:(id *)error
 {
   v19[4] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [(FastFolderCopierWrapper *)self progress];
-  [v6 setCompletedUnitCount:6];
+  folderCopy = folder;
+  progress = [(FastFolderCopierWrapper *)self progress];
+  [progress setCompletedUnitCount:6];
 
   v7 = MEMORY[0x277CCAC48];
-  v8 = [(FastFolderCopierWrapper *)self progress];
-  v9 = [v7 progressWithTotalUnitCount:100 parent:v8 pendingUnitCount:94];
+  progress2 = [(FastFolderCopierWrapper *)self progress];
+  v9 = [v7 progressWithTotalUnitCount:100 parent:progress2 pendingUnitCount:94];
 
   [(FastFolderCopierWrapper *)self copier];
   v10 = v17;
-  v11 = v5;
-  v15 = [v5 fileSystemRepresentation];
-  std::__fs::filesystem::path::path[abi:ne200100]<char const*,void>(&__p, &v15);
+  v11 = folderCopy;
+  fileSystemRepresentation = [folderCopy fileSystemRepresentation];
+  std::__fs::filesystem::path::path[abi:ne200100]<char const*,void>(&__p, &fileSystemRepresentation);
   v12 = v9;
   v19[0] = &unk_285BF4B28;
   v19[1] = v12;
@@ -187,10 +187,10 @@ void __67__FastFolderCopierWrapper_initWithSrcFolder_parallelMode_progress___blo
   return result;
 }
 
-- (void)setCopier:(shared_ptr<BaseFolderCopier>)a3
+- (void)setCopier:(shared_ptr<BaseFolderCopier>)copier
 {
-  v4 = *a3.__ptr_;
-  v3 = *(a3.__ptr_ + 1);
+  v4 = *copier.__ptr_;
+  v3 = *(copier.__ptr_ + 1);
   if (v3)
   {
     atomic_fetch_add_explicit((v3 + 8), 1uLL, memory_order_relaxed);
@@ -215,13 +215,13 @@ void __67__FastFolderCopierWrapper_initWithSrcFolder_parallelMode_progress___blo
 - (void)copyWithDstFolder:error:
 {
 
-  operator delete(a1);
+  operator delete(self);
 }
 
 - (id)copyWithDstFolder:error:
 {
   *a2 = &unk_285BF4B28;
-  result = *(a1 + 8);
+  result = *(self + 8);
   a2[1] = result;
   return result;
 }
@@ -229,7 +229,7 @@ void __67__FastFolderCopierWrapper_initWithSrcFolder_parallelMode_progress___blo
 - (uint64_t)copyWithDstFolder:error:
 {
   {
-    return a1 + 8;
+    return self + 8;
   }
 
   else

@@ -1,24 +1,24 @@
 @interface VCSpeechFrameworkWrapper
 + (id)defaultSpeechFrameworkWrapper;
-+ (unint64_t)assetTypeForTaskHint:(unsigned __int8)a3;
-- (BOOL)isAssetInstalledForTaskHint:(unsigned __int8)a3 forLocale:(id)a4 forTaskIdentifier:(id)a5;
++ (unint64_t)assetTypeForTaskHint:(unsigned __int8)hint;
+- (BOOL)isAssetInstalledForTaskHint:(unsigned __int8)hint forLocale:(id)locale forTaskIdentifier:(id)identifier;
 - (BOOL)loadSpeechFramework;
 - (VCSpeechFrameworkWrapper)init;
 - (id)findSpeechFrameworkPath;
 - (id)newSFSpeechAnalyzerLanguageDetectorOptions;
-- (id)newSFSpeechAnalyzerLanguageDetectorOptionsWithResultReportingFrequency:(unint64_t)a3;
-- (id)newSFSpeechAnalyzerOptionsWithHighPriority:(BOOL)a3 modelRetention:(unint64_t)a4 loggingInfo:(id)a5 powerContext:(id)a6;
+- (id)newSFSpeechAnalyzerLanguageDetectorOptionsWithResultReportingFrequency:(unint64_t)frequency;
+- (id)newSFSpeechAnalyzerOptionsWithHighPriority:(BOOL)priority modelRetention:(unint64_t)retention loggingInfo:(id)info powerContext:(id)context;
 - (id)newSFSpeechAnalyzerSpeechDetectorOptions;
 - (id)newSFSpeechAnalyzerTranscriberOptions;
-- (id)newSFSpeechAnalyzerWithConfig:(tagVCSFSpeechAnalyzerConfig *)a3 didChangeVolatileRange:(id)a4;
+- (id)newSFSpeechAnalyzerWithConfig:(tagVCSFSpeechAnalyzerConfig *)config didChangeVolatileRange:(id)range;
 - (id)newSFSpeechAudioBufferRecognitionRequest;
-- (id)newSFSpeechRecognizerWithLocale:(id)a3;
+- (id)newSFSpeechRecognizerWithLocale:(id)locale;
 - (id)supportedLocales;
-- (void)analyzerEndModelRetention:(id)a3;
-- (void)loadSpeechAssetsWithAssetType:(unint64_t)a3 withLanguage:(id)a4 withTaskIdentifier:(id)a5 withCompletionHandler:(id)a6;
+- (void)analyzerEndModelRetention:(id)retention;
+- (void)loadSpeechAssetsWithAssetType:(unint64_t)type withLanguage:(id)language withTaskIdentifier:(id)identifier withCompletionHandler:(id)handler;
 - (void)loadSpeechFramework;
 - (void)loadSpeechFunctionEndModelRetention;
-- (void)loadTranscriptionAssetsWithTaskHint:(unsigned __int8)a3 withLocale:(id)a4 withTaskIdentifier:(id)a5 withCompletionHandler:(id)a6;
+- (void)loadTranscriptionAssetsWithTaskHint:(unsigned __int8)hint withLocale:(id)locale withTaskIdentifier:(id)identifier withCompletionHandler:(id)handler;
 - (void)newSFSpeechAnalyzerSpeechDetectorOptions;
 @end
 
@@ -132,11 +132,11 @@ LABEL_4:
 - (BOOL)loadSpeechFramework
 {
   v10 = *MEMORY[0x1E69E9840];
-  v3 = [(VCSpeechFrameworkWrapper *)self findSpeechFrameworkPath];
-  self->_frameworkPath = v3;
-  if (v3)
+  findSpeechFrameworkPath = [(VCSpeechFrameworkWrapper *)self findSpeechFrameworkPath];
+  self->_frameworkPath = findSpeechFrameworkPath;
+  if (findSpeechFrameworkPath)
   {
-    v4 = [MEMORY[0x1E696AAE8] bundleWithPath:v3];
+    v4 = [MEMORY[0x1E696AAE8] bundleWithPath:findSpeechFrameworkPath];
     if (v4)
     {
       v5 = v4;
@@ -182,7 +182,7 @@ LABEL_4:
 - (void)loadSpeechFunctionEndModelRetention
 {
   v13 = *MEMORY[0x1E69E9840];
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 5)
     {
@@ -203,7 +203,7 @@ LABEL_10:
   {
     if (objc_opt_respondsToSelector())
     {
-      [a1 performSelector:sel_logPrefix];
+      [self performSelector:sel_logPrefix];
     }
 
     if (VRTraceGetErrorLogLevelForModule() >= 5)
@@ -229,7 +229,7 @@ LABEL_10:
   }
 }
 
-- (id)newSFSpeechRecognizerWithLocale:(id)a3
+- (id)newSFSpeechRecognizerWithLocale:(id)locale
 {
   if (!self->_isFrameworkLoaded)
   {
@@ -237,11 +237,11 @@ LABEL_10:
   }
 
   v4 = NSClassFromString(&cfstr_Sfspeechrecogn.isa);
-  if (a3)
+  if (locale)
   {
     v5 = [v4 alloc];
 
-    return [v5 initWithLocale:a3];
+    return [v5 initWithLocale:locale];
   }
 
   else
@@ -276,8 +276,8 @@ LABEL_10:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = [NSClassFromString(&cfstr_Sfspeechrecogn.isa) supportedLocales];
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v12 count:16];
+  supportedLocales = [NSClassFromString(&cfstr_Sfspeechrecogn.isa) supportedLocales];
+  v4 = [supportedLocales countByEnumeratingWithState:&v13 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -289,7 +289,7 @@ LABEL_10:
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(supportedLocales);
         }
 
         v8 = *(*(&v13 + 1) + 8 * v7);
@@ -304,7 +304,7 @@ LABEL_10:
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v13 objects:v12 count:16];
+      v5 = [supportedLocales countByEnumeratingWithState:&v13 objects:v12 count:16];
     }
 
     while (v5);
@@ -321,7 +321,7 @@ LABEL_10:
   }
 }
 
-- (id)newSFSpeechAnalyzerWithConfig:(tagVCSFSpeechAnalyzerConfig *)a3 didChangeVolatileRange:(id)a4
+- (id)newSFSpeechAnalyzerWithConfig:(tagVCSFSpeechAnalyzerConfig *)config didChangeVolatileRange:(id)range
 {
   if (!self->_isFrameworkLoaded)
   {
@@ -329,21 +329,21 @@ LABEL_10:
   }
 
   v6 = objc_alloc(NSClassFromString(&cfstr_Sfspeechanalyz.isa));
-  LOBYTE(v8) = a3->var11;
-  return [v6 initWithClientIdentifier:a3->var0 audioFormat:a3->var1 formatForNewLines:a3->var13 transcriberResultDelegate:a3->var2 endpointingResultDelegate:a3->var3 languageDetectorResultDelegate:a3->var4 speechDetectorResultDelegate:a3->var5 queue:a3->var6 transcriberOptions:a3->var7 options:a3->var8 languageDetectorOptions:a3->var9 speechDetectorOptions:a3->var10 restrictedLogging:v8 contextualNamedEntities:a3->var12 didChangeVolatileRange:a4];
+  LOBYTE(v8) = config->var11;
+  return [v6 initWithClientIdentifier:config->var0 audioFormat:config->var1 formatForNewLines:config->var13 transcriberResultDelegate:config->var2 endpointingResultDelegate:config->var3 languageDetectorResultDelegate:config->var4 speechDetectorResultDelegate:config->var5 queue:config->var6 transcriberOptions:config->var7 options:config->var8 languageDetectorOptions:config->var9 speechDetectorOptions:config->var10 restrictedLogging:v8 contextualNamedEntities:config->var12 didChangeVolatileRange:range];
 }
 
-- (id)newSFSpeechAnalyzerOptionsWithHighPriority:(BOOL)a3 modelRetention:(unint64_t)a4 loggingInfo:(id)a5 powerContext:(id)a6
+- (id)newSFSpeechAnalyzerOptionsWithHighPriority:(BOOL)priority modelRetention:(unint64_t)retention loggingInfo:(id)info powerContext:(id)context
 {
   if (!self->_isFrameworkLoaded)
   {
     return 0;
   }
 
-  v10 = a3;
+  priorityCopy = priority;
   v11 = objc_alloc(NSClassFromString(&cfstr_Sfspeechanalyz_0.isa));
 
-  return [v11 initWithHighPriority:v10 modelRetention:a4 loggingInfo:a5 powerContext:a6];
+  return [v11 initWithHighPriority:priorityCopy modelRetention:retention loggingInfo:info powerContext:context];
 }
 
 - (id)newSFSpeechAnalyzerTranscriberOptions
@@ -358,13 +358,13 @@ LABEL_10:
   return objc_alloc_init(v3);
 }
 
-- (void)analyzerEndModelRetention:(id)a3
+- (void)analyzerEndModelRetention:(id)retention
 {
   endModelRetention = self->_endModelRetention;
   if (endModelRetention)
   {
 
-    endModelRetention(a3);
+    endModelRetention(retention);
   }
 
   else
@@ -385,7 +385,7 @@ LABEL_10:
   return objc_alloc_init(v3);
 }
 
-- (id)newSFSpeechAnalyzerLanguageDetectorOptionsWithResultReportingFrequency:(unint64_t)a3
+- (id)newSFSpeechAnalyzerLanguageDetectorOptionsWithResultReportingFrequency:(unint64_t)frequency
 {
   if (!self->_isFrameworkLoaded)
   {
@@ -394,7 +394,7 @@ LABEL_10:
 
   v5 = objc_alloc(NSClassFromString(&cfstr_Sfspeechanalyz_2.isa));
 
-  return [v5 initWithResultReportingFrequency:a3];
+  return [v5 initWithResultReportingFrequency:frequency];
 }
 
 - (id)newSFSpeechAnalyzerSpeechDetectorOptions
@@ -468,7 +468,7 @@ LABEL_14:
         v20 = 2112;
         v21 = v6;
         v22 = 2048;
-        v23 = self;
+        selfCopy = self;
         v24 = 2048;
         v25 = IntValueForKey;
         v9 = " [%s] %s:%d %@(%p) Set up speech detector with sensitivityLevel=%lu";
@@ -482,15 +482,15 @@ LABEL_14:
   return v4;
 }
 
-+ (unint64_t)assetTypeForTaskHint:(unsigned __int8)a3
++ (unint64_t)assetTypeForTaskHint:(unsigned __int8)hint
 {
   v3 = 7;
-  if (a3 != 2)
+  if (hint != 2)
   {
     v3 = 0;
   }
 
-  if (a3 == 1)
+  if (hint == 1)
   {
     return 3;
   }
@@ -501,16 +501,16 @@ LABEL_14:
   }
 }
 
-- (BOOL)isAssetInstalledForTaskHint:(unsigned __int8)a3 forLocale:(id)a4 forTaskIdentifier:(id)a5
+- (BOOL)isAssetInstalledForTaskHint:(unsigned __int8)hint forLocale:(id)locale forTaskIdentifier:(id)identifier
 {
   v5 = 0;
   v10 = *MEMORY[0x1E69E9840];
-  if (a4 && self->_isFrameworkLoaded)
+  if (locale && self->_isFrameworkLoaded)
   {
-    v7 = [objc_alloc(NSClassFromString(&cfstr_Sfentitledasse.isa)) initWithLanguage:objc_msgSend(a4 assetType:{"languageIdentifier"), +[VCSpeechFrameworkWrapper assetTypeForTaskHint:](VCSpeechFrameworkWrapper, "assetTypeForTaskHint:", a3)}];
+    v7 = [objc_alloc(NSClassFromString(&cfstr_Sfentitledasse.isa)) initWithLanguage:objc_msgSend(locale assetType:{"languageIdentifier"), +[VCSpeechFrameworkWrapper assetTypeForTaskHint:](VCSpeechFrameworkWrapper, "assetTypeForTaskHint:", hint)}];
     if (v7)
     {
-      v5 = [NSClassFromString(&cfstr_Sfspeechassetm.isa) pathToAssetWithConfig:v7 clientIdentifier:a5]!= 0;
+      v5 = [NSClassFromString(&cfstr_Sfspeechassetm.isa) pathToAssetWithConfig:v7 clientIdentifier:identifier]!= 0;
     }
 
     else
@@ -523,9 +523,9 @@ LABEL_14:
   return v5;
 }
 
-- (void)loadTranscriptionAssetsWithTaskHint:(unsigned __int8)a3 withLocale:(id)a4 withTaskIdentifier:(id)a5 withCompletionHandler:(id)a6
+- (void)loadTranscriptionAssetsWithTaskHint:(unsigned __int8)hint withLocale:(id)locale withTaskIdentifier:(id)identifier withCompletionHandler:(id)handler
 {
-  v9 = a3;
+  hintCopy = hint;
   v23 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() == self)
   {
@@ -542,9 +542,9 @@ LABEL_14:
         *&v19[22] = 1024;
         *v20 = 280;
         *&v20[4] = 1024;
-        *&v20[6] = v9;
+        *&v20[6] = hintCopy;
         *&v20[10] = 2112;
-        *&v20[12] = [a4 localeIdentifier];
+        *&v20[12] = [locale localeIdentifier];
         v14 = " [%s] %s:%d Loading assets for taskHint=%d, locale=%@";
         v15 = v13;
         v16 = 44;
@@ -583,9 +583,9 @@ LABEL_11:
         *&v20[14] = 2048;
         *&v20[16] = self;
         LOWORD(v21) = 1024;
-        *(&v21 + 2) = v9;
+        *(&v21 + 2) = hintCopy;
         HIWORD(v21) = 2112;
-        v22 = [a4 localeIdentifier];
+        localeIdentifier = [locale localeIdentifier];
         v14 = " [%s] %s:%d %@(%p) Loading assets for taskHint=%d, locale=%@";
         v15 = v18;
         v16 = 64;
@@ -594,10 +594,10 @@ LABEL_11:
     }
   }
 
-  -[VCSpeechFrameworkWrapper loadSpeechAssetsWithAssetType:withLanguage:withTaskIdentifier:withCompletionHandler:](self, "loadSpeechAssetsWithAssetType:withLanguage:withTaskIdentifier:withCompletionHandler:", +[VCSpeechFrameworkWrapper assetTypeForTaskHint:](VCSpeechFrameworkWrapper, "assetTypeForTaskHint:", v9, *v19, *&v19[16], *v20, *&v20[16], v21, v22), [a4 languageIdentifier], a5, a6);
+  -[VCSpeechFrameworkWrapper loadSpeechAssetsWithAssetType:withLanguage:withTaskIdentifier:withCompletionHandler:](self, "loadSpeechAssetsWithAssetType:withLanguage:withTaskIdentifier:withCompletionHandler:", +[VCSpeechFrameworkWrapper assetTypeForTaskHint:](VCSpeechFrameworkWrapper, "assetTypeForTaskHint:", hintCopy, *v19, *&v19[16], *v20, *&v20[16], v21, localeIdentifier), [locale languageIdentifier], identifier, handler);
 }
 
-- (void)loadSpeechAssetsWithAssetType:(unint64_t)a3 withLanguage:(id)a4 withTaskIdentifier:(id)a5 withCompletionHandler:(id)a6
+- (void)loadSpeechAssetsWithAssetType:(unint64_t)type withLanguage:(id)language withTaskIdentifier:(id)identifier withCompletionHandler:(id)handler
 {
   v16 = *MEMORY[0x1E69E9840];
   if (self->_isFrameworkLoaded)
@@ -606,7 +606,7 @@ LABEL_11:
     v13 = &v12;
     v14 = 0x2020000000;
     v15 = 0;
-    v9 = [objc_alloc(NSClassFromString(&cfstr_Sfentitledasse.isa)) initWithLanguage:a4 assetType:a3];
+    v9 = [objc_alloc(NSClassFromString(&cfstr_Sfentitledasse.isa)) initWithLanguage:language assetType:type];
     if (v9)
     {
       v13[3] = micro();
@@ -615,14 +615,14 @@ LABEL_11:
       v11[2] = __112__VCSpeechFrameworkWrapper_loadSpeechAssetsWithAssetType_withLanguage_withTaskIdentifier_withCompletionHandler___block_invoke;
       v11[3] = &unk_1E85F93F0;
       v11[5] = &v12;
-      v11[6] = a3;
-      v11[4] = a6;
+      v11[6] = type;
+      v11[4] = handler;
       v10[0] = MEMORY[0x1E69E9820];
       v10[1] = 3221225472;
       v10[2] = __112__VCSpeechFrameworkWrapper_loadSpeechAssetsWithAssetType_withLanguage_withTaskIdentifier_withCompletionHandler___block_invoke_59;
       v10[3] = &__block_descriptor_40_e8_v16__0Q8l;
-      v10[4] = a3;
-      [NSClassFromString(&cfstr_Sfspeechassetm.isa) fetchAssetWithConfig:v9 clientIdentifier:a5 progress:v10 completion:v11];
+      v10[4] = type;
+      [NSClassFromString(&cfstr_Sfspeechassetm.isa) fetchAssetWithConfig:v9 clientIdentifier:identifier progress:v10 completion:v11];
     }
 
     else if (VRTraceGetErrorLogLevelForModule() >= 3)
@@ -740,7 +740,7 @@ void __112__VCSpeechFrameworkWrapper_loadSpeechAssetsWithAssetType_withLanguage_
     }
   }
 
-  *a1 = 0;
+  *self = 0;
 }
 
 - (void)analyzerEndModelRetention:.cold.1()
@@ -771,7 +771,7 @@ void __112__VCSpeechFrameworkWrapper_loadSpeechAssetsWithAssetType_withLanguage_
     }
   }
 
-  *a1 = 0;
+  *self = 0;
 }
 
 - (void)isAssetInstalledForTaskHint:(_BYTE *)a1 forLocale:forTaskIdentifier:.cold.1(_BYTE *a1)

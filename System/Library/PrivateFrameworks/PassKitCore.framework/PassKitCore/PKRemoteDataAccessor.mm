@@ -1,13 +1,13 @@
 @interface PKRemoteDataAccessor
-- (PKRemoteDataAccessor)initWithLibrary:(id)a3 objectUniqueID:(id)a4;
-- (id)cachedImageSetForType:(int64_t)a3 withDisplayProfile:(id)a4 displayTraits:(id)a5;
+- (PKRemoteDataAccessor)initWithLibrary:(id)library objectUniqueID:(id)d;
+- (id)cachedImageSetForType:(int64_t)type withDisplayProfile:(id)profile displayTraits:(id)traits;
 - (id)content;
-- (id)dataForBundleResource:(id)a3;
-- (id)imageSetForType:(int64_t)a3 screenScale:(double)a4 suffix:(id)a5 displayProfile:(id)a6 preheat:(BOOL)a7;
-- (void)contentWithCompletion:(id)a3;
-- (void)imageSetForType:(int64_t)a3 screenScale:(double)a4 suffix:(id)a5 displayProfile:(id)a6 preheat:(BOOL)a7 withCompletion:(id)a8;
-- (void)requestUpdateWithCompletion:(id)a3;
-- (void)revocationStatusWithCompletion:(id)a3;
+- (id)dataForBundleResource:(id)resource;
+- (id)imageSetForType:(int64_t)type screenScale:(double)scale suffix:(id)suffix displayProfile:(id)profile preheat:(BOOL)preheat;
+- (void)contentWithCompletion:(id)completion;
+- (void)imageSetForType:(int64_t)type screenScale:(double)scale suffix:(id)suffix displayProfile:(id)profile preheat:(BOOL)preheat withCompletion:(id)completion;
+- (void)requestUpdateWithCompletion:(id)completion;
+- (void)revocationStatusWithCompletion:(id)completion;
 @end
 
 @implementation PKRemoteDataAccessor
@@ -27,70 +27,70 @@
   return v3;
 }
 
-- (PKRemoteDataAccessor)initWithLibrary:(id)a3 objectUniqueID:(id)a4
+- (PKRemoteDataAccessor)initWithLibrary:(id)library objectUniqueID:(id)d
 {
-  v7 = a3;
-  v8 = a4;
+  libraryCopy = library;
+  dCopy = d;
   v12.receiver = self;
   v12.super_class = PKRemoteDataAccessor;
   v9 = [(PKRemoteDataAccessor *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_library, a3);
-    objc_storeStrong(&v10->_objectUniqueID, a4);
+    objc_storeStrong(&v9->_library, library);
+    objc_storeStrong(&v10->_objectUniqueID, d);
   }
 
   return v10;
 }
 
-- (void)revocationStatusWithCompletion:(id)a3
+- (void)revocationStatusWithCompletion:(id)completion
 {
-  if (a3)
+  if (completion)
   {
-    (*(a3 + 2))(a3, 0, 0);
+    (*(completion + 2))(completion, 0, 0);
   }
 }
 
-- (void)requestUpdateWithCompletion:(id)a3
+- (void)requestUpdateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   library = self->_library;
   if (library)
   {
     [(PKPassLibrary *)library requestUpdateOfObjectWithUniqueIdentifier:self->_objectUniqueID completion:?];
   }
 
-  else if (v4)
+  else if (completionCopy)
   {
-    v4[2](v4, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
   MEMORY[0x1EEE66C30]();
 }
 
-- (void)contentWithCompletion:(id)a3
+- (void)contentWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   library = self->_library;
   if (library)
   {
     [(PKPassLibrary *)library fetchContentForUniqueID:self->_objectUniqueID withCompletion:?];
   }
 
-  else if (v4)
+  else if (completionCopy)
   {
-    v4[2](v4, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
   MEMORY[0x1EEE66C30]();
 }
 
-- (id)cachedImageSetForType:(int64_t)a3 withDisplayProfile:(id)a4 displayTraits:(id)a5
+- (id)cachedImageSetForType:(int64_t)type withDisplayProfile:(id)profile displayTraits:(id)traits
 {
   if (self->_library)
   {
-    v6 = [(PKPassLibrary *)self->_library cachedImageSetForUniqueID:self->_objectUniqueID type:a3 withDisplayProfile:a4 displayTraits:a5];
+    v6 = [(PKPassLibrary *)self->_library cachedImageSetForUniqueID:self->_objectUniqueID type:type withDisplayProfile:profile displayTraits:traits];
   }
 
   else
@@ -101,45 +101,45 @@
   return v6;
 }
 
-- (id)imageSetForType:(int64_t)a3 screenScale:(double)a4 suffix:(id)a5 displayProfile:(id)a6 preheat:(BOOL)a7
+- (id)imageSetForType:(int64_t)type screenScale:(double)scale suffix:(id)suffix displayProfile:(id)profile preheat:(BOOL)preheat
 {
   if (self->_library)
   {
-    v8 = [(PKPassLibrary *)self->_library imageSetForUniqueID:self->_objectUniqueID ofType:a3 displayProfile:a6 suffix:a5, a4];
+    scale = [(PKPassLibrary *)self->_library imageSetForUniqueID:self->_objectUniqueID ofType:type displayProfile:profile suffix:suffix, scale];
   }
 
   else
   {
-    v8 = 0;
+    scale = 0;
   }
 
-  return v8;
+  return scale;
 }
 
-- (void)imageSetForType:(int64_t)a3 screenScale:(double)a4 suffix:(id)a5 displayProfile:(id)a6 preheat:(BOOL)a7 withCompletion:(id)a8
+- (void)imageSetForType:(int64_t)type screenScale:(double)scale suffix:(id)suffix displayProfile:(id)profile preheat:(BOOL)preheat withCompletion:(id)completion
 {
-  v15 = a5;
-  v12 = a6;
-  v13 = a8;
+  suffixCopy = suffix;
+  profileCopy = profile;
+  completionCopy = completion;
   library = self->_library;
   if (library)
   {
-    [(PKPassLibrary *)library fetchImageSetForUniqueID:self->_objectUniqueID ofType:a3 displayProfile:v12 suffix:v15 withCompletion:v13];
+    [(PKPassLibrary *)library fetchImageSetForUniqueID:self->_objectUniqueID ofType:type displayProfile:profileCopy suffix:suffixCopy withCompletion:completionCopy];
   }
 
-  else if (v13)
+  else if (completionCopy)
   {
-    v13[2](v13, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 
-- (id)dataForBundleResource:(id)a3
+- (id)dataForBundleResource:(id)resource
 {
-  v4 = a3;
-  v5 = [v4 name];
-  v6 = [v4 extension];
+  resourceCopy = resource;
+  name = [resourceCopy name];
+  extension = [resourceCopy extension];
 
-  v7 = [(PKRemoteDataAccessor *)self dataForBundleResourceNamed:v5 withExtension:v6];
+  v7 = [(PKRemoteDataAccessor *)self dataForBundleResourceNamed:name withExtension:extension];
 
   return v7;
 }

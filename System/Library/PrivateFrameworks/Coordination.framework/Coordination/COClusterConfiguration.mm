@@ -1,42 +1,42 @@
 @interface COClusterConfiguration
-+ (BOOL)_validateServices:(unint64_t)a3 options:(unint64_t)a4;
-+ (COClusterConfiguration)configurationWithDomain:(id)a3 requiredServices:(unint64_t)a4 options:(unint64_t)a5 realm:(id)a6;
-+ (COClusterConfiguration)configurationWithDomain:(id)a3 requiredServices:(unint64_t)a4 options:(unint64_t)a5 realm:(id)a6 globalServiceName:(id)a7;
-+ (id)_prefixFromDomain:(id)a3;
-+ (id)configurationForExplicitClusterIdentifier:(id)a3 requiredServices:(unint64_t)a4 options:(unint64_t)a5;
++ (BOOL)_validateServices:(unint64_t)services options:(unint64_t)options;
++ (COClusterConfiguration)configurationWithDomain:(id)domain requiredServices:(unint64_t)services options:(unint64_t)options realm:(id)realm;
++ (COClusterConfiguration)configurationWithDomain:(id)domain requiredServices:(unint64_t)services options:(unint64_t)options realm:(id)realm globalServiceName:(id)name;
++ (id)_prefixFromDomain:(id)domain;
++ (id)configurationForExplicitClusterIdentifier:(id)identifier requiredServices:(unint64_t)services options:(unint64_t)options;
 + (id)domainPermittedCharacterSet;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToClusterConfiguration:(id)a3;
-- (COClusterConfiguration)initWithCoder:(id)a3;
-- (id)_initWithPrefix:(id)a3 requiredServices:(unint64_t)a4 options:(unint64_t)a5 realm:(id)a6 globalServiceName:(id)a7;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToClusterConfiguration:(id)configuration;
+- (COClusterConfiguration)initWithCoder:(id)coder;
+- (id)_initWithPrefix:(id)prefix requiredServices:(unint64_t)services options:(unint64_t)options realm:(id)realm globalServiceName:(id)name;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation COClusterConfiguration
 
-- (id)_initWithPrefix:(id)a3 requiredServices:(unint64_t)a4 options:(unint64_t)a5 realm:(id)a6 globalServiceName:(id)a7
+- (id)_initWithPrefix:(id)prefix requiredServices:(unint64_t)services options:(unint64_t)options realm:(id)realm globalServiceName:(id)name
 {
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
+  prefixCopy = prefix;
+  realmCopy = realm;
+  nameCopy = name;
   v23.receiver = self;
   v23.super_class = COClusterConfiguration;
   v15 = [(COClusterConfiguration *)&v23 init];
   if (v15)
   {
-    v16 = [v12 copy];
+    v16 = [prefixCopy copy];
     prefix = v15->_prefix;
     v15->_prefix = v16;
 
-    v15->_requiredServices = a4;
-    v15->_options = a5;
-    v18 = [v13 copy];
+    v15->_requiredServices = services;
+    v15->_options = options;
+    v18 = [realmCopy copy];
     realm = v15->_realm;
     v15->_realm = v18;
 
-    v20 = [v14 copy];
+    v20 = [nameCopy copy];
     globalServiceName = v15->_globalServiceName;
     v15->_globalServiceName = v20;
   }
@@ -44,13 +44,13 @@
   return v15;
 }
 
-+ (COClusterConfiguration)configurationWithDomain:(id)a3 requiredServices:(unint64_t)a4 options:(unint64_t)a5 realm:(id)a6
++ (COClusterConfiguration)configurationWithDomain:(id)domain requiredServices:(unint64_t)services options:(unint64_t)options realm:(id)realm
 {
-  v10 = a6;
-  v11 = [a1 _prefixFromDomain:a3];
-  if (v11 && [a1 _validateServices:a4 options:a5])
+  realmCopy = realm;
+  v11 = [self _prefixFromDomain:domain];
+  if (v11 && [self _validateServices:services options:options])
   {
-    v12 = [[a1 alloc] _initWithPrefix:v11 requiredServices:a4 options:a5 realm:v10 globalServiceName:0];
+    v12 = [[self alloc] _initWithPrefix:v11 requiredServices:services options:options realm:realmCopy globalServiceName:0];
   }
 
   else
@@ -61,34 +61,34 @@
   return v12;
 }
 
-+ (COClusterConfiguration)configurationWithDomain:(id)a3 requiredServices:(unint64_t)a4 options:(unint64_t)a5 realm:(id)a6 globalServiceName:(id)a7
++ (COClusterConfiguration)configurationWithDomain:(id)domain requiredServices:(unint64_t)services options:(unint64_t)options realm:(id)realm globalServiceName:(id)name
 {
-  v12 = a6;
-  v13 = a7;
-  v14 = [a1 _prefixFromDomain:a3];
+  realmCopy = realm;
+  nameCopy = name;
+  v14 = [self _prefixFromDomain:domain];
   v15 = v14;
   v16 = 0;
-  if (!(a4 & 3 | a5 & 1) && v14)
+  if (!(services & 3 | options & 1) && v14)
   {
-    v16 = [[a1 alloc] _initWithPrefix:v14 requiredServices:a4 options:a5 realm:v12 globalServiceName:v13];
+    v16 = [[self alloc] _initWithPrefix:v14 requiredServices:services options:options realm:realmCopy globalServiceName:nameCopy];
   }
 
   return v16;
 }
 
-+ (id)configurationForExplicitClusterIdentifier:(id)a3 requiredServices:(unint64_t)a4 options:(unint64_t)a5
++ (id)configurationForExplicitClusterIdentifier:(id)identifier requiredServices:(unint64_t)services options:(unint64_t)options
 {
-  v8 = a3;
-  if (![v8 length])
+  identifierCopy = identifier;
+  if (![identifierCopy length])
   {
     v12 = 0;
     goto LABEL_11;
   }
 
-  v9 = [a1 domainPermittedCharacterSet];
-  v10 = [v9 invertedSet];
+  domainPermittedCharacterSet = [self domainPermittedCharacterSet];
+  invertedSet = [domainPermittedCharacterSet invertedSet];
 
-  if ([v8 rangeOfCharacterFromSet:v10] != 0x7FFFFFFFFFFFFFFFLL)
+  if ([identifierCopy rangeOfCharacterFromSet:invertedSet] != 0x7FFFFFFFFFFFFFFFLL)
   {
     v13 = COLogForCategory(7);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -99,15 +99,15 @@
     goto LABEL_9;
   }
 
-  if (![a1 _validateServices:a4 options:a5])
+  if (![self _validateServices:services options:options])
   {
 LABEL_9:
     v12 = 0;
     goto LABEL_10;
   }
 
-  v11 = [_COClusterRealmExplicitMembership realmWithClusterIdentifier:v8];
-  v12 = [[a1 alloc] _initWithPrefix:&stru_2857AE980 requiredServices:a4 options:a5 realm:v11 globalServiceName:0];
+  v11 = [_COClusterRealmExplicitMembership realmWithClusterIdentifier:identifierCopy];
+  v12 = [[self alloc] _initWithPrefix:&stru_2857AE980 requiredServices:services options:options realm:v11 globalServiceName:0];
 
 LABEL_10:
 LABEL_11:
@@ -115,21 +115,21 @@ LABEL_11:
   return v12;
 }
 
-- (COClusterConfiguration)initWithCoder:(id)a3
+- (COClusterConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
-  if ([v4 decodeIntegerForKey:@"version"] == 1)
+  coderCopy = coder;
+  if ([coderCopy decodeIntegerForKey:@"version"] == 1)
   {
-    v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"prefix"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"requiredServices"];
-    v7 = [v6 unsignedIntegerValue];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"options"];
-    v9 = [v8 unsignedIntegerValue];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"realm"];
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"globalService"];
-    if (v5 && v6 && v8 && v10)
+    selfCopy = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"prefix"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"requiredServices"];
+    unsignedIntegerValue = [v6 unsignedIntegerValue];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"options"];
+    unsignedIntegerValue2 = [v8 unsignedIntegerValue];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"realm"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"globalService"];
+    if (selfCopy && v6 && v8 && v10)
     {
-      v12 = [(COClusterConfiguration *)self _initWithPrefix:v5 requiredServices:v7 options:v9 realm:v10 globalServiceName:v11];
+      v12 = [(COClusterConfiguration *)self _initWithPrefix:selfCopy requiredServices:unsignedIntegerValue options:unsignedIntegerValue2 realm:v10 globalServiceName:v11];
     }
 
     else
@@ -142,30 +142,30 @@ LABEL_11:
   else
   {
     v12 = 0;
-    v5 = self;
+    selfCopy = self;
   }
 
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:1 forKey:@"version"];
-  v5 = [(COClusterConfiguration *)self prefix];
-  [v4 encodeObject:v5 forKey:@"prefix"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:1 forKey:@"version"];
+  prefix = [(COClusterConfiguration *)self prefix];
+  [coderCopy encodeObject:prefix forKey:@"prefix"];
 
   v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[COClusterConfiguration requiredServices](self, "requiredServices")}];
-  [v4 encodeObject:v6 forKey:@"requiredServices"];
+  [coderCopy encodeObject:v6 forKey:@"requiredServices"];
 
   v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[COClusterConfiguration options](self, "options")}];
-  [v4 encodeObject:v7 forKey:@"options"];
+  [coderCopy encodeObject:v7 forKey:@"options"];
 
-  v8 = [(COClusterConfiguration *)self realm];
-  [v4 encodeObject:v8 forKey:@"realm"];
+  realm = [(COClusterConfiguration *)self realm];
+  [coderCopy encodeObject:realm forKey:@"realm"];
 
-  v9 = [(COClusterConfiguration *)self globalServiceName];
-  [v4 encodeObject:v9 forKey:@"globalService"];
+  globalServiceName = [(COClusterConfiguration *)self globalServiceName];
+  [coderCopy encodeObject:globalServiceName forKey:@"globalService"];
 }
 
 - (id)description
@@ -173,33 +173,33 @@ LABEL_11:
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(COClusterConfiguration *)self prefix];
-  v7 = [(COClusterConfiguration *)self requiredServices];
-  v8 = [(COClusterConfiguration *)self options];
-  v9 = [(COClusterConfiguration *)self realm];
-  v10 = [v3 stringWithFormat:@"<%@: %p, pfx(%@) s(%#0lx) o(%#0lx) r(%@)>", v5, self, v6, v7, v8, v9];
+  prefix = [(COClusterConfiguration *)self prefix];
+  requiredServices = [(COClusterConfiguration *)self requiredServices];
+  options = [(COClusterConfiguration *)self options];
+  realm = [(COClusterConfiguration *)self realm];
+  v10 = [v3 stringWithFormat:@"<%@: %p, pfx(%@) s(%#0lx) o(%#0lx) r(%@)>", v5, self, prefix, requiredServices, options, realm];
 
   return v10;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(COClusterConfiguration *)self prefix];
-  v3 = [v2 hash];
+  prefix = [(COClusterConfiguration *)self prefix];
+  v3 = [prefix hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (!equalCopy)
   {
     goto LABEL_5;
   }
 
-  if (self == v4)
+  if (self == equalCopy)
   {
     v6 = 1;
     goto LABEL_7;
@@ -222,22 +222,22 @@ LABEL_7:
   return v6;
 }
 
-- (BOOL)isEqualToClusterConfiguration:(id)a3
+- (BOOL)isEqualToClusterConfiguration:(id)configuration
 {
-  v5 = a3;
-  v6 = [(COClusterConfiguration *)self prefix];
-  v7 = [v5 prefix];
-  if ([v6 isEqualToString:v7])
+  configurationCopy = configuration;
+  prefix = [(COClusterConfiguration *)self prefix];
+  prefix2 = [configurationCopy prefix];
+  if ([prefix isEqualToString:prefix2])
   {
-    v8 = [(COClusterConfiguration *)self requiredServices];
-    if (v8 == [v5 requiredServices])
+    requiredServices = [(COClusterConfiguration *)self requiredServices];
+    if (requiredServices == [configurationCopy requiredServices])
     {
-      v9 = [(COClusterConfiguration *)self options];
-      if (v9 == [v5 options])
+      options = [(COClusterConfiguration *)self options];
+      if (options == [configurationCopy options])
       {
-        v10 = [(COClusterConfiguration *)self realm];
-        v11 = [v5 realm];
-        if (![v10 isEqual:v11])
+        realm = [(COClusterConfiguration *)self realm];
+        realm2 = [configurationCopy realm];
+        if (![realm isEqual:realm2])
         {
           v15 = 0;
 LABEL_15:
@@ -245,14 +245,14 @@ LABEL_15:
           goto LABEL_10;
         }
 
-        v12 = [(COClusterConfiguration *)self globalServiceName];
-        if (v12 || ([v5 globalServiceName], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+        globalServiceName = [(COClusterConfiguration *)self globalServiceName];
+        if (globalServiceName || ([configurationCopy globalServiceName], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
         {
-          v13 = [(COClusterConfiguration *)self globalServiceName];
-          v14 = [v5 globalServiceName];
-          v15 = [v13 isEqual:v14];
+          globalServiceName2 = [(COClusterConfiguration *)self globalServiceName];
+          globalServiceName3 = [configurationCopy globalServiceName];
+          v15 = [globalServiceName2 isEqual:globalServiceName3];
 
-          if (v12)
+          if (globalServiceName)
           {
 LABEL_14:
 
@@ -265,7 +265,7 @@ LABEL_14:
           v15 = 1;
         }
 
-        v12 = v3;
+        globalServiceName = v3;
         goto LABEL_14;
       }
     }
@@ -308,9 +308,9 @@ void __53__COClusterConfiguration_domainPermittedCharacterSet__block_invoke()
   domainPermittedCharacterSet_permitted = v0;
 }
 
-+ (BOOL)_validateServices:(unint64_t)a3 options:(unint64_t)a4
++ (BOOL)_validateServices:(unint64_t)services options:(unint64_t)options
 {
-  if (!a3)
+  if (!services)
   {
     v4 = COLogForCategory(7);
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -321,7 +321,7 @@ void __53__COClusterConfiguration_domainPermittedCharacterSet__block_invoke()
     goto LABEL_14;
   }
 
-  if ((a3 & 0xFFFFFFFFFFFFFFF0) != 0)
+  if ((services & 0xFFFFFFFFFFFFFFF0) != 0)
   {
     v4 = COLogForCategory(7);
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -334,7 +334,7 @@ LABEL_14:
     return 0;
   }
 
-  if ((a4 & 0xFFFFFFFFFFFFFFFELL) != 0)
+  if ((options & 0xFFFFFFFFFFFFFFFELL) != 0)
   {
     v4 = COLogForCategory(7);
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -346,7 +346,7 @@ LABEL_14:
   }
 
   result = 1;
-  if ((a3 & 3) != 0 && !a4)
+  if ((services & 3) != 0 && !options)
   {
     v4 = COLogForCategory(7);
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -360,17 +360,17 @@ LABEL_14:
   return result;
 }
 
-+ (id)_prefixFromDomain:(id)a3
++ (id)_prefixFromDomain:(id)domain
 {
-  v3 = a3;
-  if ([v3 length])
+  domainCopy = domain;
+  if ([domainCopy length])
   {
-    v4 = [objc_opt_class() domainPermittedCharacterSet];
-    v5 = [v4 invertedSet];
+    domainPermittedCharacterSet = [objc_opt_class() domainPermittedCharacterSet];
+    invertedSet = [domainPermittedCharacterSet invertedSet];
 
-    if ([v3 rangeOfCharacterFromSet:v5] == 0x7FFFFFFFFFFFFFFFLL)
+    if ([domainCopy rangeOfCharacterFromSet:invertedSet] == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"d-cluster.%@", v3];
+      domainCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"d-cluster.%@", domainCopy];
     }
 
     else
@@ -381,16 +381,16 @@ LABEL_14:
         +[COClusterConfiguration _prefixFromDomain:];
       }
 
-      v6 = 0;
+      domainCopy = 0;
     }
   }
 
   else
   {
-    v6 = 0;
+    domainCopy = 0;
   }
 
-  return v6;
+  return domainCopy;
 }
 
 + (void)configurationForExplicitClusterIdentifier:requiredServices:options:.cold.1()

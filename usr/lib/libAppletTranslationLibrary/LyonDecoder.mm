@@ -1,10 +1,10 @@
 @interface LyonDecoder
 + (id)getInstance;
 - (LyonDecoder)init;
-- (id)GetAppletProperties:(id)a3 withPackage:(id)a4 withModule:(id)a5 withTransceiver:(id)a6 withError:(id *)a7;
-- (id)getAppletStateAndHistory:(id)a3 withApplet:(id)a4 withPackage:(id)a5 withModule:(id)a6 withError:(id *)a7;
-- (id)parseHCIEvent:(id)a3 withApplet:(id)a4 withPackage:(id)a5 withModule:(id)a6 withTransceiver:(id)a7 withError:(id *)a8;
-- (id)processEndOfTransaction:(id)a3 withApplet:(id)a4 withPackage:(id)a5 withModule:(id)a6 withError:(id *)a7;
+- (id)GetAppletProperties:(id)properties withPackage:(id)package withModule:(id)module withTransceiver:(id)transceiver withError:(id *)error;
+- (id)getAppletStateAndHistory:(id)history withApplet:(id)applet withPackage:(id)package withModule:(id)module withError:(id *)error;
+- (id)parseHCIEvent:(id)event withApplet:(id)applet withPackage:(id)package withModule:(id)module withTransceiver:(id)transceiver withError:(id *)error;
+- (id)processEndOfTransaction:(id)transaction withApplet:(id)applet withPackage:(id)package withModule:(id)module withError:(id *)error;
 - (int64_t)state;
 - (void)cleanup;
 @end
@@ -46,46 +46,46 @@ uint64_t __26__LyonDecoder_getInstance__block_invoke()
 - (int64_t)state
 {
   v2 = +[_TtC24AppletTranslationLibrary16LyonSwiftDecoder getInstance];
-  v3 = [v2 stateNumber];
+  stateNumber = [v2 stateNumber];
 
-  return v3;
+  return stateNumber;
 }
 
-- (id)GetAppletProperties:(id)a3 withPackage:(id)a4 withModule:(id)a5 withTransceiver:(id)a6 withError:(id *)a7
+- (id)GetAppletProperties:(id)properties withPackage:(id)package withModule:(id)module withTransceiver:(id)transceiver withError:(id *)error
 {
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
+  transceiverCopy = transceiver;
+  moduleCopy = module;
+  packageCopy = package;
+  propertiesCopy = properties;
   v15 = +[_TtC24AppletTranslationLibrary16LyonSwiftDecoder getInstance];
-  v16 = [v15 GetAppletProperties:v14 withPackage:v13 withModule:v12 withTransceiver:v11 withError:a7];
+  v16 = [v15 GetAppletProperties:propertiesCopy withPackage:packageCopy withModule:moduleCopy withTransceiver:transceiverCopy withError:error];
 
   return v16;
 }
 
-- (id)getAppletStateAndHistory:(id)a3 withApplet:(id)a4 withPackage:(id)a5 withModule:(id)a6 withError:(id *)a7
+- (id)getAppletStateAndHistory:(id)history withApplet:(id)applet withPackage:(id)package withModule:(id)module withError:(id *)error
 {
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
+  moduleCopy = module;
+  packageCopy = package;
+  appletCopy = applet;
+  historyCopy = history;
   v15 = +[_TtC24AppletTranslationLibrary16LyonSwiftDecoder getInstance];
-  v16 = [v15 getAppletStateAndHistory:v14 withApplet:v13 withPackage:v12 withModule:v11 withError:a7];
+  v16 = [v15 getAppletStateAndHistory:historyCopy withApplet:appletCopy withPackage:packageCopy withModule:moduleCopy withError:error];
 
   return v16;
 }
 
-- (id)parseHCIEvent:(id)a3 withApplet:(id)a4 withPackage:(id)a5 withModule:(id)a6 withTransceiver:(id)a7 withError:(id *)a8
+- (id)parseHCIEvent:(id)event withApplet:(id)applet withPackage:(id)package withModule:(id)module withTransceiver:(id)transceiver withError:(id *)error
 {
-  v13 = a7;
-  v14 = a6;
-  v15 = a5;
-  v16 = a4;
-  v17 = a3;
+  transceiverCopy = transceiver;
+  moduleCopy = module;
+  packageCopy = package;
+  appletCopy = applet;
+  eventCopy = event;
   v18 = +[_TtC24AppletTranslationLibrary16LyonSwiftDecoder getInstance];
-  v19 = [v18 parseHCIEvent:v17 withApplet:v16 withPackage:v15 withModule:v14 withTransceiver:v13 withError:a8];
+  v19 = [v18 parseHCIEvent:eventCopy withApplet:appletCopy withPackage:packageCopy withModule:moduleCopy withTransceiver:transceiverCopy withError:error];
 
-  if (*a8 || [v19 count])
+  if (*error || [v19 count])
   {
     v20 = v19;
   }
@@ -98,14 +98,14 @@ uint64_t __26__LyonDecoder_getInstance__block_invoke()
   return v20;
 }
 
-- (id)processEndOfTransaction:(id)a3 withApplet:(id)a4 withPackage:(id)a5 withModule:(id)a6 withError:(id *)a7
+- (id)processEndOfTransaction:(id)transaction withApplet:(id)applet withPackage:(id)package withModule:(id)module withError:(id *)error
 {
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
+  moduleCopy = module;
+  packageCopy = package;
+  appletCopy = applet;
+  transactionCopy = transaction;
   v15 = +[_TtC24AppletTranslationLibrary16LyonSwiftDecoder getInstance];
-  v16 = [v15 processEndOfTransaction:v14 withApplet:v13 withPackage:v12 withModule:v11 withError:a7];
+  v16 = [v15 processEndOfTransaction:transactionCopy withApplet:appletCopy withPackage:packageCopy withModule:moduleCopy withError:error];
 
   return v16;
 }

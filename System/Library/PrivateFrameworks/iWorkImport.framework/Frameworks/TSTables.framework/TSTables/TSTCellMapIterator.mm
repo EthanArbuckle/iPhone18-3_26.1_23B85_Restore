@@ -1,30 +1,30 @@
 @interface TSTCellMapIterator
-- (TSTCellMapIterator)initWithCellMap:(id)a3;
+- (TSTCellMapIterator)initWithCellMap:(id)map;
 - (pair<TSTCell)nextCellAndCellUID;
 @end
 
 @implementation TSTCellMapIterator
 
-- (TSTCellMapIterator)initWithCellMap:(id)a3
+- (TSTCellMapIterator)initWithCellMap:(id)map
 {
-  v5 = a3;
+  mapCopy = map;
   v44.receiver = self;
   v44.super_class = TSTCellMapIterator;
   v6 = [(TSTCellMapIterator *)&v44 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_cellMap, a3);
-    v12 = objc_msgSend_cellUIDs(v5, v8, v9, v10, v11);
+    objc_storeStrong(&v6->_cellMap, map);
+    v12 = objc_msgSend_cellUIDs(mapCopy, v8, v9, v10, v11);
     v17 = objc_msgSend_iterator(v12, v13, v14, v15, v16);
     cellUIDIterator = v7->_cellUIDIterator;
     v7->_cellUIDIterator = v17;
 
     v7->_index = 0;
-    v23 = objc_msgSend_cellLists(v5, v19, v20, v21, v22);
+    v23 = objc_msgSend_cellLists(mapCopy, v19, v20, v21, v22);
     v28 = objc_msgSend_firstObject(v23, v24, v25, v26, v27);
     v33 = objc_msgSend_count(v28, v29, v30, v31, v32);
-    v38 = objc_msgSend_cellUIDs(v5, v34, v35, v36, v37);
+    v38 = objc_msgSend_cellUIDs(mapCopy, v34, v35, v36, v37);
     v7->_oneToMany = v33 != objc_msgSend_count(v38, v39, v40, v41, v42);
   }
 

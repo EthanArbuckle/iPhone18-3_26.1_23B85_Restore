@@ -1,26 +1,26 @@
 @interface AMDJSConfigProcessor
-+ (id)getBinariesToFetch:(id)a3 withCurrentColdstartInfo:(id)a4 andAMDColdstartBinariesToDelete:(id)a5 andSummaryContainer:(id)a6;
-+ (id)getModelsToFetch:(id)a3 withCurrentModelInfo:(id)a4 andAMDModlsToDelete:(id)a5 andSummaryContainer:(id)a6;
-+ (id)getUrlsWithVersion:(id)a3;
-+ (id)processConfig:(id)a3 withCallUUID:(id)a4 error:(id *)a5;
-+ (id)refreshDescriptors:(id)a3 forDomain:(id)a4;
-+ (id)saveInAppSegmentsWorkflow:(id)a3 inDomain:(id)a4 withCallUUID:(id)a5 andSummaryContainer:(id)a6;
-+ (id)saveInFlightWorkflows:(id)a3 forModels:(id)a4 inDomain:(id)a5 withCallUUID:(id)a6 error:(id *)a7;
-+ (id)validateConfig:(id)a3 forDomain:(id)a4;
++ (id)getBinariesToFetch:(id)fetch withCurrentColdstartInfo:(id)info andAMDColdstartBinariesToDelete:(id)delete andSummaryContainer:(id)container;
++ (id)getModelsToFetch:(id)fetch withCurrentModelInfo:(id)info andAMDModlsToDelete:(id)delete andSummaryContainer:(id)container;
++ (id)getUrlsWithVersion:(id)version;
++ (id)processConfig:(id)config withCallUUID:(id)d error:(id *)error;
++ (id)refreshDescriptors:(id)descriptors forDomain:(id)domain;
++ (id)saveInAppSegmentsWorkflow:(id)workflow inDomain:(id)domain withCallUUID:(id)d andSummaryContainer:(id)container;
++ (id)saveInFlightWorkflows:(id)workflows forModels:(id)models inDomain:(id)domain withCallUUID:(id)d error:(id *)error;
++ (id)validateConfig:(id)config forDomain:(id)domain;
 @end
 
 @implementation AMDJSConfigProcessor
 
-+ (id)processConfig:(id)a3 withCallUUID:(id)a4 error:(id *)a5
++ (id)processConfig:(id)config withCallUUID:(id)d error:(id *)error
 {
   v133 = *MEMORY[0x277D85DE8];
-  v119 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, config);
   v117 = 0;
-  objc_storeStrong(&v117, a4);
-  v116 = a5;
+  objc_storeStrong(&v117, d);
+  errorCopy = error;
   v115 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v114 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v113 = objc_alloc_init(MEMORY[0x277CBEB38]);
@@ -72,7 +72,7 @@
         v100 = [location[0] objectForKey:v111];
         if (v100)
         {
-          v96 = [v119 validateConfig:v100 forDomain:v111];
+          v96 = [selfCopy validateConfig:v100 forDomain:v111];
           if (v96)
           {
             v95 = [MEMORY[0x277CCACA8] stringWithFormat:@"Bad config: %@", v96];
@@ -159,11 +159,11 @@
                 v23 = v78;
                 v24 = v77;
                 v22 = [v92 count];
-                v25 = [v92 allKeys];
-                v76 = MEMORY[0x277D82BE0](v25);
+                allKeys = [v92 allKeys];
+                v76 = MEMORY[0x277D82BE0](allKeys);
                 __os_log_helper_16_2_2_8_0_8_64(v125, v22, v76);
                 _os_log_debug_impl(&dword_240CB9000, v23, v24, "ModelIds in config (%lu): %@", v125, 0x16u);
-                MEMORY[0x277D82BD8](v25);
+                MEMORY[0x277D82BD8](allKeys);
                 objc_storeStrong(&v76, 0);
               }
 
@@ -202,29 +202,29 @@
               }
 
               v17 = v107;
-              v18 = [v119 refreshDescriptors:v100 forDomain:v111];
+              v18 = [selfCopy refreshDescriptors:v100 forDomain:v111];
               [v17 setObject:? forKey:?];
               MEMORY[0x277D82BD8](v18);
               v69 = objc_alloc_init(MEMORY[0x277CBEB18]);
-              v68 = [v119 saveInAppSegmentsWorkflow:v100 inDomain:v111 withCallUUID:v117 andSummaryContainer:v69];
+              v68 = [selfCopy saveInAppSegmentsWorkflow:v100 inDomain:v111 withCallUUID:v117 andSummaryContainer:v69];
               [v107 setObject:v69 forKey:0x2852B23A8];
               if ([v68 count])
               {
                 v64 = objc_alloc_init(MEMORY[0x277CBEB38]);
                 v63 = objc_alloc_init(MEMORY[0x277CBEB18]);
                 v62 = +[AMDModel getCurrentModelInfoByModelId];
-                v61 = [v119 getModelsToFetch:v92 withCurrentModelInfo:v62 andAMDModlsToDelete:v63 andSummaryContainer:v64];
+                v61 = [selfCopy getModelsToFetch:v92 withCurrentModelInfo:v62 andAMDModlsToDelete:v63 andSummaryContainer:v64];
                 v60 = objc_alloc_init(MEMORY[0x277CBEB38]);
                 v59 = objc_alloc_init(MEMORY[0x277CBEB18]);
                 v58 = +[AMDColdstartURL getCurrentURLInfoByModelId];
-                v57 = [v119 getBinariesToFetch:v82 withCurrentColdstartInfo:v58 andAMDColdstartBinariesToDelete:v59 andSummaryContainer:v60];
-                v56 = [v119 saveInFlightWorkflows:v68 forModels:v61 inDomain:v111 withCallUUID:v117 error:v116];
-                if (*v116)
+                v57 = [selfCopy getBinariesToFetch:v82 withCurrentColdstartInfo:v58 andAMDColdstartBinariesToDelete:v59 andSummaryContainer:v60];
+                v56 = [selfCopy saveInFlightWorkflows:v68 forModels:v61 inDomain:v111 withCallUUID:v117 error:errorCopy];
+                if (*errorCopy)
                 {
                   v13 = MEMORY[0x277CCACA8];
-                  v14 = [*v116 localizedDescription];
-                  v55 = [v13 stringWithFormat:@"Error saving in-flight workflows: %@", v14];
-                  MEMORY[0x277D82BD8](v14);
+                  localizedDescription = [*errorCopy localizedDescription];
+                  v55 = [v13 stringWithFormat:@"Error saving in-flight workflows: %@", localizedDescription];
+                  MEMORY[0x277D82BD8](localizedDescription);
                   v54 = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
                   v53 = OS_LOG_TYPE_ERROR;
                   if (os_log_type_enabled(v54, OS_LOG_TYPE_ERROR))
@@ -237,7 +237,7 @@
 
                   objc_storeStrong(&v54, 0);
                   [v107 setObject:v55 forKey:v106];
-                  *v116 = 0;
+                  *errorCopy = 0;
                   v101 = 3;
                   objc_storeStrong(&v55, 0);
                 }
@@ -396,15 +396,15 @@
   return v10;
 }
 
-+ (id)refreshDescriptors:(id)a3 forDomain:(id)a4
++ (id)refreshDescriptors:(id)descriptors forDomain:(id)domain
 {
   v34 = *MEMORY[0x277D85DE8];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, descriptors);
   v25 = 0;
-  objc_storeStrong(&v25, a4);
+  objc_storeStrong(&v25, domain);
   v24 = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
   v23 = OS_LOG_TYPE_INFO;
   if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
@@ -427,23 +427,23 @@
     MEMORY[0x277D82BD8](v4);
     if (v20)
     {
-      v18 = [v20 localizedDescription];
+      localizedDescription = [v20 localizedDescription];
       oslog = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
       v16 = OS_LOG_TYPE_INFO;
       if (os_log_type_enabled(oslog, OS_LOG_TYPE_INFO))
       {
-        __os_log_helper_16_2_2_8_64_8_64(v32, v25, v18);
+        __os_log_helper_16_2_2_8_64_8_64(v32, v25, localizedDescription);
         _os_log_impl(&dword_240CB9000, oslog, v16, "Error saving descriptors for domain '%@': %@", v32, 0x16u);
       }
 
       objc_storeStrong(&oslog, 0);
       v30 = @"error";
-      v31 = v18;
+      v31 = localizedDescription;
       v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v31 forKeys:&v30 count:1];
       v6 = v22;
       v22 = v5;
       MEMORY[0x277D82BD8](v6);
-      objc_storeStrong(&v18, 0);
+      objc_storeStrong(&localizedDescription, 0);
     }
   }
 
@@ -481,15 +481,15 @@
   return v9;
 }
 
-+ (id)validateConfig:(id)a3 forDomain:(id)a4
++ (id)validateConfig:(id)config forDomain:(id)domain
 {
   v10 = *MEMORY[0x277D85DE8];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, config);
   v7 = 0;
-  objc_storeStrong(&v7, a4);
+  objc_storeStrong(&v7, domain);
   oslog = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_INFO))
   {
@@ -504,19 +504,19 @@
   return 0;
 }
 
-+ (id)saveInAppSegmentsWorkflow:(id)a3 inDomain:(id)a4 withCallUUID:(id)a5 andSummaryContainer:(id)a6
++ (id)saveInAppSegmentsWorkflow:(id)workflow inDomain:(id)domain withCallUUID:(id)d andSummaryContainer:(id)container
 {
   v72 = *MEMORY[0x277D85DE8];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, workflow);
   v65 = 0;
-  objc_storeStrong(&v65, a4);
+  objc_storeStrong(&v65, domain);
   v64 = 0;
-  objc_storeStrong(&v64, a5);
+  objc_storeStrong(&v64, d);
   v63 = 0;
-  objc_storeStrong(&v63, a6);
+  objc_storeStrong(&v63, container);
   v62 = [location[0] objectForKey:0x2852B1BA8];
   if (v62 && [v62 count])
   {
@@ -559,11 +559,11 @@
             {
               v22 = v52;
               v23 = v51;
-              v24 = [v54 localizedDescription];
-              v50 = MEMORY[0x277D82BE0](v24);
+              localizedDescription = [v54 localizedDescription];
+              v50 = MEMORY[0x277D82BE0](localizedDescription);
               __os_log_helper_16_2_1_8_64(v69, v50);
               _os_log_error_impl(&dword_240CB9000, v22, v23, "Error saving workflow: %@", v69, 0xCu);
-              MEMORY[0x277D82BD8](v24);
+              MEMORY[0x277D82BD8](localizedDescription);
               objc_storeStrong(&v50, 0);
             }
 
@@ -730,21 +730,21 @@
   return v9;
 }
 
-+ (id)getModelsToFetch:(id)a3 withCurrentModelInfo:(id)a4 andAMDModlsToDelete:(id)a5 andSummaryContainer:(id)a6
++ (id)getModelsToFetch:(id)fetch withCurrentModelInfo:(id)info andAMDModlsToDelete:(id)delete andSummaryContainer:(id)container
 {
   v100 = *MEMORY[0x277D85DE8];
-  v84 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, fetch);
   v82 = 0;
-  objc_storeStrong(&v82, a4);
+  objc_storeStrong(&v82, info);
   v81 = 0;
-  objc_storeStrong(&v81, a5);
+  objc_storeStrong(&v81, delete);
   v80 = 0;
-  objc_storeStrong(&v80, a6);
+  objc_storeStrong(&v80, container);
   v79 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v78 = [v84 getUrlsWithVersion:location[0]];
+  v78 = [selfCopy getUrlsWithVersion:location[0]];
   v77 = objc_alloc_init(MEMORY[0x277CBEB18]);
   memset(__b, 0, sizeof(__b));
   v47 = MEMORY[0x277D82BE0](v78);
@@ -773,9 +773,9 @@
         if ([v68 isEqualToString:v72])
         {
           v65 = [v71 objectForKey:0x2852AAF08];
-          v30 = [MEMORY[0x277CCAA00] defaultManager];
-          v31 = [v30 fileExistsAtPath:v65];
-          MEMORY[0x277D82BD8](v30);
+          defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+          v31 = [defaultManager fileExistsAtPath:v65];
+          MEMORY[0x277D82BD8](defaultManager);
           if (v31)
           {
             [v77 addObject:v76];
@@ -964,11 +964,11 @@
     v11 = v52;
     v12 = v51;
     v10 = [v79 count];
-    v13 = [v79 allKeys];
-    v50 = MEMORY[0x277D82BE0](v13);
+    allKeys = [v79 allKeys];
+    v50 = MEMORY[0x277D82BE0](allKeys);
     __os_log_helper_16_2_2_8_0_8_64(v86, v10, v50);
     _os_log_impl(&dword_240CB9000, v11, v12, "Models to fetch (%lu): %@", v86, 0x16u);
-    MEMORY[0x277D82BD8](v13);
+    MEMORY[0x277D82BD8](allKeys);
     objc_storeStrong(&v50, 0);
   }
 
@@ -983,9 +983,9 @@
   objc_storeStrong(&v49, 0);
   [v80 setObject:v77 forKey:@"modelsExisting"];
   v7 = v80;
-  v8 = [v79 allKeys];
+  allKeys2 = [v79 allKeys];
   [v7 setObject:? forKey:?];
-  MEMORY[0x277D82BD8](v8);
+  MEMORY[0x277D82BD8](allKeys2);
   [v80 setObject:v81 forKey:@"modelsToDelete"];
   v9 = MEMORY[0x277D82BE0](v79);
   v55 = 1;
@@ -1001,23 +1001,23 @@
   return v9;
 }
 
-+ (id)getBinariesToFetch:(id)a3 withCurrentColdstartInfo:(id)a4 andAMDColdstartBinariesToDelete:(id)a5 andSummaryContainer:(id)a6
++ (id)getBinariesToFetch:(id)fetch withCurrentColdstartInfo:(id)info andAMDColdstartBinariesToDelete:(id)delete andSummaryContainer:(id)container
 {
   v85 = *MEMORY[0x277D85DE8];
-  v71 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, fetch);
   v69 = 0;
-  objc_storeStrong(&v69, a4);
+  objc_storeStrong(&v69, info);
   v68 = 0;
-  objc_storeStrong(&v68, a5);
+  objc_storeStrong(&v68, delete);
   v67 = 0;
-  objc_storeStrong(&v67, a6);
+  objc_storeStrong(&v67, container);
   v66 = objc_alloc_init(MEMORY[0x277CBEB38]);
   if (location[0])
   {
-    v64 = [v71 getUrlsWithVersion:location[0]];
+    v64 = [selfCopy getUrlsWithVersion:location[0]];
     v63 = objc_alloc_init(MEMORY[0x277CBEB18]);
     memset(__b, 0, sizeof(__b));
     v37 = MEMORY[0x277D82BE0](v64);
@@ -1182,11 +1182,11 @@
       v11 = v45;
       v12 = v44;
       v10 = [v66 count];
-      v13 = [v66 allKeys];
-      v43 = MEMORY[0x277D82BE0](v13);
+      allKeys = [v66 allKeys];
+      v43 = MEMORY[0x277D82BE0](allKeys);
       __os_log_helper_16_2_2_8_0_8_64(v74, v10, v43);
       _os_log_impl(&dword_240CB9000, v11, v12, "Coldstart binaries to fetch (%lu): %@", v74, 0x16u);
-      MEMORY[0x277D82BD8](v13);
+      MEMORY[0x277D82BD8](allKeys);
       objc_storeStrong(&v43, 0);
     }
 
@@ -1201,9 +1201,9 @@
     objc_storeStrong(&v42, 0);
     [v67 setObject:v63 forKey:@"binariesExisting"];
     v8 = v67;
-    v9 = [v66 allKeys];
+    allKeys2 = [v66 allKeys];
     [v8 setObject:? forKey:?];
-    MEMORY[0x277D82BD8](v9);
+    MEMORY[0x277D82BD8](allKeys2);
     [v67 setObject:v68 forKey:@"binariesToDelete"];
     v72 = MEMORY[0x277D82BE0](v66);
     v65 = 1;
@@ -1228,13 +1228,13 @@
   return v6;
 }
 
-+ (id)getUrlsWithVersion:(id)a3
++ (id)getUrlsWithVersion:(id)version
 {
   v26 = *MEMORY[0x277D85DE8];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, version);
   v13 = objc_alloc(MEMORY[0x277CBEB38]);
   v21 = [v13 initWithCapacity:{objc_msgSend(location[0], "count")}];
   memset(__b, 0, sizeof(__b));
@@ -1260,12 +1260,12 @@
       {
         v5 = v21;
         v23[0] = v18;
-        v7 = [v17 lastObject];
-        v23[1] = v7;
+        lastObject = [v17 lastObject];
+        v23[1] = lastObject;
         v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v23 count:2];
         [v5 setObject:? forKey:?];
         MEMORY[0x277D82BD8](v6);
-        MEMORY[0x277D82BD8](v7);
+        MEMORY[0x277D82BD8](lastObject);
       }
 
       else
@@ -1305,20 +1305,20 @@
   return v4;
 }
 
-+ (id)saveInFlightWorkflows:(id)a3 forModels:(id)a4 inDomain:(id)a5 withCallUUID:(id)a6 error:(id *)a7
++ (id)saveInFlightWorkflows:(id)workflows forModels:(id)models inDomain:(id)domain withCallUUID:(id)d error:(id *)error
 {
   v68 = *MEMORY[0x277D85DE8];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, workflows);
   v60 = 0;
-  objc_storeStrong(&v60, a4);
+  objc_storeStrong(&v60, models);
   v59 = 0;
-  objc_storeStrong(&v59, a5);
+  objc_storeStrong(&v59, domain);
   v58 = 0;
-  objc_storeStrong(&v58, a6);
-  v57 = a7;
+  objc_storeStrong(&v58, d);
+  errorCopy = error;
   v56 = objc_alloc_init(MEMORY[0x277CBEB18]);
   memset(__b, 0, sizeof(__b));
   v38 = MEMORY[0x277D82BE0](location[0]);
@@ -1339,8 +1339,8 @@
       v55 = *(__b[1] + 8 * v32);
       v53 = 0;
       v52 = 0;
-      v51 = [AMDModel getModelInfo:v55 error:v57];
-      if (*v57)
+      v51 = [AMDModel getModelInfo:v55 error:errorCopy];
+      if (*errorCopy)
       {
         oslog = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
         type = OS_LOG_TYPE_ERROR;
@@ -1392,10 +1392,10 @@
             {
               v20 = v47;
               v7 = [AMDDomains getCodeForDomain:v59];
-              [AMDWorkflow saveWorkflow:v20 forDomain:v7 withCallUUID:v58 error:v57];
+              [AMDWorkflow saveWorkflow:v20 forDomain:v7 withCallUUID:v58 error:errorCopy];
             }
 
-            if (*v57)
+            if (*errorCopy)
             {
               v45 = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
               v44 = OS_LOG_TYPE_ERROR;
@@ -1403,11 +1403,11 @@
               {
                 v17 = v45;
                 v18 = v44;
-                v19 = [*v57 localizedDescription];
-                v43 = MEMORY[0x277D82BE0](v19);
+                localizedDescription = [*errorCopy localizedDescription];
+                v43 = MEMORY[0x277D82BE0](localizedDescription);
                 __os_log_helper_16_2_1_8_64(v64, v43);
                 _os_log_error_impl(&dword_240CB9000, v17, v18, "Workflow save failed with error: %@", v64, 0xCu);
-                MEMORY[0x277D82BD8](v19);
+                MEMORY[0x277D82BD8](localizedDescription);
                 objc_storeStrong(&v43, 0);
               }
 
@@ -1421,10 +1421,10 @@
             {
               v16 = v47;
               v8 = [AMDDomains getCodeForDomain:v59];
-              [AMDWorkflowInFlight saveWorkflow:v16 forDomain:v8 withCallUUID:v58 error:v57];
+              [AMDWorkflowInFlight saveWorkflow:v16 forDomain:v8 withCallUUID:v58 error:errorCopy];
             }
 
-            if (*v57)
+            if (*errorCopy)
             {
               break;
             }
@@ -1451,11 +1451,11 @@
           {
             v13 = v42;
             v14 = v41;
-            v15 = [*v57 localizedDescription];
-            v40 = MEMORY[0x277D82BE0](v15);
+            localizedDescription2 = [*errorCopy localizedDescription];
+            v40 = MEMORY[0x277D82BE0](localizedDescription2);
             __os_log_helper_16_2_1_8_64(v63, v40);
             _os_log_error_impl(&dword_240CB9000, v13, v14, "Inflight workflow save failed with error: %@", v63, 0xCu);
-            MEMORY[0x277D82BD8](v15);
+            MEMORY[0x277D82BD8](localizedDescription2);
             objc_storeStrong(&v40, 0);
           }
 

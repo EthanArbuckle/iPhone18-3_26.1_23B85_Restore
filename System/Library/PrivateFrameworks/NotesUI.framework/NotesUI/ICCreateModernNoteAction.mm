@@ -1,32 +1,32 @@
 @interface ICCreateModernNoteAction
-- (ICCreateModernNoteAction)initWithManagedObjectContext:(id)a3 folder:(id)a4;
-- (id)performWithTitle:(id)a3 contents:(id)a4 pinned:(BOOL)a5 error:(id *)a6;
+- (ICCreateModernNoteAction)initWithManagedObjectContext:(id)context folder:(id)folder;
+- (id)performWithTitle:(id)title contents:(id)contents pinned:(BOOL)pinned error:(id *)error;
 @end
 
 @implementation ICCreateModernNoteAction
 
-- (ICCreateModernNoteAction)initWithManagedObjectContext:(id)a3 folder:(id)a4
+- (ICCreateModernNoteAction)initWithManagedObjectContext:(id)context folder:(id)folder
 {
-  v7 = a3;
-  v8 = a4;
+  contextCopy = context;
+  folderCopy = folder;
   v12.receiver = self;
   v12.super_class = ICCreateModernNoteAction;
   v9 = [(ICCreateModernNoteAction *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_context, a3);
-    objc_storeStrong(&v10->_folder, a4);
+    objc_storeStrong(&v9->_context, context);
+    objc_storeStrong(&v10->_folder, folder);
   }
 
   return v10;
 }
 
-- (id)performWithTitle:(id)a3 contents:(id)a4 pinned:(BOOL)a5 error:(id *)a6
+- (id)performWithTitle:(id)title contents:(id)contents pinned:(BOOL)pinned error:(id *)error
 {
   v38 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
+  titleCopy = title;
+  contentsCopy = contents;
   v31 = 0;
   v32 = &v31;
   v33 = 0x3032000000;
@@ -39,13 +39,13 @@
   v28 = __Block_byref_object_copy__49;
   v29 = __Block_byref_object_dispose__49;
   v30 = 0;
-  if ([v10 length])
+  if ([titleCopy length])
   {
-    v12 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v10];
-    if ([v11 length])
+    v12 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:titleCopy];
+    if ([contentsCopy length])
     {
       [v12 ic_appendString:@"\n"];
-      v13 = [v11 mutableCopy];
+      v13 = [contentsCopy mutableCopy];
       [v13 insertAttributedString:v12 atIndex:0];
     }
 
@@ -57,7 +57,7 @@
 
   else
   {
-    v13 = [v11 mutableCopy];
+    v13 = [contentsCopy mutableCopy];
     v12 = 0;
   }
 
@@ -67,7 +67,7 @@
     -[ICCreateModernNoteAction performWithTitle:contents:pinned:error:].cold.1(buf, [v13 length], objc_msgSend(v13, "hash"), v14);
   }
 
-  v15 = [(ICCreateModernNoteAction *)self context];
+  context = [(ICCreateModernNoteAction *)self context];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __67__ICCreateModernNoteAction_performWithTitle_contents_pinned_error___block_invoke;
@@ -77,15 +77,15 @@
   v16 = v13;
   v21 = v16;
   v23 = &v31;
-  v24 = a5;
-  [v15 performBlockAndWait:v20];
+  pinnedCopy = pinned;
+  [context performBlockAndWait:v20];
 
-  if (a6)
+  if (error)
   {
     v17 = v32[5];
     if (v17)
     {
-      *a6 = v17;
+      *error = v17;
     }
   }
 

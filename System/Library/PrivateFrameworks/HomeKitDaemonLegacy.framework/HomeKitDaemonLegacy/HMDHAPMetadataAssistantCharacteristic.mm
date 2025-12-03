@@ -1,6 +1,6 @@
 @interface HMDHAPMetadataAssistantCharacteristic
 - (HMDHAPMetadataAssistantCharacteristic)init;
-- (HMDHAPMetadataAssistantCharacteristic)initWithName:(id)a3 readHAPCharacteristic:(id)a4 writeHAPCharacteristic:(id)a5 format:(id)a6;
+- (HMDHAPMetadataAssistantCharacteristic)initWithName:(id)name readHAPCharacteristic:(id)characteristic writeHAPCharacteristic:(id)pCharacteristic format:(id)format;
 - (id)description;
 @end
 
@@ -9,42 +9,42 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HMDHAPMetadataAssistantCharacteristic *)self name];
-  v5 = [(HMDHAPMetadataAssistantCharacteristic *)self readHAPCharacteristicName];
-  v6 = [(HMDHAPMetadataAssistantCharacteristic *)self writeHAPCharacteristicName];
-  v7 = [(HMDHAPMetadataAssistantCharacteristic *)self format];
-  v8 = [v3 stringWithFormat:@"Assistant characteristic %@: readHAP %@  writeHAP %@, format %@ supportsLocalization %ld", v4, v5, v6, v7, -[HMDHAPMetadataAssistantCharacteristic supportsLocalization](self, "supportsLocalization")];
+  name = [(HMDHAPMetadataAssistantCharacteristic *)self name];
+  readHAPCharacteristicName = [(HMDHAPMetadataAssistantCharacteristic *)self readHAPCharacteristicName];
+  writeHAPCharacteristicName = [(HMDHAPMetadataAssistantCharacteristic *)self writeHAPCharacteristicName];
+  format = [(HMDHAPMetadataAssistantCharacteristic *)self format];
+  v8 = [v3 stringWithFormat:@"Assistant characteristic %@: readHAP %@  writeHAP %@, format %@ supportsLocalization %ld", name, readHAPCharacteristicName, writeHAPCharacteristicName, format, -[HMDHAPMetadataAssistantCharacteristic supportsLocalization](self, "supportsLocalization")];
 
   return v8;
 }
 
-- (HMDHAPMetadataAssistantCharacteristic)initWithName:(id)a3 readHAPCharacteristic:(id)a4 writeHAPCharacteristic:(id)a5 format:(id)a6
+- (HMDHAPMetadataAssistantCharacteristic)initWithName:(id)name readHAPCharacteristic:(id)characteristic writeHAPCharacteristic:(id)pCharacteristic format:(id)format
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  nameCopy = name;
+  characteristicCopy = characteristic;
+  pCharacteristicCopy = pCharacteristic;
+  formatCopy = format;
   v25.receiver = self;
   v25.super_class = HMDHAPMetadataAssistantCharacteristic;
   v14 = [(HMDHAPMetadataAssistantCharacteristic *)&v25 init];
   v15 = v14;
-  if (v10 && v11 | v12)
+  if (nameCopy && characteristicCopy | pCharacteristicCopy)
   {
     if (v14)
     {
-      v16 = [MEMORY[0x277D0F888] hmf_cachedInstanceForString:v10];
+      v16 = [MEMORY[0x277D0F888] hmf_cachedInstanceForString:nameCopy];
       name = v15->_name;
       v15->_name = v16;
 
-      v18 = [MEMORY[0x277D0F888] hmf_cachedInstanceForString:v11];
+      v18 = [MEMORY[0x277D0F888] hmf_cachedInstanceForString:characteristicCopy];
       readHAPCharacteristicName = v15->_readHAPCharacteristicName;
       v15->_readHAPCharacteristicName = v18;
 
-      v20 = [MEMORY[0x277D0F888] hmf_cachedInstanceForString:v12];
+      v20 = [MEMORY[0x277D0F888] hmf_cachedInstanceForString:pCharacteristicCopy];
       writeHAPCharacteristicName = v15->_writeHAPCharacteristicName;
       v15->_writeHAPCharacteristicName = v20;
 
-      v22 = [MEMORY[0x277D0F888] hmf_cachedInstanceForString:v13];
+      v22 = [MEMORY[0x277D0F888] hmf_cachedInstanceForString:formatCopy];
       format = v15->_format;
       v15->_format = v22;
     }

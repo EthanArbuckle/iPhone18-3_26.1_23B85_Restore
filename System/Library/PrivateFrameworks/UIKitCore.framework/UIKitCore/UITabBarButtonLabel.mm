@@ -1,24 +1,24 @@
 @interface UITabBarButtonLabel
-+ (double)_fontPointSizeForIdiom:(int64_t)a3;
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3;
++ (double)_fontPointSizeForIdiom:(int64_t)idiom;
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key;
 - (UITabBarButton)tabBarButton;
-- (UITabBarButtonLabel)initWithFrame:(CGRect)a3;
-- (UITabBarButtonLabel)initWithTabBarDisplayStyle:(int64_t)a3;
-- (id)_fontForIdiom:(int64_t)a3 forTabBarDisplayStyle:(int64_t)a4;
+- (UITabBarButtonLabel)initWithFrame:(CGRect)frame;
+- (UITabBarButtonLabel)initWithTabBarDisplayStyle:(int64_t)style;
+- (id)_fontForIdiom:(int64_t)idiom forTabBarDisplayStyle:(int64_t)style;
 - (id)_mutableAttributedTextExcludingKern;
-- (id)_titleTextAttributesForState:(unint64_t)a3;
-- (int64_t)_idiomForFontGivenIdiom:(int64_t)a3;
-- (void)_UIAppearance_setTitleTextAttributes:(id)a3 forState:(unint64_t)a4;
-- (void)_applyTabBarButtonAppearanceStorage:(id)a3 withTaggedSelectors:(id)a4;
-- (void)_didChangeFromIdiom:(int64_t)a3 onScreen:(id)a4 traverseHierarchy:(BOOL)a5;
+- (id)_titleTextAttributesForState:(unint64_t)state;
+- (int64_t)_idiomForFontGivenIdiom:(int64_t)idiom;
+- (void)_UIAppearance_setTitleTextAttributes:(id)attributes forState:(unint64_t)state;
+- (void)_applyTabBarButtonAppearanceStorage:(id)storage withTaggedSelectors:(id)selectors;
+- (void)_didChangeFromIdiom:(int64_t)idiom onScreen:(id)screen traverseHierarchy:(BOOL)hierarchy;
 - (void)_legacyApperance_updateTextColorsForState;
-- (void)_updateForFontChangeWithIdiom:(int64_t)a3;
-- (void)resizeToFitWidth:(double)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setSelected:(BOOL)a3;
-- (void)setUnselectedTintColor:(id)a3;
+- (void)_updateForFontChangeWithIdiom:(int64_t)idiom;
+- (void)resizeToFitWidth:(double)width;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setSelected:(BOOL)selected;
+- (void)setUnselectedTintColor:(id)color;
 - (void)tintColorDidChange;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateTextColorsForState;
 @end
 
@@ -27,23 +27,23 @@
 - (void)updateTextColorsForState
 {
   WeakRetained = objc_loadWeakRetained(&self->_tabBarButton);
-  v4 = [WeakRetained itemAppearanceData];
-  if (v4)
+  itemAppearanceData = [WeakRetained itemAppearanceData];
+  if (itemAppearanceData)
   {
-    v5 = v4;
+    v5 = itemAppearanceData;
     v6 = objc_loadWeakRetained(&self->_tabBarButton);
-    v7 = [v6 layoutStyle];
+    layoutStyle = [v6 layoutStyle];
 
-    if (v7 != 3)
+    if (layoutStyle != 3)
     {
-      v17 = [(UILabel *)self text];
-      if ([v17 length])
+      text = [(UILabel *)self text];
+      if ([text length])
       {
         v8 = objc_loadWeakRetained(&self->_tabBarButton);
-        v9 = [v8 _currentItemState];
+        _currentItemState = [v8 _currentItemState];
 
         v10 = objc_loadWeakRetained(&self->_tabBarButton);
-        v11 = [v10 defaultColorForState:v9];
+        v11 = [v10 defaultColorForState:_currentItemState];
         if (v11)
         {
           [(UILabel *)self setTextColor:v11];
@@ -52,14 +52,14 @@
         else
         {
           v12 = objc_loadWeakRetained(&self->_tabBarButton);
-          v13 = [v12 tintColor];
-          [(UILabel *)self setTextColor:v13];
+          tintColor = [v12 tintColor];
+          [(UILabel *)self setTextColor:tintColor];
         }
 
         v14 = objc_loadWeakRetained(&self->_tabBarButton);
-        v15 = [v14 titleTextAttributesForState:v9];
+        v15 = [v14 titleTextAttributesForState:_currentItemState];
 
-        v16 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v17 attributes:v15];
+        v16 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:text attributes:v15];
         [(UILabel *)self setAttributedText:v16];
       }
 
@@ -77,9 +77,9 @@
 - (void)_legacyApperance_updateTextColorsForState
 {
   WeakRetained = objc_loadWeakRetained(&self->_tabBarButton);
-  v3 = [WeakRetained tabBar];
-  v49 = [(UITabBarButtonLabel *)v3 _effectiveUnselectedTabTintColorConsideringView:self];
-  v4 = [WeakRetained isFocused];
+  tabBar = [WeakRetained tabBar];
+  v49 = [(UITabBarButtonLabel *)tabBar _effectiveUnselectedTabTintColorConsideringView:self];
+  isFocused = [WeakRetained isFocused];
   v5 = objc_loadWeakRetained(&self->_tabBarButton);
   if ([v5 isDefaultTVLayout])
   {
@@ -93,17 +93,17 @@
     v6 = v8 == 0;
   }
 
-  if ([(UITabBarButtonLabel *)v3 _useVibrantItems])
+  if ([(UITabBarButtonLabel *)tabBar _useVibrantItems])
   {
-    v9 = v3;
+    selfCopy = tabBar;
   }
 
   else
   {
-    v9 = self;
+    selfCopy = self;
   }
 
-  v10 = [(UIView *)v9 tintColor];
+  tintColor = [(UIView *)selfCopy tintColor];
   unselectedTintColor = self->_unselectedTintColor;
   if (unselectedTintColor && !self->_isSelected)
   {
@@ -113,10 +113,10 @@
 
   if (self->_isHighlighted && self->_isSelected)
   {
-    v12 = [(UIView *)self traitCollection];
-    v13 = [v12 userInterfaceIdiom];
+    traitCollection = [(UIView *)self traitCollection];
+    userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-    if (v13 == 3)
+    if (userInterfaceIdiom == 3)
     {
       v14 = [(_UIBarItemAppearanceStorage *)self->_appearanceStorage textAttributeForKey:*off_1E70EC920 state:5];
       if (!v14)
@@ -133,7 +133,7 @@ LABEL_35:
 
         else
         {
-          v33 = v10;
+          v33 = tintColor;
         }
 
         v19 = v33;
@@ -145,29 +145,29 @@ LABEL_35:
     }
   }
 
-  if (!v6 && (v4 & 1) != 0)
+  if (!v6 && (isFocused & 1) != 0)
   {
     v21 = objc_loadWeakRetained(&self->_tabBarButton);
-    v22 = [v21 isDefaultTVLayout];
+    isDefaultTVLayout = [v21 isDefaultTVLayout];
 
-    if (v22)
+    if (isDefaultTVLayout)
     {
       v23 = objc_loadWeakRetained(&self->_tabBarButton);
       v24 = [v23 defaultColorForState:4];
       v25 = v24;
       if (v24)
       {
-        v26 = v24;
+        tintColor2 = v24;
       }
 
       else
       {
-        v26 = [(UIView *)self tintColor];
+        tintColor2 = [(UIView *)self tintColor];
       }
 
-      v30 = v26;
+      v30 = tintColor2;
 
-      v10 = v30;
+      tintColor = v30;
     }
 
     v14 = [(_UIBarItemAppearanceStorage *)self->_appearanceStorage textAttributeForKey:*off_1E70EC920 state:8];
@@ -191,10 +191,10 @@ LABEL_35:
       v20 = v29 != 0;
       if (!v29)
       {
-        v46 = [WeakRetained _defaultUnselectedLabelTintColor];
-        if (v46)
+        _defaultUnselectedLabelTintColor = [WeakRetained _defaultUnselectedLabelTintColor];
+        if (_defaultUnselectedLabelTintColor)
         {
-          v19 = v46;
+          v19 = _defaultUnselectedLabelTintColor;
           goto LABEL_40;
         }
 
@@ -222,8 +222,8 @@ LABEL_28:
       v20 = v29 != 0;
       if (!v29)
       {
-        v29 = v10;
-        v10 = v29;
+        v29 = tintColor;
+        tintColor = v29;
         v20 = 0;
       }
 
@@ -253,18 +253,18 @@ LABEL_40:
   v20 = 0;
 LABEL_41:
   v34 = objc_loadWeakRetained(&self->_tabBarButton);
-  v35 = [v34 isDefaultTVLayout];
+  isDefaultTVLayout2 = [v34 isDefaultTVLayout];
 
-  if (!v35)
+  if (!isDefaultTVLayout2)
   {
     goto LABEL_45;
   }
 
-  v36 = [(UIView *)v3 traitCollection];
-  v37 = [v36 userInterfaceStyle];
+  traitCollection2 = [(UIView *)tabBar traitCollection];
+  userInterfaceStyle = [traitCollection2 userInterfaceStyle];
 
   v38 = 1.0;
-  if (!((_AXSEnhanceBackgroundContrastEnabled() != 0) | v4 & 1))
+  if (!((_AXSEnhanceBackgroundContrastEnabled() != 0) | isFocused & 1))
   {
     if ([WeakRetained _isSelected])
     {
@@ -272,7 +272,7 @@ LABEL_41:
       {
         v44 = _UISolariumEnabled();
         v39 = 0;
-        if (v37 == 2)
+        if (userInterfaceStyle == 2)
         {
           v45 = 0.5;
         }
@@ -308,7 +308,7 @@ LABEL_41:
         v38 = 0.5;
       }
 
-      if (v37 == 2)
+      if (userInterfaceStyle == 2)
       {
         v39 = 24;
       }
@@ -342,8 +342,8 @@ LABEL_45:
   v42 = v41;
   if (v41)
   {
-    v43 = [v41 shadowColor];
-    [(UILabel *)self setShadowColor:v43];
+    shadowColor = [v41 shadowColor];
+    [(UILabel *)self setShadowColor:shadowColor];
 
     [v42 shadowOffset];
     [(UILabel *)self setShadowOffset:?];
@@ -365,13 +365,13 @@ LABEL_45:
 
 - (id)_mutableAttributedTextExcludingKern
 {
-  if (a1)
+  if (self)
   {
-    v1 = [a1 attributedText];
-    v2 = v1;
-    if (v1)
+    attributedText = [self attributedText];
+    v2 = attributedText;
+    if (attributedText)
     {
-      v3 = v1;
+      v3 = attributedText;
     }
 
     else
@@ -393,11 +393,11 @@ LABEL_45:
   return v5;
 }
 
-- (UITabBarButtonLabel)initWithFrame:(CGRect)a3
+- (UITabBarButtonLabel)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = UITabBarButtonLabel;
-  v3 = [(UILabel *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UILabel *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[UIDevice currentDevice];
@@ -408,7 +408,7 @@ LABEL_45:
   return v3;
 }
 
-- (UITabBarButtonLabel)initWithTabBarDisplayStyle:(int64_t)a3
+- (UITabBarButtonLabel)initWithTabBarDisplayStyle:(int64_t)style
 {
   v8.receiver = self;
   v8.super_class = UITabBarButtonLabel;
@@ -416,17 +416,17 @@ LABEL_45:
   if (v4)
   {
     v5 = +[UIDevice currentDevice];
-    v6 = -[UITabBarButtonLabel _fontForIdiom:forTabBarDisplayStyle:](v4, "_fontForIdiom:forTabBarDisplayStyle:", [v5 userInterfaceIdiom], a3);
+    v6 = -[UITabBarButtonLabel _fontForIdiom:forTabBarDisplayStyle:](v4, "_fontForIdiom:forTabBarDisplayStyle:", [v5 userInterfaceIdiom], style);
     [(UILabel *)v4 setFont:v6];
   }
 
   return v4;
 }
 
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"contents"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"contents"])
   {
     v5 = 1;
   }
@@ -435,33 +435,33 @@ LABEL_45:
   {
     v7.receiver = self;
     v7.super_class = UITabBarButtonLabel;
-    v5 = [(UIView *)&v7 _shouldAnimatePropertyWithKey:v4];
+    v5 = [(UIView *)&v7 _shouldAnimatePropertyWithKey:keyCopy];
   }
 
   return v5;
 }
 
-- (void)resizeToFitWidth:(double)a3
+- (void)resizeToFitWidth:(double)width
 {
   v44[1] = *MEMORY[0x1E69E9840];
-  v4 = a3 + -2.0;
+  v4 = width + -2.0;
   boundsWidth = self->_boundsWidth;
   previousAttributedTextForSizingExcludingKern = self->_previousAttributedTextForSizingExcludingKern;
-  v7 = [(UILabel *)self attributedText];
-  if ([v7 length] && (objc_msgSend(v7, "attribute:atIndex:effectiveRange:", *off_1E70EC950, 0, 0), v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "doubleValue"), v10 = v9, v8, v10 < 0.0))
+  attributedText = [(UILabel *)self attributedText];
+  if ([attributedText length] && (objc_msgSend(attributedText, "attribute:atIndex:effectiveRange:", *off_1E70EC950, 0, 0), v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "doubleValue"), v10 = v9, v8, v10 < 0.0))
   {
-    v11 = [(UITabBarButtonLabel *)self _mutableAttributedTextExcludingKern];
+    _mutableAttributedTextExcludingKern = [(UITabBarButtonLabel *)self _mutableAttributedTextExcludingKern];
     v12 = 1;
   }
 
   else
   {
-    v11 = [v7 mutableCopy];
+    _mutableAttributedTextExcludingKern = [attributedText mutableCopy];
     v12 = 0;
   }
 
   v13 = v4 != boundsWidth || previousAttributedTextForSizingExcludingKern == 0;
-  if (v13 || ![v11 isEqualToAttributedString:self->_previousAttributedTextForSizingExcludingKern])
+  if (v13 || ![_mutableAttributedTextExcludingKern isEqualToAttributedString:self->_previousAttributedTextForSizingExcludingKern])
   {
     if (v4 != boundsWidth)
     {
@@ -481,7 +481,7 @@ LABEL_45:
       v39 = v21;
       v40 = v20;
       v41 = v19;
-      previousKernAttributeForSizing = [v7 mutableCopy];
+      previousKernAttributeForSizing = [attributedText mutableCopy];
       v24 = [(NSNumber *)previousKernAttributeForSizing length];
       v25 = *off_1E70EC950;
       v26 = &unk_1EFE2E268;
@@ -530,9 +530,9 @@ LABEL_45:
       self->_previousKernAttributeForSizing = v26;
     }
 
-    v37 = [(UITabBarButtonLabel *)self _mutableAttributedTextExcludingKern];
+    _mutableAttributedTextExcludingKern2 = [(UITabBarButtonLabel *)self _mutableAttributedTextExcludingKern];
     v38 = self->_previousAttributedTextForSizingExcludingKern;
-    self->_previousAttributedTextForSizingExcludingKern = v37;
+    self->_previousAttributedTextForSizingExcludingKern = _mutableAttributedTextExcludingKern2;
   }
 
   else
@@ -544,7 +544,7 @@ LABEL_45:
       v43 = *off_1E70EC950;
       v44[0] = v15;
       v16 = MEMORY[0x1E695DF20];
-      v17 = v11;
+      v17 = _mutableAttributedTextExcludingKern;
       v18 = [v16 dictionaryWithObjects:v44 forKeys:&v43 count:1];
       [v17 addAttributes:v18 range:{0, objc_msgSend(v17, "length")}];
 
@@ -553,35 +553,35 @@ LABEL_45:
   }
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  if (self->_isSelected != a3)
+  if (self->_isSelected != selected)
   {
-    self->_isSelected = a3;
+    self->_isSelected = selected;
     [(UITabBarButtonLabel *)self updateTextColorsForState];
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  if (self->_isHighlighted != a3)
+  if (self->_isHighlighted != highlighted)
   {
-    self->_isHighlighted = a3;
+    self->_isHighlighted = highlighted;
     [(UITabBarButtonLabel *)self updateTextColorsForState];
   }
 }
 
-- (void)setUnselectedTintColor:(id)a3
+- (void)setUnselectedTintColor:(id)color
 {
-  objc_storeStrong(&self->_unselectedTintColor, a3);
+  objc_storeStrong(&self->_unselectedTintColor, color);
   [(UITabBarButtonLabel *)self _updateLabelsVibrancy];
 
   [(UITabBarButtonLabel *)self updateTextColorsForState];
 }
 
-- (void)_updateForFontChangeWithIdiom:(int64_t)a3
+- (void)_updateForFontChangeWithIdiom:(int64_t)idiom
 {
-  v4 = [(UITabBarButtonLabel *)self _fontForIdiom:a3];
+  v4 = [(UITabBarButtonLabel *)self _fontForIdiom:idiom];
   [(UILabel *)self setFont:v4];
 
   v5[0] = MEMORY[0x1E69E9820];
@@ -592,11 +592,11 @@ LABEL_45:
   [UIView performWithoutAnimation:v5];
 }
 
-- (void)_UIAppearance_setTitleTextAttributes:(id)a3 forState:(unint64_t)a4
+- (void)_UIAppearance_setTitleTextAttributes:(id)attributes forState:(unint64_t)state
 {
-  v6 = a3;
+  attributesCopy = attributes;
   appearanceStorage = self->_appearanceStorage;
-  if (v6)
+  if (attributesCopy)
   {
     if (!appearanceStorage)
     {
@@ -611,32 +611,32 @@ LABEL_45:
     return;
   }
 
-  v18 = [v6 _ui_attributesForDictionaryContainingUIStringDrawingKeys];
+  _ui_attributesForDictionaryContainingUIStringDrawingKeys = [attributesCopy _ui_attributesForDictionaryContainingUIStringDrawingKeys];
 
-  v10 = _checkControlStateArgumentAdjustIfNecessary(a4);
+  v10 = _checkControlStateArgumentAdjustIfNecessary(state);
   v11 = [(_UIBarItemAppearanceStorage *)self->_appearanceStorage textAttributesForState:v10];
-  if (v18 | v11)
+  if (_ui_attributesForDictionaryContainingUIStringDrawingKeys | v11)
   {
-    if (([v18 isEqualToDictionary:v11] & 1) == 0)
+    if (([_ui_attributesForDictionaryContainingUIStringDrawingKeys isEqualToDictionary:v11] & 1) == 0)
     {
-      [(_UIBarItemAppearanceStorage *)self->_appearanceStorage setTextAttributes:v18 forState:v10];
+      [(_UIBarItemAppearanceStorage *)self->_appearanceStorage setTextAttributes:_ui_attributesForDictionaryContainingUIStringDrawingKeys forState:v10];
       [(UITabBarButtonLabel *)self updateTextColorsForState];
       [(UILabel *)self setNeedsDisplay];
       if (!v10)
       {
-        v12 = [v18 objectForKey:*off_1E70EC918];
-        v13 = [(UILabel *)self font];
-        if (v12 | v13 && ([v12 isEqual:v13] & 1) == 0)
+        v12 = [_ui_attributesForDictionaryContainingUIStringDrawingKeys objectForKey:*off_1E70EC918];
+        font = [(UILabel *)self font];
+        if (v12 | font && ([v12 isEqual:font] & 1) == 0)
         {
-          v14 = [(UIView *)self _screen];
-          -[UITabBarButtonLabel _updateForFontChangeWithIdiom:](self, "_updateForFontChangeWithIdiom:", [v14 _userInterfaceIdiom]);
+          _screen = [(UIView *)self _screen];
+          -[UITabBarButtonLabel _updateForFontChangeWithIdiom:](self, "_updateForFontChangeWithIdiom:", [_screen _userInterfaceIdiom]);
         }
 
         [(UITabBarButtonLabel *)self _updateLabelsVibrancy];
-        v15 = [(UIView *)self _screen];
-        v16 = [v15 _userInterfaceIdiom];
+        _screen2 = [(UIView *)self _screen];
+        _userInterfaceIdiom = [_screen2 _userInterfaceIdiom];
 
-        if (v16 == 3)
+        if (_userInterfaceIdiom == 3)
         {
           v17 = 0.9;
         }
@@ -646,50 +646,50 @@ LABEL_45:
           v17 = 0.0;
         }
 
-        [(UILabel *)self setAdjustsFontSizeToFitWidth:v16 == 3];
+        [(UILabel *)self setAdjustsFontSizeToFitWidth:_userInterfaceIdiom == 3];
         [(UILabel *)self setMinimumScaleFactor:v17];
       }
     }
   }
 }
 
-- (id)_titleTextAttributesForState:(unint64_t)a3
+- (id)_titleTextAttributesForState:(unint64_t)state
 {
-  v4 = _checkControlStateArgumentAdjustIfNecessary(a3);
+  v4 = _checkControlStateArgumentAdjustIfNecessary(state);
   appearanceStorage = self->_appearanceStorage;
 
   return [(_UIBarItemAppearanceStorage *)appearanceStorage textAttributesForState:v4];
 }
 
-- (void)_applyTabBarButtonAppearanceStorage:(id)a3 withTaggedSelectors:(id)a4
+- (void)_applyTabBarButtonAppearanceStorage:(id)storage withTaggedSelectors:(id)selectors
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  storageCopy = storage;
+  selectorsCopy = selectors;
+  if (selectorsCopy)
   {
-    objc_setAssociatedObject(self, &_UIAppearanceCustomizedSelectorsAssociationKey, v7, 1);
+    objc_setAssociatedObject(self, &_UIAppearanceCustomizedSelectorsAssociationKey, selectorsCopy, 1);
   }
 
-  if (v6)
+  if (storageCopy)
   {
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __79__UITabBarButtonLabel__applyTabBarButtonAppearanceStorage_withTaggedSelectors___block_invoke;
     v8[3] = &unk_1E70F9438;
     v8[4] = self;
-    [v6 enumerateTextAttributesWithBlock:v8];
+    [storageCopy enumerateTextAttributesWithBlock:v8];
   }
 }
 
-+ (double)_fontPointSizeForIdiom:(int64_t)a3
++ (double)_fontPointSizeForIdiom:(int64_t)idiom
 {
-  if (a3 == 8 || a3 == 2)
+  if (idiom == 8 || idiom == 2)
   {
     return 40.0;
   }
 
   result = 10.0;
-  if (a3 == 1)
+  if (idiom == 1)
   {
     v4 = dyld_program_sdk_at_least();
     result = 14.0;
@@ -702,18 +702,18 @@ LABEL_45:
   return result;
 }
 
-- (id)_fontForIdiom:(int64_t)a3 forTabBarDisplayStyle:(int64_t)a4
+- (id)_fontForIdiom:(int64_t)idiom forTabBarDisplayStyle:(int64_t)style
 {
   WeakRetained = objc_loadWeakRetained(&self->_tabBarButton);
-  v8 = [WeakRetained itemAppearanceData];
+  itemAppearanceData = [WeakRetained itemAppearanceData];
 
-  if (v8)
+  if (itemAppearanceData)
   {
     v9 = objc_loadWeakRetained(&self->_tabBarButton);
-    v10 = [v9 _currentItemState];
+    _currentItemState = [v9 _currentItemState];
 
     v11 = objc_loadWeakRetained(&self->_tabBarButton);
-    v12 = [v11 titleTextAttributesForState:v10];
+    v12 = [v11 titleTextAttributesForState:_currentItemState];
     v13 = [v12 objectForKey:*off_1E70EC918];
   }
 
@@ -728,7 +728,7 @@ LABEL_45:
     [v13 pointSize];
     if (v14 == 0.0)
     {
-      [UITabBarButtonLabel _fontPointSizeForIdiom:a3];
+      [UITabBarButtonLabel _fontPointSizeForIdiom:idiom];
       v15 = [v13 fontWithSize:?];
 
       v13 = v15;
@@ -737,13 +737,13 @@ LABEL_45:
     goto LABEL_19;
   }
 
-  switch(a3)
+  switch(idiom)
   {
     case 8:
       goto LABEL_10;
     case 3:
-      v16 = [(UIView *)self traitCollection];
-      v13 = [off_1E70ECC18 preferredFontForTextStyle:@"UICTFontTextStyleEmphasizedCaption2" compatibleWithTraitCollection:v16];
+      traitCollection = [(UIView *)self traitCollection];
+      v13 = [off_1E70ECC18 preferredFontForTextStyle:@"UICTFontTextStyleEmphasizedCaption2" compatibleWithTraitCollection:traitCollection];
 LABEL_18:
 
       goto LABEL_19;
@@ -760,14 +760,14 @@ LABEL_10:
       }
       v13 = ;
       v17 = objc_loadWeakRetained(&self->_tabBarButton);
-      v16 = [v17 tabBar];
+      traitCollection = [v17 tabBar];
 
-      if (v16)
+      if (traitCollection)
       {
-        a4 = [v16 _displayStyle];
+        style = [traitCollection _displayStyle];
       }
 
-      if (!a4)
+      if (!style)
       {
         v18 = [off_1E70ECC18 preferredFontForTextStyle:@"UICTFontTextStyleHeadline"];
 
@@ -778,18 +778,18 @@ LABEL_10:
   }
 
   v20 = objc_loadWeakRetained(&self->_tabBarButton);
-  v21 = [v20 layoutStyle];
+  layoutStyle = [v20 layoutStyle];
 
-  if (v21)
+  if (layoutStyle)
   {
-    v22 = [(UIView *)self traitCollection];
-    v23 = [v22 _traitCollectionByReplacingObject:@"UICTContentSizeCategoryL" forTraitToken:0x1EFE32440];
+    traitCollection2 = [(UIView *)self traitCollection];
+    v23 = [traitCollection2 _traitCollectionByReplacingObject:@"UICTContentSizeCategoryL" forTraitToken:0x1EFE32440];
 
     v24 = objc_loadWeakRetained(&self->_tabBarButton);
-    v25 = [v24 layoutStyle];
+    layoutStyle2 = [v24 layoutStyle];
 
     v26 = &UIFontTextStyleFootnote;
-    if (v25 == 2)
+    if (layoutStyle2 == 2)
     {
       v26 = &UIFontTextStyleCaption1;
     }
@@ -799,7 +799,7 @@ LABEL_10:
 
   else
   {
-    [UITabBarButtonLabel _fontPointSizeForIdiom:a3];
+    [UITabBarButtonLabel _fontPointSizeForIdiom:idiom];
     v28 = v27;
     v29 = dyld_program_sdk_at_least();
     v30 = off_1E70ECD20;
@@ -816,58 +816,58 @@ LABEL_19:
   return v13;
 }
 
-- (int64_t)_idiomForFontGivenIdiom:(int64_t)a3
+- (int64_t)_idiomForFontGivenIdiom:(int64_t)idiom
 {
   WeakRetained = objc_loadWeakRetained(&self->_tabBarButton);
-  v5 = [WeakRetained tabBar];
-  v6 = [v5 _tabBarSizing];
+  tabBar = [WeakRetained tabBar];
+  _tabBarSizing = [tabBar _tabBarSizing];
 
-  if (v6)
+  if (_tabBarSizing)
   {
-    return v6 != 1;
+    return _tabBarSizing != 1;
   }
 
   else
   {
-    return a3;
+    return idiom;
   }
 }
 
-- (void)_didChangeFromIdiom:(int64_t)a3 onScreen:(id)a4 traverseHierarchy:(BOOL)a5
+- (void)_didChangeFromIdiom:(int64_t)idiom onScreen:(id)screen traverseHierarchy:(BOOL)hierarchy
 {
   v7.receiver = self;
   v7.super_class = UITabBarButtonLabel;
-  [(UILabel *)&v7 _didChangeFromIdiom:a3 onScreen:a4 traverseHierarchy:a5];
+  [(UILabel *)&v7 _didChangeFromIdiom:idiom onScreen:screen traverseHierarchy:hierarchy];
   if ((dyld_program_sdk_at_least() & 1) == 0)
   {
-    v6 = [(UIView *)self _screen];
-    -[UITabBarButtonLabel _updateForFontChangeWithIdiom:](self, "_updateForFontChangeWithIdiom:", -[UITabBarButtonLabel _idiomForFontGivenIdiom:](self, "_idiomForFontGivenIdiom:", [v6 _userInterfaceIdiom]));
+    _screen = [(UIView *)self _screen];
+    -[UITabBarButtonLabel _updateForFontChangeWithIdiom:](self, "_updateForFontChangeWithIdiom:", -[UITabBarButtonLabel _idiomForFontGivenIdiom:](self, "_idiomForFontGivenIdiom:", [_screen _userInterfaceIdiom]));
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v10.receiver = self;
   v10.super_class = UITabBarButtonLabel;
-  [(UILabel *)&v10 traitCollectionDidChange:v4];
+  [(UILabel *)&v10 traitCollectionDidChange:changeCopy];
   if (dyld_program_sdk_at_least())
   {
-    v5 = [(UIView *)self traitCollection];
-    v6 = [v5 userInterfaceIdiom];
+    traitCollection = [(UIView *)self traitCollection];
+    userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-    if (!self->_hasSeenIdiom || v6 != [v4 userInterfaceIdiom])
+    if (!self->_hasSeenIdiom || userInterfaceIdiom != [changeCopy userInterfaceIdiom])
     {
       self->_hasSeenIdiom = 1;
-      [(UITabBarButtonLabel *)self _updateForFontChangeWithIdiom:[(UITabBarButtonLabel *)self _idiomForFontGivenIdiom:v6]];
+      [(UITabBarButtonLabel *)self _updateForFontChangeWithIdiom:[(UITabBarButtonLabel *)self _idiomForFontGivenIdiom:userInterfaceIdiom]];
     }
   }
 
-  v7 = [(UIView *)self traitCollection];
-  v8 = [v7 legibilityWeight];
-  v9 = [v4 legibilityWeight];
+  traitCollection2 = [(UIView *)self traitCollection];
+  legibilityWeight = [traitCollection2 legibilityWeight];
+  legibilityWeight2 = [changeCopy legibilityWeight];
 
-  if (v8 != v9)
+  if (legibilityWeight != legibilityWeight2)
   {
     self->_boundsWidth = 0.0;
   }

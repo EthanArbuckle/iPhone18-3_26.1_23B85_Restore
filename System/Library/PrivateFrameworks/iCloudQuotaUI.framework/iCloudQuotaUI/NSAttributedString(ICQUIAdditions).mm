@@ -11,8 +11,8 @@
   v3 = MEMORY[0x277CCAB48];
   v4 = a3;
   v5 = [v3 alloc];
-  v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%C", 8197];
-  v7 = [v5 initWithString:v6];
+  8197 = [MEMORY[0x277CCACA8] stringWithFormat:@"%C", 8197];
+  v7 = [v5 initWithString:8197];
 
   v8 = [v7 length];
   v9 = [objc_alloc(MEMORY[0x277D74270]) initWithData:0 ofType:0];
@@ -59,22 +59,22 @@
     {
       v15 = v8;
       v16 = [v8 objectAtIndexedSubscript:v14];
-      v17 = [a1 attributesForIndex:v14 baseAttributes:v33];
+      v17 = [self attributesForIndex:v14 baseAttributes:v33];
       v18 = objc_alloc(MEMORY[0x277CCA898]);
       v19 = [v7 substringWithRange:{v13, v10 - v13}];
       v20 = [v18 initWithString:v19 attributes:v33];
       [v35 appendAttributedString:v20];
 
       v21 = MEMORY[0x277CCACA8];
-      v22 = [v16 text];
-      v23 = [v21 stringWithFormat:@"%@", v22];
+      text = [v16 text];
+      v23 = [v21 stringWithFormat:@"%@", text];
 
       v24 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:v23 attributes:v17];
       [v35 appendAttributedString:v24];
 
       if ([v16 options])
       {
-        v25 = [a1 spaceArrowAttributedStringWithBaseAttributes:v17];
+        v25 = [self spaceArrowAttributedStringWithBaseAttributes:v17];
         [v35 appendAttributedString:v25];
       }
 

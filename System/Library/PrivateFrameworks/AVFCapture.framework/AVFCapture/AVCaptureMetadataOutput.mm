@@ -1,8 +1,8 @@
 @interface AVCaptureMetadataOutput
-+ (id)_metadataConstantValueToName:(id)a3;
++ (id)_metadataConstantValueToName:(id)name;
 + (void)initialize;
 - (AVCaptureMetadataOutput)init;
-- (BOOL)canAddConnection:(id)a3 failureReason:(id *)a4;
+- (BOOL)canAddConnection:(id)connection failureReason:(id *)reason;
 - (BOOL)isAppClipCodeMetadataSupported;
 - (BOOL)isAttentionDetectionSupported;
 - (BOOL)isFaceOcclusionDetectionSupported;
@@ -21,61 +21,61 @@
 - (float)motionToWakeTargetFrameRate;
 - (float)objectDetectionTargetFrameRate;
 - (id)_metadataIdentifiers;
-- (id)_newEmitTimerForSynchronizedMetadataCollections:(id)a3;
-- (id)metadataIdentifiersForMetadataObjectTypes:(id)a3;
-- (id)metadataObjectTypesForMetadataIdentifiers:(id)a3;
+- (id)_newEmitTimerForSynchronizedMetadataCollections:(id)collections;
+- (id)metadataIdentifiersForMetadataObjectTypes:(id)types;
+- (id)metadataObjectTypesForMetadataIdentifiers:(id)identifiers;
 - (id)metadataObjectTypesSupportingZeroFrameDelaySynchronization;
 - (id)supportedMetadataObjectTypesForFrameRateControl;
 - (unint64_t)maxSynchronizationFrameDelay;
-- (void)_emitCollections:(id)a3;
-- (void)_emitSyncedCollections:(id)a3;
+- (void)_emitCollections:(id)collections;
+- (void)_emitSyncedCollections:(id)collections;
 - (void)_flushSynchronizedMetadataCollectionsQueue;
-- (void)_handleLocalQueueMessage:(FigLocalQueueMessage *)a3;
-- (void)_handleNotification:(id)a3 payload:(id)a4;
-- (void)_handleRemoteQueueOperation:(FigRemoteOperation *)a3;
-- (void)_processSampleBuffer:(opaqueCMSampleBuffer *)a3;
-- (void)_processSynchronizationWithCollections:(id)a3 withCorrespondingMetadataObjectTypes:(id)a4;
-- (void)_removeMetadataObjectTypeFromMetadataObjectTypes:(id)a3;
-- (void)_removeMetadataObjectTypesFromMetadataObjectTypes:(id)a3;
-- (void)_updateLocalQueue:(localQueueOpaque *)a3;
-- (void)_updateRemoteQueue:(remoteQueueReceiverOpaque *)a3;
+- (void)_handleLocalQueueMessage:(FigLocalQueueMessage *)message;
+- (void)_handleNotification:(id)notification payload:(id)payload;
+- (void)_handleRemoteQueueOperation:(FigRemoteOperation *)operation;
+- (void)_processSampleBuffer:(opaqueCMSampleBuffer *)buffer;
+- (void)_processSynchronizationWithCollections:(id)collections withCorrespondingMetadataObjectTypes:(id)types;
+- (void)_removeMetadataObjectTypeFromMetadataObjectTypes:(id)types;
+- (void)_removeMetadataObjectTypesFromMetadataObjectTypes:(id)types;
+- (void)_updateLocalQueue:(localQueueOpaque *)queue;
+- (void)_updateRemoteQueue:(remoteQueueReceiverOpaque *)queue;
 - (void)_updateSynchronizationEnabledStatus;
-- (void)attachSafelyToFigCaptureSession:(OpaqueFigCaptureSession *)a3;
+- (void)attachSafelyToFigCaptureSession:(OpaqueFigCaptureSession *)session;
 - (void)dealloc;
-- (void)detachSafelyFromFigCaptureSession:(OpaqueFigCaptureSession *)a3;
-- (void)setAppClipCodeMetadataObjectTypeAvailable:(BOOL)a3;
-- (void)setAttentionDetectionEnabled:(BOOL)a3;
-- (void)setAttentionForFaceIDReadinessRequired:(BOOL)a3;
-- (void)setDelegateOverride:(id)a3 delegateOverrideCallbackQueue:(id)a4;
-- (void)setEmitsEmptyObjectDetectionMetadata:(BOOL)a3;
-- (void)setFaceOcclusionDetectionEnabled:(BOOL)a3;
-- (void)setFaceTrackingFailureFieldOfViewModifier:(float)a3;
-- (void)setFaceTrackingMaxFaces:(int64_t)a3;
-- (void)setFaceTrackingMetadataObjectTypesAvailable:(BOOL)a3;
-- (void)setFaceTrackingNetworkFailureThresholdMultiplier:(float)a3;
-- (void)setFaceTrackingPlusEnabled:(BOOL)a3;
-- (void)setFaceTrackingSuspended:(BOOL)a3;
-- (void)setFaceTrackingUsesFaceRecognition:(BOOL)a3;
-- (void)setHeadMetadataObjectTypesAvailable:(BOOL)a3;
-- (void)setHumanHandMetadataObjectTypeAvailable:(BOOL)a3;
-- (void)setMaxSynchronizationFrameDelay:(unint64_t)a3;
+- (void)detachSafelyFromFigCaptureSession:(OpaqueFigCaptureSession *)session;
+- (void)setAppClipCodeMetadataObjectTypeAvailable:(BOOL)available;
+- (void)setAttentionDetectionEnabled:(BOOL)enabled;
+- (void)setAttentionForFaceIDReadinessRequired:(BOOL)required;
+- (void)setDelegateOverride:(id)override delegateOverrideCallbackQueue:(id)queue;
+- (void)setEmitsEmptyObjectDetectionMetadata:(BOOL)metadata;
+- (void)setFaceOcclusionDetectionEnabled:(BOOL)enabled;
+- (void)setFaceTrackingFailureFieldOfViewModifier:(float)modifier;
+- (void)setFaceTrackingMaxFaces:(int64_t)faces;
+- (void)setFaceTrackingMetadataObjectTypesAvailable:(BOOL)available;
+- (void)setFaceTrackingNetworkFailureThresholdMultiplier:(float)multiplier;
+- (void)setFaceTrackingPlusEnabled:(BOOL)enabled;
+- (void)setFaceTrackingSuspended:(BOOL)suspended;
+- (void)setFaceTrackingUsesFaceRecognition:(BOOL)recognition;
+- (void)setHeadMetadataObjectTypesAvailable:(BOOL)available;
+- (void)setHumanHandMetadataObjectTypeAvailable:(BOOL)available;
+- (void)setMaxSynchronizationFrameDelay:(unint64_t)delay;
 - (void)setMetadataObjectTypes:(NSArray *)metadataObjectTypes;
 - (void)setMetadataObjectsDelegate:(id)objectsDelegate queue:(dispatch_queue_t)objectsCallbackQueue;
-- (void)setOfflineVideoStabilizationMotionMetadataObjectTypesAvailable:(BOOL)a3;
-- (void)setPeriocularForFaceIDReadinessEnabled:(BOOL)a3;
+- (void)setOfflineVideoStabilizationMotionMetadataObjectTypesAvailable:(BOOL)available;
+- (void)setPeriocularForFaceIDReadinessEnabled:(BOOL)enabled;
 - (void)setRectOfInterest:(CGRect)rectOfInterest;
-- (void)setSceneClassificationMetadataObjectTypeAvailable:(BOOL)a3;
-- (void)setSynchronizationEnabled:(BOOL)a3;
-- (void)setTargetFrameRate:(float)a3 forMetadataObjectType:(id)a4;
-- (void)setTextRegionMetadataObjectTypeAvailable:(BOOL)a3;
-- (void)setVideoPreviewHistogramMetadataObjectTypesAvailable:(BOOL)a3;
+- (void)setSceneClassificationMetadataObjectTypeAvailable:(BOOL)available;
+- (void)setSynchronizationEnabled:(BOOL)enabled;
+- (void)setTargetFrameRate:(float)rate forMetadataObjectType:(id)type;
+- (void)setTextRegionMetadataObjectTypeAvailable:(BOOL)available;
+- (void)setVideoPreviewHistogramMetadataObjectTypesAvailable:(BOOL)available;
 @end
 
 @implementation AVCaptureMetadataOutput
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work_cf();
@@ -88,11 +88,11 @@
 {
   v10.receiver = self;
   v10.super_class = AVCaptureMetadataOutput;
-  v2 = [(AVCaptureOutput *)&v10 initSubclass];
-  if (v2)
+  initSubclass = [(AVCaptureOutput *)&v10 initSubclass];
+  if (initSubclass)
   {
     v3 = objc_alloc_init(AVCaptureMetadataOutputInternal);
-    v2->_internal = v3;
+    initSubclass->_internal = v3;
     if (v3)
     {
       v3->rectOfInterest.origin.x = 0.0;
@@ -100,7 +100,7 @@
       __asm { FMOV            V0.2D, #1.0 }
 
       v3->rectOfInterest.size = _Q0;
-      v2->_internal->weakReference = [objc_alloc(MEMORY[0x1E6988198]) initWithReferencedObject:v2];
+      initSubclass->_internal->weakReference = [objc_alloc(MEMORY[0x1E6988198]) initWithReferencedObject:initSubclass];
     }
 
     else
@@ -110,7 +110,7 @@
     }
   }
 
-  return v2;
+  return initSubclass;
 }
 
 - (NSArray)metadataObjectTypes
@@ -128,15 +128,15 @@
     metadataObjectTypes = self->_internal->metadataObjectTypes;
     if (metadataObjectTypes)
     {
-      v6 = [(NSArray *)metadataObjectTypes copy];
+      array = [(NSArray *)metadataObjectTypes copy];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DEC8] array];
+      array = [MEMORY[0x1E695DEC8] array];
     }
 
-    v3 = v6;
+    v3 = array;
     objc_sync_exit(internal);
   }
 
@@ -246,9 +246,9 @@
 
 - (id)_metadataIdentifiers
 {
-  v3 = [(AVCaptureMetadataOutput *)self metadataObjectTypes];
+  metadataObjectTypes = [(AVCaptureMetadataOutput *)self metadataObjectTypes];
 
-  return [(AVCaptureMetadataOutput *)self metadataIdentifiersForMetadataObjectTypes:v3];
+  return [(AVCaptureMetadataOutput *)self metadataIdentifiersForMetadataObjectTypes:metadataObjectTypes];
 }
 
 - (CGRect)rectOfInterest
@@ -374,9 +374,9 @@
   }
 }
 
-- (id)metadataObjectTypesForMetadataIdentifiers:(id)a3
+- (id)metadataObjectTypesForMetadataIdentifiers:(id)identifiers
 {
-  v5 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if (metadataObjectTypesForMetadataIdentifiers__sMetadataIdentifierToMetadataConstantDictionaryOnceToken != -1)
   {
     [AVCaptureMetadataOutput metadataObjectTypesForMetadataIdentifiers:];
@@ -386,7 +386,7 @@
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v6 = [a3 countByEnumeratingWithState:&v24 objects:v23 count:16];
+  v6 = [identifiers countByEnumeratingWithState:&v24 objects:v23 count:16];
   if (v6)
   {
     v7 = v6;
@@ -397,7 +397,7 @@
       {
         if (*v25 != v8)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(identifiers);
         }
 
         v10 = *(*(&v24 + 1) + 8 * i);
@@ -457,17 +457,17 @@
 
         if (v14)
         {
-          [v5 addObject:?];
+          [array addObject:?];
         }
       }
 
-      v7 = [a3 countByEnumeratingWithState:&v24 objects:v23 count:16];
+      v7 = [identifiers countByEnumeratingWithState:&v24 objects:v23 count:16];
     }
 
     while (v7);
   }
 
-  return v5;
+  return array;
 }
 
 id __69__AVCaptureMetadataOutput_metadataObjectTypesForMetadataIdentifiers___block_invoke()
@@ -578,7 +578,7 @@ id __69__AVCaptureMetadataOutput_metadataObjectTypesForMetadataIdentifiers___blo
 {
   if (metadataObjectTypes)
   {
-    v5 = [(AVCaptureMetadataOutput *)self availableMetadataObjectTypes];
+    availableMetadataObjectTypes = [(AVCaptureMetadataOutput *)self availableMetadataObjectTypes];
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
@@ -598,7 +598,7 @@ id __69__AVCaptureMetadataOutput_metadataObjectTypesForMetadataIdentifiers___blo
           }
 
           v10 = *(*(&v15 + 1) + 8 * i);
-          if (![(NSArray *)v5 containsObject:v10])
+          if (![(NSArray *)availableMetadataObjectTypes containsObject:v10])
           {
             v13 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector() userInfo:{0, v10}];
             if (AVCaptureShouldThrowForAPIViolations())
@@ -652,19 +652,19 @@ id __69__AVCaptureMetadataOutput_metadataObjectTypesForMetadataIdentifiers___blo
   return [MEMORY[0x1E695DEC8] arrayWithObjects:v3 count:7];
 }
 
-- (id)metadataIdentifiersForMetadataObjectTypes:(id)a3
+- (id)metadataIdentifiersForMetadataObjectTypes:(id)types
 {
   if (metadataIdentifiersForMetadataObjectTypes__sMetadataConstantToMetadataIdentifierDictionaryOnceToken != -1)
   {
     [AVCaptureMetadataOutput metadataIdentifiersForMetadataObjectTypes:];
   }
 
-  v5 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v6 = [a3 countByEnumeratingWithState:&v24 objects:v23 count:16];
+  v6 = [types countByEnumeratingWithState:&v24 objects:v23 count:16];
   if (v6)
   {
     v7 = v6;
@@ -675,7 +675,7 @@ id __69__AVCaptureMetadataOutput_metadataObjectTypesForMetadataIdentifiers___blo
       {
         if (*v25 != v8)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(types);
         }
 
         v10 = *(*(&v24 + 1) + 8 * i);
@@ -735,17 +735,17 @@ id __69__AVCaptureMetadataOutput_metadataObjectTypesForMetadataIdentifiers___blo
 
         if (v14)
         {
-          [v5 addObject:?];
+          [array addObject:?];
         }
       }
 
-      v7 = [a3 countByEnumeratingWithState:&v24 objects:v23 count:16];
+      v7 = [types countByEnumeratingWithState:&v24 objects:v23 count:16];
     }
 
     while (v7);
   }
 
-  return v5;
+  return array;
 }
 
 id __69__AVCaptureMetadataOutput_metadataIdentifiersForMetadataObjectTypes___block_invoke()
@@ -873,9 +873,9 @@ id __69__AVCaptureMetadataOutput_metadataIdentifiersForMetadataObjectTypes___blo
   }
 }
 
-- (BOOL)canAddConnection:(id)a3 failureReason:(id *)a4
+- (BOOL)canAddConnection:(id)connection failureReason:(id *)reason
 {
-  if (![objc_msgSend(a3 "mediaType")])
+  if (![objc_msgSend(connection "mediaType")])
   {
     v7 = 1;
     goto LABEL_5;
@@ -885,9 +885,9 @@ id __69__AVCaptureMetadataOutput_metadataIdentifiersForMetadataObjectTypes___blo
   {
     v7 = 2;
 LABEL_5:
-    v8 = AVCaptureOutputConnectionFailureReasonString(v7, self, a3);
+    v8 = AVCaptureOutputConnectionFailureReasonString(v7, self, connection);
     result = 0;
-    *a4 = v8;
+    *reason = v8;
     return result;
   }
 
@@ -902,16 +902,16 @@ LABEL_5:
   return [v2 containsObject:v3];
 }
 
-- (void)setFaceTrackingMetadataObjectTypesAvailable:(BOOL)a3
+- (void)setFaceTrackingMetadataObjectTypesAvailable:(BOOL)available
 {
-  v3 = a3;
+  availableCopy = available;
   if ([(AVCaptureMetadataOutput *)self isFaceTrackingSupported])
   {
-    if (self->_internal->faceTrackingMetadataObjectTypesAvailable != v3)
+    if (self->_internal->faceTrackingMetadataObjectTypesAvailable != availableCopy)
     {
       [(AVCaptureMetadataOutput *)self willChangeValueForKey:@"availableMetadataObjectTypes"];
-      self->_internal->faceTrackingMetadataObjectTypesAvailable = v3;
-      if (!v3)
+      self->_internal->faceTrackingMetadataObjectTypesAvailable = availableCopy;
+      if (!availableCopy)
       {
         [(AVCaptureMetadataOutput *)self _removeMetadataObjectTypeFromMetadataObjectTypes:@"trackedFaces"];
       }
@@ -932,14 +932,14 @@ LABEL_5:
   }
 }
 
-- (void)setFaceTrackingMaxFaces:(int64_t)a3
+- (void)setFaceTrackingMaxFaces:(int64_t)faces
 {
   if ([(AVCaptureMetadataOutput *)self isFaceTrackingSupported])
   {
     internal = self->_internal;
-    if (internal->faceTrackingMaxFaces != a3)
+    if (internal->faceTrackingMaxFaces != faces)
     {
-      internal->faceTrackingMaxFaces = a3;
+      internal->faceTrackingMaxFaces = faces;
 
       [(AVCaptureOutput *)self bumpChangeSeed];
     }
@@ -957,15 +957,15 @@ LABEL_5:
   }
 }
 
-- (void)setFaceTrackingUsesFaceRecognition:(BOOL)a3
+- (void)setFaceTrackingUsesFaceRecognition:(BOOL)recognition
 {
-  v3 = a3;
+  recognitionCopy = recognition;
   if ([(AVCaptureMetadataOutput *)self isFaceTrackingSupported])
   {
     internal = self->_internal;
-    if (internal->faceTrackingUsesFaceRecognition != v3)
+    if (internal->faceTrackingUsesFaceRecognition != recognitionCopy)
     {
-      internal->faceTrackingUsesFaceRecognition = v3;
+      internal->faceTrackingUsesFaceRecognition = recognitionCopy;
 
       [(AVCaptureOutput *)self bumpChangeSeed];
     }
@@ -983,15 +983,15 @@ LABEL_5:
   }
 }
 
-- (void)setFaceTrackingPlusEnabled:(BOOL)a3
+- (void)setFaceTrackingPlusEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   if ([(AVCaptureMetadataOutput *)self isFaceTrackingSupported])
   {
     internal = self->_internal;
-    if (internal->faceTrackingPlusEnabled != v3)
+    if (internal->faceTrackingPlusEnabled != enabledCopy)
     {
-      internal->faceTrackingPlusEnabled = v3;
+      internal->faceTrackingPlusEnabled = enabledCopy;
 
       [(AVCaptureOutput *)self bumpChangeSeed];
     }
@@ -1009,14 +1009,14 @@ LABEL_5:
   }
 }
 
-- (void)setFaceTrackingNetworkFailureThresholdMultiplier:(float)a3
+- (void)setFaceTrackingNetworkFailureThresholdMultiplier:(float)multiplier
 {
   if ([(AVCaptureMetadataOutput *)self isFaceTrackingSupported])
   {
     internal = self->_internal;
-    if (internal->faceTrackingNetworkFailureThresholdMultiplier != a3)
+    if (internal->faceTrackingNetworkFailureThresholdMultiplier != multiplier)
     {
-      internal->faceTrackingNetworkFailureThresholdMultiplier = a3;
+      internal->faceTrackingNetworkFailureThresholdMultiplier = multiplier;
 
       [(AVCaptureOutput *)self bumpChangeSeed];
     }
@@ -1034,15 +1034,15 @@ LABEL_5:
   }
 }
 
-- (void)setFaceTrackingSuspended:(BOOL)a3
+- (void)setFaceTrackingSuspended:(BOOL)suspended
 {
-  v3 = a3;
+  suspendedCopy = suspended;
   if ([(AVCaptureMetadataOutput *)self isFaceTrackingSupported])
   {
     internal = self->_internal;
-    if (internal->faceTrackingSuspended != v3)
+    if (internal->faceTrackingSuspended != suspendedCopy)
     {
-      internal->faceTrackingSuspended = v3;
+      internal->faceTrackingSuspended = suspendedCopy;
 
       [(AVCaptureOutput *)self bumpChangeSeed];
     }
@@ -1060,7 +1060,7 @@ LABEL_5:
   }
 }
 
-- (void)setFaceTrackingFailureFieldOfViewModifier:(float)a3
+- (void)setFaceTrackingFailureFieldOfViewModifier:(float)modifier
 {
   if (![(AVCaptureMetadataOutput *)self isFaceTrackingSupported])
   {
@@ -1069,8 +1069,8 @@ LABEL_5:
     goto LABEL_12;
   }
 
-  v6 = a3 <= 1.0 && a3 >= 0.0;
-  if (a3 != -1.0 && !v6)
+  v6 = modifier <= 1.0 && modifier >= 0.0;
+  if (modifier != -1.0 && !v6)
   {
     v7 = MEMORY[0x1E695DF30];
     v8 = *MEMORY[0x1E695D940];
@@ -1086,9 +1086,9 @@ LABEL_12:
   }
 
   internal = self->_internal;
-  if (internal->faceTrackingFailureFieldOfViewModifier != a3)
+  if (internal->faceTrackingFailureFieldOfViewModifier != modifier)
   {
-    internal->faceTrackingFailureFieldOfViewModifier = a3;
+    internal->faceTrackingFailureFieldOfViewModifier = modifier;
 
     [(AVCaptureOutput *)self bumpChangeSeed];
   }
@@ -1096,15 +1096,15 @@ LABEL_12:
 
 - (BOOL)isAttentionDetectionSupported
 {
-  v2 = [(AVCaptureConnection *)[(AVCaptureOutput *)self connectionWithMediaType:AVMediaTypeForMetadataObjects()] sourceDevice];
+  sourceDevice = [(AVCaptureConnection *)[(AVCaptureOutput *)self connectionWithMediaType:AVMediaTypeForMetadataObjects()] sourceDevice];
 
-  return [v2 isAttentionDetectionSupported];
+  return [sourceDevice isAttentionDetectionSupported];
 }
 
-- (void)setAttentionDetectionEnabled:(BOOL)a3
+- (void)setAttentionDetectionEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  if (a3 && ![(AVCaptureMetadataOutput *)self isAttentionDetectionSupported])
+  enabledCopy = enabled;
+  if (enabled && ![(AVCaptureMetadataOutput *)self isAttentionDetectionSupported])
   {
     v6 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector() userInfo:0];
     if (AVCaptureShouldThrowForAPIViolations())
@@ -1118,19 +1118,19 @@ LABEL_12:
   else
   {
     internal = self->_internal;
-    if (internal->attentionDetectionEnabled != v3)
+    if (internal->attentionDetectionEnabled != enabledCopy)
     {
-      internal->attentionDetectionEnabled = v3;
+      internal->attentionDetectionEnabled = enabledCopy;
 
       [(AVCaptureOutput *)self bumpChangeSeed];
     }
   }
 }
 
-- (void)setPeriocularForFaceIDReadinessEnabled:(BOOL)a3
+- (void)setPeriocularForFaceIDReadinessEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  if (a3 && ![(NSArray *)[(AVCaptureMetadataOutput *)self availableMetadataObjectTypes] containsObject:@"FaceIDReadiness"])
+  enabledCopy = enabled;
+  if (enabled && ![(NSArray *)[(AVCaptureMetadataOutput *)self availableMetadataObjectTypes] containsObject:@"FaceIDReadiness"])
   {
     v6 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector() userInfo:0];
     if (AVCaptureShouldThrowForAPIViolations())
@@ -1144,19 +1144,19 @@ LABEL_12:
   else
   {
     internal = self->_internal;
-    if (internal->periocularForFaceIDReadinessEnabled != v3)
+    if (internal->periocularForFaceIDReadinessEnabled != enabledCopy)
     {
-      internal->periocularForFaceIDReadinessEnabled = v3;
+      internal->periocularForFaceIDReadinessEnabled = enabledCopy;
 
       [(AVCaptureOutput *)self bumpChangeSeed];
     }
   }
 }
 
-- (void)setAttentionForFaceIDReadinessRequired:(BOOL)a3
+- (void)setAttentionForFaceIDReadinessRequired:(BOOL)required
 {
-  v3 = a3;
-  if (a3 && ![(NSArray *)[(AVCaptureMetadataOutput *)self availableMetadataObjectTypes] containsObject:@"FaceIDReadiness"])
+  requiredCopy = required;
+  if (required && ![(NSArray *)[(AVCaptureMetadataOutput *)self availableMetadataObjectTypes] containsObject:@"FaceIDReadiness"])
   {
     v6 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector() userInfo:0];
     if (AVCaptureShouldThrowForAPIViolations())
@@ -1170,9 +1170,9 @@ LABEL_12:
   else
   {
     internal = self->_internal;
-    if (internal->attentionForFaceIDReadinessRequired != v3)
+    if (internal->attentionForFaceIDReadinessRequired != requiredCopy)
     {
-      internal->attentionForFaceIDReadinessRequired = v3;
+      internal->attentionForFaceIDReadinessRequired = requiredCopy;
 
       [(AVCaptureOutput *)self bumpChangeSeed];
     }
@@ -1181,15 +1181,15 @@ LABEL_12:
 
 - (BOOL)isFaceOcclusionDetectionSupported
 {
-  v2 = [(AVCaptureConnection *)[(AVCaptureOutput *)self connectionWithMediaType:AVMediaTypeForMetadataObjects()] sourceDevice];
+  sourceDevice = [(AVCaptureConnection *)[(AVCaptureOutput *)self connectionWithMediaType:AVMediaTypeForMetadataObjects()] sourceDevice];
 
-  return [v2 isFaceOcclusionDetectionSupported];
+  return [sourceDevice isFaceOcclusionDetectionSupported];
 }
 
-- (void)setFaceOcclusionDetectionEnabled:(BOOL)a3
+- (void)setFaceOcclusionDetectionEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  if (a3 && ![(AVCaptureMetadataOutput *)self isFaceOcclusionDetectionSupported])
+  enabledCopy = enabled;
+  if (enabled && ![(AVCaptureMetadataOutput *)self isFaceOcclusionDetectionSupported])
   {
     v6 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector() userInfo:0];
     if (AVCaptureShouldThrowForAPIViolations())
@@ -1203,9 +1203,9 @@ LABEL_12:
   else
   {
     internal = self->_internal;
-    if (internal->faceOcclusionDetectionEnabled != v3)
+    if (internal->faceOcclusionDetectionEnabled != enabledCopy)
     {
-      internal->faceOcclusionDetectionEnabled = v3;
+      internal->faceOcclusionDetectionEnabled = enabledCopy;
 
       [(AVCaptureOutput *)self bumpChangeSeed];
     }
@@ -1219,34 +1219,34 @@ LABEL_12:
   return [(AVCaptureMetadataOutput *)self metadataObjectTypesForMetadataIdentifiers:v3];
 }
 
-- (void)setTargetFrameRate:(float)a3 forMetadataObjectType:(id)a4
+- (void)setTargetFrameRate:(float)rate forMetadataObjectType:(id)type
 {
   if ([-[AVCaptureMetadataOutput supportedMetadataObjectTypesForFrameRateControl](self "supportedMetadataObjectTypesForFrameRateControl")])
   {
     targetFrameRateByMetadataObjectType = self->_internal->targetFrameRateByMetadataObjectType;
     if (targetFrameRateByMetadataObjectType)
     {
-      v8 = [(NSDictionary *)targetFrameRateByMetadataObjectType mutableCopy];
+      dictionary = [(NSDictionary *)targetFrameRateByMetadataObjectType mutableCopy];
     }
 
     else
     {
-      v8 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
     }
 
-    v11 = v8;
-    if (a3 <= 0.0)
+    v11 = dictionary;
+    if (rate <= 0.0)
     {
       v12 = 0;
     }
 
     else
     {
-      *&v9 = a3;
+      *&v9 = rate;
       v12 = [MEMORY[0x1E696AD98] numberWithFloat:v9];
     }
 
-    [(NSDictionary *)v11 setObject:v12 forKeyedSubscript:a4];
+    [(NSDictionary *)v11 setObject:v12 forKeyedSubscript:type];
     v13 = self->_internal->targetFrameRateByMetadataObjectType;
     if (v11 != v13 && ![(NSDictionary *)v13 isEqualToDictionary:v11])
     {
@@ -1277,16 +1277,16 @@ LABEL_12:
   return [v2 containsObject:v3];
 }
 
-- (void)setOfflineVideoStabilizationMotionMetadataObjectTypesAvailable:(BOOL)a3
+- (void)setOfflineVideoStabilizationMotionMetadataObjectTypesAvailable:(BOOL)available
 {
-  v3 = a3;
+  availableCopy = available;
   if ([(AVCaptureMetadataOutput *)self isOfflineVideoStabilizationMotionMetadataSupported])
   {
-    if (self->_internal->offlineVideoStabilizationMotionMetadataObjectTypesAvailable != v3)
+    if (self->_internal->offlineVideoStabilizationMotionMetadataObjectTypesAvailable != availableCopy)
     {
       [(AVCaptureMetadataOutput *)self willChangeValueForKey:@"availableMetadataObjectTypes"];
-      self->_internal->offlineVideoStabilizationMotionMetadataObjectTypesAvailable = v3;
-      if (!v3)
+      self->_internal->offlineVideoStabilizationMotionMetadataObjectTypesAvailable = availableCopy;
+      if (!availableCopy)
       {
         [(AVCaptureMetadataOutput *)self _removeMetadataObjectTypeFromMetadataObjectTypes:@"offlineVideoStabilizationMotion"];
       }
@@ -1307,10 +1307,10 @@ LABEL_12:
   }
 }
 
-- (void)setVideoPreviewHistogramMetadataObjectTypesAvailable:(BOOL)a3
+- (void)setVideoPreviewHistogramMetadataObjectTypesAvailable:(BOOL)available
 {
-  v3 = a3;
-  if (a3 && ![(AVCaptureMetadataOutput *)self isVideoPreviewHistogramMetadataSupported])
+  availableCopy = available;
+  if (available && ![(AVCaptureMetadataOutput *)self isVideoPreviewHistogramMetadataSupported])
   {
     v5 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector() userInfo:0];
     if (AVCaptureShouldThrowForAPIViolations())
@@ -1321,11 +1321,11 @@ LABEL_12:
     NSLog(&cfstr_SuppressingExc.isa, v5);
   }
 
-  else if (self->_internal->videoPreviewHistogramMetadataObjectTypesAvailable != v3)
+  else if (self->_internal->videoPreviewHistogramMetadataObjectTypesAvailable != availableCopy)
   {
     [(AVCaptureMetadataOutput *)self willChangeValueForKey:@"availableMetadataObjectTypes"];
-    self->_internal->videoPreviewHistogramMetadataObjectTypesAvailable = v3;
-    if (!v3)
+    self->_internal->videoPreviewHistogramMetadataObjectTypesAvailable = availableCopy;
+    if (!availableCopy)
     {
       [(AVCaptureMetadataOutput *)self _removeMetadataObjectTypeFromMetadataObjectTypes:@"videoPreviewHistogram"];
     }
@@ -1334,10 +1334,10 @@ LABEL_12:
   }
 }
 
-- (void)setAppClipCodeMetadataObjectTypeAvailable:(BOOL)a3
+- (void)setAppClipCodeMetadataObjectTypeAvailable:(BOOL)available
 {
-  v3 = a3;
-  if (a3 && ![(AVCaptureMetadataOutput *)self isAppClipCodeMetadataSupported])
+  availableCopy = available;
+  if (available && ![(AVCaptureMetadataOutput *)self isAppClipCodeMetadataSupported])
   {
     v5 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector() userInfo:0];
     if (AVCaptureShouldThrowForAPIViolations())
@@ -1348,11 +1348,11 @@ LABEL_12:
     NSLog(&cfstr_SuppressingExc.isa, v5);
   }
 
-  else if (self->_internal->appClipCodeObjectTypeAvailable != v3)
+  else if (self->_internal->appClipCodeObjectTypeAvailable != availableCopy)
   {
     [(AVCaptureMetadataOutput *)self willChangeValueForKey:@"availableMetadataObjectTypes"];
-    self->_internal->appClipCodeObjectTypeAvailable = v3;
-    if (!v3)
+    self->_internal->appClipCodeObjectTypeAvailable = availableCopy;
+    if (!availableCopy)
     {
       [(AVCaptureMetadataOutput *)self _removeMetadataObjectTypeFromMetadataObjectTypes:@"com.apple.AppClipCode"];
     }
@@ -1361,10 +1361,10 @@ LABEL_12:
   }
 }
 
-- (void)setTextRegionMetadataObjectTypeAvailable:(BOOL)a3
+- (void)setTextRegionMetadataObjectTypeAvailable:(BOOL)available
 {
-  v3 = a3;
-  if (a3 && ![(AVCaptureMetadataOutput *)self isTextRegionMetadataSupported])
+  availableCopy = available;
+  if (available && ![(AVCaptureMetadataOutput *)self isTextRegionMetadataSupported])
   {
     v5 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector() userInfo:0];
     if (AVCaptureShouldThrowForAPIViolations())
@@ -1375,11 +1375,11 @@ LABEL_12:
     NSLog(&cfstr_SuppressingExc.isa, v5);
   }
 
-  else if (self->_internal->textRegionObjectTypeAvailable != v3)
+  else if (self->_internal->textRegionObjectTypeAvailable != availableCopy)
   {
     [(AVCaptureMetadataOutput *)self willChangeValueForKey:@"availableMetadataObjectTypes"];
-    self->_internal->textRegionObjectTypeAvailable = v3;
-    if (!v3)
+    self->_internal->textRegionObjectTypeAvailable = availableCopy;
+    if (!availableCopy)
     {
       [(AVCaptureMetadataOutput *)self _removeMetadataObjectTypeFromMetadataObjectTypes:@"textRegion"];
     }
@@ -1396,10 +1396,10 @@ LABEL_12:
   return [v2 containsObject:v3];
 }
 
-- (void)setSceneClassificationMetadataObjectTypeAvailable:(BOOL)a3
+- (void)setSceneClassificationMetadataObjectTypeAvailable:(BOOL)available
 {
-  v3 = a3;
-  if (a3 && ![(AVCaptureMetadataOutput *)self isSceneClassificationMetadataSupported])
+  availableCopy = available;
+  if (available && ![(AVCaptureMetadataOutput *)self isSceneClassificationMetadataSupported])
   {
     v5 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector() userInfo:0];
     if (AVCaptureShouldThrowForAPIViolations())
@@ -1410,11 +1410,11 @@ LABEL_12:
     NSLog(&cfstr_SuppressingExc.isa, v5);
   }
 
-  else if (self->_internal->sceneClassificationObjectTypeAvailable != v3)
+  else if (self->_internal->sceneClassificationObjectTypeAvailable != availableCopy)
   {
     [(AVCaptureMetadataOutput *)self willChangeValueForKey:@"availableMetadataObjectTypes"];
-    self->_internal->sceneClassificationObjectTypeAvailable = v3;
-    if (!v3)
+    self->_internal->sceneClassificationObjectTypeAvailable = availableCopy;
+    if (!availableCopy)
     {
       [(AVCaptureMetadataOutput *)self _removeMetadataObjectTypeFromMetadataObjectTypes:@"sceneClassification"];
     }
@@ -1423,10 +1423,10 @@ LABEL_12:
   }
 }
 
-- (void)setHeadMetadataObjectTypesAvailable:(BOOL)a3
+- (void)setHeadMetadataObjectTypesAvailable:(BOOL)available
 {
-  v3 = a3;
-  if (a3 && ![(AVCaptureMetadataOutput *)self isHeadMetadataSupported])
+  availableCopy = available;
+  if (available && ![(AVCaptureMetadataOutput *)self isHeadMetadataSupported])
   {
     v5 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector() userInfo:0];
     if (AVCaptureShouldThrowForAPIViolations())
@@ -1437,11 +1437,11 @@ LABEL_12:
     NSLog(&cfstr_SuppressingExc.isa, v5);
   }
 
-  else if (self->_internal->headObjectTypesAvailable != v3)
+  else if (self->_internal->headObjectTypesAvailable != availableCopy)
   {
     [(AVCaptureMetadataOutput *)self willChangeValueForKey:@"availableMetadataObjectTypes"];
-    self->_internal->headObjectTypesAvailable = v3;
-    if (!v3)
+    self->_internal->headObjectTypesAvailable = availableCopy;
+    if (!availableCopy)
     {
       v6[0] = @"humanHead";
       v6[1] = @"catHead";
@@ -1461,10 +1461,10 @@ LABEL_12:
   return [v2 containsObject:v3];
 }
 
-- (void)setHumanHandMetadataObjectTypeAvailable:(BOOL)a3
+- (void)setHumanHandMetadataObjectTypeAvailable:(BOOL)available
 {
-  v3 = a3;
-  if (a3 && ![(AVCaptureMetadataOutput *)self isHumanHandMetadataSupported])
+  availableCopy = available;
+  if (available && ![(AVCaptureMetadataOutput *)self isHumanHandMetadataSupported])
   {
     v5 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector() userInfo:0];
     if (AVCaptureShouldThrowForAPIViolations())
@@ -1475,11 +1475,11 @@ LABEL_12:
     NSLog(&cfstr_SuppressingExc.isa, v5);
   }
 
-  else if (self->_internal->humanHandObjectTypeAvailable != v3)
+  else if (self->_internal->humanHandObjectTypeAvailable != availableCopy)
   {
     [(AVCaptureMetadataOutput *)self willChangeValueForKey:@"availableMetadataObjectTypes"];
-    self->_internal->humanHandObjectTypeAvailable = v3;
-    if (!v3)
+    self->_internal->humanHandObjectTypeAvailable = availableCopy;
+    if (!availableCopy)
     {
       [(AVCaptureMetadataOutput *)self _removeMetadataObjectTypeFromMetadataObjectTypes:@"humanHand"];
     }
@@ -1488,33 +1488,33 @@ LABEL_12:
   }
 }
 
-- (void)setEmitsEmptyObjectDetectionMetadata:(BOOL)a3
+- (void)setEmitsEmptyObjectDetectionMetadata:(BOOL)metadata
 {
   internal = self->_internal;
-  if (internal->emitsEmptyObjectDetectionMetadata != a3)
+  if (internal->emitsEmptyObjectDetectionMetadata != metadata)
   {
-    internal->emitsEmptyObjectDetectionMetadata = a3;
+    internal->emitsEmptyObjectDetectionMetadata = metadata;
     [(AVCaptureOutput *)self bumpChangeSeed];
   }
 }
 
 - (BOOL)isSynchronizationEnabled
 {
-  v2 = self;
+  selfCopy = self;
   internal = self->_internal;
   objc_sync_enter(internal);
-  LOBYTE(v2) = v2->_internal->synchronizationEnabledByClient;
+  LOBYTE(selfCopy) = selfCopy->_internal->synchronizationEnabledByClient;
   objc_sync_exit(internal);
-  return v2;
+  return selfCopy;
 }
 
-- (void)setSynchronizationEnabled:(BOOL)a3
+- (void)setSynchronizationEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   internal = self->_internal;
   objc_sync_enter(internal);
   v6 = self->_internal;
-  if (v6->synchronizationEnabledByClient == v3)
+  if (v6->synchronizationEnabledByClient == enabledCopy)
   {
     objc_sync_exit(internal);
 
@@ -1523,10 +1523,10 @@ LABEL_12:
 
   else
   {
-    v6->synchronizationEnabledByClient = v3;
+    v6->synchronizationEnabledByClient = enabledCopy;
     objc_sync_exit(internal);
     [(AVCaptureMetadataOutput *)self _updateSynchronizationEnabledStatus];
-    if (!v3)
+    if (!enabledCopy)
     {
 
       [(AVCaptureMetadataOutput *)self _flushSynchronizedMetadataCollectionsQueue];
@@ -1543,26 +1543,26 @@ LABEL_12:
   return maxSynchronizationFrameDelay;
 }
 
-- (void)setMaxSynchronizationFrameDelay:(unint64_t)a3
+- (void)setMaxSynchronizationFrameDelay:(unint64_t)delay
 {
   internal = self->_internal;
   objc_sync_enter(internal);
-  self->_internal->maxSynchronizationFrameDelay = a3;
+  self->_internal->maxSynchronizationFrameDelay = delay;
 
   objc_sync_exit(internal);
 }
 
-+ (id)_metadataConstantValueToName:(id)a3
++ (id)_metadataConstantValueToName:(id)name
 {
   if (_metadataConstantValueToName__sMetadataConstantToMetadataNameDictionaryOnceToken != -1)
   {
     +[AVCaptureMetadataOutput _metadataConstantValueToName:];
   }
 
-  result = [_metadataConstantValueToName__sMetadataConstantToMetadataNameDictionary objectForKeyedSubscript:a3];
+  result = [_metadataConstantValueToName__sMetadataConstantToMetadataNameDictionary objectForKeyedSubscript:name];
   if (!result)
   {
-    return [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ not mapped! Please file a radar against %s", a3, FigCaptureGetFrameworkRadarComponentName()];
+    return [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ not mapped! Please file a radar against %s", name, FigCaptureGetFrameworkRadarComponentName()];
   }
 
   return result;
@@ -1634,28 +1634,28 @@ id __56__AVCaptureMetadataOutput__metadataConstantValueToName___block_invoke()
   return _metadataConstantValueToName__sMetadataConstantToMetadataNameDictionary;
 }
 
-- (void)_removeMetadataObjectTypeFromMetadataObjectTypes:(id)a3
+- (void)_removeMetadataObjectTypeFromMetadataObjectTypes:(id)types
 {
   internal = self->_internal;
   objc_sync_enter(internal);
   metadataObjectTypes = self->_internal->metadataObjectTypes;
-  if ([(NSArray *)metadataObjectTypes containsObject:a3])
+  if ([(NSArray *)metadataObjectTypes containsObject:types])
   {
     v7 = [MEMORY[0x1E695DF70] arrayWithArray:metadataObjectTypes];
-    [(NSArray *)v7 removeObject:a3];
+    [(NSArray *)v7 removeObject:types];
     self->_internal->metadataObjectTypes = v7;
   }
 
   objc_sync_exit(internal);
 }
 
-- (void)_removeMetadataObjectTypesFromMetadataObjectTypes:(id)a3
+- (void)_removeMetadataObjectTypesFromMetadataObjectTypes:(id)types
 {
   internal = self->_internal;
   objc_sync_enter(internal);
   metadataObjectTypes = self->_internal->metadataObjectTypes;
   v7 = [MEMORY[0x1E695DF70] arrayWithArray:metadataObjectTypes];
-  [(NSArray *)v7 removeObjectsInArray:a3];
+  [(NSArray *)v7 removeObjectsInArray:types];
   v8 = [(NSArray *)v7 count];
   if (v8 != [(NSArray *)metadataObjectTypes count])
   {
@@ -1665,54 +1665,54 @@ id __56__AVCaptureMetadataOutput__metadataConstantValueToName___block_invoke()
   objc_sync_exit(internal);
 }
 
-- (void)attachSafelyToFigCaptureSession:(OpaqueFigCaptureSession *)a3
+- (void)attachSafelyToFigCaptureSession:(OpaqueFigCaptureSession *)session
 {
   [(AVCaptureMetadataOutput *)self _flushSynchronizedMetadataCollectionsQueue];
   v5 = [MEMORY[0x1E6987F48] notificationDispatcherForCMNotificationCenter:CMNotificationCenterGetDefaultLocalCenter()];
   weakReference = self->_internal->weakReference;
-  [v5 addListenerWithWeakReference:weakReference callback:mdo_notificationHandler name:*MEMORY[0x1E698FE48] object:a3 flags:0];
-  [v5 addListenerWithWeakReference:weakReference callback:mdo_notificationHandler name:*MEMORY[0x1E698FE40] object:a3 flags:0];
+  [v5 addListenerWithWeakReference:weakReference callback:mdo_notificationHandler name:*MEMORY[0x1E698FE48] object:session flags:0];
+  [v5 addListenerWithWeakReference:weakReference callback:mdo_notificationHandler name:*MEMORY[0x1E698FE40] object:session flags:0];
   v7.receiver = self;
   v7.super_class = AVCaptureMetadataOutput;
-  [(AVCaptureOutput *)&v7 attachSafelyToFigCaptureSession:a3];
+  [(AVCaptureOutput *)&v7 attachSafelyToFigCaptureSession:session];
 }
 
-- (void)detachSafelyFromFigCaptureSession:(OpaqueFigCaptureSession *)a3
+- (void)detachSafelyFromFigCaptureSession:(OpaqueFigCaptureSession *)session
 {
   [(AVCaptureMetadataOutput *)self _flushSynchronizedMetadataCollectionsQueue];
   v5 = [MEMORY[0x1E6987F48] notificationDispatcherForCMNotificationCenter:CMNotificationCenterGetDefaultLocalCenter()];
-  [v5 removeListenerWithWeakReference:self->_internal->weakReference callback:mdo_notificationHandler name:*MEMORY[0x1E698FE48] object:a3];
-  [v5 removeListenerWithWeakReference:self->_internal->weakReference callback:mdo_notificationHandler name:*MEMORY[0x1E698FE40] object:a3];
+  [v5 removeListenerWithWeakReference:self->_internal->weakReference callback:mdo_notificationHandler name:*MEMORY[0x1E698FE48] object:session];
+  [v5 removeListenerWithWeakReference:self->_internal->weakReference callback:mdo_notificationHandler name:*MEMORY[0x1E698FE40] object:session];
   v6.receiver = self;
   v6.super_class = AVCaptureMetadataOutput;
-  [(AVCaptureOutput *)&v6 detachSafelyFromFigCaptureSession:a3];
+  [(AVCaptureOutput *)&v6 detachSafelyFromFigCaptureSession:session];
 }
 
-- (void)_handleNotification:(id)a3 payload:(id)a4
+- (void)_handleNotification:(id)notification payload:(id)payload
 {
-  if ([objc_msgSend(a4 objectForKeyedSubscript:{*MEMORY[0x1E698FCD8]), "isEqual:", -[AVCaptureOutput sinkID](self, "sinkID")}])
+  if ([objc_msgSend(payload objectForKeyedSubscript:{*MEMORY[0x1E698FCD8]), "isEqual:", -[AVCaptureOutput sinkID](self, "sinkID")}])
   {
-    if ([a3 isEqualToString:*MEMORY[0x1E698FE48]])
+    if ([notification isEqualToString:*MEMORY[0x1E698FE48]])
     {
-      v7 = [a4 objectForKeyedSubscript:*MEMORY[0x1E698FE38]];
+      v7 = [payload objectForKeyedSubscript:*MEMORY[0x1E698FE38]];
 
       [(AVCaptureMetadataOutput *)self _updateRemoteQueue:v7];
     }
 
-    else if ([a3 isEqualToString:*MEMORY[0x1E698FE40]])
+    else if ([notification isEqualToString:*MEMORY[0x1E698FE40]])
     {
-      v8 = [a4 objectForKeyedSubscript:*MEMORY[0x1E698FBB8]];
+      v8 = [payload objectForKeyedSubscript:*MEMORY[0x1E698FBB8]];
 
       [(AVCaptureMetadataOutput *)self _updateLocalQueue:v8];
     }
   }
 }
 
-- (void)_updateRemoteQueue:(remoteQueueReceiverOpaque *)a3
+- (void)_updateRemoteQueue:(remoteQueueReceiverOpaque *)queue
 {
   v5 = self->_internal->weakReference;
   MessageReceiver = FigRemoteOperationReceiverCreateMessageReceiver();
-  -[AVCaptureDataOutputDelegateCallbackHelper updateRemoteQueueReceiver:handler:](self->_internal->delegateCallbackHelper, "updateRemoteQueueReceiver:handler:", a3, [MessageReceiver copy]);
+  -[AVCaptureDataOutputDelegateCallbackHelper updateRemoteQueueReceiver:handler:](self->_internal->delegateCallbackHelper, "updateRemoteQueueReceiver:handler:", queue, [MessageReceiver copy]);
 }
 
 void __46__AVCaptureMetadataOutput__updateRemoteQueue___block_invoke(uint64_t a1, int a2, uint64_t a3)
@@ -1736,15 +1736,15 @@ void __46__AVCaptureMetadataOutput__updateRemoteQueue___block_invoke(uint64_t a1
   objc_autoreleasePoolPop(v6);
 }
 
-- (void)_handleRemoteQueueOperation:(FigRemoteOperation *)a3
+- (void)_handleRemoteQueueOperation:(FigRemoteOperation *)operation
 {
-  if (a3->var0 == 3)
+  if (operation->var0 == 3)
   {
-    [(AVCaptureMetadataOutput *)self _processSampleBuffer:a3->var4.var4.var0];
+    [(AVCaptureMetadataOutput *)self _processSampleBuffer:operation->var4.var4.var0];
   }
 }
 
-- (void)_updateLocalQueue:(localQueueOpaque *)a3
+- (void)_updateLocalQueue:(localQueueOpaque *)queue
 {
   v5 = self->_internal->weakReference;
   v6[0] = MEMORY[0x1E69E9820];
@@ -1752,7 +1752,7 @@ void __46__AVCaptureMetadataOutput__updateRemoteQueue___block_invoke(uint64_t a1
   v6[2] = __45__AVCaptureMetadataOutput__updateLocalQueue___block_invoke;
   v6[3] = &unk_1E786F260;
   v6[4] = v5;
-  -[AVCaptureDataOutputDelegateCallbackHelper updateLocalQueue:handler:](self->_internal->delegateCallbackHelper, "updateLocalQueue:handler:", a3, [v6 copy]);
+  -[AVCaptureDataOutputDelegateCallbackHelper updateLocalQueue:handler:](self->_internal->delegateCallbackHelper, "updateLocalQueue:handler:", queue, [v6 copy]);
 }
 
 void __45__AVCaptureMetadataOutput__updateLocalQueue___block_invoke(uint64_t a1, __int128 *a2)
@@ -1770,15 +1770,15 @@ void __45__AVCaptureMetadataOutput__updateLocalQueue___block_invoke(uint64_t a1,
   objc_autoreleasePoolPop(v4);
 }
 
-- (void)_handleLocalQueueMessage:(FigLocalQueueMessage *)a3
+- (void)_handleLocalQueueMessage:(FigLocalQueueMessage *)message
 {
-  if (a3->var0 == 3)
+  if (message->var0 == 3)
   {
-    [(AVCaptureMetadataOutput *)self _processSampleBuffer:*(&a3->var0 + 1)];
+    [(AVCaptureMetadataOutput *)self _processSampleBuffer:*(&message->var0 + 1)];
   }
 }
 
-- (void)_processSampleBuffer:(opaqueCMSampleBuffer *)a3
+- (void)_processSampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
   internal = self->_internal;
   objc_sync_enter(internal);
@@ -1791,10 +1791,10 @@ void __45__AVCaptureMetadataOutput__updateLocalQueue___block_invoke(uint64_t a1,
     goto LABEL_248;
   }
 
-  v198 = [MEMORY[0x1E695DF70] array];
-  v7 = [(AVCaptureConnection *)v5 sourcesFromFrontFacingCamera];
+  array = [MEMORY[0x1E695DF70] array];
+  sourcesFromFrontFacingCamera = [(AVCaptureConnection *)v5 sourcesFromFrontFacingCamera];
   v8 = v5;
-  v9 = v7;
+  v9 = sourcesFromFrontFacingCamera;
   v194 = v8;
   [(AVCaptureConnection *)v8 sourcesFromExternalCamera];
   LOBYTE(v10) = 0;
@@ -1804,7 +1804,7 @@ void __45__AVCaptureMetadataOutput__updateLocalQueue___block_invoke(uint64_t a1,
   }
 
   objc_opt_class();
-  v196 = self;
+  selfCopy = self;
   if (objc_opt_isKindOfClass())
   {
     v11 = [objc_msgSend(objc_msgSend(v6 "device")];
@@ -1815,8 +1815,8 @@ void __45__AVCaptureMetadataOutput__updateLocalQueue___block_invoke(uint64_t a1,
     v11 = 0;
   }
 
-  v12 = a3;
-  v13 = CMGetAttachment(a3, *MEMORY[0x1E6990D10], 0);
+  bufferCopy6 = buffer;
+  v13 = CMGetAttachment(buffer, *MEMORY[0x1E6990D10], 0);
   v14 = MEMORY[0x1E6960C70];
   if (!v13)
   {
@@ -1844,7 +1844,7 @@ void __45__AVCaptureMetadataOutput__updateLocalQueue___block_invoke(uint64_t a1,
     goto LABEL_128;
   }
 
-  v19 = 0;
+  array2 = 0;
   v214 = *v289;
   v213 = *MEMORY[0x1E6991140];
   v212 = *MEMORY[0x1E6990EC0];
@@ -2218,7 +2218,7 @@ LABEL_118:
         goto LABEL_119;
       }
 
-      v19 = [MEMORY[0x1E695DF70] array];
+      array2 = [MEMORY[0x1E695DF70] array];
       v284 = 0u;
       v285 = 0u;
       v286 = 0u;
@@ -2240,7 +2240,7 @@ LABEL_118:
 
             v29 = [AVMetadataFaceObject faceObjectWithFigEmbeddedCaptureDeviceFaceDictionary:*(*(&v284 + 1) + 8 * nn) input:v6 timeStamp:v22];
             [v16 addObject:v29];
-            [v19 addObject:v29];
+            [array2 addObject:v29];
           }
 
           v26 = [v23 countByEnumeratingWithState:&v284 objects:&v280 count:16];
@@ -2267,10 +2267,10 @@ LABEL_120:
 
   while (v68);
   v209 = b_high;
-  v69 = v19 == 0;
-  v12 = a3;
+  v69 = array2 == 0;
+  bufferCopy6 = buffer;
 LABEL_128:
-  v70 = CMGetAttachment(v12, *MEMORY[0x1E6990D18], 0);
+  v70 = CMGetAttachment(bufferCopy6, *MEMORY[0x1E6990D18], 0);
   if (v70)
   {
     v71 = v70;
@@ -2308,7 +2308,7 @@ LABEL_128:
   if ((v192 | v191))
   {
     v76 = FigCaptureFrontCameraRotationAngle();
-    v77 = [MEMORY[0x1E695DF70] array];
+    array3 = [MEMORY[0x1E695DF70] array];
     v79 = *MEMORY[0x1E695EFD0];
     v78 = *(MEMORY[0x1E695EFD0] + 16);
     *&v229.a = *MEMORY[0x1E695EFD0];
@@ -2370,9 +2370,9 @@ LABEL_146:
             objc_enumerationMutation(v16);
           }
 
-          v85 = [*(*(&v223 + 1) + 8 * i2) originalMetadataObject];
+          originalMetadataObject = [*(*(&v223 + 1) + 8 * i2) originalMetadataObject];
           time1 = v229;
-          [v77 addObject:{+[AVMetadataObject derivedMetadataObjectFromMetadataObject:withTransform:isVideoMirrored:rollAdjustment:](AVMetadataObject, "derivedMetadataObjectFromMetadataObject:withTransform:isVideoMirrored:rollAdjustment:", v85, &time1, 0, (v76 + 180))}];
+          [array3 addObject:{+[AVMetadataObject derivedMetadataObjectFromMetadataObject:withTransform:isVideoMirrored:rollAdjustment:](AVMetadataObject, "derivedMetadataObjectFromMetadataObject:withTransform:isVideoMirrored:rollAdjustment:", originalMetadataObject, &time1, 0, (v76 + 180))}];
         }
 
         v82 = [v16 countByEnumeratingWithState:&v223 objects:v222 count:16];
@@ -2381,10 +2381,10 @@ LABEL_146:
       while (v82);
     }
 
-    v16 = v77;
+    v16 = array3;
   }
 
-  v12 = a3;
+  bufferCopy6 = buffer;
   v86 = [MEMORY[0x1E695DFD8] setWithObjects:{@"face", @"humanBody", @"humanFullBody", @"catBody", @"dogBody", @"salientObject", @"humanHead", @"catHead", @"dogHead", @"humanHand", 0}];
   v87 = [MEMORY[0x1E695DFA8] setWithArray:v201];
   [v87 intersectSet:v86];
@@ -2395,7 +2395,7 @@ LABEL_146:
 
   if (v88)
   {
-    [v198 addObject:v88];
+    [array addObject:v88];
   }
 
   if (!v69)
@@ -2404,13 +2404,13 @@ LABEL_146:
   }
 
 LABEL_157:
-  previousTwoCMTimesByDetectorType = v196->_internal->previousTwoCMTimesByDetectorType;
-  if (!CMGetAttachment(v12, *MEMORY[0x1E6990D38], 0))
+  previousTwoCMTimesByDetectorType = selfCopy->_internal->previousTwoCMTimesByDetectorType;
+  if (!CMGetAttachment(bufferCopy6, *MEMORY[0x1E6990D38], 0))
   {
     goto LABEL_173;
   }
 
-  v90 = CMGetAttachment(v12, *MEMORY[0x1E6990D30], 0);
+  v90 = CMGetAttachment(bufferCopy6, *MEMORY[0x1E6990D30], 0);
   v91 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v280 = 0u;
   v281 = 0u;
@@ -2466,24 +2466,24 @@ LABEL_170:
   v270[0] = v275;
   avcmdo_addCMTimeToHistoryForDetector(v218, &v270[0].value, @"AVMetadataDetectorLegacyFaces");
 LABEL_171:
-  v12 = a3;
+  bufferCopy6 = buffer;
   v101 = [MEMORY[0x1E695DFD8] setWithObject:@"face"];
   v270[0] = v275;
   v102 = [AVMetadataObjectCollection collectionWithTime:v270 metadataObjectTypes:v101 handledMetadataObjectTypes:v101 metadataObjects:v91];
 
   if (v102)
   {
-    [v198 addObject:v102];
+    [array addObject:v102];
   }
 
 LABEL_173:
-  v103 = CMGetAttachment(v12, *MEMORY[0x1E6990D78], 0);
+  v103 = CMGetAttachment(bufferCopy6, *MEMORY[0x1E6990D78], 0);
   v104 = 0x1E695D000uLL;
   if (v103)
   {
     v105 = v103;
     memset(&v294, 0, sizeof(v294));
-    CMSampleBufferGetPresentationTimeStamp(&v294, v12);
+    CMSampleBufferGetPresentationTimeStamp(&v294, bufferCopy6);
     v106 = [MEMORY[0x1E695DFD8] setWithObject:@"trackedFaces"];
     v280 = *&v294.value;
     *&v281 = v294.epoch;
@@ -2494,16 +2494,16 @@ LABEL_173:
     v108 = [AVMetadataObjectCollection collectionWithTime:&v280 metadataObjectTypes:v106 handledMetadataObjectTypes:v106 metadataObjects:v107];
     if (v108)
     {
-      [v198 addObject:v108];
+      [array addObject:v108];
     }
   }
 
-  v109 = CMGetAttachment(v12, *MEMORY[0x1E6990D50], 0);
+  v109 = CMGetAttachment(bufferCopy6, *MEMORY[0x1E6990D50], 0);
   if (v109)
   {
     v110 = v109;
     memset(&v294, 0, sizeof(v294));
-    CMSampleBufferGetPresentationTimeStamp(&v294, v12);
+    CMSampleBufferGetPresentationTimeStamp(&v294, bufferCopy6);
     v111 = [MEMORY[0x1E695DFD8] setWithObject:@"offlineVideoStabilizationMotion"];
     v280 = *&v294.value;
     *&v281 = v294.epoch;
@@ -2514,21 +2514,21 @@ LABEL_173:
     v113 = [AVMetadataObjectCollection collectionWithTime:&v280 metadataObjectTypes:v111 handledMetadataObjectTypes:v111 metadataObjects:v112];
     if (v113)
     {
-      [v198 addObject:v113];
+      [array addObject:v113];
     }
   }
 
-  v114 = CMGetAttachment(v12, *MEMORY[0x1E6990D20], 0);
+  v114 = CMGetAttachment(bufferCopy6, *MEMORY[0x1E6990D20], 0);
   if (v114)
   {
     v115 = v114;
     memset(&v294, 0, sizeof(v294));
-    CMSampleBufferGetPresentationTimeStamp(&v294, v12);
+    CMSampleBufferGetPresentationTimeStamp(&v294, bufferCopy6);
     v116 = [MEMORY[0x1E695DFD8] setWithObject:@"EyeReliefStatus"];
     v117 = [objc_msgSend(v115 objectForKeyedSubscript:{*MEMORY[0x1E6991248]), "intValue"}];
     v280 = *&v294.value;
     *&v281 = v294.epoch;
-    v12 = a3;
+    bufferCopy6 = buffer;
     v275.value = [AVMetadataEyeReliefStatusObject eyeReliefStatusObjectWithEyeReliefStatus:v117 input:v6 time:&v280 optionalInfoDict:v115];
     v118 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v275 count:1];
     v280 = *&v294.value;
@@ -2536,50 +2536,50 @@ LABEL_173:
     v119 = [AVMetadataObjectCollection collectionWithTime:&v280 metadataObjectTypes:v116 handledMetadataObjectTypes:v116 metadataObjects:v118];
     if (v119)
     {
-      [v198 addObject:v119];
+      [array addObject:v119];
     }
   }
 
-  v120 = CMGetAttachment(v12, *MEMORY[0x1E6990D28], 0);
+  v120 = CMGetAttachment(bufferCopy6, *MEMORY[0x1E6990D28], 0);
   if (v120)
   {
     v121 = v120;
     memset(&v294, 0, sizeof(v294));
-    CMSampleBufferGetPresentationTimeStamp(&v294, v12);
+    CMSampleBufferGetPresentationTimeStamp(&v294, bufferCopy6);
     v122 = [MEMORY[0x1E695DFD8] setWithObject:@"FaceIDReadiness"];
     v123 = [v121 objectForKeyedSubscript:*MEMORY[0x1E6991258]];
     v124 = [v121 objectForKeyedSubscript:*MEMORY[0x1E6991250]];
     v125 = [v121 objectForKeyedSubscript:*MEMORY[0x1E6991260]];
-    v126 = [v123 BOOLValue];
-    v127 = [v124 intValue];
-    v128 = [v125 intValue];
+    bOOLValue = [v123 BOOLValue];
+    intValue = [v124 intValue];
+    intValue2 = [v125 intValue];
     v280 = *&v294.value;
     *&v281 = v294.epoch;
-    v129 = v126;
-    v12 = a3;
-    v275.value = [AVMetadataFaceIDReadinessObject faceIDReadinessObjectWithReady:v129 coachingStatus:v127 userEngagementStatus:v128 input:v6 time:&v280];
+    v129 = bOOLValue;
+    bufferCopy6 = buffer;
+    v275.value = [AVMetadataFaceIDReadinessObject faceIDReadinessObjectWithReady:v129 coachingStatus:intValue userEngagementStatus:intValue2 input:v6 time:&v280];
     v130 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v275 count:1];
     v280 = *&v294.value;
     *&v281 = v294.epoch;
     v131 = [AVMetadataObjectCollection collectionWithTime:&v280 metadataObjectTypes:v122 handledMetadataObjectTypes:v122 metadataObjects:v130];
-    v132 = v196;
+    v132 = selfCopy;
     if (v131)
     {
-      [v198 addObject:v131];
+      [array addObject:v131];
     }
   }
 
   else
   {
-    v132 = v196;
+    v132 = selfCopy;
   }
 
-  v133 = CMGetAttachment(v12, *MEMORY[0x1E6990D48], 0);
+  v133 = CMGetAttachment(bufferCopy6, *MEMORY[0x1E6990D48], 0);
   if (v133)
   {
     v134 = v133;
     memset(&v294, 0, sizeof(v294));
-    CMSampleBufferGetPresentationTimeStamp(&v294, v12);
+    CMSampleBufferGetPresentationTimeStamp(&v294, bufferCopy6);
     v135 = [MEMORY[0x1E695DFD8] setWithObject:@"MotionToWake"];
     v136 = [objc_msgSend(v134 objectForKeyedSubscript:{*MEMORY[0x1E6991268]), "intValue"}];
     v280 = *&v294.value;
@@ -2591,12 +2591,12 @@ LABEL_173:
     v138 = [AVMetadataObjectCollection collectionWithTime:&v280 metadataObjectTypes:v135 handledMetadataObjectTypes:v135 metadataObjects:v137];
     if (v138)
     {
-      [v198 addObject:v138];
+      [array addObject:v138];
     }
   }
 
   v216 = v132->_internal->previousTwoCMTimesByDetectorType;
-  if (CMGetAttachment(v12, *MEMORY[0x1E6990CF0], 0))
+  if (CMGetAttachment(bufferCopy6, *MEMORY[0x1E6990CF0], 0))
   {
     v270[0].value = *MEMORY[0x1E6960C70];
     flags = *(MEMORY[0x1E6960C70] + 12);
@@ -2604,7 +2604,7 @@ LABEL_173:
     epoch = *(MEMORY[0x1E6960C70] + 16);
     v219 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v141 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-    v142 = CMGetAttachment(v12, *MEMORY[0x1E6990CE8], 0);
+    v142 = CMGetAttachment(bufferCopy6, *MEMORY[0x1E6990CE8], 0);
     v280 = 0u;
     v281 = 0u;
     v282 = 0u;
@@ -2677,21 +2677,21 @@ LABEL_173:
     v275.epoch = epoch;
     v152 = [AVMetadataObjectCollection collectionWithTime:&v275 metadataObjectTypes:v141 handledMetadataObjectTypes:v151 metadataObjects:v219];
 
-    v132 = v196;
+    v132 = selfCopy;
     v104 = 0x1E695D000uLL;
     if (v152)
     {
-      [v198 addObject:v152];
+      [array addObject:v152];
     }
   }
 
-  v153 = a3;
-  v154 = CMGetAttachment(a3, *MEMORY[0x1E6990D80], 0);
+  bufferCopy10 = buffer;
+  v154 = CMGetAttachment(buffer, *MEMORY[0x1E6990D80], 0);
   if (v154)
   {
     v155 = v154;
     memset(&v294, 0, sizeof(v294));
-    CMSampleBufferGetPresentationTimeStamp(&v294, a3);
+    CMSampleBufferGetPresentationTimeStamp(&v294, buffer);
     v280 = *&v294.value;
     *&v281 = v294.epoch;
     v156 = [AVMetadataVideoPreviewHistogramObject videoPreviewHistogramObjectWithLumaHistogramData:v155 input:v6 time:&v280];
@@ -2700,23 +2700,23 @@ LABEL_173:
     v158 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v275 count:1];
     v280 = *&v294.value;
     *&v281 = v294.epoch;
-    v153 = a3;
+    bufferCopy10 = buffer;
     v159 = [AVMetadataObjectCollection collectionWithTime:&v280 metadataObjectTypes:v157 handledMetadataObjectTypes:v157 metadataObjects:v158];
     if (v159)
     {
-      [v198 addObject:v159];
+      [array addObject:v159];
     }
   }
 
   v220 = v132->_internal->previousTwoCMTimesByDetectorType;
-  if (CMGetAttachment(v153, *MEMORY[0x1E698F8C0], 0))
+  if (CMGetAttachment(bufferCopy10, *MEMORY[0x1E698F8C0], 0))
   {
     v270[0].value = *MEMORY[0x1E6960C70];
     v160 = *(MEMORY[0x1E6960C70] + 12);
     v270[0].timescale = *(MEMORY[0x1E6960C70] + 8);
     v161 = *(MEMORY[0x1E6960C70] + 16);
     v162 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v163 = CMGetAttachment(v153, *MEMORY[0x1E698F8B8], 0);
+    v163 = CMGetAttachment(bufferCopy10, *MEMORY[0x1E698F8B8], 0);
     v280 = 0u;
     v281 = 0u;
     v282 = 0u;
@@ -2775,24 +2775,24 @@ LABEL_173:
     v275.epoch = v161;
     v171 = [AVMetadataObjectCollection collectionWithTime:&v275 metadataObjectTypes:v170 handledMetadataObjectTypes:v170 metadataObjects:v162];
 
-    v132 = v196;
-    v153 = a3;
+    v132 = selfCopy;
+    bufferCopy10 = buffer;
     v104 = 0x1E695D000;
     if (v171)
     {
-      [v198 addObject:v171];
+      [array addObject:v171];
     }
   }
 
   v221 = v132->_internal->previousTwoCMTimesByDetectorType;
-  if (CMGetAttachment(v153, *MEMORY[0x1E6990D70], 0))
+  if (CMGetAttachment(bufferCopy10, *MEMORY[0x1E6990D70], 0))
   {
     v172 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v270[0].value = *MEMORY[0x1E6960C70];
     v173 = *(MEMORY[0x1E6960C70] + 12);
     v270[0].timescale = *(MEMORY[0x1E6960C70] + 8);
     v174 = *(MEMORY[0x1E6960C70] + 16);
-    v175 = CMGetAttachment(v153, *MEMORY[0x1E6990D68], 0);
+    v175 = CMGetAttachment(bufferCopy10, *MEMORY[0x1E6990D68], 0);
     v280 = 0u;
     v281 = 0u;
     v282 = 0u;
@@ -2850,21 +2850,21 @@ LABEL_173:
     v275.epoch = v174;
     v183 = [AVMetadataObjectCollection collectionWithTime:&v275 metadataObjectTypes:v182 handledMetadataObjectTypes:v182 metadataObjects:v172];
 
-    v132 = v196;
-    v153 = a3;
+    v132 = selfCopy;
+    bufferCopy10 = buffer;
     v104 = 0x1E695D000uLL;
     if (v183)
     {
-      [v198 addObject:v183];
+      [array addObject:v183];
     }
   }
 
-  v184 = CMGetAttachment(v153, *MEMORY[0x1E6990D60], 0);
+  v184 = CMGetAttachment(bufferCopy10, *MEMORY[0x1E6990D60], 0);
   if (v184)
   {
     v185 = v184;
     memset(&v294, 0, sizeof(v294));
-    CMSampleBufferGetPresentationTimeStamp(&v294, v153);
+    CMSampleBufferGetPresentationTimeStamp(&v294, bufferCopy10);
     v280 = *&v294.value;
     *&v281 = v294.epoch;
     v186 = [AVMetadataSceneClassificationObject sceneClassificationObjectWithConfidences:v185 input:v6 time:&v280];
@@ -2877,7 +2877,7 @@ LABEL_173:
     v5 = v194;
     if (v189)
     {
-      [v198 addObject:v189];
+      [array addObject:v189];
     }
   }
 
@@ -2886,25 +2886,25 @@ LABEL_173:
     v5 = v194;
   }
 
-  if ([v198 count])
+  if ([array count])
   {
     if (v132->_internal->synchronizationEnabled)
     {
-      [(AVCaptureMetadataOutput *)v132 _processSynchronizationWithCollections:v198 withCorrespondingMetadataObjectTypes:[(AVCaptureMetadataOutput *)v132 metadataObjectTypesForMetadataIdentifiers:CMGetAttachment(a3, *MEMORY[0x1E6990C78], 0)]];
+      [(AVCaptureMetadataOutput *)v132 _processSynchronizationWithCollections:array withCorrespondingMetadataObjectTypes:[(AVCaptureMetadataOutput *)v132 metadataObjectTypesForMetadataIdentifiers:CMGetAttachment(buffer, *MEMORY[0x1E6990C78], 0)]];
     }
 
     else
     {
-      [(AVCaptureMetadataOutput *)v132 _emitCollections:v198];
+      [(AVCaptureMetadataOutput *)v132 _emitCollections:array];
     }
   }
 
 LABEL_248:
 }
 
-- (void)_processSynchronizationWithCollections:(id)a3 withCorrespondingMetadataObjectTypes:(id)a4
+- (void)_processSynchronizationWithCollections:(id)collections withCorrespondingMetadataObjectTypes:(id)types
 {
-  if (self->_internal->synchronizationEnabled && [a3 count])
+  if (self->_internal->synchronizationEnabled && [collections count])
   {
     internal = self->_internal;
     objc_sync_enter(internal);
@@ -2917,10 +2917,10 @@ LABEL_248:
 
     v9 = synchronizedMetadataCollectionsQueue;
     objc_sync_exit(internal);
-    if ([a4 count])
+    if ([types count])
     {
       v10 = [MEMORY[0x1E695DFA8] setWithArray:{-[AVCaptureMetadataOutput metadataObjectTypesSupportingZeroFrameDelaySynchronization](self, "metadataObjectTypesSupportingZeroFrameDelaySynchronization")}];
-      [v10 minusSet:{objc_msgSend(MEMORY[0x1E695DFD8], "setWithArray:", a4)}];
+      [v10 minusSet:{objc_msgSend(MEMORY[0x1E695DFD8], "setWithArray:", types)}];
     }
 
     else
@@ -2929,7 +2929,7 @@ LABEL_248:
     }
 
     v21 = 0uLL;
-    v11 = [a3 objectAtIndexedSubscript:0];
+    v11 = [collections objectAtIndexedSubscript:0];
     if (v11)
     {
       [v11 time];
@@ -3012,7 +3012,7 @@ LABEL_29:
       }
 
       [v15 skipMetadataObjectTypes:v19];
-      [v15 addCollections:a3];
+      [v15 addCollections:collections];
       if ([v15 readyToEmit])
       {
         [(AVCaptureMetadataOutput *)self _emitSyncedCollections:v15];
@@ -3025,7 +3025,7 @@ LABEL_29:
 LABEL_30:
       if (v12 != -1)
       {
-        v17 = [[AVCaptureSynchronizedMetadataCollections alloc] initWithMetadataCollections:a3 expectedMetadataObjectTypes:[(AVCaptureMetadataOutput *)self metadataObjectTypes]];
+        v17 = [[AVCaptureSynchronizedMetadataCollections alloc] initWithMetadataCollections:collections expectedMetadataObjectTypes:[(AVCaptureMetadataOutput *)self metadataObjectTypes]];
         v18 = [(AVCaptureMetadataOutput *)self _newEmitTimerForSynchronizedMetadataCollections:v17];
         [(AVCaptureSynchronizedMetadataCollections *)v17 setEmitTimer:v18];
 
@@ -3050,7 +3050,7 @@ LABEL_30:
   }
 }
 
-- (id)_newEmitTimerForSynchronizedMetadataCollections:(id)a3
+- (id)_newEmitTimerForSynchronizedMetadataCollections:(id)collections
 {
   internal = self->_internal;
   if (!internal->maxSynchronizationFrameDelay)
@@ -3058,12 +3058,12 @@ LABEL_30:
     return 0;
   }
 
-  v6 = [(AVCaptureDataOutputDelegateCallbackHelper *)internal->delegateCallbackHelper activeCallbackQueue];
-  v7 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, v6);
-  v8 = [(AVCaptureConnection *)[(AVCaptureOutput *)self connectionWithMediaType:AVMediaTypeForMetadataObjects()] sourceDevice];
-  if (v8)
+  activeCallbackQueue = [(AVCaptureDataOutputDelegateCallbackHelper *)internal->delegateCallbackHelper activeCallbackQueue];
+  v7 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, activeCallbackQueue);
+  sourceDevice = [(AVCaptureConnection *)[(AVCaptureOutput *)self connectionWithMediaType:AVMediaTypeForMetadataObjects()] sourceDevice];
+  if (sourceDevice)
   {
-    [v8 activeVideoMaxFrameDuration];
+    [sourceDevice activeVideoMaxFrameDuration];
   }
 
   else
@@ -3074,7 +3074,7 @@ LABEL_30:
   v9 = CMTimeGetSeconds(&time) * self->_internal->maxSynchronizationFrameDelay;
   v10 = dispatch_time(0, (v9 * 1000000000.0));
   dispatch_source_set_timer(v7, v10, 0xFFFFFFFFFFFFFFFFLL, (v9 * 0.1 * 1000000000.0));
-  objc_initWeak(&time, a3);
+  objc_initWeak(&time, collections);
   objc_initWeak(&location, self);
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
@@ -3111,15 +3111,15 @@ id __75__AVCaptureMetadataOutput__newEmitTimerForSynchronizedMetadataCollections
   return result;
 }
 
-- (void)_emitSyncedCollections:(id)a3
+- (void)_emitSyncedCollections:(id)collections
 {
-  [a3 setEmitTimer:0];
-  v5 = [a3 metadataCollections];
+  [collections setEmitTimer:0];
+  metadataCollections = [collections metadataCollections];
 
-  [(AVCaptureMetadataOutput *)self _emitCollections:v5];
+  [(AVCaptureMetadataOutput *)self _emitCollections:metadataCollections];
 }
 
-- (void)_emitCollections:(id)a3
+- (void)_emitCollections:(id)collections
 {
   internal = self->_internal;
   objc_sync_enter(internal);
@@ -3127,24 +3127,24 @@ id __75__AVCaptureMetadataOutput__newEmitTimerForSynchronizedMetadataCollections
   objc_sync_exit(internal);
   if (-[AVCaptureConnection isLive](v6, "isLive") && [-[AVCaptureOutput session](self "session")])
   {
-    [(AVCaptureMetadataOutput *)self _emitCollections:a3, v6, &self->_internal];
+    [(AVCaptureMetadataOutput *)self _emitCollections:collections, v6, &self->_internal];
   }
 }
 
-- (void)setDelegateOverride:(id)a3 delegateOverrideCallbackQueue:(id)a4
+- (void)setDelegateOverride:(id)override delegateOverrideCallbackQueue:(id)queue
 {
   if (AVCaptureIsRunningInMediaserverd())
   {
-    v7 = 0;
+    queueCopy = 0;
   }
 
   else
   {
-    v7 = a4;
+    queueCopy = queue;
   }
 
   v9 = 0;
-  if (![(AVCaptureDataOutputDelegateCallbackHelper *)self->_internal->delegateCallbackHelper setDelegateOverride:a3 delegateOverrideCallbackQueue:v7 exceptionReason:&v9])
+  if (![(AVCaptureDataOutputDelegateCallbackHelper *)self->_internal->delegateCallbackHelper setDelegateOverride:override delegateOverrideCallbackQueue:queueCopy exceptionReason:&v9])
   {
     v8 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector() userInfo:0];
     if (AVCaptureShouldThrowForAPIViolations())

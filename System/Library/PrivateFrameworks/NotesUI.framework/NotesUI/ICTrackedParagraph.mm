@@ -8,10 +8,10 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(ICTrackedParagraph *)self paragraph];
+  paragraph = [(ICTrackedParagraph *)self paragraph];
   v9.location = [(ICTrackedParagraph *)self characterRange];
   v5 = NSStringFromRange(v9);
-  v6 = [v3 stringWithFormat:@"<ICTrackedParagraph %p %@ %@>", self, v4, v5];
+  v6 = [v3 stringWithFormat:@"<ICTrackedParagraph %p %@ %@>", self, paragraph, v5];
 
   return v6;
 }

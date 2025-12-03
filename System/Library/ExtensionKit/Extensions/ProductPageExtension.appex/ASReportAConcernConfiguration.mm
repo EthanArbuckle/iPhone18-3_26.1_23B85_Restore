@@ -1,38 +1,38 @@
 @interface ASReportAConcernConfiguration
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation ASReportAConcernConfiguration
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
-  v5 = [(ASReportAConcernConfiguration *)self title];
-  [v4 setTitle:v5];
+  title = [(ASReportAConcernConfiguration *)self title];
+  [v4 setTitle:title];
 
-  v6 = [(ASReportAConcernConfiguration *)self backTitle];
-  [v4 setBackTitle:v6];
+  backTitle = [(ASReportAConcernConfiguration *)self backTitle];
+  [v4 setBackTitle:backTitle];
 
-  v7 = [(ASReportAConcernConfiguration *)self cancelTitle];
-  [v4 setCancelTitle:v7];
+  cancelTitle = [(ASReportAConcernConfiguration *)self cancelTitle];
+  [v4 setCancelTitle:cancelTitle];
 
-  v8 = [(ASReportAConcernConfiguration *)self submitTitle];
-  [v4 setSubmitTitle:v8];
+  submitTitle = [(ASReportAConcernConfiguration *)self submitTitle];
+  [v4 setSubmitTitle:submitTitle];
 
-  v9 = [(ASReportAConcernConfiguration *)self reportConcernExplanation];
-  [v4 setReportConcernExplanation:v9];
+  reportConcernExplanation = [(ASReportAConcernConfiguration *)self reportConcernExplanation];
+  [v4 setReportConcernExplanation:reportConcernExplanation];
 
-  v10 = [(ASReportAConcernConfiguration *)self selectReasonTitle];
-  [v4 setSelectReasonTitle:v10];
+  selectReasonTitle = [(ASReportAConcernConfiguration *)self selectReasonTitle];
+  [v4 setSelectReasonTitle:selectReasonTitle];
 
-  v11 = [(ASReportAConcernConfiguration *)self selectReasonSubtitle];
-  [v4 setSelectReasonSubtitle:v11];
+  selectReasonSubtitle = [(ASReportAConcernConfiguration *)self selectReasonSubtitle];
+  [v4 setSelectReasonSubtitle:selectReasonSubtitle];
 
-  v12 = [(ASReportAConcernConfiguration *)self privacyNote];
-  [v4 setPrivacyNote:v12];
+  privacyNote = [(ASReportAConcernConfiguration *)self privacyNote];
+  [v4 setPrivacyNote:privacyNote];
 
-  v13 = [(ASReportAConcernConfiguration *)self reasons];
-  [v4 setReasons:v13];
+  reasons = [(ASReportAConcernConfiguration *)self reasons];
+  [v4 setReasons:reasons];
 
   return v4;
 }

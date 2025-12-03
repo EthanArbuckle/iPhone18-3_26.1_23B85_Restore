@@ -1,12 +1,12 @@
 @interface PXGBasicAXGroup
-- (BOOL)_leafAtSpriteIndex:(unsigned int)a3 passesFilter:(unint64_t)a4;
-- (BOOL)_leafAtSpriteIndexIsAccessible:(unsigned int)a3;
-- (BOOL)_leafAtSpriteIndexIsSelected:(unsigned int)a3;
-- (BOOL)_leafAtSpriteIndexIsVisible:(unsigned int)a3;
-- (BOOL)_loadOrUpdateLeafAtSpriteIndex:(unsigned int)a3;
-- (BOOL)_passesFilter:(unint64_t)a3;
+- (BOOL)_leafAtSpriteIndex:(unsigned int)index passesFilter:(unint64_t)filter;
+- (BOOL)_leafAtSpriteIndexIsAccessible:(unsigned int)accessible;
+- (BOOL)_leafAtSpriteIndexIsSelected:(unsigned int)selected;
+- (BOOL)_leafAtSpriteIndexIsVisible:(unsigned int)visible;
+- (BOOL)_loadOrUpdateLeafAtSpriteIndex:(unsigned int)index;
+- (BOOL)_passesFilter:(unint64_t)filter;
 - (BOOL)axIsSelected;
-- (BOOL)updateWithSelectedChildren:(id)a3;
+- (BOOL)updateWithSelectedChildren:(id)children;
 - (CGRect)axFrame;
 - (NSArray)axLeafs;
 - (NSArray)axSubgroups;
@@ -23,55 +23,55 @@
 - (PXGBasicAXGroup)axRootParent;
 - (PXGBasicAXGroup)axScrollParent;
 - (PXGBasicAXGroup)init;
-- (PXGBasicAXGroup)initWithLayout:(id)a3;
+- (PXGBasicAXGroup)initWithLayout:(id)layout;
 - (PXGLayout)containingLayout;
 - (UIFocusEnvironment)parentFocusEnvironment;
 - (UIFocusItemContainer)focusItemContainer;
-- (id)_leafAtSpriteIndex:(unsigned int)a3;
-- (id)_loadNeighboringLeafsAtSpriteIndex:(unsigned int)a3;
-- (id)_paddingForLevel:(int64_t)a3;
-- (id)_removeLeafAtSpriteIndex:(unsigned int)a3;
-- (id)childrenPassingFilter:(unint64_t)a3 usingOptions:(unint64_t)a4;
-- (id)focusItemsForScrollViewController:(id)a3 inRect:(CGRect)a4;
-- (id)leafAtPoint:(CGPoint)a3;
-- (id)leafsInRect:(CGRect)a3 usingOptions:(unint64_t)a4;
-- (id)loadLeafAtSpriteIndexIfNeeded:(unsigned int)a3 usingOptions:(unint64_t)a4;
-- (id)loadedSubgroupAtIndex:(int64_t)a3;
-- (unsigned)_loadClosestLeafAtSpriteIndex:(unsigned int)a3 inDirection:(unint64_t)a4;
+- (id)_leafAtSpriteIndex:(unsigned int)index;
+- (id)_loadNeighboringLeafsAtSpriteIndex:(unsigned int)index;
+- (id)_paddingForLevel:(int64_t)level;
+- (id)_removeLeafAtSpriteIndex:(unsigned int)index;
+- (id)childrenPassingFilter:(unint64_t)filter usingOptions:(unint64_t)options;
+- (id)focusItemsForScrollViewController:(id)controller inRect:(CGRect)rect;
+- (id)leafAtPoint:(CGPoint)point;
+- (id)leafsInRect:(CGRect)rect usingOptions:(unint64_t)options;
+- (id)loadLeafAtSpriteIndexIfNeeded:(unsigned int)needed usingOptions:(unint64_t)options;
+- (id)loadedSubgroupAtIndex:(int64_t)index;
+- (unsigned)_loadClosestLeafAtSpriteIndex:(unsigned int)index inDirection:(unint64_t)direction;
 - (unsigned)focusedLeafIndex;
-- (void)_addAllLeafsPassingFilter:(unint64_t)a3 intoArray:(id)a4;
-- (void)_addChildrenPassingFilter:(unint64_t)a3 usingOptions:(unint64_t)a4 intoArray:(id)a5;
-- (void)_addCurrentlyLoadedLeafsPassingFilter:(unint64_t)a3 intoArray:(id)a4;
-- (void)_addFirstVisibleIndexes:(id)a3 toIndexesToLoad:(id)a4;
-- (void)_addLeafsPassingFilter:(unint64_t)a3 usingOptions:(unint64_t)a4 intoArray:(id)a5;
-- (void)_addSubgroupsPassingFilter:(unint64_t)a3 intoArray:(id)a4;
-- (void)_appendDescription:(id)a3 atLevel:(int64_t)a4;
-- (void)_appendLeafDescription:(id)a3 atLevel:(int64_t)a4;
-- (void)_cleanUpSubgroupAfterUnloading:(id)a3;
-- (void)_leafsInRect:(CGRect)a3 usingOptions:(unint64_t)a4 intoMutableArray:(id)a5;
-- (void)_setLeaf:(id)a3 forSpriteIndex:(unsigned int)a4;
-- (void)_unloadSubgroupAtIndex:(int64_t)a3 shouldNotify:(BOOL)a4;
+- (void)_addAllLeafsPassingFilter:(unint64_t)filter intoArray:(id)array;
+- (void)_addChildrenPassingFilter:(unint64_t)filter usingOptions:(unint64_t)options intoArray:(id)array;
+- (void)_addCurrentlyLoadedLeafsPassingFilter:(unint64_t)filter intoArray:(id)array;
+- (void)_addFirstVisibleIndexes:(id)indexes toIndexesToLoad:(id)load;
+- (void)_addLeafsPassingFilter:(unint64_t)filter usingOptions:(unint64_t)options intoArray:(id)array;
+- (void)_addSubgroupsPassingFilter:(unint64_t)filter intoArray:(id)array;
+- (void)_appendDescription:(id)description atLevel:(int64_t)level;
+- (void)_appendLeafDescription:(id)description atLevel:(int64_t)level;
+- (void)_cleanUpSubgroupAfterUnloading:(id)unloading;
+- (void)_leafsInRect:(CGRect)rect usingOptions:(unint64_t)options intoMutableArray:(id)array;
+- (void)_setLeaf:(id)leaf forSpriteIndex:(unsigned int)index;
+- (void)_unloadSubgroupAtIndex:(int64_t)index shouldNotify:(BOOL)notify;
 - (void)_updateLayoutIfNeeded;
-- (void)_updateLeafAtSpriteIndex:(unsigned int)a3;
+- (void)_updateLeafAtSpriteIndex:(unsigned int)index;
 - (void)_updateLeafsIfNeeded;
 - (void)_updateVersionIfNeeded;
 - (void)_updateVisibilityIfNeeded;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
 - (void)invalidateLayout;
 - (void)invalidateLeafs;
 - (void)invalidateVersion;
 - (void)invalidateVisibility;
-- (void)loadSubgroup:(id)a3 atIndex:(int64_t)a4;
-- (void)setAxParent:(id)a3;
-- (void)setAxRole:(int64_t)a3;
+- (void)loadSubgroup:(id)subgroup atIndex:(int64_t)index;
+- (void)setAxParent:(id)parent;
+- (void)setAxRole:(int64_t)role;
 - (void)setNeedsFocusUpdate;
 - (void)unloadAllLeafs;
 - (void)unloadFromParent;
-- (void)unloadLeafAtSpriteIndex:(unsigned int)a3 usingOptions:(unint64_t)a4;
+- (void)unloadLeafAtSpriteIndex:(unsigned int)index usingOptions:(unint64_t)options;
 - (void)updateFocusIfNeeded;
 - (void)updateIfNeeded;
-- (void)updateLeafsWithChangeDetails:(id)a3;
-- (void)updateSubgroupsWithChangeDetails:(id)a3;
+- (void)updateLeafsWithChangeDetails:(id)details;
+- (void)updateSubgroupsWithChangeDetails:(id)details;
 @end
 
 @implementation PXGBasicAXGroup
@@ -121,9 +121,9 @@
 {
   if (self->_updateFlags.isPerformingUpdate && (self->_updateFlags.updated & 2) != 0)
   {
-    v2 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v3 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGBasicAXGroup invalidateVisibility]"];
-    [v2 handleFailureInFunction:v3 file:@"PXGAXGroup.m" lineNumber:128 description:{@"invalidating %lu after it already has been updated", 2}];
+    [currentHandler handleFailureInFunction:v3 file:@"PXGAXGroup.m" lineNumber:128 description:{@"invalidating %lu after it already has been updated", 2}];
 
     abort();
   }
@@ -135,9 +135,9 @@
 {
   if (self->_updateFlags.isPerformingUpdate && (self->_updateFlags.updated & 4) != 0)
   {
-    v2 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v3 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGBasicAXGroup invalidateLeafs]"];
-    [v2 handleFailureInFunction:v3 file:@"PXGAXGroup.m" lineNumber:132 description:{@"invalidating %lu after it already has been updated", 4}];
+    [currentHandler handleFailureInFunction:v3 file:@"PXGAXGroup.m" lineNumber:132 description:{@"invalidating %lu after it already has been updated", 4}];
 
     abort();
   }
@@ -148,40 +148,40 @@
 - (unsigned)focusedLeafIndex
 {
   v3 = [MEMORY[0x277D75518] focusSystemForEnvironment:self];
-  v4 = [v3 focusedItem];
+  focusedItem = [v3 focusedItem];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [v5 axContainingGroup];
+    v5 = focusedItem;
+    axContainingGroup = [v5 axContainingGroup];
 
-    if (v6 == self)
+    if (axContainingGroup == self)
     {
-      v7 = [v5 spriteIndex];
+      spriteIndex = [v5 spriteIndex];
     }
 
     else
     {
-      v7 = -1;
+      spriteIndex = -1;
     }
   }
 
   else
   {
-    v7 = -1;
+    spriteIndex = -1;
   }
 
-  return v7;
+  return spriteIndex;
 }
 
 - (void)invalidateVersion
 {
   if (self->_updateFlags.isPerformingUpdate && (self->_updateFlags.updated & 1) != 0)
   {
-    v2 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v3 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGBasicAXGroup invalidateVersion]"];
-    [v2 handleFailureInFunction:v3 file:@"PXGAXGroup.m" lineNumber:124 description:{@"invalidating %lu after it already has been updated", 1}];
+    [currentHandler handleFailureInFunction:v3 file:@"PXGAXGroup.m" lineNumber:124 description:{@"invalidating %lu after it already has been updated", 1}];
 
     abort();
   }
@@ -191,15 +191,15 @@
 
 - (void)unloadFromParent
 {
-  v3 = [(PXGBasicAXGroup *)self subgroupIndex];
+  subgroupIndex = [(PXGBasicAXGroup *)self subgroupIndex];
   WeakRetained = objc_loadWeakRetained(&self->_axParent);
-  v7 = [WeakRetained loadedSubgroupAtIndex:v3];
+  v7 = [WeakRetained loadedSubgroupAtIndex:subgroupIndex];
 
   v5 = v7;
   if (v7 == self)
   {
     v6 = objc_loadWeakRetained(&self->_axParent);
-    [v6 _unloadSubgroupAtIndex:v3 shouldNotify:0];
+    [v6 _unloadSubgroupAtIndex:subgroupIndex shouldNotify:0];
 
     v5 = v7;
   }
@@ -209,9 +209,9 @@
 {
   if (self->_updateFlags.isPerformingUpdate && (self->_updateFlags.updated & 8) != 0)
   {
-    v2 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v3 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGBasicAXGroup invalidateLayout]"];
-    [v2 handleFailureInFunction:v3 file:@"PXGAXGroup.m" lineNumber:136 description:{@"invalidating %lu after it already has been updated", 8}];
+    [currentHandler handleFailureInFunction:v3 file:@"PXGAXGroup.m" lineNumber:136 description:{@"invalidating %lu after it already has been updated", 8}];
 
     abort();
   }
@@ -226,9 +226,9 @@
   {
     if (self->_updateFlags.isPerformingUpdate)
     {
-      v3 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGBasicAXGroup updateIfNeeded]"];
-      [v3 handleFailureInFunction:v4 file:@"PXGAXGroup.m" lineNumber:140 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
+      [currentHandler handleFailureInFunction:v4 file:@"PXGAXGroup.m" lineNumber:140 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
     }
 
     self->_updateFlags.isPerformingUpdate = 1;
@@ -240,9 +240,9 @@
     self->_updateFlags.isPerformingUpdate = 0;
     if (self->_updateFlags.needsUpdate)
     {
-      v6 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
       v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGBasicAXGroup updateIfNeeded]"];
-      [v6 handleFailureInFunction:v5 file:@"PXGAXGroup.m" lineNumber:145 description:{@"still needing to update %lu after update pass", self->_updateFlags.needsUpdate}];
+      [currentHandler2 handleFailureInFunction:v5 file:@"PXGAXGroup.m" lineNumber:145 description:{@"still needing to update %lu after update pass", self->_updateFlags.needsUpdate}];
     }
   }
 }
@@ -251,9 +251,9 @@
 {
   if (!self->_updateFlags.isPerformingUpdate)
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGBasicAXGroup _updateVisibilityIfNeeded]"];
-    [v11 handleFailureInFunction:v12 file:@"PXGAXGroup.m" lineNumber:156 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+    [currentHandler handleFailureInFunction:v12 file:@"PXGAXGroup.m" lineNumber:156 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
   }
 
   needsUpdate = self->_updateFlags.needsUpdate;
@@ -261,12 +261,12 @@
   if ((needsUpdate & 2) != 0)
   {
     self->_updateFlags.needsUpdate = needsUpdate & 0xFFFFFFFFFFFFFFFDLL;
-    v13 = [(PXGBasicAXGroup *)self axGroupSource];
-    [v13 axFrame];
+    axGroupSource = [(PXGBasicAXGroup *)self axGroupSource];
+    [axGroupSource axFrame];
     v5 = v4;
     v7 = v6;
     [(PXGBasicAXGroup *)self setAxFrame:?];
-    [v13 axVisibleRect];
+    [axGroupSource axVisibleRect];
     v10 = v9 < v7 && v8 < v5;
     [(PXGBasicAXGroup *)self setAxIsVisible:v10];
   }
@@ -276,9 +276,9 @@
 {
   if (!self->_updateFlags.isPerformingUpdate)
   {
-    v4 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGBasicAXGroup _updateVersionIfNeeded]"];
-    [v4 handleFailureInFunction:v5 file:@"PXGAXGroup.m" lineNumber:149 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+    [currentHandler handleFailureInFunction:v5 file:@"PXGAXGroup.m" lineNumber:149 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
   }
 
   needsUpdate = self->_updateFlags.needsUpdate;
@@ -301,9 +301,9 @@
 {
   if (!self->_updateFlags.isPerformingUpdate)
   {
-    v17 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v18 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGBasicAXGroup _updateLeafsIfNeeded]"];
-    [v17 handleFailureInFunction:v18 file:@"PXGAXGroup.m" lineNumber:175 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+    [currentHandler handleFailureInFunction:v18 file:@"PXGAXGroup.m" lineNumber:175 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
   }
 
   needsUpdate = self->_updateFlags.needsUpdate;
@@ -311,53 +311,53 @@
   if ((needsUpdate & 4) != 0)
   {
     self->_updateFlags.needsUpdate = needsUpdate & 0xFFFFFFFFFFFFFFFBLL;
-    v5 = [(PXGBasicAXGroup *)self axInfoSource];
-    if (!v5)
+    axInfoSource = [(PXGBasicAXGroup *)self axInfoSource];
+    if (!axInfoSource)
     {
-      v19 = [MEMORY[0x277CCA890] currentHandler];
-      [v19 handleFailureInMethod:a2 object:self file:@"PXGAXGroup.m" lineNumber:180 description:@"Should not attempt to update sprites without an infoSource"];
+      currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXGAXGroup.m" lineNumber:180 description:@"Should not attempt to update sprites without an infoSource"];
     }
 
     v6 = objc_alloc(MEMORY[0x277CCAB58]);
-    v7 = [v5 axBorderSpriteIndexes];
-    v8 = [v6 initWithIndexSet:v7];
+    axBorderSpriteIndexes = [axInfoSource axBorderSpriteIndexes];
+    v8 = [v6 initWithIndexSet:axBorderSpriteIndexes];
 
-    v9 = [v5 axVisibleSpriteIndexes];
-    if ([v9 count])
+    axVisibleSpriteIndexes = [axInfoSource axVisibleSpriteIndexes];
+    if ([axVisibleSpriteIndexes count])
     {
-      [v8 addIndex:{objc_msgSend(v9, "firstIndex")}];
-      [v8 addIndex:{objc_msgSend(v9, "lastIndex")}];
+      [v8 addIndex:{objc_msgSend(axVisibleSpriteIndexes, "firstIndex")}];
+      [v8 addIndex:{objc_msgSend(axVisibleSpriteIndexes, "lastIndex")}];
       if (([(PXGBasicAXGroup *)self leafFeatures]& 2) != 0)
       {
-        [v8 addIndexes:v9];
+        [v8 addIndexes:axVisibleSpriteIndexes];
       }
     }
 
-    v10 = [v5 axSelectedSpriteIndexes];
-    if ([v10 count])
+    axSelectedSpriteIndexes = [axInfoSource axSelectedSpriteIndexes];
+    if ([axSelectedSpriteIndexes count])
     {
-      [v8 addIndex:{objc_msgSend(v10, "firstIndex")}];
-      [v8 addIndex:{objc_msgSend(v10, "lastIndex")}];
+      [v8 addIndex:{objc_msgSend(axSelectedSpriteIndexes, "firstIndex")}];
+      [v8 addIndex:{objc_msgSend(axSelectedSpriteIndexes, "lastIndex")}];
     }
 
-    if (([v10 isEqualToIndexSet:self->_previouslySelectedIndexes] & 1) == 0)
+    if (([axSelectedSpriteIndexes isEqualToIndexSet:self->_previouslySelectedIndexes] & 1) == 0)
     {
-      v11 = [v10 copy];
+      v11 = [axSelectedSpriteIndexes copy];
       previouslySelectedIndexes = self->_previouslySelectedIndexes;
       self->_previouslySelectedIndexes = v11;
 
       [(PXGBasicAXGroup *)self _selectedIndexesDidChange];
     }
 
-    v13 = [(PXGBasicAXGroup *)self focusedLeafIndex];
-    if (v13 != -1)
+    focusedLeafIndex = [(PXGBasicAXGroup *)self focusedLeafIndex];
+    if (focusedLeafIndex != -1)
     {
-      [v8 addIndex:v13];
+      [v8 addIndex:focusedLeafIndex];
     }
 
     [v8 addIndexes:self->_requiredLeafIndexesToLoad];
-    v14 = [(PXGBasicAXGroup *)self loadedLeafIndexes];
-    v15 = [v14 mutableCopy];
+    loadedLeafIndexes = [(PXGBasicAXGroup *)self loadedLeafIndexes];
+    v15 = [loadedLeafIndexes mutableCopy];
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __39__PXGBasicAXGroup__updateLeafsIfNeeded__block_invoke;
@@ -372,7 +372,7 @@
     v20[3] = &unk_2782ABC08;
     v20[4] = self;
     [v16 enumerateIndexesUsingBlock:v20];
-    if (([v14 isEqualToIndexSet:v8] & 1) == 0)
+    if (([loadedLeafIndexes isEqualToIndexSet:v8] & 1) == 0)
     {
       [(PXGBasicAXGroup *)self invalidateLayout];
     }
@@ -383,8 +383,8 @@
 {
   if (self->_updateFlags.needsUpdate)
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"PXGAXGroup.m" lineNumber:253 description:@"Attempted to query group with an invalid version"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGAXGroup.m" lineNumber:253 description:@"Attempted to query group with an invalid version"];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_axInfoSource);
@@ -395,14 +395,14 @@
 - (NSIndexSet)loadedLeafIndexes
 {
   v3 = objc_alloc_init(MEMORY[0x277CCAB58]);
-  v4 = [(NSMutableDictionary *)self->_mutableSpritesToLeafs allKeys];
+  allKeys = [(NSMutableDictionary *)self->_mutableSpritesToLeafs allKeys];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __36__PXGBasicAXGroup_loadedLeafIndexes__block_invoke;
   v7[3] = &unk_2782AAF68;
   v5 = v3;
   v8 = v5;
-  [v4 enumerateObjectsUsingBlock:v7];
+  [allKeys enumerateObjectsUsingBlock:v7];
 
   return v5;
 }
@@ -417,9 +417,9 @@ void __39__PXGBasicAXGroup__updateLeafsIfNeeded__block_invoke(uint64_t a1, uint6
 {
   if (!self->_updateFlags.isPerformingUpdate)
   {
-    v4 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PXGBasicAXGroup _updateLayoutIfNeeded]"];
-    [v4 handleFailureInFunction:v5 file:@"PXGAXGroup.m" lineNumber:238 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+    [currentHandler handleFailureInFunction:v5 file:@"PXGAXGroup.m" lineNumber:238 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
   }
 
   needsUpdate = self->_updateFlags.needsUpdate;
@@ -427,8 +427,8 @@ void __39__PXGBasicAXGroup__updateLeafsIfNeeded__block_invoke(uint64_t a1, uint6
   if ((needsUpdate & 8) != 0)
   {
     self->_updateFlags.needsUpdate = needsUpdate & 0xFFFFFFFFFFFFFFF7;
-    v6 = [(PXGBasicAXGroup *)self axNextResponder];
-    [v6 axGroup:self didChange:8 userInfo:0];
+    axNextResponder = [(PXGBasicAXGroup *)self axNextResponder];
+    [axNextResponder axGroup:self didChange:8 userInfo:0];
   }
 }
 
@@ -442,46 +442,46 @@ uint64_t __36__PXGBasicAXGroup_loadedLeafIndexes__block_invoke(uint64_t a1, void
 
 - (PXGLayout)containingLayout
 {
-  v4 = [(PXGBasicAXGroup *)self axGroupSource];
-  if (v4)
+  axGroupSource = [(PXGBasicAXGroup *)self axGroupSource];
+  if (axGroupSource)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v6 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v7 = objc_opt_class();
       v8 = NSStringFromClass(v7);
-      v9 = [v4 px_descriptionForAssertionMessage];
-      [v6 handleFailureInMethod:a2 object:self file:@"PXGLayout+AX.m" lineNumber:375 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"self.axGroupSource", v8, v9}];
+      px_descriptionForAssertionMessage = [axGroupSource px_descriptionForAssertionMessage];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXGLayout+AX.m" lineNumber:375 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"self.axGroupSource", v8, px_descriptionForAssertionMessage}];
     }
   }
 
-  return v4;
+  return axGroupSource;
 }
 
-- (PXGBasicAXGroup)initWithLayout:(id)a3
+- (PXGBasicAXGroup)initWithLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   v5 = [(PXGBasicAXGroup *)self init];
   v6 = v5;
   if (v5)
   {
-    [(PXGBasicAXGroup *)v5 setAxGroupSource:v4];
-    [(PXGBasicAXGroup *)v6 setAxInfoSource:v4];
-    [(PXGBasicAXGroup *)v6 setAxNextResponder:v4];
+    [(PXGBasicAXGroup *)v5 setAxGroupSource:layoutCopy];
+    [(PXGBasicAXGroup *)v6 setAxInfoSource:layoutCopy];
+    [(PXGBasicAXGroup *)v6 setAxNextResponder:layoutCopy];
   }
 
   return v6;
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v5 = a3;
-  v6 = [(PXGBasicAXGroup *)self axInfoSource];
-  [v6 axDidUpdateFocusInContext:v5];
+  contextCopy = context;
+  axInfoSource = [(PXGBasicAXGroup *)self axInfoSource];
+  [axInfoSource axDidUpdateFocusInContext:contextCopy];
 
-  v7 = [v5 previouslyFocusedItem];
-  v8 = [v5 nextFocusedItem];
+  previouslyFocusedItem = [contextCopy previouslyFocusedItem];
+  nextFocusedItem = [contextCopy nextFocusedItem];
 
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
@@ -489,13 +489,13 @@ uint64_t __36__PXGBasicAXGroup_loadedLeafIndexes__block_invoke(uint64_t a1, void
   v14[3] = &unk_2782A9B38;
   v14[4] = self;
   v9 = MEMORY[0x21CEE40A0](v14);
-  v10 = (v9)[2](v9, v7);
-  v11 = (v9)[2](v9, v8);
+  v10 = (v9)[2](v9, previouslyFocusedItem);
+  v11 = (v9)[2](v9, nextFocusedItem);
   if (v10 | v11)
   {
     v12 = PXGAXCreateFocusChangeUserInfo(v10, v11);
-    v13 = [(PXGBasicAXGroup *)self axNextResponder];
-    [v13 axGroup:self didChange:2 userInfo:v12];
+    axNextResponder = [(PXGBasicAXGroup *)self axNextResponder];
+    [axNextResponder axGroup:self didChange:2 userInfo:v12];
   }
 }
 
@@ -552,48 +552,48 @@ id __86__PXGBasicAXGroup_PlatformSpecific__didUpdateFocusInContext_withAnimation
 
 - (UIFocusItemContainer)focusItemContainer
 {
-  v3 = [(PXGBasicAXGroup *)self axNextResponder];
-  v4 = [v3 axContainingScrollViewForAXGroup:self];
+  axNextResponder = [(PXGBasicAXGroup *)self axNextResponder];
+  v4 = [axNextResponder axContainingScrollViewForAXGroup:self];
 
   return v4;
 }
 
 - (UIFocusEnvironment)parentFocusEnvironment
 {
-  v3 = [(PXGBasicAXGroup *)self axParent];
-  if (!v3)
+  axParent = [(PXGBasicAXGroup *)self axParent];
+  if (!axParent)
   {
-    v4 = [(PXGBasicAXGroup *)self axNextResponder];
-    v5 = v4;
-    if (v4)
+    axNextResponder = [(PXGBasicAXGroup *)self axNextResponder];
+    v5 = axNextResponder;
+    if (axNextResponder)
     {
-      v3 = [v4 axContainingScrollViewForAXGroup:self];
+      axParent = [axNextResponder axContainingScrollViewForAXGroup:self];
     }
 
     else
     {
-      v3 = 0;
+      axParent = 0;
     }
   }
 
-  return v3;
+  return axParent;
 }
 
 - (NSArray)preferredFocusEnvironments
 {
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v5 = [(PXGBasicAXGroup *)self axInfoSource];
-  v6 = [(PXGBasicAXGroup *)self loadedLeafIndexes];
-  if ([v6 count])
+  axInfoSource = [(PXGBasicAXGroup *)self axInfoSource];
+  loadedLeafIndexes = [(PXGBasicAXGroup *)self loadedLeafIndexes];
+  if ([loadedLeafIndexes count])
   {
-    v7 = [v5 axVisibleSpriteIndexes];
-    if ([v6 containsIndex:{objc_msgSend(v7, "firstIndex")}])
+    axVisibleSpriteIndexes = [axInfoSource axVisibleSpriteIndexes];
+    if ([loadedLeafIndexes containsIndex:{objc_msgSend(axVisibleSpriteIndexes, "firstIndex")}])
     {
-      v8 = -[PXGBasicAXGroup loadedLeafAtSpriteIndex:](self, "loadedLeafAtSpriteIndex:", [v7 firstIndex]);
+      v8 = -[PXGBasicAXGroup loadedLeafAtSpriteIndex:](self, "loadedLeafAtSpriteIndex:", [axVisibleSpriteIndexes firstIndex]);
       if (!v8)
       {
-        v10 = [MEMORY[0x277CCA890] currentHandler];
-        [v10 handleFailureInMethod:a2 object:self file:@"PXGAXGroup+iOS.m" lineNumber:67 description:@"A loaded leaf must not be nil"];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"PXGAXGroup+iOS.m" lineNumber:67 description:@"A loaded leaf must not be nil"];
       }
 
       [v4 addObject:v8];
@@ -603,26 +603,26 @@ id __86__PXGBasicAXGroup_PlatformSpecific__didUpdateFocusInContext_withAnimation
   return v4;
 }
 
-- (id)focusItemsForScrollViewController:(id)a3 inRect:(CGRect)a4
+- (id)focusItemsForScrollViewController:(id)controller inRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v9 = +[PXTungstenSettings sharedInstance];
-  v10 = [v9 enableTungstenFocusEnvironmentSupport];
+  enableTungstenFocusEnvironmentSupport = [v9 enableTungstenFocusEnvironmentSupport];
 
-  if (v10)
+  if (enableTungstenFocusEnvironmentSupport)
   {
-    v11 = [(PXGBasicAXGroup *)self leafsInRect:1 usingOptions:x, y, width, height];
+    height = [(PXGBasicAXGroup *)self leafsInRect:1 usingOptions:x, y, width, height];
   }
 
   else
   {
-    v11 = MEMORY[0x277CBEBF8];
+    height = MEMORY[0x277CBEBF8];
   }
 
-  return v11;
+  return height;
 }
 
 - (CGRect)axFrame
@@ -638,26 +638,26 @@ id __86__PXGBasicAXGroup_PlatformSpecific__didUpdateFocusInContext_withAnimation
   return result;
 }
 
-- (void)_appendLeafDescription:(id)a3 atLevel:(int64_t)a4
+- (void)_appendLeafDescription:(id)description atLevel:(int64_t)level
 {
-  v6 = a3;
-  v7 = a4 + 1;
-  v8 = [(PXGBasicAXGroup *)self _paddingForLevel:a4 + 1];
-  v9 = [(PXGBasicAXGroup *)self _paddingForLevel:a4];
+  descriptionCopy = description;
+  v7 = level + 1;
+  v8 = [(PXGBasicAXGroup *)self _paddingForLevel:level + 1];
+  v9 = [(PXGBasicAXGroup *)self _paddingForLevel:level];
   v10 = objc_opt_class();
   v11 = NSStringFromClass(v10);
-  [v6 appendFormat:@"<%@: %p; numberOfLeafs = %lu; >\n", v11, self, -[NSMutableDictionary count](self->_mutableSpritesToLeafs, "count")];
+  [descriptionCopy appendFormat:@"<%@: %p; numberOfLeafs = %lu; >\n", v11, self, -[NSMutableDictionary count](self->_mutableSpritesToLeafs, "count")];
 
-  v12 = [(NSMutableDictionary *)self->_mutableSpritesToLeafs allValues];
+  allValues = [(NSMutableDictionary *)self->_mutableSpritesToLeafs allValues];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __50__PXGBasicAXGroup__appendLeafDescription_atLevel___block_invoke;
   v22[3] = &unk_2782AB1E8;
-  v13 = v6;
+  v13 = descriptionCopy;
   v23 = v13;
   v24 = v9;
   v14 = v9;
-  [v12 enumerateObjectsUsingBlock:v22];
+  [allValues enumerateObjectsUsingBlock:v22];
 
   mutableIndexesToSubgroups = self->_mutableIndexesToSubgroups;
   v18[0] = MEMORY[0x277D85DD0];
@@ -690,11 +690,11 @@ void __50__PXGBasicAXGroup__appendLeafDescription_atLevel___block_invoke_2(void 
   [v6 _appendLeafDescription:a1[4] atLevel:a1[6] + 1];
 }
 
-- (void)_appendDescription:(id)a3 atLevel:(int64_t)a4
+- (void)_appendDescription:(id)description atLevel:(int64_t)level
 {
-  v6 = a3;
-  v7 = a4 + 1;
-  v8 = [(PXGBasicAXGroup *)self _paddingForLevel:a4 + 1];
+  descriptionCopy = description;
+  v7 = level + 1;
+  v8 = [(PXGBasicAXGroup *)self _paddingForLevel:level + 1];
   v9 = objc_opt_class();
   v10 = NSStringFromClass(v9);
   v11 = [(NSMutableDictionary *)self->_mutableIndexesToSubgroups count];
@@ -706,7 +706,7 @@ void __50__PXGBasicAXGroup__appendLeafDescription_atLevel___block_invoke_2(void 
     v15 = objc_opt_class();
     v16 = NSStringFromClass(v15);
     [v13 axSpriteIndexes];
-    v27 = v6;
+    v27 = descriptionCopy;
     v28 = v10;
     v18 = v17 = v11;
     [v13 axVisibleSpriteIndexes];
@@ -720,7 +720,7 @@ void __50__PXGBasicAXGroup__appendLeafDescription_atLevel___block_invoke_2(void 
     v12 = v19;
 
     v11 = v17;
-    v6 = v27;
+    descriptionCopy = v27;
     v10 = v28;
   }
 
@@ -729,17 +729,17 @@ void __50__PXGBasicAXGroup__appendLeafDescription_atLevel___block_invoke_2(void 
     v23 = @"<nil>";
   }
 
-  [v6 appendFormat:@"<%@: %p; numberOfLoadedChildren = %lu; numberOfLeafs = %lu; infoSource = %@; > \n", v10, self, v11, v12, v23];
+  [descriptionCopy appendFormat:@"<%@: %p; numberOfLoadedChildren = %lu; numberOfLeafs = %lu; infoSource = %@; > \n", v10, self, v11, v12, v23];
   mutableIndexesToSubgroups = self->_mutableIndexesToSubgroups;
   v29[0] = MEMORY[0x277D85DD0];
   v29[1] = 3221225472;
   v29[2] = __46__PXGBasicAXGroup__appendDescription_atLevel___block_invoke;
   v29[3] = &unk_2782AB1C0;
-  v30 = v6;
+  v30 = descriptionCopy;
   v31 = v8;
   v32 = v7;
   v25 = v8;
-  v26 = v6;
+  v26 = descriptionCopy;
   [(NSMutableDictionary *)mutableIndexesToSubgroups enumerateKeysAndObjectsUsingBlock:v29];
 }
 
@@ -752,18 +752,18 @@ void __46__PXGBasicAXGroup__appendDescription_atLevel___block_invoke(void *a1, u
   [v6 _appendDescription:a1[4] atLevel:a1[6] + 1];
 }
 
-- (id)_paddingForLevel:(int64_t)a3
+- (id)_paddingForLevel:(int64_t)level
 {
   v4 = objc_alloc_init(MEMORY[0x277CCAB68]);
-  if (a3 >= 1)
+  if (level >= 1)
   {
     do
     {
       [v4 appendString:@"   | "];
-      --a3;
+      --level;
     }
 
-    while (a3);
+    while (level);
   }
 
   v5 = [v4 copy];
@@ -797,14 +797,14 @@ void __46__PXGBasicAXGroup__appendDescription_atLevel___block_invoke(void *a1, u
   v6 = [(NSMutableDictionary *)self->_mutableIndexesToSubgroups count];
   v7 = [(NSMutableDictionary *)self->_mutableSpritesToLeafs count];
   WeakRetained = objc_loadWeakRetained(&self->_axInfoSource);
-  v9 = [v3 stringWithFormat:@"<%@: %p frame = %@; numberOfSubgroups = %lu; numberOfLeafs = %lu; infoSource = %@; >", v4, self, v5, v6, v7, WeakRetained];;
+  weakRetained = [v3 stringWithFormat:@"<%@: %p frame = %@; numberOfSubgroups = %lu; numberOfLeafs = %lu; infoSource = %@; >", v4, self, v5, v6, v7, WeakRetained];;
 
-  return v9;
+  return weakRetained;
 }
 
-- (void)setAxParent:(id)a3
+- (void)setAxParent:(id)parent
 {
-  obj = a3;
+  obj = parent;
   WeakRetained = objc_loadWeakRetained(&self->_axParent);
   if (WeakRetained == obj)
   {
@@ -832,11 +832,11 @@ void __46__PXGBasicAXGroup__appendDescription_atLevel___block_invoke(void *a1, u
 - (NSArray)axSubgroups
 {
   v7[1] = *MEMORY[0x277D85DE8];
-  v2 = [(NSMutableDictionary *)self->_mutableIndexesToSubgroups allValues];
+  allValues = [(NSMutableDictionary *)self->_mutableIndexesToSubgroups allValues];
   v3 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"subgroupIndex" ascending:1];
   v7[0] = v3;
   v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v7 count:1];
-  v5 = [v2 sortedArrayUsingDescriptors:v4];
+  v5 = [allValues sortedArrayUsingDescriptors:v4];
 
   return v5;
 }
@@ -844,11 +844,11 @@ void __46__PXGBasicAXGroup__appendDescription_atLevel___block_invoke(void *a1, u
 - (NSArray)axLeafs
 {
   v7[1] = *MEMORY[0x277D85DE8];
-  v2 = [(NSMutableDictionary *)self->_mutableSpritesToLeafs allValues];
+  allValues = [(NSMutableDictionary *)self->_mutableSpritesToLeafs allValues];
   v3 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"spriteIndex" ascending:1];
   v7[0] = v3;
   v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v7 count:1];
-  v5 = [v2 sortedArrayUsingDescriptors:v4];
+  v5 = [allValues sortedArrayUsingDescriptors:v4];
 
   return v5;
 }
@@ -870,24 +870,24 @@ void __46__PXGBasicAXGroup__appendDescription_atLevel___block_invoke(void *a1, u
   return v4;
 }
 
-- (BOOL)updateWithSelectedChildren:(id)a3
+- (BOOL)updateWithSelectedChildren:(id)children
 {
   v33 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  childrenCopy = children;
   if ((self->_updateFlags.needsUpdate & 1) == 0)
   {
-    v25 = [(PXGBasicAXGroup *)self axNextResponder];
+    axNextResponder = [(PXGBasicAXGroup *)self axNextResponder];
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v6 = v5;
+    v6 = childrenCopy;
     v7 = [v6 countByEnumeratingWithState:&v28 objects:v32 count:16];
     if (v7)
     {
       v8 = v7;
       v23 = a2;
-      v24 = v5;
+      v24 = childrenCopy;
       v9 = 0;
       v10 = *v29;
       do
@@ -915,20 +915,20 @@ void __46__PXGBasicAXGroup__appendDescription_atLevel___block_invoke(void *a1, u
             {
               if ((v14 & 1) == 0)
               {
-                v22 = [MEMORY[0x277CCA890] currentHandler];
-                [v22 handleFailureInMethod:v23 object:self file:@"PXGAXGroup.m" lineNumber:773 description:@"Code which should be unreachable has been reached"];
+                currentHandler = [MEMORY[0x277CCA890] currentHandler];
+                [currentHandler handleFailureInMethod:v23 object:self file:@"PXGAXGroup.m" lineNumber:773 description:@"Code which should be unreachable has been reached"];
 
                 abort();
               }
 
               v15 = v12;
-              v16 = [(PXGBasicAXGroup *)v15 axContainingGroup];
+              axContainingGroup = [(PXGBasicAXGroup *)v15 axContainingGroup];
 
-              if (v16 == self)
+              if (axContainingGroup == self)
               {
                 v17 = [(PXGBasicAXGroup *)self _loadNeighboringLeafsAtSpriteIndex:[(PXGBasicAXGroup *)v15 spriteIndex]];
                 v18 = PXGAXCreateSelectionChangeUserInfo(v15);
-                [v25 axGroup:self didChange:4 userInfo:v18];
+                [axNextResponder axGroup:self didChange:4 userInfo:v18];
 
                 v9 = 1;
               }
@@ -941,7 +941,7 @@ void __46__PXGBasicAXGroup__appendDescription_atLevel___block_invoke(void *a1, u
 
       while (v8);
 
-      v5 = v24;
+      childrenCopy = v24;
       if (v9)
       {
         v19 = 1;
@@ -980,15 +980,15 @@ uint64_t __46__PXGBasicAXGroup_updateWithSelectedChildren___block_invoke(uint64_
   return result;
 }
 
-- (void)_updateLeafAtSpriteIndex:(unsigned int)a3
+- (void)_updateLeafAtSpriteIndex:(unsigned int)index
 {
-  v3 = *&a3;
+  v3 = *&index;
   v5 = [(PXGBasicAXGroup *)self _leafAtSpriteIndex:?];
   if (v5)
   {
     v8 = v5;
-    v6 = [(PXGBasicAXGroup *)self axInfoSource];
-    v7 = [v6 axContentInfoAtSpriteIndex:v3];
+    axInfoSource = [(PXGBasicAXGroup *)self axInfoSource];
+    v7 = [axInfoSource axContentInfoAtSpriteIndex:v3];
     if (v7)
     {
       [(PXGBasicAXGroup *)self _setLeaf:v7 forSpriteIndex:v3];
@@ -998,20 +998,20 @@ uint64_t __46__PXGBasicAXGroup_updateWithSelectedChildren___block_invoke(uint64_
   }
 }
 
-- (void)updateLeafsWithChangeDetails:(id)a3
+- (void)updateLeafsWithChangeDetails:(id)details
 {
   if ((self->_updateFlags.needsUpdate & 1) == 0)
   {
-    v4 = a3;
-    v5 = [(PXGBasicAXGroup *)self focusedLeafIndex];
+    detailsCopy = details;
+    focusedLeafIndex = [(PXGBasicAXGroup *)self focusedLeafIndex];
     mutableSpritesToLeafs = self->_mutableSpritesToLeafs;
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __48__PXGBasicAXGroup_updateLeafsWithChangeDetails___block_invoke;
     v7[3] = &__block_descriptor_36_e30_v24__0Q8__PXGReusableAXInfo_16l;
-    v8 = v5;
-    [v4 applyToDictionary:mutableSpritesToLeafs removalHandler:v7 moveHandler:&__block_literal_global_104_15572];
-    [v4 applyToIndexSet:self->_requiredLeafIndexesToLoad];
+    v8 = focusedLeafIndex;
+    [detailsCopy applyToDictionary:mutableSpritesToLeafs removalHandler:v7 moveHandler:&__block_literal_global_104_15572];
+    [detailsCopy applyToIndexSet:self->_requiredLeafIndexesToLoad];
   }
 }
 
@@ -1025,7 +1025,7 @@ void __48__PXGBasicAXGroup_updateLeafsWithChangeDetails___block_invoke(uint64_t 
   }
 }
 
-- (void)updateSubgroupsWithChangeDetails:(id)a3
+- (void)updateSubgroupsWithChangeDetails:(id)details
 {
   mutableIndexesToSubgroups = self->_mutableIndexesToSubgroups;
   v5[0] = MEMORY[0x277D85DD0];
@@ -1033,17 +1033,17 @@ void __48__PXGBasicAXGroup_updateLeafsWithChangeDetails___block_invoke(uint64_t 
   v5[2] = __52__PXGBasicAXGroup_updateSubgroupsWithChangeDetails___block_invoke;
   v5[3] = &unk_2782AB110;
   v5[4] = self;
-  [a3 applyToDictionary:mutableIndexesToSubgroups removalHandler:v5 moveHandler:&__block_literal_global_100];
+  [details applyToDictionary:mutableIndexesToSubgroups removalHandler:v5 moveHandler:&__block_literal_global_100];
 }
 
-- (BOOL)_leafAtSpriteIndexIsVisible:(unsigned int)a3
+- (BOOL)_leafAtSpriteIndexIsVisible:(unsigned int)visible
 {
-  v4 = [(PXGBasicAXGroup *)self axInfoSource];
-  v5 = v4;
-  if (v4)
+  axInfoSource = [(PXGBasicAXGroup *)self axInfoSource];
+  v5 = axInfoSource;
+  if (axInfoSource)
   {
-    v6 = [v4 axVisibleSpriteIndexes];
-    v7 = [v6 containsIndex:a3];
+    axVisibleSpriteIndexes = [axInfoSource axVisibleSpriteIndexes];
+    v7 = [axVisibleSpriteIndexes containsIndex:visible];
   }
 
   else
@@ -1054,14 +1054,14 @@ void __48__PXGBasicAXGroup_updateLeafsWithChangeDetails___block_invoke(uint64_t 
   return v7;
 }
 
-- (BOOL)_leafAtSpriteIndexIsSelected:(unsigned int)a3
+- (BOOL)_leafAtSpriteIndexIsSelected:(unsigned int)selected
 {
-  v4 = [(PXGBasicAXGroup *)self axInfoSource];
-  v5 = v4;
-  if (v4)
+  axInfoSource = [(PXGBasicAXGroup *)self axInfoSource];
+  v5 = axInfoSource;
+  if (axInfoSource)
   {
-    v6 = [v4 axSelectedSpriteIndexes];
-    v7 = [v6 containsIndex:a3];
+    axSelectedSpriteIndexes = [axInfoSource axSelectedSpriteIndexes];
+    v7 = [axSelectedSpriteIndexes containsIndex:selected];
   }
 
   else
@@ -1072,14 +1072,14 @@ void __48__PXGBasicAXGroup_updateLeafsWithChangeDetails___block_invoke(uint64_t 
   return v7;
 }
 
-- (BOOL)_leafAtSpriteIndexIsAccessible:(unsigned int)a3
+- (BOOL)_leafAtSpriteIndexIsAccessible:(unsigned int)accessible
 {
-  v4 = [(PXGBasicAXGroup *)self axInfoSource];
-  v5 = v4;
-  if (v4)
+  axInfoSource = [(PXGBasicAXGroup *)self axInfoSource];
+  v5 = axInfoSource;
+  if (axInfoSource)
   {
-    v6 = [v4 axSpriteIndexes];
-    v7 = [v6 containsIndex:a3];
+    axSpriteIndexes = [axInfoSource axSpriteIndexes];
+    v7 = [axSpriteIndexes containsIndex:accessible];
   }
 
   else
@@ -1090,70 +1090,70 @@ void __48__PXGBasicAXGroup_updateLeafsWithChangeDetails___block_invoke(uint64_t 
   return v7;
 }
 
-- (BOOL)_leafAtSpriteIndex:(unsigned int)a3 passesFilter:(unint64_t)a4
+- (BOOL)_leafAtSpriteIndex:(unsigned int)index passesFilter:(unint64_t)filter
 {
-  v4 = a4;
-  v5 = *&a3;
-  v7 = (a4 & 2) == 0 || [(PXGBasicAXGroup *)self _leafAtSpriteIndexIsAccessible:*&a3];
-  v8 = (v4 & 4) == 0 && v7;
-  if ((v4 & 4) != 0 && v7)
+  filterCopy = filter;
+  v5 = *&index;
+  v7 = (filter & 2) == 0 || [(PXGBasicAXGroup *)self _leafAtSpriteIndexIsAccessible:*&index];
+  v8 = (filterCopy & 4) == 0 && v7;
+  if ((filterCopy & 4) != 0 && v7)
   {
     v8 = [(PXGBasicAXGroup *)self _leafAtSpriteIndexIsVisible:v5];
   }
 
-  v9 = ((v4 & 8) == 0) & v8;
-  if ((v4 & 8) != 0 && v8)
+  v9 = ((filterCopy & 8) == 0) & v8;
+  if ((filterCopy & 8) != 0 && v8)
   {
     v9 = [(PXGBasicAXGroup *)self _leafAtSpriteIndexIsSelected:v5];
   }
 
-  return (v4 & 1) == 0 && v9;
+  return (filterCopy & 1) == 0 && v9;
 }
 
-- (BOOL)_passesFilter:(unint64_t)a3
+- (BOOL)_passesFilter:(unint64_t)filter
 {
-  v3 = a3;
-  v5 = (a3 & 1) == 0 || [(PXGBasicAXGroup *)self axRole]== 1 || [(PXGBasicAXGroup *)self axRole]== 4;
-  v6 = (v3 & 4) == 0 && v5;
-  if ((v3 & 4) != 0 && v5)
+  filterCopy = filter;
+  v5 = (filter & 1) == 0 || [(PXGBasicAXGroup *)self axRole]== 1 || [(PXGBasicAXGroup *)self axRole]== 4;
+  axIsVisible = (filterCopy & 4) == 0 && v5;
+  if ((filterCopy & 4) != 0 && v5)
   {
-    v6 = [(PXGBasicAXGroup *)self axIsVisible];
+    axIsVisible = [(PXGBasicAXGroup *)self axIsVisible];
   }
 
-  v7 = ((v3 & 8) == 0) & v6;
-  if ((v3 & 8) != 0 && v6)
+  axIsSelected = ((filterCopy & 8) == 0) & axIsVisible;
+  if ((filterCopy & 8) != 0 && axIsVisible)
   {
-    v7 = [(PXGBasicAXGroup *)self axIsSelected];
+    axIsSelected = [(PXGBasicAXGroup *)self axIsSelected];
   }
 
-  return (v3 & 2) == 0 && v7;
+  return (filterCopy & 2) == 0 && axIsSelected;
 }
 
-- (void)_addAllLeafsPassingFilter:(unint64_t)a3 intoArray:(id)a4
+- (void)_addAllLeafsPassingFilter:(unint64_t)filter intoArray:(id)array
 {
-  v4 = a3;
-  v7 = a4;
-  v8 = [(PXGBasicAXGroup *)self axInfoSource];
-  v9 = v8;
-  if ((v4 & 2) != 0)
+  filterCopy = filter;
+  arrayCopy = array;
+  axInfoSource = [(PXGBasicAXGroup *)self axInfoSource];
+  v9 = axInfoSource;
+  if ((filterCopy & 2) != 0)
   {
-    v10 = [v8 axSpriteIndexes];
+    axSpriteIndexes = [axInfoSource axSpriteIndexes];
   }
 
   else
   {
-    v10 = 0;
+    axSpriteIndexes = 0;
   }
 
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __55__PXGBasicAXGroup__addAllLeafsPassingFilter_intoArray___block_invoke;
   v12[3] = &unk_2782AB0E8;
-  v13 = v7;
+  v13 = arrayCopy;
   v14 = a2;
   v12[4] = self;
-  v11 = v7;
-  [v10 enumerateIndexesUsingBlock:v12];
+  v11 = arrayCopy;
+  [axSpriteIndexes enumerateIndexesUsingBlock:v12];
 }
 
 void __55__PXGBasicAXGroup__addAllLeafsPassingFilter_intoArray___block_invoke(uint64_t a1, uint64_t a2)
@@ -1172,18 +1172,18 @@ void __55__PXGBasicAXGroup__addAllLeafsPassingFilter_intoArray___block_invoke(ui
   [*(a1 + 40) addObject:v5];
 }
 
-- (void)_addCurrentlyLoadedLeafsPassingFilter:(unint64_t)a3 intoArray:(id)a4
+- (void)_addCurrentlyLoadedLeafsPassingFilter:(unint64_t)filter intoArray:(id)array
 {
-  v6 = a4;
+  arrayCopy = array;
   mutableSpritesToLeafs = self->_mutableSpritesToLeafs;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __67__PXGBasicAXGroup__addCurrentlyLoadedLeafsPassingFilter_intoArray___block_invoke;
   v9[3] = &unk_2782AB0C0;
-  v10 = v6;
-  v11 = a3;
+  v10 = arrayCopy;
+  filterCopy = filter;
   v9[4] = self;
-  v8 = v6;
+  v8 = arrayCopy;
   [(NSMutableDictionary *)mutableSpritesToLeafs enumerateKeysAndObjectsUsingBlock:v9];
 }
 
@@ -1196,30 +1196,30 @@ void __67__PXGBasicAXGroup__addCurrentlyLoadedLeafsPassingFilter_intoArray___blo
   }
 }
 
-- (void)_addLeafsPassingFilter:(unint64_t)a3 usingOptions:(unint64_t)a4 intoArray:(id)a5
+- (void)_addLeafsPassingFilter:(unint64_t)filter usingOptions:(unint64_t)options intoArray:(id)array
 {
-  if ((a4 & 2) != 0)
+  if ((options & 2) != 0)
   {
-    [(PXGBasicAXGroup *)self _addAllLeafsPassingFilter:a3 intoArray:a5];
+    [(PXGBasicAXGroup *)self _addAllLeafsPassingFilter:filter intoArray:array];
   }
 
   else
   {
-    [(PXGBasicAXGroup *)self _addCurrentlyLoadedLeafsPassingFilter:a3 intoArray:a5];
+    [(PXGBasicAXGroup *)self _addCurrentlyLoadedLeafsPassingFilter:filter intoArray:array];
   }
 }
 
-- (void)_addSubgroupsPassingFilter:(unint64_t)a3 intoArray:(id)a4
+- (void)_addSubgroupsPassingFilter:(unint64_t)filter intoArray:(id)array
 {
-  v6 = a4;
+  arrayCopy = array;
   mutableIndexesToSubgroups = self->_mutableIndexesToSubgroups;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __56__PXGBasicAXGroup__addSubgroupsPassingFilter_intoArray___block_invoke;
   v9[3] = &unk_2782AB098;
-  v10 = v6;
-  v11 = a3;
-  v8 = v6;
+  v10 = arrayCopy;
+  filterCopy = filter;
+  v8 = arrayCopy;
   [(NSMutableDictionary *)mutableIndexesToSubgroups enumerateKeysAndObjectsUsingBlock:v9];
 }
 
@@ -1234,48 +1234,48 @@ void __56__PXGBasicAXGroup__addSubgroupsPassingFilter_intoArray___block_invoke(u
   }
 }
 
-- (void)_addChildrenPassingFilter:(unint64_t)a3 usingOptions:(unint64_t)a4 intoArray:(id)a5
+- (void)_addChildrenPassingFilter:(unint64_t)filter usingOptions:(unint64_t)options intoArray:(id)array
 {
-  v8 = a5;
-  [(PXGBasicAXGroup *)self _addSubgroupsPassingFilter:a3 intoArray:v8];
-  [(PXGBasicAXGroup *)self _addLeafsPassingFilter:a3 usingOptions:a4 intoArray:v8];
-  if (a4)
+  arrayCopy = array;
+  [(PXGBasicAXGroup *)self _addSubgroupsPassingFilter:filter intoArray:arrayCopy];
+  [(PXGBasicAXGroup *)self _addLeafsPassingFilter:filter usingOptions:options intoArray:arrayCopy];
+  if (options)
   {
     mutableIndexesToSubgroups = self->_mutableIndexesToSubgroups;
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __68__PXGBasicAXGroup__addChildrenPassingFilter_usingOptions_intoArray___block_invoke;
     v10[3] = &unk_2782AB070;
-    v12 = a3;
-    v13 = a4;
-    v11 = v8;
+    filterCopy = filter;
+    optionsCopy = options;
+    v11 = arrayCopy;
     [(NSMutableDictionary *)mutableIndexesToSubgroups enumerateKeysAndObjectsUsingBlock:v10];
   }
 }
 
-- (id)childrenPassingFilter:(unint64_t)a3 usingOptions:(unint64_t)a4
+- (id)childrenPassingFilter:(unint64_t)filter usingOptions:(unint64_t)options
 {
   v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  [(PXGBasicAXGroup *)self _addChildrenPassingFilter:a3 usingOptions:a4 intoArray:v7];
+  [(PXGBasicAXGroup *)self _addChildrenPassingFilter:filter usingOptions:options intoArray:v7];
 
   return v7;
 }
 
-- (id)leafAtPoint:(CGPoint)a3
+- (id)leafAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
   v29 = __Block_byref_object_copy__15583;
   v30 = __Block_byref_object_dispose__15584;
   v31 = 0;
-  v7 = [(PXGBasicAXGroup *)self axInfoSource];
-  v8 = [(PXGBasicAXGroup *)self axGroupSource];
-  v9 = [v7 axSpriteIndexesInRect:{x, y, 5.0, 5.0}];
-  v10 = [v9 firstIndex];
-  if (v10 == -1)
+  axInfoSource = [(PXGBasicAXGroup *)self axInfoSource];
+  axGroupSource = [(PXGBasicAXGroup *)self axGroupSource];
+  v9 = [axInfoSource axSpriteIndexesInRect:{x, y, 5.0, 5.0}];
+  firstIndex = [v9 firstIndex];
+  if (firstIndex == -1)
   {
     mutableIndexesToSubgroups = self->_mutableIndexesToSubgroups;
     v20[0] = MEMORY[0x277D85DD0];
@@ -1284,7 +1284,7 @@ void __56__PXGBasicAXGroup__addSubgroupsPassingFilter_intoArray___block_invoke(u
     v20[3] = &unk_2782AB048;
     v24 = x;
     v25 = y;
-    v21 = v8;
+    v21 = axGroupSource;
     v22 = &__block_literal_global_90;
     v23 = &v26;
     [(NSMutableDictionary *)mutableIndexesToSubgroups enumerateKeysAndObjectsUsingBlock:v20];
@@ -1294,13 +1294,13 @@ void __56__PXGBasicAXGroup__addSubgroupsPassingFilter_intoArray___block_invoke(u
 
   else
   {
-    v11 = [(PXGBasicAXGroup *)self loadLeafAtSpriteIndexIfNeeded:v10 usingOptions:0];
-    v12 = [(PXGBasicAXGroup *)self loadedLeafAtSpriteIndex:v10];
+    v11 = [(PXGBasicAXGroup *)self loadLeafAtSpriteIndexIfNeeded:firstIndex usingOptions:0];
+    v12 = [(PXGBasicAXGroup *)self loadedLeafAtSpriteIndex:firstIndex];
     v13 = v12;
     if (!v12)
     {
-      v19 = [MEMORY[0x277CCA890] currentHandler];
-      [v19 handleFailureInMethod:a2 object:self file:@"PXGAXGroup.m" lineNumber:528 description:@"Leaf should not be nil after loading."];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXGAXGroup.m" lineNumber:528 description:@"Leaf should not be nil after loading."];
     }
 
     v14 = __31__PXGBasicAXGroup_leafAtPoint___block_invoke(v12, v13);
@@ -1412,17 +1412,17 @@ LABEL_10:
 LABEL_13:
 }
 
-- (void)_leafsInRect:(CGRect)a3 usingOptions:(unint64_t)a4 intoMutableArray:(id)a5
+- (void)_leafsInRect:(CGRect)rect usingOptions:(unint64_t)options intoMutableArray:(id)array
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v11 = a5;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  arrayCopy = array;
   if ((self->_updateFlags.needsUpdate & 1) == 0)
   {
-    v12 = [(PXGBasicAXGroup *)self axInfoSource];
-    v13 = [v12 axSpriteIndexesInRect:{x, y, width, height}];
+    axInfoSource = [(PXGBasicAXGroup *)self axInfoSource];
+    v13 = [axInfoSource axSpriteIndexesInRect:{x, y, width, height}];
     mutableSpritesToLeafs = self->_mutableSpritesToLeafs;
     v28[0] = MEMORY[0x277D85DD0];
     v28[1] = 3221225472;
@@ -1430,12 +1430,12 @@ LABEL_13:
     v28[3] = &unk_2782AAFD8;
     v15 = v13;
     v29 = v15;
-    v16 = v11;
+    v16 = arrayCopy;
     v30 = v16;
     [(NSMutableDictionary *)mutableSpritesToLeafs enumerateKeysAndObjectsUsingBlock:v28];
-    v17 = [(PXGBasicAXGroup *)self axGroupSource];
-    v18 = v17;
-    if ((a4 & 1) != 0 && [v17 axShouldSearchLeafsInSubgroups])
+    axGroupSource = [(PXGBasicAXGroup *)self axGroupSource];
+    v18 = axGroupSource;
+    if ((options & 1) != 0 && [axGroupSource axShouldSearchLeafsInSubgroups])
     {
       mutableIndexesToSubgroups = self->_mutableIndexesToSubgroups;
       v20[0] = MEMORY[0x277D85DD0];
@@ -1447,7 +1447,7 @@ LABEL_13:
       v25 = width;
       v26 = height;
       v21 = v18;
-      v27 = a4;
+      optionsCopy = options;
       v22 = v16;
       [(NSMutableDictionary *)mutableIndexesToSubgroups enumerateKeysAndObjectsUsingBlock:v20];
     }
@@ -1489,25 +1489,25 @@ void __62__PXGBasicAXGroup__leafsInRect_usingOptions_intoMutableArray___block_in
   }
 }
 
-- (id)leafsInRect:(CGRect)a3 usingOptions:(unint64_t)a4
+- (id)leafsInRect:(CGRect)rect usingOptions:(unint64_t)options
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v10 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  [(PXGBasicAXGroup *)self _leafsInRect:a4 usingOptions:v10 intoMutableArray:x, y, width, height];
+  [(PXGBasicAXGroup *)self _leafsInRect:options usingOptions:v10 intoMutableArray:x, y, width, height];
 
   return v10;
 }
 
-- (id)_removeLeafAtSpriteIndex:(unsigned int)a3
+- (id)_removeLeafAtSpriteIndex:(unsigned int)index
 {
-  v3 = *&a3;
-  if (a3 == -1)
+  v3 = *&index;
+  if (index == -1)
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PXGAXGroup.m" lineNumber:466 description:@"Can not remove a leaf at PXGSpriteIndexNotFound"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGAXGroup.m" lineNumber:466 description:@"Can not remove a leaf at PXGSpriteIndexNotFound"];
   }
 
   v5 = [(PXGBasicAXGroup *)self _leafAtSpriteIndex:v3];
@@ -1531,19 +1531,19 @@ void __62__PXGBasicAXGroup__leafsInRect_usingOptions_intoMutableArray___block_in
   [(NSMutableDictionary *)mutableSpritesToLeafs removeAllObjects];
 }
 
-- (void)unloadLeafAtSpriteIndex:(unsigned int)a3 usingOptions:(unint64_t)a4
+- (void)unloadLeafAtSpriteIndex:(unsigned int)index usingOptions:(unint64_t)options
 {
-  v4 = a4;
-  v5 = *&a3;
-  v7 = a3;
-  v8 = [(NSMutableIndexSet *)self->_requiredLeafIndexesToLoad containsIndex:a3];
+  optionsCopy = options;
+  v5 = *&index;
+  indexCopy = index;
+  v8 = [(NSMutableIndexSet *)self->_requiredLeafIndexesToLoad containsIndex:index];
   v9 = v8;
-  if ((v4 & 1) != 0 && v8)
+  if ((optionsCopy & 1) != 0 && v8)
   {
-    [(NSMutableIndexSet *)self->_requiredLeafIndexesToLoad removeIndex:v7];
+    [(NSMutableIndexSet *)self->_requiredLeafIndexesToLoad removeIndex:indexCopy];
   }
 
-  if (v4 & 2) == 0 && ((v4 | v9 ^ 1))
+  if (optionsCopy & 2) == 0 && ((optionsCopy | v9 ^ 1))
   {
     v10 = [(PXGBasicAXGroup *)self _removeLeafAtSpriteIndex:v5];
     if (v10)
@@ -1557,33 +1557,33 @@ void __62__PXGBasicAXGroup__leafsInRect_usingOptions_intoMutableArray___block_in
   }
 }
 
-- (id)_leafAtSpriteIndex:(unsigned int)a3
+- (id)_leafAtSpriteIndex:(unsigned int)index
 {
   mutableSpritesToLeafs = self->_mutableSpritesToLeafs;
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:*&a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:*&index];
   v5 = [(NSMutableDictionary *)mutableSpritesToLeafs objectForKeyedSubscript:v4];
 
   return v5;
 }
 
-- (void)_setLeaf:(id)a3 forSpriteIndex:(unsigned int)a4
+- (void)_setLeaf:(id)leaf forSpriteIndex:(unsigned int)index
 {
-  v4 = *&a4;
-  v7 = a3;
-  if (!v7)
+  v4 = *&index;
+  leafCopy = leaf;
+  if (!leafCopy)
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXGAXGroup.m" lineNumber:427 description:@"Can not add a nil leaf"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGAXGroup.m" lineNumber:427 description:@"Can not add a nil leaf"];
   }
 
   if (v4 == -1)
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PXGAXGroup.m" lineNumber:428 description:@"Can not add a leaf to PXGSpriteIndexNotFound"];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXGAXGroup.m" lineNumber:428 description:@"Can not add a leaf to PXGSpriteIndexNotFound"];
   }
 
-  v17 = v7;
-  if (v7)
+  v17 = leafCopy;
+  if (leafCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -1591,19 +1591,19 @@ void __62__PXGBasicAXGroup__leafsInRect_usingOptions_intoMutableArray___block_in
       goto LABEL_7;
     }
 
-    v12 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
     v15 = objc_opt_class();
     v14 = NSStringFromClass(v15);
-    v16 = [v17 px_descriptionForAssertionMessage];
-    [v12 handleFailureInMethod:a2 object:self file:@"PXGAXGroup.m" lineNumber:429 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"leaf", v14, v16}];
+    px_descriptionForAssertionMessage = [v17 px_descriptionForAssertionMessage];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"PXGAXGroup.m" lineNumber:429 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"leaf", v14, px_descriptionForAssertionMessage}];
   }
 
   else
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
     v13 = objc_opt_class();
     v14 = NSStringFromClass(v13);
-    [v12 handleFailureInMethod:a2 object:self file:@"PXGAXGroup.m" lineNumber:429 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"leaf", v14}];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"PXGAXGroup.m" lineNumber:429 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"leaf", v14}];
   }
 
 LABEL_7:
@@ -1616,12 +1616,12 @@ LABEL_7:
   [(NSMutableDictionary *)mutableSpritesToLeafs setObject:v17 forKeyedSubscript:v9];
 }
 
-- (BOOL)_loadOrUpdateLeafAtSpriteIndex:(unsigned int)a3
+- (BOOL)_loadOrUpdateLeafAtSpriteIndex:(unsigned int)index
 {
-  v3 = *&a3;
+  v3 = *&index;
   v6 = [(PXGBasicAXGroup *)self _leafAtSpriteIndex:?];
-  v7 = [(PXGBasicAXGroup *)self axInfoSource];
-  v8 = [v7 axContentInfoAtSpriteIndex:v3];
+  axInfoSource = [(PXGBasicAXGroup *)self axInfoSource];
+  v8 = [axInfoSource axContentInfoAtSpriteIndex:v3];
   if (!v8)
   {
     v10 = v6 != 0;
@@ -1636,11 +1636,11 @@ LABEL_7:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v13 = objc_opt_class();
     v14 = NSStringFromClass(v13);
-    v15 = [v8 px_descriptionForAssertionMessage];
-    [v12 handleFailureInMethod:a2 object:self file:@"PXGAXGroup.m" lineNumber:411 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"[infoSource axContentInfoAtSpriteIndex:spriteIndex]", v14, v15}];
+    px_descriptionForAssertionMessage = [v8 px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGAXGroup.m" lineNumber:411 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"[infoSource axContentInfoAtSpriteIndex:spriteIndex]", v14, px_descriptionForAssertionMessage}];
 
     if (v6)
     {
@@ -1689,11 +1689,11 @@ LABEL_12:
   return v16;
 }
 
-- (unsigned)_loadClosestLeafAtSpriteIndex:(unsigned int)a3 inDirection:(unint64_t)a4
+- (unsigned)_loadClosestLeafAtSpriteIndex:(unsigned int)index inDirection:(unint64_t)direction
 {
-  v5 = *&a3;
-  v7 = [(PXGBasicAXGroup *)self axInfoSource];
-  v8 = [v7 axSpriteIndexClosestToSpriteIndex:v5 inDirection:a4];
+  v5 = *&index;
+  axInfoSource = [(PXGBasicAXGroup *)self axInfoSource];
+  v8 = [axInfoSource axSpriteIndexClosestToSpriteIndex:v5 inDirection:direction];
   if (v8 == -1)
   {
     v10 = -1;
@@ -1716,7 +1716,7 @@ LABEL_12:
   return v10;
 }
 
-- (id)_loadNeighboringLeafsAtSpriteIndex:(unsigned int)a3
+- (id)_loadNeighboringLeafsAtSpriteIndex:(unsigned int)index
 {
   v18 = *MEMORY[0x277D85DE8];
   v5 = objc_alloc_init(MEMORY[0x277CCAB58]);
@@ -1724,8 +1724,8 @@ LABEL_12:
   v11[1] = 3221225472;
   v12 = __54__PXGBasicAXGroup__loadNeighboringLeafsAtSpriteIndex___block_invoke;
   v13 = &unk_2782AAF90;
-  v14 = self;
-  v16 = a3;
+  selfCopy = self;
+  indexCopy = index;
   v6 = v5;
   v7 = 0;
   v15 = v6;
@@ -1759,21 +1759,21 @@ uint64_t __54__PXGBasicAXGroup__loadNeighboringLeafsAtSpriteIndex___block_invoke
   return result;
 }
 
-- (id)loadLeafAtSpriteIndexIfNeeded:(unsigned int)a3 usingOptions:(unint64_t)a4
+- (id)loadLeafAtSpriteIndexIfNeeded:(unsigned int)needed usingOptions:(unint64_t)options
 {
-  v4 = a4;
-  v5 = *&a3;
+  optionsCopy = options;
+  v5 = *&needed;
   v7 = objc_alloc_init(MEMORY[0x277CCAB58]);
   if (v5 != -1)
   {
     [(PXGBasicAXGroup *)self _loadOrUpdateLeafAtSpriteIndex:v5];
     [v7 addIndex:v5];
-    if (v4)
+    if (optionsCopy)
     {
       [(NSMutableIndexSet *)self->_requiredLeafIndexesToLoad addIndex:v5];
     }
 
-    if ((v4 & 4) == 0)
+    if ((optionsCopy & 4) == 0)
     {
       v8 = [(PXGBasicAXGroup *)self _loadNeighboringLeafsAtSpriteIndex:v5];
       [v7 addIndexes:v8];
@@ -1783,27 +1783,27 @@ uint64_t __54__PXGBasicAXGroup__loadNeighboringLeafsAtSpriteIndex___block_invoke
   return v7;
 }
 
-- (void)_cleanUpSubgroupAfterUnloading:(id)a3
+- (void)_cleanUpSubgroupAfterUnloading:(id)unloading
 {
-  v3 = a3;
-  [v3 setAxParent:0];
-  [v3 setSubgroupIndex:0x7FFFFFFFFFFFFFFFLL];
+  unloadingCopy = unloading;
+  [unloadingCopy setAxParent:0];
+  [unloadingCopy setSubgroupIndex:0x7FFFFFFFFFFFFFFFLL];
 }
 
-- (void)_unloadSubgroupAtIndex:(int64_t)a3 shouldNotify:(BOOL)a4
+- (void)_unloadSubgroupAtIndex:(int64_t)index shouldNotify:(BOOL)notify
 {
-  v4 = a4;
+  notifyCopy = notify;
   v7 = [(PXGBasicAXGroup *)self loadedSubgroupAtIndex:?];
   if (v7)
   {
     mutableIndexesToSubgroups = self->_mutableIndexesToSubgroups;
     v10 = v7;
-    v9 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+    v9 = [MEMORY[0x277CCABB0] numberWithInteger:index];
     [(NSMutableDictionary *)mutableIndexesToSubgroups setObject:0 forKeyedSubscript:v9];
 
     [(PXGBasicAXGroup *)self _cleanUpSubgroupAfterUnloading:v10];
     v7 = v10;
-    if (v4)
+    if (notifyCopy)
     {
       [(PXGBasicAXGroup *)self invalidateLayout];
       v7 = v10;
@@ -1811,39 +1811,39 @@ uint64_t __54__PXGBasicAXGroup__loadNeighboringLeafsAtSpriteIndex___block_invoke
   }
 }
 
-- (void)loadSubgroup:(id)a3 atIndex:(int64_t)a4
+- (void)loadSubgroup:(id)subgroup atIndex:(int64_t)index
 {
-  v7 = a3;
-  v12 = v7;
-  if (!v7)
+  subgroupCopy = subgroup;
+  v12 = subgroupCopy;
+  if (!subgroupCopy)
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXGAXGroup.m" lineNumber:313 description:@"Can not add a nil childGroup"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGAXGroup.m" lineNumber:313 description:@"Can not add a nil childGroup"];
 
-    v7 = 0;
+    subgroupCopy = 0;
   }
 
-  if (v7 == self)
+  if (subgroupCopy == self)
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PXGAXGroup.m" lineNumber:314 description:@"Can not add self as a childGroup"];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXGAXGroup.m" lineNumber:314 description:@"Can not add self as a childGroup"];
 
-    v7 = v12;
+    subgroupCopy = v12;
   }
 
-  [(PXGBasicAXGroup *)v7 setAxParent:self];
-  [(PXGBasicAXGroup *)v12 setSubgroupIndex:a4];
+  [(PXGBasicAXGroup *)subgroupCopy setAxParent:self];
+  [(PXGBasicAXGroup *)v12 setSubgroupIndex:index];
   mutableIndexesToSubgroups = self->_mutableIndexesToSubgroups;
-  v9 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+  v9 = [MEMORY[0x277CCABB0] numberWithInteger:index];
   [(NSMutableDictionary *)mutableIndexesToSubgroups setObject:v12 forKeyedSubscript:v9];
 
   [(PXGBasicAXGroup *)self invalidateLayout];
 }
 
-- (id)loadedSubgroupAtIndex:(int64_t)a3
+- (id)loadedSubgroupAtIndex:(int64_t)index
 {
   mutableIndexesToSubgroups = self->_mutableIndexesToSubgroups;
-  v4 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithInteger:index];
   v5 = [(NSMutableDictionary *)mutableIndexesToSubgroups objectForKeyedSubscript:v4];
 
   return v5;
@@ -1852,14 +1852,14 @@ uint64_t __54__PXGBasicAXGroup__loadNeighboringLeafsAtSpriteIndex___block_invoke
 - (NSIndexSet)loadedSubgroupIndexes
 {
   v3 = objc_alloc_init(MEMORY[0x277CCAB58]);
-  v4 = [(NSMutableDictionary *)self->_mutableIndexesToSubgroups allKeys];
+  allKeys = [(NSMutableDictionary *)self->_mutableIndexesToSubgroups allKeys];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __40__PXGBasicAXGroup_loadedSubgroupIndexes__block_invoke;
   v7[3] = &unk_2782AAF68;
   v5 = v3;
   v8 = v5;
-  [v4 enumerateObjectsUsingBlock:v7];
+  [allKeys enumerateObjectsUsingBlock:v7];
 
   return v5;
 }
@@ -1874,19 +1874,19 @@ uint64_t __40__PXGBasicAXGroup_loadedSubgroupIndexes__block_invoke(uint64_t a1, 
 
 - (PXGBasicAXGroup)axScrollParent
 {
-  v2 = self;
-  WeakRetained = objc_loadWeakRetained(&v2->_axParent);
-  v4 = [WeakRetained axGroupSource];
+  selfCopy = self;
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_axParent);
+  axGroupSource = [WeakRetained axGroupSource];
 
-  if ([v4 axShouldBeConsideredAsSubgroup])
+  if ([axGroupSource axShouldBeConsideredAsSubgroup])
   {
-    v5 = objc_loadWeakRetained(&v2->_axParent);
-    v6 = [v5 axScrollParent];
+    v5 = objc_loadWeakRetained(&selfCopy->_axParent);
+    axScrollParent = [v5 axScrollParent];
 
-    v2 = v6;
+    selfCopy = axScrollParent;
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (PXGBasicAXGroup)axRootParent
@@ -1895,54 +1895,54 @@ uint64_t __40__PXGBasicAXGroup_loadedSubgroupIndexes__block_invoke(uint64_t a1, 
   if (WeakRetained)
   {
     v4 = WeakRetained;
-    v5 = [(PXGBasicAXGroup *)WeakRetained axParent];
+    axParent = [(PXGBasicAXGroup *)WeakRetained axParent];
 
-    if (v5)
+    if (axParent)
     {
       do
       {
-        v6 = [(PXGBasicAXGroup *)v4 axParent];
+        selfCopy = [(PXGBasicAXGroup *)v4 axParent];
 
-        v7 = [(PXGBasicAXGroup *)v6 axParent];
+        axParent2 = [(PXGBasicAXGroup *)selfCopy axParent];
 
-        v4 = v6;
+        v4 = selfCopy;
       }
 
-      while (v7);
+      while (axParent2);
     }
 
     else
     {
-      v6 = v4;
+      selfCopy = v4;
     }
   }
 
   else
   {
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)setAxRole:(int64_t)a3
+- (void)setAxRole:(int64_t)role
 {
-  if (self->_axRole != a3)
+  if (self->_axRole != role)
   {
-    self->_axRole = a3;
-    v5 = [(PXGBasicAXGroup *)self axNextResponder];
-    [v5 axGroup:self didChange:1 userInfo:0];
+    self->_axRole = role;
+    axNextResponder = [(PXGBasicAXGroup *)self axNextResponder];
+    [axNextResponder axGroup:self didChange:1 userInfo:0];
   }
 }
 
-- (void)_addFirstVisibleIndexes:(id)a3 toIndexesToLoad:(id)a4
+- (void)_addFirstVisibleIndexes:(id)indexes toIndexesToLoad:(id)load
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [(PXGBasicAXGroup *)self nonScrollingAxisItemCount];
-  if (![v8 firstIndex] && v7)
+  indexesCopy = indexes;
+  loadCopy = load;
+  nonScrollingAxisItemCount = [(PXGBasicAXGroup *)self nonScrollingAxisItemCount];
+  if (![indexesCopy firstIndex] && nonScrollingAxisItemCount)
   {
-    [v6 addIndexesInRange:{objc_msgSend(v8, "firstIndex"), v7}];
+    [loadCopy addIndexesInRange:{objc_msgSend(indexesCopy, "firstIndex"), nonScrollingAxisItemCount}];
   }
 }
 

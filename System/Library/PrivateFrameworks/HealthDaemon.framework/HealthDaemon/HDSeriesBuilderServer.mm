@@ -1,38 +1,38 @@
 @interface HDSeriesBuilderServer
-- (BOOL)canAddMetadata:(id)a3 errorOut:(id *)a4;
-- (BOOL)queue_canInsertDataWithError:(id *)a3;
+- (BOOL)canAddMetadata:(id)metadata errorOut:(id *)out;
+- (BOOL)queue_canInsertDataWithError:(id *)error;
 - (HDSeriesBuilderEntity)persistentEntity;
-- (HDSeriesBuilderServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6;
+- (HDSeriesBuilderServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate;
 - (NSString)description;
-- (void)_discardSeriesWithCompletion:(uint64_t)a1;
-- (void)_setClientState:(void *)a3 completion:;
-- (void)associateToWorkoutBuilderWithCompletion:(id)a3;
+- (void)_discardSeriesWithCompletion:(uint64_t)completion;
+- (void)_setClientState:(void *)state completion:;
+- (void)associateToWorkoutBuilderWithCompletion:(id)completion;
 - (void)connectionInvalidated;
-- (void)createSeriesSampleIfNeeded:(id)a3 errorHandler:(id)a4;
-- (void)queue_freezeBuilderWithCompletion:(id)a3;
+- (void)createSeriesSampleIfNeeded:(id)needed errorHandler:(id)handler;
+- (void)queue_freezeBuilderWithCompletion:(id)completion;
 - (void)queue_recoverBuilder;
-- (void)queue_setState:(int64_t)a3 completion:(id)a4;
-- (void)remote_addMetadata:(id)a3 completion:(id)a4;
-- (void)remote_discardWithCompletion:(id)a3;
-- (void)remote_freezeWithCompletion:(id)a3;
-- (void)remote_recoverWithCompletion:(id)a3;
+- (void)queue_setState:(int64_t)state completion:(id)completion;
+- (void)remote_addMetadata:(id)metadata completion:(id)completion;
+- (void)remote_discardWithCompletion:(id)completion;
+- (void)remote_freezeWithCompletion:(id)completion;
+- (void)remote_recoverWithCompletion:(id)completion;
 @end
 
 @implementation HDSeriesBuilderServer
 
-- (HDSeriesBuilderServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6
+- (HDSeriesBuilderServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate
 {
-  v10 = a4;
+  configurationCopy = configuration;
   v20.receiver = self;
   v20.super_class = HDSeriesBuilderServer;
-  v11 = [(HDStandardTaskServer *)&v20 initWithUUID:a3 configuration:v10 client:a5 delegate:a6];
+  v11 = [(HDStandardTaskServer *)&v20 initWithUUID:d configuration:configurationCopy client:client delegate:delegate];
   if (v11)
   {
     v12 = HKCreateSerialDispatchQueue();
     queue = v11->_queue;
     v11->_queue = v12;
 
-    v14 = [v10 copy];
+    v14 = [configurationCopy copy];
     configuration = v11->_configuration;
     v11->_configuration = v14;
 
@@ -128,59 +128,59 @@ LABEL_7:
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(HDStandardTaskServer *)self taskUUID];
+  taskUUID = [(HDStandardTaskServer *)self taskUUID];
   queue_state = self->_queue_state;
   v7 = HKSeriesBuilderStateToString();
-  v8 = [v3 stringWithFormat:@"<%@:%p %@ %@>", v4, self, v5, v7];
+  v8 = [v3 stringWithFormat:@"<%@:%p %@ %@>", v4, self, taskUUID, v7];
 
   return v8;
 }
 
-- (void)associateToWorkoutBuilderWithCompletion:(id)a3
+- (void)associateToWorkoutBuilderWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(HKSeriesBuilderConfiguration *)self->_configuration workoutBuilderID];
+  completionCopy = completion;
+  workoutBuilderID = [(HKSeriesBuilderConfiguration *)self->_configuration workoutBuilderID];
 
-  if (v5)
+  if (workoutBuilderID)
   {
-    v6 = [(HDSeriesBuilderServer *)self seriesSample];
-    v7 = [(HKSeriesBuilderConfiguration *)self->_configuration workoutBuilderID];
-    v8 = [(HDStandardTaskServer *)self profile];
+    seriesSample = [(HDSeriesBuilderServer *)self seriesSample];
+    workoutBuilderID2 = [(HKSeriesBuilderConfiguration *)self->_configuration workoutBuilderID];
+    profile = [(HDStandardTaskServer *)self profile];
     v11 = 0;
-    v9 = [HDWorkoutBuilderAssociatedSeriesEntity associateSeries:v6 toWorkoutBuilderID:v7 profile:v8 error:&v11];
+    v9 = [HDWorkoutBuilderAssociatedSeriesEntity associateSeries:seriesSample toWorkoutBuilderID:workoutBuilderID2 profile:profile error:&v11];
     v10 = v11;
 
     if ((v9 - 1) >= 2)
     {
       if (!v9)
       {
-        v4[2](v4, 0, v10);
+        completionCopy[2](completionCopy, 0, v10);
       }
     }
 
     else
     {
-      v4[2](v4, 1, 0);
+      completionCopy[2](completionCopy, 1, 0);
     }
   }
 
   else
   {
-    v4[2](v4, 1, 0);
+    completionCopy[2](completionCopy, 1, 0);
   }
 }
 
-- (void)createSeriesSampleIfNeeded:(id)a3 errorHandler:(id)a4
+- (void)createSeriesSampleIfNeeded:(id)needed errorHandler:(id)handler
 {
   objc_opt_class();
 
   NSRequestConcreteImplementation();
 }
 
-- (BOOL)canAddMetadata:(id)a3 errorOut:(id *)a4
+- (BOOL)canAddMetadata:(id)metadata errorOut:(id *)out
 {
-  v6 = a3;
-  if (!v6 || (-[HDStandardTaskServer client](self, "client"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v6 hd_validateMetadataKeysAndValuesWithClient:v7 error:a4], v7, v8))
+  metadataCopy = metadata;
+  if (!metadataCopy || (-[HDStandardTaskServer client](self, "client"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [metadataCopy hd_validateMetadataKeysAndValuesWithClient:v7 error:out], v7, v8))
   {
     LOBYTE(v8) = 1;
   }
@@ -188,7 +188,7 @@ LABEL_7:
   return v8;
 }
 
-- (BOOL)queue_canInsertDataWithError:(id *)a3
+- (BOOL)queue_canInsertDataWithError:(id *)error
 {
   dispatch_assert_queue_V2(self->_queue);
   queue_state = self->_queue_state;
@@ -199,7 +199,7 @@ LABEL_7:
 
   if (queue_state - 2 > 1)
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a3 code:100 format:{@"Unknown state %ld", self->_queue_state}];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:100 format:{@"Unknown state %ld", self->_queue_state}];
   }
 
   else
@@ -214,26 +214,26 @@ LABEL_7:
       v6 = @"discarded";
     }
 
-    [MEMORY[0x277CCA9B8] hk_assignError:a3 code:3 format:{@"Workout route is already %@.", v6}];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:3 format:{@"Workout route is already %@.", v6}];
   }
 
   return 0;
 }
 
-- (void)remote_addMetadata:(id)a3 completion:(id)a4
+- (void)remote_addMetadata:(id)metadata completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  metadataCopy = metadata;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __55__HDSeriesBuilderServer_remote_addMetadata_completion___block_invoke;
   block[3] = &unk_278614160;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = metadataCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = metadataCopy;
   dispatch_sync(queue, block);
 }
 
@@ -268,18 +268,18 @@ void __55__HDSeriesBuilderServer_remote_addMetadata_completion___block_invoke(ui
   }
 }
 
-- (void)remote_discardWithCompletion:(id)a3
+- (void)remote_discardWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __54__HDSeriesBuilderServer_remote_discardWithCompletion___block_invoke;
   block[3] = &unk_278620058;
   block[4] = self;
-  v9 = v5;
+  v9 = completionCopy;
   v10 = a2;
-  v7 = v5;
+  v7 = completionCopy;
   dispatch_sync(queue, block);
 }
 
@@ -340,31 +340,31 @@ LABEL_8:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)remote_freezeWithCompletion:(id)a3
+- (void)remote_freezeWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __53__HDSeriesBuilderServer_remote_freezeWithCompletion___block_invoke;
   v7[3] = &unk_278614E28;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_sync(queue, v7);
 }
 
-- (void)remote_recoverWithCompletion:(id)a3
+- (void)remote_recoverWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __54__HDSeriesBuilderServer_remote_recoverWithCompletion___block_invoke;
   v7[3] = &unk_278614E28;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -380,24 +380,24 @@ void __54__HDSeriesBuilderServer_remote_recoverWithCompletion___block_invoke(uin
   [(HDSeriesBuilderServer *)v1 _setClientState:v2 completion:v3];
 }
 
-- (void)_setClientState:(void *)a3 completion:
+- (void)_setClientState:(void *)state completion:
 {
-  v5 = a3;
-  v6 = v5;
-  if (a1)
+  stateCopy = state;
+  v6 = stateCopy;
+  if (self)
   {
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __52__HDSeriesBuilderServer__setClientState_completion___block_invoke;
     aBlock[3] = &unk_278620080;
-    aBlock[4] = a1;
+    aBlock[4] = self;
     v18 = a2;
-    v7 = v5;
+    v7 = stateCopy;
     v17 = v7;
     v8 = _Block_copy(aBlock);
-    v9 = [a1 client];
-    v10 = [v9 connection];
-    v11 = [v10 remoteObjectProxyWithErrorHandler:v8];
+    client = [self client];
+    connection = [client connection];
+    v11 = [connection remoteObjectProxyWithErrorHandler:v8];
 
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
@@ -500,9 +500,9 @@ uint64_t __55__HDSeriesBuilderServer__queue_addMetadata_completion___block_invok
   return v8;
 }
 
-- (void)queue_freezeBuilderWithCompletion:(id)a3
+- (void)queue_freezeBuilderWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_queue);
   v6 = 0;
   queue_state = self->_queue_state;
@@ -537,7 +537,7 @@ LABEL_10:
   if (queue_state != 1)
   {
 LABEL_11:
-    v5[2](v5, 0, v6);
+    completionCopy[2](completionCopy, 0, v6);
     goto LABEL_12;
   }
 
@@ -545,7 +545,7 @@ LABEL_11:
   v9[1] = 3221225472;
   v9[2] = __59__HDSeriesBuilderServer_queue_freezeBuilderWithCompletion___block_invoke;
   v9[3] = &unk_278613658;
-  v10 = v5;
+  v10 = completionCopy;
   [(HDSeriesBuilderServer *)self queue_setState:2 completion:v9];
   v6 = v10;
 LABEL_12:
@@ -559,8 +559,8 @@ LABEL_12:
   v11 = &v10;
   v12 = 0x2020000000;
   v13 = 0;
-  v3 = [(HDStandardTaskServer *)self profile];
-  v4 = [v3 database];
+  profile = [(HDStandardTaskServer *)self profile];
+  database = [profile database];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __45__HDSeriesBuilderServer_queue_recoverBuilder__block_invoke;
@@ -568,7 +568,7 @@ LABEL_12:
   v8[5] = &v10;
   v9 = 0;
   v8[4] = self;
-  [(HDHealthEntity *)HDSeriesBuilderEntity performReadTransactionWithHealthDatabase:v4 error:&v9 block:v8];
+  [(HDHealthEntity *)HDSeriesBuilderEntity performReadTransactionWithHealthDatabase:database error:&v9 block:v8];
   v5 = v9;
 
   if (v5)
@@ -589,22 +589,22 @@ LABEL_12:
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)queue_setState:(int64_t)a3 completion:(id)a4
+- (void)queue_setState:(int64_t)state completion:(id)completion
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_queue);
-  self->_queue_state = a3;
-  v7 = [(HDStandardTaskServer *)self profile];
-  v8 = [v7 database];
-  v13[5] = a3;
+  self->_queue_state = state;
+  profile = [(HDStandardTaskServer *)self profile];
+  database = [profile database];
+  v13[5] = state;
   v14 = 0;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __51__HDSeriesBuilderServer_queue_setState_completion___block_invoke;
   v13[3] = &unk_278619348;
   v13[4] = self;
-  v9 = [(HDHealthEntity *)HDSeriesBuilderEntity performWriteTransactionWithHealthDatabase:v8 error:&v14 block:v13];
+  v9 = [(HDHealthEntity *)HDSeriesBuilderEntity performWriteTransactionWithHealthDatabase:database error:&v14 block:v13];
   v10 = v14;
 
   if (!v9)
@@ -614,14 +614,14 @@ LABEL_12:
     if (os_log_type_enabled(*MEMORY[0x277CCC330], OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v16 = self;
+      selfCopy = self;
       v17 = 2114;
       v18 = v10;
       _os_log_error_impl(&dword_228986000, v11, OS_LOG_TYPE_ERROR, "%{public}@: Failed to persist state change with error: %{public}@", buf, 0x16u);
     }
   }
 
-  [(HDSeriesBuilderServer *)self _setClientState:a3 completion:v6];
+  [(HDSeriesBuilderServer *)self _setClientState:state completion:completionCopy];
 
   v12 = *MEMORY[0x277D85DE8];
 }
@@ -647,10 +647,10 @@ uint64_t __51__HDSeriesBuilderServer_queue_setState_completion___block_invoke(ui
 
   else
   {
-    v5 = [(HDStandardTaskServer *)self taskUUID];
-    v6 = [(HDStandardTaskServer *)self profile];
+    taskUUID = [(HDStandardTaskServer *)self taskUUID];
+    profile = [(HDStandardTaskServer *)self profile];
     v13 = 0;
-    v7 = [HDSeriesBuilderEntity persistentEntityForBuilderIdentifier:v5 profile:v6 error:&v13];
+    v7 = [HDSeriesBuilderEntity persistentEntityForBuilderIdentifier:taskUUID profile:profile error:&v13];
     v8 = v13;
     v9 = self->_persistentEntity;
     self->_persistentEntity = v7;
@@ -662,7 +662,7 @@ uint64_t __51__HDSeriesBuilderServer_queue_setState_completion___block_invoke(ui
       if (os_log_type_enabled(*MEMORY[0x277CCC330], OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
-        v15 = self;
+        selfCopy = self;
         v16 = 2114;
         v17 = v8;
         _os_log_error_impl(&dword_228986000, v10, OS_LOG_TYPE_ERROR, "%{public}@: Failed to fetch series builer persistent entity: %{public}@", buf, 0x16u);
@@ -677,18 +677,18 @@ uint64_t __51__HDSeriesBuilderServer_queue_setState_completion___block_invoke(ui
   return v3;
 }
 
-- (void)_discardSeriesWithCompletion:(uint64_t)a1
+- (void)_discardSeriesWithCompletion:(uint64_t)completion
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (completion)
   {
-    v5 = *(a1 + 48);
+    v5 = *(completion + 48);
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __54__HDSeriesBuilderServer__discardSeriesWithCompletion___block_invoke;
     v6[3] = &unk_278614E28;
-    v6[4] = a1;
+    v6[4] = completion;
     v7 = v3;
     dispatch_async(v5, v6);
   }
@@ -735,9 +735,9 @@ void __54__HDSeriesBuilderServer__discardSeriesWithCompletion___block_invoke(uin
 
 - (void)connectionInvalidated
 {
-  v3 = [(HKSeriesBuilderConfiguration *)self->_configuration workoutBuilderID];
+  workoutBuilderID = [(HKSeriesBuilderConfiguration *)self->_configuration workoutBuilderID];
 
-  if (!v3)
+  if (!workoutBuilderID)
   {
 
     [(HDSeriesBuilderServer *)self _discardSeriesWithCompletion:?];

@@ -1,34 +1,34 @@
 @interface SBSplashBoardLaunchRequestProvider
-- (SBSplashBoardLaunchRequestProvider)initWithApplicationController:(id)a3 displayConfiguration:(id)a4;
-- (id)launchRequestsForApplication:(id)a3 withCompatibilityInfo:(id)a4 defaultLaunchRequests:(id)a5;
+- (SBSplashBoardLaunchRequestProvider)initWithApplicationController:(id)controller displayConfiguration:(id)configuration;
+- (id)launchRequestsForApplication:(id)application withCompatibilityInfo:(id)info defaultLaunchRequests:(id)requests;
 @end
 
 @implementation SBSplashBoardLaunchRequestProvider
 
-- (SBSplashBoardLaunchRequestProvider)initWithApplicationController:(id)a3 displayConfiguration:(id)a4
+- (SBSplashBoardLaunchRequestProvider)initWithApplicationController:(id)controller displayConfiguration:(id)configuration
 {
-  v7 = a3;
-  v8 = a4;
+  controllerCopy = controller;
+  configurationCopy = configuration;
   v12.receiver = self;
   v12.super_class = SBSplashBoardLaunchRequestProvider;
   v9 = [(SBSplashBoardLaunchRequestProvider *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_applicationController, a3);
-    objc_storeStrong(&v10->_displayConfiguration, a4);
+    objc_storeStrong(&v9->_applicationController, controller);
+    objc_storeStrong(&v10->_displayConfiguration, configuration);
   }
 
   return v10;
 }
 
-- (id)launchRequestsForApplication:(id)a3 withCompatibilityInfo:(id)a4 defaultLaunchRequests:(id)a5
+- (id)launchRequestsForApplication:(id)application withCompatibilityInfo:(id)info defaultLaunchRequests:(id)requests
 {
   v53 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
-  v9 = [MEMORY[0x277CBEB18] array];
-  v10 = [v7 supportsDeviceFamily:2];
+  applicationCopy = application;
+  requestsCopy = requests;
+  array = [MEMORY[0x277CBEB18] array];
+  v10 = [applicationCopy supportsDeviceFamily:2];
   if (v10)
   {
     v47 = SBLayoutSupportsSideLayoutRole();
@@ -53,10 +53,10 @@
 
   else
   {
-    v13 = [MEMORY[0x277D75418] currentDevice];
-    v14 = [v13 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
     v15 = v10 ^ 1;
-    if (v14 != 1)
+    if (userInterfaceIdiom != 1)
     {
       v15 = 0;
     }
@@ -68,13 +68,13 @@
   v51 = 0u;
   v48 = 0u;
   v49 = 0u;
-  obj = v8;
+  obj = requestsCopy;
   v16 = [obj countByEnumeratingWithState:&v48 objects:v52 count:16];
   if (v16)
   {
     v17 = v16;
     v18 = *v49;
-    v44 = v9;
+    v44 = array;
     do
     {
       for (i = 0; i != v17; ++i)
@@ -86,8 +86,8 @@
 
         v20 = *(*(&v48 + 1) + 8 * i);
         applicationController = self->_applicationController;
-        v22 = [v7 bundleIdentifier];
-        v23 = [(SBApplicationController *)applicationController applicationWithBundleIdentifier:v22];
+        bundleIdentifier = [applicationCopy bundleIdentifier];
+        v23 = [(SBApplicationController *)applicationController applicationWithBundleIdentifier:bundleIdentifier];
 
         if (v46)
         {
@@ -98,20 +98,20 @@
         else if ([v23 isClassic])
         {
           v24 = [MEMORY[0x277D77750] sb_displayEdgeInfoForApplication:v23];
-          v25 = [v24 safeAreaInsetsPortrait];
+          safeAreaInsetsPortrait = [v24 safeAreaInsetsPortrait];
 
-          if (v25)
+          if (safeAreaInsetsPortrait)
           {
-            v26 = self;
-            v27 = v7;
+            selfCopy = self;
+            v27 = applicationCopy;
             v28 = objc_alloc(MEMORY[0x277D656B0]);
-            [v25 topInset];
+            [safeAreaInsetsPortrait topInset];
             v30 = v29;
-            [v25 leftInset];
+            [safeAreaInsetsPortrait leftInset];
             v32 = v31;
-            [v25 bottomInset];
+            [safeAreaInsetsPortrait bottomInset];
             v34 = v33;
-            [v25 rightInset];
+            [safeAreaInsetsPortrait rightInset];
             v36 = [v28 initWithTop:v30 left:v32 bottom:v34 right:v35];
             v37 = +[SBApplication _deviceSafeAreaInsets];
             if (([v37 isEqual:v36] & 1) == 0)
@@ -119,22 +119,22 @@
               [v20 setCustomSafeAreaInsets:v36];
             }
 
-            v7 = v27;
-            self = v26;
-            v9 = v44;
+            applicationCopy = v27;
+            self = selfCopy;
+            array = v44;
           }
 
           [v23 defaultLaunchingSizeForDisplayConfiguration:self->_displayConfiguration];
           [v20 setReferenceSize:?];
         }
 
-        [v9 addObject:v20];
+        [array addObject:v20];
         if (v47)
         {
-          v38 = [v23 info];
-          v39 = [v38 wantsFullScreen];
+          info = [v23 info];
+          wantsFullScreen = [info wantsFullScreen];
 
-          if ((v39 & 1) == 0)
+          if ((wantsFullScreen & 1) == 0)
           {
             [v20 interfaceOrientation];
             SBLayoutDefaultSideLayoutElementWidth();
@@ -142,7 +142,7 @@
             v42 = [v20 copy];
             [v20 naturalSize];
             [v42 setNaturalSize:v41];
-            [v9 addObject:v42];
+            [array addObject:v42];
           }
         }
       }
@@ -153,7 +153,7 @@
     while (v17);
   }
 
-  return v9;
+  return array;
 }
 
 @end

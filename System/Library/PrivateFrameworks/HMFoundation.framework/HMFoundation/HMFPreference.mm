@@ -1,7 +1,7 @@
 @interface HMFPreference
 - (BOOL)BOOLValue;
 - (HMFPreference)init;
-- (HMFPreference)initWithKey:(id)a3 options:(unint64_t)a4 defaultValue:(id)a5 parent:(id)a6;
+- (HMFPreference)initWithKey:(id)key options:(unint64_t)options defaultValue:(id)value parent:(id)parent;
 - (HMFPreference)parent;
 - (NSData)dataValue;
 - (NSNumber)numberValue;
@@ -18,12 +18,12 @@
     return 0;
   }
 
-  v4 = [(HMFPreference *)self value];
-  if (v4)
+  value = [(HMFPreference *)self value];
+  if (value)
   {
-    v5 = [(HMFPreference *)self numberValue];
-    v6 = v5;
-    v3 = !v5 || [v5 BOOLValue];
+    numberValue = [(HMFPreference *)self numberValue];
+    v6 = numberValue;
+    v3 = !numberValue || [numberValue BOOLValue];
   }
 
   else
@@ -42,8 +42,8 @@
     goto LABEL_15;
   }
 
-  v4 = [(HMFPreference *)self value];
-  if (!v4)
+  value = [(HMFPreference *)self value];
+  if (!value)
   {
     goto LABEL_13;
   }
@@ -52,7 +52,7 @@
   v5 = objc_opt_isKindOfClass() & 1;
   if (v5)
   {
-    v6 = v4;
+    v6 = value;
   }
 
   else
@@ -61,13 +61,13 @@
   }
 
   v7 = v6;
-  v3 = v4;
+  v3 = value;
   if (v5)
   {
     goto LABEL_14;
   }
 
-  v8 = v4;
+  v8 = value;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   v10 = (isKindOfClass & 1) != 0 ? v8 : 0;
@@ -113,26 +113,26 @@ LABEL_15:
   objc_exception_throw(v7);
 }
 
-- (HMFPreference)initWithKey:(id)a3 options:(unint64_t)a4 defaultValue:(id)a5 parent:(id)a6
+- (HMFPreference)initWithKey:(id)key options:(unint64_t)options defaultValue:(id)value parent:(id)parent
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  keyCopy = key;
+  valueCopy = value;
+  parentCopy = parent;
   v19.receiver = self;
   v19.super_class = HMFPreference;
   v13 = [(HMFPreference *)&v19 init];
   if (v13)
   {
-    v14 = [v10 copy];
+    v14 = [keyCopy copy];
     key = v13->_key;
     v13->_key = v14;
 
-    v13->_options = a4;
-    v16 = [v11 copy];
+    v13->_options = options;
+    v16 = [valueCopy copy];
     value = v13->_value;
     v13->_value = v16;
 
-    objc_storeWeak(&v13->_parent, v12);
+    objc_storeWeak(&v13->_parent, parentCopy);
   }
 
   return v13;
@@ -141,9 +141,9 @@ LABEL_15:
 - (id)shortDescription
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [objc_opt_class() shortDescription];
+  shortDescription = [objc_opt_class() shortDescription];
   v5 = [(HMFPreference *)self key];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  v6 = [v3 stringWithFormat:@"%@ %@", shortDescription, v5];
 
   return v6;
 }
@@ -157,14 +157,14 @@ LABEL_15:
 
   else
   {
-    v4 = [(HMFPreference *)self value];
-    if (v4)
+    value = [(HMFPreference *)self value];
+    if (value)
     {
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
       if (isKindOfClass)
       {
-        v6 = v4;
+        v6 = value;
       }
 
       else
@@ -175,12 +175,12 @@ LABEL_15:
       v7 = v6;
       if (isKindOfClass)
       {
-        v8 = [v4 stringValue];
+        stringValue = [value stringValue];
       }
 
       else
       {
-        v9 = v4;
+        v9 = value;
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
@@ -192,10 +192,10 @@ LABEL_15:
           v10 = 0;
         }
 
-        v8 = v10;
+        stringValue = v10;
       }
 
-      v3 = v8;
+      v3 = stringValue;
     }
 
     else
@@ -216,13 +216,13 @@ LABEL_15:
 
   else
   {
-    v4 = [(HMFPreference *)self value];
-    if (v4)
+    value = [(HMFPreference *)self value];
+    if (value)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v5 = v4;
+        v5 = value;
       }
 
       else

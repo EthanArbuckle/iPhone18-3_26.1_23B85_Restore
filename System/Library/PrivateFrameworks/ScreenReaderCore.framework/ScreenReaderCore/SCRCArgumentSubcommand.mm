@@ -1,35 +1,35 @@
 @interface SCRCArgumentSubcommand
-+ (id)subcommandWithName:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)subcommandWithName:(id)name;
+- (BOOL)isEqual:(id)equal;
 - (NSArray)optionArray;
 - (SCRCArgumentSubcommand)init;
-- (SCRCArgumentSubcommand)initWithName:(id)a3;
+- (SCRCArgumentSubcommand)initWithName:(id)name;
 - (id)description;
-- (int64_t)compare:(id)a3;
+- (int64_t)compare:(id)compare;
 - (unint64_t)hash;
-- (void)addOption:(char)a3 argument:(id)a4 target:(id)a5 action:(SEL)a6 argumentDescription:(id)a7 required:(BOOL)a8;
+- (void)addOption:(char)option argument:(id)argument target:(id)target action:(SEL)action argumentDescription:(id)description required:(BOOL)required;
 @end
 
 @implementation SCRCArgumentSubcommand
 
-+ (id)subcommandWithName:(id)a3
++ (id)subcommandWithName:(id)name
 {
-  v3 = a3;
-  v4 = [[SCRCArgumentSubcommand alloc] initWithName:v3];
+  nameCopy = name;
+  v4 = [[SCRCArgumentSubcommand alloc] initWithName:nameCopy];
 
   return v4;
 }
 
-- (SCRCArgumentSubcommand)initWithName:(id)a3
+- (SCRCArgumentSubcommand)initWithName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   v11.receiver = self;
   v11.super_class = SCRCArgumentSubcommand;
   v6 = [(SCRCArgumentSubcommand *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_subcommandName, a3);
+    objc_storeStrong(&v6->_subcommandName, name);
     v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
     optionMutableArray = v7->__optionMutableArray;
     v7->__optionMutableArray = v8;
@@ -55,29 +55,29 @@
 
 - (NSArray)optionArray
 {
-  v2 = [(SCRCArgumentSubcommand *)self _optionMutableArray];
-  v3 = [v2 copy];
+  _optionMutableArray = [(SCRCArgumentSubcommand *)self _optionMutableArray];
+  v3 = [_optionMutableArray copy];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 subcommandName];
+    subcommandName = [equalCopy subcommandName];
 
-    v6 = [(SCRCArgumentSubcommand *)self subcommandName];
-    v7 = [v5 isEqualToString:v6];
+    subcommandName2 = [(SCRCArgumentSubcommand *)self subcommandName];
+    v7 = [subcommandName isEqualToString:subcommandName2];
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = SCRCArgumentSubcommand;
-    v7 = [(SCRCArgumentSubcommand *)&v9 isEqual:v4];
+    v7 = [(SCRCArgumentSubcommand *)&v9 isEqual:equalCopy];
   }
 
   return v7;
@@ -85,44 +85,44 @@
 
 - (unint64_t)hash
 {
-  v2 = [(SCRCArgumentSubcommand *)self subcommandName];
-  v3 = [v2 hash];
+  subcommandName = [(SCRCArgumentSubcommand *)self subcommandName];
+  v3 = [subcommandName hash];
 
   return v3;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  v5 = [(SCRCArgumentSubcommand *)self subcommandName];
-  v6 = [v4 subcommandName];
+  compareCopy = compare;
+  subcommandName = [(SCRCArgumentSubcommand *)self subcommandName];
+  subcommandName2 = [compareCopy subcommandName];
 
-  v7 = [v5 compare:v6 options:1];
+  v7 = [subcommandName compare:subcommandName2 options:1];
   return v7;
 }
 
-- (void)addOption:(char)a3 argument:(id)a4 target:(id)a5 action:(SEL)a6 argumentDescription:(id)a7 required:(BOOL)a8
+- (void)addOption:(char)option argument:(id)argument target:(id)target action:(SEL)action argumentDescription:(id)description required:(BOOL)required
 {
-  v8 = a8;
-  v12 = a3;
+  requiredCopy = required;
+  optionCopy = option;
   v14 = MEMORY[0x277CCACA8];
-  v15 = a7;
-  v16 = a5;
-  v17 = a4;
-  v23 = [v14 stringWithFormat:@"%c", v12];
-  v18 = [[SCRCArgumentHolder alloc] initWithArgument:v17 option:v23 description:v15 target:v16 action:a6 required:v8];
+  descriptionCopy = description;
+  targetCopy = target;
+  argumentCopy = argument;
+  optionCopy = [v14 stringWithFormat:@"%c", optionCopy];
+  v18 = [[SCRCArgumentHolder alloc] initWithArgument:argumentCopy option:optionCopy description:descriptionCopy target:targetCopy action:action required:requiredCopy];
 
-  v19 = [(SCRCArgumentSubcommand *)self _optionMutableArray];
-  v20 = [v19 indexOfObject:v18];
+  _optionMutableArray = [(SCRCArgumentSubcommand *)self _optionMutableArray];
+  v20 = [_optionMutableArray indexOfObject:v18];
 
   if (v20 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v21 = [(SCRCArgumentSubcommand *)self _optionMutableArray];
-    [v21 removeObjectAtIndex:v20];
+    _optionMutableArray2 = [(SCRCArgumentSubcommand *)self _optionMutableArray];
+    [_optionMutableArray2 removeObjectAtIndex:v20];
   }
 
-  v22 = [(SCRCArgumentSubcommand *)self _optionMutableArray];
-  [v22 addObject:v18];
+  _optionMutableArray3 = [(SCRCArgumentSubcommand *)self _optionMutableArray];
+  [_optionMutableArray3 addObject:v18];
 }
 
 - (id)description
@@ -131,13 +131,13 @@
   v18.receiver = self;
   v18.super_class = SCRCArgumentSubcommand;
   v3 = [(SCRCArgumentSubcommand *)&v18 description];
-  v4 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(SCRCArgumentSubcommand *)self optionArray];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v19 count:16];
+  optionArray = [(SCRCArgumentSubcommand *)self optionArray];
+  v6 = [optionArray countByEnumeratingWithState:&v14 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -148,21 +148,21 @@
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(optionArray);
         }
 
-        [v4 appendFormat:@" %@", *(*(&v14 + 1) + 8 * i)];
+        [string appendFormat:@" %@", *(*(&v14 + 1) + 8 * i)];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v19 count:16];
+      v7 = [optionArray countByEnumeratingWithState:&v14 objects:v19 count:16];
     }
 
     while (v7);
   }
 
   v10 = MEMORY[0x277CCACA8];
-  v11 = [(SCRCArgumentSubcommand *)self subcommandName];
-  v12 = [v10 stringWithFormat:@"%@ { %@%@ }", v3, v11, v4];
+  subcommandName = [(SCRCArgumentSubcommand *)self subcommandName];
+  v12 = [v10 stringWithFormat:@"%@ { %@%@ }", v3, subcommandName, string];
 
   return v12;
 }

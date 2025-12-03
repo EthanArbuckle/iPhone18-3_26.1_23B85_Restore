@@ -1,25 +1,25 @@
 @interface TSPFilePackage
-+ (BOOL)isValidOrEmptyPackageOrTangierEditingFormatAtURL:(id)a3 hasNativeUTI:(BOOL)a4;
-+ (BOOL)isValidPackageAtURL:(id)a3;
-+ (BOOL)isValidPackageAtZipArchive:(id)a3;
-+ (BOOL)isValidTangierEditingFormatAtURL:(id)a3;
-+ (BOOL)isValidTangierEditingFormatAtZipArchive:(id)a3;
-- (BOOL)didReloadZipArchive:(id)a3 packageURL:(id)a4 error:(id *)a5;
-- (BOOL)hasDataAtRelativePath:(id)a3;
++ (BOOL)isValidOrEmptyPackageOrTangierEditingFormatAtURL:(id)l hasNativeUTI:(BOOL)i;
++ (BOOL)isValidPackageAtURL:(id)l;
++ (BOOL)isValidPackageAtZipArchive:(id)archive;
++ (BOOL)isValidTangierEditingFormatAtURL:(id)l;
++ (BOOL)isValidTangierEditingFormatAtZipArchive:(id)archive;
+- (BOOL)didReloadZipArchive:(id)archive packageURL:(id)l error:(id *)error;
+- (BOOL)hasDataAtRelativePath:(id)path;
 - (id)componentZipArchive;
-- (id)newDataStorageAtRelativePath:(id)a3 decryptionInfo:(id)a4 materializedLength:(unint64_t)a5 packageURL:(id)a6 lastModificationDate:(id *)a7;
-- (id)newDocumentPropertiesWithURL:(id)a3 zipProvider:(id)a4 error:(id *)a5;
-- (id)newRawDataReadChannelAtRelativePath:(id)a3;
-- (id)packageEntryInfoAtRelativePath:(id)a3 error:(id *)a4;
+- (id)newDataStorageAtRelativePath:(id)path decryptionInfo:(id)info materializedLength:(unint64_t)length packageURL:(id)l lastModificationDate:(id *)date;
+- (id)newDocumentPropertiesWithURL:(id)l zipProvider:(id)provider error:(id *)error;
+- (id)newRawDataReadChannelAtRelativePath:(id)path;
+- (id)packageEntryInfoAtRelativePath:(id)path error:(id *)error;
 @end
 
 @implementation TSPFilePackage
 
-+ (BOOL)isValidPackageAtZipArchive:(id)a3
++ (BOOL)isValidPackageAtZipArchive:(id)archive
 {
-  v3 = a3;
+  archiveCopy = archive;
   v5 = objc_msgSend_objectArchiveEntryPathForPackageLocator_(TSPPackage, v4, @"Metadata");
-  v8 = objc_msgSend_entryForName_(v3, v6, v5);
+  v8 = objc_msgSend_entryForName_(archiveCopy, v6, v5);
   if (v8)
   {
     v9 = 1;
@@ -27,28 +27,28 @@
 
   else
   {
-    v10 = objc_msgSend_entryForName_(v3, v7, @"Index.zip");
+    v10 = objc_msgSend_entryForName_(archiveCopy, v7, @"Index.zip");
     v9 = v10 != 0;
   }
 
   return v9;
 }
 
-+ (BOOL)isValidTangierEditingFormatAtZipArchive:(id)a3
++ (BOOL)isValidTangierEditingFormatAtZipArchive:(id)archive
 {
-  v3 = objc_msgSend_entryForName_(a3, a2, @"index.db");
+  v3 = objc_msgSend_entryForName_(archive, a2, @"index.db");
   v4 = v3 != 0;
 
   return v4;
 }
 
-+ (BOOL)isValidPackageAtURL:(id)a3
++ (BOOL)isValidPackageAtURL:(id)l
 {
-  v4 = a3;
-  if (objc_msgSend_checkResourceIsReachableAndReturnError_(v4, v5, 0))
+  lCopy = l;
+  if (objc_msgSend_checkResourceIsReachableAndReturnError_(lCopy, v5, 0))
   {
-    v7 = objc_msgSend_zipArchiveFromURL_options_error_(MEMORY[0x277D81380], v6, v4, 5, 0);
-    isValidPackageAtZipArchive = objc_msgSend_isValidPackageAtZipArchive_(a1, v8, v7);
+    v7 = objc_msgSend_zipArchiveFromURL_options_error_(MEMORY[0x277D81380], v6, lCopy, 5, 0);
+    isValidPackageAtZipArchive = objc_msgSend_isValidPackageAtZipArchive_(self, v8, v7);
   }
 
   else
@@ -59,15 +59,15 @@
   return isValidPackageAtZipArchive;
 }
 
-+ (BOOL)isValidTangierEditingFormatAtURL:(id)a3
++ (BOOL)isValidTangierEditingFormatAtURL:(id)l
 {
-  v4 = a3;
-  if (objc_msgSend_checkResourceIsReachableAndReturnError_(v4, v5, 0))
+  lCopy = l;
+  if (objc_msgSend_checkResourceIsReachableAndReturnError_(lCopy, v5, 0))
   {
-    v8 = objc_msgSend_zipArchiveFromURL_options_error_(MEMORY[0x277D81380], v6, v4, 5, 0);
+    v8 = objc_msgSend_zipArchiveFromURL_options_error_(MEMORY[0x277D81380], v6, lCopy, 5, 0);
     if (v8)
     {
-      isValidTangierEditingFormatAtZipArchive = objc_msgSend_isValidTangierEditingFormatAtZipArchive_(a1, v7, v8);
+      isValidTangierEditingFormatAtZipArchive = objc_msgSend_isValidTangierEditingFormatAtZipArchive_(self, v7, v8);
     }
 
     else
@@ -84,24 +84,24 @@
   return isValidTangierEditingFormatAtZipArchive;
 }
 
-+ (BOOL)isValidOrEmptyPackageOrTangierEditingFormatAtURL:(id)a3 hasNativeUTI:(BOOL)a4
++ (BOOL)isValidOrEmptyPackageOrTangierEditingFormatAtURL:(id)l hasNativeUTI:(BOOL)i
 {
-  v4 = a4;
-  v6 = a3;
-  if (objc_msgSend_checkResourceIsReachableAndReturnError_(v6, v7, 0))
+  iCopy = i;
+  lCopy = l;
+  if (objc_msgSend_checkResourceIsReachableAndReturnError_(lCopy, v7, 0))
   {
-    v10 = objc_msgSend_zipArchiveFromURL_options_error_(MEMORY[0x277D81380], v8, v6, 5, 0);
+    v10 = objc_msgSend_zipArchiveFromURL_options_error_(MEMORY[0x277D81380], v8, lCopy, 5, 0);
     if (v10)
     {
-      if (objc_msgSend_isValidPackageAtZipArchive_(a1, v9, v10))
+      if (objc_msgSend_isValidPackageAtZipArchive_(self, v9, v10))
       {
         LOBYTE(isValidTangierEditingFormatAtZipArchive) = 1;
       }
 
       else
       {
-        isValidTangierEditingFormatAtZipArchive = objc_msgSend_isValidTangierEditingFormatAtZipArchive_(a1, v11, v10);
-        if (((isValidTangierEditingFormatAtZipArchive | !v4) & 1) == 0)
+        isValidTangierEditingFormatAtZipArchive = objc_msgSend_isValidTangierEditingFormatAtZipArchive_(self, v11, v10);
+        if (((isValidTangierEditingFormatAtZipArchive | !iCopy) & 1) == 0)
         {
           isValidTangierEditingFormatAtZipArchive = objc_msgSend_hasNonEmptyEntries(v10, v13, v14) ^ 1;
         }
@@ -122,17 +122,17 @@
   return isValidTangierEditingFormatAtZipArchive;
 }
 
-- (BOOL)didReloadZipArchive:(id)a3 packageURL:(id)a4 error:(id *)a5
+- (BOOL)didReloadZipArchive:(id)archive packageURL:(id)l error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  archiveCopy = archive;
+  lCopy = l;
   v53.receiver = self;
   v53.super_class = TSPFilePackage;
   v54 = 0;
-  v10 = [(TSPPackage *)&v53 didReloadZipArchive:v8 packageURL:v9 error:&v54];
+  v10 = [(TSPPackage *)&v53 didReloadZipArchive:archiveCopy packageURL:lCopy error:&v54];
   v12 = v54;
   v13 = !v10;
-  if (!v8)
+  if (!archiveCopy)
   {
     v13 = 1;
   }
@@ -140,11 +140,11 @@
   if ((v13 & 1) == 0)
   {
     v14 = objc_msgSend_objectArchiveEntryPathForPackageLocator_(TSPPackage, v11, @"Metadata");
-    v16 = objc_msgSend_entryForName_(v8, v15, v14);
+    v16 = objc_msgSend_entryForName_(archiveCopy, v15, v14);
 
     if (v16)
     {
-      v18 = v8;
+      v18 = archiveCopy;
       componentZipArchive = self->_componentZipArchive;
       self->_componentZipArchive = v18;
 LABEL_6:
@@ -154,7 +154,7 @@ LABEL_7:
       goto LABEL_8;
     }
 
-    v23 = objc_msgSend_entryForName_(v8, v17, @"Index.zip");
+    v23 = objc_msgSend_entryForName_(archiveCopy, v17, @"Index.zip");
     componentZipArchive = v23;
     if (!v23)
     {
@@ -194,7 +194,7 @@ LABEL_33:
 
         v40 = v35;
         v51 = v35;
-        v41 = objc_msgSend_tsp_writeZipEntry_toURL_validateCRC_error_(v8, v39, componentZipArchive, v38, 0, &v51);
+        v41 = objc_msgSend_tsp_writeZipEntry_toURL_validateCRC_error_(archiveCopy, v39, componentZipArchive, v38, 0, &v51);
         v42 = v51;
 
         if (v41)
@@ -227,7 +227,7 @@ LABEL_33:
     else
     {
       v49 = v12;
-      v46 = objc_msgSend_containedZipArchiveForEntry_options_error_(v8, v26, componentZipArchive, 0, &v49);
+      v46 = objc_msgSend_containedZipArchiveForEntry_options_error_(archiveCopy, v26, componentZipArchive, 0, &v49);
       v30 = v49;
 
       if (v46)
@@ -254,18 +254,18 @@ LABEL_29:
   }
 
 LABEL_8:
-  if (a5 && !v10)
+  if (error && !v10)
   {
     if (v12)
     {
       v20 = v12;
-      *a5 = v12;
+      *error = v12;
     }
 
     else
     {
       v21 = objc_msgSend_tsp_unknownReadErrorWithUserInfo_(MEMORY[0x277CCA9B8], v11, 0);
-      *a5 = v21;
+      *error = v21;
     }
   }
 
@@ -293,27 +293,27 @@ LABEL_8:
   return v2;
 }
 
-- (id)newDataStorageAtRelativePath:(id)a3 decryptionInfo:(id)a4 materializedLength:(unint64_t)a5 packageURL:(id)a6 lastModificationDate:(id *)a7
+- (id)newDataStorageAtRelativePath:(id)path decryptionInfo:(id)info materializedLength:(unint64_t)length packageURL:(id)l lastModificationDate:(id *)date
 {
-  v11 = a3;
-  v12 = a4;
+  pathCopy = path;
+  infoCopy = info;
   v13 = [TSPFilePackageDataStorage alloc];
-  v15 = objc_msgSend_initWithPath_package_decryptionInfo_materializedLength_(v13, v14, v11, self, v12, a5);
+  v15 = objc_msgSend_initWithPath_package_decryptionInfo_materializedLength_(v13, v14, pathCopy, self, infoCopy, length);
   v18 = v15;
-  if (a7 && v15)
+  if (date && v15)
   {
     v19 = objc_msgSend_zipArchive(self, v16, v17);
-    v21 = objc_msgSend_entryForName_(v19, v20, v11);
-    *a7 = objc_msgSend_lastModificationDate(v21, v22, v23);
+    v21 = objc_msgSend_entryForName_(v19, v20, pathCopy);
+    *date = objc_msgSend_lastModificationDate(v21, v22, v23);
   }
 
   return v18;
 }
 
-- (id)packageEntryInfoAtRelativePath:(id)a3 error:(id *)a4
+- (id)packageEntryInfoAtRelativePath:(id)path error:(id *)error
 {
-  v8 = a3;
-  if (!v8)
+  pathCopy = path;
+  if (!pathCopy)
   {
     v9 = MEMORY[0x277D81150];
     v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, "[TSPFilePackage packageEntryInfoAtRelativePath:error:]");
@@ -324,7 +324,7 @@ LABEL_8:
   }
 
   v16 = objc_msgSend_zipArchive(self, v6, v7);
-  v19 = objc_msgSend_entryForName_(v16, v17, v8);
+  v19 = objc_msgSend_entryForName_(v16, v17, pathCopy);
   if (v19)
   {
     v20 = [TSPPackageEntryInfo alloc];
@@ -334,10 +334,10 @@ LABEL_8:
     ModificationDate_CRC = objc_msgSend_initWithEncodedLength_lastModificationDate_CRC_(v20, v30, v23, v26, v29);
   }
 
-  else if (a4)
+  else if (error)
   {
     objc_msgSend_errorWithDomain_code_userInfo_(MEMORY[0x277CCA9B8], v18, *MEMORY[0x277CCA050], 4, 0);
-    *a4 = ModificationDate_CRC = 0;
+    *error = ModificationDate_CRC = 0;
   }
 
   else
@@ -348,11 +348,11 @@ LABEL_8:
   return ModificationDate_CRC;
 }
 
-- (id)newRawDataReadChannelAtRelativePath:(id)a3
+- (id)newRawDataReadChannelAtRelativePath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v7 = objc_msgSend_zipArchive(self, v5, v6);
-  v10 = objc_msgSend_entryForName_(v7, v8, v4);
+  v10 = objc_msgSend_entryForName_(v7, v8, pathCopy);
   if (v10)
   {
     v11 = objc_msgSend_streamReadChannelForEntry_(v7, v9, v10);
@@ -366,25 +366,25 @@ LABEL_8:
   return v11;
 }
 
-- (BOOL)hasDataAtRelativePath:(id)a3
+- (BOOL)hasDataAtRelativePath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v7 = objc_msgSend_zipArchive(self, v5, v6);
-  v9 = objc_msgSend_entryForName_(v7, v8, v4);
+  v9 = objc_msgSend_entryForName_(v7, v8, pathCopy);
   v10 = v9 != 0;
 
   return v10;
 }
 
-- (id)newDocumentPropertiesWithURL:(id)a3 zipProvider:(id)a4 error:(id *)a5
+- (id)newDocumentPropertiesWithURL:(id)l zipProvider:(id)provider error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8[2](v8, a5);
+  lCopy = l;
+  providerCopy = provider;
+  v9 = providerCopy[2](providerCopy, error);
   if (v9)
   {
     v10 = [TSPDocumentProperties alloc];
-    v12 = objc_msgSend_initWithFilePackageURL_zipArchive_allowMissingPropertyList_error_(v10, v11, v7, v9, 0, a5);
+    v12 = objc_msgSend_initWithFilePackageURL_zipArchive_allowMissingPropertyList_error_(v10, v11, lCopy, v9, 0, error);
   }
 
   else

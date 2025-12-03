@@ -1,43 +1,43 @@
 @interface CPNowPlayingSportsTeam
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToSportsTeam:(id)a3;
-- (CPNowPlayingSportsTeam)initWithCoder:(id)a3;
-- (CPNowPlayingSportsTeam)initWithName:(id)a3 logo:(id)a4 teamStandings:(id)a5 eventScore:(id)a6 possessionIndicator:(id)a7 favorite:(BOOL)a8;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToSportsTeam:(id)team;
+- (CPNowPlayingSportsTeam)initWithCoder:(id)coder;
+- (CPNowPlayingSportsTeam)initWithName:(id)name logo:(id)logo teamStandings:(id)standings eventScore:(id)score possessionIndicator:(id)indicator favorite:(BOOL)favorite;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CPNowPlayingSportsTeam
 
-- (CPNowPlayingSportsTeam)initWithName:(id)a3 logo:(id)a4 teamStandings:(id)a5 eventScore:(id)a6 possessionIndicator:(id)a7 favorite:(BOOL)a8
+- (CPNowPlayingSportsTeam)initWithName:(id)name logo:(id)logo teamStandings:(id)standings eventScore:(id)score possessionIndicator:(id)indicator favorite:(BOOL)favorite
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
+  nameCopy = name;
+  logoCopy = logo;
+  standingsCopy = standings;
+  scoreCopy = score;
+  indicatorCopy = indicator;
   v31.receiver = self;
   v31.super_class = CPNowPlayingSportsTeam;
   v19 = [(CPNowPlayingSportsTeam *)&v31 init];
   if (v19)
   {
-    v20 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
     identifier = v19->_identifier;
-    v19->_identifier = v20;
+    v19->_identifier = uUID;
 
-    v22 = [v14 copy];
+    v22 = [nameCopy copy];
     name = v19->_name;
     v19->_name = v22;
 
-    v24 = [v16 copy];
+    v24 = [standingsCopy copy];
     teamStandings = v19->_teamStandings;
     v19->_teamStandings = v24;
 
-    if ([v17 length] < 6)
+    if ([scoreCopy length] < 6)
     {
-      if ([v17 length])
+      if ([scoreCopy length])
       {
-        v26 = [v17 copy];
+        v26 = [scoreCopy copy];
       }
 
       else
@@ -48,48 +48,48 @@
 
     else
     {
-      v26 = [v17 substringToIndex:5];
+      v26 = [scoreCopy substringToIndex:5];
     }
 
     eventScore = v19->_eventScore;
     v19->_eventScore = &v26->isa;
 
-    objc_storeStrong(&v19->_logo, a4);
-    if (v18)
+    objc_storeStrong(&v19->_logo, logo);
+    if (indicatorCopy)
     {
-      v28 = CPImageByScalingImageToSize(v18, 30.0, 30.0);
+      v28 = CPImageByScalingImageToSize(indicatorCopy, 30.0, 30.0);
       possessionIndicator = v19->_possessionIndicator;
       v19->_possessionIndicator = v28;
     }
 
-    v19->_favorite = a8;
+    v19->_favorite = favorite;
   }
 
   return v19;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CPNowPlayingSportsTeam *)self isEqualToSportsTeam:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CPNowPlayingSportsTeam *)self isEqualToSportsTeam:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToSportsTeam:(id)a3
+- (BOOL)isEqualToSportsTeam:(id)team
 {
-  v4 = a3;
-  v5 = [(CPNowPlayingSportsTeam *)self identifier];
-  v6 = [v4 identifier];
-  if (![v5 isEqual:v6])
+  teamCopy = team;
+  identifier = [(CPNowPlayingSportsTeam *)self identifier];
+  identifier2 = [teamCopy identifier];
+  if (![identifier isEqual:identifier2])
   {
     goto LABEL_13;
   }
 
-  v7 = [(CPNowPlayingSportsTeam *)self name];
-  v8 = [v4 name];
-  if (![v7 isEqualToString:v8])
+  name = [(CPNowPlayingSportsTeam *)self name];
+  name2 = [teamCopy name];
+  if (![name isEqualToString:name2])
   {
 LABEL_12:
 
@@ -98,29 +98,29 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v9 = [(CPNowPlayingSportsTeam *)self logo];
-  v10 = [v4 logo];
-  if (![v9 isEqual:v10])
+  logo = [(CPNowPlayingSportsTeam *)self logo];
+  logo2 = [teamCopy logo];
+  if (![logo isEqual:logo2])
   {
 
     goto LABEL_12;
   }
 
-  v11 = [(CPNowPlayingSportsTeam *)self isFavorite];
-  v12 = [v4 isFavorite];
+  isFavorite = [(CPNowPlayingSportsTeam *)self isFavorite];
+  isFavorite2 = [teamCopy isFavorite];
 
-  if (v11 != v12)
+  if (isFavorite != isFavorite2)
   {
     goto LABEL_16;
   }
 
-  v13 = [(CPNowPlayingSportsTeam *)self teamStandings];
+  teamStandings = [(CPNowPlayingSportsTeam *)self teamStandings];
 
-  if (v13)
+  if (teamStandings)
   {
-    v14 = [(CPNowPlayingSportsTeam *)self teamStandings];
-    v15 = [v4 teamStandings];
-    v16 = [v14 isEqualToString:v15];
+    teamStandings2 = [(CPNowPlayingSportsTeam *)self teamStandings];
+    teamStandings3 = [teamCopy teamStandings];
+    v16 = [teamStandings2 isEqualToString:teamStandings3];
 
     if (!v16)
     {
@@ -128,13 +128,13 @@ LABEL_13:
     }
   }
 
-  v17 = [(CPNowPlayingSportsTeam *)self possessionIndicator];
+  possessionIndicator = [(CPNowPlayingSportsTeam *)self possessionIndicator];
 
-  if (v17)
+  if (possessionIndicator)
   {
-    v18 = [(CPNowPlayingSportsTeam *)self possessionIndicator];
-    v19 = [v4 possessionIndicator];
-    v20 = [v18 isEqual:v19];
+    possessionIndicator2 = [(CPNowPlayingSportsTeam *)self possessionIndicator];
+    possessionIndicator3 = [teamCopy possessionIndicator];
+    v20 = [possessionIndicator2 isEqual:possessionIndicator3];
 
     if (!v20)
     {
@@ -144,17 +144,17 @@ LABEL_16:
     }
   }
 
-  v21 = [(CPNowPlayingSportsTeam *)self eventScore];
+  eventScore = [(CPNowPlayingSportsTeam *)self eventScore];
 
-  if (!v21)
+  if (!eventScore)
   {
     v22 = 1;
     goto LABEL_15;
   }
 
-  v5 = [(CPNowPlayingSportsTeam *)self eventScore];
-  v6 = [v4 eventScore];
-  v22 = [v5 isEqualToString:v6];
+  identifier = [(CPNowPlayingSportsTeam *)self eventScore];
+  identifier2 = [teamCopy eventScore];
+  v22 = [identifier isEqualToString:identifier2];
 LABEL_14:
 
 LABEL_15:
@@ -163,54 +163,54 @@ LABEL_15:
 
 - (unint64_t)hash
 {
-  v3 = [(CPNowPlayingSportsTeam *)self identifier];
-  v4 = [v3 hash];
-  v5 = [(CPNowPlayingSportsTeam *)self name];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(CPNowPlayingSportsTeam *)self teamStandings];
-  v8 = [v7 hash];
-  v9 = [(CPNowPlayingSportsTeam *)self eventScore];
-  v10 = v6 ^ v8 ^ [v9 hash];
-  v11 = [(CPNowPlayingSportsTeam *)self logo];
-  v12 = [v11 hash];
-  v13 = [(CPNowPlayingSportsTeam *)self possessionIndicator];
-  v14 = v10 ^ v12 ^ [v13 hash];
+  identifier = [(CPNowPlayingSportsTeam *)self identifier];
+  v4 = [identifier hash];
+  name = [(CPNowPlayingSportsTeam *)self name];
+  v6 = [name hash] ^ v4;
+  teamStandings = [(CPNowPlayingSportsTeam *)self teamStandings];
+  v8 = [teamStandings hash];
+  eventScore = [(CPNowPlayingSportsTeam *)self eventScore];
+  v10 = v6 ^ v8 ^ [eventScore hash];
+  logo = [(CPNowPlayingSportsTeam *)self logo];
+  v12 = [logo hash];
+  possessionIndicator = [(CPNowPlayingSportsTeam *)self possessionIndicator];
+  v14 = v10 ^ v12 ^ [possessionIndicator hash];
   v15 = [MEMORY[0x277CCABB0] numberWithBool:{-[CPNowPlayingSportsTeam isFavorite](self, "isFavorite")}];
   v16 = [v15 hash];
 
   return v14 ^ v16;
 }
 
-- (CPNowPlayingSportsTeam)initWithCoder:(id)a3
+- (CPNowPlayingSportsTeam)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = CPNowPlayingSportsTeam;
   v5 = [(CPNowPlayingSportsTeam *)&v19 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCPNowPlayingSportsTeamNameKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCPNowPlayingSportsTeamNameKey"];
     name = v5->_name;
     v5->_name = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCPNowPlayingSportsTeamLogoKey"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCPNowPlayingSportsTeamLogoKey"];
     logo = v5->_logo;
     v5->_logo = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCPNowPlayingSportsTeamStandingKey"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCPNowPlayingSportsTeamStandingKey"];
     teamStandings = v5->_teamStandings;
     v5->_teamStandings = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCPNowPlayingSportsTeamScoreKey"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCPNowPlayingSportsTeamScoreKey"];
     eventScore = v5->_eventScore;
     v5->_eventScore = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCPNowPlayingSportsTeamPossessionIndicatorKey"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCPNowPlayingSportsTeamPossessionIndicatorKey"];
     possessionIndicator = v5->_possessionIndicator;
     v5->_possessionIndicator = v14;
 
-    v5->_favorite = [v4 decodeBoolForKey:@"kCPNowPlayingSportsTeamFavoriteKey"];
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCPNowPlayingSportsTeamIdentifierKey"];
+    v5->_favorite = [coderCopy decodeBoolForKey:@"kCPNowPlayingSportsTeamFavoriteKey"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCPNowPlayingSportsTeamIdentifierKey"];
     identifier = v5->_identifier;
     v5->_identifier = v16;
   }
@@ -218,27 +218,27 @@ LABEL_15:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(CPNowPlayingSportsTeam *)self name];
-  [v4 encodeObject:v5 forKey:@"kCPNowPlayingSportsTeamNameKey"];
+  coderCopy = coder;
+  name = [(CPNowPlayingSportsTeam *)self name];
+  [coderCopy encodeObject:name forKey:@"kCPNowPlayingSportsTeamNameKey"];
 
-  v6 = [(CPNowPlayingSportsTeam *)self logo];
-  [v4 encodeObject:v6 forKey:@"kCPNowPlayingSportsTeamLogoKey"];
+  logo = [(CPNowPlayingSportsTeam *)self logo];
+  [coderCopy encodeObject:logo forKey:@"kCPNowPlayingSportsTeamLogoKey"];
 
-  v7 = [(CPNowPlayingSportsTeam *)self eventScore];
-  [v4 encodeObject:v7 forKey:@"kCPNowPlayingSportsTeamScoreKey"];
+  eventScore = [(CPNowPlayingSportsTeam *)self eventScore];
+  [coderCopy encodeObject:eventScore forKey:@"kCPNowPlayingSportsTeamScoreKey"];
 
-  v8 = [(CPNowPlayingSportsTeam *)self teamStandings];
-  [v4 encodeObject:v8 forKey:@"kCPNowPlayingSportsTeamStandingKey"];
+  teamStandings = [(CPNowPlayingSportsTeam *)self teamStandings];
+  [coderCopy encodeObject:teamStandings forKey:@"kCPNowPlayingSportsTeamStandingKey"];
 
-  v9 = [(CPNowPlayingSportsTeam *)self possessionIndicator];
-  [v4 encodeObject:v9 forKey:@"kCPNowPlayingSportsTeamPossessionIndicatorKey"];
+  possessionIndicator = [(CPNowPlayingSportsTeam *)self possessionIndicator];
+  [coderCopy encodeObject:possessionIndicator forKey:@"kCPNowPlayingSportsTeamPossessionIndicatorKey"];
 
-  [v4 encodeBool:-[CPNowPlayingSportsTeam isFavorite](self forKey:{"isFavorite"), @"kCPNowPlayingSportsTeamFavoriteKey"}];
-  v10 = [(CPNowPlayingSportsTeam *)self identifier];
-  [v4 encodeObject:v10 forKey:@"kCPNowPlayingSportsTeamIdentifierKey"];
+  [coderCopy encodeBool:-[CPNowPlayingSportsTeam isFavorite](self forKey:{"isFavorite"), @"kCPNowPlayingSportsTeamFavoriteKey"}];
+  identifier = [(CPNowPlayingSportsTeam *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"kCPNowPlayingSportsTeamIdentifierKey"];
 }
 
 @end

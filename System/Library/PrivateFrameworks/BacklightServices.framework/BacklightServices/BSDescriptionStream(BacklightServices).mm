@@ -17,7 +17,7 @@
   v46[2] = __102__BSDescriptionStream_BacklightServices__bls_appendBoundedCollection_withName_maximumItems_itemBlock___block_invoke;
   v46[3] = &__block_descriptor_40_e43_v16__0___BSDescriptionStringAppendTarget__8l;
   v46[4] = v13;
-  [a1 appendCustomFormatWithName:0 block:v46];
+  [self appendCustomFormatWithName:0 block:v46];
   v14 = _NSIsNSSet();
   v15 = v10;
   v16 = v15;
@@ -27,7 +27,7 @@
   }
 
   v17 = v15;
-  if (([a1 sortKeys] & v14) == 1)
+  if (([self sortKeys] & v14) == 1)
   {
     v37 = v11;
     v44 = 0u;
@@ -82,10 +82,10 @@
       v25 = sel_compare_;
     }
 
-    v27 = [v18 allObjects];
-    v17 = [v27 sortedArrayUsingSelector:v25];
+    allObjects = [v18 allObjects];
+    v17 = [allObjects sortedArrayUsingSelector:v25];
 
-    v18 = v27;
+    v18 = allObjects;
 LABEL_15:
 
     v11 = v37;
@@ -94,9 +94,9 @@ LABEL_15:
   v28 = a5 - 1;
   if (a5 == 1)
   {
-    v29 = [v17 allObjects];
-    v30 = [v29 firstObject];
-    v48[0] = v30;
+    allObjects2 = [v17 allObjects];
+    firstObject = [allObjects2 firstObject];
+    v48[0] = firstObject;
     v48[1] = @"…";
     v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v48 count:2];
   }
@@ -110,17 +110,17 @@ LABEL_15:
       goto LABEL_22;
     }
 
-    v29 = [v17 allObjects];
-    v31 = [v29 subarrayWithRange:{0, v28}];
+    allObjects2 = [v17 allObjects];
+    v31 = [allObjects2 subarrayWithRange:{0, v28}];
 
     v47[0] = @"…";
-    v32 = [v29 lastObject];
-    v47[1] = v32;
+    lastObject = [allObjects2 lastObject];
+    v47[1] = lastObject;
     v33 = [MEMORY[0x277CBEA60] arrayWithObjects:v47 count:2];
     v16 = [v31 arrayByAddingObjectsFromArray:v33];
   }
 
-  v17 = v29;
+  v17 = allObjects2;
 LABEL_22:
 
   if (v14)
@@ -136,10 +136,10 @@ LABEL_24:
   v38[2] = __102__BSDescriptionStream_BacklightServices__bls_appendBoundedCollection_withName_maximumItems_itemBlock___block_invoke_2;
   v38[3] = &unk_278428740;
   v39 = @"…";
-  v40 = a1;
+  selfCopy = self;
   v41 = v12;
   v35 = v12;
-  [a1 appendCollection:v16 withName:v11 itemBlock:v38];
+  [self appendCollection:v16 withName:v11 itemBlock:v38];
 
   v36 = *MEMORY[0x277D85DE8];
 }
@@ -148,7 +148,7 @@ LABEL_24:
 {
   if (a2 >= 1.0 || (a5 & 1) != 0)
   {
-    v6 = [a1 appendTimeInterval:? withName:? decomposeUnits:?];
+    selfCopy = [self appendTimeInterval:? withName:? decomposeUnits:?];
   }
 
   else
@@ -158,11 +158,11 @@ LABEL_24:
     v8[2] = __89__BSDescriptionStream_BacklightServices__bls_appendTimeInterval_withName_decomposeUnits___block_invoke;
     v8[3] = &__block_descriptor_40_e43_v16__0___BSDescriptionStringAppendTarget__8l;
     *&v8[4] = a2;
-    [a1 appendCustomFormatWithName:a4 block:v8];
-    v6 = a1;
+    [self appendCustomFormatWithName:a4 block:v8];
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 @end

@@ -1,19 +1,19 @@
 @interface CRPreflightController
 - (BOOL)_diskImageSupportPreflight;
-- (BOOL)challengeStrongComponents:(id)a3 responses:(id *)a4 error:(id *)a5;
-- (BOOL)deltaComponents:(id *)a3 strongComponents:(id *)a4 error:(id *)a5;
-- (BOOL)issueRepairCert:(id *)a3 keyBlob:(id *)a4 error:(id *)a5;
-- (BOOL)queryRepairDelta:(id *)a3 error:(id *)a4;
-- (BOOL)setComponentsState:(id)a3 withResponseDetails:(id)a4;
-- (BOOL)verify:(id)a3 signature:(id)a4 keyBlob:(id)a5;
+- (BOOL)challengeStrongComponents:(id)components responses:(id *)responses error:(id *)error;
+- (BOOL)deltaComponents:(id *)components strongComponents:(id *)strongComponents error:(id *)error;
+- (BOOL)issueRepairCert:(id *)cert keyBlob:(id *)blob error:(id *)error;
+- (BOOL)queryRepairDelta:(id *)delta error:(id *)error;
+- (BOOL)setComponentsState:(id)state withResponseDetails:(id)details;
+- (BOOL)verify:(id)verify signature:(id)signature keyBlob:(id)blob;
 - (CRPreflightController)init;
-- (id)components:(id)a3 withState:(int64_t)a4;
+- (id)components:(id)components withState:(int64_t)state;
 - (id)getPreflightEndpoint;
-- (id)sendRequest:(id)a3 keyBlob:(id)a4 error:(id *)a5;
-- (id)sign:(id)a3 keyBlob:(id)a4;
-- (void)preflight:(id)a3 withReply:(id)a4;
-- (void)preflightPhase1:(id)a3 withReply:(id)a4;
-- (void)preflightPhase2:(id)a3 withReply:(id)a4;
+- (id)sendRequest:(id)request keyBlob:(id)blob error:(id *)error;
+- (id)sign:(id)sign keyBlob:(id)blob;
+- (void)preflight:(id)preflight withReply:(id)reply;
+- (void)preflightPhase1:(id)phase1 withReply:(id)reply;
+- (void)preflightPhase2:(id)phase2 withReply:(id)reply;
 @end
 
 @implementation CRPreflightController
@@ -26,26 +26,26 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [(CRPreflightController *)v2 getPreflightEndpoint];
+    getPreflightEndpoint = [(CRPreflightController *)v2 getPreflightEndpoint];
     preflightServiceName = v3->_preflightServiceName;
-    v3->_preflightServiceName = v4;
+    v3->_preflightServiceName = getPreflightEndpoint;
   }
 
   return v3;
 }
 
-- (void)preflightPhase1:(id)a3 withReply:(id)a4
+- (void)preflightPhase1:(id)phase1 withReply:(id)reply
 {
   v88 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  phase1Copy = phase1;
+  replyCopy = reply;
+  if (phase1Copy)
   {
-    v8 = [v6 objectForKeyedSubscript:@"miniPreflight"];
+    v8 = [phase1Copy objectForKeyedSubscript:@"miniPreflight"];
 
     if (v8)
     {
-      self->_miniPreflight = [v6 BOOLFromKey:@"miniPreflight" defaultValue:0 failed:0];
+      self->_miniPreflight = [phase1Copy BOOLFromKey:@"miniPreflight" defaultValue:0 failed:0];
       v9 = handleForCategory(0);
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
@@ -65,11 +65,11 @@
       }
     }
 
-    v11 = [v6 objectForKeyedSubscript:@"socksHost"];
+    v11 = [phase1Copy objectForKeyedSubscript:@"socksHost"];
 
     if (v11)
     {
-      v12 = [v6 NSStringFromKey:@"socksHost" defaultValue:0 failed:0];
+      v12 = [phase1Copy NSStringFromKey:@"socksHost" defaultValue:0 failed:0];
       socksHost = self->_socksHost;
       self->_socksHost = v12;
 
@@ -83,11 +83,11 @@
       }
     }
 
-    v16 = [v6 objectForKeyedSubscript:@"socksPort"];
+    v16 = [phase1Copy objectForKeyedSubscript:@"socksPort"];
 
     if (v16)
     {
-      v17 = [v6 NSNumberFromKey:@"socksPort" lowerBound:&unk_1F4BCDA28 upperBound:&unk_1F4BCDA40 defaultValue:0 failed:0];
+      v17 = [phase1Copy NSNumberFromKey:@"socksPort" lowerBound:&unk_1F4BCDA28 upperBound:&unk_1F4BCDA40 defaultValue:0 failed:0];
       socksPort = self->_socksPort;
       self->_socksPort = v17;
 
@@ -137,13 +137,13 @@
   v26 = v79;
   v27 = v78;
   v28 = v77;
-  v29 = v28;
+  rawResponse3 = v28;
   v69 = v27;
   v70 = v24;
   if (!v25 || !v26 || v28)
   {
-    v48 = handleForCategory(0);
-    if (os_log_type_enabled(v48, OS_LOG_TYPE_ERROR))
+    phase = handleForCategory(0);
+    if (os_log_type_enabled(phase, OS_LOG_TYPE_ERROR))
     {
       [CRPreflightController preflightPhase1:withReply:];
     }
@@ -166,12 +166,12 @@
     v72 = v76;
     v31 = v75;
     v32 = v74;
-    v29 = v32;
+    rawResponse3 = v32;
     v71 = v31;
     if (!v30 || v32)
     {
-      v48 = handleForCategory(0);
-      if (os_log_type_enabled(v48, OS_LOG_TYPE_ERROR))
+      phase = handleForCategory(0);
+      if (os_log_type_enabled(phase, OS_LOG_TYPE_ERROR))
       {
         [CRPreflightController preflightPhase1:withReply:];
       }
@@ -183,10 +183,10 @@
     }
 
     v33 = +[CRPreflightRequest request];
-    v34 = [(CRPreflightController *)self miniPreflight];
+    miniPreflight = [(CRPreflightController *)self miniPreflight];
     v35 = MEMORY[0x1E695DFF8];
     v36 = @"fullpreflight/phase1";
-    if (v34)
+    if (miniPreflight)
     {
       v36 = @"minipreflight/phase1";
     }
@@ -195,9 +195,9 @@
     v38 = [v35 URLWithString:v37];
     [v33 setServer:v38];
 
-    v39 = [MEMORY[0x1E696AFB0] UUID];
-    v40 = [v39 UUIDString];
-    [v33 setRequestID:v40];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
+    [v33 setRequestID:uUIDString];
 
     v41 = [v72 objectAtIndexedSubscript:0];
     [v33 setBikCertificate:v41];
@@ -207,11 +207,11 @@
     v73 = 0;
     v42 = [(CRPreflightController *)self sendRequest:v33 keyBlob:v31 error:&v73];
     v43 = v73;
-    v29 = v43;
+    rawResponse3 = v43;
     if (!v42 || v43)
     {
-      v48 = handleForCategory(0);
-      if (os_log_type_enabled(v48, OS_LOG_TYPE_ERROR))
+      phase = handleForCategory(0);
+      if (os_log_type_enabled(phase, OS_LOG_TYPE_ERROR))
       {
         [CRPreflightController preflightPhase1:v33 withReply:?];
       }
@@ -227,17 +227,17 @@
         [CRPreflightController preflightPhase1:v33 withReply:?];
       }
 
-      v45 = [v42 errorCode];
-      v46 = [v45 isEqual:@"10262"];
+      errorCode = [v42 errorCode];
+      v46 = [errorCode isEqual:@"10262"];
 
       if (v46)
       {
         v67 = MEMORY[0x1E696ABC0];
         v84 = *MEMORY[0x1E696A578];
         v47 = MEMORY[0x1E696AEC0];
-        v48 = [v33 phase];
-        v49 = [v42 rawResponse];
-        v50 = [v47 stringWithFormat:@"%@: Error response: %@", v48, v49];
+        phase = [v33 phase];
+        rawResponse = [v42 rawResponse];
+        v50 = [v47 stringWithFormat:@"%@: Error response: %@", phase, rawResponse];
         v85 = v50;
         v51 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v85 forKeys:&v84 count:1];
         v52 = v67;
@@ -246,8 +246,8 @@
 
       else
       {
-        v58 = [v42 errorCode];
-        v59 = [v58 isEqual:@"10261"];
+        errorCode2 = [v42 errorCode];
+        v59 = [errorCode2 isEqual:@"10261"];
 
         v68 = MEMORY[0x1E696ABC0];
         v60 = *MEMORY[0x1E696A578];
@@ -255,28 +255,28 @@
         {
           v80 = *MEMORY[0x1E696A578];
           v62 = MEMORY[0x1E696AEC0];
-          v48 = [v33 phase];
-          v63 = [v42 rawResponse];
-          v64 = [v62 stringWithFormat:@"%@: Error response: %@", v48, v63];
+          phase = [v33 phase];
+          rawResponse2 = [v42 rawResponse];
+          v64 = [v62 stringWithFormat:@"%@: Error response: %@", phase, rawResponse2];
           v81 = v64;
           v65 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v81 forKeys:&v80 count:1];
-          v29 = [v68 errorWithDomain:@"com.apple.corerepair" code:-78 userInfo:v65];
+          rawResponse3 = [v68 errorWithDomain:@"com.apple.corerepair" code:-78 userInfo:v65];
 
           goto LABEL_63;
         }
 
         v82 = *MEMORY[0x1E696A578];
         v61 = MEMORY[0x1E696AEC0];
-        v48 = [v33 phase];
-        v49 = [v42 rawResponse];
-        v50 = [v61 stringWithFormat:@"%@: Error response: %@", v48, v49];
+        phase = [v33 phase];
+        rawResponse = [v42 rawResponse];
+        v50 = [v61 stringWithFormat:@"%@: Error response: %@", phase, rawResponse];
         v83 = v50;
         v51 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v83 forKeys:&v82 count:1];
         v52 = v68;
         v53 = -93;
       }
 
-      v29 = [v52 errorWithDomain:@"com.apple.corerepair" code:v53 userInfo:v51];
+      rawResponse3 = [v52 errorWithDomain:@"com.apple.corerepair" code:v53 userInfo:v51];
 
 LABEL_63:
       v54 = 0;
@@ -300,25 +300,25 @@ LABEL_65:
       [v54 setObject:v55 forKeyedSubscript:@"baaCert"];
     }
 
-    v29 = [v42 rawResponse];
+    rawResponse3 = [v42 rawResponse];
 
-    if (!v29)
+    if (!rawResponse3)
     {
       v56 = 1;
       goto LABEL_67;
     }
 
-    v48 = [v42 rawResponse];
-    [v54 setObject:v48 forKeyedSubscript:@"responsePhase1"];
+    phase = [v42 rawResponse];
+    [v54 setObject:phase forKeyedSubscript:@"responsePhase1"];
   }
 
   else
   {
-    v48 = handleForCategory(0);
-    if (os_log_type_enabled(v48, OS_LOG_TYPE_DEFAULT))
+    phase = handleForCategory(0);
+    if (os_log_type_enabled(phase, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_1CEDC5000, v48, OS_LOG_TYPE_DEFAULT, "No delta components", buf, 2u);
+      _os_log_impl(&dword_1CEDC5000, phase, OS_LOG_TYPE_DEFAULT, "No delta components", buf, 2u);
     }
 
     v54 = 0;
@@ -329,34 +329,34 @@ LABEL_65:
     v72 = 0;
   }
 
-  v29 = 0;
+  rawResponse3 = 0;
   v56 = 1;
 LABEL_66:
 
 LABEL_67:
-  if (v7)
+  if (replyCopy)
   {
-    v7[2](v7, v56, v54, v29);
+    replyCopy[2](replyCopy, v56, v54, rawResponse3);
   }
 
   v66 = *MEMORY[0x1E69E9840];
 }
 
-- (void)preflightPhase2:(id)a3 withReply:(id)a4
+- (void)preflightPhase2:(id)phase2 withReply:(id)reply
 {
   v132 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  phase2Copy = phase2;
+  replyCopy = reply;
   v118 = 0;
-  if (!v6)
+  if (!phase2Copy)
   {
     v12 = 0;
     v14 = 0;
 LABEL_35:
     v104 = v14;
     v105 = v12;
-    v31 = handleForCategory(0);
-    if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
+    phase = handleForCategory(0);
+    if (os_log_type_enabled(phase, OS_LOG_TYPE_ERROR))
     {
       [CRPreflightController preflightPhase2:withReply:];
     }
@@ -374,11 +374,11 @@ LABEL_35:
     goto LABEL_54;
   }
 
-  v8 = [v6 objectForKeyedSubscript:@"miniPreflight"];
+  v8 = [phase2Copy objectForKeyedSubscript:@"miniPreflight"];
 
   if (v8)
   {
-    self->_miniPreflight = [v6 BOOLFromKey:@"miniPreflight" defaultValue:0 failed:&v118];
+    self->_miniPreflight = [phase2Copy BOOLFromKey:@"miniPreflight" defaultValue:0 failed:&v118];
     v9 = handleForCategory(0);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
@@ -398,11 +398,11 @@ LABEL_35:
     }
   }
 
-  v11 = [v6 objectForKeyedSubscript:@"keyBlob"];
+  v11 = [phase2Copy objectForKeyedSubscript:@"keyBlob"];
 
   if (v11)
   {
-    v12 = [v6 NSDataFromKey:@"keyBlob" defaultValue:0 failed:&v118];
+    v12 = [phase2Copy NSDataFromKey:@"keyBlob" defaultValue:0 failed:&v118];
     v13 = handleForCategory(0);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
@@ -417,11 +417,11 @@ LABEL_35:
     v12 = 0;
   }
 
-  v15 = [v6 objectForKeyedSubscript:@"responsePhase1"];
+  v15 = [phase2Copy objectForKeyedSubscript:@"responsePhase1"];
 
   if (v15)
   {
-    v14 = [v6 NSDictionaryFromKey:@"responsePhase1" defaultValue:0 failed:&v118];
+    v14 = [phase2Copy NSDictionaryFromKey:@"responsePhase1" defaultValue:0 failed:&v118];
     v16 = handleForCategory(0);
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
@@ -436,11 +436,11 @@ LABEL_35:
     v14 = 0;
   }
 
-  v17 = [v6 objectForKeyedSubscript:@"socksHost"];
+  v17 = [phase2Copy objectForKeyedSubscript:@"socksHost"];
 
   if (v17)
   {
-    v18 = [v6 NSStringFromKey:@"socksHost" defaultValue:0 failed:0];
+    v18 = [phase2Copy NSStringFromKey:@"socksHost" defaultValue:0 failed:0];
     socksHost = self->_socksHost;
     self->_socksHost = v18;
 
@@ -454,11 +454,11 @@ LABEL_35:
     }
   }
 
-  v22 = [v6 objectForKeyedSubscript:@"socksPort"];
+  v22 = [phase2Copy objectForKeyedSubscript:@"socksPort"];
 
   if (v22)
   {
-    v23 = [v6 NSNumberFromKey:@"socksPort" lowerBound:&unk_1F4BCDA28 upperBound:&unk_1F4BCDA40 defaultValue:0 failed:0];
+    v23 = [phase2Copy NSNumberFromKey:@"socksPort" lowerBound:&unk_1F4BCDA28 upperBound:&unk_1F4BCDA40 defaultValue:0 failed:0];
     socksPort = self->_socksPort;
     self->_socksPort = v23;
 
@@ -519,8 +519,8 @@ LABEL_35:
   v103 = v40;
   if (!v38 || !v39 || v41)
   {
-    v31 = handleForCategory(0);
-    if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
+    phase = handleForCategory(0);
+    if (os_log_type_enabled(phase, OS_LOG_TYPE_ERROR))
     {
       [CRPreflightController preflightPhase1:withReply:];
     }
@@ -534,11 +534,11 @@ LABEL_35:
 
   if (![v39 count])
   {
-    v31 = handleForCategory(0);
-    if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
+    phase = handleForCategory(0);
+    if (os_log_type_enabled(phase, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_1CEDC5000, v31, OS_LOG_TYPE_DEFAULT, "No delta components", buf, 2u);
+      _os_log_impl(&dword_1CEDC5000, phase, OS_LOG_TYPE_DEFAULT, "No delta components", buf, 2u);
     }
 
     v32 = 0;
@@ -552,25 +552,25 @@ LABEL_35:
   }
 
   v34 = [[CRPreflightResponse alloc] initWithDictionary:v14];
-  v42 = [(CRPreflightResponse *)v34 componentChallenges];
+  componentChallenges = [(CRPreflightResponse *)v34 componentChallenges];
 
-  if (!v42)
+  if (!componentChallenges)
   {
     v107 = 0;
     goto LABEL_61;
   }
 
-  v43 = [(CRPreflightResponse *)v34 componentChallenges];
+  componentChallenges2 = [(CRPreflightResponse *)v34 componentChallenges];
   v113 = 0;
   v114 = 0;
-  v44 = [(CRPreflightController *)self challengeStrongComponents:v43 responses:&v114 error:&v113];
+  v44 = [(CRPreflightController *)self challengeStrongComponents:componentChallenges2 responses:&v114 error:&v113];
   v107 = v114;
   v36 = v113;
 
   if (!v44 || v36)
   {
-    v31 = handleForCategory(0);
-    if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
+    phase = handleForCategory(0);
+    if (os_log_type_enabled(phase, OS_LOG_TYPE_ERROR))
     {
       [CRPreflightController preflightPhase2:withReply:];
     }
@@ -589,8 +589,8 @@ LABEL_61:
   v46 = [(CRPreflightController *)self filteredPhase2Components:v39 response:v34];
   if (!v46)
   {
-    v31 = handleForCategory(0);
-    if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
+    phase = handleForCategory(0);
+    if (os_log_type_enabled(phase, OS_LOG_TYPE_ERROR))
     {
       [CRPreflightController preflightPhase2:withReply:];
     }
@@ -604,10 +604,10 @@ LABEL_61:
 
   v33 = v46;
   v35 = +[CRPreflightRequest request];
-  v47 = [(CRPreflightController *)self miniPreflight];
+  miniPreflight = [(CRPreflightController *)self miniPreflight];
   v48 = MEMORY[0x1E695DFF8];
   v49 = @"fullpreflight/phase2";
-  if (v47)
+  if (miniPreflight)
   {
     v49 = @"minipreflight/phase2";
   }
@@ -616,19 +616,19 @@ LABEL_61:
   v51 = [v48 URLWithString:v50];
   [v35 setServer:v51];
 
-  v52 = [(CRPreflightResponse *)v34 requestID];
-  [v35 setRequestID:v52];
+  requestID = [(CRPreflightResponse *)v34 requestID];
+  [v35 setRequestID:requestID];
 
-  v53 = [(CRPreflightResponse *)v34 sessionID];
-  [v35 setSessionID:v53];
+  sessionID = [(CRPreflightResponse *)v34 sessionID];
+  [v35 setSessionID:sessionID];
 
   [v35 setComponents:v33];
   [v35 setComponentResponses:v107];
-  v54 = [(CRPreflightResponse *)v34 activationChallenges];
-  [v35 setActivationResponses:v54];
+  activationChallenges = [(CRPreflightResponse *)v34 activationChallenges];
+  [v35 setActivationResponses:activationChallenges];
 
-  v55 = [(CRPreflightResponse *)v34 signatureChallenge];
-  [v35 setSignatureChallenge:v55];
+  signatureChallenge = [(CRPreflightResponse *)v34 signatureChallenge];
+  [v35 setSignatureChallenge:signatureChallenge];
 
   [v35 setPhase:@"Phase2"];
   v112 = 0;
@@ -637,8 +637,8 @@ LABEL_61:
   v36 = v56;
   if (!v34 || v56)
   {
-    v31 = handleForCategory(0);
-    if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
+    phase = handleForCategory(0);
+    if (os_log_type_enabled(phase, OS_LOG_TYPE_ERROR))
     {
       [CRPreflightController preflightPhase1:v35 withReply:?];
     }
@@ -657,9 +657,9 @@ LABEL_61:
     v98 = MEMORY[0x1E696ABC0];
     v128 = *MEMORY[0x1E696A578];
     v58 = MEMORY[0x1E696AEC0];
-    v31 = [v35 phase];
-    v97 = [(CRPreflightResponse *)v34 rawResponse];
-    v59 = [v58 stringWithFormat:@"%@: Error response: %@", v31, v97];
+    phase = [v35 phase];
+    rawResponse = [(CRPreflightResponse *)v34 rawResponse];
+    v59 = [v58 stringWithFormat:@"%@: Error response: %@", phase, rawResponse];
     v129 = v59;
     v60 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v129 forKeys:&v128 count:1];
     v36 = [v98 errorWithDomain:@"com.apple.corerepair" code:-79 userInfo:v60];
@@ -667,18 +667,18 @@ LABEL_61:
     goto LABEL_78;
   }
 
-  v61 = [(CRPreflightResponse *)v34 status];
-  if ([v61 isEqual:@"200"])
+  status = [(CRPreflightResponse *)v34 status];
+  if ([status isEqual:@"200"])
   {
-    v62 = [(CRPreflightResponse *)v34 details];
+    details = [(CRPreflightResponse *)v34 details];
 
-    if (v62)
+    if (details)
     {
       v99 = MEMORY[0x1E696ABC0];
       v126 = *MEMORY[0x1E696A578];
       v63 = MEMORY[0x1E696AEC0];
-      v31 = [(CRPreflightResponse *)v34 details];
-      v64 = [v63 stringWithFormat:@"Success status, but with failure details: %@", v31];
+      phase = [(CRPreflightResponse *)v34 details];
+      v64 = [v63 stringWithFormat:@"Success status, but with failure details: %@", phase];
       v127 = v64;
       v65 = MEMORY[0x1E695DF20];
       v66 = &v127;
@@ -697,18 +697,18 @@ LABEL_78:
   {
   }
 
-  v68 = [(CRPreflightResponse *)v34 status];
-  if ([v68 isEqual:@"207"])
+  status2 = [(CRPreflightResponse *)v34 status];
+  if ([status2 isEqual:@"207"])
   {
-    v69 = [(CRPreflightResponse *)v34 details];
+    details2 = [(CRPreflightResponse *)v34 details];
 
-    if (!v69)
+    if (!details2)
     {
       v99 = MEMORY[0x1E696ABC0];
       v124 = *MEMORY[0x1E696A578];
       v70 = MEMORY[0x1E696AEC0];
-      v31 = [(CRPreflightResponse *)v34 details];
-      v64 = [v70 stringWithFormat:@"Partial success status, but without failure details: %@", v31];
+      phase = [(CRPreflightResponse *)v34 details];
+      v64 = [v70 stringWithFormat:@"Partial success status, but without failure details: %@", phase];
       v125 = v64;
       v65 = MEMORY[0x1E695DF20];
       v66 = &v125;
@@ -723,39 +723,39 @@ LABEL_78:
 
   v32 = objc_alloc_init(MEMORY[0x1E695DF90]);
   [v32 setObject:v12 forKeyedSubscript:@"keyBlob"];
-  v72 = [(CRPreflightResponse *)v34 status];
+  status3 = [(CRPreflightResponse *)v34 status];
 
-  if (v72)
+  if (status3)
   {
-    v73 = [(CRPreflightResponse *)v34 status];
-    [v32 setObject:v73 forKeyedSubscript:@"status"];
+    status4 = [(CRPreflightResponse *)v34 status];
+    [v32 setObject:status4 forKeyedSubscript:@"status"];
   }
 
-  v74 = [(CRPreflightResponse *)v34 details];
+  details3 = [(CRPreflightResponse *)v34 details];
 
-  if (v74)
+  if (details3)
   {
-    v75 = [(CRPreflightResponse *)v34 details];
-    [v32 setObject:v75 forKeyedSubscript:@"details"];
+    details4 = [(CRPreflightResponse *)v34 details];
+    [v32 setObject:details4 forKeyedSubscript:@"details"];
   }
 
-  v76 = [(CRPreflightResponse *)v34 status];
-  if ([v76 isEqual:@"200"])
+  status5 = [(CRPreflightResponse *)v34 status];
+  if ([status5 isEqual:@"200"])
   {
   }
 
   else
   {
-    v77 = [(CRPreflightResponse *)v34 status];
-    v100 = [v77 isEqual:@"207"];
+    status6 = [(CRPreflightResponse *)v34 status];
+    v100 = [status6 isEqual:@"207"];
 
     if (!v100)
     {
       v102 = MEMORY[0x1E696ABC0];
       v119 = *MEMORY[0x1E696A578];
       v93 = MEMORY[0x1E696AEC0];
-      v31 = [(CRPreflightResponse *)v34 status];
-      v96 = [v93 stringWithFormat:@"Server response: %@", v31];
+      phase = [(CRPreflightResponse *)v34 status];
+      v96 = [v93 stringWithFormat:@"Server response: %@", phase];
       v120 = v96;
       v94 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v120 forKeys:&v119 count:1];
       v36 = [v102 errorWithDomain:@"com.apple.corerepair" code:-79 userInfo:v94];
@@ -793,8 +793,8 @@ LABEL_78:
     while (v79);
   }
 
-  v82 = [(CRPreflightResponse *)v34 details];
-  v83 = [(CRPreflightController *)self setComponentsState:v33 withResponseDetails:v82];
+  details5 = [(CRPreflightResponse *)v34 details];
+  v83 = [(CRPreflightController *)self setComponentsState:v33 withResponseDetails:details5];
 
   if (v83)
   {
@@ -817,8 +817,8 @@ LABEL_78:
     v89 = [(CRPreflightController *)self components:v33 withState:4];
     [v32 setObject:v89 forKeyedSubscript:@"deniedComponents"];
 
-    v31 = [(CRPreflightController *)self components:v33 withState:7];
-    [v32 setObject:v31 forKeyedSubscript:@"sealedComponents"];
+    phase = [(CRPreflightController *)self components:v33 withState:7];
+    [v32 setObject:phase forKeyedSubscript:@"sealedComponents"];
     v36 = 0;
   }
 
@@ -827,8 +827,8 @@ LABEL_78:
     v95 = MEMORY[0x1E696ABC0];
     v121 = *MEMORY[0x1E696A578];
     v90 = MEMORY[0x1E696AEC0];
-    v31 = [(CRPreflightResponse *)v34 details];
-    v91 = [v90 stringWithFormat:@"Failed to set components status: %@", v31];
+    phase = [(CRPreflightResponse *)v34 details];
+    v91 = [v90 stringWithFormat:@"Failed to set components status: %@", phase];
     v122 = v91;
     v92 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v122 forKeys:&v121 count:1];
     v36 = [v95 errorWithDomain:@"com.apple.corerepair" code:-79 userInfo:v92];
@@ -839,18 +839,18 @@ LABEL_78:
   v30 = v101;
 LABEL_54:
 
-  if (v7)
+  if (replyCopy)
   {
-    v7[2](v7, v37, v32, v36);
+    replyCopy[2](replyCopy, v37, v32, v36);
   }
 
   v45 = *MEMORY[0x1E69E9840];
 }
 
-- (void)preflight:(id)a3 withReply:(id)a4
+- (void)preflight:(id)preflight withReply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  preflightCopy = preflight;
+  replyCopy = reply;
   v28 = 0;
   v29 = &v28;
   v30 = 0x2020000000;
@@ -867,9 +867,9 @@ LABEL_54:
   v19 = __Block_byref_object_copy__1;
   v20 = __Block_byref_object_dispose__1;
   v21 = 0;
-  if (v6)
+  if (preflightCopy)
   {
-    v8 = [v6 mutableCopy];
+    v8 = [preflightCopy mutableCopy];
   }
 
   else
@@ -914,9 +914,9 @@ LABEL_54:
     [(CRPreflightController *)self preflightPhase2:v9 withReply:v14];
   }
 
-  if (v7)
+  if (replyCopy)
   {
-    v7[2](v7, *(v29 + 24), v17[5], v23[5]);
+    replyCopy[2](replyCopy, *(v29 + 24), v17[5], v23[5]);
   }
 
   _Block_object_dispose(&v16, 8);
@@ -953,10 +953,10 @@ void __45__CRPreflightController_preflight_withReply___block_invoke_2(void *a1, 
   *(v11 + 40) = v7;
 }
 
-- (id)sign:(id)a3 keyBlob:(id)a4
+- (id)sign:(id)sign keyBlob:(id)blob
 {
-  v6 = a3;
-  v7 = a4;
+  signCopy = sign;
+  blobCopy = blob;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -978,7 +978,7 @@ void __45__CRPreflightController_preflight_withReply___block_invoke_2(void *a1, 
   v14[3] = &unk_1E83B3FD0;
   v14[4] = self;
   v14[5] = &v15;
-  [v11 sign:v6 keyBlob:v7 withReply:v14];
+  [v11 sign:signCopy keyBlob:blobCopy withReply:v14];
 
   v12 = v16[5];
   _Block_object_dispose(&v15, 8);
@@ -1093,11 +1093,11 @@ void __51__CRPreflightController__diskImageSupportPreflight__block_invoke_164(ui
   }
 }
 
-- (BOOL)verify:(id)a3 signature:(id)a4 keyBlob:(id)a5
+- (BOOL)verify:(id)verify signature:(id)signature keyBlob:(id)blob
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  verifyCopy = verify;
+  signatureCopy = signature;
+  blobCopy = blob;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
@@ -1117,7 +1117,7 @@ void __51__CRPreflightController__diskImageSupportPreflight__block_invoke_164(ui
   v16[3] = &unk_1E83B4020;
   v16[4] = self;
   v16[5] = &v17;
-  [v14 verify:v8 signature:v9 keyBlob:v10 withReply:v16];
+  [v14 verify:verifyCopy signature:signatureCopy keyBlob:blobCopy withReply:v16];
 
   LOBYTE(self) = *(v18 + 24);
   _Block_object_dispose(&v17, 8);
@@ -1152,16 +1152,16 @@ uint64_t __50__CRPreflightController_verify_signature_keyBlob___block_invoke_167
   return result;
 }
 
-- (id)components:(id)a3 withState:(int64_t)a4
+- (id)components:(id)components withState:(int64_t)state
 {
   v34 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  componentsCopy = components;
   v6 = objc_opt_new();
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v7 = v5;
+  v7 = componentsCopy;
   v8 = [v7 countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v8)
   {
@@ -1180,31 +1180,31 @@ uint64_t __50__CRPreflightController_verify_signature_keyBlob___block_invoke_167
         }
 
         v12 = *(*(&v29 + 1) + 8 * v11);
-        if ([v12 state] == a4)
+        if ([v12 state] == state)
         {
           v13 = objc_alloc(MEMORY[0x1E695DEF0]);
-          v14 = [v12 identifier];
-          v15 = [v13 initWithBase64EncodedString:v14 options:0];
+          identifier = [v12 identifier];
+          v15 = [v13 initWithBase64EncodedString:identifier options:0];
 
           v16 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:v15 encoding:4];
           v17 = MEMORY[0x1E696AEC0];
-          v18 = [v12 type];
-          v19 = v18;
+          type = [v12 type];
+          v19 = type;
           if (v16)
           {
-            v20 = [v17 stringWithFormat:@"%@-%@", v18, v16];
+            v20 = [v17 stringWithFormat:@"%@-%@", type, v16];
           }
 
           else
           {
             [v12 identifier];
             v21 = v7;
-            v22 = a4;
+            stateCopy = state;
             v24 = v23 = v6;
             v20 = [v17 stringWithFormat:@"%@-%@", v19, v24];
 
             v6 = v23;
-            a4 = v22;
+            state = stateCopy;
             v7 = v21;
             v10 = v27;
           }
@@ -1228,12 +1228,12 @@ uint64_t __50__CRPreflightController_verify_signature_keyBlob___block_invoke_167
   return v6;
 }
 
-- (BOOL)setComponentsState:(id)a3 withResponseDetails:(id)a4
+- (BOOL)setComponentsState:(id)state withResponseDetails:(id)details
 {
   v58 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if (!v6)
+  stateCopy = state;
+  detailsCopy = details;
+  if (!detailsCopy)
   {
     v7 = handleForCategory(0);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -1262,7 +1262,7 @@ uint64_t __50__CRPreflightController_verify_signature_keyBlob___block_invoke_167
   v53 = 0u;
   v50 = 0u;
   v51 = 0u;
-  v7 = v6;
+  v7 = detailsCopy;
   v41 = [v7 countByEnumeratingWithState:&v50 objects:v57 count:16];
   if (!v41)
   {
@@ -1271,12 +1271,12 @@ LABEL_50:
     goto LABEL_59;
   }
 
-  v36 = v6;
+  v36 = detailsCopy;
   v9 = *v51;
   *&v8 = 138412290;
   v35 = v8;
   v38 = v7;
-  v39 = v5;
+  v39 = stateCopy;
   v37 = *v51;
   while (2)
   {
@@ -1372,7 +1372,7 @@ LABEL_57:
         v49 = 0u;
         v46 = 0u;
         v47 = 0u;
-        v21 = v5;
+        v21 = stateCopy;
         v23 = [v21 countByEnumeratingWithState:&v46 objects:v54 count:16];
         if (v23)
         {
@@ -1388,11 +1388,11 @@ LABEL_57:
               }
 
               v27 = *(*(&v46 + 1) + 8 * i);
-              v28 = [v27 type];
-              if ([v28 isEqual:v13])
+              type = [v27 type];
+              if ([type isEqual:v13])
               {
-                v29 = [v27 identifier];
-                v30 = [v29 isEqual:v14];
+                identifier = [v27 identifier];
+                v30 = [identifier isEqual:v14];
 
                 if (v30)
                 {
@@ -1410,7 +1410,7 @@ LABEL_57:
 
           while (v24);
           v7 = v38;
-          v5 = v39;
+          stateCopy = v39;
           v9 = v37;
         }
 
@@ -1437,14 +1437,14 @@ LABEL_57:
   }
 
 LABEL_58:
-  v6 = v36;
+  detailsCopy = v36;
 LABEL_59:
 
   v33 = *MEMORY[0x1E69E9840];
   return v31;
 }
 
-- (BOOL)deltaComponents:(id *)a3 strongComponents:(id *)a4 error:(id *)a5
+- (BOOL)deltaComponents:(id *)components strongComponents:(id *)strongComponents error:(id *)error
 {
   v65 = *MEMORY[0x1E69E9840];
   v42 = objc_opt_new();
@@ -1474,18 +1474,18 @@ LABEL_59:
     }
 
     v32 = v12;
-    if (!a5)
+    if (!error)
     {
       goto LABEL_41;
     }
 
 LABEL_40:
-    *a5 = v32;
+    *error = v32;
     goto LABEL_41;
   }
 
-  v36 = a3;
-  v37 = a4;
+  componentsCopy = components;
+  strongComponentsCopy = strongComponents;
   v38 = v11;
   v39 = v13;
   v51 = 0u;
@@ -1609,14 +1609,14 @@ LABEL_26:
   }
 
   v12 = v38;
-  if (v36)
+  if (componentsCopy)
   {
-    *v36 = v42;
+    *componentsCopy = v42;
   }
 
   v32 = v41;
-  a5 = v37;
-  if (v37)
+  error = strongComponentsCopy;
+  if (strongComponentsCopy)
   {
     goto LABEL_40;
   }
@@ -1627,7 +1627,7 @@ LABEL_41:
   return v13;
 }
 
-- (BOOL)queryRepairDelta:(id *)a3 error:(id *)a4
+- (BOOL)queryRepairDelta:(id *)delta error:(id *)error
 {
   v33 = 0;
   v34 = &v33;
@@ -1658,8 +1658,8 @@ LABEL_41:
   v13 = objc_opt_class();
   v14 = objc_opt_class();
   v15 = [v10 setWithObjects:{v11, v12, v13, v14, objc_opt_class(), 0}];
-  v16 = [(NSXPCConnection *)self->_connectionToService remoteObjectInterface];
-  [v16 setClasses:v15 forSelector:sel_queryRepairDeltaWithReply_ argumentIndex:1 ofReply:1];
+  remoteObjectInterface = [(NSXPCConnection *)self->_connectionToService remoteObjectInterface];
+  [remoteObjectInterface setClasses:v15 forSelector:sel_queryRepairDeltaWithReply_ argumentIndex:1 ofReply:1];
 
   [(NSXPCConnection *)self->_connectionToService resume];
   v17 = self->_connectionToService;
@@ -1679,14 +1679,14 @@ LABEL_41:
   v21[5] = &v23;
   [v18 queryRepairDeltaWithReply:v21];
 
-  if (a3)
+  if (delta)
   {
-    *a3 = v34[5];
+    *delta = v34[5];
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = v28[5];
+    *error = v28[5];
   }
 
   v19 = *(v24 + 24);
@@ -1748,7 +1748,7 @@ void __48__CRPreflightController_queryRepairDelta_error___block_invoke_203(void 
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)issueRepairCert:(id *)a3 keyBlob:(id *)a4 error:(id *)a5
+- (BOOL)issueRepairCert:(id *)cert keyBlob:(id *)blob error:(id *)error
 {
   v39 = 0;
   v40 = &v39;
@@ -1778,18 +1778,18 @@ void __48__CRPreflightController_queryRepairDelta_error___block_invoke_203(void 
     [v9 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"miniPreflight"];
   }
 
-  v10 = [(CRPreflightController *)self socksHost];
-  if (v10)
+  socksHost = [(CRPreflightController *)self socksHost];
+  if (socksHost)
   {
-    v11 = [(CRPreflightController *)self socksPort];
+    socksPort = [(CRPreflightController *)self socksPort];
 
-    if (v11)
+    if (socksPort)
     {
-      v12 = [(CRPreflightController *)self socksHost];
-      [v9 setObject:v12 forKeyedSubscript:@"socksHost"];
+      socksHost2 = [(CRPreflightController *)self socksHost];
+      [v9 setObject:socksHost2 forKeyedSubscript:@"socksHost"];
 
-      v13 = [(CRPreflightController *)self socksPort];
-      [v9 setObject:v13 forKeyedSubscript:@"socksPort"];
+      socksPort2 = [(CRPreflightController *)self socksPort];
+      [v9 setObject:socksPort2 forKeyedSubscript:@"socksPort"];
     }
   }
 
@@ -1819,19 +1819,19 @@ void __48__CRPreflightController_queryRepairDelta_error___block_invoke_203(void 
   v21[5] = &v23;
   [v18 issueRepairCert:v9 withReply:v21];
 
-  if (a3)
+  if (cert)
   {
-    *a3 = v40[5];
+    *cert = v40[5];
   }
 
-  if (a4)
+  if (blob)
   {
-    *a4 = v34[5];
+    *blob = v34[5];
   }
 
-  if (a5)
+  if (error)
   {
-    *a5 = v28[5];
+    *error = v28[5];
   }
 
   v19 = *(v24 + 24);
@@ -1901,9 +1901,9 @@ void __55__CRPreflightController_issueRepairCert_keyBlob_error___block_invoke_20
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)challengeStrongComponents:(id)a3 responses:(id *)a4 error:(id *)a5
+- (BOOL)challengeStrongComponents:(id)components responses:(id *)responses error:(id *)error
 {
-  v8 = a3;
+  componentsCopy = components;
   v38 = 0;
   v39 = &v38;
   v40 = 0x3032000000;
@@ -1921,19 +1921,19 @@ void __55__CRPreflightController_issueRepairCert_keyBlob_error___block_invoke_20
   v32 = __Block_byref_object_dispose__1;
   v33 = 0;
   v9 = objc_opt_new();
-  [v9 setObject:v8 forKeyedSubscript:@"challenges"];
-  v10 = [(CRPreflightController *)self socksHost];
-  if (v10)
+  [v9 setObject:componentsCopy forKeyedSubscript:@"challenges"];
+  socksHost = [(CRPreflightController *)self socksHost];
+  if (socksHost)
   {
-    v11 = [(CRPreflightController *)self socksPort];
+    socksPort = [(CRPreflightController *)self socksPort];
 
-    if (v11)
+    if (socksPort)
     {
-      v12 = [(CRPreflightController *)self socksHost];
-      [v9 setObject:v12 forKeyedSubscript:@"socksHost"];
+      socksHost2 = [(CRPreflightController *)self socksHost];
+      [v9 setObject:socksHost2 forKeyedSubscript:@"socksHost"];
 
-      v13 = [(CRPreflightController *)self socksPort];
-      [v9 setObject:v13 forKeyedSubscript:@"socksPort"];
+      socksPort2 = [(CRPreflightController *)self socksPort];
+      [v9 setObject:socksPort2 forKeyedSubscript:@"socksPort"];
     }
   }
 
@@ -1946,11 +1946,11 @@ void __55__CRPreflightController_issueRepairCert_keyBlob_error___block_invoke_20
   v20 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F4BCFA48];
   [v19 setRemoteObjectInterface:v20];
 
-  v21 = [v19 remoteObjectInterface];
-  [v21 setClasses:v18 forSelector:sel_challengeStrongComponents_withReply_ argumentIndex:0 ofReply:0];
+  remoteObjectInterface = [v19 remoteObjectInterface];
+  [remoteObjectInterface setClasses:v18 forSelector:sel_challengeStrongComponents_withReply_ argumentIndex:0 ofReply:0];
 
-  v22 = [v19 remoteObjectInterface];
-  [v22 setClasses:v18 forSelector:sel_challengeStrongComponents_withReply_ argumentIndex:1 ofReply:1];
+  remoteObjectInterface2 = [v19 remoteObjectInterface];
+  [remoteObjectInterface2 setClasses:v18 forSelector:sel_challengeStrongComponents_withReply_ argumentIndex:1 ofReply:1];
 
   [v19 resume];
   v27[0] = MEMORY[0x1E69E9820];
@@ -1969,14 +1969,14 @@ void __55__CRPreflightController_issueRepairCert_keyBlob_error___block_invoke_20
   v26[5] = &v34;
   [v23 challengeStrongComponents:v9 withReply:v26];
 
-  if (a5)
+  if (error)
   {
-    *a5 = v39[5];
+    *error = v39[5];
   }
 
-  if (a4)
+  if (responses)
   {
-    *a4 = v29[5];
+    *responses = v29[5];
   }
 
   v24 = *(v35 + 24);
@@ -2023,11 +2023,11 @@ void __67__CRPreflightController_challengeStrongComponents_responses_error___blo
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (id)sendRequest:(id)a3 keyBlob:(id)a4 error:(id *)a5
+- (id)sendRequest:(id)request keyBlob:(id)blob error:(id *)error
 {
   v98[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v55 = a4;
+  requestCopy = request;
+  blobCopy = blob;
   v77 = 0;
   v78 = &v77;
   v79 = 0x3032000000;
@@ -2045,7 +2045,7 @@ void __67__CRPreflightController_challengeStrongComponents_responses_error___blo
   v71 = __Block_byref_object_dispose__1;
   v72 = 0;
   v54 = objc_opt_new();
-  if (!v7)
+  if (!requestCopy)
   {
     v22 = MEMORY[0x1E696ABC0];
     v97 = *MEMORY[0x1E696A578];
@@ -2060,13 +2060,13 @@ LABEL_13:
     v21 = 0;
     v52 = 0;
     v53 = 0;
-    v9 = 0;
-    v8 = 0;
+    payload = 0;
+    server = 0;
     goto LABEL_14;
   }
 
-  v8 = [v7 server];
-  if (!v8)
+  server = [requestCopy server];
+  if (!server)
   {
     v23 = MEMORY[0x1E696ABC0];
     v95 = *MEMORY[0x1E696A578];
@@ -2076,8 +2076,8 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  v9 = [v7 payload];
-  if (!v9)
+  payload = [requestCopy payload];
+  if (!payload)
   {
     v28 = MEMORY[0x1E696ABC0];
     v93 = *MEMORY[0x1E696A578];
@@ -2091,14 +2091,14 @@ LABEL_13:
     v21 = 0;
     v52 = 0;
     v53 = 0;
-    v9 = 0;
+    payload = 0;
     goto LABEL_14;
   }
 
-  if (v55)
+  if (blobCopy)
   {
-    v10 = [v7 signatureChallenge];
-    v11 = v10 == 0;
+    signatureChallenge = [requestCopy signatureChallenge];
+    v11 = signatureChallenge == 0;
 
     if (v11)
     {
@@ -2115,8 +2115,8 @@ LABEL_13:
         _os_log_impl(&dword_1CEDC5000, v12, OS_LOG_TYPE_DEFAULT, "Signing server nonce ...", buf, 2u);
       }
 
-      v13 = [v7 signatureChallenge];
-      v52 = [(CRPreflightController *)self sign:v13 keyBlob:v55];
+      signatureChallenge2 = [requestCopy signatureChallenge];
+      v52 = [(CRPreflightController *)self sign:signatureChallenge2 keyBlob:blobCopy];
 
       if (!v52)
       {
@@ -2167,7 +2167,7 @@ LABEL_16:
       _os_log_impl(&dword_1CEDC5000, v29, OS_LOG_TYPE_DEFAULT, "Signing request ...", buf, 2u);
     }
 
-    v30 = [(CRPreflightController *)self sign:v9 keyBlob:v55];
+    v30 = [(CRPreflightController *)self sign:payload keyBlob:blobCopy];
     v21 = v30;
     if (!v30)
     {
@@ -2208,31 +2208,31 @@ LABEL_16:
     v21 = 0;
   }
 
-  v31 = [(CRPreflightController *)self socksHost];
-  if (v31)
+  socksHost = [(CRPreflightController *)self socksHost];
+  if (socksHost)
   {
-    v32 = [(CRPreflightController *)self socksPort];
-    v33 = v32 == 0;
+    socksPort = [(CRPreflightController *)self socksPort];
+    v33 = socksPort == 0;
 
     if (!v33)
     {
-      v34 = [(CRPreflightController *)self socksHost];
-      [v54 setObject:v34 forKeyedSubscript:@"SOCKSProxy"];
+      socksHost2 = [(CRPreflightController *)self socksHost];
+      [v54 setObject:socksHost2 forKeyedSubscript:@"SOCKSProxy"];
 
-      v35 = [(CRPreflightController *)self socksPort];
-      [v54 setObject:v35 forKeyedSubscript:@"SOCKSPort"];
+      socksPort2 = [(CRPreflightController *)self socksPort];
+      [v54 setObject:socksPort2 forKeyedSubscript:@"SOCKSPort"];
     }
   }
 
-  v36 = [v7 phase];
+  phase = [requestCopy phase];
 
-  if (v36)
+  if (phase)
   {
-    v37 = [v7 phase];
-    [v54 setObject:v37 forKeyedSubscript:@"Phase"];
+    phase2 = [requestCopy phase];
+    [v54 setObject:phase2 forKeyedSubscript:@"Phase"];
   }
 
-  v18 = [MEMORY[0x1E696AD68] requestWithURL:v8 cachePolicy:0 timeoutInterval:120.0];
+  v18 = [MEMORY[0x1E696AD68] requestWithURL:server cachePolicy:0 timeoutInterval:120.0];
   [v18 setHTTPMethod:@"POST"];
   [v27 setValue:@"application/xml" forHTTPHeaderField:@"Content-Type"];
   v28 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%d", objc_msgSend(v6, "length")];
@@ -2248,7 +2248,7 @@ LABEL_16:
     _os_log_impl(&dword_1CEDC5000, v29, OS_LOG_TYPE_DEFAULT, "content length is:%d", buf, 8u);
   }
 
-  v31 = [MEMORY[0x1E696AF78] sessionWithConfiguration:v10 delegate:self delegateQueue:0];
+  socksHost = [MEMORY[0x1E696AF78] sessionWithConfiguration:signatureChallenge delegate:self delegateQueue:0];
   v41[0] = MEMORY[0x1E69E9820];
   v41[1] = 3221225472;
   v41[2] = __71__CRCAttestationManager_sendChallengeRequestWith_serverResponse_error___block_invoke;
@@ -2257,30 +2257,30 @@ LABEL_16:
   v41[5] = &v46;
   v41[6] = &v42;
   v41[7] = &v58;
-  v32 = [v31 dataTaskWithRequest:v27 completionHandler:v41];
+  socksPort = [socksHost dataTaskWithRequest:v27 completionHandler:v41];
   v33 = v65[5];
-  v65[5] = v32;
+  v65[5] = socksPort;
 
-  v34 = v59[5];
+  socksHost2 = v59[5];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __71__CRCAttestationManager_sendChallengeRequestWith_serverResponse_error___block_invoke_225;
   block[3] = &unk_1E83B4298;
   block[4] = &v58;
   block[5] = &v64;
-  dispatch_group_async(v34, v9, block);
+  dispatch_group_async(socksHost2, payload, block);
   dispatch_group_wait(v59[5], 0xFFFFFFFFFFFFFFFFLL);
-  if (a5)
+  if (error)
   {
-    *a5 = v53[5];
+    *error = v53[5];
   }
 
-  if (a4)
+  if (blob)
   {
-    *a4 = v47[5];
+    *blob = v47[5];
   }
 
-  v35 = *(v43 + 24);
+  socksPort2 = *(v43 + 24);
 
   _Block_object_dispose(&v42, 8);
   _Block_object_dispose(&v46, 8);
@@ -2289,8 +2289,8 @@ LABEL_16:
   _Block_object_dispose(&v58, 8);
 
   _Block_object_dispose(&v64, 8);
-  v36 = *MEMORY[0x1E69E9840];
-  return v35 & 1;
+  phase = *MEMORY[0x1E69E9840];
+  return socksPort2 & 1;
 }
 
 @end

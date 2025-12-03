@@ -1,6 +1,6 @@
 @interface PXFloatingCardSpringInfo
-- (PXFloatingCardSpringInfo)initWithMass:(double)a3 stiffness:(double)a4 damping:(double)a5 initialVelocity:(double)a6;
-- (double)valueAtTime:(double)a3;
+- (PXFloatingCardSpringInfo)initWithMass:(double)mass stiffness:(double)stiffness damping:(double)damping initialVelocity:(double)velocity;
+- (double)valueAtTime:(double)time;
 - (id)description;
 @end
 
@@ -45,7 +45,7 @@
   return v25;
 }
 
-- (double)valueAtTime:(double)a3
+- (double)valueAtTime:(double)time
 {
   [(PXFloatingCardSpringInfo *)self mass];
   v6 = v5;
@@ -57,51 +57,51 @@
   SpringUtils::Spring::Spring(v17, v6, v8, v10, v11);
   if (v19 >= 1.0)
   {
-    v12 = v21 + v22 * a3;
-    v15 = exp(-(a3 * v18));
+    v12 = v21 + v22 * time;
+    v15 = exp(-(time * v18));
   }
 
   else
   {
-    v12 = exp(-(a3 * v19) * v18);
+    v12 = exp(-(time * v19) * v18);
     v13 = v21;
-    v14 = __sincos_stret(v20 * a3);
+    v14 = __sincos_stret(v20 * time);
     v15 = v22 * v14.__sinval + v13 * v14.__cosval;
   }
 
   return v12 * v15;
 }
 
-- (PXFloatingCardSpringInfo)initWithMass:(double)a3 stiffness:(double)a4 damping:(double)a5 initialVelocity:(double)a6
+- (PXFloatingCardSpringInfo)initWithMass:(double)mass stiffness:(double)stiffness damping:(double)damping initialVelocity:(double)velocity
 {
   v88.receiver = self;
   v88.super_class = PXFloatingCardSpringInfo;
   v11 = [(PXFloatingCardSpringInfo *)&v88 init];
   if (v11)
   {
-    if (a3 <= 0.0)
+    if (mass <= 0.0)
     {
-      v78 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v78 handleFailureInMethod:a2 object:v11 file:@"PXFloatingCardSpringInfo.mm" lineNumber:396 description:{@"Invalid parameter not satisfying: %@", @"mass > 0"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v11 file:@"PXFloatingCardSpringInfo.mm" lineNumber:396 description:{@"Invalid parameter not satisfying: %@", @"mass > 0"}];
     }
 
-    if (a4 <= 0.0)
+    if (stiffness <= 0.0)
     {
-      v79 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v79 handleFailureInMethod:a2 object:v11 file:@"PXFloatingCardSpringInfo.mm" lineNumber:397 description:{@"Invalid parameter not satisfying: %@", @"stiffness > 0"}];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:v11 file:@"PXFloatingCardSpringInfo.mm" lineNumber:397 description:{@"Invalid parameter not satisfying: %@", @"stiffness > 0"}];
     }
 
-    if (a5 <= 0.0)
+    if (damping <= 0.0)
     {
-      v80 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v80 handleFailureInMethod:a2 object:v11 file:@"PXFloatingCardSpringInfo.mm" lineNumber:398 description:{@"Invalid parameter not satisfying: %@", @"damping > 0"}];
+      currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler3 handleFailureInMethod:a2 object:v11 file:@"PXFloatingCardSpringInfo.mm" lineNumber:398 description:{@"Invalid parameter not satisfying: %@", @"damping > 0"}];
     }
 
-    v11->_mass = a3;
-    v11->_stiffness = a4;
-    v11->_damping = a5;
-    v11->_initialVelocity = a6;
-    SpringUtils::Spring::Spring(v89, a3, a4, a5, a6);
+    v11->_mass = mass;
+    v11->_stiffness = stiffness;
+    v11->_damping = damping;
+    v11->_initialVelocity = velocity;
+    SpringUtils::Spring::Spring(v89, mass, stiffness, damping, velocity);
     v12 = v92;
     if (v92 < 1.0)
     {

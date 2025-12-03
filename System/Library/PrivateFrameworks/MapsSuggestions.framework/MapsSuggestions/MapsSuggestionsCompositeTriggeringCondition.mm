@@ -1,35 +1,35 @@
 @interface MapsSuggestionsCompositeTriggeringCondition
 - (BOOL)isTrue;
-- (MapsSuggestionsCompositeTriggeringCondition)initWithName:(id)a3 startState:(BOOL)a4 behavior:(unint64_t)a5 triggers:(id)a6 conditions:(id)a7;
+- (MapsSuggestionsCompositeTriggeringCondition)initWithName:(id)name startState:(BOOL)state behavior:(unint64_t)behavior triggers:(id)triggers conditions:(id)conditions;
 - (id).cxx_construct;
 - (id)objectForJSON;
 - (void)_q_unsubscribeAll;
-- (void)addCondition:(id)a3;
-- (void)addConditions:(id)a3;
-- (void)addTrigger:(id)a3;
-- (void)addTriggers:(id)a3;
+- (void)addCondition:(id)condition;
+- (void)addConditions:(id)conditions;
+- (void)addTrigger:(id)trigger;
+- (void)addTriggers:(id)triggers;
 - (void)dealloc;
 - (void)didAddFirstObserver;
 - (void)didRemoveLastObserver;
-- (void)triggerFired:(id)a3;
+- (void)triggerFired:(id)fired;
 @end
 
 @implementation MapsSuggestionsCompositeTriggeringCondition
 
-- (MapsSuggestionsCompositeTriggeringCondition)initWithName:(id)a3 startState:(BOOL)a4 behavior:(unint64_t)a5 triggers:(id)a6 conditions:(id)a7
+- (MapsSuggestionsCompositeTriggeringCondition)initWithName:(id)name startState:(BOOL)state behavior:(unint64_t)behavior triggers:(id)triggers conditions:(id)conditions
 {
-  v10 = a4;
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
+  stateCopy = state;
+  nameCopy = name;
+  triggersCopy = triggers;
+  conditionsCopy = conditions;
   v29.receiver = self;
   v29.super_class = MapsSuggestionsCompositeTriggeringCondition;
-  v15 = [(MapsSuggestionsTriggeringToggle *)&v29 initWithName:v12 startState:v10 behavior:a5];
+  v15 = [(MapsSuggestionsTriggeringToggle *)&v29 initWithName:nameCopy startState:stateCopy behavior:behavior];
   v16 = v15;
   if (v15)
   {
-    v17 = [(MapsSuggestionsBaseTrigger *)v15 dispatchQueue];
-    MSg::Queue::Queue(&v27, v17);
+    dispatchQueue = [(MapsSuggestionsBaseTrigger *)v15 dispatchQueue];
+    MSg::Queue::Queue(&v27, dispatchQueue);
     v18 = v27;
     v27 = 0;
     innerQueue = v16->_queue._innerQueue;
@@ -40,11 +40,11 @@
     name = v16->_queue._name;
     v16->_queue._name = v20;
 
-    v22 = [v13 copy];
+    v22 = [triggersCopy copy];
     triggers = v16->_triggers;
     v16->_triggers = v22;
 
-    v24 = [v14 copy];
+    v24 = [conditionsCopy copy];
     conditions = v16->_conditions;
     v16->_conditions = v24;
   }
@@ -52,19 +52,19 @@
   return v16;
 }
 
-- (void)addConditions:(id)a3
+- (void)addConditions:(id)conditions
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  conditionsCopy = conditions;
+  v5 = conditionsCopy;
+  if (conditionsCopy)
   {
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __61__MapsSuggestionsCompositeTriggeringCondition_addConditions___block_invoke;
     v7[3] = &unk_1E81F69F0;
     v7[4] = self;
-    v8 = v4;
+    v8 = conditionsCopy;
     dispatch_sync(self->_queue._innerQueue, v7);
   }
 
@@ -94,28 +94,28 @@ void __61__MapsSuggestionsCompositeTriggeringCondition_addConditions___block_inv
   *(v3 + 72) = v2;
 }
 
-- (void)addCondition:(id)a3
+- (void)addCondition:(id)condition
 {
   v6[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v6[0] = v4;
+  conditionCopy = condition;
+  v6[0] = conditionCopy;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:1];
   [(MapsSuggestionsCompositeTriggeringCondition *)self addConditions:v5];
 }
 
-- (void)addTriggers:(id)a3
+- (void)addTriggers:(id)triggers
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  triggersCopy = triggers;
+  v5 = triggersCopy;
+  if (triggersCopy)
   {
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __59__MapsSuggestionsCompositeTriggeringCondition_addTriggers___block_invoke;
     v7[3] = &unk_1E81F6A18;
     v7[4] = self;
-    v8 = v4;
+    v8 = triggersCopy;
     MSg::Queue::async<MapsSuggestionsCompositeTriggeringCondition>(&self->_queue, self, v7);
   }
 
@@ -205,11 +205,11 @@ LABEL_14:
   }
 }
 
-- (void)addTrigger:(id)a3
+- (void)addTrigger:(id)trigger
 {
   v6[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v6[0] = v4;
+  triggerCopy = trigger;
+  v6[0] = triggerCopy;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:1];
   [(MapsSuggestionsCompositeTriggeringCondition *)self addTriggers:v5];
 }
@@ -274,13 +274,13 @@ LABEL_14:
 - (void)_q_unsubscribeAll
 {
   v11 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v8 = 0u;
     v9 = 0u;
     v6 = 0u;
     v7 = 0u;
-    v2 = *(a1 + 64);
+    v2 = *(self + 64);
     v3 = [v2 countByEnumeratingWithState:&v6 objects:v10 count:16];
     if (v3)
     {
@@ -295,7 +295,7 @@ LABEL_14:
             objc_enumerationMutation(v2);
           }
 
-          [*(*(&v6 + 1) + 8 * v5++) unregisterObserver:{a1, v6}];
+          [*(*(&v6 + 1) + 8 * v5++) unregisterObserver:{self, v6}];
         }
 
         while (v3 != v5);
@@ -324,18 +324,18 @@ LABEL_14:
   [(MapsSuggestionsCompositeTriggeringCondition *)&v4 dealloc];
 }
 
-- (void)triggerFired:(id)a3
+- (void)triggerFired:(id)fired
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  firedCopy = fired;
   v5 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    v6 = [v4 uniqueName];
+    uniqueName = [firedCopy uniqueName];
     *buf = 136315394;
     v9 = "[MapsSuggestionsCompositeTriggeringCondition triggerFired:]";
     v10 = 2112;
-    v11 = v6;
+    v11 = uniqueName;
     _os_log_impl(&dword_1C5126000, v5, OS_LOG_TYPE_DEBUG, "%s: Trigger{%@}", buf, 0x16u);
   }
 
@@ -443,9 +443,9 @@ LABEL_17:
   v3 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
-    v4 = [(MapsSuggestionsBaseTrigger *)self dispatchQueue];
+    dispatchQueue = [(MapsSuggestionsBaseTrigger *)self dispatchQueue];
     *buf = 138412290;
-    v31 = v4;
+    v31 = dispatchQueue;
     _os_log_impl(&dword_1C5126000, v3, OS_LOG_TYPE_DEBUG, "MapsSuggestionsCondition isTrue called, going to dispatch to queue %@", buf, 0xCu);
   }
 
@@ -489,9 +489,9 @@ LABEL_17:
           v14 = GEOFindOrCreateLog();
           if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
           {
-            v15 = [v11 nameForJSON];
+            nameForJSON = [v11 nameForJSON];
             *v28 = 138412290;
-            v29 = v15;
+            v29 = nameForJSON;
             _os_log_impl(&dword_1C5126000, v14, OS_LOG_TYPE_DEBUG, "Condition{%@} said NO", v28, 0xCu);
           }
 
@@ -563,8 +563,8 @@ LABEL_19:
           }
           v10 = ;
 
-          v11 = [v9 nameForJSON];
-          [v3 setObject:v10 forKeyedSubscript:v11];
+          nameForJSON = [v9 nameForJSON];
+          [v3 setObject:v10 forKeyedSubscript:nameForJSON];
         }
 
         v5 = [(NSArray *)v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -573,15 +573,15 @@ LABEL_19:
       while (v5);
     }
 
-    v12 = [v3 copy];
+    null = [v3 copy];
   }
 
   else
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  return v12;
+  return null;
 }
 
 - (id).cxx_construct

@@ -1,10 +1,10 @@
 @interface IDScanCameraReader
-- (BOOL)cameraReader:(id)a3 shouldReturnIDImage:(id)a4;
-- (_TtC9CoreIDVUI18IDScanCameraReader)initWithNibName:(id)a3 bundle:(id)a4;
-- (_TtC9CoreIDVUI18IDScanCameraReader)initWithOptions:(id)a3;
-- (id)cameraReader:(id)a3 auxiliaryIDCornerDetection:(__CVBuffer *)a4;
-- (void)cameraReader:(id)a3 didFailWithError:(id)a4;
-- (void)cameraReader:(id)a3 didRecognizeObjects:(id)a4;
+- (BOOL)cameraReader:(id)reader shouldReturnIDImage:(id)image;
+- (_TtC9CoreIDVUI18IDScanCameraReader)initWithNibName:(id)name bundle:(id)bundle;
+- (_TtC9CoreIDVUI18IDScanCameraReader)initWithOptions:(id)options;
+- (id)cameraReader:(id)reader auxiliaryIDCornerDetection:(__CVBuffer *)detection;
+- (void)cameraReader:(id)reader didFailWithError:(id)error;
+- (void)cameraReader:(id)reader didRecognizeObjects:(id)objects;
 - (void)viewDidLoad;
 @end
 
@@ -12,43 +12,43 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_2457C5560();
 }
 
-- (void)cameraReader:(id)a3 didFailWithError:(id)a4
+- (void)cameraReader:(id)reader didFailWithError:(id)error
 {
-  v6 = a3;
-  v8 = a4;
-  v7 = self;
-  sub_2457C6374(v8);
+  readerCopy = reader;
+  errorCopy = error;
+  selfCopy = self;
+  sub_2457C6374(errorCopy);
 }
 
-- (void)cameraReader:(id)a3 didRecognizeObjects:(id)a4
+- (void)cameraReader:(id)reader didRecognizeObjects:(id)objects
 {
   sub_24579D5E0(0, &qword_27EE295A0);
   v6 = sub_245910C44();
-  v7 = a3;
-  v8 = self;
+  readerCopy = reader;
+  selfCopy = self;
   sub_2457C6594(v6);
 }
 
-- (BOOL)cameraReader:(id)a3 shouldReturnIDImage:(id)a4
+- (BOOL)cameraReader:(id)reader shouldReturnIDImage:(id)image
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_2457C6930(v7);
+  readerCopy = reader;
+  imageCopy = image;
+  selfCopy = self;
+  v9 = sub_2457C6930(imageCopy);
 
   return v9 & 1;
 }
 
-- (id)cameraReader:(id)a3 auxiliaryIDCornerDetection:(__CVBuffer *)a4
+- (id)cameraReader:(id)reader auxiliaryIDCornerDetection:(__CVBuffer *)detection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_2457C6E48(v7);
+  readerCopy = reader;
+  detectionCopy = detection;
+  selfCopy = self;
+  v9 = sub_2457C6E48(detectionCopy);
 
   if (v9)
   {
@@ -64,9 +64,9 @@
   return v10;
 }
 
-- (_TtC9CoreIDVUI18IDScanCameraReader)initWithOptions:(id)a3
+- (_TtC9CoreIDVUI18IDScanCameraReader)initWithOptions:(id)options
 {
-  if (a3)
+  if (options)
   {
     v3 = sub_2459108F4();
   }
@@ -79,9 +79,9 @@
   return sub_2457C5F24(v3);
 }
 
-- (_TtC9CoreIDVUI18IDScanCameraReader)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC9CoreIDVUI18IDScanCameraReader)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_245910A04();
     v7 = v6;
@@ -93,8 +93,8 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_2457C6068(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_2457C6068(v5, v7, bundle);
 }
 
 @end

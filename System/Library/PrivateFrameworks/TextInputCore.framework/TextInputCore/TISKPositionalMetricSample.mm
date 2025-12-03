@@ -1,20 +1,20 @@
 @interface TISKPositionalMetricSample
-+ (id)makeMetric:(unint64_t)a3;
++ (id)makeMetric:(unint64_t)metric;
 - (BOOL)isEmpty;
-- (BOOL)isEqual:(id)a3;
-- (TISKPositionalMetricSample)initWithCapacity:(unint64_t)a3;
-- (TISKPositionalMetricSample)initWithCoder:(id)a3;
-- (id)description:(BOOL)a3;
-- (id)generateDataForSR:(id)a3;
-- (void)addSample:(id)a3 withPosition:(unint64_t)a4;
-- (void)merge:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (TISKPositionalMetricSample)initWithCapacity:(unint64_t)capacity;
+- (TISKPositionalMetricSample)initWithCoder:(id)coder;
+- (id)description:(BOOL)description;
+- (id)generateDataForSR:(id)r;
+- (void)addSample:(id)sample withPosition:(unint64_t)position;
+- (void)merge:(id)merge;
 @end
 
 @implementation TISKPositionalMetricSample
 
-- (TISKPositionalMetricSample)initWithCoder:(id)a3
+- (TISKPositionalMetricSample)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = TISKPositionalMetricSample;
   v5 = [(TISKPositionalMetricSample *)&v12 init];
@@ -23,7 +23,7 @@
     v6 = MEMORY[0x277CBEB98];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"PositionalMetricSample"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"PositionalMetricSample"];
     positionalMetricSample = v5->_positionalMetricSample;
     v5->_positionalMetricSample = v9;
   }
@@ -31,10 +31,10 @@
   return v5;
 }
 
-- (id)generateDataForSR:(id)a3
+- (id)generateDataForSR:(id)r
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
+  rCopy = r;
+  array = [MEMORY[0x277CBEB18] array];
   if (![(NSMutableArray *)self->_positionalMetricSample count])
   {
     goto LABEL_8;
@@ -45,14 +45,14 @@
   do
   {
     v8 = [(NSMutableArray *)self->_positionalMetricSample objectAtIndexedSubscript:v6];
-    v9 = [v8 generateDataForSR:v4];
+    v9 = [v8 generateDataForSR:rCopy];
 
     if (!v9)
     {
       v9 = objc_alloc_init(getSRKeyboardProbabilityMetricClass());
     }
 
-    [v5 addObject:v9];
+    [array addObject:v9];
     v7 += [v9 totalDataSamples];
 
     ++v6;
@@ -61,7 +61,7 @@
   while (v6 < [(NSMutableArray *)self->_positionalMetricSample count]);
   if (v7)
   {
-    v10 = v5;
+    v10 = array;
   }
 
   else
@@ -73,41 +73,41 @@ LABEL_8:
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
 
   positionalMetricSample = self->_positionalMetricSample;
-  v4 = [a3 positionalMetricSample];
-  LOBYTE(positionalMetricSample) = [(NSMutableArray *)positionalMetricSample isEqual:v4];
+  positionalMetricSample = [equal positionalMetricSample];
+  LOBYTE(positionalMetricSample) = [(NSMutableArray *)positionalMetricSample isEqual:positionalMetricSample];
 
   return positionalMetricSample;
 }
 
-- (id)description:(BOOL)a3
+- (id)description:(BOOL)description
 {
-  v3 = a3;
-  v5 = [MEMORY[0x277CCAB68] string];
+  descriptionCopy = description;
+  string = [MEMORY[0x277CCAB68] string];
   if ([(TISKPositionalMetricSample *)self size])
   {
     v6 = 0;
     do
     {
       v7 = [(NSMutableArray *)self->_positionalMetricSample objectAtIndexedSubscript:v6];
-      [v5 appendFormat:@"%lu:%lu ", v6, objc_msgSend(v7, "size")];
-      if (v3)
+      [string appendFormat:@"%lu:%lu ", v6, objc_msgSend(v7, "size")];
+      if (descriptionCopy)
       {
-        [v5 appendString:@"<"];
+        [string appendString:@"<"];
         v8 = [v7 description];
-        [v5 appendString:v8];
+        [string appendString:v8];
 
-        [v5 appendString:@">"];
+        [string appendString:@">"];
       }
 
-      [v5 appendString:{@", "}];
+      [string appendString:{@", "}];
 
       ++v6;
     }
@@ -115,13 +115,13 @@ LABEL_8:
     while (v6 < [(TISKPositionalMetricSample *)self size]);
   }
 
-  return v5;
+  return string;
 }
 
-- (void)merge:(id)a3
+- (void)merge:(id)merge
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  mergeCopy = merge;
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     v5 = IXADefaultLogFacility();
@@ -129,8 +129,8 @@ LABEL_8:
     {
       v11 = MEMORY[0x277CCACA8];
       positionalMetricSample = self->_positionalMetricSample;
-      v13 = [v4 positionalMetricSample];
-      v14 = [v11 stringWithFormat:@"%s [SensorKit] positional metric merge: other doesn't respond to positionalMetricSample selector %@ : %@", "-[TISKPositionalMetricSample merge:]", positionalMetricSample, v13];
+      positionalMetricSample = [mergeCopy positionalMetricSample];
+      v14 = [v11 stringWithFormat:@"%s [SensorKit] positional metric merge: other doesn't respond to positionalMetricSample selector %@ : %@", "-[TISKPositionalMetricSample merge:]", positionalMetricSample, positionalMetricSample];
       *buf = 138412290;
       v16 = v14;
       _os_log_error_impl(&dword_22CA55000, v5, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
@@ -143,8 +143,8 @@ LABEL_8:
     do
     {
       v7 = [(NSMutableArray *)self->_positionalMetricSample objectAtIndexedSubscript:v6];
-      v8 = [v4 positionalMetricSample];
-      v9 = [v8 objectAtIndexedSubscript:v6];
+      positionalMetricSample2 = [mergeCopy positionalMetricSample];
+      v9 = [positionalMetricSample2 objectAtIndexedSubscript:v6];
       [v7 merge:v9];
 
       ++v6;
@@ -167,9 +167,9 @@ LABEL_8:
   do
   {
     v4 = [(NSMutableArray *)self->_positionalMetricSample objectAtIndexedSubscript:v3];
-    v5 = [v4 isEmpty];
+    isEmpty = [v4 isEmpty];
 
-    if ((v5 & 1) == 0)
+    if ((isEmpty & 1) == 0)
     {
       break;
     }
@@ -178,29 +178,29 @@ LABEL_8:
   }
 
   while ([(TISKPositionalMetricSample *)self size]> v3);
-  return v5;
+  return isEmpty;
 }
 
-- (void)addSample:(id)a3 withPosition:(unint64_t)a4
+- (void)addSample:(id)sample withPosition:(unint64_t)position
 {
   positionalMetricSample = self->_positionalMetricSample;
-  v6 = a3;
-  v7 = [(NSMutableArray *)positionalMetricSample objectAtIndexedSubscript:a4];
-  [v7 addSample:v6];
+  sampleCopy = sample;
+  v7 = [(NSMutableArray *)positionalMetricSample objectAtIndexedSubscript:position];
+  [v7 addSample:sampleCopy];
 }
 
-- (TISKPositionalMetricSample)initWithCapacity:(unint64_t)a3
+- (TISKPositionalMetricSample)initWithCapacity:(unint64_t)capacity
 {
   v10.receiver = self;
   v10.super_class = TISKPositionalMetricSample;
   v4 = [(TISKPositionalMetricSample *)&v10 init];
   if (v4)
   {
-    v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:a3];
+    v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:capacity];
     positionalMetricSample = v4->_positionalMetricSample;
     v4->_positionalMetricSample = v5;
 
-    if (a3)
+    if (capacity)
     {
       v7 = 0;
       do
@@ -211,16 +211,16 @@ LABEL_8:
         ++v7;
       }
 
-      while (a3 != v7);
+      while (capacity != v7);
     }
   }
 
   return v4;
 }
 
-+ (id)makeMetric:(unint64_t)a3
++ (id)makeMetric:(unint64_t)metric
 {
-  v3 = [[TISKPositionalMetricSample alloc] initWithCapacity:a3];
+  v3 = [[TISKPositionalMetricSample alloc] initWithCapacity:metric];
 
   return v3;
 }

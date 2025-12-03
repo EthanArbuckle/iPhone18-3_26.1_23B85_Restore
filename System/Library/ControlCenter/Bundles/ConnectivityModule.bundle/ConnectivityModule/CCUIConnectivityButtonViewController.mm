@@ -1,15 +1,15 @@
 @interface CCUIConnectivityButtonViewController
-+ (id)glyphImageWithName:(id)a3 pointSize:(double)a4;
-- (BOOL)performPrimaryActionForControlTemplateView:(id)a3;
-- (CCUIConnectivityButtonViewController)initWithGlyphImage:(id)a3 highlightColor:(id)a4;
-- (CCUIConnectivityButtonViewController)initWithGlyphPackageDescription:(id)a3 highlightColor:(id)a4;
++ (id)glyphImageWithName:(id)name pointSize:(double)size;
+- (BOOL)performPrimaryActionForControlTemplateView:(id)view;
+- (CCUIConnectivityButtonViewController)initWithGlyphImage:(id)image highlightColor:(id)color;
+- (CCUIConnectivityButtonViewController)initWithGlyphPackageDescription:(id)description highlightColor:(id)color;
 - (CCUIControlTemplateView)templateView;
-- (void)buttonTapped:(id)a3;
-- (void)presentAlertWithTitle:(id)a3 message:(id)a4 completion:(id)a5;
-- (void)setInoperative:(BOOL)a3;
-- (void)setSubtitle:(id)a3;
-- (void)setTemplateView:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)buttonTapped:(id)tapped;
+- (void)presentAlertWithTitle:(id)title message:(id)message completion:(id)completion;
+- (void)setInoperative:(BOOL)inoperative;
+- (void)setSubtitle:(id)subtitle;
+- (void)setTemplateView:(id)view;
+- (void)setTitle:(id)title;
 - (void)startObservingStateChangesIfNecessary;
 - (void)stopObservingStateChangesIfNecessary;
 - (void)viewDidLoad;
@@ -17,32 +17,32 @@
 
 @implementation CCUIConnectivityButtonViewController
 
-+ (id)glyphImageWithName:(id)a3 pointSize:(double)a4
++ (id)glyphImageWithName:(id)name pointSize:(double)size
 {
-  v5 = a3;
-  v8 = objc_msgSend__symbolConfigurationWithPointSize_(CCUIConnectivityButtonViewController, v6, v7, a4);
-  v10 = objc_msgSend__systemImageNamed_withConfiguration_(MEMORY[0x29EDC7AC8], v9, v5, v8);
+  nameCopy = name;
+  v8 = objc_msgSend__symbolConfigurationWithPointSize_(CCUIConnectivityButtonViewController, v6, v7, size);
+  v10 = objc_msgSend__systemImageNamed_withConfiguration_(MEMORY[0x29EDC7AC8], v9, nameCopy, v8);
 
   return v10;
 }
 
-- (CCUIConnectivityButtonViewController)initWithGlyphImage:(id)a3 highlightColor:(id)a4
+- (CCUIConnectivityButtonViewController)initWithGlyphImage:(id)image highlightColor:(id)color
 {
   v5.receiver = self;
   v5.super_class = CCUIConnectivityButtonViewController;
-  return [(CCUILabeledRoundButtonViewController *)&v5 initWithGlyphImage:a3 highlightColor:a4 useLightStyle:1];
+  return [(CCUILabeledRoundButtonViewController *)&v5 initWithGlyphImage:image highlightColor:color useLightStyle:1];
 }
 
-- (CCUIConnectivityButtonViewController)initWithGlyphPackageDescription:(id)a3 highlightColor:(id)a4
+- (CCUIConnectivityButtonViewController)initWithGlyphPackageDescription:(id)description highlightColor:(id)color
 {
   v5.receiver = self;
   v5.super_class = CCUIConnectivityButtonViewController;
-  return [(CCUILabeledRoundButtonViewController *)&v5 initWithGlyphPackageDescription:a3 highlightColor:a4 useLightStyle:1];
+  return [(CCUILabeledRoundButtonViewController *)&v5 initWithGlyphPackageDescription:description highlightColor:color useLightStyle:1];
 }
 
-- (void)buttonTapped:(id)a3
+- (void)buttonTapped:(id)tapped
 {
-  v4 = objc_msgSend_statusText(self, a2, a3);
+  v4 = objc_msgSend_statusText(self, a2, tapped);
   if (v4)
   {
     v11 = v4;
@@ -54,10 +54,10 @@
   }
 }
 
-- (void)presentAlertWithTitle:(id)a3 message:(id)a4 completion:(id)a5
+- (void)presentAlertWithTitle:(id)title message:(id)message completion:(id)completion
 {
-  v24 = a5;
-  v9 = objc_msgSend_alertControllerWithTitle_message_preferredStyle_(MEMORY[0x29EDC7928], v8, a3, a4, 1);
+  completionCopy = completion;
+  v9 = objc_msgSend_alertControllerWithTitle_message_preferredStyle_(MEMORY[0x29EDC7928], v8, title, message, 1);
   v10 = MEMORY[0x29EDB9F48];
   v11 = objc_opt_class();
   v13 = objc_msgSend_bundleForClass_(v10, v12, v11);
@@ -81,7 +81,7 @@
     }
   }
 
-  objc_msgSend_presentViewController_animated_completion_(self, v22, v9, 1, v24);
+  objc_msgSend_presentViewController_animated_completion_(self, v22, v9, 1, completionCopy);
 }
 
 - (void)startObservingStateChangesIfNecessary
@@ -100,9 +100,9 @@
   }
 }
 
-- (void)setTemplateView:(id)a3
+- (void)setTemplateView:(id)view
 {
-  obj = a3;
+  obj = view;
   WeakRetained = objc_loadWeakRetained(&self->_templateView);
 
   if (WeakRetained != obj)
@@ -122,34 +122,34 @@
   }
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
   v9.receiver = self;
   v9.super_class = CCUIConnectivityButtonViewController;
-  v4 = a3;
-  [(CCUILabeledRoundButtonViewController *)&v9 setTitle:v4];
+  titleCopy = title;
+  [(CCUILabeledRoundButtonViewController *)&v9 setTitle:titleCopy];
   v7 = objc_msgSend_templateView(self, v5, v6, v9.receiver, v9.super_class);
-  objc_msgSend_setTitle_(v7, v8, v4);
+  objc_msgSend_setTitle_(v7, v8, titleCopy);
 }
 
-- (void)setSubtitle:(id)a3
+- (void)setSubtitle:(id)subtitle
 {
   v9.receiver = self;
   v9.super_class = CCUIConnectivityButtonViewController;
-  v4 = a3;
-  [(CCUILabeledRoundButtonViewController *)&v9 setSubtitle:v4];
+  subtitleCopy = subtitle;
+  [(CCUILabeledRoundButtonViewController *)&v9 setSubtitle:subtitleCopy];
   v7 = objc_msgSend_templateView(self, v5, v6, v9.receiver, v9.super_class);
-  objc_msgSend_setSubtitle_(v7, v8, v4);
+  objc_msgSend_setSubtitle_(v7, v8, subtitleCopy);
 }
 
-- (void)setInoperative:(BOOL)a3
+- (void)setInoperative:(BOOL)inoperative
 {
-  v3 = a3;
+  inoperativeCopy = inoperative;
   v9.receiver = self;
   v9.super_class = CCUIConnectivityButtonViewController;
   [(CCUILabeledRoundButtonViewController *)&v9 setInoperative:?];
   v7 = objc_msgSend_templateView(self, v5, v6);
-  objc_msgSend_setEnabled_(v7, v8, !v3);
+  objc_msgSend_setEnabled_(v7, v8, !inoperativeCopy);
 }
 
 - (void)viewDidLoad
@@ -161,9 +161,9 @@
   objc_msgSend_setTitle_(self, v6, v5);
 }
 
-- (BOOL)performPrimaryActionForControlTemplateView:(id)a3
+- (BOOL)performPrimaryActionForControlTemplateView:(id)view
 {
-  if (objc_msgSend_showsMenuModuleAsPrimaryAction(self, a2, a3) & 1) != 0 || (objc_msgSend_isPresentingMenuModuleViewController(self, v4, v5))
+  if (objc_msgSend_showsMenuModuleAsPrimaryAction(self, a2, view) & 1) != 0 || (objc_msgSend_isPresentingMenuModuleViewController(self, v4, v5))
   {
     return 1;
   }

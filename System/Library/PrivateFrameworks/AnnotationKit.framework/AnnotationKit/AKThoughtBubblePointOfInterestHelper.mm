@@ -1,40 +1,40 @@
 @interface AKThoughtBubblePointOfInterestHelper
-+ (CGPoint)_concreteValidatePoint:(CGPoint)a3 ofDraggableArea:(unint64_t)a4 forAnnotation:(id)a5 onPageController:(id)a6;
-+ (CGPoint)_constrainPointyPointToOutset:(CGPoint)a3 forAnnotation:(id)a4 outsetIsMin:(BOOL)a5;
-+ (unint64_t)_concreteDraggableAreaForPointOfInterestWithIndex:(unint64_t)a3 ofAnnotation:(id)a4 onPageController:(id)a5;
-+ (void)_concretePointsOfInterest:(id *)a3 withVisualStyle:(id *)a4 ofAnnotation:(id)a5 pageControllerForPixelAlignment:(id)a6;
++ (CGPoint)_concreteValidatePoint:(CGPoint)point ofDraggableArea:(unint64_t)area forAnnotation:(id)annotation onPageController:(id)controller;
++ (CGPoint)_constrainPointyPointToOutset:(CGPoint)outset forAnnotation:(id)annotation outsetIsMin:(BOOL)min;
++ (unint64_t)_concreteDraggableAreaForPointOfInterestWithIndex:(unint64_t)index ofAnnotation:(id)annotation onPageController:(id)controller;
++ (void)_concretePointsOfInterest:(id *)interest withVisualStyle:(id *)style ofAnnotation:(id)annotation pageControllerForPixelAlignment:(id)alignment;
 @end
 
 @implementation AKThoughtBubblePointOfInterestHelper
 
-+ (void)_concretePointsOfInterest:(id *)a3 withVisualStyle:(id *)a4 ofAnnotation:(id)a5 pageControllerForPixelAlignment:(id)a6
++ (void)_concretePointsOfInterest:(id *)interest withVisualStyle:(id *)style ofAnnotation:(id)annotation pageControllerForPixelAlignment:(id)alignment
 {
   v39 = 0;
   v40 = 0;
-  v38.receiver = a1;
+  v38.receiver = self;
   v38.super_class = &OBJC_METACLASS___AKThoughtBubblePointOfInterestHelper;
-  v9 = a6;
-  v10 = a5;
-  objc_msgSendSuper2(&v38, sel__concretePointsOfInterest_withVisualStyle_ofAnnotation_pageControllerForPixelAlignment_, &v40, &v39, v10, v9);
+  alignmentCopy = alignment;
+  annotationCopy = annotation;
+  objc_msgSendSuper2(&v38, sel__concretePointsOfInterest_withVisualStyle_ofAnnotation_pageControllerForPixelAlignment_, &v40, &v39, annotationCopy, alignmentCopy);
   v11 = v40;
   v12 = v39;
   v13 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v11, "count") + 1}];
   v14 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v12, "count") + 1}];
-  [v10 pointyBitPoint];
+  [annotationCopy pointyBitPoint];
   v36 = v16;
   v37 = v15;
-  [v10 rectangle];
+  [annotationCopy rectangle];
   v18 = v17;
   v20 = v19;
   v22 = v21;
   v24 = v23;
-  [v10 rotationAngle];
+  [annotationCopy rotationAngle];
   v26 = v25;
 
   [AKGeometryHelper rotationTransformForRect:v18 withAngle:v20, v22, v24, v26];
-  v27 = [v9 geometryHelper];
+  geometryHelper = [alignmentCopy geometryHelper];
 
-  [v27 screenPixelAlignedPointForPoint:{vaddq_f64(0, vmlaq_n_f64(vmulq_n_f64(0, v36), 0, v37))}];
+  [geometryHelper screenPixelAlignedPointForPoint:{vaddq_f64(0, vmlaq_n_f64(vmulq_n_f64(0, v36), 0, v37))}];
   v29 = v28;
   v31 = v30;
 
@@ -47,37 +47,37 @@
   [v13 addObjectsFromArray:v11];
   [v14 addObjectsFromArray:v12];
   v34 = v13;
-  *a3 = v13;
+  *interest = v13;
   v35 = v14;
-  *a4 = v14;
+  *style = v14;
 }
 
-+ (unint64_t)_concreteDraggableAreaForPointOfInterestWithIndex:(unint64_t)a3 ofAnnotation:(id)a4 onPageController:(id)a5
++ (unint64_t)_concreteDraggableAreaForPointOfInterestWithIndex:(unint64_t)index ofAnnotation:(id)annotation onPageController:(id)controller
 {
-  if (!a3)
+  if (!index)
   {
     return 14;
   }
 
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___AKThoughtBubblePointOfInterestHelper;
-  return objc_msgSendSuper2(&v6, sel__concreteDraggableAreaForPointOfInterestWithIndex_ofAnnotation_onPageController_, a3 - 1, a4, a5);
+  return objc_msgSendSuper2(&v6, sel__concreteDraggableAreaForPointOfInterestWithIndex_ofAnnotation_onPageController_, index - 1, annotation, controller);
 }
 
-+ (CGPoint)_constrainPointyPointToOutset:(CGPoint)a3 forAnnotation:(id)a4 outsetIsMin:(BOOL)a5
++ (CGPoint)_constrainPointyPointToOutset:(CGPoint)outset forAnnotation:(id)annotation outsetIsMin:(BOOL)min
 {
-  v5 = a5;
-  x = a3.x;
-  y = a3.y;
-  v7 = a4;
-  if (v5)
+  minCopy = min;
+  x = outset.x;
+  y = outset.y;
+  annotationCopy = annotation;
+  if (minCopy)
   {
-    [a1 minOutset];
+    [self minOutset];
   }
 
   else
   {
-    [a1 maxOutset];
+    [self maxOutset];
   }
 
   v9 = v8;
@@ -86,9 +86,9 @@
   v29 = v10;
   if (v9 < 1.79769313e308)
   {
-    [v7 originalModelBaseScaleFactor];
+    [annotationCopy originalModelBaseScaleFactor];
     v12 = v11;
-    [v7 rectangle];
+    [annotationCopy rectangle];
     v41 = CGRectInset(v40, -(v9 * v12), -(v9 * v12));
     v13 = v41.origin.x;
     v14 = v41.origin.y;
@@ -121,7 +121,7 @@
     v22 = v37.ty + y * v37.d + v37.b * x;
     v23 = hypot(v21, v22);
     v24 = v23 <= v19;
-    if (!v5)
+    if (!minCopy)
     {
       v24 = v23 >= v19;
     }
@@ -152,22 +152,22 @@
   return result;
 }
 
-+ (CGPoint)_concreteValidatePoint:(CGPoint)a3 ofDraggableArea:(unint64_t)a4 forAnnotation:(id)a5 onPageController:(id)a6
++ (CGPoint)_concreteValidatePoint:(CGPoint)point ofDraggableArea:(unint64_t)area forAnnotation:(id)annotation onPageController:(id)controller
 {
-  y = a3.y;
-  x = a3.x;
-  if (a4 == 14)
+  y = point.y;
+  x = point.x;
+  if (area == 14)
   {
-    v10 = a5;
-    [a1 _constrainPointyPointToOutset:v10 forAnnotation:0 outsetIsMin:{x, y}];
-    [a1 _constrainPointyPointToOutset:v10 forAnnotation:1 outsetIsMin:?];
+    annotationCopy = annotation;
+    [self _constrainPointyPointToOutset:annotationCopy forAnnotation:0 outsetIsMin:{x, y}];
+    [self _constrainPointyPointToOutset:annotationCopy forAnnotation:1 outsetIsMin:?];
   }
 
   else
   {
-    v17.receiver = a1;
+    v17.receiver = self;
     v17.super_class = &OBJC_METACLASS___AKThoughtBubblePointOfInterestHelper;
-    objc_msgSendSuper2(&v17, sel__concreteValidatePoint_ofDraggableArea_forAnnotation_onPageController_, a4, a5, a6, a3.x, a3.y);
+    objc_msgSendSuper2(&v17, sel__concreteValidatePoint_ofDraggableArea_forAnnotation_onPageController_, area, annotation, controller, point.x, point.y);
   }
 
   v13 = v11;

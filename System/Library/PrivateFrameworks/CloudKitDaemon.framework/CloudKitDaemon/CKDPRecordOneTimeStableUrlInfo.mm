@@ -1,32 +1,32 @@
 @interface CKDPRecordOneTimeStableUrlInfo
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)addOneTimeUrl:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addOneTimeUrl:(id)url;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CKDPRecordOneTimeStableUrlInfo
 
-- (void)addOneTimeUrl:(id)a3
+- (void)addOneTimeUrl:(id)url
 {
-  v4 = a3;
+  urlCopy = url;
   oneTimeUrls = self->_oneTimeUrls;
-  v8 = v4;
+  v8 = urlCopy;
   if (!oneTimeUrls)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_oneTimeUrls;
     self->_oneTimeUrls = v6;
 
-    v4 = v8;
+    urlCopy = v8;
     oneTimeUrls = self->_oneTimeUrls;
   }
 
-  objc_msgSend_addObject_(oneTimeUrls, v4, v4);
+  objc_msgSend_addObject_(oneTimeUrls, urlCopy, urlCopy);
 }
 
 - (id)description
@@ -87,10 +87,10 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -126,12 +126,12 @@
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v16 = a3;
+  toCopy = to;
   if (objc_msgSend_oneTimeUrlsCount(self, v4, v5))
   {
-    objc_msgSend_clearOneTimeUrls(v16, v6, v7);
+    objc_msgSend_clearOneTimeUrls(toCopy, v6, v7);
     v10 = objc_msgSend_oneTimeUrlsCount(self, v8, v9);
     if (v10)
     {
@@ -139,17 +139,17 @@
       for (i = 0; i != v12; ++i)
       {
         v14 = objc_msgSend_oneTimeUrlAtIndex_(self, v11, i);
-        objc_msgSend_addOneTimeUrl_(v16, v15, v14);
+        objc_msgSend_addOneTimeUrl_(toCopy, v15, v14);
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v27 = *MEMORY[0x277D85DE8];
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
   v22 = 0u;
   v23 = 0u;
@@ -171,7 +171,7 @@
           objc_enumerationMutation(v11);
         }
 
-        v18 = objc_msgSend_copyWithZone_(*(*(&v22 + 1) + 8 * v17), v14, a3, v22);
+        v18 = objc_msgSend_copyWithZone_(*(*(&v22 + 1) + 8 * v17), v14, zone, v22);
         objc_msgSend_addOneTimeUrl_(v10, v19, v18);
 
         ++v17;
@@ -188,14 +188,14 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (objc_msgSend_isMemberOfClass_(v4, v6, v5))
+  if (objc_msgSend_isMemberOfClass_(equalCopy, v6, v5))
   {
     oneTimeUrls = self->_oneTimeUrls;
-    v9 = v4[1];
+    v9 = equalCopy[1];
     if (oneTimeUrls | v9)
     {
       isEqual = objc_msgSend_isEqual_(oneTimeUrls, v7, v9);
@@ -215,14 +215,14 @@
   return isEqual;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v17 = *MEMORY[0x277D85DE8];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = *(a3 + 1);
+  v4 = *(from + 1);
   v6 = objc_msgSend_countByEnumeratingWithState_objects_count_(v4, v5, &v12, v16, 16);
   if (v6)
   {

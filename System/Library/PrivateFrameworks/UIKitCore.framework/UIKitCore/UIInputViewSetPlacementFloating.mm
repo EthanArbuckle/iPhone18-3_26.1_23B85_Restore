@@ -1,40 +1,40 @@
 @interface UIInputViewSetPlacementFloating
-+ (CGRect)frameAtOffset:(CGPoint)a3 keyboardSize:(CGSize)a4 screenSize:(CGSize)a5;
-+ (id)infoWithPoint:(CGPoint)a3 forOwner:(id)a4;
-+ (id)placementWithUndockedOffset:(CGPoint)a3 chromeBuffer:(UIEdgeInsets)a4 floatingWidth:(double)a5;
-- (BOOL)isEqual:(id)a3;
-- (CGRect)adjustBoundsForNotificationsWithOwner:(id)a3;
-- (CGRect)remoteIntrinsicContentSizeForInputViewInSet:(id)a3 includingIAV:(BOOL)a4;
-- (UIInputViewSetPlacementFloating)initWithCoder:(id)a3;
++ (CGRect)frameAtOffset:(CGPoint)offset keyboardSize:(CGSize)size screenSize:(CGSize)screenSize;
++ (id)infoWithPoint:(CGPoint)point forOwner:(id)owner;
++ (id)placementWithUndockedOffset:(CGPoint)offset chromeBuffer:(UIEdgeInsets)buffer floatingWidth:(double)width;
+- (BOOL)isEqual:(id)equal;
+- (CGRect)adjustBoundsForNotificationsWithOwner:(id)owner;
+- (CGRect)remoteIntrinsicContentSizeForInputViewInSet:(id)set includingIAV:(BOOL)v;
+- (UIInputViewSetPlacementFloating)initWithCoder:(id)coder;
 - (UIResponder)responderToFollow;
-- (id)applicatorInfoForOwner:(id)a3;
+- (id)applicatorInfoForOwner:(id)owner;
 - (id)expiringPlacement;
-- (id)horizontalConstraintForInputViewSet:(id)a3 hostView:(id)a4 containerView:(id)a5;
+- (id)horizontalConstraintForInputViewSet:(id)set hostView:(id)view containerView:(id)containerView;
 - (id)subPlacements;
-- (id)widthConstraintForInputViewSet:(id)a3 hostView:(id)a4 containerView:(id)a5;
-- (unint64_t)indexForPurpose:(unint64_t)a3;
-- (void)_geometryChanged:(id *)a3 forAncestor:(id)a4;
-- (void)checkSizeForOwner:(id)a3;
+- (id)widthConstraintForInputViewSet:(id)set hostView:(id)view containerView:(id)containerView;
+- (unint64_t)indexForPurpose:(unint64_t)purpose;
+- (void)_geometryChanged:(id *)changed forAncestor:(id)ancestor;
+- (void)checkSizeForOwner:(id)owner;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setSubPlacements:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setDelegate:(id)delegate;
+- (void)setSubPlacements:(id)placements;
 - (void)updateChromeBuffer;
 @end
 
 @implementation UIInputViewSetPlacementFloating
 
-- (void)_geometryChanged:(id *)a3 forAncestor:(id)a4
+- (void)_geometryChanged:(id *)changed forAncestor:(id)ancestor
 {
-  v6 = a4;
+  ancestorCopy = ancestor;
   WeakRetained = objc_loadWeakRetained(&self->_responderToFollow);
 
-  if (WeakRetained != v6)
+  if (WeakRetained != ancestorCopy)
   {
-    if ((a3->var0 & 0x80) != 0)
+    if ((changed->var0 & 0x80) != 0)
     {
-      v9 = [(UIInputViewSetPlacement *)self delegate];
-      [v9 placementNeedsUpdate:self];
+      delegate = [(UIInputViewSetPlacement *)self delegate];
+      [delegate placementNeedsUpdate:self];
     }
 
     else
@@ -47,12 +47,12 @@
   }
 }
 
-- (void)checkSizeForOwner:(id)a3
+- (void)checkSizeForOwner:(id)owner
 {
   v40 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 hostView];
-  [v5 bounds];
+  ownerCopy = owner;
+  hostView = [ownerCopy hostView];
+  [hostView bounds];
   v7 = v6;
   v9 = v8;
   width = self->_lastSize.width;
@@ -65,8 +65,8 @@
 
   v14 = *MEMORY[0x1E695EFF8];
   v13 = *(MEMORY[0x1E695EFF8] + 8);
-  v15 = [v4 containerView];
-  [v15 bounds];
+  containerView = [ownerCopy containerView];
+  [containerView bounds];
   v17 = v16;
   v19 = v18;
 
@@ -74,10 +74,10 @@
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v20 = [v4 applicator];
-  v21 = [v20 constraints];
+  applicator = [ownerCopy applicator];
+  constraints = [applicator constraints];
 
-  v22 = [v21 countByEnumeratingWithState:&v35 objects:v39 count:16];
+  v22 = [constraints countByEnumeratingWithState:&v35 objects:v39 count:16];
   if (v22)
   {
     v23 = v22;
@@ -88,25 +88,25 @@
       {
         if (*v36 != v24)
         {
-          objc_enumerationMutation(v21);
+          objc_enumerationMutation(constraints);
         }
 
         v26 = *(*(&v35 + 1) + 8 * i);
-        v27 = [v26 firstAttribute];
-        if (v27 == 4)
+        firstAttribute = [v26 firstAttribute];
+        if (firstAttribute == 4)
         {
           [v26 constant];
           v13 = fabs(v29) / v19;
         }
 
-        else if (v27 == 1)
+        else if (firstAttribute == 1)
         {
           [v26 constant];
           v14 = fabs(v28) / v17;
         }
       }
 
-      v23 = [v21 countByEnumeratingWithState:&v35 objects:v39 count:16];
+      v23 = [constraints countByEnumeratingWithState:&v35 objects:v39 count:16];
     }
 
     while (v23);
@@ -128,16 +128,16 @@
     objc_storeWeak(&self->_responderToFollow, 0);
     [(UIInputViewSetPlacementUndocked *)self setNormalizedOffset:v14, v13];
 LABEL_21:
-    v34 = [(UIInputViewSetPlacement *)self delegate];
-    [v34 placementNeedsUpdate:self];
+    delegate = [(UIInputViewSetPlacement *)self delegate];
+    [delegate placementNeedsUpdate:self];
   }
 
 LABEL_23:
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_responderToFollow);
 
   if (WeakRetained)
@@ -150,31 +150,31 @@ LABEL_23:
 
   v9.receiver = self;
   v9.super_class = UIInputViewSetPlacementFloating;
-  [(UIInputViewSetPlacement *)&v9 setDelegate:v4];
-  if (v4)
+  [(UIInputViewSetPlacement *)&v9 setDelegate:delegateCopy];
+  if (delegateCopy)
   {
-    v7 = [(UIInputViewSetPlacementFloating *)self currentResponderView];
-    objc_storeWeak(&self->_responderToFollow, v7);
+    currentResponderView = [(UIInputViewSetPlacementFloating *)self currentResponderView];
+    objc_storeWeak(&self->_responderToFollow, currentResponderView);
 
     v8 = objc_loadWeakRetained(&self->_responderToFollow);
     [(UIView *)v8 _addGeometryChangeObserver:?];
   }
 }
 
-- (id)applicatorInfoForOwner:(id)a3
+- (id)applicatorInfoForOwner:(id)owner
 {
-  v4 = a3;
-  if ([v4 keyboardController])
+  ownerCopy = owner;
+  if ([ownerCopy keyboardController])
   {
     WeakRetained = objc_loadWeakRetained(&self->_responderToFollow);
 
     if (WeakRetained)
     {
-      v6 = [(UIInputViewSetPlacementFloating *)self currentResponderView];
-      v7 = v6;
-      if (v6)
+      currentResponderView = [(UIInputViewSetPlacementFloating *)self currentResponderView];
+      v7 = currentResponderView;
+      if (currentResponderView)
       {
-        [v6 bounds];
+        [currentResponderView bounds];
         [v7 _convertViewPointToSceneSpaceForKeyboard:?];
         self->_responderRect.origin.x = v8;
         self->_responderRect.origin.y = v9;
@@ -198,27 +198,27 @@ LABEL_23:
   v73[1] = 3221225472;
   v73[2] = __58__UIInputViewSetPlacementFloating_applicatorInfoForOwner___block_invoke;
   v73[3] = &unk_1E70F3590;
-  v15 = v4;
+  v15 = ownerCopy;
   v74 = v15;
   [UIView performWithoutAnimation:v73];
-  v16 = [v15 containerView];
-  [v16 frame];
+  containerView = [v15 containerView];
+  [containerView frame];
   v18 = v17;
   v20 = v19;
 
   if ([v15 keyboardController] && (v21 = objc_loadWeakRetained(&self->_responderToFollow), v21, v21))
   {
-    v22 = [v15 containerView];
-    v23 = [v22 layer];
-    [v23 convertRect:0 fromLayer:{self->_responderRect.origin.x, self->_responderRect.origin.y, self->_responderRect.size.width, self->_responderRect.size.height}];
+    containerView2 = [v15 containerView];
+    layer = [containerView2 layer];
+    [layer convertRect:0 fromLayer:{self->_responderRect.origin.x, self->_responderRect.origin.y, self->_responderRect.size.width, self->_responderRect.size.height}];
     v25 = v24;
     v27 = v26;
     v29 = v28;
     v31 = v30;
 
     v32 = MEMORY[0x1E695DF90];
-    v33 = [v15 hostView];
-    [v33 bounds];
+    hostView = [v15 hostView];
+    [hostView bounds];
     v35 = [UIKeyboardPopoverContainer propertiesForTargetRect:v25 withHeight:v27 onScreenSize:v29, v31, v34, v18, v20];
     v36 = [v32 dictionaryWithDictionary:v35];
 
@@ -242,8 +242,8 @@ LABEL_23:
     v46 = [(UIInputViewSetPlacementUndocked *)&v72 applicatorInfoForOwner:v15, *&v20];
     v36 = [v45 dictionaryWithDictionary:v46];
 
-    v47 = [v15 applicator];
-    [v47 contentInsets];
+    applicator = [v15 applicator];
+    [applicator contentInsets];
     v49 = v48;
     v51 = v50;
 
@@ -251,8 +251,8 @@ LABEL_23:
     [v52 CGPointValue];
     v54 = v53;
 
-    v55 = [v15 hostView];
-    [v55 bounds];
+    hostView2 = [v15 hostView];
+    [hostView2 bounds];
     v57 = v56;
 
     +[UIKeyboardImpl floatingWidth];
@@ -285,8 +285,8 @@ LABEL_23:
   }
 
   p_lastSize = &self->_lastSize;
-  v67 = [v15 hostView];
-  [v67 frame];
+  hostView3 = [v15 hostView];
+  [hostView3 frame];
   p_lastSize->width = v68;
   p_lastSize->height = v69;
 
@@ -316,17 +316,17 @@ void __58__UIInputViewSetPlacementFloating_applicatorInfoForOwner___block_invoke
   [(UIInputViewSetPlacementFloating *)&v5 dealloc];
 }
 
-+ (id)placementWithUndockedOffset:(CGPoint)a3 chromeBuffer:(UIEdgeInsets)a4 floatingWidth:(double)a5
++ (id)placementWithUndockedOffset:(CGPoint)offset chromeBuffer:(UIEdgeInsets)buffer floatingWidth:(double)width
 {
-  v6 = [a1 placementWithUndockedOffset:a3.x chromeBuffer:{a3.y, a4.top, a4.left, a4.bottom, a4.right}];
-  [v6 setFloatingWidth:a5];
+  v6 = [self placementWithUndockedOffset:offset.x chromeBuffer:{offset.y, buffer.top, buffer.left, buffer.bottom, buffer.right}];
+  [v6 setFloatingWidth:width];
 
   return v6;
 }
 
-+ (CGRect)frameAtOffset:(CGPoint)a3 keyboardSize:(CGSize)a4 screenSize:(CGSize)a5
++ (CGRect)frameAtOffset:(CGPoint)offset keyboardSize:(CGSize)size screenSize:(CGSize)screenSize
 {
-  [UIKeyboardPopoverContainer frameAtOffset:a3.x keyboardSize:a3.y screenSize:a4.width, a4.height, a5.width, a5.height];
+  [UIKeyboardPopoverContainer frameAtOffset:offset.x keyboardSize:offset.y screenSize:size.width, size.height, screenSize.width, screenSize.height];
   result.size.height = v8;
   result.size.width = v7;
   result.origin.y = v6;
@@ -334,28 +334,28 @@ void __58__UIInputViewSetPlacementFloating_applicatorInfoForOwner___block_invoke
   return result;
 }
 
-- (UIInputViewSetPlacementFloating)initWithCoder:(id)a3
+- (UIInputViewSetPlacementFloating)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = UIInputViewSetPlacementFloating;
-  v5 = [(UIInputViewSetPlacementUndocked *)&v8 initWithCoder:v4];
+  v5 = [(UIInputViewSetPlacementUndocked *)&v8 initWithCoder:coderCopy];
   if (v5)
   {
-    [v4 decodeDoubleForKey:@"FloatingWidth"];
+    [coderCopy decodeDoubleForKey:@"FloatingWidth"];
     v5->_floatingWidth = v6;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = UIInputViewSetPlacementFloating;
-  v4 = a3;
-  [(UIInputViewSetPlacementUndocked *)&v5 encodeWithCoder:v4];
-  [v4 encodeDouble:@"FloatingWidth" forKey:{self->_floatingWidth, v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(UIInputViewSetPlacementUndocked *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeDouble:@"FloatingWidth" forKey:{self->_floatingWidth, v5.receiver, v5.super_class}];
 }
 
 - (void)updateChromeBuffer
@@ -365,15 +365,15 @@ void __58__UIInputViewSetPlacementFloating_applicatorInfoForOwner___block_invoke
   [(UIInputViewSetPlacementUndocked *)self setChromeBuffer:?];
 }
 
-- (id)horizontalConstraintForInputViewSet:(id)a3 hostView:(id)a4 containerView:(id)a5
+- (id)horizontalConstraintForInputViewSet:(id)set hostView:(id)view containerView:(id)containerView
 {
-  v7 = a5;
-  if (a4)
+  containerViewCopy = containerView;
+  if (view)
   {
-    v8 = a4;
+    viewCopy = view;
     +[UIKeyboardImpl floatingWidth];
     v10 = v9;
-    [v7 bounds];
+    [containerViewCopy bounds];
     v12 = v11;
     v13 = 0.0;
     if (v11 > 0.0)
@@ -387,7 +387,7 @@ void __58__UIInputViewSetPlacementFloating_applicatorInfoForOwner___block_invoke
       v14 = v13;
     }
 
-    v15 = [MEMORY[0x1E69977A0] constraintWithItem:v8 attribute:1 relatedBy:0 toItem:v7 attribute:1 multiplier:1.0 constant:v12 * v14];
+    v15 = [MEMORY[0x1E69977A0] constraintWithItem:viewCopy attribute:1 relatedBy:0 toItem:containerViewCopy attribute:1 multiplier:1.0 constant:v12 * v14];
   }
 
   else
@@ -398,12 +398,12 @@ void __58__UIInputViewSetPlacementFloating_applicatorInfoForOwner___block_invoke
   return v15;
 }
 
-- (id)widthConstraintForInputViewSet:(id)a3 hostView:(id)a4 containerView:(id)a5
+- (id)widthConstraintForInputViewSet:(id)set hostView:(id)view containerView:(id)containerView
 {
-  if (a4)
+  if (view)
   {
-    v6 = [a4 widthAnchor];
-    v7 = [v6 constraintEqualToConstant:self->_floatingWidth];
+    widthAnchor = [view widthAnchor];
+    v7 = [widthAnchor constraintEqualToConstant:self->_floatingWidth];
 
     LODWORD(v8) = 1144750080;
     [v7 setPriority:v8];
@@ -417,14 +417,14 @@ void __58__UIInputViewSetPlacementFloating_applicatorInfoForOwner___block_invoke
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v9.receiver = self;
   v9.super_class = UIInputViewSetPlacementFloating;
-  if ([(UIInputViewSetPlacementUndocked *)&v9 isEqual:v4]&& *(v4 + 11) == self->_floatingWidth)
+  if ([(UIInputViewSetPlacementUndocked *)&v9 isEqual:equalCopy]&& *(equalCopy + 11) == self->_floatingWidth)
   {
-    WeakRetained = objc_loadWeakRetained(v4 + 12);
+    WeakRetained = objc_loadWeakRetained(equalCopy + 12);
     v6 = objc_loadWeakRetained(&self->_responderToFollow);
     v7 = WeakRetained == v6;
   }
@@ -437,23 +437,23 @@ void __58__UIInputViewSetPlacementFloating_applicatorInfoForOwner___block_invoke
   return v7;
 }
 
-+ (id)infoWithPoint:(CGPoint)a3 forOwner:(id)a4
++ (id)infoWithPoint:(CGPoint)point forOwner:(id)owner
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v6 = MEMORY[0x1E695DF90];
-  v7 = a4;
+  ownerCopy = owner;
   v8 = [UIInputViewSetPlacementUndocked infoWithPoint:x, y];
   v9 = [v6 dictionaryWithDictionary:v8];
 
-  v10 = [v7 containerView];
-  [v10 bounds];
+  containerView = [ownerCopy containerView];
+  [containerView bounds];
   v12 = v11;
   v14 = v13;
 
-  v15 = [v7 hostView];
+  hostView = [ownerCopy hostView];
 
-  [v15 frame];
+  [hostView frame];
   v17 = v16;
   v19 = v18;
 
@@ -463,9 +463,9 @@ void __58__UIInputViewSetPlacementFloating_applicatorInfoForOwner___block_invoke
   return v9;
 }
 
-- (void)setSubPlacements:(id)a3
+- (void)setSubPlacements:(id)placements
 {
-  v4 = [a3 copy];
+  v4 = [placements copy];
   subPlacements = self->_subPlacements;
   self->_subPlacements = v4;
 }
@@ -498,12 +498,12 @@ void __58__UIInputViewSetPlacementFloating_applicatorInfoForOwner___block_invoke
   return v3;
 }
 
-- (unint64_t)indexForPurpose:(unint64_t)a3
+- (unint64_t)indexForPurpose:(unint64_t)purpose
 {
   result = 0;
-  if (a3 <= 99)
+  if (purpose <= 99)
   {
-    if (a3 < 4)
+    if (purpose < 4)
     {
       return result;
     }
@@ -511,11 +511,11 @@ void __58__UIInputViewSetPlacementFloating_applicatorInfoForOwner___block_invoke
     return 1;
   }
 
-  if (a3 > 101)
+  if (purpose > 101)
   {
-    if (a3 != 103)
+    if (purpose != 103)
     {
-      if (a3 == 102)
+      if (purpose == 102)
       {
         return [(NSArray *)self->_subPlacements count:v3]!= 0;
       }
@@ -524,7 +524,7 @@ void __58__UIInputViewSetPlacementFloating_applicatorInfoForOwner___block_invoke
     }
   }
 
-  else if (a3 != 100)
+  else if (purpose != 100)
   {
     return 1;
   }
@@ -536,30 +536,30 @@ void __58__UIInputViewSetPlacementFloating_applicatorInfoForOwner___block_invoke
 {
   if ([(UIInputViewSetPlacement *)self isVisible])
   {
-    v3 = [UIInputViewSetPlacementInvisible placementWithPlacement:self];
+    selfCopy = [UIInputViewSetPlacementInvisible placementWithPlacement:self];
   }
 
   else
   {
-    v3 = self;
+    selfCopy = self;
   }
 
-  return v3;
+  return selfCopy;
 }
 
-- (CGRect)adjustBoundsForNotificationsWithOwner:(id)a3
+- (CGRect)adjustBoundsForNotificationsWithOwner:(id)owner
 {
   v31.receiver = self;
   v31.super_class = UIInputViewSetPlacementFloating;
-  v3 = a3;
-  [(UIInputViewSetPlacement *)&v31 adjustBoundsForNotificationsWithOwner:v3];
+  ownerCopy = owner;
+  [(UIInputViewSetPlacement *)&v31 adjustBoundsForNotificationsWithOwner:ownerCopy];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [v3 containerView];
+  containerView = [ownerCopy containerView];
 
-  [v12 frame];
+  [containerView frame];
   v14 = v13;
   v16 = v15;
 
@@ -582,11 +582,11 @@ void __58__UIInputViewSetPlacementFloating_applicatorInfoForOwner___block_invoke
   return result;
 }
 
-- (CGRect)remoteIntrinsicContentSizeForInputViewInSet:(id)a3 includingIAV:(BOOL)a4
+- (CGRect)remoteIntrinsicContentSizeForInputViewInSet:(id)set includingIAV:(BOOL)v
 {
   v17.receiver = self;
   v17.super_class = UIInputViewSetPlacementFloating;
-  [(UIInputViewSetPlacementUndocked *)&v17 remoteIntrinsicContentSizeForInputViewInSet:a3 includingIAV:a4];
+  [(UIInputViewSetPlacementUndocked *)&v17 remoteIntrinsicContentSizeForInputViewInSet:set includingIAV:v];
   v5 = v4;
   v7 = v6;
   v9 = v8;

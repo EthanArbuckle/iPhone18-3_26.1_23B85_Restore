@@ -1,31 +1,31 @@
 @interface DDDeviceEvent
-+ (id)allocInitWithXPCObject:(id)a3 error:(id *)a4;
-- (DDDeviceEvent)initWithCoder:(id)a3;
++ (id)allocInitWithXPCObject:(id)object error:(id *)error;
+- (DDDeviceEvent)initWithCoder:(id)coder;
 - (DDDeviceEvent)initWithEventType:(DDEventType)type device:(DDDevice *)device;
-- (DDDeviceEvent)initWithXPCObject:(id)a3 error:(id *)a4;
+- (DDDeviceEvent)initWithXPCObject:(id)object error:(id *)error;
 - (id)createDADeviceEvent;
-- (id)descriptionWithLevel:(int)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)encodeWithXPCObject:(id)a3;
+- (id)descriptionWithLevel:(int)level;
+- (void)encodeWithCoder:(id)coder;
+- (void)encodeWithXPCObject:(id)object;
 @end
 
 @implementation DDDeviceEvent
 
 - (id)createDADeviceEvent
 {
-  v3 = [(DDDeviceEvent *)self eventType];
-  v4 = [(DDDeviceEvent *)self device];
-  v5 = [v4 createDADevice];
+  eventType = [(DDDeviceEvent *)self eventType];
+  device = [(DDDeviceEvent *)self device];
+  createDADevice = [device createDADevice];
 
-  v6 = [objc_alloc(MEMORY[0x277D04738]) initWithEventType:v3 device:v5];
+  v6 = [objc_alloc(MEMORY[0x277D04738]) initWithEventType:eventType device:createDADevice];
 
   return v6;
 }
 
-- (DDDeviceEvent)initWithCoder:(id)a3
+- (DDDeviceEvent)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = v4;
+  coderCopy = coder;
+  v5 = coderCopy;
   if (self)
   {
     objc_opt_class();
@@ -40,46 +40,46 @@
       self->_eventType = [v7 decodeIntegerForKey:@"evTy"];
     }
 
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    [DDDeviceEvent initWithCoder:v4];
+    [DDDeviceEvent initWithCoder:coderCopy];
   }
 
   return self;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   device = self->_device;
-  v8 = v4;
+  v8 = coderCopy;
   if (device)
   {
-    [v4 encodeObject:device forKey:@"devi"];
-    v4 = v8;
+    [coderCopy encodeObject:device forKey:@"devi"];
+    coderCopy = v8;
   }
 
   error = self->_error;
   if (error)
   {
     [v8 encodeObject:error forKey:@"errr"];
-    v4 = v8;
+    coderCopy = v8;
   }
 
   eventType = self->_eventType;
   if (eventType)
   {
     [v8 encodeInteger:eventType forKey:@"evTy"];
-    v4 = v8;
+    coderCopy = v8;
   }
 }
 
-- (void)encodeWithXPCObject:(id)a3
+- (void)encodeWithXPCObject:(id)object
 {
-  xdict = a3;
+  xdict = object;
   device = self->_device;
   CUXPCEncodeObject();
   error = self->_error;
@@ -106,9 +106,9 @@
   return v9;
 }
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
-  if ((a3 & 0x8000000) != 0)
+  if ((level & 0x8000000) != 0)
   {
     v4 = 0;
   }
@@ -120,12 +120,12 @@
     v4 = 0;
   }
 
-  v5 = [(DDDeviceEvent *)self eventType];
-  if (v5)
+  eventType = [(DDDeviceEvent *)self eventType];
+  if (eventType)
   {
-    if ((v5 - 40) <= 2)
+    if ((eventType - 40) <= 2)
     {
-      v6 = off_278A469F0[v5 - 40];
+      v6 = off_278A469F0[eventType - 40];
     }
 
     CUAppendF();
@@ -155,30 +155,30 @@
   return v11;
 }
 
-+ (id)allocInitWithXPCObject:(id)a3 error:(id *)a4
++ (id)allocInitWithXPCObject:(id)object error:(id *)error
 {
-  v5 = a3;
-  if (CUXPCDecodeSInt64RangedEx() != 5 && a4)
+  objectCopy = object;
+  if (CUXPCDecodeSInt64RangedEx() != 5 && error)
   {
-    *a4 = DDErrorF(350001, "DDEvent init bad type: %d", v6, v7, v8, v9, v10, v11, 0);
+    *error = DDErrorF(350001, "DDEvent init bad type: %d", v6, v7, v8, v9, v10, v11, 0);
   }
 
   return 0;
 }
 
-- (DDDeviceEvent)initWithXPCObject:(id)a3 error:(id *)a4
+- (DDDeviceEvent)initWithXPCObject:(id)object error:(id *)error
 {
-  v6 = a3;
+  objectCopy = object;
   v18.receiver = self;
   v18.super_class = DDDeviceEvent;
   v7 = [(DDDeviceEvent *)&v18 init];
   if (!v7)
   {
-    if (a4)
+    if (error)
     {
       v11 = objc_opt_class();
       DDErrorF(350001, "%@ super init failed", v12, v13, v14, v15, v16, v17, v11);
-      *a4 = v9 = 0;
+      *error = v9 = 0;
       goto LABEL_8;
     }
 

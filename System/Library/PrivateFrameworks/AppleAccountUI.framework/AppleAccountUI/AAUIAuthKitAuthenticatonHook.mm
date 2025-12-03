@@ -1,46 +1,46 @@
 @interface AAUIAuthKitAuthenticatonHook
-- (AAUIAuthKitAuthenticatonHook)initWithUsername:(id)a3 altDSID:(id)a4;
-- (BOOL)shouldMatchElement:(id)a3;
-- (BOOL)shouldMatchModel:(id)a3;
+- (AAUIAuthKitAuthenticatonHook)initWithUsername:(id)username altDSID:(id)d;
+- (BOOL)shouldMatchElement:(id)element;
+- (BOOL)shouldMatchModel:(id)model;
 - (RUIServerHookDelegate)delegate;
-- (id)_authContextFromAttributes:(id)a3;
-- (void)_reauthenticateWithServerAttributes:(id)a3 completion:(id)a4;
-- (void)_updateResponseWithAuthResults:(id)a3;
-- (void)processObjectModel:(id)a3 completion:(id)a4;
+- (id)_authContextFromAttributes:(id)attributes;
+- (void)_reauthenticateWithServerAttributes:(id)attributes completion:(id)completion;
+- (void)_updateResponseWithAuthResults:(id)results;
+- (void)processObjectModel:(id)model completion:(id)completion;
 @end
 
 @implementation AAUIAuthKitAuthenticatonHook
 
-- (AAUIAuthKitAuthenticatonHook)initWithUsername:(id)a3 altDSID:(id)a4
+- (AAUIAuthKitAuthenticatonHook)initWithUsername:(id)username altDSID:(id)d
 {
-  v7 = a3;
-  v8 = a4;
+  usernameCopy = username;
+  dCopy = d;
   v9 = [(AAUIAuthKitAuthenticatonHook *)self init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_appleId, a3);
-    objc_storeStrong(&v10->_altDSID, a4);
+    objc_storeStrong(&v9->_appleId, username);
+    objc_storeStrong(&v10->_altDSID, d);
   }
 
   return v10;
 }
 
-- (BOOL)shouldMatchElement:(id)a3
+- (BOOL)shouldMatchElement:(id)element
 {
-  v3 = [a3 name];
-  v4 = [v3 isEqualToString:@"ak:auth"];
+  name = [element name];
+  v4 = [name isEqualToString:@"ak:auth"];
 
   return v4;
 }
 
-- (BOOL)shouldMatchModel:(id)a3
+- (BOOL)shouldMatchModel:(id)model
 {
-  v3 = a3;
+  modelCopy = model;
   objc_opt_class();
-  v4 = [v3 clientInfo];
+  clientInfo = [modelCopy clientInfo];
 
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69C7058]];
+  v5 = [clientInfo objectForKeyedSubscript:*MEMORY[0x1E69C7058]];
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
@@ -55,18 +55,18 @@
   return v7;
 }
 
-- (void)processObjectModel:(id)a3 completion:(id)a4
+- (void)processObjectModel:(id)model completion:(id)completion
 {
-  v6 = a4;
-  v7 = [a3 clientInfo];
-  [(AAUIAuthKitAuthenticatonHook *)self _reauthenticateWithServerAttributes:v7 completion:v6];
+  completionCopy = completion;
+  clientInfo = [model clientInfo];
+  [(AAUIAuthKitAuthenticatonHook *)self _reauthenticateWithServerAttributes:clientInfo completion:completionCopy];
 }
 
-- (void)_reauthenticateWithServerAttributes:(id)a3 completion:(id)a4
+- (void)_reauthenticateWithServerAttributes:(id)attributes completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AAUIAuthKitAuthenticatonHook *)self _authContextFromAttributes:v6];
+  attributesCopy = attributes;
+  completionCopy = completion;
+  v8 = [(AAUIAuthKitAuthenticatonHook *)self _authContextFromAttributes:attributesCopy];
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -79,7 +79,7 @@
   v11[2] = __79__AAUIAuthKitAuthenticatonHook__reauthenticateWithServerAttributes_completion___block_invoke;
   v11[3] = &unk_1E820DBF8;
   v13 = &v14;
-  v10 = v7;
+  v10 = completionCopy;
   v11[4] = self;
   v12 = v10;
   [v9 authenticateWithContext:v8 completion:v11];
@@ -124,9 +124,9 @@ LABEL_8:
   }
 }
 
-- (id)_authContextFromAttributes:(id)a3
+- (id)_authContextFromAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   v5 = objc_alloc_init(MEMORY[0x1E698DE80]);
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v7 = [WeakRetained presentationContextForHook:self];
@@ -136,7 +136,7 @@ LABEL_8:
   [v5 setIsUsernameEditable:0];
   [v5 setAltDSID:self->_altDSID];
   objc_opt_class();
-  v8 = [v4 objectForKeyedSubscript:@"username"];
+  v8 = [attributesCopy objectForKeyedSubscript:@"username"];
   if (objc_opt_isKindOfClass())
   {
     v9 = v8;
@@ -162,7 +162,7 @@ LABEL_8:
   [v5 setUsername:appleId];
 LABEL_8:
   objc_opt_class();
-  v12 = [v4 objectForKeyedSubscript:@"authTitle"];
+  v12 = [attributesCopy objectForKeyedSubscript:@"authTitle"];
   if (objc_opt_isKindOfClass())
   {
     v13 = v12;
@@ -180,7 +180,7 @@ LABEL_8:
 
   v30 = v9;
   objc_opt_class();
-  v14 = [v4 objectForKeyedSubscript:@"authBody"];
+  v14 = [attributesCopy objectForKeyedSubscript:@"authBody"];
   if (objc_opt_isKindOfClass())
   {
     v15 = v14;
@@ -198,7 +198,7 @@ LABEL_8:
 
   v29 = v13;
   objc_opt_class();
-  v16 = [v4 objectForKeyedSubscript:@"authOK"];
+  v16 = [attributesCopy objectForKeyedSubscript:@"authOK"];
   if (objc_opt_isKindOfClass())
   {
     v17 = v16;
@@ -215,7 +215,7 @@ LABEL_8:
   }
 
   objc_opt_class();
-  v18 = [v4 objectForKeyedSubscript:@"authIsEphemeral"];
+  v18 = [attributesCopy objectForKeyedSubscript:@"authIsEphemeral"];
   if (objc_opt_isKindOfClass())
   {
     v19 = v18;
@@ -232,7 +232,7 @@ LABEL_8:
   }
 
   objc_opt_class();
-  v20 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69C7068]];
+  v20 = [attributesCopy objectForKeyedSubscript:*MEMORY[0x1E69C7068]];
   if (objc_opt_isKindOfClass())
   {
     v21 = v20;
@@ -249,7 +249,7 @@ LABEL_8:
   }
 
   objc_opt_class();
-  v22 = [v4 objectForKeyedSubscript:@"forceModalPresentation"];
+  v22 = [attributesCopy objectForKeyedSubscript:@"forceModalPresentation"];
   if (objc_opt_isKindOfClass())
   {
     v23 = v22;
@@ -266,7 +266,7 @@ LABEL_8:
   }
 
   objc_opt_class();
-  v24 = [v4 objectForKeyedSubscript:@"biometric"];
+  v24 = [attributesCopy objectForKeyedSubscript:@"biometric"];
   if (objc_opt_isKindOfClass())
   {
     v25 = v24;
@@ -281,7 +281,7 @@ LABEL_8:
   {
     [v5 setVerifyCredentialReason:3];
     objc_opt_class();
-    v26 = [v4 objectForKeyedSubscript:@"passcodeFallback"];
+    v26 = [attributesCopy objectForKeyedSubscript:@"passcodeFallback"];
     if (objc_opt_isKindOfClass())
     {
       v27 = v26;
@@ -301,15 +301,15 @@ LABEL_8:
   return v5;
 }
 
-- (void)_updateResponseWithAuthResults:(id)a3
+- (void)_updateResponseWithAuthResults:(id)results
 {
   v11[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x1E698DBC8]];
+  resultsCopy = results;
+  v5 = [resultsCopy objectForKeyedSubscript:*MEMORY[0x1E698DBC8]];
   if (v5)
   {
     v6 = objc_alloc_init(MEMORY[0x1E69C7038]);
-    v7 = [v4 objectForKeyedSubscript:*MEMORY[0x1E698DB70]];
+    v7 = [resultsCopy objectForKeyedSubscript:*MEMORY[0x1E698DB70]];
 
     v8 = @"biometric";
     if (!v7)

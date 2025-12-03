@@ -1,6 +1,6 @@
 @interface EMDaemonBooster
 + (OS_os_log)log;
-- (EMDaemonBooster)initWithConnection:(id)a3 description:(id)a4;
+- (EMDaemonBooster)initWithConnection:(id)connection description:(id)description;
 - (id)_newRemoteBoost;
 - (void)dealloc;
 @end
@@ -10,17 +10,17 @@
 - (id)_newRemoteBoost
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [(EMDaemonBooster *)self connection];
-  v4 = [v3 remoteObjectProxy];
+  connection = [(EMDaemonBooster *)self connection];
+  remoteObjectProxy = [connection remoteObjectProxy];
 
-  v5 = [(EMDaemonBooster *)self loggingDescription];
+  loggingDescription = [(EMDaemonBooster *)self loggingDescription];
   v6 = [objc_opt_class() log];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218242;
-    v17 = self;
+    selfCopy = self;
     v18 = 2114;
-    v19 = v5;
+    v19 = loggingDescription;
     _os_log_impl(&dword_1C6655000, v6, OS_LOG_TYPE_DEFAULT, "%ld: Acquired Daemon Boost for: %{public}@", buf, 0x16u);
   }
 
@@ -29,11 +29,11 @@
   v12[2] = __34__EMDaemonBooster__newRemoteBoost__block_invoke;
   v12[3] = &unk_1E826CB80;
   v13 = v6;
-  v15 = self;
-  v7 = v5;
+  selfCopy2 = self;
+  v7 = loggingDescription;
   v14 = v7;
   v8 = v6;
-  v9 = [v4 giveBoostWithCompletionBlock:v12];
+  v9 = [remoteObjectProxy giveBoostWithCompletionBlock:v12];
 
   v10 = *MEMORY[0x1E69E9840];
   return v9;
@@ -45,7 +45,7 @@
   block[1] = 3221225472;
   block[2] = __22__EMDaemonBooster_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_10 != -1)
   {
     dispatch_once(&log_onceToken_10, block);
@@ -64,22 +64,22 @@ void __22__EMDaemonBooster_log__block_invoke(uint64_t a1)
   log_log_10 = v1;
 }
 
-- (EMDaemonBooster)initWithConnection:(id)a3 description:(id)a4
+- (EMDaemonBooster)initWithConnection:(id)connection description:(id)description
 {
-  v7 = a3;
-  v8 = a4;
+  connectionCopy = connection;
+  descriptionCopy = description;
   v21.receiver = self;
   v21.super_class = EMDaemonBooster;
   v9 = [(EMDaemonBooster *)&v21 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_connection, a3);
-    objc_storeStrong(&v10->_loggingDescription, a4);
+    objc_storeStrong(&v9->_connection, connection);
+    objc_storeStrong(&v10->_loggingDescription, description);
     objc_initWeak(&location, v10);
-    v11 = [(EMDaemonBooster *)v10 _newRemoteBoost];
+    _newRemoteBoost = [(EMDaemonBooster *)v10 _newRemoteBoost];
     remoteBoost = v10->_remoteBoost;
-    v10->_remoteBoost = v11;
+    v10->_remoteBoost = _newRemoteBoost;
 
     connection = v10->_connection;
     v18[0] = MEMORY[0x1E69E9820];
@@ -142,8 +142,8 @@ void __34__EMDaemonBooster__newRemoteBoost__block_invoke(void *a1)
 
 - (void)dealloc
 {
-  v3 = [(EMDaemonBooster *)self remoteBoost];
-  [v3 cancel];
+  remoteBoost = [(EMDaemonBooster *)self remoteBoost];
+  [remoteBoost cancel];
 
   remoteBoost = self->_remoteBoost;
   self->_remoteBoost = 0;

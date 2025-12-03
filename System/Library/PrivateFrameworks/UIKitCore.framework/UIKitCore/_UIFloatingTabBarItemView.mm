@@ -1,8 +1,8 @@
 @interface _UIFloatingTabBarItemView
-+ (id)_jitterRotationAnimationWithAmount:(double)a3;
-+ (id)_jitterXTranslationAnimationWithAmount:(double)a3;
-+ (id)_jitterYTranslationAnimationWithAmount:(double)a3;
-+ (id)dragPreviewForItem:(id)a3 userInterfaceStyle:(int64_t)a4;
++ (id)_jitterRotationAnimationWithAmount:(double)amount;
++ (id)_jitterXTranslationAnimationWithAmount:(double)amount;
++ (id)_jitterYTranslationAnimationWithAmount:(double)amount;
++ (id)dragPreviewForItem:(id)item userInterfaceStyle:(int64_t)style;
 - (BOOL)_hasValidCompactRepresentation;
 - (BOOL)_isEffectivelyEditing;
 - (BOOL)_showsTitleLabel;
@@ -10,9 +10,9 @@
 - (BOOL)isCustomizableItem;
 - (BOOL)isDisabled;
 - (CGSize)_imageFittingSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_UIFloatingTabBarItemView)initWithCoder:(id)a3;
-- (_UIFloatingTabBarItemView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_UIFloatingTabBarItemView)initWithCoder:(id)coder;
+- (_UIFloatingTabBarItemView)initWithFrame:(CGRect)frame;
 - (double)titleOpacity;
 - (id)_currentPlatformMetrics;
 - (unint64_t)accessibilityTraits;
@@ -22,35 +22,35 @@
 - (void)_updateJigglingState;
 - (void)layoutSubviews;
 - (void)reloadItemView;
-- (void)setDragged:(BOOL)a3;
-- (void)setEditing:(BOOL)a3;
-- (void)setHasSelectionHighlight:(BOOL)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setItem:(id)a3;
-- (void)setPreferredDisplayMode:(int64_t)a3;
-- (void)setSuppressJiggleAnimation:(BOOL)a3;
-- (void)setTitleOpacity:(double)a3;
+- (void)setDragged:(BOOL)dragged;
+- (void)setEditing:(BOOL)editing;
+- (void)setHasSelectionHighlight:(BOOL)highlight;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setItem:(id)item;
+- (void)setPreferredDisplayMode:(int64_t)mode;
+- (void)setSuppressJiggleAnimation:(BOOL)animation;
+- (void)setTitleOpacity:(double)opacity;
 @end
 
 @implementation _UIFloatingTabBarItemView
 
-+ (id)dragPreviewForItem:(id)a3 userInterfaceStyle:(int64_t)a4
++ (id)dragPreviewForItem:(id)item userInterfaceStyle:(int64_t)style
 {
-  v5 = a3;
+  itemCopy = item;
   v6 = objc_alloc_init(_UIFloatingTabBarItemView);
-  v7 = [(UIView *)v6 traitOverrides];
-  [v7 setUserInterfaceStyle:a4];
+  traitOverrides = [(UIView *)v6 traitOverrides];
+  [traitOverrides setUserInterfaceStyle:style];
 
   [(_UIFloatingTabBarItemView *)v6 setDragged:1];
   [(_UIFloatingTabBarItemView *)v6 setEditing:1];
-  [(_UIFloatingTabBarItemView *)v6 setItem:v5];
+  [(_UIFloatingTabBarItemView *)v6 setItem:itemCopy];
 
   [(UIView *)v6 sizeToFit];
   [(UIView *)v6 updateTraitsIfNeeded];
   v8 = objc_alloc_init(UIDragPreviewParameters);
   v9 = +[UIColor secondarySystemBackgroundColor];
-  v10 = [(UIView *)v6 traitCollection];
-  v11 = [v9 resolvedColorWithTraitCollection:v10];
+  traitCollection = [(UIView *)v6 traitCollection];
+  v11 = [v9 resolvedColorWithTraitCollection:traitCollection];
   [(UIPreviewParameters *)v8 setBackgroundColor:v11];
 
   [(UIView *)v6 bounds];
@@ -67,11 +67,11 @@
   return v22;
 }
 
-- (_UIFloatingTabBarItemView)initWithFrame:(CGRect)a3
+- (_UIFloatingTabBarItemView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = _UIFloatingTabBarItemView;
-  v3 = [(UIView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -81,11 +81,11 @@
   return v4;
 }
 
-- (_UIFloatingTabBarItemView)initWithCoder:(id)a3
+- (_UIFloatingTabBarItemView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = _UIFloatingTabBarItemView;
-  v3 = [(UIView *)&v6 initWithCoder:a3];
+  v3 = [(UIView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -95,106 +95,106 @@
   return v4;
 }
 
-- (void)setItem:(id)a3
+- (void)setItem:(id)item
 {
-  objc_storeStrong(&self->_item, a3);
+  objc_storeStrong(&self->_item, item);
 
   [(_UIFloatingTabBarItemView *)self reloadItemView];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  if (self->_highlighted != a3)
+  if (self->_highlighted != highlighted)
   {
-    self->_highlighted = a3;
+    self->_highlighted = highlighted;
     [(_UIFloatingTabBarItemView *)self _updateFontAndColors];
   }
 }
 
-- (void)setEditing:(BOOL)a3
+- (void)setEditing:(BOOL)editing
 {
-  if (self->_editing != a3)
+  if (self->_editing != editing)
   {
-    self->_editing = a3;
+    self->_editing = editing;
     [(_UIFloatingTabBarItemView *)self _updateFontAndColors];
   }
 }
 
-- (void)setSuppressJiggleAnimation:(BOOL)a3
+- (void)setSuppressJiggleAnimation:(BOOL)animation
 {
-  if (self->_suppressJiggleAnimation != a3)
+  if (self->_suppressJiggleAnimation != animation)
   {
-    self->_suppressJiggleAnimation = a3;
+    self->_suppressJiggleAnimation = animation;
     [(_UIFloatingTabBarItemView *)self _updateJigglingState];
   }
 }
 
-- (void)setDragged:(BOOL)a3
+- (void)setDragged:(BOOL)dragged
 {
-  if (self->_dragged != a3)
+  if (self->_dragged != dragged)
   {
-    self->_dragged = a3;
+    self->_dragged = dragged;
     [(_UIFloatingTabBarItemView *)self _updateJigglingState];
   }
 }
 
-- (void)setHasSelectionHighlight:(BOOL)a3
+- (void)setHasSelectionHighlight:(BOOL)highlight
 {
-  if (self->_hasSelectionHighlight != a3)
+  if (self->_hasSelectionHighlight != highlight)
   {
-    self->_hasSelectionHighlight = a3;
+    self->_hasSelectionHighlight = highlight;
     [(_UIFloatingTabBarItemView *)self _updateImage];
 
     [(_UIFloatingTabBarItemView *)self _updateFontAndColors];
   }
 }
 
-- (void)setPreferredDisplayMode:(int64_t)a3
+- (void)setPreferredDisplayMode:(int64_t)mode
 {
-  if (self->_preferredDisplayMode != a3)
+  if (self->_preferredDisplayMode != mode)
   {
-    self->_preferredDisplayMode = a3;
+    self->_preferredDisplayMode = mode;
     [(UIView *)self setNeedsLayout];
   }
 }
 
 - (double)titleOpacity
 {
-  v2 = [(_UIFloatingTabBarItemView *)self titleLabel];
-  [v2 alpha];
+  titleLabel = [(_UIFloatingTabBarItemView *)self titleLabel];
+  [titleLabel alpha];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setTitleOpacity:(double)a3
+- (void)setTitleOpacity:(double)opacity
 {
-  v4 = [(_UIFloatingTabBarItemView *)self titleLabel];
-  [v4 setAlpha:a3];
+  titleLabel = [(_UIFloatingTabBarItemView *)self titleLabel];
+  [titleLabel setAlpha:opacity];
 }
 
 - (void)reloadItemView
 {
-  v3 = [(UIView *)self layer];
-  [v3 setAllowsGroupOpacity:0];
+  layer = [(UIView *)self layer];
+  [layer setAllowsGroupOpacity:0];
 
-  v4 = [(_UIFloatingTabBarItemView *)self _hasValidCompactRepresentation];
-  v5 = [(_UIFloatingTabBarItemView *)self item];
-  v6 = v5;
-  if (v4)
+  _hasValidCompactRepresentation = [(_UIFloatingTabBarItemView *)self _hasValidCompactRepresentation];
+  item = [(_UIFloatingTabBarItemView *)self item];
+  v6 = item;
+  if (_hasValidCompactRepresentation)
   {
-    v7 = [v5 _compactRepresentation];
-    v20 = [v7 title];
+    _compactRepresentation = [item _compactRepresentation];
+    title = [_compactRepresentation title];
   }
 
   else
   {
-    v20 = [v5 title];
+    title = [item title];
   }
 
-  if ([(__CFString *)v20 length])
+  if ([(__CFString *)title length])
   {
-    v8 = v20;
+    v8 = title;
   }
 
   else
@@ -206,42 +206,42 @@
   v21 = v8;
   [(UILabel *)self->_titleLabel setText:?];
   [(_UIFloatingTabBarItemView *)self _updateImage];
-  v9 = [(_UIFloatingTabBarItemView *)self _showsTitleLabel];
-  v10 = [(_UIFloatingTabBarItemView *)self _showsImageView];
-  v11 = [(UIView *)self->_titleLabel superview];
+  _showsTitleLabel = [(_UIFloatingTabBarItemView *)self _showsTitleLabel];
+  _showsImageView = [(_UIFloatingTabBarItemView *)self _showsImageView];
+  superview = [(UIView *)self->_titleLabel superview];
 
-  if (v9)
+  if (_showsTitleLabel)
   {
-    if (!v11)
+    if (!superview)
     {
       [(UIView *)self addSubview:self->_titleLabel];
     }
   }
 
-  else if (v11)
+  else if (superview)
   {
     [(UIView *)self->_titleLabel removeFromSuperview];
   }
 
-  v12 = [(UIView *)self->_imageView superview];
+  superview2 = [(UIView *)self->_imageView superview];
 
-  if (v10)
+  if (_showsImageView)
   {
-    if (!v12)
+    if (!superview2)
     {
       [(UIView *)self addSubview:self->_imageView];
     }
   }
 
-  else if (v12)
+  else if (superview2)
   {
     [(UIView *)self->_imageView removeFromSuperview];
   }
 
-  v13 = [(_UIFloatingTabBarItemView *)self item];
-  v14 = [v13 badgeValue];
+  item2 = [(_UIFloatingTabBarItemView *)self item];
+  badgeValue = [item2 badgeValue];
 
-  v15 = [v14 length];
+  v15 = [badgeValue length];
   badgeView = self->_badgeView;
   if (v15)
   {
@@ -255,7 +255,7 @@
       badgeView = self->_badgeView;
     }
 
-    [(_UIBarBadgeView *)badgeView setText:v14];
+    [(_UIBarBadgeView *)badgeView setText:badgeValue];
   }
 
   else if (badgeView)
@@ -269,47 +269,47 @@
   [(_UIFloatingTabBarItemView *)self _updateFontAndColors];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v4 = [(_UIFloatingTabBarItemView *)self _showsTitleLabel:a3.width];
-  v5 = [(_UIFloatingTabBarItemView *)self _showsImageView];
-  v6 = [(UIView *)self traitCollection];
-  v7 = [(_UIFloatingTabBarItemView *)self _currentPlatformMetrics];
-  [v7 imageMargins];
+  v4 = [(_UIFloatingTabBarItemView *)self _showsTitleLabel:fits.width];
+  _showsImageView = [(_UIFloatingTabBarItemView *)self _showsImageView];
+  traitCollection = [(UIView *)self traitCollection];
+  _currentPlatformMetrics = [(_UIFloatingTabBarItemView *)self _currentPlatformMetrics];
+  [_currentPlatformMetrics imageMargins];
   v9 = v8;
   v11 = v10;
-  [v7 titleMargins];
+  [_currentPlatformMetrics titleMargins];
   v13 = v12;
   v15 = v14;
   v17 = v16;
   v19 = v18;
-  v20 = [(_UIFloatingTabBarItemView *)self titleLabel];
-  v21 = [v20 font];
+  titleLabel = [(_UIFloatingTabBarItemView *)self titleLabel];
+  font = [titleLabel font];
 
-  v22 = [v7 contentFont];
-  v23 = [(_UIFloatingTabBarItemView *)self titleLabel];
-  [v23 setFont:v22];
+  contentFont = [_currentPlatformMetrics contentFont];
+  titleLabel2 = [(_UIFloatingTabBarItemView *)self titleLabel];
+  [titleLabel2 setFont:contentFont];
 
-  v24 = [(_UIFloatingTabBarItemView *)self titleLabel];
-  [v7 maximumContentWidth];
+  titleLabel3 = [(_UIFloatingTabBarItemView *)self titleLabel];
+  [_currentPlatformMetrics maximumContentWidth];
   v26 = v25;
-  v27 = [(_UIFloatingTabBarItemView *)self titleLabel];
-  [v24 textRectForBounds:objc_msgSend(v27 limitedToNumberOfLines:{"numberOfLines"), 0.0, 0.0, v26, 1.79769313e308}];
+  titleLabel4 = [(_UIFloatingTabBarItemView *)self titleLabel];
+  [titleLabel3 textRectForBounds:objc_msgSend(titleLabel4 limitedToNumberOfLines:{"numberOfLines"), 0.0, 0.0, v26, 1.79769313e308}];
   v29 = v28;
   v31 = v30;
 
   v32 = v29 - (-v19 - v15);
-  v33 = [(_UIFloatingTabBarItemView *)self titleLabel];
-  [v33 setFont:v21];
+  titleLabel5 = [(_UIFloatingTabBarItemView *)self titleLabel];
+  [titleLabel5 setFont:font];
 
-  if (v5)
+  if (_showsImageView)
   {
     [(_UIFloatingTabBarItemView *)self _imageFittingSize];
     v35 = v34 - (-v11 - v9);
     if (v4)
     {
       v36 = v35 - v11;
-      [v7 imageAndTitleSpacing];
+      [_currentPlatformMetrics imageAndTitleSpacing];
       v38 = v32 - v15 + v36 + v37;
       goto LABEL_10;
     }
@@ -326,7 +326,7 @@
     v39 = v32;
   }
 
-  if (v5)
+  if (_showsImageView)
   {
     v38 = v35;
   }
@@ -337,15 +337,15 @@
   }
 
 LABEL_10:
-  [v7 maximumContentWidth];
+  [_currentPlatformMetrics maximumContentWidth];
   if (v38 > v40)
   {
-    [v7 maximumContentWidth];
+    [_currentPlatformMetrics maximumContentWidth];
     v38 = v41;
   }
 
   v42 = v31 - (-v17 - v13);
-  [v6 displayScale];
+  [traitCollection displayScale];
   v44 = v43;
   UICeilToScale(v38, v43);
   v46 = v45;
@@ -364,16 +364,16 @@ LABEL_10:
   *&recta.origin.y = self;
   *&recta.size.width = _UIFloatingTabBarItemView;
   [(CGFloat *)&recta.origin.y layoutSubviews];
-  v3 = [(_UIFloatingTabBarItemView *)self _currentPlatformMetrics];
-  [v3 imageMargins];
+  _currentPlatformMetrics = [(_UIFloatingTabBarItemView *)self _currentPlatformMetrics];
+  [_currentPlatformMetrics imageMargins];
   v5 = v4;
-  [v3 titleMargins];
+  [_currentPlatformMetrics titleMargins];
   v106 = v7;
   v107 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(UIView *)self->_titleLabel superview];
-  if (v12)
+  superview = [(UIView *)self->_titleLabel superview];
+  if (superview)
   {
     titleLabel = self->_titleLabel;
     [(UIView *)self bounds];
@@ -388,8 +388,8 @@ LABEL_10:
     v108 = *(MEMORY[0x1E695F060] + 8);
   }
 
-  v19 = [(UIView *)self->_imageView superview];
-  if (v19)
+  superview2 = [(UIView *)self->_imageView superview];
+  if (superview2)
   {
     imageView = self->_imageView;
     [(UIView *)self bounds];
@@ -404,12 +404,12 @@ LABEL_10:
     v112 = *MEMORY[0x1E695F060];
   }
 
-  v25 = [(_UIFloatingTabBarItemView *)self imageView];
-  v26 = [v25 image];
-  v27 = [v26 _isSymbolImage];
+  imageView = [(_UIFloatingTabBarItemView *)self imageView];
+  image = [imageView image];
+  _isSymbolImage = [image _isSymbolImage];
 
-  v28 = [(UIView *)self->_imageView superview];
-  if (v28)
+  superview3 = [(UIView *)self->_imageView superview];
+  if (superview3)
   {
     [(_UIFloatingTabBarItemView *)self _imageFittingSize];
     v30 = v29;
@@ -427,7 +427,7 @@ LABEL_10:
   v36 = 0.0;
   v109 = v35;
   v110 = v5;
-  if ((v27 & 1) == 0)
+  if ((_isSymbolImage & 1) == 0)
   {
     v37 = v5;
     v38 = v30;
@@ -459,21 +459,21 @@ LABEL_10:
     v11 = v41;
   }
 
-  v48 = [(_UIFloatingTabBarItemView *)self imageView];
-  [v48 _setCornerRadius:v36];
+  imageView2 = [(_UIFloatingTabBarItemView *)self imageView];
+  [imageView2 _setCornerRadius:v36];
 
   [(UIView *)self bounds];
   recta.origin.x = v9 + v49;
   v51 = v107 + v50;
   v53 = v52 - (v9 + v11);
   v55 = v54 - (v107 + v106);
-  v56 = [(UIView *)self->_imageView superview];
-  if (v56)
+  superview4 = [(UIView *)self->_imageView superview];
+  if (superview4)
   {
-    v57 = v56;
-    v58 = [(UIView *)self->_titleLabel superview];
+    v57 = superview4;
+    superview5 = [(UIView *)self->_titleLabel superview];
 
-    if (v58)
+    if (superview5)
     {
       v115.origin.y = v109;
       v115.origin.x = v110;
@@ -482,7 +482,7 @@ LABEL_10:
       v59 = v51;
       v60 = v17;
       MaxX = CGRectGetMaxX(v115);
-      [v3 imageAndTitleSpacing];
+      [_currentPlatformMetrics imageAndTitleSpacing];
       v63 = MaxX + v62;
       v17 = v60;
       v51 = v59;
@@ -500,56 +500,56 @@ LABEL_10:
     v17 = v53 + 8.0;
   }
 
-  v64 = [(_UIFloatingTabBarItemView *)self imageView];
-  v65 = [v64 _hasBaseline];
+  imageView3 = [(_UIFloatingTabBarItemView *)self imageView];
+  _hasBaseline = [imageView3 _hasBaseline];
 
-  v66 = [(_UIFloatingTabBarItemView *)self imageView];
-  if (v65)
+  imageView4 = [(_UIFloatingTabBarItemView *)self imageView];
+  if (_hasBaseline)
   {
-    [v66 frameForAlignmentRect:{v110, v109, v30, v32}];
+    [imageView4 frameForAlignmentRect:{v110, v109, v30, v32}];
     v68 = v67;
     v70 = v69;
     v72 = v71;
     v74 = v73;
-    v75 = [(_UIFloatingTabBarItemView *)self imageView];
-    [v75 setFrame:{v68, v70, v72, v74}];
+    imageView5 = [(_UIFloatingTabBarItemView *)self imageView];
+    [imageView5 setFrame:{v68, v70, v72, v74}];
   }
 
   else
   {
-    [v66 setFrame:{v110 + (v30 - v112) * 0.5, v109 + (v32 - v111) * 0.5, v112, v111}];
+    [imageView4 setFrame:{v110 + (v30 - v112) * 0.5, v109 + (v32 - v111) * 0.5, v112, v111}];
   }
 
-  v76 = [(_UIFloatingTabBarItemView *)self titleLabel];
-  [v76 setFrame:{recta.origin.x + (v53 - v17) * 0.5, v51 + (v55 - v108) * 0.5, v17, v108}];
+  titleLabel = [(_UIFloatingTabBarItemView *)self titleLabel];
+  [titleLabel setFrame:{recta.origin.x + (v53 - v17) * 0.5, v51 + (v55 - v108) * 0.5, v17, v108}];
 
   [(UIView *)self bounds];
   v79 = v78 + v77 * 0.5;
   v82 = v81 + v80 * 0.5;
-  v83 = [(_UIFloatingTabBarItemView *)self backgroundView];
-  [v83 setCenter:{v79, v82}];
+  backgroundView = [(_UIFloatingTabBarItemView *)self backgroundView];
+  [backgroundView setCenter:{v79, v82}];
 
   [(UIView *)self bounds];
   v85 = v84;
   v87 = v86;
   v89 = v88;
   v91 = v90;
-  v92 = [(_UIFloatingTabBarItemView *)self backgroundView];
-  [v92 setBounds:{v85, v87, v89, v91}];
+  backgroundView2 = [(_UIFloatingTabBarItemView *)self backgroundView];
+  [backgroundView2 setBounds:{v85, v87, v89, v91}];
 
-  v93 = [(_UIFloatingTabBarItemView *)self badgeView];
-  v94 = v93;
-  if (v93)
+  badgeView = [(_UIFloatingTabBarItemView *)self badgeView];
+  v94 = badgeView;
+  if (badgeView)
   {
-    [v93 sizeToFit];
-    v95 = [(UIView *)self _shouldReverseLayoutDirection];
-    [v3 badgeOffset];
+    [badgeView sizeToFit];
+    _shouldReverseLayoutDirection = [(UIView *)self _shouldReverseLayoutDirection];
+    [_currentPlatformMetrics badgeOffset];
     v97 = v96;
     v99 = v98;
     [v94 bounds];
     v101 = v100;
     v103 = v102;
-    if (v95)
+    if (_shouldReverseLayoutDirection)
     {
       v104 = -v97;
     }
@@ -571,19 +571,19 @@ LABEL_10:
 
 - (BOOL)_hasValidCompactRepresentation
 {
-  v2 = [(_UIFloatingTabBarItemView *)self item];
-  v3 = [v2 _compactRepresentation];
+  item = [(_UIFloatingTabBarItemView *)self item];
+  _compactRepresentation = [item _compactRepresentation];
 
-  v4 = [v3 title];
-  if ([v4 length])
+  title = [_compactRepresentation title];
+  if ([title length])
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [v3 image];
-    v5 = v6 != 0;
+    image = [_compactRepresentation image];
+    v5 = image != 0;
   }
 
   return v5;
@@ -591,41 +591,41 @@ LABEL_10:
 
 - (BOOL)_showsTitleLabel
 {
-  v3 = [(_UIFloatingTabBarItemView *)self _hasValidCompactRepresentation];
-  v4 = [(_UIFloatingTabBarItemView *)self item];
-  v5 = v4;
-  if (v3)
+  _hasValidCompactRepresentation = [(_UIFloatingTabBarItemView *)self _hasValidCompactRepresentation];
+  item = [(_UIFloatingTabBarItemView *)self item];
+  v5 = item;
+  if (_hasValidCompactRepresentation)
   {
-    v6 = [v4 _compactRepresentation];
-    v7 = [v6 title];
+    _compactRepresentation = [item _compactRepresentation];
+    title = [_compactRepresentation title];
   }
 
   else
   {
-    v7 = [v4 title];
+    title = [item title];
   }
 
-  v8 = -[_UIFloatingTabBarItemView preferredDisplayMode](self, "preferredDisplayMode") != 2 && [v7 length] != 0;
+  v8 = -[_UIFloatingTabBarItemView preferredDisplayMode](self, "preferredDisplayMode") != 2 && [title length] != 0;
   return v8;
 }
 
 - (CGSize)_imageFittingSize
 {
-  v3 = [(_UIFloatingTabBarItemView *)self _currentPlatformMetrics];
-  v4 = [(_UIFloatingTabBarItemView *)self imageView];
-  v5 = [v4 image];
-  v6 = [v5 _isSymbolImage];
+  _currentPlatformMetrics = [(_UIFloatingTabBarItemView *)self _currentPlatformMetrics];
+  imageView = [(_UIFloatingTabBarItemView *)self imageView];
+  image = [imageView image];
+  _isSymbolImage = [image _isSymbolImage];
 
-  if (v6)
+  if (_isSymbolImage)
   {
-    v7 = [(_UIFloatingTabBarItemView *)self imageView];
-    [v7 intrinsicContentSize];
+    imageView2 = [(_UIFloatingTabBarItemView *)self imageView];
+    [imageView2 intrinsicContentSize];
   }
 
   else
   {
-    v7 = [(UIView *)self traitCollection];
-    [v3 scaledImageSizeForTraitCollection:v7];
+    imageView2 = [(UIView *)self traitCollection];
+    [_currentPlatformMetrics scaledImageSizeForTraitCollection:imageView2];
   }
 
   v10 = v8;
@@ -646,31 +646,31 @@ LABEL_10:
 {
   if ([(_UIFloatingTabBarItemView *)self _hasValidCompactRepresentation])
   {
-    v3 = [(_UIFloatingTabBarItemView *)self item];
-    v4 = [v3 _compactRepresentation];
-    v7 = [v4 image];
+    item = [(_UIFloatingTabBarItemView *)self item];
+    _compactRepresentation = [item _compactRepresentation];
+    image = [_compactRepresentation image];
 
     goto LABEL_5;
   }
 
   if ([(_UIFloatingTabBarItemView *)self hasSelectionHighlight])
   {
-    v3 = [(_UIFloatingTabBarItemView *)self item];
-    v7 = [v3 selectedImage];
+    item = [(_UIFloatingTabBarItemView *)self item];
+    image = [item selectedImage];
 LABEL_5:
 
-    if (v7)
+    if (image)
     {
       goto LABEL_7;
     }
   }
 
-  v5 = [(_UIFloatingTabBarItemView *)self item];
-  v7 = [v5 image];
+  item2 = [(_UIFloatingTabBarItemView *)self item];
+  image = [item2 image];
 
 LABEL_7:
-  v6 = [(_UIFloatingTabBarItemView *)self imageView];
-  [v6 setImage:v7];
+  imageView = [(_UIFloatingTabBarItemView *)self imageView];
+  [imageView setImage:image];
 }
 
 - (void)_createViewHierarchy
@@ -692,8 +692,8 @@ LABEL_7:
   backgroundView = self->_backgroundView;
   self->_backgroundView = v7;
 
-  v9 = [(UIView *)self->_backgroundView layer];
-  [v9 setShadowPathIsBounds:1];
+  layer = [(UIView *)self->_backgroundView layer];
+  [layer setShadowPathIsBounds:1];
 
   [(UIView *)self->_backgroundView _setShouldAdaptToMaterials:0];
   [(UIView *)self addSubview:self->_backgroundView];
@@ -713,29 +713,29 @@ LABEL_7:
 
 - (BOOL)_isEffectivelyEditing
 {
-  v3 = [(_UIFloatingTabBarItemView *)self isEditing];
-  if (v3)
+  isEditing = [(_UIFloatingTabBarItemView *)self isEditing];
+  if (isEditing)
   {
-    LOBYTE(v3) = ![(_UIFloatingTabBarItemView *)self suppressEditing];
+    LOBYTE(isEditing) = ![(_UIFloatingTabBarItemView *)self suppressEditing];
   }
 
-  return v3;
+  return isEditing;
 }
 
 - (BOOL)isCustomizableItem
 {
-  v2 = [(_UIFloatingTabBarItemView *)self item];
-  v3 = [v2 _hasCustomizablePlacement];
+  item = [(_UIFloatingTabBarItemView *)self item];
+  _hasCustomizablePlacement = [item _hasCustomizablePlacement];
 
-  return v3;
+  return _hasCustomizablePlacement;
 }
 
 - (BOOL)isDisabled
 {
-  v2 = [(_UIFloatingTabBarItemView *)self item];
-  v3 = [v2 isEnabled];
+  item = [(_UIFloatingTabBarItemView *)self item];
+  isEnabled = [item isEnabled];
 
-  return v3 ^ 1;
+  return isEnabled ^ 1;
 }
 
 - (BOOL)_wantsBackground
@@ -756,8 +756,8 @@ LABEL_7:
 
   else
   {
-    v4 = [(UIView *)self traitCollection];
-    v5 = [v4 valueForNSIntegerTrait:objc_opt_class()];
+    traitCollection = [(UIView *)self traitCollection];
+    v5 = [traitCollection valueForNSIntegerTrait:objc_opt_class()];
 
     result = [(_UIFloatingTabBarItemView *)self hasSelectionHighlight];
     if (v5)
@@ -771,34 +771,34 @@ LABEL_7:
 
 - (void)_updateFontAndColors
 {
-  v3 = [(_UIFloatingTabBarItemView *)self _currentPlatformMetrics];
-  v4 = [v3 contentPaletteProvider];
-  v5 = [(UIView *)self traitCollection];
-  v6 = v4[2](v4, [v5 userInterfaceStyle]);
+  _currentPlatformMetrics = [(_UIFloatingTabBarItemView *)self _currentPlatformMetrics];
+  contentPaletteProvider = [_currentPlatformMetrics contentPaletteProvider];
+  traitCollection = [(UIView *)self traitCollection];
+  v6 = contentPaletteProvider[2](contentPaletteProvider, [traitCollection userInterfaceStyle]);
 
   v7 = [v6 resolvedColorFromProvider:self];
   if ([(_UIFloatingTabBarItemView *)self _isEffectivelyEditing]|| ![(_UIFloatingTabBarItemView *)self hasSelectionHighlight])
   {
-    v8 = [v3 contentFont];
+    contentFont = [_currentPlatformMetrics contentFont];
   }
 
   else
   {
-    v8 = [v3 selectedContentFont];
+    contentFont = [_currentPlatformMetrics selectedContentFont];
   }
 
-  v9 = v8;
+  v9 = contentFont;
   if ([(_UIFloatingTabBarItemView *)self _isEffectivelyEditing]|| ![(_UIFloatingTabBarItemView *)self hasSelectionHighlight])
   {
-    v10 = [v3 symbolConfiguration];
+    symbolConfiguration = [_currentPlatformMetrics symbolConfiguration];
   }
 
   else
   {
-    v10 = [v3 selectedSymbolConfiguration];
+    symbolConfiguration = [_currentPlatformMetrics selectedSymbolConfiguration];
   }
 
-  v11 = v10;
+  v11 = symbolConfiguration;
   v12 = +[_UITraitMonochromaticTreatment _glassMonochromaticTreatment];
   if ([(_UIFloatingTabBarItemView *)self hasSelectionHighlight])
   {
@@ -810,33 +810,33 @@ LABEL_7:
     v13 = [(_UIFloatingTabBarItemView *)self isDisabled]^ 1;
   }
 
-  v14 = [(_UIFloatingTabBarItemView *)self titleLabel];
-  [v14 _setMonochromaticTreatment:v12];
+  titleLabel = [(_UIFloatingTabBarItemView *)self titleLabel];
+  [titleLabel _setMonochromaticTreatment:v12];
 
-  v15 = [(_UIFloatingTabBarItemView *)self imageView];
-  [v15 _setMonochromaticTreatment:v12];
+  imageView = [(_UIFloatingTabBarItemView *)self imageView];
+  [imageView _setMonochromaticTreatment:v12];
 
-  v16 = [(_UIFloatingTabBarItemView *)self titleLabel];
-  [v16 _setEnableMonochromaticTreatment:v13];
+  titleLabel2 = [(_UIFloatingTabBarItemView *)self titleLabel];
+  [titleLabel2 _setEnableMonochromaticTreatment:v13];
 
-  v17 = [(_UIFloatingTabBarItemView *)self imageView];
-  [v17 _setEnableMonochromaticTreatment:v13];
+  imageView2 = [(_UIFloatingTabBarItemView *)self imageView];
+  [imageView2 _setEnableMonochromaticTreatment:v13];
 
-  v18 = [(_UIFloatingTabBarItemView *)self _wantsBackground];
-  v19 = [(_UIFloatingTabBarItemView *)self backgroundView];
-  [v19 setHidden:!v18];
+  _wantsBackground = [(_UIFloatingTabBarItemView *)self _wantsBackground];
+  backgroundView = [(_UIFloatingTabBarItemView *)self backgroundView];
+  [backgroundView setHidden:!_wantsBackground];
 
   [(_UIFloatingTabBarItemView *)self _updateJigglingState];
-  v20 = [(_UIFloatingTabBarItemView *)self _isEffectivelyEditing];
-  v21 = [(_UIFloatingTabBarItemView *)self badgeView];
-  [v21 setHidden:v20];
+  _isEffectivelyEditing = [(_UIFloatingTabBarItemView *)self _isEffectivelyEditing];
+  badgeView = [(_UIFloatingTabBarItemView *)self badgeView];
+  [badgeView setHidden:_isEffectivelyEditing];
 
-  v22 = [(_UIFloatingTabBarItemView *)self imageView];
-  v23 = [v22 tintColor];
-  if ([v23 isEqual:v7])
+  imageView3 = [(_UIFloatingTabBarItemView *)self imageView];
+  tintColor = [imageView3 tintColor];
+  if ([tintColor isEqual:v7])
   {
-    v24 = [(_UIFloatingTabBarItemView *)self titleLabel];
-    [v24 font];
+    titleLabel3 = [(_UIFloatingTabBarItemView *)self titleLabel];
+    [titleLabel3 font];
     v25 = v11;
     v27 = v26 = v6;
     v30 = [v27 isEqual:v9];
@@ -861,11 +861,11 @@ LABEL_7:
   v31[4] = self;
   v32 = v7;
   [UIView performWithoutAnimation:v31];
-  v28 = [(_UIFloatingTabBarItemView *)self titleLabel];
-  [v28 setFont:v9];
+  titleLabel4 = [(_UIFloatingTabBarItemView *)self titleLabel];
+  [titleLabel4 setFont:v9];
 
-  v29 = [(_UIFloatingTabBarItemView *)self imageView];
-  [v29 setPreferredSymbolConfiguration:v11];
+  imageView4 = [(_UIFloatingTabBarItemView *)self imageView];
+  [imageView4 setPreferredSymbolConfiguration:v11];
 
   [(UIView *)self setNeedsLayout];
 LABEL_17:
@@ -873,8 +873,8 @@ LABEL_17:
 
 - (id)_currentPlatformMetrics
 {
-  v2 = [(UIView *)self traitCollection];
-  v3 = _UIFloatingTabBarGetPlatformMetrics([v2 userInterfaceIdiom]);
+  traitCollection = [(UIView *)self traitCollection];
+  v3 = _UIFloatingTabBarGetPlatformMetrics([traitCollection userInterfaceIdiom]);
 
   return v3;
 }
@@ -883,23 +883,23 @@ LABEL_17:
 {
   if (![(_UIFloatingTabBarItemView *)self _wantsBackground]|| ![(_UIFloatingTabBarItemView *)self _isEffectivelyEditing]|| [(_UIFloatingTabBarItemView *)self isDragged])
   {
-    v3 = [(UIView *)self layer];
+    layer = [(UIView *)self layer];
 LABEL_5:
-    v12 = v3;
-    [v3 removeAllAnimations];
+    v12 = layer;
+    [layer removeAllAnimations];
     goto LABEL_6;
   }
 
-  v4 = [(_UIFloatingTabBarItemView *)self suppressJiggleAnimation];
-  v3 = [(UIView *)self layer];
-  if (v4)
+  suppressJiggleAnimation = [(_UIFloatingTabBarItemView *)self suppressJiggleAnimation];
+  layer = [(UIView *)self layer];
+  if (suppressJiggleAnimation)
   {
     goto LABEL_5;
   }
 
-  v12 = v3;
-  v5 = [v3 animationKeys];
-  v6 = [v5 containsObject:@"RotationJitterAnimation"];
+  v12 = layer;
+  animationKeys = [layer animationKeys];
+  v6 = [animationKeys containsObject:@"RotationJitterAnimation"];
 
   if ((v6 & 1) == 0)
   {
@@ -926,15 +926,15 @@ LABEL_5:
 LABEL_6:
 }
 
-+ (id)_jitterXTranslationAnimationWithAmount:(double)a3
++ (id)_jitterXTranslationAnimationWithAmount:(double)amount
 {
   v4 = [MEMORY[0x1E6979318] animationWithKeyPath:@"transform.translation.x"];
   [v4 setDuration:0.134];
   [v4 setBeginTime:arc4random_uniform(0x64u) / 100.0];
-  v5 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v5 = [MEMORY[0x1E696AD98] numberWithDouble:amount];
   [v4 setFromValue:v5];
 
-  v6 = [MEMORY[0x1E696AD98] numberWithDouble:-a3];
+  v6 = [MEMORY[0x1E696AD98] numberWithDouble:-amount];
   [v4 setToValue:v6];
 
   LODWORD(v7) = 1052266988;
@@ -951,15 +951,15 @@ LABEL_6:
   return v4;
 }
 
-+ (id)_jitterYTranslationAnimationWithAmount:(double)a3
++ (id)_jitterYTranslationAnimationWithAmount:(double)amount
 {
   v4 = [MEMORY[0x1E6979318] animationWithKeyPath:@"transform.translation.y"];
   [v4 setDuration:0.142];
   [v4 setBeginTime:arc4random_uniform(0x64u) / 100.0];
-  v5 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v5 = [MEMORY[0x1E696AD98] numberWithDouble:amount];
   [v4 setFromValue:v5];
 
-  v6 = [MEMORY[0x1E696AD98] numberWithDouble:-a3];
+  v6 = [MEMORY[0x1E696AD98] numberWithDouble:-amount];
   [v4 setToValue:v6];
 
   LODWORD(v7) = 1052266988;
@@ -976,15 +976,15 @@ LABEL_6:
   return v4;
 }
 
-+ (id)_jitterRotationAnimationWithAmount:(double)a3
++ (id)_jitterRotationAnimationWithAmount:(double)amount
 {
   v4 = [MEMORY[0x1E6979318] animationWithKeyPath:@"transform.rotation"];
   [v4 setDuration:0.128];
   [v4 setBeginTime:arc4random_uniform(0x64u) / 100.0];
-  v5 = [MEMORY[0x1E696AD98] numberWithDouble:-a3];
+  v5 = [MEMORY[0x1E696AD98] numberWithDouble:-amount];
   [v4 setFromValue:v5];
 
-  v6 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v6 = [MEMORY[0x1E696AD98] numberWithDouble:amount];
   [v4 setToValue:v6];
 
   LODWORD(v7) = 1052266988;
@@ -1005,15 +1005,15 @@ LABEL_6:
 {
   v7.receiver = self;
   v7.super_class = _UIFloatingTabBarItemView;
-  v3 = [&v7 accessibilityTraits];
-  v4 = [(_UIFloatingTabBarItemView *)self isHighlighted];
+  accessibilityTraits = [&v7 accessibilityTraits];
+  isHighlighted = [(_UIFloatingTabBarItemView *)self isHighlighted];
   v5 = 8;
-  if (!v4)
+  if (!isHighlighted)
   {
     v5 = 0;
   }
 
-  return v3 | v5 | 1;
+  return accessibilityTraits | v5 | 1;
 }
 
 @end

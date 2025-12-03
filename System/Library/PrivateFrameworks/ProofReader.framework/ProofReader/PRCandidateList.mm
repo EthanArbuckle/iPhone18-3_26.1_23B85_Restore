@@ -1,32 +1,32 @@
 @interface PRCandidateList
-- (PRCandidateList)initWithMaxCount:(unint64_t)a3 defaultReplacementRange:(_NSRange)a4 customErrorModel:(id)a5 capitalizationDictionaryArray:(id)a6;
+- (PRCandidateList)initWithMaxCount:(unint64_t)count defaultReplacementRange:(_NSRange)range customErrorModel:(id)model capitalizationDictionaryArray:(id)array;
 - (_NSRange)defaultReplacementRange;
 - (id)candidateStrings;
-- (id)candidateWithString:(id)a3;
-- (void)addCandidate:(id)a3;
-- (void)addCandidateWithString:(id)a3 errorType:(unint64_t)a4;
-- (void)addCandidateWithString:(id)a3 replacementRange:(_NSRange)a4 errorType:(unint64_t)a5;
-- (void)addCandidateWithWords:(id)a3 replacementRange:(_NSRange)a4 errorType:(unint64_t)a5;
+- (id)candidateWithString:(id)string;
+- (void)addCandidate:(id)candidate;
+- (void)addCandidateWithString:(id)string errorType:(unint64_t)type;
+- (void)addCandidateWithString:(id)string replacementRange:(_NSRange)range errorType:(unint64_t)type;
+- (void)addCandidateWithWords:(id)words replacementRange:(_NSRange)range errorType:(unint64_t)type;
 - (void)dealloc;
 @end
 
 @implementation PRCandidateList
 
-- (PRCandidateList)initWithMaxCount:(unint64_t)a3 defaultReplacementRange:(_NSRange)a4 customErrorModel:(id)a5 capitalizationDictionaryArray:(id)a6
+- (PRCandidateList)initWithMaxCount:(unint64_t)count defaultReplacementRange:(_NSRange)range customErrorModel:(id)model capitalizationDictionaryArray:(id)array
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v13.receiver = self;
   v13.super_class = PRCandidateList;
   v11 = [(PRCandidateList *)&v13 init];
   if (v11)
   {
     v11->_candidates = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v11->_maxCount = a3;
+    v11->_maxCount = count;
     v11->_defaultReplacementRange.location = location;
     v11->_defaultReplacementRange.length = length;
-    v11->_errorModel = [[PRErrorModel alloc] initWithCustomErrorModel:a5];
-    v11->_capitalizationDictionaryArray = [a6 copy];
+    v11->_errorModel = [[PRErrorModel alloc] initWithCustomErrorModel:model];
+    v11->_capitalizationDictionaryArray = [array copy];
   }
 
   return v11;
@@ -39,10 +39,10 @@
   [(PRCandidateList *)&v3 dealloc];
 }
 
-- (void)addCandidate:(id)a3
+- (void)addCandidate:(id)candidate
 {
   v20 = *MEMORY[0x1E69E9840];
-  if (a3 && ![(PRCandidateList *)self isFull])
+  if (candidate && ![(PRCandidateList *)self isFull])
   {
     v17 = 0u;
     v18 = 0u;
@@ -64,11 +64,11 @@
           }
 
           v10 = *(*(&v15 + 1) + 8 * i);
-          if ([objc_msgSend(a3 "string")])
+          if ([objc_msgSend(candidate "string")])
           {
-            if ([a3 hasCustomErrorScore])
+            if ([candidate hasCustomErrorScore])
             {
-              [a3 errorScore];
+              [candidate errorScore];
               [v10 setErrorScore:?];
               [v10 setCustomErrorScore:1];
             }
@@ -77,10 +77,10 @@
             {
               [v10 errorScore];
               v12 = v11;
-              [a3 errorScore];
+              [candidate errorScore];
               if (v12 < v13)
               {
-                [a3 errorScore];
+                [candidate errorScore];
                 [v10 setErrorScore:?];
               }
             }
@@ -99,30 +99,30 @@
       }
     }
 
-    [(NSMutableArray *)self->_candidates addObject:a3];
+    [(NSMutableArray *)self->_candidates addObject:candidate];
   }
 
 LABEL_16:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addCandidateWithWords:(id)a3 replacementRange:(_NSRange)a4 errorType:(unint64_t)a5
+- (void)addCandidateWithWords:(id)words replacementRange:(_NSRange)range errorType:(unint64_t)type
 {
-  v6 = [PRCandidate candidateWithWords:a3 replacementRange:a4.location errorType:a4.length errorModel:a5, self->_errorModel];
+  v6 = [PRCandidate candidateWithWords:words replacementRange:range.location errorType:range.length errorModel:type, self->_errorModel];
 
   [(PRCandidateList *)self addCandidate:v6];
 }
 
-- (void)addCandidateWithString:(id)a3 replacementRange:(_NSRange)a4 errorType:(unint64_t)a5
+- (void)addCandidateWithString:(id)string replacementRange:(_NSRange)range errorType:(unint64_t)type
 {
-  v6 = [PRCandidate candidateWithString:a3 replacementRange:a4.location errorType:a4.length errorModel:a5, self->_errorModel];
+  v6 = [PRCandidate candidateWithString:string replacementRange:range.location errorType:range.length errorModel:type, self->_errorModel];
 
   [(PRCandidateList *)self addCandidate:v6];
 }
 
-- (void)addCandidateWithString:(id)a3 errorType:(unint64_t)a4
+- (void)addCandidateWithString:(id)string errorType:(unint64_t)type
 {
-  v5 = [PRCandidate candidateWithString:a3 replacementRange:self->_defaultReplacementRange.location errorType:self->_defaultReplacementRange.length errorModel:a4, self->_errorModel];
+  v5 = [PRCandidate candidateWithString:string replacementRange:self->_defaultReplacementRange.location errorType:self->_defaultReplacementRange.length errorModel:type, self->_errorModel];
 
   [(PRCandidateList *)self addCandidate:v5];
 }
@@ -130,7 +130,7 @@ LABEL_16:
 - (id)candidateStrings
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -151,7 +151,7 @@ LABEL_16:
           objc_enumerationMutation(candidates);
         }
 
-        [v3 addObject:{objc_msgSend(*(*(&v11 + 1) + 8 * v8++), "string")}];
+        [array addObject:{objc_msgSend(*(*(&v11 + 1) + 8 * v8++), "string")}];
       }
 
       while (v6 != v8);
@@ -162,7 +162,7 @@ LABEL_16:
   }
 
   v9 = *MEMORY[0x1E69E9840];
-  return v3;
+  return array;
 }
 
 - (_NSRange)defaultReplacementRange
@@ -174,7 +174,7 @@ LABEL_16:
   return result;
 }
 
-- (id)candidateWithString:(id)a3
+- (id)candidateWithString:(id)string
 {
   v17 = *MEMORY[0x1E69E9840];
   v12 = 0u;

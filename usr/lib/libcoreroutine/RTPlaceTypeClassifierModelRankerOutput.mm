@@ -1,26 +1,26 @@
 @interface RTPlaceTypeClassifierModelRankerOutput
-- (RTPlaceTypeClassifierModelRankerOutput)initWithTarget:(double)a3;
-- (id)featureValueForName:(id)a3;
+- (RTPlaceTypeClassifierModelRankerOutput)initWithTarget:(double)target;
+- (id)featureValueForName:(id)name;
 @end
 
 @implementation RTPlaceTypeClassifierModelRankerOutput
 
-- (RTPlaceTypeClassifierModelRankerOutput)initWithTarget:(double)a3
+- (RTPlaceTypeClassifierModelRankerOutput)initWithTarget:(double)target
 {
   v5.receiver = self;
   v5.super_class = RTPlaceTypeClassifierModelRankerOutput;
   result = [(RTPlaceTypeClassifierModelRankerOutput *)&v5 init];
   if (result)
   {
-    result->_target = a3;
+    result->_target = target;
   }
 
   return result;
 }
 
-- (id)featureValueForName:(id)a3
+- (id)featureValueForName:(id)name
 {
-  if ([a3 isEqualToString:@"target"])
+  if ([name isEqualToString:@"target"])
   {
     v4 = MEMORY[0x277CBFEF8];
     [(RTPlaceTypeClassifierModelRankerOutput *)self target];

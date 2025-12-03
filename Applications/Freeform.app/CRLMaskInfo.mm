@@ -1,28 +1,28 @@
 @interface CRLMaskInfo
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToMaskInfo:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToMaskInfo:(id)info;
 - (CRLCanvasElementInfo)parentInfo;
-- (CRLMaskInfo)initWithImageItem:(id)a3 geometry:(id)a4 pathSource:(id)a5;
+- (CRLMaskInfo)initWithImageItem:(id)item geometry:(id)geometry pathSource:(id)source;
 - (_TtC8Freeform12CRLImageItem)parentImageItem;
-- (void)setGeometry:(id)a3;
-- (void)setPathSource:(id)a3;
+- (void)setGeometry:(id)geometry;
+- (void)setPathSource:(id)source;
 @end
 
 @implementation CRLMaskInfo
 
-- (CRLMaskInfo)initWithImageItem:(id)a3 geometry:(id)a4 pathSource:(id)a5
+- (CRLMaskInfo)initWithImageItem:(id)item geometry:(id)geometry pathSource:(id)source
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  itemCopy = item;
+  geometryCopy = geometry;
+  sourceCopy = source;
   v22.receiver = self;
   v22.super_class = CRLMaskInfo;
   v11 = [(CRLMaskInfo *)&v22 init];
   if (v11)
   {
-    if (v10)
+    if (sourceCopy)
     {
-      if (v9)
+      if (geometryCopy)
       {
         goto LABEL_4;
       }
@@ -56,15 +56,15 @@
       v14 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/BoardItems/CRLMaskInfo.m"];
       [CRLAssertionHandler handleFailureInFunction:v13 file:v14 lineNumber:31 isFatal:0 description:"invalid nil value for '%{public}s'", "pathSource"];
 
-      if (v9)
+      if (geometryCopy)
       {
 LABEL_4:
-        if (v8)
+        if (itemCopy)
         {
 LABEL_33:
-          [(CRLMaskInfo *)v11 setGeometry:v9];
-          [(CRLMaskInfo *)v11 setParentInfo:v8];
-          [(CRLMaskInfo *)v11 setPathSource:v10];
+          [(CRLMaskInfo *)v11 setGeometry:geometryCopy];
+          [(CRLMaskInfo *)v11 setParentInfo:itemCopy];
+          [(CRLMaskInfo *)v11 setPathSource:sourceCopy];
           goto LABEL_34;
         }
 
@@ -125,7 +125,7 @@ LABEL_24:
     v17 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/BoardItems/CRLMaskInfo.m"];
     [CRLAssertionHandler handleFailureInFunction:v16 file:v17 lineNumber:32 isFatal:0 description:"invalid nil value for '%{public}s'", "geometry"];
 
-    if (v8)
+    if (itemCopy)
     {
       goto LABEL_33;
     }
@@ -147,20 +147,20 @@ LABEL_34:
   return v5;
 }
 
-- (BOOL)isEqualToMaskInfo:(id)a3
+- (BOOL)isEqualToMaskInfo:(id)info
 {
-  v4 = a3;
-  if (v4)
+  infoCopy = info;
+  if (infoCopy)
   {
-    v5 = [(CRLMaskInfo *)self geometry];
-    v6 = [v4 geometry];
-    if ([v5 isEqual:v6])
+    geometry = [(CRLMaskInfo *)self geometry];
+    geometry2 = [infoCopy geometry];
+    if ([geometry isEqual:geometry2])
     {
-      v7 = [(CRLMaskInfo *)self pathSource];
-      v8 = [v7 bezierPath];
-      v9 = [v4 pathSource];
-      v10 = [v9 bezierPath];
-      v11 = [v8 isEqual:v10];
+      pathSource = [(CRLMaskInfo *)self pathSource];
+      bezierPath = [pathSource bezierPath];
+      pathSource2 = [infoCopy pathSource];
+      bezierPath2 = [pathSource2 bezierPath];
+      v11 = [bezierPath isEqual:bezierPath2];
     }
 
     else
@@ -177,15 +177,15 @@ LABEL_34:
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  v6 = sub_100014370(v5, v4);
+  v6 = sub_100014370(v5, equalCopy);
 
-  v7 = [(CRLMaskInfo *)self parentInfo];
-  v8 = [v6 parentInfo];
-  if (v7 == v8)
+  parentInfo = [(CRLMaskInfo *)self parentInfo];
+  parentInfo2 = [v6 parentInfo];
+  if (parentInfo == parentInfo2)
   {
     v9 = [(CRLMaskInfo *)self isEqualToMaskInfo:v6];
   }
@@ -198,10 +198,10 @@ LABEL_34:
   return v9;
 }
 
-- (void)setGeometry:(id)a3
+- (void)setGeometry:(id)geometry
 {
-  v4 = a3;
-  if (([v4 allValuesValidNumbers] & 1) == 0)
+  geometryCopy = geometry;
+  if (([geometryCopy allValuesValidNumbers] & 1) == 0)
   {
     v5 = +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -226,7 +226,7 @@ LABEL_34:
       v34 = 2114;
       v35 = v25;
       v36 = 2112;
-      v37 = v4;
+      v37 = geometryCopy;
       _os_log_error_impl(&_mh_execute_header, v23, OS_LOG_TYPE_ERROR, "#Assert *** Assertion failure #%u: %{public}s %{public}s:%d Attempting to set geometry with invalid properties on %{public}@! %@", buf, 0x36u);
     }
 
@@ -245,21 +245,21 @@ LABEL_34:
     v9 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/BoardItems/CRLMaskInfo.m"];
     v10 = objc_opt_class();
     v11 = NSStringFromClass(v10);
-    [CRLAssertionHandler handleFailureInFunction:v8 file:v9 lineNumber:89 isFatal:0 description:"Attempting to set geometry with invalid properties on %{public}@! %@", v11, v4];
+    [CRLAssertionHandler handleFailureInFunction:v8 file:v9 lineNumber:89 isFatal:0 description:"Attempting to set geometry with invalid properties on %{public}@! %@", v11, geometryCopy];
 
-    v12 = [v4 geometryWithValidNumbers];
+    geometryWithValidNumbers = [geometryCopy geometryWithValidNumbers];
 
-    v4 = v12;
+    geometryCopy = geometryWithValidNumbers;
   }
 
-  if (([v4 isEqual:self->_geometry] & 1) == 0)
+  if (([geometryCopy isEqual:self->_geometry] & 1) == 0)
   {
-    v13 = [v4 copy];
+    v13 = [geometryCopy copy];
     geometry = self->_geometry;
     self->_geometry = v13;
 
-    v15 = [(CRLMaskInfo *)self geometry];
-    [v15 size];
+    geometry = [(CRLMaskInfo *)self geometry];
+    [geometry size];
     v17 = v16;
     v19 = v18;
 
@@ -271,10 +271,10 @@ LABEL_34:
   }
 }
 
-- (void)setPathSource:(id)a3
+- (void)setPathSource:(id)source
 {
-  v4 = a3;
-  if (!v4)
+  sourceCopy = source;
+  if (!sourceCopy)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -303,17 +303,17 @@ LABEL_34:
     [CRLAssertionHandler handleFailureInFunction:v6 file:v7 lineNumber:104 isFatal:0 description:"invalid nil value for '%{public}s'", "newPathSource"];
   }
 
-  if (self->_pathSource != v4)
+  if (self->_pathSource != sourceCopy)
   {
-    v8 = [(CRLPathSource *)v4 copy];
+    v8 = [(CRLPathSource *)sourceCopy copy];
     pathSource = self->_pathSource;
     self->_pathSource = v8;
 
     [(CRLPathSource *)self->_pathSource naturalSize];
     v11 = v10;
     v13 = v12;
-    v14 = [(CRLMaskInfo *)self geometry];
-    [v14 size];
+    geometry = [(CRLMaskInfo *)self geometry];
+    [geometry size];
     v17 = sub_10011ECC8(v11, v13, v15, v16);
 
     if (!v17)
@@ -331,8 +331,8 @@ LABEL_34:
         v27 = v19;
         [(CRLPathSource *)v26 naturalSize];
         v28 = NSStringFromCGSize(v45);
-        v29 = [(CRLMaskInfo *)self geometry];
-        [v29 size];
+        geometry2 = [(CRLMaskInfo *)self geometry];
+        [geometry2 size];
         v30 = NSStringFromCGSize(v46);
         *buf = 67110402;
         v32 = v18;
@@ -364,8 +364,8 @@ LABEL_34:
       v22 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/BoardItems/CRLMaskInfo.m"];
       [(CRLPathSource *)self->_pathSource naturalSize];
       v23 = NSStringFromCGSize(v43);
-      v24 = [(CRLMaskInfo *)self geometry];
-      [v24 size];
+      geometry3 = [(CRLMaskInfo *)self geometry];
+      [geometry3 size];
       v25 = NSStringFromCGSize(v44);
       [CRLAssertionHandler handleFailureInFunction:v21 file:v22 lineNumber:110 isFatal:0 description:"Path source set on mask info that doesn't have a natural size that aligns with the mask's info geometry! Path Source Size: %{public}@ Geometry Size: %{public}@", v23, v25];
     }

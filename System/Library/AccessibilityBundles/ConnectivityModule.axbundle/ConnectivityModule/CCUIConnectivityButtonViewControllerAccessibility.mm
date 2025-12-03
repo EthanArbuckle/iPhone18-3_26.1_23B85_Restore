@@ -1,5 +1,5 @@
 @interface CCUIConnectivityButtonViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilityControlCenterButtonIdentifier;
 - (id)_accessibilityControlCenterButtonLabel;
 - (id)_accessibilityControlCenterGenericOnOff;
@@ -7,14 +7,14 @@
 
 @implementation CCUIConnectivityButtonViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CCUIConnectivityButtonViewController" isKindOfClass:@"CCUILabeledRoundButtonViewController"];
-  [v3 validateClass:@"CCUIConnectivityCellularDataViewController" isKindOfClass:@"CCUIConnectivityButtonViewController"];
-  [v3 validateClass:@"CCUIConnectivityHotspotViewController" isKindOfClass:@"CCUIConnectivityButtonViewController"];
-  [v3 validateClass:@"CCUIConnectivityAirplaneViewController" isKindOfClass:@"CCUIConnectivityButtonViewController"];
-  [v3 validateClass:@"CCUIConnectivityAirplaneViewController" hasProperty:@"title" withType:"@"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CCUIConnectivityButtonViewController" isKindOfClass:@"CCUILabeledRoundButtonViewController"];
+  [validationsCopy validateClass:@"CCUIConnectivityCellularDataViewController" isKindOfClass:@"CCUIConnectivityButtonViewController"];
+  [validationsCopy validateClass:@"CCUIConnectivityHotspotViewController" isKindOfClass:@"CCUIConnectivityButtonViewController"];
+  [validationsCopy validateClass:@"CCUIConnectivityAirplaneViewController" isKindOfClass:@"CCUIConnectivityButtonViewController"];
+  [validationsCopy validateClass:@"CCUIConnectivityAirplaneViewController" hasProperty:@"title" withType:"@"];
 }
 
 - (id)_accessibilityControlCenterButtonLabel
@@ -23,15 +23,15 @@
   v4 = [(CCUIConnectivityButtonViewControllerAccessibility *)self safeStringForKey:@"subtitle"];
   if (MEMORY[0x29C2D1760](@"CCUIConnectivityButtonViewController"))
   {
-    v5 = [(CCUIConnectivityButtonViewControllerAccessibility *)self _accessibilityControlCenterGenericOnOff];
-    v6 = [v5 objectForKey:@"on"];
+    _accessibilityControlCenterGenericOnOff = [(CCUIConnectivityButtonViewControllerAccessibility *)self _accessibilityControlCenterGenericOnOff];
+    v6 = [_accessibilityControlCenterGenericOnOff objectForKey:@"on"];
     if ([v4 isEqualToString:v6])
     {
     }
 
     else
     {
-      v7 = [v5 objectForKey:@"off"];
+      v7 = [_accessibilityControlCenterGenericOnOff objectForKey:@"off"];
       v8 = [v4 isEqualToString:v7];
 
       if (!v8)
@@ -82,8 +82,8 @@ LABEL_7:
 {
   v14[2] = *MEMORY[0x29EDCA608];
   v3 = MEMORY[0x29C2D1760](@"CCUIConnectivityButtonViewController", a2);
-  v4 = [(CCUIConnectivityButtonViewControllerAccessibility *)self _accessibilityControlCenterButtonIdentifier];
-  if ([v4 isEqualToString:@"cellular-data-button"])
+  _accessibilityControlCenterButtonIdentifier = [(CCUIConnectivityButtonViewControllerAccessibility *)self _accessibilityControlCenterButtonIdentifier];
+  if ([_accessibilityControlCenterButtonIdentifier isEqualToString:@"cellular-data-button"])
   {
     v5 = @"CONTROL_CENTER_STATUS_CELLULAR_DATA_ON";
     v6 = @"CONTROL_CENTER_STATUS_CELLULAR_DATA_OFF";
@@ -100,35 +100,35 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if ([v4 isEqualToString:@"airplane-mode-button"])
+  if ([_accessibilityControlCenterButtonIdentifier isEqualToString:@"airplane-mode-button"])
   {
     v5 = @"CONTROL_CENTER_STATUS_AIRPLANE_MODE_ON";
     v6 = @"CONTROL_CENTER_STATUS_AIRPLANE_MODE_OFF";
     goto LABEL_13;
   }
 
-  if ([v4 isEqualToString:@"com.apple.ControlCenter.WiFi"])
+  if ([_accessibilityControlCenterButtonIdentifier isEqualToString:@"com.apple.ControlCenter.WiFi"])
   {
     v5 = @"CONTROL_CENTER_STATUS_WIFI_ON";
     v6 = @"CONTROL_CENTER_STATUS_WIFI_OFF";
     goto LABEL_13;
   }
 
-  if ([v4 isEqualToString:@"com.apple.ControlCenter.Bluetooth"])
+  if ([_accessibilityControlCenterButtonIdentifier isEqualToString:@"com.apple.ControlCenter.Bluetooth"])
   {
     v5 = @"CONTROL_CENTER_STATUS_BLUETOOTH_ON";
     v6 = @"CONTROL_CENTER_STATUS_BLUETOOTH_OFF";
     goto LABEL_13;
   }
 
-  if ([v4 isEqualToString:@"hotspot-button"])
+  if ([_accessibilityControlCenterButtonIdentifier isEqualToString:@"hotspot-button"])
   {
     v5 = @"CONTROL_CENTER_STATUS_HOTSPOT_ON";
     v6 = @"CONTROL_CENTER_STATUS_HOTSPOT_OFF";
     goto LABEL_13;
   }
 
-  if ([v4 isEqualToString:@"com.apple.ControlCenter.VPN"])
+  if ([_accessibilityControlCenterButtonIdentifier isEqualToString:@"com.apple.ControlCenter.VPN"])
   {
     v5 = @"CONTROL_CENTER_STATUS_VPN_ON";
     v6 = @"CONTROL_CENTER_STATUS_VPN_OFF";

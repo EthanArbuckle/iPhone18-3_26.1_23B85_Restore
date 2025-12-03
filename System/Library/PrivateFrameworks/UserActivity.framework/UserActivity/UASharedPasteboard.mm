@@ -1,54 +1,54 @@
 @interface UASharedPasteboard
 + (id)remotePasteboard;
 + (void)clearLocalPasteboardInformation;
-+ (void)localPasteboardDidAddData:(id)a3 toItemAtIndex:(unint64_t)a4 generation:(unint64_t)a5;
-+ (void)localPasteboardDidAddItems:(id)a3 forGeneration:(unint64_t)a4;
-+ (void)localPasteboardDidPasteGeneration:(unint64_t)a3;
++ (void)localPasteboardDidAddData:(id)data toItemAtIndex:(unint64_t)index generation:(unint64_t)generation;
++ (void)localPasteboardDidAddItems:(id)items forGeneration:(unint64_t)generation;
++ (void)localPasteboardDidPasteGeneration:(unint64_t)generation;
 + (void)startPreventingPasteboardSharing;
 + (void)stopPreventingPasteboardSharing;
 - (BOOL)returnPasteboardDataBeforeArchives;
 - (id)currentRemoteDeviceName;
-- (void)prefetchRemotePasteboardTypes:(id)a3;
+- (void)prefetchRemotePasteboardTypes:(id)types;
 @end
 
 @implementation UASharedPasteboard
 
-+ (void)localPasteboardDidAddData:(id)a3 toItemAtIndex:(unint64_t)a4 generation:(unint64_t)a5
++ (void)localPasteboardDidAddData:(id)data toItemAtIndex:(unint64_t)index generation:(unint64_t)generation
 {
   v16 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  dataCopy = data;
   v8 = _uaGetLogForCategory(0);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
-    v9 = [v7 type];
+    type = [dataCopy type];
     v12 = 134218243;
-    v13 = a4;
+    indexCopy = index;
     v14 = 2113;
-    v15 = v9;
+    v15 = type;
     _os_log_impl(&dword_226A4E000, v8, OS_LOG_TYPE_INFO, "PBOARD CLIENT: add type for index: %lu/%{private}@", &v12, 0x16u);
   }
 
   v10 = +[UASharedPasteboardManager sharedManager];
-  [v10 addData:v7 toItemAtIndex:a4 generation:a5];
+  [v10 addData:dataCopy toItemAtIndex:index generation:generation];
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)localPasteboardDidAddItems:(id)a3 forGeneration:(unint64_t)a4
++ (void)localPasteboardDidAddItems:(id)items forGeneration:(unint64_t)generation
 {
   v26 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  itemsCopy = items;
   v6 = _uaGetLogForCategory(0);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     *buf = 134218243;
-    v23 = [v5 count];
+    v23 = [itemsCopy count];
     v24 = 2113;
-    v25 = v5;
+    v25 = itemsCopy;
     _os_log_impl(&dword_226A4E000, v6, OS_LOG_TYPE_INFO, "PBOARD CLIENT: addItems, %lud items added, items=%{private}@", buf, 0x16u);
   }
 
-  if ([v5 count])
+  if ([itemsCopy count])
   {
     v7 = 0;
     do
@@ -57,10 +57,10 @@
       v20 = 0u;
       v17 = 0u;
       v18 = 0u;
-      v8 = [v5 objectAtIndexedSubscript:{v7, 0}];
-      v9 = [v8 types];
+      v8 = [itemsCopy objectAtIndexedSubscript:{v7, 0}];
+      types = [v8 types];
 
-      v10 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v10 = [types countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v10)
       {
         v11 = v10;
@@ -72,18 +72,18 @@
           {
             if (*v18 != v12)
             {
-              objc_enumerationMutation(v9);
+              objc_enumerationMutation(types);
             }
 
             v14 = *(*(&v17 + 1) + 8 * v13);
             v15 = +[UASharedPasteboardManager sharedManager];
-            [v15 addData:v14 toItemAtIndex:v7 generation:a4];
+            [v15 addData:v14 toItemAtIndex:v7 generation:generation];
 
             ++v13;
           }
 
           while (v11 != v13);
-          v11 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
+          v11 = [types countByEnumeratingWithState:&v17 objects:v21 count:16];
         }
 
         while (v11);
@@ -92,7 +92,7 @@
       ++v7;
     }
 
-    while ([v5 count] > v7);
+    while ([itemsCopy count] > v7);
   }
 
   v16 = *MEMORY[0x277D85DE8];
@@ -111,14 +111,14 @@
   [v3 clearLocalPasteboardInformation];
 }
 
-+ (void)localPasteboardDidPasteGeneration:(unint64_t)a3
++ (void)localPasteboardDidPasteGeneration:(unint64_t)generation
 {
   v8 = *MEMORY[0x277D85DE8];
   v4 = _uaGetLogForCategory(0);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     v6 = 134217984;
-    v7 = a3;
+    generationCopy = generation;
     _os_log_impl(&dword_226A4E000, v4, OS_LOG_TYPE_INFO, "PBOARD CLIENT: localPasteboardDidPasteGeneration = %ld", &v6, 0xCu);
   }
 
@@ -150,12 +150,12 @@ void __38__UASharedPasteboard_remotePasteboard__block_invoke()
 - (BOOL)returnPasteboardDataBeforeArchives
 {
   v2 = +[UASharedPasteboardManager sharedManager];
-  v3 = [v2 requestPasteboardFetchReturnEarly];
+  requestPasteboardFetchReturnEarly = [v2 requestPasteboardFetchReturnEarly];
 
-  return v3;
+  return requestPasteboardFetchReturnEarly;
 }
 
-- (void)prefetchRemotePasteboardTypes:(id)a3
+- (void)prefetchRemotePasteboardTypes:(id)types
 {
   v7 = *MEMORY[0x277D85DE8];
   v3 = _uaGetLogForCategory(@"pasteboard-client");
@@ -181,11 +181,11 @@ void __38__UASharedPasteboard_remotePasteboard__block_invoke()
   }
 
   v3 = +[UASharedPasteboardManager sharedManager];
-  v4 = [v3 currentRemoteDeviceName];
+  currentRemoteDeviceName = [v3 currentRemoteDeviceName];
 
   v5 = *MEMORY[0x277D85DE8];
 
-  return v4;
+  return currentRemoteDeviceName;
 }
 
 + (void)startPreventingPasteboardSharing

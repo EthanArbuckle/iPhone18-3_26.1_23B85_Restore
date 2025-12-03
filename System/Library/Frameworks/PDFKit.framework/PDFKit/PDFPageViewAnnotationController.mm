@@ -1,24 +1,24 @@
 @interface PDFPageViewAnnotationController
-- (BOOL)_indexSet:(id)a3 touchesIndexSet:(id)a4;
-- (PDFPageViewAnnotationController)initWithPDFPageView:(id)a3;
-- (id)_getIndexSetIntersectionBetween:(id)a3 and:(id)a4;
-- (id)_markupAnnotationsForExactIndexSet:(id)a3;
+- (BOOL)_indexSet:(id)set touchesIndexSet:(id)indexSet;
+- (PDFPageViewAnnotationController)initWithPDFPageView:(id)view;
+- (id)_getIndexSetIntersectionBetween:(id)between and:(id)and;
+- (id)_markupAnnotationsForExactIndexSet:(id)set;
 - (id)activeAnnotation;
-- (id)markupAnnotationsForIndexSet:(id)a3;
-- (void)_addPopupForAnnotation:(id)a3;
-- (void)_propagateNotesForIndexSet:(id)a3;
+- (id)markupAnnotationsForIndexSet:(id)set;
+- (void)_addPopupForAnnotation:(id)annotation;
+- (void)_propagateNotesForIndexSet:(id)set;
 - (void)_rotateActiveAnnotation;
-- (void)addControlForAnnotation:(id)a3;
-- (void)addMarkupWithStyle:(unint64_t)a3 forIndexSet:(id)a4;
+- (void)addControlForAnnotation:(id)annotation;
+- (void)addMarkupWithStyle:(unint64_t)style forIndexSet:(id)set;
 - (void)dealloc;
-- (void)removeControlForAnnotation:(id)a3;
+- (void)removeControlForAnnotation:(id)annotation;
 @end
 
 @implementation PDFPageViewAnnotationController
 
-- (PDFPageViewAnnotationController)initWithPDFPageView:(id)a3
+- (PDFPageViewAnnotationController)initWithPDFPageView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v16.receiver = self;
   v16.super_class = PDFPageViewAnnotationController;
   v5 = [(PDFPageViewAnnotationController *)&v16 init];
@@ -28,11 +28,11 @@
     v7 = v5->_private;
     v5->_private = v6;
 
-    objc_storeWeak(&v5->_private->pageView, v4);
-    v8 = [v4 page];
-    objc_storeWeak(&v5->_private->page, v8);
-    v9 = [v8 view];
-    objc_storeWeak(&v5->_private->view, v9);
+    objc_storeWeak(&v5->_private->pageView, viewCopy);
+    page = [viewCopy page];
+    objc_storeWeak(&v5->_private->page, page);
+    view = [page view];
+    objc_storeWeak(&v5->_private->view, view);
 
     objc_storeWeak(&v5->_private->activeAnnotation, 0);
     v10 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -40,11 +40,11 @@
     activeControls = v11->activeControls;
     v11->activeControls = v10;
 
-    v13 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v13 addObserver:v5 selector:sel__didRotatePageNotification_ name:@"PDFPageDidRotate" object:v8];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v5 selector:sel__didRotatePageNotification_ name:@"PDFPageDidRotate" object:page];
 
-    v14 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v14 addObserver:v5 selector:sel__didRotatePageNotification_ name:@"PDFPageDidChangeBounds" object:v8];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v5 selector:sel__didRotatePageNotification_ name:@"PDFPageDidChangeBounds" object:page];
   }
 
   return v5;
@@ -52,8 +52,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = PDFPageViewAnnotationController;
@@ -67,50 +67,50 @@
   return WeakRetained;
 }
 
-- (void)addControlForAnnotation:(id)a3
+- (void)addControlForAnnotation:(id)annotation
 {
-  v14 = a3;
+  annotationCopy = annotation;
   WeakRetained = objc_loadWeakRetained(&self->_private->page);
-  v5 = [WeakRetained document];
-  v6 = [v5 allowsFormFieldEntry];
+  document = [WeakRetained document];
+  allowsFormFieldEntry = [document allowsFormFieldEntry];
 
-  if (v6)
+  if (allowsFormFieldEntry)
   {
     activeControls = self->_private->activeControls;
-    v8 = [v14 pdfAnnotationUUID];
-    v9 = [(NSMutableDictionary *)activeControls objectForKey:v8];
+    pdfAnnotationUUID = [annotationCopy pdfAnnotationUUID];
+    v9 = [(NSMutableDictionary *)activeControls objectForKey:pdfAnnotationUUID];
 
     if (!v9)
     {
-      v10 = [v14 valueForAnnotationKey:@"/Subtype"];
-      v11 = [v14 popup];
+      v10 = [annotationCopy valueForAnnotationKey:@"/Subtype"];
+      popup = [annotationCopy popup];
 
-      if ((([v10 isEqualToString:@"/Widget"] & 1) != 0 || v11) && (objc_msgSend(v14, "isReadOnly") & 1) == 0 && (objc_msgSend(v14, "isLocked") & 1) == 0)
+      if ((([v10 isEqualToString:@"/Widget"] & 1) != 0 || popup) && (objc_msgSend(annotationCopy, "isReadOnly") & 1) == 0 && (objc_msgSend(annotationCopy, "isLocked") & 1) == 0)
       {
         [MEMORY[0x1E6979518] begin];
         [MEMORY[0x1E6979518] setDisableActions:1];
-        if (v11)
+        if (popup)
         {
-          [(PDFPageViewAnnotationController *)self _addPopupForAnnotation:v14];
+          [(PDFPageViewAnnotationController *)self _addPopupForAnnotation:annotationCopy];
         }
 
         else
         {
           v12 = objc_loadWeakRetained(&self->_private->pageView);
-          v13 = [v14 valueForAnnotationKey:@"/FT"];
+          v13 = [annotationCopy valueForAnnotationKey:@"/FT"];
           if ([v13 isEqualToString:@"/Tx"])
           {
-            [v12 _addPDFAnnotationTextWidget:v14];
+            [v12 _addPDFAnnotationTextWidget:annotationCopy];
           }
 
           else if ([v13 isEqualToString:@"/Ch"])
           {
-            [v12 _addPDFAnnotationChoiceWidget:v14];
+            [v12 _addPDFAnnotationChoiceWidget:annotationCopy];
           }
 
           else if ([v13 isEqualToString:@"/Sig"])
           {
-            [v12 _addPDFAnnotationSignatureWidget:v14];
+            [v12 _addPDFAnnotationSignatureWidget:annotationCopy];
           }
         }
 
@@ -120,28 +120,28 @@
   }
 }
 
-- (void)removeControlForAnnotation:(id)a3
+- (void)removeControlForAnnotation:(id)annotation
 {
-  v4 = a3;
-  if (v4)
+  annotationCopy = annotation;
+  if (annotationCopy)
   {
-    v10 = v4;
-    if ([v4 isSelected])
+    v10 = annotationCopy;
+    if ([annotationCopy isSelected])
     {
       [v10 setIsSelected:0];
     }
 
-    v5 = [v10 pdfAnnotationUUID];
-    if (v5)
+    pdfAnnotationUUID = [v10 pdfAnnotationUUID];
+    if (pdfAnnotationUUID)
     {
-      v6 = [(NSMutableDictionary *)self->_private->activeControls objectForKey:v5];
+      v6 = [(NSMutableDictionary *)self->_private->activeControls objectForKey:pdfAnnotationUUID];
       if (v6)
       {
         [MEMORY[0x1E6979518] begin];
         [MEMORY[0x1E6979518] setDisableActions:1];
         WeakRetained = objc_loadWeakRetained(&self->_private->view);
-        v8 = [WeakRetained undoManager];
-        [v8 removeAllActionsWithTarget:v6];
+        undoManager = [WeakRetained undoManager];
+        [undoManager removeAllActionsWithTarget:v6];
 
         [v10 setControl:0];
         [v6 removeFromSuperview];
@@ -152,12 +152,12 @@
           objc_storeWeak(&self->_private->activeAnnotation, 0);
         }
 
-        [(NSMutableDictionary *)self->_private->activeControls removeObjectForKey:v5];
+        [(NSMutableDictionary *)self->_private->activeControls removeObjectForKey:pdfAnnotationUUID];
         [MEMORY[0x1E6979518] commit];
       }
     }
 
-    v4 = v10;
+    annotationCopy = v10;
   }
 }
 
@@ -167,10 +167,10 @@
   if (WeakRetained)
   {
     v6 = WeakRetained;
-    v4 = [WeakRetained pdfAnnotationUUID];
-    if (v4)
+    pdfAnnotationUUID = [WeakRetained pdfAnnotationUUID];
+    if (pdfAnnotationUUID)
     {
-      v5 = [(NSMutableDictionary *)self->_private->activeControls objectForKey:v4];
+      v5 = [(NSMutableDictionary *)self->_private->activeControls objectForKey:pdfAnnotationUUID];
       if (v5)
       {
         [(PDFPageViewAnnotationController *)self removeControlForAnnotation:v6];
@@ -182,39 +182,39 @@
   }
 }
 
-- (void)addMarkupWithStyle:(unint64_t)a3 forIndexSet:(id)a4
+- (void)addMarkupWithStyle:(unint64_t)style forIndexSet:(id)set
 {
   v102 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  setCopy = set;
   WeakRetained = objc_loadWeakRetained(&self->_private->view);
-  v8 = [WeakRetained allowsMarkupAnnotationEditing];
+  allowsMarkupAnnotationEditing = [WeakRetained allowsMarkupAnnotationEditing];
 
-  if (!v8)
+  if (!allowsMarkupAnnotationEditing)
   {
     goto LABEL_69;
   }
 
   v9 = objc_loadWeakRetained(&self->_private->page);
   [v9 pageLayout];
-  if (a3 == 8 || ![v6 rangeCount])
+  if (style == 8 || ![setCopy rangeCount])
   {
     goto LABEL_68;
   }
 
-  v10 = [PDFAnnotation MarkupTypeForMarkupStyle:a3];
-  v11 = [objc_alloc(MEMORY[0x1E696AD50]) initWithIndexSet:v6];
+  v10 = [PDFAnnotation MarkupTypeForMarkupStyle:style];
+  v11 = [objc_alloc(MEMORY[0x1E696AD50]) initWithIndexSet:setCopy];
   v80 = v9;
-  v12 = [v9 annotations];
+  annotations = [v9 annotations];
   v76 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v77 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v93 = 0u;
   v94 = 0u;
   v95 = 0u;
   v96 = 0u;
-  v13 = v12;
+  v13 = annotations;
   v14 = [v13 countByEnumeratingWithState:&v93 objects:v101 count:16];
-  v69 = v6;
-  v84 = self;
+  v69 = setCopy;
+  selfCopy = self;
   v73 = v13;
   if (!v14)
   {
@@ -224,7 +224,7 @@
   v15 = v14;
   v16 = *v94;
   v78 = v10;
-  v79 = a3;
+  styleCopy = style;
   v81 = *v94;
   do
   {
@@ -240,15 +240,15 @@
       v18 = *(*(&v93 + 1) + 8 * v17);
       if ([v18 isMarkupAnnotationSubtype] && (v10 == 3 || objc_msgSend(v18, "markupType") == 3 || objc_msgSend(v18, "markupType") == v10))
       {
-        v19 = [v18 indexSetForQuadPoints];
-        v20 = [(PDFPageViewAnnotationController *)self _getIndexSetIntersectionBetween:v6 and:v19];
-        if ([v20 count] || -[PDFPageViewAnnotationController _indexSet:touchesIndexSet:](self, "_indexSet:touchesIndexSet:", v19, v6))
+        indexSetForQuadPoints = [v18 indexSetForQuadPoints];
+        v20 = [(PDFPageViewAnnotationController *)self _getIndexSetIntersectionBetween:setCopy and:indexSetForQuadPoints];
+        if ([v20 count] || -[PDFPageViewAnnotationController _indexSet:touchesIndexSet:](self, "_indexSet:touchesIndexSet:", indexSetForQuadPoints, setCopy))
         {
-          if ([v18 markupStyle] == a3)
+          if ([v18 markupStyle] == style)
           {
-            if ([v19 containsIndexes:v6])
+            if ([indexSetForQuadPoints containsIndexes:setCopy])
             {
-              if ([v19 isEqualToIndexSet:v6])
+              if ([indexSetForQuadPoints isEqualToIndexSet:setCopy])
               {
                 [v77 addObject:v18];
               }
@@ -256,15 +256,15 @@
               else
               {
                 v70 = v11;
-                v26 = [v80 string];
-                v27 = [v6 firstIndex] - 1;
-                v72 = [v6 lastIndex];
-                v74 = [objc_alloc(MEMORY[0x1E696AD50]) initWithIndexSet:v6];
-                v28 = [v19 containsIndex:v27];
-                v75 = v26;
-                v29 = [v26 substringWithRange:{v27, 1}];
-                v30 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-                v31 = [v29 stringByTrimmingCharactersInSet:v30];
+                string = [v80 string];
+                v27 = [setCopy firstIndex] - 1;
+                lastIndex = [setCopy lastIndex];
+                v74 = [objc_alloc(MEMORY[0x1E696AD50]) initWithIndexSet:setCopy];
+                v28 = [indexSetForQuadPoints containsIndex:v27];
+                v75 = string;
+                v29 = [string substringWithRange:{v27, 1}];
+                whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+                v31 = [v29 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
                 v32 = [v31 length];
 
                 if (v28 && !v32)
@@ -272,27 +272,27 @@
                   [v74 addIndex:v27];
                 }
 
-                v33 = [v19 containsIndex:v72 + 1];
-                v34 = [v75 substringWithRange:{v72 + 1, 1}];
-                v35 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-                v36 = [v34 stringByTrimmingCharactersInSet:v35];
+                v33 = [indexSetForQuadPoints containsIndex:lastIndex + 1];
+                v34 = [v75 substringWithRange:{lastIndex + 1, 1}];
+                whitespaceCharacterSet2 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+                v36 = [v34 stringByTrimmingCharactersInSet:whitespaceCharacterSet2];
                 v37 = [v36 length];
 
-                self = v84;
+                self = selfCopy;
                 if (v33 && !v37)
                 {
-                  [v74 addIndex:v72 + 1];
+                  [v74 addIndex:lastIndex + 1];
                 }
 
-                v38 = [objc_alloc(MEMORY[0x1E696AD50]) initWithIndexSet:v19];
+                v38 = [objc_alloc(MEMORY[0x1E696AD50]) initWithIndexSet:indexSetForQuadPoints];
                 [v38 removeIndexes:v74];
                 [v76 setObject:v18 forKey:v38];
 
-                v6 = v69;
+                setCopy = v69;
                 v11 = v70;
                 v13 = v73;
                 v10 = v78;
-                a3 = v79;
+                style = styleCopy;
               }
 
               v11 = 0;
@@ -301,24 +301,24 @@
             else
             {
               [v77 addObject:v18];
-              [v11 addIndexes:v19];
+              [v11 addIndexes:indexSetForQuadPoints];
             }
 
             goto LABEL_35;
           }
 
-          v21 = [objc_alloc(MEMORY[0x1E696AD50]) initWithIndexSet:v19];
-          [v21 removeIndexes:v6];
+          v21 = [objc_alloc(MEMORY[0x1E696AD50]) initWithIndexSet:indexSetForQuadPoints];
+          [v21 removeIndexes:setCopy];
           if ([v21 count])
           {
             [v76 setObject:v18 forKey:v21];
             goto LABEL_25;
           }
 
-          v22 = [v18 popup];
-          if (v22 && (v23 = v22, v24 = [v19 isEqualToIndexSet:v6], v23, !v24))
+          popup = [v18 popup];
+          if (popup && (v23 = popup, v24 = [indexSetForQuadPoints isEqualToIndexSet:setCopy], v23, !v24))
           {
-            [v11 removeIndexes:v19];
+            [v11 removeIndexes:indexSetForQuadPoints];
 
             v13 = v73;
           }
@@ -328,13 +328,13 @@
             [v77 addObject:v18];
             v13 = v73;
 LABEL_25:
-            v25 = [objc_alloc(MEMORY[0x1E696AD50]) initWithIndexSet:v19];
+            v25 = [objc_alloc(MEMORY[0x1E696AD50]) initWithIndexSet:indexSetForQuadPoints];
             [v25 removeIndexes:v21];
             [v11 addIndexes:v25];
           }
 
           v10 = v78;
-          a3 = v79;
+          style = styleCopy;
         }
 
 LABEL_35:
@@ -357,9 +357,9 @@ LABEL_40:
   v9 = v80;
   if (v11)
   {
-    v40 = [PDFAnnotation SubtypeForPDFMarkupStyle:a3];
+    v40 = [PDFAnnotation SubtypeForPDFMarkupStyle:style];
     v41 = +[PDFAnnotation PDFMarkupColors];
-    v42 = [v41 objectAtIndex:a3];
+    v42 = [v41 objectAtIndex:style];
 
     v43 = objc_alloc([v80 annotationSubclassForSubtype:v40]);
     v99 = @"/C";
@@ -431,22 +431,22 @@ LABEL_40:
 
         v58 = *(*(&v85 + 1) + 8 * j);
         [v9 removeAnnotation:v58 withUndo:{1, v69}];
-        v59 = [v58 contents];
-        if (v59)
+        contents = [v58 contents];
+        if (contents)
         {
-          v60 = v59;
-          v61 = [v58 indexSetForQuadPoints];
-          v62 = [(PDFPageViewAnnotationController *)self markupAnnotationsForIndexSet:v61];
+          v60 = contents;
+          indexSetForQuadPoints2 = [v58 indexSetForQuadPoints];
+          v62 = [(PDFPageViewAnnotationController *)self markupAnnotationsForIndexSet:indexSetForQuadPoints2];
 
           if ([v62 count])
           {
             v63 = [v62 objectAtIndex:0];
-            v64 = [v63 contents];
+            contents2 = [v63 contents];
 
-            if (v64)
+            if (contents2)
             {
-              v65 = [v63 contents];
-              v66 = [v65 stringByAppendingString:@"\n\n"];
+              contents3 = [v63 contents];
+              v66 = [contents3 stringByAppendingString:@"\n\n"];
               v67 = [v66 stringByAppendingString:v60];
 
               v60 = v67;
@@ -456,7 +456,7 @@ LABEL_40:
             [v63 setContents:v60 withUndo:1];
           }
 
-          self = v84;
+          self = selfCopy;
         }
       }
 
@@ -466,7 +466,7 @@ LABEL_40:
     while (v55);
   }
 
-  v6 = v69;
+  setCopy = v69;
   if (v71)
   {
     v68 = v71;
@@ -483,19 +483,19 @@ LABEL_68:
 LABEL_69:
 }
 
-- (id)markupAnnotationsForIndexSet:(id)a3
+- (id)markupAnnotationsForIndexSet:(id)set
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  setCopy = set;
   v17 = objc_alloc_init(MEMORY[0x1E695DF70]);
   WeakRetained = objc_loadWeakRetained(&self->_private->page);
-  v6 = [WeakRetained annotations];
+  annotations = [WeakRetained annotations];
 
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v7 = v6;
+  v7 = annotations;
   v8 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v8)
   {
@@ -513,8 +513,8 @@ LABEL_69:
         v12 = *(*(&v18 + 1) + 8 * i);
         if ([v12 isMarkupAnnotationSubtype])
         {
-          v13 = [v12 indexSetForQuadPoints];
-          v14 = [(PDFPageViewAnnotationController *)self _getIndexSetIntersectionBetween:v4 and:v13];
+          indexSetForQuadPoints = [v12 indexSetForQuadPoints];
+          v14 = [(PDFPageViewAnnotationController *)self _getIndexSetIntersectionBetween:setCopy and:indexSetForQuadPoints];
           v15 = [v14 count];
 
           if (v15)
@@ -576,9 +576,9 @@ uint64_t __64__PDFPageViewAnnotationController_markupAnnotationsForIndexSet___bl
   return v10;
 }
 
-- (void)_addPopupForAnnotation:(id)a3
+- (void)_addPopupForAnnotation:(id)annotation
 {
-  obj = a3;
+  obj = annotation;
   v4 = [PDFKitPopupView alloc];
   WeakRetained = objc_loadWeakRetained(&self->_private->pageView);
   v6 = objc_loadWeakRetained(&self->_private->view);
@@ -588,31 +588,31 @@ uint64_t __64__PDFPageViewAnnotationController_markupAnnotationsForIndexSet___bl
   {
     objc_storeWeak(&self->_private->activeAnnotation, obj);
     activeControls = self->_private->activeControls;
-    v9 = [obj pdfAnnotationUUID];
-    [(NSMutableDictionary *)activeControls setObject:v7 forKey:v9];
+    pdfAnnotationUUID = [obj pdfAnnotationUUID];
+    [(NSMutableDictionary *)activeControls setObject:v7 forKey:pdfAnnotationUUID];
 
     [obj setControl:v7];
   }
 }
 
-- (id)_getIndexSetIntersectionBetween:(id)a3 and:(id)a4
+- (id)_getIndexSetIntersectionBetween:(id)between and:(id)and
 {
-  v5 = a4;
+  andCopy = and;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __71__PDFPageViewAnnotationController__getIndexSetIntersectionBetween_and___block_invoke;
   v9[3] = &unk_1E8150908;
-  v10 = v5;
-  v6 = v5;
-  v7 = [a3 indexesPassingTest:v9];
+  v10 = andCopy;
+  v6 = andCopy;
+  v7 = [between indexesPassingTest:v9];
 
   return v7;
 }
 
-- (BOOL)_indexSet:(id)a3 touchesIndexSet:(id)a4
+- (BOOL)_indexSet:(id)set touchesIndexSet:(id)indexSet
 {
-  v5 = a3;
-  v6 = a4;
+  setCopy = set;
+  indexSetCopy = indexSet;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
@@ -621,10 +621,10 @@ uint64_t __64__PDFPageViewAnnotationController_markupAnnotationsForIndexSet___bl
   v10[1] = 3221225472;
   v10[2] = __61__PDFPageViewAnnotationController__indexSet_touchesIndexSet___block_invoke;
   v10[3] = &unk_1E8150958;
-  v7 = v6;
+  v7 = indexSetCopy;
   v11 = v7;
   v12 = &v13;
-  [v5 enumerateRangesUsingBlock:v10];
+  [setCopy enumerateRangesUsingBlock:v10];
   v8 = *(v14 + 24);
 
   _Block_object_dispose(&v13, 8);
@@ -673,19 +673,19 @@ void *__61__PDFPageViewAnnotationController__indexSet_touchesIndexSet___block_in
   return result;
 }
 
-- (id)_markupAnnotationsForExactIndexSet:(id)a3
+- (id)_markupAnnotationsForExactIndexSet:(id)set
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  setCopy = set;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   WeakRetained = objc_loadWeakRetained(&self->_private->page);
-  v7 = [WeakRetained annotations];
+  annotations = [WeakRetained annotations];
 
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v8 = v7;
+  v8 = annotations;
   v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v9)
   {
@@ -703,8 +703,8 @@ void *__61__PDFPageViewAnnotationController__indexSet_touchesIndexSet___block_in
         v13 = *(*(&v17 + 1) + 8 * i);
         if ([v13 isMarkupAnnotationSubtype])
         {
-          v14 = [v13 indexSetForQuadPoints];
-          v15 = [v14 isEqualToIndexSet:v4];
+          indexSetForQuadPoints = [v13 indexSetForQuadPoints];
+          v15 = [indexSetForQuadPoints isEqualToIndexSet:setCopy];
 
           if (v15)
           {
@@ -733,10 +733,10 @@ BOOL __70__PDFPageViewAnnotationController__markupAnnotationsForExactIndexSet___
   return v5 < v6;
 }
 
-- (void)_propagateNotesForIndexSet:(id)a3
+- (void)_propagateNotesForIndexSet:(id)set
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = [(PDFPageViewAnnotationController *)self _markupAnnotationsForExactIndexSet:a3];
+  v4 = [(PDFPageViewAnnotationController *)self _markupAnnotationsForExactIndexSet:set];
   WeakRetained = objc_loadWeakRetained(&self->_private->view);
   if ([v4 count])
   {
@@ -761,10 +761,10 @@ BOOL __70__PDFPageViewAnnotationController__markupAnnotationsForExactIndexSet___
           }
 
           v12 = *(*(&v16 + 1) + 8 * i);
-          v13 = [v12 contents];
-          if (v13)
+          contents = [v12 contents];
+          if (contents)
           {
-            v14 = v13;
+            v14 = contents;
             [v12 setContents:0 withUndo:1];
             [v6 setContents:v14 withUndo:1];
 
@@ -789,9 +789,9 @@ LABEL_12:
 
   else
   {
-    v15 = [WeakRetained currentSelection];
+    currentSelection = [WeakRetained currentSelection];
 
-    if (!v15)
+    if (!currentSelection)
     {
       [WeakRetained setActiveAnnotation:0];
     }

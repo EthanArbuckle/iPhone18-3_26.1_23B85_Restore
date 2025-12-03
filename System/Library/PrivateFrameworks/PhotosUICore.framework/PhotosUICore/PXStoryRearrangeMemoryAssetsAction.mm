@@ -1,33 +1,33 @@
 @interface PXStoryRearrangeMemoryAssetsAction
-- (PXStoryRearrangeMemoryAssetsAction)initWithModel:(id)a3 movedAssets:(id)a4 beforeAsset:(id)a5;
-- (void)performAction:(id)a3;
+- (PXStoryRearrangeMemoryAssetsAction)initWithModel:(id)model movedAssets:(id)assets beforeAsset:(id)asset;
+- (void)performAction:(id)action;
 @end
 
 @implementation PXStoryRearrangeMemoryAssetsAction
 
-- (void)performAction:(id)a3
+- (void)performAction:(id)action
 {
   v43 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PXStoryRearrangeMemoryAssetsAction *)self movedAssets];
-  v6 = [(PXStoryRearrangeMemoryAssetsAction *)self targetAsset];
-  v7 = [(PXStoryRearrangeMemoryAssetsAction *)self model];
-  v8 = [v7 recipeManager];
+  actionCopy = action;
+  movedAssets = [(PXStoryRearrangeMemoryAssetsAction *)self movedAssets];
+  targetAsset = [(PXStoryRearrangeMemoryAssetsAction *)self targetAsset];
+  model = [(PXStoryRearrangeMemoryAssetsAction *)self model];
+  recipeManager = [model recipeManager];
 
-  v9 = [v8 assetsDataSourceManager];
-  v10 = [v9 dataSource];
+  assetsDataSourceManager = [recipeManager assetsDataSourceManager];
+  dataSource = [assetsDataSourceManager dataSource];
 
-  if (v10 && [v5 count] && objc_msgSend(v10, "numberOfSections") == 1)
+  if (dataSource && [movedAssets count] && objc_msgSend(dataSource, "numberOfSections") == 1)
   {
-    [v10 firstSectionIndexPath];
-    v11 = [v10 assetsInSectionIndexPath:v41];
+    [dataSource firstSectionIndexPath];
+    v11 = [dataSource assetsInSectionIndexPath:v41];
     v12 = [objc_alloc(MEMORY[0x1E696AC90]) initWithIndexesInRange:{0, objc_msgSend(v11, "count")}];
     v13 = [v11 objectsAtIndexes:v12];
     v29 = [v13 mutableCopy];
 
-    if (v6)
+    if (targetAsset)
     {
-      v14 = [v11 indexOfObject:v6];
+      v14 = [v11 indexOfObject:targetAsset];
     }
 
     else
@@ -36,25 +36,25 @@
     }
 
     v15 = v29;
-    v16 = [PXDragAndDropUtilities adjustedTargetIndexForCollection:v29 movedObjects:v5 targetIndex:v14];
+    v16 = [PXDragAndDropUtilities adjustedTargetIndexForCollection:v29 movedObjects:movedAssets targetIndex:v14];
     if (v16 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      (*(v4 + 2))(v4, 0, 0);
+      (*(actionCopy + 2))(actionCopy, 0, 0);
     }
 
     else
     {
       v26 = v12;
       v27 = v11;
-      v28 = v6;
+      v28 = targetAsset;
       v24 = v16;
-      v25 = [objc_alloc(MEMORY[0x1E696AC90]) initWithIndexesInRange:{v16, objc_msgSend(v5, "count")}];
+      v25 = [objc_alloc(MEMORY[0x1E696AC90]) initWithIndexesInRange:{v16, objc_msgSend(movedAssets, "count")}];
       v17 = objc_alloc_init(MEMORY[0x1E695DF70]);
       v37 = 0u;
       v38 = 0u;
       v39 = 0u;
       v40 = 0u;
-      v18 = v5;
+      v18 = movedAssets;
       v19 = [v18 countByEnumeratingWithState:&v37 objects:v42 count:16];
       if (v19)
       {
@@ -85,25 +85,25 @@
       block[2] = __52__PXStoryRearrangeMemoryAssetsAction_performAction___block_invoke;
       block[3] = &unk_1E7748800;
       block[4] = self;
-      v31 = v8;
+      v31 = recipeManager;
       v36 = v24;
-      v32 = v10;
+      v32 = dataSource;
       v33 = v17;
       v34 = v29;
-      v35 = v4;
+      v35 = actionCopy;
       v23 = v17;
       dispatch_async(MEMORY[0x1E69E96A0], block);
 
       v15 = v29;
       v11 = v27;
-      v6 = v28;
+      targetAsset = v28;
       v12 = v26;
     }
   }
 
   else
   {
-    (*(v4 + 2))(v4, 0, 0);
+    (*(actionCopy + 2))(actionCopy, 0, 0);
   }
 }
 
@@ -188,21 +188,21 @@ void __52__PXStoryRearrangeMemoryAssetsAction_performAction___block_invoke_3(uin
   PXDisplayAssetFetchResultFromArray();
 }
 
-- (PXStoryRearrangeMemoryAssetsAction)initWithModel:(id)a3 movedAssets:(id)a4 beforeAsset:(id)a5
+- (PXStoryRearrangeMemoryAssetsAction)initWithModel:(id)model movedAssets:(id)assets beforeAsset:(id)asset
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [v11 photoLibrary];
+  modelCopy = model;
+  assetsCopy = assets;
+  assetCopy = asset;
+  photoLibrary = [assetCopy photoLibrary];
   v15.receiver = self;
   v15.super_class = PXStoryRearrangeMemoryAssetsAction;
-  v13 = [(PXPhotosAction *)&v15 initWithPhotoLibrary:v12];
+  v13 = [(PXPhotosAction *)&v15 initWithPhotoLibrary:photoLibrary];
 
   if (v13)
   {
-    objc_storeStrong(&v13->_model, a3);
-    objc_storeStrong(&v13->_movedAssets, a4);
-    objc_storeStrong(&v13->_targetAsset, a5);
+    objc_storeStrong(&v13->_model, model);
+    objc_storeStrong(&v13->_movedAssets, assets);
+    objc_storeStrong(&v13->_targetAsset, asset);
   }
 
   return v13;

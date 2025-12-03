@@ -1,23 +1,23 @@
 @interface SFPrivacyReportExplanationDetailItemView
-- (SFPrivacyReportExplanationDetailItemView)initWithFrame:(CGRect)a3;
+- (SFPrivacyReportExplanationDetailItemView)initWithFrame:(CGRect)frame;
 - (SFPrivacyReportGridItemDelegate)delegate;
 - (void)_preferredContentSizeCategoryDidChange;
 - (void)_updateTopConstraints;
 - (void)_updateTopSpacing;
-- (void)setGridPosition:(unint64_t)a3;
-- (void)setHairlineTopSpacing:(double)a3;
-- (void)setTitleLabelTopSpacing:(double)a3;
-- (void)setUsesInsetStyle:(BOOL)a3;
+- (void)setGridPosition:(unint64_t)position;
+- (void)setHairlineTopSpacing:(double)spacing;
+- (void)setTitleLabelTopSpacing:(double)spacing;
+- (void)setUsesInsetStyle:(BOOL)style;
 @end
 
 @implementation SFPrivacyReportExplanationDetailItemView
 
-- (SFPrivacyReportExplanationDetailItemView)initWithFrame:(CGRect)a3
+- (SFPrivacyReportExplanationDetailItemView)initWithFrame:(CGRect)frame
 {
   v71[1] = *MEMORY[0x1E69E9840];
   v67.receiver = self;
   v67.super_class = SFPrivacyReportExplanationDetailItemView;
-  v3 = [(SFPrivacyReportExplanationDetailItemView *)&v67 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SFPrivacyReportExplanationDetailItemView *)&v67 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -27,8 +27,8 @@
     v4->_hairline = v5;
 
     [(UIView *)v4->_hairline setTranslatesAutoresizingMaskIntoConstraints:0];
-    v7 = [MEMORY[0x1E69DC888] tertiaryLabelColor];
-    [(UIView *)v4->_hairline setBackgroundColor:v7];
+    tertiaryLabelColor = [MEMORY[0x1E69DC888] tertiaryLabelColor];
+    [(UIView *)v4->_hairline setBackgroundColor:tertiaryLabelColor];
 
     [(SFPrivacyReportExplanationDetailItemView *)v4 addSubview:v4->_hairline];
     v8 = objc_alloc_init(MEMORY[0x1E69DCC10]);
@@ -39,8 +39,8 @@
     v11 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD80]];
     [(UILabel *)v4->_titleLabel setFont:v11];
 
-    v12 = [MEMORY[0x1E69DC888] labelColor];
-    [(UILabel *)v4->_titleLabel setTextColor:v12];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [(UILabel *)v4->_titleLabel setTextColor:labelColor];
 
     [(UILabel *)v4->_titleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UILabel *)v4->_titleLabel setAdjustsFontForContentSizeCategory:1];
@@ -53,87 +53,87 @@
     v15 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:v10];
     [(UITextView *)v4->_bodyTextView setFont:v15];
 
-    v16 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [(UITextView *)v4->_bodyTextView setTextColor:v16];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [(UITextView *)v4->_bodyTextView setTextColor:secondaryLabelColor];
 
     [(UITextView *)v4->_bodyTextView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UITextView *)v4->_bodyTextView setAdjustsFontForContentSizeCategory:1];
-    v17 = [MEMORY[0x1E69DC888] clearColor];
-    [(UITextView *)v4->_bodyTextView setBackgroundColor:v17];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(UITextView *)v4->_bodyTextView setBackgroundColor:clearColor];
 
     [(UITextView *)v4->_bodyTextView setShowsVerticalScrollIndicator:0];
     [(UITextView *)v4->_bodyTextView setEditable:0];
     [(UITextView *)v4->_bodyTextView setSelectable:1];
     [(UITextView *)v4->_bodyTextView setScrollEnabled:0];
-    v18 = [(UITextView *)v4->_bodyTextView textContainer];
-    [v18 setLineFragmentPadding:0.0];
+    textContainer = [(UITextView *)v4->_bodyTextView textContainer];
+    [textContainer setLineFragmentPadding:0.0];
 
     [(UITextView *)v4->_bodyTextView _setInteractiveTextSelectionDisabled:1];
     [(UITextView *)v4->_bodyTextView setTextContainerInset:*MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24)];
     v70 = *MEMORY[0x1E69DB650];
-    v19 = [MEMORY[0x1E69DC888] linkColor];
-    v71[0] = v19;
+    linkColor = [MEMORY[0x1E69DC888] linkColor];
+    v71[0] = linkColor;
     v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v71 forKeys:&v70 count:1];
     [(UITextView *)v4->_bodyTextView setLinkTextAttributes:v20];
 
     [(UITextView *)v4->_bodyTextView setDelegate:v4];
     [(SFPrivacyReportExplanationDetailItemView *)v4 addSubview:v4->_bodyTextView];
-    v21 = [(UILabel *)v4->_titleLabel topAnchor];
-    v22 = [(SFPrivacyReportExplanationDetailItemView *)v4 topAnchor];
-    v23 = [v21 constraintEqualToAnchor:v22 constant:0.0];
+    topAnchor = [(UILabel *)v4->_titleLabel topAnchor];
+    topAnchor2 = [(SFPrivacyReportExplanationDetailItemView *)v4 topAnchor];
+    v23 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:0.0];
     titleTopConstraint = v4->_titleTopConstraint;
     v4->_titleTopConstraint = v23;
 
-    v25 = [(UIView *)v4->_hairline topAnchor];
-    v26 = [(SFPrivacyReportExplanationDetailItemView *)v4 topAnchor];
-    v27 = [v25 constraintEqualToAnchor:v26];
+    topAnchor3 = [(UIView *)v4->_hairline topAnchor];
+    topAnchor4 = [(SFPrivacyReportExplanationDetailItemView *)v4 topAnchor];
+    v27 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     hairlineTopConstraint = v4->_hairlineTopConstraint;
     v4->_hairlineTopConstraint = v27;
 
-    v29 = [(SFPrivacyReportExplanationDetailItemView *)v4 layoutMarginsGuide];
+    layoutMarginsGuide = [(SFPrivacyReportExplanationDetailItemView *)v4 layoutMarginsGuide];
     v54 = MEMORY[0x1E696ACD8];
     v69[0] = v4->_hairlineTopConstraint;
-    v66 = [(UIView *)v4->_hairline leadingAnchor];
-    v65 = [v29 leadingAnchor];
-    v64 = [v66 constraintEqualToAnchor:v65];
+    leadingAnchor = [(UIView *)v4->_hairline leadingAnchor];
+    leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+    v64 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v69[1] = v64;
-    v63 = [(UIView *)v4->_hairline centerXAnchor];
-    v59 = v29;
-    v62 = [v29 centerXAnchor];
-    v61 = [v63 constraintEqualToAnchor:v62];
+    centerXAnchor = [(UIView *)v4->_hairline centerXAnchor];
+    v59 = layoutMarginsGuide;
+    centerXAnchor2 = [layoutMarginsGuide centerXAnchor];
+    v61 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v69[2] = v61;
-    v60 = [(UIView *)v4->_hairline heightAnchor];
+    heightAnchor = [(UIView *)v4->_hairline heightAnchor];
     _SFOnePixel();
-    v58 = [v60 constraintEqualToConstant:?];
+    v58 = [heightAnchor constraintEqualToConstant:?];
     v69[3] = v58;
-    v57 = [(UILabel *)v4->_titleLabel leadingAnchor];
-    v56 = [v29 leadingAnchor];
-    v55 = [v57 constraintEqualToAnchor:v56];
+    leadingAnchor3 = [(UILabel *)v4->_titleLabel leadingAnchor];
+    leadingAnchor4 = [layoutMarginsGuide leadingAnchor];
+    v55 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     v69[4] = v55;
-    v53 = [(UILabel *)v4->_titleLabel centerXAnchor];
-    v52 = [v29 centerXAnchor];
-    v51 = [v53 constraintEqualToAnchor:v52];
+    centerXAnchor3 = [(UILabel *)v4->_titleLabel centerXAnchor];
+    centerXAnchor4 = [layoutMarginsGuide centerXAnchor];
+    v51 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
     v69[5] = v51;
-    v50 = [(UITextView *)v4->_bodyTextView leadingAnchor];
-    v49 = [v29 leadingAnchor];
-    v48 = [v50 constraintEqualToAnchor:v49];
+    leadingAnchor5 = [(UITextView *)v4->_bodyTextView leadingAnchor];
+    leadingAnchor6 = [layoutMarginsGuide leadingAnchor];
+    v48 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
     v69[6] = v48;
-    v47 = [(UITextView *)v4->_bodyTextView centerXAnchor];
-    v46 = [v29 centerXAnchor];
-    v45 = [v47 constraintEqualToAnchor:v46];
+    centerXAnchor5 = [(UITextView *)v4->_bodyTextView centerXAnchor];
+    centerXAnchor6 = [layoutMarginsGuide centerXAnchor];
+    v45 = [centerXAnchor5 constraintEqualToAnchor:centerXAnchor6];
     v69[7] = v45;
     v69[8] = v4->_titleTopConstraint;
-    v30 = [(UITextView *)v4->_bodyTextView topAnchor];
-    v31 = [(UILabel *)v4->_titleLabel bottomAnchor];
-    v32 = [v30 constraintEqualToSystemSpacingBelowAnchor:v31 multiplier:0.5];
+    topAnchor5 = [(UITextView *)v4->_bodyTextView topAnchor];
+    bottomAnchor = [(UILabel *)v4->_titleLabel bottomAnchor];
+    v32 = [topAnchor5 constraintEqualToSystemSpacingBelowAnchor:bottomAnchor multiplier:0.5];
     v69[9] = v32;
-    v33 = [(UITextView *)v4->_bodyTextView bottomAnchor];
-    v34 = [(SFPrivacyReportExplanationDetailItemView *)v4 bottomAnchor];
-    v35 = [v33 constraintLessThanOrEqualToAnchor:v34];
+    bottomAnchor2 = [(UITextView *)v4->_bodyTextView bottomAnchor];
+    bottomAnchor3 = [(SFPrivacyReportExplanationDetailItemView *)v4 bottomAnchor];
+    v35 = [bottomAnchor2 constraintLessThanOrEqualToAnchor:bottomAnchor3];
     v69[10] = v35;
-    v36 = [(UITextView *)v4->_bodyTextView bottomAnchor];
-    v37 = [(SFPrivacyReportExplanationDetailItemView *)v4 bottomAnchor];
-    v38 = [v36 constraintEqualToAnchor:v37];
+    bottomAnchor4 = [(UITextView *)v4->_bodyTextView bottomAnchor];
+    bottomAnchor5 = [(SFPrivacyReportExplanationDetailItemView *)v4 bottomAnchor];
+    v38 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5];
 
     LODWORD(v39) = 1131413504;
     [v38 setPriority:v39];
@@ -151,40 +151,40 @@
   return v4;
 }
 
-- (void)setUsesInsetStyle:(BOOL)a3
+- (void)setUsesInsetStyle:(BOOL)style
 {
-  if (self->_usesInsetStyle != a3)
+  if (self->_usesInsetStyle != style)
   {
-    self->_usesInsetStyle = a3;
+    self->_usesInsetStyle = style;
     [(SFPrivacyReportExplanationDetailItemView *)self _updateTopSpacing];
   }
 }
 
-- (void)setGridPosition:(unint64_t)a3
+- (void)setGridPosition:(unint64_t)position
 {
-  if (self->_gridPosition != a3)
+  if (self->_gridPosition != position)
   {
-    self->_gridPosition = a3;
-    [(UIView *)self->_hairline setHidden:(a3 & 1) == 0];
+    self->_gridPosition = position;
+    [(UIView *)self->_hairline setHidden:(position & 1) == 0];
 
     [(SFPrivacyReportExplanationDetailItemView *)self _updateTopSpacing];
   }
 }
 
-- (void)setTitleLabelTopSpacing:(double)a3
+- (void)setTitleLabelTopSpacing:(double)spacing
 {
-  if (self->_titleLabelTopSpacing != a3)
+  if (self->_titleLabelTopSpacing != spacing)
   {
-    self->_titleLabelTopSpacing = a3;
+    self->_titleLabelTopSpacing = spacing;
     [(SFPrivacyReportExplanationDetailItemView *)self _updateTopConstraints];
   }
 }
 
-- (void)setHairlineTopSpacing:(double)a3
+- (void)setHairlineTopSpacing:(double)spacing
 {
-  if (self->_hairlineTopSpacing != a3)
+  if (self->_hairlineTopSpacing != spacing)
   {
-    self->_hairlineTopSpacing = a3;
+    self->_hairlineTopSpacing = spacing;
     [(SFPrivacyReportExplanationDetailItemView *)self _updateTopConstraints];
   }
 }
@@ -200,10 +200,10 @@
 
 - (void)_updateTopSpacing
 {
-  v3 = [(UIView *)self->_hairline isHidden];
+  isHidden = [(UIView *)self->_hairline isHidden];
   v4 = 0.0;
   v5 = 0.0;
-  if (!v3)
+  if (!isHidden)
   {
     v4 = 35.0;
     v5 = 20.0;

@@ -1,14 +1,14 @@
 @interface _INPBSendAnnouncementIntent
-- (BOOL)isEqual:(id)a3;
-- (_INPBSendAnnouncementIntent)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBSendAnnouncementIntent)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addRecipients:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setRecipients:(id)a3;
-- (void)setSharedUserID:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addRecipients:(id)recipients;
+- (void)encodeWithCoder:(id)coder;
+- (void)setRecipients:(id)recipients;
+- (void)setSharedUserID:(id)d;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBSendAnnouncementIntent
@@ -16,24 +16,24 @@
 - (id)dictionaryRepresentation
 {
   v25 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(_INPBSendAnnouncementIntent *)self announcement];
-  v5 = [v4 dictionaryRepresentation];
-  [v3 setObject:v5 forKeyedSubscript:@"announcement"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  announcement = [(_INPBSendAnnouncementIntent *)self announcement];
+  dictionaryRepresentation = [announcement dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"announcement"];
 
-  v6 = [(_INPBSendAnnouncementIntent *)self intentMetadata];
-  v7 = [v6 dictionaryRepresentation];
-  [v3 setObject:v7 forKeyedSubscript:@"intentMetadata"];
+  intentMetadata = [(_INPBSendAnnouncementIntent *)self intentMetadata];
+  dictionaryRepresentation2 = [intentMetadata dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"intentMetadata"];
 
   if ([(_INPBSendAnnouncementIntent *)self hasIsReply])
   {
     v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[_INPBSendAnnouncementIntent isReply](self, "isReply")}];
-    [v3 setObject:v8 forKeyedSubscript:@"isReply"];
+    [dictionary setObject:v8 forKeyedSubscript:@"isReply"];
   }
 
   if ([(NSArray *)self->_recipients count])
   {
-    v9 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
@@ -53,8 +53,8 @@
             objc_enumerationMutation(v10);
           }
 
-          v15 = [*(*(&v20 + 1) + 8 * i) dictionaryRepresentation];
-          [v9 addObject:v15];
+          dictionaryRepresentation3 = [*(*(&v20 + 1) + 8 * i) dictionaryRepresentation];
+          [array addObject:dictionaryRepresentation3];
         }
 
         v12 = [(NSArray *)v10 countByEnumeratingWithState:&v20 objects:v24 count:16];
@@ -63,19 +63,19 @@
       while (v12);
     }
 
-    [v3 setObject:v9 forKeyedSubscript:@"recipients"];
+    [dictionary setObject:array forKeyedSubscript:@"recipients"];
   }
 
   if (self->_sharedUserID)
   {
-    v16 = [(_INPBSendAnnouncementIntent *)self sharedUserID];
-    v17 = [v16 copy];
-    [v3 setObject:v17 forKeyedSubscript:@"sharedUserID"];
+    sharedUserID = [(_INPBSendAnnouncementIntent *)self sharedUserID];
+    v17 = [sharedUserID copy];
+    [dictionary setObject:v17 forKeyedSubscript:@"sharedUserID"];
   }
 
   v18 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -96,28 +96,28 @@
   return v6 ^ [(NSString *)self->_sharedUserID hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_26;
   }
 
-  v5 = [(_INPBSendAnnouncementIntent *)self announcement];
-  v6 = [v4 announcement];
-  if ((v5 != 0) == (v6 == 0))
+  announcement = [(_INPBSendAnnouncementIntent *)self announcement];
+  announcement2 = [equalCopy announcement];
+  if ((announcement != 0) == (announcement2 == 0))
   {
     goto LABEL_25;
   }
 
-  v7 = [(_INPBSendAnnouncementIntent *)self announcement];
-  if (v7)
+  announcement3 = [(_INPBSendAnnouncementIntent *)self announcement];
+  if (announcement3)
   {
-    v8 = v7;
-    v9 = [(_INPBSendAnnouncementIntent *)self announcement];
-    v10 = [v4 announcement];
-    v11 = [v9 isEqual:v10];
+    v8 = announcement3;
+    announcement4 = [(_INPBSendAnnouncementIntent *)self announcement];
+    announcement5 = [equalCopy announcement];
+    v11 = [announcement4 isEqual:announcement5];
 
     if (!v11)
     {
@@ -129,20 +129,20 @@
   {
   }
 
-  v5 = [(_INPBSendAnnouncementIntent *)self intentMetadata];
-  v6 = [v4 intentMetadata];
-  if ((v5 != 0) == (v6 == 0))
+  announcement = [(_INPBSendAnnouncementIntent *)self intentMetadata];
+  announcement2 = [equalCopy intentMetadata];
+  if ((announcement != 0) == (announcement2 == 0))
   {
     goto LABEL_25;
   }
 
-  v12 = [(_INPBSendAnnouncementIntent *)self intentMetadata];
-  if (v12)
+  intentMetadata = [(_INPBSendAnnouncementIntent *)self intentMetadata];
+  if (intentMetadata)
   {
-    v13 = v12;
-    v14 = [(_INPBSendAnnouncementIntent *)self intentMetadata];
-    v15 = [v4 intentMetadata];
-    v16 = [v14 isEqual:v15];
+    v13 = intentMetadata;
+    intentMetadata2 = [(_INPBSendAnnouncementIntent *)self intentMetadata];
+    intentMetadata3 = [equalCopy intentMetadata];
+    v16 = [intentMetadata2 isEqual:intentMetadata3];
 
     if (!v16)
     {
@@ -154,38 +154,38 @@
   {
   }
 
-  v17 = [(_INPBSendAnnouncementIntent *)self hasIsReply];
-  if (v17 != [v4 hasIsReply])
+  hasIsReply = [(_INPBSendAnnouncementIntent *)self hasIsReply];
+  if (hasIsReply != [equalCopy hasIsReply])
   {
     goto LABEL_26;
   }
 
   if ([(_INPBSendAnnouncementIntent *)self hasIsReply])
   {
-    if ([v4 hasIsReply])
+    if ([equalCopy hasIsReply])
     {
       isReply = self->_isReply;
-      if (isReply != [v4 isReply])
+      if (isReply != [equalCopy isReply])
       {
         goto LABEL_26;
       }
     }
   }
 
-  v5 = [(_INPBSendAnnouncementIntent *)self recipients];
-  v6 = [v4 recipients];
-  if ((v5 != 0) == (v6 == 0))
+  announcement = [(_INPBSendAnnouncementIntent *)self recipients];
+  announcement2 = [equalCopy recipients];
+  if ((announcement != 0) == (announcement2 == 0))
   {
     goto LABEL_25;
   }
 
-  v19 = [(_INPBSendAnnouncementIntent *)self recipients];
-  if (v19)
+  recipients = [(_INPBSendAnnouncementIntent *)self recipients];
+  if (recipients)
   {
-    v20 = v19;
-    v21 = [(_INPBSendAnnouncementIntent *)self recipients];
-    v22 = [v4 recipients];
-    v23 = [v21 isEqual:v22];
+    v20 = recipients;
+    recipients2 = [(_INPBSendAnnouncementIntent *)self recipients];
+    recipients3 = [equalCopy recipients];
+    v23 = [recipients2 isEqual:recipients3];
 
     if (!v23)
     {
@@ -197,12 +197,12 @@
   {
   }
 
-  v5 = [(_INPBSendAnnouncementIntent *)self sharedUserID];
-  v6 = [v4 sharedUserID];
-  if ((v5 != 0) != (v6 == 0))
+  announcement = [(_INPBSendAnnouncementIntent *)self sharedUserID];
+  announcement2 = [equalCopy sharedUserID];
+  if ((announcement != 0) != (announcement2 == 0))
   {
-    v24 = [(_INPBSendAnnouncementIntent *)self sharedUserID];
-    if (!v24)
+    sharedUserID = [(_INPBSendAnnouncementIntent *)self sharedUserID];
+    if (!sharedUserID)
     {
 
 LABEL_29:
@@ -210,10 +210,10 @@ LABEL_29:
       goto LABEL_27;
     }
 
-    v25 = v24;
-    v26 = [(_INPBSendAnnouncementIntent *)self sharedUserID];
-    v27 = [v4 sharedUserID];
-    v28 = [v26 isEqual:v27];
+    v25 = sharedUserID;
+    sharedUserID2 = [(_INPBSendAnnouncementIntent *)self sharedUserID];
+    sharedUserID3 = [equalCopy sharedUserID];
+    v28 = [sharedUserID2 isEqual:sharedUserID3];
 
     if (v28)
     {
@@ -233,13 +233,13 @@ LABEL_27:
   return v29;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBSendAnnouncementIntent allocWithZone:](_INPBSendAnnouncementIntent init];
-  v6 = [(_INPBAnnouncement *)self->_announcement copyWithZone:a3];
+  v6 = [(_INPBAnnouncement *)self->_announcement copyWithZone:zone];
   [(_INPBSendAnnouncementIntent *)v5 setAnnouncement:v6];
 
-  v7 = [(_INPBIntentMetadata *)self->_intentMetadata copyWithZone:a3];
+  v7 = [(_INPBIntentMetadata *)self->_intentMetadata copyWithZone:zone];
   [(_INPBSendAnnouncementIntent *)v5 setIntentMetadata:v7];
 
   if ([(_INPBSendAnnouncementIntent *)self hasIsReply])
@@ -247,56 +247,56 @@ LABEL_27:
     [(_INPBSendAnnouncementIntent *)v5 setIsReply:[(_INPBSendAnnouncementIntent *)self isReply]];
   }
 
-  v8 = [(NSArray *)self->_recipients copyWithZone:a3];
+  v8 = [(NSArray *)self->_recipients copyWithZone:zone];
   [(_INPBSendAnnouncementIntent *)v5 setRecipients:v8];
 
-  v9 = [(NSString *)self->_sharedUserID copyWithZone:a3];
+  v9 = [(NSString *)self->_sharedUserID copyWithZone:zone];
   [(_INPBSendAnnouncementIntent *)v5 setSharedUserID:v9];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBSendAnnouncementIntent *)self data];
+  coderCopy = coder;
+  data = [(_INPBSendAnnouncementIntent *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBSendAnnouncementIntent)initWithCoder:(id)a3
+- (_INPBSendAnnouncementIntent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBSendAnnouncementIntent *)self initWithData:v6];
+    self = [(_INPBSendAnnouncementIntent *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_INPBSendAnnouncementIntent *)self announcement];
+  toCopy = to;
+  announcement = [(_INPBSendAnnouncementIntent *)self announcement];
 
-  if (v5)
+  if (announcement)
   {
-    v6 = [(_INPBSendAnnouncementIntent *)self announcement];
+    announcement2 = [(_INPBSendAnnouncementIntent *)self announcement];
     PBDataWriterWriteSubmessage();
   }
 
-  v7 = [(_INPBSendAnnouncementIntent *)self intentMetadata];
+  intentMetadata = [(_INPBSendAnnouncementIntent *)self intentMetadata];
 
-  if (v7)
+  if (intentMetadata)
   {
-    v8 = [(_INPBSendAnnouncementIntent *)self intentMetadata];
+    intentMetadata2 = [(_INPBSendAnnouncementIntent *)self intentMetadata];
     PBDataWriterWriteSubmessage();
   }
 
@@ -338,9 +338,9 @@ LABEL_27:
     while (v12);
   }
 
-  v16 = [(_INPBSendAnnouncementIntent *)self sharedUserID];
+  sharedUserID = [(_INPBSendAnnouncementIntent *)self sharedUserID];
 
-  if (v16)
+  if (sharedUserID)
   {
     sharedUserID = self->_sharedUserID;
     PBDataWriterWriteStringField();
@@ -349,36 +349,36 @@ LABEL_27:
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setSharedUserID:(id)a3
+- (void)setSharedUserID:(id)d
 {
-  v4 = [a3 copy];
+  v4 = [d copy];
   sharedUserID = self->_sharedUserID;
   self->_sharedUserID = v4;
 
   MEMORY[0x1EEE66BB8](v4, sharedUserID);
 }
 
-- (void)addRecipients:(id)a3
+- (void)addRecipients:(id)recipients
 {
-  v4 = a3;
+  recipientsCopy = recipients;
   recipients = self->_recipients;
-  v8 = v4;
+  v8 = recipientsCopy;
   if (!recipients)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_recipients;
-    self->_recipients = v6;
+    self->_recipients = array;
 
-    v4 = v8;
+    recipientsCopy = v8;
     recipients = self->_recipients;
   }
 
-  [(NSArray *)recipients addObject:v4];
+  [(NSArray *)recipients addObject:recipientsCopy];
 }
 
-- (void)setRecipients:(id)a3
+- (void)setRecipients:(id)recipients
 {
-  v4 = [a3 mutableCopy];
+  v4 = [recipients mutableCopy];
   recipients = self->_recipients;
   self->_recipients = v4;
 

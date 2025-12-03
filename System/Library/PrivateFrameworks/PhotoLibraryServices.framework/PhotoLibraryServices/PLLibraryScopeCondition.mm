@@ -1,9 +1,9 @@
 @interface PLLibraryScopeCondition
-+ (id)conditionWithSingleQueries:(id)a3 criteria:(unsigned __int8)a4;
++ (id)conditionWithSingleQueries:(id)queries criteria:(unsigned __int8)criteria;
 + (void)_abortIfCalledOnBaseClass;
-- (PLLibraryScopeCondition)initWithCriteria:(unsigned __int8)a3;
+- (PLLibraryScopeCondition)initWithCriteria:(unsigned __int8)criteria;
 - (id)conditionQuery;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)query;
 - (unsigned)type;
@@ -17,27 +17,27 @@
   v12.receiver = self;
   v12.super_class = PLLibraryScopeCondition;
   v4 = [(PLLibraryScopeCondition *)&v12 description];
-  v5 = [(PLLibraryScopeCondition *)self type];
+  type = [(PLLibraryScopeCondition *)self type];
   v6 = @"Date Range";
-  if (v5 != 1)
+  if (type != 1)
   {
     v6 = @"Unknown";
   }
 
-  if (v5 == 2)
+  if (type == 2)
   {
     v6 = @"Person";
   }
 
   v7 = v6;
-  v8 = [(PLLibraryScopeCondition *)self criteria];
+  criteria = [(PLLibraryScopeCondition *)self criteria];
   v9 = @"Exclusive";
-  if (v8 != 2)
+  if (criteria != 2)
   {
     v9 = @"Unknown";
   }
 
-  if (v8 == 1)
+  if (criteria == 1)
   {
     v9 = @"Inclusive";
   }
@@ -49,22 +49,22 @@
 
 - (id)conditionQuery
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PLAbstractMethodException();
   objc_exception_throw(v3);
 }
 
 - (id)query
 {
-  v3 = [(PLLibraryScopeCondition *)self conditionQuery];
+  conditionQuery = [(PLLibraryScopeCondition *)self conditionQuery];
   if ([(PLLibraryScopeCondition *)self criteria]== 1)
   {
-    v4 = v3;
+    v4 = conditionQuery;
   }
 
   else
   {
-    v4 = [MEMORY[0x1E69BF2C0] notQuery:v3];
+    v4 = [MEMORY[0x1E69BF2C0] notQuery:conditionQuery];
   }
 
   v5 = v4;
@@ -72,17 +72,17 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_class();
-  v5 = [(PLLibraryScopeCondition *)self conditionQuery];
-  v6 = [v5 singleQueries];
-  v7 = [v4 conditionWithSingleQueries:v6 criteria:{-[PLLibraryScopeCondition criteria](self, "criteria")}];
+  conditionQuery = [(PLLibraryScopeCondition *)self conditionQuery];
+  singleQueries = [conditionQuery singleQueries];
+  v7 = [v4 conditionWithSingleQueries:singleQueries criteria:{-[PLLibraryScopeCondition criteria](self, "criteria")}];
 
   return v7;
 }
 
-- (PLLibraryScopeCondition)initWithCriteria:(unsigned __int8)a3
+- (PLLibraryScopeCondition)initWithCriteria:(unsigned __int8)criteria
 {
   [objc_opt_class() _abortIfCalledOnBaseClass];
   v6.receiver = self;
@@ -90,7 +90,7 @@
   result = [(PLLibraryScopeCondition *)&v6 init];
   if (result)
   {
-    result->_criteria = a3;
+    result->_criteria = criteria;
   }
 
   return result;
@@ -98,15 +98,15 @@
 
 - (unsigned)type
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PLAbstractMethodException();
   objc_exception_throw(v3);
 }
 
-+ (id)conditionWithSingleQueries:(id)a3 criteria:(unsigned __int8)a4
++ (id)conditionWithSingleQueries:(id)queries criteria:(unsigned __int8)criteria
 {
-  v5 = a3;
-  v6 = a1;
+  queriesCopy = queries;
+  selfCopy = self;
   v7 = PLAbstractMethodException();
   objc_exception_throw(v7);
 }
@@ -116,7 +116,7 @@
   v3 = objc_opt_class();
   if (v3 == objc_opt_class())
   {
-    v4 = a1;
+    selfCopy = self;
     v5 = PLAbstractMethodException();
     objc_exception_throw(v5);
   }

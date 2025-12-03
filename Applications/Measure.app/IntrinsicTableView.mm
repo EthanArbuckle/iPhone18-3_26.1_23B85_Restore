@@ -1,9 +1,9 @@
 @interface IntrinsicTableView
 - (CGSize)contentSize;
 - (CGSize)intrinsicContentSize;
-- (_TtC7Measure18IntrinsicTableView)initWithCoder:(id)a3;
-- (_TtC7Measure18IntrinsicTableView)initWithFrame:(CGRect)a3 style:(int64_t)a4;
-- (void)setContentSize:(CGSize)a3;
+- (_TtC7Measure18IntrinsicTableView)initWithCoder:(id)coder;
+- (_TtC7Measure18IntrinsicTableView)initWithFrame:(CGRect)frame style:(int64_t)style;
+- (void)setContentSize:(CGSize)size;
 @end
 
 @implementation IntrinsicTableView
@@ -18,10 +18,10 @@
   return result;
 }
 
-- (void)setContentSize:(CGSize)a3
+- (void)setContentSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v6.receiver = self;
   v6.super_class = swift_getObjectType();
   v5 = v6.receiver;
@@ -32,9 +32,9 @@
 - (CGSize)intrinsicContentSize
 {
   ObjectType = swift_getObjectType();
-  v4 = self;
-  [(IntrinsicTableView *)v4 layoutIfNeeded];
-  v9.receiver = v4;
+  selfCopy = self;
+  [(IntrinsicTableView *)selfCopy layoutIfNeeded];
+  v9.receiver = selfCopy;
   v9.super_class = ObjectType;
   [(IntrinsicTableView *)&v9 contentSize];
   v6 = v5;
@@ -46,23 +46,23 @@
   return result;
 }
 
-- (_TtC7Measure18IntrinsicTableView)initWithFrame:(CGRect)a3 style:(int64_t)a4
+- (_TtC7Measure18IntrinsicTableView)initWithFrame:(CGRect)frame style:(int64_t)style
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v10.receiver = self;
   v10.super_class = swift_getObjectType();
-  return [(IntrinsicTableView *)&v10 initWithFrame:a4 style:x, y, width, height];
+  return [(IntrinsicTableView *)&v10 initWithFrame:style style:x, y, width, height];
 }
 
-- (_TtC7Measure18IntrinsicTableView)initWithCoder:(id)a3
+- (_TtC7Measure18IntrinsicTableView)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
-  v4 = a3;
-  v5 = [(IntrinsicTableView *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(IntrinsicTableView *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

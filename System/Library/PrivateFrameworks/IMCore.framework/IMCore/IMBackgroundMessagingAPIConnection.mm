@@ -1,11 +1,11 @@
 @interface IMBackgroundMessagingAPIConnection
 - (IMBackgroundMessagingAPIConnection)init;
-- (id)_backgroundMessagingAPIServiceWithErrorHandler:(id)a3;
+- (id)_backgroundMessagingAPIServiceWithErrorHandler:(id)handler;
 - (id)_currentConnection;
 - (void)_clearConnection;
-- (void)checkAuthorizationStatusForRecipients:(id)a3 completion:(id)a4;
-- (void)requestBackgroundMessagingAuthorizationForRecipients:(id)a3 completion:(id)a4;
-- (void)sendBackgroundMessage:(id)a3 toRecipient:(id)a4 completion:(id)a5;
+- (void)checkAuthorizationStatusForRecipients:(id)recipients completion:(id)completion;
+- (void)requestBackgroundMessagingAuthorizationForRecipients:(id)recipients completion:(id)completion;
+- (void)sendBackgroundMessage:(id)message toRecipient:(id)recipient completion:(id)completion;
 @end
 
 @implementation IMBackgroundMessagingAPIConnection
@@ -69,19 +69,19 @@
   self->_connection = 0;
 }
 
-- (id)_backgroundMessagingAPIServiceWithErrorHandler:(id)a3
+- (id)_backgroundMessagingAPIServiceWithErrorHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v7 = objc_msgSend__currentConnection(self, v5, v6);
-  v9 = objc_msgSend_remoteObjectProxyWithErrorHandler_(v7, v8, v4);
+  v9 = objc_msgSend_remoteObjectProxyWithErrorHandler_(v7, v8, handlerCopy);
 
   return v9;
 }
 
-- (void)requestBackgroundMessagingAuthorizationForRecipients:(id)a3 completion:(id)a4
+- (void)requestBackgroundMessagingAuthorizationForRecipients:(id)recipients completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  recipientsCopy = recipients;
+  completionCopy = completion;
   if (IMOSLoggingEnabled())
   {
     v8 = OSLogHandleForIMFoundationCategory();
@@ -97,18 +97,18 @@
   block[1] = 3221225472;
   block[2] = sub_1A83138CC;
   block[3] = &unk_1E7812328;
-  v13 = v6;
-  v14 = v7;
+  v13 = recipientsCopy;
+  v14 = completionCopy;
   block[4] = self;
-  v10 = v6;
-  v11 = v7;
+  v10 = recipientsCopy;
+  v11 = completionCopy;
   dispatch_async(queue, block);
 }
 
-- (void)checkAuthorizationStatusForRecipients:(id)a3 completion:(id)a4
+- (void)checkAuthorizationStatusForRecipients:(id)recipients completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  recipientsCopy = recipients;
+  completionCopy = completion;
   if (IMOSLoggingEnabled())
   {
     v8 = OSLogHandleForIMFoundationCategory();
@@ -124,19 +124,19 @@
   block[1] = 3221225472;
   block[2] = sub_1A8313B68;
   block[3] = &unk_1E7812328;
-  v13 = v6;
-  v14 = v7;
+  v13 = recipientsCopy;
+  v14 = completionCopy;
   block[4] = self;
-  v10 = v6;
-  v11 = v7;
+  v10 = recipientsCopy;
+  v11 = completionCopy;
   dispatch_async(queue, block);
 }
 
-- (void)sendBackgroundMessage:(id)a3 toRecipient:(id)a4 completion:(id)a5
+- (void)sendBackgroundMessage:(id)message toRecipient:(id)recipient completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  messageCopy = message;
+  recipientCopy = recipient;
+  completionCopy = completion;
   if (IMOSLoggingEnabled())
   {
     v11 = OSLogHandleForIMFoundationCategory();
@@ -153,12 +153,12 @@
   v16[2] = sub_1A8313E2C;
   v16[3] = &unk_1E7812350;
   v16[4] = self;
-  v17 = v8;
-  v18 = v9;
-  v19 = v10;
-  v13 = v9;
-  v14 = v8;
-  v15 = v10;
+  v17 = messageCopy;
+  v18 = recipientCopy;
+  v19 = completionCopy;
+  v13 = recipientCopy;
+  v14 = messageCopy;
+  v15 = completionCopy;
   dispatch_async(queue, v16);
 }
 

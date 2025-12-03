@@ -1,8 +1,8 @@
 @interface _NSPredicateOperatorUtilities
-+ (BOOL)doRegexForString:(id)a3 pattern:(id)a4 likeProtect:(BOOL)a5 flags:(unint64_t)a6 context:(id *)a7;
++ (BOOL)doRegexForString:(id)string pattern:(id)pattern likeProtect:(BOOL)protect flags:(unint64_t)flags context:(id *)context;
 + (__CFLocale)retainedLocale;
-+ (id)newStringFrom:(id)a3 usingUnicodeTransforms:(unint64_t)a4;
-+ (int64_t)copyRegexFindSafePattern:(id)a3 toBuffer:(unsigned __int16 *)a4;
++ (id)newStringFrom:(id)from usingUnicodeTransforms:(unint64_t)transforms;
++ (int64_t)copyRegexFindSafePattern:(id)pattern toBuffer:(unsigned __int16 *)buffer;
 @end
 
 @implementation _NSPredicateOperatorUtilities
@@ -12,7 +12,7 @@
   v2 = qword_1ED43FCB8;
   if (!qword_1ED43FCB8)
   {
-    objc_sync_enter(a1);
+    objc_sync_enter(self);
     if ((_MergedGlobals_131 & 1) == 0)
     {
       _MergedGlobals_131 = 1;
@@ -83,32 +83,32 @@
 
     CFRelease(CanonicalLanguageIdentifierFromString);
     CFRelease(ComponentsFromLocaleIdentifier);
-    objc_sync_exit(a1);
+    objc_sync_exit(self);
   }
 
   CFRetain(v2);
   return v2;
 }
 
-+ (id)newStringFrom:(id)a3 usingUnicodeTransforms:(unint64_t)a4
++ (id)newStringFrom:(id)from usingUnicodeTransforms:(unint64_t)transforms
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  if ([a3 length] >> 30)
+  if ([from length] >> 30)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:@"Invalid string length (too long)" userInfo:0]);
   }
 
-  if ((a4 & 2) != 0)
+  if ((transforms & 2) != 0)
   {
-    v6 = ((a4 << 63) >> 63) & 1 | 0x180;
+    v6 = ((transforms << 63) >> 63) & 1 | 0x180;
   }
 
   else
   {
-    v6 = ((a4 << 63) >> 63) & 0x101;
+    v6 = ((transforms << 63) >> 63) & 0x101;
   }
 
-  Length = CFStringGetLength(a3);
+  Length = CFStringGetLength(from);
   v8 = Length > 899;
   MEMORY[0x1EEE9AC00](Length);
   v10 = (v16 - v9);
@@ -125,9 +125,9 @@
 
   v17.location = 0;
   v17.length = Length;
-  CFStringGetCharacters(a3, v17, v10);
+  CFStringGetCharacters(from, v17, v10);
   v10[Length] = 0;
-  if ((a4 & 4) != 0)
+  if ((transforms & 4) != 0)
   {
     if (Length < 900)
     {
@@ -139,7 +139,7 @@
   {
     MutableWithExternalCharactersNoCopy = CFStringCreateMutableWithExternalCharactersNoCopy(*MEMORY[0x1E695E480], v10, Length, v12, *MEMORY[0x1E695E498]);
     v14 = MutableWithExternalCharactersNoCopy;
-    if ((a4 & 3) != 0)
+    if ((transforms & 3) != 0)
     {
       CFStringFold(MutableWithExternalCharactersNoCopy, v6, 0);
     }
@@ -171,32 +171,32 @@
   return CFStringCreateWithCharactersNoCopy(0, v10, Length, *MEMORY[0x1E695E488]);
 }
 
-+ (BOOL)doRegexForString:(id)a3 pattern:(id)a4 likeProtect:(BOOL)a5 flags:(unint64_t)a6 context:(id *)a7
++ (BOOL)doRegexForString:(id)string pattern:(id)pattern likeProtect:(BOOL)protect flags:(unint64_t)flags context:(id *)context
 {
-  v9 = a5;
+  protectCopy = protect;
   v51 = *MEMORY[0x1E69E9840];
-  v46 = a4;
-  v12 = [a4 length];
-  if (v12 >> 30 || (v13 = v12, v14 = [a3 length], v14 >> 30))
+  patternCopy = pattern;
+  v12 = [pattern length];
+  if (v12 >> 30 || (v13 = v12, v14 = [string length], v14 >> 30))
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:@"Invalid string or pattern length (too long)" userInfo:0]);
   }
 
-  v44 = a6 & 2;
-  v45 = a6 & 1;
-  if ((a6 & 2) != 0)
+  v44 = flags & 2;
+  v45 = flags & 1;
+  if ((flags & 2) != 0)
   {
-    v15 = ((a6 << 63) >> 63) & 1 | 0x180;
+    v15 = ((flags << 63) >> 63) & 1 | 0x180;
   }
 
   else
   {
-    v15 = ((a6 << 63) >> 63) & 0x101;
+    v15 = ((flags << 63) >> 63) & 0x101;
   }
 
   status = U_ZERO_ERROR;
-  a7->var2 = 3;
-  if (!a7->var1)
+  context->var2 = 3;
+  if (!context->var1)
   {
     v43[1] = v43;
     v49 = v13;
@@ -216,16 +216,16 @@
     }
 
     v47 = v17;
-    if ((a6 & 4) != 0)
+    if ((flags & 4) != 0)
     {
       v52.location = 0;
       v52.length = v13;
-      CFStringGetCharacters(v46, v52, v17);
+      CFStringGetCharacters(patternCopy, v52, v17);
       v17[v13] = 0;
-      a7->var0 = CFStringCreateWithCharacters(0, v17, v13);
-      if (v9)
+      context->var0 = CFStringCreateWithCharacters(0, v17, v13);
+      if (protectCopy)
       {
-        [a1 copyRegexFindSafePattern:v46 toBuffer:v17];
+        [self copyRegexFindSafePattern:patternCopy toBuffer:v17];
         LODWORD(v13) = u_strlen(v17);
         v49 = v13;
       }
@@ -233,14 +233,14 @@
 
     else
     {
-      _doPatternNormalization(v46, &v47, &v48, v9, a7, v15, &v49, v18, kCFStringNormalizationFormKC);
+      _doPatternNormalization(patternCopy, &v47, &v48, protectCopy, context, v15, &v49, v18, kCFStringNormalizationFormKC);
       v17 = v47;
       LODWORD(v13) = v49;
     }
 
     v19 = uregex_open(v17, v13, 0x28u, 0, &status);
     v20 = status;
-    if (status < U_ILLEGAL_ARGUMENT_ERROR || (a6 & 4) != 0)
+    if (status < U_ILLEGAL_ARGUMENT_ERROR || (flags & 4) != 0)
     {
       if (status < U_ILLEGAL_ARGUMENT_ERROR)
       {
@@ -252,8 +252,8 @@
     else
     {
 
-      a7->var0 = 0;
-      _doPatternNormalization(v46, &v47, &v48, v9, a7, v15, &v49, v18, kCFStringNormalizationFormC);
+      context->var0 = 0;
+      _doPatternNormalization(patternCopy, &v47, &v48, protectCopy, context, v15, &v49, v18, kCFStringNormalizationFormC);
       if (v19)
       {
         uregex_close(v19);
@@ -265,8 +265,8 @@
       {
         v22 = 2;
 LABEL_24:
-        a7->var1 = v19;
-        a7->var2 = v22;
+        context->var1 = v19;
+        context->var2 = v22;
         if (v48 == 1)
         {
           free(v47);
@@ -278,7 +278,7 @@ LABEL_24:
       status = v20;
     }
 
-    v39 = [NSString stringWithFormat:@"Can't open pattern %s (string %@, pattern %@, case %ld, canon %ld)", u_errorName(v20), a3, v46, v45, v44];
+    v39 = [NSString stringWithFormat:@"Can't open pattern %s (string %@, pattern %@, case %ld, canon %ld)", u_errorName(v20), string, patternCopy, v45, v44];
     uregex_close(v19);
     if (v48 == 1)
     {
@@ -297,7 +297,7 @@ LABEL_24:
   }
 
 LABEL_26:
-  Length = CFStringGetLength(a3);
+  Length = CFStringGetLength(string);
   v24 = Length > 899;
   MEMORY[0x1EEE9AC00](Length);
   v26 = (v43 - v25);
@@ -314,18 +314,18 @@ LABEL_26:
 
   v53.location = 0;
   v53.length = Length;
-  CFStringGetCharacters(a3, v53, v26);
+  CFStringGetCharacters(string, v53, v26);
   v26[Length] = 0;
-  if (((a6 >> 2) & 1) == 0)
+  if (((flags >> 2) & 1) == 0)
   {
     MutableWithExternalCharactersNoCopy = CFStringCreateMutableWithExternalCharactersNoCopy(*MEMORY[0x1E695E480], v26, Length, v28, *MEMORY[0x1E695E498]);
     v30 = MutableWithExternalCharactersNoCopy;
-    if ((a6 & 3) != 0)
+    if ((flags & 3) != 0)
     {
       CFStringFold(MutableWithExternalCharactersNoCopy, v15, 0);
     }
 
-    CFStringNormalize(v30, a7->var2);
+    CFStringNormalize(v30, context->var2);
     if (CFStringGetCharactersPtr(v30) == v26)
     {
       LODWORD(Length) = CFStringGetLength(v30);
@@ -351,7 +351,7 @@ LABEL_26:
     CFRelease(v30);
   }
 
-  uregex_setText(a7->var1, v26, Length, &status);
+  uregex_setText(context->var1, v26, Length, &status);
   v32 = status;
   if (status > U_ZERO_ERROR)
   {
@@ -359,13 +359,13 @@ LABEL_26:
     goto LABEL_46;
   }
 
-  v33 = uregex_matches(a7->var1, 0, &status);
+  v33 = uregex_matches(context->var1, 0, &status);
   v32 = status;
   if (status >= U_ILLEGAL_ARGUMENT_ERROR)
   {
     v35 = @"Can't do match %s (string %@, pattern %@, case %ld, canon %ld)";
 LABEL_46:
-    v36 = [NSString stringWithFormat:v35, u_errorName(v32), a3, v46, v45, v44];
+    v36 = [NSString stringWithFormat:v35, u_errorName(v32), string, patternCopy, v45, v44];
     if (v24)
     {
       free(v26);
@@ -384,10 +384,10 @@ LABEL_46:
   return v33 != 0;
 }
 
-+ (int64_t)copyRegexFindSafePattern:(id)a3 toBuffer:(unsigned __int16 *)a4
++ (int64_t)copyRegexFindSafePattern:(id)pattern toBuffer:(unsigned __int16 *)buffer
 {
   v49 = *MEMORY[0x1E69E9840];
-  Length = CFStringGetLength(a3);
+  Length = CFStringGetLength(pattern);
   v46 = 0u;
   v44 = 0u;
   v42 = 0u;
@@ -397,10 +397,10 @@ LABEL_46:
   v38 = 0u;
   v39 = 0u;
   v37 = 0u;
-  theString[0] = a3;
+  theString[0] = pattern;
   v48 = 0;
   v47 = Length;
-  CharactersPtr = CFStringGetCharactersPtr(a3);
+  CharactersPtr = CFStringGetCharactersPtr(pattern);
   theString[1] = CharactersPtr;
   if (CharactersPtr)
   {
@@ -536,7 +536,7 @@ LABEL_44:
           {
 LABEL_60:
             v21 = 0;
-            v31 = &a4[v12];
+            v31 = &buffer[v12];
             *v31 = 92;
             v12 += 2;
             v31[1] = v27;
@@ -545,7 +545,7 @@ LABEL_60:
 
           if (v27 == 42)
           {
-            v29 = &a4[v12];
+            v29 = &buffer[v12];
             if (v21)
             {
               v30 = 92;
@@ -579,13 +579,13 @@ LABEL_60:
               if (v21)
               {
                 v21 = 0;
-                *&a4[v12] = 4128860;
+                *&buffer[v12] = 4128860;
                 v12 += 2;
                 goto LABEL_61;
               }
 
               v21 = 0;
-              a4[v12] = 46;
+              buffer[v12] = 46;
               goto LABEL_41;
             }
 
@@ -593,7 +593,7 @@ LABEL_60:
             {
               if (v21)
               {
-                *&a4[v12] = 6029404;
+                *&buffer[v12] = 6029404;
                 v12 += 2;
               }
 
@@ -610,7 +610,7 @@ LABEL_60:
 
 LABEL_40:
         v21 = 0;
-        a4[v12] = v27;
+        buffer[v12] = v27;
 LABEL_41:
         ++v12;
 LABEL_61:
@@ -632,7 +632,7 @@ LABEL_38:
 
   else
   {
-    CStringPtr = CFStringGetCStringPtr(a3, 0x600u);
+    CStringPtr = CFStringGetCStringPtr(pattern, 0x600u);
     *(&v47 + 1) = 0;
     v48 = 0;
     *&v46 = CStringPtr;
@@ -666,7 +666,7 @@ LABEL_38:
         *(&v47 + 1) = v14.location;
         v48 = v15;
         v14.length = v15 - v14.location;
-        CFStringGetCharacters(a3, v14, &v37);
+        CFStringGetCharacters(pattern, v14, &v37);
         v8 = *(&v47 + 1);
         v9 = *(&v37 + v11 - *(&v47 + 1));
       }
@@ -677,7 +677,7 @@ LABEL_38:
 
   v12 = 0;
 LABEL_8:
-  a4[v12] = 0;
+  buffer[v12] = 0;
   return v12;
 }
 

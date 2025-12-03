@@ -1,43 +1,43 @@
 @interface TGIE5AdapterConfigurationObjC
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (TGIE5AdapterConfiguration)adapterConfiguration;
-- (TGIE5AdapterConfigurationObjC)initWithAdapterType:(id)a3 symbolName:(id)a4 mutableWeightsFilePath:(id)a5;
+- (TGIE5AdapterConfigurationObjC)initWithAdapterType:(id)type symbolName:(id)name mutableWeightsFilePath:(id)path;
 - (unint64_t)hash;
 @end
 
 @implementation TGIE5AdapterConfigurationObjC
 
-- (TGIE5AdapterConfigurationObjC)initWithAdapterType:(id)a3 symbolName:(id)a4 mutableWeightsFilePath:(id)a5
+- (TGIE5AdapterConfigurationObjC)initWithAdapterType:(id)type symbolName:(id)name mutableWeightsFilePath:(id)path
 {
   v25[3] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  typeCopy = type;
+  nameCopy = name;
+  pathCopy = path;
   v23.receiver = self;
   v23.super_class = TGIE5AdapterConfigurationObjC;
   v11 = [(TGIE5AdapterConfigurationObjC *)&v23 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [typeCopy copy];
     adapterType = v11->_adapterType;
     v11->_adapterType = v12;
 
-    v14 = [v9 copy];
+    v14 = [nameCopy copy];
     symbolName = v11->_symbolName;
     v11->_symbolName = v14;
 
-    v16 = [(__CFString *)v10 copy];
+    v16 = [(__CFString *)pathCopy copy];
     mutableWeightsFilePath = v11->_mutableWeightsFilePath;
     v11->_mutableWeightsFilePath = v16;
 
     v24[0] = @"adapterType";
     v24[1] = @"symbolName";
-    v25[0] = v8;
-    v25[1] = v9;
+    v25[0] = typeCopy;
+    v25[1] = nameCopy;
     v24[2] = @"mutableWeightsFilePath";
-    if (v10)
+    if (pathCopy)
     {
-      v18 = v10;
+      v18 = pathCopy;
     }
 
     else
@@ -58,51 +58,51 @@
 - (TGIE5AdapterConfiguration)adapterConfiguration
 {
   v2 = v1;
-  v4 = [v1 adapterType];
-  std::string::basic_string[abi:ne200100]<0>(retstr, [v4 UTF8String]);
-  v5 = [v2 symbolName];
-  std::string::basic_string[abi:ne200100]<0>(retstr[1].var0.var0.var0.var0, [v5 UTF8String]);
-  v6 = [v2 mutableWeightsFilePath];
-  v9 = [v6 UTF8String];
-  std::__fs::filesystem::path::path[abi:ne200100]<char const*,void>(&retstr[2], &v9);
+  adapterType = [v1 adapterType];
+  std::string::basic_string[abi:ne200100]<0>(retstr, [adapterType UTF8String]);
+  symbolName = [v2 symbolName];
+  std::string::basic_string[abi:ne200100]<0>(retstr[1].var0.var0.var0.var0, [symbolName UTF8String]);
+  mutableWeightsFilePath = [v2 mutableWeightsFilePath];
+  uTF8String = [mutableWeightsFilePath UTF8String];
+  std::__fs::filesystem::path::path[abi:ne200100]<char const*,void>(&retstr[2], &uTF8String);
 
-  v9 = &v8;
-  std::vector<TGIE5Function>::__destroy_vector::operator()[abi:ne200100](&v9);
+  uTF8String = &v8;
+  std::vector<TGIE5Function>::__destroy_vector::operator()[abi:ne200100](&uTF8String);
   return result;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(TGIE5AdapterConfigurationObjC *)self adapterType];
-  v4 = [v3 hash];
+  adapterType = [(TGIE5AdapterConfigurationObjC *)self adapterType];
+  v4 = [adapterType hash];
 
-  v5 = [(TGIE5AdapterConfigurationObjC *)self symbolName];
-  v6 = [v5 hash];
+  symbolName = [(TGIE5AdapterConfigurationObjC *)self symbolName];
+  v6 = [symbolName hash];
 
-  v7 = [(TGIE5AdapterConfigurationObjC *)self mutableWeightsFilePath];
-  v8 = [v7 hash];
+  mutableWeightsFilePath = [(TGIE5AdapterConfigurationObjC *)self mutableWeightsFilePath];
+  v8 = [mutableWeightsFilePath hash];
 
   return v6 ^ v4 ^ v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(TGIE5AdapterConfigurationObjC *)self adapterType];
-    v7 = [v5 adapterType];
-    if ([v6 isEqual:v7])
+    v5 = equalCopy;
+    adapterType = [(TGIE5AdapterConfigurationObjC *)self adapterType];
+    adapterType2 = [v5 adapterType];
+    if ([adapterType isEqual:adapterType2])
     {
-      v8 = [(TGIE5AdapterConfigurationObjC *)self symbolName];
-      v9 = [v5 symbolName];
-      if ([v8 isEqual:v9])
+      symbolName = [(TGIE5AdapterConfigurationObjC *)self symbolName];
+      symbolName2 = [v5 symbolName];
+      if ([symbolName isEqual:symbolName2])
       {
-        v10 = [(TGIE5AdapterConfigurationObjC *)self mutableWeightsFilePath];
-        v11 = [v5 mutableWeightsFilePath];
-        v12 = [v10 isEqual:v11];
+        mutableWeightsFilePath = [(TGIE5AdapterConfigurationObjC *)self mutableWeightsFilePath];
+        mutableWeightsFilePath2 = [v5 mutableWeightsFilePath];
+        v12 = [mutableWeightsFilePath isEqual:mutableWeightsFilePath2];
       }
 
       else

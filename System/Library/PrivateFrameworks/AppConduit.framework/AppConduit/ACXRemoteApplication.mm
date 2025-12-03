@@ -2,27 +2,27 @@
 + (id)localizedInfoPlistKeysLoadAnywhere;
 + (id)localizedInfoPlistKeysLoadAppOnly;
 - (ACXRemoteApplication)init;
-- (ACXRemoteApplication)initWithApplicationRecord:(id)a3 databaseUUID:(id)a4 sequenceNumber:(unint64_t)a5;
-- (ACXRemoteApplication)initWithBundleID:(id)a3 databaseUUID:(id)a4 sequenceNumber:(unint64_t)a5;
-- (ACXRemoteApplication)initWithCoder:(id)a3;
-- (ACXRemoteApplication)initWithSerializedDictionary:(id)a3;
+- (ACXRemoteApplication)initWithApplicationRecord:(id)record databaseUUID:(id)d sequenceNumber:(unint64_t)number;
+- (ACXRemoteApplication)initWithBundleID:(id)d databaseUUID:(id)iD sequenceNumber:(unint64_t)number;
+- (ACXRemoteApplication)initWithCoder:(id)coder;
+- (ACXRemoteApplication)initWithSerializedDictionary:(id)dictionary;
 - (BOOL)hasComplication;
-- (BOOL)isCompatibleWithDevice:(id)a3;
-- (BOOL)isCompatibleWithOSVersion:(id)a3;
-- (BOOL)isTheSameAppAs:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isCompatibleWithDevice:(id)device;
+- (BOOL)isCompatibleWithOSVersion:(id)version;
+- (BOOL)isTheSameAppAs:(id)as;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)counterpartIdentifiers;
 - (id)description;
 - (id)initForTesting;
 - (id)serialize;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ACXRemoteApplication
 
 + (id)localizedInfoPlistKeysLoadAppOnly
 {
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___ACXRemoteApplication;
   v2 = objc_msgSendSuper2(&v6, sel_localizedInfoPlistKeysLoadAppOnly);
   v3 = [MEMORY[0x277CBEB98] setWithObjects:{*MEMORY[0x277CBED50], *MEMORY[0x277CBEC40], *MEMORY[0x277CBEC50], 0}];
@@ -33,7 +33,7 @@
 
 + (id)localizedInfoPlistKeysLoadAnywhere
 {
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___ACXRemoteApplication;
   v2 = objc_msgSendSuper2(&v6, sel_localizedInfoPlistKeysLoadAnywhere);
   v3 = [MEMORY[0x277CBEB98] setWithObjects:{@"NSLocationAlwaysUsageDescription", @"NSLocationWhenInUseUsageDescription", @"NSLocationAlwaysAndWhenInUseUsageDescription", @"NSHealthUpdateUsageDescription", @"NSHealthShareUsageDescription", @"NSHealthClinicalHealthRecordsShareUsageDescription", @"NSHealthResearchStudyUsageDescription", @"NSHealthCDARequestUsageDescription", 0}];
@@ -42,12 +42,12 @@
   return v4;
 }
 
-- (ACXRemoteApplication)initWithCoder:(id)a3
+- (ACXRemoteApplication)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v75.receiver = self;
   v75.super_class = ACXRemoteApplication;
-  v5 = [(ACXSyncedApplication *)&v75 initWithCoder:v4];
+  v5 = [(ACXSyncedApplication *)&v75 initWithCoder:coderCopy];
   v6 = v5;
   if (!v5)
   {
@@ -56,9 +56,9 @@
 
   v74.receiver = v5;
   v74.super_class = ACXRemoteApplication;
-  v7 = [(ACXSyncedApplication *)&v74 _rawApplicationName];
+  _rawApplicationName = [(ACXSyncedApplication *)&v74 _rawApplicationName];
 
-  if (!v7)
+  if (!_rawApplicationName)
   {
     if (gLogHandle && *(gLogHandle + 44) < 3)
     {
@@ -72,50 +72,50 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v6->_isBetaApp = [v4 decodeBoolForKey:@"isBetaApp"];
-  v6->_isProfileValidated = [v4 decodeBoolForKey:@"isProfileValidated"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"applicationMode"];
+  v6->_isBetaApp = [coderCopy decodeBoolForKey:@"isBetaApp"];
+  v6->_isProfileValidated = [coderCopy decodeBoolForKey:@"isProfileValidated"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"applicationMode"];
   v6->_applicationMode = [v8 unsignedIntegerValue];
 
-  if (![v4 containsValueForKey:@"companionAppBundleID"])
+  if (![coderCopy containsValueForKey:@"companionAppBundleID"])
   {
     goto LABEL_10;
   }
 
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"companionAppBundleID"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"companionAppBundleID"];
   companionAppBundleID = v6->_companionAppBundleID;
   v6->_companionAppBundleID = v9;
 
-  if (([v4 containsValueForKey:@"watchKitVersion"] & 1) == 0)
+  if (([coderCopy containsValueForKey:@"watchKitVersion"] & 1) == 0)
   {
     goto LABEL_10;
   }
 
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"watchKitVersion"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"watchKitVersion"];
   watchKitVersion = v6->_watchKitVersion;
   v6->_watchKitVersion = v11;
 
-  if (([v4 containsValueForKey:@"teamID"] & 1) == 0)
+  if (([coderCopy containsValueForKey:@"teamID"] & 1) == 0)
   {
     goto LABEL_10;
   }
 
-  v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"teamID"];
+  v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"teamID"];
   teamID = v6->_teamID;
   v6->_teamID = v13;
 
-  v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"complicationPrincipalClass"];
+  v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"complicationPrincipalClass"];
   complicationPrincipalClass = v6->_complicationPrincipalClass;
   v6->_complicationPrincipalClass = v15;
 
   v17 = MEMORY[0x277CBEB98];
   v18 = objc_opt_class();
   v19 = [v17 setWithObjects:{v18, objc_opt_class(), 0}];
-  v20 = [v4 decodeObjectOfClasses:v19 forKey:@"supportedComplicationFamilies"];
+  v20 = [coderCopy decodeObjectOfClasses:v19 forKey:@"supportedComplicationFamilies"];
   supportedComplicationFamilies = v6->_supportedComplicationFamilies;
   v6->_supportedComplicationFamilies = v20;
 
-  if (([v4 containsValueForKey:@"watchKitAppExtensionBundleID"] & 1) == 0)
+  if (([coderCopy containsValueForKey:@"watchKitAppExtensionBundleID"] & 1) == 0)
   {
 LABEL_10:
     if (gLogHandle && *(gLogHandle + 44) < 3)
@@ -126,33 +126,33 @@ LABEL_10:
     goto LABEL_14;
   }
 
-  v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"watchKitAppExtensionBundleID"];
+  v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"watchKitAppExtensionBundleID"];
   watchKitAppExtensionBundleID = v6->_watchKitAppExtensionBundleID;
   v6->_watchKitAppExtensionBundleID = v22;
 
-  v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleVersion"];
+  v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleVersion"];
   bundleVersion = v6->_bundleVersion;
   v6->_bundleVersion = v24;
 
-  v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleShortVersion"];
+  v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleShortVersion"];
   bundleShortVersion = v6->_bundleShortVersion;
   v6->_bundleShortVersion = v26;
 
-  v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"minimumOSVersion"];
+  v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"minimumOSVersion"];
   minimumOSVersion = v6->_minimumOSVersion;
   v6->_minimumOSVersion = v28;
 
   v30 = MEMORY[0x277CBEB98];
   v31 = objc_opt_class();
   v32 = [v30 setWithObjects:{v31, objc_opt_class(), 0}];
-  v33 = [v4 decodeObjectOfClasses:v32 forKey:@"intentsRestrictedWhileLocked"];
+  v33 = [coderCopy decodeObjectOfClasses:v32 forKey:@"intentsRestrictedWhileLocked"];
   intentsRestrictedWhileLocked = v6->_intentsRestrictedWhileLocked;
   v6->_intentsRestrictedWhileLocked = v33;
 
   v35 = MEMORY[0x277CBEB98];
   v36 = objc_opt_class();
   v37 = [v35 setWithObjects:{v36, objc_opt_class(), 0}];
-  v38 = [v4 decodeObjectOfClasses:v37 forKey:@"intentsSupported"];
+  v38 = [coderCopy decodeObjectOfClasses:v37 forKey:@"intentsSupported"];
   intentsSupported = v6->_intentsSupported;
   v6->_intentsSupported = v38;
 
@@ -160,48 +160,48 @@ LABEL_10:
   v41 = objc_opt_class();
   v42 = objc_opt_class();
   v43 = [v40 setWithObjects:{v41, v42, objc_opt_class(), 0}];
-  v44 = [v4 decodeObjectOfClasses:v43 forKey:@"requiredCapabilities"];
+  v44 = [coderCopy decodeObjectOfClasses:v43 forKey:@"requiredCapabilities"];
   requiredCapabilities = v6->_requiredCapabilities;
   v6->_requiredCapabilities = v44;
 
   v46 = MEMORY[0x277CBEB98];
   v47 = objc_opt_class();
   v48 = [v46 setWithObjects:{v47, objc_opt_class(), 0}];
-  v49 = [v4 decodeObjectOfClasses:v48 forKey:@"architectureSlices"];
+  v49 = [coderCopy decodeObjectOfClasses:v48 forKey:@"architectureSlices"];
   architectureSlices = v6->_architectureSlices;
   v6->_architectureSlices = v49;
 
-  v51 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"watchKitAppExecutableHash"];
+  v51 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"watchKitAppExecutableHash"];
   watchKitAppExecutableHash = v6->_watchKitAppExecutableHash;
   v6->_watchKitAppExecutableHash = v51;
 
   v53 = MEMORY[0x277CBEB98];
   v54 = objc_opt_class();
   v55 = [v53 setWithObjects:{v54, objc_opt_class(), 0}];
-  v56 = [v4 decodeObjectOfClasses:v55 forKey:@"userActivityTypes"];
+  v56 = [coderCopy decodeObjectOfClasses:v55 forKey:@"userActivityTypes"];
   userActivityTypes = v6->_userActivityTypes;
   v6->_userActivityTypes = v56;
 
-  v6->_isLocallyAvailable = [v4 decodeBoolForKey:@"isLocallyAvailable"];
-  v58 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"storeMetadata"];
+  v6->_isLocallyAvailable = [coderCopy decodeBoolForKey:@"isLocallyAvailable"];
+  v58 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"storeMetadata"];
   storeMetadata = v6->_storeMetadata;
   v6->_storeMetadata = v58;
 
-  v60 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sdkVersion"];
+  v60 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sdkVersion"];
   sdkVersion = v6->_sdkVersion;
   v6->_sdkVersion = v60;
 
   v62 = MEMORY[0x277CBEB98];
   v63 = objc_opt_class();
   v64 = [v62 setWithObjects:{v63, objc_opt_class(), 0}];
-  v65 = [v4 decodeObjectOfClasses:v64 forKey:@"backgroundModes"];
+  v65 = [coderCopy decodeObjectOfClasses:v64 forKey:@"backgroundModes"];
   backgroundModes = v6->_backgroundModes;
   v6->_backgroundModes = v65;
 
   v67 = MEMORY[0x277CBEB98];
   v68 = objc_opt_class();
   v69 = [v67 setWithObjects:{v68, objc_opt_class(), 0}];
-  v70 = [v4 decodeObjectOfClasses:v69 forKey:@"uiBackgroundModes"];
+  v70 = [coderCopy decodeObjectOfClasses:v69 forKey:@"uiBackgroundModes"];
   uiBackgroundModes = v6->_uiBackgroundModes;
   v6->_uiBackgroundModes = v70;
 
@@ -219,37 +219,37 @@ LABEL_16:
   return [(ACXSyncedApplication *)&v3 initForTesting];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = ACXRemoteApplication;
-  v4 = a3;
-  [(ACXSyncedApplication *)&v6 encodeWithCoder:v4];
-  [v4 encodeBool:self->_isBetaApp forKey:{@"isBetaApp", v6.receiver, v6.super_class}];
-  [v4 encodeBool:self->_isProfileValidated forKey:@"isProfileValidated"];
+  coderCopy = coder;
+  [(ACXSyncedApplication *)&v6 encodeWithCoder:coderCopy];
+  [coderCopy encodeBool:self->_isBetaApp forKey:{@"isBetaApp", v6.receiver, v6.super_class}];
+  [coderCopy encodeBool:self->_isProfileValidated forKey:@"isProfileValidated"];
   v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_applicationMode];
-  [v4 encodeObject:v5 forKey:@"applicationMode"];
+  [coderCopy encodeObject:v5 forKey:@"applicationMode"];
 
-  [v4 encodeObject:self->_companionAppBundleID forKey:@"companionAppBundleID"];
-  [v4 encodeObject:self->_watchKitVersion forKey:@"watchKitVersion"];
-  [v4 encodeObject:self->_teamID forKey:@"teamID"];
-  [v4 encodeObject:self->_complicationPrincipalClass forKey:@"complicationPrincipalClass"];
-  [v4 encodeObject:self->_supportedComplicationFamilies forKey:@"supportedComplicationFamilies"];
-  [v4 encodeObject:self->_watchKitAppExtensionBundleID forKey:@"watchKitAppExtensionBundleID"];
-  [v4 encodeObject:self->_bundleVersion forKey:@"bundleVersion"];
-  [v4 encodeObject:self->_bundleShortVersion forKey:@"bundleShortVersion"];
-  [v4 encodeObject:self->_minimumOSVersion forKey:@"minimumOSVersion"];
-  [v4 encodeObject:self->_intentsRestrictedWhileLocked forKey:@"intentsRestrictedWhileLocked"];
-  [v4 encodeObject:self->_intentsSupported forKey:@"intentsSupported"];
-  [v4 encodeObject:self->_requiredCapabilities forKey:@"requiredCapabilities"];
-  [v4 encodeObject:self->_architectureSlices forKey:@"architectureSlices"];
-  [v4 encodeObject:self->_watchKitAppExecutableHash forKey:@"watchKitAppExecutableHash"];
-  [v4 encodeObject:self->_userActivityTypes forKey:@"userActivityTypes"];
-  [v4 encodeBool:self->_isLocallyAvailable forKey:@"isLocallyAvailable"];
-  [v4 encodeObject:self->_storeMetadata forKey:@"storeMetadata"];
-  [v4 encodeObject:self->_sdkVersion forKey:@"sdkVersion"];
-  [v4 encodeObject:self->_backgroundModes forKey:@"backgroundModes"];
-  [v4 encodeObject:self->_uiBackgroundModes forKey:@"uiBackgroundModes"];
+  [coderCopy encodeObject:self->_companionAppBundleID forKey:@"companionAppBundleID"];
+  [coderCopy encodeObject:self->_watchKitVersion forKey:@"watchKitVersion"];
+  [coderCopy encodeObject:self->_teamID forKey:@"teamID"];
+  [coderCopy encodeObject:self->_complicationPrincipalClass forKey:@"complicationPrincipalClass"];
+  [coderCopy encodeObject:self->_supportedComplicationFamilies forKey:@"supportedComplicationFamilies"];
+  [coderCopy encodeObject:self->_watchKitAppExtensionBundleID forKey:@"watchKitAppExtensionBundleID"];
+  [coderCopy encodeObject:self->_bundleVersion forKey:@"bundleVersion"];
+  [coderCopy encodeObject:self->_bundleShortVersion forKey:@"bundleShortVersion"];
+  [coderCopy encodeObject:self->_minimumOSVersion forKey:@"minimumOSVersion"];
+  [coderCopy encodeObject:self->_intentsRestrictedWhileLocked forKey:@"intentsRestrictedWhileLocked"];
+  [coderCopy encodeObject:self->_intentsSupported forKey:@"intentsSupported"];
+  [coderCopy encodeObject:self->_requiredCapabilities forKey:@"requiredCapabilities"];
+  [coderCopy encodeObject:self->_architectureSlices forKey:@"architectureSlices"];
+  [coderCopy encodeObject:self->_watchKitAppExecutableHash forKey:@"watchKitAppExecutableHash"];
+  [coderCopy encodeObject:self->_userActivityTypes forKey:@"userActivityTypes"];
+  [coderCopy encodeBool:self->_isLocallyAvailable forKey:@"isLocallyAvailable"];
+  [coderCopy encodeObject:self->_storeMetadata forKey:@"storeMetadata"];
+  [coderCopy encodeObject:self->_sdkVersion forKey:@"sdkVersion"];
+  [coderCopy encodeObject:self->_backgroundModes forKey:@"backgroundModes"];
+  [coderCopy encodeObject:self->_uiBackgroundModes forKey:@"uiBackgroundModes"];
 }
 
 - (ACXRemoteApplication)init
@@ -259,59 +259,59 @@ LABEL_16:
   return [(ACXSyncedApplication *)&v3 init];
 }
 
-- (ACXRemoteApplication)initWithApplicationRecord:(id)a3 databaseUUID:(id)a4 sequenceNumber:(unint64_t)a5
+- (ACXRemoteApplication)initWithApplicationRecord:(id)record databaseUUID:(id)d sequenceNumber:(unint64_t)number
 {
-  v8 = a3;
-  v9 = a4;
+  recordCopy = record;
+  dCopy = d;
   v13.receiver = self;
   v13.super_class = ACXRemoteApplication;
-  v10 = [(ACXSyncedApplication *)&v13 initWithApplicationRecord:v8 databaseUUID:v9 sequenceNumber:a5];
+  v10 = [(ACXSyncedApplication *)&v13 initWithApplicationRecord:recordCopy databaseUUID:dCopy sequenceNumber:number];
   if (v10)
   {
-    v11 = [v8 bundleIdentifier];
-    [(ACXSyncedApplication *)v10 setBundleIdentifier:v11];
+    bundleIdentifier = [recordCopy bundleIdentifier];
+    [(ACXSyncedApplication *)v10 setBundleIdentifier:bundleIdentifier];
 
-    [(ACXSyncedApplication *)v10 setDatabaseUUID:v9];
-    [(ACXSyncedApplication *)v10 setSequenceNumber:a5];
-    -[ACXSyncedApplication setSupportsAlwaysOnDisplay:](v10, "setSupportsAlwaysOnDisplay:", [v8 supportsAlwaysOnDisplay]);
-    -[ACXSyncedApplication setDefaultsToPrivateAlwaysOnDisplayTreatment:](v10, "setDefaultsToPrivateAlwaysOnDisplayTreatment:", [v8 defaultsToPrivateAlwaysOnDisplayTreatment]);
-    -[ACXSyncedApplication setIsEligibleForWatchAppInstall:](v10, "setIsEligibleForWatchAppInstall:", [v8 isEligibleForWatchAppInstall]);
+    [(ACXSyncedApplication *)v10 setDatabaseUUID:dCopy];
+    [(ACXSyncedApplication *)v10 setSequenceNumber:number];
+    -[ACXSyncedApplication setSupportsAlwaysOnDisplay:](v10, "setSupportsAlwaysOnDisplay:", [recordCopy supportsAlwaysOnDisplay]);
+    -[ACXSyncedApplication setDefaultsToPrivateAlwaysOnDisplayTreatment:](v10, "setDefaultsToPrivateAlwaysOnDisplayTreatment:", [recordCopy defaultsToPrivateAlwaysOnDisplayTreatment]);
+    -[ACXSyncedApplication setIsEligibleForWatchAppInstall:](v10, "setIsEligibleForWatchAppInstall:", [recordCopy isEligibleForWatchAppInstall]);
   }
 
   return v10;
 }
 
-- (ACXRemoteApplication)initWithBundleID:(id)a3 databaseUUID:(id)a4 sequenceNumber:(unint64_t)a5
+- (ACXRemoteApplication)initWithBundleID:(id)d databaseUUID:(id)iD sequenceNumber:(unint64_t)number
 {
   v6.receiver = self;
   v6.super_class = ACXRemoteApplication;
-  return [(ACXSyncedApplication *)&v6 initWithBundleID:a3 databaseUUID:a4 sequenceNumber:a5];
+  return [(ACXSyncedApplication *)&v6 initWithBundleID:d databaseUUID:iD sequenceNumber:number];
 }
 
-- (ACXRemoteApplication)initWithSerializedDictionary:(id)a3
+- (ACXRemoteApplication)initWithSerializedDictionary:(id)dictionary
 {
-  v4 = a3;
-  if (v4)
+  dictionaryCopy = dictionary;
+  if (dictionaryCopy)
   {
     v80.receiver = self;
     v80.super_class = ACXRemoteApplication;
-    self = [(ACXSyncedApplication *)&v80 initWithSerializedDictionary:v4];
+    self = [(ACXSyncedApplication *)&v80 initWithSerializedDictionary:dictionaryCopy];
 
     if (!self)
     {
 LABEL_124:
       self = self;
-      v9 = self;
+      selfCopy = self;
       goto LABEL_125;
     }
 
     v79.receiver = self;
     v79.super_class = ACXRemoteApplication;
-    v5 = [(ACXSyncedApplication *)&v79 _rawApplicationName];
+    _rawApplicationName = [(ACXSyncedApplication *)&v79 _rawApplicationName];
 
-    if (v5)
+    if (_rawApplicationName)
     {
-      v6 = [v4 objectForKeyedSubscript:@"WKBetaAppKey"];
+      v6 = [dictionaryCopy objectForKeyedSubscript:@"WKBetaAppKey"];
       objc_opt_class();
       v7 = v6;
       if (objc_opt_isKindOfClass())
@@ -329,7 +329,7 @@ LABEL_124:
         self->_isBetaApp = [v8 BOOLValue];
       }
 
-      v10 = [v4 objectForKeyedSubscript:@"applicationMode"];
+      v10 = [dictionaryCopy objectForKeyedSubscript:@"applicationMode"];
       objc_opt_class();
       v11 = v10;
       if (objc_opt_isKindOfClass())
@@ -347,7 +347,7 @@ LABEL_124:
         self->_applicationMode = [v12 unsignedIntegerValue];
       }
 
-      v13 = [v4 objectForKeyedSubscript:@"validatedByProfile"];
+      v13 = [dictionaryCopy objectForKeyedSubscript:@"validatedByProfile"];
       objc_opt_class();
       v14 = v13;
       if (objc_opt_isKindOfClass())
@@ -365,7 +365,7 @@ LABEL_124:
         self->_isProfileValidated = [v15 BOOLValue];
       }
 
-      v16 = [v4 objectForKeyedSubscript:@"SPContainerAppBundleId"];
+      v16 = [dictionaryCopy objectForKeyedSubscript:@"SPContainerAppBundleId"];
       objc_opt_class();
       v17 = v16;
       if (objc_opt_isKindOfClass())
@@ -383,7 +383,7 @@ LABEL_124:
         objc_storeStrong(&self->_companionAppBundleID, v18);
       }
 
-      v19 = [v4 objectForKeyedSubscript:@"WKWatchKitVersion"];
+      v19 = [dictionaryCopy objectForKeyedSubscript:@"WKWatchKitVersion"];
       objc_opt_class();
       v20 = v19;
       if (objc_opt_isKindOfClass())
@@ -401,7 +401,7 @@ LABEL_124:
         objc_storeStrong(&self->_watchKitVersion, v21);
       }
 
-      v22 = [v4 objectForKeyedSubscript:@"SPApplicationTeamID"];
+      v22 = [dictionaryCopy objectForKeyedSubscript:@"SPApplicationTeamID"];
       objc_opt_class();
       v23 = v22;
       if (objc_opt_isKindOfClass())
@@ -419,7 +419,7 @@ LABEL_124:
         objc_storeStrong(&self->_teamID, v24);
       }
 
-      v25 = [v4 objectForKeyedSubscript:@"CLKComplicationPrincipalClass"];
+      v25 = [dictionaryCopy objectForKeyedSubscript:@"CLKComplicationPrincipalClass"];
       objc_opt_class();
       v26 = v25;
       if (objc_opt_isKindOfClass())
@@ -437,7 +437,7 @@ LABEL_124:
         objc_storeStrong(&self->_complicationPrincipalClass, v27);
       }
 
-      v28 = [v4 objectForKeyedSubscript:@"CLKComplicationSupportedFamilies"];
+      v28 = [dictionaryCopy objectForKeyedSubscript:@"CLKComplicationSupportedFamilies"];
       objc_opt_class();
       v29 = v28;
       if (objc_opt_isKindOfClass())
@@ -455,7 +455,7 @@ LABEL_124:
         objc_storeStrong(&self->_supportedComplicationFamilies, v30);
       }
 
-      v31 = [v4 objectForKeyedSubscript:@"SPPluginBundleIdKey"];
+      v31 = [dictionaryCopy objectForKeyedSubscript:@"SPPluginBundleIdKey"];
       objc_opt_class();
       v32 = v31;
       if (objc_opt_isKindOfClass())
@@ -473,7 +473,7 @@ LABEL_124:
         objc_storeStrong(&self->_watchKitAppExtensionBundleID, v33);
       }
 
-      v34 = [v4 objectForKeyedSubscript:*MEMORY[0x277CBED58]];
+      v34 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x277CBED58]];
       objc_opt_class();
       v35 = v34;
       if (objc_opt_isKindOfClass())
@@ -491,7 +491,7 @@ LABEL_124:
         objc_storeStrong(&self->_bundleVersion, v36);
       }
 
-      v37 = [v4 objectForKeyedSubscript:*MEMORY[0x277CBEC50]];
+      v37 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x277CBEC50]];
       objc_opt_class();
       v38 = v37;
       if (objc_opt_isKindOfClass())
@@ -509,7 +509,7 @@ LABEL_124:
         objc_storeStrong(&self->_bundleShortVersion, v39);
       }
 
-      v40 = [v4 objectForKeyedSubscript:@"watchKitAppSlices"];
+      v40 = [dictionaryCopy objectForKeyedSubscript:@"watchKitAppSlices"];
       objc_opt_class();
       v41 = v40;
       if (objc_opt_isKindOfClass())
@@ -527,7 +527,7 @@ LABEL_124:
         objc_storeStrong(&self->_architectureSlices, v42);
       }
 
-      v43 = [v4 objectForKeyedSubscript:@"MinimumOSVersion"];
+      v43 = [dictionaryCopy objectForKeyedSubscript:@"MinimumOSVersion"];
       objc_opt_class();
       v44 = v43;
       if (objc_opt_isKindOfClass())
@@ -545,7 +545,7 @@ LABEL_124:
         objc_storeStrong(&self->_minimumOSVersion, v45);
       }
 
-      v46 = [v4 objectForKeyedSubscript:@"IntentsRestrictedWhileLockedAgg"];
+      v46 = [dictionaryCopy objectForKeyedSubscript:@"IntentsRestrictedWhileLockedAgg"];
       objc_opt_class();
       v47 = v46;
       if (objc_opt_isKindOfClass())
@@ -563,7 +563,7 @@ LABEL_124:
         objc_storeStrong(&self->_intentsRestrictedWhileLocked, v48);
       }
 
-      v49 = [v4 objectForKeyedSubscript:@"IntentsSupportedAgg"];
+      v49 = [dictionaryCopy objectForKeyedSubscript:@"IntentsSupportedAgg"];
       objc_opt_class();
       v50 = v49;
       if (objc_opt_isKindOfClass())
@@ -581,7 +581,7 @@ LABEL_124:
         objc_storeStrong(&self->_intentsSupported, v51);
       }
 
-      v52 = [v4 objectForKeyedSubscript:@"UIRequiredDeviceCapabilities"];
+      v52 = [dictionaryCopy objectForKeyedSubscript:@"UIRequiredDeviceCapabilities"];
       objc_opt_class();
       v53 = v52;
       if (objc_opt_isKindOfClass())
@@ -599,7 +599,7 @@ LABEL_124:
         objc_storeStrong(&self->_requiredCapabilities, v54);
       }
 
-      v55 = [v4 objectForKeyedSubscript:@"watchKitAppExecutableHash"];
+      v55 = [dictionaryCopy objectForKeyedSubscript:@"watchKitAppExecutableHash"];
       objc_opt_class();
       v56 = v55;
       if (objc_opt_isKindOfClass())
@@ -617,7 +617,7 @@ LABEL_124:
         objc_storeStrong(&self->_watchKitAppExecutableHash, v57);
       }
 
-      v58 = [v4 objectForKeyedSubscript:@"NSUserActivityTypes"];
+      v58 = [dictionaryCopy objectForKeyedSubscript:@"NSUserActivityTypes"];
       objc_opt_class();
       v59 = v58;
       if (objc_opt_isKindOfClass())
@@ -635,7 +635,7 @@ LABEL_124:
         objc_storeStrong(&self->_userActivityTypes, v60);
       }
 
-      v61 = [v4 objectForKeyedSubscript:@"isLocallyAvailable"];
+      v61 = [dictionaryCopy objectForKeyedSubscript:@"isLocallyAvailable"];
       objc_opt_class();
       v62 = v61;
       if (objc_opt_isKindOfClass())
@@ -653,7 +653,7 @@ LABEL_124:
         self->_isLocallyAvailable = [v63 BOOLValue];
       }
 
-      v64 = [v4 objectForKeyedSubscript:@"storeMetadata"];
+      v64 = [dictionaryCopy objectForKeyedSubscript:@"storeMetadata"];
       objc_opt_class();
       v65 = v64;
       if (objc_opt_isKindOfClass())
@@ -673,7 +673,7 @@ LABEL_124:
         self->_storeMetadata = v67;
       }
 
-      v69 = [v4 objectForKeyedSubscript:@"ACXSDKVersionKey"];
+      v69 = [dictionaryCopy objectForKeyedSubscript:@"ACXSDKVersionKey"];
       objc_opt_class();
       v70 = v69;
       if (objc_opt_isKindOfClass())
@@ -691,7 +691,7 @@ LABEL_124:
         objc_storeStrong(&self->_sdkVersion, v71);
       }
 
-      v72 = [v4 objectForKeyedSubscript:@"ACXBackgroundModesKey"];
+      v72 = [dictionaryCopy objectForKeyedSubscript:@"ACXBackgroundModesKey"];
       objc_opt_class();
       v73 = v72;
       if (objc_opt_isKindOfClass())
@@ -709,7 +709,7 @@ LABEL_124:
         objc_storeStrong(&self->_backgroundModes, v74);
       }
 
-      v75 = [v4 objectForKeyedSubscript:@"ACXUIBackgroundModesKey"];
+      v75 = [dictionaryCopy objectForKeyedSubscript:@"ACXUIBackgroundModesKey"];
       objc_opt_class();
       v76 = v75;
       if (objc_opt_isKindOfClass())
@@ -736,21 +736,21 @@ LABEL_124:
     }
   }
 
-  v9 = 0;
+  selfCopy = 0;
 LABEL_125:
 
-  return v9;
+  return selfCopy;
 }
 
 - (id)serialize
 {
   v37.receiver = self;
   v37.super_class = ACXRemoteApplication;
-  v3 = [(ACXSyncedApplication *)&v37 serialize];
-  v4 = [v3 mutableCopy];
+  serialize = [(ACXSyncedApplication *)&v37 serialize];
+  v4 = [serialize mutableCopy];
 
-  v5 = [(ACXSyncedApplication *)self bundleIdentifier];
-  [v4 setObject:v5 forKeyedSubscript:*MEMORY[0x277CBED38]];
+  bundleIdentifier = [(ACXSyncedApplication *)self bundleIdentifier];
+  [v4 setObject:bundleIdentifier forKeyedSubscript:*MEMORY[0x277CBED38]];
 
   v6 = [MEMORY[0x277CCABB0] numberWithBool:{-[ACXRemoteApplication isBetaApp](self, "isBetaApp")}];
   [v4 setObject:v6 forKeyedSubscript:@"WKBetaAppKey"];
@@ -761,90 +761,90 @@ LABEL_125:
   v8 = [MEMORY[0x277CCABB0] numberWithBool:{-[ACXRemoteApplication isProfileValidated](self, "isProfileValidated")}];
   [v4 setObject:v8 forKeyedSubscript:@"validatedByProfile"];
 
-  v9 = [(ACXRemoteApplication *)self companionAppBundleID];
-  [v4 setObject:v9 forKeyedSubscript:@"SPContainerAppBundleId"];
+  companionAppBundleID = [(ACXRemoteApplication *)self companionAppBundleID];
+  [v4 setObject:companionAppBundleID forKeyedSubscript:@"SPContainerAppBundleId"];
 
-  v10 = [(ACXRemoteApplication *)self watchKitVersion];
-  [v4 setObject:v10 forKeyedSubscript:@"WKWatchKitVersion"];
+  watchKitVersion = [(ACXRemoteApplication *)self watchKitVersion];
+  [v4 setObject:watchKitVersion forKeyedSubscript:@"WKWatchKitVersion"];
 
-  v11 = [(ACXRemoteApplication *)self teamID];
-  [v4 setObject:v11 forKeyedSubscript:@"SPApplicationTeamID"];
+  teamID = [(ACXRemoteApplication *)self teamID];
+  [v4 setObject:teamID forKeyedSubscript:@"SPApplicationTeamID"];
 
-  v12 = [(ACXRemoteApplication *)self complicationPrincipalClass];
-  [v4 setObject:v12 forKeyedSubscript:@"CLKComplicationPrincipalClass"];
+  complicationPrincipalClass = [(ACXRemoteApplication *)self complicationPrincipalClass];
+  [v4 setObject:complicationPrincipalClass forKeyedSubscript:@"CLKComplicationPrincipalClass"];
 
-  v13 = [(ACXRemoteApplication *)self supportedComplicationFamilies];
-  [v4 setObject:v13 forKeyedSubscript:@"CLKComplicationSupportedFamilies"];
+  supportedComplicationFamilies = [(ACXRemoteApplication *)self supportedComplicationFamilies];
+  [v4 setObject:supportedComplicationFamilies forKeyedSubscript:@"CLKComplicationSupportedFamilies"];
 
-  v14 = [(ACXRemoteApplication *)self watchKitAppExtensionBundleID];
+  watchKitAppExtensionBundleID = [(ACXRemoteApplication *)self watchKitAppExtensionBundleID];
 
-  if (v14)
+  if (watchKitAppExtensionBundleID)
   {
-    v15 = [(ACXRemoteApplication *)self watchKitAppExtensionBundleID];
-    [v4 setObject:v15 forKeyedSubscript:@"SPPluginBundleIdKey"];
+    watchKitAppExtensionBundleID2 = [(ACXRemoteApplication *)self watchKitAppExtensionBundleID];
+    [v4 setObject:watchKitAppExtensionBundleID2 forKeyedSubscript:@"SPPluginBundleIdKey"];
   }
 
-  v16 = [(ACXRemoteApplication *)self bundleVersion];
+  bundleVersion = [(ACXRemoteApplication *)self bundleVersion];
 
-  if (v16)
+  if (bundleVersion)
   {
-    v17 = [(ACXRemoteApplication *)self bundleVersion];
-    [v4 setObject:v17 forKeyedSubscript:*MEMORY[0x277CBED58]];
+    bundleVersion2 = [(ACXRemoteApplication *)self bundleVersion];
+    [v4 setObject:bundleVersion2 forKeyedSubscript:*MEMORY[0x277CBED58]];
   }
 
-  v18 = [(ACXRemoteApplication *)self bundleShortVersion];
+  bundleShortVersion = [(ACXRemoteApplication *)self bundleShortVersion];
 
-  if (v18)
+  if (bundleShortVersion)
   {
-    v19 = [(ACXRemoteApplication *)self bundleShortVersion];
-    [v4 setObject:v19 forKeyedSubscript:*MEMORY[0x277CBEC50]];
+    bundleShortVersion2 = [(ACXRemoteApplication *)self bundleShortVersion];
+    [v4 setObject:bundleShortVersion2 forKeyedSubscript:*MEMORY[0x277CBEC50]];
   }
 
-  v20 = [(ACXRemoteApplication *)self minimumOSVersion];
-  [v4 setObject:v20 forKeyedSubscript:@"MinimumOSVersion"];
+  minimumOSVersion = [(ACXRemoteApplication *)self minimumOSVersion];
+  [v4 setObject:minimumOSVersion forKeyedSubscript:@"MinimumOSVersion"];
 
-  v21 = [(ACXRemoteApplication *)self intentsRestrictedWhileLocked];
-  [v4 setObject:v21 forKeyedSubscript:@"IntentsRestrictedWhileLockedAgg"];
+  intentsRestrictedWhileLocked = [(ACXRemoteApplication *)self intentsRestrictedWhileLocked];
+  [v4 setObject:intentsRestrictedWhileLocked forKeyedSubscript:@"IntentsRestrictedWhileLockedAgg"];
 
-  v22 = [(ACXRemoteApplication *)self intentsSupported];
-  [v4 setObject:v22 forKeyedSubscript:@"IntentsSupportedAgg"];
+  intentsSupported = [(ACXRemoteApplication *)self intentsSupported];
+  [v4 setObject:intentsSupported forKeyedSubscript:@"IntentsSupportedAgg"];
 
-  v23 = [(ACXRemoteApplication *)self requiredCapabilities];
-  [v4 setObject:v23 forKeyedSubscript:@"UIRequiredDeviceCapabilities"];
+  requiredCapabilities = [(ACXRemoteApplication *)self requiredCapabilities];
+  [v4 setObject:requiredCapabilities forKeyedSubscript:@"UIRequiredDeviceCapabilities"];
 
-  v24 = [(ACXRemoteApplication *)self architectureSlices];
-  [v4 setObject:v24 forKeyedSubscript:@"watchKitAppSlices"];
+  architectureSlices = [(ACXRemoteApplication *)self architectureSlices];
+  [v4 setObject:architectureSlices forKeyedSubscript:@"watchKitAppSlices"];
 
-  v25 = [(ACXRemoteApplication *)self watchKitAppExecutableHash];
-  [v4 setObject:v25 forKeyedSubscript:@"watchKitAppExecutableHash"];
+  watchKitAppExecutableHash = [(ACXRemoteApplication *)self watchKitAppExecutableHash];
+  [v4 setObject:watchKitAppExecutableHash forKeyedSubscript:@"watchKitAppExecutableHash"];
 
-  v26 = [(ACXRemoteApplication *)self userActivityTypes];
-  [v4 setObject:v26 forKeyedSubscript:@"NSUserActivityTypes"];
+  userActivityTypes = [(ACXRemoteApplication *)self userActivityTypes];
+  [v4 setObject:userActivityTypes forKeyedSubscript:@"NSUserActivityTypes"];
 
   v27 = [MEMORY[0x277CCABB0] numberWithBool:{-[ACXRemoteApplication isLocallyAvailable](self, "isLocallyAvailable")}];
   [v4 setObject:v27 forKeyedSubscript:@"isLocallyAvailable"];
 
-  v28 = [(ACXRemoteApplication *)self storeMetadata];
-  v29 = [v28 dictionaryRepresentation];
-  [v4 setObject:v29 forKeyedSubscript:@"storeMetadata"];
+  storeMetadata = [(ACXRemoteApplication *)self storeMetadata];
+  dictionaryRepresentation = [storeMetadata dictionaryRepresentation];
+  [v4 setObject:dictionaryRepresentation forKeyedSubscript:@"storeMetadata"];
 
-  v30 = [(ACXRemoteApplication *)self sdkVersion];
-  [v4 setObject:v30 forKeyedSubscript:@"ACXSDKVersionKey"];
+  sdkVersion = [(ACXRemoteApplication *)self sdkVersion];
+  [v4 setObject:sdkVersion forKeyedSubscript:@"ACXSDKVersionKey"];
 
-  v31 = [(ACXRemoteApplication *)self backgroundModes];
+  backgroundModes = [(ACXRemoteApplication *)self backgroundModes];
 
-  if (v31)
+  if (backgroundModes)
   {
-    v32 = [(ACXRemoteApplication *)self backgroundModes];
-    [v4 setObject:v32 forKeyedSubscript:@"ACXBackgroundModesKey"];
+    backgroundModes2 = [(ACXRemoteApplication *)self backgroundModes];
+    [v4 setObject:backgroundModes2 forKeyedSubscript:@"ACXBackgroundModesKey"];
   }
 
-  v33 = [(ACXRemoteApplication *)self uiBackgroundModes];
+  uiBackgroundModes = [(ACXRemoteApplication *)self uiBackgroundModes];
 
-  if (v33)
+  if (uiBackgroundModes)
   {
-    v34 = [(ACXRemoteApplication *)self uiBackgroundModes];
-    [v4 setObject:v34 forKeyedSubscript:@"ACXUIBackgroundModesKey"];
+    uiBackgroundModes2 = [(ACXRemoteApplication *)self uiBackgroundModes];
+    [v4 setObject:uiBackgroundModes2 forKeyedSubscript:@"ACXUIBackgroundModesKey"];
   }
 
   v35 = [v4 copy];
@@ -852,109 +852,109 @@ LABEL_125:
   return v35;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v64.receiver = self;
   v64.super_class = ACXRemoteApplication;
-  v4 = [(ACXSyncedApplication *)&v64 copyWithZone:a3];
+  v4 = [(ACXSyncedApplication *)&v64 copyWithZone:zone];
   if (v4)
   {
     v4[88] = [(ACXRemoteApplication *)self isBetaApp];
     v4[89] = [(ACXRemoteApplication *)self isProfileValidated];
     *(v4 + 12) = [(ACXRemoteApplication *)self applicationMode];
-    v5 = [(ACXRemoteApplication *)self companionAppBundleID];
-    v6 = [v5 copy];
+    companionAppBundleID = [(ACXRemoteApplication *)self companionAppBundleID];
+    v6 = [companionAppBundleID copy];
     v7 = *(v4 + 18);
     *(v4 + 18) = v6;
 
-    v8 = [(ACXRemoteApplication *)self watchKitVersion];
-    v9 = [v8 copy];
+    watchKitVersion = [(ACXRemoteApplication *)self watchKitVersion];
+    v9 = [watchKitVersion copy];
     v10 = *(v4 + 17);
     *(v4 + 17) = v9;
 
-    v11 = [(ACXRemoteApplication *)self teamID];
-    v12 = [v11 copy];
+    teamID = [(ACXRemoteApplication *)self teamID];
+    v12 = [teamID copy];
     v13 = *(v4 + 21);
     *(v4 + 21) = v12;
 
-    v14 = [(ACXRemoteApplication *)self complicationPrincipalClass];
-    v15 = [v14 copy];
+    complicationPrincipalClass = [(ACXRemoteApplication *)self complicationPrincipalClass];
+    v15 = [complicationPrincipalClass copy];
     v16 = *(v4 + 22);
     *(v4 + 22) = v15;
 
-    v17 = [(ACXRemoteApplication *)self supportedComplicationFamilies];
-    v18 = [v17 copy];
+    supportedComplicationFamilies = [(ACXRemoteApplication *)self supportedComplicationFamilies];
+    v18 = [supportedComplicationFamilies copy];
     v19 = *(v4 + 23);
     *(v4 + 23) = v18;
 
-    v20 = [(ACXRemoteApplication *)self watchKitAppExtensionBundleID];
-    v21 = [v20 copy];
+    watchKitAppExtensionBundleID = [(ACXRemoteApplication *)self watchKitAppExtensionBundleID];
+    v21 = [watchKitAppExtensionBundleID copy];
     v22 = *(v4 + 20);
     *(v4 + 20) = v21;
 
-    v23 = [(ACXRemoteApplication *)self bundleVersion];
-    v24 = [v23 copy];
+    bundleVersion = [(ACXRemoteApplication *)self bundleVersion];
+    v24 = [bundleVersion copy];
     v25 = *(v4 + 13);
     *(v4 + 13) = v24;
 
-    v26 = [(ACXRemoteApplication *)self bundleShortVersion];
-    v27 = [v26 copy];
+    bundleShortVersion = [(ACXRemoteApplication *)self bundleShortVersion];
+    v27 = [bundleShortVersion copy];
     v28 = *(v4 + 14);
     *(v4 + 14) = v27;
 
-    v29 = [(ACXRemoteApplication *)self minimumOSVersion];
-    v30 = [v29 copy];
+    minimumOSVersion = [(ACXRemoteApplication *)self minimumOSVersion];
+    v30 = [minimumOSVersion copy];
     v31 = *(v4 + 15);
     *(v4 + 15) = v30;
 
-    v32 = [(ACXRemoteApplication *)self intentsRestrictedWhileLocked];
-    v33 = [v32 copy];
+    intentsRestrictedWhileLocked = [(ACXRemoteApplication *)self intentsRestrictedWhileLocked];
+    v33 = [intentsRestrictedWhileLocked copy];
     v34 = *(v4 + 24);
     *(v4 + 24) = v33;
 
-    v35 = [(ACXRemoteApplication *)self intentsSupported];
-    v36 = [v35 copy];
+    intentsSupported = [(ACXRemoteApplication *)self intentsSupported];
+    v36 = [intentsSupported copy];
     v37 = *(v4 + 25);
     *(v4 + 25) = v36;
 
-    v38 = [(ACXRemoteApplication *)self requiredCapabilities];
-    v39 = [v38 copy];
+    requiredCapabilities = [(ACXRemoteApplication *)self requiredCapabilities];
+    v39 = [requiredCapabilities copy];
     v40 = *(v4 + 16);
     *(v4 + 16) = v39;
 
-    v41 = [(ACXRemoteApplication *)self architectureSlices];
-    v42 = [v41 copy];
+    architectureSlices = [(ACXRemoteApplication *)self architectureSlices];
+    v42 = [architectureSlices copy];
     v43 = *(v4 + 27);
     *(v4 + 27) = v42;
 
-    v44 = [(ACXRemoteApplication *)self watchKitAppExecutableHash];
-    v45 = [v44 copy];
+    watchKitAppExecutableHash = [(ACXRemoteApplication *)self watchKitAppExecutableHash];
+    v45 = [watchKitAppExecutableHash copy];
     v46 = *(v4 + 19);
     *(v4 + 19) = v45;
 
-    v47 = [(ACXRemoteApplication *)self userActivityTypes];
-    v48 = [v47 copy];
+    userActivityTypes = [(ACXRemoteApplication *)self userActivityTypes];
+    v48 = [userActivityTypes copy];
     v49 = *(v4 + 26);
     *(v4 + 26) = v48;
 
     v4[91] = [(ACXRemoteApplication *)self isLocallyAvailable];
-    v50 = [(ACXRemoteApplication *)self storeMetadata];
-    v51 = [v50 copy];
+    storeMetadata = [(ACXRemoteApplication *)self storeMetadata];
+    v51 = [storeMetadata copy];
     v52 = *(v4 + 28);
     *(v4 + 28) = v51;
 
-    v53 = [(ACXRemoteApplication *)self sdkVersion];
-    v54 = [v53 copy];
+    sdkVersion = [(ACXRemoteApplication *)self sdkVersion];
+    v54 = [sdkVersion copy];
     v55 = *(v4 + 29);
     *(v4 + 29) = v54;
 
-    v56 = [(ACXRemoteApplication *)self backgroundModes];
-    v57 = [v56 copy];
+    backgroundModes = [(ACXRemoteApplication *)self backgroundModes];
+    v57 = [backgroundModes copy];
     v58 = *(v4 + 30);
     *(v4 + 30) = v57;
 
-    v59 = [(ACXRemoteApplication *)self uiBackgroundModes];
-    v60 = [v59 copy];
+    uiBackgroundModes = [(ACXRemoteApplication *)self uiBackgroundModes];
+    v60 = [uiBackgroundModes copy];
     v61 = *(v4 + 31);
     *(v4 + 31) = v60;
 
@@ -969,16 +969,16 @@ LABEL_125:
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(ACXSyncedApplication *)self bundleIdentifier];
-  v7 = [v3 stringWithFormat:@"<%@<%p> bundleID=%@>", v5, self, v6];
+  bundleIdentifier = [(ACXSyncedApplication *)self bundleIdentifier];
+  v7 = [v3 stringWithFormat:@"<%@<%p> bundleID=%@>", v5, self, bundleIdentifier];
 
   return v7;
 }
 
 - (BOOL)hasComplication
 {
-  v2 = [(ACXRemoteApplication *)self complicationPrincipalClass];
-  v3 = v2 != 0;
+  complicationPrincipalClass = [(ACXRemoteApplication *)self complicationPrincipalClass];
+  v3 = complicationPrincipalClass != 0;
 
   return v3;
 }
@@ -986,14 +986,14 @@ LABEL_125:
 - (id)counterpartIdentifiers
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v3 = [(ACXRemoteApplication *)self companionAppBundleID];
+  companionAppBundleID = [(ACXRemoteApplication *)self companionAppBundleID];
   v13.receiver = self;
   v13.super_class = ACXRemoteApplication;
-  v4 = [(ACXSyncedApplication *)&v13 counterpartIdentifiers];
-  v5 = v4;
-  if (v4)
+  counterpartIdentifiers = [(ACXSyncedApplication *)&v13 counterpartIdentifiers];
+  v5 = counterpartIdentifiers;
+  if (counterpartIdentifiers)
   {
-    v6 = v3 == 0;
+    v6 = companionAppBundleID == 0;
   }
 
   else
@@ -1003,19 +1003,19 @@ LABEL_125:
 
   if (v6)
   {
-    if (v4)
+    if (counterpartIdentifiers)
     {
       v7 = 1;
     }
 
     else
     {
-      v7 = v3 == 0;
+      v7 = companionAppBundleID == 0;
     }
 
     if (!v7)
     {
-      v14[0] = v3;
+      v14[0] = companionAppBundleID;
       v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:1];
       goto LABEL_14;
     }
@@ -1023,7 +1023,7 @@ LABEL_125:
     goto LABEL_12;
   }
 
-  v9 = [v4 containsObject:v3];
+  v9 = [counterpartIdentifiers containsObject:companionAppBundleID];
   if (v9)
   {
 LABEL_12:
@@ -1031,7 +1031,7 @@ LABEL_12:
     goto LABEL_14;
   }
 
-  v8 = [v5 arrayByAddingObject:v3];
+  v8 = [v5 arrayByAddingObject:companionAppBundleID];
 LABEL_14:
   v10 = v8;
 
@@ -1040,15 +1040,15 @@ LABEL_14:
   return v10;
 }
 
-- (BOOL)isCompatibleWithOSVersion:(id)a3
+- (BOOL)isCompatibleWithOSVersion:(id)version
 {
-  v4 = a3;
-  v5 = [(ACXRemoteApplication *)self minimumOSVersion];
+  versionCopy = version;
+  minimumOSVersion = [(ACXRemoteApplication *)self minimumOSVersion];
 
-  if (v5)
+  if (minimumOSVersion)
   {
-    v6 = [(ACXRemoteApplication *)self minimumOSVersion];
-    v7 = [v4 compare:v6 options:64] != -1;
+    minimumOSVersion2 = [(ACXRemoteApplication *)self minimumOSVersion];
+    v7 = [versionCopy compare:minimumOSVersion2 options:64] != -1;
   }
 
   else
@@ -1059,28 +1059,28 @@ LABEL_14:
   return v7;
 }
 
-- (BOOL)isCompatibleWithDevice:(id)a3
+- (BOOL)isCompatibleWithDevice:(id)device
 {
   v42 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ACXRemoteApplication *)self architectureSlices];
+  deviceCopy = device;
+  architectureSlices = [(ACXRemoteApplication *)self architectureSlices];
   v6 = 1;
-  if ([(ACXSyncedApplication *)self applicationType]== 2 && v5)
+  if ([(ACXSyncedApplication *)self applicationType]== 2 && architectureSlices)
   {
-    v7 = [v4 cpuType];
-    v8 = [v4 cpuSubtype];
-    v9 = [v4 runnableArchNames];
+    cpuType = [deviceCopy cpuType];
+    cpuSubtype = [deviceCopy cpuSubtype];
+    runnableArchNames = [deviceCopy runnableArchNames];
     v10 = objc_opt_new();
     v11 = v10;
-    if (v9)
+    if (runnableArchNames)
     {
-      v36 = v4;
-      [v10 addObjectsFromArray:v9];
+      v36 = deviceCopy;
+      [v10 addObjectsFromArray:runnableArchNames];
     }
 
     else
     {
-      v12 = macho_arch_name_for_cpu_type(v7, v8);
+      v12 = macho_arch_name_for_cpu_type(cpuType, cpuSubtype);
       if (!v12)
       {
         if (!gLogHandle || *(gLogHandle + 44) >= 3)
@@ -1092,7 +1092,7 @@ LABEL_14:
         goto LABEL_24;
       }
 
-      v36 = v4;
+      v36 = deviceCopy;
       v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:v12];
       [v11 addObject:v13];
     }
@@ -1101,9 +1101,9 @@ LABEL_14:
     if (gLogHandle && *(gLogHandle + 44) >= 7)
     {
       [(ACXSyncedApplication *)self bundleIdentifier];
-      v32 = v8;
-      v30 = v33 = v9;
-      v31 = v7;
+      v32 = cpuSubtype;
+      v30 = v33 = runnableArchNames;
+      v31 = cpuType;
       MOLogWrite();
     }
 
@@ -1112,8 +1112,8 @@ LABEL_14:
     v38 = 0u;
     v39 = 0u;
     v40 = 0u;
-    v35 = v5;
-    v15 = v5;
+    v35 = architectureSlices;
+    v15 = architectureSlices;
     v16 = [v15 countByEnumeratingWithState:&v37 objects:v41 count:16];
     if (v16)
     {
@@ -1131,12 +1131,12 @@ LABEL_14:
 
           v20 = *(*(&v37 + 1) + 8 * v19);
           v21 = [v20 objectAtIndexedSubscript:{0, v30, v31, v32, v33}];
-          v22 = [v21 intValue];
+          intValue = [v21 intValue];
 
           v23 = [v20 objectAtIndexedSubscript:1];
-          v24 = [v23 unsignedIntValue];
+          unsignedIntValue = [v23 unsignedIntValue];
 
-          v25 = macho_arch_name_for_cpu_type(v22, v24);
+          v25 = macho_arch_name_for_cpu_type(intValue, unsignedIntValue);
           if (v25)
           {
             v26 = [MEMORY[0x277CCACA8] stringWithUTF8String:v25];
@@ -1145,8 +1145,8 @@ LABEL_14:
 
           else if (gLogHandle && *(gLogHandle + 44) >= 7)
           {
-            v30 = v22;
-            v31 = v24;
+            v30 = intValue;
+            v31 = unsignedIntValue;
             MOLogWrite();
           }
 
@@ -1164,8 +1164,8 @@ LABEL_14:
     v11 = v34;
     v6 = [v34 intersectsSet:v14];
 
-    v5 = v35;
-    v4 = v36;
+    architectureSlices = v35;
+    deviceCopy = v36;
 LABEL_24:
   }
 
@@ -1173,21 +1173,21 @@ LABEL_24:
   return v6;
 }
 
-- (BOOL)isTheSameAppAs:(id)a3
+- (BOOL)isTheSameAppAs:(id)as
 {
-  v4 = a3;
-  if (!-[ACXRemoteApplication isProfileValidated](self, "isProfileValidated") && ([v4 isProfileValidated] & 1) == 0)
+  asCopy = as;
+  if (!-[ACXRemoteApplication isProfileValidated](self, "isProfileValidated") && ([asCopy isProfileValidated] & 1) == 0)
   {
-    v6 = [(ACXSyncedApplication *)self externalVersionIdentifier];
-    v10 = [v4 externalVersionIdentifier];
-    v7 = v10;
-    if (!v6 || !v10)
+    externalVersionIdentifier = [(ACXSyncedApplication *)self externalVersionIdentifier];
+    externalVersionIdentifier2 = [asCopy externalVersionIdentifier];
+    watchKitAppExecutableHash2 = externalVersionIdentifier2;
+    if (!externalVersionIdentifier || !externalVersionIdentifier2)
     {
-      v12 = [(ACXRemoteApplication *)self bundleVersion];
-      v13 = [(ACXRemoteApplication *)self bundleShortVersion];
-      v14 = [v4 bundleVersion];
-      v15 = [v4 bundleShortVersion];
-      if (ACXObjectsAreTheSameOrSameNullness(v12, v14) && ACXObjectsAreTheSameOrSameNullness(v13, v15))
+      bundleVersion = [(ACXRemoteApplication *)self bundleVersion];
+      bundleShortVersion = [(ACXRemoteApplication *)self bundleShortVersion];
+      bundleVersion2 = [asCopy bundleVersion];
+      bundleShortVersion2 = [asCopy bundleShortVersion];
+      if (ACXObjectsAreTheSameOrSameNullness(bundleVersion, bundleVersion2) && ACXObjectsAreTheSameOrSameNullness(bundleShortVersion, bundleShortVersion2))
       {
 
         v9 = 1;
@@ -1202,7 +1202,7 @@ LABEL_24:
       goto LABEL_10;
     }
 
-    v8 = [v6 isEqualToNumber:v10];
+    v8 = [externalVersionIdentifier isEqualToNumber:externalVersionIdentifier2];
 LABEL_9:
     v9 = v8;
 LABEL_10:
@@ -1210,13 +1210,13 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v5 = [(ACXRemoteApplication *)self watchKitAppExecutableHash];
+  watchKitAppExecutableHash = [(ACXRemoteApplication *)self watchKitAppExecutableHash];
 
-  if (v5)
+  if (watchKitAppExecutableHash)
   {
-    v6 = [(ACXRemoteApplication *)self watchKitAppExecutableHash];
-    v7 = [v4 watchKitAppExecutableHash];
-    v8 = ACXObjectsAreTheSameOrSameNullness(v6, v7);
+    externalVersionIdentifier = [(ACXRemoteApplication *)self watchKitAppExecutableHash];
+    watchKitAppExecutableHash2 = [asCopy watchKitAppExecutableHash];
+    v8 = ACXObjectsAreTheSameOrSameNullness(externalVersionIdentifier, watchKitAppExecutableHash2);
     goto LABEL_9;
   }
 

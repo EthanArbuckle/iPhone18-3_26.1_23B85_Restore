@@ -2,21 +2,21 @@
 - (BOOL)hasWatchlistBeenSet;
 - (NSArray)stocklist;
 - (NSArray)watchlist;
-- (StocksSyncAppPreferences)initWithPersistence:(id)a3 delegate:(id)a4;
+- (StocksSyncAppPreferences)initWithPersistence:(id)persistence delegate:(id)delegate;
 - (id)_stockDictionaries;
 - (void)_notifyDelegateOfUpdate;
 - (void)dealloc;
-- (void)setWatchlist:(id)a3;
-- (void)updateStockData:(id)a3;
+- (void)setWatchlist:(id)watchlist;
+- (void)updateStockData:(id)data;
 @end
 
 @implementation StocksSyncAppPreferences
 
-- (StocksSyncAppPreferences)initWithPersistence:(id)a3 delegate:(id)a4
+- (StocksSyncAppPreferences)initWithPersistence:(id)persistence delegate:(id)delegate
 {
   v8.receiver = self;
   v8.super_class = StocksSyncAppPreferences;
-  v4 = [(StocksSyncPreferences *)&v8 initWithPersistence:a3 delegate:a4];
+  v4 = [(StocksSyncPreferences *)&v8 initWithPersistence:persistence delegate:delegate];
   if (v4)
   {
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
@@ -37,16 +37,16 @@
   [(StocksSyncAppPreferences *)&v4 dealloc];
 }
 
-- (void)updateStockData:(id)a3
+- (void)updateStockData:(id)data
 {
-  v4 = a3;
-  v5 = [(StocksSyncAppPreferences *)self _stockDictionaries];
-  v6 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v5 count]);
+  dataCopy = data;
+  _stockDictionaries = [(StocksSyncAppPreferences *)self _stockDictionaries];
+  v6 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [_stockDictionaries count]);
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  obj = v5;
+  obj = _stockDictionaries;
   v7 = [obj countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v7)
   {
@@ -73,7 +73,7 @@
           v24[3] = &unk_C498;
           v25 = v13;
           v14 = objc_retainBlock(v24);
-          v15 = [v4 indexOfObjectPassingTest:v14];
+          v15 = [dataCopy indexOfObjectPassingTest:v14];
           if (v15 == 0x7FFFFFFFFFFFFFFFLL)
           {
             [v6 addObject:v11];
@@ -81,9 +81,9 @@
 
           else
           {
-            v16 = [v4 objectAtIndexedSubscript:v15];
-            v17 = [v16 dictionaryRepresentation];
-            [v6 addObject:v17];
+            v16 = [dataCopy objectAtIndexedSubscript:v15];
+            dictionaryRepresentation = [v16 dictionaryRepresentation];
+            [v6 addObject:dictionaryRepresentation];
           }
         }
 
@@ -101,31 +101,31 @@
 
   if (([obj isEqualToArray:v6] & 1) == 0)
   {
-    v18 = [(StocksSyncPreferences *)self persistence];
-    [v18 setObject:v6 forKey:@"watch_stocks"];
+    persistence = [(StocksSyncPreferences *)self persistence];
+    [persistence setObject:v6 forKey:@"watch_stocks"];
 
-    v19 = [(StocksSyncPreferences *)self persistence];
+    persistence2 = [(StocksSyncPreferences *)self persistence];
     v20 = +[NSDate date];
     [v20 timeIntervalSince1970];
     v21 = [NSNumber numberWithDouble:?];
-    [v19 setObject:v21 forKey:@"watch_lastModified"];
+    [persistence2 setObject:v21 forKey:@"watch_lastModified"];
 
-    v22 = [(StocksSyncPreferences *)self persistence];
-    [v22 synchronize];
+    persistence3 = [(StocksSyncPreferences *)self persistence];
+    [persistence3 synchronize];
   }
 }
 
 - (void)_notifyDelegateOfUpdate
 {
   dispatch_assert_queue_V2(&_dispatch_main_q);
-  v3 = [(StocksSyncPreferences *)self delegate];
-  [v3 preferencesUpdated:self];
+  delegate = [(StocksSyncPreferences *)self delegate];
+  [delegate preferencesUpdated:self];
 }
 
 - (id)_stockDictionaries
 {
-  v2 = [(StocksSyncPreferences *)self persistence];
-  v3 = [v2 objectForKey:@"watch_stocks"];
+  persistence = [(StocksSyncPreferences *)self persistence];
+  v3 = [persistence objectForKey:@"watch_stocks"];
 
   if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
@@ -142,28 +142,28 @@
 
 - (BOOL)hasWatchlistBeenSet
 {
-  v3 = [(StocksSyncPreferences *)self persistence];
-  [v3 synchronize];
+  persistence = [(StocksSyncPreferences *)self persistence];
+  [persistence synchronize];
 
-  v4 = [(StocksSyncPreferences *)self persistence];
-  v5 = [v4 objectForKey:@"watch_stocks"];
-  LOBYTE(v3) = v5 != 0;
+  persistence2 = [(StocksSyncPreferences *)self persistence];
+  v5 = [persistence2 objectForKey:@"watch_stocks"];
+  LOBYTE(persistence) = v5 != 0;
 
-  return v3;
+  return persistence;
 }
 
 - (NSArray)watchlist
 {
-  v3 = [(StocksSyncPreferences *)self persistence];
-  [v3 synchronize];
+  persistence = [(StocksSyncPreferences *)self persistence];
+  [persistence synchronize];
 
-  v4 = [(StocksSyncAppPreferences *)self _stockDictionaries];
-  v5 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v4, "count")}];
+  _stockDictionaries = [(StocksSyncAppPreferences *)self _stockDictionaries];
+  v5 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(_stockDictionaries, "count")}];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = v4;
+  v6 = _stockDictionaries;
   v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
@@ -203,17 +203,17 @@
   return v14;
 }
 
-- (void)setWatchlist:(id)a3
+- (void)setWatchlist:(id)watchlist
 {
-  v4 = a3;
-  v21 = self;
-  v5 = [(StocksSyncAppPreferences *)self _stockDictionaries];
-  v6 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v4 count]);
+  watchlistCopy = watchlist;
+  selfCopy = self;
+  _stockDictionaries = [(StocksSyncAppPreferences *)self _stockDictionaries];
+  v6 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [watchlistCopy count]);
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  obj = v4;
+  obj = watchlistCopy;
   v7 = [obj countByEnumeratingWithState:&v24 objects:v30 count:16];
   if (v7)
   {
@@ -236,7 +236,7 @@
         v23[3] = &unk_C4C0;
         v23[4] = v11;
         v12 = objc_retainBlock(v23);
-        v13 = [v5 indexOfObjectPassingTest:v12];
+        v13 = [_stockDictionaries indexOfObjectPassingTest:v12];
         if (v13 == 0x7FFFFFFFFFFFFFFFLL)
         {
           v14 = +[StocksSyncPreferenceKeys symbol];
@@ -247,7 +247,7 @@
 
         else
         {
-          v15 = [v5 objectAtIndexedSubscript:v13];
+          v15 = [_stockDictionaries objectAtIndexedSubscript:v13];
         }
 
         [v6 addObject:v15];
@@ -262,31 +262,31 @@
     while (v8);
   }
 
-  v16 = [(StocksSyncPreferences *)v21 persistence];
-  [v16 setObject:v6 forKey:@"watch_stocks"];
+  persistence = [(StocksSyncPreferences *)selfCopy persistence];
+  [persistence setObject:v6 forKey:@"watch_stocks"];
 
-  v17 = [(StocksSyncPreferences *)v21 persistence];
+  persistence2 = [(StocksSyncPreferences *)selfCopy persistence];
   v18 = +[NSDate date];
   [v18 timeIntervalSince1970];
   v19 = [NSNumber numberWithDouble:?];
-  [v17 setObject:v19 forKey:@"watch_lastModified"];
+  [persistence2 setObject:v19 forKey:@"watch_lastModified"];
 
-  v20 = [(StocksSyncPreferences *)v21 persistence];
-  [v20 synchronize];
+  persistence3 = [(StocksSyncPreferences *)selfCopy persistence];
+  [persistence3 synchronize];
 }
 
 - (NSArray)stocklist
 {
-  v3 = [(StocksSyncPreferences *)self persistence];
-  [v3 synchronize];
+  persistence = [(StocksSyncPreferences *)self persistence];
+  [persistence synchronize];
 
-  v4 = [(StocksSyncAppPreferences *)self _stockDictionaries];
-  v26 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v4, "count")}];
+  _stockDictionaries = [(StocksSyncAppPreferences *)self _stockDictionaries];
+  v26 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(_stockDictionaries, "count")}];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  obj = v4;
+  obj = _stockDictionaries;
   v5 = [obj countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v5)
   {

@@ -1,41 +1,41 @@
 @interface _CPButtonFeedback
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_CPButtonFeedback)init;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _CPButtonFeedback
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_11;
   }
 
   commandType = self->_commandType;
-  if (commandType != [v4 commandType])
+  if (commandType != [equalCopy commandType])
   {
     goto LABEL_11;
   }
 
-  v6 = [(_CPButtonFeedback *)self commandDetail];
-  v7 = [v4 commandDetail];
-  v8 = v7;
-  if ((v6 != 0) == (v7 == 0))
+  commandDetail = [(_CPButtonFeedback *)self commandDetail];
+  commandDetail2 = [equalCopy commandDetail];
+  v8 = commandDetail2;
+  if ((commandDetail != 0) == (commandDetail2 == 0))
   {
 
     goto LABEL_11;
   }
 
-  v9 = [(_CPButtonFeedback *)self commandDetail];
-  if (v9)
+  commandDetail3 = [(_CPButtonFeedback *)self commandDetail];
+  if (commandDetail3)
   {
-    v10 = v9;
-    v11 = [(_CPButtonFeedback *)self commandDetail];
-    v12 = [v4 commandDetail];
-    v13 = [v11 isEqual:v12];
+    v10 = commandDetail3;
+    commandDetail4 = [(_CPButtonFeedback *)self commandDetail];
+    commandDetail5 = [equalCopy commandDetail];
+    v13 = [commandDetail4 isEqual:commandDetail5];
 
     if (!v13)
     {
@@ -48,7 +48,7 @@
   }
 
   uniqueId = self->_uniqueId;
-  if (uniqueId != [v4 uniqueId])
+  if (uniqueId != [equalCopy uniqueId])
   {
 LABEL_11:
     v16 = 0;
@@ -56,24 +56,24 @@ LABEL_11:
   }
 
   timestamp = self->_timestamp;
-  v16 = timestamp == [v4 timestamp];
+  v16 = timestamp == [equalCopy timestamp];
 LABEL_12:
 
   return v16;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  a3;
+  to;
   if ([(_CPButtonFeedback *)self commandType])
   {
     commandType = self->_commandType;
     PBDataWriterWriteInt32Field();
   }
 
-  v5 = [(_CPButtonFeedback *)self commandDetail];
+  commandDetail = [(_CPButtonFeedback *)self commandDetail];
 
-  if (v5)
+  if (commandDetail)
   {
     commandDetail = self->_commandDetail;
     PBDataWriterWriteStringField();

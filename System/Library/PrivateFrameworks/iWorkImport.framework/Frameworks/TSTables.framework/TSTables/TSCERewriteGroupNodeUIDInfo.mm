@@ -1,15 +1,15 @@
 @interface TSCERewriteGroupNodeUIDInfo
-- (TSCERewriteGroupNodeUIDInfo)initWithGroupByUid:(const TSKUIDStruct *)a3 groupNodeUIDMap:(const void *)a4;
+- (TSCERewriteGroupNodeUIDInfo)initWithGroupByUid:(const TSKUIDStruct *)uid groupNodeUIDMap:(const void *)map;
 - (TSKUIDStructVectorTemplate<TSKUIDStruct>)originalGroupNodeUIDs;
 - (id).cxx_construct;
 - (id)description;
-- (id)initFromMessage:(const void *)a3;
-- (void)saveToMessage:(void *)a3;
+- (id)initFromMessage:(const void *)message;
+- (void)saveToMessage:(void *)message;
 @end
 
 @implementation TSCERewriteGroupNodeUIDInfo
 
-- (TSCERewriteGroupNodeUIDInfo)initWithGroupByUid:(const TSKUIDStruct *)a3 groupNodeUIDMap:(const void *)a4
+- (TSCERewriteGroupNodeUIDInfo)initWithGroupByUid:(const TSKUIDStruct *)uid groupNodeUIDMap:(const void *)map
 {
   v10.receiver = self;
   v10.super_class = TSCERewriteGroupNodeUIDInfo;
@@ -17,12 +17,12 @@
   v7 = v6;
   if (v6)
   {
-    v6->_groupByUid = *a3;
+    v6->_groupByUid = *uid;
     p_groupNodeUIDMap = &v6->_groupNodeUIDMap;
-    if (&v7->_groupNodeUIDMap != a4)
+    if (&v7->_groupNodeUIDMap != map)
     {
-      v7->_groupNodeUIDMap.__table_.__max_load_factor_ = *(a4 + 8);
-      sub_221417E5C(p_groupNodeUIDMap, *(a4 + 2), 0);
+      v7->_groupNodeUIDMap.__table_.__max_load_factor_ = *(map + 8);
+      sub_221417E5C(p_groupNodeUIDMap, *(map + 2), 0);
     }
   }
 
@@ -56,16 +56,16 @@
   return v9;
 }
 
-- (id)initFromMessage:(const void *)a3
+- (id)initFromMessage:(const void *)message
 {
   v11.receiver = self;
   v11.super_class = TSCERewriteGroupNodeUIDInfo;
   v5 = [(TSCERewriteGroupNodeUIDInfo *)&v11 init];
   if (v5)
   {
-    if (*(a3 + 3))
+    if (*(message + 3))
     {
-      v6 = *(a3 + 3);
+      v6 = *(message + 3);
     }
 
     else
@@ -75,9 +75,9 @@
 
     v5->_groupByUid._lower = TSKUIDStruct::loadFromMessage(v6, v4);
     v5->_groupByUid._upper = v7;
-    if (*(a3 + 4))
+    if (*(message + 4))
     {
-      v8 = *(a3 + 4);
+      v8 = *(message + 4);
     }
 
     else
@@ -93,35 +93,35 @@
   return v5;
 }
 
-- (void)saveToMessage:(void *)a3
+- (void)saveToMessage:(void *)message
 {
-  *(a3 + 4) |= 1u;
-  v5 = *(a3 + 3);
+  *(message + 4) |= 1u;
+  v5 = *(message + 3);
   if (!v5)
   {
-    v6 = *(a3 + 1);
+    v6 = *(message + 1);
     if (v6)
     {
       v6 = *(v6 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v5 = MEMORY[0x223DA0360](v6);
-    *(a3 + 3) = v5;
+    *(message + 3) = v5;
   }
 
   TSKUIDStruct::saveToMessage(&self->_groupByUid, v5);
-  *(a3 + 4) |= 2u;
-  v7 = *(a3 + 4);
+  *(message + 4) |= 2u;
+  v7 = *(message + 4);
   if (!v7)
   {
-    v8 = *(a3 + 1);
+    v8 = *(message + 1);
     if (v8)
     {
       v8 = *(v8 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v7 = MEMORY[0x223DA0310](v8);
-    *(a3 + 4) = v7;
+    *(message + 4) = v7;
   }
 
   TSKUIDStructMap::saveToMessage(&self->_groupNodeUIDMap, v7);

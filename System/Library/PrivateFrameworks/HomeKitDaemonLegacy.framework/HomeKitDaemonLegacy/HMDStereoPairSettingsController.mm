@@ -1,28 +1,28 @@
 @interface HMDStereoPairSettingsController
 + (id)logCategory;
 - (BOOL)_currentDevicePrimaryResident;
-- (HMDStereoPairSettingsController)initWithDataSource:(id)a3 workQueue:(id)a4 stateManagerFactory:(id)a5;
+- (HMDStereoPairSettingsController)initWithDataSource:(id)source workQueue:(id)queue stateManagerFactory:(id)factory;
 - (HMDStereoPairSettingsControllerDataSource)dataSource;
 - (NSArray)homes;
-- (id)_groupOwnerTopicsForMediaSystem:(id)a3;
+- (id)_groupOwnerTopicsForMediaSystem:(id)system;
 - (id)_homeUUID;
-- (id)_mediaSystemGroupOwnerAccessoryUUID:(id)a3;
-- (id)_mediaSystemWithAccessoryUUID:(id)a3;
+- (id)_mediaSystemGroupOwnerAccessoryUUID:(id)d;
+- (id)_mediaSystemWithAccessoryUUID:(id)d;
 - (id)_mediaSystems;
 - (id)logIdentifier;
-- (id)mediaSystemGroupOwner:(id)a3;
-- (void)_postAsStereoPairEventsIfDifferentForHome:(id)a3 mediaSystem:(id)a4 keyPath:(id)a5 setting:(id)a6;
-- (void)_processReceivedEvent:(id)a3 topic:(id)a4 home:(id)a5 mediaSystem:(id)a6;
-- (void)_subscribeToAddedMediaSystem:(id)a3;
-- (void)_unsubscribeToRemovedMediaSystem:(id)a3;
-- (void)didReceiveCachedEvent:(id)a3 topic:(id)a4 source:(id)a5;
-- (void)didReceiveEvent:(id)a3 topic:(id)a4;
-- (void)didUpdateCurrentRunState:(int64_t)a3 updatedState:(int64_t)a4 forHome:(id)a5;
-- (void)pushLastEvent:(id)a3 topic:(id)a4;
+- (id)mediaSystemGroupOwner:(id)owner;
+- (void)_postAsStereoPairEventsIfDifferentForHome:(id)home mediaSystem:(id)system keyPath:(id)path setting:(id)setting;
+- (void)_processReceivedEvent:(id)event topic:(id)topic home:(id)home mediaSystem:(id)system;
+- (void)_subscribeToAddedMediaSystem:(id)system;
+- (void)_unsubscribeToRemovedMediaSystem:(id)system;
+- (void)didReceiveCachedEvent:(id)event topic:(id)topic source:(id)source;
+- (void)didReceiveEvent:(id)event topic:(id)topic;
+- (void)didUpdateCurrentRunState:(int64_t)state updatedState:(int64_t)updatedState forHome:(id)home;
+- (void)pushLastEvent:(id)event topic:(id)topic;
 - (void)startIfPrimaryResident;
 - (void)stopIfPrimaryResidentChange;
-- (void)subscribeToAddedMediaSystemIfPrimaryResident:(id)a3;
-- (void)unsubscribeToRemovedMediaSystemIfPrimaryResident:(id)a3;
+- (void)subscribeToAddedMediaSystemIfPrimaryResident:(id)resident;
+- (void)unsubscribeToRemovedMediaSystemIfPrimaryResident:(id)resident;
 @end
 
 @implementation HMDStereoPairSettingsController
@@ -34,22 +34,22 @@
   return WeakRetained;
 }
 
-- (void)pushLastEvent:(id)a3 topic:(id)a4
+- (void)pushLastEvent:(id)event topic:(id)topic
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HMDStereoPairSettingsController *)self topicToLastReceivedEvent];
-  [v8 setObject:v7 forKeyedSubscript:v6];
+  topicCopy = topic;
+  eventCopy = event;
+  topicToLastReceivedEvent = [(HMDStereoPairSettingsController *)self topicToLastReceivedEvent];
+  [topicToLastReceivedEvent setObject:eventCopy forKeyedSubscript:topicCopy];
 }
 
-- (void)didReceiveCachedEvent:(id)a3 topic:(id)a4 source:(id)a5
+- (void)didReceiveCachedEvent:(id)event topic:(id)topic source:(id)source
 {
   v22 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  eventCopy = event;
+  topicCopy = topic;
+  sourceCopy = source;
   v11 = objc_autoreleasePoolPush();
-  v12 = self;
+  selfCopy = self;
   v13 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
@@ -57,30 +57,30 @@
     v16 = 138543874;
     v17 = v14;
     v18 = 2112;
-    v19 = v8;
+    v19 = eventCopy;
     v20 = 2112;
-    v21 = v9;
+    v21 = topicCopy;
     _os_log_impl(&dword_2531F8000, v13, OS_LOG_TYPE_INFO, "%{public}@Process cached event: %@ topic: %@", &v16, 0x20u);
   }
 
   objc_autoreleasePoolPop(v11);
-  [(HMDStereoPairSettingsController *)v12 didReceiveEvent:v8 topic:v9];
+  [(HMDStereoPairSettingsController *)selfCopy didReceiveEvent:eventCopy topic:topicCopy];
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didReceiveEvent:(id)a3 topic:(id)a4
+- (void)didReceiveEvent:(id)event topic:(id)topic
 {
   v37 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CD19F0] decodeTopic:v7];
-  v9 = [v8 asAccessorySettingTopic];
-  v10 = v9;
-  if (!v9)
+  eventCopy = event;
+  topicCopy = topic;
+  v8 = [MEMORY[0x277CD19F0] decodeTopic:topicCopy];
+  asAccessorySettingTopic = [v8 asAccessorySettingTopic];
+  v10 = asAccessorySettingTopic;
+  if (!asAccessorySettingTopic)
   {
     v18 = objc_autoreleasePoolPush();
-    v19 = self;
+    selfCopy2 = self;
     v20 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
@@ -88,7 +88,7 @@
       *buf = 138543618;
       v30 = v21;
       v31 = 2112;
-      v32 = v7;
+      v32 = topicCopy;
       _os_log_impl(&dword_2531F8000, v20, OS_LOG_TYPE_ERROR, "%{public}@Failed to parse topic: %@", buf, 0x16u);
 LABEL_8:
     }
@@ -99,26 +99,26 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v11 = [v9 accessoryUUID];
-  v12 = [(HMDStereoPairSettingsController *)self _mediaSystemWithAccessoryUUID:v11];
+  accessoryUUID = [asAccessorySettingTopic accessoryUUID];
+  v12 = [(HMDStereoPairSettingsController *)self _mediaSystemWithAccessoryUUID:accessoryUUID];
 
   if (!v12)
   {
     v18 = objc_autoreleasePoolPush();
-    v19 = self;
+    selfCopy2 = self;
     v20 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
       v21 = HMFGetLogIdentifier();
-      v22 = [v10 accessoryUUID];
+      accessoryUUID2 = [v10 accessoryUUID];
       *buf = 138544130;
       v30 = v21;
       v31 = 2112;
-      v32 = v6;
+      v32 = eventCopy;
       v33 = 2112;
-      v34 = v7;
+      v34 = topicCopy;
       v35 = 2112;
-      v36 = v22;
+      v36 = accessoryUUID2;
       _os_log_impl(&dword_2531F8000, v20, OS_LOG_TYPE_ERROR, "%{public}@Received event: %@ topic: %@, failed to find media system with accessory: %@", buf, 0x2Au);
 
       goto LABEL_8;
@@ -127,21 +127,21 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v13 = [(HMDStereoPairSettingsController *)self _homeUUID];
-  v14 = [v12 uuid];
-  v15 = [(HMDStereoPairSettingsController *)self workQueue];
+  _homeUUID = [(HMDStereoPairSettingsController *)self _homeUUID];
+  uuid = [v12 uuid];
+  workQueue = [(HMDStereoPairSettingsController *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __57__HMDStereoPairSettingsController_didReceiveEvent_topic___block_invoke;
   block[3] = &unk_2797352C0;
   block[4] = self;
-  v25 = v6;
-  v26 = v7;
-  v27 = v13;
-  v28 = v14;
-  v16 = v14;
-  v17 = v13;
-  dispatch_async(v15, block);
+  v25 = eventCopy;
+  v26 = topicCopy;
+  v27 = _homeUUID;
+  v28 = uuid;
+  v16 = uuid;
+  v17 = _homeUUID;
+  dispatch_async(workQueue, block);
 
 LABEL_10:
   v23 = *MEMORY[0x277D85DE8];
@@ -173,18 +173,18 @@ uint64_t __57__HMDStereoPairSettingsController_didReceiveEvent_topic___block_inv
   return result;
 }
 
-- (id)_mediaSystemWithAccessoryUUID:(id)a3
+- (id)_mediaSystemWithAccessoryUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(HMDStereoPairSettingsController *)self _mediaSystems];
+  dCopy = d;
+  _mediaSystems = [(HMDStereoPairSettingsController *)self _mediaSystems];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __65__HMDStereoPairSettingsController__mediaSystemWithAccessoryUUID___block_invoke;
   v9[3] = &unk_279723F68;
   v9[4] = self;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 na_firstObjectPassingTest:v9];
+  v10 = dCopy;
+  v6 = dCopy;
+  v7 = [_mediaSystems na_firstObjectPassingTest:v9];
 
   return v7;
 }
@@ -200,25 +200,25 @@ BOOL __65__HMDStereoPairSettingsController__mediaSystemWithAccessoryUUID___block
 
 - (id)logIdentifier
 {
-  v2 = [(HMDStereoPairSettingsController *)self _homeUUID];
-  v3 = [v2 UUIDString];
+  _homeUUID = [(HMDStereoPairSettingsController *)self _homeUUID];
+  uUIDString = [_homeUUID UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
-- (void)didUpdateCurrentRunState:(int64_t)a3 updatedState:(int64_t)a4 forHome:(id)a5
+- (void)didUpdateCurrentRunState:(int64_t)state updatedState:(int64_t)updatedState forHome:(id)home
 {
   v21 = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  v9 = [(HMDStereoPairSettingsController *)self _homeUUID];
-  if ([v9 isEqual:v8])
+  homeCopy = home;
+  _homeUUID = [(HMDStereoPairSettingsController *)self _homeUUID];
+  if ([_homeUUID isEqual:homeCopy])
   {
-    if (a3 != 3 || a4 == 3)
+    if (state != 3 || updatedState == 3)
     {
-      if (a3 != 3 && a4 == 3)
+      if (state != 3 && updatedState == 3)
       {
         v14 = objc_autoreleasePoolPush();
-        v15 = self;
+        selfCopy = self;
         v16 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
         {
@@ -229,14 +229,14 @@ BOOL __65__HMDStereoPairSettingsController__mediaSystemWithAccessoryUUID___block
         }
 
         objc_autoreleasePoolPop(v14);
-        [(HMDStereoPairSettingsController *)v15 startIfPrimaryResident];
+        [(HMDStereoPairSettingsController *)selfCopy startIfPrimaryResident];
       }
     }
 
     else
     {
       v10 = objc_autoreleasePoolPush();
-      v11 = self;
+      selfCopy2 = self;
       v12 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
       {
@@ -247,7 +247,7 @@ BOOL __65__HMDStereoPairSettingsController__mediaSystemWithAccessoryUUID___block
       }
 
       objc_autoreleasePoolPop(v10);
-      [(HMDStereoPairSettingsController *)v11 stopIfPrimaryResidentChange];
+      [(HMDStereoPairSettingsController *)selfCopy2 stopIfPrimaryResidentChange];
     }
   }
 
@@ -256,48 +256,48 @@ BOOL __65__HMDStereoPairSettingsController__mediaSystemWithAccessoryUUID___block
 
 - (NSArray)homes
 {
-  v2 = [(HMDStereoPairSettingsController *)self dataSource];
-  v3 = [v2 home];
+  dataSource = [(HMDStereoPairSettingsController *)self dataSource];
+  home = [dataSource home];
 
-  v4 = [v3 homeManager];
-  v5 = [v4 homes];
+  homeManager = [home homeManager];
+  homes = [homeManager homes];
 
-  return v5;
+  return homes;
 }
 
 - (id)_mediaSystems
 {
-  v2 = [(HMDStereoPairSettingsController *)self dataSource];
-  v3 = [v2 uuidToMediaSystems];
-  v4 = [v3 allValues];
+  dataSource = [(HMDStereoPairSettingsController *)self dataSource];
+  uuidToMediaSystems = [dataSource uuidToMediaSystems];
+  allValues = [uuidToMediaSystems allValues];
 
-  return v4;
+  return allValues;
 }
 
 - (BOOL)_currentDevicePrimaryResident
 {
-  v2 = [(HMDStereoPairSettingsController *)self dataSource];
-  v3 = [v2 home];
+  dataSource = [(HMDStereoPairSettingsController *)self dataSource];
+  home = [dataSource home];
 
-  LOBYTE(v2) = [v3 isCurrentDeviceConfirmedPrimaryResident];
-  return v2;
+  LOBYTE(dataSource) = [home isCurrentDeviceConfirmedPrimaryResident];
+  return dataSource;
 }
 
-- (void)_unsubscribeToRemovedMediaSystem:(id)a3
+- (void)_unsubscribeToRemovedMediaSystem:(id)system
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDStereoPairSettingsController *)self _homeUUID];
-  v6 = [(HMDStereoPairSettingsController *)self _mediaSystemGroupOwnerAccessoryUUID:v4];
+  systemCopy = system;
+  _homeUUID = [(HMDStereoPairSettingsController *)self _homeUUID];
+  v6 = [(HMDStereoPairSettingsController *)self _mediaSystemGroupOwnerAccessoryUUID:systemCopy];
   v7 = v6;
-  if (v5 && v6)
+  if (_homeUUID && v6)
   {
-    v8 = [(HMDStereoPairSettingsController *)self _groupOwnerTopicsForMediaSystem:v4];
+    v8 = [(HMDStereoPairSettingsController *)self _groupOwnerTopicsForMediaSystem:systemCopy];
     v9 = v8;
     if (v8 && [v8 count])
     {
       v10 = objc_autoreleasePoolPush();
-      v11 = self;
+      selfCopy = self;
       v12 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
       {
@@ -305,7 +305,7 @@ BOOL __65__HMDStereoPairSettingsController__mediaSystemWithAccessoryUUID___block
         *buf = 138544130;
         v27 = v13;
         v28 = 2112;
-        v29 = v5;
+        v29 = _homeUUID;
         v30 = 2112;
         v31 = v7;
         v32 = 2112;
@@ -314,20 +314,20 @@ BOOL __65__HMDStereoPairSettingsController__mediaSystemWithAccessoryUUID___block
       }
 
       objc_autoreleasePoolPop(v10);
-      v14 = [(HMDStereoPairSettingsController *)v11 dataSource];
-      v15 = [v14 localAndRemoteSubscriptionProvider];
+      dataSource = [(HMDStereoPairSettingsController *)selfCopy dataSource];
+      localAndRemoteSubscriptionProvider = [dataSource localAndRemoteSubscriptionProvider];
       v25[0] = MEMORY[0x277D85DD0];
       v25[1] = 3221225472;
       v25[2] = __68__HMDStereoPairSettingsController__unsubscribeToRemovedMediaSystem___block_invoke;
       v25[3] = &unk_279734EB8;
-      v25[4] = v11;
-      [v15 changeRegistrationsForConsumer:v11 topicFilterAdditions:MEMORY[0x277CBEBF8] topicFilterRemovals:v9 completion:v25];
+      v25[4] = selfCopy;
+      [localAndRemoteSubscriptionProvider changeRegistrationsForConsumer:selfCopy topicFilterAdditions:MEMORY[0x277CBEBF8] topicFilterRemovals:v9 completion:v25];
     }
 
     else
     {
       v20 = objc_autoreleasePoolPush();
-      v21 = self;
+      selfCopy2 = self;
       v22 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
       {
@@ -335,7 +335,7 @@ BOOL __65__HMDStereoPairSettingsController__mediaSystemWithAccessoryUUID___block
         *buf = 138543874;
         v27 = v23;
         v28 = 2112;
-        v29 = v5;
+        v29 = _homeUUID;
         v30 = 2112;
         v31 = v7;
         _os_log_impl(&dword_2531F8000, v22, OS_LOG_TYPE_ERROR, "%{public}@No topics for home: %@ accessory: %@", buf, 0x20u);
@@ -348,7 +348,7 @@ BOOL __65__HMDStereoPairSettingsController__mediaSystemWithAccessoryUUID___block
   else
   {
     v16 = objc_autoreleasePoolPush();
-    v17 = self;
+    selfCopy3 = self;
     v18 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
@@ -356,7 +356,7 @@ BOOL __65__HMDStereoPairSettingsController__mediaSystemWithAccessoryUUID___block
       *buf = 138543618;
       v27 = v19;
       v28 = 2112;
-      v29 = v4;
+      v29 = systemCopy;
       _os_log_impl(&dword_2531F8000, v18, OS_LOG_TYPE_ERROR, "%{public}@Media system %@ does not have an owner", buf, 0x16u);
     }
 
@@ -420,15 +420,15 @@ LABEL_6:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (id)mediaSystemGroupOwner:(id)a3
+- (id)mediaSystemGroupOwner:(id)owner
 {
   v42 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  ownerCopy = owner;
+  v5 = ownerCopy;
+  if (ownerCopy)
   {
-    v31 = v4;
-    [v4 components];
+    v31 = ownerCopy;
+    [ownerCopy components];
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
@@ -437,7 +437,7 @@ LABEL_6:
     if (v7)
     {
       v8 = v7;
-      v30 = self;
+      selfCopy = self;
       v9 = 0;
       v10 = *v34;
       obj = v6;
@@ -454,7 +454,7 @@ LABEL_6:
           if (!v12)
           {
             v19 = objc_autoreleasePoolPush();
-            v20 = v30;
+            v20 = selfCopy;
             v21 = HMFGetOSLogHandle();
             v5 = v31;
             if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -479,11 +479,11 @@ LABEL_6:
             goto LABEL_10;
           }
 
-          v13 = [v9 accessory];
-          v14 = [v13 serialNumber];
-          v15 = [v12 accessory];
-          v16 = [v15 serialNumber];
-          v17 = [v14 compare:v16];
+          accessory = [v9 accessory];
+          serialNumber = [accessory serialNumber];
+          accessory2 = [v12 accessory];
+          serialNumber2 = [accessory2 serialNumber];
+          v17 = [serialNumber compare:serialNumber2];
 
           if (v17 == 1)
           {
@@ -519,7 +519,7 @@ LABEL_22:
   else
   {
     v24 = objc_autoreleasePoolPush();
-    v25 = self;
+    selfCopy2 = self;
     v26 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
     {
@@ -540,72 +540,72 @@ LABEL_22:
   return v23;
 }
 
-- (id)_mediaSystemGroupOwnerAccessoryUUID:(id)a3
+- (id)_mediaSystemGroupOwnerAccessoryUUID:(id)d
 {
-  v3 = [(HMDStereoPairSettingsController *)self mediaSystemGroupOwner:a3];
+  v3 = [(HMDStereoPairSettingsController *)self mediaSystemGroupOwner:d];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 accessory];
-    v6 = [v5 uuid];
+    accessory = [v3 accessory];
+    uuid = [accessory uuid];
   }
 
   else
   {
-    v6 = 0;
+    uuid = 0;
   }
 
-  return v6;
+  return uuid;
 }
 
 - (id)_homeUUID
 {
-  v2 = [(HMDStereoPairSettingsController *)self dataSource];
-  v3 = [v2 home];
+  dataSource = [(HMDStereoPairSettingsController *)self dataSource];
+  home = [dataSource home];
 
-  v4 = [v3 uuid];
+  uuid = [home uuid];
 
-  return v4;
+  return uuid;
 }
 
-- (void)_postAsStereoPairEventsIfDifferentForHome:(id)a3 mediaSystem:(id)a4 keyPath:(id)a5 setting:(id)a6
+- (void)_postAsStereoPairEventsIfDifferentForHome:(id)home mediaSystem:(id)system keyPath:(id)path setting:(id)setting
 {
   v56 = *MEMORY[0x277D85DE8];
-  v48 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v47 = [(HMDStereoPairSettingsController *)self dataSource];
-  v13 = [(HMDStereoPairSettingsController *)self workQueue];
-  dispatch_assert_queue_V2(v13);
+  homeCopy = home;
+  systemCopy = system;
+  pathCopy = path;
+  settingCopy = setting;
+  dataSource = [(HMDStereoPairSettingsController *)self dataSource];
+  workQueue = [(HMDStereoPairSettingsController *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v14 = objc_autoreleasePoolPush();
-  v15 = self;
+  selfCopy = self;
   v16 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
   {
     HMFGetLogIdentifier();
-    v18 = v17 = v12;
+    v18 = v17 = settingCopy;
     *buf = 138543874;
     v51 = v18;
     v52 = 2112;
-    v53 = v10;
+    v53 = systemCopy;
     v54 = 2112;
-    v55 = v11;
+    v55 = pathCopy;
     _os_log_impl(&dword_2531F8000, v16, OS_LOG_TYPE_INFO, "%{public}@Forward media system %@ keypath: %@", buf, 0x20u);
 
-    v12 = v17;
+    settingCopy = v17;
   }
 
   objc_autoreleasePoolPop(v14);
-  v19 = [v10 UUIDString];
+  uUIDString = [systemCopy UUIDString];
   [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
-  v46 = v19;
-  v45 = [objc_alloc(MEMORY[0x277CD1AD8]) initWithSetting:v12 eventSource:v19 eventTimestamp:v20];
+  v46 = uUIDString;
+  v45 = [objc_alloc(MEMORY[0x277CD1AD8]) initWithSetting:settingCopy eventSource:uUIDString eventTimestamp:v20];
   v21 = HMImmutableSettingChangeEventTopicFromMediaSystem();
-  v22 = v47;
-  v23 = [v47 eventStoreReadHandle];
-  v24 = [v23 lastEventForTopic:v21];
+  v22 = dataSource;
+  eventStoreReadHandle = [dataSource eventStoreReadHandle];
+  v24 = [eventStoreReadHandle lastEventForTopic:v21];
   if (!v24)
   {
     v25 = 0;
@@ -617,10 +617,10 @@ LABEL_22:
   v26 = v49;
   if (v26)
   {
-    v41 = v12;
-    v43 = v11;
+    v41 = settingCopy;
+    v43 = pathCopy;
     v27 = objc_autoreleasePoolPush();
-    v28 = v15;
+    v28 = selfCopy;
     v29 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
     {
@@ -638,29 +638,29 @@ LABEL_22:
     }
 
     objc_autoreleasePoolPop(v27);
-    v12 = v41;
-    v11 = v43;
+    settingCopy = v41;
+    pathCopy = v43;
   }
 
-  if (!v25 || ![v25 isEqual:v12])
+  if (!v25 || ![v25 isEqual:settingCopy])
   {
-    v22 = v47;
+    v22 = dataSource;
 LABEL_15:
-    v38 = [v22 eventForwarder];
+    eventForwarder = [v22 eventForwarder];
     v37 = v45;
-    [v38 forwardEvent:v45 topic:v21 completion:&__block_literal_global_15];
+    [eventForwarder forwardEvent:v45 topic:v21 completion:&__block_literal_global_15];
 
     goto LABEL_16;
   }
 
-  v31 = v12;
+  v31 = settingCopy;
   v32 = objc_autoreleasePoolPush();
-  v33 = v15;
+  v33 = selfCopy;
   v34 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v34, OS_LOG_TYPE_INFO))
   {
     HMFGetLogIdentifier();
-    v35 = v44 = v11;
+    v35 = v44 = pathCopy;
     [v31 keyPath];
     v36 = v42 = v32;
     *buf = 138543618;
@@ -670,61 +670,61 @@ LABEL_15:
     _os_log_impl(&dword_2531F8000, v34, OS_LOG_TYPE_INFO, "%{public}@Skip sending event for keyPath: %{public}@ as it matches stored", buf, 0x16u);
 
     v32 = v42;
-    v11 = v44;
+    pathCopy = v44;
   }
 
   objc_autoreleasePoolPop(v32);
-  v12 = v31;
-  v22 = v47;
+  settingCopy = v31;
+  v22 = dataSource;
   v37 = v45;
 LABEL_16:
 
   v39 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_processReceivedEvent:(id)a3 topic:(id)a4 home:(id)a5 mediaSystem:(id)a6
+- (void)_processReceivedEvent:(id)event topic:(id)topic home:(id)home mediaSystem:(id)system
 {
   v42 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(HMDStereoPairSettingsController *)self workQueue];
-  dispatch_assert_queue_V2(v14);
+  eventCopy = event;
+  topicCopy = topic;
+  homeCopy = home;
+  systemCopy = system;
+  workQueue = [(HMDStereoPairSettingsController *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v15 = [HMDLegacyAccessorySettingsAdaptor parsedBoolSettingEvent:v10 topic:v11];
+  v15 = [HMDLegacyAccessorySettingsAdaptor parsedBoolSettingEvent:eventCopy topic:topicCopy];
   v16 = v15;
   if (v15)
   {
-    v17 = [v15 keyPath];
-    [(HMDStereoPairSettingsController *)self _postAsStereoPairEventsIfDifferentForHome:v12 mediaSystem:v13 keyPath:v17 setting:v16];
+    keyPath = [v15 keyPath];
+    [(HMDStereoPairSettingsController *)self _postAsStereoPairEventsIfDifferentForHome:homeCopy mediaSystem:systemCopy keyPath:keyPath setting:v16];
   }
 
   else
   {
-    v18 = [HMDLegacyAccessorySettingsAdaptor parsedIntegerSettingEvent:v10 topic:v11];
-    v17 = v18;
+    v18 = [HMDLegacyAccessorySettingsAdaptor parsedIntegerSettingEvent:eventCopy topic:topicCopy];
+    keyPath = v18;
     if (v18)
     {
-      v19 = [v18 keyPath];
-      [(HMDStereoPairSettingsController *)self _postAsStereoPairEventsIfDifferentForHome:v12 mediaSystem:v13 keyPath:v19 setting:v17];
+      keyPath2 = [v18 keyPath];
+      [(HMDStereoPairSettingsController *)self _postAsStereoPairEventsIfDifferentForHome:homeCopy mediaSystem:systemCopy keyPath:keyPath2 setting:keyPath];
     }
 
     else
     {
-      v20 = [HMDLegacyAccessorySettingsAdaptor parsedLanguageSetting:v10 topic:v11];
-      v19 = v20;
+      v20 = [HMDLegacyAccessorySettingsAdaptor parsedLanguageSetting:eventCopy topic:topicCopy];
+      keyPath2 = v20;
       if (v20)
       {
-        v21 = [v20 keyPath];
-        [(HMDStereoPairSettingsController *)self _postAsStereoPairEventsIfDifferentForHome:v12 mediaSystem:v13 keyPath:v21 setting:v19];
+        keyPath3 = [v20 keyPath];
+        [(HMDStereoPairSettingsController *)self _postAsStereoPairEventsIfDifferentForHome:homeCopy mediaSystem:systemCopy keyPath:keyPath3 setting:keyPath2];
       }
 
       else
       {
-        v22 = [HMDLegacyAccessorySettingsAdaptor parsedLanguageListSetting:v10 topic:v11];
+        v22 = [HMDLegacyAccessorySettingsAdaptor parsedLanguageListSetting:eventCopy topic:topicCopy];
         context = objc_autoreleasePoolPush();
-        v23 = self;
+        selfCopy = self;
         v24 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
         {
@@ -743,14 +743,14 @@ LABEL_16:
         v26 = v22;
         if (v22)
         {
-          v27 = [v22 keyPath];
-          [(HMDStereoPairSettingsController *)v23 _postAsStereoPairEventsIfDifferentForHome:v12 mediaSystem:v13 keyPath:v27 setting:v26];
+          keyPath4 = [v22 keyPath];
+          [(HMDStereoPairSettingsController *)selfCopy _postAsStereoPairEventsIfDifferentForHome:homeCopy mediaSystem:systemCopy keyPath:keyPath4 setting:v26];
         }
 
         else
         {
           v28 = objc_autoreleasePoolPush();
-          v29 = v23;
+          v29 = selfCopy;
           v30 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
           {
@@ -759,9 +759,9 @@ LABEL_16:
             *buf = 138543874;
             v37 = v31;
             v38 = 2112;
-            v39 = v10;
+            v39 = eventCopy;
             v40 = 2112;
-            v41 = v11;
+            v41 = topicCopy;
             _os_log_impl(&dword_2531F8000, v30, OS_LOG_TYPE_ERROR, "%{public}@Received unknown event type: %@ topic: %@", buf, 0x20u);
 
             v28 = contexta;
@@ -777,21 +777,21 @@ LABEL_16:
   v32 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_subscribeToAddedMediaSystem:(id)a3
+- (void)_subscribeToAddedMediaSystem:(id)system
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDStereoPairSettingsController *)self _homeUUID];
-  v6 = [(HMDStereoPairSettingsController *)self _mediaSystemGroupOwnerAccessoryUUID:v4];
+  systemCopy = system;
+  _homeUUID = [(HMDStereoPairSettingsController *)self _homeUUID];
+  v6 = [(HMDStereoPairSettingsController *)self _mediaSystemGroupOwnerAccessoryUUID:systemCopy];
   v7 = v6;
-  if (v5 && v6)
+  if (_homeUUID && v6)
   {
-    v8 = [(HMDStereoPairSettingsController *)self _groupOwnerTopicsForMediaSystem:v4];
+    v8 = [(HMDStereoPairSettingsController *)self _groupOwnerTopicsForMediaSystem:systemCopy];
     v9 = v8;
     if (v8 && [v8 count])
     {
       v10 = objc_autoreleasePoolPush();
-      v11 = self;
+      selfCopy = self;
       v12 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
       {
@@ -799,7 +799,7 @@ LABEL_16:
         *buf = 138544130;
         v31 = v13;
         v32 = 2112;
-        v33 = v5;
+        v33 = _homeUUID;
         v34 = 2112;
         v35 = v7;
         v36 = 2112;
@@ -808,24 +808,24 @@ LABEL_16:
       }
 
       objc_autoreleasePoolPop(v10);
-      v14 = [(HMDStereoPairSettingsController *)v11 dataSource];
-      v15 = [v14 localAndRemoteSubscriptionProvider];
+      dataSource = [(HMDStereoPairSettingsController *)selfCopy dataSource];
+      localAndRemoteSubscriptionProvider = [dataSource localAndRemoteSubscriptionProvider];
       v25[0] = MEMORY[0x277D85DD0];
       v25[1] = 3221225472;
       v25[2] = __64__HMDStereoPairSettingsController__subscribeToAddedMediaSystem___block_invoke;
       v25[3] = &unk_279728780;
-      v25[4] = v11;
+      v25[4] = selfCopy;
       v26 = v9;
       v27 = v7;
-      v28 = v5;
-      v29 = v4;
-      [v15 changeRegistrationsForConsumer:v11 topicFilterAdditions:v26 topicFilterRemovals:MEMORY[0x277CBEBF8] completion:v25];
+      v28 = _homeUUID;
+      v29 = systemCopy;
+      [localAndRemoteSubscriptionProvider changeRegistrationsForConsumer:selfCopy topicFilterAdditions:v26 topicFilterRemovals:MEMORY[0x277CBEBF8] completion:v25];
     }
 
     else
     {
       v20 = objc_autoreleasePoolPush();
-      v21 = self;
+      selfCopy2 = self;
       v22 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
       {
@@ -833,7 +833,7 @@ LABEL_16:
         *buf = 138543874;
         v31 = v23;
         v32 = 2112;
-        v33 = v5;
+        v33 = _homeUUID;
         v34 = 2112;
         v35 = v7;
         _os_log_impl(&dword_2531F8000, v22, OS_LOG_TYPE_ERROR, "%{public}@No topics for home: %@ accessory: %@", buf, 0x20u);
@@ -846,7 +846,7 @@ LABEL_16:
   else
   {
     v16 = objc_autoreleasePoolPush();
-    v17 = self;
+    selfCopy3 = self;
     v18 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
@@ -854,7 +854,7 @@ LABEL_16:
       *buf = 138543618;
       v31 = v19;
       v32 = 2112;
-      v33 = v4;
+      v33 = systemCopy;
       _os_log_impl(&dword_2531F8000, v18, OS_LOG_TYPE_ERROR, "%{public}@Media system %@ does not have an owner", buf, 0x16u);
     }
 
@@ -965,41 +965,41 @@ void __64__HMDStereoPairSettingsController__subscribeToAddedMediaSystem___block_
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_groupOwnerTopicsForMediaSystem:(id)a3
+- (id)_groupOwnerTopicsForMediaSystem:(id)system
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDStereoPairSettingsController *)self _homeUUID];
-  v6 = [(HMDStereoPairSettingsController *)self _mediaSystemGroupOwnerAccessoryUUID:v4];
+  systemCopy = system;
+  _homeUUID = [(HMDStereoPairSettingsController *)self _homeUUID];
+  v6 = [(HMDStereoPairSettingsController *)self _mediaSystemGroupOwnerAccessoryUUID:systemCopy];
   v7 = v6;
-  if (v5 && v6)
+  if (_homeUUID && v6)
   {
-    v8 = [MEMORY[0x277CD1790] defaultSettingsAllKeyPaths];
+    defaultSettingsAllKeyPaths = [MEMORY[0x277CD1790] defaultSettingsAllKeyPaths];
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
     v27[2] = __67__HMDStereoPairSettingsController__groupOwnerTopicsForMediaSystem___block_invoke;
     v27[3] = &unk_279734EE0;
-    v9 = v5;
+    v9 = _homeUUID;
     v28 = v9;
     v10 = v7;
     v29 = v10;
-    v11 = [v8 na_map:v27];
+    v11 = [defaultSettingsAllKeyPaths na_map:v27];
 
-    v12 = [MEMORY[0x277CD1790] languageKeyPaths];
+    languageKeyPaths = [MEMORY[0x277CD1790] languageKeyPaths];
     v21 = MEMORY[0x277D85DD0];
     v22 = 3221225472;
     v23 = __67__HMDStereoPairSettingsController__groupOwnerTopicsForMediaSystem___block_invoke_2;
     v24 = &unk_279734EE0;
     v25 = v9;
     v26 = v10;
-    v13 = [v12 na_map:&v21];
+    v13 = [languageKeyPaths na_map:&v21];
     v14 = [v13 arrayByAddingObjectsFromArray:{v11, v21, v22, v23, v24}];
   }
 
   else
   {
     v15 = objc_autoreleasePoolPush();
-    v16 = self;
+    selfCopy = self;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
@@ -1007,7 +1007,7 @@ void __64__HMDStereoPairSettingsController__subscribeToAddedMediaSystem___block_
       *buf = 138543618;
       v31 = v18;
       v32 = 2112;
-      v33 = v4;
+      v33 = systemCopy;
       _os_log_impl(&dword_2531F8000, v17, OS_LOG_TYPE_ERROR, "%{public}@Media system %@ does not have an owner", buf, 0x16u);
     }
 
@@ -1037,12 +1037,12 @@ void __67__HMDStereoPairSettingsController__groupOwnerTopicsForMediaSystem___blo
 - (void)stopIfPrimaryResidentChange
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDStereoPairSettingsController *)self _currentDevicePrimaryResident];
+  _currentDevicePrimaryResident = [(HMDStereoPairSettingsController *)self _currentDevicePrimaryResident];
   v4 = objc_autoreleasePoolPush();
-  v5 = self;
+  selfCopy = self;
   v6 = HMFGetOSLogHandle();
   v7 = v6;
-  if (v3)
+  if (_currentDevicePrimaryResident)
   {
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
@@ -1066,15 +1066,15 @@ void __67__HMDStereoPairSettingsController__groupOwnerTopicsForMediaSystem___blo
     }
 
     objc_autoreleasePoolPop(v4);
-    v10 = [(HMDStereoPairSettingsController *)v5 dataSource];
-    v11 = [v10 uuidToMediaSystems];
-    v12 = [v11 allValues];
+    dataSource = [(HMDStereoPairSettingsController *)selfCopy dataSource];
+    uuidToMediaSystems = [dataSource uuidToMediaSystems];
+    allValues = [uuidToMediaSystems allValues];
 
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v13 = v12;
+    v13 = allValues;
     v14 = [v13 countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v14)
     {
@@ -1090,7 +1090,7 @@ void __67__HMDStereoPairSettingsController__groupOwnerTopicsForMediaSystem___blo
             objc_enumerationMutation(v13);
           }
 
-          [(HMDStereoPairSettingsController *)v5 _unsubscribeToRemovedMediaSystem:*(*(&v20 + 1) + 8 * v17++), v20];
+          [(HMDStereoPairSettingsController *)selfCopy _unsubscribeToRemovedMediaSystem:*(*(&v20 + 1) + 8 * v17++), v20];
         }
 
         while (v15 != v17);
@@ -1100,28 +1100,28 @@ void __67__HMDStereoPairSettingsController__groupOwnerTopicsForMediaSystem___blo
       while (v15);
     }
 
-    v18 = [(HMDStereoPairSettingsController *)v5 topicToLastReceivedEvent];
-    [v18 removeAllObjects];
+    topicToLastReceivedEvent = [(HMDStereoPairSettingsController *)selfCopy topicToLastReceivedEvent];
+    [topicToLastReceivedEvent removeAllObjects];
   }
 
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)unsubscribeToRemovedMediaSystemIfPrimaryResident:(id)a3
+- (void)unsubscribeToRemovedMediaSystemIfPrimaryResident:(id)resident
 {
-  v4 = a3;
+  residentCopy = resident;
   if ([(HMDStereoPairSettingsController *)self _currentDevicePrimaryResident])
   {
-    [(HMDStereoPairSettingsController *)self _unsubscribeToRemovedMediaSystem:v4];
+    [(HMDStereoPairSettingsController *)self _unsubscribeToRemovedMediaSystem:residentCopy];
   }
 }
 
-- (void)subscribeToAddedMediaSystemIfPrimaryResident:(id)a3
+- (void)subscribeToAddedMediaSystemIfPrimaryResident:(id)resident
 {
-  v4 = a3;
+  residentCopy = resident;
   if ([(HMDStereoPairSettingsController *)self _currentDevicePrimaryResident])
   {
-    [(HMDStereoPairSettingsController *)self _subscribeToAddedMediaSystem:v4];
+    [(HMDStereoPairSettingsController *)self _subscribeToAddedMediaSystem:residentCopy];
   }
 }
 
@@ -1131,30 +1131,30 @@ void __67__HMDStereoPairSettingsController__groupOwnerTopicsForMediaSystem___blo
   if ([(HMDStereoPairSettingsController *)self _currentDevicePrimaryResident])
   {
     v3 = objc_autoreleasePoolPush();
-    v4 = self;
+    selfCopy = self;
     v5 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v6 = HMFGetLogIdentifier();
-      v7 = [(HMDStereoPairSettingsController *)v4 dataSource];
-      v8 = [v7 home];
+      dataSource = [(HMDStereoPairSettingsController *)selfCopy dataSource];
+      home = [dataSource home];
       *buf = 138543618;
       v24 = v6;
       v25 = 2112;
-      v26 = v8;
+      v26 = home;
       _os_log_impl(&dword_2531F8000, v5, OS_LOG_TYPE_INFO, "%{public}@Current device for home %@ is primary resident", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v3);
-    v9 = [(HMDStereoPairSettingsController *)v4 dataSource];
-    v10 = [v9 uuidToMediaSystems];
-    v11 = [v10 allValues];
+    dataSource2 = [(HMDStereoPairSettingsController *)selfCopy dataSource];
+    uuidToMediaSystems = [dataSource2 uuidToMediaSystems];
+    allValues = [uuidToMediaSystems allValues];
 
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v12 = v11;
+    v12 = allValues;
     v13 = [v12 countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v13)
     {
@@ -1170,7 +1170,7 @@ void __67__HMDStereoPairSettingsController__groupOwnerTopicsForMediaSystem___blo
             objc_enumerationMutation(v12);
           }
 
-          [(HMDStereoPairSettingsController *)v4 _subscribeToAddedMediaSystem:*(*(&v18 + 1) + 8 * v16++), v18];
+          [(HMDStereoPairSettingsController *)selfCopy _subscribeToAddedMediaSystem:*(*(&v18 + 1) + 8 * v16++), v18];
         }
 
         while (v14 != v16);
@@ -1184,25 +1184,25 @@ void __67__HMDStereoPairSettingsController__groupOwnerTopicsForMediaSystem___blo
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDStereoPairSettingsController)initWithDataSource:(id)a3 workQueue:(id)a4 stateManagerFactory:(id)a5
+- (HMDStereoPairSettingsController)initWithDataSource:(id)source workQueue:(id)queue stateManagerFactory:(id)factory
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sourceCopy = source;
+  queueCopy = queue;
+  factoryCopy = factory;
   v24.receiver = self;
   v24.super_class = HMDStereoPairSettingsController;
   v11 = [(HMDStereoPairSettingsController *)&v24 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_dataSource, v8);
-    objc_storeStrong(&v12->_workQueue, a4);
-    v13 = [v8 home];
-    v14 = v13;
-    if (v10)
+    objc_storeWeak(&v11->_dataSource, sourceCopy);
+    objc_storeStrong(&v12->_workQueue, queue);
+    home = [sourceCopy home];
+    v14 = home;
+    if (factoryCopy)
     {
-      v15 = [v13 uuid];
-      v16 = v10[2](v10, v15);
+      uuid = [home uuid];
+      v16 = factoryCopy[2](factoryCopy, uuid);
       residentRunStateManager = v12->_residentRunStateManager;
       v12->_residentRunStateManager = v16;
     }
@@ -1210,16 +1210,16 @@ void __67__HMDStereoPairSettingsController__groupOwnerTopicsForMediaSystem___blo
     else
     {
       v18 = [HMDStereoPairSettingsControllerStateManager alloc];
-      v15 = [MEMORY[0x277CCAB98] defaultCenter];
+      uuid = [MEMORY[0x277CCAB98] defaultCenter];
       residentRunStateManager = [v14 uuid];
-      v19 = [(HMDCompositeSettingControllerManagerStateManager *)v18 initWithDataSource:v12 notificationRegistrationProvider:v15 subscribeWithOptions:1 delegate:v12 uuid:residentRunStateManager];
+      v19 = [(HMDCompositeSettingControllerManagerStateManager *)v18 initWithDataSource:v12 notificationRegistrationProvider:uuid subscribeWithOptions:1 delegate:v12 uuid:residentRunStateManager];
       v20 = v12->_residentRunStateManager;
       v12->_residentRunStateManager = v19;
     }
 
-    v21 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     topicToLastReceivedEvent = v12->_topicToLastReceivedEvent;
-    v12->_topicToLastReceivedEvent = v21;
+    v12->_topicToLastReceivedEvent = dictionary;
   }
 
   return v12;

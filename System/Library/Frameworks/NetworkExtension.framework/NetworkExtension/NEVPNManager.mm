@@ -3,21 +3,21 @@
 + (id)configurationManager;
 + (id)create;
 + (id)loadedManagers;
-+ (id)mapError:(uint64_t)a1;
-+ (void)loadAllFromPreferencesWithCompletionHandler:(id)a3;
++ (id)mapError:(uint64_t)error;
++ (void)loadAllFromPreferencesWithCompletionHandler:(id)handler;
 - (BOOL)isEnabled;
 - (BOOL)isFromMDM;
 - (BOOL)isFromProfile;
 - (BOOL)isOnDemandEnabled;
 - (NEProfileIngestionPayloadInfo)configurationPayloadInfo;
-- (NEVPNManager)initWithGrade:(int64_t)a3 connection:(id)a4 tunnelType:(int64_t)a5;
+- (NEVPNManager)initWithGrade:(int64_t)grade connection:(id)connection tunnelType:(int64_t)type;
 - (NEVPNProtocol)protocolConfiguration;
 - (NSArray)onDemandRules;
 - (NSString)appBundleIdentifier;
 - (NSString)localizedDescription;
 - (NSUUID)identifier;
 - (id)copyCurrentUserStartOptions;
-- (id)createL2TPUserPreferencesWithName:(id)a3;
+- (id)createL2TPUserPreferencesWithName:(id)name;
 - (id)description;
 - (void)additionalSetup;
 - (void)loadFromPreferencesWithCompletionHandler:(void *)completionHandler;
@@ -30,21 +30,21 @@
 
 @implementation NEVPNManager
 
-- (id)createL2TPUserPreferencesWithName:(id)a3
+- (id)createL2TPUserPreferencesWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = [NEL2TPUserPreferences alloc];
-  v6 = [(NEVPNManager *)self configuration];
-  v7 = [(NEL2TPUserPreferences *)v5 initWithConfiguration:v6];
+  configuration = [(NEVPNManager *)self configuration];
+  v7 = [(NEL2TPUserPreferences *)v5 initWithConfiguration:configuration];
 
-  [(NEL2TPUserPreferences *)v7 setName:v4];
+  [(NEL2TPUserPreferences *)v7 setName:nameCopy];
   v8 = objc_alloc_init(NEVPNProtocolL2TP);
   [(NEL2TPUserPreferences *)v7 setSettings:v8];
 
-  v9 = [(NEL2TPUserPreferences *)v7 settings];
-  if (v9)
+  settings = [(NEL2TPUserPreferences *)v7 settings];
+  if (settings)
   {
-    v9[10] = 1;
+    settings[10] = 1;
   }
 
   return v7;
@@ -52,17 +52,17 @@
 
 - (id)copyCurrentUserStartOptions
 {
-  v3 = [(NEVPNManager *)self protocolConfiguration];
-  v4 = [v3 type];
+  protocolConfiguration = [(NEVPNManager *)self protocolConfiguration];
+  type = [protocolConfiguration type];
 
-  if (v4 != 2)
+  if (type != 2)
   {
     return 0;
   }
 
-  v5 = [(NEVPNManager *)self protocolConfiguration];
-  v6 = [v5 userPreferences];
-  v7 = [v6 indexOfObjectPassingTest:&__block_literal_global_80];
+  protocolConfiguration2 = [(NEVPNManager *)self protocolConfiguration];
+  userPreferences = [protocolConfiguration2 userPreferences];
+  v7 = [userPreferences indexOfObjectPassingTest:&__block_literal_global_80];
 
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -71,8 +71,8 @@
 
   else
   {
-    v10 = [v5 userPreferences];
-    v11 = [v10 objectAtIndexedSubscript:v7];
+    userPreferences2 = [protocolConfiguration2 userPreferences];
+    v11 = [userPreferences2 objectAtIndexedSubscript:v7];
     v12 = v11;
     if (v11)
     {
@@ -93,44 +93,44 @@
 
 - (NEProfileIngestionPayloadInfo)configurationPayloadInfo
 {
-  v2 = [(NEVPNManager *)self configuration];
-  v3 = [v2 payloadInfo];
+  configuration = [(NEVPNManager *)self configuration];
+  payloadInfo = [configuration payloadInfo];
 
-  return v3;
+  return payloadInfo;
 }
 
 - (BOOL)isFromMDM
 {
-  v2 = [(NEVPNManager *)self configuration];
-  v3 = [v2 payloadInfo];
-  v4 = [v3 profileSource] == 2;
+  configuration = [(NEVPNManager *)self configuration];
+  payloadInfo = [configuration payloadInfo];
+  v4 = [payloadInfo profileSource] == 2;
 
   return v4;
 }
 
 - (BOOL)isFromProfile
 {
-  v2 = [(NEVPNManager *)self configuration];
-  v3 = [v2 payloadInfo];
-  v4 = v3 != 0;
+  configuration = [(NEVPNManager *)self configuration];
+  payloadInfo = [configuration payloadInfo];
+  v4 = payloadInfo != 0;
 
   return v4;
 }
 
 - (NSString)appBundleIdentifier
 {
-  v2 = [(NEVPNManager *)self configuration];
-  v3 = [v2 application];
+  configuration = [(NEVPNManager *)self configuration];
+  application = [configuration application];
 
-  return v3;
+  return application;
 }
 
 - (NSUUID)identifier
 {
-  v2 = [(NEVPNManager *)self configuration];
-  v3 = [v2 identifier];
+  configuration = [(NEVPNManager *)self configuration];
+  identifier = [configuration identifier];
 
-  return v3;
+  return identifier;
 }
 
 - (id)description
@@ -145,179 +145,179 @@
 - (void)setLocalizedDescription:(NSString *)localizedDescription
 {
   v6 = localizedDescription;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(NEVPNManager *)v4 configuration];
-  [v5 setName:v6];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  configuration = [(NEVPNManager *)selfCopy configuration];
+  [configuration setName:v6];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (NSString)localizedDescription
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NEVPNManager *)v2 configuration];
-  v4 = [v3 name];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  configuration = [(NEVPNManager *)selfCopy configuration];
+  name = [configuration name];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  return v4;
+  return name;
 }
 
 - (BOOL)isEnabled
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NEVPNManager *)v2 configuration];
-  v4 = [v3 appVPN];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  configuration = [(NEVPNManager *)selfCopy configuration];
+  appVPN = [configuration appVPN];
 
-  v5 = [(NEVPNManager *)v2 configuration];
-  if (v4)
+  configuration2 = [(NEVPNManager *)selfCopy configuration];
+  if (appVPN)
   {
-    [v5 appVPN];
+    [configuration2 appVPN];
   }
 
   else
   {
-    [v5 VPN];
+    [configuration2 VPN];
   }
   v6 = ;
-  v7 = [v6 isEnabled];
+  isEnabled = [v6 isEnabled];
 
-  objc_sync_exit(v2);
-  return v7;
+  objc_sync_exit(selfCopy);
+  return isEnabled;
 }
 
 - (BOOL)isOnDemandEnabled
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NEVPNManager *)v2 configuration];
-  v4 = [v3 appVPN];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  configuration = [(NEVPNManager *)selfCopy configuration];
+  appVPN = [configuration appVPN];
 
-  v5 = [(NEVPNManager *)v2 configuration];
-  if (v4)
+  configuration2 = [(NEVPNManager *)selfCopy configuration];
+  if (appVPN)
   {
-    [v5 appVPN];
+    [configuration2 appVPN];
   }
 
   else
   {
-    [v5 VPN];
+    [configuration2 VPN];
   }
   v6 = ;
-  v7 = [v6 isOnDemandEnabled];
+  isOnDemandEnabled = [v6 isOnDemandEnabled];
 
-  objc_sync_exit(v2);
-  return v7;
+  objc_sync_exit(selfCopy);
+  return isOnDemandEnabled;
 }
 
 - (void)setOnDemandRules:(NSArray *)onDemandRules
 {
   v9 = onDemandRules;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(NEVPNManager *)v4 configuration];
-  v6 = [v5 appVPN];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  configuration = [(NEVPNManager *)selfCopy configuration];
+  appVPN = [configuration appVPN];
 
-  v7 = [(NEVPNManager *)v4 configuration];
-  if (v6)
+  configuration2 = [(NEVPNManager *)selfCopy configuration];
+  if (appVPN)
   {
-    [v7 appVPN];
+    [configuration2 appVPN];
   }
 
   else
   {
-    [v7 VPN];
+    [configuration2 VPN];
   }
   v8 = ;
   [v8 setOnDemandRules:v9];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (NSArray)onDemandRules
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NEVPNManager *)v2 configuration];
-  v4 = [v3 appVPN];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  configuration = [(NEVPNManager *)selfCopy configuration];
+  appVPN = [configuration appVPN];
 
-  v5 = [(NEVPNManager *)v2 configuration];
-  if (v4)
+  configuration2 = [(NEVPNManager *)selfCopy configuration];
+  if (appVPN)
   {
-    [v5 appVPN];
+    [configuration2 appVPN];
   }
 
   else
   {
-    [v5 VPN];
+    [configuration2 VPN];
   }
   v6 = ;
-  v7 = [v6 onDemandRules];
+  onDemandRules = [v6 onDemandRules];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  return v7;
+  return onDemandRules;
 }
 
 - (void)setProtocolConfiguration:(NEVPNProtocol *)protocolConfiguration
 {
   v9 = protocolConfiguration;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(NEVPNManager *)v4 configuration];
-  v6 = [v5 appVPN];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  configuration = [(NEVPNManager *)selfCopy configuration];
+  appVPN = [configuration appVPN];
 
-  v7 = [(NEVPNManager *)v4 configuration];
-  if (v6)
+  configuration2 = [(NEVPNManager *)selfCopy configuration];
+  if (appVPN)
   {
-    [v7 appVPN];
+    [configuration2 appVPN];
   }
 
   else
   {
-    [v7 VPN];
+    [configuration2 VPN];
   }
   v8 = ;
   [v8 setProtocol:v9];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (NEVPNProtocol)protocolConfiguration
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NEVPNManager *)v2 configuration];
-  v4 = [v3 appVPN];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  configuration = [(NEVPNManager *)selfCopy configuration];
+  appVPN = [configuration appVPN];
 
-  v5 = [(NEVPNManager *)v2 configuration];
-  if (v4)
+  configuration2 = [(NEVPNManager *)selfCopy configuration];
+  if (appVPN)
   {
-    [v5 appVPN];
+    [configuration2 appVPN];
   }
 
   else
   {
-    [v5 VPN];
+    [configuration2 VPN];
   }
   v6 = ;
-  v7 = [v6 protocol];
+  protocol = [v6 protocol];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  return v7;
+  return protocol;
 }
 
 - (void)saveToPreferencesWithCompletionHandler:(void *)completionHandler
 {
   v105 = *MEMORY[0x1E69E9840];
   v4 = completionHandler;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (!v5 || !v5->_hasLoaded)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy || !selfCopy->_hasLoaded)
   {
     v10 = [MEMORY[0x1E696ABC0] errorWithDomain:@"NEVPNErrorDomain" code:4 userInfo:0];
     if (!v4)
@@ -340,21 +340,21 @@ LABEL_39:
     goto LABEL_40;
   }
 
-  v6 = [(NEVPNManager *)v5 configuration];
-  if (!v6)
+  configuration = [(NEVPNManager *)selfCopy configuration];
+  if (!configuration)
   {
     goto LABEL_37;
   }
 
-  v7 = [(NEVPNManager *)v5 protocolConfiguration];
-  if (!v7)
+  protocolConfiguration = [(NEVPNManager *)selfCopy protocolConfiguration];
+  if (!protocolConfiguration)
   {
 
     goto LABEL_37;
   }
 
-  v8 = [(NEVPNManager *)v5 protocolConfiguration];
-  v9 = -[NEVPNManager isProtocolTypeValid:](v5, "isProtocolTypeValid:", [v8 type]);
+  protocolConfiguration2 = [(NEVPNManager *)selfCopy protocolConfiguration];
+  v9 = -[NEVPNManager isProtocolTypeValid:](selfCopy, "isProtocolTypeValid:", [protocolConfiguration2 type]);
 
   if (!v9)
   {
@@ -383,10 +383,10 @@ LABEL_37:
     goto LABEL_39;
   }
 
-  [(NEVPNManager *)v5 additionalSetup];
+  [(NEVPNManager *)selfCopy additionalSetup];
   v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v11 = [(NEVPNManager *)v5 configuration];
-  v12 = [v11 checkValidityAndCollectErrors:v10];
+  configuration2 = [(NEVPNManager *)selfCopy configuration];
+  v12 = [configuration2 checkValidityAndCollectErrors:v10];
 
   if ((v12 & 1) == 0)
   {
@@ -426,8 +426,8 @@ LABEL_37:
     goto LABEL_40;
   }
 
-  v73 = [(NEVPNManager *)v5 protocolConfiguration];
-  if ([v73 type] != 2)
+  protocolConfiguration3 = [(NEVPNManager *)selfCopy protocolConfiguration];
+  if ([protocolConfiguration3 type] != 2)
   {
     goto LABEL_53;
   }
@@ -436,16 +436,16 @@ LABEL_37:
   v84 = 0u;
   v85 = 0u;
   v86 = 0u;
-  v68 = v73;
-  v13 = [v68 userPreferences];
-  v14 = [v13 countByEnumeratingWithState:&v83 objects:v96 count:16];
-  obj = v13;
+  v68 = protocolConfiguration3;
+  userPreferences = [v68 userPreferences];
+  v14 = [userPreferences countByEnumeratingWithState:&v83 objects:v96 count:16];
+  obj = userPreferences;
   if (!v14)
   {
 
 LABEL_51:
-    v54 = [(NEVPNManager *)v5 configuration];
-    [NEL2TPUserPreferences clearCurrentForConfiguration:v54];
+    configuration3 = [(NEVPNManager *)selfCopy configuration];
+    [NEL2TPUserPreferences clearCurrentForConfiguration:configuration3];
 
     goto LABEL_52;
   }
@@ -466,19 +466,19 @@ LABEL_51:
       }
 
       v17 = *(*(&v83 + 1) + 8 * i);
-      v76 = [v17 isCurrent];
+      isCurrent = [v17 isCurrent];
       if (!v17)
       {
         goto LABEL_69;
       }
 
-      v18 = [v17 name];
-      v19 = v18 == 0;
+      name = [v17 name];
+      v19 = name == 0;
 
       if (!v19)
       {
         v20 = v17[5];
-        v21 = [v17 name];
+        name2 = [v17 name];
         LODWORD(v20) = SCUserPreferencesSetName() == 0;
 
         if (v20)
@@ -541,32 +541,32 @@ LABEL_64:
         }
       }
 
-      v23 = [v17 settings];
-      v24 = v23 == 0;
+      settings = [v17 settings];
+      v24 = settings == 0;
 
       if (!v24)
       {
-        v25 = [v17 settings];
-        v26 = [v25 passwordKeychainItem];
-        [v26 setDomain:1];
+        settings2 = [v17 settings];
+        passwordKeychainItem = [settings2 passwordKeychainItem];
+        [passwordKeychainItem setDomain:1];
 
-        v27 = [v17 settings];
-        v28 = [v27 sharedSecretKeychainItem];
-        [v28 setDomain:1];
+        settings3 = [v17 settings];
+        sharedSecretKeychainItem = [settings3 sharedSecretKeychainItem];
+        [sharedSecretKeychainItem setDomain:1];
 
         v29 = objc_alloc(MEMORY[0x1E696AFB0]);
-        v30 = [v17 identifier];
-        Error = [v29 initWithUUIDString:v30];
+        identifier = [v17 identifier];
+        Error = [v29 initWithUUIDString:identifier];
 
         oslog = [[NEConfiguration alloc] initWithIdentifier:?];
-        v32 = [v17 name];
-        [oslog setName:v32];
+        name3 = [v17 name];
+        [oslog setName:name3];
 
-        v33 = [v17 settings];
-        [v33 syncWithKeychainInDomain:1 configuration:oslog suffix:0];
+        settings4 = [v17 settings];
+        [settings4 syncWithKeychainInDomain:1 configuration:oslog suffix:0];
 
-        v34 = [v17 settings];
-        v35 = [v34 copyLegacyDictionaryComplete:0];
+        settings5 = [v17 settings];
+        v35 = [settings5 copyLegacyDictionaryComplete:0];
 
         if (!v35)
         {
@@ -588,12 +588,12 @@ LABEL_64:
           goto LABEL_68;
         }
 
-        v37 = [v17 settings];
-        v38 = [v37 copyLegacyIPSecDictionary];
+        settings6 = [v17 settings];
+        copyLegacyIPSecDictionary = [settings6 copyLegacyIPSecDictionary];
 
-        if (!v38)
+        if (!copyLegacyIPSecDictionary)
         {
-          v38 = objc_alloc_init(MEMORY[0x1E695DF20]);
+          copyLegacyIPSecDictionary = objc_alloc_init(MEMORY[0x1E695DF20]);
         }
 
         v39 = v17[5];
@@ -615,9 +615,9 @@ LABEL_64:
       Error = [v17 settings];
       if ([Error authenticationMethod] == 3)
       {
-        v40 = [v17 settings];
-        v41 = [v40 identityReference];
-        v42 = v41 == 0;
+        settings7 = [v17 settings];
+        identityReference = [settings7 identityReference];
+        v42 = identityReference == 0;
 
         if (v42)
         {
@@ -625,9 +625,9 @@ LABEL_64:
         }
 
         v101 = @"TLSIdentityHandle";
-        v43 = [v17 settings];
-        v44 = [v43 identityReference];
-        v102 = v44;
+        settings8 = [v17 settings];
+        identityReference2 = [settings8 identityReference];
+        v102 = identityReference2;
         Error = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v102 forKeys:&v101 count:1];
 
         v45 = v17[5];
@@ -647,7 +647,7 @@ LABEL_64:
       }
 
 LABEL_30:
-      v15 |= v76;
+      v15 |= isCurrent;
     }
 
     v14 = [obj countByEnumeratingWithState:&v83 objects:v96 count:16];
@@ -668,24 +668,24 @@ LABEL_52:
 
 LABEL_53:
   v55 = +[NEVPNManager loadedManagers];
-  v5->_notificationSent = 0;
+  selfCopy->_notificationSent = 0;
   v56 = +[NEVPNManager configurationManager];
-  v57 = [(NEVPNManager *)v5 configuration];
+  configuration4 = [(NEVPNManager *)selfCopy configuration];
   v58 = MEMORY[0x1E69E96A0];
   v59 = MEMORY[0x1E69E96A0];
   v78[0] = MEMORY[0x1E69E9820];
   v78[1] = 3221225472;
   v78[2] = __55__NEVPNManager_saveToPreferencesWithCompletionHandler___block_invoke_2_46;
   v78[3] = &unk_1E7F0B628;
-  v78[4] = v5;
+  v78[4] = selfCopy;
   v79 = v4;
-  [v56 saveConfiguration:v57 withCompletionQueue:v58 handler:v78];
+  [v56 saveConfiguration:configuration4 withCompletionQueue:v58 handler:v78];
 
-  v49 = v73;
+  v49 = protocolConfiguration3;
 LABEL_40:
 
 LABEL_41:
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   v50 = *MEMORY[0x1E69E9840];
 }
@@ -791,77 +791,77 @@ void __55__NEVPNManager_saveToPreferencesWithCompletionHandler___block_invoke_2_
   v13 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)mapError:(uint64_t)a1
++ (id)mapError:(uint64_t)error
 {
   v17[1] = *MEMORY[0x1E69E9840];
   v2 = a2;
   objc_opt_self();
-  v3 = [v2 domain];
-  v4 = [v3 isEqual:@"NEConfigurationErrorDomain"];
+  domain = [v2 domain];
+  v4 = [domain isEqual:@"NEConfigurationErrorDomain"];
 
   if (!v4)
   {
-    v6 = @"Unknown.";
+    localizedDescription = @"Unknown.";
     goto LABEL_6;
   }
 
-  v5 = [v2 code];
-  if (v5 > 0x15)
+  code = [v2 code];
+  if (code > 0x15)
   {
     goto LABEL_12;
   }
 
-  if (((1 << v5) & 0x301D40) != 0)
+  if (((1 << code) & 0x301D40) != 0)
   {
-    v6 = [v2 localizedDescription];
+    localizedDescription = [v2 localizedDescription];
     v7 = 5;
 LABEL_14:
     v9 = MEMORY[0x1E696ABC0];
     v16 = *MEMORY[0x1E696A578];
-    v17[0] = v6;
+    v17[0] = localizedDescription;
     v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:&v16 count:1];
     v8 = [v9 errorWithDomain:@"NEVPNErrorDomain" code:v7 userInfo:v10];
 
     goto LABEL_15;
   }
 
-  if (v5 == 7)
+  if (code == 7)
   {
 LABEL_13:
-    v6 = [v2 localizedDescription];
+    localizedDescription = [v2 localizedDescription];
     v7 = 1;
     goto LABEL_14;
   }
 
-  if (v5 != 9)
+  if (code != 9)
   {
 LABEL_12:
-    if (v5 - 1 < 4)
+    if (code - 1 < 4)
     {
       goto LABEL_13;
     }
 
-    if (v5 == 5)
+    if (code == 5)
     {
-      v6 = [v2 localizedDescription];
+      localizedDescription = [v2 localizedDescription];
       v7 = 4;
       goto LABEL_14;
     }
 
     v13 = MEMORY[0x1E696AEC0];
-    v14 = [v2 localizedDescription];
-    v6 = [v13 stringWithFormat:@"Unknown: %@", v14];
+    localizedDescription2 = [v2 localizedDescription];
+    localizedDescription = [v13 stringWithFormat:@"Unknown: %@", localizedDescription2];
 
 LABEL_6:
     v7 = 6;
     goto LABEL_14;
   }
 
-  v6 = ne_log_obj();
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  localizedDescription = ne_log_obj();
+  if (os_log_type_enabled(localizedDescription, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
-    _os_log_impl(&dword_1BA83C000, v6, OS_LOG_TYPE_DEFAULT, "The configuration was not saved because it was unchanged from the previously saved version", buf, 2u);
+    _os_log_impl(&dword_1BA83C000, localizedDescription, OS_LOG_TYPE_DEFAULT, "The configuration was not saved because it was unchanged from the previously saved version", buf, 2u);
   }
 
   v8 = 0;
@@ -1063,74 +1063,74 @@ void __30__NEVPNManager_loadedManagers__block_invoke_3(uint64_t a1)
 
 - (void)additionalSetup
 {
-  v48 = [(NEVPNManager *)self protocolConfiguration];
+  protocolConfiguration = [(NEVPNManager *)self protocolConfiguration];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v3 = v48;
+  v3 = protocolConfiguration;
   if (isKindOfClass)
   {
-    v4 = v48;
+    v4 = protocolConfiguration;
     [v4 setDisconnectOnWake:0];
     if (v4 && !v4[10])
     {
-      v5 = [v4 passwordReference];
+      passwordReference = [v4 passwordReference];
 
-      if (v5)
+      if (passwordReference)
       {
         v6 = [NEKeychainItem alloc];
-        v7 = [v4 passwordReference];
-        v8 = [(NEKeychainItem *)v6 initWithPersistentReference:v7 domain:1 accessGroup:0];
+        passwordReference2 = [v4 passwordReference];
+        v8 = [(NEKeychainItem *)v6 initWithPersistentReference:passwordReference2 domain:1 accessGroup:0];
 
-        v9 = [(NEKeychainItem *)v8 copyData];
-        if (v9)
+        copyData = [(NEKeychainItem *)v8 copyData];
+        if (copyData)
         {
           v10 = [NEKeychainItem alloc];
           v11 = v4[10];
           v13 = objc_getProperty(v4, v12, 88, 1);
-          v14 = [(NEKeychainItem *)v10 initWithData:v9 domain:v11 accessGroup:v13];
+          v14 = [(NEKeychainItem *)v10 initWithData:copyData domain:v11 accessGroup:v13];
           [v4 setPasswordKeychainItem:v14];
         }
       }
 
-      v15 = [v4 sharedSecretReference];
+      sharedSecretReference = [v4 sharedSecretReference];
 
-      if (v15)
+      if (sharedSecretReference)
       {
         v16 = [NEKeychainItem alloc];
-        v17 = [v4 sharedSecretReference];
-        v18 = [(NEKeychainItem *)v16 initWithPersistentReference:v17 domain:1 accessGroup:0];
+        sharedSecretReference2 = [v4 sharedSecretReference];
+        v18 = [(NEKeychainItem *)v16 initWithPersistentReference:sharedSecretReference2 domain:1 accessGroup:0];
 
-        v19 = [(NEKeychainItem *)v18 copyData];
-        if (v19)
+        copyData2 = [(NEKeychainItem *)v18 copyData];
+        if (copyData2)
         {
           v20 = [NEKeychainItem alloc];
           v21 = v4[10];
           v23 = objc_getProperty(v4, v22, 88, 1);
-          v24 = [(NEKeychainItem *)v20 initWithData:v19 domain:v21 accessGroup:v23];
+          v24 = [(NEKeychainItem *)v20 initWithData:copyData2 domain:v21 accessGroup:v23];
           [v4 setSharedSecretKeychainItem:v24];
         }
       }
 
-      v25 = [v4 identityDataPassword];
+      identityDataPassword = [v4 identityDataPassword];
 
-      if (v25)
+      if (identityDataPassword)
       {
-        v26 = [v4 identityDataPasswordKeychainItem];
+        identityDataPasswordKeychainItem = [v4 identityDataPasswordKeychainItem];
 
-        if (v26)
+        if (identityDataPasswordKeychainItem)
         {
-          v27 = [v4 identityDataPassword];
-          v28 = [v4 identityDataPasswordKeychainItem];
-          [v28 setPassword:v27];
+          identityDataPassword2 = [v4 identityDataPassword];
+          identityDataPasswordKeychainItem2 = [v4 identityDataPasswordKeychainItem];
+          [identityDataPasswordKeychainItem2 setPassword:identityDataPassword2];
         }
 
         else
         {
           v29 = [NEKeychainItem alloc];
-          v27 = [v4 identityDataPassword];
+          identityDataPassword2 = [v4 identityDataPassword];
           v30 = v4[10];
-          v28 = objc_getProperty(v4, v31, 88, 1);
-          v32 = [(NEKeychainItem *)v29 initWithPassword:v27 domain:v30 accessGroup:v28];
+          identityDataPasswordKeychainItem2 = objc_getProperty(v4, v31, 88, 1);
+          v32 = [(NEKeychainItem *)v29 initWithPassword:identityDataPassword2 domain:v30 accessGroup:identityDataPasswordKeychainItem2];
           [v4 setIdentityDataPasswordKeychainItem:v32];
         }
       }
@@ -1139,34 +1139,34 @@ void __30__NEVPNManager_loadedManagers__block_invoke_3(uint64_t a1)
       if (objc_opt_isKindOfClass())
       {
         v33 = v4;
-        v34 = [v33 ppkConfiguration];
+        ppkConfiguration = [v33 ppkConfiguration];
 
-        if (v34)
+        if (ppkConfiguration)
         {
           v35 = [NEKeychainItem alloc];
-          v36 = [v33 ppkConfiguration];
-          v37 = [v36 keychainReference];
-          v38 = [(NEKeychainItem *)v35 initWithPersistentReference:v37 domain:1 accessGroup:0];
+          ppkConfiguration2 = [v33 ppkConfiguration];
+          keychainReference = [ppkConfiguration2 keychainReference];
+          v38 = [(NEKeychainItem *)v35 initWithPersistentReference:keychainReference domain:1 accessGroup:0];
 
-          v39 = [(NEKeychainItem *)v38 copyData];
-          if (v39)
+          copyData3 = [(NEKeychainItem *)v38 copyData];
+          if (copyData3)
           {
             v40 = [NEKeychainItem alloc];
             v41 = v4[10];
             v43 = objc_getProperty(v33, v42, 88, 1);
-            v44 = [(NEKeychainItem *)v40 initWithData:v39 domain:v41 accessGroup:v43];
-            v45 = [v33 ppkConfiguration];
-            v47 = v45;
-            if (v45)
+            v44 = [(NEKeychainItem *)v40 initWithData:copyData3 domain:v41 accessGroup:v43];
+            ppkConfiguration3 = [v33 ppkConfiguration];
+            v47 = ppkConfiguration3;
+            if (ppkConfiguration3)
             {
-              objc_setProperty_atomic_copy(v45, v46, v44, 32);
+              objc_setProperty_atomic_copy(ppkConfiguration3, v46, v44, 32);
             }
           }
         }
       }
     }
 
-    v3 = v48;
+    v3 = protocolConfiguration;
   }
 
   MEMORY[0x1EEE66BB8](isKindOfClass, v3);
@@ -1176,18 +1176,18 @@ void __30__NEVPNManager_loadedManagers__block_invoke_3(uint64_t a1)
 {
   v26 = *MEMORY[0x1E69E9840];
   v4 = completionHandler;
-  v5 = [(NEVPNManager *)self protocolConfiguration];
-  v6 = [v5 type];
+  protocolConfiguration = [(NEVPNManager *)self protocolConfiguration];
+  type = [protocolConfiguration type];
 
-  if (v6 == 2)
+  if (type == 2)
   {
-    v7 = [(NEVPNManager *)self protocolConfiguration];
+    protocolConfiguration2 = [(NEVPNManager *)self protocolConfiguration];
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v8 = [v7 userPreferences];
-    v9 = [v8 countByEnumeratingWithState:&v21 objects:v25 count:16];
+    userPreferences = [protocolConfiguration2 userPreferences];
+    v9 = [userPreferences countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v9)
     {
       v10 = v9;
@@ -1199,7 +1199,7 @@ void __30__NEVPNManager_loadedManagers__block_invoke_3(uint64_t a1)
         {
           if (*v22 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(userPreferences);
           }
 
           v13 = *(*(&v21 + 1) + 8 * v12);
@@ -1213,13 +1213,13 @@ void __30__NEVPNManager_loadedManagers__block_invoke_3(uint64_t a1)
         }
 
         while (v10 != v12);
-        v10 = [v8 countByEnumeratingWithState:&v21 objects:v25 count:16];
+        v10 = [userPreferences countByEnumeratingWithState:&v21 objects:v25 count:16];
       }
 
       while (v10);
     }
 
-    [v7 setUserPreferences:0];
+    [protocolConfiguration2 setUserPreferences:0];
   }
 
   if (self)
@@ -1228,7 +1228,7 @@ void __30__NEVPNManager_loadedManagers__block_invoke_3(uint64_t a1)
   }
 
   v15 = +[NEVPNManager configurationManager];
-  v16 = [(NEVPNManager *)self configuration];
+  configuration = [(NEVPNManager *)self configuration];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __59__NEVPNManager_removeFromPreferencesWithCompletionHandler___block_invoke;
@@ -1236,7 +1236,7 @@ void __30__NEVPNManager_loadedManagers__block_invoke_3(uint64_t a1)
   v19[4] = self;
   v20 = v4;
   v17 = v4;
-  [v15 removeConfiguration:v16 withCompletionQueue:MEMORY[0x1E69E96A0] handler:v19];
+  [v15 removeConfiguration:configuration withCompletionQueue:MEMORY[0x1E69E96A0] handler:v19];
 
   v18 = *MEMORY[0x1E69E9840];
 }
@@ -1463,38 +1463,38 @@ LABEL_21:
   v28 = *MEMORY[0x1E69E9840];
 }
 
-- (NEVPNManager)initWithGrade:(int64_t)a3 connection:(id)a4 tunnelType:(int64_t)a5
+- (NEVPNManager)initWithGrade:(int64_t)grade connection:(id)connection tunnelType:(int64_t)type
 {
-  v9 = a4;
+  connectionCopy = connection;
   v26.receiver = self;
   v26.super_class = NEVPNManager;
   v10 = [(NEVPNManager *)&v26 init];
   if (v10)
   {
-    v11 = [MEMORY[0x1E696AAE8] mainBundle];
-    v12 = [v11 infoDictionary];
-    v13 = [v12 objectForKey:*MEMORY[0x1E695E120]];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    infoDictionary = [mainBundle infoDictionary];
+    v13 = [infoDictionary objectForKey:*MEMORY[0x1E695E120]];
 
-    v14 = [MEMORY[0x1E696AAE8] mainBundle];
-    v15 = [v14 bundleIdentifier];
+    mainBundle2 = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle2 bundleIdentifier];
 
     if (!v13)
     {
-      v16 = [MEMORY[0x1E696AAE8] mainBundle];
-      v17 = [v16 infoDictionary];
-      v13 = [v17 objectForKey:*MEMORY[0x1E695E4F8]];
+      mainBundle3 = [MEMORY[0x1E696AAE8] mainBundle];
+      infoDictionary2 = [mainBundle3 infoDictionary];
+      v13 = [infoDictionary2 objectForKey:*MEMORY[0x1E695E4F8]];
     }
 
-    v18 = [[NEConfiguration alloc] initWithName:v13 grade:a3];
+    v18 = [[NEConfiguration alloc] initWithName:v13 grade:grade];
     configuration = v10->_configuration;
     v10->_configuration = v18;
 
-    if (v9 && v9[3] == 1)
+    if (connectionCopy && connectionCopy[3] == 1)
     {
       v20 = objc_alloc_init(NEVPN);
       [(NEConfiguration *)v10->_configuration setVPN:v20];
 
-      v21 = [(NEConfiguration *)v10->_configuration VPN];
+      appVPN = [(NEConfiguration *)v10->_configuration VPN];
     }
 
     else
@@ -1502,15 +1502,15 @@ LABEL_21:
       v22 = objc_alloc_init(NEVPNApp);
       [(NEConfiguration *)v10->_configuration setAppVPN:v22];
 
-      v21 = [(NEConfiguration *)v10->_configuration appVPN];
+      appVPN = [(NEConfiguration *)v10->_configuration appVPN];
     }
 
-    v23 = v21;
-    [v21 setTunnelType:a5];
+    v23 = appVPN;
+    [appVPN setTunnelType:type];
 
-    [(NEConfiguration *)v10->_configuration setApplication:v15];
+    [(NEConfiguration *)v10->_configuration setApplication:bundleIdentifier];
     [(NEConfiguration *)v10->_configuration setApplicationName:v13];
-    objc_storeStrong(&v10->_connection, a4);
+    objc_storeStrong(&v10->_connection, connection);
     connection = v10->_connection;
     if (connection)
     {
@@ -1523,10 +1523,10 @@ LABEL_21:
   return v10;
 }
 
-+ (void)loadAllFromPreferencesWithCompletionHandler:(id)a3
++ (void)loadAllFromPreferencesWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  if (v4)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     objc_opt_self();
     g_noAppFilter = 1;
@@ -1536,8 +1536,8 @@ LABEL_21:
     v7[1] = 3221225472;
     v7[2] = __60__NEVPNManager_loadAllFromPreferencesWithCompletionHandler___block_invoke;
     v7[3] = &unk_1E7F0B1E8;
-    v9 = a1;
-    v8 = v4;
+    selfCopy = self;
+    v8 = handlerCopy;
     [v6 loadConfigurationsWithCompletionQueue:MEMORY[0x1E69E96A0] handler:v7];
   }
 }

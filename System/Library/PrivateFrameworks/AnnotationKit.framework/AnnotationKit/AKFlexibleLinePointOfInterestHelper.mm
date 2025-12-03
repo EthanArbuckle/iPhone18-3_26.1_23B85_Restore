@@ -1,32 +1,32 @@
 @interface AKFlexibleLinePointOfInterestHelper
-+ (unint64_t)_concreteDraggableAreaForPointOfInterestWithIndex:(unint64_t)a3 ofAnnotation:(id)a4 onPageController:(id)a5;
-+ (void)_concretePointsOfInterest:(id *)a3 withVisualStyle:(id *)a4 ofAnnotation:(id)a5 pageControllerForPixelAlignment:(id)a6;
++ (unint64_t)_concreteDraggableAreaForPointOfInterestWithIndex:(unint64_t)index ofAnnotation:(id)annotation onPageController:(id)controller;
++ (void)_concretePointsOfInterest:(id *)interest withVisualStyle:(id *)style ofAnnotation:(id)annotation pageControllerForPixelAlignment:(id)alignment;
 @end
 
 @implementation AKFlexibleLinePointOfInterestHelper
 
-+ (void)_concretePointsOfInterest:(id *)a3 withVisualStyle:(id *)a4 ofAnnotation:(id)a5 pageControllerForPixelAlignment:(id)a6
++ (void)_concretePointsOfInterest:(id *)interest withVisualStyle:(id *)style ofAnnotation:(id)annotation pageControllerForPixelAlignment:(id)alignment
 {
   v29 = 0;
   v30 = 0;
-  v28.receiver = a1;
+  v28.receiver = self;
   v28.super_class = &OBJC_METACLASS___AKFlexibleLinePointOfInterestHelper;
-  v9 = a6;
-  v10 = a5;
-  objc_msgSendSuper2(&v28, sel__concretePointsOfInterest_withVisualStyle_ofAnnotation_pageControllerForPixelAlignment_, &v30, &v29, v10, v9);
+  alignmentCopy = alignment;
+  annotationCopy = annotation;
+  objc_msgSendSuper2(&v28, sel__concretePointsOfInterest_withVisualStyle_ofAnnotation_pageControllerForPixelAlignment_, &v30, &v29, annotationCopy, alignmentCopy);
   v11 = v30;
   v12 = v29;
   v13 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v11, "count", v28.receiver, v28.super_class) + 1}];
   v14 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v12, "count") + 1}];
   [v13 addObjectsFromArray:v11];
   [v14 addObjectsFromArray:v12];
-  [v10 midPoint];
+  [annotationCopy midPoint];
   v16 = v15;
   v18 = v17;
 
-  v19 = [v9 geometryHelper];
+  geometryHelper = [alignmentCopy geometryHelper];
 
-  [v19 screenPixelAlignedPointForPoint:{v16, v18}];
+  [geometryHelper screenPixelAlignedPointForPoint:{v16, v18}];
   v21 = v20;
   v23 = v22;
 
@@ -37,18 +37,18 @@
   [v14 addObject:v25];
 
   v26 = v13;
-  *a3 = v13;
+  *interest = v13;
   v27 = v14;
-  *a4 = v14;
+  *style = v14;
 }
 
-+ (unint64_t)_concreteDraggableAreaForPointOfInterestWithIndex:(unint64_t)a3 ofAnnotation:(id)a4 onPageController:(id)a5
++ (unint64_t)_concreteDraggableAreaForPointOfInterestWithIndex:(unint64_t)index ofAnnotation:(id)annotation onPageController:(id)controller
 {
-  v8 = a4;
-  v9 = a5;
-  if (a3 >= 2)
+  annotationCopy = annotation;
+  controllerCopy = controller;
+  if (index >= 2)
   {
-    if (a3 == 2)
+    if (index == 2)
     {
       v10 = 11;
     }
@@ -61,9 +61,9 @@
 
   else
   {
-    v12.receiver = a1;
+    v12.receiver = self;
     v12.super_class = &OBJC_METACLASS___AKFlexibleLinePointOfInterestHelper;
-    v10 = objc_msgSendSuper2(&v12, sel__concreteDraggableAreaForPointOfInterestWithIndex_ofAnnotation_onPageController_, a3, v8, v9);
+    v10 = objc_msgSendSuper2(&v12, sel__concreteDraggableAreaForPointOfInterestWithIndex_ofAnnotation_onPageController_, index, annotationCopy, controllerCopy);
   }
 
   return v10;

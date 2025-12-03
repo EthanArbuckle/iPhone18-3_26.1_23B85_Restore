@@ -1,6 +1,6 @@
 @interface SCATDwellTimePickerViewController
 - (double)numericalPreferenceValue;
-- (void)setNumericalPreferenceValueFromUser:(double)a3;
+- (void)setNumericalPreferenceValueFromUser:(double)user;
 @end
 
 @implementation SCATDwellTimePickerViewController
@@ -14,10 +14,10 @@
   return v4;
 }
 
-- (void)setNumericalPreferenceValueFromUser:(double)a3
+- (void)setNumericalPreferenceValueFromUser:(double)user
 {
   v4 = +[AXSettings sharedInstance];
-  [v4 setSwitchControlDwellTime:a3];
+  [v4 setSwitchControlDwellTime:user];
 }
 
 @end

@@ -1,27 +1,27 @@
 @interface SDServiceManager
-- (SDServiceManager)initWithClientProxy:(id)a3 withIdentifier:(id)a4;
-- (id)streamHandlerForService:(id)a3;
-- (void)disableService:(id)a3;
-- (void)enableService:(id)a3;
-- (void)manager:(id)a3 connectedToService:(id)a4 withFileHandle:(id)a5 acceptHandler:(id)a6;
+- (SDServiceManager)initWithClientProxy:(id)proxy withIdentifier:(id)identifier;
+- (id)streamHandlerForService:(id)service;
+- (void)disableService:(id)service;
+- (void)enableService:(id)service;
+- (void)manager:(id)manager connectedToService:(id)service withFileHandle:(id)handle acceptHandler:(id)handler;
 - (void)start;
 - (void)stop;
 @end
 
 @implementation SDServiceManager
 
-- (SDServiceManager)initWithClientProxy:(id)a3 withIdentifier:(id)a4
+- (SDServiceManager)initWithClientProxy:(id)proxy withIdentifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
+  proxyCopy = proxy;
+  identifierCopy = identifier;
   v19.receiver = self;
   v19.super_class = SDServiceManager;
   v9 = [(SDServiceManager *)&v19 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_clientProxy, a3);
-    objc_storeStrong(&v10->_managerID, a4);
+    objc_storeStrong(&v9->_clientProxy, proxy);
+    objc_storeStrong(&v10->_managerID, identifier);
     bundleID = v10->_bundleID;
     v10->_bundleID = &stru_1008EFBD0;
 
@@ -74,8 +74,8 @@
         [v9 removeService:v8];
 
         v10 = +[SDStreamManager sharedManager];
-        v11 = [v8 identifier];
-        [v10 closeStreamsForIdentifier:v11];
+        identifier = [v8 identifier];
+        [v10 closeStreamsForIdentifier:identifier];
 
         v7 = v7 + 1;
       }
@@ -92,43 +92,43 @@
   [v12 unregisterManager:self];
 }
 
-- (id)streamHandlerForService:(id)a3
+- (id)streamHandlerForService:(id)service
 {
   streamHandlers = self->_streamHandlers;
-  v4 = [a3 identifier];
-  v5 = [(NSMutableDictionary *)streamHandlers objectForKeyedSubscript:v4];
+  identifier = [service identifier];
+  v5 = [(NSMutableDictionary *)streamHandlers objectForKeyedSubscript:identifier];
 
   return v5;
 }
 
-- (void)enableService:(id)a3
+- (void)enableService:(id)service
 {
   enabledServices = self->_enabledServices;
-  v4 = a3;
-  [(NSMutableArray *)enabledServices addObject:v4];
+  serviceCopy = service;
+  [(NSMutableArray *)enabledServices addObject:serviceCopy];
   v5 = +[SDStreamManager sharedManager];
-  [v5 addService:v4];
+  [v5 addService:serviceCopy];
 }
 
-- (void)disableService:(id)a3
+- (void)disableService:(id)service
 {
-  v5 = a3;
+  serviceCopy = service;
   v4 = +[SDStreamManager sharedManager];
-  [v4 removeService:v5];
+  [v4 removeService:serviceCopy];
 
-  [(NSMutableArray *)self->_enabledServices removeObject:v5];
+  [(NSMutableArray *)self->_enabledServices removeObject:serviceCopy];
 }
 
-- (void)manager:(id)a3 connectedToService:(id)a4 withFileHandle:(id)a5 acceptHandler:(id)a6
+- (void)manager:(id)manager connectedToService:(id)service withFileHandle:(id)handle acceptHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = v13;
-  if (v11)
+  managerCopy = manager;
+  serviceCopy = service;
+  handleCopy = handle;
+  handlerCopy = handler;
+  v14 = handlerCopy;
+  if (serviceCopy)
   {
-    if (v12)
+    if (handleCopy)
     {
       clientProxy = self->_clientProxy;
       if (clientProxy)
@@ -137,9 +137,9 @@
         v16[1] = 3221225472;
         v16[2] = sub_1001F4070;
         v16[3] = &unk_1008CDB38;
-        v17 = v13;
-        [(SFCompanionServiceManagerClient *)clientProxy streamToService:v11 withFileHandle:v12 acceptReply:v16];
-        [v12 closeFile];
+        v17 = handlerCopy;
+        [(SFCompanionServiceManagerClient *)clientProxy streamToService:serviceCopy withFileHandle:handleCopy acceptReply:v16];
+        [handleCopy closeFile];
       }
     }
   }

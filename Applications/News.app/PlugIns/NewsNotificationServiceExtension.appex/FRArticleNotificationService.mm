@@ -1,11 +1,11 @@
 @interface FRArticleNotificationService
-- (BOOL)supportsHandling:(id)a3;
+- (BOOL)supportsHandling:(id)handling;
 - (FRArticleNotificationService)init;
 - (id)cachesDirectory;
-- (id)notificationAttachmentsWithThumbnailFileURL:(id)a3 publisherLogoFileURL:(id)a4 publisherLogoMaskFileURL:(id)a5 publisherLogoCompactFileURL:(id)a6 isKettleDigestEnabled:(BOOL)a7;
-- (void)didReceive:(id)a3 withContentHandler:(id)a4;
-- (void)finalizeContent:(id)a3;
-- (void)processDidReceiveSingleArticleNotificationRequest:(id)a3 withContentHandler:(id)a4;
+- (id)notificationAttachmentsWithThumbnailFileURL:(id)l publisherLogoFileURL:(id)rL publisherLogoMaskFileURL:(id)uRL publisherLogoCompactFileURL:(id)fileURL isKettleDigestEnabled:(BOOL)enabled;
+- (void)didReceive:(id)receive withContentHandler:(id)handler;
+- (void)finalizeContent:(id)content;
+- (void)processDidReceiveSingleArticleNotificationRequest:(id)request withContentHandler:(id)handler;
 - (void)serviceExtensionTimeWillExpire;
 @end
 
@@ -21,9 +21,9 @@
     v3 = [[FRArticleNotificationFeedPersonalizerFactory alloc] initWithTranslationProvider:0];
     v4 = FCURLForAppConfigurationMirror();
     v5 = +[FCAppleAccount sharedAccount];
-    v6 = [v5 supportedContentStoreFrontID];
+    supportedContentStoreFrontID = [v5 supportedContentStoreFrontID];
 
-    v7 = [[FCFileCoordinatedAppConfigurationManager alloc] initWithFileURL:v4 storefrontID:v6];
+    v7 = [[FCFileCoordinatedAppConfigurationManager alloc] initWithFileURL:v4 storefrontID:supportedContentStoreFrontID];
     v8 = [[FRArticleNotificationPersonalizer alloc] initWithAppConfigurationManager:v7 feedPersonalizerFactory:v3];
     personalizer = v2->_personalizer;
     v2->_personalizer = v8;
@@ -36,33 +36,33 @@
   return v2;
 }
 
-- (BOOL)supportsHandling:(id)a3
+- (BOOL)supportsHandling:(id)handling
 {
-  v3 = [a3 content];
-  v4 = [v3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:FCNotificationPayloadApsKey];
+  content = [handling content];
+  userInfo = [content userInfo];
+  v5 = [userInfo objectForKeyedSubscript:FCNotificationPayloadApsKey];
 
   v6 = [v5 objectForKeyedSubscript:FCNotificationPayloadCategoryKey];
-  LOBYTE(v4) = [v6 isEqualToString:FCNotificationArticleCategory];
+  LOBYTE(userInfo) = [v6 isEqualToString:FCNotificationArticleCategory];
 
-  return v4;
+  return userInfo;
 }
 
-- (void)didReceive:(id)a3 withContentHandler:(id)a4
+- (void)didReceive:(id)receive withContentHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  receiveCopy = receive;
+  handlerCopy = handler;
   v8 = objc_alloc_init(FRArticleNotificationServiceArticleSource);
   [(FRArticleNotificationService *)self setArticleSource:v8];
 
-  [(FRArticleNotificationService *)self setContentHandler:v7];
-  v9 = [v6 content];
-  v10 = [v9 mutableCopy];
+  [(FRArticleNotificationService *)self setContentHandler:handlerCopy];
+  content = [receiveCopy content];
+  v10 = [content mutableCopy];
   [(FRArticleNotificationService *)self setBestAttemptContent:v10];
 
-  v11 = [v6 content];
-  v12 = [v11 userInfo];
-  v13 = [v12 mutableCopy];
+  content2 = [receiveCopy content];
+  userInfo = [content2 userInfo];
+  v13 = [userInfo mutableCopy];
 
   v14 = [v13 objectForKeyedSubscript:FCNotificationPayloadApsKey];
   v15 = [v14 mutableCopy];
@@ -79,7 +79,7 @@
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_INFO, "extension-article category notification received.", &v20, 2u);
     }
 
-    [(FRArticleNotificationService *)self processDidReceiveSingleArticleNotificationRequest:v6 withContentHandler:v7];
+    [(FRArticleNotificationService *)self processDidReceiveSingleArticleNotificationRequest:receiveCopy withContentHandler:handlerCopy];
   }
 
   else
@@ -93,28 +93,28 @@
   }
 }
 
-- (void)processDidReceiveSingleArticleNotificationRequest:(id)a3 withContentHandler:(id)a4
+- (void)processDidReceiveSingleArticleNotificationRequest:(id)request withContentHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [v4 content];
-  v6 = [v5 userInfo];
+  requestCopy = request;
+  content = [requestCopy content];
+  userInfo = [content userInfo];
 
-  v42 = v6;
-  v7 = [v6 objectForKeyedSubscript:FCNotificationPayloadNewsKey];
+  v42 = userInfo;
+  v7 = [userInfo objectForKeyedSubscript:FCNotificationPayloadNewsKey];
   v41 = +[UNUserNotificationCenter currentNotificationCenter];
-  v8 = [v41 notificationSettings];
-  v9 = [v8 scheduledDeliverySetting];
-  v40 = v9 == 2;
+  notificationSettings = [v41 notificationSettings];
+  scheduledDeliverySetting = [notificationSettings scheduledDeliverySetting];
+  v40 = scheduledDeliverySetting == 2;
   v10 = [v7 objectForKeyedSubscript:FCNotificationPayloadNotificationBehaviorFlagsKey];
-  v11 = [v10 intValue];
+  intValue = [v10 intValue];
 
   v12 = NewsCoreUserDefaults();
   v13 = [v12 BOOLForKey:@"notificationEnableAssetPrefetching"];
   v14 = [v12 BOOLForKey:@"notificationAssetPrefetchingRequiresWatch"];
   v15 = +[NRPairedDeviceRegistry sharedInstance];
-  v16 = [v15 isPaired];
+  isPaired = [v15 isPaired];
 
-  v17 = v11 & 1;
+  v17 = intValue & 1;
   v18 = FRArticleNotificationServiceSharedLog();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
   {
@@ -123,17 +123,17 @@
     *&v53[4] = 1024;
     *&v53[6] = v14;
     LOWORD(v54) = 1024;
-    *(&v54 + 2) = v9 == 2;
+    *(&v54 + 2) = scheduledDeliverySetting == 2;
     HIWORD(v54) = 1024;
     *v55 = v17;
     *&v55[4] = 1024;
-    *&v55[6] = v16;
+    *&v55[6] = isPaired;
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_INFO, "isAssetPrefetchingEnabled=%d, doesAssetPrefetchingRequireWatch=%d, isKettleDigestEnabled=%d, isBehaviorFlagSetToDisableFetchingKettleImage=%d, doesDeviceHaveWatchPaired=%d", buf, 0x20u);
   }
 
   v19 = FRArticleNotificationServiceSharedLog();
   v20 = os_log_type_enabled(v19, OS_LOG_TYPE_INFO);
-  if (v9 != 2)
+  if (scheduledDeliverySetting != 2)
   {
     if (v20)
     {
@@ -152,7 +152,7 @@
       goto LABEL_40;
     }
 
-    if (!(v16 & 1 | ((v14 & 1) == 0)))
+    if (!(isPaired & 1 | ((v14 & 1) == 0)))
     {
       v48[0] = _NSConcreteStackBlock;
       v48[1] = 3221225472;
@@ -191,10 +191,10 @@
     goto LABEL_40;
   }
 
-  if ([v8 timeSensitiveSetting] == 2)
+  if ([notificationSettings timeSensitiveSetting] == 2)
   {
-    v21 = [v4 content];
-    v22 = [v21 interruptionLevel] == 2;
+    content2 = [requestCopy content];
+    v22 = [content2 interruptionLevel] == 2;
   }
 
   else
@@ -202,10 +202,10 @@
     v22 = 0;
   }
 
-  if ([v8 criticalAlertSetting] == 2)
+  if ([notificationSettings criticalAlertSetting] == 2)
   {
-    v25 = [v4 content];
-    v26 = [v25 interruptionLevel] == 3;
+    content3 = [requestCopy content];
+    v26 = [content3 interruptionLevel] == 3;
   }
 
   else
@@ -240,11 +240,11 @@ LABEL_27:
   v39 = [v7 objectForKeyedSubscript:FCNotificationPayloadPublisherLogoMaskURLKey];
   v29 = [v7 objectForKeyedSubscript:FCNotificationPayloadPublisherLogoCompactURLKey];
   v38 = [v7 objectForKeyedSubscript:FCNotificationPayloadFlintDocumentAssetURLKey];
-  v30 = [(FRArticleNotificationService *)self cachesDirectory];
+  cachesDirectory = [(FRArticleNotificationService *)self cachesDirectory];
   v31 = FRArticleNotificationServiceSharedLog();
   if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
   {
-    v32 = [v30 absoluteString];
+    absoluteString = [cachesDirectory absoluteString];
     *buf = 138413314;
     *v53 = v27;
     *&v53[8] = 2112;
@@ -254,22 +254,22 @@ LABEL_27:
     v56 = 2112;
     v57 = v29;
     v58 = 2112;
-    v59 = v32;
+    v59 = absoluteString;
     _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_INFO, "Fetching the thumbnail and publisherLogo using the provided URLs, thumbnailURL: %@, publisherLogoURL: %@, publisherLogoMaskURLString: %@, publisherLogoCompactURL: %@, cachesDirectory: %@", buf, 0x34u);
   }
 
-  if (v30 && (v27 || v28 || v29))
+  if (cachesDirectory && (v27 || v28 || v29))
   {
     v35 = FRArticleNotificationServiceSharedLog();
     if (os_log_type_enabled(v35, OS_LOG_TYPE_INFO))
     {
-      v36 = [(FRArticleNotificationService *)self articleSource];
+      articleSource = [(FRArticleNotificationService *)self articleSource];
       *buf = 138412290;
-      *v53 = v36;
+      *v53 = articleSource;
       _os_log_impl(&_mh_execute_header, v35, OS_LOG_TYPE_INFO, "Using article source %@", buf, 0xCu);
     }
 
-    v37 = [(FRArticleNotificationService *)self articleSource];
+    articleSource2 = [(FRArticleNotificationService *)self articleSource];
     v44[0] = _NSConcreteStackBlock;
     v44[1] = 3221225472;
     v44[2] = sub_1000047A0;
@@ -278,7 +278,7 @@ LABEL_27:
     v47 = v40;
     v45 = v7;
     v46 = v42;
-    [v37 fetchAssetsWithCachesDirectory:v30 thumbnailURLString:v27 publisherLogoURLString:v28 publisherLogoMaskURLString:v39 publisherLogoCompactURLString:v29 flintDocumentURLString:v38 completion:v44];
+    [articleSource2 fetchAssetsWithCachesDirectory:cachesDirectory thumbnailURLString:v27 publisherLogoURLString:v28 publisherLogoMaskURLString:v39 publisherLogoCompactURLString:v29 flintDocumentURLString:v38 completion:v44];
   }
 
   else
@@ -290,26 +290,26 @@ LABEL_27:
       _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_INFO, "Skipping prefetch since thumbnailURLString, publisherLogoURLString & publisherLogoCompactURLString are all nil.", buf, 2u);
     }
 
-    v34 = [(FRArticleNotificationService *)self bestAttemptContent];
-    [(FRArticleNotificationService *)self finalizeContent:v34];
+    bestAttemptContent = [(FRArticleNotificationService *)self bestAttemptContent];
+    [(FRArticleNotificationService *)self finalizeContent:bestAttemptContent];
   }
 
 LABEL_40:
 }
 
-- (id)notificationAttachmentsWithThumbnailFileURL:(id)a3 publisherLogoFileURL:(id)a4 publisherLogoMaskFileURL:(id)a5 publisherLogoCompactFileURL:(id)a6 isKettleDigestEnabled:(BOOL)a7
+- (id)notificationAttachmentsWithThumbnailFileURL:(id)l publisherLogoFileURL:(id)rL publisherLogoMaskFileURL:(id)uRL publisherLogoCompactFileURL:(id)fileURL isKettleDigestEnabled:(BOOL)enabled
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  lCopy = l;
+  rLCopy = rL;
+  fileURLCopy = fileURL;
   v13 = +[NSMutableArray array];
   v14 = &_s13NewsAnalytics24NotificationSettingsDataV6tagIDsSaySSGvg_ptr;
-  if (v10)
+  if (lCopy)
   {
     v35 = UNNotificationAttachmentOptionsTypeHintKey;
     v36 = kUTTypeJPEG;
     v15 = [NSDictionary dictionaryWithObjects:&v36 forKeys:&v35 count:1];
-    if (!a7)
+    if (!enabled)
     {
       v33[0] = UNNotificationAttachmentOptionsTypeHintKey;
       v33[1] = UNNotificationAttachmentOptionsThumbnailHiddenKey;
@@ -322,7 +322,7 @@ LABEL_40:
 
     v14 = &_s13NewsAnalytics24NotificationSettingsDataV6tagIDsSaySSGvg_ptr;
     v28 = 0;
-    v17 = [UNNotificationAttachment attachmentWithIdentifier:@"thumbnail-attachment" URL:v10 options:v15 error:&v28];
+    v17 = [UNNotificationAttachment attachmentWithIdentifier:@"thumbnail-attachment" URL:lCopy options:v15 error:&v28];
     v18 = v28;
     if (v17)
     {
@@ -331,7 +331,7 @@ LABEL_40:
       if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v32 = v10;
+        v32 = lCopy;
         _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_INFO, "Added an attachment for the thumbnail. %@", buf, 0xCu);
       }
 
@@ -339,7 +339,7 @@ LABEL_40:
     }
   }
 
-  if (v12)
+  if (fileURLCopy)
   {
     v29[0] = UNNotificationAttachmentOptionsTypeHintKey;
     v29[1] = UNNotificationAttachmentOptionsThumbnailHiddenKey;
@@ -348,7 +348,7 @@ LABEL_40:
     v20 = [NSDictionary dictionaryWithObjects:v30 forKeys:v29 count:2];
     v21 = v14[294];
     v27 = 0;
-    v22 = [v21 attachmentWithIdentifier:@"publisherLogoCompact-attachment" URL:v12 options:v20 error:&v27];
+    v22 = [v21 attachmentWithIdentifier:@"publisherLogoCompact-attachment" URL:fileURLCopy options:v20 error:&v27];
     v23 = v27;
     if (v22)
     {
@@ -357,7 +357,7 @@ LABEL_40:
       if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v32 = v11;
+        v32 = rLCopy;
         _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_INFO, "Added an attachment for the publisher COMPACT logo. %@", buf, 0xCu);
       }
     }
@@ -374,23 +374,23 @@ LABEL_40:
   v3 = [v2 containerURLForSecurityApplicationGroupIdentifier:@"group.com.apple.news"];
 
   v4 = [v3 URLByAppendingPathComponent:@"Notifications"];
-  v5 = [v4 path];
+  path = [v4 path];
   v6 = FRArticleNotificationServiceSharedLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v20 = v5;
+    v20 = path;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Using cache directory at %@", buf, 0xCu);
   }
 
   v7 = +[NSFileManager defaultManager];
-  v8 = [v7 fileExistsAtPath:v5];
+  v8 = [v7 fileExistsAtPath:path];
 
   if ((v8 & 1) == 0)
   {
     v9 = +[NSFileManager defaultManager];
     v18 = 0;
-    v10 = [v9 createDirectoryAtPath:v5 withIntermediateDirectories:1 attributes:0 error:&v18];
+    v10 = [v9 createDirectoryAtPath:path withIntermediateDirectories:1 attributes:0 error:&v18];
     v11 = v18;
 
     v12 = FRArticleNotificationServiceSharedLog();
@@ -400,7 +400,7 @@ LABEL_40:
       if (v13)
       {
         *buf = 138412290;
-        v20 = v5;
+        v20 = path;
         v14 = "Created cache directory at %@";
         v15 = v12;
         v16 = 12;
@@ -412,7 +412,7 @@ LABEL_9:
     else if (v13)
     {
       *buf = 138412546;
-      v20 = v5;
+      v20 = path;
       v21 = 2112;
       v22 = v11;
       v14 = "Failed to create directory at %@ due to %@";
@@ -434,19 +434,19 @@ LABEL_9:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "The operation took too long, serviceExtensionTimeWillExpire was called", v6, 2u);
   }
 
-  v4 = [(FRArticleNotificationService *)self contentHandler];
-  v5 = [(FRArticleNotificationService *)self bestAttemptContent];
-  (v4)[2](v4, v5);
+  contentHandler = [(FRArticleNotificationService *)self contentHandler];
+  bestAttemptContent = [(FRArticleNotificationService *)self bestAttemptContent];
+  (contentHandler)[2](contentHandler, bestAttemptContent);
 }
 
-- (void)finalizeContent:(id)a3
+- (void)finalizeContent:(id)content
 {
-  v4 = a3;
-  v5 = [v4 mutableCopy];
+  contentCopy = content;
+  v5 = [contentCopy mutableCopy];
   [(FRArticleNotificationService *)self setBestAttemptContent:v5];
 
-  v6 = [v4 userInfo];
-  v7 = [v6 objectForKeyedSubscript:FCNotificationPayloadNewsKey];
+  userInfo = [contentCopy userInfo];
+  v7 = [userInfo objectForKeyedSubscript:FCNotificationPayloadNewsKey];
 
   v8 = [[FCNotificationArticleHeadline alloc] initWithArticlePayload:v7 sourceChannel:0 assetManager:0];
   if (!v8)
@@ -456,18 +456,18 @@ LABEL_9:
     v23[2] = sub_10000529C;
     v23[3] = &unk_100024D58;
     v23[4] = self;
-    v24 = v4;
+    v24 = contentCopy;
     sub_10000529C(v23);
     v13 = v24;
     goto LABEL_5;
   }
 
   v9 = [v7 objectForKeyedSubscript:FCNotificationPayloadNotificationBehaviorFlagsKey];
-  v10 = [v9 intValue];
+  intValue = [v9 intValue];
 
-  if ((v10 & 2) == 0)
+  if ((intValue & 2) == 0)
   {
-    v11 = [(FRArticleNotificationService *)self personalizer];
+    personalizer = [(FRArticleNotificationService *)self personalizer];
     v25 = v8;
     v12 = [NSArray arrayWithObjects:&v25 count:1];
     v18[0] = _NSConcreteStackBlock;
@@ -475,8 +475,8 @@ LABEL_9:
     v18[2] = sub_100005418;
     v18[3] = &unk_100024D80;
     v19 = v8;
-    v20 = self;
-    [v11 sortItems:v12 completion:v18];
+    selfCopy = self;
+    [personalizer sortItems:v12 completion:v18];
 
     v13 = v19;
 LABEL_5:
@@ -491,17 +491,17 @@ LABEL_5:
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "Skipping personalizer to assign highest score.", buf, 2u);
   }
 
-  v15 = [(FRArticleNotificationService *)self bestAttemptContent];
-  [v15 setRelevanceScore:1.0];
+  bestAttemptContent = [(FRArticleNotificationService *)self bestAttemptContent];
+  [bestAttemptContent setRelevanceScore:1.0];
 
-  v16 = [(FRArticleNotificationService *)self postProcessCoordinator];
-  v17 = [(FRArticleNotificationService *)self bestAttemptContent];
+  postProcessCoordinator = [(FRArticleNotificationService *)self postProcessCoordinator];
+  bestAttemptContent2 = [(FRArticleNotificationService *)self bestAttemptContent];
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
   v21[2] = sub_10000532C;
   v21[3] = &unk_100024D08;
   v21[4] = self;
-  [v16 notificationArrived:v17 completionHandler:v21];
+  [postProcessCoordinator notificationArrived:bestAttemptContent2 completionHandler:v21];
 
 LABEL_9:
 }

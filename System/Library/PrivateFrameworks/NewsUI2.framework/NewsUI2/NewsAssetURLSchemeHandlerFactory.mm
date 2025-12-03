@@ -1,15 +1,15 @@
 @interface NewsAssetURLSchemeHandlerFactory
 - (_TtC7NewsUI232NewsAssetURLSchemeHandlerFactory)init;
-- (id)createURLSchemeHandlerWithTask:(id)a3;
+- (id)createURLSchemeHandlerWithTask:(id)task;
 @end
 
 @implementation NewsAssetURLSchemeHandlerFactory
 
-- (id)createURLSchemeHandlerWithTask:(id)a3
+- (id)createURLSchemeHandlerWithTask:(id)task
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  v6 = sub_219A58A5C(a3);
+  selfCopy = self;
+  v6 = sub_219A58A5C(task);
   swift_unknownObjectRelease();
 
   return v6;

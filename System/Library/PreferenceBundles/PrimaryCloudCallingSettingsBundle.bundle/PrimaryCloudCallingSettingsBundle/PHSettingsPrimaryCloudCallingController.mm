@@ -1,18 +1,18 @@
 @interface PHSettingsPrimaryCloudCallingController
 - (PHSettingsPrimaryCloudCallingController)init;
 - (id)cloudDeviceSpecifiers;
-- (id)getCallsOnOtherDevices:(id)a3;
-- (id)getDeviceActive:(id)a3;
-- (id)getIncomingCallBannerEnabled:(id)a3;
+- (id)getCallsOnOtherDevices:(id)devices;
+- (id)getDeviceActive:(id)active;
+- (id)getIncomingCallBannerEnabled:(id)enabled;
 - (id)incomingCallDeviceSpecifiers;
 - (id)mainSwitchFooterText;
 - (id)specifiers;
 - (void)dealloc;
 - (void)emitNavigationEvent;
-- (void)setCallsOnOtherDevices:(id)a3 specifier:(id)a4;
-- (void)setDeviceActive:(id)a3 specifier:(id)a4;
-- (void)setIncomingCallBannerEnabled:(id)a3 specifier:(id)a4;
-- (void)statusChanged:(id)a3;
+- (void)setCallsOnOtherDevices:(id)devices specifier:(id)specifier;
+- (void)setDeviceActive:(id)active specifier:(id)specifier;
+- (void)setIncomingCallBannerEnabled:(id)enabled specifier:(id)specifier;
+- (void)statusChanged:(id)changed;
 @end
 
 @implementation PHSettingsPrimaryCloudCallingController
@@ -35,12 +35,12 @@
 
 - (void)emitNavigationEvent
 {
-  v3 = [(PHSettingsPrimaryCloudCallingController *)self specifier];
-  v4 = [v3 target];
-  v5 = [v4 parentListController];
-  v6 = [v5 specifierID];
+  specifier = [(PHSettingsPrimaryCloudCallingController *)self specifier];
+  target = [specifier target];
+  parentListController = [target parentListController];
+  specifierID = [parentListController specifierID];
 
-  if ([v6 isEqualToString:@"com.apple.preferences.phone"])
+  if ([specifierID isEqualToString:@"com.apple.preferences.phone"])
   {
     v7 = TUBundleIdentifierPhoneApplication;
     v21 = [NSString stringWithFormat:@"settings-navigation://com.apple.Settings.Apps/%@/%@", TUBundleIdentifierPhoneApplication, @"PRIMARY_CLOUD_CALLING"];
@@ -48,14 +48,14 @@
     v8 = [_NSLocalizedStringResource alloc];
     v9 = +[NSLocale currentLocale];
     v10 = [NSBundle bundleForClass:objc_opt_class()];
-    v11 = [v10 bundleURL];
-    v12 = [v8 initWithKey:@"Calls on Other Devices" table:0 locale:v9 bundleURL:v11];
+    bundleURL = [v10 bundleURL];
+    v12 = [v8 initWithKey:@"Calls on Other Devices" table:0 locale:v9 bundleURL:bundleURL];
 
     v13 = [_NSLocalizedStringResource alloc];
     v14 = +[NSLocale currentLocale];
     v15 = [NSBundle bundleForClass:objc_opt_class()];
-    v16 = [v15 bundleURL];
-    v17 = [v13 initWithKey:@"Apps" table:0 locale:v14 bundleURL:v16];
+    bundleURL2 = [v15 bundleURL];
+    v17 = [v13 initWithKey:@"Apps" table:0 locale:v14 bundleURL:bundleURL2];
 
     v18 = TUResolvedPhoneResource();
     v22[0] = v17;
@@ -83,19 +83,19 @@
   {
     v5 = [(PHSettingsPrimaryCloudCallingController *)self loadSpecifiersFromPlistName:@"PrimaryCloudCallingSettings" target:self];
     v6 = [v5 specifierForID:@"PRIMARY_CLOUD_CALLING_GROUP"];
-    v7 = [(PHSettingsPrimaryCloudCallingController *)self mainSwitchFooterText];
-    [v6 setProperty:v7 forKey:PSFooterTextGroupKey];
+    mainSwitchFooterText = [(PHSettingsPrimaryCloudCallingController *)self mainSwitchFooterText];
+    [v6 setProperty:mainSwitchFooterText forKey:PSFooterTextGroupKey];
 
     v8 = [(PHSettingsPrimaryCloudCallingController *)self getCallsOnOtherDevices:0];
-    LODWORD(v7) = [v8 BOOLValue];
+    LODWORD(mainSwitchFooterText) = [v8 BOOLValue];
 
-    if (v7)
+    if (mainSwitchFooterText)
     {
-      v9 = [(PHSettingsPrimaryCloudCallingController *)self cloudDeviceSpecifiers];
-      [v5 addObjectsFromArray:v9];
+      cloudDeviceSpecifiers = [(PHSettingsPrimaryCloudCallingController *)self cloudDeviceSpecifiers];
+      [v5 addObjectsFromArray:cloudDeviceSpecifiers];
 
-      v10 = [(PHSettingsPrimaryCloudCallingController *)self incomingCallDeviceSpecifiers];
-      [v5 addObjectsFromArray:v10];
+      incomingCallDeviceSpecifiers = [(PHSettingsPrimaryCloudCallingController *)self incomingCallDeviceSpecifiers];
+      [v5 addObjectsFromArray:incomingCallDeviceSpecifiers];
     }
 
     v11 = [[NSArray alloc] initWithArray:v5];
@@ -134,14 +134,14 @@
         v6 = *(*(&v22 + 1) + 8 * i);
         if ([v6 supportsRestrictingSecondaryCalling])
         {
-          v7 = [v6 name];
-          v8 = [v6 modelIdentifier];
-          v9 = [IMDeviceSupport marketingNameForModel:v8];
+          name = [v6 name];
+          modelIdentifier = [v6 modelIdentifier];
+          v9 = [IMDeviceSupport marketingNameForModel:modelIdentifier];
 
-          v10 = [NSString stringWithFormat:@"%@ (%@)", v7, v9];
+          v10 = [NSString stringWithFormat:@"%@ (%@)", name, v9];
           v11 = [PSSpecifier preferenceSpecifierNamed:v10 target:self set:"setDeviceActive:specifier:" get:"getDeviceActive:" detail:0 cell:6 edit:0];
-          v12 = [v6 uniqueID];
-          [v11 setIdentifier:v12];
+          uniqueID = [v6 uniqueID];
+          [v11 setIdentifier:uniqueID];
 
           [v20 addObject:v11];
         }
@@ -177,10 +177,10 @@
   v29 = 0u;
   v30 = 0u;
   v2 = +[PHCallNotificationDevicesMonitor sharedInstance];
-  v3 = [v2 callNotificationEligibleDevices];
+  callNotificationEligibleDevices = [v2 callNotificationEligibleDevices];
 
-  obj = v3;
-  v4 = [v3 countByEnumeratingWithState:&v27 objects:v31 count:16];
+  obj = callNotificationEligibleDevices;
+  v4 = [callNotificationEligibleDevices countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v4)
   {
     v5 = v4;
@@ -195,11 +195,11 @@
         }
 
         v8 = *(*(&v27 + 1) + 8 * i);
-        v9 = [v8 name];
-        v10 = [v8 model];
-        v11 = [IMDeviceSupport marketingNameForModel:v10];
+        name = [v8 name];
+        model = [v8 model];
+        v11 = [IMDeviceSupport marketingNameForModel:model];
 
-        if (v9)
+        if (name)
         {
           v12 = v11 == 0;
         }
@@ -211,10 +211,10 @@
 
         if (!v12)
         {
-          v13 = [NSString stringWithFormat:@"%@ (%@)", v9, v11];
+          v13 = [NSString stringWithFormat:@"%@ (%@)", name, v11];
           v14 = [PSSpecifier preferenceSpecifierNamed:v13 target:self set:"setIncomingCallBannerEnabled:specifier:" get:"getIncomingCallBannerEnabled:" detail:0 cell:6 edit:0];
-          v15 = [v8 serialNumber];
-          [v14 setIdentifier:v15];
+          serialNumber = [v8 serialNumber];
+          [v14 setIdentifier:serialNumber];
 
           [v25 addObject:v14];
         }
@@ -254,25 +254,25 @@
   return v4;
 }
 
-- (void)setCallsOnOtherDevices:(id)a3 specifier:(id)a4
+- (void)setCallsOnOtherDevices:(id)devices specifier:(id)specifier
 {
-  v5 = a3;
+  devicesCopy = devices;
   v6 = PHDefaultLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v23 = [v5 BOOLValue];
+    bOOLValue = [devicesCopy BOOLValue];
     _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "Asked to set calls on other devices to %d", buf, 8u);
   }
 
-  if ([v5 BOOLValue] && (+[TUCallCapabilities accountsSupportSecondaryCalling](TUCallCapabilities, "accountsSupportSecondaryCalling") & 1) == 0)
+  if ([devicesCopy BOOLValue] && (+[TUCallCapabilities accountsSupportSecondaryCalling](TUCallCapabilities, "accountsSupportSecondaryCalling") & 1) == 0)
   {
     v7 = PHDefaultLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v8 = +[TUCallCapabilities accountsSupportSecondaryCalling];
       *buf = 67109120;
-      v23 = v8;
+      bOOLValue = v8;
       _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "Not allowing Calls on Other Devices to be enabled because accountsSupportSecondaryCalling = %d", buf, 8u);
     }
 
@@ -280,10 +280,10 @@
     v10 = [v9 localizedStringForKey:@"PRIMARY_CLOUD_CALLING_ACCOUNT_ALERT_TITLE" value:&stru_C920 table:@"PrimaryCloudCallingSettings"];
 
     v11 = objc_alloc_init(TUFeatureFlags);
-    v12 = [v11 appleAccountRebrandEnabled];
+    appleAccountRebrandEnabled = [v11 appleAccountRebrandEnabled];
     v13 = [NSBundle bundleForClass:objc_opt_class()];
     v14 = v13;
-    if (v12)
+    if (appleAccountRebrandEnabled)
     {
       v15 = @"PRIMARY_CLOUD_CALLING_ACCOUNT_ALERT_MESSAGE_APPLEACCOUNT";
     }
@@ -311,55 +311,55 @@
 
   else
   {
-    +[TUCallCapabilities setRelayCallingEnabled:](TUCallCapabilities, "setRelayCallingEnabled:", [v5 BOOLValue]);
+    +[TUCallCapabilities setRelayCallingEnabled:](TUCallCapabilities, "setRelayCallingEnabled:", [devicesCopy BOOLValue]);
   }
 }
 
-- (id)getCallsOnOtherDevices:(id)a3
+- (id)getCallsOnOtherDevices:(id)devices
 {
   v3 = +[TUCallCapabilities areCallsOnOtherDevicesEnabled];
 
   return [NSNumber numberWithBool:v3];
 }
 
-- (void)setDeviceActive:(id)a3 specifier:(id)a4
+- (void)setDeviceActive:(id)active specifier:(id)specifier
 {
-  v5 = a3;
-  v6 = [a4 identifier];
+  activeCopy = active;
+  identifier = [specifier identifier];
   v7 = PHDefaultLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412546;
-    v9 = v5;
+    v9 = activeCopy;
     v10 = 2112;
-    v11 = v6;
+    v11 = identifier;
     _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "Asked to set device active=%@ on secondary device with unique ID %@", &v8, 0x16u);
   }
 
-  +[TUCallCapabilities setRelayCallingEnabled:forDeviceWithID:](TUCallCapabilities, "setRelayCallingEnabled:forDeviceWithID:", [v5 BOOLValue], v6);
+  +[TUCallCapabilities setRelayCallingEnabled:forDeviceWithID:](TUCallCapabilities, "setRelayCallingEnabled:forDeviceWithID:", [activeCopy BOOLValue], identifier);
 }
 
-- (id)getDeviceActive:(id)a3
+- (id)getDeviceActive:(id)active
 {
-  v3 = [a3 identifier];
-  v4 = [NSNumber numberWithBool:[TUCallCapabilities isRelayCallingEnabledForDeviceWithID:v3]];
+  identifier = [active identifier];
+  v4 = [NSNumber numberWithBool:[TUCallCapabilities isRelayCallingEnabledForDeviceWithID:identifier]];
 
   return v4;
 }
 
-- (void)setIncomingCallBannerEnabled:(id)a3 specifier:(id)a4
+- (void)setIncomingCallBannerEnabled:(id)enabled specifier:(id)specifier
 {
-  v5 = a3;
-  v6 = [a4 identifier];
+  enabledCopy = enabled;
+  identifier = [specifier identifier];
   v7 = [[NSUserDefaults alloc] initWithSuiteName:@"com.apple.NeighborhoodActivityConduitService"];
   v8 = v7;
   if (v7)
   {
     v9 = [v7 arrayForKey:@"incomingCallBannerEnabledDevices"];
     v10 = [[NSMutableArray alloc] initWithArray:v9];
-    if ([v5 BOOLValue])
+    if ([enabledCopy BOOLValue])
     {
-      v11 = [v10 containsObject:v6];
+      v11 = [v10 containsObject:identifier];
       v12 = PHDefaultLog();
       v13 = os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT);
       if (v11)
@@ -367,7 +367,7 @@
         if (v13)
         {
           v15 = 138412546;
-          v16 = v6;
+          v16 = identifier;
           v17 = 2112;
           v18 = v10;
           _os_log_impl(&dword_0, v12, OS_LOG_TYPE_DEFAULT, "deviceID %@ already exists in the enabled devices list %@.", &v15, 0x16u);
@@ -379,11 +379,11 @@
         if (v13)
         {
           v15 = 138412290;
-          v16 = v6;
+          v16 = identifier;
           _os_log_impl(&dword_0, v12, OS_LOG_TYPE_DEFAULT, "Adding new deviceID %@ to the enabled devices list.", &v15, 0xCu);
         }
 
-        [v10 addObject:v6];
+        [v10 addObject:identifier];
       }
     }
 
@@ -393,29 +393,29 @@
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         v15 = 138412546;
-        v16 = v6;
+        v16 = identifier;
         v17 = 2112;
         v18 = v10;
         _os_log_impl(&dword_0, v14, OS_LOG_TYPE_DEFAULT, "Removing deviceID %@ from the enabled devices list %@.", &v15, 0x16u);
       }
 
-      [v10 removeObject:v6];
+      [v10 removeObject:identifier];
     }
 
     [v8 setObject:v10 forKey:@"incomingCallBannerEnabledDevices"];
   }
 }
 
-- (id)getIncomingCallBannerEnabled:(id)a3
+- (id)getIncomingCallBannerEnabled:(id)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v4 = [[NSUserDefaults alloc] initWithSuiteName:@"com.apple.NeighborhoodActivityConduitService"];
   v5 = v4;
   if (v4 && ([v4 arrayForKey:@"incomingCallBannerEnabledDevices"], (v6 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v7 = v6;
-    v8 = [v3 identifier];
-    v9 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v7 containsObject:v8]);
+    identifier = [enabledCopy identifier];
+    v9 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v7 containsObject:identifier]);
   }
 
   else
@@ -432,14 +432,14 @@
   return v9;
 }
 
-- (void)statusChanged:(id)a3
+- (void)statusChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   v5 = PHDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v8 = v4;
+    v8 = changedCopy;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "Received capability changed notification: %@. Reloading specifiers", buf, 0xCu);
   }
 

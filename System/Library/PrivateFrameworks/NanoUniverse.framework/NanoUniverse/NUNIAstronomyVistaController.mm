@@ -2,39 +2,39 @@
 - (NUNIAegirStyleDefinition)styleDefinition;
 - (NUNIAstronomyPulseAnimationDelegate)pulseAnimationDelegate;
 - (NUNIAstronomyStyleAnimationDelegate)styleAnimationDelegate;
-- (NUNIAstronomyVistaController)initWithVistaView:(id)a3;
+- (NUNIAstronomyVistaController)initWithVistaView:(id)view;
 - (NUNIAstronomyVistaControllerDelegate)delegate;
-- (void)_animateToStyle:(unint64_t)a3;
-- (void)_animateToStyleDefinition:(NUNIAegirStyleDefinition)a3;
-- (void)_applyVista:(unint64_t)a3;
-- (void)_handleInteractiveModeGesture:(id)a3;
-- (void)_handleSpheroidPanGesture:(id)a3;
-- (void)_handleSupplementalModeGesture:(id)a3;
+- (void)_animateToStyle:(unint64_t)style;
+- (void)_animateToStyleDefinition:(NUNIAegirStyleDefinition)definition;
+- (void)_applyVista:(unint64_t)vista;
+- (void)_handleInteractiveModeGesture:(id)gesture;
+- (void)_handleSpheroidPanGesture:(id)gesture;
+- (void)_handleSupplementalModeGesture:(id)gesture;
 - (void)_updateFrameInterval;
 - (void)activeMode;
-- (void)animateToStyleDefinition:(NUNIAegirStyleDefinition)a3 duration:(float)a4;
-- (void)animateToVista:(unint64_t)a3 styleDefinition:(NUNIAegirStyleDefinition)a4 duration:(float)a5;
-- (void)animateTransitionToMode:(int64_t)a3;
-- (void)applyMode:(int64_t)a3;
-- (void)applyStyle:(unint64_t)a3;
-- (void)applyStyleDefinition:(NUNIAegirStyleDefinition)a3;
-- (void)applyTransitionFraction:(double)a3 fromStyle:(unint64_t)a4 toStyle:(unint64_t)a5;
-- (void)applyTransitionFraction:(double)a3 fromVista:(unint64_t)a4 fromStyleDefinition:(NUNIAegirStyleDefinition)a5 toVista:(unint64_t)a6 toStyleDefinition:(NUNIAegirStyleDefinition)a7;
-- (void)applyTransitionFraction:(double)a3 fromVista:(unint64_t)a4 toVista:(unint64_t)a5;
-- (void)astronomyAnimationFinished:(id)a3;
+- (void)animateToStyleDefinition:(NUNIAegirStyleDefinition)definition duration:(float)duration;
+- (void)animateToVista:(unint64_t)vista styleDefinition:(NUNIAegirStyleDefinition)definition duration:(float)duration;
+- (void)animateTransitionToMode:(int64_t)mode;
+- (void)applyMode:(int64_t)mode;
+- (void)applyStyle:(unint64_t)style;
+- (void)applyStyleDefinition:(NUNIAegirStyleDefinition)definition;
+- (void)applyTransitionFraction:(double)fraction fromStyle:(unint64_t)style toStyle:(unint64_t)toStyle;
+- (void)applyTransitionFraction:(double)fraction fromVista:(unint64_t)vista fromStyleDefinition:(NUNIAegirStyleDefinition)definition toVista:(unint64_t)toVista toStyleDefinition:(NUNIAegirStyleDefinition)styleDefinition;
+- (void)applyTransitionFraction:(double)fraction fromVista:(unint64_t)vista toVista:(unint64_t)toVista;
+- (void)astronomyAnimationFinished:(id)finished;
 - (void)cleanUpAfterTransitions;
 - (void)deactiveMode;
-- (void)hideLocationDotAnimated:(BOOL)a3;
+- (void)hideLocationDotAnimated:(BOOL)animated;
 - (void)hideLocationDotPulse;
 - (void)interactiveMode;
 - (void)prepareForTransitions;
 - (void)pulseLocationDot;
-- (void)setActiveModeFrameInterval:(int64_t)a3;
-- (void)setForceDisableLocationDot:(BOOL)a3;
-- (void)setLocationDotAlpha:(double)a3;
-- (void)setStyleDefinition:(NUNIAegirStyleDefinition)a3;
-- (void)setVistaView:(id)a3;
-- (void)showLocationDotAnimated:(BOOL)a3;
+- (void)setActiveModeFrameInterval:(int64_t)interval;
+- (void)setForceDisableLocationDot:(BOOL)dot;
+- (void)setLocationDotAlpha:(double)alpha;
+- (void)setStyleDefinition:(NUNIAegirStyleDefinition)definition;
+- (void)setVistaView:(id)view;
+- (void)showLocationDotAnimated:(BOOL)animated;
 - (void)startClockUpdates;
 - (void)stopClockUpdates;
 - (void)stopLocationDotPulse;
@@ -43,9 +43,9 @@
 
 @implementation NUNIAstronomyVistaController
 
-- (NUNIAstronomyVistaController)initWithVistaView:(id)a3
+- (NUNIAstronomyVistaController)initWithVistaView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v12.receiver = self;
   v12.super_class = NUNIAstronomyVistaController;
   v5 = [(NUNIAstronomyVistaController *)&v12 init];
@@ -60,11 +60,11 @@
 
     [(NUNIAstronomyRotationModel *)v6->_rotationModel setObserver:v6];
     v9 = objc_alloc_init(NUNIAstronomyLocationDotConfiguration);
-    v10 = [MEMORY[0x277D759A0] mainScreen];
-    [v10 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     [(NUNIAstronomyLocationDotConfiguration *)v9 setScreenScale:?];
 
-    [(NUNIAstronomyVistaController *)v6 setVistaView:v4];
+    [(NUNIAstronomyVistaController *)v6 setVistaView:viewCopy];
     v6->_isFallbackLocation = 1;
     [(NUNIAstronomyVistaController *)v6 applyMode:1];
     v6->_activeModeFrameInterval = 3;
@@ -73,11 +73,11 @@
   return v6;
 }
 
-- (void)setActiveModeFrameInterval:(int64_t)a3
+- (void)setActiveModeFrameInterval:(int64_t)interval
 {
-  if (self->_activeModeFrameInterval != a3)
+  if (self->_activeModeFrameInterval != interval)
   {
-    self->_activeModeFrameInterval = a3;
+    self->_activeModeFrameInterval = interval;
     [(NUNIAstronomyVistaController *)self _updateFrameInterval];
   }
 }
@@ -106,8 +106,8 @@
 - (void)prepareForTransitions
 {
   [(NUNIAstronomyVistaController *)self setPreparedForTransitions:1];
-  v3 = [(NUNIAstronomyVistaView *)self->_vistaView scene];
-  [v3 setUpdatable:0];
+  scene = [(NUNIAstronomyVistaView *)self->_vistaView scene];
+  [scene setUpdatable:0];
 
   v4 = 0;
   editingVistaAnimations = self->_editingVistaAnimations;
@@ -134,10 +134,10 @@
   while (v6 != 10);
 }
 
-- (void)setVistaView:(id)a3
+- (void)setVistaView:(id)view
 {
-  objc_storeStrong(&self->_vistaView, a3);
-  v11 = a3;
+  objc_storeStrong(&self->_vistaView, view);
+  viewCopy = view;
   v5 = [objc_alloc(MEMORY[0x277D757F8]) initWithTarget:self action:sel__handleSpheroidPanGesture_];
   spheroidPanGesture = self->_spheroidPanGesture;
   self->_spheroidPanGesture = v5;
@@ -165,8 +165,8 @@
 - (void)cleanUpAfterTransitions
 {
   [(NUNIAstronomyVistaController *)self _applyVista:self->_vista];
-  v3 = [(NUNIAstronomyVistaView *)self->_vistaView scene];
-  [v3 setUpdatable:1];
+  scene = [(NUNIAstronomyVistaView *)self->_vistaView scene];
+  [scene setUpdatable:1];
 
   for (i = 24; i != 104; i += 8)
   {
@@ -177,12 +177,12 @@
   [(NUNIAstronomyVistaController *)self setPreparedForTransitions:0];
 }
 
-- (void)_applyVista:(unint64_t)a3
+- (void)_applyVista:(unint64_t)vista
 {
   if (self->_vistaView)
   {
     [(NUNIAstronomyRotationModel *)self->_rotationModel stop];
-    v6 = [(NUNIAstronomyVistaView *)self->_vistaView rotatable:a3];
+    v6 = [(NUNIAstronomyVistaView *)self->_vistaView rotatable:vista];
     [(NUNIAstronomyRotationModel *)self->_rotationModel setRotatable:v6];
     if (v6)
     {
@@ -190,53 +190,53 @@
       [v6 setCenterCoordinate:0 animated:?];
     }
 
-    v5 = [(NUNIAstronomyVistaView *)self->_vistaView scene];
-    [v5 removeAllAnimations];
+    scene = [(NUNIAstronomyVistaView *)self->_vistaView scene];
+    [scene removeAllAnimations];
 
-    [(NUNIAstronomyVistaView *)self->_vistaView applyVista:a3 transitionStyle:self->_vistaTransitionStyle];
+    [(NUNIAstronomyVistaView *)self->_vistaView applyVista:vista transitionStyle:self->_vistaTransitionStyle];
   }
 }
 
-- (void)setStyleDefinition:(NUNIAegirStyleDefinition)a3
+- (void)setStyleDefinition:(NUNIAegirStyleDefinition)definition
 {
   v4 = v3;
   v5 = v3[1];
   *&self->_styleDefinition.orbit = *v3;
   *&self[1]._vistaView = v5;
-  v8 = [(NUNIAstronomyVistaView *)self->_vistaView scene];
+  scene = [(NUNIAstronomyVistaView *)self->_vistaView scene];
   v6 = v4[1];
   v9[0] = *v4;
   v9[1] = v6;
-  NUNIAstronomyVistaController_ApplyStyleDefinition(v9, v7, v8);
-  [v8 updateCamera];
+  NUNIAstronomyVistaController_ApplyStyleDefinition(v9, v7, scene);
+  [scene updateCamera];
 }
 
-- (void)applyTransitionFraction:(double)a3 fromVista:(unint64_t)a4 toVista:(unint64_t)a5
+- (void)applyTransitionFraction:(double)fraction fromVista:(unint64_t)vista toVista:(unint64_t)toVista
 {
   v23 = *MEMORY[0x277D85DE8];
-  if (a4 + 1 == a5)
+  if (vista + 1 == toVista)
   {
-    v8 = self->_editingVistaAnimations[a4];
+    v8 = self->_editingVistaAnimations[vista];
   }
 
-  else if (a5 + 1 == a4)
+  else if (toVista + 1 == vista)
   {
-    v8 = self->_editingVistaAnimations[a5];
-    a3 = 1.0 - a3;
+    v8 = self->_editingVistaAnimations[toVista];
+    fraction = 1.0 - fraction;
   }
 
   else
   {
-    if (a4 != a5)
+    if (vista != toVista)
     {
       goto LABEL_14;
     }
 
-    v8 = self->_editingVistaAnimations[a4];
-    a3 = 0.0;
-    if (self->_vista != a4)
+    v8 = self->_editingVistaAnimations[vista];
+    fraction = 0.0;
+    if (self->_vista != vista)
     {
-      [(NUNIAstronomyVistaController *)self setVista:a4];
+      [(NUNIAstronomyVistaController *)self setVista:vista];
     }
   }
 
@@ -251,8 +251,8 @@
     if (v10)
     {
       v12 = v10;
-      v13 = a3;
-      v14 = (v13 * v13) * ((v13 * -2.0) + 3.0);
+      fractionCopy = fraction;
+      v14 = (fractionCopy * fractionCopy) * ((fractionCopy * -2.0) + 3.0);
       v15 = *v19;
       do
       {
@@ -280,7 +280,7 @@ LABEL_14:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)applyTransitionFraction:(double)a3 fromStyle:(unint64_t)a4 toStyle:(unint64_t)a5
+- (void)applyTransitionFraction:(double)fraction fromStyle:(unint64_t)style toStyle:(unint64_t)toStyle
 {
   vista = self->_vista;
   v6 = &_NUNIGetAegirStyleDefinition_earthDefinitions;
@@ -299,18 +299,18 @@ LABEL_14:
     v7 = v6;
   }
 
-  v8 = &v7[32 * a4];
+  v8 = &v7[32 * style];
   v9 = *(v8 + 1);
   v13[0] = *v8;
   v13[1] = v9;
-  v10 = &v7[32 * a5];
+  v10 = &v7[32 * toStyle];
   v11 = *(v10 + 1);
   v12[0] = *v10;
   v12[1] = v11;
-  [(NUNIAstronomyVistaController *)self applyTransitionFraction:v13 fromStyleDefinition:v12 toStyleDefinition:a3];
+  [(NUNIAstronomyVistaController *)self applyTransitionFraction:v13 fromStyleDefinition:v12 toStyleDefinition:fraction];
 }
 
-- (void)applyTransitionFraction:(double)a3 fromVista:(unint64_t)a4 fromStyleDefinition:(NUNIAegirStyleDefinition)a5 toVista:(unint64_t)a6 toStyleDefinition:(NUNIAegirStyleDefinition)a7
+- (void)applyTransitionFraction:(double)fraction fromVista:(unint64_t)vista fromStyleDefinition:(NUNIAegirStyleDefinition)definition toVista:(unint64_t)toVista toStyleDefinition:(NUNIAegirStyleDefinition)styleDefinition
 {
   v9 = v8;
   v10 = v7;
@@ -319,10 +319,10 @@ LABEL_14:
   aBlock[1] = 3221225472;
   aBlock[2] = __112__NUNIAstronomyVistaController_applyTransitionFraction_fromVista_fromStyleDefinition_toVista_toStyleDefinition___block_invoke;
   aBlock[3] = &__block_descriptor_72_e19_v16__0__NUNIScene_8l;
-  v14 = *(a6 + 16);
-  v36 = *a6;
+  v14 = *(toVista + 16);
+  v36 = *toVista;
   v37 = v14;
-  v38 = a4;
+  vistaCopy = vista;
   v15 = _Block_copy(aBlock);
   v31[0] = MEMORY[0x277D85DD0];
   v31[1] = 3221225472;
@@ -333,7 +333,7 @@ LABEL_14:
   v33 = v16;
   v34 = v10;
   v17 = _Block_copy(v31);
-  v18 = [(NUNIAstronomyVistaView *)self->_vistaView generateAnimationArrayFromVista:a4 fromSceneBlock:v15 toVista:v10 toSceneBlock:v17 transitionStyle:self->_vistaTransitionStyle];
+  v18 = [(NUNIAstronomyVistaView *)self->_vistaView generateAnimationArrayFromVista:vista fromSceneBlock:v15 toVista:v10 toSceneBlock:v17 transitionStyle:self->_vistaTransitionStyle];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
@@ -342,8 +342,8 @@ LABEL_14:
   if (v19)
   {
     v21 = v19;
-    v22 = a3;
-    v23 = (v22 * v22) * ((v22 * -2.0) + 3.0);
+    fractionCopy = fraction;
+    v23 = (fractionCopy * fractionCopy) * ((fractionCopy * -2.0) + 3.0);
     v24 = *v28;
     do
     {
@@ -390,13 +390,13 @@ void __112__NUNIAstronomyVistaController_applyTransitionFraction_fromVista_fromS
   objc_initWeak(&location, self);
   if (!self->_clockTimerToken)
   {
-    v3 = [MEMORY[0x277CBB700] sharedInstance];
+    mEMORY[0x277CBB700] = [MEMORY[0x277CBB700] sharedInstance];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __49__NUNIAstronomyVistaController_startClockUpdates__block_invoke;
     v6[3] = &unk_27995FA70;
     objc_copyWeak(&v7, &location);
-    v4 = [v3 startUpdatesWithUpdateFrequency:0 withHandler:v6 identificationLog:&__block_literal_global_1];
+    v4 = [mEMORY[0x277CBB700] startUpdatesWithUpdateFrequency:0 withHandler:v6 identificationLog:&__block_literal_global_1];
     clockTimerToken = self->_clockTimerToken;
     self->_clockTimerToken = v4;
 
@@ -417,22 +417,22 @@ void __49__NUNIAstronomyVistaController_startClockUpdates__block_invoke(uint64_t
 {
   if (self->_clockTimerToken)
   {
-    v3 = [MEMORY[0x277CBB700] sharedInstance];
-    [v3 stopUpdatesForToken:self->_clockTimerToken];
+    mEMORY[0x277CBB700] = [MEMORY[0x277CBB700] sharedInstance];
+    [mEMORY[0x277CBB700] stopUpdatesForToken:self->_clockTimerToken];
 
     clockTimerToken = self->_clockTimerToken;
     self->_clockTimerToken = 0;
   }
 }
 
-- (void)_handleSpheroidPanGesture:(id)a3
+- (void)_handleSpheroidPanGesture:(id)gesture
 {
-  v4 = a3;
+  gestureCopy = gesture;
   if (self->_vista != 2 && !self->_overrideDate)
   {
-    v26 = v4;
-    v5 = [(NUNIAstronomyRotationModel *)self->_rotationModel rotatable];
-    v6 = [(NUNIAstronomyRotationModel *)self->_rotationModel interactionSettings];
+    v26 = gestureCopy;
+    rotatable = [(NUNIAstronomyRotationModel *)self->_rotationModel rotatable];
+    interactionSettings = [(NUNIAstronomyRotationModel *)self->_rotationModel interactionSettings];
     vista = self->_vista;
     if (vista)
     {
@@ -451,22 +451,22 @@ void __49__NUNIAstronomyVistaController_startClockUpdates__block_invoke(uint64_t
 
     [(NUNIAstronomyRotationModel *)self->_rotationModel setPulling:v8];
 LABEL_8:
-    v9 = [v26 state];
-    switch(v9)
+    state = [v26 state];
+    switch(state)
     {
       case 3:
         rotationModel = self->_rotationModel;
-        v23 = [v26 view];
-        [v26 velocityInView:v23];
+        view = [v26 view];
+        [v26 velocityInView:view];
         v25.f64[1] = v24;
-        [(NUNIAstronomyRotationModel *)rotationModel push:COERCE_DOUBLE(vmul_f32(*&v6->var2, vcvt_f32_f64(v25)))];
+        [(NUNIAstronomyRotationModel *)rotationModel push:COERCE_DOUBLE(vmul_f32(*&interactionSettings->var2, vcvt_f32_f64(v25)))];
 
         WeakRetained = objc_loadWeakRetained(&self->_delegate);
         [WeakRetained astronomyVistaControllerWillEndPanning:self];
         break;
       case 2:
-        v13 = [v26 view];
-        [v26 translationInView:v13];
+        view2 = [v26 view];
+        [v26 translationInView:view2];
         v15.f64[1] = v14;
         v16 = vcvt_f32_f64(v15);
 
@@ -479,14 +479,14 @@ LABEL_8:
         }
 
         self->_recentMovement = v18;
-        v20 = vmul_f32(*&v6->var0, v16);
+        v20 = vmul_f32(*&interactionSettings->var0, v16);
         *self->_previousTranslation = v16;
         latitude = self->_initialCoordinate.latitude;
-        [v5 setCenterCoordinate:{NUNIAstronomyClampLatitude(v20.f32[1] + latitude), self->_initialCoordinate.longitude + v20.f32[0]}];
+        [rotatable setCenterCoordinate:{NUNIAstronomyClampLatitude(v20.f32[1] + latitude), self->_initialCoordinate.longitude + v20.f32[0]}];
         goto LABEL_17;
       case 1:
         [(NUNIAstronomyRotationModel *)self->_rotationModel stop];
-        [v5 centerCoordinate];
+        [rotatable centerCoordinate];
         self->_initialCoordinate.latitude = v10;
         self->_initialCoordinate.longitude = v11;
         self->_recentMovement = 0.0;
@@ -497,7 +497,7 @@ LABEL_8:
       default:
 LABEL_17:
 
-        v4 = v26;
+        gestureCopy = v26;
         goto LABEL_18;
     }
 
@@ -507,9 +507,9 @@ LABEL_17:
 LABEL_18:
 }
 
-- (void)_handleInteractiveModeGesture:(id)a3
+- (void)_handleInteractiveModeGesture:(id)gesture
 {
-  if ([a3 state] != 3)
+  if ([gesture state] != 3)
   {
     return;
   }
@@ -541,9 +541,9 @@ LABEL_7:
   }
 }
 
-- (void)_handleSupplementalModeGesture:(id)a3
+- (void)_handleSupplementalModeGesture:(id)gesture
 {
-  if ([a3 state] != 3 || self->_vista != 2)
+  if ([gesture state] != 3 || self->_vista != 2)
   {
     return;
   }
@@ -569,7 +569,7 @@ LABEL_7:
 LABEL_9:
 }
 
-- (void)animateTransitionToMode:(int64_t)a3
+- (void)animateTransitionToMode:(int64_t)mode
 {
   mode = self->_mode;
   if (mode == 1)
@@ -577,12 +577,12 @@ LABEL_9:
     [(NUNIAstronomyVistaView *)self->_vistaView startAnimation];
   }
 
-  if (a3 < 2)
+  if (mode < 2)
   {
     goto LABEL_6;
   }
 
-  if (a3 == 2)
+  if (mode == 2)
   {
     if (mode == 3)
     {
@@ -595,7 +595,7 @@ LABEL_9:
     [(NUNIAstronomyVistaController *)self _animateToStyleDefinition:v7];
   }
 
-  else if (a3 == 3)
+  else if (mode == 3)
   {
 LABEL_6:
     [(UIPanGestureRecognizer *)self->_spheroidPanGesture setEnabled:0];
@@ -608,12 +608,12 @@ LABEL_6:
   if (self->_vista != 2 && ![(NUNIAstronomyRotationModel *)self->_rotationModel isAtHomeCoordinate])
   {
     [(NUNIAstronomyRotationModel *)self->_rotationModel stop];
-    v6 = [(NUNIAstronomyRotationModel *)self->_rotationModel rotatable];
-    [v6 homeCoordinate];
-    [v6 setCenterCoordinate:1 animated:?];
+    rotatable = [(NUNIAstronomyRotationModel *)self->_rotationModel rotatable];
+    [rotatable homeCoordinate];
+    [rotatable setCenterCoordinate:1 animated:?];
   }
 
-  [(NUNIAstronomyVistaView *)self->_vistaView showSupplemental:a3 == 3 animated:1];
+  [(NUNIAstronomyVistaView *)self->_vistaView showSupplemental:mode == 3 animated:1];
 }
 
 - (void)activeMode
@@ -666,17 +666,17 @@ LABEL_6:
   [(NUNIAstronomyVistaController *)self startClockUpdates];
 }
 
-- (void)applyMode:(int64_t)a3
+- (void)applyMode:(int64_t)mode
 {
-  self->_mode = a3;
-  if (a3 > 1)
+  self->_mode = mode;
+  if (mode > 1)
   {
-    if (a3 == 3)
+    if (mode == 3)
     {
       [(NUNIAstronomyVistaController *)self supplementalMode];
     }
 
-    else if (a3 == 2)
+    else if (mode == 2)
     {
       v5[0] = _NUNIAegirStyleInteractiveDefinition;
       v5[1] = unk_25B71AC38;
@@ -685,9 +685,9 @@ LABEL_6:
     }
   }
 
-  else if (a3)
+  else if (mode)
   {
-    if (a3 == 1)
+    if (mode == 1)
     {
       [(NUNIAstronomyVistaController *)self deactiveMode];
     }
@@ -699,13 +699,13 @@ LABEL_6:
   }
 
   [(NUNIAstronomyVistaView *)self->_vistaView applyVista:self->_vista transitionStyle:self->_vistaTransitionStyle];
-  [(NUNIAstronomyVistaView *)self->_vistaView showSupplemental:a3 == 3 animated:0];
+  [(NUNIAstronomyVistaView *)self->_vistaView showSupplemental:mode == 3 animated:0];
 }
 
-- (void)setForceDisableLocationDot:(BOOL)a3
+- (void)setForceDisableLocationDot:(BOOL)dot
 {
-  self->_forceDisableLocationDot = a3;
-  if (a3)
+  self->_forceDisableLocationDot = dot;
+  if (dot)
   {
     [(NUNIAstronomyVistaController *)self hideLocationDotAnimated:0];
   }
@@ -716,12 +716,12 @@ LABEL_6:
   }
 }
 
-- (void)hideLocationDotAnimated:(BOOL)a3
+- (void)hideLocationDotAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(NUNIAstronomyVistaView *)self->_vistaView scene];
-  v10 = v5;
-  if (v3 && (v6 = [(NUNIAstronomyVistaController *)self shouldShowLocationDot], v5 = v10, v6))
+  animatedCopy = animated;
+  scene = [(NUNIAstronomyVistaView *)self->_vistaView scene];
+  v10 = scene;
+  if (animatedCopy && (v6 = [(NUNIAstronomyVistaController *)self shouldShowLocationDot], scene = v10, v6))
   {
     v7 = [[NUNIAnimation alloc] initWithAnimatable:v10 value:8 key:0.0];
     LODWORD(v8) = 1050253722;
@@ -731,7 +731,7 @@ LABEL_6:
 
   else
   {
-    [v5 removeAllAnimationsFor:v5 withKeys:1792];
+    [scene removeAllAnimationsFor:scene withKeys:1792];
     [v10 setLocationDotPulse:0.0];
     LODWORD(v9) = 1.0;
     [v10 setLocationDotPulseOverrideAlpha:v9];
@@ -739,91 +739,91 @@ LABEL_6:
   }
 }
 
-- (void)setLocationDotAlpha:(double)a3
+- (void)setLocationDotAlpha:(double)alpha
 {
-  v7 = [(NUNIAstronomyVistaView *)self->_vistaView scene];
-  v5 = [(NUNIAstronomyVistaController *)self shouldShowLocationDot];
-  *&v6 = a3;
-  if (!v5)
+  scene = [(NUNIAstronomyVistaView *)self->_vistaView scene];
+  shouldShowLocationDot = [(NUNIAstronomyVistaController *)self shouldShowLocationDot];
+  *&v6 = alpha;
+  if (!shouldShowLocationDot)
   {
     *&v6 = 0.0;
   }
 
-  [v7 setLocationDotAlpha:v6];
+  [scene setLocationDotAlpha:v6];
 }
 
-- (void)showLocationDotAnimated:(BOOL)a3
+- (void)showLocationDotAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v16 = [(NUNIAstronomyVistaView *)self->_vistaView scene];
+  animatedCopy = animated;
+  scene = [(NUNIAstronomyVistaView *)self->_vistaView scene];
   if ([(NUNIAstronomyVistaController *)self shouldShowLocationDot])
   {
-    if (v3)
+    if (animatedCopy)
     {
       v5 = [NUNIAnimation alloc];
       __asm { FMOV            V0.4S, #1.0 }
 
-      v11 = [(NUNIAnimation *)v5 initWithAnimatable:v16 value:8 key:*&_Q0];
+      v11 = [(NUNIAnimation *)v5 initWithAnimatable:scene value:8 key:*&_Q0];
       LODWORD(v12) = 1050253722;
       [(NUNIAnimation *)v11 setDuration:v12];
-      [v16 addAnimation:v11];
+      [scene addAnimation:v11];
 
       goto LABEL_7;
     }
 
-    [v16 removeAllAnimationsFor:v16 withKeys:1792];
-    [v16 setLocationDotPulse:0.0];
+    [scene removeAllAnimationsFor:scene withKeys:1792];
+    [scene setLocationDotPulse:0.0];
     LODWORD(v15) = 1.0;
-    [v16 setLocationDotPulseOverrideAlpha:v15];
+    [scene setLocationDotPulseOverrideAlpha:v15];
     LODWORD(v14) = 1.0;
   }
 
   else
   {
-    [v16 removeAllAnimationsFor:v16 withKeys:1792];
-    [v16 setLocationDotPulse:0.0];
+    [scene removeAllAnimationsFor:scene withKeys:1792];
+    [scene setLocationDotPulse:0.0];
     LODWORD(v13) = 1.0;
-    [v16 setLocationDotPulseOverrideAlpha:v13];
+    [scene setLocationDotPulseOverrideAlpha:v13];
     v14 = 0.0;
   }
 
-  [v16 setLocationDotAlpha:v14];
+  [scene setLocationDotAlpha:v14];
 LABEL_7:
 }
 
 - (void)pulseLocationDot
 {
-  v8 = [(NUNIAstronomyVistaView *)self->_vistaView scene];
+  scene = [(NUNIAstronomyVistaView *)self->_vistaView scene];
   if ([(NUNIAstronomyVistaController *)self shouldShowLocationDot])
   {
     v3 = [NUNIAnimation alloc];
     numberOfPulses = self->_numberOfPulses;
     *&numberOfPulses = numberOfPulses;
-    v5 = [(NUNIAnimation *)v3 initWithAnimatable:v8 value:9 key:*vdupq_lane_s32(*&numberOfPulses, 0).i64];
+    v5 = [(NUNIAnimation *)v3 initWithAnimatable:scene value:9 key:*vdupq_lane_s32(*&numberOfPulses, 0).i64];
     pulseAnimationDuration = self->_pulseAnimationDuration;
     *&pulseAnimationDuration = pulseAnimationDuration;
     [(NUNIAnimation *)v5 setDuration:pulseAnimationDuration];
     [(NUNIAnimation *)v5 setObserver:self];
-    [v8 addAnimation:v5];
+    [scene addAnimation:v5];
   }
 
   else
   {
-    [v8 removeAllAnimationsFor:v8 withKeys:1792];
-    [v8 setLocationDotPulse:0.0];
+    [scene removeAllAnimationsFor:scene withKeys:1792];
+    [scene setLocationDotPulse:0.0];
     LODWORD(v7) = 1.0;
-    [v8 setLocationDotPulseOverrideAlpha:v7];
-    [v8 setLocationDotAlpha:0.0];
+    [scene setLocationDotPulseOverrideAlpha:v7];
+    [scene setLocationDotAlpha:0.0];
   }
 }
 
 - (void)stopLocationDotPulse
 {
-  v3 = [(NUNIAstronomyVistaView *)self->_vistaView scene];
-  [v3 removeAllAnimationsFor:v3 withKeys:1536];
-  [v3 setLocationDotPulse:0.0];
+  scene = [(NUNIAstronomyVistaView *)self->_vistaView scene];
+  [scene removeAllAnimationsFor:scene withKeys:1536];
+  [scene setLocationDotPulse:0.0];
   LODWORD(v2) = 1.0;
-  [v3 setLocationDotPulseOverrideAlpha:v2];
+  [scene setLocationDotPulseOverrideAlpha:v2];
 }
 
 - (void)hideLocationDotPulse
@@ -836,18 +836,18 @@ LABEL_7:
 
   else
   {
-    v5 = [(NUNIAstronomyVistaView *)self->_vistaView scene];
-    v3 = [[NUNIAnimation alloc] initWithAnimatable:v5 value:10 key:0.0];
+    scene = [(NUNIAstronomyVistaView *)self->_vistaView scene];
+    v3 = [[NUNIAnimation alloc] initWithAnimatable:scene value:10 key:0.0];
     LODWORD(v4) = 1.0;
     [(NUNIAnimation *)v3 setDuration:v4];
     [(NUNIAnimation *)v3 setObserver:self];
-    [v5 addAnimation:v3];
+    [scene addAnimation:v3];
   }
 }
 
-- (void)astronomyAnimationFinished:(id)a3
+- (void)astronomyAnimationFinished:(id)finished
 {
-  if (([a3 key] - 8) <= 2)
+  if (([finished key] - 8) <= 2)
   {
     WeakRetained = objc_loadWeakRetained(&self->_pulseAnimationDelegate);
     [WeakRetained pulseAnimationDidFinish];
@@ -865,9 +865,9 @@ LABEL_7:
   }
 }
 
-- (void)applyStyle:(unint64_t)a3
+- (void)applyStyle:(unint64_t)style
 {
-  self->_style = a3;
+  self->_style = style;
   v3 = &_NUNIGetAegirStyleDefinition_earthDefinitions;
   vista = self->_vista;
   if (vista == 1)
@@ -880,31 +880,31 @@ LABEL_7:
     v3 = &_NUNIGetAegirStyleDefinition_orreryDefinitions;
   }
 
-  v5 = &v3[32 * a3];
+  v5 = &v3[32 * style];
   v6 = *(v5 + 1);
   v7[0] = *v5;
   v7[1] = v6;
   [(NUNIAstronomyVistaController *)self applyStyleDefinition:v7];
 }
 
-- (void)applyStyleDefinition:(NUNIAegirStyleDefinition)a3
+- (void)applyStyleDefinition:(NUNIAegirStyleDefinition)definition
 {
   v4 = v3;
   v6 = v3[1];
   *&self->_styleDefinition.orbit = *v3;
   *&self[1]._vistaView = v6;
-  v10 = [(NUNIAstronomyVistaView *)self->_vistaView scene];
+  scene = [(NUNIAstronomyVistaView *)self->_vistaView scene];
   v7 = v4[1];
   v11[0] = *v4;
   v11[1] = v7;
-  NUNIAstronomyVistaController_ApplyStyleDefinition(v11, v8, v10);
-  v9 = [(NUNIAstronomyRotationModel *)self->_rotationModel rotatable];
-  [v9 homeCoordinate];
-  [v9 setCenterCoordinate:?];
-  [v10 updateCamera];
+  NUNIAstronomyVistaController_ApplyStyleDefinition(v11, v8, scene);
+  rotatable = [(NUNIAstronomyRotationModel *)self->_rotationModel rotatable];
+  [rotatable homeCoordinate];
+  [rotatable setCenterCoordinate:?];
+  [scene updateCamera];
 }
 
-- (void)_animateToStyle:(unint64_t)a3
+- (void)_animateToStyle:(unint64_t)style
 {
   v3 = &_NUNIGetAegirStyleDefinition_earthDefinitions;
   vista = self->_vista;
@@ -918,14 +918,14 @@ LABEL_7:
     v3 = &_NUNIGetAegirStyleDefinition_orreryDefinitions;
   }
 
-  v5 = &v3[32 * a3];
+  v5 = &v3[32 * style];
   v6 = *(v5 + 1);
   v7[0] = *v5;
   v7[1] = v6;
   [(NUNIAstronomyVistaController *)self _animateToStyleDefinition:v7];
 }
 
-- (void)_animateToStyleDefinition:(NUNIAegirStyleDefinition)a3
+- (void)_animateToStyleDefinition:(NUNIAegirStyleDefinition)definition
 {
   v4 = v3[1];
   v5[0] = *v3;
@@ -933,56 +933,56 @@ LABEL_7:
   [(NUNIAstronomyVistaController *)self animateToStyleDefinition:v5 duration:COERCE_DOUBLE(__PAIR64__(DWORD1(v5[0]), 1.0))];
 }
 
-- (void)animateToStyleDefinition:(NUNIAegirStyleDefinition)a3 duration:(float)a4
+- (void)animateToStyleDefinition:(NUNIAegirStyleDefinition)definition duration:(float)duration
 {
   v6 = v4;
   self->_isAnimatingStyleDefinition = 1;
-  v32 = [(NUNIAstronomyVistaView *)self->_vistaView scene];
+  scene = [(NUNIAstronomyVistaView *)self->_vistaView scene];
   v8 = *(v6 + 16);
   v31 = *(v6 + 8);
-  v9 = [(NUNIAstronomyVistaController *)self vista];
-  v10 = [v32 spheroidOfType:3];
+  vista = [(NUNIAstronomyVistaController *)self vista];
+  v10 = [scene spheroidOfType:3];
   if (v10)
   {
     v11 = [NUNIAnimation alloc];
     v12 = (v6 + 24);
     *&v13 = vld1q_dup_f32(v12).u64[0];
     v14 = [(NUNIAnimation *)v11 initWithAnimatable:v10 value:12 key:v13];
-    LODWORD(v15) = a3;
+    LODWORD(v15) = definition;
     [(NUNIAnimation *)v14 setDuration:v15];
-    [v32 addAnimation:v14];
+    [scene addAnimation:v14];
   }
 
   __asm { FMOV            V1.2S, #-15.0 }
 
-  v30 = COERCE_DOUBLE(vbsl_s8(vceqd_s64(v9, 1), v8, vmul_f32(v8, _D1)));
+  v30 = COERCE_DOUBLE(vbsl_s8(vceqd_s64(vista, 1), v8, vmul_f32(v8, _D1)));
   v21 = [NUNIAnimation alloc];
   *&v22 = vld1q_dup_f32(v6).u64[0];
-  v23 = [(NUNIAnimation *)v21 initWithAnimatable:v32 value:5 key:v22];
-  LODWORD(v24) = a3;
+  v23 = [(NUNIAnimation *)v21 initWithAnimatable:scene value:5 key:v22];
+  LODWORD(v24) = definition;
   [(NUNIAnimation *)v23 setDuration:v24];
-  [v32 addAnimation:v23];
-  v25 = [[NUNIAnimation alloc] initWithAnimatable:v32 value:6 key:v31];
-  LODWORD(v26) = a3;
+  [scene addAnimation:v23];
+  v25 = [[NUNIAnimation alloc] initWithAnimatable:scene value:6 key:v31];
+  LODWORD(v26) = definition;
   [(NUNIAnimation *)v25 setDuration:v26];
-  [v32 addAnimation:v25];
-  v27 = [[NUNIAnimation alloc] initWithAnimatable:v32 value:7 key:v30];
-  LODWORD(v28) = a3;
+  [scene addAnimation:v25];
+  v27 = [[NUNIAnimation alloc] initWithAnimatable:scene value:7 key:v30];
+  LODWORD(v28) = definition;
   [(NUNIAnimation *)v27 setDuration:v28];
-  [v32 addAnimation:v27];
+  [scene addAnimation:v27];
   v29 = *(v6 + 16);
   *&self->_styleDefinition.orbit = *v6;
   *&self[1]._vistaView = v29;
 }
 
-- (void)animateToVista:(unint64_t)a3 styleDefinition:(NUNIAegirStyleDefinition)a4 duration:(float)a5
+- (void)animateToVista:(unint64_t)vista styleDefinition:(NUNIAegirStyleDefinition)definition duration:(float)duration
 {
   v26 = *MEMORY[0x277D85DE8];
   v9 = v5[1];
   v24[0] = *v5;
   v24[1] = v9;
-  v10 = [(NUNIAstronomyVistaController *)self generateAnimationToVista:a3 styleDefinition:v24];
-  v11 = [(NUNIAstronomyVistaView *)self->_vistaView scene];
+  v10 = [(NUNIAstronomyVistaController *)self generateAnimationToVista:vista styleDefinition:v24];
+  scene = [(NUNIAstronomyVistaView *)self->_vistaView scene];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
@@ -1003,9 +1003,9 @@ LABEL_7:
         }
 
         v18 = *(*(&v20 + 1) + 8 * i);
-        LODWORD(v14) = a4;
+        LODWORD(v14) = definition;
         [v18 setDuration:{v14, v20}];
-        [v11 addAnimation:v18];
+        [scene addAnimation:v18];
       }
 
       v15 = [v12 countByEnumeratingWithState:&v20 objects:v25 count:16];
@@ -1014,7 +1014,7 @@ LABEL_7:
     while (v15);
   }
 
-  self->_vista = a3;
+  self->_vista = vista;
   v19 = *MEMORY[0x277D85DE8];
 }
 

@@ -1,8 +1,8 @@
 @interface MTRUnitTestingClusterTestComplexNullableOptionalRequestParams
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3;
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader;
 - (MTRUnitTestingClusterTestComplexNullableOptionalRequestParams)init;
-- (id)_encodeAsDataValue:(id *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_encodeAsDataValue:(id *)value;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -62,50 +62,50 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams);
-  v5 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self nullableInt];
-  [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)v4 setNullableInt:v5];
+  nullableInt = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self nullableInt];
+  [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)v4 setNullableInt:nullableInt];
 
-  v6 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self optionalInt];
-  [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)v4 setOptionalInt:v6];
+  optionalInt = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self optionalInt];
+  [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)v4 setOptionalInt:optionalInt];
 
-  v7 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self nullableOptionalInt];
-  [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)v4 setNullableOptionalInt:v7];
+  nullableOptionalInt = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self nullableOptionalInt];
+  [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)v4 setNullableOptionalInt:nullableOptionalInt];
 
-  v8 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self nullableString];
-  [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)v4 setNullableString:v8];
+  nullableString = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self nullableString];
+  [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)v4 setNullableString:nullableString];
 
-  v9 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self optionalString];
-  [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)v4 setOptionalString:v9];
+  optionalString = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self optionalString];
+  [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)v4 setOptionalString:optionalString];
 
-  v10 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self nullableOptionalString];
-  [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)v4 setNullableOptionalString:v10];
+  nullableOptionalString = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self nullableOptionalString];
+  [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)v4 setNullableOptionalString:nullableOptionalString];
 
-  v11 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self nullableStruct];
-  [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)v4 setNullableStruct:v11];
+  nullableStruct = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self nullableStruct];
+  [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)v4 setNullableStruct:nullableStruct];
 
-  v12 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self optionalStruct];
-  [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)v4 setOptionalStruct:v12];
+  optionalStruct = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self optionalStruct];
+  [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)v4 setOptionalStruct:optionalStruct];
 
-  v13 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self nullableOptionalStruct];
-  [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)v4 setNullableOptionalStruct:v13];
+  nullableOptionalStruct = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self nullableOptionalStruct];
+  [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)v4 setNullableOptionalStruct:nullableOptionalStruct];
 
-  v14 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self nullableList];
-  [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)v4 setNullableList:v14];
+  nullableList = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self nullableList];
+  [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)v4 setNullableList:nullableList];
 
-  v15 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self optionalList];
-  [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)v4 setOptionalList:v15];
+  optionalList = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self optionalList];
+  [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)v4 setOptionalList:optionalList];
 
-  v16 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self nullableOptionalList];
-  [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)v4 setNullableOptionalList:v16];
+  nullableOptionalList = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self nullableOptionalList];
+  [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)v4 setNullableOptionalList:nullableOptionalList];
 
-  v17 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self timedInvokeTimeoutMs];
-  [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)v4 setTimedInvokeTimeoutMs:v17];
+  timedInvokeTimeoutMs = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self timedInvokeTimeoutMs];
+  [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
-  v18 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self serverSideProcessingTimeout];
-  [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)v4 setServerSideProcessingTimeout:v18];
+  serverSideProcessingTimeout = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self serverSideProcessingTimeout];
+  [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)v4 setServerSideProcessingTimeout:serverSideProcessingTimeout];
 
   return v4;
 }
@@ -120,10 +120,10 @@
   return v6;
 }
 
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader
 {
   v174 = *MEMORY[0x277D85DE8];
-  LOBYTE(v136) = 0;
+  LOBYTE(unsignedShortValue) = 0;
   v137 = 0;
   v138 = 0;
   v140 = 0;
@@ -142,8 +142,8 @@
   v135[0] = 0;
   v135[1] = 0;
   v134 = v135;
-  v5 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self nullableInt];
-  v6 = v5 == 0;
+  nullableInt = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self nullableInt];
+  v6 = nullableInt == 0;
 
   if (v6)
   {
@@ -155,32 +155,32 @@
 
   else
   {
-    v136 = 0;
+    unsignedShortValue = 0;
     v137 = 1;
-    v7 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self nullableInt];
-    v136 = [v7 unsignedShortValue];
+    nullableInt2 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self nullableInt];
+    unsignedShortValue = [nullableInt2 unsignedShortValue];
   }
 
-  v8 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self optionalInt];
-  v9 = v8 == 0;
+  optionalInt = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self optionalInt];
+  v9 = optionalInt == 0;
 
   if (!v9)
   {
     v138 = 1;
-    v139 = 0;
-    v10 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self optionalInt];
-    v139 = [v10 unsignedShortValue];
+    unsignedShortValue2 = 0;
+    optionalInt2 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self optionalInt];
+    unsignedShortValue2 = [optionalInt2 unsignedShortValue];
   }
 
-  v11 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self nullableOptionalInt];
-  v12 = v11 == 0;
+  nullableOptionalInt = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self nullableOptionalInt];
+  v12 = nullableOptionalInt == 0;
 
   if (!v12)
   {
     v140 = 1;
     v141 = 0;
-    v13 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self nullableOptionalInt];
-    v14 = v13 == 0;
+    nullableOptionalInt2 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self nullableOptionalInt];
+    v14 = nullableOptionalInt2 == 0;
 
     if (v14)
     {
@@ -194,13 +194,13 @@
     {
       LOWORD(v141) = 0;
       BYTE2(v141) = 1;
-      v15 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self nullableOptionalInt];
-      LOWORD(v141) = [v15 unsignedShortValue];
+      nullableOptionalInt3 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self nullableOptionalInt];
+      LOWORD(v141) = [nullableOptionalInt3 unsignedShortValue];
     }
   }
 
-  v16 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self nullableString];
-  v17 = v16 == 0;
+  nullableString = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self nullableString];
+  v17 = nullableString == 0;
 
   if (v17)
   {
@@ -214,37 +214,37 @@
   {
     v142 = 0uLL;
     v143 = 1;
-    v18 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self nullableString];
-    v19 = v18;
-    sub_238DB9BD8(buf, [v18 UTF8String], objc_msgSend(v18, "lengthOfBytesUsingEncoding:", 4));
+    nullableString2 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self nullableString];
+    v19 = nullableString2;
+    sub_238DB9BD8(buf, [nullableString2 UTF8String], objc_msgSend(nullableString2, "lengthOfBytesUsingEncoding:", 4));
 
     v142 = *buf;
   }
 
-  v20 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self optionalString];
-  v21 = v20 == 0;
+  optionalString = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self optionalString];
+  v21 = optionalString == 0;
 
   if (!v21)
   {
     v144 = 1;
     v145 = 0uLL;
-    v22 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self optionalString];
-    v23 = v22;
-    sub_238DB9BD8(buf, [v22 UTF8String], objc_msgSend(v22, "lengthOfBytesUsingEncoding:", 4));
+    optionalString2 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self optionalString];
+    v23 = optionalString2;
+    sub_238DB9BD8(buf, [optionalString2 UTF8String], objc_msgSend(optionalString2, "lengthOfBytesUsingEncoding:", 4));
 
     v145 = *buf;
   }
 
-  v24 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self nullableOptionalString];
-  v25 = v24 == 0;
+  nullableOptionalString = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self nullableOptionalString];
+  v25 = nullableOptionalString == 0;
 
   if (!v25)
   {
     v146 = 1;
     v148 = 0;
     v147 = 0uLL;
-    v26 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self nullableOptionalString];
-    v27 = v26 == 0;
+    nullableOptionalString2 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self nullableOptionalString];
+    v27 = nullableOptionalString2 == 0;
 
     if (v27)
     {
@@ -258,16 +258,16 @@
     {
       v147 = 0uLL;
       LOBYTE(v148) = 1;
-      v28 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self nullableOptionalString];
-      v29 = v28;
-      sub_238DB9BD8(buf, [v28 UTF8String], objc_msgSend(v28, "lengthOfBytesUsingEncoding:", 4));
+      nullableOptionalString3 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self nullableOptionalString];
+      v29 = nullableOptionalString3;
+      sub_238DB9BD8(buf, [nullableOptionalString3 UTF8String], objc_msgSend(nullableOptionalString3, "lengthOfBytesUsingEncoding:", 4));
 
       v147 = *buf;
     }
   }
 
-  v30 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self nullableStruct];
-  v31 = v30 == 0;
+  nullableStruct = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self nullableStruct];
+  v31 = nullableStruct == 0;
 
   if (v31)
   {
@@ -282,118 +282,118 @@
     v150 = 0u;
     memset(v149, 0, sizeof(v149));
     v151 = 1;
-    v32 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self nullableStruct];
-    v33 = [v32 a];
+    nullableStruct2 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self nullableStruct];
+    v33 = [nullableStruct2 a];
     LOBYTE(v149[0]) = [v33 unsignedCharValue];
 
-    v34 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self nullableStruct];
-    v35 = [v34 b];
+    nullableStruct3 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self nullableStruct];
+    v35 = [nullableStruct3 b];
     BYTE1(v149[0]) = [v35 BOOLValue];
 
-    v36 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self nullableStruct];
-    v37 = [v36 c];
+    nullableStruct4 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self nullableStruct];
+    v37 = [nullableStruct4 c];
     BYTE2(v149[0]) = [v37 unsignedCharValue];
 
-    v38 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self nullableStruct];
-    v39 = [v38 d];
+    nullableStruct5 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self nullableStruct];
+    v39 = [nullableStruct5 d];
     v40 = v39;
     sub_238DB6950(buf, [v39 bytes], objc_msgSend(v39, "length"));
 
     *&v149[1] = *buf;
-    v41 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self nullableStruct];
-    v42 = [v41 e];
+    nullableStruct6 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self nullableStruct];
+    v42 = [nullableStruct6 e];
     v43 = v42;
     sub_238DB9BD8(buf, [v42 UTF8String], objc_msgSend(v42, "lengthOfBytesUsingEncoding:", 4));
 
     *&v149[3] = *buf;
-    v44 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self nullableStruct];
-    v45 = [v44 f];
+    nullableStruct7 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self nullableStruct];
+    v45 = [nullableStruct7 f];
     LOBYTE(v149[5]) = [v45 unsignedCharValue];
 
-    v46 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self nullableStruct];
-    v47 = [v46 g];
+    nullableStruct8 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self nullableStruct];
+    v47 = [nullableStruct8 g];
     [v47 floatValue];
     HIDWORD(v149[5]) = v48;
 
-    v49 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self nullableStruct];
-    v50 = [v49 h];
+    nullableStruct9 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self nullableStruct];
+    v50 = [nullableStruct9 h];
     [v50 doubleValue];
     *&v150 = v51;
 
-    v52 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self nullableStruct];
-    v53 = [v52 i];
+    nullableStruct10 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self nullableStruct];
+    v53 = [nullableStruct10 i];
     LOBYTE(v50) = v53 == 0;
 
     if ((v50 & 1) == 0)
     {
       WORD4(v150) = 1;
-      v54 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self nullableStruct];
-      v55 = [v54 i];
+      nullableStruct11 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self nullableStruct];
+      v55 = [nullableStruct11 i];
       BYTE9(v150) = [v55 unsignedCharValue];
     }
   }
 
-  v56 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self optionalStruct];
-  v57 = v56 == 0;
+  optionalStruct = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self optionalStruct];
+  v57 = optionalStruct == 0;
 
   if (!v57)
   {
     v152 = 1;
     memset(v153, 0, sizeof(v153));
     v154 = 0u;
-    v58 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self optionalStruct];
-    v59 = [v58 a];
+    optionalStruct2 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self optionalStruct];
+    v59 = [optionalStruct2 a];
     LOBYTE(v153[0]) = [v59 unsignedCharValue];
 
-    v60 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self optionalStruct];
-    v61 = [v60 b];
+    optionalStruct3 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self optionalStruct];
+    v61 = [optionalStruct3 b];
     BYTE1(v153[0]) = [v61 BOOLValue];
 
-    v62 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self optionalStruct];
-    v63 = [v62 c];
+    optionalStruct4 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self optionalStruct];
+    v63 = [optionalStruct4 c];
     BYTE2(v153[0]) = [v63 unsignedCharValue];
 
-    v64 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self optionalStruct];
-    v65 = [v64 d];
+    optionalStruct5 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self optionalStruct];
+    v65 = [optionalStruct5 d];
     v66 = v65;
     sub_238DB6950(buf, [v65 bytes], objc_msgSend(v65, "length"));
 
     *(v153 + 8) = *buf;
-    v67 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self optionalStruct];
-    v68 = [v67 e];
+    optionalStruct6 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self optionalStruct];
+    v68 = [optionalStruct6 e];
     v69 = v68;
     sub_238DB9BD8(buf, [v68 UTF8String], objc_msgSend(v68, "lengthOfBytesUsingEncoding:", 4));
 
     *(&v153[1] + 8) = *buf;
-    v70 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self optionalStruct];
-    v71 = [v70 f];
+    optionalStruct7 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self optionalStruct];
+    v71 = [optionalStruct7 f];
     BYTE8(v153[2]) = [v71 unsignedCharValue];
 
-    v72 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self optionalStruct];
-    v73 = [v72 g];
+    optionalStruct8 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self optionalStruct];
+    v73 = [optionalStruct8 g];
     [v73 floatValue];
     HIDWORD(v153[2]) = v74;
 
-    v75 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self optionalStruct];
-    v76 = [v75 h];
+    optionalStruct9 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self optionalStruct];
+    v76 = [optionalStruct9 h];
     [v76 doubleValue];
     *&v154 = v77;
 
-    v78 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self optionalStruct];
-    v79 = [v78 i];
+    optionalStruct10 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self optionalStruct];
+    v79 = [optionalStruct10 i];
     LOBYTE(v76) = v79 == 0;
 
     if ((v76 & 1) == 0)
     {
       WORD4(v154) = 1;
-      v80 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self optionalStruct];
-      v81 = [v80 i];
+      optionalStruct11 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self optionalStruct];
+      v81 = [optionalStruct11 i];
       BYTE9(v154) = [v81 unsignedCharValue];
     }
   }
 
-  v82 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self nullableOptionalStruct];
-  v83 = v82 == 0;
+  nullableOptionalStruct = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self nullableOptionalStruct];
+  v83 = nullableOptionalStruct == 0;
 
   if (!v83)
   {
@@ -401,8 +401,8 @@
     v157 = 0u;
     memset(v156, 0, sizeof(v156));
     v158 = 0;
-    v84 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self nullableOptionalStruct];
-    v85 = v84 == 0;
+    nullableOptionalStruct2 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self nullableOptionalStruct];
+    v85 = nullableOptionalStruct2 == 0;
 
     if (v85)
     {
@@ -417,60 +417,60 @@
       v157 = 0u;
       memset(v156, 0, sizeof(v156));
       LOBYTE(v158) = 1;
-      v86 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self nullableOptionalStruct];
-      v87 = [v86 a];
+      nullableOptionalStruct3 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self nullableOptionalStruct];
+      v87 = [nullableOptionalStruct3 a];
       LOBYTE(v156[0]) = [v87 unsignedCharValue];
 
-      v88 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self nullableOptionalStruct];
-      v89 = [v88 b];
+      nullableOptionalStruct4 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self nullableOptionalStruct];
+      v89 = [nullableOptionalStruct4 b];
       BYTE1(v156[0]) = [v89 BOOLValue];
 
-      v90 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self nullableOptionalStruct];
-      v91 = [v90 c];
+      nullableOptionalStruct5 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self nullableOptionalStruct];
+      v91 = [nullableOptionalStruct5 c];
       BYTE2(v156[0]) = [v91 unsignedCharValue];
 
-      v92 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self nullableOptionalStruct];
-      v93 = [v92 d];
+      nullableOptionalStruct6 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self nullableOptionalStruct];
+      v93 = [nullableOptionalStruct6 d];
       v94 = v93;
       sub_238DB6950(buf, [v93 bytes], objc_msgSend(v93, "length"));
 
       *&v156[1] = *buf;
-      v95 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self nullableOptionalStruct];
-      v96 = [v95 e];
+      nullableOptionalStruct7 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self nullableOptionalStruct];
+      v96 = [nullableOptionalStruct7 e];
       v97 = v96;
       sub_238DB9BD8(buf, [v96 UTF8String], objc_msgSend(v96, "lengthOfBytesUsingEncoding:", 4));
 
       *&v156[3] = *buf;
-      v98 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self nullableOptionalStruct];
-      v99 = [v98 f];
+      nullableOptionalStruct8 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self nullableOptionalStruct];
+      v99 = [nullableOptionalStruct8 f];
       LOBYTE(v156[5]) = [v99 unsignedCharValue];
 
-      v100 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self nullableOptionalStruct];
-      v101 = [v100 g];
+      nullableOptionalStruct9 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self nullableOptionalStruct];
+      v101 = [nullableOptionalStruct9 g];
       [v101 floatValue];
       HIDWORD(v156[5]) = v102;
 
-      v103 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self nullableOptionalStruct];
-      v104 = [v103 h];
+      nullableOptionalStruct10 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self nullableOptionalStruct];
+      v104 = [nullableOptionalStruct10 h];
       [v104 doubleValue];
       *&v157 = v105;
 
-      v106 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self nullableOptionalStruct];
-      v107 = [v106 i];
+      nullableOptionalStruct11 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self nullableOptionalStruct];
+      v107 = [nullableOptionalStruct11 i];
       LOBYTE(v104) = v107 == 0;
 
       if ((v104 & 1) == 0)
       {
         WORD4(v157) = 1;
-        v108 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self nullableOptionalStruct];
-        v109 = [v108 i];
+        nullableOptionalStruct12 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self nullableOptionalStruct];
+        v109 = [nullableOptionalStruct12 i];
         BYTE9(v157) = [v109 unsignedCharValue];
       }
     }
   }
 
-  v110 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self nullableList];
-  v111 = v110 == 0;
+  nullableList = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self nullableList];
+  v111 = nullableList == 0;
 
   if (v111)
   {
@@ -485,8 +485,8 @@
     v159 = 0;
     v160 = 0;
     v161 = 1;
-    v112 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self nullableList];
-    v113 = [v112 count] == 0;
+    nullableList2 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self nullableList];
+    v113 = [nullableList2 count] == 0;
 
     if (!v113)
     {
@@ -497,16 +497,16 @@
     v160 = 0;
   }
 
-  v114 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self optionalList];
-  v115 = v114 == 0;
+  optionalList = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self optionalList];
+  v115 = optionalList == 0;
 
   if (!v115)
   {
     v162 = 1;
     v163 = 0;
     v164 = 0;
-    v116 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self optionalList];
-    v117 = [v116 count] == 0;
+    optionalList2 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self optionalList];
+    v117 = [optionalList2 count] == 0;
 
     if (!v117)
     {
@@ -517,8 +517,8 @@
     v164 = 0;
   }
 
-  v118 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self nullableOptionalList];
-  v119 = v118 == 0;
+  nullableOptionalList = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self nullableOptionalList];
+  v119 = nullableOptionalList == 0;
 
   if (!v119)
   {
@@ -526,8 +526,8 @@
     v167 = 0;
     v168 = 0;
     v166 = 0;
-    v120 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self nullableOptionalList];
-    v121 = v120 == 0;
+    nullableOptionalList2 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self nullableOptionalList];
+    v121 = nullableOptionalList2 == 0;
 
     if (v121)
     {
@@ -542,8 +542,8 @@
       v166 = 0;
       v167 = 0;
       LOBYTE(v168) = 1;
-      v122 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self nullableOptionalList];
-      v123 = [v122 count] == 0;
+      nullableOptionalList3 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self nullableOptionalList];
+      v123 = [nullableOptionalList3 count] == 0;
 
       if (!v123)
       {
@@ -565,7 +565,7 @@
     v173 = 0;
     sub_238EA16C4(&v170, &v133, 0);
     sub_2393C7BF0(buf, &v170, 0xFFFFFFFF);
-    v124 = sub_238F30FA8(&v136, buf, 0x100uLL);
+    v124 = sub_238F30FA8(&unsignedShortValue, buf, 0x100uLL);
     v126 = v124;
     if (v124 || (v124 = sub_238DD2EFC(buf, &v133), v126 = v124, v124))
     {
@@ -574,8 +574,8 @@
 
     else
     {
-      sub_238DD2F90(a3, &v133);
-      v124 = sub_2393C7114(a3, 21, 256);
+      sub_238DD2F90(reader, &v133);
+      v124 = sub_2393C7114(reader, 21, 256);
       v127 = v129;
       v126 = v124;
     }
@@ -604,19 +604,19 @@
   return result;
 }
 
-- (id)_encodeAsDataValue:(id *)a3
+- (id)_encodeAsDataValue:(id *)value
 {
   v5 = sub_2393C5AAC(v12);
   v13 = 0;
   v7 = [(MTRUnitTestingClusterTestComplexNullableOptionalRequestParams *)self _encodeToTLVReader:v12, v5];
   if (v7)
   {
-    if (a3)
+    if (value)
     {
       v8 = sub_23921C1E4(MTRError, v7, v6);
       v9 = 0;
 LABEL_7:
-      *a3 = v8;
+      *value = v8;
       goto LABEL_9;
     }
 
@@ -627,7 +627,7 @@ LABEL_7:
   {
     v10 = sub_238EE60DC(v12, 0);
     v9 = v10;
-    if (a3 && !v10)
+    if (value && !v10)
     {
       v8 = sub_23921C1E4(MTRError, 0xBC7700000003, "/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/zap-generated/MTRCommandPayloadsObjc.mm");
       goto LABEL_7;

@@ -1,30 +1,30 @@
 @interface TSCH3DChartMeshResource
-+ (id)resourceWithSharedResource:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)resourceWithSharedResource:(id)resource;
+- (BOOL)isEqual:(id)equal;
 - (DataBufferInfo)bufferInfo;
-- (TSCH3DChartMeshResource)initWithSharedResource:(id)a3;
+- (TSCH3DChartMeshResource)initWithSharedResource:(id)resource;
 @end
 
 @implementation TSCH3DChartMeshResource
 
-+ (id)resourceWithSharedResource:(id)a3
++ (id)resourceWithSharedResource:(id)resource
 {
-  v4 = a3;
-  v5 = [a1 alloc];
-  v10 = objc_msgSend_initWithSharedResource_(v5, v6, v7, v8, v9, v4);
+  resourceCopy = resource;
+  v5 = [self alloc];
+  v10 = objc_msgSend_initWithSharedResource_(v5, v6, v7, v8, v9, resourceCopy);
 
   return v10;
 }
 
-- (TSCH3DChartMeshResource)initWithSharedResource:(id)a3
+- (TSCH3DChartMeshResource)initWithSharedResource:(id)resource
 {
-  v5 = a3;
+  resourceCopy = resource;
   v27.receiver = self;
   v27.super_class = TSCH3DChartMeshResource;
   v7 = [(TSCH3DResource *)&v27 init];
   if (v7)
   {
-    if (!v5)
+    if (!resourceCopy)
     {
       v11 = MEMORY[0x277D81150];
       v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, v8, v9, v10, "[TSCH3DChartMeshResource initWithSharedResource:]");
@@ -34,15 +34,15 @@
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v22, v23, v24, v25);
     }
 
-    objc_storeStrong(&v7->_shared, a3);
+    objc_storeStrong(&v7->_shared, resource);
   }
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   v5 = TSUDynamicCast();
   if (v5)

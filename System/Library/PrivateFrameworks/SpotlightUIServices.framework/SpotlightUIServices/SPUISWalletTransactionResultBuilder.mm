@@ -1,7 +1,7 @@
 @interface SPUISWalletTransactionResultBuilder
-+ (BOOL)supportsResult:(id)a3;
++ (BOOL)supportsResult:(id)result;
 - (BOOL)buildSecondaryTitleIsDetached;
-- (SPUISWalletTransactionResultBuilder)initWithResult:(id)a3;
+- (SPUISWalletTransactionResultBuilder)initWithResult:(id)result;
 - (id)buildDescriptions;
 - (id)buildSecondaryTitle;
 - (id)buildTitle;
@@ -10,19 +10,19 @@
 
 @implementation SPUISWalletTransactionResultBuilder
 
-+ (BOOL)supportsResult:(id)a3
++ (BOOL)supportsResult:(id)result
 {
   v11[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v10.receiver = a1;
+  resultCopy = result;
+  v10.receiver = self;
   v10.super_class = &OBJC_METACLASS___SPUISWalletTransactionResultBuilder;
-  if (objc_msgSendSuper2(&v10, sel_supportsResult_, v4))
+  if (objc_msgSendSuper2(&v10, sel_supportsResult_, resultCopy))
   {
     v11[0] = @"com.apple.finance.transaction";
     v11[1] = @"com.apple.pktransaction";
     v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:2];
-    v6 = [v4 contentType];
-    v7 = [v5 containsObject:v6];
+    contentType = [resultCopy contentType];
+    v7 = [v5 containsObject:contentType];
   }
 
   else
@@ -34,32 +34,32 @@
   return v7;
 }
 
-- (SPUISWalletTransactionResultBuilder)initWithResult:(id)a3
+- (SPUISWalletTransactionResultBuilder)initWithResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v15.receiver = self;
   v15.super_class = SPUISWalletTransactionResultBuilder;
-  v5 = [(SPUISResultBuilder *)&v15 initWithResult:v4];
+  v5 = [(SPUISResultBuilder *)&v15 initWithResult:resultCopy];
   if (v5)
   {
-    v6 = [v4 valueForAttribute:*MEMORY[0x277CC2760] withType:objc_opt_class()];
+    v6 = [resultCopy valueForAttribute:*MEMORY[0x277CC2760] withType:objc_opt_class()];
     [(SPUISWalletTransactionResultBuilder *)v5 setBusinessName:v6];
 
-    v7 = [v4 valueForAttribute:*MEMORY[0x277CC2E70] withType:objc_opt_class()];
+    v7 = [resultCopy valueForAttribute:*MEMORY[0x277CC2E70] withType:objc_opt_class()];
     [(SPUISWalletTransactionResultBuilder *)v5 setTransactionAmount:v7];
 
-    v8 = [v4 valueForAttribute:*MEMORY[0x277CC2E78] withType:objc_opt_class()];
+    v8 = [resultCopy valueForAttribute:*MEMORY[0x277CC2E78] withType:objc_opt_class()];
     [(SPUISWalletTransactionResultBuilder *)v5 setCurrencyCode:v8];
 
-    v9 = [v4 valueForAttribute:*MEMORY[0x277CC2C58] withType:objc_opt_class()];
+    v9 = [resultCopy valueForAttribute:*MEMORY[0x277CC2C58] withType:objc_opt_class()];
     [(SPUISWalletTransactionResultBuilder *)v5 setDate:v9];
 
-    v10 = [v4 valueForAttribute:*MEMORY[0x277CC25D8] withType:objc_opt_class()];
+    v10 = [resultCopy valueForAttribute:*MEMORY[0x277CC25D8] withType:objc_opt_class()];
     [(SPUISWalletTransactionResultBuilder *)v5 setCashBackPercentage:v10];
 
-    v11 = [v4 valueForAttribute:*MEMORY[0x277CC2750] withType:objc_opt_class()];
-    v12 = [MEMORY[0x277CCA900] newlineCharacterSet];
-    v13 = [v11 componentsSeparatedByCharactersInSet:v12];
+    v11 = [resultCopy valueForAttribute:*MEMORY[0x277CC2750] withType:objc_opt_class()];
+    newlineCharacterSet = [MEMORY[0x277CCA900] newlineCharacterSet];
+    v13 = [v11 componentsSeparatedByCharactersInSet:newlineCharacterSet];
     [(SPUISWalletTransactionResultBuilder *)v5 setDescriptions:v13];
   }
 
@@ -68,59 +68,59 @@
 
 - (id)buildTitle
 {
-  v3 = [(SPUISWalletTransactionResultBuilder *)self businessName];
-  if ([v3 length])
+  businessName = [(SPUISWalletTransactionResultBuilder *)self businessName];
+  if ([businessName length])
   {
     v4 = MEMORY[0x277D4C598];
-    v5 = [(SPUISWalletTransactionResultBuilder *)self businessName];
-    v6 = [v4 textWithString:v5];
+    businessName2 = [(SPUISWalletTransactionResultBuilder *)self businessName];
+    buildTitle = [v4 textWithString:businessName2];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = SPUISWalletTransactionResultBuilder;
-    v6 = [(SPUISResultBuilder *)&v8 buildTitle];
+    buildTitle = [(SPUISResultBuilder *)&v8 buildTitle];
   }
 
-  return v6;
+  return buildTitle;
 }
 
 - (id)buildDescriptions
 {
-  v3 = [(SPUISWalletTransactionResultBuilder *)self descriptions];
-  if ([v3 count] > 1)
+  descriptions = [(SPUISWalletTransactionResultBuilder *)self descriptions];
+  if ([descriptions count] > 1)
   {
     v5 = objc_opt_class();
-    v6 = [(SPUISWalletTransactionResultBuilder *)self descriptions];
-    v4 = [v5 richTextsFromStrings:v6];
+    descriptions2 = [(SPUISWalletTransactionResultBuilder *)self descriptions];
+    buildDescriptions = [v5 richTextsFromStrings:descriptions2];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = SPUISWalletTransactionResultBuilder;
-    v4 = [(SPUISResultBuilder *)&v8 buildDescriptions];
+    buildDescriptions = [(SPUISResultBuilder *)&v8 buildDescriptions];
   }
 
-  return v4;
+  return buildDescriptions;
 }
 
 - (id)buildSecondaryTitle
 {
-  v3 = [(SPUISWalletTransactionResultBuilder *)self descriptions];
-  if ([v3 count] <= 2 && (-[SPUISWalletTransactionResultBuilder transactionAmount](self, "transactionAmount"), (v4 = objc_claimAutoreleasedReturnValue()) != 0))
+  descriptions = [(SPUISWalletTransactionResultBuilder *)self descriptions];
+  if ([descriptions count] <= 2 && (-[SPUISWalletTransactionResultBuilder transactionAmount](self, "transactionAmount"), (v4 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v5 = v4;
-    v6 = [(SPUISWalletTransactionResultBuilder *)self currencyCode];
+    currencyCode = [(SPUISWalletTransactionResultBuilder *)self currencyCode];
 
-    if (v6)
+    if (currencyCode)
     {
       v7 = MEMORY[0x277D4C3A0];
-      v8 = [(SPUISWalletTransactionResultBuilder *)self transactionAmount];
-      v9 = [(SPUISWalletTransactionResultBuilder *)self currencyCode];
-      v10 = [SPUISNumberFormatManager currencyStringWithAmount:v8 currencyCode:v9];
-      v11 = [v7 textWithString:v10];
+      transactionAmount = [(SPUISWalletTransactionResultBuilder *)self transactionAmount];
+      currencyCode2 = [(SPUISWalletTransactionResultBuilder *)self currencyCode];
+      v10 = [SPUISNumberFormatManager currencyStringWithAmount:transactionAmount currencyCode:currencyCode2];
+      buildSecondaryTitle = [v7 textWithString:v10];
 
       goto LABEL_7;
     }
@@ -132,41 +132,41 @@
 
   v13.receiver = self;
   v13.super_class = SPUISWalletTransactionResultBuilder;
-  v11 = [(SPUISResultBuilder *)&v13 buildSecondaryTitle];
+  buildSecondaryTitle = [(SPUISResultBuilder *)&v13 buildSecondaryTitle];
 LABEL_7:
 
-  return v11;
+  return buildSecondaryTitle;
 }
 
 - (BOOL)buildSecondaryTitleIsDetached
 {
-  v2 = [(SPUISWalletTransactionResultBuilder *)self buildSecondaryTitle];
-  v3 = [v2 text];
-  v4 = [v3 length] != 0;
+  buildSecondaryTitle = [(SPUISWalletTransactionResultBuilder *)self buildSecondaryTitle];
+  text = [buildSecondaryTitle text];
+  v4 = [text length] != 0;
 
   return v4;
 }
 
 - (id)buildTrailingTopText
 {
-  v3 = [(SPUISWalletTransactionResultBuilder *)self cashBackPercentage];
-  if (v3)
+  cashBackPercentage = [(SPUISWalletTransactionResultBuilder *)self cashBackPercentage];
+  if (cashBackPercentage)
   {
     v4 = MEMORY[0x277D4C3A0];
-    v5 = [(SPUISWalletTransactionResultBuilder *)self cashBackPercentage];
-    v6 = [v4 textWithString:v5];
+    cashBackPercentage2 = [(SPUISWalletTransactionResultBuilder *)self cashBackPercentage];
+    buildTrailingTopText = [v4 textWithString:cashBackPercentage2];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = SPUISWalletTransactionResultBuilder;
-    v6 = [(SPUISResultBuilder *)&v8 buildTrailingTopText];
+    buildTrailingTopText = [(SPUISResultBuilder *)&v8 buildTrailingTopText];
   }
 
-  [v6 setEncapsulationStyle:2];
+  [buildTrailingTopText setEncapsulationStyle:2];
 
-  return v6;
+  return buildTrailingTopText;
 }
 
 @end

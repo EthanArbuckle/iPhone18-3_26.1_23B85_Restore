@@ -1,15 +1,15 @@
 @interface EDRichLinkPersistence
 + (id)messagesRichLinksTableSchema;
 + (id)richLinksTableSchema;
-+ (id)tablesAndForeignKeysToResolve:(id *)a3 associationsToResolve:(id *)a4;
-- (EDRichLinkPersistence)initWithDatabase:(id)a3;
-- (id)_hashForRichLinkData:(id)a3;
-- (id)datasForPersistentIDs:(id)a3 basePath:(id)a4;
-- (id)richLinkDataForPersistentID:(id)a3 basePath:(id)a4;
-- (id)richLinkPersistentIDsForGlobalMessageID:(int64_t)a3;
-- (id)richLinkURLsForMessageIDs:(id)a3;
-- (id)saveRichLinkData:(id)a3 globalMessageID:(int64_t)a4 basePath:(id)a5;
-- (void)cleanUpLegacyRichLinkFilesAtBasePath:(id)a3;
++ (id)tablesAndForeignKeysToResolve:(id *)resolve associationsToResolve:(id *)toResolve;
+- (EDRichLinkPersistence)initWithDatabase:(id)database;
+- (id)_hashForRichLinkData:(id)data;
+- (id)datasForPersistentIDs:(id)ds basePath:(id)path;
+- (id)richLinkDataForPersistentID:(id)d basePath:(id)path;
+- (id)richLinkPersistentIDsForGlobalMessageID:(int64_t)d;
+- (id)richLinkURLsForMessageIDs:(id)ds;
+- (id)saveRichLinkData:(id)data globalMessageID:(int64_t)d basePath:(id)path;
+- (void)cleanUpLegacyRichLinkFilesAtBasePath:(id)path;
 @end
 
 @implementation EDRichLinkPersistence
@@ -21,10 +21,10 @@ void ___ef_log_EDRichLinkPersistence_block_invoke()
   _ef_log_EDRichLinkPersistence_log = v0;
 }
 
-+ (id)tablesAndForeignKeysToResolve:(id *)a3 associationsToResolve:(id *)a4
++ (id)tablesAndForeignKeysToResolve:(id *)resolve associationsToResolve:(id *)toResolve
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v5 = [EDRichLinkPersistence richLinksTableSchema:a3];
+  v5 = [EDRichLinkPersistence richLinksTableSchema:resolve];
   v6 = +[EDRichLinkPersistence messagesRichLinksTableSchema];
   v7 = [v6 columnForName:@"rich_link"];
   [v7 setAsForeignKeyForTable:v5 onDelete:2 onUpdate:0];
@@ -33,7 +33,7 @@ void ___ef_log_EDRichLinkPersistence_block_invoke()
   v9 = [v6 columnForName:@"global_message_id"];
   v10 = [(EDPersistenceForeignKeyPlaceholder *)v8 initWithColumn:v9 tableName:@"message_global_data" onDelete:2 onUpdate:0];
   v15[0] = v10;
-  *a3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
+  *resolve = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
 
   v14[0] = v5;
   v14[1] = v6;
@@ -85,27 +85,27 @@ void ___ef_log_EDRichLinkPersistence_block_invoke()
   return v7;
 }
 
-- (EDRichLinkPersistence)initWithDatabase:(id)a3
+- (EDRichLinkPersistence)initWithDatabase:(id)database
 {
-  v5 = a3;
+  databaseCopy = database;
   v10.receiver = self;
   v10.super_class = EDRichLinkPersistence;
   v6 = [(EDRichLinkPersistence *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_database, a3);
-    v8 = [MEMORY[0x1E699AE20] mailDataDirectory];
-    [(EDRichLinkPersistence *)v7 cleanUpLegacyRichLinkFilesAtBasePath:v8];
+    objc_storeStrong(&v6->_database, database);
+    mailDataDirectory = [MEMORY[0x1E699AE20] mailDataDirectory];
+    [(EDRichLinkPersistence *)v7 cleanUpLegacyRichLinkFilesAtBasePath:mailDataDirectory];
   }
 
   return v7;
 }
 
-- (id)saveRichLinkData:(id)a3 globalMessageID:(int64_t)a4 basePath:(id)a5
+- (id)saveRichLinkData:(id)data globalMessageID:(int64_t)d basePath:(id)path
 {
-  v8 = a3;
-  v9 = a5;
+  dataCopy = data;
+  pathCopy = path;
   v28 = 0;
   v29 = &v28;
   v30 = 0x3032000000;
@@ -131,14 +131,14 @@ void ___ef_log_EDRichLinkPersistence_block_invoke()
   v11 = v10;
   _Block_object_dispose(&v35, 8);
   v12 = objc_alloc_init(v10);
-  v13 = [v8 title];
-  [v12 setTitle:v13];
+  title = [dataCopy title];
+  [v12 setTitle:title];
 
-  v14 = [v8 url];
+  v14 = [dataCopy url];
   [v12 setOriginalURL:v14];
 
-  v15 = [v12 dataRepresentation];
-  v16 = [(EDRichLinkPersistence *)self _hashForRichLinkData:v15];
+  dataRepresentation = [v12 dataRepresentation];
+  v16 = [(EDRichLinkPersistence *)self _hashForRichLinkData:dataRepresentation];
   database = self->_database;
   v18 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDRichLinkPersistence saveRichLinkData:globalMessageID:basePath:]"];
   v23[0] = MEMORY[0x1E69E9820];
@@ -147,10 +147,10 @@ void ___ef_log_EDRichLinkPersistence_block_invoke()
   v23[3] = &unk_1E8256738;
   v19 = v16;
   v24 = v19;
-  v20 = v8;
+  v20 = dataCopy;
   v25 = v20;
   v26 = &v28;
-  v27 = a4;
+  dCopy = d;
   [(EDPersistenceDatabase *)database __performWriteWithCaller:v18 usingBlock:v23];
 
   v21 = v29[5];
@@ -289,9 +289,9 @@ void __67__EDRichLinkPersistence_saveRichLinkData_globalMessageID_basePath___blo
   *(*(*(a1 + 40) + 8) + 24) = 1;
 }
 
-- (id)richLinkDataForPersistentID:(id)a3 basePath:(id)a4
+- (id)richLinkDataForPersistentID:(id)d basePath:(id)path
 {
-  v5 = a3;
+  dCopy = d;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -304,7 +304,7 @@ void __67__EDRichLinkPersistence_saveRichLinkData_globalMessageID_basePath___blo
   v11[1] = 3221225472;
   v11[2] = __62__EDRichLinkPersistence_richLinkDataForPersistentID_basePath___block_invoke;
   v11[3] = &unk_1E8250350;
-  v8 = v5;
+  v8 = dCopy;
   v12 = v8;
   v13 = &v14;
   [(EDPersistenceDatabase *)database __performReadWithCaller:v7 usingBlock:v11];
@@ -358,10 +358,10 @@ void __62__EDRichLinkPersistence_richLinkDataForPersistentID_basePath___block_in
   *(v13 + 40) = v12;
 }
 
-- (id)datasForPersistentIDs:(id)a3 basePath:(id)a4
+- (id)datasForPersistentIDs:(id)ds basePath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  pathCopy = path;
   v8 = objc_opt_new();
   database = self->_database;
   v10 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDRichLinkPersistence datasForPersistentIDs:basePath:]"];
@@ -369,10 +369,10 @@ void __62__EDRichLinkPersistence_richLinkDataForPersistentID_basePath___block_in
   v14[1] = 3221225472;
   v14[2] = __56__EDRichLinkPersistence_datasForPersistentIDs_basePath___block_invoke;
   v14[3] = &unk_1E8250440;
-  v11 = v6;
+  v11 = dsCopy;
   v15 = v11;
-  v16 = self;
-  v12 = v7;
+  selfCopy = self;
+  v12 = pathCopy;
   v17 = v12;
   [(EDPersistenceDatabase *)database __performReadWithCaller:v10 usingBlock:v14];
 
@@ -401,7 +401,7 @@ id __56__EDRichLinkPersistence_datasForPersistentIDs_basePath___block_invoke_2(u
   return v2;
 }
 
-- (id)richLinkPersistentIDsForGlobalMessageID:(int64_t)a3
+- (id)richLinkPersistentIDsForGlobalMessageID:(int64_t)d
 {
   v5 = objc_opt_new();
   database = self->_database;
@@ -410,7 +410,7 @@ id __56__EDRichLinkPersistence_datasForPersistentIDs_basePath___block_invoke_2(u
   v10[1] = 3221225472;
   v10[2] = __65__EDRichLinkPersistence_richLinkPersistentIDsForGlobalMessageID___block_invoke;
   v10[3] = &unk_1E82503F0;
-  v12 = a3;
+  dCopy = d;
   v8 = v5;
   v11 = v8;
   [(EDPersistenceDatabase *)database __performReadWithCaller:v7 usingBlock:v10];
@@ -447,31 +447,31 @@ void __65__EDRichLinkPersistence_richLinkPersistentIDsForGlobalMessageID___block
   [v3 addObject:v6];
 }
 
-- (id)_hashForRichLinkData:(id)a3
+- (id)_hashForRichLinkData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = [MEMORY[0x1E695DF88] dataWithLength:32];
-  CC_SHA256([v3 bytes], objc_msgSend(v3, "length"), objc_msgSend(v4, "mutableBytes"));
-  v5 = [v4 ef_hexString];
+  CC_SHA256([dataCopy bytes], objc_msgSend(dataCopy, "length"), objc_msgSend(v4, "mutableBytes"));
+  ef_hexString = [v4 ef_hexString];
 
-  return v5;
+  return ef_hexString;
 }
 
-- (id)richLinkURLsForMessageIDs:(id)a3
+- (id)richLinkURLsForMessageIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   v5 = objc_opt_new();
-  v6 = [(EDRichLinkPersistence *)self database];
+  database = [(EDRichLinkPersistence *)self database];
   v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[EDRichLinkPersistence richLinkURLsForMessageIDs:]"];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __51__EDRichLinkPersistence_richLinkURLsForMessageIDs___block_invoke;
   v13[3] = &unk_1E8250328;
-  v8 = v4;
+  v8 = dsCopy;
   v14 = v8;
   v9 = v5;
   v15 = v9;
-  [v6 __performReadWithCaller:v7 usingBlock:v13];
+  [database __performReadWithCaller:v7 usingBlock:v13];
 
   v10 = v15;
   v11 = v9;
@@ -533,26 +533,26 @@ void __51__EDRichLinkPersistence_richLinkURLsForMessageIDs___block_invoke_2(uint
   [v2 addObject:v5];
 }
 
-- (void)cleanUpLegacyRichLinkFilesAtBasePath:(id)a3
+- (void)cleanUpLegacyRichLinkFilesAtBasePath:(id)path
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  pathCopy = path;
+  v4 = pathCopy;
+  if (pathCopy)
   {
-    v5 = [v3 URLByAppendingPathComponent:@"RichLinkData" isDirectory:1];
+    v5 = [pathCopy URLByAppendingPathComponent:@"RichLinkData" isDirectory:1];
     v18 = 0;
-    v6 = [MEMORY[0x1E696AC08] defaultManager];
-    v7 = [v5 path];
-    v8 = [v6 fileExistsAtPath:v7 isDirectory:&v18];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    path = [v5 path];
+    v8 = [defaultManager fileExistsAtPath:path isDirectory:&v18];
 
     if (v8)
     {
       if (v18)
       {
-        v9 = [MEMORY[0x1E696AC08] defaultManager];
+        defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
         v17 = 0;
-        v10 = [v9 removeItemAtURL:v5 error:&v17];
+        v10 = [defaultManager2 removeItemAtURL:v5 error:&v17];
         v11 = v17;
 
         v12 = _ef_log_EDRichLinkPersistence();
@@ -572,8 +572,8 @@ void __51__EDRichLinkPersistence_richLinkURLsForMessageIDs___block_invoke_2(uint
           v14 = v12;
           if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
           {
-            v15 = [v11 ef_publicDescription];
-            [(EDRichLinkPersistence *)v5 cleanUpLegacyRichLinkFilesAtBasePath:v15, buf, v14];
+            ef_publicDescription = [v11 ef_publicDescription];
+            [(EDRichLinkPersistence *)v5 cleanUpLegacyRichLinkFilesAtBasePath:ef_publicDescription, buf, v14];
           }
         }
       }

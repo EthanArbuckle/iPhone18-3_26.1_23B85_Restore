@@ -1,6 +1,6 @@
 @interface MTRServiceAreaClusterAreaStruct
 - (MTRServiceAreaClusterAreaStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -28,17 +28,17 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRServiceAreaClusterAreaStruct);
-  v5 = [(MTRServiceAreaClusterAreaStruct *)self areaID];
-  [(MTRServiceAreaClusterAreaStruct *)v4 setAreaID:v5];
+  areaID = [(MTRServiceAreaClusterAreaStruct *)self areaID];
+  [(MTRServiceAreaClusterAreaStruct *)v4 setAreaID:areaID];
 
-  v6 = [(MTRServiceAreaClusterAreaStruct *)self mapID];
-  [(MTRServiceAreaClusterAreaStruct *)v4 setMapID:v6];
+  mapID = [(MTRServiceAreaClusterAreaStruct *)self mapID];
+  [(MTRServiceAreaClusterAreaStruct *)v4 setMapID:mapID];
 
-  v7 = [(MTRServiceAreaClusterAreaStruct *)self areaInfo];
-  [(MTRServiceAreaClusterAreaStruct *)v4 setAreaInfo:v7];
+  areaInfo = [(MTRServiceAreaClusterAreaStruct *)self areaInfo];
+  [(MTRServiceAreaClusterAreaStruct *)v4 setAreaInfo:areaInfo];
 
   return v4;
 }

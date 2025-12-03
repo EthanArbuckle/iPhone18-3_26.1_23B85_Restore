@@ -1,7 +1,7 @@
 @interface UIKBRenderFactory10Key_Round
 - (UIEdgeInsets)symbolFrameInsets;
 - (UIEdgeInsets)wideShadowPaddleInsets;
-- (id)_traitsForKey:(id)a3 onKeyplane:(id)a4;
+- (id)_traitsForKey:(id)key onKeyplane:(id)keyplane;
 - (id)activeControlKeyTraits;
 - (id)controlKeyBackgroundColorName;
 - (id)controlKeyTraits;
@@ -9,8 +9,8 @@
 - (id)shiftLockControlKeyTraits;
 - (id)shiftedControlKeyTraits;
 - (int64_t)lightHighQualityEnabledBlendForm;
-- (void)_customizeGeometry:(id)a3 forKey:(id)a4 contents:(id)a5 onKeyplane:(id)a6;
-- (void)_customizeTraits:(id)a3 forPopupForKey:(id)a4 withRenderingContext:(id)a5 keycapsFontName:(id)a6 fallbackFontName:(id)a7;
+- (void)_customizeGeometry:(id)geometry forKey:(id)key contents:(id)contents onKeyplane:(id)keyplane;
+- (void)_customizeTraits:(id)traits forPopupForKey:(id)key withRenderingContext:(id)context keycapsFontName:(id)name fallbackFontName:(id)fontName;
 @end
 
 @implementation UIKBRenderFactory10Key_Round
@@ -41,15 +41,15 @@
   return result;
 }
 
-- (void)_customizeGeometry:(id)a3 forKey:(id)a4 contents:(id)a5 onKeyplane:(id)a6
+- (void)_customizeGeometry:(id)geometry forKey:(id)key contents:(id)contents onKeyplane:(id)keyplane
 {
-  v32 = a3;
-  v9 = a4;
-  v10 = a6;
-  v11 = [(UIKBRenderFactory *)self renderConfig];
-  v12 = [v11 colorAdaptiveBackground];
+  geometryCopy = geometry;
+  keyCopy = key;
+  keyplaneCopy = keyplane;
+  renderConfig = [(UIKBRenderFactory *)self renderConfig];
+  colorAdaptiveBackground = [renderConfig colorAdaptiveBackground];
 
-  if (v12)
+  if (colorAdaptiveBackground)
   {
     [(UIKBRenderFactory10Key *)self keyCornerRadius];
   }
@@ -61,7 +61,7 @@
     v13 = 5.0;
     if (v15 <= 2.0)
     {
-      [v9 paddedFrame];
+      [keyCopy paddedFrame];
       v13 = 4.0;
       if (v16 > 42.0)
       {
@@ -70,13 +70,13 @@
     }
   }
 
-  [v32 setRoundRectRadius:v13];
+  [geometryCopy setRoundRectRadius:v13];
   [(UIKBRenderFactory10Key_Round *)self symbolFrameInsets];
   v18 = v17;
   v20 = v19;
   v22 = v21;
   v24 = v23;
-  v25 = [(UIKBRenderFactory10Key_Round *)self edgesWithInsetsForKey:v9 onKeyplane:v10];
+  v25 = [(UIKBRenderFactory10Key_Round *)self edgesWithInsetsForKey:keyCopy onKeyplane:keyplaneCopy];
 
   if ((v25 & 1) == 0)
   {
@@ -98,18 +98,18 @@
     v24 = 0.0;
   }
 
-  [v32 paddedFrame];
-  [v32 setSymbolFrame:{v20 + v26, v18 + v28, v27 - (v24 + v20), v29 - (v18 + v22)}];
-  [v32 symbolFrame];
-  [v32 setPaddedFrame:{v30 + 0.0, v31 + 0.0}];
+  [geometryCopy paddedFrame];
+  [geometryCopy setSymbolFrame:{v20 + v26, v18 + v28, v27 - (v24 + v20), v29 - (v18 + v22)}];
+  [geometryCopy symbolFrame];
+  [geometryCopy setPaddedFrame:{v30 + 0.0, v31 + 0.0}];
 }
 
 - (id)defaultKeyShadowColorName
 {
-  v2 = [(UIKBRenderFactory *)self renderConfig];
-  v3 = [v2 lightKeyboard];
+  renderConfig = [(UIKBRenderFactory *)self renderConfig];
+  lightKeyboard = [renderConfig lightKeyboard];
   v4 = UIKBColorBlack_Alpha35;
-  if (!v3)
+  if (!lightKeyboard)
   {
     v4 = UIKBColorBlack_Alpha40;
   }
@@ -124,17 +124,17 @@
 {
   if ([(UIKBRenderFactory10Key_Round *)self useRoundCorner])
   {
-    v3 = [(UIKBRenderFactory *)self _controlKeyBackgroundColorName];
+    _controlKeyBackgroundColorName = [(UIKBRenderFactory *)self _controlKeyBackgroundColorName];
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = UIKBRenderFactory10Key_Round;
-    v3 = [(UIKBRenderFactory10Key *)&v5 controlKeyBackgroundColorName];
+    _controlKeyBackgroundColorName = [(UIKBRenderFactory10Key *)&v5 controlKeyBackgroundColorName];
   }
 
-  return v3;
+  return _controlKeyBackgroundColorName;
 }
 
 - (int64_t)lightHighQualityEnabledBlendForm
@@ -146,22 +146,22 @@
     return [(UIKBRenderFactory10Key *)&v8 lightHighQualityEnabledBlendForm];
   }
 
-  v3 = [(UIKBRenderFactory *)self renderConfig];
-  if (![v3 colorAdaptiveBackground])
+  renderConfig = [(UIKBRenderFactory *)self renderConfig];
+  if (![renderConfig colorAdaptiveBackground])
   {
 
     return 1;
   }
 
-  v4 = [(UIKBRenderFactory *)self increasedContrastEnabled];
+  increasedContrastEnabled = [(UIKBRenderFactory *)self increasedContrastEnabled];
 
-  if (v4)
+  if (increasedContrastEnabled)
   {
     return 1;
   }
 
-  v5 = [(UIKBRenderFactory *)self renderConfig];
-  if ([v5 lightKeyboard])
+  renderConfig2 = [(UIKBRenderFactory *)self renderConfig];
+  if ([renderConfig2 lightKeyboard])
   {
     v6 = 11;
   }
@@ -178,32 +178,32 @@
 {
   if ([(UIKBRenderFactory10Key_Round *)self useRoundCorner])
   {
-    v3 = [UIKBRenderTraits traitsWithSymbolStyle:0];
-    [v3 setControlOpacities:1];
-    v4 = [(UIKBRenderFactory10Key_Round *)self controlKeyBackgroundColorName];
-    v5 = [UIKBGradient gradientWithFlatColor:v4];
-    [v3 setBackgroundGradient:v5];
+    controlKeyTraits = [UIKBRenderTraits traitsWithSymbolStyle:0];
+    [controlKeyTraits setControlOpacities:1];
+    controlKeyBackgroundColorName = [(UIKBRenderFactory10Key_Round *)self controlKeyBackgroundColorName];
+    v5 = [UIKBGradient gradientWithFlatColor:controlKeyBackgroundColorName];
+    [controlKeyTraits setBackgroundGradient:v5];
 
-    v6 = [(UIKBRenderFactory10Key *)self controlKeyForegroundColorName];
-    if (v6)
+    controlKeyForegroundColorName = [(UIKBRenderFactory10Key *)self controlKeyForegroundColorName];
+    if (controlKeyForegroundColorName)
     {
-      v7 = [UIKBGradient gradientWithFlatColor:v6];
-      [v3 setLayeredForegroundGradient:v7];
+      v7 = [UIKBGradient gradientWithFlatColor:controlKeyForegroundColorName];
+      [controlKeyTraits setLayeredForegroundGradient:v7];
     }
 
     else
     {
-      [v3 setLayeredForegroundGradient:0];
+      [controlKeyTraits setLayeredForegroundGradient:0];
     }
 
-    v8 = [(UIKBRenderFactory *)self renderConfig];
-    v9 = [v8 colorAdaptiveBackground];
+    renderConfig = [(UIKBRenderFactory *)self renderConfig];
+    colorAdaptiveBackground = [renderConfig colorAdaptiveBackground];
 
-    if ((v9 & 1) == 0)
+    if ((colorAdaptiveBackground & 1) == 0)
     {
-      v10 = [(UIKBRenderFactory10Key_Round *)self controlKeyShadowColorName];
-      v11 = [UIKBEdgeEffect effectWithColor:v10 edges:4 inset:-1.0 weight:1.0];
-      [v3 addRenderEffect:v11];
+      controlKeyShadowColorName = [(UIKBRenderFactory10Key_Round *)self controlKeyShadowColorName];
+      v11 = [UIKBEdgeEffect effectWithColor:controlKeyShadowColorName edges:4 inset:-1.0 weight:1.0];
+      [controlKeyTraits addRenderEffect:v11];
     }
   }
 
@@ -211,34 +211,34 @@
   {
     v13.receiver = self;
     v13.super_class = UIKBRenderFactory10Key_Round;
-    v3 = [(UIKBRenderFactory10Key *)&v13 controlKeyTraits];
+    controlKeyTraits = [(UIKBRenderFactory10Key *)&v13 controlKeyTraits];
   }
 
-  return v3;
+  return controlKeyTraits;
 }
 
 - (id)activeControlKeyTraits
 {
   if ([(UIKBRenderFactory10Key_Round *)self useRoundCorner])
   {
-    v3 = [UIKBRenderTraits traitsWithSymbolStyle:0];
-    [v3 setControlOpacities:0];
-    v4 = [(UIKBRenderFactory *)self defaultKeyBackgroundColorName];
-    v5 = [UIKBGradient gradientWithFlatColor:v4];
-    [v3 setBackgroundGradient:v5];
+    activeControlKeyTraits = [UIKBRenderTraits traitsWithSymbolStyle:0];
+    [activeControlKeyTraits setControlOpacities:0];
+    defaultKeyBackgroundColorName = [(UIKBRenderFactory *)self defaultKeyBackgroundColorName];
+    v5 = [UIKBGradient gradientWithFlatColor:defaultKeyBackgroundColorName];
+    [activeControlKeyTraits setBackgroundGradient:v5];
 
     v6 = [UIKBGradient gradientWithFlatColor:@"UIKBColorClear"];
-    [v3 setLayeredForegroundGradient:v6];
+    [activeControlKeyTraits setLayeredForegroundGradient:v6];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = UIKBRenderFactory10Key_Round;
-    v3 = [(UIKBRenderFactory10Key *)&v8 activeControlKeyTraits];
+    activeControlKeyTraits = [(UIKBRenderFactory10Key *)&v8 activeControlKeyTraits];
   }
 
-  return v3;
+  return activeControlKeyTraits;
 }
 
 - (id)shiftedControlKeyTraits
@@ -247,23 +247,23 @@
   {
     v13.receiver = self;
     v13.super_class = UIKBRenderFactory10Key_Round;
-    v6 = [(UIKBRenderFactory10Key *)&v13 shiftedControlKeyTraits];
+    shiftedControlKeyTraits = [(UIKBRenderFactory10Key *)&v13 shiftedControlKeyTraits];
 LABEL_7:
-    v7 = v6;
+    v7 = shiftedControlKeyTraits;
     goto LABEL_8;
   }
 
-  v3 = [(UIKBRenderFactory *)self renderConfig];
-  v4 = [v3 lightKeyboard];
+  renderConfig = [(UIKBRenderFactory *)self renderConfig];
+  lightKeyboard = [renderConfig lightKeyboard];
 
-  if ((v4 & 1) == 0)
+  if ((lightKeyboard & 1) == 0)
   {
-    v6 = [(UIKBRenderFactory10Key_Round *)self shiftLockControlKeyTraits];
+    shiftedControlKeyTraits = [(UIKBRenderFactory10Key_Round *)self shiftLockControlKeyTraits];
     goto LABEL_7;
   }
 
-  v5 = [(UIKBRenderFactory *)self renderConfig];
-  if ([v5 lightKeyboard])
+  renderConfig2 = [(UIKBRenderFactory *)self renderConfig];
+  if ([renderConfig2 lightKeyboard])
   {
     [(UIKBRenderFactory10Key_Round *)self activeControlKeyTraits];
   }
@@ -274,13 +274,13 @@ LABEL_7:
   }
   v7 = ;
 
-  v9 = [(UIKBRenderFactory *)self renderConfig];
-  v10 = [v9 lightKeyboard];
+  renderConfig3 = [(UIKBRenderFactory *)self renderConfig];
+  lightKeyboard2 = [renderConfig3 lightKeyboard];
 
-  if (v10)
+  if (lightKeyboard2)
   {
-    v11 = [(UIKBRenderFactory *)self blackKeycapColor];
-    v12 = [UIKBTextStyle styleWithTextColor:v11];
+    blackKeycapColor = [(UIKBRenderFactory *)self blackKeycapColor];
+    v12 = [UIKBTextStyle styleWithTextColor:blackKeycapColor];
     [v7 setSymbolStyle:v12];
   }
 
@@ -291,10 +291,10 @@ LABEL_8:
 
 - (id)shiftLockControlKeyTraits
 {
-  v3 = [(UIKBRenderFactory *)self renderConfig];
-  v4 = [v3 lightKeyboard];
+  renderConfig = [(UIKBRenderFactory *)self renderConfig];
+  lightKeyboard = [renderConfig lightKeyboard];
 
-  if (v4)
+  if (lightKeyboard)
   {
     [(UIKBRenderFactory10Key_Round *)self shiftedControlKeyTraits];
   }
@@ -308,39 +308,39 @@ LABEL_8:
   return v5;
 }
 
-- (id)_traitsForKey:(id)a3 onKeyplane:(id)a4
+- (id)_traitsForKey:(id)key onKeyplane:(id)keyplane
 {
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  keyplaneCopy = keyplane;
   v76.receiver = self;
   v76.super_class = UIKBRenderFactory10Key_Round;
-  v8 = [(UIKBRenderFactory10Key *)&v76 _traitsForKey:v6 onKeyplane:v7];
+  v8 = [(UIKBRenderFactory10Key *)&v76 _traitsForKey:keyCopy onKeyplane:keyplaneCopy];
   if (![(UIKBRenderFactory10Key_Round *)self useRoundCorner])
   {
     goto LABEL_67;
   }
 
-  v9 = [v6 displayType];
-  if (v9 == 12)
+  displayType = [keyCopy displayType];
+  if (displayType == 12)
   {
     goto LABEL_67;
   }
 
-  v10 = v9;
-  if (([v6 state] & 0x10) != 0 && v10 <= 0xD && ((1 << v10) & 0x2030) != 0)
+  v10 = displayType;
+  if (([keyCopy state] & 0x10) != 0 && v10 <= 0xD && ((1 << v10) & 0x2030) != 0)
   {
-    [(UIKBRenderFactory10Key_Round *)self shouldUseRoundCornerForKey:v6];
+    [(UIKBRenderFactory10Key_Round *)self shouldUseRoundCornerForKey:keyCopy];
     v11 = 1;
 LABEL_9:
     [v8 setControlOpacities:0];
     [v8 setBlendForm:{-[UIKBRenderFactory enabledBlendForm](self, "enabledBlendForm")}];
-    v12 = [(UIKBRenderFactory10Key_Round *)self roundCornersForKey:v6 onKeyplane:v7];
-    v13 = [v8 geometry];
-    [v13 setRoundRectCorners:v12];
+    v12 = [(UIKBRenderFactory10Key_Round *)self roundCornersForKey:keyCopy onKeyplane:keyplaneCopy];
+    geometry = [v8 geometry];
+    [geometry setRoundRectCorners:v12];
 
-    v14 = [(UIKBRenderFactory10Key *)self displayContentsForKey:v6];
-    v15 = [v8 geometry];
-    [(UIKBRenderFactory10Key_Round *)self _customizeGeometry:v15 forKey:v6 contents:v14 onKeyplane:v7];
+    v14 = [(UIKBRenderFactory10Key *)self displayContentsForKey:keyCopy];
+    geometry2 = [v8 geometry];
+    [(UIKBRenderFactory10Key_Round *)self _customizeGeometry:geometry2 forKey:keyCopy contents:v14 onKeyplane:keyplaneCopy];
 
     if (v11)
     {
@@ -350,22 +350,22 @@ LABEL_63:
     }
 
     [v8 removeAllRenderEffects];
-    v16 = [(UIKBRenderFactory10Key_Round *)self defaultKeyShadowColorName];
-    if (([v6 state] & 0x6C) == 0)
+    defaultKeyShadowColorName = [(UIKBRenderFactory10Key_Round *)self defaultKeyShadowColorName];
+    if (([keyCopy state] & 0x6C) == 0)
     {
-      if ([(UIKBRenderFactory *)self useBlueThemingForKey:v6])
+      if ([(UIKBRenderFactory *)self useBlueThemingForKey:keyCopy])
       {
 LABEL_47:
-        v50 = [(UIKBRenderFactory10Key_Round *)self edgesWithInsetsForKey:v6 onKeyplane:v7];
+        v50 = [(UIKBRenderFactory10Key_Round *)self edgesWithInsetsForKey:keyCopy onKeyplane:keyplaneCopy];
         v51 = v50 & 6;
-        [v6 paddedFrame];
+        [keyCopy paddedFrame];
         MinX = CGRectGetMinX(v78);
-        [v6 frame];
+        [keyCopy frame];
         v53 = MinX - CGRectGetMinX(v79);
         if (v51 != 6)
         {
           v54 = v51 ^ 6;
-          v55 = [(UIKBRenderFactory10Key *)self controlKeyDividerColorName];
+          controlKeyDividerColorName = [(UIKBRenderFactory10Key *)self controlKeyDividerColorName];
           [(UIKBRenderFactory *)self translucentGapWidth];
           v57 = -v56;
           if ((v54 & 2) != 0)
@@ -391,12 +391,12 @@ LABEL_47:
           if (v53 > 0.0)
           {
             v58 = v58 - v53;
-            v60 = [UIKBEdgeEffect effectWithColor:v55 edges:2 inset:-v53 weight:v53];
+            v60 = [UIKBEdgeEffect effectWithColor:controlKeyDividerColorName edges:2 inset:-v53 weight:v53];
             [v8 addRenderEffect:v60];
           }
 
           [(UIKBRenderFactory *)self translucentGapWidth];
-          v62 = [UIKBEdgeEffect effectWithColor:v55 edges:v54 insets:0.0 weight:v58, v59, 0.0, v61];
+          v62 = [UIKBEdgeEffect effectWithColor:controlKeyDividerColorName edges:v54 insets:0.0 weight:v58, v59, 0.0, v61];
           [v8 addRenderEffect:v62];
         }
 
@@ -409,12 +409,12 @@ LABEL_47:
             v63 = -v53 - v64;
           }
 
-          v65 = [(UIKBRenderFactory *)self renderConfig];
-          v66 = [v65 colorAdaptiveBackground];
+          renderConfig = [(UIKBRenderFactory *)self renderConfig];
+          colorAdaptiveBackground = [renderConfig colorAdaptiveBackground];
 
-          if ((v66 & 1) == 0)
+          if ((colorAdaptiveBackground & 1) == 0)
           {
-            v67 = [UIKBEdgeEffect effectWithColor:v16 edges:4 insets:0.0 weight:v63, -1.0, 0.0, 1.0];
+            v67 = [UIKBEdgeEffect effectWithColor:defaultKeyShadowColorName edges:4 insets:0.0 weight:v63, -1.0, 0.0, 1.0];
             [v8 addRenderEffect:v67];
           }
         }
@@ -422,42 +422,42 @@ LABEL_47:
         goto LABEL_63;
       }
 
-      v18 = [(UIKBRenderFactory *)self defaultKeyBackgroundColorName];
+      defaultKeyBackgroundColorName = [(UIKBRenderFactory *)self defaultKeyBackgroundColorName];
 LABEL_46:
-      v49 = [UIKBGradient gradientWithFlatColor:v18];
+      v49 = [UIKBGradient gradientWithFlatColor:defaultKeyBackgroundColorName];
       [v8 setBackgroundGradient:v49];
 
       goto LABEL_47;
     }
 
-    v17 = [v6 displayType] == 14 || objc_msgSend(v6, "displayType") == 11;
-    v19 = [(UIKBRenderFactory *)self renderConfig];
-    v20 = [v19 animatedBackground];
+    v17 = [keyCopy displayType] == 14 || objc_msgSend(keyCopy, "displayType") == 11;
+    renderConfig2 = [(UIKBRenderFactory *)self renderConfig];
+    animatedBackground = [renderConfig2 animatedBackground];
 
-    if (v20)
+    if (animatedBackground)
     {
-      v18 = [(UIKBRenderFactory *)self defaultKeyBackgroundColorName];
+      defaultKeyBackgroundColorName = [(UIKBRenderFactory *)self defaultKeyBackgroundColorName];
       v21 = [UIKBGradient gradientWithFlatColor:@"UIKBColorWhite_Alpha10"];
       [v8 setLayeredForegroundGradient:v21];
 
       goto LABEL_46;
     }
 
-    v22 = [(UIKBRenderFactory *)self renderConfig];
-    v23 = [v22 lightKeyboard];
+    renderConfig3 = [(UIKBRenderFactory *)self renderConfig];
+    lightKeyboard = [renderConfig3 lightKeyboard];
 
-    if (v23)
+    if (lightKeyboard)
     {
-      v24 = [(UIKBRenderFactory *)self renderConfig];
-      v25 = v24;
+      renderConfig4 = [(UIKBRenderFactory *)self renderConfig];
+      v25 = renderConfig4;
       if (v17)
       {
-        v18 = [v24 activatedKeyplaneSwitchControlKeyBackgroundName];
+        defaultKeyBackgroundColorName = [renderConfig4 activatedKeyplaneSwitchControlKeyBackgroundName];
 
-        v26 = [(UIKBRenderFactory *)self renderConfig];
-        v27 = [v26 colorAdaptiveBackground];
+        renderConfig5 = [(UIKBRenderFactory *)self renderConfig];
+        colorAdaptiveBackground2 = [renderConfig5 colorAdaptiveBackground];
 
-        if (!v27)
+        if (!colorAdaptiveBackground2)
         {
           goto LABEL_46;
         }
@@ -465,12 +465,12 @@ LABEL_46:
         goto LABEL_28;
       }
 
-      v35 = [v24 colorAdaptiveBackground];
+      colorAdaptiveBackground3 = [renderConfig4 colorAdaptiveBackground];
 
-      if (v35)
+      if (colorAdaptiveBackground3)
       {
-        v36 = [(UIKBRenderFactory *)self renderConfig];
-        v18 = [v36 activatedKeyplaneSwitchControlKeyBackgroundName];
+        renderConfig6 = [(UIKBRenderFactory *)self renderConfig];
+        defaultKeyBackgroundColorName = [renderConfig6 activatedKeyplaneSwitchControlKeyBackgroundName];
 
 LABEL_28:
         v33 = v8;
@@ -495,22 +495,22 @@ LABEL_29:
     {
       if (v17)
       {
-        v28 = [(UIKBRenderFactory *)self renderConfig];
-        v18 = [v28 activatedKeyplaneSwitchControlKeyBackgroundName];
+        renderConfig7 = [(UIKBRenderFactory *)self renderConfig];
+        defaultKeyBackgroundColorName = [renderConfig7 activatedKeyplaneSwitchControlKeyBackgroundName];
 
-        v29 = [(UIKBRenderFactory *)self renderingContext];
-        v30 = [v29 isFloating];
+        renderingContext = [(UIKBRenderFactory *)self renderingContext];
+        isFloating = [renderingContext isFloating];
 
-        if (v30)
+        if (isFloating)
         {
           goto LABEL_46;
         }
 
         [v8 setBlendForm:6];
-        v31 = [(UIKBRenderFactory *)self renderConfig];
-        v32 = [v31 colorAdaptiveBackground];
+        renderConfig8 = [(UIKBRenderFactory *)self renderConfig];
+        colorAdaptiveBackground4 = [renderConfig8 colorAdaptiveBackground];
 
-        if (!v32)
+        if (!colorAdaptiveBackground4)
         {
           goto LABEL_46;
         }
@@ -520,87 +520,87 @@ LABEL_29:
         goto LABEL_29;
       }
 
-      if ([v6 state] == 20)
+      if ([keyCopy state] == 20)
       {
         v37 = v14;
-        v38 = v16;
-        v39 = [(UIKBRenderFactory *)self renderConfig];
+        v38 = defaultKeyShadowColorName;
+        renderConfig9 = [(UIKBRenderFactory *)self renderConfig];
         v40 = UIKBColorWhite_Alpha30;
-        if (([v39 colorAdaptiveBackground] & 1) == 0 && !objc_msgSend(v8, "usesDarkAppearance"))
+        if (([renderConfig9 colorAdaptiveBackground] & 1) == 0 && !objc_msgSend(v8, "usesDarkAppearance"))
         {
           v40 = UIKBColorClear;
         }
 
-        v18 = *v40;
+        defaultKeyBackgroundColorName = *v40;
 
-        v16 = @"UIKBColorClear";
+        defaultKeyShadowColorName = @"UIKBColorClear";
         v14 = v37;
         goto LABEL_46;
       }
 
       if ([objc_opt_class() _graphicsQuality] == 100)
       {
-        v42 = [(UIKBRenderFactory *)self renderConfig];
-        v43 = [v42 colorAdaptiveBackground];
+        renderConfig10 = [(UIKBRenderFactory *)self renderConfig];
+        colorAdaptiveBackground5 = [renderConfig10 colorAdaptiveBackground];
 
-        if (v43)
+        if (colorAdaptiveBackground5)
         {
-          v44 = [(UIKBRenderFactory *)self renderConfig];
-          v45 = [v44 activatedKeyplaneSwitchControlKeyBackgroundName];
+          renderConfig11 = [(UIKBRenderFactory *)self renderConfig];
+          activatedKeyplaneSwitchControlKeyBackgroundName = [renderConfig11 activatedKeyplaneSwitchControlKeyBackgroundName];
 
           [v8 setBlendForm:12];
         }
 
         else
         {
-          v46 = [(UIKBRenderFactory *)self renderingContext];
-          v47 = [v46 isFloating];
+          renderingContext2 = [(UIKBRenderFactory *)self renderingContext];
+          isFloating2 = [renderingContext2 isFloating];
 
-          if ((v47 & 1) == 0)
+          if ((isFloating2 & 1) == 0)
           {
             [v8 setBlendForm:6];
           }
         }
 
-        v18 = @"UIKBColorKeyGrayKeyActiveDarkBackground";
+        defaultKeyBackgroundColorName = @"UIKBColorKeyGrayKeyActiveDarkBackground";
         v48 = @"UIKBColorClear";
 
-        v16 = v48;
+        defaultKeyShadowColorName = v48;
         goto LABEL_46;
       }
 
       v41 = UIKBColorKeyGrayKeyDarkBackground;
     }
 
-    v18 = *v41;
+    defaultKeyBackgroundColorName = *v41;
     goto LABEL_46;
   }
 
-  if ([(UIKBRenderFactory10Key_Round *)self shouldUseRoundCornerForKey:v6])
+  if ([(UIKBRenderFactory10Key_Round *)self shouldUseRoundCornerForKey:keyCopy])
   {
     v11 = 0;
     goto LABEL_9;
   }
 
 LABEL_64:
-  v68 = [(UIKBRenderFactory10Key *)self lightTextFontName];
-  v69 = [v8 symbolStyle];
-  [v69 setFontName:v68];
+  lightTextFontName = [(UIKBRenderFactory10Key *)self lightTextFontName];
+  symbolStyle = [v8 symbolStyle];
+  [symbolStyle setFontName:lightTextFontName];
 
-  v70 = [(UIKBRenderFactory10Key *)self lightTextFontFallbackName];
-  v71 = [v8 symbolStyle];
-  [v71 setKeycapsFallback:v70];
+  lightTextFontFallbackName = [(UIKBRenderFactory10Key *)self lightTextFontFallbackName];
+  symbolStyle2 = [v8 symbolStyle];
+  [symbolStyle2 setKeycapsFallback:lightTextFontFallbackName];
 
-  if ([v6 displayType] == 1)
+  if ([keyCopy displayType] == 1)
   {
     [v8 setBackgroundGradient:0];
-    v72 = [(UIKBRenderFactory *)self renderConfig];
-    v73 = [v72 usesCompactKeycapsFont];
+    renderConfig12 = [(UIKBRenderFactory *)self renderConfig];
+    usesCompactKeycapsFont = [renderConfig12 usesCompactKeycapsFont];
 
-    if (v73)
+    if (usesCompactKeycapsFont)
     {
-      v74 = [v8 symbolStyle];
-      [v74 setFontName:@"UIKBRenderFactoryWordsSystemCompactFontName"];
+      symbolStyle3 = [v8 symbolStyle];
+      [symbolStyle3 setFontName:@"UIKBRenderFactoryWordsSystemCompactFontName"];
     }
   }
 
@@ -609,17 +609,17 @@ LABEL_67:
   return v8;
 }
 
-- (void)_customizeTraits:(id)a3 forPopupForKey:(id)a4 withRenderingContext:(id)a5 keycapsFontName:(id)a6 fallbackFontName:(id)a7
+- (void)_customizeTraits:(id)traits forPopupForKey:(id)key withRenderingContext:(id)context keycapsFontName:(id)name fallbackFontName:(id)fontName
 {
-  rect_24 = a3;
-  v12 = a4;
-  v13 = a7;
-  v14 = a6;
-  v15 = [a5 renderConfig];
-  v16 = [v15 lightKeyboard];
+  rect_24 = traits;
+  keyCopy = key;
+  fontNameCopy = fontName;
+  nameCopy = name;
+  renderConfig = [context renderConfig];
+  lightKeyboard = [renderConfig lightKeyboard];
 
   v17 = UIKBColorGray_Percent37;
-  if (v16)
+  if (lightKeyboard)
   {
     v17 = UIKBColorWhite;
   }
@@ -628,10 +628,10 @@ LABEL_67:
   [rect_24 setBackgroundGradient:v18];
 
   [rect_24 removeAllRenderEffects];
-  v19 = [(UIKBRenderFactory *)self renderConfig];
-  v20 = [v19 colorAdaptiveBackground];
+  renderConfig2 = [(UIKBRenderFactory *)self renderConfig];
+  colorAdaptiveBackground = [renderConfig2 colorAdaptiveBackground];
 
-  if ((v20 & 1) == 0)
+  if ((colorAdaptiveBackground & 1) == 0)
   {
     v21 = [UIKBShadowEffect effectWithColor:@"UIKBColorBlack_Alpha35" offset:0.0 insets:2.5 weight:1.0, 0.0, 1.0, 0.0, 3.0];
     [rect_24 addRenderEffect:v21];
@@ -642,66 +642,66 @@ LABEL_67:
   v25 = v24;
   v27 = v26;
   v29 = v28;
-  v30 = [(UIKBRenderFactory *)self renderingContext];
-  if (([v30 isFloating] & 1) == 0)
+  renderingContext = [(UIKBRenderFactory *)self renderingContext];
+  if (([renderingContext isFloating] & 1) == 0)
   {
-    v31 = [(UIKBRenderFactory *)self renderConfig];
-    v32 = [v31 colorAdaptiveBackground];
+    renderConfig3 = [(UIKBRenderFactory *)self renderConfig];
+    colorAdaptiveBackground2 = [renderConfig3 colorAdaptiveBackground];
 
-    if (v32)
+    if (colorAdaptiveBackground2)
     {
       goto LABEL_9;
     }
 
-    v30 = [UIKBShadowEffect effectWithColor:@"UIKBColorBlack_Alpha55" offset:*MEMORY[0x1E695F060] insets:*(MEMORY[0x1E695F060] + 8) weight:v23, v25, v27 + 6.0, v29, 40.0];
-    [rect_24 addRenderEffect:v30];
+    renderingContext = [UIKBShadowEffect effectWithColor:@"UIKBColorBlack_Alpha55" offset:*MEMORY[0x1E695F060] insets:*(MEMORY[0x1E695F060] + 8) weight:v23, v25, v27 + 6.0, v29, 40.0];
+    [rect_24 addRenderEffect:renderingContext];
   }
 
 LABEL_9:
-  v33 = [(UIKBRenderFactory *)self renderConfig];
-  if (![v33 lightKeyboard])
+  renderConfig4 = [(UIKBRenderFactory *)self renderConfig];
+  if (![renderConfig4 lightKeyboard])
   {
 LABEL_12:
 
     goto LABEL_13;
   }
 
-  v34 = [(UIKBRenderFactory *)self renderConfig];
-  v35 = [v34 colorAdaptiveBackground];
+  renderConfig5 = [(UIKBRenderFactory *)self renderConfig];
+  colorAdaptiveBackground3 = [renderConfig5 colorAdaptiveBackground];
 
-  if ((v35 & 1) == 0)
+  if ((colorAdaptiveBackground3 & 1) == 0)
   {
-    v33 = [UIKBEdgeEffect effectWithColor:@"UIKBColorBlack_Alpha12" edges:15 inset:-0.25 weight:0.5];
-    [rect_24 addRenderEffect:v33];
+    renderConfig4 = [UIKBEdgeEffect effectWithColor:@"UIKBColorBlack_Alpha12" edges:15 inset:-0.25 weight:0.5];
+    [rect_24 addRenderEffect:renderConfig4];
     goto LABEL_12;
   }
 
 LABEL_13:
-  if ([v12 displayType] == 13 || objc_msgSend(v12, "displayType") == 4)
+  if ([keyCopy displayType] == 13 || objc_msgSend(keyCopy, "displayType") == 4)
   {
-    v36 = [(UIKBRenderFactory *)self renderingContext];
-    v37 = [v36 inputSwitcherView];
+    renderingContext2 = [(UIKBRenderFactory *)self renderingContext];
+    inputSwitcherView = [renderingContext2 inputSwitcherView];
   }
 
   else
   {
-    v36 = [(UIKBRenderFactory *)self renderingContext];
-    v37 = [v36 splitControlView];
+    renderingContext2 = [(UIKBRenderFactory *)self renderingContext];
+    inputSwitcherView = [renderingContext2 splitControlView];
   }
 
-  v38 = v37;
+  v38 = inputSwitcherView;
 
-  v39 = [(UIKBRenderFactory *)self renderingContext];
-  v40 = [v39 layoutView];
+  renderingContext3 = [(UIKBRenderFactory *)self renderingContext];
+  layoutView = [renderingContext3 layoutView];
 
-  [v40 bounds];
-  [v40 convertRect:0 toView:?];
+  [layoutView bounds];
+  [layoutView convertRect:0 toView:?];
   v42 = v41;
   v44 = v43;
   v46 = v45;
   v48 = v47;
-  v49 = [v40 window];
-  [v49 frame];
+  window = [layoutView window];
+  [window frame];
   v51 = v50;
   rect = v50;
   v53 = v52;
@@ -738,20 +738,20 @@ LABEL_13:
   v104.size.width = v46;
   v104.size.height = v48;
   v61 = Width - CGRectGetMaxX(v104);
-  v62 = [rect_24 geometry];
-  [v62 setLayoutMargins:{rect_16, rect_8, v59, v61}];
+  geometry = [rect_24 geometry];
+  [geometry setLayoutMargins:{rect_16, rect_8, v59, v61}];
 
   [v38 popupRect];
   v64 = v63;
   v66 = v65;
   v68 = v67;
   v70 = v69;
-  [v12 paddedFrame];
+  [keyCopy paddedFrame];
   v72 = v71;
   v74 = v73;
   v76 = v75;
   v78 = v77;
-  [v40 convertRect:v38 fromView:{v64, v66, v68, v70}];
+  [layoutView convertRect:v38 fromView:{v64, v66, v68, v70}];
   v108.origin.x = v79;
   v108.origin.y = v80;
   v108.size.width = v81;
@@ -766,26 +766,26 @@ LABEL_13:
   y = v107.origin.y;
   v85 = v107.size.width;
   v86 = v107.size.height;
-  v87 = [rect_24 geometry];
-  [v87 setDisplayFrame:{x, y, v85, v86}];
+  geometry2 = [rect_24 geometry];
+  [geometry2 setDisplayFrame:{x, y, v85, v86}];
 
   [rect_24 setBlurBlending:1];
-  v88 = [rect_24 geometry];
-  [v88 setPopupBias:40];
+  geometry3 = [rect_24 geometry];
+  [geometry3 setPopupBias:40];
 
-  v89 = [(UIKBRenderFactory *)self renderingContext];
-  v90 = [v89 isColorAdaptiveNonLinearCarplayKeyboard];
+  renderingContext4 = [(UIKBRenderFactory *)self renderingContext];
+  isColorAdaptiveNonLinearCarplayKeyboard = [renderingContext4 isColorAdaptiveNonLinearCarplayKeyboard];
   v91 = 22.0;
-  if (v90)
+  if (isColorAdaptiveNonLinearCarplayKeyboard)
   {
     v91 = 14.0;
   }
 
-  v92 = [UIKBTextStyle styleWithFontName:v14 withFallbackFontName:v13 withFontSize:v91, *&rect];
+  v92 = [UIKBTextStyle styleWithFontName:nameCopy withFallbackFontName:fontNameCopy withFontSize:v91, *&rect];
 
   [rect_24 setSymbolStyle:v92];
-  v93 = [rect_24 symbolStyle];
-  [v93 setTextColor:@"UIKBColorClear"];
+  symbolStyle = [rect_24 symbolStyle];
+  [symbolStyle setTextColor:@"UIKBColorClear"];
 
   if (+[UIKBRenderFactory _graphicsQuality]== 10)
   {

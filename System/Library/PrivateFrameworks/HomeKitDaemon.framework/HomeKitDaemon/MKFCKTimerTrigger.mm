@@ -1,22 +1,22 @@
 @interface MKFCKTimerTrigger
-- (BOOL)exportFromLocalModel:(id)a3 updatedProperties:(id)a4 context:(id)a5;
-- (BOOL)importIntoLocalModel:(id)a3 updatedProperties:(id)a4 context:(id)a5;
+- (BOOL)exportFromLocalModel:(id)model updatedProperties:(id)properties context:(id)context;
+- (BOOL)importIntoLocalModel:(id)model updatedProperties:(id)properties context:(id)context;
 @end
 
 @implementation MKFCKTimerTrigger
 
-- (BOOL)exportFromLocalModel:(id)a3 updatedProperties:(id)a4 context:(id)a5
+- (BOOL)exportFromLocalModel:(id)model updatedProperties:(id)properties context:(id)context
 {
   v6.receiver = self;
   v6.super_class = MKFCKTimerTrigger;
-  return [(MKFCKTrigger *)&v6 exportFromLocalModel:a3 updatedProperties:a4 context:a5];
+  return [(MKFCKTrigger *)&v6 exportFromLocalModel:model updatedProperties:properties context:context];
 }
 
-- (BOOL)importIntoLocalModel:(id)a3 updatedProperties:(id)a4 context:(id)a5
+- (BOOL)importIntoLocalModel:(id)model updatedProperties:(id)properties context:(id)context
 {
   v6.receiver = self;
   v6.super_class = MKFCKTimerTrigger;
-  return [(MKFCKTrigger *)&v6 importIntoLocalModel:a3 updatedProperties:a4 context:a5];
+  return [(MKFCKTrigger *)&v6 importIntoLocalModel:model updatedProperties:properties context:context];
 }
 
 @end

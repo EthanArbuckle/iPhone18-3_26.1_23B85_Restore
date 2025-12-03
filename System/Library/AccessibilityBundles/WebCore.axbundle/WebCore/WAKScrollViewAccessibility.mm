@@ -1,11 +1,11 @@
 @interface WAKScrollViewAccessibility
 - (id)accessibilityContainer;
-- (id)accessibilityElementAtIndex:(int64_t)a3;
+- (id)accessibilityElementAtIndex:(int64_t)index;
 @end
 
 @implementation WAKScrollViewAccessibility
 
-- (id)accessibilityElementAtIndex:(int64_t)a3
+- (id)accessibilityElementAtIndex:(int64_t)index
 {
   v3 = [(WAKScrollViewAccessibility *)self safeValueForKey:@"contentView"];
   v4 = [v3 safeValueForKey:@"documentView"];

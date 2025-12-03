@@ -1,20 +1,20 @@
 @interface SCLMutableInterruptEvent
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setSender:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setSender:(id)sender;
 @end
 
 @implementation SCLMutableInterruptEvent
 
-- (void)setSender:(id)a3
+- (void)setSender:(id)sender
 {
-  v4 = [a3 copy];
+  v4 = [sender copy];
   sender = self->super._sender;
   self->super._sender = v4;
 
   MEMORY[0x2821F96F8]();
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [SCLInterruptEvent alloc];
 

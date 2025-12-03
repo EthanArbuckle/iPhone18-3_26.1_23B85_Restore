@@ -1,11 +1,11 @@
 @interface CCSetChangePublisher
-+ (id)publisherForSet:(id)a3 useCase:(id)a4;
-- (BOOL)isBookmarkUpToDate:(id)a3;
++ (id)publisherForSet:(id)set useCase:(id)case;
+- (BOOL)isBookmarkUpToDate:(id)date;
 - (CCSetChangePublisher)init;
-- (CCSetChangePublisher)initWithEnumerator:(id)a3;
-- (CCSetChangePublisher)initWithSet:(id)a3 readAccess:(id)a4;
+- (CCSetChangePublisher)initWithEnumerator:(id)enumerator;
+- (CCSetChangePublisher)initWithSet:(id)set readAccess:(id)access;
 - (id)nextEvent;
-- (id)startWithSubscriber:(id)a3;
+- (id)startWithSubscriber:(id)subscriber;
 - (unint64_t)localItemInstanceCount;
 - (unint64_t)sharedItemCount;
 - (void)localItemInstanceCount;
@@ -34,14 +34,14 @@
   v6 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)publisherForSet:(id)a3 useCase:(id)a4
++ (id)publisherForSet:(id)set useCase:(id)case
 {
-  v5 = a4;
-  v6 = a3;
+  caseCopy = case;
+  setCopy = set;
   v7 = objc_alloc(objc_opt_class());
-  v8 = [CCDataResourceReadAccess defaultInstanceWithUseCase:v5];
+  v8 = [CCDataResourceReadAccess defaultInstanceWithUseCase:caseCopy];
 
-  v9 = [v7 initWithSet:v6 readAccess:v8];
+  v9 = [v7 initWithSet:setCopy readAccess:v8];
 
   return v9;
 }
@@ -52,26 +52,26 @@
   objc_exception_throw(v2);
 }
 
-- (CCSetChangePublisher)initWithSet:(id)a3 readAccess:(id)a4
+- (CCSetChangePublisher)initWithSet:(id)set readAccess:(id)access
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[CCDatabaseSetChangeEnumerator alloc] initWithSet:v7 readAccess:v6];
+  accessCopy = access;
+  setCopy = set;
+  v8 = [[CCDatabaseSetChangeEnumerator alloc] initWithSet:setCopy readAccess:accessCopy];
 
   v9 = [(CCSetChangePublisher *)self initWithEnumerator:v8];
   return v9;
 }
 
-- (CCSetChangePublisher)initWithEnumerator:(id)a3
+- (CCSetChangePublisher)initWithEnumerator:(id)enumerator
 {
-  v5 = a3;
+  enumeratorCopy = enumerator;
   v9.receiver = self;
   v9.super_class = CCSetChangePublisher;
   v6 = [(CCSetChangePublisher *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_enumerator, a3);
+    objc_storeStrong(&v6->_enumerator, enumerator);
   }
 
   return v7;
@@ -85,7 +85,7 @@
   v4 = v8;
   if (v3)
   {
-    v5 = [v3 unsignedIntegerValue];
+    unsignedIntegerValue = [v3 unsignedIntegerValue];
   }
 
   else
@@ -96,10 +96,10 @@
       [CCSetChangePublisher sharedItemCount];
     }
 
-    v5 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  return v5;
+  return unsignedIntegerValue;
 }
 
 - (unint64_t)localItemInstanceCount
@@ -110,7 +110,7 @@
   v4 = v8;
   if (v3)
   {
-    v5 = [v3 unsignedIntegerValue];
+    unsignedIntegerValue = [v3 unsignedIntegerValue];
   }
 
   else
@@ -121,29 +121,29 @@
       [CCSetChangePublisher localItemInstanceCount];
     }
 
-    v5 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  return v5;
+  return unsignedIntegerValue;
 }
 
-- (BOOL)isBookmarkUpToDate:(id)a3
+- (BOOL)isBookmarkUpToDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 value];
+    value = [dateCopy value];
 
-    v4 = v5;
+    dateCopy = value;
   }
 
-  v6 = [(CCSetChangeEnumerator *)self->_enumerator isBookmarkUpToDate:v4];
+  v6 = [(CCSetChangeEnumerator *)self->_enumerator isBookmarkUpToDate:dateCopy];
 
   return v6;
 }
 
-- (id)startWithSubscriber:(id)a3
+- (id)startWithSubscriber:(id)subscriber
 {
   enumerator = self->_enumerator;
   enumeratorBookmark = self->_enumeratorBookmark;

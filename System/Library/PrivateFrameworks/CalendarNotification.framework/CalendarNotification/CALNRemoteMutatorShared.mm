@@ -1,21 +1,21 @@
 @interface CALNRemoteMutatorShared
-+ (BOOL)deleteEvent:(id)a3 inEventStore:(id)a4 withSpan:(int64_t)a5 usingRemoteMutator:(id)a6 error:(id *)a7;
++ (BOOL)deleteEvent:(id)event inEventStore:(id)store withSpan:(int64_t)span usingRemoteMutator:(id)mutator error:(id *)error;
 @end
 
 @implementation CALNRemoteMutatorShared
 
-+ (BOOL)deleteEvent:(id)a3 inEventStore:(id)a4 withSpan:(int64_t)a5 usingRemoteMutator:(id)a6 error:(id *)a7
++ (BOOL)deleteEvent:(id)event inEventStore:(id)store withSpan:(int64_t)span usingRemoteMutator:(id)mutator error:(id *)error
 {
-  v11 = a3;
-  v12 = a4;
-  if ([a6 deleteEvent:v11 withSpan:a5])
+  eventCopy = event;
+  storeCopy = store;
+  if ([mutator deleteEvent:eventCopy withSpan:span])
   {
     v13 = 1;
   }
 
   else
   {
-    v13 = [v12 removeEvent:v11 span:a5 error:a7];
+    v13 = [storeCopy removeEvent:eventCopy span:span error:error];
   }
 
   return v13;

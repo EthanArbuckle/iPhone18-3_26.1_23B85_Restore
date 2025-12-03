@@ -1,19 +1,19 @@
 @interface WFSlotTemplateImageAttachment
-- (CGRect)attachmentBoundsForTextContainer:(id)a3 proposedLineFragment:(CGRect)a4 glyphPosition:(CGPoint)a5 characterIndex:(unint64_t)a6;
-- (WFSlotTemplateImageAttachment)initWithData:(id)a3 ofType:(id)a4;
+- (CGRect)attachmentBoundsForTextContainer:(id)container proposedLineFragment:(CGRect)fragment glyphPosition:(CGPoint)position characterIndex:(unint64_t)index;
+- (WFSlotTemplateImageAttachment)initWithData:(id)data ofType:(id)type;
 @end
 
 @implementation WFSlotTemplateImageAttachment
 
-- (CGRect)attachmentBoundsForTextContainer:(id)a3 proposedLineFragment:(CGRect)a4 glyphPosition:(CGPoint)a5 characterIndex:(unint64_t)a6
+- (CGRect)attachmentBoundsForTextContainer:(id)container proposedLineFragment:(CGRect)fragment glyphPosition:(CGPoint)position characterIndex:(unint64_t)index
 {
-  v7 = [(WFSlotTemplateImageAttachment *)self image:a3];
+  v7 = [(WFSlotTemplateImageAttachment *)self image:container];
   [v7 size];
   v9 = v8;
   v11 = v10;
 
-  v12 = [(WFSlotTemplateImageAttachment *)self fontForAlignment];
-  [v12 wf_lineHeight];
+  fontForAlignment = [(WFSlotTemplateImageAttachment *)self fontForAlignment];
+  [fontForAlignment wf_lineHeight];
   v14 = v13 * 0.75;
 
   if (v11 < v14)
@@ -22,8 +22,8 @@
   }
 
   v15 = v9 / v11 * v14;
-  v16 = [(WFSlotTemplateImageAttachment *)self fontForAlignment];
-  [v16 capHeight];
+  fontForAlignment2 = [(WFSlotTemplateImageAttachment *)self fontForAlignment];
+  [fontForAlignment2 capHeight];
   v18 = v17;
   [(WFSlotTemplateImageAttachment *)self imageScaleFactor];
   v20 = (v18 - v14 * v19) * 0.5;
@@ -43,11 +43,11 @@
   return result;
 }
 
-- (WFSlotTemplateImageAttachment)initWithData:(id)a3 ofType:(id)a4
+- (WFSlotTemplateImageAttachment)initWithData:(id)data ofType:(id)type
 {
   v7.receiver = self;
   v7.super_class = WFSlotTemplateImageAttachment;
-  v4 = [(WFSlotTemplateImageAttachment *)&v7 initWithData:a3 ofType:a4];
+  v4 = [(WFSlotTemplateImageAttachment *)&v7 initWithData:data ofType:type];
   v5 = v4;
   if (v4)
   {

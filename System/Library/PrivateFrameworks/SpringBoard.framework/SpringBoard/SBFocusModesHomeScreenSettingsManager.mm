@@ -1,12 +1,12 @@
 @interface SBFocusModesHomeScreenSettingsManager
 - (SBFocusModesHomeScreenSettingsManager)init;
 - (id)iconController;
-- (void)_snapshotRemainingListViews:(id)a3 snapshotDelay:(double)a4 snapshotScale:(double)a5 excludeWallpaper:(BOOL)a6 forFocusModeIdentifier:(id)a7 iconManager:(id)a8 rootFolderView:(id)a9 accumulatedSnapshots:(id)a10 completion:(id)a11;
-- (void)_snapshotRootFolderView:(id)a3 snapshotDelay:(double)a4 snapshotScale:(double)a5 excludeWallpaper:(BOOL)a6 focusModeIdentifier:(id)a7 iconManager:(id)a8 isSuggestedPage:(BOOL)a9 completion:(id)a10;
-- (void)settingsServer:(id)a3 addSuggestedHomeScreenPageWithRequest:(id)a4;
-- (void)settingsServer:(id)a3 homeScreenSnapshotsForSuggestedPagesWithRequest:(id)a4 completion:(id)a5;
-- (void)settingsServer:(id)a3 homeScreenSnapshotsWithRequest:(id)a4 completion:(id)a5;
-- (void)settingsServer:(id)a3 updateFocusModeHomeScreenSettingsWithRequest:(id)a4;
+- (void)_snapshotRemainingListViews:(id)views snapshotDelay:(double)delay snapshotScale:(double)scale excludeWallpaper:(BOOL)wallpaper forFocusModeIdentifier:(id)identifier iconManager:(id)manager rootFolderView:(id)view accumulatedSnapshots:(id)self0 completion:(id)self1;
+- (void)_snapshotRootFolderView:(id)view snapshotDelay:(double)delay snapshotScale:(double)scale excludeWallpaper:(BOOL)wallpaper focusModeIdentifier:(id)identifier iconManager:(id)manager isSuggestedPage:(BOOL)page completion:(id)self0;
+- (void)settingsServer:(id)server addSuggestedHomeScreenPageWithRequest:(id)request;
+- (void)settingsServer:(id)server homeScreenSnapshotsForSuggestedPagesWithRequest:(id)request completion:(id)completion;
+- (void)settingsServer:(id)server homeScreenSnapshotsWithRequest:(id)request completion:(id)completion;
+- (void)settingsServer:(id)server updateFocusModeHomeScreenSettingsWithRequest:(id)request;
 @end
 
 @implementation SBFocusModesHomeScreenSettingsManager
@@ -31,27 +31,27 @@
 
 - (id)iconController
 {
-  v2 = [SBApp windowSceneManager];
-  v3 = [v2 embeddedDisplayWindowScene];
+  windowSceneManager = [SBApp windowSceneManager];
+  embeddedDisplayWindowScene = [windowSceneManager embeddedDisplayWindowScene];
 
-  v4 = [v3 iconController];
+  iconController = [embeddedDisplayWindowScene iconController];
 
-  return v4;
+  return iconController;
 }
 
-- (void)settingsServer:(id)a3 homeScreenSnapshotsForSuggestedPagesWithRequest:(id)a4 completion:(id)a5
+- (void)settingsServer:(id)server homeScreenSnapshotsForSuggestedPagesWithRequest:(id)request completion:(id)completion
 {
-  v7 = a4;
-  v8 = a5;
+  requestCopy = request;
+  completionCopy = completion;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __115__SBFocusModesHomeScreenSettingsManager_settingsServer_homeScreenSnapshotsForSuggestedPagesWithRequest_completion___block_invoke;
   block[3] = &unk_2783AA1E8;
-  v12 = v7;
-  v13 = self;
-  v14 = v8;
-  v9 = v8;
-  v10 = v7;
+  v12 = requestCopy;
+  selfCopy = self;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = requestCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -132,19 +132,19 @@ void __115__SBFocusModesHomeScreenSettingsManager_settingsServer_homeScreenSnaps
   [v25 _snapshotRootFolderView:v22 snapshotDelay:v30 snapshotScale:v39 excludeWallpaper:v2 focusModeIdentifier:1 iconManager:v40 isSuggestedPage:v27 completion:v29];
 }
 
-- (void)settingsServer:(id)a3 homeScreenSnapshotsWithRequest:(id)a4 completion:(id)a5
+- (void)settingsServer:(id)server homeScreenSnapshotsWithRequest:(id)request completion:(id)completion
 {
-  v7 = a4;
-  v8 = a5;
+  requestCopy = request;
+  completionCopy = completion;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __98__SBFocusModesHomeScreenSettingsManager_settingsServer_homeScreenSnapshotsWithRequest_completion___block_invoke;
   block[3] = &unk_2783AA1E8;
-  v12 = v7;
-  v13 = self;
-  v14 = v8;
-  v9 = v8;
-  v10 = v7;
+  v12 = requestCopy;
+  selfCopy = self;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = requestCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -184,16 +184,16 @@ void __98__SBFocusModesHomeScreenSettingsManager_settingsServer_homeScreenSnapsh
   [v10 _snapshotRootFolderView:v9 snapshotDelay:objc_msgSend(*(a1 + 32) snapshotScale:"excludeWallpaper") excludeWallpaper:v14 focusModeIdentifier:v3 iconManager:0 isSuggestedPage:*(a1 + 48) completion:{v12, v13}];
 }
 
-- (void)settingsServer:(id)a3 updateFocusModeHomeScreenSettingsWithRequest:(id)a4
+- (void)settingsServer:(id)server updateFocusModeHomeScreenSettingsWithRequest:(id)request
 {
-  v5 = a4;
+  requestCopy = request;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __101__SBFocusModesHomeScreenSettingsManager_settingsServer_updateFocusModeHomeScreenSettingsWithRequest___block_invoke;
   v7[3] = &unk_2783A92D8;
-  v8 = v5;
-  v9 = self;
-  v6 = v5;
+  v8 = requestCopy;
+  selfCopy = self;
+  v6 = requestCopy;
   dispatch_async(MEMORY[0x277D85CD0], v7);
 }
 
@@ -354,16 +354,16 @@ void __101__SBFocusModesHomeScreenSettingsManager_settingsServer_updateFocusMode
   [v35 updateRootFolderWithCurrentDoNotDisturbState];
 }
 
-- (void)settingsServer:(id)a3 addSuggestedHomeScreenPageWithRequest:(id)a4
+- (void)settingsServer:(id)server addSuggestedHomeScreenPageWithRequest:(id)request
 {
-  v5 = a4;
+  requestCopy = request;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __94__SBFocusModesHomeScreenSettingsManager_settingsServer_addSuggestedHomeScreenPageWithRequest___block_invoke;
   v7[3] = &unk_2783A92D8;
-  v8 = v5;
-  v9 = self;
-  v6 = v5;
+  v8 = requestCopy;
+  selfCopy = self;
+  v6 = requestCopy;
   dispatch_async(MEMORY[0x277D85CD0], v7);
 }
 
@@ -414,34 +414,34 @@ void __94__SBFocusModesHomeScreenSettingsManager_settingsServer_addSuggestedHome
   }
 }
 
-- (void)_snapshotRootFolderView:(id)a3 snapshotDelay:(double)a4 snapshotScale:(double)a5 excludeWallpaper:(BOOL)a6 focusModeIdentifier:(id)a7 iconManager:(id)a8 isSuggestedPage:(BOOL)a9 completion:(id)a10
+- (void)_snapshotRootFolderView:(id)view snapshotDelay:(double)delay snapshotScale:(double)scale excludeWallpaper:(BOOL)wallpaper focusModeIdentifier:(id)identifier iconManager:(id)manager isSuggestedPage:(BOOL)page completion:(id)self0
 {
-  v14 = a6;
-  v18 = a3;
+  wallpaperCopy = wallpaper;
+  viewCopy = view;
   v19 = MEMORY[0x277CCACC8];
-  v20 = a10;
-  v21 = a8;
-  v22 = a7;
+  completionCopy = completion;
+  managerCopy = manager;
+  identifierCopy = identifier;
   if (([v19 isMainThread] & 1) == 0)
   {
     [SBFocusModesHomeScreenSettingsManager _snapshotRootFolderView:snapshotDelay:snapshotScale:excludeWallpaper:focusModeIdentifier:iconManager:isSuggestedPage:completion:];
   }
 
-  v23 = [v18 folder];
+  folder = [viewCopy folder];
   v24 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
   v28[2] = __169__SBFocusModesHomeScreenSettingsManager__snapshotRootFolderView_snapshotDelay_snapshotScale_excludeWallpaper_focusModeIdentifier_iconManager_isSuggestedPage_completion___block_invoke;
   v28[3] = &unk_2783B3A68;
-  v29 = v23;
-  v30 = v18;
-  v32 = a9;
+  v29 = folder;
+  v30 = viewCopy;
+  pageCopy = page;
   v31 = v24;
   v25 = v24;
-  v26 = v18;
-  v27 = v23;
+  v26 = viewCopy;
+  v27 = folder;
   [v27 enumerateListsWithOptions:4 usingBlock:v28];
-  [(SBFocusModesHomeScreenSettingsManager *)self _snapshotRemainingListViews:v25 snapshotDelay:v14 snapshotScale:v22 excludeWallpaper:v21 forFocusModeIdentifier:v26 iconManager:0 rootFolderView:a4 accumulatedSnapshots:a5 completion:v20];
+  [(SBFocusModesHomeScreenSettingsManager *)self _snapshotRemainingListViews:v25 snapshotDelay:wallpaperCopy snapshotScale:identifierCopy excludeWallpaper:managerCopy forFocusModeIdentifier:v26 iconManager:0 rootFolderView:delay accumulatedSnapshots:scale completion:completionCopy];
 }
 
 void __169__SBFocusModesHomeScreenSettingsManager__snapshotRootFolderView_snapshotDelay_snapshotScale_excludeWallpaper_focusModeIdentifier_iconManager_isSuggestedPage_completion___block_invoke(uint64_t a1, void *a2, uint64_t a3, _BYTE *a4)
@@ -482,41 +482,41 @@ void __169__SBFocusModesHomeScreenSettingsManager__snapshotRootFolderView_snapsh
   }
 }
 
-- (void)_snapshotRemainingListViews:(id)a3 snapshotDelay:(double)a4 snapshotScale:(double)a5 excludeWallpaper:(BOOL)a6 forFocusModeIdentifier:(id)a7 iconManager:(id)a8 rootFolderView:(id)a9 accumulatedSnapshots:(id)a10 completion:(id)a11
+- (void)_snapshotRemainingListViews:(id)views snapshotDelay:(double)delay snapshotScale:(double)scale excludeWallpaper:(BOOL)wallpaper forFocusModeIdentifier:(id)identifier iconManager:(id)manager rootFolderView:(id)view accumulatedSnapshots:(id)self0 completion:(id)self1
 {
-  v15 = a6;
-  v19 = a3;
-  v47 = a7;
-  v20 = a8;
-  v21 = a9;
-  v22 = a10;
-  v23 = a11;
+  wallpaperCopy = wallpaper;
+  viewsCopy = views;
+  identifierCopy = identifier;
+  managerCopy = manager;
+  viewCopy = view;
+  snapshotsCopy = snapshots;
+  completionCopy = completion;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [SBFocusModesHomeScreenSettingsManager _snapshotRemainingListViews:snapshotDelay:snapshotScale:excludeWallpaper:forFocusModeIdentifier:iconManager:rootFolderView:accumulatedSnapshots:completion:];
   }
 
-  if ([v19 count])
+  if ([viewsCopy count])
   {
-    v45 = self;
-    v24 = [v19 firstObject];
-    v46 = v21;
-    v44 = [v21 folder];
-    v25 = [MEMORY[0x277D75418] currentDevice];
-    v26 = [v25 userInterfaceIdiom];
+    selfCopy = self;
+    firstObject = [viewsCopy firstObject];
+    v46 = viewCopy;
+    folder = [viewCopy folder];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if ((v26 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+    if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
     {
-      v27 = [v20 interfaceOrientation];
+      interfaceOrientation = [managerCopy interfaceOrientation];
     }
 
     else
     {
-      v27 = 1;
+      interfaceOrientation = 1;
     }
 
-    SBScreenBoundsRotatedRoundCenter(v27);
-    if (v15)
+    SBScreenBoundsRotatedRoundCenter(interfaceOrientation);
+    if (wallpaperCopy)
     {
       v34 = 8259;
     }
@@ -526,55 +526,55 @@ void __169__SBFocusModesHomeScreenSettingsManager__snapshotRootFolderView_snapsh
       v34 = 8195;
     }
 
-    v43 = v20;
-    v35 = [[SBHomeScreenPreviewView alloc] initWithFrame:v20 iconManager:0 wallpaperController:v34 options:0 wallpaperImage:v24 listView:v30, v31, v32, v33];
-    v36 = [SBApp windowSceneManager];
-    v37 = [v36 embeddedDisplayWindowScene];
+    v43 = managerCopy;
+    v35 = [[SBHomeScreenPreviewView alloc] initWithFrame:managerCopy iconManager:0 wallpaperController:v34 options:0 wallpaperImage:firstObject listView:v30, v31, v32, v33];
+    windowSceneManager = [SBApp windowSceneManager];
+    embeddedDisplayWindowScene = [windowSceneManager embeddedDisplayWindowScene];
 
     v42 = v35;
-    v38 = [[SBViewSnapshotProvider alloc] initWithWindowScene:v37 view:v35 orientation:v27];
-    [(SBViewSnapshotProvider *)v38 setIncludeWindowSceneWallpaper:!v15];
-    if ([v24 containsWidget])
+    v38 = [[SBViewSnapshotProvider alloc] initWithWindowScene:embeddedDisplayWindowScene view:v35 orientation:interfaceOrientation];
+    [(SBViewSnapshotProvider *)v38 setIncludeWindowSceneWallpaper:!wallpaperCopy];
+    if ([firstObject containsWidget])
     {
-      v39 = 5.0;
-      if (a4 <= 5.0)
+      delayCopy = 5.0;
+      if (delay <= 5.0)
       {
-        v39 = a4;
+        delayCopy = delay;
       }
 
-      [(SBViewSnapshotProvider *)v38 setDelay:v39];
+      [(SBViewSnapshotProvider *)v38 setDelay:delayCopy];
     }
 
     v48[0] = MEMORY[0x277D85DD0];
     v48[1] = 3221225472;
     v48[2] = __196__SBFocusModesHomeScreenSettingsManager__snapshotRemainingListViews_snapshotDelay_snapshotScale_excludeWallpaper_forFocusModeIdentifier_iconManager_rootFolderView_accumulatedSnapshots_completion___block_invoke;
     v48[3] = &unk_2783B3A90;
-    v58 = a5;
-    v49 = v24;
-    v29 = v47;
-    v50 = v47;
-    v51 = v44;
-    v52 = v22;
-    v53 = v19;
-    v54 = v45;
-    v59 = a4;
-    v60 = v15;
+    scaleCopy = scale;
+    v49 = firstObject;
+    v29 = identifierCopy;
+    v50 = identifierCopy;
+    v51 = folder;
+    v52 = snapshotsCopy;
+    v53 = viewsCopy;
+    v54 = selfCopy;
+    delayCopy2 = delay;
+    v60 = wallpaperCopy;
     v55 = v43;
-    v21 = v46;
+    viewCopy = v46;
     v56 = v46;
-    v57 = v23;
-    v20 = v43;
-    v40 = v44;
-    v41 = v24;
+    v57 = completionCopy;
+    managerCopy = v43;
+    v40 = folder;
+    v41 = firstObject;
     [(SBViewSnapshotProvider *)v38 snapshotWithImageBlock:v48];
   }
 
   else
   {
-    v28 = [objc_alloc(MEMORY[0x277D66A78]) initWithSnapshots:v22];
-    (*(v23 + 2))(v23, v28, 0);
+    v28 = [objc_alloc(MEMORY[0x277D66A78]) initWithSnapshots:snapshotsCopy];
+    (*(completionCopy + 2))(completionCopy, v28, 0);
 
-    v29 = v47;
+    v29 = identifierCopy;
   }
 }
 

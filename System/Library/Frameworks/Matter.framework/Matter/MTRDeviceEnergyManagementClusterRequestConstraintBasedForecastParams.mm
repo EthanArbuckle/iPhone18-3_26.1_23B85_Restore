@@ -1,8 +1,8 @@
 @interface MTRDeviceEnergyManagementClusterRequestConstraintBasedForecastParams
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3;
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader;
 - (MTRDeviceEnergyManagementClusterRequestConstraintBasedForecastParams)init;
-- (id)_encodeAsDataValue:(id *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_encodeAsDataValue:(id *)value;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -15,9 +15,9 @@
   v2 = [(MTRDeviceEnergyManagementClusterRequestConstraintBasedForecastParams *)&v9 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
     constraints = v2->_constraints;
-    v2->_constraints = v3;
+    v2->_constraints = array;
 
     cause = v2->_cause;
     v2->_cause = &unk_284C3E4C8;
@@ -32,20 +32,20 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRDeviceEnergyManagementClusterRequestConstraintBasedForecastParams);
-  v5 = [(MTRDeviceEnergyManagementClusterRequestConstraintBasedForecastParams *)self constraints];
-  [(MTRDeviceEnergyManagementClusterRequestConstraintBasedForecastParams *)v4 setConstraints:v5];
+  constraints = [(MTRDeviceEnergyManagementClusterRequestConstraintBasedForecastParams *)self constraints];
+  [(MTRDeviceEnergyManagementClusterRequestConstraintBasedForecastParams *)v4 setConstraints:constraints];
 
-  v6 = [(MTRDeviceEnergyManagementClusterRequestConstraintBasedForecastParams *)self cause];
-  [(MTRDeviceEnergyManagementClusterRequestConstraintBasedForecastParams *)v4 setCause:v6];
+  cause = [(MTRDeviceEnergyManagementClusterRequestConstraintBasedForecastParams *)self cause];
+  [(MTRDeviceEnergyManagementClusterRequestConstraintBasedForecastParams *)v4 setCause:cause];
 
-  v7 = [(MTRDeviceEnergyManagementClusterRequestConstraintBasedForecastParams *)self timedInvokeTimeoutMs];
-  [(MTRDeviceEnergyManagementClusterRequestConstraintBasedForecastParams *)v4 setTimedInvokeTimeoutMs:v7];
+  timedInvokeTimeoutMs = [(MTRDeviceEnergyManagementClusterRequestConstraintBasedForecastParams *)self timedInvokeTimeoutMs];
+  [(MTRDeviceEnergyManagementClusterRequestConstraintBasedForecastParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
-  v8 = [(MTRDeviceEnergyManagementClusterRequestConstraintBasedForecastParams *)self serverSideProcessingTimeout];
-  [(MTRDeviceEnergyManagementClusterRequestConstraintBasedForecastParams *)v4 setServerSideProcessingTimeout:v8];
+  serverSideProcessingTimeout = [(MTRDeviceEnergyManagementClusterRequestConstraintBasedForecastParams *)self serverSideProcessingTimeout];
+  [(MTRDeviceEnergyManagementClusterRequestConstraintBasedForecastParams *)v4 setServerSideProcessingTimeout:serverSideProcessingTimeout];
 
   return v4;
 }
@@ -60,16 +60,16 @@
   return v6;
 }
 
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader
 {
   v27 = *MEMORY[0x277D85DE8];
   v20 = 0uLL;
-  v21 = 0;
+  unsignedCharValue = 0;
   v19[0] = 0;
   v19[1] = 0;
   v18 = v19;
-  v4 = [(MTRDeviceEnergyManagementClusterRequestConstraintBasedForecastParams *)self constraints];
-  v5 = [v4 count] == 0;
+  constraints = [(MTRDeviceEnergyManagementClusterRequestConstraintBasedForecastParams *)self constraints];
+  v5 = [constraints count] == 0;
 
   if (!v5)
   {
@@ -77,8 +77,8 @@
   }
 
   v20 = 0uLL;
-  v6 = [(MTRDeviceEnergyManagementClusterRequestConstraintBasedForecastParams *)self cause];
-  v21 = [v6 unsignedCharValue];
+  cause = [(MTRDeviceEnergyManagementClusterRequestConstraintBasedForecastParams *)self cause];
+  unsignedCharValue = [cause unsignedCharValue];
 
   sub_2393D9C18(0x62FuLL, 0, &v17);
   if (v17)
@@ -99,8 +99,8 @@
 
     else
     {
-      sub_238DD2F90(a3, &v17);
-      v7 = sub_2393C7114(a3, 21, 256);
+      sub_238DD2F90(reader, &v17);
+      v7 = sub_2393C7114(reader, 21, 256);
       v10 = v15;
       v9 = v7;
     }
@@ -129,19 +129,19 @@
   return result;
 }
 
-- (id)_encodeAsDataValue:(id *)a3
+- (id)_encodeAsDataValue:(id *)value
 {
   v5 = sub_2393C5AAC(v12);
   v13 = 0;
   v7 = [(MTRDeviceEnergyManagementClusterRequestConstraintBasedForecastParams *)self _encodeToTLVReader:v12, v5];
   if (v7)
   {
-    if (a3)
+    if (value)
     {
       v8 = sub_23921C1E4(MTRError, v7, v6);
       v9 = 0;
 LABEL_7:
-      *a3 = v8;
+      *value = v8;
       goto LABEL_9;
     }
 
@@ -152,7 +152,7 @@ LABEL_7:
   {
     v10 = sub_238EE60DC(v12, 0);
     v9 = v10;
-    if (a3 && !v10)
+    if (value && !v10)
     {
       v8 = sub_23921C1E4(MTRError, 0x44C100000003, "/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/zap-generated/MTRCommandPayloadsObjc.mm");
       goto LABEL_7;

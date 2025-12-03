@@ -2,13 +2,13 @@
 - (CGSize)activeIndicatorSize;
 - (CGSize)indicatorSize;
 - (CGSize)resolvedSize;
-- (_UIPageIndicatorStoreObject)initWithStartIndex:(int64_t)a3 endIndex:(int64_t)a4;
+- (_UIPageIndicatorStoreObject)initWithStartIndex:(int64_t)index endIndex:(int64_t)endIndex;
 - (id)description;
-- (id)splitAtIndex:(int64_t)a3 withImage:(id)a4 active:(BOOL)a5;
-- (void)_copyImagesFromObject:(id)a3;
+- (id)splitAtIndex:(int64_t)index withImage:(id)image active:(BOOL)active;
+- (void)_copyImagesFromObject:(id)object;
 - (void)invalidateLayoutInfo;
-- (void)setActiveImage:(id)a3;
-- (void)setCustomImage:(id)a3;
+- (void)setActiveImage:(id)image;
+- (void)setCustomImage:(id)image;
 @end
 
 @implementation _UIPageIndicatorStoreObject
@@ -47,7 +47,7 @@
   [(_UIPageIndicatorStoreObject *)self setActiveIndicatorSize:-1.0, -1.0];
 }
 
-- (_UIPageIndicatorStoreObject)initWithStartIndex:(int64_t)a3 endIndex:(int64_t)a4
+- (_UIPageIndicatorStoreObject)initWithStartIndex:(int64_t)index endIndex:(int64_t)endIndex
 {
   v9.receiver = self;
   v9.super_class = _UIPageIndicatorStoreObject;
@@ -55,44 +55,44 @@
   v7 = v6;
   if (v6)
   {
-    [(_UIPageIndicatorStoreObject *)v6 setStartIndex:a3];
-    [(_UIPageIndicatorStoreObject *)v7 setEndIndex:a4];
+    [(_UIPageIndicatorStoreObject *)v6 setStartIndex:index];
+    [(_UIPageIndicatorStoreObject *)v7 setEndIndex:endIndex];
   }
 
   return v7;
 }
 
-- (void)setCustomImage:(id)a3
+- (void)setCustomImage:(id)image
 {
-  objc_storeStrong(&self->_customImage, a3);
+  objc_storeStrong(&self->_customImage, image);
   __asm { FMOV            V0.2D, #-1.0 }
 
   self->_indicatorSize = _Q0;
 }
 
-- (void)setActiveImage:(id)a3
+- (void)setActiveImage:(id)image
 {
-  objc_storeStrong(&self->_activeImage, a3);
+  objc_storeStrong(&self->_activeImage, image);
   __asm { FMOV            V0.2D, #-1.0 }
 
   self->_activeIndicatorSize = _Q0;
 }
 
-- (void)_copyImagesFromObject:(id)a3
+- (void)_copyImagesFromObject:(id)object
 {
-  v4 = a3;
-  v5 = [v4 customImage];
+  objectCopy = object;
+  customImage = [objectCopy customImage];
   customImage = self->_customImage;
-  self->_customImage = v5;
+  self->_customImage = customImage;
 
-  v7 = [v4 activeImage];
+  activeImage = [objectCopy activeImage];
   activeImage = self->_activeImage;
-  self->_activeImage = v7;
+  self->_activeImage = activeImage;
 
-  [v4 indicatorSize];
+  [objectCopy indicatorSize];
   self->_indicatorSize.width = v9;
   self->_indicatorSize.height = v10;
-  [v4 activeIndicatorSize];
+  [objectCopy activeIndicatorSize];
   v12 = v11;
   v14 = v13;
 
@@ -100,20 +100,20 @@
   self->_activeIndicatorSize.height = v14;
 }
 
-- (id)splitAtIndex:(int64_t)a3 withImage:(id)a4 active:(BOOL)a5
+- (id)splitAtIndex:(int64_t)index withImage:(id)image active:(BOOL)active
 {
-  v5 = a5;
+  activeCopy = active;
   v18[1] = *MEMORY[0x1E69E9840];
-  v9 = a4;
+  imageCopy = image;
   if (self->_endIndex - self->_startIndex == 1)
   {
     v10 = 8;
-    if (v5)
+    if (activeCopy)
     {
       v10 = 16;
     }
 
-    objc_storeStrong((&self->super.isa + v10), a4);
+    objc_storeStrong((&self->super.isa + v10), image);
     v18[0] = self;
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:1];
   }
@@ -121,24 +121,24 @@
   else
   {
     v11 = objc_opt_new();
-    if (self->_startIndex < a3)
+    if (self->_startIndex < index)
     {
-      v12 = [[_UIPageIndicatorStoreObject alloc] initWithStartIndex:self->_startIndex endIndex:a3];
+      v12 = [[_UIPageIndicatorStoreObject alloc] initWithStartIndex:self->_startIndex endIndex:index];
       [(_UIPageIndicatorStoreObject *)v12 _copyImagesFromObject:self];
       [v11 addObject:v12];
     }
 
-    v13 = a3 + 1;
-    v14 = [[_UIPageIndicatorStoreObject alloc] initWithStartIndex:a3 endIndex:a3 + 1];
+    v13 = index + 1;
+    v14 = [[_UIPageIndicatorStoreObject alloc] initWithStartIndex:index endIndex:index + 1];
     v15 = v14;
-    if (v5)
+    if (activeCopy)
     {
-      [(_UIPageIndicatorStoreObject *)v14 setActiveImage:v9];
+      [(_UIPageIndicatorStoreObject *)v14 setActiveImage:imageCopy];
     }
 
     else
     {
-      [(_UIPageIndicatorStoreObject *)v14 setCustomImage:v9];
+      [(_UIPageIndicatorStoreObject *)v14 setCustomImage:imageCopy];
     }
 
     [v11 addObject:v15];

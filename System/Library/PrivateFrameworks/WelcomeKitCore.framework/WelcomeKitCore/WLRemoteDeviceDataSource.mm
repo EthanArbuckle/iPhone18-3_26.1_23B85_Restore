@@ -1,27 +1,27 @@
 @interface WLRemoteDeviceDataSource
 + (id)_requestSerialQueue;
-- (BOOL)_shouldHandleHTTPErrorWithResponse:(id)a3 expectedContentLength:(unint64_t)a4 error:(id *)a5;
-- (BOOL)_shouldRetryLaterWithResponse:(id)a3 error:(id)a4;
-- (BOOL)_shouldRetryWithData:(id)a3 response:(id)a4 error:(id)a5;
-- (double)_taskDurationSinceStartDate:(id)a3;
-- (id)_urlForAccountsWithMigrator:(id)a3;
-- (id)_urlForRecordForMigrator:(id)a3 withSummaryIdentifier:(id)a4 accountIdentifier:(id)a5 segmentByteRange:(_NSRange *)a6;
-- (id)_urlForRecordSummariesForMigrator:(id)a3 withAccountIdentifier:(id)a4;
+- (BOOL)_shouldHandleHTTPErrorWithResponse:(id)response expectedContentLength:(unint64_t)length error:(id *)error;
+- (BOOL)_shouldRetryLaterWithResponse:(id)response error:(id)error;
+- (BOOL)_shouldRetryWithData:(id)data response:(id)response error:(id)error;
+- (double)_taskDurationSinceStartDate:(id)date;
+- (id)_urlForAccountsWithMigrator:(id)migrator;
+- (id)_urlForRecordForMigrator:(id)migrator withSummaryIdentifier:(id)identifier accountIdentifier:(id)accountIdentifier segmentByteRange:(_NSRange *)range;
+- (id)_urlForRecordSummariesForMigrator:(id)migrator withAccountIdentifier:(id)identifier;
 - (id)_urlScheme;
-- (unint64_t)_newNumberOfRetriesAllowed:(unint64_t)a3 startDate:(id)a4;
-- (void)_downloadTaskWithRequest:(id)a3 expectedContentLength:(unint64_t)a4 numberOfRetriesAllowed:(unint64_t)a5 startDate:(id)a6 fileAccessor:(id)a7 completion:(id)a8;
-- (void)_performDownloadRequest:(id)a3 expectedContentLength:(unint64_t)a4 numberOfRetriesAllowed:(unint64_t)a5 startDate:(id)a6 fileAccessor:(id)a7 completion:(id)a8;
-- (void)_performRequest:(id)a3 expectedContentLength:(unint64_t)a4 numberOfRetriesAllowed:(unint64_t)a5 preventRetriesAfterTaskExceedsDuration:(BOOL)a6 taskDurationLimit:(double)a7 startDate:(id)a8 completionHandler:(id)a9;
-- (void)_runTaskWithRequest:(id)a3 expectedContentLength:(unint64_t)a4 numberOfRetriesAllowed:(unint64_t)a5 preventRetriesAfterTaskExceedsDuration:(BOOL)a6 taskDurationLimit:(double)a7 startDate:(id)a8 completionHandler:(id)a9;
-- (void)accountsDataForMigrator:(id)a3 completion:(id)a4;
+- (unint64_t)_newNumberOfRetriesAllowed:(unint64_t)allowed startDate:(id)date;
+- (void)_downloadTaskWithRequest:(id)request expectedContentLength:(unint64_t)length numberOfRetriesAllowed:(unint64_t)allowed startDate:(id)date fileAccessor:(id)accessor completion:(id)completion;
+- (void)_performDownloadRequest:(id)request expectedContentLength:(unint64_t)length numberOfRetriesAllowed:(unint64_t)allowed startDate:(id)date fileAccessor:(id)accessor completion:(id)completion;
+- (void)_performRequest:(id)request expectedContentLength:(unint64_t)length numberOfRetriesAllowed:(unint64_t)allowed preventRetriesAfterTaskExceedsDuration:(BOOL)duration taskDurationLimit:(double)limit startDate:(id)date completionHandler:(id)handler;
+- (void)_runTaskWithRequest:(id)request expectedContentLength:(unint64_t)length numberOfRetriesAllowed:(unint64_t)allowed preventRetriesAfterTaskExceedsDuration:(BOOL)duration taskDurationLimit:(double)limit startDate:(id)date completionHandler:(id)handler;
+- (void)accountsDataForMigrator:(id)migrator completion:(id)completion;
 - (void)cancel;
-- (void)dataForSummary:(id)a3 migrator:(id)a4 completion:(id)a5;
-- (void)dataSegmentForSummary:(id)a3 byteRange:(_NSRange)a4 migrator:(id)a5 completion:(id)a6;
+- (void)dataForSummary:(id)summary migrator:(id)migrator completion:(id)completion;
+- (void)dataSegmentForSummary:(id)summary byteRange:(_NSRange)range migrator:(id)migrator completion:(id)completion;
 - (void)dealloc;
-- (void)fileForSummary:(id)a3 migrator:(id)a4 fileAccessor:(id)a5 completion:(id)a6;
-- (void)itemSizeForSummary:(id)a3 migrator:(id)a4 completion:(id)a5;
-- (void)summariesDataForAccount:(id)a3 migrator:(id)a4 completion:(id)a5;
-- (void)updateUIWithProgress:(double)a3 remainingTime:(double)a4 logString:(id)a5 completion:(id)a6;
+- (void)fileForSummary:(id)summary migrator:(id)migrator fileAccessor:(id)accessor completion:(id)completion;
+- (void)itemSizeForSummary:(id)summary migrator:(id)migrator completion:(id)completion;
+- (void)summariesDataForAccount:(id)account migrator:(id)migrator completion:(id)completion;
+- (void)updateUIWithProgress:(double)progress remainingTime:(double)time logString:(id)string completion:(id)completion;
 @end
 
 @implementation WLRemoteDeviceDataSource
@@ -43,10 +43,10 @@
   [(NSOperationQueue *)queue waitUntilAllOperationsAreFinished];
 }
 
-- (void)accountsDataForMigrator:(id)a3 completion:(id)a4
+- (void)accountsDataForMigrator:(id)migrator completion:(id)completion
 {
-  v6 = a4;
-  v7 = [(WLRemoteDeviceDataSource *)self _urlForAccountsWithMigrator:a3];
+  completionCopy = completion;
+  v7 = [(WLRemoteDeviceDataSource *)self _urlForAccountsWithMigrator:migrator];
   v8 = MEMORY[0x277CCAD20];
   [(WLRemoteDeviceDataSource *)self _urlRequestTimeout];
   v9 = [v8 requestWithURL:v7 cachePolicy:1 timeoutInterval:?];
@@ -57,8 +57,8 @@
   v13[2] = __63__WLRemoteDeviceDataSource_accountsDataForMigrator_completion___block_invoke;
   v13[3] = &unk_279EB5D18;
   v13[4] = self;
-  v14 = v6;
-  v12 = v6;
+  v14 = completionCopy;
+  v12 = completionCopy;
   [(WLRemoteDeviceDataSource *)self _performRequest:v9 expectedContentLength:0 numberOfRetriesAllowed:6 preventRetriesAfterTaskExceedsDuration:1 taskDurationLimit:0 startDate:v13 completionHandler:v11];
 }
 
@@ -109,28 +109,28 @@ void __63__WLRemoteDeviceDataSource_accountsDataForMigrator_completion___block_i
   }
 }
 
-- (id)_urlForAccountsWithMigrator:(id)a3
+- (id)_urlForAccountsWithMigrator:(id)migrator
 {
   v4 = MEMORY[0x277CCACA8];
-  v5 = a3;
-  v6 = [(WLRemoteDeviceDataSource *)self _urlScheme];
+  migratorCopy = migrator;
+  _urlScheme = [(WLRemoteDeviceDataSource *)self _urlScheme];
   host = self->_host;
   port = self->_port;
-  v9 = [v5 contentType];
+  contentType = [migratorCopy contentType];
 
-  v10 = [v4 stringWithFormat:@"%@://%@:%u/remote_data_access/v1/%@/accounts", v6, host, port, v9];
+  v10 = [v4 stringWithFormat:@"%@://%@:%u/remote_data_access/v1/%@/accounts", _urlScheme, host, port, contentType];
 
   v11 = [MEMORY[0x277CBEBC0] URLWithString:v10];
 
   return v11;
 }
 
-- (void)summariesDataForAccount:(id)a3 migrator:(id)a4 completion:(id)a5
+- (void)summariesDataForAccount:(id)account migrator:(id)migrator completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [a3 identifier];
-  v11 = [(WLRemoteDeviceDataSource *)self _urlForRecordSummariesForMigrator:v9 withAccountIdentifier:v10];
+  completionCopy = completion;
+  migratorCopy = migrator;
+  identifier = [account identifier];
+  v11 = [(WLRemoteDeviceDataSource *)self _urlForRecordSummariesForMigrator:migratorCopy withAccountIdentifier:identifier];
 
   v12 = MEMORY[0x277CCAD20];
   [(WLRemoteDeviceDataSource *)self _urlRequestTimeout];
@@ -142,8 +142,8 @@ void __63__WLRemoteDeviceDataSource_accountsDataForMigrator_completion___block_i
   v17[2] = __72__WLRemoteDeviceDataSource_summariesDataForAccount_migrator_completion___block_invoke;
   v17[3] = &unk_279EB5D18;
   v17[4] = self;
-  v18 = v8;
-  v16 = v8;
+  v18 = completionCopy;
+  v16 = completionCopy;
   [(WLRemoteDeviceDataSource *)self _performRequest:v13 expectedContentLength:0 numberOfRetriesAllowed:6 preventRetriesAfterTaskExceedsDuration:1 taskDurationLimit:0 startDate:v17 completionHandler:v15];
 }
 
@@ -193,33 +193,33 @@ void __72__WLRemoteDeviceDataSource_summariesDataForAccount_migrator_completion_
   }
 }
 
-- (id)_urlForRecordSummariesForMigrator:(id)a3 withAccountIdentifier:(id)a4
+- (id)_urlForRecordSummariesForMigrator:(id)migrator withAccountIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = a3;
-  if ([v7 accountBased])
+  identifierCopy = identifier;
+  migratorCopy = migrator;
+  if ([migratorCopy accountBased])
   {
-    v8 = [MEMORY[0x277CCA900] URLPathAllowedCharacterSet];
-    v9 = [v6 stringByAddingPercentEncodingWithAllowedCharacters:v8];
+    uRLPathAllowedCharacterSet = [MEMORY[0x277CCA900] URLPathAllowedCharacterSet];
+    _urlScheme2 = [identifierCopy stringByAddingPercentEncodingWithAllowedCharacters:uRLPathAllowedCharacterSet];
 
     v10 = MEMORY[0x277CCACA8];
-    v11 = [(WLRemoteDeviceDataSource *)self _urlScheme];
+    _urlScheme = [(WLRemoteDeviceDataSource *)self _urlScheme];
     host = self->_host;
     port = self->_port;
-    v14 = [v7 contentType];
+    contentType = [migratorCopy contentType];
 
-    v15 = [v10 stringWithFormat:@"%@://%@:%u/remote_data_access/v1/%@/accounts/%@", v11, host, port, v14, v9];
+    v15 = [v10 stringWithFormat:@"%@://%@:%u/remote_data_access/v1/%@/accounts/%@", _urlScheme, host, port, contentType, _urlScheme2];
   }
 
   else
   {
     v16 = MEMORY[0x277CCACA8];
-    v9 = [(WLRemoteDeviceDataSource *)self _urlScheme];
+    _urlScheme2 = [(WLRemoteDeviceDataSource *)self _urlScheme];
     v17 = self->_host;
     v18 = self->_port;
-    v11 = [v7 contentType];
+    _urlScheme = [migratorCopy contentType];
 
-    v15 = [v16 stringWithFormat:@"%@://%@:%u/remote_data_access/v1/%@", v9, v17, v18, v11];
+    v15 = [v16 stringWithFormat:@"%@://%@:%u/remote_data_access/v1/%@", _urlScheme2, v17, v18, _urlScheme];
   }
 
   v19 = [MEMORY[0x277CBEBC0] URLWithString:v15];
@@ -227,18 +227,18 @@ void __72__WLRemoteDeviceDataSource_summariesDataForAccount_migrator_completion_
   return v19;
 }
 
-- (void)itemSizeForSummary:(id)a3 migrator:(id)a4 completion:(id)a5
+- (void)itemSizeForSummary:(id)summary migrator:(id)migrator completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   v20[0] = 0;
   v20[1] = 0;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v10 identifier];
-  v12 = [v10 account];
+  migratorCopy = migrator;
+  summaryCopy = summary;
+  identifier = [summaryCopy identifier];
+  account = [summaryCopy account];
 
-  v13 = [v12 identifier];
-  v14 = [(WLRemoteDeviceDataSource *)self _urlForRecordForMigrator:v9 withSummaryIdentifier:v11 accountIdentifier:v13 segmentByteRange:v20];
+  identifier2 = [account identifier];
+  v14 = [(WLRemoteDeviceDataSource *)self _urlForRecordForMigrator:migratorCopy withSummaryIdentifier:identifier accountIdentifier:identifier2 segmentByteRange:v20];
 
   v15 = MEMORY[0x277CCAD20];
   [(WLRemoteDeviceDataSource *)self _urlRequestTimeout];
@@ -248,8 +248,8 @@ void __72__WLRemoteDeviceDataSource_summariesDataForAccount_migrator_completion_
   v18[2] = __67__WLRemoteDeviceDataSource_itemSizeForSummary_migrator_completion___block_invoke;
   v18[3] = &unk_279EB5D40;
   v18[4] = self;
-  v19 = v8;
-  v17 = v8;
+  v19 = completionCopy;
+  v17 = completionCopy;
   [(WLRemoteDeviceDataSource *)self _performRequest:v16 expectedContentLength:0 numberOfRetriesAllowed:6 preventRetriesAfterTaskExceedsDuration:0 taskDurationLimit:0 startDate:v18 completionHandler:0.0];
 }
 
@@ -301,30 +301,30 @@ LABEL_10:
   (*(*(a1 + 40) + 16))(*(a1 + 40), v10);
 }
 
-- (void)fileForSummary:(id)a3 migrator:(id)a4 fileAccessor:(id)a5 completion:(id)a6
+- (void)fileForSummary:(id)summary migrator:(id)migrator fileAccessor:(id)accessor completion:(id)completion
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [v13 identifier];
-  v15 = [v13 account];
-  v16 = [v15 identifier];
-  v17 = [(WLRemoteDeviceDataSource *)self _urlForRecordForMigrator:v12 withSummaryIdentifier:v14 accountIdentifier:v16 segmentByteRange:0];
+  completionCopy = completion;
+  accessorCopy = accessor;
+  migratorCopy = migrator;
+  summaryCopy = summary;
+  identifier = [summaryCopy identifier];
+  account = [summaryCopy account];
+  identifier2 = [account identifier];
+  v17 = [(WLRemoteDeviceDataSource *)self _urlForRecordForMigrator:migratorCopy withSummaryIdentifier:identifier accountIdentifier:identifier2 segmentByteRange:0];
 
   v18 = MEMORY[0x277CCAD20];
   [(WLRemoteDeviceDataSource *)self _urlRequestTimeout];
   v19 = [v18 requestWithURL:v17 cachePolicy:1 timeoutInterval:?];
-  v20 = [v13 itemSize];
+  itemSize = [summaryCopy itemSize];
 
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __76__WLRemoteDeviceDataSource_fileForSummary_migrator_fileAccessor_completion___block_invoke;
   v22[3] = &unk_279EB5D68;
   v22[4] = self;
-  v23 = v10;
-  v21 = v10;
-  [(WLRemoteDeviceDataSource *)self _performDownloadRequest:v19 expectedContentLength:v20 numberOfRetriesAllowed:6 startDate:0 fileAccessor:v11 completion:v22];
+  v23 = completionCopy;
+  v21 = completionCopy;
+  [(WLRemoteDeviceDataSource *)self _performDownloadRequest:v19 expectedContentLength:itemSize numberOfRetriesAllowed:6 startDate:0 fileAccessor:accessorCopy completion:v22];
 }
 
 void __76__WLRemoteDeviceDataSource_fileForSummary_migrator_fileAccessor_completion___block_invoke(uint64_t a1, void *a2)
@@ -335,60 +335,60 @@ void __76__WLRemoteDeviceDataSource_fileForSummary_migrator_fileAccessor_complet
   (*(*(a1 + 40) + 16))(*(a1 + 40), v4);
 }
 
-- (id)_urlForRecordForMigrator:(id)a3 withSummaryIdentifier:(id)a4 accountIdentifier:(id)a5 segmentByteRange:(_NSRange *)a6
+- (id)_urlForRecordForMigrator:(id)migrator withSummaryIdentifier:(id)identifier accountIdentifier:(id)accountIdentifier segmentByteRange:(_NSRange *)range
 {
-  v10 = a3;
-  v11 = a5;
+  migratorCopy = migrator;
+  accountIdentifierCopy = accountIdentifier;
   v12 = MEMORY[0x277CCA900];
-  v13 = a4;
-  v14 = [v12 URLPathAllowedCharacterSet];
-  v15 = [v13 stringByAddingPercentEncodingWithAllowedCharacters:v14];
+  identifierCopy = identifier;
+  uRLPathAllowedCharacterSet = [v12 URLPathAllowedCharacterSet];
+  v15 = [identifierCopy stringByAddingPercentEncodingWithAllowedCharacters:uRLPathAllowedCharacterSet];
 
-  if ([v10 accountBased])
+  if ([migratorCopy accountBased])
   {
-    v16 = [MEMORY[0x277CCA900] URLPathAllowedCharacterSet];
-    v36 = v11;
-    v17 = [v11 stringByAddingPercentEncodingWithAllowedCharacters:v16];
+    uRLPathAllowedCharacterSet2 = [MEMORY[0x277CCA900] URLPathAllowedCharacterSet];
+    v36 = accountIdentifierCopy;
+    v17 = [accountIdentifierCopy stringByAddingPercentEncodingWithAllowedCharacters:uRLPathAllowedCharacterSet2];
 
     v18 = MEMORY[0x277CCACA8];
-    v19 = [(WLRemoteDeviceDataSource *)self _urlScheme];
+    _urlScheme = [(WLRemoteDeviceDataSource *)self _urlScheme];
     host = self->_host;
     port = self->_port;
-    v22 = [v10 contentType];
-    v23 = [v18 stringWithFormat:@"%@://%@:%u/remote_data_access/v1/%@/accounts/%@/%@", v19, host, port, v22, v17, v15];
+    contentType = [migratorCopy contentType];
+    v23 = [v18 stringWithFormat:@"%@://%@:%u/remote_data_access/v1/%@/accounts/%@/%@", _urlScheme, host, port, contentType, v17, v15];
 
-    if (!a6)
+    if (!range)
     {
-      v11 = v36;
+      accountIdentifierCopy = v36;
       goto LABEL_8;
     }
 
     v24 = MEMORY[0x277CCACA8];
-    v25 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a6->location];
-    v26 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a6->length];
+    v25 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:range->location];
+    v26 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:range->length];
     v27 = [v24 stringWithFormat:@"%@?start=%@&length=%@", v23, v25, v26];
 
     v23 = v27;
-    v11 = v36;
+    accountIdentifierCopy = v36;
   }
 
   else
   {
     v28 = MEMORY[0x277CCACA8];
-    v29 = [(WLRemoteDeviceDataSource *)self _urlScheme];
+    _urlScheme2 = [(WLRemoteDeviceDataSource *)self _urlScheme];
     v30 = self->_host;
     v31 = self->_port;
-    v32 = [v10 contentType];
-    v26 = [v28 stringWithFormat:@"%@://%@:%u/remote_data_access/v1/%@/%@", v29, v30, v31, v32, v15];
+    contentType2 = [migratorCopy contentType];
+    v26 = [v28 stringWithFormat:@"%@://%@:%u/remote_data_access/v1/%@/%@", _urlScheme2, v30, v31, contentType2, v15];
 
-    if (!a6)
+    if (!range)
     {
       goto LABEL_9;
     }
 
     v33 = MEMORY[0x277CCACA8];
-    v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a6->location];
-    v25 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a6->length];
+    v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:range->location];
+    v25 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:range->length];
     v23 = [v33 stringWithFormat:@"%@?start=%@&length=%@", v26, v17, v25];
   }
 
@@ -400,19 +400,19 @@ LABEL_9:
   return v34;
 }
 
-- (void)_performDownloadRequest:(id)a3 expectedContentLength:(unint64_t)a4 numberOfRetriesAllowed:(unint64_t)a5 startDate:(id)a6 fileAccessor:(id)a7 completion:(id)a8
+- (void)_performDownloadRequest:(id)request expectedContentLength:(unint64_t)length numberOfRetriesAllowed:(unint64_t)allowed startDate:(id)date fileAccessor:(id)accessor completion:(id)completion
 {
-  v14 = a3;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
-  if (!v15)
+  requestCopy = request;
+  dateCopy = date;
+  accessorCopy = accessor;
+  completionCopy = completion;
+  if (!dateCopy)
   {
-    v15 = [MEMORY[0x277CBEAA8] date];
+    dateCopy = [MEMORY[0x277CBEAA8] date];
   }
 
-  v18 = [v14 URL];
-  v25 = [v18 absoluteString];
+  v18 = [requestCopy URL];
+  absoluteString = [v18 absoluteString];
   _WLLog();
 
   objc_initWeak(&location, self);
@@ -422,17 +422,17 @@ LABEL_9:
   v26[2] = __131__WLRemoteDeviceDataSource__performDownloadRequest_expectedContentLength_numberOfRetriesAllowed_startDate_fileAccessor_completion___block_invoke;
   v26[3] = &unk_279EB5D90;
   objc_copyWeak(v31, &location);
-  v20 = v17;
+  v20 = completionCopy;
   v29 = v20;
-  v21 = v14;
+  v21 = requestCopy;
   v27 = v21;
-  v31[1] = a4;
-  v31[2] = a5;
-  v22 = v15;
+  v31[1] = length;
+  v31[2] = allowed;
+  v22 = dateCopy;
   v28 = v22;
-  v23 = v16;
+  v23 = accessorCopy;
   v30 = v23;
-  v24 = [v19 blockOperationWithBlock:{v26, self, v25}];
+  v24 = [v19 blockOperationWithBlock:{v26, self, absoluteString}];
   [(NSOperationQueue *)self->_queue addOperation:v24];
 
   objc_destroyWeak(v31);
@@ -464,12 +464,12 @@ void __131__WLRemoteDeviceDataSource__performDownloadRequest_expectedContentLeng
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_downloadTaskWithRequest:(id)a3 expectedContentLength:(unint64_t)a4 numberOfRetriesAllowed:(unint64_t)a5 startDate:(id)a6 fileAccessor:(id)a7 completion:(id)a8
+- (void)_downloadTaskWithRequest:(id)request expectedContentLength:(unint64_t)length numberOfRetriesAllowed:(unint64_t)allowed startDate:(id)date fileAccessor:(id)accessor completion:(id)completion
 {
-  v14 = a3;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  requestCopy = request;
+  dateCopy = date;
+  accessorCopy = accessor;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   session = self->_session;
   v24 = MEMORY[0x277D85DD0];
@@ -477,15 +477,15 @@ void __131__WLRemoteDeviceDataSource__performDownloadRequest_expectedContentLeng
   v26 = __132__WLRemoteDeviceDataSource__downloadTaskWithRequest_expectedContentLength_numberOfRetriesAllowed_startDate_fileAccessor_completion___block_invoke;
   v27 = &unk_279EB5E30;
   objc_copyWeak(v32, &location);
-  v19 = v17;
+  v19 = completionCopy;
   v30 = v19;
-  v20 = v14;
+  v20 = requestCopy;
   v28 = v20;
-  v32[1] = a4;
-  v32[2] = a5;
-  v21 = v15;
+  v32[1] = length;
+  v32[2] = allowed;
+  v21 = dateCopy;
   v29 = v21;
-  v22 = v16;
+  v22 = accessorCopy;
   v31 = v22;
   v23 = [(NSURLSession *)session downloadTaskWithRequest:v20 completionHandler:&v24];
   [v23 resume];
@@ -650,29 +650,29 @@ uint64_t __132__WLRemoteDeviceDataSource__downloadTaskWithRequest_expectedConten
   }
 }
 
-- (void)dataSegmentForSummary:(id)a3 byteRange:(_NSRange)a4 migrator:(id)a5 completion:(id)a6
+- (void)dataSegmentForSummary:(id)summary byteRange:(_NSRange)range migrator:(id)migrator completion:(id)completion
 {
-  v22 = a4;
-  v9 = a6;
-  v10 = a5;
-  v11 = a3;
-  v12 = [v11 identifier];
-  v13 = [v11 account];
+  rangeCopy = range;
+  completionCopy = completion;
+  migratorCopy = migrator;
+  summaryCopy = summary;
+  identifier = [summaryCopy identifier];
+  account = [summaryCopy account];
 
-  v14 = [v13 identifier];
-  v15 = [(WLRemoteDeviceDataSource *)self _urlForRecordForMigrator:v10 withSummaryIdentifier:v12 accountIdentifier:v14 segmentByteRange:&v22];
+  identifier2 = [account identifier];
+  v15 = [(WLRemoteDeviceDataSource *)self _urlForRecordForMigrator:migratorCopy withSummaryIdentifier:identifier accountIdentifier:identifier2 segmentByteRange:&rangeCopy];
 
   v16 = MEMORY[0x277CCAD20];
   [(WLRemoteDeviceDataSource *)self _urlRequestTimeout];
   v17 = [v16 requestWithURL:v15 cachePolicy:1 timeoutInterval:?];
-  length = v22.length;
+  length = rangeCopy.length;
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __80__WLRemoteDeviceDataSource_dataSegmentForSummary_byteRange_migrator_completion___block_invoke;
   v20[3] = &unk_279EB5D40;
   v20[4] = self;
-  v21 = v9;
-  v19 = v9;
+  v21 = completionCopy;
+  v19 = completionCopy;
   [(WLRemoteDeviceDataSource *)self _performRequest:v17 expectedContentLength:length numberOfRetriesAllowed:6 preventRetriesAfterTaskExceedsDuration:0 taskDurationLimit:0 startDate:v20 completionHandler:0.0];
 }
 
@@ -701,16 +701,16 @@ void __80__WLRemoteDeviceDataSource_dataSegmentForSummary_byteRange_migrator_com
   (*(*(a1 + 40) + 16))(*(a1 + 40), v8);
 }
 
-- (void)dataForSummary:(id)a3 migrator:(id)a4 completion:(id)a5
+- (void)dataForSummary:(id)summary migrator:(id)migrator completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v10 identifier];
-  v12 = [v10 account];
+  completionCopy = completion;
+  migratorCopy = migrator;
+  summaryCopy = summary;
+  identifier = [summaryCopy identifier];
+  account = [summaryCopy account];
 
-  v13 = [v12 identifier];
-  v14 = [(WLRemoteDeviceDataSource *)self _urlForRecordForMigrator:v9 withSummaryIdentifier:v11 accountIdentifier:v13 segmentByteRange:0];
+  identifier2 = [account identifier];
+  v14 = [(WLRemoteDeviceDataSource *)self _urlForRecordForMigrator:migratorCopy withSummaryIdentifier:identifier accountIdentifier:identifier2 segmentByteRange:0];
 
   v15 = MEMORY[0x277CCAD20];
   [(WLRemoteDeviceDataSource *)self _urlRequestTimeout];
@@ -720,8 +720,8 @@ void __80__WLRemoteDeviceDataSource_dataSegmentForSummary_byteRange_migrator_com
   v18[2] = __63__WLRemoteDeviceDataSource_dataForSummary_migrator_completion___block_invoke;
   v18[3] = &unk_279EB5D40;
   v18[4] = self;
-  v19 = v8;
-  v17 = v8;
+  v19 = completionCopy;
+  v17 = completionCopy;
   [(WLRemoteDeviceDataSource *)self _performRequest:v16 expectedContentLength:0 numberOfRetriesAllowed:6 preventRetriesAfterTaskExceedsDuration:0 taskDurationLimit:0 startDate:v18 completionHandler:0.0];
 }
 
@@ -750,22 +750,22 @@ void __63__WLRemoteDeviceDataSource_dataForSummary_migrator_completion___block_i
   (*(*(a1 + 40) + 16))(*(a1 + 40), v8);
 }
 
-- (void)updateUIWithProgress:(double)a3 remainingTime:(double)a4 logString:(id)a5 completion:(id)a6
+- (void)updateUIWithProgress:(double)progress remainingTime:(double)time logString:(id)string completion:(id)completion
 {
-  v10 = a6;
-  if (a3 >= 1.0)
+  completionCopy = completion;
+  if (progress >= 1.0)
   {
     v13 = MEMORY[0x277CCACA8];
-    v12 = [(WLRemoteDeviceDataSource *)self _urlScheme];
-    [v13 stringWithFormat:@"%@://%@:%u/transfer?status=done", v12, self->_host, self->_port, v18, v19];
+    _urlScheme = [(WLRemoteDeviceDataSource *)self _urlScheme];
+    [v13 stringWithFormat:@"%@://%@:%u/transfer?status=done", _urlScheme, self->_host, self->_port, v18, v19];
   }
 
   else
   {
-    LODWORD(v6) = vcvtmd_s64_f64(a3 * 100.0);
+    LODWORD(v6) = vcvtmd_s64_f64(progress * 100.0);
     v11 = MEMORY[0x277CCACA8];
-    v12 = [(WLRemoteDeviceDataSource *)self _urlScheme];
-    [v11 stringWithFormat:@"%@://%@:%u/transfer?status=active&progress=%d&remaining_time=%ld", v12, self->_host, self->_port, v6, a4];
+    _urlScheme = [(WLRemoteDeviceDataSource *)self _urlScheme];
+    [v11 stringWithFormat:@"%@://%@:%u/transfer?status=active&progress=%d&remaining_time=%ld", _urlScheme, self->_host, self->_port, v6, time];
   }
   v14 = ;
 
@@ -777,8 +777,8 @@ void __63__WLRemoteDeviceDataSource_dataForSummary_migrator_completion___block_i
   v20[1] = 3221225472;
   v20[2] = __84__WLRemoteDeviceDataSource_updateUIWithProgress_remainingTime_logString_completion___block_invoke;
   v20[3] = &unk_279EB5E58;
-  v21 = v10;
-  v17 = v10;
+  v21 = completionCopy;
+  v17 = completionCopy;
   [(WLRemoteDeviceDataSource *)self _performRequest:v16 expectedContentLength:0 numberOfRetriesAllowed:0 preventRetriesAfterTaskExceedsDuration:0 taskDurationLimit:0 startDate:v20 completionHandler:0.0];
 }
 
@@ -841,14 +841,14 @@ void __47__WLRemoteDeviceDataSource__requestSerialQueue__block_invoke()
   _requestSerialQueue__requestQueue = v0;
 }
 
-- (void)_performRequest:(id)a3 expectedContentLength:(unint64_t)a4 numberOfRetriesAllowed:(unint64_t)a5 preventRetriesAfterTaskExceedsDuration:(BOOL)a6 taskDurationLimit:(double)a7 startDate:(id)a8 completionHandler:(id)a9
+- (void)_performRequest:(id)request expectedContentLength:(unint64_t)length numberOfRetriesAllowed:(unint64_t)allowed preventRetriesAfterTaskExceedsDuration:(BOOL)duration taskDurationLimit:(double)limit startDate:(id)date completionHandler:(id)handler
 {
-  v16 = a3;
-  v17 = a8;
-  v18 = a9;
-  if (!v17)
+  requestCopy = request;
+  dateCopy = date;
+  handlerCopy = handler;
+  if (!dateCopy)
   {
-    v17 = [MEMORY[0x277CBEAA8] date];
+    dateCopy = [MEMORY[0x277CBEAA8] date];
   }
 
   objc_initWeak(&location, self);
@@ -858,16 +858,16 @@ void __47__WLRemoteDeviceDataSource__requestSerialQueue__block_invoke()
   v24[2] = __174__WLRemoteDeviceDataSource__performRequest_expectedContentLength_numberOfRetriesAllowed_preventRetriesAfterTaskExceedsDuration_taskDurationLimit_startDate_completionHandler___block_invoke;
   v24[3] = &unk_279EB5E80;
   objc_copyWeak(v28, &location);
-  v20 = v18;
+  v20 = handlerCopy;
   v27 = v20;
-  v21 = v17;
+  v21 = dateCopy;
   v25 = v21;
-  v22 = v16;
+  v22 = requestCopy;
   v26 = v22;
-  v28[1] = a4;
-  v28[2] = a5;
-  v29 = a6;
-  v28[3] = *&a7;
+  v28[1] = length;
+  v28[2] = allowed;
+  durationCopy = duration;
+  v28[3] = *&limit;
   v23 = [v19 blockOperationWithBlock:v24];
   [(NSOperationQueue *)self->_queue addOperation:v23];
 
@@ -903,36 +903,36 @@ void __174__WLRemoteDeviceDataSource__performRequest_expectedContentLength_numbe
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_runTaskWithRequest:(id)a3 expectedContentLength:(unint64_t)a4 numberOfRetriesAllowed:(unint64_t)a5 preventRetriesAfterTaskExceedsDuration:(BOOL)a6 taskDurationLimit:(double)a7 startDate:(id)a8 completionHandler:(id)a9
+- (void)_runTaskWithRequest:(id)request expectedContentLength:(unint64_t)length numberOfRetriesAllowed:(unint64_t)allowed preventRetriesAfterTaskExceedsDuration:(BOOL)duration taskDurationLimit:(double)limit startDate:(id)date completionHandler:(id)handler
 {
-  v16 = a3;
-  v17 = a8;
-  v18 = a9;
+  requestCopy = request;
+  dateCopy = date;
+  handlerCopy = handler;
   objc_initWeak(location, self);
-  v19 = [v16 URL];
-  v27 = [v19 absoluteString];
+  v19 = [requestCopy URL];
+  absoluteString = [v19 absoluteString];
   _WLLog();
 
-  v20 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   session = self->_session;
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
   v28[2] = __178__WLRemoteDeviceDataSource__runTaskWithRequest_expectedContentLength_numberOfRetriesAllowed_preventRetriesAfterTaskExceedsDuration_taskDurationLimit_startDate_completionHandler___block_invoke;
   v28[3] = &unk_279EB5EF8;
   objc_copyWeak(v34, location);
-  v22 = v18;
+  v22 = handlerCopy;
   v33 = v22;
-  v23 = v17;
+  v23 = dateCopy;
   v29 = v23;
-  v24 = v20;
+  v24 = date;
   v30 = v24;
-  v25 = v16;
+  v25 = requestCopy;
   v31 = v25;
-  v32 = self;
-  v34[1] = a4;
-  v34[2] = a5;
-  v35 = a6;
-  v34[3] = *&a7;
+  selfCopy = self;
+  v34[1] = length;
+  v34[2] = allowed;
+  durationCopy = duration;
+  v34[3] = *&limit;
   v26 = [(NSURLSession *)session dataTaskWithRequest:v25 completionHandler:v28];
   [v26 resume];
 
@@ -1080,28 +1080,28 @@ void __178__WLRemoteDeviceDataSource__runTaskWithRequest_expectedContentLength_n
   }
 }
 
-- (double)_taskDurationSinceStartDate:(id)a3
+- (double)_taskDurationSinceStartDate:(id)date
 {
   v3 = MEMORY[0x277CBEAA8];
-  v4 = a3;
-  v5 = [v3 date];
-  [v5 timeIntervalSinceDate:v4];
+  dateCopy = date;
+  date = [v3 date];
+  [date timeIntervalSinceDate:dateCopy];
   v7 = v6;
 
   return v7;
 }
 
-- (BOOL)_shouldRetryLaterWithResponse:(id)a3 error:(id)a4
+- (BOOL)_shouldRetryLaterWithResponse:(id)response error:(id)error
 {
-  v5 = a3;
-  if (a4 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  responseCopy = response;
+  if (error || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v8 = 0;
   }
 
   else
   {
-    v6 = v5;
+    v6 = responseCopy;
     if ([v6 statusCode] == 200)
     {
       v7 = [v6 valueForHTTPHeaderField:@"Retry-After"];
@@ -1117,20 +1117,20 @@ void __178__WLRemoteDeviceDataSource__runTaskWithRequest_expectedContentLength_n
   return v8;
 }
 
-- (BOOL)_shouldRetryWithData:(id)a3 response:(id)a4 error:(id)a5
+- (BOOL)_shouldRetryWithData:(id)data response:(id)response error:(id)error
 {
-  v6 = a4;
-  if (a5 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  responseCopy = response;
+  if (error || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v9 = 1;
   }
 
   else
   {
-    v7 = v6;
-    v8 = [v7 statusCode];
-    v9 = v8 != 200;
-    if (v8 != 200)
+    v7 = responseCopy;
+    statusCode = [v7 statusCode];
+    v9 = statusCode != 200;
+    if (statusCode != 200)
     {
       v11 = [v7 URL];
       [v7 statusCode];
@@ -1141,12 +1141,12 @@ void __178__WLRemoteDeviceDataSource__runTaskWithRequest_expectedContentLength_n
   return v9;
 }
 
-- (unint64_t)_newNumberOfRetriesAllowed:(unint64_t)a3 startDate:(id)a4
+- (unint64_t)_newNumberOfRetriesAllowed:(unint64_t)allowed startDate:(id)date
 {
   v5 = MEMORY[0x277CBEAA8];
-  v6 = a4;
-  v7 = [v5 date];
-  [v7 timeIntervalSinceDate:v6];
+  dateCopy = date;
+  date = [v5 date];
+  [date timeIntervalSinceDate:dateCopy];
   v9 = v8;
 
   if (v9 <= 5.0)
@@ -1157,15 +1157,15 @@ void __178__WLRemoteDeviceDataSource__runTaskWithRequest_expectedContentLength_n
 
   else
   {
-    --a3;
+    --allowed;
   }
 
-  return a3;
+  return allowed;
 }
 
-- (BOOL)_shouldHandleHTTPErrorWithResponse:(id)a3 expectedContentLength:(unint64_t)a4 error:(id *)a5
+- (BOOL)_shouldHandleHTTPErrorWithResponse:(id)response expectedContentLength:(unint64_t)length error:(id *)error
 {
-  v5 = a3;
+  responseCopy = response;
   objc_opt_class();
   objc_opt_isKindOfClass();
 

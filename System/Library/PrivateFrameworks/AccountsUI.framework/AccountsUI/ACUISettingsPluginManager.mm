@@ -1,37 +1,37 @@
 @interface ACUISettingsPluginManager
-- (ACUISettingsPluginManager)initWithParentViewController:(id)a3;
-- (id)_loadSettingsPluginFromBundleWithName:(id)a3;
-- (id)_settingsPluginFromBundleWithName:(id)a3;
+- (ACUISettingsPluginManager)initWithParentViewController:(id)controller;
+- (id)_loadSettingsPluginFromBundleWithName:(id)name;
+- (id)_settingsPluginFromBundleWithName:(id)name;
 - (void)parentViewControllerWillDisappear;
 @end
 
 @implementation ACUISettingsPluginManager
 
-- (ACUISettingsPluginManager)initWithParentViewController:(id)a3
+- (ACUISettingsPluginManager)initWithParentViewController:(id)controller
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v11;
-  v11 = 0;
+  objc_storeStrong(location, controller);
+  v3 = selfCopy;
+  selfCopy = 0;
   v9.receiver = v3;
   v9.super_class = ACUISettingsPluginManager;
   v8 = [(ACUISettingsPluginManager *)&v9 init];
-  v11 = v8;
-  objc_storeStrong(&v11, v8);
+  selfCopy = v8;
+  objc_storeStrong(&selfCopy, v8);
   if (v8)
   {
-    objc_storeWeak(&v11->_parentViewController, location[0]);
+    objc_storeWeak(&selfCopy->_parentViewController, location[0]);
     v4 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    pluginCache = v11->_pluginCache;
-    v11->_pluginCache = v4;
+    pluginCache = selfCopy->_pluginCache;
+    selfCopy->_pluginCache = v4;
     MEMORY[0x277D82BD8](pluginCache);
   }
 
-  v7 = MEMORY[0x277D82BE0](v11);
+  v7 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v11, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v7;
 }
 
@@ -83,20 +83,20 @@
   *MEMORY[0x277D85DE8];
 }
 
-- (id)_settingsPluginFromBundleWithName:(id)a3
+- (id)_settingsPluginFromBundleWithName:(id)name
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v5 = [(NSMutableDictionary *)v7->_pluginCache objectForKey:location[0]];
+  objc_storeStrong(location, name);
+  v5 = [(NSMutableDictionary *)selfCopy->_pluginCache objectForKey:location[0]];
   if (!v5)
   {
-    v5 = [(ACUISettingsPluginManager *)v7 _loadSettingsPluginFromBundleWithName:location[0]];
+    v5 = [(ACUISettingsPluginManager *)selfCopy _loadSettingsPluginFromBundleWithName:location[0]];
     MEMORY[0x277D82BD8](0);
     if (v5)
     {
-      [(NSMutableDictionary *)v7->_pluginCache setObject:v5 forKey:location[0]];
+      [(NSMutableDictionary *)selfCopy->_pluginCache setObject:v5 forKey:location[0]];
     }
   }
 
@@ -107,22 +107,22 @@
   return v4;
 }
 
-- (id)_loadSettingsPluginFromBundleWithName:(id)a3
+- (id)_loadSettingsPluginFromBundleWithName:(id)name
 {
   v24 = *MEMORY[0x277D85DE8];
-  v21 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, name);
   v19 = [ACUIPluginLoader pluginBundleWithName:location[0]];
   if (v19)
   {
     v15 = 0;
-    v14 = [v19 principalClass];
-    if ([(objc_class *)v14 conformsToProtocol:&unk_285035940]== 1)
+    principalClass = [v19 principalClass];
+    if ([(objc_class *)principalClass conformsToProtocol:&unk_285035940]== 1)
     {
-      v11 = [v14 alloc];
-      WeakRetained = objc_loadWeakRetained(&v21->_parentViewController);
+      v11 = [principalClass alloc];
+      WeakRetained = objc_loadWeakRetained(&selfCopy->_parentViewController);
       v3 = [v11 initWithParentController:?];
       v4 = v15;
       v15 = v3;
@@ -130,11 +130,11 @@
       MEMORY[0x277D82BD8](WeakRetained);
     }
 
-    else if ([(objc_class *)v14 conformsToProtocol:&unk_2850359A0]== 1)
+    else if ([(objc_class *)principalClass conformsToProtocol:&unk_2850359A0]== 1)
     {
-      v13 = objc_alloc_init(v14);
+      v13 = objc_alloc_init(principalClass);
       v9 = v13;
-      v10 = objc_loadWeakRetained(&v21->_parentViewController);
+      v10 = objc_loadWeakRetained(&selfCopy->_parentViewController);
       v5 = [v9 settingsPluginWithParent:?];
       v6 = v15;
       v15 = v5;

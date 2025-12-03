@@ -1,36 +1,36 @@
 @interface HMDPersonCoreDataManager
 + (id)logCategory;
-- (BOOL)isRelevantFaceprint:(id)a3;
-- (BOOL)isRelevantManagedObjectContext:(id)a3;
-- (BOOL)isRelevantPerson:(id)a3;
+- (BOOL)isRelevantFaceprint:(id)faceprint;
+- (BOOL)isRelevantManagedObjectContext:(id)context;
+- (BOOL)isRelevantPerson:(id)person;
 - (BOOL)shouldDispatchToPrimaryResident;
 - (HMDHome)home;
-- (HMDPersonCoreDataManager)initWithUUID:(id)a3 workQueue:(id)a4 home:(id)a5 userUUID:(id)a6;
-- (HMDPersonCoreDataManager)initWithUUID:(id)a3 workQueue:(id)a4 home:(id)a5 userUUID:(id)a6 context:(id)a7 residentSyncManager:(id)a8 notificationCenter:(id)a9;
+- (HMDPersonCoreDataManager)initWithUUID:(id)d workQueue:(id)queue home:(id)home userUUID:(id)iD;
+- (HMDPersonCoreDataManager)initWithUUID:(id)d workQueue:(id)queue home:(id)home userUUID:(id)iD context:(id)context residentSyncManager:(id)manager notificationCenter:(id)center;
 - (HMDPersonCoreDataManagerDelegate)delegate;
 - (HMDPersonDataSource)dataSource;
-- (id)addOrUpdateFaceprints:(id)a3 andRemoveFaceprintsWithUUIDs:(id)a4;
-- (id)addOrUpdatePersons:(id)a3 andRemovePersonsWithUUIDs:(id)a4;
+- (id)addOrUpdateFaceprints:(id)faceprints andRemoveFaceprintsWithUUIDs:(id)ds;
+- (id)addOrUpdatePersons:(id)persons andRemovePersonsWithUUIDs:(id)ds;
 - (id)deletedFaceprintUUIDsUserInfoKey;
 - (id)deletedPersonUUIDsUserInfoKey;
 - (id)logIdentifier;
 - (id)mkfPersons;
-- (id)personModelWithModelID:(id)a3;
-- (id)personWithModelID:(id)a3;
-- (id)personWithUUID:(id)a3;
+- (id)personModelWithModelID:(id)d;
+- (id)personWithModelID:(id)d;
+- (id)personWithUUID:(id)d;
 - (id)persons;
 - (id)removeAllAssociatedData;
 - (id)removeAllAssociatedLocalData;
 - (id)removeAllAssociatedSyncedData;
-- (void)configureWithDataSource:(id)a3;
-- (void)enumerateFaceprintsForFaceCropsWithUUIDs:(id)a3 usingBlock:(id)a4;
-- (void)enumerateFaceprintsUsingBlock:(id)a3;
-- (void)enumerateMKFFaceprintsForFaceCropsWithUUIDs:(id)a3 usingBlock:(id)a4;
-- (void)enumeratePersonsUsingBlock:(id)a3;
-- (void)handleManagedObjectContextDidSaveNotification:(id)a3;
-- (void)handleManagedObjectContextWillSaveNotification:(id)a3;
-- (void)insertOrUpdateFaceprintUsingFaceprint:(id)a3;
-- (void)insertOrUpdatePersonUsingPerson:(id)a3;
+- (void)configureWithDataSource:(id)source;
+- (void)enumerateFaceprintsForFaceCropsWithUUIDs:(id)ds usingBlock:(id)block;
+- (void)enumerateFaceprintsUsingBlock:(id)block;
+- (void)enumerateMKFFaceprintsForFaceCropsWithUUIDs:(id)ds usingBlock:(id)block;
+- (void)enumeratePersonsUsingBlock:(id)block;
+- (void)handleManagedObjectContextDidSaveNotification:(id)notification;
+- (void)handleManagedObjectContextWillSaveNotification:(id)notification;
+- (void)insertOrUpdateFaceprintUsingFaceprint:(id)faceprint;
+- (void)insertOrUpdatePersonUsingPerson:(id)person;
 @end
 
 @implementation HMDPersonCoreDataManager
@@ -58,21 +58,21 @@
 
 - (id)logIdentifier
 {
-  v2 = [(HMDPersonCoreDataManager *)self UUID];
-  v3 = [v2 UUIDString];
+  uUID = [(HMDPersonCoreDataManager *)self UUID];
+  uUIDString = [uUID UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
 - (id)removeAllAssociatedSyncedData
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDPersonCoreDataManager *)self home];
+  home = [(HMDPersonCoreDataManager *)self home];
   v4 = objc_autoreleasePoolPush();
-  v5 = self;
+  selfCopy = self;
   v6 = HMFGetOSLogHandle();
   v7 = v6;
-  if (v3)
+  if (home)
   {
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
@@ -85,19 +85,19 @@
     objc_autoreleasePoolPop(v4);
     v9 = objc_alloc_init(MEMORY[0x277D2C900]);
     v10 = MEMORY[0x277D2C938];
-    v11 = [(HMDPersonCoreDataManager *)v5 workQueue];
-    v12 = [v10 schedulerWithDispatchQueue:v11];
+    workQueue = [(HMDPersonCoreDataManager *)selfCopy workQueue];
+    v12 = [v10 schedulerWithDispatchQueue:workQueue];
     v13 = [v9 reschedule:v12];
 
-    v14 = [(HMDPersonCoreDataManager *)v5 context];
+    context = [(HMDPersonCoreDataManager *)selfCopy context];
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __57__HMDPersonCoreDataManager_removeAllAssociatedSyncedData__block_invoke;
     v23[3] = &unk_27868A750;
-    v23[4] = v5;
+    v23[4] = selfCopy;
     v15 = v13;
     v24 = v15;
-    [v14 performBlock:v23];
+    [context performBlock:v23];
 
     v16 = v24;
     v17 = v15;
@@ -196,15 +196,15 @@ void __57__HMDPersonCoreDataManager_removeAllAssociatedSyncedData__block_invoke(
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleManagedObjectContextDidSaveNotification:(id)a3
+- (void)handleManagedObjectContextDidSaveNotification:(id)notification
 {
   v100 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 object];
+  notificationCopy = notification;
+  object = [notificationCopy object];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = object;
   }
 
   else
@@ -219,9 +219,9 @@ void __57__HMDPersonCoreDataManager_removeAllAssociatedSyncedData__block_invoke(
     v75 = v7;
     v80 = [MEMORY[0x277CBEB58] set];
     v78 = [MEMORY[0x277CBEB58] set];
-    v76 = v4;
-    v8 = [v4 userInfo];
-    v9 = [v8 hmf_setForKey:*MEMORY[0x277CBE188]];
+    v76 = notificationCopy;
+    userInfo = [notificationCopy userInfo];
+    v9 = [userInfo hmf_setForKey:*MEMORY[0x277CBE188]];
 
     v92 = 0u;
     v93 = 0u;
@@ -259,7 +259,7 @@ void __57__HMDPersonCoreDataManager_removeAllAssociatedSyncedData__block_invoke(
           if (v16 && [(HMDPersonCoreDataManager *)self isRelevantPerson:v16])
           {
             v17 = objc_autoreleasePoolPush();
-            v18 = self;
+            selfCopy = self;
             v19 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
             {
@@ -272,8 +272,8 @@ void __57__HMDPersonCoreDataManager_removeAllAssociatedSyncedData__block_invoke(
             }
 
             objc_autoreleasePoolPop(v17);
-            v21 = [v16 createHMPerson];
-            [v80 addObject:v21];
+            createHMPerson = [v16 createHMPerson];
+            [v80 addObject:createHMPerson];
           }
 
           else
@@ -290,12 +290,12 @@ void __57__HMDPersonCoreDataManager_removeAllAssociatedSyncedData__block_invoke(
               v23 = 0;
             }
 
-            v21 = v23;
+            createHMPerson = v23;
 
-            if (v21 && [(HMDPersonCoreDataManager *)self isRelevantFaceprint:v21])
+            if (createHMPerson && [(HMDPersonCoreDataManager *)self isRelevantFaceprint:createHMPerson])
             {
               v24 = objc_autoreleasePoolPush();
-              v25 = self;
+              selfCopy2 = self;
               v26 = HMFGetOSLogHandle();
               if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
               {
@@ -303,13 +303,13 @@ void __57__HMDPersonCoreDataManager_removeAllAssociatedSyncedData__block_invoke(
                 *buf = 138543618;
                 v96 = v27;
                 v97 = 2112;
-                v98 = v21;
+                v98 = createHMPerson;
                 _os_log_impl(&dword_229538000, v26, OS_LOG_TYPE_INFO, "%{public}@Received notification about inserted faceprint: %@", buf, 0x16u);
               }
 
               objc_autoreleasePoolPop(v24);
-              v28 = [v21 createHMFaceprint];
-              [v78 addObject:v28];
+              createHMFaceprint = [createHMPerson createHMFaceprint];
+              [v78 addObject:createHMFaceprint];
             }
           }
         }
@@ -320,8 +320,8 @@ void __57__HMDPersonCoreDataManager_removeAllAssociatedSyncedData__block_invoke(
       while (v11);
     }
 
-    v29 = [v76 userInfo];
-    v30 = [v29 hmf_setForKey:*MEMORY[0x277CBE310]];
+    userInfo2 = [v76 userInfo];
+    v30 = [userInfo2 hmf_setForKey:*MEMORY[0x277CBE310]];
 
     v88 = 0u;
     v89 = 0u;
@@ -360,7 +360,7 @@ void __57__HMDPersonCoreDataManager_removeAllAssociatedSyncedData__block_invoke(
           if (v38 && [(HMDPersonCoreDataManager *)self isRelevantPerson:v38])
           {
             v39 = objc_autoreleasePoolPush();
-            v40 = self;
+            selfCopy3 = self;
             v41 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v41, OS_LOG_TYPE_INFO))
             {
@@ -373,8 +373,8 @@ void __57__HMDPersonCoreDataManager_removeAllAssociatedSyncedData__block_invoke(
             }
 
             objc_autoreleasePoolPop(v39);
-            v43 = [v38 createHMPerson];
-            [v80 addObject:v43];
+            createHMPerson2 = [v38 createHMPerson];
+            [v80 addObject:createHMPerson2];
           }
 
           else
@@ -391,12 +391,12 @@ void __57__HMDPersonCoreDataManager_removeAllAssociatedSyncedData__block_invoke(
               v45 = 0;
             }
 
-            v43 = v45;
+            createHMPerson2 = v45;
 
-            if (v43 && [(HMDPersonCoreDataManager *)self isRelevantFaceprint:v43])
+            if (createHMPerson2 && [(HMDPersonCoreDataManager *)self isRelevantFaceprint:createHMPerson2])
             {
               v46 = objc_autoreleasePoolPush();
-              v47 = self;
+              selfCopy4 = self;
               v48 = HMFGetOSLogHandle();
               if (os_log_type_enabled(v48, OS_LOG_TYPE_INFO))
               {
@@ -404,15 +404,15 @@ void __57__HMDPersonCoreDataManager_removeAllAssociatedSyncedData__block_invoke(
                 *buf = 138543618;
                 v96 = v49;
                 v97 = 2112;
-                v98 = v43;
+                v98 = createHMPerson2;
                 _os_log_impl(&dword_229538000, v48, OS_LOG_TYPE_INFO, "%{public}@Received notification about updated faceprint: %@", buf, 0x16u);
 
                 v31 = v77;
               }
 
               objc_autoreleasePoolPop(v46);
-              v50 = [v43 createHMFaceprint];
-              [v78 addObject:v50];
+              createHMFaceprint2 = [createHMPerson2 createHMFaceprint];
+              [v78 addObject:createHMFaceprint2];
             }
           }
         }
@@ -424,18 +424,18 @@ void __57__HMDPersonCoreDataManager_removeAllAssociatedSyncedData__block_invoke(
     }
 
     v7 = v75;
-    v51 = [v75 userInfo];
-    v52 = [(HMDPersonCoreDataManager *)self deletedPersonUUIDsUserInfoKey];
-    v53 = [v51 objectForKeyedSubscript:v52];
+    userInfo3 = [v75 userInfo];
+    deletedPersonUUIDsUserInfoKey = [(HMDPersonCoreDataManager *)self deletedPersonUUIDsUserInfoKey];
+    v53 = [userInfo3 objectForKeyedSubscript:deletedPersonUUIDsUserInfoKey];
 
-    v54 = [v75 userInfo];
-    v55 = [(HMDPersonCoreDataManager *)self deletedPersonUUIDsUserInfoKey];
-    [v54 setObject:0 forKeyedSubscript:v55];
+    userInfo4 = [v75 userInfo];
+    deletedPersonUUIDsUserInfoKey2 = [(HMDPersonCoreDataManager *)self deletedPersonUUIDsUserInfoKey];
+    [userInfo4 setObject:0 forKeyedSubscript:deletedPersonUUIDsUserInfoKey2];
 
     if (v53)
     {
       v56 = objc_autoreleasePoolPush();
-      v57 = self;
+      selfCopy5 = self;
       v58 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v58, OS_LOG_TYPE_INFO))
       {
@@ -450,18 +450,18 @@ void __57__HMDPersonCoreDataManager_removeAllAssociatedSyncedData__block_invoke(
       objc_autoreleasePoolPop(v56);
     }
 
-    v60 = [v75 userInfo];
-    v61 = [(HMDPersonCoreDataManager *)self deletedFaceprintUUIDsUserInfoKey];
-    v62 = [v60 objectForKeyedSubscript:v61];
+    userInfo5 = [v75 userInfo];
+    deletedFaceprintUUIDsUserInfoKey = [(HMDPersonCoreDataManager *)self deletedFaceprintUUIDsUserInfoKey];
+    v62 = [userInfo5 objectForKeyedSubscript:deletedFaceprintUUIDsUserInfoKey];
 
-    v63 = [v75 userInfo];
-    v64 = [(HMDPersonCoreDataManager *)self deletedFaceprintUUIDsUserInfoKey];
-    [v63 setObject:0 forKeyedSubscript:v64];
+    userInfo6 = [v75 userInfo];
+    deletedFaceprintUUIDsUserInfoKey2 = [(HMDPersonCoreDataManager *)self deletedFaceprintUUIDsUserInfoKey];
+    [userInfo6 setObject:0 forKeyedSubscript:deletedFaceprintUUIDsUserInfoKey2];
 
     if (v62)
     {
       v65 = objc_autoreleasePoolPush();
-      v66 = self;
+      selfCopy6 = self;
       v67 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v67, OS_LOG_TYPE_INFO))
       {
@@ -476,7 +476,7 @@ void __57__HMDPersonCoreDataManager_removeAllAssociatedSyncedData__block_invoke(
       objc_autoreleasePoolPop(v65);
     }
 
-    v69 = [(HMDPersonCoreDataManager *)self workQueue];
+    workQueue = [(HMDPersonCoreDataManager *)self workQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __74__HMDPersonCoreDataManager_handleManagedObjectContextDidSaveNotification___block_invoke;
@@ -490,9 +490,9 @@ void __57__HMDPersonCoreDataManager_removeAllAssociatedSyncedData__block_invoke(
     v71 = v78;
     v72 = v53;
     v73 = v80;
-    dispatch_async(v69, block);
+    dispatch_async(workQueue, block);
 
-    v4 = v76;
+    notificationCopy = v76;
   }
 
   v74 = *MEMORY[0x277D85DE8];
@@ -525,15 +525,15 @@ void __74__HMDPersonCoreDataManager_handleManagedObjectContextDidSaveNotificatio
   }
 }
 
-- (void)handleManagedObjectContextWillSaveNotification:(id)a3
+- (void)handleManagedObjectContextWillSaveNotification:(id)notification
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 object];
+  notificationCopy = notification;
+  object = [notificationCopy object];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = object;
   }
 
   else
@@ -545,26 +545,26 @@ void __74__HMDPersonCoreDataManager_handleManagedObjectContextDidSaveNotificatio
 
   if (v7 && [(HMDPersonCoreDataManager *)self isRelevantManagedObjectContext:v7])
   {
-    v8 = [v7 deletedObjects];
+    deletedObjects = [v7 deletedObjects];
     v28[0] = MEMORY[0x277D85DD0];
     v28[1] = 3221225472;
     v28[2] = __75__HMDPersonCoreDataManager_handleManagedObjectContextWillSaveNotification___block_invoke;
     v28[3] = &unk_2786878A8;
     v28[4] = self;
-    v9 = [v8 na_map:v28];
+    v9 = [deletedObjects na_map:v28];
 
-    v10 = [v7 deletedObjects];
+    deletedObjects2 = [v7 deletedObjects];
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
     v27[2] = __75__HMDPersonCoreDataManager_handleManagedObjectContextWillSaveNotification___block_invoke_2;
     v27[3] = &unk_2786878A8;
     v27[4] = self;
-    v11 = [v10 na_map:v27];
+    v11 = [deletedObjects2 na_map:v27];
 
     if ([v9 count])
     {
       v12 = objc_autoreleasePoolPush();
-      v13 = self;
+      selfCopy = self;
       v14 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
       {
@@ -585,14 +585,14 @@ void __74__HMDPersonCoreDataManager_handleManagedObjectContextDidSaveNotificatio
       v16 = 0;
     }
 
-    v17 = [v7 userInfo];
-    v18 = [(HMDPersonCoreDataManager *)self deletedPersonUUIDsUserInfoKey];
-    [v17 setObject:v16 forKeyedSubscript:v18];
+    userInfo = [v7 userInfo];
+    deletedPersonUUIDsUserInfoKey = [(HMDPersonCoreDataManager *)self deletedPersonUUIDsUserInfoKey];
+    [userInfo setObject:v16 forKeyedSubscript:deletedPersonUUIDsUserInfoKey];
 
     if ([v11 count])
     {
       v19 = objc_autoreleasePoolPush();
-      v20 = self;
+      selfCopy2 = self;
       v21 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
       {
@@ -613,9 +613,9 @@ void __74__HMDPersonCoreDataManager_handleManagedObjectContextDidSaveNotificatio
       v23 = 0;
     }
 
-    v24 = [v7 userInfo];
-    v25 = [(HMDPersonCoreDataManager *)self deletedFaceprintUUIDsUserInfoKey];
-    [v24 setObject:v23 forKeyedSubscript:v25];
+    userInfo2 = [v7 userInfo];
+    deletedFaceprintUUIDsUserInfoKey = [(HMDPersonCoreDataManager *)self deletedFaceprintUUIDsUserInfoKey];
+    [userInfo2 setObject:v23 forKeyedSubscript:deletedFaceprintUUIDsUserInfoKey];
   }
 
   v26 = *MEMORY[0x277D85DE8];
@@ -680,12 +680,12 @@ id __75__HMDPersonCoreDataManager_handleManagedObjectContextWillSaveNotification
 - (id)removeAllAssociatedLocalData
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDPersonCoreDataManager *)self home];
+  home = [(HMDPersonCoreDataManager *)self home];
   v4 = objc_autoreleasePoolPush();
-  v5 = self;
+  selfCopy = self;
   v6 = HMFGetOSLogHandle();
   v7 = v6;
-  if (v3)
+  if (home)
   {
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
@@ -698,19 +698,19 @@ id __75__HMDPersonCoreDataManager_handleManagedObjectContextWillSaveNotification
     objc_autoreleasePoolPop(v4);
     v9 = objc_alloc_init(MEMORY[0x277D2C900]);
     v10 = MEMORY[0x277D2C938];
-    v11 = [(HMDPersonCoreDataManager *)v5 workQueue];
-    v12 = [v10 schedulerWithDispatchQueue:v11];
+    workQueue = [(HMDPersonCoreDataManager *)selfCopy workQueue];
+    v12 = [v10 schedulerWithDispatchQueue:workQueue];
     v13 = [v9 reschedule:v12];
 
-    v14 = [(HMDPersonCoreDataManager *)v5 context];
+    context = [(HMDPersonCoreDataManager *)selfCopy context];
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __56__HMDPersonCoreDataManager_removeAllAssociatedLocalData__block_invoke;
     v23[3] = &unk_27868A750;
-    v23[4] = v5;
+    v23[4] = selfCopy;
     v15 = v13;
     v24 = v15;
-    [v14 performBlock:v23];
+    [context performBlock:v23];
 
     v16 = v24;
     v17 = v15;
@@ -789,24 +789,24 @@ void __56__HMDPersonCoreDataManager_removeAllAssociatedLocalData__block_invoke_2
   [v4 deleteObject:v3];
 }
 
-- (BOOL)isRelevantFaceprint:(id)a3
+- (BOOL)isRelevantFaceprint:(id)faceprint
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDPersonCoreDataManager *)self home];
-  if (v5)
+  faceprintCopy = faceprint;
+  home = [(HMDPersonCoreDataManager *)self home];
+  if (home)
   {
-    v6 = [(HMDPersonCoreDataManager *)self userUUID];
+    userUUID = [(HMDPersonCoreDataManager *)self userUUID];
 
-    if (v6)
+    if (userUUID)
     {
-      v7 = [v4 hmd_lastKnownValueForKey:@"user"];
+      v7 = [faceprintCopy hmd_lastKnownValueForKey:@"user"];
       v8 = v7;
       if (v7)
       {
-        v9 = [v7 modelID];
-        v10 = [(HMDPersonCoreDataManager *)self userUUID];
-        v11 = [v9 isEqual:v10];
+        modelID = [v7 modelID];
+        userUUID2 = [(HMDPersonCoreDataManager *)self userUUID];
+        v11 = [modelID isEqual:userUUID2];
       }
 
       else
@@ -817,13 +817,13 @@ void __56__HMDPersonCoreDataManager_removeAllAssociatedLocalData__block_invoke_2
 
     else
     {
-      v16 = [v4 hmd_lastKnownValueForKey:@"home"];
+      v16 = [faceprintCopy hmd_lastKnownValueForKey:@"home"];
       v17 = v16;
       if (v16)
       {
-        v18 = [v16 modelID];
-        v19 = [v5 uuid];
-        v11 = [v18 isEqual:v19];
+        modelID2 = [v16 modelID];
+        uuid = [home uuid];
+        v11 = [modelID2 isEqual:uuid];
       }
 
       else
@@ -836,7 +836,7 @@ void __56__HMDPersonCoreDataManager_removeAllAssociatedLocalData__block_invoke_2
   else
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
@@ -854,18 +854,18 @@ void __56__HMDPersonCoreDataManager_removeAllAssociatedLocalData__block_invoke_2
   return v11;
 }
 
-- (BOOL)isRelevantPerson:(id)a3
+- (BOOL)isRelevantPerson:(id)person
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDPersonCoreDataManager *)self home];
-  if (v5)
+  personCopy = person;
+  home = [(HMDPersonCoreDataManager *)self home];
+  if (home)
   {
-    v6 = [(HMDPersonCoreDataManager *)self userUUID];
+    userUUID = [(HMDPersonCoreDataManager *)self userUUID];
 
-    if (v6)
+    if (userUUID)
     {
-      v7 = v4;
+      v7 = personCopy;
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -885,18 +885,18 @@ void __56__HMDPersonCoreDataManager_removeAllAssociatedLocalData__block_invoke_2
         v11 = v10;
         if (v10)
         {
-          v12 = [v10 modelID];
-          v13 = [(HMDPersonCoreDataManager *)self userUUID];
+          modelID = [v10 modelID];
+          userUUID2 = [(HMDPersonCoreDataManager *)self userUUID];
 LABEL_18:
-          v22 = v13;
-          v18 = [v12 isEqual:v13];
+          v22 = userUUID2;
+          v18 = [modelID isEqual:userUUID2];
 
 LABEL_26:
           goto LABEL_27;
         }
 
         v23 = objc_autoreleasePoolPush();
-        v24 = self;
+        selfCopy2 = self;
         v25 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
         {
@@ -919,7 +919,7 @@ LABEL_24:
 
     else
     {
-      v19 = v4;
+      v19 = personCopy;
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -939,13 +939,13 @@ LABEL_24:
         v11 = v21;
         if (v21)
         {
-          v12 = [v21 modelID];
-          v13 = [v5 uuid];
+          modelID = [v21 modelID];
+          userUUID2 = [home uuid];
           goto LABEL_18;
         }
 
         v23 = objc_autoreleasePoolPush();
-        v24 = self;
+        selfCopy2 = self;
         v25 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
         {
@@ -974,7 +974,7 @@ LABEL_27:
   }
 
   v14 = objc_autoreleasePoolPush();
-  v15 = self;
+  selfCopy3 = self;
   v16 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
   {
@@ -992,16 +992,16 @@ LABEL_28:
   return v18;
 }
 
-- (BOOL)isRelevantManagedObjectContext:(id)a3
+- (BOOL)isRelevantManagedObjectContext:(id)context
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDPersonCoreDataManager *)self home];
-  v6 = v5;
-  if (!v5)
+  contextCopy = context;
+  home = [(HMDPersonCoreDataManager *)self home];
+  v6 = home;
+  if (!home)
   {
     v14 = objc_autoreleasePoolPush();
-    v15 = self;
+    selfCopy = self;
     v16 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
@@ -1015,9 +1015,9 @@ LABEL_28:
     goto LABEL_7;
   }
 
-  v7 = [v5 backingStore];
-  v8 = [v7 coreData];
-  v9 = [v8 isRelatedContext:v4];
+  backingStore = [home backingStore];
+  coreData = [backingStore coreData];
+  v9 = [coreData isRelatedContext:contextCopy];
 
   if (!v9)
   {
@@ -1026,10 +1026,10 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v10 = [v4 name];
-  v11 = [v6 uuid];
-  v12 = HMDWorkingContextNameForHomeUUID(v11);
-  v13 = [v10 isEqualToString:v12];
+  name = [contextCopy name];
+  uuid = [v6 uuid];
+  v12 = HMDWorkingContextNameForHomeUUID(uuid);
+  v13 = [name isEqualToString:v12];
 
 LABEL_8:
   v18 = *MEMORY[0x277D85DE8];
@@ -1039,12 +1039,12 @@ LABEL_8:
 - (BOOL)shouldDispatchToPrimaryResident
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDPersonCoreDataManager *)self home];
-  v4 = v3;
-  if (!v3)
+  home = [(HMDPersonCoreDataManager *)self home];
+  v4 = home;
+  if (!home)
   {
     v7 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
@@ -1058,61 +1058,61 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  if ([v3 isCurrentDeviceConfirmedPrimaryResident])
+  if ([home isCurrentDeviceConfirmedPrimaryResident])
   {
 LABEL_8:
-    v6 = 0;
+    isOwnerUser = 0;
     goto LABEL_11;
   }
 
-  v5 = [(HMDPersonCoreDataManager *)self userUUID];
-  if (v5)
+  userUUID = [(HMDPersonCoreDataManager *)self userUUID];
+  if (userUUID)
   {
-    v6 = [v4 isOwnerUser];
+    isOwnerUser = [v4 isOwnerUser];
   }
 
   else
   {
-    v6 = 1;
+    isOwnerUser = 1;
   }
 
 LABEL_11:
   v11 = *MEMORY[0x277D85DE8];
-  return v6;
+  return isOwnerUser;
 }
 
-- (void)enumerateMKFFaceprintsForFaceCropsWithUUIDs:(id)a3 usingBlock:(id)a4
+- (void)enumerateMKFFaceprintsForFaceCropsWithUUIDs:(id)ds usingBlock:(id)block
 {
   v40 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDPersonCoreDataManager *)self context];
-  [v8 assertIsExecuting];
+  dsCopy = ds;
+  blockCopy = block;
+  context = [(HMDPersonCoreDataManager *)self context];
+  [context assertIsExecuting];
 
-  v9 = [(HMDPersonCoreDataManager *)self home];
-  if (v9)
+  home = [(HMDPersonCoreDataManager *)self home];
+  if (home)
   {
     v10 = +[_MKFFaceprint fetchRequest];
     [v10 setFetchBatchSize:10];
-    v11 = [(HMDPersonCoreDataManager *)self userUUID];
+    userUUID = [(HMDPersonCoreDataManager *)self userUUID];
 
     v12 = MEMORY[0x277CCAC30];
-    if (v11)
+    if (userUUID)
     {
-      v13 = [(HMDPersonCoreDataManager *)self userUUID];
-      if (v6)
+      userUUID2 = [(HMDPersonCoreDataManager *)self userUUID];
+      if (dsCopy)
       {
-        v32 = v6;
+        v32 = dsCopy;
         v14 = @"user.modelID";
 LABEL_10:
-        [v12 predicateWithFormat:@"(%K == %@) && (%K IN %@)", v14, v13, @"faceCropUUID", v32];
+        [v12 predicateWithFormat:@"(%K == %@) && (%K IN %@)", v14, userUUID2, @"faceCropUUID", v32];
         v20 = LABEL_14:;
         [v10 setPredicate:v20];
 
-        v21 = [(HMDPersonCoreDataManager *)self context];
-        v22 = [v21 managedObjectContext];
+        context2 = [(HMDPersonCoreDataManager *)self context];
+        managedObjectContext = [context2 managedObjectContext];
         v35 = 0;
-        v23 = [v22 executeFetchRequest:v10 error:&v35];
+        v23 = [managedObjectContext executeFetchRequest:v10 error:&v35];
         v24 = v35;
 
         if (v23)
@@ -1121,14 +1121,14 @@ LABEL_10:
           v33[1] = 3221225472;
           v33[2] = __83__HMDPersonCoreDataManager_enumerateMKFFaceprintsForFaceCropsWithUUIDs_usingBlock___block_invoke;
           v33[3] = &unk_278687858;
-          v34 = v7;
+          v34 = blockCopy;
           [v23 hmf_enumerateWithAutoreleasePoolUsingBlock:v33];
         }
 
         else
         {
           v25 = objc_autoreleasePoolPush();
-          v26 = self;
+          selfCopy = self;
           v27 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
           {
@@ -1151,10 +1151,10 @@ LABEL_10:
 
     else
     {
-      v13 = [v9 uuid];
-      if (v6)
+      userUUID2 = [home uuid];
+      if (dsCopy)
       {
-        v32 = v6;
+        v32 = dsCopy;
         v14 = @"home.modelID";
         goto LABEL_10;
       }
@@ -1162,12 +1162,12 @@ LABEL_10:
       v19 = @"home.modelID";
     }
 
-    [v12 predicateWithFormat:@"(%K == %@)", v19, v13, v30, v31];
+    [v12 predicateWithFormat:@"(%K == %@)", v19, userUUID2, v30, v31];
     goto LABEL_14;
   }
 
   v15 = objc_autoreleasePoolPush();
-  v16 = self;
+  selfCopy2 = self;
   v17 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
   {
@@ -1183,59 +1183,59 @@ LABEL_20:
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (void)insertOrUpdateFaceprintUsingFaceprint:(id)a3
+- (void)insertOrUpdateFaceprintUsingFaceprint:(id)faceprint
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDPersonCoreDataManager *)self context];
-  [v5 assertIsExecuting];
+  faceprintCopy = faceprint;
+  context = [(HMDPersonCoreDataManager *)self context];
+  [context assertIsExecuting];
 
-  v6 = [(HMDPersonCoreDataManager *)self home];
-  if (v6)
+  home = [(HMDPersonCoreDataManager *)self home];
+  if (home)
   {
-    v7 = [v4 UUID];
-    v8 = [(HMDPersonCoreDataManager *)self context];
-    v9 = [v8 managedObjectContext];
-    v10 = [(_MKFModel *)_MKFFaceprint modelWithModelID:v7 context:v9];
+    uUID = [faceprintCopy UUID];
+    context2 = [(HMDPersonCoreDataManager *)self context];
+    managedObjectContext = [context2 managedObjectContext];
+    v10 = [(_MKFModel *)_MKFFaceprint modelWithModelID:uUID context:managedObjectContext];
 
     if (!v10)
     {
       v11 = [_MKFFaceprint alloc];
-      v12 = [(HMDPersonCoreDataManager *)self context];
-      v13 = [v12 managedObjectContext];
-      v10 = [(_MKFFaceprint *)v11 initWithContext:v13];
+      context3 = [(HMDPersonCoreDataManager *)self context];
+      managedObjectContext2 = [context3 managedObjectContext];
+      v10 = [(_MKFFaceprint *)v11 initWithContext:managedObjectContext2];
 
-      v14 = [v4 UUID];
-      [(_MKFFaceprint *)v10 setModelID:v14];
+      uUID2 = [faceprintCopy UUID];
+      [(_MKFFaceprint *)v10 setModelID:uUID2];
 
-      v15 = [(HMDPersonCoreDataManager *)self userUUID];
+      userUUID = [(HMDPersonCoreDataManager *)self userUUID];
 
-      if (v15)
+      if (userUUID)
       {
-        v16 = [(HMDPersonCoreDataManager *)self userUUID];
-        v17 = [(HMDPersonCoreDataManager *)self context];
-        v18 = [v17 managedObjectContext];
-        v19 = [(_MKFModel *)_MKFUser modelWithModelID:v16 context:v18];
+        userUUID2 = [(HMDPersonCoreDataManager *)self userUUID];
+        context4 = [(HMDPersonCoreDataManager *)self context];
+        managedObjectContext3 = [context4 managedObjectContext];
+        v19 = [(_MKFModel *)_MKFUser modelWithModelID:userUUID2 context:managedObjectContext3];
         [(_MKFFaceprint *)v10 setUser:v19];
       }
 
       else
       {
-        v16 = [v6 uuid];
-        v17 = [(HMDPersonCoreDataManager *)self context];
-        v18 = [v17 managedObjectContext];
-        v19 = [(_MKFModel *)_MKFHome modelWithModelID:v16 context:v18];
+        userUUID2 = [home uuid];
+        context4 = [(HMDPersonCoreDataManager *)self context];
+        managedObjectContext3 = [context4 managedObjectContext];
+        v19 = [(_MKFModel *)_MKFHome modelWithModelID:userUUID2 context:managedObjectContext3];
         [(_MKFFaceprint *)v10 setHome:v19];
       }
     }
 
-    [(_MKFFaceprint *)v10 updateWithHMFaceprint:v4];
+    [(_MKFFaceprint *)v10 updateWithHMFaceprint:faceprintCopy];
   }
 
   else
   {
     v20 = objc_autoreleasePoolPush();
-    v21 = self;
+    selfCopy = self;
     v22 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
     {
@@ -1251,28 +1251,28 @@ LABEL_20:
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (id)personModelWithModelID:(id)a3
+- (id)personModelWithModelID:(id)d
 {
-  v4 = a3;
-  v5 = [(HMDPersonCoreDataManager *)self context];
-  [v5 assertIsExecuting];
+  dCopy = d;
+  context = [(HMDPersonCoreDataManager *)self context];
+  [context assertIsExecuting];
 
-  v6 = [(HMDPersonCoreDataManager *)self home];
-  if (!v6)
+  home = [(HMDPersonCoreDataManager *)self home];
+  if (!home)
   {
     v9 = 0;
     goto LABEL_10;
   }
 
-  v7 = [(HMDPersonCoreDataManager *)self userUUID];
+  userUUID = [(HMDPersonCoreDataManager *)self userUUID];
 
-  if (v7)
+  if (userUUID)
   {
-    if (![v6 isOwnerUser])
+    if (![home isOwnerUser])
     {
-      v10 = [(HMDPersonCoreDataManager *)self context];
-      v11 = [v10 managedObjectContext];
-      v12 = [(MKFCKModel *)MKFCKSharedUserPhotosPerson modelWithModelID:v4 context:v11 error:0];
+      context2 = [(HMDPersonCoreDataManager *)self context];
+      managedObjectContext = [context2 managedObjectContext];
+      v12 = [(MKFCKModel *)MKFCKSharedUserPhotosPerson modelWithModelID:dCopy context:managedObjectContext error:0];
       goto LABEL_9;
     }
 
@@ -1284,9 +1284,9 @@ LABEL_20:
     v8 = _MKFHomePerson;
   }
 
-  v10 = [(HMDPersonCoreDataManager *)self context];
-  v11 = [v10 managedObjectContext];
-  v12 = [(__objc2_class *)v8 modelWithModelID:v4 context:v11];
+  context2 = [(HMDPersonCoreDataManager *)self context];
+  managedObjectContext = [context2 managedObjectContext];
+  v12 = [(__objc2_class *)v8 modelWithModelID:dCopy context:managedObjectContext];
 LABEL_9:
   v9 = v12;
 
@@ -1298,31 +1298,31 @@ LABEL_10:
 - (id)deletedFaceprintUUIDsUserInfoKey
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(HMDPersonCoreDataManager *)self UUID];
-  v4 = [v2 stringWithFormat:@"HMDPersonCoreDataManagerDeletedFaceprintUUIDs.%@", v3];
+  uUID = [(HMDPersonCoreDataManager *)self UUID];
+  v4 = [v2 stringWithFormat:@"HMDPersonCoreDataManagerDeletedFaceprintUUIDs.%@", uUID];
 
   return v4;
 }
 
-- (id)personWithModelID:(id)a3
+- (id)personWithModelID:(id)d
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDPersonCoreDataManager *)self context];
-  [v5 assertIsExecuting];
+  dCopy = d;
+  context = [(HMDPersonCoreDataManager *)self context];
+  [context assertIsExecuting];
 
-  v6 = [(HMDPersonCoreDataManager *)self home];
-  if (v6)
+  home = [(HMDPersonCoreDataManager *)self home];
+  if (home)
   {
-    v7 = [(HMDPersonCoreDataManager *)self userUUID];
+    userUUID = [(HMDPersonCoreDataManager *)self userUUID];
 
-    if (v7)
+    if (userUUID)
     {
-      if (![v6 isOwnerUser])
+      if (![home isOwnerUser])
       {
-        v14 = [(HMDPersonCoreDataManager *)self context];
-        v15 = [v14 managedObjectContext];
-        v16 = [(MKFCKModel *)MKFCKSharedUserPhotosPerson modelWithModelID:v4 context:v15 error:0];
+        context2 = [(HMDPersonCoreDataManager *)self context];
+        managedObjectContext = [context2 managedObjectContext];
+        v16 = [(MKFCKModel *)MKFCKSharedUserPhotosPerson modelWithModelID:dCopy context:managedObjectContext error:0];
         goto LABEL_11;
       }
 
@@ -1334,19 +1334,19 @@ LABEL_10:
       v8 = _MKFHomePerson;
     }
 
-    v14 = [(HMDPersonCoreDataManager *)self context];
-    v15 = [v14 managedObjectContext];
-    v16 = [(__objc2_class *)v8 modelWithModelID:v4 context:v15];
+    context2 = [(HMDPersonCoreDataManager *)self context];
+    managedObjectContext = [context2 managedObjectContext];
+    v16 = [(__objc2_class *)v8 modelWithModelID:dCopy context:managedObjectContext];
 LABEL_11:
     v17 = v16;
 
-    v13 = [v17 createHMPerson];
+    createHMPerson = [v17 createHMPerson];
 
     goto LABEL_12;
   }
 
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
   {
@@ -1357,77 +1357,77 @@ LABEL_11:
   }
 
   objc_autoreleasePoolPop(v9);
-  v13 = 0;
+  createHMPerson = 0;
 LABEL_12:
 
   v18 = *MEMORY[0x277D85DE8];
 
-  return v13;
+  return createHMPerson;
 }
 
-- (void)insertOrUpdatePersonUsingPerson:(id)a3
+- (void)insertOrUpdatePersonUsingPerson:(id)person
 {
   v46 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDPersonCoreDataManager *)self context];
-  [v5 assertIsExecuting];
+  personCopy = person;
+  context = [(HMDPersonCoreDataManager *)self context];
+  [context assertIsExecuting];
 
-  v6 = [(HMDPersonCoreDataManager *)self home];
-  if (v6)
+  home = [(HMDPersonCoreDataManager *)self home];
+  if (home)
   {
-    v7 = [(HMDPersonCoreDataManager *)self userUUID];
+    userUUID = [(HMDPersonCoreDataManager *)self userUUID];
 
-    if (v7)
+    if (userUUID)
     {
-      if (![v6 isOwnerUser])
+      if (![home isOwnerUser])
       {
-        v31 = [v4 UUID];
-        v32 = [(HMDPersonCoreDataManager *)self context];
-        v33 = [v32 managedObjectContext];
-        v11 = [(MKFCKModel *)MKFCKSharedUserPhotosPerson modelWithModelID:v31 context:v33 error:0];
+        uUID = [personCopy UUID];
+        context2 = [(HMDPersonCoreDataManager *)self context];
+        managedObjectContext = [context2 managedObjectContext];
+        v11 = [(MKFCKModel *)MKFCKSharedUserPhotosPerson modelWithModelID:uUID context:managedObjectContext error:0];
 
         if (!v11)
         {
           v34 = [MKFCKSharedUserPhotosPerson alloc];
-          v35 = [(HMDPersonCoreDataManager *)self context];
-          v36 = [v35 managedObjectContext];
-          v11 = [(MKFCKSharedUserPhotosPerson *)v34 initWithContext:v36];
+          context3 = [(HMDPersonCoreDataManager *)self context];
+          managedObjectContext2 = [context3 managedObjectContext];
+          v11 = [(MKFCKSharedUserPhotosPerson *)v34 initWithContext:managedObjectContext2];
 
-          v37 = [v4 UUID];
-          [(MKFCKSharedUserPhotosPerson *)v11 setModelID:v37];
+          uUID2 = [personCopy UUID];
+          [(MKFCKSharedUserPhotosPerson *)v11 setModelID:uUID2];
 
-          v38 = [v6 uuid];
-          v39 = [(HMDPersonCoreDataManager *)self context];
-          v40 = [v39 managedObjectContext];
-          v41 = [(MKFCKModel *)MKFCKSharedUserDataRoot modelWithModelID:v38 context:v40 error:0];
+          uuid = [home uuid];
+          context4 = [(HMDPersonCoreDataManager *)self context];
+          managedObjectContext3 = [context4 managedObjectContext];
+          v41 = [(MKFCKModel *)MKFCKSharedUserDataRoot modelWithModelID:uuid context:managedObjectContext3 error:0];
           [(MKFCKSharedUserPhotosPerson *)v11 setRoot:v41];
 
-          v42 = [v6 uuid];
-          [(MKFCKSharedUserPhotosPerson *)v11 setHomeModelID:v42];
+          uuid2 = [home uuid];
+          [(MKFCKSharedUserPhotosPerson *)v11 setHomeModelID:uuid2];
         }
 
         goto LABEL_14;
       }
 
-      v8 = [v4 UUID];
-      v9 = [(HMDPersonCoreDataManager *)self context];
-      v10 = [v9 managedObjectContext];
-      v11 = [(_MKFModel *)_MKFPhotosPerson modelWithModelID:v8 context:v10];
+      uUID3 = [personCopy UUID];
+      context5 = [(HMDPersonCoreDataManager *)self context];
+      managedObjectContext4 = [context5 managedObjectContext];
+      v11 = [(_MKFModel *)_MKFPhotosPerson modelWithModelID:uUID3 context:managedObjectContext4];
 
       if (!v11)
       {
         v12 = [_MKFPhotosPerson alloc];
-        v13 = [(HMDPersonCoreDataManager *)self context];
-        v14 = [v13 managedObjectContext];
-        v11 = [(_MKFPhotosPerson *)v12 initWithContext:v14];
+        context6 = [(HMDPersonCoreDataManager *)self context];
+        managedObjectContext5 = [context6 managedObjectContext];
+        v11 = [(_MKFPhotosPerson *)v12 initWithContext:managedObjectContext5];
 
-        v15 = [v4 UUID];
-        [(MKFCKSharedUserPhotosPerson *)v11 setModelID:v15];
+        uUID4 = [personCopy UUID];
+        [(MKFCKSharedUserPhotosPerson *)v11 setModelID:uUID4];
 
-        v16 = [(HMDPersonCoreDataManager *)self userUUID];
-        v17 = [(HMDPersonCoreDataManager *)self context];
-        v18 = [v17 managedObjectContext];
-        v19 = [(_MKFModel *)_MKFUser modelWithModelID:v16 context:v18];
+        userUUID2 = [(HMDPersonCoreDataManager *)self userUUID];
+        context7 = [(HMDPersonCoreDataManager *)self context];
+        managedObjectContext6 = [context7 managedObjectContext];
+        v19 = [(_MKFModel *)_MKFUser modelWithModelID:userUUID2 context:managedObjectContext6];
         [(MKFCKSharedUserPhotosPerson *)v11 setUser:v19];
 LABEL_11:
       }
@@ -1435,38 +1435,38 @@ LABEL_11:
 
     else
     {
-      v24 = [v4 UUID];
-      v25 = [(HMDPersonCoreDataManager *)self context];
-      v26 = [v25 managedObjectContext];
-      v11 = [(_MKFModel *)_MKFHomePerson modelWithModelID:v24 context:v26];
+      uUID5 = [personCopy UUID];
+      context8 = [(HMDPersonCoreDataManager *)self context];
+      managedObjectContext7 = [context8 managedObjectContext];
+      v11 = [(_MKFModel *)_MKFHomePerson modelWithModelID:uUID5 context:managedObjectContext7];
 
       if (!v11)
       {
         v27 = [_MKFHomePerson alloc];
-        v28 = [(HMDPersonCoreDataManager *)self context];
-        v29 = [v28 managedObjectContext];
-        v11 = [(_MKFHomePerson *)v27 initWithContext:v29];
+        context9 = [(HMDPersonCoreDataManager *)self context];
+        managedObjectContext8 = [context9 managedObjectContext];
+        v11 = [(_MKFHomePerson *)v27 initWithContext:managedObjectContext8];
 
-        v30 = [v4 UUID];
-        [(MKFCKSharedUserPhotosPerson *)v11 setModelID:v30];
+        uUID6 = [personCopy UUID];
+        [(MKFCKSharedUserPhotosPerson *)v11 setModelID:uUID6];
 
-        v16 = [v6 uuid];
-        v17 = [(HMDPersonCoreDataManager *)self context];
-        v18 = [v17 managedObjectContext];
-        v19 = [(_MKFModel *)_MKFHome modelWithModelID:v16 context:v18];
+        userUUID2 = [home uuid];
+        context7 = [(HMDPersonCoreDataManager *)self context];
+        managedObjectContext6 = [context7 managedObjectContext];
+        v19 = [(_MKFModel *)_MKFHome modelWithModelID:userUUID2 context:managedObjectContext6];
         [(MKFCKSharedUserPhotosPerson *)v11 setHome:v19];
         goto LABEL_11;
       }
     }
 
 LABEL_14:
-    [(MKFCKSharedUserPhotosPerson *)v11 updateWithHMPerson:v4];
+    [(MKFCKSharedUserPhotosPerson *)v11 updateWithHMPerson:personCopy];
 
     goto LABEL_15;
   }
 
   v20 = objc_autoreleasePoolPush();
-  v21 = self;
+  selfCopy = self;
   v22 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
   {
@@ -1485,53 +1485,53 @@ LABEL_15:
 - (id)mkfPersons
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDPersonCoreDataManager *)self context];
-  [v3 assertIsExecuting];
+  context = [(HMDPersonCoreDataManager *)self context];
+  [context assertIsExecuting];
 
-  v4 = [(HMDPersonCoreDataManager *)self home];
-  if (v4)
+  home = [(HMDPersonCoreDataManager *)self home];
+  if (home)
   {
-    v5 = [(HMDPersonCoreDataManager *)self userUUID];
+    userUUID = [(HMDPersonCoreDataManager *)self userUUID];
 
-    if (v5)
+    if (userUUID)
     {
-      if ([v4 isOwnerUser])
+      if ([home isOwnerUser])
       {
-        v6 = [(HMDPersonCoreDataManager *)self userUUID];
-        v7 = [(HMDPersonCoreDataManager *)self context];
-        v8 = [v7 managedObjectContext];
-        [(_MKFModel *)_MKFUser modelWithModelID:v6 context:v8];
+        userUUID2 = [(HMDPersonCoreDataManager *)self userUUID];
+        context2 = [(HMDPersonCoreDataManager *)self context];
+        managedObjectContext = [context2 managedObjectContext];
+        [(_MKFModel *)_MKFUser modelWithModelID:userUUID2 context:managedObjectContext];
       }
 
       else
       {
-        v6 = [v4 uuid];
-        v7 = [(HMDPersonCoreDataManager *)self context];
-        v8 = [v7 managedObjectContext];
-        [(MKFCKModel *)MKFCKSharedUserDataRoot modelWithModelID:v6 context:v8 error:0];
+        userUUID2 = [home uuid];
+        context2 = [(HMDPersonCoreDataManager *)self context];
+        managedObjectContext = [context2 managedObjectContext];
+        [(MKFCKModel *)MKFCKSharedUserDataRoot modelWithModelID:userUUID2 context:managedObjectContext error:0];
       }
       v9 = ;
 
-      v10 = [v9 personsFromPhotos];
+      personsFromPhotos = [v9 personsFromPhotos];
     }
 
     else
     {
-      v16 = [v4 uuid];
-      v17 = [(HMDPersonCoreDataManager *)self context];
-      v18 = [v17 managedObjectContext];
-      v9 = [(_MKFModel *)_MKFHome modelWithModelID:v16 context:v18];
+      uuid = [home uuid];
+      context3 = [(HMDPersonCoreDataManager *)self context];
+      managedObjectContext2 = [context3 managedObjectContext];
+      v9 = [(_MKFModel *)_MKFHome modelWithModelID:uuid context:managedObjectContext2];
 
-      v10 = [v9 persons];
+      personsFromPhotos = [v9 persons];
     }
 
-    v15 = v10;
+    v15 = personsFromPhotos;
   }
 
   else
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
@@ -1552,11 +1552,11 @@ LABEL_15:
 
 - (id)persons
 {
-  v3 = [(HMDPersonCoreDataManager *)self context];
-  [v3 assertIsExecuting];
+  context = [(HMDPersonCoreDataManager *)self context];
+  [context assertIsExecuting];
 
-  v4 = [(HMDPersonCoreDataManager *)self mkfPersons];
-  v5 = [v4 na_map:&__block_literal_global_264218];
+  mkfPersons = [(HMDPersonCoreDataManager *)self mkfPersons];
+  v5 = [mkfPersons na_map:&__block_literal_global_264218];
 
   return v5;
 }
@@ -1564,61 +1564,61 @@ LABEL_15:
 - (id)deletedPersonUUIDsUserInfoKey
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(HMDPersonCoreDataManager *)self UUID];
-  v4 = [v2 stringWithFormat:@"HMDPersonCoreDataManagerDeletedPersonUUIDs.%@", v3];
+  uUID = [(HMDPersonCoreDataManager *)self UUID];
+  v4 = [v2 stringWithFormat:@"HMDPersonCoreDataManagerDeletedPersonUUIDs.%@", uUID];
 
   return v4;
 }
 
 - (id)removeAllAssociatedData
 {
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [(HMDPersonCoreDataManager *)self removeAllAssociatedLocalData];
-  [v3 addObject:v4];
+  array = [MEMORY[0x277CBEB18] array];
+  removeAllAssociatedLocalData = [(HMDPersonCoreDataManager *)self removeAllAssociatedLocalData];
+  [array addObject:removeAllAssociatedLocalData];
 
   if ([(HMDPersonCoreDataManager *)self shouldDispatchToPrimaryResident])
   {
-    v5 = [(HMDPersonCoreDataManager *)self residentSyncManager];
-    v6 = [v5 removeAllAssociatedSyncedData];
-    [v3 addObject:v6];
+    residentSyncManager = [(HMDPersonCoreDataManager *)self residentSyncManager];
+    removeAllAssociatedSyncedData = [residentSyncManager removeAllAssociatedSyncedData];
+    [array addObject:removeAllAssociatedSyncedData];
   }
 
   else
   {
-    v5 = [(HMDPersonCoreDataManager *)self removeAllAssociatedSyncedData];
-    [v3 addObject:v5];
+    residentSyncManager = [(HMDPersonCoreDataManager *)self removeAllAssociatedSyncedData];
+    [array addObject:residentSyncManager];
   }
 
-  v7 = [MEMORY[0x277D2C900] chainFutures:v3];
+  v7 = [MEMORY[0x277D2C900] chainFutures:array];
 
   return v7;
 }
 
-- (id)addOrUpdateFaceprints:(id)a3 andRemoveFaceprintsWithUUIDs:(id)a4
+- (id)addOrUpdateFaceprints:(id)faceprints andRemoveFaceprintsWithUUIDs:(id)ds
 {
   v33 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDPersonCoreDataManager *)self home];
-  if (v8)
+  faceprintsCopy = faceprints;
+  dsCopy = ds;
+  home = [(HMDPersonCoreDataManager *)self home];
+  if (home)
   {
     v9 = objc_alloc_init(MEMORY[0x277D2C900]);
     v10 = MEMORY[0x277D2C938];
-    v11 = [(HMDPersonCoreDataManager *)self workQueue];
-    v12 = [v10 schedulerWithDispatchQueue:v11];
+    workQueue = [(HMDPersonCoreDataManager *)self workQueue];
+    v12 = [v10 schedulerWithDispatchQueue:workQueue];
     v13 = [v9 reschedule:v12];
 
-    v14 = [(HMDPersonCoreDataManager *)self context];
+    context = [(HMDPersonCoreDataManager *)self context];
     v26[0] = MEMORY[0x277D85DD0];
     v26[1] = 3221225472;
     v26[2] = __79__HMDPersonCoreDataManager_addOrUpdateFaceprints_andRemoveFaceprintsWithUUIDs___block_invoke;
     v26[3] = &unk_2786891E0;
-    v27 = v6;
-    v28 = self;
-    v29 = v7;
+    v27 = faceprintsCopy;
+    selfCopy = self;
+    v29 = dsCopy;
     v15 = v13;
     v30 = v15;
-    [v14 performBlock:v26];
+    [context performBlock:v26];
 
     v16 = v30;
     v17 = v15;
@@ -1629,7 +1629,7 @@ LABEL_15:
   else
   {
     v19 = objc_autoreleasePoolPush();
-    v20 = self;
+    selfCopy2 = self;
     v21 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
@@ -1784,21 +1784,21 @@ void __79__HMDPersonCoreDataManager_addOrUpdateFaceprints_andRemoveFaceprintsWit
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (void)enumerateFaceprintsForFaceCropsWithUUIDs:(id)a3 usingBlock:(id)a4
+- (void)enumerateFaceprintsForFaceCropsWithUUIDs:(id)ds usingBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDPersonCoreDataManager *)self context];
+  dsCopy = ds;
+  blockCopy = block;
+  context = [(HMDPersonCoreDataManager *)self context];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __80__HMDPersonCoreDataManager_enumerateFaceprintsForFaceCropsWithUUIDs_usingBlock___block_invoke;
   v11[3] = &unk_278689F98;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  [v8 unsafeSynchronousBlock:v11];
+  v12 = dsCopy;
+  v13 = blockCopy;
+  v9 = blockCopy;
+  v10 = dsCopy;
+  [context unsafeSynchronousBlock:v11];
 }
 
 void __80__HMDPersonCoreDataManager_enumerateFaceprintsForFaceCropsWithUUIDs_usingBlock___block_invoke(uint64_t a1)
@@ -1824,18 +1824,18 @@ void __80__HMDPersonCoreDataManager_enumerateFaceprintsForFaceCropsWithUUIDs_usi
   }
 }
 
-- (void)enumerateFaceprintsUsingBlock:(id)a3
+- (void)enumerateFaceprintsUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(HMDPersonCoreDataManager *)self context];
+  blockCopy = block;
+  context = [(HMDPersonCoreDataManager *)self context];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __58__HMDPersonCoreDataManager_enumerateFaceprintsUsingBlock___block_invoke;
   v7[3] = &unk_27868A7A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 unsafeSynchronousBlock:v7];
+  v8 = blockCopy;
+  v6 = blockCopy;
+  [context unsafeSynchronousBlock:v7];
 }
 
 void __58__HMDPersonCoreDataManager_enumerateFaceprintsUsingBlock___block_invoke(uint64_t a1)
@@ -1860,16 +1860,16 @@ void __58__HMDPersonCoreDataManager_enumerateFaceprintsUsingBlock___block_invoke
   }
 }
 
-- (id)addOrUpdatePersons:(id)a3 andRemovePersonsWithUUIDs:(id)a4
+- (id)addOrUpdatePersons:(id)persons andRemovePersonsWithUUIDs:(id)ds
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDPersonCoreDataManager *)self home];
-  if (!v8)
+  personsCopy = persons;
+  dsCopy = ds;
+  home = [(HMDPersonCoreDataManager *)self home];
+  if (!home)
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
@@ -1881,15 +1881,15 @@ void __58__HMDPersonCoreDataManager_enumerateFaceprintsUsingBlock___block_invoke
 
     objc_autoreleasePoolPop(v11);
     v15 = MEMORY[0x277D2C900];
-    v9 = [MEMORY[0x277CCA9B8] hmErrorWithCode:48];
-    v10 = [v15 futureWithError:v9];
+    residentSyncManager = [MEMORY[0x277CCA9B8] hmErrorWithCode:48];
+    v10 = [v15 futureWithError:residentSyncManager];
     goto LABEL_7;
   }
 
   if ([(HMDPersonCoreDataManager *)self shouldDispatchToPrimaryResident])
   {
-    v9 = [(HMDPersonCoreDataManager *)self residentSyncManager];
-    v10 = [v9 addOrUpdatePersons:v6 andRemovePersonsWithUUIDs:v7];
+    residentSyncManager = [(HMDPersonCoreDataManager *)self residentSyncManager];
+    v10 = [residentSyncManager addOrUpdatePersons:personsCopy andRemovePersonsWithUUIDs:dsCopy];
 LABEL_7:
     v16 = v10;
 
@@ -1898,21 +1898,21 @@ LABEL_7:
 
   v17 = objc_alloc_init(MEMORY[0x277D2C900]);
   v18 = MEMORY[0x277D2C938];
-  v19 = [(HMDPersonCoreDataManager *)self workQueue];
-  v20 = [v18 schedulerWithDispatchQueue:v19];
+  workQueue = [(HMDPersonCoreDataManager *)self workQueue];
+  v20 = [v18 schedulerWithDispatchQueue:workQueue];
   v21 = [v17 reschedule:v20];
 
-  v22 = [(HMDPersonCoreDataManager *)self context];
+  context = [(HMDPersonCoreDataManager *)self context];
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
   v27[2] = __73__HMDPersonCoreDataManager_addOrUpdatePersons_andRemovePersonsWithUUIDs___block_invoke;
   v27[3] = &unk_2786891E0;
-  v28 = v6;
-  v29 = self;
-  v30 = v7;
+  v28 = personsCopy;
+  selfCopy2 = self;
+  v30 = dsCopy;
   v23 = v21;
   v31 = v23;
-  [v22 performBlock:v27];
+  [context performBlock:v27];
 
   v24 = v31;
   v16 = v23;
@@ -2049,30 +2049,30 @@ void __73__HMDPersonCoreDataManager_addOrUpdatePersons_andRemovePersonsWithUUIDs
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (void)enumeratePersonsUsingBlock:(id)a3
+- (void)enumeratePersonsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
   v14 = __Block_byref_object_copy__264231;
   v15 = __Block_byref_object_dispose__264232;
   v16 = 0;
-  v5 = [(HMDPersonCoreDataManager *)self context];
+  context = [(HMDPersonCoreDataManager *)self context];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __55__HMDPersonCoreDataManager_enumeratePersonsUsingBlock___block_invoke;
   v10[3] = &unk_27868A688;
   v10[4] = self;
   v10[5] = &v11;
-  [v5 unsafeSynchronousBlock:v10];
+  [context unsafeSynchronousBlock:v10];
 
   v6 = v12[5];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __55__HMDPersonCoreDataManager_enumeratePersonsUsingBlock___block_invoke_2;
   v8[3] = &unk_2786877E8;
-  v7 = v4;
+  v7 = blockCopy;
   v9 = v7;
   [v6 hmf_enumerateWithAutoreleasePoolUsingBlock:v8];
 
@@ -2087,25 +2087,25 @@ void __55__HMDPersonCoreDataManager_enumeratePersonsUsingBlock___block_invoke(ui
   *(v3 + 40) = v2;
 }
 
-- (id)personWithUUID:(id)a3
+- (id)personWithUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__264231;
   v16 = __Block_byref_object_dispose__264232;
   v17 = 0;
-  v5 = [(HMDPersonCoreDataManager *)self context];
+  context = [(HMDPersonCoreDataManager *)self context];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __43__HMDPersonCoreDataManager_personWithUUID___block_invoke;
   v9[3] = &unk_27868A4D8;
   v11 = &v12;
   v9[4] = self;
-  v6 = v4;
+  v6 = dCopy;
   v10 = v6;
-  [v5 unsafeSynchronousBlock:v9];
+  [context unsafeSynchronousBlock:v9];
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -2121,73 +2121,73 @@ void __43__HMDPersonCoreDataManager_personWithUUID___block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-- (void)configureWithDataSource:(id)a3
+- (void)configureWithDataSource:(id)source
 {
-  v4 = a3;
-  v5 = [(HMDPersonCoreDataManager *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  sourceCopy = source;
+  workQueue = [(HMDPersonCoreDataManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  [(HMDPersonCoreDataManager *)self setDataSource:v4];
-  v6 = [(HMDPersonCoreDataManager *)self notificationCenter];
-  [v6 addObserver:self selector:sel_handleManagedObjectContextWillSaveNotification_ name:*MEMORY[0x277CBE1C0] object:0];
+  [(HMDPersonCoreDataManager *)self setDataSource:sourceCopy];
+  notificationCenter = [(HMDPersonCoreDataManager *)self notificationCenter];
+  [notificationCenter addObserver:self selector:sel_handleManagedObjectContextWillSaveNotification_ name:*MEMORY[0x277CBE1C0] object:0];
 
-  v7 = [(HMDPersonCoreDataManager *)self notificationCenter];
-  [v7 addObserver:self selector:sel_handleManagedObjectContextDidSaveNotification_ name:*MEMORY[0x277CBE1A8] object:0];
+  notificationCenter2 = [(HMDPersonCoreDataManager *)self notificationCenter];
+  [notificationCenter2 addObserver:self selector:sel_handleManagedObjectContextDidSaveNotification_ name:*MEMORY[0x277CBE1A8] object:0];
 
-  v9 = [(HMDPersonCoreDataManager *)self residentSyncManager];
-  v8 = [(HMDPersonCoreDataManager *)self home];
-  [v9 configureWithHome:v8 delegate:self];
+  residentSyncManager = [(HMDPersonCoreDataManager *)self residentSyncManager];
+  home = [(HMDPersonCoreDataManager *)self home];
+  [residentSyncManager configureWithHome:home delegate:self];
 }
 
-- (HMDPersonCoreDataManager)initWithUUID:(id)a3 workQueue:(id)a4 home:(id)a5 userUUID:(id)a6 context:(id)a7 residentSyncManager:(id)a8 notificationCenter:(id)a9
+- (HMDPersonCoreDataManager)initWithUUID:(id)d workQueue:(id)queue home:(id)home userUUID:(id)iD context:(id)context residentSyncManager:(id)manager notificationCenter:(id)center
 {
-  v15 = a3;
-  v28 = a4;
-  v16 = a5;
-  v17 = a6;
-  v27 = a7;
-  v18 = a8;
-  v19 = a9;
+  dCopy = d;
+  queueCopy = queue;
+  homeCopy = home;
+  iDCopy = iD;
+  contextCopy = context;
+  managerCopy = manager;
+  centerCopy = center;
   v29.receiver = self;
   v29.super_class = HMDPersonCoreDataManager;
   v20 = [(HMDPersonCoreDataManager *)&v29 init];
   v21 = v20;
   if (v20)
   {
-    objc_storeStrong(&v20->_workQueue, a4);
-    v22 = [v15 copy];
+    objc_storeStrong(&v20->_workQueue, queue);
+    v22 = [dCopy copy];
     UUID = v21->_UUID;
     v21->_UUID = v22;
 
-    objc_storeWeak(&v21->_home, v16);
-    v24 = [v17 copy];
+    objc_storeWeak(&v21->_home, homeCopy);
+    v24 = [iDCopy copy];
     userUUID = v21->_userUUID;
     v21->_userUUID = v24;
 
-    objc_storeStrong(&v21->_context, a7);
-    objc_storeStrong(&v21->_residentSyncManager, a8);
-    objc_storeStrong(&v21->_notificationCenter, a9);
+    objc_storeStrong(&v21->_context, context);
+    objc_storeStrong(&v21->_residentSyncManager, manager);
+    objc_storeStrong(&v21->_notificationCenter, center);
   }
 
   return v21;
 }
 
-- (HMDPersonCoreDataManager)initWithUUID:(id)a3 workQueue:(id)a4 home:(id)a5 userUUID:(id)a6
+- (HMDPersonCoreDataManager)initWithUUID:(id)d workQueue:(id)queue home:(id)home userUUID:(id)iD
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [v11 backingStore];
-  v15 = [v14 context];
+  iDCopy = iD;
+  homeCopy = home;
+  queueCopy = queue;
+  dCopy = d;
+  backingStore = [homeCopy backingStore];
+  context = [backingStore context];
 
   v16 = [HMDPersonResidentSyncManager alloc];
-  v17 = [v11 msgDispatcher];
-  v18 = [v11 residentSyncManager];
-  v19 = [(HMDPersonResidentSyncManager *)v16 initWithUUID:v13 messageDispatcher:v17 workQueue:v12 residentSyncManager:v18];
+  msgDispatcher = [homeCopy msgDispatcher];
+  residentSyncManager = [homeCopy residentSyncManager];
+  v19 = [(HMDPersonResidentSyncManager *)v16 initWithUUID:dCopy messageDispatcher:msgDispatcher workQueue:queueCopy residentSyncManager:residentSyncManager];
 
-  v20 = [MEMORY[0x277CCAB98] defaultCenter];
-  v21 = [(HMDPersonCoreDataManager *)self initWithUUID:v13 workQueue:v12 home:v11 userUUID:v10 context:v15 residentSyncManager:v19 notificationCenter:v20];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  v21 = [(HMDPersonCoreDataManager *)self initWithUUID:dCopy workQueue:queueCopy home:homeCopy userUUID:iDCopy context:context residentSyncManager:v19 notificationCenter:defaultCenter];
 
   return v21;
 }

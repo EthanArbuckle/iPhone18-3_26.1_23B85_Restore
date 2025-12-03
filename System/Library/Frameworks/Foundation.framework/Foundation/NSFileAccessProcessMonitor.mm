@@ -1,11 +1,11 @@
 @interface NSFileAccessProcessMonitor
 + (id)sharedInstance;
-- (BOOL)processWithPIDIsSuspended:(int)a3;
+- (BOOL)processWithPIDIsSuspended:(int)suspended;
 - (id)_init;
-- (void)addProcessManager:(id)a3 forPID:(int)a4;
+- (void)addProcessManager:(id)manager forPID:(int)d;
 - (void)dealloc;
-- (void)process:(id)a3 receivedUpdate:(id)a4;
-- (void)removeProcessManager:(id)a3 forPID:(int)a4;
+- (void)process:(id)process receivedUpdate:(id)update;
+- (void)removeProcessManager:(id)manager forPID:(int)d;
 - (void)updateMonitorPredicate;
 @end
 
@@ -18,7 +18,7 @@
   v3[1] = 3221225472;
   v3[2] = __44__NSFileAccessProcessMonitor_sharedInstance__block_invoke;
   v3[3] = &unk_1E69F2C00;
-  v3[4] = a1;
+  v3[4] = self;
   if (qword_1ED440018 != -1)
   {
     dispatch_once(&qword_1ED440018, v3);
@@ -124,10 +124,10 @@ uint64_t __44__NSFileAccessProcessMonitor_sharedInstance__block_invoke(uint64_t 
   [(NSFileAccessProcessMonitor *)&v3 dealloc];
 }
 
-- (void)addProcessManager:(id)a3 forPID:(int)a4
+- (void)addProcessManager:(id)manager forPID:(int)d
 {
   v11 = *MEMORY[0x1E69E9840];
-  v7 = [(objc_class *)objc_lookUpClass("RBSProcessIdentifier") identifierWithPid:*&a4];
+  v7 = [(objc_class *)objc_lookUpClass("RBSProcessIdentifier") identifierWithPid:*&d];
   os_unfair_lock_lock(&self->_lock);
   v8 = [(NSMutableDictionary *)self->_pidToProcessManagers objectForKey:v7];
   if (!v8)
@@ -136,7 +136,7 @@ uint64_t __44__NSFileAccessProcessMonitor_sharedInstance__block_invoke(uint64_t 
     [(NSMutableDictionary *)self->_pidToProcessManagers setObject:v8 forKey:v7];
   }
 
-  if ([(NSHashTable *)v8 containsObject:a3])
+  if ([(NSHashTable *)v8 containsObject:manager])
   {
 
     os_unfair_lock_unlock(&self->_lock);
@@ -148,37 +148,37 @@ uint64_t __44__NSFileAccessProcessMonitor_sharedInstance__block_invoke(uint64_t 
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
       v10[0] = 67109120;
-      v10[1] = a4;
+      v10[1] = d;
       _os_log_debug_impl(&dword_18075C000, v9, OS_LOG_TYPE_DEBUG, "Creating process monitor for pid %d", v10, 8u);
     }
 
-    [(NSHashTable *)v8 addObject:a3];
+    [(NSHashTable *)v8 addObject:manager];
     os_unfair_lock_unlock(&self->_lock);
     [(NSFileAccessProcessMonitor *)self updateMonitorPredicate];
   }
 }
 
-- (void)removeProcessManager:(id)a3 forPID:(int)a4
+- (void)removeProcessManager:(id)manager forPID:(int)d
 {
   v13 = *MEMORY[0x1E69E9840];
-  v7 = [(objc_class *)objc_lookUpClass("RBSProcessIdentifier") identifierWithPid:*&a4];
+  v7 = [(objc_class *)objc_lookUpClass("RBSProcessIdentifier") identifierWithPid:*&d];
   os_unfair_lock_lock(&self->_lock);
   v8 = [(NSMutableDictionary *)self->_pidToProcessManagers objectForKey:v7];
   if (v8)
   {
     v9 = v8;
-    v10 = [v8 containsObject:a3];
+    v10 = [v8 containsObject:manager];
     if (v10)
     {
       v11 = _NSFCProcessMonitorLog();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
       {
         v12[0] = 67109120;
-        v12[1] = a4;
+        v12[1] = d;
         _os_log_debug_impl(&dword_18075C000, v11, OS_LOG_TYPE_DEBUG, "Destroying process monitor for pid %d", v12, 8u);
       }
 
-      [v9 removeObject:a3];
+      [v9 removeObject:manager];
     }
 
     if (![v9 count])
@@ -200,12 +200,12 @@ uint64_t __44__NSFileAccessProcessMonitor_sharedInstance__block_invoke(uint64_t 
   }
 }
 
-- (void)process:(id)a3 receivedUpdate:(id)a4
+- (void)process:(id)process receivedUpdate:(id)update
 {
   v17 = *MEMORY[0x1E69E9840];
-  if ([objc_msgSend(a3 "currentState")] == 3)
+  if ([objc_msgSend(process "currentState")] == 3)
   {
-    v6 = -[objc_class identifierWithPid:](objc_lookUpClass("RBSProcessIdentifier"), "identifierWithPid:", [a3 pid]);
+    v6 = -[objc_class identifierWithPid:](objc_lookUpClass("RBSProcessIdentifier"), "identifierWithPid:", [process pid]);
     os_unfair_lock_lock(&self->_lock);
     v7 = [-[NSMutableDictionary objectForKey:](self->_pidToProcessManagers objectForKey:{v6), "allObjects"}];
     os_unfair_lock_unlock(&self->_lock);
@@ -240,9 +240,9 @@ uint64_t __44__NSFileAccessProcessMonitor_sharedInstance__block_invoke(uint64_t 
   }
 }
 
-- (BOOL)processWithPIDIsSuspended:(int)a3
+- (BOOL)processWithPIDIsSuspended:(int)suspended
 {
-  v3 = [(objc_class *)objc_lookUpClass("RBSProcessIdentifier") identifierWithPid:*&a3];
+  v3 = [(objc_class *)objc_lookUpClass("RBSProcessIdentifier") identifierWithPid:*&suspended];
   v4 = [(objc_class *)objc_lookUpClass("RBSProcessPredicate") predicateMatchingIdentifier:v3];
   return [objc_msgSend(-[objc_class handleForPredicate:error:](objc_lookUpClass("RBSProcessHandle") handleForPredicate:v4 error:{0), "currentState"), "taskState"}] == 3;
 }

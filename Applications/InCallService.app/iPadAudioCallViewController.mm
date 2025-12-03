@@ -1,34 +1,34 @@
 @interface iPadAudioCallViewController
-+ (BOOL)prefersWhiteTextOnImageRef:(CGImage *)a3;
-+ (BOOL)wallpaperContentIsSensitive:(id)a3;
-+ (CGImage)imageRefFrom:(id)a3;
++ (BOOL)prefersWhiteTextOnImageRef:(CGImage *)ref;
++ (BOOL)wallpaperContentIsSensitive:(id)sensitive;
++ (CGImage)imageRefFrom:(id)from;
 + (NSArray)contactKeysToFetch;
-+ (void)fetchPrefersWhiteColorAtCropRect:(CGRect)a3 image:(id)a4 completion:(id)a5;
++ (void)fetchPrefersWhiteColorAtCropRect:(CGRect)rect image:(id)image completion:(id)completion;
 - (AVSpeechSynthesizer)speechSynthesizer;
-- (BOOL)_isScreeningAnyCallGroup:(id)a3;
-- (BOOL)_isScreeningCallGroup:(id)a3;
+- (BOOL)_isScreeningAnyCallGroup:(id)group;
+- (BOOL)_isScreeningCallGroup:(id)group;
 - (BOOL)allowsBanners;
 - (BOOL)allowsMenuButtonDismissal;
 - (BOOL)allowsOrientationChangeEvents;
 - (BOOL)callHasContactPosterWithHorizontalName;
 - (BOOL)callHasContactPosterWithVerticalName;
 - (BOOL)callHasNoContactPoster;
-- (BOOL)callParticipantsViewControllerHasHighResolutionImageOrWallpaperForContact:(id)a3;
-- (BOOL)callParticipantsViewControllerShouldShowLargeAvatar:(id)a3;
+- (BOOL)callParticipantsViewControllerHasHighResolutionImageOrWallpaperForContact:(id)contact;
+- (BOOL)callParticipantsViewControllerShouldShowLargeAvatar:(id)avatar;
 - (BOOL)callRecordingAllowed;
-- (BOOL)callStateCanShowNewPoster:(id)a3;
-- (BOOL)canDoInfoButtonCoinFlipWith:(id)a3 contactStore:(id)a4;
+- (BOOL)callStateCanShowNewPoster:(id)poster;
+- (BOOL)canDoInfoButtonCoinFlipWith:(id)with contactStore:(id)store;
 - (BOOL)canShowBackgroundImage;
-- (BOOL)canShowPosterBadgeInAudioCallView:(id)a3;
+- (BOOL)canShowPosterBadgeInAudioCallView:(id)view;
 - (BOOL)canShowPosterImage;
-- (BOOL)contactHasPoster:(id)a3;
+- (BOOL)contactHasPoster:(id)poster;
 - (BOOL)currentCallStateCanShowNewPoster;
 - (BOOL)desiresLockButtonEvents;
-- (BOOL)desiresLockButtonEventsForCallContainer:(id)a3;
-- (BOOL)hasLastSeenPosterForCall:(id)a3;
+- (BOOL)desiresLockButtonEventsForCallContainer:(id)container;
+- (BOOL)hasLastSeenPosterForCall:(id)call;
 - (BOOL)hasNoCallsOrOnlyEndedCalls;
 - (BOOL)isCallRecordingActive;
-- (BOOL)isCallSmartHoldingSessionActive:(id)a3;
+- (BOOL)isCallSmartHoldingSessionActive:(id)active;
 - (BOOL)isPickedRouteReceiver;
 - (BOOL)isPickedRouteSpeaker;
 - (BOOL)isReadyToShowCallDetails;
@@ -37,11 +37,11 @@
 - (BOOL)isShowingPoster;
 - (BOOL)isShowingPosterBadge;
 - (BOOL)isShowingPosterName;
-- (BOOL)lastSeenPosterDataIsSensitiveForCall:(id)a3;
+- (BOOL)lastSeenPosterDataIsSensitiveForCall:(id)call;
 - (BOOL)needsDismissalAssertion;
-- (BOOL)prefersShowingCachedLastSeenPosterBeforeCallConnected:(id)a3;
-- (BOOL)prioritizedCallIsInSameCallGroupAsCall:(id)a3;
-- (BOOL)setCallForBackgroundImage:(id)a3 animated:(BOOL)a4 callDisplayStyleChanged:(BOOL)a5;
+- (BOOL)prefersShowingCachedLastSeenPosterBeforeCallConnected:(id)connected;
+- (BOOL)prioritizedCallIsInSameCallGroupAsCall:(id)call;
+- (BOOL)setCallForBackgroundImage:(id)image animated:(BOOL)animated callDisplayStyleChanged:(BOOL)changed;
 - (BOOL)shouldAddExtensionNumberButtonToViewHierarchy;
 - (BOOL)shouldAddRTTButtonToViewHierarchy;
 - (BOOL)shouldApplyNewGradientBlur;
@@ -54,8 +54,8 @@
 - (BOOL)shouldShowCircularAvatar;
 - (BOOL)shouldShowConferenceCallDetails;
 - (BOOL)shouldShowContactOrLastSeenWallpaper;
-- (BOOL)shouldShowEnableWiFiCallingAlertForCall:(id)a3;
-- (BOOL)shouldShowLargeAvatarForCall:(id)a3;
+- (BOOL)shouldShowEnableWiFiCallingAlertForCall:(id)call;
+- (BOOL)shouldShowLargeAvatarForCall:(id)call;
 - (BOOL)shouldShowMergeCalls;
 - (BOOL)shouldShowNewPosterUpdates;
 - (BOOL)shouldShowUseRTT;
@@ -86,63 +86,63 @@
 - (double)callDetailsButtonPaddingTrailing;
 - (double)callDetailsButtonPaddingTrailing_PERCENT;
 - (double)callWaitingAnimationDelay;
-- (iPadAudioCallViewController)initWithCallDisplayStyleManager:(id)a3 callCenter:(id)a4 featureFlags:(id)a5 call:(id)a6;
-- (id)ambientParticipantsViewConstraintsForView:(id)a3 largeAvatar:(BOOL)a4;
-- (id)answerRequestForCall:(id)a3;
-- (id)associatedCallGroupForCall:(id)a3;
+- (iPadAudioCallViewController)initWithCallDisplayStyleManager:(id)manager callCenter:(id)center featureFlags:(id)flags call:(id)call;
+- (id)ambientParticipantsViewConstraintsForView:(id)view largeAvatar:(BOOL)avatar;
+- (id)answerRequestForCall:(id)call;
+- (id)associatedCallGroupForCall:(id)call;
 - (id)audioRouteMenu;
-- (id)contactForCall:(id)a3;
+- (id)contactForCall:(id)call;
 - (id)contactImage;
-- (id)contactImageDataForCall:(id)a3;
-- (id)contactImageForCall:(id)a3;
-- (id)contactToDisplayInCallWallpaperForCall:(id)a3;
+- (id)contactImageDataForCall:(id)call;
+- (id)contactImageForCall:(id)call;
+- (id)contactToDisplayInCallWallpaperForCall:(id)call;
 - (id)contactWallpaperBackgroundColor;
-- (id)contactWallpaperConfigurationForCall:(id)a3 shouldReadFromCache:(BOOL)a4;
-- (id)contactWallpaperForCall:(id)a3;
+- (id)contactWallpaperConfigurationForCall:(id)call shouldReadFromCache:(BOOL)cache;
+- (id)contactWallpaperForCall:(id)call;
 - (id)createBlurryBackgroundView;
 - (id)createContactFirstNameLabelViewModel;
 - (id)createDimmingView;
-- (id)currentIMNicknameMatchingContact:(id)a3;
-- (id)customColorForParticipantLabelWithCall:(id)a3;
-- (id)customColorForStatusLabelWithCall:(id)a3;
-- (id)customFontForParticipantLabelWithCall:(id)a3;
-- (id)customizedTitleForItemInBar:(id)a3 withActionType:(int64_t)a4;
+- (id)currentIMNicknameMatchingContact:(id)contact;
+- (id)customColorForParticipantLabelWithCall:(id)call;
+- (id)customColorForStatusLabelWithCall:(id)call;
+- (id)customFontForParticipantLabelWithCall:(id)call;
+- (id)customizedTitleForItemInBar:(id)bar withActionType:(int64_t)type;
 - (id)fallbackHorizontalNameLabelString;
-- (id)fallbackImageDataForCall:(id)a3;
+- (id)fallbackImageDataForCall:(id)call;
 - (id)getParticipantsView_NotWaiting;
 - (id)getParticipantsView_Waiting;
 - (id)getParticipantsView_WaitingOrNot;
 - (id)isolatedCall;
-- (id)lastSeenOrCurrentPosterConfigurationForCall:(id)a3;
-- (id)lastSeenPosterConfigurationForCall:(id)a3;
-- (id)lastSeenPosterIMWallpaperMetadataForCall:(id)a3;
-- (id)makeCallDetailsCoordinatorWithBannerPresentationManager:(id)a3 existingCoordinator:(id)a4 deferredPresentationManager:(id)a5;
-- (id)makeHeldCallControlsViewWithCallCenter:(id)a3 style:(int64_t)a4;
-- (id)makeLockObserverWithHandler:(id)a3;
-- (id)newPosterConfigurationForCall:(id)a3;
+- (id)lastSeenOrCurrentPosterConfigurationForCall:(id)call;
+- (id)lastSeenPosterConfigurationForCall:(id)call;
+- (id)lastSeenPosterIMWallpaperMetadataForCall:(id)call;
+- (id)makeCallDetailsCoordinatorWithBannerPresentationManager:(id)manager existingCoordinator:(id)coordinator deferredPresentationManager:(id)presentationManager;
+- (id)makeHeldCallControlsViewWithCallCenter:(id)center style:(int64_t)style;
+- (id)makeLockObserverWithHandler:(id)handler;
+- (id)newPosterConfigurationForCall:(id)call;
 - (id)participantsViewConstraints;
-- (id)readCachedLastSeenPosterDataForCall:(id)a3;
-- (id)routesForAudioRoutingMenuController:(id)a3;
-- (id)sharedProfileStateOracleForCall:(id)a3;
+- (id)readCachedLastSeenPosterDataForCall:(id)call;
+- (id)routesForAudioRoutingMenuController:(id)controller;
+- (id)sharedProfileStateOracleForCall:(id)call;
 - (id)snapshotUIImageView;
 - (id)wallpaperTitleStyleAttributes;
-- (id)wallpaperTitleStyleAttributesForCall:(id)a3;
-- (id)wallpaperTypeForBundleID:(id)a3;
-- (id)wallpaperTypeForCNWallpaper:(id)a3;
-- (id)wallpaperTypeForIMWallpaperMetadata:(id)a3;
-- (int64_t)bottomBarCallStateInBar:(id)a3;
+- (id)wallpaperTitleStyleAttributesForCall:(id)call;
+- (id)wallpaperTypeForBundleID:(id)d;
+- (id)wallpaperTypeForCNWallpaper:(id)wallpaper;
+- (id)wallpaperTypeForIMWallpaperMetadata:(id)metadata;
+- (int64_t)bottomBarCallStateInBar:(id)bar;
 - (int64_t)bottomBarStateForCallWaitingCall;
-- (unint64_t)currentDisplayedPosterSourceForCall:(id)a3;
-- (unint64_t)suggestedNewPosterSourceAfterCallConnects:(id)a3;
+- (unint64_t)currentDisplayedPosterSourceForCall:(id)call;
+- (unint64_t)suggestedNewPosterSourceAfterCallConnects:(id)connects;
 - (void)_leaveMessage;
-- (void)_performPosterTransformationsIfNecessaryToState:(unsigned __int16)a3;
-- (void)_testing_didTransitionToActiveCallState:(id)a3;
+- (void)_performPosterTransformationsIfNecessaryToState:(unsigned __int16)state;
+- (void)_testing_didTransitionToActiveCallState:(id)state;
 - (void)_testing_didTransitionToEndingCallState;
 - (void)_testing_didTransitionToIdleCallState;
-- (void)_testing_didTransitionToIncomingRingingCallState:(id)a3;
-- (void)_testing_finishedAnimatingToActiveCallState:(id)a3;
+- (void)_testing_didTransitionToIncomingRingingCallState:(id)state;
+- (void)_testing_finishedAnimatingToActiveCallState:(id)state;
 - (void)_updatePosterNameAlpha;
-- (void)_updatePosterStatusLabelForState:(unsigned __int16)a3;
+- (void)_updatePosterStatusLabelForState:(unsigned __int16)state;
 - (void)_updateStatusLabelVisibility;
 - (void)activatePoster;
 - (void)addBottomBarSubView;
@@ -151,67 +151,67 @@
 - (void)addCallRecordingIndicator;
 - (void)addDefaultBackgroundGradientView;
 - (void)addMiddleStackView;
-- (void)addNoPosterContactImage:(id)a3;
-- (void)addSubviewsToMiddleStackViewWithView:(id)a3 priority:(int64_t)a4;
+- (void)addNoPosterContactImage:(id)image;
+- (void)addSubviewsToMiddleStackViewWithView:(id)view priority:(int64_t)priority;
 - (void)alertWillInvoke;
 - (void)animateInfoButtonCoinFlipIfNeeded;
-- (void)applyCallDetailsViewButtonPositionAndSizeCapToElement:(id)a3;
+- (void)applyCallDetailsViewButtonPositionAndSizeCapToElement:(id)element;
 - (void)applyCallWaitingConstraintsForAmbient;
 - (void)applyParticipantsViewConstraints;
 - (void)applyParticipantsViewConstraintsForAmbient;
 - (void)applyParticipantsViewConstraintsForBanner;
 - (void)applyParticipantsViewConstraintsForFullScreen;
-- (void)applySizeToElement:(id)a3 usingThisElementAsGuide:(id)a4;
-- (void)applyWallpaperTitleStyleAttributesToTextViewWrapper:(id)a3;
-- (void)audioCallControlsViewControllerDidTapEndButton:(id)a3;
+- (void)applySizeToElement:(id)element usingThisElementAsGuide:(id)guide;
+- (void)applyWallpaperTitleStyleAttributesToTextViewWrapper:(id)wrapper;
+- (void)audioCallControlsViewControllerDidTapEndButton:(id)button;
 - (void)audioCallControlsViewControllerDidTapRTTButton;
-- (void)audioCallControlsViewControllerDidToggleMuteButton:(BOOL)a3;
-- (void)audioCallControlsViewControllerRequestedAddCallPresentation:(id)a3;
-- (void)audioCallControlsViewControllerRequestedAddCallPresentation:(id)a3 forView:(id)a4;
-- (void)audioCallControlsViewControllerRequestedAudioRoutesPresentation:(id)a3;
-- (void)audioCallControlsViewControllerRequestedContactsPresentation:(id)a3 forView:(id)a4;
+- (void)audioCallControlsViewControllerDidToggleMuteButton:(BOOL)button;
+- (void)audioCallControlsViewControllerRequestedAddCallPresentation:(id)presentation;
+- (void)audioCallControlsViewControllerRequestedAddCallPresentation:(id)presentation forView:(id)view;
+- (void)audioCallControlsViewControllerRequestedAudioRoutesPresentation:(id)presentation;
+- (void)audioCallControlsViewControllerRequestedContactsPresentation:(id)presentation forView:(id)view;
 - (void)audioCallControlsViewControllerRequestedInvokeAlert;
-- (void)audioCallControlsViewControllerRequestedKeypadPresentation:(id)a3;
-- (void)audioCallControlsViewControllerRequestedKeypadPresentationForFieldMode:(id)a3;
-- (void)audioCallControlsViewControllerRequestedMoreMenuFromSourceView:(id)a3;
-- (void)audioCallControlsViewControllerRequestedShareCardFromSourceView:(id)a3;
+- (void)audioCallControlsViewControllerRequestedKeypadPresentation:(id)presentation;
+- (void)audioCallControlsViewControllerRequestedKeypadPresentationForFieldMode:(id)mode;
+- (void)audioCallControlsViewControllerRequestedMoreMenuFromSourceView:(id)view;
+- (void)audioCallControlsViewControllerRequestedShareCardFromSourceView:(id)view;
 - (void)audioCallControlsViewControllerRequestedShareMedia;
-- (void)audioCallControlsViewControllerRequestedVideoPresentation:(id)a3;
+- (void)audioCallControlsViewControllerRequestedVideoPresentation:(id)presentation;
 - (void)audioCallVoiceLoopViewControllerRequestedButtonPresentation;
-- (void)audioDeviceControllerMutedTalkerDidStart:(id)a3;
-- (void)audioRoutingMenuController:(id)a3 didSelectRoute:(id)a4;
+- (void)audioDeviceControllerMutedTalkerDidStart:(id)start;
+- (void)audioRoutingMenuController:(id)controller didSelectRoute:(id)route;
 - (void)bannerDidGetTap;
 - (void)beginWaitOnHoldSession;
-- (void)blockWithHandle:(id)a3;
-- (void)bottomBarActionPerformed:(int64_t)a3 withCompletionState:(int64_t)a4 fromBar:(id)a5;
-- (void)callCenterCallStatusChangedNotification:(id)a3;
-- (void)callCenterScreeningStatusChangedNotification:(id)a3;
-- (void)callContinuityStateChangedNotification:(id)a3;
+- (void)blockWithHandle:(id)handle;
+- (void)bottomBarActionPerformed:(int64_t)performed withCompletionState:(int64_t)state fromBar:(id)bar;
+- (void)callCenterCallStatusChangedNotification:(id)notification;
+- (void)callCenterScreeningStatusChangedNotification:(id)notification;
+- (void)callContinuityStateChangedNotification:(id)notification;
 - (void)callDetailsViewButtonTapped;
-- (void)callDisplayContextChangedNotification:(id)a3;
-- (void)callDisplayStyleDidChangeFromStyle:(int64_t)a3 toStyle:(int64_t)a4;
-- (void)callIsEmergencyChangedNotification:(id)a3;
-- (void)callIsScreenSharingChangedNotification:(id)a3;
-- (void)callOnHoldChangedNotification:(id)a3;
-- (void)callParticipantsViewController:(id)a3 didPerformActionType:(int64_t)a4;
-- (void)callParticipantsViewController:(id)a3 didShowMultipleLabel:(BOOL)a4;
-- (void)callParticipantsViewController:(id)a3 willShowMultipleLabel:(BOOL)a4;
-- (void)callParticipantsViewControllerDidTapCallDetailsGestureRecognizer:(id)a3;
-- (void)callRecordingAfterFullScreenRequest:(id)a3;
+- (void)callDisplayContextChangedNotification:(id)notification;
+- (void)callDisplayStyleDidChangeFromStyle:(int64_t)style toStyle:(int64_t)toStyle;
+- (void)callIsEmergencyChangedNotification:(id)notification;
+- (void)callIsScreenSharingChangedNotification:(id)notification;
+- (void)callOnHoldChangedNotification:(id)notification;
+- (void)callParticipantsViewController:(id)controller didPerformActionType:(int64_t)type;
+- (void)callParticipantsViewController:(id)controller didShowMultipleLabel:(BOOL)label;
+- (void)callParticipantsViewController:(id)controller willShowMultipleLabel:(BOOL)label;
+- (void)callParticipantsViewControllerDidTapCallDetailsGestureRecognizer:(id)recognizer;
+- (void)callRecordingAfterFullScreenRequest:(id)request;
 - (void)callTransferButtonTapped;
-- (void)callTranslationControllerWithShouldAddTranslationViewToHost:(id)a3;
-- (void)callTranslationControllerWithShouldRemoveTranslationViewFromHost:(id)a3;
-- (void)clearMenuItemRegistration:(id)a3;
-- (void)conferenceParticipantCallsChangedNotification:(id)a3;
-- (void)constraintCallRecordingWithView:(id)a3;
+- (void)callTranslationControllerWithShouldAddTranslationViewToHost:(id)host;
+- (void)callTranslationControllerWithShouldRemoveTranslationViewFromHost:(id)host;
+- (void)clearMenuItemRegistration:(id)registration;
+- (void)conferenceParticipantCallsChangedNotification:(id)notification;
+- (void)constraintCallRecordingWithView:(id)view;
 - (void)constraintDefaultNoPosterAvatarView;
-- (void)constraintWaitOnHoldView:(id)a3;
-- (void)contactDidChange:(id)a3;
-- (void)contactViewController:(id)a3 didCompleteWithContact:(id)a4;
-- (void)contactViewController:(id)a3 didExecuteBlockAndReportContactAction:(id)a4;
+- (void)constraintWaitOnHoldView:(id)view;
+- (void)contactDidChange:(id)change;
+- (void)contactViewController:(id)controller didCompleteWithContact:(id)contact;
+- (void)contactViewController:(id)controller didExecuteBlockAndReportContactAction:(id)action;
 - (void)copyCallWaitingConstraintsFromParticipantsView;
-- (void)createContactWithHandle:(id)a3;
-- (void)createDetachedPosterNameViewModel:(id)a3;
+- (void)createContactWithHandle:(id)handle;
+- (void)createDetachedPosterNameViewModel:(id)model;
 - (void)deactivatePoster;
 - (void)dealloc;
 - (void)deleteAllUnarchivedPosterDirectories;
@@ -224,111 +224,111 @@
 - (void)endRecording;
 - (void)endWaitOnHoldSession;
 - (void)extensionNumberButtonTapped;
-- (void)finishNewPosterUpdatesWithCompletion:(id)a3;
+- (void)finishNewPosterUpdatesWithCompletion:(id)completion;
 - (void)gameControllerDidChangeContext;
-- (void)handleCallRecordingCountdownNotificationWithNotification:(id)a3;
+- (void)handleCallRecordingCountdownNotificationWithNotification:(id)notification;
 - (void)handleCancelPressedInCallBufferScreen;
 - (void)handleConfigurationAfterViewLoaded;
-- (void)handleDeviceLockEventWithSourceType:(int64_t)a3;
-- (void)handleTUCallSupportsTTYWithVoiceChangedNotification:(id)a3;
-- (void)handleTUCallTTYTypeChangedNotification:(id)a3;
-- (void)handleViewDidAppear:(BOOL)a3;
-- (void)handleViewDidDisappear:(BOOL)a3;
-- (void)handleViewWillAppear:(BOOL)a3;
-- (void)handleViewWillDisappear:(BOOL)a3;
-- (void)hardPauseDigitsStateChangedNotification:(id)a3;
-- (void)hardwareButtonEventNotification:(id)a3;
+- (void)handleDeviceLockEventWithSourceType:(int64_t)type;
+- (void)handleTUCallSupportsTTYWithVoiceChangedNotification:(id)notification;
+- (void)handleTUCallTTYTypeChangedNotification:(id)notification;
+- (void)handleViewDidAppear:(BOOL)appear;
+- (void)handleViewDidDisappear:(BOOL)disappear;
+- (void)handleViewWillAppear:(BOOL)appear;
+- (void)handleViewWillDisappear:(BOOL)disappear;
+- (void)hardPauseDigitsStateChangedNotification:(id)notification;
+- (void)hardwareButtonEventNotification:(id)notification;
 - (void)hideFirstNameLabelOnKeypad;
 - (void)hideOrShowScreeningBackgroundView;
-- (void)hideOrShowThirdPartyBackgroundImageWithImage:(id)a3;
+- (void)hideOrShowThirdPartyBackgroundImageWithImage:(id)image;
 - (void)hideTrailngPanelCoveringViewIfNeeded;
-- (void)invertColorForBottomButtonsBasedOn:(id)a3;
-- (void)invertColorForCallDetailsButtonBasedOn:(id)a3;
-- (void)invertColorForPosterBadgeViewBasedOn:(id)a3;
+- (void)invertColorForBottomButtonsBasedOn:(id)on;
+- (void)invertColorForCallDetailsButtonBasedOn:(id)on;
+- (void)invertColorForPosterBadgeViewBasedOn:(id)on;
 - (void)invertColorForPosterBadgeViewIfSnapshotPoster;
-- (void)invertNecessaryUIElementsBasedOnPosterImage:(id)a3;
-- (void)keypadViewWillDisappearWithCompletion:(id)a3;
-- (void)layoutParticipantsViewAnimated:(BOOL)a3 crossfade:(BOOL)a4;
-- (void)localAudioToggledWithIsMuted:(BOOL)a3;
-- (void)lockScreenVisibilityDidChange:(id)a3;
+- (void)invertNecessaryUIElementsBasedOnPosterImage:(id)image;
+- (void)keypadViewWillDisappearWithCompletion:(id)completion;
+- (void)layoutParticipantsViewAnimated:(BOOL)animated crossfade:(BOOL)crossfade;
+- (void)localAudioToggledWithIsMuted:(BOOL)muted;
+- (void)lockScreenVisibilityDidChange:(id)change;
 - (void)mergeCallsButtonTapped;
-- (void)messageComposeViewController:(id)a3 didFinishWithResult:(int64_t)a4;
+- (void)messageComposeViewController:(id)controller didFinishWithResult:(int64_t)result;
 - (void)observeCallRecordingNotifications;
-- (void)performBottomBarActionType:(int64_t)a3;
-- (void)positionParticipantsViewStatusLabelToBeHorizontallyCenteredToInfoButton:(id)a3;
-- (void)positionPosterBadgeToBeHorizontallyCenteredToInfoButton:(id)a3;
+- (void)performBottomBarActionType:(int64_t)type;
+- (void)positionParticipantsViewStatusLabelToBeHorizontallyCenteredToInfoButton:(id)button;
+- (void)positionPosterBadgeToBeHorizontallyCenteredToInfoButton:(id)button;
 - (void)presentContactCard;
-- (void)presentDisconnectionAlert:(id)a3;
+- (void)presentDisconnectionAlert:(id)alert;
 - (void)presentFullScreenPeoplePicker;
-- (void)presentMoreMenu:(id)a3 contact:(id)a4 source:(id)a5;
-- (void)presentMoreMenu:(id)a3 source:(id)a4;
-- (void)presentShareCard:(id)a3 source:(id)a4;
-- (void)presentWaitOnHoldEndForAnotherCallAlertWithCallerName:(id)a3 completionHandler:(id)a4;
-- (void)receptionistStateChanged:(id)a3;
+- (void)presentMoreMenu:(id)menu contact:(id)contact source:(id)source;
+- (void)presentMoreMenu:(id)menu source:(id)source;
+- (void)presentShareCard:(id)card source:(id)source;
+- (void)presentWaitOnHoldEndForAnotherCallAlertWithCallerName:(id)name completionHandler:(id)handler;
+- (void)receptionistStateChanged:(id)changed;
 - (void)refreshExtensionNumberButton;
 - (void)releaseDismissalAssertion;
 - (void)removeAllParticipantsViewConstraints;
 - (void)removeBackgroundContactImageView;
 - (void)removeCallRecordingIndicator;
-- (void)removeContentViewIfNeeded:(id)a3 animated:(BOOL)a4;
+- (void)removeContentViewIfNeeded:(id)needed animated:(BOOL)animated;
 - (void)removeDefaultBackgroundGradientView;
 - (void)removeFirstNameLabelFromViewIfNeeded;
 - (void)removeNameLabelForAlwaysOnDisplay;
-- (void)removePosterViewController:(BOOL)a3 completion:(id)a4;
-- (void)removeSubviewFromMiddleStackViewWithView:(id)a3;
-- (void)reportWithCall:(id)a3;
+- (void)removePosterViewController:(BOOL)controller completion:(id)completion;
+- (void)removeSubviewFromMiddleStackViewWithView:(id)view;
+- (void)reportWithCall:(id)call;
 - (void)resetParticipantsViewConstraints;
 - (void)restartCallBufferTimer;
 - (void)restoreParticipantsViewStatusLabelForFullScreen;
-- (void)revealAudioRoutingDeviceListAnimated:(BOOL)a3;
+- (void)revealAudioRoutingDeviceListAnimated:(BOOL)animated;
 - (void)revealAudioRoutingDeviceListAnimatedIfNeeded;
-- (void)routesChangedForRouteController:(id)a3;
-- (void)screenSharingInteractionController:(id)a3 didUpdateRemoteControlStatus:(BOOL)a4;
-- (void)setActiveState:(unsigned __int16)a3;
-- (void)setBackgroundColor:(id)a3 animated:(BOOL)a4;
-- (void)setBackgroundImage:(id)a3;
-- (void)setCallBufferState:(unsigned __int16)a3;
-- (void)setCurrentState:(unsigned __int16)a3 animated:(BOOL)a4;
-- (void)setDetachedPosterNameViewModel:(id)a3;
-- (void)setEndedState:(unsigned __int16)a3;
-- (void)setEndingState:(unsigned __int16)a3;
-- (void)setIdleState:(unsigned __int16)a3;
-- (void)setInCallRootViewController:(id)a3;
-- (void)setKeypadPosterNameViewModel:(id)a3;
+- (void)routesChangedForRouteController:(id)controller;
+- (void)screenSharingInteractionController:(id)controller didUpdateRemoteControlStatus:(BOOL)status;
+- (void)setActiveState:(unsigned __int16)state;
+- (void)setBackgroundColor:(id)color animated:(BOOL)animated;
+- (void)setBackgroundImage:(id)image;
+- (void)setCallBufferState:(unsigned __int16)state;
+- (void)setCurrentState:(unsigned __int16)state animated:(BOOL)animated;
+- (void)setDetachedPosterNameViewModel:(id)model;
+- (void)setEndedState:(unsigned __int16)state;
+- (void)setEndingState:(unsigned __int16)state;
+- (void)setIdleState:(unsigned __int16)state;
+- (void)setInCallRootViewController:(id)controller;
+- (void)setKeypadPosterNameViewModel:(id)model;
 - (void)setLayoutGuides;
 - (void)setMiddleViewButtonsIfNecessary;
-- (void)setMiddleViewState:(unsigned __int16)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)setOutgoingRingingState:(unsigned __int16)a3;
-- (void)setParticipantsViewControllersShouldIgnoreUpdates:(BOOL)a3;
-- (void)setParticipantsViewShouldShowParticipantLabel:(BOOL)a3;
-- (void)setPosterNameViewModel:(id)a3;
-- (void)setPosterViewController:(id)a3;
-- (void)setPrioritizedCall:(id)a3;
-- (void)setRingingState:(unsigned __int16)a3;
-- (void)setScreeningState:(unsigned __int16)a3 animated:(BOOL)a4 overrideWithIsUnlocked:(BOOL)a5;
-- (void)setShowsCallDetailsViewButton:(BOOL)a3;
-- (void)setShowsCallWaitingParticipantView:(BOOL)a3;
+- (void)setMiddleViewState:(unsigned __int16)state animated:(BOOL)animated completion:(id)completion;
+- (void)setOutgoingRingingState:(unsigned __int16)state;
+- (void)setParticipantsViewControllersShouldIgnoreUpdates:(BOOL)updates;
+- (void)setParticipantsViewShouldShowParticipantLabel:(BOOL)label;
+- (void)setPosterNameViewModel:(id)model;
+- (void)setPosterViewController:(id)controller;
+- (void)setPrioritizedCall:(id)call;
+- (void)setRingingState:(unsigned __int16)state;
+- (void)setScreeningState:(unsigned __int16)state animated:(BOOL)animated overrideWithIsUnlocked:(BOOL)unlocked;
+- (void)setShowsCallDetailsViewButton:(BOOL)button;
+- (void)setShowsCallWaitingParticipantView:(BOOL)view;
 - (void)setUpCallDetailsViewButton;
 - (void)setUpPosterBadgeViewIfNecessary;
-- (void)setViewsHiddenForAudioRoutes:(BOOL)a3 animated:(BOOL)a4;
-- (void)setWaitOnHoldState:(unsigned __int16)a3 animated:(BOOL)a4;
-- (void)setWaitingState:(unsigned __int16)a3;
-- (void)set_callRecordingController:(id)a3;
+- (void)setViewsHiddenForAudioRoutes:(BOOL)routes animated:(BOOL)animated;
+- (void)setWaitOnHoldState:(unsigned __int16)state animated:(BOOL)animated;
+- (void)setWaitingState:(unsigned __int16)state;
+- (void)set_callRecordingController:(id)controller;
 - (void)setupAmbientAudioRoutesControlViewIfNeeded;
 - (void)setupCallHoldingObservers;
 - (void)setupDimmingViewForAlwaysOnDisplay;
 - (void)setupHeldCallControlsViewIfNeeded;
-- (void)setupMiddleContentView:(id)a3;
-- (void)setupMiddleContentView:(id)a3 flexibleConstraints:(BOOL)a4 bottomPadding:(double)a5;
+- (void)setupMiddleContentView:(id)view;
+- (void)setupMiddleContentView:(id)view flexibleConstraints:(BOOL)constraints bottomPadding:(double)padding;
 - (void)setupNameLabelForAlwaysOnDisplay;
 - (void)showAddParticipantSheet;
-- (void)showBlockAlertForHandle:(id)a3;
+- (void)showBlockAlertForHandle:(id)handle;
 - (void)showCallDetailsIfNecessary;
 - (void)showFirstNameLabelOnKeypad;
-- (void)showKeypadWithPerviousMiddleState:(unsigned __int16)a3 viewSize:(CGSize)a4;
-- (void)showNameAndPhotoHUDIfNecessaryWithBannerPresentationManager:(id)a3 callCenter:(id)a4;
+- (void)showKeypadWithPerviousMiddleState:(unsigned __int16)state viewSize:(CGSize)size;
+- (void)showNameAndPhotoHUDIfNecessaryWithBannerPresentationManager:(id)manager callCenter:(id)center;
 - (void)showPosterBlurTransition;
-- (void)showStopAlertForCall:(id)a3;
+- (void)showStopAlertForCall:(id)call;
 - (void)showTrailngPanelCoveringViewIfNeeded;
 - (void)speakAlertUtteranceIfNecessary;
 - (void)startAutoCountdownAlert;
@@ -340,84 +340,84 @@
 - (void)stopMessagePlayback;
 - (void)stopSuppressionOfSTKAlerts;
 - (void)suppressRingtoneForIncomingCall;
-- (void)suspendPosterAndCancelDelay:(BOOL)a3;
+- (void)suspendPosterAndCancelDelay:(BOOL)delay;
 - (void)synchronizeSingleLabelViewWithPosterText;
 - (void)tipKitStartWaitOnHoldObservation;
 - (void)tipKitStopWaitOnHoldObservation;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 - (void)transitionToFullScreenIfNecessary;
 - (void)transitionToNewPosterIfNeeded;
 - (void)triggerAutoCountdownIfAvailable;
-- (void)triggerInversionColorUpdate:(id)a3;
+- (void)triggerInversionColorUpdate:(id)update;
 - (void)updateAmbientAudioRoutesVisibility;
 - (void)updateBackgroundForEmergencyCall;
-- (void)updateBackgroundTintToView:(id)a3;
-- (void)updateBottomBarButtonsWithCall:(id)a3;
-- (void)updateBottomShelfState:(int64_t)a3;
-- (void)updateBottomShelfWithMiddleViewState:(unsigned __int16)a3 callDisplayStyle:(int64_t)a4;
+- (void)updateBackgroundTintToView:(id)view;
+- (void)updateBottomBarButtonsWithCall:(id)call;
+- (void)updateBottomShelfState:(int64_t)state;
+- (void)updateBottomShelfWithMiddleViewState:(unsigned __int16)state callDisplayStyle:(int64_t)style;
 - (void)updateCallDurationVisibility;
 - (void)updateCallParticipantsViewControllerCallGroups;
-- (void)updateCallRecording:(id)a3;
+- (void)updateCallRecording:(id)recording;
 - (void)updateCallRecordingIfNeeded;
 - (void)updateCallTranslationIfNeeded;
 - (void)updateCurrentState;
 - (void)updateDefaultNoPosterAvatarViewVisibility;
-- (void)updateDimmingView:(id)a3 with:(CGSize)a4;
+- (void)updateDimmingView:(id)view with:(CGSize)with;
 - (void)updateFloatingViewsVisibilityHandlers;
 - (void)updateHardPauseDigitsState;
 - (void)updateIncomingBottomBarControlState;
-- (void)updateKeypadBackgroundMaterialWithViewSize:(CGSize)a3;
+- (void)updateKeypadBackgroundMaterialWithViewSize:(CGSize)size;
 - (void)updateLayeredBackgroundWallpaper;
 - (void)updateLayoutSupplementalButtons;
-- (void)updateLegacyBackgroundImageVisibilityWithShouldShowWallpaper:(BOOL)a3;
-- (void)updateParticipantConstraintsForPosterName:(id)a3;
-- (void)updateParticipantsLabelForView:(id)a3 isHidden:(BOOL)a4;
+- (void)updateLegacyBackgroundImageVisibilityWithShouldShowWallpaper:(BOOL)wallpaper;
+- (void)updateParticipantConstraintsForPosterName:(id)name;
+- (void)updateParticipantsLabelForView:(id)view isHidden:(BOOL)hidden;
 - (void)updatePoster;
-- (void)updatePosterBadgeView:(BOOL)a3 to:(id)a4;
+- (void)updatePosterBadgeView:(BOOL)view to:(id)to;
 - (void)updatePosterSaliencyRect;
-- (void)updatePosterViewModelForParticipantsView:(id)a3;
-- (void)updatePresentationStateWithAllowed:(BOOL)a3;
+- (void)updatePosterViewModelForParticipantsView:(id)view;
+- (void)updatePresentationStateWithAllowed:(BOOL)allowed;
 - (void)updateScreenSharingDisableUpdateMask;
-- (void)updateScreeningTextFieldContainer:(id)a3;
+- (void)updateScreeningTextFieldContainer:(id)container;
 - (void)updateShareNameAndPhotoHUDPresentationIfNeeded;
 - (void)updateShouldShowLargeAvatar;
 - (void)updateSupplementalButtonsLayout;
-- (void)updateTopShelfContentWithCall:(id)a3 sceneWindowSize:(CGSize)a4;
-- (void)updateTranslationBackgroundView:(BOOL)a3;
+- (void)updateTopShelfContentWithCall:(id)call sceneWindowSize:(CGSize)size;
+- (void)updateTranslationBackgroundView:(BOOL)view;
 - (void)updateViewForEmergencyCallIfNecessary;
 - (void)updateViewsForHeldCallControlsViewIfNeeded;
-- (void)updateWaitOnHoldServiceWithCall:(id)a3;
+- (void)updateWaitOnHoldServiceWithCall:(id)call;
 - (void)updateWaitOnHoldViewIfNeeded;
 - (void)useRTTButtonTapped;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4;
-- (void)viewIsAppearing:(BOOL)a3;
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear;
+- (void)viewIsAppearing:(BOOL)appearing;
 - (void)viewSafeAreaInsetsDidChange;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
-- (void)wantsHoldMusicChangedNotification:(id)a3;
-- (void)writeToLastSeenPosterCacheIfNecessaryForCall:(id)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)wantsHoldMusicChangedNotification:(id)notification;
+- (void)writeToLastSeenPosterCacheIfNecessaryForCall:(id)call;
 @end
 
 @implementation iPadAudioCallViewController
 
-- (void)_testing_finishedAnimatingToActiveCallState:(id)a3
+- (void)_testing_finishedAnimatingToActiveCallState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   if ([UIApp isRunningTest:@"AnswerIncomingCall"])
   {
     [UIApp finishedSubTest:@"end-to-end" forTest:@"AnswerIncomingCall"];
-    [(iPadAudioCallViewController *)self bottomBarActionPerformed:15 withCompletionState:1 fromBar:v4];
+    [(iPadAudioCallViewController *)self bottomBarActionPerformed:15 withCompletionState:1 fromBar:stateCopy];
   }
 }
 
-- (void)_testing_didTransitionToActiveCallState:(id)a3
+- (void)_testing_didTransitionToActiveCallState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   if ([UIApp isRunningTest:@"AnswerIncomingCall"])
   {
     [UIApp finishedSubTest:@"pre-animation-delay" forTest:@"AnswerIncomingCall"];
@@ -431,7 +431,7 @@
     v7[2] = sub_1000CE104;
     v7[3] = &unk_100357110;
     v7[4] = self;
-    v8 = v4;
+    v8 = stateCopy;
     dispatch_after(v5, &_dispatch_main_q, v7);
   }
 
@@ -485,9 +485,9 @@
   }
 }
 
-- (void)_testing_didTransitionToIncomingRingingCallState:(id)a3
+- (void)_testing_didTransitionToIncomingRingingCallState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   if ([UIApp isRunningTest:@"AnswerIncomingCall"])
   {
     v5 = dispatch_time(0, 2000000000);
@@ -496,21 +496,21 @@
     v6[2] = sub_1000CE380;
     v6[3] = &unk_100357110;
     v6[4] = self;
-    v7 = v4;
+    v7 = stateCopy;
     dispatch_after(v5, &_dispatch_main_q, v6);
   }
 }
 
-- (void)setParticipantsViewControllersShouldIgnoreUpdates:(BOOL)a3
+- (void)setParticipantsViewControllersShouldIgnoreUpdates:(BOOL)updates
 {
-  if (self->_participantsViewControllersShouldIgnoreUpdates != a3)
+  if (self->_participantsViewControllersShouldIgnoreUpdates != updates)
   {
-    v3 = a3;
+    updatesCopy = updates;
     v5 = sub_100004F84();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6 = @"NO";
-      if (v3)
+      if (updatesCopy)
       {
         v6 = @"YES";
       }
@@ -520,36 +520,36 @@
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Updating the participants view and viewController shouldIgnoreUpdates: %@", &v9, 0xCu);
     }
 
-    self->_participantsViewControllersShouldIgnoreUpdates = v3;
-    v7 = [(iPadAudioCallViewController *)self callParticipantsViewController];
-    [v7 setShouldIgnoreUpdates:v3];
+    self->_participantsViewControllersShouldIgnoreUpdates = updatesCopy;
+    callParticipantsViewController = [(iPadAudioCallViewController *)self callParticipantsViewController];
+    [callParticipantsViewController setShouldIgnoreUpdates:updatesCopy];
 
-    v8 = [(iPadAudioCallViewController *)self callWaitingParticipantsViewController];
-    [v8 setShouldIgnoreUpdates:v3];
+    callWaitingParticipantsViewController = [(iPadAudioCallViewController *)self callWaitingParticipantsViewController];
+    [callWaitingParticipantsViewController setShouldIgnoreUpdates:updatesCopy];
   }
 }
 
-- (iPadAudioCallViewController)initWithCallDisplayStyleManager:(id)a3 callCenter:(id)a4 featureFlags:(id)a5 call:(id)a6
+- (iPadAudioCallViewController)initWithCallDisplayStyleManager:(id)manager callCenter:(id)center featureFlags:(id)flags call:(id)call
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  managerCopy = manager;
+  centerCopy = center;
+  flagsCopy = flags;
+  callCopy = call;
   v84.receiver = self;
   v84.super_class = iPadAudioCallViewController;
   v15 = [(PHCallViewController *)&v84 initWithNibName:0 bundle:0];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_existingPrioritizedCall, a6);
-    objc_storeStrong(&v16->_callCenter, a4);
-    objc_storeStrong(&v16->_featureFlags, a5);
+    objc_storeStrong(&v15->_existingPrioritizedCall, call);
+    objc_storeStrong(&v16->_callCenter, center);
+    objc_storeStrong(&v16->_featureFlags, flags);
     v17 = objc_opt_new();
     analyticsReporter = v16->_analyticsReporter;
     v16->_analyticsReporter = v17;
 
     v19 = objc_opt_new();
-    v20 = [v19 makeWithCallCenter:v12];
+    v20 = [v19 makeWithCallCenter:centerCopy];
     declineCallService = v16->_declineCallService;
     v16->_declineCallService = v20;
 
@@ -557,17 +557,17 @@
     labelDescriptorFactory = v16->_labelDescriptorFactory;
     v16->_labelDescriptorFactory = v22;
 
-    objc_storeStrong(&v16->_callDisplayStyleManager, a3);
-    v16->_wasPresentedAsBanner = [v11 callDisplayStyle] == 0;
+    objc_storeStrong(&v16->_callDisplayStyleManager, manager);
+    v16->_wasPresentedAsBanner = [managerCopy callDisplayStyle] == 0;
     v16->_middleViewState = 0;
     v16->_canDumpHierarchy = 1;
     v24 = objc_opt_new();
     mutedTalkerViewControllerFactory = v16->_mutedTalkerViewControllerFactory;
     v16->_mutedTalkerViewControllerFactory = v24;
 
-    v26 = [(CNKMutedTalkerBannerViewControllerFactory *)v16->_mutedTalkerViewControllerFactory makeViewController];
+    makeViewController = [(CNKMutedTalkerBannerViewControllerFactory *)v16->_mutedTalkerViewControllerFactory makeViewController];
     mutedTalkerBannerViewController = v16->_mutedTalkerBannerViewController;
-    v16->_mutedTalkerBannerViewController = v26;
+    v16->_mutedTalkerBannerViewController = makeViewController;
 
     [(CNKMutedTalkerBannerViewControllerProtocol *)v16->_mutedTalkerBannerViewController setDelegate:v16];
     v16->_didNotifyMutedCaller = 0;
@@ -631,7 +631,7 @@
     [v48 addObserver:v16 selector:"conferenceParticipantCallsChangedNotification:" name:TUCallCenterConferenceParticipantsChangedNotification object:0];
     [v48 addObserver:v16 selector:"appBecomesInactive:" name:UIApplicationWillResignActiveNotification object:0];
     [v48 addObserver:v16 selector:"appBecomesActive:" name:UIApplicationDidBecomeActiveNotification object:0];
-    v49 = [(iPadAudioCallViewController *)v16 featureFlags];
+    featureFlags = [(iPadAudioCallViewController *)v16 featureFlags];
     v50 = TUCallScreeningEnabledM3();
 
     if (v50)
@@ -639,44 +639,44 @@
       [v48 addObserver:v16 selector:"callCenterScreeningStatusChangedNotification:" name:TUCallCenterIsScreeningChangedNotification object:0];
     }
 
-    v51 = [(iPadAudioCallViewController *)v16 featureFlags];
-    v52 = [v51 receptionistEnabled];
+    featureFlags2 = [(iPadAudioCallViewController *)v16 featureFlags];
+    receptionistEnabled = [featureFlags2 receptionistEnabled];
 
-    if (v52)
+    if (receptionistEnabled)
     {
       [v48 addObserver:v16 selector:"answeringMachineStreamTokenChanged:" name:TUCallAnsweringMachineStreamTokenChangedNotification object:0];
       [v48 addObserver:v16 selector:"receptionistStateChanged:" name:TUCallCenterReceptionistStateChangedNotification object:0];
     }
 
-    v53 = [(iPadAudioCallViewController *)v16 featureFlags];
-    v54 = [v53 audioCallTranslationEnabled];
+    featureFlags3 = [(iPadAudioCallViewController *)v16 featureFlags];
+    audioCallTranslationEnabled = [featureFlags3 audioCallTranslationEnabled];
 
-    if (v54)
+    if (audioCallTranslationEnabled)
     {
       [v48 addObserver:v16 selector:"updateCallTranslationIfNeeded" name:TUCallTranslationAvailabilityChangedNotification object:0];
     }
 
-    v55 = [(iPadAudioCallViewController *)v16 featureFlags];
-    v56 = [v55 waitOnHoldEnabled];
+    featureFlags4 = [(iPadAudioCallViewController *)v16 featureFlags];
+    waitOnHoldEnabled = [featureFlags4 waitOnHoldEnabled];
 
-    if (v56)
+    if (waitOnHoldEnabled)
     {
       [(iPadAudioCallViewController *)v16 setupCallHoldingObservers];
     }
 
-    v57 = [v12 routeController];
-    [v57 addDelegate:v16];
+    routeController = [centerCopy routeController];
+    [routeController addDelegate:v16];
 
-    v58 = [v12 audioDeviceController];
-    [v58 addDelegate:v16];
+    audioDeviceController = [centerCopy audioDeviceController];
+    [audioDeviceController addDelegate:v16];
 
     v59 = +[UIApplication sharedApplication];
-    v60 = [v59 delegate];
-    v61 = [v60 bannerPresentationManager];
-    [v61 setLocalAudioTogglingDelegate:v16];
+    delegate = [v59 delegate];
+    bannerPresentationManager = [delegate bannerPresentationManager];
+    [bannerPresentationManager setLocalAudioTogglingDelegate:v16];
 
-    v62 = [(CNKScreenSharingInteractionControllerFactory *)v16->_screenSharingInteractionControllerFactory sharedController];
-    [v62 addDelegate:v16];
+    sharedController = [(CNKScreenSharingInteractionControllerFactory *)v16->_screenSharingInteractionControllerFactory sharedController];
+    [sharedController addDelegate:v16];
 
     v16->_shouldIgnoreWaitOnHoldSessionState = 0;
     [(iPadAudioCallViewController *)v16 observeCallRecordingNotifications];
@@ -691,43 +691,43 @@
 
   v16->_shouldPresentAlertButton = 0;
   v64 = +[UIApplication sharedApplication];
-  v65 = [v64 delegate];
-  v66 = [v65 alertCoordinator];
+  delegate2 = [v64 delegate];
+  alertCoordinator = [delegate2 alertCoordinator];
 
-  if (!v66)
+  if (!alertCoordinator)
   {
     v67 = objc_alloc_init(_TtC13InCallService16AlertCoordinator);
     v68 = +[UIApplication sharedApplication];
-    v69 = [v68 delegate];
-    [v69 setAlertCoordinator:v67];
+    delegate3 = [v68 delegate];
+    [delegate3 setAlertCoordinator:v67];
   }
 
   v70 = +[UIApplication sharedApplication];
-  v71 = [v70 delegate];
-  v72 = [v71 alertCoordinator];
-  [v72 setDelegate:v16];
+  delegate4 = [v70 delegate];
+  alertCoordinator2 = [delegate4 alertCoordinator];
+  [alertCoordinator2 setDelegate:v16];
 
   v16->_shouldEnableVideoStreamingButton = 0;
   v16->_shouldEnableShareMediaButton = 0;
-  v73 = [(iPadAudioCallViewController *)v16 features];
-  LODWORD(v71) = [v73 isEnhancedEmergencyEnabled];
+  features = [(iPadAudioCallViewController *)v16 features];
+  LODWORD(delegate4) = [features isEnhancedEmergencyEnabled];
 
-  if (v71)
+  if (delegate4)
   {
     v74 = +[PHSOSDisconnectionConfirmation sharedInstance];
     [v74 addDelegate:v16];
 
-    v75 = [v12 frontmostCall];
-    if (![v75 isEmergency])
+    frontmostCall = [centerCopy frontmostCall];
+    if (![frontmostCall isEmergency])
     {
 LABEL_21:
 
       goto LABEL_22;
     }
 
-    v76 = [(iPadAudioCallViewController *)v16 emergencyCoordinator];
+    emergencyCoordinator = [(iPadAudioCallViewController *)v16 emergencyCoordinator];
 
-    if (!v76)
+    if (!emergencyCoordinator)
     {
       v77 = sub_100004F84();
       if (os_log_type_enabled(v77, OS_LOG_TYPE_DEFAULT))
@@ -740,12 +740,12 @@ LABEL_21:
       v78 = objc_alloc_init(PHEnhancedEmergencyCoordinator);
       [(iPadAudioCallViewController *)v16 setEmergencyCoordinator:v78];
 
-      v79 = [(iPadAudioCallViewController *)v16 emergencyCoordinator];
-      [v79 setDelegate:v16];
+      emergencyCoordinator2 = [(iPadAudioCallViewController *)v16 emergencyCoordinator];
+      [emergencyCoordinator2 setDelegate:v16];
 
-      v75 = [v12 frontmostCall];
-      v80 = [(iPadAudioCallViewController *)v16 emergencyCoordinator];
-      [v80 setTuCall:v75];
+      frontmostCall = [centerCopy frontmostCall];
+      emergencyCoordinator3 = [(iPadAudioCallViewController *)v16 emergencyCoordinator];
+      [emergencyCoordinator3 setTuCall:frontmostCall];
 
       goto LABEL_21;
     }
@@ -753,19 +753,19 @@ LABEL_21:
 
 LABEL_22:
   [(iPadAudioCallViewController *)v16 setupDimmingViewForAlwaysOnDisplay];
-  v81 = [(iPadAudioCallViewController *)v16 frontmostCall];
-  [(iPadAudioCallViewController *)v16 updateWaitOnHoldServiceWithCall:v81];
+  frontmostCall2 = [(iPadAudioCallViewController *)v16 frontmostCall];
+  [(iPadAudioCallViewController *)v16 updateWaitOnHoldServiceWithCall:frontmostCall2];
 
-  v82 = [(iPadAudioCallViewController *)v16 backgroundController];
-  [v82 updateBackgroundFor:{objc_msgSend(v11, "callDisplayStyle")}];
+  backgroundController = [(iPadAudioCallViewController *)v16 backgroundController];
+  [backgroundController updateBackgroundFor:{objc_msgSend(managerCopy, "callDisplayStyle")}];
 
   return v16;
 }
 
-- (void)callRecordingAfterFullScreenRequest:(id)a3
+- (void)callRecordingAfterFullScreenRequest:(id)request
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 valueForKey:@"callRecording"];
+  userInfo = [request userInfo];
+  v5 = [userInfo valueForKey:@"callRecording"];
 
   if ([v5 isEqual:@"start"])
   {
@@ -783,33 +783,33 @@ LABEL_22:
   v3 = +[NSNotificationCenter defaultCenter];
   [v3 removeObserver:self];
 
-  v4 = [(PHCallViewController *)self bottomBar];
-  [v4 setDelegate:0];
+  bottomBar = [(PHCallViewController *)self bottomBar];
+  [bottomBar setDelegate:0];
 
-  v5 = [(iPadAudioCallViewController *)self callCenter];
-  v6 = [v5 audioDeviceController];
-  [v6 removeDelegate:self];
+  callCenter = [(iPadAudioCallViewController *)self callCenter];
+  audioDeviceController = [callCenter audioDeviceController];
+  [audioDeviceController removeDelegate:self];
 
-  v7 = [(iPadAudioCallViewController *)self callDisplayStyleManager];
-  if ([v7 callDisplayStyle] != 3)
+  callDisplayStyleManager = [(iPadAudioCallViewController *)self callDisplayStyleManager];
+  if ([callDisplayStyleManager callDisplayStyle] != 3)
   {
 
     goto LABEL_5;
   }
 
-  v8 = [(iPadAudioCallViewController *)self features];
-  v9 = [v8 isDominoEnabled];
+  features = [(iPadAudioCallViewController *)self features];
+  isDominoEnabled = [features isDominoEnabled];
 
-  if ((v9 & 1) == 0)
+  if ((isDominoEnabled & 1) == 0)
   {
 LABEL_5:
     [(iPadAudioCallViewController *)self deleteAllUnarchivedPosterDirectories];
   }
 
-  v10 = [(iPadAudioCallViewController *)self features];
-  v11 = [v10 isEnhancedEmergencyEnabled];
+  features2 = [(iPadAudioCallViewController *)self features];
+  isEnhancedEmergencyEnabled = [features2 isEnhancedEmergencyEnabled];
 
-  if (v11)
+  if (isEnhancedEmergencyEnabled)
   {
     v12 = +[PHSOSDisconnectionConfirmation sharedInstance];
     [v12 removeDelegate:self];
@@ -819,7 +819,7 @@ LABEL_5:
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v16 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "iPadAudioCallViewController deallocated %@", buf, 0xCu);
   }
 
@@ -831,27 +831,27 @@ LABEL_5:
 - (void)addBottomBarSubView
 {
   v3 = [PHBottomBar alloc];
-  v4 = [(iPadAudioCallViewController *)self callDisplayStyleManager];
-  v5 = [(PHBottomBar *)v3 initWithCallDisplayStyleManager:v4 isAudioCall:1];
+  callDisplayStyleManager = [(iPadAudioCallViewController *)self callDisplayStyleManager];
+  v5 = [(PHBottomBar *)v3 initWithCallDisplayStyleManager:callDisplayStyleManager isAudioCall:1];
   [(PHCallViewController *)self setBottomBar:v5];
 
   v6 = +[UIColor clearColor];
-  v7 = [(PHCallViewController *)self bottomBar];
-  [v7 setBackgroundColor:v6];
+  bottomBar = [(PHCallViewController *)self bottomBar];
+  [bottomBar setBackgroundColor:v6];
 
-  v8 = [(PHCallViewController *)self bottomBar];
-  [v8 setDelegate:self];
+  bottomBar2 = [(PHCallViewController *)self bottomBar];
+  [bottomBar2 setDelegate:self];
 
-  v9 = [(PHCallViewController *)self bottomBar];
-  [v9 setBottomMargin:0.0];
+  bottomBar3 = [(PHCallViewController *)self bottomBar];
+  [bottomBar3 setBottomMargin:0.0];
 
   [(iPadAudioCallViewController *)self updateHardPauseDigitsState];
-  v10 = [(iPadAudioCallViewController *)self view];
-  v11 = [(PHCallViewController *)self bottomBar];
-  [v10 addSubview:v11];
+  view = [(iPadAudioCallViewController *)self view];
+  bottomBar4 = [(PHCallViewController *)self bottomBar];
+  [view addSubview:bottomBar4];
 
-  v12 = [(PHCallViewController *)self bottomBar];
-  [v12 setCurrentState:11];
+  bottomBar5 = [(PHCallViewController *)self bottomBar];
+  [bottomBar5 setCurrentState:11];
 
   objc_initWeak(&location, self);
   v18 = _NSConcreteStackBlock;
@@ -874,8 +874,8 @@ LABEL_5:
   {
     v3 = [(iPadAudioCallViewController *)self contactForCall:self->_existingPrioritizedCall];
     v4 = [PHCallParticipantsViewController alloc];
-    v5 = [(iPadAudioCallViewController *)self callDisplayStyleManager];
-    v6 = [(iPadAudioCallViewController *)self contactsCache];
+    callDisplayStyleManager = [(iPadAudioCallViewController *)self callDisplayStyleManager];
+    contactsCache = [(iPadAudioCallViewController *)self contactsCache];
     if (v3)
     {
       v13 = v3;
@@ -887,7 +887,7 @@ LABEL_5:
       v7 = &__NSArray0__struct;
     }
 
-    v8 = [(PHCallParticipantsViewController *)v4 initWithCallDisplayStyleManager:v5 contactsCache:v6 contacts:v7];
+    v8 = [(PHCallParticipantsViewController *)v4 initWithCallDisplayStyleManager:callDisplayStyleManager contactsCache:contactsCache contacts:v7];
     callParticipantsViewController = self->_callParticipantsViewController;
     self->_callParticipantsViewController = v8;
 
@@ -900,26 +900,26 @@ LABEL_5:
     [(PHCallParticipantsViewController *)self->_callParticipantsViewController setShouldIgnoreUpdates:[(iPadAudioCallViewController *)self participantsViewControllersShouldIgnoreUpdates]];
     [(iPadAudioCallViewController *)self updateShouldShowLargeAvatar];
     [(iPadAudioCallViewController *)self addChildViewController:self->_callParticipantsViewController];
-    v10 = [(iPadAudioCallViewController *)self view];
-    v11 = [(PHCallParticipantsViewController *)self->_callParticipantsViewController view];
-    [v10 addSubview:v11];
+    view = [(iPadAudioCallViewController *)self view];
+    view2 = [(PHCallParticipantsViewController *)self->_callParticipantsViewController view];
+    [view addSubview:view2];
 
     [(iPadAudioCallViewController *)self applyParticipantsViewConstraints];
-    v12 = [(PHCallParticipantsViewController *)self->_callParticipantsViewController view];
-    [v12 setAlpha:1.0];
+    view3 = [(PHCallParticipantsViewController *)self->_callParticipantsViewController view];
+    [view3 setAlpha:1.0];
   }
 }
 
-- (void)layoutParticipantsViewAnimated:(BOOL)a3 crossfade:(BOOL)a4
+- (void)layoutParticipantsViewAnimated:(BOOL)animated crossfade:(BOOL)crossfade
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [(iPadAudioCallViewController *)self shouldShowLargeAvatar];
+  crossfadeCopy = crossfade;
+  animatedCopy = animated;
+  shouldShowLargeAvatar = [(iPadAudioCallViewController *)self shouldShowLargeAvatar];
   [(iPadAudioCallViewController *)self updateShouldShowLargeAvatar];
-  v8 = [(iPadAudioCallViewController *)self shouldShowLargeAvatar];
-  if (v5)
+  shouldShowLargeAvatar2 = [(iPadAudioCallViewController *)self shouldShowLargeAvatar];
+  if (animatedCopy)
   {
-    if (v4)
+    if (crossfadeCopy)
     {
       v14[0] = _NSConcreteStackBlock;
       v14[1] = 3221225472;
@@ -936,11 +936,11 @@ LABEL_5:
 
     else
     {
-      v9 = v7 ^ v8;
+      v9 = shouldShowLargeAvatar ^ shouldShowLargeAvatar2;
       if (v9)
       {
-        v10 = [(iPadAudioCallViewController *)self view];
-        [v10 layoutIfNeeded];
+        view = [(iPadAudioCallViewController *)self view];
+        [view layoutIfNeeded];
       }
 
       v11[0] = _NSConcreteStackBlock;
@@ -971,52 +971,52 @@ LABEL_5:
 - (void)removeAllParticipantsViewConstraints
 {
   v15 = +[NSMutableArray array];
-  v3 = [(iPadAudioCallViewController *)self participantsViewTopConstraint];
+  participantsViewTopConstraint = [(iPadAudioCallViewController *)self participantsViewTopConstraint];
 
-  if (v3)
+  if (participantsViewTopConstraint)
   {
-    v4 = [(iPadAudioCallViewController *)self participantsViewTopConstraint];
-    [v15 addObject:v4];
+    participantsViewTopConstraint2 = [(iPadAudioCallViewController *)self participantsViewTopConstraint];
+    [v15 addObject:participantsViewTopConstraint2];
   }
 
-  v5 = [(iPadAudioCallViewController *)self participantsViewLeadingConstraint];
+  participantsViewLeadingConstraint = [(iPadAudioCallViewController *)self participantsViewLeadingConstraint];
 
-  if (v5)
+  if (participantsViewLeadingConstraint)
   {
-    v6 = [(iPadAudioCallViewController *)self participantsViewLeadingConstraint];
-    [v15 addObject:v6];
+    participantsViewLeadingConstraint2 = [(iPadAudioCallViewController *)self participantsViewLeadingConstraint];
+    [v15 addObject:participantsViewLeadingConstraint2];
   }
 
-  v7 = [(iPadAudioCallViewController *)self participantsViewTrailingConstraint];
+  participantsViewTrailingConstraint = [(iPadAudioCallViewController *)self participantsViewTrailingConstraint];
 
-  if (v7)
+  if (participantsViewTrailingConstraint)
   {
-    v8 = [(iPadAudioCallViewController *)self participantsViewTrailingConstraint];
-    [v15 addObject:v8];
+    participantsViewTrailingConstraint2 = [(iPadAudioCallViewController *)self participantsViewTrailingConstraint];
+    [v15 addObject:participantsViewTrailingConstraint2];
   }
 
-  v9 = [(iPadAudioCallViewController *)self participantsViewCenterXConstraint];
+  participantsViewCenterXConstraint = [(iPadAudioCallViewController *)self participantsViewCenterXConstraint];
 
-  if (v9)
+  if (participantsViewCenterXConstraint)
   {
-    v10 = [(iPadAudioCallViewController *)self participantsViewCenterXConstraint];
-    [v15 addObject:v10];
+    participantsViewCenterXConstraint2 = [(iPadAudioCallViewController *)self participantsViewCenterXConstraint];
+    [v15 addObject:participantsViewCenterXConstraint2];
   }
 
-  v11 = [(iPadAudioCallViewController *)self participantsViewBottomConstraint];
+  participantsViewBottomConstraint = [(iPadAudioCallViewController *)self participantsViewBottomConstraint];
 
-  if (v11)
+  if (participantsViewBottomConstraint)
   {
-    v12 = [(iPadAudioCallViewController *)self participantsViewBottomConstraint];
-    [v15 addObject:v12];
+    participantsViewBottomConstraint2 = [(iPadAudioCallViewController *)self participantsViewBottomConstraint];
+    [v15 addObject:participantsViewBottomConstraint2];
   }
 
-  v13 = [(iPadAudioCallViewController *)self participantsViewCenterYConstraint];
+  participantsViewCenterYConstraint = [(iPadAudioCallViewController *)self participantsViewCenterYConstraint];
 
-  if (v13)
+  if (participantsViewCenterYConstraint)
   {
-    v14 = [(iPadAudioCallViewController *)self participantsViewCenterYConstraint];
-    [v15 addObject:v14];
+    participantsViewCenterYConstraint2 = [(iPadAudioCallViewController *)self participantsViewCenterYConstraint];
+    [v15 addObject:participantsViewCenterYConstraint2];
   }
 
   [NSLayoutConstraint deactivateConstraints:v15];
@@ -1024,14 +1024,14 @@ LABEL_5:
 
 - (void)applyParticipantsViewConstraints
 {
-  v3 = [(iPadAudioCallViewController *)self callDisplayStyleManager];
-  v4 = [v3 callDisplayStyle];
+  callDisplayStyleManager = [(iPadAudioCallViewController *)self callDisplayStyleManager];
+  callDisplayStyle = [callDisplayStyleManager callDisplayStyle];
 
-  if (v4 <= 2)
+  if (callDisplayStyle <= 2)
   {
-    if ((v4 - 1) >= 2)
+    if ((callDisplayStyle - 1) >= 2)
     {
-      if (!v4)
+      if (!callDisplayStyle)
       {
 
         [(iPadAudioCallViewController *)self applyParticipantsViewConstraintsForBanner];
@@ -1043,9 +1043,9 @@ LABEL_5:
     goto LABEL_9;
   }
 
-  if (v4 != 3)
+  if (callDisplayStyle != 3)
   {
-    if (v4 != 4)
+    if (callDisplayStyle != 4)
     {
       return;
     }
@@ -1061,50 +1061,50 @@ LABEL_9:
 
 - (void)applyParticipantsViewConstraintsForFullScreen
 {
-  v3 = [(iPadAudioCallViewController *)self getParticipantsView_NotWaiting];
-  if (v3)
+  getParticipantsView_NotWaiting = [(iPadAudioCallViewController *)self getParticipantsView_NotWaiting];
+  if (getParticipantsView_NotWaiting)
   {
-    v4 = [(iPadAudioCallViewController *)self viewIfLoaded];
+    viewIfLoaded = [(iPadAudioCallViewController *)self viewIfLoaded];
 
-    if (v4)
+    if (viewIfLoaded)
     {
-      [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
-      v5 = [v3 bottomAnchor];
-      v6 = [(iPadAudioCallViewController *)self layoutGuidesProvider];
-      v7 = [v6 callerDetailsLayoutGuide];
-      v8 = [v7 bottomAnchor];
-      v9 = [v5 constraintEqualToAnchor:v8];
+      [getParticipantsView_NotWaiting setTranslatesAutoresizingMaskIntoConstraints:0];
+      bottomAnchor = [getParticipantsView_NotWaiting bottomAnchor];
+      layoutGuidesProvider = [(iPadAudioCallViewController *)self layoutGuidesProvider];
+      callerDetailsLayoutGuide = [layoutGuidesProvider callerDetailsLayoutGuide];
+      bottomAnchor2 = [callerDetailsLayoutGuide bottomAnchor];
+      v9 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
       [(iPadAudioCallViewController *)self setParticipantsViewBottomConstraint:v9];
 
-      v10 = [v3 leadingAnchor];
-      v11 = [(iPadAudioCallViewController *)self layoutGuidesProvider];
-      v12 = [v11 bottomShelfLayoutGuide];
-      v13 = [v12 leadingAnchor];
-      v14 = [v10 constraintEqualToAnchor:v13];
+      leadingAnchor = [getParticipantsView_NotWaiting leadingAnchor];
+      layoutGuidesProvider2 = [(iPadAudioCallViewController *)self layoutGuidesProvider];
+      bottomShelfLayoutGuide = [layoutGuidesProvider2 bottomShelfLayoutGuide];
+      leadingAnchor2 = [bottomShelfLayoutGuide leadingAnchor];
+      v14 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
       [(iPadAudioCallViewController *)self setParticipantsViewLeadingConstraint:v14];
 
-      v15 = [v3 trailingAnchor];
-      v16 = [(iPadAudioCallViewController *)self layoutGuidesProvider];
-      v17 = [v16 bottomShelfLayoutGuide];
-      v18 = [v17 trailingAnchor];
-      v19 = [v15 constraintEqualToAnchor:v18];
+      trailingAnchor = [getParticipantsView_NotWaiting trailingAnchor];
+      layoutGuidesProvider3 = [(iPadAudioCallViewController *)self layoutGuidesProvider];
+      bottomShelfLayoutGuide2 = [layoutGuidesProvider3 bottomShelfLayoutGuide];
+      trailingAnchor2 = [bottomShelfLayoutGuide2 trailingAnchor];
+      v19 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
       [(iPadAudioCallViewController *)self setParticipantsViewTrailingConstraint:v19];
 
-      v20 = [v3 topAnchor];
-      v21 = [(iPadAudioCallViewController *)self layoutGuidesProvider];
-      v22 = [v21 callerDetailsLayoutGuide];
-      v23 = [v22 topAnchor];
-      v24 = [v20 constraintEqualToAnchor:v23];
+      topAnchor = [getParticipantsView_NotWaiting topAnchor];
+      layoutGuidesProvider4 = [(iPadAudioCallViewController *)self layoutGuidesProvider];
+      callerDetailsLayoutGuide2 = [layoutGuidesProvider4 callerDetailsLayoutGuide];
+      topAnchor2 = [callerDetailsLayoutGuide2 topAnchor];
+      v24 = [topAnchor constraintEqualToAnchor:topAnchor2];
       [(iPadAudioCallViewController *)self setParticipantsViewTopConstraint:v24];
 
-      v25 = [(iPadAudioCallViewController *)self participantsViewBottomConstraint];
-      v30[0] = v25;
-      v26 = [(iPadAudioCallViewController *)self participantsViewTopConstraint];
-      v30[1] = v26;
-      v27 = [(iPadAudioCallViewController *)self participantsViewLeadingConstraint];
-      v30[2] = v27;
-      v28 = [(iPadAudioCallViewController *)self participantsViewTrailingConstraint];
-      v30[3] = v28;
+      participantsViewBottomConstraint = [(iPadAudioCallViewController *)self participantsViewBottomConstraint];
+      v30[0] = participantsViewBottomConstraint;
+      participantsViewTopConstraint = [(iPadAudioCallViewController *)self participantsViewTopConstraint];
+      v30[1] = participantsViewTopConstraint;
+      participantsViewLeadingConstraint = [(iPadAudioCallViewController *)self participantsViewLeadingConstraint];
+      v30[2] = participantsViewLeadingConstraint;
+      participantsViewTrailingConstraint = [(iPadAudioCallViewController *)self participantsViewTrailingConstraint];
+      v30[3] = participantsViewTrailingConstraint;
       v29 = [NSArray arrayWithObjects:v30 count:4];
       [NSLayoutConstraint activateConstraints:v29];
     }
@@ -1113,64 +1113,64 @@ LABEL_9:
 
 - (id)participantsViewConstraints
 {
-  v3 = [(iPadAudioCallViewController *)self participantsViewBottomConstraint];
-  v9[0] = v3;
-  v4 = [(iPadAudioCallViewController *)self participantsViewTopConstraint];
-  v9[1] = v4;
-  v5 = [(iPadAudioCallViewController *)self participantsViewLeadingConstraint];
-  v9[2] = v5;
-  v6 = [(iPadAudioCallViewController *)self participantsViewTrailingConstraint];
-  v9[3] = v6;
+  participantsViewBottomConstraint = [(iPadAudioCallViewController *)self participantsViewBottomConstraint];
+  v9[0] = participantsViewBottomConstraint;
+  participantsViewTopConstraint = [(iPadAudioCallViewController *)self participantsViewTopConstraint];
+  v9[1] = participantsViewTopConstraint;
+  participantsViewLeadingConstraint = [(iPadAudioCallViewController *)self participantsViewLeadingConstraint];
+  v9[2] = participantsViewLeadingConstraint;
+  participantsViewTrailingConstraint = [(iPadAudioCallViewController *)self participantsViewTrailingConstraint];
+  v9[3] = participantsViewTrailingConstraint;
   v7 = [NSArray arrayWithObjects:v9 count:4];
 
   return v7;
 }
 
-- (id)ambientParticipantsViewConstraintsForView:(id)a3 largeAvatar:(BOOL)a4
+- (id)ambientParticipantsViewConstraintsForView:(id)view largeAvatar:(BOOL)avatar
 {
-  v4 = a4;
-  v6 = a3;
+  avatarCopy = avatar;
+  viewCopy = view;
   v7 = objc_alloc_init(NSMutableDictionary);
   +[PHUIConfiguration ambientVerticalPadding];
   v9 = v8;
   +[PHUIConfiguration ambientHorizontalPadding];
   v11 = v10;
-  if (v4)
+  if (avatarCopy)
   {
-    v12 = [v6 bottomAnchor];
-    v13 = [(iPadAudioCallViewController *)self view];
-    v14 = [v13 bottomAnchor];
-    v15 = [v12 constraintEqualToAnchor:v14 constant:-v9];
+    bottomAnchor = [viewCopy bottomAnchor];
+    view = [(iPadAudioCallViewController *)self view];
+    bottomAnchor2 = [view bottomAnchor];
+    v15 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-v9];
     [v7 setObject:v15 forKeyedSubscript:&off_10036A2F8];
 
-    v16 = [v6 trailingAnchor];
-    v17 = [(iPadAudioCallViewController *)self view];
-    v18 = [v17 safeAreaLayoutGuide];
-    v19 = [v18 trailingAnchor];
-    v20 = [v16 constraintEqualToAnchor:v19 constant:-v11];
+    trailingAnchor = [viewCopy trailingAnchor];
+    view2 = [(iPadAudioCallViewController *)self view];
+    safeAreaLayoutGuide = [view2 safeAreaLayoutGuide];
+    trailingAnchor2 = [safeAreaLayoutGuide trailingAnchor];
+    v20 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-v11];
     [v7 setObject:v20 forKeyedSubscript:&off_10036A310];
   }
 
   else
   {
-    v16 = [v6 trailingAnchor];
-    v17 = [(iPadAudioCallViewController *)self ambientAudioRoutesControlView];
-    v18 = [v17 leadingAnchor];
-    v19 = [v16 constraintEqualToAnchor:v18 constant:-20.0];
-    [v7 setObject:v19 forKeyedSubscript:&off_10036A310];
+    trailingAnchor = [viewCopy trailingAnchor];
+    view2 = [(iPadAudioCallViewController *)self ambientAudioRoutesControlView];
+    safeAreaLayoutGuide = [view2 leadingAnchor];
+    trailingAnchor2 = [trailingAnchor constraintEqualToAnchor:safeAreaLayoutGuide constant:-20.0];
+    [v7 setObject:trailingAnchor2 forKeyedSubscript:&off_10036A310];
   }
 
-  v21 = [v6 topAnchor];
-  v22 = [(iPadAudioCallViewController *)self view];
-  v23 = [v22 topAnchor];
-  v24 = [v21 constraintEqualToAnchor:v23 constant:v9];
+  topAnchor = [viewCopy topAnchor];
+  view3 = [(iPadAudioCallViewController *)self view];
+  topAnchor2 = [view3 topAnchor];
+  v24 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:v9];
   [v7 setObject:v24 forKeyedSubscript:&off_10036A328];
 
-  v25 = [v6 leadingAnchor];
-  v26 = [(iPadAudioCallViewController *)self view];
-  v27 = [v26 safeAreaLayoutGuide];
-  v28 = [v27 leadingAnchor];
-  v29 = [v25 constraintEqualToAnchor:v28 constant:v11];
+  leadingAnchor = [viewCopy leadingAnchor];
+  view4 = [(iPadAudioCallViewController *)self view];
+  safeAreaLayoutGuide2 = [view4 safeAreaLayoutGuide];
+  leadingAnchor2 = [safeAreaLayoutGuide2 leadingAnchor];
+  v29 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:v11];
   [v7 setObject:v29 forKeyedSubscript:&off_10036A340];
 
   return v7;
@@ -1178,11 +1178,11 @@ LABEL_9:
 
 - (void)applyParticipantsViewConstraintsForAmbient
 {
-  v3 = [(iPadAudioCallViewController *)self getParticipantsView_NotWaiting];
-  v4 = v3;
-  if (v3)
+  getParticipantsView_NotWaiting = [(iPadAudioCallViewController *)self getParticipantsView_NotWaiting];
+  v4 = getParticipantsView_NotWaiting;
+  if (getParticipantsView_NotWaiting)
   {
-    [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
+    [getParticipantsView_NotWaiting setTranslatesAutoresizingMaskIntoConstraints:0];
     v5 = [(iPadAudioCallViewController *)self ambientParticipantsViewConstraintsForView:v4 largeAvatar:[(iPadAudioCallViewController *)self shouldShowLargeAvatar]];
     [(iPadAudioCallViewController *)self setParticipantsViewCenterXConstraint:0];
     [(iPadAudioCallViewController *)self setParticipantsViewCenterYConstraint:0];
@@ -1198,71 +1198,71 @@ LABEL_9:
     v9 = [v5 objectForKeyedSubscript:&off_10036A310];
     [(iPadAudioCallViewController *)self setParticipantsViewTrailingConstraint:v9];
 
-    v10 = [(iPadAudioCallViewController *)self participantsViewTopConstraint];
-    v11 = [(iPadAudioCallViewController *)self participantsViewLeadingConstraint];
-    v16[1] = v11;
-    v12 = [(iPadAudioCallViewController *)self participantsViewTrailingConstraint];
-    v16[2] = v12;
+    participantsViewTopConstraint = [(iPadAudioCallViewController *)self participantsViewTopConstraint];
+    participantsViewLeadingConstraint = [(iPadAudioCallViewController *)self participantsViewLeadingConstraint];
+    v16[1] = participantsViewLeadingConstraint;
+    participantsViewTrailingConstraint = [(iPadAudioCallViewController *)self participantsViewTrailingConstraint];
+    v16[2] = participantsViewTrailingConstraint;
     v13 = [NSArray arrayWithObjects:v16 count:3];
     [NSLayoutConstraint activateConstraints:v13];
 
-    v14 = [(iPadAudioCallViewController *)self participantsViewBottomConstraint];
+    participantsViewBottomConstraint = [(iPadAudioCallViewController *)self participantsViewBottomConstraint];
 
-    if (v14)
+    if (participantsViewBottomConstraint)
     {
-      v15 = [(iPadAudioCallViewController *)self participantsViewBottomConstraint];
-      [v15 setActive:1];
+      participantsViewBottomConstraint2 = [(iPadAudioCallViewController *)self participantsViewBottomConstraint];
+      [participantsViewBottomConstraint2 setActive:1];
     }
   }
 }
 
 - (void)applyParticipantsViewConstraintsForBanner
 {
-  v3 = [(iPadAudioCallViewController *)self getParticipantsView_NotWaiting];
-  v4 = v3;
-  if (v3)
+  getParticipantsView_NotWaiting = [(iPadAudioCallViewController *)self getParticipantsView_NotWaiting];
+  v4 = getParticipantsView_NotWaiting;
+  if (getParticipantsView_NotWaiting)
   {
-    [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
+    [getParticipantsView_NotWaiting setTranslatesAutoresizingMaskIntoConstraints:0];
     [(iPadAudioCallViewController *)self setParticipantsViewCenterXConstraint:0];
-    v5 = [v4 centerYAnchor];
-    v6 = [(iPadAudioCallViewController *)self view];
-    v7 = [v6 centerYAnchor];
-    v8 = [v5 constraintEqualToAnchor:v7];
+    centerYAnchor = [v4 centerYAnchor];
+    view = [(iPadAudioCallViewController *)self view];
+    centerYAnchor2 = [view centerYAnchor];
+    v8 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     [(iPadAudioCallViewController *)self setParticipantsViewCenterYConstraint:v8];
 
-    v9 = [v4 topAnchor];
-    v10 = [(iPadAudioCallViewController *)self view];
-    v11 = [v10 topAnchor];
-    v12 = [v9 constraintGreaterThanOrEqualToAnchor:v11];
+    topAnchor = [v4 topAnchor];
+    view2 = [(iPadAudioCallViewController *)self view];
+    topAnchor2 = [view2 topAnchor];
+    v12 = [topAnchor constraintGreaterThanOrEqualToAnchor:topAnchor2];
     [(iPadAudioCallViewController *)self setParticipantsViewTopConstraint:v12];
 
-    v13 = [v4 bottomAnchor];
-    v14 = [(iPadAudioCallViewController *)self view];
-    v15 = [v14 bottomAnchor];
-    v16 = [v13 constraintLessThanOrEqualToAnchor:v15];
+    bottomAnchor = [v4 bottomAnchor];
+    view3 = [(iPadAudioCallViewController *)self view];
+    bottomAnchor2 = [view3 bottomAnchor];
+    v16 = [bottomAnchor constraintLessThanOrEqualToAnchor:bottomAnchor2];
     [(iPadAudioCallViewController *)self setParticipantsViewBottomConstraint:v16];
 
-    v17 = [v4 leadingAnchor];
-    v18 = [(iPadAudioCallViewController *)self view];
-    v19 = [v18 leadingAnchor];
-    v20 = [v17 constraintEqualToAnchor:v19];
+    leadingAnchor = [v4 leadingAnchor];
+    view4 = [(iPadAudioCallViewController *)self view];
+    leadingAnchor2 = [view4 leadingAnchor];
+    v20 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     [(iPadAudioCallViewController *)self setParticipantsViewLeadingConstraint:v20];
 
-    v21 = [v4 trailingAnchor];
-    v22 = [(iPadAudioCallViewController *)self view];
-    v23 = [v22 trailingAnchor];
-    v24 = [v21 constraintEqualToAnchor:v23];
+    trailingAnchor = [v4 trailingAnchor];
+    view5 = [(iPadAudioCallViewController *)self view];
+    trailingAnchor2 = [view5 trailingAnchor];
+    v24 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     [(iPadAudioCallViewController *)self setParticipantsViewTrailingConstraint:v24];
 
-    v25 = [(iPadAudioCallViewController *)self participantsViewCenterYConstraint];
-    v26 = [(iPadAudioCallViewController *)self participantsViewTopConstraint];
-    v31[1] = v26;
-    v27 = [(iPadAudioCallViewController *)self participantsViewBottomConstraint];
-    v31[2] = v27;
-    v28 = [(iPadAudioCallViewController *)self participantsViewLeadingConstraint];
-    v31[3] = v28;
-    v29 = [(iPadAudioCallViewController *)self participantsViewTrailingConstraint];
-    v31[4] = v29;
+    participantsViewCenterYConstraint = [(iPadAudioCallViewController *)self participantsViewCenterYConstraint];
+    participantsViewTopConstraint = [(iPadAudioCallViewController *)self participantsViewTopConstraint];
+    v31[1] = participantsViewTopConstraint;
+    participantsViewBottomConstraint = [(iPadAudioCallViewController *)self participantsViewBottomConstraint];
+    v31[2] = participantsViewBottomConstraint;
+    participantsViewLeadingConstraint = [(iPadAudioCallViewController *)self participantsViewLeadingConstraint];
+    v31[3] = participantsViewLeadingConstraint;
+    participantsViewTrailingConstraint = [(iPadAudioCallViewController *)self participantsViewTrailingConstraint];
+    v31[4] = participantsViewTrailingConstraint;
     v30 = [NSArray arrayWithObjects:v31 count:5];
     [NSLayoutConstraint activateConstraints:v30];
   }
@@ -1274,10 +1274,10 @@ LABEL_9:
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v3 = [(iPadAudioCallViewController *)self callCenter];
-  v4 = [v3 currentAudioAndVideoCalls];
+  callCenter = [(iPadAudioCallViewController *)self callCenter];
+  currentAudioAndVideoCalls = [callCenter currentAudioAndVideoCalls];
 
-  v5 = [v4 countByEnumeratingWithState:&v22 objects:v32 count:16];
+  v5 = [currentAudioAndVideoCalls countByEnumeratingWithState:&v22 objects:v32 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1288,7 +1288,7 @@ LABEL_9:
       {
         if (*v23 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(currentAudioAndVideoCalls);
         }
 
         if ([*(*(&v22 + 1) + 8 * i) isSharingScreen])
@@ -1298,7 +1298,7 @@ LABEL_9:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v22 objects:v32 count:16];
+      v6 = [currentAudioAndVideoCalls countByEnumeratingWithState:&v22 objects:v32 count:16];
       if (v6)
       {
         continue;
@@ -1311,11 +1311,11 @@ LABEL_9:
   v9 = 0;
 LABEL_11:
 
-  v10 = [(iPadAudioCallViewController *)self screenSharingInteractionControllerFactory];
-  v11 = [v10 sharedController];
-  v12 = [v11 remoteControlStatus];
+  screenSharingInteractionControllerFactory = [(iPadAudioCallViewController *)self screenSharingInteractionControllerFactory];
+  sharedController = [screenSharingInteractionControllerFactory sharedController];
+  remoteControlStatus = [sharedController remoteControlStatus];
 
-  if (v12 == 2)
+  if (remoteControlStatus == 2)
   {
     v13 = 0;
   }
@@ -1353,7 +1353,7 @@ LABEL_11:
     v27 = v16;
     v28 = 2114;
     v29 = v17;
-    if (v12 == 2)
+    if (remoteControlStatus == 2)
     {
       v15 = @"YES";
     }
@@ -1373,12 +1373,12 @@ LABEL_11:
     v18 = 0;
   }
 
-  v19 = [(iPadAudioCallViewController *)self view];
-  v20 = [v19 layer];
-  [v20 setDisableUpdateMask:v18];
+  view = [(iPadAudioCallViewController *)self view];
+  layer = [view layer];
+  [layer setDisableUpdateMask:v18];
 
-  v21 = [(iPadAudioCallViewController *)self callDetailsCoordinator];
-  [v21 setShouldHideViewsFromScreenSharing:v13];
+  callDetailsCoordinator = [(iPadAudioCallViewController *)self callDetailsCoordinator];
+  [callDetailsCoordinator setShouldHideViewsFromScreenSharing:v13];
 }
 
 - (void)viewDidLoad
@@ -1386,9 +1386,9 @@ LABEL_11:
   v6.receiver = self;
   v6.super_class = iPadAudioCallViewController;
   [(iPadAudioCallViewController *)&v6 viewDidLoad];
-  v3 = [(iPadAudioCallViewController *)self inCallRootViewController];
+  inCallRootViewController = [(iPadAudioCallViewController *)self inCallRootViewController];
 
-  if (v3)
+  if (inCallRootViewController)
   {
     [(iPadAudioCallViewController *)self handleConfigurationAfterViewLoaded];
   }
@@ -1407,54 +1407,54 @@ LABEL_11:
 - (void)handleConfigurationAfterViewLoaded
 {
   [(iPadAudioCallViewController *)self setLayoutGuides];
-  v3 = [(iPadAudioCallViewController *)self layoutGuidesProvider];
-  v4 = [(iPadAudioCallViewController *)self backgroundController];
-  [v4 setLayoutGuidesProvider:v3];
+  layoutGuidesProvider = [(iPadAudioCallViewController *)self layoutGuidesProvider];
+  backgroundController = [(iPadAudioCallViewController *)self backgroundController];
+  [backgroundController setLayoutGuidesProvider:layoutGuidesProvider];
 
-  v5 = [(iPadAudioCallViewController *)self backgroundController];
-  v6 = [(iPadAudioCallViewController *)self view];
-  [v6 bounds];
+  backgroundController2 = [(iPadAudioCallViewController *)self backgroundController];
+  view = [(iPadAudioCallViewController *)self view];
+  [view bounds];
   v8 = v7;
-  v9 = [(iPadAudioCallViewController *)self view];
-  [v9 bounds];
-  [v5 updateIsLandscape:v8 > v10];
+  view2 = [(iPadAudioCallViewController *)self view];
+  [view2 bounds];
+  [backgroundController2 updateIsLandscape:v8 > v10];
 
-  v11 = [(iPadAudioCallViewController *)self view];
-  v12 = [(iPadAudioCallViewController *)self backgroundController];
-  v13 = [v12 backgroundContainer];
-  [v11 addSubview:v13];
+  view3 = [(iPadAudioCallViewController *)self view];
+  backgroundController3 = [(iPadAudioCallViewController *)self backgroundController];
+  backgroundContainer = [backgroundController3 backgroundContainer];
+  [view3 addSubview:backgroundContainer];
 
-  v14 = [(iPadAudioCallViewController *)self backgroundController];
-  v15 = [v14 backgroundContainer];
-  [(iPadAudioCallViewController *)self updateBackgroundTintToView:v15];
+  backgroundController4 = [(iPadAudioCallViewController *)self backgroundController];
+  backgroundContainer2 = [backgroundController4 backgroundContainer];
+  [(iPadAudioCallViewController *)self updateBackgroundTintToView:backgroundContainer2];
 
-  v45 = [(iPadAudioCallViewController *)self backgroundController];
-  v44 = [v45 backgroundContainer];
-  v42 = [v44 leadingAnchor];
-  v43 = [(iPadAudioCallViewController *)self view];
-  v41 = [v43 leadingAnchor];
-  v40 = [v42 constraintEqualToAnchor:v41];
+  backgroundController5 = [(iPadAudioCallViewController *)self backgroundController];
+  backgroundContainer3 = [backgroundController5 backgroundContainer];
+  leadingAnchor = [backgroundContainer3 leadingAnchor];
+  view4 = [(iPadAudioCallViewController *)self view];
+  leadingAnchor2 = [view4 leadingAnchor];
+  v40 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v46[0] = v40;
-  v39 = [(iPadAudioCallViewController *)self backgroundController];
-  v38 = [v39 backgroundContainer];
-  v36 = [v38 trailingAnchor];
-  v37 = [(iPadAudioCallViewController *)self view];
-  v35 = [v37 trailingAnchor];
-  v34 = [v36 constraintEqualToAnchor:v35];
+  backgroundController6 = [(iPadAudioCallViewController *)self backgroundController];
+  backgroundContainer4 = [backgroundController6 backgroundContainer];
+  trailingAnchor = [backgroundContainer4 trailingAnchor];
+  view5 = [(iPadAudioCallViewController *)self view];
+  trailingAnchor2 = [view5 trailingAnchor];
+  v34 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v46[1] = v34;
-  v33 = [(iPadAudioCallViewController *)self backgroundController];
-  v32 = [v33 backgroundContainer];
-  v30 = [v32 bottomAnchor];
-  v31 = [(iPadAudioCallViewController *)self view];
-  v16 = [v31 bottomAnchor];
-  v17 = [v30 constraintEqualToAnchor:v16];
+  backgroundController7 = [(iPadAudioCallViewController *)self backgroundController];
+  backgroundContainer5 = [backgroundController7 backgroundContainer];
+  bottomAnchor = [backgroundContainer5 bottomAnchor];
+  view6 = [(iPadAudioCallViewController *)self view];
+  bottomAnchor2 = [view6 bottomAnchor];
+  v17 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v46[2] = v17;
-  v18 = [(iPadAudioCallViewController *)self backgroundController];
-  v19 = [v18 backgroundContainer];
-  v20 = [v19 topAnchor];
-  v21 = [(iPadAudioCallViewController *)self view];
-  v22 = [v21 topAnchor];
-  v23 = [v20 constraintEqualToAnchor:v22];
+  backgroundController8 = [(iPadAudioCallViewController *)self backgroundController];
+  backgroundContainer6 = [backgroundController8 backgroundContainer];
+  topAnchor = [backgroundContainer6 topAnchor];
+  view7 = [(iPadAudioCallViewController *)self view];
+  topAnchor2 = [view7 topAnchor];
+  v23 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v46[3] = v23;
   v24 = [NSArray arrayWithObjects:v46 count:4];
   [NSLayoutConstraint activateConstraints:v24];
@@ -1465,8 +1465,8 @@ LABEL_11:
   if (![(iPadAudioCallViewController *)self isShowingPoster])
   {
     [(iPadAudioCallViewController *)self addDefaultBackgroundGradientView];
-    v25 = [(iPadAudioCallViewController *)self existingPrioritizedCall];
-    [(iPadAudioCallViewController *)self addNoPosterContactImage:v25];
+    existingPrioritizedCall = [(iPadAudioCallViewController *)self existingPrioritizedCall];
+    [(iPadAudioCallViewController *)self addNoPosterContactImage:existingPrioritizedCall];
 
     [(iPadAudioCallViewController *)self constraintDefaultNoPosterAvatarView];
     [(iPadAudioCallViewController *)self updateDefaultNoPosterAvatarViewVisibility];
@@ -1475,15 +1475,15 @@ LABEL_11:
   [(iPadAudioCallViewController *)self addMiddleStackView];
   [(iPadAudioCallViewController *)self updateCurrentState];
   [(iPadAudioCallViewController *)self updatePosterSaliencyRect];
-  v26 = [(iPadAudioCallViewController *)self glassDimmingView];
-  v27 = [(iPadAudioCallViewController *)self view];
-  [v27 bounds];
-  [(iPadAudioCallViewController *)self updateDimmingView:v26 with:v28, v29];
+  glassDimmingView = [(iPadAudioCallViewController *)self glassDimmingView];
+  view8 = [(iPadAudioCallViewController *)self view];
+  [view8 bounds];
+  [(iPadAudioCallViewController *)self updateDimmingView:glassDimmingView with:v28, v29];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1493,56 +1493,56 @@ LABEL_11:
 
   v9.receiver = self;
   v9.super_class = iPadAudioCallViewController;
-  [(iPadAudioCallViewController *)&v9 viewWillAppear:v3];
-  [(iPadAudioCallViewController *)self handleViewWillAppear:v3];
+  [(iPadAudioCallViewController *)&v9 viewWillAppear:appearCopy];
+  [(iPadAudioCallViewController *)self handleViewWillAppear:appearCopy];
   [(iPadAudioCallViewController *)self updateBottomShelfWithMiddleViewState:self->_middleViewState callDisplayStyle:[(ICSCallDisplayStyleManager *)self->_callDisplayStyleManager callDisplayStyle]];
-  v6 = [(iPadAudioCallViewController *)self view];
-  [v6 layoutIfNeeded];
+  view = [(iPadAudioCallViewController *)self view];
+  [view layoutIfNeeded];
 
-  v7 = [(iPadAudioCallViewController *)self defaultNoPosterAvatarView];
-  [v7 setNeedsLayout];
+  defaultNoPosterAvatarView = [(iPadAudioCallViewController *)self defaultNoPosterAvatarView];
+  [defaultNoPosterAvatarView setNeedsLayout];
 
-  v8 = [(iPadAudioCallViewController *)self defaultNoPosterAvatarView];
-  [v8 layoutIfNeeded];
+  defaultNoPosterAvatarView2 = [(iPadAudioCallViewController *)self defaultNoPosterAvatarView];
+  [defaultNoPosterAvatarView2 layoutIfNeeded];
 }
 
-- (void)handleViewWillAppear:(BOOL)a3
+- (void)handleViewWillAppear:(BOOL)appear
 {
   [(iPadAudioCallViewController *)self setParticipantsViewControllersShouldIgnoreUpdates:0];
   [(iPadAudioCallViewController *)self updateCurrentState];
   [(iPadAudioCallViewController *)self updateScreenSharingDisableUpdateMask];
-  v8 = [(iPadAudioCallViewController *)self features];
-  if ([v8 isEnhancedEmergencyEnabled])
+  features = [(iPadAudioCallViewController *)self features];
+  if ([features isEnhancedEmergencyEnabled])
   {
-    v4 = [(iPadAudioCallViewController *)self emergencyCoordinator];
-    if (v4)
+    emergencyCoordinator = [(iPadAudioCallViewController *)self emergencyCoordinator];
+    if (emergencyCoordinator)
     {
-      v5 = v4;
-      v6 = [(iPadAudioCallViewController *)self emergencyCoordinator];
-      v7 = [v6 eedRTTState];
+      v5 = emergencyCoordinator;
+      emergencyCoordinator2 = [(iPadAudioCallViewController *)self emergencyCoordinator];
+      eedRTTState = [emergencyCoordinator2 eedRTTState];
 
-      if (v7 != 4)
+      if (eedRTTState != 4)
       {
         return;
       }
 
-      v8 = [(iPadAudioCallViewController *)self emergencyCoordinator];
-      [v8 transitionToRTTState:2];
+      features = [(iPadAudioCallViewController *)self emergencyCoordinator];
+      [features transitionToRTTState:2];
     }
   }
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
   v4.receiver = self;
   v4.super_class = iPadAudioCallViewController;
-  [(iPadAudioCallViewController *)&v4 viewIsAppearing:a3];
+  [(iPadAudioCallViewController *)&v4 viewIsAppearing:appearing];
   [(iPadAudioCallViewController *)self updateLayeredBackgroundWallpaper];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1552,55 +1552,55 @@ LABEL_11:
 
   v6.receiver = self;
   v6.super_class = iPadAudioCallViewController;
-  [(iPadAudioCallViewController *)&v6 viewDidAppear:v3];
-  [(iPadAudioCallViewController *)self handleViewDidAppear:v3];
+  [(iPadAudioCallViewController *)&v6 viewDidAppear:appearCopy];
+  [(iPadAudioCallViewController *)self handleViewDidAppear:appearCopy];
 }
 
-- (void)handleViewDidAppear:(BOOL)a3
+- (void)handleViewDidAppear:(BOOL)appear
 {
   v4 = 0.300000012;
-  if (!a3)
+  if (!appear)
   {
     v4 = 0.0;
   }
 
   [(PHCallViewController *)self setStatusBarHidden:0 withDuration:v4];
-  v16 = [(iPadAudioCallViewController *)self frontmostCall];
-  v5 = [v16 provider];
-  if ([v5 isFaceTimeProvider])
+  frontmostCall = [(iPadAudioCallViewController *)self frontmostCall];
+  provider = [frontmostCall provider];
+  if ([provider isFaceTimeProvider])
   {
-    v6 = [v16 isVideo];
+    isVideo = [frontmostCall isVideo];
 
-    if (v6)
+    if (isVideo)
     {
       goto LABEL_7;
     }
 
-    v5 = +[CUTWiFiManager sharedInstance];
-    [v5 addWiFiAutoAssociationClientToken:@"iPadFaceTimeAudioWiFiAssertionKey"];
+    provider = +[CUTWiFiManager sharedInstance];
+    [provider addWiFiAutoAssociationClientToken:@"iPadFaceTimeAudioWiFiAssertionKey"];
   }
 
 LABEL_7:
-  v7 = [(iPadAudioCallViewController *)self callCenter];
-  [v7 enteredForegroundForCall:v16];
+  callCenter = [(iPadAudioCallViewController *)self callCenter];
+  [callCenter enteredForegroundForCall:frontmostCall];
 
   v8 = +[UIApplication sharedApplication];
-  v9 = [v8 delegate];
-  v10 = [v9 alertCoordinator];
-  v11 = [v10 isMonitoring];
+  delegate = [v8 delegate];
+  alertCoordinator = [delegate alertCoordinator];
+  isMonitoring = [alertCoordinator isMonitoring];
 
   v12 = +[UIApplication sharedApplication];
-  v13 = [v12 delegate];
-  v14 = [v13 alertCoordinator];
-  v15 = v14;
-  if (v11)
+  delegate2 = [v12 delegate];
+  alertCoordinator2 = [delegate2 alertCoordinator];
+  v15 = alertCoordinator2;
+  if (isMonitoring)
   {
-    [v14 refreshDelegateWithState];
+    [alertCoordinator2 refreshDelegateWithState];
   }
 
   else
   {
-    [v14 startMonitoring];
+    [alertCoordinator2 startMonitoring];
   }
 }
 
@@ -1609,31 +1609,31 @@ LABEL_7:
   v11.receiver = self;
   v11.super_class = iPadAudioCallViewController;
   [(iPadAudioCallViewController *)&v11 viewDidLayoutSubviews];
-  v3 = [(iPadAudioCallViewController *)self callParticipantsViewController];
-  if (v3)
+  callParticipantsViewController = [(iPadAudioCallViewController *)self callParticipantsViewController];
+  if (callParticipantsViewController)
   {
-    v4 = v3;
-    v5 = [(iPadAudioCallViewController *)self canDumpHierarchy];
+    v4 = callParticipantsViewController;
+    canDumpHierarchy = [(iPadAudioCallViewController *)self canDumpHierarchy];
 
-    if (v5)
+    if (canDumpHierarchy)
     {
-      v6 = [(iPadAudioCallViewController *)self callParticipantsViewController];
-      v7 = [v6 view];
-      [ICSViewEvaluation processHierarchy:v7];
+      callParticipantsViewController2 = [(iPadAudioCallViewController *)self callParticipantsViewController];
+      view = [callParticipantsViewController2 view];
+      [ICSViewEvaluation processHierarchy:view];
 
       [(iPadAudioCallViewController *)self setCanDumpHierarchy:0];
     }
   }
 
   [(iPadAudioCallViewController *)self updatePosterSaliencyRect];
-  v8 = [(iPadAudioCallViewController *)self view];
-  [v8 bounds];
+  view2 = [(iPadAudioCallViewController *)self view];
+  [view2 bounds];
   [(iPadAudioCallViewController *)self updateDimmingLayerInPosterForViewSize:v9, v10];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1643,19 +1643,19 @@ LABEL_7:
 
   v6.receiver = self;
   v6.super_class = iPadAudioCallViewController;
-  [(iPadAudioCallViewController *)&v6 viewWillDisappear:v3];
-  [(iPadAudioCallViewController *)self handleViewWillDisappear:v3];
+  [(iPadAudioCallViewController *)&v6 viewWillDisappear:disappearCopy];
+  [(iPadAudioCallViewController *)self handleViewWillDisappear:disappearCopy];
 }
 
-- (void)handleViewWillDisappear:(BOOL)a3
+- (void)handleViewWillDisappear:(BOOL)disappear
 {
   v3 = +[CUTWiFiManager sharedInstance];
   [v3 removeWiFiAutoAssociationClientToken:@"iPadFaceTimeAudioWiFiAssertionKey"];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1665,51 +1665,51 @@ LABEL_7:
 
   v6.receiver = self;
   v6.super_class = iPadAudioCallViewController;
-  [(PHCallViewController *)&v6 viewDidDisappear:v3];
-  [(iPadAudioCallViewController *)self handleViewDidDisappear:v3];
+  [(PHCallViewController *)&v6 viewDidDisappear:disappearCopy];
+  [(iPadAudioCallViewController *)self handleViewDidDisappear:disappearCopy];
   [(iPadAudioCallViewController *)self setCanDumpHierarchy:1];
 }
 
-- (void)handleViewDidDisappear:(BOOL)a3
+- (void)handleViewDidDisappear:(BOOL)disappear
 {
-  v4 = [(iPadAudioCallViewController *)self callCenter];
-  [v4 enteredBackgroundForAllCalls];
+  callCenter = [(iPadAudioCallViewController *)self callCenter];
+  [callCenter enteredBackgroundForAllCalls];
 
   [(iPadAudioCallViewController *)self suspendPosterAndCancelDelay:1];
 }
 
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear
 {
-  v4 = a4;
-  v6 = a3;
+  disappearCopy = disappear;
+  windowCopy = window;
   v8.receiver = self;
   v8.super_class = iPadAudioCallViewController;
-  [(iPadAudioCallViewController *)&v8 viewDidMoveToWindow:v6 shouldAppearOrDisappear:v4];
+  [(iPadAudioCallViewController *)&v8 viewDidMoveToWindow:windowCopy shouldAppearOrDisappear:disappearCopy];
   v7 = sub_100004F84();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v10 = v6;
+    v10 = windowCopy;
     v11 = 1024;
-    v12 = v4;
+    v12 = disappearCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "iPadAudioCallViewController view did move to window %@, shouldAppearOrDisappear %d", buf, 0x12u);
   }
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v12.receiver = self;
   v12.super_class = iPadAudioCallViewController;
-  v7 = a4;
-  [(iPadAudioCallViewController *)&v12 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  coordinatorCopy = coordinator;
+  [(iPadAudioCallViewController *)&v12 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   [(iPadAudioCallViewController *)self updateConstraintsConstantsBasedOnSize:width, height];
-  v8 = [(iPadAudioCallViewController *)self backgroundController];
-  [v8 updateIsLandscape:width > height];
+  backgroundController = [(iPadAudioCallViewController *)self backgroundController];
+  [backgroundController updateIsLandscape:width > height];
 
-  v9 = [(iPadAudioCallViewController *)self glassDimmingView];
-  [(iPadAudioCallViewController *)self updateDimmingView:v9 with:width, height];
+  glassDimmingView = [(iPadAudioCallViewController *)self glassDimmingView];
+  [(iPadAudioCallViewController *)self updateDimmingView:glassDimmingView with:width, height];
 
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
@@ -1723,30 +1723,30 @@ LABEL_7:
   v10[2] = sub_1000D1BA8;
   v10[3] = &unk_100358FC0;
   v10[4] = self;
-  [v7 animateAlongsideTransition:v11 completion:v10];
+  [coordinatorCopy animateAlongsideTransition:v11 completion:v10];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v37.receiver = self;
   v37.super_class = iPadAudioCallViewController;
-  v4 = a3;
-  [(iPadAudioCallViewController *)&v37 traitCollectionDidChange:v4];
-  v5 = [v4 _backlightLuminance];
+  changeCopy = change;
+  [(iPadAudioCallViewController *)&v37 traitCollectionDidChange:changeCopy];
+  _backlightLuminance = [changeCopy _backlightLuminance];
 
-  v6 = [(iPadAudioCallViewController *)self traitCollection];
-  v7 = [v6 _backlightLuminance];
+  traitCollection = [(iPadAudioCallViewController *)self traitCollection];
+  _backlightLuminance2 = [traitCollection _backlightLuminance];
 
-  if (v5 != v7)
+  if (_backlightLuminance != _backlightLuminance2)
   {
     [(iPadAudioCallViewController *)self updateCallDurationVisibility];
-    v8 = [(iPadAudioCallViewController *)self traitCollection];
-    v9 = [v8 _backlightLuminance];
+    traitCollection2 = [(iPadAudioCallViewController *)self traitCollection];
+    _backlightLuminance3 = [traitCollection2 _backlightLuminance];
 
-    v10 = [(iPadAudioCallViewController *)self traitCollection];
-    v11 = [v10 _backlightLuminance];
+    traitCollection3 = [(iPadAudioCallViewController *)self traitCollection];
+    _backlightLuminance4 = [traitCollection3 _backlightLuminance];
 
-    if (!v11)
+    if (!_backlightLuminance4)
     {
       v12 = sub_100004F84();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -1758,56 +1758,56 @@ LABEL_7:
       [(iPadAudioCallViewController *)self suspendPosterAndCancelDelay:1];
     }
 
-    if (v9 != 1)
+    if (_backlightLuminance3 != 1)
     {
-      v26 = [(iPadAudioCallViewController *)self alwaysOnDisplayDimmingView];
-      [v26 setAlpha:0.0];
+      alwaysOnDisplayDimmingView = [(iPadAudioCallViewController *)self alwaysOnDisplayDimmingView];
+      [alwaysOnDisplayDimmingView setAlpha:0.0];
 
-      v27 = [(iPadAudioCallViewController *)self renderingViewController];
-      if (!v27)
+      renderingViewController = [(iPadAudioCallViewController *)self renderingViewController];
+      if (!renderingViewController)
       {
         goto LABEL_24;
       }
 
-      v28 = v27;
-      v29 = [(iPadAudioCallViewController *)self canShowPosterImage];
+      v28 = renderingViewController;
+      canShowPosterImage = [(iPadAudioCallViewController *)self canShowPosterImage];
 
-      if (!v29)
+      if (!canShowPosterImage)
       {
         goto LABEL_24;
       }
 
-      v30 = [(iPadAudioCallViewController *)self renderingViewController];
-      v31 = [v30 view];
-      [v31 setAlpha:1.0];
+      renderingViewController2 = [(iPadAudioCallViewController *)self renderingViewController];
+      view = [renderingViewController2 view];
+      [view setAlpha:1.0];
 
       goto LABEL_23;
     }
 
-    v13 = [(iPadAudioCallViewController *)self view];
-    v14 = [(iPadAudioCallViewController *)self alwaysOnDisplayDimmingView];
-    [v13 bringSubviewToFront:v14];
+    view2 = [(iPadAudioCallViewController *)self view];
+    alwaysOnDisplayDimmingView2 = [(iPadAudioCallViewController *)self alwaysOnDisplayDimmingView];
+    [view2 bringSubviewToFront:alwaysOnDisplayDimmingView2];
 
-    v15 = [(iPadAudioCallViewController *)self view];
-    v16 = [(iPadAudioCallViewController *)self callParticipantsViewController];
-    v17 = [v16 view];
-    [v15 bringSubviewToFront:v17];
+    view3 = [(iPadAudioCallViewController *)self view];
+    callParticipantsViewController = [(iPadAudioCallViewController *)self callParticipantsViewController];
+    view4 = [callParticipantsViewController view];
+    [view3 bringSubviewToFront:view4];
 
-    v18 = [(iPadAudioCallViewController *)self alwaysOnDisplayDimmingView];
-    [v18 setAlpha:1.0];
+    alwaysOnDisplayDimmingView3 = [(iPadAudioCallViewController *)self alwaysOnDisplayDimmingView];
+    [alwaysOnDisplayDimmingView3 setAlpha:1.0];
 
-    v19 = [(iPadAudioCallViewController *)self renderingViewController];
+    renderingViewController3 = [(iPadAudioCallViewController *)self renderingViewController];
 
-    if (v19)
+    if (renderingViewController3)
     {
-      v20 = [(iPadAudioCallViewController *)self renderingViewController];
-      v21 = [v20 view];
-      [v21 setAlpha:0.0];
+      renderingViewController4 = [(iPadAudioCallViewController *)self renderingViewController];
+      view5 = [renderingViewController4 view];
+      [view5 setAlpha:0.0];
     }
 
-    v22 = [(iPadAudioCallViewController *)self alwaysOnDisplayPosterNameViewModel];
+    alwaysOnDisplayPosterNameViewModel = [(iPadAudioCallViewController *)self alwaysOnDisplayPosterNameViewModel];
 
-    if (!v22)
+    if (!alwaysOnDisplayPosterNameViewModel)
     {
 LABEL_19:
       if (![(iPadAudioCallViewController *)self videoStreamingIsGoingOn])
@@ -1822,17 +1822,17 @@ LABEL_19:
         _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_DEFAULT, "EnhancedEmergency: pause video if necessary when going to AOD", v36, 2u);
       }
 
-      v30 = [(iPadAudioCallViewController *)self emergencyCoordinator];
-      [v30 handleDeviceLockEvent];
+      renderingViewController2 = [(iPadAudioCallViewController *)self emergencyCoordinator];
+      [renderingViewController2 handleDeviceLockEvent];
 LABEL_23:
 
 LABEL_24:
-      v34 = [(iPadAudioCallViewController *)self stateDisplayChangedObservation];
+      stateDisplayChangedObservation = [(iPadAudioCallViewController *)self stateDisplayChangedObservation];
 
-      if (v34)
+      if (stateDisplayChangedObservation)
       {
-        v35 = [(iPadAudioCallViewController *)self stateDisplayChangedObservation];
-        v35[2]();
+        stateDisplayChangedObservation2 = [(iPadAudioCallViewController *)self stateDisplayChangedObservation];
+        stateDisplayChangedObservation2[2]();
       }
 
       return;
@@ -1845,10 +1845,10 @@ LABEL_24:
 
     else
     {
-      v24 = [(iPadAudioCallViewController *)self usesCompactMulticallUI];
+      usesCompactMulticallUI = [(iPadAudioCallViewController *)self usesCompactMulticallUI];
 
       v25 = 0.0;
-      if ((v24 & 1) == 0)
+      if ((usesCompactMulticallUI & 1) == 0)
       {
         goto LABEL_18;
       }
@@ -1856,8 +1856,8 @@ LABEL_24:
 
     v25 = 1.0;
 LABEL_18:
-    v32 = [(iPadAudioCallViewController *)self alwaysOnDisplayPosterNameViewModel];
-    [v32 updatePosterNameAlpha:v25];
+    alwaysOnDisplayPosterNameViewModel2 = [(iPadAudioCallViewController *)self alwaysOnDisplayPosterNameViewModel];
+    [alwaysOnDisplayPosterNameViewModel2 updatePosterNameAlpha:v25];
 
     goto LABEL_19;
   }
@@ -1865,10 +1865,10 @@ LABEL_18:
 
 - (BOOL)needsDismissalAssertion
 {
-  v2 = [(iPadAudioCallViewController *)self callCenter];
-  v3 = [v2 hasCurrentAudioCalls];
+  callCenter = [(iPadAudioCallViewController *)self callCenter];
+  hasCurrentAudioCalls = [callCenter hasCurrentAudioCalls];
 
-  return v3;
+  return hasCurrentAudioCalls;
 }
 
 - (void)releaseDismissalAssertion
@@ -1879,45 +1879,45 @@ LABEL_18:
   [PHInCallRootViewController releaseDismissalAssertionForReason:@"PHAudioCallViewControllerDismissalAssertionHandlingCallFailure"];
 }
 
-- (void)callIsEmergencyChangedNotification:(id)a3
+- (void)callIsEmergencyChangedNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = objc_opt_class();
     v7 = v6;
-    v8 = [v4 name];
+    name = [notificationCopy name];
     v14 = 138412546;
-    v15 = v6;
+    selfCopy = v6;
     v16 = 2112;
-    v17 = v8;
+    v17 = name;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@ is handling %@", &v14, 0x16u);
   }
 
-  v9 = [v4 object];
-  if (v9)
+  object = [notificationCopy object];
+  if (object)
   {
     if ([(iPadAudioCallViewController *)self shouldUpdateBackgroundForEmergencyCall])
     {
       [(iPadAudioCallViewController *)self updateViewForEmergencyCallIfNecessary];
-      v10 = [(iPadAudioCallViewController *)self emergencyCoordinator];
+      emergencyCoordinator = [(iPadAudioCallViewController *)self emergencyCoordinator];
 
-      if (!v10)
+      if (!emergencyCoordinator)
       {
         v11 = sub_100004F84();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
         {
           v14 = 138412290;
-          v15 = self;
+          selfCopy = self;
           _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "EnhancedEmergency: going to create PHEnhancedEmergencyCoordinator from callIsEmergencyChangedNotification from iPadAudioCallViewController: %@", &v14, 0xCu);
         }
 
         v12 = objc_alloc_init(PHEnhancedEmergencyCoordinator);
         [(iPadAudioCallViewController *)self setEmergencyCoordinator:v12];
 
-        v13 = [(iPadAudioCallViewController *)self emergencyCoordinator];
-        [v13 setDelegate:self];
+        emergencyCoordinator2 = [(iPadAudioCallViewController *)self emergencyCoordinator];
+        [emergencyCoordinator2 setDelegate:self];
       }
     }
   }
@@ -1932,33 +1932,33 @@ LABEL_18:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "EnhancedEmergency: remove all the possile call UI because we are now in emergency call", v9, 2u);
   }
 
-  v4 = [(iPadAudioCallViewController *)self renderingViewController];
+  renderingViewController = [(iPadAudioCallViewController *)self renderingViewController];
 
-  if (v4)
+  if (renderingViewController)
   {
     [(iPadAudioCallViewController *)self removePosterViewController:1 completion:0];
   }
 
-  v5 = [(iPadAudioCallViewController *)self backgroundImageView];
+  backgroundImageView = [(iPadAudioCallViewController *)self backgroundImageView];
 
-  if (v5)
+  if (backgroundImageView)
   {
     [(iPadAudioCallViewController *)self removeBackgroundContactImageView];
   }
 
-  v6 = [(iPadAudioCallViewController *)self defaultBackgroundGradientView];
+  defaultBackgroundGradientView = [(iPadAudioCallViewController *)self defaultBackgroundGradientView];
 
-  if (v6)
+  if (defaultBackgroundGradientView)
   {
     [(iPadAudioCallViewController *)self removeDefaultBackgroundGradientView];
   }
 
-  v7 = [(iPadAudioCallViewController *)self unblurredBackgroundImageView];
+  unblurredBackgroundImageView = [(iPadAudioCallViewController *)self unblurredBackgroundImageView];
 
-  if (v7)
+  if (unblurredBackgroundImageView)
   {
-    v8 = [(iPadAudioCallViewController *)self unblurredBackgroundImageView];
-    [v8 removeFromSuperview];
+    unblurredBackgroundImageView2 = [(iPadAudioCallViewController *)self unblurredBackgroundImageView];
+    [unblurredBackgroundImageView2 removeFromSuperview];
 
     [(iPadAudioCallViewController *)self setUnblurredBackgroundImageView:0];
   }
@@ -1967,12 +1967,12 @@ LABEL_18:
   [(iPadAudioCallViewController *)self _updateStatusLabelVisibility];
 }
 
-- (void)wantsHoldMusicChangedNotification:(id)a3
+- (void)wantsHoldMusicChangedNotification:(id)notification
 {
-  v4 = [(iPadAudioCallViewController *)self frontmostCall];
-  v5 = [v4 wantsHoldMusic];
+  frontmostCall = [(iPadAudioCallViewController *)self frontmostCall];
+  wantsHoldMusic = [frontmostCall wantsHoldMusic];
 
-  if (v5)
+  if (wantsHoldMusic)
   {
     v6 = sub_100004F84();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -1981,79 +1981,79 @@ LABEL_18:
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "decline with reminder and decline with message unavailable due to call wanting hold music.", v9, 2u);
     }
 
-    v7 = [(PHCallViewController *)self bottomBar];
-    [v7 setDeclineAndMessageIsAvailable:0];
+    bottomBar = [(PHCallViewController *)self bottomBar];
+    [bottomBar setDeclineAndMessageIsAvailable:0];
 
-    v8 = [(PHCallViewController *)self bottomBar];
-    [v8 setDeclineAndRemindIsAvailable:0];
+    bottomBar2 = [(PHCallViewController *)self bottomBar];
+    [bottomBar2 setDeclineAndRemindIsAvailable:0];
   }
 }
 
-- (void)callCenterScreeningStatusChangedNotification:(id)a3
+- (void)callCenterScreeningStatusChangedNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = objc_opt_class();
     v7 = v6;
-    v8 = [v4 name];
+    name = [notificationCopy name];
     v11 = 138412546;
     v12 = v6;
     v13 = 2112;
-    v14 = v8;
+    v14 = name;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@ is handling %@", &v11, 0x16u);
   }
 
   [(iPadAudioCallViewController *)self updateCurrentState];
-  v9 = [(iPadAudioCallViewController *)self getParticipantsView_NotWaiting];
-  v10 = [v9 singleCallLabelView];
-  [v10 updateLabelsOrderAndLayout];
+  getParticipantsView_NotWaiting = [(iPadAudioCallViewController *)self getParticipantsView_NotWaiting];
+  singleCallLabelView = [getParticipantsView_NotWaiting singleCallLabelView];
+  [singleCallLabelView updateLabelsOrderAndLayout];
 }
 
-- (void)callCenterCallStatusChangedNotification:(id)a3
+- (void)callCenterCallStatusChangedNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = objc_opt_class();
     v7 = v6;
-    v8 = [v4 name];
+    name = [notificationCopy name];
     v49 = 138412546;
-    v50 = v6;
+    selfCopy = v6;
     v51 = 2112;
-    v52 = v8;
+    v52 = name;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@ is handling %@", &v49, 0x16u);
   }
 
-  v9 = [v4 object];
+  object = [notificationCopy object];
   if (![(iPadAudioCallViewController *)self usesCompactMulticallUI])
   {
     goto LABEL_12;
   }
 
-  v10 = [(iPadAudioCallViewController *)self prioritizedCall];
-  v11 = [v10 callUUID];
-  if (!v11)
+  prioritizedCall = [(iPadAudioCallViewController *)self prioritizedCall];
+  callUUID = [prioritizedCall callUUID];
+  if (!callUUID)
   {
 LABEL_11:
 
     goto LABEL_12;
   }
 
-  v12 = v11;
-  v13 = [v9 callUUID];
-  v14 = [(iPadAudioCallViewController *)self prioritizedCall];
-  v15 = [v14 callUUID];
-  v16 = v15;
-  if (v13 == v15)
+  v12 = callUUID;
+  callUUID2 = [object callUUID];
+  prioritizedCall2 = [(iPadAudioCallViewController *)self prioritizedCall];
+  callUUID3 = [prioritizedCall2 callUUID];
+  v16 = callUUID3;
+  if (callUUID2 == callUUID3)
   {
 
     goto LABEL_11;
   }
 
-  v17 = [(iPadAudioCallViewController *)self prioritizedCallIsInSameCallGroupAsCall:v9];
+  v17 = [(iPadAudioCallViewController *)self prioritizedCallIsInSameCallGroupAsCall:object];
 
   if ((v17 & 1) == 0)
   {
@@ -2070,21 +2070,21 @@ LABEL_11:
   }
 
 LABEL_12:
-  if ([v9 status] == 1)
+  if ([object status] == 1)
   {
-    v19 = [(iPadAudioCallViewController *)self features];
-    if ([v19 isEnhancedEmergencyEnabled])
+    features = [(iPadAudioCallViewController *)self features];
+    if ([features isEnhancedEmergencyEnabled])
     {
-      v20 = [(iPadAudioCallViewController *)self emergencyCoordinator];
-      if (v20)
+      emergencyCoordinator = [(iPadAudioCallViewController *)self emergencyCoordinator];
+      if (emergencyCoordinator)
       {
       }
 
       else
       {
-        v21 = [v9 isEmergency];
+        isEmergency = [object isEmergency];
 
-        if (!v21)
+        if (!isEmergency)
         {
 LABEL_21:
           [(iPadAudioCallViewController *)self tipKitStartWaitOnHoldObservation];
@@ -2095,15 +2095,15 @@ LABEL_21:
         if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
         {
           v49 = 138412290;
-          v50 = self;
+          selfCopy = self;
           _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "EnhancedEmergency: going to create PHEnhancedEmergencyCoordinator when call is active from iPadAudioCallViewController: %@", &v49, 0xCu);
         }
 
         v23 = objc_alloc_init(PHEnhancedEmergencyCoordinator);
         [(iPadAudioCallViewController *)self setEmergencyCoordinator:v23];
 
-        v19 = [(iPadAudioCallViewController *)self emergencyCoordinator];
-        [v19 setDelegate:self];
+        features = [(iPadAudioCallViewController *)self emergencyCoordinator];
+        [features setDelegate:self];
       }
     }
 
@@ -2111,51 +2111,51 @@ LABEL_21:
   }
 
 LABEL_22:
-  if ([v9 status] == 6)
+  if ([object status] == 6)
   {
     v24 = +[UIApplication sharedApplication];
-    v25 = [v24 delegate];
-    [v25 setMostRecentlyDisconnectedAudioCall:v9];
+    delegate = [v24 delegate];
+    [delegate setMostRecentlyDisconnectedAudioCall:object];
 
-    v26 = [v9 uniqueProxyIdentifier];
-    [(iPadAudioCallViewController *)self clearMenuItemRegistration:v26];
+    uniqueProxyIdentifier = [object uniqueProxyIdentifier];
+    [(iPadAudioCallViewController *)self clearMenuItemRegistration:uniqueProxyIdentifier];
 
-    v27 = [(iPadAudioCallViewController *)self frontmostCall];
-    if (([v9 isVideo] & 1) == 0 && objc_msgSend(v9, "disconnectedReason") == 6)
+    frontmostCall = [(iPadAudioCallViewController *)self frontmostCall];
+    if (([object isVideo] & 1) == 0 && objc_msgSend(object, "disconnectedReason") == 6)
     {
-      if (v27)
+      if (frontmostCall)
       {
-        v42 = [(PHCallViewController *)self bottomBar];
-        v43 = [v42 currentState];
+        bottomBar = [(PHCallViewController *)self bottomBar];
+        currentState = [bottomBar currentState];
 
-        if (v43 == 7)
+        if (currentState == 7)
         {
-          v44 = [(iPadAudioCallViewController *)self analyticsReporter];
-          [v44 reportMultipleCallsWaitingUIAction:0];
+          analyticsReporter = [(iPadAudioCallViewController *)self analyticsReporter];
+          [analyticsReporter reportMultipleCallsWaitingUIAction:0];
         }
       }
     }
 
-    [(iPadAudioCallViewController *)self writeToLastSeenPosterCacheIfNecessaryForCall:v9];
-    v28 = [(iPadAudioCallViewController *)self features];
-    if (([v28 isEnhancedEmergencyEnabled] & 1) != 0 && (-[iPadAudioCallViewController emergencyCoordinator](self, "emergencyCoordinator"), (v29 = objc_claimAutoreleasedReturnValue()) != 0))
+    [(iPadAudioCallViewController *)self writeToLastSeenPosterCacheIfNecessaryForCall:object];
+    features2 = [(iPadAudioCallViewController *)self features];
+    if (([features2 isEnhancedEmergencyEnabled] & 1) != 0 && (-[iPadAudioCallViewController emergencyCoordinator](self, "emergencyCoordinator"), (v29 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v30 = v29;
-      v31 = [v9 isEmergency];
+      isEmergency2 = [object isEmergency];
 
-      if (v31)
+      if (isEmergency2)
       {
         v32 = sub_100004F84();
         if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
         {
-          v33 = [(iPadAudioCallViewController *)self emergencyCoordinator];
+          emergencyCoordinator2 = [(iPadAudioCallViewController *)self emergencyCoordinator];
           v49 = 138412290;
-          v50 = v33;
+          selfCopy = emergencyCoordinator2;
           _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "EnhancedEmergency: clean emergencyCoordinator: %@", &v49, 0xCu);
         }
 
-        v34 = [(iPadAudioCallViewController *)self emergencyCoordinator];
-        [v34 cleanUpViewAndObjectWhenCallEnds];
+        emergencyCoordinator3 = [(iPadAudioCallViewController *)self emergencyCoordinator];
+        [emergencyCoordinator3 cleanUpViewAndObjectWhenCallEnds];
 
         [(iPadAudioCallViewController *)self setEmergencyCoordinator:0];
       }
@@ -2168,21 +2168,21 @@ LABEL_22:
     [(iPadAudioCallViewController *)self tipKitStopWaitOnHoldObservation];
   }
 
-  v35 = [(iPadAudioCallViewController *)self emergencyCoordinator];
+  emergencyCoordinator4 = [(iPadAudioCallViewController *)self emergencyCoordinator];
 
-  if (v35)
+  if (emergencyCoordinator4)
   {
-    v36 = [(iPadAudioCallViewController *)self emergencyCoordinator];
-    [v36 setTuCall:v9];
+    emergencyCoordinator5 = [(iPadAudioCallViewController *)self emergencyCoordinator];
+    [emergencyCoordinator5 setTuCall:object];
   }
 
   [(iPadAudioCallViewController *)self updateViewsForHeldCallControlsViewIfNeeded];
   [(iPadAudioCallViewController *)self updateCurrentState];
   [(iPadAudioCallViewController *)self refreshUseRTTButton];
-  v37 = [(iPadAudioCallViewController *)self callCenter];
-  v38 = [v37 autoPunchOutBehaviorRequiredForCurrentCalls];
+  callCenter = [(iPadAudioCallViewController *)self callCenter];
+  autoPunchOutBehaviorRequiredForCurrentCalls = [callCenter autoPunchOutBehaviorRequiredForCurrentCalls];
 
-  if (v38)
+  if (autoPunchOutBehaviorRequiredForCurrentCalls)
   {
     v39 = sub_100004F84();
     if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
@@ -2197,12 +2197,12 @@ LABEL_22:
 
   else
   {
-    v40 = [(iPadAudioCallViewController *)self callCenter];
-    v41 = [v40 shouldActivateProviderInBackgroundForCall:v9];
+    callCenter2 = [(iPadAudioCallViewController *)self callCenter];
+    v41 = [callCenter2 shouldActivateProviderInBackgroundForCall:object];
 
     if (v41)
     {
-      [(PHCallViewController *)self activateProviderInBackgroundForCall:v9];
+      [(PHCallViewController *)self activateProviderInBackgroundForCall:object];
     }
 
     else
@@ -2212,51 +2212,51 @@ LABEL_22:
   }
 
   existingPrioritizedCall = self->_existingPrioritizedCall;
-  v46 = [(iPadAudioCallViewController *)self view];
-  [v46 frame];
+  view = [(iPadAudioCallViewController *)self view];
+  [view frame];
   [(iPadAudioCallViewController *)self updateTopShelfContentWithCall:existingPrioritizedCall sceneWindowSize:v47, v48];
 
 LABEL_46:
 }
 
-- (void)conferenceParticipantCallsChangedNotification:(id)a3
+- (void)conferenceParticipantCallsChangedNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = objc_opt_class();
     v7 = v6;
-    v8 = [v4 name];
+    name = [notificationCopy name];
     v9 = 138412546;
     v10 = v6;
     v11 = 2112;
-    v12 = v8;
+    v12 = name;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@ is handling %@", &v9, 0x16u);
   }
 
   [(iPadAudioCallViewController *)self updateCurrentState];
 }
 
-- (void)receptionistStateChanged:(id)a3
+- (void)receptionistStateChanged:(id)changed
 {
-  v4 = [(iPadAudioCallViewController *)self frontmostCall];
-  v5 = [v4 isScreening];
+  frontmostCall = [(iPadAudioCallViewController *)self frontmostCall];
+  isScreening = [frontmostCall isScreening];
 
-  if (v5)
+  if (isScreening)
   {
-    v6 = [(iPadAudioCallViewController *)self screeningViewController];
-    if (v6)
+    screeningViewController = [(iPadAudioCallViewController *)self screeningViewController];
+    if (screeningViewController)
     {
-      v7 = v6;
-      v8 = [(iPadAudioCallViewController *)self isShowingNewTranscriptsView];
+      v7 = screeningViewController;
+      isShowingNewTranscriptsView = [(iPadAudioCallViewController *)self isShowingNewTranscriptsView];
 
-      if ((v8 & 1) == 0)
+      if ((isShowingNewTranscriptsView & 1) == 0)
       {
-        v9 = [(iPadAudioCallViewController *)self frontmostCall];
-        v10 = [v9 receptionistState];
+        frontmostCall2 = [(iPadAudioCallViewController *)self frontmostCall];
+        receptionistState = [frontmostCall2 receptionistState];
 
-        if (v10)
+        if (receptionistState)
         {
           [(iPadAudioCallViewController *)self setMiddleViewState:0 animated:0];
           [(iPadAudioCallViewController *)self setScreeningViewController:0];
@@ -2268,103 +2268,103 @@ LABEL_46:
   }
 }
 
-- (void)callContinuityStateChangedNotification:(id)a3
+- (void)callContinuityStateChangedNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = notificationCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "callContinuityStateChangedNotification: %@", &v6, 0xCu);
   }
 
   [(iPadAudioCallViewController *)self updateCurrentState];
 }
 
-- (void)hardPauseDigitsStateChangedNotification:(id)a3
+- (void)hardPauseDigitsStateChangedNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = notificationCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "hardPauseDigitsStateChangedNotification: %@", &v7, 0xCu);
   }
 
-  v6 = [(PHCallViewController *)self bottomBar];
-  [v6 refreshCustomizedActionTypeTitles];
+  bottomBar = [(PHCallViewController *)self bottomBar];
+  [bottomBar refreshCustomizedActionTypeTitles];
 
   [(iPadAudioCallViewController *)self updateHardPauseDigitsState];
   [(iPadAudioCallViewController *)self refreshExtensionNumberButton];
 }
 
-- (void)callOnHoldChangedNotification:(id)a3
+- (void)callOnHoldChangedNotification:(id)notification
 {
-  v4 = [(PHCallViewController *)self bottomBar];
-  [v4 refreshEndCallButton];
+  bottomBar = [(PHCallViewController *)self bottomBar];
+  [bottomBar refreshEndCallButton];
 
-  v5 = [(iPadAudioCallViewController *)self frontmostCall];
-  [(iPadAudioCallViewController *)self updateWaitOnHoldServiceWithCall:v5];
+  frontmostCall = [(iPadAudioCallViewController *)self frontmostCall];
+  [(iPadAudioCallViewController *)self updateWaitOnHoldServiceWithCall:frontmostCall];
 }
 
-- (void)handleTUCallSupportsTTYWithVoiceChangedNotification:(id)a3
+- (void)handleTUCallSupportsTTYWithVoiceChangedNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = objc_opt_class();
     v7 = v6;
-    v8 = [v4 name];
+    name = [notificationCopy name];
     v9 = 138412546;
     v10 = v6;
     v11 = 2112;
-    v12 = v8;
+    v12 = name;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@ is handling %@", &v9, 0x16u);
   }
 
   [(iPadAudioCallViewController *)self refreshUseRTTButton];
 }
 
-- (void)handleTUCallTTYTypeChangedNotification:(id)a3
+- (void)handleTUCallTTYTypeChangedNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = objc_opt_class();
     v7 = v6;
-    v8 = [v4 name];
+    name = [notificationCopy name];
     v32 = 138412546;
     v33 = v6;
     v34 = 2112;
-    v35 = v8;
+    v35 = name;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@ is handling %@", &v32, 0x16u);
   }
 
   [(iPadAudioCallViewController *)self refreshUseRTTButton];
-  v9 = [(iPadAudioCallViewController *)self features];
-  if ([v9 isEnhancedEmergencyEnabled])
+  features = [(iPadAudioCallViewController *)self features];
+  if ([features isEnhancedEmergencyEnabled])
   {
-    v10 = [(iPadAudioCallViewController *)self callCenter];
-    v11 = [v10 frontmostCall];
-    v12 = [v11 isEmergency];
+    callCenter = [(iPadAudioCallViewController *)self callCenter];
+    frontmostCall = [callCenter frontmostCall];
+    isEmergency = [frontmostCall isEmergency];
 
-    if (!v12)
+    if (!isEmergency)
     {
       goto LABEL_7;
     }
 
-    v9 = [(iPadAudioCallViewController *)self emergencyCoordinator];
-    v13 = [(iPadAudioCallViewController *)self callCenter];
-    v14 = [v13 frontmostCall];
-    [v9 updateRTTEnabled:{objc_msgSend(v14, "isRTT")}];
+    features = [(iPadAudioCallViewController *)self emergencyCoordinator];
+    callCenter2 = [(iPadAudioCallViewController *)self callCenter];
+    frontmostCall2 = [callCenter2 frontmostCall];
+    [features updateRTTEnabled:{objc_msgSend(frontmostCall2, "isRTT")}];
   }
 
 LABEL_7:
-  v15 = [(iPadAudioCallViewController *)self featureFlags];
+  featureFlags = [(iPadAudioCallViewController *)self featureFlags];
   v16 = TUCallScreeningRTTEnabled();
 
   if (v16)
@@ -2389,79 +2389,79 @@ LABEL_7:
       [(iPadAudioCallViewController *)self setMiddleViewState:4];
     }
 
-    v18 = [(PHCallViewController *)self bottomBar];
-    v19 = [v18 currentState];
+    bottomBar = [(PHCallViewController *)self bottomBar];
+    currentState = [bottomBar currentState];
 
-    if (v19 == 23)
+    if (currentState == 23)
     {
-      v20 = [(PHCallViewController *)self bottomBar];
-      [v20 setCurrentState:29];
+      bottomBar2 = [(PHCallViewController *)self bottomBar];
+      [bottomBar2 setCurrentState:29];
 
-      v21 = [(PHCallViewController *)self bottomBar];
-      [v21 setCurrentState:23];
+      bottomBar3 = [(PHCallViewController *)self bottomBar];
+      [bottomBar3 setCurrentState:23];
     }
   }
 
   v22 = +[UIApplication sharedApplication];
-  v23 = [v22 delegate];
-  v24 = [v23 currentInCallScene];
+  delegate = [v22 delegate];
+  currentInCallScene = [delegate currentInCallScene];
 
-  if (v24)
+  if (currentInCallScene)
   {
     v25 = +[UIApplication sharedApplication];
-    v26 = [v25 delegate];
-    v27 = [v26 currentInCallScene];
-    v28 = [v27 delegate];
+    delegate2 = [v25 delegate];
+    currentInCallScene2 = [delegate2 currentInCallScene];
+    delegate3 = [currentInCallScene2 delegate];
     v29 = +[UIApplication sharedApplication];
-    v30 = [v29 delegate];
-    v31 = [v30 currentInCallScene];
-    [v28 updateSceneBackgroundMaterialWith:v31];
+    delegate4 = [v29 delegate];
+    currentInCallScene3 = [delegate4 currentInCallScene];
+    [delegate3 updateSceneBackgroundMaterialWith:currentInCallScene3];
   }
 }
 
-- (void)callIsScreenSharingChangedNotification:(id)a3
+- (void)callIsScreenSharingChangedNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = objc_opt_class();
-    v7 = [v4 name];
+    name = [notificationCopy name];
     v8 = 138412546;
     v9 = v6;
     v10 = 2112;
-    v11 = v7;
+    v11 = name;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@ is handling %@", &v8, 0x16u);
   }
 
   [(iPadAudioCallViewController *)self updateScreenSharingDisableUpdateMask];
 }
 
-- (void)callDisplayContextChangedNotification:(id)a3
+- (void)callDisplayContextChangedNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = objc_opt_class();
-    v7 = [v4 name];
+    name = [notificationCopy name];
     v9 = 138412546;
     v10 = v6;
     v11 = 2112;
-    v12 = v7;
+    v12 = name;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@ is handling %@", &v9, 0x16u);
   }
 
-  v8 = [v4 object];
-  [(iPadAudioCallViewController *)self updateBottomBarButtonsWithCall:v8];
+  object = [notificationCopy object];
+  [(iPadAudioCallViewController *)self updateBottomBarButtonsWithCall:object];
 }
 
-- (void)setShowsCallDetailsViewButton:(BOOL)a3
+- (void)setShowsCallDetailsViewButton:(BOOL)button
 {
-  v3 = a3;
-  v5 = [(iPadAudioCallViewController *)self callDetailsViewButton];
-  v6 = v5;
-  if (v3)
+  buttonCopy = button;
+  callDetailsViewButton = [(iPadAudioCallViewController *)self callDetailsViewButton];
+  v6 = callDetailsViewButton;
+  if (buttonCopy)
   {
 
     if (!v6)
@@ -2473,7 +2473,7 @@ LABEL_7:
 
   else
   {
-    [v5 removeFromSuperview];
+    [callDetailsViewButton removeFromSuperview];
 
     [(iPadAudioCallViewController *)self setCallDetailsViewButton:0];
   }
@@ -2484,29 +2484,29 @@ LABEL_7:
   v3 = [UIButton buttonWithType:4];
   [(iPadAudioCallViewController *)self setCallDetailsViewButton:v3];
 
-  v4 = [(iPadAudioCallViewController *)self callDetailsViewButton];
-  [v4 addTarget:self action:"callDetailsViewButtonTapped" forEvents:64];
+  callDetailsViewButton = [(iPadAudioCallViewController *)self callDetailsViewButton];
+  [callDetailsViewButton addTarget:self action:"callDetailsViewButtonTapped" forEvents:64];
 
-  v5 = [(iPadAudioCallViewController *)self callDetailsViewButton];
-  [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
+  callDetailsViewButton2 = [(iPadAudioCallViewController *)self callDetailsViewButton];
+  [callDetailsViewButton2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v6 = [(iPadAudioCallViewController *)self view];
-  v7 = [(iPadAudioCallViewController *)self callDetailsViewButton];
-  [v6 addSubview:v7];
+  view = [(iPadAudioCallViewController *)self view];
+  callDetailsViewButton3 = [(iPadAudioCallViewController *)self callDetailsViewButton];
+  [view addSubview:callDetailsViewButton3];
 
   v8 = +[UIColor whiteColor];
-  v9 = [(iPadAudioCallViewController *)self callDetailsViewButton];
-  [v9 setTintColor:v8];
+  callDetailsViewButton4 = [(iPadAudioCallViewController *)self callDetailsViewButton];
+  [callDetailsViewButton4 setTintColor:v8];
 
-  v10 = [(iPadAudioCallViewController *)self callDetailsViewButton];
-  [(iPadAudioCallViewController *)self applyCallDetailsViewButtonPositionAndSizeCapToElement:v10];
+  callDetailsViewButton5 = [(iPadAudioCallViewController *)self callDetailsViewButton];
+  [(iPadAudioCallViewController *)self applyCallDetailsViewButtonPositionAndSizeCapToElement:callDetailsViewButton5];
 }
 
 - (double)callDetailsButtonPaddingTop
 {
   +[TPIncomingCallMetricsProvider fullDeviceHeight];
   [(iPadAudioCallViewController *)self callDetailsButtonPaddingTop_PERCENT];
-  v3 = [(iPadAudioCallViewController *)self view];
+  view = [(iPadAudioCallViewController *)self view];
   UIRoundToViewScale();
   v5 = v4;
 
@@ -2517,7 +2517,7 @@ LABEL_7:
 {
   +[TPIncomingCallMetricsProvider fullDeviceWidth];
   [(iPadAudioCallViewController *)self callDetailsButtonPaddingTrailing_PERCENT];
-  v3 = [(iPadAudioCallViewController *)self view];
+  view = [(iPadAudioCallViewController *)self view];
   UIRoundToViewScale();
   v5 = v4;
 
@@ -2534,10 +2534,10 @@ LABEL_7:
 
   else
   {
-    v3 = [(iPadAudioCallViewController *)self features];
-    v4 = [v3 isSystemApertureEnabled];
+    features = [(iPadAudioCallViewController *)self features];
+    isSystemApertureEnabled = [features isSystemApertureEnabled];
 
-    if (v4)
+    if (isSystemApertureEnabled)
     {
 
       +[TPIncomingCallMetricsProvider callDetailsButtonPaddingTopPercent_DynamicIsland];
@@ -2563,10 +2563,10 @@ LABEL_7:
 
   else
   {
-    v3 = [(iPadAudioCallViewController *)self features];
-    v4 = [v3 isSystemApertureEnabled];
+    features = [(iPadAudioCallViewController *)self features];
+    isSystemApertureEnabled = [features isSystemApertureEnabled];
 
-    if (v4)
+    if (isSystemApertureEnabled)
     {
 
       +[TPIncomingCallMetricsProvider callDetailsButtonPaddingTrailingPercent_DynamicIsland];
@@ -2582,27 +2582,27 @@ LABEL_7:
   return result;
 }
 
-- (void)updateParticipantConstraintsForPosterName:(id)a3
+- (void)updateParticipantConstraintsForPosterName:(id)name
 {
-  v9 = a3;
-  v4 = [(iPadAudioCallViewController *)self callDisplayStyleManager];
-  v5 = [v4 callDisplayStyle];
+  nameCopy = name;
+  callDisplayStyleManager = [(iPadAudioCallViewController *)self callDisplayStyleManager];
+  callDisplayStyle = [callDisplayStyleManager callDisplayStyle];
 
-  if (v5)
+  if (callDisplayStyle)
   {
     if (![(iPadAudioCallViewController *)self participantsViewIsShowingMultipleLabel])
     {
-      v6 = [(iPadAudioCallViewController *)self detachedPosterNameViewModel];
-      if (v6)
+      detachedPosterNameViewModel = [(iPadAudioCallViewController *)self detachedPosterNameViewModel];
+      if (detachedPosterNameViewModel)
       {
       }
 
       else if ([(iPadAudioCallViewController *)self callHasContactPosterWithVerticalName])
       {
-        [(iPadAudioCallViewController *)self positionParticipantsViewStatusLabelToBeHorizontallyCenteredToInfoButton:v9];
-        v7 = [(iPadAudioCallViewController *)self callDetailsViewButton];
+        [(iPadAudioCallViewController *)self positionParticipantsViewStatusLabelToBeHorizontallyCenteredToInfoButton:nameCopy];
+        callDetailsViewButton = [(iPadAudioCallViewController *)self callDetailsViewButton];
         v8 = +[TPIncomingCallMetricsProvider callDetailsButtonMaxSize];
-        [v7 setMaximumContentSizeCategory:v8];
+        [callDetailsViewButton setMaximumContentSizeCategory:v8];
 
         goto LABEL_8;
       }
@@ -2616,165 +2616,165 @@ LABEL_8:
 
 - (void)restoreParticipantsViewStatusLabelForFullScreen
 {
-  v3 = [(iPadAudioCallViewController *)self participantsViewVerticalPosterNameTopConstraint];
-  if (v3)
+  participantsViewVerticalPosterNameTopConstraint = [(iPadAudioCallViewController *)self participantsViewVerticalPosterNameTopConstraint];
+  if (participantsViewVerticalPosterNameTopConstraint)
   {
-    v4 = v3;
-    v5 = [(iPadAudioCallViewController *)self participantsViewVerticalPosterNameTopConstraint];
-    v6 = [v5 isActive];
+    v4 = participantsViewVerticalPosterNameTopConstraint;
+    participantsViewVerticalPosterNameTopConstraint2 = [(iPadAudioCallViewController *)self participantsViewVerticalPosterNameTopConstraint];
+    isActive = [participantsViewVerticalPosterNameTopConstraint2 isActive];
 
-    if (v6)
+    if (isActive)
     {
-      v7 = [(iPadAudioCallViewController *)self participantsViewVerticalPosterNameTopConstraint];
-      [v7 setActive:0];
+      participantsViewVerticalPosterNameTopConstraint3 = [(iPadAudioCallViewController *)self participantsViewVerticalPosterNameTopConstraint];
+      [participantsViewVerticalPosterNameTopConstraint3 setActive:0];
 
       [(iPadAudioCallViewController *)self setParticipantsViewVerticalPosterNameTopConstraint:0];
     }
   }
 
-  v8 = [(iPadAudioCallViewController *)self participantsViewTopConstraint];
-  if (v8)
+  participantsViewTopConstraint = [(iPadAudioCallViewController *)self participantsViewTopConstraint];
+  if (participantsViewTopConstraint)
   {
-    v9 = v8;
-    v10 = [(iPadAudioCallViewController *)self participantsViewTopConstraint];
-    v11 = [v10 isActive];
+    v9 = participantsViewTopConstraint;
+    participantsViewTopConstraint2 = [(iPadAudioCallViewController *)self participantsViewTopConstraint];
+    isActive2 = [participantsViewTopConstraint2 isActive];
 
-    if ((v11 & 1) == 0)
+    if ((isActive2 & 1) == 0)
     {
-      v12 = [(iPadAudioCallViewController *)self participantsViewTopConstraint];
-      [v12 setActive:1];
+      participantsViewTopConstraint3 = [(iPadAudioCallViewController *)self participantsViewTopConstraint];
+      [participantsViewTopConstraint3 setActive:1];
     }
   }
 }
 
-- (void)positionParticipantsViewStatusLabelToBeHorizontallyCenteredToInfoButton:(id)a3
+- (void)positionParticipantsViewStatusLabelToBeHorizontallyCenteredToInfoButton:(id)button
 {
-  v4 = a3;
+  buttonCopy = button;
   v16 = +[NSMutableArray array];
-  v5 = [(iPadAudioCallViewController *)self participantsViewTopConstraint];
+  participantsViewTopConstraint = [(iPadAudioCallViewController *)self participantsViewTopConstraint];
 
-  if (v5)
+  if (participantsViewTopConstraint)
   {
-    v6 = [(iPadAudioCallViewController *)self participantsViewTopConstraint];
-    [v16 addObject:v6];
+    participantsViewTopConstraint2 = [(iPadAudioCallViewController *)self participantsViewTopConstraint];
+    [v16 addObject:participantsViewTopConstraint2];
   }
 
-  v7 = [(iPadAudioCallViewController *)self participantsViewCenterYConstraint];
+  participantsViewCenterYConstraint = [(iPadAudioCallViewController *)self participantsViewCenterYConstraint];
 
-  if (v7)
+  if (participantsViewCenterYConstraint)
   {
-    v8 = [(iPadAudioCallViewController *)self participantsViewCenterYConstraint];
-    [v16 addObject:v8];
+    participantsViewCenterYConstraint2 = [(iPadAudioCallViewController *)self participantsViewCenterYConstraint];
+    [v16 addObject:participantsViewCenterYConstraint2];
   }
 
-  v9 = [(iPadAudioCallViewController *)self participantsViewVerticalPosterNameTopConstraint];
+  participantsViewVerticalPosterNameTopConstraint = [(iPadAudioCallViewController *)self participantsViewVerticalPosterNameTopConstraint];
 
-  if (v9)
+  if (participantsViewVerticalPosterNameTopConstraint)
   {
-    v10 = [(iPadAudioCallViewController *)self participantsViewVerticalPosterNameTopConstraint];
-    [v16 addObject:v10];
+    participantsViewVerticalPosterNameTopConstraint2 = [(iPadAudioCallViewController *)self participantsViewVerticalPosterNameTopConstraint];
+    [v16 addObject:participantsViewVerticalPosterNameTopConstraint2];
   }
 
   [NSLayoutConstraint deactivateConstraints:v16];
-  v11 = [v4 topAnchor];
+  topAnchor = [buttonCopy topAnchor];
 
-  v12 = [(iPadAudioCallViewController *)self view];
-  v13 = [v12 topAnchor];
+  view = [(iPadAudioCallViewController *)self view];
+  topAnchor2 = [view topAnchor];
   [(iPadAudioCallViewController *)self callDetailsButtonPaddingTop];
-  v14 = [v11 constraintEqualToAnchor:v13 constant:?];
+  v14 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:?];
   [(iPadAudioCallViewController *)self setParticipantsViewVerticalPosterNameTopConstraint:v14];
 
-  v15 = [(iPadAudioCallViewController *)self participantsViewVerticalPosterNameTopConstraint];
-  [v15 setActive:1];
+  participantsViewVerticalPosterNameTopConstraint3 = [(iPadAudioCallViewController *)self participantsViewVerticalPosterNameTopConstraint];
+  [participantsViewVerticalPosterNameTopConstraint3 setActive:1];
 }
 
-- (void)positionPosterBadgeToBeHorizontallyCenteredToInfoButton:(id)a3
+- (void)positionPosterBadgeToBeHorizontallyCenteredToInfoButton:(id)button
 {
-  v4 = a3;
-  v5 = [v4 leadingAnchor];
-  v6 = [(iPadAudioCallViewController *)self view];
-  v7 = [v6 leadingAnchor];
+  buttonCopy = button;
+  leadingAnchor = [buttonCopy leadingAnchor];
+  view = [(iPadAudioCallViewController *)self view];
+  leadingAnchor2 = [view leadingAnchor];
   [(iPadAudioCallViewController *)self callDetailsButtonPaddingTrailing];
-  v8 = [v5 constraintEqualToAnchor:v7 constant:?];
+  v8 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:?];
   v15[0] = v8;
-  v9 = [v4 topAnchor];
+  topAnchor = [buttonCopy topAnchor];
 
-  v10 = [(iPadAudioCallViewController *)self view];
-  v11 = [v10 topAnchor];
+  view2 = [(iPadAudioCallViewController *)self view];
+  topAnchor2 = [view2 topAnchor];
   [(iPadAudioCallViewController *)self callDetailsButtonPaddingTop];
-  v13 = [v9 constraintEqualToAnchor:v11 constant:v12 + 6.0];
+  v13 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:v12 + 6.0];
   v15[1] = v13;
   v14 = [NSArray arrayWithObjects:v15 count:2];
   [NSLayoutConstraint activateConstraints:v14];
 }
 
-- (void)applySizeToElement:(id)a3 usingThisElementAsGuide:(id)a4
+- (void)applySizeToElement:(id)element usingThisElementAsGuide:(id)guide
 {
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  elementCopy = element;
+  guideCopy = guide;
+  if (guideCopy)
   {
-    v7 = [v5 widthAnchor];
-    v8 = [v6 widthAnchor];
-    v9 = [v7 constraintEqualToAnchor:v8 constant:0.0];
+    widthAnchor = [elementCopy widthAnchor];
+    widthAnchor2 = [guideCopy widthAnchor];
+    v9 = [widthAnchor constraintEqualToAnchor:widthAnchor2 constant:0.0];
     v16[0] = v9;
-    v10 = [v5 heightAnchor];
-    v11 = [v6 heightAnchor];
-    v12 = [v10 constraintEqualToAnchor:v11 constant:0.0];
+    heightAnchor = [elementCopy heightAnchor];
+    heightAnchor2 = [guideCopy heightAnchor];
+    v12 = [heightAnchor constraintEqualToAnchor:heightAnchor2 constant:0.0];
     v16[1] = v12;
     v13 = [NSArray arrayWithObjects:v16 count:2];
     [NSLayoutConstraint activateConstraints:v13];
 
-    v14 = [v6 maximumContentSizeCategory];
+    maximumContentSizeCategory = [guideCopy maximumContentSizeCategory];
 
-    if (v14)
+    if (maximumContentSizeCategory)
     {
-      v15 = [v6 maximumContentSizeCategory];
-      [v5 setMaximumContentSizeCategory:v15];
+      maximumContentSizeCategory2 = [guideCopy maximumContentSizeCategory];
+      [elementCopy setMaximumContentSizeCategory:maximumContentSizeCategory2];
     }
   }
 }
 
-- (void)applyCallDetailsViewButtonPositionAndSizeCapToElement:(id)a3
+- (void)applyCallDetailsViewButtonPositionAndSizeCapToElement:(id)element
 {
-  v4 = a3;
-  v5 = [v4 topAnchor];
-  v6 = [(iPadAudioCallViewController *)self view];
-  v7 = [v6 topAnchor];
+  elementCopy = element;
+  topAnchor = [elementCopy topAnchor];
+  view = [(iPadAudioCallViewController *)self view];
+  topAnchor2 = [view topAnchor];
   [(iPadAudioCallViewController *)self callDetailsButtonPaddingTop];
-  v8 = [v5 constraintEqualToAnchor:v7 constant:?];
+  v8 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:?];
   v16[0] = v8;
-  v9 = [v4 trailingAnchor];
-  v10 = [(iPadAudioCallViewController *)self view];
-  v11 = [v10 trailingAnchor];
+  trailingAnchor = [elementCopy trailingAnchor];
+  view2 = [(iPadAudioCallViewController *)self view];
+  trailingAnchor2 = [view2 trailingAnchor];
   [(iPadAudioCallViewController *)self callDetailsButtonPaddingTrailing];
-  v13 = [v9 constraintEqualToAnchor:v11 constant:-v12];
+  v13 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-v12];
   v16[1] = v13;
   v14 = [NSArray arrayWithObjects:v16 count:2];
   [NSLayoutConstraint activateConstraints:v14];
 
   v15 = +[TPIncomingCallMetricsProvider callDetailsButtonMaxSize];
-  [v4 setMaximumContentSizeCategory:v15];
+  [elementCopy setMaximumContentSizeCategory:v15];
 }
 
 - (BOOL)shouldShowCallDetailsViewButton
 {
   v4 = +[CNKFeatures sharedInstance];
-  v5 = [v4 isMoreMenuEnabled];
+  isMoreMenuEnabled = [v4 isMoreMenuEnabled];
 
-  v6 = [(iPadAudioCallViewController *)self frontmostCall];
-  v7 = v6;
-  if (v5)
+  frontmostCall = [(iPadAudioCallViewController *)self frontmostCall];
+  v7 = frontmostCall;
+  if (isMoreMenuEnabled)
   {
-    v8 = [(iPadAudioCallViewController *)self callCenter];
-    v9 = [v8 currentCallGroups];
+    callCenter = [(iPadAudioCallViewController *)self callCenter];
+    currentCallGroups = [callCenter currentCallGroups];
 
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v10 = v9;
-    v11 = [v10 countByEnumeratingWithState:&v25 objects:v29 count:16];
+    provider2 = currentCallGroups;
+    v11 = [provider2 countByEnumeratingWithState:&v25 objects:v29 count:16];
     if (v11)
     {
       v12 = v11;
@@ -2785,11 +2785,11 @@ LABEL_8:
         {
           if (*v26 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(provider2);
           }
 
-          v15 = [*(*(&v25 + 1) + 8 * i) calls];
-          v16 = [v15 count];
+          calls = [*(*(&v25 + 1) + 8 * i) calls];
+          v16 = [calls count];
 
           if (v16 > 1)
           {
@@ -2798,7 +2798,7 @@ LABEL_8:
           }
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v25 objects:v29 count:16];
+        v12 = [provider2 countByEnumeratingWithState:&v25 objects:v29 count:16];
         if (v12)
         {
           continue;
@@ -2811,14 +2811,14 @@ LABEL_8:
     v17 = 0;
 LABEL_20:
 
-    v2 = [v7 provider];
-    if ((([v2 isFaceTimeProvider] & 1) != 0 || v17 && -[iPadAudioCallViewController shouldShowConferenceCallDetails](self, "shouldShowConferenceCallDetails")) && ((objc_msgSend(v7, "isActive", v25) & 1) != 0 || objc_msgSend(v7, "isOnHold")) && (objc_msgSend(v7, "isVideo") & 1) == 0)
+    provider = [v7 provider];
+    if ((([provider isFaceTimeProvider] & 1) != 0 || v17 && -[iPadAudioCallViewController shouldShowConferenceCallDetails](self, "shouldShowConferenceCallDetails")) && ((objc_msgSend(v7, "isActive", v25) & 1) != 0 || objc_msgSend(v7, "isOnHold")) && (objc_msgSend(v7, "isVideo") & 1) == 0)
     {
-      v22 = [(iPadAudioCallViewController *)self callDisplayStyleManager];
-      if ([v22 callDisplayStyle])
+      callDisplayStyleManager = [(iPadAudioCallViewController *)self callDisplayStyleManager];
+      if ([callDisplayStyleManager callDisplayStyle])
       {
-        v23 = [(iPadAudioCallViewController *)self callDisplayStyleManager];
-        v21 = [v23 callDisplayStyle] != 3;
+        callDisplayStyleManager2 = [(iPadAudioCallViewController *)self callDisplayStyleManager];
+        v21 = [callDisplayStyleManager2 callDisplayStyle] != 3;
       }
 
       else
@@ -2832,12 +2832,12 @@ LABEL_20:
     goto LABEL_28;
   }
 
-  v10 = [v6 provider];
-  v18 = [v10 isFaceTimeProvider];
-  if ((v18 & 1) == 0)
+  provider2 = [frontmostCall provider];
+  isFaceTimeProvider = [provider2 isFaceTimeProvider];
+  if ((isFaceTimeProvider & 1) == 0)
   {
-    v2 = [v7 provider];
-    if (![v2 isTelephonyProvider])
+    provider = [v7 provider];
+    if (![provider isTelephonyProvider])
     {
 LABEL_28:
       v21 = 0;
@@ -2847,13 +2847,13 @@ LABEL_28:
 
   if ((([v7 isActive] & 1) != 0 || objc_msgSend(v7, "isOnHold")) && (objc_msgSend(v7, "isVideo") & 1) == 0)
   {
-    v19 = [(iPadAudioCallViewController *)self callDisplayStyleManager];
-    if ([v19 callDisplayStyle])
+    callDisplayStyleManager3 = [(iPadAudioCallViewController *)self callDisplayStyleManager];
+    if ([callDisplayStyleManager3 callDisplayStyle])
     {
-      v20 = [(iPadAudioCallViewController *)self callDisplayStyleManager];
-      v21 = [v20 callDisplayStyle] != 3;
+      callDisplayStyleManager4 = [(iPadAudioCallViewController *)self callDisplayStyleManager];
+      v21 = [callDisplayStyleManager4 callDisplayStyle] != 3;
 
-      if (v18)
+      if (isFaceTimeProvider)
       {
         goto LABEL_35;
       }
@@ -2863,7 +2863,7 @@ LABEL_28:
   }
 
   v21 = 0;
-  if (v18)
+  if (isFaceTimeProvider)
   {
     goto LABEL_35;
   }
@@ -2876,28 +2876,28 @@ LABEL_35:
 
 - (void)callDetailsViewButtonTapped
 {
-  v3 = [(iPadAudioCallViewController *)self frontmostCall];
+  frontmostCall = [(iPadAudioCallViewController *)self frontmostCall];
   if ([(iPadAudioCallViewController *)self shouldShowConferenceCallDetails])
   {
     v4 = objc_alloc_init(PHConferenceParticipantsViewController);
     v5 = [[UINavigationController alloc] initWithRootViewController:v4];
     v6 = +[UIColor grayColor];
-    v7 = [v5 view];
-    [v7 setBackgroundColor:v6];
+    view = [v5 view];
+    [view setBackgroundColor:v6];
 
     v8 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:0 target:self action:"dismissNavigationController"];
-    v9 = [(PHConferenceParticipantsViewController *)v4 navigationItem];
-    [v9 setLeftBarButtonItem:v8];
+    navigationItem = [(PHConferenceParticipantsViewController *)v4 navigationItem];
+    [navigationItem setLeftBarButtonItem:v8];
 
     [(iPadAudioCallViewController *)self presentViewController:v5 animated:1 completion:0];
   }
 
   else
   {
-    v10 = [v3 provider];
-    v11 = [v10 isTelephonyProvider];
+    provider = [frontmostCall provider];
+    isTelephonyProvider = [provider isTelephonyProvider];
 
-    if (v11)
+    if (isTelephonyProvider)
     {
       [(iPadAudioCallViewController *)self presentContactCard];
     }
@@ -2920,16 +2920,16 @@ LABEL_35:
   }
 }
 
-- (void)contactViewController:(id)a3 didExecuteBlockAndReportContactAction:(id)a4
+- (void)contactViewController:(id)controller didExecuteBlockAndReportContactAction:(id)action
 {
-  v5 = [(iPadAudioCallViewController *)self activeCall:a3];
+  v5 = [(iPadAudioCallViewController *)self activeCall:controller];
   [(iPadAudioCallViewController *)self reportWithCall:v5];
 }
 
 - (BOOL)shouldShowConferenceCallDetails
 {
-  v3 = [(iPadAudioCallViewController *)self callParticipantsViewController];
-  v4 = [v3 view];
+  callParticipantsViewController = [(iPadAudioCallViewController *)self callParticipantsViewController];
+  view = [callParticipantsViewController view];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -2938,23 +2938,23 @@ LABEL_35:
     return 0;
   }
 
-  v6 = [(iPadAudioCallViewController *)self getParticipantsView_NotWaiting];
-  v7 = [(iPadAudioCallViewController *)self callParticipantsViewController];
-  v8 = [v7 shouldShowInfoButtonForParticipantAtIndex:0 inParticipantsView:v6];
+  getParticipantsView_NotWaiting = [(iPadAudioCallViewController *)self getParticipantsView_NotWaiting];
+  callParticipantsViewController2 = [(iPadAudioCallViewController *)self callParticipantsViewController];
+  v8 = [callParticipantsViewController2 shouldShowInfoButtonForParticipantAtIndex:0 inParticipantsView:getParticipantsView_NotWaiting];
 
   return v8;
 }
 
-- (BOOL)canDoInfoButtonCoinFlipWith:(id)a3 contactStore:(id)a4
+- (BOOL)canDoInfoButtonCoinFlipWith:(id)with contactStore:(id)store
 {
-  v5 = a3;
-  v6 = a4;
+  withCopy = with;
+  storeCopy = store;
   v7 = +[NSUserDefaults standardUserDefaults];
   v8 = [v7 BOOLForKey:@"iPadInCallUIInfoButtonCoinFlipKey"];
 
   if (v8)
   {
-    v9 = [[CNSharedProfileStateOracle alloc] initWithContact:v5 contactStore:v6];
+    v9 = [[CNSharedProfileStateOracle alloc] initWithContact:withCopy contactStore:storeCopy];
     v10 = [v9 avatarViewAnimationTypeForEffectiveState] == 1;
   }
 
@@ -2968,29 +2968,29 @@ LABEL_35:
 
 - (void)animateInfoButtonCoinFlipIfNeeded
 {
-  v48 = [(iPadAudioCallViewController *)self features];
-  if ([v48 isNameAndPhotoC3Enabled])
+  features = [(iPadAudioCallViewController *)self features];
+  if ([features isNameAndPhotoC3Enabled])
   {
-    v3 = [(iPadAudioCallViewController *)self callDetailsViewButton];
+    callDetailsViewButton = [(iPadAudioCallViewController *)self callDetailsViewButton];
 
-    if (!v3)
+    if (!callDetailsViewButton)
     {
       return;
     }
 
-    v4 = [(iPadAudioCallViewController *)self frontmostCall];
-    v5 = [v4 contactIdentifier];
+    frontmostCall = [(iPadAudioCallViewController *)self frontmostCall];
+    contactIdentifier = [frontmostCall contactIdentifier];
 
-    if (!v5)
+    if (!contactIdentifier)
     {
       goto LABEL_28;
     }
 
-    v6 = [PHInCallUtilities contactStoreForCall:v4];
-    v7 = [v4 contactIdentifier];
+    v6 = [PHInCallUtilities contactStoreForCall:frontmostCall];
+    contactIdentifier2 = [frontmostCall contactIdentifier];
     v8 = +[iPadAudioCallViewController contactKeysToFetch];
-    v9 = [(iPadAudioCallViewController *)self contactsCache];
-    v10 = [v6 contactForIdentifier:v7 keysToFetch:v8 usingCache:v9];
+    contactsCache = [(iPadAudioCallViewController *)self contactsCache];
+    v10 = [v6 contactForIdentifier:contactIdentifier2 keysToFetch:v8 usingCache:contactsCache];
 
     if (!v10 || ![(iPadAudioCallViewController *)self canDoInfoButtonCoinFlipWith:v10 contactStore:v6])
     {
@@ -3008,66 +3008,66 @@ LABEL_28:
     {
       if (v14)
       {
-        v15 = [v11 currentNickname];
-        v16 = [v10 imageData];
+        currentNickname = [v11 currentNickname];
+        imageData = [v10 imageData];
         *buf = 138412546;
-        v58 = v15;
+        v58 = currentNickname;
         v59 = 2112;
-        v60 = v16;
+        v60 = imageData;
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "SNAP: animateInfoButtonCoinFlipIfNeeded using currentNickname %@ contact.imageData: %@", buf, 0x16u);
       }
 
-      v17 = [v11 currentNickname];
+      currentNickname2 = [v11 currentNickname];
 
       v18 = [CNSharedProfile alloc];
       v19 = v18;
-      if (!v17)
+      if (!currentNickname2)
       {
         v49 = [v18 initWithContact:v10];
         goto LABEL_18;
       }
 
-      v20 = [v11 currentNickname];
+      currentNickname3 = [v11 currentNickname];
     }
 
     else
     {
       if (v14)
       {
-        v21 = [v11 pendingNickname];
+        pendingNickname = [v11 pendingNickname];
         *buf = 138412290;
-        v58 = v21;
+        v58 = pendingNickname;
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "SNAP: animateInfoButtonCoinFlipIfNeeded using pendingNickname %@", buf, 0xCu);
       }
 
       v19 = [CNSharedProfile alloc];
-      v20 = [v11 pendingNickname];
+      currentNickname3 = [v11 pendingNickname];
     }
 
-    v22 = v20;
-    v49 = [v19 initWithNickname:v20];
+    v22 = currentNickname3;
+    v49 = [v19 initWithNickname:currentNickname3];
 
 LABEL_18:
-    v23 = [(iPadAudioCallViewController *)self callDetailsViewButton];
-    [v23 setAlpha:0.0];
+    callDetailsViewButton2 = [(iPadAudioCallViewController *)self callDetailsViewButton];
+    [callDetailsViewButton2 setAlpha:0.0];
 
     v24 = objc_alloc_init(UIView);
     [v24 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v25 = [(iPadAudioCallViewController *)self view];
-    [v25 addSubview:v24];
+    view = [(iPadAudioCallViewController *)self view];
+    [view addSubview:v24];
 
-    v26 = [v11 pendingNickname];
-    v27 = [v26 avatar];
+    pendingNickname2 = [v11 pendingNickname];
+    avatar = [pendingNickname2 avatar];
 
-    v46 = v27;
+    v46 = avatar;
     if (+[_TtC13InCallService23SensitivityFeatureFlags isSensitivityAvatarTreatmentEnabled])
     {
-      v28 = [v27 contentIsSensitive];
+      contentIsSensitive = [avatar contentIsSensitive];
       v29 = sub_100004F84();
       if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 67109120;
-        LODWORD(v58) = v28;
+        LODWORD(v58) = contentIsSensitive;
         _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEFAULT, "SNAP: IMNicknameAvatarImage.contentIsSensitive for infoButton peekaboo returning %d", buf, 8u);
       }
     }
@@ -3081,16 +3081,16 @@ LABEL_18:
         _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEFAULT, "SNAP: IMNicknameAvatarImage.contentIsSensitive for infoButton peekaboo not performing check", buf, 2u);
       }
 
-      LOBYTE(v28) = 0;
+      LOBYTE(contentIsSensitive) = 0;
     }
 
     v30 = +[ICSPreferences sharedPreferences];
-    v31 = [v30 forceBlurNewPoster];
+    forceBlurNewPoster = [v30 forceBlurNewPoster];
 
-    v32 = v31 | v28;
+    v32 = forceBlurNewPoster | contentIsSensitive;
     v33 = [_TtC13InCallService19BlurrableAvatarView alloc];
-    v34 = [v49 contact];
-    v35 = [(BlurrableAvatarView *)v33 initWithContact:v34 wantsBlur:v32 & 1 isCommunicationSafetyEnabled:+[_TtC13InCallService23SensitivityFeatureFlags isCommunicationSafetyEnabled]];
+    contact = [v49 contact];
+    v35 = [(BlurrableAvatarView *)v33 initWithContact:contact wantsBlur:v32 & 1 isCommunicationSafetyEnabled:+[_TtC13InCallService23SensitivityFeatureFlags isCommunicationSafetyEnabled]];
 
     [(BlurrableAvatarView *)v35 setTranslatesAutoresizingMaskIntoConstraints:0];
     [v24 addSubview:v35];
@@ -3101,12 +3101,12 @@ LABEL_18:
     [v36 setTintColor:v37];
 
     [(iPadAudioCallViewController *)self applyCallDetailsViewButtonPositionAndSizeCapToElement:v36];
-    v38 = [(iPadAudioCallViewController *)self wallpaperTitleStyleAttributes];
-    v39 = v38;
-    if (v38)
+    wallpaperTitleStyleAttributes = [(iPadAudioCallViewController *)self wallpaperTitleStyleAttributes];
+    v39 = wallpaperTitleStyleAttributes;
+    if (wallpaperTitleStyleAttributes)
     {
-      v40 = [v38 titleColor];
-      [v36 setTintColor:v40];
+      titleColor = [wallpaperTitleStyleAttributes titleColor];
+      [v36 setTintColor:titleColor];
     }
 
     v41 = +[TPIncomingCallMetricsProvider callDetailsButtonMaxSize];
@@ -3124,7 +3124,7 @@ LABEL_18:
     v51 = v24;
     v52 = v35;
     v53 = v36;
-    v54 = self;
+    selfCopy = self;
     v55 = v10;
     v56 = v11;
     v42 = v11;
@@ -3137,9 +3137,9 @@ LABEL_18:
   }
 }
 
-- (void)triggerInversionColorUpdate:(id)a3
+- (void)triggerInversionColorUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   if (![(iPadAudioCallViewController *)self hasInvertedUIElementColorsBasedOnPoster])
   {
     v5 = sub_100004F84();
@@ -3149,42 +3149,42 @@ LABEL_18:
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "SNAP: We are going to update inversion color based on new configuration", buf, 2u);
     }
 
-    v6 = [[TPInComingCallUISnapshotViewController alloc] initWithConfiguration:v4 style:0 nameString:&stru_100361FD0];
+    v6 = [[TPInComingCallUISnapshotViewController alloc] initWithConfiguration:updateCopy style:0 nameString:&stru_100361FD0];
     objc_initWeak(buf, self);
-    v7 = [(iPadAudioCallViewController *)self view];
-    v8 = [v7 window];
-    v9 = [v8 windowScene];
+    view = [(iPadAudioCallViewController *)self view];
+    window = [view window];
+    windowScene = [window windowScene];
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_1000D55E8;
     v10[3] = &unk_1003590C0;
     objc_copyWeak(&v11, buf);
-    [v6 snapshotWithOptions:0 windowScene:v9 completionBlock:v10];
+    [v6 snapshotWithOptions:0 windowScene:windowScene completionBlock:v10];
 
     objc_destroyWeak(&v11);
     objc_destroyWeak(buf);
   }
 }
 
-- (void)invertNecessaryUIElementsBasedOnPosterImage:(id)a3
+- (void)invertNecessaryUIElementsBasedOnPosterImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   if (![(iPadAudioCallViewController *)self hasInvertedUIElementColorsBasedOnPoster])
   {
-    [(iPadAudioCallViewController *)self invertColorForBottomButtonsBasedOn:v4];
-    [(iPadAudioCallViewController *)self invertColorForCallDetailsButtonBasedOn:v4];
-    [(iPadAudioCallViewController *)self invertColorForPosterBadgeViewBasedOn:v4];
+    [(iPadAudioCallViewController *)self invertColorForBottomButtonsBasedOn:imageCopy];
+    [(iPadAudioCallViewController *)self invertColorForCallDetailsButtonBasedOn:imageCopy];
+    [(iPadAudioCallViewController *)self invertColorForPosterBadgeViewBasedOn:imageCopy];
   }
 }
 
-+ (void)fetchPrefersWhiteColorAtCropRect:(CGRect)a3 image:(id)a4 completion:(id)a5
++ (void)fetchPrefersWhiteColorAtCropRect:(CGRect)rect image:(id)image completion:(id)completion
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = a5;
-  v11 = [iPadAudioCallViewController imageRefFrom:a4];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  completionCopy = completion;
+  v11 = [iPadAudioCallViewController imageRefFrom:image];
   v20.origin.x = x;
   v20.origin.y = y;
   v20.size.width = width;
@@ -3195,7 +3195,7 @@ LABEL_18:
     v13 = v12;
     v14 = [iPadAudioCallViewController prefersWhiteTextOnImageRef:v12];
     CGImageRelease(v13);
-    v10[2](v10, v14, 0);
+    completionCopy[2](completionCopy, v14, 0);
   }
 
   else
@@ -3210,57 +3210,57 @@ LABEL_18:
     v19 = @"SNAP: croppedImageRef for snapshot is nil, can't invert the color";
     v16 = [NSDictionary dictionaryWithObjects:&v19 forKeys:&v18 count:1];
     v17 = [NSError errorWithDomain:@"com.apple.incallservice" code:-1 userInfo:v16];
-    (v10)[2](v10, 0, v17);
+    (completionCopy)[2](completionCopy, 0, v17);
 
-    v10 = v16;
+    completionCopy = v16;
   }
 }
 
-- (void)invertColorForBottomButtonsBasedOn:(id)a3
+- (void)invertColorForBottomButtonsBasedOn:(id)on
 {
-  v4 = a3;
+  onCopy = on;
   v5 = +[UIScreen mainScreen];
   [v5 bounds];
   v7 = v6;
   v9 = v8;
 
-  [v4 scale];
+  [onCopy scale];
   v11 = v10 * (v7 * 0.1);
-  [v4 scale];
+  [onCopy scale];
   v13 = v9 * 0.6 * v12;
-  [v4 scale];
+  [onCopy scale];
   v15 = v7 * 0.8 * v14;
-  [v4 scale];
+  [onCopy scale];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_1000D5A48;
   v17[3] = &unk_100358030;
   v17[4] = self;
-  [objc_opt_class() fetchPrefersWhiteColorAtCropRect:v4 image:v17 completion:{v11, v13, v15, v9 * 0.3 * v16}];
+  [objc_opt_class() fetchPrefersWhiteColorAtCropRect:onCopy image:v17 completion:{v11, v13, v15, v9 * 0.3 * v16}];
 }
 
-- (void)invertColorForCallDetailsButtonBasedOn:(id)a3
+- (void)invertColorForCallDetailsButtonBasedOn:(id)on
 {
-  v4 = a3;
-  v5 = [(iPadAudioCallViewController *)self callDetailsViewButton];
-  [v5 origin];
+  onCopy = on;
+  callDetailsViewButton = [(iPadAudioCallViewController *)self callDetailsViewButton];
+  [callDetailsViewButton origin];
   v7 = v6;
-  [v4 scale];
+  [onCopy scale];
   v9 = v7 * v8;
-  v10 = [(iPadAudioCallViewController *)self callDetailsViewButton];
-  [v10 origin];
+  callDetailsViewButton2 = [(iPadAudioCallViewController *)self callDetailsViewButton];
+  [callDetailsViewButton2 origin];
   v12 = v11;
-  [v4 scale];
+  [onCopy scale];
   v14 = v12 * v13;
-  v15 = [(iPadAudioCallViewController *)self callDetailsViewButton];
-  [v15 frame];
+  callDetailsViewButton3 = [(iPadAudioCallViewController *)self callDetailsViewButton];
+  [callDetailsViewButton3 frame];
   v17 = v16;
-  [v4 scale];
+  [onCopy scale];
   v19 = v18 * v17;
-  v20 = [(iPadAudioCallViewController *)self callDetailsViewButton];
-  [v20 frame];
+  callDetailsViewButton4 = [(iPadAudioCallViewController *)self callDetailsViewButton];
+  [callDetailsViewButton4 frame];
   v22 = v21;
-  [v4 scale];
+  [onCopy scale];
   v24 = v23 * v22;
 
   v25[0] = _NSConcreteStackBlock;
@@ -3268,42 +3268,42 @@ LABEL_18:
   v25[2] = sub_1000D5CB4;
   v25[3] = &unk_100358030;
   v25[4] = self;
-  [objc_opt_class() fetchPrefersWhiteColorAtCropRect:v4 image:v25 completion:{v9, v14, v19, v24}];
+  [objc_opt_class() fetchPrefersWhiteColorAtCropRect:onCopy image:v25 completion:{v9, v14, v19, v24}];
 }
 
-- (void)invertColorForPosterBadgeViewBasedOn:(id)a3
+- (void)invertColorForPosterBadgeViewBasedOn:(id)on
 {
-  v4 = a3;
-  v5 = [(iPadAudioCallViewController *)self posterBadgeView];
-  if (v5)
+  onCopy = on;
+  posterBadgeView = [(iPadAudioCallViewController *)self posterBadgeView];
+  if (posterBadgeView)
   {
-    v6 = v5;
-    v7 = [(iPadAudioCallViewController *)self posterBadgeView];
+    v6 = posterBadgeView;
+    posterBadgeView2 = [(iPadAudioCallViewController *)self posterBadgeView];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v9 = [(iPadAudioCallViewController *)self posterBadgeView];
-      v10 = [(iPadAudioCallViewController *)self posterBadgeView];
-      [v10 origin];
+      posterBadgeView3 = [(iPadAudioCallViewController *)self posterBadgeView];
+      posterBadgeView4 = [(iPadAudioCallViewController *)self posterBadgeView];
+      [posterBadgeView4 origin];
       v12 = v11;
-      [v4 scale];
+      [onCopy scale];
       v14 = v12 * v13;
-      v15 = [(iPadAudioCallViewController *)self posterBadgeView];
-      [v15 origin];
+      posterBadgeView5 = [(iPadAudioCallViewController *)self posterBadgeView];
+      [posterBadgeView5 origin];
       v17 = v16;
-      [v4 scale];
+      [onCopy scale];
       v19 = v17 * v18;
-      v20 = [(iPadAudioCallViewController *)self posterBadgeView];
-      [v20 frame];
+      posterBadgeView6 = [(iPadAudioCallViewController *)self posterBadgeView];
+      [posterBadgeView6 frame];
       v22 = v21;
-      [v4 scale];
+      [onCopy scale];
       v24 = v23 * v22;
-      v25 = [(iPadAudioCallViewController *)self posterBadgeView];
-      [v25 frame];
+      posterBadgeView7 = [(iPadAudioCallViewController *)self posterBadgeView];
+      [posterBadgeView7 frame];
       v27 = v26;
-      [v4 scale];
+      [onCopy scale];
       v29 = v28 * v27;
 
       v30 = objc_opt_class();
@@ -3312,30 +3312,30 @@ LABEL_18:
       v32[2] = sub_1000D5F98;
       v32[3] = &unk_1003590E8;
       v32[4] = self;
-      v33 = v9;
-      v31 = v9;
-      [v30 fetchPrefersWhiteColorAtCropRect:v4 image:v32 completion:{v14, v19, v24, v29}];
+      v33 = posterBadgeView3;
+      v31 = posterBadgeView3;
+      [v30 fetchPrefersWhiteColorAtCropRect:onCopy image:v32 completion:{v14, v19, v24, v29}];
     }
   }
 }
 
-+ (BOOL)prefersWhiteTextOnImageRef:(CGImage *)a3
++ (BOOL)prefersWhiteTextOnImageRef:(CGImage *)ref
 {
-  v3 = [CNImageDerivedColorGenerator colorsForImageRef:a3];
+  v3 = [CNImageDerivedColorGenerator colorsForImageRef:ref];
   v4 = [CNImageDerivedColorBackgroundUtilities backgroundColorsPreferWhiteForegroundText:v3];
 
   return v4;
 }
 
-+ (CGImage)imageRefFrom:(id)a3
++ (CGImage)imageRefFrom:(id)from
 {
-  v3 = a3;
-  if ([v3 ioSurface])
+  fromCopy = from;
+  if ([fromCopy ioSurface])
   {
     v4 = UICreateCGImageFromIOSurface();
-    [v3 size];
+    [fromCopy size];
     v6 = v5;
-    [v3 size];
+    [fromCopy size];
     v8 = v7;
     DeviceRGB = CGColorSpaceCreateDeviceRGB();
     v10 = CGBitmapContextCreate(0, v6, v8, 8uLL, vcvtd_n_u64_f64(v6, 2uLL), DeviceRGB, 1u);
@@ -3345,7 +3345,7 @@ LABEL_18:
     v14.size.height = v8;
     CGContextDrawImage(v10, v14, v4);
     Image = CGBitmapContextCreateImage(v10);
-    v12 = Image;
+    cGImage = Image;
     if (Image)
     {
       CFAutorelease(Image);
@@ -3365,38 +3365,38 @@ LABEL_18:
 
   else
   {
-    v12 = [v3 CGImage];
+    cGImage = [fromCopy CGImage];
   }
 
-  return v12;
+  return cGImage;
 }
 
 - (void)useRTTButtonTapped
 {
-  v4 = [(iPadAudioCallViewController *)self frontmostCall];
-  v3 = [(iPadAudioCallViewController *)self callCenter];
-  [v3 setTTYType:1 forCall:v4];
+  frontmostCall = [(iPadAudioCallViewController *)self frontmostCall];
+  callCenter = [(iPadAudioCallViewController *)self callCenter];
+  [callCenter setTTYType:1 forCall:frontmostCall];
 }
 
 - (void)extensionNumberButtonTapped
 {
-  v2 = [(iPadAudioCallViewController *)self frontmostCall];
-  [v2 sendHardPauseDigits];
+  frontmostCall = [(iPadAudioCallViewController *)self frontmostCall];
+  [frontmostCall sendHardPauseDigits];
 }
 
 - (void)callTransferButtonTapped
 {
   v9 = objc_alloc_init(TUCallProviderManager);
   v3 = [TUDialRequest alloc];
-  v4 = [v9 telephonyProvider];
-  v5 = [v3 initWithProvider:v4];
+  telephonyProvider = [v9 telephonyProvider];
+  v5 = [v3 initWithProvider:telephonyProvider];
 
   v6 = [[TUHandle alloc] initWithType:2 value:@"4"];
   [v5 setHandle:v6];
 
   [v5 setOriginatingUIType:38];
-  v7 = [(iPadAudioCallViewController *)self callCenter];
-  v8 = [v7 dialWithRequest:v5];
+  callCenter = [(iPadAudioCallViewController *)self callCenter];
+  v8 = [callCenter dialWithRequest:v5];
 }
 
 - (BOOL)shouldAddRTTButtonToViewHierarchy
@@ -3406,11 +3406,11 @@ LABEL_18:
     return 0;
   }
 
-  v3 = [(iPadAudioCallViewController *)self callDisplayStyleManager];
-  if ([v3 callDisplayStyle] == 3)
+  callDisplayStyleManager = [(iPadAudioCallViewController *)self callDisplayStyleManager];
+  if ([callDisplayStyleManager callDisplayStyle] == 3)
   {
-    v4 = [(iPadAudioCallViewController *)self features];
-    v5 = ([v4 isDominoEnabled] & 1) == 0 && self->_middleViewState == 1;
+    features = [(iPadAudioCallViewController *)self features];
+    v5 = ([features isDominoEnabled] & 1) == 0 && self->_middleViewState == 1;
   }
 
   else
@@ -3423,12 +3423,12 @@ LABEL_18:
 
 - (BOOL)shouldAddExtensionNumberButtonToViewHierarchy
 {
-  v4 = [(iPadAudioCallViewController *)self callDisplayStyleManager];
-  v5 = [v4 callDisplayStyle];
-  if (v5 == 3)
+  callDisplayStyleManager = [(iPadAudioCallViewController *)self callDisplayStyleManager];
+  callDisplayStyle = [callDisplayStyleManager callDisplayStyle];
+  if (callDisplayStyle == 3)
   {
-    v2 = [(iPadAudioCallViewController *)self features];
-    if (([v2 isDominoEnabled] & 1) != 0 || self->_middleViewState != 1)
+    features = [(iPadAudioCallViewController *)self features];
+    if (([features isDominoEnabled] & 1) != 0 || self->_middleViewState != 1)
     {
       v6 = 0;
 LABEL_7:
@@ -3443,10 +3443,10 @@ LABEL_7:
     goto LABEL_9;
   }
 
-  v7 = [(iPadAudioCallViewController *)self frontmostCall];
-  v6 = [v7 hardPauseDigitsState] == 2;
+  frontmostCall = [(iPadAudioCallViewController *)self frontmostCall];
+  v6 = [frontmostCall hardPauseDigitsState] == 2;
 
-  if (v5 == 3)
+  if (callDisplayStyle == 3)
   {
     goto LABEL_7;
   }
@@ -3458,8 +3458,8 @@ LABEL_9:
 
 - (void)refreshExtensionNumberButton
 {
-  v3 = [(PHCallViewController *)self bottomBar];
-  v4 = [(iPadAudioCallViewController *)self customizedTitleForItemInBar:v3 withActionType:23];
+  bottomBar = [(PHCallViewController *)self bottomBar];
+  v4 = [(iPadAudioCallViewController *)self customizedTitleForItemInBar:bottomBar withActionType:23];
 
   [(PHAudioCallControlsSupplementalButton *)self->_extensionNumberButton setTitle:v4 forState:0];
   [(iPadAudioCallViewController *)self updateSupplementalButtonsLayout];
@@ -3467,11 +3467,11 @@ LABEL_9:
 
 - (void)mergeCallsButtonTapped
 {
-  v3 = [(iPadAudioCallViewController *)self callCenter];
-  v4 = [v3 callWithStatus:2];
+  callCenter = [(iPadAudioCallViewController *)self callCenter];
+  v4 = [callCenter callWithStatus:2];
 
-  v5 = [(iPadAudioCallViewController *)self callCenter];
-  v6 = [v5 callWithStatus:1];
+  callCenter2 = [(iPadAudioCallViewController *)self callCenter];
+  v6 = [callCenter2 callWithStatus:1];
 
   v7 = sub_100004F84();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -3483,8 +3483,8 @@ LABEL_9:
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Supplemental merge button tapped. Grouping held call %@ with active call %@", &v9, 0x16u);
   }
 
-  v8 = [(iPadAudioCallViewController *)self callCenter];
-  [v8 groupCall:v4 withOtherCall:v6];
+  callCenter3 = [(iPadAudioCallViewController *)self callCenter];
+  [callCenter3 groupCall:v4 withOtherCall:v6];
 }
 
 - (void)updateLayoutSupplementalButtons
@@ -3494,16 +3494,16 @@ LABEL_9:
     [(iPadAudioCallViewController *)self removeSubviewFromMiddleStackViewWithView:?];
   }
 
-  v3 = [(iPadAudioCallViewController *)self buttonsViewController];
-  v34 = [v3 view];
+  buttonsViewController = [(iPadAudioCallViewController *)self buttonsViewController];
+  view = [buttonsViewController view];
 
-  v4 = [v34 superview];
-  if (v4)
+  superview = [view superview];
+  if (superview)
   {
-    v5 = v4;
-    v6 = [(iPadAudioCallViewController *)self middleViewState];
+    v5 = superview;
+    middleViewState = [(iPadAudioCallViewController *)self middleViewState];
 
-    if (v6 == 1)
+    if (middleViewState == 1)
     {
       v7 = [[UIStackView alloc] initWithArrangedSubviews:&__NSArray0__struct];
       [v7 setAxis:0];
@@ -3519,61 +3519,61 @@ LABEL_9:
       v9 = objc_alloc_init(NSMutableArray);
       if ([(iPadAudioCallViewController *)self shouldShowCallTransfer])
       {
-        v10 = [(iPadAudioCallViewController *)self callTransferButton];
-        [v7 addArrangedSubview:v10];
+        callTransferButton = [(iPadAudioCallViewController *)self callTransferButton];
+        [v7 addArrangedSubview:callTransferButton];
 
-        v11 = [(iPadAudioCallViewController *)self callTransferButton];
-        [v11 setTranslatesAutoresizingMaskIntoConstraints:0];
+        callTransferButton2 = [(iPadAudioCallViewController *)self callTransferButton];
+        [callTransferButton2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-        v12 = [(iPadAudioCallViewController *)self callTransferButton];
-        v13 = [v12 heightAnchor];
-        v14 = [v7 heightAnchor];
-        v15 = [v13 constraintEqualToAnchor:v14];
+        callTransferButton3 = [(iPadAudioCallViewController *)self callTransferButton];
+        heightAnchor = [callTransferButton3 heightAnchor];
+        heightAnchor2 = [v7 heightAnchor];
+        v15 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
         [v15 setActive:1];
       }
 
       if ([(iPadAudioCallViewController *)self shouldShowMergeCalls])
       {
-        v16 = [(iPadAudioCallViewController *)self mergeCallsButton];
-        [v7 addArrangedSubview:v16];
+        mergeCallsButton = [(iPadAudioCallViewController *)self mergeCallsButton];
+        [v7 addArrangedSubview:mergeCallsButton];
 
-        v17 = [(iPadAudioCallViewController *)self mergeCallsButton];
-        [v17 setTranslatesAutoresizingMaskIntoConstraints:0];
+        mergeCallsButton2 = [(iPadAudioCallViewController *)self mergeCallsButton];
+        [mergeCallsButton2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-        v18 = [(iPadAudioCallViewController *)self mergeCallsButton];
-        v19 = [v18 heightAnchor];
-        v20 = [v7 heightAnchor];
-        v21 = [v19 constraintEqualToAnchor:v20];
+        mergeCallsButton3 = [(iPadAudioCallViewController *)self mergeCallsButton];
+        heightAnchor3 = [mergeCallsButton3 heightAnchor];
+        heightAnchor4 = [v7 heightAnchor];
+        v21 = [heightAnchor3 constraintEqualToAnchor:heightAnchor4];
         [v21 setActive:1];
       }
 
       if ([(iPadAudioCallViewController *)self shouldAddExtensionNumberButtonToViewHierarchy])
       {
-        v22 = [(iPadAudioCallViewController *)self extensionNumberButton];
-        [v7 addArrangedSubview:v22];
+        extensionNumberButton = [(iPadAudioCallViewController *)self extensionNumberButton];
+        [v7 addArrangedSubview:extensionNumberButton];
 
-        v23 = [(iPadAudioCallViewController *)self extensionNumberButton];
-        [v23 setTranslatesAutoresizingMaskIntoConstraints:0];
+        extensionNumberButton2 = [(iPadAudioCallViewController *)self extensionNumberButton];
+        [extensionNumberButton2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-        v24 = [(iPadAudioCallViewController *)self extensionNumberButton];
-        v25 = [v24 heightAnchor];
-        v26 = [v7 heightAnchor];
-        v27 = [v25 constraintEqualToAnchor:v26];
+        extensionNumberButton3 = [(iPadAudioCallViewController *)self extensionNumberButton];
+        heightAnchor5 = [extensionNumberButton3 heightAnchor];
+        heightAnchor6 = [v7 heightAnchor];
+        v27 = [heightAnchor5 constraintEqualToAnchor:heightAnchor6];
         [v27 setActive:1];
       }
 
       if ([(iPadAudioCallViewController *)self shouldAddRTTButtonToViewHierarchy])
       {
-        v28 = [(iPadAudioCallViewController *)self useRTTButton];
-        [v7 addArrangedSubview:v28];
+        useRTTButton = [(iPadAudioCallViewController *)self useRTTButton];
+        [v7 addArrangedSubview:useRTTButton];
 
-        v29 = [(iPadAudioCallViewController *)self useRTTButton];
-        [v29 setTranslatesAutoresizingMaskIntoConstraints:0];
+        useRTTButton2 = [(iPadAudioCallViewController *)self useRTTButton];
+        [useRTTButton2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-        v30 = [(iPadAudioCallViewController *)self useRTTButton];
-        v31 = [v30 heightAnchor];
-        v32 = [v7 heightAnchor];
-        v33 = [v31 constraintEqualToAnchor:v32];
+        useRTTButton3 = [(iPadAudioCallViewController *)self useRTTButton];
+        heightAnchor7 = [useRTTButton3 heightAnchor];
+        heightAnchor8 = [v7 heightAnchor];
+        v33 = [heightAnchor7 constraintEqualToAnchor:heightAnchor8];
         [v33 setActive:1];
       }
 
@@ -3585,20 +3585,20 @@ LABEL_9:
 
 - (void)dismissNavigationController
 {
-  v2 = [(iPadAudioCallViewController *)self navigationController];
-  [v2 dismissViewControllerAnimated:1 completion:0];
+  navigationController = [(iPadAudioCallViewController *)self navigationController];
+  [navigationController dismissViewControllerAnimated:1 completion:0];
 }
 
 - (void)dismissNavigationControllerAndUpdateScene
 {
   objc_initWeak(&location, self);
-  v3 = [(iPadAudioCallViewController *)self navigationController];
+  navigationController = [(iPadAudioCallViewController *)self navigationController];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1000D6B9C;
   v4[3] = &unk_100356F60;
   objc_copyWeak(&v5, &location);
-  [v3 dismissViewControllerAnimated:1 completion:v4];
+  [navigationController dismissViewControllerAnimated:1 completion:v4];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -3606,23 +3606,23 @@ LABEL_9:
 
 - (void)updateCurrentState
 {
-  v3 = [(iPadAudioCallViewController *)self callCenter];
-  v4 = [v3 currentCallGroups];
+  callCenter = [(iPadAudioCallViewController *)self callCenter];
+  currentCallGroups = [callCenter currentCallGroups];
 
-  v5 = [(iPadAudioCallViewController *)self callDisplayStyleManager];
-  if (![v5 callDisplayStyle])
+  callDisplayStyleManager = [(iPadAudioCallViewController *)self callDisplayStyleManager];
+  if (![callDisplayStyleManager callDisplayStyle])
   {
-    v6 = [(iPadAudioCallViewController *)self _isScreeningAnyCallGroup:v4];
+    v6 = [(iPadAudioCallViewController *)self _isScreeningAnyCallGroup:currentCallGroups];
 
     if (!v6)
     {
       goto LABEL_5;
     }
 
-    v5 = +[UIApplication sharedApplication];
-    v7 = [v5 delegate];
-    v8 = [v7 currentInCallScene];
-    [v8 requestTransitionToPresentationMode:0 shouldDismissCMASAlerts:0 analyticsSource:@"iPadSBSUIInCallTransitionAnalyticsSourceCallScreeningBegin"];
+    callDisplayStyleManager = +[UIApplication sharedApplication];
+    delegate = [callDisplayStyleManager delegate];
+    currentInCallScene = [delegate currentInCallScene];
+    [currentInCallScene requestTransitionToPresentationMode:0 shouldDismissCMASAlerts:0 analyticsSource:@"iPadSBSUIInCallTransitionAnalyticsSourceCallScreeningBegin"];
   }
 
 LABEL_5:
@@ -3631,7 +3631,7 @@ LABEL_5:
     goto LABEL_8;
   }
 
-  if ([v4 count])
+  if ([currentCallGroups count])
   {
     +[PHSOSViewController releaseAllCallBufferDismissalAssertions];
 LABEL_8:
@@ -3639,30 +3639,30 @@ LABEL_8:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *v98 = 138412290;
-      *&v98[4] = v4;
+      *&v98[4] = currentCallGroups;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "UpdateCurrentState: Current Call Groups is %@", v98, 0xCu);
     }
 
-    v10 = [(iPadAudioCallViewController *)self callCenter];
-    v11 = [v10 allCallsPassTest:&stru_100359108];
+    callCenter2 = [(iPadAudioCallViewController *)self callCenter];
+    v11 = [callCenter2 allCallsPassTest:&stru_100359108];
 
-    v12 = [(iPadAudioCallViewController *)self callCenter];
-    v13 = [v12 routeController];
-    v14 = [v13 pickedRoute];
-    v15 = [v14 deviceType];
+    callCenter3 = [(iPadAudioCallViewController *)self callCenter];
+    routeController = [callCenter3 routeController];
+    pickedRoute = [routeController pickedRoute];
+    deviceType = [pickedRoute deviceType];
 
-    if (!v11 || [(PHCallViewController *)self currentState]!= 1 && [(PHCallViewController *)self currentState]!= 3 && v15 != 13)
+    if (!v11 || [(PHCallViewController *)self currentState]!= 1 && [(PHCallViewController *)self currentState]!= 3 && deviceType != 13)
     {
       goto LABEL_17;
     }
 
-    v16 = [(iPadAudioCallViewController *)self callDisplayStyleManager];
-    if ([v16 callDisplayStyle] == 3)
+    callDisplayStyleManager2 = [(iPadAudioCallViewController *)self callDisplayStyleManager];
+    if ([callDisplayStyleManager2 callDisplayStyle] == 3)
     {
-      v17 = [(iPadAudioCallViewController *)self features];
-      v18 = [v17 isDominoEnabled];
+      features = [(iPadAudioCallViewController *)self features];
+      isDominoEnabled = [features isDominoEnabled];
 
-      if (v18)
+      if (isDominoEnabled)
       {
 LABEL_17:
         [(PHCallViewController *)self obtainDismissalAssertionIfNeeded];
@@ -3677,7 +3677,7 @@ LABEL_17:
 
     v19 = 1;
 LABEL_23:
-    if ([v4 count])
+    if ([currentCallGroups count])
     {
       if (([(iPadAudioCallViewController *)self isViewLoaded]& 1) == 0)
       {
@@ -3685,31 +3685,31 @@ LABEL_23:
       }
 
       v21 = +[UIApplication sharedApplication];
-      v22 = [v21 delegate];
-      v23 = [v22 bannerPresentationManager];
-      v24 = [(iPadAudioCallViewController *)self callDetailsCoordinator];
-      v25 = [(iPadAudioCallViewController *)self makeCallDetailsCoordinatorWithBannerPresentationManager:v23 existingCoordinator:v24 deferredPresentationManager:self];
+      delegate2 = [v21 delegate];
+      bannerPresentationManager = [delegate2 bannerPresentationManager];
+      callDetailsCoordinator = [(iPadAudioCallViewController *)self callDetailsCoordinator];
+      v25 = [(iPadAudioCallViewController *)self makeCallDetailsCoordinatorWithBannerPresentationManager:bannerPresentationManager existingCoordinator:callDetailsCoordinator deferredPresentationManager:self];
 
-      v26 = [v25 outcome];
-      if (v26 == 1)
+      outcome = [v25 outcome];
+      if (outcome == 1)
       {
         [(iPadAudioCallViewController *)self setCallDetailsCoordinator:0];
       }
 
-      else if (v26 == 2)
+      else if (outcome == 2)
       {
-        v27 = [v25 coordinator];
-        [(iPadAudioCallViewController *)self setCallDetailsCoordinator:v27];
+        coordinator = [v25 coordinator];
+        [(iPadAudioCallViewController *)self setCallDetailsCoordinator:coordinator];
       }
     }
 
-    if (![v4 count])
+    if (![currentCallGroups count])
     {
       v32 = +[UIApplication sharedApplication];
-      v33 = [v32 delegate];
-      v34 = [v33 mostRecentlyDisconnectedAudioCall];
+      delegate3 = [v32 delegate];
+      mostRecentlyDisconnectedAudioCall = [delegate3 mostRecentlyDisconnectedAudioCall];
 
-      if (v34)
+      if (mostRecentlyDisconnectedAudioCall)
       {
         v35 = sub_100004F84();
         if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
@@ -3729,24 +3729,24 @@ LABEL_23:
       v28 = sub_100004F84();
       if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
       {
-        v29 = [(PHCallViewController *)self currentState];
+        currentState = [(PHCallViewController *)self currentState];
         *v98 = 67109376;
-        *&v98[4] = v29;
+        *&v98[4] = currentState;
         *&v98[8] = 1024;
-        *&v98[10] = v15 == 13;
+        *&v98[10] = deviceType == 13;
         _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "UpdateCurrentState: All calls are an endpoint elsewhere and previous state was %d OR shouldDismissForPickedRoute is %d, so setting state to PHInCallStateIdle", v98, 0xEu);
       }
 
-      v30 = self;
+      selfCopy5 = self;
       v31 = 0;
       goto LABEL_36;
     }
 
-    if ([v4 count] != 1 || (-[iPadAudioCallViewController callCenter](self, "callCenter"), v36 = objc_claimAutoreleasedReturnValue(), v37 = objc_msgSend(v36, "hasCurrentVideoCalls"), v36, (v37 & 1) != 0))
+    if ([currentCallGroups count] != 1 || (-[iPadAudioCallViewController callCenter](self, "callCenter"), v36 = objc_claimAutoreleasedReturnValue(), v37 = objc_msgSend(v36, "hasCurrentVideoCalls"), v36, (v37 & 1) != 0))
     {
-      v38 = [v4 count];
-      v39 = [(iPadAudioCallViewController *)self callCenter];
-      v40 = &v38[[v39 currentVideoCallCount]];
+      v38 = [currentCallGroups count];
+      callCenter4 = [(iPadAudioCallViewController *)self callCenter];
+      v40 = &v38[[callCenter4 currentVideoCallCount]];
 
       if (v40 < 2)
       {
@@ -3760,14 +3760,14 @@ LABEL_23:
         _os_log_impl(&_mh_execute_header, v41, OS_LOG_TYPE_DEFAULT, "UpdateCurrentState: More than one call is active...", v98, 2u);
       }
 
-      v42 = [(iPadAudioCallViewController *)self callCenter];
-      v43 = [v42 incomingCall];
+      callCenter5 = [(iPadAudioCallViewController *)self callCenter];
+      incomingCall = [callCenter5 incomingCall];
 
-      if (!v43)
+      if (!incomingCall)
       {
-        v68 = [(iPadAudioCallViewController *)self _isScreeningAnyCallGroup:v4];
-        v69 = [(iPadAudioCallViewController *)self usesCompactMulticallUI];
-        v70 = v69;
+        v68 = [(iPadAudioCallViewController *)self _isScreeningAnyCallGroup:currentCallGroups];
+        usesCompactMulticallUI = [(iPadAudioCallViewController *)self usesCompactMulticallUI];
+        v70 = usesCompactMulticallUI;
         if (!v68)
         {
           v76 = sub_100004F84();
@@ -3799,7 +3799,7 @@ LABEL_23:
           goto LABEL_75;
         }
 
-        if (!v69 || (-[iPadAudioCallViewController prioritizedCall](self, "prioritizedCall"), (v71 = objc_claimAutoreleasedReturnValue()) == 0) || (v72 = v71, -[iPadAudioCallViewController prioritizedCall](self, "prioritizedCall"), v73 = objc_claimAutoreleasedReturnValue(), v74 = [v73 isScreening], v73, v72, (v74 & 1) != 0))
+        if (!usesCompactMulticallUI || (-[iPadAudioCallViewController prioritizedCall](self, "prioritizedCall"), (v71 = objc_claimAutoreleasedReturnValue()) == 0) || (v72 = v71, -[iPadAudioCallViewController prioritizedCall](self, "prioritizedCall"), v73 = objc_claimAutoreleasedReturnValue(), v74 = [v73 isScreening], v73, v72, (v74 & 1) != 0))
         {
           v75 = sub_100004F84();
           if (os_log_type_enabled(v75, OS_LOG_TYPE_DEFAULT))
@@ -3808,7 +3808,7 @@ LABEL_23:
             _os_log_impl(&_mh_execute_header, v75, OS_LOG_TYPE_DEFAULT, "UpdateCurrentState: ... but no incoming call while one is being screened meaning the other was declined, so moving to PHInCallStateScreening", v98, 2u);
           }
 
-          v30 = self;
+          selfCopy5 = self;
           v31 = 11;
           goto LABEL_36;
         }
@@ -3831,28 +3831,28 @@ LABEL_23:
         _os_log_impl(&_mh_execute_header, v44, OS_LOG_TYPE_DEFAULT, "UpdateCurrentState: ... and we have an incoming audio call...", v98, 2u);
       }
 
-      v45 = [(iPadAudioCallViewController *)self callCenter];
-      v46 = [v45 callWithStatus:1];
-      if (!v46)
+      callCenter6 = [(iPadAudioCallViewController *)self callCenter];
+      callCenter7 = [callCenter6 callWithStatus:1];
+      if (!callCenter7)
       {
-        v46 = [(iPadAudioCallViewController *)self callCenter];
-        v47 = [v46 callWithStatus:3];
-        if (!v47)
+        callCenter7 = [(iPadAudioCallViewController *)self callCenter];
+        callCenter8 = [callCenter7 callWithStatus:3];
+        if (!callCenter8)
         {
-          v47 = [(iPadAudioCallViewController *)self callCenter];
-          v48 = [v47 callWithStatus:2];
+          callCenter8 = [(iPadAudioCallViewController *)self callCenter];
+          v48 = [callCenter8 callWithStatus:2];
           if (!v48)
           {
-            v94 = [(iPadAudioCallViewController *)self callCenter];
-            v95 = [v94 currentVideoCallCount];
+            callCenter9 = [(iPadAudioCallViewController *)self callCenter];
+            currentVideoCallCount = [callCenter9 currentVideoCallCount];
 
-            if (!v95)
+            if (!currentVideoCallCount)
             {
-              v54 = sub_100004F84();
-              if (os_log_type_enabled(v54, OS_LOG_TYPE_DEFAULT))
+              prioritizedCall = sub_100004F84();
+              if (os_log_type_enabled(prioritizedCall, OS_LOG_TYPE_DEFAULT))
               {
                 *v98 = 0;
-                _os_log_impl(&_mh_execute_header, v54, OS_LOG_TYPE_DEFAULT, "UpdateCurrentState: ... but we don't also have an active call, so moving to PHInCallStateIncomingRinging", v98, 2u);
+                _os_log_impl(&_mh_execute_header, prioritizedCall, OS_LOG_TYPE_DEFAULT, "UpdateCurrentState: ... but we don't also have an active call, so moving to PHInCallStateIncomingRinging", v98, 2u);
               }
 
               goto LABEL_123;
@@ -3864,24 +3864,24 @@ LABEL_23:
       }
 
 LABEL_55:
-      v49 = [(iPadAudioCallViewController *)self _isScreeningAnyCallGroup:v4];
-      v50 = [(iPadAudioCallViewController *)self callCenter];
-      v51 = [v50 ics_hasTooManyCallsForCallWaitingBanner];
+      v49 = [(iPadAudioCallViewController *)self _isScreeningAnyCallGroup:currentCallGroups];
+      callCenter10 = [(iPadAudioCallViewController *)self callCenter];
+      ics_hasTooManyCallsForCallWaitingBanner = [callCenter10 ics_hasTooManyCallsForCallWaitingBanner];
 
-      v52 = [(iPadAudioCallViewController *)self features];
-      if (([v52 shouldShowFullScreenCallWaiting] & 1) != 0 || (v49 & 1) != 0 || (v51 & 1) != 0 || -[iPadAudioCallViewController usesCompactMulticallUI](self, "usesCompactMulticallUI"))
+      features2 = [(iPadAudioCallViewController *)self features];
+      if (([features2 shouldShowFullScreenCallWaiting] & 1) != 0 || (v49 & 1) != 0 || (ics_hasTooManyCallsForCallWaitingBanner & 1) != 0 || -[iPadAudioCallViewController usesCompactMulticallUI](self, "usesCompactMulticallUI"))
       {
 
         goto LABEL_60;
       }
 
-      v86 = [(iPadAudioCallViewController *)self callDisplayStyleManager];
-      if ([v86 callDisplayStyle] == 3)
+      callDisplayStyleManager3 = [(iPadAudioCallViewController *)self callDisplayStyleManager];
+      if ([callDisplayStyleManager3 callDisplayStyle] == 3)
       {
-        v87 = [(iPadAudioCallViewController *)self features];
-        v88 = [v87 isDominoEnabled];
+        features3 = [(iPadAudioCallViewController *)self features];
+        isDominoEnabled2 = [features3 isDominoEnabled];
 
-        if (v88)
+        if (isDominoEnabled2)
         {
 LABEL_60:
           v53 = sub_100004F84();
@@ -3893,42 +3893,42 @@ LABEL_60:
 
           if (![(iPadAudioCallViewController *)self usesCompactMulticallUI])
           {
-            v30 = self;
+            selfCopy5 = self;
             v31 = 3;
 LABEL_36:
-            [(iPadAudioCallViewController *)v30 setCurrentState:v31 animated:1, *v98];
+            [(iPadAudioCallViewController *)selfCopy5 setCurrentState:v31 animated:1, *v98];
 LABEL_75:
             [(iPadAudioCallViewController *)self updateCallTranslationIfNeeded];
-            v67 = [(iPadAudioCallViewController *)self frontmostCall];
-            [(iPadAudioCallViewController *)self updateWaitOnHoldServiceWithCall:v67];
+            frontmostCall = [(iPadAudioCallViewController *)self frontmostCall];
+            [(iPadAudioCallViewController *)self updateWaitOnHoldServiceWithCall:frontmostCall];
 
             [(iPadAudioCallViewController *)self updateDefaultNoPosterAvatarViewVisibility];
             goto LABEL_76;
           }
 
-          v54 = [(iPadAudioCallViewController *)self prioritizedCall];
-          v55 = [v54 callUUID];
-          if (v55)
+          prioritizedCall = [(iPadAudioCallViewController *)self prioritizedCall];
+          callUUID = [prioritizedCall callUUID];
+          if (callUUID)
           {
-            v56 = v55;
-            v57 = [(iPadAudioCallViewController *)self callCenter];
-            v58 = [v57 incomingCall];
-            v59 = [v58 callUUID];
-            v60 = [(iPadAudioCallViewController *)self prioritizedCall];
-            v61 = [v60 callUUID];
+            v56 = callUUID;
+            callCenter11 = [(iPadAudioCallViewController *)self callCenter];
+            incomingCall2 = [callCenter11 incomingCall];
+            callUUID2 = [incomingCall2 callUUID];
+            prioritizedCall2 = [(iPadAudioCallViewController *)self prioritizedCall];
+            callUUID3 = [prioritizedCall2 callUUID];
 
-            if (v59 != v61)
+            if (callUUID2 != callUUID3)
             {
-              v62 = [(iPadAudioCallViewController *)self prioritizedCall];
-              if ([(iPadAudioCallViewController *)self isCallSmartHoldingSessionActive:v62])
+              prioritizedCall3 = [(iPadAudioCallViewController *)self prioritizedCall];
+              if ([(iPadAudioCallViewController *)self isCallSmartHoldingSessionActive:prioritizedCall3])
               {
               }
 
               else
               {
-                v92 = [(PHCallViewController *)self currentState];
+                currentState2 = [(PHCallViewController *)self currentState];
 
-                if (v92 == 12)
+                if (currentState2 == 12)
                 {
                   [(iPadAudioCallViewController *)self setCurrentState:4 animated:1];
                 }
@@ -3943,7 +3943,7 @@ LABEL_75:
 LABEL_123:
 
 LABEL_124:
-          v30 = self;
+          selfCopy5 = self;
           v31 = 1;
           goto LABEL_36;
         }
@@ -3958,7 +3958,7 @@ LABEL_124:
       {
 LABEL_128:
 
-        v30 = self;
+        selfCopy5 = self;
         v31 = 4;
         goto LABEL_36;
       }
@@ -3970,8 +3970,8 @@ LABEL_127:
       goto LABEL_128;
     }
 
-    v34 = [v4 lastObject];
-    if ([v34 status] == 4 || objc_msgSend(v34, "wantsHoldMusic"))
+    mostRecentlyDisconnectedAudioCall = [currentCallGroups lastObject];
+    if ([mostRecentlyDisconnectedAudioCall status] == 4 || objc_msgSend(mostRecentlyDisconnectedAudioCall, "wantsHoldMusic"))
     {
       v63 = sub_100004F84();
       if (os_log_type_enabled(v63, OS_LOG_TYPE_DEFAULT))
@@ -3980,14 +3980,14 @@ LABEL_127:
         _os_log_impl(&_mh_execute_header, v63, OS_LOG_TYPE_DEFAULT, "UpdateCurrentState: Call status is TUCallStatusRinging, setting state to PHInCallStateIncomingRinging", v98, 2u);
       }
 
-      v64 = self;
+      selfCopy10 = self;
       v65 = 1;
       v66 = 0;
     }
 
     else
     {
-      if ([v34 status] == 1 || objc_msgSend(v34, "status") == 2)
+      if ([mostRecentlyDisconnectedAudioCall status] == 1 || objc_msgSend(mostRecentlyDisconnectedAudioCall, "status") == 2)
       {
         v79 = sub_100004F84();
         if (os_log_type_enabled(v79, OS_LOG_TYPE_DEFAULT))
@@ -3996,8 +3996,8 @@ LABEL_127:
           _os_log_impl(&_mh_execute_header, v79, OS_LOG_TYPE_DEFAULT, "UpdateCurrentState: Call status is TUCallStatusActive, and the call was initiated on this device", v98, 2u);
         }
 
-        v80 = [v34 calls];
-        v81 = [v80 count];
+        calls = [mostRecentlyDisconnectedAudioCall calls];
+        v81 = [calls count];
 
         v82 = sub_100004F84();
         v83 = os_log_type_enabled(v82, OS_LOG_TYPE_DEFAULT);
@@ -4009,12 +4009,12 @@ LABEL_127:
             _os_log_impl(&_mh_execute_header, v82, OS_LOG_TYPE_DEFAULT, "There is only one call in call group, so setting state to PHInCallStateSingleCallActive", v98, 2u);
           }
 
-          if ([(iPadAudioCallViewController *)self _isScreeningCallGroup:v34]&& ![(iPadAudioCallViewController *)self isCallSmartHoldingSessionActive:v34])
+          if ([(iPadAudioCallViewController *)self _isScreeningCallGroup:mostRecentlyDisconnectedAudioCall]&& ![(iPadAudioCallViewController *)self isCallSmartHoldingSessionActive:mostRecentlyDisconnectedAudioCall])
           {
             v91 = 11;
           }
 
-          else if ([(iPadAudioCallViewController *)self isCallSmartHoldingSessionActive:v34])
+          else if ([(iPadAudioCallViewController *)self isCallSmartHoldingSessionActive:mostRecentlyDisconnectedAudioCall])
           {
             v91 = 12;
           }
@@ -4035,18 +4035,18 @@ LABEL_127:
 
         if (v83)
         {
-          v84 = [v34 calls];
-          v85 = [v84 count];
+          calls2 = [mostRecentlyDisconnectedAudioCall calls];
+          v85 = [calls2 count];
           *v98 = 134217984;
           *&v98[4] = v85;
           _os_log_impl(&_mh_execute_header, v82, OS_LOG_TYPE_DEFAULT, "There are %lu calls in call group, so setting state to PHInCallStateMultipleCallsActive", v98, 0xCu);
         }
 
-        v64 = self;
+        selfCopy10 = self;
         v65 = 5;
       }
 
-      else if ([v34 status] == 5)
+      else if ([mostRecentlyDisconnectedAudioCall status] == 5)
       {
         v93 = sub_100004F84();
         if (os_log_type_enabled(v93, OS_LOG_TYPE_DEFAULT))
@@ -4055,11 +4055,11 @@ LABEL_127:
           _os_log_impl(&_mh_execute_header, v93, OS_LOG_TYPE_DEFAULT, "UpdateCurrentState: Call status is TUCallStatusDisconnecting, setting state to PHInCallStateEnding", v98, 2u);
         }
 
-        v64 = self;
+        selfCopy10 = self;
         v65 = 6;
       }
 
-      else if ([v34 status] == 6)
+      else if ([mostRecentlyDisconnectedAudioCall status] == 6)
       {
         v96 = sub_100004F84();
         if (os_log_type_enabled(v96, OS_LOG_TYPE_DEFAULT))
@@ -4068,13 +4068,13 @@ LABEL_127:
           _os_log_impl(&_mh_execute_header, v96, OS_LOG_TYPE_DEFAULT, "UpdateCurrentState: Call status is TUCallStatusDisconnected, setting state to PHInCallStateEnded", v98, 2u);
         }
 
-        v64 = self;
+        selfCopy10 = self;
         v65 = 7;
       }
 
       else
       {
-        if ([v34 status] != 3)
+        if ([mostRecentlyDisconnectedAudioCall status] != 3)
         {
           goto LABEL_73;
         }
@@ -4086,14 +4086,14 @@ LABEL_127:
           _os_log_impl(&_mh_execute_header, v97, OS_LOG_TYPE_DEFAULT, "UpdateCurrentState: Call status is Sending, setting state to PHInCallStateOutgoingRinging", v98, 2u);
         }
 
-        v64 = self;
+        selfCopy10 = self;
         v65 = 2;
       }
 
       v66 = 1;
     }
 
-    [(iPadAudioCallViewController *)v64 setCurrentState:v65 animated:v66];
+    [(iPadAudioCallViewController *)selfCopy10 setCurrentState:v65 animated:v66];
 LABEL_73:
 
 LABEL_74:
@@ -4111,40 +4111,40 @@ LABEL_74:
 LABEL_76:
 }
 
-- (BOOL)_isScreeningAnyCallGroup:(id)a3
+- (BOOL)_isScreeningAnyCallGroup:(id)group
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1000D7AFC;
   v4[3] = &unk_100359130;
   v4[4] = self;
-  return [a3 tu_containsObjectPassingTest:v4];
+  return [group tu_containsObjectPassingTest:v4];
 }
 
-- (BOOL)_isScreeningCallGroup:(id)a3
+- (BOOL)_isScreeningCallGroup:(id)group
 {
-  v4 = a3;
-  v5 = [(iPadAudioCallViewController *)self featureFlags];
+  groupCopy = group;
+  featureFlags = [(iPadAudioCallViewController *)self featureFlags];
   if (TUCallScreeningEnabled())
   {
-    v6 = [v4 calls];
-    v7 = [v6 firstObject];
-    v8 = [v7 isScreening];
+    calls = [groupCopy calls];
+    firstObject = [calls firstObject];
+    isScreening = [firstObject isScreening];
   }
 
   else
   {
-    v8 = 0;
+    isScreening = 0;
   }
 
-  return v8;
+  return isScreening;
 }
 
-- (void)setIdleState:(unsigned __int16)a3
+- (void)setIdleState:(unsigned __int16)state
 {
   v4 = +[UIApplication sharedApplication];
-  v5 = [v4 delegate];
-  [v5 setMostRecentlyDisconnectedAudioCall:0];
+  delegate = [v4 delegate];
+  [delegate setMostRecentlyDisconnectedAudioCall:0];
 
   [PHInCallRootViewController releaseDismissalAssertionForReason:@"PHAudioCallViewControllerDismissalAssertionWaitingForIdle"];
   [(iPadAudioCallViewController *)self setCallForBackgroundImage:0 animated:1 callDisplayStyleChanged:0];
@@ -4153,15 +4153,15 @@ LABEL_76:
   [(iPadAudioCallViewController *)self _testing_didTransitionToIdleCallState];
 }
 
-- (void)setActiveState:(unsigned __int16)a3
+- (void)setActiveState:(unsigned __int16)state
 {
-  v3 = a3;
-  v5 = [(iPadAudioCallViewController *)self callCenter];
-  v6 = [v5 routeController];
+  stateCopy = state;
+  callCenter = [(iPadAudioCallViewController *)self callCenter];
+  routeController = [callCenter routeController];
 
-  if ([v6 hasAirPodsAvailable])
+  if ([routeController hasAirPodsAvailable])
   {
-    v7 = [v6 hasAirPodsInEar] ^ 1;
+    v7 = [routeController hasAirPodsInEar] ^ 1;
   }
 
   else
@@ -4194,7 +4194,7 @@ LABEL_76:
     objc_destroyWeak(location);
   }
 
-  if (v3 == 5 || [(PHCallViewController *)self currentState]== 5)
+  if (stateCopy == 5 || [(PHCallViewController *)self currentState]== 5)
   {
     [(iPadAudioCallViewController *)self updateViewsForHeldCallControlsViewIfNeeded:v37];
   }
@@ -4202,23 +4202,23 @@ LABEL_76:
   v10 = [(PHCallViewController *)self bottomBar:v37];
   [v10 setUserInteractionEnabled:1];
 
-  v11 = [(iPadAudioCallViewController *)self currentMiddleView];
+  currentMiddleView = [(iPadAudioCallViewController *)self currentMiddleView];
   v12 = objc_opt_respondsToSelector();
 
   if (v12)
   {
-    v13 = [(iPadAudioCallViewController *)self currentMiddleView];
-    [v13 setButtonsEnabled:1];
+    currentMiddleView2 = [(iPadAudioCallViewController *)self currentMiddleView];
+    [currentMiddleView2 setButtonsEnabled:1];
   }
 
-  v14 = [(PHCallViewController *)self bottomBar];
-  [(iPadAudioCallViewController *)self _testing_didTransitionToActiveCallState:v14];
+  bottomBar = [(PHCallViewController *)self bottomBar];
+  [(iPadAudioCallViewController *)self _testing_didTransitionToActiveCallState:bottomBar];
 
-  [(PHCallViewController *)self setWantsApplicationDismissalStyle:v3 == 4];
-  if (v3 == 4)
+  [(PHCallViewController *)self setWantsApplicationDismissalStyle:stateCopy == 4];
+  if (stateCopy == 4)
   {
-    v15 = [(iPadAudioCallViewController *)self isolatedCall];
-    [(iPadAudioCallViewController *)self setCallForBackgroundImage:v15 animated:1 callDisplayStyleChanged:0];
+    isolatedCall = [(iPadAudioCallViewController *)self isolatedCall];
+    [(iPadAudioCallViewController *)self setCallForBackgroundImage:isolatedCall animated:1 callDisplayStyleChanged:0];
     if ([(iPadAudioCallViewController *)self shouldShowNewPosterUpdates])
     {
       [(iPadAudioCallViewController *)self updateLayeredBackgroundWallpaper];
@@ -4229,101 +4229,101 @@ LABEL_76:
 
   else
   {
-    v15 = [(iPadAudioCallViewController *)self callToUseForWallpaper];
-    [(iPadAudioCallViewController *)self setCallForBackgroundImage:v15 animated:1 callDisplayStyleChanged:0];
+    isolatedCall = [(iPadAudioCallViewController *)self callToUseForWallpaper];
+    [(iPadAudioCallViewController *)self setCallForBackgroundImage:isolatedCall animated:1 callDisplayStyleChanged:0];
   }
 
-  if ([v15 originatingUIType] == 10)
+  if ([isolatedCall originatingUIType] == 10)
   {
-    v16 = [(iPadAudioCallViewController *)self callCenter];
-    v17 = [v16 routeController];
-    v18 = [v17 routeForSpeakerEnable];
+    callCenter2 = [(iPadAudioCallViewController *)self callCenter];
+    routeController2 = [callCenter2 routeController];
+    routeForSpeakerEnable = [routeController2 routeForSpeakerEnable];
 
-    if (v18)
+    if (routeForSpeakerEnable)
     {
-      v19 = [(iPadAudioCallViewController *)self callCenter];
-      v20 = [v19 routeController];
-      [v20 pickRoute:v18];
+      callCenter3 = [(iPadAudioCallViewController *)self callCenter];
+      routeController3 = [callCenter3 routeController];
+      [routeController3 pickRoute:routeForSpeakerEnable];
     }
 
     else
     {
-      v19 = sub_100004F84();
-      if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+      callCenter3 = sub_100004F84();
+      if (os_log_type_enabled(callCenter3, OS_LOG_TYPE_ERROR))
       {
         sub_100256590();
       }
     }
 
-    v23 = [(iPadAudioCallViewController *)self voiceLoopManager];
-    [v23 startLoopPlayback];
+    voiceLoopManager = [(iPadAudioCallViewController *)self voiceLoopManager];
+    [voiceLoopManager startLoopPlayback];
   }
 
   else
   {
-    if ([v15 originatingUIType] != 12)
+    if ([isolatedCall originatingUIType] != 12)
     {
       goto LABEL_31;
     }
 
-    v21 = [(iPadAudioCallViewController *)self callCenter];
-    v22 = [v21 routeController];
-    v18 = [v22 routeForSpeakerDisable];
+    callCenter4 = [(iPadAudioCallViewController *)self callCenter];
+    routeController4 = [callCenter4 routeController];
+    routeForSpeakerEnable = [routeController4 routeForSpeakerDisable];
 
-    if (v18)
+    if (routeForSpeakerEnable)
     {
-      v23 = [(iPadAudioCallViewController *)self callCenter];
-      v24 = [v23 routeController];
-      [v24 pickRoute:v18];
+      voiceLoopManager = [(iPadAudioCallViewController *)self callCenter];
+      routeController5 = [voiceLoopManager routeController];
+      [routeController5 pickRoute:routeForSpeakerEnable];
     }
 
     else
     {
-      v23 = sub_100004F84();
-      if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
+      voiceLoopManager = sub_100004F84();
+      if (os_log_type_enabled(voiceLoopManager, OS_LOG_TYPE_DEFAULT))
       {
         LOWORD(location[0]) = 0;
-        _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "[WARN] iPadAudioCallViewController: Could not find available route to pick for speaker disable", location, 2u);
+        _os_log_impl(&_mh_execute_header, voiceLoopManager, OS_LOG_TYPE_DEFAULT, "[WARN] iPadAudioCallViewController: Could not find available route to pick for speaker disable", location, 2u);
       }
     }
   }
 
 LABEL_31:
-  v25 = [(iPadAudioCallViewController *)self callDisplayStyleManager];
-  v26 = [v25 callDisplayStyle];
+  callDisplayStyleManager = [(iPadAudioCallViewController *)self callDisplayStyleManager];
+  callDisplayStyle = [callDisplayStyleManager callDisplayStyle];
 
-  if (!v26)
+  if (!callDisplayStyle)
   {
-    v27 = [(iPadAudioCallViewController *)self callParticipantsViewController];
-    [v27 setBannerButtonsState:1];
+    callParticipantsViewController = [(iPadAudioCallViewController *)self callParticipantsViewController];
+    [callParticipantsViewController setBannerButtonsState:1];
 
-    v28 = [(iPadAudioCallViewController *)self callCenter];
-    v29 = [v28 routeController];
-    v30 = [v29 pickedRoute];
-    v31 = [v30 isReceiver];
+    callCenter5 = [(iPadAudioCallViewController *)self callCenter];
+    routeController6 = [callCenter5 routeController];
+    pickedRoute = [routeController6 pickedRoute];
+    isReceiver = [pickedRoute isReceiver];
 
     v32 = +[UIApplication sharedApplication];
-    v33 = [v32 delegate];
-    v34 = [v33 currentInCallScene];
-    v35 = [v34 delegate];
-    v36 = [v35 callAnalyticsLogger];
-    [v36 createAnsweredBannerAnalyticsViewWithIsHandsfreeAudioRoute:v31 ^ 1];
+    delegate = [v32 delegate];
+    currentInCallScene = [delegate currentInCallScene];
+    delegate2 = [currentInCallScene delegate];
+    callAnalyticsLogger = [delegate2 callAnalyticsLogger];
+    [callAnalyticsLogger createAnsweredBannerAnalyticsViewWithIsHandsfreeAudioRoute:isReceiver ^ 1];
   }
 
-  [(iPadAudioCallViewController *)self _performPosterTransformationsIfNecessaryToState:v3];
+  [(iPadAudioCallViewController *)self _performPosterTransformationsIfNecessaryToState:stateCopy];
 }
 
-- (void)_performPosterTransformationsIfNecessaryToState:(unsigned __int16)a3
+- (void)_performPosterTransformationsIfNecessaryToState:(unsigned __int16)state
 {
-  v3 = a3;
-  v10 = [(iPadAudioCallViewController *)self callDisplayStyleManager];
-  v5 = [v10 callDisplayStyle];
-  if (v3 == 4 && v5 == 2 && ([(iPadAudioCallViewController *)self renderingViewController], (v6 = objc_claimAutoreleasedReturnValue()) != 0))
+  stateCopy = state;
+  callDisplayStyleManager = [(iPadAudioCallViewController *)self callDisplayStyleManager];
+  callDisplayStyle = [callDisplayStyleManager callDisplayStyle];
+  if (stateCopy == 4 && callDisplayStyle == 2 && ([(iPadAudioCallViewController *)self renderingViewController], (v6 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v7 = v6;
-    v8 = [(iPadAudioCallViewController *)self shouldShowContactOrLastSeenWallpaper];
+    shouldShowContactOrLastSeenWallpaper = [(iPadAudioCallViewController *)self shouldShowContactOrLastSeenWallpaper];
 
-    if (v8)
+    if (shouldShowContactOrLastSeenWallpaper)
     {
       v11[0] = _NSConcreteStackBlock;
       v11[1] = 3221225472;
@@ -4346,96 +4346,96 @@ LABEL_31:
   if ([(iPadAudioCallViewController *)self usesCompactMulticallUI]&& ([(iPadAudioCallViewController *)self prioritizedCall], v3 = objc_claimAutoreleasedReturnValue(), v3, v3))
   {
     existingPrioritizedCall = self->_existingPrioritizedCall;
-    v5 = [(iPadAudioCallViewController *)self callParticipantsViewController];
-    [v5 setPrioritizedCall:existingPrioritizedCall];
+    callParticipantsViewController = [(iPadAudioCallViewController *)self callParticipantsViewController];
+    [callParticipantsViewController setPrioritizedCall:existingPrioritizedCall];
   }
 
   else
   {
-    v5 = [(iPadAudioCallViewController *)self callParticipantsViewController];
-    [v5 updateCallGroups];
+    callParticipantsViewController = [(iPadAudioCallViewController *)self callParticipantsViewController];
+    [callParticipantsViewController updateCallGroups];
   }
 }
 
 - (void)_updateStatusLabelVisibility
 {
-  v4 = [(iPadAudioCallViewController *)self getParticipantsView_WaitingOrNot];
-  v3 = [v4 singleCallLabelView];
-  if (v3)
+  getParticipantsView_WaitingOrNot = [(iPadAudioCallViewController *)self getParticipantsView_WaitingOrNot];
+  singleCallLabelView = [getParticipantsView_WaitingOrNot singleCallLabelView];
+  if (singleCallLabelView)
   {
-    [(iPadAudioCallViewController *)self updatePosterBadgeView:0 to:v3];
-    [v3 setHidesLabel:0];
-    [v3 updateLabelsOrderAndLayout];
+    [(iPadAudioCallViewController *)self updatePosterBadgeView:0 to:singleCallLabelView];
+    [singleCallLabelView setHidesLabel:0];
+    [singleCallLabelView updateLabelsOrderAndLayout];
   }
 }
 
 - (BOOL)isShowingPosterBadge
 {
-  v2 = [(iPadAudioCallViewController *)self posterBadgeView];
-  v3 = v2 != 0;
+  posterBadgeView = [(iPadAudioCallViewController *)self posterBadgeView];
+  v3 = posterBadgeView != 0;
 
   return v3;
 }
 
-- (void)updatePosterBadgeView:(BOOL)a3 to:(id)a4
+- (void)updatePosterBadgeView:(BOOL)view to:(id)to
 {
-  v4 = a3;
-  v10 = a4;
-  if (v4 && [(iPadAudioCallViewController *)self canShowPosterBadgeInAudioCallView:v10])
+  viewCopy = view;
+  toCopy = to;
+  if (viewCopy && [(iPadAudioCallViewController *)self canShowPosterBadgeInAudioCallView:toCopy])
   {
     [(iPadAudioCallViewController *)self setUpPosterBadgeViewIfNecessary];
   }
 
   else
   {
-    v6 = [(iPadAudioCallViewController *)self posterBadgeView];
+    posterBadgeView = [(iPadAudioCallViewController *)self posterBadgeView];
 
-    if (v6)
+    if (posterBadgeView)
     {
-      v7 = [(iPadAudioCallViewController *)self posterBadgeView];
-      [v7 removeFromSuperview];
+      posterBadgeView2 = [(iPadAudioCallViewController *)self posterBadgeView];
+      [posterBadgeView2 removeFromSuperview];
 
       [(iPadAudioCallViewController *)self setPosterBadgeView:0];
     }
   }
 
-  v8 = v10;
-  if (v10)
+  v8 = toCopy;
+  if (toCopy)
   {
-    v9 = [(iPadAudioCallViewController *)self posterBadgeView];
-    [v10 setPosterBadgeView:v9];
+    posterBadgeView3 = [(iPadAudioCallViewController *)self posterBadgeView];
+    [toCopy setPosterBadgeView:posterBadgeView3];
 
     [(iPadAudioCallViewController *)self synchronizeSingleLabelViewWithPosterText];
-    v8 = v10;
+    v8 = toCopy;
   }
 }
 
 - (void)synchronizeSingleLabelViewWithPosterText
 {
-  v5 = [(iPadAudioCallViewController *)self getParticipantsView_WaitingOrNot];
-  v3 = [(iPadAudioCallViewController *)self detachedPosterNameViewModel];
+  getParticipantsView_WaitingOrNot = [(iPadAudioCallViewController *)self getParticipantsView_WaitingOrNot];
+  detachedPosterNameViewModel = [(iPadAudioCallViewController *)self detachedPosterNameViewModel];
 
-  if (v3)
+  if (detachedPosterNameViewModel)
   {
-    v4 = [(iPadAudioCallViewController *)self detachedPosterNameViewModel];
-    [v4 updateViewModelForParticipantsView:v5];
+    detachedPosterNameViewModel2 = [(iPadAudioCallViewController *)self detachedPosterNameViewModel];
+    [detachedPosterNameViewModel2 updateViewModelForParticipantsView:getParticipantsView_WaitingOrNot];
   }
 
   else
   {
-    [(iPadAudioCallViewController *)self updatePosterViewModelForParticipantsView:v5];
+    [(iPadAudioCallViewController *)self updatePosterViewModelForParticipantsView:getParticipantsView_WaitingOrNot];
   }
 }
 
 - (void)setUpPosterBadgeViewIfNecessary
 {
-  v3 = [(iPadAudioCallViewController *)self callDisplayStyleManager];
-  if ([v3 callDisplayStyle] == 3)
+  callDisplayStyleManager = [(iPadAudioCallViewController *)self callDisplayStyleManager];
+  if ([callDisplayStyleManager callDisplayStyle] == 3)
   {
-    v4 = [(iPadAudioCallViewController *)self features];
-    v5 = [v4 isDominoEnabled];
+    features = [(iPadAudioCallViewController *)self features];
+    isDominoEnabled = [features isDominoEnabled];
 
-    if (v5)
+    if (isDominoEnabled)
     {
       return;
     }
@@ -4445,76 +4445,76 @@ LABEL_31:
   {
   }
 
-  v6 = [(iPadAudioCallViewController *)self posterBadgeView];
+  posterBadgeView = [(iPadAudioCallViewController *)self posterBadgeView];
 
-  if (v6)
+  if (posterBadgeView)
   {
     return;
   }
 
-  v14 = [(iPadAudioCallViewController *)self getParticipantsView_WaitingOrNot];
-  v7 = [v14 singleCallLabelView];
-  v8 = [v7 iconView];
+  getParticipantsView_WaitingOrNot = [(iPadAudioCallViewController *)self getParticipantsView_WaitingOrNot];
+  singleCallLabelView = [getParticipantsView_WaitingOrNot singleCallLabelView];
+  iconView = [singleCallLabelView iconView];
 
-  if (v8)
+  if (iconView)
   {
     v9 = objc_alloc_init(UIImageView);
 LABEL_10:
-    v10 = v9;
+    badgeView = v9;
     goto LABEL_11;
   }
 
-  v10 = [v7 badgeView];
+  badgeView = [singleCallLabelView badgeView];
 
-  if (v10)
+  if (badgeView)
   {
     v9 = [[TPBadgeView alloc] initWithTitle:&stru_100361FD0 theme:1];
     goto LABEL_10;
   }
 
 LABEL_11:
-  [v10 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v11 = [(iPadAudioCallViewController *)self view];
-  [v11 addSubview:v10];
+  [badgeView setTranslatesAutoresizingMaskIntoConstraints:0];
+  view = [(iPadAudioCallViewController *)self view];
+  [view addSubview:badgeView];
 
-  [(iPadAudioCallViewController *)self positionPosterBadgeToBeHorizontallyCenteredToInfoButton:v10];
-  [(iPadAudioCallViewController *)self setPosterBadgeView:v10];
-  v12 = [(iPadAudioCallViewController *)self posterBadgeView];
+  [(iPadAudioCallViewController *)self positionPosterBadgeToBeHorizontallyCenteredToInfoButton:badgeView];
+  [(iPadAudioCallViewController *)self setPosterBadgeView:badgeView];
+  posterBadgeView2 = [(iPadAudioCallViewController *)self posterBadgeView];
   v13 = +[TPIncomingCallMetricsProvider posterBadgeMaxSize];
-  [v12 setMaximumContentSizeCategory:v13];
+  [posterBadgeView2 setMaximumContentSizeCategory:v13];
 
   [(iPadAudioCallViewController *)self invertColorForPosterBadgeViewIfSnapshotPoster];
 }
 
 - (void)invertColorForPosterBadgeViewIfSnapshotPoster
 {
-  v3 = [(iPadAudioCallViewController *)self snapshottedPosterImageToUseForColorInversion];
+  snapshottedPosterImageToUseForColorInversion = [(iPadAudioCallViewController *)self snapshottedPosterImageToUseForColorInversion];
 
-  if (v3)
+  if (snapshottedPosterImageToUseForColorInversion)
   {
-    v4 = [(iPadAudioCallViewController *)self snapshottedPosterImageToUseForColorInversion];
-    [(iPadAudioCallViewController *)self invertColorForPosterBadgeViewBasedOn:v4];
+    snapshottedPosterImageToUseForColorInversion2 = [(iPadAudioCallViewController *)self snapshottedPosterImageToUseForColorInversion];
+    [(iPadAudioCallViewController *)self invertColorForPosterBadgeViewBasedOn:snapshottedPosterImageToUseForColorInversion2];
   }
 }
 
-- (void)_updatePosterStatusLabelForState:(unsigned __int16)a3
+- (void)_updatePosterStatusLabelForState:(unsigned __int16)state
 {
-  v3 = a3;
-  v5 = [(iPadAudioCallViewController *)self posterNameViewModel];
+  stateCopy = state;
+  posterNameViewModel = [(iPadAudioCallViewController *)self posterNameViewModel];
 
-  if (v5)
+  if (posterNameViewModel)
   {
-    v6 = [(iPadAudioCallViewController *)self getParticipantsView_WaitingOrNot];
-    v7 = [(iPadAudioCallViewController *)self posterNameViewModel];
-    [v7 updateStatusFromParticipantsView:v6];
+    getParticipantsView_WaitingOrNot = [(iPadAudioCallViewController *)self getParticipantsView_WaitingOrNot];
+    posterNameViewModel2 = [(iPadAudioCallViewController *)self posterNameViewModel];
+    [posterNameViewModel2 updateStatusFromParticipantsView:getParticipantsView_WaitingOrNot];
 
-    if (v3 <= 0xB && ((1 << v3) & 0x814) != 0)
+    if (stateCopy <= 0xB && ((1 << stateCopy) & 0x814) != 0)
     {
       [(iPadAudioCallViewController *)self _updatePosterNameAlpha];
-      v8 = [(iPadAudioCallViewController *)self view];
-      v9 = [v8 window];
+      view = [(iPadAudioCallViewController *)self view];
+      window = [view window];
 
-      v10 = v9 != 0;
+      v10 = window != 0;
       if ([(iPadAudioCallViewController *)self shouldShowNewPosterUpdates])
       {
         v11 = dispatch_time(0, 850000000);
@@ -4529,8 +4529,8 @@ LABEL_11:
 
       else
       {
-        v12 = [(iPadAudioCallViewController *)self posterNameViewModel];
-        [v12 transitionCallToActiveStateAnimated:v10];
+        posterNameViewModel3 = [(iPadAudioCallViewController *)self posterNameViewModel];
+        [posterNameViewModel3 transitionCallToActiveStateAnimated:v10];
       }
     }
 
@@ -4540,54 +4540,54 @@ LABEL_11:
 
 - (void)_updatePosterNameAlpha
 {
-  v3 = [(iPadAudioCallViewController *)self detachedPosterNameViewModel];
-  if (v3 || ([(iPadAudioCallViewController *)self posterNameViewModel], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+  detachedPosterNameViewModel = [(iPadAudioCallViewController *)self detachedPosterNameViewModel];
+  if (detachedPosterNameViewModel || ([(iPadAudioCallViewController *)self posterNameViewModel], (detachedPosterNameViewModel = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v8 = v3;
-    [v3 updatePosterNameAlpha:!self->_participantsViewIsShowingMultipleLabel];
-    v4 = [(iPadAudioCallViewController *)self detachedPosterNameViewModel];
-    if (v4)
+    v8 = detachedPosterNameViewModel;
+    [detachedPosterNameViewModel updatePosterNameAlpha:!self->_participantsViewIsShowingMultipleLabel];
+    detachedPosterNameViewModel2 = [(iPadAudioCallViewController *)self detachedPosterNameViewModel];
+    if (detachedPosterNameViewModel2)
     {
-      v5 = v4;
-      v6 = [(iPadAudioCallViewController *)self posterNameViewModel];
+      v5 = detachedPosterNameViewModel2;
+      posterNameViewModel = [(iPadAudioCallViewController *)self posterNameViewModel];
 
-      if (v6)
+      if (posterNameViewModel)
       {
-        v7 = [(iPadAudioCallViewController *)self posterNameViewModel];
-        [v7 updatePosterNameAlpha:0.0];
+        posterNameViewModel2 = [(iPadAudioCallViewController *)self posterNameViewModel];
+        [posterNameViewModel2 updatePosterNameAlpha:0.0];
       }
     }
 
-    v3 = v8;
+    detachedPosterNameViewModel = v8;
   }
 }
 
-- (void)setRingingState:(unsigned __int16)a3
+- (void)setRingingState:(unsigned __int16)state
 {
-  v4 = [(iPadAudioCallViewController *)self presentedViewController];
+  presentedViewController = [(iPadAudioCallViewController *)self presentedViewController];
 
-  if (v4)
+  if (presentedViewController)
   {
     [(iPadAudioCallViewController *)self dismissViewControllerAnimated:1 completion:0];
   }
 
   [(iPadAudioCallViewController *)self updateShouldShowLargeAvatar];
   v5 = +[UIApplication sharedApplication];
-  v6 = [v5 delegate];
-  v7 = [v6 currentInCallScene];
-  v8 = [v7 isBeingShownAboveCoverSheet];
+  delegate = [v5 delegate];
+  currentInCallScene = [delegate currentInCallScene];
+  isBeingShownAboveCoverSheet = [currentInCallScene isBeingShownAboveCoverSheet];
 
-  v9 = [(iPadAudioCallViewController *)self callCenter];
-  v22 = [v9 incomingCall];
+  callCenter = [(iPadAudioCallViewController *)self callCenter];
+  incomingCall = [callCenter incomingCall];
 
-  v10 = [(iPadAudioCallViewController *)self setCallForBackgroundImage:v22 animated:1 callDisplayStyleChanged:0];
+  v10 = [(iPadAudioCallViewController *)self setCallForBackgroundImage:incomingCall animated:1 callDisplayStyleChanged:0];
   v11 = 4;
   if (v10)
   {
     v11 = 5;
   }
 
-  if (v8)
+  if (isBeingShownAboveCoverSheet)
   {
     v12 = v11;
   }
@@ -4597,56 +4597,56 @@ LABEL_11:
     v12 = 0;
   }
 
-  v13 = [v22 isMessagingAllowed];
-  v14 = [(PHCallViewController *)self bottomBar];
-  [v14 setDeclineAndMessageIsAvailable:v13];
+  isMessagingAllowed = [incomingCall isMessagingAllowed];
+  bottomBar = [(PHCallViewController *)self bottomBar];
+  [bottomBar setDeclineAndMessageIsAvailable:isMessagingAllowed];
 
-  v15 = [v22 isReminderAllowed];
-  v16 = [(PHCallViewController *)self bottomBar];
-  [v16 setDeclineAndRemindIsAvailable:v15];
+  isReminderAllowed = [incomingCall isReminderAllowed];
+  bottomBar2 = [(PHCallViewController *)self bottomBar];
+  [bottomBar2 setDeclineAndRemindIsAvailable:isReminderAllowed];
 
-  v17 = [(PHCallViewController *)self bottomBar];
-  [v17 setCurrentState:v12];
+  bottomBar3 = [(PHCallViewController *)self bottomBar];
+  [bottomBar3 setCurrentState:v12];
 
   [(iPadAudioCallViewController *)self setMiddleViewState:0 animated:0];
-  v18 = [(iPadAudioCallViewController *)self callDisplayStyleManager];
-  v19 = [v18 callDisplayStyle];
+  callDisplayStyleManager = [(iPadAudioCallViewController *)self callDisplayStyleManager];
+  callDisplayStyle = [callDisplayStyleManager callDisplayStyle];
 
-  if (!v19)
+  if (!callDisplayStyle)
   {
-    v20 = [(iPadAudioCallViewController *)self callParticipantsViewController];
-    [v20 setBannerButtonsState:0];
+    callParticipantsViewController = [(iPadAudioCallViewController *)self callParticipantsViewController];
+    [callParticipantsViewController setBannerButtonsState:0];
   }
 
-  v21 = [(PHCallViewController *)self bottomBar];
-  [(iPadAudioCallViewController *)self _testing_didTransitionToIncomingRingingCallState:v21];
+  bottomBar4 = [(PHCallViewController *)self bottomBar];
+  [(iPadAudioCallViewController *)self _testing_didTransitionToIncomingRingingCallState:bottomBar4];
 }
 
-- (void)setWaitingState:(unsigned __int16)a3
+- (void)setWaitingState:(unsigned __int16)state
 {
-  v3 = a3;
+  stateCopy = state;
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v23 = 134217984;
-    v24 = v3;
+    v24 = stateCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "setWaitingState: %lu", &v23, 0xCu);
   }
 
-  v6 = [(iPadAudioCallViewController *)self callCenter];
-  v7 = [v6 incomingCall];
+  callCenter = [(iPadAudioCallViewController *)self callCenter];
+  incomingCall = [callCenter incomingCall];
 
   v8 = +[UIApplication sharedApplication];
-  v9 = [v8 delegate];
-  v10 = [v9 isPresentingAmbient];
+  delegate = [v8 delegate];
+  isPresentingAmbient = [delegate isPresentingAmbient];
 
-  if ((v10 & 1) == 0)
+  if ((isPresentingAmbient & 1) == 0)
   {
-    v11 = [v7 provider];
-    if ([v11 supportsDynamicSystemUI])
+    provider = [incomingCall provider];
+    if ([provider supportsDynamicSystemUI])
     {
-      v12 = [(iPadAudioCallViewController *)self featureFlags];
-      if ([v12 groupConversations])
+      featureFlags = [(iPadAudioCallViewController *)self featureFlags];
+      if ([featureFlags groupConversations])
       {
         HasChinaSKU = TUDeviceHasChinaSKU();
 
@@ -4660,115 +4660,115 @@ LABEL_11:
     }
 
 LABEL_10:
-    v14 = [(iPadAudioCallViewController *)self inCallRootViewController];
-    [v14 requestInCallSceneTransitionToFullScreen];
+    inCallRootViewController = [(iPadAudioCallViewController *)self inCallRootViewController];
+    [inCallRootViewController requestInCallSceneTransitionToFullScreen];
   }
 
 LABEL_11:
-  [(iPadAudioCallViewController *)self setShouldShowLargeAvatarForCallWaiting:[(iPadAudioCallViewController *)self shouldShowLargeAvatarForCall:v7]];
-  [(iPadAudioCallViewController *)self setCallForBackgroundImage:v7 animated:1 callDisplayStyleChanged:0];
+  [(iPadAudioCallViewController *)self setShouldShowLargeAvatarForCallWaiting:[(iPadAudioCallViewController *)self shouldShowLargeAvatarForCall:incomingCall]];
+  [(iPadAudioCallViewController *)self setCallForBackgroundImage:incomingCall animated:1 callDisplayStyleChanged:0];
   if ([(iPadAudioCallViewController *)self participantsViewControllersShouldIgnoreUpdates])
   {
-    v15 = [(iPadAudioCallViewController *)self callCenter];
-    v16 = [v15 autoPunchOutBehaviorRequiredForCurrentCalls];
+    callCenter2 = [(iPadAudioCallViewController *)self callCenter];
+    autoPunchOutBehaviorRequiredForCurrentCalls = [callCenter2 autoPunchOutBehaviorRequiredForCurrentCalls];
 
-    if ((v16 & 1) == 0)
+    if ((autoPunchOutBehaviorRequiredForCurrentCalls & 1) == 0)
     {
       [(iPadAudioCallViewController *)self setParticipantsViewControllersShouldIgnoreUpdates:0];
     }
   }
 
   [(iPadAudioCallViewController *)self setShowsCallWaitingParticipantView:1];
-  v17 = [v7 isMessagingAllowed];
-  v18 = [(PHCallViewController *)self bottomBar];
-  [v18 setDeclineAndMessageIsAvailable:v17];
+  isMessagingAllowed = [incomingCall isMessagingAllowed];
+  bottomBar = [(PHCallViewController *)self bottomBar];
+  [bottomBar setDeclineAndMessageIsAvailable:isMessagingAllowed];
 
-  v19 = [v7 isReminderAllowed];
-  v20 = [(PHCallViewController *)self bottomBar];
-  [v20 setDeclineAndRemindIsAvailable:v19];
+  isReminderAllowed = [incomingCall isReminderAllowed];
+  bottomBar2 = [(PHCallViewController *)self bottomBar];
+  [bottomBar2 setDeclineAndRemindIsAvailable:isReminderAllowed];
 
-  v21 = [(PHCallViewController *)self bottomBar];
-  [v21 setUserInteractionEnabled:1];
+  bottomBar3 = [(PHCallViewController *)self bottomBar];
+  [bottomBar3 setUserInteractionEnabled:1];
 
-  v22 = [(PHCallViewController *)self bottomBar];
-  [v22 setCurrentState:-[iPadAudioCallViewController bottomBarStateForCallWaitingCall](self animated:"bottomBarStateForCallWaitingCall") animationCompletionBlock:{0, 0}];
+  bottomBar4 = [(PHCallViewController *)self bottomBar];
+  [bottomBar4 setCurrentState:-[iPadAudioCallViewController bottomBarStateForCallWaitingCall](self animated:"bottomBarStateForCallWaitingCall") animationCompletionBlock:{0, 0}];
 
   [(iPadAudioCallViewController *)self setMiddleViewState:0 animated:1];
   [(PHCallViewController *)self setWantsApplicationDismissalStyle:0];
 }
 
-- (void)setEndedState:(unsigned __int16)a3
+- (void)setEndedState:(unsigned __int16)state
 {
   v4 = +[UIApplication sharedApplication];
-  v5 = [v4 delegate];
-  v6 = [v5 mostRecentlyDisconnectedAudioCall];
+  delegate = [v4 delegate];
+  mostRecentlyDisconnectedAudioCall = [delegate mostRecentlyDisconnectedAudioCall];
 
-  v7 = [(iPadAudioCallViewController *)self currentMiddleView];
-  LOBYTE(v5) = objc_opt_respondsToSelector();
+  currentMiddleView = [(iPadAudioCallViewController *)self currentMiddleView];
+  LOBYTE(delegate) = objc_opt_respondsToSelector();
 
-  if (v5)
+  if (delegate)
   {
-    v8 = [(iPadAudioCallViewController *)self currentMiddleView];
-    [v8 setButtonsEnabled:0];
+    currentMiddleView2 = [(iPadAudioCallViewController *)self currentMiddleView];
+    [currentMiddleView2 setButtonsEnabled:0];
   }
 
   [(SOSEmergencyCallVoiceLoopManager *)self->_voiceLoopManager invalidate];
   v9 = sub_100004F84();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v6 uniqueProxyIdentifierUUID];
-    v31 = [v6 disconnectedReason];
-    v32 = [v6 contactIdentifiers];
-    v30 = [v32 count];
-    v11 = [v6 isOutgoing];
-    v12 = [v6 dateConnected];
-    v13 = [v12 description];
-    v14 = [v6 provider];
-    v15 = [v14 isFaceTimeProvider];
+    uniqueProxyIdentifierUUID = [mostRecentlyDisconnectedAudioCall uniqueProxyIdentifierUUID];
+    disconnectedReason = [mostRecentlyDisconnectedAudioCall disconnectedReason];
+    contactIdentifiers = [mostRecentlyDisconnectedAudioCall contactIdentifiers];
+    v30 = [contactIdentifiers count];
+    isOutgoing = [mostRecentlyDisconnectedAudioCall isOutgoing];
+    dateConnected = [mostRecentlyDisconnectedAudioCall dateConnected];
+    v13 = [dateConnected description];
+    provider = [mostRecentlyDisconnectedAudioCall provider];
+    isFaceTimeProvider = [provider isFaceTimeProvider];
     v16 = +[FTDeviceSupport sharedInstance];
     *buf = 138413826;
-    v34 = v10;
+    v34 = uniqueProxyIdentifierUUID;
     v35 = 2048;
-    v36 = v31;
+    v36 = disconnectedReason;
     v37 = 2048;
     v38 = v30;
     v39 = 1024;
-    v40 = v11;
+    v40 = isOutgoing;
     v41 = 2112;
     v42 = v13;
     v43 = 1024;
-    v44 = v15;
+    v44 = isFaceTimeProvider;
     v45 = 1024;
-    v46 = [v16 isGreenTea];
+    isGreenTea = [v16 isGreenTea];
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "disconnectedCall: %@ disconnectedReason: %ld (disconnectedCall.contactIdentifiers.count: %lu && \n\n !(disconnectedCall.isOutgoing: %d && disconnectedCall.dateConnected: %@) && \n\n disconnectedCall.provider.isFaceTimeProvider: %d \n\n [[FTDeviceSupport sharedInstance] isGreenTea]) : %d", buf, 0x3Cu);
   }
 
-  if (![v6 disconnectedReasonRequiresCallBackUI])
+  if (![mostRecentlyDisconnectedAudioCall disconnectedReasonRequiresCallBackUI])
   {
-    v20 = [(iPadAudioCallViewController *)self UUIDForLocallyDisconnectedCall];
-    v21 = [v6 callUUID];
-    if ([v20 isEqualToString:v21])
+    uUIDForLocallyDisconnectedCall = [(iPadAudioCallViewController *)self UUIDForLocallyDisconnectedCall];
+    callUUID = [mostRecentlyDisconnectedAudioCall callUUID];
+    if ([uUIDForLocallyDisconnectedCall isEqualToString:callUUID])
     {
     }
 
     else
     {
       v25 = +[UIApplication sharedApplication];
-      v26 = [v25 delegate];
-      v27 = [v26 hasExistingFullScreenInCallScene];
+      delegate2 = [v25 delegate];
+      hasExistingFullScreenInCallScene = [delegate2 hasExistingFullScreenInCallScene];
 
-      if (v27)
+      if (hasExistingFullScreenInCallScene)
       {
         [PHInCallRootViewController obtainDismissalAssertionForReason:@"PHAudioCallViewControllerDismissalAssertionWaitingForIdle"];
       }
     }
 
-    v28 = [(PHCallViewController *)self bottomBar];
-    [v28 setUserInteractionEnabled:0];
+    bottomBar = [(PHCallViewController *)self bottomBar];
+    [bottomBar setUserInteractionEnabled:0];
 
     [(PHCallViewController *)self transitionToIdleAfterDelay];
-    v24 = [(iPadAudioCallViewController *)self inCallRootViewController];
-    [v24 showFailureOrFallbackAlertIfNecessaryForCall:v6];
+    inCallRootViewController = [(iPadAudioCallViewController *)self inCallRootViewController];
+    [inCallRootViewController showFailureOrFallbackAlertIfNecessaryForCall:mostRecentlyDisconnectedAudioCall];
     goto LABEL_22;
   }
 
@@ -4779,18 +4779,18 @@ LABEL_11:
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "disconnectedCall requires callback UI", buf, 2u);
   }
 
-  v18 = [(iPadAudioCallViewController *)self inCallRootViewController];
-  [v18 requestInCallSceneTransitionToFullScreen];
+  inCallRootViewController2 = [(iPadAudioCallViewController *)self inCallRootViewController];
+  [inCallRootViewController2 requestInCallSceneTransitionToFullScreen];
 
   [PHInCallRootViewController obtainDismissalAssertionForReason:@"PHAudioCallViewControllerDismissalAssertionHandlingCallFailure"];
   [(iPadAudioCallViewController *)self setMiddleViewState:0];
-  [(iPadAudioCallViewController *)self setCallForBackgroundImage:v6 animated:1 callDisplayStyleChanged:0];
-  if ([v6 service] == 2 && (objc_msgSend(v6, "isMessagingAllowed") & 1) != 0)
+  [(iPadAudioCallViewController *)self setCallForBackgroundImage:mostRecentlyDisconnectedAudioCall animated:1 callDisplayStyleChanged:0];
+  if ([mostRecentlyDisconnectedAudioCall service] == 2 && (objc_msgSend(mostRecentlyDisconnectedAudioCall, "isMessagingAllowed") & 1) != 0)
   {
     v19 = 17;
   }
 
-  else if ([v6 isCallbackAllowed])
+  else if ([mostRecentlyDisconnectedAudioCall isCallbackAllowed])
   {
     v19 = 13;
   }
@@ -4800,25 +4800,25 @@ LABEL_11:
     v19 = 18;
   }
 
-  v22 = [(PHCallViewController *)self bottomBar];
-  [v22 setCurrentState:v19 animated:1 animationCompletionBlock:0];
+  bottomBar2 = [(PHCallViewController *)self bottomBar];
+  [bottomBar2 setCurrentState:v19 animated:1 animationCompletionBlock:0];
 
-  v23 = [(PHCallViewController *)self bottomBar];
-  [v23 setUserInteractionEnabled:1];
+  bottomBar3 = [(PHCallViewController *)self bottomBar];
+  [bottomBar3 setUserInteractionEnabled:1];
 
-  if ([(iPadAudioCallViewController *)self shouldShowEnableWiFiCallingAlertForCall:v6])
+  if ([(iPadAudioCallViewController *)self shouldShowEnableWiFiCallingAlertForCall:mostRecentlyDisconnectedAudioCall])
   {
-    v24 = +[UIAlertController enableWiFiCallingAlertController];
-    if (v24)
+    inCallRootViewController = +[UIAlertController enableWiFiCallingAlertController];
+    if (inCallRootViewController)
     {
-      [(iPadAudioCallViewController *)self presentViewController:v24 animated:1 completion:0];
+      [(iPadAudioCallViewController *)self presentViewController:inCallRootViewController animated:1 completion:0];
       PHIncrementWifiCallingAlertShowCount();
     }
 
 LABEL_22:
   }
 
-  if ([v6 disconnectedReason] == 34)
+  if ([mostRecentlyDisconnectedAudioCall disconnectedReason] == 34)
   {
     [(iPadAudioCallViewController *)self setMiddleViewState:0];
     v29 = sub_100004F84();
@@ -4832,56 +4832,56 @@ LABEL_22:
   }
 }
 
-- (void)setEndingState:(unsigned __int16)a3
+- (void)setEndingState:(unsigned __int16)state
 {
-  v4 = [(PHCallViewController *)self bottomBar];
-  [v4 setUserInteractionEnabled:0];
+  bottomBar = [(PHCallViewController *)self bottomBar];
+  [bottomBar setUserInteractionEnabled:0];
 
-  v5 = [(iPadAudioCallViewController *)self currentMiddleView];
+  currentMiddleView = [(iPadAudioCallViewController *)self currentMiddleView];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(iPadAudioCallViewController *)self currentMiddleView];
-    [v7 setButtonsEnabled:0];
+    currentMiddleView2 = [(iPadAudioCallViewController *)self currentMiddleView];
+    [currentMiddleView2 setButtonsEnabled:0];
   }
 
   [(SOSEmergencyCallVoiceLoopManager *)self->_voiceLoopManager invalidate];
-  v8 = [(iPadAudioCallViewController *)self isolatedCall];
-  v9 = v8;
-  if (v8)
+  isolatedCall = [(iPadAudioCallViewController *)self isolatedCall];
+  v9 = isolatedCall;
+  if (isolatedCall)
   {
-    v10 = v8;
-    v8 = [(iPadAudioCallViewController *)self setCallForBackgroundImage:v8 animated:0 callDisplayStyleChanged:0];
+    v10 = isolatedCall;
+    isolatedCall = [(iPadAudioCallViewController *)self setCallForBackgroundImage:isolatedCall animated:0 callDisplayStyleChanged:0];
     v9 = v10;
   }
 
-  _objc_release_x1(v8, v9);
+  _objc_release_x1(isolatedCall, v9);
 }
 
-- (void)setOutgoingRingingState:(unsigned __int16)a3
+- (void)setOutgoingRingingState:(unsigned __int16)state
 {
-  v4 = [(iPadAudioCallViewController *)self callCenter];
-  v5 = [v4 currentCallGroups];
+  callCenter = [(iPadAudioCallViewController *)self callCenter];
+  currentCallGroups = [callCenter currentCallGroups];
 
-  v6 = [v5 lastObject];
-  if ([v6 originatingUIType] == 10)
+  lastObject = [currentCallGroups lastObject];
+  if ([lastObject originatingUIType] == 10)
   {
-    v7 = [(iPadAudioCallViewController *)self callCenter];
-    v8 = [v7 routeController];
-    v9 = [v8 pickedRoute];
-    v10 = [v9 isSpeaker];
+    callCenter2 = [(iPadAudioCallViewController *)self callCenter];
+    routeController = [callCenter2 routeController];
+    pickedRoute = [routeController pickedRoute];
+    isSpeaker = [pickedRoute isSpeaker];
 
-    if ((v10 & 1) == 0)
+    if ((isSpeaker & 1) == 0)
     {
-      v19 = [(iPadAudioCallViewController *)self callCenter];
-      v20 = [v19 routeController];
-      v17 = [v20 routeForSpeakerEnable];
+      callCenter3 = [(iPadAudioCallViewController *)self callCenter];
+      routeController2 = [callCenter3 routeController];
+      routeForSpeakerEnable = [routeController2 routeForSpeakerEnable];
 
-      if (!v17)
+      if (!routeForSpeakerEnable)
       {
-        v18 = sub_100004F84();
-        if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+        callCenter6 = sub_100004F84();
+        if (os_log_type_enabled(callCenter6, OS_LOG_TYPE_ERROR))
         {
           sub_100256590();
         }
@@ -4893,59 +4893,59 @@ LABEL_22:
     }
   }
 
-  if ([v6 originatingUIType] == 12)
+  if ([lastObject originatingUIType] == 12)
   {
-    v11 = [(iPadAudioCallViewController *)self callCenter];
-    v12 = [v11 routeController];
-    v13 = [v12 pickedRoute];
-    v14 = [v13 isReceiver];
+    callCenter4 = [(iPadAudioCallViewController *)self callCenter];
+    routeController3 = [callCenter4 routeController];
+    pickedRoute2 = [routeController3 pickedRoute];
+    isReceiver = [pickedRoute2 isReceiver];
 
-    if ((v14 & 1) == 0)
+    if ((isReceiver & 1) == 0)
     {
-      v15 = [(iPadAudioCallViewController *)self callCenter];
-      v16 = [v15 routeController];
-      v17 = [v16 routeForSpeakerDisable];
+      callCenter5 = [(iPadAudioCallViewController *)self callCenter];
+      routeController4 = [callCenter5 routeController];
+      routeForSpeakerEnable = [routeController4 routeForSpeakerDisable];
 
-      if (!v17)
+      if (!routeForSpeakerEnable)
       {
-        v18 = sub_100004F84();
-        if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
+        callCenter6 = sub_100004F84();
+        if (os_log_type_enabled(callCenter6, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 0;
-          _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "[WARN] iPadAudioCallViewController: Could not find available route to pick for speaker disable", buf, 2u);
+          _os_log_impl(&_mh_execute_header, callCenter6, OS_LOG_TYPE_DEFAULT, "[WARN] iPadAudioCallViewController: Could not find available route to pick for speaker disable", buf, 2u);
         }
 
         goto LABEL_12;
       }
 
 LABEL_9:
-      v18 = [(iPadAudioCallViewController *)self callCenter];
-      v21 = [v18 routeController];
-      [v21 pickRoute:v17];
+      callCenter6 = [(iPadAudioCallViewController *)self callCenter];
+      routeController5 = [callCenter6 routeController];
+      [routeController5 pickRoute:routeForSpeakerEnable];
 
 LABEL_12:
     }
   }
 
-  v22 = [(iPadAudioCallViewController *)self isolatedCall];
-  [(iPadAudioCallViewController *)self setCallForBackgroundImage:v22 animated:1 callDisplayStyleChanged:0];
+  isolatedCall = [(iPadAudioCallViewController *)self isolatedCall];
+  [(iPadAudioCallViewController *)self setCallForBackgroundImage:isolatedCall animated:1 callDisplayStyleChanged:0];
 
   v39 = _NSConcreteStackBlock;
   v40 = 3221225472;
   v41 = sub_1000D9A94;
   v42 = &unk_100356D10;
-  v23 = v6;
+  v23 = lastObject;
   v43 = v23;
-  v44 = self;
+  selfCopy = self;
   v24 = objc_retainBlock(&v39);
   -[iPadAudioCallViewController setMiddleViewState:animated:completion:](self, "setMiddleViewState:animated:completion:", 1, [v23 isVoicemail] ^ 1, v24);
-  v25 = [(iPadAudioCallViewController *)self currentMiddleView];
+  currentMiddleView = [(iPadAudioCallViewController *)self currentMiddleView];
   v26 = objc_opt_respondsToSelector();
 
   if (v26)
   {
-    v27 = [(iPadAudioCallViewController *)self currentMiddleView];
-    [v27 setButtonsEnabled:1];
+    currentMiddleView2 = [(iPadAudioCallViewController *)self currentMiddleView];
+    [currentMiddleView2 setButtonsEnabled:1];
   }
 
   if ([v23 isVoicemail])
@@ -4954,45 +4954,45 @@ LABEL_12:
   }
 
   [(PHCallViewController *)self setWantsApplicationDismissalStyle:1];
-  v28 = [(iPadAudioCallViewController *)self callDisplayStyleManager];
-  if ([v28 callDisplayStyle] != 3)
+  callDisplayStyleManager = [(iPadAudioCallViewController *)self callDisplayStyleManager];
+  if ([callDisplayStyleManager callDisplayStyle] != 3)
   {
     goto LABEL_24;
   }
 
-  v29 = [(iPadAudioCallViewController *)self features];
-  if (![v29 isDominoEnabled])
+  features = [(iPadAudioCallViewController *)self features];
+  if (![features isDominoEnabled])
   {
     goto LABEL_23;
   }
 
   v30 = +[UIApplication sharedApplication];
-  v31 = [v30 delegate];
-  v32 = [v31 currentInCallScene];
-  v33 = [v32 presentationMode];
+  delegate = [v30 delegate];
+  currentInCallScene = [delegate currentInCallScene];
+  presentationMode = [currentInCallScene presentationMode];
 
-  if (!v33)
+  if (!presentationMode)
   {
-    v34 = [(iPadAudioCallViewController *)self callCenter];
-    v28 = [v34 routeController];
+    callCenter7 = [(iPadAudioCallViewController *)self callCenter];
+    callDisplayStyleManager = [callCenter7 routeController];
 
-    v35 = [v28 routeForSpeakerEnable];
-    if (!v35)
+    routeForSpeakerEnable2 = [callDisplayStyleManager routeForSpeakerEnable];
+    if (!routeForSpeakerEnable2)
     {
       goto LABEL_24;
     }
 
-    v36 = v35;
-    v37 = [v28 pickedRoute];
-    v38 = [v37 isReceiver];
+    v36 = routeForSpeakerEnable2;
+    pickedRoute3 = [callDisplayStyleManager pickedRoute];
+    isReceiver2 = [pickedRoute3 isReceiver];
 
-    if (!v38)
+    if (!isReceiver2)
     {
       goto LABEL_24;
     }
 
-    v29 = [v28 routeForSpeakerEnable];
-    [v28 pickRoute:v29];
+    features = [callDisplayStyleManager routeForSpeakerEnable];
+    [callDisplayStyleManager pickRoute:features];
 LABEL_23:
 
 LABEL_24:
@@ -5001,7 +5001,7 @@ LABEL_24:
   [(iPadAudioCallViewController *)self updateLayeredBackgroundWallpaper];
 }
 
-- (void)setCallBufferState:(unsigned __int16)a3
+- (void)setCallBufferState:(unsigned __int16)state
 {
   v4 = sub_100004F84();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -5012,11 +5012,11 @@ LABEL_24:
 
   if ([(iPadAudioCallViewController *)self middleViewState]== 1)
   {
-    v5 = [(iPadAudioCallViewController *)self currentMiddleView];
-    [v5 setButtonsEnabled:0];
+    currentMiddleView = [(iPadAudioCallViewController *)self currentMiddleView];
+    [currentMiddleView setButtonsEnabled:0];
 
-    v6 = [(iPadAudioCallViewController *)self currentMiddleView];
-    v7 = [v6 buttonForControlType:15];
+    currentMiddleView2 = [(iPadAudioCallViewController *)self currentMiddleView];
+    v7 = [currentMiddleView2 buttonForControlType:15];
     [v7 setEnabled:1];
   }
 
@@ -5033,8 +5033,8 @@ LABEL_24:
     objc_destroyWeak(buf);
   }
 
-  v8 = [(PHCallViewController *)self bottomBar];
-  [v8 setUserInteractionEnabled:1];
+  bottomBar = [(PHCallViewController *)self bottomBar];
+  [bottomBar setUserInteractionEnabled:1];
 
   [(iPadAudioCallViewController *)self setCallForBackgroundImage:0 animated:1 callDisplayStyleChanged:0];
   [(iPadAudioCallViewController *)self displayDialledNumberDetailsForCallBufferScreen];
@@ -5042,57 +5042,57 @@ LABEL_24:
   [(iPadAudioCallViewController *)self startCallBufferScreenCountdown];
 }
 
-- (void)setScreeningState:(unsigned __int16)a3 animated:(BOOL)a4 overrideWithIsUnlocked:(BOOL)a5
+- (void)setScreeningState:(unsigned __int16)state animated:(BOOL)animated overrideWithIsUnlocked:(BOOL)unlocked
 {
-  v65 = a3;
-  v66 = a5;
+  stateCopy = state;
+  unlockedCopy = unlocked;
   v7 = sub_100004F84();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109376;
-    *&buf[4] = v65;
+    *&buf[4] = stateCopy;
     *&buf[8] = 1024;
-    *&buf[10] = v66;
+    *&buf[10] = unlockedCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Audio: setCurrentState: (existing state is %d) with unlockedOverride: %d", buf, 0xEu);
   }
 
-  v8 = [(PHCallViewController *)self bottomBar];
-  [v8 setUserInteractionEnabled:1];
+  bottomBar = [(PHCallViewController *)self bottomBar];
+  [bottomBar setUserInteractionEnabled:1];
 
-  v9 = [(iPadAudioCallViewController *)self presentedViewController];
-  if (v9)
+  presentedViewController = [(iPadAudioCallViewController *)self presentedViewController];
+  if (presentedViewController)
   {
-    v10 = [(PHCallViewController *)self isPresentingCustomMessageController];
+    isPresentingCustomMessageController = [(PHCallViewController *)self isPresentingCustomMessageController];
 
-    if ((v10 & 1) == 0)
+    if ((isPresentingCustomMessageController & 1) == 0)
     {
       [(iPadAudioCallViewController *)self dismissViewControllerAnimated:1 completion:0];
     }
   }
 
-  v11 = [(iPadAudioCallViewController *)self traitCollection];
-  if ([v11 _backlightLuminance] == 1)
+  traitCollection = [(iPadAudioCallViewController *)self traitCollection];
+  if ([traitCollection _backlightLuminance] == 1)
   {
     v12 = 1;
   }
 
   else
   {
-    v13 = [(iPadAudioCallViewController *)self traitCollection];
-    v12 = [v13 _backlightLuminance] == 0;
+    traitCollection2 = [(iPadAudioCallViewController *)self traitCollection];
+    v12 = [traitCollection2 _backlightLuminance] == 0;
   }
 
   v14 = +[UIApplication sharedApplication];
-  v15 = [v14 delegate];
-  v16 = [v15 currentInCallScene];
-  v17 = [v16 isBeingShownAboveCoverSheet];
+  delegate = [v14 delegate];
+  currentInCallScene = [delegate currentInCallScene];
+  isBeingShownAboveCoverSheet = [currentInCallScene isBeingShownAboveCoverSheet];
 
-  v18 = [(iPadAudioCallViewController *)self callDisplayStyleManager];
-  v64 = v17 & !v66 | v12;
-  if ([v18 callDisplayStyle] == 3)
+  callDisplayStyleManager = [(iPadAudioCallViewController *)self callDisplayStyleManager];
+  v64 = isBeingShownAboveCoverSheet & !unlockedCopy | v12;
+  if ([callDisplayStyleManager callDisplayStyle] == 3)
   {
-    v19 = [(iPadAudioCallViewController *)self features];
-    v20 = [v19 isDominoEnabled];
+    features = [(iPadAudioCallViewController *)self features];
+    isDominoEnabled = [features isDominoEnabled];
     v21 = 23;
     if (v64)
     {
@@ -5104,7 +5104,7 @@ LABEL_24:
       v22 = 23;
     }
 
-    if (!v20)
+    if (!isDominoEnabled)
     {
       v21 = v22;
     }
@@ -5115,7 +5115,7 @@ LABEL_24:
   else
   {
     v23 = 23;
-    if ((v17 & !v66 | v12))
+    if ((isBeingShownAboveCoverSheet & !unlockedCopy | v12))
     {
       v23 = 24;
     }
@@ -5123,8 +5123,8 @@ LABEL_24:
     v63 = v23;
   }
 
-  v24 = [(iPadAudioCallViewController *)self callCenter];
-  v67 = [v24 screeningCall];
+  callCenter = [(iPadAudioCallViewController *)self callCenter];
+  screeningCall = [callCenter screeningCall];
 
   v25 = sub_100004F84();
   if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
@@ -5149,7 +5149,7 @@ LABEL_24:
       v27 = @"NO";
     }
 
-    if (v17)
+    if (isBeingShownAboveCoverSheet)
     {
       v28 = @"YES";
     }
@@ -5159,13 +5159,13 @@ LABEL_24:
       v28 = @"NO";
     }
 
-    v29 = [(iPadAudioCallViewController *)self callDisplayStyleManager];
-    v30 = [v29 callDisplayStyle];
+    callDisplayStyleManager2 = [(iPadAudioCallViewController *)self callDisplayStyleManager];
+    callDisplayStyle = [callDisplayStyleManager2 callDisplayStyle];
     v31 = @"NO";
-    if (v30 == 3)
+    if (callDisplayStyle == 3)
     {
-      v5 = [(iPadAudioCallViewController *)self features];
-      if ([v5 isDominoEnabled])
+      features2 = [(iPadAudioCallViewController *)self features];
+      if ([features2 isDominoEnabled])
       {
         v31 = @"YES";
       }
@@ -5180,20 +5180,20 @@ LABEL_24:
     LOWORD(v77[0]) = 2112;
     *(v77 + 2) = v31;
     _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "Audio: setCurrentState: showLockedState: %@, displayIsOff: %@, beingShownAboveCoverSheet: %@, isAmbient: %@", buf, 0x2Au);
-    if (v30 == 3)
+    if (callDisplayStyle == 3)
     {
     }
   }
 
-  v32 = [(iPadAudioCallViewController *)self featureFlags];
+  featureFlags = [(iPadAudioCallViewController *)self featureFlags];
   if (TUCallScreeningEnabledM3())
   {
-    v33 = [v67 contactIdentifiers];
-    v34 = [v33 count] != 0;
+    contactIdentifiers = [screeningCall contactIdentifiers];
+    v34 = [contactIdentifiers count] != 0;
 
     if (((v34 | v64) & 1) == 0)
     {
-      [(iPadAudioCallViewController *)self setCallForBackgroundImage:v67 animated:1 callDisplayStyleChanged:0];
+      [(iPadAudioCallViewController *)self setCallForBackgroundImage:screeningCall animated:1 callDisplayStyleChanged:0];
       v35 = 25;
       goto LABEL_41;
     }
@@ -5203,7 +5203,7 @@ LABEL_24:
   {
   }
 
-  [(iPadAudioCallViewController *)self setCallForBackgroundImage:v67 animated:1 callDisplayStyleChanged:0];
+  [(iPadAudioCallViewController *)self setCallForBackgroundImage:screeningCall animated:1 callDisplayStyleChanged:0];
   if (v63 != 23)
   {
     v35 = 24;
@@ -5212,15 +5212,15 @@ LABEL_24:
 
   v35 = 23;
 LABEL_41:
-  if (!v66)
+  if (!unlockedCopy)
   {
-    v36 = [(iPadAudioCallViewController *)self callDisplayStyleManager];
-    if ([v36 callDisplayStyle] == 3)
+    callDisplayStyleManager3 = [(iPadAudioCallViewController *)self callDisplayStyleManager];
+    if ([callDisplayStyleManager3 callDisplayStyle] == 3)
     {
-      v37 = [(iPadAudioCallViewController *)self features];
-      v38 = [v37 isDominoEnabled];
+      features3 = [(iPadAudioCallViewController *)self features];
+      isDominoEnabled2 = [features3 isDominoEnabled];
 
-      if (v38)
+      if (isDominoEnabled2)
       {
         v35 = 26;
       }
@@ -5232,36 +5232,36 @@ LABEL_41:
   }
 
 LABEL_48:
-  v39 = [v67 isMessagingAllowed];
-  v40 = [(PHCallViewController *)self bottomBar];
-  [v40 setDeclineAndMessageIsAvailable:v39];
+  isMessagingAllowed = [screeningCall isMessagingAllowed];
+  bottomBar2 = [(PHCallViewController *)self bottomBar];
+  [bottomBar2 setDeclineAndMessageIsAvailable:isMessagingAllowed];
 
-  v41 = [v67 isReminderAllowed];
-  v42 = [(PHCallViewController *)self bottomBar];
-  [v42 setDeclineAndRemindIsAvailable:v41];
+  isReminderAllowed = [screeningCall isReminderAllowed];
+  bottomBar3 = [(PHCallViewController *)self bottomBar];
+  [bottomBar3 setDeclineAndRemindIsAvailable:isReminderAllowed];
 
-  v43 = [(PHCallViewController *)self bottomBar];
-  v44 = [(iPadAudioCallViewController *)self callDisplayStyleManager];
-  if ([v44 callDisplayStyle] == 3)
+  bottomBar4 = [(PHCallViewController *)self bottomBar];
+  callDisplayStyleManager4 = [(iPadAudioCallViewController *)self callDisplayStyleManager];
+  if ([callDisplayStyleManager4 callDisplayStyle] == 3)
   {
-    v45 = [(iPadAudioCallViewController *)self features];
-    [v43 setCurrentState:v35 animated:objc_msgSend(v45 animationCompletionBlock:{"isDominoEnabled"), 0}];
+    features4 = [(iPadAudioCallViewController *)self features];
+    [bottomBar4 setCurrentState:v35 animated:objc_msgSend(features4 animationCompletionBlock:{"isDominoEnabled"), 0}];
   }
 
   else
   {
-    [v43 setCurrentState:v35 animated:0 animationCompletionBlock:0];
+    [bottomBar4 setCurrentState:v35 animated:0 animationCompletionBlock:0];
   }
 
-  v46 = [(PHCallViewController *)self bottomBar];
-  v47 = [v46 controlForActionType:30];
+  bottomBar5 = [(PHCallViewController *)self bottomBar];
+  v47 = [bottomBar5 controlForActionType:30];
 
-  [(PHCallViewController *)self configureDeclineWithReminderButton:0 declineWithMessageButton:v47 forIncomingCall:v67];
-  v48 = [(iPadAudioCallViewController *)self featureFlags];
-  v49 = [v48 receptionistEnabled];
-  if (v67)
+  [(PHCallViewController *)self configureDeclineWithReminderButton:0 declineWithMessageButton:v47 forIncomingCall:screeningCall];
+  featureFlags2 = [(iPadAudioCallViewController *)self featureFlags];
+  receptionistEnabled = [featureFlags2 receptionistEnabled];
+  if (screeningCall)
   {
-    v50 = v49;
+    v50 = receptionistEnabled;
   }
 
   else
@@ -5271,27 +5271,27 @@ LABEL_48:
 
   if (v50)
   {
-    v51 = [(PHCallViewController *)self bottomBar];
-    v52 = [v51 controlForActionType:27];
+    bottomBar6 = [(PHCallViewController *)self bottomBar];
+    v52 = [bottomBar6 controlForActionType:27];
 
-    [(PHCallViewController *)self configureDeclineWithMoreButton:v52 forIncomingCall:v67];
+    [(PHCallViewController *)self configureDeclineWithMoreButton:v52 forIncomingCall:screeningCall];
   }
 
   [(iPadAudioCallViewController *)self setMiddleViewState:4 animated:1];
-  v53 = [(iPadAudioCallViewController *)self callDisplayStyleManager];
-  v54 = [v53 callDisplayStyle] == 0;
+  callDisplayStyleManager5 = [(iPadAudioCallViewController *)self callDisplayStyleManager];
+  v54 = [callDisplayStyleManager5 callDisplayStyle] == 0;
 
   if (v54)
   {
-    v55 = [(iPadAudioCallViewController *)self callParticipantsViewController];
-    [v55 setBannerButtonsState:0];
+    callParticipantsViewController = [(iPadAudioCallViewController *)self callParticipantsViewController];
+    [callParticipantsViewController setBannerButtonsState:0];
   }
 
-  v56 = [(PHCallViewController *)self bottomBar];
-  [(iPadAudioCallViewController *)self _testing_didTransitionToIncomingRingingCallState:v56];
+  bottomBar7 = [(PHCallViewController *)self bottomBar];
+  [(iPadAudioCallViewController *)self _testing_didTransitionToIncomingRingingCallState:bottomBar7];
 
-  v57 = [(iPadAudioCallViewController *)self stateChangeLockObservation];
-  if (!v57 || ([(iPadAudioCallViewController *)self stateDisplayChangedObservation], v58 = objc_claimAutoreleasedReturnValue(), v59 = v58 == 0, v58, v57, v59))
+  stateChangeLockObservation = [(iPadAudioCallViewController *)self stateChangeLockObservation];
+  if (!stateChangeLockObservation || ([(iPadAudioCallViewController *)self stateDisplayChangedObservation], v58 = objc_claimAutoreleasedReturnValue(), v59 = v58 == 0, v58, stateChangeLockObservation, v59))
   {
     v73[0] = 0;
     v73[1] = v73;
@@ -5309,17 +5309,17 @@ LABEL_48:
     v71[3] = &unk_100359180;
     v71[4] = buf;
     v71[5] = v73;
-    v72 = v65;
+    v72 = stateCopy;
     v60 = [(iPadAudioCallViewController *)self makeLockObserverWithHandler:v71];
     [(iPadAudioCallViewController *)self setStateChangeLockObservation:v60];
 
     v70[0] = 0;
     v70[1] = v70;
     v70[2] = 0x2020000000;
-    v61 = [(iPadAudioCallViewController *)self traitCollection];
-    v62 = [v61 _backlightLuminance];
+    traitCollection3 = [(iPadAudioCallViewController *)self traitCollection];
+    _backlightLuminance = [traitCollection3 _backlightLuminance];
 
-    v70[3] = v62;
+    v70[3] = _backlightLuminance;
     v68[0] = _NSConcreteStackBlock;
     v68[1] = 3221225472;
     v68[2] = sub_1000DA6E4;
@@ -5327,7 +5327,7 @@ LABEL_48:
     v68[4] = buf;
     v68[5] = v70;
     v68[6] = v73;
-    v69 = v65;
+    v69 = stateCopy;
     [(iPadAudioCallViewController *)self setStateDisplayChangedObservation:v68];
     _Block_object_dispose(v70, 8);
     _Block_object_dispose(buf, 8);
@@ -5336,32 +5336,32 @@ LABEL_48:
   }
 }
 
-- (void)setWaitOnHoldState:(unsigned __int16)a3 animated:(BOOL)a4
+- (void)setWaitOnHoldState:(unsigned __int16)state animated:(BOOL)animated
 {
-  [(iPadAudioCallViewController *)self dismissWaitOnHoldTip:a3];
-  v5 = [(iPadAudioCallViewController *)self presentedViewController];
-  if (v5)
+  [(iPadAudioCallViewController *)self dismissWaitOnHoldTip:state];
+  presentedViewController = [(iPadAudioCallViewController *)self presentedViewController];
+  if (presentedViewController)
   {
-    v6 = v5;
-    v7 = [(PHCallViewController *)self isPresentingCustomMessageController];
+    v6 = presentedViewController;
+    isPresentingCustomMessageController = [(PHCallViewController *)self isPresentingCustomMessageController];
 
-    if ((v7 & 1) == 0)
+    if ((isPresentingCustomMessageController & 1) == 0)
     {
       [(iPadAudioCallViewController *)self dismissViewControllerAnimated:1 completion:0];
     }
   }
 
-  v8 = [(PHCallViewController *)self bottomBar];
-  v9 = [(iPadAudioCallViewController *)self callDisplayStyleManager];
-  if ([v9 callDisplayStyle] == 3)
+  bottomBar = [(PHCallViewController *)self bottomBar];
+  callDisplayStyleManager = [(iPadAudioCallViewController *)self callDisplayStyleManager];
+  if ([callDisplayStyleManager callDisplayStyle] == 3)
   {
-    v10 = [(iPadAudioCallViewController *)self features];
-    [v8 setCurrentState:28 animated:objc_msgSend(v10 animationCompletionBlock:{"isDominoEnabled"), 0}];
+    features = [(iPadAudioCallViewController *)self features];
+    [bottomBar setCurrentState:28 animated:objc_msgSend(features animationCompletionBlock:{"isDominoEnabled"), 0}];
   }
 
   else
   {
-    [v8 setCurrentState:28 animated:0 animationCompletionBlock:0];
+    [bottomBar setCurrentState:28 animated:0 animationCompletionBlock:0];
   }
 
   [(iPadAudioCallViewController *)self setMiddleViewState:5 animated:1];
@@ -5376,17 +5376,17 @@ LABEL_48:
   }
 
   v4 = +[UIApplication sharedApplication];
-  v5 = [v4 delegate];
-  v6 = [v5 waitOnHoldService];
+  delegate = [v4 delegate];
+  waitOnHoldService = [delegate waitOnHoldService];
 
-  if (v6)
+  if (waitOnHoldService)
   {
-    v7 = [(CNKWaitOnHoldViewComposerFactory *)self->_waitOnHoldViewControllerFactory makeViewComposer];
-    v8 = [(iPadAudioCallViewController *)self activeCall];
+    makeViewComposer = [(CNKWaitOnHoldViewComposerFactory *)self->_waitOnHoldViewControllerFactory makeViewComposer];
+    activeCall = [(iPadAudioCallViewController *)self activeCall];
     v9 = +[UIApplication sharedApplication];
-    v10 = [v9 delegate];
-    v11 = [v10 waitOnHoldService];
-    v12 = [v7 composeWithCall:v8 waitOnHoldService:v11];
+    delegate2 = [v9 delegate];
+    waitOnHoldService2 = [delegate2 waitOnHoldService];
+    v12 = [makeViewComposer composeWithCall:activeCall waitOnHoldService:waitOnHoldService2];
     v13 = self->_waitOnHoldViewController;
     self->_waitOnHoldViewController = v12;
 
@@ -5413,21 +5413,21 @@ LABEL_5:
   }
 
   [(iPadAudioCallViewController *)self updateCurrentState];
-  v4 = [(iPadAudioCallViewController *)self activeCall];
-  v5 = [v4 isWaitOnHoldActive];
+  activeCall = [(iPadAudioCallViewController *)self activeCall];
+  isWaitOnHoldActive = [activeCall isWaitOnHoldActive];
 
-  if ((v5 & 1) == 0)
+  if ((isWaitOnHoldActive & 1) == 0)
   {
-    v6 = [(UIViewController *)self->_waitOnHoldViewController view];
-    v7 = [v6 superview];
+    view = [(UIViewController *)self->_waitOnHoldViewController view];
+    superview = [view superview];
 
-    if (v7)
+    if (superview)
     {
-      v8 = [(UIViewController *)self->_waitOnHoldViewController view];
-      [v8 removeFromSuperview];
+      view2 = [(UIViewController *)self->_waitOnHoldViewController view];
+      [view2 removeFromSuperview];
 
-      v9 = [(iPadAudioCallViewController *)self layoutGuidesProvider];
-      [v9 updateMiddleShelfStateWithIsOpen:0];
+      layoutGuidesProvider = [(iPadAudioCallViewController *)self layoutGuidesProvider];
+      [layoutGuidesProvider updateMiddleShelfStateWithIsOpen:0];
     }
 
     waitOnHoldViewController = self->_waitOnHoldViewController;
@@ -5435,18 +5435,18 @@ LABEL_5:
   }
 }
 
-- (BOOL)isCallSmartHoldingSessionActive:(id)a3
+- (BOOL)isCallSmartHoldingSessionActive:(id)active
 {
-  v3 = a3;
-  v4 = [v3 smartHoldingSession];
+  activeCopy = active;
+  smartHoldingSession = [activeCopy smartHoldingSession];
 
-  if (v4)
+  if (smartHoldingSession)
   {
-    v5 = [v3 smartHoldingSession];
-    if ([v5 state])
+    smartHoldingSession2 = [activeCopy smartHoldingSession];
+    if ([smartHoldingSession2 state])
     {
-      v6 = [v3 smartHoldingSession];
-      v7 = [v6 state] == 3;
+      smartHoldingSession3 = [activeCopy smartHoldingSession];
+      v7 = [smartHoldingSession3 state] == 3;
     }
 
     else
@@ -5463,50 +5463,50 @@ LABEL_5:
   return v7;
 }
 
-- (void)setCurrentState:(unsigned __int16)a3 animated:(BOOL)a4
+- (void)setCurrentState:(unsigned __int16)state animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [(PHCallViewController *)self currentState];
+  animatedCopy = animated;
+  stateCopy = state;
+  currentState = [(PHCallViewController *)self currentState];
   v8 = sub_100004F84();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109376;
-    *&buf[4] = v5;
+    *&buf[4] = stateCopy;
     *&buf[8] = 1024;
-    *&buf[10] = v7;
+    *&buf[10] = currentState;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Audio: setCurrentState: %d (existing state is %d)", buf, 0xEu);
   }
 
-  if (v7 != v5)
+  if (currentState != stateCopy)
   {
     v9 = sub_100004F84();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [(PHCallViewController *)self currentState];
+      currentState2 = [(PHCallViewController *)self currentState];
       *buf = 67109376;
-      *&buf[4] = v10;
+      *&buf[4] = currentState2;
       *&buf[8] = 1024;
-      *&buf[10] = v5;
+      *&buf[10] = stateCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Audio: Setting current state: %d -> %d", buf, 0xEu);
     }
 
     v31.receiver = self;
     v31.super_class = iPadAudioCallViewController;
-    [(PHCallViewController *)&v31 setCurrentState:v5];
+    [(PHCallViewController *)&v31 setCurrentState:stateCopy];
     [(iPadAudioCallViewController *)self setStateChangeLockObservation:0];
     [(iPadAudioCallViewController *)self setStateDisplayChangedObservation:0];
-    if (v5 <= 4)
+    if (stateCopy <= 4)
     {
-      if (v5 > 1)
+      if (stateCopy > 1)
       {
-        if (v5 == 2)
+        if (stateCopy == 2)
         {
           [(iPadAudioCallViewController *)self setOutgoingRingingState:2];
           goto LABEL_30;
         }
 
-        if (v5 == 3)
+        if (stateCopy == 3)
         {
           [(iPadAudioCallViewController *)self setWaitingState:3];
           goto LABEL_38;
@@ -5517,9 +5517,9 @@ LABEL_5:
         goto LABEL_16;
       }
 
-      if (v5)
+      if (stateCopy)
       {
-        if (v5 == 1)
+        if (stateCopy == 1)
         {
           [(iPadAudioCallViewController *)self setRingingState:1];
         }
@@ -5533,17 +5533,17 @@ LABEL_5:
 
     else
     {
-      if (v5 <= 9)
+      if (stateCopy <= 9)
       {
-        if (v5 != 5)
+        if (stateCopy != 5)
         {
-          if (v5 == 6)
+          if (stateCopy == 6)
           {
             [(iPadAudioCallViewController *)self setEndingState:6];
             [(iPadAudioCallViewController *)self _testing_didTransitionToEndingCallState];
           }
 
-          else if (v5 == 7)
+          else if (stateCopy == 7)
           {
             [(iPadAudioCallViewController *)self setEndedState:7];
           }
@@ -5552,46 +5552,46 @@ LABEL_5:
         }
 
 LABEL_16:
-        [(iPadAudioCallViewController *)self setActiveState:v5];
+        [(iPadAudioCallViewController *)self setActiveState:stateCopy];
         goto LABEL_30;
       }
 
-      switch(v5)
+      switch(stateCopy)
       {
         case 0xA:
           [(iPadAudioCallViewController *)self setCallBufferState:10];
           break;
         case 0xB:
-          [(iPadAudioCallViewController *)self setScreeningState:11 animated:v4];
+          [(iPadAudioCallViewController *)self setScreeningState:11 animated:animatedCopy];
           break;
         case 0xC:
-          [(iPadAudioCallViewController *)self setWaitOnHoldState:12 animated:v4];
+          [(iPadAudioCallViewController *)self setWaitOnHoldState:12 animated:animatedCopy];
           break;
       }
     }
 
 LABEL_30:
-    if (v7 == 3)
+    if (currentState == 3)
     {
       [(iPadAudioCallViewController *)self setShowsCallWaitingParticipantView:0];
     }
 
-    if (v5 <= 7 && ((1 << v5) & 0xC1) != 0)
+    if (stateCopy <= 7 && ((1 << stateCopy) & 0xC1) != 0)
     {
       [(iPadAudioCallViewController *)self stopSuppressionOfSTKAlerts];
-      if (v5 == 7)
+      if (stateCopy == 7)
       {
-        v11 = [(iPadAudioCallViewController *)self getParticipantsView_NotWaiting];
-        v12 = [v11 singleCallLabelView];
-        v13 = v12;
-        if (v12)
+        getParticipantsView_NotWaiting = [(iPadAudioCallViewController *)self getParticipantsView_NotWaiting];
+        singleCallLabelView = [getParticipantsView_NotWaiting singleCallLabelView];
+        v13 = singleCallLabelView;
+        if (singleCallLabelView)
         {
-          v14 = [v12 statusLabel];
+          statusLabel = [singleCallLabelView statusLabel];
           v15 = *&CGAffineTransformIdentity.c;
           *buf = *&CGAffineTransformIdentity.a;
           v33 = v15;
           v34 = *&CGAffineTransformIdentity.tx;
-          [v14 setTransform:buf];
+          [statusLabel setTransform:buf];
         }
       }
 
@@ -5599,10 +5599,10 @@ LABEL_30:
     }
 
 LABEL_38:
-    v16 = [(PHCallViewController *)self bottomBar];
-    [v16 setUserInteractionEnabled:1];
+    bottomBar = [(PHCallViewController *)self bottomBar];
+    [bottomBar setUserInteractionEnabled:1];
 
-    if (v5 == 1)
+    if (stateCopy == 1)
     {
       [(iPadAudioCallViewController *)self startSuppressionOfSTKAlerts];
     }
@@ -5621,27 +5621,27 @@ LABEL_41:
       v29[2] = sub_1000DB134;
       v29[3] = &unk_100356960;
       v29[4] = self;
-      v30 = v5;
+      v30 = stateCopy;
       dispatch_after(v17, &_dispatch_main_q, v29);
     }
 
     else
     {
-      [(iPadAudioCallViewController *)self _updatePosterStatusLabelForState:v5];
+      [(iPadAudioCallViewController *)self _updatePosterStatusLabelForState:stateCopy];
       if ([(iPadAudioCallViewController *)self hasNoCallsOrOnlyEndedCalls])
       {
-        v18 = [(iPadAudioCallViewController *)self renderingViewController];
-        if (v18)
+        renderingViewController = [(iPadAudioCallViewController *)self renderingViewController];
+        if (renderingViewController)
         {
-          v19 = v18;
-          v20 = [(iPadAudioCallViewController *)self posterNameViewModel];
-          v21 = [v20 priorityPosterNameTextView];
+          v19 = renderingViewController;
+          posterNameViewModel = [(iPadAudioCallViewController *)self posterNameViewModel];
+          priorityPosterNameTextView = [posterNameViewModel priorityPosterNameTextView];
 
-          if (v21)
+          if (priorityPosterNameTextView)
           {
-            v22 = [(iPadAudioCallViewController *)self renderingViewController];
-            v23 = [v22 view];
-            [v23 setAlpha:0.0];
+            renderingViewController2 = [(iPadAudioCallViewController *)self renderingViewController];
+            view = [renderingViewController2 view];
+            [view setAlpha:0.0];
           }
         }
       }
@@ -5652,38 +5652,38 @@ LABEL_41:
     v24 = +[NSNotificationCenter defaultCenter];
     [v24 postNotificationName:@"PHCallViewControllerStateChangedNotification" object:0];
 
-    v25 = [(PHCallViewController *)self bottomBar];
-    [v25 setNeedsLayout];
+    bottomBar2 = [(PHCallViewController *)self bottomBar];
+    [bottomBar2 setNeedsLayout];
 
-    v26 = [(PHCallViewController *)self bottomBar];
-    [v26 layoutIfNeeded];
+    bottomBar3 = [(PHCallViewController *)self bottomBar];
+    [bottomBar3 layoutIfNeeded];
   }
 
-  v27 = [(iPadAudioCallViewController *)self backgroundController];
-  v28 = [v27 backgroundContainer];
-  [(iPadAudioCallViewController *)self updateBackgroundTintToView:v28];
+  backgroundController = [(iPadAudioCallViewController *)self backgroundController];
+  backgroundContainer = [backgroundController backgroundContainer];
+  [(iPadAudioCallViewController *)self updateBackgroundTintToView:backgroundContainer];
 }
 
 - (void)updateIncomingBottomBarControlState
 {
   if ([(PHCallViewController *)self currentState]== 11)
   {
-    v3 = [(PHCallViewController *)self currentState];
+    currentState = [(PHCallViewController *)self currentState];
 
-    [(iPadAudioCallViewController *)self setScreeningState:v3 animated:1];
+    [(iPadAudioCallViewController *)self setScreeningState:currentState animated:1];
   }
 
   else
   {
-    v4 = [(PHCallViewController *)self bottomBar];
-    v5 = [v4 currentState];
+    bottomBar = [(PHCallViewController *)self bottomBar];
+    currentState2 = [bottomBar currentState];
 
-    if (!v5)
+    if (!currentState2)
     {
       v6 = +[UIApplication sharedApplication];
-      v7 = [v6 delegate];
-      v8 = [v7 currentInCallScene];
-      if ([v8 isBeingShownAboveCoverSheet])
+      delegate = [v6 delegate];
+      currentInCallScene = [delegate currentInCallScene];
+      if ([currentInCallScene isBeingShownAboveCoverSheet])
       {
         v9 = 4;
       }
@@ -5693,36 +5693,36 @@ LABEL_41:
         v9 = 0;
       }
 
-      v10 = [(PHCallViewController *)self bottomBar];
-      [v10 setCurrentState:v9];
+      bottomBar2 = [(PHCallViewController *)self bottomBar];
+      [bottomBar2 setCurrentState:v9];
     }
   }
 }
 
-- (void)updateBottomBarButtonsWithCall:(id)a3
+- (void)updateBottomBarButtonsWithCall:(id)call
 {
-  v4 = [a3 isMessagingAllowed];
-  v5 = [(PHCallViewController *)self bottomBar];
-  [v5 setDeclineAndMessageIsAvailable:v4];
+  isMessagingAllowed = [call isMessagingAllowed];
+  bottomBar = [(PHCallViewController *)self bottomBar];
+  [bottomBar setDeclineAndMessageIsAvailable:isMessagingAllowed];
 }
 
 - (void)updateHardPauseDigitsState
 {
-  v3 = [(iPadAudioCallViewController *)self frontmostCall];
-  v4 = [v3 hardPauseDigitsState] == 2;
+  frontmostCall = [(iPadAudioCallViewController *)self frontmostCall];
+  v4 = [frontmostCall hardPauseDigitsState] == 2;
 
-  v5 = [(PHCallViewController *)self bottomBar];
-  [v5 setAction:23 enabled:v4];
+  bottomBar = [(PHCallViewController *)self bottomBar];
+  [bottomBar setAction:23 enabled:v4];
 }
 
 - (void)transitionToFullScreenIfNecessary
 {
-  v7 = [(iPadAudioCallViewController *)self callDisplayStyleManager];
-  if (![v7 callDisplayStyle])
+  callDisplayStyleManager = [(iPadAudioCallViewController *)self callDisplayStyleManager];
+  if (![callDisplayStyleManager callDisplayStyle])
   {
-    v3 = [(iPadAudioCallViewController *)self view];
-    v4 = [v3 window];
-    v5 = [v4 windowScene];
+    view = [(iPadAudioCallViewController *)self view];
+    window = [view window];
+    windowScene = [window windowScene];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -5731,40 +5731,40 @@ LABEL_41:
       return;
     }
 
-    v7 = [(iPadAudioCallViewController *)self inCallRootViewController];
-    [v7 requestInCallSceneTransitionToFullScreen];
+    callDisplayStyleManager = [(iPadAudioCallViewController *)self inCallRootViewController];
+    [callDisplayStyleManager requestInCallSceneTransitionToFullScreen];
   }
 }
 
 - (id)isolatedCall
 {
-  v2 = [(iPadAudioCallViewController *)self callCenter];
-  v3 = [v2 currentCalls];
+  callCenter = [(iPadAudioCallViewController *)self callCenter];
+  currentCalls = [callCenter currentCalls];
 
-  if ([v3 count] == 1)
+  if ([currentCalls count] == 1)
   {
-    v4 = [v3 firstObject];
+    firstObject = [currentCalls firstObject];
   }
 
   else
   {
-    v4 = 0;
+    firstObject = 0;
   }
 
-  return v4;
+  return firstObject;
 }
 
-- (id)associatedCallGroupForCall:(id)a3
+- (id)associatedCallGroupForCall:(id)call
 {
-  v4 = a3;
+  callCopy = call;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(iPadAudioCallViewController *)self callCenter];
-  v6 = [v5 currentCallGroups];
+  callCenter = [(iPadAudioCallViewController *)self callCenter];
+  currentCallGroups = [callCenter currentCallGroups];
 
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v7 = [currentCallGroups countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = *v15;
@@ -5774,12 +5774,12 @@ LABEL_41:
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(currentCallGroups);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        v11 = [v10 calls];
-        v12 = [v11 containsObject:v4];
+        calls = [v10 calls];
+        v12 = [calls containsObject:callCopy];
 
         if (v12)
         {
@@ -5788,7 +5788,7 @@ LABEL_41:
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [currentCallGroups countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v7)
       {
         continue;
@@ -5803,20 +5803,20 @@ LABEL_11:
   return v7;
 }
 
-- (BOOL)prioritizedCallIsInSameCallGroupAsCall:(id)a3
+- (BOOL)prioritizedCallIsInSameCallGroupAsCall:(id)call
 {
-  v4 = a3;
-  v5 = [(iPadAudioCallViewController *)self prioritizedCall];
+  callCopy = call;
+  prioritizedCall = [(iPadAudioCallViewController *)self prioritizedCall];
 
-  if (v5)
+  if (prioritizedCall)
   {
-    v6 = [(iPadAudioCallViewController *)self associatedCallGroupForCall:v4];
+    v6 = [(iPadAudioCallViewController *)self associatedCallGroupForCall:callCopy];
     v7 = v6;
     if (v6)
     {
-      v8 = [v6 calls];
-      v9 = [(iPadAudioCallViewController *)self prioritizedCall];
-      v10 = [v8 containsObject:v9];
+      calls = [v6 calls];
+      prioritizedCall2 = [(iPadAudioCallViewController *)self prioritizedCall];
+      v10 = [calls containsObject:prioritizedCall2];
     }
 
     else
@@ -5833,60 +5833,60 @@ LABEL_11:
   return v10;
 }
 
-- (void)setInCallRootViewController:(id)a3
+- (void)setInCallRootViewController:(id)controller
 {
-  obj = a3;
+  obj = controller;
   WeakRetained = objc_loadWeakRetained(&self->_inCallRootViewController);
 
   v6 = obj;
   if (WeakRetained != obj)
   {
     objc_storeWeak(&self->_inCallRootViewController, obj);
-    v5 = [(iPadAudioCallViewController *)self isViewLoaded];
+    isViewLoaded = [(iPadAudioCallViewController *)self isViewLoaded];
     v6 = obj;
-    if (v5)
+    if (isViewLoaded)
     {
-      v5 = [(iPadAudioCallViewController *)self handleConfigurationAfterViewLoaded];
+      isViewLoaded = [(iPadAudioCallViewController *)self handleConfigurationAfterViewLoaded];
       v6 = obj;
     }
   }
 
-  _objc_release_x1(v5, v6);
+  _objc_release_x1(isViewLoaded, v6);
 }
 
 - (id)getParticipantsView_WaitingOrNot
 {
-  v3 = [(iPadAudioCallViewController *)self getParticipantsView_Waiting];
-  v4 = v3;
-  if (v3)
+  getParticipantsView_Waiting = [(iPadAudioCallViewController *)self getParticipantsView_Waiting];
+  v4 = getParticipantsView_Waiting;
+  if (getParticipantsView_Waiting)
   {
-    v5 = v3;
+    getParticipantsView_NotWaiting = getParticipantsView_Waiting;
   }
 
   else
   {
-    v5 = [(iPadAudioCallViewController *)self getParticipantsView_NotWaiting];
+    getParticipantsView_NotWaiting = [(iPadAudioCallViewController *)self getParticipantsView_NotWaiting];
   }
 
-  v6 = v5;
+  v6 = getParticipantsView_NotWaiting;
 
   return v6;
 }
 
 - (id)getParticipantsView_Waiting
 {
-  v2 = [(iPadAudioCallViewController *)self callWaitingParticipantsViewController];
-  v3 = [v2 view];
+  callWaitingParticipantsViewController = [(iPadAudioCallViewController *)self callWaitingParticipantsViewController];
+  view = [callWaitingParticipantsViewController view];
 
-  return v3;
+  return view;
 }
 
 - (id)getParticipantsView_NotWaiting
 {
-  v2 = [(iPadAudioCallViewController *)self callParticipantsViewController];
-  v3 = [v2 view];
+  callParticipantsViewController = [(iPadAudioCallViewController *)self callParticipantsViewController];
+  view = [callParticipantsViewController view];
 
-  return v3;
+  return view;
 }
 
 - (BOOL)callHasNoContactPoster
@@ -5917,23 +5917,23 @@ LABEL_11:
 
 - (BOOL)callHasContactPosterWithVerticalName
 {
-  v3 = [(iPadAudioCallViewController *)self posterNameViewModel];
+  posterNameViewModel = [(iPadAudioCallViewController *)self posterNameViewModel];
 
-  if (!v3)
+  if (!posterNameViewModel)
   {
     return 0;
   }
 
-  v4 = [(iPadAudioCallViewController *)self posterNameViewModel];
-  v5 = [v4 posterNameTextView];
-  v6 = [v5 layout] == 1;
+  posterNameViewModel2 = [(iPadAudioCallViewController *)self posterNameViewModel];
+  posterNameTextView = [posterNameViewModel2 posterNameTextView];
+  v6 = [posterNameTextView layout] == 1;
 
   return v6;
 }
 
-- (BOOL)canShowPosterBadgeInAudioCallView:(id)a3
+- (BOOL)canShowPosterBadgeInAudioCallView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   if ([(iPadAudioCallViewController *)self participantsViewIsShowingMultipleLabel])
   {
     v5 = 0;
@@ -5941,16 +5941,16 @@ LABEL_11:
 
   else
   {
-    v6 = [v4 badgeView];
-    if (v6)
+    badgeView = [viewCopy badgeView];
+    if (badgeView)
     {
       v5 = 1;
     }
 
     else
     {
-      v7 = [v4 iconView];
-      v5 = v7 != 0;
+      iconView = [viewCopy iconView];
+      v5 = iconView != 0;
     }
   }
 
@@ -5959,14 +5959,14 @@ LABEL_11:
 
 - (BOOL)usesCompactMulticallUI
 {
-  v3 = [(iPadAudioCallViewController *)self features];
-  if ([v3 callManagerEnabled])
+  features = [(iPadAudioCallViewController *)self features];
+  if ([features callManagerEnabled])
   {
-    v4 = [(iPadAudioCallViewController *)self callDisplayStyleManager];
-    if ([v4 callDisplayStyle] == 3)
+    callDisplayStyleManager = [(iPadAudioCallViewController *)self callDisplayStyleManager];
+    if ([callDisplayStyleManager callDisplayStyle] == 3)
     {
-      v5 = [(iPadAudioCallViewController *)self features];
-      v6 = [v5 isDominoEnabled] ^ 1;
+      features2 = [(iPadAudioCallViewController *)self features];
+      v6 = [features2 isDominoEnabled] ^ 1;
     }
 
     else
@@ -5983,43 +5983,43 @@ LABEL_11:
   return v6;
 }
 
-- (void)setPosterViewController:(id)a3
+- (void)setPosterViewController:(id)controller
 {
-  objc_storeStrong(&self->_posterViewController, a3);
+  objc_storeStrong(&self->_posterViewController, controller);
 
   [(iPadAudioCallViewController *)self _updateStatusLabelVisibility];
 }
 
-- (id)newPosterConfigurationForCall:(id)a3
+- (id)newPosterConfigurationForCall:(id)call
 {
-  v4 = a3;
-  v5 = [(iPadAudioCallViewController *)self features];
-  v6 = [v5 isNameAndPhotoC3Enabled];
+  callCopy = call;
+  features = [(iPadAudioCallViewController *)self features];
+  isNameAndPhotoC3Enabled = [features isNameAndPhotoC3Enabled];
 
-  if (v6)
+  if (isNameAndPhotoC3Enabled)
   {
-    v7 = [(iPadAudioCallViewController *)self sharedProfileStateOracleForCall:v4];
-    v8 = [v7 pendingNickname];
+    v7 = [(iPadAudioCallViewController *)self sharedProfileStateOracleForCall:callCopy];
+    pendingNickname = [v7 pendingNickname];
 
-    if (v8 && ([v8 wallpaper], (v9 = objc_claimAutoreleasedReturnValue()) != 0) && (v10 = v9, objc_msgSend(v8, "wallpaper"), v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "wallpaperData"), v12 = objc_claimAutoreleasedReturnValue(), v12, v11, v10, v12))
+    if (pendingNickname && ([pendingNickname wallpaper], (v9 = objc_claimAutoreleasedReturnValue()) != 0) && (v10 = v9, objc_msgSend(pendingNickname, "wallpaper"), v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "wallpaperData"), v12 = objc_claimAutoreleasedReturnValue(), v12, v11, v10, v12))
     {
-      v13 = [v8 wallpaper];
-      v14 = [v13 wallpaperData];
+      wallpaper = [pendingNickname wallpaper];
+      wallpaperData = [wallpaper wallpaperData];
 
-      v15 = [PRSPosterArchiver unarchiveConfigurationFromData:v14 error:0];
+      v15 = [PRSPosterArchiver unarchiveConfigurationFromData:wallpaperData error:0];
       v16 = sub_100004F84();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
-        v17 = [v4 uniqueProxyIdentifier];
+        uniqueProxyIdentifier = [callCopy uniqueProxyIdentifier];
         v23 = 138412290;
-        v24 = v17;
+        v24 = uniqueProxyIdentifier;
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "SNAP: unarchived a pending PRSPosterConfiguration for %@", &v23, 0xCu);
       }
 
       v18 = [[ICSPosterConfigurationWrapper alloc] initWithConfiguration:v15 source:3];
-      v19 = [(iPadAudioCallViewController *)self configurationCache];
-      v20 = [v4 uniqueProxyIdentifier];
-      [v19 setObject:v18 forKey:v20];
+      configurationCache = [(iPadAudioCallViewController *)self configurationCache];
+      uniqueProxyIdentifier2 = [callCopy uniqueProxyIdentifier];
+      [configurationCache setObject:v18 forKey:uniqueProxyIdentifier2];
     }
 
     else
@@ -6028,14 +6028,14 @@ LABEL_11:
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
       {
         v23 = 138412290;
-        v24 = v8;
+        v24 = pendingNickname;
         _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "SNAP: there is no newPosterConfiguration, current pendingNickName is %@", &v23, 0xCu);
       }
 
-      v14 = [(iPadAudioCallViewController *)self configurationCache];
+      wallpaperData = [(iPadAudioCallViewController *)self configurationCache];
       v18 = [[ICSPosterConfigurationWrapper alloc] initWithConfiguration:0 source:3];
-      v19 = [v4 uniqueProxyIdentifier];
-      [v14 setObject:v18 forKey:v19];
+      configurationCache = [callCopy uniqueProxyIdentifier];
+      [wallpaperData setObject:v18 forKey:configurationCache];
       v15 = 0;
     }
   }
@@ -6048,18 +6048,18 @@ LABEL_11:
   return v15;
 }
 
-- (id)sharedProfileStateOracleForCall:(id)a3
+- (id)sharedProfileStateOracleForCall:(id)call
 {
-  v4 = a3;
-  v5 = [v4 contactIdentifier];
+  callCopy = call;
+  contactIdentifier = [callCopy contactIdentifier];
 
-  if (v5)
+  if (contactIdentifier)
   {
-    v6 = [PHInCallUtilities contactStoreForCall:v4];
-    v7 = [v4 contactIdentifier];
+    v6 = [PHInCallUtilities contactStoreForCall:callCopy];
+    contactIdentifier2 = [callCopy contactIdentifier];
     v8 = +[iPadAudioCallViewController contactKeysToFetch];
-    v9 = [(iPadAudioCallViewController *)self contactsCache];
-    v10 = [v6 contactForIdentifier:v7 keysToFetch:v8 usingCache:v9];
+    contactsCache = [(iPadAudioCallViewController *)self contactsCache];
+    v10 = [v6 contactForIdentifier:contactIdentifier2 keysToFetch:v8 usingCache:contactsCache];
 
     if (v10)
     {
@@ -6084,9 +6084,9 @@ LABEL_11:
     v6 = sub_100004F84();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [v4 uniqueProxyIdentifier];
+      uniqueProxyIdentifier = [callCopy uniqueProxyIdentifier];
       v15 = 138412290;
-      v16 = v13;
+      v16 = uniqueProxyIdentifier;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "SNAP: call doesn't have contactIdentifier %@", &v15, 0xCu);
     }
 
@@ -6098,30 +6098,30 @@ LABEL_11:
 
 - (BOOL)currentCallStateCanShowNewPoster
 {
-  v2 = self;
-  v3 = [(iPadAudioCallViewController *)self frontmostCall];
-  LOBYTE(v2) = [(iPadAudioCallViewController *)v2 callStateCanShowNewPoster:v3];
+  selfCopy = self;
+  frontmostCall = [(iPadAudioCallViewController *)self frontmostCall];
+  LOBYTE(selfCopy) = [(iPadAudioCallViewController *)selfCopy callStateCanShowNewPoster:frontmostCall];
 
-  return v2;
+  return selfCopy;
 }
 
-- (BOOL)callStateCanShowNewPoster:(id)a3
+- (BOOL)callStateCanShowNewPoster:(id)poster
 {
-  v4 = a3;
-  v5 = [(iPadAudioCallViewController *)self features];
-  v6 = [v5 isNameAndPhotoC3Enabled];
+  posterCopy = poster;
+  features = [(iPadAudioCallViewController *)self features];
+  isNameAndPhotoC3Enabled = [features isNameAndPhotoC3Enabled];
 
   v9 = 0;
-  if (v6)
+  if (isNameAndPhotoC3Enabled)
   {
-    if (v4)
+    if (posterCopy)
     {
-      if ([v4 status] == 1)
+      if ([posterCopy status] == 1)
       {
-        v7 = [(iPadAudioCallViewController *)self callCenter];
-        v8 = [v7 currentCallCount];
+        callCenter = [(iPadAudioCallViewController *)self callCenter];
+        currentCallCount = [callCenter currentCallCount];
 
-        if (v8 < 2)
+        if (currentCallCount < 2)
         {
           v9 = 1;
         }
@@ -6134,10 +6134,10 @@ LABEL_11:
 
 - (BOOL)shouldShowNewPosterUpdates
 {
-  v3 = [(iPadAudioCallViewController *)self frontmostCall];
-  if ([(iPadAudioCallViewController *)self callStateCanShowNewPoster:v3])
+  frontmostCall = [(iPadAudioCallViewController *)self frontmostCall];
+  if ([(iPadAudioCallViewController *)self callStateCanShowNewPoster:frontmostCall])
   {
-    v4 = [objc_opt_class() posterSourceIsSyncedWithContacts:{-[iPadAudioCallViewController suggestedNewPosterSourceAfterCallConnects:](self, "suggestedNewPosterSourceAfterCallConnects:", v3)}];
+    v4 = [objc_opt_class() posterSourceIsSyncedWithContacts:{-[iPadAudioCallViewController suggestedNewPosterSourceAfterCallConnects:](self, "suggestedNewPosterSourceAfterCallConnects:", frontmostCall)}];
   }
 
   else
@@ -6148,24 +6148,24 @@ LABEL_11:
   return v4;
 }
 
-- (void)finishNewPosterUpdatesWithCompletion:(id)a3
+- (void)finishNewPosterUpdatesWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(iPadAudioCallViewController *)self features];
-  v6 = [v5 isNameAndPhotoC3Enabled];
+  completionCopy = completion;
+  features = [(iPadAudioCallViewController *)self features];
+  isNameAndPhotoC3Enabled = [features isNameAndPhotoC3Enabled];
 
-  if (v6)
+  if (isNameAndPhotoC3Enabled)
   {
-    v7 = [(iPadAudioCallViewController *)self frontmostCall];
-    v8 = v7;
-    if (v7)
+    frontmostCall = [(iPadAudioCallViewController *)self frontmostCall];
+    v8 = frontmostCall;
+    if (frontmostCall)
     {
-      if ([v7 status] == 1)
+      if ([frontmostCall status] == 1)
       {
-        v9 = [(iPadAudioCallViewController *)self callCenter];
-        v10 = [v9 currentCallCount];
+        callCenter = [(iPadAudioCallViewController *)self callCenter];
+        currentCallCount = [callCenter currentCallCount];
 
-        if (v10 <= 1)
+        if (currentCallCount <= 1)
         {
           v11 = [(iPadAudioCallViewController *)self sharedProfileStateOracleForCall:v8];
           v15 = 0;
@@ -6179,9 +6179,9 @@ LABEL_11:
             _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "SNAP: new poster update completed with error: %@", buf, 0xCu);
           }
 
-          if (v4)
+          if (completionCopy)
           {
-            v4[2](v4, v11);
+            completionCopy[2](completionCopy, v11);
           }
         }
       }
@@ -6193,17 +6193,17 @@ LABEL_11:
 {
   if ([(CNKFeatures *)self->_features isEnhancedEmergencyEnabled])
   {
-    v3 = [(iPadAudioCallViewController *)self frontmostCall];
-    v4 = [v3 isEmergency];
+    frontmostCall = [(iPadAudioCallViewController *)self frontmostCall];
+    isEmergency = [frontmostCall isEmergency];
 
-    if (v4)
+    if (isEmergency)
     {
       return 0;
     }
   }
 
-  v6 = [(iPadAudioCallViewController *)self callDisplayStyleManager];
-  v5 = [v6 callDisplayStyle] != 0;
+  callDisplayStyleManager = [(iPadAudioCallViewController *)self callDisplayStyleManager];
+  v5 = [callDisplayStyleManager callDisplayStyle] != 0;
 
   return v5;
 }
@@ -6212,24 +6212,24 @@ LABEL_11:
 {
   if ([(CNKFeatures *)self->_features isEnhancedEmergencyEnabled])
   {
-    v3 = [(iPadAudioCallViewController *)self frontmostCall];
-    v4 = [v3 isEmergency];
+    frontmostCall = [(iPadAudioCallViewController *)self frontmostCall];
+    isEmergency = [frontmostCall isEmergency];
 
-    if (v4)
+    if (isEmergency)
     {
       return 0;
     }
   }
 
-  v6 = [(iPadAudioCallViewController *)self callDisplayStyleManager];
-  if ([v6 callDisplayStyle] == 3)
+  callDisplayStyleManager = [(iPadAudioCallViewController *)self callDisplayStyleManager];
+  if ([callDisplayStyleManager callDisplayStyle] == 3)
   {
-    v7 = [(iPadAudioCallViewController *)self features];
-    [v7 isDominoEnabled];
+    features = [(iPadAudioCallViewController *)self features];
+    [features isDominoEnabled];
   }
 
-  v8 = [(iPadAudioCallViewController *)self callDisplayStyleManager];
-  v5 = [v8 callDisplayStyle] != 0;
+  callDisplayStyleManager2 = [(iPadAudioCallViewController *)self callDisplayStyleManager];
+  v5 = [callDisplayStyleManager2 callDisplayStyle] != 0;
 
   return v5;
 }
@@ -6238,26 +6238,26 @@ LABEL_11:
 {
   if ([(CNKFeatures *)self->_features isEnhancedEmergencyEnabled])
   {
-    v3 = [(iPadAudioCallViewController *)self frontmostCall];
-    v4 = [v3 isEmergency];
+    frontmostCall = [(iPadAudioCallViewController *)self frontmostCall];
+    isEmergency = [frontmostCall isEmergency];
 
-    if (v4)
+    if (isEmergency)
     {
       return 0;
     }
   }
 
-  v6 = [(iPadAudioCallViewController *)self callToUseForWallpaper];
-  v7 = [v6 provider];
-  if ([v7 isSystemProvider])
+  callToUseForWallpaper = [(iPadAudioCallViewController *)self callToUseForWallpaper];
+  provider = [callToUseForWallpaper provider];
+  if ([provider isSystemProvider])
   {
     v5 = 1;
   }
 
   else
   {
-    v8 = [(iPadAudioCallViewController *)self callToUseForWallpaper];
-    v5 = [v8 status] != 4;
+    callToUseForWallpaper2 = [(iPadAudioCallViewController *)self callToUseForWallpaper];
+    v5 = [callToUseForWallpaper2 status] != 4;
   }
 
   return v5;
@@ -6265,8 +6265,8 @@ LABEL_11:
 
 - (BOOL)isShowingBackgroundImage
 {
-  v2 = [(iPadAudioCallViewController *)self backgroundImageView];
-  v3 = v2 != 0;
+  backgroundImageView = [(iPadAudioCallViewController *)self backgroundImageView];
+  v3 = backgroundImageView != 0;
 
   return v3;
 }
@@ -6275,41 +6275,41 @@ LABEL_11:
 {
   if ([(CNKFeatures *)self->_features isEnhancedEmergencyEnabled])
   {
-    v3 = [(iPadAudioCallViewController *)self frontmostCall];
-    if (v3)
+    frontmostCall = [(iPadAudioCallViewController *)self frontmostCall];
+    if (frontmostCall)
     {
-      v4 = v3;
+      firstObject = frontmostCall;
     }
 
     else
     {
-      v5 = [(iPadAudioCallViewController *)self callCenter];
-      v6 = [v5 currentCalls];
-      v4 = [v6 firstObject];
+      callCenter = [(iPadAudioCallViewController *)self callCenter];
+      currentCalls = [callCenter currentCalls];
+      firstObject = [currentCalls firstObject];
 
-      if (!v4)
+      if (!firstObject)
       {
         v7 = +[UIApplication sharedApplication];
-        v8 = [v7 delegate];
-        v4 = [v8 mostRecentlyDisconnectedAudioCall];
+        delegate = [v7 delegate];
+        firstObject = [delegate mostRecentlyDisconnectedAudioCall];
       }
     }
 
-    v9 = [v4 isEmergency];
+    isEmergency = [firstObject isEmergency];
 
-    if (v9)
+    if (isEmergency)
     {
       return 0;
     }
   }
 
-  v11 = [(iPadAudioCallViewController *)self callDisplayStyleManager];
-  if ([v11 callDisplayStyle] == 3)
+  callDisplayStyleManager = [(iPadAudioCallViewController *)self callDisplayStyleManager];
+  if ([callDisplayStyleManager callDisplayStyle] == 3)
   {
-    v12 = [(iPadAudioCallViewController *)self features];
-    v13 = [v12 isDominoEnabled];
+    features = [(iPadAudioCallViewController *)self features];
+    isDominoEnabled = [features isDominoEnabled];
 
-    if (v13)
+    if (isDominoEnabled)
     {
       return 1;
     }
@@ -6320,10 +6320,10 @@ LABEL_11:
   }
 
   v14 = +[UIDevice currentDevice];
-  v15 = [v14 userInterfaceIdiom];
+  userInterfaceIdiom = [v14 userInterfaceIdiom];
 
-  v16 = [(iPadAudioCallViewController *)self callDisplayStyleManager];
-  v17 = [v16 callDisplayStyle];
+  callDisplayStyleManager2 = [(iPadAudioCallViewController *)self callDisplayStyleManager];
+  callDisplayStyle = [callDisplayStyleManager2 callDisplayStyle];
 
   if ([(iPadAudioCallViewController *)self shouldShowContactOrLastSeenWallpaper])
   {
@@ -6332,15 +6332,15 @@ LABEL_11:
 
   else
   {
-    v19 = [(iPadAudioCallViewController *)self renderingViewController];
-    v18 = v19 != 0;
+    renderingViewController = [(iPadAudioCallViewController *)self renderingViewController];
+    v18 = renderingViewController != 0;
   }
 
-  v20 = [(iPadAudioCallViewController *)self callToUseForWallpaper];
-  v21 = [(iPadAudioCallViewController *)self contactImageForCall:v20];
+  callToUseForWallpaper = [(iPadAudioCallViewController *)self callToUseForWallpaper];
+  v21 = [(iPadAudioCallViewController *)self contactImageForCall:callToUseForWallpaper];
 
-  v22 = [(iPadAudioCallViewController *)self callToUseForWallpaper];
-  v23 = [(iPadAudioCallViewController *)self fallbackImageDataForCall:v22];
+  callToUseForWallpaper2 = [(iPadAudioCallViewController *)self callToUseForWallpaper];
+  v23 = [(iPadAudioCallViewController *)self fallbackImageDataForCall:callToUseForWallpaper2];
 
   if (!v18 && [(iPadAudioCallViewController *)self shouldApplyNewGradientBlur])
   {
@@ -6358,9 +6358,9 @@ LABEL_11:
   }
 
   v25 = !v24;
-  if ((v15 | v17) == 0 || v18)
+  if ((userInterfaceIdiom | callDisplayStyle) == 0 || v18)
   {
-    return (v15 | v17) == 0;
+    return (userInterfaceIdiom | callDisplayStyle) == 0;
   }
 
   else
@@ -6369,23 +6369,23 @@ LABEL_11:
   }
 }
 
-- (id)contactToDisplayInCallWallpaperForCall:(id)a3
+- (id)contactToDisplayInCallWallpaperForCall:(id)call
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && ([v4 contactIdentifier], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
+  callCopy = call;
+  v5 = callCopy;
+  if (callCopy && ([callCopy contactIdentifier], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
   {
     v7 = [PHInCallUtilities contactStoreForCall:v5];
-    v8 = [v5 contactIdentifier];
+    contactIdentifier = [v5 contactIdentifier];
     v9 = +[iPadAudioCallViewController contactKeysToFetch];
-    v10 = [(iPadAudioCallViewController *)self contactsCache];
-    v11 = [v7 contactForIdentifier:v8 keysToFetch:v9 usingCache:v10];
+    contactsCache = [(iPadAudioCallViewController *)self contactsCache];
+    v11 = [v7 contactForIdentifier:contactIdentifier keysToFetch:v9 usingCache:contactsCache];
 
     if (v11)
     {
-      v12 = [(iPadAudioCallViewController *)self mostRecentContactToDisplayInCallWallpaper];
+      mostRecentContactToDisplayInCallWallpaper = [(iPadAudioCallViewController *)self mostRecentContactToDisplayInCallWallpaper];
 
-      if (v11 != v12)
+      if (v11 != mostRecentContactToDisplayInCallWallpaper)
       {
         [(iPadAudioCallViewController *)self setMostRecentContactToDisplayInCallWallpaper:v11];
         v13 = +[CNContactChangesNotifier sharedNotifier];
@@ -6406,33 +6406,33 @@ LABEL_11:
   return v11;
 }
 
-- (id)contactWallpaperForCall:(id)a3
+- (id)contactWallpaperForCall:(id)call
 {
-  v4 = a3;
-  if (-[CNKFeatures isEnhancedEmergencyEnabled](self->_features, "isEnhancedEmergencyEnabled") && ([v4 isEmergency] & 1) != 0)
+  callCopy = call;
+  if (-[CNKFeatures isEnhancedEmergencyEnabled](self->_features, "isEnhancedEmergencyEnabled") && ([callCopy isEmergency] & 1) != 0)
   {
-    v5 = 0;
+    wallpaper = 0;
     goto LABEL_20;
   }
 
-  v6 = [v4 contactIdentifier];
+  contactIdentifier = [callCopy contactIdentifier];
 
-  if (v6)
+  if (contactIdentifier)
   {
-    v7 = [v4 handle];
-    v8 = [v7 siriDisplayName];
-    if ([v8 length])
+    handle = [callCopy handle];
+    siriDisplayName = [handle siriDisplayName];
+    if ([siriDisplayName length])
     {
-      v9 = [v4 handle];
-      v10 = [v9 shouldHideContact];
+      handle2 = [callCopy handle];
+      shouldHideContact = [handle2 shouldHideContact];
 
-      if (v10)
+      if (shouldHideContact)
       {
         v11 = sub_100004F84();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
         {
           v19 = 138412290;
-          v20 = v4;
+          v20 = callCopy;
           v12 = "SNAP: call initiated with Siri using a phone or email on a lock device, not showing the wallpaper %@";
 LABEL_11:
           _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, v12, &v19, 0xCu);
@@ -6447,11 +6447,11 @@ LABEL_11:
     {
     }
 
-    v11 = [PHInCallUtilities contactStoreForCall:v4];
-    v13 = [v4 contactIdentifier];
+    v11 = [PHInCallUtilities contactStoreForCall:callCopy];
+    contactIdentifier2 = [callCopy contactIdentifier];
     v14 = +[iPadAudioCallViewController contactKeysToFetch];
-    v15 = [(iPadAudioCallViewController *)self contactsCache];
-    v16 = [v11 contactForIdentifier:v13 keysToFetch:v14 usingCache:v15];
+    contactsCache = [(iPadAudioCallViewController *)self contactsCache];
+    v16 = [v11 contactForIdentifier:contactIdentifier2 keysToFetch:v14 usingCache:contactsCache];
 
     v17 = sub_100004F84();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
@@ -6461,11 +6461,11 @@ LABEL_11:
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "SNAP: the contact we used to fetch wallpaper for call is non-nil: %d", &v19, 8u);
     }
 
-    v5 = [v16 wallpaper];
+    wallpaper = [v16 wallpaper];
 
-    if (v5)
+    if (wallpaper)
     {
-      v5 = [v16 wallpaper];
+      wallpaper = [v16 wallpaper];
     }
 
     goto LABEL_19;
@@ -6475,40 +6475,40 @@ LABEL_11:
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v19 = 138412290;
-    v20 = v4;
+    v20 = callCopy;
     v12 = "SNAP: call doesn't have contactIdentifier %@";
     goto LABEL_11;
   }
 
 LABEL_12:
-  v5 = 0;
+  wallpaper = 0;
 LABEL_19:
 
 LABEL_20:
 
-  return v5;
+  return wallpaper;
 }
 
-- (id)wallpaperTypeForCNWallpaper:(id)a3
+- (id)wallpaperTypeForCNWallpaper:(id)wallpaper
 {
-  v4 = [a3 extensionBundleID];
-  v5 = [(iPadAudioCallViewController *)self wallpaperTypeForBundleID:v4];
-
-  return v5;
-}
-
-- (id)wallpaperTypeForIMWallpaperMetadata:(id)a3
-{
-  v4 = [a3 type];
-  v5 = [(iPadAudioCallViewController *)self wallpaperTypeForBundleID:v4];
+  extensionBundleID = [wallpaper extensionBundleID];
+  v5 = [(iPadAudioCallViewController *)self wallpaperTypeForBundleID:extensionBundleID];
 
   return v5;
 }
 
-- (id)wallpaperTypeForBundleID:(id)a3
+- (id)wallpaperTypeForIMWallpaperMetadata:(id)metadata
 {
-  v3 = a3;
-  if ([v3 isEqual:@"com.apple.PhotosUIPrivate.PhotosPosterProvider"])
+  type = [metadata type];
+  v5 = [(iPadAudioCallViewController *)self wallpaperTypeForBundleID:type];
+
+  return v5;
+}
+
+- (id)wallpaperTypeForBundleID:(id)d
+{
+  dCopy = d;
+  if ([dCopy isEqual:@"com.apple.PhotosUIPrivate.PhotosPosterProvider"])
   {
     v4 = &CNWallpaperTypePhoto;
 LABEL_7:
@@ -6516,13 +6516,13 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if ([v3 isEqual:@"com.apple.AvatarUI.AvatarPosterExtension"])
+  if ([dCopy isEqual:@"com.apple.AvatarUI.AvatarPosterExtension"])
   {
     v4 = &CNWallpaperTypeMemoji;
     goto LABEL_7;
   }
 
-  if ([v3 isEqual:@"com.apple.ContactsUI.MonogramPosterExtension"])
+  if ([dCopy isEqual:@"com.apple.ContactsUI.MonogramPosterExtension"])
   {
     v4 = &CNWallpaperTypeMonogram;
     goto LABEL_7;
@@ -6538,17 +6538,17 @@ LABEL_8:
 {
   if ([(iPadAudioCallViewController *)self hasNoCallsOrOnlyEndedCalls])
   {
-    v3 = [(iPadAudioCallViewController *)self renderingViewController];
+    renderingViewController = [(iPadAudioCallViewController *)self renderingViewController];
 
-    if (v3)
+    if (renderingViewController)
     {
       return 1;
     }
   }
 
-  v5 = [(iPadAudioCallViewController *)self callToUseForWallpaper];
-  v6 = v5;
-  if (v5 && ([v5 contactIdentifier], v7 = objc_claimAutoreleasedReturnValue(), v7, v7))
+  callToUseForWallpaper = [(iPadAudioCallViewController *)self callToUseForWallpaper];
+  v6 = callToUseForWallpaper;
+  if (callToUseForWallpaper && ([callToUseForWallpaper contactIdentifier], v7 = objc_claimAutoreleasedReturnValue(), v7, v7))
   {
     if ([(iPadAudioCallViewController *)self callStateCanShowNewPoster:v6]|| ![(iPadAudioCallViewController *)self prefersShowingCachedLastSeenPosterBeforeCallConnected:v6])
     {
@@ -6570,48 +6570,48 @@ LABEL_8:
   return v4;
 }
 
-- (id)lastSeenOrCurrentPosterConfigurationForCall:(id)a3
+- (id)lastSeenOrCurrentPosterConfigurationForCall:(id)call
 {
-  v4 = a3;
-  if ([(iPadAudioCallViewController *)self prefersShowingCachedLastSeenPosterBeforeCallConnected:v4])
+  callCopy = call;
+  if ([(iPadAudioCallViewController *)self prefersShowingCachedLastSeenPosterBeforeCallConnected:callCopy])
   {
-    [(iPadAudioCallViewController *)self lastSeenPosterConfigurationForCall:v4];
+    [(iPadAudioCallViewController *)self lastSeenPosterConfigurationForCall:callCopy];
   }
 
   else
   {
-    [(iPadAudioCallViewController *)self contactWallpaperConfigurationForCall:v4 shouldReadFromCache:1];
+    [(iPadAudioCallViewController *)self contactWallpaperConfigurationForCall:callCopy shouldReadFromCache:1];
   }
   v5 = ;
 
   return v5;
 }
 
-- (id)lastSeenPosterConfigurationForCall:(id)a3
+- (id)lastSeenPosterConfigurationForCall:(id)call
 {
-  v4 = a3;
-  v5 = [(iPadAudioCallViewController *)self configurationCache];
-  v6 = [v4 uniqueProxyIdentifier];
-  v7 = [v5 objectForKey:v6];
-  v8 = [v7 configuration];
+  callCopy = call;
+  configurationCache = [(iPadAudioCallViewController *)self configurationCache];
+  uniqueProxyIdentifier = [callCopy uniqueProxyIdentifier];
+  v7 = [configurationCache objectForKey:uniqueProxyIdentifier];
+  configuration = [v7 configuration];
 
-  if (!v8)
+  if (!configuration)
   {
-    v12 = [v4 handle];
-    v13 = [v12 siriDisplayName];
-    if ([v13 length])
+    handle = [callCopy handle];
+    siriDisplayName = [handle siriDisplayName];
+    if ([siriDisplayName length])
     {
-      v14 = [v4 handle];
-      v15 = [v14 shouldHideContact];
+      handle2 = [callCopy handle];
+      shouldHideContact = [handle2 shouldHideContact];
 
-      if (v15)
+      if (shouldHideContact)
       {
         v16 = sub_100004F84();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
         {
-          v17 = [v4 uniqueProxyIdentifier];
+          uniqueProxyIdentifier2 = [callCopy uniqueProxyIdentifier];
           v26 = 138412290;
-          v27 = v17;
+          v27 = uniqueProxyIdentifier2;
           _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "SNAP: call initiated with Siri using a phone or email on a lock device, not showing the wallpaper for callUUID %@", &v26, 0xCu);
         }
 
@@ -6623,33 +6623,33 @@ LABEL_8:
     {
     }
 
-    v18 = [(iPadAudioCallViewController *)self readCachedLastSeenPosterDataForCall:v4];
+    v18 = [(iPadAudioCallViewController *)self readCachedLastSeenPosterDataForCall:callCopy];
     if (v18)
     {
-      v19 = v18;
+      configurationCache3 = v18;
       v11 = [PRSPosterArchiver unarchiveConfigurationFromData:v18 error:0];
       v20 = sub_100004F84();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
       {
-        v21 = [v4 uniqueProxyIdentifier];
+        uniqueProxyIdentifier3 = [callCopy uniqueProxyIdentifier];
         v26 = 138412290;
-        v27 = v21;
+        v27 = uniqueProxyIdentifier3;
         _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "SNAP: unarchived a lastSeen PRSPosterConfiguration for %@", &v26, 0xCu);
       }
 
       v22 = [[ICSPosterConfigurationWrapper alloc] initWithConfiguration:v11 source:1];
-      v23 = [(iPadAudioCallViewController *)self configurationCache];
-      v24 = [v4 uniqueProxyIdentifier];
-      [v23 setObject:v22 forKey:v24];
+      configurationCache2 = [(iPadAudioCallViewController *)self configurationCache];
+      uniqueProxyIdentifier4 = [callCopy uniqueProxyIdentifier];
+      [configurationCache2 setObject:v22 forKey:uniqueProxyIdentifier4];
 
       goto LABEL_16;
     }
 
 LABEL_15:
-    v19 = [(iPadAudioCallViewController *)self configurationCache];
+    configurationCache3 = [(iPadAudioCallViewController *)self configurationCache];
     v22 = [[ICSPosterConfigurationWrapper alloc] initWithConfiguration:0 source:1];
-    v23 = [v4 uniqueProxyIdentifier];
-    [v19 setObject:v22 forKey:v23];
+    configurationCache2 = [callCopy uniqueProxyIdentifier];
+    [configurationCache3 setObject:v22 forKey:configurationCache2];
     v11 = 0;
 LABEL_16:
 
@@ -6659,67 +6659,67 @@ LABEL_16:
   v9 = sub_100004F84();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v4 callUUID];
+    callUUID = [callCopy callUUID];
     v26 = 138412290;
-    v27 = v10;
+    v27 = callUUID;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "SNAP: Returning a cached PRSPosterConfiguration for %@", &v26, 0xCu);
   }
 
-  v11 = v8;
+  v11 = configuration;
 LABEL_17:
 
   return v11;
 }
 
-- (id)contactWallpaperConfigurationForCall:(id)a3 shouldReadFromCache:(BOOL)a4
+- (id)contactWallpaperConfigurationForCall:(id)call shouldReadFromCache:(BOOL)cache
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(iPadAudioCallViewController *)self contactWallpaperForCall:v6];
+  cacheCopy = cache;
+  callCopy = call;
+  v7 = [(iPadAudioCallViewController *)self contactWallpaperForCall:callCopy];
   if (v7)
   {
-    if (v4 && (-[iPadAudioCallViewController configurationCache](self, "configurationCache"), v8 = objc_claimAutoreleasedReturnValue(), [v6 uniqueProxyIdentifier], v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "objectForKey:", v9), v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "configuration"), v11 = objc_claimAutoreleasedReturnValue(), v10, v9, v8, v11))
+    if (cacheCopy && (-[iPadAudioCallViewController configurationCache](self, "configurationCache"), v8 = objc_claimAutoreleasedReturnValue(), [callCopy uniqueProxyIdentifier], v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "objectForKey:", v9), v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "configuration"), v11 = objc_claimAutoreleasedReturnValue(), v10, v9, v8, v11))
     {
-      v12 = sub_100004F84();
-      if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+      posterArchiveData = sub_100004F84();
+      if (os_log_type_enabled(posterArchiveData, OS_LOG_TYPE_DEFAULT))
       {
-        v13 = [v6 callUUID];
+        callUUID = [callCopy callUUID];
         v25 = 138412290;
-        v26 = v13;
-        _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "SNAP: Returning a cached PRSPosterConfiguration for %@", &v25, 0xCu);
+        v26 = callUUID;
+        _os_log_impl(&_mh_execute_header, posterArchiveData, OS_LOG_TYPE_DEFAULT, "SNAP: Returning a cached PRSPosterConfiguration for %@", &v25, 0xCu);
       }
     }
 
     else
     {
-      v12 = [v7 posterArchiveData];
+      posterArchiveData = [v7 posterArchiveData];
       v14 = sub_100004F84();
       v15 = os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
-      if (v12)
+      if (posterArchiveData)
       {
         if (v15)
         {
           v25 = 138412546;
-          v26 = v12;
+          v26 = posterArchiveData;
           v27 = 2048;
-          v28 = [v12 length];
+          v28 = [posterArchiveData length];
           _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "SNAP: posterArchiveData in wallpaper is %@, length is %lu", &v25, 0x16u);
         }
 
-        v11 = [PRSPosterArchiver unarchiveConfigurationFromData:v12 error:0];
+        v11 = [PRSPosterArchiver unarchiveConfigurationFromData:posterArchiveData error:0];
         v16 = sub_100004F84();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
         {
-          v17 = [v6 uniqueProxyIdentifier];
+          uniqueProxyIdentifier = [callCopy uniqueProxyIdentifier];
           v25 = 138412290;
-          v26 = v17;
+          v26 = uniqueProxyIdentifier;
           _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "SNAP: unarchived a contact (current) PRSPosterConfiguration for %@", &v25, 0xCu);
         }
 
-        v18 = [[ICSPosterConfigurationWrapper alloc] initWithConfiguration:v11 source:2];
-        v19 = [(iPadAudioCallViewController *)self configurationCache];
-        v20 = [v6 uniqueProxyIdentifier];
-        [(ICSPosterConfigurationWrapper *)v19 setObject:v18 forKey:v20];
+        configurationCache2 = [[ICSPosterConfigurationWrapper alloc] initWithConfiguration:v11 source:2];
+        configurationCache = [(iPadAudioCallViewController *)self configurationCache];
+        uniqueProxyIdentifier2 = [callCopy uniqueProxyIdentifier];
+        [(ICSPosterConfigurationWrapper *)configurationCache setObject:configurationCache2 forKey:uniqueProxyIdentifier2];
       }
 
       else
@@ -6730,10 +6730,10 @@ LABEL_17:
           _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "SNAP: there is no posterArchiveData in wallpaper", &v25, 2u);
         }
 
-        v18 = [(iPadAudioCallViewController *)self configurationCache];
-        v19 = [[ICSPosterConfigurationWrapper alloc] initWithConfiguration:0 source:2];
-        v20 = [v6 uniqueProxyIdentifier];
-        [(ICSPosterConfigurationWrapper *)v18 setObject:v19 forKey:v20];
+        configurationCache2 = [(iPadAudioCallViewController *)self configurationCache];
+        configurationCache = [[ICSPosterConfigurationWrapper alloc] initWithConfiguration:0 source:2];
+        uniqueProxyIdentifier2 = [callCopy uniqueProxyIdentifier];
+        [(ICSPosterConfigurationWrapper *)configurationCache2 setObject:configurationCache forKey:uniqueProxyIdentifier2];
         v11 = 0;
       }
     }
@@ -6741,16 +6741,16 @@ LABEL_17:
 
   else
   {
-    v21 = [(iPadAudioCallViewController *)self configurationCache];
+    configurationCache3 = [(iPadAudioCallViewController *)self configurationCache];
     v22 = [[ICSPosterConfigurationWrapper alloc] initWithConfiguration:0 source:2];
-    v23 = [v6 uniqueProxyIdentifier];
-    [v21 setObject:v22 forKey:v23];
+    uniqueProxyIdentifier3 = [callCopy uniqueProxyIdentifier];
+    [configurationCache3 setObject:v22 forKey:uniqueProxyIdentifier3];
 
-    v12 = sub_100004F84();
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+    posterArchiveData = sub_100004F84();
+    if (os_log_type_enabled(posterArchiveData, OS_LOG_TYPE_DEFAULT))
     {
       LOWORD(v25) = 0;
-      _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "SNAP: contactWallpaperForCall is nil", &v25, 2u);
+      _os_log_impl(&_mh_execute_header, posterArchiveData, OS_LOG_TYPE_DEFAULT, "SNAP: contactWallpaperForCall is nil", &v25, 2u);
     }
 
     v11 = 0;
@@ -6759,86 +6759,86 @@ LABEL_17:
   return v11;
 }
 
-- (id)wallpaperTitleStyleAttributesForCall:(id)a3
+- (id)wallpaperTitleStyleAttributesForCall:(id)call
 {
-  v4 = a3;
-  v5 = [(iPadAudioCallViewController *)self lastSeenOrCurrentPosterConfigurationForCall:v4];
+  callCopy = call;
+  v5 = [(iPadAudioCallViewController *)self lastSeenOrCurrentPosterConfigurationForCall:callCopy];
   if (!v5)
   {
-    v11 = 0;
+    titleStyleAttributes2 = 0;
     goto LABEL_12;
   }
 
-  v6 = [(iPadAudioCallViewController *)self configurationCache];
-  v7 = [v4 uniqueProxyIdentifier];
-  v8 = [v6 objectForKey:v7];
+  configurationCache = [(iPadAudioCallViewController *)self configurationCache];
+  uniqueProxyIdentifier = [callCopy uniqueProxyIdentifier];
+  v8 = [configurationCache objectForKey:uniqueProxyIdentifier];
 
   if (!v8)
   {
     goto LABEL_8;
   }
 
-  v9 = [v8 configuration];
-  if (([v9 isEqual:v5] & 1) == 0)
+  configuration = [v8 configuration];
+  if (([configuration isEqual:v5] & 1) == 0)
   {
 
     goto LABEL_8;
   }
 
-  v10 = [v8 titleStyleAttributes];
+  titleStyleAttributes = [v8 titleStyleAttributes];
 
-  if (!v10)
+  if (!titleStyleAttributes)
   {
 LABEL_8:
     v15 = 0;
-    v11 = [PRUISPosterConfigurationUtilities titleStyleAttributesForConfiguration:v5 error:&v15];
+    titleStyleAttributes2 = [PRUISPosterConfigurationUtilities titleStyleAttributesForConfiguration:v5 error:&v15];
     if (v8)
     {
-      v12 = [v8 configuration];
-      v13 = [v12 isEqual:v5];
+      configuration2 = [v8 configuration];
+      v13 = [configuration2 isEqual:v5];
 
       if (v13)
       {
-        [v8 setTitleStyleAttributes:v11];
+        [v8 setTitleStyleAttributes:titleStyleAttributes2];
       }
     }
 
     goto LABEL_11;
   }
 
-  v11 = [v8 titleStyleAttributes];
+  titleStyleAttributes2 = [v8 titleStyleAttributes];
 LABEL_11:
 
 LABEL_12:
 
-  return v11;
+  return titleStyleAttributes2;
 }
 
 - (id)wallpaperTitleStyleAttributes
 {
-  v3 = [(iPadAudioCallViewController *)self callToUseForWallpaper];
-  v4 = [(iPadAudioCallViewController *)self wallpaperTitleStyleAttributesForCall:v3];
+  callToUseForWallpaper = [(iPadAudioCallViewController *)self callToUseForWallpaper];
+  v4 = [(iPadAudioCallViewController *)self wallpaperTitleStyleAttributesForCall:callToUseForWallpaper];
 
   return v4;
 }
 
 - (id)contactWallpaperBackgroundColor
 {
-  v3 = [(iPadAudioCallViewController *)self callToUseForWallpaper];
-  if (![(iPadAudioCallViewController *)self callStateCanShowNewPoster:v3]&& [(iPadAudioCallViewController *)self prefersShowingCachedLastSeenPosterBeforeCallConnected:v3])
+  callToUseForWallpaper = [(iPadAudioCallViewController *)self callToUseForWallpaper];
+  if (![(iPadAudioCallViewController *)self callStateCanShowNewPoster:callToUseForWallpaper]&& [(iPadAudioCallViewController *)self prefersShowingCachedLastSeenPosterBeforeCallConnected:callToUseForWallpaper])
   {
-    v4 = [(iPadAudioCallViewController *)self lastSeenPosterIMWallpaperMetadataForCall:v3];
-    v5 = [v4 backgroundColor];
+    v4 = [(iPadAudioCallViewController *)self lastSeenPosterIMWallpaperMetadataForCall:callToUseForWallpaper];
+    backgroundColor = [v4 backgroundColor];
 LABEL_6:
-    v7 = v5;
+    v7 = backgroundColor;
     goto LABEL_8;
   }
 
-  v6 = [(iPadAudioCallViewController *)self contactWallpaperForCall:v3];
+  v6 = [(iPadAudioCallViewController *)self contactWallpaperForCall:callToUseForWallpaper];
   v4 = v6;
   if (v6)
   {
-    v5 = [v6 backgroundColorDescription];
+    backgroundColor = [v6 backgroundColorDescription];
     goto LABEL_6;
   }
 
@@ -6880,12 +6880,12 @@ LABEL_8:
   return v23;
 }
 
-- (void)updateLegacyBackgroundImageVisibilityWithShouldShowWallpaper:(BOOL)a3
+- (void)updateLegacyBackgroundImageVisibilityWithShouldShowWallpaper:(BOOL)wallpaper
 {
-  v3 = a3;
-  v5 = [(iPadAudioCallViewController *)self canShowBackgroundImage];
-  v6 = !v3;
-  if (!v5)
+  wallpaperCopy = wallpaper;
+  canShowBackgroundImage = [(iPadAudioCallViewController *)self canShowBackgroundImage];
+  v6 = !wallpaperCopy;
+  if (!canShowBackgroundImage)
   {
     v6 = 0.0;
   }
@@ -6901,39 +6901,39 @@ LABEL_8:
   }
 }
 
-- (BOOL)setCallForBackgroundImage:(id)a3 animated:(BOOL)a4 callDisplayStyleChanged:(BOOL)a5
+- (BOOL)setCallForBackgroundImage:(id)image animated:(BOOL)animated callDisplayStyleChanged:(BOOL)changed
 {
-  v5 = a5;
-  v7 = a3;
+  changedCopy = changed;
+  imageCopy = image;
   v8 = sub_100004F84();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v17 = 138412290;
-    v18 = v7;
+    v18 = imageCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "setCallForBackgroundImage to: %@", &v17, 0xCu);
   }
 
-  v9 = [(iPadAudioCallViewController *)self callForBackgroundImage];
-  if ([v9 isEqual:v7])
+  callForBackgroundImage = [(iPadAudioCallViewController *)self callForBackgroundImage];
+  if ([callForBackgroundImage isEqual:imageCopy])
   {
-    v10 = [(iPadAudioCallViewController *)self callForBackgroundImage];
+    callForBackgroundImage2 = [(iPadAudioCallViewController *)self callForBackgroundImage];
 
-    if (v10)
+    if (callForBackgroundImage2)
     {
       v11 = 1;
     }
 
     else
     {
-      v11 = v7 == 0;
+      v11 = imageCopy == 0;
     }
 
-    if (v11 && !v5)
+    if (v11 && !changedCopy)
     {
-      v12 = [(iPadAudioCallViewController *)self backgroundImageView];
-      v13 = [v12 image];
+      backgroundImageView = [(iPadAudioCallViewController *)self backgroundImageView];
+      image = [backgroundImageView image];
 
-      [(iPadAudioCallViewController *)self hideOrShowThirdPartyBackgroundImageWithImage:v13];
+      [(iPadAudioCallViewController *)self hideOrShowThirdPartyBackgroundImageWithImage:image];
       goto LABEL_19;
     }
   }
@@ -6942,58 +6942,58 @@ LABEL_8:
   {
   }
 
-  if (v7)
+  if (imageCopy)
   {
-    v14 = [(iPadAudioCallViewController *)self contactImageDataForCall:v7];
+    v14 = [(iPadAudioCallViewController *)self contactImageDataForCall:imageCopy];
     if (v14)
     {
-      v13 = [[UIImage alloc] initWithData:v14];
+      image = [[UIImage alloc] initWithData:v14];
     }
 
     else
     {
-      v13 = 0;
+      image = 0;
     }
   }
 
   else
   {
-    v13 = 0;
+    image = 0;
   }
 
-  [(iPadAudioCallViewController *)self setBackgroundImage:v13];
-  [(iPadAudioCallViewController *)self setCallForBackgroundImage:v7];
+  [(iPadAudioCallViewController *)self setBackgroundImage:image];
+  [(iPadAudioCallViewController *)self setCallForBackgroundImage:imageCopy];
 LABEL_19:
   [(iPadAudioCallViewController *)self updateLegacyBackgroundImageVisibilityWithShouldShowWallpaper:[(iPadAudioCallViewController *)self callHasNoContactPoster]^ 1];
-  if (v13)
+  if (image)
   {
-    v15 = [(iPadAudioCallViewController *)self canShowBackgroundImage];
+    canShowBackgroundImage = [(iPadAudioCallViewController *)self canShowBackgroundImage];
   }
 
   else
   {
-    v15 = 0;
+    canShowBackgroundImage = 0;
   }
 
-  return v15;
+  return canShowBackgroundImage;
 }
 
-- (id)contactImageDataForCall:(id)a3
+- (id)contactImageDataForCall:(id)call
 {
-  v4 = [(iPadAudioCallViewController *)self contactForCall:a3];
+  v4 = [(iPadAudioCallViewController *)self contactForCall:call];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 fullscreenImageData];
-    v7 = [(iPadAudioCallViewController *)self callDisplayStyleManager];
-    if ([v7 callDisplayStyle] == 3)
+    fullscreenImageData = [v4 fullscreenImageData];
+    callDisplayStyleManager = [(iPadAudioCallViewController *)self callDisplayStyleManager];
+    if ([callDisplayStyleManager callDisplayStyle] == 3)
     {
-      v8 = [(iPadAudioCallViewController *)self features];
-      v9 = [v8 isDominoEnabled];
+      features = [(iPadAudioCallViewController *)self features];
+      isDominoEnabled = [features isDominoEnabled];
 
-      if (v9 && !v6)
+      if (isDominoEnabled && !fullscreenImageData)
       {
-        v6 = [v5 imageData];
+        fullscreenImageData = [v5 imageData];
       }
     }
 
@@ -7004,29 +7004,29 @@ LABEL_19:
 
   else
   {
-    v6 = 0;
+    fullscreenImageData = 0;
   }
 
   v10 = sub_100004F84();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138412290;
-    v13 = v6;
+    v13 = fullscreenImageData;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "SNAP: contactImageDataForCall is %@", &v12, 0xCu);
   }
 
-  return v6;
+  return fullscreenImageData;
 }
 
-- (id)contactForCall:(id)a3
+- (id)contactForCall:(id)call
 {
-  v4 = a3;
-  v5 = [v4 handle];
-  v6 = [v5 siriDisplayName];
-  if ([v6 length])
+  callCopy = call;
+  handle = [callCopy handle];
+  siriDisplayName = [handle siriDisplayName];
+  if ([siriDisplayName length])
   {
-    v7 = [v4 handle];
-    v8 = [v7 shouldHideContact] ^ 1;
+    handle2 = [callCopy handle];
+    v8 = [handle2 shouldHideContact] ^ 1;
   }
 
   else
@@ -7034,9 +7034,9 @@ LABEL_19:
     v8 = 1;
   }
 
-  v9 = [v4 contactIdentifier];
+  contactIdentifier = [callCopy contactIdentifier];
 
-  if (v9 && v8)
+  if (contactIdentifier && v8)
   {
     v10 = sub_100004F84();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -7045,52 +7045,52 @@ LABEL_19:
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "SNAP: trying to fetch contactImageData", v18, 2u);
     }
 
-    v11 = [PHInCallUtilities contactStoreForCall:v4];
-    v12 = [v4 contactIdentifier];
+    handle3 = [PHInCallUtilities contactStoreForCall:callCopy];
+    contactIdentifier2 = [callCopy contactIdentifier];
     v13 = +[iPadAudioCallViewController contactKeysToFetch];
-    v14 = [(iPadAudioCallViewController *)self contactsCache];
-    v15 = [v11 contactForIdentifier:v12 keysToFetch:v13 usingCache:v14];
+    contactsCache = [(iPadAudioCallViewController *)self contactsCache];
+    v15 = [handle3 contactForIdentifier:contactIdentifier2 keysToFetch:v13 usingCache:contactsCache];
   }
 
   else
   {
     v16 = [CNMutableContact alloc];
-    v11 = [v4 handle];
-    v15 = [v16 initWithHandle:v11];
+    handle3 = [callCopy handle];
+    v15 = [v16 initWithHandle:handle3];
   }
 
   return v15;
 }
 
-- (id)fallbackImageDataForCall:(id)a3
+- (id)fallbackImageDataForCall:(id)call
 {
-  v3 = [(iPadAudioCallViewController *)self contactForCall:a3];
+  v3 = [(iPadAudioCallViewController *)self contactForCall:call];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 imageData];
+    imageData = [v3 imageData];
   }
 
   else
   {
-    v5 = 0;
+    imageData = 0;
   }
 
   v6 = sub_100004F84();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v5;
+    v9 = imageData;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "SNAP: fallbackImageDataForContact is %@", &v8, 0xCu);
   }
 
-  return v5;
+  return imageData;
 }
 
-- (id)contactImageForCall:(id)a3
+- (id)contactImageForCall:(id)call
 {
-  v4 = a3;
-  if (v4 && ([(iPadAudioCallViewController *)self contactImageDataForCall:v4], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
+  callCopy = call;
+  if (callCopy && ([(iPadAudioCallViewController *)self contactImageDataForCall:callCopy], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v6 = v5;
     v7 = [UIImage imageWithData:v5];
@@ -7106,59 +7106,59 @@ LABEL_19:
 
 - (id)contactImage
 {
-  v3 = [(iPadAudioCallViewController *)self callToUseForWallpaper];
-  v4 = [(iPadAudioCallViewController *)self contactImageForCall:v3];
+  callToUseForWallpaper = [(iPadAudioCallViewController *)self callToUseForWallpaper];
+  v4 = [(iPadAudioCallViewController *)self contactImageForCall:callToUseForWallpaper];
 
   return v4;
 }
 
-- (void)setBackgroundImage:(id)a3
+- (void)setBackgroundImage:(id)image
 {
-  v5 = [(iPadAudioCallViewController *)self callDisplayStyleManager];
-  if ([v5 callDisplayStyle] == 3)
+  callDisplayStyleManager = [(iPadAudioCallViewController *)self callDisplayStyleManager];
+  if ([callDisplayStyleManager callDisplayStyle] == 3)
   {
-    v6 = [(iPadAudioCallViewController *)self features];
-    v7 = [v6 isDominoEnabled];
+    features = [(iPadAudioCallViewController *)self features];
+    isDominoEnabled = [features isDominoEnabled];
 
-    if (v7)
+    if (isDominoEnabled)
     {
-      v8 = [(iPadAudioCallViewController *)self callToUseForWallpaper];
-      if ([(iPadAudioCallViewController *)self callStateCanShowNewPoster:v8]|| ![(iPadAudioCallViewController *)self prefersShowingCachedLastSeenPosterBeforeCallConnected:v8])
+      callToUseForWallpaper = [(iPadAudioCallViewController *)self callToUseForWallpaper];
+      if ([(iPadAudioCallViewController *)self callStateCanShowNewPoster:callToUseForWallpaper]|| ![(iPadAudioCallViewController *)self prefersShowingCachedLastSeenPosterBeforeCallConnected:callToUseForWallpaper])
       {
-        v9 = [(iPadAudioCallViewController *)self contactWallpaperForCall:v8];
+        v9 = [(iPadAudioCallViewController *)self contactWallpaperForCall:callToUseForWallpaper];
         v10 = [(iPadAudioCallViewController *)self wallpaperTypeForCNWallpaper:v9];
       }
 
       else
       {
-        v9 = [(iPadAudioCallViewController *)self lastSeenPosterIMWallpaperMetadataForCall:v8];
+        v9 = [(iPadAudioCallViewController *)self lastSeenPosterIMWallpaperMetadataForCall:callToUseForWallpaper];
         v10 = [(iPadAudioCallViewController *)self wallpaperTypeForIMWallpaperMetadata:v9];
       }
 
-      v26 = v10;
+      mostRecentlyDisconnectedAudioCall = v10;
 
-      v15 = [(iPadAudioCallViewController *)self callCenter];
-      if ([v15 currentCallCount] <= 1)
+      callCenter = [(iPadAudioCallViewController *)self callCenter];
+      if ([callCenter currentCallCount] <= 1)
       {
       }
 
       else
       {
-        v16 = [(iPadAudioCallViewController *)self callCenter];
-        v17 = [v16 incomingCall];
+        callCenter2 = [(iPadAudioCallViewController *)self callCenter];
+        incomingCall = [callCenter2 incomingCall];
 
-        if (v17)
+        if (incomingCall)
         {
           v18 = &OBJC_IVAR___iPadAudioCallViewController__shouldShowLargeAvatarForCallWaiting;
 LABEL_26:
           v20 = *(&self->super.super.super.super.isa + *v18);
-          v21 = [(PHCallViewController *)self currentState];
-          if (v26 == CNWallpaperTypeMemoji || v26 == CNWallpaperTypeMonogram)
+          currentState = [(PHCallViewController *)self currentState];
+          if (mostRecentlyDisconnectedAudioCall == CNWallpaperTypeMemoji || mostRecentlyDisconnectedAudioCall == CNWallpaperTypeMonogram)
           {
-            v24 = [(iPadAudioCallViewController *)self contactWallpaperBackgroundColor];
-            if (v24)
+            contactWallpaperBackgroundColor = [(iPadAudioCallViewController *)self contactWallpaperBackgroundColor];
+            if (contactWallpaperBackgroundColor)
             {
-              [(iPadAudioCallViewController *)self setBackgroundColor:v24 animated:1];
+              [(iPadAudioCallViewController *)self setBackgroundColor:contactWallpaperBackgroundColor animated:1];
             }
 
             else
@@ -7172,7 +7172,7 @@ LABEL_26:
 
           else
           {
-            if (v21 == 11)
+            if (currentState == 11)
             {
               v22 = 1;
             }
@@ -7182,7 +7182,7 @@ LABEL_26:
               v22 = v20;
             }
 
-            if (!a3 || (v22 & 1) == 0)
+            if (!image || (v22 & 1) == 0)
             {
               v23 = +[UIColor blackColor];
               [(iPadAudioCallViewController *)self setBackgroundColor:v23 animated:1];
@@ -7195,9 +7195,9 @@ LABEL_40:
         }
       }
 
-      v19 = [(iPadAudioCallViewController *)self usesCompactMulticallUI];
+      usesCompactMulticallUI = [(iPadAudioCallViewController *)self usesCompactMulticallUI];
       v18 = &OBJC_IVAR___iPadAudioCallViewController__shouldShowLargeAvatar;
-      if (v19)
+      if (usesCompactMulticallUI)
       {
         v18 = &OBJC_IVAR___iPadAudioCallViewController__shouldShowLargeAvatarForCallWaiting;
       }
@@ -7210,21 +7210,21 @@ LABEL_40:
   {
   }
 
-  if ((!a3 || ![(iPadAudioCallViewController *)self canShowBackgroundImage]) && ![(iPadAudioCallViewController *)self shouldShowContactOrLastSeenWallpaper])
+  if ((!image || ![(iPadAudioCallViewController *)self canShowBackgroundImage]) && ![(iPadAudioCallViewController *)self shouldShowContactOrLastSeenWallpaper])
   {
-    v11 = [(iPadAudioCallViewController *)self callDisplayStyleManager];
-    v12 = [v11 callDisplayStyle];
+    callDisplayStyleManager2 = [(iPadAudioCallViewController *)self callDisplayStyleManager];
+    callDisplayStyle = [callDisplayStyleManager2 callDisplayStyle];
 
-    if (!v12)
+    if (!callDisplayStyle)
     {
       return;
     }
 
     v13 = +[UIApplication sharedApplication];
-    v14 = [v13 delegate];
-    v26 = [v14 mostRecentlyDisconnectedAudioCall];
+    delegate = [v13 delegate];
+    mostRecentlyDisconnectedAudioCall = [delegate mostRecentlyDisconnectedAudioCall];
 
-    if (!v26 || ![v26 isEmergency] || (objc_msgSend(v26, "disconnectedReasonRequiresCallBackUI") & 1) == 0)
+    if (!mostRecentlyDisconnectedAudioCall || ![mostRecentlyDisconnectedAudioCall isEmergency] || (objc_msgSend(mostRecentlyDisconnectedAudioCall, "disconnectedReasonRequiresCallBackUI") & 1) == 0)
     {
       [(iPadAudioCallViewController *)self addDefaultBackgroundGradientView];
     }
@@ -7239,19 +7239,19 @@ LABEL_40:
   [(iPadAudioCallViewController *)self removeDefaultBackgroundGradientView];
 }
 
-- (void)setBackgroundColor:(id)a3 animated:(BOOL)a4
+- (void)setBackgroundColor:(id)color animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1000DE444;
   v10[3] = &unk_100357110;
   v10[4] = self;
-  v5 = a3;
-  v11 = v5;
+  colorCopy = color;
+  v11 = colorCopy;
   v6 = objc_retainBlock(v10);
   v7 = v6;
-  if (v4)
+  if (animatedCopy)
   {
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
@@ -7267,98 +7267,98 @@ LABEL_40:
   }
 }
 
-- (void)hideOrShowThirdPartyBackgroundImageWithImage:(id)a3
+- (void)hideOrShowThirdPartyBackgroundImageWithImage:(id)image
 {
-  v24 = a3;
+  imageCopy = image;
   if (!-[CNKFeatures isEnhancedEmergencyEnabled](self->_features, "isEnhancedEmergencyEnabled") || (-[iPadAudioCallViewController frontmostCall](self, "frontmostCall"), v4 = objc_claimAutoreleasedReturnValue(), v5 = [v4 isEmergency], v4, (v5 & 1) == 0))
   {
     if ([(iPadAudioCallViewController *)self shouldApplyNewGradientBlur]|| [(iPadAudioCallViewController *)self shouldShowContactOrLastSeenWallpaper])
     {
-      v6 = [(iPadAudioCallViewController *)self unblurredBackgroundImageView];
-      [v6 removeFromSuperview];
+      unblurredBackgroundImageView = [(iPadAudioCallViewController *)self unblurredBackgroundImageView];
+      [unblurredBackgroundImageView removeFromSuperview];
 
       [(iPadAudioCallViewController *)self setUnblurredBackgroundImageView:0];
     }
 
     else
     {
-      v7 = [(iPadAudioCallViewController *)self unblurredBackgroundImageView];
+      unblurredBackgroundImageView2 = [(iPadAudioCallViewController *)self unblurredBackgroundImageView];
 
-      if (!v7)
+      if (!unblurredBackgroundImageView2)
       {
         v8 = objc_opt_new();
         [(iPadAudioCallViewController *)self setUnblurredBackgroundImageView:v8];
 
-        v9 = [(iPadAudioCallViewController *)self view];
-        [v9 frame];
+        view = [(iPadAudioCallViewController *)self view];
+        [view frame];
         v11 = v10;
         v13 = v12;
         v15 = v14;
         v17 = v16;
-        v18 = [(iPadAudioCallViewController *)self unblurredBackgroundImageView];
-        [v18 setFrame:{v11, v13, v15, v17}];
+        unblurredBackgroundImageView3 = [(iPadAudioCallViewController *)self unblurredBackgroundImageView];
+        [unblurredBackgroundImageView3 setFrame:{v11, v13, v15, v17}];
 
-        v19 = [(iPadAudioCallViewController *)self unblurredBackgroundImageView];
-        [v19 setContentMode:2];
+        unblurredBackgroundImageView4 = [(iPadAudioCallViewController *)self unblurredBackgroundImageView];
+        [unblurredBackgroundImageView4 setContentMode:2];
       }
 
-      v20 = [(iPadAudioCallViewController *)self unblurredBackgroundImageView];
-      [v20 setImage:v24];
+      unblurredBackgroundImageView5 = [(iPadAudioCallViewController *)self unblurredBackgroundImageView];
+      [unblurredBackgroundImageView5 setImage:imageCopy];
 
-      v21 = [(iPadAudioCallViewController *)self view];
-      v22 = [(iPadAudioCallViewController *)self unblurredBackgroundImageView];
-      v23 = [(iPadAudioCallViewController *)self backgroundImageView];
-      [v21 insertSubview:v22 above:v23];
+      view2 = [(iPadAudioCallViewController *)self view];
+      unblurredBackgroundImageView6 = [(iPadAudioCallViewController *)self unblurredBackgroundImageView];
+      backgroundImageView = [(iPadAudioCallViewController *)self backgroundImageView];
+      [view2 insertSubview:unblurredBackgroundImageView6 above:backgroundImageView];
     }
   }
 }
 
 - (id)fallbackHorizontalNameLabelString
 {
-  v3 = [(iPadAudioCallViewController *)self callToUseForWallpaper];
-  v4 = [(iPadAudioCallViewController *)self associatedCallGroupForCall:v3];
+  callToUseForWallpaper = [(iPadAudioCallViewController *)self callToUseForWallpaper];
+  v4 = [(iPadAudioCallViewController *)self associatedCallGroupForCall:callToUseForWallpaper];
 
-  v5 = [(iPadAudioCallViewController *)self callParticipantsViewController];
-  v6 = [v5 nameForCallGroup:v4];
+  callParticipantsViewController = [(iPadAudioCallViewController *)self callParticipantsViewController];
+  v6 = [callParticipantsViewController nameForCallGroup:v4];
 
   return v6;
 }
 
 - (id)createContactFirstNameLabelViewModel
 {
-  v3 = [(iPadAudioCallViewController *)self callToUseForWallpaper];
-  v4 = [(iPadAudioCallViewController *)self contactToDisplayInCallWallpaperForCall:v3];
-  v5 = [v3 handle];
-  v6 = [v5 value];
-  v7 = [TPIncomingCallMetricsProvider appropriateCallerNameViewForContact:v4 callStatus:0 callIsActive:1 optionalBackupName:v6];
+  callToUseForWallpaper = [(iPadAudioCallViewController *)self callToUseForWallpaper];
+  v4 = [(iPadAudioCallViewController *)self contactToDisplayInCallWallpaperForCall:callToUseForWallpaper];
+  handle = [callToUseForWallpaper handle];
+  value = [handle value];
+  v7 = [TPIncomingCallMetricsProvider appropriateCallerNameViewForContact:v4 callStatus:0 callIsActive:1 optionalBackupName:value];
 
   [(iPadAudioCallViewController *)self applyWallpaperTitleStyleAttributesToTextViewWrapper:v7];
   [v7 overrideTitleLayoutWith:0];
-  v8 = [[PHPosterNameViewModel alloc] initWithCall:v3 posterNameTextView:v7];
+  v8 = [[PHPosterNameViewModel alloc] initWithCall:callToUseForWallpaper posterNameTextView:v7];
 
   return v8;
 }
 
-- (void)applyWallpaperTitleStyleAttributesToTextViewWrapper:(id)a3
+- (void)applyWallpaperTitleStyleAttributesToTextViewWrapper:(id)wrapper
 {
-  v7 = a3;
-  v4 = [(iPadAudioCallViewController *)self wallpaperTitleStyleAttributes];
-  v5 = v4;
-  if (v4)
+  wrapperCopy = wrapper;
+  wallpaperTitleStyleAttributes = [(iPadAudioCallViewController *)self wallpaperTitleStyleAttributes];
+  v5 = wallpaperTitleStyleAttributes;
+  if (wallpaperTitleStyleAttributes)
   {
-    v6 = [v4 titleFont];
-    [v7 setTextFontUsingDefaultFontSizes:v6];
+    titleFont = [wallpaperTitleStyleAttributes titleFont];
+    [wrapperCopy setTextFontUsingDefaultFontSizes:titleFont];
 
-    [v7 setPreferredAlignment:{objc_msgSend(v5, "preferredTitleAlignment")}];
-    [v7 setPreferredLayout:0];
+    [wrapperCopy setPreferredAlignment:{objc_msgSend(v5, "preferredTitleAlignment")}];
+    [wrapperCopy setPreferredLayout:0];
   }
 }
 
 - (void)removeFirstNameLabelFromViewIfNeeded
 {
-  v3 = [(iPadAudioCallViewController *)self detachedPosterNameViewModel];
+  detachedPosterNameViewModel = [(iPadAudioCallViewController *)self detachedPosterNameViewModel];
 
-  if (v3)
+  if (detachedPosterNameViewModel)
   {
 
     [(iPadAudioCallViewController *)self setDetachedPosterNameViewModel:0];
@@ -7367,115 +7367,115 @@ LABEL_40:
 
 - (void)hideFirstNameLabelOnKeypad
 {
-  v3 = [(iPadAudioCallViewController *)self detachedPosterNameViewModel];
+  detachedPosterNameViewModel = [(iPadAudioCallViewController *)self detachedPosterNameViewModel];
 
-  if (v3)
+  if (detachedPosterNameViewModel)
   {
-    v4 = [(iPadAudioCallViewController *)self detachedPosterNameViewModel];
-    [v4 updatePosterNameAlpha:0.0];
+    detachedPosterNameViewModel2 = [(iPadAudioCallViewController *)self detachedPosterNameViewModel];
+    [detachedPosterNameViewModel2 updatePosterNameAlpha:0.0];
   }
 }
 
 - (void)showFirstNameLabelOnKeypad
 {
-  v3 = [(iPadAudioCallViewController *)self detachedPosterNameViewModel];
+  detachedPosterNameViewModel = [(iPadAudioCallViewController *)self detachedPosterNameViewModel];
 
-  if (v3)
+  if (detachedPosterNameViewModel)
   {
-    v4 = [(iPadAudioCallViewController *)self detachedPosterNameViewModel];
-    [v4 updatePosterNameAlpha:1.0];
+    detachedPosterNameViewModel2 = [(iPadAudioCallViewController *)self detachedPosterNameViewModel];
+    [detachedPosterNameViewModel2 updatePosterNameAlpha:1.0];
   }
 }
 
-- (void)createDetachedPosterNameViewModel:(id)a3
+- (void)createDetachedPosterNameViewModel:(id)model
 {
-  v4 = a3;
-  v5 = [(iPadAudioCallViewController *)self detachedPosterNameViewModel];
+  modelCopy = model;
+  detachedPosterNameViewModel = [(iPadAudioCallViewController *)self detachedPosterNameViewModel];
 
-  if (!v5)
+  if (!detachedPosterNameViewModel)
   {
-    v6 = [(iPadAudioCallViewController *)self getParticipantsView_NotWaiting];
-    v7 = [(iPadAudioCallViewController *)self createContactFirstNameLabelViewModel];
-    [(iPadAudioCallViewController *)self setDetachedPosterNameViewModel:v7];
+    getParticipantsView_NotWaiting = [(iPadAudioCallViewController *)self getParticipantsView_NotWaiting];
+    createContactFirstNameLabelViewModel = [(iPadAudioCallViewController *)self createContactFirstNameLabelViewModel];
+    [(iPadAudioCallViewController *)self setDetachedPosterNameViewModel:createContactFirstNameLabelViewModel];
 
-    v8 = [(iPadAudioCallViewController *)self detachedPosterNameViewModel];
-    [v8 updatePosterNameAlpha:0.0];
+    detachedPosterNameViewModel2 = [(iPadAudioCallViewController *)self detachedPosterNameViewModel];
+    [detachedPosterNameViewModel2 updatePosterNameAlpha:0.0];
 
-    v9 = [(iPadAudioCallViewController *)self detachedPosterNameViewModel];
-    [v9 updateStatusFromParticipantsView:v6];
+    detachedPosterNameViewModel3 = [(iPadAudioCallViewController *)self detachedPosterNameViewModel];
+    [detachedPosterNameViewModel3 updateStatusFromParticipantsView:getParticipantsView_NotWaiting];
 
-    v10 = [(iPadAudioCallViewController *)self detachedPosterNameViewModel];
-    v11 = [v10 posterNameTextView];
-    v12 = [v11 viewController];
+    detachedPosterNameViewModel4 = [(iPadAudioCallViewController *)self detachedPosterNameViewModel];
+    posterNameTextView = [detachedPosterNameViewModel4 posterNameTextView];
+    viewController = [posterNameTextView viewController];
 
-    v13 = [(iPadAudioCallViewController *)self layoutGuidesProvider];
-    v14 = [v13 callerDetailsLayoutGuide];
+    layoutGuidesProvider = [(iPadAudioCallViewController *)self layoutGuidesProvider];
+    callerDetailsLayoutGuide = [layoutGuidesProvider callerDetailsLayoutGuide];
 
-    if (v12)
+    if (viewController)
     {
-      [(iPadAudioCallViewController *)self addChildViewController:v12];
-      v15 = [v12 view];
-      [v4 addSubview:v15];
+      [(iPadAudioCallViewController *)self addChildViewController:viewController];
+      view = [viewController view];
+      [modelCopy addSubview:view];
 
-      v16 = [v12 view];
-      [v16 setTranslatesAutoresizingMaskIntoConstraints:0];
-      v41 = [v16 topAnchor];
-      v40 = [v14 topAnchor];
-      v39 = [v41 constraintEqualToAnchor:v40];
+      view2 = [viewController view];
+      [view2 setTranslatesAutoresizingMaskIntoConstraints:0];
+      topAnchor = [view2 topAnchor];
+      topAnchor2 = [callerDetailsLayoutGuide topAnchor];
+      v39 = [topAnchor constraintEqualToAnchor:topAnchor2];
       v45[0] = v39;
-      v38 = [v16 bottomAnchor];
-      v37 = [v14 bottomAnchor];
-      [v38 constraintEqualToAnchor:v37];
-      v36 = v44 = v4;
+      bottomAnchor = [view2 bottomAnchor];
+      bottomAnchor2 = [callerDetailsLayoutGuide bottomAnchor];
+      [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
+      v36 = v44 = modelCopy;
       v45[1] = v36;
-      [v16 leadingAnchor];
-      v17 = v43 = v6;
-      [v14 leadingAnchor];
-      v18 = v42 = v12;
+      [view2 leadingAnchor];
+      v17 = v43 = getParticipantsView_NotWaiting;
+      [callerDetailsLayoutGuide leadingAnchor];
+      v18 = v42 = viewController;
       v19 = [v17 constraintEqualToAnchor:v18];
       v45[2] = v19;
-      v20 = [v16 trailingAnchor];
-      [v14 trailingAnchor];
-      v22 = v21 = v14;
-      v23 = [v20 constraintEqualToAnchor:v22];
+      trailingAnchor = [view2 trailingAnchor];
+      [callerDetailsLayoutGuide trailingAnchor];
+      v22 = v21 = callerDetailsLayoutGuide;
+      v23 = [trailingAnchor constraintEqualToAnchor:v22];
       v45[3] = v23;
       v24 = [NSArray arrayWithObjects:v45 count:4];
       [NSLayoutConstraint activateConstraints:v24];
 
-      v14 = v21;
-      v12 = v42;
+      callerDetailsLayoutGuide = v21;
+      viewController = v42;
 
-      v6 = v43;
-      v4 = v44;
+      getParticipantsView_NotWaiting = v43;
+      modelCopy = v44;
 
       [v42 didMoveToParentViewController:self];
     }
 
-    v25 = [(iPadAudioCallViewController *)self detachedPosterNameViewModel];
-    v26 = [v25 posterNameTextView];
-    v27 = [v26 displayNameText];
+    detachedPosterNameViewModel5 = [(iPadAudioCallViewController *)self detachedPosterNameViewModel];
+    posterNameTextView2 = [detachedPosterNameViewModel5 posterNameTextView];
+    displayNameText = [posterNameTextView2 displayNameText];
 
-    v28 = [(iPadAudioCallViewController *)self detachedPosterNameViewModel];
-    v29 = [v28 posterNameTextView];
-    [(iPadAudioCallViewController *)self applyWallpaperTitleStyleAttributesToTextViewWrapper:v29];
+    detachedPosterNameViewModel6 = [(iPadAudioCallViewController *)self detachedPosterNameViewModel];
+    posterNameTextView3 = [detachedPosterNameViewModel6 posterNameTextView];
+    [(iPadAudioCallViewController *)self applyWallpaperTitleStyleAttributesToTextViewWrapper:posterNameTextView3];
 
-    v30 = [(iPadAudioCallViewController *)self detachedPosterNameViewModel];
-    v31 = [v30 posterNameTextView];
-    v32 = [v31 displayNameText];
-    v33 = [v32 length];
+    detachedPosterNameViewModel7 = [(iPadAudioCallViewController *)self detachedPosterNameViewModel];
+    posterNameTextView4 = [detachedPosterNameViewModel7 posterNameTextView];
+    displayNameText2 = [posterNameTextView4 displayNameText];
+    v33 = [displayNameText2 length];
 
     if (!v33)
     {
-      v34 = [(iPadAudioCallViewController *)self detachedPosterNameViewModel];
-      v35 = [v34 posterNameTextView];
-      [v35 setDisplayNameText:v27];
+      detachedPosterNameViewModel8 = [(iPadAudioCallViewController *)self detachedPosterNameViewModel];
+      posterNameTextView5 = [detachedPosterNameViewModel8 posterNameTextView];
+      [posterNameTextView5 setDisplayNameText:displayNameText];
     }
   }
 }
 
 - (void)hideOrShowScreeningBackgroundView
 {
-  v3 = [(iPadAudioCallViewController *)self featureFlags];
+  featureFlags = [(iPadAudioCallViewController *)self featureFlags];
   v4 = TUCallScreeningEnabled();
 
   if (!v4)
@@ -7483,18 +7483,18 @@ LABEL_40:
     return;
   }
 
-  v5 = [(PHCallViewController *)self currentState];
-  if ([(PHCallViewController *)self currentState]== 11 || v5 == 12)
+  currentState = [(PHCallViewController *)self currentState];
+  if ([(PHCallViewController *)self currentState]== 11 || currentState == 12)
   {
     goto LABEL_6;
   }
 
-  v6 = [(PHCallViewController *)self bottomBar];
-  if ([v6 currentState] == 24)
+  bottomBar = [(PHCallViewController *)self bottomBar];
+  if ([bottomBar currentState] == 24)
   {
-    v7 = [(PHCallViewController *)self currentState];
+    currentState2 = [(PHCallViewController *)self currentState];
 
-    if (v7 == 11)
+    if (currentState2 == 11)
     {
 LABEL_6:
 
@@ -7507,18 +7507,18 @@ LABEL_6:
   {
   }
 
-  v8 = [(iPadAudioCallViewController *)self translationController];
-  v9 = [v8 isTranslationStarted];
+  translationController = [(iPadAudioCallViewController *)self translationController];
+  isTranslationStarted = [translationController isTranslationStarted];
 
-  if ((v9 & 1) == 0)
+  if ((isTranslationStarted & 1) == 0)
   {
     [(iPadAudioCallViewController *)self hideTrailngPanelCoveringViewIfNeeded];
   }
 
   [(iPadAudioCallViewController *)self _updatePosterNameAlpha];
   [(iPadAudioCallViewController *)self _updateStatusLabelVisibility];
-  v10 = [(iPadAudioCallViewController *)self getParticipantsView_NotWaiting];
-  [(iPadAudioCallViewController *)self updateParticipantConstraintsForPosterName:v10];
+  getParticipantsView_NotWaiting = [(iPadAudioCallViewController *)self getParticipantsView_NotWaiting];
+  [(iPadAudioCallViewController *)self updateParticipantConstraintsForPosterName:getParticipantsView_NotWaiting];
 }
 
 - (void)removeBackgroundContactImageView
@@ -7537,50 +7537,50 @@ LABEL_6:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "SNAP: Adding default backgroundGradientView", buf, 2u);
   }
 
-  v4 = [(iPadAudioCallViewController *)self buttonsViewController];
-  v5 = [v4 view];
+  buttonsViewController = [(iPadAudioCallViewController *)self buttonsViewController];
+  view = [buttonsViewController view];
 
-  if (v5)
+  if (view)
   {
-    v6 = [(iPadAudioCallViewController *)self buttonsViewController];
-    v7 = [v6 view];
+    buttonsViewController2 = [(iPadAudioCallViewController *)self buttonsViewController];
+    view2 = [buttonsViewController2 view];
 
-    v8 = [(iPadAudioCallViewController *)self defaultBackgroundGradientView];
+    defaultBackgroundGradientView = [(iPadAudioCallViewController *)self defaultBackgroundGradientView];
 
-    if (!v8)
+    if (!defaultBackgroundGradientView)
     {
       v28 = objc_alloc_init(PHAudioCallBackgroundGradientViewController);
-      v9 = [(PHAudioCallBackgroundGradientViewController *)v28 view];
-      [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
+      view3 = [(PHAudioCallBackgroundGradientViewController *)v28 view];
+      [view3 setTranslatesAutoresizingMaskIntoConstraints:0];
       [(iPadAudioCallViewController *)self addChildViewController:v28];
-      v10 = [(iPadAudioCallViewController *)self backgroundController];
-      [v10 insertToBackground:v9];
+      backgroundController = [(iPadAudioCallViewController *)self backgroundController];
+      [backgroundController insertToBackground:view3];
 
-      v26 = [v9 leadingAnchor];
-      v27 = [(iPadAudioCallViewController *)self view];
-      v25 = [v27 leadingAnchor];
-      v24 = [v26 constraintEqualToAnchor:v25];
+      leadingAnchor = [view3 leadingAnchor];
+      view4 = [(iPadAudioCallViewController *)self view];
+      leadingAnchor2 = [view4 leadingAnchor];
+      v24 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
       v30[0] = v24;
-      v22 = [v9 trailingAnchor];
-      v23 = [(iPadAudioCallViewController *)self view];
-      v21 = [v23 trailingAnchor];
-      v20 = [v22 constraintEqualToAnchor:v21];
+      trailingAnchor = [view3 trailingAnchor];
+      view5 = [(iPadAudioCallViewController *)self view];
+      trailingAnchor2 = [view5 trailingAnchor];
+      v20 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
       v30[1] = v20;
-      v18 = [v9 topAnchor];
-      v19 = [(iPadAudioCallViewController *)self view];
-      v11 = [v19 topAnchor];
-      v12 = [v18 constraintEqualToAnchor:v11];
+      topAnchor = [view3 topAnchor];
+      view6 = [(iPadAudioCallViewController *)self view];
+      topAnchor2 = [view6 topAnchor];
+      v12 = [topAnchor constraintEqualToAnchor:topAnchor2];
       v30[2] = v12;
-      v13 = [v9 bottomAnchor];
-      v14 = [(iPadAudioCallViewController *)self view];
-      v15 = [v14 bottomAnchor];
-      v16 = [v13 constraintEqualToAnchor:v15];
+      bottomAnchor = [view3 bottomAnchor];
+      view7 = [(iPadAudioCallViewController *)self view];
+      bottomAnchor2 = [view7 bottomAnchor];
+      v16 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
       v30[3] = v16;
       v17 = [NSArray arrayWithObjects:v30 count:4];
       [NSLayoutConstraint activateConstraints:v17];
 
-      [(iPadAudioCallViewController *)self setDefaultBackgroundGradientView:v9];
-      [v7 updateBackgroundMaterial:2];
+      [(iPadAudioCallViewController *)self setDefaultBackgroundGradientView:view3];
+      [view2 updateBackgroundMaterial:2];
       [(PHAudioCallBackgroundGradientViewController *)v28 didMoveToParentViewController:self];
     }
   }
@@ -7595,15 +7595,15 @@ LABEL_6:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "SNAP: Removing default backgroundGradientView", v5, 2u);
   }
 
-  v4 = [(iPadAudioCallViewController *)self defaultBackgroundGradientView];
-  [v4 removeFromSuperview];
+  defaultBackgroundGradientView = [(iPadAudioCallViewController *)self defaultBackgroundGradientView];
+  [defaultBackgroundGradientView removeFromSuperview];
 
   [(iPadAudioCallViewController *)self setDefaultBackgroundGradientView:0];
 }
 
-- (void)setPosterNameViewModel:(id)a3
+- (void)setPosterNameViewModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   posterNameViewModel = self->_posterNameViewModel;
   if (posterNameViewModel)
   {
@@ -7611,12 +7611,12 @@ LABEL_6:
   }
 
   v6 = self->_posterNameViewModel;
-  self->_posterNameViewModel = v4;
+  self->_posterNameViewModel = modelCopy;
 }
 
-- (void)setKeypadPosterNameViewModel:(id)a3
+- (void)setKeypadPosterNameViewModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   keypadPosterNameViewModel = self->_keypadPosterNameViewModel;
   if (keypadPosterNameViewModel)
   {
@@ -7624,12 +7624,12 @@ LABEL_6:
   }
 
   v6 = self->_keypadPosterNameViewModel;
-  self->_keypadPosterNameViewModel = v4;
+  self->_keypadPosterNameViewModel = modelCopy;
 }
 
-- (void)setDetachedPosterNameViewModel:(id)a3
+- (void)setDetachedPosterNameViewModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   detachedPosterNameViewModel = self->_detachedPosterNameViewModel;
   if (detachedPosterNameViewModel)
   {
@@ -7637,24 +7637,24 @@ LABEL_6:
   }
 
   v6 = self->_detachedPosterNameViewModel;
-  self->_detachedPosterNameViewModel = v4;
+  self->_detachedPosterNameViewModel = modelCopy;
 }
 
-- (void)updatePosterViewModelForParticipantsView:(id)a3
+- (void)updatePosterViewModelForParticipantsView:(id)view
 {
-  v6 = a3;
-  v4 = [(iPadAudioCallViewController *)self posterNameViewModel];
+  viewCopy = view;
+  posterNameViewModel = [(iPadAudioCallViewController *)self posterNameViewModel];
 
-  if (v4)
+  if (posterNameViewModel)
   {
-    v5 = [(iPadAudioCallViewController *)self posterNameViewModel];
-    [v5 updateViewModelForParticipantsView:v6];
+    posterNameViewModel2 = [(iPadAudioCallViewController *)self posterNameViewModel];
+    [posterNameViewModel2 updateViewModelForParticipantsView:viewCopy];
   }
 
   else
   {
-    v5 = [v6 singleCallLabelView];
-    [v5 setPosterNameViewModel:0];
+    posterNameViewModel2 = [viewCopy singleCallLabelView];
+    [posterNameViewModel2 setPosterNameViewModel:0];
   }
 }
 
@@ -7662,22 +7662,22 @@ LABEL_6:
 {
   v3 = [UIBlurEffect effectWithBlurRadius:15.0];
   v4 = [[UIVisualEffectView alloc] initWithEffect:0];
-  v5 = [(iPadAudioCallViewController *)self view];
-  [v5 frame];
+  view = [(iPadAudioCallViewController *)self view];
+  [view frame];
   [v4 setFrame:?];
 
-  v6 = [(iPadAudioCallViewController *)self view];
-  v7 = [(iPadAudioCallViewController *)self buttonsViewController];
-  v8 = [v7 view];
-  [v6 insertSubview:v4 below:v8];
+  view2 = [(iPadAudioCallViewController *)self view];
+  buttonsViewController = [(iPadAudioCallViewController *)self buttonsViewController];
+  view3 = [buttonsViewController view];
+  [view2 insertSubview:v4 below:view3];
 
-  v9 = [(iPadAudioCallViewController *)self view];
-  v10 = [(iPadAudioCallViewController *)self callDetailsViewButton];
-  [v9 bringSubviewToFront:v10];
+  view4 = [(iPadAudioCallViewController *)self view];
+  callDetailsViewButton = [(iPadAudioCallViewController *)self callDetailsViewButton];
+  [view4 bringSubviewToFront:callDetailsViewButton];
 
-  v11 = [(iPadAudioCallViewController *)self view];
-  v12 = [(iPadAudioCallViewController *)self posterBadgeView];
-  [v11 bringSubviewToFront:v12];
+  view5 = [(iPadAudioCallViewController *)self view];
+  posterBadgeView = [(iPadAudioCallViewController *)self posterBadgeView];
+  [view5 bringSubviewToFront:posterBadgeView];
 
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
@@ -7695,25 +7695,25 @@ LABEL_6:
   [UIView _animateUsingSpringWithDuration:0 delay:v17 options:v15 mass:0.25 stiffness:0.0 damping:2.0 initialVelocity:300.0 animations:50.0 completion:0.0];
 }
 
-- (void)removePosterViewController:(BOOL)a3 completion:(id)a4
+- (void)removePosterViewController:(BOOL)controller completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(iPadAudioCallViewController *)self renderingViewController];
+  controllerCopy = controller;
+  completionCopy = completion;
+  renderingViewController = [(iPadAudioCallViewController *)self renderingViewController];
   [(iPadAudioCallViewController *)self setRenderingViewController:0];
   [(iPadAudioCallViewController *)self setPosterNameViewModel:0];
-  if (v7)
+  if (renderingViewController)
   {
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_1000DFA50;
     v11[3] = &unk_100357C78;
-    v12 = v7;
-    v13 = self;
-    v14 = v6;
+    v12 = renderingViewController;
+    selfCopy = self;
+    v14 = completionCopy;
     v8 = objc_retainBlock(v11);
     v9 = v8;
-    if (v4)
+    if (controllerCopy)
     {
       [(iPadAudioCallViewController *)self showPosterBlurTransition];
       v10 = dispatch_time(0, 0);
@@ -7729,9 +7729,9 @@ LABEL_6:
   else
   {
     [(iPadAudioCallViewController *)self setParticipantsViewShouldShowParticipantLabel:1];
-    if (v6)
+    if (completionCopy)
     {
-      v6[2](v6);
+      completionCopy[2](completionCopy);
     }
   }
 }
@@ -7740,8 +7740,8 @@ LABEL_6:
 {
   [(iPadAudioCallViewController *)self updatePoster];
   existingPrioritizedCall = self->_existingPrioritizedCall;
-  v6 = [(iPadAudioCallViewController *)self view];
-  [v6 frame];
+  view = [(iPadAudioCallViewController *)self view];
+  [view frame];
   [(iPadAudioCallViewController *)self updateTopShelfContentWithCall:existingPrioritizedCall sceneWindowSize:v4, v5];
 }
 
@@ -7749,23 +7749,23 @@ LABEL_6:
 {
   [(iPadAudioCallViewController *)self removeNameLabelForAlwaysOnDisplay];
   [(iPadAudioCallViewController *)self setupDimmingViewForAlwaysOnDisplay];
-  v3 = [(iPadAudioCallViewController *)self createContactFirstNameLabelViewModel];
-  [(iPadAudioCallViewController *)self setAlwaysOnDisplayPosterNameViewModel:v3];
+  createContactFirstNameLabelViewModel = [(iPadAudioCallViewController *)self createContactFirstNameLabelViewModel];
+  [(iPadAudioCallViewController *)self setAlwaysOnDisplayPosterNameViewModel:createContactFirstNameLabelViewModel];
 
-  v6 = [(iPadAudioCallViewController *)self alwaysOnDisplayPosterNameViewModel];
-  v4 = [v6 posterNameTextView];
-  v5 = [(iPadAudioCallViewController *)self alwaysOnDisplayDimmingView];
-  [TPIncomingCallMetricsProvider addCallerNameView:v4 toContainerView:v5];
+  alwaysOnDisplayPosterNameViewModel = [(iPadAudioCallViewController *)self alwaysOnDisplayPosterNameViewModel];
+  posterNameTextView = [alwaysOnDisplayPosterNameViewModel posterNameTextView];
+  alwaysOnDisplayDimmingView = [(iPadAudioCallViewController *)self alwaysOnDisplayDimmingView];
+  [TPIncomingCallMetricsProvider addCallerNameView:posterNameTextView toContainerView:alwaysOnDisplayDimmingView];
 }
 
 - (void)removeNameLabelForAlwaysOnDisplay
 {
-  v3 = [(iPadAudioCallViewController *)self alwaysOnDisplayPosterNameViewModel];
+  alwaysOnDisplayPosterNameViewModel = [(iPadAudioCallViewController *)self alwaysOnDisplayPosterNameViewModel];
 
-  if (v3)
+  if (alwaysOnDisplayPosterNameViewModel)
   {
-    v4 = [(iPadAudioCallViewController *)self alwaysOnDisplayPosterNameViewModel];
-    [v4 removeFromSuperview];
+    alwaysOnDisplayPosterNameViewModel2 = [(iPadAudioCallViewController *)self alwaysOnDisplayPosterNameViewModel];
+    [alwaysOnDisplayPosterNameViewModel2 removeFromSuperview];
 
     [(iPadAudioCallViewController *)self setAlwaysOnDisplayPosterNameViewModel:0];
   }
@@ -7773,37 +7773,37 @@ LABEL_6:
 
 - (void)setupDimmingViewForAlwaysOnDisplay
 {
-  v3 = [(iPadAudioCallViewController *)self alwaysOnDisplayDimmingView];
+  alwaysOnDisplayDimmingView = [(iPadAudioCallViewController *)self alwaysOnDisplayDimmingView];
 
-  if (!v3)
+  if (!alwaysOnDisplayDimmingView)
   {
     v4 = [UIView alloc];
-    v5 = [(iPadAudioCallViewController *)self view];
-    [v5 frame];
+    view = [(iPadAudioCallViewController *)self view];
+    [view frame];
     v10 = [v4 initWithFrame:?];
 
     v6 = +[UIColor blackColor];
     v7 = [v6 colorWithAlphaComponent:0.75];
     [v10 setBackgroundColor:v7];
 
-    v8 = [(iPadAudioCallViewController *)self view];
-    [v8 addSubview:v10];
+    view2 = [(iPadAudioCallViewController *)self view];
+    [view2 addSubview:v10];
 
     [(iPadAudioCallViewController *)self setAlwaysOnDisplayDimmingView:v10];
-    v9 = [(iPadAudioCallViewController *)self alwaysOnDisplayDimmingView];
-    [v9 setAlpha:0.0];
+    alwaysOnDisplayDimmingView2 = [(iPadAudioCallViewController *)self alwaysOnDisplayDimmingView];
+    [alwaysOnDisplayDimmingView2 setAlpha:0.0];
   }
 }
 
 - (id)snapshotUIImageView
 {
   v3 = [UIImageView alloc];
-  v4 = [(iPadAudioCallViewController *)self backgroundImageView];
-  v5 = [v4 image];
-  v6 = [v3 initWithImage:v5];
+  backgroundImageView = [(iPadAudioCallViewController *)self backgroundImageView];
+  image = [backgroundImageView image];
+  v6 = [v3 initWithImage:image];
 
-  v7 = [(iPadAudioCallViewController *)self view];
-  [v7 frame];
+  view = [(iPadAudioCallViewController *)self view];
+  [view frame];
   [v6 setFrame:?];
 
   v8 = objc_alloc_init(UIVisualEffectView);
@@ -7812,8 +7812,8 @@ LABEL_6:
   v10 = [NSArray arrayWithObjects:&v18 count:1];
   [v8 setBackgroundEffects:v10];
 
-  v11 = [(iPadAudioCallViewController *)self view];
-  [v11 frame];
+  view2 = [(iPadAudioCallViewController *)self view];
+  [view2 frame];
   [v8 setFrame:?];
 
   [v6 addSubview:v8];
@@ -7824,12 +7824,12 @@ LABEL_6:
   v14 = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.150000006];
   [v12 setBackgroundColor:{objc_msgSend(v14, "CGColor")}];
 
-  v15 = [(iPadAudioCallViewController *)self view];
-  [v15 frame];
+  view3 = [(iPadAudioCallViewController *)self view];
+  [view3 frame];
   [v12 setFrame:?];
 
-  v16 = [v8 layer];
-  [v16 addSublayer:v12];
+  layer = [v8 layer];
+  [layer addSublayer:v12];
 
   return v6;
 }
@@ -7840,23 +7840,23 @@ LABEL_6:
   v4.super_class = iPadAudioCallViewController;
   [(iPadAudioCallViewController *)&v4 viewSafeAreaInsetsDidChange];
   [(iPadAudioCallViewController *)self _updateStatusLabelVisibility];
-  v3 = [(iPadAudioCallViewController *)self renderingViewController];
+  renderingViewController = [(iPadAudioCallViewController *)self renderingViewController];
 
-  if (v3)
+  if (renderingViewController)
   {
     [(iPadAudioCallViewController *)self setupNameLabelForAlwaysOnDisplay];
   }
 }
 
-- (void)lockScreenVisibilityDidChange:(id)a3
+- (void)lockScreenVisibilityDidChange:(id)change
 {
-  v4 = [(iPadAudioCallViewController *)self callDisplayStyleManager];
-  if ([v4 callDisplayStyle] == 3)
+  callDisplayStyleManager = [(iPadAudioCallViewController *)self callDisplayStyleManager];
+  if ([callDisplayStyleManager callDisplayStyle] == 3)
   {
-    v5 = [(iPadAudioCallViewController *)self features];
-    v6 = [v5 isDominoEnabled];
+    features = [(iPadAudioCallViewController *)self features];
+    isDominoEnabled = [features isDominoEnabled];
 
-    if (v6)
+    if (isDominoEnabled)
     {
       return;
     }
@@ -7874,25 +7874,25 @@ LABEL_6:
   }
 
   [(iPadAudioCallViewController *)self setCallForBackgroundImage:0];
-  v8 = [(iPadAudioCallViewController *)self callToUseForWallpaper];
-  [(iPadAudioCallViewController *)self setCallForBackgroundImage:v8 animated:1 callDisplayStyleChanged:0];
+  callToUseForWallpaper = [(iPadAudioCallViewController *)self callToUseForWallpaper];
+  [(iPadAudioCallViewController *)self setCallForBackgroundImage:callToUseForWallpaper animated:1 callDisplayStyleChanged:0];
 
   [(iPadAudioCallViewController *)self updateCallParticipantsViewControllerCallGroups];
-  v9 = [(iPadAudioCallViewController *)self getParticipantsView_NotWaiting];
-  v10 = [v9 singleCallLabelView];
-  [v10 updateLabelsOrderAndLayout];
-  v11 = [(iPadAudioCallViewController *)self middleViewState];
+  getParticipantsView_NotWaiting = [(iPadAudioCallViewController *)self getParticipantsView_NotWaiting];
+  singleCallLabelView = [getParticipantsView_NotWaiting singleCallLabelView];
+  [singleCallLabelView updateLabelsOrderAndLayout];
+  middleViewState = [(iPadAudioCallViewController *)self middleViewState];
   [(iPadAudioCallViewController *)self setMiddleViewState:0];
-  v12 = [(UIViewController *)self->_screeningViewController view];
-  v13 = [v12 superview];
+  view = [(UIViewController *)self->_screeningViewController view];
+  superview = [view superview];
 
-  if (v13)
+  if (superview)
   {
-    v14 = [(UIViewController *)self->_screeningViewController view];
-    [v14 removeFromSuperview];
+    view2 = [(UIViewController *)self->_screeningViewController view];
+    [view2 removeFromSuperview];
 
-    v15 = [(iPadAudioCallViewController *)self layoutGuidesProvider];
-    [v15 updateMiddleShelfStateWithIsOpen:0];
+    layoutGuidesProvider = [(iPadAudioCallViewController *)self layoutGuidesProvider];
+    [layoutGuidesProvider updateMiddleShelfStateWithIsOpen:0];
 
     [(iPadAudioCallViewController *)self removeChildViewController:self->_screeningViewController];
     [(UIViewController *)self->_screeningViewController didMoveToParentViewController:0];
@@ -7901,37 +7901,37 @@ LABEL_6:
   screeningViewController = self->_screeningViewController;
   self->_screeningViewController = 0;
 
-  [(iPadAudioCallViewController *)self setMiddleViewState:v11];
-  v17 = [(PHCallViewController *)self bottomBar];
-  v18 = [v17 currentState];
+  [(iPadAudioCallViewController *)self setMiddleViewState:middleViewState];
+  bottomBar = [(PHCallViewController *)self bottomBar];
+  currentState = [bottomBar currentState];
 
-  v19 = [(PHCallViewController *)self bottomBar];
-  [v19 setCurrentState:-1];
+  bottomBar2 = [(PHCallViewController *)self bottomBar];
+  [bottomBar2 setCurrentState:-1];
 
-  v20 = [(PHCallViewController *)self bottomBar];
-  [v20 setCurrentState:v18];
+  bottomBar3 = [(PHCallViewController *)self bottomBar];
+  [bottomBar3 setCurrentState:currentState];
 }
 
-- (unint64_t)currentDisplayedPosterSourceForCall:(id)a3
+- (unint64_t)currentDisplayedPosterSourceForCall:(id)call
 {
-  v4 = a3;
-  v5 = [v4 uniqueProxyIdentifier];
+  callCopy = call;
+  uniqueProxyIdentifier = [callCopy uniqueProxyIdentifier];
 
-  if (v5)
+  if (uniqueProxyIdentifier)
   {
-    v6 = [(iPadAudioCallViewController *)self configurationCache];
-    v7 = [v4 uniqueProxyIdentifier];
-    v8 = [v6 objectForKey:v7];
+    configurationCache = [(iPadAudioCallViewController *)self configurationCache];
+    uniqueProxyIdentifier2 = [callCopy uniqueProxyIdentifier];
+    v8 = [configurationCache objectForKey:uniqueProxyIdentifier2];
 
-    v9 = [v8 source];
+    source = [v8 source];
   }
 
   else
   {
-    v9 = 0;
+    source = 0;
   }
 
-  return v9;
+  return source;
 }
 
 + (NSArray)contactKeysToFetch
@@ -7946,35 +7946,35 @@ LABEL_6:
   return v3;
 }
 
-- (void)suspendPosterAndCancelDelay:(BOOL)a3
+- (void)suspendPosterAndCancelDelay:(BOOL)delay
 {
-  v3 = a3;
-  v5 = [(iPadAudioCallViewController *)self renderingViewController];
+  delayCopy = delay;
+  renderingViewController = [(iPadAudioCallViewController *)self renderingViewController];
 
-  if (v5)
+  if (renderingViewController)
   {
-    v6 = [(iPadAudioCallViewController *)self renderingViewController];
+    renderingViewController2 = [(iPadAudioCallViewController *)self renderingViewController];
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
     {
-      if (v3)
+      if (delayCopy)
       {
-        v8 = [(iPadAudioCallViewController *)self suspendPosterAfterDelayBlock];
+        suspendPosterAfterDelayBlock = [(iPadAudioCallViewController *)self suspendPosterAfterDelayBlock];
 
-        if (v8)
+        if (suspendPosterAfterDelayBlock)
         {
-          v9 = [(iPadAudioCallViewController *)self suspendPosterAfterDelayBlock];
-          dispatch_block_cancel(v9);
+          suspendPosterAfterDelayBlock2 = [(iPadAudioCallViewController *)self suspendPosterAfterDelayBlock];
+          dispatch_block_cancel(suspendPosterAfterDelayBlock2);
 
           [(iPadAudioCallViewController *)self setSuspendPosterAfterDelayBlock:0];
         }
       }
 
-      v10 = [(iPadAudioCallViewController *)self renderingViewController];
-      v11 = [v10 renderingMode];
+      renderingViewController3 = [(iPadAudioCallViewController *)self renderingViewController];
+      renderingMode = [renderingViewController3 renderingMode];
 
-      if (v11 == 2)
+      if (renderingMode == 2)
       {
         v12 = sub_100004F84();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -7983,17 +7983,17 @@ LABEL_6:
           _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "SNAP: Setting poster renderingMode to .paused", v14, 2u);
         }
 
-        v13 = [(iPadAudioCallViewController *)self renderingViewController];
-        [v13 setRenderingMode:1];
+        renderingViewController4 = [(iPadAudioCallViewController *)self renderingViewController];
+        [renderingViewController4 setRenderingMode:1];
       }
     }
   }
 }
 
-- (void)setShowsCallWaitingParticipantView:(BOOL)a3
+- (void)setShowsCallWaitingParticipantView:(BOOL)view
 {
   callWaitingParticipantsViewController = self->_callWaitingParticipantsViewController;
-  if (a3)
+  if (view)
   {
     if (callWaitingParticipantsViewController)
     {
@@ -8001,22 +8001,22 @@ LABEL_6:
     }
 
     v5 = [(iPadAudioCallViewController *)self contactForCall:self->_existingPrioritizedCall];
-    v6 = v5;
+    view9 = v5;
     if (v5)
     {
       v35 = v5;
-      v7 = [NSArray arrayWithObjects:&v35 count:1];
+      view10 = [NSArray arrayWithObjects:&v35 count:1];
     }
 
     else
     {
-      v7 = &__NSArray0__struct;
+      view10 = &__NSArray0__struct;
     }
 
     v14 = [PHCallParticipantsViewController alloc];
-    v15 = [(iPadAudioCallViewController *)self callDisplayStyleManager];
-    v16 = [(iPadAudioCallViewController *)self contactsCache];
-    v17 = [(PHCallParticipantsViewController *)v14 initWithCallDisplayStyleManager:v15 contactsCache:v16 contacts:v7];
+    callDisplayStyleManager = [(iPadAudioCallViewController *)self callDisplayStyleManager];
+    contactsCache = [(iPadAudioCallViewController *)self contactsCache];
+    v17 = [(PHCallParticipantsViewController *)v14 initWithCallDisplayStyleManager:callDisplayStyleManager contactsCache:contactsCache contacts:view10];
     v18 = self->_callWaitingParticipantsViewController;
     self->_callWaitingParticipantsViewController = v17;
 
@@ -8024,30 +8024,30 @@ LABEL_6:
     [(PHCallParticipantsViewController *)self->_callWaitingParticipantsViewController setHandlesCallWaitingCalls:1];
     [(PHCallParticipantsViewController *)self->_callWaitingParticipantsViewController setDelegate:self];
     [(iPadAudioCallViewController *)self addChildViewController:self->_callWaitingParticipantsViewController];
-    v19 = [(iPadAudioCallViewController *)self view];
-    v20 = [(PHCallParticipantsViewController *)self->_callWaitingParticipantsViewController view];
-    [v19 addSubview:v20];
+    view = [(iPadAudioCallViewController *)self view];
+    view2 = [(PHCallParticipantsViewController *)self->_callWaitingParticipantsViewController view];
+    [view addSubview:view2];
 
-    v12 = [(PHCallParticipantsViewController *)self->_callParticipantsViewController view];
-    v21 = [(PHCallParticipantsViewController *)v12 singleCallLabelView];
-    [v21 setPosterNameViewModel:0];
+    view3 = [(PHCallParticipantsViewController *)self->_callParticipantsViewController view];
+    singleCallLabelView = [(PHCallParticipantsViewController *)view3 singleCallLabelView];
+    [singleCallLabelView setPosterNameViewModel:0];
 
-    v13 = [(PHCallParticipantsViewController *)self->_callWaitingParticipantsViewController view];
-    [(iPadAudioCallViewController *)self updatePosterViewModelForParticipantsView:v13];
+    view4 = [(PHCallParticipantsViewController *)self->_callWaitingParticipantsViewController view];
+    [(iPadAudioCallViewController *)self updatePosterViewModelForParticipantsView:view4];
     [(iPadAudioCallViewController *)self copyCallWaitingConstraintsFromParticipantsView];
-    v22 = [(PHCallParticipantsViewController *)self->_callWaitingParticipantsViewController view];
-    [v22 setAlpha:0.0];
+    view5 = [(PHCallParticipantsViewController *)self->_callWaitingParticipantsViewController view];
+    [view5 setAlpha:0.0];
 
-    v23 = [(ICSCallDisplayStyleManager *)self->_callDisplayStyleManager callDisplayStyle];
-    v24 = [(PHCallParticipantsViewController *)self->_callParticipantsViewController view];
-    v25 = v24;
+    callDisplayStyle = [(ICSCallDisplayStyleManager *)self->_callDisplayStyleManager callDisplayStyle];
+    view6 = [(PHCallParticipantsViewController *)self->_callParticipantsViewController view];
+    v25 = view6;
     v26 = 1.0;
-    if (v23 == 2)
+    if (callDisplayStyle == 2)
     {
       v26 = 0.0;
     }
 
-    [v24 setAlpha:v26];
+    [view6 setAlpha:v26];
 
     [(iPadAudioCallViewController *)self callWaitingAnimationDelay];
     v34[0] = _NSConcreteStackBlock;
@@ -8066,41 +8066,41 @@ LABEL_6:
     }
 
     v8 = callWaitingParticipantsViewController;
-    v9 = [(PHCallParticipantsViewController *)v8 view];
-    [v9 setAlpha:1.0];
+    view7 = [(PHCallParticipantsViewController *)v8 view];
+    [view7 setAlpha:1.0];
 
-    v10 = [(PHCallParticipantsViewController *)self->_callParticipantsViewController view];
-    [v10 setAlpha:1.0];
+    view8 = [(PHCallParticipantsViewController *)self->_callParticipantsViewController view];
+    [view8 setAlpha:1.0];
 
-    v6 = [(PHCallParticipantsViewController *)self->_callWaitingParticipantsViewController view];
-    v11 = [v6 singleCallLabelView];
-    [v11 setPosterNameViewModel:0];
+    view9 = [(PHCallParticipantsViewController *)self->_callWaitingParticipantsViewController view];
+    singleCallLabelView2 = [view9 singleCallLabelView];
+    [singleCallLabelView2 setPosterNameViewModel:0];
 
-    v7 = [(PHCallParticipantsViewController *)self->_callParticipantsViewController view];
-    [(iPadAudioCallViewController *)self updatePosterViewModelForParticipantsView:v7];
+    view10 = [(PHCallParticipantsViewController *)self->_callParticipantsViewController view];
+    [(iPadAudioCallViewController *)self updatePosterViewModelForParticipantsView:view10];
     v31[0] = _NSConcreteStackBlock;
     v31[1] = 3221225472;
     v31[2] = sub_1000E0C0C;
     v31[3] = &unk_100357110;
     v32 = v8;
-    v33 = self;
+    selfCopy = self;
     v28[0] = _NSConcreteStackBlock;
     v28[1] = 3221225472;
     v28[2] = sub_1000E0CB4;
     v28[3] = &unk_100356D10;
     v29 = v32;
-    v30 = self;
-    v12 = v32;
+    selfCopy2 = self;
+    view3 = v32;
     [UIView animateWithDuration:v31 animations:v28 completion:0.5];
 
-    v13 = v32;
+    view4 = v32;
   }
 }
 
 - (double)callWaitingAnimationDelay
 {
-  v2 = [(iPadAudioCallViewController *)self callDisplayStyleManager];
-  if ([v2 callDisplayStyle])
+  callDisplayStyleManager = [(iPadAudioCallViewController *)self callDisplayStyleManager];
+  if ([callDisplayStyleManager callDisplayStyle])
   {
     v3 = 0.0;
   }
@@ -8115,8 +8115,8 @@ LABEL_6:
 
 - (int64_t)bottomBarStateForCallWaitingCall
 {
-  v3 = [(iPadAudioCallViewController *)self callCenter];
-  if ([v3 currentVideoCallCount])
+  callCenter = [(iPadAudioCallViewController *)self callCenter];
+  if ([callCenter currentVideoCallCount])
   {
 
 LABEL_8:
@@ -8124,21 +8124,21 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v4 = [(iPadAudioCallViewController *)self callCenter];
-  v5 = [v4 isHoldAndAnswerAllowed];
+  callCenter2 = [(iPadAudioCallViewController *)self callCenter];
+  isHoldAndAnswerAllowed = [callCenter2 isHoldAndAnswerAllowed];
 
-  if (!v5)
+  if (!isHoldAndAnswerAllowed)
   {
     goto LABEL_8;
   }
 
-  v6 = [(iPadAudioCallViewController *)self callCenter];
-  v7 = [v6 callWithStatus:2];
+  callCenter3 = [(iPadAudioCallViewController *)self callCenter];
+  v7 = [callCenter3 callWithStatus:2];
   if (v7)
   {
     v8 = v7;
-    v9 = [(iPadAudioCallViewController *)self callCenter];
-    v10 = [v9 callWithStatus:1];
+    callCenter4 = [(iPadAudioCallViewController *)self callCenter];
+    v10 = [callCenter4 callWithStatus:1];
 
     if (v10)
     {
@@ -8171,13 +8171,13 @@ LABEL_9:
 
 - (void)copyCallWaitingConstraintsFromParticipantsView
 {
-  v3 = [(iPadAudioCallViewController *)self callDisplayStyleManager];
-  if ([v3 callDisplayStyle] == 3)
+  callDisplayStyleManager = [(iPadAudioCallViewController *)self callDisplayStyleManager];
+  if ([callDisplayStyleManager callDisplayStyle] == 3)
   {
-    v4 = [(iPadAudioCallViewController *)self features];
-    v5 = [v4 isDominoEnabled];
+    features = [(iPadAudioCallViewController *)self features];
+    isDominoEnabled = [features isDominoEnabled];
 
-    if (v5)
+    if (isDominoEnabled)
     {
       return;
     }
@@ -8187,49 +8187,49 @@ LABEL_9:
   {
   }
 
-  v6 = [(iPadAudioCallViewController *)self getParticipantsView_Waiting];
-  v7 = [(iPadAudioCallViewController *)self getParticipantsView_NotWaiting];
-  if (v6)
+  getParticipantsView_Waiting = [(iPadAudioCallViewController *)self getParticipantsView_Waiting];
+  getParticipantsView_NotWaiting = [(iPadAudioCallViewController *)self getParticipantsView_NotWaiting];
+  if (getParticipantsView_Waiting)
   {
-    v8 = [v6 superview];
+    superview = [getParticipantsView_Waiting superview];
 
-    if (v8)
+    if (superview)
     {
-      if (v7)
+      if (getParticipantsView_NotWaiting)
       {
-        [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
-        v9 = [(iPadAudioCallViewController *)self callWaitingLayoutConstraints];
-        [NSLayoutConstraint deactivateConstraints:v9];
+        [getParticipantsView_Waiting setTranslatesAutoresizingMaskIntoConstraints:0];
+        callWaitingLayoutConstraints = [(iPadAudioCallViewController *)self callWaitingLayoutConstraints];
+        [NSLayoutConstraint deactivateConstraints:callWaitingLayoutConstraints];
 
-        v29 = [v6 centerYAnchor];
-        v28 = [v7 centerYAnchor];
-        v27 = [v29 constraintEqualToAnchor:v28];
+        centerYAnchor = [getParticipantsView_Waiting centerYAnchor];
+        centerYAnchor2 = [getParticipantsView_NotWaiting centerYAnchor];
+        v27 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
         v30[0] = v27;
-        v26 = [v6 centerXAnchor];
-        v25 = [v7 centerXAnchor];
-        v24 = [v26 constraintEqualToAnchor:v25];
+        centerXAnchor = [getParticipantsView_Waiting centerXAnchor];
+        centerXAnchor2 = [getParticipantsView_NotWaiting centerXAnchor];
+        v24 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
         v30[1] = v24;
-        v23 = [v6 topAnchor];
-        v22 = [v7 topAnchor];
-        v21 = [v23 constraintEqualToAnchor:v22];
+        topAnchor = [getParticipantsView_Waiting topAnchor];
+        topAnchor2 = [getParticipantsView_NotWaiting topAnchor];
+        v21 = [topAnchor constraintEqualToAnchor:topAnchor2];
         v30[2] = v21;
-        v20 = [v6 bottomAnchor];
-        v19 = [v7 bottomAnchor];
-        v18 = [v20 constraintEqualToAnchor:v19];
+        bottomAnchor = [getParticipantsView_Waiting bottomAnchor];
+        bottomAnchor2 = [getParticipantsView_NotWaiting bottomAnchor];
+        v18 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
         v30[3] = v18;
-        v10 = [v6 leadingAnchor];
-        v11 = [v7 leadingAnchor];
-        v12 = [v10 constraintEqualToAnchor:v11];
+        leadingAnchor = [getParticipantsView_Waiting leadingAnchor];
+        leadingAnchor2 = [getParticipantsView_NotWaiting leadingAnchor];
+        v12 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
         v30[4] = v12;
-        v13 = [v6 trailingAnchor];
-        v14 = [v7 trailingAnchor];
-        v15 = [v13 constraintEqualToAnchor:v14];
+        trailingAnchor = [getParticipantsView_Waiting trailingAnchor];
+        trailingAnchor2 = [getParticipantsView_NotWaiting trailingAnchor];
+        v15 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
         v30[5] = v15;
         v16 = [NSArray arrayWithObjects:v30 count:6];
         [(iPadAudioCallViewController *)self setCallWaitingLayoutConstraints:v16];
 
-        v17 = [(iPadAudioCallViewController *)self callWaitingLayoutConstraints];
-        [NSLayoutConstraint activateConstraints:v17];
+        callWaitingLayoutConstraints2 = [(iPadAudioCallViewController *)self callWaitingLayoutConstraints];
+        [NSLayoutConstraint activateConstraints:callWaitingLayoutConstraints2];
       }
     }
   }
@@ -8237,45 +8237,45 @@ LABEL_9:
 
 - (void)applyCallWaitingConstraintsForAmbient
 {
-  v3 = [(iPadAudioCallViewController *)self getParticipantsView_Waiting];
-  if (v3)
+  getParticipantsView_Waiting = [(iPadAudioCallViewController *)self getParticipantsView_Waiting];
+  if (getParticipantsView_Waiting)
   {
-    v10 = v3;
-    v4 = [v3 superview];
-    v3 = v10;
-    if (v4)
+    v10 = getParticipantsView_Waiting;
+    superview = [getParticipantsView_Waiting superview];
+    getParticipantsView_Waiting = v10;
+    if (superview)
     {
-      v5 = [(iPadAudioCallViewController *)self callDisplayStyleManager];
-      if ([v5 callDisplayStyle] == 3)
+      callDisplayStyleManager = [(iPadAudioCallViewController *)self callDisplayStyleManager];
+      if ([callDisplayStyleManager callDisplayStyle] == 3)
       {
-        v6 = [(iPadAudioCallViewController *)self features];
-        v7 = [v6 isDominoEnabled];
+        features = [(iPadAudioCallViewController *)self features];
+        isDominoEnabled = [features isDominoEnabled];
 
-        v3 = v10;
-        if (!v7)
+        getParticipantsView_Waiting = v10;
+        if (!isDominoEnabled)
         {
           goto LABEL_7;
         }
 
-        v8 = [(PHCallParticipantsViewController *)self->_callWaitingParticipantsViewController view];
-        [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
+        view = [(PHCallParticipantsViewController *)self->_callWaitingParticipantsViewController view];
+        [view setTranslatesAutoresizingMaskIntoConstraints:0];
 
-        v4 = [(iPadAudioCallViewController *)self ambientParticipantsViewConstraintsForView:v10 largeAvatar:self->_shouldShowLargeAvatarForCallWaiting];
-        v9 = [v4 allValues];
-        [(iPadAudioCallViewController *)self setCallWaitingLayoutConstraints:v9];
+        superview = [(iPadAudioCallViewController *)self ambientParticipantsViewConstraintsForView:v10 largeAvatar:self->_shouldShowLargeAvatarForCallWaiting];
+        allValues = [superview allValues];
+        [(iPadAudioCallViewController *)self setCallWaitingLayoutConstraints:allValues];
 
-        v5 = [(iPadAudioCallViewController *)self callWaitingLayoutConstraints];
-        [NSLayoutConstraint activateConstraints:v5];
+        callDisplayStyleManager = [(iPadAudioCallViewController *)self callWaitingLayoutConstraints];
+        [NSLayoutConstraint activateConstraints:callDisplayStyleManager];
       }
 
-      v3 = v10;
+      getParticipantsView_Waiting = v10;
     }
   }
 
 LABEL_7:
 }
 
-- (void)audioCallControlsViewControllerRequestedKeypadPresentation:(id)a3
+- (void)audioCallControlsViewControllerRequestedKeypadPresentation:(id)presentation
 {
   v4 = sub_100004F84();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -8287,7 +8287,7 @@ LABEL_7:
   [(iPadAudioCallViewController *)self setMiddleViewState:2 animated:1];
 }
 
-- (void)audioCallControlsViewControllerRequestedKeypadPresentationForFieldMode:(id)a3
+- (void)audioCallControlsViewControllerRequestedKeypadPresentationForFieldMode:(id)mode
 {
   v4 = sub_100004F84();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -8297,13 +8297,13 @@ LABEL_7:
   }
 
   [(iPadAudioCallViewController *)self setMiddleViewState:2 animated:1];
-  v5 = [(iPadAudioCallViewController *)self callParticipantsViewController];
-  [v5 setAllowsFieldModeSendButton:1];
+  callParticipantsViewController = [(iPadAudioCallViewController *)self callParticipantsViewController];
+  [callParticipantsViewController setAllowsFieldModeSendButton:1];
 }
 
-- (void)audioCallControlsViewControllerRequestedContactsPresentation:(id)a3 forView:(id)a4
+- (void)audioCallControlsViewControllerRequestedContactsPresentation:(id)presentation forView:(id)view
 {
-  v5 = a4;
+  viewCopy = view;
   v6 = sub_100004F84();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -8315,17 +8315,17 @@ LABEL_7:
   v11 = 3221225472;
   v12 = sub_1000E1588;
   v13 = &unk_100356D10;
-  v14 = self;
-  v15 = v5;
-  v7 = v5;
+  selfCopy = self;
+  v15 = viewCopy;
+  v7 = viewCopy;
   v8 = objc_retainBlock(&v10);
   v9 = [PHInCallUtilities sharedInstance:v10];
   [v9 requestPasscodeUnlockWithCompletion:v8];
 }
 
-- (void)audioCallControlsViewControllerRequestedAddCallPresentation:(id)a3 forView:(id)a4
+- (void)audioCallControlsViewControllerRequestedAddCallPresentation:(id)presentation forView:(id)view
 {
-  v5 = a4;
+  viewCopy = view;
   v6 = sub_100004F84();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -8337,15 +8337,15 @@ LABEL_7:
   v11 = 3221225472;
   v12 = sub_1000E1724;
   v13 = &unk_100356D10;
-  v14 = self;
-  v15 = v5;
-  v7 = v5;
+  selfCopy = self;
+  v15 = viewCopy;
+  v7 = viewCopy;
   v8 = objc_retainBlock(&v10);
   v9 = [PHInCallUtilities sharedInstance:v10];
   [v9 requestPasscodeUnlockWithCompletion:v8];
 }
 
-- (void)audioCallControlsViewControllerRequestedAudioRoutesPresentation:(id)a3
+- (void)audioCallControlsViewControllerRequestedAudioRoutesPresentation:(id)presentation
 {
   v4 = sub_100004F84();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -8357,7 +8357,7 @@ LABEL_7:
   [(iPadAudioCallViewController *)self revealAudioRoutingDeviceListAnimated:1];
 }
 
-- (void)audioCallControlsViewControllerRequestedVideoPresentation:(id)a3
+- (void)audioCallControlsViewControllerRequestedVideoPresentation:(id)presentation
 {
   v4 = sub_100004F84();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -8379,36 +8379,36 @@ LABEL_7:
 - (void)audioCallControlsViewControllerRequestedInvokeAlert
 {
   v5 = +[UIApplication sharedApplication];
-  v3 = [v5 delegate];
-  v4 = [v3 alertCoordinator];
-  [v4 invokeAlertWithRequestUnlock:-[iPadAudioCallViewController alertTriggeredByAutoCountdown](self automaticallyInvoked:{"alertTriggeredByAutoCountdown") ^ 1, -[iPadAudioCallViewController alertTriggeredByAutoCountdown](self, "alertTriggeredByAutoCountdown")}];
+  delegate = [v5 delegate];
+  alertCoordinator = [delegate alertCoordinator];
+  [alertCoordinator invokeAlertWithRequestUnlock:-[iPadAudioCallViewController alertTriggeredByAutoCountdown](self automaticallyInvoked:{"alertTriggeredByAutoCountdown") ^ 1, -[iPadAudioCallViewController alertTriggeredByAutoCountdown](self, "alertTriggeredByAutoCountdown")}];
 }
 
 - (void)audioCallControlsViewControllerRequestedShareMedia
 {
-  v3 = [(iPadAudioCallViewController *)self features];
-  v4 = [v3 isEnhancedEmergencyEnabled];
+  features = [(iPadAudioCallViewController *)self features];
+  isEnhancedEmergencyEnabled = [features isEnhancedEmergencyEnabled];
 
-  if (v4)
+  if (isEnhancedEmergencyEnabled)
   {
-    v5 = [(iPadAudioCallViewController *)self emergencyCoordinator];
-    [v5 handleMediaUploadButtonTapped];
+    emergencyCoordinator = [(iPadAudioCallViewController *)self emergencyCoordinator];
+    [emergencyCoordinator handleMediaUploadButtonTapped];
   }
 }
 
 - (void)audioCallControlsViewControllerDidTapRTTButton
 {
-  v3 = [(iPadAudioCallViewController *)self features];
-  if ([v3 isEnhancedEmergencyEnabled] && (-[iPadAudioCallViewController emergencyCoordinator](self, "emergencyCoordinator"), (v4 = objc_claimAutoreleasedReturnValue()) != 0))
+  features = [(iPadAudioCallViewController *)self features];
+  if ([features isEnhancedEmergencyEnabled] && (-[iPadAudioCallViewController emergencyCoordinator](self, "emergencyCoordinator"), (v4 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v5 = v4;
-    v6 = [(iPadAudioCallViewController *)self emergencyCoordinator];
-    v7 = [v6 eedRTTState];
+    emergencyCoordinator = [(iPadAudioCallViewController *)self emergencyCoordinator];
+    eedRTTState = [emergencyCoordinator eedRTTState];
 
-    if (v7 == 3)
+    if (eedRTTState == 3)
     {
-      v12 = [(iPadAudioCallViewController *)self emergencyCoordinator];
-      [v12 transitionToRTTState:2];
+      emergencyCoordinator2 = [(iPadAudioCallViewController *)self emergencyCoordinator];
+      [emergencyCoordinator2 transitionToRTTState:2];
       goto LABEL_8;
     }
   }
@@ -8424,18 +8424,18 @@ LABEL_7:
   }
 
   v9 = v8;
-  v10 = [(iPadAudioCallViewController *)self activeCall];
-  v12 = [v9 viewControllerForCall:v10];
+  activeCall = [(iPadAudioCallViewController *)self activeCall];
+  emergencyCoordinator2 = [v9 viewControllerForCall:activeCall];
 
-  v11 = [(iPadAudioCallViewController *)self navigationController];
-  [v11 pushViewController:v12 animated:1];
+  navigationController = [(iPadAudioCallViewController *)self navigationController];
+  [navigationController pushViewController:emergencyCoordinator2 animated:1];
 
 LABEL_8:
 }
 
-- (void)audioCallControlsViewControllerRequestedMoreMenuFromSourceView:(id)a3
+- (void)audioCallControlsViewControllerRequestedMoreMenuFromSourceView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -8443,18 +8443,18 @@ LABEL_8:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "iPadAudioCallViewController: requested more menu presentation", v11, 2u);
   }
 
-  v6 = [(iPadAudioCallViewController *)self activeCall];
-  v7 = [(iPadAudioCallViewController *)self contactForCall:v6];
+  activeCall = [(iPadAudioCallViewController *)self activeCall];
+  v7 = [(iPadAudioCallViewController *)self contactForCall:activeCall];
 
   v8 = +[UIApplication sharedApplication];
-  v9 = [v8 delegate];
-  v10 = [v9 bannerPresentationManager];
-  [(iPadAudioCallViewController *)self presentMoreMenu:v10 contact:v7 source:v4];
+  delegate = [v8 delegate];
+  bannerPresentationManager = [delegate bannerPresentationManager];
+  [(iPadAudioCallViewController *)self presentMoreMenu:bannerPresentationManager contact:v7 source:viewCopy];
 }
 
-- (void)audioCallControlsViewControllerRequestedShareCardFromSourceView:(id)a3
+- (void)audioCallControlsViewControllerRequestedShareCardFromSourceView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -8463,53 +8463,53 @@ LABEL_8:
   }
 
   v6 = +[UIApplication sharedApplication];
-  v7 = [v6 delegate];
-  v8 = [v7 bannerPresentationManager];
-  [(iPadAudioCallViewController *)self presentShareCard:v8 source:v4];
+  delegate = [v6 delegate];
+  bannerPresentationManager = [delegate bannerPresentationManager];
+  [(iPadAudioCallViewController *)self presentShareCard:bannerPresentationManager source:viewCopy];
 }
 
 - (BOOL)videoStreamingIsGoingOn
 {
-  v3 = [(iPadAudioCallViewController *)self features];
-  if ([v3 isEnhancedEmergencyEnabled])
+  features = [(iPadAudioCallViewController *)self features];
+  if ([features isEnhancedEmergencyEnabled])
   {
-    v4 = [(iPadAudioCallViewController *)self emergencyCoordinator];
-    if (v4)
+    emergencyCoordinator = [(iPadAudioCallViewController *)self emergencyCoordinator];
+    if (emergencyCoordinator)
     {
-      v5 = [(iPadAudioCallViewController *)self emergencyCoordinator];
-      v6 = [v5 videoStreamingIsOnScreen];
+      emergencyCoordinator2 = [(iPadAudioCallViewController *)self emergencyCoordinator];
+      videoStreamingIsOnScreen = [emergencyCoordinator2 videoStreamingIsOnScreen];
     }
 
     else
     {
-      v6 = 0;
+      videoStreamingIsOnScreen = 0;
     }
   }
 
   else
   {
-    v6 = 0;
+    videoStreamingIsOnScreen = 0;
   }
 
-  return v6;
+  return videoStreamingIsOnScreen;
 }
 
-- (void)audioCallControlsViewControllerDidToggleMuteButton:(BOOL)a3
+- (void)audioCallControlsViewControllerDidToggleMuteButton:(BOOL)button
 {
-  v3 = a3;
+  buttonCopy = button;
   if ([(iPadAudioCallViewController *)self audioCallMutedTalkerIsSupported])
   {
-    if (!v3)
+    if (!buttonCopy)
     {
       [(iPadAudioCallViewController *)self setDidNotifyMutedCaller:0];
     }
 
-    v5 = [(iPadAudioCallViewController *)self mutedTalkerBannerViewController];
-    [v5 updatePillViewWithIsMuted:v3];
+    mutedTalkerBannerViewController = [(iPadAudioCallViewController *)self mutedTalkerBannerViewController];
+    [mutedTalkerBannerViewController updatePillViewWithIsMuted:buttonCopy];
   }
 }
 
-- (void)audioCallControlsViewControllerDidTapEndButton:(id)a3
+- (void)audioCallControlsViewControllerDidTapEndButton:(id)button
 {
   if ([(PHCallViewController *)self currentState]== 10)
   {
@@ -8520,40 +8520,40 @@ LABEL_8:
   else
   {
     v4 = +[UIApplication sharedApplication];
-    v5 = [v4 delegate];
-    v11 = [v5 mostRecentlyDisconnectedAudioCall];
+    delegate = [v4 delegate];
+    mostRecentlyDisconnectedAudioCall = [delegate mostRecentlyDisconnectedAudioCall];
 
-    if (v11 && [v11 isEmergency])
+    if (mostRecentlyDisconnectedAudioCall && [mostRecentlyDisconnectedAudioCall isEmergency])
     {
-      v6 = [v11 disconnectedReasonRequiresCallBackUI];
+      disconnectedReasonRequiresCallBackUI = [mostRecentlyDisconnectedAudioCall disconnectedReasonRequiresCallBackUI];
     }
 
     else
     {
-      v6 = 0;
+      disconnectedReasonRequiresCallBackUI = 0;
     }
 
-    v7 = [v11 canDisplayAlertUI:{-[iPadAudioCallViewController shouldPresentAlertButton](self, "shouldPresentAlertButton")}];
-    if (v6 && v7)
+    v7 = [mostRecentlyDisconnectedAudioCall canDisplayAlertUI:{-[iPadAudioCallViewController shouldPresentAlertButton](self, "shouldPresentAlertButton")}];
+    if (disconnectedReasonRequiresCallBackUI && v7)
     {
       [(iPadAudioCallViewController *)self setCurrentState:0];
     }
 
     else
     {
-      v8 = [(iPadAudioCallViewController *)self activeCall];
-      v9 = [v8 callUUID];
-      [(iPadAudioCallViewController *)self setUUIDForLocallyDisconnectedCall:v9];
+      activeCall = [(iPadAudioCallViewController *)self activeCall];
+      callUUID = [activeCall callUUID];
+      [(iPadAudioCallViewController *)self setUUIDForLocallyDisconnectedCall:callUUID];
 
-      v10 = [(iPadAudioCallViewController *)self callCenter];
-      [v10 disconnectCurrentCallAndActivateHeld];
+      callCenter = [(iPadAudioCallViewController *)self callCenter];
+      [callCenter disconnectCurrentCallAndActivateHeld];
     }
   }
 }
 
-- (void)audioCallControlsViewControllerRequestedAddCallPresentation:(id)a3
+- (void)audioCallControlsViewControllerRequestedAddCallPresentation:(id)presentation
 {
-  v4 = a3;
+  presentationCopy = presentation;
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -8565,26 +8565,26 @@ LABEL_8:
   v10 = 3221225472;
   v11 = sub_1000E22E4;
   v12 = &unk_100356D10;
-  v13 = self;
-  v14 = v4;
-  v6 = v4;
+  selfCopy = self;
+  v14 = presentationCopy;
+  v6 = presentationCopy;
   v7 = objc_retainBlock(&v9);
   v8 = [PHInCallUtilities sharedInstance:v9];
   [v8 requestPasscodeUnlockWithCompletion:v7];
 }
 
-- (void)localAudioToggledWithIsMuted:(BOOL)a3
+- (void)localAudioToggledWithIsMuted:(BOOL)muted
 {
-  v3 = a3;
+  mutedCopy = muted;
   if ([(iPadAudioCallViewController *)self audioCallMutedTalkerIsSupported])
   {
-    if (!v3)
+    if (!mutedCopy)
     {
       [(iPadAudioCallViewController *)self setDidNotifyMutedCaller:0];
     }
 
-    v5 = [(iPadAudioCallViewController *)self mutedTalkerBannerViewController];
-    [v5 updatePillViewWithIsMuted:v3];
+    mutedTalkerBannerViewController = [(iPadAudioCallViewController *)self mutedTalkerBannerViewController];
+    [mutedTalkerBannerViewController updatePillViewWithIsMuted:mutedCopy];
   }
 }
 
@@ -8597,24 +8597,24 @@ LABEL_8:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "iPadAudioCallViewController: Voice loop controller requested button presentation", v5, 2u);
   }
 
-  v4 = [(iPadAudioCallViewController *)self voiceLoopManager];
-  [v4 stopLoopPlayback];
+  voiceLoopManager = [(iPadAudioCallViewController *)self voiceLoopManager];
+  [voiceLoopManager stopLoopPlayback];
 }
 
-- (void)removeContentViewIfNeeded:(id)a3 animated:(BOOL)a4
+- (void)removeContentViewIfNeeded:(id)needed animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  animatedCopy = animated;
+  neededCopy = needed;
+  v7 = neededCopy;
+  if (neededCopy)
   {
-    if (v4)
+    if (animatedCopy)
     {
       v12[0] = _NSConcreteStackBlock;
       v12[1] = 3221225472;
       v12[2] = sub_1000E2598;
       v12[3] = &unk_100356988;
-      v13 = v6;
+      v13 = neededCopy;
       v8 = objc_retainBlock(v12);
     }
 
@@ -8623,210 +8623,210 @@ LABEL_8:
       v8 = 0;
     }
 
-    v9 = [(iPadAudioCallViewController *)self layoutGuidesProvider];
+    layoutGuidesProvider = [(iPadAudioCallViewController *)self layoutGuidesProvider];
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_1000E25A4;
     v10[3] = &unk_100356988;
     v11 = v7;
-    [v9 updateMiddleShelfStateWithIsOpen:0 animation:v8 completion:v10];
+    [layoutGuidesProvider updateMiddleShelfStateWithIsOpen:0 animation:v8 completion:v10];
   }
 }
 
-- (void)setMiddleViewState:(unsigned __int16)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)setMiddleViewState:(unsigned __int16)state animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  animatedCopy = animated;
+  stateCopy = state;
   v8 = sub_100004F84();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    LODWORD(v102) = v6;
+    LODWORD(v102) = stateCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "setMiddleViewState: %d", buf, 8u);
   }
 
   v9 = sub_100004F84();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [(iPadAudioCallViewController *)self buttonsViewController];
-    [v10 view];
-    v97 = v6;
-    v12 = v11 = v5;
-    v13 = [(iPadAudioCallViewController *)self buttonsViewController];
-    v14 = [v13 view];
-    [v14 alpha];
+    buttonsViewController = [(iPadAudioCallViewController *)self buttonsViewController];
+    [buttonsViewController view];
+    v97 = stateCopy;
+    v12 = v11 = animatedCopy;
+    buttonsViewController2 = [(iPadAudioCallViewController *)self buttonsViewController];
+    view = [buttonsViewController2 view];
+    [view alpha];
     v16 = v15;
-    v17 = [(iPadAudioCallViewController *)self buttonsViewController];
-    v18 = [v17 view];
-    v19 = [v18 superview];
+    buttonsViewController3 = [(iPadAudioCallViewController *)self buttonsViewController];
+    view2 = [buttonsViewController3 view];
+    superview = [view2 superview];
     *buf = 138412802;
     v102 = v12;
     v103 = 2048;
     v104 = v16;
     v105 = 2112;
-    v106 = v19;
+    v106 = superview;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "current six-up is: %@, six-up view alpha is: %f, six-up view parent view is: %@", buf, 0x20u);
 
-    v5 = v11;
-    v6 = v97;
+    animatedCopy = v11;
+    stateCopy = v97;
   }
 
   middleViewState = self->_middleViewState;
-  if (middleViewState != v6)
+  if (middleViewState != stateCopy)
   {
-    if (v6 <= 2)
+    if (stateCopy <= 2)
     {
-      if (v6)
+      if (stateCopy)
       {
-        if (v6 != 2)
+        if (stateCopy != 2)
         {
           goto LABEL_29;
         }
 
-        v28 = [(iPadAudioCallViewController *)self view];
-        [v28 bounds];
+        view3 = [(iPadAudioCallViewController *)self view];
+        [view3 bounds];
         [(iPadAudioCallViewController *)self showKeypadWithPerviousMiddleState:middleViewState viewSize:v30, v31];
       }
 
       else
       {
-        v28 = [(iPadAudioCallViewController *)self callParticipantsViewController];
-        [v28 resetNameOverrideString];
+        view3 = [(iPadAudioCallViewController *)self callParticipantsViewController];
+        [view3 resetNameOverrideString];
       }
 
       goto LABEL_28;
     }
 
-    switch(v6)
+    switch(stateCopy)
     {
       case 3:
-        v32 = [(iPadAudioCallViewController *)self voiceLoopViewController];
-        v33 = [v32 view];
-        v34 = [v33 superview];
+        voiceLoopViewController = [(iPadAudioCallViewController *)self voiceLoopViewController];
+        view4 = [voiceLoopViewController view];
+        superview2 = [view4 superview];
 
-        if (!v34)
+        if (!superview2)
         {
-          v35 = [(iPadAudioCallViewController *)self view];
-          v36 = [(iPadAudioCallViewController *)self voiceLoopViewController];
-          v37 = [v36 view];
-          [v35 addSubview:v37];
+          view5 = [(iPadAudioCallViewController *)self view];
+          voiceLoopViewController2 = [(iPadAudioCallViewController *)self voiceLoopViewController];
+          view6 = [voiceLoopViewController2 view];
+          [view5 addSubview:view6];
 
-          v38 = [(iPadAudioCallViewController *)self voiceLoopViewController];
-          v39 = [v38 view];
-          [v39 setTranslatesAutoresizingMaskIntoConstraints:0];
+          voiceLoopViewController3 = [(iPadAudioCallViewController *)self voiceLoopViewController];
+          view7 = [voiceLoopViewController3 view];
+          [view7 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-          v98 = [(iPadAudioCallViewController *)self voiceLoopViewController];
-          v96 = [v98 view];
-          v94 = [v96 centerXAnchor];
-          v95 = [(iPadAudioCallViewController *)self view];
-          v93 = [v95 centerXAnchor];
-          v92 = [v94 constraintEqualToAnchor:v93];
+          voiceLoopViewController4 = [(iPadAudioCallViewController *)self voiceLoopViewController];
+          view8 = [voiceLoopViewController4 view];
+          centerXAnchor = [view8 centerXAnchor];
+          view9 = [(iPadAudioCallViewController *)self view];
+          centerXAnchor2 = [view9 centerXAnchor];
+          v92 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
           v100[0] = v92;
-          v91 = [(iPadAudioCallViewController *)self voiceLoopViewController];
-          v90 = [v91 view];
-          v88 = [v90 leadingAnchor];
-          v89 = [(iPadAudioCallViewController *)self view];
-          v87 = [v89 leadingAnchor];
-          v86 = [v88 constraintEqualToAnchor:v87];
+          voiceLoopViewController5 = [(iPadAudioCallViewController *)self voiceLoopViewController];
+          view10 = [voiceLoopViewController5 view];
+          leadingAnchor = [view10 leadingAnchor];
+          view11 = [(iPadAudioCallViewController *)self view];
+          leadingAnchor2 = [view11 leadingAnchor];
+          v86 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
           v100[1] = v86;
-          v85 = [(iPadAudioCallViewController *)self voiceLoopViewController];
-          v84 = [v85 view];
-          v82 = [v84 trailingAnchor];
-          v83 = [(iPadAudioCallViewController *)self view];
-          v81 = [v83 trailingAnchor];
-          v80 = [v82 constraintEqualToAnchor:v81];
+          voiceLoopViewController6 = [(iPadAudioCallViewController *)self voiceLoopViewController];
+          view12 = [voiceLoopViewController6 view];
+          trailingAnchor = [view12 trailingAnchor];
+          view13 = [(iPadAudioCallViewController *)self view];
+          trailingAnchor2 = [view13 trailingAnchor];
+          v80 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
           v100[2] = v80;
-          v79 = [(iPadAudioCallViewController *)self voiceLoopViewController];
-          v78 = [v79 view];
-          v76 = [v78 topAnchor];
-          v77 = [(iPadAudioCallViewController *)self callParticipantsViewController];
-          v75 = [v77 view];
-          v74 = [v75 bottomAnchor];
-          v73 = [v76 constraintEqualToAnchor:v74];
+          voiceLoopViewController7 = [(iPadAudioCallViewController *)self voiceLoopViewController];
+          view14 = [voiceLoopViewController7 view];
+          topAnchor = [view14 topAnchor];
+          callParticipantsViewController = [(iPadAudioCallViewController *)self callParticipantsViewController];
+          view15 = [callParticipantsViewController view];
+          bottomAnchor = [view15 bottomAnchor];
+          v73 = [topAnchor constraintEqualToAnchor:bottomAnchor];
           v100[3] = v73;
-          v72 = [(iPadAudioCallViewController *)self voiceLoopViewController];
-          v71 = [v72 view];
-          v40 = [v71 bottomAnchor];
-          v41 = [(PHCallViewController *)self bottomBar];
-          v42 = [v41 topLayoutGuide];
-          v43 = [v42 topAnchor];
-          [v40 constraintEqualToAnchor:v43];
-          v45 = v44 = v5;
+          voiceLoopViewController8 = [(iPadAudioCallViewController *)self voiceLoopViewController];
+          view16 = [voiceLoopViewController8 view];
+          bottomAnchor2 = [view16 bottomAnchor];
+          bottomBar = [(PHCallViewController *)self bottomBar];
+          topLayoutGuide = [bottomBar topLayoutGuide];
+          topAnchor2 = [topLayoutGuide topAnchor];
+          [bottomAnchor2 constraintEqualToAnchor:topAnchor2];
+          v45 = v44 = animatedCopy;
           v100[4] = v45;
           v46 = [NSArray arrayWithObjects:v100 count:5];
           [NSLayoutConstraint activateConstraints:v46];
 
-          v5 = v44;
+          animatedCopy = v44;
         }
 
-        v47 = [(iPadAudioCallViewController *)self callParticipantsViewController];
-        [v47 resetNameOverrideString];
+        callParticipantsViewController2 = [(iPadAudioCallViewController *)self callParticipantsViewController];
+        [callParticipantsViewController2 resetNameOverrideString];
 
-        v48 = [(iPadAudioCallViewController *)self callParticipantsViewController];
-        v49 = [v48 view];
-        [v49 setNeedsLayout];
+        callParticipantsViewController3 = [(iPadAudioCallViewController *)self callParticipantsViewController];
+        view17 = [callParticipantsViewController3 view];
+        [view17 setNeedsLayout];
 
-        v50 = [(iPadAudioCallViewController *)self callParticipantsViewController];
-        v51 = [v50 view];
-        [v51 layoutIfNeeded];
+        callParticipantsViewController4 = [(iPadAudioCallViewController *)self callParticipantsViewController];
+        view18 = [callParticipantsViewController4 view];
+        [view18 layoutIfNeeded];
 
-        v52 = [(iPadAudioCallViewController *)self callDisplayStyleManager];
-        v53 = [v52 callDisplayStyle] != 0;
+        callDisplayStyleManager = [(iPadAudioCallViewController *)self callDisplayStyleManager];
+        v53 = [callDisplayStyleManager callDisplayStyle] != 0;
 
-        v28 = [(PHCallViewController *)self bottomBar];
-        [v28 setCurrentState:11 animated:v53 animationCompletionBlock:0];
+        view3 = [(PHCallViewController *)self bottomBar];
+        [view3 setCurrentState:11 animated:v53 animationCompletionBlock:0];
         goto LABEL_28;
       case 4:
         if ([(iPadAudioCallViewController *)self middleViewState]== 1)
         {
-          v5 = 0;
+          animatedCopy = 0;
         }
 
         else
         {
-          v5 = v5;
+          animatedCopy = animatedCopy;
         }
 
-        v54 = [(iPadAudioCallViewController *)self screeningViewController];
-        v55 = [v54 view];
-        v56 = [v55 superview];
+        screeningViewController = [(iPadAudioCallViewController *)self screeningViewController];
+        view19 = [screeningViewController view];
+        superview3 = [view19 superview];
 
-        if (!v56)
+        if (!superview3)
         {
-          v57 = [(iPadAudioCallViewController *)self view];
-          v58 = [(iPadAudioCallViewController *)self screeningViewController];
-          v59 = [v58 view];
-          [v57 addSubview:v59];
+          view20 = [(iPadAudioCallViewController *)self view];
+          screeningViewController2 = [(iPadAudioCallViewController *)self screeningViewController];
+          view21 = [screeningViewController2 view];
+          [view20 addSubview:view21];
 
-          v60 = [(iPadAudioCallViewController *)self screeningViewController];
-          v61 = [v60 view];
-          [(iPadAudioCallViewController *)self setupMiddleContentView:v61];
+          screeningViewController3 = [(iPadAudioCallViewController *)self screeningViewController];
+          view22 = [screeningViewController3 view];
+          [(iPadAudioCallViewController *)self setupMiddleContentView:view22];
 
-          v62 = [(iPadAudioCallViewController *)self screeningViewController];
-          [(iPadAudioCallViewController *)self updateScreeningTextFieldContainer:v62];
+          screeningViewController4 = [(iPadAudioCallViewController *)self screeningViewController];
+          [(iPadAudioCallViewController *)self updateScreeningTextFieldContainer:screeningViewController4];
 
-          v63 = [(iPadAudioCallViewController *)self screeningViewController];
-          [v63 didMoveToParentViewController:self];
+          screeningViewController5 = [(iPadAudioCallViewController *)self screeningViewController];
+          [screeningViewController5 didMoveToParentViewController:self];
         }
 
 LABEL_32:
         waitOnHoldViewController = self->_waitOnHoldViewController;
         if (waitOnHoldViewController)
         {
-          v68 = [(UIViewController *)waitOnHoldViewController view];
-          [(iPadAudioCallViewController *)self removeContentViewIfNeeded:v68 animated:v5];
+          view23 = [(UIViewController *)waitOnHoldViewController view];
+          [(iPadAudioCallViewController *)self removeContentViewIfNeeded:view23 animated:animatedCopy];
 
           v69 = self->_waitOnHoldViewController;
           self->_waitOnHoldViewController = 0;
         }
 
 LABEL_34:
-        self->_middleViewState = v6;
+        self->_middleViewState = stateCopy;
         [(iPadAudioCallViewController *)self refreshUseRTTButton];
         [(iPadAudioCallViewController *)self refreshExtensionNumberButton];
         [(iPadAudioCallViewController *)self hideOrShowScreeningBackgroundView];
-        v70 = [(iPadAudioCallViewController *)self frontmostCall];
-        [(iPadAudioCallViewController *)self updateWaitOnHoldServiceWithCall:v70];
+        frontmostCall = [(iPadAudioCallViewController *)self frontmostCall];
+        [(iPadAudioCallViewController *)self updateWaitOnHoldServiceWithCall:frontmostCall];
 
         [(iPadAudioCallViewController *)self updateBottomShelfWithMiddleViewState:self->_middleViewState callDisplayStyle:[(ICSCallDisplayStyleManager *)self->_callDisplayStyleManager callDisplayStyle]];
         if ([(iPadAudioCallViewController *)self isShowingPoster])
@@ -8842,15 +8842,15 @@ LABEL_34:
 
         return;
       case 5:
-        v21 = [(iPadAudioCallViewController *)self waitOnHoldViewController];
+        waitOnHoldViewController = [(iPadAudioCallViewController *)self waitOnHoldViewController];
 
-        if (!v21)
+        if (!waitOnHoldViewController)
         {
-          v28 = sub_100004F84();
-          if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
+          view3 = sub_100004F84();
+          if (os_log_type_enabled(view3, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 0;
-            _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "[WARN] WaitOnHoldViewController was unexpectedly nil, cannot show WaitOnHold middle view state.", buf, 2u);
+            _os_log_impl(&_mh_execute_header, view3, OS_LOG_TYPE_DEFAULT, "[WARN] WaitOnHoldViewController was unexpectedly nil, cannot show WaitOnHold middle view state.", buf, 2u);
           }
 
           goto LABEL_28;
@@ -8858,28 +8858,28 @@ LABEL_34:
 
         if ([(iPadAudioCallViewController *)self middleViewState]== 1)
         {
-          v5 = 0;
+          animatedCopy = 0;
         }
 
         else
         {
-          v5 = v5;
+          animatedCopy = animatedCopy;
         }
 
-        v22 = [(iPadAudioCallViewController *)self waitOnHoldViewController];
-        v23 = [v22 view];
-        v24 = [v23 superview];
+        waitOnHoldViewController2 = [(iPadAudioCallViewController *)self waitOnHoldViewController];
+        view24 = [waitOnHoldViewController2 view];
+        superview4 = [view24 superview];
 
-        if (!v24)
+        if (!superview4)
         {
-          v25 = [(iPadAudioCallViewController *)self view];
-          v26 = [(iPadAudioCallViewController *)self waitOnHoldViewController];
-          v27 = [v26 view];
-          [v25 addSubview:v27];
+          view25 = [(iPadAudioCallViewController *)self view];
+          waitOnHoldViewController3 = [(iPadAudioCallViewController *)self waitOnHoldViewController];
+          view26 = [waitOnHoldViewController3 view];
+          [view25 addSubview:view26];
 
-          v28 = [(iPadAudioCallViewController *)self waitOnHoldViewController];
-          v29 = [v28 view];
-          [(iPadAudioCallViewController *)self setupMiddleContentView:v29 flexibleConstraints:1 bottomPadding:-20.0];
+          view3 = [(iPadAudioCallViewController *)self waitOnHoldViewController];
+          v28View = [view3 view];
+          [(iPadAudioCallViewController *)self setupMiddleContentView:v28View flexibleConstraints:1 bottomPadding:-20.0];
 
 LABEL_28:
         }
@@ -8891,8 +8891,8 @@ LABEL_29:
     screeningViewController = self->_screeningViewController;
     if (screeningViewController)
     {
-      v65 = [(UIViewController *)screeningViewController view];
-      [(iPadAudioCallViewController *)self removeContentViewIfNeeded:v65 animated:v5];
+      view27 = [(UIViewController *)screeningViewController view];
+      [(iPadAudioCallViewController *)self removeContentViewIfNeeded:view27 animated:animatedCopy];
 
       [(iPadAudioCallViewController *)self removeChildViewController:self->_screeningViewController];
       [(UIViewController *)self->_screeningViewController didMoveToParentViewController:0];
@@ -8900,7 +8900,7 @@ LABEL_29:
       self->_screeningViewController = 0;
     }
 
-    if (v6 == 5)
+    if (stateCopy == 5)
     {
       goto LABEL_34;
     }
@@ -8909,16 +8909,16 @@ LABEL_29:
   }
 }
 
-- (void)updateBottomShelfWithMiddleViewState:(unsigned __int16)a3 callDisplayStyle:(int64_t)a4
+- (void)updateBottomShelfWithMiddleViewState:(unsigned __int16)state callDisplayStyle:(int64_t)style
 {
-  if (a4)
+  if (style)
   {
-    if (a3 == 1)
+    if (state == 1)
     {
       [(iPadAudioCallViewController *)self updateBottomShelfState:1];
     }
 
-    else if (a3 != 2)
+    else if (state != 2)
     {
       [(iPadAudioCallViewController *)self updateBottomShelfState:0];
     }
@@ -8932,8 +8932,8 @@ LABEL_29:
 
 - (void)updateViewsForHeldCallControlsViewIfNeeded
 {
-  v3 = [(iPadAudioCallViewController *)self heldCallControlsView];
-  [v3 removeFromSuperview];
+  heldCallControlsView = [(iPadAudioCallViewController *)self heldCallControlsView];
+  [heldCallControlsView removeFromSuperview];
 
   [(iPadAudioCallViewController *)self setHeldCallControlsView:0];
 
@@ -8942,46 +8942,46 @@ LABEL_29:
 
 - (void)setupHeldCallControlsViewIfNeeded
 {
-  v3 = [(iPadAudioCallViewController *)self heldCallControlsView];
+  heldCallControlsView = [(iPadAudioCallViewController *)self heldCallControlsView];
 
-  if (!v3)
+  if (!heldCallControlsView)
   {
-    v4 = [(iPadAudioCallViewController *)self callCenter];
-    v5 = [(iPadAudioCallViewController *)self callDisplayStyleManager];
-    v6 = -[iPadAudioCallViewController makeHeldCallControlsViewWithCallCenter:style:](self, "makeHeldCallControlsViewWithCallCenter:style:", v4, [v5 callDisplayStyle]);
+    callCenter = [(iPadAudioCallViewController *)self callCenter];
+    callDisplayStyleManager = [(iPadAudioCallViewController *)self callDisplayStyleManager];
+    v6 = -[iPadAudioCallViewController makeHeldCallControlsViewWithCallCenter:style:](self, "makeHeldCallControlsViewWithCallCenter:style:", callCenter, [callDisplayStyleManager callDisplayStyle]);
     [(iPadAudioCallViewController *)self setHeldCallControlsView:v6];
 
-    v7 = [(iPadAudioCallViewController *)self heldCallControlsView];
+    heldCallControlsView2 = [(iPadAudioCallViewController *)self heldCallControlsView];
 
-    if (v7)
+    if (heldCallControlsView2)
     {
-      v8 = [(iPadAudioCallViewController *)self view];
-      v9 = [(iPadAudioCallViewController *)self heldCallControlsView];
-      [v8 addSubview:v9];
+      view = [(iPadAudioCallViewController *)self view];
+      heldCallControlsView3 = [(iPadAudioCallViewController *)self heldCallControlsView];
+      [view addSubview:heldCallControlsView3];
 
-      v10 = [(iPadAudioCallViewController *)self heldCallControlsView];
-      [v10 setTranslatesAutoresizingMaskIntoConstraints:0];
+      heldCallControlsView4 = [(iPadAudioCallViewController *)self heldCallControlsView];
+      [heldCallControlsView4 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-      v29 = [(iPadAudioCallViewController *)self heldCallControlsView];
-      v27 = [v29 leadingAnchor];
-      v28 = [(iPadAudioCallViewController *)self view];
-      v26 = [v28 layoutMarginsGuide];
-      v25 = [v26 leadingAnchor];
-      v24 = [v27 constraintEqualToAnchor:v25];
+      heldCallControlsView5 = [(iPadAudioCallViewController *)self heldCallControlsView];
+      leadingAnchor = [heldCallControlsView5 leadingAnchor];
+      view2 = [(iPadAudioCallViewController *)self view];
+      layoutMarginsGuide = [view2 layoutMarginsGuide];
+      leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+      v24 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
       v30[0] = v24;
-      v23 = [(iPadAudioCallViewController *)self heldCallControlsView];
-      v21 = [v23 trailingAnchor];
-      v22 = [(iPadAudioCallViewController *)self view];
-      v11 = [v22 layoutMarginsGuide];
-      v12 = [v11 trailingAnchor];
-      v13 = [v21 constraintEqualToAnchor:v12];
+      heldCallControlsView6 = [(iPadAudioCallViewController *)self heldCallControlsView];
+      trailingAnchor = [heldCallControlsView6 trailingAnchor];
+      view3 = [(iPadAudioCallViewController *)self view];
+      layoutMarginsGuide2 = [view3 layoutMarginsGuide];
+      trailingAnchor2 = [layoutMarginsGuide2 trailingAnchor];
+      v13 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
       v30[1] = v13;
-      v14 = [(iPadAudioCallViewController *)self heldCallControlsView];
-      v15 = [v14 bottomAnchor];
-      v16 = [(iPadAudioCallViewController *)self view];
-      v17 = [v16 safeAreaLayoutGuide];
-      v18 = [v17 bottomAnchor];
-      v19 = [v15 constraintEqualToAnchor:v18];
+      heldCallControlsView7 = [(iPadAudioCallViewController *)self heldCallControlsView];
+      bottomAnchor = [heldCallControlsView7 bottomAnchor];
+      view4 = [(iPadAudioCallViewController *)self view];
+      safeAreaLayoutGuide = [view4 safeAreaLayoutGuide];
+      bottomAnchor2 = [safeAreaLayoutGuide bottomAnchor];
+      v19 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
       v30[2] = v19;
       v20 = [NSArray arrayWithObjects:v30 count:3];
       [NSLayoutConstraint activateConstraints:v20];
@@ -8991,21 +8991,21 @@ LABEL_29:
 
 - (void)updateShareNameAndPhotoHUDPresentationIfNeeded
 {
-  v3 = [(iPadAudioCallViewController *)self features];
-  v4 = [v3 isNameAndPhotoC3Enabled];
+  features = [(iPadAudioCallViewController *)self features];
+  isNameAndPhotoC3Enabled = [features isNameAndPhotoC3Enabled];
 
-  if (v4 && ([(PHCallViewController *)self currentState]== 4 || [(PHCallViewController *)self currentState]== 5))
+  if (isNameAndPhotoC3Enabled && ([(PHCallViewController *)self currentState]== 4 || [(PHCallViewController *)self currentState]== 5))
   {
-    v5 = [(iPadAudioCallViewController *)self callDisplayStyleManager];
-    v6 = [v5 callDisplayStyle];
+    callDisplayStyleManager = [(iPadAudioCallViewController *)self callDisplayStyleManager];
+    callDisplayStyle = [callDisplayStyleManager callDisplayStyle];
 
-    if (v6 == 2)
+    if (callDisplayStyle == 2)
     {
       v10 = +[UIApplication sharedApplication];
-      v7 = [v10 delegate];
-      v8 = [v7 bannerPresentationManager];
-      v9 = [(iPadAudioCallViewController *)self callCenter];
-      [(iPadAudioCallViewController *)self showNameAndPhotoHUDIfNecessaryWithBannerPresentationManager:v8 callCenter:v9];
+      delegate = [v10 delegate];
+      bannerPresentationManager = [delegate bannerPresentationManager];
+      callCenter = [(iPadAudioCallViewController *)self callCenter];
+      [(iPadAudioCallViewController *)self showNameAndPhotoHUDIfNecessaryWithBannerPresentationManager:bannerPresentationManager callCenter:callCenter];
     }
   }
 }
@@ -9016,15 +9016,15 @@ LABEL_29:
   if (!buttonsViewController)
   {
     v4 = [PHAudioCallControlsViewController alloc];
-    v5 = [(iPadAudioCallViewController *)self callDisplayStyleManager];
-    v6 = [(PHAudioCallControlsViewController *)v4 initWithCallDisplayStyleManager:v5];
+    callDisplayStyleManager = [(iPadAudioCallViewController *)self callDisplayStyleManager];
+    v6 = [(PHAudioCallControlsViewController *)v4 initWithCallDisplayStyleManager:callDisplayStyleManager];
     v7 = self->_buttonsViewController;
     self->_buttonsViewController = v6;
 
     [(iPadAudioCallViewController *)self addChildViewController:self->_buttonsViewController];
     [(PHAudioCallControlsViewController *)self->_buttonsViewController setDelegate:self];
-    v8 = [(PHAudioCallControlsViewController *)self->_buttonsViewController view];
-    [v8 updateBackgroundMaterial:1];
+    view = [(PHAudioCallControlsViewController *)self->_buttonsViewController view];
+    [view updateBackgroundMaterial:1];
 
     buttonsViewController = self->_buttonsViewController;
   }
@@ -9037,24 +9037,24 @@ LABEL_29:
   screeningViewController = self->_screeningViewController;
   if (!screeningViewController)
   {
-    v4 = [(iPadAudioCallViewController *)self featureFlags];
-    if ([v4 receptionistEnabled])
+    featureFlags = [(iPadAudioCallViewController *)self featureFlags];
+    if ([featureFlags receptionistEnabled])
     {
       [(iPadAudioCallViewController *)self setIsShowingNewTranscriptsView:1];
     }
 
     else
     {
-      v5 = [(iPadAudioCallViewController *)self featureFlags];
-      -[iPadAudioCallViewController setIsShowingNewTranscriptsView:](self, "setIsShowingNewTranscriptsView:", [v5 LVMEverywhere]);
+      featureFlags2 = [(iPadAudioCallViewController *)self featureFlags];
+      -[iPadAudioCallViewController setIsShowingNewTranscriptsView:](self, "setIsShowingNewTranscriptsView:", [featureFlags2 LVMEverywhere]);
     }
 
-    v6 = [(iPadAudioCallViewController *)self isShowingNewTranscriptsView];
-    v7 = [(CNKTranscriptionViewComposerFactory *)self->_screeningViewControllerFactory makeViewComposer];
-    v8 = [(iPadAudioCallViewController *)self frontmostCall];
-    if (v6)
+    isShowingNewTranscriptsView = [(iPadAudioCallViewController *)self isShowingNewTranscriptsView];
+    makeViewComposer = [(CNKTranscriptionViewComposerFactory *)self->_screeningViewControllerFactory makeViewComposer];
+    frontmostCall = [(iPadAudioCallViewController *)self frontmostCall];
+    if (isShowingNewTranscriptsView)
     {
-      v9 = [v7 composeWithCall:v8 createTextField:1 liveReply:{-[iPadAudioCallViewController sendToLiveReply](self, "sendToLiveReply")}];
+      v9 = [makeViewComposer composeWithCall:frontmostCall createTextField:1 liveReply:{-[iPadAudioCallViewController sendToLiveReply](self, "sendToLiveReply")}];
       v10 = self->_screeningViewController;
       self->_screeningViewController = v9;
 
@@ -9063,7 +9063,7 @@ LABEL_29:
 
     else
     {
-      v11 = [v7 composeWithCall:v8];
+      v11 = [makeViewComposer composeWithCall:frontmostCall];
       v12 = self->_screeningViewController;
       self->_screeningViewController = v11;
     }
@@ -9081,13 +9081,13 @@ LABEL_29:
   if (!useRTTButton)
   {
     v4 = sub_10001A58C();
-    v5 = [(iPadAudioCallViewController *)self frontmostCall];
+    frontmostCall = [(iPadAudioCallViewController *)self frontmostCall];
     v6 = [[PHAudioCallControlsSupplementalButton alloc] initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
     v7 = self->_useRTTButton;
     self->_useRTTButton = v6;
 
-    v8 = [v5 localSenderIdentityUUID];
-    v9 = [v4 rttDisplayName:0 forSubscriptionContextUUID:v8];
+    localSenderIdentityUUID = [frontmostCall localSenderIdentityUUID];
+    v9 = [v4 rttDisplayName:0 forSubscriptionContextUUID:localSenderIdentityUUID];
 
     [(PHAudioCallControlsSupplementalButton *)self->_useRTTButton setTitle:v9 forState:0];
     v10 = self->_useRTTButton;
@@ -9200,14 +9200,14 @@ LABEL_29:
   return voiceLoopViewController;
 }
 
-- (void)bottomBarActionPerformed:(int64_t)a3 withCompletionState:(int64_t)a4 fromBar:(id)a5
+- (void)bottomBarActionPerformed:(int64_t)performed withCompletionState:(int64_t)state fromBar:(id)bar
 {
-  v7 = a5;
-  v8 = [(PHCallViewController *)self bottomBar];
+  barCopy = bar;
+  bottomBar = [(PHCallViewController *)self bottomBar];
 
-  if (v8 == v7)
+  if (bottomBar == barCopy)
   {
-    [(iPadAudioCallViewController *)self performBottomBarActionType:a3];
+    [(iPadAudioCallViewController *)self performBottomBarActionType:performed];
   }
 
   else
@@ -9216,15 +9216,15 @@ LABEL_29:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 134218242;
-      v11 = a3;
+      performedCopy = performed;
       v12 = 2112;
-      v13 = v7;
+      v13 = barCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "[WARN] Cannot perform bottom bar action %ld from unknown bottom bar %@", &v10, 0x16u);
     }
   }
 }
 
-- (void)performBottomBarActionType:(int64_t)a3
+- (void)performBottomBarActionType:(int64_t)type
 {
   v5 = [NSNumber numberWithInteger:4];
   v6 = [NSNumber numberWithInteger:6];
@@ -9233,26 +9233,26 @@ LABEL_29:
   v9 = [NSNumber numberWithInteger:3];
   v10 = [NSArray arrayWithObjects:v5, v6, v7, v8, v9, 0];
 
-  v11 = [NSNumber numberWithInteger:a3];
+  v11 = [NSNumber numberWithInteger:type];
   LODWORD(v6) = [v10 containsObject:v11];
 
   if (v6)
   {
     v12 = +[TUCallCenter sharedInstance];
     v13 = [v12 callsPassingTest:&stru_100359210];
-    v14 = [v13 firstObject];
+    firstObject = [v13 firstObject];
 
-    if (v14 && !self->_shouldIgnoreWaitOnHoldSessionState)
+    if (firstObject && !self->_shouldIgnoreWaitOnHoldSessionState)
     {
       v131[0] = _NSConcreteStackBlock;
       v131[1] = 3221225472;
       v131[2] = sub_1000E4E94;
       v131[3] = &unk_100359238;
       v131[4] = self;
-      v131[5] = a3;
+      v131[5] = type;
       v18 = objc_retainBlock(v131);
-      v19 = [v14 displayName];
-      [(iPadAudioCallViewController *)self presentWaitOnHoldEndForAnotherCallAlertWithCallerName:v19 completionHandler:v18];
+      displayName = [firstObject displayName];
+      [(iPadAudioCallViewController *)self presentWaitOnHoldEndForAnotherCallAlertWithCallerName:displayName completionHandler:v18];
 
       goto LABEL_104;
     }
@@ -9261,38 +9261,38 @@ LABEL_29:
   v15 = sub_100004F84();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
-    v16 = [(PHCallViewController *)self bottomBar];
-    v17 = [v16 nameForActionType:a3];
+    bottomBar = [(PHCallViewController *)self bottomBar];
+    v17 = [bottomBar nameForActionType:type];
     *buf = 138412290;
     v133 = v17;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "BottomBarActionPerformed: %@", buf, 0xCu);
   }
 
-  switch(a3)
+  switch(type)
   {
     case 1:
       goto LABEL_32;
     case 2:
-      v53 = [(iPadAudioCallViewController *)self inCallRootViewController];
-      [v53 requestInCallSceneTransitionToFullScreen];
+      inCallRootViewController = [(iPadAudioCallViewController *)self inCallRootViewController];
+      [inCallRootViewController requestInCallSceneTransitionToFullScreen];
 
 LABEL_32:
-      v42 = [(iPadAudioCallViewController *)self frontmostCall];
-      if ([v42 wantsHoldMusic])
+      frontmostCall = [(iPadAudioCallViewController *)self frontmostCall];
+      if ([frontmostCall wantsHoldMusic])
       {
-        [v42 resetWantsHoldMusic];
+        [frontmostCall resetWantsHoldMusic];
         [(iPadAudioCallViewController *)self updateCurrentState];
       }
 
       else
       {
-        v88 = [(iPadAudioCallViewController *)self callCenter];
-        v89 = [v88 screeningCall];
+        callCenter = [(iPadAudioCallViewController *)self callCenter];
+        screeningCall = [callCenter screeningCall];
 
         if ([(iPadAudioCallViewController *)self usesCompactMulticallUI])
         {
-          v90 = [(iPadAudioCallViewController *)self prioritizedCall];
-          v91 = [v89 isEqualToCall:v90];
+          prioritizedCall = [(iPadAudioCallViewController *)self prioritizedCall];
+          v91 = [screeningCall isEqualToCall:prioritizedCall];
 
           v92 = v91 ^ 1;
         }
@@ -9302,43 +9302,43 @@ LABEL_32:
           v92 = 0;
         }
 
-        if (!v89 || (v92 & 1) != 0)
+        if (!screeningCall || (v92 & 1) != 0)
         {
-          v105 = [(iPadAudioCallViewController *)self callCenter];
-          v103 = [v105 incomingCall];
+          callCenter2 = [(iPadAudioCallViewController *)self callCenter];
+          incomingCall = [callCenter2 incomingCall];
 
           v106 = sub_100004F84();
           if (os_log_type_enabled(v106, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
-            v133 = v103;
+            v133 = incomingCall;
             _os_log_impl(&_mh_execute_header, v106, OS_LOG_TYPE_DEFAULT, "Answering incoming call: %@", buf, 0xCu);
           }
 
           if (-[iPadAudioCallViewController usesCompactMulticallUI](self, "usesCompactMulticallUI") && (-[iPadAudioCallViewController callCenter](self, "callCenter"), v107 = objc_claimAutoreleasedReturnValue(), [v107 currentCallGroups], v108 = objc_claimAutoreleasedReturnValue(), v109 = objc_msgSend(v108, "count") > 1, v108, v107, v109))
           {
-            v104 = [(iPadAudioCallViewController *)self answerRequestForCall:v103];
-            v110 = [(iPadAudioCallViewController *)self callCenter];
-            v111 = v110;
-            if (v89)
+            callCenter4 = [(iPadAudioCallViewController *)self answerRequestForCall:incomingCall];
+            callCenter3 = [(iPadAudioCallViewController *)self callCenter];
+            v111 = callCenter3;
+            if (screeningCall)
             {
-              [v110 endActiveOrHeldAndAnswerWithRequest:v104];
+              [callCenter3 endActiveOrHeldAndAnswerWithRequest:callCenter4];
             }
 
             else
             {
-              [v110 holdActiveAndAnswerWithRequest:v104];
+              [callCenter3 holdActiveAndAnswerWithRequest:callCenter4];
             }
 
-            v123 = [(iPadAudioCallViewController *)self analyticsReporter];
-            [v123 reportMultipleCallsWaitingUIAction:3];
+            analyticsReporter = [(iPadAudioCallViewController *)self analyticsReporter];
+            [analyticsReporter reportMultipleCallsWaitingUIAction:3];
           }
 
           else
           {
-            v104 = [(iPadAudioCallViewController *)self callCenter];
-            v123 = [(iPadAudioCallViewController *)self answerRequestForCall:v103];
-            [v104 answerWithRequest:v123];
+            callCenter4 = [(iPadAudioCallViewController *)self callCenter];
+            analyticsReporter = [(iPadAudioCallViewController *)self answerRequestForCall:incomingCall];
+            [callCenter4 answerWithRequest:analyticsReporter];
           }
         }
 
@@ -9348,40 +9348,40 @@ LABEL_32:
           if (os_log_type_enabled(v102, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
-            v133 = v89;
+            v133 = screeningCall;
             _os_log_impl(&_mh_execute_header, v102, OS_LOG_TYPE_DEFAULT, "Answering screened call: %@", buf, 0xCu);
           }
 
-          v103 = [(iPadAudioCallViewController *)self answerRequestForCall:v89];
-          [v103 setBehavior:4];
-          v104 = [(iPadAudioCallViewController *)self callCenter];
-          [v104 answerWithRequest:v103];
+          incomingCall = [(iPadAudioCallViewController *)self answerRequestForCall:screeningCall];
+          [incomingCall setBehavior:4];
+          callCenter4 = [(iPadAudioCallViewController *)self callCenter];
+          [callCenter4 answerWithRequest:incomingCall];
         }
       }
 
       goto LABEL_103;
     case 4:
-      v68 = [(iPadAudioCallViewController *)self callCenter];
-      v69 = [v68 incomingCall];
-      v70 = [(iPadAudioCallViewController *)self answerRequestForCall:v69];
+      callCenter5 = [(iPadAudioCallViewController *)self callCenter];
+      incomingCall2 = [callCenter5 incomingCall];
+      v70 = [(iPadAudioCallViewController *)self answerRequestForCall:incomingCall2];
 
-      v71 = [(iPadAudioCallViewController *)self callCenter];
-      v72 = [v71 activeVideoCall];
+      callCenter6 = [(iPadAudioCallViewController *)self callCenter];
+      activeVideoCall = [callCenter6 activeVideoCall];
 
-      v73 = [(iPadAudioCallViewController *)self callCenter];
-      v74 = v73;
-      if (v72)
+      callCenter7 = [(iPadAudioCallViewController *)self callCenter];
+      analyticsReporter2 = callCenter7;
+      if (activeVideoCall)
       {
-        [v73 endActiveOrHeldAndAnswerWithRequest:v70];
+        [callCenter7 endActiveOrHeldAndAnswerWithRequest:v70];
       }
 
       else
       {
-        v119 = [v73 isEndAndAnswerAllowed];
+        isEndAndAnswerAllowed = [callCenter7 isEndAndAnswerAllowed];
 
         v120 = sub_100004F84();
         v121 = os_log_type_enabled(v120, OS_LOG_TYPE_DEFAULT);
-        if (v119)
+        if (isEndAndAnswerAllowed)
         {
           if (v121)
           {
@@ -9389,8 +9389,8 @@ LABEL_32:
             _os_log_impl(&_mh_execute_header, v120, OS_LOG_TYPE_DEFAULT, "BottomBar: Ending active and answering incoming call", buf, 2u);
           }
 
-          v122 = [(iPadAudioCallViewController *)self callCenter];
-          [v122 endActiveOrHeldAndAnswerWithRequest:v70];
+          callCenter8 = [(iPadAudioCallViewController *)self callCenter];
+          [callCenter8 endActiveOrHeldAndAnswerWithRequest:v70];
         }
 
         else
@@ -9401,61 +9401,61 @@ LABEL_32:
             _os_log_impl(&_mh_execute_header, v120, OS_LOG_TYPE_DEFAULT, "BottomBar: Disconnecting all calls", buf, 2u);
           }
 
-          v122 = [(iPadAudioCallViewController *)self callCenter];
-          [v122 disconnectAllCalls];
+          callCenter8 = [(iPadAudioCallViewController *)self callCenter];
+          [callCenter8 disconnectAllCalls];
         }
 
-        v74 = [(iPadAudioCallViewController *)self analyticsReporter];
-        [v74 reportMultipleCallsWaitingUIAction:2];
+        analyticsReporter2 = [(iPadAudioCallViewController *)self analyticsReporter];
+        [analyticsReporter2 reportMultipleCallsWaitingUIAction:2];
       }
 
       break;
     case 5:
-      v44 = [(iPadAudioCallViewController *)self callCenter];
-      v45 = [(iPadAudioCallViewController *)self callCenter];
-      v46 = [v45 incomingCall];
-      v47 = [(iPadAudioCallViewController *)self answerRequestForCall:v46];
-      [v44 endHeldAndAnswerWithRequest:v47];
+      callCenter9 = [(iPadAudioCallViewController *)self callCenter];
+      callCenter10 = [(iPadAudioCallViewController *)self callCenter];
+      incomingCall3 = [callCenter10 incomingCall];
+      v47 = [(iPadAudioCallViewController *)self answerRequestForCall:incomingCall3];
+      [callCenter9 endHeldAndAnswerWithRequest:v47];
 
       break;
     case 6:
-      v48 = [(iPadAudioCallViewController *)self callCenter];
-      v49 = [(iPadAudioCallViewController *)self callCenter];
-      v50 = [v49 incomingCall];
-      v51 = [(iPadAudioCallViewController *)self answerRequestForCall:v50];
-      [v48 holdActiveAndAnswerWithRequest:v51];
+      callCenter11 = [(iPadAudioCallViewController *)self callCenter];
+      callCenter12 = [(iPadAudioCallViewController *)self callCenter];
+      incomingCall4 = [callCenter12 incomingCall];
+      v51 = [(iPadAudioCallViewController *)self answerRequestForCall:incomingCall4];
+      [callCenter11 holdActiveAndAnswerWithRequest:v51];
 
-      v52 = [(iPadAudioCallViewController *)self analyticsReporter];
-      [v52 reportMultipleCallsWaitingUIAction:3];
+      analyticsReporter3 = [(iPadAudioCallViewController *)self analyticsReporter];
+      [analyticsReporter3 reportMultipleCallsWaitingUIAction:3];
 
       break;
     case 7:
-      v75 = [(iPadAudioCallViewController *)self declineCallService];
-      [v75 declineAnsweringFrontMostCallViaUserActionWithCompletionHandler:&stru_100359258];
+      declineCallService = [(iPadAudioCallViewController *)self declineCallService];
+      [declineCallService declineAnsweringFrontMostCallViaUserActionWithCompletionHandler:&stru_100359258];
 
       break;
     case 10:
-      v40 = [(iPadAudioCallViewController *)self frontmostCall];
-      v41 = [v40 handle];
-      [(iPadAudioCallViewController *)self showBlockAlertForHandle:v41];
+      frontmostCall2 = [(iPadAudioCallViewController *)self frontmostCall];
+      handle = [frontmostCall2 handle];
+      [(iPadAudioCallViewController *)self showBlockAlertForHandle:handle];
 
       break;
     case 11:
-      v42 = [(iPadAudioCallViewController *)self frontmostCall];
-      if (v42)
+      frontmostCall = [(iPadAudioCallViewController *)self frontmostCall];
+      if (frontmostCall)
       {
         if ([(PHCallViewController *)self currentState]== 11 || [(PHCallViewController *)self currentState]== 12)
         {
           [(iPadAudioCallViewController *)self setMiddleViewState:0];
         }
 
-        if ([(iPadAudioCallViewController *)self isCallSmartHoldingSessionActive:v42])
+        if ([(iPadAudioCallViewController *)self isCallSmartHoldingSessionActive:frontmostCall])
         {
           [(iPadAudioCallViewController *)self endWaitOnHoldSession];
         }
 
-        v43 = [(iPadAudioCallViewController *)self callCenter];
-        [v43 disconnectCall:v42 withReason:2];
+        callCenter13 = [(iPadAudioCallViewController *)self callCenter];
+        [callCenter13 disconnectCall:frontmostCall withReason:2];
       }
 
 LABEL_103:
@@ -9475,8 +9475,8 @@ LABEL_103:
       [(iPadAudioCallViewController *)self handleCancelPressedInCallBufferScreen];
       break;
     case 16:
-      v81 = [(iPadAudioCallViewController *)self callCenter];
-      [v81 disconnectAllCalls];
+      callCenter14 = [(iPadAudioCallViewController *)self callCenter];
+      [callCenter14 disconnectAllCalls];
 
       break;
     case 17:
@@ -9489,20 +9489,20 @@ LABEL_103:
       break;
     case 18:
       v76 = +[UIApplication sharedApplication];
-      v77 = [v76 delegate];
-      v78 = [v77 mostRecentlyDisconnectedAudioCall];
+      delegate = [v76 delegate];
+      mostRecentlyDisconnectedAudioCall = [delegate mostRecentlyDisconnectedAudioCall];
 
-      if (v78)
+      if (mostRecentlyDisconnectedAudioCall)
       {
-        v79 = [(iPadAudioCallViewController *)self callCenter];
-        v80 = [v78 dialRequestForRedial];
-        [v79 launchAppForDialRequest:v80 completion:0];
+        callCenter15 = [(iPadAudioCallViewController *)self callCenter];
+        dialRequestForRedial = [mostRecentlyDisconnectedAudioCall dialRequestForRedial];
+        [callCenter15 launchAppForDialRequest:dialRequestForRedial completion:0];
       }
 
       else
       {
-        v79 = sub_100004F84();
-        if (os_log_type_enabled(v79, OS_LOG_TYPE_ERROR))
+        callCenter15 = sub_100004F84();
+        if (os_log_type_enabled(callCenter15, OS_LOG_TYPE_ERROR))
         {
           sub_1002565D8();
         }
@@ -9510,76 +9510,76 @@ LABEL_103:
 
       goto LABEL_98;
     case 22:
-      v33 = [(iPadAudioCallViewController *)self callCenter];
-      v34 = [v33 routeController];
-      v35 = [v34 areAuxiliaryRoutesAvailable];
+      callCenter16 = [(iPadAudioCallViewController *)self callCenter];
+      routeController = [callCenter16 routeController];
+      areAuxiliaryRoutesAvailable = [routeController areAuxiliaryRoutesAvailable];
 
-      if (v35)
+      if (areAuxiliaryRoutesAvailable)
       {
         v36 = +[UIApplication sharedApplication];
-        v37 = [v36 delegate];
-        v38 = [v37 currentInCallScene];
-        [v38 requestTransitionToPresentationMode:2 shouldDismissCMASAlerts:0 analyticsSource:@"iPadSBSUIInCallTransitionAnalyticsSourceAudioRouteButtonPress"];
+        delegate2 = [v36 delegate];
+        currentInCallScene = [delegate2 currentInCallScene];
+        [currentInCallScene requestTransitionToPresentationMode:2 shouldDismissCMASAlerts:0 analyticsSource:@"iPadSBSUIInCallTransitionAnalyticsSourceAudioRouteButtonPress"];
 
         [(iPadAudioCallViewController *)self setWaitingForFullScreenAudioRoutes:1];
       }
 
       else
       {
-        v93 = [(iPadAudioCallViewController *)self callCenter];
-        v94 = [v93 routeController];
-        v95 = [v94 pickedRoute];
-        v96 = [v95 isSpeaker];
+        callCenter17 = [(iPadAudioCallViewController *)self callCenter];
+        routeController2 = [callCenter17 routeController];
+        pickedRoute = [routeController2 pickedRoute];
+        isSpeaker = [pickedRoute isSpeaker];
 
-        v97 = [(iPadAudioCallViewController *)self callCenter];
-        v98 = [v97 routeController];
-        v99 = v98;
-        if (v96)
+        callCenter18 = [(iPadAudioCallViewController *)self callCenter];
+        routeController3 = [callCenter18 routeController];
+        v99 = routeController3;
+        if (isSpeaker)
         {
-          v78 = [v98 routeForSpeakerDisable];
+          mostRecentlyDisconnectedAudioCall = [routeController3 routeForSpeakerDisable];
 
-          if (v78)
+          if (mostRecentlyDisconnectedAudioCall)
           {
-            v100 = [(iPadAudioCallViewController *)self callCenter];
-            v101 = [v100 routeController];
-            [v101 pickRoute:v78];
+            callCenter19 = [(iPadAudioCallViewController *)self callCenter];
+            routeController4 = [callCenter19 routeController];
+            [routeController4 pickRoute:mostRecentlyDisconnectedAudioCall];
 
-            v79 = [(iPadAudioCallViewController *)self callParticipantsViewController];
-            [v79 setBannerAudioRouteButtonSelected:0];
+            callCenter15 = [(iPadAudioCallViewController *)self callParticipantsViewController];
+            [callCenter15 setBannerAudioRouteButtonSelected:0];
           }
 
           else
           {
-            v79 = sub_100004F84();
-            if (os_log_type_enabled(v79, OS_LOG_TYPE_DEFAULT))
+            callCenter15 = sub_100004F84();
+            if (os_log_type_enabled(callCenter15, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 0;
-              _os_log_impl(&_mh_execute_header, v79, OS_LOG_TYPE_DEFAULT, "[WARN] Could not find available route to pick for speaker disable", buf, 2u);
+              _os_log_impl(&_mh_execute_header, callCenter15, OS_LOG_TYPE_DEFAULT, "[WARN] Could not find available route to pick for speaker disable", buf, 2u);
             }
           }
         }
 
         else
         {
-          v78 = [v98 routeForSpeakerEnable];
+          mostRecentlyDisconnectedAudioCall = [routeController3 routeForSpeakerEnable];
 
-          if (v78)
+          if (mostRecentlyDisconnectedAudioCall)
           {
-            v124 = [(iPadAudioCallViewController *)self callCenter];
-            v125 = [v124 routeController];
-            [v125 pickRoute:v78];
+            callCenter20 = [(iPadAudioCallViewController *)self callCenter];
+            routeController5 = [callCenter20 routeController];
+            [routeController5 pickRoute:mostRecentlyDisconnectedAudioCall];
 
-            v79 = [(iPadAudioCallViewController *)self callParticipantsViewController];
-            [v79 setBannerAudioRouteButtonSelected:1];
+            callCenter15 = [(iPadAudioCallViewController *)self callParticipantsViewController];
+            [callCenter15 setBannerAudioRouteButtonSelected:1];
           }
 
           else
           {
-            v79 = sub_100004F84();
-            if (os_log_type_enabled(v79, OS_LOG_TYPE_DEFAULT))
+            callCenter15 = sub_100004F84();
+            if (os_log_type_enabled(callCenter15, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 0;
-              _os_log_impl(&_mh_execute_header, v79, OS_LOG_TYPE_DEFAULT, "[WARN] Could not find available route to pick for speaker enable", buf, 2u);
+              _os_log_impl(&_mh_execute_header, callCenter15, OS_LOG_TYPE_DEFAULT, "[WARN] Could not find available route to pick for speaker enable", buf, 2u);
             }
           }
         }
@@ -9589,23 +9589,23 @@ LABEL_98:
 
       break;
     case 23:
-      v39 = [(iPadAudioCallViewController *)self frontmostCall];
-      [v39 sendHardPauseDigits];
+      frontmostCall3 = [(iPadAudioCallViewController *)self frontmostCall];
+      [frontmostCall3 sendHardPauseDigits];
 
       break;
     case 24:
-      v65 = [(iPadAudioCallViewController *)self callCenter];
-      v66 = [v65 currentCallCount] > 1;
+      callCenter21 = [(iPadAudioCallViewController *)self callCenter];
+      v66 = [callCenter21 currentCallCount] > 1;
 
       if (v66)
       {
-        v67 = [(iPadAudioCallViewController *)self analyticsReporter];
-        [v67 reportMultipleCallsWaitingUIAction:4];
+        analyticsReporter4 = [(iPadAudioCallViewController *)self analyticsReporter];
+        [analyticsReporter4 reportMultipleCallsWaitingUIAction:4];
       }
 
       goto LABEL_39;
     case 25:
-      v54 = [(iPadAudioCallViewController *)self featureFlags];
+      featureFlags = [(iPadAudioCallViewController *)self featureFlags];
       v55 = TUCallScreeningEnabledM3();
 
       if (!v55)
@@ -9615,20 +9615,20 @@ LABEL_98:
 
       if (-[iPadAudioCallViewController usesCompactMulticallUI](self, "usesCompactMulticallUI") && (-[iPadAudioCallViewController callCenter](self, "callCenter"), v56 = objc_claimAutoreleasedReturnValue(), [v56 currentCallGroups], v57 = objc_claimAutoreleasedReturnValue(), v58 = objc_msgSend(v57, "count") > 1, v57, v56, v58))
       {
-        v59 = [(iPadAudioCallViewController *)self callCenter];
-        v60 = [v59 currentCallCount] > 1;
+        callCenter22 = [(iPadAudioCallViewController *)self callCenter];
+        v60 = [callCenter22 currentCallCount] > 1;
 
         if (v60)
         {
-          v61 = [(iPadAudioCallViewController *)self analyticsReporter];
-          [v61 reportMultipleCallsWaitingUIAction:4];
+          analyticsReporter5 = [(iPadAudioCallViewController *)self analyticsReporter];
+          [analyticsReporter5 reportMultipleCallsWaitingUIAction:4];
         }
 
 LABEL_39:
-        v62 = [(iPadAudioCallViewController *)self callCenter];
-        v63 = [(iPadAudioCallViewController *)self callCenter];
-        v64 = [v63 incomingCall];
-        [v62 disconnectCall:v64 withReason:2];
+        callCenter23 = [(iPadAudioCallViewController *)self callCenter];
+        callCenter24 = [(iPadAudioCallViewController *)self callCenter];
+        incomingCall5 = [callCenter24 incomingCall];
+        [callCenter23 disconnectCall:incomingCall5 withReason:2];
       }
 
       else
@@ -9636,26 +9636,26 @@ LABEL_39:
         v112 = sub_100004F84();
         if (os_log_type_enabled(v112, OS_LOG_TYPE_DEFAULT))
         {
-          v113 = [(iPadAudioCallViewController *)self frontmostCall];
+          frontmostCall4 = [(iPadAudioCallViewController *)self frontmostCall];
           *buf = 138412290;
-          v133 = v113;
+          v133 = frontmostCall4;
           _os_log_impl(&_mh_execute_header, v112, OS_LOG_TYPE_DEFAULT, "Answering screened call: %@", buf, 0xCu);
         }
 
-        v114 = [(iPadAudioCallViewController *)self frontmostCall];
-        if (v114)
+        frontmostCall5 = [(iPadAudioCallViewController *)self frontmostCall];
+        if (frontmostCall5)
         {
           v115 = +[UIApplication sharedApplication];
-          v116 = [v115 delegate];
-          v117 = [v116 answeringMachine];
-          v118 = [v114 callUUID];
-          [v117 screenCallWithUUID:v118 manualScreening:1 completion:&stru_100359278];
+          delegate3 = [v115 delegate];
+          answeringMachine = [delegate3 answeringMachine];
+          callUUID = [frontmostCall5 callUUID];
+          [answeringMachine screenCallWithUUID:callUUID manualScreening:1 completion:&stru_100359278];
         }
       }
 
       break;
     case 26:
-      v84 = [(iPadAudioCallViewController *)self featureFlags];
+      featureFlags2 = [(iPadAudioCallViewController *)self featureFlags];
       v85 = TUCallScreeningEnabledM3();
 
       if (v85)
@@ -9679,24 +9679,24 @@ LABEL_39:
       [(iPadAudioCallViewController *)self _leaveMessage];
       break;
     case 32:
-      v82 = [(iPadAudioCallViewController *)self callCenter];
-      v83 = [(iPadAudioCallViewController *)self frontmostCall];
-      [v82 setTTYType:1 forCall:v83];
+      callCenter25 = [(iPadAudioCallViewController *)self callCenter];
+      frontmostCall6 = [(iPadAudioCallViewController *)self frontmostCall];
+      [callCenter25 setTTYType:1 forCall:frontmostCall6];
 
       break;
     case 35:
       v20 = +[UIApplication sharedApplication];
-      v21 = [v20 delegate];
-      v22 = [v21 mostRecentlyDisconnectedAudioCall];
+      delegate4 = [v20 delegate];
+      mostRecentlyDisconnectedAudioCall2 = [delegate4 mostRecentlyDisconnectedAudioCall];
 
       objc_initWeak(buf, self);
-      v23 = [(iPadAudioCallViewController *)self inCallRootViewController];
+      inCallRootViewController2 = [(iPadAudioCallViewController *)self inCallRootViewController];
       v129[0] = _NSConcreteStackBlock;
       v129[1] = 3221225472;
       v129[2] = sub_1000E4F94;
       v129[3] = &unk_100356E98;
       objc_copyWeak(&v130, buf);
-      [v23 presentBlockAndReportAlertToBlockCall:v22 forViewController:self completion:v129];
+      [inCallRootViewController2 presentBlockAndReportAlertToBlockCall:mostRecentlyDisconnectedAudioCall2 forViewController:self completion:v129];
 
       objc_destroyWeak(&v130);
       objc_destroyWeak(buf);
@@ -9704,25 +9704,25 @@ LABEL_39:
       break;
     case 36:
       v25 = +[UIApplication sharedApplication];
-      v26 = [v25 delegate];
-      v27 = [v26 mostRecentlyDisconnectedAudioCall];
+      delegate5 = [v25 delegate];
+      mostRecentlyDisconnectedAudioCall3 = [delegate5 mostRecentlyDisconnectedAudioCall];
 
-      v28 = [(iPadAudioCallViewController *)self inCallRootViewController];
-      v29 = [v27 handle];
-      [v28 presentCreateContactViewControllerWithHandle:v29 forViewController:self];
+      inCallRootViewController3 = [(iPadAudioCallViewController *)self inCallRootViewController];
+      handle2 = [mostRecentlyDisconnectedAudioCall3 handle];
+      [inCallRootViewController3 presentCreateContactViewControllerWithHandle:handle2 forViewController:self];
 
       break;
     case 38:
       v30 = +[UIApplication sharedApplication];
-      v31 = [v30 delegate];
-      v32 = [v31 alertCoordinator];
-      [v32 invokeAlertWithRequestUnlock:-[iPadAudioCallViewController alertTriggeredByAutoCountdown](self automaticallyInvoked:{"alertTriggeredByAutoCountdown") ^ 1, -[iPadAudioCallViewController alertTriggeredByAutoCountdown](self, "alertTriggeredByAutoCountdown")}];
+      delegate6 = [v30 delegate];
+      alertCoordinator = [delegate6 alertCoordinator];
+      [alertCoordinator invokeAlertWithRequestUnlock:-[iPadAudioCallViewController alertTriggeredByAutoCountdown](self automaticallyInvoked:{"alertTriggeredByAutoCountdown") ^ 1, -[iPadAudioCallViewController alertTriggeredByAutoCountdown](self, "alertTriggeredByAutoCountdown")}];
 
       break;
     case 39:
 LABEL_11:
-      v24 = [(iPadAudioCallViewController *)self callCenter];
-      [v24 disconnectCurrentCallAndActivateHeld];
+      callCenter26 = [(iPadAudioCallViewController *)self callCenter];
+      [callCenter26 disconnectCurrentCallAndActivateHeld];
 
       break;
     case 40:
@@ -9743,59 +9743,59 @@ LABEL_104:
 
 - (BOOL)shouldShowAnswerRTT
 {
-  v2 = [(iPadAudioCallViewController *)self frontmostCall];
-  if ([v2 isRTT])
+  frontmostCall = [(iPadAudioCallViewController *)self frontmostCall];
+  if ([frontmostCall isRTT])
   {
-    v3 = 1;
+    isTTY = 1;
   }
 
   else
   {
-    v3 = [v2 isTTY];
+    isTTY = [frontmostCall isTTY];
   }
 
-  return v3;
+  return isTTY;
 }
 
 - (BOOL)shouldShowUseRTT
 {
-  v3 = [(iPadAudioCallViewController *)self callCenter];
-  v4 = [v3 currentCallCount];
+  callCenter = [(iPadAudioCallViewController *)self callCenter];
+  currentCallCount = [callCenter currentCallCount];
 
-  if (v4 != 1)
+  if (currentCallCount != 1)
   {
-    v5 = sub_100004F84();
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+    frontmostCall = sub_100004F84();
+    if (os_log_type_enabled(frontmostCall, OS_LOG_TYPE_DEFAULT))
     {
       LOWORD(v13) = 0;
-      _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Multiple calls are currently active; Use RTT button should not be presented.", &v13, 2u);
+      _os_log_impl(&_mh_execute_header, frontmostCall, OS_LOG_TYPE_DEFAULT, "Multiple calls are currently active; Use RTT button should not be presented.", &v13, 2u);
     }
 
     goto LABEL_17;
   }
 
-  v5 = [(iPadAudioCallViewController *)self frontmostCall];
-  if (([v5 isRTT]& 1) != 0 || ([v5 isTTY]& 1) != 0 || ![v5 supportsTTYWithVoice]|| [v5 status]!= 1)
+  frontmostCall = [(iPadAudioCallViewController *)self frontmostCall];
+  if (([frontmostCall isRTT]& 1) != 0 || ([frontmostCall isTTY]& 1) != 0 || ![frontmostCall supportsTTYWithVoice]|| [frontmostCall status]!= 1)
   {
 LABEL_17:
     LOBYTE(v9) = 0;
     goto LABEL_18;
   }
 
-  v6 = [v5 localSenderIdentityUUID];
-  if (!v6)
+  localSenderIdentityUUID = [frontmostCall localSenderIdentityUUID];
+  if (!localSenderIdentityUUID)
   {
     v7 = sub_100004F84();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138412290;
-      v14 = v5;
+      v14 = frontmostCall;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Could not retrieve a sender identity UUID from the frontmost call %@; checking if RTT is available anyway.", &v13, 0xCu);
     }
   }
 
-  v8 = [(PHCallViewController *)self senderIdentityClient];
-  v9 = [v8 isRTTAvailableForSenderIdentityUUID:v6];
+  senderIdentityClient = [(PHCallViewController *)self senderIdentityClient];
+  v9 = [senderIdentityClient isRTTAvailableForSenderIdentityUUID:localSenderIdentityUUID];
 
   v10 = sub_100004F84();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -9809,7 +9809,7 @@ LABEL_17:
     v13 = 138412546;
     v14 = v11;
     v15 = 2112;
-    v16 = v5;
+    v16 = frontmostCall;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Determined that the Use RTT button %@ be presented for the frontmost call %@.", &v13, 0x16u);
   }
 
@@ -9819,13 +9819,13 @@ LABEL_18:
 
 - (BOOL)shouldShowCallTransfer
 {
-  v3 = [(iPadAudioCallViewController *)self callDisplayStyleManager];
-  if ([v3 callDisplayStyle] != 3)
+  callDisplayStyleManager = [(iPadAudioCallViewController *)self callDisplayStyleManager];
+  if ([callDisplayStyleManager callDisplayStyle] != 3)
   {
 
 LABEL_5:
-    v7 = [(iPadAudioCallViewController *)self callCenter];
-    v8 = [v7 callsPassingTest:&stru_1003592B8];
+    callCenter = [(iPadAudioCallViewController *)self callCenter];
+    v8 = [callCenter callsPassingTest:&stru_1003592B8];
 
     if ([v8 count] == 2)
     {
@@ -9837,16 +9837,16 @@ LABEL_5:
       else
       {
         v10 = [v8 objectAtIndexedSubscript:0];
-        v11 = [v10 provider];
-        v12 = [v11 identifier];
+        provider = [v10 provider];
+        identifier = [provider identifier];
         v13 = [v8 objectAtIndexedSubscript:1];
-        v14 = [v13 provider];
-        v15 = [v14 identifier];
+        provider2 = [v13 provider];
+        identifier2 = [provider2 identifier];
 
-        if (v12 == v15)
+        if (identifier == identifier2)
         {
-          v17 = [v8 firstObject];
-          v18 = [PHInCallUtilities contactStoreForCall:v17];
+          firstObject = [v8 firstObject];
+          v18 = [PHInCallUtilities contactStoreForCall:firstObject];
 
           v19 = [CNPhoneNumber phoneNumberWithStringValue:@"4"];
           v20 = [CNContact predicateForContactMatchingPhoneNumber:v19];
@@ -9857,11 +9857,11 @@ LABEL_5:
           v22 = [v18 unifiedContactsMatchingPredicate:v20 keysToFetch:v21 error:&v31];
           v23 = v31;
 
-          v24 = [v8 firstObject];
-          v25 = [v24 localSenderIdentity];
-          v26 = [v25 accountUUID];
-          v27 = [v26 UUIDString];
-          v28 = [PHInCallUIUtilities isExplicitTransferSupportedForSubscriptionLabelIdentifier:v27];
+          firstObject2 = [v8 firstObject];
+          localSenderIdentity = [firstObject2 localSenderIdentity];
+          accountUUID = [localSenderIdentity accountUUID];
+          uUIDString = [accountUUID UUIDString];
+          v28 = [PHInCallUIUtilities isExplicitTransferSupportedForSubscriptionLabelIdentifier:uUIDString];
 
           v29 = sub_100004F84();
           if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
@@ -9897,10 +9897,10 @@ LABEL_10:
     return v6 & 1;
   }
 
-  v4 = [(iPadAudioCallViewController *)self features];
-  v5 = [v4 isDominoEnabled];
+  features = [(iPadAudioCallViewController *)self features];
+  isDominoEnabled = [features isDominoEnabled];
 
-  if ((v5 & 1) == 0)
+  if ((isDominoEnabled & 1) == 0)
   {
     goto LABEL_5;
   }
@@ -9909,40 +9909,40 @@ LABEL_10:
   return v6 & 1;
 }
 
-- (id)customizedTitleForItemInBar:(id)a3 withActionType:(int64_t)a4
+- (id)customizedTitleForItemInBar:(id)bar withActionType:(int64_t)type
 {
-  v6 = a3;
-  v7 = [(PHCallViewController *)self bottomBar];
+  barCopy = bar;
+  bottomBar = [(PHCallViewController *)self bottomBar];
 
-  v8 = 0;
-  if (a4 == 23 && v7 == v6)
+  hardPauseDigitsDisplayString = 0;
+  if (type == 23 && bottomBar == barCopy)
   {
-    v9 = [(iPadAudioCallViewController *)self frontmostCall];
-    if ([v9 hardPauseDigitsState] == 2)
+    frontmostCall = [(iPadAudioCallViewController *)self frontmostCall];
+    if ([frontmostCall hardPauseDigitsState] == 2)
     {
-      v8 = [v9 hardPauseDigitsDisplayString];
+      hardPauseDigitsDisplayString = [frontmostCall hardPauseDigitsDisplayString];
     }
 
     else
     {
-      v8 = &stru_100361FD0;
+      hardPauseDigitsDisplayString = &stru_100361FD0;
     }
   }
 
-  return v8;
+  return hardPauseDigitsDisplayString;
 }
 
-- (int64_t)bottomBarCallStateInBar:(id)a3
+- (int64_t)bottomBarCallStateInBar:(id)bar
 {
-  v3 = [(iPadAudioCallViewController *)self callCenter];
-  v4 = [v3 bottomBarCallState];
+  callCenter = [(iPadAudioCallViewController *)self callCenter];
+  bottomBarCallState = [callCenter bottomBarCallState];
 
-  return v4;
+  return bottomBarCallState;
 }
 
-- (void)showBlockAlertForHandle:(id)a3
+- (void)showBlockAlertForHandle:(id)handle
 {
-  v4 = a3;
+  handleCopy = handle;
   objc_initWeak(&location, self);
   v5 = +[NSBundle mainBundle];
   v6 = [v5 localizedStringForKey:@"BLOCK_UNKNOWN_CALLER_ALERT_TITLE" value:&stru_100361FD0 table:@"InCallService"];
@@ -9955,7 +9955,7 @@ LABEL_10:
   v15[2] = sub_1000E5C04;
   v15[3] = &unk_1003592E0;
   objc_copyWeak(&v17, &location);
-  v10 = v4;
+  v10 = handleCopy;
   v16 = v10;
   v11 = [UIAlertAction actionWithTitle:v9 style:2 handler:v15];
   [v7 addAction:v11];
@@ -9971,16 +9971,16 @@ LABEL_10:
   objc_destroyWeak(&location);
 }
 
-- (void)showStopAlertForCall:(id)a3
+- (void)showStopAlertForCall:(id)call
 {
-  v4 = a3;
-  v5 = [(iPadAudioCallViewController *)self features];
-  v6 = [v5 lvm_stopEnabled];
+  callCopy = call;
+  features = [(iPadAudioCallViewController *)self features];
+  lvm_stopEnabled = [features lvm_stopEnabled];
 
-  if (v6)
+  if (lvm_stopEnabled)
   {
-    v7 = [v4 handle];
-    if (v4 && (-[iPadAudioCallViewController features](self, "features"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 lvm_endCallImmediately], v8, v9))
+    handle = [callCopy handle];
+    if (callCopy && (-[iPadAudioCallViewController features](self, "features"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 lvm_endCallImmediately], v8, v9))
     {
       v10 = [[_TtC13InCallService11PHAssertion alloc] initWithReason:@"PHAudioCallViewControllerDismissalAssertionPresentingBlockFlow"];
       if ([(PHCallViewController *)self currentState]== 11)
@@ -9988,8 +9988,8 @@ LABEL_10:
         [(iPadAudioCallViewController *)self setMiddleViewState:0];
       }
 
-      v11 = [(iPadAudioCallViewController *)self callCenter];
-      [v11 disconnectCall:v4 withReason:2];
+      callCenter = [(iPadAudioCallViewController *)self callCenter];
+      [callCenter disconnectCall:callCopy withReason:2];
     }
 
     else
@@ -10009,9 +10009,9 @@ LABEL_10:
     v33[2] = sub_1000E609C;
     v33[3] = &unk_100359328;
     objc_copyWeak(&v37, location);
-    v17 = v7;
+    v17 = handle;
     v34 = v17;
-    v35 = self;
+    selfCopy = self;
     v18 = v10;
     v36 = v18;
     v19 = [UIAlertAction actionWithTitle:v16 style:2 handler:v33];
@@ -10024,13 +10024,13 @@ LABEL_10:
     v27 = sub_1000E6178;
     v28 = &unk_100359328;
     objc_copyWeak(&v32, location);
-    v29 = self;
+    selfCopy2 = self;
     v22 = v18;
     v30 = v22;
     v23 = v17;
     v31 = v23;
     v24 = [UIAlertAction actionWithTitle:v21 style:1 handler:&v25];
-    [v14 addAction:{v24, v25, v26, v27, v28, v29}];
+    [v14 addAction:{v24, v25, v26, v27, v28, selfCopy2}];
 
     [(iPadAudioCallViewController *)self presentViewController:v14 animated:1 completion:0];
     objc_destroyWeak(&v32);
@@ -10040,28 +10040,28 @@ LABEL_10:
   }
 }
 
-- (id)answerRequestForCall:(id)a3
+- (id)answerRequestForCall:(id)call
 {
-  v4 = a3;
-  v5 = [[TUAnswerRequest alloc] initWithCall:v4];
+  callCopy = call;
+  v5 = [[TUAnswerRequest alloc] initWithCall:callCopy];
 
-  v6 = [(iPadAudioCallViewController *)self callCenter];
-  v7 = [v6 routeController];
-  v8 = [v7 pickedRoute];
+  callCenter = [(iPadAudioCallViewController *)self callCenter];
+  routeController = [callCenter routeController];
+  pickedRoute = [routeController pickedRoute];
 
-  v9 = [(iPadAudioCallViewController *)self callDisplayStyleManager];
-  if ([v9 callDisplayStyle] != 3)
+  callDisplayStyleManager = [(iPadAudioCallViewController *)self callDisplayStyleManager];
+  if ([callDisplayStyleManager callDisplayStyle] != 3)
   {
 
     goto LABEL_9;
   }
 
-  v10 = [(iPadAudioCallViewController *)self features];
-  v11 = [v10 isDominoEnabled];
-  if (!v11 || !v8)
+  features = [(iPadAudioCallViewController *)self features];
+  isDominoEnabled = [features isDominoEnabled];
+  if (!isDominoEnabled || !pickedRoute)
   {
 
-    if (!v11)
+    if (!isDominoEnabled)
     {
       goto LABEL_9;
     }
@@ -10077,9 +10077,9 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v13 = [(iPadAudioCallViewController *)self isPickedRouteReceiver];
+  isPickedRouteReceiver = [(iPadAudioCallViewController *)self isPickedRouteReceiver];
 
-  if (v13)
+  if (isPickedRouteReceiver)
   {
     goto LABEL_8;
   }
@@ -10091,39 +10091,39 @@ LABEL_9:
 
 - (void)gameControllerDidChangeContext
 {
-  v2 = [(iPadAudioCallViewController *)self callParticipantsViewController];
-  [v2 gameControllerDidChangeContext];
+  callParticipantsViewController = [(iPadAudioCallViewController *)self callParticipantsViewController];
+  [callParticipantsViewController gameControllerDidChangeContext];
 }
 
 - (void)_leaveMessage
 {
   v3 = +[UIApplication sharedApplication];
-  v4 = [v3 delegate];
-  v5 = [v4 mostRecentlyDisconnectedAudioCall];
+  delegate = [v3 delegate];
+  mostRecentlyDisconnectedAudioCall = [delegate mostRecentlyDisconnectedAudioCall];
 
-  v6 = [(iPadAudioCallViewController *)self featureFlags];
-  LODWORD(v4) = TUCallScreeningEnabled();
+  featureFlags = [(iPadAudioCallViewController *)self featureFlags];
+  LODWORD(delegate) = TUCallScreeningEnabled();
 
-  if (v4 && !v5)
+  if (delegate && !mostRecentlyDisconnectedAudioCall)
   {
-    v7 = [(iPadAudioCallViewController *)self callCenter];
-    v5 = [v7 screeningCall];
+    callCenter = [(iPadAudioCallViewController *)self callCenter];
+    mostRecentlyDisconnectedAudioCall = [callCenter screeningCall];
   }
 
-  v8 = [v5 handle];
-  v9 = [v8 value];
+  handle = [mostRecentlyDisconnectedAudioCall handle];
+  value = [handle value];
 
   v10 = sub_100004F84();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v16 = 138412546;
-    v17 = v5;
+    v17 = mostRecentlyDisconnectedAudioCall;
     v18 = 2112;
-    v19 = v9;
+    v19 = value;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Call %@; Destination ID %@", &v16, 0x16u);
   }
 
-  if ([v9 destinationIdIsPhoneNumber])
+  if ([value destinationIdIsPhoneNumber])
   {
     v11 = CPPhoneNumberCopyCountryCodeForIncomingTextMessage();
     if (!v11)
@@ -10134,13 +10134,13 @@ LABEL_9:
     v12 = TUNetworkCountryCode();
     v13 = TUNumberToDial();
 
-    v9 = v13;
+    value = v13;
   }
 
-  if (v9 && [v9 length])
+  if (value && [value length])
   {
     v14 = objc_alloc_init(MFMessageComposeViewController);
-    v15 = [NSArray arrayWithObject:v9];
+    v15 = [NSArray arrayWithObject:value];
     [v14 setRecipients:v15];
 
     [v14 setBody:&stru_100361FD0];
@@ -10165,9 +10165,9 @@ LABEL_9:
   if (objc_opt_respondsToSelector())
   {
     v3 = +[UIDevice currentDevice];
-    v4 = [v3 userInterfaceIdiom];
+    userInterfaceIdiom = [v3 userInterfaceIdiom];
 
-    v5 = v4 == 1;
+    v5 = userInterfaceIdiom == 1;
   }
 
   else
@@ -10178,7 +10178,7 @@ LABEL_9:
   return v5;
 }
 
-- (void)messageComposeViewController:(id)a3 didFinishWithResult:(int64_t)a4
+- (void)messageComposeViewController:(id)controller didFinishWithResult:(int64_t)result
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
@@ -10190,47 +10190,47 @@ LABEL_9:
 
 - (BOOL)allowsMenuButtonDismissal
 {
-  v2 = [(iPadAudioCallViewController *)self callCenter];
-  v3 = [v2 incomingCall];
-  v4 = v3 == 0;
+  callCenter = [(iPadAudioCallViewController *)self callCenter];
+  incomingCall = [callCenter incomingCall];
+  v4 = incomingCall == 0;
 
   return v4;
 }
 
 - (BOOL)allowsBanners
 {
-  v2 = [(iPadAudioCallViewController *)self callCenter];
-  v3 = [v2 incomingCall];
-  v4 = v3 == 0;
+  callCenter = [(iPadAudioCallViewController *)self callCenter];
+  incomingCall = [callCenter incomingCall];
+  v4 = incomingCall == 0;
 
   return v4;
 }
 
 - (BOOL)desiresLockButtonEvents
 {
-  v2 = self;
-  v3 = [(iPadAudioCallViewController *)self callCenter];
-  LOBYTE(v2) = [(iPadAudioCallViewController *)v2 desiresLockButtonEventsForCallContainer:v3];
+  selfCopy = self;
+  callCenter = [(iPadAudioCallViewController *)self callCenter];
+  LOBYTE(selfCopy) = [(iPadAudioCallViewController *)selfCopy desiresLockButtonEventsForCallContainer:callCenter];
 
-  return v2;
+  return selfCopy;
 }
 
-- (BOOL)desiresLockButtonEventsForCallContainer:(id)a3
+- (BOOL)desiresLockButtonEventsForCallContainer:(id)container
 {
-  v4 = a3;
-  v5 = [v4 incomingCall];
-  if (v5 || [v4 currentCallCount] && -[iPadAudioCallViewController isPickedRouteReceiver](self, "isPickedRouteReceiver"))
+  containerCopy = container;
+  incomingCall = [containerCopy incomingCall];
+  if (incomingCall || [containerCopy currentCallCount] && -[iPadAudioCallViewController isPickedRouteReceiver](self, "isPickedRouteReceiver"))
   {
     v6 = 1;
   }
 
   else
   {
-    v7 = [(iPadAudioCallViewController *)self features];
-    if ([v7 lvmEverywhereEnabled])
+    features = [(iPadAudioCallViewController *)self features];
+    if ([features lvmEverywhereEnabled])
     {
-      v8 = [v4 screeningCall];
-      v6 = v8 != 0;
+      screeningCall = [containerCopy screeningCall];
+      v6 = screeningCall != 0;
     }
 
     else
@@ -10242,97 +10242,97 @@ LABEL_9:
   return v6;
 }
 
-- (void)setPrioritizedCall:(id)a3
+- (void)setPrioritizedCall:(id)call
 {
   [(iPadAudioCallViewController *)self updateCurrentState];
-  v4 = [(iPadAudioCallViewController *)self callToUseForWallpaper];
+  callToUseForWallpaper = [(iPadAudioCallViewController *)self callToUseForWallpaper];
   WeakRetained = objc_loadWeakRetained(&self->_prioritizedCall);
-  -[iPadAudioCallViewController setCallForBackgroundImage:animated:callDisplayStyleChanged:](self, "setCallForBackgroundImage:animated:callDisplayStyleChanged:", v4, 1, [WeakRetained status] == 4);
+  -[iPadAudioCallViewController setCallForBackgroundImage:animated:callDisplayStyleChanged:](self, "setCallForBackgroundImage:animated:callDisplayStyleChanged:", callToUseForWallpaper, 1, [WeakRetained status] == 4);
 
-  v6 = [(PHCallViewController *)self currentState];
+  currentState = [(PHCallViewController *)self currentState];
 
-  [(iPadAudioCallViewController *)self _updatePosterStatusLabelForState:v6];
+  [(iPadAudioCallViewController *)self _updatePosterStatusLabelForState:currentState];
 }
 
 - (TUCall)activeCall
 {
   if ([(iPadAudioCallViewController *)self usesCompactMulticallUI]&& ([(iPadAudioCallViewController *)self prioritizedCall], v3 = objc_claimAutoreleasedReturnValue(), v3, v3))
   {
-    v4 = [(iPadAudioCallViewController *)self prioritizedCall];
+    prioritizedCall = [(iPadAudioCallViewController *)self prioritizedCall];
   }
 
   else
   {
-    v5 = [(iPadAudioCallViewController *)self callCenter];
-    v4 = [v5 callWithStatus:1];
+    callCenter = [(iPadAudioCallViewController *)self callCenter];
+    prioritizedCall = [callCenter callWithStatus:1];
 
-    if (!v4)
+    if (!prioritizedCall)
     {
-      v6 = [(iPadAudioCallViewController *)self callCenter];
-      v4 = [v6 callWithStatus:4];
+      callCenter2 = [(iPadAudioCallViewController *)self callCenter];
+      prioritizedCall = [callCenter2 callWithStatus:4];
 
-      if (!v4)
+      if (!prioritizedCall)
       {
-        v7 = [(iPadAudioCallViewController *)self callCenter];
-        v4 = [v7 callWithStatus:3];
+        callCenter3 = [(iPadAudioCallViewController *)self callCenter];
+        prioritizedCall = [callCenter3 callWithStatus:3];
 
-        if (!v4)
+        if (!prioritizedCall)
         {
-          v8 = [(iPadAudioCallViewController *)self callCenter];
-          v4 = [v8 callWithStatus:2];
+          callCenter4 = [(iPadAudioCallViewController *)self callCenter];
+          prioritizedCall = [callCenter4 callWithStatus:2];
         }
       }
     }
   }
 
-  return v4;
+  return prioritizedCall;
 }
 
 - (TUCall)frontmostCall
 {
   if ([(iPadAudioCallViewController *)self usesCompactMulticallUI])
   {
-    v3 = [(iPadAudioCallViewController *)self activeCall];
+    activeCall = [(iPadAudioCallViewController *)self activeCall];
   }
 
   else
   {
-    v4 = [(iPadAudioCallViewController *)self callCenter];
-    v3 = [v4 frontmostCall];
+    callCenter = [(iPadAudioCallViewController *)self callCenter];
+    activeCall = [callCenter frontmostCall];
   }
 
-  return v3;
+  return activeCall;
 }
 
-- (void)hardwareButtonEventNotification:(id)a3
+- (void)hardwareButtonEventNotification:(id)notification
 {
-  v5 = a3;
+  notificationCopy = notification;
   v6 = sub_100004F84();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v5 userInfo];
+    userInfo = [notificationCopy userInfo];
     v33 = 138412290;
-    *v34 = v7;
+    *v34 = userInfo;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "iPadAudioCallViewController received a hardware button event (%@)", &v33, 0xCu);
   }
 
-  v8 = [(iPadAudioCallViewController *)self activeCall];
-  if (([v8 isRTT] & 1) != 0 || objc_msgSend(v8, "isTTY"))
+  activeCall = [(iPadAudioCallViewController *)self activeCall];
+  if (([activeCall isRTT] & 1) != 0 || objc_msgSend(activeCall, "isTTY"))
   {
     v9 = sub_10014265C();
     isKindOfClass = v9;
     if (v9)
     {
-      v11 = [(iPadAudioCallViewController *)self navigationController];
-      v12 = [v11 visibleViewController];
+      navigationController = [(iPadAudioCallViewController *)self navigationController];
+      visibleViewController = [navigationController visibleViewController];
       isKindOfClass = objc_opt_isKindOfClass();
 
-      v3 = sub_100004F84();
-      if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+      view = sub_100004F84();
+      if (os_log_type_enabled(view, OS_LOG_TYPE_DEFAULT))
       {
         v33 = 67109120;
         *v34 = isKindOfClass & 1;
-        _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "setting isShowingRTTConversationViewController: %d", &v33, 8u);
+        _os_log_impl(&_mh_execute_header, view, OS_LOG_TYPE_DEFAULT, "setting isShowingRTTConversationViewController: %d", &v33, 8u);
       }
     }
   }
@@ -10342,13 +10342,13 @@ LABEL_9:
     isKindOfClass = 0;
   }
 
-  v13 = [(iPadAudioCallViewController *)self isViewLoaded];
-  v14 = v13;
-  if (v13)
+  isViewLoaded = [(iPadAudioCallViewController *)self isViewLoaded];
+  v14 = isViewLoaded;
+  if (isViewLoaded)
   {
-    v3 = [(iPadAudioCallViewController *)self view];
-    v15 = [v3 window];
-    if ((v15 != 0) | isKindOfClass & 1)
+    view = [(iPadAudioCallViewController *)self view];
+    window = [view window];
+    if ((window != 0) | isKindOfClass & 1)
     {
 
       goto LABEL_19;
@@ -10360,23 +10360,23 @@ LABEL_9:
     goto LABEL_19;
   }
 
-  v16 = [(iPadAudioCallViewController *)self inCallRootViewController];
-  v17 = [v16 isDisplayStyleMiniWindow];
+  inCallRootViewController = [(iPadAudioCallViewController *)self inCallRootViewController];
+  isDisplayStyleMiniWindow = [inCallRootViewController isDisplayStyleMiniWindow];
 
   if (v14)
   {
 
-    if ((v17 & 1) == 0)
+    if ((isDisplayStyleMiniWindow & 1) == 0)
     {
       goto LABEL_16;
     }
 
 LABEL_19:
-    v22 = [v5 userInfo];
-    v18 = [v22 valueForKey:@"kPHHardwareButtonEventType"];
+    userInfo2 = [notificationCopy userInfo];
+    v18 = [userInfo2 valueForKey:@"kPHHardwareButtonEventType"];
 
-    v23 = [(iPadAudioCallViewController *)self callCenter];
-    v24 = [v23 incomingCall];
+    callCenter = [(iPadAudioCallViewController *)self callCenter];
+    incomingCall = [callCenter incomingCall];
 
     if (v18 == @"kPHHardwareButtonEventTypeLockButton")
     {
@@ -10394,7 +10394,7 @@ LABEL_19:
           _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEFAULT, "iPadAudioCallViewController handling kPHHardwareButtonEventTypeVolumeDownButton || kPHHardwareButtonEventTypeVolumeUpButton buttonType", &v33, 2u);
         }
 
-        [v24 suppressRingtone];
+        [incomingCall suppressRingtone];
         goto LABEL_35;
       }
 
@@ -10403,17 +10403,17 @@ LABEL_19:
         v30 = sub_100004F84();
         if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
         {
-          v31 = [(iPadAudioCallViewController *)self callCenter];
-          v32 = [v31 incomingCall];
+          callCenter2 = [(iPadAudioCallViewController *)self callCenter];
+          incomingCall2 = [callCenter2 incomingCall];
           v33 = 138412546;
-          *v34 = v32;
+          *v34 = incomingCall2;
           *&v34[8] = 2112;
-          v35 = v8;
+          v35 = activeCall;
           _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "iPadAudioCallViewController handling kPHHardwareButtonEventTypeHeadsetButton buttonType (incoming call = %@, active call = %@)", &v33, 0x16u);
         }
 
-        v28 = [(iPadAudioCallViewController *)self callCenter];
-        [v28 handleActionForWiredHeadsetMiddleButtonPress];
+        callCenter3 = [(iPadAudioCallViewController *)self callCenter];
+        [callCenter3 handleActionForWiredHeadsetMiddleButtonPress];
         goto LABEL_34;
       }
 
@@ -10422,15 +10422,15 @@ LABEL_19:
         v25 = sub_100004F84();
         if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
         {
-          v26 = [(iPadAudioCallViewController *)self callCenter];
-          v27 = [v26 incomingCall];
+          callCenter4 = [(iPadAudioCallViewController *)self callCenter];
+          incomingCall3 = [callCenter4 incomingCall];
           v33 = 138412290;
-          *v34 = v27;
+          *v34 = incomingCall3;
           _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "iPadAudioCallViewController handling kPHHardwareButtonEventTypeHeadsetButtonLongPress buttonType (incoming call = %@)", &v33, 0xCu);
         }
 
-        v28 = [(iPadAudioCallViewController *)self callCenter];
-        [v28 handleActionForWiredHeadsetMiddleButtonLongPress];
+        callCenter3 = [(iPadAudioCallViewController *)self callCenter];
+        [callCenter3 handleActionForWiredHeadsetMiddleButtonLongPress];
 LABEL_34:
       }
     }
@@ -10440,7 +10440,7 @@ LABEL_35:
     goto LABEL_36;
   }
 
-  if (v17)
+  if (isDisplayStyleMiniWindow)
   {
     goto LABEL_19;
   }
@@ -10449,103 +10449,103 @@ LABEL_16:
   v18 = sub_100004F84();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
-    v19 = [(iPadAudioCallViewController *)self isViewLoaded];
-    v20 = [(iPadAudioCallViewController *)self view];
-    v21 = [v20 window];
+    isViewLoaded2 = [(iPadAudioCallViewController *)self isViewLoaded];
+    view2 = [(iPadAudioCallViewController *)self view];
+    window2 = [view2 window];
     v33 = 67109376;
-    *v34 = v19;
+    *v34 = isViewLoaded2;
     *&v34[4] = 1024;
-    *&v34[6] = v21 != 0;
+    *&v34[6] = window2 != 0;
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "[WARN] iPadAudioCallViewController will not handle the hardware button event as the view is not loaded (viewLoaded = %d) or we have no window (window exists = %d)", &v33, 0xEu);
   }
 
 LABEL_36:
 }
 
-- (void)handleDeviceLockEventWithSourceType:(int64_t)a3
+- (void)handleDeviceLockEventWithSourceType:(int64_t)type
 {
   v22.receiver = self;
   v22.super_class = iPadAudioCallViewController;
   [(PHCallViewController *)&v22 handleDeviceLockEventWithSourceType:?];
-  v5 = [(iPadAudioCallViewController *)self activeCall];
-  v6 = [(iPadAudioCallViewController *)self callCenter];
-  v7 = [v6 resolvedIncomingCall];
+  activeCall = [(iPadAudioCallViewController *)self activeCall];
+  callCenter = [(iPadAudioCallViewController *)self callCenter];
+  resolvedIncomingCall = [callCenter resolvedIncomingCall];
 
-  v8 = [(iPadAudioCallViewController *)self isPickedRouteReceiver];
+  isPickedRouteReceiver = [(iPadAudioCallViewController *)self isPickedRouteReceiver];
   v9 = sub_100004F84();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109888;
-    v24 = v8;
+    v24 = isPickedRouteReceiver;
     v25 = 1024;
-    v26 = v5 != 0;
+    v26 = activeCall != 0;
     v27 = 1024;
-    v28 = v7 != 0;
+    v28 = resolvedIncomingCall != 0;
     v29 = 1024;
-    v30 = a3;
+    typeCopy = type;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "iPadAudioCallViewController handling device lock event isPickedRouteReceiver=%d, activeCall=%d, incomingCall=%d, sourceType=%d", buf, 0x1Au);
   }
 
-  if (a3 == 2)
+  if (type == 2)
   {
-    if ((v7 != 0) | v8 & 1)
+    if ((resolvedIncomingCall != 0) | isPickedRouteReceiver & 1)
     {
-      v10 = [(iPadAudioCallViewController *)self declineCallService];
-      [v10 declineAnsweringCallDueToLockEventWithCurrentActiveCall:v5 completionHandler:&stru_100359348];
+      declineCallService = [(iPadAudioCallViewController *)self declineCallService];
+      [declineCallService declineAnsweringCallDueToLockEventWithCurrentActiveCall:activeCall completionHandler:&stru_100359348];
 LABEL_25:
 
       goto LABEL_26;
     }
 
 LABEL_12:
-    if (((v5 != 0) & v8) == 1)
+    if (((activeCall != 0) & isPickedRouteReceiver) == 1)
     {
       goto LABEL_13;
     }
 
 LABEL_10:
-    v11 = sub_100004F84();
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+    declineCallService2 = sub_100004F84();
+    if (os_log_type_enabled(declineCallService2, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "iPadAudioCallViewController: Not suppressing ringtone or declining call.", buf, 2u);
+      _os_log_impl(&_mh_execute_header, declineCallService2, OS_LOG_TYPE_DEFAULT, "iPadAudioCallViewController: Not suppressing ringtone or declining call.", buf, 2u);
     }
 
     goto LABEL_15;
   }
 
-  if (!v7)
+  if (!resolvedIncomingCall)
   {
     goto LABEL_12;
   }
 
-  if (([v7 shouldSuppressRingtone] & 1) == 0)
+  if (([resolvedIncomingCall shouldSuppressRingtone] & 1) == 0)
   {
     v14 = +[UIApplication sharedApplication];
-    v15 = [v14 delegate];
-    v16 = [v15 currentInCallScene];
-    v17 = [v16 delegate];
-    v18 = [v17 callAnalyticsLogger];
-    v19 = [v7 uniqueProxyIdentifierUUID];
-    [v18 ringerMutedForCallUUID:v19];
+    delegate = [v14 delegate];
+    currentInCallScene = [delegate currentInCallScene];
+    delegate2 = [currentInCallScene delegate];
+    callAnalyticsLogger = [delegate2 callAnalyticsLogger];
+    uniqueProxyIdentifierUUID = [resolvedIncomingCall uniqueProxyIdentifierUUID];
+    [callAnalyticsLogger ringerMutedForCallUUID:uniqueProxyIdentifierUUID];
 
-    [v7 suppressRingtone];
+    [resolvedIncomingCall suppressRingtone];
     goto LABEL_20;
   }
 
-  if (([v7 shouldSuppressRingtone] & 1) == 0 && ((v5 != 0) & v8) == 0)
+  if (([resolvedIncomingCall shouldSuppressRingtone] & 1) == 0 && ((activeCall != 0) & isPickedRouteReceiver) == 0)
   {
     goto LABEL_10;
   }
 
 LABEL_13:
   v12 = +[PHInCallUtilities sharedInstance];
-  v13 = [v12 isLockToEndCallEnabled];
+  isLockToEndCallEnabled = [v12 isLockToEndCallEnabled];
 
-  if (v13)
+  if (isLockToEndCallEnabled)
   {
-    v11 = [(iPadAudioCallViewController *)self declineCallService];
-    [v11 declineAnsweringCallDueToLockEventWithCurrentActiveCall:v5 completionHandler:&stru_100359368];
+    declineCallService2 = [(iPadAudioCallViewController *)self declineCallService];
+    [declineCallService2 declineAnsweringCallDueToLockEventWithCurrentActiveCall:activeCall completionHandler:&stru_100359368];
 LABEL_15:
 
     goto LABEL_20;
@@ -10560,7 +10560,7 @@ LABEL_15:
 
   +[PHInCallRootViewController setShouldLockDeviceOnNextDismiss];
 LABEL_20:
-  if (a3 == 1 && [(iPadAudioCallViewController *)self videoStreamingIsGoingOn])
+  if (type == 1 && [(iPadAudioCallViewController *)self videoStreamingIsGoingOn])
   {
     v21 = sub_100004F84();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
@@ -10569,8 +10569,8 @@ LABEL_20:
       _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "EnhancedEmergency: pause video if necessary when locking device", buf, 2u);
     }
 
-    v10 = [(iPadAudioCallViewController *)self emergencyCoordinator];
-    [v10 handleDeviceLockEvent];
+    declineCallService = [(iPadAudioCallViewController *)self emergencyCoordinator];
+    [declineCallService handleDeviceLockEvent];
     goto LABEL_25;
   }
 
@@ -10579,65 +10579,65 @@ LABEL_26:
 
 - (BOOL)isPickedRouteReceiver
 {
-  v2 = [(iPadAudioCallViewController *)self callCenter];
-  v3 = [v2 routeController];
-  v4 = [v3 pickedRoute];
-  v5 = [v4 isReceiver];
+  callCenter = [(iPadAudioCallViewController *)self callCenter];
+  routeController = [callCenter routeController];
+  pickedRoute = [routeController pickedRoute];
+  isReceiver = [pickedRoute isReceiver];
 
-  return v5;
+  return isReceiver;
 }
 
 - (BOOL)isPickedRouteSpeaker
 {
-  v2 = [(iPadAudioCallViewController *)self callCenter];
-  v3 = [v2 routeController];
-  v4 = [v3 pickedRoute];
-  v5 = [v4 isSpeaker];
+  callCenter = [(iPadAudioCallViewController *)self callCenter];
+  routeController = [callCenter routeController];
+  pickedRoute = [routeController pickedRoute];
+  isSpeaker = [pickedRoute isSpeaker];
 
-  return v5;
+  return isSpeaker;
 }
 
 - (void)setupAmbientAudioRoutesControlViewIfNeeded
 {
   if (!self->_ambientAudioRoutesControlView)
   {
-    v19 = [(iPadAudioCallViewController *)self callDisplayStyleManager];
-    if ([v19 callDisplayStyle] == 3)
+    callDisplayStyleManager = [(iPadAudioCallViewController *)self callDisplayStyleManager];
+    if ([callDisplayStyleManager callDisplayStyle] == 3)
     {
-      v3 = [(iPadAudioCallViewController *)self features];
-      v4 = [v3 isDominoEnabled];
+      features = [(iPadAudioCallViewController *)self features];
+      isDominoEnabled = [features isDominoEnabled];
 
-      if (!v4)
+      if (!isDominoEnabled)
       {
         return;
       }
 
       v5 = objc_alloc_init(PHAmbientAudioRoutesControlView);
-      v6 = [(iPadAudioCallViewController *)self buttonsViewController];
-      [(PHAmbientAudioRoutesControlView *)v5 setDelegate:v6];
+      buttonsViewController = [(iPadAudioCallViewController *)self buttonsViewController];
+      [(PHAmbientAudioRoutesControlView *)v5 setDelegate:buttonsViewController];
 
       [(PHAmbientAudioRoutesControlView *)v5 setTranslatesAutoresizingMaskIntoConstraints:0];
       ambientAudioRoutesControlView = self->_ambientAudioRoutesControlView;
       self->_ambientAudioRoutesControlView = &v5->super;
       v8 = v5;
 
-      v9 = [(iPadAudioCallViewController *)self view];
-      [v9 addSubview:self->_ambientAudioRoutesControlView];
+      view = [(iPadAudioCallViewController *)self view];
+      [view addSubview:self->_ambientAudioRoutesControlView];
 
-      v10 = [(UIView *)self->_ambientAudioRoutesControlView topAnchor];
-      v11 = [(iPadAudioCallViewController *)self view];
-      v12 = [v11 topAnchor];
+      topAnchor = [(UIView *)self->_ambientAudioRoutesControlView topAnchor];
+      view2 = [(iPadAudioCallViewController *)self view];
+      topAnchor2 = [view2 topAnchor];
       +[PHUIConfiguration ambientAudioRoutesInset];
-      v13 = [v10 constraintEqualToAnchor:v12 constant:?];
+      v13 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:?];
       [v13 setActive:1];
 
-      v19 = [(UIView *)self->_ambientAudioRoutesControlView trailingAnchor];
-      v14 = [(iPadAudioCallViewController *)self view];
-      v15 = [v14 trailingAnchor];
+      callDisplayStyleManager = [(UIView *)self->_ambientAudioRoutesControlView trailingAnchor];
+      view3 = [(iPadAudioCallViewController *)self view];
+      trailingAnchor = [view3 trailingAnchor];
       +[PHUIConfiguration ambientAudioRoutesInset];
       v17 = v16;
 
-      v18 = [v19 constraintEqualToAnchor:v15 constant:-v17];
+      v18 = [callDisplayStyleManager constraintEqualToAnchor:trailingAnchor constant:-v17];
       [v18 setActive:1];
     }
   }
@@ -10646,71 +10646,71 @@ LABEL_26:
 - (void)updateAmbientAudioRoutesVisibility
 {
   [(iPadAudioCallViewController *)self setupAmbientAudioRoutesControlViewIfNeeded];
-  v3 = [(iPadAudioCallViewController *)self callDisplayStyleManager];
-  if ([v3 callDisplayStyle] != 3)
+  callDisplayStyleManager = [(iPadAudioCallViewController *)self callDisplayStyleManager];
+  if ([callDisplayStyleManager callDisplayStyle] != 3)
   {
     goto LABEL_7;
   }
 
-  v4 = [(iPadAudioCallViewController *)self features];
-  if (([v4 isDominoEnabled] & 1) == 0)
+  features = [(iPadAudioCallViewController *)self features];
+  if (([features isDominoEnabled] & 1) == 0)
   {
 
 LABEL_7:
     goto LABEL_8;
   }
 
-  v5 = [(iPadAudioCallViewController *)self middleViewState];
+  middleViewState = [(iPadAudioCallViewController *)self middleViewState];
 
-  if (v5 != 1)
+  if (middleViewState != 1)
   {
 LABEL_8:
     v11 = 1;
     goto LABEL_9;
   }
 
-  v6 = [(iPadAudioCallViewController *)self ambientAudioRoutesControlView];
-  v7 = [v6 isHidden];
+  ambientAudioRoutesControlView = [(iPadAudioCallViewController *)self ambientAudioRoutesControlView];
+  isHidden = [ambientAudioRoutesControlView isHidden];
 
-  if (v7)
+  if (isHidden)
   {
-    v8 = [(iPadAudioCallViewController *)self ambientAudioRoutesControlView];
-    [_TtC13InCallService27AmbientAnimationCoordinator show:v8 completion:0];
+    ambientAudioRoutesControlView2 = [(iPadAudioCallViewController *)self ambientAudioRoutesControlView];
+    [_TtC13InCallService27AmbientAnimationCoordinator show:ambientAudioRoutesControlView2 completion:0];
 
-    v9 = [(iPadAudioCallViewController *)self ambientAudioRoutesControlView];
-    [v9 setHidden:0];
+    ambientAudioRoutesControlView3 = [(iPadAudioCallViewController *)self ambientAudioRoutesControlView];
+    [ambientAudioRoutesControlView3 setHidden:0];
 
-    v12 = [(iPadAudioCallViewController *)self view];
-    v10 = [(iPadAudioCallViewController *)self ambientAudioRoutesControlView];
-    [v12 bringSubviewToFront:v10];
+    view = [(iPadAudioCallViewController *)self view];
+    ambientAudioRoutesControlView4 = [(iPadAudioCallViewController *)self ambientAudioRoutesControlView];
+    [view bringSubviewToFront:ambientAudioRoutesControlView4];
 
     goto LABEL_10;
   }
 
   v11 = 0;
 LABEL_9:
-  v12 = [(iPadAudioCallViewController *)self ambientAudioRoutesControlView];
-  [v12 setHidden:v11];
+  view = [(iPadAudioCallViewController *)self ambientAudioRoutesControlView];
+  [view setHidden:v11];
 LABEL_10:
 }
 
-- (void)setViewsHiddenForAudioRoutes:(BOOL)a3 animated:(BOOL)a4
+- (void)setViewsHiddenForAudioRoutes:(BOOL)routes animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v7 = +[UIDevice currentDevice];
-  v8 = [v7 userInterfaceIdiom];
+  userInterfaceIdiom = [v7 userInterfaceIdiom];
 
-  if (v8 != 1)
+  if (userInterfaceIdiom != 1)
   {
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_1000E7868;
     v11[3] = &unk_100356BB8;
-    v12 = a3;
+    routesCopy = routes;
     v11[4] = self;
     v9 = objc_retainBlock(v11);
     v10 = v9;
-    if (v4)
+    if (animatedCopy)
     {
       [UIView animateWithDuration:v9 animations:0.25];
     }
@@ -10724,27 +10724,27 @@ LABEL_10:
 
 - (void)revealAudioRoutingDeviceListAnimatedIfNeeded
 {
-  v3 = [(iPadAudioCallViewController *)self callCenter];
-  v9 = [v3 routeController];
+  callCenter = [(iPadAudioCallViewController *)self callCenter];
+  routeController = [callCenter routeController];
 
-  v4 = [v9 areNonRelayAuxiliaryRoutesAvailable];
-  v5 = v9;
-  if (v4)
+  areNonRelayAuxiliaryRoutesAvailable = [routeController areNonRelayAuxiliaryRoutesAvailable];
+  v5 = routeController;
+  if (areNonRelayAuxiliaryRoutesAvailable)
   {
-    v6 = [v9 pickedRoute];
-    v7 = v6;
-    if (!v6 || (v8 = [v6 deviceType], v8 > 0x1D) || ((1 << v8) & 0x24140002) == 0 || (objc_msgSend(v7, "isPreferredAndActive") & 1) == 0)
+    pickedRoute = [routeController pickedRoute];
+    v7 = pickedRoute;
+    if (!pickedRoute || (v8 = [pickedRoute deviceType], v8 > 0x1D) || ((1 << v8) & 0x24140002) == 0 || (objc_msgSend(v7, "isPreferredAndActive") & 1) == 0)
     {
       [(iPadAudioCallViewController *)self revealAudioRoutingDeviceListAnimated:1];
     }
 
-    v5 = v9;
+    v5 = routeController;
   }
 
-  _objc_release_x1(v4, v5);
+  _objc_release_x1(areNonRelayAuxiliaryRoutesAvailable, v5);
 }
 
-- (void)revealAudioRoutingDeviceListAnimated:(BOOL)a3
+- (void)revealAudioRoutingDeviceListAnimated:(BOOL)animated
 {
   v4 = sub_100004F84();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -10753,32 +10753,32 @@ LABEL_10:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Revealing audio routing device list", buf, 2u);
   }
 
-  v5 = [(iPadAudioCallViewController *)self buttonsViewController];
-  if ([v5 isViewLoaded])
+  buttonsViewController = [(iPadAudioCallViewController *)self buttonsViewController];
+  if ([buttonsViewController isViewLoaded])
   {
-    v6 = [(iPadAudioCallViewController *)self buttonsViewController];
-    v7 = [v6 view];
-    v8 = [v7 window];
+    buttonsViewController2 = [(iPadAudioCallViewController *)self buttonsViewController];
+    view = [buttonsViewController2 view];
+    window = [view window];
 
-    if (v8)
+    if (window)
     {
-      v9 = [(iPadAudioCallViewController *)self callDisplayStyleManager];
-      if ([v9 callDisplayStyle] == 3)
+      callDisplayStyleManager = [(iPadAudioCallViewController *)self callDisplayStyleManager];
+      if ([callDisplayStyleManager callDisplayStyle] == 3)
       {
-        v10 = [(iPadAudioCallViewController *)self features];
-        if ([v10 isDominoEnabled])
+        features = [(iPadAudioCallViewController *)self features];
+        if ([features isDominoEnabled])
         {
-          v11 = [(iPadAudioCallViewController *)self ambientAudioRoutesControlView];
+          ambientAudioRoutesControlView = [(iPadAudioCallViewController *)self ambientAudioRoutesControlView];
 
-          if (v11)
+          if (ambientAudioRoutesControlView)
           {
-            v12 = [(iPadAudioCallViewController *)self ambientAudioRoutesControlView];
-            v13 = [v12 button];
+            ambientAudioRoutesControlView2 = [(iPadAudioCallViewController *)self ambientAudioRoutesControlView];
+            button = [ambientAudioRoutesControlView2 button];
             goto LABEL_16;
           }
 
 LABEL_14:
-          v20 = [(iPadAudioCallViewController *)self currentMiddleView];
+          currentMiddleView = [(iPadAudioCallViewController *)self currentMiddleView];
           v21 = objc_opt_respondsToSelector();
 
           if ((v21 & 1) == 0)
@@ -10789,8 +10789,8 @@ LABEL_18:
             v38 = 0u;
             v35 = 0u;
             v36 = 0u;
-            v22 = [v14 interactions];
-            v23 = [v22 countByEnumeratingWithState:&v35 objects:v39 count:16];
+            interactions = [v14 interactions];
+            v23 = [interactions countByEnumeratingWithState:&v35 objects:v39 count:16];
             if (v23)
             {
               v24 = v23;
@@ -10801,7 +10801,7 @@ LABEL_20:
               {
                 if (*v36 != v25)
                 {
-                  objc_enumerationMutation(v22);
+                  objc_enumerationMutation(interactions);
                 }
 
                 v27 = *(*(&v35 + 1) + 8 * v26);
@@ -10813,7 +10813,7 @@ LABEL_20:
 
                 if (v24 == ++v26)
                 {
-                  v24 = [v22 countByEnumeratingWithState:&v35 objects:v39 count:16];
+                  v24 = [interactions countByEnumeratingWithState:&v35 objects:v39 count:16];
                   if (v24)
                   {
                     goto LABEL_20;
@@ -10823,9 +10823,9 @@ LABEL_20:
                 }
               }
 
-              v15 = v27;
+              buttonsViewController3 = v27;
 
-              if (!v15)
+              if (!buttonsViewController3)
               {
                 goto LABEL_29;
               }
@@ -10837,7 +10837,7 @@ LABEL_20:
               [v14 bounds];
               v33 = v32;
               [v14 bounds];
-              [v15 _presentMenuAtLocation:v31, v33 + v34 * 0.5];
+              [buttonsViewController3 _presentMenuAtLocation:v31, v33 + v34 * 0.5];
             }
 
             else
@@ -10845,22 +10845,22 @@ LABEL_20:
 LABEL_26:
 
 LABEL_29:
-              v15 = sub_100004F84();
-              if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+              buttonsViewController3 = sub_100004F84();
+              if (os_log_type_enabled(buttonsViewController3, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 138412290;
                 *v41 = v14;
-                _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "[WARN] Could not find menu interaction for audio routes button: %@", buf, 0xCu);
+                _os_log_impl(&_mh_execute_header, buttonsViewController3, OS_LOG_TYPE_DEFAULT, "[WARN] Could not find menu interaction for audio routes button: %@", buf, 0xCu);
               }
             }
 
             goto LABEL_31;
           }
 
-          v12 = [(iPadAudioCallViewController *)self currentMiddleView];
-          v13 = [v12 buttonForControlType:3];
+          ambientAudioRoutesControlView2 = [(iPadAudioCallViewController *)self currentMiddleView];
+          button = [ambientAudioRoutesControlView2 buttonForControlType:3];
 LABEL_16:
-          v14 = v13;
+          v14 = button;
 
           goto LABEL_18;
         }
@@ -10877,15 +10877,15 @@ LABEL_16:
   v14 = sub_100004F84();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [(iPadAudioCallViewController *)self buttonsViewController];
-    v16 = [v15 isViewLoaded];
-    v17 = [(iPadAudioCallViewController *)self buttonsViewController];
-    v18 = [v17 view];
-    v19 = [v18 window];
+    buttonsViewController3 = [(iPadAudioCallViewController *)self buttonsViewController];
+    isViewLoaded = [buttonsViewController3 isViewLoaded];
+    buttonsViewController4 = [(iPadAudioCallViewController *)self buttonsViewController];
+    view2 = [buttonsViewController4 view];
+    window2 = [view2 window];
     *buf = 67109378;
-    *v41 = v16;
+    *v41 = isViewLoaded;
     *&v41[4] = 2112;
-    *&v41[6] = v19;
+    *&v41[6] = window2;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Not presenting audio routing device list since isViewLoaded: %d; window: %@", buf, 0x12u);
 
 LABEL_31:
@@ -10894,60 +10894,60 @@ LABEL_31:
 
 - (id)audioRouteMenu
 {
-  v3 = [(iPadAudioCallViewController *)self routeListController];
+  routeListController = [(iPadAudioCallViewController *)self routeListController];
 
-  if (!v3)
+  if (!routeListController)
   {
     v4 = [PHAudioRoutingMenuController menuControllerWithCallStyle:1 dataSource:self delegate:self];
     [(iPadAudioCallViewController *)self setRouteListController:v4];
   }
 
-  v5 = [(iPadAudioCallViewController *)self routeListController];
-  v6 = [v5 menu];
+  routeListController2 = [(iPadAudioCallViewController *)self routeListController];
+  menu = [routeListController2 menu];
 
-  return v6;
+  return menu;
 }
 
-- (id)routesForAudioRoutingMenuController:(id)a3
+- (id)routesForAudioRoutingMenuController:(id)controller
 {
-  v3 = [(iPadAudioCallViewController *)self callCenter];
-  v4 = [v3 routeController];
-  v5 = [v4 sortedRoutes];
+  callCenter = [(iPadAudioCallViewController *)self callCenter];
+  routeController = [callCenter routeController];
+  sortedRoutes = [routeController sortedRoutes];
 
-  return v5;
+  return sortedRoutes;
 }
 
-- (void)audioRoutingMenuController:(id)a3 didSelectRoute:(id)a4
+- (void)audioRoutingMenuController:(id)controller didSelectRoute:(id)route
 {
-  v5 = a4;
-  v6 = [(iPadAudioCallViewController *)self callCenter];
-  v7 = [v6 routeController];
-  [v7 pickRoute:v5];
+  routeCopy = route;
+  callCenter = [(iPadAudioCallViewController *)self callCenter];
+  routeController = [callCenter routeController];
+  [routeController pickRoute:routeCopy];
 
-  v12 = [(iPadAudioCallViewController *)self features];
-  if ([v12 isEnhancedEmergencyEnabled])
+  features = [(iPadAudioCallViewController *)self features];
+  if ([features isEnhancedEmergencyEnabled])
   {
-    v8 = [(iPadAudioCallViewController *)self emergencyCoordinator];
-    if (v8)
+    emergencyCoordinator = [(iPadAudioCallViewController *)self emergencyCoordinator];
+    if (emergencyCoordinator)
     {
-      v9 = v8;
-      v10 = [(iPadAudioCallViewController *)self emergencyCoordinator];
-      v11 = [v10 eedRTTState];
+      v9 = emergencyCoordinator;
+      emergencyCoordinator2 = [(iPadAudioCallViewController *)self emergencyCoordinator];
+      eedRTTState = [emergencyCoordinator2 eedRTTState];
 
-      if (!v11)
+      if (!eedRTTState)
       {
         return;
       }
 
-      v12 = [(iPadAudioCallViewController *)self emergencyCoordinator];
-      [v12 updateRTTAudioRouteButton];
+      features = [(iPadAudioCallViewController *)self emergencyCoordinator];
+      [features updateRTTAudioRouteButton];
     }
   }
 }
 
-- (void)routesChangedForRouteController:(id)a3
+- (void)routesChangedForRouteController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -10956,49 +10956,49 @@ LABEL_31:
   }
 
   [(iPadAudioCallViewController *)self updateCurrentState];
-  v6 = [(iPadAudioCallViewController *)self routeListController];
-  [v6 reload];
+  routeListController = [(iPadAudioCallViewController *)self routeListController];
+  [routeListController reload];
 
   v7 = +[UIApplication sharedApplication];
-  v8 = [v7 delegate];
-  v9 = [v8 currentInCallScene];
-  v10 = [v9 delegate];
-  v11 = [v10 callAnalyticsLogger];
-  v12 = [v4 pickedRoute];
+  delegate = [v7 delegate];
+  currentInCallScene = [delegate currentInCallScene];
+  delegate2 = [currentInCallScene delegate];
+  callAnalyticsLogger = [delegate2 callAnalyticsLogger];
+  pickedRoute = [controllerCopy pickedRoute];
 
-  [v11 audioRouteIsHandsfree:{objc_msgSend(v12, "isReceiver") ^ 1}];
-  v13 = [(iPadAudioCallViewController *)self features];
-  if ([v13 isEnhancedEmergencyEnabled])
+  [callAnalyticsLogger audioRouteIsHandsfree:{objc_msgSend(pickedRoute, "isReceiver") ^ 1}];
+  features = [(iPadAudioCallViewController *)self features];
+  if ([features isEnhancedEmergencyEnabled])
   {
-    v14 = [(iPadAudioCallViewController *)self emergencyCoordinator];
-    if (v14)
+    emergencyCoordinator = [(iPadAudioCallViewController *)self emergencyCoordinator];
+    if (emergencyCoordinator)
     {
-      v15 = v14;
-      v16 = [(iPadAudioCallViewController *)self emergencyCoordinator];
-      v17 = [v16 eedRTTState];
+      v15 = emergencyCoordinator;
+      emergencyCoordinator2 = [(iPadAudioCallViewController *)self emergencyCoordinator];
+      eedRTTState = [emergencyCoordinator2 eedRTTState];
 
-      if (!v17)
+      if (!eedRTTState)
       {
         return;
       }
 
-      v13 = [(iPadAudioCallViewController *)self emergencyCoordinator];
-      [v13 updateRTTAudioRouteButton];
+      features = [(iPadAudioCallViewController *)self emergencyCoordinator];
+      [features updateRTTAudioRouteButton];
     }
   }
 }
 
-- (void)callDisplayStyleDidChangeFromStyle:(int64_t)a3 toStyle:(int64_t)a4
+- (void)callDisplayStyleDidChangeFromStyle:(int64_t)style toStyle:(int64_t)toStyle
 {
   v33.receiver = self;
   v33.super_class = iPadAudioCallViewController;
   [PHCallViewController callDisplayStyleDidChangeFromStyle:"callDisplayStyleDidChangeFromStyle:toStyle:" toStyle:?];
-  if (a4 == 4)
+  if (toStyle == 4)
   {
-    v7 = [(iPadAudioCallViewController *)self callCenter];
-    v8 = [v7 hasCurrentCalls];
+    callCenter = [(iPadAudioCallViewController *)self callCenter];
+    hasCurrentCalls = [callCenter hasCurrentCalls];
 
-    if ((v8 & 1) == 0)
+    if ((hasCurrentCalls & 1) == 0)
     {
       v9 = sub_100004F84();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -11013,26 +11013,26 @@ LABEL_31:
     }
   }
 
-  if (!a3)
+  if (!style)
   {
     [(iPadAudioCallViewController *)self resetParticipantsViewConstraints];
-    v10 = [(iPadAudioCallViewController *)self pendingMiddleViewAnimations];
+    pendingMiddleViewAnimations = [(iPadAudioCallViewController *)self pendingMiddleViewAnimations];
 
-    if (v10)
+    if (pendingMiddleViewAnimations)
     {
-      v11 = [(iPadAudioCallViewController *)self pendingMiddleViewAnimations];
-      v11[2]();
+      pendingMiddleViewAnimations2 = [(iPadAudioCallViewController *)self pendingMiddleViewAnimations];
+      pendingMiddleViewAnimations2[2]();
 
       [(iPadAudioCallViewController *)self setPendingMiddleViewAnimations:0];
     }
 
     if ([(iPadAudioCallViewController *)self waitingForFullScreenAudioRoutes])
     {
-      v12 = [(iPadAudioCallViewController *)self callCenter];
-      v13 = [v12 routeController];
-      v14 = [v13 areAuxiliaryRoutesAvailable];
+      callCenter2 = [(iPadAudioCallViewController *)self callCenter];
+      routeController = [callCenter2 routeController];
+      areAuxiliaryRoutesAvailable = [routeController areAuxiliaryRoutesAvailable];
 
-      if (v14)
+      if (areAuxiliaryRoutesAvailable)
       {
         objc_initWeak(buf, self);
         +[UIView _currentAnimationDuration];
@@ -11051,9 +11051,9 @@ LABEL_31:
     [(iPadAudioCallViewController *)self setWaitingForFullScreenAudioRoutes:0];
   }
 
-  if (a3 == 1 || a4 != 1)
+  if (style == 1 || toStyle != 1)
   {
-    if (a3 == 2 && a4 == 4)
+    if (style == 2 && toStyle == 4)
     {
       if ([(iPadAudioCallViewController *)self videoStreamingIsGoingOn])
       {
@@ -11076,28 +11076,28 @@ LABEL_31:
     [(iPadAudioCallViewController *)self handleDeviceLockEventWithSourceType:1];
   }
 
-  if (a3 == 4)
+  if (style == 4)
   {
     [(iPadAudioCallViewController *)self handleViewWillAppear:1];
     [(iPadAudioCallViewController *)self handleViewDidAppear:1];
     goto LABEL_34;
   }
 
-  if (a4 == 4)
+  if (toStyle == 4)
   {
 LABEL_25:
     [(iPadAudioCallViewController *)self handleViewWillDisappear:1];
     [(iPadAudioCallViewController *)self handleViewDidDisappear:1];
-    v18 = [(iPadAudioCallViewController *)self callCenter];
-    v19 = [v18 incomingCall];
+    callCenter3 = [(iPadAudioCallViewController *)self callCenter];
+    incomingCall = [callCenter3 incomingCall];
 
-    if (v19)
+    if (incomingCall)
     {
-      v20 = [v19 provider];
-      if ([v20 supportsDynamicSystemUI])
+      provider = [incomingCall provider];
+      if ([provider supportsDynamicSystemUI])
       {
-        v21 = [(iPadAudioCallViewController *)self featureFlags];
-        if ([v21 groupConversations])
+        featureFlags = [(iPadAudioCallViewController *)self featureFlags];
+        if ([featureFlags groupConversations])
         {
           HasChinaSKU = TUDeviceHasChinaSKU();
 
@@ -11118,12 +11118,12 @@ LABEL_33:
 
 LABEL_34:
   v23 = +[UIDevice currentDevice];
-  v24 = [v23 orientation];
+  orientation = [v23 orientation];
 
-  if (!a3 && a4 == 2 && (v24 - 3) < 2 || UIAccessibilityIsReduceMotionEnabled())
+  if (!style && toStyle == 2 && (orientation - 3) < 2 || UIAccessibilityIsReduceMotionEnabled())
   {
-    v25 = [(iPadAudioCallViewController *)self view];
-    [ICSBannerTransitionAnimation performBannerToFullScreenCrossFadeAnimationWithView:v25];
+    view = [(iPadAudioCallViewController *)self view];
+    [ICSBannerTransitionAnimation performBannerToFullScreenCrossFadeAnimationWithView:view];
   }
 
   [(iPadAudioCallViewController *)self showCallDetailsIfNecessary];
@@ -11131,24 +11131,24 @@ LABEL_34:
   [(iPadAudioCallViewController *)self updateShareNameAndPhotoHUDPresentationIfNeeded];
   [(iPadAudioCallViewController *)self updateLayeredBackgroundWallpaper];
   [(iPadAudioCallViewController *)self updateDefaultNoPosterAvatarViewVisibility];
-  v26 = [(iPadAudioCallViewController *)self frontmostCall];
-  [(iPadAudioCallViewController *)self updateWaitOnHoldServiceWithCall:v26];
+  frontmostCall = [(iPadAudioCallViewController *)self frontmostCall];
+  [(iPadAudioCallViewController *)self updateWaitOnHoldServiceWithCall:frontmostCall];
 
-  [(iPadAudioCallViewController *)self updateBottomShelfWithMiddleViewState:self->_middleViewState callDisplayStyle:a4];
+  [(iPadAudioCallViewController *)self updateBottomShelfWithMiddleViewState:self->_middleViewState callDisplayStyle:toStyle];
   [(iPadAudioCallViewController *)self _updateStatusLabelVisibility];
-  if (a3 != 2 && !a4)
+  if (style != 2 && !toStyle)
   {
-    v27 = [(PHCallViewController *)self bottomBar];
-    [v27 setNeedsLayout];
+    bottomBar = [(PHCallViewController *)self bottomBar];
+    [bottomBar setNeedsLayout];
 
-    v28 = [(PHCallViewController *)self bottomBar];
-    [v28 layoutIfNeeded];
+    bottomBar2 = [(PHCallViewController *)self bottomBar];
+    [bottomBar2 layoutIfNeeded];
   }
 
-  v29 = [(iPadAudioCallViewController *)self backgroundController];
-  [v29 updateBackgroundFor:{-[ICSCallDisplayStyleManager callDisplayStyle](self->_callDisplayStyleManager, "callDisplayStyle")}];
+  backgroundController = [(iPadAudioCallViewController *)self backgroundController];
+  [backgroundController updateBackgroundFor:{-[ICSCallDisplayStyleManager callDisplayStyle](self->_callDisplayStyleManager, "callDisplayStyle")}];
 
-  if (a4 == 4 || a4 == 2)
+  if (toStyle == 4 || toStyle == 2)
   {
     [(iPadAudioCallViewController *)self activatePoster];
   }
@@ -11156,45 +11156,45 @@ LABEL_34:
 
 - (void)suppressRingtoneForIncomingCall
 {
-  v2 = [(iPadAudioCallViewController *)self callCenter];
-  v5 = [v2 incomingCall];
+  callCenter = [(iPadAudioCallViewController *)self callCenter];
+  incomingCall = [callCenter incomingCall];
 
-  v4 = v5;
-  if (v5)
+  v4 = incomingCall;
+  if (incomingCall)
   {
-    v3 = [v5 shouldSuppressRingtone];
-    v4 = v5;
-    if ((v3 & 1) == 0)
+    shouldSuppressRingtone = [incomingCall shouldSuppressRingtone];
+    v4 = incomingCall;
+    if ((shouldSuppressRingtone & 1) == 0)
     {
-      v3 = [v5 suppressRingtone];
-      v4 = v5;
+      shouldSuppressRingtone = [incomingCall suppressRingtone];
+      v4 = incomingCall;
     }
   }
 
-  _objc_release_x1(v3, v4);
+  _objc_release_x1(shouldSuppressRingtone, v4);
 }
 
 - (void)showCallDetailsIfNecessary
 {
-  v3 = [(iPadAudioCallViewController *)self callDetailsCoordinator];
-  if (v3)
+  callDetailsCoordinator = [(iPadAudioCallViewController *)self callDetailsCoordinator];
+  if (callDetailsCoordinator)
   {
-    v9 = v3;
+    callDetailsCoordinator2 = callDetailsCoordinator;
     v4 = +[UIApplication sharedApplication];
-    v5 = [v4 delegate];
-    v6 = [v5 bannerPresentationManager];
-    if ([v6 shouldShowCallDetailsWhenReady])
+    delegate = [v4 delegate];
+    bannerPresentationManager = [delegate bannerPresentationManager];
+    if ([bannerPresentationManager shouldShowCallDetailsWhenReady])
     {
-      v7 = [(iPadAudioCallViewController *)self callDisplayStyleManager];
-      v8 = [v7 callDisplayStyle];
+      callDisplayStyleManager = [(iPadAudioCallViewController *)self callDisplayStyleManager];
+      callDisplayStyle = [callDisplayStyleManager callDisplayStyle];
 
-      if (v8 != 2)
+      if (callDisplayStyle != 2)
       {
         return;
       }
 
-      v9 = [(iPadAudioCallViewController *)self callDetailsCoordinator];
-      [v9 startWithReason:@"Controls manager requested deferred call details presentation"];
+      callDetailsCoordinator2 = [(iPadAudioCallViewController *)self callDetailsCoordinator];
+      [callDetailsCoordinator2 startWithReason:@"Controls manager requested deferred call details presentation"];
     }
 
     else
@@ -11219,14 +11219,14 @@ LABEL_34:
   }
 }
 
-- (void)callParticipantsViewController:(id)a3 didPerformActionType:(int64_t)a4
+- (void)callParticipantsViewController:(id)controller didPerformActionType:(int64_t)type
 {
-  v6 = a3;
-  v7 = [(iPadAudioCallViewController *)self callParticipantsViewController];
+  controllerCopy = controller;
+  callParticipantsViewController = [(iPadAudioCallViewController *)self callParticipantsViewController];
 
-  if (v7 == v6)
+  if (callParticipantsViewController == controllerCopy)
   {
-    [(iPadAudioCallViewController *)self performBottomBarActionType:a4];
+    [(iPadAudioCallViewController *)self performBottomBarActionType:type];
   }
 
   else
@@ -11235,20 +11235,20 @@ LABEL_34:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 134218242;
-      v10 = a4;
+      typeCopy = type;
       v11 = 2112;
-      v12 = v6;
+      v12 = controllerCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "[WARN] Cannot perform bottom bar action %ld from unknown call participants viewcontroller object %@", &v9, 0x16u);
     }
   }
 }
 
-- (BOOL)callParticipantsViewControllerHasHighResolutionImageOrWallpaperForContact:(id)a3
+- (BOOL)callParticipantsViewControllerHasHighResolutionImageOrWallpaperForContact:(id)contact
 {
   v4 = [(iPadAudioCallViewController *)self contactForCall:self->_existingPrioritizedCall];
-  v5 = [v4 fullscreenImageData];
+  fullscreenImageData = [v4 fullscreenImageData];
 
-  if (v5)
+  if (fullscreenImageData)
   {
     v6 = 1;
   }
@@ -11261,76 +11261,76 @@ LABEL_34:
   return v6;
 }
 
-- (void)callParticipantsViewControllerDidTapCallDetailsGestureRecognizer:(id)a3
+- (void)callParticipantsViewControllerDidTapCallDetailsGestureRecognizer:(id)recognizer
 {
-  v4 = a3;
-  v5 = [(iPadAudioCallViewController *)self callParticipantsViewController];
+  recognizerCopy = recognizer;
+  callParticipantsViewController = [(iPadAudioCallViewController *)self callParticipantsViewController];
 
-  if (v5 == v4)
+  if (callParticipantsViewController == recognizerCopy)
   {
-    v6 = [(iPadAudioCallViewController *)self callDetailsCoordinator];
-    [v6 startWithReason:@"Call participant view requested call details"];
+    callDetailsCoordinator = [(iPadAudioCallViewController *)self callDetailsCoordinator];
+    [callDetailsCoordinator startWithReason:@"Call participant view requested call details"];
   }
 
   else
   {
-    v6 = sub_100004F84();
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+    callDetailsCoordinator = sub_100004F84();
+    if (os_log_type_enabled(callDetailsCoordinator, OS_LOG_TYPE_DEFAULT))
     {
       v7 = 138412290;
-      v8 = v4;
-      _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "[WARN] Cannot handle call details disclosure button tap from unknown call participants viewcontroller object %@", &v7, 0xCu);
+      v8 = recognizerCopy;
+      _os_log_impl(&_mh_execute_header, callDetailsCoordinator, OS_LOG_TYPE_DEFAULT, "[WARN] Cannot handle call details disclosure button tap from unknown call participants viewcontroller object %@", &v7, 0xCu);
     }
   }
 }
 
-- (void)callParticipantsViewController:(id)a3 willShowMultipleLabel:(BOOL)a4
+- (void)callParticipantsViewController:(id)controller willShowMultipleLabel:(BOOL)label
 {
-  v6 = a3;
-  v7 = [(iPadAudioCallViewController *)self callParticipantsViewController];
+  controllerCopy = controller;
+  callParticipantsViewController = [(iPadAudioCallViewController *)self callParticipantsViewController];
 
-  if (v7 != v6)
+  if (callParticipantsViewController != controllerCopy)
   {
     return;
   }
 
-  self->_participantsViewIsShowingMultipleLabel = a4 & ~[(iPadAudioCallViewController *)self usesCompactMulticallUI];
+  self->_participantsViewIsShowingMultipleLabel = label & ~[(iPadAudioCallViewController *)self usesCompactMulticallUI];
   [(iPadAudioCallViewController *)self _updatePosterNameAlpha];
   [(iPadAudioCallViewController *)self _updateStatusLabelVisibility];
-  v11 = [(iPadAudioCallViewController *)self getParticipantsView_WaitingOrNot];
+  getParticipantsView_WaitingOrNot = [(iPadAudioCallViewController *)self getParticipantsView_WaitingOrNot];
   [(iPadAudioCallViewController *)self updateParticipantConstraintsForPosterName:?];
-  v8 = [(iPadAudioCallViewController *)self callDisplayStyleManager];
-  if ([v8 callDisplayStyle] != 3)
+  callDisplayStyleManager = [(iPadAudioCallViewController *)self callDisplayStyleManager];
+  if ([callDisplayStyleManager callDisplayStyle] != 3)
   {
     goto LABEL_5;
   }
 
-  v9 = [(iPadAudioCallViewController *)self features];
-  v10 = [v9 isDominoEnabled];
+  features = [(iPadAudioCallViewController *)self features];
+  isDominoEnabled = [features isDominoEnabled];
 
-  if (v10)
+  if (isDominoEnabled)
   {
     [(iPadAudioCallViewController *)self layoutParticipantsViewAnimated:0];
-    v8 = [(iPadAudioCallViewController *)self callToUseForWallpaper];
-    [(iPadAudioCallViewController *)self setCallForBackgroundImage:v8 animated:1 callDisplayStyleChanged:0];
+    callDisplayStyleManager = [(iPadAudioCallViewController *)self callToUseForWallpaper];
+    [(iPadAudioCallViewController *)self setCallForBackgroundImage:callDisplayStyleManager animated:1 callDisplayStyleChanged:0];
 LABEL_5:
   }
 }
 
-- (void)callParticipantsViewController:(id)a3 didShowMultipleLabel:(BOOL)a4
+- (void)callParticipantsViewController:(id)controller didShowMultipleLabel:(BOOL)label
 {
-  v6 = a3;
-  v7 = [(iPadAudioCallViewController *)self callParticipantsViewController];
+  controllerCopy = controller;
+  callParticipantsViewController = [(iPadAudioCallViewController *)self callParticipantsViewController];
 
-  if (v7 == v6)
+  if (callParticipantsViewController == controllerCopy)
   {
-    v8 = [(iPadAudioCallViewController *)self callDisplayStyleManager];
-    if ([v8 callDisplayStyle] == 3)
+    callDisplayStyleManager = [(iPadAudioCallViewController *)self callDisplayStyleManager];
+    if ([callDisplayStyleManager callDisplayStyle] == 3)
     {
-      v9 = [(iPadAudioCallViewController *)self features];
-      v10 = [v9 isDominoEnabled];
+      features = [(iPadAudioCallViewController *)self features];
+      isDominoEnabled = [features isDominoEnabled];
 
-      if ((v10 & 1) != 0 || a4)
+      if ((isDominoEnabled & 1) != 0 || label)
       {
         return;
       }
@@ -11339,15 +11339,15 @@ LABEL_5:
     else
     {
 
-      if (a4)
+      if (label)
       {
         return;
       }
     }
 
-    v11 = [(iPadAudioCallViewController *)self posterNameViewModel];
+    posterNameViewModel = [(iPadAudioCallViewController *)self posterNameViewModel];
 
-    if (v11)
+    if (posterNameViewModel)
     {
 
       [(iPadAudioCallViewController *)self _updateStatusLabelVisibility];
@@ -11355,24 +11355,24 @@ LABEL_5:
   }
 }
 
-- (BOOL)callParticipantsViewControllerShouldShowLargeAvatar:(id)a3
+- (BOOL)callParticipantsViewControllerShouldShowLargeAvatar:(id)avatar
 {
-  v4 = a3;
-  v5 = [(iPadAudioCallViewController *)self callParticipantsViewController];
+  avatarCopy = avatar;
+  callParticipantsViewController = [(iPadAudioCallViewController *)self callParticipantsViewController];
 
-  if (v5 == v4)
+  if (callParticipantsViewController == avatarCopy)
   {
-    v8 = [(iPadAudioCallViewController *)self shouldShowLargeAvatar];
+    shouldShowLargeAvatar = [(iPadAudioCallViewController *)self shouldShowLargeAvatar];
 LABEL_6:
-    v7 = v8;
+    v7 = shouldShowLargeAvatar;
     goto LABEL_7;
   }
 
-  v6 = [(iPadAudioCallViewController *)self callWaitingParticipantsViewController];
+  callWaitingParticipantsViewController = [(iPadAudioCallViewController *)self callWaitingParticipantsViewController];
 
-  if (v6 == v4)
+  if (callWaitingParticipantsViewController == avatarCopy)
   {
-    v8 = [(iPadAudioCallViewController *)self shouldShowLargeAvatarForCallWaiting];
+    shouldShowLargeAvatar = [(iPadAudioCallViewController *)self shouldShowLargeAvatarForCallWaiting];
     goto LABEL_6;
   }
 
@@ -11408,34 +11408,34 @@ LABEL_7:
   return [(PHCallViewController *)self currentState]== 8;
 }
 
-- (BOOL)shouldShowLargeAvatarForCall:(id)a3
+- (BOOL)shouldShowLargeAvatarForCall:(id)call
 {
-  v4 = a3;
-  if ([(iPadAudioCallViewController *)self callStateCanShowNewPoster:v4]|| ![(iPadAudioCallViewController *)self prefersShowingCachedLastSeenPosterBeforeCallConnected:v4])
+  callCopy = call;
+  if ([(iPadAudioCallViewController *)self callStateCanShowNewPoster:callCopy]|| ![(iPadAudioCallViewController *)self prefersShowingCachedLastSeenPosterBeforeCallConnected:callCopy])
   {
-    v5 = [(iPadAudioCallViewController *)self contactWallpaperForCall:v4];
+    v5 = [(iPadAudioCallViewController *)self contactWallpaperForCall:callCopy];
     v6 = [(iPadAudioCallViewController *)self wallpaperTypeForCNWallpaper:v5];
   }
 
   else
   {
-    v5 = [(iPadAudioCallViewController *)self lastSeenPosterIMWallpaperMetadataForCall:v4];
+    v5 = [(iPadAudioCallViewController *)self lastSeenPosterIMWallpaperMetadataForCall:callCopy];
     v6 = [(iPadAudioCallViewController *)self wallpaperTypeForIMWallpaperMetadata:v5];
   }
 
   v7 = v6;
 
-  v8 = [(iPadAudioCallViewController *)self callDisplayStyleManager];
-  if ([v8 callDisplayStyle] != 3)
+  callDisplayStyleManager = [(iPadAudioCallViewController *)self callDisplayStyleManager];
+  if ([callDisplayStyleManager callDisplayStyle] != 3)
   {
     v11 = 0;
     goto LABEL_11;
   }
 
-  v9 = [(iPadAudioCallViewController *)self features];
-  v10 = [v9 isDominoEnabled];
+  features = [(iPadAudioCallViewController *)self features];
+  isDominoEnabled = [features isDominoEnabled];
 
-  if (!v10)
+  if (!isDominoEnabled)
   {
     v11 = 0;
     goto LABEL_13;
@@ -11444,8 +11444,8 @@ LABEL_7:
   v11 = 1;
   if (v7 != CNWallpaperTypeMemoji && v7 != CNWallpaperTypeMonogram)
   {
-    v8 = [(iPadAudioCallViewController *)self contactImageForCall:v4];
-    [v8 size];
+    callDisplayStyleManager = [(iPadAudioCallViewController *)self contactImageForCall:callCopy];
+    [callDisplayStyleManager size];
     v11 = v12 > 300.0;
 LABEL_11:
   }
@@ -11457,13 +11457,13 @@ LABEL_13:
 
 - (void)updateShouldShowLargeAvatar
 {
-  v11 = [(iPadAudioCallViewController *)self callDisplayStyleManager];
-  if ([v11 callDisplayStyle] == 3)
+  callDisplayStyleManager = [(iPadAudioCallViewController *)self callDisplayStyleManager];
+  if ([callDisplayStyleManager callDisplayStyle] == 3)
   {
-    v3 = [(iPadAudioCallViewController *)self features];
-    v4 = [v3 isDominoEnabled];
+    features = [(iPadAudioCallViewController *)self features];
+    isDominoEnabled = [features isDominoEnabled];
 
-    if (!v4)
+    if (!isDominoEnabled)
     {
       return;
     }
@@ -11477,108 +11477,108 @@ LABEL_13:
 
     if ([(iPadAudioCallViewController *)self usesCompactMulticallUI]&& ([(iPadAudioCallViewController *)self prioritizedCall], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
     {
-      v11 = [(iPadAudioCallViewController *)self prioritizedCall];
-      v6 = [(iPadAudioCallViewController *)self shouldShowLargeAvatarForCall:v11];
+      callDisplayStyleManager = [(iPadAudioCallViewController *)self prioritizedCall];
+      v6 = [(iPadAudioCallViewController *)self shouldShowLargeAvatarForCall:callDisplayStyleManager];
     }
 
     else
     {
-      v7 = [(iPadAudioCallViewController *)self callParticipantsViewController];
-      v8 = [v7 currentCallGroups];
-      v9 = [v8 firstObject];
-      v10 = [v9 calls];
-      v11 = [v10 firstObject];
+      callParticipantsViewController = [(iPadAudioCallViewController *)self callParticipantsViewController];
+      currentCallGroups = [callParticipantsViewController currentCallGroups];
+      firstObject = [currentCallGroups firstObject];
+      calls = [firstObject calls];
+      callDisplayStyleManager = [calls firstObject];
 
-      v6 = [(iPadAudioCallViewController *)self shouldShowLargeAvatarForCall:v11];
+      v6 = [(iPadAudioCallViewController *)self shouldShowLargeAvatarForCall:callDisplayStyleManager];
     }
 
     [(iPadAudioCallViewController *)self setShouldShowLargeAvatar:v6];
   }
 }
 
-- (id)customColorForStatusLabelWithCall:(id)a3
+- (id)customColorForStatusLabelWithCall:(id)call
 {
-  v3 = [(iPadAudioCallViewController *)self wallpaperTitleStyleAttributesForCall:a3];
-  v4 = [v3 titleColor];
+  v3 = [(iPadAudioCallViewController *)self wallpaperTitleStyleAttributesForCall:call];
+  titleColor = [v3 titleColor];
 
-  return v4;
+  return titleColor;
 }
 
-- (id)customColorForParticipantLabelWithCall:(id)a3
+- (id)customColorForParticipantLabelWithCall:(id)call
 {
-  v4 = a3;
-  v5 = [(iPadAudioCallViewController *)self callDisplayStyleManager];
-  if ([v5 callDisplayStyle] != 3)
+  callCopy = call;
+  callDisplayStyleManager = [(iPadAudioCallViewController *)self callDisplayStyleManager];
+  if ([callDisplayStyleManager callDisplayStyle] != 3)
   {
-    v8 = 0;
+    titleColor = 0;
     goto LABEL_5;
   }
 
-  v6 = [(iPadAudioCallViewController *)self features];
-  v7 = [v6 isDominoEnabled];
+  features = [(iPadAudioCallViewController *)self features];
+  isDominoEnabled = [features isDominoEnabled];
 
-  if (v7)
+  if (isDominoEnabled)
   {
-    v5 = [(iPadAudioCallViewController *)self wallpaperTitleStyleAttributesForCall:v4];
-    v8 = [v5 titleColor];
+    callDisplayStyleManager = [(iPadAudioCallViewController *)self wallpaperTitleStyleAttributesForCall:callCopy];
+    titleColor = [callDisplayStyleManager titleColor];
 LABEL_5:
 
     goto LABEL_7;
   }
 
-  v8 = 0;
+  titleColor = 0;
 LABEL_7:
 
-  return v8;
+  return titleColor;
 }
 
-- (id)customFontForParticipantLabelWithCall:(id)a3
+- (id)customFontForParticipantLabelWithCall:(id)call
 {
-  v4 = a3;
-  v5 = [(iPadAudioCallViewController *)self callDisplayStyleManager];
-  if ([v5 callDisplayStyle] != 3)
+  callCopy = call;
+  callDisplayStyleManager = [(iPadAudioCallViewController *)self callDisplayStyleManager];
+  if ([callDisplayStyleManager callDisplayStyle] != 3)
   {
-    v8 = 0;
+    titleFont = 0;
     goto LABEL_5;
   }
 
-  v6 = [(iPadAudioCallViewController *)self features];
-  v7 = [v6 isDominoEnabled];
+  features = [(iPadAudioCallViewController *)self features];
+  isDominoEnabled = [features isDominoEnabled];
 
-  if (v7)
+  if (isDominoEnabled)
   {
-    v5 = [(iPadAudioCallViewController *)self wallpaperTitleStyleAttributesForCall:v4];
-    v8 = [v5 titleFont];
+    callDisplayStyleManager = [(iPadAudioCallViewController *)self wallpaperTitleStyleAttributesForCall:callCopy];
+    titleFont = [callDisplayStyleManager titleFont];
 LABEL_5:
 
     goto LABEL_7;
   }
 
-  v8 = 0;
+  titleFont = 0;
 LABEL_7:
 
-  return v8;
+  return titleFont;
 }
 
-- (void)setParticipantsViewShouldShowParticipantLabel:(BOOL)a3
+- (void)setParticipantsViewShouldShowParticipantLabel:(BOOL)label
 {
-  if (self->_participantsViewShouldShowParticipantLabel != a3)
+  if (self->_participantsViewShouldShowParticipantLabel != label)
   {
-    v4 = a3;
-    self->_participantsViewShouldShowParticipantLabel = a3;
-    v6 = [(iPadAudioCallViewController *)self getParticipantsView_NotWaiting];
-    [(iPadAudioCallViewController *)self updateParticipantsLabelForView:v6 isHidden:!v4];
+    labelCopy = label;
+    self->_participantsViewShouldShowParticipantLabel = label;
+    getParticipantsView_NotWaiting = [(iPadAudioCallViewController *)self getParticipantsView_NotWaiting];
+    [(iPadAudioCallViewController *)self updateParticipantsLabelForView:getParticipantsView_NotWaiting isHidden:!labelCopy];
   }
 }
 
-- (void)updateParticipantsLabelForView:(id)a3 isHidden:(BOOL)a4
+- (void)updateParticipantsLabelForView:(id)view isHidden:(BOOL)hidden
 {
-  if (a3)
+  if (view)
   {
-    v4 = !a4;
-    v6 = [a3 singleCallLabelView];
-    v5 = [v6 participantMarqueeLabel];
-    [v5 setAlpha:v4];
+    v4 = !hidden;
+    singleCallLabelView = [view singleCallLabelView];
+    participantMarqueeLabel = [singleCallLabelView participantMarqueeLabel];
+    [participantMarqueeLabel setAlpha:v4];
   }
 }
 
@@ -11619,10 +11619,10 @@ LABEL_7:
   }
 }
 
-- (BOOL)shouldShowEnableWiFiCallingAlertForCall:(id)a3
+- (BOOL)shouldShowEnableWiFiCallingAlertForCall:(id)call
 {
-  v3 = a3;
-  if (([v3 isEmergency] & 1) == 0 && objc_msgSend(v3, "disconnectedReason") == 14 && objc_msgSend(v3, "service") == 1)
+  callCopy = call;
+  if (([callCopy isEmergency] & 1) == 0 && objc_msgSend(callCopy, "disconnectedReason") == 14 && objc_msgSend(callCopy, "service") == 1)
   {
     v4 = PHShouldShowWifiCallingAlert();
   }
@@ -11632,10 +11632,10 @@ LABEL_7:
     v4 = 0;
   }
 
-  v5 = [v3 localSenderIdentityUUID];
-  if (v5)
+  localSenderIdentityUUID = [callCopy localSenderIdentityUUID];
+  if (localSenderIdentityUUID)
   {
-    v6 = [TUCallCapabilities senderIdentityCapabilitiesWithUUID:v5];
+    v6 = [TUCallCapabilities senderIdentityCapabilitiesWithUUID:localSenderIdentityUUID];
     v7 = v6;
     LOBYTE(v8) = (v6 == 0) & v4;
     if (v6 && ((v4 ^ 1) & 1) == 0)
@@ -11670,20 +11670,20 @@ LABEL_7:
   [v2 postNotificationName:@"PHAlertDisconnectingCallsNotification" object:0];
 }
 
-- (void)updatePresentationStateWithAllowed:(BOOL)a3
+- (void)updatePresentationStateWithAllowed:(BOOL)allowed
 {
-  v3 = a3;
-  if ([(iPadAudioCallViewController *)self shouldPresentAlertButton]!= a3)
+  allowedCopy = allowed;
+  if ([(iPadAudioCallViewController *)self shouldPresentAlertButton]!= allowed)
   {
     v5 = sub_100004F84();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6[0] = 67109120;
-      v6[1] = v3;
+      v6[1] = allowedCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "iPadAudioCallViewController is about to set shouldPresentAlertButton to %d", v6, 8u);
     }
 
-    [(iPadAudioCallViewController *)self setShouldPresentAlertButton:v3];
+    [(iPadAudioCallViewController *)self setShouldPresentAlertButton:allowedCopy];
     [(iPadAudioCallViewController *)self updateCurrentState];
     [(iPadAudioCallViewController *)self triggerAutoCountdownIfAvailable];
   }
@@ -11712,9 +11712,9 @@ LABEL_7:
 
     else
     {
-      v4 = [(iPadAudioCallViewController *)self alertCountDownTimer];
+      alertCountDownTimer = [(iPadAudioCallViewController *)self alertCountDownTimer];
 
-      if (!v4)
+      if (!alertCountDownTimer)
       {
         v5 = sub_100004F84();
         if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -11730,22 +11730,22 @@ LABEL_7:
         +[_TtC13InCallService16AlertCoordinator countdownDuration];
         v25 = v6;
         v7 = +[UIApplication sharedApplication];
-        v8 = [v7 delegate];
-        v9 = [v8 alertCoordinator];
-        v10 = [v9 isBackgroundCountdownRunning];
+        delegate = [v7 delegate];
+        alertCoordinator = [delegate alertCoordinator];
+        isBackgroundCountdownRunning = [alertCoordinator isBackgroundCountdownRunning];
 
-        if (v10)
+        if (isBackgroundCountdownRunning)
         {
           v11 = +[UIApplication sharedApplication];
-          v12 = [v11 delegate];
-          v13 = [v12 alertCoordinator];
-          [v13 currentBackgroundCountdownDuration];
+          delegate2 = [v11 delegate];
+          alertCoordinator2 = [delegate2 alertCoordinator];
+          [alertCoordinator2 currentBackgroundCountdownDuration];
           *(v23 + 3) = v14;
 
           v15 = +[UIApplication sharedApplication];
-          v16 = [v15 delegate];
-          v17 = [v16 alertCoordinator];
-          [v17 stopBackgroundCountdown];
+          delegate3 = [v15 delegate];
+          alertCoordinator3 = [delegate3 alertCoordinator];
+          [alertCoordinator3 stopBackgroundCountdown];
         }
 
         objc_initWeak(&location, self);
@@ -11770,8 +11770,8 @@ LABEL_7:
 {
   if ([(iPadAudioCallViewController *)self shouldPresentAlertButton])
   {
-    v3 = [(iPadAudioCallViewController *)self frontmostCall];
-    if ([v3 originatingUIType] == 11 && !-[iPadAudioCallViewController didRequestToSpeakAlertUtterance](self, "didRequestToSpeakAlertUtterance"))
+    frontmostCall = [(iPadAudioCallViewController *)self frontmostCall];
+    if ([frontmostCall originatingUIType] == 11 && !-[iPadAudioCallViewController didRequestToSpeakAlertUtterance](self, "didRequestToSpeakAlertUtterance"))
     {
       v4 = +[UIScreen _carScreen];
 
@@ -11798,12 +11798,12 @@ LABEL_7:
       }
 
       v10 = +[UIScreen _carScreen];
-      v11 = [(iPadAudioCallViewController *)self speechSynthesizer];
-      [v11 setUsesApplicationAudioSession:v10 != 0];
+      speechSynthesizer = [(iPadAudioCallViewController *)self speechSynthesizer];
+      [speechSynthesizer setUsesApplicationAudioSession:v10 != 0];
 
       v12 = [AVSpeechUtterance speechUtteranceWithString:v8];
-      v13 = [(iPadAudioCallViewController *)self speechSynthesizer];
-      [v13 speakUtterance:v12];
+      speechSynthesizer2 = [(iPadAudioCallViewController *)self speechSynthesizer];
+      [speechSynthesizer2 speakUtterance:v12];
 
       [(iPadAudioCallViewController *)self setDidRequestToSpeakAlertUtterance:1];
     }
@@ -11812,25 +11812,25 @@ LABEL_7:
 
 - (BOOL)isReadyToShowCallDetails
 {
-  v2 = [(iPadAudioCallViewController *)self callDisplayStyleManager];
-  v3 = [v2 callDisplayStyle] == 2;
+  callDisplayStyleManager = [(iPadAudioCallViewController *)self callDisplayStyleManager];
+  v3 = [callDisplayStyleManager callDisplayStyle] == 2;
 
   return v3;
 }
 
-- (void)audioDeviceControllerMutedTalkerDidStart:(id)a3
+- (void)audioDeviceControllerMutedTalkerDidStart:(id)start
 {
   if ([(iPadAudioCallViewController *)self audioCallMutedTalkerIsSupported])
   {
-    v4 = [(iPadAudioCallViewController *)self didNotifyMutedCaller];
-    v5 = sub_100004F84();
-    v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
-    if (v4)
+    didNotifyMutedCaller = [(iPadAudioCallViewController *)self didNotifyMutedCaller];
+    mutedTalkerBannerViewController2 = sub_100004F84();
+    v6 = os_log_type_enabled(mutedTalkerBannerViewController2, OS_LOG_TYPE_DEFAULT);
+    if (didNotifyMutedCaller)
     {
       if (v6)
       {
         *v8 = 0;
-        _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "iPadAudioCallViewController: received audioDeviceControllerMutedTalkerDidStart callback, but banner was presented before, skips updating", v8, 2u);
+        _os_log_impl(&_mh_execute_header, mutedTalkerBannerViewController2, OS_LOG_TYPE_DEFAULT, "iPadAudioCallViewController: received audioDeviceControllerMutedTalkerDidStart callback, but banner was presented before, skips updating", v8, 2u);
       }
     }
 
@@ -11839,15 +11839,15 @@ LABEL_7:
       if (v6)
       {
         *buf = 0;
-        _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "iPadAudioCallViewController: received audioDeviceControllerMutedTalkerDidStart callback, presenting banner", buf, 2u);
+        _os_log_impl(&_mh_execute_header, mutedTalkerBannerViewController2, OS_LOG_TYPE_DEFAULT, "iPadAudioCallViewController: received audioDeviceControllerMutedTalkerDidStart callback, presenting banner", buf, 2u);
       }
 
       [(iPadAudioCallViewController *)self setDidNotifyMutedCaller:1];
-      v7 = [(iPadAudioCallViewController *)self mutedTalkerBannerViewController];
-      [v7 showBanner];
+      mutedTalkerBannerViewController = [(iPadAudioCallViewController *)self mutedTalkerBannerViewController];
+      [mutedTalkerBannerViewController showBanner];
 
-      v5 = [(iPadAudioCallViewController *)self mutedTalkerBannerViewController];
-      [v5 playBannerSound];
+      mutedTalkerBannerViewController2 = [(iPadAudioCallViewController *)self mutedTalkerBannerViewController];
+      [mutedTalkerBannerViewController2 playBannerSound];
     }
   }
 }
@@ -11856,31 +11856,31 @@ LABEL_7:
 {
   if ([(iPadAudioCallViewController *)self audioCallMutedTalkerIsSupported])
   {
-    v3 = [(iPadAudioCallViewController *)self buttonsViewController];
-    [v3 handleMutedTalkerBannerTap];
+    buttonsViewController = [(iPadAudioCallViewController *)self buttonsViewController];
+    [buttonsViewController handleMutedTalkerBannerTap];
 
-    v4 = [(iPadAudioCallViewController *)self callDisplayStyleManager];
-    v5 = [v4 callDisplayStyle];
+    callDisplayStyleManager = [(iPadAudioCallViewController *)self callDisplayStyleManager];
+    callDisplayStyle = [callDisplayStyleManager callDisplayStyle];
 
-    if (v5 == 2)
+    if (callDisplayStyle == 2)
     {
-      v6 = [(iPadAudioCallViewController *)self mutedTalkerBannerViewController];
-      [v6 dismissBanner];
+      mutedTalkerBannerViewController = [(iPadAudioCallViewController *)self mutedTalkerBannerViewController];
+      [mutedTalkerBannerViewController dismissBanner];
     }
   }
 }
 
-- (void)contactDidChange:(id)a3
+- (void)contactDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 wallpaper];
+    wallpaper = [changeCopy wallpaper];
     v28 = 138412546;
-    *v29 = v4;
+    *v29 = changeCopy;
     *&v29[8] = 2112;
-    v30 = v6;
+    v30 = wallpaper;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "contactDidChange: %@ wallpaper: %@", &v28, 0x16u);
   }
 
@@ -11897,20 +11897,20 @@ LABEL_7:
     goto LABEL_25;
   }
 
-  v8 = [(iPadAudioCallViewController *)self contactsCache];
-  v9 = [v4 identifier];
-  v10 = [v8 objectForKey:v9];
+  contactsCache = [(iPadAudioCallViewController *)self contactsCache];
+  identifier = [changeCopy identifier];
+  v10 = [contactsCache objectForKey:identifier];
 
   v11 = +[UIApplication sharedApplication];
-  v12 = [v11 delegate];
-  v13 = [v12 isShowingIncomingNameUpdate];
+  delegate = [v11 delegate];
+  isShowingIncomingNameUpdate = [delegate isShowingIncomingNameUpdate];
 
-  v14 = [(iPadAudioCallViewController *)self presentedViewController];
+  presentedViewController = [(iPadAudioCallViewController *)self presentedViewController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v15 = [v14 topViewController];
-    if (v15)
+    topViewController = [presentedViewController topViewController];
+    if (topViewController)
     {
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
@@ -11930,90 +11930,90 @@ LABEL_7:
   else
   {
     isKindOfClass = 0;
-    v15 = v14;
+    topViewController = presentedViewController;
     if (!v10)
     {
       goto LABEL_22;
     }
   }
 
-  v17 = [(iPadAudioCallViewController *)self contactsCache];
-  v18 = [v4 identifier];
-  [v17 setObject:v4 forKey:v18];
+  contactsCache2 = [(iPadAudioCallViewController *)self contactsCache];
+  identifier2 = [changeCopy identifier];
+  [contactsCache2 setObject:changeCopy forKey:identifier2];
 
-  if ((v13 | isKindOfClass))
+  if ((isShowingIncomingNameUpdate | isKindOfClass))
   {
     v19 = sub_100004F84();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
       v28 = 67109376;
-      *v29 = v13;
+      *v29 = isShowingIncomingNameUpdate;
       *&v29[4] = 1024;
       *&v29[6] = isKindOfClass & 1;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "SNAP: going to render poster again since contact did change, isBannerPresented = %d, isContactCardPresented = %d", &v28, 0xEu);
     }
 
-    v20 = [(iPadAudioCallViewController *)self configurationCache];
-    [v20 removeAllObjects];
+    configurationCache = [(iPadAudioCallViewController *)self configurationCache];
+    [configurationCache removeAllObjects];
 
     [(iPadAudioCallViewController *)self updateLayeredBackgroundWallpaper];
   }
 
-  v21 = [(iPadAudioCallViewController *)self callDisplayStyleManager];
-  if ([v21 callDisplayStyle] != 3)
+  callDisplayStyleManager = [(iPadAudioCallViewController *)self callDisplayStyleManager];
+  if ([callDisplayStyleManager callDisplayStyle] != 3)
   {
     goto LABEL_21;
   }
 
-  v22 = [(iPadAudioCallViewController *)self features];
-  v23 = [v22 isDominoEnabled];
+  features = [(iPadAudioCallViewController *)self features];
+  isDominoEnabled = [features isDominoEnabled];
 
-  if (v23)
+  if (isDominoEnabled)
   {
-    v24 = [(iPadAudioCallViewController *)self callToUseForWallpaper];
-    v21 = [(iPadAudioCallViewController *)self contactImageDataForCall:v24];
+    callToUseForWallpaper = [(iPadAudioCallViewController *)self callToUseForWallpaper];
+    callDisplayStyleManager = [(iPadAudioCallViewController *)self contactImageDataForCall:callToUseForWallpaper];
 
-    v25 = [[UIImage alloc] initWithData:v21];
+    v25 = [[UIImage alloc] initWithData:callDisplayStyleManager];
     [(iPadAudioCallViewController *)self setBackgroundImage:v25];
 
 LABEL_21:
   }
 
 LABEL_22:
-  if (v13)
+  if (isShowingIncomingNameUpdate)
   {
     v26 = +[UIApplication sharedApplication];
-    v27 = [v26 delegate];
-    [v27 setIsShowingIncomingNameUpdate:0];
+    delegate2 = [v26 delegate];
+    [delegate2 setIsShowingIncomingNameUpdate:0];
   }
 
 LABEL_25:
 }
 
-- (void)presentDisconnectionAlert:(id)a3
+- (void)presentDisconnectionAlert:(id)alert
 {
-  v4 = a3;
+  alertCopy = alert;
   v5 = +[CNKFeatures sharedInstance];
-  v6 = [v5 isEnhancedEmergencyEnabled];
+  isEnhancedEmergencyEnabled = [v5 isEnhancedEmergencyEnabled];
 
-  if (v6)
+  if (isEnhancedEmergencyEnabled)
   {
-    v7 = [(iPadAudioCallViewController *)self emergencyCoordinator];
-    if (v7)
+    emergencyCoordinator = [(iPadAudioCallViewController *)self emergencyCoordinator];
+    if (emergencyCoordinator)
     {
-      v8 = v7;
-      v9 = [(iPadAudioCallViewController *)self emergencyCoordinator];
-      v10 = [v9 videoStreamingIsOnScreen];
+      v8 = emergencyCoordinator;
+      emergencyCoordinator2 = [(iPadAudioCallViewController *)self emergencyCoordinator];
+      videoStreamingIsOnScreen = [emergencyCoordinator2 videoStreamingIsOnScreen];
 
-      if (v10)
+      if (videoStreamingIsOnScreen)
       {
         v11 = +[NSBundle mainBundle];
         v12 = [v11 localizedStringForKey:@"STOP_SHARING_LIVE_VIDEO_TITLE" value:&stru_100361FD0 table:@"InCallService"];
-        [v4 setTitle:v12];
+        [alertCopy setTitle:v12];
 
         v13 = +[NSBundle mainBundle];
         v14 = [v13 localizedStringForKey:@"STOP_SHARING_LIVE_VIDEO_SUBTITLE" value:&stru_100361FD0 table:@"InCallService"];
-        [v4 setMessage:v14];
+        [alertCopy setMessage:v14];
 
         objc_initWeak(&location, self);
         v15 = +[NSBundle mainBundle];
@@ -12024,39 +12024,39 @@ LABEL_25:
         v21 = &unk_100359390;
         objc_copyWeak(&v22, &location);
         v17 = [UIAlertAction actionWithTitle:v16 style:0 handler:&v18];
-        [v4 addAction:{v17, v18, v19, v20, v21}];
+        [alertCopy addAction:{v17, v18, v19, v20, v21}];
 
         objc_destroyWeak(&v22);
         objc_destroyWeak(&location);
       }
     }
 
-    [(iPadAudioCallViewController *)self presentViewController:v4 animated:1 completion:0];
+    [(iPadAudioCallViewController *)self presentViewController:alertCopy animated:1 completion:0];
   }
 }
 
 - (BOOL)isShowSOSConfirmationSupported
 {
-  v2 = [(iPadAudioCallViewController *)self callDisplayStyleManager];
-  v3 = [v2 callDisplayStyle] == 2;
+  callDisplayStyleManager = [(iPadAudioCallViewController *)self callDisplayStyleManager];
+  v3 = [callDisplayStyleManager callDisplayStyle] == 2;
 
   return v3;
 }
 
-- (void)screenSharingInteractionController:(id)a3 didUpdateRemoteControlStatus:(BOOL)a4
+- (void)screenSharingInteractionController:(id)controller didUpdateRemoteControlStatus:(BOOL)status
 {
-  v4 = a4;
-  v6 = [(iPadAudioCallViewController *)self featureFlags];
-  v7 = [v6 screenSharingRemoteControlEnabled];
+  statusCopy = status;
+  featureFlags = [(iPadAudioCallViewController *)self featureFlags];
+  screenSharingRemoteControlEnabled = [featureFlags screenSharingRemoteControlEnabled];
 
   v8 = sub_10000B2A0();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
-  if (v7)
+  if (screenSharingRemoteControlEnabled)
   {
     if (v9)
     {
       v10 = @"NO";
-      if (v4)
+      if (statusCopy)
       {
         v10 = @"YES";
       }
@@ -12129,8 +12129,8 @@ LABEL_25:
   [(iPadAudioCallViewController *)self stopMessagePlayback];
   if (+[SOSUtilities shouldPlayAudioDuringCountdown])
   {
-    v3 = [(iPadAudioCallViewController *)self voiceMessageManager];
-    if (v3)
+    voiceMessageManager = [(iPadAudioCallViewController *)self voiceMessageManager];
+    if (voiceMessageManager)
     {
     }
 
@@ -12146,17 +12146,17 @@ LABEL_25:
         _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "startMessagePlayback,starting call buffer voice message", v7, 2u);
       }
 
-      v6 = [(iPadAudioCallViewController *)self voiceMessageManager];
-      [v6 startMessagePlayback];
+      voiceMessageManager2 = [(iPadAudioCallViewController *)self voiceMessageManager];
+      [voiceMessageManager2 startMessagePlayback];
     }
   }
 }
 
 - (void)stopMessagePlayback
 {
-  v3 = [(iPadAudioCallViewController *)self voiceMessageManager];
+  voiceMessageManager = [(iPadAudioCallViewController *)self voiceMessageManager];
 
-  if (v3)
+  if (voiceMessageManager)
   {
     v4 = sub_100004F84();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -12165,8 +12165,8 @@ LABEL_25:
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "stopMessagePlayback", v6, 2u);
     }
 
-    v5 = [(iPadAudioCallViewController *)self voiceMessageManager];
-    [v5 stopMessagePlayback];
+    voiceMessageManager2 = [(iPadAudioCallViewController *)self voiceMessageManager];
+    [voiceMessageManager2 stopMessagePlayback];
 
     [(iPadAudioCallViewController *)self setVoiceMessageManager:0];
   }
@@ -12176,9 +12176,9 @@ LABEL_25:
 {
   [(iPadAudioCallViewController *)self stopCallBufferTimer];
   [(iPadAudioCallViewController *)self startMessagePlayback];
-  v3 = [(iPadAudioCallViewController *)self callBufferTimer];
+  callBufferTimer = [(iPadAudioCallViewController *)self callBufferTimer];
 
-  if (!v3)
+  if (!callBufferTimer)
   {
     objc_initWeak(&location, self);
     v7[0] = 0;
@@ -12202,10 +12202,10 @@ LABEL_25:
 
 - (void)stopCallBufferTimer
 {
-  v3 = [(iPadAudioCallViewController *)self callBufferTimer];
-  v4 = [v3 isValid];
+  callBufferTimer = [(iPadAudioCallViewController *)self callBufferTimer];
+  isValid = [callBufferTimer isValid];
 
-  if (v4)
+  if (isValid)
   {
     v5 = sub_100004F84();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -12214,8 +12214,8 @@ LABEL_25:
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "iPadAudioCallViewController,stopCallBufferTimer", v7, 2u);
     }
 
-    v6 = [(iPadAudioCallViewController *)self callBufferTimer];
-    [v6 invalidate];
+    callBufferTimer2 = [(iPadAudioCallViewController *)self callBufferTimer];
+    [callBufferTimer2 invalidate];
 
     [(iPadAudioCallViewController *)self setCallBufferTimer:0];
   }
@@ -12233,8 +12233,8 @@ LABEL_25:
   if (!self->_bufferSingleCallLabelView)
   {
     v3 = [PHSingleCallParticipantLabelView alloc];
-    v4 = [(iPadAudioCallViewController *)self callDisplayStyleManager];
-    v5 = [(PHSingleCallParticipantLabelView *)v3 initWithCallDisplayStyleManager:v4];
+    callDisplayStyleManager = [(iPadAudioCallViewController *)self callDisplayStyleManager];
+    v5 = [(PHSingleCallParticipantLabelView *)v3 initWithCallDisplayStyleManager:callDisplayStyleManager];
     bufferSingleCallLabelView = self->_bufferSingleCallLabelView;
     self->_bufferSingleCallLabelView = v5;
 
@@ -12250,8 +12250,8 @@ LABEL_25:
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Adding a new single-participant view to the view hierarchy: %@", buf, 0xCu);
     }
 
-    v9 = [(iPadAudioCallViewController *)self view];
-    [v9 addSubview:self->_bufferSingleCallLabelView];
+    view = [(iPadAudioCallViewController *)self view];
+    [view addSubview:self->_bufferSingleCallLabelView];
 
     v41 = [UIFont phPreferredFontForTextStyle:UIFontTextStyleLargeTitle];
     v10 = self->_bufferSingleCallLabelView;
@@ -12261,8 +12261,8 @@ LABEL_25:
 
     v12 = +[NSBundle mainBundle];
     v13 = [v12 localizedStringForKey:@"SOS_CALL_BUFFER_TITLE" value:&stru_100361FD0 table:@"InCallService"];
-    v14 = [(PHAbstractCallParticipantLabelView *)self->_bufferSingleCallLabelView participantMarqueeLabel];
-    [v14 setText:v13];
+    participantMarqueeLabel = [(PHAbstractCallParticipantLabelView *)self->_bufferSingleCallLabelView participantMarqueeLabel];
+    [participantMarqueeLabel setText:v13];
 
     v15 = self->_bufferSingleCallLabelView;
     v16 = +[UIColor systemRedColor];
@@ -12274,29 +12274,29 @@ LABEL_25:
     v20 = [(CNKCallParticipantLabelDescriptorFactory *)labelDescriptorFactory makeLabelWithString:v19];
 
     [(PHSingleCallParticipantLabelView *)self->_bufferSingleCallLabelView setLabelDescriptor:v20];
-    v21 = [(PHSingleCallParticipantLabelView *)self->_bufferSingleCallLabelView topAnchor];
-    v22 = [(iPadAudioCallViewController *)self view];
-    v23 = [v22 safeAreaLayoutGuide];
-    v24 = [v23 topAnchor];
+    topAnchor = [(PHSingleCallParticipantLabelView *)self->_bufferSingleCallLabelView topAnchor];
+    view2 = [(iPadAudioCallViewController *)self view];
+    safeAreaLayoutGuide = [view2 safeAreaLayoutGuide];
+    topAnchor2 = [safeAreaLayoutGuide topAnchor];
     +[TPIncomingCallMetricsProvider sixPercentOfDeviceHeight];
-    v25 = [v21 constraintEqualToAnchor:v24 constant:?];
+    v25 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:?];
 
-    v26 = [(PHSingleCallParticipantLabelView *)self->_bufferSingleCallLabelView centerXAnchor];
-    v27 = [(iPadAudioCallViewController *)self view];
-    v28 = [v27 centerXAnchor];
-    v29 = [v26 constraintEqualToAnchor:v28];
+    centerXAnchor = [(PHSingleCallParticipantLabelView *)self->_bufferSingleCallLabelView centerXAnchor];
+    view3 = [(iPadAudioCallViewController *)self view];
+    centerXAnchor2 = [view3 centerXAnchor];
+    v29 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
 
-    v30 = [(PHSingleCallParticipantLabelView *)self->_bufferSingleCallLabelView leadingAnchor];
-    v31 = [(iPadAudioCallViewController *)self view];
-    v32 = [v31 readableContentGuide];
-    v33 = [v32 leadingAnchor];
-    v34 = [v30 constraintEqualToAnchor:v33];
+    leadingAnchor = [(PHSingleCallParticipantLabelView *)self->_bufferSingleCallLabelView leadingAnchor];
+    view4 = [(iPadAudioCallViewController *)self view];
+    readableContentGuide = [view4 readableContentGuide];
+    leadingAnchor2 = [readableContentGuide leadingAnchor];
+    v34 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
 
-    v35 = [(PHSingleCallParticipantLabelView *)self->_bufferSingleCallLabelView trailingAnchor];
-    v36 = [(iPadAudioCallViewController *)self view];
-    v37 = [v36 readableContentGuide];
-    v38 = [v37 trailingAnchor];
-    v39 = [v35 constraintEqualToAnchor:v38];
+    trailingAnchor = [(PHSingleCallParticipantLabelView *)self->_bufferSingleCallLabelView trailingAnchor];
+    view5 = [(iPadAudioCallViewController *)self view];
+    readableContentGuide2 = [view5 readableContentGuide];
+    trailingAnchor2 = [readableContentGuide2 trailingAnchor];
+    v39 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
 
     v42[0] = v25;
     v42[1] = v29;
@@ -12307,17 +12307,17 @@ LABEL_25:
   }
 }
 
-+ (BOOL)wallpaperContentIsSensitive:(id)a3
++ (BOOL)wallpaperContentIsSensitive:(id)sensitive
 {
-  v3 = a3;
+  sensitiveCopy = sensitive;
   if (+[_TtC13InCallService23SensitivityFeatureFlags isContactNudityDetectionEnabled])
   {
-    v4 = [v3 contentIsSensitive];
+    contentIsSensitive = [sensitiveCopy contentIsSensitive];
     v5 = sub_100004F84();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v7[0] = 67109120;
-      v7[1] = v4;
+      v7[1] = contentIsSensitive;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "SNAP: IMWallpaper.contentIsSensitive returning %d", v7, 8u);
     }
   }
@@ -12331,10 +12331,10 @@ LABEL_25:
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "SNAP: IMWallpaper.contentIsSensitive not performing check", v7, 2u);
     }
 
-    LOBYTE(v4) = 0;
+    LOBYTE(contentIsSensitive) = 0;
   }
 
-  return v4;
+  return contentIsSensitive;
 }
 
 - (IMNicknameProvider)imNicknameProvider
@@ -12354,79 +12354,79 @@ LABEL_25:
 
 - (void)showTrailngPanelCoveringViewIfNeeded
 {
-  v3 = [(iPadAudioCallViewController *)self layoutGuidesProvider];
-  v4 = [v3 trailingPanelLayoutGuide];
+  layoutGuidesProvider = [(iPadAudioCallViewController *)self layoutGuidesProvider];
+  trailingPanelLayoutGuide = [layoutGuidesProvider trailingPanelLayoutGuide];
 
-  if (v4)
+  if (trailingPanelLayoutGuide)
   {
-    v5 = [(iPadAudioCallViewController *)self trailingPanelCoveringView];
+    trailingPanelCoveringView = [(iPadAudioCallViewController *)self trailingPanelCoveringView];
 
-    if (!v5)
+    if (!trailingPanelCoveringView)
     {
-      v6 = [(iPadAudioCallViewController *)self createBlurryBackgroundView];
-      [(iPadAudioCallViewController *)self setTrailingPanelCoveringView:v6];
+      createBlurryBackgroundView = [(iPadAudioCallViewController *)self createBlurryBackgroundView];
+      [(iPadAudioCallViewController *)self setTrailingPanelCoveringView:createBlurryBackgroundView];
 
-      v7 = [(iPadAudioCallViewController *)self trailingPanelCoveringView];
-      [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
+      trailingPanelCoveringView2 = [(iPadAudioCallViewController *)self trailingPanelCoveringView];
+      [trailingPanelCoveringView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-      v8 = [(iPadAudioCallViewController *)self backgroundController];
-      v9 = [(iPadAudioCallViewController *)self trailingPanelCoveringView];
-      [v8 addToBackground:v9];
+      backgroundController = [(iPadAudioCallViewController *)self backgroundController];
+      trailingPanelCoveringView3 = [(iPadAudioCallViewController *)self trailingPanelCoveringView];
+      [backgroundController addToBackground:trailingPanelCoveringView3];
 
-      v47 = [(iPadAudioCallViewController *)self trailingPanelCoveringView];
-      v46 = [v47 topAnchor];
-      v45 = [v4 topAnchor];
-      v44 = [v46 constraintEqualToAnchor:v45];
+      trailingPanelCoveringView4 = [(iPadAudioCallViewController *)self trailingPanelCoveringView];
+      topAnchor = [trailingPanelCoveringView4 topAnchor];
+      topAnchor2 = [trailingPanelLayoutGuide topAnchor];
+      v44 = [topAnchor constraintEqualToAnchor:topAnchor2];
       v49[0] = v44;
-      v43 = [(iPadAudioCallViewController *)self trailingPanelCoveringView];
-      v42 = [v43 bottomAnchor];
-      v41 = [v4 bottomAnchor];
-      v40 = [v42 constraintEqualToAnchor:v41];
+      trailingPanelCoveringView5 = [(iPadAudioCallViewController *)self trailingPanelCoveringView];
+      bottomAnchor = [trailingPanelCoveringView5 bottomAnchor];
+      bottomAnchor2 = [trailingPanelLayoutGuide bottomAnchor];
+      v40 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
       v49[1] = v40;
-      v39 = [(iPadAudioCallViewController *)self trailingPanelCoveringView];
-      v10 = [v39 leadingAnchor];
-      v11 = [v4 leadingAnchor];
-      v12 = [v10 constraintEqualToAnchor:v11];
+      trailingPanelCoveringView6 = [(iPadAudioCallViewController *)self trailingPanelCoveringView];
+      leadingAnchor = [trailingPanelCoveringView6 leadingAnchor];
+      leadingAnchor2 = [trailingPanelLayoutGuide leadingAnchor];
+      v12 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
       v49[2] = v12;
-      v13 = [(iPadAudioCallViewController *)self trailingPanelCoveringView];
-      v14 = [v13 trailingAnchor];
-      v15 = [v4 trailingAnchor];
-      v16 = [v14 constraintEqualToAnchor:v15];
+      trailingPanelCoveringView7 = [(iPadAudioCallViewController *)self trailingPanelCoveringView];
+      trailingAnchor = [trailingPanelCoveringView7 trailingAnchor];
+      trailingAnchor2 = [trailingPanelLayoutGuide trailingAnchor];
+      v16 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
       v49[3] = v16;
       v17 = [NSArray arrayWithObjects:v49 count:4];
       [NSLayoutConstraint activateConstraints:v17];
 
-      [v4 layoutFrame];
+      [trailingPanelLayoutGuide layoutFrame];
       v19 = v18;
       v21 = v20;
       v23 = v22;
       v25 = v24;
-      v26 = [(iPadAudioCallViewController *)self trailingPanelCoveringView];
-      [v26 setFrame:{v19, v21, v23, v25}];
+      trailingPanelCoveringView8 = [(iPadAudioCallViewController *)self trailingPanelCoveringView];
+      [trailingPanelCoveringView8 setFrame:{v19, v21, v23, v25}];
 
-      v27 = [(iPadAudioCallViewController *)self backgroundController];
-      v28 = [v27 backgroundContainer];
-      [v28 layoutIfNeeded];
+      backgroundController2 = [(iPadAudioCallViewController *)self backgroundController];
+      backgroundContainer = [backgroundController2 backgroundContainer];
+      [backgroundContainer layoutIfNeeded];
 
-      v29 = [(iPadAudioCallViewController *)self trailingPanelCoveringView];
-      [v29 setHidden:1];
+      trailingPanelCoveringView9 = [(iPadAudioCallViewController *)self trailingPanelCoveringView];
+      [trailingPanelCoveringView9 setHidden:1];
     }
 
-    v30 = [(iPadAudioCallViewController *)self trailingPanelCoveringView];
-    v31 = [v30 isHidden];
+    trailingPanelCoveringView10 = [(iPadAudioCallViewController *)self trailingPanelCoveringView];
+    isHidden = [trailingPanelCoveringView10 isHidden];
 
-    if (v31)
+    if (isHidden)
     {
-      v32 = [(iPadAudioCallViewController *)self view];
-      [v32 bounds];
+      view = [(iPadAudioCallViewController *)self view];
+      [view bounds];
       v34 = v33;
       v36 = v35;
 
-      v37 = [(iPadAudioCallViewController *)self trailingPanelCoveringView];
-      [v37 setHidden:0];
+      trailingPanelCoveringView11 = [(iPadAudioCallViewController *)self trailingPanelCoveringView];
+      [trailingPanelCoveringView11 setHidden:0];
 
-      v38 = [(iPadAudioCallViewController *)self trailingPanelCoveringView];
-      [v38 setAlpha:0.0];
+      trailingPanelCoveringView12 = [(iPadAudioCallViewController *)self trailingPanelCoveringView];
+      [trailingPanelCoveringView12 setAlpha:0.0];
 
       if (v36 > v34)
       {
@@ -12443,14 +12443,14 @@ LABEL_25:
 
 - (void)hideTrailngPanelCoveringViewIfNeeded
 {
-  v3 = [(iPadAudioCallViewController *)self trailingPanelCoveringView];
-  if (v3)
+  trailingPanelCoveringView = [(iPadAudioCallViewController *)self trailingPanelCoveringView];
+  if (trailingPanelCoveringView)
   {
-    v4 = v3;
-    v5 = [(iPadAudioCallViewController *)self trailingPanelCoveringView];
-    v6 = [v5 isHidden];
+    v4 = trailingPanelCoveringView;
+    trailingPanelCoveringView2 = [(iPadAudioCallViewController *)self trailingPanelCoveringView];
+    isHidden = [trailingPanelCoveringView2 isHidden];
 
-    if ((v6 & 1) == 0)
+    if ((isHidden & 1) == 0)
     {
       v9[0] = _NSConcreteStackBlock;
       v9[1] = 3221225472;
@@ -12463,29 +12463,29 @@ LABEL_25:
       v8[3] = &unk_1003569B0;
       v8[4] = self;
       [UIView animateWithDuration:4 delay:v9 options:v8 animations:0.200000003 completion:0.0];
-      v7 = [(iPadAudioCallViewController *)self getParticipantsView_NotWaiting];
-      [(iPadAudioCallViewController *)self updateParticipantConstraintsForPosterName:v7];
+      getParticipantsView_NotWaiting = [(iPadAudioCallViewController *)self getParticipantsView_NotWaiting];
+      [(iPadAudioCallViewController *)self updateParticipantConstraintsForPosterName:getParticipantsView_NotWaiting];
     }
   }
 }
 
 - (void)updateCallTranslationIfNeeded
 {
-  v3 = [(iPadAudioCallViewController *)self featureFlags];
-  v4 = [v3 audioCallTranslationEnabled];
+  featureFlags = [(iPadAudioCallViewController *)self featureFlags];
+  audioCallTranslationEnabled = [featureFlags audioCallTranslationEnabled];
 
-  if (!v4)
+  if (!audioCallTranslationEnabled)
   {
     return;
   }
 
-  v5 = [(iPadAudioCallViewController *)self callDisplayStyleManager];
-  if ([v5 callDisplayStyle] == 3)
+  callDisplayStyleManager = [(iPadAudioCallViewController *)self callDisplayStyleManager];
+  if ([callDisplayStyleManager callDisplayStyle] == 3)
   {
-    v6 = [(iPadAudioCallViewController *)self features];
-    v7 = [v6 isDominoEnabled];
+    features = [(iPadAudioCallViewController *)self features];
+    isDominoEnabled = [features isDominoEnabled];
 
-    if (v7)
+    if (isDominoEnabled)
     {
       return;
     }
@@ -12495,14 +12495,14 @@ LABEL_25:
   {
   }
 
-  v13 = [(iPadAudioCallViewController *)self activeCall];
-  if ([v13 translationAvailability] != 3 || objc_msgSend(v13, "callStatus") != 1 && objc_msgSend(v13, "callStatus") != 4)
+  activeCall = [(iPadAudioCallViewController *)self activeCall];
+  if ([activeCall translationAvailability] != 3 || objc_msgSend(activeCall, "callStatus") != 1 && objc_msgSend(activeCall, "callStatus") != 4)
   {
     goto LABEL_15;
   }
 
-  v8 = [(iPadAudioCallViewController *)self callDisplayStyleManager];
-  if ([v8 callDisplayStyle] != 2)
+  callDisplayStyleManager2 = [(iPadAudioCallViewController *)self callDisplayStyleManager];
+  if ([callDisplayStyleManager2 callDisplayStyle] != 2)
   {
 
     goto LABEL_15;
@@ -12510,40 +12510,40 @@ LABEL_25:
 
   if ([(PHCallViewController *)self currentState]!= 4 && [(PHCallViewController *)self currentState]!= 1)
   {
-    v12 = [(PHCallViewController *)self currentState];
+    currentState = [(PHCallViewController *)self currentState];
 
-    if (v12 == 2)
+    if (currentState == 2)
     {
       goto LABEL_13;
     }
 
 LABEL_15:
-    v11 = [(iPadAudioCallViewController *)self translationController];
-    [v11 hideCallTranslationButtonIfNeeded];
+    translationController = [(iPadAudioCallViewController *)self translationController];
+    [translationController hideCallTranslationButtonIfNeeded];
 
-    v10 = [(iPadAudioCallViewController *)self translationController];
-    [v10 updateCall:0];
+    translationController2 = [(iPadAudioCallViewController *)self translationController];
+    [translationController2 updateCall:0];
     goto LABEL_16;
   }
 
 LABEL_13:
-  v9 = [(iPadAudioCallViewController *)self translationController];
-  [v9 updateCall:v13];
+  translationController3 = [(iPadAudioCallViewController *)self translationController];
+  [translationController3 updateCall:activeCall];
 
-  v10 = [(iPadAudioCallViewController *)self translationController];
-  [v10 showCallTranslationButtonIfNeeded:self buttonContainer:0];
+  translationController2 = [(iPadAudioCallViewController *)self translationController];
+  [translationController2 showCallTranslationButtonIfNeeded:self buttonContainer:0];
 LABEL_16:
 }
 
 - (PHCallTranslationController)translationController
 {
-  v3 = [(iPadAudioCallViewController *)self featureFlags];
-  v4 = [v3 audioCallTranslationEnabled];
+  featureFlags = [(iPadAudioCallViewController *)self featureFlags];
+  audioCallTranslationEnabled = [featureFlags audioCallTranslationEnabled];
 
-  if (v4)
+  if (audioCallTranslationEnabled)
   {
-    v5 = [(iPadAudioCallViewController *)self layoutGuidesProvider];
-    v6 = [v5 middleShelfLayoutGuide];
+    layoutGuidesProvider = [(iPadAudioCallViewController *)self layoutGuidesProvider];
+    middleShelfLayoutGuide = [layoutGuidesProvider middleShelfLayoutGuide];
 
     translationController = self->_translationController;
     if (translationController)
@@ -12553,7 +12553,7 @@ LABEL_16:
 
     else
     {
-      v8 = v6 == 0;
+      v8 = middleShelfLayoutGuide == 0;
     }
 
     if (!v8)
@@ -12565,7 +12565,7 @@ LABEL_16:
       v16 = sub_1000EC3B8;
       v17 = &unk_100356E98;
       objc_copyWeak(&v18, &location);
-      v10 = [(PHCallTranslationController *)v9 initWithContentLayoutGuide:v6 translationStateDidChange:&v14];
+      v10 = [(PHCallTranslationController *)v9 initWithContentLayoutGuide:middleShelfLayoutGuide translationStateDidChange:&v14];
       v11 = self->_translationController;
       self->_translationController = v10;
 
@@ -12586,14 +12586,14 @@ LABEL_16:
   return v12;
 }
 
-- (void)updateTranslationBackgroundView:(BOOL)a3
+- (void)updateTranslationBackgroundView:(BOOL)view
 {
-  v3 = a3;
-  v5 = [(iPadAudioCallViewController *)self translationController];
-  v6 = [(iPadAudioCallViewController *)self view];
-  [v5 updateContentView:v6 updateVisibility:1];
+  viewCopy = view;
+  translationController = [(iPadAudioCallViewController *)self translationController];
+  view = [(iPadAudioCallViewController *)self view];
+  [translationController updateContentView:view updateVisibility:1];
 
-  if (v3)
+  if (viewCopy)
   {
 
     [(iPadAudioCallViewController *)self showTrailngPanelCoveringViewIfNeeded];
@@ -12629,7 +12629,7 @@ LABEL_16:
 
 - (_TtC16CommunicationsUI22SwitchingContainerView)typedBottomContainerView
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10014DABC();
 
   return v3;
@@ -12637,106 +12637,106 @@ LABEL_16:
 
 - (void)addBottomShelfContainerIfNeeded
 {
-  v2 = self;
+  selfCopy = self;
   iPadAudioCallViewController.addBottomShelfContainerIfNeeded()();
 }
 
-- (void)updateBottomShelfState:(int64_t)a3
+- (void)updateBottomShelfState:(int64_t)state
 {
-  v4 = self;
-  iPadAudioCallViewController.updateBottomShelfState(_:)(a3);
+  selfCopy = self;
+  iPadAudioCallViewController.updateBottomShelfState(_:)(state);
 }
 
 - (void)setLayoutGuides
 {
-  v2 = self;
+  selfCopy = self;
   sub_100160A34();
 }
 
-- (void)setupMiddleContentView:(id)a3
+- (void)setupMiddleContentView:(id)view
 {
-  v4 = a3;
-  v5 = self;
-  sub_100160E84(v4);
+  viewCopy = view;
+  selfCopy = self;
+  sub_100160E84(viewCopy);
 }
 
-- (void)setupMiddleContentView:(id)a3 flexibleConstraints:(BOOL)a4 bottomPadding:(double)a5
+- (void)setupMiddleContentView:(id)view flexibleConstraints:(BOOL)constraints bottomPadding:(double)padding
 {
-  v8 = a3;
-  v9 = self;
-  sub_100160F08(v8, a4, a5);
+  viewCopy = view;
+  selfCopy = self;
+  sub_100160F08(viewCopy, constraints, padding);
 }
 
 - (void)constraintDefaultNoPosterAvatarView
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001614FC();
 }
 
-- (void)constraintCallRecordingWithView:(id)a3
+- (void)constraintCallRecordingWithView:(id)view
 {
-  v4 = a3;
-  v5 = self;
+  viewCopy = view;
+  selfCopy = self;
   sub_100161AA0();
 }
 
-- (void)constraintWaitOnHoldView:(id)a3
+- (void)constraintWaitOnHoldView:(id)view
 {
-  v4 = a3;
-  v5 = self;
+  viewCopy = view;
+  selfCopy = self;
   sub_100161CB8();
 }
 
-- (void)callTranslationControllerWithShouldAddTranslationViewToHost:(id)a3
+- (void)callTranslationControllerWithShouldAddTranslationViewToHost:(id)host
 {
-  v4 = a3;
-  v5 = self;
-  sub_100193078(v4);
+  hostCopy = host;
+  selfCopy = self;
+  sub_100193078(hostCopy);
 }
 
-- (void)callTranslationControllerWithShouldRemoveTranslationViewFromHost:(id)a3
+- (void)callTranslationControllerWithShouldRemoveTranslationViewFromHost:(id)host
 {
-  v4 = a3;
-  v5 = self;
-  sub_100193160(v4);
+  hostCopy = host;
+  selfCopy = self;
+  sub_100193160(hostCopy);
 }
 
 - (_TtC15ConversationKit23CallRecordingController)_callRecordingController
 {
-  v2 = self;
+  selfCopy = self;
   v3 = iPadAudioCallViewController._callRecordingController.getter();
 
   return v3;
 }
 
-- (void)set_callRecordingController:(id)a3
+- (void)set_callRecordingController:(id)controller
 {
-  v5 = a3;
-  v6 = self;
-  iPadAudioCallViewController._callRecordingController.setter(a3);
+  controllerCopy = controller;
+  selfCopy = self;
+  iPadAudioCallViewController._callRecordingController.setter(controller);
 }
 
 - (void)startRecording
 {
-  v2 = self;
+  selfCopy = self;
   iPadAudioCallViewController.startRecording()();
 }
 
 - (void)endRecording
 {
-  v2 = self;
+  selfCopy = self;
   iPadAudioCallViewController.endRecording()();
 }
 
 - (void)updateCallRecordingIfNeeded
 {
-  v2 = self;
+  selfCopy = self;
   iPadAudioCallViewController.updateCallRecordingIfNeeded()();
 }
 
 - (BOOL)callRecordingAllowed
 {
-  v2 = self;
+  selfCopy = self;
   v3 = iPadAudioCallViewController.callRecordingAllowed.getter();
 
   return v3 & 1;
@@ -12744,7 +12744,7 @@ LABEL_16:
 
 - (BOOL)isCallRecordingActive
 {
-  v2 = self;
+  selfCopy = self;
   v3 = iPadAudioCallViewController.isCallRecordingActive.getter();
 
   return v3 & 1;
@@ -12752,69 +12752,69 @@ LABEL_16:
 
 - (void)observeCallRecordingNotifications
 {
-  v2 = self;
+  selfCopy = self;
   iPadAudioCallViewController.observeCallRecordingNotifications()();
 }
 
 - (void)addCallRecordingIndicator
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001B9020();
 }
 
 - (void)removeCallRecordingIndicator
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001B9310();
 }
 
-- (void)updateCallRecording:(id)a3
+- (void)updateCallRecording:(id)recording
 {
-  v4 = a3;
-  v5 = self;
-  sub_1001B9454(v4);
+  recordingCopy = recording;
+  selfCopy = self;
+  sub_1001B9454(recordingCopy);
 }
 
 - (void)updateCallDurationVisibility
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001C4E84();
 }
 
-- (void)showKeypadWithPerviousMiddleState:(unsigned __int16)a3 viewSize:(CGSize)a4
+- (void)showKeypadWithPerviousMiddleState:(unsigned __int16)state viewSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = self;
-  iPadAudioCallViewController.showKeypad(perviousMiddleState:viewSize:)(a3, width, height);
+  height = size.height;
+  width = size.width;
+  selfCopy = self;
+  iPadAudioCallViewController.showKeypad(perviousMiddleState:viewSize:)(state, width, height);
 }
 
-- (void)keypadViewWillDisappearWithCompletion:(id)a3
+- (void)keypadViewWillDisappearWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
-  v6 = self;
+  selfCopy = self;
   iPadAudioCallViewController.keypadViewWillDisappear(completion:)(sub_1001541E8, v5);
 }
 
 - (void)updateFloatingViewsVisibilityHandlers
 {
-  v2 = self;
+  selfCopy = self;
   iPadAudioCallViewController.updateFloatingViewsVisibilityHandlers()();
 }
 
-- (void)updateKeypadBackgroundMaterialWithViewSize:(CGSize)a3
+- (void)updateKeypadBackgroundMaterialWithViewSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = size.height;
+  width = size.width;
+  selfCopy = self;
   iPadAudioCallViewController.updateKeypadBackgroundMaterial(viewSize:)(width, height);
 }
 
-- (void)clearMenuItemRegistration:(id)a3
+- (void)clearMenuItemRegistration:(id)registration
 {
-  if (a3)
+  if (registration)
   {
     v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = v5;
@@ -12826,42 +12826,42 @@ LABEL_16:
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   sub_1000321BC(v4, v6);
 }
 
-- (void)presentMoreMenu:(id)a3 source:(id)a4
+- (void)presentMoreMenu:(id)menu source:(id)source
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1001DFB48(v6, a4);
+  menuCopy = menu;
+  sourceCopy = source;
+  selfCopy = self;
+  sub_1001DFB48(menuCopy, source);
 }
 
-- (void)presentMoreMenu:(id)a3 contact:(id)a4 source:(id)a5
+- (void)presentMoreMenu:(id)menu contact:(id)contact source:(id)source
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  sub_1001DFBE0(v8, v11, a5);
+  menuCopy = menu;
+  contactCopy = contact;
+  sourceCopy = source;
+  selfCopy = self;
+  sub_1001DFBE0(menuCopy, selfCopy, source);
 }
 
 - (void)presentContactCard
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001E0ECC();
 }
 
 - (void)showAddParticipantSheet
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001E1468();
 }
 
 - (BOOL)shouldShowMergeCalls
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001E6D48();
   v4 = v3;
 
@@ -12870,74 +12870,74 @@ LABEL_16:
 
 - (void)updateSupplementalButtonsLayout
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001E721C();
 }
 
 - (void)updatePoster
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001F6914();
 }
 
 - (void)transitionToNewPosterIfNeeded
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001F79C4();
 }
 
 - (void)updatePosterSaliencyRect
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001F7BA0();
 }
 
 - (void)deactivatePoster
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001F8584();
 }
 
 - (void)activatePoster
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001F8658();
 }
 
-- (void)updateTopShelfContentWithCall:(id)a3 sceneWindowSize:(CGSize)a4
+- (void)updateTopShelfContentWithCall:(id)call sceneWindowSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
-  v8 = self;
+  height = size.height;
+  width = size.width;
+  callCopy = call;
+  selfCopy = self;
   sub_1001FCE38(width, height);
 }
 
-- (void)addNoPosterContactImage:(id)a3
+- (void)addNoPosterContactImage:(id)image
 {
-  v4 = a3;
-  v5 = self;
+  imageCopy = image;
+  selfCopy = self;
   sub_10021AA74();
 }
 
 - (void)updateDefaultNoPosterAvatarViewVisibility
 {
-  v2 = self;
+  selfCopy = self;
   sub_10021B188();
 }
 
-- (BOOL)contactHasPoster:(id)a3
+- (BOOL)contactHasPoster:(id)poster
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_10021B31C(v4);
+  posterCopy = poster;
+  selfCopy = self;
+  v6 = sub_10021B31C(posterCopy);
 
   return v6 & 1;
 }
 
 - (BOOL)isShowingPoster
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10021B598(&PosterViewController.isShowingPoster.getter);
 
   return v3 & 1;
@@ -12945,44 +12945,44 @@ LABEL_16:
 
 - (BOOL)isShowingPosterName
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10021B598(&PosterViewController.isPosterNameVisible.getter);
 
   return v3 & 1;
 }
 
-- (void)updateBackgroundTintToView:(id)a3
+- (void)updateBackgroundTintToView:(id)view
 {
-  v4 = a3;
-  v5 = self;
-  sub_10021B620(v4);
+  viewCopy = view;
+  selfCopy = self;
+  sub_10021B620(viewCopy);
 }
 
 - (id)createBlurryBackgroundView
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10022A6B0();
 
   return v3;
 }
 
-- (void)presentWaitOnHoldEndForAnotherCallAlertWithCallerName:(id)a3 completionHandler:(id)a4
+- (void)presentWaitOnHoldEndForAnotherCallAlertWithCallerName:(id)name completionHandler:(id)handler
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(handler);
   v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = v7;
   v9 = swift_allocObject();
   *(v9 + 16) = v5;
-  v10 = self;
+  selfCopy = self;
   iPadAudioCallViewController.presentWaitOnHoldEndForAnotherCallAlert(callerName:completionHandler:)(v6, v8, sub_100231E5C, v9);
 }
 
-- (id)makeLockObserverWithHandler:(id)a3
+- (id)makeLockObserverWithHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
-  v6 = self;
+  selfCopy = self;
   iPadAudioCallViewController.makeLockObserver(with:)(sub_100231DA4, v5, v9);
 
   sub_100008878(v9, v9[3]);
@@ -12992,13 +12992,13 @@ LABEL_16:
   return v7;
 }
 
-- (id)makeCallDetailsCoordinatorWithBannerPresentationManager:(id)a3 existingCoordinator:(id)a4 deferredPresentationManager:(id)a5
+- (id)makeCallDetailsCoordinatorWithBannerPresentationManager:(id)manager existingCoordinator:(id)coordinator deferredPresentationManager:(id)presentationManager
 {
-  v7 = a3;
+  managerCopy = manager;
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  v8 = self;
-  v9 = iPadAudioCallViewController.makeCallDetailsCoordinator(bannerPresentationManager:existingCoordinator:deferredPresentationManager:)(v7, a4);
+  selfCopy = self;
+  v9 = iPadAudioCallViewController.makeCallDetailsCoordinator(bannerPresentationManager:existingCoordinator:deferredPresentationManager:)(managerCopy, coordinator);
 
   swift_unknownObjectRelease();
   swift_unknownObjectRelease();
@@ -13006,73 +13006,73 @@ LABEL_16:
   return v9;
 }
 
-- (id)makeHeldCallControlsViewWithCallCenter:(id)a3 style:(int64_t)a4
+- (id)makeHeldCallControlsViewWithCallCenter:(id)center style:(int64_t)style
 {
-  v6 = a3;
-  v7 = self;
-  iPadAudioCallViewController.makeHeldCallControls(callCenter:style:)(v6, a4);
+  centerCopy = center;
+  selfCopy = self;
+  iPadAudioCallViewController.makeHeldCallControls(callCenter:style:)(centerCopy, style);
   v9 = v8;
 
   return v9;
 }
 
-- (void)showNameAndPhotoHUDIfNecessaryWithBannerPresentationManager:(id)a3 callCenter:(id)a4
+- (void)showNameAndPhotoHUDIfNecessaryWithBannerPresentationManager:(id)manager callCenter:(id)center
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  managerCopy = manager;
+  centerCopy = center;
+  selfCopy = self;
   sub_10022AF68();
 }
 
-- (void)presentShareCard:(id)a3 source:(id)a4
+- (void)presentShareCard:(id)card source:(id)source
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_10022BB00(v6, a4);
+  cardCopy = card;
+  sourceCopy = source;
+  selfCopy = self;
+  sub_10022BB00(cardCopy, source);
 }
 
-- (void)updateScreeningTextFieldContainer:(id)a3
+- (void)updateScreeningTextFieldContainer:(id)container
 {
-  v4 = a3;
-  v5 = self;
-  sub_10022BC50(v4);
+  containerCopy = container;
+  selfCopy = self;
+  sub_10022BC50(containerCopy);
 }
 
-- (id)currentIMNicknameMatchingContact:(id)a3
+- (id)currentIMNicknameMatchingContact:(id)contact
 {
-  v4 = a3;
-  v5 = self;
+  contactCopy = contact;
+  selfCopy = self;
   v6 = sub_10022C48C();
 
   return v6;
 }
 
-- (BOOL)hasLastSeenPosterForCall:(id)a3
+- (BOOL)hasLastSeenPosterForCall:(id)call
 {
-  v3 = a3;
-  v5 = a3;
-  v6 = self;
-  LOBYTE(v3) = sub_100013F60(v3);
+  callCopy = call;
+  callCopy2 = call;
+  selfCopy = self;
+  LOBYTE(callCopy) = sub_100013F60(callCopy);
 
-  return v3 & 1;
+  return callCopy & 1;
 }
 
-- (BOOL)lastSeenPosterDataIsSensitiveForCall:(id)a3
+- (BOOL)lastSeenPosterDataIsSensitiveForCall:(id)call
 {
-  v3 = a3;
-  v5 = a3;
-  v6 = self;
-  LOBYTE(v3) = sub_100168C40(v3);
+  callCopy = call;
+  callCopy2 = call;
+  selfCopy = self;
+  LOBYTE(callCopy) = sub_100168C40(callCopy);
 
-  return v3 & 1;
+  return callCopy & 1;
 }
 
-- (id)readCachedLastSeenPosterDataForCall:(id)a3
+- (id)readCachedLastSeenPosterDataForCall:(id)call
 {
-  v4 = self;
-  v5 = a3;
-  v6 = sub_100168D40(a3);
+  selfCopy = self;
+  callCopy = call;
+  v6 = sub_100168D40(call);
   v8 = v7;
 
   if (v8 >> 60 == 15)
@@ -13089,50 +13089,50 @@ LABEL_16:
   return isa;
 }
 
-- (id)lastSeenPosterIMWallpaperMetadataForCall:(id)a3
+- (id)lastSeenPosterIMWallpaperMetadataForCall:(id)call
 {
-  v5 = a3;
-  v6 = self;
-  v7 = sub_1001690A0(a3);
+  callCopy = call;
+  selfCopy = self;
+  v7 = sub_1001690A0(call);
 
   return v7;
 }
 
-- (unint64_t)suggestedNewPosterSourceAfterCallConnects:(id)a3
+- (unint64_t)suggestedNewPosterSourceAfterCallConnects:(id)connects
 {
-  v5 = a3;
-  v6 = self;
-  v7 = sub_10022C6FC(a3);
+  connectsCopy = connects;
+  selfCopy = self;
+  v7 = sub_10022C6FC(connects);
 
   return v7;
 }
 
-- (BOOL)prefersShowingCachedLastSeenPosterBeforeCallConnected:(id)a3
+- (BOOL)prefersShowingCachedLastSeenPosterBeforeCallConnected:(id)connected
 {
-  v3 = a3;
-  v5 = a3;
-  v6 = self;
-  LOBYTE(v3) = sub_10022CD10(v3);
+  connectedCopy = connected;
+  connectedCopy2 = connected;
+  selfCopy = self;
+  LOBYTE(connectedCopy) = sub_10022CD10(connectedCopy);
 
-  return v3 & 1;
+  return connectedCopy & 1;
 }
 
-- (void)writeToLastSeenPosterCacheIfNecessaryForCall:(id)a3
+- (void)writeToLastSeenPosterCacheIfNecessaryForCall:(id)call
 {
-  v4 = a3;
-  v5 = self;
+  callCopy = call;
+  selfCopy = self;
   sub_10022D0F8();
 }
 
 - (void)deleteAllUnarchivedPosterDirectories
 {
-  v2 = self;
+  selfCopy = self;
   sub_10022EF84();
 }
 
 - (TUCall)callToUseForWallpaper
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10022F7B4();
 
   return v3;
@@ -13140,61 +13140,61 @@ LABEL_16:
 
 - (BOOL)hasNoCallsOrOnlyEndedCalls
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100230150();
 
   return v3;
 }
 
-- (void)updateDimmingView:(id)a3 with:(CGSize)a4
+- (void)updateDimmingView:(id)view with:(CGSize)with
 {
-  height = a4.height;
-  width = a4.width;
-  v8 = a3;
-  v9 = self;
-  sub_100230294(a3, width, height);
+  height = with.height;
+  width = with.width;
+  viewCopy = view;
+  selfCopy = self;
+  sub_100230294(view, width, height);
 }
 
 - (id)createDimmingView
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1002303FC();
 
   return v3;
 }
 
-- (void)blockWithHandle:(id)a3
+- (void)blockWithHandle:(id)handle
 {
-  v4 = a3;
-  v5 = self;
-  sub_100230854(v4);
+  handleCopy = handle;
+  selfCopy = self;
+  sub_100230854(handleCopy);
 }
 
-- (void)reportWithCall:(id)a3
+- (void)reportWithCall:(id)call
 {
-  v4 = a3;
-  v5 = self;
-  sub_100230B90(v4);
+  callCopy = call;
+  selfCopy = self;
+  sub_100230B90(callCopy);
 }
 
-- (void)createContactWithHandle:(id)a3
+- (void)createContactWithHandle:(id)handle
 {
-  v4 = a3;
-  v5 = self;
-  sub_10016AE2C(v4);
+  handleCopy = handle;
+  selfCopy = self;
+  sub_10016AE2C(handleCopy);
 }
 
-- (void)contactViewController:(id)a3 didCompleteWithContact:(id)a4
+- (void)contactViewController:(id)controller didCompleteWithContact:(id)contact
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  iPadAudioCallViewController.contactViewController(_:didCompleteWith:)(v8, v10);
+  controllerCopy = controller;
+  contactCopy = contact;
+  selfCopy = self;
+  iPadAudioCallViewController.contactViewController(_:didCompleteWith:)(selfCopy, v10);
 }
 
 - (BOOL)shouldUpdateBackgroundForEmergencyCall
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10023102C();
 
   return v3;
@@ -13202,102 +13202,102 @@ LABEL_16:
 
 - (void)updateBackgroundForEmergencyCall
 {
-  v2 = self;
+  selfCopy = self;
   sub_1002311C8();
 }
 
 - (void)presentFullScreenPeoplePicker
 {
-  v2 = self;
+  selfCopy = self;
   sub_10023AF84();
 }
 
 - (void)dismissPeoplePicker
 {
-  v2 = self;
+  selfCopy = self;
   sub_10023BBE0();
 }
 
 - (void)addMiddleStackView
 {
-  v2 = self;
+  selfCopy = self;
   sub_100245CE8();
 }
 
-- (void)addSubviewsToMiddleStackViewWithView:(id)a3 priority:(int64_t)a4
+- (void)addSubviewsToMiddleStackViewWithView:(id)view priority:(int64_t)priority
 {
-  v6 = a3;
-  v7 = self;
-  sub_100245F74(v6, a4);
+  viewCopy = view;
+  selfCopy = self;
+  sub_100245F74(viewCopy, priority);
 }
 
-- (void)removeSubviewFromMiddleStackViewWithView:(id)a3
+- (void)removeSubviewFromMiddleStackViewWithView:(id)view
 {
-  v4 = a3;
-  v6 = self;
-  v5.super.super.isa = v4;
+  viewCopy = view;
+  selfCopy = self;
+  v5.super.super.isa = viewCopy;
   sub_1002461C8(v5);
 }
 
 - (void)setupCallHoldingObservers
 {
-  v2 = self;
+  selfCopy = self;
   iPadAudioCallViewController.setupCallHoldingObservers()();
 }
 
-- (void)handleCallRecordingCountdownNotificationWithNotification:(id)a3
+- (void)handleCallRecordingCountdownNotificationWithNotification:(id)notification
 {
   v4 = type metadata accessor for Notification();
   v5 = *(v4 - 8);
   __chkstk_darwin(v4, v6);
   v8 = &v10 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   static Notification._unconditionallyBridgeFromObjectiveC(_:)();
-  v9 = self;
+  selfCopy = self;
   iPadAudioCallViewController.handleCallRecordingCountdownNotification(notification:)();
 
   (*(v5 + 8))(v8, v4);
 }
 
-- (void)updateWaitOnHoldServiceWithCall:(id)a3
+- (void)updateWaitOnHoldServiceWithCall:(id)call
 {
-  v4 = a3;
-  v5 = self;
-  iPadAudioCallViewController.updateWaitOnHoldService(call:)(v4);
+  callCopy = call;
+  selfCopy = self;
+  iPadAudioCallViewController.updateWaitOnHoldService(call:)(callCopy);
 }
 
 - (void)beginWaitOnHoldSession
 {
-  v2 = self;
+  selfCopy = self;
   iPadAudioCallViewController.beginWaitOnHoldSession()();
 }
 
 - (void)endWaitOnHoldSession
 {
-  v2 = self;
+  selfCopy = self;
   iPadAudioCallViewController.endWaitOnHoldSession()();
 }
 
 - (void)dismissWaitOnHoldTip
 {
-  v2 = self;
+  selfCopy = self;
   sub_100036558();
 }
 
 - (void)tipKitStartWaitOnHoldObservation
 {
-  v2 = self;
+  selfCopy = self;
   sub_10024937C();
 }
 
 - (void)tipKitStopWaitOnHoldObservation
 {
-  v2 = self;
+  selfCopy = self;
   sub_10024A418();
 }
 
 - (void)displayWaitOnHoldTip
 {
-  v2 = self;
+  selfCopy = self;
   sub_10024AA74();
 }
 

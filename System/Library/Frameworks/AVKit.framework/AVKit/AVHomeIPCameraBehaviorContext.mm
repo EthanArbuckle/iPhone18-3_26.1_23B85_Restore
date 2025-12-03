@@ -1,6 +1,6 @@
 @interface AVHomeIPCameraBehaviorContext
 - (AVHomeIPCameraBehavior)behavior;
-- (AVHomeIPCameraBehaviorContext)initWithAVKitOwner:(id)a3;
+- (AVHomeIPCameraBehaviorContext)initWithAVKitOwner:(id)owner;
 - (AVHomeIPCameraPlayerController)livePreviewPlayerController;
 - (AVPlayerViewController)playerViewController;
 - (CGSize)livePreviewAspectRatio;
@@ -8,21 +8,21 @@
 - (void)_updatePlaybackControlsControllerAndZoomingBehavior;
 - (void)beginScrubbing;
 - (void)dealloc;
-- (void)didAddBehavior:(id)a3;
-- (void)didRemoveBehavior:(id)a3;
+- (void)didAddBehavior:(id)behavior;
+- (void)didRemoveBehavior:(id)behavior;
 - (void)didStopPictureInPicture;
 - (void)endScrubbing;
-- (void)scrubToTime:(double)a3 resolution:(double)a4;
-- (void)setBackgroundColor:(id)a3 forContainerOfControlItem:(id)a4;
-- (void)setCanStartPictureInPictureAutomaticallyWhenEnteringBackground:(BOOL)a3;
-- (void)setHasMicrophone:(BOOL)a3;
-- (void)setLivePreviewActive:(BOOL)a3;
-- (void)setLivePreviewAspectRatio:(CGSize)a3;
-- (void)setMicrophoneEnabled:(BOOL)a3;
-- (void)setPlaybackControlsIncludePictureInPictureButton:(BOOL)a3;
-- (void)setZoomingEnabled:(BOOL)a3;
+- (void)scrubToTime:(double)time resolution:(double)resolution;
+- (void)setBackgroundColor:(id)color forContainerOfControlItem:(id)item;
+- (void)setCanStartPictureInPictureAutomaticallyWhenEnteringBackground:(BOOL)background;
+- (void)setHasMicrophone:(BOOL)microphone;
+- (void)setLivePreviewActive:(BOOL)active;
+- (void)setLivePreviewAspectRatio:(CGSize)ratio;
+- (void)setMicrophoneEnabled:(BOOL)enabled;
+- (void)setPlaybackControlsIncludePictureInPictureButton:(BOOL)button;
+- (void)setZoomingEnabled:(BOOL)enabled;
 - (void)viewDidLoad;
-- (void)willStartPictureInPictureWithViewController:(id)a3;
+- (void)willStartPictureInPictureWithViewController:(id)controller;
 @end
 
 @implementation AVHomeIPCameraBehaviorContext
@@ -59,24 +59,24 @@
 
 - (void)_updatePictureInPictureController
 {
-  v3 = [(AVHomeIPCameraBehaviorContext *)self playerViewController];
-  v4 = [v3 playbackControlsController];
-  v5 = [v4 pictureInPictureController];
-  [v5 setControlsStyle:{-[AVHomeIPCameraBehaviorContext isLivePreviewActive](self, "isLivePreviewActive")}];
+  playerViewController = [(AVHomeIPCameraBehaviorContext *)self playerViewController];
+  playbackControlsController = [playerViewController playbackControlsController];
+  pictureInPictureController = [playbackControlsController pictureInPictureController];
+  [pictureInPictureController setControlsStyle:{-[AVHomeIPCameraBehaviorContext isLivePreviewActive](self, "isLivePreviewActive")}];
 
-  v6 = [(AVHomeIPCameraBehaviorContext *)self playerViewController];
-  v7 = [v6 playbackControlsController];
-  v8 = [v7 pictureInPictureController];
-  v9 = [v8 pictureInPictureViewController];
-  [v9 setShouldShowAlternateActionButtonImage:{-[AVHomeIPCameraBehaviorContext hasMicrophone](self, "hasMicrophone")}];
+  playerViewController2 = [(AVHomeIPCameraBehaviorContext *)self playerViewController];
+  playbackControlsController2 = [playerViewController2 playbackControlsController];
+  pictureInPictureController2 = [playbackControlsController2 pictureInPictureController];
+  pictureInPictureViewController = [pictureInPictureController2 pictureInPictureViewController];
+  [pictureInPictureViewController setShouldShowAlternateActionButtonImage:{-[AVHomeIPCameraBehaviorContext hasMicrophone](self, "hasMicrophone")}];
 
-  v10 = [(AVHomeIPCameraBehaviorContext *)self playerViewController];
-  v11 = [v10 playbackControlsController];
-  v12 = [v11 pictureInPictureController];
-  [v12 setMicrophoneEnabled:{-[AVHomeIPCameraBehaviorContext isMicrophoneEnabled](self, "isMicrophoneEnabled")}];
+  playerViewController3 = [(AVHomeIPCameraBehaviorContext *)self playerViewController];
+  playbackControlsController3 = [playerViewController3 playbackControlsController];
+  pictureInPictureController3 = [playbackControlsController3 pictureInPictureController];
+  [pictureInPictureController3 setMicrophoneEnabled:{-[AVHomeIPCameraBehaviorContext isMicrophoneEnabled](self, "isMicrophoneEnabled")}];
 
-  v13 = [(AVHomeIPCameraBehaviorContext *)self playerViewController];
-  [v13 setCanStartPictureInPictureAutomaticallyWhenEnteringBackground:{-[AVHomeIPCameraBehaviorContext canStartPictureInPictureAutomaticallyWhenEnteringBackground](self, "canStartPictureInPictureAutomaticallyWhenEnteringBackground")}];
+  playerViewController4 = [(AVHomeIPCameraBehaviorContext *)self playerViewController];
+  [playerViewController4 setCanStartPictureInPictureAutomaticallyWhenEnteringBackground:{-[AVHomeIPCameraBehaviorContext canStartPictureInPictureAutomaticallyWhenEnteringBackground](self, "canStartPictureInPictureAutomaticallyWhenEnteringBackground")}];
 }
 
 - (void)_updatePlaybackControlsControllerAndZoomingBehavior
@@ -175,86 +175,86 @@ LABEL_7:
 
 - (void)endScrubbing
 {
-  v3 = [(AVHomeIPCameraBehaviorContext *)self playerViewController];
-  v4 = [v3 chromePlaybackControlsController];
-  [v4 setForcePlaybackControlsHidden:0];
+  playerViewController = [(AVHomeIPCameraBehaviorContext *)self playerViewController];
+  chromePlaybackControlsController = [playerViewController chromePlaybackControlsController];
+  [chromePlaybackControlsController setForcePlaybackControlsHidden:0];
 
-  v5 = [(AVHomeIPCameraBehaviorContext *)self playerViewController];
-  v6 = [v5 chromePlaybackControlsController];
-  [v6 endScrubbing];
+  playerViewController2 = [(AVHomeIPCameraBehaviorContext *)self playerViewController];
+  chromePlaybackControlsController2 = [playerViewController2 chromePlaybackControlsController];
+  [chromePlaybackControlsController2 endScrubbing];
 
-  v7 = [(AVHomeIPCameraBehaviorContext *)self playerViewController];
-  v8 = [v7 catalystPlaybackControlsController];
-  [v8 setForcePlaybackControlsHidden:0];
+  playerViewController3 = [(AVHomeIPCameraBehaviorContext *)self playerViewController];
+  catalystPlaybackControlsController = [playerViewController3 catalystPlaybackControlsController];
+  [catalystPlaybackControlsController setForcePlaybackControlsHidden:0];
 
-  v10 = [(AVHomeIPCameraBehaviorContext *)self playerViewController];
-  v9 = [v10 catalystPlaybackControlsController];
-  [v9 endScrubbing];
+  playerViewController4 = [(AVHomeIPCameraBehaviorContext *)self playerViewController];
+  catalystPlaybackControlsController2 = [playerViewController4 catalystPlaybackControlsController];
+  [catalystPlaybackControlsController2 endScrubbing];
 }
 
-- (void)scrubToTime:(double)a3 resolution:(double)a4
+- (void)scrubToTime:(double)time resolution:(double)resolution
 {
-  v7 = [(AVHomeIPCameraBehaviorContext *)self playerViewController];
-  v8 = [v7 chromePlaybackControlsController];
-  [v8 scrubToTime:a3 resolution:a4];
+  playerViewController = [(AVHomeIPCameraBehaviorContext *)self playerViewController];
+  chromePlaybackControlsController = [playerViewController chromePlaybackControlsController];
+  [chromePlaybackControlsController scrubToTime:time resolution:resolution];
 
-  v10 = [(AVHomeIPCameraBehaviorContext *)self playerViewController];
-  v9 = [v10 catalystPlaybackControlsController];
-  [v9 scrubToTime:a3 resolution:a4];
+  playerViewController2 = [(AVHomeIPCameraBehaviorContext *)self playerViewController];
+  catalystPlaybackControlsController = [playerViewController2 catalystPlaybackControlsController];
+  [catalystPlaybackControlsController scrubToTime:time resolution:resolution];
 }
 
 - (void)beginScrubbing
 {
-  v3 = [(AVHomeIPCameraBehaviorContext *)self playerViewController];
-  v4 = [v3 chromePlaybackControlsController];
-  [v4 beginScrubbing];
+  playerViewController = [(AVHomeIPCameraBehaviorContext *)self playerViewController];
+  chromePlaybackControlsController = [playerViewController chromePlaybackControlsController];
+  [chromePlaybackControlsController beginScrubbing];
 
-  v5 = [(AVHomeIPCameraBehaviorContext *)self playerViewController];
-  v6 = [v5 chromePlaybackControlsController];
-  [v6 setForcePlaybackControlsHidden:1];
+  playerViewController2 = [(AVHomeIPCameraBehaviorContext *)self playerViewController];
+  chromePlaybackControlsController2 = [playerViewController2 chromePlaybackControlsController];
+  [chromePlaybackControlsController2 setForcePlaybackControlsHidden:1];
 
-  v7 = [(AVHomeIPCameraBehaviorContext *)self playerViewController];
-  v8 = [v7 catalystPlaybackControlsController];
-  [v8 beginScrubbing];
+  playerViewController3 = [(AVHomeIPCameraBehaviorContext *)self playerViewController];
+  catalystPlaybackControlsController = [playerViewController3 catalystPlaybackControlsController];
+  [catalystPlaybackControlsController beginScrubbing];
 
-  v10 = [(AVHomeIPCameraBehaviorContext *)self playerViewController];
-  v9 = [v10 catalystPlaybackControlsController];
-  [v9 setForcePlaybackControlsHidden:1];
+  playerViewController4 = [(AVHomeIPCameraBehaviorContext *)self playerViewController];
+  catalystPlaybackControlsController2 = [playerViewController4 catalystPlaybackControlsController];
+  [catalystPlaybackControlsController2 setForcePlaybackControlsHidden:1];
 }
 
 - (void)didStopPictureInPicture
 {
-  v3 = [(AVHomeIPCameraBehaviorContext *)self zoomingBehavior];
-  v4 = [v3 behaviorContext];
-  v5 = [v4 activeContentView];
-  v6 = [v5 playerLayerView];
-  v7 = [(AVHomeIPCameraBehaviorContext *)self livePreviewContainerView];
-  [v6 addSubview:v7];
+  zoomingBehavior = [(AVHomeIPCameraBehaviorContext *)self zoomingBehavior];
+  behaviorContext = [zoomingBehavior behaviorContext];
+  activeContentView = [behaviorContext activeContentView];
+  playerLayerView = [activeContentView playerLayerView];
+  livePreviewContainerView = [(AVHomeIPCameraBehaviorContext *)self livePreviewContainerView];
+  [playerLayerView addSubview:livePreviewContainerView];
 
   v8 = MEMORY[0x1E696ACD8];
-  v9 = [(AVHomeIPCameraBehaviorContext *)self livePreviewContainerView];
-  v10 = [(AVHomeIPCameraBehaviorContext *)self zoomingBehavior];
-  v11 = [v10 behaviorContext];
-  v12 = [v11 activeContentView];
-  v13 = [v12 playerLayerView];
-  v14 = [v9 avkit_constraintsFromEdgeAnchorsToEdgeAnchorsOfItem:v13];
+  livePreviewContainerView2 = [(AVHomeIPCameraBehaviorContext *)self livePreviewContainerView];
+  zoomingBehavior2 = [(AVHomeIPCameraBehaviorContext *)self zoomingBehavior];
+  behaviorContext2 = [zoomingBehavior2 behaviorContext];
+  activeContentView2 = [behaviorContext2 activeContentView];
+  playerLayerView2 = [activeContentView2 playerLayerView];
+  v14 = [livePreviewContainerView2 avkit_constraintsFromEdgeAnchorsToEdgeAnchorsOfItem:playerLayerView2];
   [v8 activateConstraints:v14];
 
   [(AVHomeIPCameraBehaviorContext *)self _updatePlaybackControlsControllerAndZoomingBehavior];
 }
 
-- (void)willStartPictureInPictureWithViewController:(id)a3
+- (void)willStartPictureInPictureWithViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [v4 view];
-  v6 = [(AVHomeIPCameraBehaviorContext *)self livePreviewContainerView];
-  [v5 addSubview:v6];
+  controllerCopy = controller;
+  view = [controllerCopy view];
+  livePreviewContainerView = [(AVHomeIPCameraBehaviorContext *)self livePreviewContainerView];
+  [view addSubview:livePreviewContainerView];
 
   v7 = MEMORY[0x1E696ACD8];
-  v8 = [(AVHomeIPCameraBehaviorContext *)self livePreviewContainerView];
-  v9 = [v4 view];
+  livePreviewContainerView2 = [(AVHomeIPCameraBehaviorContext *)self livePreviewContainerView];
+  view2 = [controllerCopy view];
 
-  v10 = [v8 avkit_constraintsFromEdgeAnchorsToEdgeAnchorsOfItem:v9];
+  v10 = [livePreviewContainerView2 avkit_constraintsFromEdgeAnchorsToEdgeAnchorsOfItem:view2];
   [v7 activateConstraints:v10];
 
   [(AVHomeIPCameraBehaviorContext *)self _updatePictureInPictureController];
@@ -264,55 +264,55 @@ LABEL_7:
 {
   [(AVHomeIPCameraBehaviorContext *)self _updatePlaybackControlsControllerAndZoomingBehavior];
   [(AVHomeIPCameraBehaviorContext *)self _updatePictureInPictureController];
-  v3 = [(AVHomeIPCameraBehaviorContext *)self playerViewController];
-  v4 = [v3 chromePlaybackControlsController];
-  [v4 setShowsVideoGravityButton:0];
+  playerViewController = [(AVHomeIPCameraBehaviorContext *)self playerViewController];
+  chromePlaybackControlsController = [playerViewController chromePlaybackControlsController];
+  [chromePlaybackControlsController setShowsVideoGravityButton:0];
 
-  v5 = [(AVHomeIPCameraBehaviorContext *)self playerViewController];
-  v6 = [v5 catalystPlaybackControlsController];
-  [v6 setShowsVideoZoomControl:0];
+  playerViewController2 = [(AVHomeIPCameraBehaviorContext *)self playerViewController];
+  catalystPlaybackControlsController = [playerViewController2 catalystPlaybackControlsController];
+  [catalystPlaybackControlsController setShowsVideoZoomControl:0];
 
-  v7 = [(AVHomeIPCameraBehaviorContext *)self playerViewController];
-  v8 = [v7 chromePlaybackControlsController];
-  [v8 setShowsVolumeControlsForContentWithNoAudio:1];
+  playerViewController3 = [(AVHomeIPCameraBehaviorContext *)self playerViewController];
+  chromePlaybackControlsController2 = [playerViewController3 chromePlaybackControlsController];
+  [chromePlaybackControlsController2 setShowsVolumeControlsForContentWithNoAudio:1];
 
-  v9 = [(AVHomeIPCameraBehaviorContext *)self playerViewController];
-  v10 = [v9 catalystPlaybackControlsController];
-  [v10 setShowsVolumeControlsForContentWithNoAudio:1];
+  playerViewController4 = [(AVHomeIPCameraBehaviorContext *)self playerViewController];
+  catalystPlaybackControlsController2 = [playerViewController4 catalystPlaybackControlsController];
+  [catalystPlaybackControlsController2 setShowsVolumeControlsForContentWithNoAudio:1];
 
-  v12 = [(AVHomeIPCameraBehaviorContext *)self playerViewController];
-  v11 = [v12 contentView];
-  [v11 setContentOverlayViewPlacement:1];
+  playerViewController5 = [(AVHomeIPCameraBehaviorContext *)self playerViewController];
+  contentView = [playerViewController5 contentView];
+  [contentView setContentOverlayViewPlacement:1];
 }
 
-- (void)didRemoveBehavior:(id)a3
+- (void)didRemoveBehavior:(id)behavior
 {
-  v4 = [(AVHomeIPCameraBehaviorContext *)self playerViewController];
-  v5 = [v4 chromePlaybackControlsController];
-  [v5 setShowsVolumeControlsForContentWithNoAudio:0];
+  playerViewController = [(AVHomeIPCameraBehaviorContext *)self playerViewController];
+  chromePlaybackControlsController = [playerViewController chromePlaybackControlsController];
+  [chromePlaybackControlsController setShowsVolumeControlsForContentWithNoAudio:0];
 
-  v7 = [(AVHomeIPCameraBehaviorContext *)self playerViewController];
-  v6 = [v7 catalystPlaybackControlsController];
-  [v6 setShowsVolumeControlsForContentWithNoAudio:0];
+  playerViewController2 = [(AVHomeIPCameraBehaviorContext *)self playerViewController];
+  catalystPlaybackControlsController = [playerViewController2 catalystPlaybackControlsController];
+  [catalystPlaybackControlsController setShowsVolumeControlsForContentWithNoAudio:0];
 }
 
-- (void)didAddBehavior:(id)a3
+- (void)didAddBehavior:(id)behavior
 {
-  v4 = a3;
-  v5 = [(AVHomeIPCameraBehaviorContext *)self playerViewController];
-  v6 = [(AVHomeIPCameraBehaviorContext *)self zoomingBehavior];
-  [v5 addBehavior:v6];
+  behaviorCopy = behavior;
+  playerViewController = [(AVHomeIPCameraBehaviorContext *)self playerViewController];
+  zoomingBehavior = [(AVHomeIPCameraBehaviorContext *)self zoomingBehavior];
+  [playerViewController addBehavior:zoomingBehavior];
 
   [(AVHomeIPCameraBehaviorContext *)self _updatePlaybackControlsControllerAndZoomingBehavior];
-  v7 = [(AVHomeIPCameraBehaviorContext *)self observationController];
-  v8 = [(AVHomeIPCameraBehaviorContext *)self playerViewController];
-  [v7 startObservingNotificationForName:@"AVPlayerViewControllerDidChangePlayerControllerNotification" object:v8 notificationCenter:0 observationHandler:&__block_literal_global_14537];
+  observationController = [(AVHomeIPCameraBehaviorContext *)self observationController];
+  playerViewController2 = [(AVHomeIPCameraBehaviorContext *)self playerViewController];
+  [observationController startObservingNotificationForName:@"AVPlayerViewControllerDidChangePlayerControllerNotification" object:playerViewController2 notificationCenter:0 observationHandler:&__block_literal_global_14537];
 
-  v9 = [(AVHomeIPCameraBehaviorContext *)self observationController];
-  [v9 startObservingNotificationForName:@"AVPlaybackControlsControllsShowsLoadingIndicatorNotification" object:0 notificationCenter:0 observationHandler:&__block_literal_global_15];
+  observationController2 = [(AVHomeIPCameraBehaviorContext *)self observationController];
+  [observationController2 startObservingNotificationForName:@"AVPlaybackControlsControllsShowsLoadingIndicatorNotification" object:0 notificationCenter:0 observationHandler:&__block_literal_global_15];
 
-  v10 = [(AVHomeIPCameraBehaviorContext *)self livePreviewPlayerController];
-  [v10 setDelegate:v4];
+  livePreviewPlayerController = [(AVHomeIPCameraBehaviorContext *)self livePreviewPlayerController];
+  [livePreviewPlayerController setDelegate:behaviorCopy];
 }
 
 void __48__AVHomeIPCameraBehaviorContext_didAddBehavior___block_invoke_2(uint64_t a1, void *a2, uint64_t a3, void *a4)
@@ -376,77 +376,77 @@ void __48__AVHomeIPCameraBehaviorContext_didAddBehavior___block_invoke(uint64_t 
   }
 }
 
-- (void)setBackgroundColor:(id)a3 forContainerOfControlItem:(id)a4
+- (void)setBackgroundColor:(id)color forContainerOfControlItem:(id)item
 {
-  v25 = a3;
-  v6 = a4;
-  v7 = [(AVHomeIPCameraBehaviorContext *)self playerViewController];
-  [v7 loadViewIfNeeded];
+  colorCopy = color;
+  itemCopy = item;
+  playerViewController = [(AVHomeIPCameraBehaviorContext *)self playerViewController];
+  [playerViewController loadViewIfNeeded];
 
-  v8 = [(AVHomeIPCameraBehaviorContext *)self playerViewController];
-  v9 = [v8 contentView];
-  [v9 loadPlaybackControlsViewIfNeeded];
+  playerViewController2 = [(AVHomeIPCameraBehaviorContext *)self playerViewController];
+  contentView = [playerViewController2 contentView];
+  [contentView loadPlaybackControlsViewIfNeeded];
 
-  v10 = [v6 type];
-  if (v10)
+  type = [itemCopy type];
+  if (type)
   {
-    if (v10 != 1)
+    if (type != 1)
     {
       goto LABEL_6;
     }
 
-    v11 = [(AVHomeIPCameraBehaviorContext *)self playerViewController];
-    v12 = [v11 contentView];
-    v13 = [v12 chromePlaybackControlsView];
-    v14 = [v13 volumeControls];
-    [v14 setBackgroundColor:v25];
+    playerViewController3 = [(AVHomeIPCameraBehaviorContext *)self playerViewController];
+    contentView2 = [playerViewController3 contentView];
+    chromePlaybackControlsView = [contentView2 chromePlaybackControlsView];
+    volumeControls = [chromePlaybackControlsView volumeControls];
+    [volumeControls setBackgroundColor:colorCopy];
 
-    v15 = [(AVHomeIPCameraBehaviorContext *)self playerViewController];
-    v16 = [v15 controlsViewController];
-    v17 = [v16 controlsViewControllerIfCatalystGlass];
-    v18 = [v17 playbackControlsView];
-    v19 = [v18 volumeControls];
+    playerViewController4 = [(AVHomeIPCameraBehaviorContext *)self playerViewController];
+    controlsViewController = [playerViewController4 controlsViewController];
+    controlsViewControllerIfCatalystGlass = [controlsViewController controlsViewControllerIfCatalystGlass];
+    playbackControlsView = [controlsViewControllerIfCatalystGlass playbackControlsView];
+    volumeControls2 = [playbackControlsView volumeControls];
   }
 
   else
   {
-    v20 = [(AVHomeIPCameraBehaviorContext *)self playerViewController];
-    v21 = [v20 contentView];
-    v22 = [v21 chromePlaybackControlsView];
-    v23 = [v22 screenModeControls];
-    [v23 setBackgroundColor:v25];
+    playerViewController5 = [(AVHomeIPCameraBehaviorContext *)self playerViewController];
+    contentView3 = [playerViewController5 contentView];
+    chromePlaybackControlsView2 = [contentView3 chromePlaybackControlsView];
+    screenModeControls = [chromePlaybackControlsView2 screenModeControls];
+    [screenModeControls setBackgroundColor:colorCopy];
 
-    v15 = [(AVHomeIPCameraBehaviorContext *)self playerViewController];
-    v16 = [v15 controlsViewController];
-    v17 = [v16 controlsViewControllerIfCatalystGlass];
-    v18 = [v17 playbackControlsView];
-    v19 = [v18 screenModeControls];
+    playerViewController4 = [(AVHomeIPCameraBehaviorContext *)self playerViewController];
+    controlsViewController = [playerViewController4 controlsViewController];
+    controlsViewControllerIfCatalystGlass = [controlsViewController controlsViewControllerIfCatalystGlass];
+    playbackControlsView = [controlsViewControllerIfCatalystGlass playbackControlsView];
+    volumeControls2 = [playbackControlsView screenModeControls];
   }
 
-  v24 = v19;
-  [v19 setBackgroundColor:v25];
+  v24 = volumeControls2;
+  [volumeControls2 setBackgroundColor:colorCopy];
 
 LABEL_6:
 }
 
-- (void)setLivePreviewAspectRatio:(CGSize)a3
+- (void)setLivePreviewAspectRatio:(CGSize)ratio
 {
-  height = a3.height;
-  width = a3.width;
-  self->_livePreviewAspectRatio = a3;
-  v6 = [(AVHomeIPCameraBehaviorContext *)self livePreviewPlayerController];
-  [v6 setPresentationSize:{width, height}];
+  height = ratio.height;
+  width = ratio.width;
+  self->_livePreviewAspectRatio = ratio;
+  livePreviewPlayerController = [(AVHomeIPCameraBehaviorContext *)self livePreviewPlayerController];
+  [livePreviewPlayerController setPresentationSize:{width, height}];
 
   [(AVHomeIPCameraBehaviorContext *)self _updatePlaybackControlsControllerAndZoomingBehavior];
 }
 
-- (void)setPlaybackControlsIncludePictureInPictureButton:(BOOL)a3
+- (void)setPlaybackControlsIncludePictureInPictureButton:(BOOL)button
 {
   v13 = *MEMORY[0x1E69E9840];
-  if (self->_playbackControlsIncludePictureInPictureButton != a3)
+  if (self->_playbackControlsIncludePictureInPictureButton != button)
   {
-    v3 = a3;
-    self->_playbackControlsIncludePictureInPictureButton = a3;
+    buttonCopy = button;
+    self->_playbackControlsIncludePictureInPictureButton = button;
     v5 = _AVLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
@@ -455,7 +455,7 @@ LABEL_6:
       v8 = "[AVHomeIPCameraBehaviorContext setPlaybackControlsIncludePictureInPictureButton:]";
       v10 = "playbackControlsIncludePictureInPictureButton";
       v9 = 2080;
-      if (v3)
+      if (buttonCopy)
       {
         v6 = "YES";
       }
@@ -469,13 +469,13 @@ LABEL_6:
   }
 }
 
-- (void)setCanStartPictureInPictureAutomaticallyWhenEnteringBackground:(BOOL)a3
+- (void)setCanStartPictureInPictureAutomaticallyWhenEnteringBackground:(BOOL)background
 {
   v13 = *MEMORY[0x1E69E9840];
-  if (self->_canStartPictureInPictureAutomaticallyWhenEnteringBackground != a3)
+  if (self->_canStartPictureInPictureAutomaticallyWhenEnteringBackground != background)
   {
-    v3 = a3;
-    self->_canStartPictureInPictureAutomaticallyWhenEnteringBackground = a3;
+    backgroundCopy = background;
+    self->_canStartPictureInPictureAutomaticallyWhenEnteringBackground = background;
     v5 = _AVLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
@@ -484,7 +484,7 @@ LABEL_6:
       v8 = "[AVHomeIPCameraBehaviorContext setCanStartPictureInPictureAutomaticallyWhenEnteringBackground:]";
       v10 = "canStartPictureInPictureAutomaticallyWhenEnteringBackground";
       v9 = 2080;
-      if (v3)
+      if (backgroundCopy)
       {
         v6 = "YES";
       }
@@ -498,30 +498,30 @@ LABEL_6:
   }
 }
 
-- (void)setMicrophoneEnabled:(BOOL)a3
+- (void)setMicrophoneEnabled:(BOOL)enabled
 {
-  if (self->_microphoneEnabled != a3)
+  if (self->_microphoneEnabled != enabled)
   {
-    self->_microphoneEnabled = a3;
+    self->_microphoneEnabled = enabled;
     [(AVHomeIPCameraBehaviorContext *)self _updatePictureInPictureController];
   }
 }
 
-- (void)setHasMicrophone:(BOOL)a3
+- (void)setHasMicrophone:(BOOL)microphone
 {
-  if (self->_hasMicrophone != a3)
+  if (self->_hasMicrophone != microphone)
   {
-    self->_hasMicrophone = a3;
+    self->_hasMicrophone = microphone;
     [(AVHomeIPCameraBehaviorContext *)self _updatePictureInPictureController];
   }
 }
 
-- (void)setLivePreviewActive:(BOOL)a3
+- (void)setLivePreviewActive:(BOOL)active
 {
   v30 = *MEMORY[0x1E69E9840];
-  if (self->_livePreviewActive != a3)
+  if (self->_livePreviewActive != active)
   {
-    v3 = a3;
+    activeCopy = active;
     v5 = _AVLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
@@ -530,7 +530,7 @@ LABEL_6:
       v25 = "[AVHomeIPCameraBehaviorContext setLivePreviewActive:]";
       v27 = "livePreviewActive";
       v26 = 2080;
-      if (v3)
+      if (activeCopy)
       {
         v6 = "YES";
       }
@@ -540,62 +540,62 @@ LABEL_6:
       _os_log_impl(&dword_18B49C000, v5, OS_LOG_TYPE_DEFAULT, "%s %s %s", &v24, 0x20u);
     }
 
-    self->_livePreviewActive = v3;
-    if (v3)
+    self->_livePreviewActive = activeCopy;
+    if (activeCopy)
     {
-      v7 = [(AVHomeIPCameraBehaviorContext *)self playerViewController];
-      v8 = [v7 playerController];
-      [(AVHomeIPCameraBehaviorContext *)self setPlayerControllerToRestore:v8];
+      playerViewController = [(AVHomeIPCameraBehaviorContext *)self playerViewController];
+      playerController = [playerViewController playerController];
+      [(AVHomeIPCameraBehaviorContext *)self setPlayerControllerToRestore:playerController];
 
-      v9 = objc_alloc_init(AVHomeIPCameraPlayerController);
-      v10 = [(AVHomeIPCameraBehaviorContext *)self behavior];
-      [(AVHomeIPCameraPlayerController *)v9 setDelegate:v10];
+      playerViewController6 = objc_alloc_init(AVHomeIPCameraPlayerController);
+      behavior = [(AVHomeIPCameraBehaviorContext *)self behavior];
+      [(AVHomeIPCameraPlayerController *)playerViewController6 setDelegate:behavior];
 
       [(AVHomeIPCameraBehaviorContext *)self livePreviewAspectRatio];
-      [(AVHomeIPCameraPlayerController *)v9 setPresentationSize:?];
-      v11 = [(AVHomeIPCameraBehaviorContext *)self playerControllerToRestore];
-      -[AVHomeIPCameraPlayerController setMuted:](v9, "setMuted:", [v11 isMuted]);
+      [(AVHomeIPCameraPlayerController *)playerViewController6 setPresentationSize:?];
+      playerControllerToRestore = [(AVHomeIPCameraBehaviorContext *)self playerControllerToRestore];
+      -[AVHomeIPCameraPlayerController setMuted:](playerViewController6, "setMuted:", [playerControllerToRestore isMuted]);
 
-      [(AVHomeIPCameraBehaviorContext *)self setLivePreviewPlayerController:v9];
-      v12 = [(AVHomeIPCameraBehaviorContext *)self playerViewController];
-      [v12 setPlayerController:v9];
+      [(AVHomeIPCameraBehaviorContext *)self setLivePreviewPlayerController:playerViewController6];
+      playerViewController2 = [(AVHomeIPCameraBehaviorContext *)self playerViewController];
+      [playerViewController2 setPlayerController:playerViewController6];
 
       [(AVHomeIPCameraBehaviorContext *)self _updatePictureInPictureController];
     }
 
     else
     {
-      v13 = [(AVHomeIPCameraBehaviorContext *)self playerControllerToRestore];
-      v14 = [(AVHomeIPCameraBehaviorContext *)self playerViewController];
-      v15 = [v14 playerController];
-      [v13 setMuted:{objc_msgSend(v15, "isMuted")}];
+      playerControllerToRestore2 = [(AVHomeIPCameraBehaviorContext *)self playerControllerToRestore];
+      playerViewController3 = [(AVHomeIPCameraBehaviorContext *)self playerViewController];
+      playerController2 = [playerViewController3 playerController];
+      [playerControllerToRestore2 setMuted:{objc_msgSend(playerController2, "isMuted")}];
 
-      v16 = [(AVHomeIPCameraBehaviorContext *)self playerViewController];
-      v17 = [(AVHomeIPCameraBehaviorContext *)self playerControllerToRestore];
-      [v16 setPlayerController:v17];
+      playerViewController4 = [(AVHomeIPCameraBehaviorContext *)self playerViewController];
+      playerControllerToRestore3 = [(AVHomeIPCameraBehaviorContext *)self playerControllerToRestore];
+      [playerViewController4 setPlayerController:playerControllerToRestore3];
 
       [(AVHomeIPCameraBehaviorContext *)self setPlayerControllerToRestore:0];
       [(AVHomeIPCameraBehaviorContext *)self setLivePreviewPlayerController:0];
-      v18 = [(AVHomeIPCameraBehaviorContext *)self playerViewController];
-      v19 = [v18 chromePlaybackControlsController];
-      v20 = [v19 pictureInPictureController];
-      [v20 setControlsStyle:0];
+      playerViewController5 = [(AVHomeIPCameraBehaviorContext *)self playerViewController];
+      chromePlaybackControlsController = [playerViewController5 chromePlaybackControlsController];
+      pictureInPictureController = [chromePlaybackControlsController pictureInPictureController];
+      [pictureInPictureController setControlsStyle:0];
 
-      v9 = [(AVHomeIPCameraBehaviorContext *)self playerViewController];
-      v21 = [(AVHomeIPCameraPlayerController *)v9 catalystPlaybackControlsController];
-      v22 = [v21 pictureInPictureController];
-      [v22 setControlsStyle:0];
+      playerViewController6 = [(AVHomeIPCameraBehaviorContext *)self playerViewController];
+      catalystPlaybackControlsController = [(AVHomeIPCameraPlayerController *)playerViewController6 catalystPlaybackControlsController];
+      pictureInPictureController2 = [catalystPlaybackControlsController pictureInPictureController];
+      [pictureInPictureController2 setControlsStyle:0];
     }
 
     [(AVHomeIPCameraBehaviorContext *)self _updatePlaybackControlsControllerAndZoomingBehavior];
-    v23 = [(AVHomeIPCameraBehaviorContext *)self livePreviewContainerView];
-    [v23 setHidden:{-[AVHomeIPCameraBehaviorContext isLivePreviewActive](self, "isLivePreviewActive") ^ 1}];
+    livePreviewContainerView = [(AVHomeIPCameraBehaviorContext *)self livePreviewContainerView];
+    [livePreviewContainerView setHidden:{-[AVHomeIPCameraBehaviorContext isLivePreviewActive](self, "isLivePreviewActive") ^ 1}];
   }
 }
 
-- (void)setZoomingEnabled:(BOOL)a3
+- (void)setZoomingEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v13 = *MEMORY[0x1E69E9840];
   v5 = _AVLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -605,7 +605,7 @@ LABEL_6:
     v8 = "[AVHomeIPCameraBehaviorContext setZoomingEnabled:]";
     v10 = "zoomingEnabled";
     v9 = 2080;
-    if (v3)
+    if (enabledCopy)
     {
       v6 = "YES";
     }
@@ -615,31 +615,31 @@ LABEL_6:
     _os_log_impl(&dword_18B49C000, v5, OS_LOG_TYPE_DEFAULT, "%s %s %s", &v7, 0x20u);
   }
 
-  self->_zoomingEnabled = v3;
+  self->_zoomingEnabled = enabledCopy;
   [(AVHomeIPCameraBehaviorContext *)self _updatePlaybackControlsControllerAndZoomingBehavior];
 }
 
 - (void)dealloc
 {
-  v3 = [(AVHomeIPCameraBehaviorContext *)self observationController];
-  [v3 stopAllObservation];
+  observationController = [(AVHomeIPCameraBehaviorContext *)self observationController];
+  [observationController stopAllObservation];
 
   v4.receiver = self;
   v4.super_class = AVHomeIPCameraBehaviorContext;
   [(AVHomeIPCameraBehaviorContext *)&v4 dealloc];
 }
 
-- (AVHomeIPCameraBehaviorContext)initWithAVKitOwner:(id)a3
+- (AVHomeIPCameraBehaviorContext)initWithAVKitOwner:(id)owner
 {
-  v4 = a3;
+  ownerCopy = owner;
   if (self)
   {
     *&self->_playbackControlsIncludeTransportControls = 16843008;
     self->_playbackControlsShowsLoadingIndicator = 0;
-    v5 = objc_storeWeak(&self->_playerViewController, v4);
+    v5 = objc_storeWeak(&self->_playerViewController, ownerCopy);
     *&self->_canStartPictureInPictureAutomaticallyWhenEnteringBackground = 1;
     v6 = v5;
-    [v4 setRequiresImmediateAssetInspection:1];
+    [ownerCopy setRequiresImmediateAssetInspection:1];
 
     WeakRetained = objc_loadWeakRetained(&self->_playerViewController);
     [WeakRetained setCanDisplayContentInDetachedWindow:0];

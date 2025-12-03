@@ -1,24 +1,24 @@
 @interface SSVLeaseCertificateRequestOperation
 - (NSString)certificateURLBagKey;
-- (SSVLeaseCertificateRequestOperation)initWithConfiguration:(id)a3;
-- (SSVLeaseCertificateRequestOperation)initWithURLBag:(id)a3;
-- (id)_resolveCertificateURLReturningError:(id *)a3;
+- (SSVLeaseCertificateRequestOperation)initWithConfiguration:(id)configuration;
+- (SSVLeaseCertificateRequestOperation)initWithURLBag:(id)bag;
+- (id)_resolveCertificateURLReturningError:(id *)error;
 - (id)outputBlock;
 - (void)cancel;
 - (void)main;
-- (void)setCertificateURLBagKey:(id)a3;
-- (void)setOutputBlock:(id)a3;
+- (void)setCertificateURLBagKey:(id)key;
+- (void)setOutputBlock:(id)block;
 @end
 
 @implementation SSVLeaseCertificateRequestOperation
 
-- (SSVLeaseCertificateRequestOperation)initWithConfiguration:(id)a3
+- (SSVLeaseCertificateRequestOperation)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = [(SSVOperation *)self init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [configurationCopy copy];
     configuration = v5->_configuration;
     v5->_configuration = v6;
   }
@@ -26,9 +26,9 @@
   return v5;
 }
 
-- (SSVLeaseCertificateRequestOperation)initWithURLBag:(id)a3
+- (SSVLeaseCertificateRequestOperation)initWithURLBag:(id)bag
 {
-  v5 = a3;
+  bagCopy = bag;
   v6 = [(SSVOperation *)self init];
   if (v6)
   {
@@ -36,7 +36,7 @@
     bagLoadSemaphore = v6->_bagLoadSemaphore;
     v6->_bagLoadSemaphore = v7;
 
-    objc_storeStrong(&v6->_urlBag, a3);
+    objc_storeStrong(&v6->_urlBag, bag);
   }
 
   return v6;
@@ -103,11 +103,11 @@ LABEL_3:
   }
 
 LABEL_5:
-  v7 = [(SSVLeaseCertificateRequestOperation *)self outputBlock];
-  v8 = v7;
-  if (v7)
+  outputBlock = [(SSVLeaseCertificateRequestOperation *)self outputBlock];
+  v8 = outputBlock;
+  if (outputBlock)
   {
-    (*(v7 + 16))(v7, v13[5], v19[5]);
+    (*(outputBlock + 16))(outputBlock, v13[5], v19[5]);
   }
 
   _Block_object_dispose(&v12, 8);
@@ -174,9 +174,9 @@ void __50__SSVLeaseCertificateRequestOperation_outputBlock__block_invoke(uint64_
   *(v3 + 40) = v2;
 }
 
-- (void)setOutputBlock:(id)a3
+- (void)setOutputBlock:(id)block
 {
-  v4 = [a3 copy];
+  v4 = [block copy];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __54__SSVLeaseCertificateRequestOperation_setOutputBlock___block_invoke;
@@ -195,9 +195,9 @@ void __54__SSVLeaseCertificateRequestOperation_setOutputBlock___block_invoke(uin
   *(v3 + 336) = v2;
 }
 
-- (void)setCertificateURLBagKey:(id)a3
+- (void)setCertificateURLBagKey:(id)key
 {
-  v4 = [a3 copy];
+  v4 = [key copy];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __63__SSVLeaseCertificateRequestOperation_setCertificateURLBagKey___block_invoke;
@@ -208,7 +208,7 @@ void __54__SSVLeaseCertificateRequestOperation_setOutputBlock___block_invoke(uin
   [(SSVOperation *)self dispatchAsync:v6];
 }
 
-- (id)_resolveCertificateURLReturningError:(id *)a3
+- (id)_resolveCertificateURLReturningError:(id *)error
 {
   v25 = 0;
   v26 = &v25;
@@ -221,11 +221,11 @@ void __54__SSVLeaseCertificateRequestOperation_setOutputBlock___block_invoke(uin
   v21 = 0x3032000000;
   v22 = __Block_byref_object_copy__16;
   v23 = __Block_byref_object_dispose__16;
-  v24 = [(SSVPlaybackLeaseConfiguration *)self->_configuration certificateURL];
+  certificateURL = [(SSVPlaybackLeaseConfiguration *)self->_configuration certificateURL];
   if (!v20[5])
   {
-    v5 = [(SSVLeaseCertificateRequestOperation *)self certificateURLBagKey];
-    if (v5 || (v5 = @"fps-cert") != 0)
+    certificateURLBagKey = [(SSVLeaseCertificateRequestOperation *)self certificateURLBagKey];
+    if (certificateURLBagKey || (certificateURLBagKey = @"fps-cert") != 0)
     {
       v6 = self->_urlBag;
       if (!v6)
@@ -253,7 +253,7 @@ void __54__SSVLeaseCertificateRequestOperation_setOutputBlock___block_invoke(uin
       v18 = &v25;
       v10 = v9;
       v16 = v10;
-      [(SSURLBag *)v6 loadValueForKey:v5 completionBlock:v15];
+      [(SSURLBag *)v6 loadValueForKey:certificateURLBagKey completionBlock:v15];
       dispatch_semaphore_wait(v10, 0xFFFFFFFFFFFFFFFFLL);
     }
 
@@ -265,9 +265,9 @@ void __54__SSVLeaseCertificateRequestOperation_setOutputBlock___block_invoke(uin
     }
   }
 
-  if (a3)
+  if (error)
   {
-    *a3 = v26[5];
+    *error = v26[5];
   }
 
   v13 = v20[5];

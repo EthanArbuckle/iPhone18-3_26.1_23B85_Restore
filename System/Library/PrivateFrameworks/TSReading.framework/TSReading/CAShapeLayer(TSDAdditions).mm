@@ -23,7 +23,7 @@
     v4 = v3;
   }
 
-  return [a1 setLineCap:v4];
+  return [self setLineCap:v4];
 }
 
 - (uint64_t)setCGLineJoin:()TSDAdditions
@@ -44,7 +44,7 @@
     v4 = v3;
   }
 
-  return [a1 setLineJoin:v4];
+  return [self setLineJoin:v4];
 }
 
 @end

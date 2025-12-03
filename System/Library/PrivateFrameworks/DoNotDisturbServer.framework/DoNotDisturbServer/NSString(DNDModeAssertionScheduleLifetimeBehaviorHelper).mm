@@ -20,14 +20,14 @@
 
 - (uint64_t)dnds_scheduleLifetimeBehaviorValue
 {
-  if ([a1 isEqualToString:@"match-schedule"])
+  if ([self isEqualToString:@"match-schedule"])
   {
     return 0;
   }
 
   else
   {
-    return [a1 isEqualToString:@"expire-on-end"];
+    return [self isEqualToString:@"expire-on-end"];
   }
 }
 

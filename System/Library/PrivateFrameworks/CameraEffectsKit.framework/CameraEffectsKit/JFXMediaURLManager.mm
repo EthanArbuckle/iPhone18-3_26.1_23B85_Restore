@@ -1,19 +1,19 @@
 @interface JFXMediaURLManager
 + (BOOL)ODRAssetsAreEmbedded;
-+ (BOOL)_createDirectoryAtURL:(id)a3 error:(id *)a4;
-+ (id)_capturedPhotoURL:(id *)a3 isHEIF:(BOOL)a4;
-+ (id)_photoExportURL:(id *)a3 isHEIF:(BOOL)a4;
-+ (id)_tempFileURLWithDirectory:(id)a3 file:(id)a4 error:(id *)a5;
-+ (id)_temporaryPhotoURL:(id *)a3 fileName:(id)a4;
-+ (id)audioRecordingURL:(id *)a3;
-+ (id)cachedExportFileURLWithError:(id *)a3;
-+ (id)capturedPhotoURL:(id *)a3 isHEIF:(BOOL)a4;
-+ (id)photoExportURL:(id *)a3 isHEIF:(BOOL)a4;
++ (BOOL)_createDirectoryAtURL:(id)l error:(id *)error;
++ (id)_capturedPhotoURL:(id *)l isHEIF:(BOOL)f;
++ (id)_photoExportURL:(id *)l isHEIF:(BOOL)f;
++ (id)_tempFileURLWithDirectory:(id)directory file:(id)file error:(id *)error;
++ (id)_temporaryPhotoURL:(id *)l fileName:(id)name;
++ (id)audioRecordingURL:(id *)l;
++ (id)cachedExportFileURLWithError:(id *)error;
++ (id)capturedPhotoURL:(id *)l isHEIF:(BOOL)f;
++ (id)photoExportURL:(id *)l isHEIF:(BOOL)f;
 + (id)sharedInstance;
-+ (id)temporaryPhotoURL:(id *)a3 fileName:(id)a4;
-+ (id)videoExportURL:(id *)a3;
-+ (id)videoRecordingFolderURL:(id *)a3;
-+ (void)_cleanupDirectory:(id)a3;
++ (id)temporaryPhotoURL:(id *)l fileName:(id)name;
++ (id)videoExportURL:(id *)l;
++ (id)videoRecordingFolderURL:(id *)l;
++ (void)_cleanupDirectory:(id)directory;
 + (void)cleanupTemporaryDirectories;
 + (void)jfx_cleanupOldProjects;
 - (JTFileURLSource)urlSource;
@@ -42,32 +42,32 @@ uint64_t __36__JFXMediaURLManager_sharedInstance__block_invoke()
   return MEMORY[0x2821F96F8](v0, v1);
 }
 
-+ (id)videoRecordingFolderURL:(id *)a3
++ (id)videoRecordingFolderURL:(id *)l
 {
-  v5 = [a1 _tempFileURLWithDirectory:@"VideoRecordings" file:@"foo.bar" error:a3];
-  v6 = [v5 URLByDeletingLastPathComponent];
+  v5 = [self _tempFileURLWithDirectory:@"VideoRecordings" file:@"foo.bar" error:l];
+  uRLByDeletingLastPathComponent = [v5 URLByDeletingLastPathComponent];
 
-  if (v6 && !*a3 && (![a1 _createDirectoryAtURL:v6 error:a3] || *a3))
+  if (uRLByDeletingLastPathComponent && !*l && (![self _createDirectoryAtURL:uRLByDeletingLastPathComponent error:l] || *l))
   {
 
-    v6 = 0;
+    uRLByDeletingLastPathComponent = 0;
   }
 
-  return v6;
+  return uRLByDeletingLastPathComponent;
 }
 
-+ (id)videoExportURL:(id *)a3
++ (id)videoExportURL:(id *)l
 {
-  v5 = [a1 _videoExportURL:?];
+  v5 = [self _videoExportURL:?];
   v6 = v5;
   if (v5)
   {
-    if (!*a3)
+    if (!*l)
     {
-      v7 = [v5 URLByDeletingLastPathComponent];
-      v8 = [a1 _createDirectoryAtURL:v7 error:a3];
+      uRLByDeletingLastPathComponent = [v5 URLByDeletingLastPathComponent];
+      v8 = [self _createDirectoryAtURL:uRLByDeletingLastPathComponent error:l];
 
-      if (!v8 || *a3)
+      if (!v8 || *l)
       {
 
         v6 = 0;
@@ -78,18 +78,18 @@ uint64_t __36__JFXMediaURLManager_sharedInstance__block_invoke()
   return v6;
 }
 
-+ (id)capturedPhotoURL:(id *)a3 isHEIF:(BOOL)a4
++ (id)capturedPhotoURL:(id *)l isHEIF:(BOOL)f
 {
-  v6 = [a1 _capturedPhotoURL:a3 isHEIF:a4];
+  v6 = [self _capturedPhotoURL:l isHEIF:f];
   v7 = v6;
   if (v6)
   {
-    if (!*a3)
+    if (!*l)
     {
-      v8 = [v6 URLByDeletingLastPathComponent];
-      v9 = [a1 _createDirectoryAtURL:v8 error:a3];
+      uRLByDeletingLastPathComponent = [v6 URLByDeletingLastPathComponent];
+      v9 = [self _createDirectoryAtURL:uRLByDeletingLastPathComponent error:l];
 
-      if (!v9 || *a3)
+      if (!v9 || *l)
       {
 
         v7 = 0;
@@ -100,18 +100,18 @@ uint64_t __36__JFXMediaURLManager_sharedInstance__block_invoke()
   return v7;
 }
 
-+ (id)photoExportURL:(id *)a3 isHEIF:(BOOL)a4
++ (id)photoExportURL:(id *)l isHEIF:(BOOL)f
 {
-  v6 = [a1 _photoExportURL:a3 isHEIF:a4];
+  v6 = [self _photoExportURL:l isHEIF:f];
   v7 = v6;
   if (v6)
   {
-    if (!*a3)
+    if (!*l)
     {
-      v8 = [v6 URLByDeletingLastPathComponent];
-      v9 = [a1 _createDirectoryAtURL:v8 error:a3];
+      uRLByDeletingLastPathComponent = [v6 URLByDeletingLastPathComponent];
+      v9 = [self _createDirectoryAtURL:uRLByDeletingLastPathComponent error:l];
 
-      if (!v9 || *a3)
+      if (!v9 || *l)
       {
 
         v7 = 0;
@@ -122,18 +122,18 @@ uint64_t __36__JFXMediaURLManager_sharedInstance__block_invoke()
   return v7;
 }
 
-+ (id)temporaryPhotoURL:(id *)a3 fileName:(id)a4
++ (id)temporaryPhotoURL:(id *)l fileName:(id)name
 {
-  v6 = [a1 _temporaryPhotoURL:a3 fileName:a4];
+  v6 = [self _temporaryPhotoURL:l fileName:name];
   v7 = v6;
   if (v6)
   {
-    if (!*a3)
+    if (!*l)
     {
-      v8 = [v6 URLByDeletingLastPathComponent];
-      v9 = [a1 _createDirectoryAtURL:v8 error:a3];
+      uRLByDeletingLastPathComponent = [v6 URLByDeletingLastPathComponent];
+      v9 = [self _createDirectoryAtURL:uRLByDeletingLastPathComponent error:l];
 
-      if (!v9 || *a3)
+      if (!v9 || *l)
       {
 
         v7 = 0;
@@ -144,18 +144,18 @@ uint64_t __36__JFXMediaURLManager_sharedInstance__block_invoke()
   return v7;
 }
 
-+ (id)audioRecordingURL:(id *)a3
++ (id)audioRecordingURL:(id *)l
 {
-  v5 = [a1 _audioRecordingURL:?];
+  v5 = [self _audioRecordingURL:?];
   v6 = v5;
   if (v5)
   {
-    if (!*a3)
+    if (!*l)
     {
-      v7 = [v5 URLByDeletingLastPathComponent];
-      v8 = [a1 _createDirectoryAtURL:v7 error:a3];
+      uRLByDeletingLastPathComponent = [v5 URLByDeletingLastPathComponent];
+      v8 = [self _createDirectoryAtURL:uRLByDeletingLastPathComponent error:l];
 
-      if (!v8 || *a3)
+      if (!v8 || *l)
       {
 
         v6 = 0;
@@ -166,17 +166,17 @@ uint64_t __36__JFXMediaURLManager_sharedInstance__block_invoke()
   return v6;
 }
 
-+ (id)cachedExportFileURLWithError:(id *)a3
++ (id)cachedExportFileURLWithError:(id *)error
 {
   v5 = +[JFXMediaURLManager sharedInstance];
-  v6 = [v5 urlSource];
+  urlSource = [v5 urlSource];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
     v8 = +[JFXMediaURLManager sharedInstance];
-    v9 = [v8 urlSource];
-    v10 = [v9 cachedExportFileURLWithError:a3];
+    urlSource2 = [v8 urlSource];
+    v10 = [urlSource2 cachedExportFileURLWithError:error];
 
     if (!v10)
     {
@@ -184,9 +184,9 @@ uint64_t __36__JFXMediaURLManager_sharedInstance__block_invoke()
     }
 
     v20 = 0;
-    v11 = [MEMORY[0x277CCAA00] defaultManager];
-    v12 = [v10 path];
-    v13 = [v11 fileExistsAtPath:v12 isDirectory:&v20];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    path = [v10 path];
+    v13 = [defaultManager fileExistsAtPath:path isDirectory:&v20];
 
     if (v13 && v20 == 1)
     {
@@ -196,23 +196,23 @@ uint64_t __36__JFXMediaURLManager_sharedInstance__block_invoke()
 
   else
   {
-    v14 = [MEMORY[0x277CCAA00] defaultManager];
-    v10 = [v14 URLForDirectory:13 inDomain:1 appropriateForURL:0 create:1 error:a3];
+    defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+    v10 = [defaultManager2 URLForDirectory:13 inDomain:1 appropriateForURL:0 create:1 error:error];
 
-    if (!v10 || a3 && *a3)
+    if (!v10 || error && *error)
     {
       goto LABEL_12;
     }
 
-    v15 = [MEMORY[0x277CCA8D8] mainBundle];
-    v16 = [v15 bundleIdentifier];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
 
-    v17 = [v10 URLByAppendingPathComponent:v16 isDirectory:1];
+    v17 = [v10 URLByAppendingPathComponent:bundleIdentifier isDirectory:1];
 
     v10 = [v17 URLByAppendingPathComponent:@"Exports" isDirectory:1];
   }
 
-  if ([a1 _createDirectoryAtURL:v10 error:a3])
+  if ([self _createDirectoryAtURL:v10 error:error])
   {
 LABEL_11:
     v10 = v10;
@@ -230,9 +230,9 @@ LABEL_13:
 + (void)jfx_cleanupOldProjects
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v4 = NSTemporaryDirectory();
-  v5 = [v3 contentsOfDirectoryAtPath:v4 error:0];
+  v5 = [defaultManager contentsOfDirectoryAtPath:v4 error:0];
 
   v22 = 0u;
   v23 = 0u;
@@ -256,17 +256,17 @@ LABEL_13:
 
         v11 = *(*(&v20 + 1) + 8 * v10);
         v19 = 0;
-        v12 = [a1 cachedExportFileURLWithError:&v19];
+        v12 = [self cachedExportFileURLWithError:&v19];
         v13 = v19;
-        v14 = [v12 lastPathComponent];
+        lastPathComponent = [v12 lastPathComponent];
 
-        if (([v11 isEqualToString:v14] & 1) == 0)
+        if (([v11 isEqualToString:lastPathComponent] & 1) == 0)
         {
           v15 = MEMORY[0x277CBEBC0];
           v16 = NSTemporaryDirectory();
           v17 = [v16 stringByAppendingPathComponent:v11];
           v18 = [v15 fileURLWithPath:v17];
-          [a1 _cleanupDirectory:v18];
+          [self _cleanupDirectory:v18];
         }
 
         ++v10;
@@ -282,92 +282,92 @@ LABEL_13:
 
 + (void)cleanupTemporaryDirectories
 {
-  [a1 jfx_cleanupOldProjects];
+  [self jfx_cleanupOldProjects];
   v10 = 0;
-  v3 = [a1 videoRecordingFolderURL:&v10];
+  v3 = [self videoRecordingFolderURL:&v10];
   if (v3)
   {
-    [a1 _cleanupDirectory:v3];
+    [self _cleanupDirectory:v3];
   }
 
-  v4 = [a1 _capturedPhotoURL:0 isHEIF:0];
+  v4 = [self _capturedPhotoURL:0 isHEIF:0];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 URLByDeletingLastPathComponent];
-    [a1 _cleanupDirectory:v6];
+    uRLByDeletingLastPathComponent = [v4 URLByDeletingLastPathComponent];
+    [self _cleanupDirectory:uRLByDeletingLastPathComponent];
   }
 
-  v7 = [a1 _audioRecordingURL:0];
+  v7 = [self _audioRecordingURL:0];
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 URLByDeletingLastPathComponent];
-    [a1 _cleanupDirectory:v9];
+    uRLByDeletingLastPathComponent2 = [v7 URLByDeletingLastPathComponent];
+    [self _cleanupDirectory:uRLByDeletingLastPathComponent2];
   }
 }
 
-+ (id)_temporaryPhotoURL:(id *)a3 fileName:(id)a4
++ (id)_temporaryPhotoURL:(id *)l fileName:(id)name
 {
-  v6 = a4;
-  v7 = v6;
+  nameCopy = name;
+  v7 = nameCopy;
   v8 = @"photo";
-  if (v6 && [(__CFString *)v6 length])
+  if (nameCopy && [(__CFString *)nameCopy length])
   {
     v8 = v7;
   }
 
   v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.png", v8];
-  v10 = [a1 _tempFileURLWithDirectory:@"TemporaryPhotos" file:v9 error:a3];
+  v10 = [self _tempFileURLWithDirectory:@"TemporaryPhotos" file:v9 error:l];
 
   return v10;
 }
 
-+ (id)_capturedPhotoURL:(id *)a3 isHEIF:(BOOL)a4
++ (id)_capturedPhotoURL:(id *)l isHEIF:(BOOL)f
 {
   v6 = @"jpg";
-  if (a4)
+  if (f)
   {
     v6 = @"heic";
   }
 
   v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"photo.%@", v6];
-  v8 = [a1 _tempFileURLWithDirectory:@"CapturedPhotos" file:v7 error:a3];
+  v8 = [self _tempFileURLWithDirectory:@"CapturedPhotos" file:v7 error:l];
 
   return v8;
 }
 
-+ (id)_photoExportURL:(id *)a3 isHEIF:(BOOL)a4
++ (id)_photoExportURL:(id *)l isHEIF:(BOOL)f
 {
   v6 = @"jpg";
-  if (a4)
+  if (f)
   {
     v6 = @"heic";
   }
 
   v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"photo.%@", v6];
-  v8 = [a1 _tempFileURLWithDirectory:@"Exports" file:v7 error:a3];
+  v8 = [self _tempFileURLWithDirectory:@"Exports" file:v7 error:l];
 
   return v8;
 }
 
-+ (void)_cleanupDirectory:(id)a3
++ (void)_cleanupDirectory:(id)directory
 {
   v35 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
+  directoryCopy = directory;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v29 = 0;
-  v5 = [v4 contentsOfDirectoryAtURL:v3 includingPropertiesForKeys:0 options:0 error:&v29];
+  v5 = [defaultManager contentsOfDirectoryAtURL:directoryCopy includingPropertiesForKeys:0 options:0 error:&v29];
   v6 = v29;
 
   if (v6)
   {
-    v7 = [v6 domain];
-    if ([v7 isEqual:*MEMORY[0x277CCA050]])
+    domain = [v6 domain];
+    if ([domain isEqual:*MEMORY[0x277CCA050]])
     {
-      v8 = [v6 code];
+      code = [v6 code];
 
-      if (v8 == 260)
+      if (code == 260)
       {
         goto LABEL_26;
       }
@@ -391,10 +391,10 @@ LABEL_13:
       v9 = JFXLog_modelAssetManagement();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
-        v10 = [v3 lastPathComponent];
+        lastPathComponent = [directoryCopy lastPathComponent];
         v11 = [v5 count];
         *buf = 138412546;
-        v31 = v10;
+        v31 = lastPathComponent;
         v32 = 1024;
         LODWORD(v33) = v11;
         _os_log_impl(&dword_242A3B000, v9, OS_LOG_TYPE_DEFAULT, "clean up directory %@: %u items", buf, 0x12u);
@@ -411,7 +411,7 @@ LABEL_13:
     {
       v14 = v13;
       v22 = v5;
-      v23 = v3;
+      v23 = directoryCopy;
       v6 = 0;
       v15 = *v26;
       do
@@ -426,9 +426,9 @@ LABEL_13:
           }
 
           v18 = *(*(&v25 + 1) + 8 * v16);
-          v19 = [MEMORY[0x277CCAA00] defaultManager];
+          defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
           v24 = v17;
-          v20 = [v19 removeItemAtURL:v18 error:&v24];
+          v20 = [defaultManager2 removeItemAtURL:v18 error:&v24];
           v6 = v24;
 
           if ((v20 & 1) == 0)
@@ -454,7 +454,7 @@ LABEL_13:
 
       while (v14);
       v5 = v22;
-      v3 = v23;
+      directoryCopy = v23;
     }
 
     else
@@ -466,37 +466,37 @@ LABEL_13:
 LABEL_26:
 }
 
-+ (id)_tempFileURLWithDirectory:(id)a3 file:(id)a4 error:(id *)a5
++ (id)_tempFileURLWithDirectory:(id)directory file:(id)file error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [MEMORY[0x277CCAA00] defaultManager];
-  v10 = [v9 URLForDirectory:13 inDomain:1 appropriateForURL:0 create:1 error:a5];
+  directoryCopy = directory;
+  fileCopy = file;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v10 = [defaultManager URLForDirectory:13 inDomain:1 appropriateForURL:0 create:1 error:error];
 
-  if (!v10 || a5 && *a5)
+  if (!v10 || error && *error)
   {
     v11 = 0;
   }
 
   else
   {
-    v12 = [MEMORY[0x277CCA8D8] mainBundle];
-    v13 = [v12 bundleIdentifier];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
 
-    v14 = [v10 URLByAppendingPathComponent:v13 isDirectory:1];
+    v14 = [v10 URLByAppendingPathComponent:bundleIdentifier isDirectory:1];
 
-    v15 = [v14 URLByAppendingPathComponent:v7 isDirectory:1];
+    v15 = [v14 URLByAppendingPathComponent:directoryCopy isDirectory:1];
 
-    v16 = [v15 URLByAppendingPathComponent:v8 isDirectory:0];
+    v16 = [v15 URLByAppendingPathComponent:fileCopy isDirectory:0];
 
-    v17 = [MEMORY[0x277CCAA00] defaultManager];
-    v18 = [v16 path];
-    v19 = [v17 fileExistsAtPath:v18];
+    defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+    path = [v16 path];
+    v19 = [defaultManager2 fileExistsAtPath:path];
 
     if (v19)
     {
-      v20 = [MEMORY[0x277CCAA00] defaultManager];
-      [v20 removeItemAtURL:v16 error:0];
+      defaultManager3 = [MEMORY[0x277CCAA00] defaultManager];
+      [defaultManager3 removeItemAtURL:v16 error:0];
     }
 
     v10 = v16;
@@ -507,14 +507,14 @@ LABEL_26:
   return v11;
 }
 
-+ (BOOL)_createDirectoryAtURL:(id)a3 error:(id *)a4
++ (BOOL)_createDirectoryAtURL:(id)l error:(id *)error
 {
   v5 = MEMORY[0x277CCAA00];
-  v6 = a3;
-  v7 = [v5 defaultManager];
-  LOBYTE(a4) = [v7 createDirectoryAtURL:v6 withIntermediateDirectories:1 attributes:0 error:a4];
+  lCopy = l;
+  defaultManager = [v5 defaultManager];
+  LOBYTE(error) = [defaultManager createDirectoryAtURL:lCopy withIntermediateDirectories:1 attributes:0 error:error];
 
-  return a4;
+  return error;
 }
 
 + (BOOL)ODRAssetsAreEmbedded

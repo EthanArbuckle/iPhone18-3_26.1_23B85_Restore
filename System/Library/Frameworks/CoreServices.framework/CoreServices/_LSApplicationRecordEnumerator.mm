@@ -1,9 +1,9 @@
 @interface _LSApplicationRecordEnumerator
-- (BOOL)_getObject:(id *)a3 atIndex:(unint64_t)a4 context:(LSContext *)a5;
-- (BOOL)_prepareWithContext:(LSContext *)a3 error:(id *)a4;
-- (_LSApplicationRecordEnumerator)initWithContext:(LSContext *)a3 volumeURL:(id)a4 options:(unint64_t)a5;
+- (BOOL)_getObject:(id *)object atIndex:(unint64_t)index context:(LSContext *)context;
+- (BOOL)_prepareWithContext:(LSContext *)context error:(id *)error;
+- (_LSApplicationRecordEnumerator)initWithContext:(LSContext *)context volumeURL:(id)l options:(unint64_t)options;
 - (id).cxx_construct;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation _LSApplicationRecordEnumerator
@@ -18,44 +18,44 @@
   return self;
 }
 
-- (_LSApplicationRecordEnumerator)initWithContext:(LSContext *)a3 volumeURL:(id)a4 options:(unint64_t)a5
+- (_LSApplicationRecordEnumerator)initWithContext:(LSContext *)context volumeURL:(id)l options:(unint64_t)options
 {
   v10.receiver = self;
   v10.super_class = _LSApplicationRecordEnumerator;
-  v7 = [(_LSDBEnumerator *)&v10 _initWithContext:a3];
+  v7 = [(_LSDBEnumerator *)&v10 _initWithContext:context];
   v8 = v7;
   if (v7)
   {
-    v7->_options = a5;
-    v11 = a4;
-    std::__variant_detail::__assignment<std::__variant_detail::__traits<unsigned int,NSURL * {__strong},NSError * {__strong}>>::__assign_alt[abi:nn200100]<1ul,NSURL * {__strong},NSURL * const {__strong}&>(&v7->_volumeContainerAdapter, &v7->_volumeContainerAdapter, &v11);
+    v7->_options = options;
+    lCopy = l;
+    std::__variant_detail::__assignment<std::__variant_detail::__traits<unsigned int,NSURL * {__strong},NSError * {__strong}>>::__assign_alt[abi:nn200100]<1ul,NSURL * {__strong},NSURL * const {__strong}&>(&v7->_volumeContainerAdapter, &v7->_volumeContainerAdapter, &lCopy);
     v8->_bundleClass = 2;
   }
 
   return v8;
 }
 
-- (BOOL)_prepareWithContext:(LSContext *)a3 error:(id *)a4
+- (BOOL)_prepareWithContext:(LSContext *)context error:(id *)error
 {
-  v7 = LaunchServices::AppRecordEnumeration::VolumeContainerResolutionAdapter::resolve(&self->_volumeContainerAdapter, a3);
+  v7 = LaunchServices::AppRecordEnumeration::VolumeContainerResolutionAdapter::resolve(&self->_volumeContainerAdapter, context);
   v8 = v7;
   if (v7)
   {
-    if (a4)
+    if (error)
     {
       v9 = v7;
-      *a4 = v8;
+      *error = v8;
     }
   }
 
   else
   {
-    v10 = [(_LSApplicationRecordEnumerator *)self _enumerateAllBundles];
-    [(_LSDatabase *)a3->db store];
-    v11 = [(_LSDatabase *)a3->db schema];
-    if (v10)
+    _enumerateAllBundles = [(_LSApplicationRecordEnumerator *)self _enumerateAllBundles];
+    [(_LSDatabase *)context->db store];
+    schema = [(_LSDatabase *)context->db schema];
+    if (_enumerateAllBundles)
     {
-      v12 = *(v11 + 4);
+      v12 = *(schema + 4);
       _CSStoreEnumerateUnits();
     }
 
@@ -74,25 +74,25 @@
   return v8 == 0;
 }
 
-- (BOOL)_getObject:(id *)a3 atIndex:(unint64_t)a4 context:(LSContext *)a5
+- (BOOL)_getObject:(id *)object atIndex:(unint64_t)index context:(LSContext *)context
 {
   begin = self->_bundleIdentifiersOrUnits.__begin_;
   v7 = self->_bundleIdentifiersOrUnits.__end_ - begin;
-  if (v7 > a4)
+  if (v7 > index)
   {
-    v9 = [(_LSApplicationRecordEnumerator *)self _applicationRecordWithContext:a5 bundleIdentifierOrUnit:begin[a4]];
-    v10 = *a3;
-    *a3 = v9;
+    v9 = [(_LSApplicationRecordEnumerator *)self _applicationRecordWithContext:context bundleIdentifierOrUnit:begin[index]];
+    v10 = *object;
+    *object = v9;
   }
 
-  return v7 > a4;
+  return v7 > index;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = _LSApplicationRecordEnumerator;
-  v4 = [(_LSDBEnumerator *)&v7 copyWithZone:a3];
+  v4 = [(_LSDBEnumerator *)&v7 copyWithZone:zone];
   v5 = v4;
   if (v4)
   {

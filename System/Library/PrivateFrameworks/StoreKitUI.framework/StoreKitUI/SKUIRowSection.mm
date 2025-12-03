@@ -1,70 +1,70 @@
 @interface SKUIRowSection
-- (CGSize)cellSizeForIndexPath:(id)a3;
-- (SKUILockupStyle)_lockupStyleForComponent:(SEL)a3 columnIndex:(id)a4;
-- (SKUIRowSection)initWithPageComponent:(id)a3;
-- (UIEdgeInsets)_edgeInsetsForColumnIndex:(int64_t)a3;
-- (double)_cellContentHeightForRowWidth:(double)a3;
-- (double)_columnWidthForColumnIndex:(int64_t)a3 rowWidth:(double)a4;
-- (double)_heightForArtwork:(id)a3 columnIndex:(int64_t)a4 rowWidth:(double)a5;
-- (double)_heightForComponent:(id)a3 columnIndex:(double)a4 rowWidth:(double)a5;
-- (double)_heightForCountdownComponent:(id)a3 columnIndex:(int64_t)a4 rowWidth:(double)a5;
-- (double)_heightForEditorialComponent:(id)a3 columnIndex:(int64_t)a4 rowWidth:(double)a5;
-- (double)_heightForGalleryComponent:(id)a3 columnIndex:(int64_t)a4 rowWidth:(double)a5;
-- (double)_heightForLockupComponent:(id)a3 columnIndex:(int64_t)a4 rowWidth:(double)a5;
-- (double)_heightForMediaComponent:(id)a3 columnIndex:(int64_t)a4 rowWidth:(double)a5;
+- (CGSize)cellSizeForIndexPath:(id)path;
+- (SKUILockupStyle)_lockupStyleForComponent:(SEL)component columnIndex:(id)index;
+- (SKUIRowSection)initWithPageComponent:(id)component;
+- (UIEdgeInsets)_edgeInsetsForColumnIndex:(int64_t)index;
+- (double)_cellContentHeightForRowWidth:(double)width;
+- (double)_columnWidthForColumnIndex:(int64_t)index rowWidth:(double)width;
+- (double)_heightForArtwork:(id)artwork columnIndex:(int64_t)index rowWidth:(double)width;
+- (double)_heightForComponent:(id)component columnIndex:(double)index rowWidth:(double)width;
+- (double)_heightForCountdownComponent:(id)component columnIndex:(int64_t)index rowWidth:(double)width;
+- (double)_heightForEditorialComponent:(id)component columnIndex:(int64_t)index rowWidth:(double)width;
+- (double)_heightForGalleryComponent:(id)component columnIndex:(int64_t)index rowWidth:(double)width;
+- (double)_heightForLockupComponent:(id)component columnIndex:(int64_t)index rowWidth:(double)width;
+- (double)_heightForMediaComponent:(id)component columnIndex:(int64_t)index rowWidth:(double)width;
 - (double)_interColumnSpacing;
 - (id)_columnViews;
-- (id)_editorialLayoutForEditorial:(id)a3 columnIndex:(int64_t)a4;
-- (id)_editorialLayoutForLockup:(id)a3 columnIndex:(int64_t)a4;
-- (id)_imageConsumerWithItem:(id)a3 lockupSize:(int64_t)a4;
-- (id)_lockupImageForComponent:(id)a3;
-- (id)_lockupPlaceholderForComponent:(id)a3;
+- (id)_editorialLayoutForEditorial:(id)editorial columnIndex:(int64_t)index;
+- (id)_editorialLayoutForLockup:(id)lockup columnIndex:(int64_t)index;
+- (id)_imageConsumerWithItem:(id)item lockupSize:(int64_t)size;
+- (id)_lockupImageForComponent:(id)component;
+- (id)_lockupPlaceholderForComponent:(id)component;
 - (id)_missingItemLoader;
-- (id)_newSizeToFitArtworkRequestWithArtwork:(id)a3 columnIndex:(int64_t)a4;
-- (id)_newViewWithMediaComponent:(id)a3;
+- (id)_newSizeToFitArtworkRequestWithArtwork:(id)artwork columnIndex:(int64_t)index;
+- (id)_newViewWithMediaComponent:(id)component;
 - (id)_overlaySourceCell;
-- (id)_popSourceViewForOverlayController:(id)a3;
-- (id)_viewControllerForCountdownComponent:(id)a3;
-- (id)_viewControllerForGalleryComponent:(id)a3;
-- (id)backgroundColorForIndexPath:(id)a3;
-- (id)cellForIndexPath:(id)a3;
-- (id)clickEventWithItem:(id)a3 elementName:(id)a4 index:(int64_t)a5;
-- (id)itemOfferClickEventWithItem:(id)a3 elementName:(id)a4 index:(int64_t)a5;
+- (id)_popSourceViewForOverlayController:(id)controller;
+- (id)_viewControllerForCountdownComponent:(id)component;
+- (id)_viewControllerForGalleryComponent:(id)component;
+- (id)backgroundColorForIndexPath:(id)path;
+- (id)cellForIndexPath:(id)path;
+- (id)clickEventWithItem:(id)item elementName:(id)name index:(int64_t)index;
+- (id)itemOfferClickEventWithItem:(id)item elementName:(id)name index:(int64_t)index;
 - (int64_t)numberOfCells;
-- (void)_enumerateLockupsWithBlock:(id)a3;
-- (void)_expandEditorialComponent:(id)a3 columnIndex:(int64_t)a4;
-- (void)_loadImagesForGalleryComponent:(id)a3 columnIndex:(int64_t)a4;
-- (void)_reloadEditorialCell:(id)a3 forComponent:(id)a4 columnIndex:(int64_t)a5;
-- (void)_reloadEditorialLockupCell:(id)a3 forComponent:(id)a4 columnIndex:(int64_t)a5;
-- (void)_reloadLockupCell:(id)a3 forComponent:(id)a4 columnIndex:(int64_t)a5;
-- (void)_reloadView:(id)a3 forMediaComponent:(id)a4 columnIndex:(int64_t)a5;
-- (void)_selectGalleryComponent:(id)a3 columnIndex:(int64_t)a4;
-- (void)_selectLockupComponent:(id)a3 columnIndex:(int64_t)a4;
-- (void)_selectMediaComponent:(id)a3 columnIndex:(int64_t)a4;
-- (void)_setPositionForClickEvent:(id)a3 elementIndex:(int64_t)a4;
-- (void)addImpressionsForIndexPath:(id)a3 toSession:(id)a4;
-- (void)artworkRequest:(id)a3 didLoadImage:(id)a4;
-- (void)collectionViewDidConfirmItemOfferAtIndexPath:(id)a3;
-- (void)collectionViewDidSelectItemAtIndexPath:(id)a3;
-- (void)collectionViewWillApplyLayoutAttributes:(id)a3;
+- (void)_enumerateLockupsWithBlock:(id)block;
+- (void)_expandEditorialComponent:(id)component columnIndex:(int64_t)index;
+- (void)_loadImagesForGalleryComponent:(id)component columnIndex:(int64_t)index;
+- (void)_reloadEditorialCell:(id)cell forComponent:(id)component columnIndex:(int64_t)index;
+- (void)_reloadEditorialLockupCell:(id)cell forComponent:(id)component columnIndex:(int64_t)index;
+- (void)_reloadLockupCell:(id)cell forComponent:(id)component columnIndex:(int64_t)index;
+- (void)_reloadView:(id)view forMediaComponent:(id)component columnIndex:(int64_t)index;
+- (void)_selectGalleryComponent:(id)component columnIndex:(int64_t)index;
+- (void)_selectLockupComponent:(id)component columnIndex:(int64_t)index;
+- (void)_selectMediaComponent:(id)component columnIndex:(int64_t)index;
+- (void)_setPositionForClickEvent:(id)event elementIndex:(int64_t)index;
+- (void)addImpressionsForIndexPath:(id)path toSession:(id)session;
+- (void)artworkRequest:(id)request didLoadImage:(id)image;
+- (void)collectionViewDidConfirmItemOfferAtIndexPath:(id)path;
+- (void)collectionViewDidSelectItemAtIndexPath:(id)path;
+- (void)collectionViewWillApplyLayoutAttributes:(id)attributes;
 - (void)dealloc;
 - (void)invalidateCachedLayoutInformation;
-- (void)itemStateCenter:(id)a3 itemStatesChanged:(id)a4;
-- (void)itemStateCenterRestrictionsChanged:(id)a3;
-- (void)mediaView:(id)a3 playbackStateDidChange:(int64_t)a4;
-- (void)missingItemLoader:(id)a3 didLoadItems:(id)a4 invalidItemIdentifiers:(id)a5;
-- (void)prefetchResourcesWithReason:(int64_t)a3;
-- (void)productPageOverlayDidDismiss:(id)a3;
-- (void)willAppearInContext:(id)a3;
-- (void)willHideInContext:(id)a3;
-- (void)willTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)itemStateCenter:(id)center itemStatesChanged:(id)changed;
+- (void)itemStateCenterRestrictionsChanged:(id)changed;
+- (void)mediaView:(id)view playbackStateDidChange:(int64_t)change;
+- (void)missingItemLoader:(id)loader didLoadItems:(id)items invalidItemIdentifiers:(id)identifiers;
+- (void)prefetchResourcesWithReason:(int64_t)reason;
+- (void)productPageOverlayDidDismiss:(id)dismiss;
+- (void)willAppearInContext:(id)context;
+- (void)willHideInContext:(id)context;
+- (void)willTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation SKUIRowSection
 
-- (SKUIRowSection)initWithPageComponent:(id)a3
+- (SKUIRowSection)initWithPageComponent:(id)component
 {
-  v4 = a3;
+  componentCopy = component;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIRowSection initWithPageComponent:];
@@ -72,15 +72,15 @@
 
   v10.receiver = self;
   v10.super_class = SKUIRowSection;
-  v5 = [(SKUIStorePageSection *)&v10 initWithPageComponent:v4];
+  v5 = [(SKUIStorePageSection *)&v10 initWithPageComponent:componentCopy];
   if (v5)
   {
     v6 = [objc_alloc(MEMORY[0x277CCAB00]) initWithKeyOptions:517 valueOptions:0 capacity:0];
     componentArtworkRequestIDs = v5->_componentArtworkRequestIDs;
     v5->_componentArtworkRequestIDs = v6;
 
-    v8 = [MEMORY[0x277D75418] currentDevice];
-    v5->_isPad = [v8 userInterfaceIdiom] == 1;
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    v5->_isPad = [currentDevice userInterfaceIdiom] == 1;
   }
 
   return v5;
@@ -98,70 +98,70 @@
   [(SKUIStorePageSection *)&v4 dealloc];
 }
 
-- (void)addImpressionsForIndexPath:(id)a3 toSession:(id)a4
+- (void)addImpressionsForIndexPath:(id)path toSession:(id)session
 {
-  v20 = a4;
-  v6 = a3;
-  v7 = [(SKUIStorePageSection *)self pageComponent];
-  v8 = [v7 viewElement];
-  [v20 addItemViewElement:v8];
+  sessionCopy = session;
+  pathCopy = path;
+  pageComponent = [(SKUIStorePageSection *)self pageComponent];
+  viewElement = [pageComponent viewElement];
+  [sessionCopy addItemViewElement:viewElement];
 
-  v9 = [(SKUIStorePageSection *)self pageComponent];
-  v10 = [v9 childComponents];
-  v11 = [v6 item];
+  pageComponent2 = [(SKUIStorePageSection *)self pageComponent];
+  childComponents = [pageComponent2 childComponents];
+  item = [pathCopy item];
 
-  if (v11 < [v10 count])
+  if (item < [childComponents count])
   {
-    v12 = [v10 objectAtIndex:v11];
-    v13 = [v12 componentType];
-    switch(v13)
+    v12 = [childComponents objectAtIndex:item];
+    componentType = [v12 componentType];
+    switch(componentType)
     {
       case 10:
-        v16 = [v12 mediaIdentifier];
-        v18 = [v12 viewElement];
+        mediaIdentifier = [v12 mediaIdentifier];
+        viewElement2 = [v12 viewElement];
         break;
       case 9:
-        v19 = [v12 item];
-        v16 = [v19 itemIdentifier];
+        item2 = [v12 item];
+        mediaIdentifier = [item2 itemIdentifier];
 
-        v18 = 0;
+        viewElement2 = 0;
         break;
       case 7:
         v14 = [(NSMapTable *)self->_galleryViewControllers objectForKey:v12];
-        v15 = [v14 selectedMediaComponent];
-        v16 = [v15 mediaIdentifier];
+        selectedMediaComponent = [v14 selectedMediaComponent];
+        mediaIdentifier = [selectedMediaComponent mediaIdentifier];
 
-        v17 = [v14 selectedMediaComponent];
-        v18 = [v17 viewElement];
+        selectedMediaComponent2 = [v14 selectedMediaComponent];
+        viewElement2 = [selectedMediaComponent2 viewElement];
 
         break;
       default:
-        v18 = 0;
-        v16 = 0;
+        viewElement2 = 0;
+        mediaIdentifier = 0;
         break;
     }
 
-    [v20 addItemIdentifier:v16];
-    [v20 addItemViewElement:v18];
+    [sessionCopy addItemIdentifier:mediaIdentifier];
+    [sessionCopy addItemViewElement:viewElement2];
   }
 }
 
-- (id)backgroundColorForIndexPath:(id)a3
+- (id)backgroundColorForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(SKUIStorePageSection *)self pageComponent];
-  v6 = [v5 backgroundColor];
+  pathCopy = path;
+  pageComponent = [(SKUIStorePageSection *)self pageComponent];
+  backgroundColor = [pageComponent backgroundColor];
 
-  if (v6)
+  if (backgroundColor)
   {
-    v7 = v6;
+    v7 = backgroundColor;
   }
 
   else
   {
     v10.receiver = self;
     v10.super_class = SKUIRowSection;
-    v7 = [(SKUIStorePageSection *)&v10 backgroundColorForIndexPath:v4];
+    v7 = [(SKUIStorePageSection *)&v10 backgroundColorForIndexPath:pathCopy];
   }
 
   v8 = v7;
@@ -169,57 +169,57 @@
   return v8;
 }
 
-- (id)cellForIndexPath:(id)a3
+- (id)cellForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(SKUIStorePageSection *)self context];
-  v6 = [v5 collectionView];
+  pathCopy = path;
+  context = [(SKUIStorePageSection *)self context];
+  collectionView = [context collectionView];
 
-  v7 = [v4 item];
-  v8 = [(SKUIStorePageSection *)self pageComponent];
-  v9 = [v8 childComponents];
+  item = [pathCopy item];
+  pageComponent = [(SKUIStorePageSection *)self pageComponent];
+  childComponents = [pageComponent childComponents];
 
-  if (v7 >= [v9 count])
+  if (item >= [childComponents count])
   {
     v10 = 0;
   }
 
   else
   {
-    v10 = [v9 objectAtIndex:v7];
+    v10 = [childComponents objectAtIndex:item];
   }
 
-  v11 = [v10 componentType];
-  if (v11 == 5)
+  componentType = [v10 componentType];
+  if (componentType == 5)
   {
-    v13 = [v6 dequeueReusableCellWithReuseIdentifier:0x282808E48 forIndexPath:v4];
-    [(SKUIRowSection *)self _reloadEditorialCell:v13 forComponent:v10 columnIndex:v7];
+    v13 = [collectionView dequeueReusableCellWithReuseIdentifier:0x282808E48 forIndexPath:pathCopy];
+    [(SKUIRowSection *)self _reloadEditorialCell:v13 forComponent:v10 columnIndex:item];
   }
 
-  else if (v11 == 9)
+  else if (componentType == 9)
   {
-    v12 = [v10 editorial];
+    editorial = [v10 editorial];
 
-    if (v12)
+    if (editorial)
     {
-      v13 = [v6 dequeueReusableCellWithReuseIdentifier:0x2828123C8 forIndexPath:v4];
-      [(SKUIRowSection *)self _reloadEditorialLockupCell:v13 forComponent:v10 columnIndex:v7];
+      v13 = [collectionView dequeueReusableCellWithReuseIdentifier:0x2828123C8 forIndexPath:pathCopy];
+      [(SKUIRowSection *)self _reloadEditorialLockupCell:v13 forComponent:v10 columnIndex:item];
     }
 
     else
     {
-      v13 = [v6 dequeueReusableCellWithReuseIdentifier:0x2828083E8 forIndexPath:v4];
-      [(SKUIRowSection *)self _reloadLockupCell:v13 forComponent:v10 columnIndex:v7];
+      v13 = [collectionView dequeueReusableCellWithReuseIdentifier:0x2828083E8 forIndexPath:pathCopy];
+      [(SKUIRowSection *)self _reloadLockupCell:v13 forComponent:v10 columnIndex:item];
     }
   }
 
   else
   {
-    v13 = [v6 dequeueReusableCellWithReuseIdentifier:@"SKUIRowSectionMiscReuseIdentifer" forIndexPath:v4];
+    v13 = [collectionView dequeueReusableCellWithReuseIdentifier:@"SKUIRowSectionMiscReuseIdentifer" forIndexPath:pathCopy];
     if (v10)
     {
-      v14 = [(SKUIRowSection *)self _columnViews];
-      v15 = [v14 objectForKey:v10];
+      _columnViews = [(SKUIRowSection *)self _columnViews];
+      v15 = [_columnViews objectForKey:v10];
     }
 
     else
@@ -228,35 +228,35 @@
     }
 
     [v13 setContentChildView:v15];
-    [(SKUIRowSection *)self _edgeInsetsForColumnIndex:v7];
+    [(SKUIRowSection *)self _edgeInsetsForColumnIndex:item];
     [v13 setContentInsets:?];
-    v16 = [v10 componentType];
-    if (v16 == 10)
+    componentType2 = [v10 componentType];
+    if (componentType2 == 10)
     {
-      [(SKUIRowSection *)self _reloadView:v15 forMediaComponent:v10 columnIndex:v7];
+      [(SKUIRowSection *)self _reloadView:v15 forMediaComponent:v10 columnIndex:item];
     }
 
-    else if (v16 == 7)
+    else if (componentType2 == 7)
     {
-      [(SKUIRowSection *)self _loadImagesForGalleryComponent:v10 columnIndex:v7];
+      [(SKUIRowSection *)self _loadImagesForGalleryComponent:v10 columnIndex:item];
     }
   }
 
   return v13;
 }
 
-- (CGSize)cellSizeForIndexPath:(id)a3
+- (CGSize)cellSizeForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(SKUIStorePageSection *)self context];
-  v6 = [v5 collectionView];
+  pathCopy = path;
+  context = [(SKUIStorePageSection *)self context];
+  collectionView = [context collectionView];
 
-  [v6 bounds];
+  [collectionView bounds];
   v8 = v7;
   v10 = v9;
-  v11 = [(SKUIStorePageSection *)self pageComponent];
-  v12 = v11;
-  if (self->_isPad || ![v11 shouldAutoFlow])
+  pageComponent = [(SKUIStorePageSection *)self pageComponent];
+  v12 = pageComponent;
+  if (self->_isPad || ![pageComponent shouldAutoFlow])
   {
     if (v8 <= v10)
     {
@@ -279,18 +279,18 @@
 
   else
   {
-    v13 = [v4 item];
-    v14 = [v12 childComponents];
-    v15 = [v14 objectAtIndex:v13];
+    item = [pathCopy item];
+    childComponents = [v12 childComponents];
+    v15 = [childComponents objectAtIndex:item];
 
-    [(SKUIRowSection *)self _heightForComponent:v15 columnIndex:v13 rowWidth:v8];
+    [(SKUIRowSection *)self _heightForComponent:v15 columnIndex:item rowWidth:v8];
     v17 = v16;
   }
 
-  v20 = [v4 item];
-  [(SKUIRowSection *)self _columnWidthForColumnIndex:v20 rowWidth:v8];
+  item2 = [pathCopy item];
+  [(SKUIRowSection *)self _columnWidthForColumnIndex:item2 rowWidth:v8];
   v22 = v21;
-  [(SKUIRowSection *)self _edgeInsetsForColumnIndex:v20];
+  [(SKUIRowSection *)self _edgeInsetsForColumnIndex:item2];
   v25 = v17 + v24 + v23;
   v28 = v22 + v26 + v27;
 
@@ -301,91 +301,91 @@
   return result;
 }
 
-- (id)clickEventWithItem:(id)a3 elementName:(id)a4 index:(int64_t)a5
+- (id)clickEventWithItem:(id)item elementName:(id)name index:(int64_t)index
 {
   v9.receiver = self;
   v9.super_class = SKUIRowSection;
-  v7 = [(SKUIStorePageSection *)&v9 clickEventWithItem:a3 elementName:a4 index:?];
-  [(SKUIRowSection *)self _setPositionForClickEvent:v7 elementIndex:a5];
+  v7 = [(SKUIStorePageSection *)&v9 clickEventWithItem:item elementName:name index:?];
+  [(SKUIRowSection *)self _setPositionForClickEvent:v7 elementIndex:index];
 
   return v7;
 }
 
-- (void)collectionViewDidConfirmItemOfferAtIndexPath:(id)a3
+- (void)collectionViewDidConfirmItemOfferAtIndexPath:(id)path
 {
-  v16 = a3;
-  v4 = [v16 item];
-  v5 = [(SKUIStorePageSection *)self pageComponent];
-  v6 = [v5 childComponents];
-  v7 = [v6 objectAtIndex:v4];
+  pathCopy = path;
+  item = [pathCopy item];
+  pageComponent = [(SKUIStorePageSection *)self pageComponent];
+  childComponents = [pageComponent childComponents];
+  v7 = [childComponents objectAtIndex:item];
 
   if ([v7 componentType] == 9)
   {
-    v8 = [(SKUIStorePageSection *)self context];
-    v9 = [v7 item];
-    v10 = [(SKUIRowSection *)self itemOfferClickEventWithItem:v9 elementName:@"Column" index:v4];
+    context = [(SKUIStorePageSection *)self context];
+    item2 = [v7 item];
+    v10 = [(SKUIRowSection *)self itemOfferClickEventWithItem:item2 elementName:@"Column" index:item];
     if (v10)
     {
-      v11 = [v8 metricsController];
-      [v11 recordEvent:v10];
+      metricsController = [context metricsController];
+      [metricsController recordEvent:v10];
     }
 
-    v12 = [v8 collectionView];
-    v13 = [v12 cellForItemAtIndexPath:v16];
+    collectionView = [context collectionView];
+    v13 = [collectionView cellForItemAtIndexPath:pathCopy];
 
-    v14 = [(SKUIStorePageSection *)self performItemOfferActionForItem:v9];
-    v15 = [v13 layout];
-    [v15 setItemState:v14 animated:1];
+    v14 = [(SKUIStorePageSection *)self performItemOfferActionForItem:item2];
+    layout = [v13 layout];
+    [layout setItemState:v14 animated:1];
   }
 }
 
-- (void)collectionViewDidSelectItemAtIndexPath:(id)a3
+- (void)collectionViewDidSelectItemAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [v4 item];
-  v6 = [(SKUIStorePageSection *)self pageComponent];
-  v7 = [v6 childComponents];
-  v8 = [v7 objectAtIndex:v5];
+  pathCopy = path;
+  item = [pathCopy item];
+  pageComponent = [(SKUIStorePageSection *)self pageComponent];
+  childComponents = [pageComponent childComponents];
+  v8 = [childComponents objectAtIndex:item];
 
-  v9 = [v8 componentType];
-  if (v9 > 8)
+  componentType = [v8 componentType];
+  if (componentType > 8)
   {
-    if (v9 == 9)
+    if (componentType == 9)
     {
-      [(SKUIRowSection *)self _selectLockupComponent:v8 columnIndex:v5];
+      [(SKUIRowSection *)self _selectLockupComponent:v8 columnIndex:item];
     }
 
-    else if (v9 == 10)
+    else if (componentType == 10)
     {
-      [(SKUIRowSection *)self _selectMediaComponent:v8 columnIndex:v5];
+      [(SKUIRowSection *)self _selectMediaComponent:v8 columnIndex:item];
     }
   }
 
-  else if (v9 == 5)
+  else if (componentType == 5)
   {
-    [(SKUIRowSection *)self _expandEditorialComponent:v8 columnIndex:v5];
+    [(SKUIRowSection *)self _expandEditorialComponent:v8 columnIndex:item];
   }
 
-  else if (v9 == 7)
+  else if (componentType == 7)
   {
-    [(SKUIRowSection *)self _selectGalleryComponent:v8 columnIndex:v5];
+    [(SKUIRowSection *)self _selectGalleryComponent:v8 columnIndex:item];
   }
 
   v10.receiver = self;
   v10.super_class = SKUIRowSection;
-  [(SKUIStorePageSection *)&v10 collectionViewDidSelectItemAtIndexPath:v4];
+  [(SKUIStorePageSection *)&v10 collectionViewDidSelectItemAtIndexPath:pathCopy];
 }
 
-- (void)collectionViewWillApplyLayoutAttributes:(id)a3
+- (void)collectionViewWillApplyLayoutAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = [v4 indexPath];
-  v6 = [(SKUIRowSection *)self backgroundColorForIndexPath:v5];
-  [v4 setBackgroundColor:v6];
+  attributesCopy = attributes;
+  indexPath = [attributesCopy indexPath];
+  v6 = [(SKUIRowSection *)self backgroundColorForIndexPath:indexPath];
+  [attributesCopy setBackgroundColor:v6];
 
   v7.receiver = self;
   v7.super_class = SKUIRowSection;
-  [(SKUIStorePageSection *)&v7 collectionViewWillApplyLayoutAttributes:v4];
+  [(SKUIStorePageSection *)&v7 collectionViewWillApplyLayoutAttributes:attributesCopy];
 }
 
 - (void)invalidateCachedLayoutInformation
@@ -397,12 +397,12 @@
   [(SKUIStorePageSection *)&v2 invalidateCachedLayoutInformation];
 }
 
-- (id)itemOfferClickEventWithItem:(id)a3 elementName:(id)a4 index:(int64_t)a5
+- (id)itemOfferClickEventWithItem:(id)item elementName:(id)name index:(int64_t)index
 {
   v9.receiver = self;
   v9.super_class = SKUIRowSection;
-  v7 = [(SKUIStorePageSection *)&v9 itemOfferClickEventWithItem:a3 elementName:a4 index:?];
-  [(SKUIRowSection *)self _setPositionForClickEvent:v7 elementIndex:a5];
+  v7 = [(SKUIStorePageSection *)&v9 itemOfferClickEventWithItem:item elementName:name index:?];
+  [(SKUIRowSection *)self _setPositionForClickEvent:v7 elementIndex:index];
 
   return v7;
 }
@@ -410,13 +410,13 @@
 - (int64_t)numberOfCells
 {
   v17 = *MEMORY[0x277D85DE8];
-  v2 = [(SKUIStorePageSection *)self pageComponent];
-  v3 = [v2 columnWidths];
+  pageComponent = [(SKUIStorePageSection *)self pageComponent];
+  columnWidths = [pageComponent columnWidths];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v4 = [columnWidths countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -429,14 +429,14 @@
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(columnWidths);
         }
 
         v6 += [*(*(&v12 + 1) + 8 * i) integerValue];
       }
 
       v7 += v5;
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [columnWidths countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v5);
@@ -448,49 +448,49 @@
     v7 = 0;
   }
 
-  v10 = [v2 numberOfColumns];
+  numberOfColumns = [pageComponent numberOfColumns];
 
-  return v7 - v6 + v10;
+  return v7 - v6 + numberOfColumns;
 }
 
-- (void)prefetchResourcesWithReason:(int64_t)a3
+- (void)prefetchResourcesWithReason:(int64_t)reason
 {
-  v6 = [(SKUIStorePageSection *)self pageComponent];
-  if ([v6 isMissingItemData])
+  pageComponent = [(SKUIStorePageSection *)self pageComponent];
+  if ([pageComponent isMissingItemData])
   {
-    v5 = [(SKUIRowSection *)self _missingItemLoader];
-    [v5 loadItemsForPageComponent:v6 startIndex:0 reason:a3];
+    _missingItemLoader = [(SKUIRowSection *)self _missingItemLoader];
+    [_missingItemLoader loadItemsForPageComponent:pageComponent startIndex:0 reason:reason];
   }
 }
 
-- (void)willAppearInContext:(id)a3
+- (void)willAppearInContext:(id)context
 {
-  v4 = a3;
-  v5 = [v4 collectionView];
-  [v5 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"SKUIRowSectionMiscReuseIdentifer"];
-  [v5 registerClass:objc_opt_class() forCellWithReuseIdentifier:0x282808E48];
-  [v5 registerClass:objc_opt_class() forCellWithReuseIdentifier:0x2828083E8];
-  [v5 registerClass:objc_opt_class() forCellWithReuseIdentifier:0x2828123C8];
-  v6 = [(SKUIStorePageSection *)self pageComponent];
-  v7 = [v6 childComponents];
+  contextCopy = context;
+  collectionView = [contextCopy collectionView];
+  [collectionView registerClass:objc_opt_class() forCellWithReuseIdentifier:@"SKUIRowSectionMiscReuseIdentifer"];
+  [collectionView registerClass:objc_opt_class() forCellWithReuseIdentifier:0x282808E48];
+  [collectionView registerClass:objc_opt_class() forCellWithReuseIdentifier:0x2828083E8];
+  [collectionView registerClass:objc_opt_class() forCellWithReuseIdentifier:0x2828123C8];
+  pageComponent = [(SKUIStorePageSection *)self pageComponent];
+  childComponents = [pageComponent childComponents];
 
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __38__SKUIRowSection_willAppearInContext___block_invoke;
   v13[3] = &unk_2781FBE80;
   v13[4] = self;
-  [v7 enumerateObjectsUsingBlock:v13];
-  v8 = [v4 parentViewController];
-  v9 = [v8 clientContext];
+  [childComponents enumerateObjectsUsingBlock:v13];
+  parentViewController = [contextCopy parentViewController];
+  clientContext = [parentViewController clientContext];
   clientContext = self->_clientContext;
-  self->_clientContext = v9;
+  self->_clientContext = clientContext;
 
   v11 = +[SKUIItemStateCenter defaultCenter];
   [v11 addObserver:self];
 
   v12.receiver = self;
   v12.super_class = SKUIRowSection;
-  [(SKUIStorePageSection *)&v12 willAppearInContext:v4];
+  [(SKUIStorePageSection *)&v12 willAppearInContext:contextCopy];
 }
 
 void __38__SKUIRowSection_willAppearInContext___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -518,42 +518,42 @@ void __38__SKUIRowSection_willAppearInContext___block_invoke(uint64_t a1, void *
 LABEL_6:
 }
 
-- (void)willHideInContext:(id)a3
+- (void)willHideInContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = +[SKUIItemStateCenter defaultCenter];
   [v5 removeObserver:self];
 
   v6.receiver = self;
   v6.super_class = SKUIRowSection;
-  [(SKUIStorePageSection *)&v6 willHideInContext:v4];
+  [(SKUIStorePageSection *)&v6 willHideInContext:contextCopy];
 }
 
-- (void)willTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)willTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
-  v8 = [(SKUIStorePageSection *)self context];
-  v9 = [v8 collectionView];
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
+  context = [(SKUIStorePageSection *)self context];
+  collectionView = [context collectionView];
 
-  v10 = [(SKUIStorePageSection *)self sectionIndex];
-  v11 = [(SKUIStorePageSection *)self pageComponent];
-  v12 = [v11 childComponents];
+  sectionIndex = [(SKUIStorePageSection *)self sectionIndex];
+  pageComponent = [(SKUIStorePageSection *)self pageComponent];
+  childComponents = [pageComponent childComponents];
 
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __65__SKUIRowSection_willTransitionToSize_withTransitionCoordinator___block_invoke;
   v15[3] = &unk_2781FBEA8;
   v15[4] = self;
-  v16 = v9;
-  v17 = v10;
+  v16 = collectionView;
+  v17 = sectionIndex;
   v18 = width > height;
-  v13 = v9;
-  [v12 enumerateObjectsUsingBlock:v15];
+  v13 = collectionView;
+  [childComponents enumerateObjectsUsingBlock:v15];
   v14.receiver = self;
   v14.super_class = SKUIRowSection;
-  [(SKUIStorePageSection *)&v14 willTransitionToSize:v7 withTransitionCoordinator:width, height];
+  [(SKUIStorePageSection *)&v14 willTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
 }
 
 void __65__SKUIRowSection_willTransitionToSize_withTransitionCoordinator___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -594,27 +594,27 @@ LABEL_7:
 LABEL_9:
 }
 
-- (void)artworkRequest:(id)a3 didLoadImage:(id)a4
+- (void)artworkRequest:(id)request didLoadImage:(id)image
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SKUIRowSection *)self _columnViews];
-  v9 = [v7 requestIdentifier];
+  imageCopy = image;
+  requestCopy = request;
+  _columnViews = [(SKUIRowSection *)self _columnViews];
+  requestIdentifier = [requestCopy requestIdentifier];
 
-  v10 = [(SKUIStorePageSection *)self pageComponent];
-  v11 = [v10 childComponents];
+  pageComponent = [(SKUIStorePageSection *)self pageComponent];
+  childComponents = [pageComponent childComponents];
 
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __46__SKUIRowSection_artworkRequest_didLoadImage___block_invoke;
   v14[3] = &unk_2781FBED0;
   v14[4] = self;
-  v15 = v6;
-  v16 = v8;
-  v17 = v9;
-  v12 = v8;
-  v13 = v6;
-  [v11 enumerateObjectsUsingBlock:v14];
+  v15 = imageCopy;
+  v16 = _columnViews;
+  v17 = requestIdentifier;
+  v12 = _columnViews;
+  v13 = imageCopy;
+  [childComponents enumerateObjectsUsingBlock:v14];
 }
 
 void __46__SKUIRowSection_artworkRequest_didLoadImage___block_invoke(uint64_t a1, void *a2, uint64_t a3, _BYTE *a4)
@@ -655,10 +655,10 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)mediaView:(id)a3 playbackStateDidChange:(int64_t)a4
+- (void)mediaView:(id)view playbackStateDidChange:(int64_t)change
 {
   v37 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  viewCopy = view;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
@@ -679,8 +679,8 @@ LABEL_3:
       }
 
       v12 = *(*(&v31 + 1) + 8 * v11);
-      v13 = [(NSMapTable *)self->_columnViews objectForKey:v12, v31];
-      if ([v6 isDescendantOfView:v13])
+      metricsController = [(NSMapTable *)self->_columnViews objectForKey:v12, v31];
+      if ([viewCopy isDescendantOfView:metricsController])
       {
         break;
       }
@@ -697,49 +697,49 @@ LABEL_3:
       }
     }
 
-    v14 = [(SKUIStorePageSection *)self pageComponent];
-    v15 = [v14 childComponents];
-    v16 = [v15 indexOfObjectIdenticalTo:v12];
+    pageComponent = [(SKUIStorePageSection *)self pageComponent];
+    childComponents = [pageComponent childComponents];
+    v16 = [childComponents indexOfObjectIdenticalTo:v12];
 
-    v17 = [v12 componentType];
-    if (v17 == 10)
+    componentType = [v12 componentType];
+    if (componentType == 10)
     {
-      v19 = v12;
+      selectedMediaComponent = v12;
     }
 
     else
     {
-      if (v17 != 7)
+      if (componentType != 7)
       {
-        v19 = v7;
+        selectedMediaComponent = v7;
 LABEL_23:
 
-        v7 = v19;
+        v7 = selectedMediaComponent;
         goto LABEL_24;
       }
 
       v18 = [(NSMapTable *)self->_galleryViewControllers objectForKey:v12];
-      v19 = [v18 selectedMediaComponent];
+      selectedMediaComponent = [v18 selectedMediaComponent];
     }
 
-    if (!v19)
+    if (!selectedMediaComponent)
     {
       goto LABEL_25;
     }
 
-    v20 = [(SKUIStorePageSection *)self context];
-    v13 = [v20 metricsController];
+    context = [(SKUIStorePageSection *)self context];
+    metricsController = [context metricsController];
 
-    if ([v13 canRecordEventWithType:*MEMORY[0x277D6A488]])
+    if ([metricsController canRecordEventWithType:*MEMORY[0x277D6A488]])
     {
       v21 = objc_alloc_init(MEMORY[0x277D69BA8]);
-      v22 = SKUIMetricsMediaEventTypeForPlaybackState(a4);
+      v22 = SKUIMetricsMediaEventTypeForPlaybackState(change);
       [v21 setMediaEventType:v22];
 
-      v23 = [(SKUIStorePageSection *)self pageComponent];
-      v24 = [v13 locationWithPageComponent:v23];
+      pageComponent2 = [(SKUIStorePageSection *)self pageComponent];
+      v24 = [metricsController locationWithPageComponent:pageComponent2];
 
-      v25 = [v13 locationWithPosition:v16 type:@"Column" fieldData:0];
+      v25 = [metricsController locationWithPosition:v16 type:@"Column" fieldData:0];
       v26 = v25;
       if (v24 && v25)
       {
@@ -749,17 +749,17 @@ LABEL_23:
         [v21 setLocationWithEventLocations:v27];
       }
 
-      v28 = [(NSMapTable *)v19 mediaIdentifier];
-      if (v28)
+      mediaIdentifier = [(NSMapTable *)selectedMediaComponent mediaIdentifier];
+      if (mediaIdentifier)
       {
-        v29 = [MEMORY[0x277CCABB0] numberWithLongLong:v28];
+        v29 = [MEMORY[0x277CCABB0] numberWithLongLong:mediaIdentifier];
         [v21 setItemIdentifier:v29];
       }
 
-      v30 = [(NSMapTable *)v19 mediaURLString];
-      [v21 setMediaURL:v30];
+      mediaURLString = [(NSMapTable *)selectedMediaComponent mediaURLString];
+      [v21 setMediaURL:mediaURLString];
 
-      [v13 recordEvent:v21];
+      [metricsController recordEvent:v21];
     }
 
     goto LABEL_23;
@@ -770,16 +770,16 @@ LABEL_24:
 LABEL_25:
 }
 
-- (void)itemStateCenter:(id)a3 itemStatesChanged:(id)a4
+- (void)itemStateCenter:(id)center itemStatesChanged:(id)changed
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  changedCopy = changed;
   v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v7 = v5;
+  v7 = changedCopy;
   v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v8)
   {
@@ -795,8 +795,8 @@ LABEL_25:
         }
 
         v12 = *(*(&v17 + 1) + 8 * i);
-        v13 = [v12 itemIdentifier];
-        [v6 setObject:v12 forKey:v13];
+        itemIdentifier = [v12 itemIdentifier];
+        [v6 setObject:v12 forKey:itemIdentifier];
       }
 
       v9 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -860,16 +860,16 @@ void __52__SKUIRowSection_itemStateCenter_itemStatesChanged___block_invoke_2(uin
   }
 }
 
-- (void)itemStateCenterRestrictionsChanged:(id)a3
+- (void)itemStateCenterRestrictionsChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __53__SKUIRowSection_itemStateCenterRestrictionsChanged___block_invoke;
   v6[3] = &unk_2781F80C8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = changedCopy;
+  v5 = changedCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -901,30 +901,30 @@ void __53__SKUIRowSection_itemStateCenterRestrictionsChanged___block_invoke_2(ui
   [v7 setRestricted:{objc_msgSend(v8, "isItemRestrictedWithParentalControlsRank:", objc_msgSend(v9, "parentalControlsRank"))}];
 }
 
-- (void)missingItemLoader:(id)a3 didLoadItems:(id)a4 invalidItemIdentifiers:(id)a5
+- (void)missingItemLoader:(id)loader didLoadItems:(id)items invalidItemIdentifiers:(id)identifiers
 {
-  v6 = a4;
-  if ([v6 count])
+  itemsCopy = items;
+  if ([itemsCopy count])
   {
-    v7 = [(SKUIStorePageSection *)self pageComponent];
-    v8 = [v7 _updateWithMissingItems:v6];
+    pageComponent = [(SKUIStorePageSection *)self pageComponent];
+    v8 = [pageComponent _updateWithMissingItems:itemsCopy];
     if ([v8 count])
     {
-      v9 = [v7 childComponents];
-      v10 = [(SKUIStorePageSection *)self context];
-      v11 = [v10 collectionView];
+      childComponents = [pageComponent childComponents];
+      context = [(SKUIStorePageSection *)self context];
+      collectionView = [context collectionView];
 
-      v12 = [(SKUIStorePageSection *)self sectionIndex];
+      sectionIndex = [(SKUIStorePageSection *)self sectionIndex];
       v15[0] = MEMORY[0x277D85DD0];
       v15[1] = 3221225472;
       v15[2] = __72__SKUIRowSection_missingItemLoader_didLoadItems_invalidItemIdentifiers___block_invoke;
       v15[3] = &unk_2781FBF20;
-      v16 = v11;
-      v17 = v9;
-      v18 = self;
-      v19 = v12;
-      v13 = v9;
-      v14 = v11;
+      v16 = collectionView;
+      v17 = childComponents;
+      selfCopy = self;
+      v19 = sectionIndex;
+      v13 = childComponents;
+      v14 = collectionView;
       [v8 enumerateIndexesUsingBlock:v15];
     }
   }
@@ -954,41 +954,41 @@ void __72__SKUIRowSection_missingItemLoader_didLoadItems_invalidItemIdentifiers_
   }
 }
 
-- (void)productPageOverlayDidDismiss:(id)a3
+- (void)productPageOverlayDidDismiss:(id)dismiss
 {
-  v9 = [(SKUIRowSection *)self _overlaySourceCell];
-  v4 = [v9 layout];
-  [v4 setIconImageHidden:0];
+  _overlaySourceCell = [(SKUIRowSection *)self _overlaySourceCell];
+  layout = [_overlaySourceCell layout];
+  [layout setIconImageHidden:0];
 
   overlaySourceComponent = self->_overlaySourceComponent;
   self->_overlaySourceComponent = 0;
 
-  v6 = [(SKUIStorePageSection *)self context];
-  v7 = [v6 parentViewController];
-  [v7 _pageSectionDidDismissOverlayController:self->_overlayController];
+  context = [(SKUIStorePageSection *)self context];
+  parentViewController = [context parentViewController];
+  [parentViewController _pageSectionDidDismissOverlayController:self->_overlayController];
 
   [(SKUIProductPageOverlayController *)self->_overlayController setDelegate:0];
   overlayController = self->_overlayController;
   self->_overlayController = 0;
 }
 
-- (double)_cellContentHeightForRowWidth:(double)a3
+- (double)_cellContentHeightForRowWidth:(double)width
 {
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
   v13 = 0;
-  v5 = [(SKUIStorePageSection *)self pageComponent];
-  v6 = [v5 childComponents];
+  pageComponent = [(SKUIStorePageSection *)self pageComponent];
+  childComponents = [pageComponent childComponents];
 
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __48__SKUIRowSection__cellContentHeightForRowWidth___block_invoke;
   v9[3] = &unk_2781FBF48;
-  *&v9[6] = a3;
+  *&v9[6] = width;
   v9[4] = self;
   v9[5] = &v10;
-  [v6 enumerateObjectsUsingBlock:v9];
+  [childComponents enumerateObjectsUsingBlock:v9];
   v7 = v11[3];
 
   _Block_object_dispose(&v10, 8);
@@ -1017,15 +1017,15 @@ uint64_t __48__SKUIRowSection__cellContentHeightForRowWidth___block_invoke(uint6
     v5 = self->_columnViews;
     self->_columnViews = v4;
 
-    v6 = [(SKUIStorePageSection *)self pageComponent];
-    v7 = [v6 childComponents];
+    pageComponent = [(SKUIStorePageSection *)self pageComponent];
+    childComponents = [pageComponent childComponents];
 
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __30__SKUIRowSection__columnViews__block_invoke;
     v9[3] = &unk_2781FBE80;
     v9[4] = self;
-    [v7 enumerateObjectsUsingBlock:v9];
+    [childComponents enumerateObjectsUsingBlock:v9];
 
     columnViews = self->_columnViews;
   }
@@ -1076,19 +1076,19 @@ LABEL_7:
 LABEL_8:
 }
 
-- (double)_columnWidthForColumnIndex:(int64_t)a3 rowWidth:(double)a4
+- (double)_columnWidthForColumnIndex:(int64_t)index rowWidth:(double)width
 {
-  v7 = [(SKUIStorePageSection *)self pageComponent];
-  v8 = v7;
-  if (self->_isPad || ![v7 shouldAutoFlow])
+  pageComponent = [(SKUIStorePageSection *)self pageComponent];
+  v8 = pageComponent;
+  if (self->_isPad || ![pageComponent shouldAutoFlow])
   {
-    v10 = [v8 columnWidths];
-    v11 = [v8 numberOfColumns];
+    columnWidths = [v8 columnWidths];
+    numberOfColumns = [v8 numberOfColumns];
     [(SKUIRowSection *)self _interColumnSpacing];
     v13 = v12;
-    *&v12 = (a4 + -30.0 - v12 * (v11 - 1)) / v11;
+    *&v12 = (width + -30.0 - v12 * (numberOfColumns - 1)) / numberOfColumns;
     v14 = floorf(*&v12);
-    if (a3 < 1)
+    if (index < 1)
     {
       v16 = 15.0;
     }
@@ -1099,65 +1099,65 @@ LABEL_8:
       v16 = 15.0;
       do
       {
-        if ([v10 count] <= a3)
+        if ([columnWidths count] <= index)
         {
-          v18 = 1;
+          integerValue = 1;
         }
 
         else
         {
-          v17 = [v10 objectAtIndex:v15];
-          v18 = [v17 integerValue];
+          v17 = [columnWidths objectAtIndex:v15];
+          integerValue = [v17 integerValue];
         }
 
-        v16 = v13 + v16 + v13 * (v18 - 1) + v18 * v14;
+        v16 = v13 + v16 + v13 * (integerValue - 1) + integerValue * v14;
         ++v15;
       }
 
-      while (a3 != v15);
+      while (index != v15);
     }
 
-    if ([v10 count] <= a3)
+    if ([columnWidths count] <= index)
     {
-      v20 = 1;
-    }
-
-    else
-    {
-      v19 = [v10 objectAtIndex:a3];
-      v20 = [v19 integerValue];
-    }
-
-    if (v11 - v20 == a3)
-    {
-      v9 = a4 + -15.0 - v16;
+      integerValue2 = 1;
     }
 
     else
     {
-      v9 = v13 * (v20 - 1) + v20 * v14;
+      v19 = [columnWidths objectAtIndex:index];
+      integerValue2 = [v19 integerValue];
+    }
+
+    if (numberOfColumns - integerValue2 == index)
+    {
+      v9 = width + -15.0 - v16;
+    }
+
+    else
+    {
+      v9 = v13 * (integerValue2 - 1) + integerValue2 * v14;
     }
   }
 
   else
   {
-    v9 = a4 + -30.0;
+    v9 = width + -30.0;
   }
 
   return v9;
 }
 
-- (UIEdgeInsets)_edgeInsetsForColumnIndex:(int64_t)a3
+- (UIEdgeInsets)_edgeInsetsForColumnIndex:(int64_t)index
 {
-  v5 = [(SKUIStorePageSection *)self pageComponent];
+  pageComponent = [(SKUIStorePageSection *)self pageComponent];
   [(SKUIRowSection *)self _interColumnSpacing];
   v7 = v6;
-  v8 = [v5 numberOfColumns];
-  if (self->_isPad || (v9 = 15.0, v10 = 15.0, ([v5 shouldAutoFlow] & 1) == 0))
+  numberOfColumns = [pageComponent numberOfColumns];
+  if (self->_isPad || (v9 = 15.0, v10 = 15.0, ([pageComponent shouldAutoFlow] & 1) == 0))
   {
     v11 = v7 * 0.5;
     v12 = floorf(v11);
-    if (a3)
+    if (index)
     {
       v10 = v12;
     }
@@ -1167,7 +1167,7 @@ LABEL_8:
       v10 = 15.0;
     }
 
-    if (v8 - 1 == a3)
+    if (numberOfColumns - 1 == index)
     {
       v9 = 15.0;
     }
@@ -1189,9 +1189,9 @@ LABEL_8:
   return result;
 }
 
-- (id)_editorialLayoutForEditorial:(id)a3 columnIndex:(int64_t)a4
+- (id)_editorialLayoutForEditorial:(id)editorial columnIndex:(int64_t)index
 {
-  v6 = a3;
+  editorialCopy = editorial;
   editorialLayouts = self->_editorialLayouts;
   if (!editorialLayouts)
   {
@@ -1202,32 +1202,32 @@ LABEL_8:
     editorialLayouts = self->_editorialLayouts;
   }
 
-  v10 = [(NSMapTable *)editorialLayouts objectForKey:v6];
+  v10 = [(NSMapTable *)editorialLayouts objectForKey:editorialCopy];
   if (!v10)
   {
-    v11 = [(SKUIStorePageSection *)self context];
+    context = [(SKUIStorePageSection *)self context];
     v12 = [SKUIEditorialLayout alloc];
-    v13 = [(SKUIStorePageSection *)self context];
-    v14 = [v13 textLayoutCache];
-    v10 = [(SKUIEditorialLayout *)v12 initWithEditorial:v6 layoutCache:v14];
+    context2 = [(SKUIStorePageSection *)self context];
+    textLayoutCache = [context2 textLayoutCache];
+    v10 = [(SKUIEditorialLayout *)v12 initWithEditorial:editorialCopy layoutCache:textLayoutCache];
 
-    [v11 portraitPageWidth];
-    [(SKUIRowSection *)self _columnWidthForColumnIndex:a4 rowWidth:?];
+    [context portraitPageWidth];
+    [(SKUIRowSection *)self _columnWidthForColumnIndex:index rowWidth:?];
     [(SKUIEditorialLayout *)v10 setLayoutWidth:0 forOrientation:?];
-    [v11 landscapePageWidth];
-    [(SKUIRowSection *)self _columnWidthForColumnIndex:a4 rowWidth:?];
+    [context landscapePageWidth];
+    [(SKUIRowSection *)self _columnWidthForColumnIndex:index rowWidth:?];
     [(SKUIEditorialLayout *)v10 setLayoutWidth:1 forOrientation:?];
-    [(NSMapTable *)self->_editorialLayouts setObject:v10 forKey:v6];
+    [(NSMapTable *)self->_editorialLayouts setObject:v10 forKey:editorialCopy];
   }
 
   return v10;
 }
 
-- (id)_editorialLayoutForLockup:(id)a3 columnIndex:(int64_t)a4
+- (id)_editorialLayoutForLockup:(id)lockup columnIndex:(int64_t)index
 {
-  v6 = a3;
-  v7 = [v6 editorial];
-  if (v7)
+  lockupCopy = lockup;
+  editorial = [lockupCopy editorial];
+  if (editorial)
   {
     editorialLayouts = self->_editorialLayouts;
     if (!editorialLayouts)
@@ -1239,31 +1239,31 @@ LABEL_8:
       editorialLayouts = self->_editorialLayouts;
     }
 
-    v11 = [(NSMapTable *)editorialLayouts objectForKey:v7];
+    v11 = [(NSMapTable *)editorialLayouts objectForKey:editorial];
     if (!v11)
     {
-      v12 = [(SKUIStorePageSection *)self context];
+      context = [(SKUIStorePageSection *)self context];
       v13 = [SKUIEditorialLayout alloc];
-      v14 = [(SKUIStorePageSection *)self context];
-      v15 = [v14 textLayoutCache];
-      v11 = [(SKUIEditorialLayout *)v13 initWithEditorial:v7 layoutCache:v15];
+      context2 = [(SKUIStorePageSection *)self context];
+      textLayoutCache = [context2 textLayoutCache];
+      v11 = [(SKUIEditorialLayout *)v13 initWithEditorial:editorial layoutCache:textLayoutCache];
 
       v19 = 0uLL;
       v20 = 0;
-      [(SKUIRowSection *)self _lockupStyleForComponent:v6 columnIndex:a4];
-      [v12 portraitPageWidth];
-      [(SKUIRowSection *)self _columnWidthForColumnIndex:a4 rowWidth:?];
+      [(SKUIRowSection *)self _lockupStyleForComponent:lockupCopy columnIndex:index];
+      [context portraitPageWidth];
+      [(SKUIRowSection *)self _columnWidthForColumnIndex:index rowWidth:?];
       v17 = v19;
       v18 = v20;
       [SKUIEditorialLockupCellLayout editorialWidthForCellWidth:&v17 lockupStyle:?];
       [(SKUIEditorialLayout *)v11 setLayoutWidth:0 forOrientation:?];
-      [v12 landscapePageWidth];
-      [(SKUIRowSection *)self _columnWidthForColumnIndex:a4 rowWidth:?];
+      [context landscapePageWidth];
+      [(SKUIRowSection *)self _columnWidthForColumnIndex:index rowWidth:?];
       v17 = v19;
       v18 = v20;
       [SKUIEditorialLockupCellLayout editorialWidthForCellWidth:&v17 lockupStyle:?];
       [(SKUIEditorialLayout *)v11 setLayoutWidth:1 forOrientation:?];
-      [(NSMapTable *)self->_editorialLayouts setObject:v11 forKey:v7];
+      [(NSMapTable *)self->_editorialLayouts setObject:v11 forKey:editorial];
     }
   }
 
@@ -1275,20 +1275,20 @@ LABEL_8:
   return v11;
 }
 
-- (void)_enumerateLockupsWithBlock:(id)a3
+- (void)_enumerateLockupsWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(SKUIStorePageSection *)self sectionIndex];
-  v6 = [(SKUIStorePageSection *)self pageComponent];
-  v7 = [v6 childComponents];
+  blockCopy = block;
+  sectionIndex = [(SKUIStorePageSection *)self sectionIndex];
+  pageComponent = [(SKUIStorePageSection *)self pageComponent];
+  childComponents = [pageComponent childComponents];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __45__SKUIRowSection__enumerateLockupsWithBlock___block_invoke;
   v9[3] = &unk_2781FBF70;
-  v10 = v4;
-  v11 = v5;
-  v8 = v4;
-  [v7 enumerateObjectsUsingBlock:v9];
+  v10 = blockCopy;
+  v11 = sectionIndex;
+  v8 = blockCopy;
+  [childComponents enumerateObjectsUsingBlock:v9];
 }
 
 void __45__SKUIRowSection__enumerateLockupsWithBlock___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -1301,19 +1301,19 @@ void __45__SKUIRowSection__enumerateLockupsWithBlock___block_invoke(uint64_t a1,
   }
 }
 
-- (void)_expandEditorialComponent:(id)a3 columnIndex:(int64_t)a4
+- (void)_expandEditorialComponent:(id)component columnIndex:(int64_t)index
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(SKUIStorePageSection *)self context];
-  v8 = [v7 collectionView];
+  componentCopy = component;
+  context = [(SKUIStorePageSection *)self context];
+  collectionView = [context collectionView];
 
-  v9 = SKUIEditorialLayoutOrientationForView(v8);
-  v10 = [(SKUIRowSection *)self _editorialLayoutForEditorial:v6 columnIndex:a4];
+  v9 = SKUIEditorialLayoutOrientationForView(collectionView);
+  v10 = [(SKUIRowSection *)self _editorialLayoutForEditorial:componentCopy columnIndex:index];
 
   v11 = [v10 bodyTextLayoutForOrientation:v9];
 
-  if ([v11 requiresTruncation] && (-[NSMutableIndexSet containsIndex:](self->_expandedEditorialIndexes, "containsIndex:", a4) & 1) == 0)
+  if ([v11 requiresTruncation] && (-[NSMutableIndexSet containsIndex:](self->_expandedEditorialIndexes, "containsIndex:", index) & 1) == 0)
   {
     expandedEditorialIndexes = self->_expandedEditorialIndexes;
     if (!expandedEditorialIndexes)
@@ -1325,61 +1325,61 @@ void __45__SKUIRowSection__enumerateLockupsWithBlock___block_invoke(uint64_t a1,
       expandedEditorialIndexes = self->_expandedEditorialIndexes;
     }
 
-    [(NSMutableIndexSet *)expandedEditorialIndexes addIndex:a4];
+    [(NSMutableIndexSet *)expandedEditorialIndexes addIndex:index];
     self->_landscapeCellContentHeight = 0.0;
     self->_portraitCellContentHeight = 0.0;
-    v15 = [MEMORY[0x277CCAA70] indexPathForItem:a4 inSection:{-[SKUIStorePageSection sectionIndex](self, "sectionIndex")}];
+    v15 = [MEMORY[0x277CCAA70] indexPathForItem:index inSection:{-[SKUIStorePageSection sectionIndex](self, "sectionIndex")}];
     v17[0] = v15;
     v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:1];
-    [v8 reloadItemsAtIndexPaths:v16];
+    [collectionView reloadItemsAtIndexPaths:v16];
   }
 }
 
-- (double)_heightForArtwork:(id)a3 columnIndex:(int64_t)a4 rowWidth:(double)a5
+- (double)_heightForArtwork:(id)artwork columnIndex:(int64_t)index rowWidth:(double)width
 {
-  v8 = a3;
-  [(SKUIRowSection *)self _columnWidthForColumnIndex:a4 rowWidth:a5];
+  artworkCopy = artwork;
+  [(SKUIRowSection *)self _columnWidthForColumnIndex:index rowWidth:width];
   v10 = v9;
-  v11 = [v8 height];
-  v12 = [v8 width];
+  height = [artworkCopy height];
+  width = [artworkCopy width];
 
-  v13 = v10 / v12 * v11;
+  v13 = v10 / width * height;
   return floorf(v13);
 }
 
-- (double)_heightForComponent:(id)a3 columnIndex:(double)a4 rowWidth:(double)a5
+- (double)_heightForComponent:(id)component columnIndex:(double)index rowWidth:(double)width
 {
-  v8 = a3;
-  v9 = [v8 componentType];
+  componentCopy = component;
+  componentType = [componentCopy componentType];
   v10 = 0.0;
-  if (v9 > 8)
+  if (componentType > 8)
   {
-    switch(v9)
+    switch(componentType)
     {
       case 9:
-        [(SKUIRowSection *)self _heightForLockupComponent:v8 columnIndex:a4 rowWidth:a5];
+        [(SKUIRowSection *)self _heightForLockupComponent:componentCopy columnIndex:index rowWidth:width];
         goto LABEL_14;
       case 10:
-        [(SKUIRowSection *)self _heightForMediaComponent:v8 columnIndex:a4 rowWidth:a5];
+        [(SKUIRowSection *)self _heightForMediaComponent:componentCopy columnIndex:index rowWidth:width];
         goto LABEL_14;
       case 14:
-        [v8 height];
+        [componentCopy height];
         goto LABEL_14;
     }
   }
 
   else
   {
-    switch(v9)
+    switch(componentType)
     {
       case 2:
-        [(SKUIRowSection *)self _heightForCountdownComponent:v8 columnIndex:a4 rowWidth:a5];
+        [(SKUIRowSection *)self _heightForCountdownComponent:componentCopy columnIndex:index rowWidth:width];
         goto LABEL_14;
       case 5:
-        [(SKUIRowSection *)self _heightForEditorialComponent:v8 columnIndex:a4 rowWidth:a5];
+        [(SKUIRowSection *)self _heightForEditorialComponent:componentCopy columnIndex:index rowWidth:width];
         goto LABEL_14;
       case 7:
-        [(SKUIRowSection *)self _heightForGalleryComponent:v8 columnIndex:a4 rowWidth:a5];
+        [(SKUIRowSection *)self _heightForGalleryComponent:componentCopy columnIndex:index rowWidth:width];
 LABEL_14:
         v10 = v11;
         break;
@@ -1389,15 +1389,15 @@ LABEL_14:
   return v10;
 }
 
-- (double)_heightForCountdownComponent:(id)a3 columnIndex:(int64_t)a4 rowWidth:(double)a5
+- (double)_heightForCountdownComponent:(id)component columnIndex:(int64_t)index rowWidth:(double)width
 {
-  v8 = [a3 countdown];
-  v9 = [v8 artworkProvider];
-  v10 = [v9 largestArtwork];
+  countdown = [component countdown];
+  artworkProvider = [countdown artworkProvider];
+  largestArtwork = [artworkProvider largestArtwork];
 
-  if (v10)
+  if (largestArtwork)
   {
-    [(SKUIRowSection *)self _heightForArtwork:v10 columnIndex:a4 rowWidth:a5];
+    [(SKUIRowSection *)self _heightForArtwork:largestArtwork columnIndex:index rowWidth:width];
     v12 = v11;
   }
 
@@ -1409,28 +1409,28 @@ LABEL_14:
   return v12;
 }
 
-- (double)_heightForEditorialComponent:(id)a3 columnIndex:(int64_t)a4 rowWidth:(double)a5
+- (double)_heightForEditorialComponent:(id)component columnIndex:(int64_t)index rowWidth:(double)width
 {
-  v7 = [(SKUIRowSection *)self _editorialLayoutForEditorial:a3 columnIndex:a5];
-  v8 = [(SKUIStorePageSection *)self context];
-  v9 = [v8 collectionView];
-  v10 = SKUIEditorialLayoutOrientationForView(v9);
+  v7 = [(SKUIRowSection *)self _editorialLayoutForEditorial:component columnIndex:width];
+  context = [(SKUIStorePageSection *)self context];
+  collectionView = [context collectionView];
+  v10 = SKUIEditorialLayoutOrientationForView(collectionView);
 
-  [v7 layoutHeightForOrientation:v10 expanded:{-[NSMutableIndexSet containsIndex:](self->_expandedEditorialIndexes, "containsIndex:", a4)}];
+  [v7 layoutHeightForOrientation:v10 expanded:{-[NSMutableIndexSet containsIndex:](self->_expandedEditorialIndexes, "containsIndex:", index)}];
   v12 = v11 + 17.0;
 
   return v12;
 }
 
-- (double)_heightForGalleryComponent:(id)a3 columnIndex:(int64_t)a4 rowWidth:(double)a5
+- (double)_heightForGalleryComponent:(id)component columnIndex:(int64_t)index rowWidth:(double)width
 {
   v21 = *MEMORY[0x277D85DE8];
-  v8 = [a3 childComponents];
+  childComponents = [component childComponents];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v9 = [childComponents countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v9)
   {
     v10 = v9;
@@ -1442,17 +1442,17 @@ LABEL_14:
       {
         if (*v17 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(childComponents);
         }
 
-        [(SKUIRowSection *)self _heightForMediaComponent:*(*(&v16 + 1) + 8 * i) columnIndex:a4 rowWidth:a5];
+        [(SKUIRowSection *)self _heightForMediaComponent:*(*(&v16 + 1) + 8 * i) columnIndex:index rowWidth:width];
         if (v12 < v14)
         {
           v12 = v14;
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v10 = [childComponents countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v10);
@@ -1466,27 +1466,27 @@ LABEL_14:
   return v12;
 }
 
-- (double)_heightForLockupComponent:(id)a3 columnIndex:(int64_t)a4 rowWidth:(double)a5
+- (double)_heightForLockupComponent:(id)component columnIndex:(int64_t)index rowWidth:(double)width
 {
-  v7 = a3;
-  v8 = [(SKUIStorePageSection *)self context];
-  v9 = [v7 editorial];
+  componentCopy = component;
+  context = [(SKUIStorePageSection *)self context];
+  editorial = [componentCopy editorial];
   v24 = 0uLL;
   v25 = 0;
-  [(SKUIRowSection *)self _lockupStyleForComponent:v7 columnIndex:a4];
-  v10 = [v7 item];
-  v11 = [v8 parentViewController];
-  v12 = [v11 clientContext];
+  [(SKUIRowSection *)self _lockupStyleForComponent:componentCopy columnIndex:index];
+  item = [componentCopy item];
+  parentViewController = [context parentViewController];
+  clientContext = [parentViewController clientContext];
   v22 = v24;
   v23 = v25;
-  [SKUILockupItemCellLayout heightForLockupStyle:&v22 item:v10 editorial:v9 clientContext:v12];
+  [SKUILockupItemCellLayout heightForLockupStyle:&v22 item:item editorial:editorial clientContext:clientContext];
   v14 = v13;
 
-  if (v9)
+  if (editorial)
   {
-    v15 = [(SKUIRowSection *)self _editorialLayoutForLockup:v7 columnIndex:a4];
-    v16 = [v8 collectionView];
-    v17 = SKUIEditorialLayoutOrientationForView(v16);
+    v15 = [(SKUIRowSection *)self _editorialLayoutForLockup:componentCopy columnIndex:index];
+    collectionView = [context collectionView];
+    v17 = SKUIEditorialLayoutOrientationForView(collectionView);
 
     [v15 layoutHeightForOrientation:v17 expanded:1];
     v19 = v18 + 17.0;
@@ -1513,12 +1513,12 @@ LABEL_14:
   return v14;
 }
 
-- (double)_heightForMediaComponent:(id)a3 columnIndex:(int64_t)a4 rowWidth:(double)a5
+- (double)_heightForMediaComponent:(id)component columnIndex:(int64_t)index rowWidth:(double)width
 {
-  v8 = [a3 bestThumbnailArtwork];
-  if (v8)
+  bestThumbnailArtwork = [component bestThumbnailArtwork];
+  if (bestThumbnailArtwork)
   {
-    [(SKUIRowSection *)self _heightForArtwork:v8 columnIndex:a4 rowWidth:a5];
+    [(SKUIRowSection *)self _heightForArtwork:bestThumbnailArtwork columnIndex:index rowWidth:width];
     v10 = v9;
   }
 
@@ -1530,17 +1530,17 @@ LABEL_14:
   return v10;
 }
 
-- (id)_imageConsumerWithItem:(id)a3 lockupSize:(int64_t)a4
+- (id)_imageConsumerWithItem:(id)item lockupSize:(int64_t)size
 {
-  v5 = [a3 itemKind];
-  if (v5 <= 0x11 && ((1 << v5) & 0x21020) != 0)
+  itemKind = [item itemKind];
+  if (itemKind <= 0x11 && ((1 << itemKind) & 0x21020) != 0)
   {
-    v6 = [SKUIStyledImageDataConsumer lockupIconConsumerWithSize:a4, v5];
+    v6 = [SKUIStyledImageDataConsumer lockupIconConsumerWithSize:size, itemKind];
   }
 
   else
   {
-    v6 = [SKUIProductImageDataConsumer lockupConsumerWithSize:a4 itemKind:v5];
+    v6 = [SKUIProductImageDataConsumer lockupConsumerWithSize:size itemKind:itemKind];
   }
 
   return v6;
@@ -1551,9 +1551,9 @@ LABEL_14:
   result = 20.0;
   if (self->_isPad)
   {
-    v3 = [(SKUIStorePageSection *)self context];
-    v4 = [v3 collectionView];
-    [v4 bounds];
+    context = [(SKUIStorePageSection *)self context];
+    collectionView = [context collectionView];
+    [collectionView bounds];
     v6 = v5;
     v8 = v7;
 
@@ -1567,46 +1567,46 @@ LABEL_14:
   return result;
 }
 
-- (void)_loadImagesForGalleryComponent:(id)a3 columnIndex:(int64_t)a4
+- (void)_loadImagesForGalleryComponent:(id)component columnIndex:(int64_t)index
 {
-  v6 = a3;
-  v7 = [(SKUIRowSection *)self _viewControllerForGalleryComponent:v6];
+  componentCopy = component;
+  v7 = [(SKUIRowSection *)self _viewControllerForGalleryComponent:componentCopy];
   if (v7)
   {
-    v8 = [(SKUIStorePageSection *)self context];
-    [v8 landscapePageWidth];
+    context = [(SKUIStorePageSection *)self context];
+    [context landscapePageWidth];
     v10 = v9;
-    [v8 portraitPageWidth];
+    [context portraitPageWidth];
     if (v10 >= v11)
     {
       v11 = v10;
     }
 
-    [(SKUIRowSection *)self _columnWidthForColumnIndex:a4 rowWidth:v11];
+    [(SKUIRowSection *)self _columnWidthForColumnIndex:index rowWidth:v11];
     v13 = v12;
-    v14 = [v6 childComponents];
+    childComponents = [componentCopy childComponents];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __61__SKUIRowSection__loadImagesForGalleryComponent_columnIndex___block_invoke;
     v15[3] = &unk_2781FBF98;
     v16 = v7;
     v17 = v13;
-    [v14 enumerateObjectsUsingBlock:v15];
+    [childComponents enumerateObjectsUsingBlock:v15];
   }
 }
 
-- (id)_lockupImageForComponent:(id)a3
+- (id)_lockupImageForComponent:(id)component
 {
-  v4 = a3;
-  v5 = [(SKUIStorePageSection *)self context];
-  v6 = [v5 resourceLoader];
+  componentCopy = component;
+  context = [(SKUIStorePageSection *)self context];
+  resourceLoader = [context resourceLoader];
 
-  v7 = [(NSMapTable *)self->_componentArtworkRequestIDs objectForKey:v4];
+  v7 = [(NSMapTable *)self->_componentArtworkRequestIDs objectForKey:componentCopy];
   v8 = v7;
   if (v7)
   {
-    v9 = [v6 cachedResourceForRequestIdentifier:{objc_msgSend(v7, "unsignedIntegerValue")}];
-    v10 = v9;
+    v9 = [resourceLoader cachedResourceForRequestIdentifier:{objc_msgSend(v7, "unsignedIntegerValue")}];
+    item = v9;
     if (v9)
     {
       v11 = v9;
@@ -1615,54 +1615,54 @@ LABEL_6:
       goto LABEL_12;
     }
 
-    if ([v6 trySetReason:1 forRequestWithIdentifier:{objc_msgSend(v8, "unsignedIntegerValue")}])
+    if ([resourceLoader trySetReason:1 forRequestWithIdentifier:{objc_msgSend(v8, "unsignedIntegerValue")}])
     {
-      v11 = [(SKUIRowSection *)self _lockupPlaceholderForComponent:v4];
+      v11 = [(SKUIRowSection *)self _lockupPlaceholderForComponent:componentCopy];
       goto LABEL_6;
     }
   }
 
-  v10 = [v4 item];
-  if (v4)
+  item = [componentCopy item];
+  if (componentCopy)
   {
-    [v4 lockupStyle];
+    [componentCopy lockupStyle];
   }
 
-  v13 = SKUILockupImageSizeForLockupSize(0, [v10 itemKind]);
-  v14 = [MEMORY[0x277D759A0] mainScreen];
-  [v14 scale];
+  v13 = SKUILockupImageSizeForLockupSize(0, [item itemKind]);
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v16 = (v15 * v13);
 
-  v17 = [v10 artworkURLForSize:v16];
+  v17 = [item artworkURLForSize:v16];
   if (v17)
   {
     v18 = objc_alloc_init(SKUIArtworkRequest);
-    v19 = [(SKUIRowSection *)self _imageConsumerWithItem:v10 lockupSize:0];
+    v19 = [(SKUIRowSection *)self _imageConsumerWithItem:item lockupSize:0];
     [(SKUIArtworkRequest *)v18 setDataConsumer:v19];
 
     [(SKUIArtworkRequest *)v18 setDelegate:self];
     [(SKUIArtworkRequest *)v18 setURL:v17];
     componentArtworkRequestIDs = self->_componentArtworkRequestIDs;
     v21 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[SKUIResourceRequest requestIdentifier](v18, "requestIdentifier")}];
-    [(NSMapTable *)componentArtworkRequestIDs setObject:v21 forKey:v4];
+    [(NSMapTable *)componentArtworkRequestIDs setObject:v21 forKey:componentCopy];
 
-    [v6 loadResourceWithRequest:v18 reason:1];
+    [resourceLoader loadResourceWithRequest:v18 reason:1];
   }
 
-  v12 = [(SKUIRowSection *)self _lockupPlaceholderForComponent:v4];
+  v12 = [(SKUIRowSection *)self _lockupPlaceholderForComponent:componentCopy];
 
 LABEL_12:
 
   return v12;
 }
 
-- (id)_lockupPlaceholderForComponent:(id)a3
+- (id)_lockupPlaceholderForComponent:(id)component
 {
-  v4 = a3;
-  v5 = [v4 item];
-  if (v4)
+  componentCopy = component;
+  item = [componentCopy item];
+  if (componentCopy)
   {
-    [v4 lockupStyle];
+    [componentCopy lockupStyle];
     v6 = v11;
   }
 
@@ -1671,7 +1671,7 @@ LABEL_12:
     v6 = 0;
   }
 
-  v7 = [(SKUIRowSection *)self _imageConsumerWithItem:v5 lockupSize:v6];
+  v7 = [(SKUIRowSection *)self _imageConsumerWithItem:item lockupSize:v6];
 
   v8 = [MEMORY[0x277D75348] colorWithWhite:0.8 alpha:1.0];
   v9 = [v7 imageForColor:v8];
@@ -1679,17 +1679,17 @@ LABEL_12:
   return v9;
 }
 
-- (SKUILockupStyle)_lockupStyleForComponent:(SEL)a3 columnIndex:(id)a4
+- (SKUILockupStyle)_lockupStyleForComponent:(SEL)component columnIndex:(id)index
 {
-  v8 = a4;
+  indexCopy = index;
   retstr->layoutStyle = 0;
   retstr->visibleFields = 0;
   retstr->artworkSize = 0;
-  v16 = v8;
-  if (v8)
+  v16 = indexCopy;
+  if (indexCopy)
   {
-    [v8 lockupStyle];
-    v8 = v16;
+    [indexCopy lockupStyle];
+    indexCopy = v16;
   }
 
   if (self->_isPad)
@@ -1704,31 +1704,31 @@ LABEL_12:
 
     else
     {
-      v9 = [(SKUIStorePageSection *)self pageComponent];
-      if ([v9 numberOfColumns] < 2)
+      pageComponent = [(SKUIStorePageSection *)self pageComponent];
+      if ([pageComponent numberOfColumns] < 2)
       {
 
         goto LABEL_12;
       }
 
-      v10 = [v9 columnWidths];
-      v11 = [v10 objectAtIndex:a5];
+      columnWidths = [pageComponent columnWidths];
+      v11 = [columnWidths objectAtIndex:a5];
 
-      v12 = [v11 integerValue];
-      v8 = v16;
-      if (v12 != 1)
+      integerValue = [v11 integerValue];
+      indexCopy = v16;
+      if (integerValue != 1)
       {
         goto LABEL_13;
       }
     }
 
-    v13 = [v8 editorial];
+    editorial = [indexCopy editorial];
 
-    if (v13)
+    if (editorial)
     {
       retstr->layoutStyle = 0;
 LABEL_12:
-      v8 = v16;
+      indexCopy = v16;
       goto LABEL_13;
     }
 
@@ -1739,7 +1739,7 @@ LABEL_12:
       goto LABEL_12;
     }
 
-    v8 = v16;
+    indexCopy = v16;
     if (!layoutStyle)
     {
       retstr->layoutStyle = 2;
@@ -1757,9 +1757,9 @@ LABEL_13:
   if (!missingItemLoader)
   {
     v4 = [SKUIMissingItemLoader alloc];
-    v5 = [(SKUIStorePageSection *)self context];
-    v6 = [v5 resourceLoader];
-    v7 = [(SKUIMissingItemLoader *)v4 initWithResourceLoader:v6];
+    context = [(SKUIStorePageSection *)self context];
+    resourceLoader = [context resourceLoader];
+    v7 = [(SKUIMissingItemLoader *)v4 initWithResourceLoader:resourceLoader];
     v8 = self->_missingItemLoader;
     self->_missingItemLoader = v7;
 
@@ -1770,31 +1770,31 @@ LABEL_13:
   return missingItemLoader;
 }
 
-- (id)_newSizeToFitArtworkRequestWithArtwork:(id)a3 columnIndex:(int64_t)a4
+- (id)_newSizeToFitArtworkRequestWithArtwork:(id)artwork columnIndex:(int64_t)index
 {
-  v6 = a3;
+  artworkCopy = artwork;
   v7 = objc_alloc_init(SKUIArtworkRequest);
   [(SKUIArtworkRequest *)v7 setDelegate:self];
-  v8 = [v6 URL];
+  v8 = [artworkCopy URL];
 
   [(SKUIArtworkRequest *)v7 setURL:v8];
-  v9 = [(SKUIStorePageSection *)self context];
-  [v9 landscapePageWidth];
+  context = [(SKUIStorePageSection *)self context];
+  [context landscapePageWidth];
   v11 = v10;
-  [v9 portraitPageWidth];
+  [context portraitPageWidth];
   if (v11 >= v12)
   {
     v12 = v11;
   }
 
-  [(SKUIRowSection *)self _columnWidthForColumnIndex:a4 rowWidth:v12];
+  [(SKUIRowSection *)self _columnWidthForColumnIndex:index rowWidth:v12];
   v13 = [SKUISizeToFitImageDataConsumer consumerWithConstraintSize:?];
   [(SKUIArtworkRequest *)v7 setDataConsumer:v13];
 
   return v7;
 }
 
-- (id)_newViewWithMediaComponent:(id)a3
+- (id)_newViewWithMediaComponent:(id)component
 {
   v4 = objc_alloc_init(SKUIEmbeddedMediaView);
   [(SKUIEmbeddedMediaView *)v4 setDelegate:self];
@@ -1805,15 +1805,15 @@ LABEL_13:
 {
   if (self->_overlaySourceComponent)
   {
-    v3 = [(SKUIStorePageSection *)self context];
-    v4 = [v3 collectionView];
+    context = [(SKUIStorePageSection *)self context];
+    collectionView = [context collectionView];
 
-    v5 = [(SKUIStorePageSection *)self pageComponent];
-    v6 = [v5 childComponents];
-    v7 = [v6 indexOfObjectIdenticalTo:self->_overlaySourceComponent];
+    pageComponent = [(SKUIStorePageSection *)self pageComponent];
+    childComponents = [pageComponent childComponents];
+    v7 = [childComponents indexOfObjectIdenticalTo:self->_overlaySourceComponent];
 
     v8 = [MEMORY[0x277CCAA70] indexPathForItem:v7 inSection:{-[SKUIStorePageSection sectionIndex](self, "sectionIndex")}];
-    v9 = [v4 cellForItemAtIndexPath:v8];
+    v9 = [collectionView cellForItemAtIndexPath:v8];
   }
 
   else
@@ -1824,32 +1824,32 @@ LABEL_13:
   return v9;
 }
 
-- (id)_popSourceViewForOverlayController:(id)a3
+- (id)_popSourceViewForOverlayController:(id)controller
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_overlaySourceComponent && [v4 numberOfVisibleOverlays] <= 1)
+  controllerCopy = controller;
+  v5 = controllerCopy;
+  if (self->_overlaySourceComponent && [controllerCopy numberOfVisibleOverlays] <= 1)
   {
-    v6 = [(SKUIRowSection *)self _overlaySourceCell];
-    v7 = [v6 layout];
-    v8 = [v7 iconImageView];
-    [v8 frame];
+    _overlaySourceCell = [(SKUIRowSection *)self _overlaySourceCell];
+    layout = [_overlaySourceCell layout];
+    iconImageView = [layout iconImageView];
+    [iconImageView frame];
     v10 = v9;
     v12 = v11;
     v14 = v13;
     v16 = v15;
     v17 = objc_alloc(MEMORY[0x277D755E8]);
-    v18 = [v7 iconImage];
-    v19 = [v17 initWithImage:v18];
+    iconImage = [layout iconImage];
+    v19 = [v17 initWithImage:iconImage];
 
-    v20 = [MEMORY[0x277D75348] clearColor];
-    [v19 setBackgroundColor:v20];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [v19 setBackgroundColor:clearColor];
 
-    v21 = [v8 superview];
-    [v21 convertRect:0 toView:{v10, v12, v14, v16}];
+    superview = [iconImageView superview];
+    [superview convertRect:0 toView:{v10, v12, v14, v16}];
     [v19 setFrame:?];
 
-    [v7 setIconImageHidden:1];
+    [layout setIconImageHidden:1];
   }
 
   else
@@ -1860,37 +1860,37 @@ LABEL_13:
   return v19;
 }
 
-- (void)_reloadEditorialCell:(id)a3 forComponent:(id)a4 columnIndex:(int64_t)a5
+- (void)_reloadEditorialCell:(id)cell forComponent:(id)component columnIndex:(int64_t)index
 {
-  v20 = a3;
-  v8 = a4;
-  v9 = [(SKUIRowSection *)self _editorialLayoutForEditorial:v8 columnIndex:a5];
-  v10 = [(SKUIStorePageSection *)self context];
-  v11 = [v10 collectionView];
-  v12 = SKUIEditorialLayoutOrientationForView(v11);
+  cellCopy = cell;
+  componentCopy = component;
+  v9 = [(SKUIRowSection *)self _editorialLayoutForEditorial:componentCopy columnIndex:index];
+  context = [(SKUIStorePageSection *)self context];
+  collectionView = [context collectionView];
+  v12 = SKUIEditorialLayoutOrientationForView(collectionView);
 
-  if (([(NSMutableIndexSet *)self->_expandedEditorialIndexes containsIndex:a5]& 1) != 0)
+  if (([(NSMutableIndexSet *)self->_expandedEditorialIndexes containsIndex:index]& 1) != 0)
   {
-    v13 = 0;
+    maximumBodyLines = 0;
   }
 
   else
   {
-    v13 = [v8 maximumBodyLines];
+    maximumBodyLines = [componentCopy maximumBodyLines];
   }
 
-  v14 = [v20 layout];
-  [v14 applyEditorialLayout:v9 withOrientation:v12 expanded:v13 == 0];
-  [(SKUIRowSection *)self _edgeInsetsForColumnIndex:a5];
-  [v14 setContentInset:?];
-  v15 = [(SKUIStorePageSection *)self context];
-  v16 = [v15 parentViewController];
-  v17 = [v16 clientContext];
+  layout = [cellCopy layout];
+  [layout applyEditorialLayout:v9 withOrientation:v12 expanded:maximumBodyLines == 0];
+  [(SKUIRowSection *)self _edgeInsetsForColumnIndex:index];
+  [layout setContentInset:?];
+  context2 = [(SKUIStorePageSection *)self context];
+  parentViewController = [context2 parentViewController];
+  clientContext = [parentViewController clientContext];
 
-  v18 = [v14 textBoxView];
-  if (v17)
+  textBoxView = [layout textBoxView];
+  if (clientContext)
   {
-    [v17 localizedStringForKey:@"MORE_BUTTON"];
+    [clientContext localizedStringForKey:@"MORE_BUTTON"];
   }
 
   else
@@ -1898,134 +1898,134 @@ LABEL_13:
     [SKUIClientContext localizedStringForKey:@"MORE_BUTTON" inBundles:0];
   }
   v19 = ;
-  [v18 setMoreButtonTitle:v19];
+  [textBoxView setMoreButtonTitle:v19];
 
-  [v18 setNumberOfVisibleLines:v13];
+  [textBoxView setNumberOfVisibleLines:maximumBodyLines];
 }
 
-- (void)_reloadEditorialLockupCell:(id)a3 forComponent:(id)a4 columnIndex:(int64_t)a5
+- (void)_reloadEditorialLockupCell:(id)cell forComponent:(id)component columnIndex:(int64_t)index
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(SKUIStorePageSection *)self context];
-  v11 = [v9 layout];
-  [v11 setClientContext:self->_clientContext];
-  [(SKUIRowSection *)self _edgeInsetsForColumnIndex:a5];
-  [v11 setContentInsets:?];
+  componentCopy = component;
+  cellCopy = cell;
+  context = [(SKUIStorePageSection *)self context];
+  layout = [cellCopy layout];
+  [layout setClientContext:self->_clientContext];
+  [(SKUIRowSection *)self _edgeInsetsForColumnIndex:index];
+  [layout setContentInsets:?];
   v23 = 0;
   v24 = 0;
   v25 = 0;
-  [(SKUIRowSection *)self _lockupStyleForComponent:v8 columnIndex:a5];
-  [v11 setLayoutStyle:v24];
-  [v11 setVisibleFields:v25];
-  v12 = [(SKUILockupComponent *)v8 item];
-  [v9 configureForItem:v12 clientContext:self->_clientContext];
-  [v9 setSeparatorStyle:0];
+  [(SKUIRowSection *)self _lockupStyleForComponent:componentCopy columnIndex:index];
+  [layout setLayoutStyle:v24];
+  [layout setVisibleFields:v25];
+  item = [(SKUILockupComponent *)componentCopy item];
+  [cellCopy configureForItem:item clientContext:self->_clientContext];
+  [cellCopy setSeparatorStyle:0];
 
-  v13 = [(SKUIRowSection *)self _lockupImageForComponent:v8];
-  v14 = [v11 lockupCellLayout];
-  [v14 setClientContext:self->_clientContext];
-  [v14 setIconImage:v13];
-  [v14 setIconImageHidden:self->_overlaySourceComponent == v8];
-  [v14 setImageBoundingSize:{SKUILockupImageSizeForLockupSize(v23, objc_msgSend(v12, "itemKind"))}];
-  [v14 setLockupSize:v23];
-  v15 = [(SKUIRowSection *)self _editorialLayoutForLockup:v8 columnIndex:a5];
+  v13 = [(SKUIRowSection *)self _lockupImageForComponent:componentCopy];
+  lockupCellLayout = [layout lockupCellLayout];
+  [lockupCellLayout setClientContext:self->_clientContext];
+  [lockupCellLayout setIconImage:v13];
+  [lockupCellLayout setIconImageHidden:self->_overlaySourceComponent == componentCopy];
+  [lockupCellLayout setImageBoundingSize:{SKUILockupImageSizeForLockupSize(v23, objc_msgSend(item, "itemKind"))}];
+  [lockupCellLayout setLockupSize:v23];
+  v15 = [(SKUIRowSection *)self _editorialLayoutForLockup:componentCopy columnIndex:index];
 
-  v16 = [(SKUIStorePageSection *)self context];
-  v17 = [v16 collectionView];
-  v18 = SKUIEditorialLayoutOrientationForView(v17);
+  context2 = [(SKUIStorePageSection *)self context];
+  collectionView = [context2 collectionView];
+  v18 = SKUIEditorialLayoutOrientationForView(collectionView);
 
-  [v11 applyEditorialLayout:v15 withOrientation:v18];
+  [layout applyEditorialLayout:v15 withOrientation:v18];
   v19 = +[SKUIItemStateCenter defaultCenter];
-  v20 = [v19 stateForItemWithIdentifier:{objc_msgSend(v12, "itemIdentifier")}];
-  v21 = [v10 colorScheme];
-  [v11 setColoringWithColorScheme:v21];
+  v20 = [v19 stateForItemWithIdentifier:{objc_msgSend(item, "itemIdentifier")}];
+  colorScheme = [context colorScheme];
+  [layout setColoringWithColorScheme:colorScheme];
 
-  v22 = [v10 itemOfferButtonAppearance];
-  [v11 setItemOfferButtonAppearance:v22];
+  itemOfferButtonAppearance = [context itemOfferButtonAppearance];
+  [layout setItemOfferButtonAppearance:itemOfferButtonAppearance];
 
-  [v11 setItemState:v20];
-  [v11 setRestricted:{objc_msgSend(v19, "isItemRestrictedWithParentalControlsRank:", objc_msgSend(v12, "parentalControlsRank"))}];
+  [layout setItemState:v20];
+  [layout setRestricted:{objc_msgSend(v19, "isItemRestrictedWithParentalControlsRank:", objc_msgSend(item, "parentalControlsRank"))}];
 }
 
-- (void)_reloadLockupCell:(id)a3 forComponent:(id)a4 columnIndex:(int64_t)a5
+- (void)_reloadLockupCell:(id)cell forComponent:(id)component columnIndex:(int64_t)index
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(SKUIStorePageSection *)self context];
-  v11 = [v9 layout];
+  componentCopy = component;
+  cellCopy = cell;
+  context = [(SKUIStorePageSection *)self context];
+  layout = [cellCopy layout];
   v19 = 0;
   v20 = 0;
   v21 = 0;
-  [(SKUIRowSection *)self _lockupStyleForComponent:v8 columnIndex:a5];
-  [v11 setClientContext:self->_clientContext];
-  [(SKUIRowSection *)self _edgeInsetsForColumnIndex:a5];
-  [v11 setContentInsets:?];
-  v12 = [v10 itemOfferButtonAppearance];
-  [v11 setItemOfferButtonAppearance:v12];
+  [(SKUIRowSection *)self _lockupStyleForComponent:componentCopy columnIndex:index];
+  [layout setClientContext:self->_clientContext];
+  [(SKUIRowSection *)self _edgeInsetsForColumnIndex:index];
+  [layout setContentInsets:?];
+  itemOfferButtonAppearance = [context itemOfferButtonAppearance];
+  [layout setItemOfferButtonAppearance:itemOfferButtonAppearance];
 
-  [v11 setLayoutStyle:v20];
-  [v11 setLockupSize:v19];
-  [v11 setVerticalAlignment:0];
-  [v11 setVisibleFields:v21];
-  v13 = [(SKUILockupComponent *)v8 item];
-  [v9 configureForItem:v13 clientContext:self->_clientContext];
-  [v9 setSeparatorStyle:0];
+  [layout setLayoutStyle:v20];
+  [layout setLockupSize:v19];
+  [layout setVerticalAlignment:0];
+  [layout setVisibleFields:v21];
+  item = [(SKUILockupComponent *)componentCopy item];
+  [cellCopy configureForItem:item clientContext:self->_clientContext];
+  [cellCopy setSeparatorStyle:0];
 
-  [v11 setImageBoundingSize:{SKUILockupImageSizeForLockupSize(v19, objc_msgSend(v13, "itemKind"))}];
-  v14 = [(SKUIRowSection *)self _lockupImageForComponent:v8];
-  [v11 setIconImage:v14];
-  v15 = self->_overlaySourceComponent == v8;
+  [layout setImageBoundingSize:{SKUILockupImageSizeForLockupSize(v19, objc_msgSend(item, "itemKind"))}];
+  v14 = [(SKUIRowSection *)self _lockupImageForComponent:componentCopy];
+  [layout setIconImage:v14];
+  v15 = self->_overlaySourceComponent == componentCopy;
 
-  [v11 setIconImageHidden:v15];
+  [layout setIconImageHidden:v15];
   v16 = +[SKUIItemStateCenter defaultCenter];
-  v17 = [v16 stateForItemWithIdentifier:{objc_msgSend(v13, "itemIdentifier")}];
-  v18 = [v10 colorScheme];
-  [v11 setColoringWithColorScheme:v18];
+  v17 = [v16 stateForItemWithIdentifier:{objc_msgSend(item, "itemIdentifier")}];
+  colorScheme = [context colorScheme];
+  [layout setColoringWithColorScheme:colorScheme];
 
-  [v11 setItemState:v17];
-  [v11 setRestricted:{objc_msgSend(v16, "isItemRestrictedWithParentalControlsRank:", objc_msgSend(v13, "parentalControlsRank"))}];
+  [layout setItemState:v17];
+  [layout setRestricted:{objc_msgSend(v16, "isItemRestrictedWithParentalControlsRank:", objc_msgSend(item, "parentalControlsRank"))}];
 }
 
-- (void)_reloadView:(id)a3 forMediaComponent:(id)a4 columnIndex:(int64_t)a5
+- (void)_reloadView:(id)view forMediaComponent:(id)component columnIndex:(int64_t)index
 {
-  v22 = a3;
-  v8 = a4;
-  v9 = [(SKUIStorePageSection *)self context];
-  v10 = [v9 resourceLoader];
+  viewCopy = view;
+  componentCopy = component;
+  context = [(SKUIStorePageSection *)self context];
+  resourceLoader = [context resourceLoader];
 
-  v11 = [(NSMapTable *)self->_componentArtworkRequestIDs objectForKey:v8];
+  v11 = [(NSMapTable *)self->_componentArtworkRequestIDs objectForKey:componentCopy];
   v12 = v11;
   if (!v11)
   {
-    v13 = [v8 bestThumbnailArtwork];
-    if (!v13)
+    bestThumbnailArtwork = [componentCopy bestThumbnailArtwork];
+    if (!bestThumbnailArtwork)
     {
       goto LABEL_9;
     }
 
-    v14 = [(SKUIRowSection *)self _newSizeToFitArtworkRequestWithArtwork:v13 columnIndex:a5];
+    bestThumbnailArtwork2 = [(SKUIRowSection *)self _newSizeToFitArtworkRequestWithArtwork:bestThumbnailArtwork columnIndex:index];
     componentArtworkRequestIDs = self->_componentArtworkRequestIDs;
-    v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v14, "requestIdentifier")}];
-    [(NSMapTable *)componentArtworkRequestIDs setObject:v19 forKey:v8];
+    v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(bestThumbnailArtwork2, "requestIdentifier")}];
+    [(NSMapTable *)componentArtworkRequestIDs setObject:v19 forKey:componentCopy];
 
-    [v10 loadResourceWithRequest:v14 reason:1];
+    [resourceLoader loadResourceWithRequest:bestThumbnailArtwork2 reason:1];
     goto LABEL_8;
   }
 
-  v13 = [v10 cachedResourceForRequestIdentifier:{objc_msgSend(v11, "unsignedIntegerValue")}];
-  [v22 setThumbnailImage:v13];
-  if (!v13 && ([v10 trySetReason:1 forRequestWithIdentifier:{objc_msgSend(v12, "unsignedIntegerValue")}] & 1) == 0)
+  bestThumbnailArtwork = [resourceLoader cachedResourceForRequestIdentifier:{objc_msgSend(v11, "unsignedIntegerValue")}];
+  [viewCopy setThumbnailImage:bestThumbnailArtwork];
+  if (!bestThumbnailArtwork && ([resourceLoader trySetReason:1 forRequestWithIdentifier:{objc_msgSend(v12, "unsignedIntegerValue")}] & 1) == 0)
   {
-    v14 = [v8 bestThumbnailArtwork];
-    if (v14)
+    bestThumbnailArtwork2 = [componentCopy bestThumbnailArtwork];
+    if (bestThumbnailArtwork2)
     {
-      v15 = [(SKUIRowSection *)self _newSizeToFitArtworkRequestWithArtwork:v14 columnIndex:a5];
+      v15 = [(SKUIRowSection *)self _newSizeToFitArtworkRequestWithArtwork:bestThumbnailArtwork2 columnIndex:index];
       v16 = self->_componentArtworkRequestIDs;
       v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v15, "requestIdentifier")}];
-      [(NSMapTable *)v16 setObject:v17 forKey:v8];
+      [(NSMapTable *)v16 setObject:v17 forKey:componentCopy];
 
-      [v10 loadResourceWithRequest:v15 reason:1];
+      [resourceLoader loadResourceWithRequest:v15 reason:1];
     }
 
 LABEL_8:
@@ -2033,63 +2033,63 @@ LABEL_8:
 
 LABEL_9:
 
-  v20 = [v8 accessibilityLabel];
-  [v22 setAccessibilityLabel:v20];
+  accessibilityLabel = [componentCopy accessibilityLabel];
+  [viewCopy setAccessibilityLabel:accessibilityLabel];
 
-  [v22 setMediaType:{objc_msgSend(v8, "mediaType")}];
-  v21 = [v8 mediaURLString];
-  [v22 setMediaURLString:v21];
+  [viewCopy setMediaType:{objc_msgSend(componentCopy, "mediaType")}];
+  mediaURLString = [componentCopy mediaURLString];
+  [viewCopy setMediaURLString:mediaURLString];
 }
 
-- (void)_selectGalleryComponent:(id)a3 columnIndex:(int64_t)a4
+- (void)_selectGalleryComponent:(id)component columnIndex:(int64_t)index
 {
-  v10 = [(NSMapTable *)self->_galleryViewControllers objectForKey:a3];
-  v6 = [v10 selectedMediaComponent];
-  v7 = [(SKUIStorePageSection *)self clickEventWithMedia:v6 elementName:@"Column" index:a4];
+  v10 = [(NSMapTable *)self->_galleryViewControllers objectForKey:component];
+  selectedMediaComponent = [v10 selectedMediaComponent];
+  v7 = [(SKUIStorePageSection *)self clickEventWithMedia:selectedMediaComponent elementName:@"Column" index:index];
   if (v7)
   {
-    v8 = [(SKUIStorePageSection *)self context];
-    v9 = [v8 metricsController];
-    [v9 recordEvent:v7];
+    context = [(SKUIStorePageSection *)self context];
+    metricsController = [context metricsController];
+    [metricsController recordEvent:v7];
   }
 
   [v10 performActionForSelectedComponentAnimated:1];
 }
 
-- (void)_selectLockupComponent:(id)a3 columnIndex:(int64_t)a4
+- (void)_selectLockupComponent:(id)component columnIndex:(int64_t)index
 {
-  v6 = a3;
-  v7 = [v6 item];
-  v8 = [(SKUIRowSection *)self clickEventWithItem:v7 elementName:@"Column" index:a4];
+  componentCopy = component;
+  item = [componentCopy item];
+  v8 = [(SKUIRowSection *)self clickEventWithItem:item elementName:@"Column" index:index];
   if (v8)
   {
-    v9 = [(SKUIStorePageSection *)self context];
-    v10 = [v9 metricsController];
-    [v10 recordEvent:v8];
+    context = [(SKUIStorePageSection *)self context];
+    metricsController = [context metricsController];
+    [metricsController recordEvent:v8];
   }
 
-  v11 = [(SKUIStorePageSection *)self context];
-  v12 = [v11 parentViewController];
+  context2 = [(SKUIStorePageSection *)self context];
+  parentViewController = [context2 parentViewController];
 
-  v13 = [v12 delegate];
-  if ((objc_opt_respondsToSelector() & 1) == 0 || ([v13 sectionsViewController:v12 showProductPageForItem:v7] & 1) == 0)
+  delegate = [parentViewController delegate];
+  if ((objc_opt_respondsToSelector() & 1) == 0 || ([delegate sectionsViewController:parentViewController showProductPageForItem:item] & 1) == 0)
   {
-    if (SKUIItemKindIsSoftwareKind([v7 itemKind]) && (objc_msgSend(MEMORY[0x277D75418], "currentDevice"), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "userInterfaceIdiom"), v14, v15))
+    if (SKUIItemKindIsSoftwareKind([item itemKind]) && (objc_msgSend(MEMORY[0x277D75418], "currentDevice"), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "userInterfaceIdiom"), v14, v15))
     {
       v16[0] = MEMORY[0x277D85DD0];
       v16[1] = 3221225472;
       v16[2] = __53__SKUIRowSection__selectLockupComponent_columnIndex___block_invoke;
       v16[3] = &unk_2781FBFC0;
       v16[4] = self;
-      v17 = v12;
-      v18 = v6;
-      v19 = v7;
+      v17 = parentViewController;
+      v18 = componentCopy;
+      v19 = item;
       [(SKUIStorePageSection *)self sendXEventWithItem:v19 completionBlock:v16];
     }
 
     else
     {
-      [(SKUIStorePageSection *)self showProductViewControllerWithItem:v7];
+      [(SKUIStorePageSection *)self showProductViewControllerWithItem:item];
     }
   }
 }
@@ -2126,65 +2126,65 @@ uint64_t __53__SKUIRowSection__selectLockupComponent_columnIndex___block_invoke(
   return result;
 }
 
-- (void)_selectMediaComponent:(id)a3 columnIndex:(int64_t)a4
+- (void)_selectMediaComponent:(id)component columnIndex:(int64_t)index
 {
-  v9 = a3;
+  componentCopy = component;
   v5 = [SKUIStorePageSection clickEventWithMedia:"clickEventWithMedia:elementName:index:" elementName:? index:?];
   if (v5)
   {
-    v6 = [(SKUIStorePageSection *)self context];
-    v7 = [v6 metricsController];
-    [v7 recordEvent:v5];
+    context = [(SKUIStorePageSection *)self context];
+    metricsController = [context metricsController];
+    [metricsController recordEvent:v5];
   }
 
-  if ([v9 mediaType])
+  if ([componentCopy mediaType])
   {
-    v8 = [(NSMapTable *)self->_columnViews objectForKey:v9];
-    [v8 beginPlaybackAnimated:1];
+    link = [(NSMapTable *)self->_columnViews objectForKey:componentCopy];
+    [link beginPlaybackAnimated:1];
   }
 
   else
   {
-    v8 = [v9 link];
-    [(SKUIStorePageSection *)self showPageWithLink:v8];
+    link = [componentCopy link];
+    [(SKUIStorePageSection *)self showPageWithLink:link];
   }
 }
 
-- (void)_setPositionForClickEvent:(id)a3 elementIndex:(int64_t)a4
+- (void)_setPositionForClickEvent:(id)event elementIndex:(int64_t)index
 {
-  if (a3)
+  if (event)
   {
-    v6 = a3;
-    v7 = [(SKUIStorePageSection *)self context];
-    v10 = [v7 collectionView];
+    eventCopy = event;
+    context = [(SKUIStorePageSection *)self context];
+    collectionView = [context collectionView];
 
-    v8 = [MEMORY[0x277CCAA70] indexPathForItem:a4 inSection:{-[SKUIStorePageSection sectionIndex](self, "sectionIndex")}];
-    v9 = [v10 cellForItemAtIndexPath:v8];
+    v8 = [MEMORY[0x277CCAA70] indexPathForItem:index inSection:{-[SKUIStorePageSection sectionIndex](self, "sectionIndex")}];
+    v9 = [collectionView cellForItemAtIndexPath:v8];
 
-    SKUIMetricsSetClickEventPositionWithView(v6, v9);
+    SKUIMetricsSetClickEventPositionWithView(eventCopy, v9);
   }
 }
 
-- (id)_viewControllerForCountdownComponent:(id)a3
+- (id)_viewControllerForCountdownComponent:(id)component
 {
-  v4 = a3;
-  v5 = [(NSMapTable *)self->_countdownViewControllers objectForKey:v4];
+  componentCopy = component;
+  v5 = [(NSMapTable *)self->_countdownViewControllers objectForKey:componentCopy];
   if (!v5)
   {
-    v6 = [(SKUIStorePageSection *)self context];
+    context = [(SKUIStorePageSection *)self context];
     v7 = [SKUICountdownViewController alloc];
-    v8 = [v6 resourceLoader];
-    v5 = [(SKUICountdownViewController *)v7 initWithCountdownComponent:v4 artworkLoader:v8];
+    resourceLoader = [context resourceLoader];
+    v5 = [(SKUICountdownViewController *)v7 initWithCountdownComponent:componentCopy artworkLoader:resourceLoader];
 
     [(SKUICountdownViewController *)v5 setClientContext:self->_clientContext];
-    v9 = [(SKUIStorePageSection *)self pageComponent];
-    v10 = [v9 childComponents];
-    v11 = [v10 indexOfObjectIdenticalTo:v4];
+    pageComponent = [(SKUIStorePageSection *)self pageComponent];
+    childComponents = [pageComponent childComponents];
+    v11 = [childComponents indexOfObjectIdenticalTo:componentCopy];
 
     v12 = [MEMORY[0x277CCAA70] indexPathForItem:v11 inSection:{-[SKUIStorePageSection sectionIndex](self, "sectionIndex")}];
-    v13 = [(SKUICountdownViewController *)v5 view];
+    view = [(SKUICountdownViewController *)v5 view];
     v14 = [(SKUIRowSection *)self backgroundColorForIndexPath:v12];
-    [v13 setBackgroundColor:v14];
+    [view setBackgroundColor:v14];
 
     countdownViewControllers = self->_countdownViewControllers;
     if (!countdownViewControllers)
@@ -2196,29 +2196,29 @@ uint64_t __53__SKUIRowSection__selectLockupComponent_columnIndex___block_invoke(
       countdownViewControllers = self->_countdownViewControllers;
     }
 
-    [(NSMapTable *)countdownViewControllers setObject:v5 forKey:v4];
-    v18 = [v6 parentViewController];
-    [v18 addChildViewController:v5];
+    [(NSMapTable *)countdownViewControllers setObject:v5 forKey:componentCopy];
+    parentViewController = [context parentViewController];
+    [parentViewController addChildViewController:v5];
   }
 
   return v5;
 }
 
-- (id)_viewControllerForGalleryComponent:(id)a3
+- (id)_viewControllerForGalleryComponent:(id)component
 {
-  v4 = a3;
-  v5 = [(NSMapTable *)self->_galleryViewControllers objectForKey:v4];
+  componentCopy = component;
+  v5 = [(NSMapTable *)self->_galleryViewControllers objectForKey:componentCopy];
   if (!v5)
   {
-    v6 = [(SKUIStorePageSection *)self context];
+    context = [(SKUIStorePageSection *)self context];
     v7 = [SKUIGalleryViewController alloc];
-    v8 = [v6 resourceLoader];
-    v5 = [(SKUIGalleryViewController *)v7 initWithGalleryComponent:v4 artworkLoader:v8];
+    resourceLoader = [context resourceLoader];
+    v5 = [(SKUIGalleryViewController *)v7 initWithGalleryComponent:componentCopy artworkLoader:resourceLoader];
 
     [(SKUIGalleryViewController *)v5 setEmbeddedMediaDelegate:self];
-    v9 = [(SKUIStorePageSection *)self pageComponent];
-    v10 = [v9 childComponents];
-    v11 = [v10 indexOfObjectIdenticalTo:v4];
+    pageComponent = [(SKUIStorePageSection *)self pageComponent];
+    childComponents = [pageComponent childComponents];
+    v11 = [childComponents indexOfObjectIdenticalTo:componentCopy];
 
     v12 = [MEMORY[0x277CCAA70] indexPathForItem:v11 inSection:{-[SKUIStorePageSection sectionIndex](self, "sectionIndex")}];
     v13 = [(SKUIRowSection *)self backgroundColorForIndexPath:v12];
@@ -2234,9 +2234,9 @@ uint64_t __53__SKUIRowSection__selectLockupComponent_columnIndex___block_invoke(
       galleryViewControllers = self->_galleryViewControllers;
     }
 
-    [(NSMapTable *)galleryViewControllers setObject:v5 forKey:v4];
-    v17 = [v6 parentViewController];
-    [v17 addChildViewController:v5];
+    [(NSMapTable *)galleryViewControllers setObject:v5 forKey:componentCopy];
+    parentViewController = [context parentViewController];
+    [parentViewController addChildViewController:v5];
   }
 
   return v5;

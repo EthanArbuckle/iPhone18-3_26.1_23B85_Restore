@@ -1,14 +1,14 @@
 @interface CPLCKUtilitiesOperation
-+ (id)deleteAllZonesWithCompletionHandler:(id)a3;
-+ (id)deleteZoneWithName:(id)a3 completionHandler:(id)a4;
++ (id)deleteAllZonesWithCompletionHandler:(id)handler;
++ (id)deleteZoneWithName:(id)name completionHandler:(id)handler;
 - (CPLCKUtilitiesOperation)init;
 @end
 
 @implementation CPLCKUtilitiesOperation
 
-+ (id)deleteZoneWithName:(id)a3 completionHandler:(id)a4
++ (id)deleteZoneWithName:(id)name completionHandler:(id)handler
 {
-  v4 = _Block_copy(a4);
+  v4 = _Block_copy(handler);
   v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v7 = v6;
   v8 = swift_allocObject();
@@ -18,9 +18,9 @@
   return v9;
 }
 
-+ (id)deleteAllZonesWithCompletionHandler:(id)a3
++ (id)deleteAllZonesWithCompletionHandler:(id)handler
 {
-  v3 = _Block_copy(a3);
+  v3 = _Block_copy(handler);
   v4 = swift_allocObject();
   *(v4 + 16) = v3;
   v5 = _s22CloudKitImplementation23CPLCKUtilitiesOperationC14deleteAllZones17completionHandlerSo010CKDatabaseE0CySb_s5Error_pSgtc_tFZ_0(sub_1001111B0, v4);

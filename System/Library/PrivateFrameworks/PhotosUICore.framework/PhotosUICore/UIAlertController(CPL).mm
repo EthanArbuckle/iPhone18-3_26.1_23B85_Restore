@@ -11,44 +11,44 @@
   v7 = a3;
   v8 = a4;
   v9 = a5;
-  v10 = [v7 code];
-  if (v10 <= 8)
+  code = [v7 code];
+  if (code <= 8)
   {
-    if (v10 == 6)
+    if (code == 6)
     {
       v23 = PXLocalizedStringFromTable(@"ICLOUDPHOTOS_RAMP_DISABLED_TITLE", @"PhotosUICore");
       v25 = @"ICLOUDPHOTOS_RAMP_DISABLED_MESSAGE";
       goto LABEL_13;
     }
 
-    if (v10 == 7)
+    if (code == 7)
     {
-      v11 = [v7 userInfo];
-      v12 = [v11 objectForKeyedSubscript:*MEMORY[0x1E69BE940]];
+      userInfo = [v7 userInfo];
+      v12 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E69BE940]];
 
-      v13 = [v7 userInfo];
-      v14 = [v13 objectForKeyedSubscript:*MEMORY[0x1E69BE938]];
-      v15 = [v14 unsignedLongLongValue];
+      userInfo2 = [v7 userInfo];
+      v14 = [userInfo2 objectForKeyedSubscript:*MEMORY[0x1E69BE938]];
+      unsignedLongLongValue = [v14 unsignedLongLongValue];
 
-      [MEMORY[0x1E696AAF0] stringFromByteCount:v15 countStyle:0];
+      [MEMORY[0x1E696AAF0] stringFromByteCount:unsignedLongLongValue countStyle:0];
       objc_claimAutoreleasedReturnValue();
-      v16 = [v12 availableBytes];
-      v17 = [MEMORY[0x1E69DC938] currentDevice];
-      v18 = [v17 model];
-      if (v16 < 0x100000)
+      availableBytes = [v12 availableBytes];
+      currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+      model = [currentDevice model];
+      if (availableBytes < 0x100000)
       {
-        v19 = [@"ICLOUD_PHOTOS_QUOTA_EXHAUSTED_MESSAGE_FORMAT_" stringByAppendingString:v18];
+        v19 = [@"ICLOUD_PHOTOS_QUOTA_EXHAUSTED_MESSAGE_FORMAT_" stringByAppendingString:model];
 
         PXLocalizedStringFromTable(v19, @"PhotosUICore");
         objc_claimAutoreleasedReturnValue();
         PXStringWithValidatedFormat();
       }
 
-      v27 = [@"ICLOUD_PHOTOS_QUOTA_INSUFFICIENT_MESSAGE_FORMAT_" stringByAppendingString:v18];
+      v27 = [@"ICLOUD_PHOTOS_QUOTA_INSUFFICIENT_MESSAGE_FORMAT_" stringByAppendingString:model];
 
       PXLocalizedStringFromTable(v27, @"PhotosUICore");
       objc_claimAutoreleasedReturnValue();
-      [MEMORY[0x1E696AAF0] stringFromByteCount:v16 countStyle:0];
+      [MEMORY[0x1E696AAF0] stringFromByteCount:availableBytes countStyle:0];
       objc_claimAutoreleasedReturnValue();
       PXStringWithValidatedFormat();
     }
@@ -63,9 +63,9 @@ LABEL_14:
     goto LABEL_17;
   }
 
-  if (v10 != 9)
+  if (code != 9)
   {
-    if (v10 == 11)
+    if (code == 11)
     {
       v20 = MGGetBoolAnswer();
       v21 = @"ICLOUDPHOTOS_NO_CONNECTION_MESSAGE";

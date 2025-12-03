@@ -1,23 +1,23 @@
 @interface _MKRouteETAFetcher
 - (BOOL)isUsingCurrentLocationForOrigin;
-- (BOOL)isValidETA:(id)a3;
-- (BOOL)shouldUpdateEstimatedTravelTimeForNewOrigin:(CLLocationCoordinate2D)a3;
+- (BOOL)isValidETA:(id)a;
+- (BOOL)shouldUpdateEstimatedTravelTimeForNewOrigin:(CLLocationCoordinate2D)origin;
 - (CLLocationCoordinate2D)destinationCoordinate;
 - (CLLocationCoordinate2D)originCoordinate;
 - (_MKRouteETAFetcher)init;
-- (id)routeETAForTransportType:(unint64_t)a3;
+- (id)routeETAForTransportType:(unint64_t)type;
 - (void)_didUpdateETAResult;
 - (void)_resetState;
 - (void)dealloc;
 - (void)expireETAsIfNoLongerValid;
-- (void)invalidateETAForTransportType:(unint64_t)a3;
-- (void)requestNewETAForTransportType:(unint64_t)a3 additionalTransportTypes:(id)a4 completion:(id)a5;
-- (void)setAutomobileOptions:(id)a3;
-- (void)setCyclingOptions:(id)a3;
-- (void)setMapItem:(id)a3;
-- (void)setOriginMapItem:(id)a3;
-- (void)setTransitOptions:(id)a3;
-- (void)setWalkingOptions:(id)a3;
+- (void)invalidateETAForTransportType:(unint64_t)type;
+- (void)requestNewETAForTransportType:(unint64_t)type additionalTransportTypes:(id)types completion:(id)completion;
+- (void)setAutomobileOptions:(id)options;
+- (void)setCyclingOptions:(id)options;
+- (void)setMapItem:(id)item;
+- (void)setOriginMapItem:(id)item;
+- (void)setTransitOptions:(id)options;
+- (void)setWalkingOptions:(id)options;
 @end
 
 @implementation _MKRouteETAFetcher
@@ -32,23 +32,23 @@
   self->_lastRequestTime = Current;
 }
 
-- (void)invalidateETAForTransportType:(unint64_t)a3
+- (void)invalidateETAForTransportType:(unint64_t)type
 {
   etaResults = self->_etaResults;
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:type];
   [(NSMutableDictionary *)etaResults removeObjectForKey:v4];
 }
 
-- (BOOL)isValidETA:(id)a3
+- (BOOL)isValidETA:(id)a
 {
-  v4 = a3;
+  aCopy = a;
   Current = CFAbsoluteTimeGetCurrent();
-  [v4 responseTime];
+  [aCopy responseTime];
   v7 = 0;
   if (Current - v6 <= self->_staleTimeInterval)
   {
-    [v4 travelTime];
-    if (v8 >= 1.0 || (v9 = CFAbsoluteTimeGetCurrent(), [v4 responseTime], v9 - v10 <= 300.0))
+    [aCopy travelTime];
+    if (v8 >= 1.0 || (v9 = CFAbsoluteTimeGetCurrent(), [aCopy responseTime], v9 - v10 <= 300.0))
     {
       v7 = 1;
     }
@@ -70,8 +70,8 @@
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = [(NSMutableDictionary *)self->_etaResults allKeys];
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  allKeys = [(NSMutableDictionary *)self->_etaResults allKeys];
+  v7 = [allKeys countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -82,7 +82,7 @@
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allKeys);
         }
 
         v11 = *(*(&v13 + 1) + 8 * i);
@@ -93,20 +93,20 @@
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v8 = [allKeys countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v8);
   }
 }
 
-- (BOOL)shouldUpdateEstimatedTravelTimeForNewOrigin:(CLLocationCoordinate2D)a3
+- (BOOL)shouldUpdateEstimatedTravelTimeForNewOrigin:(CLLocationCoordinate2D)origin
 {
-  latitude = a3.latitude;
+  latitude = origin.latitude;
   result = 1;
   if (self->_lastRequestTime != 0.0 && !self->_optionsHaveChangedSinceLastUpdate)
   {
-    longitude = a3.longitude;
+    longitude = origin.longitude;
     v7 = CFAbsoluteTimeGetCurrent() - self->_lastRequestTime;
     if (!(self->_lastETAUpdateHadError ? v7 >= 300.0 : v7 >= 60.0))
     {
@@ -134,8 +134,8 @@
     if ([v3 hasLocation])
     {
       v4 = +[MKLocationManager sharedLocationManager];
-      v5 = [v4 lastLocation];
-      [v5 coordinate];
+      lastLocation = [v4 lastLocation];
+      [lastLocation coordinate];
       v7 = v6;
       v9 = v8;
     }
@@ -169,8 +169,8 @@
     if ([v3 hasLocation])
     {
       v4 = +[MKLocationManager sharedLocationManager];
-      v5 = [v4 lastLocation];
-      [v5 coordinate];
+      lastLocation = [v4 lastLocation];
+      [lastLocation coordinate];
       v7 = v6;
       v9 = v8;
     }
@@ -198,47 +198,47 @@
 
 - (BOOL)isUsingCurrentLocationForOrigin
 {
-  v2 = [(_MKRouteETAFetcher *)self originMapItem];
-  v3 = [v2 isCurrentLocation];
+  originMapItem = [(_MKRouteETAFetcher *)self originMapItem];
+  isCurrentLocation = [originMapItem isCurrentLocation];
 
-  return v3;
+  return isCurrentLocation;
 }
 
-- (void)requestNewETAForTransportType:(unint64_t)a3 additionalTransportTypes:(id)a4 completion:(id)a5
+- (void)requestNewETAForTransportType:(unint64_t)type additionalTransportTypes:(id)types completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  if (v9)
+  typesCopy = types;
+  completionCopy = completion;
+  if (completionCopy)
   {
     v10 = [MKDirectionsRequest alloc];
     mapItem = self->_mapItem;
     originMapItem = self->_originMapItem;
-    v13 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     LOWORD(v23) = 256;
-    v14 = [(MKDirectionsRequest *)v10 _mapkit_initWithSource:originMapItem destination:mapItem transportType:a3 departureDate:v13 includeTravelTimes:1 includeTrafficIncidents:0 includeRoutePoints:v23 resolveExtraAutomobileOptions:?];
+    v14 = [(MKDirectionsRequest *)v10 _mapkit_initWithSource:originMapItem destination:mapItem transportType:type departureDate:date includeTravelTimes:1 includeTrafficIncidents:0 includeRoutePoints:v23 resolveExtraAutomobileOptions:?];
 
     [v14 _setIncludeDistanceInETA:1];
-    if ([v8 count])
+    if ([typesCopy count])
     {
-      [v14 _setAdditionalTransportTypesRequested:v8];
+      [v14 _setAdditionalTransportTypesRequested:typesCopy];
     }
 
-    if (a3 == 1 || [v8 containsObject:&unk_1F1611578])
+    if (type == 1 || [typesCopy containsObject:&unk_1F1611578])
     {
-      v15 = [(_MKRouteETAFetcher *)self automobileOptions];
-      [v14 _setAutomobileOptions:v15];
+      automobileOptions = [(_MKRouteETAFetcher *)self automobileOptions];
+      [v14 _setAutomobileOptions:automobileOptions];
     }
 
-    if (a3 == 4 || [v8 containsObject:&unk_1F1611590])
+    if (type == 4 || [typesCopy containsObject:&unk_1F1611590])
     {
-      v16 = [(_MKRouteETAFetcher *)self transitOptions];
-      [v14 _setTransitOptions:v16];
+      transitOptions = [(_MKRouteETAFetcher *)self transitOptions];
+      [v14 _setTransitOptions:transitOptions];
     }
 
-    if (a3 == 8 || [v8 containsObject:&unk_1F16115A8])
+    if (type == 8 || [typesCopy containsObject:&unk_1F16115A8])
     {
-      v17 = [(_MKRouteETAFetcher *)self cyclingOptions];
-      [v14 _setCyclingOptions:v17];
+      cyclingOptions = [(_MKRouteETAFetcher *)self cyclingOptions];
+      [v14 _setCyclingOptions:cyclingOptions];
     }
 
     v18 = self->_mapItem;
@@ -256,16 +256,16 @@
     v24[3] = &unk_1E76C9BE8;
     v24[4] = self;
     v25 = v18;
-    v26 = v9;
+    v26 = completionCopy;
     v22 = v18;
     [(MKDirections *)v21 calculateETAWithCompletionHandler:v24];
   }
 }
 
-- (id)routeETAForTransportType:(unint64_t)a3
+- (id)routeETAForTransportType:(unint64_t)type
 {
   etaResults = self->_etaResults;
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:type];
   v5 = [(NSMutableDictionary *)etaResults objectForKeyedSubscript:v4];
 
   return v5;
@@ -285,39 +285,39 @@
   self->_optionsHaveChangedSinceLastUpdate = 0;
 }
 
-- (void)setOriginMapItem:(id)a3
+- (void)setOriginMapItem:(id)item
 {
-  v5 = a3;
-  if (self->_originMapItem != v5)
+  itemCopy = item;
+  if (self->_originMapItem != itemCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_originMapItem, a3);
+    v6 = itemCopy;
+    objc_storeStrong(&self->_originMapItem, item);
     [(_MKRouteETAFetcher *)self _resetState];
-    v5 = v6;
+    itemCopy = v6;
   }
 }
 
-- (void)setMapItem:(id)a3
+- (void)setMapItem:(id)item
 {
-  v5 = a3;
-  if (self->_mapItem != v5)
+  itemCopy = item;
+  if (self->_mapItem != itemCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_mapItem, a3);
+    v6 = itemCopy;
+    objc_storeStrong(&self->_mapItem, item);
     [(_MKRouteETAFetcher *)self _resetState];
-    v5 = v6;
+    itemCopy = v6;
   }
 }
 
-- (void)setCyclingOptions:(id)a3
+- (void)setCyclingOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   cyclingOptions = self->_cyclingOptions;
-  if (cyclingOptions != v4)
+  if (cyclingOptions != optionsCopy)
   {
-    v9 = v4;
-    v6 = [(GEOCyclingOptions *)cyclingOptions isEqual:v4];
-    v4 = v9;
+    v9 = optionsCopy;
+    v6 = [(GEOCyclingOptions *)cyclingOptions isEqual:optionsCopy];
+    optionsCopy = v9;
     if ((v6 & 1) == 0)
     {
       v7 = [(GEOCyclingOptions *)v9 copy];
@@ -325,21 +325,21 @@
       self->_cyclingOptions = v7;
 
       [(_MKRouteETAFetcher *)self invalidateETAForTransportType:8];
-      v4 = v9;
+      optionsCopy = v9;
       self->_optionsHaveChangedSinceLastUpdate = 1;
     }
   }
 }
 
-- (void)setTransitOptions:(id)a3
+- (void)setTransitOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   transitOptions = self->_transitOptions;
-  if (transitOptions != v4)
+  if (transitOptions != optionsCopy)
   {
-    v9 = v4;
-    v6 = [(GEOTransitOptions *)transitOptions isEqual:v4];
-    v4 = v9;
+    v9 = optionsCopy;
+    v6 = [(GEOTransitOptions *)transitOptions isEqual:optionsCopy];
+    optionsCopy = v9;
     if ((v6 & 1) == 0)
     {
       v7 = [(GEOTransitOptions *)v9 copy];
@@ -347,21 +347,21 @@
       self->_transitOptions = v7;
 
       [(_MKRouteETAFetcher *)self invalidateETAForTransportType:4];
-      v4 = v9;
+      optionsCopy = v9;
       self->_optionsHaveChangedSinceLastUpdate = 1;
     }
   }
 }
 
-- (void)setWalkingOptions:(id)a3
+- (void)setWalkingOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   walkingOptions = self->_walkingOptions;
-  if (walkingOptions != v4)
+  if (walkingOptions != optionsCopy)
   {
-    v9 = v4;
-    v6 = [(GEOWalkingOptions *)walkingOptions isEqual:v4];
-    v4 = v9;
+    v9 = optionsCopy;
+    v6 = [(GEOWalkingOptions *)walkingOptions isEqual:optionsCopy];
+    optionsCopy = v9;
     if ((v6 & 1) == 0)
     {
       v7 = [(GEOWalkingOptions *)v9 copy];
@@ -369,21 +369,21 @@
       self->_walkingOptions = v7;
 
       [(_MKRouteETAFetcher *)self invalidateETAForTransportType:2];
-      v4 = v9;
+      optionsCopy = v9;
       self->_optionsHaveChangedSinceLastUpdate = 1;
     }
   }
 }
 
-- (void)setAutomobileOptions:(id)a3
+- (void)setAutomobileOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   automobileOptions = self->_automobileOptions;
-  if (automobileOptions != v4)
+  if (automobileOptions != optionsCopy)
   {
-    v9 = v4;
-    v6 = [(GEOAutomobileOptions *)automobileOptions isEqual:v4];
-    v4 = v9;
+    v9 = optionsCopy;
+    v6 = [(GEOAutomobileOptions *)automobileOptions isEqual:optionsCopy];
+    optionsCopy = v9;
     if ((v6 & 1) == 0)
     {
       v7 = [(GEOAutomobileOptions *)v9 copy];
@@ -391,7 +391,7 @@
       self->_automobileOptions = v7;
 
       [(_MKRouteETAFetcher *)self invalidateETAForTransportType:1];
-      v4 = v9;
+      optionsCopy = v9;
       self->_optionsHaveChangedSinceLastUpdate = 1;
     }
   }

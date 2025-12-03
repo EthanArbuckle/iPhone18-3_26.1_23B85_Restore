@@ -1,15 +1,15 @@
 @interface TSDCanvasSelection
 + (id)emptySelection;
-- (BOOL)containsKindOfClass:(Class)a3;
-- (BOOL)containsUnlockedKindOfClass:(Class)a3;
+- (BOOL)containsKindOfClass:(Class)class;
+- (BOOL)containsUnlockedKindOfClass:(Class)class;
 - (BOOL)isEmpty;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSSet)unlockedInfos;
-- (TSDCanvasSelection)initWithInfos:(id)a3 andContainer:(id)a4;
-- (id)copyExcludingInfo:(id)a3;
-- (id)copyIncludingInfo:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)infosOfClass:(Class)a3;
+- (TSDCanvasSelection)initWithInfos:(id)infos andContainer:(id)container;
+- (id)copyExcludingInfo:(id)info;
+- (id)copyIncludingInfo:(id)info;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)infosOfClass:(Class)class;
 - (unint64_t)infoCount;
 - (unint64_t)unlockedInfoCount;
 - (void)dealloc;
@@ -17,7 +17,7 @@
 
 @implementation TSDCanvasSelection
 
-- (TSDCanvasSelection)initWithInfos:(id)a3 andContainer:(id)a4
+- (TSDCanvasSelection)initWithInfos:(id)infos andContainer:(id)container
 {
   v23 = *MEMORY[0x277D85DE8];
   v21.receiver = self;
@@ -25,9 +25,9 @@
   v6 = [(TSDCanvasSelection *)&v21 init];
   if (v6)
   {
-    v7 = [a3 copy];
+    v7 = [infos copy];
     v6->mInfos = v7;
-    if (!a4)
+    if (!container)
     {
       v8 = v7;
       v19 = 0u;
@@ -38,7 +38,7 @@
       if (v9)
       {
         v10 = v9;
-        a4 = 0;
+        container = 0;
         v11 = *v18;
 LABEL_5:
         v12 = 0;
@@ -55,10 +55,10 @@ LABEL_5:
             break;
           }
 
-          v14 = [v13 parentInfo];
-          if (a4)
+          parentInfo = [v13 parentInfo];
+          if (container)
           {
-            if (v14 != a4)
+            if (parentInfo != container)
             {
               break;
             }
@@ -68,7 +68,7 @@ LABEL_5:
           {
             objc_opt_class();
             v16 = &unk_287E2DDA0;
-            a4 = TSUClassAndProtocolCast();
+            container = TSUClassAndProtocolCast();
           }
 
           if (v10 == ++v12)
@@ -84,11 +84,11 @@ LABEL_5:
         }
       }
 
-      a4 = 0;
+      container = 0;
     }
 
 LABEL_17:
-    v6->mContainer = a4;
+    v6->mContainer = container;
   }
 
   return v6;
@@ -97,7 +97,7 @@ LABEL_17:
 + (id)emptySelection
 {
   v3 = objc_alloc_init(MEMORY[0x277CBEB98]);
-  v4 = [[a1 alloc] initWithInfos:v3];
+  v4 = [[self alloc] initWithInfos:v3];
 
   return v4;
 }
@@ -109,7 +109,7 @@ LABEL_17:
   [(TSDCanvasSelection *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   mInfos = self->mInfos;
@@ -129,18 +129,18 @@ LABEL_17:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v7) = 1;
   }
 
   else
   {
-    v5 = [(TSDCanvasSelection *)self infos];
-    v6 = v5;
-    if (a3 || [(NSSet *)v5 count]|| self->mContainer)
+    infos = [(TSDCanvasSelection *)self infos];
+    v6 = infos;
+    if (equal || [(NSSet *)infos count]|| self->mContainer)
     {
       objc_opt_class();
       v7 = TSUDynamicCast();
@@ -148,15 +148,15 @@ LABEL_17:
       {
         v8 = v7;
         v9 = [(NSSet *)v6 count];
-        v10 = [v8 infos];
+        infos2 = [v8 infos];
         if (v9)
         {
-          v11 = [(NSSet *)v6 isEqual:v10];
+          v11 = [(NSSet *)v6 isEqual:infos2];
         }
 
         else
         {
-          v11 = [v10 count] == 0;
+          v11 = [infos2 count] == 0;
         }
 
         if ([(TSDCanvasSelection *)self container])
@@ -184,23 +184,23 @@ LABEL_17:
 
 - (BOOL)isEmpty
 {
-  v3 = [objc_opt_class() emptySelection];
+  emptySelection = [objc_opt_class() emptySelection];
 
-  return [(TSDCanvasSelection *)self isEqual:v3];
+  return [(TSDCanvasSelection *)self isEqual:emptySelection];
 }
 
-- (id)infosOfClass:(Class)a3
+- (id)infosOfClass:(Class)class
 {
-  v4 = [(TSDCanvasSelection *)self infos];
+  infos = [(TSDCanvasSelection *)self infos];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __35__TSDCanvasSelection_infosOfClass___block_invoke;
   v6[3] = &unk_279D483A8;
-  v6[4] = a3;
-  return [(NSSet *)v4 objectsPassingTest:v6];
+  v6[4] = class;
+  return [(NSSet *)infos objectsPassingTest:v6];
 }
 
-- (BOOL)containsKindOfClass:(Class)a3
+- (BOOL)containsKindOfClass:(Class)class
 {
   v14 = *MEMORY[0x277D85DE8];
   v10 = 0u;
@@ -249,13 +249,13 @@ LABEL_17:
 - (NSSet)unlockedInfos
 {
   v3 = objc_opt_class();
-  v4 = [(TSDCanvasSelection *)self infos];
+  infos = [(TSDCanvasSelection *)self infos];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __35__TSDCanvasSelection_unlockedInfos__block_invoke;
   v6[3] = &unk_279D483A8;
   v6[4] = v3;
-  return [(NSSet *)v4 objectsPassingTest:v6];
+  return [(NSSet *)infos objectsPassingTest:v6];
 }
 
 uint64_t __35__TSDCanvasSelection_unlockedInfos__block_invoke(uint64_t a1, void *a2)
@@ -273,20 +273,20 @@ uint64_t __35__TSDCanvasSelection_unlockedInfos__block_invoke(uint64_t a1, void 
 
 - (unint64_t)unlockedInfoCount
 {
-  v2 = [(TSDCanvasSelection *)self unlockedInfos];
+  unlockedInfos = [(TSDCanvasSelection *)self unlockedInfos];
 
-  return [(NSSet *)v2 count];
+  return [(NSSet *)unlockedInfos count];
 }
 
-- (BOOL)containsUnlockedKindOfClass:(Class)a3
+- (BOOL)containsUnlockedKindOfClass:(Class)class
 {
   v15 = *MEMORY[0x277D85DE8];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(TSDCanvasSelection *)self infos];
-  v4 = [(NSSet *)v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  infos = [(TSDCanvasSelection *)self infos];
+  v4 = [(NSSet *)infos countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -298,7 +298,7 @@ uint64_t __35__TSDCanvasSelection_unlockedInfos__block_invoke(uint64_t a1, void 
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(infos);
         }
 
         v8 = *(*(&v10 + 1) + 8 * v7);
@@ -312,7 +312,7 @@ uint64_t __35__TSDCanvasSelection_unlockedInfos__block_invoke(uint64_t a1, void 
       }
 
       while (v5 != v7);
-      v4 = [(NSSet *)v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [(NSSet *)infos countByEnumeratingWithState:&v10 objects:v14 count:16];
       v5 = v4;
       if (v4)
       {
@@ -326,7 +326,7 @@ uint64_t __35__TSDCanvasSelection_unlockedInfos__block_invoke(uint64_t a1, void 
   return v4;
 }
 
-- (id)copyIncludingInfo:(id)a3
+- (id)copyIncludingInfo:(id)info
 {
   v4 = [(TSDCanvasSelection *)self copy];
   v5 = v4[1];
@@ -341,17 +341,17 @@ uint64_t __35__TSDCanvasSelection_unlockedInfos__block_invoke(uint64_t a1, void 
   }
 
   v7 = v6;
-  [v6 addObject:a3];
+  [v6 addObject:info];
 
   v4[1] = [v7 copy];
   return v4;
 }
 
-- (id)copyExcludingInfo:(id)a3
+- (id)copyExcludingInfo:(id)info
 {
   v4 = [(TSDCanvasSelection *)self copy];
   v5 = [v4[1] mutableCopy];
-  [v5 removeObject:a3];
+  [v5 removeObject:info];
 
   v4[1] = [v5 copy];
   return v4;

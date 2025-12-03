@@ -1,6 +1,6 @@
 @interface CKTitleIcon
-- (BOOL)isEqual:(id)a3;
-- (CKTitleIcon)initWithTitleIconImageType:(int64_t)a3;
+- (BOOL)isEqual:(id)equal;
+- (CKTitleIcon)initWithTitleIconImageType:(int64_t)type;
 - (NSString)imageName;
 - (UIColor)preferredColor;
 - (UIImage)image;
@@ -8,30 +8,30 @@
 
 @implementation CKTitleIcon
 
-- (CKTitleIcon)initWithTitleIconImageType:(int64_t)a3
+- (CKTitleIcon)initWithTitleIconImageType:(int64_t)type
 {
   v5.receiver = self;
   v5.super_class = CKTitleIcon;
   result = [(CKTitleIcon *)&v5 init];
   if (result)
   {
-    result->_imageType = a3;
+    result->_imageType = type;
   }
 
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(CKTitleIcon *)self imageType];
-    v7 = [v5 imageType];
+    v5 = equalCopy;
+    imageType = [(CKTitleIcon *)self imageType];
+    imageType2 = [v5 imageType];
 
-    v8 = v6 == v7;
+    v8 = imageType == imageType2;
   }
 
   else
@@ -75,21 +75,21 @@
     {
       case 1:
         v4 = +[CKUIBehavior sharedBehaviors];
-        v5 = [v4 businessVerifiedImageLarge];
+        businessVerifiedImageLarge = [v4 businessVerifiedImageLarge];
         break;
       case 2:
         v4 = +[CKUIBehavior sharedBehaviors];
-        v5 = [v4 navBarHeaderChevronImageNoAvatar];
+        businessVerifiedImageLarge = [v4 navBarHeaderChevronImageNoAvatar];
         break;
       case 3:
         v4 = +[CKUIBehavior sharedBehaviors];
-        v5 = [v4 navBarHeaderOpaqueChevronImageNoAvatar];
+        businessVerifiedImageLarge = [v4 navBarHeaderOpaqueChevronImageNoAvatar];
         break;
       default:
         goto LABEL_16;
     }
 
-    v2 = v5;
+    v2 = businessVerifiedImageLarge;
   }
 
 LABEL_16:
@@ -113,7 +113,7 @@ LABEL_16:
 
 - (UIColor)preferredColor
 {
-  v2 = 0;
+  navBarGrayColor = 0;
   imageType = self->_imageType;
   if (imageType <= 4)
   {
@@ -124,8 +124,8 @@ LABEL_16:
 
 LABEL_8:
     v4 = +[CKUIBehavior sharedBehaviors];
-    v5 = [v4 theme];
-    v2 = [v5 navBarGrayColor];
+    theme = [v4 theme];
+    navBarGrayColor = [theme navBarGrayColor];
 
     goto LABEL_9;
   }
@@ -137,12 +137,12 @@ LABEL_8:
 
   if (imageType == 6)
   {
-    v2 = [MEMORY[0x1E69DC888] systemRedColor];
+    navBarGrayColor = [MEMORY[0x1E69DC888] systemRedColor];
   }
 
 LABEL_9:
 
-  return v2;
+  return navBarGrayColor;
 }
 
 @end

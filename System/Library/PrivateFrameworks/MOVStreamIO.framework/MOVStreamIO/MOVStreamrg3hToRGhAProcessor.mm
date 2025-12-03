@@ -1,24 +1,24 @@
 @interface MOVStreamrg3hToRGhAProcessor
-- (opaqueCMFormatDescription)createTrackFormatDescriptionFromStreamData:(StreamRecordingData *)a3;
+- (opaqueCMFormatDescription)createTrackFormatDescriptionFromStreamData:(StreamRecordingData *)data;
 @end
 
 @implementation MOVStreamrg3hToRGhAProcessor
 
-- (opaqueCMFormatDescription)createTrackFormatDescriptionFromStreamData:(StreamRecordingData *)a3
+- (opaqueCMFormatDescription)createTrackFormatDescriptionFromStreamData:(StreamRecordingData *)data
 {
   mioProcesser = self->_mioProcesser;
   if (!mioProcesser)
   {
-    v5 = [[MIOrg3hToRGhAFrameProcessor alloc] initWithInputFormatDescription:a3->var0];
+    v5 = [[MIOrg3hToRGhAFrameProcessor alloc] initWithInputFormatDescription:data->var0];
     v6 = self->_mioProcesser;
     self->_mioProcesser = v5;
 
     mioProcesser = self->_mioProcesser;
   }
 
-  v7 = [(MIOrg3hToRGhAFrameProcessor *)mioProcesser formatDescriptionForEncoding];
-  CFRetain(v7);
-  return v7;
+  formatDescriptionForEncoding = [(MIOrg3hToRGhAFrameProcessor *)mioProcesser formatDescriptionForEncoding];
+  CFRetain(formatDescriptionForEncoding);
+  return formatDescriptionForEncoding;
 }
 
 @end

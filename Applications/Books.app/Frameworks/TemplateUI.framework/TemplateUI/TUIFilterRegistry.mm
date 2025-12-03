@@ -1,9 +1,9 @@
 @interface TUIFilterRegistry
 - (TUIFilterRegistry)init;
-- (id)imageFilterWithIdentifier:(id)a3;
-- (id)imageSetFilterWithIdentifier:(id)a3;
-- (void)registerImageFilters:(id)a3;
-- (void)registerImageSetFilters:(id)a3;
+- (id)imageFilterWithIdentifier:(id)identifier;
+- (id)imageSetFilterWithIdentifier:(id)identifier;
+- (void)registerImageFilters:(id)filters;
+- (void)registerImageSetFilters:(id)filters;
 @end
 
 @implementation TUIFilterRegistry
@@ -27,14 +27,14 @@
   return v2;
 }
 
-- (void)registerImageFilters:(id)a3
+- (void)registerImageFilters:(id)filters
 {
-  v4 = a3;
+  filtersCopy = filters;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [filtersCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -45,32 +45,32 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(filtersCopy);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
-        v10 = [v9 identifier];
-        if ([v10 length])
+        identifier = [v9 identifier];
+        if ([identifier length])
         {
-          [(NSMutableDictionary *)self->_imageFilters setObject:v9 forKeyedSubscript:v10];
+          [(NSMutableDictionary *)self->_imageFilters setObject:v9 forKeyedSubscript:identifier];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [filtersCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)registerImageSetFilters:(id)a3
+- (void)registerImageSetFilters:(id)filters
 {
-  v4 = a3;
+  filtersCopy = filters;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [filtersCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -81,30 +81,30 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(filtersCopy);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
-        v10 = [v9 identifier];
-        if ([v10 length])
+        identifier = [v9 identifier];
+        if ([identifier length])
         {
-          [(NSMutableDictionary *)self->_imageSetFilters setObject:v9 forKeyedSubscript:v10];
+          [(NSMutableDictionary *)self->_imageSetFilters setObject:v9 forKeyedSubscript:identifier];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [filtersCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
   }
 }
 
-- (id)imageFilterWithIdentifier:(id)a3
+- (id)imageFilterWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  if ([v4 length])
+  identifierCopy = identifier;
+  if ([identifierCopy length])
   {
-    v5 = [(NSMutableDictionary *)self->_imageFilters objectForKeyedSubscript:v4];
+    v5 = [(NSMutableDictionary *)self->_imageFilters objectForKeyedSubscript:identifierCopy];
   }
 
   else
@@ -115,12 +115,12 @@
   return v5;
 }
 
-- (id)imageSetFilterWithIdentifier:(id)a3
+- (id)imageSetFilterWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  if ([v4 length])
+  identifierCopy = identifier;
+  if ([identifierCopy length])
   {
-    v5 = [(NSMutableDictionary *)self->_imageSetFilters objectForKeyedSubscript:v4];
+    v5 = [(NSMutableDictionary *)self->_imageSetFilters objectForKeyedSubscript:identifierCopy];
   }
 
   else

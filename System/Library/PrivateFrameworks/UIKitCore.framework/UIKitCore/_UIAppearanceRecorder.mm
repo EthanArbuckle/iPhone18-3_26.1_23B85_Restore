@@ -1,24 +1,24 @@
 @interface _UIAppearanceRecorder
 + (id)_sharedAppearanceRecorder;
-+ (id)_sharedAppearanceRecorderForClass:(Class)a3 whenContainedIn:(id)a4;
-+ (id)_sharedAppearanceRecorderForClassNamed:(id)a3 superclass:(Class)a4 whenContainedIn:(id)a5;
++ (id)_sharedAppearanceRecorderForClass:(Class)class whenContainedIn:(id)in;
++ (id)_sharedAppearanceRecorderForClassNamed:(id)named superclass:(Class)superclass whenContainedIn:(id)in;
 - (NSData)_serializedRepresentation;
-- (_UIAppearanceRecorder)initWithSerializedRepresentation:(id)a3;
-- (id)methodSignatureForSelector:(SEL)a3;
+- (_UIAppearanceRecorder)initWithSerializedRepresentation:(id)representation;
+- (id)methodSignatureForSelector:(SEL)selector;
 - (void)_applyCustomizations;
-- (void)_importCustomizations:(id)a3 withArchiveVersion:(int64_t)a4;
-- (void)_recordInvocation:(id)a3 withClassName:(id)a4 containerClassNames:(id)a5 traitCollection:(id)a6 selectorString:(id)a7 forRemoteProcess:(BOOL)a8;
+- (void)_importCustomizations:(id)customizations withArchiveVersion:(int64_t)version;
+- (void)_recordInvocation:(id)invocation withClassName:(id)name containerClassNames:(id)names traitCollection:(id)collection selectorString:(id)string forRemoteProcess:(BOOL)process;
 - (void)dealloc;
-- (void)forwardInvocation:(id)a3;
+- (void)forwardInvocation:(id)invocation;
 @end
 
 @implementation _UIAppearanceRecorder
 
-- (void)_importCustomizations:(id)a3 withArchiveVersion:(int64_t)a4
+- (void)_importCustomizations:(id)customizations withArchiveVersion:(int64_t)version
 {
-  if (a4 == 1)
+  if (version == 1)
   {
-    self->_unarchivedCustomizations = a3;
+    self->_unarchivedCustomizations = customizations;
   }
 
   else
@@ -27,21 +27,21 @@
   }
 }
 
-- (_UIAppearanceRecorder)initWithSerializedRepresentation:(id)a3
+- (_UIAppearanceRecorder)initWithSerializedRepresentation:(id)representation
 {
   v10.receiver = self;
   v10.super_class = _UIAppearanceRecorder;
   v5 = [(_UIAppearanceRecorder *)&v10 init];
   if (v5)
   {
-    if (a3)
+    if (representation)
     {
       v9 = 0;
-      v6 = [MEMORY[0x1E696AE40] propertyListWithData:a3 options:0 format:0 error:&v9];
+      v6 = [MEMORY[0x1E696AE40] propertyListWithData:representation options:0 format:0 error:&v9];
       if (!v6)
       {
-        v8 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v8 handleFailureInMethod:a2 object:v5 file:@"UIAppearance.m" lineNumber:2165 description:{@"Encountered error attempting to deserialize customizations: %@", objc_msgSend(v9, "localizedDescription")}];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:v5 file:@"UIAppearance.m" lineNumber:2165 description:{@"Encountered error attempting to deserialize customizations: %@", objc_msgSend(v9, "localizedDescription")}];
       }
 
       if ([objc_msgSend(v6 objectForKey:{@"_UIARAVersionKey", "integerValue"}] == 1)
@@ -64,7 +64,7 @@
   v3 = _sharedAppearanceRecorder_sharedAppearance;
   if (!_sharedAppearanceRecorder_sharedAppearance)
   {
-    v3 = objc_alloc_init(a1);
+    v3 = objc_alloc_init(self);
     _sharedAppearanceRecorder_sharedAppearance = v3;
   }
 
@@ -74,20 +74,20 @@
   return _sharedAppearanceRecorder_sharedAppearance;
 }
 
-+ (id)_sharedAppearanceRecorderForClassNamed:(id)a3 superclass:(Class)a4 whenContainedIn:(id)a5
++ (id)_sharedAppearanceRecorderForClassNamed:(id)named superclass:(Class)superclass whenContainedIn:(id)in
 {
-  v8 = [a1 _sharedAppearanceRecorder];
-  [v8 _setClassNameToRecord:a3];
-  [v8 _setSuperclassToRecord:a4];
-  [v8 _setContainerClassNames:a5];
-  return v8;
+  _sharedAppearanceRecorder = [self _sharedAppearanceRecorder];
+  [_sharedAppearanceRecorder _setClassNameToRecord:named];
+  [_sharedAppearanceRecorder _setSuperclassToRecord:superclass];
+  [_sharedAppearanceRecorder _setContainerClassNames:in];
+  return _sharedAppearanceRecorder;
 }
 
-+ (id)_sharedAppearanceRecorderForClass:(Class)a3 whenContainedIn:(id)a4
++ (id)_sharedAppearanceRecorderForClass:(Class)class whenContainedIn:(id)in
 {
-  v6 = NSStringFromClass(a3);
+  v6 = NSStringFromClass(class);
 
-  return [a1 _sharedAppearanceRecorderForClassNamed:v6 superclass:0 whenContainedIn:a4];
+  return [self _sharedAppearanceRecorderForClassNamed:v6 superclass:0 whenContainedIn:in];
 }
 
 - (void)dealloc
@@ -97,7 +97,7 @@
   [(_UIAppearanceRecorder *)&v3 dealloc];
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
   superclassToRecord = self->_superclassToRecord;
   if (!superclassToRecord)
@@ -105,50 +105,50 @@
     superclassToRecord = NSClassFromString(self->_classNameToRecord);
   }
 
-  return [(objc_class *)superclassToRecord instanceMethodSignatureForSelector:a3];
+  return [(objc_class *)superclassToRecord instanceMethodSignatureForSelector:selector];
 }
 
-- (void)_recordInvocation:(id)a3 withClassName:(id)a4 containerClassNames:(id)a5 traitCollection:(id)a6 selectorString:(id)a7 forRemoteProcess:(BOOL)a8
+- (void)_recordInvocation:(id)invocation withClassName:(id)name containerClassNames:(id)names traitCollection:(id)collection selectorString:(id)string forRemoteProcess:(BOOL)process
 {
-  v51 = a8;
-  v11 = self;
+  processCopy = process;
+  selfCopy = self;
   v61 = *MEMORY[0x1E69E9840];
-  if (!a4)
+  if (!name)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
-  v48 = a7;
-  if ([(NSArray *)v11->_unarchivedCustomizations count])
+  stringCopy = string;
+  if ([(NSArray *)selfCopy->_unarchivedCustomizations count])
   {
-    v11->_customizations = [(NSArray *)v11->_unarchivedCustomizations mutableCopy];
+    selfCopy->_customizations = [(NSArray *)selfCopy->_unarchivedCustomizations mutableCopy];
 
-    v11->_unarchivedCustomizations = 0;
+    selfCopy->_unarchivedCustomizations = 0;
   }
 
-  v12 = [MEMORY[0x1E695DF70] array];
-  if ([objc_msgSend(a3 "methodSignature")] < 3)
+  array = [MEMORY[0x1E695DF70] array];
+  if ([objc_msgSend(invocation "methodSignature")] < 3)
   {
 LABEL_96:
-    v39 = v48;
-    if (!v48)
+    v39 = stringCopy;
+    if (!stringCopy)
     {
-      v39 = NSStringFromSelector([a3 selector]);
+      v39 = NSStringFromSelector([invocation selector]);
     }
 
-    v40 = [objc_alloc(MEMORY[0x1E695DF90]) initWithObjectsAndKeys:{a4, @"_UIARACustomizationsClassNameKey", v39, @"_UIARACustomizationsSelectorNameKey", v12, @"_UIARACustomizationsArgsKey", 0}];
+    v40 = [objc_alloc(MEMORY[0x1E695DF90]) initWithObjectsAndKeys:{name, @"_UIARACustomizationsClassNameKey", v39, @"_UIARACustomizationsSelectorNameKey", array, @"_UIARACustomizationsArgsKey", 0}];
     v41 = v40;
-    if (a5)
+    if (names)
     {
-      [v40 setObject:a5 forKey:@"_UIARACustomizationsContainerClassNamesKey"];
+      [v40 setObject:names forKey:@"_UIARACustomizationsContainerClassNamesKey"];
     }
 
-    if (a6)
+    if (collection)
     {
-      [v41 setObject:objc_msgSend(MEMORY[0x1E696ACC8] forKey:{"archivedDataWithRootObject:requiringSecureCoding:error:", a6, 1, 0), @"_UIARACustomizationsTraitCollectionArchiveKey"}];
+      [v41 setObject:objc_msgSend(MEMORY[0x1E696ACC8] forKey:{"archivedDataWithRootObject:requiringSecureCoding:error:", collection, 1, 0), @"_UIARACustomizationsTraitCollectionArchiveKey"}];
     }
 
-    [(NSMutableArray *)v11->_customizations addObject:v41];
+    [(NSMutableArray *)selfCopy->_customizations addObject:v41];
 
     return;
   }
@@ -157,10 +157,10 @@ LABEL_96:
   v14 = *off_1E70EC918;
   v53 = *off_1E70EC9B0;
   v52 = *off_1E70EC920;
-  v47 = v12;
+  v47 = array;
   while (1)
   {
-    v15 = [objc_msgSend(a3 "methodSignature")];
+    v15 = [objc_msgSend(invocation "methodSignature")];
     v16 = v15;
     v17 = *v15;
     if (v17 == 64 && !v15[1])
@@ -171,35 +171,35 @@ LABEL_96:
     if (!strcmp(v15, "{CGPoint=dd}"))
     {
       memset(&buf, 0, 16);
-      [a3 getArgument:&buf atIndex:v13];
+      [invocation getArgument:&buf atIndex:v13];
       v19 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{@"CGPoint", @"_UIARACustomizationArgsObjCTypeKey", NSStringFromCGPoint(*&buf.top), @"_UIARACustomizationArgsRepresentationKey", 0, v43, v44}];
     }
 
     else if (!strcmp(v16, "{CGSize=dd}"))
     {
       memset(&buf, 0, 16);
-      [a3 getArgument:&buf atIndex:v13];
+      [invocation getArgument:&buf atIndex:v13];
       v19 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{@"CGSize", @"_UIARACustomizationArgsObjCTypeKey", NSStringFromCGSize(*&buf.top), @"_UIARACustomizationArgsRepresentationKey", 0, v43, v44}];
     }
 
     else if (!strcmp(v16, "{UIOffset=dd}"))
     {
       memset(&buf, 0, 16);
-      [a3 getArgument:&buf atIndex:v13];
+      [invocation getArgument:&buf atIndex:v13];
       v19 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{@"UIOffset", @"_UIARACustomizationArgsObjCTypeKey", NSStringFromUIOffset(*&buf.top), @"_UIARACustomizationArgsRepresentationKey", 0, v43, v44}];
     }
 
     else if (!strcmp(v16, "{CGRect={CGPoint=dd}{CGSize=dd}}"))
     {
       memset(&buf, 0, sizeof(buf));
-      [a3 getArgument:&buf atIndex:v13];
+      [invocation getArgument:&buf atIndex:v13];
       v19 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{@"CGRect", @"_UIARACustomizationArgsObjCTypeKey", NSStringFromCGRect(buf), @"_UIARACustomizationArgsRepresentationKey", 0, v43, v44}];
     }
 
     else if (!strcmp(v16, "{UIEdgeInsets=dddd}"))
     {
       memset(&buf, 0, sizeof(buf));
-      [a3 getArgument:&buf atIndex:v13];
+      [invocation getArgument:&buf atIndex:v13];
       v19 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{@"UIEdgeInsets", @"_UIARACustomizationArgsObjCTypeKey", NSStringFromUIEdgeInsets(buf), @"_UIARACustomizationArgsRepresentationKey", 0, v43, v44}];
     }
 
@@ -217,7 +217,7 @@ LABEL_96:
             }
 
             buf.top = 0.0;
-            [a3 getArgument:&buf atIndex:v13];
+            [invocation getArgument:&buf atIndex:v13];
             v19 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{@"Class", @"_UIARACustomizationArgsObjCTypeKey", NSStringFromClass(*&buf.top), @"_UIARACustomizationArgsRepresentationKey", 0, v43, v44}];
           }
 
@@ -229,7 +229,7 @@ LABEL_96:
             }
 
             LOBYTE(buf.top) = 0;
-            [a3 getArgument:&buf atIndex:v13];
+            [invocation getArgument:&buf atIndex:v13];
             v19 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{@"BOOL", @"_UIARACustomizationArgsObjCTypeKey", objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", LOBYTE(buf.top)), @"_UIARACustomizationArgsRepresentationKey", 0, v43, v44}];
           }
 
@@ -245,7 +245,7 @@ LABEL_66:
           }
 
           LODWORD(buf.top) = 0;
-          [a3 getArgument:&buf atIndex:v13];
+          [invocation getArgument:&buf atIndex:v13];
           v19 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{@"unsigned int", @"_UIARACustomizationArgsObjCTypeKey", objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", LODWORD(buf.top)), @"_UIARACustomizationArgsRepresentationKey", 0, v43, v44}];
           goto LABEL_47;
         }
@@ -268,7 +268,7 @@ LABEL_66:
             }
 
             LOBYTE(buf.top) = 0;
-            [a3 getArgument:&buf atIndex:v13];
+            [invocation getArgument:&buf atIndex:v13];
             v19 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{@"char", @"_UIARACustomizationArgsObjCTypeKey", objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", SLOBYTE(buf.top)), @"_UIARACustomizationArgsRepresentationKey", 0, v43, v44}];
             goto LABEL_47;
           }
@@ -285,7 +285,7 @@ LABEL_64:
           }
 
           buf.top = 0.0;
-          [a3 getArgument:&buf atIndex:v13];
+          [invocation getArgument:&buf atIndex:v13];
           v19 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{@"double", @"_UIARACustomizationArgsObjCTypeKey", objc_msgSend(MEMORY[0x1E696AD98], "numberWithDouble:", buf.top), @"_UIARACustomizationArgsRepresentationKey", 0, v43, v44}];
           goto LABEL_47;
         }
@@ -312,7 +312,7 @@ LABEL_64:
       }
 
       buf.top = 0.0;
-      [a3 getArgument:&buf atIndex:v13];
+      [invocation getArgument:&buf atIndex:v13];
       v19 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{@"NSUInteger", @"_UIARACustomizationArgsObjCTypeKey", objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInteger:", *&buf.top), @"_UIARACustomizationArgsRepresentationKey", 0, v43, v44}];
     }
 
@@ -323,21 +323,21 @@ LABEL_47:
       goto LABEL_104;
     }
 
-    [v12 addObject:v19];
-    if (++v13 >= [objc_msgSend(a3 "methodSignature")])
+    [array addObject:v19];
+    if (++v13 >= [objc_msgSend(invocation "methodSignature")])
     {
       goto LABEL_96;
     }
   }
 
   v58 = 0;
-  [a3 getArgument:&v58 atIndex:v13];
+  [invocation getArgument:&v58 atIndex:v13];
   if (!v58)
   {
-    v27 = 0;
+    dictionary = 0;
     v28 = @"_UIARACustomizationArgsHintIsPlistType";
 LABEL_46:
-    v19 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{@"id", @"_UIARACustomizationArgsObjCTypeKey", v28, @"_UIARACustomizationArgsHintKey", v27, @"_UIARACustomizationArgsRepresentationKey", 0}];
+    v19 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{@"id", @"_UIARACustomizationArgsObjCTypeKey", v28, @"_UIARACustomizationArgsHintKey", dictionary, @"_UIARACustomizationArgsRepresentationKey", 0}];
     goto LABEL_47;
   }
 
@@ -370,7 +370,7 @@ LABEL_46:
     while ((isKindOfClass & 1) == 0);
     if (isKindOfClass)
     {
-      v27 = v58;
+      dictionary = v58;
       v28 = @"_UIARACustomizationArgsHintIsPlistType";
       goto LABEL_31;
     }
@@ -390,43 +390,43 @@ LABEL_46:
       v28 = @"_UIARACustomizationArgsHintIsUIColor";
     }
 
-    v12 = v47;
-    if (v51 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    array = v47;
+    if (processCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v29 = [v58 _serializedData];
+      _serializedData = [v58 _serializedData];
     }
 
     else
     {
-      v29 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v58 requiringSecureCoding:1 error:0];
+      _serializedData = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v58 requiringSecureCoding:1 error:0];
     }
 
-    v27 = v29;
+    dictionary = _serializedData;
     goto LABEL_46;
   }
 
   objc_opt_class();
-  v12 = v47;
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [-[NSArray objectAtIndex:](-[NSString componentsSeparatedByString:](NSStringFromSelector(objc_msgSend(a3 "selector"))] != 0x7FFFFFFFFFFFFFFFLL)
+  array = v47;
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [-[NSArray objectAtIndex:](-[NSString componentsSeparatedByString:](NSStringFromSelector(objc_msgSend(invocation "selector"))] != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v27 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v54 = 0u;
     v55 = 0u;
     v56 = 0u;
     v57 = 0u;
-    v30 = [v58 allKeys];
-    v31 = [v30 countByEnumeratingWithState:&v54 objects:v60 count:16];
+    allKeys = [v58 allKeys];
+    v31 = [allKeys countByEnumeratingWithState:&v54 objects:v60 count:16];
     if (!v31)
     {
       v28 = @"_UIARACustomizationArgsHintIsUITextAttribute";
 LABEL_31:
-      v12 = v47;
+      array = v47;
       goto LABEL_46;
     }
 
     v32 = v31;
-    v45 = a6;
-    v46 = v11;
+    collectionCopy = collection;
+    v46 = selfCopy;
     v33 = *v55;
 LABEL_74:
     v34 = 0;
@@ -434,7 +434,7 @@ LABEL_74:
     {
       if (*v55 != v33)
       {
-        objc_enumerationMutation(v30);
+        objc_enumerationMutation(allKeys);
       }
 
       v35 = *(*(&v54 + 1) + 8 * v34);
@@ -462,17 +462,17 @@ LABEL_74:
         v36 = NSStringFromUIOffset(v62);
       }
 
-      [v27 setObject:v36 forKey:v35];
+      [dictionary setObject:v36 forKey:v35];
 LABEL_87:
       if (v32 == ++v34)
       {
-        v38 = [v30 countByEnumeratingWithState:&v54 objects:v60 count:16];
+        v38 = [allKeys countByEnumeratingWithState:&v54 objects:v60 count:16];
         v32 = v38;
         if (!v38)
         {
           v28 = @"_UIARACustomizationArgsHintIsUITextAttribute";
-          a6 = v45;
-          v11 = v46;
+          collection = collectionCopy;
+          selfCopy = v46;
           goto LABEL_31;
         }
 
@@ -483,19 +483,19 @@ LABEL_87:
 
   v18 = 0;
 LABEL_104:
-  if (!v51 && !v12)
+  if (!processCopy && !array)
   {
-    v42 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v42 handleFailureInFunction:objc_msgSend(MEMORY[0x1E696AEC0] file:"stringWithUTF8String:" lineNumber:"-[_UIAppearanceRecorder _recordInvocation:withClassName:containerClassNames:traitCollection:selectorString:forRemoteProcess:]") description:{@"UIAppearance.m", 2384, @"Failed to record argument %lu of invocation %@", v13, a3}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInFunction:objc_msgSend(MEMORY[0x1E696AEC0] file:"stringWithUTF8String:" lineNumber:"-[_UIAppearanceRecorder _recordInvocation:withClassName:containerClassNames:traitCollection:selectorString:forRemoteProcess:]") description:{@"UIAppearance.m", 2384, @"Failed to record argument %lu of invocation %@", v13, invocation}];
   }
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
-  v5 = [(_UIAppearanceRecorder *)self _classNameToRecord];
+  _classNameToRecord = [(_UIAppearanceRecorder *)self _classNameToRecord];
   containerClassNames = self->_containerClassNames;
 
-  [(_UIAppearanceRecorder *)self _recordInvocation:a3 withClassName:v5 containerClassNames:containerClassNames traitCollection:0 selectorString:0 forRemoteProcess:0];
+  [(_UIAppearanceRecorder *)self _recordInvocation:invocation withClassName:_classNameToRecord containerClassNames:containerClassNames traitCollection:0 selectorString:0 forRemoteProcess:0];
 }
 
 - (void)_applyCustomizations
@@ -575,14 +575,14 @@ LABEL_104:
             v14 = [(objc_class *)v9 instanceMethodSignatureForSelector:v13];
             v75 = [MEMORY[0x1E695DF50] invocationWithMethodSignature:v14];
             [v75 setSelector:v13];
-            v77 = [v14 numberOfArguments];
-            if (v77 <= 2)
+            numberOfArguments = [v14 numberOfArguments];
+            if (numberOfArguments <= 2)
             {
               [*(v3 + 3888) raise:v4 format:{@"*** Invalid selector for appearance customization: %@", NSStringFromSelector(v13)}];
             }
 
             v15 = [v76 objectForKey:@"_UIARACustomizationsArgsKey"];
-            if ([v15 count] != v77 - 2)
+            if ([v15 count] != numberOfArguments - 2)
             {
               [*(v3 + 3888) raise:v4 format:@"*** Number of arguments in appearance customization data does not match method signature"];
             }
@@ -842,14 +842,14 @@ LABEL_39:
             if ([v29 isEqual:@"_UIARACustomizationArgsHintIsUITextAttribute"])
             {
               v51 = [v17 objectForKey:@"_UIARACustomizationArgsRepresentationKey"];
-              v67 = [MEMORY[0x1E695DF90] dictionary];
+              dictionary = [MEMORY[0x1E695DF90] dictionary];
               v68 = v51;
               v87 = 0u;
               v88 = 0u;
               v89 = 0u;
               v90 = 0u;
-              v66 = [v51 allKeys];
-              v52 = [v66 countByEnumeratingWithState:&v87 objects:v94 count:16];
+              allKeys = [v51 allKeys];
+              v52 = [allKeys countByEnumeratingWithState:&v87 objects:v94 count:16];
               if (!v52)
               {
                 goto LABEL_152;
@@ -864,7 +864,7 @@ LABEL_39:
                 {
                   if (*v88 != v69)
                   {
-                    objc_enumerationMutation(v66);
+                    objc_enumerationMutation(allKeys);
                   }
 
                   v55 = *(*(&v87 + 1) + 8 * v54);
@@ -885,23 +885,23 @@ LABEL_39:
                     v86 = UIOffsetFromString([v68 objectForKey:v55]);
                     v56 = [v57 valueWithBytes:&v86 objCType:"{UIOffset=dd}"];
 LABEL_139:
-                    [v67 setObject:v56 forKey:v55];
+                    [dictionary setObject:v56 forKey:v55];
                     goto LABEL_140;
                   }
 
-                  v58 = [MEMORY[0x1E696AAA8] currentHandler];
-                  [v58 handleFailureInFunction:objc_msgSend(MEMORY[0x1E696AEC0] file:"stringWithUTF8String:" lineNumber:"NSInvocation *_invocationFromCustomizationRaiseForUnexpectedData(NSDictionary * description:{Class *)"), @"UIAppearance.m", 2521, @"Unknown key, %@ in title text attributes dictionary", v55}];
+                  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+                  [currentHandler handleFailureInFunction:objc_msgSend(MEMORY[0x1E696AEC0] file:"stringWithUTF8String:" lineNumber:"NSInvocation *_invocationFromCustomizationRaiseForUnexpectedData(NSDictionary * description:{Class *)"), @"UIAppearance.m", 2521, @"Unknown key, %@ in title text attributes dictionary", v55}];
 LABEL_140:
                   ++v54;
                 }
 
                 while (v53 != v54);
-                v59 = [v66 countByEnumeratingWithState:&v87 objects:v94 count:16];
+                v59 = [allKeys countByEnumeratingWithState:&v87 objects:v94 count:16];
                 v53 = v59;
                 if (!v59)
                 {
 LABEL_152:
-                  v30 = v67;
+                  v30 = dictionary;
 LABEL_125:
                   *&buf.origin.x = v30;
                   if (!v30)
@@ -917,9 +917,9 @@ LABEL_62:
             }
 
 LABEL_77:
-            if (v77 >= 4)
+            if (numberOfArguments >= 4)
             {
-              for (i = 3; v77 != i; ++i)
+              for (i = 3; numberOfArguments != i; ++i)
               {
                 v32 = [v14 getArgumentTypeAtIndex:i];
                 v33 = [v15 objectAtIndexedSubscript:i - 2];
@@ -1012,19 +1012,19 @@ LABEL_91:
                 {
                   if (v40)
                   {
-                    v43 = [(objc_class *)v71 appearanceForTraitCollection:v40];
+                    appearance = [(objc_class *)v71 appearanceForTraitCollection:v40];
                   }
 
                   else
                   {
 LABEL_116:
-                    v43 = [(objc_class *)v42 appearance];
+                    appearance = [(objc_class *)v42 appearance];
                   }
 
 LABEL_118:
-                  if (v43)
+                  if (appearance)
                   {
-                    [v75 invokeWithTarget:v43];
+                    [v75 invokeWithTarget:appearance];
                   }
 
                   goto LABEL_120;
@@ -1043,7 +1043,7 @@ LABEL_118:
                 v40 = 0;
               }
 
-              v45 = [MEMORY[0x1E695DF70] array];
+              array = [MEMORY[0x1E695DF70] array];
               v78 = 0u;
               v79 = 0u;
               v80 = 0u;
@@ -1054,12 +1054,12 @@ LABEL_118:
 LABEL_114:
                 if (v40)
                 {
-                  v43 = [_UITraitBasedAppearance _appearanceForTraitCollection:v40 forClass:v71 withContainerList:v45];
+                  appearance = [_UITraitBasedAppearance _appearanceForTraitCollection:v40 forClass:v71 withContainerList:array];
                 }
 
                 else
                 {
-                  v43 = [(objc_class *)v71 _appearanceWhenContainedIn:v45];
+                  appearance = [(objc_class *)v71 _appearanceWhenContainedIn:array];
                 }
 
                 goto LABEL_118;
@@ -1082,7 +1082,7 @@ LABEL_108:
                   break;
                 }
 
-                [v45 addObject:v50];
+                [array addObject:v50];
                 if (v47 == ++v49)
                 {
                   v47 = [v38 countByEnumeratingWithState:&v78 objects:v91 count:16];
@@ -1118,8 +1118,8 @@ LABEL_120:
   v5 = [MEMORY[0x1E696AE40] dataWithPropertyList:v4 format:200 options:0 error:&v8];
   if (!v5)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"UIAppearance.m" lineNumber:2725 description:{@"Encountered error attempting to serialize customizations: %@", objc_msgSend(v8, "localizedDescription")}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIAppearance.m" lineNumber:2725 description:{@"Encountered error attempting to serialize customizations: %@", objc_msgSend(v8, "localizedDescription")}];
   }
 
   return v5;

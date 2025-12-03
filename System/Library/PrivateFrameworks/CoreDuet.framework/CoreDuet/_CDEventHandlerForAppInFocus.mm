@@ -1,6 +1,6 @@
 @interface _CDEventHandlerForAppInFocus
 - (_CDEventHandlerForAppInFocus)init;
-- (void)eventHandler:(id)a3 withFileHandle:(id)a4;
+- (void)eventHandler:(id)handler withFileHandle:(id)handle;
 @end
 
 @implementation _CDEventHandlerForAppInFocus
@@ -18,12 +18,12 @@
   return v2;
 }
 
-- (void)eventHandler:(id)a3 withFileHandle:(id)a4
+- (void)eventHandler:(id)handler withFileHandle:(id)handle
 {
-  v6 = OUTLINED_FUNCTION_4_10(self, a2, a3, a4);
+  v6 = OUTLINED_FUNCTION_4_10(self, a2, handler, handle);
   v7 = v5;
-  v8 = [v7 metadata];
-  v18 = [v8 copy];
+  metadata = [v7 metadata];
+  v18 = [metadata copy];
 
   [v4 anonymizer];
   objc_claimAutoreleasedReturnValue();
@@ -35,8 +35,8 @@
   OUTLINED_FUNCTION_0_15();
   v16 = [(_CDFileUtility *)v12 fileHandlerUtiity:v13 withBundleId:v14 withMetaData:v15];
 
-  v17 = [v4 utility];
-  OUTLINED_FUNCTION_1_14(v17);
+  utility = [v4 utility];
+  OUTLINED_FUNCTION_1_14(utility);
 }
 
 @end

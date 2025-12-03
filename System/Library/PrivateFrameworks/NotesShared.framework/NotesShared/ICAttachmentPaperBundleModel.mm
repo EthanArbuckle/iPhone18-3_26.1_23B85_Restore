@@ -1,28 +1,28 @@
 @interface ICAttachmentPaperBundleModel
-+ (id)generateFallbackPDFDataForAttachment:(id)a3;
-+ (id)paperBundleURLForAttachmentIdentifier:(id)a3 inAccount:(id)a4;
++ (id)generateFallbackPDFDataForAttachment:(id)attachment;
++ (id)paperBundleURLForAttachmentIdentifier:(id)identifier inAccount:(id)account;
 - (BOOL)paperHasEnhancedCanvas;
 - (BOOL)paperHasMath;
 - (BOOL)paperHasNewInks2022;
 - (BOOL)paperHasNewInks2023;
 - (BOOL)paperHasNewInks2025;
 - (BOOL)paperHasNewInksSpring2024;
-- (BOOL)restorePaperBundleFromArchiveURL:(id)a3 error:(id *)a4;
+- (BOOL)restorePaperBundleFromArchiveURL:(id)l error:(id *)error;
 - (BOOL)showThumbnailInNoteList;
 - (NSURL)paperBundleAssetsSubdirectoryURL;
 - (NSURL)paperBundleDatabaseSubdirectoryURL;
 - (NSURL)paperBundleURL;
 - (NSURL)paperCoherenceContextURL;
-- (id)archivePaperBundleToDiskWithError:(id *)a3;
+- (id)archivePaperBundleToDiskWithError:(id *)error;
 - (id)standaloneTitleForNote;
 - (void)removeStrokesFromStyleInventory;
-- (void)setPaperHasEnhancedCanvas:(BOOL)a3;
-- (void)setPaperHasMath:(BOOL)a3;
-- (void)setPaperHasNewInks2022:(BOOL)a3;
-- (void)setPaperHasNewInks2023:(BOOL)a3;
-- (void)setPaperHasNewInks2025:(BOOL)a3;
-- (void)setPaperHasNewInksSpring2024:(BOOL)a3;
-- (void)updateMinimumSupportedVersionIfNeededWithCompletionHandler:(id)a3;
+- (void)setPaperHasEnhancedCanvas:(BOOL)canvas;
+- (void)setPaperHasMath:(BOOL)math;
+- (void)setPaperHasNewInks2022:(BOOL)inks2022;
+- (void)setPaperHasNewInks2023:(BOOL)inks2023;
+- (void)setPaperHasNewInks2025:(BOOL)inks2025;
+- (void)setPaperHasNewInksSpring2024:(BOOL)spring2024;
+- (void)updateMinimumSupportedVersionIfNeededWithCompletionHandler:(id)handler;
 @end
 
 @implementation ICAttachmentPaperBundleModel
@@ -34,35 +34,35 @@
     return 0;
   }
 
-  v3 = [(ICAttachmentModel *)self attachment];
-  v4 = [v3 previewImages];
-  v5 = [v4 count] != 0;
+  attachment = [(ICAttachmentModel *)self attachment];
+  previewImages = [attachment previewImages];
+  v5 = [previewImages count] != 0;
 
   return v5;
 }
 
 - (NSURL)paperCoherenceContextURL
 {
-  v2 = [(ICAttachmentModel *)self attachment];
-  v3 = [v2 paperCoherenceContextURL];
+  attachment = [(ICAttachmentModel *)self attachment];
+  paperCoherenceContextURL = [attachment paperCoherenceContextURL];
 
-  return v3;
+  return paperCoherenceContextURL;
 }
 
 - (NSURL)paperBundleURL
 {
-  v2 = [(ICAttachmentModel *)self attachment];
-  v3 = [v2 paperBundleURL];
+  attachment = [(ICAttachmentModel *)self attachment];
+  paperBundleURL = [attachment paperBundleURL];
 
-  return v3;
+  return paperBundleURL;
 }
 
-+ (id)paperBundleURLForAttachmentIdentifier:(id)a3 inAccount:(id)a4
++ (id)paperBundleURLForAttachmentIdentifier:(id)identifier inAccount:(id)account
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 length];
-  if (v6 && v7)
+  identifierCopy = identifier;
+  accountCopy = account;
+  v7 = [identifierCopy length];
+  if (accountCopy && v7)
   {
     v21 = 0;
     v22 = &v21;
@@ -70,15 +70,15 @@
     v24 = __Block_byref_object_copy__44;
     v25 = __Block_byref_object_dispose__44;
     v26 = 0;
-    v8 = [v6 managedObjectContext];
+    managedObjectContext = [accountCopy managedObjectContext];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __80__ICAttachmentPaperBundleModel_paperBundleURLForAttachmentIdentifier_inAccount___block_invoke;
     v17[3] = &unk_2781961E0;
-    v18 = v6;
-    v19 = v5;
+    v18 = accountCopy;
+    v19 = identifierCopy;
     v20 = &v21;
-    [v8 performBlockAndWait:v17];
+    [managedObjectContext performBlockAndWait:v17];
 
     v9 = v22[5];
     _Block_object_dispose(&v21, 8);
@@ -86,10 +86,10 @@
     goto LABEL_7;
   }
 
-  if (![v5 length])
+  if (![identifierCopy length])
   {
     [MEMORY[0x277D36198] handleFailedAssertWithCondition:"identifier.length" functionName:"+[ICAttachmentPaperBundleModel paperBundleURLForAttachmentIdentifier:inAccount:]" simulateCrash:1 showAlert:1 format:@"PaperKit attachment identifier is empty"];
-    if (v6)
+    if (accountCopy)
     {
       goto LABEL_6;
     }
@@ -99,7 +99,7 @@ LABEL_11:
     goto LABEL_6;
   }
 
-  if (!v6)
+  if (!accountCopy)
   {
     goto LABEL_11;
   }
@@ -108,9 +108,9 @@ LABEL_6:
   v10 = MEMORY[0x277CBEBC0];
   v11 = NSTemporaryDirectory();
   v12 = [v10 fileURLWithPath:v11];
-  v13 = [MEMORY[0x277CCAD78] UUID];
-  v14 = [v13 UUIDString];
-  v15 = [v12 URLByAppendingPathComponent:v14 isDirectory:0];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  v15 = [v12 URLByAppendingPathComponent:uUIDString isDirectory:0];
   v9 = [v15 URLByAppendingPathExtension:@"bundle"];
 
 LABEL_7:
@@ -167,36 +167,36 @@ LABEL_10:
 
 - (NSURL)paperBundleDatabaseSubdirectoryURL
 {
-  v2 = [(ICAttachmentPaperBundleModel *)self paperBundleURL];
-  v3 = [_TtC11NotesShared21ICSystemPaperDocument databaseDirectoryAt:v2];
+  paperBundleURL = [(ICAttachmentPaperBundleModel *)self paperBundleURL];
+  v3 = [_TtC11NotesShared21ICSystemPaperDocument databaseDirectoryAt:paperBundleURL];
 
   return v3;
 }
 
 - (NSURL)paperBundleAssetsSubdirectoryURL
 {
-  v2 = [(ICAttachmentPaperBundleModel *)self paperBundleURL];
-  v3 = [_TtC11NotesShared21ICSystemPaperDocument assetsDirectoryAt:v2];
+  paperBundleURL = [(ICAttachmentPaperBundleModel *)self paperBundleURL];
+  v3 = [_TtC11NotesShared21ICSystemPaperDocument assetsDirectoryAt:paperBundleURL];
 
   return v3;
 }
 
-- (id)archivePaperBundleToDiskWithError:(id *)a3
+- (id)archivePaperBundleToDiskWithError:(id *)error
 {
   v31 = *MEMORY[0x277D85DE8];
-  v5 = [(ICAttachmentModel *)self attachment];
-  v6 = [v5 cloudAccount];
-  v7 = [v6 systemPaperTemporaryDirectoryURL];
+  attachment = [(ICAttachmentModel *)self attachment];
+  cloudAccount = [attachment cloudAccount];
+  systemPaperTemporaryDirectoryURL = [cloudAccount systemPaperTemporaryDirectoryURL];
 
-  v8 = [MEMORY[0x277CCAD78] UUID];
-  v9 = [v8 UUIDString];
-  v10 = [v7 URLByAppendingPathComponent:v9 isDirectory:0];
-  v11 = [*MEMORY[0x277CE1EF8] preferredFilenameExtension];
-  v12 = [v10 URLByAppendingPathExtension:v11];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  v10 = [systemPaperTemporaryDirectoryURL URLByAppendingPathComponent:uUIDString isDirectory:0];
+  preferredFilenameExtension = [*MEMORY[0x277CE1EF8] preferredFilenameExtension];
+  v12 = [v10 URLByAppendingPathExtension:preferredFilenameExtension];
 
   v13 = [_TtC11NotesShared21ICSystemPaperDocument alloc];
-  v14 = [(ICAttachmentModel *)self attachment];
-  v15 = [(ICSystemPaperDocument *)v13 initWithPaperAttachment:v14];
+  attachment2 = [(ICAttachmentModel *)self attachment];
+  v15 = [(ICSystemPaperDocument *)v13 initWithPaperAttachment:attachment2];
 
   v24 = 0;
   [(ICSystemPaperDocument *)v15 copyAndArchivePaperBundleTo:v12 error:&v24];
@@ -204,19 +204,19 @@ LABEL_10:
   v17 = v16;
   if (v16)
   {
-    if (a3)
+    if (error)
     {
       v18 = v16;
-      *a3 = v17;
+      *error = v17;
     }
 
     v19 = os_log_create("com.apple.notes", "SystemPaper");
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
-      v22 = [(ICAttachmentModel *)self attachment];
-      v23 = [v22 ic_loggingIdentifier];
+      attachment3 = [(ICAttachmentModel *)self attachment];
+      ic_loggingIdentifier = [attachment3 ic_loggingIdentifier];
       *buf = 138412802;
-      v26 = v23;
+      v26 = ic_loggingIdentifier;
       v27 = 2112;
       v28 = v12;
       v29 = 2112;
@@ -235,35 +235,35 @@ LABEL_10:
   return v20;
 }
 
-- (BOOL)restorePaperBundleFromArchiveURL:(id)a3 error:(id *)a4
+- (BOOL)restorePaperBundleFromArchiveURL:(id)l error:(id *)error
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  lCopy = l;
   v7 = [_TtC11NotesShared21ICSystemPaperDocument alloc];
-  v8 = [(ICAttachmentModel *)self attachment];
-  v9 = [(ICSystemPaperDocument *)v7 initWithPaperAttachment:v8];
+  attachment = [(ICAttachmentModel *)self attachment];
+  v9 = [(ICSystemPaperDocument *)v7 initWithPaperAttachment:attachment];
 
   v17 = 0;
-  [(ICSystemPaperDocument *)v9 restorePaperBundleFrom:v6 error:&v17];
+  [(ICSystemPaperDocument *)v9 restorePaperBundleFrom:lCopy error:&v17];
   v10 = v17;
   v11 = v10;
   if (v10)
   {
-    if (a4)
+    if (error)
     {
       v12 = v10;
-      *a4 = v11;
+      *error = v11;
     }
 
     v13 = os_log_create("com.apple.notes", "SystemPaper");
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      v15 = [(ICAttachmentModel *)self attachment];
-      v16 = [v15 ic_loggingIdentifier];
+      attachment2 = [(ICAttachmentModel *)self attachment];
+      ic_loggingIdentifier = [attachment2 ic_loggingIdentifier];
       *buf = 138412802;
-      v19 = v16;
+      v19 = ic_loggingIdentifier;
       v20 = 2112;
-      v21 = v6;
+      v21 = lCopy;
       v22 = 2112;
       v23 = v11;
       _os_log_error_impl(&dword_214D51000, v13, OS_LOG_TYPE_ERROR, "Failed to restore paper (%@) bundle archive (%@): %@", buf, 0x20u);
@@ -275,23 +275,23 @@ LABEL_10:
 
 - (BOOL)paperHasEnhancedCanvas
 {
-  v2 = [(ICAttachmentModel *)self attachment];
-  v3 = [v2 metadata];
-  v4 = [v3 objectForKeyedSubscript:@"hasEnhancedCanvasKey"];
-  v5 = [v4 BOOLValue];
+  attachment = [(ICAttachmentModel *)self attachment];
+  metadata = [attachment metadata];
+  v4 = [metadata objectForKeyedSubscript:@"hasEnhancedCanvasKey"];
+  bOOLValue = [v4 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
-- (void)setPaperHasEnhancedCanvas:(BOOL)a3
+- (void)setPaperHasEnhancedCanvas:(BOOL)canvas
 {
-  v4 = [(ICAttachmentModel *)self attachment];
+  attachment = [(ICAttachmentModel *)self attachment];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __58__ICAttachmentPaperBundleModel_setPaperHasEnhancedCanvas___block_invoke;
   v5[3] = &__block_descriptor_33_e29_v16__0__NSMutableDictionary_8l;
-  v6 = a3;
-  [v4 updateAttachmentMetadataWithBlock:v5];
+  canvasCopy = canvas;
+  [attachment updateAttachmentMetadataWithBlock:v5];
 }
 
 void __58__ICAttachmentPaperBundleModel_setPaperHasEnhancedCanvas___block_invoke(uint64_t a1, void *a2)
@@ -305,23 +305,23 @@ void __58__ICAttachmentPaperBundleModel_setPaperHasEnhancedCanvas___block_invoke
 
 - (BOOL)paperHasNewInks2022
 {
-  v2 = [(ICAttachmentModel *)self attachment];
-  v3 = [v2 metadata];
-  v4 = [v3 objectForKeyedSubscript:@"hasNewInksKey"];
-  v5 = [v4 BOOLValue];
+  attachment = [(ICAttachmentModel *)self attachment];
+  metadata = [attachment metadata];
+  v4 = [metadata objectForKeyedSubscript:@"hasNewInksKey"];
+  bOOLValue = [v4 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
-- (void)setPaperHasNewInks2022:(BOOL)a3
+- (void)setPaperHasNewInks2022:(BOOL)inks2022
 {
-  v4 = [(ICAttachmentModel *)self attachment];
+  attachment = [(ICAttachmentModel *)self attachment];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __55__ICAttachmentPaperBundleModel_setPaperHasNewInks2022___block_invoke;
   v5[3] = &__block_descriptor_33_e29_v16__0__NSMutableDictionary_8l;
-  v6 = a3;
-  [v4 updateAttachmentMetadataWithBlock:v5];
+  inks2022Copy = inks2022;
+  [attachment updateAttachmentMetadataWithBlock:v5];
 }
 
 void __55__ICAttachmentPaperBundleModel_setPaperHasNewInks2022___block_invoke(uint64_t a1, void *a2)
@@ -335,23 +335,23 @@ void __55__ICAttachmentPaperBundleModel_setPaperHasNewInks2022___block_invoke(ui
 
 - (BOOL)paperHasNewInks2023
 {
-  v2 = [(ICAttachmentModel *)self attachment];
-  v3 = [v2 metadata];
-  v4 = [v3 objectForKeyedSubscript:@"hasNewInks2023Key"];
-  v5 = [v4 BOOLValue];
+  attachment = [(ICAttachmentModel *)self attachment];
+  metadata = [attachment metadata];
+  v4 = [metadata objectForKeyedSubscript:@"hasNewInks2023Key"];
+  bOOLValue = [v4 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
-- (void)setPaperHasNewInks2023:(BOOL)a3
+- (void)setPaperHasNewInks2023:(BOOL)inks2023
 {
-  v4 = [(ICAttachmentModel *)self attachment];
+  attachment = [(ICAttachmentModel *)self attachment];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __55__ICAttachmentPaperBundleModel_setPaperHasNewInks2023___block_invoke;
   v5[3] = &__block_descriptor_33_e29_v16__0__NSMutableDictionary_8l;
-  v6 = a3;
-  [v4 updateAttachmentMetadataWithBlock:v5];
+  inks2023Copy = inks2023;
+  [attachment updateAttachmentMetadataWithBlock:v5];
 }
 
 void __55__ICAttachmentPaperBundleModel_setPaperHasNewInks2023___block_invoke(uint64_t a1, void *a2)
@@ -365,23 +365,23 @@ void __55__ICAttachmentPaperBundleModel_setPaperHasNewInks2023___block_invoke(ui
 
 - (BOOL)paperHasNewInksSpring2024
 {
-  v2 = [(ICAttachmentModel *)self attachment];
-  v3 = [v2 metadata];
-  v4 = [v3 objectForKeyedSubscript:@"hasNewInksSpring2024Key"];
-  v5 = [v4 BOOLValue];
+  attachment = [(ICAttachmentModel *)self attachment];
+  metadata = [attachment metadata];
+  v4 = [metadata objectForKeyedSubscript:@"hasNewInksSpring2024Key"];
+  bOOLValue = [v4 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
-- (void)setPaperHasNewInksSpring2024:(BOOL)a3
+- (void)setPaperHasNewInksSpring2024:(BOOL)spring2024
 {
-  v4 = [(ICAttachmentModel *)self attachment];
+  attachment = [(ICAttachmentModel *)self attachment];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __61__ICAttachmentPaperBundleModel_setPaperHasNewInksSpring2024___block_invoke;
   v5[3] = &__block_descriptor_33_e29_v16__0__NSMutableDictionary_8l;
-  v6 = a3;
-  [v4 updateAttachmentMetadataWithBlock:v5];
+  spring2024Copy = spring2024;
+  [attachment updateAttachmentMetadataWithBlock:v5];
 }
 
 void __61__ICAttachmentPaperBundleModel_setPaperHasNewInksSpring2024___block_invoke(uint64_t a1, void *a2)
@@ -395,23 +395,23 @@ void __61__ICAttachmentPaperBundleModel_setPaperHasNewInksSpring2024___block_inv
 
 - (BOOL)paperHasMath
 {
-  v2 = [(ICAttachmentModel *)self attachment];
-  v3 = [v2 metadata];
-  v4 = [v3 objectForKeyedSubscript:@"hasMathKey"];
-  v5 = [v4 BOOLValue];
+  attachment = [(ICAttachmentModel *)self attachment];
+  metadata = [attachment metadata];
+  v4 = [metadata objectForKeyedSubscript:@"hasMathKey"];
+  bOOLValue = [v4 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
-- (void)setPaperHasMath:(BOOL)a3
+- (void)setPaperHasMath:(BOOL)math
 {
-  v4 = [(ICAttachmentModel *)self attachment];
+  attachment = [(ICAttachmentModel *)self attachment];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __48__ICAttachmentPaperBundleModel_setPaperHasMath___block_invoke;
   v5[3] = &__block_descriptor_33_e29_v16__0__NSMutableDictionary_8l;
-  v6 = a3;
-  [v4 updateAttachmentMetadataWithBlock:v5];
+  mathCopy = math;
+  [attachment updateAttachmentMetadataWithBlock:v5];
 }
 
 void __48__ICAttachmentPaperBundleModel_setPaperHasMath___block_invoke(uint64_t a1, void *a2)
@@ -425,23 +425,23 @@ void __48__ICAttachmentPaperBundleModel_setPaperHasMath___block_invoke(uint64_t 
 
 - (BOOL)paperHasNewInks2025
 {
-  v2 = [(ICAttachmentModel *)self attachment];
-  v3 = [v2 metadata];
-  v4 = [v3 objectForKeyedSubscript:@"hasNewInks2025Key"];
-  v5 = [v4 BOOLValue];
+  attachment = [(ICAttachmentModel *)self attachment];
+  metadata = [attachment metadata];
+  v4 = [metadata objectForKeyedSubscript:@"hasNewInks2025Key"];
+  bOOLValue = [v4 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
-- (void)setPaperHasNewInks2025:(BOOL)a3
+- (void)setPaperHasNewInks2025:(BOOL)inks2025
 {
-  v4 = [(ICAttachmentModel *)self attachment];
+  attachment = [(ICAttachmentModel *)self attachment];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __55__ICAttachmentPaperBundleModel_setPaperHasNewInks2025___block_invoke;
   v5[3] = &__block_descriptor_33_e29_v16__0__NSMutableDictionary_8l;
-  v6 = a3;
-  [v4 updateAttachmentMetadataWithBlock:v5];
+  inks2025Copy = inks2025;
+  [attachment updateAttachmentMetadataWithBlock:v5];
 }
 
 void __55__ICAttachmentPaperBundleModel_setPaperHasNewInks2025___block_invoke(uint64_t a1, void *a2)
@@ -453,26 +453,26 @@ void __55__ICAttachmentPaperBundleModel_setPaperHasNewInks2025___block_invoke(ui
   [v4 setObject:v5 forKeyedSubscript:@"hasNewInks2025Key"];
 }
 
-- (void)updateMinimumSupportedVersionIfNeededWithCompletionHandler:(id)a3
+- (void)updateMinimumSupportedVersionIfNeededWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  v5 = [(ICAttachmentModel *)self attachment];
+  attachment = [(ICAttachmentModel *)self attachment];
   if ([(ICAttachmentPaperBundleModel *)self paperHasNewInksSpring2024])
   {
 LABEL_9:
-    v4[2](v4);
+    handlerCopy[2](handlerCopy);
     goto LABEL_10;
   }
 
-  v6 = [(ICAttachmentPaperBundleModel *)self paperBundleURL];
+  paperBundleURL = [(ICAttachmentPaperBundleModel *)self paperBundleURL];
 
-  if (!v6)
+  if (!paperBundleURL)
   {
     v8 = os_log_create("com.apple.notes", "SystemPaper");
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      [(ICAttachmentPaperBundleModel *)v5 updateMinimumSupportedVersionIfNeededWithCompletionHandler:v8];
+      [(ICAttachmentPaperBundleModel *)attachment updateMinimumSupportedVersionIfNeededWithCompletionHandler:v8];
     }
 
     goto LABEL_9;
@@ -489,8 +489,8 @@ LABEL_9:
   block[2] = __91__ICAttachmentPaperBundleModel_updateMinimumSupportedVersionIfNeededWithCompletionHandler___block_invoke_2;
   block[3] = &unk_278194E38;
   block[4] = self;
-  v10 = v5;
-  v11 = v4;
+  v10 = attachment;
+  v11 = handlerCopy;
   dispatch_async(v7, block);
 
 LABEL_10:
@@ -690,20 +690,20 @@ LABEL_31:
 
 - (void)removeStrokesFromStyleInventory
 {
-  v3 = [(ICAttachmentModel *)self attachment];
-  v4 = [v3 ic_permanentObjectID];
+  attachment = [(ICAttachmentModel *)self attachment];
+  ic_permanentObjectID = [attachment ic_permanentObjectID];
 
-  v5 = [(ICAttachmentModel *)self attachment];
-  v6 = [v5 workerManagedObjectContext];
+  attachment2 = [(ICAttachmentModel *)self attachment];
+  workerManagedObjectContext = [attachment2 workerManagedObjectContext];
 
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __63__ICAttachmentPaperBundleModel_removeStrokesFromStyleInventory__block_invoke;
   v9[3] = &unk_278194AD8;
-  v10 = v6;
-  v11 = v4;
-  v7 = v4;
-  v8 = v6;
+  v10 = workerManagedObjectContext;
+  v11 = ic_permanentObjectID;
+  v7 = ic_permanentObjectID;
+  v8 = workerManagedObjectContext;
   [v8 performBlock:v9];
 }
 
@@ -714,52 +714,52 @@ void __63__ICAttachmentPaperBundleModel_removeStrokesFromStyleInventory__block_i
   [(ICSystemPaperDocument *)v1 removeStrokesFromStyleInventory];
 }
 
-+ (id)generateFallbackPDFDataForAttachment:(id)a3
++ (id)generateFallbackPDFDataForAttachment:(id)attachment
 {
-  v3 = a3;
-  v4 = [[_TtC11NotesShared21ICSystemPaperDocument alloc] initWithPaperAttachment:v3];
+  attachmentCopy = attachment;
+  v4 = [[_TtC11NotesShared21ICSystemPaperDocument alloc] initWithPaperAttachment:attachmentCopy];
 
-  v5 = [(ICSystemPaperDocument *)v4 toFallbackPDFData];
+  toFallbackPDFData = [(ICSystemPaperDocument *)v4 toFallbackPDFData];
 
-  return v5;
+  return toFallbackPDFData;
 }
 
 - (id)standaloneTitleForNote
 {
-  v3 = [(ICAttachmentModel *)self attachment];
-  v4 = [v3 userTitle];
+  attachment = [(ICAttachmentModel *)self attachment];
+  userTitle = [attachment userTitle];
 
-  if (v4)
+  if (userTitle)
   {
-    v5 = v4;
+    title = userTitle;
   }
 
   else
   {
-    v6 = [(ICAttachmentModel *)self attachment];
-    v5 = [v6 title];
+    attachment2 = [(ICAttachmentModel *)self attachment];
+    title = [attachment2 title];
   }
 
-  if (![v5 length])
+  if (![title length])
   {
     v7 = +[ICNote defaultTitleForEmptyNote];
 
-    v5 = v7;
+    title = v7;
   }
 
-  v8 = [v5 pathExtension];
-  if ([v8 length])
+  pathExtension = [title pathExtension];
+  if ([pathExtension length])
   {
-    v9 = [MEMORY[0x277CE1CB8] typeWithFilenameExtension:v8];
+    v9 = [MEMORY[0x277CE1CB8] typeWithFilenameExtension:pathExtension];
     if ([v9 isEqual:*MEMORY[0x277CE1E08]])
     {
-      v10 = [v5 stringByDeletingPathExtension];
+      stringByDeletingPathExtension = [title stringByDeletingPathExtension];
 
-      v5 = v10;
+      title = stringByDeletingPathExtension;
     }
   }
 
-  return v5;
+  return title;
 }
 
 void __80__ICAttachmentPaperBundleModel_paperBundleURLForAttachmentIdentifier_inAccount___block_invoke_cold_1()

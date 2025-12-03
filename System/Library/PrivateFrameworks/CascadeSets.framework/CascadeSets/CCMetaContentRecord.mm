@@ -1,10 +1,10 @@
 @interface CCMetaContentRecord
 + (id)genSQLCreateStatements;
-+ (id)recordFromDatabaseValueRow:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToItemRecord:(id)a3;
++ (id)recordFromDatabaseValueRow:(id)row;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToItemRecord:(id)record;
 - (CCMetaContentRecord)init;
-- (CCMetaContentRecord)initWithDatabaseValueRow:(id)a3;
+- (CCMetaContentRecord)initWithDatabaseValueRow:(id)row;
 - (NSString)description;
 @end
 
@@ -16,10 +16,10 @@
   objc_exception_throw(v2);
 }
 
-+ (id)recordFromDatabaseValueRow:(id)a3
++ (id)recordFromDatabaseValueRow:(id)row
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithDatabaseValueRow:v3];
+  rowCopy = row;
+  v4 = [objc_alloc(objc_opt_class()) initWithDatabaseValueRow:rowCopy];
 
   return v4;
 }
@@ -36,19 +36,19 @@
   return v3;
 }
 
-- (CCMetaContentRecord)initWithDatabaseValueRow:(id)a3
+- (CCMetaContentRecord)initWithDatabaseValueRow:(id)row
 {
-  v4 = a3;
+  rowCopy = row;
   v11.receiver = self;
   v11.super_class = CCMetaContentRecord;
   v5 = [(CCMetaContentRecord *)&v11 init];
   if (v5)
   {
-    v6 = [v4 numberValueAtColumnIndex:0];
+    v6 = [rowCopy numberValueAtColumnIndex:0];
     instanceHash = v5->_instanceHash;
     v5->_instanceHash = v6;
 
-    v8 = [v4 dataValueAtColumnIndex:1];
+    v8 = [rowCopy dataValueAtColumnIndex:1];
     metaContent = v5->_metaContent;
     v5->_metaContent = v8;
   }
@@ -66,36 +66,36 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CCMetaContentRecord *)self isEqualToItemRecord:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CCMetaContentRecord *)self isEqualToItemRecord:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToItemRecord:(id)a3
+- (BOOL)isEqualToItemRecord:(id)record
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  recordCopy = record;
+  v5 = recordCopy;
+  if (recordCopy)
   {
     instanceHash = self->_instanceHash;
-    v7 = [v4 instanceHash];
-    if ([(NSNumber *)instanceHash isEqual:v7])
+    instanceHash = [recordCopy instanceHash];
+    if ([(NSNumber *)instanceHash isEqual:instanceHash])
     {
       metaContent = self->_metaContent;
-      v9 = [v5 metaContent];
-      v10 = [(NSData *)metaContent isEqual:v9];
+      metaContent = [v5 metaContent];
+      v10 = [(NSData *)metaContent isEqual:metaContent];
     }
 
     else

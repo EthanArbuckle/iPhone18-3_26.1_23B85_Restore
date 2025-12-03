@@ -1,6 +1,6 @@
 @interface _EFContentProtectionObserverWrapper
 - (EFContentProtectionObserver)observer;
-- (_EFContentProtectionObserverWrapper)initWithObserver:(id)a3 queue:(id)a4;
+- (_EFContentProtectionObserverWrapper)initWithObserver:(id)observer queue:(id)queue;
 @end
 
 @implementation _EFContentProtectionObserverWrapper
@@ -12,18 +12,18 @@
   return WeakRetained;
 }
 
-- (_EFContentProtectionObserverWrapper)initWithObserver:(id)a3 queue:(id)a4
+- (_EFContentProtectionObserverWrapper)initWithObserver:(id)observer queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  observerCopy = observer;
+  queueCopy = queue;
   v11.receiver = self;
   v11.super_class = _EFContentProtectionObserverWrapper;
   v8 = [(_EFContentProtectionObserverWrapper *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_observer, v6);
-    objc_storeStrong(&v9->_queue, a4);
+    objc_storeWeak(&v8->_observer, observerCopy);
+    objc_storeStrong(&v9->_queue, queue);
   }
 
   return v9;

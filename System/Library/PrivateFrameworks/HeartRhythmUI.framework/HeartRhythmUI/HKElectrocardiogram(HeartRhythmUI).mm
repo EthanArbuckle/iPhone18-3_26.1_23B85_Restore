@@ -6,12 +6,12 @@
 
 - (id)hrui_classificationShortBodyTextWithActiveAlgorithmVersion:()HeartRhythmUI isSharedData:
 {
-  v6 = [a1 privateClassification];
-  if (v6 <= 4)
+  privateClassification = [self privateClassification];
+  if (privateClassification <= 4)
   {
-    if (v6 <= 1)
+    if (privateClassification <= 1)
     {
-      if (v6 != 1)
+      if (privateClassification != 1)
       {
 LABEL_24:
         v8 = @"ATRIAL_FIBRILLATION_CLASSIFICATION_SHORT_BODY_UNKNOWN";
@@ -31,9 +31,9 @@ LABEL_24:
       }
     }
 
-    else if (v6 != 2)
+    else if (privateClassification != 2)
     {
-      if (v6 != 3)
+      if (privateClassification != 3)
       {
         goto LABEL_18;
       }
@@ -48,17 +48,17 @@ LABEL_25:
     goto LABEL_30;
   }
 
-  if (v6 > 7)
+  if (privateClassification > 7)
   {
-    if (v6 != 8)
+    if (privateClassification != 8)
     {
-      if (v6 == 9)
+      if (privateClassification == 9)
       {
         v7 = @"ATRIAL_FIBRILLATION_V2_CLASSIFICATION_SHORT_BODY_ATRIAL_FIBRILLATION_HEART_RATE_100_TO_150";
         goto LABEL_30;
       }
 
-      if (v6 == 10)
+      if (privateClassification == 10)
       {
         v7 = @"ATRIAL_FIBRILLATION_V2_CLASSIFICATION_SHORT_BODY_HEART_RATE_ABOVE_150";
         goto LABEL_30;
@@ -72,13 +72,13 @@ LABEL_18:
     goto LABEL_30;
   }
 
-  if (v6 == 5)
+  if (privateClassification == 5)
   {
     v7 = @"ATRIAL_FIBRILLATION_CLASSIFICATION_SHORT_BODY_HEART_RATE_ABOVE_120";
     goto LABEL_30;
   }
 
-  if (v6 == 6)
+  if (privateClassification == 6)
   {
     if (a3 == 2)
     {

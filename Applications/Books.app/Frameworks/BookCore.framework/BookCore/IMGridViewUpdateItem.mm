@@ -1,30 +1,30 @@
 @interface IMGridViewUpdateItem
-- (IMGridViewUpdateItem)initWithAction:(int)a3 forIndex:(unint64_t)a4;
-- (int64_t)compareIndexes:(id)a3;
+- (IMGridViewUpdateItem)initWithAction:(int)action forIndex:(unint64_t)index;
+- (int64_t)compareIndexes:(id)indexes;
 @end
 
 @implementation IMGridViewUpdateItem
 
-- (IMGridViewUpdateItem)initWithAction:(int)a3 forIndex:(unint64_t)a4
+- (IMGridViewUpdateItem)initWithAction:(int)action forIndex:(unint64_t)index
 {
   result = [(IMGridViewUpdateItem *)self init];
   if (result)
   {
-    result->_action = a3;
-    result->_index = a4;
+    result->_action = action;
+    result->_index = index;
   }
 
   return result;
 }
 
-- (int64_t)compareIndexes:(id)a3
+- (int64_t)compareIndexes:(id)indexes
 {
-  v4 = a3;
-  v5 = [(IMGridViewUpdateItem *)self index];
-  if (v5 <= [v4 index])
+  indexesCopy = indexes;
+  index = [(IMGridViewUpdateItem *)self index];
+  if (index <= [indexesCopy index])
   {
-    v7 = [(IMGridViewUpdateItem *)self index];
-    if (v7 >= [v4 index])
+    index2 = [(IMGridViewUpdateItem *)self index];
+    if (index2 >= [indexesCopy index])
     {
       v6 = 0;
     }

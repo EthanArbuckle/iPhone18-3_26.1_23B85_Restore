@@ -1,19 +1,19 @@
 @interface PGYearEnrichmentRule
-- (PGYearEnrichmentRule)initWithModelReader:(id)a3 loggingConnection:(id)a4;
-- (double)promotionScoreForHighlightItemList:(id)a3;
+- (PGYearEnrichmentRule)initWithModelReader:(id)reader loggingConnection:(id)connection;
+- (double)promotionScoreForHighlightItemList:(id)list;
 @end
 
 @implementation PGYearEnrichmentRule
 
-- (double)promotionScoreForHighlightItemList:(id)a3
+- (double)promotionScoreForHighlightItemList:(id)list
 {
   v17 = *MEMORY[0x277D85DE8];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = [a3 sortedChildHighlightItems];
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  sortedChildHighlightItems = [list sortedChildHighlightItems];
+  v4 = [sortedChildHighlightItems countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -25,7 +25,7 @@
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(sortedChildHighlightItems);
         }
 
         [*(*(&v12 + 1) + 8 * i) promotionScore];
@@ -35,7 +35,7 @@
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [sortedChildHighlightItems countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v5);
@@ -50,18 +50,18 @@
   return v7;
 }
 
-- (PGYearEnrichmentRule)initWithModelReader:(id)a3 loggingConnection:(id)a4
+- (PGYearEnrichmentRule)initWithModelReader:(id)reader loggingConnection:(id)connection
 {
-  v7 = a3;
-  v8 = a4;
+  readerCopy = reader;
+  connectionCopy = connection;
   v12.receiver = self;
   v12.super_class = PGYearEnrichmentRule;
   v9 = [(PGYearEnrichmentRule *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_modelReader, a3);
-    objc_storeStrong(&v10->_loggingConnection, a4);
+    objc_storeStrong(&v9->_modelReader, reader);
+    objc_storeStrong(&v10->_loggingConnection, connection);
   }
 
   return v10;

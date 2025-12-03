@@ -1,6 +1,6 @@
 @interface _SchemaRenditionTuple
 - (_SchemaRenditionTuple)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)dealloc;
 @end
@@ -16,11 +16,11 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_alloc_init(objc_opt_class());
   CUIRenditionKeyCopy(v5 + 1, self->key, 0x16u);
-  v5[12] = [(NSMutableDictionary *)self->info mutableCopyWithZone:a3];
+  v5[12] = [(NSMutableDictionary *)self->info mutableCopyWithZone:zone];
   return v5;
 }
 

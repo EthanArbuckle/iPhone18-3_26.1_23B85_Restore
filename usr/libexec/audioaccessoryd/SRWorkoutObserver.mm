@@ -1,10 +1,10 @@
 @interface SRWorkoutObserver
 - (SRWorkoutObserver)init;
 - (void)_startHKWorkoutObserver;
-- (void)_startWorkoutStartedTimer:(unint64_t)a3;
-- (void)didUpdateWorkoutSnapshot:(id)a3;
-- (void)updateWithSnapshot:(id)a3;
-- (void)workoutStateChanged:(BOOL)a3;
+- (void)_startWorkoutStartedTimer:(unint64_t)timer;
+- (void)didUpdateWorkoutSnapshot:(id)snapshot;
+- (void)updateWithSnapshot:(id)snapshot;
+- (void)workoutStateChanged:(BOOL)changed;
 @end
 
 @implementation SRWorkoutObserver
@@ -35,19 +35,19 @@
   v5 = [v3 initWithHealthStore:v4];
   [(SRWorkoutObserver *)self setHkWorkoutObserver:v5];
 
-  v6 = [(SRWorkoutObserver *)self hkWorkoutObserver];
-  [v6 setDelegate:self];
+  hkWorkoutObserver = [(SRWorkoutObserver *)self hkWorkoutObserver];
+  [hkWorkoutObserver setDelegate:self];
 
-  v7 = [(SRWorkoutObserver *)self hkWorkoutObserver];
+  hkWorkoutObserver2 = [(SRWorkoutObserver *)self hkWorkoutObserver];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000DB760;
   v8[3] = &unk_1002BB678;
   v8[4] = self;
-  [v7 currentWorkoutSnapshotWithCompletion:v8];
+  [hkWorkoutObserver2 currentWorkoutSnapshotWithCompletion:v8];
 }
 
-- (void)_startWorkoutStartedTimer:(unint64_t)a3
+- (void)_startWorkoutStartedTimer:(unint64_t)timer
 {
   if (!self->_workoutStartedTimer)
   {
@@ -74,21 +74,21 @@
   }
 }
 
-- (void)updateWithSnapshot:(id)a3
+- (void)updateWithSnapshot:(id)snapshot
 {
-  v15 = a3;
-  v4 = [v15 sessionIdentifier];
-  if ([v15 sessionType] == 1)
+  snapshotCopy = snapshot;
+  sessionIdentifier = [snapshotCopy sessionIdentifier];
+  if ([snapshotCopy sessionType] == 1)
   {
     sub_1001FB954();
   }
 
   else
   {
-    v5 = [v15 internalState];
-    if ((v5 - 4) >= 4)
+    internalState = [snapshotCopy internalState];
+    if ((internalState - 4) >= 4)
     {
-      if ((v5 - 11) < 3 && [v4 isEqual:self->_currentWorkoutSessionIdentifier])
+      if ((internalState - 11) < 3 && [sessionIdentifier isEqual:self->_currentWorkoutSessionIdentifier])
       {
         if (dword_1002F75A0 <= 30 && (dword_1002F75A0 != -1 || _LogCategory_Initialize()))
         {
@@ -107,19 +107,19 @@
     else
     {
       p_currentWorkoutSessionIdentifier = &self->_currentWorkoutSessionIdentifier;
-      if (!self->_currentWorkoutSessionIdentifier || ([v4 isEqual:?] & 1) == 0)
+      if (!self->_currentWorkoutSessionIdentifier || ([sessionIdentifier isEqual:?] & 1) == 0)
       {
         [(SRWorkoutObserver *)self workoutStateChanged:1];
-        v7 = [v15 configuration];
-        [v7 activityType];
+        configuration = [snapshotCopy configuration];
+        [configuration activityType];
         v8 = _HKWorkoutActivityNameForActivityType();
         v10 = self->_currentWorkoutName;
         p_currentWorkoutName = &self->_currentWorkoutName;
         *p_currentWorkoutName = v8;
 
-        v11 = [v15 sessionIdentifier];
+        sessionIdentifier2 = [snapshotCopy sessionIdentifier];
         v12 = *(p_currentWorkoutName - 1);
-        *(p_currentWorkoutName - 1) = v11;
+        *(p_currentWorkoutName - 1) = sessionIdentifier2;
 
         if (dword_1002F75A0 <= 30 && (dword_1002F75A0 != -1 || _LogCategory_Initialize()))
         {
@@ -130,9 +130,9 @@
   }
 }
 
-- (void)workoutStateChanged:(BOOL)a3
+- (void)workoutStateChanged:(BOOL)changed
 {
-  if (self->_isWorkoutActive == a3)
+  if (self->_isWorkoutActive == changed)
   {
     return;
   }
@@ -153,11 +153,11 @@
   }
 
 LABEL_6:
-  self->_isWorkoutActive = a3;
+  self->_isWorkoutActive = changed;
   v5 = objc_initWeak(&location, self);
-  v6 = [(SRWorkoutObserver *)self workoutStateChangedHandler];
+  workoutStateChangedHandler = [(SRWorkoutObserver *)self workoutStateChangedHandler];
 
-  if (v6)
+  if (workoutStateChangedHandler)
   {
     if (dword_1002F75A0 <= 30 && (dword_1002F75A0 != -1 || _LogCategory_Initialize()))
     {
@@ -165,24 +165,24 @@ LABEL_6:
     }
 
     v7 = objc_loadWeakRetained(&location);
-    v8 = [v7 workoutStateChangedHandler];
-    v8[2](v8, v9);
+    workoutStateChangedHandler2 = [v7 workoutStateChangedHandler];
+    workoutStateChangedHandler2[2](workoutStateChangedHandler2, v9);
   }
 
   objc_destroyWeak(&location);
 }
 
-- (void)didUpdateWorkoutSnapshot:(id)a3
+- (void)didUpdateWorkoutSnapshot:(id)snapshot
 {
-  v4 = a3;
+  snapshotCopy = snapshot;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000DBD7C;
   v7[3] = &unk_1002B6D18;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = snapshotCopy;
+  v6 = snapshotCopy;
   dispatch_async(dispatchQueue, v7);
 }
 

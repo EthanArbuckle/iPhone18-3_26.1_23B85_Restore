@@ -1,20 +1,20 @@
 @interface WLKVideo
-+ (id)videosWithDictionaries:(id)a3;
-- (WLKVideo)initWithDictionary:(id)a3;
++ (id)videosWithDictionaries:(id)dictionaries;
+- (WLKVideo)initWithDictionary:(id)dictionary;
 @end
 
 @implementation WLKVideo
 
-+ (id)videosWithDictionaries:(id)a3
++ (id)videosWithDictionaries:(id)dictionaries
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB18] array];
+  dictionariesCopy = dictionaries;
+  array = [MEMORY[0x277CBEB18] array];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = v3;
+  v5 = dictionariesCopy;
   v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v6)
   {
@@ -35,7 +35,7 @@
         v12 = [(WLKVideo *)v11 initWithDictionary:v10, v17];
         if (v12)
         {
-          [v4 addObject:v12];
+          [array addObject:v12];
         }
 
         ++v9;
@@ -48,9 +48,9 @@
     while (v7);
   }
 
-  if ([v4 count])
+  if ([array count])
   {
-    v13 = v4;
+    v13 = array;
   }
 
   else
@@ -64,29 +64,29 @@
   return v13;
 }
 
-- (WLKVideo)initWithDictionary:(id)a3
+- (WLKVideo)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  if (v4)
+  dictionaryCopy = dictionary;
+  if (dictionaryCopy)
   {
     v21.receiver = self;
     v21.super_class = WLKVideo;
     v5 = [(WLKVideo *)&v21 init];
     if (v5)
     {
-      v6 = [v4 wlk_stringForKey:@"id"];
+      v6 = [dictionaryCopy wlk_stringForKey:@"id"];
       ID = v5->_ID;
       v5->_ID = v6;
 
-      v8 = [v4 wlk_stringForKey:@"externalId"];
+      v8 = [dictionaryCopy wlk_stringForKey:@"externalId"];
       externalID = v5->_externalID;
       v5->_externalID = v8;
 
-      v10 = [v4 wlk_stringForKey:@"title"];
+      v10 = [dictionaryCopy wlk_stringForKey:@"title"];
       title = v5->_title;
       v5->_title = v10;
 
-      v12 = [v4 wlk_dictionaryForKey:@"assets"];
+      v12 = [dictionaryCopy wlk_dictionaryForKey:@"assets"];
       if (v12)
       {
         v13 = [[WLKVideoAsset alloc] initWithDictionary:v12];
@@ -94,25 +94,25 @@
         v5->_asset = v13;
       }
 
-      v15 = [v4 wlk_dictionaryForKey:@"images"];
+      v15 = [dictionaryCopy wlk_dictionaryForKey:@"images"];
       v16 = [[WLKArtworkVariantListing alloc] initWithArtworkDictionary:v15];
       images = v5->_images;
       v5->_images = v16;
 
-      v18 = [v4 wlk_numberForKey:@"duration"];
+      v18 = [dictionaryCopy wlk_numberForKey:@"duration"];
       v5->_duration = [v18 unsignedIntegerValue];
     }
 
     self = v5;
-    v19 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v19 = 0;
+    selfCopy = 0;
   }
 
-  return v19;
+  return selfCopy;
 }
 
 @end

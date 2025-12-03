@@ -1,52 +1,52 @@
 @interface SAUISystemApertureManager
 + (void)initialize;
-- (BOOL)_axLayoutSpecifierRequestsCollapseIfExpandedByUserInteraction:(id)a3;
-- (BOOL)_elementRequiresBeingDisplayedAlone:(id)a3;
-- (BOOL)viewProviderShouldMakeSensorShadowVisible:(id)a3;
-- (CGRect)interSensorRegionInContentView:(id)a3;
-- (CGRect)sensorRegionInContentView:(id)a3 fromViewProvider:(id)a4;
-- (CGRect)sensorRegionObstructingViewProvider:(id)a3 inContentView:(id)a4;
-- (CGSize)maximumAvailableSizeForProvidedLeadingView:(id)a3 fromViewProvider:(id)a4;
-- (CGSize)maximumAvailableSizeForProvidedMinimalView:(id)a3 fromViewProvider:(id)a4;
-- (CGSize)maximumAvailableSizeForProvidedTrailingView:(id)a3 fromViewProvider:(id)a4;
+- (BOOL)_axLayoutSpecifierRequestsCollapseIfExpandedByUserInteraction:(id)interaction;
+- (BOOL)_elementRequiresBeingDisplayedAlone:(id)alone;
+- (BOOL)viewProviderShouldMakeSensorShadowVisible:(id)visible;
+- (CGRect)interSensorRegionInContentView:(id)view;
+- (CGRect)sensorRegionInContentView:(id)view fromViewProvider:(id)provider;
+- (CGRect)sensorRegionObstructingViewProvider:(id)provider inContentView:(id)view;
+- (CGSize)maximumAvailableSizeForProvidedLeadingView:(id)view fromViewProvider:(id)provider;
+- (CGSize)maximumAvailableSizeForProvidedMinimalView:(id)view fromViewProvider:(id)provider;
+- (CGSize)maximumAvailableSizeForProvidedTrailingView:(id)view fromViewProvider:(id)provider;
 - (NSArray)registeredElements;
-- (NSDirectionalEdgeInsets)edgeOutsetsForSize:(CGSize)a3;
+- (NSDirectionalEdgeInsets)edgeOutsetsForSize:(CGSize)size;
 - (SAUIElementViewControlling)indicatorElementViewController;
-- (SAUISystemApertureManager)initWithElementAuthority:(id)a3;
+- (SAUISystemApertureManager)initWithElementAuthority:(id)authority;
 - (SAUISystemApertureManagerDelegate)delegate;
-- (double)alertingDurationForHost:(id)a3;
-- (double)concentricPaddingForProvidedView:(id)a3 fromViewProvider:(id)a4;
-- (double)viewProviderSensorShadowOpacityFactor:(id)a3;
-- (id)_assertionForElement:(id)a3;
-- (id)_assertionForElementCreatingIfNecessary:(id)a3;
-- (id)_elementViewControllerForElement:(id)a3 creatingIfNecessary:(BOOL)a4;
-- (id)_invalidatedAssertionForElement:(id)a3;
+- (double)alertingDurationForHost:(id)host;
+- (double)concentricPaddingForProvidedView:(id)view fromViewProvider:(id)provider;
+- (double)viewProviderSensorShadowOpacityFactor:(id)factor;
+- (id)_assertionForElement:(id)element;
+- (id)_assertionForElementCreatingIfNecessary:(id)necessary;
+- (id)_elementViewControllerForElement:(id)element creatingIfNecessary:(BOOL)necessary;
+- (id)_invalidatedAssertionForElement:(id)element;
 - (id)_temporallyOrderedVisibleAlertAndActivityElements;
-- (id)registerElement:(id)a3;
+- (id)registerElement:(id)element;
 - (unint64_t)_maximumNumberOfSimultaneouslyVisibleElements;
-- (void)_addInvalidatedAssertion:(id)a3 forElement:(id)a4;
-- (void)_axLayoutSpecifierRequestsDiminishment:(id)a3;
+- (void)_addInvalidatedAssertion:(id)assertion forElement:(id)element;
+- (void)_axLayoutSpecifierRequestsDiminishment:(id)diminishment;
 - (void)_compactElements;
-- (void)_elementAssertionDidInvalidate:(id)a3;
+- (void)_elementAssertionDidInvalidate:(id)invalidate;
 - (void)_invalidatePromotedState;
 - (void)_invalidateTemporallyOrderedElements;
 - (void)_purgeRemovedElementViewControllers;
 - (void)_reevaluatePromotedElements;
-- (void)_removeAssertionForElement:(id)a3;
-- (void)_removeElementViewController:(id)a3;
-- (void)_removeInvalidatedAssertionForElement:(id)a3;
+- (void)_removeAssertionForElement:(id)element;
+- (void)_removeElementViewController:(id)controller;
+- (void)_removeInvalidatedAssertionForElement:(id)element;
 - (void)_requestHostNeedsLayout;
-- (void)elementRequestsNegativeResponse:(id)a3;
-- (void)elementRequestsSignificantUpdateTransition:(id)a3;
-- (void)elementViewControllingDidDisappear:(id)a3;
+- (void)elementRequestsNegativeResponse:(id)response;
+- (void)elementRequestsSignificantUpdateTransition:(id)transition;
+- (void)elementViewControllingDidDisappear:(id)disappear;
 - (void)hostWillPerformLayout;
-- (void)indicatorNeedsDisplayWellKnownLocationDidInvalidateForLayoutSpecifier:(id)a3;
-- (void)menuPresentationRequestDidChangeForLayoutSpecifier:(id)a3;
-- (void)preferredComponentViewSizeDidInvalidateForLayoutSpecifier:(id)a3;
-- (void)preferredEdgeOutsetsDidInvalidateForLayoutSpecifier:(id)a3;
-- (void)preferredLayoutModeDidInvalidateForLayoutSpecifier:(id)a3;
-- (void)preferredPromotionDidInvalidateForLayoutSpecifier:(id)a3;
-- (void)setLayoutMode:(int64_t)a3 reason:(int64_t)a4 forTargetWithOverrider:(id)a5;
+- (void)indicatorNeedsDisplayWellKnownLocationDidInvalidateForLayoutSpecifier:(id)specifier;
+- (void)menuPresentationRequestDidChangeForLayoutSpecifier:(id)specifier;
+- (void)preferredComponentViewSizeDidInvalidateForLayoutSpecifier:(id)specifier;
+- (void)preferredEdgeOutsetsDidInvalidateForLayoutSpecifier:(id)specifier;
+- (void)preferredLayoutModeDidInvalidateForLayoutSpecifier:(id)specifier;
+- (void)preferredPromotionDidInvalidateForLayoutSpecifier:(id)specifier;
+- (void)setLayoutMode:(int64_t)mode reason:(int64_t)reason forTargetWithOverrider:(id)overrider;
 @end
 
 @implementation SAUISystemApertureManager
@@ -99,7 +99,7 @@
 - (void)_reevaluatePromotedElements
 {
   v5 = *MEMORY[0x277D85DE8];
-  v2 = *a1;
+  v2 = *self;
   v3 = 138543362;
   v4 = v2;
   _os_log_debug_impl(&dword_26C482000, a2, OS_LOG_TYPE_DEBUG, "Updated ordered element view controllers: %{public}@", &v3, 0xCu);
@@ -108,17 +108,17 @@
 - (id)_temporallyOrderedVisibleAlertAndActivityElements
 {
   v23 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
-  [(SAUISystemApertureManager *)v2 _compactElements];
-  if (!v2->_temporallyOrderedElements && [(NSPointerArray *)v2->_elements count])
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(SAUISystemApertureManager *)selfCopy _compactElements];
+  if (!selfCopy->_temporallyOrderedElements && [(NSPointerArray *)selfCopy->_elements count])
   {
-    v3 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{-[NSPointerArray count](v2->_elements, "count")}];
+    v3 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{-[NSPointerArray count](selfCopy->_elements, "count")}];
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v4 = [(NSPointerArray *)v2->_elements copy];
+    v4 = [(NSPointerArray *)selfCopy->_elements copy];
     v5 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v5)
     {
@@ -134,7 +134,7 @@
           }
 
           v8 = *(*(&v18 + 1) + 8 * v7);
-          v9 = [(NSMapTable *)v2->_elementsToAssertions objectForKey:v8];
+          v9 = [(NSMapTable *)selfCopy->_elementsToAssertions objectForKey:v8];
           if ([v9 isValid] && (SAHasIndicatorBehavior() & 1) == 0)
           {
             v10 = SAUILayoutSpecifyingOverriderForElement(v8);
@@ -165,15 +165,15 @@
     v17[1] = 3221225472;
     v17[2] = __78__SAUISystemApertureManager__temporallyOrderedVisibleAlertAndActivityElements__block_invoke;
     v17[3] = &unk_279D32A30;
-    v17[4] = v2;
+    v17[4] = selfCopy;
     [(NSArray *)v3 sortUsingComparator:v17];
-    temporallyOrderedElements = v2->_temporallyOrderedElements;
-    v2->_temporallyOrderedElements = v3;
+    temporallyOrderedElements = selfCopy->_temporallyOrderedElements;
+    selfCopy->_temporallyOrderedElements = v3;
     v14 = v3;
   }
 
-  v15 = v2->_temporallyOrderedElements;
-  objc_sync_exit(v2);
+  v15 = selfCopy->_temporallyOrderedElements;
+  objc_sync_exit(selfCopy);
 
   return v15;
 }
@@ -209,9 +209,9 @@
 - (SAUIElementViewControlling)indicatorElementViewController
 {
   WeakRetained = objc_loadWeakRetained(&self->_indicatorElementViewController);
-  v4 = [WeakRetained elementViewProvider];
-  v5 = [v4 element];
-  v6 = [(SAUISystemApertureManager *)self _assertionForElement:v5];
+  elementViewProvider = [WeakRetained elementViewProvider];
+  element = [elementViewProvider element];
+  v6 = [(SAUISystemApertureManager *)self _assertionForElement:element];
   if ([v6 isValid])
   {
     v7 = WeakRetained;
@@ -229,25 +229,25 @@
 
 - (NSArray)registeredElements
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  [(NSPointerArray *)v2->_elements sa_compact];
-  v3 = [(NSPointerArray *)v2->_elements allObjects];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSPointerArray *)selfCopy->_elements sa_compact];
+  allObjects = [(NSPointerArray *)selfCopy->_elements allObjects];
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return allObjects;
 }
 
 - (void)_purgeRemovedElementViewControllers
 {
   v23 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v3 = [(NSMutableSet *)v2->_removedElementViewControllers copy];
+  v3 = [(NSMutableSet *)selfCopy->_removedElementViewControllers copy];
   v4 = [v3 countByEnumeratingWithState:&v16 objects:v22 count:16];
   if (v4)
   {
@@ -273,24 +273,24 @@
           _os_log_impl(&dword_26C482000, v9, OS_LOG_TYPE_DEFAULT, "Purging removed element view controller: %{public}@", buf, 0xCu);
         }
 
-        [(NSMutableSet *)v2->_removedElementViewControllers removeObject:v8, v15];
-        v10 = [v8 elementViewProvider];
-        v11 = [v10 element];
+        [(NSMutableSet *)selfCopy->_removedElementViewControllers removeObject:v8, v15];
+        elementViewProvider = [v8 elementViewProvider];
+        element = [elementViewProvider element];
 
-        v12 = [(SAUISystemApertureManager *)v2 _invalidatedAssertionForElement:v11];
-        [(SAUISystemApertureManager *)v2 _removeInvalidatedAssertionForElement:v11];
-        v13 = SAUILayoutSpecifyingOverriderForElement(v11);
+        v12 = [(SAUISystemApertureManager *)selfCopy _invalidatedAssertionForElement:element];
+        [(SAUISystemApertureManager *)selfCopy _removeInvalidatedAssertionForElement:element];
+        v13 = SAUILayoutSpecifyingOverriderForElement(element);
         if (v12)
         {
-          v14 = [v12 invalidationLayoutModeChangeReason];
+          invalidationLayoutModeChangeReason = [v12 invalidationLayoutModeChangeReason];
         }
 
         else
         {
-          v14 = 0;
+          invalidationLayoutModeChangeReason = 0;
         }
 
-        [v13 setLayoutMode:-1 reason:v14];
+        [v13 setLayoutMode:-1 reason:invalidationLayoutModeChangeReason];
 
         ++v7;
       }
@@ -302,7 +302,7 @@
     while (v4);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 id __56__SAUISystemApertureManager__reevaluatePromotedElements__block_invoke(uint64_t a1, void *a2)
@@ -315,17 +315,17 @@ id __56__SAUISystemApertureManager__reevaluatePromotedElements__block_invoke(uin
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
     SAUIRegisterSystemApertureLogging();
   }
 }
 
-- (SAUISystemApertureManager)initWithElementAuthority:(id)a3
+- (SAUISystemApertureManager)initWithElementAuthority:(id)authority
 {
-  v6 = a3;
-  if (!v6)
+  authorityCopy = authority;
+  if (!authorityCopy)
   {
     [(SAUISystemApertureManager *)a2 initWithElementAuthority:?];
   }
@@ -336,21 +336,21 @@ id __56__SAUISystemApertureManager__reevaluatePromotedElements__block_invoke(uin
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_elementAuthority, a3);
+    objc_storeStrong(&v7->_elementAuthority, authority);
   }
 
   return v8;
 }
 
-- (id)registerElement:(id)a3
+- (id)registerElement:(id)element
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  elementCopy = element;
   v5 = SAUILogManager;
   if (os_log_type_enabled(SAUILogManager, OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = MEMORY[0x26D6A1D80](v4);
+    v7 = MEMORY[0x26D6A1D80](elementCopy);
     *buf = 138543362;
     v32 = v7;
     _os_log_impl(&dword_26C482000, v6, OS_LOG_TYPE_DEFAULT, "Asked to register element: %{public}@", buf, 0xCu);
@@ -360,8 +360,8 @@ id __56__SAUISystemApertureManager__reevaluatePromotedElements__block_invoke(uin
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v8 = [(SAUISystemApertureManager *)self registeredElements];
-  v9 = [v8 countByEnumeratingWithState:&v27 objects:v37 count:16];
+  registeredElements = [(SAUISystemApertureManager *)self registeredElements];
+  v9 = [registeredElements countByEnumeratingWithState:&v27 objects:v37 count:16];
   if (v9)
   {
     v11 = *v28;
@@ -373,7 +373,7 @@ id __56__SAUISystemApertureManager__reevaluatePromotedElements__block_invoke(uin
       {
         if (*v28 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(registeredElements);
         }
 
         v13 = *(*(&v27 + 1) + 8 * i);
@@ -389,7 +389,7 @@ id __56__SAUISystemApertureManager__reevaluatePromotedElements__block_invoke(uin
               if (os_log_type_enabled(SAUILogManager, OS_LOG_TYPE_ERROR))
               {
                 *buf = v24;
-                v32 = v4;
+                v32 = elementCopy;
                 v33 = 2112;
                 v34 = v13;
                 v35 = 2112;
@@ -401,39 +401,39 @@ id __56__SAUISystemApertureManager__reevaluatePromotedElements__block_invoke(uin
         }
       }
 
-      v9 = [v8 countByEnumeratingWithState:&v27 objects:v37 count:16];
+      v9 = [registeredElements countByEnumeratingWithState:&v27 objects:v37 count:16];
     }
 
     while (v9);
   }
 
-  v17 = [(SAUISystemApertureManager *)self _assertionForElementCreatingIfNecessary:v4];
+  v17 = [(SAUISystemApertureManager *)self _assertionForElementCreatingIfNecessary:elementCopy];
   if (v17)
   {
     if (SAHasIndicatorBehavior())
     {
-      v18 = [(SAUISystemApertureManager *)self _elementViewControllerForElement:v4 creatingIfNecessary:1];
+      v18 = [(SAUISystemApertureManager *)self _elementViewControllerForElement:elementCopy creatingIfNecessary:1];
       [(SAUISystemApertureManager *)self _requestHostNeedsLayout];
     }
 
     else
     {
-      v19 = [v4 viewProvider];
-      v20 = [v19 systemApertureLayoutSpecifyingOverrider];
-      [v20 addBehaviorOverridingParticipant:self];
+      viewProvider = [elementCopy viewProvider];
+      systemApertureLayoutSpecifyingOverrider = [viewProvider systemApertureLayoutSpecifyingOverrider];
+      [systemApertureLayoutSpecifyingOverrider addBehaviorOverridingParticipant:self];
 
-      v21 = [(SAUISystemApertureManager *)self _elementViewControllerForElement:v4 creatingIfNecessary:1];
+      v21 = [(SAUISystemApertureManager *)self _elementViewControllerForElement:elementCopy creatingIfNecessary:1];
       [(SAUISystemApertureManager *)self _invalidatePromotedState];
       if (SAHasAlertBehavior() && (objc_opt_respondsToSelector() & 1) != 0)
       {
         objc_initWeak(buf, v17);
-        v22 = [v21 alertAssertion];
+        alertAssertion = [v21 alertAssertion];
         v25[0] = MEMORY[0x277D85DD0];
         v25[1] = 3221225472;
         v25[2] = __45__SAUISystemApertureManager_registerElement___block_invoke;
         v25[3] = &unk_279D32738;
         objc_copyWeak(&v26, buf);
-        [v22 addInvalidationBlock:v25];
+        [alertAssertion addInvalidationBlock:v25];
 
         objc_destroyWeak(&v26);
         objc_destroyWeak(buf);
@@ -451,76 +451,76 @@ void __45__SAUISystemApertureManager_registerElement___block_invoke(uint64_t a1,
   [WeakRetained invalidateWithReason:v4];
 }
 
-- (void)elementRequestsNegativeResponse:(id)a3
+- (void)elementRequestsNegativeResponse:(id)response
 {
-  v5 = a3;
+  responseCopy = response;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained elementRequestsNegativeResponse:v5];
+    [WeakRetained elementRequestsNegativeResponse:responseCopy];
   }
 }
 
-- (void)elementRequestsSignificantUpdateTransition:(id)a3
+- (void)elementRequestsSignificantUpdateTransition:(id)transition
 {
-  v5 = a3;
+  transitionCopy = transition;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained elementRequestsSignificantUpdateTransition:v5];
+    [WeakRetained elementRequestsSignificantUpdateTransition:transitionCopy];
   }
 }
 
-- (double)alertingDurationForHost:(id)a3
+- (double)alertingDurationForHost:(id)host
 {
-  v5 = a3;
+  hostCopy = host;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     [(SAUISystemApertureManager *)a2 alertingDurationForHost:WeakRetained];
   }
 
-  [WeakRetained alertingDurationForHost:v5];
+  [WeakRetained alertingDurationForHost:hostCopy];
   v8 = v7;
 
   return v8;
 }
 
-- (void)preferredLayoutModeDidInvalidateForLayoutSpecifier:(id)a3
+- (void)preferredLayoutModeDidInvalidateForLayoutSpecifier:(id)specifier
 {
-  if (a3)
+  if (specifier)
   {
-    v4 = a3;
+    specifierCopy = specifier;
     [(SAUISystemApertureManager *)self _invalidatePromotedState];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained preferredLayoutModeDidInvalidateForLayoutSpecifier:v4];
+    [WeakRetained preferredLayoutModeDidInvalidateForLayoutSpecifier:specifierCopy];
   }
 }
 
-- (void)preferredEdgeOutsetsDidInvalidateForLayoutSpecifier:(id)a3
+- (void)preferredEdgeOutsetsDidInvalidateForLayoutSpecifier:(id)specifier
 {
-  if (a3)
+  if (specifier)
   {
-    v4 = a3;
+    specifierCopy = specifier;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained preferredEdgeOutsetsDidInvalidateForLayoutSpecifier:v4];
+    [WeakRetained preferredEdgeOutsetsDidInvalidateForLayoutSpecifier:specifierCopy];
   }
 }
 
-- (void)menuPresentationRequestDidChangeForLayoutSpecifier:(id)a3
+- (void)menuPresentationRequestDidChangeForLayoutSpecifier:(id)specifier
 {
-  if (a3)
+  if (specifier)
   {
-    v4 = a3;
+    specifierCopy = specifier;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained menuPresentationRequestDidChangeForLayoutSpecifier:v4];
+    [WeakRetained menuPresentationRequestDidChangeForLayoutSpecifier:specifierCopy];
   }
 }
 
-- (NSDirectionalEdgeInsets)edgeOutsetsForSize:(CGSize)a3
+- (NSDirectionalEdgeInsets)edgeOutsetsForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained edgeOutsetsForSize:{width, height}];
   v7 = v6;
@@ -539,12 +539,12 @@ void __45__SAUISystemApertureManager_registerElement___block_invoke(uint64_t a1,
   return result;
 }
 
-- (void)preferredPromotionDidInvalidateForLayoutSpecifier:(id)a3
+- (void)preferredPromotionDidInvalidateForLayoutSpecifier:(id)specifier
 {
-  v4 = a3;
-  if (v4)
+  specifierCopy = specifier;
+  if (specifierCopy)
   {
-    v6 = v4;
+    v6 = specifierCopy;
     [(SAUISystemApertureManager *)self _invalidatePromotedState];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     if (objc_opt_respondsToSelector())
@@ -552,49 +552,49 @@ void __45__SAUISystemApertureManager_registerElement___block_invoke(uint64_t a1,
       [WeakRetained preferredPromotionDidInvalidateForLayoutSpecifier:v6];
     }
 
-    v4 = v6;
+    specifierCopy = v6;
   }
 }
 
-- (void)preferredComponentViewSizeDidInvalidateForLayoutSpecifier:(id)a3
+- (void)preferredComponentViewSizeDidInvalidateForLayoutSpecifier:(id)specifier
 {
-  v4 = a3;
-  if (v4)
+  specifierCopy = specifier;
+  if (specifierCopy)
   {
-    v6 = v4;
+    v6 = specifierCopy;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     if (objc_opt_respondsToSelector())
     {
       [WeakRetained preferredComponentViewSizeDidInvalidateForLayoutSpecifier:v6];
     }
 
-    v4 = v6;
+    specifierCopy = v6;
   }
 }
 
-- (void)indicatorNeedsDisplayWellKnownLocationDidInvalidateForLayoutSpecifier:(id)a3
+- (void)indicatorNeedsDisplayWellKnownLocationDidInvalidateForLayoutSpecifier:(id)specifier
 {
-  v4 = a3;
-  if (v4)
+  specifierCopy = specifier;
+  if (specifierCopy)
   {
-    v6 = v4;
+    v6 = specifierCopy;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     if (objc_opt_respondsToSelector())
     {
       [WeakRetained indicatorNeedsDisplayWellKnownLocationDidInvalidateForLayoutSpecifier:v6];
     }
 
-    v4 = v6;
+    specifierCopy = v6;
   }
 }
 
-- (CGRect)interSensorRegionInContentView:(id)a3
+- (CGRect)interSensorRegionInContentView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained interSensorRegionInContentView:v4];
+    [WeakRetained interSensorRegionInContentView:viewCopy];
     v7 = v6;
     v9 = v8;
     v11 = v10;
@@ -620,29 +620,29 @@ void __45__SAUISystemApertureManager_registerElement___block_invoke(uint64_t a1,
   return result;
 }
 
-- (double)concentricPaddingForProvidedView:(id)a3 fromViewProvider:(id)a4
+- (double)concentricPaddingForProvidedView:(id)view fromViewProvider:(id)provider
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  providerCopy = provider;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v9 = 0.0;
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained concentricPaddingForProvidedView:v6 fromViewProvider:v7];
+    [WeakRetained concentricPaddingForProvidedView:viewCopy fromViewProvider:providerCopy];
     v9 = v10;
   }
 
   return v9;
 }
 
-- (CGRect)sensorRegionObstructingViewProvider:(id)a3 inContentView:(id)a4
+- (CGRect)sensorRegionObstructingViewProvider:(id)provider inContentView:(id)view
 {
-  v6 = a3;
-  v7 = a4;
+  providerCopy = provider;
+  viewCopy = view;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained sensorRegionObstructingViewProvider:v6 inContentView:v7];
+    [WeakRetained sensorRegionObstructingViewProvider:providerCopy inContentView:viewCopy];
     v10 = v9;
     v12 = v11;
     v14 = v13;
@@ -668,14 +668,14 @@ void __45__SAUISystemApertureManager_registerElement___block_invoke(uint64_t a1,
   return result;
 }
 
-- (CGRect)sensorRegionInContentView:(id)a3 fromViewProvider:(id)a4
+- (CGRect)sensorRegionInContentView:(id)view fromViewProvider:(id)provider
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  providerCopy = provider;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained sensorRegionInContentView:v6 fromViewProvider:v7];
+    [WeakRetained sensorRegionInContentView:viewCopy fromViewProvider:providerCopy];
     v10 = v9;
     v12 = v11;
     v14 = v13;
@@ -701,13 +701,13 @@ void __45__SAUISystemApertureManager_registerElement___block_invoke(uint64_t a1,
   return result;
 }
 
-- (BOOL)viewProviderShouldMakeSensorShadowVisible:(id)a3
+- (BOOL)viewProviderShouldMakeSensorShadowVisible:(id)visible
 {
-  v4 = a3;
+  visibleCopy = visible;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    v6 = [WeakRetained viewProviderShouldMakeSensorShadowVisible:v4];
+    v6 = [WeakRetained viewProviderShouldMakeSensorShadowVisible:visibleCopy];
   }
 
   else
@@ -718,28 +718,28 @@ void __45__SAUISystemApertureManager_registerElement___block_invoke(uint64_t a1,
   return v6;
 }
 
-- (double)viewProviderSensorShadowOpacityFactor:(id)a3
+- (double)viewProviderSensorShadowOpacityFactor:(id)factor
 {
-  v4 = a3;
+  factorCopy = factor;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = 0.0;
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained viewProviderSensorShadowOpacityFactor:v4];
+    [WeakRetained viewProviderSensorShadowOpacityFactor:factorCopy];
     v6 = v7;
   }
 
   return v6;
 }
 
-- (CGSize)maximumAvailableSizeForProvidedMinimalView:(id)a3 fromViewProvider:(id)a4
+- (CGSize)maximumAvailableSizeForProvidedMinimalView:(id)view fromViewProvider:(id)provider
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  providerCopy = provider;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained maximumAvailableSizeForProvidedMinimalView:v6 fromViewProvider:v7];
+    [WeakRetained maximumAvailableSizeForProvidedMinimalView:viewCopy fromViewProvider:providerCopy];
     v10 = v9;
     v12 = v11;
   }
@@ -757,14 +757,14 @@ void __45__SAUISystemApertureManager_registerElement___block_invoke(uint64_t a1,
   return result;
 }
 
-- (CGSize)maximumAvailableSizeForProvidedLeadingView:(id)a3 fromViewProvider:(id)a4
+- (CGSize)maximumAvailableSizeForProvidedLeadingView:(id)view fromViewProvider:(id)provider
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  providerCopy = provider;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained maximumAvailableSizeForProvidedLeadingView:v6 fromViewProvider:v7];
+    [WeakRetained maximumAvailableSizeForProvidedLeadingView:viewCopy fromViewProvider:providerCopy];
     v10 = v9;
     v12 = v11;
   }
@@ -782,14 +782,14 @@ void __45__SAUISystemApertureManager_registerElement___block_invoke(uint64_t a1,
   return result;
 }
 
-- (CGSize)maximumAvailableSizeForProvidedTrailingView:(id)a3 fromViewProvider:(id)a4
+- (CGSize)maximumAvailableSizeForProvidedTrailingView:(id)view fromViewProvider:(id)provider
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  providerCopy = provider;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained maximumAvailableSizeForProvidedTrailingView:v6 fromViewProvider:v7];
+    [WeakRetained maximumAvailableSizeForProvidedTrailingView:viewCopy fromViewProvider:providerCopy];
     v10 = v9;
     v12 = v11;
   }
@@ -807,23 +807,23 @@ void __45__SAUISystemApertureManager_registerElement___block_invoke(uint64_t a1,
   return result;
 }
 
-- (void)_axLayoutSpecifierRequestsDiminishment:(id)a3
+- (void)_axLayoutSpecifierRequestsDiminishment:(id)diminishment
 {
-  v5 = a3;
+  diminishmentCopy = diminishment;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained _axLayoutSpecifierRequestsDiminishment:v5];
+    [WeakRetained _axLayoutSpecifierRequestsDiminishment:diminishmentCopy];
   }
 }
 
-- (BOOL)_axLayoutSpecifierRequestsCollapseIfExpandedByUserInteraction:(id)a3
+- (BOOL)_axLayoutSpecifierRequestsCollapseIfExpandedByUserInteraction:(id)interaction
 {
-  v4 = a3;
+  interactionCopy = interaction;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    v6 = [WeakRetained _axLayoutSpecifierRequestsCollapseIfExpandedByUserInteraction:v4];
+    v6 = [WeakRetained _axLayoutSpecifierRequestsCollapseIfExpandedByUserInteraction:interactionCopy];
   }
 
   else
@@ -834,33 +834,33 @@ void __45__SAUISystemApertureManager_registerElement___block_invoke(uint64_t a1,
   return v6;
 }
 
-- (void)setLayoutMode:(int64_t)a3 reason:(int64_t)a4 forTargetWithOverrider:(id)a5
+- (void)setLayoutMode:(int64_t)mode reason:(int64_t)reason forTargetWithOverrider:(id)overrider
 {
-  v8 = a5;
-  v9 = [v8 layoutMode];
-  v10 = [v8 layoutSpecifyingOverridingParticipantSubordinateToParticipant:self thatRespondsToSelector:sel_setLayoutMode_reason_forTargetWithOverrider_];
-  [v10 setLayoutMode:a3 reason:a4 forTargetWithOverrider:v8];
+  overriderCopy = overrider;
+  layoutMode = [overriderCopy layoutMode];
+  v10 = [overriderCopy layoutSpecifyingOverridingParticipantSubordinateToParticipant:self thatRespondsToSelector:sel_setLayoutMode_reason_forTargetWithOverrider_];
+  [v10 setLayoutMode:mode reason:reason forTargetWithOverrider:overriderCopy];
 
-  v11 = [v8 layoutMode];
-  if (v9 != v11)
+  layoutMode2 = [overriderCopy layoutMode];
+  if (layoutMode != layoutMode2)
   {
 
     [(SAUISystemApertureManager *)self _invalidatePromotedState];
   }
 }
 
-- (void)elementViewControllingDidDisappear:(id)a3
+- (void)elementViewControllingDidDisappear:(id)disappear
 {
-  v12 = a3;
-  v4 = [v12 elementViewProvider];
-  v5 = [v4 element];
-  v6 = [(SAUISystemApertureManager *)self _assertionForElement:v5];
-  v7 = [v6 isValid];
+  disappearCopy = disappear;
+  elementViewProvider = [disappearCopy elementViewProvider];
+  element = [elementViewProvider element];
+  v6 = [(SAUISystemApertureManager *)self _assertionForElement:element];
+  isValid = [v6 isValid];
 
-  if ((v7 & 1) == 0)
+  if ((isValid & 1) == 0)
   {
     v8 = objc_opt_class();
-    v9 = v12;
+    v9 = disappearCopy;
     if (v8)
     {
       if (objc_opt_isKindOfClass())
@@ -886,20 +886,20 @@ void __45__SAUISystemApertureManager_registerElement___block_invoke(uint64_t a1,
   }
 }
 
-- (id)_elementViewControllerForElement:(id)a3 creatingIfNecessary:(BOOL)a4
+- (id)_elementViewControllerForElement:(id)element creatingIfNecessary:(BOOL)necessary
 {
-  v4 = a4;
+  necessaryCopy = necessary;
   v40 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (!v6)
+  elementCopy = element;
+  if (!elementCopy)
   {
     v8 = 0;
     goto LABEL_45;
   }
 
-  v7 = self;
-  objc_sync_enter(v7);
-  v8 = [(NSMapTable *)v7->_elementsToElementViewControllers objectForKey:v6];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v8 = [(NSMapTable *)selfCopy->_elementsToElementViewControllers objectForKey:elementCopy];
   if (v8)
   {
     v9 = 1;
@@ -907,7 +907,7 @@ void __45__SAUISystemApertureManager_registerElement___block_invoke(uint64_t a1,
 
   else
   {
-    v9 = !v4;
+    v9 = !necessaryCopy;
   }
 
   if (!v9)
@@ -915,7 +915,7 @@ void __45__SAUISystemApertureManager_registerElement___block_invoke(uint64_t a1,
     v10 = SAUILogManager;
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = MEMORY[0x26D6A1D80](v6);
+      v11 = MEMORY[0x26D6A1D80](elementCopy);
       *buf = 138543362;
       v39 = v11;
       _os_log_impl(&dword_26C482000, v10, OS_LOG_TYPE_DEFAULT, "Asked to add view controller for element: %{public}@", buf, 0xCu);
@@ -925,7 +925,7 @@ void __45__SAUISystemApertureManager_registerElement___block_invoke(uint64_t a1,
     v36 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v12 = [(NSMutableSet *)v7->_removedElementViewControllers copy];
+    v12 = [(NSMutableSet *)selfCopy->_removedElementViewControllers copy];
     v13 = [v12 countByEnumeratingWithState:&v33 objects:v37 count:16];
     if (v13)
     {
@@ -943,18 +943,18 @@ void __45__SAUISystemApertureManager_registerElement___block_invoke(uint64_t a1,
           }
 
           v17 = *(*(&v33 + 1) + 8 * i);
-          v18 = [v17 elementViewProvider];
-          v19 = [v18 element];
-          v20 = v19 == v6;
+          elementViewProvider = [v17 elementViewProvider];
+          element = [elementViewProvider element];
+          v20 = element == elementCopy;
 
           if (v20)
           {
             v21 = v17;
 
-            [(NSMutableSet *)v7->_removedElementViewControllers removeObject:v21];
+            [(NSMutableSet *)selfCopy->_removedElementViewControllers removeObject:v21];
             if (SAHasIndicatorBehavior())
             {
-              objc_storeWeak(&v7->_indicatorElementViewController, v21);
+              objc_storeWeak(&selfCopy->_indicatorElementViewController, v21);
             }
 
             v22 = SAUILogManager;
@@ -977,18 +977,18 @@ void __45__SAUISystemApertureManager_registerElement___block_invoke(uint64_t a1,
       if (v8)
       {
 LABEL_41:
-        elementsToElementViewControllers = v7->_elementsToElementViewControllers;
+        elementsToElementViewControllers = selfCopy->_elementsToElementViewControllers;
         if (!elementsToElementViewControllers)
         {
-          v29 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
-          v30 = v7->_elementsToElementViewControllers;
-          v7->_elementsToElementViewControllers = v29;
+          strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+          v30 = selfCopy->_elementsToElementViewControllers;
+          selfCopy->_elementsToElementViewControllers = strongToStrongObjectsMapTable;
 
-          elementsToElementViewControllers = v7->_elementsToElementViewControllers;
+          elementsToElementViewControllers = selfCopy->_elementsToElementViewControllers;
         }
 
-        [(NSMapTable *)elementsToElementViewControllers setObject:v8 forKey:v6];
-        [(SAUILayoutSpecifyingElementViewController *)v8 addElementViewControllingObserver:v7];
+        [(NSMapTable *)elementsToElementViewControllers setObject:v8 forKey:elementCopy];
+        [(SAUILayoutSpecifyingElementViewController *)v8 addElementViewControllingObserver:selfCopy];
         goto LABEL_44;
       }
     }
@@ -1000,21 +1000,21 @@ LABEL_41:
     if (SAHasIndicatorBehavior())
     {
       v23 = [SAUIIndicatorElementViewController alloc];
-      v24 = [v6 viewProvider];
-      v8 = [(SAUIIndicatorElementViewController *)v23 initWithIndicatorElementViewProvider:v24];
+      viewProvider = [elementCopy viewProvider];
+      v8 = [(SAUIIndicatorElementViewController *)v23 initWithIndicatorElementViewProvider:viewProvider];
 
-      [(SAUILayoutSpecifyingElementViewController *)v8 setLayoutHost:v7];
-      objc_storeWeak(&v7->_indicatorElementViewController, v8);
+      [(SAUILayoutSpecifyingElementViewController *)v8 setLayoutHost:selfCopy];
+      objc_storeWeak(&selfCopy->_indicatorElementViewController, v8);
     }
 
     else
     {
-      if (((objc_opt_respondsToSelector() & 1) == 0 || ([v6 hasAlertBehavior] & 1) == 0) && ((objc_opt_respondsToSelector() & 1) == 0 || !objc_msgSend(v6, "hasActivityBehavior")))
+      if (((objc_opt_respondsToSelector() & 1) == 0 || ([elementCopy hasAlertBehavior] & 1) == 0) && ((objc_opt_respondsToSelector() & 1) == 0 || !objc_msgSend(elementCopy, "hasActivityBehavior")))
       {
         v26 = SAUILogManager;
         if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
         {
-          v27 = MEMORY[0x26D6A1D80](v6);
+          v27 = MEMORY[0x26D6A1D80](elementCopy);
           [(SAUISystemApertureManager *)v27 _elementViewControllerForElement:buf creatingIfNecessary:v26];
         }
 
@@ -1022,10 +1022,10 @@ LABEL_41:
         goto LABEL_44;
       }
 
-      v25 = [v6 viewProvider];
+      viewProvider2 = [elementCopy viewProvider];
       if (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector())
       {
-        v8 = [[SAUIElementViewController alloc] initWithElementViewProvider:v25];
+        v8 = [[SAUIElementViewController alloc] initWithElementViewProvider:viewProvider2];
       }
 
       else
@@ -1034,7 +1034,7 @@ LABEL_41:
       }
 
       [(SAUILayoutSpecifyingElementViewController *)v8 setLayoutMode:0 reason:4];
-      [(SAUILayoutSpecifyingElementViewController *)v8 setLayoutHost:v7];
+      [(SAUILayoutSpecifyingElementViewController *)v8 setLayoutHost:selfCopy];
     }
 
     if (v8)
@@ -1044,53 +1044,53 @@ LABEL_41:
   }
 
 LABEL_44:
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 
 LABEL_45:
 
   return v8;
 }
 
-- (void)_removeElementViewController:(id)a3
+- (void)_removeElementViewController:(id)controller
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  controllerCopy = controller;
   v5 = SAUILogManager;
   if (os_log_type_enabled(SAUILogManager, OS_LOG_TYPE_DEFAULT))
   {
     v16 = 138543362;
-    v17 = v4;
+    v17 = controllerCopy;
     _os_log_impl(&dword_26C482000, v5, OS_LOG_TYPE_DEFAULT, "Asked to remove element view controller: %{public}@", &v16, 0xCu);
   }
 
-  if (v4)
+  if (controllerCopy)
   {
-    v6 = self;
-    objc_sync_enter(v6);
-    v7 = [v4 elementViewProvider];
-    v8 = [v7 element];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    elementViewProvider = [controllerCopy elementViewProvider];
+    element = [elementViewProvider element];
 
-    v9 = [(SAUISystemApertureManager *)v6 elementViewControllerForElement:v8];
-    if (v9 == v4)
+    v9 = [(SAUISystemApertureManager *)selfCopy elementViewControllerForElement:element];
+    if (v9 == controllerCopy)
     {
-      removedElementViewControllers = v6->_removedElementViewControllers;
+      removedElementViewControllers = selfCopy->_removedElementViewControllers;
       if (!removedElementViewControllers)
       {
         v12 = objc_alloc_init(MEMORY[0x277CBEB58]);
-        v13 = v6->_removedElementViewControllers;
-        v6->_removedElementViewControllers = v12;
+        v13 = selfCopy->_removedElementViewControllers;
+        selfCopy->_removedElementViewControllers = v12;
 
-        removedElementViewControllers = v6->_removedElementViewControllers;
+        removedElementViewControllers = selfCopy->_removedElementViewControllers;
       }
 
-      [(NSMutableSet *)removedElementViewControllers addObject:v4];
-      [(NSMapTable *)v6->_elementsToElementViewControllers removeObjectForKey:v8];
-      [v9 removeElementViewControllingObserver:v6];
+      [(NSMutableSet *)removedElementViewControllers addObject:controllerCopy];
+      [(NSMapTable *)selfCopy->_elementsToElementViewControllers removeObjectForKey:element];
+      [v9 removeElementViewControllingObserver:selfCopy];
       v14 = SAUILogManager;
       if (os_log_type_enabled(SAUILogManager, OS_LOG_TYPE_DEFAULT))
       {
         v16 = 138543362;
-        v17 = v4;
+        v17 = controllerCopy;
         _os_log_impl(&dword_26C482000, v14, OS_LOG_TYPE_DEFAULT, "Removed element view controller: %{public}@", &v16, 0xCu);
       }
     }
@@ -1100,18 +1100,18 @@ LABEL_45:
       v10 = SAUILogManager;
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
-        v15 = MEMORY[0x26D6A1D80](v8);
+        v15 = MEMORY[0x26D6A1D80](element);
         v16 = 138543874;
         v17 = v15;
         v18 = 2114;
         v19 = v9;
         v20 = 2114;
-        v21 = v4;
+        v21 = controllerCopy;
         _os_log_error_impl(&dword_26C482000, v10, OS_LOG_TYPE_ERROR, "Asked to remove element view controller with element that is associated with a different view controller: element: %{public}@; expected view controller: %{public}@; argument view controller: %{public}@", &v16, 0x20u);
       }
     }
 
-    objc_sync_exit(v6);
+    objc_sync_exit(selfCopy);
   }
 }
 
@@ -1183,20 +1183,20 @@ id __78__SAUISystemApertureManager__temporallyOrderedVisibleAlertAndActivityElem
   return v5;
 }
 
-- (BOOL)_elementRequiresBeingDisplayedAlone:(id)a3
+- (BOOL)_elementRequiresBeingDisplayedAlone:(id)alone
 {
-  v4 = a3;
+  aloneCopy = alone;
   if (SAHasAlertBehavior())
   {
     goto LABEL_2;
   }
 
-  v7 = SAUILayoutSpecifyingOverriderForElement(v4);
-  v8 = [v7 layoutModePreference];
-  v9 = [v8 preferredLayoutMode];
+  v7 = SAUILayoutSpecifyingOverriderForElement(aloneCopy);
+  layoutModePreference = [v7 layoutModePreference];
+  preferredLayoutMode = [layoutModePreference preferredLayoutMode];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
-    if (v9 == 3)
+    if (preferredLayoutMode == 3)
     {
 
       goto LABEL_2;
@@ -1207,8 +1207,8 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v10 = [v7 customizationOptionsForLayoutMode:v9];
-  if (v9 != 3)
+  v10 = [v7 customizationOptionsForLayoutMode:preferredLayoutMode];
+  if (preferredLayoutMode != 3)
   {
     goto LABEL_10;
   }
@@ -1225,7 +1225,7 @@ LABEL_2:
 LABEL_11:
   if (objc_opt_respondsToSelector())
   {
-    v5 = [(SAElementConsidering *)self->_elementAuthority elementRequiresBeingDisplayedAlone:v4];
+    v5 = [(SAElementConsidering *)self->_elementAuthority elementRequiresBeingDisplayedAlone:aloneCopy];
   }
 
   else
@@ -1247,36 +1247,36 @@ id __56__SAUISystemApertureManager__reevaluatePromotedElements__block_invoke_2(u
   return v4;
 }
 
-- (id)_assertionForElement:(id)a3
+- (id)_assertionForElement:(id)element
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(NSMapTable *)v5->_elementsToAssertions objectForKey:v4];
-  objc_sync_exit(v5);
+  elementCopy = element;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(NSMapTable *)selfCopy->_elementsToAssertions objectForKey:elementCopy];
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
-- (void)_elementAssertionDidInvalidate:(id)a3
+- (void)_elementAssertionDidInvalidate:(id)invalidate
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 element];
+  invalidateCopy = invalidate;
+  element = [invalidateCopy element];
   v6 = SAUILogManager;
   if (os_log_type_enabled(SAUILogManager, OS_LOG_TYPE_DEFAULT))
   {
     v7 = v6;
-    v8 = MEMORY[0x26D6A1D80](v5);
+    v8 = MEMORY[0x26D6A1D80](element);
     v14 = 138543362;
     v15 = v8;
     _os_log_impl(&dword_26C482000, v7, OS_LOG_TYPE_DEFAULT, "Assertion for element did invalidate: %{public}@", &v14, 0xCu);
   }
 
-  [(SAUISystemApertureManager *)self _addInvalidatedAssertion:v4 forElement:v5];
+  [(SAUISystemApertureManager *)self _addInvalidatedAssertion:invalidateCopy forElement:element];
 
-  [(SAUISystemApertureManager *)self _removeAssertionForElement:v5];
-  v9 = [(SAUISystemApertureManager *)self elementViewControllerForElement:v5];
+  [(SAUISystemApertureManager *)self _removeAssertionForElement:element];
+  v9 = [(SAUISystemApertureManager *)self elementViewControllerForElement:element];
   v10 = v9;
   if (v9 && (![v9 isViewLoaded] || !objc_msgSend(v10, "_appearState")))
   {
@@ -1284,7 +1284,7 @@ id __56__SAUISystemApertureManager__reevaluatePromotedElements__block_invoke_2(u
     if (os_log_type_enabled(SAUILogManager, OS_LOG_TYPE_DEFAULT))
     {
       v12 = v11;
-      v13 = MEMORY[0x26D6A1D80](v5);
+      v13 = MEMORY[0x26D6A1D80](element);
       v14 = 138543362;
       v15 = v13;
       _os_log_impl(&dword_26C482000, v12, OS_LOG_TYPE_DEFAULT, "Removing unpresented element view controller for invalidated element: %{public}@", &v14, 0xCu);
@@ -1305,57 +1305,57 @@ id __56__SAUISystemApertureManager__reevaluatePromotedElements__block_invoke_2(u
   }
 }
 
-- (id)_assertionForElementCreatingIfNecessary:(id)a3
+- (id)_assertionForElementCreatingIfNecessary:(id)necessary
 {
-  v4 = a3;
-  if (v4)
+  necessaryCopy = necessary;
+  if (necessaryCopy)
   {
-    v5 = self;
-    objc_sync_enter(v5);
-    v6 = [(SAUISystemApertureManager *)v5 _assertionForElement:v4];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v6 = [(SAUISystemApertureManager *)selfCopy _assertionForElement:necessaryCopy];
     if (!v6)
     {
-      [v4 uniquelyIdentifyElement];
-      objc_initWeak(&location, v5);
+      [necessaryCopy uniquelyIdentifyElement];
+      objc_initWeak(&location, selfCopy);
       v7 = [SAUIElementAssertion alloc];
       v15 = MEMORY[0x277D85DD0];
       v16 = 3221225472;
       v17 = __69__SAUISystemApertureManager__assertionForElementCreatingIfNecessary___block_invoke;
       v18 = &unk_279D32738;
       objc_copyWeak(&v19, &location);
-      v6 = [(SAUIElementAssertion *)v7 initWithElement:v4 invalidationHandler:&v15];
+      v6 = [(SAUIElementAssertion *)v7 initWithElement:necessaryCopy invalidationHandler:&v15];
       if (v6)
       {
-        elementsToAssertions = v5->_elementsToAssertions;
+        elementsToAssertions = selfCopy->_elementsToAssertions;
         if (!elementsToAssertions)
         {
-          v9 = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
-          v10 = v5->_elementsToAssertions;
-          v5->_elementsToAssertions = v9;
+          strongToWeakObjectsMapTable = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
+          v10 = selfCopy->_elementsToAssertions;
+          selfCopy->_elementsToAssertions = strongToWeakObjectsMapTable;
 
-          elementsToAssertions = v5->_elementsToAssertions;
+          elementsToAssertions = selfCopy->_elementsToAssertions;
         }
 
-        [(NSMapTable *)elementsToAssertions setObject:v6 forKey:v4, v15, v16, v17, v18];
-        elements = v5->_elements;
+        [(NSMapTable *)elementsToAssertions setObject:v6 forKey:necessaryCopy, v15, v16, v17, v18];
+        elements = selfCopy->_elements;
         if (!elements)
         {
-          v12 = [MEMORY[0x277CCAC18] weakObjectsPointerArray];
-          v13 = v5->_elements;
-          v5->_elements = v12;
+          weakObjectsPointerArray = [MEMORY[0x277CCAC18] weakObjectsPointerArray];
+          v13 = selfCopy->_elements;
+          selfCopy->_elements = weakObjectsPointerArray;
 
-          elements = v5->_elements;
+          elements = selfCopy->_elements;
         }
 
-        [(NSPointerArray *)elements addPointer:v4];
-        [(SAUISystemApertureManager *)v5 _invalidateTemporallyOrderedElements];
+        [(NSPointerArray *)elements addPointer:necessaryCopy];
+        [(SAUISystemApertureManager *)selfCopy _invalidateTemporallyOrderedElements];
       }
 
       objc_destroyWeak(&v19);
       objc_destroyWeak(&location);
     }
 
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -1395,28 +1395,28 @@ void __69__SAUISystemApertureManager__assertionForElementCreatingIfNecessary___b
   [WeakRetained _elementAssertionDidInvalidate:v7];
 }
 
-- (void)_removeAssertionForElement:(id)a3
+- (void)_removeAssertionForElement:(id)element
 {
-  v4 = a3;
-  if (v4)
+  elementCopy = element;
+  if (elementCopy)
   {
-    v8 = v4;
-    v5 = self;
-    objc_sync_enter(v5);
-    v6 = [(SAUISystemApertureManager *)v5 _assertionForElement:v8];
+    v8 = elementCopy;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v6 = [(SAUISystemApertureManager *)selfCopy _assertionForElement:v8];
     if (v6)
     {
-      [(SAUISystemApertureManager *)v5 _compactElements];
-      for (i = 0; i < [(NSPointerArray *)v5->_elements count]; ++i)
+      [(SAUISystemApertureManager *)selfCopy _compactElements];
+      for (i = 0; i < [(NSPointerArray *)selfCopy->_elements count]; ++i)
       {
-        if ([(NSPointerArray *)v5->_elements pointerAtIndex:i]== v8)
+        if ([(NSPointerArray *)selfCopy->_elements pointerAtIndex:i]== v8)
         {
           if (i != 0x7FFFFFFFFFFFFFFFLL)
           {
-            [(NSPointerArray *)v5->_elements removePointerAtIndex:i];
-            [(NSMapTable *)v5->_elementsToAssertions removeObjectForKey:v8];
-            [(SAUISystemApertureManager *)v5 _compactElements];
-            [(SAUISystemApertureManager *)v5 _invalidateTemporallyOrderedElements];
+            [(NSPointerArray *)selfCopy->_elements removePointerAtIndex:i];
+            [(NSMapTable *)selfCopy->_elementsToAssertions removeObjectForKey:v8];
+            [(SAUISystemApertureManager *)selfCopy _compactElements];
+            [(SAUISystemApertureManager *)selfCopy _invalidateTemporallyOrderedElements];
           }
 
           break;
@@ -1424,57 +1424,57 @@ void __69__SAUISystemApertureManager__assertionForElementCreatingIfNecessary___b
       }
     }
 
-    objc_sync_exit(v5);
-    v4 = v8;
+    objc_sync_exit(selfCopy);
+    elementCopy = v8;
   }
 }
 
-- (void)_addInvalidatedAssertion:(id)a3 forElement:(id)a4
+- (void)_addInvalidatedAssertion:(id)assertion forElement:(id)element
 {
-  v12 = a3;
-  v7 = a4;
-  if (v7)
+  assertionCopy = assertion;
+  elementCopy = element;
+  if (elementCopy)
   {
-    if (!v12 || [v12 isValid])
+    if (!assertionCopy || [assertionCopy isValid])
     {
-      [(SAUISystemApertureManager *)a2 _addInvalidatedAssertion:v12 forElement:?];
+      [(SAUISystemApertureManager *)a2 _addInvalidatedAssertion:assertionCopy forElement:?];
     }
 
-    v8 = self;
-    objc_sync_enter(v8);
-    elementsToInvalidatedAssertions = v8->_elementsToInvalidatedAssertions;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    elementsToInvalidatedAssertions = selfCopy->_elementsToInvalidatedAssertions;
     if (!elementsToInvalidatedAssertions)
     {
-      v10 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
-      v11 = v8->_elementsToInvalidatedAssertions;
-      v8->_elementsToInvalidatedAssertions = v10;
+      weakToStrongObjectsMapTable = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
+      v11 = selfCopy->_elementsToInvalidatedAssertions;
+      selfCopy->_elementsToInvalidatedAssertions = weakToStrongObjectsMapTable;
 
-      elementsToInvalidatedAssertions = v8->_elementsToInvalidatedAssertions;
+      elementsToInvalidatedAssertions = selfCopy->_elementsToInvalidatedAssertions;
     }
 
-    [(NSMapTable *)elementsToInvalidatedAssertions setObject:v12 forKey:v7];
-    objc_sync_exit(v8);
+    [(NSMapTable *)elementsToInvalidatedAssertions setObject:assertionCopy forKey:elementCopy];
+    objc_sync_exit(selfCopy);
   }
 }
 
-- (id)_invalidatedAssertionForElement:(id)a3
+- (id)_invalidatedAssertionForElement:(id)element
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(NSMapTable *)v5->_elementsToInvalidatedAssertions objectForKey:v4];
-  objc_sync_exit(v5);
+  elementCopy = element;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(NSMapTable *)selfCopy->_elementsToInvalidatedAssertions objectForKey:elementCopy];
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
-- (void)_removeInvalidatedAssertionForElement:(id)a3
+- (void)_removeInvalidatedAssertionForElement:(id)element
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [(NSMapTable *)v4->_elementsToInvalidatedAssertions removeObjectForKey:v5];
-  objc_sync_exit(v4);
+  elementCopy = element;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSMapTable *)selfCopy->_elementsToInvalidatedAssertions removeObjectForKey:elementCopy];
+  objc_sync_exit(selfCopy);
 }
 
 - (SAUISystemApertureManagerDelegate)delegate

@@ -1,9 +1,9 @@
 @interface GKApplicationWorkspace
 + (id)defaultWorkspace;
-+ (int64_t)getPlatformForBundleID:(id)a3;
-- (id)applicationProxyForBundleID:(id)a3;
-- (id)gameDescriptorsWithInstalledBundleVersionsForGameDescriptors:(id)a3;
-- (id)openURL:(id)a3;
++ (int64_t)getPlatformForBundleID:(id)d;
+- (id)applicationProxyForBundleID:(id)d;
+- (id)gameDescriptorsWithInstalledBundleVersionsForGameDescriptors:(id)descriptors;
+- (id)openURL:(id)l;
 - (void)openICloudSettings;
 - (void)openNewsApp;
 - (void)openSoftwareUpdateSettings;
@@ -40,14 +40,14 @@ id __81__GKApplicationWorkspace_gameDescriptorsWithInstalledBundleVersionsForBun
   return v9;
 }
 
-- (id)gameDescriptorsWithInstalledBundleVersionsForGameDescriptors:(id)a3
+- (id)gameDescriptorsWithInstalledBundleVersionsForGameDescriptors:(id)descriptors
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __87__GKApplicationWorkspace_gameDescriptorsWithInstalledBundleVersionsForGameDescriptors___block_invoke;
   v5[3] = &unk_2785DFED8;
   v5[4] = self;
-  v3 = [a3 _gkMapWithBlock:v5];
+  v3 = [descriptors _gkMapWithBlock:v5];
 
   return v3;
 }
@@ -83,29 +83,29 @@ id __87__GKApplicationWorkspace_gameDescriptorsWithInstalledBundleVersionsForGam
   return v9;
 }
 
-+ (int64_t)getPlatformForBundleID:(id)a3
++ (int64_t)getPlatformForBundleID:(id)d
 {
-  v3 = [MEMORY[0x277CC1E90] bundleRecordWithBundleIdentifier:a3 allowPlaceholder:0 error:0];
+  v3 = [MEMORY[0x277CC1E90] bundleRecordWithBundleIdentifier:d allowPlaceholder:0 error:0];
   v4 = GKGamePlatformFromDyldPlatform([v3 platform]);
 
   return v4;
 }
 
-- (id)applicationProxyForBundleID:(id)a3
+- (id)applicationProxyForBundleID:(id)d
 {
-  v3 = a3;
-  v4 = [[GKApplicationProxy alloc] initWithBundleID:v3];
+  dCopy = d;
+  v4 = [[GKApplicationProxy alloc] initWithBundleID:dCopy];
 
   return v4;
 }
 
-- (id)openURL:(id)a3
+- (id)openURL:(id)l
 {
   v3 = MEMORY[0x277CC1E80];
-  v4 = a3;
-  v5 = [v3 defaultWorkspace];
+  lCopy = l;
+  defaultWorkspace = [v3 defaultWorkspace];
   v9 = 0;
-  [v5 openSensitiveURL:v4 withOptions:0 error:&v9];
+  [defaultWorkspace openSensitiveURL:lCopy withOptions:0 error:&v9];
 
   v6 = v9;
   v7 = v9;

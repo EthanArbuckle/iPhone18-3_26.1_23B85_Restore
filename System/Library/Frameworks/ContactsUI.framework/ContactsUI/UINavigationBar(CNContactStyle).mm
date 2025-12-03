@@ -6,15 +6,15 @@
 
 - (void)_cnui_applyContactStyle
 {
-  v2 = [a1 _cnui_contactStyle];
-  if ([v2 barStyle])
+  _cnui_contactStyle = [self _cnui_contactStyle];
+  if ([_cnui_contactStyle barStyle])
   {
-    [a1 setBarStyle:{objc_msgSend(v2, "barStyle")}];
+    [self setBarStyle:{objc_msgSend(_cnui_contactStyle, "barStyle")}];
   }
 
-  if ([v2 usesTranslucentBarStyle])
+  if ([_cnui_contactStyle usesTranslucentBarStyle])
   {
-    [a1 setTranslucent:{objc_msgSend(v2, "usesTranslucentBarStyle")}];
+    [self setTranslucent:{objc_msgSend(_cnui_contactStyle, "usesTranslucentBarStyle")}];
   }
 }
 

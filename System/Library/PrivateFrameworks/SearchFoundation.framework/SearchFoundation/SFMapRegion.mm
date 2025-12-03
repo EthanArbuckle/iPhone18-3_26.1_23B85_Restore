@@ -1,12 +1,12 @@
 @interface SFMapRegion
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFMapRegion)initWithCoder:(id)a3;
-- (SFMapRegion)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFMapRegion)initWithCoder:(id)coder;
+- (SFMapRegion)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFMapRegion
@@ -54,17 +54,17 @@
   return *&veor_s8(*v26.i8, *&vextq_s8(v26, v26, 8uLL)) ^ v25;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v21 = 1;
   }
 
-  else if ([(SFMapRegion *)v4 isMemberOfClass:objc_opt_class()])
+  else if ([(SFMapRegion *)equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
+    v5 = equalCopy;
     [(SFMapRegion *)self southLat];
     v7 = v6;
     [(SFMapRegion *)v5 southLat];
@@ -99,9 +99,9 @@ LABEL_10:
   return v21;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [(SFMapRegion *)self southLat];
   [v4 setSouthLat:?];
   [(SFMapRegion *)self westLng];
@@ -118,31 +118,31 @@ LABEL_10:
 - (NSData)jsonData
 {
   v2 = [[_SFPBMapRegion alloc] initWithFacade:self];
-  v3 = [(_SFPBMapRegion *)v2 jsonData];
+  jsonData = [(_SFPBMapRegion *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBMapRegion alloc] initWithFacade:self];
-  v3 = [(_SFPBMapRegion *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBMapRegion *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6 = [[_SFPBMapRegion alloc] initWithFacade:self];
-  v5 = [(_SFPBMapRegion *)v6 data];
-  [v4 encodeObject:v5 forKey:@"_backingStore"];
+  data = [(_SFPBMapRegion *)v6 data];
+  [coderCopy encodeObject:data forKey:@"_backingStore"];
 }
 
-- (SFMapRegion)initWithCoder:(id)a3
+- (SFMapRegion)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v6 = [[_SFPBMapRegion alloc] initWithData:v5];
   v7 = [(SFMapRegion *)self initWithProtobuf:v6];
@@ -150,46 +150,46 @@ LABEL_10:
   return v7;
 }
 
-- (SFMapRegion)initWithProtobuf:(id)a3
+- (SFMapRegion)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v13.receiver = self;
   v13.super_class = SFMapRegion;
   v5 = [(SFMapRegion *)&v13 init];
   if (v5)
   {
-    [v4 southLat];
+    [protobufCopy southLat];
     if (v6 != 0.0)
     {
-      [v4 southLat];
+      [protobufCopy southLat];
       [(SFMapRegion *)v5 setSouthLat:?];
     }
 
-    [v4 westLng];
+    [protobufCopy westLng];
     if (v7 != 0.0)
     {
-      [v4 westLng];
+      [protobufCopy westLng];
       [(SFMapRegion *)v5 setWestLng:?];
     }
 
-    [v4 northLat];
+    [protobufCopy northLat];
     if (v8 != 0.0)
     {
-      [v4 northLat];
+      [protobufCopy northLat];
       [(SFMapRegion *)v5 setNorthLat:?];
     }
 
-    [v4 eastLng];
+    [protobufCopy eastLng];
     if (v9 != 0.0)
     {
-      [v4 eastLng];
+      [protobufCopy eastLng];
       [(SFMapRegion *)v5 setEastLng:?];
     }
 
-    [v4 altitudeInMeters];
+    [protobufCopy altitudeInMeters];
     if (v10 != 0.0)
     {
-      [v4 altitudeInMeters];
+      [protobufCopy altitudeInMeters];
       [(SFMapRegion *)v5 setAltitudeInMeters:?];
     }
 

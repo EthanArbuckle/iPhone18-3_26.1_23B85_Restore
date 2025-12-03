@@ -1,19 +1,19 @@
 @interface DDSAssertionTracker
-- (DDSAssertionTracker)initWithDataHandler:(id)a3;
+- (DDSAssertionTracker)initWithDataHandler:(id)handler;
 - (NSMutableArray)trackedAssertions;
-- (double)intervalForDownloadFrequency:(int64_t)a3;
+- (double)intervalForDownloadFrequency:(int64_t)frequency;
 - (id)allAssertions;
-- (id)assertionDueForUpdateFrom:(id)a3 SinceDate:(id)a4;
-- (id)assertionDueForUpdateSinceDate:(id)a3;
-- (id)assertionForQuery:(id)a3;
-- (id)assertionIDsForClientID:(id)a3;
+- (id)assertionDueForUpdateFrom:(id)from SinceDate:(id)date;
+- (id)assertionDueForUpdateSinceDate:(id)date;
+- (id)assertionForQuery:(id)query;
+- (id)assertionIDsForClientID:(id)d;
 - (id)trackedAssetTypes;
-- (int64_t)updateStatusForAssertion:(id)a3;
-- (void)addAssertionForQuery:(id)a3 policy:(id)a4 assertionID:(id)a5 clientID:(id)a6;
-- (void)didUpdateAssertion:(id)a3 atDate:(id)a4;
-- (void)modifyUpdateStatusForAssertion:(id)a3 toStatus:(int64_t)a4;
-- (void)removeAssertionWithID:(id)a3;
-- (void)resetAssertionDueDatesForAssetType:(id)a3;
+- (int64_t)updateStatusForAssertion:(id)assertion;
+- (void)addAssertionForQuery:(id)query policy:(id)policy assertionID:(id)d clientID:(id)iD;
+- (void)didUpdateAssertion:(id)assertion atDate:(id)date;
+- (void)modifyUpdateStatusForAssertion:(id)assertion toStatus:(int64_t)status;
+- (void)removeAssertionWithID:(id)d;
+- (void)resetAssertionDueDatesForAssetType:(id)type;
 @end
 
 @implementation DDSAssertionTracker
@@ -23,9 +23,9 @@
   trackedAssertions = self->_trackedAssertions;
   if (!trackedAssertions)
   {
-    v4 = [(DDSAssertionTracker *)self dataHandler];
-    v5 = [v4 loadAssertionData];
-    v6 = [v5 mutableCopy];
+    dataHandler = [(DDSAssertionTracker *)self dataHandler];
+    loadAssertionData = [dataHandler loadAssertionData];
+    v6 = [loadAssertionData mutableCopy];
     v7 = self->_trackedAssertions;
     self->_trackedAssertions = v6;
 
@@ -35,9 +35,9 @@
   return trackedAssertions;
 }
 
-- (DDSAssertionTracker)initWithDataHandler:(id)a3
+- (DDSAssertionTracker)initWithDataHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   v14.receiver = self;
   v14.super_class = DDSAssertionTracker;
   v6 = [(DDSAssertionTracker *)&v14 init];
@@ -50,7 +50,7 @@
     queue = v6->_queue;
     v6->_queue = v9;
 
-    objc_storeStrong(&v6->_dataHandler, a3);
+    objc_storeStrong(&v6->_dataHandler, handler);
     v11 = objc_alloc_init(MEMORY[0x1E695DF90]);
     assertionUpdateStatus = v6->_assertionUpdateStatus;
     v6->_assertionUpdateStatus = v11;
@@ -67,14 +67,14 @@
   v10 = __Block_byref_object_copy__3;
   v11 = __Block_byref_object_dispose__3;
   v12 = 0;
-  v3 = [(DDSAssertionTracker *)self queue];
+  queue = [(DDSAssertionTracker *)self queue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __36__DDSAssertionTracker_allAssertions__block_invoke;
   v6[3] = &unk_1E86C6530;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(queue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -91,25 +91,25 @@ void __36__DDSAssertionTracker_allAssertions__block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-- (id)assertionDueForUpdateSinceDate:(id)a3
+- (id)assertionDueForUpdateSinceDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__3;
   v16 = __Block_byref_object_dispose__3;
   v17 = 0;
-  v5 = [(DDSAssertionTracker *)self queue];
+  queue = [(DDSAssertionTracker *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __54__DDSAssertionTracker_assertionDueForUpdateSinceDate___block_invoke;
   block[3] = &unk_1E86C6558;
-  v10 = v4;
+  v10 = dateCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = dateCopy;
+  dispatch_sync(queue, block);
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -127,17 +127,17 @@ void __54__DDSAssertionTracker_assertionDueForUpdateSinceDate___block_invoke(voi
   *(v4 + 40) = v3;
 }
 
-- (id)assertionDueForUpdateFrom:(id)a3 SinceDate:(id)a4
+- (id)assertionDueForUpdateFrom:(id)from SinceDate:(id)date
 {
   v31 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  fromCopy = from;
+  dateCopy = date;
   v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v9 = v6;
+  v9 = fromCopy;
   v10 = [v9 countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v10)
   {
@@ -153,17 +153,17 @@ void __54__DDSAssertionTracker_assertionDueForUpdateSinceDate___block_invoke(voi
         }
 
         v14 = *(*(&v26 + 1) + 8 * i);
-        v15 = [v14 policy];
-        v16 = [v15 preferredDownloadFrequency];
+        policy = [v14 policy];
+        preferredDownloadFrequency = [policy preferredDownloadFrequency];
 
-        [(DDSAssertionTracker *)self intervalForDownloadFrequency:v16];
+        [(DDSAssertionTracker *)self intervalForDownloadFrequency:preferredDownloadFrequency];
         v18 = v17;
-        v19 = [v14 lastUpdated];
-        if (v19)
+        lastUpdated = [v14 lastUpdated];
+        if (lastUpdated)
         {
-          v20 = v19;
-          v21 = [v14 lastUpdated];
-          [v7 timeIntervalSinceDate:v21];
+          v20 = lastUpdated;
+          lastUpdated2 = [v14 lastUpdated];
+          [dateCopy timeIntervalSinceDate:lastUpdated2];
           v23 = v22;
 
           if (v23 <= v18)
@@ -186,18 +186,18 @@ void __54__DDSAssertionTracker_assertionDueForUpdateSinceDate___block_invoke(voi
   return v8;
 }
 
-- (void)resetAssertionDueDatesForAssetType:(id)a3
+- (void)resetAssertionDueDatesForAssetType:(id)type
 {
-  v4 = a3;
-  v5 = [(DDSAssertionTracker *)self queue];
+  typeCopy = type;
+  queue = [(DDSAssertionTracker *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __58__DDSAssertionTracker_resetAssertionDueDatesForAssetType___block_invoke;
   v7[3] = &unk_1E86C5C70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = typeCopy;
+  v6 = typeCopy;
+  dispatch_sync(queue, v7);
 }
 
 void __58__DDSAssertionTracker_resetAssertionDueDatesForAssetType___block_invoke(uint64_t a1)
@@ -246,12 +246,12 @@ void __58__DDSAssertionTracker_resetAssertionDueDatesForAssetType___block_invoke
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addAssertionForQuery:(id)a3 policy:(id)a4 assertionID:(id)a5 clientID:(id)a6
+- (void)addAssertionForQuery:(id)query policy:(id)policy assertionID:(id)d clientID:(id)iD
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  queryCopy = query;
+  policyCopy = policy;
+  dCopy = d;
+  iDCopy = iD;
   v44 = 0;
   v45 = &v44;
   v46 = 0x3032000000;
@@ -268,24 +268,24 @@ void __58__DDSAssertionTracker_resetAssertionDueDatesForAssetType___block_invoke
   v37 = __Block_byref_object_copy__3;
   v38 = __Block_byref_object_dispose__3;
   v39 = 0;
-  v14 = [(DDSAssertionTracker *)self queue];
+  queue = [(DDSAssertionTracker *)self queue];
   v22 = MEMORY[0x1E69E9820];
   v23 = 3221225472;
   v24 = __72__DDSAssertionTracker_addAssertionForQuery_policy_assertionID_clientID___block_invoke;
   v25 = &unk_1E86C6580;
-  v26 = self;
-  v15 = v10;
+  selfCopy = self;
+  v15 = queryCopy;
   v27 = v15;
   v31 = &v34;
-  v16 = v12;
+  v16 = dCopy;
   v28 = v16;
-  v17 = v13;
+  v17 = iDCopy;
   v29 = v17;
-  v18 = v11;
+  v18 = policyCopy;
   v30 = v18;
   v32 = &v40;
   v33 = &v44;
-  dispatch_sync(v14, &v22);
+  dispatch_sync(queue, &v22);
 
   if ((v41[3] & 1) == 0)
   {
@@ -296,8 +296,8 @@ void __58__DDSAssertionTracker_resetAssertionDueDatesForAssetType___block_invoke
 
   if (v35[5])
   {
-    v21 = [(DDSAssertionTracker *)self delegate];
-    [v21 handleAddedNewDescriptor:v35[5] forAssertion:v45[5]];
+    delegate = [(DDSAssertionTracker *)self delegate];
+    [delegate handleAddedNewDescriptor:v35[5] forAssertion:v45[5]];
   }
 
   _Block_object_dispose(&v34, 8);
@@ -394,25 +394,25 @@ LABEL_11:
   v26 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeAssertionWithID:(id)a3
+- (void)removeAssertionWithID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v14 = 0;
   v15[0] = &v14;
   v15[1] = 0x3032000000;
   v15[2] = __Block_byref_object_copy__3;
   v15[3] = __Block_byref_object_dispose__3;
   v16 = 0;
-  v5 = [(DDSAssertionTracker *)self queue];
+  queue = [(DDSAssertionTracker *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __45__DDSAssertionTracker_removeAssertionWithID___block_invoke;
   block[3] = &unk_1E86C65A8;
-  v6 = v4;
+  v6 = dCopy;
   v11 = v6;
-  v12 = self;
+  selfCopy = self;
   v13 = &v14;
-  dispatch_sync(v5, block);
+  dispatch_sync(queue, block);
 
   v7 = DefaultLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -422,9 +422,9 @@ LABEL_11:
 
   if (*(v15[0] + 40))
   {
-    v8 = [(DDSAssertionTracker *)self delegate];
+    delegate = [(DDSAssertionTracker *)self delegate];
     v9 = [MEMORY[0x1E695DFD8] setWithObject:*(v15[0] + 40)];
-    [v8 handleRemovedAssertions:v9];
+    [delegate handleRemovedAssertions:v9];
   }
 
   _Block_object_dispose(&v14, 8);
@@ -527,21 +527,21 @@ LABEL_21:
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (void)didUpdateAssertion:(id)a3 atDate:(id)a4
+- (void)didUpdateAssertion:(id)assertion atDate:(id)date
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(DDSAssertionTracker *)self queue];
+  assertionCopy = assertion;
+  dateCopy = date;
+  queue = [(DDSAssertionTracker *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __49__DDSAssertionTracker_didUpdateAssertion_atDate___block_invoke;
   block[3] = &unk_1E86C65D0;
-  v12 = v6;
-  v13 = v7;
-  v14 = self;
-  v9 = v7;
-  v10 = v6;
-  dispatch_sync(v8, block);
+  v12 = assertionCopy;
+  v13 = dateCopy;
+  selfCopy = self;
+  v9 = dateCopy;
+  v10 = assertionCopy;
+  dispatch_sync(queue, block);
 }
 
 void __49__DDSAssertionTracker_didUpdateAssertion_atDate___block_invoke(uint64_t a1)
@@ -567,25 +567,25 @@ void __49__DDSAssertionTracker_didUpdateAssertion_atDate___block_invoke(uint64_t
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (id)assertionForQuery:(id)a3
+- (id)assertionForQuery:(id)query
 {
-  v4 = a3;
+  queryCopy = query;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__3;
   v16 = __Block_byref_object_dispose__3;
   v17 = 0;
-  v5 = [(DDSAssertionTracker *)self queue];
+  queue = [(DDSAssertionTracker *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __41__DDSAssertionTracker_assertionForQuery___block_invoke;
   block[3] = &unk_1E86C65A8;
   block[4] = self;
-  v10 = v4;
+  v10 = queryCopy;
   v11 = &v12;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = queryCopy;
+  dispatch_sync(queue, block);
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -641,15 +641,15 @@ LABEL_11:
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (double)intervalForDownloadFrequency:(int64_t)a3
+- (double)intervalForDownloadFrequency:(int64_t)frequency
 {
   result = 86400.0;
-  if (a3 != 1)
+  if (frequency != 1)
   {
     result = 0.0;
   }
 
-  if (a3 == 2)
+  if (frequency == 2)
   {
     return 604800.0;
   }
@@ -660,7 +660,7 @@ LABEL_11:
 - (id)trackedAssetTypes
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  v4 = [(DDSAssertionTracker *)self queue];
+  queue = [(DDSAssertionTracker *)self queue];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __40__DDSAssertionTracker_trackedAssetTypes__block_invoke;
@@ -668,7 +668,7 @@ LABEL_11:
   v9[4] = self;
   v5 = v3;
   v10 = v5;
-  dispatch_sync(v4, v9);
+  dispatch_sync(queue, v9);
 
   v6 = v10;
   v7 = v5;
@@ -717,11 +717,11 @@ void __40__DDSAssertionTracker_trackedAssetTypes__block_invoke(uint64_t a1)
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (id)assertionIDsForClientID:(id)a3
+- (id)assertionIDsForClientID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  v6 = [(DDSAssertionTracker *)self queue];
+  queue = [(DDSAssertionTracker *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __47__DDSAssertionTracker_assertionIDsForClientID___block_invoke;
@@ -729,9 +729,9 @@ void __40__DDSAssertionTracker_trackedAssetTypes__block_invoke(uint64_t a1)
   block[4] = self;
   v7 = v5;
   v13 = v7;
-  v14 = v4;
-  v8 = v4;
-  dispatch_sync(v6, block);
+  v14 = dCopy;
+  v8 = dCopy;
+  dispatch_sync(queue, block);
 
   v9 = v14;
   v10 = v7;
@@ -779,19 +779,19 @@ void __47__DDSAssertionTracker_assertionIDsForClientID___block_invoke(uint64_t a
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)modifyUpdateStatusForAssertion:(id)a3 toStatus:(int64_t)a4
+- (void)modifyUpdateStatusForAssertion:(id)assertion toStatus:(int64_t)status
 {
-  v6 = a3;
-  v7 = [(DDSAssertionTracker *)self queue];
+  assertionCopy = assertion;
+  queue = [(DDSAssertionTracker *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __63__DDSAssertionTracker_modifyUpdateStatusForAssertion_toStatus___block_invoke;
   block[3] = &unk_1E86C65F8;
-  v10 = v6;
-  v11 = a4;
+  v10 = assertionCopy;
+  statusCopy = status;
   block[4] = self;
-  v8 = v6;
-  dispatch_async(v7, block);
+  v8 = assertionCopy;
+  dispatch_async(queue, block);
 }
 
 void __63__DDSAssertionTracker_modifyUpdateStatusForAssertion_toStatus___block_invoke(uint64_t a1)
@@ -804,23 +804,23 @@ void __63__DDSAssertionTracker_modifyUpdateStatusForAssertion_toStatus___block_i
   [v6 setObject:v2 forKey:v5];
 }
 
-- (int64_t)updateStatusForAssertion:(id)a3
+- (int64_t)updateStatusForAssertion:(id)assertion
 {
-  v4 = a3;
+  assertionCopy = assertion;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 0;
-  v5 = [(DDSAssertionTracker *)self queue];
+  queue = [(DDSAssertionTracker *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __48__DDSAssertionTracker_updateStatusForAssertion___block_invoke;
   block[3] = &unk_1E86C6558;
-  v10 = v4;
+  v10 = assertionCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = assertionCopy;
+  dispatch_sync(queue, block);
 
   v7 = v13[3];
   _Block_object_dispose(&v12, 8);

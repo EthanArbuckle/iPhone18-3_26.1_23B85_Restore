@@ -1,13 +1,13 @@
 @interface WeatherIntent
-- (WeatherIntent)initWithDomain:(id)a3 verb:(id)a4 parametersByName:(id)a5;
-- (WeatherIntent)initWithIdentifier:(id)a3 backingStore:(id)a4;
+- (WeatherIntent)initWithDomain:(id)domain verb:(id)verb parametersByName:(id)name;
+- (WeatherIntent)initWithIdentifier:(id)identifier backingStore:(id)store;
 @end
 
 @implementation WeatherIntent
 
-- (WeatherIntent)initWithIdentifier:(id)a3 backingStore:(id)a4
+- (WeatherIntent)initWithIdentifier:(id)identifier backingStore:(id)store
 {
-  if (a3)
+  if (identifier)
   {
     v5 = sub_1000EBE84();
     v7 = v6;
@@ -19,15 +19,15 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return WeatherIntent.init(identifier:backingStore:)(v5, v7, a4);
+  storeCopy = store;
+  return WeatherIntent.init(identifier:backingStore:)(v5, v7, store);
 }
 
-- (WeatherIntent)initWithDomain:(id)a3 verb:(id)a4 parametersByName:(id)a5
+- (WeatherIntent)initWithDomain:(id)domain verb:(id)verb parametersByName:(id)name
 {
   sub_1000EBE84();
   sub_1000EBE84();
-  if (a5)
+  if (name)
   {
     sub_1000EBDD4();
   }

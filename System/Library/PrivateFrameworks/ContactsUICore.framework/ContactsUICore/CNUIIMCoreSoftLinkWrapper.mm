@@ -6,9 +6,9 @@
 
 + (BOOL)multiplePhoneNumbersTiedToAppleID
 {
-  v2 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v3 = [v2 featureFlags];
-  if ([v3 isFeatureEnabled:26])
+  currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+  featureFlags = [currentEnvironment featureFlags];
+  if ([featureFlags isFeatureEnabled:26])
   {
     v9 = 0;
     v10 = &v9;
@@ -28,15 +28,15 @@
 
     v5 = v4;
     _Block_object_dispose(&v9, 8);
-    v6 = [v4 multiplePhoneNumbersTiedToAppleID];
+    multiplePhoneNumbersTiedToAppleID = [v4 multiplePhoneNumbersTiedToAppleID];
   }
 
   else
   {
-    v6 = 0;
+    multiplePhoneNumbersTiedToAppleID = 0;
   }
 
-  return v6;
+  return multiplePhoneNumbersTiedToAppleID;
 }
 
 @end

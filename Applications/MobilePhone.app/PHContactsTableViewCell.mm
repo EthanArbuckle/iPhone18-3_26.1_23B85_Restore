@@ -1,16 +1,16 @@
 @interface PHContactsTableViewCell
-- (PHContactsTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (PHContactsTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (TUFeatureFlags)featureFlags;
 - (void)setUpBlurredBackground;
 @end
 
 @implementation PHContactsTableViewCell
 
-- (PHContactsTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (PHContactsTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v5.receiver = self;
   v5.super_class = PHContactsTableViewCell;
-  return [(PHTableViewCell *)&v5 initWithStyle:a3 reuseIdentifier:a4];
+  return [(PHTableViewCell *)&v5 initWithStyle:style reuseIdentifier:identifier];
 }
 
 - (TUFeatureFlags)featureFlags

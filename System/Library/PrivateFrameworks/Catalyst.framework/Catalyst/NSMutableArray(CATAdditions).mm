@@ -14,22 +14,22 @@
   v7[3] = &unk_278DA71B8;
   v5 = v4;
   v8 = v5;
-  v6 = [a1 indexOfObjectPassingTest:v7];
+  v6 = [self indexOfObjectPassingTest:v7];
   if (v6 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    [a1 removeObjectAtIndex:v6];
+    [self removeObjectAtIndex:v6];
   }
 }
 
 - (id)cat_popFirstObject
 {
-  v2 = [a1 firstObject];
-  if (v2)
+  firstObject = [self firstObject];
+  if (firstObject)
   {
-    [a1 removeObjectAtIndex:0];
+    [self removeObjectAtIndex:0];
   }
 
-  return v2;
+  return firstObject;
 }
 
 @end

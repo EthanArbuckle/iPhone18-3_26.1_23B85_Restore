@@ -1,45 +1,45 @@
 @interface AMSDefaults
 + (BOOL)QAMode;
-+ (BOOL)_BOOLForKey:(id)a3 defaultValue:(BOOL)a4 domain:(__CFString *)a5;
-+ (BOOL)_resultFromSampleSession:(id)a3 isActive:(BOOL *)a4;
++ (BOOL)_BOOLForKey:(id)key defaultValue:(BOOL)value domain:(__CFString *)domain;
++ (BOOL)_resultFromSampleSession:(id)session isActive:(BOOL *)active;
 + (BOOL)autoSyncDisabledForMetricsIdentifierStore;
 + (BOOL)debugUIDynamicUIEnabled;
 + (BOOL)debugUIMessagingUIEnabled;
 + (BOOL)devMode;
 + (BOOL)deviceIsBundleOverride;
 + (BOOL)reviewComposerDemoMode;
-+ (BOOL)shouldSampleWithPercentage:(double)a3 sessionDuration:(double)a4 identifier:(id)a5;
++ (BOOL)shouldSampleWithPercentage:(double)percentage sessionDuration:(double)duration identifier:(id)identifier;
 + (NSDictionary)journeysURLOverrides;
 + (NSDictionary)jsSourceOverrides;
 + (NSDictionary)marketingItemOverrides;
 + (NSDictionary)sourceOverrides;
 + (NSDictionary)treatmentOverrides;
 + (NSDictionary)ttrMetricsClickStreamUserIdHistory;
-+ (id)_allKeysForDomain:(__CFString *)a3;
-+ (id)_valueForKey:(id)a3 domain:(__CFString *)a4;
++ (id)_allKeysForDomain:(__CFString *)domain;
++ (id)_valueForKey:(id)key domain:(__CFString *)domain;
 + (id)journeysURLOverride;
-+ (id)sharedStoreReviewMetricsForProcess:(id)a3;
++ (id)sharedStoreReviewMetricsForProcess:(id)process;
 + (id)storefrontSuffixes;
-+ (int64_t)_integerForKey:(id)a3 defaultValue:(int64_t)a4 domain:(__CFString *)a5;
++ (int64_t)_integerForKey:(id)key defaultValue:(int64_t)value domain:(__CFString *)domain;
 + (void)_cleanupSampleSessions;
-+ (void)_setBool:(BOOL)a3 forKey:(id)a4 domain:(__CFString *)a5;
-+ (void)_setInteger:(int64_t)a3 forKey:(id)a4;
-+ (void)_setValue:(id)a3 forKey:(id)a4 domain:(__CFString *)a5;
-+ (void)setDemoAccount:(id)a3;
-+ (void)setJourneysURLOverride:(id)a3;
-+ (void)setJourneysURLOverrides:(id)a3;
-+ (void)setJsSourceOverrides:(id)a3;
-+ (void)setMarketingItemOverrides:(id)a3;
-+ (void)setSharedStoreReviewMetrics:(id)a3 forProcess:(id)a4;
-+ (void)setSourceOverrides:(id)a3;
-+ (void)setStorefrontSuffixes:(id)a3;
-+ (void)setTtrMetricsClickStreamUserIdHistory:(id)a3;
-+ (void)shouldSampleWithPercentageValue:(id)a3 sessionDurationValue:(id)a4 identifier:(id)a5 completion:(id)a6;
-+ (void)updateBadgeIdsForBundle:(id)a3 block:(id)a4;
++ (void)_setBool:(BOOL)bool forKey:(id)key domain:(__CFString *)domain;
++ (void)_setInteger:(int64_t)integer forKey:(id)key;
++ (void)_setValue:(id)value forKey:(id)key domain:(__CFString *)domain;
++ (void)setDemoAccount:(id)account;
++ (void)setJourneysURLOverride:(id)override;
++ (void)setJourneysURLOverrides:(id)overrides;
++ (void)setJsSourceOverrides:(id)overrides;
++ (void)setMarketingItemOverrides:(id)overrides;
++ (void)setSharedStoreReviewMetrics:(id)metrics forProcess:(id)process;
++ (void)setSourceOverrides:(id)overrides;
++ (void)setStorefrontSuffixes:(id)suffixes;
++ (void)setTtrMetricsClickStreamUserIdHistory:(id)history;
++ (void)shouldSampleWithPercentageValue:(id)value sessionDurationValue:(id)durationValue identifier:(id)identifier completion:(id)completion;
++ (void)updateBadgeIdsForBundle:(id)bundle block:(id)block;
 - (BOOL)autoSyncDisabledForAccountData;
 - (BOOL)autoSyncDisabledForTSDataSync;
-- (void)setAutoSyncDisabledForAccountData:(BOOL)a3;
-- (void)setAutoSyncDisabledForTSDataSync:(BOOL)a3;
+- (void)setAutoSyncDisabledForAccountData:(BOOL)data;
+- (void)setAutoSyncDisabledForTSDataSync:(BOOL)sync;
 @end
 
 @implementation AMSDefaults
@@ -49,16 +49,16 @@
   v23 = *MEMORY[0x1E69E9840];
   v4 = +[AMSUnitTests isRunningUnitTests];
   v5 = +[AMSLogConfig sharedConfig];
-  v6 = v5;
+  defaultCenter = v5;
   if (v4)
   {
     if (!v5)
     {
-      v6 = +[AMSLogConfig sharedConfig];
+      defaultCenter = +[AMSLogConfig sharedConfig];
     }
 
-    v7 = [v6 OSLogObject];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    oSLogObject = [defaultCenter OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v8 = AMSLogKey();
       v9 = MEMORY[0x1E696AEC0];
@@ -77,7 +77,7 @@
       v12 = ;
       *buf = 138543362;
       v22 = v12;
-      _os_log_impl(&dword_192869000, v7, OS_LOG_TYPE_ERROR, "%{public}@Unexpected storefrontSuffixes access. Clients should not directly access this property. This is a bug that must be fixed.", buf, 0xCu);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@Unexpected storefrontSuffixes access. Clients should not directly access this property. This is a bug that must be fixed.", buf, 0xCu);
       if (v8)
       {
 
@@ -85,20 +85,20 @@
       }
     }
 
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
-    v13 = +[AMSLogConfig sharedConfig];
-    [v6 postNotificationName:@"com.apple.AppleMediaServicesTests.FaultLogged" object:v13 userInfo:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    oSLogObject2 = +[AMSLogConfig sharedConfig];
+    [defaultCenter postNotificationName:@"com.apple.AppleMediaServicesTests.FaultLogged" object:oSLogObject2 userInfo:0];
   }
 
   else
   {
     if (!v5)
     {
-      v6 = +[AMSLogConfig sharedConfig];
+      defaultCenter = +[AMSLogConfig sharedConfig];
     }
 
-    v13 = [v6 OSLogObject];
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
+    oSLogObject2 = [defaultCenter OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_FAULT))
     {
       v14 = AMSLogKey();
       v15 = MEMORY[0x1E696AEC0];
@@ -117,7 +117,7 @@
       v18 = ;
       *buf = 138543362;
       v22 = v18;
-      _os_log_impl(&dword_192869000, v13, OS_LOG_TYPE_FAULT, "%{public}@Unexpected storefrontSuffixes access. Clients should not directly access this property. This is a bug that must be fixed.", buf, 0xCu);
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_FAULT, "%{public}@Unexpected storefrontSuffixes access. Clients should not directly access this property. This is a bug that must be fixed.", buf, 0xCu);
       if (v14)
       {
 
@@ -126,7 +126,7 @@
     }
   }
 
-  v19 = [a1 _valueForKey:@"AMSStorefrontSuffixes"];
+  v19 = [self _valueForKey:@"AMSStorefrontSuffixes"];
 
   return v19;
 }
@@ -137,7 +137,7 @@
   if (has_internal_content)
   {
 
-    LOBYTE(has_internal_content) = [a1 _BOOLForKey:@"AMSQAMode" defaultValue:0];
+    LOBYTE(has_internal_content) = [self _BOOLForKey:@"AMSQAMode" defaultValue:0];
   }
 
   return has_internal_content;
@@ -145,7 +145,7 @@
 
 + (NSDictionary)treatmentOverrides
 {
-  v2 = [a1 _valueForKey:@"AMSTreatmentOverrides"];
+  v2 = [self _valueForKey:@"AMSTreatmentOverrides"];
   v3 = v2;
   if (v2)
   {
@@ -170,15 +170,15 @@
   if (v3)
   {
     v4 = [v2 objectForKeyedSubscript:@"DynamicUI"];
-    v5 = [v4 BOOLValue];
+    bOOLValue = [v4 BOOLValue];
   }
 
   else
   {
-    v5 = 1;
+    bOOLValue = 1;
   }
 
-  return v5;
+  return bOOLValue;
 }
 
 + (BOOL)debugUIMessagingUIEnabled
@@ -189,15 +189,15 @@
   if (v3)
   {
     v4 = [v2 objectForKeyedSubscript:@"MessagingUI"];
-    v5 = [v4 BOOLValue];
+    bOOLValue = [v4 BOOLValue];
   }
 
   else
   {
-    v5 = 1;
+    bOOLValue = 1;
   }
 
-  return v5;
+  return bOOLValue;
 }
 
 + (BOOL)deviceIsBundleOverride
@@ -206,7 +206,7 @@
   if (has_internal_content)
   {
 
-    LOBYTE(has_internal_content) = [a1 _BOOLForKey:@"AMSDeviceIsBundleOverride" defaultValue:0];
+    LOBYTE(has_internal_content) = [self _BOOLForKey:@"AMSDeviceIsBundleOverride" defaultValue:0];
   }
 
   return has_internal_content;
@@ -218,7 +218,7 @@
   if (has_internal_content)
   {
 
-    LOBYTE(has_internal_content) = [a1 _BOOLForKey:@"AMSDevMode" defaultValue:0];
+    LOBYTE(has_internal_content) = [self _BOOLForKey:@"AMSDevMode" defaultValue:0];
   }
 
   return has_internal_content;
@@ -226,7 +226,7 @@
 
 + (id)journeysURLOverride
 {
-  v2 = [a1 _valueForKey:@"AMSJourneysURLOverride"];
+  v2 = [self _valueForKey:@"AMSJourneysURLOverride"];
   if (v2)
   {
     v3 = [MEMORY[0x1E695DFF8] URLWithString:v2];
@@ -242,7 +242,7 @@
 
 + (NSDictionary)journeysURLOverrides
 {
-  v2 = [a1 _valueForKey:@"urlOverrides" domain:@"com.apple.amsengagementd"];
+  v2 = [self _valueForKey:@"urlOverrides" domain:@"com.apple.amsengagementd"];
   v3 = [v2 ams_mapWithTransform:&__block_literal_global_36];
 
   return v3;
@@ -262,7 +262,7 @@ AMSPair *__35__AMSDefaults_journeysURLOverrides__block_invoke(uint64_t a1, void 
 
 + (NSDictionary)marketingItemOverrides
 {
-  v2 = [a1 _valueForKey:@"AMSMarketingItemOverrides"];
+  v2 = [self _valueForKey:@"AMSMarketingItemOverrides"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -289,7 +289,7 @@ LABEL_6:
 
 + (NSDictionary)jsSourceOverrides
 {
-  v2 = [a1 _valueForKey:@"AMSJSSourceOverrides"];
+  v2 = [self _valueForKey:@"AMSJSSourceOverrides"];
   v3 = [v2 ams_mapWithTransform:&__block_literal_global_328];
 
   return v3;
@@ -313,7 +313,7 @@ AMSPair *__32__AMSDefaults_jsSourceOverrides__block_invoke(uint64_t a1, void *a2
   if (has_internal_content)
   {
 
-    LOBYTE(has_internal_content) = [a1 _BOOLForKey:@"AMSAutoSyncDisabledForMetricsIdentifierStore" defaultValue:0];
+    LOBYTE(has_internal_content) = [self _BOOLForKey:@"AMSAutoSyncDisabledForMetricsIdentifierStore" defaultValue:0];
   }
 
   return has_internal_content;
@@ -349,7 +349,7 @@ AMSPair *__32__AMSDefaults_jsSourceOverrides__block_invoke(uint64_t a1, void *a2
 {
   if (os_variant_has_internal_content())
   {
-    v3 = [a1 _valueForKey:@"AMSTTRMetricsClickStreamUserIdHistory"];
+    v3 = [self _valueForKey:@"AMSTTRMetricsClickStreamUserIdHistory"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -369,23 +369,23 @@ LABEL_5:
   if (has_internal_content)
   {
 
-    LOBYTE(has_internal_content) = [a1 _BOOLForKey:@"AMSReviewComposerDemoMode" defaultValue:0];
+    LOBYTE(has_internal_content) = [self _BOOLForKey:@"AMSReviewComposerDemoMode" defaultValue:0];
   }
 
   return has_internal_content;
 }
 
-+ (id)sharedStoreReviewMetricsForProcess:(id)a3
++ (id)sharedStoreReviewMetricsForProcess:(id)process
 {
-  v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%@", @"AMSSharedStoreReviewMetrics", a3];
-  v5 = [a1 _valueForKey:v4];
+  process = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%@", @"AMSSharedStoreReviewMetrics", process];
+  v5 = [self _valueForKey:process];
 
   return v5;
 }
 
 + (NSDictionary)sourceOverrides
 {
-  v2 = [a1 _valueForKey:@"AMSSourceOverrides"];
+  v2 = [self _valueForKey:@"AMSSourceOverrides"];
   v3 = [v2 ams_mapWithTransform:&__block_literal_global_335];
 
   return v3;
@@ -403,10 +403,10 @@ AMSPair *__30__AMSDefaults_sourceOverrides__block_invoke(uint64_t a1, void *a2, 
   return v8;
 }
 
-+ (void)setJsSourceOverrides:(id)a3
++ (void)setJsSourceOverrides:(id)overrides
 {
-  v4 = [a3 ams_mapWithTransform:&__block_literal_global_338];
-  [a1 _setValue:v4 forKey:@"AMSJSSourceOverrides"];
+  v4 = [overrides ams_mapWithTransform:&__block_literal_global_338];
+  [self _setValue:v4 forKey:@"AMSJSSourceOverrides"];
 }
 
 AMSPair *__36__AMSDefaults_setJsSourceOverrides___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -421,16 +421,16 @@ AMSPair *__36__AMSDefaults_setJsSourceOverrides___block_invoke(uint64_t a1, void
   return v8;
 }
 
-+ (void)setJourneysURLOverride:(id)a3
++ (void)setJourneysURLOverride:(id)override
 {
-  v4 = [a3 absoluteString];
-  [a1 _setValue:v4 forKey:@"AMSJourneysURLOverride"];
+  absoluteString = [override absoluteString];
+  [self _setValue:absoluteString forKey:@"AMSJourneysURLOverride"];
 }
 
-+ (void)setJourneysURLOverrides:(id)a3
++ (void)setJourneysURLOverrides:(id)overrides
 {
-  v4 = [a3 ams_mapWithTransform:&__block_literal_global_340];
-  [a1 _setValue:v4 forKey:@"urlOverrides" domain:@"com.apple.amsengagementd"];
+  v4 = [overrides ams_mapWithTransform:&__block_literal_global_340];
+  [self _setValue:v4 forKey:@"urlOverrides" domain:@"com.apple.amsengagementd"];
 }
 
 AMSPair *__39__AMSDefaults_setJourneysURLOverrides___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -445,49 +445,49 @@ AMSPair *__39__AMSDefaults_setJourneysURLOverrides___block_invoke(uint64_t a1, v
   return v8;
 }
 
-+ (void)setMarketingItemOverrides:(id)a3
++ (void)setMarketingItemOverrides:(id)overrides
 {
-  v4 = [MEMORY[0x1E696ACB0] dataWithJSONObject:a3 options:4 error:0];
-  [a1 _setValue:v4 forKey:@"AMSMarketingItemOverrides"];
+  v4 = [MEMORY[0x1E696ACB0] dataWithJSONObject:overrides options:4 error:0];
+  [self _setValue:v4 forKey:@"AMSMarketingItemOverrides"];
 }
 
-- (void)setAutoSyncDisabledForAccountData:(BOOL)a3
+- (void)setAutoSyncDisabledForAccountData:(BOOL)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = objc_opt_class();
 
-  [v4 _setBool:v3 forKey:@"AMSAutoSyncDisabledForAccountData"];
+  [v4 _setBool:dataCopy forKey:@"AMSAutoSyncDisabledForAccountData"];
 }
 
-- (void)setAutoSyncDisabledForTSDataSync:(BOOL)a3
+- (void)setAutoSyncDisabledForTSDataSync:(BOOL)sync
 {
-  v3 = a3;
+  syncCopy = sync;
   v4 = objc_opt_class();
 
-  [v4 _setBool:v3 forKey:@"AMSAutoSyncDisabledForTSDataSync"];
+  [v4 _setBool:syncCopy forKey:@"AMSAutoSyncDisabledForTSDataSync"];
 }
 
-+ (void)setTtrMetricsClickStreamUserIdHistory:(id)a3
++ (void)setTtrMetricsClickStreamUserIdHistory:(id)history
 {
-  v4 = a3;
+  historyCopy = history;
   if (os_variant_has_internal_content())
   {
-    [a1 _setValue:v4 forKey:@"AMSTTRMetricsClickStreamUserIdHistory"];
+    [self _setValue:historyCopy forKey:@"AMSTTRMetricsClickStreamUserIdHistory"];
   }
 }
 
-+ (void)setSharedStoreReviewMetrics:(id)a3 forProcess:(id)a4
++ (void)setSharedStoreReviewMetrics:(id)metrics forProcess:(id)process
 {
   v6 = MEMORY[0x1E696AEC0];
-  v7 = a3;
-  v8 = [v6 stringWithFormat:@"%@-%@", @"AMSSharedStoreReviewMetrics", a4];
-  [a1 _setValue:v7 forKey:v8];
+  metricsCopy = metrics;
+  process = [v6 stringWithFormat:@"%@-%@", @"AMSSharedStoreReviewMetrics", process];
+  [self _setValue:metricsCopy forKey:process];
 }
 
-+ (void)setSourceOverrides:(id)a3
++ (void)setSourceOverrides:(id)overrides
 {
-  v4 = [a3 ams_mapWithTransform:&__block_literal_global_342];
-  [a1 _setValue:v4 forKey:@"AMSSourceOverrides"];
+  v4 = [overrides ams_mapWithTransform:&__block_literal_global_342];
+  [self _setValue:v4 forKey:@"AMSSourceOverrides"];
 }
 
 AMSPair *__34__AMSDefaults_setSourceOverrides___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -502,16 +502,16 @@ AMSPair *__34__AMSDefaults_setSourceOverrides___block_invoke(uint64_t a1, void *
   return v8;
 }
 
-+ (BOOL)shouldSampleWithPercentage:(double)a3 sessionDuration:(double)a4 identifier:(id)a5
++ (BOOL)shouldSampleWithPercentage:(double)percentage sessionDuration:(double)duration identifier:(id)identifier
 {
   v22[3] = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  [a1 _cleanupSampleSessions];
-  v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%@", @"AMSSamplingSession", v8];
+  identifierCopy = identifier;
+  [self _cleanupSampleSessions];
+  identifierCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%@", @"AMSSamplingSession", identifierCopy];
 
-  v10 = [a1 _valueForKey:v9];
+  v10 = [self _valueForKey:identifierCopy];
   v20 = 0;
-  v11 = [a1 _resultFromSampleSession:v10 isActive:&v20];
+  v11 = [self _resultFromSampleSession:v10 isActive:&v20];
   if (v20)
   {
     LOBYTE(v12) = v11;
@@ -521,40 +521,40 @@ AMSPair *__34__AMSDefaults_setSourceOverrides___block_invoke(uint64_t a1, void *
   {
     +[AMSRandomNumberGenerator normalizedRandomDouble];
     v14 = v13 <= 1.0;
-    if (v13 > a3)
+    if (v13 > percentage)
     {
       v14 = 0;
     }
 
     v12 = v13 >= 0.0 && v14;
-    if (a4 > 0.0)
+    if (duration > 0.0)
     {
       v21[0] = @"date";
-      v15 = [MEMORY[0x1E695DF00] date];
-      v22[0] = v15;
+      date = [MEMORY[0x1E695DF00] date];
+      v22[0] = date;
       v21[1] = @"result";
       v16 = [MEMORY[0x1E696AD98] numberWithBool:v12];
       v22[1] = v16;
       v21[2] = @"duration";
-      v17 = [MEMORY[0x1E696AD98] numberWithDouble:a4];
+      v17 = [MEMORY[0x1E696AD98] numberWithDouble:duration];
       v22[2] = v17;
       v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v22 forKeys:v21 count:3];
 
-      [a1 _setValue:v18 forKey:v9];
+      [self _setValue:v18 forKey:identifierCopy];
     }
   }
 
   return v12;
 }
 
-+ (void)shouldSampleWithPercentageValue:(id)a3 sessionDurationValue:(id)a4 identifier:(id)a5 completion:(id)a6
++ (void)shouldSampleWithPercentageValue:(id)value sessionDurationValue:(id)durationValue identifier:(id)identifier completion:(id)completion
 {
   v32 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (v10)
+  valueCopy = value;
+  durationValueCopy = durationValue;
+  identifierCopy = identifier;
+  completionCopy = completion;
+  if (valueCopy)
   {
     v14 = AMSLogKey();
     v20[0] = MEMORY[0x1E69E9820];
@@ -562,12 +562,12 @@ AMSPair *__34__AMSDefaults_setSourceOverrides___block_invoke(uint64_t a1, void *
     v20[2] = __90__AMSDefaults_shouldSampleWithPercentageValue_sessionDurationValue_identifier_completion___block_invoke;
     v20[3] = &unk_1E73B6808;
     v21 = v14;
-    v25 = a1;
-    v22 = v12;
-    v24 = v13;
-    v23 = v11;
+    selfCopy = self;
+    v22 = identifierCopy;
+    v24 = completionCopy;
+    v23 = durationValueCopy;
     v15 = v14;
-    [v10 valueWithCompletion:v20];
+    [valueCopy valueWithCompletion:v20];
   }
 
   else
@@ -578,8 +578,8 @@ AMSPair *__34__AMSDefaults_setSourceOverrides___block_invoke(uint64_t a1, void *
       v16 = +[AMSLogConfig sharedConfig];
     }
 
-    v17 = [v16 OSLogObject];
-    if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
+    oSLogObject = [v16 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
     {
       v18 = objc_opt_class();
       v19 = AMSLogKey();
@@ -588,11 +588,11 @@ AMSPair *__34__AMSDefaults_setSourceOverrides___block_invoke(uint64_t a1, void *
       v28 = 2114;
       v29 = v19;
       v30 = 2114;
-      v31 = v12;
-      _os_log_impl(&dword_192869000, v17, OS_LOG_TYPE_INFO, "%{public}@: [%{public}@] No percentage provided for identifier: %{public}@", buf, 0x20u);
+      v31 = identifierCopy;
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_INFO, "%{public}@: [%{public}@] No percentage provided for identifier: %{public}@", buf, 0x20u);
     }
 
-    (*(v13 + 2))(v13, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
@@ -779,11 +779,11 @@ void __90__AMSDefaults_shouldSampleWithPercentageValue_sessionDurationValue_iden
   (*(*(a1 + 48) + 16))();
 }
 
-+ (void)updateBadgeIdsForBundle:(id)a3 block:(id)a4
++ (void)updateBadgeIdsForBundle:(id)bundle block:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  bundleCopy = bundle;
+  blockCopy = block;
+  if (bundleCopy)
   {
     if (_MergedGlobals_99 != -1)
     {
@@ -795,9 +795,9 @@ void __90__AMSDefaults_shouldSampleWithPercentageValue_sessionDurationValue_iden
     block[1] = 3221225472;
     block[2] = __45__AMSDefaults_updateBadgeIdsForBundle_block___block_invoke_2;
     block[3] = &unk_1E73B6830;
-    v11 = v6;
-    v13 = a1;
-    v12 = v7;
+    v11 = bundleCopy;
+    selfCopy = self;
+    v12 = blockCopy;
     v9 = v8;
     dispatch_sync(v9, block);
   }
@@ -839,20 +839,20 @@ void __45__AMSDefaults_updateBadgeIdsForBundle_block___block_invoke_2(uint64_t a
   }
 }
 
-+ (id)_allKeysForDomain:(__CFString *)a3
++ (id)_allKeysForDomain:(__CFString *)domain
 {
-  CFPreferencesAppSynchronize(a3);
-  v4 = CFPreferencesCopyKeyList(a3, *MEMORY[0x1E695E8B8], *MEMORY[0x1E695E8B0]);
+  CFPreferencesAppSynchronize(domain);
+  v4 = CFPreferencesCopyKeyList(domain, *MEMORY[0x1E695E8B8], *MEMORY[0x1E695E8B0]);
 
   return v4;
 }
 
-+ (BOOL)_BOOLForKey:(id)a3 defaultValue:(BOOL)a4 domain:(__CFString *)a5
++ (BOOL)_BOOLForKey:(id)key defaultValue:(BOOL)value domain:(__CFString *)domain
 {
-  v7 = a3;
-  CFPreferencesAppSynchronize(a5);
+  keyCopy = key;
+  CFPreferencesAppSynchronize(domain);
   keyExistsAndHasValidFormat = 0;
-  AppBooleanValue = CFPreferencesGetAppBooleanValue(v7, a5, &keyExistsAndHasValidFormat);
+  AppBooleanValue = CFPreferencesGetAppBooleanValue(keyCopy, domain, &keyExistsAndHasValidFormat);
 
   if (keyExistsAndHasValidFormat)
   {
@@ -861,7 +861,7 @@ void __45__AMSDefaults_updateBadgeIdsForBundle_block___block_invoke_2(uint64_t a
 
   else
   {
-    return a4;
+    return value;
   }
 }
 
@@ -871,7 +871,7 @@ void __45__AMSDefaults_updateBadgeIdsForBundle_block___block_invoke_2(uint64_t a
   block[1] = 3221225472;
   block[2] = __37__AMSDefaults__cleanupSampleSessions__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_cleanupSampleSessions_onceToken[0] != -1)
   {
     dispatch_once(_cleanupSampleSessions_onceToken, block);
@@ -960,12 +960,12 @@ void __37__AMSDefaults__cleanupSampleSessions__block_invoke_2(uint64_t a1)
   }
 }
 
-+ (int64_t)_integerForKey:(id)a3 defaultValue:(int64_t)a4 domain:(__CFString *)a5
++ (int64_t)_integerForKey:(id)key defaultValue:(int64_t)value domain:(__CFString *)domain
 {
-  v7 = a3;
-  CFPreferencesAppSynchronize(a5);
+  keyCopy = key;
+  CFPreferencesAppSynchronize(domain);
   keyExistsAndHasValidFormat = 0;
-  AppIntegerValue = CFPreferencesGetAppIntegerValue(v7, a5, &keyExistsAndHasValidFormat);
+  AppIntegerValue = CFPreferencesGetAppIntegerValue(keyCopy, domain, &keyExistsAndHasValidFormat);
 
   if (keyExistsAndHasValidFormat)
   {
@@ -974,102 +974,102 @@ void __37__AMSDefaults__cleanupSampleSessions__block_invoke_2(uint64_t a1)
 
   else
   {
-    return a4;
+    return value;
   }
 }
 
-+ (BOOL)_resultFromSampleSession:(id)a3 isActive:(BOOL *)a4
++ (BOOL)_resultFromSampleSession:(id)session isActive:(BOOL *)active
 {
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:@"date"];
-  v7 = [v5 objectForKeyedSubscript:@"result"];
-  v8 = [v7 BOOLValue];
+  sessionCopy = session;
+  v6 = [sessionCopy objectForKeyedSubscript:@"date"];
+  v7 = [sessionCopy objectForKeyedSubscript:@"result"];
+  bOOLValue = [v7 BOOLValue];
 
-  v9 = [v5 objectForKeyedSubscript:@"duration"];
+  v9 = [sessionCopy objectForKeyedSubscript:@"duration"];
 
-  v10 = [v9 BOOLValue];
-  v11 = [MEMORY[0x1E695DF00] date];
+  bOOLValue2 = [v9 BOOLValue];
+  date = [MEMORY[0x1E695DF00] date];
   if (!v6)
   {
 LABEL_4:
-    v8 = 0;
-    if (a4)
+    bOOLValue = 0;
+    if (active)
     {
-      *a4 = 0;
+      *active = 0;
     }
 
     goto LABEL_9;
   }
 
-  v12 = [v6 dateByAddingTimeInterval:v10];
-  if ([v11 compare:v12] != -1)
+  v12 = [v6 dateByAddingTimeInterval:bOOLValue2];
+  if ([date compare:v12] != -1)
   {
 
     goto LABEL_4;
   }
 
-  if (a4)
+  if (active)
   {
-    *a4 = 1;
+    *active = 1;
   }
 
 LABEL_9:
-  return v8;
+  return bOOLValue;
 }
 
-+ (void)_setBool:(BOOL)a3 forKey:(id)a4 domain:(__CFString *)a5
++ (void)_setBool:(BOOL)bool forKey:(id)key domain:(__CFString *)domain
 {
   v6 = MEMORY[0x1E695E4D0];
-  if (!a3)
+  if (!bool)
   {
     v6 = MEMORY[0x1E695E4C0];
   }
 
-  CFPreferencesSetAppValue(a4, *v6, a5);
+  CFPreferencesSetAppValue(key, *v6, domain);
 
-  CFPreferencesAppSynchronize(a5);
+  CFPreferencesAppSynchronize(domain);
 }
 
-+ (void)_setInteger:(int64_t)a3 forKey:(id)a4
++ (void)_setInteger:(int64_t)integer forKey:(id)key
 {
   v6 = MEMORY[0x1E696AD98];
-  v7 = a4;
-  v8 = [v6 numberWithInteger:a3];
-  [a1 _setValue:v8 forKey:v7];
+  keyCopy = key;
+  v8 = [v6 numberWithInteger:integer];
+  [self _setValue:v8 forKey:keyCopy];
 }
 
-+ (void)_setValue:(id)a3 forKey:(id)a4 domain:(__CFString *)a5
++ (void)_setValue:(id)value forKey:(id)key domain:(__CFString *)domain
 {
-  CFPreferencesSetAppValue(a4, a3, a5);
+  CFPreferencesSetAppValue(key, value, domain);
 
-  CFPreferencesAppSynchronize(a5);
+  CFPreferencesAppSynchronize(domain);
 }
 
-+ (id)_valueForKey:(id)a3 domain:(__CFString *)a4
++ (id)_valueForKey:(id)key domain:(__CFString *)domain
 {
-  v5 = a3;
-  CFPreferencesAppSynchronize(a4);
-  v6 = CFPreferencesCopyAppValue(v5, a4);
+  keyCopy = key;
+  CFPreferencesAppSynchronize(domain);
+  v6 = CFPreferencesCopyAppValue(keyCopy, domain);
 
   return v6;
 }
 
-+ (void)setDemoAccount:(id)a3
++ (void)setDemoAccount:(id)account
 {
   v25 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  accountCopy = account;
   v4 = [AMSSetDemoAccountTask alloc];
-  v5 = [v3 first];
-  v6 = [v3 second];
+  first = [accountCopy first];
+  second = [accountCopy second];
 
-  v7 = [(AMSSetDemoAccountTask *)v4 initWithUsername:v5 password:v6];
+  v7 = [(AMSSetDemoAccountTask *)v4 initWithUsername:first password:second];
   v8 = AMSAccountMediaTypeAppStoreSandbox;
-  v9 = [(AMSSetDemoAccountTask *)v7 clientInfo];
-  [v9 setAccountMediaType:v8];
+  clientInfo = [(AMSSetDemoAccountTask *)v7 clientInfo];
+  [clientInfo setAccountMediaType:v8];
 
-  v10 = [(AMSSetDemoAccountTask *)v7 performTask];
+  performTask = [(AMSSetDemoAccountTask *)v7 performTask];
   v18 = 0;
-  v11 = [v10 resultWithError:&v18];
+  v11 = [performTask resultWithError:&v18];
   v12 = v18;
 
   if (!v11)
@@ -1080,8 +1080,8 @@ LABEL_9:
       v13 = +[AMSLogConfig sharedConfig];
     }
 
-    v14 = [v13 OSLogObject];
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v13 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v15 = objc_opt_class();
       v16 = AMSLogKey();
@@ -1092,27 +1092,27 @@ LABEL_9:
       v22 = v16;
       v23 = 2114;
       v24 = v17;
-      _os_log_impl(&dword_192869000, v14, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to setup the demo account. error = %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to setup the demo account. error = %{public}@", buf, 0x20u);
     }
   }
 }
 
-+ (void)setStorefrontSuffixes:(id)a3
++ (void)setStorefrontSuffixes:(id)suffixes
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  suffixesCopy = suffixes;
   v6 = +[AMSUnitTests isRunningUnitTests];
   v7 = +[AMSLogConfig sharedConfig];
-  v8 = v7;
+  defaultCenter = v7;
   if (v6)
   {
     if (!v7)
     {
-      v8 = +[AMSLogConfig sharedConfig];
+      defaultCenter = +[AMSLogConfig sharedConfig];
     }
 
-    v9 = [v8 OSLogObject];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    oSLogObject = [defaultCenter OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v10 = AMSLogKey();
       v11 = MEMORY[0x1E696AEC0];
@@ -1131,7 +1131,7 @@ LABEL_9:
       v14 = ;
       *buf = 138543362;
       v22 = v14;
-      _os_log_impl(&dword_192869000, v9, OS_LOG_TYPE_ERROR, "%{public}@Unexpected storefrontSuffixes access. Clients should not directly access this property. This is a bug that must be fixed.", buf, 0xCu);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@Unexpected storefrontSuffixes access. Clients should not directly access this property. This is a bug that must be fixed.", buf, 0xCu);
       if (v10)
       {
 
@@ -1139,20 +1139,20 @@ LABEL_9:
       }
     }
 
-    v8 = [MEMORY[0x1E696AD88] defaultCenter];
-    v15 = +[AMSLogConfig sharedConfig];
-    [v8 postNotificationName:@"com.apple.AppleMediaServicesTests.FaultLogged" object:v15 userInfo:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    oSLogObject2 = +[AMSLogConfig sharedConfig];
+    [defaultCenter postNotificationName:@"com.apple.AppleMediaServicesTests.FaultLogged" object:oSLogObject2 userInfo:0];
   }
 
   else
   {
     if (!v7)
     {
-      v8 = +[AMSLogConfig sharedConfig];
+      defaultCenter = +[AMSLogConfig sharedConfig];
     }
 
-    v15 = [v8 OSLogObject];
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_FAULT))
+    oSLogObject2 = [defaultCenter OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_FAULT))
     {
       v16 = AMSLogKey();
       v17 = MEMORY[0x1E696AEC0];
@@ -1171,7 +1171,7 @@ LABEL_9:
       v20 = ;
       *buf = 138543362;
       v22 = v20;
-      _os_log_impl(&dword_192869000, v15, OS_LOG_TYPE_FAULT, "%{public}@Unexpected storefrontSuffixes access. Clients should not directly access this property. This is a bug that must be fixed.", buf, 0xCu);
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_FAULT, "%{public}@Unexpected storefrontSuffixes access. Clients should not directly access this property. This is a bug that must be fixed.", buf, 0xCu);
       if (v16)
       {
 
@@ -1180,7 +1180,7 @@ LABEL_9:
     }
   }
 
-  [a1 _setValue:v5 forKey:@"AMSStorefrontSuffixes"];
+  [self _setValue:suffixesCopy forKey:@"AMSStorefrontSuffixes"];
 }
 
 @end

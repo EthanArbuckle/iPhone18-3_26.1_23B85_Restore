@@ -1,13 +1,13 @@
 @interface WFOnScreenContentExtractor
 - (CGRect)applicationFrame;
-- (CGRect)applicationFrameForScene:(id)a3;
+- (CGRect)applicationFrameForScene:(id)scene;
 - (WFOnScreenContentExtractor)init;
-- (id)activityItemsConfigurationFromScene:(id)a3;
+- (id)activityItemsConfigurationFromScene:(id)scene;
 - (id)expectedQueue;
-- (id)nodeWithContentCollection:(id)a3 file:(id)a4 linkPresentationMetadata:(id)a5;
-- (id)responseWithError:(id)a3;
-- (void)handleAction:(id)a3 completionHandler:(id)a4;
-- (void)loadActivityItemsConfigurationItemsForScene:(id)a3 serviceOptions:(id)a4 completionHandler:(id)a5;
+- (id)nodeWithContentCollection:(id)collection file:(id)file linkPresentationMetadata:(id)metadata;
+- (id)responseWithError:(id)error;
+- (void)handleAction:(id)action completionHandler:(id)handler;
+- (void)loadActivityItemsConfigurationItemsForScene:(id)scene serviceOptions:(id)options completionHandler:(id)handler;
 @end
 
 @implementation WFOnScreenContentExtractor
@@ -25,36 +25,36 @@
   return result;
 }
 
-- (id)nodeWithContentCollection:(id)a3 file:(id)a4 linkPresentationMetadata:(id)a5
+- (id)nodeWithContentCollection:(id)collection file:(id)file linkPresentationMetadata:(id)metadata
 {
   v49 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [MEMORY[0x1E696AAE8] mainBundle];
-  v12 = [v11 bundleIdentifier];
+  collectionCopy = collection;
+  fileCopy = file;
+  metadataCopy = metadata;
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
 
-  v13 = [v8 items];
-  v14 = [v13 firstObject];
+  items = [collectionCopy items];
+  firstObject = [items firstObject];
 
-  v15 = [v8 items];
-  v16 = [v15 count];
+  items2 = [collectionCopy items];
+  v16 = [items2 count];
 
   if (v16 >= 2)
   {
-    v43 = [v14 name];
+    name = [firstObject name];
     v17 = objc_alloc_init(MEMORY[0x1E696AD60]);
     v44 = 0u;
     v45 = 0u;
     v46 = 0u;
     v47 = 0u;
-    v18 = [v8 items];
-    v19 = [v18 countByEnumeratingWithState:&v44 objects:v48 count:16];
+    items3 = [collectionCopy items];
+    v19 = [items3 countByEnumeratingWithState:&v44 objects:v48 count:16];
     if (v19)
     {
       v20 = v19;
-      v41 = v10;
-      v42 = v9;
+      v41 = metadataCopy;
+      v42 = fileCopy;
       v21 = *v45;
       while (2)
       {
@@ -62,7 +62,7 @@
         {
           if (*v45 != v21)
           {
-            objc_enumerationMutation(v18);
+            objc_enumerationMutation(items3);
           }
 
           v23 = *(*(&v44 + 1) + 8 * i);
@@ -74,11 +74,11 @@
             goto LABEL_12;
           }
 
-          v24 = [v23 string];
-          [v17 appendString:v24];
+          string = [v23 string];
+          [v17 appendString:string];
         }
 
-        v20 = [v18 countByEnumeratingWithState:&v44 objects:v48 count:16];
+        v20 = [items3 countByEnumeratingWithState:&v44 objects:v48 count:16];
         if (v20)
         {
           continue;
@@ -88,17 +88,17 @@
       }
 
 LABEL_12:
-      v10 = v41;
-      v9 = v42;
+      metadataCopy = v41;
+      fileCopy = v42;
     }
 
     if ([v17 length])
     {
       WFStringContentItemClass = getWFStringContentItemClass();
       v26 = [v17 copy];
-      v27 = [WFStringContentItemClass itemWithObject:v26 named:v43];
+      v27 = [WFStringContentItemClass itemWithObject:v26 named:name];
 
-      v14 = v27;
+      firstObject = v27;
     }
   }
 
@@ -109,32 +109,32 @@ LABEL_12:
   v34 = v33;
   v36 = v35;
   v37 = [MEMORY[0x1E696AD98] numberWithInteger:{-[WFOnScreenContentExtractor applicationLevel](self, "applicationLevel")}];
-  v38 = [(WFOnScreenContentNode *)v28 initWithContentItem:v14 file:v9 applicationBundleIdentifier:v12 applicationFrame:v37 applicationLevel:@"UIActivityItemsConfiguration" source:v10 linkPresentationMetadata:v30, v32, v34, v36];
+  v38 = [(WFOnScreenContentNode *)v28 initWithContentItem:firstObject file:fileCopy applicationBundleIdentifier:bundleIdentifier applicationFrame:v37 applicationLevel:@"UIActivityItemsConfiguration" source:metadataCopy linkPresentationMetadata:v30, v32, v34, v36];
 
   v39 = *MEMORY[0x1E69E9840];
 
   return v38;
 }
 
-- (id)responseWithError:(id)a3
+- (id)responseWithError:(id)error
 {
   v3 = MEMORY[0x1E696E850];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithNode:0 error:v4];
+  errorCopy = error;
+  v5 = [[v3 alloc] initWithNode:0 error:errorCopy];
 
   return v5;
 }
 
-- (id)activityItemsConfigurationFromScene:(id)a3
+- (id)activityItemsConfigurationFromScene:(id)scene
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  sceneCopy = scene;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v4 = [v3 windows];
-  v5 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  windows = [sceneCopy windows];
+  v5 = [windows countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v5)
   {
     v6 = v5;
@@ -146,7 +146,7 @@ LABEL_12:
       {
         if (*v19 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(windows);
         }
 
         v10 = *(*(&v18 + 1) + 8 * i);
@@ -158,7 +158,7 @@ LABEL_12:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v6 = [windows countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v6);
@@ -169,69 +169,69 @@ LABEL_12:
     v7 = 0;
   }
 
-  v12 = [v7 _focusResponder];
-  if (v12)
+  _focusResponder = [v7 _focusResponder];
+  if (_focusResponder)
   {
-    v13 = v12;
+    v13 = _focusResponder;
     while (1)
     {
-      v14 = [v13 activityItemsConfiguration];
+      activityItemsConfiguration = [v13 activityItemsConfiguration];
 
-      if (v14)
+      if (activityItemsConfiguration)
       {
         break;
       }
 
-      v15 = [v13 nextResponder];
+      nextResponder = [v13 nextResponder];
 
-      if (!v15)
+      if (!nextResponder)
       {
         goto LABEL_20;
       }
 
-      v15 = [v13 nextResponder];
+      nextResponder = [v13 nextResponder];
 
-      v13 = v15;
-      if (!v15)
+      v13 = nextResponder;
+      if (!nextResponder)
       {
         goto LABEL_21;
       }
     }
 
-    v15 = [v13 activityItemsConfiguration];
+    nextResponder = [v13 activityItemsConfiguration];
 LABEL_20:
   }
 
   else
   {
-    v15 = 0;
+    nextResponder = 0;
   }
 
 LABEL_21:
 
   v16 = *MEMORY[0x1E69E9840];
 
-  return v15;
+  return nextResponder;
 }
 
-- (void)loadActivityItemsConfigurationItemsForScene:(id)a3 serviceOptions:(id)a4 completionHandler:(id)a5
+- (void)loadActivityItemsConfigurationItemsForScene:(id)scene serviceOptions:(id)options completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(WFOnScreenContentExtractor *)self expectedQueue];
+  sceneCopy = scene;
+  optionsCopy = options;
+  handlerCopy = handler;
+  expectedQueue = [(WFOnScreenContentExtractor *)self expectedQueue];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __107__WFOnScreenContentExtractor_loadActivityItemsConfigurationItemsForScene_serviceOptions_completionHandler___block_invoke;
   v15[3] = &unk_1E7B024B0;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v9;
-  v13 = v10;
-  v14 = v8;
-  dispatch_async(v11, v15);
+  v16 = sceneCopy;
+  v17 = optionsCopy;
+  v18 = handlerCopy;
+  v12 = optionsCopy;
+  v13 = handlerCopy;
+  v14 = sceneCopy;
+  dispatch_async(expectedQueue, v15);
 }
 
 void __107__WFOnScreenContentExtractor_loadActivityItemsConfigurationItemsForScene_serviceOptions_completionHandler___block_invoke(uint64_t a1)
@@ -534,32 +534,32 @@ LABEL_19:
 
 - (id)expectedQueue
 {
-  v3 = [MEMORY[0x1E696AAE8] mainBundle];
-  v4 = [v3 bundleIdentifier];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
 
-  if ([&unk_1F29315C0 containsObject:v4])
+  if ([&unk_1F29315C0 containsObject:bundleIdentifier])
   {
-    v5 = [(WFOnScreenContentExtractor *)self itemProviderQueue];
+    itemProviderQueue = [(WFOnScreenContentExtractor *)self itemProviderQueue];
   }
 
   else
   {
-    v5 = MEMORY[0x1E69E96A0];
+    itemProviderQueue = MEMORY[0x1E69E96A0];
     v6 = MEMORY[0x1E69E96A0];
   }
 
-  return v5;
+  return itemProviderQueue;
 }
 
-- (CGRect)applicationFrameForScene:(id)a3
+- (CGRect)applicationFrameForScene:(id)scene
 {
-  v3 = [a3 settings];
-  [v3 frame];
+  settings = [scene settings];
+  [settings frame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  if ([v3 interfaceOrientation] == 1 || objc_msgSend(v3, "interfaceOrientation") == 2 || objc_msgSend(v3, "interfaceOrientation") != 4 && objc_msgSend(v3, "interfaceOrientation") != 3)
+  if ([settings interfaceOrientation] == 1 || objc_msgSend(settings, "interfaceOrientation") == 2 || objc_msgSend(settings, "interfaceOrientation") != 4 && objc_msgSend(settings, "interfaceOrientation") != 3)
   {
     v12 = v9;
     v9 = v11;
@@ -581,11 +581,11 @@ LABEL_19:
   return result;
 }
 
-- (void)handleAction:(id)a3 completionHandler:(id)a4
+- (void)handleAction:(id)action completionHandler:(id)handler
 {
   v53 = *MEMORY[0x1E69E9840];
-  v33 = a3;
-  v29 = a4;
+  actionCopy = action;
+  handlerCopy = handler;
   v48 = 0;
   v49 = &v48;
   v50 = 0x2050000000;
@@ -604,13 +604,13 @@ LABEL_19:
 
   v6 = v5;
   _Block_object_dispose(&v48, 8);
-  v30 = [v5 sharedApplication];
-  v7 = [v30 connectedScenes];
+  sharedApplication = [v5 sharedApplication];
+  connectedScenes = [sharedApplication connectedScenes];
   v46 = 0u;
   v47 = 0u;
   v44 = 0u;
   v45 = 0u;
-  obj = v7;
+  obj = connectedScenes;
   v8 = [obj countByEnumeratingWithState:&v44 objects:v52 count:16];
   if (!v8)
   {
@@ -618,7 +618,7 @@ LABEL_19:
     v34 = 0;
 LABEL_23:
     v27 = [(WFOnScreenContentExtractor *)self responseWithError:0];
-    v29[2](v29, v27);
+    handlerCopy[2](handlerCopy, v27);
 
     v9 = 0;
     goto LABEL_24;
@@ -669,16 +669,16 @@ LABEL_23:
       v17 = v16;
       if (v16)
       {
-        v18 = [v16 _FBSScene];
-        v19 = [v18 identifier];
-        v20 = [v33 sceneIdentifier];
-        v21 = [v19 isEqualToString:v20];
+        _FBSScene = [v16 _FBSScene];
+        identifier = [_FBSScene identifier];
+        sceneIdentifier = [actionCopy sceneIdentifier];
+        v21 = [identifier isEqualToString:sceneIdentifier];
 
         if (v21)
         {
           v22 = v17;
 
-          v23 = v18;
+          v23 = _FBSScene;
           v34 = v23;
         }
 
@@ -703,8 +703,8 @@ LABEL_23:
 
   [(WFOnScreenContentExtractor *)self applicationFrameForScene:v34];
   [(WFOnScreenContentExtractor *)self setApplicationFrame:?];
-  v24 = [v34 settings];
-  [v24 level];
+  settings = [v34 settings];
+  [settings level];
   [(WFOnScreenContentExtractor *)self setApplicationLevel:v25];
 
   v38 = 0;
@@ -713,14 +713,14 @@ LABEL_23:
   v41 = __Block_byref_object_copy__19005;
   v42 = __Block_byref_object_dispose__19006;
   v43 = objc_alloc_init(WFOnScreenContentNode);
-  v26 = [v33 serviceOptions];
+  serviceOptions = [actionCopy serviceOptions];
   v35[0] = MEMORY[0x1E69E9820];
   v35[1] = 3221225472;
   v35[2] = __61__WFOnScreenContentExtractor_handleAction_completionHandler___block_invoke;
   v35[3] = &unk_1E7B023C8;
   v37 = &v38;
-  v36 = v29;
-  [(WFOnScreenContentExtractor *)self loadActivityItemsConfigurationItemsForScene:v9 serviceOptions:v26 completionHandler:v35];
+  v36 = handlerCopy;
+  [(WFOnScreenContentExtractor *)self loadActivityItemsConfigurationItemsForScene:v9 serviceOptions:serviceOptions completionHandler:v35];
 
   _Block_object_dispose(&v38, 8);
 LABEL_24:

@@ -1,17 +1,17 @@
 @interface PKSpinnerHeaderView
-- (PKSpinnerHeaderView)initWithReuseIdentifier:(id)a3;
+- (PKSpinnerHeaderView)initWithReuseIdentifier:(id)identifier;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setShowSpinner:(BOOL)a3;
+- (void)setShowSpinner:(BOOL)spinner;
 @end
 
 @implementation PKSpinnerHeaderView
 
-- (PKSpinnerHeaderView)initWithReuseIdentifier:(id)a3
+- (PKSpinnerHeaderView)initWithReuseIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = PKSpinnerHeaderView;
-  v3 = [(PKSpinnerHeaderView *)&v7 initWithReuseIdentifier:a3];
+  v3 = [(PKSpinnerHeaderView *)&v7 initWithReuseIdentifier:identifier];
   if (v3)
   {
     v4 = [objc_alloc(MEMORY[0x1E69DC638]) initWithActivityIndicatorStyle:100];
@@ -35,22 +35,22 @@
   v34.receiver = self;
   v34.super_class = PKSpinnerHeaderView;
   [(PKSpinnerHeaderView *)&v34 layoutSubviews];
-  v3 = [(PKSpinnerHeaderView *)self contentView];
-  [v3 bounds];
+  contentView = [(PKSpinnerHeaderView *)self contentView];
+  [contentView bounds];
   v33 = v4;
   v6 = v5;
   v31 = v5;
-  [v3 layoutMargins];
+  [contentView layoutMargins];
   v8 = v7;
   v30 = v7;
   v10 = v9;
   v32 = v9;
-  v11 = [(PKSpinnerHeaderView *)self _shouldReverseLayoutDirection];
-  v12 = [(PKSpinnerHeaderView *)self textLabel];
-  v13 = [v12 text];
-  v14 = [v13 length];
+  _shouldReverseLayoutDirection = [(PKSpinnerHeaderView *)self _shouldReverseLayoutDirection];
+  textLabel = [(PKSpinnerHeaderView *)self textLabel];
+  text = [textLabel text];
+  v14 = [text length];
 
-  [v12 frame];
+  [textLabel frame];
   [(UIActivityIndicatorView *)self->_spinner frame];
   v16 = v15;
   v18 = v17;
@@ -66,12 +66,12 @@
     v21 = v19;
   }
 
-  [v12 sizeThatFits:{v21, 1.79769313e308}];
+  [textLabel sizeThatFits:{v21, 1.79769313e308}];
   PKContentAlignmentMake();
   PKSizeAlignedInRect();
   v23 = v22;
   v25 = v24;
-  [v12 setFrame:?];
+  [textLabel setFrame:?];
   PKFloatRoundToPixel();
   v27 = v26;
   v28 = v33 + v30;
@@ -86,7 +86,7 @@
     v29 = v23 - v20;
   }
 
-  if (v11)
+  if (_shouldReverseLayoutDirection)
   {
     v28 = v29;
   }
@@ -94,22 +94,22 @@
   [(UIActivityIndicatorView *)self->_spinner setFrame:v28, v27, v16, v18];
 }
 
-- (void)setShowSpinner:(BOOL)a3
+- (void)setShowSpinner:(BOOL)spinner
 {
-  if (self->_showSpinner == !a3)
+  if (self->_showSpinner == !spinner)
   {
     v13 = v4;
     v14 = v3;
-    self->_showSpinner = a3;
+    self->_showSpinner = spinner;
     spinner = self->_spinner;
-    if (a3)
+    if (spinner)
     {
-      v11 = [(UIActivityIndicatorView *)spinner superview];
+      superview = [(UIActivityIndicatorView *)spinner superview];
 
-      if (!v11)
+      if (!superview)
       {
-        v12 = [(PKSpinnerHeaderView *)self contentView];
-        [v12 addSubview:self->_spinner];
+        contentView = [(PKSpinnerHeaderView *)self contentView];
+        [contentView addSubview:self->_spinner];
       }
 
       [(UIActivityIndicatorView *)self->_spinner startAnimating:v6];

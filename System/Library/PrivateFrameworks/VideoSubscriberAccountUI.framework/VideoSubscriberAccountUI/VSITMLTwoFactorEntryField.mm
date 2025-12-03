@@ -1,38 +1,38 @@
 @interface VSITMLTwoFactorEntryField
-- (void)setAssociatedTextFieldElement:(id)a3;
-- (void)textDidChangeForKeyboard:(id)a3;
+- (void)setAssociatedTextFieldElement:(id)element;
+- (void)textDidChangeForKeyboard:(id)keyboard;
 @end
 
 @implementation VSITMLTwoFactorEntryField
 
-- (void)setAssociatedTextFieldElement:(id)a3
+- (void)setAssociatedTextFieldElement:(id)element
 {
-  v5 = a3;
+  elementCopy = element;
   associatedTextFieldElement = self->_associatedTextFieldElement;
-  if (associatedTextFieldElement != v5)
+  if (associatedTextFieldElement != elementCopy)
   {
-    v9 = v5;
-    v7 = [(IKTextFieldElement *)associatedTextFieldElement keyboard];
-    [v7 setDelegate:0];
+    v9 = elementCopy;
+    keyboard = [(IKTextFieldElement *)associatedTextFieldElement keyboard];
+    [keyboard setDelegate:0];
 
-    objc_storeStrong(&self->_associatedTextFieldElement, a3);
-    v8 = [(IKTextFieldElement *)v9 keyboard];
-    [v8 setDelegate:self];
-    [(VSITMLTwoFactorEntryField *)self textDidChangeForKeyboard:v8];
+    objc_storeStrong(&self->_associatedTextFieldElement, element);
+    keyboard2 = [(IKTextFieldElement *)v9 keyboard];
+    [keyboard2 setDelegate:self];
+    [(VSITMLTwoFactorEntryField *)self textDidChangeForKeyboard:keyboard2];
   }
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)textDidChangeForKeyboard:(id)a3
+- (void)textDidChangeForKeyboard:(id)keyboard
 {
-  v4 = a3;
+  keyboardCopy = keyboard;
   VSRequireMainThread();
-  v5 = [v4 text];
+  text = [keyboardCopy text];
 
-  if (v5)
+  if (text)
   {
-    v6 = v5;
+    v6 = text;
   }
 
   else

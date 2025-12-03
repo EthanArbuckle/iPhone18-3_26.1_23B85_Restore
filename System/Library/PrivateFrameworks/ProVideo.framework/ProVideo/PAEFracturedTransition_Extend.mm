@@ -1,14 +1,14 @@
 @interface PAEFracturedTransition_Extend
-- (PAEFracturedTransition_Extend)initWithAPIManager:(id)a3;
+- (PAEFracturedTransition_Extend)initWithAPIManager:(id)manager;
 @end
 
 @implementation PAEFracturedTransition_Extend
 
-- (PAEFracturedTransition_Extend)initWithAPIManager:(id)a3
+- (PAEFracturedTransition_Extend)initWithAPIManager:(id)manager
 {
   v10.receiver = self;
   v10.super_class = PAEFracturedTransition_Extend;
-  result = [(PAEFracturedTransition *)&v10 initWithAPIManager:a3];
+  result = [(PAEFracturedTransition *)&v10 initWithAPIManager:manager];
   if (result)
   {
     fxParams = result->super._fxParams;

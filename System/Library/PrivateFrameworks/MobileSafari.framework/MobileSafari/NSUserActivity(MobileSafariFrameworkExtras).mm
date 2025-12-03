@@ -24,16 +24,16 @@
   v12[1] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E696AE30];
   v4 = a3;
-  v5 = [v3 processInfo];
-  v6 = [v5 globallyUniqueString];
+  processInfo = [v3 processInfo];
+  globallyUniqueString = [processInfo globallyUniqueString];
 
   v7 = windowCreationNavigationIntentDictionary();
-  [v7 setObject:v4 forKeyedSubscript:v6];
+  [v7 setObject:v4 forKeyedSubscript:globallyUniqueString];
 
   v8 = [objc_alloc(MEMORY[0x1E69636A8]) initWithActivityType:@"com.apple.mobilesafari.UserActivity.create-window"];
   [v8 setEligibleForHandoff:0];
   v11 = @"navigation-intent-id";
-  v12[0] = v6;
+  v12[0] = globallyUniqueString;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:&v11 count:1];
   [v8 setUserInfo:v9];
 
@@ -62,13 +62,13 @@
   v10 = a3;
   v11 = [[v7 alloc] initWithActivityType:@"com.apple.mobilesafari.UserActivity.create-window"];
   [v11 setEligibleForHandoff:0];
-  v12 = [MEMORY[0x1E695DF90] dictionary];
-  [v12 setObject:v10 forKeyedSubscript:@"tab-uuid"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:v10 forKeyedSubscript:@"tab-uuid"];
 
-  [v12 setObject:v9 forKeyedSubscript:@"tab-group-uuid"];
-  [v12 setObject:v8 forKeyedSubscript:@"source-browser-controller-uuid"];
+  [dictionary setObject:v9 forKeyedSubscript:@"tab-group-uuid"];
+  [dictionary setObject:v8 forKeyedSubscript:@"source-browser-controller-uuid"];
 
-  [v11 setUserInfo:v12];
+  [v11 setUserInfo:dictionary];
 
   return v11;
 }
@@ -81,13 +81,13 @@
   v10 = a3;
   v11 = [[v7 alloc] initWithActivityType:@"com.apple.mobilesafari.UserActivity.create-window"];
   [v11 setEligibleForHandoff:0];
-  v12 = [MEMORY[0x1E695DF90] dictionary];
-  [v12 setObject:v10 forKeyedSubscript:@"tab-uuids"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:v10 forKeyedSubscript:@"tab-uuids"];
 
-  [v12 setObject:v9 forKeyedSubscript:@"selected-tab-uuid"];
-  [v12 setObject:v8 forKeyedSubscript:@"source-browser-controller-uuid"];
+  [dictionary setObject:v9 forKeyedSubscript:@"selected-tab-uuid"];
+  [dictionary setObject:v8 forKeyedSubscript:@"source-browser-controller-uuid"];
 
-  [v11 setUserInfo:v12];
+  [v11 setUserInfo:dictionary];
 
   return v11;
 }
@@ -110,15 +110,15 @@
 
 + (id)_sf_windowCreationActivityFromSceneConnectionOptions:()MobileSafariFrameworkExtras
 {
-  v3 = [a3 userActivities];
-  v4 = [v3 anyObject];
+  userActivities = [a3 userActivities];
+  anyObject = [userActivities anyObject];
 
-  v5 = [v4 activityType];
-  v6 = [v5 isEqualToString:@"com.apple.mobilesafari.UserActivity.create-window"];
+  activityType = [anyObject activityType];
+  v6 = [activityType isEqualToString:@"com.apple.mobilesafari.UserActivity.create-window"];
 
   if (v6)
   {
-    v7 = v4;
+    v7 = anyObject;
   }
 
   else
@@ -131,19 +131,19 @@
 
 - (id)sf_windowCreationNavigationIntentID
 {
-  v1 = [a1 userInfo];
-  v2 = [v1 safari_stringForKey:@"navigation-intent-id"];
+  userInfo = [self userInfo];
+  v2 = [userInfo safari_stringForKey:@"navigation-intent-id"];
 
   return v2;
 }
 
 - (id)_sf_windowCreationNavigationIntent
 {
-  v1 = [a1 sf_windowCreationNavigationIntentID];
-  if (v1)
+  sf_windowCreationNavigationIntentID = [self sf_windowCreationNavigationIntentID];
+  if (sf_windowCreationNavigationIntentID)
   {
     v2 = windowCreationNavigationIntentDictionary();
-    v3 = [v2 objectForKeyedSubscript:v1];
+    v3 = [v2 objectForKeyedSubscript:sf_windowCreationNavigationIntentID];
   }
 
   else
@@ -156,70 +156,70 @@
 
 - (id)_sf_windowCreationTabUUID
 {
-  v1 = [a1 userInfo];
-  v2 = [v1 safari_UUIDForKey:@"tab-uuid"];
+  userInfo = [self userInfo];
+  v2 = [userInfo safari_UUIDForKey:@"tab-uuid"];
 
   return v2;
 }
 
 - (id)_sf_windowCreationTabGroupUUID
 {
-  v1 = [a1 userInfo];
-  v2 = [v1 safari_UUIDForKey:@"tab-group-uuid"];
+  userInfo = [self userInfo];
+  v2 = [userInfo safari_UUIDForKey:@"tab-group-uuid"];
 
   return v2;
 }
 
 - (id)_sf_windowCreationSourceBrowserControllerUUID
 {
-  v1 = [a1 userInfo];
-  v2 = [v1 safari_UUIDForKey:@"source-browser-controller-uuid"];
+  userInfo = [self userInfo];
+  v2 = [userInfo safari_UUIDForKey:@"source-browser-controller-uuid"];
 
   return v2;
 }
 
 - (id)_sf_windowCreationRecentlyClosedTabUUID
 {
-  v1 = [a1 userInfo];
-  v2 = [v1 safari_UUIDForKey:@"recently-closed-tab-uuid"];
+  userInfo = [self userInfo];
+  v2 = [userInfo safari_UUIDForKey:@"recently-closed-tab-uuid"];
 
   return v2;
 }
 
 - (id)_sf_windowCreationMode
 {
-  v1 = [a1 userInfo];
-  v2 = [v1 safari_numberForKey:@"mode"];
+  userInfo = [self userInfo];
+  v2 = [userInfo safari_numberForKey:@"mode"];
 
   return v2;
 }
 
 - (id)safari_windowCreationSelectedTabUUID
 {
-  v1 = [a1 userInfo];
-  v2 = [v1 safari_UUIDForKey:@"selected-tab-uuid"];
+  userInfo = [self userInfo];
+  v2 = [userInfo safari_UUIDForKey:@"selected-tab-uuid"];
 
   return v2;
 }
 
 - (id)safari_windowCreationTabUUIDs
 {
-  v1 = [a1 userInfo];
-  v2 = [v1 safari_arrayContainingObjectsOfClass:objc_opt_class() forKey:@"tab-uuids"];
+  userInfo = [self userInfo];
+  v2 = [userInfo safari_arrayContainingObjectsOfClass:objc_opt_class() forKey:@"tab-uuids"];
 
   return v2;
 }
 
 - (void)_sf_invalidateWindowCreationData
 {
-  v1 = [a1 sf_windowCreationNavigationIntentID];
-  if (v1)
+  sf_windowCreationNavigationIntentID = [self sf_windowCreationNavigationIntentID];
+  if (sf_windowCreationNavigationIntentID)
   {
-    v3 = v1;
+    v3 = sf_windowCreationNavigationIntentID;
     v2 = windowCreationNavigationIntentDictionary();
     [v2 removeObjectForKey:v3];
 
-    v1 = v3;
+    sf_windowCreationNavigationIntentID = v3;
   }
 }
 

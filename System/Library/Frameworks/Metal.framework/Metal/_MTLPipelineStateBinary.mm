@@ -1,23 +1,23 @@
 @interface _MTLPipelineStateBinary
-- (_MTLPipelineStateBinary)initWithBinary:(id)a3 uniqueIdentifier:(unint64_t)a4;
-- (_MTLPipelineStateBinary)initWithBinary:(id)a3 uniqueIdentifier:(unint64_t)a4 debugIdentifier:(unint64_t)a5;
+- (_MTLPipelineStateBinary)initWithBinary:(id)binary uniqueIdentifier:(unint64_t)identifier;
+- (_MTLPipelineStateBinary)initWithBinary:(id)binary uniqueIdentifier:(unint64_t)identifier debugIdentifier:(unint64_t)debugIdentifier;
 - (void)dealloc;
 @end
 
 @implementation _MTLPipelineStateBinary
 
-- (_MTLPipelineStateBinary)initWithBinary:(id)a3 uniqueIdentifier:(unint64_t)a4
+- (_MTLPipelineStateBinary)initWithBinary:(id)binary uniqueIdentifier:(unint64_t)identifier
 {
-  self->_binary = a3;
-  self->_uniqueIdentifier = a4;
+  self->_binary = binary;
+  self->_uniqueIdentifier = identifier;
   return self;
 }
 
-- (_MTLPipelineStateBinary)initWithBinary:(id)a3 uniqueIdentifier:(unint64_t)a4 debugIdentifier:(unint64_t)a5
+- (_MTLPipelineStateBinary)initWithBinary:(id)binary uniqueIdentifier:(unint64_t)identifier debugIdentifier:(unint64_t)debugIdentifier
 {
-  self->_binary = a3;
-  self->_uniqueIdentifier = a4;
-  self->_debugIdentifier = a5;
+  self->_binary = binary;
+  self->_uniqueIdentifier = identifier;
+  self->_debugIdentifier = debugIdentifier;
   return self;
 }
 

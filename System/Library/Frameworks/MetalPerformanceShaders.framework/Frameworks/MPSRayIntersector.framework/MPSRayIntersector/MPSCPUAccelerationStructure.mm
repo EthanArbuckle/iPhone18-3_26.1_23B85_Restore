@@ -2,8 +2,8 @@
 - (_MPSAxisAlignedBoundingBox)boundingBox;
 - (id).cxx_construct;
 - (void)dealloc;
-- (void)rebuildWithDescriptor:(id)a3;
-- (void)rebuildWithDescriptor:(id)a3 queue:(id)a4;
+- (void)rebuildWithDescriptor:(id)descriptor;
+- (void)rebuildWithDescriptor:(id)descriptor queue:(id)queue;
 @end
 
 @implementation MPSCPUAccelerationStructure
@@ -29,15 +29,15 @@
   [(MPSCPUAccelerationStructure *)&v4 dealloc];
 }
 
-- (void)rebuildWithDescriptor:(id)a3
+- (void)rebuildWithDescriptor:(id)descriptor
 {
   v5 = sub_239E05F90();
-  objc_msgSend_rebuildWithDescriptor_queue_(self, v6, a3, v5, v7);
+  objc_msgSend_rebuildWithDescriptor_queue_(self, v6, descriptor, v5, v7);
 
   dispatch_release(v5);
 }
 
-- (void)rebuildWithDescriptor:(id)a3 queue:(id)a4
+- (void)rebuildWithDescriptor:(id)descriptor queue:(id)queue
 {
   v92 = *MEMORY[0x277D85DE8];
   self->_branchingFactor = 4;
@@ -52,12 +52,12 @@
     v90 = 4;
     v85 = &unk_284D08698;
     self->_instancing = 1;
-    self->_identityTransforms = objc_msgSend_transformType(a3, v12, v13, v14, v15) == 1;
-    v48 = objc_msgSend_transformData(a3, v44, v45, v46, v47);
-    v53 = objc_msgSend_transformType(a3, v49, v50, v51, v52);
-    v58 = objc_msgSend_instanceData(a3, v54, v55, v56, v57);
-    v63 = objc_msgSend_instanceCount(a3, v59, v60, v61, v62);
-    sub_239E0D774(&v85, v48, v53, v58, v63, a4, &self->_boundingBox);
+    self->_identityTransforms = objc_msgSend_transformType(descriptor, v12, v13, v14, v15) == 1;
+    v48 = objc_msgSend_transformData(descriptor, v44, v45, v46, v47);
+    v53 = objc_msgSend_transformType(descriptor, v49, v50, v51, v52);
+    v58 = objc_msgSend_instanceData(descriptor, v54, v55, v56, v57);
+    v63 = objc_msgSend_instanceCount(descriptor, v59, v60, v61, v62);
+    sub_239E0D774(&v85, v48, v53, v58, v63, queue, &self->_boundingBox);
   }
 
   *&self->_instancing = 0;
@@ -89,7 +89,7 @@
   v69 = 0u;
   v66 = 0u;
   v67 = 0u;
-  v17 = objc_msgSend_geometryDescriptors(a3, v12, v13, v14, v15);
+  v17 = objc_msgSend_geometryDescriptors(descriptor, v12, v13, v14, v15);
   v23 = objc_msgSend_countByEnumeratingWithState_objects_count_(v17, v18, &v66, v91, 16);
   if (v23)
   {
@@ -132,7 +132,7 @@
     while (v23);
   }
 
-  self->_bvh = sub_239E0CEC8(&v85, &v82, &v73, &v79, &__p, &v76, 0, a4, &self->_boundingBox);
+  self->_bvh = sub_239E0CEC8(&v85, &v82, &v73, &v79, &__p, &v76, 0, queue, &self->_boundingBox);
   if (__p)
   {
     v71 = __p;

@@ -1,6 +1,6 @@
 @interface GTReplayerTextureViewPoolBufferEntry
-+ (id)entryWithBuffer:(id)a3 descriptor:(id)a4 offset:(unint64_t)a5 bytesPerRow:(unint64_t)a6;
-- (GTReplayerTextureViewPoolBufferEntry)initWithBuffer:(id)a3 descriptor:(id)a4 offset:(unint64_t)a5 bytesPerRow:(unint64_t)a6;
++ (id)entryWithBuffer:(id)buffer descriptor:(id)descriptor offset:(unint64_t)offset bytesPerRow:(unint64_t)row;
+- (GTReplayerTextureViewPoolBufferEntry)initWithBuffer:(id)buffer descriptor:(id)descriptor offset:(unint64_t)offset bytesPerRow:(unint64_t)row;
 - (id)materializeTextureView;
 @end
 
@@ -13,30 +13,30 @@
   return v2;
 }
 
-- (GTReplayerTextureViewPoolBufferEntry)initWithBuffer:(id)a3 descriptor:(id)a4 offset:(unint64_t)a5 bytesPerRow:(unint64_t)a6
+- (GTReplayerTextureViewPoolBufferEntry)initWithBuffer:(id)buffer descriptor:(id)descriptor offset:(unint64_t)offset bytesPerRow:(unint64_t)row
 {
-  v11 = a3;
-  v12 = a4;
+  bufferCopy = buffer;
+  descriptorCopy = descriptor;
   v16.receiver = self;
   v16.super_class = GTReplayerTextureViewPoolBufferEntry;
   v13 = [(GTReplayerTextureViewPoolBufferEntry *)&v16 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_buffer, a3);
-    objc_storeStrong(&v14->_descriptor, a4);
-    v14->_offset = a5;
-    v14->_bytesPerRow = a6;
+    objc_storeStrong(&v13->_buffer, buffer);
+    objc_storeStrong(&v14->_descriptor, descriptor);
+    v14->_offset = offset;
+    v14->_bytesPerRow = row;
   }
 
   return v14;
 }
 
-+ (id)entryWithBuffer:(id)a3 descriptor:(id)a4 offset:(unint64_t)a5 bytesPerRow:(unint64_t)a6
++ (id)entryWithBuffer:(id)buffer descriptor:(id)descriptor offset:(unint64_t)offset bytesPerRow:(unint64_t)row
 {
-  v10 = a4;
-  v11 = a3;
-  v12 = [[a1 alloc] initWithBuffer:v11 descriptor:v10 offset:a5 bytesPerRow:a6];
+  descriptorCopy = descriptor;
+  bufferCopy = buffer;
+  v12 = [[self alloc] initWithBuffer:bufferCopy descriptor:descriptorCopy offset:offset bytesPerRow:row];
 
   return v12;
 }

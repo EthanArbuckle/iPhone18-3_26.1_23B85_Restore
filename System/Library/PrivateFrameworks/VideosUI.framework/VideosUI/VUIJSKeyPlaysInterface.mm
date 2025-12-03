@@ -1,29 +1,29 @@
 @interface VUIJSKeyPlaysInterface
-+ (void)fetchKeyPlays:(id)a3 nextToken:(id)a4 completion:(id)a5;
++ (void)fetchKeyPlays:(id)plays nextToken:(id)token completion:(id)completion;
 @end
 
 @implementation VUIJSKeyPlaysInterface
 
-+ (void)fetchKeyPlays:(id)a3 nextToken:(id)a4 completion:(id)a5
++ (void)fetchKeyPlays:(id)plays nextToken:(id)token completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  playsCopy = plays;
+  tokenCopy = token;
+  completionCopy = completion;
   v10 = +[VUITVAppLauncher sharedInstance];
-  v11 = [v10 appController];
-  v12 = [v11 appContext];
+  appController = [v10 appController];
+  appContext = [appController appContext];
 
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __61__VUIJSKeyPlaysInterface_fetchKeyPlays_nextToken_completion___block_invoke;
   v16[3] = &unk_1E872DD88;
-  v17 = v7;
-  v18 = v8;
-  v19 = v9;
-  v13 = v9;
-  v14 = v8;
-  v15 = v7;
-  [v12 evaluate:v16];
+  v17 = playsCopy;
+  v18 = tokenCopy;
+  v19 = completionCopy;
+  v13 = completionCopy;
+  v14 = tokenCopy;
+  v15 = playsCopy;
+  [appContext evaluate:v16];
 }
 
 void __61__VUIJSKeyPlaysInterface_fetchKeyPlays_nextToken_completion___block_invoke(uint64_t a1, void *a2)

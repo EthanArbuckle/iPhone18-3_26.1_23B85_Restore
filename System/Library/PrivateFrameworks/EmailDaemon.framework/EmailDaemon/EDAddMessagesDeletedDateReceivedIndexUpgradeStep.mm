@@ -1,13 +1,13 @@
 @interface EDAddMessagesDeletedDateReceivedIndexUpgradeStep
-+ (int)runWithConnection:(id)a3;
++ (int)runWithConnection:(id)connection;
 @end
 
 @implementation EDAddMessagesDeletedDateReceivedIndexUpgradeStep
 
-+ (int)runWithConnection:(id)a3
++ (int)runWithConnection:(id)connection
 {
-  v3 = a3;
-  v4 = sqlite3_exec([v3 sqlDB], "CREATE INDEX IF NOT EXISTS messages_deleted_date_received_index ON messages(deleted, date_received);", 0, 0, 0);
+  connectionCopy = connection;
+  v4 = sqlite3_exec([connectionCopy sqlDB], "CREATE INDEX IF NOT EXISTS messages_deleted_date_received_index ON messages(deleted, date_received);", 0, 0, 0);
 
   return v4;
 }

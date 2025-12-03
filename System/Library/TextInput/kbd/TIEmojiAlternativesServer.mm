@@ -1,7 +1,7 @@
 @interface TIEmojiAlternativesServer
 + (id)sharedInstance;
-- (void)alternativesForText:(id)a3 completionHandler:(id)a4;
-- (void)updateForActiveLocaleIdentifiers:(id)a3;
+- (void)alternativesForText:(id)text completionHandler:(id)handler;
+- (void)updateForActiveLocaleIdentifiers:(id)identifiers;
 @end
 
 @implementation TIEmojiAlternativesServer
@@ -18,18 +18,18 @@
   return v3;
 }
 
-- (void)updateForActiveLocaleIdentifiers:(id)a3
+- (void)updateForActiveLocaleIdentifiers:(id)identifiers
 {
-  v5 = a3;
-  if (![(NSArray *)self->_localeIdentifiers isEqualToArray:v5])
+  identifiersCopy = identifiers;
+  if (![(NSArray *)self->_localeIdentifiers isEqualToArray:identifiersCopy])
   {
-    objc_storeStrong(&self->_localeIdentifiers, a3);
-    v6 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v5 count]);
+    objc_storeStrong(&self->_localeIdentifiers, identifiers);
+    v6 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [identifiersCopy count]);
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v7 = v5;
+    v7 = identifiersCopy;
     v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v8)
     {
@@ -67,10 +67,10 @@
   }
 }
 
-- (void)alternativesForText:(id)a3 completionHandler:(id)a4
+- (void)alternativesForText:(id)text completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = v6;
+  handlerCopy = handler;
+  v7 = handlerCopy;
   generator = self->_generator;
   if (generator)
   {
@@ -78,13 +78,13 @@
     v9[1] = 3221225472;
     v9[2] = sub_100004FEC;
     v9[3] = &unk_10001C910;
-    v10 = v6;
-    [(TIEmojiCandidateGenerator *)generator emojiAlternativesForText:a3 completionHandler:v9];
+    v10 = handlerCopy;
+    [(TIEmojiCandidateGenerator *)generator emojiAlternativesForText:text completionHandler:v9];
   }
 
   else
   {
-    (*(v6 + 2))(v6, &stru_10001CFB8, &__NSArray0__struct);
+    (*(handlerCopy + 2))(handlerCopy, &stru_10001CFB8, &__NSArray0__struct);
   }
 }
 

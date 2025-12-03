@@ -1,16 +1,16 @@
 @interface WFWalletMerchantSelectionTableViewController
 - (UITableView)tableView;
-- (WFWalletMerchantSelectionTableViewController)initWithTransactionIdentifiers:(id)a3 selectedMerchants:(id)a4;
+- (WFWalletMerchantSelectionTableViewController)initWithTransactionIdentifiers:(id)identifiers selectedMerchants:(id)merchants;
 - (WFWalletMerchantSelectionTableViewControllerDelegate)delegate;
 - (id)filteredMerchants;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)clear:(id)a3;
-- (void)done:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)clear:(id)clear;
+- (void)done:(id)done;
 - (void)fetchTransactions;
 - (void)loadView;
-- (void)searchBar:(id)a3 textDidChange:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)searchBar:(id)bar textDidChange:(id)change;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -30,24 +30,24 @@
   return WeakRetained;
 }
 
-- (void)searchBar:(id)a3 textDidChange:(id)a4
+- (void)searchBar:(id)bar textDidChange:(id)change
 {
-  v4 = [(WFWalletMerchantSelectionTableViewController *)self tableView:a3];
+  v4 = [(WFWalletMerchantSelectionTableViewController *)self tableView:bar];
   [v4 reloadData];
 }
 
-- (void)done:(id)a3
+- (void)done:(id)done
 {
-  v4 = [(WFWalletMerchantSelectionTableViewController *)self merchants];
+  merchants = [(WFWalletMerchantSelectionTableViewController *)self merchants];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __53__WFWalletMerchantSelectionTableViewController_done___block_invoke;
   v7[3] = &unk_279EE8C08;
   v7[4] = self;
-  v5 = [v4 if_objectsPassingTest:v7];
+  v5 = [merchants if_objectsPassingTest:v7];
 
-  v6 = [(WFWalletMerchantSelectionTableViewController *)self delegate];
-  [v6 walletMerchantViewController:self didFinishWithMerchants:v5];
+  delegate = [(WFWalletMerchantSelectionTableViewController *)self delegate];
+  [delegate walletMerchantViewController:self didFinishWithMerchants:v5];
 }
 
 uint64_t __53__WFWalletMerchantSelectionTableViewController_done___block_invoke(uint64_t a1, void *a2)
@@ -61,72 +61,72 @@ uint64_t __53__WFWalletMerchantSelectionTableViewController_done___block_invoke(
   return v6;
 }
 
-- (void)clear:(id)a3
+- (void)clear:(id)clear
 {
   v4 = objc_opt_new();
   [(WFWalletMerchantSelectionTableViewController *)self setSelectedMerchantIdentifiers:v4];
 
-  v5 = [(WFWalletMerchantSelectionTableViewController *)self tableView];
-  [v5 reloadData];
+  tableView = [(WFWalletMerchantSelectionTableViewController *)self tableView];
+  [tableView reloadData];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [(WFWalletMerchantSelectionTableViewController *)self tableView];
-  [v6 deselectRowAtIndexPath:v5 animated:1];
+  pathCopy = path;
+  tableView = [(WFWalletMerchantSelectionTableViewController *)self tableView];
+  [tableView deselectRowAtIndexPath:pathCopy animated:1];
 
-  v7 = [(WFWalletMerchantSelectionTableViewController *)self filteredMerchants];
-  v8 = [v7 objectAtIndexedSubscript:{objc_msgSend(v5, "row")}];
+  filteredMerchants = [(WFWalletMerchantSelectionTableViewController *)self filteredMerchants];
+  v8 = [filteredMerchants objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
 
-  v9 = [(WFWalletMerchantSelectionTableViewController *)self selectedMerchantIdentifiers];
-  v10 = [v8 uniqueIdentifier];
-  v11 = [v9 containsObject:v10];
+  selectedMerchantIdentifiers = [(WFWalletMerchantSelectionTableViewController *)self selectedMerchantIdentifiers];
+  uniqueIdentifier = [v8 uniqueIdentifier];
+  v11 = [selectedMerchantIdentifiers containsObject:uniqueIdentifier];
 
-  v12 = [(WFWalletMerchantSelectionTableViewController *)self selectedMerchantIdentifiers];
-  v13 = [v8 uniqueIdentifier];
+  selectedMerchantIdentifiers2 = [(WFWalletMerchantSelectionTableViewController *)self selectedMerchantIdentifiers];
+  uniqueIdentifier2 = [v8 uniqueIdentifier];
   if (v11)
   {
-    [v12 removeObject:v13];
+    [selectedMerchantIdentifiers2 removeObject:uniqueIdentifier2];
   }
 
   else
   {
-    [v12 addObject:v13];
+    [selectedMerchantIdentifiers2 addObject:uniqueIdentifier2];
   }
 
-  v14 = [(WFWalletMerchantSelectionTableViewController *)self tableView];
-  v16[0] = v5;
+  tableView2 = [(WFWalletMerchantSelectionTableViewController *)self tableView];
+  v16[0] = pathCopy;
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:1];
-  [v14 reloadRowsAtIndexPaths:v15 withRowAnimation:100];
+  [tableView2 reloadRowsAtIndexPaths:v15 withRowAnimation:100];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 dequeueReusableCellWithIdentifier:@"cell" forIndexPath:v7];
-  v9 = [v8 imageView];
-  [v9 setClipsToBounds:1];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [viewCopy dequeueReusableCellWithIdentifier:@"cell" forIndexPath:pathCopy];
+  imageView = [v8 imageView];
+  [imageView setClipsToBounds:1];
 
-  v10 = [v8 imageView];
-  v11 = [v10 layer];
-  [v11 setMasksToBounds:1];
+  imageView2 = [v8 imageView];
+  layer = [imageView2 layer];
+  [layer setMasksToBounds:1];
 
-  v12 = [v8 imageView];
-  [v12 _setContinuousCornerRadius:6.0];
+  imageView3 = [v8 imageView];
+  [imageView3 _setContinuousCornerRadius:6.0];
 
-  v13 = [(WFWalletMerchantSelectionTableViewController *)self filteredMerchants];
-  v14 = [v13 objectAtIndexedSubscript:{objc_msgSend(v7, "row")}];
+  filteredMerchants = [(WFWalletMerchantSelectionTableViewController *)self filteredMerchants];
+  v14 = [filteredMerchants objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
 
-  v15 = [v14 displayName];
-  v16 = [v8 textLabel];
-  [v16 setText:v15];
+  displayName = [v14 displayName];
+  textLabel = [v8 textLabel];
+  [textLabel setText:displayName];
 
-  v17 = [(WFWalletMerchantSelectionTableViewController *)self selectedMerchantIdentifiers];
-  v18 = [v14 uniqueIdentifier];
-  v19 = [v17 containsObject:v18];
+  selectedMerchantIdentifiers = [(WFWalletMerchantSelectionTableViewController *)self selectedMerchantIdentifiers];
+  uniqueIdentifier = [v14 uniqueIdentifier];
+  v19 = [selectedMerchantIdentifiers containsObject:uniqueIdentifier];
 
   if (v19)
   {
@@ -139,22 +139,22 @@ uint64_t __53__WFWalletMerchantSelectionTableViewController_done___block_invoke(
   }
 
   [v8 setAccessoryType:v20];
-  v21 = [(WFWalletMerchantSelectionTableViewController *)self generator];
+  generator = [(WFWalletMerchantSelectionTableViewController *)self generator];
   v28 = MEMORY[0x277D85DD0];
   v29 = 3221225472;
   v30 = __80__WFWalletMerchantSelectionTableViewController_tableView_cellForRowAtIndexPath___block_invoke;
   v31 = &unk_279EE8CD0;
-  v32 = v6;
-  v33 = v7;
-  v22 = v7;
-  v23 = v6;
-  v24 = [v21 iconForMerchant:v14 size:0 ignoreLogoURL:0 requestType:&v28 iconHandler:{29.0, 29.0}];
+  v32 = viewCopy;
+  v33 = pathCopy;
+  v22 = pathCopy;
+  v23 = viewCopy;
+  v24 = [generator iconForMerchant:v14 size:0 ignoreLogoURL:0 requestType:&v28 iconHandler:{29.0, 29.0}];
 
   if (v24)
   {
     v25 = WFScaledImage(v24);
-    v26 = [v8 imageView];
-    [v26 setImage:v25];
+    imageView4 = [v8 imageView];
+    [imageView4 setImage:v25];
   }
 
   return v8;
@@ -184,9 +184,9 @@ void __80__WFWalletMerchantSelectionTableViewController_tableView_cellForRowAtIn
   [v4 setNeedsLayout];
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(WFWalletMerchantSelectionTableViewController *)self filteredMerchants:a3];
+  v4 = [(WFWalletMerchantSelectionTableViewController *)self filteredMerchants:view];
   v5 = [v4 count];
 
   return v5;
@@ -197,8 +197,8 @@ void __80__WFWalletMerchantSelectionTableViewController_tableView_cellForRowAtIn
   v4.receiver = self;
   v4.super_class = WFWalletMerchantSelectionTableViewController;
   [(WFWalletMerchantSelectionTableViewController *)&v4 viewDidLoad];
-  v3 = [(WFWalletMerchantSelectionTableViewController *)self tableView];
-  [v3 registerClass:objc_opt_class() forCellReuseIdentifier:@"cell"];
+  tableView = [(WFWalletMerchantSelectionTableViewController *)self tableView];
+  [tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"cell"];
 
   [(WFWalletMerchantSelectionTableViewController *)self fetchTransactions];
 }
@@ -206,13 +206,13 @@ void __80__WFWalletMerchantSelectionTableViewController_tableView_cellForRowAtIn
 - (void)fetchTransactions
 {
   v3 = objc_alloc_init(MEMORY[0x277D380F0]);
-  v4 = [(WFWalletMerchantSelectionTableViewController *)self cardIdentifiers];
+  cardIdentifiers = [(WFWalletMerchantSelectionTableViewController *)self cardIdentifiers];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __65__WFWalletMerchantSelectionTableViewController_fetchTransactions__block_invoke;
   v5[3] = &unk_279EE8C80;
   v5[4] = self;
-  [v3 transactionsForTransactionSourceIdentifiers:v4 withTransactionSource:0 withBackingData:0 limit:100 completion:v5];
+  [v3 transactionsForTransactionSourceIdentifiers:cardIdentifiers withTransactionSource:0 withBackingData:0 limit:100 completion:v5];
 }
 
 void __65__WFWalletMerchantSelectionTableViewController_fetchTransactions__block_invoke(uint64_t a1, void *a2)
@@ -277,26 +277,26 @@ void __65__WFWalletMerchantSelectionTableViewController_fetchTransactions__block
 
 - (id)filteredMerchants
 {
-  v3 = [(WFWalletMerchantSelectionTableViewController *)self navigationItem];
-  v4 = [v3 searchController];
-  v5 = [v4 searchBar];
+  navigationItem = [(WFWalletMerchantSelectionTableViewController *)self navigationItem];
+  searchController = [navigationItem searchController];
+  searchBar = [searchController searchBar];
 
-  v6 = [v5 text];
-  v7 = [v6 length];
-  v8 = [(WFWalletMerchantSelectionTableViewController *)self merchants];
+  text = [searchBar text];
+  v7 = [text length];
+  merchants = [(WFWalletMerchantSelectionTableViewController *)self merchants];
   if (v7)
   {
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __65__WFWalletMerchantSelectionTableViewController_filteredMerchants__block_invoke;
     v11[3] = &unk_279EE8C08;
-    v12 = v6;
-    v9 = [v8 if_objectsPassingTest:v11];
+    v12 = text;
+    v9 = [merchants if_objectsPassingTest:v11];
 
-    v8 = v9;
+    merchants = v9;
   }
 
-  return v8;
+  return merchants;
 }
 
 uint64_t __65__WFWalletMerchantSelectionTableViewController_filteredMerchants__block_invoke(uint64_t a1, void *a2)
@@ -326,76 +326,76 @@ uint64_t __65__WFWalletMerchantSelectionTableViewController_filteredMerchants__b
   v6 = objc_alloc_init(MEMORY[0x277D75D18]);
   [v4 setTableFooterView:v6];
 
-  v7 = [(WFWalletMerchantSelectionTableViewController *)self view];
-  [v7 addSubview:v4];
+  view = [(WFWalletMerchantSelectionTableViewController *)self view];
+  [view addSubview:v4];
 
   [(WFWalletMerchantSelectionTableViewController *)self setTableView:v4];
   v8 = [objc_alloc(MEMORY[0x277D759F0]) initWithSearchResultsController:0];
   [v8 setObscuresBackgroundDuringPresentation:0];
-  v9 = [v8 searchBar];
-  [v9 setAutocorrectionType:1];
+  searchBar = [v8 searchBar];
+  [searchBar setAutocorrectionType:1];
 
   [v8 setHidesNavigationBarDuringPresentation:0];
   v32 = v8;
-  v10 = [v8 searchBar];
-  [v10 setDelegate:self];
+  searchBar2 = [v8 searchBar];
+  [searchBar2 setDelegate:self];
 
-  v11 = [(WFWalletMerchantSelectionTableViewController *)self navigationItem];
-  [v11 setSearchController:v8];
+  navigationItem = [(WFWalletMerchantSelectionTableViewController *)self navigationItem];
+  [navigationItem setSearchController:v8];
 
-  v12 = [(WFWalletMerchantSelectionTableViewController *)self navigationItem];
-  [v12 setHidesSearchBarWhenScrolling:0];
+  navigationItem2 = [(WFWalletMerchantSelectionTableViewController *)self navigationItem];
+  [navigationItem2 setHidesSearchBarWhenScrolling:0];
 
   v13 = WFLocalizedString(@"Merchants");
   [(WFWalletMerchantSelectionTableViewController *)self setTitle:v13];
 
   v24 = MEMORY[0x277CCAAD0];
-  v30 = [v4 topAnchor];
-  v31 = [(WFWalletMerchantSelectionTableViewController *)self view];
-  v29 = [v31 topAnchor];
-  v28 = [v30 constraintEqualToAnchor:v29];
+  topAnchor = [v4 topAnchor];
+  view2 = [(WFWalletMerchantSelectionTableViewController *)self view];
+  topAnchor2 = [view2 topAnchor];
+  v28 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v34[0] = v28;
-  v26 = [v4 leadingAnchor];
-  v27 = [(WFWalletMerchantSelectionTableViewController *)self view];
-  v25 = [v27 leadingAnchor];
-  v23 = [v26 constraintEqualToAnchor:v25];
+  leadingAnchor = [v4 leadingAnchor];
+  view3 = [(WFWalletMerchantSelectionTableViewController *)self view];
+  leadingAnchor2 = [view3 leadingAnchor];
+  v23 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v34[1] = v23;
-  v14 = [v4 bottomAnchor];
-  v15 = [(WFWalletMerchantSelectionTableViewController *)self view];
-  v16 = [v15 bottomAnchor];
-  v17 = [v14 constraintEqualToAnchor:v16];
+  bottomAnchor = [v4 bottomAnchor];
+  view4 = [(WFWalletMerchantSelectionTableViewController *)self view];
+  bottomAnchor2 = [view4 bottomAnchor];
+  v17 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v34[2] = v17;
-  v18 = [v4 trailingAnchor];
-  v19 = [(WFWalletMerchantSelectionTableViewController *)self view];
-  v20 = [v19 trailingAnchor];
-  v21 = [v18 constraintEqualToAnchor:v20];
+  trailingAnchor = [v4 trailingAnchor];
+  view5 = [(WFWalletMerchantSelectionTableViewController *)self view];
+  trailingAnchor2 = [view5 trailingAnchor];
+  v21 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v34[3] = v21;
   v22 = [MEMORY[0x277CBEA60] arrayWithObjects:v34 count:4];
   [v24 activateConstraints:v22];
 }
 
-- (WFWalletMerchantSelectionTableViewController)initWithTransactionIdentifiers:(id)a3 selectedMerchants:(id)a4
+- (WFWalletMerchantSelectionTableViewController)initWithTransactionIdentifiers:(id)identifiers selectedMerchants:(id)merchants
 {
-  v6 = a3;
-  v7 = a4;
+  identifiersCopy = identifiers;
+  merchantsCopy = merchants;
   v27.receiver = self;
   v27.super_class = WFWalletMerchantSelectionTableViewController;
   v8 = [(WFWalletMerchantSelectionTableViewController *)&v27 initWithNibName:0 bundle:0];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [identifiersCopy copy];
     cardIdentifiers = v8->_cardIdentifiers;
     v8->_cardIdentifiers = v9;
 
-    v11 = [(WFWalletMerchantSelectionTableViewController *)v8 navigationItem];
+    navigationItem = [(WFWalletMerchantSelectionTableViewController *)v8 navigationItem];
     v12 = objc_alloc(MEMORY[0x277D751E0]);
     v13 = WFLocalizedString(@"Clear");
     v14 = [v12 initWithTitle:v13 style:0 target:v8 action:sel_clear_];
-    [v11 setLeftBarButtonItem:v14];
+    [navigationItem setLeftBarButtonItem:v14];
 
-    v15 = [(WFWalletMerchantSelectionTableViewController *)v8 navigationItem];
+    navigationItem2 = [(WFWalletMerchantSelectionTableViewController *)v8 navigationItem];
     v16 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:0 target:v8 action:sel_done_];
-    [v15 setRightBarButtonItem:v16];
+    [navigationItem2 setRightBarButtonItem:v16];
 
     v29 = 0;
     v30 = &v29;
@@ -416,8 +416,8 @@ uint64_t __65__WFWalletMerchantSelectionTableViewController_filteredMerchants__b
     v18 = v17;
     _Block_object_dispose(&v29, 8);
     v19 = [v17 alloc];
-    v20 = [MEMORY[0x277D759A0] mainScreen];
-    [v20 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     v21 = [v19 initWithCache:1 scale:?];
     generator = v8->_generator;
     v8->_generator = v21;

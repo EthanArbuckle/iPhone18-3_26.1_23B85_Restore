@@ -1,25 +1,25 @@
 @interface PUIStyleUICoordinatorImpl
-- (PUIStyleUICoordinatorImpl)initWithStyle:(id)a3;
+- (PUIStyleUICoordinatorImpl)initWithStyle:(id)style;
 - (UIView)itemView;
 - (id)variationSupportingStyle;
-- (void)setVariation:(double)a3 updateStyle:(BOOL)a4;
+- (void)setVariation:(double)variation updateStyle:(BOOL)style;
 @end
 
 @implementation PUIStyleUICoordinatorImpl
 
-- (PUIStyleUICoordinatorImpl)initWithStyle:(id)a3
+- (PUIStyleUICoordinatorImpl)initWithStyle:(id)style
 {
-  v5 = a3;
+  styleCopy = style;
   v10.receiver = self;
   v10.super_class = PUIStyleUICoordinatorImpl;
   v6 = [(PUIStyleUICoordinatorImpl *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_style, a3);
-    if ([v5 allowsVariation])
+    objc_storeStrong(&v6->_style, style);
+    if ([styleCopy allowsVariation])
     {
-      [v5 variation];
+      [styleCopy variation];
       v7->_variation = v8;
     }
   }
@@ -29,37 +29,37 @@
 
 - (id)variationSupportingStyle
 {
-  v3 = [(PUIStyleUICoordinatorImpl *)self style];
-  v4 = [v3 allowsVariation];
+  style = [(PUIStyleUICoordinatorImpl *)self style];
+  allowsVariation = [style allowsVariation];
 
-  if (v4)
+  if (allowsVariation)
   {
-    v5 = [(PUIStyleUICoordinatorImpl *)self style];
+    style2 = [(PUIStyleUICoordinatorImpl *)self style];
   }
 
   else
   {
-    v5 = 0;
+    style2 = 0;
   }
 
-  return v5;
+  return style2;
 }
 
-- (void)setVariation:(double)a3 updateStyle:(BOOL)a4
+- (void)setVariation:(double)variation updateStyle:(BOOL)style
 {
-  v4 = a4;
-  v7 = [(PUIStyleUICoordinatorImpl *)self style];
-  v8 = [v7 allowsVariation];
+  styleCopy = style;
+  style = [(PUIStyleUICoordinatorImpl *)self style];
+  allowsVariation = [style allowsVariation];
 
-  if (v8)
+  if (allowsVariation)
   {
-    if (self->_variation != a3)
+    if (self->_variation != variation)
     {
-      self->_variation = a3;
-      if (v4)
+      self->_variation = variation;
+      if (styleCopy)
       {
-        v10 = [(PUIStyleUICoordinatorImpl *)self style];
-        v9 = [v10 copyWithVariation:a3];
+        style2 = [(PUIStyleUICoordinatorImpl *)self style];
+        v9 = [style2 copyWithVariation:variation];
         [(PUIStyleUICoordinatorImpl *)self setStyle:v9];
       }
     }

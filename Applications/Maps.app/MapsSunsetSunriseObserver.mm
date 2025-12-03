@@ -1,44 +1,44 @@
 @interface MapsSunsetSunriseObserver
 - (BOOL)_shouldCalculateState;
-- (MapsSunsetSunriseObserver)initWithLocationManager:(id)a3 sunsetSunriseCalculator:(id)a4 platformController:(id)a5 transportTypeSupportProvider:(Class)a6;
+- (MapsSunsetSunriseObserver)initWithLocationManager:(id)manager sunsetSunriseCalculator:(id)calculator platformController:(id)controller transportTypeSupportProvider:(Class)provider;
 - (PlatformController)platformController;
 - (id)_sunrise;
 - (id)_sunset;
 - (int64_t)_currentTransportType;
 - (void)_calculateState;
 - (void)dealloc;
-- (void)locationManagerUpdatedLocation:(id)a3;
-- (void)navigationSession:(id)a3 didChangeCurrentTransportType:(int64_t)a4;
-- (void)platformController:(id)a3 didChangeCurrentSessionFromSession:(id)a4 toSession:(id)a5;
-- (void)registerObserver:(id)a3;
-- (void)routePlanningSession:(id)a3 didChangeCurrentTransportType:(int64_t)a4 userInitiated:(BOOL)a5;
-- (void)setCurrentState:(int64_t)a3;
-- (void)setNavigationSession:(id)a3;
-- (void)setRoutePlanningSession:(id)a3;
-- (void)unregisterObserver:(id)a3;
+- (void)locationManagerUpdatedLocation:(id)location;
+- (void)navigationSession:(id)session didChangeCurrentTransportType:(int64_t)type;
+- (void)platformController:(id)controller didChangeCurrentSessionFromSession:(id)session toSession:(id)toSession;
+- (void)registerObserver:(id)observer;
+- (void)routePlanningSession:(id)session didChangeCurrentTransportType:(int64_t)type userInitiated:(BOOL)initiated;
+- (void)setCurrentState:(int64_t)state;
+- (void)setNavigationSession:(id)session;
+- (void)setRoutePlanningSession:(id)session;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation MapsSunsetSunriseObserver
 
 - (int64_t)_currentTransportType
 {
-  v3 = [(MapsSunsetSunriseObserver *)self routePlanningSession];
+  routePlanningSession = [(MapsSunsetSunriseObserver *)self routePlanningSession];
 
-  if (v3)
+  if (routePlanningSession)
   {
-    v4 = [(MapsSunsetSunriseObserver *)self routePlanningSession];
+    routePlanningSession2 = [(MapsSunsetSunriseObserver *)self routePlanningSession];
 LABEL_5:
-    v6 = v4;
-    v7 = [v4 currentTransportType];
+    v6 = routePlanningSession2;
+    currentTransportType = [routePlanningSession2 currentTransportType];
 
-    return v7;
+    return currentTransportType;
   }
 
-  v5 = [(MapsSunsetSunriseObserver *)self navigationSession];
+  navigationSession = [(MapsSunsetSunriseObserver *)self navigationSession];
 
-  if (v5)
+  if (navigationSession)
   {
-    v4 = [(MapsSunsetSunriseObserver *)self navigationSession];
+    routePlanningSession2 = [(MapsSunsetSunriseObserver *)self navigationSession];
     goto LABEL_5;
   }
 
@@ -47,28 +47,28 @@ LABEL_5:
 
 - (BOOL)_shouldCalculateState
 {
-  v3 = [(MapsSunsetSunriseObserver *)self lastCheckLocation];
-  if (v3 && (v4 = v3, [(MapsSunsetSunriseObserver *)self lastCheckTime], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, v5))
+  lastCheckLocation = [(MapsSunsetSunriseObserver *)self lastCheckLocation];
+  if (lastCheckLocation && (v4 = lastCheckLocation, [(MapsSunsetSunriseObserver *)self lastCheckTime], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, v5))
   {
     if (![(MapsSunsetSunriseObserver *)self transportTypeSupportProvider])
     {
 LABEL_18:
-      v12 = [(MapsSunsetSunriseObserver *)self lastCheckTime];
-      [v12 timeIntervalSinceNow];
+      lastCheckTime = [(MapsSunsetSunriseObserver *)self lastCheckTime];
+      [lastCheckTime timeIntervalSinceNow];
       v14 = v13;
-      v15 = [(MapsSunsetSunriseObserver *)self lastCheckTime];
-      [v15 timeIntervalSinceNow];
+      lastCheckTime2 = [(MapsSunsetSunriseObserver *)self lastCheckTime];
+      [lastCheckTime2 timeIntervalSinceNow];
       v17 = v16;
 
-      v18 = [(MapsSunsetSunriseObserver *)self locationManager];
-      v9 = [v18 lastLocation];
+      locationManager = [(MapsSunsetSunriseObserver *)self locationManager];
+      lastLocation = [locationManager lastLocation];
 
-      [v9 coordinate];
-      [v9 coordinate];
-      v19 = [(MapsSunsetSunriseObserver *)self lastCheckLocation];
-      [v19 coordinate];
-      v20 = [(MapsSunsetSunriseObserver *)self lastCheckLocation];
-      [v20 coordinate];
+      [lastLocation coordinate];
+      [lastLocation coordinate];
+      lastCheckLocation2 = [(MapsSunsetSunriseObserver *)self lastCheckLocation];
+      [lastCheckLocation2 coordinate];
+      lastCheckLocation3 = [(MapsSunsetSunriseObserver *)self lastCheckLocation];
+      [lastCheckLocation3 coordinate];
       CLClientGetDistanceCoordinates();
       v22 = v21;
 
@@ -105,7 +105,7 @@ LABEL_18:
 
         v28 = v27;
         v30 = 134349314;
-        v31 = self;
+        selfCopy4 = self;
         v32 = 2112;
         v33 = v28;
         _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEBUG, "[%{public}p] shouldCalculateState %@", &v30, 0x16u);
@@ -114,24 +114,24 @@ LABEL_18:
       goto LABEL_29;
     }
 
-    v6 = [(MapsSunsetSunriseObserver *)self _currentTransportType];
-    if (!v6 || ([(objc_class *)[(MapsSunsetSunriseObserver *)self transportTypeSupportProvider] isSupportedForTransportType:v6]& 1) != 0)
+    _currentTransportType = [(MapsSunsetSunriseObserver *)self _currentTransportType];
+    if (!_currentTransportType || ([(objc_class *)[(MapsSunsetSunriseObserver *)self transportTypeSupportProvider] isSupportedForTransportType:_currentTransportType]& 1) != 0)
     {
       v7 = sub_10007178C();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
       {
-        if ((v6 - 1) > 4)
+        if ((_currentTransportType - 1) > 4)
         {
           v8 = @"Undefined";
         }
 
         else
         {
-          v8 = off_10165F970[v6 - 1];
+          v8 = off_10165F970[_currentTransportType - 1];
         }
 
         v30 = 134349314;
-        v31 = self;
+        selfCopy4 = self;
         v32 = 2112;
         v33 = v8;
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "[%{public}p] Current transport type (%@) is supported", &v30, 0x16u);
@@ -140,24 +140,24 @@ LABEL_18:
       goto LABEL_18;
     }
 
-    v9 = sub_10007178C();
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
+    lastLocation = sub_10007178C();
+    if (os_log_type_enabled(lastLocation, OS_LOG_TYPE_DEBUG))
     {
-      if ((v6 - 2) > 3)
+      if ((_currentTransportType - 2) > 3)
       {
         v11 = @"Drive";
       }
 
       else
       {
-        v11 = off_10165F950[v6 - 2];
+        v11 = off_10165F950[_currentTransportType - 2];
       }
 
       v30 = 134349314;
-      v31 = self;
+      selfCopy4 = self;
       v32 = 2112;
       v33 = v11;
-      _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEBUG, "[%{public}p] Current transport type (%@) is NOT supported", &v30, 0x16u);
+      _os_log_impl(&_mh_execute_header, lastLocation, OS_LOG_TYPE_DEBUG, "[%{public}p] Current transport type (%@) is NOT supported", &v30, 0x16u);
     }
 
     LOBYTE(v10) = 0;
@@ -165,12 +165,12 @@ LABEL_18:
 
   else
   {
-    v9 = sub_10007178C();
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
+    lastLocation = sub_10007178C();
+    if (os_log_type_enabled(lastLocation, OS_LOG_TYPE_DEBUG))
     {
       v30 = 134349056;
-      v31 = self;
-      _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEBUG, "[%{public}p] Initial state check", &v30, 0xCu);
+      selfCopy4 = self;
+      _os_log_impl(&_mh_execute_header, lastLocation, OS_LOG_TYPE_DEBUG, "[%{public}p] Initial state check", &v30, 0xCu);
     }
 
     LOBYTE(v10) = 1;
@@ -188,31 +188,31 @@ LABEL_29:
   return WeakRetained;
 }
 
-- (void)routePlanningSession:(id)a3 didChangeCurrentTransportType:(int64_t)a4 userInitiated:(BOOL)a5
+- (void)routePlanningSession:(id)session didChangeCurrentTransportType:(int64_t)type userInitiated:(BOOL)initiated
 {
-  if ([(MapsSunsetSunriseObserver *)self _shouldCalculateState:a3])
+  if ([(MapsSunsetSunriseObserver *)self _shouldCalculateState:session])
   {
 
     [(MapsSunsetSunriseObserver *)self _calculateState];
   }
 }
 
-- (void)navigationSession:(id)a3 didChangeCurrentTransportType:(int64_t)a4
+- (void)navigationSession:(id)session didChangeCurrentTransportType:(int64_t)type
 {
-  if ([(MapsSunsetSunriseObserver *)self _shouldCalculateState:a3])
+  if ([(MapsSunsetSunriseObserver *)self _shouldCalculateState:session])
   {
 
     [(MapsSunsetSunriseObserver *)self _calculateState];
   }
 }
 
-- (void)platformController:(id)a3 didChangeCurrentSessionFromSession:(id)a4 toSession:(id)a5
+- (void)platformController:(id)controller didChangeCurrentSessionFromSession:(id)session toSession:(id)toSession
 {
-  v6 = a5;
+  toSessionCopy = toSession;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
+    v7 = toSessionCopy;
   }
 
   else
@@ -223,7 +223,7 @@ LABEL_29:
   v8 = v7;
   [(MapsSunsetSunriseObserver *)self setNavigationSession:v8];
 
-  v11 = v6;
+  v11 = toSessionCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -244,7 +244,7 @@ LABEL_29:
   }
 }
 
-- (void)locationManagerUpdatedLocation:(id)a3
+- (void)locationManagerUpdatedLocation:(id)location
 {
   if ([(MapsSunsetSunriseObserver *)self _shouldCalculateState])
   {
@@ -255,48 +255,48 @@ LABEL_29:
 
 - (id)_sunrise
 {
-  v3 = [(MapsSunsetSunriseObserver *)self sunsetSunriseCalculator];
-  v4 = [(MapsSunsetSunriseObserver *)self locationManager];
-  v5 = [v4 lastLocation];
-  v6 = [v3 _sunriseForLocation:v5];
+  sunsetSunriseCalculator = [(MapsSunsetSunriseObserver *)self sunsetSunriseCalculator];
+  locationManager = [(MapsSunsetSunriseObserver *)self locationManager];
+  lastLocation = [locationManager lastLocation];
+  v6 = [sunsetSunriseCalculator _sunriseForLocation:lastLocation];
 
   return v6;
 }
 
 - (id)_sunset
 {
-  v3 = [(MapsSunsetSunriseObserver *)self sunsetSunriseCalculator];
-  v4 = [(MapsSunsetSunriseObserver *)self locationManager];
-  v5 = [v4 lastLocation];
-  v6 = [v3 _sunsetForLocation:v5];
+  sunsetSunriseCalculator = [(MapsSunsetSunriseObserver *)self sunsetSunriseCalculator];
+  locationManager = [(MapsSunsetSunriseObserver *)self locationManager];
+  lastLocation = [locationManager lastLocation];
+  v6 = [sunsetSunriseCalculator _sunsetForLocation:lastLocation];
 
   return v6;
 }
 
 - (void)_calculateState
 {
-  v3 = [(MapsSunsetSunriseObserver *)self locationManager];
-  v4 = [v3 hasLocation];
+  locationManager = [(MapsSunsetSunriseObserver *)self locationManager];
+  hasLocation = [locationManager hasLocation];
 
   v5 = sub_10007178C();
   v6 = v5;
-  if (v4)
+  if (hasLocation)
   {
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
       [(MapsSunsetSunriseObserver *)self offsetThreshold];
       v17 = 134349312;
-      v18 = self;
+      selfCopy3 = self;
       v19 = 2048;
       v20 = v7;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEBUG, "[%{public}p] Calculating sunset/sunrise state with offset threshold: %f", &v17, 0x16u);
     }
 
-    v8 = [(MapsSunsetSunriseObserver *)self sunsetSunriseCalculator];
-    v9 = [(MapsSunsetSunriseObserver *)self locationManager];
-    v10 = [v9 lastLocation];
+    sunsetSunriseCalculator = [(MapsSunsetSunriseObserver *)self sunsetSunriseCalculator];
+    locationManager2 = [(MapsSunsetSunriseObserver *)self locationManager];
+    lastLocation = [locationManager2 lastLocation];
     [(MapsSunsetSunriseObserver *)self offsetThreshold];
-    v11 = [v8 currentStateForLocation:v10 offsetThreshold:?];
+    v11 = [sunsetSunriseCalculator currentStateForLocation:lastLocation offsetThreshold:?];
 
     v12 = sub_10007178C();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -312,7 +312,7 @@ LABEL_29:
       }
 
       v17 = 134349314;
-      v18 = self;
+      selfCopy3 = self;
       v19 = 2112;
       v20 = v13;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEBUG, "[%{public}p] Calculated sunset/sunrise state: %@", &v17, 0x16u);
@@ -322,9 +322,9 @@ LABEL_29:
     v14 = +[NSDate date];
     [(MapsSunsetSunriseObserver *)self setLastCheckTime:v14];
 
-    v15 = [(MapsSunsetSunriseObserver *)self locationManager];
-    v16 = [v15 lastLocation];
-    [(MapsSunsetSunriseObserver *)self setLastCheckLocation:v16];
+    locationManager3 = [(MapsSunsetSunriseObserver *)self locationManager];
+    lastLocation2 = [locationManager3 lastLocation];
+    [(MapsSunsetSunriseObserver *)self setLastCheckLocation:lastLocation2];
   }
 
   else
@@ -332,7 +332,7 @@ LABEL_29:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v17 = 134349056;
-      v18 = self;
+      selfCopy3 = self;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "[%{public}p] No location estimate available; cannot calculate sunset/sunrise state", &v17, 0xCu);
     }
 
@@ -341,90 +341,90 @@ LABEL_29:
   }
 }
 
-- (void)setCurrentState:(int64_t)a3
+- (void)setCurrentState:(int64_t)state
 {
-  if (self->_currentState != a3)
+  if (self->_currentState != state)
   {
-    self->_currentState = a3;
-    v5 = [(MapsSunsetSunriseObserver *)self observers];
-    [v5 sunsetSunriseObserver:self didUpdateState:self->_currentState];
+    self->_currentState = state;
+    observers = [(MapsSunsetSunriseObserver *)self observers];
+    [observers sunsetSunriseObserver:self didUpdateState:self->_currentState];
   }
 }
 
-- (void)setRoutePlanningSession:(id)a3
+- (void)setRoutePlanningSession:(id)session
 {
-  v5 = a3;
-  if (self->_routePlanningSession != v5)
+  sessionCopy = session;
+  if (self->_routePlanningSession != sessionCopy)
   {
     v6 = sub_10007178C();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
       v7 = 134349314;
-      v8 = self;
+      selfCopy = self;
       v9 = 2112;
-      v10 = v5;
+      v10 = sessionCopy;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEBUG, "[%{public}p] Got new RoutePlanningSession: %@", &v7, 0x16u);
     }
 
     [(RoutePlanningSession *)self->_routePlanningSession unregisterObserver:self];
-    objc_storeStrong(&self->_routePlanningSession, a3);
+    objc_storeStrong(&self->_routePlanningSession, session);
     [(RoutePlanningSession *)self->_routePlanningSession registerObserver:self];
   }
 }
 
-- (void)setNavigationSession:(id)a3
+- (void)setNavigationSession:(id)session
 {
-  v5 = a3;
-  if (self->_navigationSession != v5)
+  sessionCopy = session;
+  if (self->_navigationSession != sessionCopy)
   {
     v6 = sub_10007178C();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
       v7 = 134349314;
-      v8 = self;
+      selfCopy = self;
       v9 = 2112;
-      v10 = v5;
+      v10 = sessionCopy;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEBUG, "[%{public}p] Got new NavigationSession: %@", &v7, 0x16u);
     }
 
     [(NavigationSession *)self->_navigationSession unregisterObserver:self];
-    objc_storeStrong(&self->_navigationSession, a3);
+    objc_storeStrong(&self->_navigationSession, session);
     [(NavigationSession *)self->_navigationSession registerObserver:self];
   }
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v5 = sub_10007178C();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     v7 = 134349314;
-    v8 = self;
+    selfCopy = self;
     v9 = 2112;
-    v10 = v4;
+    v10 = observerCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "[%{public}p] Unregistering observer: %@", &v7, 0x16u);
   }
 
-  v6 = [(MapsSunsetSunriseObserver *)self observers];
-  [v6 unregisterObserver:v4];
+  observers = [(MapsSunsetSunriseObserver *)self observers];
+  [observers unregisterObserver:observerCopy];
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v5 = sub_10007178C();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     v7 = 134349314;
-    v8 = self;
+    selfCopy = self;
     v9 = 2112;
-    v10 = v4;
+    v10 = observerCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "[%{public}p] Registering observer: %@", &v7, 0x16u);
   }
 
-  v6 = [(MapsSunsetSunriseObserver *)self observers];
-  [v6 registerObserver:v4];
+  observers = [(MapsSunsetSunriseObserver *)self observers];
+  [observers registerObserver:observerCopy];
 }
 
 - (void)dealloc
@@ -433,7 +433,7 @@ LABEL_29:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     *buf = 134349056;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}p] Deallocating", buf, 0xCu);
   }
 
@@ -448,11 +448,11 @@ LABEL_29:
   [(MapsSunsetSunriseObserver *)&v5 dealloc];
 }
 
-- (MapsSunsetSunriseObserver)initWithLocationManager:(id)a3 sunsetSunriseCalculator:(id)a4 platformController:(id)a5 transportTypeSupportProvider:(Class)a6
+- (MapsSunsetSunriseObserver)initWithLocationManager:(id)manager sunsetSunriseCalculator:(id)calculator platformController:(id)controller transportTypeSupportProvider:(Class)provider
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  managerCopy = manager;
+  calculatorCopy = calculator;
+  controllerCopy = controller;
   v28.receiver = self;
   v28.super_class = MapsSunsetSunriseObserver;
   v14 = [(MapsSunsetSunriseObserver *)&v28 init];
@@ -466,19 +466,19 @@ LABEL_29:
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "[%{public}p] Initializing", buf, 0xCu);
     }
 
-    objc_storeStrong(&v14->_locationManager, a3);
+    objc_storeStrong(&v14->_locationManager, manager);
     [(MKLocationManager *)v14->_locationManager listenForLocationUpdates:v14];
-    objc_storeStrong(&v14->_sunsetSunriseCalculator, a4);
-    v16 = objc_storeWeak(&v14->_platformController, v13);
-    [v13 registerObserver:v14];
+    objc_storeStrong(&v14->_sunsetSunriseCalculator, calculator);
+    v16 = objc_storeWeak(&v14->_platformController, controllerCopy);
+    [controllerCopy registerObserver:v14];
 
     WeakRetained = objc_loadWeakRetained(&v14->_platformController);
-    v18 = [WeakRetained currentSession];
+    currentSession = [WeakRetained currentSession];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v19 = v18;
+      v19 = currentSession;
     }
 
     else
@@ -490,12 +490,12 @@ LABEL_29:
 
     [(MapsSunsetSunriseObserver *)v14 setNavigationSession:v20];
     v21 = objc_loadWeakRetained(&v14->_platformController);
-    v22 = [v21 currentSession];
+    currentSession2 = [v21 currentSession];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v23 = v22;
+      v23 = currentSession2;
     }
 
     else
@@ -506,7 +506,7 @@ LABEL_29:
     v24 = v23;
 
     [(MapsSunsetSunriseObserver *)v14 setRoutePlanningSession:v24];
-    objc_storeStrong(&v14->_transportTypeSupportProvider, a6);
+    objc_storeStrong(&v14->_transportTypeSupportProvider, provider);
     v25 = [[GEOObserverHashTable alloc] initWithProtocol:&OBJC_PROTOCOL___MapsSunsetSunriseObservation queue:&_dispatch_main_q];
     observers = v14->_observers;
     v14->_observers = v25;

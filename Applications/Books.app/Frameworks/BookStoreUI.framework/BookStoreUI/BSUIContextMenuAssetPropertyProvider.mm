@@ -15,7 +15,7 @@
   v5 = v3[4];
   sub_72084(v3, v4);
   v6 = *(v5 + 8);
-  v7 = self;
+  selfCopy = self;
   v6(v4, v5);
 
   v8 = sub_2C5888();
@@ -25,7 +25,7 @@
 
 - (int64_t)assetType
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_2724C8();
 
   return v3;
@@ -38,7 +38,7 @@
   v5 = v3[4];
   sub_72084(v3, v4);
   v6 = *(v5 + 152);
-  v7 = self;
+  selfCopy = self;
   v8 = v6(v4, v5);
 
   return v8 & 1;
@@ -51,7 +51,7 @@
   v5 = v3[4];
   sub_72084(v3, v4);
   v6 = *(v5 + 288);
-  v7 = self;
+  selfCopy = self;
   v6(v4, v5);
   v9 = v8;
 

@@ -1,24 +1,24 @@
 @interface SFShareAudioBaseViewController
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation SFShareAudioBaseViewController
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v7.receiver = self;
   v7.super_class = SFShareAudioBaseViewController;
-  [(SFShareAudioBaseViewController *)&v7 viewWillAppear:a3];
+  [(SFShareAudioBaseViewController *)&v7 viewWillAppear:appear];
   self->_viewActive = 1;
-  v4 = [(SFShareAudioViewController *)self->_mainController flags];
-  if ((v4 & 2) != 0)
+  flags = [(SFShareAudioViewController *)self->_mainController flags];
+  if ((flags & 2) != 0)
   {
-    v5 = [MEMORY[0x1E69DC888] darkGrayColor];
-    [(UIView *)self->_cardView setBackgroundColor:v5];
+    darkGrayColor = [MEMORY[0x1E69DC888] darkGrayColor];
+    [(UIView *)self->_cardView setBackgroundColor:darkGrayColor];
   }
 
-  if (v4)
+  if (flags)
   {
     [(UIView *)self->_cardView _setContinuousCornerRadius:0.0];
   }
@@ -27,11 +27,11 @@
   [(UILabel *)self->_titleLabel setFont:v6];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = SFShareAudioBaseViewController;
-  [(SFShareAudioBaseViewController *)&v4 viewWillDisappear:a3];
+  [(SFShareAudioBaseViewController *)&v4 viewWillDisappear:disappear];
   self->_viewActive = 0;
 }
 

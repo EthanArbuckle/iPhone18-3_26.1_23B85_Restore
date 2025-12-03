@@ -52,8 +52,8 @@
       sub_1A7E20B64(v4);
     }
 
-    v5 = [MEMORY[0x1E695DF00] date];
-    [v5 timeIntervalSince1970];
+    date = [MEMORY[0x1E695DF00] date];
+    [date timeIntervalSince1970];
     v7 = v6;
 
     return v7;

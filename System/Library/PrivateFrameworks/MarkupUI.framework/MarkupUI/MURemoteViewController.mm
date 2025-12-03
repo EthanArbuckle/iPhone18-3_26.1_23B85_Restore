@@ -1,11 +1,11 @@
 @interface MURemoteViewController
 + (id)exportedInterface;
 + (id)serviceViewControllerInterface;
-- (void)beginDismissWithInfo:(id)a3;
-- (void)motionEnded:(int64_t)a3 withEvent:(id)a4;
-- (void)serviceDidFinishwithResults:(id)a3 andSandboxExtension:(id)a4;
+- (void)beginDismissWithInfo:(id)info;
+- (void)motionEnded:(int64_t)ended withEvent:(id)event;
+- (void)serviceDidFinishwithResults:(id)results andSandboxExtension:(id)extension;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation MURemoteViewController
@@ -44,18 +44,18 @@
   [(MURemoteViewController *)self becomeFirstResponder];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = MURemoteViewController;
-  [(_UIRemoteViewController *)&v4 viewWillDisappear:a3];
+  [(_UIRemoteViewController *)&v4 viewWillDisappear:disappear];
   [(MURemoteViewController *)self setShouldResignFirstResponder:1];
 }
 
-- (void)motionEnded:(int64_t)a3 withEvent:(id)a4
+- (void)motionEnded:(int64_t)ended withEvent:(id)event
 {
-  v6 = a4;
-  if (a3 != 1)
+  eventCopy = event;
+  if (ended != 1)
   {
     v8.receiver = self;
     v8.super_class = MURemoteViewController;
@@ -63,35 +63,35 @@
     {
       v7.receiver = self;
       v7.super_class = MURemoteViewController;
-      [(MURemoteViewController *)&v7 motionEnded:a3 withEvent:v6];
+      [(MURemoteViewController *)&v7 motionEnded:ended withEvent:eventCopy];
     }
   }
 }
 
-- (void)serviceDidFinishwithResults:(id)a3 andSandboxExtension:(id)a4
+- (void)serviceDidFinishwithResults:(id)results andSandboxExtension:(id)extension
 {
-  v9 = a3;
-  v6 = a4;
-  if ([v6 length])
+  resultsCopy = results;
+  extensionCopy = extension;
+  if ([extensionCopy length])
   {
-    [v6 UTF8String];
+    [extensionCopy UTF8String];
     [(MURemoteViewController *)self setSandboxExtensionHandle:sandbox_extension_consume()];
   }
 
-  v7 = [(MURemoteViewController *)self finishedWithResultsCompletionBlock];
+  finishedWithResultsCompletionBlock = [(MURemoteViewController *)self finishedWithResultsCompletionBlock];
 
-  if (v7)
+  if (finishedWithResultsCompletionBlock)
   {
-    v8 = [(MURemoteViewController *)self finishedWithResultsCompletionBlock];
-    (v8)[2](v8, v9);
+    finishedWithResultsCompletionBlock2 = [(MURemoteViewController *)self finishedWithResultsCompletionBlock];
+    (finishedWithResultsCompletionBlock2)[2](finishedWithResultsCompletionBlock2, resultsCopy);
   }
 }
 
-- (void)beginDismissWithInfo:(id)a3
+- (void)beginDismissWithInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(_UIRemoteViewController *)self serviceViewControllerProxy];
-  [v5 animateExitWithInfo:v4];
+  infoCopy = info;
+  serviceViewControllerProxy = [(_UIRemoteViewController *)self serviceViewControllerProxy];
+  [serviceViewControllerProxy animateExitWithInfo:infoCopy];
 
   if ([(MURemoteViewController *)self sandboxExtensionHandle])
   {

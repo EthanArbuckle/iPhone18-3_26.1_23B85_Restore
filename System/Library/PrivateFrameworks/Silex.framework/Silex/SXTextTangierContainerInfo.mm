@@ -1,32 +1,32 @@
 @interface SXTextTangierContainerInfo
 - (NSSet)rangedExclusionPaths;
-- (SXTextTangierContainerInfo)initWithContext:(id)a3 geometry:(id)a4 stylesheet:(id)a5 string:(id)a6 locale:(id)a7;
+- (SXTextTangierContainerInfo)initWithContext:(id)context geometry:(id)geometry stylesheet:(id)stylesheet string:(id)string locale:(id)locale;
 - (TSDRepDirectLayerHosting)directLayerHost;
-- (void)setIsSelectable:(BOOL)a3;
-- (void)setRangedExclusionPaths:(id)a3;
-- (void)setShouldHyphenate:(BOOL)a3;
+- (void)setIsSelectable:(BOOL)selectable;
+- (void)setRangedExclusionPaths:(id)paths;
+- (void)setShouldHyphenate:(BOOL)hyphenate;
 @end
 
 @implementation SXTextTangierContainerInfo
 
-- (SXTextTangierContainerInfo)initWithContext:(id)a3 geometry:(id)a4 stylesheet:(id)a5 string:(id)a6 locale:(id)a7
+- (SXTextTangierContainerInfo)initWithContext:(id)context geometry:(id)geometry stylesheet:(id)stylesheet string:(id)string locale:(id)locale
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  contextCopy = context;
+  stylesheetCopy = stylesheet;
+  stringCopy = string;
+  localeCopy = locale;
   v22.receiver = self;
   v22.super_class = SXTextTangierContainerInfo;
-  v16 = [(TSDContainerInfo *)&v22 initWithContext:v12 geometry:a4];
+  v16 = [(TSDContainerInfo *)&v22 initWithContext:contextCopy geometry:geometry];
   if (v16)
   {
-    v17 = [(SXTextTangierStorage *)[SXComponentTextStorage alloc] initWithContext:v12 stylesheet:v13 storageKind:0 string:v14 locale:v15];
+    v17 = [(SXTextTangierStorage *)[SXComponentTextStorage alloc] initWithContext:contextCopy stylesheet:stylesheetCopy storageKind:0 string:stringCopy locale:localeCopy];
     storage = v16->_storage;
     v16->_storage = &v17->super;
 
-    v19 = [(SXTextTangierContainerInfo *)v16 storage];
-    v23[0] = v19;
+    storage = [(SXTextTangierContainerInfo *)v16 storage];
+    v23[0] = storage;
     v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:1];
     [(TSDContainerInfo *)v16 setChildInfos:v20];
   }
@@ -34,35 +34,35 @@
   return v16;
 }
 
-- (void)setIsSelectable:(BOOL)a3
+- (void)setIsSelectable:(BOOL)selectable
 {
-  v3 = a3;
-  self->_isSelectable = a3;
-  v4 = [(SXTextTangierContainerInfo *)self storage];
-  [v4 setIsSelectable:v3];
+  selectableCopy = selectable;
+  self->_isSelectable = selectable;
+  storage = [(SXTextTangierContainerInfo *)self storage];
+  [storage setIsSelectable:selectableCopy];
 }
 
-- (void)setShouldHyphenate:(BOOL)a3
+- (void)setShouldHyphenate:(BOOL)hyphenate
 {
-  v3 = a3;
-  self->_shouldHyphenate = a3;
-  v4 = [(SXTextTangierContainerInfo *)self storage];
-  [v4 setShouldHyphenate:v3];
+  hyphenateCopy = hyphenate;
+  self->_shouldHyphenate = hyphenate;
+  storage = [(SXTextTangierContainerInfo *)self storage];
+  [storage setShouldHyphenate:hyphenateCopy];
 }
 
 - (NSSet)rangedExclusionPaths
 {
-  v2 = [(SXTextTangierContainerInfo *)self storage];
-  v3 = [v2 rangedExclusionPaths];
+  storage = [(SXTextTangierContainerInfo *)self storage];
+  rangedExclusionPaths = [storage rangedExclusionPaths];
 
-  return v3;
+  return rangedExclusionPaths;
 }
 
-- (void)setRangedExclusionPaths:(id)a3
+- (void)setRangedExclusionPaths:(id)paths
 {
-  v4 = a3;
-  v5 = [(SXTextTangierContainerInfo *)self storage];
-  [v5 setRangedExclusionPaths:v4];
+  pathsCopy = paths;
+  storage = [(SXTextTangierContainerInfo *)self storage];
+  [storage setRangedExclusionPaths:pathsCopy];
 }
 
 - (TSDRepDirectLayerHosting)directLayerHost

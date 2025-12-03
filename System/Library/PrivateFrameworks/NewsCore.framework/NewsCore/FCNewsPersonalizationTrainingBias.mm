@@ -1,24 +1,24 @@
 @interface FCNewsPersonalizationTrainingBias
-+ (id)identifierForEventType:(id)a3 feedType:(id)a4 groupType:(id)a5;
-- (FCNewsPersonalizationTrainingBias)initWithDictionary:(id)a3;
++ (id)identifierForEventType:(id)type feedType:(id)feedType groupType:(id)groupType;
+- (FCNewsPersonalizationTrainingBias)initWithDictionary:(id)dictionary;
 - (NSString)identifier;
 - (id)description;
 @end
 
 @implementation FCNewsPersonalizationTrainingBias
 
-- (FCNewsPersonalizationTrainingBias)initWithDictionary:(id)a3
+- (FCNewsPersonalizationTrainingBias)initWithDictionary:(id)dictionary
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v17.receiver = self;
   v17.super_class = FCNewsPersonalizationTrainingBias;
   v5 = [(FCNewsPersonalizationTrainingBias *)&v17 init];
   if (v5)
   {
-    v6 = FCAppConfigurationStringValue(v4, @"eventType", 0);
-    v7 = FCAppConfigurationStringValue(v4, @"feedType", 0);
-    v8 = FCAppConfigurationStringValue(v4, @"groupType", 0);
+    v6 = FCAppConfigurationStringValue(dictionaryCopy, @"eventType", 0);
+    v7 = FCAppConfigurationStringValue(dictionaryCopy, @"feedType", 0);
+    v8 = FCAppConfigurationStringValue(dictionaryCopy, @"groupType", 0);
     v9 = v8;
     if (!v6 && !v7 && !v8)
     {
@@ -42,7 +42,7 @@ LABEL_15:
       goto LABEL_16;
     }
 
-    v10 = FCAppConfigurationNumberValue(v4, @"bias", 0);
+    v10 = FCAppConfigurationNumberValue(dictionaryCopy, @"bias", 0);
     if (v10)
     {
       objc_storeStrong(&v5->_eventType, v6);
@@ -87,57 +87,57 @@ LABEL_16:
 
 - (NSString)identifier
 {
-  v3 = [(FCNewsPersonalizationTrainingBias *)self eventType];
-  v4 = [(FCNewsPersonalizationTrainingBias *)self feedType];
-  v5 = [(FCNewsPersonalizationTrainingBias *)self groupType];
-  v6 = [FCNewsPersonalizationTrainingBias identifierForEventType:v3 feedType:v4 groupType:v5];
+  eventType = [(FCNewsPersonalizationTrainingBias *)self eventType];
+  feedType = [(FCNewsPersonalizationTrainingBias *)self feedType];
+  groupType = [(FCNewsPersonalizationTrainingBias *)self groupType];
+  v6 = [FCNewsPersonalizationTrainingBias identifierForEventType:eventType feedType:feedType groupType:groupType];
 
   return v6;
 }
 
-+ (id)identifierForEventType:(id)a3 feedType:(id)a4 groupType:(id)a5
++ (id)identifierForEventType:(id)type feedType:(id)feedType groupType:(id)groupType
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [MEMORY[0x1E696AD60] string];
-  if (v7)
+  typeCopy = type;
+  feedTypeCopy = feedType;
+  groupTypeCopy = groupType;
+  string = [MEMORY[0x1E696AD60] string];
+  if (typeCopy)
   {
-    v11 = [v7 stringByAppendingString:@"-"];
-    [v10 appendString:v11];
+    v11 = [typeCopy stringByAppendingString:@"-"];
+    [string appendString:v11];
   }
 
-  if (v8)
+  if (feedTypeCopy)
   {
-    v12 = [v8 stringByAppendingString:@"-"];
-    [v10 appendString:v12];
+    v12 = [feedTypeCopy stringByAppendingString:@"-"];
+    [string appendString:v12];
   }
 
-  if (v9)
+  if (groupTypeCopy)
   {
-    v13 = [v9 stringByAppendingString:@"-"];
-    [v10 appendString:v13];
+    v13 = [groupTypeCopy stringByAppendingString:@"-"];
+    [string appendString:v13];
   }
 
-  if ([v10 length])
+  if ([string length])
   {
-    [v10 deleteCharactersInRange:{objc_msgSend(v10, "length") - 1, 1}];
+    [string deleteCharactersInRange:{objc_msgSend(string, "length") - 1, 1}];
   }
 
-  return v10;
+  return string;
 }
 
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];;
-  v4 = [(FCNewsPersonalizationTrainingBias *)self eventType];
-  [v3 appendFormat:@"; eventType: %@", v4];
+  eventType = [(FCNewsPersonalizationTrainingBias *)self eventType];
+  [v3 appendFormat:@"; eventType: %@", eventType];
 
-  v5 = [(FCNewsPersonalizationTrainingBias *)self feedType];
-  [v3 appendFormat:@"; feedType: %@", v5];
+  feedType = [(FCNewsPersonalizationTrainingBias *)self feedType];
+  [v3 appendFormat:@"; feedType: %@", feedType];
 
-  v6 = [(FCNewsPersonalizationTrainingBias *)self groupType];
-  [v3 appendFormat:@"; groupType: %@", v6];
+  groupType = [(FCNewsPersonalizationTrainingBias *)self groupType];
+  [v3 appendFormat:@"; groupType: %@", groupType];
 
   [(FCNewsPersonalizationTrainingBias *)self bias];
   [v3 appendFormat:@"; bias: %f", v7];

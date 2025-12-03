@@ -50,10 +50,10 @@ void __33__PXModelSettings_sharedInstance__block_invoke()
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:2];
   v10 = [v2 sectionWithRows:v9 title:@"Photo Analysis Graph"];
 
-  v11 = [MEMORY[0x1E69C6638] px_restoreDefaultsSection];
+  px_restoreDefaultsSection = [MEMORY[0x1E69C6638] px_restoreDefaultsSection];
   v12 = MEMORY[0x1E69C6638];
   v16[0] = v10;
-  v16[1] = v11;
+  v16[1] = px_restoreDefaultsSection;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:2];
   v14 = [v12 moduleWithTitle:@"Model" contents:v13];
 

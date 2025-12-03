@@ -1,20 +1,20 @@
 @interface AWDServerConnection
-- (AWDServerConnection)initWithComponentId:(unsigned int)a3;
-- (AWDServerConnection)initWithComponentId:(unsigned int)a3 andBlockOnConfiguration:(BOOL)a4;
-- (BOOL)registerConfigChangeCallback:(id)a3;
-- (BOOL)registerQueriableMetric:(unsigned int)a3 callback:(id)a4;
-- (BOOL)registerQueriableMetricCallback:(id)a3 forIdentifier:(unsigned int)a4;
-- (BOOL)submitMetric:(id)a3;
+- (AWDServerConnection)initWithComponentId:(unsigned int)id;
+- (AWDServerConnection)initWithComponentId:(unsigned int)id andBlockOnConfiguration:(BOOL)configuration;
+- (BOOL)registerConfigChangeCallback:(id)callback;
+- (BOOL)registerQueriableMetric:(unsigned int)metric callback:(id)callback;
+- (BOOL)registerQueriableMetricCallback:(id)callback forIdentifier:(unsigned int)identifier;
+- (BOOL)submitMetric:(id)metric;
 - (id)getComponentConfigurationParameters;
-- (id)newMetricContainerWithIdentifier:(unsigned int)a3;
+- (id)newMetricContainerWithIdentifier:(unsigned int)identifier;
 - (unint64_t)getAWDTimestamp;
-- (void)flushToQueue:(dispatch_queue_s *)a3 block:(id)a4;
-- (void)registerComponentParametersChangeCallback:(id)a3;
+- (void)flushToQueue:(dispatch_queue_s *)queue block:(id)block;
+- (void)registerComponentParametersChangeCallback:(id)callback;
 @end
 
 @implementation AWDServerConnection
 
-- (AWDServerConnection)initWithComponentId:(unsigned int)a3
+- (AWDServerConnection)initWithComponentId:(unsigned int)id
 {
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
@@ -27,7 +27,7 @@
   return [(AWDServerConnection *)&v5 init];
 }
 
-- (AWDServerConnection)initWithComponentId:(unsigned int)a3 andBlockOnConfiguration:(BOOL)a4
+- (AWDServerConnection)initWithComponentId:(unsigned int)id andBlockOnConfiguration:(BOOL)configuration
 {
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
@@ -40,7 +40,7 @@
   return [(AWDServerConnection *)&v6 init];
 }
 
-- (id)newMetricContainerWithIdentifier:(unsigned int)a3
+- (id)newMetricContainerWithIdentifier:(unsigned int)identifier
 {
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
@@ -51,7 +51,7 @@
   return 0;
 }
 
-- (BOOL)submitMetric:(id)a3
+- (BOOL)submitMetric:(id)metric
 {
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
@@ -62,7 +62,7 @@
   return 0;
 }
 
-- (BOOL)registerQueriableMetric:(unsigned int)a3 callback:(id)a4
+- (BOOL)registerQueriableMetric:(unsigned int)metric callback:(id)callback
 {
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
@@ -73,7 +73,7 @@
   return 0;
 }
 
-- (BOOL)registerQueriableMetricCallback:(id)a3 forIdentifier:(unsigned int)a4
+- (BOOL)registerQueriableMetricCallback:(id)callback forIdentifier:(unsigned int)identifier
 {
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
@@ -84,7 +84,7 @@
   return 0;
 }
 
-- (BOOL)registerConfigChangeCallback:(id)a3
+- (BOOL)registerConfigChangeCallback:(id)callback
 {
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
@@ -106,7 +106,7 @@
   return 0;
 }
 
-- (void)registerComponentParametersChangeCallback:(id)a3
+- (void)registerComponentParametersChangeCallback:(id)callback
 {
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
@@ -127,7 +127,7 @@
   return awd::getAWDTimestamp(v2);
 }
 
-- (void)flushToQueue:(dispatch_queue_s *)a3 block:(id)a4
+- (void)flushToQueue:(dispatch_queue_s *)queue block:(id)block
 {
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {

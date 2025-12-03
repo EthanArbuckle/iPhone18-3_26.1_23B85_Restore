@@ -5,57 +5,57 @@
 - (NSString)hardwareMACAddress;
 - (OS_dispatch_queue)stateMonitorQueue;
 - (WFClient)init;
-- (WFClient)initWithCallbackRunLoop:(id)a3;
+- (WFClient)initWithCallbackRunLoop:(id)loop;
 - (WFInterface)interface;
-- (id)newRandomMACAddressForSSID:(id)a3;
-- (int64_t)_askToJoinModeFromCoreWiFiAskToJoinMode:(int64_t)a3;
-- (int64_t)_coreWiFiAskToJoinModeFromAskToJoinMode:(int64_t)a3;
-- (int64_t)_coreWiFiHotspotJoinOptionFromAutoHotspotMode:(int64_t)a3;
-- (int64_t)_hotspotJoinOptionFromCoreWiFiAutoHotspotMode:(int64_t)a3;
-- (void)_logWiFiManagerPropertyChange:(id)a3 value:(BOOL)a4;
-- (void)_managedConfigurationDidChange:(id)a3;
-- (void)_notifyWiFiPropertyChanged:(id)a3 value:(id)a4;
+- (id)newRandomMACAddressForSSID:(id)d;
+- (int64_t)_askToJoinModeFromCoreWiFiAskToJoinMode:(int64_t)mode;
+- (int64_t)_coreWiFiAskToJoinModeFromAskToJoinMode:(int64_t)mode;
+- (int64_t)_coreWiFiHotspotJoinOptionFromAutoHotspotMode:(int64_t)mode;
+- (int64_t)_hotspotJoinOptionFromCoreWiFiAutoHotspotMode:(int64_t)mode;
+- (void)_logWiFiManagerPropertyChange:(id)change value:(BOOL)value;
+- (void)_managedConfigurationDidChange:(id)change;
+- (void)_notifyWiFiPropertyChanged:(id)changed value:(id)value;
 - (void)_registerForCellularRankingStateNotification;
-- (void)_scheduleCallbacksWithManager:(__WiFiManagerClient *)a3 runLoop:(id)a4;
-- (void)_setupDefaultInterfaceWithManager:(__WiFiManagerClient *)a3 coreWiFiInterface:(id)a4;
-- (void)_startMonitoringCoreWiFiEventsWithInterface:(id)a3;
-- (void)_unscheduleCallbacksWithManager:(__WiFiManagerClient *)a3;
+- (void)_scheduleCallbacksWithManager:(__WiFiManagerClient *)manager runLoop:(id)loop;
+- (void)_setupDefaultInterfaceWithManager:(__WiFiManagerClient *)manager coreWiFiInterface:(id)interface;
+- (void)_startMonitoringCoreWiFiEventsWithInterface:(id)interface;
+- (void)_unscheduleCallbacksWithManager:(__WiFiManagerClient *)manager;
 - (void)_updateAirplaneModeStickiness;
 - (void)_updateCellularRankingState;
 - (void)_updateManagedAppleIDState;
 - (void)_updateNetworkRestrictionActive;
-- (void)_updateOSSpecificAttributes:(id)a3;
+- (void)_updateOSSpecificAttributes:(id)attributes;
 - (void)_updatePowerModificationDisableState;
 - (void)_updatePowerState;
-- (void)_updateWPA3Properties:(__WiFiManagerClient *)a3;
-- (void)_updateWithDeviceAttachment:(__WiFiDeviceClient *)a3;
-- (void)_userAutoJoinStateDidChange:(BOOL)a3 info:(id)a4;
-- (void)asyncMISDiscoveryState:(id)a3;
-- (void)asyncMISState:(id)a3;
-- (void)asyncPowered:(id)a3;
-- (void)asyncUserAutoJoinState:(id)a3;
+- (void)_updateWPA3Properties:(__WiFiManagerClient *)properties;
+- (void)_updateWithDeviceAttachment:(__WiFiDeviceClient *)attachment;
+- (void)_userAutoJoinStateDidChange:(BOOL)change info:(id)info;
+- (void)asyncMISDiscoveryState:(id)state;
+- (void)asyncMISState:(id)state;
+- (void)asyncPowered:(id)powered;
+- (void)asyncUserAutoJoinState:(id)state;
 - (void)dealloc;
-- (void)dispatchAskToJoinAction:(unint64_t)a3 notificationId:(unsigned int)a4 network:(id)a5;
-- (void)dispatchCertificateTrustAction:(int64_t)a3 profile:(id)a4;
-- (void)dispatchJoinRecommendationAction:(int64_t)a3 profile:(id)a4;
+- (void)dispatchAskToJoinAction:(unint64_t)action notificationId:(unsigned int)id network:(id)network;
+- (void)dispatchCertificateTrustAction:(int64_t)action profile:(id)profile;
+- (void)dispatchJoinRecommendationAction:(int64_t)action profile:(id)profile;
 - (void)reloadConfiguration;
-- (void)setAirplaneModeBehavior:(unint64_t)a3;
-- (void)setAskToJoinMode:(int64_t)a3;
-- (void)setAutoInstantHotspotJoinOption:(int64_t)a3;
-- (void)setAutoJoinEnabled:(BOOL)a3;
+- (void)setAirplaneModeBehavior:(unint64_t)behavior;
+- (void)setAskToJoinMode:(int64_t)mode;
+- (void)setAutoInstantHotspotJoinOption:(int64_t)option;
+- (void)setAutoJoinEnabled:(BOOL)enabled;
 - (void)setClientTypeAsForeground;
-- (void)setEnableRandomMACForNetwork:(id)a3 enable:(BOOL)a4 randomMAC:(id)a5;
-- (void)setHasShownSBPickerDontAsk:(BOOL)a3;
-- (void)setMISDiscoveryState:(BOOL)a3 immediateDisable:(BOOL)a4;
-- (void)setMISState:(BOOL)a3;
-- (void)setManagedAppleID:(BOOL)a3;
-- (void)setNetworkRestrictionActive:(BOOL)a3;
-- (void)setPowerModificationDisableState:(BOOL)a3;
-- (void)setPowered:(BOOL)a3;
-- (void)setPoweredToggle:(BOOL)a3 handler:(id)a4;
-- (void)setRandomAddressModeForNetwork:(id)a3 mode:(unint64_t)a4 randomMAC:(id)a5;
-- (void)setUserAutoJoinState:(BOOL)a3 completion:(id)a4;
-- (void)setWAPIEnabled:(BOOL)a3;
+- (void)setEnableRandomMACForNetwork:(id)network enable:(BOOL)enable randomMAC:(id)c;
+- (void)setHasShownSBPickerDontAsk:(BOOL)ask;
+- (void)setMISDiscoveryState:(BOOL)state immediateDisable:(BOOL)disable;
+- (void)setMISState:(BOOL)state;
+- (void)setManagedAppleID:(BOOL)d;
+- (void)setNetworkRestrictionActive:(BOOL)active;
+- (void)setPowerModificationDisableState:(BOOL)state;
+- (void)setPowered:(BOOL)powered;
+- (void)setPoweredToggle:(BOOL)toggle handler:(id)handler;
+- (void)setRandomAddressModeForNetwork:(id)network mode:(unint64_t)mode randomMAC:(id)c;
+- (void)setUserAutoJoinState:(BOOL)state completion:(id)completion;
+- (void)setWAPIEnabled:(BOOL)enabled;
 @end
 
 @implementation WFClient
@@ -90,8 +90,8 @@
         }
 
         v6 = [objc_alloc(MEMORY[0x277D02B18]) initWithServiceType:1];
-        v9 = [(CWFInterface *)v6 requestParameters];
-        [v9 setTimeout:120000000000];
+        requestParameters = [(CWFInterface *)v6 requestParameters];
+        [requestParameters setTimeout:120000000000];
 
         objc_storeStrong(&self->_cInterface, v6);
         [(CWFInterface *)v6 resume];
@@ -155,8 +155,8 @@ void __26__WFClient_sharedInstance__block_invoke()
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   notify_cancel(self->_cellularOutrankWiFiNotificationToken);
   self->_cellularOutrankWiFiNotificationToken = -1;
@@ -190,10 +190,10 @@ void __26__WFClient_sharedInstance__block_invoke()
   [(WFClient *)&v8 dealloc];
 }
 
-- (WFClient)initWithCallbackRunLoop:(id)a3
+- (WFClient)initWithCallbackRunLoop:(id)loop
 {
   v31 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  loopCopy = loop;
   v6 = WFLogForCategory(0);
   v7 = OSLogForWFLogLevel(3uLL);
   if (WFCurrentLogLevel() >= 3 && v6 && os_log_type_enabled(v6, v7))
@@ -203,8 +203,8 @@ void __26__WFClient_sharedInstance__block_invoke()
   }
 
   v8 = [objc_alloc(MEMORY[0x277D02B18]) initWithServiceType:1];
-  v9 = [v8 requestParameters];
-  [v9 setTimeout:120000000000];
+  requestParameters = [v8 requestParameters];
+  [requestParameters setTimeout:120000000000];
 
   v27.receiver = self;
   v27.super_class = WFClient;
@@ -230,8 +230,8 @@ LABEL_21:
   v10->_manager = v12;
   v10->_cellularOutrankWiFiNotificationToken = -1;
   [(WFClient *)v10 _registerForCellularRankingStateNotification];
-  objc_storeStrong(&v10->_callbackRunLoop, a3);
-  [(WFClient *)v10 _scheduleCallbacksWithManager:v10->_manager runLoop:v5];
+  objc_storeStrong(&v10->_callbackRunLoop, loop);
+  [(WFClient *)v10 _scheduleCallbacksWithManager:v10->_manager runLoop:loopCopy];
   if (!v8)
   {
     [WFClient initWithCallbackRunLoop:buf];
@@ -242,11 +242,11 @@ LABEL_21:
   [(WFClient *)v10 setCInterface:v8];
   v10->_powered = [v8 powerOn];
   manager = v10->_manager;
-  v14 = [(WFClient *)v10 cInterface];
-  [(WFClient *)v10 _setupDefaultInterfaceWithManager:manager coreWiFiInterface:v14];
+  cInterface = [(WFClient *)v10 cInterface];
+  [(WFClient *)v10 _setupDefaultInterfaceWithManager:manager coreWiFiInterface:cInterface];
 
-  v15 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v15 addObserver:v10 selector:sel__managedConfigurationDidChange_ name:*MEMORY[0x277D25CA0] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:v10 selector:sel__managedConfigurationDidChange_ name:*MEMORY[0x277D25CA0] object:0];
 
   v16 = WFLogForCategory(0);
   v17 = OSLogForWFLogLevel(3uLL);
@@ -269,8 +269,8 @@ LABEL_21:
 
   if (objc_opt_class())
   {
-    v22 = [MEMORY[0x277D243A0] shared];
-    v10->_lockdownModeEnabled = [v22 enabled];
+    mEMORY[0x277D243A0] = [MEMORY[0x277D243A0] shared];
+    v10->_lockdownModeEnabled = [mEMORY[0x277D243A0] enabled];
   }
 
   v23 = 2;
@@ -282,8 +282,8 @@ LABEL_21:
   v10->_askToJoinMode = v23;
   v10->_autoInstantHotspotJoinOption = 1;
   [(WFClient *)v10 reloadConfiguration];
-  v24 = [(WFClient *)v10 cInterface];
-  [(WFClient *)v10 _startMonitoringCoreWiFiEventsWithInterface:v24];
+  cInterface2 = [(WFClient *)v10 cInterface];
+  [(WFClient *)v10 _startMonitoringCoreWiFiEventsWithInterface:cInterface2];
 
 LABEL_17:
   v25 = *MEMORY[0x277D85DE8];
@@ -292,38 +292,38 @@ LABEL_17:
 
 - (WFClient)init
 {
-  v3 = [MEMORY[0x277CBEB88] mainRunLoop];
-  v4 = [(WFClient *)self initWithCallbackRunLoop:v3];
+  mainRunLoop = [MEMORY[0x277CBEB88] mainRunLoop];
+  v4 = [(WFClient *)self initWithCallbackRunLoop:mainRunLoop];
 
   return v4;
 }
 
-- (void)_startMonitoringCoreWiFiEventsWithInterface:(id)a3
+- (void)_startMonitoringCoreWiFiEventsWithInterface:(id)interface
 {
-  v4 = a3;
+  interfaceCopy = interface;
   objc_initWeak(&location, self);
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __56__WFClient__startMonitoringCoreWiFiEventsWithInterface___block_invoke;
   v12[3] = &unk_279EBCEA0;
   objc_copyWeak(&v13, &location);
-  [v4 setInterruptionHandler:v12];
-  v5 = [(WFClient *)self cInterface];
+  [interfaceCopy setInterruptionHandler:v12];
+  cInterface = [(WFClient *)self cInterface];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __56__WFClient__startMonitoringCoreWiFiEventsWithInterface___block_invoke_2;
   v10[3] = &unk_279EBDEB0;
   objc_copyWeak(&v11, &location);
-  [v5 setEventHandler:v10];
+  [cInterface setEventHandler:v10];
 
-  v6 = [(WFClient *)self stateMonitorQueue];
+  stateMonitorQueue = [(WFClient *)self stateMonitorQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __56__WFClient__startMonitoringCoreWiFiEventsWithInterface___block_invoke_2_91;
   v8[3] = &unk_279EBCFE0;
-  v9 = v4;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = interfaceCopy;
+  v7 = interfaceCopy;
+  dispatch_async(stateMonitorQueue, v8);
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&v13);
@@ -731,10 +731,10 @@ void __56__WFClient__startMonitoringCoreWiFiEventsWithInterface___block_invoke_1
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_setupDefaultInterfaceWithManager:(__WiFiManagerClient *)a3 coreWiFiInterface:(id)a4
+- (void)_setupDefaultInterfaceWithManager:(__WiFiManagerClient *)manager coreWiFiInterface:(id)interface
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  interfaceCopy = interface;
   v6 = WiFiManagerClientCopyDevices();
   v7 = WFLogForCategory(0);
   v8 = OSLogForWFLogLevel(1uLL);
@@ -749,7 +749,7 @@ void __56__WFClient__startMonitoringCoreWiFiEventsWithInterface___block_invoke_1
 
   if (v6)
   {
-    v9 = [[WFInterface alloc] initWithDevice:[(WFInterface *)v6 objectAtIndex:0] coreWiFiInterface:v5];
+    v9 = [[WFInterface alloc] initWithDevice:[(WFInterface *)v6 objectAtIndex:0] coreWiFiInterface:interfaceCopy];
     interface = self->_interface;
     self->_interface = v9;
 
@@ -791,18 +791,18 @@ LABEL_14:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_scheduleCallbacksWithManager:(__WiFiManagerClient *)a3 runLoop:(id)a4
+- (void)_scheduleCallbacksWithManager:(__WiFiManagerClient *)manager runLoop:(id)loop
 {
-  [a4 getCFRunLoop];
+  [loop getCFRunLoop];
   v6 = *MEMORY[0x277CBF058];
   WiFiManagerClientScheduleWithRunLoop();
   WiFiManagerClientRegisterNotificationCallback();
   WiFiManagerClientRegisterDeviceAttachmentCallback();
 
-  MEMORY[0x282187820](a3, _WiFiManagerClientManagedAppleIDCabllack, self);
+  MEMORY[0x282187820](manager, _WiFiManagerClientManagedAppleIDCabllack, self);
 }
 
-- (void)_updateWithDeviceAttachment:(__WiFiDeviceClient *)a3
+- (void)_updateWithDeviceAttachment:(__WiFiDeviceClient *)attachment
 {
   v16 = *MEMORY[0x277D85DE8];
   v5 = WFLogForCategory(0);
@@ -814,9 +814,9 @@ LABEL_14:
     _os_log_impl(&dword_273ECD000, v5, v6, "%s: Device became available", buf, 0xCu);
   }
 
-  v7 = [(WFClient *)self interface];
+  interface = [(WFClient *)self interface];
 
-  if (v7)
+  if (interface)
   {
     v8 = WFLogForCategory(0);
     v9 = OSLogForWFLogLevel(1uLL);
@@ -827,24 +827,24 @@ LABEL_14:
       _os_log_impl(&dword_273ECD000, v8, v9, "%s: interface already exists", buf, 0xCu);
     }
 
-    v10 = [(WFClient *)self interface];
-    [v10 setDevice:a3];
+    interface2 = [(WFClient *)self interface];
+    [interface2 setDevice:attachment];
   }
 
   else
   {
-    v10 = dispatch_get_global_queue(21, 0);
+    interface2 = dispatch_get_global_queue(21, 0);
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __40__WFClient__updateWithDeviceAttachment___block_invoke;
     v13[3] = &unk_279EBCFB8;
     v13[4] = self;
-    v13[5] = a3;
-    dispatch_async(v10, v13);
+    v13[5] = attachment;
+    dispatch_async(interface2, v13);
   }
 
-  v11 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v11 postNotificationName:@"WFClientInterfaceAvailableNotification" object:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"WFClientInterfaceAvailableNotification" object:self];
 
   v12 = *MEMORY[0x277D85DE8];
 }
@@ -878,7 +878,7 @@ void __40__WFClient__updateWithDeviceAttachment___block_invoke_2(uint64_t a1)
   [v8 setWifiClient:v7];
 }
 
-- (void)_updateWPA3Properties:(__WiFiManagerClient *)a3
+- (void)_updateWPA3Properties:(__WiFiManagerClient *)properties
 {
   v16 = *MEMORY[0x277D85DE8];
   [(WFClient *)self setWPA3PersonalEnabled:WiFiManagerClientIsWPA3PersonalSupported() != 0];
@@ -894,11 +894,11 @@ void __40__WFClient__updateWithDeviceAttachment___block_invoke_2(uint64_t a1)
       v8 = 136315906;
       v9 = "[WFClient _updateWPA3Properties:]";
       v10 = 1024;
-      v11 = [(WFClient *)self isWPA3PersonalEnabled];
+      isWPA3PersonalEnabled = [(WFClient *)self isWPA3PersonalEnabled];
       v12 = 1024;
-      v13 = [(WFClient *)self isWPA3EnterpriseEnabled];
+      isWPA3EnterpriseEnabled = [(WFClient *)self isWPA3EnterpriseEnabled];
       v14 = 1024;
-      v15 = [(WFClient *)self isMfpCapable];
+      isMfpCapable = [(WFClient *)self isMfpCapable];
       _os_log_impl(&dword_273ECD000, v6, v5, "%s: WPA3 personal (%d) WPA3 enterprise (%d) MFP Capable (%d)", &v8, 0x1Eu);
     }
   }
@@ -933,18 +933,18 @@ void __29__WFClient__updatePowerState__block_invoke(uint64_t a1)
   return stateMonitorQueue;
 }
 
-- (void)setPowered:(BOOL)a3
+- (void)setPowered:(BOOL)powered
 {
-  v3 = a3;
+  poweredCopy = powered;
   v20 = *MEMORY[0x277D85DE8];
-  if ([(WFClient *)self powered]== a3)
+  if ([(WFClient *)self powered]== powered)
   {
     v9 = WFLogForCategory(0);
     v10 = OSLogForWFLogLevel(1uLL);
     if (WFCurrentLogLevel() && v9 && os_log_type_enabled(v9, v10))
     {
       v11 = @"OFF";
-      if (v3)
+      if (poweredCopy)
       {
         v11 = @"ON";
       }
@@ -959,13 +959,13 @@ void __29__WFClient__updatePowerState__block_invoke(uint64_t a1)
 
   else
   {
-    self->_powered = v3;
+    self->_powered = poweredCopy;
     v5 = WFLogForCategory(0);
     v6 = OSLogForWFLogLevel(1uLL);
     if (WFCurrentLogLevel() && v5 && os_log_type_enabled(v5, v6))
     {
       v7 = @"OFF";
-      if (v3)
+      if (poweredCopy)
       {
         v7 = @"ON";
       }
@@ -983,7 +983,7 @@ void __29__WFClient__updatePowerState__block_invoke(uint64_t a1)
     block[2] = __23__WFClient_setPowered___block_invoke;
     block[3] = &unk_279EBDF00;
     block[4] = self;
-    v15 = v3;
+    v15 = poweredCopy;
     dispatch_async(v8, block);
 
     v13[0] = MEMORY[0x277D85DD0];
@@ -1035,19 +1035,19 @@ void __23__WFClient_setPowered___block_invoke_124(uint64_t a1)
   [v2 postNotificationName:@"WFClientPowerStateChangedNotification" object:*(a1 + 32)];
 }
 
-- (void)setPoweredToggle:(BOOL)a3 handler:(id)a4
+- (void)setPoweredToggle:(BOOL)toggle handler:(id)handler
 {
-  v4 = a3;
+  toggleCopy = toggle;
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  if ([(WFClient *)self powered]== v4)
+  handlerCopy = handler;
+  if ([(WFClient *)self powered]== toggleCopy)
   {
     v11 = WFLogForCategory(0);
     v12 = OSLogForWFLogLevel(1uLL);
     if (WFCurrentLogLevel() && v11 && os_log_type_enabled(v11, v12))
     {
       v13 = @"OFF";
-      if (v4)
+      if (toggleCopy)
       {
         v13 = @"ON";
       }
@@ -1062,13 +1062,13 @@ void __23__WFClient_setPowered___block_invoke_124(uint64_t a1)
 
   else
   {
-    self->_powered = v4;
+    self->_powered = toggleCopy;
     v7 = WFLogForCategory(0);
     v8 = OSLogForWFLogLevel(1uLL);
     if (WFCurrentLogLevel() && v7 && os_log_type_enabled(v7, v8))
     {
       v9 = @"OFF";
-      if (v4)
+      if (toggleCopy)
       {
         v9 = @"ON";
       }
@@ -1085,9 +1085,9 @@ void __23__WFClient_setPowered___block_invoke_124(uint64_t a1)
     block[1] = 3221225472;
     block[2] = __37__WFClient_setPoweredToggle_handler___block_invoke;
     block[3] = &unk_279EBDF50;
-    v17 = v4;
+    v17 = toggleCopy;
     block[4] = self;
-    v16 = v6;
+    v16 = handlerCopy;
     dispatch_async(v10, block);
   }
 
@@ -1149,19 +1149,19 @@ void __37__WFClient_setPoweredToggle_handler___block_invoke_125(void *a1)
   [v2 postNotificationName:@"WFClientPowerStateChangedNotification" object:a1[4]];
 }
 
-- (void)asyncPowered:(id)a3
+- (void)asyncPowered:(id)powered
 {
-  v4 = a3;
+  poweredCopy = powered;
   objc_initWeak(&location, self);
-  v5 = [(WFClient *)self stateMonitorQueue];
+  stateMonitorQueue = [(WFClient *)self stateMonitorQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __25__WFClient_asyncPowered___block_invoke;
   block[3] = &unk_279EBDF78;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = poweredCopy;
+  v6 = poweredCopy;
+  dispatch_async(stateMonitorQueue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -1313,10 +1313,10 @@ void __31__WFClient_reloadConfiguration__block_invoke(uint64_t a1)
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setWAPIEnabled:(BOOL)a3
+- (void)setWAPIEnabled:(BOOL)enabled
 {
   v9[1] = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (enabled)
   {
     v5 = MEMORY[0x277CBEC38];
   }
@@ -1331,28 +1331,28 @@ void __31__WFClient_reloadConfiguration__block_invoke(uint64_t a1)
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v9 forKeys:&v8 count:1];
   [(WFClient *)self _updateOSSpecificAttributes:v6];
 
-  self->_WAPIEnabled = a3;
+  self->_WAPIEnabled = enabled;
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (int64_t)_askToJoinModeFromCoreWiFiAskToJoinMode:(int64_t)a3
+- (int64_t)_askToJoinModeFromCoreWiFiAskToJoinMode:(int64_t)mode
 {
-  if (a3 >= 4)
+  if (mode >= 4)
   {
     return 0;
   }
 
   else
   {
-    return a3 - 1;
+    return mode - 1;
   }
 }
 
-- (int64_t)_coreWiFiAskToJoinModeFromAskToJoinMode:(int64_t)a3
+- (int64_t)_coreWiFiAskToJoinModeFromAskToJoinMode:(int64_t)mode
 {
-  if ((a3 + 1) < 4)
+  if ((mode + 1) < 4)
   {
-    return a3 + 1;
+    return mode + 1;
   }
 
   else
@@ -1361,20 +1361,20 @@ void __31__WFClient_reloadConfiguration__block_invoke(uint64_t a1)
   }
 }
 
-- (void)setAskToJoinMode:(int64_t)a3
+- (void)setAskToJoinMode:(int64_t)mode
 {
   v18 = *MEMORY[0x277D85DE8];
   v5 = objc_alloc_init(MEMORY[0x277D02B60]);
-  [v5 setAskToJoinMode:{-[WFClient _coreWiFiAskToJoinModeFromAskToJoinMode:](self, "_coreWiFiAskToJoinModeFromAskToJoinMode:", a3)}];
-  v6 = [(WFClient *)self cInterface];
+  [v5 setAskToJoinMode:{-[WFClient _coreWiFiAskToJoinModeFromAskToJoinMode:](self, "_coreWiFiAskToJoinModeFromAskToJoinMode:", mode)}];
+  cInterface = [(WFClient *)self cInterface];
   v7 = [MEMORY[0x277CBEB98] setWithObjects:{&unk_288304A20, 0}];
   v13 = 0;
-  v8 = [v6 applyUserSettings:v5 properties:v7 error:&v13];
+  v8 = [cInterface applyUserSettings:v5 properties:v7 error:&v13];
   v9 = v13;
 
   if (v8)
   {
-    v10 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+    v10 = [MEMORY[0x277CCABB0] numberWithInteger:mode];
     [(WFClient *)self _notifyWiFiPropertyChanged:@"kWFClientUserInterfacePropertyATJKey" value:v10];
   }
 
@@ -1385,42 +1385,42 @@ void __31__WFClient_reloadConfiguration__block_invoke(uint64_t a1)
     if (WFCurrentLogLevel() && v10 && os_log_type_enabled(v10, v12))
     {
       *buf = 134218242;
-      v15 = a3;
+      modeCopy = mode;
       v16 = 2112;
       v17 = v9;
       _os_log_impl(&dword_273ECD000, v10, v12, "failed to set ask to join to %ld, error='%@'", buf, 0x16u);
     }
   }
 
-  self->_askToJoinMode = a3;
+  self->_askToJoinMode = mode;
   v11 = *MEMORY[0x277D85DE8];
 }
 
 - (BOOL)hasShownSBPickerDontAsk
 {
-  v2 = [(WFClient *)self cInterface];
-  v3 = [v2 userSettings];
+  cInterface = [(WFClient *)self cInterface];
+  userSettings = [cInterface userSettings];
 
-  v4 = [v3 OSSpecificAttributes];
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277D298F8]];
+  oSSpecificAttributes = [userSettings OSSpecificAttributes];
+  v5 = [oSSpecificAttributes objectForKeyedSubscript:*MEMORY[0x277D298F8]];
 
   if (v5)
   {
-    v6 = [v5 BOOLValue];
+    bOOLValue = [v5 BOOLValue];
   }
 
   else
   {
-    v6 = 0;
+    bOOLValue = 0;
   }
 
-  return v6;
+  return bOOLValue;
 }
 
-- (void)setHasShownSBPickerDontAsk:(BOOL)a3
+- (void)setHasShownSBPickerDontAsk:(BOOL)ask
 {
   v8[1] = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (ask)
   {
     v4 = MEMORY[0x277CBEC38];
   }
@@ -1458,9 +1458,9 @@ void __31__WFClient_reloadConfiguration__block_invoke(uint64_t a1)
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setNetworkRestrictionActive:(BOOL)a3
+- (void)setNetworkRestrictionActive:(BOOL)active
 {
-  v3 = a3;
+  activeCopy = active;
   v21 = *MEMORY[0x277D85DE8];
   v5 = WFLogForCategory(0);
   v6 = OSLogForWFLogLevel(3uLL);
@@ -1469,30 +1469,30 @@ void __31__WFClient_reloadConfiguration__block_invoke(uint64_t a1)
     *buf = 136315394;
     *v19 = "[WFClient setNetworkRestrictionActive:]";
     *&v19[8] = 1024;
-    *v20 = v3;
+    *v20 = activeCopy;
     _os_log_impl(&dword_273ECD000, v5, v6, "%s: restriction %d", buf, 0x12u);
   }
 
-  if (self->_networkRestrictionActive != v3)
+  if (self->_networkRestrictionActive != activeCopy)
   {
-    if (v3)
+    if (activeCopy)
     {
-      v7 = [(WFClient *)self cInterface];
-      v8 = [v7 userSettings];
+      cInterface = [(WFClient *)self cInterface];
+      userSettings = [cInterface userSettings];
 
-      v9 = [v8 OSSpecificAttributes];
-      v10 = [v9 objectForKeyedSubscript:*MEMORY[0x277D29970]];
+      oSSpecificAttributes = [userSettings OSSpecificAttributes];
+      v10 = [oSSpecificAttributes objectForKeyedSubscript:*MEMORY[0x277D29970]];
       whitelistingUUID = self->_whitelistingUUID;
       self->_whitelistingUUID = v10;
     }
 
     else
     {
-      v8 = self->_whitelistingUUID;
+      userSettings = self->_whitelistingUUID;
       self->_whitelistingUUID = 0;
     }
 
-    if (self->_networkRestrictionActive != v3)
+    if (self->_networkRestrictionActive != activeCopy)
     {
       v12 = WFLogForCategory(0);
       v13 = OSLogForWFLogLevel(3uLL);
@@ -1503,13 +1503,13 @@ void __31__WFClient_reloadConfiguration__block_invoke(uint64_t a1)
         *buf = 67109634;
         *v19 = networkRestrictionActive;
         *&v19[4] = 1024;
-        *&v19[6] = v3;
+        *&v19[6] = activeCopy;
         *v20 = 2112;
         *&v20[2] = v15;
         _os_log_impl(&dword_273ECD000, v12, v13, "Restriction policy changed (was %d is %d) policyUUID='%@'", buf, 0x18u);
       }
 
-      self->_networkRestrictionActive = v3;
+      self->_networkRestrictionActive = activeCopy;
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __40__WFClient_setNetworkRestrictionActive___block_invoke;
@@ -1554,10 +1554,10 @@ void __40__WFClient_setNetworkRestrictionActive___block_invoke(uint64_t a1)
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setPowerModificationDisableState:(BOOL)a3
+- (void)setPowerModificationDisableState:(BOOL)state
 {
   v9 = *MEMORY[0x277D85DE8];
-  if (self->_powerModificationDisabled == a3)
+  if (self->_powerModificationDisabled == state)
   {
     v3 = WFLogForCategory(0);
     v4 = OSLogForWFLogLevel(3uLL);
@@ -1571,7 +1571,7 @@ void __40__WFClient_setNetworkRestrictionActive___block_invoke(uint64_t a1)
 
   else
   {
-    self->_powerModificationDisabled = a3;
+    self->_powerModificationDisabled = state;
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __45__WFClient_setPowerModificationDisableState___block_invoke;
@@ -1592,7 +1592,7 @@ void __45__WFClient_setPowerModificationDisableState___block_invoke(uint64_t a1)
 - (void)_updateCellularRankingState
 {
   v29 = *MEMORY[0x277D85DE8];
-  v3 = [(WFClient *)self cellularOutrankWiFiSymtpomsState];
+  cellularOutrankWiFiSymtpomsState = [(WFClient *)self cellularOutrankWiFiSymtpomsState];
   if (notify_get_state([(WFClient *)self cellularOutrankWiFiNotificationToken], &self->_cellularOutrankWiFiSymtpomsState))
   {
     v4 = WFLogForCategory(0);
@@ -1608,7 +1608,7 @@ void __45__WFClient_setPowerModificationDisableState___block_invoke(uint64_t a1)
   else
   {
     cellularOutrankWiFiSymtpomsState = self->_cellularOutrankWiFiSymtpomsState;
-    if (v3 == cellularOutrankWiFiSymtpomsState)
+    if (cellularOutrankWiFiSymtpomsState == cellularOutrankWiFiSymtpomsState)
     {
       v7 = WFLogForCategory(0);
       v8 = OSLogForWFLogLevel(3uLL);
@@ -1681,14 +1681,14 @@ void __45__WFClient_setPowerModificationDisableState___block_invoke(uint64_t a1)
             v16 = "FALSE";
           }
 
-          v17 = [(WFClient *)self cellularOutrankState];
+          cellularOutrankState = [(WFClient *)self cellularOutrankState];
           v18 = self->_cellularOutrankWiFiSymtpomsState;
           *buf = 136315906;
           v22 = "[WFClient _updateCellularRankingState]";
           v23 = 2080;
           v24 = v16;
           v25 = 2048;
-          v26 = v17;
+          v26 = cellularOutrankState;
           v27 = 2048;
           v28 = v18;
           _os_log_impl(&dword_273ECD000, v15, v14, "%s: symptoms cellular outrank recommendation is set to %s (%lu - %llu)", buf, 0x2Au);
@@ -1783,10 +1783,10 @@ void __56__WFClient__registerForCellularRankingStateNotification__block_invoke(u
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setManagedAppleID:(BOOL)a3
+- (void)setManagedAppleID:(BOOL)d
 {
   v9 = *MEMORY[0x277D85DE8];
-  if (self->_managedAppleID == a3)
+  if (self->_managedAppleID == d)
   {
     v3 = WFLogForCategory(0);
     v4 = OSLogForWFLogLevel(3uLL);
@@ -1800,7 +1800,7 @@ void __56__WFClient__registerForCellularRankingStateNotification__block_invoke(u
 
   else
   {
-    self->_managedAppleID = a3;
+    self->_managedAppleID = d;
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __30__WFClient_setManagedAppleID___block_invoke;
@@ -1818,11 +1818,11 @@ void __30__WFClient_setManagedAppleID___block_invoke(uint64_t a1)
   [v2 postNotificationName:@"WFClientManagedAppleIDStateChangedNotification" object:*(a1 + 32)];
 }
 
-- (void)_logWiFiManagerPropertyChange:(id)a3 value:(BOOL)a4
+- (void)_logWiFiManagerPropertyChange:(id)change value:(BOOL)value
 {
-  v4 = a4;
+  valueCopy = value;
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  changeCopy = change;
   v6 = WFLogForCategory(0);
   v7 = OSLogForWFLogLevel(3uLL);
   if (WFCurrentLogLevel() >= 3 && v6 && os_log_type_enabled(v6, v7))
@@ -1830,9 +1830,9 @@ void __30__WFClient_setManagedAppleID___block_invoke(uint64_t a1)
     v9 = 136315650;
     v10 = "[WFClient _logWiFiManagerPropertyChange:value:]";
     v11 = 2112;
-    v12 = v5;
+    v12 = changeCopy;
     v13 = 1024;
-    v14 = v4;
+    v14 = valueCopy;
     _os_log_impl(&dword_273ECD000, v6, v7, "%s: wifi manager property %@ changed to %d", &v9, 0x1Cu);
   }
 
@@ -1910,25 +1910,25 @@ void __30__WFClient_setManagedAppleID___block_invoke(uint64_t a1)
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setAirplaneModeBehavior:(unint64_t)a3
+- (void)setAirplaneModeBehavior:(unint64_t)behavior
 {
   v32 = *MEMORY[0x277D85DE8];
   airplaneModeBehavior = self->_airplaneModeBehavior;
   v6 = WFLogForCategory(0);
   v7 = OSLogForWFLogLevel(3uLL);
   v9 = WFCurrentLogLevel() > 2 && v6 != 0;
-  if (airplaneModeBehavior != a3)
+  if (airplaneModeBehavior != behavior)
   {
     if (v9 && os_log_type_enabled(v6, v7))
     {
-      if (a3 > 2)
+      if (behavior > 2)
       {
         v11 = &stru_2882E4AD8;
       }
 
       else
       {
-        v11 = off_279EBE060[a3];
+        v11 = off_279EBE060[behavior];
       }
 
       *buf = 136315394;
@@ -1938,7 +1938,7 @@ void __30__WFClient_setManagedAppleID___block_invoke(uint64_t a1)
       _os_log_impl(&dword_273ECD000, v6, v7, "%s: new state %@", buf, 0x16u);
     }
 
-    if (a3 == 2)
+    if (behavior == 2)
     {
       v20 = @"KeepWiFiPoweredAirplaneModeEnabled";
       v21 = @"KeepWiFiPoweredAirplaneMode";
@@ -1949,7 +1949,7 @@ void __30__WFClient_setManagedAppleID___block_invoke(uint64_t a1)
       v14 = &v20;
     }
 
-    else if (a3 == 1)
+    else if (behavior == 1)
     {
       v16 = @"KeepWiFiPoweredAirplaneModeEnabled";
       v17 = @"KeepWiFiPoweredAirplaneMode";
@@ -1962,7 +1962,7 @@ void __30__WFClient_setManagedAppleID___block_invoke(uint64_t a1)
 
     else
     {
-      if (a3)
+      if (behavior)
       {
         v6 = 0;
         goto LABEL_28;
@@ -1980,20 +1980,20 @@ void __30__WFClient_setManagedAppleID___block_invoke(uint64_t a1)
     v6 = [v12 dictionaryWithObjects:v13 forKeys:v14 count:{2, v16, v17, v18, v19, v20, v21, v22, v23, v24, v25, v26, v27}];
 LABEL_28:
     [(WFClient *)self _updateOSSpecificAttributes:v6];
-    self->_airplaneModeBehavior = a3;
+    self->_airplaneModeBehavior = behavior;
     goto LABEL_29;
   }
 
   if (v9 && os_log_type_enabled(v6, v7))
   {
-    if (a3 > 2)
+    if (behavior > 2)
     {
       v10 = &stru_2882E4AD8;
     }
 
     else
     {
-      v10 = off_279EBE060[a3];
+      v10 = off_279EBE060[behavior];
     }
 
     *buf = 136315394;
@@ -2008,13 +2008,13 @@ LABEL_29:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setAutoJoinEnabled:(BOOL)a3
+- (void)setAutoJoinEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v5 = WFLogForCategory(0);
   v6 = OSLogForWFLogLevel(3uLL);
   v8 = WFCurrentLogLevel() > 2 && v5 != 0;
-  if (v3)
+  if (enabledCopy)
   {
     if (v8 && os_log_type_enabled(v5, v6))
     {
@@ -2039,20 +2039,20 @@ LABEL_29:
   }
 }
 
-- (void)setAutoInstantHotspotJoinOption:(int64_t)a3
+- (void)setAutoInstantHotspotJoinOption:(int64_t)option
 {
   v18 = *MEMORY[0x277D85DE8];
   v5 = objc_alloc_init(MEMORY[0x277D02B60]);
-  [v5 setAutoHotspotMode:{-[WFClient _coreWiFiHotspotJoinOptionFromAutoHotspotMode:](self, "_coreWiFiHotspotJoinOptionFromAutoHotspotMode:", a3)}];
-  v6 = [(WFClient *)self cInterface];
+  [v5 setAutoHotspotMode:{-[WFClient _coreWiFiHotspotJoinOptionFromAutoHotspotMode:](self, "_coreWiFiHotspotJoinOptionFromAutoHotspotMode:", option)}];
+  cInterface = [(WFClient *)self cInterface];
   v7 = [MEMORY[0x277CBEB98] setWithObjects:{&unk_288304A80, 0}];
   v13 = 0;
-  v8 = [v6 applyUserSettings:v5 properties:v7 error:&v13];
+  v8 = [cInterface applyUserSettings:v5 properties:v7 error:&v13];
   v9 = v13;
 
   if (v8)
   {
-    v10 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+    v10 = [MEMORY[0x277CCABB0] numberWithInteger:option];
     [(WFClient *)self _notifyWiFiPropertyChanged:@"kWFClientUserInterfacePropertyHotspotAJKey" value:v10];
   }
 
@@ -2063,39 +2063,39 @@ LABEL_29:
     if (WFCurrentLogLevel() && v10 && os_log_type_enabled(v10, v12))
     {
       *buf = 134218242;
-      v15 = a3;
+      optionCopy = option;
       v16 = 2112;
       v17 = v9;
       _os_log_impl(&dword_273ECD000, v10, v12, "failed to set auto hotspot join option to %ld, error='%@'", buf, 0x16u);
     }
   }
 
-  self->_autoInstantHotspotJoinOption = a3;
+  self->_autoInstantHotspotJoinOption = option;
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (int64_t)_hotspotJoinOptionFromCoreWiFiAutoHotspotMode:(int64_t)a3
+- (int64_t)_hotspotJoinOptionFromCoreWiFiAutoHotspotMode:(int64_t)mode
 {
-  if (a3 > 3)
+  if (mode > 3)
   {
     return 1;
   }
 
   else
   {
-    return qword_273F75C00[a3];
+    return qword_273F75C00[mode];
   }
 }
 
-- (int64_t)_coreWiFiHotspotJoinOptionFromAutoHotspotMode:(int64_t)a3
+- (int64_t)_coreWiFiHotspotJoinOptionFromAutoHotspotMode:(int64_t)mode
 {
   v3 = 1;
-  if (a3)
+  if (mode)
   {
     v3 = 2;
   }
 
-  if (a3 == 2)
+  if (mode == 2)
   {
     return 3;
   }
@@ -2106,18 +2106,18 @@ LABEL_29:
   }
 }
 
-- (void)asyncUserAutoJoinState:(id)a3
+- (void)asyncUserAutoJoinState:(id)state
 {
-  v4 = a3;
-  v5 = [(WFClient *)self stateMonitorQueue];
+  stateCopy = state;
+  stateMonitorQueue = [(WFClient *)self stateMonitorQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __35__WFClient_asyncUserAutoJoinState___block_invoke;
   v7[3] = &unk_279EBD9A8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = stateCopy;
+  v6 = stateCopy;
+  dispatch_async(stateMonitorQueue, v7);
 }
 
 void __35__WFClient_asyncUserAutoJoinState___block_invoke(uint64_t a1)
@@ -2176,18 +2176,18 @@ uint64_t __35__WFClient_asyncUserAutoJoinState___block_invoke_161(uint64_t a1)
   return v3(v1, v2);
 }
 
-- (void)setUserAutoJoinState:(BOOL)a3 completion:(id)a4
+- (void)setUserAutoJoinState:(BOOL)state completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = dispatch_get_global_queue(21, 0);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __44__WFClient_setUserAutoJoinState_completion___block_invoke;
   block[3] = &unk_279EBDF50;
-  v11 = a3;
+  stateCopy = state;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = completionCopy;
+  v8 = completionCopy;
   dispatch_async(v7, block);
 }
 
@@ -2237,11 +2237,11 @@ void __44__WFClient_setUserAutoJoinState_completion___block_invoke(uint64_t a1)
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_userAutoJoinStateDidChange:(BOOL)a3 info:(id)a4
+- (void)_userAutoJoinStateDidChange:(BOOL)change info:(id)info
 {
-  v4 = a3;
+  changeCopy = change;
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  infoCopy = info;
   v7 = WFLogForCategory(0);
   v8 = OSLogForWFLogLevel(1uLL);
   if (WFCurrentLogLevel() && v7 && os_log_type_enabled(v7, v8))
@@ -2249,23 +2249,23 @@ void __44__WFClient_setUserAutoJoinState_completion___block_invoke(uint64_t a1)
     v11 = 136315650;
     v12 = "[WFClient _userAutoJoinStateDidChange:info:]";
     v13 = 1024;
-    v14 = v4;
+    v14 = changeCopy;
     v15 = 2112;
-    v16 = v6;
+    v16 = infoCopy;
     _os_log_impl(&dword_273ECD000, v7, v8, "%s: enabled %d info %@", &v11, 0x1Cu);
   }
 
-  self->_userAutoJoinState = v4;
-  v9 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v9 postNotificationName:@"WFClientUserAutoJoinStateChangedNotification" object:self];
+  self->_userAutoJoinState = changeCopy;
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"WFClientUserAutoJoinStateChangedNotification" object:self];
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_managedConfigurationDidChange:(id)a3
+- (void)_managedConfigurationDidChange:(id)change
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changeCopy = change;
   v5 = WFLogForCategory(0);
   v6 = OSLogForWFLogLevel(4uLL);
   if (WFCurrentLogLevel() >= 4 && v5)
@@ -2273,48 +2273,48 @@ void __44__WFClient_setUserAutoJoinState_completion___block_invoke(uint64_t a1)
     v7 = v5;
     if (os_log_type_enabled(v7, v6))
     {
-      v8 = [v4 userInfo];
+      userInfo = [changeCopy userInfo];
       *buf = 136315394;
       v17 = "[WFClient _managedConfigurationDidChange:]";
       v18 = 2112;
-      v19 = v8;
+      v19 = userInfo;
       _os_log_impl(&dword_273ECD000, v7, v6, "%s- userInfo %@", buf, 0x16u);
     }
   }
 
   v9 = dispatch_time(0, 500000000);
-  v10 = [(WFClient *)self serialClientQueue];
+  serialClientQueue = [(WFClient *)self serialClientQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __43__WFClient__managedConfigurationDidChange___block_invoke;
   block[3] = &unk_279EBCFE0;
   block[4] = self;
-  dispatch_after(v9, v10, block);
+  dispatch_after(v9, serialClientQueue, block);
 
   v11 = dispatch_time(0, 100000000);
-  v12 = [(WFClient *)self serialClientQueue];
+  serialClientQueue2 = [(WFClient *)self serialClientQueue];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __43__WFClient__managedConfigurationDidChange___block_invoke_2;
   v14[3] = &unk_279EBCFE0;
   v14[4] = self;
-  dispatch_after(v11, v12, v14);
+  dispatch_after(v11, serialClientQueue2, v14);
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)asyncMISState:(id)a3
+- (void)asyncMISState:(id)state
 {
-  v4 = a3;
-  v5 = [(WFClient *)self stateMonitorQueue];
+  stateCopy = state;
+  stateMonitorQueue = [(WFClient *)self stateMonitorQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __26__WFClient_asyncMISState___block_invoke;
   v7[3] = &unk_279EBD9A8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = stateCopy;
+  v6 = stateCopy;
+  dispatch_async(stateMonitorQueue, v7);
 }
 
 void __26__WFClient_asyncMISState___block_invoke(uint64_t a1)
@@ -2356,9 +2356,9 @@ void __26__WFClient_asyncMISState___block_invoke(uint64_t a1)
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setMISState:(BOOL)a3
+- (void)setMISState:(BOOL)state
 {
-  v3 = a3;
+  stateCopy = state;
   v15 = *MEMORY[0x277D85DE8];
   v5 = WFLogForCategory(0);
   v6 = OSLogForWFLogLevel(3uLL);
@@ -2367,7 +2367,7 @@ void __26__WFClient_asyncMISState___block_invoke(uint64_t a1)
     *buf = 136315394;
     v12 = "[WFClient setMISState:]";
     v13 = 1024;
-    v14 = v3;
+    v14 = stateCopy;
     _os_log_impl(&dword_273ECD000, v5, v6, "%s: setting MIS state %d", buf, 0x12u);
   }
 
@@ -2377,7 +2377,7 @@ void __26__WFClient_asyncMISState___block_invoke(uint64_t a1)
   v9[2] = __24__WFClient_setMISState___block_invoke;
   v9[3] = &unk_279EBDF00;
   v9[4] = self;
-  v10 = v3;
+  v10 = stateCopy;
   dispatch_async(v7, v9);
 
   v8 = *MEMORY[0x277D85DE8];
@@ -2391,18 +2391,18 @@ uint64_t __24__WFClient_setMISState___block_invoke(uint64_t a1)
   return MEMORY[0x282187888](v2, v3);
 }
 
-- (void)asyncMISDiscoveryState:(id)a3
+- (void)asyncMISDiscoveryState:(id)state
 {
-  v4 = a3;
-  v5 = [(WFClient *)self stateMonitorQueue];
+  stateCopy = state;
+  stateMonitorQueue = [(WFClient *)self stateMonitorQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __35__WFClient_asyncMISDiscoveryState___block_invoke;
   v7[3] = &unk_279EBD9A8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = stateCopy;
+  v6 = stateCopy;
+  dispatch_async(stateMonitorQueue, v7);
 }
 
 void __35__WFClient_asyncMISDiscoveryState___block_invoke(uint64_t a1)
@@ -2444,10 +2444,10 @@ void __35__WFClient_asyncMISDiscoveryState___block_invoke(uint64_t a1)
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setMISDiscoveryState:(BOOL)a3 immediateDisable:(BOOL)a4
+- (void)setMISDiscoveryState:(BOOL)state immediateDisable:(BOOL)disable
 {
-  v4 = a4;
-  v5 = a3;
+  disableCopy = disable;
+  stateCopy = state;
   v20 = *MEMORY[0x277D85DE8];
   v7 = WFLogForCategory(0);
   v8 = OSLogForWFLogLevel(3uLL);
@@ -2456,9 +2456,9 @@ void __35__WFClient_asyncMISDiscoveryState___block_invoke(uint64_t a1)
     *buf = 136315650;
     v15 = "[WFClient setMISDiscoveryState:immediateDisable:]";
     v16 = 1024;
-    v17 = v5;
+    v17 = stateCopy;
     v18 = 1024;
-    v19 = v4;
+    v19 = disableCopy;
     _os_log_impl(&dword_273ECD000, v7, v8, "%s: setting MIS discovery state %d (immediateDisable %d)", buf, 0x18u);
   }
 
@@ -2468,8 +2468,8 @@ void __35__WFClient_asyncMISDiscoveryState___block_invoke(uint64_t a1)
   v11[2] = __50__WFClient_setMISDiscoveryState_immediateDisable___block_invoke;
   v11[3] = &unk_279EBD620;
   v11[4] = self;
-  v12 = v5;
-  v13 = v4;
+  v12 = stateCopy;
+  v13 = disableCopy;
   dispatch_async(v9, v11);
 
   v10 = *MEMORY[0x277D85DE8];
@@ -2484,10 +2484,10 @@ uint64_t __50__WFClient_setMISDiscoveryState_immediateDisable___block_invoke(uin
   return MEMORY[0x282187878](v2, v3, v4);
 }
 
-- (void)dispatchCertificateTrustAction:(int64_t)a3 profile:(id)a4
+- (void)dispatchCertificateTrustAction:(int64_t)action profile:(id)profile
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  profileCopy = profile;
   v7 = WFLogForCategory(0);
   v8 = OSLogForWFLogLevel(3uLL);
   if (WFCurrentLogLevel() >= 3 && v7)
@@ -2495,20 +2495,20 @@ uint64_t __50__WFClient_setMISDiscoveryState_immediateDisable___block_invoke(uin
     v9 = v7;
     if (os_log_type_enabled(v9, v8))
     {
-      v10 = [v6 ssid];
+      ssid = [profileCopy ssid];
       *v13 = 136315650;
       *&v13[4] = "[WFClient dispatchCertificateTrustAction:profile:]";
       v14 = 2048;
-      v15 = a3;
+      actionCopy = action;
       v16 = 2112;
-      v17 = v10;
+      v17 = ssid;
       _os_log_impl(&dword_273ECD000, v9, v8, "%s: dispatching trust action %lu for network %@", v13, 0x20u);
     }
   }
 
-  if (v6)
+  if (profileCopy)
   {
-    v11 = [v6 networkAttributes];
+    networkAttributes = [profileCopy networkAttributes];
     [(WFClient *)self manager];
     WiFiManagerClientDispatchNotificationResponse();
   }
@@ -2516,16 +2516,16 @@ uint64_t __50__WFClient_setMISDiscoveryState_immediateDisable___block_invoke(uin
   else
   {
     [WFClient dispatchCertificateTrustAction:v13 profile:?];
-    v11 = *v13;
+    networkAttributes = *v13;
   }
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)dispatchJoinRecommendationAction:(int64_t)a3 profile:(id)a4
+- (void)dispatchJoinRecommendationAction:(int64_t)action profile:(id)profile
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  profileCopy = profile;
   v7 = WFLogForCategory(0);
   v8 = OSLogForWFLogLevel(3uLL);
   if (WFCurrentLogLevel() >= 3 && v7)
@@ -2533,25 +2533,25 @@ uint64_t __50__WFClient_setMISDiscoveryState_immediateDisable___block_invoke(uin
     v9 = v7;
     if (os_log_type_enabled(v9, v8))
     {
-      v10 = [v6 ssid];
+      ssid = [profileCopy ssid];
       *v14 = 136315650;
       *&v14[4] = "[WFClient dispatchJoinRecommendationAction:profile:]";
       v15 = 1024;
-      v16 = a3;
+      actionCopy = action;
       v17 = 2112;
-      v18 = v10;
+      v18 = ssid;
       _os_log_impl(&dword_273ECD000, v9, v8, "%s: dispatching auto join action %d for network %@", v14, 0x1Cu);
     }
   }
 
-  if (v6)
+  if (profileCopy)
   {
-    if (a3 <= 3)
+    if (action <= 3)
     {
-      v11 = dword_273F75C30[a3];
+      v11 = dword_273F75C30[action];
     }
 
-    v12 = [v6 networkAttributes];
+    networkAttributes = [profileCopy networkAttributes];
     [(WFClient *)self manager];
     WiFiManagerClientDispatchNotificationResponse();
   }
@@ -2559,16 +2559,16 @@ uint64_t __50__WFClient_setMISDiscoveryState_immediateDisable___block_invoke(uin
   else
   {
     [WFClient dispatchJoinRecommendationAction:v14 profile:?];
-    v12 = *v14;
+    networkAttributes = *v14;
   }
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)dispatchAskToJoinAction:(unint64_t)a3 notificationId:(unsigned int)a4 network:(id)a5
+- (void)dispatchAskToJoinAction:(unint64_t)action notificationId:(unsigned int)id network:(id)network
 {
   v22 = *MEMORY[0x277D85DE8];
-  v8 = a5;
+  networkCopy = network;
   v9 = WFLogForCategory(0);
   v10 = OSLogForWFLogLevel(3uLL);
   if (WFCurrentLogLevel() >= 3 && v9 && os_log_type_enabled(v9, v10))
@@ -2576,32 +2576,32 @@ uint64_t __50__WFClient_setMISDiscoveryState_immediateDisable___block_invoke(uin
     v16 = 136315650;
     v17 = "[WFClient dispatchAskToJoinAction:notificationId:network:]";
     v18 = 2048;
-    v19 = a3;
+    actionCopy = action;
     v20 = 1024;
-    v21 = a4;
+    idCopy = id;
     _os_log_impl(&dword_273ECD000, v9, v10, "%s: dispatching ask to join action %lu for notificationId %d", &v16, 0x1Cu);
   }
 
-  if (a3 <= 2)
+  if (action <= 2)
   {
-    v11 = dword_273F75C20[a3];
-    if (v8)
+    v11 = dword_273F75C20[action];
+    if (networkCopy)
     {
       goto LABEL_7;
     }
 
 LABEL_13:
-    v12 = 0;
+    attributes = 0;
     goto LABEL_14;
   }
 
-  if (!v8)
+  if (!networkCopy)
   {
     goto LABEL_13;
   }
 
 LABEL_7:
-  v12 = [v8 attributes];
+  attributes = [networkCopy attributes];
   v13 = WFLogForCategory(0);
   v14 = OSLogForWFLogLevel(3uLL);
   if (WFCurrentLogLevel() >= 3 && v13 && os_log_type_enabled(v13, v14))
@@ -2609,7 +2609,7 @@ LABEL_7:
     v16 = 136315394;
     v17 = "[WFClient dispatchAskToJoinAction:notificationId:network:]";
     v18 = 2112;
-    v19 = v8;
+    actionCopy = networkCopy;
     _os_log_impl(&dword_273ECD000, v13, v14, "%s: network %@", &v16, 0x16u);
   }
 
@@ -2637,11 +2637,11 @@ LABEL_14:
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_notifyWiFiPropertyChanged:(id)a3 value:(id)a4
+- (void)_notifyWiFiPropertyChanged:(id)changed value:(id)value
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  changedCopy = changed;
+  valueCopy = value;
   v8 = WFLogForCategory(0);
   v9 = OSLogForWFLogLevel(3uLL);
   if (WFCurrentLogLevel() >= 3 && v8 && os_log_type_enabled(v8, v9))
@@ -2649,9 +2649,9 @@ LABEL_14:
     *buf = 136315650;
     v17 = "[WFClient _notifyWiFiPropertyChanged:value:]";
     v18 = 2112;
-    v19 = v6;
+    v19 = changedCopy;
     v20 = 2112;
-    v21 = v7;
+    v21 = valueCopy;
     _os_log_impl(&dword_273ECD000, v8, v9, "%s: key='%@' value='%@'", buf, 0x20u);
   }
 
@@ -2660,10 +2660,10 @@ LABEL_14:
   block[2] = __45__WFClient__notifyWiFiPropertyChanged_value___block_invoke;
   block[3] = &unk_279EBD268;
   block[4] = self;
-  v14 = v6;
-  v15 = v7;
-  v10 = v7;
-  v11 = v6;
+  v14 = changedCopy;
+  v15 = valueCopy;
+  v10 = valueCopy;
+  v11 = changedCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 
   v12 = *MEMORY[0x277D85DE8];
@@ -2704,21 +2704,21 @@ void __45__WFClient__notifyWiFiPropertyChanged_value___block_invoke(void *a1)
   return v5;
 }
 
-- (void)setRandomAddressModeForNetwork:(id)a3 mode:(unint64_t)a4 randomMAC:(id)a5
+- (void)setRandomAddressModeForNetwork:(id)network mode:(unint64_t)mode randomMAC:(id)c
 {
-  v8 = a3;
-  v9 = a5;
+  networkCopy = network;
+  cCopy = c;
   v10 = dispatch_get_global_queue(21, 0);
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __58__WFClient_setRandomAddressModeForNetwork_mode_randomMAC___block_invoke;
   v13[3] = &unk_279EBDFC8;
-  v14 = v9;
-  v15 = self;
-  v16 = v8;
-  v17 = a4;
-  v11 = v8;
-  v12 = v9;
+  v14 = cCopy;
+  selfCopy = self;
+  v16 = networkCopy;
+  modeCopy = mode;
+  v11 = networkCopy;
+  v12 = cCopy;
   dispatch_async(v10, v13);
 }
 
@@ -2830,9 +2830,9 @@ LABEL_31:
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setEnableRandomMACForNetwork:(id)a3 enable:(BOOL)a4 randomMAC:(id)a5
+- (void)setEnableRandomMACForNetwork:(id)network enable:(BOOL)enable randomMAC:(id)c
 {
-  if (a4)
+  if (enable)
   {
     v5 = 2;
   }
@@ -2842,13 +2842,13 @@ LABEL_31:
     v5 = 3;
   }
 
-  [(WFClient *)self setRandomAddressModeForNetwork:a3 mode:v5 randomMAC:a5];
+  [(WFClient *)self setRandomAddressModeForNetwork:network mode:v5 randomMAC:c];
 }
 
-- (id)newRandomMACAddressForSSID:(id)a3
+- (id)newRandomMACAddressForSSID:(id)d
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   [(WFClient *)self manager];
   v5 = *MEMORY[0x277D29800];
   v6 = WiFiManagerClientCopyProperty();
@@ -2899,7 +2899,7 @@ LABEL_31:
   if (WFCurrentLogLevel() && v21 && os_log_type_enabled(v21, v22))
   {
     v23 = 138412290;
-    v24 = v4;
+    v24 = dCopy;
     _os_log_impl(&dword_273ECD000, v21, v22, "Fail to generate random MAC for ssid: %@", &v23, 0xCu);
   }
 
@@ -2930,15 +2930,15 @@ LABEL_16:
   return v18;
 }
 
-- (void)_updateOSSpecificAttributes:(id)a3
+- (void)_updateOSSpecificAttributes:(id)attributes
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  attributesCopy = attributes;
   v5 = objc_alloc_init(MEMORY[0x277D02B60]);
-  [v5 setOSSpecificAttributes:v4];
-  v6 = [(WFClient *)self cInterface];
+  [v5 setOSSpecificAttributes:attributesCopy];
+  cInterface = [(WFClient *)self cInterface];
   v12 = 0;
-  v7 = [v6 applyUserSettings:v5 properties:0 error:&v12];
+  v7 = [cInterface applyUserSettings:v5 properties:0 error:&v12];
   v8 = v12;
 
   if ((v7 & 1) == 0)
@@ -2948,7 +2948,7 @@ LABEL_16:
     if (WFCurrentLogLevel() && v9 && os_log_type_enabled(v9, v10))
     {
       *buf = 138412546;
-      v14 = v4;
+      v14 = attributesCopy;
       v15 = 2112;
       v16 = v8;
       _os_log_impl(&dword_273ECD000, v9, v10, "failed to set OSSpecificAttributes for %@, error='%@'", buf, 0x16u);
@@ -2958,12 +2958,12 @@ LABEL_16:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_unscheduleCallbacksWithManager:(__WiFiManagerClient *)a3
+- (void)_unscheduleCallbacksWithManager:(__WiFiManagerClient *)manager
 {
-  if (a3)
+  if (manager)
   {
-    v4 = [(WFClient *)self callbackRunLoop];
-    [v4 getCFRunLoop];
+    callbackRunLoop = [(WFClient *)self callbackRunLoop];
+    [callbackRunLoop getCFRunLoop];
     v5 = *MEMORY[0x277CBF058];
     WiFiManagerClientUnscheduleFromRunLoop();
 
@@ -3006,7 +3006,7 @@ LABEL_16:
     v11 = 3221225472;
     v12 = __35__WFClient__updateWiFiUIFlagsState__block_invoke;
     v13 = &unk_279EBCFE0;
-    v14 = self;
+    selfCopy = self;
     dispatch_async(MEMORY[0x277D85CD0], block);
     result = 1;
   }
@@ -3025,8 +3025,8 @@ LABEL_16:
   v17 = *MEMORY[0x277D85DE8];
   if (self->_manager)
   {
-    v3 = [(WFClient *)self cInterface];
-    v4 = [v3 powerOn];
+    cInterface = [(WFClient *)self cInterface];
+    powerOn = [cInterface powerOn];
 
     v5 = WFLogForCategory(0);
     v6 = OSLogForWFLogLevel(3uLL);
@@ -3035,18 +3035,18 @@ LABEL_16:
       *buf = 136315394;
       v14 = "[WFClient _updatePowerState]";
       v15 = 1024;
-      v16 = v4;
+      v16 = powerOn;
       _os_log_impl(&dword_273ECD000, v5, v6, "%s: current power %d", buf, 0x12u);
     }
 
-    if (self->_powered != v4)
+    if (self->_powered != powerOn)
     {
-      self->_powered = v4;
+      self->_powered = powerOn;
       OUTLINED_FUNCTION_1_4();
       v9 = 3221225472;
       v10 = __29__WFClient__updatePowerState__block_invoke;
       v11 = &unk_279EBCFE0;
-      v12 = self;
+      selfCopy = self;
       dispatch_async(MEMORY[0x277D85CD0], block);
     }
   }

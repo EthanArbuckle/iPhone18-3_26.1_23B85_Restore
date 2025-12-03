@@ -1,5 +1,5 @@
 @interface MIBUDeviceStatus
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (MIBUDeviceStatus)init;
 @end
 
@@ -26,84 +26,84 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_11;
   }
 
-  v5 = [v4 state];
-  if (v5 != [(MIBUDeviceStatus *)self state])
+  state = [equalCopy state];
+  if (state != [(MIBUDeviceStatus *)self state])
   {
     goto LABEL_11;
   }
 
-  v6 = [v4 operation];
-  if (v6 != [(MIBUDeviceStatus *)self operation])
+  operation = [equalCopy operation];
+  if (operation != [(MIBUDeviceStatus *)self operation])
   {
     goto LABEL_11;
   }
 
-  v7 = [v4 operationError];
-  v8 = [v7 domain];
-  v9 = [(MIBUDeviceStatus *)self operationError];
-  v10 = [v9 domain];
-  v11 = [v8 isEqualToString:v10];
+  operationError = [equalCopy operationError];
+  domain = [operationError domain];
+  operationError2 = [(MIBUDeviceStatus *)self operationError];
+  domain2 = [operationError2 domain];
+  v11 = [domain isEqualToString:domain2];
 
   if (!v11)
   {
     goto LABEL_11;
   }
 
-  v12 = [v4 operationError];
-  v13 = [v12 code];
-  v14 = [(MIBUDeviceStatus *)self operationError];
-  v15 = [v14 code];
+  operationError3 = [equalCopy operationError];
+  code = [operationError3 code];
+  operationError4 = [(MIBUDeviceStatus *)self operationError];
+  code2 = [operationError4 code];
 
-  if (v13 != v15)
+  if (code != code2)
   {
     goto LABEL_11;
   }
 
-  v16 = [v4 batteryLevel];
-  v17 = [(MIBUDeviceStatus *)self batteryLevel];
-  v18 = [v16 isEqualToNumber:v17];
+  batteryLevel = [equalCopy batteryLevel];
+  batteryLevel2 = [(MIBUDeviceStatus *)self batteryLevel];
+  v18 = [batteryLevel isEqualToNumber:batteryLevel2];
 
   if (!v18)
   {
     goto LABEL_11;
   }
 
-  v19 = [v4 operationDetails];
-  v20 = [(MIBUDeviceStatus *)self operationDetails];
-  v21 = [v19 isEqualToDictionary:v20];
+  operationDetails = [equalCopy operationDetails];
+  operationDetails2 = [(MIBUDeviceStatus *)self operationDetails];
+  v21 = [operationDetails isEqualToDictionary:operationDetails2];
 
   if (!v21)
   {
     goto LABEL_11;
   }
 
-  v22 = [v4 thermalDetails];
-  v23 = [(MIBUDeviceStatus *)self thermalDetails];
-  v24 = [v22 isEqualToDictionary:v23];
+  thermalDetails = [equalCopy thermalDetails];
+  thermalDetails2 = [(MIBUDeviceStatus *)self thermalDetails];
+  v24 = [thermalDetails isEqualToDictionary:thermalDetails2];
 
   if (!v24)
   {
     goto LABEL_11;
   }
 
-  v25 = [v4 batteryDetails];
-  v26 = [(MIBUDeviceStatus *)self batteryDetails];
-  v27 = [v25 isEqualToDictionary:v26];
+  batteryDetails = [equalCopy batteryDetails];
+  batteryDetails2 = [(MIBUDeviceStatus *)self batteryDetails];
+  v27 = [batteryDetails isEqualToDictionary:batteryDetails2];
 
   if (v27)
   {
-    v28 = [v4 updateSummary];
-    v29 = [(MIBUDeviceStatus *)self updateSummary];
-    v30 = [v28 isEqualToDictionary:v29];
+    updateSummary = [equalCopy updateSummary];
+    updateSummary2 = [(MIBUDeviceStatus *)self updateSummary];
+    v30 = [updateSummary isEqualToDictionary:updateSummary2];
   }
 
   else

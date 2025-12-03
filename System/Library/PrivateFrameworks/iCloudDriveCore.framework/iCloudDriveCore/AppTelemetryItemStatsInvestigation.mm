@@ -1,93 +1,93 @@
 @interface AppTelemetryItemStatsInvestigation
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasApfsBlockSize:(BOOL)a3;
-- (void)setHasApfsEncrypted:(BOOL)a3;
-- (void)setHasApfsFlags:(BOOL)a3;
-- (void)setHasApfsRole:(BOOL)a3;
-- (void)setHasAppLibraryMatches:(BOOL)a3;
-- (void)setHasBTime:(BOOL)a3;
-- (void)setHasBTimeIsBusy:(BOOL)a3;
-- (void)setHasCloneErrorCode:(BOOL)a3;
-- (void)setHasCompressionType:(BOOL)a3;
-- (void)setHasDataProtectionClass:(BOOL)a3;
-- (void)setHasDbCapabilities:(BOOL)a3;
-- (void)setHasDbEffectiveContentPolicy:(BOOL)a3;
-- (void)setHasDbErrorCode:(BOOL)a3;
-- (void)setHasDbFpContentStatus:(BOOL)a3;
-- (void)setHasDbFpDeletionStatus:(BOOL)a3;
-- (void)setHasDbFpImportStatus:(BOOL)a3;
-- (void)setHasDbFsContentStatus:(BOOL)a3;
-- (void)setHasDbFsDeletionStatus:(BOOL)a3;
-- (void)setHasDbFsImportStatus:(BOOL)a3;
-- (void)setHasDbGenCount:(BOOL)a3;
-- (void)setHasDbIsApplibrary:(BOOL)a3;
-- (void)setHasDbIsPackage:(BOOL)a3;
-- (void)setHasDbIsSuper:(BOOL)a3;
-- (void)setHasDbSharingState:(BOOL)a3;
-- (void)setHasDbTransferState:(BOOL)a3;
-- (void)setHasDiagErrorCode:(BOOL)a3;
-- (void)setHasDiagFailuresBitmap:(BOOL)a3;
-- (void)setHasDiagUnderlyingErrorCode:(BOOL)a3;
-- (void)setHasDoGenCountsMatchInFileId:(BOOL)a3;
-- (void)setHasDocIDMatches:(BOOL)a3;
-- (void)setHasFileNameLength:(BOOL)a3;
-- (void)setHasFsGenCount:(BOOL)a3;
-- (void)setHasGencountDiff:(BOOL)a3;
-- (void)setHasHasAcls:(BOOL)a3;
-- (void)setHasHasLocalChanges:(BOOL)a3;
-- (void)setHasHasMoreLinks:(BOOL)a3;
-- (void)setHasIsAppleDouble:(BOOL)a3;
-- (void)setHasIsBundleBit:(BOOL)a3;
-- (void)setHasIsFileNameNonAscii:(BOOL)a3;
-- (void)setHasIsOwnedByLoggedInUser:(BOOL)a3;
-- (void)setHasIsOwnedByRoot:(BOOL)a3;
-- (void)setHasIsPurgable:(BOOL)a3;
-- (void)setHasIsQuarantined:(BOOL)a3;
-- (void)setHasIsResourceFork:(BOOL)a3;
-- (void)setHasIsUnderDirStatFolder:(BOOL)a3;
-- (void)setHasIsUrgent:(BOOL)a3;
-- (void)setHasItemNumber:(BOOL)a3;
-- (void)setHasItemType:(BOOL)a3;
-- (void)setHasMTime:(BOOL)a3;
-- (void)setHasMTimeBeforeMigrationStarted:(BOOL)a3;
-- (void)setHasNameIsTrashed:(BOOL)a3;
-- (void)setHasParentHasAcls:(BOOL)a3;
-- (void)setHasParentMatches:(BOOL)a3;
-- (void)setHasPathDepth:(BOOL)a3;
-- (void)setHasPathLength:(BOOL)a3;
-- (void)setHasPurgeATime:(BOOL)a3;
-- (void)setHasPurgeGenCount:(BOOL)a3;
-- (void)setHasPurgeSyncRoot:(BOOL)a3;
-- (void)setHasReadErrorCode:(BOOL)a3;
-- (void)setHasStFlags:(BOOL)a3;
-- (void)setHasStMode:(BOOL)a3;
-- (void)setHasStatDirEntryCount:(BOOL)a3;
-- (void)setHasStatDocID:(BOOL)a3;
-- (void)setHasStatLogicalSize:(BOOL)a3;
-- (void)setHasStatPhysicalSize:(BOOL)a3;
-- (void)setHasSyncRootEnum:(BOOL)a3;
-- (void)setHasSysDocIDResolutionOK:(BOOL)a3;
-- (void)setHasSysPageSize:(BOOL)a3;
-- (void)setHasSysUID:(BOOL)a3;
-- (void)setHasXattrCount:(BOOL)a3;
-- (void)setHasXattrHasBeforeBounce:(BOOL)a3;
-- (void)setHasXattrHasDemotion:(BOOL)a3;
-- (void)setHasXattrHasPromotion:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasApfsBlockSize:(BOOL)size;
+- (void)setHasApfsEncrypted:(BOOL)encrypted;
+- (void)setHasApfsFlags:(BOOL)flags;
+- (void)setHasApfsRole:(BOOL)role;
+- (void)setHasAppLibraryMatches:(BOOL)matches;
+- (void)setHasBTime:(BOOL)time;
+- (void)setHasBTimeIsBusy:(BOOL)busy;
+- (void)setHasCloneErrorCode:(BOOL)code;
+- (void)setHasCompressionType:(BOOL)type;
+- (void)setHasDataProtectionClass:(BOOL)class;
+- (void)setHasDbCapabilities:(BOOL)capabilities;
+- (void)setHasDbEffectiveContentPolicy:(BOOL)policy;
+- (void)setHasDbErrorCode:(BOOL)code;
+- (void)setHasDbFpContentStatus:(BOOL)status;
+- (void)setHasDbFpDeletionStatus:(BOOL)status;
+- (void)setHasDbFpImportStatus:(BOOL)status;
+- (void)setHasDbFsContentStatus:(BOOL)status;
+- (void)setHasDbFsDeletionStatus:(BOOL)status;
+- (void)setHasDbFsImportStatus:(BOOL)status;
+- (void)setHasDbGenCount:(BOOL)count;
+- (void)setHasDbIsApplibrary:(BOOL)applibrary;
+- (void)setHasDbIsPackage:(BOOL)package;
+- (void)setHasDbIsSuper:(BOOL)super;
+- (void)setHasDbSharingState:(BOOL)state;
+- (void)setHasDbTransferState:(BOOL)state;
+- (void)setHasDiagErrorCode:(BOOL)code;
+- (void)setHasDiagFailuresBitmap:(BOOL)bitmap;
+- (void)setHasDiagUnderlyingErrorCode:(BOOL)code;
+- (void)setHasDoGenCountsMatchInFileId:(BOOL)id;
+- (void)setHasDocIDMatches:(BOOL)matches;
+- (void)setHasFileNameLength:(BOOL)length;
+- (void)setHasFsGenCount:(BOOL)count;
+- (void)setHasGencountDiff:(BOOL)diff;
+- (void)setHasHasAcls:(BOOL)acls;
+- (void)setHasHasLocalChanges:(BOOL)changes;
+- (void)setHasHasMoreLinks:(BOOL)links;
+- (void)setHasIsAppleDouble:(BOOL)double;
+- (void)setHasIsBundleBit:(BOOL)bit;
+- (void)setHasIsFileNameNonAscii:(BOOL)ascii;
+- (void)setHasIsOwnedByLoggedInUser:(BOOL)user;
+- (void)setHasIsOwnedByRoot:(BOOL)root;
+- (void)setHasIsPurgable:(BOOL)purgable;
+- (void)setHasIsQuarantined:(BOOL)quarantined;
+- (void)setHasIsResourceFork:(BOOL)fork;
+- (void)setHasIsUnderDirStatFolder:(BOOL)folder;
+- (void)setHasIsUrgent:(BOOL)urgent;
+- (void)setHasItemNumber:(BOOL)number;
+- (void)setHasItemType:(BOOL)type;
+- (void)setHasMTime:(BOOL)time;
+- (void)setHasMTimeBeforeMigrationStarted:(BOOL)started;
+- (void)setHasNameIsTrashed:(BOOL)trashed;
+- (void)setHasParentHasAcls:(BOOL)acls;
+- (void)setHasParentMatches:(BOOL)matches;
+- (void)setHasPathDepth:(BOOL)depth;
+- (void)setHasPathLength:(BOOL)length;
+- (void)setHasPurgeATime:(BOOL)time;
+- (void)setHasPurgeGenCount:(BOOL)count;
+- (void)setHasPurgeSyncRoot:(BOOL)root;
+- (void)setHasReadErrorCode:(BOOL)code;
+- (void)setHasStFlags:(BOOL)flags;
+- (void)setHasStMode:(BOOL)mode;
+- (void)setHasStatDirEntryCount:(BOOL)count;
+- (void)setHasStatDocID:(BOOL)d;
+- (void)setHasStatLogicalSize:(BOOL)size;
+- (void)setHasStatPhysicalSize:(BOOL)size;
+- (void)setHasSyncRootEnum:(BOOL)enum;
+- (void)setHasSysDocIDResolutionOK:(BOOL)k;
+- (void)setHasSysPageSize:(BOOL)size;
+- (void)setHasSysUID:(BOOL)d;
+- (void)setHasXattrCount:(BOOL)count;
+- (void)setHasXattrHasBeforeBounce:(BOOL)bounce;
+- (void)setHasXattrHasDemotion:(BOOL)demotion;
+- (void)setHasXattrHasPromotion:(BOOL)promotion;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AppTelemetryItemStatsInvestigation
 
-- (void)setHasItemNumber:(BOOL)a3
+- (void)setHasItemNumber:(BOOL)number
 {
   v3 = 0x2000000;
-  if (!a3)
+  if (!number)
   {
     v3 = 0;
   }
@@ -95,10 +95,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFDFFFFFFLL | v3;
 }
 
-- (void)setHasItemType:(BOOL)a3
+- (void)setHasItemType:(BOOL)type
 {
   v3 = 0x80000000000;
-  if (!a3)
+  if (!type)
   {
     v3 = 0;
   }
@@ -106,10 +106,10 @@
   *&self->_has = *&self->_has & 0xFFFFF7FFFFFFFFFFLL | v3;
 }
 
-- (void)setHasDataProtectionClass:(BOOL)a3
+- (void)setHasDataProtectionClass:(BOOL)class
 {
   v3 = 0x40000000000;
-  if (!a3)
+  if (!class)
   {
     v3 = 0;
   }
@@ -117,10 +117,10 @@
   *&self->_has = *&self->_has & 0xFFFFFBFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasIsOwnedByLoggedInUser:(BOOL)a3
+- (void)setHasIsOwnedByLoggedInUser:(BOOL)user
 {
   v3 = 0x800000000000000;
-  if (!a3)
+  if (!user)
   {
     v3 = 0;
   }
@@ -128,10 +128,10 @@
   *&self->_has = *&self->_has & 0xF7FFFFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasIsOwnedByRoot:(BOOL)a3
+- (void)setHasIsOwnedByRoot:(BOOL)root
 {
   v3 = 0x1000000000000000;
-  if (!a3)
+  if (!root)
   {
     v3 = 0;
   }
@@ -139,10 +139,10 @@
   *&self->_has = *&self->_has & 0xEFFFFFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasXattrCount:(BOOL)a3
+- (void)setHasXattrCount:(BOOL)count
 {
   v3 = 0x200000000000;
-  if (!a3)
+  if (!count)
   {
     v3 = 0;
   }
@@ -150,10 +150,10 @@
   *&self->_has = *&self->_has & 0xFFFFDFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasIsAppleDouble:(BOOL)a3
+- (void)setHasIsAppleDouble:(BOOL)double
 {
   v3 = 0x100000000000000;
-  if (!a3)
+  if (!double)
   {
     v3 = 0;
   }
@@ -161,10 +161,10 @@
   *&self->_has = *&self->_has & 0xFEFFFFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasIsResourceFork:(BOOL)a3
+- (void)setHasIsResourceFork:(BOOL)fork
 {
   v3 = 0x8000000000000000;
-  if (!a3)
+  if (!fork)
   {
     v3 = 0;
   }
@@ -172,10 +172,10 @@
   *&self->_has = v3 & 0x8000000000000000 | *&self->_has & 0x7FFFFFFFFFFFFFFFLL;
 }
 
-- (void)setHasIsQuarantined:(BOOL)a3
+- (void)setHasIsQuarantined:(BOOL)quarantined
 {
   v3 = 0x4000000000000000;
-  if (!a3)
+  if (!quarantined)
   {
     v3 = 0;
   }
@@ -183,10 +183,10 @@
   *&self->_has = *&self->_has & 0xBFFFFFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasIsBundleBit:(BOOL)a3
+- (void)setHasIsBundleBit:(BOOL)bit
 {
   v3 = 0x200000000000000;
-  if (!a3)
+  if (!bit)
   {
     v3 = 0;
   }
@@ -194,10 +194,10 @@
   *&self->_has = *&self->_has & 0xFDFFFFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasCompressionType:(BOOL)a3
+- (void)setHasCompressionType:(BOOL)type
 {
   v3 = 0x20000000000;
-  if (!a3)
+  if (!type)
   {
     v3 = 0;
   }
@@ -205,10 +205,10 @@
   *&self->_has = *&self->_has & 0xFFFFFDFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasReadErrorCode:(BOOL)a3
+- (void)setHasReadErrorCode:(BOOL)code
 {
   v3 = 0x100000000;
-  if (!a3)
+  if (!code)
   {
     v3 = 0;
   }
@@ -216,10 +216,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFEFFFFFFFFLL | v3;
 }
 
-- (void)setHasCloneErrorCode:(BOOL)a3
+- (void)setHasCloneErrorCode:(BOOL)code
 {
   v3 = 32;
-  if (!a3)
+  if (!code)
   {
     v3 = 0;
   }
@@ -227,10 +227,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFFFFDFLL | v3;
 }
 
-- (void)setHasSyncRootEnum:(BOOL)a3
+- (void)setHasSyncRootEnum:(BOOL)enum
 {
   v3 = 0x100000000000;
-  if (!a3)
+  if (!enum)
   {
     v3 = 0;
   }
@@ -238,10 +238,10 @@
   *&self->_has = *&self->_has & 0xFFFFEFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasPathLength:(BOOL)a3
+- (void)setHasPathLength:(BOOL)length
 {
   v3 = 0x10000000;
-  if (!a3)
+  if (!length)
   {
     v3 = 0;
   }
@@ -249,10 +249,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFEFFFFFFFLL | v3;
 }
 
-- (void)setHasFileNameLength:(BOOL)a3
+- (void)setHasFileNameLength:(BOOL)length
 {
   v3 = 0x200000;
-  if (!a3)
+  if (!length)
   {
     v3 = 0;
   }
@@ -260,10 +260,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFDFFFFFLL | v3;
 }
 
-- (void)setHasStMode:(BOOL)a3
+- (void)setHasStMode:(BOOL)mode
 {
   v3 = 0x400000000;
-  if (!a3)
+  if (!mode)
   {
     v3 = 0;
   }
@@ -271,10 +271,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFBFFFFFFFFLL | v3;
 }
 
-- (void)setHasStFlags:(BOOL)a3
+- (void)setHasStFlags:(BOOL)flags
 {
   v3 = 0x200000000;
-  if (!a3)
+  if (!flags)
   {
     v3 = 0;
   }
@@ -282,10 +282,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFDFFFFFFFFLL | v3;
 }
 
-- (void)setHasHasAcls:(BOOL)a3
+- (void)setHasHasAcls:(BOOL)acls
 {
   v3 = 0x40000000000000;
-  if (!a3)
+  if (!acls)
   {
     v3 = 0;
   }
@@ -293,9 +293,9 @@
   *&self->_has = *&self->_has & 0xFFBFFFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasParentHasAcls:(BOOL)a3
+- (void)setHasParentHasAcls:(BOOL)acls
 {
-  if (a3)
+  if (acls)
   {
     v3 = 32;
   }
@@ -308,10 +308,10 @@
   *(&self->_has + 4) = *(&self->_has + 4) & 0xFFDF | v3;
 }
 
-- (void)setHasIsPurgable:(BOOL)a3
+- (void)setHasIsPurgable:(BOOL)purgable
 {
   v3 = 0x2000000000000000;
-  if (!a3)
+  if (!purgable)
   {
     v3 = 0;
   }
@@ -319,9 +319,9 @@
   *&self->_has = *&self->_has & 0xDFFFFFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasIsUrgent:(BOOL)a3
+- (void)setHasIsUrgent:(BOOL)urgent
 {
-  if (a3)
+  if (urgent)
   {
     v3 = 4;
   }
@@ -334,9 +334,9 @@
   *(&self->_has + 4) = *(&self->_has + 4) & 0xFFFB | v3;
 }
 
-- (void)setHasIsUnderDirStatFolder:(BOOL)a3
+- (void)setHasIsUnderDirStatFolder:(BOOL)folder
 {
-  if (a3)
+  if (folder)
   {
     v3 = 2;
   }
@@ -349,10 +349,10 @@
   *(&self->_has + 4) = *(&self->_has + 4) & 0xFFFD | v3;
 }
 
-- (void)setHasIsFileNameNonAscii:(BOOL)a3
+- (void)setHasIsFileNameNonAscii:(BOOL)ascii
 {
   v3 = 0x400000000000000;
-  if (!a3)
+  if (!ascii)
   {
     v3 = 0;
   }
@@ -360,10 +360,10 @@
   *&self->_has = *&self->_has & 0xFBFFFFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasHasMoreLinks:(BOOL)a3
+- (void)setHasHasMoreLinks:(BOOL)links
 {
   v3 = 0x1000000;
-  if (!a3)
+  if (!links)
   {
     v3 = 0;
   }
@@ -371,10 +371,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFEFFFFFFLL | v3;
 }
 
-- (void)setHasFsGenCount:(BOOL)a3
+- (void)setHasFsGenCount:(BOOL)count
 {
   v3 = 0x400000;
-  if (!a3)
+  if (!count)
   {
     v3 = 0;
   }
@@ -382,10 +382,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFBFFFFFLL | v3;
 }
 
-- (void)setHasDbGenCount:(BOOL)a3
+- (void)setHasDbGenCount:(BOOL)count
 {
   v3 = 0x8000;
-  if (!a3)
+  if (!count)
   {
     v3 = 0;
   }
@@ -393,10 +393,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFF7FFFLL | v3;
 }
 
-- (void)setHasHasLocalChanges:(BOOL)a3
+- (void)setHasHasLocalChanges:(BOOL)changes
 {
   v3 = 0x80000000000000;
-  if (!a3)
+  if (!changes)
   {
     v3 = 0;
   }
@@ -404,10 +404,10 @@
   *&self->_has = *&self->_has & 0xFF7FFFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasDoGenCountsMatchInFileId:(BOOL)a3
+- (void)setHasDoGenCountsMatchInFileId:(BOOL)id
 {
   v3 = 0x10000000000000;
-  if (!a3)
+  if (!id)
   {
     v3 = 0;
   }
@@ -415,10 +415,10 @@
   *&self->_has = *&self->_has & 0xFFEFFFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasPathDepth:(BOOL)a3
+- (void)setHasPathDepth:(BOOL)depth
 {
   v3 = 0x8000000;
-  if (!a3)
+  if (!depth)
   {
     v3 = 0;
   }
@@ -426,9 +426,9 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFF7FFFFFFLL | v3;
 }
 
-- (void)setHasXattrHasDemotion:(BOOL)a3
+- (void)setHasXattrHasDemotion:(BOOL)demotion
 {
-  if (a3)
+  if (demotion)
   {
     v3 = 512;
   }
@@ -441,9 +441,9 @@
   *(&self->_has + 4) = *(&self->_has + 4) & 0xFDFF | v3;
 }
 
-- (void)setHasXattrHasPromotion:(BOOL)a3
+- (void)setHasXattrHasPromotion:(BOOL)promotion
 {
-  if (a3)
+  if (promotion)
   {
     v3 = 1024;
   }
@@ -456,10 +456,10 @@
   *(&self->_has + 4) = *(&self->_has + 4) & 0xFBFF | v3;
 }
 
-- (void)setHasDbErrorCode:(BOOL)a3
+- (void)setHasDbErrorCode:(BOOL)code
 {
   v3 = 256;
-  if (!a3)
+  if (!code)
   {
     v3 = 0;
   }
@@ -467,10 +467,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFFFEFFLL | v3;
 }
 
-- (void)setHasDbCapabilities:(BOOL)a3
+- (void)setHasDbCapabilities:(BOOL)capabilities
 {
   v3 = 64;
-  if (!a3)
+  if (!capabilities)
   {
     v3 = 0;
   }
@@ -478,10 +478,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFFFFBFLL | v3;
 }
 
-- (void)setHasDbTransferState:(BOOL)a3
+- (void)setHasDbTransferState:(BOOL)state
 {
   v3 = 0x20000;
-  if (!a3)
+  if (!state)
   {
     v3 = 0;
   }
@@ -489,10 +489,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFDFFFFLL | v3;
 }
 
-- (void)setHasDbSharingState:(BOOL)a3
+- (void)setHasDbSharingState:(BOOL)state
 {
   v3 = 0x10000;
-  if (!a3)
+  if (!state)
   {
     v3 = 0;
   }
@@ -500,10 +500,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFEFFFFLL | v3;
 }
 
-- (void)setHasDbIsApplibrary:(BOOL)a3
+- (void)setHasDbIsApplibrary:(BOOL)applibrary
 {
   v3 = 0x2000000000000;
-  if (!a3)
+  if (!applibrary)
   {
     v3 = 0;
   }
@@ -511,10 +511,10 @@
   *&self->_has = *&self->_has & 0xFFFDFFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasDbEffectiveContentPolicy:(BOOL)a3
+- (void)setHasDbEffectiveContentPolicy:(BOOL)policy
 {
   v3 = 128;
-  if (!a3)
+  if (!policy)
   {
     v3 = 0;
   }
@@ -522,10 +522,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFFFF7FLL | v3;
 }
 
-- (void)setHasDbIsPackage:(BOOL)a3
+- (void)setHasDbIsPackage:(BOOL)package
 {
   v3 = 0x4000000000000;
-  if (!a3)
+  if (!package)
   {
     v3 = 0;
   }
@@ -533,10 +533,10 @@
   *&self->_has = *&self->_has & 0xFFFBFFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasDbFsContentStatus:(BOOL)a3
+- (void)setHasDbFsContentStatus:(BOOL)status
 {
   v3 = 4096;
-  if (!a3)
+  if (!status)
   {
     v3 = 0;
   }
@@ -544,10 +544,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFFEFFFLL | v3;
 }
 
-- (void)setHasDbFpContentStatus:(BOOL)a3
+- (void)setHasDbFpContentStatus:(BOOL)status
 {
   v3 = 512;
-  if (!a3)
+  if (!status)
   {
     v3 = 0;
   }
@@ -555,10 +555,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFFFDFFLL | v3;
 }
 
-- (void)setHasDbFsDeletionStatus:(BOOL)a3
+- (void)setHasDbFsDeletionStatus:(BOOL)status
 {
   v3 = 0x2000;
-  if (!a3)
+  if (!status)
   {
     v3 = 0;
   }
@@ -566,10 +566,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFFDFFFLL | v3;
 }
 
-- (void)setHasDbFpDeletionStatus:(BOOL)a3
+- (void)setHasDbFpDeletionStatus:(BOOL)status
 {
   v3 = 1024;
-  if (!a3)
+  if (!status)
   {
     v3 = 0;
   }
@@ -577,10 +577,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFFFBFFLL | v3;
 }
 
-- (void)setHasDbFsImportStatus:(BOOL)a3
+- (void)setHasDbFsImportStatus:(BOOL)status
 {
   v3 = 0x4000;
-  if (!a3)
+  if (!status)
   {
     v3 = 0;
   }
@@ -588,10 +588,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFFBFFFLL | v3;
 }
 
-- (void)setHasDbFpImportStatus:(BOOL)a3
+- (void)setHasDbFpImportStatus:(BOOL)status
 {
   v3 = 2048;
-  if (!a3)
+  if (!status)
   {
     v3 = 0;
   }
@@ -599,10 +599,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFFF7FFLL | v3;
 }
 
-- (void)setHasDbIsSuper:(BOOL)a3
+- (void)setHasDbIsSuper:(BOOL)super
 {
   v3 = 0x8000000000000;
-  if (!a3)
+  if (!super)
   {
     v3 = 0;
   }
@@ -610,10 +610,10 @@
   *&self->_has = *&self->_has & 0xFFF7FFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasGencountDiff:(BOOL)a3
+- (void)setHasGencountDiff:(BOOL)diff
 {
   v3 = 0x800000;
-  if (!a3)
+  if (!diff)
   {
     v3 = 0;
   }
@@ -621,9 +621,9 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFF7FFFFFLL | v3;
 }
 
-- (void)setHasParentMatches:(BOOL)a3
+- (void)setHasParentMatches:(BOOL)matches
 {
-  if (a3)
+  if (matches)
   {
     v3 = 64;
   }
@@ -636,10 +636,10 @@
   *(&self->_has + 4) = *(&self->_has + 4) & 0xFFBF | v3;
 }
 
-- (void)setHasAppLibraryMatches:(BOOL)a3
+- (void)setHasAppLibraryMatches:(BOOL)matches
 {
   v3 = 0x800000000000;
-  if (!a3)
+  if (!matches)
   {
     v3 = 0;
   }
@@ -647,9 +647,9 @@
   *&self->_has = *&self->_has & 0xFFFF7FFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasMTimeBeforeMigrationStarted:(BOOL)a3
+- (void)setHasMTimeBeforeMigrationStarted:(BOOL)started
 {
-  if (a3)
+  if (started)
   {
     v3 = 8;
   }
@@ -662,10 +662,10 @@
   *(&self->_has + 4) = *(&self->_has + 4) & 0xFFF7 | v3;
 }
 
-- (void)setHasDocIDMatches:(BOOL)a3
+- (void)setHasDocIDMatches:(BOOL)matches
 {
   v3 = 0x20000000000000;
-  if (!a3)
+  if (!matches)
   {
     v3 = 0;
   }
@@ -673,10 +673,10 @@
   *&self->_has = *&self->_has & 0xFFDFFFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasMTime:(BOOL)a3
+- (void)setHasMTime:(BOOL)time
 {
   v3 = 0x4000000;
-  if (!a3)
+  if (!time)
   {
     v3 = 0;
   }
@@ -684,10 +684,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFBFFFFFFLL | v3;
 }
 
-- (void)setHasBTime:(BOOL)a3
+- (void)setHasBTime:(BOOL)time
 {
   v3 = 16;
-  if (!a3)
+  if (!time)
   {
     v3 = 0;
   }
@@ -695,10 +695,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFFFFEFLL | v3;
 }
 
-- (void)setHasBTimeIsBusy:(BOOL)a3
+- (void)setHasBTimeIsBusy:(BOOL)busy
 {
   v3 = 0x1000000000000;
-  if (!a3)
+  if (!busy)
   {
     v3 = 0;
   }
@@ -706,9 +706,9 @@
   *&self->_has = *&self->_has & 0xFFFEFFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasXattrHasBeforeBounce:(BOOL)a3
+- (void)setHasXattrHasBeforeBounce:(BOOL)bounce
 {
-  if (a3)
+  if (bounce)
   {
     v3 = 256;
   }
@@ -721,9 +721,9 @@
   *(&self->_has + 4) = *(&self->_has + 4) & 0xFEFF | v3;
 }
 
-- (void)setHasNameIsTrashed:(BOOL)a3
+- (void)setHasNameIsTrashed:(BOOL)trashed
 {
-  if (a3)
+  if (trashed)
   {
     v3 = 16;
   }
@@ -736,10 +736,10 @@
   *(&self->_has + 4) = *(&self->_has + 4) & 0xFFEF | v3;
 }
 
-- (void)setHasSysPageSize:(BOOL)a3
+- (void)setHasSysPageSize:(BOOL)size
 {
   v3 = 0x8000000000;
-  if (!a3)
+  if (!size)
   {
     v3 = 0;
   }
@@ -747,10 +747,10 @@
   *&self->_has = *&self->_has & 0xFFFFFF7FFFFFFFFFLL | v3;
 }
 
-- (void)setHasSysUID:(BOOL)a3
+- (void)setHasSysUID:(BOOL)d
 {
   v3 = 0x10000000000;
-  if (!a3)
+  if (!d)
   {
     v3 = 0;
   }
@@ -758,9 +758,9 @@
   *&self->_has = *&self->_has & 0xFFFFFEFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasSysDocIDResolutionOK:(BOOL)a3
+- (void)setHasSysDocIDResolutionOK:(BOOL)k
 {
-  if (a3)
+  if (k)
   {
     v3 = 128;
   }
@@ -773,10 +773,10 @@
   *(&self->_has + 4) = *(&self->_has + 4) & 0xFF7F | v3;
 }
 
-- (void)setHasPurgeGenCount:(BOOL)a3
+- (void)setHasPurgeGenCount:(BOOL)count
 {
   v3 = 0x40000000;
-  if (!a3)
+  if (!count)
   {
     v3 = 0;
   }
@@ -784,10 +784,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFBFFFFFFFLL | v3;
 }
 
-- (void)setHasPurgeATime:(BOOL)a3
+- (void)setHasPurgeATime:(BOOL)time
 {
   v3 = 0x20000000;
-  if (!a3)
+  if (!time)
   {
     v3 = 0;
   }
@@ -795,10 +795,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFDFFFFFFFLL | v3;
 }
 
-- (void)setHasPurgeSyncRoot:(BOOL)a3
+- (void)setHasPurgeSyncRoot:(BOOL)root
 {
   v3 = 0x80000000;
-  if (!a3)
+  if (!root)
   {
     v3 = 0;
   }
@@ -806,10 +806,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFF7FFFFFFFLL | v3;
 }
 
-- (void)setHasDiagFailuresBitmap:(BOOL)a3
+- (void)setHasDiagFailuresBitmap:(BOOL)bitmap
 {
   v3 = 0x80000;
-  if (!a3)
+  if (!bitmap)
   {
     v3 = 0;
   }
@@ -817,10 +817,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFF7FFFFLL | v3;
 }
 
-- (void)setHasDiagErrorCode:(BOOL)a3
+- (void)setHasDiagErrorCode:(BOOL)code
 {
   v3 = 0x40000;
-  if (!a3)
+  if (!code)
   {
     v3 = 0;
   }
@@ -828,10 +828,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFBFFFFLL | v3;
 }
 
-- (void)setHasDiagUnderlyingErrorCode:(BOOL)a3
+- (void)setHasDiagUnderlyingErrorCode:(BOOL)code
 {
   v3 = 0x100000;
-  if (!a3)
+  if (!code)
   {
     v3 = 0;
   }
@@ -839,10 +839,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFEFFFFFLL | v3;
 }
 
-- (void)setHasApfsFlags:(BOOL)a3
+- (void)setHasApfsFlags:(BOOL)flags
 {
   v3 = 4;
-  if (!a3)
+  if (!flags)
   {
     v3 = 0;
   }
@@ -850,10 +850,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFFFFFBLL | v3;
 }
 
-- (void)setHasApfsBlockSize:(BOOL)a3
+- (void)setHasApfsBlockSize:(BOOL)size
 {
   v3 = 2;
-  if (!a3)
+  if (!size)
   {
     v3 = 0;
   }
@@ -861,10 +861,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFFFFFDLL | v3;
 }
 
-- (void)setHasApfsRole:(BOOL)a3
+- (void)setHasApfsRole:(BOOL)role
 {
   v3 = 8;
-  if (!a3)
+  if (!role)
   {
     v3 = 0;
   }
@@ -872,10 +872,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFFFFFFFFFF7 | v3;
 }
 
-- (void)setHasApfsEncrypted:(BOOL)a3
+- (void)setHasApfsEncrypted:(BOOL)encrypted
 {
   v3 = 0x400000000000;
-  if (!a3)
+  if (!encrypted)
   {
     v3 = 0;
   }
@@ -883,10 +883,10 @@
   *&self->_has = *&self->_has & 0xFFFFBFFFFFFFFFFFLL | v3;
 }
 
-- (void)setHasStatDocID:(BOOL)a3
+- (void)setHasStatDocID:(BOOL)d
 {
   v3 = 0x1000000000;
-  if (!a3)
+  if (!d)
   {
     v3 = 0;
   }
@@ -894,10 +894,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFEFFFFFFFFFLL | v3;
 }
 
-- (void)setHasStatLogicalSize:(BOOL)a3
+- (void)setHasStatLogicalSize:(BOOL)size
 {
   v3 = 0x2000000000;
-  if (!a3)
+  if (!size)
   {
     v3 = 0;
   }
@@ -905,10 +905,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFDFFFFFFFFFLL | v3;
 }
 
-- (void)setHasStatPhysicalSize:(BOOL)a3
+- (void)setHasStatPhysicalSize:(BOOL)size
 {
   v3 = 0x4000000000;
-  if (!a3)
+  if (!size)
   {
     v3 = 0;
   }
@@ -916,10 +916,10 @@
   *&self->_has = *&self->_has & 0xFFFFFFBFFFFFFFFFLL | v3;
 }
 
-- (void)setHasStatDirEntryCount:(BOOL)a3
+- (void)setHasStatDirEntryCount:(BOOL)count
 {
   v3 = 0x800000000;
-  if (!a3)
+  if (!count)
   {
     v3 = 0;
   }
@@ -933,21 +933,21 @@
   v8.receiver = self;
   v8.super_class = AppTelemetryItemStatsInvestigation;
   v4 = [(AppTelemetryItemStatsInvestigation *)&v8 description];
-  v5 = [(AppTelemetryItemStatsInvestigation *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(AppTelemetryItemStatsInvestigation *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   p_has = &self->_has;
   has = self->_has;
   if ((has & 0x2000000) != 0)
   {
     v49 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_itemNumber];
-    [v3 setObject:v49 forKey:@"itemNumber"];
+    [dictionary setObject:v49 forKey:@"itemNumber"];
 
     has = *p_has;
     if ((*p_has & 0x80000000000) == 0)
@@ -968,7 +968,7 @@ LABEL_3:
   }
 
   v50 = [MEMORY[0x277CCABB0] numberWithInt:self->_itemType];
-  [v3 setObject:v50 forKey:@"itemType"];
+  [dictionary setObject:v50 forKey:@"itemType"];
 
   has = *p_has;
   if ((*p_has & 0x40000000000) == 0)
@@ -984,7 +984,7 @@ LABEL_4:
 
 LABEL_118:
   v51 = [MEMORY[0x277CCABB0] numberWithInt:self->_dataProtectionClass];
-  [v3 setObject:v51 forKey:@"dataProtectionClass"];
+  [dictionary setObject:v51 forKey:@"dataProtectionClass"];
 
   has = *p_has;
   if ((*p_has & 0x800000000000000) == 0)
@@ -1000,7 +1000,7 @@ LABEL_5:
 
 LABEL_119:
   v52 = [MEMORY[0x277CCABB0] numberWithBool:self->_isOwnedByLoggedInUser];
-  [v3 setObject:v52 forKey:@"isOwnedByLoggedInUser"];
+  [dictionary setObject:v52 forKey:@"isOwnedByLoggedInUser"];
 
   has = *p_has;
   if ((*p_has & 0x1000000000000000) == 0)
@@ -1016,7 +1016,7 @@ LABEL_6:
 
 LABEL_120:
   v53 = [MEMORY[0x277CCABB0] numberWithBool:self->_isOwnedByRoot];
-  [v3 setObject:v53 forKey:@"isOwnedByRoot"];
+  [dictionary setObject:v53 forKey:@"isOwnedByRoot"];
 
   has = *p_has;
   if ((*p_has & 0x200000000000) == 0)
@@ -1032,7 +1032,7 @@ LABEL_7:
 
 LABEL_121:
   v54 = [MEMORY[0x277CCABB0] numberWithInt:self->_xattrCount];
-  [v3 setObject:v54 forKey:@"xattrCount"];
+  [dictionary setObject:v54 forKey:@"xattrCount"];
 
   has = *p_has;
   if ((*p_has & 0x100000000000000) == 0)
@@ -1048,7 +1048,7 @@ LABEL_8:
 
 LABEL_122:
   v55 = [MEMORY[0x277CCABB0] numberWithBool:self->_isAppleDouble];
-  [v3 setObject:v55 forKey:@"isAppleDouble"];
+  [dictionary setObject:v55 forKey:@"isAppleDouble"];
 
   has = *p_has;
   if ((*p_has & 0x8000000000000000) == 0)
@@ -1064,39 +1064,39 @@ LABEL_9:
 
 LABEL_123:
   v56 = [MEMORY[0x277CCABB0] numberWithBool:self->_isResourceFork];
-  [v3 setObject:v56 forKey:@"isResourceFork"];
+  [dictionary setObject:v56 forKey:@"isResourceFork"];
 
   if ((*p_has & 0x4000000000000000) != 0)
   {
 LABEL_10:
     v6 = [MEMORY[0x277CCABB0] numberWithBool:self->_isQuarantined];
-    [v3 setObject:v6 forKey:@"isQuarantined"];
+    [dictionary setObject:v6 forKey:@"isQuarantined"];
   }
 
 LABEL_11:
   utType = self->_utType;
   if (utType)
   {
-    [v3 setObject:utType forKey:@"utType"];
+    [dictionary setObject:utType forKey:@"utType"];
   }
 
   if ((*(&self->_has + 7) & 2) != 0)
   {
     v8 = [MEMORY[0x277CCABB0] numberWithBool:self->_isBundleBit];
-    [v3 setObject:v8 forKey:@"isBundleBit"];
+    [dictionary setObject:v8 forKey:@"isBundleBit"];
   }
 
   if (*(&self->_has + 4))
   {
     v9 = [MEMORY[0x277CCABB0] numberWithBool:self->_isSparseFile];
-    [v3 setObject:v9 forKey:@"isSparseFile"];
+    [dictionary setObject:v9 forKey:@"isSparseFile"];
   }
 
   v10 = *p_has;
   if ((*p_has & 0x20000000000) != 0)
   {
     v57 = [MEMORY[0x277CCABB0] numberWithInt:self->_compressionType];
-    [v3 setObject:v57 forKey:@"compressionType"];
+    [dictionary setObject:v57 forKey:@"compressionType"];
 
     v10 = *p_has;
     if ((*p_has & 0x100000000) == 0)
@@ -1117,7 +1117,7 @@ LABEL_19:
   }
 
   v58 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_readErrorCode];
-  [v3 setObject:v58 forKey:@"readErrorCode"];
+  [dictionary setObject:v58 forKey:@"readErrorCode"];
 
   v10 = *p_has;
   if ((*p_has & 0x20) == 0)
@@ -1133,7 +1133,7 @@ LABEL_20:
 
 LABEL_127:
   v59 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_cloneErrorCode];
-  [v3 setObject:v59 forKey:@"cloneErrorCode"];
+  [dictionary setObject:v59 forKey:@"cloneErrorCode"];
 
   v10 = *p_has;
   if ((*p_has & 0x100000000000) == 0)
@@ -1149,7 +1149,7 @@ LABEL_21:
 
 LABEL_128:
   v60 = [MEMORY[0x277CCABB0] numberWithInt:self->_syncRootEnum];
-  [v3 setObject:v60 forKey:@"syncRootEnum"];
+  [dictionary setObject:v60 forKey:@"syncRootEnum"];
 
   v10 = *p_has;
   if ((*p_has & 0x10000000) == 0)
@@ -1165,7 +1165,7 @@ LABEL_22:
 
 LABEL_129:
   v61 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_pathLength];
-  [v3 setObject:v61 forKey:@"pathLength"];
+  [dictionary setObject:v61 forKey:@"pathLength"];
 
   v10 = *p_has;
   if ((*p_has & 0x200000) == 0)
@@ -1181,7 +1181,7 @@ LABEL_23:
 
 LABEL_130:
   v62 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_fileNameLength];
-  [v3 setObject:v62 forKey:@"fileNameLength"];
+  [dictionary setObject:v62 forKey:@"fileNameLength"];
 
   v10 = *p_has;
   if ((*p_has & 0x400000000) == 0)
@@ -1197,7 +1197,7 @@ LABEL_24:
 
 LABEL_131:
   v63 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_stMode];
-  [v3 setObject:v63 forKey:@"st_mode"];
+  [dictionary setObject:v63 forKey:@"st_mode"];
 
   v10 = *p_has;
   if ((*p_has & 0x200000000) == 0)
@@ -1213,33 +1213,33 @@ LABEL_25:
 
 LABEL_132:
   v64 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_stFlags];
-  [v3 setObject:v64 forKey:@"st_flags"];
+  [dictionary setObject:v64 forKey:@"st_flags"];
 
   if ((*p_has & 0x40000000000000) != 0)
   {
 LABEL_26:
     v11 = [MEMORY[0x277CCABB0] numberWithBool:self->_hasAcls];
-    [v3 setObject:v11 forKey:@"hasAcls"];
+    [dictionary setObject:v11 forKey:@"hasAcls"];
   }
 
 LABEL_27:
   if ((*(&self->_has + 4) & 0x20) != 0)
   {
     v12 = [MEMORY[0x277CCABB0] numberWithBool:self->_parentHasAcls];
-    [v3 setObject:v12 forKey:@"parentHasAcls"];
+    [dictionary setObject:v12 forKey:@"parentHasAcls"];
   }
 
   if ((*(&self->_has + 7) & 0x20) != 0)
   {
     v13 = [MEMORY[0x277CCABB0] numberWithBool:self->_isPurgable];
-    [v3 setObject:v13 forKey:@"isPurgable"];
+    [dictionary setObject:v13 forKey:@"isPurgable"];
   }
 
   v14 = *(&self->_has + 4);
   if ((v14 & 4) != 0)
   {
     v15 = [MEMORY[0x277CCABB0] numberWithBool:self->_isUrgent];
-    [v3 setObject:v15 forKey:@"isUrgent"];
+    [dictionary setObject:v15 forKey:@"isUrgent"];
 
     v14 = *(&self->_has + 4);
   }
@@ -1247,26 +1247,26 @@ LABEL_27:
   if ((v14 & 2) != 0)
   {
     v16 = [MEMORY[0x277CCABB0] numberWithBool:self->_isUnderDirStatFolder];
-    [v3 setObject:v16 forKey:@"isUnderDirStatFolder"];
+    [dictionary setObject:v16 forKey:@"isUnderDirStatFolder"];
   }
 
   if ((*(&self->_has + 7) & 4) != 0)
   {
     v17 = [MEMORY[0x277CCABB0] numberWithBool:self->_isFileNameNonAscii];
-    [v3 setObject:v17 forKey:@"isFileNameNonAscii"];
+    [dictionary setObject:v17 forKey:@"isFileNameNonAscii"];
   }
 
   finderInfoFlagsBase64 = self->_finderInfoFlagsBase64;
   if (finderInfoFlagsBase64)
   {
-    [v3 setObject:finderInfoFlagsBase64 forKey:@"finderInfoFlagsBase64"];
+    [dictionary setObject:finderInfoFlagsBase64 forKey:@"finderInfoFlagsBase64"];
   }
 
   v19 = *p_has;
   if ((*p_has & 0x1000000) != 0)
   {
     v65 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_hasMoreLinks];
-    [v3 setObject:v65 forKey:@"hasMoreLinks"];
+    [dictionary setObject:v65 forKey:@"hasMoreLinks"];
 
     v19 = *p_has;
     if ((*p_has & 0x400000) == 0)
@@ -1287,7 +1287,7 @@ LABEL_41:
   }
 
   v66 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_fsGenCount];
-  [v3 setObject:v66 forKey:@"fsGenCount"];
+  [dictionary setObject:v66 forKey:@"fsGenCount"];
 
   v19 = *p_has;
   if ((*p_has & 0x8000) == 0)
@@ -1303,7 +1303,7 @@ LABEL_42:
 
 LABEL_136:
   v67 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_dbGenCount];
-  [v3 setObject:v67 forKey:@"dbGenCount"];
+  [dictionary setObject:v67 forKey:@"dbGenCount"];
 
   v19 = *p_has;
   if ((*p_has & 0x80000000000000) == 0)
@@ -1319,33 +1319,33 @@ LABEL_43:
 
 LABEL_137:
   v68 = [MEMORY[0x277CCABB0] numberWithBool:self->_hasLocalChanges];
-  [v3 setObject:v68 forKey:@"hasLocalChanges"];
+  [dictionary setObject:v68 forKey:@"hasLocalChanges"];
 
   if ((*p_has & 0x10000000000000) != 0)
   {
 LABEL_44:
     v20 = [MEMORY[0x277CCABB0] numberWithBool:self->_doGenCountsMatchInFileId];
-    [v3 setObject:v20 forKey:@"doGenCountsMatchInFileId"];
+    [dictionary setObject:v20 forKey:@"doGenCountsMatchInFileId"];
   }
 
 LABEL_45:
   fileNameExtension = self->_fileNameExtension;
   if (fileNameExtension)
   {
-    [v3 setObject:fileNameExtension forKey:@"fileNameExtension"];
+    [dictionary setObject:fileNameExtension forKey:@"fileNameExtension"];
   }
 
   if ((*(&self->_has + 3) & 8) != 0)
   {
     v22 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_pathDepth];
-    [v3 setObject:v22 forKey:@"pathDepth"];
+    [dictionary setObject:v22 forKey:@"pathDepth"];
   }
 
   v23 = *(&self->_has + 4);
   if ((v23 & 0x200) != 0)
   {
     v24 = [MEMORY[0x277CCABB0] numberWithBool:self->_xattrHasDemotion];
-    [v3 setObject:v24 forKey:@"xattrHasDemotion"];
+    [dictionary setObject:v24 forKey:@"xattrHasDemotion"];
 
     v23 = *(&self->_has + 4);
   }
@@ -1353,20 +1353,20 @@ LABEL_45:
   if ((v23 & 0x400) != 0)
   {
     v25 = [MEMORY[0x277CCABB0] numberWithBool:self->_xattrHasPromotion];
-    [v3 setObject:v25 forKey:@"xattrHasPromotion"];
+    [dictionary setObject:v25 forKey:@"xattrHasPromotion"];
   }
 
   dbErrorDomain = self->_dbErrorDomain;
   if (dbErrorDomain)
   {
-    [v3 setObject:dbErrorDomain forKey:@"dbErrorDomain"];
+    [dictionary setObject:dbErrorDomain forKey:@"dbErrorDomain"];
   }
 
   v27 = *p_has;
   if ((*p_has & 0x100) != 0)
   {
     v69 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_dbErrorCode];
-    [v3 setObject:v69 forKey:@"dbErrorCode"];
+    [dictionary setObject:v69 forKey:@"dbErrorCode"];
 
     v27 = *p_has;
     if ((*p_has & 0x40) == 0)
@@ -1387,7 +1387,7 @@ LABEL_57:
   }
 
   v70 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_dbCapabilities];
-  [v3 setObject:v70 forKey:@"dbCapabilities"];
+  [dictionary setObject:v70 forKey:@"dbCapabilities"];
 
   v27 = *p_has;
   if ((*p_has & 0x20000) == 0)
@@ -1403,7 +1403,7 @@ LABEL_58:
 
 LABEL_141:
   v71 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_dbTransferState];
-  [v3 setObject:v71 forKey:@"dbTransferState"];
+  [dictionary setObject:v71 forKey:@"dbTransferState"];
 
   v27 = *p_has;
   if ((*p_has & 0x10000) == 0)
@@ -1419,7 +1419,7 @@ LABEL_59:
 
 LABEL_142:
   v72 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_dbSharingState];
-  [v3 setObject:v72 forKey:@"dbSharingState"];
+  [dictionary setObject:v72 forKey:@"dbSharingState"];
 
   v27 = *p_has;
   if ((*p_has & 0x2000000000000) == 0)
@@ -1435,7 +1435,7 @@ LABEL_60:
 
 LABEL_143:
   v73 = [MEMORY[0x277CCABB0] numberWithBool:self->_dbIsApplibrary];
-  [v3 setObject:v73 forKey:@"dbIsApplibrary"];
+  [dictionary setObject:v73 forKey:@"dbIsApplibrary"];
 
   v27 = *p_has;
   if ((*p_has & 0x80) == 0)
@@ -1451,7 +1451,7 @@ LABEL_61:
 
 LABEL_144:
   v74 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_dbEffectiveContentPolicy];
-  [v3 setObject:v74 forKey:@"dbEffectiveContentPolicy"];
+  [dictionary setObject:v74 forKey:@"dbEffectiveContentPolicy"];
 
   v27 = *p_has;
   if ((*p_has & 0x4000000000000) == 0)
@@ -1467,7 +1467,7 @@ LABEL_62:
 
 LABEL_145:
   v75 = [MEMORY[0x277CCABB0] numberWithBool:self->_dbIsPackage];
-  [v3 setObject:v75 forKey:@"dbIsPackage"];
+  [dictionary setObject:v75 forKey:@"dbIsPackage"];
 
   v27 = *p_has;
   if ((*p_has & 0x1000) == 0)
@@ -1483,7 +1483,7 @@ LABEL_63:
 
 LABEL_146:
   v76 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_dbFsContentStatus];
-  [v3 setObject:v76 forKey:@"dbFsContentStatus"];
+  [dictionary setObject:v76 forKey:@"dbFsContentStatus"];
 
   v27 = *p_has;
   if ((*p_has & 0x200) == 0)
@@ -1499,7 +1499,7 @@ LABEL_64:
 
 LABEL_147:
   v77 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_dbFpContentStatus];
-  [v3 setObject:v77 forKey:@"dbFpContentStatus"];
+  [dictionary setObject:v77 forKey:@"dbFpContentStatus"];
 
   v27 = *p_has;
   if ((*p_has & 0x2000) == 0)
@@ -1515,7 +1515,7 @@ LABEL_65:
 
 LABEL_148:
   v78 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_dbFsDeletionStatus];
-  [v3 setObject:v78 forKey:@"dbFsDeletionStatus"];
+  [dictionary setObject:v78 forKey:@"dbFsDeletionStatus"];
 
   v27 = *p_has;
   if ((*p_has & 0x400) == 0)
@@ -1531,7 +1531,7 @@ LABEL_66:
 
 LABEL_149:
   v79 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_dbFpDeletionStatus];
-  [v3 setObject:v79 forKey:@"dbFpDeletionStatus"];
+  [dictionary setObject:v79 forKey:@"dbFpDeletionStatus"];
 
   v27 = *p_has;
   if ((*p_has & 0x4000) == 0)
@@ -1547,7 +1547,7 @@ LABEL_67:
 
 LABEL_150:
   v80 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_dbFsImportStatus];
-  [v3 setObject:v80 forKey:@"dbFsImportStatus"];
+  [dictionary setObject:v80 forKey:@"dbFsImportStatus"];
 
   v27 = *p_has;
   if ((*p_has & 0x800) == 0)
@@ -1563,7 +1563,7 @@ LABEL_68:
 
 LABEL_151:
   v81 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_dbFpImportStatus];
-  [v3 setObject:v81 forKey:@"dbFpImportStatus"];
+  [dictionary setObject:v81 forKey:@"dbFpImportStatus"];
 
   v27 = *p_has;
   if ((*p_has & 0x8000000000000) == 0)
@@ -1579,39 +1579,39 @@ LABEL_69:
 
 LABEL_152:
   v82 = [MEMORY[0x277CCABB0] numberWithBool:self->_dbIsSuper];
-  [v3 setObject:v82 forKey:@"dbIsSuper"];
+  [dictionary setObject:v82 forKey:@"dbIsSuper"];
 
   if ((*p_has & 0x800000) != 0)
   {
 LABEL_70:
     v28 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_gencountDiff];
-    [v3 setObject:v28 forKey:@"gencountDiff"];
+    [dictionary setObject:v28 forKey:@"gencountDiff"];
   }
 
 LABEL_71:
   if ((*(&self->_has + 4) & 0x40) != 0)
   {
     v29 = [MEMORY[0x277CCABB0] numberWithBool:self->_parentMatches];
-    [v3 setObject:v29 forKey:@"parentMatches"];
+    [dictionary setObject:v29 forKey:@"parentMatches"];
   }
 
   if ((*(&self->_has + 5) & 0x80) != 0)
   {
     v30 = [MEMORY[0x277CCABB0] numberWithBool:self->_appLibraryMatches];
-    [v3 setObject:v30 forKey:@"appLibraryMatches"];
+    [dictionary setObject:v30 forKey:@"appLibraryMatches"];
   }
 
   if ((*(&self->_has + 4) & 8) != 0)
   {
     v31 = [MEMORY[0x277CCABB0] numberWithBool:self->_mTimeBeforeMigrationStarted];
-    [v3 setObject:v31 forKey:@"mTimeBeforeMigrationStarted"];
+    [dictionary setObject:v31 forKey:@"mTimeBeforeMigrationStarted"];
   }
 
   v32 = *p_has;
   if ((*p_has & 0x20000000000000) != 0)
   {
     v83 = [MEMORY[0x277CCABB0] numberWithBool:self->_docIDMatches];
-    [v3 setObject:v83 forKey:@"docIDMatches"];
+    [dictionary setObject:v83 forKey:@"docIDMatches"];
 
     v32 = *p_has;
     if ((*p_has & 0x4000000) == 0)
@@ -1632,7 +1632,7 @@ LABEL_79:
   }
 
   v84 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_mTime];
-  [v3 setObject:v84 forKey:@"mTime"];
+  [dictionary setObject:v84 forKey:@"mTime"];
 
   v32 = *p_has;
   if ((*p_has & 0x10) == 0)
@@ -1648,39 +1648,39 @@ LABEL_80:
 
 LABEL_156:
   v85 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_bTime];
-  [v3 setObject:v85 forKey:@"bTime"];
+  [dictionary setObject:v85 forKey:@"bTime"];
 
   if ((*p_has & 0x1000000000000) != 0)
   {
 LABEL_81:
     v33 = [MEMORY[0x277CCABB0] numberWithBool:self->_bTimeIsBusy];
-    [v3 setObject:v33 forKey:@"bTimeIsBusy"];
+    [dictionary setObject:v33 forKey:@"bTimeIsBusy"];
   }
 
 LABEL_82:
   if ((*(&self->_has + 4) & 0x100) != 0)
   {
     v34 = [MEMORY[0x277CCABB0] numberWithBool:self->_xattrHasBeforeBounce];
-    [v3 setObject:v34 forKey:@"xattrHasBeforeBounce"];
+    [dictionary setObject:v34 forKey:@"xattrHasBeforeBounce"];
   }
 
   nameUnicodeNorm = self->_nameUnicodeNorm;
   if (nameUnicodeNorm)
   {
-    [v3 setObject:nameUnicodeNorm forKey:@"nameUnicodeNorm"];
+    [dictionary setObject:nameUnicodeNorm forKey:@"nameUnicodeNorm"];
   }
 
   if ((*(&self->_has + 4) & 0x10) != 0)
   {
     v36 = [MEMORY[0x277CCABB0] numberWithBool:self->_nameIsTrashed];
-    [v3 setObject:v36 forKey:@"nameIsTrashed"];
+    [dictionary setObject:v36 forKey:@"nameIsTrashed"];
   }
 
   v37 = *p_has;
   if ((*p_has & 0x8000000000) != 0)
   {
     v38 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_sysPageSize];
-    [v3 setObject:v38 forKey:@"sysPageSize"];
+    [dictionary setObject:v38 forKey:@"sysPageSize"];
 
     v37 = *p_has;
   }
@@ -1688,20 +1688,20 @@ LABEL_82:
   if ((v37 & 0x10000000000) != 0)
   {
     v39 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_sysUID];
-    [v3 setObject:v39 forKey:@"sysUID"];
+    [dictionary setObject:v39 forKey:@"sysUID"];
   }
 
   if ((*(&self->_has + 4) & 0x80) != 0)
   {
     v40 = [MEMORY[0x277CCABB0] numberWithBool:self->_sysDocIDResolutionOK];
-    [v3 setObject:v40 forKey:@"sysDocIDResolutionOK"];
+    [dictionary setObject:v40 forKey:@"sysDocIDResolutionOK"];
   }
 
   v41 = *p_has;
   if ((*p_has & 0x40000000) != 0)
   {
     v86 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_purgeGenCount];
-    [v3 setObject:v86 forKey:@"purgeGenCount"];
+    [dictionary setObject:v86 forKey:@"purgeGenCount"];
 
     v41 = *p_has;
     if ((*p_has & 0x20000000) == 0)
@@ -1722,7 +1722,7 @@ LABEL_96:
   }
 
   v87 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_purgeATime];
-  [v3 setObject:v87 forKey:@"purgeATime"];
+  [dictionary setObject:v87 forKey:@"purgeATime"];
 
   v41 = *p_has;
   if ((*p_has & 0x80000000) == 0)
@@ -1738,7 +1738,7 @@ LABEL_97:
 
 LABEL_160:
   v88 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_purgeSyncRoot];
-  [v3 setObject:v88 forKey:@"purgeSyncRoot"];
+  [dictionary setObject:v88 forKey:@"purgeSyncRoot"];
 
   v41 = *p_has;
   if ((*p_has & 0x80000) == 0)
@@ -1754,7 +1754,7 @@ LABEL_98:
 
 LABEL_161:
   v89 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_diagFailuresBitmap];
-  [v3 setObject:v89 forKey:@"diagFailuresBitmap"];
+  [dictionary setObject:v89 forKey:@"diagFailuresBitmap"];
 
   v41 = *p_has;
   if ((*p_has & 0x40000) == 0)
@@ -1770,33 +1770,33 @@ LABEL_99:
 
 LABEL_162:
   v90 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_diagErrorCode];
-  [v3 setObject:v90 forKey:@"diagErrorCode"];
+  [dictionary setObject:v90 forKey:@"diagErrorCode"];
 
   if ((*p_has & 0x100000) != 0)
   {
 LABEL_100:
     v42 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_diagUnderlyingErrorCode];
-    [v3 setObject:v42 forKey:@"diagUnderlyingErrorCode"];
+    [dictionary setObject:v42 forKey:@"diagUnderlyingErrorCode"];
   }
 
 LABEL_101:
   diagErrorDomain = self->_diagErrorDomain;
   if (diagErrorDomain)
   {
-    [v3 setObject:diagErrorDomain forKey:@"diagErrorDomain"];
+    [dictionary setObject:diagErrorDomain forKey:@"diagErrorDomain"];
   }
 
   diagUnderlyingErrorDomain = self->_diagUnderlyingErrorDomain;
   if (diagUnderlyingErrorDomain)
   {
-    [v3 setObject:diagUnderlyingErrorDomain forKey:@"diagUnderlyingErrorDomain"];
+    [dictionary setObject:diagUnderlyingErrorDomain forKey:@"diagUnderlyingErrorDomain"];
   }
 
   v45 = *p_has;
   if (*p_has)
   {
     v91 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_apfsAvailableSpace];
-    [v3 setObject:v91 forKey:@"apfsAvailableSpace"];
+    [dictionary setObject:v91 forKey:@"apfsAvailableSpace"];
 
     v45 = *p_has;
     if ((*p_has & 4) == 0)
@@ -1817,7 +1817,7 @@ LABEL_107:
   }
 
   v92 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_apfsFlags];
-  [v3 setObject:v92 forKey:@"apfsFlags"];
+  [dictionary setObject:v92 forKey:@"apfsFlags"];
 
   v45 = *p_has;
   if ((*p_has & 2) == 0)
@@ -1833,7 +1833,7 @@ LABEL_108:
 
 LABEL_166:
   v93 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_apfsBlockSize];
-  [v3 setObject:v93 forKey:@"apfsBlockSize"];
+  [dictionary setObject:v93 forKey:@"apfsBlockSize"];
 
   v45 = *p_has;
   if ((*p_has & 8) == 0)
@@ -1849,7 +1849,7 @@ LABEL_109:
 
 LABEL_167:
   v94 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_apfsRole];
-  [v3 setObject:v94 forKey:@"apfsRole"];
+  [dictionary setObject:v94 forKey:@"apfsRole"];
 
   v45 = *p_has;
   if ((*p_has & 0x400000000000) == 0)
@@ -1865,7 +1865,7 @@ LABEL_110:
 
 LABEL_168:
   v95 = [MEMORY[0x277CCABB0] numberWithBool:self->_apfsEncrypted];
-  [v3 setObject:v95 forKey:@"apfsEncrypted"];
+  [dictionary setObject:v95 forKey:@"apfsEncrypted"];
 
   v45 = *p_has;
   if ((*p_has & 0x1000000000) == 0)
@@ -1881,7 +1881,7 @@ LABEL_111:
 
 LABEL_169:
   v96 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_statDocID];
-  [v3 setObject:v96 forKey:@"statDocID"];
+  [dictionary setObject:v96 forKey:@"statDocID"];
 
   v45 = *p_has;
   if ((*p_has & 0x2000000000) == 0)
@@ -1894,7 +1894,7 @@ LABEL_112:
 
 LABEL_171:
     v98 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_statPhysicalSize];
-    [v3 setObject:v98 forKey:@"statPhysicalSize"];
+    [dictionary setObject:v98 forKey:@"statPhysicalSize"];
 
     if ((*p_has & 0x800000000) == 0)
     {
@@ -1906,7 +1906,7 @@ LABEL_171:
 
 LABEL_170:
   v97 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_statLogicalSize];
-  [v3 setObject:v97 forKey:@"statLogicalSize"];
+  [dictionary setObject:v97 forKey:@"statLogicalSize"];
 
   v45 = *p_has;
   if ((*p_has & 0x4000000000) != 0)
@@ -1919,18 +1919,18 @@ LABEL_113:
   {
 LABEL_114:
     v46 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_statDirEntryCount];
-    [v3 setObject:v46 forKey:@"statDirEntryCount"];
+    [dictionary setObject:v46 forKey:@"statDirEntryCount"];
   }
 
 LABEL_115:
-  v47 = v3;
+  v47 = dictionary;
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v90 = a3;
+  toCopy = to;
   p_has = &self->_has;
   has = self->_has;
   if ((has & 0x2000000) != 0)
@@ -2854,15 +2854,15 @@ LABEL_114:
 LABEL_115:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   p_has = &self->_has;
   has = self->_has;
   if ((has & 0x2000000) != 0)
   {
-    v4[26] = self->_itemNumber;
-    *(v4 + 452) |= 0x2000000uLL;
+    toCopy[26] = self->_itemNumber;
+    *(toCopy + 452) |= 0x2000000uLL;
     has = self->_has;
     if ((has & 0x80000000000) == 0)
     {
@@ -2881,8 +2881,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(v4 + 96) = self->_itemType;
-  *(v4 + 452) |= 0x80000000000uLL;
+  *(toCopy + 96) = self->_itemType;
+  *(toCopy + 452) |= 0x80000000000uLL;
   has = self->_has;
   if ((has & 0x40000000000) == 0)
   {
@@ -2896,8 +2896,8 @@ LABEL_4:
   }
 
 LABEL_120:
-  *(v4 + 85) = self->_dataProtectionClass;
-  *(v4 + 452) |= 0x40000000000uLL;
+  *(toCopy + 85) = self->_dataProtectionClass;
+  *(toCopy + 452) |= 0x40000000000uLL;
   has = self->_has;
   if ((has & 0x800000000000000) == 0)
   {
@@ -2911,8 +2911,8 @@ LABEL_5:
   }
 
 LABEL_121:
-  *(v4 + 433) = self->_isOwnedByLoggedInUser;
-  *(v4 + 452) |= 0x800000000000000uLL;
+  *(toCopy + 433) = self->_isOwnedByLoggedInUser;
+  *(toCopy + 452) |= 0x800000000000000uLL;
   has = self->_has;
   if ((has & 0x1000000000000000) == 0)
   {
@@ -2926,8 +2926,8 @@ LABEL_6:
   }
 
 LABEL_122:
-  *(v4 + 434) = self->_isOwnedByRoot;
-  *(v4 + 452) |= 0x1000000000000000uLL;
+  *(toCopy + 434) = self->_isOwnedByRoot;
+  *(toCopy + 452) |= 0x1000000000000000uLL;
   has = self->_has;
   if ((has & 0x200000000000) == 0)
   {
@@ -2941,8 +2941,8 @@ LABEL_7:
   }
 
 LABEL_123:
-  *(v4 + 104) = self->_xattrCount;
-  *(v4 + 452) |= 0x200000000000uLL;
+  *(toCopy + 104) = self->_xattrCount;
+  *(toCopy + 452) |= 0x200000000000uLL;
   has = self->_has;
   if ((has & 0x100000000000000) == 0)
   {
@@ -2956,8 +2956,8 @@ LABEL_8:
   }
 
 LABEL_124:
-  *(v4 + 430) = self->_isAppleDouble;
-  *(v4 + 452) |= 0x100000000000000uLL;
+  *(toCopy + 430) = self->_isAppleDouble;
+  *(toCopy + 452) |= 0x100000000000000uLL;
   has = self->_has;
   if ((has & 0x8000000000000000) == 0)
   {
@@ -2971,40 +2971,40 @@ LABEL_9:
   }
 
 LABEL_125:
-  *(v4 + 437) = self->_isResourceFork;
-  *(v4 + 452) |= 0x8000000000000000;
+  *(toCopy + 437) = self->_isResourceFork;
+  *(toCopy + 452) |= 0x8000000000000000;
   if ((*&self->_has & 0x4000000000000000) != 0)
   {
 LABEL_10:
-    *(v4 + 436) = self->_isQuarantined;
-    *(v4 + 452) |= 0x4000000000000000uLL;
+    *(toCopy + 436) = self->_isQuarantined;
+    *(toCopy + 452) |= 0x4000000000000000uLL;
   }
 
 LABEL_11:
-  v16 = v4;
+  v16 = toCopy;
   if (self->_utType)
   {
-    [v4 setUtType:?];
-    v4 = v16;
+    [toCopy setUtType:?];
+    toCopy = v16;
   }
 
   if ((*(&self->_has + 7) & 2) != 0)
   {
-    *(v4 + 431) = self->_isBundleBit;
-    *(v4 + 452) |= 0x200000000000000uLL;
+    *(toCopy + 431) = self->_isBundleBit;
+    *(toCopy + 452) |= 0x200000000000000uLL;
   }
 
   if (*(&self->_has + 4))
   {
-    *(v4 + 438) = self->_isSparseFile;
-    *(v4 + 230) |= 1u;
+    *(toCopy + 438) = self->_isSparseFile;
+    *(toCopy + 230) |= 1u;
   }
 
   v7 = *p_has;
   if ((*p_has & 0x20000000000) != 0)
   {
-    *(v4 + 84) = self->_compressionType;
-    *(v4 + 452) |= 0x20000000000uLL;
+    *(toCopy + 84) = self->_compressionType;
+    *(toCopy + 452) |= 0x20000000000uLL;
     v7 = self->_has;
     if ((v7 & 0x100000000) == 0)
     {
@@ -3023,8 +3023,8 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  v4[33] = self->_readErrorCode;
-  *(v4 + 452) |= 0x100000000uLL;
+  toCopy[33] = self->_readErrorCode;
+  *(toCopy + 452) |= 0x100000000uLL;
   v7 = self->_has;
   if ((v7 & 0x20) == 0)
   {
@@ -3038,8 +3038,8 @@ LABEL_20:
   }
 
 LABEL_129:
-  v4[6] = self->_cloneErrorCode;
-  *(v4 + 452) |= 0x20uLL;
+  toCopy[6] = self->_cloneErrorCode;
+  *(toCopy + 452) |= 0x20uLL;
   v7 = self->_has;
   if ((v7 & 0x100000000000) == 0)
   {
@@ -3053,8 +3053,8 @@ LABEL_21:
   }
 
 LABEL_130:
-  *(v4 + 100) = self->_syncRootEnum;
-  *(v4 + 452) |= 0x100000000000uLL;
+  *(toCopy + 100) = self->_syncRootEnum;
+  *(toCopy + 452) |= 0x100000000000uLL;
   v7 = self->_has;
   if ((v7 & 0x10000000) == 0)
   {
@@ -3068,8 +3068,8 @@ LABEL_22:
   }
 
 LABEL_131:
-  v4[29] = self->_pathLength;
-  *(v4 + 452) |= 0x10000000uLL;
+  toCopy[29] = self->_pathLength;
+  *(toCopy + 452) |= 0x10000000uLL;
   v7 = self->_has;
   if ((v7 & 0x200000) == 0)
   {
@@ -3083,8 +3083,8 @@ LABEL_23:
   }
 
 LABEL_132:
-  v4[22] = self->_fileNameLength;
-  *(v4 + 452) |= 0x200000uLL;
+  toCopy[22] = self->_fileNameLength;
+  *(toCopy + 452) |= 0x200000uLL;
   v7 = self->_has;
   if ((v7 & 0x400000000) == 0)
   {
@@ -3098,8 +3098,8 @@ LABEL_24:
   }
 
 LABEL_133:
-  v4[35] = self->_stMode;
-  *(v4 + 452) |= 0x400000000uLL;
+  toCopy[35] = self->_stMode;
+  *(toCopy + 452) |= 0x400000000uLL;
   v7 = self->_has;
   if ((v7 & 0x200000000) == 0)
   {
@@ -3113,59 +3113,59 @@ LABEL_25:
   }
 
 LABEL_134:
-  v4[34] = self->_stFlags;
-  *(v4 + 452) |= 0x200000000uLL;
+  toCopy[34] = self->_stFlags;
+  *(toCopy + 452) |= 0x200000000uLL;
   if ((*&self->_has & 0x40000000000000) != 0)
   {
 LABEL_26:
-    *(v4 + 428) = self->_hasAcls;
-    *(v4 + 452) |= 0x40000000000000uLL;
+    *(toCopy + 428) = self->_hasAcls;
+    *(toCopy + 452) |= 0x40000000000000uLL;
   }
 
 LABEL_27:
   if ((*(&self->_has + 4) & 0x20) != 0)
   {
-    *(v4 + 443) = self->_parentHasAcls;
-    *(v4 + 230) |= 0x20u;
+    *(toCopy + 443) = self->_parentHasAcls;
+    *(toCopy + 230) |= 0x20u;
   }
 
   if ((*(&self->_has + 7) & 0x20) != 0)
   {
-    *(v4 + 435) = self->_isPurgable;
-    *(v4 + 452) |= 0x2000000000000000uLL;
+    *(toCopy + 435) = self->_isPurgable;
+    *(toCopy + 452) |= 0x2000000000000000uLL;
   }
 
   v8 = *(&self->_has + 4);
   if ((v8 & 4) != 0)
   {
-    *(v4 + 440) = self->_isUrgent;
-    *(v4 + 230) |= 4u;
+    *(toCopy + 440) = self->_isUrgent;
+    *(toCopy + 230) |= 4u;
     v8 = *(&self->_has + 4);
   }
 
   if ((v8 & 2) != 0)
   {
-    *(v4 + 439) = self->_isUnderDirStatFolder;
-    *(v4 + 230) |= 2u;
+    *(toCopy + 439) = self->_isUnderDirStatFolder;
+    *(toCopy + 230) |= 2u;
   }
 
   if ((*(&self->_has + 7) & 4) != 0)
   {
-    *(v4 + 432) = self->_isFileNameNonAscii;
-    *(v4 + 452) |= 0x400000000000000uLL;
+    *(toCopy + 432) = self->_isFileNameNonAscii;
+    *(toCopy + 452) |= 0x400000000000000uLL;
   }
 
   if (self->_finderInfoFlagsBase64)
   {
     [v16 setFinderInfoFlagsBase64:?];
-    v4 = v16;
+    toCopy = v16;
   }
 
   v9 = *p_has;
   if ((*p_has & 0x1000000) != 0)
   {
-    v4[25] = self->_hasMoreLinks;
-    *(v4 + 452) |= 0x1000000uLL;
+    toCopy[25] = self->_hasMoreLinks;
+    *(toCopy + 452) |= 0x1000000uLL;
     v9 = self->_has;
     if ((v9 & 0x400000) == 0)
     {
@@ -3184,8 +3184,8 @@ LABEL_41:
     goto LABEL_41;
   }
 
-  v4[23] = self->_fsGenCount;
-  *(v4 + 452) |= 0x400000uLL;
+  toCopy[23] = self->_fsGenCount;
+  *(toCopy + 452) |= 0x400000uLL;
   v9 = self->_has;
   if ((v9 & 0x8000) == 0)
   {
@@ -3199,8 +3199,8 @@ LABEL_42:
   }
 
 LABEL_138:
-  v4[16] = self->_dbGenCount;
-  *(v4 + 452) |= 0x8000uLL;
+  toCopy[16] = self->_dbGenCount;
+  *(toCopy + 452) |= 0x8000uLL;
   v9 = self->_has;
   if ((v9 & 0x80000000000000) == 0)
   {
@@ -3214,53 +3214,53 @@ LABEL_43:
   }
 
 LABEL_139:
-  *(v4 + 429) = self->_hasLocalChanges;
-  *(v4 + 452) |= 0x80000000000000uLL;
+  *(toCopy + 429) = self->_hasLocalChanges;
+  *(toCopy + 452) |= 0x80000000000000uLL;
   if ((*&self->_has & 0x10000000000000) != 0)
   {
 LABEL_44:
-    *(v4 + 426) = self->_doGenCountsMatchInFileId;
-    *(v4 + 452) |= 0x10000000000000uLL;
+    *(toCopy + 426) = self->_doGenCountsMatchInFileId;
+    *(toCopy + 452) |= 0x10000000000000uLL;
   }
 
 LABEL_45:
   if (self->_fileNameExtension)
   {
     [v16 setFileNameExtension:?];
-    v4 = v16;
+    toCopy = v16;
   }
 
   if ((*(&self->_has + 3) & 8) != 0)
   {
-    v4[28] = self->_pathDepth;
-    *(v4 + 452) |= 0x8000000uLL;
+    toCopy[28] = self->_pathDepth;
+    *(toCopy + 452) |= 0x8000000uLL;
   }
 
   v10 = *(&self->_has + 4);
   if ((v10 & 0x200) != 0)
   {
-    *(v4 + 447) = self->_xattrHasDemotion;
-    *(v4 + 230) |= 0x200u;
+    *(toCopy + 447) = self->_xattrHasDemotion;
+    *(toCopy + 230) |= 0x200u;
     v10 = *(&self->_has + 4);
   }
 
   if ((v10 & 0x400) != 0)
   {
-    *(v4 + 448) = self->_xattrHasPromotion;
-    *(v4 + 230) |= 0x400u;
+    *(toCopy + 448) = self->_xattrHasPromotion;
+    *(toCopy + 230) |= 0x400u;
   }
 
   if (self->_dbErrorDomain)
   {
     [v16 setDbErrorDomain:?];
-    v4 = v16;
+    toCopy = v16;
   }
 
   v11 = *p_has;
   if ((*p_has & 0x100) != 0)
   {
-    v4[9] = self->_dbErrorCode;
-    *(v4 + 452) |= 0x100uLL;
+    toCopy[9] = self->_dbErrorCode;
+    *(toCopy + 452) |= 0x100uLL;
     v11 = self->_has;
     if ((v11 & 0x40) == 0)
     {
@@ -3279,8 +3279,8 @@ LABEL_57:
     goto LABEL_57;
   }
 
-  v4[7] = self->_dbCapabilities;
-  *(v4 + 452) |= 0x40uLL;
+  toCopy[7] = self->_dbCapabilities;
+  *(toCopy + 452) |= 0x40uLL;
   v11 = self->_has;
   if ((v11 & 0x20000) == 0)
   {
@@ -3294,8 +3294,8 @@ LABEL_58:
   }
 
 LABEL_143:
-  v4[18] = self->_dbTransferState;
-  *(v4 + 452) |= 0x20000uLL;
+  toCopy[18] = self->_dbTransferState;
+  *(toCopy + 452) |= 0x20000uLL;
   v11 = self->_has;
   if ((v11 & 0x10000) == 0)
   {
@@ -3309,8 +3309,8 @@ LABEL_59:
   }
 
 LABEL_144:
-  v4[17] = self->_dbSharingState;
-  *(v4 + 452) |= 0x10000uLL;
+  toCopy[17] = self->_dbSharingState;
+  *(toCopy + 452) |= 0x10000uLL;
   v11 = self->_has;
   if ((v11 & 0x2000000000000) == 0)
   {
@@ -3324,8 +3324,8 @@ LABEL_60:
   }
 
 LABEL_145:
-  *(v4 + 423) = self->_dbIsApplibrary;
-  *(v4 + 452) |= 0x2000000000000uLL;
+  *(toCopy + 423) = self->_dbIsApplibrary;
+  *(toCopy + 452) |= 0x2000000000000uLL;
   v11 = self->_has;
   if ((v11 & 0x80) == 0)
   {
@@ -3339,8 +3339,8 @@ LABEL_61:
   }
 
 LABEL_146:
-  v4[8] = self->_dbEffectiveContentPolicy;
-  *(v4 + 452) |= 0x80uLL;
+  toCopy[8] = self->_dbEffectiveContentPolicy;
+  *(toCopy + 452) |= 0x80uLL;
   v11 = self->_has;
   if ((v11 & 0x4000000000000) == 0)
   {
@@ -3354,8 +3354,8 @@ LABEL_62:
   }
 
 LABEL_147:
-  *(v4 + 424) = self->_dbIsPackage;
-  *(v4 + 452) |= 0x4000000000000uLL;
+  *(toCopy + 424) = self->_dbIsPackage;
+  *(toCopy + 452) |= 0x4000000000000uLL;
   v11 = self->_has;
   if ((v11 & 0x1000) == 0)
   {
@@ -3369,8 +3369,8 @@ LABEL_63:
   }
 
 LABEL_148:
-  v4[13] = self->_dbFsContentStatus;
-  *(v4 + 452) |= 0x1000uLL;
+  toCopy[13] = self->_dbFsContentStatus;
+  *(toCopy + 452) |= 0x1000uLL;
   v11 = self->_has;
   if ((v11 & 0x200) == 0)
   {
@@ -3384,8 +3384,8 @@ LABEL_64:
   }
 
 LABEL_149:
-  v4[10] = self->_dbFpContentStatus;
-  *(v4 + 452) |= 0x200uLL;
+  toCopy[10] = self->_dbFpContentStatus;
+  *(toCopy + 452) |= 0x200uLL;
   v11 = self->_has;
   if ((v11 & 0x2000) == 0)
   {
@@ -3399,8 +3399,8 @@ LABEL_65:
   }
 
 LABEL_150:
-  v4[14] = self->_dbFsDeletionStatus;
-  *(v4 + 452) |= 0x2000uLL;
+  toCopy[14] = self->_dbFsDeletionStatus;
+  *(toCopy + 452) |= 0x2000uLL;
   v11 = self->_has;
   if ((v11 & 0x400) == 0)
   {
@@ -3414,8 +3414,8 @@ LABEL_66:
   }
 
 LABEL_151:
-  v4[11] = self->_dbFpDeletionStatus;
-  *(v4 + 452) |= 0x400uLL;
+  toCopy[11] = self->_dbFpDeletionStatus;
+  *(toCopy + 452) |= 0x400uLL;
   v11 = self->_has;
   if ((v11 & 0x4000) == 0)
   {
@@ -3429,8 +3429,8 @@ LABEL_67:
   }
 
 LABEL_152:
-  v4[15] = self->_dbFsImportStatus;
-  *(v4 + 452) |= 0x4000uLL;
+  toCopy[15] = self->_dbFsImportStatus;
+  *(toCopy + 452) |= 0x4000uLL;
   v11 = self->_has;
   if ((v11 & 0x800) == 0)
   {
@@ -3444,8 +3444,8 @@ LABEL_68:
   }
 
 LABEL_153:
-  v4[12] = self->_dbFpImportStatus;
-  *(v4 + 452) |= 0x800uLL;
+  toCopy[12] = self->_dbFpImportStatus;
+  *(toCopy + 452) |= 0x800uLL;
   v11 = self->_has;
   if ((v11 & 0x8000000000000) == 0)
   {
@@ -3459,39 +3459,39 @@ LABEL_69:
   }
 
 LABEL_154:
-  *(v4 + 425) = self->_dbIsSuper;
-  *(v4 + 452) |= 0x8000000000000uLL;
+  *(toCopy + 425) = self->_dbIsSuper;
+  *(toCopy + 452) |= 0x8000000000000uLL;
   if ((*&self->_has & 0x800000) != 0)
   {
 LABEL_70:
-    v4[24] = self->_gencountDiff;
-    *(v4 + 452) |= 0x800000uLL;
+    toCopy[24] = self->_gencountDiff;
+    *(toCopy + 452) |= 0x800000uLL;
   }
 
 LABEL_71:
   if ((*(&self->_has + 4) & 0x40) != 0)
   {
-    *(v4 + 444) = self->_parentMatches;
-    *(v4 + 230) |= 0x40u;
+    *(toCopy + 444) = self->_parentMatches;
+    *(toCopy + 230) |= 0x40u;
   }
 
   if ((*(&self->_has + 5) & 0x80) != 0)
   {
-    *(v4 + 421) = self->_appLibraryMatches;
-    *(v4 + 452) |= 0x800000000000uLL;
+    *(toCopy + 421) = self->_appLibraryMatches;
+    *(toCopy + 452) |= 0x800000000000uLL;
   }
 
   if ((*(&self->_has + 4) & 8) != 0)
   {
-    *(v4 + 441) = self->_mTimeBeforeMigrationStarted;
-    *(v4 + 230) |= 8u;
+    *(toCopy + 441) = self->_mTimeBeforeMigrationStarted;
+    *(toCopy + 230) |= 8u;
   }
 
   v12 = *p_has;
   if ((*p_has & 0x20000000000000) != 0)
   {
-    *(v4 + 427) = self->_docIDMatches;
-    *(v4 + 452) |= 0x20000000000000uLL;
+    *(toCopy + 427) = self->_docIDMatches;
+    *(toCopy + 452) |= 0x20000000000000uLL;
     v12 = self->_has;
     if ((v12 & 0x4000000) == 0)
     {
@@ -3510,8 +3510,8 @@ LABEL_79:
     goto LABEL_79;
   }
 
-  v4[27] = self->_mTime;
-  *(v4 + 452) |= 0x4000000uLL;
+  toCopy[27] = self->_mTime;
+  *(toCopy + 452) |= 0x4000000uLL;
   v12 = self->_has;
   if ((v12 & 0x10) == 0)
   {
@@ -3525,59 +3525,59 @@ LABEL_80:
   }
 
 LABEL_158:
-  v4[5] = self->_bTime;
-  *(v4 + 452) |= 0x10uLL;
+  toCopy[5] = self->_bTime;
+  *(toCopy + 452) |= 0x10uLL;
   if ((*&self->_has & 0x1000000000000) != 0)
   {
 LABEL_81:
-    *(v4 + 422) = self->_bTimeIsBusy;
-    *(v4 + 452) |= 0x1000000000000uLL;
+    *(toCopy + 422) = self->_bTimeIsBusy;
+    *(toCopy + 452) |= 0x1000000000000uLL;
   }
 
 LABEL_82:
   if ((*(&self->_has + 4) & 0x100) != 0)
   {
-    *(v4 + 446) = self->_xattrHasBeforeBounce;
-    *(v4 + 230) |= 0x100u;
+    *(toCopy + 446) = self->_xattrHasBeforeBounce;
+    *(toCopy + 230) |= 0x100u;
   }
 
   if (self->_nameUnicodeNorm)
   {
     [v16 setNameUnicodeNorm:?];
-    v4 = v16;
+    toCopy = v16;
   }
 
   if ((*(&self->_has + 4) & 0x10) != 0)
   {
-    *(v4 + 442) = self->_nameIsTrashed;
-    *(v4 + 230) |= 0x10u;
+    *(toCopy + 442) = self->_nameIsTrashed;
+    *(toCopy + 230) |= 0x10u;
   }
 
   v13 = *p_has;
   if ((*p_has & 0x8000000000) != 0)
   {
-    v4[40] = self->_sysPageSize;
-    *(v4 + 452) |= 0x8000000000uLL;
+    toCopy[40] = self->_sysPageSize;
+    *(toCopy + 452) |= 0x8000000000uLL;
     v13 = self->_has;
   }
 
   if ((v13 & 0x10000000000) != 0)
   {
-    v4[41] = self->_sysUID;
-    *(v4 + 452) |= 0x10000000000uLL;
+    toCopy[41] = self->_sysUID;
+    *(toCopy + 452) |= 0x10000000000uLL;
   }
 
   if ((*(&self->_has + 4) & 0x80) != 0)
   {
-    *(v4 + 445) = self->_sysDocIDResolutionOK;
-    *(v4 + 230) |= 0x80u;
+    *(toCopy + 445) = self->_sysDocIDResolutionOK;
+    *(toCopy + 230) |= 0x80u;
   }
 
   v14 = *p_has;
   if ((*p_has & 0x40000000) != 0)
   {
-    v4[31] = self->_purgeGenCount;
-    *(v4 + 452) |= 0x40000000uLL;
+    toCopy[31] = self->_purgeGenCount;
+    *(toCopy + 452) |= 0x40000000uLL;
     v14 = self->_has;
     if ((v14 & 0x20000000) == 0)
     {
@@ -3596,8 +3596,8 @@ LABEL_96:
     goto LABEL_96;
   }
 
-  v4[30] = self->_purgeATime;
-  *(v4 + 452) |= 0x20000000uLL;
+  toCopy[30] = self->_purgeATime;
+  *(toCopy + 452) |= 0x20000000uLL;
   v14 = self->_has;
   if ((v14 & 0x80000000) == 0)
   {
@@ -3611,8 +3611,8 @@ LABEL_97:
   }
 
 LABEL_162:
-  v4[32] = self->_purgeSyncRoot;
-  *(v4 + 452) |= 0x80000000uLL;
+  toCopy[32] = self->_purgeSyncRoot;
+  *(toCopy + 452) |= 0x80000000uLL;
   v14 = self->_has;
   if ((v14 & 0x80000) == 0)
   {
@@ -3626,8 +3626,8 @@ LABEL_98:
   }
 
 LABEL_163:
-  v4[20] = self->_diagFailuresBitmap;
-  *(v4 + 452) |= 0x80000uLL;
+  toCopy[20] = self->_diagFailuresBitmap;
+  *(toCopy + 452) |= 0x80000uLL;
   v14 = self->_has;
   if ((v14 & 0x40000) == 0)
   {
@@ -3641,33 +3641,33 @@ LABEL_99:
   }
 
 LABEL_164:
-  v4[19] = self->_diagErrorCode;
-  *(v4 + 452) |= 0x40000uLL;
+  toCopy[19] = self->_diagErrorCode;
+  *(toCopy + 452) |= 0x40000uLL;
   if ((*&self->_has & 0x100000) != 0)
   {
 LABEL_100:
-    v4[21] = self->_diagUnderlyingErrorCode;
-    *(v4 + 452) |= 0x100000uLL;
+    toCopy[21] = self->_diagUnderlyingErrorCode;
+    *(toCopy + 452) |= 0x100000uLL;
   }
 
 LABEL_101:
   if (self->_diagErrorDomain)
   {
     [v16 setDiagErrorDomain:?];
-    v4 = v16;
+    toCopy = v16;
   }
 
   if (self->_diagUnderlyingErrorDomain)
   {
     [v16 setDiagUnderlyingErrorDomain:?];
-    v4 = v16;
+    toCopy = v16;
   }
 
   v15 = *p_has;
   if (*p_has)
   {
-    v4[1] = self->_apfsAvailableSpace;
-    *(v4 + 452) |= 1uLL;
+    toCopy[1] = self->_apfsAvailableSpace;
+    *(toCopy + 452) |= 1uLL;
     v15 = self->_has;
     if ((v15 & 4) == 0)
     {
@@ -3686,8 +3686,8 @@ LABEL_107:
     goto LABEL_107;
   }
 
-  v4[3] = self->_apfsFlags;
-  *(v4 + 452) |= 4uLL;
+  toCopy[3] = self->_apfsFlags;
+  *(toCopy + 452) |= 4uLL;
   v15 = self->_has;
   if ((v15 & 2) == 0)
   {
@@ -3701,8 +3701,8 @@ LABEL_108:
   }
 
 LABEL_168:
-  v4[2] = self->_apfsBlockSize;
-  *(v4 + 452) |= 2uLL;
+  toCopy[2] = self->_apfsBlockSize;
+  *(toCopy + 452) |= 2uLL;
   v15 = self->_has;
   if ((v15 & 8) == 0)
   {
@@ -3716,8 +3716,8 @@ LABEL_109:
   }
 
 LABEL_169:
-  v4[4] = self->_apfsRole;
-  *(v4 + 452) |= 8uLL;
+  toCopy[4] = self->_apfsRole;
+  *(toCopy + 452) |= 8uLL;
   v15 = self->_has;
   if ((v15 & 0x400000000000) == 0)
   {
@@ -3731,8 +3731,8 @@ LABEL_110:
   }
 
 LABEL_170:
-  *(v4 + 420) = self->_apfsEncrypted;
-  *(v4 + 452) |= 0x400000000000uLL;
+  *(toCopy + 420) = self->_apfsEncrypted;
+  *(toCopy + 452) |= 0x400000000000uLL;
   v15 = self->_has;
   if ((v15 & 0x1000000000) == 0)
   {
@@ -3746,8 +3746,8 @@ LABEL_111:
   }
 
 LABEL_171:
-  v4[37] = self->_statDocID;
-  *(v4 + 452) |= 0x1000000000uLL;
+  toCopy[37] = self->_statDocID;
+  *(toCopy + 452) |= 0x1000000000uLL;
   v15 = self->_has;
   if ((v15 & 0x2000000000) == 0)
   {
@@ -3761,8 +3761,8 @@ LABEL_112:
   }
 
 LABEL_172:
-  v4[38] = self->_statLogicalSize;
-  *(v4 + 452) |= 0x2000000000uLL;
+  toCopy[38] = self->_statLogicalSize;
+  *(toCopy + 452) |= 0x2000000000uLL;
   v15 = self->_has;
   if ((v15 & 0x4000000000) == 0)
   {
@@ -3776,21 +3776,21 @@ LABEL_113:
   }
 
 LABEL_173:
-  v4[39] = self->_statPhysicalSize;
-  *(v4 + 452) |= 0x4000000000uLL;
+  toCopy[39] = self->_statPhysicalSize;
+  *(toCopy + 452) |= 0x4000000000uLL;
   if ((*&self->_has & 0x800000000) != 0)
   {
 LABEL_114:
-    v4[36] = self->_statDirEntryCount;
-    *(v4 + 452) |= 0x800000000uLL;
+    toCopy[36] = self->_statDirEntryCount;
+    *(toCopy + 452) |= 0x800000000uLL;
   }
 
 LABEL_115:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   p_has = &self->_has;
   has = self->_has;
@@ -3916,7 +3916,7 @@ LABEL_10:
   }
 
 LABEL_11:
-  v9 = [(NSString *)self->_utType copyWithZone:a3];
+  v9 = [(NSString *)self->_utType copyWithZone:zone];
   v10 = *(v6 + 408);
   *(v6 + 408) = v9;
 
@@ -4087,7 +4087,7 @@ LABEL_25:
     *(v6 + 452) |= 0x400000000000000uLL;
   }
 
-  v13 = [(NSString *)self->_finderInfoFlagsBase64 copyWithZone:a3];
+  v13 = [(NSString *)self->_finderInfoFlagsBase64 copyWithZone:zone];
   v14 = *(v6 + 376);
   *(v6 + 376) = v13;
 
@@ -4154,7 +4154,7 @@ LABEL_40:
   }
 
 LABEL_41:
-  v16 = [(NSString *)self->_fileNameExtension copyWithZone:a3];
+  v16 = [(NSString *)self->_fileNameExtension copyWithZone:zone];
   v17 = *(v6 + 368);
   *(v6 + 368) = v16;
 
@@ -4178,7 +4178,7 @@ LABEL_41:
     *(v6 + 460) |= 0x400u;
   }
 
-  v19 = [(NSString *)self->_dbErrorDomain copyWithZone:a3];
+  v19 = [(NSString *)self->_dbErrorDomain copyWithZone:zone];
   v20 = *(v6 + 344);
   *(v6 + 344) = v19;
 
@@ -4467,7 +4467,7 @@ LABEL_74:
     *(v6 + 460) |= 0x100u;
   }
 
-  v23 = [(NSString *)self->_nameUnicodeNorm copyWithZone:a3];
+  v23 = [(NSString *)self->_nameUnicodeNorm copyWithZone:zone];
   v24 = *(v6 + 392);
   *(v6 + 392) = v23;
 
@@ -4575,11 +4575,11 @@ LABEL_90:
   }
 
 LABEL_91:
-  v27 = [(NSString *)self->_diagErrorDomain copyWithZone:a3];
+  v27 = [(NSString *)self->_diagErrorDomain copyWithZone:zone];
   v28 = *(v6 + 352);
   *(v6 + 352) = v27;
 
-  v29 = [(NSString *)self->_diagUnderlyingErrorDomain copyWithZone:a3];
+  v29 = [(NSString *)self->_diagUnderlyingErrorDomain copyWithZone:zone];
   v30 = *(v6 + 360);
   *(v6 + 360) = v29;
 
@@ -4711,21 +4711,21 @@ LABEL_101:
   return v32;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_483;
   }
 
   p_has = &self->_has;
   has = self->_has;
-  v7 = (v4 + 452);
-  v8 = *(v4 + 452);
+  v7 = (equalCopy + 452);
+  v8 = *(equalCopy + 452);
   if ((has & 0x2000000) != 0)
   {
-    if ((v8 & 0x2000000) == 0 || self->_itemNumber != *(v4 + 26))
+    if ((v8 & 0x2000000) == 0 || self->_itemNumber != *(equalCopy + 26))
     {
       goto LABEL_483;
     }
@@ -4738,7 +4738,7 @@ LABEL_101:
 
   if ((has & 0x80000000000) != 0)
   {
-    if ((v8 & 0x80000000000) == 0 || self->_itemType != *(v4 + 96))
+    if ((v8 & 0x80000000000) == 0 || self->_itemType != *(equalCopy + 96))
     {
       goto LABEL_483;
     }
@@ -4751,7 +4751,7 @@ LABEL_101:
 
   if ((has & 0x40000000000) != 0)
   {
-    if ((v8 & 0x40000000000) == 0 || self->_dataProtectionClass != *(v4 + 85))
+    if ((v8 & 0x40000000000) == 0 || self->_dataProtectionClass != *(equalCopy + 85))
     {
       goto LABEL_483;
     }
@@ -4769,16 +4769,16 @@ LABEL_101:
       goto LABEL_483;
     }
 
-    v9 = v4[433];
+    v9 = equalCopy[433];
     if (self->_isOwnedByLoggedInUser)
     {
-      if ((v4[433] & 1) == 0)
+      if ((equalCopy[433] & 1) == 0)
       {
         goto LABEL_483;
       }
     }
 
-    else if (v4[433])
+    else if (equalCopy[433])
     {
       goto LABEL_483;
     }
@@ -4796,16 +4796,16 @@ LABEL_101:
       goto LABEL_483;
     }
 
-    v10 = v4[434];
+    v10 = equalCopy[434];
     if (self->_isOwnedByRoot)
     {
-      if ((v4[434] & 1) == 0)
+      if ((equalCopy[434] & 1) == 0)
       {
         goto LABEL_483;
       }
     }
 
-    else if (v4[434])
+    else if (equalCopy[434])
     {
       goto LABEL_483;
     }
@@ -4818,7 +4818,7 @@ LABEL_101:
 
   if ((has & 0x200000000000) != 0)
   {
-    if ((v8 & 0x200000000000) == 0 || self->_xattrCount != *(v4 + 104))
+    if ((v8 & 0x200000000000) == 0 || self->_xattrCount != *(equalCopy + 104))
     {
       goto LABEL_483;
     }
@@ -4836,16 +4836,16 @@ LABEL_101:
       goto LABEL_483;
     }
 
-    v15 = v4[430];
+    v15 = equalCopy[430];
     if (self->_isAppleDouble)
     {
-      if ((v4[430] & 1) == 0)
+      if ((equalCopy[430] & 1) == 0)
       {
         goto LABEL_483;
       }
     }
 
-    else if (v4[430])
+    else if (equalCopy[430])
     {
       goto LABEL_483;
     }
@@ -4863,16 +4863,16 @@ LABEL_101:
       goto LABEL_483;
     }
 
-    v16 = v4[437];
+    v16 = equalCopy[437];
     if (self->_isResourceFork)
     {
-      if ((v4[437] & 1) == 0)
+      if ((equalCopy[437] & 1) == 0)
       {
         goto LABEL_483;
       }
     }
 
-    else if (v4[437])
+    else if (equalCopy[437])
     {
       goto LABEL_483;
     }
@@ -4890,16 +4890,16 @@ LABEL_101:
       goto LABEL_483;
     }
 
-    v17 = v4[436];
+    v17 = equalCopy[436];
     if (self->_isQuarantined)
     {
-      if ((v4[436] & 1) == 0)
+      if ((equalCopy[436] & 1) == 0)
       {
         goto LABEL_483;
       }
     }
 
-    else if (v4[436])
+    else if (equalCopy[436])
     {
       goto LABEL_483;
     }
@@ -4911,7 +4911,7 @@ LABEL_101:
   }
 
   utType = self->_utType;
-  if (utType | *(v4 + 51))
+  if (utType | *(equalCopy + 51))
   {
     if (![(NSString *)utType isEqual:?])
     {
@@ -4929,16 +4929,16 @@ LABEL_101:
       goto LABEL_483;
     }
 
-    v18 = v4[431];
+    v18 = equalCopy[431];
     if (self->_isBundleBit)
     {
-      if ((v4[431] & 1) == 0)
+      if ((equalCopy[431] & 1) == 0)
       {
         goto LABEL_483;
       }
     }
 
-    else if (v4[431])
+    else if (equalCopy[431])
     {
       goto LABEL_483;
     }
@@ -4950,7 +4950,7 @@ LABEL_101:
   }
 
   v13 = *(&self->_has + 4);
-  v14 = *(v4 + 230);
+  v14 = *(equalCopy + 230);
   if (v13)
   {
     if ((v14 & 1) == 0)
@@ -4958,16 +4958,16 @@ LABEL_101:
       goto LABEL_483;
     }
 
-    v19 = v4[438];
+    v19 = equalCopy[438];
     if (self->_isSparseFile)
     {
-      if ((v4[438] & 1) == 0)
+      if ((equalCopy[438] & 1) == 0)
       {
         goto LABEL_483;
       }
     }
 
-    else if (v4[438])
+    else if (equalCopy[438])
     {
       goto LABEL_483;
     }
@@ -4980,7 +4980,7 @@ LABEL_101:
 
   if ((has & 0x20000000000) != 0)
   {
-    if ((v12 & 0x20000000000) == 0 || self->_compressionType != *(v4 + 84))
+    if ((v12 & 0x20000000000) == 0 || self->_compressionType != *(equalCopy + 84))
     {
       goto LABEL_483;
     }
@@ -4993,7 +4993,7 @@ LABEL_101:
 
   if ((has & 0x100000000) != 0)
   {
-    if ((v12 & 0x100000000) == 0 || self->_readErrorCode != *(v4 + 33))
+    if ((v12 & 0x100000000) == 0 || self->_readErrorCode != *(equalCopy + 33))
     {
       goto LABEL_483;
     }
@@ -5006,7 +5006,7 @@ LABEL_101:
 
   if ((has & 0x20) != 0)
   {
-    if ((v12 & 0x20) == 0 || self->_cloneErrorCode != *(v4 + 6))
+    if ((v12 & 0x20) == 0 || self->_cloneErrorCode != *(equalCopy + 6))
     {
       goto LABEL_483;
     }
@@ -5019,7 +5019,7 @@ LABEL_101:
 
   if ((has & 0x100000000000) != 0)
   {
-    if ((v12 & 0x100000000000) == 0 || self->_syncRootEnum != *(v4 + 100))
+    if ((v12 & 0x100000000000) == 0 || self->_syncRootEnum != *(equalCopy + 100))
     {
       goto LABEL_483;
     }
@@ -5032,7 +5032,7 @@ LABEL_101:
 
   if ((has & 0x10000000) != 0)
   {
-    if ((v12 & 0x10000000) == 0 || self->_pathLength != *(v4 + 29))
+    if ((v12 & 0x10000000) == 0 || self->_pathLength != *(equalCopy + 29))
     {
       goto LABEL_483;
     }
@@ -5045,7 +5045,7 @@ LABEL_101:
 
   if ((has & 0x200000) != 0)
   {
-    if ((v12 & 0x200000) == 0 || self->_fileNameLength != *(v4 + 22))
+    if ((v12 & 0x200000) == 0 || self->_fileNameLength != *(equalCopy + 22))
     {
       goto LABEL_483;
     }
@@ -5058,7 +5058,7 @@ LABEL_101:
 
   if ((has & 0x400000000) != 0)
   {
-    if ((v12 & 0x400000000) == 0 || self->_stMode != *(v4 + 35))
+    if ((v12 & 0x400000000) == 0 || self->_stMode != *(equalCopy + 35))
     {
       goto LABEL_483;
     }
@@ -5071,7 +5071,7 @@ LABEL_101:
 
   if ((has & 0x200000000) != 0)
   {
-    if ((v12 & 0x200000000) == 0 || self->_stFlags != *(v4 + 34))
+    if ((v12 & 0x200000000) == 0 || self->_stFlags != *(equalCopy + 34))
     {
       goto LABEL_483;
     }
@@ -5089,16 +5089,16 @@ LABEL_101:
       goto LABEL_483;
     }
 
-    v20 = v4[428];
+    v20 = equalCopy[428];
     if (self->_hasAcls)
     {
-      if ((v4[428] & 1) == 0)
+      if ((equalCopy[428] & 1) == 0)
       {
         goto LABEL_483;
       }
     }
 
-    else if (v4[428])
+    else if (equalCopy[428])
     {
       goto LABEL_483;
     }
@@ -5116,16 +5116,16 @@ LABEL_101:
       goto LABEL_483;
     }
 
-    v21 = v4[443];
+    v21 = equalCopy[443];
     if (self->_parentHasAcls)
     {
-      if ((v4[443] & 1) == 0)
+      if ((equalCopy[443] & 1) == 0)
       {
         goto LABEL_483;
       }
     }
 
-    else if (v4[443])
+    else if (equalCopy[443])
     {
       goto LABEL_483;
     }
@@ -5143,16 +5143,16 @@ LABEL_101:
       goto LABEL_483;
     }
 
-    v24 = v4[435];
+    v24 = equalCopy[435];
     if (self->_isPurgable)
     {
-      if ((v4[435] & 1) == 0)
+      if ((equalCopy[435] & 1) == 0)
       {
         goto LABEL_483;
       }
     }
 
-    else if (v4[435])
+    else if (equalCopy[435])
     {
       goto LABEL_483;
     }
@@ -5170,16 +5170,16 @@ LABEL_101:
       goto LABEL_483;
     }
 
-    v25 = v4[440];
+    v25 = equalCopy[440];
     if (self->_isUrgent)
     {
-      if ((v4[440] & 1) == 0)
+      if ((equalCopy[440] & 1) == 0)
       {
         goto LABEL_483;
       }
     }
 
-    else if (v4[440])
+    else if (equalCopy[440])
     {
       goto LABEL_483;
     }
@@ -5197,16 +5197,16 @@ LABEL_101:
       goto LABEL_483;
     }
 
-    v26 = v4[439];
+    v26 = equalCopy[439];
     if (self->_isUnderDirStatFolder)
     {
-      if ((v4[439] & 1) == 0)
+      if ((equalCopy[439] & 1) == 0)
       {
         goto LABEL_483;
       }
     }
 
-    else if (v4[439])
+    else if (equalCopy[439])
     {
       goto LABEL_483;
     }
@@ -5224,16 +5224,16 @@ LABEL_101:
       goto LABEL_483;
     }
 
-    v27 = v4[432];
+    v27 = equalCopy[432];
     if (self->_isFileNameNonAscii)
     {
-      if ((v4[432] & 1) == 0)
+      if ((equalCopy[432] & 1) == 0)
       {
         goto LABEL_483;
       }
     }
 
-    else if (v4[432])
+    else if (equalCopy[432])
     {
       goto LABEL_483;
     }
@@ -5245,7 +5245,7 @@ LABEL_101:
   }
 
   finderInfoFlagsBase64 = self->_finderInfoFlagsBase64;
-  if (finderInfoFlagsBase64 | *(v4 + 47))
+  if (finderInfoFlagsBase64 | *(equalCopy + 47))
   {
     if (![(NSString *)finderInfoFlagsBase64 isEqual:?])
     {
@@ -5258,7 +5258,7 @@ LABEL_101:
   v23 = *v7;
   if ((has & 0x1000000) != 0)
   {
-    if ((v23 & 0x1000000) == 0 || self->_hasMoreLinks != *(v4 + 25))
+    if ((v23 & 0x1000000) == 0 || self->_hasMoreLinks != *(equalCopy + 25))
     {
       goto LABEL_483;
     }
@@ -5271,7 +5271,7 @@ LABEL_101:
 
   if ((has & 0x400000) != 0)
   {
-    if ((v23 & 0x400000) == 0 || self->_fsGenCount != *(v4 + 23))
+    if ((v23 & 0x400000) == 0 || self->_fsGenCount != *(equalCopy + 23))
     {
       goto LABEL_483;
     }
@@ -5284,7 +5284,7 @@ LABEL_101:
 
   if ((has & 0x8000) != 0)
   {
-    if ((v23 & 0x8000) == 0 || self->_dbGenCount != *(v4 + 16))
+    if ((v23 & 0x8000) == 0 || self->_dbGenCount != *(equalCopy + 16))
     {
       goto LABEL_483;
     }
@@ -5302,16 +5302,16 @@ LABEL_101:
       goto LABEL_483;
     }
 
-    v30 = v4[429];
+    v30 = equalCopy[429];
     if (self->_hasLocalChanges)
     {
-      if ((v4[429] & 1) == 0)
+      if ((equalCopy[429] & 1) == 0)
       {
         goto LABEL_483;
       }
     }
 
-    else if (v4[429])
+    else if (equalCopy[429])
     {
       goto LABEL_483;
     }
@@ -5329,16 +5329,16 @@ LABEL_101:
       goto LABEL_483;
     }
 
-    v31 = v4[426];
+    v31 = equalCopy[426];
     if (self->_doGenCountsMatchInFileId)
     {
-      if ((v4[426] & 1) == 0)
+      if ((equalCopy[426] & 1) == 0)
       {
         goto LABEL_483;
       }
     }
 
-    else if (v4[426])
+    else if (equalCopy[426])
     {
       goto LABEL_483;
     }
@@ -5350,7 +5350,7 @@ LABEL_101:
   }
 
   fileNameExtension = self->_fileNameExtension;
-  if (fileNameExtension | *(v4 + 46))
+  if (fileNameExtension | *(equalCopy + 46))
   {
     if (![(NSString *)fileNameExtension isEqual:?])
     {
@@ -5363,7 +5363,7 @@ LABEL_101:
   v29 = *v7;
   if ((has & 0x8000000) != 0)
   {
-    if ((v29 & 0x8000000) == 0 || self->_pathDepth != *(v4 + 28))
+    if ((v29 & 0x8000000) == 0 || self->_pathDepth != *(equalCopy + 28))
     {
       goto LABEL_483;
     }
@@ -5374,63 +5374,63 @@ LABEL_101:
     goto LABEL_483;
   }
 
-  v32 = *(v4 + 230);
+  v32 = *(equalCopy + 230);
   if ((*(&self->_has + 4) & 0x200) != 0)
   {
-    if ((*(v4 + 230) & 0x200) == 0)
+    if ((*(equalCopy + 230) & 0x200) == 0)
     {
       goto LABEL_483;
     }
 
-    v33 = v4[447];
+    v33 = equalCopy[447];
     if (self->_xattrHasDemotion)
     {
-      if ((v4[447] & 1) == 0)
+      if ((equalCopy[447] & 1) == 0)
       {
         goto LABEL_483;
       }
     }
 
-    else if (v4[447])
+    else if (equalCopy[447])
     {
       goto LABEL_483;
     }
   }
 
-  else if ((*(v4 + 230) & 0x200) != 0)
+  else if ((*(equalCopy + 230) & 0x200) != 0)
   {
     goto LABEL_483;
   }
 
   if ((*(&self->_has + 4) & 0x400) != 0)
   {
-    if ((*(v4 + 230) & 0x400) == 0)
+    if ((*(equalCopy + 230) & 0x400) == 0)
     {
       goto LABEL_483;
     }
 
-    v36 = v4[448];
+    v36 = equalCopy[448];
     if (self->_xattrHasPromotion)
     {
-      if ((v4[448] & 1) == 0)
+      if ((equalCopy[448] & 1) == 0)
       {
         goto LABEL_483;
       }
     }
 
-    else if (v4[448])
+    else if (equalCopy[448])
     {
       goto LABEL_483;
     }
   }
 
-  else if ((*(v4 + 230) & 0x400) != 0)
+  else if ((*(equalCopy + 230) & 0x400) != 0)
   {
     goto LABEL_483;
   }
 
   dbErrorDomain = self->_dbErrorDomain;
-  if (dbErrorDomain | *(v4 + 43))
+  if (dbErrorDomain | *(equalCopy + 43))
   {
     if (![(NSString *)dbErrorDomain isEqual:?])
     {
@@ -5443,7 +5443,7 @@ LABEL_101:
   v35 = *v7;
   if ((has & 0x100) != 0)
   {
-    if ((v35 & 0x100) == 0 || self->_dbErrorCode != *(v4 + 9))
+    if ((v35 & 0x100) == 0 || self->_dbErrorCode != *(equalCopy + 9))
     {
       goto LABEL_483;
     }
@@ -5456,7 +5456,7 @@ LABEL_101:
 
   if ((has & 0x40) != 0)
   {
-    if ((v35 & 0x40) == 0 || self->_dbCapabilities != *(v4 + 7))
+    if ((v35 & 0x40) == 0 || self->_dbCapabilities != *(equalCopy + 7))
     {
       goto LABEL_483;
     }
@@ -5469,7 +5469,7 @@ LABEL_101:
 
   if ((has & 0x20000) != 0)
   {
-    if ((v35 & 0x20000) == 0 || self->_dbTransferState != *(v4 + 18))
+    if ((v35 & 0x20000) == 0 || self->_dbTransferState != *(equalCopy + 18))
     {
       goto LABEL_483;
     }
@@ -5482,7 +5482,7 @@ LABEL_101:
 
   if ((has & 0x10000) != 0)
   {
-    if ((v35 & 0x10000) == 0 || self->_dbSharingState != *(v4 + 17))
+    if ((v35 & 0x10000) == 0 || self->_dbSharingState != *(equalCopy + 17))
     {
       goto LABEL_483;
     }
@@ -5500,16 +5500,16 @@ LABEL_101:
       goto LABEL_483;
     }
 
-    v37 = v4[423];
+    v37 = equalCopy[423];
     if (self->_dbIsApplibrary)
     {
-      if ((v4[423] & 1) == 0)
+      if ((equalCopy[423] & 1) == 0)
       {
         goto LABEL_483;
       }
     }
 
-    else if (v4[423])
+    else if (equalCopy[423])
     {
       goto LABEL_483;
     }
@@ -5522,7 +5522,7 @@ LABEL_101:
 
   if ((has & 0x80) != 0)
   {
-    if ((v35 & 0x80) == 0 || self->_dbEffectiveContentPolicy != *(v4 + 8))
+    if ((v35 & 0x80) == 0 || self->_dbEffectiveContentPolicy != *(equalCopy + 8))
     {
       goto LABEL_483;
     }
@@ -5540,16 +5540,16 @@ LABEL_101:
       goto LABEL_483;
     }
 
-    v38 = v4[424];
+    v38 = equalCopy[424];
     if (self->_dbIsPackage)
     {
-      if ((v4[424] & 1) == 0)
+      if ((equalCopy[424] & 1) == 0)
       {
         goto LABEL_483;
       }
     }
 
-    else if (v4[424])
+    else if (equalCopy[424])
     {
       goto LABEL_483;
     }
@@ -5562,7 +5562,7 @@ LABEL_101:
 
   if ((has & 0x1000) != 0)
   {
-    if ((v35 & 0x1000) == 0 || self->_dbFsContentStatus != *(v4 + 13))
+    if ((v35 & 0x1000) == 0 || self->_dbFsContentStatus != *(equalCopy + 13))
     {
       goto LABEL_483;
     }
@@ -5575,7 +5575,7 @@ LABEL_101:
 
   if ((has & 0x200) != 0)
   {
-    if ((v35 & 0x200) == 0 || self->_dbFpContentStatus != *(v4 + 10))
+    if ((v35 & 0x200) == 0 || self->_dbFpContentStatus != *(equalCopy + 10))
     {
       goto LABEL_483;
     }
@@ -5588,7 +5588,7 @@ LABEL_101:
 
   if ((has & 0x2000) != 0)
   {
-    if ((v35 & 0x2000) == 0 || self->_dbFsDeletionStatus != *(v4 + 14))
+    if ((v35 & 0x2000) == 0 || self->_dbFsDeletionStatus != *(equalCopy + 14))
     {
       goto LABEL_483;
     }
@@ -5601,7 +5601,7 @@ LABEL_101:
 
   if ((has & 0x400) != 0)
   {
-    if ((v35 & 0x400) == 0 || self->_dbFpDeletionStatus != *(v4 + 11))
+    if ((v35 & 0x400) == 0 || self->_dbFpDeletionStatus != *(equalCopy + 11))
     {
       goto LABEL_483;
     }
@@ -5614,7 +5614,7 @@ LABEL_101:
 
   if ((has & 0x4000) != 0)
   {
-    if ((v35 & 0x4000) == 0 || self->_dbFsImportStatus != *(v4 + 15))
+    if ((v35 & 0x4000) == 0 || self->_dbFsImportStatus != *(equalCopy + 15))
     {
       goto LABEL_483;
     }
@@ -5627,7 +5627,7 @@ LABEL_101:
 
   if ((has & 0x800) != 0)
   {
-    if ((v35 & 0x800) == 0 || self->_dbFpImportStatus != *(v4 + 12))
+    if ((v35 & 0x800) == 0 || self->_dbFpImportStatus != *(equalCopy + 12))
     {
       goto LABEL_483;
     }
@@ -5645,16 +5645,16 @@ LABEL_101:
       goto LABEL_483;
     }
 
-    v39 = v4[425];
+    v39 = equalCopy[425];
     if (self->_dbIsSuper)
     {
-      if ((v4[425] & 1) == 0)
+      if ((equalCopy[425] & 1) == 0)
       {
         goto LABEL_483;
       }
     }
 
-    else if (v4[425])
+    else if (equalCopy[425])
     {
       goto LABEL_483;
     }
@@ -5667,7 +5667,7 @@ LABEL_101:
 
   if ((has & 0x800000) != 0)
   {
-    if ((v35 & 0x800000) == 0 || self->_gencountDiff != *(v4 + 24))
+    if ((v35 & 0x800000) == 0 || self->_gencountDiff != *(equalCopy + 24))
     {
       goto LABEL_483;
     }
@@ -5679,7 +5679,7 @@ LABEL_101:
   }
 
   v40 = *(&self->_has + 4);
-  v41 = *(v4 + 230);
+  v41 = *(equalCopy + 230);
   if ((v40 & 0x40) != 0)
   {
     if ((v41 & 0x40) == 0)
@@ -5687,16 +5687,16 @@ LABEL_101:
       goto LABEL_483;
     }
 
-    v42 = v4[444];
+    v42 = equalCopy[444];
     if (self->_parentMatches)
     {
-      if ((v4[444] & 1) == 0)
+      if ((equalCopy[444] & 1) == 0)
       {
         goto LABEL_483;
       }
     }
 
-    else if (v4[444])
+    else if (equalCopy[444])
     {
       goto LABEL_483;
     }
@@ -5714,16 +5714,16 @@ LABEL_101:
       goto LABEL_483;
     }
 
-    v43 = v4[421];
+    v43 = equalCopy[421];
     if (self->_appLibraryMatches)
     {
-      if ((v4[421] & 1) == 0)
+      if ((equalCopy[421] & 1) == 0)
       {
         goto LABEL_483;
       }
     }
 
-    else if (v4[421])
+    else if (equalCopy[421])
     {
       goto LABEL_483;
     }
@@ -5741,16 +5741,16 @@ LABEL_101:
       goto LABEL_483;
     }
 
-    v44 = v4[441];
+    v44 = equalCopy[441];
     if (self->_mTimeBeforeMigrationStarted)
     {
-      if ((v4[441] & 1) == 0)
+      if ((equalCopy[441] & 1) == 0)
       {
         goto LABEL_483;
       }
     }
 
-    else if (v4[441])
+    else if (equalCopy[441])
     {
       goto LABEL_483;
     }
@@ -5768,16 +5768,16 @@ LABEL_101:
       goto LABEL_483;
     }
 
-    v45 = v4[427];
+    v45 = equalCopy[427];
     if (self->_docIDMatches)
     {
-      if ((v4[427] & 1) == 0)
+      if ((equalCopy[427] & 1) == 0)
       {
         goto LABEL_483;
       }
     }
 
-    else if (v4[427])
+    else if (equalCopy[427])
     {
       goto LABEL_483;
     }
@@ -5790,7 +5790,7 @@ LABEL_101:
 
   if ((has & 0x4000000) != 0)
   {
-    if ((v35 & 0x4000000) == 0 || self->_mTime != *(v4 + 27))
+    if ((v35 & 0x4000000) == 0 || self->_mTime != *(equalCopy + 27))
     {
       goto LABEL_483;
     }
@@ -5803,7 +5803,7 @@ LABEL_101:
 
   if ((has & 0x10) != 0)
   {
-    if ((v35 & 0x10) == 0 || self->_bTime != *(v4 + 5))
+    if ((v35 & 0x10) == 0 || self->_bTime != *(equalCopy + 5))
     {
       goto LABEL_483;
     }
@@ -5821,16 +5821,16 @@ LABEL_101:
       goto LABEL_483;
     }
 
-    v46 = v4[422];
+    v46 = equalCopy[422];
     if (self->_bTimeIsBusy)
     {
-      if ((v4[422] & 1) == 0)
+      if ((equalCopy[422] & 1) == 0)
       {
         goto LABEL_483;
       }
     }
 
-    else if (v4[422])
+    else if (equalCopy[422])
     {
       goto LABEL_483;
     }
@@ -5843,33 +5843,33 @@ LABEL_101:
 
   if ((*(&self->_has + 4) & 0x100) != 0)
   {
-    if ((*(v4 + 230) & 0x100) == 0)
+    if ((*(equalCopy + 230) & 0x100) == 0)
     {
       goto LABEL_483;
     }
 
-    v47 = v4[446];
+    v47 = equalCopy[446];
     if (self->_xattrHasBeforeBounce)
     {
-      if ((v4[446] & 1) == 0)
+      if ((equalCopy[446] & 1) == 0)
       {
         goto LABEL_483;
       }
     }
 
-    else if (v4[446])
+    else if (equalCopy[446])
     {
       goto LABEL_483;
     }
   }
 
-  else if ((*(v4 + 230) & 0x100) != 0)
+  else if ((*(equalCopy + 230) & 0x100) != 0)
   {
     goto LABEL_483;
   }
 
   nameUnicodeNorm = self->_nameUnicodeNorm;
-  if (nameUnicodeNorm | *(v4 + 49))
+  if (nameUnicodeNorm | *(equalCopy + 49))
   {
     if (![(NSString *)nameUnicodeNorm isEqual:?])
     {
@@ -5879,7 +5879,7 @@ LABEL_101:
     v40 = *(&self->_has + 4);
   }
 
-  v49 = *(v4 + 230);
+  v49 = *(equalCopy + 230);
   if ((v40 & 0x10) != 0)
   {
     if ((v49 & 0x10) == 0)
@@ -5887,16 +5887,16 @@ LABEL_101:
       goto LABEL_483;
     }
 
-    v50 = v4[442];
+    v50 = equalCopy[442];
     if (self->_nameIsTrashed)
     {
-      if ((v4[442] & 1) == 0)
+      if ((equalCopy[442] & 1) == 0)
       {
         goto LABEL_483;
       }
     }
 
-    else if (v4[442])
+    else if (equalCopy[442])
     {
       goto LABEL_483;
     }
@@ -5911,7 +5911,7 @@ LABEL_101:
   v52 = *v7;
   if ((*p_has & 0x8000000000) != 0)
   {
-    if ((v52 & 0x8000000000) == 0 || self->_sysPageSize != *(v4 + 40))
+    if ((v52 & 0x8000000000) == 0 || self->_sysPageSize != *(equalCopy + 40))
     {
       goto LABEL_483;
     }
@@ -5924,7 +5924,7 @@ LABEL_101:
 
   if ((v51 & 0x10000000000) != 0)
   {
-    if ((v52 & 0x10000000000) == 0 || self->_sysUID != *(v4 + 41))
+    if ((v52 & 0x10000000000) == 0 || self->_sysUID != *(equalCopy + 41))
     {
       goto LABEL_483;
     }
@@ -5942,16 +5942,16 @@ LABEL_101:
       goto LABEL_483;
     }
 
-    v53 = v4[445];
+    v53 = equalCopy[445];
     if (self->_sysDocIDResolutionOK)
     {
-      if ((v4[445] & 1) == 0)
+      if ((equalCopy[445] & 1) == 0)
       {
         goto LABEL_483;
       }
     }
 
-    else if (v4[445])
+    else if (equalCopy[445])
     {
       goto LABEL_483;
     }
@@ -5964,7 +5964,7 @@ LABEL_101:
 
   if ((v51 & 0x40000000) != 0)
   {
-    if ((v52 & 0x40000000) == 0 || self->_purgeGenCount != *(v4 + 31))
+    if ((v52 & 0x40000000) == 0 || self->_purgeGenCount != *(equalCopy + 31))
     {
       goto LABEL_483;
     }
@@ -5977,7 +5977,7 @@ LABEL_101:
 
   if ((v51 & 0x20000000) != 0)
   {
-    if ((v52 & 0x20000000) == 0 || self->_purgeATime != *(v4 + 30))
+    if ((v52 & 0x20000000) == 0 || self->_purgeATime != *(equalCopy + 30))
     {
       goto LABEL_483;
     }
@@ -5990,7 +5990,7 @@ LABEL_101:
 
   if ((v51 & 0x80000000) != 0)
   {
-    if ((v52 & 0x80000000) == 0 || self->_purgeSyncRoot != *(v4 + 32))
+    if ((v52 & 0x80000000) == 0 || self->_purgeSyncRoot != *(equalCopy + 32))
     {
       goto LABEL_483;
     }
@@ -6003,7 +6003,7 @@ LABEL_101:
 
   if ((v51 & 0x80000) != 0)
   {
-    if ((v52 & 0x80000) == 0 || self->_diagFailuresBitmap != *(v4 + 20))
+    if ((v52 & 0x80000) == 0 || self->_diagFailuresBitmap != *(equalCopy + 20))
     {
       goto LABEL_483;
     }
@@ -6016,7 +6016,7 @@ LABEL_101:
 
   if ((v51 & 0x40000) != 0)
   {
-    if ((v52 & 0x40000) == 0 || self->_diagErrorCode != *(v4 + 19))
+    if ((v52 & 0x40000) == 0 || self->_diagErrorCode != *(equalCopy + 19))
     {
       goto LABEL_483;
     }
@@ -6029,7 +6029,7 @@ LABEL_101:
 
   if ((v51 & 0x100000) != 0)
   {
-    if ((v52 & 0x100000) == 0 || self->_diagUnderlyingErrorCode != *(v4 + 21))
+    if ((v52 & 0x100000) == 0 || self->_diagUnderlyingErrorCode != *(equalCopy + 21))
     {
       goto LABEL_483;
     }
@@ -6041,13 +6041,13 @@ LABEL_101:
   }
 
   diagErrorDomain = self->_diagErrorDomain;
-  if (diagErrorDomain | *(v4 + 44) && ![(NSString *)diagErrorDomain isEqual:?])
+  if (diagErrorDomain | *(equalCopy + 44) && ![(NSString *)diagErrorDomain isEqual:?])
   {
     goto LABEL_483;
   }
 
   diagUnderlyingErrorDomain = self->_diagUnderlyingErrorDomain;
-  if (diagUnderlyingErrorDomain | *(v4 + 45))
+  if (diagUnderlyingErrorDomain | *(equalCopy + 45))
   {
     if (![(NSString *)diagUnderlyingErrorDomain isEqual:?])
     {
@@ -6059,7 +6059,7 @@ LABEL_101:
   v57 = *v7;
   if (*p_has)
   {
-    if ((v57 & 1) == 0 || self->_apfsAvailableSpace != *(v4 + 1))
+    if ((v57 & 1) == 0 || self->_apfsAvailableSpace != *(equalCopy + 1))
     {
       goto LABEL_483;
     }
@@ -6072,7 +6072,7 @@ LABEL_101:
 
   if ((v56 & 4) != 0)
   {
-    if ((v57 & 4) == 0 || self->_apfsFlags != *(v4 + 3))
+    if ((v57 & 4) == 0 || self->_apfsFlags != *(equalCopy + 3))
     {
       goto LABEL_483;
     }
@@ -6085,7 +6085,7 @@ LABEL_101:
 
   if ((v56 & 2) != 0)
   {
-    if ((v57 & 2) == 0 || self->_apfsBlockSize != *(v4 + 2))
+    if ((v57 & 2) == 0 || self->_apfsBlockSize != *(equalCopy + 2))
     {
       goto LABEL_483;
     }
@@ -6098,7 +6098,7 @@ LABEL_101:
 
   if ((v56 & 8) != 0)
   {
-    if ((v57 & 8) == 0 || self->_apfsRole != *(v4 + 4))
+    if ((v57 & 8) == 0 || self->_apfsRole != *(equalCopy + 4))
     {
       goto LABEL_483;
     }
@@ -6113,10 +6113,10 @@ LABEL_101:
   {
     if ((v57 & 0x400000000000) != 0)
     {
-      v58 = v4[420];
+      v58 = equalCopy[420];
       if (self->_apfsEncrypted)
       {
-        if ((v4[420] & 1) == 0)
+        if ((equalCopy[420] & 1) == 0)
         {
           goto LABEL_483;
         }
@@ -6124,7 +6124,7 @@ LABEL_101:
         goto LABEL_463;
       }
 
-      if ((v4[420] & 1) == 0)
+      if ((equalCopy[420] & 1) == 0)
       {
         goto LABEL_463;
       }
@@ -6143,7 +6143,7 @@ LABEL_483:
 LABEL_463:
   if ((v56 & 0x1000000000) != 0)
   {
-    if ((v57 & 0x1000000000) == 0 || self->_statDocID != *(v4 + 37))
+    if ((v57 & 0x1000000000) == 0 || self->_statDocID != *(equalCopy + 37))
     {
       goto LABEL_483;
     }
@@ -6156,7 +6156,7 @@ LABEL_463:
 
   if ((v56 & 0x2000000000) != 0)
   {
-    if ((v57 & 0x2000000000) == 0 || self->_statLogicalSize != *(v4 + 38))
+    if ((v57 & 0x2000000000) == 0 || self->_statLogicalSize != *(equalCopy + 38))
     {
       goto LABEL_483;
     }
@@ -6169,7 +6169,7 @@ LABEL_463:
 
   if ((v56 & 0x4000000000) != 0)
   {
-    if ((v57 & 0x4000000000) == 0 || self->_statPhysicalSize != *(v4 + 39))
+    if ((v57 & 0x4000000000) == 0 || self->_statPhysicalSize != *(equalCopy + 39))
     {
       goto LABEL_483;
     }
@@ -6182,7 +6182,7 @@ LABEL_463:
 
   if ((v56 & 0x800000000) != 0)
   {
-    if ((v57 & 0x800000000) == 0 || self->_statDirEntryCount != *(v4 + 36))
+    if ((v57 & 0x800000000) == 0 || self->_statDirEntryCount != *(equalCopy + 36))
     {
       goto LABEL_483;
     }
@@ -7211,16 +7211,16 @@ LABEL_152:
   return v95 ^ v96 ^ v94 ^ v93 ^ v92 ^ v91 ^ v90 ^ v89 ^ v88 ^ v86 ^ v85 ^ v84 ^ v83 ^ v82 ^ v81 ^ v80 ^ v87 ^ v79 ^ v78 ^ v77 ^ v76 ^ v75 ^ v74 ^ v73 ^ v72 ^ v71 ^ v70 ^ v69 ^ v68 ^ v67 ^ v66 ^ v65 ^ v64 ^ v63 ^ v62 ^ v61 ^ v60 ^ v59 ^ v58 ^ v57 ^ v56 ^ v55 ^ v54 ^ v53 ^ v52 ^ v51 ^ v50 ^ v49 ^ v48 ^ v47 ^ v46 ^ v45 ^ v44 ^ v43 ^ v42 ^ v41 ^ v40 ^ v39 ^ v38 ^ v37 ^ v36 ^ v35 ^ v34 ^ v33 ^ v32 ^ v12 ^ v13 ^ v14 ^ v15 ^ v16 ^ v17 ^ v18 ^ v19 ^ v21 ^ v22 ^ v23 ^ v24 ^ v25 ^ v26 ^ v27 ^ v28 ^ v29;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4 + 452;
-  v6 = *(v4 + 452);
+  fromCopy = from;
+  v5 = fromCopy + 452;
+  v6 = *(fromCopy + 452);
   if ((v6 & 0x2000000) != 0)
   {
-    self->_itemNumber = *(v4 + 26);
+    self->_itemNumber = *(fromCopy + 26);
     *&self->_has |= 0x2000000uLL;
-    v6 = *(v4 + 452);
+    v6 = *(fromCopy + 452);
     if ((v6 & 0x80000000000) == 0)
     {
 LABEL_3:
@@ -7238,9 +7238,9 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  self->_itemType = *(v4 + 96);
+  self->_itemType = *(fromCopy + 96);
   *&self->_has |= 0x80000000000uLL;
-  v6 = *(v4 + 452);
+  v6 = *(fromCopy + 452);
   if ((v6 & 0x40000000000) == 0)
   {
 LABEL_4:
@@ -7253,9 +7253,9 @@ LABEL_4:
   }
 
 LABEL_120:
-  self->_dataProtectionClass = *(v4 + 85);
+  self->_dataProtectionClass = *(fromCopy + 85);
   *&self->_has |= 0x40000000000uLL;
-  v6 = *(v4 + 452);
+  v6 = *(fromCopy + 452);
   if ((v6 & 0x800000000000000) == 0)
   {
 LABEL_5:
@@ -7268,9 +7268,9 @@ LABEL_5:
   }
 
 LABEL_121:
-  self->_isOwnedByLoggedInUser = v4[433];
+  self->_isOwnedByLoggedInUser = fromCopy[433];
   *&self->_has |= 0x800000000000000uLL;
-  v6 = *(v4 + 452);
+  v6 = *(fromCopy + 452);
   if ((v6 & 0x1000000000000000) == 0)
   {
 LABEL_6:
@@ -7283,9 +7283,9 @@ LABEL_6:
   }
 
 LABEL_122:
-  self->_isOwnedByRoot = v4[434];
+  self->_isOwnedByRoot = fromCopy[434];
   *&self->_has |= 0x1000000000000000uLL;
-  v6 = *(v4 + 452);
+  v6 = *(fromCopy + 452);
   if ((v6 & 0x200000000000) == 0)
   {
 LABEL_7:
@@ -7298,9 +7298,9 @@ LABEL_7:
   }
 
 LABEL_123:
-  self->_xattrCount = *(v4 + 104);
+  self->_xattrCount = *(fromCopy + 104);
   *&self->_has |= 0x200000000000uLL;
-  v6 = *(v4 + 452);
+  v6 = *(fromCopy + 452);
   if ((v6 & 0x100000000000000) == 0)
   {
 LABEL_8:
@@ -7313,9 +7313,9 @@ LABEL_8:
   }
 
 LABEL_124:
-  self->_isAppleDouble = v4[430];
+  self->_isAppleDouble = fromCopy[430];
   *&self->_has |= 0x100000000000000uLL;
-  v6 = *(v4 + 452);
+  v6 = *(fromCopy + 452);
   if ((v6 & 0x8000000000000000) == 0)
   {
 LABEL_9:
@@ -7328,41 +7328,41 @@ LABEL_9:
   }
 
 LABEL_125:
-  self->_isResourceFork = v4[437];
+  self->_isResourceFork = fromCopy[437];
   *&self->_has |= 0x8000000000000000;
-  if ((*(v4 + 452) & 0x4000000000000000) != 0)
+  if ((*(fromCopy + 452) & 0x4000000000000000) != 0)
   {
 LABEL_10:
-    self->_isQuarantined = v4[436];
+    self->_isQuarantined = fromCopy[436];
     *&self->_has |= 0x4000000000000000uLL;
   }
 
 LABEL_11:
-  v16 = v4;
-  if (*(v4 + 51))
+  v16 = fromCopy;
+  if (*(fromCopy + 51))
   {
     [(AppTelemetryItemStatsInvestigation *)self setUtType:?];
-    v4 = v16;
+    fromCopy = v16;
   }
 
   if ((v5[7] & 2) != 0)
   {
-    self->_isBundleBit = v4[431];
+    self->_isBundleBit = fromCopy[431];
     *&self->_has |= 0x200000000000000uLL;
   }
 
   if (*(v5 + 4))
   {
-    self->_isSparseFile = v4[438];
+    self->_isSparseFile = fromCopy[438];
     *(&self->_has + 4) |= 1u;
   }
 
   v7 = *v5;
   if ((*v5 & 0x20000000000) != 0)
   {
-    self->_compressionType = *(v4 + 84);
+    self->_compressionType = *(fromCopy + 84);
     *&self->_has |= 0x20000000000uLL;
-    v7 = *(v4 + 452);
+    v7 = *(fromCopy + 452);
     if ((v7 & 0x100000000) == 0)
     {
 LABEL_19:
@@ -7380,9 +7380,9 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  self->_readErrorCode = *(v4 + 33);
+  self->_readErrorCode = *(fromCopy + 33);
   *&self->_has |= 0x100000000uLL;
-  v7 = *(v4 + 452);
+  v7 = *(fromCopy + 452);
   if ((v7 & 0x20) == 0)
   {
 LABEL_20:
@@ -7395,9 +7395,9 @@ LABEL_20:
   }
 
 LABEL_129:
-  self->_cloneErrorCode = *(v4 + 6);
+  self->_cloneErrorCode = *(fromCopy + 6);
   *&self->_has |= 0x20uLL;
-  v7 = *(v4 + 452);
+  v7 = *(fromCopy + 452);
   if ((v7 & 0x100000000000) == 0)
   {
 LABEL_21:
@@ -7410,9 +7410,9 @@ LABEL_21:
   }
 
 LABEL_130:
-  self->_syncRootEnum = *(v4 + 100);
+  self->_syncRootEnum = *(fromCopy + 100);
   *&self->_has |= 0x100000000000uLL;
-  v7 = *(v4 + 452);
+  v7 = *(fromCopy + 452);
   if ((v7 & 0x10000000) == 0)
   {
 LABEL_22:
@@ -7425,9 +7425,9 @@ LABEL_22:
   }
 
 LABEL_131:
-  self->_pathLength = *(v4 + 29);
+  self->_pathLength = *(fromCopy + 29);
   *&self->_has |= 0x10000000uLL;
-  v7 = *(v4 + 452);
+  v7 = *(fromCopy + 452);
   if ((v7 & 0x200000) == 0)
   {
 LABEL_23:
@@ -7440,9 +7440,9 @@ LABEL_23:
   }
 
 LABEL_132:
-  self->_fileNameLength = *(v4 + 22);
+  self->_fileNameLength = *(fromCopy + 22);
   *&self->_has |= 0x200000uLL;
-  v7 = *(v4 + 452);
+  v7 = *(fromCopy + 452);
   if ((v7 & 0x400000000) == 0)
   {
 LABEL_24:
@@ -7455,9 +7455,9 @@ LABEL_24:
   }
 
 LABEL_133:
-  self->_stMode = *(v4 + 35);
+  self->_stMode = *(fromCopy + 35);
   *&self->_has |= 0x400000000uLL;
-  v7 = *(v4 + 452);
+  v7 = *(fromCopy + 452);
   if ((v7 & 0x200000000) == 0)
   {
 LABEL_25:
@@ -7470,60 +7470,60 @@ LABEL_25:
   }
 
 LABEL_134:
-  self->_stFlags = *(v4 + 34);
+  self->_stFlags = *(fromCopy + 34);
   *&self->_has |= 0x200000000uLL;
-  if ((*(v4 + 452) & 0x40000000000000) != 0)
+  if ((*(fromCopy + 452) & 0x40000000000000) != 0)
   {
 LABEL_26:
-    self->_hasAcls = v4[428];
+    self->_hasAcls = fromCopy[428];
     *&self->_has |= 0x40000000000000uLL;
   }
 
 LABEL_27:
   if ((*(v5 + 4) & 0x20) != 0)
   {
-    self->_parentHasAcls = v4[443];
+    self->_parentHasAcls = fromCopy[443];
     *(&self->_has + 4) |= 0x20u;
   }
 
   if ((v5[7] & 0x20) != 0)
   {
-    self->_isPurgable = v4[435];
+    self->_isPurgable = fromCopy[435];
     *&self->_has |= 0x2000000000000000uLL;
   }
 
   v8 = *(v5 + 4);
   if ((v8 & 4) != 0)
   {
-    self->_isUrgent = v4[440];
+    self->_isUrgent = fromCopy[440];
     *(&self->_has + 4) |= 4u;
     v8 = *(v5 + 4);
   }
 
   if ((v8 & 2) != 0)
   {
-    self->_isUnderDirStatFolder = v4[439];
+    self->_isUnderDirStatFolder = fromCopy[439];
     *(&self->_has + 4) |= 2u;
   }
 
   if ((v5[7] & 4) != 0)
   {
-    self->_isFileNameNonAscii = v4[432];
+    self->_isFileNameNonAscii = fromCopy[432];
     *&self->_has |= 0x400000000000000uLL;
   }
 
-  if (*(v4 + 47))
+  if (*(fromCopy + 47))
   {
     [(AppTelemetryItemStatsInvestigation *)self setFinderInfoFlagsBase64:?];
-    v4 = v16;
+    fromCopy = v16;
   }
 
   v9 = *v5;
   if ((*v5 & 0x1000000) != 0)
   {
-    self->_hasMoreLinks = *(v4 + 25);
+    self->_hasMoreLinks = *(fromCopy + 25);
     *&self->_has |= 0x1000000uLL;
-    v9 = *(v4 + 452);
+    v9 = *(fromCopy + 452);
     if ((v9 & 0x400000) == 0)
     {
 LABEL_41:
@@ -7541,9 +7541,9 @@ LABEL_41:
     goto LABEL_41;
   }
 
-  self->_fsGenCount = *(v4 + 23);
+  self->_fsGenCount = *(fromCopy + 23);
   *&self->_has |= 0x400000uLL;
-  v9 = *(v4 + 452);
+  v9 = *(fromCopy + 452);
   if ((v9 & 0x8000) == 0)
   {
 LABEL_42:
@@ -7556,9 +7556,9 @@ LABEL_42:
   }
 
 LABEL_138:
-  self->_dbGenCount = *(v4 + 16);
+  self->_dbGenCount = *(fromCopy + 16);
   *&self->_has |= 0x8000uLL;
-  v9 = *(v4 + 452);
+  v9 = *(fromCopy + 452);
   if ((v9 & 0x80000000000000) == 0)
   {
 LABEL_43:
@@ -7571,54 +7571,54 @@ LABEL_43:
   }
 
 LABEL_139:
-  self->_hasLocalChanges = v4[429];
+  self->_hasLocalChanges = fromCopy[429];
   *&self->_has |= 0x80000000000000uLL;
-  if ((*(v4 + 452) & 0x10000000000000) != 0)
+  if ((*(fromCopy + 452) & 0x10000000000000) != 0)
   {
 LABEL_44:
-    self->_doGenCountsMatchInFileId = v4[426];
+    self->_doGenCountsMatchInFileId = fromCopy[426];
     *&self->_has |= 0x10000000000000uLL;
   }
 
 LABEL_45:
-  if (*(v4 + 46))
+  if (*(fromCopy + 46))
   {
     [(AppTelemetryItemStatsInvestigation *)self setFileNameExtension:?];
-    v4 = v16;
+    fromCopy = v16;
   }
 
   if ((v5[3] & 8) != 0)
   {
-    self->_pathDepth = *(v4 + 28);
+    self->_pathDepth = *(fromCopy + 28);
     *&self->_has |= 0x8000000uLL;
   }
 
   v10 = *(v5 + 4);
   if ((v10 & 0x200) != 0)
   {
-    self->_xattrHasDemotion = v4[447];
+    self->_xattrHasDemotion = fromCopy[447];
     *(&self->_has + 4) |= 0x200u;
     v10 = *(v5 + 4);
   }
 
   if ((v10 & 0x400) != 0)
   {
-    self->_xattrHasPromotion = v4[448];
+    self->_xattrHasPromotion = fromCopy[448];
     *(&self->_has + 4) |= 0x400u;
   }
 
-  if (*(v4 + 43))
+  if (*(fromCopy + 43))
   {
     [(AppTelemetryItemStatsInvestigation *)self setDbErrorDomain:?];
-    v4 = v16;
+    fromCopy = v16;
   }
 
   v11 = *v5;
   if ((*v5 & 0x100) != 0)
   {
-    self->_dbErrorCode = *(v4 + 9);
+    self->_dbErrorCode = *(fromCopy + 9);
     *&self->_has |= 0x100uLL;
-    v11 = *(v4 + 452);
+    v11 = *(fromCopy + 452);
     if ((v11 & 0x40) == 0)
     {
 LABEL_57:
@@ -7636,9 +7636,9 @@ LABEL_57:
     goto LABEL_57;
   }
 
-  self->_dbCapabilities = *(v4 + 7);
+  self->_dbCapabilities = *(fromCopy + 7);
   *&self->_has |= 0x40uLL;
-  v11 = *(v4 + 452);
+  v11 = *(fromCopy + 452);
   if ((v11 & 0x20000) == 0)
   {
 LABEL_58:
@@ -7651,9 +7651,9 @@ LABEL_58:
   }
 
 LABEL_143:
-  self->_dbTransferState = *(v4 + 18);
+  self->_dbTransferState = *(fromCopy + 18);
   *&self->_has |= 0x20000uLL;
-  v11 = *(v4 + 452);
+  v11 = *(fromCopy + 452);
   if ((v11 & 0x10000) == 0)
   {
 LABEL_59:
@@ -7666,9 +7666,9 @@ LABEL_59:
   }
 
 LABEL_144:
-  self->_dbSharingState = *(v4 + 17);
+  self->_dbSharingState = *(fromCopy + 17);
   *&self->_has |= 0x10000uLL;
-  v11 = *(v4 + 452);
+  v11 = *(fromCopy + 452);
   if ((v11 & 0x2000000000000) == 0)
   {
 LABEL_60:
@@ -7681,9 +7681,9 @@ LABEL_60:
   }
 
 LABEL_145:
-  self->_dbIsApplibrary = v4[423];
+  self->_dbIsApplibrary = fromCopy[423];
   *&self->_has |= 0x2000000000000uLL;
-  v11 = *(v4 + 452);
+  v11 = *(fromCopy + 452);
   if ((v11 & 0x80) == 0)
   {
 LABEL_61:
@@ -7696,9 +7696,9 @@ LABEL_61:
   }
 
 LABEL_146:
-  self->_dbEffectiveContentPolicy = *(v4 + 8);
+  self->_dbEffectiveContentPolicy = *(fromCopy + 8);
   *&self->_has |= 0x80uLL;
-  v11 = *(v4 + 452);
+  v11 = *(fromCopy + 452);
   if ((v11 & 0x4000000000000) == 0)
   {
 LABEL_62:
@@ -7711,9 +7711,9 @@ LABEL_62:
   }
 
 LABEL_147:
-  self->_dbIsPackage = v4[424];
+  self->_dbIsPackage = fromCopy[424];
   *&self->_has |= 0x4000000000000uLL;
-  v11 = *(v4 + 452);
+  v11 = *(fromCopy + 452);
   if ((v11 & 0x1000) == 0)
   {
 LABEL_63:
@@ -7726,9 +7726,9 @@ LABEL_63:
   }
 
 LABEL_148:
-  self->_dbFsContentStatus = *(v4 + 13);
+  self->_dbFsContentStatus = *(fromCopy + 13);
   *&self->_has |= 0x1000uLL;
-  v11 = *(v4 + 452);
+  v11 = *(fromCopy + 452);
   if ((v11 & 0x200) == 0)
   {
 LABEL_64:
@@ -7741,9 +7741,9 @@ LABEL_64:
   }
 
 LABEL_149:
-  self->_dbFpContentStatus = *(v4 + 10);
+  self->_dbFpContentStatus = *(fromCopy + 10);
   *&self->_has |= 0x200uLL;
-  v11 = *(v4 + 452);
+  v11 = *(fromCopy + 452);
   if ((v11 & 0x2000) == 0)
   {
 LABEL_65:
@@ -7756,9 +7756,9 @@ LABEL_65:
   }
 
 LABEL_150:
-  self->_dbFsDeletionStatus = *(v4 + 14);
+  self->_dbFsDeletionStatus = *(fromCopy + 14);
   *&self->_has |= 0x2000uLL;
-  v11 = *(v4 + 452);
+  v11 = *(fromCopy + 452);
   if ((v11 & 0x400) == 0)
   {
 LABEL_66:
@@ -7771,9 +7771,9 @@ LABEL_66:
   }
 
 LABEL_151:
-  self->_dbFpDeletionStatus = *(v4 + 11);
+  self->_dbFpDeletionStatus = *(fromCopy + 11);
   *&self->_has |= 0x400uLL;
-  v11 = *(v4 + 452);
+  v11 = *(fromCopy + 452);
   if ((v11 & 0x4000) == 0)
   {
 LABEL_67:
@@ -7786,9 +7786,9 @@ LABEL_67:
   }
 
 LABEL_152:
-  self->_dbFsImportStatus = *(v4 + 15);
+  self->_dbFsImportStatus = *(fromCopy + 15);
   *&self->_has |= 0x4000uLL;
-  v11 = *(v4 + 452);
+  v11 = *(fromCopy + 452);
   if ((v11 & 0x800) == 0)
   {
 LABEL_68:
@@ -7801,9 +7801,9 @@ LABEL_68:
   }
 
 LABEL_153:
-  self->_dbFpImportStatus = *(v4 + 12);
+  self->_dbFpImportStatus = *(fromCopy + 12);
   *&self->_has |= 0x800uLL;
-  v11 = *(v4 + 452);
+  v11 = *(fromCopy + 452);
   if ((v11 & 0x8000000000000) == 0)
   {
 LABEL_69:
@@ -7816,40 +7816,40 @@ LABEL_69:
   }
 
 LABEL_154:
-  self->_dbIsSuper = v4[425];
+  self->_dbIsSuper = fromCopy[425];
   *&self->_has |= 0x8000000000000uLL;
-  if ((*(v4 + 452) & 0x800000) != 0)
+  if ((*(fromCopy + 452) & 0x800000) != 0)
   {
 LABEL_70:
-    self->_gencountDiff = *(v4 + 24);
+    self->_gencountDiff = *(fromCopy + 24);
     *&self->_has |= 0x800000uLL;
   }
 
 LABEL_71:
   if ((*(v5 + 4) & 0x40) != 0)
   {
-    self->_parentMatches = v4[444];
+    self->_parentMatches = fromCopy[444];
     *(&self->_has + 4) |= 0x40u;
   }
 
   if (v5[5] < 0)
   {
-    self->_appLibraryMatches = v4[421];
+    self->_appLibraryMatches = fromCopy[421];
     *&self->_has |= 0x800000000000uLL;
   }
 
   if ((*(v5 + 4) & 8) != 0)
   {
-    self->_mTimeBeforeMigrationStarted = v4[441];
+    self->_mTimeBeforeMigrationStarted = fromCopy[441];
     *(&self->_has + 4) |= 8u;
   }
 
   v12 = *v5;
   if ((*v5 & 0x20000000000000) != 0)
   {
-    self->_docIDMatches = v4[427];
+    self->_docIDMatches = fromCopy[427];
     *&self->_has |= 0x20000000000000uLL;
-    v12 = *(v4 + 452);
+    v12 = *(fromCopy + 452);
     if ((v12 & 0x4000000) == 0)
     {
 LABEL_79:
@@ -7867,9 +7867,9 @@ LABEL_79:
     goto LABEL_79;
   }
 
-  self->_mTime = *(v4 + 27);
+  self->_mTime = *(fromCopy + 27);
   *&self->_has |= 0x4000000uLL;
-  v12 = *(v4 + 452);
+  v12 = *(fromCopy + 452);
   if ((v12 & 0x10) == 0)
   {
 LABEL_80:
@@ -7882,60 +7882,60 @@ LABEL_80:
   }
 
 LABEL_158:
-  self->_bTime = *(v4 + 5);
+  self->_bTime = *(fromCopy + 5);
   *&self->_has |= 0x10uLL;
-  if ((*(v4 + 452) & 0x1000000000000) != 0)
+  if ((*(fromCopy + 452) & 0x1000000000000) != 0)
   {
 LABEL_81:
-    self->_bTimeIsBusy = v4[422];
+    self->_bTimeIsBusy = fromCopy[422];
     *&self->_has |= 0x1000000000000uLL;
   }
 
 LABEL_82:
   if ((*(v5 + 4) & 0x100) != 0)
   {
-    self->_xattrHasBeforeBounce = v4[446];
+    self->_xattrHasBeforeBounce = fromCopy[446];
     *(&self->_has + 4) |= 0x100u;
   }
 
-  if (*(v4 + 49))
+  if (*(fromCopy + 49))
   {
     [(AppTelemetryItemStatsInvestigation *)self setNameUnicodeNorm:?];
-    v4 = v16;
+    fromCopy = v16;
   }
 
   if ((*(v5 + 4) & 0x10) != 0)
   {
-    self->_nameIsTrashed = v4[442];
+    self->_nameIsTrashed = fromCopy[442];
     *(&self->_has + 4) |= 0x10u;
   }
 
   v13 = *v5;
   if ((*v5 & 0x8000000000) != 0)
   {
-    self->_sysPageSize = *(v4 + 40);
+    self->_sysPageSize = *(fromCopy + 40);
     *&self->_has |= 0x8000000000uLL;
-    v13 = *(v4 + 452);
+    v13 = *(fromCopy + 452);
   }
 
   if ((v13 & 0x10000000000) != 0)
   {
-    self->_sysUID = *(v4 + 41);
+    self->_sysUID = *(fromCopy + 41);
     *&self->_has |= 0x10000000000uLL;
   }
 
   if ((*(v5 + 4) & 0x80) != 0)
   {
-    self->_sysDocIDResolutionOK = v4[445];
+    self->_sysDocIDResolutionOK = fromCopy[445];
     *(&self->_has + 4) |= 0x80u;
   }
 
   v14 = *v5;
   if ((*v5 & 0x40000000) != 0)
   {
-    self->_purgeGenCount = *(v4 + 31);
+    self->_purgeGenCount = *(fromCopy + 31);
     *&self->_has |= 0x40000000uLL;
-    v14 = *(v4 + 452);
+    v14 = *(fromCopy + 452);
     if ((v14 & 0x20000000) == 0)
     {
 LABEL_96:
@@ -7953,9 +7953,9 @@ LABEL_96:
     goto LABEL_96;
   }
 
-  self->_purgeATime = *(v4 + 30);
+  self->_purgeATime = *(fromCopy + 30);
   *&self->_has |= 0x20000000uLL;
-  v14 = *(v4 + 452);
+  v14 = *(fromCopy + 452);
   if ((v14 & 0x80000000) == 0)
   {
 LABEL_97:
@@ -7968,9 +7968,9 @@ LABEL_97:
   }
 
 LABEL_162:
-  self->_purgeSyncRoot = *(v4 + 32);
+  self->_purgeSyncRoot = *(fromCopy + 32);
   *&self->_has |= 0x80000000uLL;
-  v14 = *(v4 + 452);
+  v14 = *(fromCopy + 452);
   if ((v14 & 0x80000) == 0)
   {
 LABEL_98:
@@ -7983,9 +7983,9 @@ LABEL_98:
   }
 
 LABEL_163:
-  self->_diagFailuresBitmap = *(v4 + 20);
+  self->_diagFailuresBitmap = *(fromCopy + 20);
   *&self->_has |= 0x80000uLL;
-  v14 = *(v4 + 452);
+  v14 = *(fromCopy + 452);
   if ((v14 & 0x40000) == 0)
   {
 LABEL_99:
@@ -7998,34 +7998,34 @@ LABEL_99:
   }
 
 LABEL_164:
-  self->_diagErrorCode = *(v4 + 19);
+  self->_diagErrorCode = *(fromCopy + 19);
   *&self->_has |= 0x40000uLL;
-  if ((*(v4 + 452) & 0x100000) != 0)
+  if ((*(fromCopy + 452) & 0x100000) != 0)
   {
 LABEL_100:
-    self->_diagUnderlyingErrorCode = *(v4 + 21);
+    self->_diagUnderlyingErrorCode = *(fromCopy + 21);
     *&self->_has |= 0x100000uLL;
   }
 
 LABEL_101:
-  if (*(v4 + 44))
+  if (*(fromCopy + 44))
   {
     [(AppTelemetryItemStatsInvestigation *)self setDiagErrorDomain:?];
-    v4 = v16;
+    fromCopy = v16;
   }
 
-  if (*(v4 + 45))
+  if (*(fromCopy + 45))
   {
     [(AppTelemetryItemStatsInvestigation *)self setDiagUnderlyingErrorDomain:?];
-    v4 = v16;
+    fromCopy = v16;
   }
 
   v15 = *v5;
   if (*v5)
   {
-    self->_apfsAvailableSpace = *(v4 + 1);
+    self->_apfsAvailableSpace = *(fromCopy + 1);
     *&self->_has |= 1uLL;
-    v15 = *(v4 + 452);
+    v15 = *(fromCopy + 452);
     if ((v15 & 4) == 0)
     {
 LABEL_107:
@@ -8043,9 +8043,9 @@ LABEL_107:
     goto LABEL_107;
   }
 
-  self->_apfsFlags = *(v4 + 3);
+  self->_apfsFlags = *(fromCopy + 3);
   *&self->_has |= 4uLL;
-  v15 = *(v4 + 452);
+  v15 = *(fromCopy + 452);
   if ((v15 & 2) == 0)
   {
 LABEL_108:
@@ -8058,9 +8058,9 @@ LABEL_108:
   }
 
 LABEL_168:
-  self->_apfsBlockSize = *(v4 + 2);
+  self->_apfsBlockSize = *(fromCopy + 2);
   *&self->_has |= 2uLL;
-  v15 = *(v4 + 452);
+  v15 = *(fromCopy + 452);
   if ((v15 & 8) == 0)
   {
 LABEL_109:
@@ -8073,9 +8073,9 @@ LABEL_109:
   }
 
 LABEL_169:
-  self->_apfsRole = *(v4 + 4);
+  self->_apfsRole = *(fromCopy + 4);
   *&self->_has |= 8uLL;
-  v15 = *(v4 + 452);
+  v15 = *(fromCopy + 452);
   if ((v15 & 0x400000000000) == 0)
   {
 LABEL_110:
@@ -8088,9 +8088,9 @@ LABEL_110:
   }
 
 LABEL_170:
-  self->_apfsEncrypted = v4[420];
+  self->_apfsEncrypted = fromCopy[420];
   *&self->_has |= 0x400000000000uLL;
-  v15 = *(v4 + 452);
+  v15 = *(fromCopy + 452);
   if ((v15 & 0x1000000000) == 0)
   {
 LABEL_111:
@@ -8103,9 +8103,9 @@ LABEL_111:
   }
 
 LABEL_171:
-  self->_statDocID = *(v4 + 37);
+  self->_statDocID = *(fromCopy + 37);
   *&self->_has |= 0x1000000000uLL;
-  v15 = *(v4 + 452);
+  v15 = *(fromCopy + 452);
   if ((v15 & 0x2000000000) == 0)
   {
 LABEL_112:
@@ -8118,9 +8118,9 @@ LABEL_112:
   }
 
 LABEL_172:
-  self->_statLogicalSize = *(v4 + 38);
+  self->_statLogicalSize = *(fromCopy + 38);
   *&self->_has |= 0x2000000000uLL;
-  v15 = *(v4 + 452);
+  v15 = *(fromCopy + 452);
   if ((v15 & 0x4000000000) == 0)
   {
 LABEL_113:
@@ -8133,12 +8133,12 @@ LABEL_113:
   }
 
 LABEL_173:
-  self->_statPhysicalSize = *(v4 + 39);
+  self->_statPhysicalSize = *(fromCopy + 39);
   *&self->_has |= 0x4000000000uLL;
-  if ((*(v4 + 452) & 0x800000000) != 0)
+  if ((*(fromCopy + 452) & 0x800000000) != 0)
   {
 LABEL_114:
-    self->_statDirEntryCount = *(v4 + 36);
+    self->_statDirEntryCount = *(fromCopy + 36);
     *&self->_has |= 0x800000000uLL;
   }
 

@@ -1,16 +1,16 @@
 @interface SBContinuousExposeStripRevealGestureWorkspaceTransaction
 - (BOOL)_canBeInterrupted;
-- (void)handleTransitionRequestForGestureComplete:(id)a3 fromGestureManager:(id)a4;
+- (void)handleTransitionRequestForGestureComplete:(id)complete fromGestureManager:(id)manager;
 @end
 
 @implementation SBContinuousExposeStripRevealGestureWorkspaceTransaction
 
-- (void)handleTransitionRequestForGestureComplete:(id)a3 fromGestureManager:(id)a4
+- (void)handleTransitionRequestForGestureComplete:(id)complete fromGestureManager:(id)manager
 {
   self->_completedGestureWithTransitionRequest = 1;
   v4.receiver = self;
   v4.super_class = SBContinuousExposeStripRevealGestureWorkspaceTransaction;
-  [(SBFluidSwitcherGestureWorkspaceTransaction *)&v4 handleTransitionRequestForGestureComplete:a3 fromGestureManager:a4];
+  [(SBFluidSwitcherGestureWorkspaceTransaction *)&v4 handleTransitionRequestForGestureComplete:complete fromGestureManager:manager];
 }
 
 - (BOOL)_canBeInterrupted

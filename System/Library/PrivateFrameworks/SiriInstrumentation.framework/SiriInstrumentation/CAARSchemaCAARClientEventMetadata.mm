@@ -1,26 +1,26 @@
 @interface CAARSchemaCAARClientEventMetadata
-- (BOOL)isEqual:(id)a3;
-- (CAARSchemaCAARClientEventMetadata)initWithDictionary:(id)a3;
-- (CAARSchemaCAARClientEventMetadata)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CAARSchemaCAARClientEventMetadata)initWithDictionary:(id)dictionary;
+- (CAARSchemaCAARClientEventMetadata)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CAARSchemaCAARClientEventMetadata
 
-- (CAARSchemaCAARClientEventMetadata)initWithDictionary:(id)a3
+- (CAARSchemaCAARClientEventMetadata)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v18.receiver = self;
   v18.super_class = CAARSchemaCAARClientEventMetadata;
   v5 = [(CAARSchemaCAARClientEventMetadata *)&v18 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"caarId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"caarId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -28,7 +28,7 @@
       [(CAARSchemaCAARClientEventMetadata *)v5 setCaarId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"resultCandidateId"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"resultCandidateId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -36,7 +36,7 @@
       [(CAARSchemaCAARClientEventMetadata *)v5 setResultCandidateId:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"requestId"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"requestId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -44,7 +44,7 @@
       [(CAARSchemaCAARClientEventMetadata *)v5 setRequestId:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"trpId"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"trpId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -52,7 +52,7 @@
       [(CAARSchemaCAARClientEventMetadata *)v5 setTrpId:v13];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"subRequestId"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"subRequestId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -66,30 +66,30 @@
   return v5;
 }
 
-- (CAARSchemaCAARClientEventMetadata)initWithJSON:(id)a3
+- (CAARSchemaCAARClientEventMetadata)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(CAARSchemaCAARClientEventMetadata *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(CAARSchemaCAARClientEventMetadata *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(CAARSchemaCAARClientEventMetadata *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -102,81 +102,81 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_caarId)
   {
-    v4 = [(CAARSchemaCAARClientEventMetadata *)self caarId];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    caarId = [(CAARSchemaCAARClientEventMetadata *)self caarId];
+    dictionaryRepresentation = [caarId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"caarId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"caarId"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"caarId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"caarId"];
     }
   }
 
   if (self->_requestId)
   {
-    v7 = [(CAARSchemaCAARClientEventMetadata *)self requestId];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    requestId = [(CAARSchemaCAARClientEventMetadata *)self requestId];
+    dictionaryRepresentation2 = [requestId dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"requestId"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"requestId"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"requestId"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"requestId"];
     }
   }
 
   if (self->_resultCandidateId)
   {
-    v10 = [(CAARSchemaCAARClientEventMetadata *)self resultCandidateId];
-    v11 = [v10 copy];
-    [v3 setObject:v11 forKeyedSubscript:@"resultCandidateId"];
+    resultCandidateId = [(CAARSchemaCAARClientEventMetadata *)self resultCandidateId];
+    v11 = [resultCandidateId copy];
+    [dictionary setObject:v11 forKeyedSubscript:@"resultCandidateId"];
   }
 
   if (self->_subRequestId)
   {
-    v12 = [(CAARSchemaCAARClientEventMetadata *)self subRequestId];
-    v13 = [v12 dictionaryRepresentation];
-    if (v13)
+    subRequestId = [(CAARSchemaCAARClientEventMetadata *)self subRequestId];
+    dictionaryRepresentation3 = [subRequestId dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v13 forKeyedSubscript:@"subRequestId"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"subRequestId"];
     }
 
     else
     {
-      v14 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v14 forKeyedSubscript:@"subRequestId"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"subRequestId"];
     }
   }
 
   if (self->_trpId)
   {
-    v15 = [(CAARSchemaCAARClientEventMetadata *)self trpId];
-    v16 = [v15 dictionaryRepresentation];
-    if (v16)
+    trpId = [(CAARSchemaCAARClientEventMetadata *)self trpId];
+    dictionaryRepresentation4 = [trpId dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v16 forKeyedSubscript:@"trpId"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"trpId"];
     }
 
     else
     {
-      v17 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v17 forKeyedSubscript:@"trpId"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"trpId"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -188,28 +188,28 @@
   return v6 ^ [(SISchemaUUID *)self->_subRequestId hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_27;
   }
 
-  v5 = [(CAARSchemaCAARClientEventMetadata *)self caarId];
-  v6 = [v4 caarId];
-  if ((v5 != 0) == (v6 == 0))
+  caarId = [(CAARSchemaCAARClientEventMetadata *)self caarId];
+  caarId2 = [equalCopy caarId];
+  if ((caarId != 0) == (caarId2 == 0))
   {
     goto LABEL_26;
   }
 
-  v7 = [(CAARSchemaCAARClientEventMetadata *)self caarId];
-  if (v7)
+  caarId3 = [(CAARSchemaCAARClientEventMetadata *)self caarId];
+  if (caarId3)
   {
-    v8 = v7;
-    v9 = [(CAARSchemaCAARClientEventMetadata *)self caarId];
-    v10 = [v4 caarId];
-    v11 = [v9 isEqual:v10];
+    v8 = caarId3;
+    caarId4 = [(CAARSchemaCAARClientEventMetadata *)self caarId];
+    caarId5 = [equalCopy caarId];
+    v11 = [caarId4 isEqual:caarId5];
 
     if (!v11)
     {
@@ -221,20 +221,20 @@
   {
   }
 
-  v5 = [(CAARSchemaCAARClientEventMetadata *)self resultCandidateId];
-  v6 = [v4 resultCandidateId];
-  if ((v5 != 0) == (v6 == 0))
+  caarId = [(CAARSchemaCAARClientEventMetadata *)self resultCandidateId];
+  caarId2 = [equalCopy resultCandidateId];
+  if ((caarId != 0) == (caarId2 == 0))
   {
     goto LABEL_26;
   }
 
-  v12 = [(CAARSchemaCAARClientEventMetadata *)self resultCandidateId];
-  if (v12)
+  resultCandidateId = [(CAARSchemaCAARClientEventMetadata *)self resultCandidateId];
+  if (resultCandidateId)
   {
-    v13 = v12;
-    v14 = [(CAARSchemaCAARClientEventMetadata *)self resultCandidateId];
-    v15 = [v4 resultCandidateId];
-    v16 = [v14 isEqual:v15];
+    v13 = resultCandidateId;
+    resultCandidateId2 = [(CAARSchemaCAARClientEventMetadata *)self resultCandidateId];
+    resultCandidateId3 = [equalCopy resultCandidateId];
+    v16 = [resultCandidateId2 isEqual:resultCandidateId3];
 
     if (!v16)
     {
@@ -246,20 +246,20 @@
   {
   }
 
-  v5 = [(CAARSchemaCAARClientEventMetadata *)self requestId];
-  v6 = [v4 requestId];
-  if ((v5 != 0) == (v6 == 0))
+  caarId = [(CAARSchemaCAARClientEventMetadata *)self requestId];
+  caarId2 = [equalCopy requestId];
+  if ((caarId != 0) == (caarId2 == 0))
   {
     goto LABEL_26;
   }
 
-  v17 = [(CAARSchemaCAARClientEventMetadata *)self requestId];
-  if (v17)
+  requestId = [(CAARSchemaCAARClientEventMetadata *)self requestId];
+  if (requestId)
   {
-    v18 = v17;
-    v19 = [(CAARSchemaCAARClientEventMetadata *)self requestId];
-    v20 = [v4 requestId];
-    v21 = [v19 isEqual:v20];
+    v18 = requestId;
+    requestId2 = [(CAARSchemaCAARClientEventMetadata *)self requestId];
+    requestId3 = [equalCopy requestId];
+    v21 = [requestId2 isEqual:requestId3];
 
     if (!v21)
     {
@@ -271,20 +271,20 @@
   {
   }
 
-  v5 = [(CAARSchemaCAARClientEventMetadata *)self trpId];
-  v6 = [v4 trpId];
-  if ((v5 != 0) == (v6 == 0))
+  caarId = [(CAARSchemaCAARClientEventMetadata *)self trpId];
+  caarId2 = [equalCopy trpId];
+  if ((caarId != 0) == (caarId2 == 0))
   {
     goto LABEL_26;
   }
 
-  v22 = [(CAARSchemaCAARClientEventMetadata *)self trpId];
-  if (v22)
+  trpId = [(CAARSchemaCAARClientEventMetadata *)self trpId];
+  if (trpId)
   {
-    v23 = v22;
-    v24 = [(CAARSchemaCAARClientEventMetadata *)self trpId];
-    v25 = [v4 trpId];
-    v26 = [v24 isEqual:v25];
+    v23 = trpId;
+    trpId2 = [(CAARSchemaCAARClientEventMetadata *)self trpId];
+    trpId3 = [equalCopy trpId];
+    v26 = [trpId2 isEqual:trpId3];
 
     if (!v26)
     {
@@ -296,12 +296,12 @@
   {
   }
 
-  v5 = [(CAARSchemaCAARClientEventMetadata *)self subRequestId];
-  v6 = [v4 subRequestId];
-  if ((v5 != 0) != (v6 == 0))
+  caarId = [(CAARSchemaCAARClientEventMetadata *)self subRequestId];
+  caarId2 = [equalCopy subRequestId];
+  if ((caarId != 0) != (caarId2 == 0))
   {
-    v27 = [(CAARSchemaCAARClientEventMetadata *)self subRequestId];
-    if (!v27)
+    subRequestId = [(CAARSchemaCAARClientEventMetadata *)self subRequestId];
+    if (!subRequestId)
     {
 
 LABEL_30:
@@ -309,10 +309,10 @@ LABEL_30:
       goto LABEL_28;
     }
 
-    v28 = v27;
-    v29 = [(CAARSchemaCAARClientEventMetadata *)self subRequestId];
-    v30 = [v4 subRequestId];
-    v31 = [v29 isEqual:v30];
+    v28 = subRequestId;
+    subRequestId2 = [(CAARSchemaCAARClientEventMetadata *)self subRequestId];
+    subRequestId3 = [equalCopy subRequestId];
+    v31 = [subRequestId2 isEqual:subRequestId3];
 
     if (v31)
     {
@@ -332,90 +332,90 @@ LABEL_28:
   return v32;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v14 = a3;
-  v4 = [(CAARSchemaCAARClientEventMetadata *)self caarId];
+  toCopy = to;
+  caarId = [(CAARSchemaCAARClientEventMetadata *)self caarId];
 
-  if (v4)
+  if (caarId)
   {
-    v5 = [(CAARSchemaCAARClientEventMetadata *)self caarId];
+    caarId2 = [(CAARSchemaCAARClientEventMetadata *)self caarId];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(CAARSchemaCAARClientEventMetadata *)self resultCandidateId];
+  resultCandidateId = [(CAARSchemaCAARClientEventMetadata *)self resultCandidateId];
 
-  if (v6)
+  if (resultCandidateId)
   {
     PBDataWriterWriteStringField();
   }
 
-  v7 = [(CAARSchemaCAARClientEventMetadata *)self requestId];
+  requestId = [(CAARSchemaCAARClientEventMetadata *)self requestId];
 
-  if (v7)
+  if (requestId)
   {
-    v8 = [(CAARSchemaCAARClientEventMetadata *)self requestId];
+    requestId2 = [(CAARSchemaCAARClientEventMetadata *)self requestId];
     PBDataWriterWriteSubmessage();
   }
 
-  v9 = [(CAARSchemaCAARClientEventMetadata *)self trpId];
+  trpId = [(CAARSchemaCAARClientEventMetadata *)self trpId];
 
-  if (v9)
+  if (trpId)
   {
-    v10 = [(CAARSchemaCAARClientEventMetadata *)self trpId];
+    trpId2 = [(CAARSchemaCAARClientEventMetadata *)self trpId];
     PBDataWriterWriteSubmessage();
   }
 
-  v11 = [(CAARSchemaCAARClientEventMetadata *)self subRequestId];
+  subRequestId = [(CAARSchemaCAARClientEventMetadata *)self subRequestId];
 
-  v12 = v14;
-  if (v11)
+  v12 = toCopy;
+  if (subRequestId)
   {
-    v13 = [(CAARSchemaCAARClientEventMetadata *)self subRequestId];
+    subRequestId2 = [(CAARSchemaCAARClientEventMetadata *)self subRequestId];
     PBDataWriterWriteSubmessage();
 
-    v12 = v14;
+    v12 = toCopy;
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v19.receiver = self;
   v19.super_class = CAARSchemaCAARClientEventMetadata;
-  v5 = [(SISchemaInstrumentationMessage *)&v19 applySensitiveConditionsPolicy:v4];
-  v6 = [(CAARSchemaCAARClientEventMetadata *)self caarId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v19 applySensitiveConditionsPolicy:policyCopy];
+  caarId = [(CAARSchemaCAARClientEventMetadata *)self caarId];
+  v7 = [caarId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(CAARSchemaCAARClientEventMetadata *)self deleteCaarId];
   }
 
-  v9 = [(CAARSchemaCAARClientEventMetadata *)self requestId];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  requestId = [(CAARSchemaCAARClientEventMetadata *)self requestId];
+  v10 = [requestId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(CAARSchemaCAARClientEventMetadata *)self deleteRequestId];
   }
 
-  v12 = [(CAARSchemaCAARClientEventMetadata *)self trpId];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  trpId = [(CAARSchemaCAARClientEventMetadata *)self trpId];
+  v13 = [trpId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(CAARSchemaCAARClientEventMetadata *)self deleteTrpId];
   }
 
-  v15 = [(CAARSchemaCAARClientEventMetadata *)self subRequestId];
-  v16 = [v15 applySensitiveConditionsPolicy:v4];
-  v17 = [v16 suppressMessage];
+  subRequestId = [(CAARSchemaCAARClientEventMetadata *)self subRequestId];
+  v16 = [subRequestId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v16 suppressMessage];
 
-  if (v17)
+  if (suppressMessage4)
   {
     [(CAARSchemaCAARClientEventMetadata *)self deleteSubRequestId];
   }

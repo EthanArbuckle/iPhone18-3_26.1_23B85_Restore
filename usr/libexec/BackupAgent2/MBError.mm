@@ -1,17 +1,17 @@
 @interface MBError
-+ (BOOL)isNSFileNotFoundError:(id)a3;
-+ (BOOL)isTooManyOpenFilesError:(id)a3;
++ (BOOL)isNSFileNotFoundError:(id)error;
++ (BOOL)isTooManyOpenFilesError:(id)error;
 @end
 
 @implementation MBError
 
-+ (BOOL)isNSFileNotFoundError:(id)a3
++ (BOOL)isNSFileNotFoundError:(id)error
 {
-  v3 = a3;
-  if ([v3 code] == 4 || objc_msgSend(v3, "code") == 260)
+  errorCopy = error;
+  if ([errorCopy code] == 4 || objc_msgSend(errorCopy, "code") == 260)
   {
-    v4 = [v3 domain];
-    v5 = [v4 isEqualToString:NSCocoaErrorDomain];
+    domain = [errorCopy domain];
+    v5 = [domain isEqualToString:NSCocoaErrorDomain];
   }
 
   else
@@ -22,23 +22,23 @@
   return v5;
 }
 
-+ (BOOL)isTooManyOpenFilesError:(id)a3
++ (BOOL)isTooManyOpenFilesError:(id)error
 {
-  v3 = a3;
-  if ([v3 code] == 24 && (objc_msgSend(v3, "domain"), v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "isEqualToString:", NSPOSIXErrorDomain), v4, (v5 & 1) != 0))
+  errorCopy = error;
+  if ([errorCopy code] == 24 && (objc_msgSend(errorCopy, "domain"), v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "isEqualToString:", NSPOSIXErrorDomain), v4, (v5 & 1) != 0))
   {
     v6 = 1;
   }
 
   else
   {
-    v7 = [v3 userInfo];
-    v8 = [v7 objectForKeyedSubscript:NSUnderlyingErrorKey];
+    userInfo = [errorCopy userInfo];
+    v8 = [userInfo objectForKeyedSubscript:NSUnderlyingErrorKey];
 
     if (v8 && [v8 code] == 24)
     {
-      v9 = [v8 domain];
-      v6 = [v9 isEqualToString:NSPOSIXErrorDomain];
+      domain = [v8 domain];
+      v6 = [domain isEqualToString:NSPOSIXErrorDomain];
     }
 
     else

@@ -1,24 +1,24 @@
 @interface CUXPCAgent
-- (BOOL)activateDirectAndReturnError:(id *)a3;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)activateDirectAndReturnError:(id *)error;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (CUXPCAgent)init;
 - (id)remoteObjectProxy;
-- (id)remoteObjectProxyWithErrorHandler:(id)a3;
-- (void)_connectionInvalidated:(id)a3;
+- (id)remoteObjectProxyWithErrorHandler:(id)handler;
+- (void)_connectionInvalidated:(id)invalidated;
 - (void)_interrupted;
 - (void)_invalidate;
 - (void)_invalidated;
-- (void)activateWithCompletion:(id)a3;
+- (void)activateWithCompletion:(id)completion;
 - (void)dealloc;
 - (void)invalidate;
-- (void)setLabel:(id)a3;
+- (void)setLabel:(id)label;
 @end
 
 @implementation CUXPCAgent
 
-- (id)remoteObjectProxyWithErrorHandler:(id)a3
+- (id)remoteObjectProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   xpcCnx = self->_xpcCnx;
   if (!xpcCnx)
   {
@@ -42,11 +42,11 @@
     }
 
 LABEL_8:
-    v12 = [(NSMutableSet *)self->_xpcCnxSet anyObject];
-    v13 = v12;
-    if (v12)
+    anyObject = [(NSMutableSet *)self->_xpcCnxSet anyObject];
+    v13 = anyObject;
+    if (anyObject)
     {
-      v6 = [*(v12 + 24) remoteObjectProxyWithErrorHandler:v4];
+      v6 = [*(anyObject + 24) remoteObjectProxyWithErrorHandler:handlerCopy];
     }
 
     else
@@ -57,7 +57,7 @@ LABEL_8:
     goto LABEL_12;
   }
 
-  v6 = [(NSXPCConnection *)xpcCnx remoteObjectProxyWithErrorHandler:v4];
+  v6 = [(NSXPCConnection *)xpcCnx remoteObjectProxyWithErrorHandler:handlerCopy];
 LABEL_12:
 
   return v6;
@@ -88,48 +88,48 @@ LABEL_12:
     }
 
 LABEL_8:
-    v10 = [(NSMutableSet *)self->_xpcCnxSet anyObject];
-    v11 = v10;
-    if (v10)
+    anyObject = [(NSMutableSet *)self->_xpcCnxSet anyObject];
+    v11 = anyObject;
+    if (anyObject)
     {
-      v4 = [*(v10 + 24) remoteObjectProxy];
+      remoteObjectProxy = [*(anyObject + 24) remoteObjectProxy];
     }
 
     else
     {
-      v4 = 0;
+      remoteObjectProxy = 0;
     }
 
     goto LABEL_12;
   }
 
-  v4 = [(NSXPCConnection *)xpcCnx remoteObjectProxy];
+  remoteObjectProxy = [(NSXPCConnection *)xpcCnx remoteObjectProxy];
 LABEL_12:
 
-  return v4;
+  return remoteObjectProxy;
 }
 
-- (void)_connectionInvalidated:(id)a3
+- (void)_connectionInvalidated:(id)invalidated
 {
-  v5 = a3;
+  invalidatedCopy = invalidated;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  [v5 connectionInvalidated];
-  [(NSMutableSet *)self->_xpcCnxSet removeObject:v5];
+  [invalidatedCopy connectionInvalidated];
+  [(NSMutableSet *)self->_xpcCnxSet removeObject:invalidatedCopy];
   connectionEndedHandler = self->_connectionEndedHandler;
   if (connectionEndedHandler)
   {
-    connectionEndedHandler[2](connectionEndedHandler, v5);
+    connectionEndedHandler[2](connectionEndedHandler, invalidatedCopy);
   }
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a4;
+  connectionCopy = connection;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   v7 = objc_alloc_init(CUXPCAgentConnection);
   objc_storeStrong(&v7->_agent, self);
   objc_storeStrong(&v7->_dispatchQueue, self->_dispatchQueue);
-  objc_storeStrong(&v7->_xpcCnx, a4);
+  objc_storeStrong(&v7->_xpcCnx, connection);
   xpcCnxSet = self->_xpcCnxSet;
   if (!xpcCnxSet)
   {
@@ -141,9 +141,9 @@ LABEL_12:
   }
 
   [(NSMutableSet *)xpcCnxSet addObject:v7];
-  [v6 _setQueue:self->_dispatchQueue];
-  [v6 setExportedInterface:self->_exportedInterface];
-  [v6 setExportedObject:self->_exportedObject];
+  [connectionCopy _setQueue:self->_dispatchQueue];
+  [connectionCopy setExportedInterface:self->_exportedInterface];
+  [connectionCopy setExportedObject:self->_exportedObject];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __49__CUXPCAgent_listener_shouldAcceptNewConnection___block_invoke;
@@ -151,17 +151,17 @@ LABEL_12:
   v20[4] = self;
   v11 = v7;
   v21 = v11;
-  [v6 setInvalidationHandler:v20];
-  [v6 setRemoteObjectInterface:self->_remoteObjectInterface];
-  [v6 resume];
+  [connectionCopy setInvalidationHandler:v20];
+  [connectionCopy setRemoteObjectInterface:self->_remoteObjectInterface];
+  [connectionCopy resume];
   ucat = self->_ucat;
   if (ucat->var0 <= 20)
   {
     if (ucat->var0 != -1)
     {
 LABEL_5:
-      v13 = [v6 processIdentifier];
-      LogPrintF(ucat, "[CUXPCAgent listener:shouldAcceptNewConnection:]", 0x14u, "XPC connection started from %#{pid}\n", v14, v15, v16, v17, v13);
+      processIdentifier = [connectionCopy processIdentifier];
+      LogPrintF(ucat, "[CUXPCAgent listener:shouldAcceptNewConnection:]", 0x14u, "XPC connection started from %#{pid}\n", v14, v15, v16, v17, processIdentifier);
       goto LABEL_7;
     }
 
@@ -356,7 +356,7 @@ LABEL_5:
   }
 }
 
-- (BOOL)activateDirectAndReturnError:(id *)a3
+- (BOOL)activateDirectAndReturnError:(id *)error
 {
   ucat = self->_ucat;
   if (ucat->var0 <= 30)
@@ -412,16 +412,16 @@ LABEL_10:
 
   else if (!self->_xpcListener)
   {
-    v19 = [MEMORY[0x1E696B0D8] anonymousListener];
+    anonymousListener = [MEMORY[0x1E696B0D8] anonymousListener];
     xpcListener = self->_xpcListener;
-    self->_xpcListener = v19;
+    self->_xpcListener = anonymousListener;
 
     [(NSXPCListener *)self->_xpcListener _setQueue:self->_dispatchQueue];
     [(NSXPCListener *)self->_xpcListener setDelegate:self];
     [(NSXPCListener *)self->_xpcListener resume];
-    v21 = [(NSXPCListener *)self->_xpcListener endpoint];
+    endpoint = [(NSXPCListener *)self->_xpcListener endpoint];
     listenerEndpoint = self->_listenerEndpoint;
-    self->_listenerEndpoint = v21;
+    self->_listenerEndpoint = endpoint;
 
     goto LABEL_10;
   }
@@ -429,10 +429,10 @@ LABEL_10:
   v26 = NSErrorWithOSStatusF(4294960575, "Activate already called", v10, v11, v12, v13, v14, v15, v28[0]);
   v24 = v26;
   v23 = v26 != 0;
-  if (a3 && v26)
+  if (error && v26)
   {
     v27 = v26;
-    *a3 = v24;
+    *error = v24;
     v23 = 1;
   }
 
@@ -473,17 +473,17 @@ LABEL_5:
   return [v13 _invalidated];
 }
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __37__CUXPCAgent_activateWithCompletion___block_invoke;
   v7[3] = &unk_1E73A49A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -500,13 +500,13 @@ void __37__CUXPCAgent_activateWithCompletion___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  objc_storeStrong(&self->_label, a3);
-  v13 = a3;
+  objc_storeStrong(&self->_label, label);
+  labelCopy = label;
   v5 = qword_1EADEA998;
-  v6 = v13;
-  [v13 UTF8String];
+  v6 = labelCopy;
+  [labelCopy UTF8String];
   LogCategoryReplaceF(&self->_ucat, "%s-%s", v7, v8, v9, v10, v11, v12, v5);
 }
 

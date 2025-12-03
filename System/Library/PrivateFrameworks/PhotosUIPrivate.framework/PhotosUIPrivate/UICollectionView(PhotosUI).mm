@@ -13,10 +13,10 @@
   v9 = a4;
   v10 = a5;
   [v8 bounds];
-  [a1 convertRect:v8 fromView:?];
-  v11 = [a1 resizableSnapshotViewFromRect:0 afterScreenUpdates:? withCapInsets:?];
-  v12 = [a1 backgroundColor];
-  [v11 setBackgroundColor:v12];
+  [self convertRect:v8 fromView:?];
+  v11 = [self resizableSnapshotViewFromRect:0 afterScreenUpdates:? withCapInsets:?];
+  backgroundColor = [self backgroundColor];
+  [v11 setBackgroundColor:backgroundColor];
 
   [v8 bounds];
   [v11 setFrame:?];
@@ -61,14 +61,14 @@
       v8 = 1;
     }
 
-    v9 = [a1 numberOfSections];
-    v10 = [v7 section];
-    v11 = [v7 item];
+    numberOfSections = [self numberOfSections];
+    section = [v7 section];
+    item = [v7 item];
     v12 = 0;
-    if ((v10 & 0x8000000000000000) == 0 && v10 < v9)
+    if ((section & 0x8000000000000000) == 0 && section < numberOfSections)
     {
       v12 = 0;
-      v13 = v11 + v8;
+      v13 = item + v8;
       if (a3 >= 0)
       {
         v14 = a3;
@@ -81,8 +81,8 @@
 
       do
       {
-        v15 = a1;
-        v16 = [a1 numberOfItemsInSection:v10];
+        selfCopy = self;
+        v16 = [self numberOfItemsInSection:section];
         if (v13 == 0x8000000000000000)
         {
           v13 = (v16 - 1) & (a3 >> 63);
@@ -100,7 +100,7 @@
 
             if (v14 == 1)
             {
-              v18 = [MEMORY[0x1E696AC88] indexPathForItem:v13 inSection:v10];
+              v18 = [MEMORY[0x1E696AC88] indexPathForItem:v13 inSection:section];
 
               v12 = v18;
             }
@@ -121,17 +121,17 @@
           break;
         }
 
-        v10 += v8;
-        if (v10 < 0)
+        section += v8;
+        if (section < 0)
         {
           break;
         }
 
         v13 = 0x8000000000000000;
-        a1 = v15;
+        self = selfCopy;
       }
 
-      while (v10 < v9);
+      while (section < numberOfSections);
     }
   }
 
@@ -145,24 +145,24 @@
 
 - (uint64_t)pu_scrollToItemAtIndexPath:()PhotosUI atScrollPosition:animated:
 {
-  v8 = [a1 layoutAttributesForItemAtIndexPath:?];
+  v8 = [self layoutAttributesForItemAtIndexPath:?];
   [v8 frame];
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v16 = v15;
 
-  return [a1 pu_scrollToRect:a4 atScrollPosition:a5 animated:{v10, v12, v14, v16}];
+  return [self pu_scrollToRect:a4 atScrollPosition:a5 animated:{v10, v12, v14, v16}];
 }
 
 - (uint64_t)pu_scrollToRect:()PhotosUI atScrollPosition:animated:
 {
-  [a1 bounds];
+  [self bounds];
   v16 = v15;
   v18 = v17;
   v44 = v19;
   v45 = v20;
-  [a1 contentInset];
+  [self contentInset];
   v42 = v23;
   v43 = v22;
   v25 = v24;
@@ -232,7 +232,7 @@
     v38 = MidY + (v43 + CGRectGetHeight(v50) - v42) * -0.5;
   }
 
-  return [a1 px_scrollToContentOffset:a8 animated:{v31, v38}];
+  return [self px_scrollToContentOffset:a8 animated:{v31, v38}];
 }
 
 @end

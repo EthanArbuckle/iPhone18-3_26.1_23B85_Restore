@@ -1,12 +1,12 @@
 @interface _NSNumberFormattingAttributeDescriptor
-- (id)attributeValueFromValue:(id)a3;
+- (id)attributeValueFromValue:(id)value;
 @end
 
 @implementation _NSNumberFormattingAttributeDescriptor
 
-- (id)attributeValueFromValue:(id)a3
+- (id)attributeValueFromValue:(id)value
 {
-  if (!_NSIsNSNumber() || ![a3 BOOLValue])
+  if (!_NSIsNSNumber() || ![value BOOLValue])
   {
     return 0;
   }

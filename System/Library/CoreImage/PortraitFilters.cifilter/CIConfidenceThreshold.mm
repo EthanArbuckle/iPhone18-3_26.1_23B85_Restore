@@ -74,10 +74,10 @@
     v44 = kCIInputRadiusKey;
     v45 = &off_799D0;
     v16 = [[(CIImage *)v15 imageByApplyingFilter:@"CIMorphologyMaximum" withInputParameters:[NSDictionary dictionaryWithObjects:&v44 forKeys:1 count:?]], "imageByCroppingToRect:", v7, v9, v11, v13];
-    v17 = [(CIConfidenceThreshold *)self transitionDepthsKernel];
+    transitionDepthsKernel = [(CIConfidenceThreshold *)self transitionDepthsKernel];
     v43[0] = v16;
     v43[1] = v5;
-    v18 = [v17 applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:"arrayWithObjects:count:" options:{v43, 2), v14, v7, v9, v11, v13}];
+    v18 = [transitionDepthsKernel applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:"arrayWithObjects:count:" options:{v43, 2), v14, v7, v9, v11, v13}];
     v40.a = 0.0;
     *&v40.b = &v40;
     *&v40.c = 0x4010000000;
@@ -104,12 +104,12 @@
     y = v50.origin.y;
     width = v50.size.width;
     height = v50.size.height;
-    v35 = [(CIConfidenceThreshold *)self thresholdKernel];
+    thresholdKernel = [(CIConfidenceThreshold *)self thresholdKernel];
     v42[0] = v18;
     v42[1] = v5;
     v42[2] = [CIVector vectorWithCGRect:x, y, width, height, _NSConcreteStackBlock, 3221225472, sub_3DF0, &unk_749C8, &v40];
     v42[3] = [CIVector vectorWithX:*(*&v40.b + 48) Y:*(*&v40.b + 56)];
-    v36 = [objc_msgSend(v35 applyWithExtent:&v38 roiCallback:+[NSArray arrayWithObjects:count:](NSArray arguments:"arrayWithObjects:count:" options:{v42, 4), v14, 0.0, 0.0, 1.0, 1.0), "imageByClampingToExtent"}];
+    v36 = [objc_msgSend(thresholdKernel applyWithExtent:&v38 roiCallback:+[NSArray arrayWithObjects:count:](NSArray arguments:"arrayWithObjects:count:" options:{v42, 4), v14, 0.0, 0.0, 1.0, 1.0), "imageByClampingToExtent"}];
     _Block_object_dispose(&v40, 8);
     return v36;
   }

@@ -1,11 +1,11 @@
 @interface VSIdentityProviderAppsResponse
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (VSIdentityProviderAppsResponse)init;
-- (VSIdentityProviderAppsResponse)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (VSIdentityProviderAppsResponse)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VSIdentityProviderAppsResponse
@@ -24,32 +24,32 @@
   return v2;
 }
 
-- (VSIdentityProviderAppsResponse)initWithCoder:(id)a3
+- (VSIdentityProviderAppsResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = VSIdentityProviderAppsResponse;
   v5 = [(VSIdentityProviderAppsResponse *)&v8 init];
   if (v5)
   {
     v6 = VSIdentityProviderAppsResponseValueType();
-    VSValueTypeInitWithCoder(v6, v5, v4);
+    VSValueTypeInitWithCoder(v6, v5, coderCopy);
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = VSIdentityProviderAppsResponseValueType();
-  VSValueTypeEncodeWithCoder(v5, self, v4);
+  VSValueTypeEncodeWithCoder(v5, self, coderCopy);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = VSIdentityProviderAppsResponseValueType();
-  v6 = VSValueTypeCopyWithZone(v5, self, a3);
+  v6 = VSValueTypeCopyWithZone(v5, self, zone);
 
   return v6;
 }
@@ -62,11 +62,11 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = VSIdentityProviderAppsResponseValueType();
-  LOBYTE(self) = VSValueTypeIsEqual(v5, self, v4);
+  LOBYTE(self) = VSValueTypeIsEqual(v5, self, equalCopy);
 
   return self;
 }

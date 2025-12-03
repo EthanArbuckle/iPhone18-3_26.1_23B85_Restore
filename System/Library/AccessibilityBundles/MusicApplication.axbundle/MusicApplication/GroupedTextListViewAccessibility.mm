@@ -1,16 +1,16 @@
 @interface GroupedTextListViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)layoutSubviews;
 @end
 
 @implementation GroupedTextListViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MusicApplication.GroupedTextListView" hasInstanceMethod:@"accessibilityListGroupStrings" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MusicApplication.GroupedTextListView" hasInstanceMethod:@"accessibilityStackViews" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MusicApplication.GroupedTextListView" hasInstanceMethod:@"accessibilityListGroupStrings" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MusicApplication.GroupedTextListView" hasInstanceMethod:@"accessibilityStackViews" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

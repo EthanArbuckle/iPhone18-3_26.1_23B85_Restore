@@ -8,14 +8,14 @@
 {
   v5.receiver = self;
   v5.super_class = _UIDictationCursorAccessory;
-  v3 = [(_UICursorAccessory *)&v5 identifier];
-  if (!v3)
+  identifier = [(_UICursorAccessory *)&v5 identifier];
+  if (!identifier)
   {
-    v3 = [MEMORY[0x1E696AEC0] stringWithFormat:@"dictation"];
-    [(_UICursorAccessory *)self setIdentifier:v3];
+    identifier = [MEMORY[0x1E696AEC0] stringWithFormat:@"dictation"];
+    [(_UICursorAccessory *)self setIdentifier:identifier];
   }
 
-  return v3;
+  return identifier;
 }
 
 @end

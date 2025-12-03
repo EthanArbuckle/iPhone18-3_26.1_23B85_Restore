@@ -2,8 +2,8 @@
 - (ASAuthorizationSecurityKeyPublicKeyCredentialAssertionRequest)createCredentialAssertionRequestWithChallenge:(NSData *)challenge;
 - (ASAuthorizationSecurityKeyPublicKeyCredentialProvider)initWithRelyingPartyIdentifier:(NSString *)relyingPartyIdentifier;
 - (ASAuthorizationSecurityKeyPublicKeyCredentialRegistrationRequest)createCredentialRegistrationRequestWithChallenge:(NSData *)challenge displayName:(NSString *)displayName name:(NSString *)name userID:(NSData *)userID;
-- (id)createCredentialAssertionRequestWithClientData:(id)a3;
-- (id)createCredentialRegistrationRequestWithClientData:(id)a3 displayName:(id)a4 name:(id)a5 userID:(id)a6;
+- (id)createCredentialAssertionRequestWithClientData:(id)data;
+- (id)createCredentialRegistrationRequestWithClientData:(id)data displayName:(id)name name:(id)a5 userID:(id)d;
 @end
 
 @implementation ASAuthorizationSecurityKeyPublicKeyCredentialProvider
@@ -45,21 +45,21 @@
   return v5;
 }
 
-- (id)createCredentialAssertionRequestWithClientData:(id)a3
+- (id)createCredentialAssertionRequestWithClientData:(id)data
 {
-  v4 = a3;
-  v5 = [[ASAuthorizationSecurityKeyPublicKeyCredentialAssertionRequest alloc] _initWithProvider:self relyingPartyIdentifier:self->_relyingPartyIdentifier challenge:0 clientData:v4];
+  dataCopy = data;
+  v5 = [[ASAuthorizationSecurityKeyPublicKeyCredentialAssertionRequest alloc] _initWithProvider:self relyingPartyIdentifier:self->_relyingPartyIdentifier challenge:0 clientData:dataCopy];
 
   return v5;
 }
 
-- (id)createCredentialRegistrationRequestWithClientData:(id)a3 displayName:(id)a4 name:(id)a5 userID:(id)a6
+- (id)createCredentialRegistrationRequestWithClientData:(id)data displayName:(id)name name:(id)a5 userID:(id)d
 {
-  v10 = a6;
+  dCopy = d;
   v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [[ASAuthorizationSecurityKeyPublicKeyCredentialRegistrationRequest alloc] _initWithProvider:self relyingPartyIdentifier:self->_relyingPartyIdentifier challenge:0 displayName:v12 name:v11 userID:v10 clientData:v13];
+  nameCopy = name;
+  dataCopy = data;
+  v14 = [[ASAuthorizationSecurityKeyPublicKeyCredentialRegistrationRequest alloc] _initWithProvider:self relyingPartyIdentifier:self->_relyingPartyIdentifier challenge:0 displayName:nameCopy name:v11 userID:dCopy clientData:dataCopy];
 
   return v14;
 }

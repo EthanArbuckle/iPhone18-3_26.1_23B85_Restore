@@ -1,9 +1,9 @@
 @interface CTSweetgumUsagePlanItemMessages
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CTSweetgumUsagePlanItemMessages)init;
-- (CTSweetgumUsagePlanItemMessages)initWithCoder:(id)a3;
+- (CTSweetgumUsagePlanItemMessages)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CTSweetgumUsagePlanItemMessages
@@ -29,21 +29,21 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];
-  v4 = [(CTSweetgumUsagePlanItemMessages *)self capacity];
-  [v3 appendFormat:@", capacity=%@", v4];
+  capacity = [(CTSweetgumUsagePlanItemMessages *)self capacity];
+  [v3 appendFormat:@", capacity=%@", capacity];
 
-  v5 = [(CTSweetgumUsagePlanItemMessages *)self used];
-  [v3 appendFormat:@", used=%@", v5];
+  used = [(CTSweetgumUsagePlanItemMessages *)self used];
+  [v3 appendFormat:@", used=%@", used];
 
   [v3 appendString:@">"];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
-  if (v6 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v9 = 1;
   }
@@ -53,25 +53,25 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [(CTSweetgumUsagePlanItemMessages *)self capacity];
-      v8 = [(CTSweetgumUsagePlanItemMessages *)v6 capacity];
-      if (v7 == v8 || (-[CTSweetgumUsagePlanItemMessages capacity](self, "capacity"), v3 = objc_claimAutoreleasedReturnValue(), -[CTSweetgumUsagePlanItemMessages capacity](v6, "capacity"), v4 = objc_claimAutoreleasedReturnValue(), [v3 isEqualToString:v4]))
+      capacity = [(CTSweetgumUsagePlanItemMessages *)self capacity];
+      capacity2 = [(CTSweetgumUsagePlanItemMessages *)equalCopy capacity];
+      if (capacity == capacity2 || (-[CTSweetgumUsagePlanItemMessages capacity](self, "capacity"), v3 = objc_claimAutoreleasedReturnValue(), -[CTSweetgumUsagePlanItemMessages capacity](equalCopy, "capacity"), v4 = objc_claimAutoreleasedReturnValue(), [v3 isEqualToString:v4]))
       {
-        v10 = [(CTSweetgumUsagePlanItemMessages *)self used];
-        v11 = [(CTSweetgumUsagePlanItemMessages *)v6 used];
-        if (v10 == v11)
+        used = [(CTSweetgumUsagePlanItemMessages *)self used];
+        used2 = [(CTSweetgumUsagePlanItemMessages *)equalCopy used];
+        if (used == used2)
         {
           v9 = 1;
         }
 
         else
         {
-          v12 = [(CTSweetgumUsagePlanItemMessages *)self used];
-          v13 = [(CTSweetgumUsagePlanItemMessages *)v6 used];
-          v9 = [v12 isEqualToString:v13];
+          used3 = [(CTSweetgumUsagePlanItemMessages *)self used];
+          used4 = [(CTSweetgumUsagePlanItemMessages *)equalCopy used];
+          v9 = [used3 isEqualToString:used4];
         }
 
-        if (v7 == v8)
+        if (capacity == capacity2)
         {
           goto LABEL_13;
         }
@@ -94,27 +94,27 @@ LABEL_14:
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   capacity = self->_capacity;
-  v5 = a3;
-  [v5 encodeObject:capacity forKey:@"capacity"];
-  [v5 encodeObject:self->_used forKey:@"used"];
+  coderCopy = coder;
+  [coderCopy encodeObject:capacity forKey:@"capacity"];
+  [coderCopy encodeObject:self->_used forKey:@"used"];
 }
 
-- (CTSweetgumUsagePlanItemMessages)initWithCoder:(id)a3
+- (CTSweetgumUsagePlanItemMessages)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = CTSweetgumUsagePlanItemMessages;
   v5 = [(CTSweetgumUsagePlanItemMessages *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"capacity"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"capacity"];
     capacity = v5->_capacity;
     v5->_capacity = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"used"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"used"];
     used = v5->_used;
     v5->_used = v8;
   }

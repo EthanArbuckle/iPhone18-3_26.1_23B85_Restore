@@ -1,13 +1,13 @@
 @interface TSCH3DOrderedDictionary
 + (id)dictionary;
-+ (id)dictionaryWithMutableDictionaryStore:(id)a3;
++ (id)dictionaryWithMutableDictionaryStore:(id)store;
 - (TSCH3DOrderedDictionary)init;
-- (TSCH3DOrderedDictionary)initWithMutableDictionaryStore:(id)a3;
+- (TSCH3DOrderedDictionary)initWithMutableDictionaryStore:(id)store;
 - (id)description;
 - (id)lastObject;
-- (id)objectForKey:(id)a3;
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5;
-- (void)setObject:(id)a3 forKey:(id)a4;
+- (id)objectForKey:(id)key;
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count;
+- (void)setObject:(id)object forKey:(id)key;
 @end
 
 @implementation TSCH3DOrderedDictionary
@@ -15,16 +15,16 @@
 + (id)dictionary
 {
   v6 = objc_msgSend_dictionary(MEMORY[0x277CBEB38], a2, v2, v3, v4);
-  v11 = objc_msgSend_dictionaryWithMutableDictionaryStore_(a1, v7, v8, v9, v10, v6);
+  v11 = objc_msgSend_dictionaryWithMutableDictionaryStore_(self, v7, v8, v9, v10, v6);
 
   return v11;
 }
 
-+ (id)dictionaryWithMutableDictionaryStore:(id)a3
++ (id)dictionaryWithMutableDictionaryStore:(id)store
 {
-  v4 = a3;
-  v5 = [a1 alloc];
-  v10 = objc_msgSend_initWithMutableDictionaryStore_(v5, v6, v7, v8, v9, v4);
+  storeCopy = store;
+  v5 = [self alloc];
+  v10 = objc_msgSend_initWithMutableDictionaryStore_(v5, v6, v7, v8, v9, storeCopy);
 
   return v10;
 }
@@ -37,16 +37,16 @@
   return v11;
 }
 
-- (TSCH3DOrderedDictionary)initWithMutableDictionaryStore:(id)a3
+- (TSCH3DOrderedDictionary)initWithMutableDictionaryStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v11.receiver = self;
   v11.super_class = TSCH3DOrderedDictionary;
   v6 = [(TSCH3DOrderedDictionary *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_store, a3);
+    objc_storeStrong(&v6->_store, store);
     v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
     keyOrder = v7->_keyOrder;
     v7->_keyOrder = v8;
@@ -75,9 +75,9 @@
   return v11;
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  v5 = a3;
+  keyCopy = key;
   store = self->_store;
   if (!store)
   {
@@ -90,16 +90,16 @@
     store = self->_store;
   }
 
-  v25 = objc_msgSend_objectForKey_(store, v4, v6, v7, v8, v5);
+  v25 = objc_msgSend_objectForKey_(store, v4, v6, v7, v8, keyCopy);
 
   return v25;
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  v63 = a3;
-  v7 = a4;
-  if (!v63)
+  objectCopy = object;
+  keyCopy = key;
+  if (!objectCopy)
   {
     v11 = MEMORY[0x277D81150];
     v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, v8, v9, v10, "[TSCH3DOrderedDictionary setObject:forKey:]");
@@ -121,7 +121,7 @@
     store = self->_store;
   }
 
-  v42 = objc_msgSend_objectForKey_(store, v6, v8, v9, v10, v7);
+  v42 = objc_msgSend_objectForKey_(store, v6, v8, v9, v10, keyCopy);
 
   if (!v42)
   {
@@ -137,13 +137,13 @@
       keyOrder = self->_keyOrder;
     }
 
-    objc_msgSend_addObject_(keyOrder, v43, v44, v45, v46, v7);
+    objc_msgSend_addObject_(keyOrder, v43, v44, v45, v46, keyCopy);
   }
 
-  objc_msgSend_setObject_forKey_(self->_store, v43, v44, v45, v46, v63, v7);
+  objc_msgSend_setObject_forKey_(self->_store, v43, v44, v45, v46, objectCopy, keyCopy);
 }
 
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count
 {
   keyOrder = self->_keyOrder;
   if (!keyOrder)
@@ -157,7 +157,7 @@
     keyOrder = self->_keyOrder;
   }
 
-  return objc_msgSend_countByEnumeratingWithState_objects_count_(keyOrder, a2, v5, v6, v7, a3, a4, a5);
+  return objc_msgSend_countByEnumeratingWithState_objects_count_(keyOrder, a2, v5, v6, v7, state, objects, count);
 }
 
 @end

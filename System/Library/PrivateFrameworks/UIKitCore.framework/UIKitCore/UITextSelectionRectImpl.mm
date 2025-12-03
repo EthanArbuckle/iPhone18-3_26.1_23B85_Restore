@@ -1,49 +1,49 @@
 @interface UITextSelectionRectImpl
-+ (id)rectWithWebRect:(id)a3;
-+ (id)rectsWithWebRects:(id)a3;
++ (id)rectWithWebRect:(id)rect;
++ (id)rectsWithWebRects:(id)rects;
 - (BOOL)containsEnd;
 - (BOOL)containsStart;
 - (BOOL)isVertical;
 - (CGRect)rect;
-- (UITextSelectionRectImpl)initWithWebRect:(id)a3;
+- (UITextSelectionRectImpl)initWithWebRect:(id)rect;
 - (int64_t)writingDirection;
 @end
 
 @implementation UITextSelectionRectImpl
 
-- (UITextSelectionRectImpl)initWithWebRect:(id)a3
+- (UITextSelectionRectImpl)initWithWebRect:(id)rect
 {
-  v4 = a3;
+  rectCopy = rect;
   v8.receiver = self;
   v8.super_class = UITextSelectionRectImpl;
   v5 = [(UITextSelectionRectImpl *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(UITextSelectionRectImpl *)v5 setWebRect:v4];
+    [(UITextSelectionRectImpl *)v5 setWebRect:rectCopy];
   }
 
   return v6;
 }
 
-+ (id)rectWithWebRect:(id)a3
++ (id)rectWithWebRect:(id)rect
 {
-  v3 = a3;
-  v4 = [[UITextSelectionRectImpl alloc] initWithWebRect:v3];
+  rectCopy = rect;
+  v4 = [[UITextSelectionRectImpl alloc] initWithWebRect:rectCopy];
 
   return v4;
 }
 
-+ (id)rectsWithWebRects:(id)a3
++ (id)rectsWithWebRects:(id)rects
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v3, "count")}];
+  rectsCopy = rects;
+  v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(rectsCopy, "count")}];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = v3;
+  v5 = rectsCopy;
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -73,8 +73,8 @@
 
 - (CGRect)rect
 {
-  v2 = [(UITextSelectionRectImpl *)self webRect];
-  [v2 rect];
+  webRect = [(UITextSelectionRectImpl *)self webRect];
+  [webRect rect];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -93,34 +93,34 @@
 
 - (int64_t)writingDirection
 {
-  v2 = [(UITextSelectionRectImpl *)self webRect];
-  v3 = [v2 writingDirection];
+  webRect = [(UITextSelectionRectImpl *)self webRect];
+  writingDirection = [webRect writingDirection];
 
-  return v3;
+  return writingDirection;
 }
 
 - (BOOL)containsStart
 {
-  v2 = [(UITextSelectionRectImpl *)self webRect];
-  v3 = [v2 containsStart];
+  webRect = [(UITextSelectionRectImpl *)self webRect];
+  containsStart = [webRect containsStart];
 
-  return v3;
+  return containsStart;
 }
 
 - (BOOL)containsEnd
 {
-  v2 = [(UITextSelectionRectImpl *)self webRect];
-  v3 = [v2 containsEnd];
+  webRect = [(UITextSelectionRectImpl *)self webRect];
+  containsEnd = [webRect containsEnd];
 
-  return v3;
+  return containsEnd;
 }
 
 - (BOOL)isVertical
 {
-  v2 = [(UITextSelectionRectImpl *)self webRect];
-  v3 = [v2 isHorizontal];
+  webRect = [(UITextSelectionRectImpl *)self webRect];
+  isHorizontal = [webRect isHorizontal];
 
-  return v3 ^ 1;
+  return isHorizontal ^ 1;
 }
 
 @end

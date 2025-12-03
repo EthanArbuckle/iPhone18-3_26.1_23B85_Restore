@@ -1,13 +1,13 @@
 @interface SVXVirtualDeviceFactory
-- (id)createWithInstanceContext:(id)a3;
+- (id)createWithInstanceContext:(id)context;
 @end
 
 @implementation SVXVirtualDeviceFactory
 
-- (id)createWithInstanceContext:(id)a3
+- (id)createWithInstanceContext:(id)context
 {
-  v3 = a3;
-  v4 = [[SVXVirtualDevice alloc] initWithInstanceContext:v3];
+  contextCopy = context;
+  v4 = [[SVXVirtualDevice alloc] initWithInstanceContext:contextCopy];
 
   return v4;
 }

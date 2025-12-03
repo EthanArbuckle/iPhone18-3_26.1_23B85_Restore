@@ -1,27 +1,27 @@
 @interface FCDescription
-+ (id)descriptionWithCFType:(void *)a3 format:(id)a4;
-+ (id)descriptionWithObject:(id)a3 class:(Class)a4;
-+ (id)descriptionWithObject:(id)a3 class:(Class)a4 format:(id)a5;
-+ (id)descriptionWithObject:(id)a3 format:(id)a4;
-- (FCDescription)initWithCFType:(void *)a3 header:(id)a4;
-- (FCDescription)initWithObject:(id)a3;
-- (FCDescription)initWithObject:(id)a3 class:(Class)a4 format:(id)a5 arguments:(char *)a6;
-- (FCDescription)initWithObject:(id)a3 class:(Class)a4 header:(id)a5;
-- (FCDescription)initWithObject:(id)a3 format:(id)a4;
++ (id)descriptionWithCFType:(void *)type format:(id)format;
++ (id)descriptionWithObject:(id)object class:(Class)class;
++ (id)descriptionWithObject:(id)object class:(Class)class format:(id)format;
++ (id)descriptionWithObject:(id)object format:(id)format;
+- (FCDescription)initWithCFType:(void *)type header:(id)header;
+- (FCDescription)initWithObject:(id)object;
+- (FCDescription)initWithObject:(id)object class:(Class)class format:(id)format arguments:(char *)arguments;
+- (FCDescription)initWithObject:(id)object class:(Class)class header:(id)header;
+- (FCDescription)initWithObject:(id)object format:(id)format;
 - (id)descriptionString;
 - (id)p_header;
-- (void)addField:(id)a3 format:(id)a4;
-- (void)addField:(id)a3 value:(id)a4;
-- (void)addFieldWithFormat:(id)a3;
+- (void)addField:(id)field format:(id)format;
+- (void)addField:(id)field value:(id)value;
+- (void)addFieldWithFormat:(id)format;
 - (void)addSuperDescription;
 @end
 
 @implementation FCDescription
 
-- (FCDescription)initWithObject:(id)a3 class:(Class)a4 header:(id)a5
+- (FCDescription)initWithObject:(id)object class:(Class)class header:(id)header
 {
-  v9 = a3;
-  v10 = a5;
+  objectCopy = object;
+  headerCopy = header;
   atomic_fetch_add(&FCDescriptionDepth, 1uLL);
   v16.receiver = self;
   v16.super_class = FCDescription;
@@ -29,9 +29,9 @@
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_object, a3);
-    v12->_class = a4;
-    v13 = [v10 copy];
+    objc_storeStrong(&v11->_object, object);
+    v12->_class = class;
+    v13 = [headerCopy copy];
     header = v12->_header;
     v12->_header = v13;
   }
@@ -39,9 +39,9 @@
   return v12;
 }
 
-- (FCDescription)initWithCFType:(void *)a3 header:(id)a4
+- (FCDescription)initWithCFType:(void *)type header:(id)header
 {
-  v6 = a4;
+  headerCopy = header;
   atomic_fetch_add(&FCDescriptionDepth, 1uLL);
   v12.receiver = self;
   v12.super_class = FCDescription;
@@ -49,8 +49,8 @@
   v8 = v7;
   if (v7)
   {
-    v7->_cfType = a3;
-    v9 = [v6 copy];
+    v7->_cfType = type;
+    v9 = [headerCopy copy];
     header = v8->_header;
     v8->_header = v9;
   }
@@ -58,67 +58,67 @@
   return v8;
 }
 
-- (FCDescription)initWithObject:(id)a3 class:(Class)a4 format:(id)a5 arguments:(char *)a6
+- (FCDescription)initWithObject:(id)object class:(Class)class format:(id)format arguments:(char *)arguments
 {
   v10 = MEMORY[0x1E696AEC0];
-  v11 = a5;
-  v12 = a3;
-  v13 = [[v10 alloc] initWithFormat:v11 arguments:a6];
+  formatCopy = format;
+  objectCopy = object;
+  v13 = [[v10 alloc] initWithFormat:formatCopy arguments:arguments];
 
-  v14 = [(FCDescription *)self initWithObject:v12 class:a4 header:v13];
+  v14 = [(FCDescription *)self initWithObject:objectCopy class:class header:v13];
   return v14;
 }
 
-- (FCDescription)initWithObject:(id)a3 format:(id)a4
+- (FCDescription)initWithObject:(id)object format:(id)format
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(FCDescription *)self initWithObject:v7 class:object_getClass(v7) format:v6 arguments:&v10];
+  formatCopy = format;
+  objectCopy = object;
+  v8 = [(FCDescription *)self initWithObject:objectCopy class:object_getClass(objectCopy) format:formatCopy arguments:&v10];
 
   return v8;
 }
 
-- (FCDescription)initWithObject:(id)a3
+- (FCDescription)initWithObject:(id)object
 {
-  v4 = a3;
-  v5 = [(FCDescription *)self initWithObject:v4 class:object_getClass(v4) format:&stru_1F2DC7DC0];
+  objectCopy = object;
+  v5 = [(FCDescription *)self initWithObject:objectCopy class:object_getClass(objectCopy) format:&stru_1F2DC7DC0];
 
   return v5;
 }
 
-+ (id)descriptionWithObject:(id)a3 class:(Class)a4 format:(id)a5
++ (id)descriptionWithObject:(id)object class:(Class)class format:(id)format
 {
-  v7 = a5;
-  v8 = a3;
-  v9 = [[FCDescription alloc] initWithObject:v8 class:a4 format:v7 arguments:&v12];
+  formatCopy = format;
+  objectCopy = object;
+  v9 = [[FCDescription alloc] initWithObject:objectCopy class:class format:formatCopy arguments:&v12];
 
   return v9;
 }
 
-+ (id)descriptionWithObject:(id)a3 format:(id)a4
++ (id)descriptionWithObject:(id)object format:(id)format
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[FCDescription alloc] initWithObject:v6 class:object_getClass(v6) format:v5 arguments:&v10];
+  formatCopy = format;
+  objectCopy = object;
+  v7 = [[FCDescription alloc] initWithObject:objectCopy class:object_getClass(objectCopy) format:formatCopy arguments:&v10];
 
   return v7;
 }
 
-+ (id)descriptionWithObject:(id)a3 class:(Class)a4
++ (id)descriptionWithObject:(id)object class:(Class)class
 {
-  v5 = a3;
-  v6 = [[FCDescription alloc] initWithObject:v5 class:a4 format:&stru_1F2DC7DC0];
+  objectCopy = object;
+  v6 = [[FCDescription alloc] initWithObject:objectCopy class:class format:&stru_1F2DC7DC0];
 
   return v6;
 }
 
-+ (id)descriptionWithCFType:(void *)a3 format:(id)a4
++ (id)descriptionWithCFType:(void *)type format:(id)format
 {
   v5 = MEMORY[0x1E696AEC0];
-  v6 = a4;
-  v7 = [[v5 alloc] initWithFormat:v6 arguments:&v11];
+  formatCopy = format;
+  v7 = [[v5 alloc] initWithFormat:formatCopy arguments:&v11];
 
-  v8 = [[FCDescription alloc] initWithCFType:a3 header:v7];
+  v8 = [[FCDescription alloc] initWithCFType:type header:v7];
 
   return v8;
 }
@@ -153,10 +153,10 @@
   return v6;
 }
 
-- (void)addField:(id)a3 value:(id)a4
+- (void)addField:(id)field value:(id)value
 {
-  v6 = a3;
-  v7 = a4;
+  fieldCopy = field;
+  valueCopy = value;
   if (!self->_fields)
   {
     v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -168,14 +168,14 @@
     self->_fieldOrder = v10;
   }
 
-  if (!v7)
+  if (!valueCopy)
   {
-    v7 = @"nil";
+    valueCopy = @"nil";
   }
 
-  if (v6 && [v6 length])
+  if (fieldCopy && [fieldCopy length])
   {
-    [MEMORY[0x1E696AEC0] stringWithFormat:@"%@: ", v6];
+    [MEMORY[0x1E696AEC0] stringWithFormat:@"%@: ", fieldCopy];
   }
 
   else
@@ -185,7 +185,7 @@
   v13 = ;
 
   [(NSMutableArray *)self->_fieldOrder addObject:v13];
-  [(NSMutableDictionary *)self->_fields setObject:v7 forKey:v13];
+  [(NSMutableDictionary *)self->_fields setObject:valueCopy forKey:v13];
   if (([v13 hasPrefix:@"$$$"] & 1) == 0)
   {
     v12 = [v13 length];
@@ -196,21 +196,21 @@
   }
 }
 
-- (void)addField:(id)a3 format:(id)a4
+- (void)addField:(id)field format:(id)format
 {
   v6 = MEMORY[0x1E696AEC0];
-  v7 = a4;
-  v8 = a3;
-  v9 = [[v6 alloc] initWithFormat:v7 arguments:&v10];
+  formatCopy = format;
+  fieldCopy = field;
+  v9 = [[v6 alloc] initWithFormat:formatCopy arguments:&v10];
 
-  [(FCDescription *)self addField:v8 value:v9];
+  [(FCDescription *)self addField:fieldCopy value:v9];
 }
 
-- (void)addFieldWithFormat:(id)a3
+- (void)addFieldWithFormat:(id)format
 {
   v4 = MEMORY[0x1E696AEC0];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithFormat:v5 arguments:&v7];
+  formatCopy = format;
+  v6 = [[v4 alloc] initWithFormat:formatCopy arguments:&v7];
 
   [(FCDescription *)self addField:0 value:v6];
 }
@@ -239,20 +239,20 @@
     object = self->_object;
     if (objc_opt_respondsToSelector())
     {
-      v5 = [self->_object shortDescription];
+      shortDescription = [self->_object shortDescription];
 LABEL_6:
-      v6 = v5;
+      v6 = shortDescription;
       goto LABEL_31;
     }
 
 LABEL_5:
-    v5 = [(FCDescription *)self p_header];
+    shortDescription = [(FCDescription *)self p_header];
     goto LABEL_6;
   }
 
   v7 = MEMORY[0x1E696AD60];
-  v8 = [(FCDescription *)self p_header];
-  v6 = [v7 stringWithFormat:@"%@ {", v8];
+  p_header = [(FCDescription *)self p_header];
+  v6 = [v7 stringWithFormat:@"%@ {", p_header];
 
   v32 = objc_alloc_init(MEMORY[0x1E696AD60]);
   v33 = 0u;

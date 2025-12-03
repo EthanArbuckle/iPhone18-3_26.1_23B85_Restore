@@ -1,11 +1,11 @@
 @interface CXPullCallAction
-- (CXPullCallAction)initWithCoder:(id)a3;
+- (CXPullCallAction)initWithCoder:(id)coder;
 - (id)customDescription;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)fulfill;
-- (void)fulfillWithDateConnected:(id)a3;
-- (void)updateAsFulfilledWithDateConnected:(id)a3;
-- (void)updateCopy:(id)a3 withZone:(_NSZone *)a4;
+- (void)fulfillWithDateConnected:(id)connected;
+- (void)updateAsFulfilledWithDateConnected:(id)connected;
+- (void)updateCopy:(id)copy withZone:(_NSZone *)zone;
 @end
 
 @implementation CXPullCallAction
@@ -14,73 +14,73 @@
 {
   v7.receiver = self;
   v7.super_class = CXPullCallAction;
-  v3 = [(CXCallAction *)&v7 customDescription];
-  v4 = [(CXPullCallAction *)self handoffContext];
-  [v3 appendFormat:@" handoffContext=%@", v4];
+  customDescription = [(CXCallAction *)&v7 customDescription];
+  handoffContext = [(CXPullCallAction *)self handoffContext];
+  [customDescription appendFormat:@" handoffContext=%@", handoffContext];
 
-  v5 = [(CXPullCallAction *)self dateConnected];
-  [v3 appendFormat:@" dateConnected=%@", v5];
+  dateConnected = [(CXPullCallAction *)self dateConnected];
+  [customDescription appendFormat:@" dateConnected=%@", dateConnected];
 
-  return v3;
+  return customDescription;
 }
 
 - (void)fulfill
 {
-  v3 = [MEMORY[0x1E695DF00] date];
-  [(CXPullCallAction *)self fulfillWithDateConnected:v3];
+  date = [MEMORY[0x1E695DF00] date];
+  [(CXPullCallAction *)self fulfillWithDateConnected:date];
 }
 
-- (void)fulfillWithDateConnected:(id)a3
+- (void)fulfillWithDateConnected:(id)connected
 {
-  v6 = a3;
-  if (!v6)
+  connectedCopy = connected;
+  if (!connectedCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%s: parameter '%@' cannot be nil", "-[CXPullCallAction fulfillWithDateConnected:]", @"dateConnected"}];
   }
 
   v4 = [(CXPullCallAction *)self copy];
-  [v4 updateAsFulfilledWithDateConnected:v6];
-  v5 = [v4 delegate];
-  [v5 actionCompleted:v4];
+  [v4 updateAsFulfilledWithDateConnected:connectedCopy];
+  delegate = [v4 delegate];
+  [delegate actionCompleted:v4];
 }
 
-- (void)updateAsFulfilledWithDateConnected:(id)a3
+- (void)updateAsFulfilledWithDateConnected:(id)connected
 {
-  v4 = a3;
+  connectedCopy = connected;
   [(CXAction *)self updateAsFulfilled];
-  [(CXPullCallAction *)self setDateConnected:v4];
+  [(CXPullCallAction *)self setDateConnected:connectedCopy];
 }
 
-- (void)updateCopy:(id)a3 withZone:(_NSZone *)a4
+- (void)updateCopy:(id)copy withZone:(_NSZone *)zone
 {
   v9.receiver = self;
   v9.super_class = CXPullCallAction;
-  v6 = a3;
-  [(CXAction *)&v9 updateCopy:v6 withZone:a4];
+  copyCopy = copy;
+  [(CXAction *)&v9 updateCopy:copyCopy withZone:zone];
   v7 = [(CXPullCallAction *)self dateConnected:v9.receiver];
-  [v6 setDateConnected:v7];
+  [copyCopy setDateConnected:v7];
 
-  v8 = [(CXPullCallAction *)self handoffContext];
-  [v6 setHandoffContext:v8];
+  handoffContext = [(CXPullCallAction *)self handoffContext];
+  [copyCopy setHandoffContext:handoffContext];
 }
 
-- (CXPullCallAction)initWithCoder:(id)a3
+- (CXPullCallAction)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = CXPullCallAction;
-  v5 = [(CXCallAction *)&v15 initWithCoder:v4];
+  v5 = [(CXCallAction *)&v15 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = objc_opt_class();
     v7 = NSStringFromSelector(sel_handoffContext);
-    v8 = [v4 decodeObjectOfClass:v6 forKey:v7];
+    v8 = [coderCopy decodeObjectOfClass:v6 forKey:v7];
     handoffContext = v5->_handoffContext;
     v5->_handoffContext = v8;
 
     v10 = objc_opt_class();
     v11 = NSStringFromSelector(sel_dateConnected);
-    v12 = [v4 decodeObjectOfClass:v10 forKey:v11];
+    v12 = [coderCopy decodeObjectOfClass:v10 forKey:v11];
     dateConnected = v5->_dateConnected;
     v5->_dateConnected = v12;
   }
@@ -88,19 +88,19 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v9.receiver = self;
   v9.super_class = CXPullCallAction;
-  v4 = a3;
-  [(CXCallAction *)&v9 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(CXCallAction *)&v9 encodeWithCoder:coderCopy];
   v5 = [(CXPullCallAction *)self handoffContext:v9.receiver];
   v6 = NSStringFromSelector(sel_handoffContext);
-  [v4 encodeObject:v5 forKey:v6];
+  [coderCopy encodeObject:v5 forKey:v6];
 
-  v7 = [(CXPullCallAction *)self dateConnected];
+  dateConnected = [(CXPullCallAction *)self dateConnected];
   v8 = NSStringFromSelector(sel_dateConnected);
-  [v4 encodeObject:v7 forKey:v8];
+  [coderCopy encodeObject:dateConnected forKey:v8];
 }
 
 @end

@@ -1,26 +1,26 @@
 @interface TVRCDeviceAuthenticationChallenge
-- (id)_initWithDeviceIdentifier:(id)a3 challengeType:(int64_t)a4 codeToEnterOnDevice:(id)a5;
+- (id)_initWithDeviceIdentifier:(id)identifier challengeType:(int64_t)type codeToEnterOnDevice:(id)device;
 - (void)cancel;
-- (void)userEnteredCodeLocally:(id)a3;
+- (void)userEnteredCodeLocally:(id)locally;
 @end
 
 @implementation TVRCDeviceAuthenticationChallenge
 
-- (id)_initWithDeviceIdentifier:(id)a3 challengeType:(int64_t)a4 codeToEnterOnDevice:(id)a5
+- (id)_initWithDeviceIdentifier:(id)identifier challengeType:(int64_t)type codeToEnterOnDevice:(id)device
 {
-  v8 = a3;
-  v9 = a5;
+  identifierCopy = identifier;
+  deviceCopy = device;
   v16.receiver = self;
   v16.super_class = TVRCDeviceAuthenticationChallenge;
   v10 = [(TVRCDeviceAuthenticationChallenge *)&v16 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [identifierCopy copy];
     deviceIdentifier = v10->_deviceIdentifier;
     v10->_deviceIdentifier = v11;
 
-    v10->_challengeType = a4;
-    v13 = [v9 copy];
+    v10->_challengeType = type;
+    v13 = [deviceCopy copy];
     codeToEnterOnDevice = v10->_codeToEnterOnDevice;
     v10->_codeToEnterOnDevice = v13;
   }
@@ -28,13 +28,13 @@
   return v10;
 }
 
-- (void)userEnteredCodeLocally:(id)a3
+- (void)userEnteredCodeLocally:(id)locally
 {
   if (!self->_challengeType)
   {
-    v5 = a3;
+    locallyCopy = locally;
     v6 = +[TVRCXPCClient sharedInstance];
-    [v6 fulfillAuthChallengeForDeviceWithIdentifier:self->_deviceIdentifier withLocallyEnteredCode:v5];
+    [v6 fulfillAuthChallengeForDeviceWithIdentifier:self->_deviceIdentifier withLocallyEnteredCode:locallyCopy];
   }
 }
 

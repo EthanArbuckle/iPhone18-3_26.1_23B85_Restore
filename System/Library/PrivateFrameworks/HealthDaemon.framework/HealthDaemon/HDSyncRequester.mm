@@ -1,8 +1,8 @@
 @interface HDSyncRequester
 - (HDProfile)profile;
 - (HDSyncRequester)init;
-- (HDSyncRequester)initWithProfile:(id)a3;
-- (void)requestSyncsWithReason:(id)a3 options:(unint64_t)a4;
+- (HDSyncRequester)initWithProfile:(id)profile;
+- (void)requestSyncsWithReason:(id)reason options:(unint64_t)options;
 @end
 
 @implementation HDSyncRequester
@@ -17,25 +17,25 @@
   return 0;
 }
 
-- (HDSyncRequester)initWithProfile:(id)a3
+- (HDSyncRequester)initWithProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v8.receiver = self;
   v8.super_class = HDSyncRequester;
   v5 = [(HDSyncRequester *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_profile, v4);
+    objc_storeWeak(&v5->_profile, profileCopy);
   }
 
   return v6;
 }
 
-- (void)requestSyncsWithReason:(id)a3 options:(unint64_t)a4
+- (void)requestSyncsWithReason:(id)reason options:(unint64_t)options
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  reasonCopy = reason;
   _HKInitializeLogging();
   v7 = *MEMORY[0x277CCC328];
   if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
@@ -44,7 +44,7 @@
     *v25 = 138543618;
     *&v25[4] = objc_opt_class();
     *&v25[12] = 2114;
-    *&v25[14] = v6;
+    *&v25[14] = reasonCopy;
     _os_log_impl(&dword_228986000, v8, OS_LOG_TYPE_DEFAULT, "[%{public}@] Requesting syncs for '%{public}@'", v25, 0x16u);
   }
 
@@ -52,43 +52,43 @@
   v10 = v9;
   if (v9)
   {
-    (*(v9 + 2))(v9, v6, a4);
+    (*(v9 + 2))(v9, reasonCopy, options);
   }
 
-  if ((a4 & 1) == 0)
+  if ((options & 1) == 0)
   {
-    v11 = v6;
+    v11 = reasonCopy;
     v12 = objc_alloc_init(MEMORY[0x277CCDA40]);
     WeakRetained = objc_loadWeakRetained(&self->_profile);
-    v14 = [WeakRetained cloudSyncManager];
+    cloudSyncManager = [WeakRetained cloudSyncManager];
     v15 = [objc_alloc(MEMORY[0x277CCD140]) initWithStateSyncRequest:v12];
     *v25 = MEMORY[0x277D85DD0];
     *&v25[8] = 3221225472;
     *&v25[16] = __47__HDSyncRequester__requestStateSyncWithReason___block_invoke;
     v26 = &unk_278616020;
-    v27 = self;
+    selfCopy2 = self;
     v16 = v11;
     v28 = v16;
-    [v14 syncWithRequest:v15 reason:v16 completion:v25];
+    [cloudSyncManager syncWithRequest:v15 reason:v16 completion:v25];
   }
 
-  v17 = v6;
+  v17 = reasonCopy;
   v18 = objc_loadWeakRetained(&self->_profile);
-  v19 = [v18 daemon];
-  v20 = [v19 behavior];
-  v21 = [v20 supportsNanoSync];
+  daemon = [v18 daemon];
+  behavior = [daemon behavior];
+  supportsNanoSync = [behavior supportsNanoSync];
 
-  if (v21)
+  if (supportsNanoSync)
   {
     v22 = objc_loadWeakRetained(&self->_profile);
-    v23 = [v22 nanoSyncManager];
+    nanoSyncManager = [v22 nanoSyncManager];
     *v25 = MEMORY[0x277D85DD0];
     *&v25[8] = 3221225472;
     *&v25[16] = __46__HDSyncRequester__requestNanoSyncWithReason___block_invoke;
     v26 = &unk_278616020;
-    v27 = self;
+    selfCopy2 = self;
     v28 = v17;
-    [v23 syncHealthDataWithOptions:0 reason:v28 completion:v25];
+    [nanoSyncManager syncHealthDataWithOptions:0 reason:v28 completion:v25];
   }
 
   v24 = *MEMORY[0x277D85DE8];

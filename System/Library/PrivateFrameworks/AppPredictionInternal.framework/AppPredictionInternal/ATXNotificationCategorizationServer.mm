@@ -1,13 +1,13 @@
 @interface ATXNotificationCategorizationServer
 + (id)sharedInstance;
 - (ATXNotificationCategorizationServer)init;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (void)collectCoreAnalyticsJsonForNotification:(id)a3 completion:(id)a4;
-- (void)collectDynamicBreakthroughFeaturesForNotification:(id)a3 completion:(id)a4;
-- (void)fetchContextForMailWithRequest:(id)a3 completion:(id)a4;
-- (void)fetchContextForMessageWithRequest:(id)a3 completion:(id)a4;
-- (void)fetchContextForNotificationWithRequest:(id)a3 completion:(id)a4;
-- (void)rankUserNotificationWithRequest:(id)a3 completion:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (void)collectCoreAnalyticsJsonForNotification:(id)notification completion:(id)completion;
+- (void)collectDynamicBreakthroughFeaturesForNotification:(id)notification completion:(id)completion;
+- (void)fetchContextForMailWithRequest:(id)request completion:(id)completion;
+- (void)fetchContextForMessageWithRequest:(id)request completion:(id)completion;
+- (void)fetchContextForNotificationWithRequest:(id)request completion:(id)completion;
+- (void)rankUserNotificationWithRequest:(id)request completion:(id)completion;
 @end
 
 @implementation ATXNotificationCategorizationServer
@@ -156,11 +156,11 @@ id __43__ATXNotificationCategorizationServer_init__block_invoke_6()
   return v0;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   v8 = __atxlog_handle_notification_categorization();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -169,7 +169,7 @@ id __43__ATXNotificationCategorizationServer_init__block_invoke_6()
     _os_log_impl(&dword_2263AA000, v8, OS_LOG_TYPE_INFO, "%s: Connection attempted", buf, 0xCu);
   }
 
-  v9 = [v7 valueForEntitlement:@"com.apple.personalization.notificationCategorization"];
+  v9 = [connectionCopy valueForEntitlement:@"com.apple.personalization.notificationCategorization"];
   if (v9 && (objc_opt_respondsToSelector() & 1) != 0 && ([v9 BOOLValue] & 1) != 0)
   {
     v10 = __atxlog_handle_notification_categorization();
@@ -181,23 +181,23 @@ id __43__ATXNotificationCategorizationServer_init__block_invoke_6()
     }
 
     v11 = ATXNotificationCategorizationXPCInterface();
-    [v7 setExportedInterface:v11];
+    [connectionCopy setExportedInterface:v11];
 
-    [v7 setExportedObject:self];
-    objc_initWeak(buf, v7);
+    [connectionCopy setExportedObject:self];
+    objc_initWeak(buf, connectionCopy);
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
     v27[2] = __74__ATXNotificationCategorizationServer_listener_shouldAcceptNewConnection___block_invoke;
     v27[3] = &unk_2785977B0;
     objc_copyWeak(&v28, buf);
-    [v7 setInterruptionHandler:v27];
+    [connectionCopy setInterruptionHandler:v27];
     v22 = MEMORY[0x277D85DD0];
     v23 = 3221225472;
     v24 = __74__ATXNotificationCategorizationServer_listener_shouldAcceptNewConnection___block_invoke_64;
     v25 = &unk_2785977B0;
     objc_copyWeak(&v26, buf);
-    [v7 setInvalidationHandler:&v22];
-    [v7 resume];
+    [connectionCopy setInvalidationHandler:&v22];
+    [connectionCopy resume];
     objc_destroyWeak(&v26);
     objc_destroyWeak(&v28);
     objc_destroyWeak(buf);
@@ -209,7 +209,7 @@ id __43__ATXNotificationCategorizationServer_init__block_invoke_6()
     v13 = __atxlog_handle_notification_categorization();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      [(ATXNotificationCategorizationServer *)v7 listener:v13 shouldAcceptNewConnection:v14, v15, v16, v17, v18, v19];
+      [(ATXNotificationCategorizationServer *)connectionCopy listener:v13 shouldAcceptNewConnection:v14, v15, v16, v17, v18, v19];
     }
 
     v12 = 0;
@@ -239,11 +239,11 @@ void __74__ATXNotificationCategorizationServer_listener_shouldAcceptNewConnectio
   }
 }
 
-- (void)collectDynamicBreakthroughFeaturesForNotification:(id)a3 completion:(id)a4
+- (void)collectDynamicBreakthroughFeaturesForNotification:(id)notification completion:(id)completion
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  notificationCopy = notification;
   v8 = __atxlog_handle_notification_categorization();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -263,10 +263,10 @@ void __74__ATXNotificationCategorizationServer_listener_shouldAcceptNewConnectio
     _os_signpost_emit_with_name_impl(&dword_2263AA000, v12, OS_SIGNPOST_INTERVAL_BEGIN, v10, "ATXNotificationCategorizationServer.dynamicBreakthroughDataCollection", " enableTelemetry=YES ", &v20, 2u);
   }
 
-  v13 = [(_PASLazyResult *)self->_featuresCorrelator result];
-  v14 = [(_PASLazyResult *)self->_contactStore result];
-  v15 = [(_PASLazyResult *)self->_contactRelationships result];
-  v16 = [v13 collectDynamicBreakthroughFeaturesForNotification:v7 contactStore:v14 withContactRelationships:v15];
+  result = [(_PASLazyResult *)self->_featuresCorrelator result];
+  result2 = [(_PASLazyResult *)self->_contactStore result];
+  result3 = [(_PASLazyResult *)self->_contactRelationships result];
+  v16 = [result collectDynamicBreakthroughFeaturesForNotification:notificationCopy contactStore:result2 withContactRelationships:result3];
 
   v17 = __atxlog_handle_notification_categorization();
   v18 = v17;
@@ -276,15 +276,15 @@ void __74__ATXNotificationCategorizationServer_listener_shouldAcceptNewConnectio
     _os_signpost_emit_with_name_impl(&dword_2263AA000, v18, OS_SIGNPOST_INTERVAL_END, v10, "ATXNotificationCategorizationServer.dynamicBreakthroughDataCollection", " enableTelemetry=YES ", &v20, 2u);
   }
 
-  v6[2](v6, v16, 0);
+  completionCopy[2](completionCopy, v16, 0);
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)collectCoreAnalyticsJsonForNotification:(id)a3 completion:(id)a4
+- (void)collectCoreAnalyticsJsonForNotification:(id)notification completion:(id)completion
 {
   v35 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  notificationCopy = notification;
+  completionCopy = completion;
   v8 = __atxlog_handle_notification_categorization();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -305,25 +305,25 @@ void __74__ATXNotificationCategorizationServer_listener_shouldAcceptNewConnectio
   }
 
   v13 = objc_opt_new();
-  v14 = [v6 bundleID];
-  v15 = [v6 notificationID];
-  v16 = [v6 recordDate];
-  [v16 timeIntervalSinceReferenceDate];
-  v17 = [v13 telemetryDataForNotificationWithBundleId:v14 notificationId:v15 recordTimestamp:?];
+  bundleID = [notificationCopy bundleID];
+  notificationID = [notificationCopy notificationID];
+  recordDate = [notificationCopy recordDate];
+  [recordDate timeIntervalSinceReferenceDate];
+  v17 = [v13 telemetryDataForNotificationWithBundleId:bundleID notificationId:notificationID recordTimestamp:?];
 
   if (!v17)
   {
     v18 = __atxlog_handle_notification_categorization();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
-      [ATXNotificationCategorizationServer collectCoreAnalyticsJsonForNotification:v6 completion:v18];
+      [ATXNotificationCategorizationServer collectCoreAnalyticsJsonForNotification:notificationCopy completion:v18];
     }
   }
 
-  v19 = [(_PASLazyResult *)self->_featuresCorrelator result];
-  v20 = [(_PASLazyResult *)self->_contactStore result];
-  v21 = [(_PASLazyResult *)self->_contactRelationships result];
-  v22 = [v19 collectDynamicBreakthroughFeaturesForNotification:v6 contactStore:v20 withContactRelationships:v21];
+  result = [(_PASLazyResult *)self->_featuresCorrelator result];
+  result2 = [(_PASLazyResult *)self->_contactStore result];
+  result3 = [(_PASLazyResult *)self->_contactRelationships result];
+  v22 = [result collectDynamicBreakthroughFeaturesForNotification:notificationCopy contactStore:result2 withContactRelationships:result3];
 
   v23 = [ATXNotificationBreakthroughEventMetric coreAnalyticsDictionaryFromQueryResult:v17 featureCollectionSet:v22];
   v24 = __atxlog_handle_notification_categorization();
@@ -350,32 +350,32 @@ void __74__ATXNotificationCategorizationServer_listener_shouldAcceptNewConnectio
     v30 = 0;
   }
 
-  v7[2](v7, v29, v30);
+  completionCopy[2](completionCopy, v29, v30);
 
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (void)rankUserNotificationWithRequest:(id)a3 completion:(id)a4
+- (void)rankUserNotificationWithRequest:(id)request completion:(id)completion
 {
   v46 = *MEMORY[0x277D85DE8];
-  v26 = a3;
-  v24 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   v5 = __atxlog_handle_notification_categorization();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v26 userNotifications];
+    userNotifications = [requestCopy userNotifications];
     *buf = 136315394;
     *&buf[4] = "[ATXNotificationCategorizationServer rankUserNotificationWithRequest:completion:]";
     *&buf[12] = 2048;
-    *&buf[14] = [v6 count];
+    *&buf[14] = [userNotifications count];
     _os_log_impl(&dword_2263AA000, v5, OS_LOG_TYPE_DEFAULT, "%s: Received request to rank: %ld notifications", buf, 0x16u);
   }
 
   v28 = objc_opt_new();
-  v7 = [v26 useLLM];
+  useLLM = [requestCopy useLLM];
   v8 = &unk_283A58F90;
   [v28 setObject:&unk_283A58F90 forKeyedSubscript:@"critical"];
-  if (v7)
+  if (useLLM)
   {
     v8 = &unk_283A58FA0;
     v9 = &unk_283A58FB0;
@@ -386,7 +386,7 @@ void __74__ATXNotificationCategorizationServer_listener_shouldAcceptNewConnectio
     v9 = &unk_283A58FC0;
   }
 
-  [v28 setObject:v8 forKeyedSubscript:{@"timeSensitive", v24}];
+  [v28 setObject:v8 forKeyedSubscript:{@"timeSensitive", completionCopy}];
   [v28 setObject:&unk_283A58F90 forKeyedSubscript:@"isMessage"];
   [v28 setObject:v8 forKeyedSubscript:@"personScore"];
   [v28 setObject:v8 forKeyedSubscript:@"tendencyToOpenAppAfterNotification"];
@@ -408,8 +408,8 @@ void __74__ATXNotificationCategorizationServer_listener_shouldAcceptNewConnectio
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v14 = [v26 userNotifications];
-  v15 = [v14 countByEnumeratingWithState:&v33 objects:v41 count:16];
+  userNotifications2 = [requestCopy userNotifications];
+  v15 = [userNotifications2 countByEnumeratingWithState:&v33 objects:v41 count:16];
   if (v15)
   {
     v16 = *v34;
@@ -419,7 +419,7 @@ void __74__ATXNotificationCategorizationServer_listener_shouldAcceptNewConnectio
       {
         if (*v34 != v16)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(userNotifications2);
         }
 
         v18 = *(*(&v33 + 1) + 8 * i);
@@ -434,7 +434,7 @@ void __74__ATXNotificationCategorizationServer_listener_shouldAcceptNewConnectio
         dispatch_group_async(v13, queue, block);
       }
 
-      v15 = [v14 countByEnumeratingWithState:&v33 objects:v41 count:16];
+      v15 = [userNotifications2 countByEnumeratingWithState:&v33 objects:v41 count:16];
     }
 
     while (v15);
@@ -544,17 +544,17 @@ void __82__ATXNotificationCategorizationServer_rankUserNotificationWithRequest_c
   }
 }
 
-- (void)fetchContextForNotificationWithRequest:(id)a3 completion:(id)a4
+- (void)fetchContextForNotificationWithRequest:(id)request completion:(id)completion
 {
   v34[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   v8 = objc_opt_new();
-  v9 = [v6 userNotification];
-  if (v9)
+  userNotification = [requestCopy userNotification];
+  if (userNotification)
   {
-    v10 = [(_PASLazyResult *)self->_notificationSenderImportanceModel result];
-    v11 = [v10 calculateSenderImportanceForNotificationWithContextRequest:v6];
+    result = [(_PASLazyResult *)self->_notificationSenderImportanceModel result];
+    v11 = [result calculateSenderImportanceForNotificationWithContextRequest:requestCopy];
 
     [v11 senderImportanceScore];
     v13 = v12;
@@ -564,8 +564,8 @@ void __82__ATXNotificationCategorizationServer_rankUserNotificationWithRequest_c
       v28 = objc_alloc(MEMORY[0x277CEB6E8]);
       [v11 senderImportanceScore];
       v30 = v29;
-      v22 = [v11 featureDictionary];
-      v31 = [v28 initWithNotificationSenderImportance:2 importanceConfidenceScore:v22 notificationFeatureDictionary:v30];
+      featureDictionary = [v11 featureDictionary];
+      v31 = [v28 initWithNotificationSenderImportance:2 importanceConfidenceScore:featureDictionary notificationFeatureDictionary:v30];
     }
 
     else
@@ -577,11 +577,11 @@ void __82__ATXNotificationCategorizationServer_rankUserNotificationWithRequest_c
       v19 = objc_alloc(MEMORY[0x277CEB6E8]);
       [v11 senderImportanceScore];
       v21 = v20;
-      v22 = [v11 featureDictionary];
-      v31 = [v19 initWithNotificationSenderImportance:v16 < v18 importanceConfidenceScore:v22 notificationFeatureDictionary:v21];
+      featureDictionary = [v11 featureDictionary];
+      v31 = [v19 initWithNotificationSenderImportance:v16 < v18 importanceConfidenceScore:featureDictionary notificationFeatureDictionary:v21];
     }
 
-    v7[2](v7, v31, 0);
+    completionCopy[2](completionCopy, v31, 0);
   }
 
   else
@@ -593,25 +593,25 @@ void __82__ATXNotificationCategorizationServer_rankUserNotificationWithRequest_c
     v34[0] = @"ATXNotificationCategorizationServer: Invalid Request Object: Nil ATXUserNotification object.";
     v26 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v34 forKeys:&v33 count:1];
     v27 = [v23 errorWithDomain:v24 code:v25 userInfo:v26];
-    (v7)[2](v7, 0, v27);
+    (completionCopy)[2](completionCopy, 0, v27);
   }
 
   v32 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchContextForMailWithRequest:(id)a3 completion:(id)a4
+- (void)fetchContextForMailWithRequest:(id)request completion:(id)completion
 {
   v36[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   v8 = objc_opt_new();
-  v9 = [v6 mailMessage];
-  if (v9)
+  mailMessage = [requestCopy mailMessage];
+  if (mailMessage)
   {
-    v10 = [(_PASLazyResult *)self->_mailSenderImportanceModel result];
-    v11 = [(_PASLazyResult *)self->_contactStore result];
-    v12 = [(_PASLazyResult *)self->_contactRelationships result];
-    v13 = [v10 calculateSenderImportanceForMailWithContextRequest:v6 contactStore:v11 contactRelationships:v12];
+    result = [(_PASLazyResult *)self->_mailSenderImportanceModel result];
+    result2 = [(_PASLazyResult *)self->_contactStore result];
+    result3 = [(_PASLazyResult *)self->_contactRelationships result];
+    v13 = [result calculateSenderImportanceForMailWithContextRequest:requestCopy contactStore:result2 contactRelationships:result3];
 
     [v13 senderImportanceScore];
     v15 = v14;
@@ -621,8 +621,8 @@ void __82__ATXNotificationCategorizationServer_rankUserNotificationWithRequest_c
       v30 = objc_alloc(MEMORY[0x277CEB638]);
       [v13 senderImportanceScore];
       v32 = v31;
-      v24 = [v13 featureDictionary];
-      v33 = [v30 initWithMailSenderImportance:2 importanceConfidenceScore:v24 mailFeatureDictionary:v32];
+      featureDictionary = [v13 featureDictionary];
+      v33 = [v30 initWithMailSenderImportance:2 importanceConfidenceScore:featureDictionary mailFeatureDictionary:v32];
     }
 
     else
@@ -634,11 +634,11 @@ void __82__ATXNotificationCategorizationServer_rankUserNotificationWithRequest_c
       v21 = objc_alloc(MEMORY[0x277CEB638]);
       [v13 senderImportanceScore];
       v23 = v22;
-      v24 = [v13 featureDictionary];
-      v33 = [v21 initWithMailSenderImportance:v18 < v20 importanceConfidenceScore:v24 mailFeatureDictionary:v23];
+      featureDictionary = [v13 featureDictionary];
+      v33 = [v21 initWithMailSenderImportance:v18 < v20 importanceConfidenceScore:featureDictionary mailFeatureDictionary:v23];
     }
 
-    v7[2](v7, v33, 0);
+    completionCopy[2](completionCopy, v33, 0);
   }
 
   else
@@ -650,25 +650,25 @@ void __82__ATXNotificationCategorizationServer_rankUserNotificationWithRequest_c
     v36[0] = @"ATXNotificationCategorizationServer: Invalid Request Object: Nil ATXMailMessage object.";
     v28 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v36 forKeys:&v35 count:1];
     v29 = [v25 errorWithDomain:v26 code:v27 userInfo:v28];
-    (v7)[2](v7, 0, v29);
+    (completionCopy)[2](completionCopy, 0, v29);
   }
 
   v34 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchContextForMessageWithRequest:(id)a3 completion:(id)a4
+- (void)fetchContextForMessageWithRequest:(id)request completion:(id)completion
 {
   v36[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   v8 = objc_opt_new();
-  v9 = [v6 textMessage];
-  if (v9)
+  textMessage = [requestCopy textMessage];
+  if (textMessage)
   {
-    v10 = [(_PASLazyResult *)self->_messageSenderImportanceModel result];
-    v11 = [(_PASLazyResult *)self->_contactStore result];
-    v12 = [(_PASLazyResult *)self->_contactRelationships result];
-    v13 = [v10 calculateSenderImportanceForMessageWithContextRequest:v6 contactStore:v11 contactRelationships:v12];
+    result = [(_PASLazyResult *)self->_messageSenderImportanceModel result];
+    result2 = [(_PASLazyResult *)self->_contactStore result];
+    result3 = [(_PASLazyResult *)self->_contactRelationships result];
+    v13 = [result calculateSenderImportanceForMessageWithContextRequest:requestCopy contactStore:result2 contactRelationships:result3];
 
     [v13 senderImportanceScore];
     v15 = v14;
@@ -678,8 +678,8 @@ void __82__ATXNotificationCategorizationServer_rankUserNotificationWithRequest_c
       v30 = objc_alloc(MEMORY[0x277CEB660]);
       [v13 senderImportanceScore];
       v32 = v31;
-      v24 = [v13 featureDictionary];
-      v33 = [v30 initWithMessageSenderImportance:2 importanceConfidenceScore:v24 messageFeatureDictionary:v32];
+      featureDictionary = [v13 featureDictionary];
+      v33 = [v30 initWithMessageSenderImportance:2 importanceConfidenceScore:featureDictionary messageFeatureDictionary:v32];
     }
 
     else
@@ -691,11 +691,11 @@ void __82__ATXNotificationCategorizationServer_rankUserNotificationWithRequest_c
       v21 = objc_alloc(MEMORY[0x277CEB660]);
       [v13 senderImportanceScore];
       v23 = v22;
-      v24 = [v13 featureDictionary];
-      v33 = [v21 initWithMessageSenderImportance:v18 < v20 importanceConfidenceScore:v24 messageFeatureDictionary:v23];
+      featureDictionary = [v13 featureDictionary];
+      v33 = [v21 initWithMessageSenderImportance:v18 < v20 importanceConfidenceScore:featureDictionary messageFeatureDictionary:v23];
     }
 
-    v7[2](v7, v33, 0);
+    completionCopy[2](completionCopy, v33, 0);
   }
 
   else
@@ -707,7 +707,7 @@ void __82__ATXNotificationCategorizationServer_rankUserNotificationWithRequest_c
     v36[0] = @"ATXNotificationCategorizationServer: Invalid Request Object: Nil ATXTextMessage object.";
     v28 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v36 forKeys:&v35 count:1];
     v29 = [v25 errorWithDomain:v26 code:v27 userInfo:v28];
-    (v7)[2](v7, 0, v29);
+    (completionCopy)[2](completionCopy, 0, v29);
   }
 
   v34 = *MEMORY[0x277D85DE8];

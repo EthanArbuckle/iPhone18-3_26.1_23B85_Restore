@@ -1,23 +1,23 @@
 @interface SBPearlInterlockObserver
-- (SBPearlInterlockObserver)initWithBiometricResource:(id)a3;
+- (SBPearlInterlockObserver)initWithBiometricResource:(id)resource;
 - (void)_checkForLockout;
 - (void)_fire;
 - (void)activate;
-- (void)biometricResource:(id)a3 observeEvent:(unint64_t)a4;
+- (void)biometricResource:(id)resource observeEvent:(unint64_t)event;
 @end
 
 @implementation SBPearlInterlockObserver
 
-- (SBPearlInterlockObserver)initWithBiometricResource:(id)a3
+- (SBPearlInterlockObserver)initWithBiometricResource:(id)resource
 {
-  v5 = a3;
+  resourceCopy = resource;
   v9.receiver = self;
   v9.super_class = SBPearlInterlockObserver;
   v6 = [(SBPearlInterlockObserver *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_biometricResource, a3);
+    objc_storeStrong(&v6->_biometricResource, resource);
   }
 
   return v7;
@@ -60,14 +60,14 @@
   }
 }
 
-- (void)biometricResource:(id)a3 observeEvent:(unint64_t)a4
+- (void)biometricResource:(id)resource observeEvent:(unint64_t)event
 {
-  v6 = a3;
-  if (a4 == 24 || self->_didSuppressFire)
+  resourceCopy = resource;
+  if (event == 24 || self->_didSuppressFire)
   {
-    v7 = v6;
+    v7 = resourceCopy;
     [(SBPearlInterlockObserver *)self _fire];
-    v6 = v7;
+    resourceCopy = v7;
   }
 }
 

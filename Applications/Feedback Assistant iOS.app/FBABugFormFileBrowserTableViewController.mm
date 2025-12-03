@@ -1,42 +1,42 @@
 @interface FBABugFormFileBrowserTableViewController
-- (CGRect)documentInteractionControllerRectForPreview:(id)a3;
-- (FBABugFormFileBrowserTableViewController)initWithGroup:(id)a3;
-- (FBABugFormFileBrowserTableViewController)initWithUrl:(id)a3;
-- (id)documentInteractionControllerViewForPreview:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)documentInteractionControllerDidEndPreview:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (CGRect)documentInteractionControllerRectForPreview:(id)preview;
+- (FBABugFormFileBrowserTableViewController)initWithGroup:(id)group;
+- (FBABugFormFileBrowserTableViewController)initWithUrl:(id)url;
+- (id)documentInteractionControllerViewForPreview:(id)preview;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)documentInteractionControllerDidEndPreview:(id)preview;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
 @implementation FBABugFormFileBrowserTableViewController
 
-- (FBABugFormFileBrowserTableViewController)initWithGroup:(id)a3
+- (FBABugFormFileBrowserTableViewController)initWithGroup:(id)group
 {
-  v4 = a3;
+  groupCopy = group;
   v8.receiver = self;
   v8.super_class = FBABugFormFileBrowserTableViewController;
   v5 = [(FBABugFormFileBrowserTableViewController *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(FBABugFormFileBrowserTableViewController *)v5 setGroup:v4];
+    [(FBABugFormFileBrowserTableViewController *)v5 setGroup:groupCopy];
   }
 
   return v6;
 }
 
-- (FBABugFormFileBrowserTableViewController)initWithUrl:(id)a3
+- (FBABugFormFileBrowserTableViewController)initWithUrl:(id)url
 {
-  v4 = a3;
+  urlCopy = url;
   v8.receiver = self;
   v8.super_class = FBABugFormFileBrowserTableViewController;
   v5 = [(FBABugFormFileBrowserTableViewController *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(FBABugFormFileBrowserTableViewController *)v5 setUrl:v4];
+    [(FBABugFormFileBrowserTableViewController *)v5 setUrl:urlCopy];
   }
 
   return v6;
@@ -47,73 +47,73 @@
   v11.receiver = self;
   v11.super_class = FBABugFormFileBrowserTableViewController;
   [(FBABugFormFileBrowserTableViewController *)&v11 viewDidLoad];
-  v3 = [(FBABugFormFileBrowserTableViewController *)self navigationItem];
-  [v3 setLargeTitleDisplayMode:2];
+  navigationItem = [(FBABugFormFileBrowserTableViewController *)self navigationItem];
+  [navigationItem setLargeTitleDisplayMode:2];
 
-  v4 = [(FBABugFormFileBrowserTableViewController *)self group];
+  group = [(FBABugFormFileBrowserTableViewController *)self group];
 
-  if (v4)
+  if (group)
   {
-    v5 = [(FBABugFormFileBrowserTableViewController *)self group];
-    v6 = [v5 displayName];
-    [(FBABugFormFileBrowserTableViewController *)self setTitle:v6];
+    group2 = [(FBABugFormFileBrowserTableViewController *)self group];
+    displayName = [group2 displayName];
+    [(FBABugFormFileBrowserTableViewController *)self setTitle:displayName];
   }
 
   else
   {
     v7 = [(FBABugFormFileBrowserTableViewController *)self url];
-    v8 = [v7 lastPathComponent];
-    [(FBABugFormFileBrowserTableViewController *)self setTitle:v8];
+    lastPathComponent = [v7 lastPathComponent];
+    [(FBABugFormFileBrowserTableViewController *)self setTitle:lastPathComponent];
 
-    v5 = +[NSFileManager defaultManager];
-    v6 = [(FBABugFormFileBrowserTableViewController *)self url];
-    v9 = [v5 contentsOfDirectoryAtURL:v6 includingPropertiesForKeys:&__NSArray0__struct options:4 error:0];
+    group2 = +[NSFileManager defaultManager];
+    displayName = [(FBABugFormFileBrowserTableViewController *)self url];
+    v9 = [group2 contentsOfDirectoryAtURL:displayName includingPropertiesForKeys:&__NSArray0__struct options:4 error:0];
     [(FBABugFormFileBrowserTableViewController *)self setDirectoryList:v9];
   }
 
-  v10 = [(FBABugFormFileBrowserTableViewController *)self tableView];
-  [v10 registerClass:objc_opt_class() forCellReuseIdentifier:@"DEFileCell"];
+  tableView = [(FBABugFormFileBrowserTableViewController *)self tableView];
+  [tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"DEFileCell"];
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v5 = [(FBABugFormFileBrowserTableViewController *)self group:a3];
+  v5 = [(FBABugFormFileBrowserTableViewController *)self group:view];
 
   if (v5)
   {
-    v6 = [(FBABugFormFileBrowserTableViewController *)self group];
-    v7 = [v6 attachmentItems];
-    v8 = [v7 count];
+    group = [(FBABugFormFileBrowserTableViewController *)self group];
+    attachmentItems = [group attachmentItems];
+    v8 = [attachmentItems count];
   }
 
   else
   {
-    v6 = [(FBABugFormFileBrowserTableViewController *)self directoryList];
-    v8 = [v6 count];
+    group = [(FBABugFormFileBrowserTableViewController *)self directoryList];
+    v8 = [group count];
   }
 
   return v8;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"DEFileCell" forIndexPath:v6];
-  v8 = [(FBABugFormFileBrowserTableViewController *)self group];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"DEFileCell" forIndexPath:pathCopy];
+  group = [(FBABugFormFileBrowserTableViewController *)self group];
 
-  if (v8)
+  if (group)
   {
-    v9 = [(FBABugFormFileBrowserTableViewController *)self group];
-    v10 = [v9 attachmentItems];
-    v11 = [v6 row];
+    group2 = [(FBABugFormFileBrowserTableViewController *)self group];
+    attachmentItems = [group2 attachmentItems];
+    v11 = [pathCopy row];
 
-    v12 = [v10 objectAtIndexedSubscript:v11];
+    v12 = [attachmentItems objectAtIndexedSubscript:v11];
 
-    v13 = [v12 displayName];
+    displayName = [v12 displayName];
     if ([v12 isLocal])
     {
-      v14 = [v12 attachedPath];
-      v15 = [FBKFileManager isDirectory:v14]^ 1;
+      attachedPath = [v12 attachedPath];
+      v15 = [FBKFileManager isDirectory:attachedPath]^ 1;
     }
 
     else
@@ -124,17 +124,17 @@
 
   else
   {
-    v16 = [(FBABugFormFileBrowserTableViewController *)self directoryList];
-    v17 = [v6 row];
+    directoryList = [(FBABugFormFileBrowserTableViewController *)self directoryList];
+    v17 = [pathCopy row];
 
-    v12 = [v16 objectAtIndexedSubscript:v17];
+    v12 = [directoryList objectAtIndexedSubscript:v17];
 
-    v13 = [v12 lastPathComponent];
+    displayName = [v12 lastPathComponent];
     v15 = [FBKFileManager isDirectory:v12]^ 1;
   }
 
-  v18 = [v7 textLabel];
-  [v18 setText:v13];
+  textLabel = [v7 textLabel];
+  [textLabel setText:displayName];
 
   [v7 setAccessoryType:1];
   v19 = &FBKSystemImageNameFolder;
@@ -144,30 +144,30 @@
   }
 
   v20 = [UIImage systemImageNamed:*v19];
-  v21 = [v7 imageView];
-  [v21 setImage:v20];
+  imageView = [v7 imageView];
+  [imageView setImage:v20];
 
   return v7;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(FBABugFormFileBrowserTableViewController *)self group];
+  pathCopy = path;
+  group = [(FBABugFormFileBrowserTableViewController *)self group];
 
-  if (v6)
+  if (group)
   {
-    v7 = [(FBABugFormFileBrowserTableViewController *)self group];
-    v8 = [v7 attachmentItems];
-    v9 = [v8 objectAtIndexedSubscript:{objc_msgSend(v5, "row")}];
+    group2 = [(FBABugFormFileBrowserTableViewController *)self group];
+    attachmentItems = [group2 attachmentItems];
+    v9 = [attachmentItems objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
 
     [FBAAttachmentViewingControllerSelector controllerForItem:v9];
   }
 
   else
   {
-    v10 = [(FBABugFormFileBrowserTableViewController *)self directoryList];
-    v9 = [v10 objectAtIndexedSubscript:{objc_msgSend(v5, "row")}];
+    directoryList = [(FBABugFormFileBrowserTableViewController *)self directoryList];
+    v9 = [directoryList objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
 
     [FBAAttachmentViewingControllerSelector controllerForUrl:v9];
   }
@@ -186,10 +186,10 @@
         sub_100091FC0(v13);
       }
 
-      v15 = v11;
-      [v15 setDelegate:self];
-      [v15 setAnnotation:v5];
-      [v15 presentPreviewAnimated:1];
+      navigationController = v11;
+      [navigationController setDelegate:self];
+      [navigationController setAnnotation:pathCopy];
+      [navigationController presentPreviewAnimated:1];
     }
 
     else
@@ -199,40 +199,40 @@
         sub_100091F7C(v13);
       }
 
-      v15 = [(FBABugFormFileBrowserTableViewController *)self navigationController];
-      [v15 pushViewController:v11 animated:1];
+      navigationController = [(FBABugFormFileBrowserTableViewController *)self navigationController];
+      [navigationController pushViewController:v11 animated:1];
     }
   }
 
   else
   {
-    v15 = +[FBALog appHandle];
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+    navigationController = +[FBALog appHandle];
+    if (os_log_type_enabled(navigationController, OS_LOG_TYPE_ERROR))
     {
-      sub_100092004(v15);
+      sub_100092004(navigationController);
     }
   }
 }
 
-- (void)documentInteractionControllerDidEndPreview:(id)a3
+- (void)documentInteractionControllerDidEndPreview:(id)preview
 {
-  v4 = a3;
-  v6 = [(FBABugFormFileBrowserTableViewController *)self tableView];
-  v5 = [v4 annotation];
+  previewCopy = preview;
+  tableView = [(FBABugFormFileBrowserTableViewController *)self tableView];
+  annotation = [previewCopy annotation];
 
-  [v6 deselectRowAtIndexPath:v5 animated:1];
+  [tableView deselectRowAtIndexPath:annotation animated:1];
 }
 
-- (CGRect)documentInteractionControllerRectForPreview:(id)a3
+- (CGRect)documentInteractionControllerRectForPreview:(id)preview
 {
-  v4 = a3;
-  v5 = [(FBABugFormFileBrowserTableViewController *)self tableView];
-  v6 = [v4 annotation];
+  previewCopy = preview;
+  tableView = [(FBABugFormFileBrowserTableViewController *)self tableView];
+  annotation = [previewCopy annotation];
 
-  v7 = [v5 cellForRowAtIndexPath:v6];
+  v7 = [tableView cellForRowAtIndexPath:annotation];
 
-  v8 = [v7 imageView];
-  [v8 frame];
+  imageView = [v7 imageView];
+  [imageView frame];
   v10 = v9;
   v12 = v11;
   v14 = v13;
@@ -249,17 +249,17 @@
   return result;
 }
 
-- (id)documentInteractionControllerViewForPreview:(id)a3
+- (id)documentInteractionControllerViewForPreview:(id)preview
 {
-  v4 = a3;
-  v5 = [(FBABugFormFileBrowserTableViewController *)self tableView];
-  v6 = [v4 annotation];
+  previewCopy = preview;
+  tableView = [(FBABugFormFileBrowserTableViewController *)self tableView];
+  annotation = [previewCopy annotation];
 
-  v7 = [v5 cellForRowAtIndexPath:v6];
+  v7 = [tableView cellForRowAtIndexPath:annotation];
 
-  v8 = [v7 imageView];
+  imageView = [v7 imageView];
 
-  return v8;
+  return imageView;
 }
 
 @end

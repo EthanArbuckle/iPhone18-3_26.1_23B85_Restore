@@ -15,54 +15,54 @@
 
 - (id)_localizedDescription:()CalendarUIKit isAllDay:
 {
-  if ([a1 isAbsolute])
+  if ([self isAbsolute])
   {
-    v7 = [a1 absoluteDate];
-    v8 = v7;
+    absoluteDate = [self absoluteDate];
+    owner = absoluteDate;
     if (a3)
     {
-      CUIKLongStringForDateAndTime(v7);
+      CUIKLongStringForDateAndTime(absoluteDate);
     }
 
     else
     {
-      CUIKStringForDateAndTime(v7);
+      CUIKStringForDateAndTime(absoluteDate);
     }
     v13 = ;
   }
 
   else
   {
-    v8 = [a1 owner];
+    owner = [self owner];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v8 travelTime];
+      [owner travelTime];
       v10 = v9 > 0.0;
-      v11 = [v8 defaultAlarms];
-      v12 = [v11 anyObject];
+      defaultAlarms = [owner defaultAlarms];
+      anyObject = [defaultAlarms anyObject];
     }
 
     else
     {
-      v12 = 0;
+      anyObject = 0;
       v10 = 0;
     }
 
-    [a1 relativeOffset];
+    [self relativeOffset];
     v15 = v14;
-    if ([a1 isDefaultAlarm] && v12)
+    if ([self isDefaultAlarm] && anyObject)
     {
-      [v12 relativeOffset];
+      [anyObject relativeOffset];
       v15 = v16;
     }
 
     v13 = CUIKStringForRelativeOffset(a4, v10, v15);
-    if ([a1 isDefaultAlarm])
+    if ([self isDefaultAlarm])
     {
       v17 = MEMORY[0x1E696AEC0];
-      v18 = [MEMORY[0x1E6966950] cuik_defaultDesignator];
-      v19 = [v17 localizedStringWithValidatedFormat:v18 validFormatSpecifiers:@"%@" error:0, v13];
+      cuik_defaultDesignator = [MEMORY[0x1E6966950] cuik_defaultDesignator];
+      v19 = [v17 localizedStringWithValidatedFormat:cuik_defaultDesignator validFormatSpecifiers:@"%@" error:0, v13];
 
       v13 = v19;
     }

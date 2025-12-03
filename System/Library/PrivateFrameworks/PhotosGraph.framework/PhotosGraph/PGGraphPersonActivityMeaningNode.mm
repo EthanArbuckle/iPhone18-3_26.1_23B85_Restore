@@ -1,13 +1,13 @@
 @interface PGGraphPersonActivityMeaningNode
 + (MARelation)momentOfPersonActivity;
 + (id)filter;
-+ (id)filterWithActivityLabels:(id)a3;
-+ (id)filterWithPersonLocalIdentifiers:(id)a3 label:(id)a4;
++ (id)filterWithActivityLabels:(id)labels;
++ (id)filterWithPersonLocalIdentifiers:(id)identifiers label:(id)label;
 + (id)personOfPersonActivity;
-- (BOOL)hasProperties:(id)a3;
+- (BOOL)hasProperties:(id)properties;
 - (NSString)featureIdentifier;
-- (PGGraphPersonActivityMeaningNode)initWithLabel:(id)a3 domain:(unsigned __int16)a4 properties:(id)a5;
-- (PGGraphPersonActivityMeaningNode)initWithPersonLocalIdentifier:(id)a3 activity:(id)a4;
+- (PGGraphPersonActivityMeaningNode)initWithLabel:(id)label domain:(unsigned __int16)domain properties:(id)properties;
+- (PGGraphPersonActivityMeaningNode)initWithPersonLocalIdentifier:(id)identifier activity:(id)activity;
 - (PGGraphPersonActivityMeaningNodeCollection)collection;
 - (id)propertyDictionary;
 @end
@@ -19,9 +19,9 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(PGGraphPersonActivityMeaningNode *)self label];
-  v7 = [(PGGraphPersonActivityMeaningNode *)self personLocalIdentifier];
-  v8 = [v3 stringWithFormat:@"%@|%@|%@", v5, v6, v7];
+  label = [(PGGraphPersonActivityMeaningNode *)self label];
+  personLocalIdentifier = [(PGGraphPersonActivityMeaningNode *)self personLocalIdentifier];
+  v8 = [v3 stringWithFormat:@"%@|%@|%@", v5, label, personLocalIdentifier];
 
   return v8;
 }
@@ -45,15 +45,15 @@
   return v3;
 }
 
-- (BOOL)hasProperties:(id)a3
+- (BOOL)hasProperties:(id)properties
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 count] && (objc_msgSend(v5, "objectForKeyedSubscript:", @"id"), (v6 = objc_claimAutoreleasedReturnValue()) != 0))
+  propertiesCopy = properties;
+  v5 = propertiesCopy;
+  if (propertiesCopy && [propertiesCopy count] && (objc_msgSend(v5, "objectForKeyedSubscript:", @"id"), (v6 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v7 = v6;
-    v8 = [v6 stringValue];
-    v9 = v8 == self->_personLocalIdentifier;
+    stringValue = [v6 stringValue];
+    v9 = stringValue == self->_personLocalIdentifier;
   }
 
   else
@@ -64,54 +64,54 @@
   return v9;
 }
 
-- (PGGraphPersonActivityMeaningNode)initWithLabel:(id)a3 domain:(unsigned __int16)a4 properties:(id)a5
+- (PGGraphPersonActivityMeaningNode)initWithLabel:(id)label domain:(unsigned __int16)domain properties:(id)properties
 {
-  v7 = a3;
-  v8 = [a5 objectForKeyedSubscript:@"identifier"];
-  v9 = [(PGGraphPersonActivityMeaningNode *)self initWithPersonLocalIdentifier:v8 activity:v7];
+  labelCopy = label;
+  v8 = [properties objectForKeyedSubscript:@"identifier"];
+  v9 = [(PGGraphPersonActivityMeaningNode *)self initWithPersonLocalIdentifier:v8 activity:labelCopy];
 
   return v9;
 }
 
-- (PGGraphPersonActivityMeaningNode)initWithPersonLocalIdentifier:(id)a3 activity:(id)a4
+- (PGGraphPersonActivityMeaningNode)initWithPersonLocalIdentifier:(id)identifier activity:(id)activity
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  activityCopy = activity;
   v12.receiver = self;
   v12.super_class = PGGraphPersonActivityMeaningNode;
   v9 = [(PGGraphNode *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_personLocalIdentifier, a3);
-    objc_storeStrong(&v10->_label, a4);
+    objc_storeStrong(&v9->_personLocalIdentifier, identifier);
+    objc_storeStrong(&v10->_label, activity);
   }
 
   return v10;
 }
 
-+ (id)filterWithActivityLabels:(id)a3
++ (id)filterWithActivityLabels:(id)labels
 {
   v3 = MEMORY[0x277D22C78];
-  v4 = a3;
+  labelsCopy = labels;
   v5 = [v3 alloc];
-  v6 = [v5 initWithLabels:v4 domain:701 properties:MEMORY[0x277CBEC10]];
+  v6 = [v5 initWithLabels:labelsCopy domain:701 properties:MEMORY[0x277CBEC10]];
 
   return v6;
 }
 
-+ (id)filterWithPersonLocalIdentifiers:(id)a3 label:(id)a4
++ (id)filterWithPersonLocalIdentifiers:(id)identifiers label:(id)label
 {
   v14[1] = *MEMORY[0x277D85DE8];
   v5 = MEMORY[0x277D22C78];
-  v6 = a4;
-  v7 = a3;
+  labelCopy = label;
+  identifiersCopy = identifiers;
   v8 = [v5 alloc];
   v13 = @"identifier";
-  v14[0] = v7;
+  v14[0] = identifiersCopy;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:&v13 count:1];
 
-  v10 = [v8 initWithLabel:v6 domain:701 properties:v9];
+  v10 = [v8 initWithLabel:labelCopy domain:701 properties:v9];
   v11 = *MEMORY[0x277D85DE8];
 
   return v10;
@@ -120,17 +120,17 @@
 + (id)personOfPersonActivity
 {
   v2 = +[PGGraphPracticesActivityEdge filter];
-  v3 = [v2 inRelation];
+  inRelation = [v2 inRelation];
 
-  return v3;
+  return inRelation;
 }
 
 + (MARelation)momentOfPersonActivity
 {
   v2 = +[PGGraphPersonActivityMeaningEdge filter];
-  v3 = [v2 inRelation];
+  inRelation = [v2 inRelation];
 
-  return v3;
+  return inRelation;
 }
 
 + (id)filter

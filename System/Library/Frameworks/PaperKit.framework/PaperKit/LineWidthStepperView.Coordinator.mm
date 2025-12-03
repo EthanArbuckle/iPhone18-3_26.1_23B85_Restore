@@ -1,13 +1,13 @@
 @interface LineWidthStepperView.Coordinator
-- (void)didChange:(id)a3;
+- (void)didChange:(id)change;
 @end
 
 @implementation LineWidthStepperView.Coordinator
 
-- (void)didChange:(id)a3
+- (void)didChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
+  changeCopy = change;
+  selfCopy = self;
   LineWidthStepperView.Coordinator.didChange(_:)();
 }
 

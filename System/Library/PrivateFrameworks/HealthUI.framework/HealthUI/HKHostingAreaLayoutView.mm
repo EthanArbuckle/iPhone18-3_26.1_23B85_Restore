@@ -1,74 +1,74 @@
 @interface HKHostingAreaLayoutView
-+ (id)colorBackgroundViewHostingView:(id)a3;
-+ (id)viewHostingView:(id)a3;
++ (id)colorBackgroundViewHostingView:(id)view;
++ (id)viewHostingView:(id)view;
 - (CGSize)intrinsicContentSize;
-- (void)setHostedView:(id)a3;
+- (void)setHostedView:(id)view;
 @end
 
 @implementation HKHostingAreaLayoutView
 
-+ (id)viewHostingView:(id)a3
++ (id)viewHostingView:(id)view
 {
-  v3 = a3;
+  viewCopy = view;
   v4 = [HKHostingAreaLayoutView alloc];
   v5 = [(HKHostingAreaLayoutView *)v4 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
-  [(HKHostingAreaLayoutView *)v5 setHostedView:v3];
+  [(HKHostingAreaLayoutView *)v5 setHostedView:viewCopy];
 
   return v5;
 }
 
-+ (id)colorBackgroundViewHostingView:(id)a3
++ (id)colorBackgroundViewHostingView:(id)view
 {
-  v3 = [a1 viewHostingView:a3];
-  v4 = [MEMORY[0x1E69DC888] systemGroupedBackgroundColor];
-  [v3 setBackgroundColor:v4];
+  v3 = [self viewHostingView:view];
+  systemGroupedBackgroundColor = [MEMORY[0x1E69DC888] systemGroupedBackgroundColor];
+  [v3 setBackgroundColor:systemGroupedBackgroundColor];
 
   return v3;
 }
 
-- (void)setHostedView:(id)a3
+- (void)setHostedView:(id)view
 {
-  objc_storeStrong(&self->_hostedView, a3);
-  v4 = [(HKHostingAreaLayoutView *)self hostedView];
-  [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
+  objc_storeStrong(&self->_hostedView, view);
+  hostedView = [(HKHostingAreaLayoutView *)self hostedView];
+  [hostedView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v5 = [(HKHostingAreaLayoutView *)self hostedView];
-  [(HKHostingAreaLayoutView *)self addSubview:v5];
+  hostedView2 = [(HKHostingAreaLayoutView *)self hostedView];
+  [(HKHostingAreaLayoutView *)self addSubview:hostedView2];
 
-  v6 = [(HKHostingAreaLayoutView *)self safeAreaLayoutGuide];
-  v7 = [v6 topAnchor];
-  v8 = [(HKHostingAreaLayoutView *)self hostedView];
-  v9 = [v8 topAnchor];
-  v10 = [v7 constraintEqualToAnchor:v9];
+  safeAreaLayoutGuide = [(HKHostingAreaLayoutView *)self safeAreaLayoutGuide];
+  topAnchor = [safeAreaLayoutGuide topAnchor];
+  hostedView3 = [(HKHostingAreaLayoutView *)self hostedView];
+  topAnchor2 = [hostedView3 topAnchor];
+  v10 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v10 setActive:1];
 
-  v11 = [(HKHostingAreaLayoutView *)self safeAreaLayoutGuide];
-  v12 = [v11 bottomAnchor];
-  v13 = [(HKHostingAreaLayoutView *)self hostedView];
-  v14 = [v13 bottomAnchor];
-  v15 = [v12 constraintEqualToAnchor:v14];
+  safeAreaLayoutGuide2 = [(HKHostingAreaLayoutView *)self safeAreaLayoutGuide];
+  bottomAnchor = [safeAreaLayoutGuide2 bottomAnchor];
+  hostedView4 = [(HKHostingAreaLayoutView *)self hostedView];
+  bottomAnchor2 = [hostedView4 bottomAnchor];
+  v15 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [v15 setActive:1];
 
-  v16 = [(HKHostingAreaLayoutView *)self safeAreaLayoutGuide];
-  v17 = [v16 leadingAnchor];
-  v18 = [(HKHostingAreaLayoutView *)self hostedView];
-  v19 = [v18 leadingAnchor];
-  v20 = [v17 constraintEqualToAnchor:v19];
+  safeAreaLayoutGuide3 = [(HKHostingAreaLayoutView *)self safeAreaLayoutGuide];
+  leadingAnchor = [safeAreaLayoutGuide3 leadingAnchor];
+  hostedView5 = [(HKHostingAreaLayoutView *)self hostedView];
+  leadingAnchor2 = [hostedView5 leadingAnchor];
+  v20 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v20 setActive:1];
 
-  v25 = [(HKHostingAreaLayoutView *)self safeAreaLayoutGuide];
-  v21 = [v25 trailingAnchor];
-  v22 = [(HKHostingAreaLayoutView *)self hostedView];
-  v23 = [v22 trailingAnchor];
-  v24 = [v21 constraintEqualToAnchor:v23];
+  safeAreaLayoutGuide4 = [(HKHostingAreaLayoutView *)self safeAreaLayoutGuide];
+  trailingAnchor = [safeAreaLayoutGuide4 trailingAnchor];
+  hostedView6 = [(HKHostingAreaLayoutView *)self hostedView];
+  trailingAnchor2 = [hostedView6 trailingAnchor];
+  v24 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [v24 setActive:1];
 }
 
 - (CGSize)intrinsicContentSize
 {
   v3 = *MEMORY[0x1E69DE788];
-  v4 = [(HKHostingAreaLayoutView *)self hostedView];
-  [v4 intrinsicContentSize];
+  hostedView = [(HKHostingAreaLayoutView *)self hostedView];
+  [hostedView intrinsicContentSize];
   v6 = v5;
   [(HKHostingAreaLayoutView *)self safeAreaInsets];
   v8 = v6 + v7;

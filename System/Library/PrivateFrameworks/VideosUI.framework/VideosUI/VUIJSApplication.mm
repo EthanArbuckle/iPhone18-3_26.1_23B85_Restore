@@ -1,53 +1,53 @@
 @interface VUIJSApplication
 - (NSDictionary)traitCollection;
-- (void)launchAppWithOptions:(id)a3;
-- (void)reload:(id)a3 :(id)a4;
-- (void)resumeAppWithOptions:(id)a3;
-- (void)suspendAppWithOptions:(id)a3;
+- (void)launchAppWithOptions:(id)options;
+- (void)reload:(id)reload :(id)a4;
+- (void)resumeAppWithOptions:(id)options;
+- (void)suspendAppWithOptions:(id)options;
 @end
 
 @implementation VUIJSApplication
 
-- (void)launchAppWithOptions:(id)a3
+- (void)launchAppWithOptions:(id)options
 {
   v9 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  optionsCopy = options;
   v4 = MEMORY[0x1E695DEC8];
-  v5 = a3;
-  v6 = [v4 arrayWithObjects:&v8 count:1];
+  optionsCopy2 = options;
+  v6 = [v4 arrayWithObjects:&optionsCopy count:1];
 
-  v7 = [(VUIJSObject *)self invokeMethod:@"onLaunch" withArguments:v6, v8, v9];
+  v7 = [(VUIJSObject *)self invokeMethod:@"onLaunch" withArguments:v6, optionsCopy, v9];
 }
 
-- (void)suspendAppWithOptions:(id)a3
+- (void)suspendAppWithOptions:(id)options
 {
   v9 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  optionsCopy = options;
   v4 = MEMORY[0x1E695DEC8];
-  v5 = a3;
-  v6 = [v4 arrayWithObjects:&v8 count:1];
+  optionsCopy2 = options;
+  v6 = [v4 arrayWithObjects:&optionsCopy count:1];
 
-  v7 = [(VUIJSObject *)self invokeMethod:@"onSuspend" withArguments:v6, v8, v9];
+  v7 = [(VUIJSObject *)self invokeMethod:@"onSuspend" withArguments:v6, optionsCopy, v9];
 }
 
-- (void)resumeAppWithOptions:(id)a3
+- (void)resumeAppWithOptions:(id)options
 {
   v9 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  optionsCopy = options;
   v4 = MEMORY[0x1E695DEC8];
-  v5 = a3;
-  v6 = [v4 arrayWithObjects:&v8 count:1];
+  optionsCopy2 = options;
+  v6 = [v4 arrayWithObjects:&optionsCopy count:1];
 
-  v7 = [(VUIJSObject *)self invokeMethod:@"onResume" withArguments:v6, v8, v9];
+  v7 = [(VUIJSObject *)self invokeMethod:@"onResume" withArguments:v6, optionsCopy, v9];
 }
 
-- (void)reload:(id)a3 :(id)a4
+- (void)reload:(id)reload :(id)a4
 {
   v6 = a4;
-  v7 = a3;
-  v13 = [v7 objectForKeyedSubscript:@"when"];
+  reloadCopy = reload;
+  v13 = [reloadCopy objectForKeyedSubscript:@"when"];
   v8 = [v13 isEqualToString:@"onResume"];
-  v9 = [v7 objectForKeyedSubscript:@"minSuspensionTime"];
+  v9 = [reloadCopy objectForKeyedSubscript:@"minSuspensionTime"];
 
   if ([v9 length])
   {
@@ -60,8 +60,8 @@
     v11 = 0.0;
   }
 
-  v12 = [(VUIJSObject *)self appContext];
-  [v12 handleReloadWithUrgencyType:v8 minInterval:v6 data:v11];
+  appContext = [(VUIJSObject *)self appContext];
+  [appContext handleReloadWithUrgencyType:v8 minInterval:v6 data:v11];
 }
 
 - (NSDictionary)traitCollection
@@ -72,14 +72,14 @@
   v10 = __Block_byref_object_copy__22;
   v11 = __Block_byref_object_dispose__22;
   v12 = 0;
-  v3 = [(VUIJSObject *)self appContext];
+  appContext = [(VUIJSObject *)self appContext];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __35__VUIJSApplication_traitCollection__block_invoke;
   v6[3] = &unk_1E87347B8;
   v6[4] = self;
   v6[5] = &v7;
-  [v3 evaluateDelegateBlockSync:v6];
+  [appContext evaluateDelegateBlockSync:v6];
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);

@@ -1,10 +1,10 @@
 @interface WFContentCoercionNodeView
 - (CAShapeLayer)outlineLayer;
 - (UILabel)nameLabel;
-- (WFContentCoercionNodeView)initWithFrame:(CGRect)a3 isRootNode:(BOOL)a4;
+- (WFContentCoercionNodeView)initWithFrame:(CGRect)frame isRootNode:(BOOL)node;
 - (void)layoutSubviews;
-- (void)setNode:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setNode:(id)node;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateColors;
 @end
 
@@ -24,28 +24,28 @@
   return WeakRetained;
 }
 
-- (void)setNode:(id)a3
+- (void)setNode:(id)node
 {
-  objc_storeStrong(&self->_node, a3);
-  v5 = a3;
-  v8 = [v5 itemOrItemClass];
+  objc_storeStrong(&self->_node, node);
+  nodeCopy = node;
+  itemOrItemClass = [nodeCopy itemOrItemClass];
 
-  v6 = [objc_opt_class() localizedTypeDescription];
+  localizedTypeDescription = [objc_opt_class() localizedTypeDescription];
   WeakRetained = objc_loadWeakRetained(&self->_nameLabel);
-  [WeakRetained setText:v6];
+  [WeakRetained setText:localizedTypeDescription];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v8.receiver = self;
   v8.super_class = WFContentCoercionNodeView;
-  v4 = a3;
-  [(WFContentCoercionNodeView *)&v8 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(WFContentCoercionNodeView *)&v8 traitCollectionDidChange:changeCopy];
   v5 = [(WFContentCoercionNodeView *)self traitCollection:v8.receiver];
-  v6 = [v5 userInterfaceStyle];
-  v7 = [v4 userInterfaceStyle];
+  userInterfaceStyle = [v5 userInterfaceStyle];
+  userInterfaceStyle2 = [changeCopy userInterfaceStyle];
 
-  if (v6 != v7)
+  if (userInterfaceStyle != userInterfaceStyle2)
   {
     [(WFContentCoercionNodeView *)self updateColors];
   }
@@ -53,11 +53,11 @@
 
 - (void)updateColors
 {
-  v6 = [MEMORY[0x277D75348] systemBlueColor];
-  v3 = v6;
-  v4 = [v6 CGColor];
-  v5 = [(WFContentCoercionNodeView *)self outlineLayer];
-  [v5 setStrokeColor:v4];
+  systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+  v3 = systemBlueColor;
+  cGColor = [systemBlueColor CGColor];
+  outlineLayer = [(WFContentCoercionNodeView *)self outlineLayer];
+  [outlineLayer setStrokeColor:cGColor];
 }
 
 - (void)layoutSubviews
@@ -80,9 +80,9 @@
   }
 
   CGPathAddArc(Mutable, 0, MidX, MidY, Height * 0.5, 0.0, 6.28318531, 1);
-  v8 = [(WFContentCoercionNodeView *)self layer];
-  v9 = [v8 mask];
-  [v9 setPath:Mutable];
+  layer = [(WFContentCoercionNodeView *)self layer];
+  mask = [layer mask];
+  [mask setPath:Mutable];
 
   WeakRetained = objc_loadWeakRetained(&self->_outlineLayer);
   [WeakRetained setPath:Mutable];
@@ -97,26 +97,26 @@
   [v19 setFrame:{v12, v14, v16, v18}];
 }
 
-- (WFContentCoercionNodeView)initWithFrame:(CGRect)a3 isRootNode:(BOOL)a4
+- (WFContentCoercionNodeView)initWithFrame:(CGRect)frame isRootNode:(BOOL)node
 {
-  height = a3.size.height;
+  height = frame.size.height;
   v20.receiver = self;
   v20.super_class = WFContentCoercionNodeView;
-  v6 = [(WFContentCoercionNodeView *)&v20 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width];
+  v6 = [(WFContentCoercionNodeView *)&v20 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width];
   if (v6)
   {
-    v7 = [MEMORY[0x277D75348] systemBackgroundColor];
-    [(WFContentCoercionNodeView *)v6 setBackgroundColor:v7];
+    systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+    [(WFContentCoercionNodeView *)v6 setBackgroundColor:systemBackgroundColor];
 
-    v8 = [MEMORY[0x277CD9F90] layer];
-    v9 = [(WFContentCoercionNodeView *)v6 layer];
-    [v9 setMask:v8];
+    layer = [MEMORY[0x277CD9F90] layer];
+    layer2 = [(WFContentCoercionNodeView *)v6 layer];
+    [layer2 setMask:layer];
 
     v10 = objc_alloc_init(MEMORY[0x277D756B8]);
     [v10 setNumberOfLines:2];
     [v10 setLineBreakMode:0];
-    v11 = [MEMORY[0x277D75348] clearColor];
-    [v10 setBackgroundColor:v11];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [v10 setBackgroundColor:clearColor];
 
     v12 = 12.0;
     if (height >= 100.0)
@@ -129,33 +129,33 @@
 
     [v10 setTextAlignment:1];
     [v10 setAdjustsFontSizeToFitWidth:1];
-    if (a4)
+    if (node)
     {
-      v14 = [MEMORY[0x277D75348] whiteColor];
-      [v10 setTextColor:v14];
+      whiteColor = [MEMORY[0x277D75348] whiteColor];
+      [v10 setTextColor:whiteColor];
 
       [(WFContentCoercionNodeView *)v6 addSubview:v10];
       objc_storeWeak(&v6->_nameLabel, v10);
-      v15 = [MEMORY[0x277D75348] systemBlueColor];
-      [(WFContentCoercionNodeView *)v6 setBackgroundColor:v15];
+      systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+      [(WFContentCoercionNodeView *)v6 setBackgroundColor:systemBlueColor];
     }
 
     else
     {
-      v16 = [MEMORY[0x277D75348] systemBlueColor];
-      [v10 setTextColor:v16];
+      systemBlueColor2 = [MEMORY[0x277D75348] systemBlueColor];
+      [v10 setTextColor:systemBlueColor2];
 
       [(WFContentCoercionNodeView *)v6 addSubview:v10];
       objc_storeWeak(&v6->_nameLabel, v10);
-      v15 = [MEMORY[0x277CD9F90] layer];
-      v17 = [MEMORY[0x277D75348] clearColor];
-      [v15 setFillColor:{objc_msgSend(v17, "CGColor")}];
+      systemBlueColor = [MEMORY[0x277CD9F90] layer];
+      clearColor2 = [MEMORY[0x277D75348] clearColor];
+      [systemBlueColor setFillColor:{objc_msgSend(clearColor2, "CGColor")}];
 
-      [v15 setLineWidth:3.0];
-      v18 = [(WFContentCoercionNodeView *)v6 layer];
-      [v18 addSublayer:v15];
+      [systemBlueColor setLineWidth:3.0];
+      layer3 = [(WFContentCoercionNodeView *)v6 layer];
+      [layer3 addSublayer:systemBlueColor];
 
-      objc_storeWeak(&v6->_outlineLayer, v15);
+      objc_storeWeak(&v6->_outlineLayer, systemBlueColor);
     }
 
     [(WFContentCoercionNodeView *)v6 updateColors];

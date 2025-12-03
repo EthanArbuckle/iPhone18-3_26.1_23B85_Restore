@@ -1,16 +1,16 @@
 @interface AXUISettingsSetupCapableListController
 - (id)soundActionsDownloadManager;
 - (id)soundActionslocalURL;
-- (void)popToViewController:(id)a3 animated:(BOOL)a4 destinationClass:(Class)a5;
+- (void)popToViewController:(id)controller animated:(BOOL)animated destinationClass:(Class)class;
 @end
 
 @implementation AXUISettingsSetupCapableListController
 
 - (id)soundActionsDownloadManager
 {
-  v3 = [(AXUISettingsSetupCapableListController *)self _axGetSoundActionsDownloadManager];
+  _axGetSoundActionsDownloadManager = [(AXUISettingsSetupCapableListController *)self _axGetSoundActionsDownloadManager];
 
-  if (!v3)
+  if (!_axGetSoundActionsDownloadManager)
   {
     v4 = objc_alloc_init(SoundActionsAssetsDownloadManager);
     [(SoundActionsAssetsDownloadManager *)v4 setDelegate:self];
@@ -23,19 +23,19 @@
 
 - (id)soundActionslocalURL
 {
-  v2 = [(AXUISettingsSetupCapableListController *)self soundActionsDownloadManager];
-  v3 = [v2 latestAsset];
-  v4 = [v3 localURL];
+  soundActionsDownloadManager = [(AXUISettingsSetupCapableListController *)self soundActionsDownloadManager];
+  latestAsset = [soundActionsDownloadManager latestAsset];
+  localURL = [latestAsset localURL];
 
-  return v4;
+  return localURL;
 }
 
-- (void)popToViewController:(id)a3 animated:(BOOL)a4 destinationClass:(Class)a5
+- (void)popToViewController:(id)controller animated:(BOOL)animated destinationClass:(Class)class
 {
   swift_getObjCClassMetadata();
-  v7 = a3;
-  v8 = self;
-  sub_18F5A0(v7);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_18F5A0(controllerCopy);
 }
 
 @end

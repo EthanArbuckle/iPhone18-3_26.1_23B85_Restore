@@ -12,9 +12,9 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [a1 creationDate];
-    v6 = [v4 creationDate];
-    v7 = [v5 compare:v6];
+    creationDate = [self creationDate];
+    creationDate2 = [v4 creationDate];
+    v7 = [creationDate compare:creationDate2];
   }
 
   else
@@ -31,7 +31,7 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if ([a1 hasContentEqualTo:v4])
+    if ([self hasContentEqualTo:v4])
     {
       v5 = 2;
     }
@@ -53,15 +53,15 @@
 + (id)pk_fetchPlacesAssetsInAssetCollection:()PXPlacesAdditions shouldMergeOptionFetchPropertySets:options:
 {
   v25[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  firstObject = a3;
   v8 = a5;
   v9 = v8;
-  if (v7)
+  if (firstObject)
   {
     if (v8)
     {
 LABEL_3:
-      v10 = [v9 copy];
+      librarySpecificFetchOptions = [v9 copy];
       goto LABEL_6;
     }
   }
@@ -69,12 +69,12 @@ LABEL_3:
   else
   {
     v11 = MEMORY[0x1E6978830];
-    v12 = [v8 photoLibrary];
-    v13 = [v11 fetchOptionsWithPhotoLibrary:v12 orObject:0];
+    photoLibrary = [v8 photoLibrary];
+    v13 = [v11 fetchOptionsWithPhotoLibrary:photoLibrary orObject:0];
 
     [v13 setIncludePlacesSmartAlbum:1];
     v14 = [MEMORY[0x1E6978650] fetchAssetCollectionsWithType:2 subtype:1000000203 options:v13];
-    v7 = [v14 firstObject];
+    firstObject = [v14 firstObject];
 
     if (v9)
     {
@@ -82,17 +82,17 @@ LABEL_3:
     }
   }
 
-  v15 = [v7 photoLibrary];
-  v10 = [v15 librarySpecificFetchOptions];
+  photoLibrary2 = [firstObject photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary2 librarySpecificFetchOptions];
 
-  [v10 setSharingFilter:{objc_msgSend(0, "sharingFilter")}];
+  [librarySpecificFetchOptions setSharingFilter:{objc_msgSend(0, "sharingFilter")}];
 LABEL_6:
-  v16 = [MEMORY[0x1E6978830] px_placesFetchOptionsWith:v10];
+  v16 = [MEMORY[0x1E6978830] px_placesFetchOptionsWith:librarySpecificFetchOptions];
 
   [v16 setChunkSizeForFetch:5000];
-  v17 = [v16 sortDescriptors];
+  sortDescriptors = [v16 sortDescriptors];
 
-  if (!v17)
+  if (!sortDescriptors)
   {
     v18 = [objc_alloc(MEMORY[0x1E696AEB0]) initWithKey:@"creationDate" ascending:0];
     v25[0] = v18;
@@ -115,7 +115,7 @@ LABEL_6:
     [v16 setFetchPropertySets:v21];
   }
 
-  v22 = [MEMORY[0x1E6978630] fetchAssetsInAssetCollection:v7 options:v16];
+  v22 = [MEMORY[0x1E6978630] fetchAssetsInAssetCollection:firstObject options:v16];
 
   return v22;
 }

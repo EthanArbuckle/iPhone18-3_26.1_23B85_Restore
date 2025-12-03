@@ -1,32 +1,32 @@
 @interface MSDSetupUILocalization
-+ (id)localizedStringForKey:(id)a3;
-+ (id)localizedStringForKey:(id)a3 withStringArgument:(id)a4;
++ (id)localizedStringForKey:(id)key;
++ (id)localizedStringForKey:(id)key withStringArgument:(id)argument;
 @end
 
 @implementation MSDSetupUILocalization
 
-+ (id)localizedStringForKey:(id)a3
++ (id)localizedStringForKey:(id)key
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = MEMORY[0x277CCA8D8];
-  v5 = a3;
+  keyCopy = key;
   v6 = [v4 bundleWithPath:@"/System/Library/PrivateFrameworks/MobileStoreDemoSetupUI.framework"];
-  v7 = [v6 localizedStringForKey:v5 value:&stru_286AE2298 table:@"Localizable"];
+  v7 = [v6 localizedStringForKey:keyCopy value:&stru_286AE2298 table:@"Localizable"];
 
   v8 = [v3 localizedStringWithFormat:v7];
 
   return v8;
 }
 
-+ (id)localizedStringForKey:(id)a3 withStringArgument:(id)a4
++ (id)localizedStringForKey:(id)key withStringArgument:(id)argument
 {
-  v5 = a4;
-  v6 = [MSDSetupUILocalization localizedStringForKey:a3];
+  argumentCopy = argument;
+  v6 = [MSDSetupUILocalization localizedStringForKey:key];
   v11 = 0;
-  v7 = [MEMORY[0x277CCACA8] localizedStringWithValidatedFormat:v6 validFormatSpecifiers:@"%@" error:&v11, v5];
+  argumentCopy = [MEMORY[0x277CCACA8] localizedStringWithValidatedFormat:v6 validFormatSpecifiers:@"%@" error:&v11, argumentCopy];
 
   v8 = v11;
-  if (!v7)
+  if (!argumentCopy)
   {
     v9 = defaultLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -35,7 +35,7 @@
     }
   }
 
-  return v7;
+  return argumentCopy;
 }
 
 + (void)localizedStringForKey:(NSObject *)a3 withStringArgument:.cold.1(uint64_t a1, void *a2, NSObject *a3)

@@ -1,15 +1,15 @@
 @interface GestureRecognizerHandler
-- (void)handleActionFromGestureRecognizer:(id)a3;
+- (void)handleActionFromGestureRecognizer:(id)recognizer;
 @end
 
 @implementation GestureRecognizerHandler
 
-- (void)handleActionFromGestureRecognizer:(id)a3
+- (void)handleActionFromGestureRecognizer:(id)recognizer
 {
   v3 = *self->handler;
-  v4 = a3;
+  recognizerCopy = recognizer;
 
-  v3(v4);
+  v3(recognizerCopy);
 }
 
 @end

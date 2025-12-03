@@ -1,23 +1,23 @@
 @interface AWDLPeerProbe
-- (AWDLPeerProbe)initWithQueue:(id)a3;
+- (AWDLPeerProbe)initWithQueue:(id)queue;
 - (void)dealloc;
-- (void)periodicTimerFired:(id)a3;
-- (void)startAWDLPeerPollingForServices:(id)a3 withCount:(unint64_t)a4 interval:(unint64_t)a5;
+- (void)periodicTimerFired:(id)fired;
+- (void)startAWDLPeerPollingForServices:(id)services withCount:(unint64_t)count interval:(unint64_t)interval;
 - (void)stopTest;
 @end
 
 @implementation AWDLPeerProbe
 
-- (AWDLPeerProbe)initWithQueue:(id)a3
+- (AWDLPeerProbe)initWithQueue:(id)queue
 {
   v7.receiver = self;
   v7.super_class = AWDLPeerProbe;
-  v3 = [(TestProbe *)&v7 initWithQueue:a3];
+  v3 = [(TestProbe *)&v7 initWithQueue:queue];
   if (v3)
   {
-    v4 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     peerList = v3->_peerList;
-    v3->_peerList = v4;
+    v3->_peerList = dictionary;
   }
 
   return v3;
@@ -31,27 +31,27 @@
   [(AWDLPeerProbe *)&v3 dealloc];
 }
 
-- (void)periodicTimerFired:(id)a3
+- (void)periodicTimerFired:(id)fired
 {
   v85 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  firedCopy = fired;
   if (![(TestProbe *)self isRunning])
   {
     goto LABEL_60;
   }
 
-  v51 = v4;
+  v51 = firedCopy;
   v5 = +[WiFiShim sharedInstance];
-  v6 = [v5 getAWDLPeerList];
+  getAWDLPeerList = [v5 getAWDLPeerList];
 
   v52 = [(NSMutableDictionary *)self->_peerList mutableCopy];
   v77 = 0u;
   v78 = 0u;
   v79 = 0u;
   v80 = 0u;
-  obj = v6;
+  obj = getAWDLPeerList;
   v7 = [obj countByEnumeratingWithState:&v77 objects:v84 count:16];
-  v64 = self;
+  selfCopy = self;
   if (!v7)
   {
     v9 = 0;
@@ -138,7 +138,7 @@
                     if ([v25 hasPrefix:@"PTR"] && objc_msgSend(v25, "containsString:", v19))
                     {
 
-                      self = v64;
+                      self = selfCopy;
                       v9 = v60;
                       v10 = v61;
                       v8 = v53;
@@ -160,7 +160,7 @@
 
               ++v18;
               v17 = v55;
-              self = v64;
+              self = selfCopy;
               v9 = v60;
               v10 = v61;
               v12 = v58;
@@ -196,7 +196,7 @@
 
         [v26 length];
 
-        v30 = v62;
+        delegate2 = v62;
         goto LABEL_41;
       }
 
@@ -212,13 +212,13 @@ LABEL_34:
       {
         [(NSMutableDictionary *)self->_peerList setObject:v12 forKeyedSubscript:v10];
         [v52 removeObjectForKey:v10];
-        v34 = [(AWDLPeerProbe *)self delegate];
+        delegate = [(AWDLPeerProbe *)self delegate];
         v35 = objc_opt_respondsToSelector();
 
         if (v35)
         {
-          v30 = [(AWDLPeerProbe *)self delegate];
-          [v30 awdlPeerPollProbe:self serviceAdded:v12];
+          delegate2 = [(AWDLPeerProbe *)self delegate];
+          [delegate2 awdlPeerPollProbe:self serviceAdded:v12];
           v9 = 0;
           goto LABEL_41;
         }
@@ -233,13 +233,13 @@ LABEL_42:
       {
         [(NSMutableDictionary *)self->_peerList setObject:v12 forKeyedSubscript:v10];
         [v52 removeObjectForKey:v10];
-        v32 = [(AWDLPeerProbe *)self delegate];
+        delegate3 = [(AWDLPeerProbe *)self delegate];
         v33 = objc_opt_respondsToSelector();
 
         if (v33)
         {
-          v30 = [(AWDLPeerProbe *)self delegate];
-          [v30 awdlPeerPollProbe:self serviceUpdated:v12];
+          delegate2 = [(AWDLPeerProbe *)self delegate];
+          [delegate2 awdlPeerPollProbe:self serviceUpdated:v12];
 LABEL_41:
         }
       }
@@ -283,17 +283,17 @@ LABEL_47:
         v43 = v42;
         v9 = [v36 objectForKeyedSubscript:v42];
 
-        v44 = [(AWDLPeerProbe *)v64 delegate];
+        delegate4 = [(AWDLPeerProbe *)selfCopy delegate];
         LOBYTE(v42) = objc_opt_respondsToSelector();
 
         if (v42)
         {
-          v45 = [(AWDLPeerProbe *)v64 delegate];
-          [v45 awdlPeerPollProbe:v64 serviceRemoved:v9];
+          delegate5 = [(AWDLPeerProbe *)selfCopy delegate];
+          [delegate5 awdlPeerPollProbe:selfCopy serviceRemoved:v9];
         }
 
         v10 = v43;
-        [(NSMutableDictionary *)v64->_peerList removeObjectForKey:v43];
+        [(NSMutableDictionary *)selfCopy->_peerList removeObjectForKey:v43];
         ++v39;
         v40 = v9;
         v41 = v43;
@@ -306,47 +306,47 @@ LABEL_47:
     while (v38);
   }
 
-  v46 = v64->_pollCount - 1;
-  v64->_pollCount = v46;
+  v46 = selfCopy->_pollCount - 1;
+  selfCopy->_pollCount = v46;
   if (!v46)
   {
-    [(AWDLPeerProbe *)v64 stopTest];
-    v47 = [(AWDLPeerProbe *)v64 delegate];
+    [(AWDLPeerProbe *)selfCopy stopTest];
+    delegate6 = [(AWDLPeerProbe *)selfCopy delegate];
     v48 = objc_opt_respondsToSelector();
 
     if (v48)
     {
-      v49 = [(AWDLPeerProbe *)v64 delegate];
-      [v49 awdlPeerPollProbeIsComplete:v64];
+      delegate7 = [(AWDLPeerProbe *)selfCopy delegate];
+      [delegate7 awdlPeerPollProbeIsComplete:selfCopy];
     }
   }
 
-  v4 = v51;
+  firedCopy = v51;
 LABEL_60:
 
   v50 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startAWDLPeerPollingForServices:(id)a3 withCount:(unint64_t)a4 interval:(unint64_t)a5
+- (void)startAWDLPeerPollingForServices:(id)services withCount:(unint64_t)count interval:(unint64_t)interval
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  [(AWDLPeerProbe *)self setPollCount:a4];
+  servicesCopy = services;
+  [(AWDLPeerProbe *)self setPollCount:count];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(AWDLPeerProbe *)self setServicesOfInterest:v8];
+    [(AWDLPeerProbe *)self setServicesOfInterest:servicesCopy];
   }
 
   else
   {
-    v11[0] = v8;
+    v11[0] = servicesCopy;
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:1];
     [(AWDLPeerProbe *)self setServicesOfInterest:v9];
   }
 
   [(TestProbe *)self setRunning:1];
-  [(TestProbe *)self startPeriodicTimerAt:0 repeatInterval:1000000000 * a5];
+  [(TestProbe *)self startPeriodicTimerAt:0 repeatInterval:1000000000 * interval];
   [(TestProbe *)self setStatus:1];
 
   v10 = *MEMORY[0x277D85DE8];

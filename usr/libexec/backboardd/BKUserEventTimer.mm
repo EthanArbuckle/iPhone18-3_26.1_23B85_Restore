@@ -2,19 +2,19 @@
 + (id)sharedInstance;
 - (BKUserEventTimer)init;
 - (double)lastUserEventTime;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (void)_queue_clearTimer;
-- (void)_queue_postNotification:(__CFString *)a3;
-- (void)_queue_scheduleTimerWithTimeInterval:(double)a3;
+- (void)_queue_postNotification:(__CFString *)notification;
+- (void)_queue_scheduleTimerWithTimeInterval:(double)interval;
 - (void)_queue_userEventOccurredInIdleMode;
 - (void)_queue_userEventOccurredInPresenceMode;
 - (void)dealloc;
 - (void)notifyOnNextUserEvent;
-- (void)resetTimer:(double)a3 mode:(int)a4;
-- (void)systemShellDidFinishLaunching:(id)a3;
-- (void)userEventOccurredOnDisplay:(id)a3;
+- (void)resetTimer:(double)timer mode:(int)mode;
+- (void)systemShellDidFinishLaunching:(id)launching;
+- (void)userEventOccurredOnDisplay:(id)display;
 @end
 
 @implementation BKUserEventTimer
@@ -57,12 +57,12 @@
   self->_timer = 0;
 }
 
-- (void)_queue_scheduleTimerWithTimeInterval:(double)a3
+- (void)_queue_scheduleTimerWithTimeInterval:(double)interval
 {
   queue = self->_queue;
   BSDispatchQueueAssert();
   [(BKUserEventTimer *)self _queue_clearTimer];
-  if (BKSHIDServicesUserEventTimerIntervalForever == a3)
+  if (BKSHIDServicesUserEventTimerIntervalForever == interval)
   {
     v6 = sub_100052774();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -80,9 +80,9 @@
     v11[1] = 3221225472;
     v11[2] = sub_100040D9C;
     v11[3] = &unk_1000FCF78;
-    *&v11[5] = a3;
+    *&v11[5] = interval;
     v11[4] = self;
-    v9 = [v7 initWithFireInterval:v8 queue:v11 handler:a3];
+    v9 = [v7 initWithFireInterval:v8 queue:v11 handler:interval];
     timer = self->_timer;
     self->_timer = v9;
 
@@ -116,7 +116,7 @@
   }
 }
 
-- (void)_queue_postNotification:(__CFString *)a3
+- (void)_queue_postNotification:(__CFString *)notification
 {
   queue = self->_queue;
   BSDispatchQueueAssert();
@@ -124,12 +124,12 @@
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543362;
-    v8 = a3;
+    notificationCopy = notification;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "postNotification: %{public}@", &v7, 0xCu);
   }
 
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
-  CFNotificationCenterPostNotification(DarwinNotifyCenter, a3, 0, 0, 1u);
+  CFNotificationCenterPostNotification(DarwinNotifyCenter, notification, 0, 0, 1u);
 }
 
 - (void)notifyOnNextUserEvent
@@ -143,9 +143,9 @@
   dispatch_async(queue, block);
 }
 
-- (void)userEventOccurredOnDisplay:(id)a3
+- (void)userEventOccurredOnDisplay:(id)display
 {
-  if (!a3)
+  if (!display)
   {
     v8[8] = v3;
     v8[9] = v4;
@@ -161,16 +161,16 @@
   }
 }
 
-- (void)resetTimer:(double)a3 mode:(int)a4
+- (void)resetTimer:(double)timer mode:(int)mode
 {
-  if (BKSHIDServicesUserEventTimerIntervalForever <= a3 || a4 == 0 || a3 < 0.0)
+  if (BKSHIDServicesUserEventTimerIntervalForever <= timer || mode == 0 || timer < 0.0)
   {
-    v8 = BKSHIDServicesUserEventTimerIntervalForever;
+    timerCopy = BKSHIDServicesUserEventTimerIntervalForever;
   }
 
   else
   {
-    v8 = a3;
+    timerCopy = timer;
   }
 
   v9 = CACurrentMediaTime();
@@ -179,14 +179,14 @@
   v11[1] = 3221225472;
   v11[2] = sub_1000412F4;
   v11[3] = &unk_1000FB4D0;
-  v12 = a4;
+  modeCopy = mode;
   v11[4] = self;
-  *&v11[5] = v8;
+  *&v11[5] = timerCopy;
   *&v11[6] = v9;
   dispatch_async(queue, v11);
 }
 
-- (void)systemShellDidFinishLaunching:(id)a3
+- (void)systemShellDidFinishLaunching:(id)launching
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -196,37 +196,37 @@
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(BKUserEventTimer *)self succinctDescriptionBuilder];
+  succinctDescriptionBuilder = [(BKUserEventTimer *)self succinctDescriptionBuilder];
   currentMode = self->_currentMode;
   v6 = NSStringFromBKSHIDServicesUserEventTimerMode();
-  v7 = [v4 appendObject:v6 withName:@"currentMode"];
+  v7 = [succinctDescriptionBuilder appendObject:v6 withName:@"currentMode"];
 
-  v8 = [v4 appendTimeInterval:@"currentTimeout" withName:0 decomposeUnits:self->_currentTimeout];
-  v9 = [v4 appendTimeInterval:@"lastUserEventTime" withName:0 decomposeUnits:self->_lastUserEvent];
-  v10 = [v4 appendTimeInterval:@"lastResetTimerRequestTime" withName:0 decomposeUnits:self->_lastResetTimerRequest];
-  v11 = [v4 appendBool:self->_isIdle withName:@"_isIdle"];
-  v12 = [v4 appendBool:self->_shouldNotify withName:@"_shouldNotify"];
-  v13 = [v4 appendBool:self->_safeToResetIdleTimer withName:@"_safeToResetIdleTimer"];
+  v8 = [succinctDescriptionBuilder appendTimeInterval:@"currentTimeout" withName:0 decomposeUnits:self->_currentTimeout];
+  v9 = [succinctDescriptionBuilder appendTimeInterval:@"lastUserEventTime" withName:0 decomposeUnits:self->_lastUserEvent];
+  v10 = [succinctDescriptionBuilder appendTimeInterval:@"lastResetTimerRequestTime" withName:0 decomposeUnits:self->_lastResetTimerRequest];
+  v11 = [succinctDescriptionBuilder appendBool:self->_isIdle withName:@"_isIdle"];
+  v12 = [succinctDescriptionBuilder appendBool:self->_shouldNotify withName:@"_shouldNotify"];
+  v13 = [succinctDescriptionBuilder appendBool:self->_safeToResetIdleTimer withName:@"_safeToResetIdleTimer"];
 
-  return v4;
+  return succinctDescriptionBuilder;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(BKUserEventTimer *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(BKUserEventTimer *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 - (id)succinctDescription
 {
-  v2 = [(BKUserEventTimer *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(BKUserEventTimer *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (void)dealloc
@@ -257,14 +257,14 @@
     v3->_queue = Serial;
 
     v6 = +[BKSystemShellSentinel sharedInstance];
-    v7 = [v6 systemShellState];
+    systemShellState = [v6 systemShellState];
 
-    if (v7)
+    if (systemShellState)
     {
-      v8 = v7[2];
+      v8 = systemShellState[2];
       if (v8)
       {
-        v9 = v7[4];
+        v9 = systemShellState[4];
         v3->_safeToResetIdleTimer = [v9 containsObject:v8];
       }
     }

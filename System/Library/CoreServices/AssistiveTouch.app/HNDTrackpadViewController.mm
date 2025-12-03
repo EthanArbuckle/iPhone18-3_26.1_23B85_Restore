@@ -1,42 +1,42 @@
 @interface HNDTrackpadViewController
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
 - (BOOL)isPressingOnTrackpad;
 - (BOOL)trackpadCanPinch;
 - (BOOL)trackpadCanScroll;
-- (BOOL)trackpadContainsPoint:(CGPoint)a3;
-- (CGPoint)getPointsDelta:(CGPoint)a3 startPoint:(CGPoint)a4 scale:(double)a5;
+- (BOOL)trackpadContainsPoint:(CGPoint)point;
+- (CGPoint)getPointsDelta:(CGPoint)delta startPoint:(CGPoint)point scale:(double)scale;
 - (CGPoint)pinchFirstPoint;
 - (CGPoint)pinchSecondPoint;
 - (CGPoint)pointerLocation;
 - (CGPoint)previousPointerPoint;
 - (CGPoint)previousTouchPoint;
 - (CGRect)_getTrackpadBorderFrame;
-- (CGRect)_getTrackpadFrame:(double)a3 borderFrame:(CGRect)a4;
+- (CGRect)_getTrackpadFrame:(double)frame borderFrame:(CGRect)borderFrame;
 - (CGRect)trackpadViewFrame;
 - (HNDTrackpadViewController)init;
-- (void)_handleMovePointer:(CGPoint)a3 startPoint:(CGPoint)a4;
+- (void)_handleMovePointer:(CGPoint)pointer startPoint:(CGPoint)point;
 - (void)_initSettings;
 - (void)_registerForSettingsUpdates;
-- (void)_sendEventAtPinchPoint:(CGPoint)a3 pointTwo:(CGPoint)a4 handEventType:(unsigned int)a5;
-- (void)_sendMouseMoveEventWithDelta:(CGPoint)a3;
-- (void)_setTrackpadBorderFrame:(CGRect)a3;
+- (void)_sendEventAtPinchPoint:(CGPoint)point pointTwo:(CGPoint)two handEventType:(unsigned int)type;
+- (void)_sendMouseMoveEventWithDelta:(CGPoint)delta;
+- (void)_setTrackpadBorderFrame:(CGRect)frame;
 - (void)_setTrackpadPositionBottomRight;
 - (void)_setUpGestureRecognizers;
 - (void)_updateTrackpadSize;
 - (void)dealloc;
 - (void)fadeTrackpad;
-- (void)handleBorderViewMove:(id)a3;
+- (void)handleBorderViewMove:(id)move;
 - (void)handleOrientationChange;
-- (void)handleTrackpadBorderTap:(id)a3 moveAmount:(double)a4;
-- (void)handleTrackpadMove:(id)a3;
-- (void)handleTrackpadPinch:(unint64_t)a3 firstPoint:(CGPoint)a4 secondPoint:(CGPoint)a5;
-- (void)handleTrackpadPress:(id)a3;
-- (void)handleTrackpadScroll:(unint64_t)a3 point:(CGPoint)a4;
-- (void)handleTrackpadTap:(id)a3;
+- (void)handleTrackpadBorderTap:(id)tap moveAmount:(double)amount;
+- (void)handleTrackpadMove:(id)move;
+- (void)handleTrackpadPinch:(unint64_t)pinch firstPoint:(CGPoint)point secondPoint:(CGPoint)secondPoint;
+- (void)handleTrackpadPress:(id)press;
+- (void)handleTrackpadScroll:(unint64_t)scroll point:(CGPoint)point;
+- (void)handleTrackpadTap:(id)tap;
 - (void)highlightTrackpad;
 - (void)loadView;
-- (void)resetVisibility:(BOOL)a3;
-- (void)setTrackpadViewFrame:(CGRect)a3;
+- (void)resetVisibility:(BOOL)visibility;
+- (void)setTrackpadViewFrame:(CGRect)frame;
 - (void)unload;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
@@ -54,9 +54,9 @@
   v2->_handManager = v3;
 
   v5 = +[HNDHandManager sharedManager];
-  v6 = [v5 currentDisplayManager];
+  currentDisplayManager = [v5 currentDisplayManager];
   displayManager = v2->_displayManager;
-  v2->_displayManager = v6;
+  v2->_displayManager = currentDisplayManager;
 
   v8 = [[AXDispatchTimer alloc] initWithTargetSerialQueue:&_dispatch_main_q];
   scrollHysteresisTimer = v2->_scrollHysteresisTimer;
@@ -92,8 +92,8 @@
 
   [(HNDTrackpadBorderView *)self->_trackpadBorderView setDelegate:self];
   [(HNDTrackpadViewController *)self setView:self->_trackpadBorderView];
-  v22 = [(HNDTrackpadViewController *)self view];
-  [v22 addSubview:self->_trackpadView];
+  view = [(HNDTrackpadViewController *)self view];
+  [view addSubview:self->_trackpadView];
 }
 
 - (void)viewDidLoad
@@ -101,9 +101,9 @@
   v7.receiver = self;
   v7.super_class = HNDTrackpadViewController;
   [(HNDTrackpadViewController *)&v7 viewDidLoad];
-  v3 = [(HNDTrackpadViewController *)self virtualMouseClientAssertionForVirtualTrackpad];
+  virtualMouseClientAssertionForVirtualTrackpad = [(HNDTrackpadViewController *)self virtualMouseClientAssertionForVirtualTrackpad];
 
-  if (!v3)
+  if (!virtualMouseClientAssertionForVirtualTrackpad)
   {
     v4 = objc_opt_class();
     v5 = NSStringFromClass(v4);
@@ -120,16 +120,16 @@
   v4.receiver = self;
   v4.super_class = HNDTrackpadViewController;
   [(HNDTrackpadViewController *)&v4 viewDidLayoutSubviews];
-  v3 = [(HNDTrackpadViewController *)self trackpadBorderView];
-  [v3 updateFrameLayer];
+  trackpadBorderView = [(HNDTrackpadViewController *)self trackpadBorderView];
+  [trackpadBorderView updateFrameLayer];
 
   [(HNDTrackpadViewController *)self highlightTrackpad];
 }
 
 - (void)dealloc
 {
-  v3 = [(HNDTrackpadViewController *)self virtualMouseClientAssertionForVirtualTrackpad];
-  [v3 invalidate];
+  virtualMouseClientAssertionForVirtualTrackpad = [(HNDTrackpadViewController *)self virtualMouseClientAssertionForVirtualTrackpad];
+  [virtualMouseClientAssertionForVirtualTrackpad invalidate];
 
   v4.receiver = self;
   v4.super_class = HNDTrackpadViewController;
@@ -138,26 +138,26 @@
 
 - (void)unload
 {
-  v3 = [(HNDTrackpadViewController *)self virtualMouseClientAssertionForVirtualTrackpad];
-  [v3 invalidate];
+  virtualMouseClientAssertionForVirtualTrackpad = [(HNDTrackpadViewController *)self virtualMouseClientAssertionForVirtualTrackpad];
+  [virtualMouseClientAssertionForVirtualTrackpad invalidate];
 
   [(HNDTrackpadViewController *)self setVirtualMouseClientAssertionForVirtualTrackpad:0];
-  v4 = [(HNDTrackpadViewController *)self view];
-  [v4 removeFromSuperview];
+  view = [(HNDTrackpadViewController *)self view];
+  [view removeFromSuperview];
 }
 
 - (void)_setUpGestureRecognizers
 {
   v17 = [[UITapGestureRecognizer alloc] initWithTarget:self action:"handleTrackpadTap:"];
-  v3 = [(HNDTrackpadViewController *)self trackpadView];
-  [v3 addGestureRecognizer:v17];
+  trackpadView = [(HNDTrackpadViewController *)self trackpadView];
+  [trackpadView addGestureRecognizer:v17];
 
   v4 = [[UIPanGestureRecognizer alloc] initWithTarget:self action:"handleTrackpadMove:"];
   [v4 setMaximumNumberOfTouches:1];
   [v4 setDelegate:self];
   [(HNDTrackpadViewController *)self setTrackpadMoveGestureRecognizer:v4];
-  v5 = [(HNDTrackpadViewController *)self trackpadView];
-  [v5 addGestureRecognizer:v4];
+  trackpadView2 = [(HNDTrackpadViewController *)self trackpadView];
+  [trackpadView2 addGestureRecognizer:v4];
 
   v6 = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:"handleTrackpadPress:"];
   v7 = +[AXSettings sharedInstance];
@@ -166,45 +166,45 @@
 
   [v6 setDelegate:self];
   [(HNDTrackpadViewController *)self setTrackpadPressGestureRecognizer:v6];
-  v8 = [(HNDTrackpadViewController *)self trackpadView];
-  [v8 addGestureRecognizer:v6];
+  trackpadView3 = [(HNDTrackpadViewController *)self trackpadView];
+  [trackpadView3 addGestureRecognizer:v6];
 
   v9 = [[UIPanGestureRecognizer alloc] initWithTarget:self action:0];
   [v9 setMinimumNumberOfTouches:2];
   [v9 setMaximumNumberOfTouches:2];
   [v9 setDelegate:self];
   [(HNDTrackpadViewController *)self setTrackpadScrollGestureRecognizer:v9];
-  v10 = [(HNDTrackpadViewController *)self trackpadView];
-  [v10 addGestureRecognizer:v9];
+  trackpadView4 = [(HNDTrackpadViewController *)self trackpadView];
+  [trackpadView4 addGestureRecognizer:v9];
 
   v11 = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:0];
   [v11 setDelaysTouchesBegan:1];
   [v11 setDelegate:self];
   [(HNDTrackpadViewController *)self setTrackpadPinchGestureRecognizer:v11];
-  v12 = [(HNDTrackpadViewController *)self trackpadView];
-  [v12 addGestureRecognizer:v11];
+  trackpadView5 = [(HNDTrackpadViewController *)self trackpadView];
+  [trackpadView5 addGestureRecognizer:v11];
 
   v13 = [[UITapGestureRecognizer alloc] initWithTarget:self action:"handleBorderTap:"];
-  v14 = [(HNDTrackpadViewController *)self trackpadBorderView];
-  [v14 addGestureRecognizer:v13];
+  trackpadBorderView = [(HNDTrackpadViewController *)self trackpadBorderView];
+  [trackpadBorderView addGestureRecognizer:v13];
 
   v15 = [[UIPanGestureRecognizer alloc] initWithTarget:self action:"handleBorderViewMove:"];
   [v15 setMaximumNumberOfTouches:1];
   [(HNDTrackpadViewController *)self setBorderMoveGestureRecognizer:v15];
-  v16 = [(HNDTrackpadViewController *)self trackpadBorderView];
-  [v16 addGestureRecognizer:v15];
+  trackpadBorderView2 = [(HNDTrackpadViewController *)self trackpadBorderView];
+  [trackpadBorderView2 addGestureRecognizer:v15];
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HNDTrackpadViewController *)self trackpadPressGestureRecognizer];
+  gestureRecognizerCopy = gestureRecognizer;
+  recognizerCopy = recognizer;
+  trackpadPressGestureRecognizer = [(HNDTrackpadViewController *)self trackpadPressGestureRecognizer];
 
-  if (v8 == v7)
+  if (trackpadPressGestureRecognizer == recognizerCopy)
   {
-    v10 = [(HNDTrackpadViewController *)self trackpadMoveGestureRecognizer];
-    v9 = v10 == v6;
+    trackpadMoveGestureRecognizer = [(HNDTrackpadViewController *)self trackpadMoveGestureRecognizer];
+    v9 = trackpadMoveGestureRecognizer == gestureRecognizerCopy;
   }
 
   else
@@ -284,18 +284,18 @@
   objc_destroyWeak(&location);
 }
 
-- (void)handleTrackpadTap:(id)a3
+- (void)handleTrackpadTap:(id)tap
 {
-  v4 = [(HNDTrackpadViewController *)self handManager];
-  if (([v4 inCustomGesture] & 1) == 0)
+  handManager = [(HNDTrackpadViewController *)self handManager];
+  if (([handManager inCustomGesture] & 1) == 0)
   {
 
     goto LABEL_7;
   }
 
-  v5 = [(HNDTrackpadViewController *)self displayManager];
-  v6 = [v5 rocker];
-  [v6 frame];
+  displayManager = [(HNDTrackpadViewController *)self displayManager];
+  rocker = [displayManager rocker];
+  [rocker frame];
   v8 = v7;
   v10 = v9;
   v12 = v11;
@@ -317,25 +317,25 @@ LABEL_7:
     return;
   }
 
-  v18 = [(HNDTrackpadViewController *)self handManager];
-  [v18 specialToolUsageEnded:1];
+  handManager2 = [(HNDTrackpadViewController *)self handManager];
+  [handManager2 specialToolUsageEnded:1];
 }
 
-- (void)handleTrackpadMove:(id)a3
+- (void)handleTrackpadMove:(id)move
 {
-  v4 = a3;
-  [v4 locationInView:0];
+  moveCopy = move;
+  [moveCopy locationInView:0];
   v6 = v5;
   v8 = v7;
-  v9 = [v4 state];
+  state = [moveCopy state];
 
-  if (v9 == 2)
+  if (state == 2)
   {
     [(HNDTrackpadViewController *)self previousTouchPoint];
     [(HNDTrackpadViewController *)self _handleMovePointer:v6 startPoint:v8, v10, v11];
   }
 
-  else if (v9 != 1)
+  else if (state != 1)
   {
     return;
   }
@@ -343,30 +343,30 @@ LABEL_7:
   [(HNDTrackpadViewController *)self setPreviousTouchPoint:v6, v8];
 }
 
-- (void)handleTrackpadPress:(id)a3
+- (void)handleTrackpadPress:(id)press
 {
-  v4 = [a3 state];
-  v5 = v4 - 1;
-  if (v4 - 1) <= 4 && ((0x1Du >> v5))
+  state = [press state];
+  v5 = state - 1;
+  if (state - 1) <= 4 && ((0x1Du >> v5))
   {
 
     [(HNDTrackpadViewController *)self _handlePrimaryButtonPress:(3u >> v5) & 1];
   }
 }
 
-- (void)handleTrackpadScroll:(unint64_t)a3 point:(CGPoint)a4
+- (void)handleTrackpadScroll:(unint64_t)scroll point:(CGPoint)point
 {
-  if (a3 == 2)
+  if (scroll == 2)
   {
-    [(HNDTrackpadViewController *)self _handlePrimaryButtonPress:0, a4.x, a4.y];
+    [(HNDTrackpadViewController *)self _handlePrimaryButtonPress:0, point.x, point.y];
     AXPerformBlockOnMainThreadAfterDelay();
   }
 
   else
   {
-    y = a4.y;
-    x = a4.x;
-    if (a3 == 1)
+    y = point.y;
+    x = point.x;
+    if (scroll == 1)
     {
       [(HNDTrackpadViewController *)self previousTouchPoint];
       v9 = v8;
@@ -394,10 +394,10 @@ LABEL_7:
         v17 = 0.0;
       }
 
-      v18 = [(HNDTrackpadViewController *)self naturalScroll];
+      naturalScroll = [(HNDTrackpadViewController *)self naturalScroll];
       v19 = -v17;
       v20 = -v16;
-      if (v18)
+      if (naturalScroll)
       {
         v20 = v16;
         v19 = v17;
@@ -406,11 +406,11 @@ LABEL_7:
       [(HNDTrackpadViewController *)self _sendMouseMoveEventWithDelta:v19, v20];
     }
 
-    else if (!a3)
+    else if (!scroll)
     {
-      [(HNDTrackpadViewController *)self setPreviousTouchPoint:a4.x, a4.y];
-      v7 = [(HNDTrackpadViewController *)self handManager];
-      [v7 currentPointForPointer];
+      [(HNDTrackpadViewController *)self setPreviousTouchPoint:point.x, point.y];
+      handManager = [(HNDTrackpadViewController *)self handManager];
+      [handManager currentPointForPointer];
       [(HNDTrackpadViewController *)self setPreviousPointerPoint:?];
 
       [(HNDTrackpadViewController *)self _handlePrimaryButtonPress:1];
@@ -418,27 +418,27 @@ LABEL_7:
   }
 }
 
-- (void)handleTrackpadPinch:(unint64_t)a3 firstPoint:(CGPoint)a4 secondPoint:(CGPoint)a5
+- (void)handleTrackpadPinch:(unint64_t)pinch firstPoint:(CGPoint)point secondPoint:(CGPoint)secondPoint
 {
-  if (a3 == 2)
+  if (pinch == 2)
   {
     v22 = 6;
   }
 
   else
   {
-    y = a5.y;
-    x = a5.x;
-    v8 = a4.y;
-    v9 = a4.x;
-    if (a3 == 1)
+    y = secondPoint.y;
+    x = secondPoint.x;
+    v8 = point.y;
+    v9 = point.x;
+    if (pinch == 1)
     {
       v11 = 0;
     }
 
     else
     {
-      if (a3)
+      if (pinch)
       {
         return;
       }
@@ -456,7 +456,7 @@ LABEL_7:
     v21 = v20;
     [(HNDTrackpadViewController *)self setPinchFirstPoint:v18 + v13, v20 + v15];
     [(HNDTrackpadViewController *)self setPinchSecondPoint:v19 + v16, v21 + v17];
-    if (a3 == 1)
+    if (pinch == 1)
     {
       v22 = 2;
     }
@@ -475,30 +475,30 @@ LABEL_7:
   [(HNDTrackpadViewController *)self _sendEventAtPinchPoint:v22 pointTwo:v24 handEventType:v26, v27, v28];
 }
 
-- (void)_handleMovePointer:(CGPoint)a3 startPoint:(CGPoint)a4
+- (void)_handleMovePointer:(CGPoint)pointer startPoint:(CGPoint)point
 {
-  [(HNDTrackpadViewController *)self getPointsDelta:a3.x startPoint:a3.y scale:a4.x, a4.y, self->_pointerSpeed];
+  [(HNDTrackpadViewController *)self getPointsDelta:pointer.x startPoint:pointer.y scale:point.x, point.y, self->_pointerSpeed];
 
   [(HNDTrackpadViewController *)self _sendMouseMoveEventWithDelta:?];
 }
 
-- (void)_sendMouseMoveEventWithDelta:(CGPoint)a3
+- (void)_sendMouseMoveEventWithDelta:(CGPoint)delta
 {
-  y = a3.y;
-  x = a3.x;
+  y = delta.y;
+  x = delta.x;
   v8 = [objc_allocWithZone(HNDEvent) init];
   [v8 setType:3];
   [v8 setDeltaX:x];
   [v8 setDeltaY:y];
   [v8 setIsVirtualTrackpadEvent:1];
-  v6 = [(HNDTrackpadViewController *)self handManager];
-  v7 = [v6 deviceManager];
-  [v7 device:0 didPostEvent:v8];
+  handManager = [(HNDTrackpadViewController *)self handManager];
+  deviceManager = [handManager deviceManager];
+  [deviceManager device:0 didPostEvent:v8];
 }
 
-- (void)_sendEventAtPinchPoint:(CGPoint)a3 pointTwo:(CGPoint)a4 handEventType:(unsigned int)a5
+- (void)_sendEventAtPinchPoint:(CGPoint)point pointTwo:(CGPoint)two handEventType:(unsigned int)type
 {
-  v5 = *&a5;
+  v5 = *&type;
   AXNormalizePoint();
   v27[0] = v7;
   v27[1] = v8;
@@ -512,15 +512,15 @@ LABEL_7:
   v13 = [NSArray arrayWithObjects:v28 count:2];
 
   v14 = [AXEventRepresentation gestureRepresentationWithHandType:v5 locations:v13];
-  v15 = [v14 handInfo];
-  v16 = [v15 paths];
-  v17 = [v16 firstPath];
-  [v17 setTransducerType:2];
+  handInfo = [v14 handInfo];
+  paths = [handInfo paths];
+  firstPath = [paths firstPath];
+  [firstPath setTransducerType:2];
 
-  v18 = [v14 handInfo];
-  v19 = [v18 paths];
-  v20 = [v19 secondPath];
-  [v20 setTransducerType:2];
+  handInfo2 = [v14 handInfo];
+  paths2 = [handInfo2 paths];
+  secondPath = [paths2 secondPath];
+  [secondPath setTransducerType:2];
 
   v21 = +[AXBackBoardServer server];
   [(HNDTrackpadViewController *)self pointerLocation];
@@ -528,28 +528,28 @@ LABEL_7:
 
   [v14 setContextId:v22];
   v23 = +[AXEventTapManager sharedManager];
-  v24 = [(HNDTrackpadViewController *)self displayManager];
-  v25 = [v24 fingerController];
-  [v23 sendHIDSystemEvent:v14 senderID:{objc_msgSend(v25, "eventSenderServiceID")}];
+  displayManager = [(HNDTrackpadViewController *)self displayManager];
+  fingerController = [displayManager fingerController];
+  [v23 sendHIDSystemEvent:v14 senderID:{objc_msgSend(fingerController, "eventSenderServiceID")}];
 }
 
-- (void)handleTrackpadBorderTap:(id)a3 moveAmount:(double)a4
+- (void)handleTrackpadBorderTap:(id)tap moveAmount:(double)amount
 {
-  v6 = a3;
-  v21 = [(HNDTrackpadViewController *)self trackpadBorderView];
-  [v6 locationInView:v21];
+  tapCopy = tap;
+  trackpadBorderView = [(HNDTrackpadViewController *)self trackpadBorderView];
+  [tapCopy locationInView:trackpadBorderView];
   v8 = v7;
   v10 = v9;
 
-  [v21 frame];
+  [trackpadBorderView frame];
   v12 = v11;
   v14 = v13;
   v16 = v15;
   v18 = v17;
-  v19 = [v21 borderLocationFromPoint:{v8, v10}];
+  v19 = [trackpadBorderView borderLocationFromPoint:{v8, v10}];
   if (v19 > 3)
   {
-    v20 = v12 + a4;
+    v20 = v12 + amount;
     if (v19 != 5)
     {
       v20 = v12;
@@ -557,7 +557,7 @@ LABEL_7:
 
     if (v19 == 4)
     {
-      v12 = v12 - a4;
+      v12 = v12 - amount;
     }
 
     else
@@ -568,41 +568,41 @@ LABEL_7:
 
   else if (v19 == 2)
   {
-    v14 = v14 - a4;
+    v14 = v14 - amount;
   }
 
   else if (v19 == 3)
   {
-    v14 = v14 + a4;
+    v14 = v14 + amount;
   }
 
   [(HNDTrackpadViewController *)self _setTrackpadBorderFrame:v12, v14, v16, v18];
 }
 
-- (void)handleBorderViewMove:(id)a3
+- (void)handleBorderViewMove:(id)move
 {
-  v34 = a3;
-  [v34 locationInView:0];
+  moveCopy = move;
+  [moveCopy locationInView:0];
   v5 = v4;
   v7 = v6;
-  v8 = [v34 state];
-  if ((v8 - 3) < 3)
+  state = [moveCopy state];
+  if ((state - 3) < 3)
   {
     [(HNDTrackpadViewController *)self setCurrentBorderAction:0];
     goto LABEL_16;
   }
 
-  if (v8 == 2)
+  if (state == 2)
   {
     [(HNDTrackpadViewController *)self previousTouchPoint];
     [(HNDTrackpadViewController *)self getPointsDelta:v5 startPoint:v7 scale:v17, v18, 1.0];
     v20 = v19;
     v22 = v21;
-    v23 = [(HNDTrackpadViewController *)self currentBorderAction];
-    if (v23 == 2)
+    currentBorderAction = [(HNDTrackpadViewController *)self currentBorderAction];
+    if (currentBorderAction == 2)
     {
-      v25 = [(HNDTrackpadViewController *)self trackpadBorderView];
-      [v25 frame];
+      trackpadBorderView = [(HNDTrackpadViewController *)self trackpadBorderView];
+      [trackpadBorderView frame];
       v27 = v26;
       v29 = v28;
       v31 = v30;
@@ -611,27 +611,27 @@ LABEL_7:
       [(HNDTrackpadViewController *)self _setTrackpadBorderFrame:v20 + v27, v22 + v29, v31, v33];
     }
 
-    else if (v23 == 1)
+    else if (currentBorderAction == 1)
     {
-      v24 = [(HNDTrackpadViewController *)self trackpadBorderView];
-      [v24 resizeTrackpadWithDelta:{v20, v22}];
+      trackpadBorderView2 = [(HNDTrackpadViewController *)self trackpadBorderView];
+      [trackpadBorderView2 resizeTrackpadWithDelta:{v20, v22}];
     }
   }
 
   else
   {
-    if (v8 != 1)
+    if (state != 1)
     {
       goto LABEL_16;
     }
 
-    v9 = [(HNDTrackpadViewController *)self trackpadBorderView];
-    [v34 locationInView:v9];
+    trackpadBorderView3 = [(HNDTrackpadViewController *)self trackpadBorderView];
+    [moveCopy locationInView:trackpadBorderView3];
     v11 = v10;
     v13 = v12;
 
-    v14 = [(HNDTrackpadViewController *)self trackpadBorderView];
-    v15 = [v14 borderLocationFromPoint:{v11, v13}];
+    trackpadBorderView4 = [(HNDTrackpadViewController *)self trackpadBorderView];
+    v15 = [trackpadBorderView4 borderLocationFromPoint:{v11, v13}];
 
     if (v15 == 1)
     {
@@ -655,14 +655,14 @@ LABEL_7:
 LABEL_16:
 }
 
-- (void)_setTrackpadBorderFrame:(CGRect)a3
+- (void)_setTrackpadBorderFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(HNDTrackpadViewController *)self displayManager];
-  [v8 screenBounds];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  displayManager = [(HNDTrackpadViewController *)self displayManager];
+  [displayManager screenBounds];
   v10 = v9;
   v12 = v11;
 
@@ -706,14 +706,14 @@ LABEL_16:
     v16 = v12 - height;
   }
 
-  v17 = [(HNDTrackpadViewController *)self trackpadBorderView];
-  [v17 setFrame:{v14, v16, width, height}];
+  trackpadBorderView = [(HNDTrackpadViewController *)self trackpadBorderView];
+  [trackpadBorderView setFrame:{v14, v16, width, height}];
 }
 
 - (CGPoint)pointerLocation
 {
-  v2 = [(HNDTrackpadViewController *)self handManager];
-  [v2 systemPointerLocation];
+  handManager = [(HNDTrackpadViewController *)self handManager];
+  [handManager systemPointerLocation];
   v4 = v3;
   v6 = v5;
 
@@ -724,12 +724,12 @@ LABEL_16:
   return result;
 }
 
-- (BOOL)trackpadContainsPoint:(CGPoint)a3
+- (BOOL)trackpadContainsPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(HNDTrackpadViewController *)self trackpadBorderView];
-  [v5 frame];
+  y = point.y;
+  x = point.x;
+  trackpadBorderView = [(HNDTrackpadViewController *)self trackpadBorderView];
+  [trackpadBorderView frame];
   v8.x = x;
   v8.y = y;
   v6 = CGRectContainsPoint(v9, v8);
@@ -739,22 +739,22 @@ LABEL_16:
 
 - (BOOL)isPressingOnTrackpad
 {
-  v2 = [(HNDTrackpadViewController *)self trackpadPressGestureRecognizer];
-  v3 = [v2 state];
+  trackpadPressGestureRecognizer = [(HNDTrackpadViewController *)self trackpadPressGestureRecognizer];
+  state = [trackpadPressGestureRecognizer state];
 
-  return (v3 - 1) < 2;
+  return (state - 1) < 2;
 }
 
 - (BOOL)trackpadCanPinch
 {
-  v3 = [(HNDTrackpadViewController *)self trackpadPinchGestureRecognizer];
-  v4 = [v3 state];
+  trackpadPinchGestureRecognizer = [(HNDTrackpadViewController *)self trackpadPinchGestureRecognizer];
+  state = [trackpadPinchGestureRecognizer state];
 
-  v5 = [(HNDTrackpadViewController *)self trackpadPinchGestureRecognizer];
-  [v5 scale];
+  trackpadPinchGestureRecognizer2 = [(HNDTrackpadViewController *)self trackpadPinchGestureRecognizer];
+  [trackpadPinchGestureRecognizer2 scale];
   v7 = v6;
 
-  if ((v4 - 1) > 1)
+  if ((state - 1) > 1)
   {
     return 0;
   }
@@ -769,10 +769,10 @@ LABEL_16:
 
 - (BOOL)trackpadCanScroll
 {
-  v2 = [(HNDTrackpadViewController *)self trackpadScrollGestureRecognizer];
-  v3 = [v2 state];
+  trackpadScrollGestureRecognizer = [(HNDTrackpadViewController *)self trackpadScrollGestureRecognizer];
+  state = [trackpadScrollGestureRecognizer state];
 
-  return (v3 - 1) < 2;
+  return (state - 1) < 2;
 }
 
 - (void)highlightTrackpad
@@ -790,8 +790,8 @@ LABEL_16:
 
   else
   {
-    v3 = [(HNDTrackpadViewController *)self fadeTimer];
-    [v3 cancel];
+    fadeTimer = [(HNDTrackpadViewController *)self fadeTimer];
+    [fadeTimer cancel];
   }
 
   [(HNDTrackpadViewController *)self fadeTrackpad];
@@ -801,11 +801,11 @@ LABEL_16:
 {
   if (![(HNDTrackpadViewController *)self isTrackpadDimmed])
   {
-    v3 = [(HNDTrackpadViewController *)self fadeTimer];
-    [v3 cancel];
+    fadeTimer = [(HNDTrackpadViewController *)self fadeTimer];
+    [fadeTimer cancel];
 
     objc_initWeak(&location, self);
-    v4 = [(HNDTrackpadViewController *)self fadeTimer];
+    fadeTimer2 = [(HNDTrackpadViewController *)self fadeTimer];
     [(HNDTrackpadViewController *)self fadeDelay];
     v6 = v5;
     v7[0] = _NSConcreteStackBlock;
@@ -813,28 +813,28 @@ LABEL_16:
     v7[2] = sub_10004A900;
     v7[3] = &unk_1001D3460;
     objc_copyWeak(&v8, &location);
-    [v4 afterDelay:v7 processBlock:v6];
+    [fadeTimer2 afterDelay:v7 processBlock:v6];
 
     objc_destroyWeak(&v8);
     objc_destroyWeak(&location);
   }
 }
 
-- (void)resetVisibility:(BOOL)a3
+- (void)resetVisibility:(BOOL)visibility
 {
-  if (a3)
+  if (visibility)
   {
-    v7 = [(HNDTrackpadViewController *)self view];
-    [v7 setAlpha:1.0];
+    view = [(HNDTrackpadViewController *)self view];
+    [view setAlpha:1.0];
   }
 
   else
   {
-    v7 = +[AXSettings sharedInstance];
-    [v7 assistiveTouchIdleOpacity];
+    view = +[AXSettings sharedInstance];
+    [view assistiveTouchIdleOpacity];
     v5 = v4;
-    v6 = [(HNDTrackpadViewController *)self view];
-    [v6 setAlpha:v5];
+    view2 = [(HNDTrackpadViewController *)self view];
+    [view2 setAlpha:v5];
   }
 }
 
@@ -847,20 +847,20 @@ LABEL_16:
 
 - (void)_updateTrackpadSize
 {
-  v3 = [(HNDTrackpadViewController *)self displayManager];
-  [v3 screenBounds];
+  displayManager = [(HNDTrackpadViewController *)self displayManager];
+  [displayManager screenBounds];
   v5 = v4;
   v7 = v6;
 
-  v8 = [(HNDTrackpadViewController *)self trackpadBorderView];
-  [v8 frame];
+  trackpadBorderView = [(HNDTrackpadViewController *)self trackpadBorderView];
+  [trackpadBorderView frame];
   v28 = v10;
   v30 = v9;
   v12 = v11;
   v14 = v13;
 
-  v15 = [(HNDTrackpadViewController *)self trackpadView];
-  [v15 frame];
+  trackpadView = [(HNDTrackpadViewController *)self trackpadView];
+  [trackpadView frame];
   v17 = v16;
   v19 = v18;
   v21 = v20;
@@ -883,35 +883,35 @@ LABEL_16:
     v23 = v23 - v24;
   }
 
-  v26 = [(HNDTrackpadViewController *)self trackpadBorderView];
-  [v26 setFrame:{*&v30, v29, v12, v14}];
+  trackpadBorderView2 = [(HNDTrackpadViewController *)self trackpadBorderView];
+  [trackpadBorderView2 setFrame:{*&v30, v29, v12, v14}];
 
-  v27 = [(HNDTrackpadViewController *)self trackpadView];
-  [v27 setFrame:{v17, v19, v21, v23}];
+  trackpadView2 = [(HNDTrackpadViewController *)self trackpadView];
+  [trackpadView2 setFrame:{v17, v19, v21, v23}];
 
-  v31 = [(HNDTrackpadViewController *)self trackpadBorderView];
-  [v31 updateFrameLayer];
+  trackpadBorderView3 = [(HNDTrackpadViewController *)self trackpadBorderView];
+  [trackpadBorderView3 updateFrameLayer];
 }
 
 - (void)_setTrackpadPositionBottomRight
 {
-  v3 = [(HNDTrackpadViewController *)self displayManager];
-  [v3 screenBounds];
+  displayManager = [(HNDTrackpadViewController *)self displayManager];
+  [displayManager screenBounds];
   v5 = v4;
   v7 = v6;
 
-  v8 = [(HNDTrackpadViewController *)self trackpadBorderView];
-  [v8 bounds];
+  trackpadBorderView = [(HNDTrackpadViewController *)self trackpadBorderView];
+  [trackpadBorderView bounds];
   v10 = v9;
   v12 = v11;
 
-  v13 = [(HNDTrackpadViewController *)self trackpadBorderView];
-  [v13 frame];
+  trackpadBorderView2 = [(HNDTrackpadViewController *)self trackpadBorderView];
+  [trackpadBorderView2 frame];
   v15 = v14;
   v17 = v16;
 
-  v18 = [(HNDTrackpadViewController *)self trackpadBorderView];
-  [v18 setFrame:{v5 - v10, v7 - v12, v15, v17}];
+  trackpadBorderView3 = [(HNDTrackpadViewController *)self trackpadBorderView];
+  [trackpadBorderView3 setFrame:{v5 - v10, v7 - v12, v15, v17}];
 }
 
 - (CGRect)_getTrackpadBorderFrame
@@ -957,31 +957,31 @@ LABEL_16:
   return result;
 }
 
-- (CGRect)_getTrackpadFrame:(double)a3 borderFrame:(CGRect)a4
+- (CGRect)_getTrackpadFrame:(double)frame borderFrame:(CGRect)borderFrame
 {
-  v4 = a4.size.width + a3 * -2.0;
-  v5 = a4.size.height + a3 * -2.0;
+  v4 = borderFrame.size.width + frame * -2.0;
+  v5 = borderFrame.size.height + frame * -2.0;
   result.size.height = v5;
   result.size.width = v4;
-  result.origin.y = a3;
-  result.origin.x = a3;
+  result.origin.y = frame;
+  result.origin.x = frame;
   return result;
 }
 
-- (void)setTrackpadViewFrame:(CGRect)a3
+- (void)setTrackpadViewFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = [(HNDTrackpadViewController *)self trackpadView];
-  [v7 setFrame:{x, y, width, height}];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  trackpadView = [(HNDTrackpadViewController *)self trackpadView];
+  [trackpadView setFrame:{x, y, width, height}];
 }
 
 - (CGRect)trackpadViewFrame
 {
-  v2 = [(HNDTrackpadViewController *)self trackpadView];
-  [v2 frame];
+  trackpadView = [(HNDTrackpadViewController *)self trackpadView];
+  [trackpadView frame];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -998,10 +998,10 @@ LABEL_16:
   return result;
 }
 
-- (CGPoint)getPointsDelta:(CGPoint)a3 startPoint:(CGPoint)a4 scale:(double)a5
+- (CGPoint)getPointsDelta:(CGPoint)delta startPoint:(CGPoint)point scale:(double)scale
 {
-  v5 = (a3.x - a4.x) * a5;
-  v6 = (a3.y - a4.y) * a5;
+  v5 = (delta.x - point.x) * scale;
+  v6 = (delta.y - point.y) * scale;
   result.y = v6;
   result.x = v5;
   return result;

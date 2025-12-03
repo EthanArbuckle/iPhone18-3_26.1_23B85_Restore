@@ -1,12 +1,12 @@
 @interface FTBipartiteMatcher
-- (FTBipartiteMatcher)initWithInitialSize:(unint64_t)a3;
-- (id)computeMatchingForCostMatrix:(const float *)a3 withRowCount:(unint64_t)a4 columnCount:(unint64_t)a5;
-- (id)computeMatchingForCostMatrix:(const float *)a3 withRowCount:(unint64_t)a4 columnCount:(unint64_t)a5 maxIters:(unint64_t)a6 minimumNonzeroPaddingValue:(float)a7;
+- (FTBipartiteMatcher)initWithInitialSize:(unint64_t)size;
+- (id)computeMatchingForCostMatrix:(const float *)matrix withRowCount:(unint64_t)count columnCount:(unint64_t)columnCount;
+- (id)computeMatchingForCostMatrix:(const float *)matrix withRowCount:(unint64_t)count columnCount:(unint64_t)columnCount maxIters:(unint64_t)iters minimumNonzeroPaddingValue:(float)value;
 @end
 
 @implementation FTBipartiteMatcher
 
-- (FTBipartiteMatcher)initWithInitialSize:(unint64_t)a3
+- (FTBipartiteMatcher)initWithInitialSize:(unint64_t)size
 {
   v4.receiver = self;
   v4.super_class = FTBipartiteMatcher;
@@ -18,9 +18,9 @@
   return 0;
 }
 
-- (id)computeMatchingForCostMatrix:(const float *)a3 withRowCount:(unint64_t)a4 columnCount:(unint64_t)a5
+- (id)computeMatchingForCostMatrix:(const float *)matrix withRowCount:(unint64_t)count columnCount:(unint64_t)columnCount
 {
-  ft::HungarianMatcher::Match(self->_optimizer.__ptr_, a3, a4, a5, &v12);
+  ft::HungarianMatcher::Match(self->_optimizer.__ptr_, matrix, count, columnCount, &v12);
   v5 = v12;
   if (v12 == v13)
   {
@@ -63,23 +63,23 @@ LABEL_8:
   return v7;
 }
 
-- (id)computeMatchingForCostMatrix:(const float *)a3 withRowCount:(unint64_t)a4 columnCount:(unint64_t)a5 maxIters:(unint64_t)a6 minimumNonzeroPaddingValue:(float)a7
+- (id)computeMatchingForCostMatrix:(const float *)matrix withRowCount:(unint64_t)count columnCount:(unint64_t)columnCount maxIters:(unint64_t)iters minimumNonzeroPaddingValue:(float)value
 {
   v26 = 2;
   v25 = 0;
   v13 = objc_alloc(MEMORY[0x277CBEB18]);
-  if (a4 <= a5)
+  if (count <= columnCount)
   {
-    v14 = a5;
+    countCopy = columnCount;
   }
 
   else
   {
-    v14 = a4;
+    countCopy = count;
   }
 
-  v15 = [v13 initWithCapacity:v14];
-  ft::HungarianMatcher::Match(self->_optimizer.__ptr_, &v25, a3, a4, a5, a6, &v26, &v23, a7, v16);
+  v15 = [v13 initWithCapacity:countCopy];
+  ft::HungarianMatcher::Match(self->_optimizer.__ptr_, &v25, matrix, count, columnCount, iters, &v26, &v23, value, v16);
   v17 = v23;
   v18 = v24;
   if (v23 != v24)

@@ -1,13 +1,13 @@
 @interface JavaUtilCollections_ReverseComparator2
-- (BOOL)isEqual:(id)a3;
-- (int)compareWithId:(id)a3 withId:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (int)compareWithId:(id)id withId:(id)withId;
 - (unint64_t)hash;
 - (void)dealloc;
 @end
 
 @implementation JavaUtilCollections_ReverseComparator2
 
-- (int)compareWithId:(id)a3 withId:(id)a4
+- (int)compareWithId:(id)id withId:(id)withId
 {
   cmp = self->cmp_;
   if (!cmp)
@@ -15,10 +15,10 @@
     JreThrowNullPointerException();
   }
 
-  return [(JavaUtilComparator *)cmp compareWithId:a4 withId:a3];
+  return [(JavaUtilComparator *)cmp compareWithId:withId withId:id];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -27,7 +27,7 @@
   }
 
   objc_opt_class();
-  if (!a3)
+  if (!equal)
   {
     goto LABEL_9;
   }
@@ -37,7 +37,7 @@
     JreThrowClassCastException();
   }
 
-  v5 = *(a3 + 1);
+  v5 = *(equal + 1);
   if (!v5)
   {
 LABEL_9:

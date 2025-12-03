@@ -1,21 +1,21 @@
 @interface FCCCControlCenterModuleAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityIsOnboardingControlVisible;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation FCCCControlCenterModuleAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"FCCCControlCenterModule" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"FCUIActivityPickerViewController"];
-  [v3 validateClass:@"FCUIActivityPickerViewController" hasClassMethod:@"isOnboardingEncountered" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"FCCCControlCenterModule" hasInstanceVariable:@"_moduleViewController" withType:"FCCCModuleViewController"];
-  [v3 validateClass:@"FCCCModuleViewController" hasInstanceVariable:@"_activeActivity" withType:"<FCActivityDescribing>"];
-  [v3 validateClass:@"FCCCModuleViewController" hasInstanceVariable:@"_suggestedActivity" withType:"<FCActivityDescribing>"];
-  [v3 validateClass:@"FCCCModuleViewController" hasInstanceVariable:@"_templateView" withType:"CCUIControlTemplateView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"FCCCControlCenterModule" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"FCUIActivityPickerViewController"];
+  [validationsCopy validateClass:@"FCUIActivityPickerViewController" hasClassMethod:@"isOnboardingEncountered" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"FCCCControlCenterModule" hasInstanceVariable:@"_moduleViewController" withType:"FCCCModuleViewController"];
+  [validationsCopy validateClass:@"FCCCModuleViewController" hasInstanceVariable:@"_activeActivity" withType:"<FCActivityDescribing>"];
+  [validationsCopy validateClass:@"FCCCModuleViewController" hasInstanceVariable:@"_suggestedActivity" withType:"<FCActivityDescribing>"];
+  [validationsCopy validateClass:@"FCCCModuleViewController" hasInstanceVariable:@"_templateView" withType:"CCUIControlTemplateView"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -120,11 +120,11 @@ id __82__FCCCControlCenterModuleAccessibility__accessibilityLoadAccessibilityInf
 - (BOOL)_accessibilityIsOnboardingControlVisible
 {
   v3 = [MEMORY[0x29C2D66A0](@"FCUIActivityPickerViewController" a2)];
-  v4 = [(FCCCControlCenterModuleAccessibility *)self _accessibilityModuleViewController];
-  v5 = [v4 safeValueForKey:@"_activeActivity"];
+  _accessibilityModuleViewController = [(FCCCControlCenterModuleAccessibility *)self _accessibilityModuleViewController];
+  v5 = [_accessibilityModuleViewController safeValueForKey:@"_activeActivity"];
 
-  v6 = [(FCCCControlCenterModuleAccessibility *)self _accessibilityModuleViewController];
-  v7 = [v6 safeValueForKey:@"_suggestedActivity"];
+  _accessibilityModuleViewController2 = [(FCCCControlCenterModuleAccessibility *)self _accessibilityModuleViewController];
+  v7 = [_accessibilityModuleViewController2 safeValueForKey:@"_suggestedActivity"];
 
   return (v5 | v7) == 0 || (v3 & 1) == 0;
 }

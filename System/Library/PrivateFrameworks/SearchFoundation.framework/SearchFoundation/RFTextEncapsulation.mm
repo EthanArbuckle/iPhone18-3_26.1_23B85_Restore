@@ -1,30 +1,30 @@
 @interface RFTextEncapsulation
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (RFTextEncapsulation)initWithCoder:(id)a3;
-- (RFTextEncapsulation)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (RFTextEncapsulation)initWithCoder:(id)coder;
+- (RFTextEncapsulation)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RFTextEncapsulation
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
 
-  else if ([(RFTextEncapsulation *)v4 isMemberOfClass:objc_opt_class()])
+  else if ([(RFTextEncapsulation *)equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
-    v6 = [(RFTextEncapsulation *)self style];
-    v7 = [(RFTextEncapsulation *)v5 style];
+    v5 = equalCopy;
+    style = [(RFTextEncapsulation *)self style];
+    style2 = [(RFTextEncapsulation *)v5 style];
 
-    v8 = v6 == v7;
+    v8 = style == style2;
   }
 
   else
@@ -35,9 +35,9 @@
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setStyle:{-[RFTextEncapsulation style](self, "style")}];
   return v4;
 }
@@ -45,31 +45,31 @@
 - (NSData)jsonData
 {
   v2 = [[_SFPBRFTextEncapsulation alloc] initWithFacade:self];
-  v3 = [(_SFPBRFTextEncapsulation *)v2 jsonData];
+  jsonData = [(_SFPBRFTextEncapsulation *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBRFTextEncapsulation alloc] initWithFacade:self];
-  v3 = [(_SFPBRFTextEncapsulation *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBRFTextEncapsulation *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6 = [[_SFPBRFTextEncapsulation alloc] initWithFacade:self];
-  v5 = [(_SFPBRFTextEncapsulation *)v6 data];
-  [v4 encodeObject:v5 forKey:@"_backingStore"];
+  data = [(_SFPBRFTextEncapsulation *)v6 data];
+  [coderCopy encodeObject:data forKey:@"_backingStore"];
 }
 
-- (RFTextEncapsulation)initWithCoder:(id)a3
+- (RFTextEncapsulation)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v6 = [[_SFPBRFTextEncapsulation alloc] initWithData:v5];
   v7 = [(RFTextEncapsulation *)self initWithProtobuf:v6];
@@ -77,17 +77,17 @@
   return v7;
 }
 
-- (RFTextEncapsulation)initWithProtobuf:(id)a3
+- (RFTextEncapsulation)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v8.receiver = self;
   v8.super_class = RFTextEncapsulation;
   v5 = [(RFTextEncapsulation *)&v8 init];
   if (v5)
   {
-    if ([v4 style])
+    if ([protobufCopy style])
     {
-      -[RFTextEncapsulation setStyle:](v5, "setStyle:", [v4 style]);
+      -[RFTextEncapsulation setStyle:](v5, "setStyle:", [protobufCopy style]);
     }
 
     v6 = v5;

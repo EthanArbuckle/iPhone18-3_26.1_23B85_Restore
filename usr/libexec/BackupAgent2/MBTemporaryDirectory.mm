@@ -1,13 +1,13 @@
 @interface MBTemporaryDirectory
-+ (id)sharedTemporaryDirectoryForTest:(id)a3 error:(id *)a4;
-+ (id)sharedTemporaryDirectoryIdentifiedBy:(id)a3 error:(id *)a4;
-+ (id)temporaryDirectoryOnSameVolumeAsPath:(id)a3 identifiedBy:(id)a4 error:(id *)a5;
-+ (id)userTemporaryDirectoryForPersona:(id)a3 identifiedBy:(id)a4 error:(id *)a5;
-+ (id)userTemporaryDirectoryForTest:(id)a3 error:(id *)a4;
-- (BOOL)_purgeContentsAt:(int)a3 rPath:(id)a4 error:(id *)a5;
-- (BOOL)disposeWithError:(id *)a3;
-- (BOOL)purgeContentsWithError:(id *)a3;
-- (id)_initWithExistingFsRepPath:(char *)a3 identifier:(id)a4;
++ (id)sharedTemporaryDirectoryForTest:(id)test error:(id *)error;
++ (id)sharedTemporaryDirectoryIdentifiedBy:(id)by error:(id *)error;
++ (id)temporaryDirectoryOnSameVolumeAsPath:(id)path identifiedBy:(id)by error:(id *)error;
++ (id)userTemporaryDirectoryForPersona:(id)persona identifiedBy:(id)by error:(id *)error;
++ (id)userTemporaryDirectoryForTest:(id)test error:(id *)error;
+- (BOOL)_purgeContentsAt:(int)at rPath:(id)path error:(id *)error;
+- (BOOL)disposeWithError:(id *)error;
+- (BOOL)purgeContentsWithError:(id *)error;
+- (id)_initWithExistingFsRepPath:(char *)path identifier:(id)identifier;
 - (id)description;
 - (void)dealloc;
 - (void)disposeWithoutDeleting;
@@ -15,10 +15,10 @@
 
 @implementation MBTemporaryDirectory
 
-+ (id)sharedTemporaryDirectoryForTest:(id)a3 error:(id *)a4
++ (id)sharedTemporaryDirectoryForTest:(id)test error:(id *)error
 {
-  v5 = a3;
-  if (![v5 length])
+  testCopy = test;
+  if (![testCopy length])
   {
     sub_10009D724();
   }
@@ -28,19 +28,19 @@
     sub_10009D710();
   }
 
-  v6 = sub_100037754(qword_10011E340, v5, a4);
+  v6 = sub_100037754(qword_10011E340, testCopy, error);
   if (v6)
   {
-    v6 = [[MBTemporaryDirectory alloc] _initWithExistingFsRepPath:v6 identifier:v5];
+    v6 = [[MBTemporaryDirectory alloc] _initWithExistingFsRepPath:v6 identifier:testCopy];
   }
 
   return v6;
 }
 
-+ (id)userTemporaryDirectoryForTest:(id)a3 error:(id *)a4
++ (id)userTemporaryDirectoryForTest:(id)test error:(id *)error
 {
-  v5 = a3;
-  if (![v5 length])
+  testCopy = test;
+  if (![testCopy length])
   {
     sub_10009D7BC();
   }
@@ -50,19 +50,19 @@
     sub_10009D7A8();
   }
 
-  v6 = sub_100037754(qword_10011E350, v5, a4);
+  v6 = sub_100037754(qword_10011E350, testCopy, error);
   if (v6)
   {
-    v6 = [[MBTemporaryDirectory alloc] _initWithExistingFsRepPath:v6 identifier:v5];
+    v6 = [[MBTemporaryDirectory alloc] _initWithExistingFsRepPath:v6 identifier:testCopy];
   }
 
   return v6;
 }
 
-+ (id)sharedTemporaryDirectoryIdentifiedBy:(id)a3 error:(id *)a4
++ (id)sharedTemporaryDirectoryIdentifiedBy:(id)by error:(id *)error
 {
-  v5 = a3;
-  if (![v5 length])
+  byCopy = by;
+  if (![byCopy length])
   {
     sub_10009D7FC();
   }
@@ -72,37 +72,37 @@
     sub_10009D7E8();
   }
 
-  v6 = sub_100037754(qword_10011E360, v5, a4);
+  v6 = sub_100037754(qword_10011E360, byCopy, error);
   if (v6)
   {
-    v6 = [[MBTemporaryDirectory alloc] _initWithExistingFsRepPath:v6 identifier:v5];
+    v6 = [[MBTemporaryDirectory alloc] _initWithExistingFsRepPath:v6 identifier:byCopy];
   }
 
   return v6;
 }
 
-+ (id)userTemporaryDirectoryForPersona:(id)a3 identifiedBy:(id)a4 error:(id *)a5
++ (id)userTemporaryDirectoryForPersona:(id)persona identifiedBy:(id)by error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  personaCopy = persona;
+  byCopy = by;
+  if (!personaCopy)
   {
     sub_10009D854();
   }
 
-  v9 = v8;
-  if (![v8 length])
+  v9 = byCopy;
+  if (![byCopy length])
   {
     sub_10009D828();
   }
 
-  v10 = [v7 volumeMountPoint];
-  v11 = [v10 stringByAppendingPathComponent:@"tmp"];
+  volumeMountPoint = [personaCopy volumeMountPoint];
+  v11 = [volumeMountPoint stringByAppendingPathComponent:@"tmp"];
   v12 = [v11 stringByAppendingPathComponent:@"com.apple.backup"];
-  v13 = [v12 fileSystemRepresentation];
+  fileSystemRepresentation = [v12 fileSystemRepresentation];
 
-  sub_100037B38(v13);
-  v14 = sub_100037754(v13, v9, a5);
+  sub_100037B38(fileSystemRepresentation);
+  v14 = sub_100037754(fileSystemRepresentation, v9, error);
   if (v14)
   {
     v14 = [[MBTemporaryDirectory alloc] _initWithExistingFsRepPath:v14 identifier:v9];
@@ -111,36 +111,36 @@
   return v14;
 }
 
-+ (id)temporaryDirectoryOnSameVolumeAsPath:(id)a3 identifiedBy:(id)a4 error:(id *)a5
++ (id)temporaryDirectoryOnSameVolumeAsPath:(id)path identifiedBy:(id)by error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  pathCopy = path;
+  byCopy = by;
+  if (!pathCopy)
   {
     sub_10009D9A0();
   }
 
-  v9 = v8;
-  if (![v8 length])
+  v9 = byCopy;
+  if (![byCopy length])
   {
     sub_10009D974();
   }
 
-  if (!a5)
+  if (!error)
   {
     sub_10009D948();
   }
 
-  v10 = [MBFileSystemManager volumeMountPointForFile:v7 error:a5];
+  v10 = [MBFileSystemManager volumeMountPointForFile:pathCopy error:error];
   v11 = v10;
   if (v10)
   {
     v12 = [v10 stringByAppendingPathComponent:@"tmp"];
     v13 = [v12 stringByAppendingPathComponent:@"com.apple.backup"];
-    v14 = [v13 fileSystemRepresentation];
+    fileSystemRepresentation = [v13 fileSystemRepresentation];
 
-    sub_100037B38(v14);
-    v15 = sub_100037754(v14, v9, a5);
+    sub_100037B38(fileSystemRepresentation);
+    v15 = sub_100037754(fileSystemRepresentation, v9, error);
     if (v15)
     {
       v15 = [[MBTemporaryDirectory alloc] _initWithExistingFsRepPath:v15 identifier:v9];
@@ -152,13 +152,13 @@
     v16 = MBGetDefaultLog();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
-      v17 = *a5;
+      v17 = *error;
       *buf = 138412546;
-      v21 = v7;
+      v21 = pathCopy;
       v22 = 2112;
       v23 = v17;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "=tmpdir= could not find mount point for %@: %@", buf, 0x16u);
-      v19 = *a5;
+      v19 = *error;
       _MBLog();
     }
 
@@ -168,16 +168,16 @@
   return v15;
 }
 
-- (id)_initWithExistingFsRepPath:(char *)a3 identifier:(id)a4
+- (id)_initWithExistingFsRepPath:(char *)path identifier:(id)identifier
 {
-  v7 = a4;
-  if (!a3)
+  identifierCopy = identifier;
+  if (!path)
   {
     sub_10009D9F8();
   }
 
-  v8 = v7;
-  if (!v7)
+  v8 = identifierCopy;
+  if (!identifierCopy)
   {
     sub_10009D9CC();
   }
@@ -187,39 +187,39 @@
   v9 = [(MBTemporaryDirectory *)&v13 init];
   if (v9)
   {
-    v10 = [NSString mb_stringWithFileSystemRepresentation:a3];
+    v10 = [NSString mb_stringWithFileSystemRepresentation:path];
     path = v9->_path;
     v9->_path = v10;
 
-    v9->_fsRepPath = a3;
-    objc_storeStrong(&v9->_identifier, a4);
+    v9->_fsRepPath = path;
+    objc_storeStrong(&v9->_identifier, identifier);
   }
 
   return v9;
 }
 
-- (BOOL)purgeContentsWithError:(id *)a3
+- (BOOL)purgeContentsWithError:(id *)error
 {
-  v5 = [(MBTemporaryDirectory *)self path];
-  v6 = [v5 stringByDeletingLastPathComponent];
+  path = [(MBTemporaryDirectory *)self path];
+  stringByDeletingLastPathComponent = [path stringByDeletingLastPathComponent];
 
-  v7 = sub_100037EA4([v6 fileSystemRepresentation]);
+  v7 = sub_100037EA4([stringByDeletingLastPathComponent fileSystemRepresentation]);
   v8 = +[NSFileManager defaultManager];
-  v9 = [(MBTemporaryDirectory *)self path];
+  path2 = [(MBTemporaryDirectory *)self path];
   v22 = 0;
-  v10 = [v8 moveItemAtPath:v9 toPath:v7 error:&v22];
+  v10 = [v8 moveItemAtPath:path2 toPath:v7 error:&v22];
   v11 = v22;
 
   if (v10)
   {
-    v12 = [(MBTemporaryDirectory *)self path];
+    path3 = [(MBTemporaryDirectory *)self path];
     v21 = v11;
-    v13 = [v8 createDirectoryAtPath:v12 withIntermediateDirectories:0 attributes:0 error:&v21];
+    v13 = [v8 createDirectoryAtPath:path3 withIntermediateDirectories:0 attributes:0 error:&v21];
     v14 = v21;
 
     if (v13)
     {
-      v15 = [(MBTemporaryDirectory *)self _purgeContentsAt:4294967294 rPath:v7 error:a3];
+      v15 = [(MBTemporaryDirectory *)self _purgeContentsAt:4294967294 rPath:v7 error:error];
     }
 
     else
@@ -228,18 +228,18 @@
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v24 = self;
+        selfCopy2 = self;
         v25 = 2112;
         v26 = v14;
         _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_ERROR, "=tmpdir= %@ failed to create new contents directory: %@", buf, 0x16u);
         _MBLog();
       }
 
-      if (a3)
+      if (error)
       {
         v19 = v14;
         v15 = 0;
-        *a3 = v14;
+        *error = v14;
       }
 
       else
@@ -257,18 +257,18 @@
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v24 = self;
+      selfCopy2 = self;
       v25 = 2112;
       v26 = v11;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "=tmpdir= %@ failed to move contents aside to purge: %@", buf, 0x16u);
       _MBLog();
     }
 
-    if (a3)
+    if (error)
     {
       v17 = v11;
       v15 = 0;
-      *a3 = v11;
+      *error = v11;
     }
 
     else
@@ -280,20 +280,20 @@
   return v15;
 }
 
-- (BOOL)_purgeContentsAt:(int)a3 rPath:(id)a4 error:(id *)a5
+- (BOOL)_purgeContentsAt:(int)at rPath:(id)path error:(id *)error
 {
-  v8 = a4;
-  if ([&stru_1000FF270 isEqualToString:v8])
+  pathCopy = path;
+  if ([&stru_1000FF270 isEqualToString:pathCopy])
   {
 
-    v8 = @".";
+    pathCopy = @".";
   }
 
   v9 = +[NSMutableArray array];
   v10 = removefile_state_alloc();
   removefile_state_set(v10, 4u, v9);
   removefile_state_set(v10, 3u, sub_1000383B8);
-  v11 = removefileat(a3, [(__CFString *)v8 fileSystemRepresentation], v10, 0x301u);
+  v11 = removefileat(at, [(__CFString *)pathCopy fileSystemRepresentation], v10, 0x301u);
   removefile_state_free(v10);
   if (v11)
   {
@@ -302,17 +302,17 @@
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v17 = self;
+      selfCopy = self;
       v18 = 2112;
       v19 = v12;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "=tmpdir= failed to delete %@: %@", buf, 0x16u);
       _MBLog();
     }
 
-    if (a5)
+    if (error)
     {
       v14 = v12;
-      *a5 = v12;
+      *error = v12;
     }
   }
 
@@ -327,21 +327,21 @@
   objc_sync_exit(obj);
 }
 
-- (BOOL)disposeWithError:(id *)a3
+- (BOOL)disposeWithError:(id *)error
 {
-  v5 = self;
-  objc_sync_enter(v5);
-  if (v5->_disposed)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_disposed)
   {
     v9 = +[NSAssertionHandler currentHandler];
-    [v9 handleFailureInMethod:a2 object:v5 file:@"MBTemporaryDirectory.m" lineNumber:277 description:{@"TempDir: cannot be disposed multiple times %@", v5}];
+    [v9 handleFailureInMethod:a2 object:selfCopy file:@"MBTemporaryDirectory.m" lineNumber:277 description:{@"TempDir: cannot be disposed multiple times %@", selfCopy}];
   }
 
-  v5->_disposed = 1;
-  v6 = [(MBTemporaryDirectory *)v5 path];
-  v7 = [(MBTemporaryDirectory *)v5 _purgeContentsAt:4294967294 rPath:v6 error:a3];
+  selfCopy->_disposed = 1;
+  path = [(MBTemporaryDirectory *)selfCopy path];
+  v7 = [(MBTemporaryDirectory *)selfCopy _purgeContentsAt:4294967294 rPath:path error:error];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
   return v7;
 }
 
@@ -353,7 +353,7 @@
     if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v6 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_ERROR, "=tmpdir= %@ was not disposed before dealloc", buf, 0xCu);
       _MBLog();
     }

@@ -1,12 +1,12 @@
 @interface TSPDocumentResourceLegacyRegistry
 + (id)sharedSageRegistry;
 + (id)sharedTangierRegistry;
-+ (void)setSharedSageRegistryMetadataURL:(id)a3;
-+ (void)setSharedTangierRegistryMetadataURL:(id)a3;
++ (void)setSharedSageRegistryMetadataURL:(id)l;
++ (void)setSharedTangierRegistryMetadataURL:(id)l;
 - (TSPDocumentResourceLegacyRegistry)init;
-- (TSPDocumentResourceLegacyRegistry)initWithMetadataDictionary:(id)a3;
-- (TSPDocumentResourceLegacyRegistry)initWithMetadataURL:(id)a3;
-- (id)documentResourceLegacyInfoForApplicationRelativePath:(id)a3;
+- (TSPDocumentResourceLegacyRegistry)initWithMetadataDictionary:(id)dictionary;
+- (TSPDocumentResourceLegacyRegistry)initWithMetadataURL:(id)l;
+- (id)documentResourceLegacyInfoForApplicationRelativePath:(id)path;
 @end
 
 @implementation TSPDocumentResourceLegacyRegistry
@@ -17,7 +17,7 @@
   block[1] = 3221225472;
   block[2] = sub_276ACEE88;
   block[3] = &unk_27A6E4768;
-  block[4] = a1;
+  block[4] = self;
   if (qword_280A530A0 != -1)
   {
     dispatch_once(&qword_280A530A0, block);
@@ -34,7 +34,7 @@
   block[1] = 3221225472;
   block[2] = sub_276ACF05C;
   block[3] = &unk_27A6E4768;
-  block[4] = a1;
+  block[4] = self;
   if (qword_280A530A8 != -1)
   {
     dispatch_once(&qword_280A530A8, block);
@@ -62,10 +62,10 @@
   objc_exception_throw(v14);
 }
 
-- (TSPDocumentResourceLegacyRegistry)initWithMetadataURL:(id)a3
+- (TSPDocumentResourceLegacyRegistry)initWithMetadataURL:(id)l
 {
   v8 = 0;
-  v5 = objc_msgSend_tsu_propertyListWithContentsOfURL_options_error_(MEMORY[0x277CCAC58], a2, a3, 0, &v8);
+  v5 = objc_msgSend_tsu_propertyListWithContentsOfURL_options_error_(MEMORY[0x277CCAC58], a2, l, 0, &v8);
   if (v8)
   {
     if (*MEMORY[0x277D81408] != -1)
@@ -73,50 +73,50 @@
       sub_276BD6858();
     }
 
-    v6 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = objc_msgSend_initWithMetadataDictionary_(self, v4, v5);
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (TSPDocumentResourceLegacyRegistry)initWithMetadataDictionary:(id)a3
+- (TSPDocumentResourceLegacyRegistry)initWithMetadataDictionary:(id)dictionary
 {
-  v4 = a3;
-  if (objc_msgSend_count(v4, v5, v6))
+  dictionaryCopy = dictionary;
+  if (objc_msgSend_count(dictionaryCopy, v5, v6))
   {
     v14.receiver = self;
     v14.super_class = TSPDocumentResourceLegacyRegistry;
     v9 = [(TSPDocumentResourceLegacyRegistry *)&v14 init];
     if (v9)
     {
-      v10 = objc_msgSend_copy(v4, v7, v8);
+      v10 = objc_msgSend_copy(dictionaryCopy, v7, v8);
       metadataDictionary = v9->_metadataDictionary;
       v9->_metadataDictionary = v10;
     }
 
     self = v9;
-    v12 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v12 = 0;
+    selfCopy = 0;
   }
 
-  return v12;
+  return selfCopy;
 }
 
-- (id)documentResourceLegacyInfoForApplicationRelativePath:(id)a3
+- (id)documentResourceLegacyInfoForApplicationRelativePath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   metadataDictionary = self->_metadataDictionary;
-  v7 = objc_msgSend_metadataDictionaryKeyForRelativePath_(self, v6, v4);
+  v7 = objc_msgSend_metadataDictionaryKeyForRelativePath_(self, v6, pathCopy);
   v9 = objc_msgSend_objectForKeyedSubscript_(metadataDictionary, v8, v7);
 
   if (objc_msgSend_count(v9, v10, v11) > 1)
@@ -142,7 +142,7 @@
         v38 = MEMORY[0x277D81150];
         v39 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v28, "[TSPDocumentResourceLegacyRegistry documentResourceLegacyInfoForApplicationRelativePath:]");
         v41 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v40, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/persistence/src/TSPDocumentResourceLegacyRegistry.m");
-        objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v38, v42, v39, v41, 133, 0, "Invalid locator value for application relative path %{public}@: Locator must be a string", v4);
+        objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v38, v42, v39, v41, 133, 0, "Invalid locator value for application relative path %{public}@: Locator must be a string", pathCopy);
 
         objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v43, v44);
         v20 = 0;
@@ -154,7 +154,7 @@
       v31 = MEMORY[0x277D81150];
       v32 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v24, "[TSPDocumentResourceLegacyRegistry documentResourceLegacyInfoForApplicationRelativePath:]");
       v34 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v33, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/persistence/src/TSPDocumentResourceLegacyRegistry.m");
-      objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v31, v35, v32, v34, 126, 0, "Invalid digest value for application relative path %{public}@: Digest must be a string", v4);
+      objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v31, v35, v32, v34, 126, 0, "Invalid digest value for application relative path %{public}@: Digest must be a string", pathCopy);
 
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v36, v37);
       v20 = 0;
@@ -166,7 +166,7 @@
     v13 = MEMORY[0x277D81150];
     v14 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v12, "[TSPDocumentResourceLegacyRegistry documentResourceLegacyInfoForApplicationRelativePath:]");
     v16 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v15, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/persistence/src/TSPDocumentResourceLegacyRegistry.m");
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v13, v17, v14, v16, 119, 0, "Invalid entry for application relative path %{public}@", v4);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v13, v17, v14, v16, 119, 0, "Invalid entry for application relative path %{public}@", pathCopy);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v18, v19);
     v20 = 0;
@@ -175,11 +175,11 @@
   return v20;
 }
 
-+ (void)setSharedSageRegistryMetadataURL:(id)a3
++ (void)setSharedSageRegistryMetadataURL:(id)l
 {
-  if (qword_280A52B00 != a3)
+  if (qword_280A52B00 != l)
   {
-    v3 = objc_msgSend_copy(a3, a2, a3);
+    v3 = objc_msgSend_copy(l, a2, l);
     v4 = qword_280A52B00;
     qword_280A52B00 = v3;
   }
@@ -187,11 +187,11 @@
   qword_280A530A0 = 0;
 }
 
-+ (void)setSharedTangierRegistryMetadataURL:(id)a3
++ (void)setSharedTangierRegistryMetadataURL:(id)l
 {
-  if (qword_280A52B08 != a3)
+  if (qword_280A52B08 != l)
   {
-    v3 = objc_msgSend_copy(a3, a2, a3);
+    v3 = objc_msgSend_copy(l, a2, l);
     v4 = qword_280A52B08;
     qword_280A52B08 = v3;
   }

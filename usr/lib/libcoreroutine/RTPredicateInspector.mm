@@ -1,47 +1,47 @@
 @interface RTPredicateInspector
-- (BOOL)predicate:(id)a3 referencesSubstitutionVariablesFromSet:(id)a4;
-- (void)_inspectExpression:(id)a3;
-- (void)visitPredicate:(id)a3;
+- (BOOL)predicate:(id)predicate referencesSubstitutionVariablesFromSet:(id)set;
+- (void)_inspectExpression:(id)expression;
+- (void)visitPredicate:(id)predicate;
 @end
 
 @implementation RTPredicateInspector
 
-- (BOOL)predicate:(id)a3 referencesSubstitutionVariablesFromSet:(id)a4
+- (BOOL)predicate:(id)predicate referencesSubstitutionVariablesFromSet:(id)set
 {
   self->_predicateContainsSubstitutionVariables = 0;
-  v6 = a3;
-  v7 = [a4 copy];
+  predicateCopy = predicate;
+  v7 = [set copy];
   substitutionVariables = self->_substitutionVariables;
   self->_substitutionVariables = v7;
 
-  [v6 acceptVisitor:self flags:3];
+  [predicateCopy acceptVisitor:self flags:3];
   return self->_predicateContainsSubstitutionVariables;
 }
 
-- (void)visitPredicate:(id)a3
+- (void)visitPredicate:(id)predicate
 {
-  v7 = a3;
+  predicateCopy = predicate;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v7;
-    v5 = [v4 leftExpression];
-    [(RTPredicateInspector *)self _inspectExpression:v5];
+    v4 = predicateCopy;
+    leftExpression = [v4 leftExpression];
+    [(RTPredicateInspector *)self _inspectExpression:leftExpression];
 
-    v6 = [v4 rightExpression];
+    rightExpression = [v4 rightExpression];
 
-    [(RTPredicateInspector *)self _inspectExpression:v6];
+    [(RTPredicateInspector *)self _inspectExpression:rightExpression];
   }
 }
 
-- (void)_inspectExpression:(id)a3
+- (void)_inspectExpression:(id)expression
 {
-  v6 = a3;
-  if ([v6 expressionType] == 2)
+  expressionCopy = expression;
+  if ([expressionCopy expressionType] == 2)
   {
     substitutionVariables = self->_substitutionVariables;
-    v5 = [v6 variable];
-    LODWORD(substitutionVariables) = [(NSSet *)substitutionVariables containsObject:v5];
+    variable = [expressionCopy variable];
+    LODWORD(substitutionVariables) = [(NSSet *)substitutionVariables containsObject:variable];
 
     if (substitutionVariables)
     {

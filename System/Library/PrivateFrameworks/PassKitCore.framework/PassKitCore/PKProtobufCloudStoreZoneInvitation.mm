@@ -1,12 +1,12 @@
 @interface PKProtobufCloudStoreZoneInvitation
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PKProtobufCloudStoreZoneInvitation
@@ -17,54 +17,54 @@
   v8.receiver = self;
   v8.super_class = PKProtobufCloudStoreZoneInvitation;
   v4 = [(PKProtobufCloudStoreZoneInvitation *)&v8 description];
-  v5 = [(PKProtobufCloudStoreZoneInvitation *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(PKProtobufCloudStoreZoneInvitation *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_version];
-  [v3 setObject:v4 forKey:@"version"];
+  [dictionary setObject:v4 forKey:@"version"];
 
   shareURL = self->_shareURL;
   if (shareURL)
   {
-    [v3 setObject:shareURL forKey:@"shareURL"];
+    [dictionary setObject:shareURL forKey:@"shareURL"];
   }
 
   shareInvitationToken = self->_shareInvitationToken;
   if (shareInvitationToken)
   {
-    [v3 setObject:shareInvitationToken forKey:@"shareInvitationToken"];
+    [dictionary setObject:shareInvitationToken forKey:@"shareInvitationToken"];
   }
 
   containerIdentifier = self->_containerIdentifier;
   if (containerIdentifier)
   {
-    [v3 setObject:containerIdentifier forKey:@"containerIdentifier"];
+    [dictionary setObject:containerIdentifier forKey:@"containerIdentifier"];
   }
 
   zoneName = self->_zoneName;
   if (zoneName)
   {
-    [v3 setObject:zoneName forKey:@"zoneName"];
+    [dictionary setObject:zoneName forKey:@"zoneName"];
   }
 
   if (*&self->_has)
   {
     v9 = [MEMORY[0x1E696AD98] numberWithDouble:self->_dateCreated];
-    [v3 setObject:v9 forKey:@"dateCreated"];
+    [dictionary setObject:v9 forKey:@"dateCreated"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   PBDataWriterWriteUint32Field();
   if (self->_shareURL)
   {
@@ -76,79 +76,79 @@
     PBDataWriterWriteDataField();
   }
 
-  v4 = v5;
+  v4 = toCopy;
   if (self->_containerIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    v4 = toCopy;
   }
 
   if (self->_zoneName)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    v4 = toCopy;
   }
 
   if (*&self->_has)
   {
     PBDataWriterWriteDoubleField();
-    v4 = v5;
+    v4 = toCopy;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v4[10] = self->_version;
-  v5 = v4;
+  toCopy = to;
+  toCopy[10] = self->_version;
+  v5 = toCopy;
   if (self->_shareURL)
   {
-    [v4 setShareURL:?];
-    v4 = v5;
+    [toCopy setShareURL:?];
+    toCopy = v5;
   }
 
   if (self->_shareInvitationToken)
   {
     [v5 setShareInvitationToken:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_containerIdentifier)
   {
     [v5 setContainerIdentifier:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_zoneName)
   {
     [v5 setZoneName:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 1) = *&self->_dateCreated;
-    *(v4 + 56) |= 1u;
+    *(toCopy + 1) = *&self->_dateCreated;
+    *(toCopy + 56) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(v5 + 40) = self->_version;
-  v6 = [(NSString *)self->_shareURL copyWithZone:a3];
+  v6 = [(NSString *)self->_shareURL copyWithZone:zone];
   v7 = *(v5 + 32);
   *(v5 + 32) = v6;
 
-  v8 = [(NSData *)self->_shareInvitationToken copyWithZone:a3];
+  v8 = [(NSData *)self->_shareInvitationToken copyWithZone:zone];
   v9 = *(v5 + 24);
   *(v5 + 24) = v8;
 
-  v10 = [(NSString *)self->_containerIdentifier copyWithZone:a3];
+  v10 = [(NSString *)self->_containerIdentifier copyWithZone:zone];
   v11 = *(v5 + 16);
   *(v5 + 16) = v10;
 
-  v12 = [(NSString *)self->_zoneName copyWithZone:a3];
+  v12 = [(NSString *)self->_zoneName copyWithZone:zone];
   v13 = *(v5 + 48);
   *(v5 + 48) = v12;
 
@@ -161,21 +161,21 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_15;
   }
 
-  if (self->_version != *(v4 + 10))
+  if (self->_version != *(equalCopy + 10))
   {
     goto LABEL_15;
   }
 
   shareURL = self->_shareURL;
-  if (shareURL | *(v4 + 4))
+  if (shareURL | *(equalCopy + 4))
   {
     if (![(NSString *)shareURL isEqual:?])
     {
@@ -184,7 +184,7 @@
   }
 
   shareInvitationToken = self->_shareInvitationToken;
-  if (shareInvitationToken | *(v4 + 3))
+  if (shareInvitationToken | *(equalCopy + 3))
   {
     if (![(NSData *)shareInvitationToken isEqual:?])
     {
@@ -193,7 +193,7 @@
   }
 
   containerIdentifier = self->_containerIdentifier;
-  if (containerIdentifier | *(v4 + 2))
+  if (containerIdentifier | *(equalCopy + 2))
   {
     if (![(NSString *)containerIdentifier isEqual:?])
     {
@@ -202,7 +202,7 @@
   }
 
   zoneName = self->_zoneName;
-  if (zoneName | *(v4 + 6))
+  if (zoneName | *(equalCopy + 6))
   {
     if (![(NSString *)zoneName isEqual:?])
     {
@@ -210,10 +210,10 @@
     }
   }
 
-  v9 = (*(v4 + 56) & 1) == 0;
+  v9 = (*(equalCopy + 56) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 56) & 1) != 0 && self->_dateCreated == *(v4 + 1))
+    if ((*(equalCopy + 56) & 1) != 0 && self->_dateCreated == *(equalCopy + 1))
     {
       v9 = 1;
       goto LABEL_16;
@@ -271,38 +271,38 @@ LABEL_16:
   return v4 ^ v5 ^ v6 ^ v7 ^ (2654435761 * version) ^ v10;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  self->_version = *(v4 + 10);
-  v5 = v4;
-  if (*(v4 + 4))
+  fromCopy = from;
+  self->_version = *(fromCopy + 10);
+  v5 = fromCopy;
+  if (*(fromCopy + 4))
   {
     [(PKProtobufCloudStoreZoneInvitation *)self setShareURL:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(PKProtobufCloudStoreZoneInvitation *)self setShareInvitationToken:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(PKProtobufCloudStoreZoneInvitation *)self setContainerIdentifier:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(PKProtobufCloudStoreZoneInvitation *)self setZoneName:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 56))
+  if (*(fromCopy + 56))
   {
-    self->_dateCreated = *(v4 + 1);
+    self->_dateCreated = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 }

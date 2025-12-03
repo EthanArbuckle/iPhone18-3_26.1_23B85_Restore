@@ -1,14 +1,14 @@
 @interface CalInMemoryBlockList
-- (BOOL)isBlockedWithEmail:(id)a3;
-- (BOOL)isBlockedWithPhoneNumber:(id)a3;
+- (BOOL)isBlockedWithEmail:(id)email;
+- (BOOL)isBlockedWithPhoneNumber:(id)number;
 - (BOOL)isEmpty;
 - (CalInMemoryBlockList)init;
 - (NSArray)blockedPhoneNumbers;
-- (void)addBlockedEmail:(id)a3;
-- (void)addBlockedPhoneNumber:(id)a3;
-- (void)batchCachedEmails:(id)a3 phoneNumbers:(id)a4 completionHandler:(id)a5;
-- (void)batchLookupEmails:(id)a3 phoneNumbers:(id)a4 completionHandler:(id)a5;
-- (void)setBlockedPhoneNumbers:(id)a3;
+- (void)addBlockedEmail:(id)email;
+- (void)addBlockedPhoneNumber:(id)number;
+- (void)batchCachedEmails:(id)emails phoneNumbers:(id)numbers completionHandler:(id)handler;
+- (void)batchLookupEmails:(id)emails phoneNumbers:(id)numbers completionHandler:(id)handler;
+- (void)setBlockedPhoneNumbers:(id)numbers;
 @end
 
 @implementation CalInMemoryBlockList
@@ -22,7 +22,7 @@
   return v3;
 }
 
-- (void)setBlockedPhoneNumbers:(id)a3
+- (void)setBlockedPhoneNumbers:(id)numbers
 {
   v4 = sub_1B996FFBC();
   v5 = *(self + OBJC_IVAR___CalInMemoryBlockList_blockedPhoneNumbers);
@@ -39,7 +39,7 @@
   return [(CalInMemoryBlockList *)&v4 init];
 }
 
-- (BOOL)isBlockedWithEmail:(id)a3
+- (BOOL)isBlockedWithEmail:(id)email
 {
   v4 = sub_1B996FF7C();
   v6 = v5;
@@ -49,19 +49,19 @@
   v12[0] = v4;
   v12[1] = v6;
   v11[2] = v12;
-  v9 = self;
+  selfCopy = self;
 
   LOBYTE(v4) = sub_1B9968808(sub_1B9968FD0, v11, v8);
 
   return v4 & 1;
 }
 
-- (BOOL)isBlockedWithPhoneNumber:(id)a3
+- (BOOL)isBlockedWithPhoneNumber:(id)number
 {
   v4 = sub_1B996FF7C();
   v6 = v5;
-  v7 = self;
-  v8 = [(CalInMemoryBlockList *)v7 blockedPhoneNumbers];
+  selfCopy = self;
+  blockedPhoneNumbers = [(CalInMemoryBlockList *)selfCopy blockedPhoneNumbers];
   v9 = sub_1B996FFBC();
 
   v12[0] = v4;
@@ -72,14 +72,14 @@
   return v4 & 1;
 }
 
-- (void)addBlockedEmail:(id)a3
+- (void)addBlockedEmail:(id)email
 {
   v4 = sub_1B996FF7C();
   v6 = v5;
   v7 = OBJC_IVAR___CalInMemoryBlockList_blockedEmails;
   swift_beginAccess();
   v8 = *(self + v7);
-  v9 = self;
+  selfCopy = self;
   isUniquelyReferenced_nonNull_native = swift_isUniquelyReferenced_nonNull_native();
   *(self + v7) = v8;
   if ((isUniquelyReferenced_nonNull_native & 1) == 0)
@@ -103,11 +103,11 @@
   swift_endAccess();
 }
 
-- (void)addBlockedPhoneNumber:(id)a3
+- (void)addBlockedPhoneNumber:(id)number
 {
   v4 = sub_1B996FF7C();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   v8._countAndFlagsBits = v4;
   v8._object = v6;
   CalInMemoryBlockList.addBlocked(phoneNumber:)(v8);
@@ -122,8 +122,8 @@
     return 0;
   }
 
-  v5 = self;
-  v6 = [(CalInMemoryBlockList *)v5 blockedPhoneNumbers];
+  selfCopy = self;
+  blockedPhoneNumbers = [(CalInMemoryBlockList *)selfCopy blockedPhoneNumbers];
   v7 = sub_1B996FFBC();
 
   v8 = *(v7 + 16);
@@ -131,43 +131,43 @@
   return v8 == 0;
 }
 
-- (void)batchLookupEmails:(id)a3 phoneNumbers:(id)a4 completionHandler:(id)a5
+- (void)batchLookupEmails:(id)emails phoneNumbers:(id)numbers completionHandler:(id)handler
 {
-  v8 = _Block_copy(a5);
-  if (a3)
+  v8 = _Block_copy(handler);
+  if (emails)
   {
-    a3 = sub_1B996FFBC();
+    emails = sub_1B996FFBC();
   }
 
-  if (a4)
+  if (numbers)
   {
-    a4 = sub_1B996FFBC();
+    numbers = sub_1B996FFBC();
   }
 
-  v9 = self;
+  selfCopy = self;
   _Block_copy(v8);
-  sub_1B9968A14(a3, a4, v9, v8);
+  sub_1B9968A14(emails, numbers, selfCopy, v8);
   _Block_release(v8);
   _Block_release(v8);
 }
 
-- (void)batchCachedEmails:(id)a3 phoneNumbers:(id)a4 completionHandler:(id)a5
+- (void)batchCachedEmails:(id)emails phoneNumbers:(id)numbers completionHandler:(id)handler
 {
-  v8 = _Block_copy(a5);
-  if (a3)
+  v8 = _Block_copy(handler);
+  if (emails)
   {
-    a3 = sub_1B996FFBC();
+    emails = sub_1B996FFBC();
   }
 
-  if (a4)
+  if (numbers)
   {
-    a4 = sub_1B996FFBC();
+    numbers = sub_1B996FFBC();
   }
 
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
-  v10 = self;
-  CalInMemoryBlockList.batchCached(emails:phoneNumbers:completionHandler:)(a3, a4, sub_1B996899C, v9);
+  selfCopy = self;
+  CalInMemoryBlockList.batchCached(emails:phoneNumbers:completionHandler:)(emails, numbers, sub_1B996899C, v9);
 }
 
 @end

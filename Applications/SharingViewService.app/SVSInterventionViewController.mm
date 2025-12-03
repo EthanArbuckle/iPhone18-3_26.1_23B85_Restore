@@ -1,17 +1,17 @@
 @interface SVSInterventionViewController
-- (SVSInterventionViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (SVSInterventionViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)_willAppearInRemoteViewController;
-- (void)configureWithContext:(id)a3 completion:(id)a4;
-- (void)didContactSomeoneForInterventionViewController:(id)a3;
+- (void)configureWithContext:(id)context completion:(id)completion;
+- (void)didContactSomeoneForInterventionViewController:(id)controller;
 - (void)viewDidLoad;
-- (void)viewIsAppearing:(BOOL)a3;
+- (void)viewIsAppearing:(BOOL)appearing;
 @end
 
 @implementation SVSInterventionViewController
 
-- (void)configureWithContext:(id)a3 completion:(id)a4
+- (void)configureWithContext:(id)context completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   if (v6)
   {
     v7 = swift_allocObject();
@@ -24,16 +24,16 @@
     v7 = 0;
   }
 
-  v8 = a3;
-  v9 = self;
-  sub_1000A9190(a3, v6, v7);
+  contextCopy = context;
+  selfCopy = self;
+  sub_1000A9190(context, v6, v7);
   sub_100025EF4(v6, v7);
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
-  v4 = self;
-  sub_1000A9B40(a3);
+  selfCopy = self;
+  sub_1000A9B40(appearing);
 }
 
 - (void)viewDidLoad
@@ -57,17 +57,17 @@
   }
 }
 
-- (void)didContactSomeoneForInterventionViewController:(id)a3
+- (void)didContactSomeoneForInterventionViewController:(id)controller
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_1000AAC88();
   swift_unknownObjectRelease();
 }
 
-- (SVSInterventionViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (SVSInterventionViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v7 = v6;
@@ -79,8 +79,8 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_1000AA068(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_1000AA068(v5, v7, bundle);
 }
 
 @end

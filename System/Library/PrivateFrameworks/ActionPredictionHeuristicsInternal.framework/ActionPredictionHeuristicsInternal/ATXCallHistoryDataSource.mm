@@ -1,39 +1,39 @@
 @interface ATXCallHistoryDataSource
-- (ATXCallHistoryDataSource)initWithDevice:(id)a3;
-- (id)_dictForCall:(id)a3;
-- (id)_dictForHandle:(id)a3;
-- (void)callNewerThan:(double)a3 showIncoming:(BOOL)a4 showOutgoing:(BOOL)a5 missedOnly:(BOOL)a6 callback:(id)a7;
+- (ATXCallHistoryDataSource)initWithDevice:(id)device;
+- (id)_dictForCall:(id)call;
+- (id)_dictForHandle:(id)handle;
+- (void)callNewerThan:(double)than showIncoming:(BOOL)incoming showOutgoing:(BOOL)outgoing missedOnly:(BOOL)only callback:(id)callback;
 @end
 
 @implementation ATXCallHistoryDataSource
 
-- (ATXCallHistoryDataSource)initWithDevice:(id)a3
+- (ATXCallHistoryDataSource)initWithDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v9.receiver = self;
   v9.super_class = ATXCallHistoryDataSource;
   v6 = [(ATXCallHistoryDataSource *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_device, a3);
+    objc_storeStrong(&v6->_device, device);
   }
 
   return v7;
 }
 
-- (void)callNewerThan:(double)a3 showIncoming:(BOOL)a4 showOutgoing:(BOOL)a5 missedOnly:(BOOL)a6 callback:(id)a7
+- (void)callNewerThan:(double)than showIncoming:(BOOL)incoming showOutgoing:(BOOL)outgoing missedOnly:(BOOL)only callback:(id)callback
 {
-  v38 = a6;
+  onlyCopy = only;
   v45[2] = *MEMORY[0x277D85DE8];
-  v10 = a7;
+  callbackCopy = callback;
   if (ATXHeuristicCanLearnFromApp(&unk_2850BA320))
   {
-    v11 = 7776000.0;
-    v34 = v10;
-    if (a3 <= 7776000.0)
+    thanCopy = 7776000.0;
+    v34 = callbackCopy;
+    if (than <= 7776000.0)
     {
-      v11 = a3;
+      thanCopy = than;
     }
 
     else
@@ -41,13 +41,13 @@
       v12 = __atxlog_handle_heuristic();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
       {
-        [ATXCallHistoryDataSource callNewerThan:v12 showIncoming:a3 showOutgoing:? missedOnly:? callback:?];
+        [ATXCallHistoryDataSource callNewerThan:v12 showIncoming:than showOutgoing:? missedOnly:? callback:?];
       }
     }
 
     v44[0] = *MEMORY[0x277CF7DF8];
     v13 = [(ATXHeuristicDevice *)self->_device now];
-    v14 = [v13 dateByAddingTimeInterval:-v11];
+    v14 = [v13 dateByAddingTimeInterval:-thanCopy];
     v45[0] = v14;
     v44[1] = *MEMORY[0x277CF7DF0];
     v15 = [(ATXHeuristicDevice *)self->_device now];
@@ -63,8 +63,8 @@
     v41 = 0u;
     v42 = 0u;
     v32 = v18;
-    v19 = [v18 recentCalls];
-    v20 = [v19 countByEnumeratingWithState:&v39 objects:v43 count:16];
+    recentCalls = [v18 recentCalls];
+    v20 = [recentCalls countByEnumeratingWithState:&v39 objects:v43 count:16];
     if (v20)
     {
       v21 = v20;
@@ -78,16 +78,16 @@
         {
           if (*v40 != v22)
           {
-            objc_enumerationMutation(v19);
+            objc_enumerationMutation(recentCalls);
           }
 
           v26 = *(*(&v39 + 1) + 8 * i);
-          v27 = [v26 callStatus];
-          if ((a4 || (v23 & v27) == 0) && (a5 || (v24 & v27) == 0) && (!v38 || (v37 & v27) != 0))
+          callStatus = [v26 callStatus];
+          if ((incoming || (v23 & callStatus) == 0) && (outgoing || (v24 & callStatus) == 0) && (!onlyCopy || (v37 & callStatus) != 0))
           {
-            v28 = [v26 date];
+            date = [v26 date];
 
-            if (v28)
+            if (date)
             {
               v29 = [(ATXCallHistoryDataSource *)self _dictForCall:v26];
               if (v29)
@@ -98,7 +98,7 @@
           }
         }
 
-        v21 = [v19 countByEnumeratingWithState:&v39 objects:v43 count:16];
+        v21 = [recentCalls countByEnumeratingWithState:&v39 objects:v43 count:16];
       }
 
       while (v21);
@@ -110,45 +110,45 @@
       [ATXCallHistoryDataSource callNewerThan:v35 showIncoming:v30 showOutgoing:? missedOnly:? callback:?];
     }
 
-    v10 = v34;
+    callbackCopy = v34;
     (*(v34 + 2))(v34, v35, 0);
   }
 
   else
   {
-    (*(v10 + 2))(v10, MEMORY[0x277CBEBF8], 0);
+    (*(callbackCopy + 2))(callbackCopy, MEMORY[0x277CBEBF8], 0);
   }
 
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_dictForCall:(id)a3
+- (id)_dictForCall:(id)call
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  callCopy = call;
   v5 = objc_opt_new();
-  v6 = [v4 localParticipantUUID];
-  v7 = [v6 UUIDString];
-  [v5 setObject:v7 forKeyedSubscript:@"localParticipantUUID"];
+  localParticipantUUID = [callCopy localParticipantUUID];
+  uUIDString = [localParticipantUUID UUIDString];
+  [v5 setObject:uUIDString forKeyedSubscript:@"localParticipantUUID"];
 
-  v8 = [v4 uniqueId];
-  [v5 setObject:v8 forKeyedSubscript:@"uniqueId"];
+  uniqueId = [callCopy uniqueId];
+  [v5 setObject:uniqueId forKeyedSubscript:@"uniqueId"];
 
-  v9 = [v4 callStatus];
+  callStatus = [callCopy callStatus];
   v10 = objc_opt_new();
   v11 = v10;
-  if ((*MEMORY[0x277CF7D98] & v9) != 0)
+  if ((*MEMORY[0x277CF7D98] & callStatus) != 0)
   {
     [v10 addObject:@"incoming"];
   }
 
-  if ((*MEMORY[0x277CF7DA8] & v9) != 0)
+  if ((*MEMORY[0x277CF7DA8] & callStatus) != 0)
   {
     [v11 addObject:@"outgoing"];
   }
 
   v12 = *MEMORY[0x277CF7DA0];
-  if ((*MEMORY[0x277CF7DA0] & v9) != 0)
+  if ((*MEMORY[0x277CF7DA0] & callStatus) != 0)
   {
     [v11 addObject:@"missed"];
   }
@@ -157,37 +157,37 @@
 
   [v5 setObject:v13 forKeyedSubscript:@"callStatus"];
   v14 = MEMORY[0x277CCABB0];
-  v15 = [v4 date];
-  [v15 timeIntervalSinceReferenceDate];
+  date = [callCopy date];
+  [date timeIntervalSinceReferenceDate];
   v16 = [v14 numberWithDouble:?];
   [v5 setObject:v16 forKeyedSubscript:@"date"];
 
-  v17 = [MEMORY[0x277CCABB0] numberWithInt:{(objc_msgSend(v4, "callStatus") & v12) != 0}];
+  v17 = [MEMORY[0x277CCABB0] numberWithInt:{(objc_msgSend(callCopy, "callStatus") & v12) != 0}];
   [v5 setObject:v17 forKeyedSubscript:@"missed"];
 
-  v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v4, "unreadCount")}];
+  v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(callCopy, "unreadCount")}];
   [v5 setObject:v18 forKeyedSubscript:@"unreadCount"];
 
-  v19 = [v4 contactIdentifier];
-  [v5 setObject:v19 forKeyedSubscript:@"contactIdentifier"];
+  contactIdentifier = [callCopy contactIdentifier];
+  [v5 setObject:contactIdentifier forKeyedSubscript:@"contactIdentifier"];
 
-  v20 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v4, "mediaType")}];
+  v20 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(callCopy, "mediaType")}];
   [v5 setObject:v20 forKeyedSubscript:@"mediaType"];
 
-  v21 = [v4 callerNameForDisplay];
-  [v5 setObject:v21 forKeyedSubscript:@"callerNameForDisplay"];
+  callerNameForDisplay = [callCopy callerNameForDisplay];
+  [v5 setObject:callerNameForDisplay forKeyedSubscript:@"callerNameForDisplay"];
 
-  v22 = [v4 serviceProvider];
-  [v5 setObject:v22 forKeyedSubscript:@"serviceProvider"];
+  serviceProvider = [callCopy serviceProvider];
+  [v5 setObject:serviceProvider forKeyedSubscript:@"serviceProvider"];
 
-  [v5 setObject:v4 forKeyedSubscript:@"CHRecentCall"];
+  [v5 setObject:callCopy forKeyedSubscript:@"CHRecentCall"];
   v23 = objc_opt_new();
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v24 = [v4 remoteParticipantHandles];
-  v25 = [v24 countByEnumeratingWithState:&v32 objects:v36 count:16];
+  remoteParticipantHandles = [callCopy remoteParticipantHandles];
+  v25 = [remoteParticipantHandles countByEnumeratingWithState:&v32 objects:v36 count:16];
   if (v25)
   {
     v26 = v25;
@@ -198,7 +198,7 @@
       {
         if (*v33 != v27)
         {
-          objc_enumerationMutation(v24);
+          objc_enumerationMutation(remoteParticipantHandles);
         }
 
         v29 = [(ATXCallHistoryDataSource *)self _dictForHandle:*(*(&v32 + 1) + 8 * i)];
@@ -208,7 +208,7 @@
         }
       }
 
-      v26 = [v24 countByEnumeratingWithState:&v32 objects:v36 count:16];
+      v26 = [remoteParticipantHandles countByEnumeratingWithState:&v32 objects:v36 count:16];
     }
 
     while (v26);
@@ -220,29 +220,29 @@
   return v5;
 }
 
-- (id)_dictForHandle:(id)a3
+- (id)_dictForHandle:(id)handle
 {
   v11[2] = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (handle)
   {
     v10[0] = @"type";
-    v3 = a3;
-    v4 = [v3 type];
-    if ((v4 - 1) > 2)
+    handleCopy = handle;
+    type = [handleCopy type];
+    if ((type - 1) > 2)
     {
       v5 = @"unknown";
     }
 
     else
     {
-      v5 = off_278C3D288[v4 - 1];
+      v5 = off_278C3D288[type - 1];
     }
 
     v11[0] = v5;
     v10[1] = @"value";
-    v7 = [v3 value];
+    value = [handleCopy value];
 
-    v11[1] = v7;
+    v11[1] = value;
     v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:v10 count:2];
   }
 

@@ -1,6 +1,6 @@
 @interface SLAssistantWeiboPostDelegate
 - (NSBundle)locationPermissionBundle;
-- (id)extractErrorDetailsFromResponseData:(id)a3 urlResponse:(id)a4;
+- (id)extractErrorDetailsFromResponseData:(id)data urlResponse:(id)response;
 @end
 
 @implementation SLAssistantWeiboPostDelegate
@@ -12,15 +12,15 @@
   return [NSBundle bundleWithPath:v2];
 }
 
-- (id)extractErrorDetailsFromResponseData:(id)a3 urlResponse:(id)a4
+- (id)extractErrorDetailsFromResponseData:(id)data urlResponse:(id)response
 {
-  if ([a4 statusCode] != &stru_158.reloff)
+  if ([response statusCode] != &stru_158.reloff)
   {
     return 0;
   }
 
   v8 = 0;
-  v5 = [NSJSONSerialization JSONObjectWithData:a3 options:0 error:&v8];
+  v5 = [NSJSONSerialization JSONObjectWithData:data options:0 error:&v8];
   if (!v5)
   {
     return 0;

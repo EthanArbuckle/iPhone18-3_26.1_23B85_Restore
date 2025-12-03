@@ -1,12 +1,12 @@
 @interface RTStateModelLocation
 - (RTStateModelLocation)init;
-- (RTStateModelLocation)initWithCLLocation:(id)a3;
-- (RTStateModelLocation)initWithCoder:(id)a3;
-- (RTStateModelLocation)initWithLat:(double)a3 Lon:(double)a4 Uncertainty:(double)a5 confidence:(double)a6 andTimestamp_s:(double)a7 referenceFrame:(int)a8;
-- (RTStateModelLocation)initWithLatitude:(double)a3 longitude:(double)a4 uncertainty:(double)a5;
-- (RTStateModelLocation)initWithRTLocation:(id)a3;
+- (RTStateModelLocation)initWithCLLocation:(id)location;
+- (RTStateModelLocation)initWithCoder:(id)coder;
+- (RTStateModelLocation)initWithLat:(double)lat Lon:(double)lon Uncertainty:(double)uncertainty confidence:(double)confidence andTimestamp_s:(double)timestamp_s referenceFrame:(int)frame;
+- (RTStateModelLocation)initWithLatitude:(double)latitude longitude:(double)longitude uncertainty:(double)uncertainty;
+- (RTStateModelLocation)initWithRTLocation:(id)location;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RTStateModelLocation
@@ -18,119 +18,119 @@
   return [(RTStateModelLocation *)self initWithLat:0 Lon:-360.0 Uncertainty:-360.0 confidence:-1.0 andTimestamp_s:0.0 referenceFrame:Current];
 }
 
-- (RTStateModelLocation)initWithLat:(double)a3 Lon:(double)a4 Uncertainty:(double)a5 confidence:(double)a6 andTimestamp_s:(double)a7 referenceFrame:(int)a8
+- (RTStateModelLocation)initWithLat:(double)lat Lon:(double)lon Uncertainty:(double)uncertainty confidence:(double)confidence andTimestamp_s:(double)timestamp_s referenceFrame:(int)frame
 {
   v15.receiver = self;
   v15.super_class = RTStateModelLocation;
   result = [(RTStateModelLocation *)&v15 init];
   if (result)
   {
-    result->_Latitude_deg = a3;
-    result->_Longitude_deg = a4;
-    result->_uncertainty_m = a5;
-    result->_confidence = a6;
-    result->_timestamp_s = a7;
-    result->_referenceFrame = a8;
+    result->_Latitude_deg = lat;
+    result->_Longitude_deg = lon;
+    result->_uncertainty_m = uncertainty;
+    result->_confidence = confidence;
+    result->_timestamp_s = timestamp_s;
+    result->_referenceFrame = frame;
   }
 
   return result;
 }
 
-- (RTStateModelLocation)initWithCLLocation:(id)a3
+- (RTStateModelLocation)initWithCLLocation:(id)location
 {
-  if (a3)
+  if (location)
   {
-    v4 = a3;
-    [v4 coordinate];
+    locationCopy = location;
+    [locationCopy coordinate];
     v6 = v5;
-    [v4 coordinate];
+    [locationCopy coordinate];
     v8 = v7;
-    [v4 horizontalAccuracy];
+    [locationCopy horizontalAccuracy];
     v10 = v9;
-    v11 = [v4 timestamp];
-    [v11 timeIntervalSinceReferenceDate];
+    timestamp = [locationCopy timestamp];
+    [timestamp timeIntervalSinceReferenceDate];
     v13 = v12;
-    v14 = [v4 referenceFrame];
+    referenceFrame = [locationCopy referenceFrame];
 
-    self = [(RTStateModelLocation *)self initWithLat:v14 Lon:v6 Uncertainty:v8 confidence:v10 andTimestamp_s:0.0 referenceFrame:v13];
-    v15 = self;
+    self = [(RTStateModelLocation *)self initWithLat:referenceFrame Lon:v6 Uncertainty:v8 confidence:v10 andTimestamp_s:0.0 referenceFrame:v13];
+    selfCopy = self;
   }
 
   else
   {
-    v15 = 0;
+    selfCopy = 0;
   }
 
-  return v15;
+  return selfCopy;
 }
 
-- (RTStateModelLocation)initWithRTLocation:(id)a3
+- (RTStateModelLocation)initWithRTLocation:(id)location
 {
-  if (a3)
+  if (location)
   {
-    v4 = a3;
-    [v4 latitude];
+    locationCopy = location;
+    [locationCopy latitude];
     v6 = v5;
-    [v4 longitude];
+    [locationCopy longitude];
     v8 = v7;
-    [v4 horizontalUncertainty];
+    [locationCopy horizontalUncertainty];
     v10 = v9;
-    v11 = [v4 date];
-    [v11 timeIntervalSinceReferenceDate];
+    date = [locationCopy date];
+    [date timeIntervalSinceReferenceDate];
     v13 = v12;
-    v14 = [v4 referenceFrame];
+    referenceFrame = [locationCopy referenceFrame];
 
-    self = [(RTStateModelLocation *)self initWithLat:v14 Lon:v6 Uncertainty:v8 confidence:v10 andTimestamp_s:0.0 referenceFrame:v13];
-    v15 = self;
+    self = [(RTStateModelLocation *)self initWithLat:referenceFrame Lon:v6 Uncertainty:v8 confidence:v10 andTimestamp_s:0.0 referenceFrame:v13];
+    selfCopy = self;
   }
 
   else
   {
-    v15 = 0;
+    selfCopy = 0;
   }
 
-  return v15;
+  return selfCopy;
 }
 
-- (RTStateModelLocation)initWithLatitude:(double)a3 longitude:(double)a4 uncertainty:(double)a5
+- (RTStateModelLocation)initWithLatitude:(double)latitude longitude:(double)longitude uncertainty:(double)uncertainty
 {
   Current = CFAbsoluteTimeGetCurrent();
 
-  return [(RTStateModelLocation *)self initWithLat:a3 Lon:a4 Uncertainty:a5 confidence:0.0 andTimestamp_s:Current];
+  return [(RTStateModelLocation *)self initWithLat:latitude Lon:longitude Uncertainty:uncertainty confidence:0.0 andTimestamp_s:Current];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   [(RTStateModelLocation *)self Latitude_deg];
-  [v4 encodeDouble:@"Latitude_deg" forKey:?];
+  [coderCopy encodeDouble:@"Latitude_deg" forKey:?];
   [(RTStateModelLocation *)self Longitude_deg];
-  [v4 encodeDouble:@"Longitude_deg" forKey:?];
+  [coderCopy encodeDouble:@"Longitude_deg" forKey:?];
   [(RTStateModelLocation *)self uncertainty_m];
-  [v4 encodeDouble:@"uncertainty_m" forKey:?];
+  [coderCopy encodeDouble:@"uncertainty_m" forKey:?];
   [(RTStateModelLocation *)self confidence];
-  [v4 encodeDouble:@"confidence" forKey:?];
+  [coderCopy encodeDouble:@"confidence" forKey:?];
   [(RTStateModelLocation *)self timestamp_s];
-  [v4 encodeDouble:@"timestamp_s" forKey:?];
+  [coderCopy encodeDouble:@"timestamp_s" forKey:?];
 }
 
-- (RTStateModelLocation)initWithCoder:(id)a3
+- (RTStateModelLocation)initWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 decodeDoubleForKey:@"Latitude_deg"];
+  coderCopy = coder;
+  [coderCopy decodeDoubleForKey:@"Latitude_deg"];
   v6 = v5;
-  [v4 decodeDoubleForKey:@"Longitude_deg"];
+  [coderCopy decodeDoubleForKey:@"Longitude_deg"];
   v8 = v7;
-  [v4 decodeDoubleForKey:@"uncertainty_m"];
+  [coderCopy decodeDoubleForKey:@"uncertainty_m"];
   v10 = v9;
   v11 = 0.0;
-  if ([v4 containsValueForKey:@"confidence"])
+  if ([coderCopy containsValueForKey:@"confidence"])
   {
-    [v4 decodeDoubleForKey:@"confidence"];
+    [coderCopy decodeDoubleForKey:@"confidence"];
     v11 = v12;
   }
 
-  [v4 decodeDoubleForKey:@"timestamp_s"];
+  [coderCopy decodeDoubleForKey:@"timestamp_s"];
   v14 = [(RTStateModelLocation *)self initWithLat:v6 Lon:v8 Uncertainty:v10 confidence:v11 andTimestamp_s:v13];
 
   return v14;

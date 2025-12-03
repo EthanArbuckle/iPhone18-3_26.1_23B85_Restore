@@ -12,10 +12,10 @@
 
 - (id)accessibilityDelegate
 {
-  v1 = objc_getAssociatedObject(a1, &AXDelegateKey);
-  v2 = [v1 delegate];
+  v1 = objc_getAssociatedObject(self, &AXDelegateKey);
+  delegate = [v1 delegate];
 
-  return v2;
+  return delegate;
 }
 
 - (void)setAccessibilityDelegate:()Private
@@ -24,25 +24,25 @@
   value = objc_alloc_init(UIAccessibilityElementWeakDelegateContainer);
   [(UIAccessibilityElementWeakDelegateContainer *)value setDelegate:v4];
 
-  objc_setAssociatedObject(a1, &AXDelegateKey, value, 1);
+  objc_setAssociatedObject(self, &AXDelegateKey, value, 1);
 }
 
 - (uint64_t)_accessibilityViewIsVisible
 {
-  v1 = [a1 _accessibilityParentView];
-  v2 = [v1 _accessibilityViewIsVisible];
+  _accessibilityParentView = [self _accessibilityParentView];
+  _accessibilityViewIsVisible = [_accessibilityParentView _accessibilityViewIsVisible];
 
-  return v2;
+  return _accessibilityViewIsVisible;
 }
 
 - (void)setDelegate:()Private forAttribute:withSelector:
 {
   v8 = a3;
-  v13 = [a1 _accessibilityValueForKey:@"UIAXDelegateSpecific"];
+  v13 = [self _accessibilityValueForKey:@"UIAXDelegateSpecific"];
   if (!v13)
   {
     v13 = [objc_allocWithZone(MEMORY[0x1E695DF90]) init];
-    [a1 _accessibilitySetRetainedValue:? forKey:?];
+    [self _accessibilitySetRetainedValue:? forKey:?];
   }
 
   v9 = MEMORY[0x1E695DF20];
@@ -55,7 +55,7 @@
 
 - (void)delegateSpecificsForAttribute:()Private delegate:selector:
 {
-  v8 = [a1 _accessibilityValueForKey:@"UIAXDelegateSpecific"];
+  v8 = [self _accessibilityValueForKey:@"UIAXDelegateSpecific"];
   if (v8)
   {
     v12 = v8;
@@ -73,12 +73,12 @@
 - (void)setBounds:()Private
 {
   v2 = [MEMORY[0x1E696B098] valueWithRect:?];
-  [a1 _accessibilitySetValue:v2 forKey:@"AXElementBounds" storageMode:0];
+  [self _accessibilitySetValue:v2 forKey:@"AXElementBounds" storageMode:0];
 }
 
 - (double)bounds
 {
-  v1 = [a1 _accessibilityValueForKey:@"AXElementBounds"];
+  v1 = [self _accessibilityValueForKey:@"AXElementBounds"];
   v2 = v1;
   if (v1)
   {

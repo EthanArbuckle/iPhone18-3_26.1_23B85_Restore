@@ -23,12 +23,12 @@
   v5 = MEMORY[0x277CBC538];
   v6 = a3;
   v7 = [v5 packageWithPackage:v6 error:a4];
-  v8 = [v6 boundaryKey];
+  boundaryKey = [v6 boundaryKey];
 
-  v9 = [MEMORY[0x277CBC190] transferOptionsWithMMCSV2:v8 != 0];
+  v9 = [MEMORY[0x277CBC190] transferOptionsWithMMCSV2:boundaryKey != 0];
   [v7 setAssetTransferOptions:v9];
 
-  v10 = [v7 setBoundaryKey:v8];
+  v10 = [v7 setBoundaryKey:boundaryKey];
 
   return v7;
 }

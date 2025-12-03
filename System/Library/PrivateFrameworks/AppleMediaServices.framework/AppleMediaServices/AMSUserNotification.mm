@@ -1,34 +1,34 @@
 @interface AMSUserNotification
 + (AMSBagKeySet)bagKeySet;
-+ (BOOL)_canParseNotificationWithIdentifier:(id)a3 userInfo:(id)a4;
-+ (BOOL)shouldDeleteNotificationForPayload:(id)a3 outIdentifier:(id *)a4 scheduledOnly:(BOOL *)a5;
-+ (BOOL)shouldHandleNotificationResponse:(id)a3;
-+ (BOOL)shouldHandleServiceExtensionNotificationRequest:(id)a3;
++ (BOOL)_canParseNotificationWithIdentifier:(id)identifier userInfo:(id)info;
++ (BOOL)shouldDeleteNotificationForPayload:(id)payload outIdentifier:(id *)identifier scheduledOnly:(BOOL *)only;
++ (BOOL)shouldHandleNotificationResponse:(id)response;
++ (BOOL)shouldHandleServiceExtensionNotificationRequest:(id)request;
 + (NSString)bagSubProfile;
 + (NSString)bagSubProfileVersion;
-+ (id)_cachedImagePathForIdentifier:(id)a3 assetURL:(id)a4;
-+ (id)_dateFromString:(id)a3;
-+ (id)_downloadAssetAtUrl:(id)a3 withIdentifier:(id)a4 logKey:(id)a5 bag:(id)a6;
-+ (id)_identifierFromPayload:(id)a3;
++ (id)_cachedImagePathForIdentifier:(id)identifier assetURL:(id)l;
++ (id)_dateFromString:(id)string;
++ (id)_downloadAssetAtUrl:(id)url withIdentifier:(id)identifier logKey:(id)key bag:(id)bag;
++ (id)_identifierFromPayload:(id)payload;
 + (id)createBagForSubProfile;
-+ (id)handleNotificationResponse:(id)a3 bag:(id)a4;
-+ (id)handleNotificationResponse:(id)a3 bagContract:(id)a4;
-+ (id)notificationCenter:(id)a3 didChangeSettings:(id)a4 bag:(id)a5;
-+ (id)notificationWithPayload:(id)a3 andConfig:(id)a4;
-+ (void)handleServiceExtensionNotificationRequest:(id)a3 bag:(id)a4 withContentHandler:(id)a5;
-+ (void)openAppUsingBundleIdentifier:(id)a3;
++ (id)handleNotificationResponse:(id)response bag:(id)bag;
++ (id)handleNotificationResponse:(id)response bagContract:(id)contract;
++ (id)notificationCenter:(id)center didChangeSettings:(id)settings bag:(id)bag;
++ (id)notificationWithPayload:(id)payload andConfig:(id)config;
++ (void)handleServiceExtensionNotificationRequest:(id)request bag:(id)bag withContentHandler:(id)handler;
++ (void)openAppUsingBundleIdentifier:(id)identifier;
 - (AMSUserNotification)init;
-- (AMSUserNotification)initWithPayload:(id)a3 andConfig:(id)a4;
-- (AMSUserNotification)initWithTitle:(id)a3 intent:(int64_t)a4;
-- (AMSUserNotification)initWithUNNotification:(id)a3;
-- (id)_generatePayloadWithBase:(id)a3;
+- (AMSUserNotification)initWithPayload:(id)payload andConfig:(id)config;
+- (AMSUserNotification)initWithTitle:(id)title intent:(int64_t)intent;
+- (AMSUserNotification)initWithUNNotification:(id)notification;
+- (id)_generatePayloadWithBase:(id)base;
 - (id)createUNNotificationActions;
 - (id)createUNNotificationContent;
-- (id)createUNNotificationRequestFromContent:(id)a3;
-- (id)determineSelectedActionFromResponse:(id)a3 error:(id *)a4;
-- (id)handleSelectedButton:(id)a3 bag:(id)a4;
-- (id)handleSelectedButton:(id)a3 bagContract:(id)a4;
-- (void)addButtonAction:(id)a3;
+- (id)createUNNotificationRequestFromContent:(id)content;
+- (id)determineSelectedActionFromResponse:(id)response error:(id *)error;
+- (id)handleSelectedButton:(id)button bag:(id)bag;
+- (id)handleSelectedButton:(id)button bagContract:(id)contract;
+- (void)addButtonAction:(id)action;
 @end
 
 @implementation AMSUserNotification
@@ -46,32 +46,32 @@
   return result;
 }
 
-- (AMSUserNotification)initWithTitle:(id)a3 intent:(int64_t)a4
+- (AMSUserNotification)initWithTitle:(id)title intent:(int64_t)intent
 {
-  v7 = a3;
+  titleCopy = title;
   v8 = [(AMSUserNotification *)self init];
   if (v8)
   {
     v9 = MEMORY[0x1E696AEC0];
-    v10 = [MEMORY[0x1E696AFB0] UUID];
-    v11 = [v10 UUIDString];
-    v12 = [v9 stringWithFormat:@"%@%@", @"ams_", v11];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
+    v12 = [v9 stringWithFormat:@"%@%@", @"ams_", uUIDString];
     categoryIdentifier = v8->_categoryIdentifier;
     v8->_categoryIdentifier = v12;
 
     v14 = MEMORY[0x1E696AEC0];
-    v15 = [MEMORY[0x1E696AFB0] UUID];
-    v16 = [v15 UUIDString];
-    v17 = [v14 stringWithFormat:@"%@%@", @"ams_", v16];
+    uUID2 = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString2 = [uUID2 UUIDString];
+    v17 = [v14 stringWithFormat:@"%@%@", @"ams_", uUIDString2];
     identifier = v8->_identifier;
     v8->_identifier = v17;
 
-    v8->_intent = a4;
+    v8->_intent = intent;
     v19 = AMSGenerateLogCorrelationKey();
     logKey = v8->_logKey;
     v8->_logKey = v19;
 
-    objc_storeStrong(&v8->_title, a3);
+    objc_storeStrong(&v8->_title, title);
     v21 = objc_alloc_init(MEMORY[0x1E695DF90]);
     userInfo = v8->_userInfo;
     v8->_userInfo = v21;
@@ -80,20 +80,20 @@
   return v8;
 }
 
-+ (id)notificationWithPayload:(id)a3 andConfig:(id)a4
++ (id)notificationWithPayload:(id)payload andConfig:(id)config
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[AMSUserNotification alloc] initWithPayload:v6 andConfig:v5];
+  configCopy = config;
+  payloadCopy = payload;
+  v7 = [[AMSUserNotification alloc] initWithPayload:payloadCopy andConfig:configCopy];
 
   return v7;
 }
 
-- (AMSUserNotification)initWithPayload:(id)a3 andConfig:(id)a4
+- (AMSUserNotification)initWithPayload:(id)payload andConfig:(id)config
 {
   v201 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  payloadCopy = payload;
+  configCopy = config;
   v8 = [(AMSUserNotification *)self init];
 
   if (!v8)
@@ -101,7 +101,7 @@
     goto LABEL_144;
   }
 
-  v9 = [v6 aps];
+  v9 = [payloadCopy aps];
   v10 = [v9 objectForKeyedSubscript:@"alert"];
 
   objc_opt_class();
@@ -175,7 +175,7 @@
 
   else
   {
-    v16 = [v6 aps];
+    v16 = [payloadCopy aps];
     v17 = [v16 objectForKeyedSubscript:@"text"];
 
     objc_opt_class();
@@ -194,11 +194,11 @@
     v30 = v8->_informativeText;
     v8->_informativeText = v29;
 
-    v31 = [v6 aps];
+    v31 = [payloadCopy aps];
     v32 = [v31 objectForKeyedSubscript:@"_lv"];
     if (objc_opt_respondsToSelector())
     {
-      v33 = [v6 aps];
+      v33 = [payloadCopy aps];
       v34 = [v33 objectForKeyedSubscript:@"_lv"];
       v8->_interruptionLevel = [v34 integerValue];
     }
@@ -208,7 +208,7 @@
       v8->_interruptionLevel = 1;
     }
 
-    v35 = [v6 aps];
+    v35 = [payloadCopy aps];
     v36 = [v35 objectForKeyedSubscript:@"_sb"];
 
     objc_opt_class();
@@ -227,7 +227,7 @@
     v39 = v8->_subtitle;
     v8->_subtitle = v38;
 
-    v40 = [v6 aps];
+    v40 = [payloadCopy aps];
     v28 = [v40 objectForKeyedSubscript:@"title"];
   }
 
@@ -257,15 +257,15 @@
 
   objc_storeStrong(&v8->_title, v43);
 
-  v44 = [v6 account];
+  account = [payloadCopy account];
   account = v8->_account;
-  v8->_account = v44;
+  v8->_account = account;
 
-  v46 = [v6 clientIdentifier];
+  clientIdentifier = [payloadCopy clientIdentifier];
   centerBundleIdentifier = v8->_centerBundleIdentifier;
-  v8->_centerBundleIdentifier = v46;
+  v8->_centerBundleIdentifier = clientIdentifier;
 
-  v48 = [v6 aps];
+  v48 = [payloadCopy aps];
   v49 = [v48 objectForKeyedSubscript:@"icon"];
 
   objc_opt_class();
@@ -287,7 +287,7 @@
     objc_storeStrong(&v8->_iconBundleIdentifier, v50);
   }
 
-  v52 = [v6 objectForKeyedSubscript:@"_logKey"];
+  v52 = [payloadCopy objectForKeyedSubscript:@"_logKey"];
   v53 = v52;
   if (v52)
   {
@@ -298,16 +298,16 @@
 
   else
   {
-    logKey = [v6 logKey];
+    logKey = [payloadCopy logKey];
     objc_storeStrong(&v8->_logKey, logKey);
   }
 
-  v56 = [v6 aps];
+  v56 = [payloadCopy aps];
   v57 = [v56 objectForKeyedSubscript:@"thread"];
   threadIdentifier = v8->_threadIdentifier;
   v8->_threadIdentifier = v57;
 
-  v59 = [v6 aps];
+  v59 = [payloadCopy aps];
   v60 = [v59 objectForKeyedSubscript:@"_st"];
 
   objc_opt_class();
@@ -330,23 +330,23 @@
     v8->_scheduledTime = v63;
   }
 
-  v65 = [v6 aps];
+  v65 = [payloadCopy aps];
   v66 = [v65 objectForKeyedSubscript:@"_sd"];
 
   v187 = v62;
   v181 = v66;
   if (objc_opt_respondsToSelector())
   {
-    v67 = [v66 BOOLValue];
+    bOOLValue = [v66 BOOLValue];
   }
 
   else
   {
-    v67 = 0;
+    bOOLValue = 0;
   }
 
-  v8->_shouldSuppressDefaultAction = v67;
-  v68 = [v6 aps];
+  v8->_shouldSuppressDefaultAction = bOOLValue;
+  v68 = [payloadCopy aps];
   v69 = [v68 objectForKeyedSubscript:@"_ss"];
 
   objc_opt_class();
@@ -369,39 +369,39 @@ LABEL_53:
 
 LABEL_54:
   v180 = v69;
-  v72 = [v6 aps];
+  v72 = [payloadCopy aps];
   v73 = [v72 objectForKeyedSubscript:@"category"];
   categoryIdentifier = v8->_categoryIdentifier;
   v8->_categoryIdentifier = v73;
 
   if (!v8->_categoryIdentifier)
   {
-    v75 = [v7 userNotificationExtensionId];
+    userNotificationExtensionId = [configCopy userNotificationExtensionId];
     v76 = v8->_categoryIdentifier;
-    v8->_categoryIdentifier = v75;
+    v8->_categoryIdentifier = userNotificationExtensionId;
   }
 
-  v77 = [AMSUserNotification _identifierFromPayload:v6];
+  v77 = [AMSUserNotification _identifierFromPayload:payloadCopy];
   identifier = v8->_identifier;
   v8->_identifier = v77;
 
-  v79 = [v6 aps];
+  v79 = [payloadCopy aps];
   v80 = [v79 objectForKeyedSubscript:@"_ex"];
 
   v179 = v80;
   if (objc_opt_respondsToSelector())
   {
-    v81 = [v80 BOOLValue];
+    bOOLValue2 = [v80 BOOLValue];
   }
 
   else
   {
-    v81 = 0;
+    bOOLValue2 = 0;
   }
 
-  v182 = v7;
-  v8->_explicitContent = v81;
-  v82 = [v6 aps];
+  v182 = configCopy;
+  v8->_explicitContent = bOOLValue2;
+  v82 = [payloadCopy aps];
   v83 = [v82 objectForKeyedSubscript:@"_an"];
   v84 = v83;
   v85 = MEMORY[0x1E695E110];
@@ -414,7 +414,7 @@ LABEL_54:
 
   v178 = v86;
   v8->_anonymizeMetrics = [v86 BOOLValue];
-  v87 = [v6 aps];
+  v87 = [payloadCopy aps];
   v88 = [v87 objectForKeyedSubscript:@"_au"];
   v89 = v88;
   v90 = &stru_1F071BA78;
@@ -430,7 +430,7 @@ LABEL_54:
   artworkUrl = v8->_artworkUrl;
   v8->_artworkUrl = v92;
 
-  v94 = [v6 aps];
+  v94 = [payloadCopy aps];
   v95 = [v94 objectForKeyedSubscript:@"_vu"];
 
   v176 = v95;
@@ -441,8 +441,8 @@ LABEL_54:
 
   v185 = objc_alloc_init(MEMORY[0x1E695DF70]);
   [MEMORY[0x1E695DF70] array];
-  v190 = v189 = v6;
-  v98 = [v6 aps];
+  v190 = v189 = payloadCopy;
+  v98 = [payloadCopy aps];
   v99 = [v98 objectForKeyedSubscript:@"_ba"];
 
   v198 = 0u;
@@ -492,23 +492,23 @@ LABEL_54:
         v108 = [v101 objectForKeyedSubscript:@"_id"];
         [(AMSUserNotificationAction *)v107 setIdentifier:v108];
 
-        v109 = [(AMSUserNotificationAction *)v107 identifier];
+        identifier = [(AMSUserNotificationAction *)v107 identifier];
 
-        if (!v109)
+        if (!identifier)
         {
           v110 = *(v13 + 3776);
-          v111 = [MEMORY[0x1E696AFB0] UUID];
-          v112 = [v111 UUIDString];
-          v113 = [v110 stringWithFormat:@"%@%@", @"ams_", v112];
-          [(AMSUserNotificationAction *)v107 setIdentifier:v113];
+          uUID = [MEMORY[0x1E696AFB0] UUID];
+          uUIDString = [uUID UUIDString];
+          v112 = [v110 stringWithFormat:@"%@%@", @"ams_", uUIDString];
+          [(AMSUserNotificationAction *)v107 setIdentifier:v112];
         }
 
         v114 = [v101 objectForKeyedSubscript:@"_mt"];
         if (v114)
         {
           [v190 addObject:v114];
-          v115 = [v189 clientIdentifier];
-          v116 = [AMSUserNotificationMetricsEvent eventFromMetricsDictionary:v114 centerBundleId:v115];
+          clientIdentifier2 = [v189 clientIdentifier];
+          v116 = [AMSUserNotificationMetricsEvent eventFromMetricsDictionary:v114 centerBundleId:clientIdentifier2];
 
           [v116 setAnonymous:{-[AMSUserNotification anonymizeMetrics](v188, "anonymizeMetrics")}];
           [v116 setDisplayScheduledTime:v187];
@@ -707,7 +707,7 @@ LABEL_118:
   v192 = 0;
 LABEL_122:
 
-  v6 = v189;
+  payloadCopy = v189;
   v151 = [v189 aps];
   v152 = [v151 objectForKeyedSubscript:@"_mt"];
   v8 = v188;
@@ -726,7 +726,7 @@ LABEL_122:
   v157 = [v156 objectForKeyedSubscript:@"tapUrl"];
 
   objc_opt_class();
-  v7 = v182;
+  configCopy = v182;
   if (objc_opt_isKindOfClass())
   {
     v158 = v157;
@@ -763,9 +763,9 @@ LABEL_122:
     goto LABEL_135;
   }
 
-  v165 = [v189 URLString];
+  uRLString = [v189 URLString];
 
-  if (!v165 || (v166 = MEMORY[0x1E695DFF8], [v189 URLString], v167 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v166, "URLWithString:", v167), v168 = objc_claimAutoreleasedReturnValue(), v167, !v168))
+  if (!uRLString || (v166 = MEMORY[0x1E695DFF8], [v189 URLString], v167 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v166, "URLWithString:", v167), v168 = objc_claimAutoreleasedReturnValue(), v167, !v168))
   {
     v164 = 0;
     v163 = v185;
@@ -807,15 +807,15 @@ LABEL_144:
   return v174;
 }
 
-- (AMSUserNotification)initWithUNNotification:(id)a3
+- (AMSUserNotification)initWithUNNotification:(id)notification
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 request];
-  v6 = [v5 content];
-  v7 = [v6 userInfo];
+  notificationCopy = notification;
+  request = [notificationCopy request];
+  content = [request content];
+  userInfo = [content userInfo];
 
-  v8 = [[AMSPushPayload alloc] initWithPayload:v7];
+  v8 = [[AMSPushPayload alloc] initWithPayload:userInfo];
   v9 = [(AMSUserNotification *)self initWithPayload:v8 andConfig:0];
   if (!v9)
   {
@@ -824,18 +824,18 @@ LABEL_6:
     goto LABEL_12;
   }
 
-  if ([AMSUserNotification _canParseNotificationWithIdentifier:v9->_identifier userInfo:v7])
+  if ([AMSUserNotification _canParseNotificationWithIdentifier:v9->_identifier userInfo:userInfo])
   {
-    v10 = [v4 request];
-    v11 = [v10 content];
+    request2 = [notificationCopy request];
+    content2 = [request2 content];
 
-    v12 = [v11 attachments];
-    v13 = [v12 count];
+    attachments = [content2 attachments];
+    v13 = [attachments count];
 
     if (v13)
     {
-      v14 = [v11 attachments];
-      v15 = [v14 objectAtIndexedSubscript:0];
+      attachments2 = [content2 attachments];
+      v15 = [attachments2 objectAtIndexedSubscript:0];
       v16 = [v15 URL];
       artworkUrl = v9->_artworkUrl;
       v9->_artworkUrl = v16;
@@ -850,8 +850,8 @@ LABEL_6:
     v19 = +[AMSLogConfig sharedConfig];
   }
 
-  v20 = [v19 OSLogObject];
-  if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
+  oSLogObject = [v19 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     v21 = objc_opt_class();
     logKey = v9->_logKey;
@@ -863,7 +863,7 @@ LABEL_6:
     v30 = 2114;
     v31 = identifier;
     v24 = v21;
-    _os_log_impl(&dword_192869000, v20, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Not allowed to operate on a NSUserNotification that did not originate from AMS. Identifier: %{public}@", &v26, 0x20u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Not allowed to operate on a NSUserNotification that did not originate from AMS. Identifier: %{public}@", &v26, 0x20u);
   }
 
   v18 = 0;
@@ -896,19 +896,19 @@ LABEL_12:
         }
 
         v8 = *(*(&v19 + 1) + 8 * i);
-        v9 = [v8 systemImageName];
+        systemImageName = [v8 systemImageName];
 
-        if (v9)
+        if (systemImageName)
         {
           v10 = MEMORY[0x1E6983260];
-          v11 = [v8 systemImageName];
-          v9 = [v10 iconWithSystemImageName:v11];
+          systemImageName2 = [v8 systemImageName];
+          systemImageName = [v10 iconWithSystemImageName:systemImageName2];
         }
 
         v12 = MEMORY[0x1E6983250];
-        v13 = [v8 identifier];
-        v14 = [v8 title];
-        v15 = [v12 actionWithIdentifier:v13 title:v14 options:objc_msgSend(v8 icon:{"un_ActionOptions"), v9}];
+        identifier = [v8 identifier];
+        title = [v8 title];
+        v15 = [v12 actionWithIdentifier:identifier title:title options:objc_msgSend(v8 icon:{"un_ActionOptions"), systemImageName}];
 
         [v3 addObject:v15];
       }
@@ -927,66 +927,66 @@ LABEL_12:
 - (id)createUNNotificationContent
 {
   v3 = objc_alloc_init(MEMORY[0x1E6983220]);
-  v4 = [(AMSUserNotification *)self informativeText];
-  [v3 setBody:v4];
+  informativeText = [(AMSUserNotification *)self informativeText];
+  [v3 setBody:informativeText];
 
-  v5 = [(AMSUserNotification *)self categoryIdentifier];
-  [v3 setCategoryIdentifier:v5];
+  categoryIdentifier = [(AMSUserNotification *)self categoryIdentifier];
+  [v3 setCategoryIdentifier:categoryIdentifier];
 
-  v6 = [(AMSUserNotification *)self threadIdentifier];
-  [v3 setThreadIdentifier:v6];
+  threadIdentifier = [(AMSUserNotification *)self threadIdentifier];
+  [v3 setThreadIdentifier:threadIdentifier];
 
-  v7 = [(AMSUserNotification *)self title];
-  [v3 setTitle:v7];
+  title = [(AMSUserNotification *)self title];
+  [v3 setTitle:title];
 
-  v8 = [(AMSUserNotification *)self subtitle];
-  [v3 setSubtitle:v8];
+  subtitle = [(AMSUserNotification *)self subtitle];
+  [v3 setSubtitle:subtitle];
 
-  v9 = [(AMSUserNotification *)self userInfo];
-  v10 = [(AMSUserNotification *)self _generatePayloadWithBase:v9];
+  userInfo = [(AMSUserNotification *)self userInfo];
+  v10 = [(AMSUserNotification *)self _generatePayloadWithBase:userInfo];
   [v3 setUserInfo:v10];
 
   [v3 setInterruptionLevel:{-[AMSUserNotification interruptionLevel](self, "interruptionLevel")}];
   [v3 setShouldSuppressDefaultAction:{-[AMSUserNotification shouldSuppressDefaultAction](self, "shouldSuppressDefaultAction")}];
-  v11 = [(AMSUserNotification *)self defaultAction];
+  defaultAction = [(AMSUserNotification *)self defaultAction];
 
-  if (v11)
+  if (defaultAction)
   {
     [v3 setShouldBackgroundDefaultAction:1];
     [v3 setShouldAuthenticateDefaultAction:1];
   }
 
-  v12 = [(AMSUserNotification *)self subsections];
+  subsections = [(AMSUserNotification *)self subsections];
 
-  if (v12)
+  if (subsections)
   {
-    v13 = [(AMSUserNotification *)self subsections];
-    [v3 setTopicIdentifiers:v13];
+    subsections2 = [(AMSUserNotification *)self subsections];
+    [v3 setTopicIdentifiers:subsections2];
   }
 
-  v14 = [(AMSUserNotification *)self iconBundleIdentifier];
+  iconBundleIdentifier = [(AMSUserNotification *)self iconBundleIdentifier];
 
-  if (v14)
+  if (iconBundleIdentifier)
   {
     v15 = MEMORY[0x1E6983290];
-    v16 = [(AMSUserNotification *)self iconBundleIdentifier];
-    v17 = [v15 iconForApplicationIdentifier:v16];
+    iconBundleIdentifier2 = [(AMSUserNotification *)self iconBundleIdentifier];
+    v17 = [v15 iconForApplicationIdentifier:iconBundleIdentifier2];
     [v3 setIcon:v17];
   }
 
   return v3;
 }
 
-- (id)createUNNotificationRequestFromContent:(id)a3
+- (id)createUNNotificationRequestFromContent:(id)content
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(AMSUserNotification *)self scheduledTime];
+  contentCopy = content;
+  scheduledTime = [(AMSUserNotification *)self scheduledTime];
 
-  if (v5)
+  if (scheduledTime)
   {
-    v6 = [(AMSUserNotification *)self scheduledTime];
-    [v6 timeIntervalSinceNow];
+    scheduledTime2 = [(AMSUserNotification *)self scheduledTime];
+    [scheduledTime2 timeIntervalSinceNow];
     v8 = v7;
 
     v9 = +[AMSLogConfig sharedUserNotificationConfig];
@@ -998,24 +998,24 @@ LABEL_12:
         v10 = +[AMSLogConfig sharedConfig];
       }
 
-      v16 = [v10 OSLogObject];
-      if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+      oSLogObject = [v10 OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
       {
         v17 = objc_opt_class();
         v18 = AMSLogKey();
-        v19 = [(AMSUserNotification *)self scheduledTime];
+        scheduledTime3 = [(AMSUserNotification *)self scheduledTime];
         v26 = 138543874;
         v27 = v17;
         v28 = 2114;
         v29 = v18;
         v30 = 2114;
-        v31 = v19;
-        _os_log_impl(&dword_192869000, v16, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Scheduling notification for time: %{public}@", &v26, 0x20u);
+        v31 = scheduledTime3;
+        _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Scheduling notification for time: %{public}@", &v26, 0x20u);
       }
 
-      v20 = [MEMORY[0x1E695DEE8] currentCalendar];
-      v21 = [(AMSUserNotification *)self scheduledTime];
-      v10 = [v20 components:252 fromDate:v21];
+      currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+      scheduledTime4 = [(AMSUserNotification *)self scheduledTime];
+      v10 = [currentCalendar components:252 fromDate:scheduledTime4];
 
       v15 = [MEMORY[0x1E69831E8] triggerWithDateMatchingComponents:v10 repeats:0];
     }
@@ -1027,19 +1027,19 @@ LABEL_12:
         v10 = +[AMSLogConfig sharedConfig];
       }
 
-      v11 = [v10 OSLogObject];
-      if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+      oSLogObject2 = [v10 OSLogObject];
+      if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
       {
         v12 = objc_opt_class();
         v13 = AMSLogKey();
-        v14 = [(AMSUserNotification *)self scheduledTime];
+        scheduledTime5 = [(AMSUserNotification *)self scheduledTime];
         v26 = 138543874;
         v27 = v12;
         v28 = 2114;
         v29 = v13;
         v30 = 2114;
-        v31 = v14;
-        _os_log_impl(&dword_192869000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Notification scheduled time %{public}@ has passed, ignoring schedule.", &v26, 0x20u);
+        v31 = scheduledTime5;
+        _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Notification scheduled time %{public}@ has passed, ignoring schedule.", &v26, 0x20u);
       }
 
       v15 = 0;
@@ -1052,17 +1052,17 @@ LABEL_12:
   }
 
   v22 = MEMORY[0x1E6983298];
-  v23 = [(AMSUserNotification *)self identifier];
-  v24 = [v22 requestWithIdentifier:v23 content:v4 trigger:v15];
+  identifier = [(AMSUserNotification *)self identifier];
+  v24 = [v22 requestWithIdentifier:identifier content:contentCopy trigger:v15];
 
   return v24;
 }
 
-- (void)addButtonAction:(id)a3
+- (void)addButtonAction:(id)action
 {
-  v4 = a3;
-  v5 = [(AMSUserNotification *)self buttonActions];
-  v6 = [v5 mutableCopy];
+  actionCopy = action;
+  buttonActions = [(AMSUserNotification *)self buttonActions];
+  v6 = [buttonActions mutableCopy];
   v7 = v6;
   if (v6)
   {
@@ -1076,41 +1076,41 @@ LABEL_12:
 
   v9 = v8;
 
-  [v9 addObject:v4];
+  [v9 addObject:actionCopy];
   [(AMSUserNotification *)self setButtonActions:v9];
 }
 
-- (id)determineSelectedActionFromResponse:(id)a3 error:(id *)a4
+- (id)determineSelectedActionFromResponse:(id)response error:(id *)error
 {
   v50 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(AMSUserNotification *)self logKey];
-  v8 = AMSSetLogKey(v7);
+  responseCopy = response;
+  logKey = [(AMSUserNotification *)self logKey];
+  v8 = AMSSetLogKey(logKey);
 
-  v9 = [v6 actionIdentifier];
-  v10 = [v9 isEqualToString:*MEMORY[0x1E69833E0]];
+  actionIdentifier = [responseCopy actionIdentifier];
+  v10 = [actionIdentifier isEqualToString:*MEMORY[0x1E69833E0]];
 
   if (v10)
   {
-    v11 = [(AMSUserNotification *)self defaultAction];
+    defaultAction = [(AMSUserNotification *)self defaultAction];
     v12 = +[AMSLogConfig sharedUserNotificationConfig];
     v13 = v12;
-    if (v11)
+    if (defaultAction)
     {
       if (!v12)
       {
         v13 = +[AMSLogConfig sharedConfig];
       }
 
-      v14 = [v13 OSLogObject];
-      if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+      oSLogObject = [v13 OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
       {
-        v15 = [(AMSUserNotification *)self logKey];
+        logKey2 = [(AMSUserNotification *)self logKey];
         *buf = 138543618;
-        v44 = self;
+        selfCopy5 = self;
         v45 = 2114;
-        v46 = v15;
-        _os_log_impl(&dword_192869000, v14, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Default action selected", buf, 0x16u);
+        v46 = logKey2;
+        _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Default action selected", buf, 0x16u);
       }
 
       v16 = 0;
@@ -1122,24 +1122,24 @@ LABEL_12:
       v13 = +[AMSLogConfig sharedConfig];
     }
 
-    v30 = [v13 OSLogObject];
-    if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
+    oSLogObject2 = [v13 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
     {
-      v31 = [(AMSUserNotification *)self logKey];
+      logKey3 = [(AMSUserNotification *)self logKey];
       *buf = 138543618;
-      v44 = self;
+      selfCopy5 = self;
       v45 = 2114;
-      v46 = v31;
-      _os_log_impl(&dword_192869000, v30, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Default action selected, but action not defined", buf, 0x16u);
+      v46 = logKey3;
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Default action selected, but action not defined", buf, 0x16u);
     }
 
-    v11 = 0;
+    defaultAction = 0;
   }
 
   else
   {
-    v17 = [v6 actionIdentifier];
-    v18 = [v17 isEqualToString:*MEMORY[0x1E69833F8]];
+    actionIdentifier2 = [responseCopy actionIdentifier];
+    v18 = [actionIdentifier2 isEqualToString:*MEMORY[0x1E69833F8]];
 
     if (v18)
     {
@@ -1149,19 +1149,19 @@ LABEL_12:
         v19 = +[AMSLogConfig sharedConfig];
       }
 
-      v20 = [v19 OSLogObject];
-      if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
+      oSLogObject3 = [v19 OSLogObject];
+      if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_DEFAULT))
       {
-        v21 = [(AMSUserNotification *)self logKey];
+        logKey4 = [(AMSUserNotification *)self logKey];
         *buf = 138543618;
-        v44 = self;
+        selfCopy5 = self;
         v45 = 2114;
-        v46 = v21;
-        _os_log_impl(&dword_192869000, v20, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] User dismissed alert", buf, 0x16u);
+        v46 = logKey4;
+        _os_log_impl(&dword_192869000, oSLogObject3, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] User dismissed alert", buf, 0x16u);
       }
 
       v16 = AMSError(6, @"User Notification Cancelled", @"Cancel action selected", 0);
-      v11 = 0;
+      defaultAction = 0;
       goto LABEL_37;
     }
 
@@ -1169,33 +1169,33 @@ LABEL_12:
     v42 = 0u;
     v39 = 0u;
     v40 = 0u;
-    v22 = [(AMSUserNotification *)self buttonActions];
-    v11 = [v22 countByEnumeratingWithState:&v39 objects:v49 count:16];
-    if (v11)
+    buttonActions = [(AMSUserNotification *)self buttonActions];
+    defaultAction = [buttonActions countByEnumeratingWithState:&v39 objects:v49 count:16];
+    if (defaultAction)
     {
-      v36 = self;
-      v37 = a4;
+      selfCopy4 = self;
+      errorCopy = error;
       v23 = 0;
       v24 = *v40;
       while (2)
       {
         v25 = 0;
-        v38 = v23 + v11;
+        v38 = v23 + defaultAction;
         do
         {
           if (*v40 != v24)
           {
-            objc_enumerationMutation(v22);
+            objc_enumerationMutation(buttonActions);
           }
 
           v26 = *(*(&v39 + 1) + 8 * v25);
-          v27 = [v26 identifier];
-          v28 = [v6 actionIdentifier];
-          v29 = [v27 isEqualToString:v28];
+          identifier = [v26 identifier];
+          actionIdentifier3 = [responseCopy actionIdentifier];
+          v29 = [identifier isEqualToString:actionIdentifier3];
 
           if (v29)
           {
-            v11 = v26;
+            defaultAction = v26;
             goto LABEL_29;
           }
 
@@ -1203,10 +1203,10 @@ LABEL_12:
           ++v25;
         }
 
-        while (v11 != v25);
-        v11 = [v22 countByEnumeratingWithState:&v39 objects:v49 count:16];
+        while (defaultAction != v25);
+        defaultAction = [buttonActions countByEnumeratingWithState:&v39 objects:v49 count:16];
         v23 = v38;
-        if (v11)
+        if (defaultAction)
         {
           continue;
         }
@@ -1215,8 +1215,8 @@ LABEL_12:
       }
 
 LABEL_29:
-      self = v36;
-      a4 = v37;
+      self = selfCopy4;
+      error = errorCopy;
     }
 
     else
@@ -1230,55 +1230,55 @@ LABEL_29:
       v32 = +[AMSLogConfig sharedConfig];
     }
 
-    v33 = [v32 OSLogObject];
-    if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
+    oSLogObject4 = [v32 OSLogObject];
+    if (os_log_type_enabled(oSLogObject4, OS_LOG_TYPE_DEFAULT))
     {
-      v34 = [(AMSUserNotification *)self logKey];
+      logKey5 = [(AMSUserNotification *)self logKey];
       *buf = 138543874;
-      v44 = self;
+      selfCopy5 = self;
       v45 = 2114;
-      v46 = v34;
+      v46 = logKey5;
       v47 = 1024;
       v48 = v23;
-      _os_log_impl(&dword_192869000, v33, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] User selected button index: %d", buf, 0x1Cu);
+      _os_log_impl(&dword_192869000, oSLogObject4, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] User selected button index: %d", buf, 0x1Cu);
     }
   }
 
   v16 = 0;
 LABEL_37:
-  if (!(v11 | v16))
+  if (!(defaultAction | v16))
   {
     v16 = AMSError(7, @"User Notification Failure", @"Action not found", 0);
-    v11 = 0;
+    defaultAction = 0;
   }
 
 LABEL_39:
-  if (a4)
+  if (error)
   {
     v16 = v16;
-    *a4 = v16;
+    *error = v16;
   }
 
-  return v11;
+  return defaultAction;
 }
 
-+ (id)handleNotificationResponse:(id)a3 bag:(id)a4
++ (id)handleNotificationResponse:(id)response bag:(id)bag
 {
-  v6 = a3;
-  v7 = a4;
+  responseCopy = response;
+  bagCopy = bag;
   v8 = objc_alloc_init(AMSMutableBinaryPromise);
   v9 = dispatch_get_global_queue(0, 0);
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __54__AMSUserNotification_handleNotificationResponse_bag___block_invoke;
   v16[3] = &unk_1E73B92F0;
-  v20 = a1;
-  v17 = v6;
+  selfCopy = self;
+  v17 = responseCopy;
   v10 = v8;
   v18 = v10;
-  v19 = v7;
-  v11 = v7;
-  v12 = v6;
+  v19 = bagCopy;
+  v11 = bagCopy;
+  v12 = responseCopy;
   dispatch_async(v9, v16);
 
   v13 = v19;
@@ -1337,13 +1337,13 @@ void __54__AMSUserNotification_handleNotificationResponse_bag___block_invoke(uin
   }
 }
 
-- (id)handleSelectedButton:(id)a3 bag:(id)a4
+- (id)handleSelectedButton:(id)button bag:(id)bag
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  buttonCopy = button;
+  bagCopy = bag;
   v8 = objc_alloc_init(AMSMutableBinaryPromise);
-  if (!v7)
+  if (!bagCopy)
   {
     v9 = +[AMSLogConfig sharedUserNotificationConfig];
     if (!v9)
@@ -1351,17 +1351,17 @@ void __54__AMSUserNotification_handleNotificationResponse_bag___block_invoke(uin
       v9 = +[AMSLogConfig sharedConfig];
     }
 
-    v10 = [v9 OSLogObject];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v9 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v11 = objc_opt_class();
       v12 = v11;
-      v13 = [(AMSUserNotification *)self logKey];
+      logKey = [(AMSUserNotification *)self logKey];
       *buf = 138543618;
       v26 = v11;
       v27 = 2114;
-      v28 = v13;
-      _os_log_impl(&dword_192869000, v10, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Handling button tap without a bag.", buf, 0x16u);
+      v28 = logKey;
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Handling button tap without a bag.", buf, 0x16u);
     }
   }
 
@@ -1371,12 +1371,12 @@ void __54__AMSUserNotification_handleNotificationResponse_bag___block_invoke(uin
   v21[2] = __48__AMSUserNotification_handleSelectedButton_bag___block_invoke;
   v21[3] = &unk_1E73B72B8;
   v21[4] = self;
-  v22 = v6;
-  v23 = v7;
+  v22 = buttonCopy;
+  v23 = bagCopy;
   v15 = v8;
   v24 = v15;
-  v16 = v7;
-  v17 = v6;
+  v16 = bagCopy;
+  v17 = buttonCopy;
   dispatch_async(v14, v21);
 
   v18 = v24;
@@ -1795,21 +1795,21 @@ void __48__AMSUserNotification_handleSelectedButton_bag___block_invoke_192(uint6
   [*(a1 + 40) finishWithSuccess:v4 == 0 error:v4];
 }
 
-+ (void)handleServiceExtensionNotificationRequest:(id)a3 bag:(id)a4 withContentHandler:(id)a5
++ (void)handleServiceExtensionNotificationRequest:(id)request bag:(id)bag withContentHandler:(id)handler
 {
   v83 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  requestCopy = request;
+  bagCopy = bag;
+  handlerCopy = handler;
   v10 = [AMSPushPayload alloc];
-  v11 = [v7 content];
-  v12 = [v11 userInfo];
-  v13 = [(AMSPushPayload *)v10 initWithPayload:v12];
+  content = [requestCopy content];
+  userInfo = [content userInfo];
+  v13 = [(AMSPushPayload *)v10 initWithPayload:userInfo];
 
   v73 = v13;
   v14 = [[AMSUserNotification alloc] initWithPayload:v13 andConfig:0];
-  v15 = [(AMSUserNotification *)v14 logKey];
-  v16 = AMSSetLogKey(v15);
+  logKey = [(AMSUserNotification *)v14 logKey];
+  v16 = AMSSetLogKey(logKey);
 
   v17 = +[AMSLogConfig sharedPushNotificationConfig];
   if (!v17)
@@ -1817,30 +1817,30 @@ void __48__AMSUserNotification_handleSelectedButton_bag___block_invoke_192(uint6
     v17 = +[AMSLogConfig sharedConfig];
   }
 
-  v18 = [v17 OSLogObject];
-  if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v17 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v19 = objc_opt_class();
     v20 = v19;
-    v21 = [(AMSUserNotification *)v14 logKey];
+    logKey2 = [(AMSUserNotification *)v14 logKey];
     *buf = 138543874;
-    v78 = v19;
+    selfCopy2 = v19;
     v79 = 2114;
-    v80 = v21;
+    v80 = logKey2;
     v81 = 2114;
     v82 = v14;
-    _os_log_impl(&dword_192869000, v18, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Handling service extension for note: %{public}@", buf, 0x20u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Handling service extension for note: %{public}@", buf, 0x20u);
   }
 
-  v22 = [(AMSUserNotification *)v14 logKey];
-  if (!v22)
+  logKey3 = [(AMSUserNotification *)v14 logKey];
+  if (!logKey3)
   {
     v23 = AMSGenerateLogCorrelationKey();
     [(AMSUserNotification *)v14 setLogKey:v23];
   }
 
-  v24 = [(AMSUserNotification *)v14 centerBundleIdentifier];
-  v25 = [AMSRestrictions explicitContentSettingForBundleID:v24];
+  centerBundleIdentifier = [(AMSUserNotification *)v14 centerBundleIdentifier];
+  v25 = [AMSRestrictions explicitContentSettingForBundleID:centerBundleIdentifier];
 
   if ([(AMSUserNotification *)v14 explicitContent]&& !v25)
   {
@@ -1850,99 +1850,99 @@ void __48__AMSUserNotification_handleSelectedButton_bag___block_invoke_192(uint6
       v26 = +[AMSLogConfig sharedConfig];
     }
 
-    v27 = [(AMSUserNotification *)v26 OSLogObject];
-    if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
+    oSLogObject2 = [(AMSUserNotification *)v26 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v78 = a1;
+      selfCopy2 = self;
       v79 = 2114;
-      v80 = v22;
-      _os_log_impl(&dword_192869000, v27, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Explicit content disallowed", buf, 0x16u);
+      v80 = logKey3;
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Explicit content disallowed", buf, 0x16u);
     }
 
 LABEL_21:
 
-    v33 = [(AMSUserNotification *)v14 centerBundleIdentifier];
+    centerBundleIdentifier2 = [(AMSUserNotification *)v14 centerBundleIdentifier];
 
     v34 = +[AMSLogConfig sharedPushNotificationConfig];
-    v35 = v34;
-    if (v33)
+    centerBundleIdentifier3 = v34;
+    if (centerBundleIdentifier2)
     {
       if (!v34)
       {
-        v35 = +[AMSLogConfig sharedConfig];
+        centerBundleIdentifier3 = +[AMSLogConfig sharedConfig];
       }
 
-      v36 = [v35 OSLogObject];
-      if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
+      oSLogObject3 = [centerBundleIdentifier3 OSLogObject];
+      if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_DEFAULT))
       {
         v37 = objc_opt_class();
         v38 = v37;
-        v39 = [(AMSUserNotification *)v14 logKey];
+        logKey4 = [(AMSUserNotification *)v14 logKey];
         *buf = 138543618;
-        v78 = v37;
+        selfCopy2 = v37;
         v79 = 2114;
-        v80 = v39;
-        _os_log_impl(&dword_192869000, v36, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Removing notification", buf, 0x16u);
+        v80 = logKey4;
+        _os_log_impl(&dword_192869000, oSLogObject3, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Removing notification", buf, 0x16u);
       }
 
-      v35 = [(AMSUserNotification *)v14 centerBundleIdentifier];
-      v40 = [objc_alloc(MEMORY[0x1E6983308]) initWithBundleIdentifier:v35];
-      v41 = [v7 identifier];
-      v76 = v41;
+      centerBundleIdentifier3 = [(AMSUserNotification *)v14 centerBundleIdentifier];
+      oSLogObject4 = [objc_alloc(MEMORY[0x1E6983308]) initWithBundleIdentifier:centerBundleIdentifier3];
+      identifier = [requestCopy identifier];
+      v76 = identifier;
       v42 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v76 count:1];
-      [v40 removePendingNotificationRequestsWithIdentifiers:v42];
+      [oSLogObject4 removePendingNotificationRequestsWithIdentifiers:v42];
     }
 
     else
     {
       if (!v34)
       {
-        v35 = +[AMSLogConfig sharedConfig];
+        centerBundleIdentifier3 = +[AMSLogConfig sharedConfig];
       }
 
-      v40 = [v35 OSLogObject];
-      if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
+      oSLogObject4 = [centerBundleIdentifier3 OSLogObject];
+      if (os_log_type_enabled(oSLogObject4, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
-        v78 = a1;
+        selfCopy2 = self;
         v79 = 2114;
-        v80 = v22;
-        _os_log_impl(&dword_192869000, v40, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to remove notification for nil bundle identifier", buf, 0x16u);
+        v80 = logKey3;
+        _os_log_impl(&dword_192869000, oSLogObject4, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to remove notification for nil bundle identifier", buf, 0x16u);
       }
     }
 
     goto LABEL_51;
   }
 
-  v28 = [(AMSUserNotification *)v14 account];
-  v26 = v28;
-  if (v28)
+  account = [(AMSUserNotification *)v14 account];
+  v26 = account;
+  if (account)
   {
-    if (([(AMSUserNotification *)v28 isActive]& 1) == 0)
+    if (([(AMSUserNotification *)account isActive]& 1) == 0)
     {
-      v29 = [(AMSUserNotification *)v14 centerBundleIdentifier];
+      centerBundleIdentifier4 = [(AMSUserNotification *)v14 centerBundleIdentifier];
 
-      if (v29)
+      if (centerBundleIdentifier4)
       {
-        v27 = +[AMSLogConfig sharedPushNotificationConfig];
-        if (!v27)
+        oSLogObject2 = +[AMSLogConfig sharedPushNotificationConfig];
+        if (!oSLogObject2)
         {
-          v27 = +[AMSLogConfig sharedConfig];
+          oSLogObject2 = +[AMSLogConfig sharedConfig];
         }
 
-        v30 = [v27 OSLogObject];
-        if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
+        v27OSLogObject = [oSLogObject2 OSLogObject];
+        if (os_log_type_enabled(v27OSLogObject, OS_LOG_TYPE_ERROR))
         {
           v31 = objc_opt_class();
           *buf = 138543874;
-          v78 = v31;
+          selfCopy2 = v31;
           v79 = 2114;
-          v80 = v22;
+          v80 = logKey3;
           v81 = 2114;
           v82 = v26;
           v32 = v31;
-          _os_log_impl(&dword_192869000, v30, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Ignoring notification for inactive account: %{public}@", buf, 0x20u);
+          _os_log_impl(&dword_192869000, v27OSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Ignoring notification for inactive account: %{public}@", buf, 0x20u);
         }
 
         goto LABEL_21;
@@ -1950,49 +1950,49 @@ LABEL_21:
     }
   }
 
-  v43 = [(AMSUserNotification *)v14 metricsEvent];
+  metricsEvent = [(AMSUserNotification *)v14 metricsEvent];
 
-  if (v43)
+  if (metricsEvent)
   {
     v44 = [AMSUserNotificationMetricsEvent eventForPostedNotification:v14];
     [v44 setPostedSuccessfully:1];
     [v44 setAnonymous:{-[AMSUserNotification anonymizeMetrics](v14, "anonymizeMetrics")}];
-    v45 = [(AMSUserNotification *)v14 scheduledTime];
+    scheduledTime = [(AMSUserNotification *)v14 scheduledTime];
 
-    if (v45)
+    if (scheduledTime)
     {
-      v46 = [MEMORY[0x1E696AB78] ams_serverFriendlyFormatter];
-      v47 = [(AMSUserNotification *)v14 scheduledTime];
-      v48 = [v46 stringFromDate:v47];
+      ams_serverFriendlyFormatter = [MEMORY[0x1E696AB78] ams_serverFriendlyFormatter];
+      scheduledTime2 = [(AMSUserNotification *)v14 scheduledTime];
+      v48 = [ams_serverFriendlyFormatter stringFromDate:scheduledTime2];
       [v44 setDisplayScheduledTime:v48];
     }
 
-    v49 = [AMSMetrics internalInstanceUsingBag:v8];
+    v49 = [AMSMetrics internalInstanceUsingBag:bagCopy];
     [v49 enqueueEvent:v44];
   }
 
-  v50 = [(AMSUserNotification *)v14 createUNNotificationContent];
-  v35 = [v50 mutableCopy];
+  createUNNotificationContent = [(AMSUserNotification *)v14 createUNNotificationContent];
+  centerBundleIdentifier3 = [createUNNotificationContent mutableCopy];
 
-  v51 = [(AMSUserNotification *)v14 artworkUrl];
-  v52 = [v51 absoluteString];
-  v53 = [v52 length];
+  artworkUrl = [(AMSUserNotification *)v14 artworkUrl];
+  absoluteString = [artworkUrl absoluteString];
+  v53 = [absoluteString length];
 
   if (v53)
   {
-    v71 = v9;
-    v54 = [MEMORY[0x1E696AFB0] UUID];
-    v55 = [v54 UUIDString];
+    v71 = handlerCopy;
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
 
-    v56 = [(AMSUserNotification *)v14 artworkUrl];
-    v72 = v8;
-    v57 = [a1 _downloadAssetAtUrl:v56 withIdentifier:v55 logKey:v22 bag:v8];
+    artworkUrl2 = [(AMSUserNotification *)v14 artworkUrl];
+    v72 = bagCopy;
+    v57 = [self _downloadAssetAtUrl:artworkUrl2 withIdentifier:uUIDString logKey:logKey3 bag:bagCopy];
 
     if (v57)
     {
       v58 = objc_alloc_init(MEMORY[0x1E695DF70]);
       v75 = 0;
-      v59 = [MEMORY[0x1E6983268] attachmentWithIdentifier:v55 URL:v57 options:0 error:&v75];
+      v59 = [MEMORY[0x1E6983268] attachmentWithIdentifier:uUIDString URL:v57 options:0 error:&v75];
       v60 = v75;
       if (v60)
       {
@@ -2004,18 +2004,18 @@ LABEL_21:
           v61 = +[AMSLogConfig sharedConfig];
         }
 
-        v62 = [v61 OSLogObject];
-        if (os_log_type_enabled(v62, OS_LOG_TYPE_ERROR))
+        oSLogObject5 = [v61 OSLogObject];
+        if (os_log_type_enabled(oSLogObject5, OS_LOG_TYPE_ERROR))
         {
           v63 = objc_opt_class();
           *buf = 138543874;
-          v78 = v63;
+          selfCopy2 = v63;
           v79 = 2114;
-          v80 = v22;
+          v80 = logKey3;
           v81 = 2114;
           v82 = v60;
           v64 = v63;
-          _os_log_impl(&dword_192869000, v62, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Error generating attachment: %{public}@", buf, 0x20u);
+          _os_log_impl(&dword_192869000, oSLogObject5, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Error generating attachment: %{public}@", buf, 0x20u);
         }
 
         v59 = v69;
@@ -2025,32 +2025,32 @@ LABEL_21:
       else if (v59)
       {
         [v58 addObject:v59];
-        [v35 setAttachments:v58];
+        [centerBundleIdentifier3 setAttachments:v58];
       }
     }
 
-    v9 = v71;
-    v8 = v72;
+    handlerCopy = v71;
+    bagCopy = v72;
   }
 
-  v65 = [v7 content];
-  v66 = [v65 icon];
+  content2 = [requestCopy content];
+  icon = [content2 icon];
 
-  if (v66)
+  if (icon)
   {
-    v67 = [v7 content];
-    v68 = [v67 icon];
-    [v35 setIcon:v68];
+    content3 = [requestCopy content];
+    icon2 = [content3 icon];
+    [centerBundleIdentifier3 setIcon:icon2];
   }
 
-  v9[2](v9, v35);
+  handlerCopy[2](handlerCopy, centerBundleIdentifier3);
 LABEL_51:
 }
 
-+ (void)openAppUsingBundleIdentifier:(id)a3
++ (void)openAppUsingBundleIdentifier:(id)identifier
 {
   v15[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = objc_alloc_init(MEMORY[0x1E69636B8]);
   v6 = *MEMORY[0x1E699F990];
   v14[0] = *MEMORY[0x1E699F970];
@@ -2060,16 +2060,16 @@ LABEL_51:
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:v14 count:2];
   [v5 setFrontBoardOptions:v7];
 
-  v8 = [MEMORY[0x1E6963608] defaultWorkspace];
-  v9 = [v4 centerBundleIdentifier];
+  defaultWorkspace = [MEMORY[0x1E6963608] defaultWorkspace];
+  centerBundleIdentifier = [identifierCopy centerBundleIdentifier];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __52__AMSUserNotification_openAppUsingBundleIdentifier___block_invoke;
   v11[3] = &unk_1E73BDE18;
-  v12 = v4;
-  v13 = a1;
-  v10 = v4;
-  [v8 openApplicationWithBundleIdentifier:v9 configuration:v5 completionHandler:v11];
+  v12 = identifierCopy;
+  selfCopy = self;
+  v10 = identifierCopy;
+  [defaultWorkspace openApplicationWithBundleIdentifier:centerBundleIdentifier configuration:v5 completionHandler:v11];
 }
 
 void __52__AMSUserNotification_openAppUsingBundleIdentifier___block_invoke(uint64_t a1, int a2, void *a3)
@@ -2136,21 +2136,21 @@ LABEL_10:
   }
 }
 
-+ (id)notificationCenter:(id)a3 didChangeSettings:(id)a4 bag:(id)a5
++ (id)notificationCenter:(id)center didChangeSettings:(id)settings bag:(id)bag
 {
-  v6 = a3;
-  v7 = a5;
+  centerCopy = center;
+  bagCopy = bag;
   v8 = objc_alloc_init(AMSMutableBinaryPromise);
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __64__AMSUserNotification_notificationCenter_didChangeSettings_bag___block_invoke;
   v15[3] = &unk_1E73BDE68;
-  v16 = v6;
-  v17 = v7;
+  v16 = centerCopy;
+  v17 = bagCopy;
   v9 = v8;
   v18 = v9;
-  v10 = v7;
-  v11 = v6;
+  v10 = bagCopy;
+  v11 = centerCopy;
   [v11 getNotificationSettingsWithCompletionHandler:v15];
   v12 = v18;
   v13 = v9;
@@ -2202,29 +2202,29 @@ id __64__AMSUserNotification_notificationCenter_didChangeSettings_bag___block_in
   return v5;
 }
 
-+ (BOOL)shouldDeleteNotificationForPayload:(id)a3 outIdentifier:(id *)a4 scheduledOnly:(BOOL *)a5
++ (BOOL)shouldDeleteNotificationForPayload:(id)payload outIdentifier:(id *)identifier scheduledOnly:(BOOL *)only
 {
-  v8 = a3;
-  v9 = [v8 aps];
+  payloadCopy = payload;
+  v9 = [payloadCopy aps];
   v10 = [v9 objectForKeyedSubscript:@"_delAll"];
 
   if (objc_opt_respondsToSelector())
   {
-    v11 = [v10 BOOLValue];
+    bOOLValue = [v10 BOOLValue];
   }
 
   else
   {
-    v11 = 0;
+    bOOLValue = 0;
   }
 
-  v12 = [v8 aps];
+  v12 = [payloadCopy aps];
   v13 = [v12 objectForKeyedSubscript:@"_del"];
 
   if (objc_opt_respondsToSelector())
   {
-    v14 = [v13 BOOLValue];
-    if (((v14 | v11) & 1) == 0)
+    bOOLValue2 = [v13 BOOLValue];
+    if (((bOOLValue2 | bOOLValue) & 1) == 0)
     {
       v15 = 0;
       goto LABEL_13;
@@ -2233,22 +2233,22 @@ id __64__AMSUserNotification_notificationCenter_didChangeSettings_bag___block_in
 
   else
   {
-    LOBYTE(v14) = 0;
+    LOBYTE(bOOLValue2) = 0;
     v15 = 0;
-    if (!v11)
+    if (!bOOLValue)
     {
       goto LABEL_13;
     }
   }
 
-  if (a5)
+  if (only)
   {
-    *a5 = v14;
+    *only = bOOLValue2;
   }
 
-  if (a4)
+  if (identifier)
   {
-    *a4 = [a1 _identifierFromPayload:v8];
+    *identifier = [self _identifierFromPayload:payloadCopy];
   }
 
   v15 = 1;
@@ -2257,29 +2257,29 @@ LABEL_13:
   return v15;
 }
 
-+ (BOOL)shouldHandleNotificationResponse:(id)a3
++ (BOOL)shouldHandleNotificationResponse:(id)response
 {
-  v4 = [a3 notification];
-  v5 = [v4 request];
+  notification = [response notification];
+  request = [notification request];
 
-  v6 = [v5 identifier];
-  v7 = [v5 content];
-  v8 = [v7 userInfo];
-  LOBYTE(a1) = [a1 _canParseNotificationWithIdentifier:v6 userInfo:v8];
+  identifier = [request identifier];
+  content = [request content];
+  userInfo = [content userInfo];
+  LOBYTE(self) = [self _canParseNotificationWithIdentifier:identifier userInfo:userInfo];
 
-  return a1;
+  return self;
 }
 
-+ (BOOL)shouldHandleServiceExtensionNotificationRequest:(id)a3
++ (BOOL)shouldHandleServiceExtensionNotificationRequest:(id)request
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  v6 = [v4 content];
+  requestCopy = request;
+  identifier = [requestCopy identifier];
+  content = [requestCopy content];
 
-  v7 = [v6 userInfo];
-  LOBYTE(a1) = [a1 _canParseNotificationWithIdentifier:v5 userInfo:v7];
+  userInfo = [content userInfo];
+  LOBYTE(self) = [self _canParseNotificationWithIdentifier:identifier userInfo:userInfo];
 
-  return a1;
+  return self;
 }
 
 + (NSString)bagSubProfile
@@ -2320,18 +2320,18 @@ void __43__AMSUserNotification_bagSubProfileVersion__block_invoke()
 
 + (id)createBagForSubProfile
 {
-  v2 = [objc_opt_class() bagSubProfile];
-  v3 = [objc_opt_class() bagSubProfileVersion];
-  v4 = [AMSBag bagForProfile:v2 profileVersion:v3];
+  bagSubProfile = [objc_opt_class() bagSubProfile];
+  bagSubProfileVersion = [objc_opt_class() bagSubProfileVersion];
+  v4 = [AMSBag bagForProfile:bagSubProfile profileVersion:bagSubProfileVersion];
 
   return v4;
 }
 
-+ (BOOL)_canParseNotificationWithIdentifier:(id)a3 userInfo:(id)a4
++ (BOOL)_canParseNotificationWithIdentifier:(id)identifier userInfo:(id)info
 {
-  v5 = a4;
-  v6 = [a3 hasPrefix:@"ams_"];
-  v7 = [v5 objectForKeyedSubscript:@"aps"];
+  infoCopy = info;
+  v6 = [identifier hasPrefix:@"ams_"];
+  v7 = [infoCopy objectForKeyedSubscript:@"aps"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -2369,28 +2369,28 @@ void __43__AMSUserNotification_bagSubProfileVersion__block_invoke()
   return v12;
 }
 
-+ (id)_cachedImagePathForIdentifier:(id)a3 assetURL:(id)a4
++ (id)_cachedImagePathForIdentifier:(id)identifier assetURL:(id)l
 {
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  lCopy = l;
   v7 = objc_alloc(MEMORY[0x1E695DEC8]);
   v8 = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, 1uLL, 1);
-  v9 = [v8 lastObject];
-  v10 = [v7 initWithObjects:{v9, @"com.apple.AppleMediaServices", @"UserNotificationImageCache", 0}];
+  lastObject = [v8 lastObject];
+  v10 = [v7 initWithObjects:{lastObject, @"com.apple.AppleMediaServices", @"UserNotificationImageCache", 0}];
 
   v11 = [MEMORY[0x1E696AEC0] pathWithComponents:v10];
   v12 = 0;
   if ([MEMORY[0x1E696AC08] ams_ensureDirectoryExists:v11])
   {
-    v13 = [v6 pathExtension];
-    if (v13)
+    pathExtension = [lCopy pathExtension];
+    if (pathExtension)
     {
-      v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v5, v13];
+      v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", identifierCopy, pathExtension];
     }
 
     else
     {
-      v14 = v5;
+      v14 = identifierCopy;
     }
 
     v15 = v14;
@@ -2400,15 +2400,15 @@ void __43__AMSUserNotification_bagSubProfileVersion__block_invoke()
   return v12;
 }
 
-+ (id)_identifierFromPayload:(id)a3
++ (id)_identifierFromPayload:(id)payload
 {
-  v3 = a3;
-  v4 = [v3 aps];
+  payloadCopy = payload;
+  v4 = [payloadCopy aps];
   v5 = [v4 objectForKeyedSubscript:@"_id"];
 
   if (![v5 length])
   {
-    v6 = [v3 aps];
+    v6 = [payloadCopy aps];
     v7 = [v6 objectForKeyedSubscript:@"uuid"];
 
     v5 = v7;
@@ -2417,9 +2417,9 @@ void __43__AMSUserNotification_bagSubProfileVersion__block_invoke()
   if (![v5 length])
   {
     v8 = MEMORY[0x1E696AEC0];
-    v9 = [MEMORY[0x1E696AFB0] UUID];
-    v10 = [v9 UUIDString];
-    v11 = [v8 stringWithFormat:@"%@%@", @"ams_", v10];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
+    v11 = [v8 stringWithFormat:@"%@%@", @"ams_", uUIDString];
 
     v5 = v11;
   }
@@ -2434,13 +2434,13 @@ void __43__AMSUserNotification_bagSubProfileVersion__block_invoke()
   return v5;
 }
 
-+ (id)_downloadAssetAtUrl:(id)a3 withIdentifier:(id)a4 logKey:(id)a5 bag:(id)a6
++ (id)_downloadAssetAtUrl:(id)url withIdentifier:(id)identifier logKey:(id)key bag:(id)bag
 {
   v41 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = [a1 _cachedImagePathForIdentifier:a4 assetURL:v10];
+  urlCopy = url;
+  keyCopy = key;
+  bagCopy = bag;
+  v13 = [self _cachedImagePathForIdentifier:identifier assetURL:urlCopy];
   if (v13)
   {
     v14 = [MEMORY[0x1E695DFF8] fileURLWithPath:v13];
@@ -2451,19 +2451,19 @@ void __43__AMSUserNotification_bagSubProfileVersion__block_invoke()
     v14 = 0;
   }
 
-  v15 = [MEMORY[0x1E696AC08] defaultManager];
-  v16 = [v14 absoluteString];
-  v17 = [v15 fileExistsAtPath:v16];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  absoluteString = [v14 absoluteString];
+  v17 = [defaultManager fileExistsAtPath:absoluteString];
 
   if (v17)
   {
     goto LABEL_16;
   }
 
-  v18 = [[AMSURLRequestEncoder alloc] initWithBag:v12];
-  [(AMSURLRequestEncoder *)v18 setLogUUID:v11];
+  v18 = [[AMSURLRequestEncoder alloc] initWithBag:bagCopy];
+  [(AMSURLRequestEncoder *)v18 setLogUUID:keyCopy];
   [(AMSURLRequestEncoder *)v18 setUrlKnownToBeTrusted:1];
-  v19 = [(AMSURLRequestEncoder *)v18 requestWithMethod:2 URL:v10 parameters:0];
+  v19 = [(AMSURLRequestEncoder *)v18 requestWithMethod:2 URL:urlCopy parameters:0];
   v34 = 0;
   v31 = [v19 resultWithError:&v34];
   v20 = v34;
@@ -2489,40 +2489,40 @@ LABEL_8:
       v24 = +[AMSLogConfig sharedConfig];
     }
 
-    v25 = [v24 OSLogObject];
-    if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v24 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543874;
-      v36 = a1;
+      selfCopy2 = self;
       v37 = 2114;
-      v38 = v11;
+      v38 = keyCopy;
       v39 = 2114;
       v40 = v20;
-      _os_log_impl(&dword_192869000, v25, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Error downloading asset: %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Error downloading asset: %{public}@", buf, 0x20u);
     }
 
-    v26 = 0;
+    data2 = 0;
 LABEL_13:
 
     goto LABEL_14;
   }
 
-  v28 = [v23 data];
+  data = [v23 data];
 
-  if (v28)
+  if (data)
   {
-    v26 = [v23 data];
+    data2 = [v23 data];
   }
 
   else
   {
-    v26 = 0;
+    data2 = 0;
   }
 
   if (v14)
   {
     v32 = 0;
-    v29 = [v26 writeToURL:v14 options:1 error:&v32];
+    v29 = [data2 writeToURL:v14 options:1 error:&v32];
     v30 = v32;
     v20 = v30;
     if ((v29 & 1) == 0 && v30)
@@ -2533,16 +2533,16 @@ LABEL_13:
         v24 = +[AMSLogConfig sharedConfig];
       }
 
-      v25 = [v24 OSLogObject];
-      if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
+      oSLogObject = [v24 OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543874;
-        v36 = a1;
+        selfCopy2 = self;
         v37 = 2114;
-        v38 = v11;
+        v38 = keyCopy;
         v39 = 2114;
         v40 = v20;
-        _os_log_impl(&dword_192869000, v25, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to cache asset data: %{public}@", buf, 0x20u);
+        _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to cache asset data: %{public}@", buf, 0x20u);
       }
 
       goto LABEL_13;
@@ -2567,31 +2567,31 @@ LABEL_16:
   return v14;
 }
 
-- (id)_generatePayloadWithBase:(id)a3
+- (id)_generatePayloadWithBase:(id)base
 {
   v48 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E695DF90]) initWithDictionary:v4];
-  v6 = [(AMSUserNotification *)self account];
-  v7 = [v6 ams_DSID];
-  [v5 setObject:v7 forKeyedSubscript:@"0"];
+  baseCopy = base;
+  v5 = [objc_alloc(MEMORY[0x1E695DF90]) initWithDictionary:baseCopy];
+  account = [(AMSUserNotification *)self account];
+  ams_DSID = [account ams_DSID];
+  [v5 setObject:ams_DSID forKeyedSubscript:@"0"];
 
-  v8 = [(AMSUserNotification *)self centerBundleIdentifier];
-  [v5 setObject:v8 forKeyedSubscript:@"2"];
+  centerBundleIdentifier = [(AMSUserNotification *)self centerBundleIdentifier];
+  [v5 setObject:centerBundleIdentifier forKeyedSubscript:@"2"];
 
-  v9 = [(AMSUserNotification *)self logKey];
-  [v5 setObject:v9 forKeyedSubscript:@"_logKey"];
+  logKey = [(AMSUserNotification *)self logKey];
+  [v5 setObject:logKey forKeyedSubscript:@"_logKey"];
 
   v10 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v11 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v12 = [(AMSUserNotification *)self informativeText];
-  [v11 setObject:v12 forKeyedSubscript:@"body"];
+  informativeText = [(AMSUserNotification *)self informativeText];
+  [v11 setObject:informativeText forKeyedSubscript:@"body"];
 
-  v13 = [(AMSUserNotification *)self title];
-  [v11 setObject:v13 forKeyedSubscript:@"title"];
+  title = [(AMSUserNotification *)self title];
+  [v11 setObject:title forKeyedSubscript:@"title"];
 
-  v14 = [(AMSUserNotification *)self subtitle];
-  [v11 setObject:v14 forKeyedSubscript:@"subtitle"];
+  subtitle = [(AMSUserNotification *)self subtitle];
+  [v11 setObject:subtitle forKeyedSubscript:@"subtitle"];
 
   v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[AMSUserNotification interruptionLevel](self, "interruptionLevel")}];
   [v11 setObject:v15 forKeyedSubscript:@"level"];
@@ -2600,58 +2600,58 @@ LABEL_16:
   v16 = [MEMORY[0x1E696AD98] numberWithBool:{-[AMSUserNotification anonymizeMetrics](self, "anonymizeMetrics")}];
   [v10 setObject:v16 forKeyedSubscript:@"_an"];
 
-  v17 = [(AMSUserNotification *)self artworkUrl];
-  v18 = [v17 absoluteString];
-  [v10 setObject:v18 forKeyedSubscript:@"_au"];
+  artworkUrl = [(AMSUserNotification *)self artworkUrl];
+  absoluteString = [artworkUrl absoluteString];
+  [v10 setObject:absoluteString forKeyedSubscript:@"_au"];
 
-  v19 = [(AMSUserNotification *)self videoUrl];
-  v20 = [v19 absoluteString];
-  [v10 setObject:v20 forKeyedSubscript:@"_vu"];
+  videoUrl = [(AMSUserNotification *)self videoUrl];
+  absoluteString2 = [videoUrl absoluteString];
+  [v10 setObject:absoluteString2 forKeyedSubscript:@"_vu"];
 
   v21 = [MEMORY[0x1E696AD98] numberWithBool:{-[AMSUserNotification shouldSuppressDefaultAction](self, "shouldSuppressDefaultAction")}];
   [v10 setObject:v21 forKeyedSubscript:@"_sd"];
 
-  v22 = [(AMSUserNotification *)self categoryIdentifier];
-  [v10 setObject:v22 forKeyedSubscript:@"category"];
+  categoryIdentifier = [(AMSUserNotification *)self categoryIdentifier];
+  [v10 setObject:categoryIdentifier forKeyedSubscript:@"category"];
 
   v23 = [MEMORY[0x1E696AD98] numberWithBool:{-[AMSUserNotification explicitContent](self, "explicitContent")}];
   [v10 setObject:v23 forKeyedSubscript:@"_ex"];
 
-  v24 = [(AMSUserNotification *)self metricsEvent];
-  [v10 setObject:v24 forKeyedSubscript:@"_mt"];
+  metricsEvent = [(AMSUserNotification *)self metricsEvent];
+  [v10 setObject:metricsEvent forKeyedSubscript:@"_mt"];
 
-  v25 = [(AMSUserNotification *)self subsections];
-  v26 = [v25 allObjects];
-  [v10 setObject:v26 forKeyedSubscript:@"_ss"];
+  subsections = [(AMSUserNotification *)self subsections];
+  allObjects = [subsections allObjects];
+  [v10 setObject:allObjects forKeyedSubscript:@"_ss"];
 
-  v27 = [(AMSUserNotification *)self threadIdentifier];
-  [v10 setObject:v27 forKeyedSubscript:@"thread"];
+  threadIdentifier = [(AMSUserNotification *)self threadIdentifier];
+  [v10 setObject:threadIdentifier forKeyedSubscript:@"thread"];
 
-  v28 = [(AMSUserNotification *)self identifier];
-  [v10 setObject:v28 forKeyedSubscript:@"_id"];
+  identifier = [(AMSUserNotification *)self identifier];
+  [v10 setObject:identifier forKeyedSubscript:@"_id"];
 
-  v29 = [(AMSUserNotification *)self scheduledTime];
+  scheduledTime = [(AMSUserNotification *)self scheduledTime];
 
-  if (v29)
+  if (scheduledTime)
   {
-    v30 = [MEMORY[0x1E696AB78] ams_serverFriendlyFormatter];
-    v31 = [(AMSUserNotification *)self scheduledTime];
-    v32 = [v30 stringFromDate:v31];
+    ams_serverFriendlyFormatter = [MEMORY[0x1E696AB78] ams_serverFriendlyFormatter];
+    scheduledTime2 = [(AMSUserNotification *)self scheduledTime];
+    v32 = [ams_serverFriendlyFormatter stringFromDate:scheduledTime2];
 
     [v10 setObject:v32 forKeyedSubscript:@"_st"];
   }
 
   v33 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v34 = [(AMSUserNotification *)self defaultAction];
-  v35 = __48__AMSUserNotification__generatePayloadWithBase___block_invoke(v34, 1);
+  defaultAction = [(AMSUserNotification *)self defaultAction];
+  v35 = __48__AMSUserNotification__generatePayloadWithBase___block_invoke(defaultAction, 1);
   [v33 ams_addNullableObject:v35];
 
   v45 = 0u;
   v46 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v36 = [(AMSUserNotification *)self buttonActions];
-  v37 = [v36 countByEnumeratingWithState:&v43 objects:v47 count:16];
+  buttonActions = [(AMSUserNotification *)self buttonActions];
+  v37 = [buttonActions countByEnumeratingWithState:&v43 objects:v47 count:16];
   if (v37)
   {
     v38 = v37;
@@ -2662,14 +2662,14 @@ LABEL_16:
       {
         if (*v44 != v39)
         {
-          objc_enumerationMutation(v36);
+          objc_enumerationMutation(buttonActions);
         }
 
         v41 = __48__AMSUserNotification__generatePayloadWithBase___block_invoke(*(*(&v43 + 1) + 8 * i), 0);
         [v33 ams_addNullableObject:v41];
       }
 
-      v38 = [v36 countByEnumeratingWithState:&v43 objects:v47 count:16];
+      v38 = [buttonActions countByEnumeratingWithState:&v43 objects:v47 count:16];
     }
 
     while (v38);
@@ -2755,16 +2755,16 @@ id __48__AMSUserNotification__generatePayloadWithBase___block_invoke(void *a1, i
   return v5;
 }
 
-+ (id)_dateFromString:(id)a3
++ (id)_dateFromString:(id)string
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E696AB78] ams_serverFriendlyFormatter];
-  v5 = [v4 dateFromString:v3];
+  stringCopy = string;
+  ams_serverFriendlyFormatter = [MEMORY[0x1E696AB78] ams_serverFriendlyFormatter];
+  v5 = [ams_serverFriendlyFormatter dateFromString:stringCopy];
 
   if (!v5)
   {
-    v6 = [MEMORY[0x1E696AB78] ams_serverFriendlyLocalTimeZoneFormatter];
-    v5 = [v6 dateFromString:v3];
+    ams_serverFriendlyLocalTimeZoneFormatter = [MEMORY[0x1E696AB78] ams_serverFriendlyLocalTimeZoneFormatter];
+    v5 = [ams_serverFriendlyLocalTimeZoneFormatter dateFromString:stringCopy];
   }
 
   return v5;
@@ -2777,24 +2777,24 @@ id __48__AMSUserNotification__generatePayloadWithBase___block_invoke(void *a1, i
   return v2;
 }
 
-+ (id)handleNotificationResponse:(id)a3 bagContract:(id)a4
++ (id)handleNotificationResponse:(id)response bagContract:(id)contract
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[AMSContractBagShim alloc] initWithBagContract:v6];
+  contractCopy = contract;
+  responseCopy = response;
+  v8 = [[AMSContractBagShim alloc] initWithBagContract:contractCopy];
 
-  v9 = [a1 handleNotificationResponse:v7 bag:v8];
+  v9 = [self handleNotificationResponse:responseCopy bag:v8];
 
   return v9;
 }
 
-- (id)handleSelectedButton:(id)a3 bagContract:(id)a4
+- (id)handleSelectedButton:(id)button bagContract:(id)contract
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[AMSContractBagShim alloc] initWithBagContract:v6];
+  contractCopy = contract;
+  buttonCopy = button;
+  v8 = [[AMSContractBagShim alloc] initWithBagContract:contractCopy];
 
-  v9 = [(AMSUserNotification *)self handleSelectedButton:v7 bag:v8];
+  v9 = [(AMSUserNotification *)self handleSelectedButton:buttonCopy bag:v8];
 
   return v9;
 }

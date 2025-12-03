@@ -1,17 +1,17 @@
 @interface MTReportsManager
 - (MTReportsManager)init;
-- (void)didCreateLiveActivityForAlarm:(id)a3 withId:(id)a4 date:(id)a5;
-- (void)didDuckPlaybackForAttentionAwarenessWithId:(id)a3;
-- (void)didPostNotificationForAlarm:(id)a3 fullNotificationId:(id)a4 shortNotificationId:(id)a5;
-- (void)didPostToneAlertWithIdentifier:(id)a3;
-- (void)didRenderSceneForAlarm:(id)a3 withType:(id)a4;
-- (void)didRetrieveDeliveredNotificationForAlarm:(id)a3 date:(id)a4;
-- (void)didShowCoversheetForIdentifier:(id)a3;
-- (void)didStopSoundPlaybackWithId:(id)a3;
-- (void)didTearDownToneAlertWithIdentifier:(id)a3;
-- (void)didTriggerSoundPlaybackWithId:(id)a3;
-- (void)didUpdateAudioReporterId:(unint64_t)a3;
-- (void)processFiredAlarm:(id)a3;
+- (void)didCreateLiveActivityForAlarm:(id)alarm withId:(id)id date:(id)date;
+- (void)didDuckPlaybackForAttentionAwarenessWithId:(id)id;
+- (void)didPostNotificationForAlarm:(id)alarm fullNotificationId:(id)id shortNotificationId:(id)notificationId;
+- (void)didPostToneAlertWithIdentifier:(id)identifier;
+- (void)didRenderSceneForAlarm:(id)alarm withType:(id)type;
+- (void)didRetrieveDeliveredNotificationForAlarm:(id)alarm date:(id)date;
+- (void)didShowCoversheetForIdentifier:(id)identifier;
+- (void)didStopSoundPlaybackWithId:(id)id;
+- (void)didTearDownToneAlertWithIdentifier:(id)identifier;
+- (void)didTriggerSoundPlaybackWithId:(id)id;
+- (void)didUpdateAudioReporterId:(unint64_t)id;
+- (void)processFiredAlarm:(id)alarm;
 @end
 
 @implementation MTReportsManager
@@ -30,93 +30,93 @@
   return v2;
 }
 
-- (void)processFiredAlarm:(id)a3
+- (void)processFiredAlarm:(id)alarm
 {
-  v4 = a3;
-  v5 = [(MTReportsManager *)self reporterProxy];
-  [v5 processFiredAlarm:v4];
+  alarmCopy = alarm;
+  reporterProxy = [(MTReportsManager *)self reporterProxy];
+  [reporterProxy processFiredAlarm:alarmCopy];
 }
 
-- (void)didPostNotificationForAlarm:(id)a3 fullNotificationId:(id)a4 shortNotificationId:(id)a5
+- (void)didPostNotificationForAlarm:(id)alarm fullNotificationId:(id)id shortNotificationId:(id)notificationId
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(MTReportsManager *)self reporterProxy];
-  [v11 didPostNotificationForAlarm:v10 fullNotificationId:v9 shortNotificationId:v8];
+  notificationIdCopy = notificationId;
+  idCopy = id;
+  alarmCopy = alarm;
+  reporterProxy = [(MTReportsManager *)self reporterProxy];
+  [reporterProxy didPostNotificationForAlarm:alarmCopy fullNotificationId:idCopy shortNotificationId:notificationIdCopy];
 }
 
-- (void)didRetrieveDeliveredNotificationForAlarm:(id)a3 date:(id)a4
+- (void)didRetrieveDeliveredNotificationForAlarm:(id)alarm date:(id)date
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(MTReportsManager *)self reporterProxy];
-  [v8 didRetrieveDeliveredNotificationForAlarm:v7 date:v6];
+  dateCopy = date;
+  alarmCopy = alarm;
+  reporterProxy = [(MTReportsManager *)self reporterProxy];
+  [reporterProxy didRetrieveDeliveredNotificationForAlarm:alarmCopy date:dateCopy];
 }
 
-- (void)didCreateLiveActivityForAlarm:(id)a3 withId:(id)a4 date:(id)a5
+- (void)didCreateLiveActivityForAlarm:(id)alarm withId:(id)id date:(id)date
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(MTReportsManager *)self reporterProxy];
-  [v11 didCreateLiveActivityForAlarm:v10 withId:v9 date:v8];
+  dateCopy = date;
+  idCopy = id;
+  alarmCopy = alarm;
+  reporterProxy = [(MTReportsManager *)self reporterProxy];
+  [reporterProxy didCreateLiveActivityForAlarm:alarmCopy withId:idCopy date:dateCopy];
 }
 
-- (void)didRenderSceneForAlarm:(id)a3 withType:(id)a4
+- (void)didRenderSceneForAlarm:(id)alarm withType:(id)type
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(MTReportsManager *)self reporterProxy];
-  [v8 didRenderSceneForAlarm:v7 withType:v6];
+  typeCopy = type;
+  alarmCopy = alarm;
+  reporterProxy = [(MTReportsManager *)self reporterProxy];
+  [reporterProxy didRenderSceneForAlarm:alarmCopy withType:typeCopy];
 }
 
-- (void)didShowCoversheetForIdentifier:(id)a3
+- (void)didShowCoversheetForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(MTReportsManager *)self reporterProxy];
-  [v5 didShowCoversheetForIdentifier:v4];
+  identifierCopy = identifier;
+  reporterProxy = [(MTReportsManager *)self reporterProxy];
+  [reporterProxy didShowCoversheetForIdentifier:identifierCopy];
 }
 
-- (void)didPostToneAlertWithIdentifier:(id)a3
+- (void)didPostToneAlertWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(MTReportsManager *)self reporterProxy];
-  [v5 didPostToneAlertWithIdentifier:v4];
+  identifierCopy = identifier;
+  reporterProxy = [(MTReportsManager *)self reporterProxy];
+  [reporterProxy didPostToneAlertWithIdentifier:identifierCopy];
 }
 
-- (void)didTearDownToneAlertWithIdentifier:(id)a3
+- (void)didTearDownToneAlertWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(MTReportsManager *)self reporterProxy];
-  [v5 didTearDownToneAlertWithIdentifier:v4];
+  identifierCopy = identifier;
+  reporterProxy = [(MTReportsManager *)self reporterProxy];
+  [reporterProxy didTearDownToneAlertWithIdentifier:identifierCopy];
 }
 
-- (void)didDuckPlaybackForAttentionAwarenessWithId:(id)a3
+- (void)didDuckPlaybackForAttentionAwarenessWithId:(id)id
 {
-  v4 = a3;
-  v5 = [(MTReportsManager *)self reporterProxy];
-  [v5 didDuckPlaybackForAttentionAwarenessWithId:v4];
+  idCopy = id;
+  reporterProxy = [(MTReportsManager *)self reporterProxy];
+  [reporterProxy didDuckPlaybackForAttentionAwarenessWithId:idCopy];
 }
 
-- (void)didTriggerSoundPlaybackWithId:(id)a3
+- (void)didTriggerSoundPlaybackWithId:(id)id
 {
-  v4 = a3;
-  v5 = [(MTReportsManager *)self reporterProxy];
-  [v5 didTriggerSoundPlaybackWithId:v4];
+  idCopy = id;
+  reporterProxy = [(MTReportsManager *)self reporterProxy];
+  [reporterProxy didTriggerSoundPlaybackWithId:idCopy];
 }
 
-- (void)didUpdateAudioReporterId:(unint64_t)a3
+- (void)didUpdateAudioReporterId:(unint64_t)id
 {
-  v4 = [(MTReportsManager *)self reporterProxy];
-  [v4 didUpdateAudioReporterId:a3];
+  reporterProxy = [(MTReportsManager *)self reporterProxy];
+  [reporterProxy didUpdateAudioReporterId:id];
 }
 
-- (void)didStopSoundPlaybackWithId:(id)a3
+- (void)didStopSoundPlaybackWithId:(id)id
 {
-  v4 = a3;
-  v5 = [(MTReportsManager *)self reporterProxy];
-  [v5 didStopSoundPlaybackWithId:v4];
+  idCopy = id;
+  reporterProxy = [(MTReportsManager *)self reporterProxy];
+  [reporterProxy didStopSoundPlaybackWithId:idCopy];
 }
 
 @end

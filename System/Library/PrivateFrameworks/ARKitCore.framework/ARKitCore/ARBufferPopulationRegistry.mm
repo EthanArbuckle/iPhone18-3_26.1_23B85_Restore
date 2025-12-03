@@ -1,11 +1,11 @@
 @interface ARBufferPopulationRegistry
 - (ARBufferPopulationRegistry)init;
-- (double)timestampForSurfaceID:(id)a3;
+- (double)timestampForSurfaceID:(id)d;
 - (id)description;
-- (int)signpostTypeForLabel:(id)a3;
-- (unint64_t)countWithLabel:(id)a3;
-- (void)registerBufferWithSurfaceID:(id)a3 label:(id)a4 signpostType:(id)a5 timestamp:(double)a6;
-- (void)unregisterBufferWithSurfaceID:(id)a3;
+- (int)signpostTypeForLabel:(id)label;
+- (unint64_t)countWithLabel:(id)label;
+- (void)registerBufferWithSurfaceID:(id)d label:(id)label signpostType:(id)type timestamp:(double)timestamp;
+- (void)unregisterBufferWithSurfaceID:(id)d;
 @end
 
 @implementation ARBufferPopulationRegistry
@@ -37,9 +37,9 @@
   return v2;
 }
 
-- (unint64_t)countWithLabel:(id)a3
+- (unint64_t)countWithLabel:(id)label
 {
-  v3 = [(NSMutableDictionary *)self->_labelToBuffersLUT objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->_labelToBuffersLUT objectForKey:label];
   v4 = [v3 count];
 
   return v4;
@@ -55,7 +55,7 @@
   v8[3] = &unk_1E817E030;
   v5 = v3;
   v9 = v5;
-  v10 = self;
+  selfCopy = self;
   [(NSMutableDictionary *)labelToBuffersLUT enumerateKeysAndObjectsUsingBlock:v8];
   v6 = v5;
 
@@ -137,49 +137,49 @@ void __41__ARBufferPopulationRegistry_description__block_invoke(uint64_t a1, voi
   [v25 appendFormat:@"%@", v27];
 }
 
-- (void)registerBufferWithSurfaceID:(id)a3 label:(id)a4 signpostType:(id)a5 timestamp:(double)a6
+- (void)registerBufferWithSurfaceID:(id)d label:(id)label signpostType:(id)type timestamp:(double)timestamp
 {
-  v16 = a3;
-  v10 = a4;
+  dCopy = d;
+  labelCopy = label;
   bufferToLabelLUT = self->_bufferToLabelLUT;
-  v12 = a5;
-  [(NSMutableDictionary *)bufferToLabelLUT setObject:v10 forKey:v16];
-  [(NSMutableDictionary *)self->_labelToSignpostTypeLUT setObject:v12 forKey:v10];
+  typeCopy = type;
+  [(NSMutableDictionary *)bufferToLabelLUT setObject:labelCopy forKey:dCopy];
+  [(NSMutableDictionary *)self->_labelToSignpostTypeLUT setObject:typeCopy forKey:labelCopy];
 
   bufferToTimestampLUT = self->_bufferToTimestampLUT;
-  v14 = [MEMORY[0x1E696AD98] numberWithDouble:a6];
-  [(NSMutableDictionary *)bufferToTimestampLUT setObject:v14 forKey:v16];
+  v14 = [MEMORY[0x1E696AD98] numberWithDouble:timestamp];
+  [(NSMutableDictionary *)bufferToTimestampLUT setObject:v14 forKey:dCopy];
 
-  v15 = [(NSMutableDictionary *)self->_labelToBuffersLUT objectForKey:v10];
+  v15 = [(NSMutableDictionary *)self->_labelToBuffersLUT objectForKey:labelCopy];
   if (!v15)
   {
     v15 = objc_opt_new();
-    [(NSMutableDictionary *)self->_labelToBuffersLUT setObject:v15 forKey:v10];
+    [(NSMutableDictionary *)self->_labelToBuffersLUT setObject:v15 forKey:labelCopy];
   }
 
-  [v15 addObject:v16];
+  [v15 addObject:dCopy];
 }
 
-- (int)signpostTypeForLabel:(id)a3
+- (int)signpostTypeForLabel:(id)label
 {
-  v3 = [(NSMutableDictionary *)self->_labelToSignpostTypeLUT objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->_labelToSignpostTypeLUT objectForKey:label];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 unsignedIntegerValue];
+    unsignedIntegerValue = [v3 unsignedIntegerValue];
   }
 
   else
   {
-    v5 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  return v5;
+  return unsignedIntegerValue;
 }
 
-- (double)timestampForSurfaceID:(id)a3
+- (double)timestampForSurfaceID:(id)d
 {
-  v3 = [(NSMutableDictionary *)self->_bufferToTimestampLUT objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->_bufferToTimestampLUT objectForKey:d];
   v4 = v3;
   if (v3)
   {
@@ -195,15 +195,15 @@ void __41__ARBufferPopulationRegistry_description__block_invoke(uint64_t a1, voi
   return v6;
 }
 
-- (void)unregisterBufferWithSurfaceID:(id)a3
+- (void)unregisterBufferWithSurfaceID:(id)d
 {
   bufferToLabelLUT = self->_bufferToLabelLUT;
-  v5 = a3;
-  v7 = [(NSMutableDictionary *)bufferToLabelLUT objectForKey:v5];
-  [(NSMutableDictionary *)self->_bufferToLabelLUT removeObjectForKey:v5];
-  [(NSMutableDictionary *)self->_bufferToTimestampLUT removeObjectForKey:v5];
+  dCopy = d;
+  v7 = [(NSMutableDictionary *)bufferToLabelLUT objectForKey:dCopy];
+  [(NSMutableDictionary *)self->_bufferToLabelLUT removeObjectForKey:dCopy];
+  [(NSMutableDictionary *)self->_bufferToTimestampLUT removeObjectForKey:dCopy];
   v6 = [(NSMutableDictionary *)self->_labelToBuffersLUT objectForKey:v7];
-  [v6 removeObject:v5];
+  [v6 removeObject:dCopy];
 }
 
 @end

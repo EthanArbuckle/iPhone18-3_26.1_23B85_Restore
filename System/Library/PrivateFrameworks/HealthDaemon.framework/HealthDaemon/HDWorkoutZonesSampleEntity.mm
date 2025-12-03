@@ -1,18 +1,18 @@
 @interface HDWorkoutZonesSampleEntity
-+ (BOOL)addCodableObject:(id)a3 toCollection:(id)a4;
-+ (id)entityEncoderForProfile:(id)a3 transaction:(id)a4 purpose:(int64_t)a5 encodingOptions:(id)a6 authorizationFilter:(id)a7;
-+ (id)insertDataObject:(id)a3 withProvenance:(id)a4 inDatabase:(id)a5 persistentID:(id)a6 error:(id *)a7;
++ (BOOL)addCodableObject:(id)object toCollection:(id)collection;
++ (id)entityEncoderForProfile:(id)profile transaction:(id)transaction purpose:(int64_t)purpose encodingOptions:(id)options authorizationFilter:(id)filter;
++ (id)insertDataObject:(id)object withProvenance:(id)provenance inDatabase:(id)database persistentID:(id)d error:(id *)error;
 @end
 
 @implementation HDWorkoutZonesSampleEntity
 
-+ (id)insertDataObject:(id)a3 withProvenance:(id)a4 inDatabase:(id)a5 persistentID:(id)a6 error:(id *)a7
++ (id)insertDataObject:(id)object withProvenance:(id)provenance inDatabase:(id)database persistentID:(id)d error:(id *)error
 {
-  v10 = a5;
-  v11 = a6;
+  databaseCopy = database;
+  dCopy = d;
   v12 = MEMORY[0x277CCAAB0];
-  v13 = [a3 zones];
-  v14 = [v12 archivedDataWithRootObject:v13 requiringSecureCoding:1 error:a7];
+  zones = [object zones];
+  v14 = [v12 archivedDataWithRootObject:zones requiringSecureCoding:1 error:error];
 
   if (v14)
   {
@@ -20,10 +20,10 @@
     v19[1] = 3221225472;
     v19[2] = __92__HDWorkoutZonesSampleEntity_insertDataObject_withProvenance_inDatabase_persistentID_error___block_invoke;
     v19[3] = &unk_278613038;
-    v15 = v11;
+    v15 = dCopy;
     v20 = v15;
     v21 = v14;
-    if ([v10 executeSQL:@"INSERT INTO workout_zones_samples (data_id error:zones) VALUES (? bindingHandler:?)" enumerationHandler:{a7, v19, 0}])
+    if ([databaseCopy executeSQL:@"INSERT INTO workout_zones_samples (data_id error:zones) VALUES (? bindingHandler:?)" enumerationHandler:{error, v19, 0}])
     {
       v16 = v15;
     }
@@ -52,23 +52,23 @@ uint64_t __92__HDWorkoutZonesSampleEntity_insertDataObject_withProvenance_inData
   return HDSQLiteBindFoundationValueToStatement();
 }
 
-+ (BOOL)addCodableObject:(id)a3 toCollection:(id)a4
++ (BOOL)addCodableObject:(id)object toCollection:(id)collection
 {
-  if (a3)
+  if (object)
   {
-    [a4 addWorkoutZones:a3];
+    [collection addWorkoutZones:object];
   }
 
-  return a3 != 0;
+  return object != 0;
 }
 
-+ (id)entityEncoderForProfile:(id)a3 transaction:(id)a4 purpose:(int64_t)a5 encodingOptions:(id)a6 authorizationFilter:(id)a7
++ (id)entityEncoderForProfile:(id)profile transaction:(id)transaction purpose:(int64_t)purpose encodingOptions:(id)options authorizationFilter:(id)filter
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = a4;
-  v14 = a3;
-  v15 = [(HDEntityEncoder *)[_HDWorkoutZonesSampleEntityEncoder alloc] initWithHealthEntityClass:objc_opt_class() profile:v14 transaction:v13 purpose:a5 encodingOptions:v12 authorizationFilter:v11];
+  filterCopy = filter;
+  optionsCopy = options;
+  transactionCopy = transaction;
+  profileCopy = profile;
+  v15 = [(HDEntityEncoder *)[_HDWorkoutZonesSampleEntityEncoder alloc] initWithHealthEntityClass:objc_opt_class() profile:profileCopy transaction:transactionCopy purpose:purpose encodingOptions:optionsCopy authorizationFilter:filterCopy];
 
   return v15;
 }

@@ -1,13 +1,13 @@
 @interface NSCustomPredicateOperator
-- (BOOL)isEqual:(id)a3;
-- (BOOL)performPrimitiveOperationUsingObject:(id)a3 andObject:(id)a4;
-- (NSCustomPredicateOperator)initWithCoder:(id)a3;
-- (NSCustomPredicateOperator)initWithCustomSelector:(SEL)a3 modifier:(unint64_t)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)performPrimitiveOperationUsingObject:(id)object andObject:(id)andObject;
+- (NSCustomPredicateOperator)initWithCoder:(id)coder;
+- (NSCustomPredicateOperator)initWithCustomSelector:(SEL)selector modifier:(unint64_t)modifier;
 - (SEL)selector;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)symbol;
 - (uint64_t)_validateOperator;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NSCustomPredicateOperator
@@ -46,9 +46,9 @@
 
 - (id)symbol
 {
-  v2 = [(NSCustomPredicateOperator *)self selector];
+  selector = [(NSCustomPredicateOperator *)self selector];
 
-  return NSStringFromSelector(v2);
+  return NSStringFromSelector(selector);
 }
 
 - (SEL)selector
@@ -64,43 +64,43 @@
   }
 }
 
-- (NSCustomPredicateOperator)initWithCustomSelector:(SEL)a3 modifier:(unint64_t)a4
+- (NSCustomPredicateOperator)initWithCustomSelector:(SEL)selector modifier:(unint64_t)modifier
 {
   v10 = *MEMORY[0x1E69E9840];
   v9.receiver = self;
   v9.super_class = NSCustomPredicateOperator;
-  v5 = [(NSPredicateOperator *)&v9 initWithOperatorType:11 modifier:a4];
+  v5 = [(NSPredicateOperator *)&v9 initWithOperatorType:11 modifier:modifier];
   v6 = v5;
   if (v5)
   {
-    if (a3)
+    if (selector)
     {
-      v7 = a3;
+      selectorCopy = selector;
     }
 
     else
     {
-      v7 = 0;
+      selectorCopy = 0;
     }
 
-    v5->_selector = v7;
+    v5->_selector = selectorCopy;
   }
 
   [(NSCustomPredicateOperator *)v5 _validateOperator];
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v9 = *MEMORY[0x1E69E9840];
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"NSPredicates and NSExpressions cannot be encoded by non-keyed archivers" userInfo:0]);
   }
 
   v7.receiver = self;
   v7.super_class = NSCustomPredicateOperator;
-  [(NSPredicateOperator *)&v7 encodeWithCoder:a3];
+  [(NSPredicateOperator *)&v7 encodeWithCoder:coder];
   if (self->_selector)
   {
     selector = self->_selector;
@@ -111,7 +111,7 @@
     selector = 0;
   }
 
-  [a3 encodeObject:NSStringFromSelector(selector) forKey:@"NSSelectorName"];
+  [coder encodeObject:NSStringFromSelector(selector) forKey:@"NSSelectorName"];
   objc_opt_self();
   if ((_CFPredicatePolicyData_getFlags() & 8) != 0)
   {
@@ -125,10 +125,10 @@
   }
 }
 
-- (NSCustomPredicateOperator)initWithCoder:(id)a3
+- (NSCustomPredicateOperator)initWithCoder:(id)coder
 {
   v16 = *MEMORY[0x1E69E9840];
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
 
     v11 = MEMORY[0x1E695DF30];
@@ -139,10 +139,10 @@
 
   v14.receiver = self;
   v14.super_class = NSCustomPredicateOperator;
-  v5 = [(NSPredicateOperator *)&v14 initWithCoder:a3];
+  v5 = [(NSPredicateOperator *)&v14 initWithCoder:coder];
   if (v5)
   {
-    v6 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"NSSelectorName"];
+    v6 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"NSSelectorName"];
     p_selector = &v5->_selector;
     v8 = NSSelectorFromString(v6);
     if (v8)
@@ -177,7 +177,7 @@ LABEL_5:
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   if (self->_selector)
@@ -190,48 +190,48 @@ LABEL_5:
     selector = 0;
   }
 
-  v6 = [(NSPredicateOperator *)self modifier];
+  modifier = [(NSPredicateOperator *)self modifier];
 
-  return [v4 initWithCustomSelector:selector modifier:v6];
+  return [v4 initWithCustomSelector:selector modifier:modifier];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     return 0;
   }
 
-  v5 = [(NSCustomPredicateOperator *)self operatorType];
-  if (v5 != [a3 operatorType])
+  operatorType = [(NSCustomPredicateOperator *)self operatorType];
+  if (operatorType != [equal operatorType])
   {
     return 0;
   }
 
-  v6 = [(NSPredicateOperator *)self modifier];
-  if (v6 != [a3 modifier])
+  modifier = [(NSPredicateOperator *)self modifier];
+  if (modifier != [equal modifier])
   {
     return 0;
   }
 
-  v7 = [(NSCustomPredicateOperator *)self selector];
-  return v7 == [a3 selector];
+  selector = [(NSCustomPredicateOperator *)self selector];
+  return selector == [equal selector];
 }
 
-- (BOOL)performPrimitiveOperationUsingObject:(id)a3 andObject:(id)a4
+- (BOOL)performPrimitiveOperationUsingObject:(id)object andObject:(id)andObject
 {
   v34 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!object)
   {
-    v26 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"Can't invoke the selector %@ on (nil)", NSStringFromSelector(-[NSCustomPredicateOperator selector](self, "selector", 0, a4))), 0}];
+    v26 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"Can't invoke the selector %@ on (nil)", NSStringFromSelector(-[NSCustomPredicateOperator selector](self, "selector", 0, andObject))), 0}];
     objc_exception_throw(v26);
   }
 
   v7 = *(_ReadStatusReg(ARM64_SYSREG(3, 3, 13, 0, 3)) + 704);
-  isClass = object_isClass(a3);
+  isClass = object_isClass(object);
   if (isClass)
   {
-    Name = class_getName(a3);
+    Name = class_getName(object);
     if (strncmp("_NSPredicateUtilities", Name, 0x15uLL))
     {
       objc_opt_self();
@@ -239,7 +239,7 @@ LABEL_5:
       if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
       {
         *buf = 138543362;
-        v31 = a3;
+        objectCopy = object;
         _os_log_fault_impl(&dword_18075C000, v10, OS_LOG_TYPE_FAULT, "NSPredicate: Using NSCustomPredicateOperator on a Class '%{public}@' is deprecated and will be removed in a future release.  NSCustomPredicateOperator should operate on instances.", buf, 0xCu);
       }
 
@@ -254,13 +254,13 @@ LABEL_5:
     }
   }
 
-  if ([_NSPredicateUtilities _predicateEnforceRestrictionsOnTarget:a3 forComponentName:@"NSCustomPredicateOperator"])
+  if ([_NSPredicateUtilities _predicateEnforceRestrictionsOnTarget:object forComponentName:@"NSCustomPredicateOperator"])
   {
     +[_NSPredicateUtilities _predicateSecurityAction];
   }
 
-  v11 = [(NSCustomPredicateOperator *)self selector];
-  v12 = v11;
+  selector = [(NSCustomPredicateOperator *)self selector];
+  v12 = selector;
   v27 = *&self->_operatorFlags & 1;
   if (v7 == 4211063755)
   {
@@ -274,7 +274,7 @@ LABEL_5:
   else
   {
     v13 = 0;
-    if (!v11)
+    if (!selector)
     {
       goto LABEL_19;
     }
@@ -295,13 +295,13 @@ LABEL_5:
 LABEL_19:
   if (v27)
   {
-    if (a4)
+    if (andObject)
     {
       if ((*&self->_operatorFlags & 4) == 0)
       {
-        if ([a4 isNSString])
+        if ([andObject isNSString])
         {
-          if ([_NSPredicateUtilities _predicateEnforceRestrictionsOnKeyPath:a4 withOperand:v13 forComponentName:@"NSCustomPredicateOperator"])
+          if ([_NSPredicateUtilities _predicateEnforceRestrictionsOnKeyPath:andObject withOperand:v13 forComponentName:@"NSCustomPredicateOperator"])
           {
             objc_opt_self();
             if ((_CFPredicatePolicyData_getFlags() & 8) != 0)
@@ -314,7 +314,7 @@ LABEL_19:
     }
   }
 
-  Class = object_getClass(a3);
+  Class = object_getClass(object);
   if (isClass)
   {
     ClassMethod = class_getClassMethod(Class, v12);
@@ -358,7 +358,7 @@ LABEL_44:
               }
 
               *buf = 138412546;
-              v31 = v25;
+              objectCopy = v25;
               v32 = 2080;
               v33 = dst;
               _os_log_fault_impl(&dword_18075C000, v21, OS_LOG_TYPE_FAULT, "NSPredicate: Using NSCustomPredicateOperator with selector '%@' and return type '%s' is forbidden", buf, 0x16u);
@@ -368,7 +368,7 @@ LABEL_44:
           }
         }
 
-        return [a3 v12];
+        return [object v12];
       }
     }
 
@@ -395,7 +395,7 @@ LABEL_44:
         }
 
         *buf = 138412546;
-        v31 = v24;
+        objectCopy = v24;
         v32 = 2080;
         v33 = dst;
         _os_log_fault_impl(&dword_18075C000, v18, OS_LOG_TYPE_FAULT, "NSPredicate: Using NSCustomPredicateOperator with selector '%@' and parameter encoding '%s' is forbidden", buf, 0x16u);
@@ -404,7 +404,7 @@ LABEL_44:
       +[_NSPredicateUtilities _predicateSecurityAction];
     }
 
-    if (([a4 isNSData] & 1) != 0 || objc_msgSend(a4, "isNSString"))
+    if (([andObject isNSData] & 1) != 0 || objc_msgSend(andObject, "isNSString"))
     {
       objc_opt_self();
       v19 = _NSOSLog();
@@ -421,7 +421,7 @@ LABEL_44:
         }
 
         *buf = 138412546;
-        v31 = v23;
+        objectCopy = v23;
         v32 = 2080;
         v33 = dst;
         _os_log_fault_impl(&dword_18075C000, v19, OS_LOG_TYPE_FAULT, "NSPredicate: Invalid argument passed to NSCustomPredicateOperator with selector '%@' and parameter encoding '%s' expecting pointer", buf, 0x16u);
@@ -433,7 +433,7 @@ LABEL_44:
     goto LABEL_44;
   }
 
-  return [a3 v12];
+  return [object v12];
 }
 
 @end

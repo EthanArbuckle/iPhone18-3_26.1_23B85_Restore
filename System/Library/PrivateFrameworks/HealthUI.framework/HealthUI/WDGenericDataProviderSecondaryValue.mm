@@ -1,33 +1,33 @@
 @interface WDGenericDataProviderSecondaryValue
-- (WDGenericDataProviderSecondaryValue)initWithAverage:(id)a3;
-- (id)attributedStringWithDisplayType:(id)a3 unitController:(id)a4 valueFont:(id)a5 unitFont:(id)a6 dateCache:(id)a7;
-- (id)lastUpdatedDescriptionWithDateCache:(id)a3;
+- (WDGenericDataProviderSecondaryValue)initWithAverage:(id)average;
+- (id)attributedStringWithDisplayType:(id)type unitController:(id)controller valueFont:(id)font unitFont:(id)unitFont dateCache:(id)cache;
+- (id)lastUpdatedDescriptionWithDateCache:(id)cache;
 @end
 
 @implementation WDGenericDataProviderSecondaryValue
 
-- (WDGenericDataProviderSecondaryValue)initWithAverage:(id)a3
+- (WDGenericDataProviderSecondaryValue)initWithAverage:(id)average
 {
-  v5 = a3;
+  averageCopy = average;
   v6 = [(WDGenericDataProviderSecondaryValue *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_average, a3);
+    objc_storeStrong(&v6->_average, average);
   }
 
   return v7;
 }
 
-- (id)attributedStringWithDisplayType:(id)a3 unitController:(id)a4 valueFont:(id)a5 unitFont:(id)a6 dateCache:(id)a7
+- (id)attributedStringWithDisplayType:(id)type unitController:(id)controller valueFont:(id)font unitFont:(id)unitFont dateCache:(id)cache
 {
-  v9 = a3;
-  v10 = a4;
+  typeCopy = type;
+  controllerCopy = controller;
   v11 = HKLocalizedNoDataString();
   average = self->_average;
   if (average)
   {
-    v13 = HKFormattedStringFromValue(average, v9, v10, 0, 0);
+    v13 = HKFormattedStringFromValue(average, typeCopy, controllerCopy, 0, 0);
 
     v11 = v13;
   }
@@ -42,11 +42,11 @@
   return v18;
 }
 
-- (id)lastUpdatedDescriptionWithDateCache:(id)a3
+- (id)lastUpdatedDescriptionWithDateCache:(id)cache
 {
-  v4 = a3;
-  v5 = [(WDGenericDataProviderSecondaryValue *)self date];
-  v6 = HKLastUpdatedText(v5, v4);
+  cacheCopy = cache;
+  date = [(WDGenericDataProviderSecondaryValue *)self date];
+  v6 = HKLastUpdatedText(date, cacheCopy);
 
   return v6;
 }

@@ -1,22 +1,22 @@
 @interface LocationPickerView.Coordinator
-- (void)locationPicker:(id)a3 didFinishWithValue:(id)a4;
-- (void)locationPickerDidCancel:(id)a3;
+- (void)locationPicker:(id)picker didFinishWithValue:(id)value;
+- (void)locationPickerDidCancel:(id)cancel;
 @end
 
 @implementation LocationPickerView.Coordinator
 
-- (void)locationPicker:(id)a3 didFinishWithValue:(id)a4
+- (void)locationPicker:(id)picker didFinishWithValue:(id)value
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_274457710(v8, a4);
+  pickerCopy = picker;
+  valueCopy = value;
+  selfCopy = self;
+  sub_274457710(selfCopy, value);
 }
 
-- (void)locationPickerDidCancel:(id)a3
+- (void)locationPickerDidCancel:(id)cancel
 {
-  v4 = a3;
-  v5 = self;
+  cancelCopy = cancel;
+  selfCopy = self;
   sub_27445793C();
 }
 

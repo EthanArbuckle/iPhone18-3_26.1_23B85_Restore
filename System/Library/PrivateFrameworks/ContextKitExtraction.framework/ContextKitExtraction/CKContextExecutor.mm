@@ -1,8 +1,8 @@
 @interface CKContextExecutor
-- (CKContextExecutor)initWithContext:(id)a3 workItemQueue:(id)a4 completionQueue:(id)a5 timeoutAfter:(unint64_t)a6 completionHandler:(id)a7;
+- (CKContextExecutor)initWithContext:(id)context workItemQueue:(id)queue completionQueue:(id)completionQueue timeoutAfter:(unint64_t)after completionHandler:(id)handler;
 - (id)context;
 - (void)_awaitCompletion;
-- (void)addWorkItemToQueue:(id)a3 withWorkItem:(id)a4 andContext:(id)a5;
+- (void)addWorkItemToQueue:(id)queue withWorkItem:(id)item andContext:(id)context;
 - (void)dealloc;
 - (void)markReadyAndAwaitCompletion;
 @end
@@ -67,27 +67,27 @@
   [(CKContextExecutor *)&v8 dealloc];
 }
 
-- (CKContextExecutor)initWithContext:(id)a3 workItemQueue:(id)a4 completionQueue:(id)a5 timeoutAfter:(unint64_t)a6 completionHandler:(id)a7
+- (CKContextExecutor)initWithContext:(id)context workItemQueue:(id)queue completionQueue:(id)completionQueue timeoutAfter:(unint64_t)after completionHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  contextCopy = context;
+  queueCopy = queue;
+  completionQueueCopy = completionQueue;
+  handlerCopy = handler;
   v28.receiver = self;
   v28.super_class = CKContextExecutor;
   v16 = [(CKContextExecutor *)&v28 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeWeak(&v16->_context, v12);
-    objc_storeStrong(&v17->_workItemQueue, a4);
-    objc_storeStrong(&v17->_completionQueue, a5);
+    objc_storeWeak(&v16->_context, contextCopy);
+    objc_storeStrong(&v17->_workItemQueue, queue);
+    objc_storeStrong(&v17->_completionQueue, completionQueue);
     v18 = dispatch_group_create();
     group = v17->_group;
     v17->_group = v18;
 
-    v17->_timeoutAfter = a6;
-    v20 = MEMORY[0x1B8CBE810](v15);
+    v17->_timeoutAfter = after;
+    v20 = MEMORY[0x1B8CBE810](handlerCopy);
     completionHandler = v17->_completionHandler;
     v17->_completionHandler = v20;
 
@@ -107,7 +107,7 @@
 
   else
   {
-    (*(v15 + 2))(v15, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 
   return v17;
@@ -125,15 +125,15 @@
   }
 }
 
-- (void)addWorkItemToQueue:(id)a3 withWorkItem:(id)a4 andContext:(id)a5
+- (void)addWorkItemToQueue:(id)queue withWorkItem:(id)item andContext:(id)context
 {
-  v8 = a4;
-  v9 = a5;
+  itemCopy = item;
+  contextCopy = context;
   v10 = atomic_load(&self->_done);
-  if (v8 && (v10 & 1) == 0)
+  if (itemCopy && (v10 & 1) == 0)
   {
-    v11 = a3;
-    v12 = [v8 copy];
+    queueCopy = queue;
+    v12 = [itemCopy copy];
 
     objc_initWeak(&location, self);
     group = self->_group;
@@ -142,10 +142,10 @@
     v14[2] = __64__CKContextExecutor_addWorkItemToQueue_withWorkItem_andContext___block_invoke;
     v14[3] = &unk_1E7CEE540;
     objc_copyWeak(&v17, &location);
-    v8 = v12;
-    v16 = v8;
-    v15 = v9;
-    dispatch_group_async(group, v11, v14);
+    itemCopy = v12;
+    v16 = itemCopy;
+    v15 = contextCopy;
+    dispatch_group_async(group, queueCopy, v14);
 
     objc_destroyWeak(&v17);
     objc_destroyWeak(&location);

@@ -1,12 +1,12 @@
 @interface NRGDaemon
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (NRGDaemon)init;
 - (void)dealloc;
-- (void)handleRequest:(id)a3;
-- (void)handleResponse:(id)a3;
+- (void)handleRequest:(id)request;
+- (void)handleResponse:(id)response;
 - (void)initIDS;
 - (void)purgeCache;
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7;
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error;
 - (void)start;
 @end
 
@@ -54,8 +54,8 @@
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(NRGDaemon *)self xpcClients];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  xpcClients = [(NRGDaemon *)self xpcClients];
+  v5 = [xpcClients countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -66,20 +66,20 @@
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(xpcClients);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 connection];
+        connection = [v9 connection];
 
-        if (v10)
+        if (connection)
         {
-          v11 = [v9 connection];
-          [v11 invalidate];
+          connection2 = [v9 connection];
+          [connection2 invalidate];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [xpcClients countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
@@ -101,20 +101,20 @@
   _objc_release_x1();
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  listenerCopy = listener;
+  connectionCopy = connection;
+  if (!connectionCopy)
   {
     sub_100011AC4();
   }
 
-  v8 = v7;
-  v9 = [v7 valueForEntitlement:@"com.apple.nano.nanoresourcegrabber"];
+  v8 = connectionCopy;
+  v9 = [connectionCopy valueForEntitlement:@"com.apple.nano.nanoresourcegrabber"];
   if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && ([v9 BOOLValue] & 1) != 0)
   {
-    v31 = v6;
+    v31 = listenerCopy;
     [v8 setExportedObject:self];
     v10 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___NanoResourceGrabberIDSXPC];
     [v8 setExportedInterface:v10];
@@ -125,8 +125,8 @@
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v12 = [(NRGDaemon *)self xpcClients];
-    v13 = [v12 countByEnumeratingWithState:&v32 objects:v36 count:16];
+    xpcClients = [(NRGDaemon *)self xpcClients];
+    v13 = [xpcClients countByEnumeratingWithState:&v32 objects:v36 count:16];
     if (v13)
     {
       v14 = v13;
@@ -138,12 +138,12 @@
         {
           if (*v33 != v16)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(xpcClients);
           }
 
-          v18 = [*(*(&v32 + 1) + 8 * i) connection];
+          connection = [*(*(&v32 + 1) + 8 * i) connection];
 
-          if (!v18)
+          if (!connection)
           {
             [v11 addIndex:v15];
           }
@@ -151,21 +151,21 @@
           ++v15;
         }
 
-        v14 = [v12 countByEnumeratingWithState:&v32 objects:v36 count:16];
+        v14 = [xpcClients countByEnumeratingWithState:&v32 objects:v36 count:16];
       }
 
       while (v14);
     }
 
-    v19 = [(NRGDaemon *)self xpcClients];
-    [v19 removeObjectsAtIndexes:v11];
+    xpcClients2 = [(NRGDaemon *)self xpcClients];
+    [xpcClients2 removeObjectsAtIndexes:v11];
 
     v20 = [[NanoResourceGrabberNanoAgent alloc] initWithConnection:v8];
-    v21 = [(NRGDaemon *)self xpcClients];
-    [v21 addObject:v20];
+    xpcClients3 = [(NRGDaemon *)self xpcClients];
+    [xpcClients3 addObject:v20];
 
     v22 = 1;
-    v6 = v31;
+    listenerCopy = v31;
   }
 
   else
@@ -205,10 +205,10 @@
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v5 = [(NRGDaemon *)self protobufRequestHandlers];
-  v6 = [v5 keyEnumerator];
+  protobufRequestHandlers = [(NRGDaemon *)self protobufRequestHandlers];
+  keyEnumerator = [protobufRequestHandlers keyEnumerator];
 
-  v7 = [v6 countByEnumeratingWithState:&v25 objects:v32 count:16];
+  v7 = [keyEnumerator countByEnumeratingWithState:&v25 objects:v32 count:16];
   if (v7)
   {
     v8 = v7;
@@ -219,7 +219,7 @@
       {
         if (*v26 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(keyEnumerator);
         }
 
         v11 = *(*(&v25 + 1) + 8 * i);
@@ -234,7 +234,7 @@
         -[IDSService setProtobufAction:forIncomingRequestsOfType:](self->_idsService, "setProtobufAction:forIncomingRequestsOfType:", "handleRequest:", [v11 integerValue]);
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v25 objects:v32 count:16];
+      v8 = [keyEnumerator countByEnumeratingWithState:&v25 objects:v32 count:16];
     }
 
     while (v8);
@@ -244,10 +244,10 @@
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v13 = [(NRGDaemon *)self protobufResponseHandlers];
-  v14 = [v13 keyEnumerator];
+  protobufResponseHandlers = [(NRGDaemon *)self protobufResponseHandlers];
+  keyEnumerator2 = [protobufResponseHandlers keyEnumerator];
 
-  v15 = [v14 countByEnumeratingWithState:&v21 objects:v29 count:16];
+  v15 = [keyEnumerator2 countByEnumeratingWithState:&v21 objects:v29 count:16];
   if (v15)
   {
     v16 = v15;
@@ -258,7 +258,7 @@
       {
         if (*v22 != v17)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(keyEnumerator2);
         }
 
         v19 = *(*(&v21 + 1) + 8 * j);
@@ -273,7 +273,7 @@
         -[IDSService setProtobufAction:forIncomingResponsesOfType:](self->_idsService, "setProtobufAction:forIncomingResponsesOfType:", "handleResponse:", [v19 integerValue]);
       }
 
-      v16 = [v14 countByEnumeratingWithState:&v21 objects:v29 count:16];
+      v16 = [keyEnumerator2 countByEnumeratingWithState:&v21 objects:v29 count:16];
     }
 
     while (v16);
@@ -283,12 +283,12 @@
   xpc_set_event_stream_handler("com.apple.notifyd.matching", &_dispatch_main_q, &stru_100020B30);
 }
 
-- (void)handleRequest:(id)a3
+- (void)handleRequest:(id)request
 {
-  v4 = a3;
-  v5 = +[NSNumber numberWithUnsignedShort:](NSNumber, "numberWithUnsignedShort:", [v4 type]);
-  v6 = [(NRGDaemon *)self protobufRequestHandlers];
-  v7 = [v6 objectForKeyedSubscript:v5];
+  requestCopy = request;
+  v5 = +[NSNumber numberWithUnsignedShort:](NSNumber, "numberWithUnsignedShort:", [requestCopy type]);
+  protobufRequestHandlers = [(NRGDaemon *)self protobufRequestHandlers];
+  v7 = [protobufRequestHandlers objectForKeyedSubscript:v5];
 
   v8 = nrg_daemon_log();
   v9 = v8;
@@ -301,7 +301,7 @@
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "handling request of type %@", &v10, 0xCu);
     }
 
-    (v7)[2](v7, v4);
+    (v7)[2](v7, requestCopy);
   }
 
   else
@@ -313,12 +313,12 @@
   }
 }
 
-- (void)handleResponse:(id)a3
+- (void)handleResponse:(id)response
 {
-  v4 = a3;
-  v5 = +[NSNumber numberWithUnsignedShort:](NSNumber, "numberWithUnsignedShort:", [v4 type]);
-  v6 = [(NRGDaemon *)self protobufResponseHandlers];
-  v7 = [v6 objectForKeyedSubscript:v5];
+  responseCopy = response;
+  v5 = +[NSNumber numberWithUnsignedShort:](NSNumber, "numberWithUnsignedShort:", [responseCopy type]);
+  protobufResponseHandlers = [(NRGDaemon *)self protobufResponseHandlers];
+  v7 = [protobufResponseHandlers objectForKeyedSubscript:v5];
 
   v8 = nrg_daemon_log();
   v9 = v8;
@@ -331,7 +331,7 @@
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "handling response of type %@", &v10, 0xCu);
     }
 
-    (v7)[2](v7, v4);
+    (v7)[2](v7, responseCopy);
   }
 
   else
@@ -343,43 +343,43 @@
   }
 }
 
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error
 {
-  v10 = a5;
-  v11 = a7;
+  identifierCopy = identifier;
+  errorCopy = error;
   v12 = nrg_daemon_log();
   v13 = os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT);
-  if (v11 || !a6)
+  if (errorCopy || !success)
   {
     if (v13)
     {
       v17 = 138543362;
-      v18 = v10;
+      v18 = identifierCopy;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Failed to send IDS Request for identifier %{public}@", &v17, 0xCu);
     }
 
     os_unfair_lock_lock(&self->_requestErrorHandlerLock);
-    v14 = [(NSMutableDictionary *)self->_requestErrorHandlerDictionary objectForKey:v10];
+    v14 = [(NSMutableDictionary *)self->_requestErrorHandlerDictionary objectForKey:identifierCopy];
     if (v14)
     {
-      [(NSMutableDictionary *)self->_requestErrorHandlerDictionary removeObjectForKey:v10];
+      [(NSMutableDictionary *)self->_requestErrorHandlerDictionary removeObjectForKey:identifierCopy];
     }
 
     os_unfair_lock_unlock(&self->_requestErrorHandlerLock);
-    if (v11)
+    if (errorCopy)
     {
-      v15 = v11;
+      genericSendError = errorCopy;
     }
 
     else
     {
-      v15 = [(NRGDaemon *)self genericSendError];
+      genericSendError = [(NRGDaemon *)self genericSendError];
     }
 
-    v16 = v15;
+    v16 = genericSendError;
     if (v14)
     {
-      (v14)[2](v14, v15);
+      (v14)[2](v14, genericSendError);
     }
   }
 
@@ -388,12 +388,12 @@
     if (v13)
     {
       v17 = 138543362;
-      v18 = v10;
+      v18 = identifierCopy;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "IDS Request sent for identifier %{public}@", &v17, 0xCu);
     }
 
     os_unfair_lock_lock(&self->_requestErrorHandlerLock);
-    [(NSMutableDictionary *)self->_requestErrorHandlerDictionary removeObjectForKey:v10];
+    [(NSMutableDictionary *)self->_requestErrorHandlerDictionary removeObjectForKey:identifierCopy];
     os_unfair_lock_unlock(&self->_requestErrorHandlerLock);
   }
 }

@@ -1,24 +1,24 @@
 @interface TRIAppContainer
-+ (TRIAppContainer)containerWithIdentifier:(id)a3 type:(int64_t)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToContainer:(id)a3;
-- (TRIAppContainer)initWithCoder:(id)a3;
-- (TRIAppContainer)initWithIdentifier:(id)a3 type:(int64_t)a4;
++ (TRIAppContainer)containerWithIdentifier:(id)identifier type:(int64_t)type;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToContainer:(id)container;
+- (TRIAppContainer)initWithCoder:(id)coder;
+- (TRIAppContainer)initWithIdentifier:(id)identifier type:(int64_t)type;
 - (id)_appBundleContainerDirectoryAsOwner;
-- (id)_appContainerDirectoryAsSystemWithContainerClass:(unint64_t)a3 error:(id *)a4;
+- (id)_appContainerDirectoryAsSystemWithContainerClass:(unint64_t)class error:(id *)error;
 - (id)_appDataContainerDirectoryAsOwner;
-- (id)_containerError:(unint64_t)a3 withFormat:(id)a4;
-- (id)_containerURLWithError:(id *)a3;
+- (id)_containerError:(unint64_t)error withFormat:(id)format;
+- (id)_containerURLWithError:(id *)error;
 - (id)_groupContainerDirectoryAsOwner;
-- (id)_groupContainerDirectoryAsSystemWithError:(id *)a3;
+- (id)_groupContainerDirectoryAsSystemWithError:(id *)error;
 - (id)containerURL;
 - (id)containerURLAsOwner;
-- (id)copyWithReplacementIdentifier:(id)a3;
-- (id)copyWithReplacementType:(int64_t)a3;
+- (id)copyWithReplacementIdentifier:(id)identifier;
+- (id)copyWithReplacementType:(int64_t)type;
 - (id)description;
 - (id)sanitizedIdentifier;
 - (int64_t)fetchStatus;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TRIAppContainer
@@ -31,10 +31,10 @@
   v4 = v3;
   if (!v3)
   {
-    v10 = [v14 userInfo];
-    v5 = [v10 objectForKeyedSubscript:@"containerError"];
+    userInfo = [v14 userInfo];
+    path = [userInfo objectForKeyedSubscript:@"containerError"];
 
-    if (v5 && [v5 integerValue] == 21)
+    if (path && [path integerValue] == 21)
     {
       v8 = 2;
       goto LABEL_13;
@@ -43,9 +43,9 @@
     v9 = TRILogCategory_ClientFramework();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      v13 = [v14 localizedFailureReason];
+      localizedFailureReason = [v14 localizedFailureReason];
       *buf = 138412290;
-      v16 = v13;
+      selfCopy = localizedFailureReason;
       _os_log_error_impl(&dword_22EA6B000, v9, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
     }
 
@@ -55,14 +55,14 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v5 = [v3 path];
-  if (!v5 || ([MEMORY[0x277CCAA00] defaultManager], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "fileExistsAtPath:", v5), v6, (v7 & 1) == 0))
+  path = [v3 path];
+  if (!path || ([MEMORY[0x277CCAA00] defaultManager], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "fileExistsAtPath:", path), v6, (v7 & 1) == 0))
   {
     v9 = TRILogCategory_ClientFramework();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v16 = self;
+      selfCopy = self;
       _os_log_error_impl(&dword_22EA6B000, v9, OS_LOG_TYPE_ERROR, "could not determine state of app container %@", buf, 0xCu);
     }
 
@@ -86,9 +86,9 @@ LABEL_13:
     v3 = TRILogCategory_ClientFramework();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
     {
-      v6 = [v7 localizedFailureReason];
+      localizedFailureReason = [v7 localizedFailureReason];
       *buf = 138412290;
-      v9 = v6;
+      v9 = localizedFailureReason;
       _os_log_error_impl(&dword_22EA6B000, v3, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
     }
   }
@@ -98,19 +98,19 @@ LABEL_13:
   return v2;
 }
 
-- (id)_containerURLWithError:(id *)a3
+- (id)_containerURLWithError:(id *)error
 {
-  v5 = [(TRIAppContainer *)self type];
-  switch(v5)
+  type = [(TRIAppContainer *)self type];
+  switch(type)
   {
     case 3:
-      v6 = [(TRIAppContainer *)self _groupContainerDirectoryAsSystemWithError:a3];
+      v6 = [(TRIAppContainer *)self _groupContainerDirectoryAsSystemWithError:error];
       break;
     case 2:
-      v6 = [(TRIAppContainer *)self _appDataContainerDirectoryAsSystemWithError:a3];
+      v6 = [(TRIAppContainer *)self _appDataContainerDirectoryAsSystemWithError:error];
       break;
     case 1:
-      v6 = [(TRIAppContainer *)self _appBundleContainerDirectoryAsSystemWithError:a3];
+      v6 = [(TRIAppContainer *)self _appBundleContainerDirectoryAsSystemWithError:error];
       break;
     default:
       v6 = 0;
@@ -122,24 +122,24 @@ LABEL_13:
 
 - (id)containerURLAsOwner
 {
-  v3 = [(TRIAppContainer *)self type];
-  switch(v3)
+  type = [(TRIAppContainer *)self type];
+  switch(type)
   {
     case 3:
-      v4 = [(TRIAppContainer *)self _groupContainerDirectoryAsOwner];
+      _groupContainerDirectoryAsOwner = [(TRIAppContainer *)self _groupContainerDirectoryAsOwner];
       break;
     case 2:
-      v4 = [(TRIAppContainer *)self _appDataContainerDirectoryAsOwner];
+      _groupContainerDirectoryAsOwner = [(TRIAppContainer *)self _appDataContainerDirectoryAsOwner];
       break;
     case 1:
-      v4 = [(TRIAppContainer *)self _appBundleContainerDirectoryAsOwner];
+      _groupContainerDirectoryAsOwner = [(TRIAppContainer *)self _appBundleContainerDirectoryAsOwner];
       break;
     default:
-      v4 = 0;
+      _groupContainerDirectoryAsOwner = 0;
       break;
   }
 
-  return v4;
+  return _groupContainerDirectoryAsOwner;
 }
 
 - (id)sanitizedIdentifier
@@ -149,8 +149,8 @@ LABEL_13:
     dispatch_once(&_MergedGlobals_9, &__block_literal_global_10);
   }
 
-  v3 = [(TRIAppContainer *)self identifier];
-  v4 = [v3 dataUsingEncoding:1 allowLossyConversion:1];
+  identifier = [(TRIAppContainer *)self identifier];
+  v4 = [identifier dataUsingEncoding:1 allowLossyConversion:1];
 
   v5 = [objc_alloc(MEMORY[0x277CCAB68]) initWithData:v4 encoding:1];
   v6 = [v5 rangeOfCharacterFromSet:qword_280ACADF8];
@@ -173,23 +173,23 @@ void __48__TRIAppContainer_TRIPaths__sanitizedIdentifier__block_invoke()
   qword_280ACADF8 = v0;
 }
 
-- (id)_containerError:(unint64_t)a3 withFormat:(id)a4
+- (id)_containerError:(unint64_t)error withFormat:(id)format
 {
   v18[3] = *MEMORY[0x277D85DE8];
   v5 = MEMORY[0x277CCACA8];
-  v6 = a4;
-  v7 = [[v5 alloc] initWithFormat:v6 arguments:&v20];
+  formatCopy = format;
+  v7 = [[v5 alloc] initWithFormat:formatCopy arguments:&v20];
 
   v17[0] = @"containerError";
-  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a3];
+  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:error];
   v18[0] = v8;
   v17[1] = *MEMORY[0x277CCA450];
-  v9 = [MEMORY[0x277CCA8D8] mainBundle];
-  v10 = [v9 localizedStringForKey:@"Container error" value:&stru_28435FC98 table:0];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v10 = [mainBundle localizedStringForKey:@"Container error" value:&stru_28435FC98 table:0];
   v18[1] = v10;
   v17[2] = *MEMORY[0x277CCA470];
-  v11 = [MEMORY[0x277CCA8D8] mainBundle];
-  v12 = [v11 localizedStringForKey:v7 value:&stru_28435FC98 table:0];
+  mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+  v12 = [mainBundle2 localizedStringForKey:v7 value:&stru_28435FC98 table:0];
   v18[2] = v12;
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:3];
 
@@ -200,21 +200,21 @@ void __48__TRIAppContainer_TRIPaths__sanitizedIdentifier__block_invoke()
   return v14;
 }
 
-- (id)_appContainerDirectoryAsSystemWithContainerClass:(unint64_t)a3 error:(id *)a4
+- (id)_appContainerDirectoryAsSystemWithContainerClass:(unint64_t)class error:(id *)error
 {
-  v6 = [(TRIAppContainer *)self sanitizedIdentifier];
-  v7 = v6;
-  if (!v6 || ![v6 length])
+  sanitizedIdentifier = [(TRIAppContainer *)self sanitizedIdentifier];
+  v7 = sanitizedIdentifier;
+  if (!sanitizedIdentifier || ![sanitizedIdentifier length])
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_11;
     }
 
-    v11 = [(TRIAppContainer *)self identifier];
-    v12 = [(TRIAppContainer *)self _containerError:1 withFormat:@"Failed to look up container with identifier %@ because cannot sanitize identifier", v11];
-    v13 = *a4;
-    *a4 = v12;
+    identifier = [(TRIAppContainer *)self identifier];
+    v12 = [(TRIAppContainer *)self _containerError:1 withFormat:@"Failed to look up container with identifier %@ because cannot sanitize identifier", identifier];
+    v13 = *error;
+    *error = v12;
 
     goto LABEL_10;
   }
@@ -228,29 +228,29 @@ void __48__TRIAppContainer_TRIPaths__sanitizedIdentifier__block_invoke()
     MEMORY[0x2318F1FA0](v9);
     if (v10)
     {
-      a4 = [MEMORY[0x277CBEBC0] fileURLWithFileSystemRepresentation:v10 isDirectory:1 relativeToURL:0];
+      error = [MEMORY[0x277CBEBC0] fileURLWithFileSystemRepresentation:v10 isDirectory:1 relativeToURL:0];
       free(v10);
       goto LABEL_11;
     }
   }
 
-  if (a4)
+  if (error)
   {
-    v14 = [(TRIAppContainer *)self identifier];
-    v15 = [(TRIAppContainer *)self _containerError:0 withFormat:@"Failed to look up container with identifier %@ due to container manager error: %llu", v14, 0];
-    v16 = *a4;
-    *a4 = v15;
+    identifier2 = [(TRIAppContainer *)self identifier];
+    v15 = [(TRIAppContainer *)self _containerError:0 withFormat:@"Failed to look up container with identifier %@ due to container manager error: %llu", identifier2, 0];
+    v16 = *error;
+    *error = v15;
 
 LABEL_10:
-    a4 = 0;
+    error = 0;
   }
 
 LABEL_11:
 
-  return a4;
+  return error;
 }
 
-- (id)_groupContainerDirectoryAsSystemWithError:(id *)a3
+- (id)_groupContainerDirectoryAsSystemWithError:(id *)error
 {
   v18 = *MEMORY[0x277D85DE8];
   v13 = 0;
@@ -281,9 +281,9 @@ LABEL_11:
     v8 = TRILogCategory_ClientFramework();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      v11 = [(TRIAppContainer *)self identifier];
+      identifier = [(TRIAppContainer *)self identifier];
       *buf = 138412546;
-      *&buf[4] = v11;
+      *&buf[4] = identifier;
       *&buf[12] = 2048;
       *&buf[14] = v13;
       _os_log_error_impl(&dword_22EA6B000, v8, OS_LOG_TYPE_ERROR, "Failed to look up container with identifier %@ due to container manager error: %llu", buf, 0x16u);
@@ -337,43 +337,43 @@ uint64_t __71__TRIAppContainer_TRIPaths___groupContainerDirectoryAsSystemWithErr
 
 - (id)_appBundleContainerDirectoryAsOwner
 {
-  v2 = [MEMORY[0x277CCA8D8] mainBundle];
-  v3 = [v2 bundleURL];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleURL = [mainBundle bundleURL];
 
-  return v3;
+  return bundleURL;
 }
 
 - (id)_appDataContainerDirectoryAsOwner
 {
-  v2 = [MEMORY[0x277CCAA00] defaultManager];
-  v3 = [v2 URLsForDirectory:5 inDomains:1];
-  v4 = [v3 firstObject];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v3 = [defaultManager URLsForDirectory:5 inDomains:1];
+  firstObject = [v3 firstObject];
 
-  if (v4)
+  if (firstObject)
   {
-    v5 = [v3 firstObject];
-    v4 = [v5 URLByDeletingLastPathComponent];
+    firstObject2 = [v3 firstObject];
+    firstObject = [firstObject2 URLByDeletingLastPathComponent];
   }
 
-  return v4;
+  return firstObject;
 }
 
 - (id)_groupContainerDirectoryAsOwner
 {
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
-  v4 = [(TRIAppContainer *)self sanitizedIdentifier];
-  v5 = [v3 containerURLForSecurityApplicationGroupIdentifier:v4];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  sanitizedIdentifier = [(TRIAppContainer *)self sanitizedIdentifier];
+  v5 = [defaultManager containerURLForSecurityApplicationGroupIdentifier:sanitizedIdentifier];
 
   return v5;
 }
 
-- (TRIAppContainer)initWithIdentifier:(id)a3 type:(int64_t)a4
+- (TRIAppContainer)initWithIdentifier:(id)identifier type:(int64_t)type
 {
-  v8 = a3;
-  if (!v8)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"TRIClientTupleTypes.m" lineNumber:20 description:{@"Invalid parameter not satisfying: %@", @"identifier != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIClientTupleTypes.m" lineNumber:20 description:{@"Invalid parameter not satisfying: %@", @"identifier != nil"}];
   }
 
   v13.receiver = self;
@@ -382,49 +382,49 @@ uint64_t __71__TRIAppContainer_TRIPaths___groupContainerDirectoryAsSystemWithErr
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_identifier, a3);
-    v10->_type = a4;
+    objc_storeStrong(&v9->_identifier, identifier);
+    v10->_type = type;
   }
 
   return v10;
 }
 
-+ (TRIAppContainer)containerWithIdentifier:(id)a3 type:(int64_t)a4
++ (TRIAppContainer)containerWithIdentifier:(id)identifier type:(int64_t)type
 {
-  v6 = a3;
-  v7 = [[a1 alloc] initWithIdentifier:v6 type:a4];
+  identifierCopy = identifier;
+  v7 = [[self alloc] initWithIdentifier:identifierCopy type:type];
 
   return v7;
 }
 
-- (id)copyWithReplacementIdentifier:(id)a3
+- (id)copyWithReplacementIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [objc_alloc(objc_opt_class()) initWithIdentifier:v4 type:self->_type];
+  identifierCopy = identifier;
+  v5 = [objc_alloc(objc_opt_class()) initWithIdentifier:identifierCopy type:self->_type];
 
   return v5;
 }
 
-- (id)copyWithReplacementType:(int64_t)a3
+- (id)copyWithReplacementType:(int64_t)type
 {
   v5 = objc_alloc(objc_opt_class());
   identifier = self->_identifier;
 
-  return [v5 initWithIdentifier:identifier type:a3];
+  return [v5 initWithIdentifier:identifier type:type];
 }
 
-- (BOOL)isEqualToContainer:(id)a3
+- (BOOL)isEqualToContainer:(id)container
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  containerCopy = container;
+  v5 = containerCopy;
+  if (!containerCopy)
   {
     goto LABEL_6;
   }
 
   v6 = self->_identifier == 0;
-  v7 = [v4 identifier];
-  v8 = v7 != 0;
+  identifier = [containerCopy identifier];
+  v8 = identifier != 0;
 
   if (v6 == v8 || (identifier = self->_identifier) != 0 && ([v5 identifier], v10 = objc_claimAutoreleasedReturnValue(), v11 = -[NSString isEqual:](identifier, "isEqual:", v10), v10, !v11))
   {
@@ -441,36 +441,36 @@ LABEL_6:
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(TRIAppContainer *)self isEqualToContainer:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(TRIAppContainer *)self isEqualToContainer:v5];
   }
 
   return v6;
 }
 
-- (TRIAppContainer)initWithCoder:(id)a3
+- (TRIAppContainer)initWithCoder:(id)coder
 {
   v26[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
   if (!v5)
   {
-    v8 = [v4 error];
+    error = [coderCopy error];
 
-    if (v8)
+    if (error)
     {
 LABEL_10:
-      v7 = 0;
+      selfCopy = 0;
       goto LABEL_11;
     }
 
@@ -494,22 +494,22 @@ LABEL_10:
     v24 = v15;
     v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v24 forKeys:&v23 count:1];
     v17 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:@"TRIAppContainerOCNTErrorDomain" code:3 userInfo:v16];
-    [v4 failWithError:v17];
+    [coderCopy failWithError:v17];
 
     goto LABEL_9;
   }
 
-  v6 = [v4 decodeInt64ForKey:@"type"];
+  v6 = [coderCopy decodeInt64ForKey:@"type"];
   if (!v6)
   {
-    v20 = [v4 error];
+    error2 = [coderCopy error];
 
-    if (v20)
+    if (error2)
     {
       goto LABEL_10;
     }
 
-    if ([v4 containsValueForKey:@"type"])
+    if ([coderCopy containsValueForKey:@"type"])
     {
       goto LABEL_4;
     }
@@ -521,7 +521,7 @@ LABEL_10:
     v11 = 1;
 LABEL_7:
     v12 = [v10 initWithDomain:@"TRIAppContainerOCNTErrorDomain" code:v11 userInfo:v9];
-    [v4 failWithError:v12];
+    [coderCopy failWithError:v12];
 LABEL_9:
 
     goto LABEL_10;
@@ -529,25 +529,25 @@ LABEL_9:
 
 LABEL_4:
   self = [(TRIAppContainer *)self initWithIdentifier:v5 type:v6];
-  v7 = self;
+  selfCopy = self;
 LABEL_11:
 
   v18 = *MEMORY[0x277D85DE8];
-  return v7;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   identifier = self->_identifier;
-  v6 = v4;
+  v6 = coderCopy;
   if (identifier)
   {
-    [v4 encodeObject:identifier forKey:@"identifier"];
-    v4 = v6;
+    [coderCopy encodeObject:identifier forKey:@"identifier"];
+    coderCopy = v6;
   }
 
-  [v4 encodeInt64:self->_type forKey:@"type"];
+  [coderCopy encodeInt64:self->_type forKey:@"type"];
 }
 
 - (id)description

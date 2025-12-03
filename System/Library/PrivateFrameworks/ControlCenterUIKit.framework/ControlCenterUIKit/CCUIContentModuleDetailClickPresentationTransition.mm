@@ -1,45 +1,45 @@
 @interface CCUIContentModuleDetailClickPresentationTransition
-- (CCUIContentModuleDetailClickPresentationTransition)initWithPresentedViewController:(id)a3 animationController:(id)a4;
-- (void)performTransitionFromView:(id)a3 toView:(id)a4 containerView:(id)a5;
-- (void)transitionDidEnd:(BOOL)a3;
+- (CCUIContentModuleDetailClickPresentationTransition)initWithPresentedViewController:(id)controller animationController:(id)animationController;
+- (void)performTransitionFromView:(id)view toView:(id)toView containerView:(id)containerView;
+- (void)transitionDidEnd:(BOOL)end;
 @end
 
 @implementation CCUIContentModuleDetailClickPresentationTransition
 
-- (CCUIContentModuleDetailClickPresentationTransition)initWithPresentedViewController:(id)a3 animationController:(id)a4
+- (CCUIContentModuleDetailClickPresentationTransition)initWithPresentedViewController:(id)controller animationController:(id)animationController
 {
-  v7 = a3;
-  v8 = a4;
+  controllerCopy = controller;
+  animationControllerCopy = animationController;
   v12.receiver = self;
   v12.super_class = CCUIContentModuleDetailClickPresentationTransition;
   v9 = [(CCUIContentModuleDetailClickPresentationTransition *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_presentedViewController, a3);
-    objc_storeStrong(&v10->_animationController, a4);
+    objc_storeStrong(&v9->_presentedViewController, controller);
+    objc_storeStrong(&v10->_animationController, animationController);
   }
 
   return v10;
 }
 
-- (void)performTransitionFromView:(id)a3 toView:(id)a4 containerView:(id)a5
+- (void)performTransitionFromView:(id)view toView:(id)toView containerView:(id)containerView
 {
-  v8 = [(UIViewController *)self->_presentedViewController transitionCoordinator:a3];
+  v8 = [(UIViewController *)self->_presentedViewController transitionCoordinator:view];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v8 _mainContext];
-    if (v6)
+    _mainContext = [v8 _mainContext];
+    if (_mainContext)
     {
-      v7 = v6;
-      [(CCUIContentModuleDetailAnimationController *)self->_animationController performTransition:v6];
+      v7 = _mainContext;
+      [(CCUIContentModuleDetailAnimationController *)self->_animationController performTransition:_mainContext];
     }
   }
 }
 
-- (void)transitionDidEnd:(BOOL)a3
+- (void)transitionDidEnd:(BOOL)end
 {
-  [(CCUIContentModuleDetailAnimationController *)self->_animationController animationEnded:a3];
+  [(CCUIContentModuleDetailAnimationController *)self->_animationController animationEnded:end];
   animationController = self->_animationController;
   self->_animationController = 0;
 }

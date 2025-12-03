@@ -1,27 +1,27 @@
 @interface POMMESSchemaPOMMESClientEventMetadata
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (POMMESSchemaPOMMESClientEventMetadata)initWithDictionary:(id)a3;
-- (POMMESSchemaPOMMESClientEventMetadata)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (POMMESSchemaPOMMESClientEventMetadata)initWithDictionary:(id)dictionary;
+- (POMMESSchemaPOMMESClientEventMetadata)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasSearchToolGlobalSearchResultId:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasSearchToolGlobalSearchResultId:(BOOL)id;
+- (void)writeTo:(id)to;
 @end
 
 @implementation POMMESSchemaPOMMESClientEventMetadata
 
-- (POMMESSchemaPOMMESClientEventMetadata)initWithDictionary:(id)a3
+- (POMMESSchemaPOMMESClientEventMetadata)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v22.receiver = self;
   v22.super_class = POMMESSchemaPOMMESClientEventMetadata;
   v5 = [(POMMESSchemaPOMMESClientEventMetadata *)&v22 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"pommesId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"pommesId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -29,7 +29,7 @@
       [(POMMESSchemaPOMMESClientEventMetadata *)v5 setPommesId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"resultCandidateId"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"resultCandidateId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -37,7 +37,7 @@
       [(POMMESSchemaPOMMESClientEventMetadata *)v5 setResultCandidateId:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"requestId"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"requestId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -45,7 +45,7 @@
       [(POMMESSchemaPOMMESClientEventMetadata *)v5 setRequestId:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"trpId"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"trpId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -53,14 +53,14 @@
       [(POMMESSchemaPOMMESClientEventMetadata *)v5 setTrpId:v13];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"originProcess"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"originProcess"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[POMMESSchemaPOMMESClientEventMetadata setOriginProcess:](v5, "setOriginProcess:", [v14 intValue]);
     }
 
-    v15 = [v4 objectForKeyedSubscript:@"subRequestId"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"subRequestId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -68,7 +68,7 @@
       [(POMMESSchemaPOMMESClientEventMetadata *)v5 setSubRequestId:v16];
     }
 
-    v17 = [v4 objectForKeyedSubscript:@"searchToolId"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"searchToolId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -76,7 +76,7 @@
       [(POMMESSchemaPOMMESClientEventMetadata *)v5 setSearchToolId:v18];
     }
 
-    v19 = [v4 objectForKeyedSubscript:@"searchToolGlobalSearchResultId"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"searchToolGlobalSearchResultId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -89,30 +89,30 @@
   return v5;
 }
 
-- (POMMESSchemaPOMMESClientEventMetadata)initWithJSON:(id)a3
+- (POMMESSchemaPOMMESClientEventMetadata)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(POMMESSchemaPOMMESClientEventMetadata *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(POMMESSchemaPOMMESClientEventMetadata *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(POMMESSchemaPOMMESClientEventMetadata *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -125,17 +125,17 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
-    v4 = [(POMMESSchemaPOMMESClientEventMetadata *)self originProcess];
+    originProcess = [(POMMESSchemaPOMMESClientEventMetadata *)self originProcess];
     v5 = @"POMMESCLIENTORIGINPROCESS_UNKNOWN";
-    if (v4 == 1)
+    if (originProcess == 1)
     {
       v5 = @"POMMESCLIENTORIGINPROCESS_SIRI";
     }
 
-    if (v4 == 2)
+    if (originProcess == 2)
     {
       v6 = @"POMMESCLIENTORIGINPROCESS_MAINTENANCE";
     }
@@ -145,105 +145,105 @@
       v6 = v5;
     }
 
-    [v3 setObject:v6 forKeyedSubscript:@"originProcess"];
+    [dictionary setObject:v6 forKeyedSubscript:@"originProcess"];
   }
 
   if (self->_pommesId)
   {
-    v7 = [(POMMESSchemaPOMMESClientEventMetadata *)self pommesId];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    pommesId = [(POMMESSchemaPOMMESClientEventMetadata *)self pommesId];
+    dictionaryRepresentation = [pommesId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"pommesId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"pommesId"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"pommesId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"pommesId"];
     }
   }
 
   if (self->_requestId)
   {
-    v10 = [(POMMESSchemaPOMMESClientEventMetadata *)self requestId];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    requestId = [(POMMESSchemaPOMMESClientEventMetadata *)self requestId];
+    dictionaryRepresentation2 = [requestId dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"requestId"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"requestId"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"requestId"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"requestId"];
     }
   }
 
   if (self->_resultCandidateId)
   {
-    v13 = [(POMMESSchemaPOMMESClientEventMetadata *)self resultCandidateId];
-    v14 = [v13 copy];
-    [v3 setObject:v14 forKeyedSubscript:@"resultCandidateId"];
+    resultCandidateId = [(POMMESSchemaPOMMESClientEventMetadata *)self resultCandidateId];
+    v14 = [resultCandidateId copy];
+    [dictionary setObject:v14 forKeyedSubscript:@"resultCandidateId"];
   }
 
   if ((*&self->_has & 2) != 0)
   {
     v15 = [MEMORY[0x1E696AD98] numberWithInt:{-[POMMESSchemaPOMMESClientEventMetadata searchToolGlobalSearchResultId](self, "searchToolGlobalSearchResultId")}];
-    [v3 setObject:v15 forKeyedSubscript:@"searchToolGlobalSearchResultId"];
+    [dictionary setObject:v15 forKeyedSubscript:@"searchToolGlobalSearchResultId"];
   }
 
   if (self->_searchToolId)
   {
-    v16 = [(POMMESSchemaPOMMESClientEventMetadata *)self searchToolId];
-    v17 = [v16 dictionaryRepresentation];
-    if (v17)
+    searchToolId = [(POMMESSchemaPOMMESClientEventMetadata *)self searchToolId];
+    dictionaryRepresentation3 = [searchToolId dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v17 forKeyedSubscript:@"searchToolId"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"searchToolId"];
     }
 
     else
     {
-      v18 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v18 forKeyedSubscript:@"searchToolId"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"searchToolId"];
     }
   }
 
   if (self->_subRequestId)
   {
-    v19 = [(POMMESSchemaPOMMESClientEventMetadata *)self subRequestId];
-    v20 = [v19 dictionaryRepresentation];
-    if (v20)
+    subRequestId = [(POMMESSchemaPOMMESClientEventMetadata *)self subRequestId];
+    dictionaryRepresentation4 = [subRequestId dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v20 forKeyedSubscript:@"subRequestId"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"subRequestId"];
     }
 
     else
     {
-      v21 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v21 forKeyedSubscript:@"subRequestId"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"subRequestId"];
     }
   }
 
   if (self->_trpId)
   {
-    v22 = [(POMMESSchemaPOMMESClientEventMetadata *)self trpId];
-    v23 = [v22 dictionaryRepresentation];
-    if (v23)
+    trpId = [(POMMESSchemaPOMMESClientEventMetadata *)self trpId];
+    dictionaryRepresentation5 = [trpId dictionaryRepresentation];
+    if (dictionaryRepresentation5)
     {
-      [v3 setObject:v23 forKeyedSubscript:@"trpId"];
+      [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"trpId"];
     }
 
     else
     {
-      v24 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v24 forKeyedSubscript:@"trpId"];
+      null5 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null5 forKeyedSubscript:@"trpId"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -277,28 +277,28 @@
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_35;
   }
 
-  v5 = [(POMMESSchemaPOMMESClientEventMetadata *)self pommesId];
-  v6 = [v4 pommesId];
-  if ((v5 != 0) == (v6 == 0))
+  pommesId = [(POMMESSchemaPOMMESClientEventMetadata *)self pommesId];
+  pommesId2 = [equalCopy pommesId];
+  if ((pommesId != 0) == (pommesId2 == 0))
   {
     goto LABEL_34;
   }
 
-  v7 = [(POMMESSchemaPOMMESClientEventMetadata *)self pommesId];
-  if (v7)
+  pommesId3 = [(POMMESSchemaPOMMESClientEventMetadata *)self pommesId];
+  if (pommesId3)
   {
-    v8 = v7;
-    v9 = [(POMMESSchemaPOMMESClientEventMetadata *)self pommesId];
-    v10 = [v4 pommesId];
-    v11 = [v9 isEqual:v10];
+    v8 = pommesId3;
+    pommesId4 = [(POMMESSchemaPOMMESClientEventMetadata *)self pommesId];
+    pommesId5 = [equalCopy pommesId];
+    v11 = [pommesId4 isEqual:pommesId5];
 
     if (!v11)
     {
@@ -310,20 +310,20 @@
   {
   }
 
-  v5 = [(POMMESSchemaPOMMESClientEventMetadata *)self resultCandidateId];
-  v6 = [v4 resultCandidateId];
-  if ((v5 != 0) == (v6 == 0))
+  pommesId = [(POMMESSchemaPOMMESClientEventMetadata *)self resultCandidateId];
+  pommesId2 = [equalCopy resultCandidateId];
+  if ((pommesId != 0) == (pommesId2 == 0))
   {
     goto LABEL_34;
   }
 
-  v12 = [(POMMESSchemaPOMMESClientEventMetadata *)self resultCandidateId];
-  if (v12)
+  resultCandidateId = [(POMMESSchemaPOMMESClientEventMetadata *)self resultCandidateId];
+  if (resultCandidateId)
   {
-    v13 = v12;
-    v14 = [(POMMESSchemaPOMMESClientEventMetadata *)self resultCandidateId];
-    v15 = [v4 resultCandidateId];
-    v16 = [v14 isEqual:v15];
+    v13 = resultCandidateId;
+    resultCandidateId2 = [(POMMESSchemaPOMMESClientEventMetadata *)self resultCandidateId];
+    resultCandidateId3 = [equalCopy resultCandidateId];
+    v16 = [resultCandidateId2 isEqual:resultCandidateId3];
 
     if (!v16)
     {
@@ -335,20 +335,20 @@
   {
   }
 
-  v5 = [(POMMESSchemaPOMMESClientEventMetadata *)self requestId];
-  v6 = [v4 requestId];
-  if ((v5 != 0) == (v6 == 0))
+  pommesId = [(POMMESSchemaPOMMESClientEventMetadata *)self requestId];
+  pommesId2 = [equalCopy requestId];
+  if ((pommesId != 0) == (pommesId2 == 0))
   {
     goto LABEL_34;
   }
 
-  v17 = [(POMMESSchemaPOMMESClientEventMetadata *)self requestId];
-  if (v17)
+  requestId = [(POMMESSchemaPOMMESClientEventMetadata *)self requestId];
+  if (requestId)
   {
-    v18 = v17;
-    v19 = [(POMMESSchemaPOMMESClientEventMetadata *)self requestId];
-    v20 = [v4 requestId];
-    v21 = [v19 isEqual:v20];
+    v18 = requestId;
+    requestId2 = [(POMMESSchemaPOMMESClientEventMetadata *)self requestId];
+    requestId3 = [equalCopy requestId];
+    v21 = [requestId2 isEqual:requestId3];
 
     if (!v21)
     {
@@ -360,20 +360,20 @@
   {
   }
 
-  v5 = [(POMMESSchemaPOMMESClientEventMetadata *)self trpId];
-  v6 = [v4 trpId];
-  if ((v5 != 0) == (v6 == 0))
+  pommesId = [(POMMESSchemaPOMMESClientEventMetadata *)self trpId];
+  pommesId2 = [equalCopy trpId];
+  if ((pommesId != 0) == (pommesId2 == 0))
   {
     goto LABEL_34;
   }
 
-  v22 = [(POMMESSchemaPOMMESClientEventMetadata *)self trpId];
-  if (v22)
+  trpId = [(POMMESSchemaPOMMESClientEventMetadata *)self trpId];
+  if (trpId)
   {
-    v23 = v22;
-    v24 = [(POMMESSchemaPOMMESClientEventMetadata *)self trpId];
-    v25 = [v4 trpId];
-    v26 = [v24 isEqual:v25];
+    v23 = trpId;
+    trpId2 = [(POMMESSchemaPOMMESClientEventMetadata *)self trpId];
+    trpId3 = [equalCopy trpId];
+    v26 = [trpId2 isEqual:trpId3];
 
     if (!v26)
     {
@@ -385,7 +385,7 @@
   {
   }
 
-  if ((*&self->_has & 1) != (v4[68] & 1))
+  if ((*&self->_has & 1) != (equalCopy[68] & 1))
   {
     goto LABEL_35;
   }
@@ -393,26 +393,26 @@
   if (*&self->_has)
   {
     originProcess = self->_originProcess;
-    if (originProcess != [v4 originProcess])
+    if (originProcess != [equalCopy originProcess])
     {
       goto LABEL_35;
     }
   }
 
-  v5 = [(POMMESSchemaPOMMESClientEventMetadata *)self subRequestId];
-  v6 = [v4 subRequestId];
-  if ((v5 != 0) == (v6 == 0))
+  pommesId = [(POMMESSchemaPOMMESClientEventMetadata *)self subRequestId];
+  pommesId2 = [equalCopy subRequestId];
+  if ((pommesId != 0) == (pommesId2 == 0))
   {
     goto LABEL_34;
   }
 
-  v28 = [(POMMESSchemaPOMMESClientEventMetadata *)self subRequestId];
-  if (v28)
+  subRequestId = [(POMMESSchemaPOMMESClientEventMetadata *)self subRequestId];
+  if (subRequestId)
   {
-    v29 = v28;
-    v30 = [(POMMESSchemaPOMMESClientEventMetadata *)self subRequestId];
-    v31 = [v4 subRequestId];
-    v32 = [v30 isEqual:v31];
+    v29 = subRequestId;
+    subRequestId2 = [(POMMESSchemaPOMMESClientEventMetadata *)self subRequestId];
+    subRequestId3 = [equalCopy subRequestId];
+    v32 = [subRequestId2 isEqual:subRequestId3];
 
     if (!v32)
     {
@@ -424,22 +424,22 @@
   {
   }
 
-  v5 = [(POMMESSchemaPOMMESClientEventMetadata *)self searchToolId];
-  v6 = [v4 searchToolId];
-  if ((v5 != 0) == (v6 == 0))
+  pommesId = [(POMMESSchemaPOMMESClientEventMetadata *)self searchToolId];
+  pommesId2 = [equalCopy searchToolId];
+  if ((pommesId != 0) == (pommesId2 == 0))
   {
 LABEL_34:
 
     goto LABEL_35;
   }
 
-  v33 = [(POMMESSchemaPOMMESClientEventMetadata *)self searchToolId];
-  if (v33)
+  searchToolId = [(POMMESSchemaPOMMESClientEventMetadata *)self searchToolId];
+  if (searchToolId)
   {
-    v34 = v33;
-    v35 = [(POMMESSchemaPOMMESClientEventMetadata *)self searchToolId];
-    v36 = [v4 searchToolId];
-    v37 = [v35 isEqual:v36];
+    v34 = searchToolId;
+    searchToolId2 = [(POMMESSchemaPOMMESClientEventMetadata *)self searchToolId];
+    searchToolId3 = [equalCopy searchToolId];
+    v37 = [searchToolId2 isEqual:searchToolId3];
 
     if (!v37)
     {
@@ -452,9 +452,9 @@ LABEL_34:
   }
 
   v40 = (*&self->_has >> 1) & 1;
-  if (v40 == ((v4[68] >> 1) & 1))
+  if (v40 == ((equalCopy[68] >> 1) & 1))
   {
-    if (!v40 || (searchToolGlobalSearchResultId = self->_searchToolGlobalSearchResultId, searchToolGlobalSearchResultId == [v4 searchToolGlobalSearchResultId]))
+    if (!v40 || (searchToolGlobalSearchResultId = self->_searchToolGlobalSearchResultId, searchToolGlobalSearchResultId == [equalCopy searchToolGlobalSearchResultId]))
     {
       v38 = 1;
       goto LABEL_36;
@@ -468,37 +468,37 @@ LABEL_36:
   return v38;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v15 = a3;
-  v4 = [(POMMESSchemaPOMMESClientEventMetadata *)self pommesId];
+  toCopy = to;
+  pommesId = [(POMMESSchemaPOMMESClientEventMetadata *)self pommesId];
 
-  if (v4)
+  if (pommesId)
   {
-    v5 = [(POMMESSchemaPOMMESClientEventMetadata *)self pommesId];
+    pommesId2 = [(POMMESSchemaPOMMESClientEventMetadata *)self pommesId];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(POMMESSchemaPOMMESClientEventMetadata *)self resultCandidateId];
+  resultCandidateId = [(POMMESSchemaPOMMESClientEventMetadata *)self resultCandidateId];
 
-  if (v6)
+  if (resultCandidateId)
   {
     PBDataWriterWriteStringField();
   }
 
-  v7 = [(POMMESSchemaPOMMESClientEventMetadata *)self requestId];
+  requestId = [(POMMESSchemaPOMMESClientEventMetadata *)self requestId];
 
-  if (v7)
+  if (requestId)
   {
-    v8 = [(POMMESSchemaPOMMESClientEventMetadata *)self requestId];
+    requestId2 = [(POMMESSchemaPOMMESClientEventMetadata *)self requestId];
     PBDataWriterWriteSubmessage();
   }
 
-  v9 = [(POMMESSchemaPOMMESClientEventMetadata *)self trpId];
+  trpId = [(POMMESSchemaPOMMESClientEventMetadata *)self trpId];
 
-  if (v9)
+  if (trpId)
   {
-    v10 = [(POMMESSchemaPOMMESClientEventMetadata *)self trpId];
+    trpId2 = [(POMMESSchemaPOMMESClientEventMetadata *)self trpId];
     PBDataWriterWriteSubmessage();
   }
 
@@ -507,19 +507,19 @@ LABEL_36:
     PBDataWriterWriteInt32Field();
   }
 
-  v11 = [(POMMESSchemaPOMMESClientEventMetadata *)self subRequestId];
+  subRequestId = [(POMMESSchemaPOMMESClientEventMetadata *)self subRequestId];
 
-  if (v11)
+  if (subRequestId)
   {
-    v12 = [(POMMESSchemaPOMMESClientEventMetadata *)self subRequestId];
+    subRequestId2 = [(POMMESSchemaPOMMESClientEventMetadata *)self subRequestId];
     PBDataWriterWriteSubmessage();
   }
 
-  v13 = [(POMMESSchemaPOMMESClientEventMetadata *)self searchToolId];
+  searchToolId = [(POMMESSchemaPOMMESClientEventMetadata *)self searchToolId];
 
-  if (v13)
+  if (searchToolId)
   {
-    v14 = [(POMMESSchemaPOMMESClientEventMetadata *)self searchToolId];
+    searchToolId2 = [(POMMESSchemaPOMMESClientEventMetadata *)self searchToolId];
     PBDataWriterWriteSubmessage();
   }
 
@@ -529,9 +529,9 @@ LABEL_36:
   }
 }
 
-- (void)setHasSearchToolGlobalSearchResultId:(BOOL)a3
+- (void)setHasSearchToolGlobalSearchResultId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 2;
   }
@@ -544,53 +544,53 @@ LABEL_36:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v22.receiver = self;
   v22.super_class = POMMESSchemaPOMMESClientEventMetadata;
-  v5 = [(SISchemaInstrumentationMessage *)&v22 applySensitiveConditionsPolicy:v4];
-  v6 = [(POMMESSchemaPOMMESClientEventMetadata *)self pommesId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v22 applySensitiveConditionsPolicy:policyCopy];
+  pommesId = [(POMMESSchemaPOMMESClientEventMetadata *)self pommesId];
+  v7 = [pommesId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(POMMESSchemaPOMMESClientEventMetadata *)self deletePommesId];
   }
 
-  v9 = [(POMMESSchemaPOMMESClientEventMetadata *)self requestId];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  requestId = [(POMMESSchemaPOMMESClientEventMetadata *)self requestId];
+  v10 = [requestId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(POMMESSchemaPOMMESClientEventMetadata *)self deleteRequestId];
   }
 
-  v12 = [(POMMESSchemaPOMMESClientEventMetadata *)self trpId];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  trpId = [(POMMESSchemaPOMMESClientEventMetadata *)self trpId];
+  v13 = [trpId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(POMMESSchemaPOMMESClientEventMetadata *)self deleteTrpId];
   }
 
-  v15 = [(POMMESSchemaPOMMESClientEventMetadata *)self subRequestId];
-  v16 = [v15 applySensitiveConditionsPolicy:v4];
-  v17 = [v16 suppressMessage];
+  subRequestId = [(POMMESSchemaPOMMESClientEventMetadata *)self subRequestId];
+  v16 = [subRequestId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v16 suppressMessage];
 
-  if (v17)
+  if (suppressMessage4)
   {
     [(POMMESSchemaPOMMESClientEventMetadata *)self deleteSubRequestId];
   }
 
-  v18 = [(POMMESSchemaPOMMESClientEventMetadata *)self searchToolId];
-  v19 = [v18 applySensitiveConditionsPolicy:v4];
-  v20 = [v19 suppressMessage];
+  searchToolId = [(POMMESSchemaPOMMESClientEventMetadata *)self searchToolId];
+  v19 = [searchToolId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage5 = [v19 suppressMessage];
 
-  if (v20)
+  if (suppressMessage5)
   {
     [(POMMESSchemaPOMMESClientEventMetadata *)self deleteSearchToolId];
   }

@@ -1,14 +1,14 @@
 @interface BLBooksDEExtensionProvider
 - (id)_fileDateSuffix;
-- (id)attachmentFromURL:(id)a3 withName:(id)a4 archiveFile:(BOOL)a5 fixPermission:(BOOL)a6;
-- (void)appendDatabaseAttachmentsFromURLs:(id)a3 hasSqliteSuffix:(BOOL)a4 toArray:(id)a5;
+- (id)attachmentFromURL:(id)l withName:(id)name archiveFile:(BOOL)file fixPermission:(BOOL)permission;
+- (void)appendDatabaseAttachmentsFromURLs:(id)ls hasSqliteSuffix:(BOOL)suffix toArray:(id)array;
 @end
 
 @implementation BLBooksDEExtensionProvider
 
-- (void)appendDatabaseAttachmentsFromURLs:(id)a3 hasSqliteSuffix:(BOOL)a4 toArray:(id)a5
+- (void)appendDatabaseAttachmentsFromURLs:(id)ls hasSqliteSuffix:(BOOL)suffix toArray:(id)array
 {
-  v8 = a3;
+  lsCopy = ls;
   v14[0] = 0;
   v14[1] = v14;
   v14[2] = 0x3032000000;
@@ -19,27 +19,27 @@
   v10[1] = 3221225472;
   v10[2] = sub_100000DC4;
   v10[3] = &unk_100008200;
-  v13 = a4;
+  suffixCopy = suffix;
   v12 = v14;
   v10[4] = self;
-  v9 = a5;
-  v11 = v9;
-  [v8 enumerateKeysAndObjectsUsingBlock:v10];
+  arrayCopy = array;
+  v11 = arrayCopy;
+  [lsCopy enumerateKeysAndObjectsUsingBlock:v10];
 
   _Block_object_dispose(v14, 8);
 }
 
-- (id)attachmentFromURL:(id)a3 withName:(id)a4 archiveFile:(BOOL)a5 fixPermission:(BOOL)a6
+- (id)attachmentFromURL:(id)l withName:(id)name archiveFile:(BOOL)file fixPermission:(BOOL)permission
 {
-  v6 = a6;
-  v38 = a5;
-  v9 = a3;
-  v10 = a4;
-  v11 = [v10 stringByDeletingPathExtension];
-  v12 = [(BLBooksDEExtensionProvider *)self _fileDateSuffix];
-  v13 = [v11 stringByAppendingString:v12];
-  v14 = [v9 pathExtension];
-  v15 = [v13 stringByAppendingPathExtension:v14];
+  permissionCopy = permission;
+  fileCopy = file;
+  lCopy = l;
+  nameCopy = name;
+  stringByDeletingPathExtension = [nameCopy stringByDeletingPathExtension];
+  _fileDateSuffix = [(BLBooksDEExtensionProvider *)self _fileDateSuffix];
+  v13 = [stringByDeletingPathExtension stringByAppendingString:_fileDateSuffix];
+  pathExtension = [lCopy pathExtension];
+  v15 = [v13 stringByAppendingPathExtension:pathExtension];
 
   v16 = NSTemporaryDirectory();
   v50[0] = v16;
@@ -49,27 +49,27 @@
 
   v19 = +[NSFileManager defaultManager];
   v40 = 0;
-  v20 = [v19 copyItemAtURL:v9 toURL:v18 error:&v40];
+  v20 = [v19 copyItemAtURL:lCopy toURL:v18 error:&v40];
   v21 = v40;
 
   if (v20)
   {
-    if (v6)
+    if (permissionCopy)
     {
       memset(&v49, 0, sizeof(v49));
-      v22 = [v18 path];
-      v23 = stat([v22 UTF8String], &v49);
+      path = [v18 path];
+      v23 = stat([path UTF8String], &v49);
 
       if (v23)
       {
         v24 = BLBooksDiagnosticExtensionLog();
         if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
         {
-          v25 = [v18 path];
+          path2 = [v18 path];
           v26 = __error();
           v27 = strerror(*v26);
           *buf = 138412546;
-          v42 = v25;
+          v42 = path2;
           v43 = 2080;
           *v44 = v27;
           _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_ERROR, "Could not stat %@: %s", buf, 0x16u);
@@ -87,9 +87,9 @@
         v24 = [NSDictionary dictionaryWithObjects:&v48 forKeys:&v47 count:1];
 
         v32 = +[NSFileManager defaultManager];
-        v33 = [v18 path];
+        path3 = [v18 path];
         v39 = v21;
-        [v32 setAttributes:v24 ofItemAtPath:v33 error:&v39];
+        [v32 setAttributes:v24 ofItemAtPath:path3 error:&v39];
         v28 = v39;
 
         if (v28)
@@ -98,7 +98,7 @@
           if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
           {
             *buf = 138413058;
-            v42 = v10;
+            v42 = nameCopy;
             v43 = 1024;
             *v44 = v37;
             *&v44[4] = 2112;
@@ -113,7 +113,7 @@
       v21 = v28;
     }
 
-    if (v38)
+    if (fileCopy)
     {
       v35 = [DEArchiver archiveFile:v18 deleteOriginal:1];
       v30 = [DEAttachmentItem attachmentWithPathURL:v35];
@@ -131,9 +131,9 @@
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
     {
       v49.st_dev = 138412802;
-      *&v49.st_mode = v10;
+      *&v49.st_mode = nameCopy;
       WORD2(v49.st_ino) = 2112;
-      *(&v49.st_ino + 6) = v9;
+      *(&v49.st_ino + 6) = lCopy;
       HIWORD(v49.st_gid) = 2112;
       *&v49.st_rdev = v21;
       _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_ERROR, "Failed to copy %@, sourceURL: %@ %@", &v49, 0x20u);

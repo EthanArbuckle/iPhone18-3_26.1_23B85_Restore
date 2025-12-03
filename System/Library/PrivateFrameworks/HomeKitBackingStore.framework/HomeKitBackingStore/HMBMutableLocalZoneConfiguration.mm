@@ -1,19 +1,19 @@
 @interface HMBMutableLocalZoneConfiguration
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation HMBMutableLocalZoneConfiguration
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[HMBLocalZoneConfiguration allocWithZone:?]];
   [(HMBLocalZoneConfiguration *)v4 setReadOnly:[(HMBLocalZoneConfiguration *)self readOnly]];
   [(HMBLocalZoneConfiguration *)v4 setCreateIfNeeded:[(HMBLocalZoneConfiguration *)self createIfNeeded]];
-  v5 = [(HMBLocalZoneConfiguration *)self modelContainer];
-  [(HMBLocalZoneConfiguration *)v4 setModelContainer:v5];
+  modelContainer = [(HMBLocalZoneConfiguration *)self modelContainer];
+  [(HMBLocalZoneConfiguration *)v4 setModelContainer:modelContainer];
 
-  v6 = [(HMBLocalZoneConfiguration *)self delegate];
-  [(HMBLocalZoneConfiguration *)v4 setDelegate:v6];
+  delegate = [(HMBLocalZoneConfiguration *)self delegate];
+  [(HMBLocalZoneConfiguration *)v4 setDelegate:delegate];
 
   return v4;
 }

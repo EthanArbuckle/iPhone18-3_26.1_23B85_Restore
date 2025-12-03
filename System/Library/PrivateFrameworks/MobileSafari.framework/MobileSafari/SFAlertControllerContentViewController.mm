@@ -9,14 +9,14 @@
   v23.receiver = self;
   v23.super_class = SFAlertControllerContentViewController;
   [(SFAlertControllerContentViewController *)&v23 viewDidLayoutSubviews];
-  v3 = [(SFAlertControllerContentViewController *)self view];
-  [v3 bounds];
+  view = [(SFAlertControllerContentViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
-  v12 = [(SFAlertControllerContentViewController *)self view];
+  view2 = [(SFAlertControllerContentViewController *)self view];
   v24.origin.x = v5;
   v24.origin.y = v7;
   v24.size.width = v9;
@@ -24,7 +24,7 @@
   Width = CGRectGetWidth(v24);
   LODWORD(v14) = 1148846080;
   LODWORD(v15) = 1112014848;
-  [v12 systemLayoutSizeFittingSize:Width withHorizontalFittingPriority:1.79769313e308 verticalFittingPriority:{v14, v15}];
+  [view2 systemLayoutSizeFittingSize:Width withHorizontalFittingPriority:1.79769313e308 verticalFittingPriority:{v14, v15}];
   v17 = v16;
   v19 = v18;
 

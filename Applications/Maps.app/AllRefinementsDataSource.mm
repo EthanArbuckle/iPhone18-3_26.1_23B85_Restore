@@ -1,14 +1,14 @@
 @interface AllRefinementsDataSource
-- (AllRefinementsDataSource)initWithCollectionView:(id)a3 viewModel:(id)a4 scrollViewDelegate:(id)a5 selectionSequenceNumber:(id)a6 analyticsDelegate:(id)a7 viewModelDelegate:(id)a8;
+- (AllRefinementsDataSource)initWithCollectionView:(id)view viewModel:(id)model scrollViewDelegate:(id)delegate selectionSequenceNumber:(id)number analyticsDelegate:(id)analyticsDelegate viewModelDelegate:(id)modelDelegate;
 - (AllRefinementsViewModelDelegate)viewModelDelegate;
 - (ResultRefinementsAnalytics)analyticsDelegate;
 - (double)getMaxWidth;
-- (id)layoutSectionForSectionIndex:(int64_t)a3 layoutEnvironment:(id)a4;
+- (id)layoutSectionForSectionIndex:(int64_t)index layoutEnvironment:(id)environment;
 - (void)displayRefinements;
-- (void)reloadCollectionView:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
+- (void)reloadCollectionView:(id)view;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
 - (void)setupDataSource;
 @end
 
@@ -28,62 +28,62 @@
   return WeakRetained;
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
-  v5 = [(AllRefinementsDataSource *)self scrollViewDelegate];
-  [v5 scrollViewDidScroll:v4];
+  scrollCopy = scroll;
+  scrollViewDelegate = [(AllRefinementsDataSource *)self scrollViewDelegate];
+  [scrollViewDelegate scrollViewDidScroll:scrollCopy];
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  y = a4.y;
-  x = a4.x;
-  v9 = a3;
-  v10 = [(AllRefinementsDataSource *)self scrollViewDelegate];
-  [v10 scrollViewWillEndDragging:v9 withVelocity:a5 targetContentOffset:{x, y}];
+  y = velocity.y;
+  x = velocity.x;
+  draggingCopy = dragging;
+  scrollViewDelegate = [(AllRefinementsDataSource *)self scrollViewDelegate];
+  [scrollViewDelegate scrollViewWillEndDragging:draggingCopy withVelocity:offset targetContentOffset:{x, y}];
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
-  v4 = a3;
-  v5 = [(AllRefinementsDataSource *)self scrollViewDelegate];
-  [v5 scrollViewWillBeginDragging:v4];
+  draggingCopy = dragging;
+  scrollViewDelegate = [(AllRefinementsDataSource *)self scrollViewDelegate];
+  [scrollViewDelegate scrollViewWillBeginDragging:draggingCopy];
 }
 
 - (double)getMaxWidth
 {
-  v3 = [(AllRefinementsDataSource *)self sizeController];
-  [v3 multiSelectSectionContentInsets];
+  sizeController = [(AllRefinementsDataSource *)self sizeController];
+  [sizeController multiSelectSectionContentInsets];
   v5 = v4;
-  v6 = [(AllRefinementsDataSource *)self sizeController];
-  [v6 multiSelectSectionContentInsets];
+  sizeController2 = [(AllRefinementsDataSource *)self sizeController];
+  [sizeController2 multiSelectSectionContentInsets];
   v8 = v7;
-  v9 = [(AllRefinementsDataSource *)self sizeController];
-  [v9 multiSelectBackgroundContentInsets];
+  sizeController3 = [(AllRefinementsDataSource *)self sizeController];
+  [sizeController3 multiSelectBackgroundContentInsets];
   v11 = v10;
-  v12 = [(AllRefinementsDataSource *)self sizeController];
-  [v12 multiSelectBackgroundContentInsets];
+  sizeController4 = [(AllRefinementsDataSource *)self sizeController];
+  [sizeController4 multiSelectBackgroundContentInsets];
   v14 = v13;
 
-  v15 = [(AllRefinementsDataSource *)self collectionView];
-  [v15 frame];
+  collectionView = [(AllRefinementsDataSource *)self collectionView];
+  [collectionView frame];
   v16 = CGRectGetWidth(v18) - (v14 + v11 + v5 + v8);
 
   return v16;
 }
 
-- (id)layoutSectionForSectionIndex:(int64_t)a3 layoutEnvironment:(id)a4
+- (id)layoutSectionForSectionIndex:(int64_t)index layoutEnvironment:(id)environment
 {
-  v6 = a4;
-  v7 = [(AllRefinementsDataSource *)self viewModel];
-  v8 = [v7 sections];
-  v9 = [v8 objectAtIndex:a3];
+  environmentCopy = environment;
+  viewModel = [(AllRefinementsDataSource *)self viewModel];
+  sections = [viewModel sections];
+  v9 = [sections objectAtIndex:index];
 
-  v10 = [v9 type];
-  if (v10 == 2)
+  type = [v9 type];
+  if (type == 2)
   {
-    v87 = [[_UICollectionViewListLayoutSectionConfiguration alloc] initWithAppearanceStyle:0 layoutEnvironment:v6];
+    v87 = [[_UICollectionViewListLayoutSectionConfiguration alloc] initWithAppearanceStyle:0 layoutEnvironment:environmentCopy];
     [v87 setSeparatorStyle:1];
     [v87 setEstimatedRowHeight:44.0];
     objc_initWeak(&location, v9);
@@ -93,22 +93,22 @@
     v125[3] = &unk_10165D6A8;
     objc_copyWeak(&v126, &location);
     [v87 setSeparatorInsetProvider:v125];
-    v7 = [[_UICollectionViewListLayoutSection alloc] initWithConfiguration:v87 layoutEnvironment:v6];
-    v88 = [(AllRefinementsDataSource *)self sizeController];
-    [v88 togglesSectionContentInsets];
+    viewModel = [[_UICollectionViewListLayoutSection alloc] initWithConfiguration:v87 layoutEnvironment:environmentCopy];
+    sizeController = [(AllRefinementsDataSource *)self sizeController];
+    [sizeController togglesSectionContentInsets];
     v90 = v89;
     v92 = v91;
     v94 = v93;
     v96 = v95;
 
-    [v7 setContentInsets:{v90, v92, v94, v96}];
+    [viewModel setContentInsets:{v90, v92, v94, v96}];
     v97 = +[AllRefinementsSectionBackground decorationViewKind];
     v98 = [NSCollectionLayoutDecorationItem backgroundDecorationItemWithElementKind:v97];
 
-    v99 = [(AllRefinementsDataSource *)self sizeController];
-    v100 = [v9 displayName];
-    v101 = [(AllRefinementsDataSource *)self collectionView];
-    [v99 headerHeightWithTitle:v100 collectionView:v101];
+    sizeController2 = [(AllRefinementsDataSource *)self sizeController];
+    displayName = [v9 displayName];
+    collectionView = [(AllRefinementsDataSource *)self collectionView];
+    [sizeController2 headerHeightWithTitle:displayName collectionView:collectionView];
     v103 = v102;
 
     if (v103 > 0.0)
@@ -118,17 +118,17 @@
       v106 = [NSCollectionLayoutSize sizeWithWidthDimension:v104 heightDimension:v105];
 
       v107 = [NSCollectionLayoutBoundarySupplementaryItem boundarySupplementaryItemWithLayoutSize:v106 elementKind:UICollectionElementKindSectionHeader alignment:2];
-      v108 = [(AllRefinementsDataSource *)self sizeController];
-      [v108 togglesHeaderLeadingAdjustment];
+      sizeController3 = [(AllRefinementsDataSource *)self sizeController];
+      [sizeController3 togglesHeaderLeadingAdjustment];
       [v107 setContentInsets:{0.0, v109, 0.0, 0.0}];
 
       v131 = v107;
       v110 = [NSArray arrayWithObjects:&v131 count:1];
-      [v7 setBoundarySupplementaryItems:v110];
+      [viewModel setBoundarySupplementaryItems:v110];
     }
 
-    v111 = [(AllRefinementsDataSource *)self sizeController];
-    [v111 togglesBackgroundContentInsets];
+    sizeController4 = [(AllRefinementsDataSource *)self sizeController];
+    [sizeController4 togglesBackgroundContentInsets];
     v113 = v112;
     v115 = v114;
     v117 = v116;
@@ -137,13 +137,13 @@
     [v98 setContentInsets:{v113 + v103, v115, v117, v119}];
     v130 = v98;
     v120 = [NSArray arrayWithObjects:&v130 count:1];
-    [v7 setDecorationItems:v120];
+    [viewModel setDecorationItems:v120];
 
     objc_destroyWeak(&v126);
     objc_destroyWeak(&location);
   }
 
-  else if (v10 == 1)
+  else if (type == 1)
   {
     v45 = [NSCollectionLayoutDimension estimatedDimension:100.0];
     v46 = [NSCollectionLayoutDimension estimatedDimension:32.0];
@@ -158,31 +158,31 @@
     v49 = [NSArray arrayWithObjects:&v134 count:1];
     v50 = [NSCollectionLayoutGroup horizontalGroupWithLayoutSize:v122 subitems:v49];
 
-    v51 = [(AllRefinementsDataSource *)self sizeController];
-    [v51 multiSelectPaddingBetweenCells];
+    sizeController5 = [(AllRefinementsDataSource *)self sizeController];
+    [sizeController5 multiSelectPaddingBetweenCells];
     v52 = [NSCollectionLayoutSpacing fixedSpacing:?];
     [v50 setInterItemSpacing:v52];
 
-    v7 = [NSCollectionLayoutSection sectionWithGroup:v50];
-    v53 = [(AllRefinementsDataSource *)self sizeController];
-    [v53 multiSelectPaddingBetweenCells];
-    [v7 setInterGroupSpacing:?];
+    viewModel = [NSCollectionLayoutSection sectionWithGroup:v50];
+    sizeController6 = [(AllRefinementsDataSource *)self sizeController];
+    [sizeController6 multiSelectPaddingBetweenCells];
+    [viewModel setInterGroupSpacing:?];
 
-    v54 = [(AllRefinementsDataSource *)self sizeController];
-    [v54 multiSelectSectionContentInsets];
+    sizeController7 = [(AllRefinementsDataSource *)self sizeController];
+    [sizeController7 multiSelectSectionContentInsets];
     v56 = v55;
     v58 = v57;
     v60 = v59;
     v62 = v61;
 
-    [v7 setContentInsets:{v56, v58, v60, v62}];
+    [viewModel setContentInsets:{v56, v58, v60, v62}];
     v63 = +[AllRefinementsSectionBackground decorationViewKind];
     v64 = [NSCollectionLayoutDecorationItem backgroundDecorationItemWithElementKind:v63];
 
-    v65 = [(AllRefinementsDataSource *)self sizeController];
-    v66 = [v9 displayName];
-    v67 = [(AllRefinementsDataSource *)self collectionView];
-    [v65 headerHeightWithTitle:v66 collectionView:v67];
+    sizeController8 = [(AllRefinementsDataSource *)self sizeController];
+    displayName2 = [v9 displayName];
+    collectionView2 = [(AllRefinementsDataSource *)self collectionView];
+    [sizeController8 headerHeightWithTitle:displayName2 collectionView:collectionView2];
     v69 = v68;
 
     if (v69 > 0.0)
@@ -192,17 +192,17 @@
       v72 = [NSCollectionLayoutSize sizeWithWidthDimension:v70 heightDimension:v71];
 
       v73 = [NSCollectionLayoutBoundarySupplementaryItem boundarySupplementaryItemWithLayoutSize:v72 elementKind:UICollectionElementKindSectionHeader alignment:2];
-      v74 = [(AllRefinementsDataSource *)self sizeController];
-      [v74 multiSelectHeaderLeadingAdjustment];
+      sizeController9 = [(AllRefinementsDataSource *)self sizeController];
+      [sizeController9 multiSelectHeaderLeadingAdjustment];
       [v73 setContentInsets:{0.0, v75, 0.0, 0.0}];
 
       v133 = v73;
       v76 = [NSArray arrayWithObjects:&v133 count:1];
-      [v7 setBoundarySupplementaryItems:v76];
+      [viewModel setBoundarySupplementaryItems:v76];
     }
 
-    v77 = [(AllRefinementsDataSource *)self sizeController];
-    [v77 multiSelectBackgroundContentInsets];
+    sizeController10 = [(AllRefinementsDataSource *)self sizeController];
+    [sizeController10 multiSelectBackgroundContentInsets];
     v79 = v78;
     v81 = v80;
     v83 = v82;
@@ -211,13 +211,13 @@
     [v64 setContentInsets:{v79 + v69, v81, v83, v85}];
     v132 = v64;
     v86 = [NSArray arrayWithObjects:&v132 count:1];
-    [v7 setDecorationItems:v86];
+    [viewModel setDecorationItems:v86];
   }
 
-  else if (!v10)
+  else if (!type)
   {
     objc_initWeak(&location, v9);
-    v11 = [[_UICollectionViewListLayoutSectionConfiguration alloc] initWithAppearanceStyle:0 layoutEnvironment:v6];
+    v11 = [[_UICollectionViewListLayoutSectionConfiguration alloc] initWithAppearanceStyle:0 layoutEnvironment:environmentCopy];
     [v11 setSeparatorStyle:1];
     [v11 setEstimatedRowHeight:44.0];
     v127[0] = _NSConcreteStackBlock;
@@ -226,22 +226,22 @@
     v127[3] = &unk_10165D6A8;
     objc_copyWeak(&v128, &location);
     [v11 setSeparatorInsetProvider:v127];
-    v7 = [[_UICollectionViewListLayoutSection alloc] initWithConfiguration:v11 layoutEnvironment:v6];
-    v12 = [(AllRefinementsDataSource *)self sizeController];
-    [v12 togglesSectionContentInsets];
+    viewModel = [[_UICollectionViewListLayoutSection alloc] initWithConfiguration:v11 layoutEnvironment:environmentCopy];
+    sizeController11 = [(AllRefinementsDataSource *)self sizeController];
+    [sizeController11 togglesSectionContentInsets];
     v14 = v13;
     v16 = v15;
     v18 = v17;
     v20 = v19;
 
-    [v7 setContentInsets:{v14, v16, v18, v20}];
+    [viewModel setContentInsets:{v14, v16, v18, v20}];
     v21 = +[AllRefinementsSectionBackground decorationViewKind];
     v22 = [NSCollectionLayoutDecorationItem backgroundDecorationItemWithElementKind:v21];
 
-    v23 = [(AllRefinementsDataSource *)self sizeController];
-    v24 = [v9 displayName];
-    v25 = [(AllRefinementsDataSource *)self collectionView];
-    [v23 headerHeightWithTitle:v24 collectionView:v25];
+    sizeController12 = [(AllRefinementsDataSource *)self sizeController];
+    displayName3 = [v9 displayName];
+    collectionView3 = [(AllRefinementsDataSource *)self collectionView];
+    [sizeController12 headerHeightWithTitle:displayName3 collectionView:collectionView3];
     v27 = v26;
 
     if (v27 > 0.0)
@@ -251,17 +251,17 @@
       v30 = [NSCollectionLayoutSize sizeWithWidthDimension:v28 heightDimension:v29];
 
       v31 = [NSCollectionLayoutBoundarySupplementaryItem boundarySupplementaryItemWithLayoutSize:v30 elementKind:UICollectionElementKindSectionHeader alignment:2];
-      v32 = [(AllRefinementsDataSource *)self sizeController];
-      [v32 togglesHeaderLeadingAdjustment];
+      sizeController13 = [(AllRefinementsDataSource *)self sizeController];
+      [sizeController13 togglesHeaderLeadingAdjustment];
       [v31 setContentInsets:{0.0, v33, 0.0, 0.0}];
 
       v136 = v31;
       v34 = [NSArray arrayWithObjects:&v136 count:1];
-      [v7 setBoundarySupplementaryItems:v34];
+      [viewModel setBoundarySupplementaryItems:v34];
     }
 
-    v35 = [(AllRefinementsDataSource *)self sizeController];
-    [v35 togglesBackgroundContentInsets];
+    sizeController14 = [(AllRefinementsDataSource *)self sizeController];
+    [sizeController14 togglesBackgroundContentInsets];
     v37 = v36;
     v39 = v38;
     v41 = v40;
@@ -270,13 +270,13 @@
     [v22 setContentInsets:{v37 + v27, v39, v41, v43}];
     v135 = v22;
     v44 = [NSArray arrayWithObjects:&v135 count:1];
-    [v7 setDecorationItems:v44];
+    [viewModel setDecorationItems:v44];
 
     objc_destroyWeak(&v128);
     objc_destroyWeak(&location);
   }
 
-  return v7;
+  return viewModel;
 }
 
 - (void)displayRefinements
@@ -286,11 +286,11 @@
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v25 = self;
-  v4 = [(AllRefinementsDataSource *)self viewModel];
-  v5 = [v4 sections];
+  selfCopy = self;
+  viewModel = [(AllRefinementsDataSource *)self viewModel];
+  sections = [viewModel sections];
 
-  v6 = [v5 countByEnumeratingWithState:&v26 objects:v31 count:16];
+  v6 = [sections countByEnumeratingWithState:&v26 objects:v31 count:16];
   if (v6)
   {
     v7 = v6;
@@ -301,110 +301,110 @@
       {
         if (*v27 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(sections);
         }
 
         v10 = *(*(&v26 + 1) + 8 * i);
-        v11 = [v10 identifier];
-        v30 = v11;
+        identifier = [v10 identifier];
+        v30 = identifier;
         v12 = [NSArray arrayWithObjects:&v30 count:1];
         [v3 appendSectionsWithIdentifiers:v12];
 
-        v13 = [v10 type];
-        if (v13 == 2)
+        type = [v10 type];
+        if (type == 2)
         {
           v16 = v10;
-          v17 = +[NSMutableArray array];
-          v18 = [v16 openNow];
+          identifier3 = +[NSMutableArray array];
+          openNow = [v16 openNow];
 
-          if (v18)
+          if (openNow)
           {
-            v19 = [v16 openNow];
-            [v17 addObject:v19];
+            openNow2 = [v16 openNow];
+            [identifier3 addObject:openNow2];
           }
 
-          v20 = [v16 openAt];
+          openAt = [v16 openAt];
 
-          if (v20)
+          if (openAt)
           {
-            v21 = [v16 openAt];
-            [v17 addObject:v21];
+            openAt2 = [v16 openAt];
+            [identifier3 addObject:openAt2];
           }
 
-          v22 = [v16 identifier];
-          [v3 appendItemsWithIdentifiers:v17 intoSectionWithIdentifier:v22];
+          identifier2 = [v16 identifier];
+          [v3 appendItemsWithIdentifiers:identifier3 intoSectionWithIdentifier:identifier2];
         }
 
         else
         {
-          if (v13 == 1)
+          if (type == 1)
           {
             v14 = v10;
-            v15 = [v14 elements];
+            elements = [v14 elements];
           }
 
           else
           {
-            if (v13)
+            if (type)
             {
               continue;
             }
 
             v14 = v10;
-            v15 = [v14 toggles];
+            elements = [v14 toggles];
           }
 
-          v16 = v15;
-          v17 = [v14 identifier];
+          v16 = elements;
+          identifier3 = [v14 identifier];
 
-          [v3 appendItemsWithIdentifiers:v16 intoSectionWithIdentifier:v17];
+          [v3 appendItemsWithIdentifiers:v16 intoSectionWithIdentifier:identifier3];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v26 objects:v31 count:16];
+      v7 = [sections countByEnumeratingWithState:&v26 objects:v31 count:16];
     }
 
     while (v7);
   }
 
-  v23 = [(AllRefinementsDataSource *)v25 collectionViewDiffableDataSource];
-  [v23 applySnapshot:v3 animatingDifferences:0];
+  collectionViewDiffableDataSource = [(AllRefinementsDataSource *)selfCopy collectionViewDiffableDataSource];
+  [collectionViewDiffableDataSource applySnapshot:v3 animatingDifferences:0];
 
-  v24 = [(AllRefinementsDataSource *)v25 collectionView];
-  [v24 layoutIfNeeded];
+  collectionView = [(AllRefinementsDataSource *)selfCopy collectionView];
+  [collectionView layoutIfNeeded];
 }
 
-- (void)reloadCollectionView:(id)a3
+- (void)reloadCollectionView:(id)view
 {
-  [(AllRefinementsDataSource *)self setViewModel:a3];
+  [(AllRefinementsDataSource *)self setViewModel:view];
 
   [(AllRefinementsDataSource *)self displayRefinements];
 }
 
 - (void)setupDataSource
 {
-  v3 = [(AllRefinementsDataSource *)self collectionView];
+  collectionView = [(AllRefinementsDataSource *)self collectionView];
   v4 = objc_opt_class();
   v5 = +[NonSelectableCollectionViewListCell reuseIdentifier];
-  [v3 registerClass:v4 forCellWithReuseIdentifier:v5];
+  [collectionView registerClass:v4 forCellWithReuseIdentifier:v5];
 
-  v6 = [(AllRefinementsDataSource *)self collectionView];
+  collectionView2 = [(AllRefinementsDataSource *)self collectionView];
   v7 = objc_opt_class();
   v8 = +[_TtC4Maps36AllRefinementsMultiSelectElementCell reuseIdentifier];
-  [v6 registerClass:v7 forCellWithReuseIdentifier:v8];
+  [collectionView2 registerClass:v7 forCellWithReuseIdentifier:v8];
 
   if (MapsFeature_IsEnabled_SearchAndDiscovery())
   {
-    v9 = [(AllRefinementsDataSource *)self collectionView];
+    collectionView3 = [(AllRefinementsDataSource *)self collectionView];
     v10 = objc_opt_class();
     v11 = +[_TtC4Maps24AllRefinementsOpenAtCell reuseIdentifier];
-    [v9 registerClass:v10 forCellWithReuseIdentifier:v11];
+    [collectionView3 registerClass:v10 forCellWithReuseIdentifier:v11];
   }
 
-  v12 = [(AllRefinementsDataSource *)self collectionView];
+  collectionView4 = [(AllRefinementsDataSource *)self collectionView];
   v13 = objc_opt_class();
   v14 = +[AllRefinementsHeaderView reuseIdentifier];
-  [v12 registerClass:v13 forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:v14];
+  [collectionView4 registerClass:v13 forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:v14];
 
   v26[0] = 0;
   v26[1] = v26;
@@ -420,7 +420,7 @@
   v25 = 0;
   objc_initWeak(&location, self);
   v15 = [UICollectionViewDiffableDataSource alloc];
-  v16 = [(AllRefinementsDataSource *)self collectionView];
+  collectionView5 = [(AllRefinementsDataSource *)self collectionView];
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
   v21[2] = sub_100F32E70;
@@ -428,7 +428,7 @@
   objc_copyWeak(&v22, &location);
   v21[4] = v24;
   v21[5] = v26;
-  v17 = [v15 initWithCollectionView:v16 cellProvider:v21];
+  v17 = [v15 initWithCollectionView:collectionView5 cellProvider:v21];
   collectionViewDiffableDataSource = self->_collectionViewDiffableDataSource;
   self->_collectionViewDiffableDataSource = v17;
 
@@ -446,29 +446,29 @@
   _Block_object_dispose(v26, 8);
 }
 
-- (AllRefinementsDataSource)initWithCollectionView:(id)a3 viewModel:(id)a4 scrollViewDelegate:(id)a5 selectionSequenceNumber:(id)a6 analyticsDelegate:(id)a7 viewModelDelegate:(id)a8
+- (AllRefinementsDataSource)initWithCollectionView:(id)view viewModel:(id)model scrollViewDelegate:(id)delegate selectionSequenceNumber:(id)number analyticsDelegate:(id)analyticsDelegate viewModelDelegate:(id)modelDelegate
 {
-  v29 = a3;
-  v28 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  viewCopy = view;
+  modelCopy = model;
+  delegateCopy = delegate;
+  numberCopy = number;
+  analyticsDelegateCopy = analyticsDelegate;
+  modelDelegateCopy = modelDelegate;
   v30.receiver = self;
   v30.super_class = AllRefinementsDataSource;
   v19 = [(AllRefinementsDataSource *)&v30 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_collectionView, a3);
-    [(UICollectionView *)v20->_collectionView setDelegate:v20, v28, v29];
-    objc_storeStrong(&v20->_viewModel, a4);
+    objc_storeStrong(&v19->_collectionView, view);
+    [(UICollectionView *)v20->_collectionView setDelegate:v20, modelCopy, viewCopy];
+    objc_storeStrong(&v20->_viewModel, model);
     v21 = objc_alloc_init(AllRefinementsSizeController);
     sizeController = v20->_sizeController;
     v20->_sizeController = v21;
 
-    objc_storeStrong(&v20->_scrollViewDelegate, a5);
-    objc_storeStrong(&v20->_selectionSequenceNumber, a6);
+    objc_storeStrong(&v20->_scrollViewDelegate, delegate);
+    objc_storeStrong(&v20->_selectionSequenceNumber, number);
     v23 = objc_alloc_init(AllRefinementsTogglesCellLogicController);
     togglesLogicController = v20->_togglesLogicController;
     v20->_togglesLogicController = v23;
@@ -477,8 +477,8 @@
     multiSelectLogicController = v20->_multiSelectLogicController;
     v20->_multiSelectLogicController = v25;
 
-    objc_storeWeak(&v20->_analyticsDelegate, v17);
-    objc_storeWeak(&v20->_viewModelDelegate, v18);
+    objc_storeWeak(&v20->_analyticsDelegate, analyticsDelegateCopy);
+    objc_storeWeak(&v20->_viewModelDelegate, modelDelegateCopy);
     [(AllRefinementsDataSource *)v20 setupDataSource];
   }
 

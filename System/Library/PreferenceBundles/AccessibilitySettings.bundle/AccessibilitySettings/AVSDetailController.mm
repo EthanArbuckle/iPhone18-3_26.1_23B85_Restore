@@ -1,27 +1,27 @@
 @interface AVSDetailController
-- (AVSDetailController)initWithIdentifier:(id)a3 title:(id)a4 withCompletion:(id)a5;
+- (AVSDetailController)initWithIdentifier:(id)identifier title:(id)title withCompletion:(id)completion;
 - (id)specifiers;
-- (void)_removeButtonTapped:(id)a3;
+- (void)_removeButtonTapped:(id)tapped;
 @end
 
 @implementation AVSDetailController
 
-- (AVSDetailController)initWithIdentifier:(id)a3 title:(id)a4 withCompletion:(id)a5
+- (AVSDetailController)initWithIdentifier:(id)identifier title:(id)title withCompletion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  titleCopy = title;
+  completionCopy = completion;
   v16.receiver = self;
   v16.super_class = AVSDetailController;
   v11 = [(AVSDetailController *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    v13 = [(AVSDetailController *)v11 navigationItem];
-    [v13 setTitle:v9];
+    navigationItem = [(AVSDetailController *)v11 navigationItem];
+    [navigationItem setTitle:titleCopy];
 
-    [(AVSDetailController *)v12 setIdentifier:v8];
-    [(AVSDetailController *)v12 setCompletion:v10];
+    [(AVSDetailController *)v12 setIdentifier:identifierCopy];
+    [(AVSDetailController *)v12 setCompletion:completionCopy];
     v14 = v12;
   }
 
@@ -49,12 +49,12 @@
   return v4;
 }
 
-- (void)_removeButtonTapped:(id)a3
+- (void)_removeButtonTapped:(id)tapped
 {
   v6 = objc_alloc_init(AVSStore);
   [v6 deleteShortcutWithIdentifier:self->_identifier];
-  v4 = [(AVSDetailController *)self navigationController];
-  v5 = [v4 popViewControllerAnimated:1];
+  navigationController = [(AVSDetailController *)self navigationController];
+  v5 = [navigationController popViewControllerAnimated:1];
 
   (*(self->_completion + 2))();
 }

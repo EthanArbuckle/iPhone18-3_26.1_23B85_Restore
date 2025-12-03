@@ -1,7 +1,7 @@
 @interface PFCloudKitMetadataModel
-+ (BOOL)checkAndRepairSchemaOfStore:(uint64_t)a3 withManagedObjectContext:(void *)a4 error:;
-+ (BOOL)isExportableMetadataClassName:(id)a3;
-+ (BOOL)isExportableMetadataEntity:(id)a3;
++ (BOOL)checkAndRepairSchemaOfStore:(uint64_t)store withManagedObjectContext:(void *)context error:;
++ (BOOL)isExportableMetadataClassName:(id)name;
++ (BOOL)isExportableMetadataEntity:(id)entity;
 + (NSManagedObjectModel)_newMetadataModelV1;
 + (NSManagedObjectModel)_newMetadataModelV10;
 + (NSManagedObjectModel)_newMetadataModelV11;
@@ -18,10 +18,10 @@
 + (NSManagedObjectModel)_newMetadataModelV7;
 + (NSManagedObjectModel)_newMetadataModelV8;
 + (NSManagedObjectModel)_newMetadataModelV9;
-+ (NSManagedObjectModel)newMetadataModelForFrameworkVersion:(uint64_t)a1;
++ (NSManagedObjectModel)newMetadataModelForFrameworkVersion:(uint64_t)version;
 + (id)_newMetadataModelV17;
-+ (id)createMapOfEntityIDToPrimaryKeySetForObjectIDs:(id)a3 fromStore:(id)a4;
-+ (uint64_t)identifyModelForStore:(uint64_t)a3 withConnection:(uint64_t)a4 hasOldMetadataTables:;
++ (id)createMapOfEntityIDToPrimaryKeySetForObjectIDs:(id)ds fromStore:(id)store;
++ (uint64_t)identifyModelForStore:(uint64_t)store withConnection:(uint64_t)connection hasOldMetadataTables:;
 + (void)initialize;
 @end
 
@@ -29,7 +29,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = objc_alloc_init(PFCloudKitMetadataValueTransformer);
     [MEMORY[0x1E696B0A0] setValueTransformer:v2 forName:@"com.apple.CoreData.cloudkit.metadata.transformer"];
@@ -4386,58 +4386,58 @@
   return v27;
 }
 
-+ (NSManagedObjectModel)newMetadataModelForFrameworkVersion:(uint64_t)a1
++ (NSManagedObjectModel)newMetadataModelForFrameworkVersion:(uint64_t)version
 {
   objc_opt_self();
-  v3 = [a2 integerValue];
-  if (v3 <= 826)
+  integerValue = [a2 integerValue];
+  if (integerValue <= 826)
   {
 
     return +[PFCloudKitMetadataModel _newMetadataModelV1];
   }
 
-  if (v3 < 0x384)
+  if (integerValue < 0x384)
   {
     goto LABEL_15;
   }
 
-  if (v3 <= 0x385)
+  if (integerValue <= 0x385)
   {
 
     return +[PFCloudKitMetadataModel _newMetadataModelV2];
   }
 
-  if (v3 == 902)
+  if (integerValue == 902)
   {
 
     return +[PFCloudKitMetadataModel _newMetadataModelV3];
   }
 
-  if (v3 > 0x399)
+  if (integerValue > 0x399)
   {
-    if (v3 > 0x3AB)
+    if (integerValue > 0x3AB)
     {
-      if (v3 > 0x3AE)
+      if (integerValue > 0x3AE)
       {
-        if (v3 > 0x3C8)
+        if (integerValue > 0x3C8)
         {
-          if (v3 > 0x3F3)
+          if (integerValue > 0x3F3)
           {
-            if (v3 > 0x403)
+            if (integerValue > 0x403)
             {
-              if (v3 > 0x450)
+              if (integerValue > 0x450)
               {
-                if (v3 > 0x454)
+                if (integerValue > 0x454)
                 {
-                  if (v3 > 0x45F)
+                  if (integerValue > 0x45F)
                   {
-                    if (v3 > 0x469)
+                    if (integerValue > 0x469)
                     {
-                      if (v3 > 0x470)
+                      if (integerValue > 0x470)
                       {
-                        if (v3 > 0x4DA)
+                        if (integerValue > 0x4DA)
                         {
-                          if (v3 > 0x5E2)
+                          if (integerValue > 0x5E2)
                           {
 
                             return +[PFCloudKitMetadataModel _newMetadataModelV17];
@@ -4548,15 +4548,15 @@ LABEL_15:
   return v0;
 }
 
-+ (BOOL)checkAndRepairSchemaOfStore:(uint64_t)a3 withManagedObjectContext:(void *)a4 error:
++ (BOOL)checkAndRepairSchemaOfStore:(uint64_t)store withManagedObjectContext:(void *)context error:
 {
   v26 = *MEMORY[0x1E69E9840];
   objc_opt_self();
   v21 = 0;
-  v7 = [a2 _persistentStoreCoordinator];
-  v8 = [a2 isReadOnly];
+  _persistentStoreCoordinator = [a2 _persistentStoreCoordinator];
+  isReadOnly = [a2 isReadOnly];
   result = 1;
-  if (!v7 || (v8 & 1) != 0)
+  if (!_persistentStoreCoordinator || (isReadOnly & 1) != 0)
   {
     goto LABEL_9;
   }
@@ -4569,16 +4569,16 @@ LABEL_8:
   }
 
   v10 = [_PFBackgroundRuntimeVoucher _beginPowerAssertionNamed:@"CoreData: CloudKit Metadata Model Migration"];
-  v11 = [a2 mirroringDelegate];
+  mirroringDelegate = [a2 mirroringDelegate];
   v12 = [PFCloudKitMetadataModelMigrator alloc];
-  if (!v11)
+  if (!mirroringDelegate)
   {
-    v13 = [0 databaseScope];
+    databaseScope = [0 databaseScope];
     goto LABEL_19;
   }
 
-  v13 = [*(v11 + 8) databaseScope];
-  v14 = *(v11 + 8);
+  databaseScope = [*(mirroringDelegate + 8) databaseScope];
+  v14 = *(mirroringDelegate + 8);
   if (!v14)
   {
 LABEL_19:
@@ -4588,7 +4588,7 @@ LABEL_19:
 
   v15 = *(v14 + 72);
 LABEL_7:
-  v16 = [(PFCloudKitMetadataModelMigrator *)v12 initWithStore:a2 metadataContext:a3 databaseScope:v13 metricsClient:v15];
+  v16 = [(PFCloudKitMetadataModelMigrator *)v12 initWithStore:a2 metadataContext:store databaseScope:databaseScope metricsClient:v15];
   v17 = [(PFCloudKitMetadataModelMigrator *)v16 checkAndPerformMigrationIfNecessary:?];
   [_PFBackgroundRuntimeVoucher _endPowerAssertionWithVoucher:v10];
 
@@ -4599,10 +4599,10 @@ LABEL_7:
 
   if (v21)
   {
-    if (a4)
+    if (context)
     {
       result = 0;
-      *a4 = v21;
+      *context = v21;
       goto LABEL_9;
     }
 
@@ -4638,7 +4638,7 @@ LABEL_9:
   return result;
 }
 
-+ (uint64_t)identifyModelForStore:(uint64_t)a3 withConnection:(uint64_t)a4 hasOldMetadataTables:
++ (uint64_t)identifyModelForStore:(uint64_t)store withConnection:(uint64_t)connection hasOldMetadataTables:
 {
   objc_opt_self();
   v33 = 0;
@@ -4653,8 +4653,8 @@ LABEL_9:
   v28 = __85__PFCloudKitMetadataModel_identifyModelForStore_withConnection_hasOldMetadataTables___block_invoke;
   v29 = &unk_1E6EC17E8;
   v31 = &v33;
-  v32 = a4;
-  v30 = a3;
+  connectionCopy = connection;
+  storeCopy = store;
   objc_opt_self();
   v7 = objc_autoreleasePoolPush();
   v39 = 0;
@@ -5392,7 +5392,7 @@ void __47__PFCloudKitMetadataModel__newMetadataModelV17__block_invoke()
   v53 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)createMapOfEntityIDToPrimaryKeySetForObjectIDs:(id)a3 fromStore:(id)a4
++ (id)createMapOfEntityIDToPrimaryKeySetForObjectIDs:(id)ds fromStore:(id)store
 {
   v39 = *MEMORY[0x1E69E9840];
   v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -5400,7 +5400,7 @@ void __47__PFCloudKitMetadataModel__newMetadataModelV17__block_invoke()
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v7 = [a3 countByEnumeratingWithState:&v32 objects:v38 count:16];
+  v7 = [ds countByEnumeratingWithState:&v32 objects:v38 count:16];
   if (v7)
   {
     v9 = v7;
@@ -5414,7 +5414,7 @@ void __47__PFCloudKitMetadataModel__newMetadataModelV17__block_invoke()
       {
         if (*v33 != v10)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(ds);
         }
 
         v12 = *(*(&v32 + 1) + 8 * v11);
@@ -5441,9 +5441,9 @@ void __47__PFCloudKitMetadataModel__newMetadataModelV17__block_invoke()
 
         else
         {
-          v16 = [v12 persistentStore];
-          v17 = v16;
-          if (!a4 || ([objc_msgSend(v16 "identifier")] & 1) != 0)
+          persistentStore = [v12 persistentStore];
+          v17 = persistentStore;
+          if (!store || ([objc_msgSend(persistentStore "identifier")] & 1) != 0)
           {
             objc_opt_class();
             if (objc_opt_isKindOfClass())
@@ -5498,7 +5498,7 @@ void __47__PFCloudKitMetadataModel__newMetadataModelV17__block_invoke()
       }
 
       while (v9 != v11);
-      v28 = [a3 countByEnumeratingWithState:&v32 objects:v38 count:16];
+      v28 = [ds countByEnumeratingWithState:&v32 objects:v38 count:16];
       v9 = v28;
     }
 
@@ -5509,14 +5509,14 @@ void __47__PFCloudKitMetadataModel__newMetadataModelV17__block_invoke()
   return v6;
 }
 
-+ (BOOL)isExportableMetadataEntity:(id)a3
++ (BOOL)isExportableMetadataEntity:(id)entity
 {
-  v3 = [a3 name];
+  name = [entity name];
 
-  return [PFCloudKitMetadataModel isExportableMetadataClassName:v3];
+  return [PFCloudKitMetadataModel isExportableMetadataClassName:name];
 }
 
-+ (BOOL)isExportableMetadataClassName:(id)a3
++ (BOOL)isExportableMetadataClassName:(id)name
 {
   if (qword_1ED4BE8C8 != -1)
   {
@@ -5525,7 +5525,7 @@ void __47__PFCloudKitMetadataModel__newMetadataModelV17__block_invoke()
 
   v4 = qword_1ED4BE8D0;
 
-  return [v4 containsObject:a3];
+  return [v4 containsObject:name];
 }
 
 uint64_t __57__PFCloudKitMetadataModel_isExportableMetadataClassName___block_invoke()

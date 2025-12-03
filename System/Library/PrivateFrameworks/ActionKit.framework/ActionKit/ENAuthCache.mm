@@ -1,83 +1,83 @@
 @interface ENAuthCache
 - (ENAuthCache)init;
 - (id)authenticationResultForBusiness;
-- (id)authenticationResultForLinkedNotebookGuid:(id)a3;
-- (void)setAuthenticationResult:(id)a3 forLinkedNotebookGuid:(id)a4;
-- (void)setAuthenticationResultForBusiness:(id)a3;
+- (id)authenticationResultForLinkedNotebookGuid:(id)guid;
+- (void)setAuthenticationResult:(id)result forLinkedNotebookGuid:(id)guid;
+- (void)setAuthenticationResultForBusiness:(id)business;
 @end
 
 @implementation ENAuthCache
 
 - (id)authenticationResultForBusiness
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(ENAuthCache *)v2 businessCache];
-  v4 = v3;
-  if (v3 && ([v3 isValid] & 1) == 0)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  businessCache = [(ENAuthCache *)selfCopy businessCache];
+  v4 = businessCache;
+  if (businessCache && ([businessCache isValid] & 1) == 0)
   {
-    [(ENAuthCache *)v2 setBusinessCache:0];
+    [(ENAuthCache *)selfCopy setBusinessCache:0];
   }
 
-  v5 = [v4 authResult];
+  authResult = [v4 authResult];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  return v5;
+  return authResult;
 }
 
-- (void)setAuthenticationResultForBusiness:(id)a3
+- (void)setAuthenticationResultForBusiness:(id)business
 {
-  v4 = a3;
-  if (v4)
+  businessCopy = business;
+  if (businessCopy)
   {
-    v7 = v4;
-    v5 = [ENAuthCacheEntry entryWithResult:v4];
-    v6 = self;
-    objc_sync_enter(v6);
-    [(ENAuthCache *)v6 setBusinessCache:v5];
-    objc_sync_exit(v6);
+    v7 = businessCopy;
+    v5 = [ENAuthCacheEntry entryWithResult:businessCopy];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    [(ENAuthCache *)selfCopy setBusinessCache:v5];
+    objc_sync_exit(selfCopy);
 
-    v4 = v7;
+    businessCopy = v7;
   }
 }
 
-- (id)authenticationResultForLinkedNotebookGuid:(id)a3
+- (id)authenticationResultForLinkedNotebookGuid:(id)guid
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(ENAuthCache *)v5 linkedCache];
-  v7 = [v6 objectForKeyedSubscript:v4];
+  guidCopy = guid;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  linkedCache = [(ENAuthCache *)selfCopy linkedCache];
+  v7 = [linkedCache objectForKeyedSubscript:guidCopy];
 
   if (v7 && ([v7 isValid] & 1) == 0)
   {
-    v8 = [(ENAuthCache *)v5 linkedCache];
-    [v8 removeObjectForKey:v4];
+    linkedCache2 = [(ENAuthCache *)selfCopy linkedCache];
+    [linkedCache2 removeObjectForKey:guidCopy];
 
     v7 = 0;
   }
 
-  v9 = [v7 authResult];
+  authResult = [v7 authResult];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
-  return v9;
+  return authResult;
 }
 
-- (void)setAuthenticationResult:(id)a3 forLinkedNotebookGuid:(id)a4
+- (void)setAuthenticationResult:(id)result forLinkedNotebookGuid:(id)guid
 {
-  v10 = a3;
-  v6 = a4;
-  if (v10)
+  resultCopy = result;
+  guidCopy = guid;
+  if (resultCopy)
   {
     v7 = [ENAuthCacheEntry entryWithResult:?];
-    v8 = self;
-    objc_sync_enter(v8);
-    v9 = [(ENAuthCache *)v8 linkedCache];
-    [v9 setObject:v7 forKeyedSubscript:v6];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    linkedCache = [(ENAuthCache *)selfCopy linkedCache];
+    [linkedCache setObject:v7 forKeyedSubscript:guidCopy];
 
-    objc_sync_exit(v8);
+    objc_sync_exit(selfCopy);
   }
 }
 

@@ -1,43 +1,43 @@
 @interface RCWaveformDataSource
 - ($F24F406B2B787EFB06265DBA3D28CBD5)timeRangeToHighlight;
 - (BOOL)waitUntilFinished;
-- (RCWaveformDataSource)initWithWaveformGenerator:(id)a3 generatedWaveformOutputURL:(id)a4;
+- (RCWaveformDataSource)initWithWaveformGenerator:(id)generator generatedWaveformOutputURL:(id)l;
 - (double)averagePowerLevelsRate;
 - (double)duration;
-- (id)waveformSegmentsInTimeRange:(id)a3;
-- (id)waveformSegmentsIntersectingTimeRange:(id)a3;
-- (void)_performObserversBlock:(id)a3;
-- (void)addObserver:(id)a3;
+- (id)waveformSegmentsInTimeRange:(id)range;
+- (id)waveformSegmentsIntersectingTimeRange:(id)range;
+- (void)_performObserversBlock:(id)block;
+- (void)addObserver:(id)observer;
 - (void)beginLoading;
 - (void)dealloc;
-- (void)finishLoadingWithCompletionTimeout:(unint64_t)a3 completionBlock:(id)a4;
+- (void)finishLoadingWithCompletionTimeout:(unint64_t)timeout completionBlock:(id)block;
 - (void)mergeGeneratedWaveformIfNecessary;
-- (void)removeObserver:(id)a3;
+- (void)removeObserver:(id)observer;
 - (void)saveGeneratedWaveformIfNecessary;
-- (void)updateAccumulatorWaveformSegmentsWithBlock:(id)a3;
-- (void)waveformGenerator:(id)a3 didLoadWaveformSegment:(id)a4;
-- (void)waveformGeneratorDidFinishLoading:(id)a3 error:(id)a4;
+- (void)updateAccumulatorWaveformSegmentsWithBlock:(id)block;
+- (void)waveformGenerator:(id)generator didLoadWaveformSegment:(id)segment;
+- (void)waveformGeneratorDidFinishLoading:(id)loading error:(id)error;
 @end
 
 @implementation RCWaveformDataSource
 
-- (RCWaveformDataSource)initWithWaveformGenerator:(id)a3 generatedWaveformOutputURL:(id)a4
+- (RCWaveformDataSource)initWithWaveformGenerator:(id)generator generatedWaveformOutputURL:(id)l
 {
-  v7 = a3;
-  v8 = a4;
+  generatorCopy = generator;
+  lCopy = l;
   v18.receiver = self;
   v18.super_class = RCWaveformDataSource;
   v9 = [(RCWaveformDataSource *)&v18 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_waveformGenerator, a3);
+    objc_storeStrong(&v9->_waveformGenerator, generator);
     v11 = objc_alloc_init(RCMutableWaveform);
     accumulatorWaveform = v10->_accumulatorWaveform;
     v10->_accumulatorWaveform = v11;
 
     v10->_liveRecordingMergeTime = 0.0;
-    objc_storeStrong(&v10->_generatedWaveformOutputURL, a4);
+    objc_storeStrong(&v10->_generatedWaveformOutputURL, l);
     v13 = +[NSHashTable weakObjectsHashTable];
     weakObservers = v10->_weakObservers;
     v10->_weakObservers = v13;
@@ -58,31 +58,31 @@
   [(RCWaveformDataSource *)&v3 dealloc];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_16BF4;
   v7[3] = &unk_6D430;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_sync(queue, v7);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_16CE0;
   v7[3] = &unk_6D430;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -91,29 +91,29 @@
   if (!self->_hasStartedLoading)
   {
     self->_hasStartedLoading = 1;
-    v4 = [(RCWaveformDataSource *)self waveformGenerator];
-    [v4 beginLoading];
+    waveformGenerator = [(RCWaveformDataSource *)self waveformGenerator];
+    [waveformGenerator beginLoading];
 
-    v5 = [(RCWaveformDataSource *)self waveformGenerator];
-    [v5 addSegmentOutputObserver:self];
+    waveformGenerator2 = [(RCWaveformDataSource *)self waveformGenerator];
+    [waveformGenerator2 addSegmentOutputObserver:self];
 
     [(RCWaveformDataSource *)self startLoading];
   }
 }
 
-- (void)finishLoadingWithCompletionTimeout:(unint64_t)a3 completionBlock:(id)a4
+- (void)finishLoadingWithCompletionTimeout:(unint64_t)timeout completionBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   objc_initWeak(&location, self);
-  v7 = [(RCWaveformDataSource *)self waveformGenerator];
+  waveformGenerator = [(RCWaveformDataSource *)self waveformGenerator];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_16F54;
   v9[3] = &unk_6D4A8;
   objc_copyWeak(&v11, &location);
-  v8 = v6;
+  v8 = blockCopy;
   v10 = v8;
-  [v7 finishLoadingWithCompletionTimeout:a3 completionBlock:v9];
+  [waveformGenerator finishLoadingWithCompletionTimeout:timeout completionBlock:v9];
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
@@ -177,7 +177,7 @@
   return result;
 }
 
-- (id)waveformSegmentsInTimeRange:(id)a3
+- (id)waveformSegmentsInTimeRange:(id)range
 {
   v8 = 0;
   v9 = &v8;
@@ -192,7 +192,7 @@
   v6[3] = &unk_6D520;
   v6[4] = self;
   v6[5] = &v8;
-  v7 = a3;
+  rangeCopy = range;
   dispatch_sync(queue, v6);
   v4 = v9[5];
   _Block_object_dispose(&v8, 8);
@@ -200,7 +200,7 @@
   return v4;
 }
 
-- (id)waveformSegmentsIntersectingTimeRange:(id)a3
+- (id)waveformSegmentsIntersectingTimeRange:(id)range
 {
   v8 = 0;
   v9 = &v8;
@@ -215,7 +215,7 @@
   v6[3] = &unk_6D520;
   v6[4] = self;
   v6[5] = &v8;
-  v7 = a3;
+  rangeCopy = range;
   dispatch_sync(queue, v6);
   v4 = v9[5];
   _Block_object_dispose(&v8, 8);
@@ -244,26 +244,26 @@
 
 - (void)saveGeneratedWaveformIfNecessary
 {
-  v3 = [(RCWaveformDataSource *)self hasSavedGeneratedWaveform];
-  v4 = [(RCWaveformDataSource *)self generatedWaveformOutputURL];
-  if (self->_hasStartedLoading && (v3 & 1) == 0)
+  hasSavedGeneratedWaveform = [(RCWaveformDataSource *)self hasSavedGeneratedWaveform];
+  generatedWaveformOutputURL = [(RCWaveformDataSource *)self generatedWaveformOutputURL];
+  if (self->_hasStartedLoading && (hasSavedGeneratedWaveform & 1) == 0)
   {
-    v5 = [(RCWaveformDataSource *)self waveformGenerator];
-    if ([v5 canceled])
+    waveformGenerator = [(RCWaveformDataSource *)self waveformGenerator];
+    if ([waveformGenerator canceled])
     {
 LABEL_15:
 
       goto LABEL_16;
     }
 
-    v6 = [v4 path];
-    v7 = [v6 length];
+    path = [generatedWaveformOutputURL path];
+    v7 = [path length];
 
     if (v7)
     {
       [(RCWaveformDataSource *)self setHasSavedGeneratedWaveform:1];
-      v5 = [(RCWaveformDataSource *)self saveableWaveform];
-      if ([v5 segmentCount])
+      waveformGenerator = [(RCWaveformDataSource *)self saveableWaveform];
+      if ([waveformGenerator segmentCount])
       {
         v8 = +[NSThread currentThread];
         [v8 threadPriority];
@@ -272,30 +272,30 @@ LABEL_15:
         v11 = +[NSThread currentThread];
         [v11 setThreadPriority:1.0];
 
-        v12 = [v5 segmentsCopy];
-        v13 = [RCWaveformSegment segmentsByMergingSegments:v12 preferredSegmentDuration:30.0];
+        segmentsCopy = [waveformGenerator segmentsCopy];
+        v13 = [RCWaveformSegment segmentsByMergingSegments:segmentsCopy preferredSegmentDuration:30.0];
 
         if ([v13 count])
         {
           v14 = [(RCWaveform *)[RCMutableWaveform alloc] initWithSegments:v13];
 
-          v5 = v14;
+          waveformGenerator = v14;
         }
 
         v15 = +[NSThread currentThread];
         [v15 setThreadPriority:v10];
       }
 
-      if ([v5 segmentCount])
+      if ([waveformGenerator segmentCount])
       {
         Current = CFAbsoluteTimeGetCurrent();
         v17 = OSLogForCategory(@"Default");
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
         {
-          sub_42360(v4, v17);
+          sub_42360(generatedWaveformOutputURL, v17);
         }
 
-        -[RCWaveformDataSource setHasSavedGeneratedWaveform:](self, "setHasSavedGeneratedWaveform:", [v5 saveContentsToURL:v4]);
+        -[RCWaveformDataSource setHasSavedGeneratedWaveform:](self, "setHasSavedGeneratedWaveform:", [waveformGenerator saveContentsToURL:generatedWaveformOutputURL]);
         v18 = CFAbsoluteTimeGetCurrent();
         v19 = OSLogForCategory(@"Default");
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
@@ -305,7 +305,7 @@ LABEL_15:
           v23 = 2048;
           v24 = v18 - Current;
           v25 = 1024;
-          v26 = [v5 segmentCount];
+          segmentCount = [waveformGenerator segmentCount];
           _os_log_debug_impl(&dword_0, v19, OS_LOG_TYPE_DEBUG, "%s -- save: took %.2f sec to save waveform with %d segments", buf, 0x1Cu);
         }
       }
@@ -327,12 +327,12 @@ LABEL_16:
 {
   if ([(RCWaveformDataSource *)self shouldMergeLiveWaveform])
   {
-    v3 = [(RCWaveform *)self->_accumulatorWaveform segments];
-    v4 = [v3 lastObject];
+    segments = [(RCWaveform *)self->_accumulatorWaveform segments];
+    lastObject = [segments lastObject];
 
-    if (v4)
+    if (lastObject)
     {
-      [v4 timeRange];
+      [lastObject timeRange];
       v6 = v5 + -15.0;
     }
 
@@ -341,8 +341,8 @@ LABEL_16:
       v6 = -15.0;
     }
 
-    v7 = [(RCWaveform *)self->_accumulatorWaveform segments];
-    v8 = [v7 count];
+    segments2 = [(RCWaveform *)self->_accumulatorWaveform segments];
+    v8 = [segments2 count];
 
     if (v8)
     {
@@ -372,30 +372,30 @@ LABEL_16:
   }
 }
 
-- (void)updateAccumulatorWaveformSegmentsWithBlock:(id)a3
+- (void)updateAccumulatorWaveformSegmentsWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_17CB8;
   v7[3] = &unk_6D598;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   dispatch_sync(queue, v7);
 }
 
-- (void)waveformGeneratorDidFinishLoading:(id)a3 error:(id)a4
+- (void)waveformGeneratorDidFinishLoading:(id)loading error:(id)error
 {
-  v5 = a4;
-  v6 = [(RCWaveformDataSource *)self generatedWaveformOutputURL];
-  if (v5)
+  errorCopy = error;
+  generatedWaveformOutputURL = [(RCWaveformDataSource *)self generatedWaveformOutputURL];
+  if (errorCopy)
   {
     v7 = OSLogForCategory(@"Default");
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      sub_423FC(v5, v7);
+      sub_423FC(errorCopy, v7);
     }
 
     if (self->_hasStartedLoading)
@@ -409,13 +409,13 @@ LABEL_16:
       dispatch_sync(queue, block);
       self->_hasStartedLoading = 0;
       v9 = +[NSFileManager defaultManager];
-      v10 = [v6 path];
-      v11 = [v9 fileExistsAtPath:v10];
+      path = [generatedWaveformOutputURL path];
+      v11 = [v9 fileExistsAtPath:path];
 
       if (v11)
       {
         v12 = +[NSFileManager defaultManager];
-        [v12 removeItemAtURL:v6 error:0];
+        [v12 removeItemAtURL:generatedWaveformOutputURL error:0];
 
         v14[0] = _NSConcreteStackBlock;
         v14[1] = 3221225472;
@@ -440,17 +440,17 @@ LABEL_16:
   [(RCWaveformDataSource *)self _performObserversBlock:v13];
 }
 
-- (void)waveformGenerator:(id)a3 didLoadWaveformSegment:(id)a4
+- (void)waveformGenerator:(id)generator didLoadWaveformSegment:(id)segment
 {
-  v5 = a4;
+  segmentCopy = segment;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_18078;
   block[3] = &unk_6D430;
   block[4] = self;
-  v12 = v5;
-  v7 = v5;
+  v12 = segmentCopy;
+  v7 = segmentCopy;
   dispatch_sync(queue, block);
   [(RCWaveformDataSource *)self mergeGeneratedWaveformIfNecessary];
   [(RCWaveformDataSource *)self segmentsInCompositionByConvertingFromActiveLoadingFragment:v7];
@@ -463,9 +463,9 @@ LABEL_16:
   [(RCWaveformDataSource *)self _performObserversBlock:v9];
 }
 
-- (void)_performObserversBlock:(id)a3
+- (void)_performObserversBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -499,7 +499,7 @@ LABEL_16:
           objc_enumerationMutation(v6);
         }
 
-        v4[2](v4, *(*(&v10 + 1) + 8 * v9));
+        blockCopy[2](blockCopy, *(*(&v10 + 1) + 8 * v9));
         v9 = v9 + 1;
       }
 

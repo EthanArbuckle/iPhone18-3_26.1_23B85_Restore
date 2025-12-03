@@ -1,6 +1,6 @@
 @interface REMBertTextClassifierInput
 - (NSSet)featureNames;
-- (id)featureValueForName:(id)a3;
+- (id)featureValueForName:(id)name;
 @end
 
 @implementation REMBertTextClassifierInput
@@ -14,7 +14,7 @@
   return v2;
 }
 
-- (id)featureValueForName:(id)a3
+- (id)featureValueForName:(id)name
 {
   v3 = _sSo15REMSortingStylea19ReminderKitInternalE11descriptionSSvg_0();
   v5 = v4;

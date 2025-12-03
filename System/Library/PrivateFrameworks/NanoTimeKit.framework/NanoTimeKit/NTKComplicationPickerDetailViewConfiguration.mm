@@ -1,18 +1,18 @@
 @interface NTKComplicationPickerDetailViewConfiguration
-- (NTKComplicationPickerDetailViewConfiguration)initWithDetailListProvider:(id)a3 title:(id)a4;
+- (NTKComplicationPickerDetailViewConfiguration)initWithDetailListProvider:(id)provider title:(id)title;
 @end
 
 @implementation NTKComplicationPickerDetailViewConfiguration
 
-- (NTKComplicationPickerDetailViewConfiguration)initWithDetailListProvider:(id)a3 title:(id)a4
+- (NTKComplicationPickerDetailViewConfiguration)initWithDetailListProvider:(id)provider title:(id)title
 {
-  v6 = a4;
+  titleCopy = title;
   v11.receiver = self;
   v11.super_class = NTKComplicationPickerDetailViewConfiguration;
-  v7 = [(NTKComplicationPickerBaseViewConfiguration *)&v11 initWithListProvider:a3];
+  v7 = [(NTKComplicationPickerBaseViewConfiguration *)&v11 initWithListProvider:provider];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [titleCopy copy];
     title = v7->_title;
     v7->_title = v8;
   }

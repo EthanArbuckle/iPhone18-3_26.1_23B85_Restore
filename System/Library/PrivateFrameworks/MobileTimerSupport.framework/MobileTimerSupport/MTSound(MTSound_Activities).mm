@@ -19,34 +19,34 @@
   v5 = [objc_alloc(MEMORY[0x277D71F58]) initWithType:v4];
   [v5 setMaximumDuration:900.0];
   [v5 setShouldIgnoreRingerSwitch:1];
-  v6 = [a1 soundVolume];
+  soundVolume = [self soundVolume];
 
-  if (v6)
+  if (soundVolume)
   {
-    v7 = [a1 soundVolume];
-    [v7 floatValue];
+    soundVolume2 = [self soundVolume];
+    [soundVolume2 floatValue];
     [v5 setAudioVolume:?];
   }
 
-  v8 = [a1 vibrationIdentifier];
-  [v5 setVibrationIdentifier:v8];
+  vibrationIdentifier = [self vibrationIdentifier];
+  [v5 setVibrationIdentifier:vibrationIdentifier];
 
-  v9 = [a1 soundType];
-  if (v9 == 3)
+  soundType = [self soundType];
+  if (soundType == 3)
   {
-    v10 = [a1 mediaItemIdentifier];
-    [v5 setExternalToneMediaLibraryItemIdentifier:{objc_msgSend(v10, "integerValue")}];
+    mediaItemIdentifier = [self mediaItemIdentifier];
+    [v5 setExternalToneMediaLibraryItemIdentifier:{objc_msgSend(mediaItemIdentifier, "integerValue")}];
   }
 
   else
   {
-    if (v9 != 2)
+    if (soundType != 2)
     {
       goto LABEL_11;
     }
 
-    v10 = [a1 toneIdentifier];
-    [v5 setToneIdentifier:v10];
+    mediaItemIdentifier = [self toneIdentifier];
+    [v5 setToneIdentifier:mediaItemIdentifier];
   }
 
 LABEL_11:

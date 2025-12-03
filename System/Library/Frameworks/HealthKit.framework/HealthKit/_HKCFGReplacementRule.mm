@@ -1,33 +1,33 @@
 @interface _HKCFGReplacementRule
-+ (_HKCFGReplacementRule)ruleWithLHS:(id)a3 RHS:(id)a4 nodeEvaluator:(id)a5;
++ (_HKCFGReplacementRule)ruleWithLHS:(id)s RHS:(id)hS nodeEvaluator:(id)evaluator;
 @end
 
 @implementation _HKCFGReplacementRule
 
-+ (_HKCFGReplacementRule)ruleWithLHS:(id)a3 RHS:(id)a4 nodeEvaluator:(id)a5
++ (_HKCFGReplacementRule)ruleWithLHS:(id)s RHS:(id)hS nodeEvaluator:(id)evaluator
 {
   v60 = *MEMORY[0x1E69E9840];
-  v44 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (![v8 count])
+  sCopy = s;
+  hSCopy = hS;
+  evaluatorCopy = evaluator;
+  if (![hSCopy count])
   {
     +[_HKCFGReplacementRule ruleWithLHS:RHS:nodeEvaluator:];
   }
 
-  v10 = objc_alloc_init(a1);
-  v43 = v9;
-  v11 = [v9 copy];
+  v10 = objc_alloc_init(self);
+  v43 = evaluatorCopy;
+  v11 = [evaluatorCopy copy];
   v12 = *(v10 + 3);
   v42 = v10;
   *(v10 + 3) = v11;
 
-  v13 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
-  v14 = v8;
+  v14 = hSCopy;
   v15 = [v14 countByEnumeratingWithState:&v53 objects:v59 count:16];
   if (v15)
   {
@@ -47,7 +47,7 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          [v13 addObject:v20];
+          [array addObject:v20];
         }
 
         else
@@ -56,7 +56,7 @@
           if (objc_opt_isKindOfClass())
           {
             v21 = [_HKCFGTerminal terminalMatchingString:v20];
-            [v13 addObject:v21];
+            [array addObject:v21];
           }
 
           else
@@ -73,16 +73,16 @@
   }
 
   v22 = v10;
-  objc_storeStrong(v10 + 2, v13);
+  objc_storeStrong(v10 + 2, array);
   v23 = MEMORY[0x1E696AD60];
-  v24 = [v44 _label];
-  v25 = [v23 stringWithFormat:@"%@ -> ", v24];
+  _label = [sCopy _label];
+  v25 = [v23 stringWithFormat:@"%@ -> ", _label];
 
   v51 = 0u;
   v52 = 0u;
   v49 = 0u;
   v50 = 0u;
-  v26 = v13;
+  v26 = array;
   v27 = [v26 countByEnumeratingWithState:&v49 objects:v58 count:16];
   if (v27)
   {
@@ -97,8 +97,8 @@
           objc_enumerationMutation(v26);
         }
 
-        v31 = [*(*(&v49 + 1) + 8 * j) _label];
-        [v25 appendString:v31];
+        _label2 = [*(*(&v49 + 1) + 8 * j) _label];
+        [v25 appendString:_label2];
       }
 
       v28 = [v26 countByEnumeratingWithState:&v49 objects:v58 count:16];
@@ -145,7 +145,7 @@
     v37 = 0;
   }
 
-  v42[4] = v37 - [v44 _minimumLength];
+  v42[4] = v37 - [sCopy _minimumLength];
   v40 = *MEMORY[0x1E69E9840];
 
   return v22;

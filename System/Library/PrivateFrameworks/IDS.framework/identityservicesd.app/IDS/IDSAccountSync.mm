@@ -1,35 +1,35 @@
 @interface IDSAccountSync
-+ (double)retryTimeForKey:(id)a3 attempts:(int64_t)a4;
++ (double)retryTimeForKey:(id)key attempts:(int64_t)attempts;
 + (id)sharedInstance;
-+ (id)usefulLoggingDescriptionAccountInfos:(id)a3;
++ (id)usefulLoggingDescriptionAccountInfos:(id)infos;
 - (IDSAccountSync)init;
-- (IDSAccountSync)initWithPairingManager:(id)a3 serviceController:(id)a4 accountController:(id)a5 pushHandler:(id)a6 userDefaults:(id)a7 remoteCredential:(id)a8;
-- (id)_constructAccountInfo:(id)a3;
+- (IDSAccountSync)initWithPairingManager:(id)manager serviceController:(id)controller accountController:(id)accountController pushHandler:(id)handler userDefaults:(id)defaults remoteCredential:(id)credential;
+- (id)_constructAccountInfo:(id)info;
 - (id)_registrationConductor;
-- (id)_sendAccountSyncMessage:(id)a3 withPersistentKey:(id)a4;
+- (id)_sendAccountSyncMessage:(id)message withPersistentKey:(id)key;
 - (id)_stewieCoordinator;
 - (id)_userStore;
-- (id)constructRAResponseDictionary:(id)a3;
-- (void)_addPhoneNumbersToAccount:(id)a3 withNonPreferredPhoneAccounts:(id)a4;
-- (void)_noteShouldSynchronizeServices:(id)a3;
+- (id)constructRAResponseDictionary:(id)dictionary;
+- (void)_addPhoneNumbersToAccount:(id)account withNonPreferredPhoneAccounts:(id)accounts;
+- (void)_noteShouldSynchronizeServices:(id)services;
 - (void)_noteShouldSynchronizeTinkerDeviceInfo;
-- (void)_registerAccountsWithRemoteInfo:(id)a3;
-- (void)_startRetryForKey:(id)a3 withAction:(id)a4;
+- (void)_registerAccountsWithRemoteInfo:(id)info;
+- (void)_startRetryForKey:(id)key withAction:(id)action;
 - (void)_stopAllPendingActions;
 - (void)_syncTinkerDeviceInfo;
-- (void)_updatePreferredAccountWithAccountInfo:(id)a3 withAccountSyncCommand:(unsigned int)a4;
-- (void)_updateSPSProvisioningInfo:(id)a3 fromID:(id)a4;
-- (void)_updateTinkerDeviceWithURIs:(id)a3 pushToken:(id)a4;
-- (void)incomingSyncMessage:(id)a3 fromID:(id)a4;
+- (void)_updatePreferredAccountWithAccountInfo:(id)info withAccountSyncCommand:(unsigned int)command;
+- (void)_updateSPSProvisioningInfo:(id)info fromID:(id)d;
+- (void)_updateTinkerDeviceWithURIs:(id)is pushToken:(id)token;
+- (void)incomingSyncMessage:(id)message fromID:(id)d;
 - (void)kickAnyUnfinishedSynchronization;
 - (void)noteShouldFetchRemoteAccountInfoForAllServices;
 - (void)noteShouldSynchronizeAllServices;
 - (void)noteShouldSynchronizePreferredAccount;
 - (void)noteShouldSynchronizeSPSProvisioningInfo;
-- (void)noteUnpairedTraditionalDeviceWithID:(id)a3;
+- (void)noteUnpairedTraditionalDeviceWithID:(id)d;
 - (void)resetAndResynchronizeEverything;
 - (void)saveTracking;
-- (void)synchronizeAccountsWithRemoteInfo:(id)a3 service:(id)a4;
+- (void)synchronizeAccountsWithRemoteInfo:(id)info service:(id)service;
 @end
 
 @implementation IDSAccountSync
@@ -60,26 +60,26 @@
   return v9;
 }
 
-- (IDSAccountSync)initWithPairingManager:(id)a3 serviceController:(id)a4 accountController:(id)a5 pushHandler:(id)a6 userDefaults:(id)a7 remoteCredential:(id)a8
+- (IDSAccountSync)initWithPairingManager:(id)manager serviceController:(id)controller accountController:(id)accountController pushHandler:(id)handler userDefaults:(id)defaults remoteCredential:(id)credential
 {
-  v25 = a3;
-  v24 = a4;
-  v23 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  managerCopy = manager;
+  controllerCopy = controller;
+  accountControllerCopy = accountController;
+  handlerCopy = handler;
+  defaultsCopy = defaults;
+  credentialCopy = credential;
   v26.receiver = self;
   v26.super_class = IDSAccountSync;
   v18 = [(IDSAccountSync *)&v26 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_pairingManager, a3);
-    objc_storeStrong(&v19->_serviceController, a4);
-    objc_storeStrong(&v19->_accountController, a5);
-    objc_storeStrong(&v19->_pushHandler, a6);
-    objc_storeStrong(&v19->_userDefaults, a7);
-    objc_storeStrong(&v19->_syncCredential, a8);
+    objc_storeStrong(&v18->_pairingManager, manager);
+    objc_storeStrong(&v19->_serviceController, controller);
+    objc_storeStrong(&v19->_accountController, accountController);
+    objc_storeStrong(&v19->_pushHandler, handler);
+    objc_storeStrong(&v19->_userDefaults, defaults);
+    objc_storeStrong(&v19->_syncCredential, credential);
     v20 = objc_alloc_init(NSMutableDictionary);
     currentInFlightSyncAttempts = v19->_currentInFlightSyncAttempts;
     v19->_currentInFlightSyncAttempts = v20;
@@ -90,10 +90,10 @@
 
 - (void)saveTracking
 {
-  v5 = [(IDSAccountSync *)self userDefaults];
-  v3 = [(IDSAccountSync *)self currentInFlightSyncAttempts];
-  v4 = [v3 allKeys];
-  [v5 setAppValue:v4 forKey:@"AccountSyncSyncedServices"];
+  userDefaults = [(IDSAccountSync *)self userDefaults];
+  currentInFlightSyncAttempts = [(IDSAccountSync *)self currentInFlightSyncAttempts];
+  allKeys = [currentInFlightSyncAttempts allKeys];
+  [userDefaults setAppValue:allKeys forKey:@"AccountSyncSyncedServices"];
 }
 
 - (void)kickAnyUnfinishedSynchronization
@@ -107,8 +107,8 @@
 
   if (![(NSMutableDictionary *)self->_currentInFlightSyncAttempts count])
   {
-    v4 = [(IDSAccountSync *)self userDefaults];
-    v5 = [v4 appValueForKey:@"AccountSyncSyncedServices"];
+    userDefaults = [(IDSAccountSync *)self userDefaults];
+    v5 = [userDefaults appValueForKey:@"AccountSyncSyncedServices"];
 
     if (v5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [v5 count])
     {
@@ -188,18 +188,18 @@
   }
 }
 
-+ (double)retryTimeForKey:(id)a3 attempts:(int64_t)a4
++ (double)retryTimeForKey:(id)key attempts:(int64_t)attempts
 {
-  v5 = 60 * a4;
-  if (60 * a4 >= 3600)
+  v5 = 60 * attempts;
+  if (60 * attempts >= 3600)
   {
     v5 = 3600;
   }
 
   v6 = v5;
-  if ([a3 isEqualToString:@"TinkerDeviceInfo"])
+  if ([key isEqualToString:@"TinkerDeviceInfo"])
   {
-    v7 = 5 * a4 * a4;
+    v7 = 5 * attempts * attempts;
     if (v7 < v6)
     {
       return v7;
@@ -209,16 +209,16 @@
   return v6;
 }
 
-- (void)_startRetryForKey:(id)a3 withAction:(id)a4
+- (void)_startRetryForKey:(id)key withAction:(id)action
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(IDSAccountSync *)self currentInFlightSyncAttempts];
-  v9 = [v8 objectForKeyedSubscript:v6];
+  keyCopy = key;
+  actionCopy = action;
+  currentInFlightSyncAttempts = [(IDSAccountSync *)self currentInFlightSyncAttempts];
+  v9 = [currentInFlightSyncAttempts objectForKeyedSubscript:keyCopy];
   [v9 stop];
 
-  v10 = [(IDSAccountSync *)self currentInFlightSyncAttempts];
-  [v10 setObject:0 forKeyedSubscript:v6];
+  currentInFlightSyncAttempts2 = [(IDSAccountSync *)self currentInFlightSyncAttempts];
+  [currentInFlightSyncAttempts2 setObject:0 forKeyedSubscript:keyCopy];
 
   v11 = [IDSBlockRetryHandler alloc];
   v12 = im_primary_queue();
@@ -226,14 +226,14 @@
   v22[1] = 3221225472;
   v22[2] = sub_1003F6F48;
   v22[3] = &unk_100BDAE68;
-  v23 = v6;
+  v23 = keyCopy;
   v17 = _NSConcreteStackBlock;
   v18 = 3221225472;
   v19 = sub_1003F6F60;
   v20 = &unk_100BDAE90;
-  v21 = v7;
-  v13 = v7;
-  v14 = v6;
+  v21 = actionCopy;
+  v13 = actionCopy;
+  v14 = keyCopy;
   v15 = [(IDSBlockRetryHandler *)v11 initWithQueue:v12 backoffProvider:v22 block:&v17];
 
   v16 = [(IDSAccountSync *)self currentInFlightSyncAttempts:v17];
@@ -248,10 +248,10 @@
   v3 = +[IMRGLog accountSync];
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(IDSAccountSync *)self currentInFlightSyncAttempts];
-    v5 = [v4 allKeys];
+    currentInFlightSyncAttempts = [(IDSAccountSync *)self currentInFlightSyncAttempts];
+    allKeys = [currentInFlightSyncAttempts allKeys];
     *buf = 138412290;
-    v21 = v5;
+    v21 = allKeys;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Stopping all pending account sync actions { pending: %@ }", buf, 0xCu);
   }
 
@@ -259,8 +259,8 @@
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [(IDSAccountSync *)self currentInFlightSyncAttempts];
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  currentInFlightSyncAttempts2 = [(IDSAccountSync *)self currentInFlightSyncAttempts];
+  v7 = [currentInFlightSyncAttempts2 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -272,50 +272,50 @@
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(currentInFlightSyncAttempts2);
         }
 
         v11 = *(*(&v15 + 1) + 8 * v10);
-        v12 = [(IDSAccountSync *)self currentInFlightSyncAttempts];
-        v13 = [v12 objectForKeyedSubscript:v11];
+        currentInFlightSyncAttempts3 = [(IDSAccountSync *)self currentInFlightSyncAttempts];
+        v13 = [currentInFlightSyncAttempts3 objectForKeyedSubscript:v11];
         [v13 stop];
 
         v10 = v10 + 1;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [currentInFlightSyncAttempts2 countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);
   }
 
-  v14 = [(IDSAccountSync *)self currentInFlightSyncAttempts];
-  [v14 removeAllObjects];
+  currentInFlightSyncAttempts4 = [(IDSAccountSync *)self currentInFlightSyncAttempts];
+  [currentInFlightSyncAttempts4 removeAllObjects];
 
   [(IDSAccountSync *)self saveTracking];
 }
 
-- (id)_sendAccountSyncMessage:(id)a3 withPersistentKey:(id)a4
+- (id)_sendAccountSyncMessage:(id)message withPersistentKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  keyCopy = key;
   v8 = +[NSString stringGUID];
-  v9 = [NSString stringWithFormat:@"com.apple.identityservice.accountsync-%@", v7];
+  keyCopy = [NSString stringWithFormat:@"com.apple.identityservice.accountsync-%@", keyCopy];
   objc_initWeak(&location, self);
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_1003F72C8;
   v17[3] = &unk_100BDAEE0;
   objc_copyWeak(&v23, &location);
-  v10 = v6;
+  v10 = messageCopy;
   v18 = v10;
   v11 = v8;
   v19 = v11;
-  v12 = v9;
+  v12 = keyCopy;
   v20 = v12;
-  v21 = self;
-  v13 = v7;
+  selfCopy = self;
+  v13 = keyCopy;
   v22 = v13;
   [(IDSAccountSync *)self _startRetryForKey:v13 withAction:v17];
   v14 = v22;
@@ -361,17 +361,17 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Note should sync all services", v6, 2u);
   }
 
-  v4 = [(IDSAccountSync *)self serviceController];
-  v5 = [v4 allServices];
-  [(IDSAccountSync *)self _noteShouldSynchronizeServices:v5];
+  serviceController = [(IDSAccountSync *)self serviceController];
+  allServices = [serviceController allServices];
+  [(IDSAccountSync *)self _noteShouldSynchronizeServices:allServices];
 }
 
 - (void)noteShouldSynchronizePreferredAccount
 {
-  v3 = [(IDSAccountSync *)self pairingManager];
-  v4 = [v3 isPaired];
+  pairingManager = [(IDSAccountSync *)self pairingManager];
+  isPaired = [pairingManager isPaired];
 
-  if ((v4 & 1) == 0)
+  if ((isPaired & 1) == 0)
   {
     v7 = +[IMRGLog accountSync];
     if (!os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -379,10 +379,10 @@
       goto LABEL_51;
     }
 
-    v26 = [(IDSAccountSync *)self pairingManager];
-    v27 = [v26 pairedDeviceUniqueID];
+    pairingManager2 = [(IDSAccountSync *)self pairingManager];
+    pairedDeviceUniqueID = [pairingManager2 pairedDeviceUniqueID];
     *buf = 138412290;
-    v78 = v27;
+    v78 = pairedDeviceUniqueID;
     v28 = "Not syncing preferred account because device %@ is not paired";
 LABEL_21:
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, v28, buf, 0xCu);
@@ -390,8 +390,8 @@ LABEL_21:
     goto LABEL_51;
   }
 
-  v5 = [(IDSAccountSync *)self pairingManager];
-  v6 = [v5 activePairedDeviceHasPairingType:0];
+  pairingManager3 = [(IDSAccountSync *)self pairingManager];
+  v6 = [pairingManager3 activePairedDeviceHasPairingType:0];
 
   v7 = +[IMRGLog accountSync];
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
@@ -402,10 +402,10 @@ LABEL_21:
       goto LABEL_51;
     }
 
-    v26 = [(IDSAccountSync *)self pairingManager];
-    v27 = [v26 pairedDeviceUniqueID];
+    pairingManager2 = [(IDSAccountSync *)self pairingManager];
+    pairedDeviceUniqueID = [pairingManager2 pairedDeviceUniqueID];
     *buf = 138412290;
-    v78 = v27;
+    v78 = pairedDeviceUniqueID;
     v28 = "Not syncing preferred account because device %@ is tinker paired";
     goto LABEL_21;
   }
@@ -419,9 +419,9 @@ LABEL_21:
   v9 = IMPreferredAccountMap();
   v7 = [v9 objectForKey:@"iMessage"];
 
-  v10 = [(IDSAccountSync *)self accountController];
+  accountController = [(IDSAccountSync *)self accountController];
   v11 = [v7 objectForKeyedSubscript:@"guid"];
-  v12 = [v10 accountWithUniqueID:v11];
+  v12 = [accountController accountWithUniqueID:v11];
 
   if ([v12 isEnabled] && objc_msgSend(v12, "accountType") != 2 && (objc_msgSend(v12, "accountInfo"), v13 = objc_claimAutoreleasedReturnValue(), v13, v13))
   {
@@ -430,8 +430,8 @@ LABEL_21:
     v70 = 0u;
     v67 = 0u;
     v68 = 0u;
-    v14 = [v12 service];
-    v15 = [(IDSAccountSync *)self _constructAccountInfo:v14];
+    service = [v12 service];
+    v15 = [(IDSAccountSync *)self _constructAccountInfo:service];
 
     obj = v15;
     v16 = [v15 countByEnumeratingWithState:&v67 objects:v76 count:16];
@@ -452,8 +452,8 @@ LABEL_10:
         v21 = *(*(&v67 + 1) + 8 * v20);
         v22 = [v21 objectForKeyedSubscript:v19];
         v23 = v12;
-        v24 = [v12 uniqueID];
-        v25 = [v22 isEqualToString:v24];
+        uniqueID = [v12 uniqueID];
+        v25 = [v22 isEqualToString:uniqueID];
 
         if (v25)
         {
@@ -474,10 +474,10 @@ LABEL_10:
         }
       }
 
-      v29 = v21;
+      accountInfo = v21;
 
       v12 = v23;
-      if (v29)
+      if (accountInfo)
       {
         goto LABEL_26;
       }
@@ -488,22 +488,22 @@ LABEL_10:
 LABEL_16:
     }
 
-    v29 = [v12 accountInfo];
+    accountInfo = [v12 accountInfo];
 LABEL_26:
     v74[0] = IDSAccountSyncKeyCommand;
     v74[1] = IDSAccountSyncKeyAccountInfo;
     v75[0] = &off_100C3BF08;
-    v75[1] = v29;
+    v75[1] = accountInfo;
     v30 = [NSDictionary dictionaryWithObjects:v75 forKeys:v74 count:2];
     v31 = [(IDSAccountSync *)self _sendAccountSyncMessage:v30 withPersistentKey:@"PreferredAccount"];
     v32 = +[IMRGLog accountSync];
     if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
     {
-      v33 = [v12 uniqueID];
+      uniqueID2 = [v12 uniqueID];
       *buf = 138412546;
       v78 = v31;
       v79 = 2112;
-      v80 = v33;
+      v80 = uniqueID2;
       _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "Syncing preferred account for iMessage {guid: %@, uniqueID: %@}", buf, 0x16u);
     }
 
@@ -512,14 +512,14 @@ LABEL_26:
 
   else
   {
-    v29 = +[IMRGLog accountSync];
-    if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
+    accountInfo = +[IMRGLog accountSync];
+    if (os_log_type_enabled(accountInfo, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 136315394;
       v78 = "[IDSAccountSync noteShouldSynchronizePreferredAccount]";
       v79 = 2112;
       v80 = v12;
-      _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEFAULT, "%s: invalid iMessage account %@", buf, 0x16u);
+      _os_log_impl(&_mh_execute_header, accountInfo, OS_LOG_TYPE_DEFAULT, "%s: invalid iMessage account %@", buf, 0x16u);
     }
   }
 
@@ -533,9 +533,9 @@ LABEL_26:
   v35 = IMPreferredAccountMap();
   v36 = [v35 objectForKey:@"FaceTime"];
 
-  v37 = [(IDSAccountSync *)self accountController];
+  accountController2 = [(IDSAccountSync *)self accountController];
   v38 = [v36 objectForKeyedSubscript:@"guid"];
-  v39 = [v37 accountWithUniqueID:v38];
+  v39 = [accountController2 accountWithUniqueID:v38];
 
   if ([v39 isEnabled] && objc_msgSend(v39, "accountType") != 2 && (objc_msgSend(v39, "accountInfo"), v40 = objc_claimAutoreleasedReturnValue(), v40, v40))
   {
@@ -546,8 +546,8 @@ LABEL_26:
     v66 = 0u;
     v63 = 0u;
     v64 = 0u;
-    v41 = [v39 service];
-    v42 = [(IDSAccountSync *)self _constructAccountInfo:v41];
+    service2 = [v39 service];
+    v42 = [(IDSAccountSync *)self _constructAccountInfo:service2];
 
     v60 = v42;
     v43 = [v42 countByEnumeratingWithState:&v63 objects:v73 count:16];
@@ -567,8 +567,8 @@ LABEL_36:
 
         v48 = *(*(&v63 + 1) + 8 * v47);
         v49 = [v48 objectForKeyedSubscript:v46];
-        v50 = [obja uniqueID];
-        v51 = [v49 isEqualToString:v50];
+        uniqueID3 = [obja uniqueID];
+        v51 = [v49 isEqualToString:uniqueID3];
 
         if (v51)
         {
@@ -587,10 +587,10 @@ LABEL_36:
         }
       }
 
-      v52 = v48;
+      accountInfo2 = v48;
 
       v39 = v57;
-      if (v52)
+      if (accountInfo2)
       {
         goto LABEL_47;
       }
@@ -603,12 +603,12 @@ LABEL_42:
       v39 = v57;
     }
 
-    v52 = [v39 accountInfo];
+    accountInfo2 = [v39 accountInfo];
 LABEL_47:
     v71[0] = IDSAccountSyncKeyCommand;
     v71[1] = IDSAccountSyncKeyAccountInfo;
     v72[0] = &off_100C3BF20;
-    v72[1] = v52;
+    v72[1] = accountInfo2;
     v53 = [NSDictionary dictionaryWithObjects:v72 forKeys:v71 count:2];
     v54 = [(IDSAccountSync *)self _sendAccountSyncMessage:v53 withPersistentKey:@"PreferredAccount"];
     v55 = +[IMRGLog accountSync];
@@ -616,25 +616,25 @@ LABEL_47:
     v36 = v58;
     if (os_log_type_enabled(v55, OS_LOG_TYPE_DEFAULT))
     {
-      v56 = [v39 uniqueID];
+      uniqueID4 = [v39 uniqueID];
       *buf = 138412546;
       v78 = v54;
       v79 = 2112;
-      v80 = v56;
+      v80 = uniqueID4;
       _os_log_impl(&_mh_execute_header, v55, OS_LOG_TYPE_DEFAULT, "Syncing preferred account for FaceTime {guid: %@, uniqueID: %@}", buf, 0x16u);
     }
   }
 
   else
   {
-    v52 = +[IMRGLog accountSync];
-    if (os_log_type_enabled(v52, OS_LOG_TYPE_DEFAULT))
+    accountInfo2 = +[IMRGLog accountSync];
+    if (os_log_type_enabled(accountInfo2, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 136315394;
       v78 = "[IDSAccountSync noteShouldSynchronizePreferredAccount]";
       v79 = 2112;
       v80 = v12;
-      _os_log_impl(&_mh_execute_header, v52, OS_LOG_TYPE_DEFAULT, "%s: invalid FaceTime account %@", buf, 0x16u);
+      _os_log_impl(&_mh_execute_header, accountInfo2, OS_LOG_TYPE_DEFAULT, "%s: invalid FaceTime account %@", buf, 0x16u);
     }
   }
 
@@ -643,13 +643,13 @@ LABEL_51:
 
 - (void)noteShouldFetchRemoteAccountInfoForAllServices
 {
-  v3 = [(IDSAccountSync *)self pairingManager];
-  v4 = [v3 isPaired];
+  pairingManager = [(IDSAccountSync *)self pairingManager];
+  isPaired = [pairingManager isPaired];
 
-  if (v4)
+  if (isPaired)
   {
-    v5 = [(IDSAccountSync *)self pairingManager];
-    v6 = [v5 activePairedDeviceHasPairingType:0];
+    pairingManager2 = [(IDSAccountSync *)self pairingManager];
+    v6 = [pairingManager2 activePairedDeviceHasPairingType:0];
 
     if (v6)
     {
@@ -658,10 +658,10 @@ LABEL_51:
       v26 = 0u;
       v27 = 0u;
       v28 = 0u;
-      v8 = [(IDSAccountSync *)self serviceController];
-      v9 = [v8 allServices];
+      serviceController = [(IDSAccountSync *)self serviceController];
+      allServices = [serviceController allServices];
 
-      v10 = [v9 countByEnumeratingWithState:&v25 objects:v29 count:16];
+      v10 = [allServices countByEnumeratingWithState:&v25 objects:v29 count:16];
       if (v10)
       {
         v11 = *v26;
@@ -671,18 +671,18 @@ LABEL_51:
           {
             if (*v26 != v11)
             {
-              objc_enumerationMutation(v9);
+              objc_enumerationMutation(allServices);
             }
 
             v13 = *(*(&v25 + 1) + 8 * i);
             if ([v13 shouldSyncAccounts])
             {
-              v14 = [v13 pushTopic];
-              [v7 addObject:v14];
+              pushTopic = [v13 pushTopic];
+              [v7 addObject:pushTopic];
             }
           }
 
-          v10 = [v9 countByEnumeratingWithState:&v25 objects:v29 count:16];
+          v10 = [allServices countByEnumeratingWithState:&v25 objects:v29 count:16];
         }
 
         while (v10);
@@ -704,7 +704,7 @@ LABEL_51:
       objc_copyWeak(&v24, buf);
       v16 = v7;
       v22 = v16;
-      v23 = self;
+      selfCopy = self;
       [(IDSAccountSync *)self _startRetryForKey:@"FetchRemote" withAction:v21];
 
       objc_destroyWeak(&v24);
@@ -716,10 +716,10 @@ LABEL_51:
       v16 = +[IMRGLog accountSync];
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
-        v19 = [(IDSAccountSync *)self pairingManager];
-        v20 = [v19 pairedDeviceUniqueID];
+        pairingManager3 = [(IDSAccountSync *)self pairingManager];
+        pairedDeviceUniqueID = [pairingManager3 pairedDeviceUniqueID];
         *buf = 138412290;
-        v31 = v20;
+        v31 = pairedDeviceUniqueID;
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Not fetching remote account info because device %@ is tinker paired", buf, 0xCu);
       }
     }
@@ -730,10 +730,10 @@ LABEL_51:
     v16 = +[IMRGLog accountSync];
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [(IDSAccountSync *)self pairingManager];
-      v18 = [v17 pairedDeviceUniqueID];
+      pairingManager4 = [(IDSAccountSync *)self pairingManager];
+      pairedDeviceUniqueID2 = [pairingManager4 pairedDeviceUniqueID];
       *buf = 138412290;
-      v31 = v18;
+      v31 = pairedDeviceUniqueID2;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Not fetching remote account info because device %@ is not paired", buf, 0xCu);
     }
   }
@@ -748,26 +748,26 @@ LABEL_51:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Note should sync sps provisioning info", buf, 2u);
   }
 
-  v4 = [(IDSAccountSync *)self pairingManager];
-  v5 = [v4 isPaired];
+  pairingManager = [(IDSAccountSync *)self pairingManager];
+  isPaired = [pairingManager isPaired];
 
-  if (v5)
+  if (isPaired)
   {
-    v6 = [(IDSAccountSync *)self pairingManager];
-    v7 = [v6 activePairedDeviceHasPairingType:0];
+    pairingManager2 = [(IDSAccountSync *)self pairingManager];
+    v7 = [pairingManager2 activePairedDeviceHasPairingType:0];
 
     if (v7)
     {
       v8 = +[NSMutableSet set];
-      v9 = [(IDSAccountSync *)self _userStore];
-      v10 = [v9 usersWithRealm:0];
+      _userStore = [(IDSAccountSync *)self _userStore];
+      v10 = [_userStore usersWithRealm:0];
 
       v28 = 0u;
       v29 = 0u;
       v26 = 0u;
       v27 = 0u;
-      v11 = v10;
-      v12 = [v11 countByEnumeratingWithState:&v26 objects:v36 count:16];
+      pairedDeviceUniqueID = v10;
+      v12 = [pairedDeviceUniqueID countByEnumeratingWithState:&v26 objects:v36 count:16];
       if (v12)
       {
         v13 = v12;
@@ -778,20 +778,20 @@ LABEL_51:
           {
             if (*v27 != v14)
             {
-              objc_enumerationMutation(v11);
+              objc_enumerationMutation(pairedDeviceUniqueID);
             }
 
             v16 = *(*(&v26 + 1) + 8 * i);
-            v17 = [v16 phoneNumber];
+            phoneNumber = [v16 phoneNumber];
 
-            if (v17)
+            if (phoneNumber)
             {
-              v18 = [v16 phoneNumber];
-              [v8 addObject:v18];
+              phoneNumber2 = [v16 phoneNumber];
+              [v8 addObject:phoneNumber2];
             }
           }
 
-          v13 = [v11 countByEnumeratingWithState:&v26 objects:v36 count:16];
+          v13 = [pairedDeviceUniqueID countByEnumeratingWithState:&v26 objects:v36 count:16];
         }
 
         while (v13);
@@ -800,10 +800,10 @@ LABEL_51:
       v19 = MGCopyAnswer();
       v20 = +[NSMutableDictionary dictionary];
       CFDictionarySetValue(v20, IDSAccountSyncKeyCommand, &off_100C3BF38);
-      v21 = [v8 allObjects];
-      if (v21)
+      allObjects = [v8 allObjects];
+      if (allObjects)
       {
-        CFDictionarySetValue(v20, IDSAccountSyncKeySPSPrimaryPhoneNumbers, v21);
+        CFDictionarySetValue(v20, IDSAccountSyncKeySPSPrimaryPhoneNumbers, allObjects);
       }
 
       if (v19)
@@ -830,10 +830,10 @@ LABEL_51:
     v8 = +[IMRGLog accountSync];
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v24 = [(IDSAccountSync *)self pairingManager];
-      v11 = [v24 pairedDeviceUniqueID];
+      pairingManager3 = [(IDSAccountSync *)self pairingManager];
+      pairedDeviceUniqueID = [pairingManager3 pairedDeviceUniqueID];
       *buf = 138412290;
-      v31 = v11;
+      v31 = pairedDeviceUniqueID;
       v25 = "Not syncing preferred account because device %@ is tinker paired";
       goto LABEL_25;
     }
@@ -844,10 +844,10 @@ LABEL_51:
     v8 = +[IMRGLog accountSync];
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v24 = [(IDSAccountSync *)self pairingManager];
-      v11 = [v24 pairedDeviceUniqueID];
+      pairingManager3 = [(IDSAccountSync *)self pairingManager];
+      pairedDeviceUniqueID = [pairingManager3 pairedDeviceUniqueID];
       *buf = 138412290;
-      v31 = v11;
+      v31 = pairedDeviceUniqueID;
       v25 = "Not syncing preferred account because device %@ is not paired";
 LABEL_25:
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, v25, buf, 0xCu);
@@ -859,18 +859,18 @@ LABEL_26:
 
 - (void)_noteShouldSynchronizeTinkerDeviceInfo
 {
-  v3 = [(IDSAccountSync *)self pairingManager];
-  v4 = [v3 isPaired];
+  pairingManager = [(IDSAccountSync *)self pairingManager];
+  isPaired = [pairingManager isPaired];
 
-  if ((v4 & 1) == 0)
+  if ((isPaired & 1) == 0)
   {
     v7 = +[IMRGLog accountSync];
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(IDSAccountSync *)self pairingManager];
-      v9 = [v8 pairedDeviceUniqueID];
+      pairingManager2 = [(IDSAccountSync *)self pairingManager];
+      pairedDeviceUniqueID = [pairingManager2 pairedDeviceUniqueID];
       v11 = 138412290;
-      v12 = v9;
+      v12 = pairedDeviceUniqueID;
       v10 = "Not syncing tinker info because device %@ is not paired";
 LABEL_10:
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, v10, &v11, 0xCu);
@@ -881,18 +881,18 @@ LABEL_11:
     return;
   }
 
-  v5 = [(IDSAccountSync *)self pairingManager];
-  v6 = [v5 activePairedDeviceHasPairingType:1];
+  pairingManager3 = [(IDSAccountSync *)self pairingManager];
+  v6 = [pairingManager3 activePairedDeviceHasPairingType:1];
 
   if ((v6 & 1) == 0)
   {
     v7 = +[IMRGLog accountSync];
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(IDSAccountSync *)self pairingManager];
-      v9 = [v8 pairedDeviceUniqueID];
+      pairingManager2 = [(IDSAccountSync *)self pairingManager];
+      pairedDeviceUniqueID = [pairingManager2 pairedDeviceUniqueID];
       v11 = 138412290;
-      v12 = v9;
+      v12 = pairedDeviceUniqueID;
       v10 = "Not syncing tinker info because device %@ is not tinker paired";
       goto LABEL_10;
     }
@@ -903,13 +903,13 @@ LABEL_11:
   [(IDSAccountSync *)self _syncTinkerDeviceInfo];
 }
 
-- (void)_noteShouldSynchronizeServices:(id)a3
+- (void)_noteShouldSynchronizeServices:(id)services
 {
-  v4 = a3;
-  v5 = [(IDSAccountSync *)self pairingManager];
-  v6 = [v5 isPaired];
+  servicesCopy = services;
+  pairingManager = [(IDSAccountSync *)self pairingManager];
+  isPaired = [pairingManager isPaired];
 
-  if ((v6 & 1) == 0)
+  if ((isPaired & 1) == 0)
   {
     v23 = +[IMRGLog accountSync];
     if (!os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
@@ -917,10 +917,10 @@ LABEL_11:
       goto LABEL_20;
     }
 
-    v24 = [(IDSAccountSync *)self pairingManager];
-    v25 = [v24 pairedDeviceUniqueID];
+    pairingManager2 = [(IDSAccountSync *)self pairingManager];
+    pairedDeviceUniqueID = [pairingManager2 pairedDeviceUniqueID];
     *buf = 138412290;
-    v37 = v25;
+    v37 = pairedDeviceUniqueID;
     v26 = "Not syncing services because device %@ is not paired";
 LABEL_19:
     _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, v26, buf, 0xCu);
@@ -928,8 +928,8 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  v7 = [(IDSAccountSync *)self pairingManager];
-  v8 = [v7 activePairedDeviceHasPairingType:0];
+  pairingManager3 = [(IDSAccountSync *)self pairingManager];
+  v8 = [pairingManager3 activePairedDeviceHasPairingType:0];
 
   if ((v8 & 1) == 0)
   {
@@ -939,10 +939,10 @@ LABEL_19:
       goto LABEL_20;
     }
 
-    v24 = [(IDSAccountSync *)self pairingManager];
-    v25 = [v24 pairedDeviceUniqueID];
+    pairingManager2 = [(IDSAccountSync *)self pairingManager];
+    pairedDeviceUniqueID = [pairingManager2 pairedDeviceUniqueID];
     *buf = 138412290;
-    v37 = v25;
+    v37 = pairedDeviceUniqueID;
     v26 = "Not syncing services because device %@ is tinker paired";
     goto LABEL_19;
   }
@@ -951,12 +951,12 @@ LABEL_19:
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  obj = v4;
+  obj = servicesCopy;
   v9 = [obj countByEnumeratingWithState:&v32 objects:v44 count:16];
   if (v9)
   {
     v10 = v9;
-    v27 = v4;
+    v27 = servicesCopy;
     v11 = *v33;
     v31 = IDSAccountSyncKeyCommand;
     v30 = IDSAccountSyncKeyService;
@@ -978,22 +978,22 @@ LABEL_19:
           v43[0] = &off_100C3BF50;
           v42[0] = v31;
           v42[1] = v30;
-          v16 = [v14 identifier];
+          identifier = [v14 identifier];
           v42[2] = v29;
-          v43[1] = v16;
+          v43[1] = identifier;
           v43[2] = v15;
           v17 = [NSDictionary dictionaryWithObjects:v43 forKeys:v42 count:3];
 
-          v18 = [v14 identifier];
-          v19 = [(IDSAccountSync *)self _sendAccountSyncMessage:v17 withPersistentKey:v18];
+          identifier2 = [v14 identifier];
+          v19 = [(IDSAccountSync *)self _sendAccountSyncMessage:v17 withPersistentKey:identifier2];
 
           v20 = +[IMRGLog accountSync];
           if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
           {
-            v21 = [v14 identifier];
+            identifier3 = [v14 identifier];
             v22 = [objc_opt_class() usefulLoggingDescriptionAccountInfos:v15];
             *buf = 138412802;
-            v37 = v21;
+            v37 = identifier3;
             v38 = 2112;
             v39 = v19;
             v40 = 2112;
@@ -1010,7 +1010,7 @@ LABEL_19:
 
     while (v10);
     v23 = v12;
-    v4 = v27;
+    servicesCopy = v27;
   }
 
   else
@@ -1021,14 +1021,14 @@ LABEL_19:
 LABEL_20:
 }
 
-- (id)constructRAResponseDictionary:(id)a3
+- (id)constructRAResponseDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = +[IMRGLog accountSync];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v23 = v4;
+    v23 = dictionaryCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Constructing RA response dictionary for services: %@", buf, 0xCu);
   }
 
@@ -1037,7 +1037,7 @@ LABEL_20:
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v7 = v4;
+  v7 = dictionaryCopy;
   v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v8)
   {
@@ -1053,8 +1053,8 @@ LABEL_20:
         }
 
         v12 = *(*(&v17 + 1) + 8 * i);
-        v13 = [(IDSAccountSync *)self serviceController];
-        v14 = [v13 serviceWithPushTopic:v12];
+        serviceController = [(IDSAccountSync *)self serviceController];
+        v14 = [serviceController serviceWithPushTopic:v12];
 
         v15 = [(IDSAccountSync *)self _constructAccountInfo:v14];
         if (v15)
@@ -1072,23 +1072,23 @@ LABEL_20:
   return v6;
 }
 
-- (id)_constructAccountInfo:(id)a3
+- (id)_constructAccountInfo:(id)info
 {
-  v4 = a3;
-  if (![v4 shouldSyncAccounts])
+  infoCopy = info;
+  if (![infoCopy shouldSyncAccounts])
   {
     v10 = 0;
     goto LABEL_59;
   }
 
-  v5 = [(IDSAccountSync *)self pairingManager];
-  v6 = [v5 pairedDeviceServiceMinCompatibilityVersion];
-  v7 = [v4 accountSyncMinCompatibilityVersion];
+  pairingManager = [(IDSAccountSync *)self pairingManager];
+  pairedDeviceServiceMinCompatibilityVersion = [pairingManager pairedDeviceServiceMinCompatibilityVersion];
+  accountSyncMinCompatibilityVersion = [infoCopy accountSyncMinCompatibilityVersion];
 
-  if (v7 <= v6)
+  if (accountSyncMinCompatibilityVersion <= pairedDeviceServiceMinCompatibilityVersion)
   {
-    v11 = [v4 identifier];
-    v12 = [v11 isEqualToString:@"com.apple.madrid"];
+    identifier = [infoCopy identifier];
+    v12 = [identifier isEqualToString:@"com.apple.madrid"];
 
     if (v12)
     {
@@ -1108,10 +1108,10 @@ LABEL_20:
     v50 = 0u;
     v51 = 0u;
     v52 = 0u;
-    v45 = self;
-    v16 = [(IDSAccountSync *)self accountController];
-    v46 = v4;
-    v17 = [v16 accountsOnService:v4];
+    selfCopy = self;
+    accountController = [(IDSAccountSync *)self accountController];
+    v46 = infoCopy;
+    v17 = [accountController accountsOnService:infoCopy];
 
     v18 = [v17 countByEnumeratingWithState:&v49 objects:v57 count:16];
     if (v18)
@@ -1119,7 +1119,7 @@ LABEL_20:
       v19 = v18;
       v44 = v15;
       v20 = 0;
-      v21 = 0;
+      accountInfo2 = 0;
       v22 = 0;
       v23 = *v50;
       do
@@ -1136,21 +1136,21 @@ LABEL_20:
           {
             if ([v25 accountType])
             {
-              v26 = [v25 accountInfo];
+              accountInfo = [v25 accountInfo];
 
-              v22 = v26;
+              v22 = accountInfo;
             }
 
             else
             {
-              if (v21 || v47 && ([v25 uniqueID], v27 = objc_claimAutoreleasedReturnValue(), v28 = objc_msgSend(v27, "isEqualToString:", v47), v27, !v28))
+              if (accountInfo2 || v47 && ([v25 uniqueID], v27 = objc_claimAutoreleasedReturnValue(), v28 = objc_msgSend(v27, "isEqualToString:", v47), v27, !v28))
               {
                 [v48 addObject:v25];
               }
 
               else
               {
-                v21 = [v25 accountInfo];
+                accountInfo2 = [v25 accountInfo];
               }
 
               v20 = 1;
@@ -1165,13 +1165,13 @@ LABEL_20:
 
       v15 = v44;
       v29 = v48;
-      if (v21)
+      if (accountInfo2)
       {
 LABEL_33:
-        v31 = [v21 mutableCopy];
+        v31 = [accountInfo2 mutableCopy];
         if (!v22)
         {
-          [(IDSAccountSync *)v45 _addPhoneNumbersToAccount:v31 withNonPreferredPhoneAccounts:v29];
+          [(IDSAccountSync *)selfCopy _addPhoneNumbersToAccount:v31 withNonPreferredPhoneAccounts:v29];
         }
 
         [v15 addObject:v31];
@@ -1196,11 +1196,11 @@ LABEL_33:
 
     if ([v29 count])
     {
-      v30 = [v29 firstObject];
-      v21 = [v30 accountInfo];
+      firstObject = [v29 firstObject];
+      accountInfo2 = [firstObject accountInfo];
 
       [v29 removeFirstObject];
-      if (v21)
+      if (accountInfo2)
       {
         goto LABEL_33;
       }
@@ -1208,14 +1208,14 @@ LABEL_33:
 
     else
     {
-      v21 = 0;
+      accountInfo2 = 0;
     }
 
     v32 = 1;
     if (!v22)
     {
 LABEL_47:
-      v4 = v46;
+      infoCopy = v46;
       if ([v46 shouldNotSyncPhoneNumberAccounts] && ((objc_msgSend(v15, "count") == 1) & v20) == 1)
       {
         v40 = +[IMRGLog accountSync];
@@ -1251,23 +1251,23 @@ LABEL_47:
 
 LABEL_39:
     v33 = [v22 mutableCopy];
-    [(IDSAccountSync *)v45 _addPhoneNumbersToAccount:v33 withNonPreferredPhoneAccounts:v29];
+    [(IDSAccountSync *)selfCopy _addPhoneNumbersToAccount:v33 withNonPreferredPhoneAccounts:v29];
     if ((v32 & 1) == 0)
     {
       v34 = kIDSServiceDefaultsDisplayNameKey;
       v35 = [v22 objectForKeyedSubscript:kIDSServiceDefaultsDisplayNameKey];
-      v36 = [v21 objectForKeyedSubscript:kIDSServiceDefaultsAliasesKey];
+      v36 = [accountInfo2 objectForKeyedSubscript:kIDSServiceDefaultsAliasesKey];
       v37 = [v36 __imArrayByApplyingBlock:&stru_100BDAF28];
-      v38 = [v37 firstObject];
+      firstObject2 = [v37 firstObject];
 
-      if (![v35 length] && objc_msgSend(v38, "length"))
+      if (![v35 length] && objc_msgSend(firstObject2, "length"))
       {
-        [v33 setObject:v38 forKey:v34];
+        [v33 setObject:firstObject2 forKey:v34];
         v39 = +[IMRGLog accountSync];
         if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v54 = v38;
+          v54 = firstObject2;
           _os_log_impl(&_mh_execute_header, v39, OS_LOG_TYPE_DEFAULT, "Setting callerID for Apple ID account to phone number {phoneNumber: %@}", buf, 0xCu);
         }
       }
@@ -1283,9 +1283,9 @@ LABEL_39:
   v8 = +[IMRGLog accountSync];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v4 pushTopic];
+    pushTopic = [infoCopy pushTopic];
     *buf = 138412290;
-    v54 = v9;
+    v54 = pushTopic;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Skipping %@, paired device doesn't support syncing of that service", buf, 0xCu);
   }
 
@@ -1297,18 +1297,18 @@ LABEL_59:
   return v10;
 }
 
-- (void)_addPhoneNumbersToAccount:(id)a3 withNonPreferredPhoneAccounts:(id)a4
+- (void)_addPhoneNumbersToAccount:(id)account withNonPreferredPhoneAccounts:(id)accounts
 {
-  v5 = a3;
-  v6 = [a4 __imArrayByApplyingBlock:&stru_100BDAF68];
+  accountCopy = account;
+  v6 = [accounts __imArrayByApplyingBlock:&stru_100BDAF68];
   if ([v6 count])
   {
     v21 = kIDSServiceDefaultsAliasesKey;
-    v7 = [v5 objectForKey:?];
+    v7 = [accountCopy objectForKey:?];
     v22 = [v7 mutableCopy];
 
     v20 = kIDSServiceDefaultsVettedAliasesKey;
-    v8 = [v5 objectForKey:?];
+    v8 = [accountCopy objectForKey:?];
     v9 = [v8 mutableCopy];
 
     v25 = 0u;
@@ -1348,8 +1348,8 @@ LABEL_59:
       while (v12);
     }
 
-    [v5 setObject:v22 forKey:v21];
-    [v5 setObject:v9 forKey:v20];
+    [accountCopy setObject:v22 forKey:v21];
+    [accountCopy setObject:v9 forKey:v20];
     v19 = +[IMRGLog accountSync];
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
@@ -1362,19 +1362,19 @@ LABEL_59:
 
 - (void)_syncTinkerDeviceInfo
 {
-  v3 = [(IDSAccountSync *)self serviceController];
-  v4 = [v3 iCloudService];
+  serviceController = [(IDSAccountSync *)self serviceController];
+  iCloudService = [serviceController iCloudService];
 
-  v5 = [(IDSAccountSync *)self accountController];
-  v6 = [v5 appleIDAccountOnService:v4];
+  accountController = [(IDSAccountSync *)self accountController];
+  v6 = [accountController appleIDAccountOnService:iCloudService];
 
   v7 = objc_alloc_init(NSMutableSet);
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v8 = [v6 prefixedURIStringsFromRegistration];
-  v9 = [v8 countByEnumeratingWithState:&v21 objects:v33 count:16];
+  prefixedURIStringsFromRegistration = [v6 prefixedURIStringsFromRegistration];
+  v9 = [prefixedURIStringsFromRegistration countByEnumeratingWithState:&v21 objects:v33 count:16];
   if (v9)
   {
     v10 = v9;
@@ -1385,7 +1385,7 @@ LABEL_59:
       {
         if (*v22 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(prefixedURIStringsFromRegistration);
         }
 
         v13 = *(*(&v21 + 1) + 8 * i);
@@ -1395,24 +1395,24 @@ LABEL_59:
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v21 objects:v33 count:16];
+      v10 = [prefixedURIStringsFromRegistration countByEnumeratingWithState:&v21 objects:v33 count:16];
     }
 
     while (v10);
   }
 
-  v14 = [(IDSAccountSync *)self pushHandler];
-  v15 = [v14 pushToken];
+  pushHandler = [(IDSAccountSync *)self pushHandler];
+  pushToken = [pushHandler pushToken];
 
-  if ([v7 count] && v15)
+  if ([v7 count] && pushToken)
   {
     v32[0] = &off_100C3BF80;
     v31[0] = IDSAccountSyncKeyCommand;
     v31[1] = IDSAccountSyncKeyiCloudURIs;
-    v16 = [v7 allObjects];
+    allObjects = [v7 allObjects];
     v31[2] = IDSAccountSyncKeyPushToken;
-    v32[1] = v16;
-    v32[2] = v15;
+    v32[1] = allObjects;
+    v32[2] = pushToken;
     v17 = [NSDictionary dictionaryWithObjects:v32 forKeys:v31 count:3];
 
     v18 = [(IDSAccountSync *)self _sendAccountSyncMessage:v17 withPersistentKey:@"TinkerDeviceInfo"];
@@ -1424,7 +1424,7 @@ LABEL_59:
       v27 = 2112;
       v28 = v7;
       v29 = 2112;
-      v30 = v15;
+      v30 = pushToken;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "Syncing tinker device info to paired device { guid : %@, uris : %@, pushToken : %@ }", buf, 0x20u);
     }
   }
@@ -1436,7 +1436,7 @@ LABEL_59:
     {
       v20 = [v7 count];
       *buf = 138412546;
-      v26 = v15;
+      v26 = pushToken;
       v27 = 2048;
       v28 = v20;
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Don't have tinker device info to sync { token : %@, accounts_count : %ld }", buf, 0x16u);
@@ -1444,17 +1444,17 @@ LABEL_59:
   }
 }
 
-- (void)incomingSyncMessage:(id)a3 fromID:(id)a4
+- (void)incomingSyncMessage:(id)message fromID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 objectForKeyedSubscript:IDSAccountSyncKeyCommand];
+  messageCopy = message;
+  dCopy = d;
+  v8 = [messageCopy objectForKeyedSubscript:IDSAccountSyncKeyCommand];
   v9 = +[IMRGLog accountSync];
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [IDSLogFormatter descriptionForDictionary:v6 options:5];
+    v10 = [IDSLogFormatter descriptionForDictionary:messageCopy options:5];
     v28 = 138412802;
-    v29 = v7;
+    v29 = dCopy;
     v30 = 2112;
     v31 = v8;
     v32 = 2112;
@@ -1464,12 +1464,12 @@ LABEL_59:
 
   if (v8)
   {
-    v11 = [v8 unsignedIntValue];
-    if (v11 <= 2)
+    unsignedIntValue = [v8 unsignedIntValue];
+    if (unsignedIntValue <= 2)
     {
-      if (v11 != 1)
+      if (unsignedIntValue != 1)
       {
-        if (v11 != 2)
+        if (unsignedIntValue != 2)
         {
 LABEL_33:
           v14 = +[IMRGLog accountSync];
@@ -1481,17 +1481,17 @@ LABEL_33:
           goto LABEL_37;
         }
 
-        v15 = [(IDSAccountSync *)self pairingManager];
-        v16 = [v15 activePairedDeviceHasPairingType:0];
+        pairingManager = [(IDSAccountSync *)self pairingManager];
+        v16 = [pairingManager activePairedDeviceHasPairingType:0];
 
         if (v16)
         {
-          v14 = [v6 objectForKeyedSubscript:IDSAccountSyncKeyAccountInfo];
-          v17 = self;
+          v14 = [messageCopy objectForKeyedSubscript:IDSAccountSyncKeyAccountInfo];
+          selfCopy2 = self;
           v18 = v14;
           v19 = 2;
 LABEL_20:
-          [(IDSAccountSync *)v17 _updatePreferredAccountWithAccountInfo:v18 withAccountSyncCommand:v19];
+          [(IDSAccountSync *)selfCopy2 _updatePreferredAccountWithAccountInfo:v18 withAccountSyncCommand:v19];
           goto LABEL_37;
         }
 
@@ -1506,8 +1506,8 @@ LABEL_36:
         goto LABEL_37;
       }
 
-      v25 = [(IDSAccountSync *)self pairingManager];
-      v26 = [v25 activePairedDeviceHasPairingType:0];
+      pairingManager2 = [(IDSAccountSync *)self pairingManager];
+      v26 = [pairingManager2 activePairedDeviceHasPairingType:0];
 
       if (!v26)
       {
@@ -1520,26 +1520,26 @@ LABEL_36:
         goto LABEL_36;
       }
 
-      v14 = [v6 objectForKeyedSubscript:IDSAccountSyncKeyAccountInfo];
-      v22 = [v6 objectForKeyedSubscript:IDSAccountSyncKeyService];
+      v14 = [messageCopy objectForKeyedSubscript:IDSAccountSyncKeyAccountInfo];
+      v22 = [messageCopy objectForKeyedSubscript:IDSAccountSyncKeyService];
       [(IDSAccountSync *)self synchronizeAccountsWithRemoteInfo:v14 service:v22];
 LABEL_23:
 
       goto LABEL_37;
     }
 
-    if (v11 != 3)
+    if (unsignedIntValue != 3)
     {
-      if (v11 != 4)
+      if (unsignedIntValue != 4)
       {
-        if (v11 == 5)
+        if (unsignedIntValue == 5)
         {
-          v12 = [(IDSAccountSync *)self pairingManager];
-          v13 = [v12 activePairedDeviceHasPairingType:0];
+          pairingManager3 = [(IDSAccountSync *)self pairingManager];
+          v13 = [pairingManager3 activePairedDeviceHasPairingType:0];
 
           if (v13)
           {
-            [(IDSAccountSync *)self _updateSPSProvisioningInfo:v6 fromID:v7];
+            [(IDSAccountSync *)self _updateSPSProvisioningInfo:messageCopy fromID:dCopy];
           }
 
           else
@@ -1555,13 +1555,13 @@ LABEL_23:
         goto LABEL_33;
       }
 
-      v23 = [(IDSAccountSync *)self pairingManager];
-      v24 = [v23 activePairedDeviceHasPairingType:0];
+      pairingManager4 = [(IDSAccountSync *)self pairingManager];
+      v24 = [pairingManager4 activePairedDeviceHasPairingType:0];
 
       if (v24)
       {
-        v14 = [v6 objectForKeyedSubscript:IDSAccountSyncKeyAccountInfo];
-        v17 = self;
+        v14 = [messageCopy objectForKeyedSubscript:IDSAccountSyncKeyAccountInfo];
+        selfCopy2 = self;
         v18 = v14;
         v19 = 4;
         goto LABEL_20;
@@ -1576,13 +1576,13 @@ LABEL_23:
       goto LABEL_36;
     }
 
-    v20 = [(IDSAccountSync *)self pairingManager];
-    v21 = [v20 activePairedDeviceHasPairingType:1];
+    pairingManager5 = [(IDSAccountSync *)self pairingManager];
+    v21 = [pairingManager5 activePairedDeviceHasPairingType:1];
 
     if (v21)
     {
-      v14 = [v6 objectForKeyedSubscript:IDSAccountSyncKeyiCloudURIs];
-      v22 = [v6 objectForKeyedSubscript:IDSAccountSyncKeyPushToken];
+      v14 = [messageCopy objectForKeyedSubscript:IDSAccountSyncKeyiCloudURIs];
+      v22 = [messageCopy objectForKeyedSubscript:IDSAccountSyncKeyPushToken];
       [(IDSAccountSync *)self _updateTinkerDeviceWithURIs:v14 pushToken:v22];
       goto LABEL_23;
     }
@@ -1606,32 +1606,32 @@ LABEL_23:
 LABEL_37:
 }
 
-- (void)synchronizeAccountsWithRemoteInfo:(id)a3 service:(id)a4
+- (void)synchronizeAccountsWithRemoteInfo:(id)info service:(id)service
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(IDSAccountSync *)self accountController];
-  v57 = self;
-  v9 = [(IDSAccountSync *)self serviceController];
-  v10 = [v9 serviceWithPushTopic:v7];
-  v11 = [v8 accountsOnService:v10];
+  infoCopy = info;
+  serviceCopy = service;
+  accountController = [(IDSAccountSync *)self accountController];
+  selfCopy = self;
+  serviceController = [(IDSAccountSync *)self serviceController];
+  v10 = [serviceController serviceWithPushTopic:serviceCopy];
+  v11 = [accountController accountsOnService:v10];
 
   v12 = +[IMRGLog accountSync];
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [IDSAccountSync usefulLoggingDescriptionAccountInfos:v6];
+    v13 = [IDSAccountSync usefulLoggingDescriptionAccountInfos:infoCopy];
     *buf = 138412546;
-    v76 = v7;
+    v76 = serviceCopy;
     v77 = 2112;
     v78 = v13;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Synchronizing accounts {service: %@, accountInfo: %@}", buf, 0x16u);
   }
 
-  if ([v6 count])
+  if ([infoCopy count])
   {
-    v54 = v6;
-    v56 = v7;
-    v14 = [v6 __imArrayByApplyingBlock:&stru_100BDAFC8];
+    v54 = infoCopy;
+    v56 = serviceCopy;
+    v14 = [infoCopy __imArrayByApplyingBlock:&stru_100BDAFC8];
     v63 = 0u;
     v64 = 0u;
     v65 = 0u;
@@ -1654,20 +1654,20 @@ LABEL_37:
           }
 
           v21 = *(*(&v63 + 1) + 8 * i);
-          v22 = [v21 loginID];
-          v23 = [v22 lowercaseString];
-          v24 = [v14 containsObject:v23];
+          loginID = [v21 loginID];
+          lowercaseString = [loginID lowercaseString];
+          v24 = [v14 containsObject:lowercaseString];
 
           if ((v24 & 1) == 0)
           {
             if ([v21 accountType] == 1 && (objc_msgSend(v21, "service"), v25 = objc_claimAutoreleasedReturnValue(), v26 = objc_msgSend(v25, "iCloudBasedService"), v25, v26))
             {
-              v27 = +[IMRGLog accountSync];
-              if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
+              accountController2 = +[IMRGLog accountSync];
+              if (os_log_type_enabled(accountController2, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 138412290;
                 v76 = v21;
-                _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "This is an AppleID account on an iCloud based service, not removing account %@", buf, 0xCu);
+                _os_log_impl(&_mh_execute_header, accountController2, OS_LOG_TYPE_DEFAULT, "This is an AppleID account on an iCloud based service, not removing account %@", buf, 0xCu);
               }
             }
 
@@ -1676,14 +1676,14 @@ LABEL_37:
               v28 = +[IMRGLog accountSync];
               if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
               {
-                v29 = [v21 smallDescription];
+                smallDescription = [v21 smallDescription];
                 *buf = 138412290;
-                v76 = v29;
+                v76 = smallDescription;
                 _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "Removing account %@", buf, 0xCu);
               }
 
-              v27 = [(IDSAccountSync *)v57 accountController];
-              [v27 removeAccount:v21];
+              accountController2 = [(IDSAccountSync *)selfCopy accountController];
+              [accountController2 removeAccount:v21];
               v18 = 1;
             }
           }
@@ -1700,9 +1700,9 @@ LABEL_37:
       v18 = 0;
     }
 
-    v6 = v54;
-    [(IDSAccountSync *)v57 _registerAccountsWithRemoteInfo:v54];
-    v7 = v56;
+    infoCopy = v54;
+    [(IDSAccountSync *)selfCopy _registerAccountsWithRemoteInfo:v54];
+    serviceCopy = v56;
     if (![v56 isEqualToIgnoringCase:@"com.apple.madrid"] || (v18 & 1) == 0)
     {
       goto LABEL_55;
@@ -1712,10 +1712,10 @@ LABEL_37:
     v62 = 0u;
     v59 = 0u;
     v60 = 0u;
-    v42 = [(IDSAccountSync *)v57 serviceController];
-    v43 = [v42 allServices];
+    serviceController2 = [(IDSAccountSync *)selfCopy serviceController];
+    allServices = [serviceController2 allServices];
 
-    v44 = [v43 countByEnumeratingWithState:&v59 objects:v72 count:16];
+    v44 = [allServices countByEnumeratingWithState:&v59 objects:v72 count:16];
     if (v44)
     {
       v45 = v44;
@@ -1726,14 +1726,14 @@ LABEL_37:
         {
           if (*v60 != v46)
           {
-            objc_enumerationMutation(v43);
+            objc_enumerationMutation(allServices);
           }
 
           v48 = *(*(&v59 + 1) + 8 * j);
           if (([v48 useiMessageCallerID] & 1) == 0)
           {
-            v49 = [v48 pushTopic];
-            v50 = [v49 isEqualToIgnoringCase:@"com.apple.madrid"];
+            pushTopic = [v48 pushTopic];
+            v50 = [pushTopic isEqualToIgnoringCase:@"com.apple.madrid"];
 
             if (!v50)
             {
@@ -1742,8 +1742,8 @@ LABEL_37:
           }
 
           memset(v58, 0, sizeof(v58));
-          v51 = [(IDSAccountSync *)v57 accountController];
-          v52 = [v51 accountsOnService:v48 withType:1];
+          accountController3 = [(IDSAccountSync *)selfCopy accountController];
+          v52 = [accountController3 accountsOnService:v48 withType:1];
 
           if ([v52 countByEnumeratingWithState:v58 objects:v71 count:16])
           {
@@ -1751,14 +1751,14 @@ LABEL_37:
           }
         }
 
-        v45 = [v43 countByEnumeratingWithState:&v59 objects:v72 count:16];
+        v45 = [allServices countByEnumeratingWithState:&v59 objects:v72 count:16];
       }
 
       while (v45);
     }
 
 LABEL_54:
-    v7 = v56;
+    serviceCopy = v56;
 LABEL_55:
     v11 = v53;
     goto LABEL_56;
@@ -1781,8 +1781,8 @@ LABEL_55:
   {
     v32 = v31;
     v53 = v11;
-    v55 = v6;
-    v56 = v7;
+    v55 = infoCopy;
+    v56 = serviceCopy;
     v33 = *v68;
     do
     {
@@ -1796,12 +1796,12 @@ LABEL_55:
         v35 = *(*(&v67 + 1) + 8 * k);
         if ([v35 accountType] == 1 && (objc_msgSend(v35, "service"), v36 = objc_claimAutoreleasedReturnValue(), v37 = objc_msgSend(v36, "iCloudBasedService"), v36, v37))
         {
-          v38 = +[IMRGLog accountSync];
-          if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
+          accountController4 = +[IMRGLog accountSync];
+          if (os_log_type_enabled(accountController4, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
             v76 = v35;
-            _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_DEFAULT, "This is an AppleID account on an iCloud based service, not disabling account %@", buf, 0xCu);
+            _os_log_impl(&_mh_execute_header, accountController4, OS_LOG_TYPE_DEFAULT, "This is an AppleID account on an iCloud based service, not disabling account %@", buf, 0xCu);
           }
         }
 
@@ -1810,15 +1810,15 @@ LABEL_55:
           v39 = +[IMRGLog accountSync];
           if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
           {
-            v40 = [v35 smallDescription];
+            smallDescription2 = [v35 smallDescription];
             *buf = 138412290;
-            v76 = v40;
+            v76 = smallDescription2;
             _os_log_impl(&_mh_execute_header, v39, OS_LOG_TYPE_DEFAULT, "Disabling account %@", buf, 0xCu);
           }
 
-          v38 = [(IDSAccountSync *)v57 accountController];
-          v41 = [v35 uniqueID];
-          [v38 disableAccountWithUniqueID:v41];
+          accountController4 = [(IDSAccountSync *)selfCopy accountController];
+          uniqueID = [v35 uniqueID];
+          [accountController4 disableAccountWithUniqueID:uniqueID];
         }
       }
 
@@ -1826,38 +1826,38 @@ LABEL_55:
     }
 
     while (v32);
-    v6 = v55;
+    infoCopy = v55;
     goto LABEL_54;
   }
 
 LABEL_56:
 }
 
-- (void)noteUnpairedTraditionalDeviceWithID:(id)a3
+- (void)noteUnpairedTraditionalDeviceWithID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = +[IMRGLog accountSync];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = dCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Handling traditional device unpair with deviceID: %@", &v7, 0xCu);
   }
 
-  v6 = [(IDSAccountSync *)self _stewieCoordinator];
-  [v6 handleCompanionDeviceUnpairWithDeviceID:v4];
+  _stewieCoordinator = [(IDSAccountSync *)self _stewieCoordinator];
+  [_stewieCoordinator handleCompanionDeviceUnpairWithDeviceID:dCopy];
 }
 
-- (void)_updateSPSProvisioningInfo:(id)a3 fromID:(id)a4
+- (void)_updateSPSProvisioningInfo:(id)info fromID:(id)d
 {
   v6 = IDSAccountSyncKeySPSPrimaryPhoneNumbers;
-  v7 = a4;
-  v8 = a3;
-  v9 = [v8 objectForKeyedSubscript:v6];
+  dCopy = d;
+  infoCopy = info;
+  v9 = [infoCopy objectForKeyedSubscript:v6];
   v10 = [v9 __imArrayByApplyingBlock:&stru_100BDAFE8];
-  v11 = [v7 _stripFZIDPrefix];
+  _stripFZIDPrefix = [dCopy _stripFZIDPrefix];
 
-  v12 = [v8 objectForKeyedSubscript:IDSAccountSyncKeySPSCompanionDeviceUDID];
+  v12 = [infoCopy objectForKeyedSubscript:IDSAccountSyncKeySPSCompanionDeviceUDID];
 
   v13 = +[IMRGLog accountSync];
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -1865,20 +1865,20 @@ LABEL_56:
     v15 = 138412802;
     v16 = v10;
     v17 = 2112;
-    v18 = v11;
+    v18 = _stripFZIDPrefix;
     v19 = 2112;
     v20 = v12;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Incoming sps provisioning info { phoneNumberURIs: %@ deviceID: %@ deviceUDID: %@ }", &v15, 0x20u);
   }
 
-  v14 = [(IDSAccountSync *)self _stewieCoordinator];
-  [v14 handleCompanionDeviceSyncWithPhoneNumbers:v10 deviceID:v11 deviceUDID:v12];
+  _stewieCoordinator = [(IDSAccountSync *)self _stewieCoordinator];
+  [_stewieCoordinator handleCompanionDeviceSyncWithPhoneNumbers:v10 deviceID:_stripFZIDPrefix deviceUDID:v12];
 }
 
-- (void)_registerAccountsWithRemoteInfo:(id)a3
+- (void)_registerAccountsWithRemoteInfo:(id)info
 {
-  v4 = a3;
-  if (![v4 count])
+  infoCopy = info;
+  if (![infoCopy count])
   {
     v39 = +[IMRGLog accountSync];
     if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
@@ -1894,7 +1894,7 @@ LABEL_56:
   v113 = 0u;
   v110 = 0u;
   v111 = 0u;
-  obj = v4;
+  obj = infoCopy;
   v103 = [obj countByEnumeratingWithState:&v110 objects:v123 count:16];
   if (!v103)
   {
@@ -1903,7 +1903,7 @@ LABEL_56:
     goto LABEL_69;
   }
 
-  v89 = v4;
+  v89 = infoCopy;
   v5 = 0;
   v94 = 0;
   v101 = *v111;
@@ -1915,7 +1915,7 @@ LABEL_56:
   v95 = kIDSServiceDefaultsUniqueIDKey;
   v91 = kIDSServiceDefaultsAliasesKey;
   v90 = kIDSServiceDefaultsServiceNameKey;
-  v93 = self;
+  selfCopy = self;
   do
   {
     for (i = 0; i != v103; i = i + 1)
@@ -1927,28 +1927,28 @@ LABEL_56:
 
       v9 = *(*(&v110 + 1) + 8 * i);
       v10 = [v9 objectForKeyedSubscript:v6];
-      v11 = [v10 intValue];
+      intValue = [v10 intValue];
 
       v12 = [v9 objectForKeyedSubscript:v7];
       v13 = [v12 objectForKeyedSubscript:v99];
-      v14 = [v13 intValue];
+      intValue2 = [v13 intValue];
 
-      if (v14 == 5)
+      if (intValue2 == 5)
       {
         v15 = [v9 mutableCopy];
         [v15 removeObjectForKey:v6];
         [v15 removeObjectForKey:v96];
         [v15 removeObjectForKey:v7];
         [v15 removeObjectForKey:v95];
-        if (v11)
+        if (intValue)
         {
-          if (v11 != 1)
+          if (intValue != 1)
           {
             goto LABEL_32;
           }
 
           v16 = v94;
-          v17 = v5;
+          firstObject = v5;
           v94 = v15;
         }
 
@@ -1968,24 +1968,24 @@ LABEL_56:
 
           v23 = [v15 objectForKeyedSubscript:v91];
           v24 = [v23 __imArrayByApplyingBlock:&stru_100BDB008];
-          v17 = [v24 firstObject];
+          firstObject = [v24 firstObject];
 
           v25 = +[IMRGLog accountSync];
           if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
-            v119 = v17;
+            v119 = firstObject;
             _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "Retrieved phone number alias %@", buf, 0xCu);
           }
 
           v16 = [v15 objectForKeyedSubscript:v90];
-          v26 = [(IDSAccountSync *)self serviceController];
-          v27 = [v26 serviceWithIdentifier:v16];
+          serviceController = [(IDSAccountSync *)self serviceController];
+          v27 = [serviceController serviceWithIdentifier:v16];
 
           if (v27 && ![v27 shouldNotSyncPhoneNumberAccounts])
           {
-            v31 = [(IDSAccountSync *)self accountController];
-            v32 = [v31 existingAccountOnService:v27 withType:2 loginID:0];
+            accountController = [(IDSAccountSync *)self accountController];
+            v32 = [accountController existingAccountOnService:v27 withType:2 loginID:0];
 
             if (!v32)
             {
@@ -1996,16 +1996,16 @@ LABEL_56:
                 _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_DEFAULT, "Didn't find a local account, setting one up", buf, 2u);
               }
 
-              v34 = [(IDSAccountSync *)self accountController];
-              [v34 setupLocalAccountForService:v27];
+              accountController2 = [(IDSAccountSync *)self accountController];
+              [accountController2 setupLocalAccountForService:v27];
 
-              v35 = [(IDSAccountSync *)self accountController];
-              v32 = [v35 localAccountOnService:v27];
+              accountController3 = [(IDSAccountSync *)self accountController];
+              v32 = [accountController3 localAccountOnService:v27];
             }
 
-            v36 = [(IDSAccountSync *)self accountController];
-            v37 = [v32 uniqueID];
-            [v36 enablePrimaryAccountWithUniqueID:v37];
+            accountController4 = [(IDSAccountSync *)self accountController];
+            uniqueID = [v32 uniqueID];
+            [accountController4 enablePrimaryAccountWithUniqueID:uniqueID];
 
             v38 = +[IMRGLog accountSync];
             if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
@@ -2016,7 +2016,7 @@ LABEL_56:
             }
 
             [v32 _updateAccountWithAccountInfo:v15];
-            self = v93;
+            self = selfCopy;
           }
 
           else
@@ -2024,10 +2024,10 @@ LABEL_56:
             v28 = +[IMRGLog accountSync];
             if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
             {
-              v29 = [v27 shouldNotSyncPhoneNumberAccounts];
+              shouldNotSyncPhoneNumberAccounts = [v27 shouldNotSyncPhoneNumberAccounts];
               *buf = 138412546;
               v30 = @"NO";
-              if (v29)
+              if (shouldNotSyncPhoneNumberAccounts)
               {
                 v30 = @"YES";
               }
@@ -2040,7 +2040,7 @@ LABEL_56:
           }
         }
 
-        v5 = v17;
+        v5 = firstObject;
       }
 
       else
@@ -2053,7 +2053,7 @@ LABEL_56:
           v119 = v18;
           _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Account info for %@ is not registered, ignoring...", buf, 0xCu);
 
-          self = v93;
+          self = selfCopy;
         }
       }
 
@@ -2069,15 +2069,15 @@ LABEL_32:
   if (v94)
   {
     v40 = [v94 objectForKeyedSubscript:v90];
-    v41 = [(IDSAccountSync *)self serviceController];
+    serviceController2 = [(IDSAccountSync *)self serviceController];
     obj = v40;
-    v42 = [v41 serviceWithIdentifier:v40];
+    v42 = [serviceController2 serviceWithIdentifier:v40];
 
-    LODWORD(v41) = [v42 iCloudBasedService];
+    LODWORD(serviceController2) = [v42 iCloudBasedService];
     v43 = +[IMRGLog accountSync];
     v44 = os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT);
-    v4 = v89;
-    if (v41)
+    infoCopy = v89;
+    if (serviceController2)
     {
       if (v44)
       {
@@ -2131,8 +2131,8 @@ LABEL_32:
       }
 
       v56 = [v94 objectForKey:v92];
-      v57 = [(IDSAccountSync *)v93 accountController];
-      v58 = [v57 accountWithServiceName:obj loginID:v56];
+      accountController5 = [(IDSAccountSync *)selfCopy accountController];
+      v58 = [accountController5 accountWithServiceName:obj loginID:v56];
 
       if (v58)
       {
@@ -2157,15 +2157,15 @@ LABEL_32:
         v62 = v56;
         v58 = [(IDSDAccount *)v60 initWithLoginID:v56 service:v104 uniqueID:v61 accountType:1 accountConfig:v94];
 
-        v63 = [(IDSAccountSync *)v93 accountController];
-        [v63 addPrimaryAccount:v58];
+        accountController6 = [(IDSAccountSync *)selfCopy accountController];
+        [accountController6 addPrimaryAccount:v58];
 
-        v64 = [(IDSAccountSync *)v93 accountController];
-        v65 = [(IDSDAccount *)v58 uniqueID];
-        [v64 enablePrimaryAccountWithUniqueID:v65];
+        accountController7 = [(IDSAccountSync *)selfCopy accountController];
+        uniqueID2 = [(IDSDAccount *)v58 uniqueID];
+        [accountController7 enablePrimaryAccountWithUniqueID:uniqueID2];
 
-        v66 = [(IDSDAccount *)v58 linkedAccounts];
-        v67 = [v66 count];
+        linkedAccounts = [(IDSDAccount *)v58 linkedAccounts];
+        v67 = [linkedAccounts count];
 
         if (v67)
         {
@@ -2181,8 +2181,8 @@ LABEL_32:
           v107 = 0u;
           v68 = +[IDSDServiceController sharedInstance];
           v97 = v58;
-          v69 = [(IDSDAccount *)v58 service];
-          v70 = [v68 linkedServicesForService:v69];
+          service = [(IDSDAccount *)v58 service];
+          v70 = [v68 linkedServicesForService:service];
 
           v71 = [v70 countByEnumeratingWithState:&v106 objects:v114 count:16];
           p_cache = &OBJC_METACLASS___IDSRegistrationReasonTracker.cache;
@@ -2213,12 +2213,12 @@ LABEL_32:
                   _os_log_impl(&_mh_execute_header, v81, OS_LOG_TYPE_DEFAULT, "  Creating a linked account: %@", buf, 0xCu);
                 }
 
-                v82 = [(IDSAccountSync *)v93 accountController];
-                [v82 addPrimaryAccount:v80];
+                accountController8 = [(IDSAccountSync *)selfCopy accountController];
+                [accountController8 addPrimaryAccount:v80];
 
-                v83 = [(IDSAccountSync *)v93 accountController];
-                v84 = [v80 uniqueID];
-                [v83 enablePrimaryAccountWithUniqueID:v84];
+                accountController9 = [(IDSAccountSync *)selfCopy accountController];
+                uniqueID3 = [v80 uniqueID];
+                [accountController9 enablePrimaryAccountWithUniqueID:uniqueID3];
 
                 p_cache = v77;
               }
@@ -2229,7 +2229,7 @@ LABEL_32:
             while (v73);
           }
 
-          v4 = v89;
+          infoCopy = v89;
           v39 = v94;
           v43 = v100;
           v50 = v102;
@@ -2239,23 +2239,23 @@ LABEL_32:
         v56 = v62;
       }
 
-      v85 = [(IDSAccountSync *)v93 accountController];
-      v86 = [(IDSDAccount *)v58 uniqueID];
-      [v85 enablePrimaryAccountWithUniqueID:v86];
+      accountController10 = [(IDSAccountSync *)selfCopy accountController];
+      uniqueID4 = [(IDSDAccount *)v58 uniqueID];
+      [accountController10 enablePrimaryAccountWithUniqueID:uniqueID4];
 
-      v87 = [(IDSDAccount *)v58 linkedAccounts];
+      linkedAccounts2 = [(IDSDAccount *)v58 linkedAccounts];
       v105[0] = _NSConcreteStackBlock;
       v105[1] = 3221225472;
       v105[2] = sub_1003FBA14;
       v105[3] = &unk_100BDB090;
-      v105[4] = v93;
-      [v87 __imForEach:v105];
+      v105[4] = selfCopy;
+      [linkedAccounts2 __imForEach:v105];
 
       if (![(IDSDAccount *)v58 isRegistered])
       {
         [(IDSDAccount *)v58 registerAccount];
-        v88 = [(IDSDAccount *)v58 linkedAccounts];
-        [v88 __imForEach:&stru_100BDB0D0];
+        linkedAccounts3 = [(IDSDAccount *)v58 linkedAccounts];
+        [linkedAccounts3 __imForEach:&stru_100BDB0D0];
       }
 
       v42 = v104;
@@ -2266,20 +2266,20 @@ LABEL_69:
 
   else
   {
-    v4 = v89;
+    infoCopy = v89;
   }
 
 LABEL_71:
 }
 
-- (void)_updatePreferredAccountWithAccountInfo:(id)a3 withAccountSyncCommand:(unsigned int)a4
+- (void)_updatePreferredAccountWithAccountInfo:(id)info withAccountSyncCommand:(unsigned int)command
 {
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:kIDSServiceDefaultsDisplayNameKey];
+  infoCopy = info;
+  v7 = [infoCopy objectForKeyedSubscript:kIDSServiceDefaultsDisplayNameKey];
   v52 = kIDSServiceDefaultsAccountTypeKey;
-  v53 = v6;
-  v8 = [v6 objectForKeyedSubscript:?];
-  v54 = [v8 intValue];
+  v53 = infoCopy;
+  v8 = [infoCopy objectForKeyedSubscript:?];
+  intValue = [v8 intValue];
 
   v9 = &uuid_unparse_upper_ptr;
   v10 = +[IMRGLog accountSync];
@@ -2297,17 +2297,17 @@ LABEL_71:
 
   if ([v7 length])
   {
-    v55 = self;
-    if (a4 == 4)
+    selfCopy = self;
+    if (command == 4)
     {
       v62 = 0u;
       v63 = 0u;
       v60 = 0u;
       v61 = 0u;
-      v34 = [(IDSAccountSync *)self serviceController];
-      v14 = [v34 allServices];
+      serviceController = [(IDSAccountSync *)self serviceController];
+      allServices = [serviceController allServices];
 
-      v35 = [v14 countByEnumeratingWithState:&v60 objects:v73 count:16];
+      v35 = [allServices countByEnumeratingWithState:&v60 objects:v73 count:16];
       if (v35)
       {
         v36 = v35;
@@ -2318,23 +2318,23 @@ LABEL_71:
           {
             if (*v61 != v37)
             {
-              objc_enumerationMutation(v14);
+              objc_enumerationMutation(allServices);
             }
 
             v39 = *(*(&v60 + 1) + 8 * i);
             if ([v39 useFaceTimeCallerID])
             {
-              v40 = [v9[504] accountSync];
-              if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
+              accountSync = [v9[504] accountSync];
+              if (os_log_type_enabled(accountSync, OS_LOG_TYPE_DEFAULT))
               {
-                v41 = [v39 serviceName];
+                serviceName = [v39 serviceName];
                 *buf = 138412290;
-                v78 = v41;
-                _os_log_impl(&_mh_execute_header, v40, OS_LOG_TYPE_DEFAULT, "Service: %@ wants to use the FaceTime CallerID, attempting to update it", buf, 0xCu);
+                v78 = serviceName;
+                _os_log_impl(&_mh_execute_header, accountSync, OS_LOG_TYPE_DEFAULT, "Service: %@ wants to use the FaceTime CallerID, attempting to update it", buf, 0xCu);
               }
 
-              v42 = [(IDSAccountSync *)self accountController];
-              v43 = [v42 accountsOnService:v39 withType:1];
+              accountController = [(IDSAccountSync *)self accountController];
+              v43 = [accountController accountsOnService:v39 withType:1];
 
               if ([v43 count])
               {
@@ -2366,13 +2366,13 @@ LABEL_71:
                   while (v46);
                 }
 
-                self = v55;
+                self = selfCopy;
                 v9 = &uuid_unparse_upper_ptr;
               }
             }
           }
 
-          v36 = [v14 countByEnumeratingWithState:&v60 objects:v73 count:16];
+          v36 = [allServices countByEnumeratingWithState:&v60 objects:v73 count:16];
         }
 
         while (v36);
@@ -2381,16 +2381,16 @@ LABEL_71:
 LABEL_53:
     }
 
-    else if (a4 == 2)
+    else if (command == 2)
     {
       v70 = 0u;
       v71 = 0u;
       v68 = 0u;
       v69 = 0u;
-      v13 = [(IDSAccountSync *)self serviceController];
-      v14 = [v13 allServices];
+      serviceController2 = [(IDSAccountSync *)self serviceController];
+      allServices = [serviceController2 allServices];
 
-      v15 = [v14 countByEnumeratingWithState:&v68 objects:v75 count:16];
+      v15 = [allServices countByEnumeratingWithState:&v68 objects:v75 count:16];
       if (!v15)
       {
         goto LABEL_53;
@@ -2408,23 +2408,23 @@ LABEL_53:
         {
           if (*v69 != v17)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(allServices);
           }
 
           v19 = *(*(&v68 + 1) + 8 * v18);
           if (([v19 useiMessageCallerID] & 1) != 0 || (objc_msgSend(v19, "pushTopic"), v20 = objc_claimAutoreleasedReturnValue(), v21 = objc_msgSend(v20, "isEqualToIgnoringCase:", @"com.apple.madrid"), v20, v21))
           {
-            v22 = [v9[504] accountSync];
-            if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
+            accountSync2 = [v9[504] accountSync];
+            if (os_log_type_enabled(accountSync2, OS_LOG_TYPE_DEFAULT))
             {
-              v23 = [v19 serviceName];
+              serviceName2 = [v19 serviceName];
               *buf = 138412290;
-              v78 = v23;
-              _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "Service: %@ also wants to use the iMessage CallerID, attempting to update it", buf, 0xCu);
+              v78 = serviceName2;
+              _os_log_impl(&_mh_execute_header, accountSync2, OS_LOG_TYPE_DEFAULT, "Service: %@ also wants to use the iMessage CallerID, attempting to update it", buf, 0xCu);
             }
 
-            v24 = [(IDSAccountSync *)self accountController];
-            v25 = [v24 accountsOnService:v19 withType:1];
+            accountController2 = [(IDSAccountSync *)self accountController];
+            v25 = [accountController2 accountsOnService:v19 withType:1];
 
             if ([v25 count])
             {
@@ -2454,17 +2454,17 @@ LABEL_53:
                 }
 
                 while (v28);
-                self = v55;
+                self = selfCopy;
                 v9 = &uuid_unparse_upper_ptr;
               }
 
 LABEL_24:
             }
 
-            else if (!v54 && ([v19 shouldNotSyncPhoneNumberAccounts] & 1) == 0)
+            else if (!intValue && ([v19 shouldNotSyncPhoneNumberAccounts] & 1) == 0)
             {
-              v31 = [(IDSAccountSync *)self accountController];
-              v26 = [v31 localAccountOnService:v19];
+              accountController3 = [(IDSAccountSync *)self accountController];
+              v26 = [accountController3 localAccountOnService:v19];
 
               v32 = [v53 mutableCopy];
               [v32 removeObjectForKey:v52];
@@ -2481,7 +2481,7 @@ LABEL_24:
         }
 
         while (v18 != v16);
-        v33 = [v14 countByEnumeratingWithState:&v68 objects:v75 count:16];
+        v33 = [allServices countByEnumeratingWithState:&v68 objects:v75 count:16];
         v16 = v33;
         if (!v33)
         {
@@ -2492,39 +2492,39 @@ LABEL_24:
   }
 }
 
-- (void)_updateTinkerDeviceWithURIs:(id)a3 pushToken:(id)a4
+- (void)_updateTinkerDeviceWithURIs:(id)is pushToken:(id)token
 {
-  v6 = a3;
-  v7 = a4;
+  isCopy = is;
+  tokenCopy = token;
   v8 = +[IMRGLog accountSync];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412546;
-    v11 = v6;
+    v11 = isCopy;
     v12 = 2112;
-    v13 = v7;
+    v13 = tokenCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Incoming tinker device info { uris: %@, pushToken: %@ }", &v10, 0x16u);
   }
 
-  v9 = [(IDSAccountSync *)self pairingManager];
-  [v9 updatePairedDeviceiCloudURIs:v6 pushToken:v7];
+  pairingManager = [(IDSAccountSync *)self pairingManager];
+  [pairingManager updatePairedDeviceiCloudURIs:isCopy pushToken:tokenCopy];
 }
 
-+ (id)usefulLoggingDescriptionAccountInfos:(id)a3
++ (id)usefulLoggingDescriptionAccountInfos:(id)infos
 {
   v10[0] = kIDSServiceDefaultsAccountTypeKey;
   v10[1] = kIDSServiceDefaultsVettedAliasesKey;
   v10[2] = kIDSServiceDefaultsAliasesKey;
   v10[3] = kIDSServiceDefaultsLoginAsKey;
   v10[4] = kIDSServiceDefaultsRegistrationInfoKey;
-  v3 = a3;
+  infosCopy = infos;
   [NSArray arrayWithObjects:v10 count:5];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1003FC358;
   v9 = v8[3] = &unk_100BDB120;
   v4 = v9;
-  v5 = [v3 __imArrayByApplyingBlock:v8];
+  v5 = [infosCopy __imArrayByApplyingBlock:v8];
 
   v6 = [IDSLogFormatter descriptionForArray:v5 options:0];
 
@@ -2534,25 +2534,25 @@ LABEL_24:
 - (id)_registrationConductor
 {
   v2 = +[IDSDaemon sharedInstance];
-  v3 = [v2 registrationConductor];
+  registrationConductor = [v2 registrationConductor];
 
-  return v3;
+  return registrationConductor;
 }
 
 - (id)_stewieCoordinator
 {
-  v2 = [(IDSAccountSync *)self _registrationConductor];
-  v3 = [v2 stewieCoordinator];
+  _registrationConductor = [(IDSAccountSync *)self _registrationConductor];
+  stewieCoordinator = [_registrationConductor stewieCoordinator];
 
-  return v3;
+  return stewieCoordinator;
 }
 
 - (id)_userStore
 {
-  v2 = [(IDSAccountSync *)self _registrationConductor];
-  v3 = [v2 userStore];
+  _registrationConductor = [(IDSAccountSync *)self _registrationConductor];
+  userStore = [_registrationConductor userStore];
 
-  return v3;
+  return userStore;
 }
 
 @end

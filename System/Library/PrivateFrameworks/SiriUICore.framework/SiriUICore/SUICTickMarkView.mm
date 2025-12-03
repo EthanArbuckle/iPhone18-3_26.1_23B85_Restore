@@ -1,14 +1,14 @@
 @interface SUICTickMarkView
 + (void)initialize;
-- (CGImage)imageMask:(BOOL)a3;
+- (CGImage)imageMask:(BOOL)mask;
 - (SUICTickMarkView)init;
 - (void)didMoveToSuperview;
-- (void)drawRect:(CGRect)a3;
-- (void)handleSafetyTimer:(id)a3;
+- (void)drawRect:(CGRect)rect;
+- (void)handleSafetyTimer:(id)timer;
 - (void)layoutSubviews;
-- (void)setHidden:(BOOL)a3;
+- (void)setHidden:(BOOL)hidden;
 - (void)setUpDisplayLink;
-- (void)startAnimationsForTickMark:(BOOL)a3 fadeInFrames:(int64_t)a4 pauseFrames:(int64_t)a5 fadeOutFrames:(int64_t)a6 completion:(id)a7;
+- (void)startAnimationsForTickMark:(BOOL)mark fadeInFrames:(int64_t)frames pauseFrames:(int64_t)pauseFrames fadeOutFrames:(int64_t)outFrames completion:(id)completion;
 - (void)tearDownDisplayLink;
 @end
 
@@ -16,7 +16,7 @@
 
 + (void)initialize
 {
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___SUICTickMarkView;
   objc_msgSendSuper2(&v6, sel_initialize);
   v2 = [MEMORY[0x1E69DC888] colorWithRed:0.96875 green:0.25390625 blue:0.36328125 alpha:1.0];
@@ -57,12 +57,12 @@
   return v3;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   CurrentContext = UIGraphicsGetCurrentContext();
   v29.origin.x = x;
   v29.origin.y = y;
@@ -172,21 +172,21 @@ LABEL_14:
   [(SUICTickMarkView *)self setNeedsDisplay];
 }
 
-- (void)startAnimationsForTickMark:(BOOL)a3 fadeInFrames:(int64_t)a4 pauseFrames:(int64_t)a5 fadeOutFrames:(int64_t)a6 completion:(id)a7
+- (void)startAnimationsForTickMark:(BOOL)mark fadeInFrames:(int64_t)frames pauseFrames:(int64_t)pauseFrames fadeOutFrames:(int64_t)outFrames completion:(id)completion
 {
-  v12 = a7;
-  self->_fadeInFrames = a4;
-  self->_pauseFrames = a5;
-  self->_fadeOutFrames = a6;
+  completionCopy = completion;
+  self->_fadeInFrames = frames;
+  self->_pauseFrames = pauseFrames;
+  self->_fadeOutFrames = outFrames;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __97__SUICTickMarkView_startAnimationsForTickMark_fadeInFrames_pauseFrames_fadeOutFrames_completion___block_invoke;
   v14[3] = &unk_1E81E7B60;
-  v17 = a3;
+  markCopy = mark;
   v14[4] = self;
-  v15 = v12;
-  v16 = a4;
-  v13 = v12;
+  v15 = completionCopy;
+  framesCopy = frames;
+  v13 = completionCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v14);
 }
 
@@ -231,13 +231,13 @@ void __97__SUICTickMarkView_startAnimationsForTickMark_fadeInFrames_pauseFrames_
   }
 }
 
-- (CGImage)imageMask:(BOOL)a3
+- (CGImage)imageMask:(BOOL)mask
 {
-  v3 = a3;
+  maskCopy = mask;
   v4 = MEMORY[0x1E69DCAD8];
   [(SUICTickMarkView *)self bounds];
   v5 = [v4 configurationWithPointSize:CGRectGetHeight(v10)];
-  if (v3)
+  if (maskCopy)
   {
     v6 = @"checkmark";
   }
@@ -248,12 +248,12 @@ void __97__SUICTickMarkView_startAnimationsForTickMark_fadeInFrames_pauseFrames_
   }
 
   v7 = [MEMORY[0x1E69DCAB8] systemImageNamed:v6 withConfiguration:v5];
-  v8 = [v7 CGImage];
+  cGImage = [v7 CGImage];
 
-  return v8;
+  return cGImage;
 }
 
-- (void)handleSafetyTimer:(id)a3
+- (void)handleSafetyTimer:(id)timer
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -309,8 +309,8 @@ uint64_t __38__SUICTickMarkView_handleSafetyTimer___block_invoke(uint64_t result
 
     [(CADisplayLink *)self->_displayLink setPreferredFramesPerSecond:self->_currentPreferredFrameRate];
     v5 = self->_displayLink;
-    v6 = [MEMORY[0x1E695DFD0] currentRunLoop];
-    [(CADisplayLink *)v5 addToRunLoop:v6 forMode:*MEMORY[0x1E695D918]];
+    currentRunLoop = [MEMORY[0x1E695DFD0] currentRunLoop];
+    [(CADisplayLink *)v5 addToRunLoop:currentRunLoop forMode:*MEMORY[0x1E695D918]];
   }
 }
 
@@ -321,14 +321,14 @@ uint64_t __38__SUICTickMarkView_handleSafetyTimer___block_invoke(uint64_t result
   self->_displayLink = 0;
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
-  v3 = a3;
-  NSLog(&cfstr_TickmarkviewSe.isa, a2, a3);
+  hiddenCopy = hidden;
+  NSLog(&cfstr_TickmarkviewSe.isa, a2, hidden);
   v7.receiver = self;
   v7.super_class = SUICTickMarkView;
-  [(SUICTickMarkView *)&v7 setHidden:v3];
-  if (v3)
+  [(SUICTickMarkView *)&v7 setHidden:hiddenCopy];
+  if (hiddenCopy)
   {
     safetyTimer = self->_safetyTimer;
     if (safetyTimer)
@@ -351,9 +351,9 @@ uint64_t __38__SUICTickMarkView_handleSafetyTimer___block_invoke(uint64_t result
 - (void)didMoveToSuperview
 {
   NSLog(&cfstr_TickmarkviewDi.isa, a2);
-  v3 = [(SUICTickMarkView *)self superview];
+  superview = [(SUICTickMarkView *)self superview];
 
-  if (!v3)
+  if (!superview)
   {
 
     [(SUICTickMarkView *)self tearDownDisplayLink];

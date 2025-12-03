@@ -1,52 +1,52 @@
 @interface SIRINLUINTERNALMatchingSpan
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsMatcherNames:(id)a3;
-- (int)matcherNamesAtIndex:(unint64_t)a3;
+- (int)StringAsMatcherNames:(id)names;
+- (int)matcherNamesAtIndex:(unint64_t)index;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasStartTokenIndex:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasStartTokenIndex:(BOOL)index;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SIRINLUINTERNALMatchingSpan
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v14 = v4;
-  if (*(v4 + 7))
+  fromCopy = from;
+  v14 = fromCopy;
+  if (*(fromCopy + 7))
   {
     [(SIRINLUINTERNALMatchingSpan *)self setLabel:?];
-    v4 = v14;
+    fromCopy = v14;
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(SIRINLUINTERNALMatchingSpan *)self setInput:?];
-    v4 = v14;
+    fromCopy = v14;
   }
 
-  v5 = *(v4 + 88);
+  v5 = *(fromCopy + 88);
   if ((v5 & 2) != 0)
   {
-    self->_startTokenIndex = *(v4 + 18);
+    self->_startTokenIndex = *(fromCopy + 18);
     *&self->_has |= 2u;
-    v5 = *(v4 + 88);
+    v5 = *(fromCopy + 88);
   }
 
   if (v5)
   {
-    self->_endTokenIndex = *(v4 + 8);
+    self->_endTokenIndex = *(fromCopy + 8);
     *&self->_has |= 1u;
   }
 
   usoGraph = self->_usoGraph;
-  v7 = *(v4 + 10);
+  v7 = *(fromCopy + 10);
   if (usoGraph)
   {
     if (!v7)
@@ -67,12 +67,12 @@
     [(SIRINLUINTERNALMatchingSpan *)self setUsoGraph:?];
   }
 
-  v4 = v14;
+  fromCopy = v14;
 LABEL_15:
-  v8 = [v4 matcherNamesCount];
-  if (v8)
+  matcherNamesCount = [fromCopy matcherNamesCount];
+  if (matcherNamesCount)
   {
-    v9 = v8;
+    v9 = matcherNamesCount;
     for (i = 0; i != v9; ++i)
     {
       -[SIRINLUINTERNALMatchingSpan addMatcherNames:](self, "addMatcherNames:", [v14 matcherNamesAtIndex:i]);
@@ -144,16 +144,16 @@ LABEL_6:
   return v7 ^ v9 ^ [(NSString *)self->_semanticValue hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_23;
   }
 
   label = self->_label;
-  if (label | *(v4 + 7))
+  if (label | *(equalCopy + 7))
   {
     if (![(NSString *)label isEqual:?])
     {
@@ -162,7 +162,7 @@ LABEL_6:
   }
 
   input = self->_input;
-  if (input | *(v4 + 5))
+  if (input | *(equalCopy + 5))
   {
     if (![(NSString *)input isEqual:?])
     {
@@ -170,16 +170,16 @@ LABEL_6:
     }
   }
 
-  v7 = *(v4 + 88);
+  v7 = *(equalCopy + 88);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 88) & 2) == 0 || self->_startTokenIndex != *(v4 + 18))
+    if ((*(equalCopy + 88) & 2) == 0 || self->_startTokenIndex != *(equalCopy + 18))
     {
       goto LABEL_23;
     }
   }
 
-  else if ((*(v4 + 88) & 2) != 0)
+  else if ((*(equalCopy + 88) & 2) != 0)
   {
 LABEL_23:
     v11 = 0;
@@ -188,19 +188,19 @@ LABEL_23:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 88) & 1) == 0 || self->_endTokenIndex != *(v4 + 8))
+    if ((*(equalCopy + 88) & 1) == 0 || self->_endTokenIndex != *(equalCopy + 8))
     {
       goto LABEL_23;
     }
   }
 
-  else if (*(v4 + 88))
+  else if (*(equalCopy + 88))
   {
     goto LABEL_23;
   }
 
   usoGraph = self->_usoGraph;
-  if (usoGraph | *(v4 + 10) && ![(SIRINLUEXTERNALUsoGraph *)usoGraph isEqual:?])
+  if (usoGraph | *(equalCopy + 10) && ![(SIRINLUEXTERNALUsoGraph *)usoGraph isEqual:?])
   {
     goto LABEL_23;
   }
@@ -211,7 +211,7 @@ LABEL_23:
   }
 
   internalSpanData = self->_internalSpanData;
-  if (internalSpanData | *(v4 + 6))
+  if (internalSpanData | *(equalCopy + 6))
   {
     if (![(SIRINLUINTERNALInternalSpanData *)internalSpanData isEqual:?])
     {
@@ -220,7 +220,7 @@ LABEL_23:
   }
 
   semanticValue = self->_semanticValue;
-  if (semanticValue | *(v4 + 8))
+  if (semanticValue | *(equalCopy + 8))
   {
     v11 = [(NSString *)semanticValue isEqual:?];
   }
@@ -235,14 +235,14 @@ LABEL_24:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_label copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_label copyWithZone:zone];
   v7 = *(v5 + 56);
   *(v5 + 56) = v6;
 
-  v8 = [(NSString *)self->_input copyWithZone:a3];
+  v8 = [(NSString *)self->_input copyWithZone:zone];
   v9 = *(v5 + 40);
   *(v5 + 40) = v8;
 
@@ -260,50 +260,50 @@ LABEL_24:
     *(v5 + 88) |= 1u;
   }
 
-  v11 = [(SIRINLUEXTERNALUsoGraph *)self->_usoGraph copyWithZone:a3];
+  v11 = [(SIRINLUEXTERNALUsoGraph *)self->_usoGraph copyWithZone:zone];
   v12 = *(v5 + 80);
   *(v5 + 80) = v11;
 
   PBRepeatedInt32Copy();
-  v13 = [(SIRINLUINTERNALInternalSpanData *)self->_internalSpanData copyWithZone:a3];
+  v13 = [(SIRINLUINTERNALInternalSpanData *)self->_internalSpanData copyWithZone:zone];
   v14 = *(v5 + 48);
   *(v5 + 48) = v13;
 
-  v15 = [(NSString *)self->_semanticValue copyWithZone:a3];
+  v15 = [(NSString *)self->_semanticValue copyWithZone:zone];
   v16 = *(v5 + 64);
   *(v5 + 64) = v15;
 
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v10 = v4;
+  toCopy = to;
+  v10 = toCopy;
   if (self->_label)
   {
-    [v4 setLabel:?];
-    v4 = v10;
+    [toCopy setLabel:?];
+    toCopy = v10;
   }
 
   if (self->_input)
   {
     [v10 setInput:?];
-    v4 = v10;
+    toCopy = v10;
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(v4 + 18) = self->_startTokenIndex;
-    *(v4 + 88) |= 2u;
+    *(toCopy + 18) = self->_startTokenIndex;
+    *(toCopy + 88) |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    *(v4 + 8) = self->_endTokenIndex;
-    *(v4 + 88) |= 1u;
+    *(toCopy + 8) = self->_endTokenIndex;
+    *(toCopy + 88) |= 1u;
   }
 
   if (self->_usoGraph)
@@ -314,10 +314,10 @@ LABEL_24:
   if ([(SIRINLUINTERNALMatchingSpan *)self matcherNamesCount])
   {
     [v10 clearMatcherNames];
-    v6 = [(SIRINLUINTERNALMatchingSpan *)self matcherNamesCount];
-    if (v6)
+    matcherNamesCount = [(SIRINLUINTERNALMatchingSpan *)self matcherNamesCount];
+    if (matcherNamesCount)
     {
-      v7 = v6;
+      v7 = matcherNamesCount;
       for (i = 0; i != v7; ++i)
       {
         [v10 addMatcherNames:{-[SIRINLUINTERNALMatchingSpan matcherNamesAtIndex:](self, "matcherNamesAtIndex:", i)}];
@@ -338,20 +338,20 @@ LABEL_24:
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v10 = v4;
+  toCopy = to;
+  v10 = toCopy;
   if (self->_label)
   {
     PBDataWriterWriteStringField();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_input)
   {
     PBDataWriterWriteStringField();
-    v4 = v10;
+    toCopy = v10;
   }
 
   has = self->_has;
@@ -359,7 +359,7 @@ LABEL_24:
   {
     startTokenIndex = self->_startTokenIndex;
     PBDataWriterWriteUint32Field();
-    v4 = v10;
+    toCopy = v10;
     has = self->_has;
   }
 
@@ -367,13 +367,13 @@ LABEL_24:
   {
     endTokenIndex = self->_endTokenIndex;
     PBDataWriterWriteUint32Field();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_usoGraph)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_matcherNames.count)
@@ -383,7 +383,7 @@ LABEL_24:
     {
       v9 = self->_matcherNames.list[v8];
       PBDataWriterWriteInt32Field();
-      v4 = v10;
+      toCopy = v10;
       ++v8;
     }
 
@@ -393,24 +393,24 @@ LABEL_24:
   if (self->_internalSpanData)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_semanticValue)
   {
     PBDataWriterWriteStringField();
-    v4 = v10;
+    toCopy = v10;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   label = self->_label;
   if (label)
   {
-    [v3 setObject:label forKey:@"label"];
+    [dictionary setObject:label forKey:@"label"];
   }
 
   input = self->_input;
@@ -437,8 +437,8 @@ LABEL_24:
   usoGraph = self->_usoGraph;
   if (usoGraph)
   {
-    v11 = [(SIRINLUEXTERNALUsoGraph *)usoGraph dictionaryRepresentation];
-    [v4 setObject:v11 forKey:@"uso_graph"];
+    dictionaryRepresentation = [(SIRINLUEXTERNALUsoGraph *)usoGraph dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"uso_graph"];
   }
 
   p_matcherNames = &self->_matcherNames;
@@ -475,8 +475,8 @@ LABEL_24:
   internalSpanData = self->_internalSpanData;
   if (internalSpanData)
   {
-    v18 = [(SIRINLUINTERNALInternalSpanData *)internalSpanData dictionaryRepresentation];
-    [v4 setObject:v18 forKey:@"internal_span_data"];
+    dictionaryRepresentation2 = [(SIRINLUINTERNALInternalSpanData *)internalSpanData dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation2 forKey:@"internal_span_data"];
   }
 
   semanticValue = self->_semanticValue;
@@ -494,56 +494,56 @@ LABEL_24:
   v8.receiver = self;
   v8.super_class = SIRINLUINTERNALMatchingSpan;
   v4 = [(SIRINLUINTERNALMatchingSpan *)&v8 description];
-  v5 = [(SIRINLUINTERNALMatchingSpan *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SIRINLUINTERNALMatchingSpan *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (int)StringAsMatcherNames:(id)a3
+- (int)StringAsMatcherNames:(id)names
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"DATADETECTOR_MATCHER"])
+  namesCopy = names;
+  if ([namesCopy isEqualToString:@"DATADETECTOR_MATCHER"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"PLUM_MATCHER"])
+  else if ([namesCopy isEqualToString:@"PLUM_MATCHER"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SIRI_VOCABULARY_MATCHER"])
+  else if ([namesCopy isEqualToString:@"SIRI_VOCABULARY_MATCHER"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"VOC_TRIE_MATCHER"])
+  else if ([namesCopy isEqualToString:@"VOC_TRIE_MATCHER"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"CONTEXT_MATCHER"])
+  else if ([namesCopy isEqualToString:@"CONTEXT_MATCHER"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"OVERTON_KG_MATCHER"])
+  else if ([namesCopy isEqualToString:@"OVERTON_KG_MATCHER"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"MRR_DETECTOR"])
+  else if ([namesCopy isEqualToString:@"MRR_DETECTOR"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"MRR_MATCHER"])
+  else if ([namesCopy isEqualToString:@"MRR_MATCHER"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"REGEX_MATCHER"])
+  else if ([namesCopy isEqualToString:@"REGEX_MATCHER"])
   {
     v4 = 8;
   }
@@ -556,25 +556,25 @@ LABEL_24:
   return v4;
 }
 
-- (int)matcherNamesAtIndex:(unint64_t)a3
+- (int)matcherNamesAtIndex:(unint64_t)index
 {
   p_matcherNames = &self->_matcherNames;
   count = self->_matcherNames.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x1E695DF30];
     v7 = *MEMORY[0x1E695DA20];
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_matcherNames->list[a3];
+  return p_matcherNames->list[index];
 }
 
-- (void)setHasStartTokenIndex:(BOOL)a3
+- (void)setHasStartTokenIndex:(BOOL)index
 {
-  if (a3)
+  if (index)
   {
     v3 = 2;
   }

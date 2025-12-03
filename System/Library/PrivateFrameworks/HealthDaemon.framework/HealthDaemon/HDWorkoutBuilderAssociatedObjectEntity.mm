@@ -1,38 +1,38 @@
 @interface HDWorkoutBuilderAssociatedObjectEntity
-+ (BOOL)enumerateAssociatedUUIDsForBuilder:(id)a3 transaction:(id)a4 error:(id *)a5 block:(id)a6;
-+ (BOOL)removeAssociationFromBuilder:(id)a3 toUUID:(id)a4 transaction:(id)a5 error:(id *)a6;
++ (BOOL)enumerateAssociatedUUIDsForBuilder:(id)builder transaction:(id)transaction error:(id *)error block:(id)block;
++ (BOOL)removeAssociationFromBuilder:(id)builder toUUID:(id)d transaction:(id)transaction error:(id *)error;
 + (id)foreignKeys;
 + (id)uniquedColumns;
-+ (int64_t)associateObject:(id)a3 code:(int64_t)a4 timestamp:(double)a5 withBuilder:(id)a6 transaction:(id)a7 error:(id *)a8;
++ (int64_t)associateObject:(id)object code:(int64_t)code timestamp:(double)timestamp withBuilder:(id)builder transaction:(id)transaction error:(id *)error;
 @end
 
 @implementation HDWorkoutBuilderAssociatedObjectEntity
 
-+ (int64_t)associateObject:(id)a3 code:(int64_t)a4 timestamp:(double)a5 withBuilder:(id)a6 transaction:(id)a7 error:(id *)a8
++ (int64_t)associateObject:(id)object code:(int64_t)code timestamp:(double)timestamp withBuilder:(id)builder transaction:(id)transaction error:(id *)error
 {
-  v13 = a3;
-  v14 = a6;
-  v15 = [a7 databaseForEntityClass:a1];
+  objectCopy = object;
+  builderCopy = builder;
+  v15 = [transaction databaseForEntityClass:self];
   v31 = 0;
   v30[0] = MEMORY[0x277D85DD0];
   v30[1] = 3221225472;
   v30[2] = __103__HDWorkoutBuilderAssociatedObjectEntity_associateObject_code_timestamp_withBuilder_transaction_error___block_invoke;
   v30[3] = &__block_descriptor_40_e15___NSString_8__0l;
-  v30[4] = a1;
+  v30[4] = self;
   v22 = MEMORY[0x277D85DD0];
   v23 = 3221225472;
   v24 = __103__HDWorkoutBuilderAssociatedObjectEntity_associateObject_code_timestamp_withBuilder_transaction_error___block_invoke_2;
   v25 = &unk_2786214F8;
-  v16 = v14;
+  v16 = builderCopy;
   v26 = v16;
-  v17 = v13;
+  v17 = objectCopy;
   v27 = v17;
-  v28 = a5;
-  v29 = a4;
-  LOBYTE(a1) = [v15 executeCachedStatementForKey:&associateObject_code_timestamp_withBuilder_transaction_error__insertKey error:&v31 SQLGenerator:v30 bindingHandler:&v22 enumerationHandler:0];
+  timestampCopy = timestamp;
+  codeCopy = code;
+  LOBYTE(self) = [v15 executeCachedStatementForKey:&associateObject_code_timestamp_withBuilder_transaction_error__insertKey error:&v31 SQLGenerator:v30 bindingHandler:&v22 enumerationHandler:0];
   v18 = v31;
   v19 = v18;
-  if (a1)
+  if (self)
   {
     v20 = 1;
   }
@@ -78,18 +78,18 @@ uint64_t __103__HDWorkoutBuilderAssociatedObjectEntity_associateObject_code_time
   return sqlite3_bind_int64(a2, 4, v5);
 }
 
-+ (BOOL)enumerateAssociatedUUIDsForBuilder:(id)a3 transaction:(id)a4 error:(id *)a5 block:(id)a6
++ (BOOL)enumerateAssociatedUUIDsForBuilder:(id)builder transaction:(id)transaction error:(id *)error block:(id)block
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = [a4 databaseForEntityClass:a1];
-  v19 = v10;
+  builderCopy = builder;
+  blockCopy = block;
+  v12 = [transaction databaseForEntityClass:self];
+  v19 = builderCopy;
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __101__HDWorkoutBuilderAssociatedObjectEntity_enumerateAssociatedUUIDsForBuilder_transaction_error_block___block_invoke;
   v20[3] = &__block_descriptor_40_e15___NSString_8__0l;
-  v20[4] = a1;
-  v17 = v11;
+  v20[4] = self;
+  v17 = blockCopy;
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __101__HDWorkoutBuilderAssociatedObjectEntity_enumerateAssociatedUUIDsForBuilder_transaction_error_block___block_invoke_2;
@@ -98,11 +98,11 @@ uint64_t __103__HDWorkoutBuilderAssociatedObjectEntity_associateObject_code_time
   v16[1] = 3221225472;
   v16[2] = __101__HDWorkoutBuilderAssociatedObjectEntity_enumerateAssociatedUUIDsForBuilder_transaction_error_block___block_invoke_3;
   v16[3] = &unk_278613B30;
-  v13 = v11;
-  v14 = v10;
-  LOBYTE(a5) = [v12 executeCachedStatementForKey:&enumerateAssociatedUUIDsForBuilder_transaction_error_block__enumerationKey error:a5 SQLGenerator:v20 bindingHandler:v18 enumerationHandler:v16];
+  v13 = blockCopy;
+  v14 = builderCopy;
+  LOBYTE(error) = [v12 executeCachedStatementForKey:&enumerateAssociatedUUIDsForBuilder_transaction_error_block__enumerationKey error:error SQLGenerator:v20 bindingHandler:v18 enumerationHandler:v16];
 
-  return a5;
+  return error;
 }
 
 id __101__HDWorkoutBuilderAssociatedObjectEntity_enumerateAssociatedUUIDsForBuilder_transaction_error_block___block_invoke(uint64_t a1)
@@ -140,28 +140,28 @@ uint64_t __101__HDWorkoutBuilderAssociatedObjectEntity_enumerateAssociatedUUIDsF
   return v8;
 }
 
-+ (BOOL)removeAssociationFromBuilder:(id)a3 toUUID:(id)a4 transaction:(id)a5 error:(id *)a6
++ (BOOL)removeAssociationFromBuilder:(id)builder toUUID:(id)d transaction:(id)transaction error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
+  builderCopy = builder;
+  dCopy = d;
   v12 = MEMORY[0x277CCACA8];
-  v13 = a5;
-  v14 = [a1 disambiguatedDatabaseTable];
-  v15 = [v12 stringWithFormat:@"DELETE FROM %@ WHERE %@ = ? AND %@ = ?", v14, @"workout_builder_id", @"object_uuid"];
+  transactionCopy = transaction;
+  disambiguatedDatabaseTable = [self disambiguatedDatabaseTable];
+  v15 = [v12 stringWithFormat:@"DELETE FROM %@ WHERE %@ = ? AND %@ = ?", disambiguatedDatabaseTable, @"workout_builder_id", @"object_uuid"];
 
-  v16 = [v13 databaseForEntityClass:a1];
+  v16 = [transactionCopy databaseForEntityClass:self];
 
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __96__HDWorkoutBuilderAssociatedObjectEntity_removeAssociationFromBuilder_toUUID_transaction_error___block_invoke;
   v20[3] = &unk_278613038;
-  v21 = v10;
-  v22 = v11;
-  v17 = v11;
-  v18 = v10;
-  LOBYTE(a6) = [v16 executeSQL:v15 error:a6 bindingHandler:v20 enumerationHandler:0];
+  v21 = builderCopy;
+  v22 = dCopy;
+  v17 = dCopy;
+  v18 = builderCopy;
+  LOBYTE(error) = [v16 executeSQL:v15 error:error bindingHandler:v20 enumerationHandler:0];
 
-  return a6;
+  return error;
 }
 
 uint64_t __96__HDWorkoutBuilderAssociatedObjectEntity_removeAssociationFromBuilder_toUUID_transaction_error___block_invoke(uint64_t a1, sqlite3_stmt *a2)

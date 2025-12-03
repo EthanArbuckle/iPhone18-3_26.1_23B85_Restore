@@ -1,16 +1,16 @@
 @interface MainWindowSearchBar
 - (SearchBarHeightObserver)heightObserver;
-- (void)setFrame:(CGRect)a3;
+- (void)setFrame:(CGRect)frame;
 @end
 
 @implementation MainWindowSearchBar
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(MainWindowSearchBar *)self frame];
   v9 = v8;
   v11.receiver = self;
@@ -18,8 +18,8 @@
   [(MainWindowSearchBar *)&v11 setFrame:x, y, width, height];
   if (height != v9)
   {
-    v10 = [(MainWindowSearchBar *)self heightObserver];
-    [v10 searchBarHeightDidChange];
+    heightObserver = [(MainWindowSearchBar *)self heightObserver];
+    [heightObserver searchBarHeightDidChange];
   }
 }
 

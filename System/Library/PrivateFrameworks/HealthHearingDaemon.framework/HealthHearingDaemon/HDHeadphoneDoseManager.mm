@@ -1,39 +1,39 @@
 @interface HDHeadphoneDoseManager
-- (BOOL)_lock_rebuildWithAssertion:(id)a3 error:(id *)a4;
-- (BOOL)_lock_rebuildWithAssertion:(id)a3 resetSyncNotification:(BOOL)a4 error:(id *)a5;
-- (BOOL)_lock_updateCurrentDoseUsingStatisticsResult:(id)a3 assertion:(id)a4 error:(id *)a5;
-- (BOOL)_overrideDoseLimit:(id)a3 error:(id *)a4;
-- (BOOL)_rebuildWithError:(id *)a3;
-- (HDHeadphoneDoseManager)initWithProfile:(id)a3;
-- (id)_fetchDoseLimitInfoWithError:(id *)a3;
-- (id)_infoDictWithError:(id *)a3;
-- (id)_infoWithError:(id *)a3;
-- (id)_initWithProfile:(id)a3 keyValueStore:(id)a4 calculator:(id)a5 unitTesting_profileDidBecomeReadyHandler:(id)a6 unitTesting_didObserveProtectedDataHandler:(id)a7 unitTesting_didUpdateHandler:(id)a8;
-- (id)_lock_pruneWithNowDate:(id)a3 limit:(unint64_t)a4 error:(id *)a5;
-- (id)_pruneWithNowDate:(id)a3 limit:(unint64_t)a4 error:(id *)a5;
+- (BOOL)_lock_rebuildWithAssertion:(id)assertion error:(id *)error;
+- (BOOL)_lock_rebuildWithAssertion:(id)assertion resetSyncNotification:(BOOL)notification error:(id *)error;
+- (BOOL)_lock_updateCurrentDoseUsingStatisticsResult:(id)result assertion:(id)assertion error:(id *)error;
+- (BOOL)_overrideDoseLimit:(id)limit error:(id *)error;
+- (BOOL)_rebuildWithError:(id *)error;
+- (HDHeadphoneDoseManager)initWithProfile:(id)profile;
+- (id)_fetchDoseLimitInfoWithError:(id *)error;
+- (id)_infoDictWithError:(id *)error;
+- (id)_infoWithError:(id *)error;
+- (id)_initWithProfile:(id)profile keyValueStore:(id)store calculator:(id)calculator unitTesting_profileDidBecomeReadyHandler:(id)handler unitTesting_didObserveProtectedDataHandler:(id)dataHandler unitTesting_didUpdateHandler:(id)updateHandler;
+- (id)_lock_pruneWithNowDate:(id)date limit:(unint64_t)limit error:(id *)error;
+- (id)_pruneWithNowDate:(id)date limit:(unint64_t)limit error:(id *)error;
 - (id)_takeAccessibilityAssertion;
-- (id)transactionalQuantityInsertHandlerForProfile:(id)a3 journaled:(BOOL)a4 count:(int64_t)a5;
-- (void)_handleSignificantTimeChangeNotification:(id)a3;
-- (void)_headphoneExposureNotificationsEnabledDidChange:(id)a3;
-- (void)_lock_setCollectionAssertion:(id)a3;
-- (void)_lock_updateCollectionAssertionForDoseAccumulated:(double)a3;
-- (void)_lock_updateIsEnabledForInitialSetup:(BOOL)a3 assertion:(id)a4;
-- (void)_lock_updateWithNotifications:(id)a3 journaled:(BOOL)a4 assertion:(id)a5;
-- (void)_lock_updateWithRemoteNotificationDismissalDate:(id)a3 assertion:(id)a4;
+- (id)transactionalQuantityInsertHandlerForProfile:(id)profile journaled:(BOOL)journaled count:(int64_t)count;
+- (void)_handleSignificantTimeChangeNotification:(id)notification;
+- (void)_headphoneExposureNotificationsEnabledDidChange:(id)change;
+- (void)_lock_setCollectionAssertion:(id)assertion;
+- (void)_lock_updateCollectionAssertionForDoseAccumulated:(double)accumulated;
+- (void)_lock_updateIsEnabledForInitialSetup:(BOOL)setup assertion:(id)assertion;
+- (void)_lock_updateWithNotifications:(id)notifications journaled:(BOOL)journaled assertion:(id)assertion;
+- (void)_lock_updateWithRemoteNotificationDismissalDate:(id)date assertion:(id)assertion;
 - (void)_registerForSignificantTimeChangeNotification;
-- (void)_reportSyncedHeadphoneNotificationSamples:(id)a3 journaled:(BOOL)a4 nowDate:(id)a5;
+- (void)_reportSyncedHeadphoneNotificationSamples:(id)samples journaled:(BOOL)journaled nowDate:(id)date;
 - (void)_takeAccessibilityAssertion;
 - (void)_unregisterForSignificantTimeChangeNotification;
-- (void)_updateCurrentDoseFromResult:(id)a3 context:(id)a4 sampleCount:(unint64_t)a5 assertion:(id)a6;
-- (void)_updateWithRemoteNotificationDismissalDate:(id)a3 assertion:(id)a4;
+- (void)_updateCurrentDoseFromResult:(id)result context:(id)context sampleCount:(unint64_t)count assertion:(id)assertion;
+- (void)_updateWithRemoteNotificationDismissalDate:(id)date assertion:(id)assertion;
 - (void)dealloc;
-- (void)didReceiveResetDosageToFireDate:(id)a3;
-- (void)profile:(id)a3 didDiscardSeriesOfType:(id)a4;
-- (void)profileDidBecomeReady:(id)a3;
-- (void)samplesAdded:(id)a3 anchor:(id)a4;
-- (void)samplesJournaled:(id)a3 type:(id)a4;
-- (void)samplesOfTypesWereRemoved:(id)a3 anchor:(id)a4;
-- (void)unitTesting_didReceiveResetDosageToFireDate:(id)a3;
+- (void)didReceiveResetDosageToFireDate:(id)date;
+- (void)profile:(id)profile didDiscardSeriesOfType:(id)type;
+- (void)profileDidBecomeReady:(id)ready;
+- (void)samplesAdded:(id)added anchor:(id)anchor;
+- (void)samplesJournaled:(id)journaled type:(id)type;
+- (void)samplesOfTypesWereRemoved:(id)removed anchor:(id)anchor;
+- (void)unitTesting_didReceiveResetDosageToFireDate:(id)date;
 @end
 
 @implementation HDHeadphoneDoseManager
@@ -43,14 +43,14 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [MEMORY[0x277CCAD78] UUID];
-  v7 = [v6 UUIDString];
-  v8 = [v3 stringWithFormat:@"%@-%@", v5, v7];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  v8 = [v3 stringWithFormat:@"%@-%@", v5, uUIDString];
 
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v10 = [WeakRetained database];
+  database = [WeakRetained database];
   v14 = 0;
-  v11 = [v10 takeAccessibilityAssertionWithOwnerIdentifier:v8 timeout:&v14 error:300.0];
+  v11 = [database takeAccessibilityAssertionWithOwnerIdentifier:v8 timeout:&v14 error:300.0];
   v12 = v14;
 
   if (!v11)
@@ -65,32 +65,32 @@
   return v11;
 }
 
-- (HDHeadphoneDoseManager)initWithProfile:(id)a3
+- (HDHeadphoneDoseManager)initWithProfile:(id)profile
 {
-  v4 = a3;
-  v5 = [[HDHeadphoneDoseMetadataStore alloc] initWithProfile:v4];
-  v6 = [[HDHeadphoneAudioExposureStatisticsCalculator alloc] initWithProfile:v4 keyValueStore:v5];
-  v7 = [(HDHeadphoneDoseManager *)self _initWithProfile:v4 keyValueStore:v5 calculator:v6];
+  profileCopy = profile;
+  v5 = [[HDHeadphoneDoseMetadataStore alloc] initWithProfile:profileCopy];
+  v6 = [[HDHeadphoneAudioExposureStatisticsCalculator alloc] initWithProfile:profileCopy keyValueStore:v5];
+  v7 = [(HDHeadphoneDoseManager *)self _initWithProfile:profileCopy keyValueStore:v5 calculator:v6];
 
   return v7;
 }
 
-- (id)_initWithProfile:(id)a3 keyValueStore:(id)a4 calculator:(id)a5 unitTesting_profileDidBecomeReadyHandler:(id)a6 unitTesting_didObserveProtectedDataHandler:(id)a7 unitTesting_didUpdateHandler:(id)a8
+- (id)_initWithProfile:(id)profile keyValueStore:(id)store calculator:(id)calculator unitTesting_profileDidBecomeReadyHandler:(id)handler unitTesting_didObserveProtectedDataHandler:(id)dataHandler unitTesting_didUpdateHandler:(id)updateHandler
 {
-  v14 = a3;
-  v15 = a4;
-  obj = a5;
-  v52 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = v14;
-  v20 = [v14 profileIdentifier];
-  v51 = v15;
-  v21 = [v15 _profileIdentifier];
-  LOBYTE(a7) = [v20 isEqual:v21];
+  profileCopy = profile;
+  storeCopy = store;
+  obj = calculator;
+  calculatorCopy = calculator;
+  handlerCopy = handler;
+  dataHandlerCopy = dataHandler;
+  updateHandlerCopy = updateHandler;
+  v19 = profileCopy;
+  profileIdentifier = [profileCopy profileIdentifier];
+  v51 = storeCopy;
+  _profileIdentifier = [storeCopy _profileIdentifier];
+  LOBYTE(dataHandler) = [profileIdentifier isEqual:_profileIdentifier];
 
-  if ((a7 & 1) == 0)
+  if ((dataHandler & 1) == 0)
   {
     [HDHeadphoneDoseManager _initWithProfile:keyValueStore:calculator:unitTesting_profileDidBecomeReadyHandler:unitTesting_didObserveProtectedDataHandler:unitTesting_didUpdateHandler:];
   }
@@ -99,7 +99,7 @@
   v53.super_class = HDHeadphoneDoseManager;
   v22 = [(HDHeadphoneDoseManager *)&v53 init];
   v23 = v22;
-  v24 = v17;
+  v24 = dataHandlerCopy;
   if (v22)
   {
     objc_storeWeak(&v22->_profile, v19);
@@ -110,7 +110,7 @@
     v23->_queue = v25;
 
     v23->_enabled = [MEMORY[0x277D11268] isHeadphoneExposureNotificationsEnabled];
-    objc_storeStrong(&v23->_keyValueStore, a4);
+    objc_storeStrong(&v23->_keyValueStore, store);
     v27 = [[HDHeadphoneExposureNotificationSyncManager alloc] initWithProfile:v19];
     notificationSyncManager = v23->_notificationSyncManager;
     v23->_notificationSyncManager = v27;
@@ -123,15 +123,15 @@
     collectionAssertion = v23->_collectionAssertion;
     v23->_collectionAssertion = 0;
 
-    v32 = MEMORY[0x253081C40](v16);
+    v32 = MEMORY[0x253081C40](handlerCopy);
     unitTesting_profileDidBecomeReadyHandler = v23->_unitTesting_profileDidBecomeReadyHandler;
     v23->_unitTesting_profileDidBecomeReadyHandler = v32;
 
-    v34 = MEMORY[0x253081C40](v17);
+    v34 = MEMORY[0x253081C40](dataHandlerCopy);
     unitTesting_didObserveProtectedDataHandler = v23->_unitTesting_didObserveProtectedDataHandler;
     v23->_unitTesting_didObserveProtectedDataHandler = v34;
 
-    v36 = MEMORY[0x253081C40](v18);
+    v36 = MEMORY[0x253081C40](updateHandlerCopy);
     unitTesting_didUpdateHandler = v23->_unitTesting_didUpdateHandler;
     v23->_unitTesting_didUpdateHandler = v36;
 
@@ -140,15 +140,15 @@
 
     [(HDHeadphoneDoseManager *)v23 _registerForSignificantTimeChangeNotification];
     WeakRetained = objc_loadWeakRetained(&v23->_profile);
-    v40 = [WeakRetained dataManager];
+    dataManager = [WeakRetained dataManager];
     v41 = HKHeadphoneAudioExposureEventType();
-    [v40 addObserver:v23 forDataType:v41];
+    [dataManager addObserver:v23 forDataType:v41];
 
     v42 = objc_loadWeakRetained(&v23->_profile);
-    v43 = [v42 dataManager];
-    v44 = [v43 quantitySeriesManager];
+    dataManager2 = [v42 dataManager];
+    quantitySeriesManager = [dataManager2 quantitySeriesManager];
     v45 = HKHeadphoneAudioExposureType();
-    [v44 addObserver:v23 forType:v45 queue:v23->_queue];
+    [quantitySeriesManager addObserver:v23 forType:v45 queue:v23->_queue];
 
     v46 = objc_loadWeakRetained(&v23->_profile);
     [v46 registerProfileReadyObserver:v23 queue:v23->_queue];
@@ -164,19 +164,19 @@
 {
   [(HDHeadphoneDoseManager *)self _unregisterForSignificantTimeChangeNotification];
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v4 = [WeakRetained database];
-  [v4 removeProtectedDataObserver:self];
+  database = [WeakRetained database];
+  [database removeProtectedDataObserver:self];
 
   v5 = objc_loadWeakRetained(&self->_profile);
-  v6 = [v5 dataManager];
+  dataManager = [v5 dataManager];
   v7 = HKHeadphoneAudioExposureEventType();
-  [v6 removeObserver:self forDataType:v7];
+  [dataManager removeObserver:self forDataType:v7];
 
   v8 = objc_loadWeakRetained(&self->_profile);
-  v9 = [v8 dataManager];
-  v10 = [v9 quantitySeriesManager];
+  dataManager2 = [v8 dataManager];
+  quantitySeriesManager = [dataManager2 quantitySeriesManager];
   v11 = HKHeadphoneAudioExposureType();
-  [v10 removeObserver:self forType:v11];
+  [quantitySeriesManager removeObserver:self forType:v11];
 
   [(HDHeadphoneExposureNotificationSyncManager *)self->_notificationSyncManager removeObserver:self];
   [(HDDataCollectionAssertion *)self->_collectionAssertion invalidate];
@@ -185,7 +185,7 @@
   [(HDHeadphoneDoseManager *)&v12 dealloc];
 }
 
-- (void)profileDidBecomeReady:(id)a3
+- (void)profileDidBecomeReady:(id)ready
 {
   v15 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(self->_queue);
@@ -201,14 +201,14 @@
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v8 = [WeakRetained database];
+  database = [WeakRetained database];
   queue = self->_queue;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __48__HDHeadphoneDoseManager_profileDidBecomeReady___block_invoke;
   v12[3] = &unk_2796C6390;
   v12[4] = self;
-  [v8 performWhenDataProtectedByFirstUnlockIsAvailableOnQueue:queue block:v12];
+  [database performWhenDataProtectedByFirstUnlockIsAvailableOnQueue:queue block:v12];
 
   unitTesting_profileDidBecomeReadyHandler = self->_unitTesting_profileDidBecomeReadyHandler;
   if (unitTesting_profileDidBecomeReadyHandler)
@@ -242,10 +242,10 @@ void __48__HDHeadphoneDoseManager_profileDidBecomeReady___block_invoke(uint64_t 
   }
 }
 
-- (void)samplesAdded:(id)a3 anchor:(id)a4
+- (void)samplesAdded:(id)added anchor:(id)anchor
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  addedCopy = added;
   _HKInitializeLogging();
   v6 = *MEMORY[0x277CCC2C8];
   if (os_log_type_enabled(*MEMORY[0x277CCC2C8], OS_LOG_TYPE_DEFAULT))
@@ -254,7 +254,7 @@ void __48__HDHeadphoneDoseManager_profileDidBecomeReady___block_invoke(uint64_t 
     *buf = 138543618;
     v14 = objc_opt_class();
     v15 = 2048;
-    v16 = [v5 count];
+    v16 = [addedCopy count];
     _os_log_impl(&dword_251764000, v7, OS_LOG_TYPE_DEFAULT, "[%{public}@] Processing %lu added HAEN samples.", buf, 0x16u);
   }
 
@@ -264,8 +264,8 @@ void __48__HDHeadphoneDoseManager_profileDidBecomeReady___block_invoke(uint64_t 
   v11[2] = __46__HDHeadphoneDoseManager_samplesAdded_anchor___block_invoke;
   v11[3] = &unk_2796C63B8;
   v11[4] = self;
-  v12 = v5;
-  v9 = v5;
+  v12 = addedCopy;
+  v9 = addedCopy;
   dispatch_async(queue, v11);
 
   v10 = *MEMORY[0x277D85DE8];
@@ -302,10 +302,10 @@ void __46__HDHeadphoneDoseManager_samplesAdded_anchor___block_invoke(uint64_t a1
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)samplesJournaled:(id)a3 type:(id)a4
+- (void)samplesJournaled:(id)journaled type:(id)type
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  journaledCopy = journaled;
   _HKInitializeLogging();
   v6 = *MEMORY[0x277CCC2C8];
   if (os_log_type_enabled(*MEMORY[0x277CCC2C8], OS_LOG_TYPE_DEFAULT))
@@ -314,7 +314,7 @@ void __46__HDHeadphoneDoseManager_samplesAdded_anchor___block_invoke(uint64_t a1
     *buf = 138543618;
     v14 = objc_opt_class();
     v15 = 2048;
-    v16 = [v5 count];
+    v16 = [journaledCopy count];
     _os_log_impl(&dword_251764000, v7, OS_LOG_TYPE_DEFAULT, "[%{public}@] Processing %lu journaled HAEN samples.", buf, 0x16u);
   }
 
@@ -324,8 +324,8 @@ void __46__HDHeadphoneDoseManager_samplesAdded_anchor___block_invoke(uint64_t a1
   v11[2] = __48__HDHeadphoneDoseManager_samplesJournaled_type___block_invoke;
   v11[3] = &unk_2796C63B8;
   v11[4] = self;
-  v12 = v5;
-  v9 = v5;
+  v12 = journaledCopy;
+  v9 = journaledCopy;
   dispatch_async(queue, v11);
 
   v10 = *MEMORY[0x277D85DE8];
@@ -360,11 +360,11 @@ void __48__HDHeadphoneDoseManager_samplesJournaled_type___block_invoke(uint64_t 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_reportSyncedHeadphoneNotificationSamples:(id)a3 journaled:(BOOL)a4 nowDate:(id)a5
+- (void)_reportSyncedHeadphoneNotificationSamples:(id)samples journaled:(BOOL)journaled nowDate:(id)date
 {
   v27 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v20 = a5;
+  samplesCopy = samples;
+  dateCopy = date;
   if (HKImproveHealthAndActivityAnalyticsAllowed())
   {
     WeakRetained = objc_loadWeakRetained(&self->_profile);
@@ -374,8 +374,8 @@ void __48__HDHeadphoneDoseManager_samplesJournaled_type___block_invoke(uint64_t 
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v19 = v7;
-    v9 = v7;
+    v19 = samplesCopy;
+    v9 = samplesCopy;
     v10 = [v9 countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v10)
     {
@@ -396,13 +396,13 @@ void __48__HDHeadphoneDoseManager_samplesJournaled_type___block_invoke(uint64_t 
           {
             if ([v14 hk_isHearingSevenDayDoseNotification])
             {
-              v15 = [v14 sourceRevision];
-              v16 = [v15 source];
-              v17 = [v16 _isLocalDevice];
+              sourceRevision = [v14 sourceRevision];
+              source = [sourceRevision source];
+              _isLocalDevice = [source _isLocalDevice];
 
-              if ((v17 & 1) == 0)
+              if ((_isLocalDevice & 1) == 0)
               {
-                v21 = v20;
+                v21 = dateCopy;
                 AnalyticsSendEventLazy();
               }
             }
@@ -415,7 +415,7 @@ void __48__HDHeadphoneDoseManager_samplesJournaled_type___block_invoke(uint64_t 
       while (v11);
     }
 
-    v7 = v19;
+    samplesCopy = v19;
   }
 
   v18 = *MEMORY[0x277D85DE8];
@@ -446,10 +446,10 @@ id __86__HDHeadphoneDoseManager__reportSyncedHeadphoneNotificationSamples_journa
   return v10;
 }
 
-- (void)samplesOfTypesWereRemoved:(id)a3 anchor:(id)a4
+- (void)samplesOfTypesWereRemoved:(id)removed anchor:(id)anchor
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  removedCopy = removed;
   _HKInitializeLogging();
   v6 = *MEMORY[0x277CCC2C8];
   if (os_log_type_enabled(*MEMORY[0x277CCC2C8], OS_LOG_TYPE_DEFAULT))
@@ -466,8 +466,8 @@ id __86__HDHeadphoneDoseManager__reportSyncedHeadphoneNotificationSamples_journa
   v11[2] = __59__HDHeadphoneDoseManager_samplesOfTypesWereRemoved_anchor___block_invoke;
   v11[3] = &unk_2796C63B8;
   v11[4] = self;
-  v12 = v5;
-  v9 = v5;
+  v12 = removedCopy;
+  v9 = removedCopy;
   dispatch_async(queue, v11);
 
   v10 = *MEMORY[0x277D85DE8];
@@ -548,7 +548,7 @@ void __59__HDHeadphoneDoseManager_samplesOfTypesWereRemoved_anchor___block_invok
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)profile:(id)a3 didDiscardSeriesOfType:(id)a4
+- (void)profile:(id)profile didDiscardSeriesOfType:(id)type
 {
   v23 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(self->_queue);
@@ -563,12 +563,12 @@ void __59__HDHeadphoneDoseManager_samplesOfTypesWereRemoved_anchor___block_invok
     _os_log_impl(&dword_251764000, v7, OS_LOG_TYPE_DEFAULT, "[%{public}@] HAE samples were removed, requesting rebuild.", buf, 0xCu);
   }
 
-  v8 = [(HDHeadphoneDoseManager *)self _takeAccessibilityAssertion];
+  _takeAccessibilityAssertion = [(HDHeadphoneDoseManager *)self _takeAccessibilityAssertion];
   os_unfair_lock_lock(&self->_lock);
   if (self->_enabled)
   {
     v20 = 0;
-    v9 = [(HDHeadphoneDoseManager *)self _lock_rebuildWithAssertion:v8 error:&v20];
+    v9 = [(HDHeadphoneDoseManager *)self _lock_rebuildWithAssertion:_takeAccessibilityAssertion error:&v20];
     v10 = v20;
     v11 = v10;
     if (v9)
@@ -587,10 +587,10 @@ void __59__HDHeadphoneDoseManager_samplesOfTypesWereRemoved_anchor___block_invok
 
     else
     {
-      v17 = [v10 hearing_isExpectedError];
+      hearing_isExpectedError = [v10 hearing_isExpectedError];
       _HKInitializeLogging();
       v18 = *v5;
-      if (v17)
+      if (hearing_isExpectedError)
       {
         if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
         {
@@ -620,16 +620,16 @@ LABEL_14:
   }
 
   os_unfair_lock_unlock(&self->_lock);
-  [v8 invalidate];
+  [_takeAccessibilityAssertion invalidate];
 
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (id)transactionalQuantityInsertHandlerForProfile:(id)a3 journaled:(BOOL)a4 count:(int64_t)a5
+- (id)transactionalQuantityInsertHandlerForProfile:(id)profile journaled:(BOOL)journaled count:(int64_t)count
 {
-  v6 = a4;
+  journaledCopy = journaled;
   v33 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  profileCopy = profile;
   dispatch_assert_queue_V2(self->_queue);
   if (os_unfair_lock_trylock(&self->_lock))
   {
@@ -647,13 +647,13 @@ LABEL_3:
         v13 = @"added";
         *buf = 138543874;
         *&buf[4] = v12;
-        if (v6)
+        if (journaledCopy)
         {
           v13 = @"journaled";
         }
 
         *&buf[12] = 2048;
-        *&buf[14] = a5;
+        *&buf[14] = count;
         *&buf[22] = 2114;
         v30 = v13;
         v14 = v12;
@@ -679,13 +679,13 @@ LABEL_3:
     v19 = @"added";
     *buf = 138543874;
     *&buf[4] = v18;
-    if (v6)
+    if (journaledCopy)
     {
       v19 = @"journaled";
     }
 
     *&buf[12] = 2048;
-    *&buf[14] = a5;
+    *&buf[14] = count;
     *&buf[22] = 2114;
     v30 = v19;
     _os_log_impl(&dword_251764000, v17, OS_LOG_TYPE_DEFAULT, "[%{public}@] Inserted %ld %{public}@ samples", buf, 0x20u);
@@ -696,15 +696,15 @@ LABEL_3:
   *&buf[16] = 0x3032000000;
   v30 = __Block_byref_object_copy_;
   v31 = __Block_byref_object_dispose_;
-  v32 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:a5];
-  if (v6)
+  v32 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:count];
+  if (journaledCopy)
   {
-    v20 = 0;
+    _takeAccessibilityAssertion = 0;
   }
 
   else
   {
-    v20 = [(HDHeadphoneDoseManager *)self _takeAccessibilityAssertion];
+    _takeAccessibilityAssertion = [(HDHeadphoneDoseManager *)self _takeAccessibilityAssertion];
   }
 
   v24[0] = MEMORY[0x277D85DD0];
@@ -712,11 +712,11 @@ LABEL_3:
   v24[2] = __87__HDHeadphoneDoseManager_transactionalQuantityInsertHandlerForProfile_journaled_count___block_invoke;
   v24[3] = &unk_2796C6408;
   v26 = buf;
-  v27 = a5;
-  v28 = v6;
+  countCopy = count;
+  v28 = journaledCopy;
   v24[4] = self;
-  v25 = v20;
-  v21 = v20;
+  v25 = _takeAccessibilityAssertion;
+  v21 = _takeAccessibilityAssertion;
   v15 = MEMORY[0x253081C40](v24);
 
   _Block_object_dispose(buf, 8);
@@ -1001,10 +1001,10 @@ LABEL_37:
   v83 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didReceiveResetDosageToFireDate:(id)a3
+- (void)didReceiveResetDosageToFireDate:(id)date
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dateCopy = date;
   dispatch_assert_queue_V2(self->_queue);
   _HKInitializeLogging();
   v5 = *MEMORY[0x277CCC2C8];
@@ -1018,13 +1018,13 @@ LABEL_37:
     v14 = 2114;
     v15 = v8;
     v16 = 2113;
-    v17 = v4;
+    v17 = dateCopy;
     _os_log_impl(&dword_251764000, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@] Received reset dosage notification at %{public}@ for fire date %{private}@.", buf, 0x20u);
   }
 
-  v9 = [(HDHeadphoneDoseManager *)self _takeAccessibilityAssertion];
-  [(HDHeadphoneDoseManager *)self _updateWithRemoteNotificationDismissalDate:v4 assertion:v9];
-  [v9 invalidate];
+  _takeAccessibilityAssertion = [(HDHeadphoneDoseManager *)self _takeAccessibilityAssertion];
+  [(HDHeadphoneDoseManager *)self _updateWithRemoteNotificationDismissalDate:dateCopy assertion:_takeAccessibilityAssertion];
+  [_takeAccessibilityAssertion invalidate];
   if (self->_unitTesting_didFinishResetDosageToFireDate)
   {
     block[0] = MEMORY[0x277D85DD0];
@@ -1044,18 +1044,18 @@ void __58__HDHeadphoneDoseManager_didReceiveResetDosageToFireDate___block_invoke
   v1[2]();
 }
 
-- (BOOL)_rebuildWithError:(id *)a3
+- (BOOL)_rebuildWithError:(id *)error
 {
-  v5 = [(HDHeadphoneDoseManager *)self _takeAccessibilityAssertion];
+  _takeAccessibilityAssertion = [(HDHeadphoneDoseManager *)self _takeAccessibilityAssertion];
   os_unfair_lock_lock(&self->_lock);
-  LOBYTE(a3) = [(HDHeadphoneDoseManager *)self _lock_rebuildWithAssertion:v5 error:a3];
+  LOBYTE(error) = [(HDHeadphoneDoseManager *)self _lock_rebuildWithAssertion:_takeAccessibilityAssertion error:error];
   os_unfair_lock_unlock(&self->_lock);
-  [v5 invalidate];
+  [_takeAccessibilityAssertion invalidate];
 
-  return a3;
+  return error;
 }
 
-- (id)_infoWithError:(id *)a3
+- (id)_infoWithError:(id *)error
 {
   os_unfair_lock_lock(&self->_lock);
   v4 = [MEMORY[0x277CBEAA8] now];
@@ -1081,8 +1081,8 @@ void __58__HDHeadphoneDoseManager_didReceiveResetDosageToFireDate___block_invoke
   }
 
   [v7 appendFormat:v10, *&v14];
-  v11 = [(HDHeadphoneDoseMetadataStore *)self->_keyValueStore _info];
-  [v7 appendString:v11];
+  _info = [(HDHeadphoneDoseMetadataStore *)self->_keyValueStore _info];
+  [v7 appendString:_info];
 
   os_unfair_lock_unlock(&self->_lock);
   v12 = [v7 copy];
@@ -1090,7 +1090,7 @@ void __58__HDHeadphoneDoseManager_didReceiveResetDosageToFireDate___block_invoke
   return v12;
 }
 
-- (id)_infoDictWithError:(id *)a3
+- (id)_infoDictWithError:(id *)error
 {
   os_unfair_lock_lock(&self->_lock);
   v4 = objc_alloc_init(MEMORY[0x277CBEB38]);
@@ -1114,8 +1114,8 @@ void __58__HDHeadphoneDoseManager_didReceiveResetDosageToFireDate___block_invoke
     [v4 setObject:v9 forKeyedSubscript:@"accumulated_dose"];
   }
 
-  v10 = [(HDHeadphoneDoseMetadataStore *)self->_keyValueStore _infoDict];
-  [v4 addEntriesFromDictionary:v10];
+  _infoDict = [(HDHeadphoneDoseMetadataStore *)self->_keyValueStore _infoDict];
+  [v4 addEntriesFromDictionary:_infoDict];
 
   os_unfair_lock_unlock(&self->_lock);
   v11 = [v4 copy];
@@ -1123,23 +1123,23 @@ void __58__HDHeadphoneDoseManager_didReceiveResetDosageToFireDate___block_invoke
   return v11;
 }
 
-- (id)_pruneWithNowDate:(id)a3 limit:(unint64_t)a4 error:(id *)a5
+- (id)_pruneWithNowDate:(id)date limit:(unint64_t)limit error:(id *)error
 {
-  v8 = a3;
+  dateCopy = date;
   os_unfair_lock_lock(&self->_lock);
-  v9 = [(HDHeadphoneDoseManager *)self _lock_pruneWithNowDate:v8 limit:a4 error:a5];
+  v9 = [(HDHeadphoneDoseManager *)self _lock_pruneWithNowDate:dateCopy limit:limit error:error];
 
   os_unfair_lock_unlock(&self->_lock);
 
   return v9;
 }
 
-- (id)_lock_pruneWithNowDate:(id)a3 limit:(unint64_t)a4 error:(id *)a5
+- (id)_lock_pruneWithNowDate:(id)date limit:(unint64_t)limit error:(id *)error
 {
   v25 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = [(HDHeadphoneDoseManager *)self _takeAccessibilityAssertion];
-  v10 = [(HDHeadphoneAudioExposureStatisticsCalculator *)self->_statisticsCalculator pruneWithNowDate:v8 limit:a4 error:a5];
+  dateCopy = date;
+  _takeAccessibilityAssertion = [(HDHeadphoneDoseManager *)self _takeAccessibilityAssertion];
+  v10 = [(HDHeadphoneAudioExposureStatisticsCalculator *)self->_statisticsCalculator pruneWithNowDate:dateCopy limit:limit error:error];
 
   _HKInitializeLogging();
   v11 = *MEMORY[0x277CCC2C8];
@@ -1147,114 +1147,114 @@ void __58__HDHeadphoneDoseManager_didReceiveResetDosageToFireDate___block_invoke
   {
     v12 = v11;
     v13 = objc_opt_class();
-    v14 = [v10 prunedCount];
+    prunedCount = [v10 prunedCount];
     v21 = 138543618;
     v22 = v13;
     v23 = 2114;
-    v24 = v14;
+    v24 = prunedCount;
     _os_log_impl(&dword_251764000, v12, OS_LOG_TYPE_DEFAULT, "[%{public}@] Pruned %{public}@ HAE Buckets.", &v21, 0x16u);
   }
 
   if (!v10)
   {
-    [v9 invalidate];
+    [_takeAccessibilityAssertion invalidate];
     goto LABEL_8;
   }
 
-  v15 = [v10 prunedCount];
-  v16 = [v15 unsignedLongValue];
+  prunedCount2 = [v10 prunedCount];
+  unsignedLongValue = [prunedCount2 unsignedLongValue];
 
-  if (v16)
+  if (unsignedLongValue)
   {
-    v17 = [(HDHeadphoneDoseManager *)self _lock_updateCurrentDoseUsingStatisticsResult:v10 assertion:v9 error:a5];
-    [v9 invalidate];
+    v17 = [(HDHeadphoneDoseManager *)self _lock_updateCurrentDoseUsingStatisticsResult:v10 assertion:_takeAccessibilityAssertion error:error];
+    [_takeAccessibilityAssertion invalidate];
     if (v17)
     {
       goto LABEL_10;
     }
 
 LABEL_8:
-    v18 = 0;
+    prunedCount3 = 0;
     goto LABEL_11;
   }
 
-  [v9 invalidate];
+  [_takeAccessibilityAssertion invalidate];
 LABEL_10:
-  v18 = [v10 prunedCount];
+  prunedCount3 = [v10 prunedCount];
 LABEL_11:
 
   v19 = *MEMORY[0x277D85DE8];
 
-  return v18;
+  return prunedCount3;
 }
 
-- (void)unitTesting_didReceiveResetDosageToFireDate:(id)a3
+- (void)unitTesting_didReceiveResetDosageToFireDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __70__HDHeadphoneDoseManager_unitTesting_didReceiveResetDosageToFireDate___block_invoke;
   v7[3] = &unk_2796C63B8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dateCopy;
+  v6 = dateCopy;
   dispatch_async(queue, v7);
 }
 
-- (id)_fetchDoseLimitInfoWithError:(id *)a3
+- (id)_fetchDoseLimitInfoWithError:(id *)error
 {
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(HDHeadphoneDoseMetadataStore *)self->_keyValueStore _fetchDoseLimitInfoWithError:a3];
+  v5 = [(HDHeadphoneDoseMetadataStore *)self->_keyValueStore _fetchDoseLimitInfoWithError:error];
   os_unfair_lock_unlock(&self->_lock);
 
   return v5;
 }
 
-- (BOOL)_overrideDoseLimit:(id)a3 error:(id *)a4
+- (BOOL)_overrideDoseLimit:(id)limit error:(id *)error
 {
-  v6 = a3;
+  limitCopy = limit;
   os_unfair_lock_lock(&self->_lock);
-  LOBYTE(a4) = [(HDHeadphoneDoseMetadataStore *)self->_keyValueStore _overrideDoseLimit:v6 error:a4];
+  LOBYTE(error) = [(HDHeadphoneDoseMetadataStore *)self->_keyValueStore _overrideDoseLimit:limitCopy error:error];
 
   os_unfair_lock_unlock(&self->_lock);
-  return a4;
+  return error;
 }
 
-- (void)_headphoneExposureNotificationsEnabledDidChange:(id)a3
+- (void)_headphoneExposureNotificationsEnabledDidChange:(id)change
 {
-  v4 = [(HDHeadphoneDoseManager *)self _takeAccessibilityAssertion];
+  _takeAccessibilityAssertion = [(HDHeadphoneDoseManager *)self _takeAccessibilityAssertion];
   os_unfair_lock_lock(&self->_lock);
-  [(HDHeadphoneDoseManager *)self _lock_updateIsEnabledForInitialSetup:0 assertion:v4];
+  [(HDHeadphoneDoseManager *)self _lock_updateIsEnabledForInitialSetup:0 assertion:_takeAccessibilityAssertion];
   os_unfair_lock_unlock(&self->_lock);
-  [v4 invalidate];
+  [_takeAccessibilityAssertion invalidate];
 }
 
-- (void)_lock_updateIsEnabledForInitialSetup:(BOOL)a3 assertion:(id)a4
+- (void)_lock_updateIsEnabledForInitialSetup:(BOOL)setup assertion:(id)assertion
 {
-  v4 = a3;
+  setupCopy = setup;
   v53 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  assertionCopy = assertion;
   os_unfair_lock_assert_owner(&self->_lock);
   enabled = self->_enabled;
   self->_enabled = [MEMORY[0x277D11268] isHeadphoneExposureNotificationsEnabled];
-  v9 = [(HDHeadphoneAudioExposureStatisticsCalculator *)self->_statisticsCalculator isSetup];
+  isSetup = [(HDHeadphoneAudioExposureStatisticsCalculator *)self->_statisticsCalculator isSetup];
   v10 = self->_enabled;
   if (v10 == 1)
   {
-    if ((enabled & v9 & 1) == 0)
+    if ((enabled & isSetup & 1) == 0)
     {
-      if (v9)
+      if (isSetup)
       {
         if (enabled)
         {
-          v11 = [MEMORY[0x277CCA890] currentHandler];
-          [v11 handleFailureInMethod:a2 object:self file:@"HDHeadphoneDoseManager.m" lineNumber:572 description:@"Unreachable code has been executed"];
+          currentHandler = [MEMORY[0x277CCA890] currentHandler];
+          [currentHandler handleFailureInMethod:a2 object:self file:@"HDHeadphoneDoseManager.m" lineNumber:572 description:@"Unreachable code has been executed"];
 
           goto LABEL_25;
         }
 
-        if (v4)
+        if (setupCopy)
         {
           [HDHeadphoneDoseManager _lock_updateIsEnabledForInitialSetup:assertion:];
         }
@@ -1266,13 +1266,13 @@ LABEL_11:
 LABEL_25:
           statisticsCalculator = self->_statisticsCalculator;
           v44 = 0;
-          v23 = [(HDHeadphoneAudioExposureStatisticsCalculator *)statisticsCalculator rebuildWithAssertion:v7 error:&v44];
+          v23 = [(HDHeadphoneAudioExposureStatisticsCalculator *)statisticsCalculator rebuildWithAssertion:assertionCopy error:&v44];
           v24 = v44;
           v25 = v24;
           if (v23)
           {
             v43 = 0;
-            v26 = [(HDHeadphoneDoseManager *)self _lock_updateCurrentDoseUsingStatisticsResult:v23 assertion:v7 error:&v43];
+            v26 = [(HDHeadphoneDoseManager *)self _lock_updateCurrentDoseUsingStatisticsResult:v23 assertion:assertionCopy error:&v43];
             v27 = v43;
             _HKInitializeLogging();
             v28 = *MEMORY[0x277CCC2C8];
@@ -1294,7 +1294,7 @@ LABEL_25:
               *&v48[4] = 1024;
               *&v48[6] = enabled;
               v49 = 1024;
-              v50 = v4;
+              v50 = setupCopy;
               v51 = 2112;
               v52 = v27;
               _os_log_fault_impl(&dword_251764000, v30, OS_LOG_TYPE_FAULT, "[%{public}@] Failure to handle HAEN isEnabled change (enabled: %d, wasEnabled: %d, initialSetup: %d, changed: YES): %@", buf, 0x28u);
@@ -1313,7 +1313,7 @@ LABEL_25:
               *&v48[4] = 1024;
               *&v48[6] = enabled;
               v49 = 1024;
-              v50 = v4;
+              v50 = setupCopy;
               _os_log_impl(&dword_251764000, v30, OS_LOG_TYPE_DEFAULT, "[%{public}@] Handled HAEN isEnabled change (enabled: %d, wasEnabled: %d, initialSetup: %d, changed: YES)", buf, 0x1Eu);
 LABEL_29:
             }
@@ -1321,7 +1321,7 @@ LABEL_29:
 
           else
           {
-            if (v4 && [v24 hearing_isExpectedError])
+            if (setupCopy && [v24 hearing_isExpectedError])
             {
               _HKInitializeLogging();
               v33 = *MEMORY[0x277CCC2C8];
@@ -1365,7 +1365,7 @@ LABEL_37:
             *&v48[4] = 1024;
             *&v48[6] = enabled;
             v49 = 1024;
-            v50 = v4;
+            v50 = setupCopy;
             v51 = 2112;
             v52 = v25;
             _os_log_fault_impl(&dword_251764000, v27, OS_LOG_TYPE_FAULT, "[%{public}@] Unable to handle HAEN isEnabled change (enabled: %d, wasEnabled: %d, initialSetup: %d): %@", buf, 0x28u);
@@ -1385,7 +1385,7 @@ LABEL_35:
       else
       {
         v17 = @"while healthd is running.";
-        if (v4)
+        if (setupCopy)
         {
           v17 = @"before launching healthd or first unlock";
         }
@@ -1411,12 +1411,12 @@ LABEL_35:
   else if (enabled)
   {
     v12 = @"while healthd is running.";
-    if (v4)
+    if (setupCopy)
     {
       v12 = @"before launching healthd or first unlock";
     }
 
-    v13 = v12;
+    currentHandler2 = v12;
     _HKInitializeLogging();
     v14 = *MEMORY[0x277CCC2C8];
     if (os_log_type_enabled(*MEMORY[0x277CCC2C8], OS_LOG_TYPE_DEFAULT))
@@ -1425,7 +1425,7 @@ LABEL_35:
       *buf = 138543618;
       v46 = objc_opt_class();
       v47 = 2114;
-      *v48 = v13;
+      *v48 = currentHandler2;
       _os_log_impl(&dword_251764000, v15, OS_LOG_TYPE_DEFAULT, "[%{public}@] User has DISABLED Headphone Exposure Notifications %{public}@.", buf, 0x16u);
     }
 
@@ -1434,8 +1434,8 @@ LABEL_35:
 
   if (enabled != v10)
   {
-    v13 = [MEMORY[0x277CCA890] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"HDHeadphoneDoseManager.m" lineNumber:602 description:@"Unreachable code has been executed"];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"HDHeadphoneDoseManager.m" lineNumber:602 description:@"Unreachable code has been executed"];
     goto LABEL_15;
   }
 
@@ -1443,10 +1443,10 @@ LABEL_35:
   v16 = *MEMORY[0x277CCC2C8];
   if (os_log_type_enabled(*MEMORY[0x277CCC2C8], OS_LOG_TYPE_DEFAULT))
   {
-    v13 = v16;
+    currentHandler2 = v16;
     *buf = 138543362;
     v46 = objc_opt_class();
-    _os_log_impl(&dword_251764000, v13, OS_LOG_TYPE_DEFAULT, "[%{public}@] No changes to Headphone Exposure Notifications setting occurred.", buf, 0xCu);
+    _os_log_impl(&dword_251764000, currentHandler2, OS_LOG_TYPE_DEFAULT, "[%{public}@] No changes to Headphone Exposure Notifications setting occurred.", buf, 0xCu);
 LABEL_15:
   }
 
@@ -1455,22 +1455,22 @@ LABEL_38:
   v38 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_lock_rebuildWithAssertion:(id)a3 error:(id *)a4
+- (BOOL)_lock_rebuildWithAssertion:(id)assertion error:(id *)error
 {
-  v6 = a3;
+  assertionCopy = assertion;
   os_unfair_lock_assert_owner(&self->_lock);
-  LOBYTE(a4) = [(HDHeadphoneDoseManager *)self _lock_rebuildWithAssertion:v6 resetSyncNotification:0 error:a4];
+  LOBYTE(error) = [(HDHeadphoneDoseManager *)self _lock_rebuildWithAssertion:assertionCopy resetSyncNotification:0 error:error];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)_lock_rebuildWithAssertion:(id)a3 resetSyncNotification:(BOOL)a4 error:(id *)a5
+- (BOOL)_lock_rebuildWithAssertion:(id)assertion resetSyncNotification:(BOOL)notification error:(id *)error
 {
-  v6 = a4;
+  notificationCopy = notification;
   v34 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  assertionCopy = assertion;
   os_unfair_lock_assert_owner(&self->_lock);
-  if (v6)
+  if (notificationCopy)
   {
     keyValueStore = self->_keyValueStore;
     v29 = 0;
@@ -1497,7 +1497,7 @@ LABEL_38:
         goto LABEL_18;
       }
 
-      if (!a5)
+      if (!error)
       {
 LABEL_7:
         _HKLogDroppedError();
@@ -1509,7 +1509,7 @@ LABEL_18:
 LABEL_17:
       v25 = v15;
       v21 = 0;
-      *a5 = v15;
+      *error = v15;
 LABEL_19:
       v18 = v15;
       goto LABEL_22;
@@ -1547,7 +1547,7 @@ LABEL_19:
       goto LABEL_18;
     }
 
-    if (!a5)
+    if (!error)
     {
       goto LABEL_7;
     }
@@ -1555,7 +1555,7 @@ LABEL_19:
     goto LABEL_17;
   }
 
-  v19 = [(HDHeadphoneAudioExposureStatisticsCalculator *)self->_statisticsCalculator rebuildWithAssertion:v8 error:a5];
+  v19 = [(HDHeadphoneAudioExposureStatisticsCalculator *)self->_statisticsCalculator rebuildWithAssertion:assertionCopy error:error];
   v15 = v19;
   if (!v19)
   {
@@ -1564,30 +1564,30 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  v20 = [v19 cache];
+  cache = [v19 cache];
 
-  if (!v20)
+  if (!cache)
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a5 code:100 description:@"Cache not ready. Pending samples should be replayed soon."];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:100 description:@"Cache not ready. Pending samples should be replayed soon."];
     goto LABEL_21;
   }
 
-  v21 = [(HDHeadphoneDoseManager *)self _lock_updateCurrentDoseUsingStatisticsResult:v15 assertion:v8 error:a5];
+  v21 = [(HDHeadphoneDoseManager *)self _lock_updateCurrentDoseUsingStatisticsResult:v15 assertion:assertionCopy error:error];
 LABEL_22:
 
   v26 = *MEMORY[0x277D85DE8];
   return v21;
 }
 
-- (void)_lock_updateWithNotifications:(id)a3 journaled:(BOOL)a4 assertion:(id)a5
+- (void)_lock_updateWithNotifications:(id)notifications journaled:(BOOL)journaled assertion:(id)assertion
 {
-  v6 = a4;
+  journaledCopy = journaled;
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  notificationsCopy = notifications;
+  assertionCopy = assertion;
   os_unfair_lock_assert_owner(&self->_lock);
   v10 = @"added";
-  if (v6)
+  if (journaledCopy)
   {
     v10 = @"journaled";
   }
@@ -1597,11 +1597,11 @@ LABEL_22:
   {
     statisticsCalculator = self->_statisticsCalculator;
     v21 = 0;
-    v13 = [(HDHeadphoneAudioExposureStatisticsCalculator *)statisticsCalculator updateWithNotifications:v8 assertion:v9 error:&v21];
+    v13 = [(HDHeadphoneAudioExposureStatisticsCalculator *)statisticsCalculator updateWithNotifications:notificationsCopy assertion:assertionCopy error:&v21];
     v14 = v21;
     if (v13)
     {
-      -[HDHeadphoneDoseManager _updateCurrentDoseFromResult:context:sampleCount:assertion:](self, "_updateCurrentDoseFromResult:context:sampleCount:assertion:", v13, v11, [v8 count], v9);
+      -[HDHeadphoneDoseManager _updateCurrentDoseFromResult:context:sampleCount:assertion:](self, "_updateCurrentDoseFromResult:context:sampleCount:assertion:", v13, v11, [notificationsCopy count], assertionCopy);
     }
 
     else
@@ -1633,7 +1633,7 @@ LABEL_22:
       *buf = 138543874;
       v23 = objc_opt_class();
       v24 = 2048;
-      v25 = [v8 count];
+      v25 = [notificationsCopy count];
       v26 = 2114;
       v27 = v11;
       _os_log_impl(&dword_251764000, v16, OS_LOG_TYPE_DEFAULT, "[%{public}@] Ignoring %lu %{public}@ HAEN samples since HAEN is disabled.", buf, 0x20u);
@@ -1643,27 +1643,27 @@ LABEL_22:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateCurrentDoseFromResult:(id)a3 context:(id)a4 sampleCount:(unint64_t)a5 assertion:(id)a6
+- (void)_updateCurrentDoseFromResult:(id)result context:(id)context sampleCount:(unint64_t)count assertion:(id)assertion
 {
   v34 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [v10 statistics];
+  resultCopy = result;
+  contextCopy = context;
+  assertionCopy = assertion;
+  statistics = [resultCopy statistics];
 
-  if (v13)
+  if (statistics)
   {
-    v14 = [v10 statistics];
-    v15 = [v14 eligbleForUserNotification];
+    statistics2 = [resultCopy statistics];
+    eligbleForUserNotification = [statistics2 eligbleForUserNotification];
 
-    if (v15)
+    if (eligbleForUserNotification)
     {
       [HDHeadphoneDoseManager _updateCurrentDoseFromResult:context:sampleCount:assertion:];
     }
 
-    v16 = [v10 statistics];
+    statistics3 = [resultCopy statistics];
     v27 = 0;
-    v17 = [(HDHeadphoneDoseManager *)self _lock_updateCurrentDoseUsingStatisticsResult:v16 assertion:v12 error:&v27];
+    v17 = [(HDHeadphoneDoseManager *)self _lock_updateCurrentDoseUsingStatisticsResult:statistics3 assertion:assertionCopy error:&v27];
     v18 = v27;
 
     _HKInitializeLogging();
@@ -1678,9 +1678,9 @@ LABEL_22:
         *buf = 138543874;
         v29 = v22;
         v30 = 2048;
-        v31 = a5;
+        countCopy2 = count;
         v32 = 2114;
-        v33 = v11;
+        v33 = contextCopy;
         _os_log_impl(&dword_251764000, v21, OS_LOG_TYPE_DEFAULT, "[%{public}@] Successfully updated dose for %lu %{public}@ HAEN samples.", buf, 0x20u);
       }
     }
@@ -1692,7 +1692,7 @@ LABEL_22:
       *buf = 138543874;
       v29 = v26;
       v30 = 2114;
-      v31 = v11;
+      countCopy2 = contextCopy;
       v32 = 2112;
       v33 = v18;
       _os_log_fault_impl(&dword_251764000, v25, OS_LOG_TYPE_FAULT, "[%{public}@] Unable to update 7-Day HAE Dose due to 7-Day HAEN %{public}@ sample arrival: %@", buf, 0x20u);
@@ -1709,9 +1709,9 @@ LABEL_22:
     *buf = 138543874;
     v29 = objc_opt_class();
     v30 = 2048;
-    v31 = a5;
+    countCopy2 = count;
     v32 = 2114;
-    v33 = v11;
+    v33 = contextCopy;
     _os_log_impl(&dword_251764000, v18, OS_LOG_TYPE_DEFAULT, "[%{public}@] Successfully processed %lu %{public}@ HAEN samples which did NOT impact current dose", buf, 0x20u);
 LABEL_11:
   }
@@ -1719,12 +1719,12 @@ LABEL_11:
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_lock_updateCurrentDoseUsingStatisticsResult:(id)a3 assertion:(id)a4 error:(id *)a5
+- (BOOL)_lock_updateCurrentDoseUsingStatisticsResult:(id)result assertion:(id)assertion error:(id *)error
 {
   v91 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  resultCopy = result;
+  assertionCopy = assertion;
+  if (!resultCopy)
   {
     [HDHeadphoneDoseManager _lock_updateCurrentDoseUsingStatisticsResult:assertion:error:];
   }
@@ -1739,12 +1739,12 @@ LABEL_11:
     v10 = v12;
   }
 
-  v13 = [v8 eligbleForUserNotification];
-  v14 = [v8 cache];
-  v15 = v14;
-  if (v14)
+  eligbleForUserNotification = [resultCopy eligbleForUserNotification];
+  cache = [resultCopy cache];
+  v15 = cache;
+  if (cache)
   {
-    v16 = [v14 snapshotStatisticsForNowDate:v10 error:a5];
+    v16 = [cache snapshotStatisticsForNowDate:v10 error:error];
     v17 = v16;
     if (!v16)
     {
@@ -1754,8 +1754,8 @@ LABEL_73:
       goto LABEL_74;
     }
 
-    v18 = [v16 statistics];
-    v19 = [v18 hk_hearingSevenDayDosePercentageWithError:a5];
+    statistics = [v16 statistics];
+    v19 = [statistics hk_hearingSevenDayDosePercentageWithError:error];
 
     if (!v19)
     {
@@ -1783,7 +1783,7 @@ LABEL_72:
       v25 = -v25;
     }
 
-    if (v13)
+    if (eligbleForUserNotification)
     {
       lastUpdateSuppressedUserNotification = self->_lastUpdateSuppressedUserNotification;
     }
@@ -1821,7 +1821,7 @@ LABEL_71:
     v79[2](v24);
     [(HDHeadphoneDoseManager *)self _lock_updateCollectionAssertionForDoseAccumulated:v24];
     v32 = [(HDHeadphoneDoseMetadataStore *)self->_keyValueStore shouldNotifyUserForAccumulatedDose:v24];
-    if (!(v13 & 1 | !v32))
+    if (!(eligbleForUserNotification & 1 | !v32))
     {
       v32 = 0;
       self->_lastUpdateSuppressedUserNotification = 1;
@@ -1863,8 +1863,8 @@ LABEL_70:
     v75 = MEMORY[0x253081C40](v84);
     v37 = [HDHeadphoneExposureNotificationAnalyticsInfo alloc];
     lastLockDateForAnalytics = self->_lastLockDateForAnalytics;
-    v39 = [v17 previousNotificationDate];
-    v40 = [(HDHeadphoneExposureNotificationAnalyticsInfo *)v37 initWithLastLockDate:lastLockDateForAnalytics lastNotificationDate:v39];
+    previousNotificationDate = [v17 previousNotificationDate];
+    v40 = [(HDHeadphoneExposureNotificationAnalyticsInfo *)v37 initWithLastLockDate:lastLockDateForAnalytics lastNotificationDate:previousNotificationDate];
 
     _HKInitializeLogging();
     v41 = *MEMORY[0x277CCC2C8];
@@ -1911,31 +1911,31 @@ LABEL_70:
       v86 = v77;
       v50 = [MEMORY[0x277CBEA60] arrayWithObjects:&v86 count:1];
       v82 = 0;
-      v51 = [(HDHeadphoneAudioExposureStatisticsCalculator *)statisticsCalculator updateWithNotifications:v50 assertion:v9 error:&v82];
+      v51 = [(HDHeadphoneAudioExposureStatisticsCalculator *)statisticsCalculator updateWithNotifications:v50 assertion:assertionCopy error:&v82];
       v52 = v82;
 
       v72 = v51;
       v73 = v52;
       if (v51)
       {
-        v53 = [v51 statistics];
+        statistics2 = [v51 statistics];
 
-        if (!v53)
+        if (!statistics2)
         {
           [HDHeadphoneDoseManager _lock_updateCurrentDoseUsingStatisticsResult:assertion:error:];
         }
 
-        v54 = [v51 statistics];
-        v55 = [v54 eligbleForUserNotification];
+        statistics3 = [v51 statistics];
+        eligbleForUserNotification2 = [statistics3 eligbleForUserNotification];
 
-        if (v55)
+        if (eligbleForUserNotification2)
         {
           [HDHeadphoneDoseManager _lock_updateCurrentDoseUsingStatisticsResult:assertion:error:];
         }
 
-        v56 = [v51 statistics];
+        statistics4 = [v51 statistics];
         v81 = 0;
-        v28 = [(HDHeadphoneDoseManager *)self _lock_updateCurrentDoseUsingStatisticsResult:v56 assertion:v9 error:&v81];
+        v28 = [(HDHeadphoneDoseManager *)self _lock_updateCurrentDoseUsingStatisticsResult:statistics4 assertion:assertionCopy error:&v81];
         v57 = v81;
 
         v58 = 0;
@@ -1946,10 +1946,10 @@ LABEL_70:
           v58 = v59;
           if (v59)
           {
-            if (a5)
+            if (error)
             {
               v60 = v59;
-              *a5 = v58;
+              *error = v58;
             }
 
             else
@@ -1973,11 +1973,11 @@ LABEL_70:
         if (v64)
         {
           v19 = v78;
-          if (a5)
+          if (error)
           {
             v65 = v64;
             v28 = 0;
-            *a5 = v57;
+            *error = v57;
           }
 
           else
@@ -2027,11 +2027,11 @@ LABEL_70:
     v67 = v76;
     if (v67)
     {
-      if (a5)
+      if (error)
       {
         v67 = v67;
         v28 = 0;
-        *a5 = v67;
+        *error = v67;
 LABEL_69:
 
         goto LABEL_70;
@@ -2083,9 +2083,9 @@ void __87__HDHeadphoneDoseManager__lock_updateCurrentDoseUsingStatisticsResult_a
   }
 }
 
-- (void)_lock_setCollectionAssertion:(id)a3
+- (void)_lock_setCollectionAssertion:(id)assertion
 {
-  v4 = a3;
+  assertionCopy = assertion;
   os_unfair_lock_assert_owner(&self->_lock);
   collectionAssertion = self->_collectionAssertion;
   if (collectionAssertion)
@@ -2094,14 +2094,14 @@ void __87__HDHeadphoneDoseManager__lock_updateCurrentDoseUsingStatisticsResult_a
   }
 
   v6 = self->_collectionAssertion;
-  self->_collectionAssertion = v4;
+  self->_collectionAssertion = assertionCopy;
 }
 
-- (void)_lock_updateCollectionAssertionForDoseAccumulated:(double)a3
+- (void)_lock_updateCollectionAssertionForDoseAccumulated:(double)accumulated
 {
   v28 = *MEMORY[0x277D85DE8];
   os_unfair_lock_assert_owner(&self->_lock);
-  v5 = [(HDHeadphoneDoseMetadataStore *)self->_keyValueStore collectionIntervalForDoseAccumulated:a3];
+  v5 = [(HDHeadphoneDoseMetadataStore *)self->_keyValueStore collectionIntervalForDoseAccumulated:accumulated];
   v6 = v5;
   if (!v5)
   {
@@ -2143,9 +2143,9 @@ LABEL_7:
   v12 = MEMORY[0x277CCACA8];
   v13 = objc_opt_class();
   v14 = NSStringFromClass(v13);
-  v15 = [MEMORY[0x277CCAD78] UUID];
-  v16 = [v15 UUIDString];
-  v17 = [v12 stringWithFormat:@"%@-%@", v14, v16];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  v17 = [v12 stringWithFormat:@"%@-%@", v14, uUIDString];
 
   v18 = MEMORY[0x277CBEB98];
   v19 = HKHeadphoneAudioExposureType();
@@ -2153,8 +2153,8 @@ LABEL_7:
 
   v21 = [MEMORY[0x277D10680] dataCollectionObserverStateInForeground:1 hasRunningWorkout:0 hasBackgroundObserver:0 shouldTakeWorkoutDatabaseAssertion:0];
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v23 = [WeakRetained dataCollectionManager];
-  v24 = [v23 takeCollectionAssertionWithOwnerIdentifier:v17 sampleTypes:v20 observerState:v21 collectionInterval:v8];
+  dataCollectionManager = [WeakRetained dataCollectionManager];
+  v24 = [dataCollectionManager takeCollectionAssertionWithOwnerIdentifier:v17 sampleTypes:v20 observerState:v21 collectionInterval:v8];
 
   [(HDHeadphoneDoseManager *)self _lock_setCollectionAssertion:v24];
 LABEL_11:
@@ -2162,31 +2162,31 @@ LABEL_11:
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateWithRemoteNotificationDismissalDate:(id)a3 assertion:(id)a4
+- (void)_updateWithRemoteNotificationDismissalDate:(id)date assertion:(id)assertion
 {
-  v6 = a4;
-  v7 = a3;
+  assertionCopy = assertion;
+  dateCopy = date;
   os_unfair_lock_lock(&self->_lock);
-  [(HDHeadphoneDoseManager *)self _lock_updateWithRemoteNotificationDismissalDate:v7 assertion:v6];
+  [(HDHeadphoneDoseManager *)self _lock_updateWithRemoteNotificationDismissalDate:dateCopy assertion:assertionCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)_lock_updateWithRemoteNotificationDismissalDate:(id)a3 assertion:(id)a4
+- (void)_lock_updateWithRemoteNotificationDismissalDate:(id)date assertion:(id)assertion
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dateCopy = date;
+  assertionCopy = assertion;
   os_unfair_lock_assert_owner(&self->_lock);
   if (self->_enabled)
   {
     statisticsCalculator = self->_statisticsCalculator;
     v14 = 0;
-    v9 = [(HDHeadphoneAudioExposureStatisticsCalculator *)statisticsCalculator updateWithRemoteNotificationDismissalFireDate:v6 assertion:v7 error:&v14];
+    v9 = [(HDHeadphoneAudioExposureStatisticsCalculator *)statisticsCalculator updateWithRemoteNotificationDismissalFireDate:dateCopy assertion:assertionCopy error:&v14];
     v10 = v14;
     if (v9)
     {
-      [(HDHeadphoneDoseManager *)self _updateCurrentDoseFromResult:v9 context:@"Notification Synced" sampleCount:1 assertion:v7];
+      [(HDHeadphoneDoseManager *)self _updateCurrentDoseFromResult:v9 context:@"Notification Synced" sampleCount:1 assertion:assertionCopy];
     }
 
     else
@@ -2219,21 +2219,21 @@ LABEL_11:
 {
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterAddObserver(DarwinNotifyCenter, self, _significantTimeChange, @"SignificantTimeChangeNotification", 0, CFNotificationSuspensionBehaviorCoalesce);
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 addObserver:self selector:sel__handleSignificantTimeChangeNotification_ name:*MEMORY[0x277CBE580] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__handleSignificantTimeChangeNotification_ name:*MEMORY[0x277CBE580] object:0];
 }
 
 - (void)_unregisterForSignificantTimeChangeNotification
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277CBE580] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277CBE580] object:0];
 
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
 
   CFNotificationCenterRemoveObserver(DarwinNotifyCenter, self, @"SignificantTimeChangeNotification", 0);
 }
 
-- (void)_handleSignificantTimeChangeNotification:(id)a3
+- (void)_handleSignificantTimeChangeNotification:(id)notification
 {
   _HKInitializeLogging();
   v4 = *MEMORY[0x277CCC2C8];

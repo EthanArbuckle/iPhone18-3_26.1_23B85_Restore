@@ -2,25 +2,25 @@
 + (double)estimatedHeight;
 - (NSLayoutAnchor)_anchorFromWhichToPositionPrimaryLabelFirstBaseline;
 - (RouteTableViewCell)init;
-- (RouteTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (RouteTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (RouteTableViewCellButtonConstraintsController)_buttonConstraintsController;
 - (RouteTableViewCellDelegate)delegate;
 - (id)_autolayoutConstraints;
 - (id)_disclosureButton;
-- (void)_contentSizeCategoryDidChange:(id)a3;
+- (void)_contentSizeCategoryDidChange:(id)change;
 - (void)_createSubviews;
-- (void)_disclosureButtonTapped:(id)a3;
-- (void)_setShouldHaveFullLengthBottomSeparator:(BOOL)a3;
+- (void)_disclosureButtonTapped:(id)tapped;
+- (void)_setShouldHaveFullLengthBottomSeparator:(BOOL)separator;
 - (void)_updateCellLabels;
 - (void)_updateConstraintValues;
 - (void)_updateFonts;
 - (void)dealloc;
 - (void)didMoveToWindow;
-- (void)setRoute:(id)a3;
-- (void)setSeparatorInset:(UIEdgeInsets)a3;
-- (void)setShowDisclosureButton:(BOOL)a3;
-- (void)setUseRoutePreviewDescription:(BOOL)a3;
-- (void)set_maps_shouldHaveFullLengthBottomSeparator:(BOOL)a3;
+- (void)setRoute:(id)route;
+- (void)setSeparatorInset:(UIEdgeInsets)inset;
+- (void)setShowDisclosureButton:(BOOL)button;
+- (void)setUseRoutePreviewDescription:(BOOL)description;
+- (void)set_maps_shouldHaveFullLengthBottomSeparator:(BOOL)separator;
 @end
 
 @implementation RouteTableViewCell
@@ -32,20 +32,20 @@
   return WeakRetained;
 }
 
-- (void)_disclosureButtonTapped:(id)a3
+- (void)_disclosureButtonTapped:(id)tapped
 {
-  v4 = [(RouteTableViewCell *)self delegate];
-  [v4 disclosureButtonTappedInCell:self];
+  delegate = [(RouteTableViewCell *)self delegate];
+  [delegate disclosureButtonTappedInCell:self];
 }
 
 - (RouteTableViewCellButtonConstraintsController)_buttonConstraintsController
 {
   v3 = [RouteTableViewCellButtonConstraintsController alloc];
-  v4 = [(_MKUILabel *)self->_primaryLabel trailingAnchor];
-  v5 = [(RouteTableViewCell *)self contentView];
-  v6 = [v5 trailingAnchor];
-  v7 = [(_MKUILabel *)self->_primaryLabel firstBaselineAnchor];
-  v8 = [(RouteTableViewCellButtonConstraintsController *)v3 initWithLeadingAnchor:v4 trailingAnchor:v6 firstBaselineAnchor:v7 leadingDistance:8.0 firstBaselineDistance:0.0];
+  trailingAnchor = [(_MKUILabel *)self->_primaryLabel trailingAnchor];
+  contentView = [(RouteTableViewCell *)self contentView];
+  trailingAnchor2 = [contentView trailingAnchor];
+  firstBaselineAnchor = [(_MKUILabel *)self->_primaryLabel firstBaselineAnchor];
+  v8 = [(RouteTableViewCellButtonConstraintsController *)v3 initWithLeadingAnchor:trailingAnchor trailingAnchor:trailingAnchor2 firstBaselineAnchor:firstBaselineAnchor leadingDistance:8.0 firstBaselineDistance:0.0];
 
   return v8;
 }
@@ -57,9 +57,9 @@
   v5 = [v4 localizedStringForKey:@"WalkingDrivingRoute_ButtonTitle" value:@"localized string not found" table:0];
 
   [v3 setTitle:v5 forState:0];
-  v6 = [(RouteTableViewCell *)self _disclosureButtonFont];
-  v7 = [v3 titleLabel];
-  [v7 setFont:v6];
+  _disclosureButtonFont = [(RouteTableViewCell *)self _disclosureButtonFont];
+  titleLabel = [v3 titleLabel];
+  [titleLabel setFont:_disclosureButtonFont];
 
   IsRightToLeft = MKApplicationLayoutDirectionIsRightToLeft();
   if (IsRightToLeft)
@@ -87,9 +87,9 @@
   return v3;
 }
 
-- (void)setShowDisclosureButton:(BOOL)a3
+- (void)setShowDisclosureButton:(BOOL)button
 {
-  if (self->_showDisclosureButton != a3)
+  if (self->_showDisclosureButton != button)
   {
     v17 = v8;
     v18 = v7;
@@ -97,16 +97,16 @@
     v20 = v5;
     v21 = v4;
     v22 = v3;
-    v11 = a3;
-    self->_showDisclosureButton = a3;
+    buttonCopy = button;
+    self->_showDisclosureButton = button;
     disclosureButton = self->_disclosureButton;
-    if (a3)
+    if (button)
     {
       if (!disclosureButton)
       {
-        v14 = [(RouteTableViewCell *)self _disclosureButton];
+        _disclosureButton = [(RouteTableViewCell *)self _disclosureButton];
         v15 = self->_disclosureButton;
-        self->_disclosureButton = v14;
+        self->_disclosureButton = _disclosureButton;
 
         [(MapsLargerHitTargetButton *)self->_disclosureButton addTarget:self action:"_disclosureButtonTapped:" forControlEvents:64];
         [(RouteTableViewCellButtonConstraintsController *)self->_buttonConstraintsController setButton:self->_disclosureButton];
@@ -121,30 +121,30 @@
       [(MapsLargerHitTargetButton *)disclosureButton removeFromSuperview];
     }
 
-    [(RouteTableViewCellButtonConstraintsController *)self->_buttonConstraintsController setButtonVisible:v11, v17, v18, v19, v20, v21, v22];
+    [(RouteTableViewCellButtonConstraintsController *)self->_buttonConstraintsController setButtonVisible:buttonCopy, v17, v18, v19, v20, v21, v22];
 
     [(RouteTableViewCell *)self _mapkit_setNeedsLayout];
   }
 }
 
-- (void)setSeparatorInset:(UIEdgeInsets)a3
+- (void)setSeparatorInset:(UIEdgeInsets)inset
 {
   v4.receiver = self;
   v4.super_class = RouteTableViewCell;
-  [(RouteTableViewCell *)&v4 setSeparatorInset:a3.top, a3.left, a3.bottom, a3.right];
+  [(RouteTableViewCell *)&v4 setSeparatorInset:inset.top, inset.left, inset.bottom, inset.right];
   [(RouteTableViewCell *)self _updateConstraintValues];
 }
 
-- (void)set_maps_shouldHaveFullLengthBottomSeparator:(BOOL)a3
+- (void)set_maps_shouldHaveFullLengthBottomSeparator:(BOOL)separator
 {
-  if (self->__maps_shouldHaveFullLengthBottomSeparator != a3)
+  if (self->__maps_shouldHaveFullLengthBottomSeparator != separator)
   {
-    self->__maps_shouldHaveFullLengthBottomSeparator = a3;
+    self->__maps_shouldHaveFullLengthBottomSeparator = separator;
     [(RouteTableViewCell *)self _setShouldHaveFullLengthBottomSeparator:?];
   }
 }
 
-- (void)_setShouldHaveFullLengthBottomSeparator:(BOOL)a3
+- (void)_setShouldHaveFullLengthBottomSeparator:(BOOL)separator
 {
   maps_shouldHaveFullLengthBottomSeparator = self->__maps_shouldHaveFullLengthBottomSeparator;
   v4.receiver = self;
@@ -152,55 +152,55 @@
   [(RouteTableViewCell *)&v4 _setShouldHaveFullLengthBottomSeparator:maps_shouldHaveFullLengthBottomSeparator];
 }
 
-- (void)setUseRoutePreviewDescription:(BOOL)a3
+- (void)setUseRoutePreviewDescription:(BOOL)description
 {
-  if (self->_useRoutePreviewDescription != a3)
+  if (self->_useRoutePreviewDescription != description)
   {
-    self->_useRoutePreviewDescription = a3;
+    self->_useRoutePreviewDescription = description;
     [(RouteTableViewCell *)self _updateCellLabels];
   }
 }
 
 - (void)_updateCellLabels
 {
-  v3 = [(RouteTableViewCell *)self route];
+  route = [(RouteTableViewCell *)self route];
 
-  if (v3)
+  if (route)
   {
-    v4 = [(RouteTableViewCell *)self useRoutePreviewDescription];
-    v5 = [(RouteTableViewCell *)self route];
-    v6 = v5;
-    if (v4)
+    useRoutePreviewDescription = [(RouteTableViewCell *)self useRoutePreviewDescription];
+    route2 = [(RouteTableViewCell *)self route];
+    v6 = route2;
+    if (useRoutePreviewDescription)
     {
-      [v5 previewDurationString];
+      [route2 previewDurationString];
     }
 
     else
     {
-      [v5 pickingDurationString];
+      [route2 pickingDurationString];
     }
     v7 = ;
 
-    v8 = [(RouteTableViewCell *)self route];
-    v9 = [v8 planningDescriptionString];
+    route3 = [(RouteTableViewCell *)self route];
+    planningDescriptionString = [route3 planningDescriptionString];
 
     if (v7)
     {
       v20 = NSFontAttributeName;
-      v10 = [(_MKUILabel *)self->_primaryLabel font];
-      v21 = v10;
+      font = [(_MKUILabel *)self->_primaryLabel font];
+      v21 = font;
       v11 = [NSDictionary dictionaryWithObjects:&v21 forKeys:&v20 count:1];
       v12 = [NSAttributedString _mapkit_attributedStringForComposedString:v7 defaultAttributes:v11];
       [(_MKUILabel *)self->_primaryLabel setAttributedText:v12];
 
-      if (v9)
+      if (planningDescriptionString)
       {
 LABEL_7:
         v18 = NSFontAttributeName;
-        v13 = [(_MKUILabel *)self->_secondaryLabel font];
-        v19 = v13;
-        v14 = [NSDictionary dictionaryWithObjects:&v19 forKeys:&v18 count:1];
-        v15 = [NSAttributedString _mapkit_attributedStringForComposedString:v9 defaultAttributes:v14];
+        font2 = [(_MKUILabel *)self->_secondaryLabel font];
+        v19 = font2;
+        clientPickingDescription = [NSDictionary dictionaryWithObjects:&v19 forKeys:&v18 count:1];
+        v15 = [NSAttributedString _mapkit_attributedStringForComposedString:planningDescriptionString defaultAttributes:clientPickingDescription];
         [(_MKUILabel *)self->_secondaryLabel setAttributedText:v15];
 
 LABEL_10:
@@ -210,32 +210,32 @@ LABEL_10:
 
     else
     {
-      v16 = [(RouteTableViewCell *)self route];
-      v17 = [v16 clientPickingDuration];
-      [(_MKUILabel *)self->_primaryLabel setText:v17];
+      route4 = [(RouteTableViewCell *)self route];
+      clientPickingDuration = [route4 clientPickingDuration];
+      [(_MKUILabel *)self->_primaryLabel setText:clientPickingDuration];
 
-      if (v9)
+      if (planningDescriptionString)
       {
         goto LABEL_7;
       }
     }
 
-    v13 = [(RouteTableViewCell *)self route];
-    v14 = [v13 clientPickingDescription];
-    [(_MKUILabel *)self->_secondaryLabel setText:v14];
+    font2 = [(RouteTableViewCell *)self route];
+    clientPickingDescription = [font2 clientPickingDescription];
+    [(_MKUILabel *)self->_secondaryLabel setText:clientPickingDescription];
     goto LABEL_10;
   }
 }
 
-- (void)setRoute:(id)a3
+- (void)setRoute:(id)route
 {
-  v5 = a3;
-  if (self->_route != v5)
+  routeCopy = route;
+  if (self->_route != routeCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_route, a3);
+    v6 = routeCopy;
+    objc_storeStrong(&self->_route, route);
     [(RouteTableViewCell *)self _updateCellLabels];
-    v5 = v6;
+    routeCopy = v6;
   }
 }
 
@@ -247,12 +247,12 @@ LABEL_10:
   v4 = [UIFont _mapkit_preferredFontForTextStyleInTableViewCell:UIFontTextStyleFootnote addingSymbolicTraits:0];
   [(_MKUILabel *)self->_secondaryLabel setFont:v4];
 
-  v6 = [(RouteTableViewCell *)self _disclosureButtonFont];
-  v5 = [(MapsLargerHitTargetButton *)self->_disclosureButton titleLabel];
-  [v5 setFont:v6];
+  _disclosureButtonFont = [(RouteTableViewCell *)self _disclosureButtonFont];
+  titleLabel = [(MapsLargerHitTargetButton *)self->_disclosureButton titleLabel];
+  [titleLabel setFont:_disclosureButtonFont];
 }
 
-- (void)_contentSizeCategoryDidChange:(id)a3
+- (void)_contentSizeCategoryDidChange:(id)change
 {
   [(RouteTableViewCell *)self _updateFonts];
   [(RouteTableViewCell *)self _updateConstraintValues];
@@ -262,43 +262,43 @@ LABEL_10:
 
 - (NSLayoutAnchor)_anchorFromWhichToPositionPrimaryLabelFirstBaseline
 {
-  v2 = [(RouteTableViewCell *)self contentView];
-  v3 = [v2 topAnchor];
+  contentView = [(RouteTableViewCell *)self contentView];
+  topAnchor = [contentView topAnchor];
 
-  return v3;
+  return topAnchor;
 }
 
 - (void)_updateConstraintValues
 {
-  v3 = [(_MKUILabel *)self->_primaryLabel font];
+  font = [(_MKUILabel *)self->_primaryLabel font];
   [(RouteTableViewCell *)self _distanceToPositionPrimaryLabelFirstBaseline];
-  [v3 _scaledValueForValue:?];
+  [font _scaledValueForValue:?];
   UIRoundToViewScale();
   [(NSLayoutConstraint *)self->_primaryToTopViewConstraint setConstant:?];
 
-  v4 = [(_MKUILabel *)self->_secondaryLabel font];
-  [v4 _scaledValueForValue:18.0];
+  font2 = [(_MKUILabel *)self->_secondaryLabel font];
+  [font2 _scaledValueForValue:18.0];
   UIRoundToViewScale();
   [(NSLayoutConstraint *)self->_secondaryToPrimaryConstraint setConstant:?];
 
-  v5 = self;
-  v6 = [(RouteTableViewCell *)v5 window];
-  v7 = [v6 screen];
-  if (v7)
+  selfCopy = self;
+  window = [(RouteTableViewCell *)selfCopy window];
+  screen = [window screen];
+  if (screen)
   {
-    v8 = [(RouteTableViewCell *)v5 window];
-    v9 = [v8 screen];
-    [v9 nativeScale];
+    window2 = [(RouteTableViewCell *)selfCopy window];
+    screen2 = [window2 screen];
+    [screen2 nativeScale];
   }
 
   else
   {
-    v8 = +[UIScreen mainScreen];
-    [v8 nativeScale];
+    window2 = +[UIScreen mainScreen];
+    [window2 nativeScale];
   }
 
   UIRoundToViewScale();
-  secondaryLabelToBottomConstraint = v5->_secondaryLabelToBottomConstraint;
+  secondaryLabelToBottomConstraint = selfCopy->_secondaryLabelToBottomConstraint;
 
   [(NSLayoutConstraint *)secondaryLabelToBottomConstraint setConstant:?];
 }
@@ -307,46 +307,46 @@ LABEL_10:
 {
   v42.receiver = self;
   v42.super_class = RouteTableViewCell;
-  v3 = [(RoutePickingCell *)&v42 _autolayoutConstraints];
-  v4 = [(_MKUILabel *)self->_primaryLabel leadingAnchor];
-  v5 = [(RouteTableViewCell *)self contentView];
-  v6 = [v5 safeAreaLayoutGuide];
-  v7 = [v6 leadingAnchor];
-  v8 = [v4 constraintEqualToAnchor:v7];
+  _autolayoutConstraints = [(RoutePickingCell *)&v42 _autolayoutConstraints];
+  leadingAnchor = [(_MKUILabel *)self->_primaryLabel leadingAnchor];
+  contentView = [(RouteTableViewCell *)self contentView];
+  safeAreaLayoutGuide = [contentView safeAreaLayoutGuide];
+  leadingAnchor2 = [safeAreaLayoutGuide leadingAnchor];
+  v8 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   leftPaddingConstraint = self->_leftPaddingConstraint;
   self->_leftPaddingConstraint = v8;
 
-  [v3 addObject:self->_leftPaddingConstraint];
-  v10 = [(RouteTableViewCell *)self contentView];
-  v11 = [v10 safeAreaLayoutGuide];
-  v12 = [v11 trailingAnchor];
-  v13 = [(_MKUILabel *)self->_secondaryLabel trailingAnchor];
-  v14 = [v12 constraintEqualToAnchor:v13];
+  [_autolayoutConstraints addObject:self->_leftPaddingConstraint];
+  contentView2 = [(RouteTableViewCell *)self contentView];
+  safeAreaLayoutGuide2 = [contentView2 safeAreaLayoutGuide];
+  trailingAnchor = [safeAreaLayoutGuide2 trailingAnchor];
+  trailingAnchor2 = [(_MKUILabel *)self->_secondaryLabel trailingAnchor];
+  v14 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   secondaryLabelToContentViewConstraint = self->_secondaryLabelToContentViewConstraint;
   self->_secondaryLabelToContentViewConstraint = v14;
 
-  [v3 addObject:self->_secondaryLabelToContentViewConstraint];
-  v16 = [(_MKUILabel *)self->_secondaryLabel leadingAnchor];
-  v17 = [(_MKUILabel *)self->_primaryLabel leadingAnchor];
-  v18 = [v16 constraintEqualToAnchor:v17];
-  [v3 addObject:v18];
+  [_autolayoutConstraints addObject:self->_secondaryLabelToContentViewConstraint];
+  leadingAnchor3 = [(_MKUILabel *)self->_secondaryLabel leadingAnchor];
+  leadingAnchor4 = [(_MKUILabel *)self->_primaryLabel leadingAnchor];
+  v18 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
+  [_autolayoutConstraints addObject:v18];
 
-  v19 = [(_MKUILabel *)self->_primaryLabel firstBaselineAnchor];
-  v20 = [(RouteTableViewCell *)self _anchorFromWhichToPositionPrimaryLabelFirstBaseline];
-  v21 = [v19 constraintEqualToAnchor:v20];
+  firstBaselineAnchor = [(_MKUILabel *)self->_primaryLabel firstBaselineAnchor];
+  _anchorFromWhichToPositionPrimaryLabelFirstBaseline = [(RouteTableViewCell *)self _anchorFromWhichToPositionPrimaryLabelFirstBaseline];
+  v21 = [firstBaselineAnchor constraintEqualToAnchor:_anchorFromWhichToPositionPrimaryLabelFirstBaseline];
   primaryToTopViewConstraint = self->_primaryToTopViewConstraint;
   self->_primaryToTopViewConstraint = v21;
 
-  v23 = [(_MKUILabel *)self->_secondaryLabel firstBaselineAnchor];
-  v24 = [(_MKUILabel *)self->_primaryLabel lastBaselineAnchor];
-  v25 = [v23 constraintEqualToAnchor:v24];
+  firstBaselineAnchor2 = [(_MKUILabel *)self->_secondaryLabel firstBaselineAnchor];
+  lastBaselineAnchor = [(_MKUILabel *)self->_primaryLabel lastBaselineAnchor];
+  v25 = [firstBaselineAnchor2 constraintEqualToAnchor:lastBaselineAnchor];
   secondaryToPrimaryConstraint = self->_secondaryToPrimaryConstraint;
   self->_secondaryToPrimaryConstraint = v25;
 
-  v27 = [(RouteTableViewCell *)self contentView];
-  v28 = [v27 bottomAnchor];
-  v29 = [(_MKUILabel *)self->_secondaryLabel lastBaselineAnchor];
-  v30 = [v28 constraintEqualToAnchor:v29];
+  contentView3 = [(RouteTableViewCell *)self contentView];
+  bottomAnchor = [contentView3 bottomAnchor];
+  lastBaselineAnchor2 = [(_MKUILabel *)self->_secondaryLabel lastBaselineAnchor];
+  v30 = [bottomAnchor constraintEqualToAnchor:lastBaselineAnchor2];
   secondaryLabelToBottomConstraint = self->_secondaryLabelToBottomConstraint;
   self->_secondaryLabelToBottomConstraint = v30;
 
@@ -354,24 +354,24 @@ LABEL_10:
   v43[0] = self->_primaryToTopViewConstraint;
   v43[1] = v32;
   v43[2] = self->_secondaryLabelToBottomConstraint;
-  v33 = [(_MKUILabel *)self->_primaryLabel lastBaselineAnchor];
-  v34 = [(RouteTableViewCell *)self contentView];
-  v35 = [v34 bottomAnchor];
-  v36 = [v33 constraintLessThanOrEqualToAnchor:v35 constant:-18.0];
+  lastBaselineAnchor3 = [(_MKUILabel *)self->_primaryLabel lastBaselineAnchor];
+  contentView4 = [(RouteTableViewCell *)self contentView];
+  bottomAnchor2 = [contentView4 bottomAnchor];
+  v36 = [lastBaselineAnchor3 constraintLessThanOrEqualToAnchor:bottomAnchor2 constant:-18.0];
   v43[3] = v36;
   v37 = [NSArray arrayWithObjects:v43 count:4];
-  [v3 addObjectsFromArray:v37];
+  [_autolayoutConstraints addObjectsFromArray:v37];
 
-  v38 = [(RouteTableViewCell *)self _buttonConstraintsController];
+  _buttonConstraintsController = [(RouteTableViewCell *)self _buttonConstraintsController];
   buttonConstraintsController = self->_buttonConstraintsController;
-  self->_buttonConstraintsController = v38;
+  self->_buttonConstraintsController = _buttonConstraintsController;
 
-  v40 = [(RouteTableViewCellButtonConstraintsController *)self->_buttonConstraintsController initialConstraints];
-  [v3 addObjectsFromArray:v40];
+  initialConstraints = [(RouteTableViewCellButtonConstraintsController *)self->_buttonConstraintsController initialConstraints];
+  [_autolayoutConstraints addObjectsFromArray:initialConstraints];
 
   [(RouteTableViewCell *)self _updateConstraintValues];
 
-  return v3;
+  return _autolayoutConstraints;
 }
 
 - (void)didMoveToWindow
@@ -397,8 +397,8 @@ LABEL_10:
   [(_MKUILabel *)self->_primaryLabel setNumberOfLines:0];
   [(_MKUILabel *)self->_primaryLabel setTextAlignment:4];
   [(_MKUILabel *)self->_primaryLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-  v6 = [(RouteTableViewCell *)self contentView];
-  [v6 addSubview:self->_primaryLabel];
+  contentView = [(RouteTableViewCell *)self contentView];
+  [contentView addSubview:self->_primaryLabel];
 
   v7 = objc_alloc_init(_MKUILabel);
   secondaryLabel = self->_secondaryLabel;
@@ -413,8 +413,8 @@ LABEL_10:
 
   [(_MKUILabel *)self->_secondaryLabel setTextAlignment:4];
   [(_MKUILabel *)self->_secondaryLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-  v11 = [(RouteTableViewCell *)self contentView];
-  [v11 addSubview:self->_secondaryLabel];
+  contentView2 = [(RouteTableViewCell *)self contentView];
+  [contentView2 addSubview:self->_secondaryLabel];
 }
 
 - (void)dealloc
@@ -427,11 +427,11 @@ LABEL_10:
   [(RouteTableViewCell *)&v4 dealloc];
 }
 
-- (RouteTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (RouteTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v10.receiver = self;
   v10.super_class = RouteTableViewCell;
-  v4 = [(RoutePickingCell *)&v10 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(RoutePickingCell *)&v10 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = +[NSNotificationCenter defaultCenter];
@@ -449,8 +449,8 @@ LABEL_10:
 
 - (RouteTableViewCell)init
 {
-  v3 = [objc_opt_class() reuseIdentifier];
-  v4 = [(RouteTableViewCell *)self initWithStyle:0 reuseIdentifier:v3];
+  reuseIdentifier = [objc_opt_class() reuseIdentifier];
+  v4 = [(RouteTableViewCell *)self initWithStyle:0 reuseIdentifier:reuseIdentifier];
 
   return v4;
 }

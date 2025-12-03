@@ -1,41 +1,41 @@
 @interface JavaUtilIdentityHashMap
 + (void)initialize;
-- (BOOL)containsKeyWithId:(id)a3;
-- (BOOL)containsValueWithId:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)containsKeyWithId:(id)id;
+- (BOOL)containsValueWithId:(id)id;
+- (BOOL)isEqual:(id)equal;
 - (id)clone;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)entrySet;
-- (id)getWithId:(id)a3;
+- (id)getWithId:(id)id;
 - (id)keySet;
-- (id)massageValueWithId:(id)a3;
-- (id)newElementArrayWithInt:(int)a3;
-- (id)putWithId:(id)a3 withId:(id)a4;
+- (id)massageValueWithId:(id)id;
+- (id)newElementArrayWithInt:(int)int;
+- (id)putWithId:(id)id withId:(id)withId;
 - (id)rehash;
-- (id)removeWithId:(id)a3;
+- (id)removeWithId:(id)id;
 - (id)values;
 - (int)computeElementArraySize;
-- (int)getThresholdWithInt:(int)a3;
+- (int)getThresholdWithInt:(int)int;
 - (void)clear;
 - (void)computeMaxSize;
 - (void)dealloc;
-- (void)putAllImplWithJavaUtilMap:(id)a3;
-- (void)readObjectWithJavaIoObjectInputStream:(id)a3;
-- (void)writeObjectWithJavaIoObjectOutputStream:(id)a3;
+- (void)putAllImplWithJavaUtilMap:(id)map;
+- (void)readObjectWithJavaIoObjectInputStream:(id)stream;
+- (void)writeObjectWithJavaIoObjectOutputStream:(id)stream;
 @end
 
 @implementation JavaUtilIdentityHashMap
 
-- (int)getThresholdWithInt:(int)a3
+- (int)getThresholdWithInt:(int)int
 {
-  if (a3 <= 3)
+  if (int <= 3)
   {
     return 3;
   }
 
   else
   {
-    return a3;
+    return int;
   }
 }
 
@@ -52,24 +52,24 @@
   }
 }
 
-- (id)newElementArrayWithInt:(int)a3
+- (id)newElementArrayWithInt:(int)int
 {
-  v3 = a3;
+  intCopy = int;
   v4 = NSObject_class_();
 
-  return [IOSObjectArray arrayWithLength:v3 type:v4];
+  return [IOSObjectArray arrayWithLength:intCopy type:v4];
 }
 
-- (id)massageValueWithId:(id)a3
+- (id)massageValueWithId:(id)id
 {
-  if (qword_1005568B0 == a3)
+  if (qword_1005568B0 == id)
   {
     return 0;
   }
 
   else
   {
-    return a3;
+    return id;
   }
 }
 
@@ -97,19 +97,19 @@ LABEL_5:
   ++self->modCount_;
 }
 
-- (BOOL)containsKeyWithId:(id)a3
+- (BOOL)containsKeyWithId:(id)id
 {
-  if (a3)
+  if (id)
   {
-    v4 = a3;
+    idCopy = id;
   }
 
   else
   {
-    v4 = qword_1005568B0;
+    idCopy = qword_1005568B0;
   }
 
-  v5 = sub_1002619CC(v4, self->elementData_);
+  v5 = sub_1002619CC(idCopy, self->elementData_);
   elementData = self->elementData_;
   if (!elementData)
   {
@@ -123,19 +123,19 @@ LABEL_5:
     IOSArray_throwOutOfBoundsWithMsg(size, v7);
   }
 
-  return (&elementData->elementType_)[v7] == v4;
+  return (&elementData->elementType_)[v7] == idCopy;
 }
 
-- (BOOL)containsValueWithId:(id)a3
+- (BOOL)containsValueWithId:(id)id
 {
-  if (a3)
+  if (id)
   {
-    v3 = a3;
+    idCopy = id;
   }
 
   else
   {
-    v3 = qword_1005568B0;
+    idCopy = qword_1005568B0;
   }
 
   elementData = self->elementData_;
@@ -159,7 +159,7 @@ LABEL_13:
       IOSArray_throwOutOfBoundsWithMsg(elementData->super.size_, v5);
     }
 
-    if ((&elementData->elementType_)[v5] == v3)
+    if ((&elementData->elementType_)[v5] == idCopy)
     {
       break;
     }
@@ -175,19 +175,19 @@ LABEL_13:
   return v5 < size;
 }
 
-- (id)getWithId:(id)a3
+- (id)getWithId:(id)id
 {
-  if (a3)
+  if (id)
   {
-    v4 = a3;
+    idCopy = id;
   }
 
   else
   {
-    v4 = qword_1005568B0;
+    idCopy = qword_1005568B0;
   }
 
-  v5 = sub_1002619CC(v4, self->elementData_);
+  v5 = sub_1002619CC(idCopy, self->elementData_);
   elementData = self->elementData_;
   if (!elementData)
   {
@@ -201,7 +201,7 @@ LABEL_13:
     IOSArray_throwOutOfBoundsWithMsg(size, v7);
   }
 
-  if ((&elementData->elementType_)[v7] != v4)
+  if ((&elementData->elementType_)[v7] != idCopy)
   {
     return 0;
   }
@@ -225,20 +225,20 @@ LABEL_13:
   }
 }
 
-- (id)putWithId:(id)a3 withId:(id)a4
+- (id)putWithId:(id)id withId:(id)withId
 {
   v6 = qword_1005568B0;
-  if (a3)
+  if (id)
   {
-    v7 = a3;
+    idCopy = id;
   }
 
   else
   {
-    v7 = qword_1005568B0;
+    idCopy = qword_1005568B0;
   }
 
-  v8 = sub_1002619CC(v7, self->elementData_);
+  v8 = sub_1002619CC(idCopy, self->elementData_);
   elementData = self->elementData_;
   if (!elementData)
   {
@@ -253,7 +253,7 @@ LABEL_13:
     IOSArray_throwOutOfBoundsWithMsg(size, v10);
   }
 
-  if ((&elementData->elementType_)[v11] == v7)
+  if ((&elementData->elementType_)[v11] == idCopy)
   {
     v15 = (v10 + 1);
   }
@@ -266,12 +266,12 @@ LABEL_13:
     if (v13 > self->threshold_)
     {
       [JavaUtilIdentityHashMap rehash]_0(self);
-      v14 = sub_1002619CC(v7, self->elementData_);
+      v14 = sub_1002619CC(idCopy, self->elementData_);
       v11 = v14;
       LODWORD(v10) = v14;
     }
 
-    IOSObjectArray_Set(self->elementData_, v11, v7);
+    IOSObjectArray_Set(self->elementData_, v11, idCopy);
     v15 = (v10 + 1);
     IOSObjectArray_Set(self->elementData_, v15, 0);
   }
@@ -282,18 +282,18 @@ LABEL_13:
     IOSArray_throwOutOfBoundsWithMsg(v16->super.size_, v15);
   }
 
-  if (a4)
+  if (withId)
   {
-    v17 = a4;
+    withIdCopy = withId;
   }
 
   else
   {
-    v17 = v6;
+    withIdCopy = v6;
   }
 
   v18 = (&v16->elementType_)[v15];
-  IOSObjectArray_Set(self->elementData_, v15, v17);
+  IOSObjectArray_Set(self->elementData_, v15, withIdCopy);
   if (qword_1005568B0 == v18)
   {
     return 0;
@@ -307,7 +307,7 @@ LABEL_13:
 
 - (id)rehash
 {
-  v1 = *(a1 + 24);
+  v1 = *(self + 24);
   if (!v1)
   {
     goto LABEL_18;
@@ -320,7 +320,7 @@ LABEL_13:
   }
 
   v4 = [IOSObjectArray arrayWithLength:v3 type:NSObject_class_()];
-  v5 = *(a1 + 24);
+  v5 = *(self + 24);
   v6 = *(v5 + 8);
   if (v6 >= 1)
   {
@@ -344,7 +344,7 @@ LABEL_13:
 
         v11 = v10;
         IOSObjectArray_Set(v4, v10, v9);
-        v12 = *(a1 + 24);
+        v12 = *(self + 24);
         v13 = v8 + 1;
         v14 = *(v12 + 8);
         if (v8 < 0 || v13 >= v14)
@@ -356,22 +356,22 @@ LABEL_13:
       }
 
       v7 = v8 + 2;
-      v5 = *(a1 + 24);
+      v5 = *(self + 24);
       v6 = *(v5 + 8);
     }
 
     while (v8 + 2 < v6);
   }
 
-  result = JreStrongAssign((a1 + 24), v4);
-  v16 = *(a1 + 24);
+  result = JreStrongAssign((self + 24), v4);
+  v16 = *(self + 24);
   if (!v16)
   {
 LABEL_18:
     JreThrowNullPointerException();
   }
 
-  *(a1 + 36) = 7500 * (*(v16 + 8) / 2) / 10000;
+  *(self + 36) = 7500 * (*(v16 + 8) / 2) / 10000;
   return result;
 }
 
@@ -386,19 +386,19 @@ LABEL_18:
   self->threshold_ = 7500 * (elementData->super.size_ / 2) / 10000;
 }
 
-- (id)removeWithId:(id)a3
+- (id)removeWithId:(id)id
 {
-  if (a3)
+  if (id)
   {
-    v4 = a3;
+    idCopy = id;
   }
 
   else
   {
-    v4 = qword_1005568B0;
+    idCopy = qword_1005568B0;
   }
 
-  v5 = sub_1002619CC(v4, self->elementData_);
+  v5 = sub_1002619CC(idCopy, self->elementData_);
   elementData = self->elementData_;
   if (!elementData)
   {
@@ -412,7 +412,7 @@ LABEL_18:
     IOSArray_throwOutOfBoundsWithMsg(size, v7);
   }
 
-  if ((&elementData->elementType_)[v7] != v4)
+  if ((&elementData->elementType_)[v7] != idCopy)
   {
     return 0;
   }
@@ -523,43 +523,43 @@ LABEL_29:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     LOBYTE(v5) = 1;
   }
 
   else
   {
-    v5 = [JavaUtilMap_class_() isInstance:a3];
+    v5 = [JavaUtilMap_class_() isInstance:equal];
     if (v5)
     {
       v6 = JavaUtilMap_class_();
-      if (!a3)
+      if (!equal)
       {
         [(JavaUtilIdentityHashMap *)self size];
         JreThrowNullPointerException();
       }
 
-      if (([v6 isInstance:a3] & 1) == 0)
+      if (([v6 isInstance:equal] & 1) == 0)
       {
         JreThrowClassCastException();
       }
 
       v7 = [(JavaUtilIdentityHashMap *)self size];
-      if (v7 == [a3 size])
+      if (v7 == [equal size])
       {
-        v8 = [(JavaUtilIdentityHashMap *)self entrySet];
-        if (!v8)
+        entrySet = [(JavaUtilIdentityHashMap *)self entrySet];
+        if (!entrySet)
         {
           JreThrowNullPointerException();
         }
 
-        v9 = v8;
-        v10 = [a3 entrySet];
+        v9 = entrySet;
+        entrySet2 = [equal entrySet];
 
-        LOBYTE(v5) = [v9 isEqual:v10];
+        LOBYTE(v5) = [v9 isEqual:entrySet2];
       }
 
       else
@@ -576,9 +576,9 @@ LABEL_29:
 {
   v8.receiver = self;
   v8.super_class = JavaUtilIdentityHashMap;
-  v3 = [(JavaUtilAbstractMap *)&v8 clone];
+  clone = [(JavaUtilAbstractMap *)&v8 clone];
   objc_opt_class();
-  if (!v3)
+  if (!clone)
   {
     goto LABEL_6;
   }
@@ -589,45 +589,45 @@ LABEL_29:
   }
 
   elementData = self->elementData_;
-  if (!elementData || (v5 = [IOSObjectArray arrayWithLength:elementData->super.size_ type:NSObject_class_()], JreStrongAssign(v3 + 3, v5), (v6 = self->elementData_) == 0))
+  if (!elementData || (v5 = [IOSObjectArray arrayWithLength:elementData->super.size_ type:NSObject_class_()], JreStrongAssign(clone + 3, v5), (v6 = self->elementData_) == 0))
   {
 LABEL_6:
     JreThrowNullPointerException();
   }
 
-  JavaLangSystem_arraycopyWithId_withInt_withId_withInt_withInt_(v6, 0, v3[3], 0, v6->super.size_);
-  return v3;
+  JavaLangSystem_arraycopyWithId_withInt_withId_withInt_withInt_(v6, 0, clone[3], 0, v6->super.size_);
+  return clone;
 }
 
-- (void)writeObjectWithJavaIoObjectOutputStream:(id)a3
+- (void)writeObjectWithJavaIoObjectOutputStream:(id)stream
 {
-  if (!a3)
+  if (!stream)
   {
     goto LABEL_9;
   }
 
-  [a3 defaultWriteObject];
-  [a3 writeIntWithInt:self->size_];
-  v5 = [(JavaUtilIdentityHashMap *)self entrySet];
-  if (!v5)
+  [stream defaultWriteObject];
+  [stream writeIntWithInt:self->size_];
+  entrySet = [(JavaUtilIdentityHashMap *)self entrySet];
+  if (!entrySet)
   {
     goto LABEL_9;
   }
 
-  v6 = [v5 iterator];
-  if (!v6)
+  iterator = [entrySet iterator];
+  if (!iterator)
   {
     goto LABEL_9;
   }
 
-  v7 = v6;
-  if ([v6 hasNext])
+  v7 = iterator;
+  if ([iterator hasNext])
   {
     while (1)
     {
-      v8 = [v7 next];
+      next = [v7 next];
       objc_opt_class();
-      if (!v8)
+      if (!next)
       {
         break;
       }
@@ -637,8 +637,8 @@ LABEL_6:
         JreThrowClassCastException();
       }
 
-      [a3 writeObjectWithId:v8[1]];
-      [a3 writeObjectWithId:v8[2]];
+      [stream writeObjectWithId:next[1]];
+      [stream writeObjectWithId:next[2]];
       if (([v7 hasNext] & 1) == 0)
       {
         return;
@@ -650,45 +650,45 @@ LABEL_9:
   }
 }
 
-- (void)readObjectWithJavaIoObjectInputStream:(id)a3
+- (void)readObjectWithJavaIoObjectInputStream:(id)stream
 {
-  if (!a3)
+  if (!stream)
   {
     JreThrowNullPointerException();
   }
 
-  [a3 defaultReadObject];
-  v5 = [a3 readInt];
+  [stream defaultReadObject];
+  readInt = [stream readInt];
   self->threshold_ = 21;
   v6 = [IOSObjectArray arrayWithLength:56 type:NSObject_class_()];
   JreStrongAssign(&self->elementData_, v6);
-  if (v5 - 1 >= 0)
+  if (readInt - 1 >= 0)
   {
-    v7 = v5;
+    v7 = readInt;
     do
     {
-      -[JavaUtilIdentityHashMap putWithId:withId:](self, "putWithId:withId:", [a3 readObject], objc_msgSend(a3, "readObject"));
+      -[JavaUtilIdentityHashMap putWithId:withId:](self, "putWithId:withId:", [stream readObject], objc_msgSend(stream, "readObject"));
       --v7;
     }
 
     while (v7);
   }
 
-  self->size_ = v5;
+  self->size_ = readInt;
 }
 
-- (void)putAllImplWithJavaUtilMap:(id)a3
+- (void)putAllImplWithJavaUtilMap:(id)map
 {
-  if (!a3)
+  if (!map)
   {
     JreThrowNullPointerException();
   }
 
-  if ([a3 entrySet])
+  if ([map entrySet])
   {
     v5.receiver = self;
     v5.super_class = JavaUtilIdentityHashMap;
-    [(JavaUtilAbstractMap *)&v5 putAllWithJavaUtilMap:a3];
+    [(JavaUtilAbstractMap *)&v5 putAllWithJavaUtilMap:map];
   }
 }
 
@@ -699,16 +699,16 @@ LABEL_9:
   [(JavaUtilAbstractMap *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = [(JavaUtilIdentityHashMap *)self clone];
+  clone = [(JavaUtilIdentityHashMap *)self clone];
 
-  return v3;
+  return clone;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     JreStrongAssignAndConsume(&qword_1005568B0, [NSObject alloc]);
     atomic_store(1u, &JavaUtilIdentityHashMap__initialized);

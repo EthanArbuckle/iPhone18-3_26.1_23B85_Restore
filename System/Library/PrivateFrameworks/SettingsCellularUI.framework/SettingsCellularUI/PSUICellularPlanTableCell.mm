@@ -1,51 +1,51 @@
 @interface PSUICellularPlanTableCell
-- (PSUICellularPlanTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (void)_setBadge:(id)a3 andLabel:(id)a4 andPhoneNumber:(id)a5;
-- (void)_setCenteredBadge:(id)a3 andLabel:(id)a4;
+- (PSUICellularPlanTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (void)_setBadge:(id)badge andLabel:(id)label andPhoneNumber:(id)number;
+- (void)_setCenteredBadge:(id)badge andLabel:(id)label;
 - (void)_setupView;
 - (void)prepareForReuse;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation PSUICellularPlanTableCell
 
-- (PSUICellularPlanTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (PSUICellularPlanTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v19.receiver = self;
   v19.super_class = PSUICellularPlanTableCell;
-  v4 = [(PSTableCell *)&v19 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(PSTableCell *)&v19 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
     v18.receiver = v4;
     v18.super_class = PSUICellularPlanTableCell;
-    v6 = [(PSUICellularPlanTableCell *)&v18 textLabel];
-    [v6 setText:@"ABC"];
+    textLabel = [(PSUICellularPlanTableCell *)&v18 textLabel];
+    [textLabel setText:@"ABC"];
 
     v17.receiver = v5;
     v17.super_class = PSUICellularPlanTableCell;
-    v7 = [(PSUICellularPlanTableCell *)&v17 detailTextLabel];
-    [v7 setText:@"XYZ"];
+    detailTextLabel = [(PSUICellularPlanTableCell *)&v17 detailTextLabel];
+    [detailTextLabel setText:@"XYZ"];
 
     v16.receiver = v5;
     v16.super_class = PSUICellularPlanTableCell;
-    v8 = [(PSUICellularPlanTableCell *)&v16 textLabel];
-    [v8 removeFromSuperview];
+    textLabel2 = [(PSUICellularPlanTableCell *)&v16 textLabel];
+    [textLabel2 removeFromSuperview];
 
     v15.receiver = v5;
     v15.super_class = PSUICellularPlanTableCell;
-    v9 = [(PSUICellularPlanTableCell *)&v15 detailTextLabel];
-    [v9 removeFromSuperview];
+    detailTextLabel2 = [(PSUICellularPlanTableCell *)&v15 detailTextLabel];
+    [detailTextLabel2 removeFromSuperview];
 
     v14.receiver = v5;
     v14.super_class = PSUICellularPlanTableCell;
-    v10 = [(PSUICellularPlanTableCell *)&v14 textLabel];
-    [v10 setHidden:1];
+    textLabel3 = [(PSUICellularPlanTableCell *)&v14 textLabel];
+    [textLabel3 setHidden:1];
 
     v13.receiver = v5;
     v13.super_class = PSUICellularPlanTableCell;
-    v11 = [(PSUICellularPlanTableCell *)&v13 detailTextLabel];
-    [v11 setHidden:1];
+    detailTextLabel3 = [(PSUICellularPlanTableCell *)&v13 detailTextLabel];
+    [detailTextLabel3 setHidden:1];
 
     [(PSUICellularPlanTableCell *)v5 setAccessoryType:1];
   }
@@ -53,43 +53,43 @@
   return v5;
 }
 
-- (void)_setCenteredBadge:(id)a3 andLabel:(id)a4
+- (void)_setCenteredBadge:(id)badge andLabel:(id)label
 {
   badgeView = self->_badgeView;
-  v10 = a4;
-  v7 = a3;
+  labelCopy = label;
+  badgeCopy = badge;
   [(PSUIBadgeView *)badgeView setHidden:1];
   [(UILabel *)self->_nameLabel setHidden:1];
   [(UILabel *)self->_numberLabel setHidden:1];
   [(PSUIBadgeView *)self->_centeredBadgeView setHidden:0];
   [(UILabel *)self->_centeredNameLabel setHidden:0];
-  [(PSUIBadgeView *)self->_badgeView setText:v7];
-  [(UILabel *)self->_nameLabel setText:v10];
+  [(PSUIBadgeView *)self->_badgeView setText:badgeCopy];
+  [(UILabel *)self->_nameLabel setText:labelCopy];
   v8 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v9 = [v8 localizedStringForKey:@"PLACEHOLDER_PHONE_NUMBER" value:&stru_287733598 table:@"Gemini-Gemini"];
   [(UILabel *)self->_numberLabel setText:v9];
 
-  [(PSUIBadgeView *)self->_centeredBadgeView setText:v7];
-  [(UILabel *)self->_centeredNameLabel setText:v10];
+  [(PSUIBadgeView *)self->_centeredBadgeView setText:badgeCopy];
+  [(UILabel *)self->_centeredNameLabel setText:labelCopy];
 }
 
-- (void)_setBadge:(id)a3 andLabel:(id)a4 andPhoneNumber:(id)a5
+- (void)_setBadge:(id)badge andLabel:(id)label andPhoneNumber:(id)number
 {
   badgeView = self->_badgeView;
-  v9 = a5;
-  v11 = a4;
-  v10 = a3;
+  numberCopy = number;
+  labelCopy = label;
+  badgeCopy = badge;
   [(PSUIBadgeView *)badgeView setHidden:0];
   [(UILabel *)self->_nameLabel setHidden:0];
   [(UILabel *)self->_numberLabel setHidden:0];
   [(PSUIBadgeView *)self->_centeredBadgeView setHidden:1];
   [(UILabel *)self->_centeredNameLabel setHidden:1];
-  [(PSUIBadgeView *)self->_badgeView setText:v10];
-  [(UILabel *)self->_nameLabel setText:v11];
-  [(UILabel *)self->_numberLabel setText:v9];
+  [(PSUIBadgeView *)self->_badgeView setText:badgeCopy];
+  [(UILabel *)self->_nameLabel setText:labelCopy];
+  [(UILabel *)self->_numberLabel setText:numberCopy];
 
-  [(PSUIBadgeView *)self->_centeredBadgeView setText:v10];
-  [(UILabel *)self->_centeredNameLabel setText:v11];
+  [(PSUIBadgeView *)self->_centeredBadgeView setText:badgeCopy];
+  [(UILabel *)self->_centeredNameLabel setText:labelCopy];
 }
 
 - (void)prepareForReuse
@@ -102,10 +102,10 @@
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(PSUICellularPlanTableCell *)self contentView];
-  v4 = [v3 subviews];
+  contentView = [(PSUICellularPlanTableCell *)self contentView];
+  subviews = [contentView subviews];
 
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v15 count:16];
+  v5 = [subviews countByEnumeratingWithState:&v10 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -117,14 +117,14 @@
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(subviews);
         }
 
         [*(*(&v10 + 1) + 8 * v8++) removeFromSuperview];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v15 count:16];
+      v6 = [subviews countByEnumeratingWithState:&v10 objects:v15 count:16];
     }
 
     while (v6);
@@ -133,18 +133,18 @@
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v22.receiver = self;
   v22.super_class = PSUICellularPlanTableCell;
-  [(PSTableCell *)&v22 refreshCellContentsWithSpecifier:v4];
+  [(PSTableCell *)&v22 refreshCellContentsWithSpecifier:specifierCopy];
   [(PSUICellularPlanTableCell *)self _setupView];
-  v5 = [v4 propertyForKey:*MEMORY[0x277D3FE70]];
+  v5 = [specifierCopy propertyForKey:*MEMORY[0x277D3FE70]];
   v6 = +[PSUICellularPlanManagerCache sharedInstance];
   v7 = [v6 planFromReference:v5];
 
-  v8 = [v4 propertyForKey:*MEMORY[0x277D40128]];
+  v8 = [specifierCopy propertyForKey:*MEMORY[0x277D40128]];
   v9 = +[PSUICoreTelephonySubscriberCache sharedInstance];
   v10 = [v9 shortLabel:v8];
   v11 = v10;
@@ -157,13 +157,13 @@
   v13 = v12;
 
   v14 = MEMORY[0x277CCACA8];
-  v15 = [v7 userLabel];
-  v16 = [v15 label];
-  v17 = [v14 stringWithFormat:@"%@", v16];
+  userLabel = [v7 userLabel];
+  label = [userLabel label];
+  v17 = [v14 stringWithFormat:@"%@", label];
 
   v18 = +[PSUICoreTelephonyCallCache sharedInstance];
-  v19 = [v7 phoneNumber];
-  v20 = [v18 localizedPhoneNumber:v19 context:v8];
+  phoneNumber = [v7 phoneNumber];
+  v20 = [v18 localizedPhoneNumber:phoneNumber context:v8];
 
   if ([v20 length])
   {
@@ -175,15 +175,15 @@
     [(PSUICellularPlanTableCell *)self _setCenteredBadge:v13 andLabel:v17];
   }
 
-  if ([v4 hasValidGetter])
+  if ([specifierCopy hasValidGetter])
   {
-    v21 = [v4 performGetter];
-    if (v21)
+    performGetter = [specifierCopy performGetter];
+    if (performGetter)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [(UILabel *)self->_statusLabel setText:v21];
+        [(UILabel *)self->_statusLabel setText:performGetter];
       }
     }
   }
@@ -197,14 +197,14 @@
   badgeView = self->_badgeView;
   self->_badgeView = v3;
 
-  v5 = [(PSUICellularPlanTableCell *)self contentView];
-  [v5 addSubview:self->_badgeView];
+  contentView = [(PSUICellularPlanTableCell *)self contentView];
+  [contentView addSubview:self->_badgeView];
 
-  v6 = [(PSUIBadgeView *)self->_badgeView leadingAnchor];
-  v7 = [(PSUICellularPlanTableCell *)self contentView];
-  v8 = [v7 layoutMarginsGuide];
-  v9 = [v8 leadingAnchor];
-  v10 = [v6 constraintEqualToAnchor:v9];
+  leadingAnchor = [(PSUIBadgeView *)self->_badgeView leadingAnchor];
+  contentView2 = [(PSUICellularPlanTableCell *)self contentView];
+  layoutMarginsGuide = [contentView2 layoutMarginsGuide];
+  leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+  v10 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v10 setActive:1];
 
   v11 = objc_alloc_init(MEMORY[0x277D756B8]);
@@ -217,26 +217,26 @@
 
   [(UILabel *)self->_nameLabel setNumberOfLines:0];
   [(UILabel *)self->_nameLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-  v14 = [(PSUICellularPlanTableCell *)self contentView];
-  [v14 addSubview:self->_nameLabel];
+  contentView3 = [(PSUICellularPlanTableCell *)self contentView];
+  [contentView3 addSubview:self->_nameLabel];
 
-  v15 = [(UILabel *)self->_nameLabel topAnchor];
-  v16 = [(PSUICellularPlanTableCell *)self contentView];
-  v17 = [v16 layoutMarginsGuide];
-  v18 = [v17 topAnchor];
-  v19 = [v15 constraintEqualToAnchor:v18];
+  topAnchor = [(UILabel *)self->_nameLabel topAnchor];
+  contentView4 = [(PSUICellularPlanTableCell *)self contentView];
+  layoutMarginsGuide2 = [contentView4 layoutMarginsGuide];
+  topAnchor2 = [layoutMarginsGuide2 topAnchor];
+  v19 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v19 setActive:1];
 
-  v20 = [(UILabel *)self->_nameLabel leadingAnchor];
-  v21 = [(PSUIBadgeView *)self->_badgeView trailingAnchor];
-  v22 = [MEMORY[0x277D75520] defaultMetrics];
-  [v22 scaledValueForValue:4.0];
-  v23 = [v20 constraintEqualToAnchor:v21 constant:?];
+  leadingAnchor3 = [(UILabel *)self->_nameLabel leadingAnchor];
+  trailingAnchor = [(PSUIBadgeView *)self->_badgeView trailingAnchor];
+  defaultMetrics = [MEMORY[0x277D75520] defaultMetrics];
+  [defaultMetrics scaledValueForValue:4.0];
+  v23 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor constant:?];
   [v23 setActive:1];
 
-  v24 = [(UILabel *)self->_nameLabel centerYAnchor];
-  v25 = [(PSUIBadgeView *)self->_badgeView centerYAnchor];
-  v26 = [v24 constraintEqualToAnchor:v25];
+  centerYAnchor = [(UILabel *)self->_nameLabel centerYAnchor];
+  centerYAnchor2 = [(PSUIBadgeView *)self->_badgeView centerYAnchor];
+  v26 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   [v26 setActive:1];
 
   v27 = objc_alloc_init(MEMORY[0x277D756B8]);
@@ -248,48 +248,48 @@
 
   [(UILabel *)self->_numberLabel setNumberOfLines:0];
   [(UILabel *)self->_numberLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-  v30 = [MEMORY[0x277D75348] systemGrayColor];
-  [(UILabel *)self->_numberLabel setTextColor:v30];
+  systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
+  [(UILabel *)self->_numberLabel setTextColor:systemGrayColor];
 
-  v31 = [(PSUICellularPlanTableCell *)self contentView];
-  [v31 addSubview:self->_numberLabel];
+  contentView5 = [(PSUICellularPlanTableCell *)self contentView];
+  [contentView5 addSubview:self->_numberLabel];
 
-  v32 = [(UILabel *)self->_numberLabel firstBaselineAnchor];
-  v33 = [(UILabel *)self->_nameLabel lastBaselineAnchor];
-  v34 = [v32 constraintEqualToSystemSpacingBelowAnchor:v33 multiplier:1.0];
+  firstBaselineAnchor = [(UILabel *)self->_numberLabel firstBaselineAnchor];
+  lastBaselineAnchor = [(UILabel *)self->_nameLabel lastBaselineAnchor];
+  v34 = [firstBaselineAnchor constraintEqualToSystemSpacingBelowAnchor:lastBaselineAnchor multiplier:1.0];
   [v34 setActive:1];
 
-  v35 = [(UILabel *)self->_numberLabel leadingAnchor];
-  v36 = [(PSUIBadgeView *)self->_badgeView leadingAnchor];
-  v37 = [v35 constraintEqualToAnchor:v36];
+  leadingAnchor4 = [(UILabel *)self->_numberLabel leadingAnchor];
+  leadingAnchor5 = [(PSUIBadgeView *)self->_badgeView leadingAnchor];
+  v37 = [leadingAnchor4 constraintEqualToAnchor:leadingAnchor5];
   [v37 setActive:1];
 
-  v38 = [(UILabel *)self->_numberLabel trailingAnchor];
-  v39 = [(PSUICellularPlanTableCell *)self contentView];
-  v40 = [v39 layoutMarginsGuide];
-  v41 = [v40 trailingAnchor];
-  v42 = [v38 constraintLessThanOrEqualToAnchor:v41];
+  trailingAnchor2 = [(UILabel *)self->_numberLabel trailingAnchor];
+  contentView6 = [(PSUICellularPlanTableCell *)self contentView];
+  layoutMarginsGuide3 = [contentView6 layoutMarginsGuide];
+  trailingAnchor3 = [layoutMarginsGuide3 trailingAnchor];
+  v42 = [trailingAnchor2 constraintLessThanOrEqualToAnchor:trailingAnchor3];
   [v42 setActive:1];
 
-  v43 = [(UILabel *)self->_numberLabel bottomAnchor];
-  v44 = [(PSUICellularPlanTableCell *)self contentView];
-  v45 = [v44 layoutMarginsGuide];
-  v46 = [v45 bottomAnchor];
-  v47 = [v43 constraintEqualToAnchor:v46];
+  bottomAnchor = [(UILabel *)self->_numberLabel bottomAnchor];
+  contentView7 = [(PSUICellularPlanTableCell *)self contentView];
+  layoutMarginsGuide4 = [contentView7 layoutMarginsGuide];
+  bottomAnchor2 = [layoutMarginsGuide4 bottomAnchor];
+  v47 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [v47 setActive:1];
 
   v48 = objc_alloc_init(PSUIBadgeView);
   centeredBadgeView = self->_centeredBadgeView;
   self->_centeredBadgeView = v48;
 
-  v50 = [(PSUICellularPlanTableCell *)self contentView];
-  [v50 addSubview:self->_centeredBadgeView];
+  contentView8 = [(PSUICellularPlanTableCell *)self contentView];
+  [contentView8 addSubview:self->_centeredBadgeView];
 
-  v51 = [(PSUIBadgeView *)self->_centeredBadgeView leadingAnchor];
-  v52 = [(PSUICellularPlanTableCell *)self contentView];
-  v53 = [v52 layoutMarginsGuide];
-  v54 = [v53 leadingAnchor];
-  v55 = [v51 constraintEqualToAnchor:v54];
+  leadingAnchor6 = [(PSUIBadgeView *)self->_centeredBadgeView leadingAnchor];
+  contentView9 = [(PSUICellularPlanTableCell *)self contentView];
+  layoutMarginsGuide5 = [contentView9 layoutMarginsGuide];
+  leadingAnchor7 = [layoutMarginsGuide5 leadingAnchor];
+  v55 = [leadingAnchor6 constraintEqualToAnchor:leadingAnchor7];
   [v55 setActive:1];
 
   v56 = objc_alloc_init(MEMORY[0x277D756B8]);
@@ -301,25 +301,25 @@
 
   [(UILabel *)self->_centeredNameLabel setNumberOfLines:0];
   [(UILabel *)self->_centeredNameLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-  v59 = [(PSUICellularPlanTableCell *)self contentView];
-  [v59 addSubview:self->_centeredNameLabel];
+  contentView10 = [(PSUICellularPlanTableCell *)self contentView];
+  [contentView10 addSubview:self->_centeredNameLabel];
 
-  v60 = [(UILabel *)self->_centeredNameLabel centerYAnchor];
-  v61 = [(PSUICellularPlanTableCell *)self contentView];
-  v62 = [v61 centerYAnchor];
-  v63 = [v60 constraintEqualToAnchor:v62];
+  centerYAnchor3 = [(UILabel *)self->_centeredNameLabel centerYAnchor];
+  contentView11 = [(PSUICellularPlanTableCell *)self contentView];
+  centerYAnchor4 = [contentView11 centerYAnchor];
+  v63 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
   [v63 setActive:1];
 
-  v64 = [(UILabel *)self->_centeredNameLabel leadingAnchor];
-  v65 = [(PSUIBadgeView *)self->_centeredBadgeView trailingAnchor];
-  v66 = [MEMORY[0x277D75520] defaultMetrics];
-  [v66 scaledValueForValue:4.0];
-  v67 = [v64 constraintEqualToAnchor:v65 constant:?];
+  leadingAnchor8 = [(UILabel *)self->_centeredNameLabel leadingAnchor];
+  trailingAnchor4 = [(PSUIBadgeView *)self->_centeredBadgeView trailingAnchor];
+  defaultMetrics2 = [MEMORY[0x277D75520] defaultMetrics];
+  [defaultMetrics2 scaledValueForValue:4.0];
+  v67 = [leadingAnchor8 constraintEqualToAnchor:trailingAnchor4 constant:?];
   [v67 setActive:1];
 
-  v68 = [(PSUIBadgeView *)self->_centeredBadgeView centerYAnchor];
-  v69 = [(UILabel *)self->_centeredNameLabel centerYAnchor];
-  v70 = [v68 constraintEqualToAnchor:v69];
+  centerYAnchor5 = [(PSUIBadgeView *)self->_centeredBadgeView centerYAnchor];
+  centerYAnchor6 = [(UILabel *)self->_centeredNameLabel centerYAnchor];
+  v70 = [centerYAnchor5 constraintEqualToAnchor:centerYAnchor6];
   [v70 setActive:1];
 
   v71 = objc_alloc_init(MEMORY[0x277D756B8]);
@@ -330,36 +330,36 @@
   [(UILabel *)self->_statusLabel setFont:v73];
 
   [(UILabel *)self->_statusLabel setNumberOfLines:0];
-  v74 = [MEMORY[0x277D75348] systemGrayColor];
-  [(UILabel *)self->_statusLabel setTextColor:v74];
+  systemGrayColor2 = [MEMORY[0x277D75348] systemGrayColor];
+  [(UILabel *)self->_statusLabel setTextColor:systemGrayColor2];
 
   [(UILabel *)self->_statusLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-  v75 = [(PSUICellularPlanTableCell *)self contentView];
-  [v75 addSubview:self->_statusLabel];
+  contentView12 = [(PSUICellularPlanTableCell *)self contentView];
+  [contentView12 addSubview:self->_statusLabel];
 
-  v76 = [(UILabel *)self->_statusLabel centerYAnchor];
-  v77 = [(PSUICellularPlanTableCell *)self contentView];
-  v78 = [v77 centerYAnchor];
-  v79 = [v76 constraintEqualToAnchor:v78];
+  centerYAnchor7 = [(UILabel *)self->_statusLabel centerYAnchor];
+  contentView13 = [(PSUICellularPlanTableCell *)self contentView];
+  centerYAnchor8 = [contentView13 centerYAnchor];
+  v79 = [centerYAnchor7 constraintEqualToAnchor:centerYAnchor8];
   [v79 setActive:1];
 
-  v80 = [(UILabel *)self->_statusLabel trailingAnchor];
-  v81 = [(PSUICellularPlanTableCell *)self contentView];
-  v82 = [v81 layoutMarginsGuide];
-  v83 = [v82 trailingAnchor];
-  v84 = [v80 constraintEqualToAnchor:v83];
+  trailingAnchor5 = [(UILabel *)self->_statusLabel trailingAnchor];
+  contentView14 = [(PSUICellularPlanTableCell *)self contentView];
+  layoutMarginsGuide6 = [contentView14 layoutMarginsGuide];
+  trailingAnchor6 = [layoutMarginsGuide6 trailingAnchor];
+  v84 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
   [v84 setActive:1];
 
   LODWORD(v85) = 1148846080;
   [(UILabel *)self->_statusLabel setContentCompressionResistancePriority:0 forAxis:v85];
-  v86 = [(UILabel *)self->_statusLabel leadingAnchor];
-  v87 = [(UILabel *)self->_nameLabel trailingAnchor];
-  v88 = [v86 constraintGreaterThanOrEqualToSystemSpacingAfterAnchor:v87 multiplier:1.0];
+  leadingAnchor9 = [(UILabel *)self->_statusLabel leadingAnchor];
+  trailingAnchor7 = [(UILabel *)self->_nameLabel trailingAnchor];
+  v88 = [leadingAnchor9 constraintGreaterThanOrEqualToSystemSpacingAfterAnchor:trailingAnchor7 multiplier:1.0];
   [v88 setActive:1];
 
-  v92 = [(UILabel *)self->_statusLabel leadingAnchor];
-  v89 = [(UILabel *)self->_centeredNameLabel trailingAnchor];
-  v90 = [v92 constraintGreaterThanOrEqualToSystemSpacingAfterAnchor:v89 multiplier:1.0];
+  leadingAnchor10 = [(UILabel *)self->_statusLabel leadingAnchor];
+  trailingAnchor8 = [(UILabel *)self->_centeredNameLabel trailingAnchor];
+  v90 = [leadingAnchor10 constraintGreaterThanOrEqualToSystemSpacingAfterAnchor:trailingAnchor8 multiplier:1.0];
   [v90 setActive:1];
 }
 

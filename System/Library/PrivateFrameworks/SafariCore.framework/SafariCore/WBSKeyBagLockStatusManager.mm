@@ -1,13 +1,13 @@
 @interface WBSKeyBagLockStatusManager
 + (id)sharedManager;
 - (WBSKeyBagLockStatusManager)init;
-- (id)_descriptionOfKeyBagLockStatus:(int64_t)a3;
-- (id)addKeyBagLockStatusChangedObserverWithHandler:(id)a3;
+- (id)_descriptionOfKeyBagLockStatus:(int64_t)status;
+- (id)addKeyBagLockStatusChangedObserverWithHandler:(id)handler;
 - (int64_t)keyBagLockStatus;
 - (void)_startObservingKeyBagLockStatusChanges;
 - (void)_stopObservingKeyBagLockStatusChanges;
 - (void)dealloc;
-- (void)removeKeyBagLockStatusChangedObserver:(id)a3;
+- (void)removeKeyBagLockStatusChangedObserver:(id)observer;
 @end
 
 @implementation WBSKeyBagLockStatusManager
@@ -33,15 +33,15 @@
   {
     v7.receiver = self;
     v7.super_class = WBSKeyBagLockStatusManager;
-    v3 = [(WBSKeyBagLockStatusManager *)&v7 init];
-    if (v3)
+    selfCopy = [(WBSKeyBagLockStatusManager *)&v7 init];
+    if (selfCopy)
     {
       v4 = dispatch_queue_create("com.apple.SafariCore.WBSKeyBagLockStatusManager", 0);
-      internalQueue = v3->_internalQueue;
-      v3->_internalQueue = v4;
+      internalQueue = selfCopy->_internalQueue;
+      selfCopy->_internalQueue = v4;
 
-      self = v3;
-      v3 = self;
+      self = selfCopy;
+      selfCopy = self;
     }
 
     else
@@ -52,10 +52,10 @@
 
   else
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (void)_startObservingKeyBagLockStatusChanges
@@ -127,9 +127,9 @@ _DWORD *__37__WBSKeyBagLockStatusManager_dealloc__block_invoke(uint64_t a1)
   return result;
 }
 
-- (id)addKeyBagLockStatusChangedObserverWithHandler:(id)a3
+- (id)addKeyBagLockStatusChangedObserverWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -141,10 +141,10 @@ _DWORD *__37__WBSKeyBagLockStatusManager_dealloc__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __76__WBSKeyBagLockStatusManager_addKeyBagLockStatusChangedObserverWithHandler___block_invoke;
   block[3] = &unk_1E7CF2130;
-  v10 = v4;
+  v10 = handlerCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = handlerCopy;
   dispatch_sync(internalQueue, block);
   v7 = v13[5];
 
@@ -182,17 +182,17 @@ uint64_t __76__WBSKeyBagLockStatusManager_addKeyBagLockStatusChangedObserverWith
   return [v9 addObject:v10];
 }
 
-- (void)removeKeyBagLockStatusChangedObserver:(id)a3
+- (void)removeKeyBagLockStatusChangedObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   internalQueue = self->_internalQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __68__WBSKeyBagLockStatusManager_removeKeyBagLockStatusChangedObserver___block_invoke;
   v7[3] = &unk_1E7CF0908;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_sync(internalQueue, v7);
 }
 
@@ -293,15 +293,15 @@ void __68__WBSKeyBagLockStatusManager__startObservingKeyBagLockStatusChanges__bl
   }
 }
 
-- (id)_descriptionOfKeyBagLockStatus:(int64_t)a3
+- (id)_descriptionOfKeyBagLockStatus:(int64_t)status
 {
   v3 = @"locked";
-  if (a3 == 1)
+  if (status == 1)
   {
     v3 = @"locking";
   }
 
-  if (a3)
+  if (status)
   {
     return v3;
   }

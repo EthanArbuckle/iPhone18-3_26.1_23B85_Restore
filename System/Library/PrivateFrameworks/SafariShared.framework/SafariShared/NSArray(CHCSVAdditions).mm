@@ -22,14 +22,14 @@
 - (id)CSVString
 {
   v18 = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E695DFC0] outputStreamToMemory];
-  v3 = [[CHCSVWriter alloc] initWithOutputStream:v2 encoding:4 delimiter:44];
+  outputStreamToMemory = [MEMORY[0x1E695DFC0] outputStreamToMemory];
+  v3 = [[CHCSVWriter alloc] initWithOutputStream:outputStreamToMemory encoding:4 delimiter:44];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = a1;
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  selfCopy = self;
+  v5 = [selfCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -40,7 +40,7 @@
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(selfCopy);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
@@ -50,14 +50,14 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [selfCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
   }
 
   [(CHCSVWriter *)v3 closeStream];
-  v10 = [v2 propertyForKey:*MEMORY[0x1E695DA30]];
+  v10 = [outputStreamToMemory propertyForKey:*MEMORY[0x1E695DA30]];
   v11 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:v10 encoding:4];
 
   return v11;

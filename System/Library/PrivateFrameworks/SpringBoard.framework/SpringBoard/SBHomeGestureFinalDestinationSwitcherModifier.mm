@@ -1,56 +1,56 @@
 @interface SBHomeGestureFinalDestinationSwitcherModifier
-- (BOOL)_hasTraveledSufficientDistanceForHomeOrAppSwitcherForMouseEvent:(BOOL)a3;
-- (BOOL)_isTranslationPastDistanceThresholdToUnconditionallyGoHome:(double)a3;
-- (SBHomeGestureFinalDestinationSwitcherModifier)initWithDelegate:(id)a3 initialTranslationAdjustment:(CGPoint)a4 minYDistanceForHomeOrSwitcher:(double)a5 startingEnvironmentMode:(int64_t)a6 continuingGesture:(BOOL)a7 dockModifier:(id)a8;
+- (BOOL)_hasTraveledSufficientDistanceForHomeOrAppSwitcherForMouseEvent:(BOOL)event;
+- (BOOL)_isTranslationPastDistanceThresholdToUnconditionallyGoHome:(double)home;
+- (SBHomeGestureFinalDestinationSwitcherModifier)initWithDelegate:(id)delegate initialTranslationAdjustment:(CGPoint)adjustment minYDistanceForHomeOrSwitcher:(double)switcher startingEnvironmentMode:(int64_t)mode continuingGesture:(BOOL)gesture dockModifier:(id)modifier;
 - (double)_unconditionalDistanceThresholdForHome;
 - (id)debugDescription;
-- (id)handleGestureEvent:(id)a3;
-- (id)handleHomeGestureSettingsChangedEvent:(id)a3;
-- (id)handleSwitcherSettingsChangedEvent:(id)a3;
+- (id)handleGestureEvent:(id)event;
+- (id)handleHomeGestureSettingsChangedEvent:(id)event;
+- (id)handleSwitcherSettingsChangedEvent:(id)event;
 - (id)studyLogData;
-- (int64_t)_adjustedFinalDestinationAccountingForEdgeDataDistortion:(int64_t)a3 location:(CGPoint)a4;
+- (int64_t)_adjustedFinalDestinationAccountingForEdgeDataDistortion:(int64_t)distortion location:(CGPoint)location;
 - (int64_t)currentFinalDestination;
 - (void)_applyPrototypeSettings;
-- (void)_updateAdaptiveThresholdsForCurrentFinalDestination:(int64_t)a3 velocityAverage:(CGPoint)a4;
-- (void)_updateForGestureDidBeginWithEvent:(id)a3;
-- (void)_updateForGestureDidChangeWithEvent:(id)a3;
-- (void)_updateForGestureDidEndWithEvent:(id)a3;
-- (void)_updateGestureTranslationVelocityAndProgressWithEvent:(id)a3;
-- (void)didMoveToParentModifier:(id)a3;
+- (void)_updateAdaptiveThresholdsForCurrentFinalDestination:(int64_t)destination velocityAverage:(CGPoint)average;
+- (void)_updateForGestureDidBeginWithEvent:(id)event;
+- (void)_updateForGestureDidChangeWithEvent:(id)event;
+- (void)_updateForGestureDidEndWithEvent:(id)event;
+- (void)_updateGestureTranslationVelocityAndProgressWithEvent:(id)event;
+- (void)didMoveToParentModifier:(id)modifier;
 @end
 
 @implementation SBHomeGestureFinalDestinationSwitcherModifier
 
-- (SBHomeGestureFinalDestinationSwitcherModifier)initWithDelegate:(id)a3 initialTranslationAdjustment:(CGPoint)a4 minYDistanceForHomeOrSwitcher:(double)a5 startingEnvironmentMode:(int64_t)a6 continuingGesture:(BOOL)a7 dockModifier:(id)a8
+- (SBHomeGestureFinalDestinationSwitcherModifier)initWithDelegate:(id)delegate initialTranslationAdjustment:(CGPoint)adjustment minYDistanceForHomeOrSwitcher:(double)switcher startingEnvironmentMode:(int64_t)mode continuingGesture:(BOOL)gesture dockModifier:(id)modifier
 {
-  y = a4.y;
-  x = a4.x;
-  v15 = a3;
-  v16 = a8;
+  y = adjustment.y;
+  x = adjustment.x;
+  delegateCopy = delegate;
+  modifierCopy = modifier;
   v20.receiver = self;
   v20.super_class = SBHomeGestureFinalDestinationSwitcherModifier;
   v17 = [(SBSwitcherModifier *)&v20 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeWeak(&v17->_finalDestinationDelegate, v15);
+    objc_storeWeak(&v17->_finalDestinationDelegate, delegateCopy);
     v18->_initialTranslationAdjustment.x = x;
     v18->_initialTranslationAdjustment.y = y;
-    v18->_minYDistanceForHomeOrSwitcher = a5;
-    v18->_startingEnvironmentMode = a6;
-    v18->_continuingGesture = a7;
-    objc_storeStrong(&v18->_dockModifier, a8);
+    v18->_minYDistanceForHomeOrSwitcher = switcher;
+    v18->_startingEnvironmentMode = mode;
+    v18->_continuingGesture = gesture;
+    objc_storeStrong(&v18->_dockModifier, modifier);
   }
 
   return v18;
 }
 
-- (void)didMoveToParentModifier:(id)a3
+- (void)didMoveToParentModifier:(id)modifier
 {
   v5.receiver = self;
   v5.super_class = SBHomeGestureFinalDestinationSwitcherModifier;
   [(SBChainableModifier *)&v5 didMoveToParentModifier:?];
-  if (a3)
+  if (modifier)
   {
     [(SBHomeGestureFinalDestinationSwitcherModifier *)self _applyPrototypeSettings];
     if (self->_dockModifier)
@@ -60,68 +60,68 @@
   }
 }
 
-- (id)handleHomeGestureSettingsChangedEvent:(id)a3
+- (id)handleHomeGestureSettingsChangedEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   [(SBHomeGestureFinalDestinationSwitcherModifier *)self _applyPrototypeSettings];
   v7.receiver = self;
   v7.super_class = SBHomeGestureFinalDestinationSwitcherModifier;
-  v5 = [(SBSwitcherModifier *)&v7 handleHomeGestureSettingsChangedEvent:v4];
+  v5 = [(SBSwitcherModifier *)&v7 handleHomeGestureSettingsChangedEvent:eventCopy];
 
   return v5;
 }
 
-- (id)handleSwitcherSettingsChangedEvent:(id)a3
+- (id)handleSwitcherSettingsChangedEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   [(SBHomeGestureFinalDestinationSwitcherModifier *)self _applyPrototypeSettings];
   v7.receiver = self;
   v7.super_class = SBHomeGestureFinalDestinationSwitcherModifier;
-  v5 = [(SBSwitcherModifier *)&v7 handleSwitcherSettingsChangedEvent:v4];
+  v5 = [(SBSwitcherModifier *)&v7 handleSwitcherSettingsChangedEvent:eventCopy];
 
   return v5;
 }
 
-- (id)handleGestureEvent:(id)a3
+- (id)handleGestureEvent:(id)event
 {
-  v5 = a3;
+  eventCopy = event;
   v10.receiver = self;
   v10.super_class = SBHomeGestureFinalDestinationSwitcherModifier;
-  v6 = [(SBSwitcherModifier *)&v10 handleGestureEvent:v5];
-  v7 = [v5 phase];
-  if (v7 > 1)
+  v6 = [(SBSwitcherModifier *)&v10 handleGestureEvent:eventCopy];
+  phase = [eventCopy phase];
+  if (phase > 1)
   {
-    if (v7 == 2)
+    if (phase == 2)
     {
-      [(SBHomeGestureFinalDestinationSwitcherModifier *)self _updateForGestureDidChangeWithEvent:v5];
+      [(SBHomeGestureFinalDestinationSwitcherModifier *)self _updateForGestureDidChangeWithEvent:eventCopy];
     }
 
-    else if (v7 == 3)
+    else if (phase == 3)
     {
-      [(SBHomeGestureFinalDestinationSwitcherModifier *)self _updateForGestureDidEndWithEvent:v5];
+      [(SBHomeGestureFinalDestinationSwitcherModifier *)self _updateForGestureDidEndWithEvent:eventCopy];
     }
   }
 
-  else if (v7)
+  else if (phase)
   {
-    if (v7 == 1)
+    if (phase == 1)
     {
-      [(SBHomeGestureFinalDestinationSwitcherModifier *)self _updateForGestureDidBeginWithEvent:v5];
+      [(SBHomeGestureFinalDestinationSwitcherModifier *)self _updateForGestureDidBeginWithEvent:eventCopy];
     }
   }
 
   else
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"SBHomeGestureFinalDestinationSwitcherModifier.m" lineNumber:156 description:@"Should not be getting PhasePossible"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SBHomeGestureFinalDestinationSwitcherModifier.m" lineNumber:156 description:@"Should not be getting PhasePossible"];
   }
 
   return v6;
 }
 
-- (void)_updateForGestureDidBeginWithEvent:(id)a3
+- (void)_updateForGestureDidBeginWithEvent:(id)event
 {
-  v10 = a3;
+  eventCopy = event;
   if (self->_gestureHasBegun)
   {
     [SBHomeGestureFinalDestinationSwitcherModifier _updateForGestureDidBeginWithEvent:];
@@ -134,21 +134,21 @@
 
   self->_gestureHasBegun = 1;
   self->_numberOfTouchSamples = 0;
-  v4 = [v10 type];
-  self->_scrunchInitiated = v4 == 3;
+  type = [eventCopy type];
+  self->_scrunchInitiated = type == 3;
   *&self->_adaptiveMinimumYVelocityForHome = kMinimumYVelocityForHome;
   *&self->_adaptivePauseVelocityThresholdForAppSwitcher = kPauseVelocityThresholdForAppSwitcher_0;
   v5 = &kVelocitySlopeThresholdForScrunchArc;
-  if (v4 != 3)
+  if (type != 3)
   {
     v5 = &kVelocitySlopeThresholdForBottomSwipeUpArc;
   }
 
   *&self->_adaptiveVelocitySlopeThresholdForArc = *v5;
   self->_lastFinalDestination = 0.0;
-  [v10 averageTouchVelocityOverTimeDuration:0.25];
+  [eventCopy averageTouchVelocityOverTimeDuration:0.25];
   self->_lastAverageVelocityYForAcceleration = v6;
-  [v10 locationInContainerView];
+  [eventCopy locationInContainerView];
   self->_initialTouchLocation.x = v7;
   self->_initialTouchLocation.y = v8;
   self->_lastTouchLocation.x = v7;
@@ -159,12 +159,12 @@
     self->_initialTouchLocation.y = v9;
   }
 
-  [(SBHomeGestureFinalDestinationSwitcherModifier *)self _updateGestureTranslationVelocityAndProgressWithEvent:v10];
+  [(SBHomeGestureFinalDestinationSwitcherModifier *)self _updateGestureTranslationVelocityAndProgressWithEvent:eventCopy];
 }
 
-- (void)_updateForGestureDidChangeWithEvent:(id)a3
+- (void)_updateForGestureDidChangeWithEvent:(id)event
 {
-  v22 = a3;
+  eventCopy = event;
   if (!self->_gestureHasBegun)
   {
     [SBHomeGestureFinalDestinationSwitcherModifier _updateForGestureDidChangeWithEvent:];
@@ -176,29 +176,29 @@
   }
 
   lastTouchTimestamp = self->_lastTouchTimestamp;
-  [(SBHomeGestureFinalDestinationSwitcherModifier *)self _updateGestureTranslationVelocityAndProgressWithEvent:v22];
+  [(SBHomeGestureFinalDestinationSwitcherModifier *)self _updateGestureTranslationVelocityAndProgressWithEvent:eventCopy];
   if ([(SBHomeGestureFinalDestinationSwitcherModifier *)self _isTranslationPastDistanceThresholdToUnconditionallyGoHome:self->_translation.y])
   {
     self->_hasSeenAccelerationDipForAppSwitcher = 0;
     self->_lastAverageVelocityYForAcceleration = 0.0;
   }
 
-  v5 = [(SBHomeGestureFinalDestinationSwitcherModifier *)self switcherSettings];
-  v6 = [v5 animationSettings];
+  switcherSettings = [(SBHomeGestureFinalDestinationSwitcherModifier *)self switcherSettings];
+  animationSettings = [switcherSettings animationSettings];
 
-  [v22 averageTouchVelocityOverTimeDuration:0.25];
+  [eventCopy averageTouchVelocityOverTimeDuration:0.25];
   v8 = v7;
   numberOfTouchSamples = self->_numberOfTouchSamples;
-  if (numberOfTouchSamples > [v6 minimumTouchSamplesForAccelerationDip] && (BSFloatEqualToFloat() & 1) == 0)
+  if (numberOfTouchSamples > [animationSettings minimumTouchSamplesForAccelerationDip] && (BSFloatEqualToFloat() & 1) == 0)
   {
     [(SBHomeGestureFinalDestinationSwitcherModifier *)self containerViewBounds];
     v11 = v10;
-    [v22 locationInContainerView];
+    [eventCopy locationInContainerView];
     if (v12 <= v11 - *&kMinimumYDistanceToConsiderAccelerationDip)
     {
       lastAverageVelocityYForAcceleration = self->_lastAverageVelocityYForAcceleration;
       v14 = self->_lastTouchTimestamp;
-      [v6 cardFlyInAccelerationDipThreshold];
+      [animationSettings cardFlyInAccelerationDipThreshold];
       if (!self->_hasSeenAccelerationDipForAppSwitcher && (v8 - lastAverageVelocityYForAcceleration) / (v14 - lastTouchTimestamp) > v15)
       {
         self->_hasSeenAccelerationDipForAppSwitcher = 1;
@@ -207,12 +207,12 @@
   }
 
   self->_lastAverageVelocityYForAcceleration = v8;
-  v16 = [(SBHomeGestureFinalDestinationSwitcherModifier *)self currentFinalDestination];
+  currentFinalDestination = [(SBHomeGestureFinalDestinationSwitcherModifier *)self currentFinalDestination];
   self->_updateEdgeRegionSampleCounter = 1;
-  self->_lastFinalDestination = v16;
-  [(SBHomeGestureFinalDestinationSwitcherModifier *)self _updateAdaptiveThresholdsForCurrentFinalDestination:v16 velocityAverage:self->_velocity.x, self->_velocity.y];
+  self->_lastFinalDestination = currentFinalDestination;
+  [(SBHomeGestureFinalDestinationSwitcherModifier *)self _updateAdaptiveThresholdsForCurrentFinalDestination:currentFinalDestination velocityAverage:self->_velocity.x, self->_velocity.y];
   self->_updateEdgeRegionSampleCounter = 0;
-  [v22 locationInContainerView];
+  [eventCopy locationInContainerView];
   v18 = v17;
   v20 = v19;
   [(SBHomeGestureFinalDestinationSwitcherModifier *)self isRTLEnabled];
@@ -228,9 +228,9 @@
   self->_lastTouchLocation.y = v20;
 }
 
-- (void)_updateForGestureDidEndWithEvent:(id)a3
+- (void)_updateForGestureDidEndWithEvent:(id)event
 {
-  v7 = a3;
+  eventCopy = event;
   if (!self->_gestureHasBegun)
   {
     [SBHomeGestureFinalDestinationSwitcherModifier _updateForGestureDidEndWithEvent:];
@@ -244,29 +244,29 @@
   self->_gestureHasEnded = 1;
   [(SBHomeGestureFinalDestinationSwitcherModifier *)self _updateGestureTranslationVelocityAndProgressWithEvent:?];
   p_lastTouchLocation = &self->_lastTouchLocation;
-  [v7 locationInContainerView];
+  [eventCopy locationInContainerView];
   p_lastTouchLocation->x = v5;
   p_lastTouchLocation->y = v6;
 }
 
-- (void)_updateGestureTranslationVelocityAndProgressWithEvent:(id)a3
+- (void)_updateGestureTranslationVelocityAndProgressWithEvent:(id)event
 {
-  v4 = a3;
-  [v4 translationInContainerView];
+  eventCopy = event;
+  [eventCopy translationInContainerView];
   v6 = v5 + self->_initialTranslationAdjustment.x;
   v8 = v7 + self->_initialTranslationAdjustment.y;
-  [v4 averageTouchVelocityOverTimeDuration:0.0416666667];
+  [eventCopy averageTouchVelocityOverTimeDuration:0.0416666667];
   self->_translation.x = v6;
   self->_translation.y = v8;
   self->_velocity.x = v9;
   self->_velocity.y = v10;
-  [v4 lastTouchTimestamp];
+  [eventCopy lastTouchTimestamp];
   self->_lastTouchTimestamp = v11;
   ++self->_numberOfTouchSamples;
-  self->_touchType = [v4 touchType];
-  v12 = [v4 isMouseEvent];
+  self->_touchType = [eventCopy touchType];
+  isMouseEvent = [eventCopy isMouseEvent];
 
-  self->_isMouseEvent = v12;
+  self->_isMouseEvent = isMouseEvent;
 }
 
 - (int64_t)currentFinalDestination
@@ -279,7 +279,7 @@
   p_initialTouchLocation = &self->_initialTouchLocation;
   v10 = self->_initialTouchLocation.y;
   v70 = self->_initialTouchLocation.x;
-  v11 = [(SBHomeGestureFinalDestinationSwitcherModifier *)self switcherInterfaceOrientation];
+  switcherInterfaceOrientation = [(SBHomeGestureFinalDestinationSwitcherModifier *)self switcherInterfaceOrientation];
   adaptiveMinimumYVelocityForHome = self->_adaptiveMinimumYVelocityForHome;
   if (self->_scrunchInitiated)
   {
@@ -310,7 +310,7 @@
   v20 = fabs(p_velocity->x);
   v21 = fabs(v19);
   v22 = v20 <= *&kVelocityXThresholdForUnconditionalArcSwipe_0 || v21 >= v20 * self->_adaptiveVelocitySlopeThresholdForArc;
-  if ((v11 - 3) >= 2)
+  if ((switcherInterfaceOrientation - 3) >= 2)
   {
     v23 = &kMinimumXDistanceToTriggerArcByDistancePortrait;
   }
@@ -461,16 +461,16 @@ LABEL_101:
       goto LABEL_34;
     }
 
-    v61 = [(SBHomeGestureFinalDestinationSwitcherModifier *)self isRTLEnabled];
+    isRTLEnabled = [(SBHomeGestureFinalDestinationSwitcherModifier *)self isRTLEnabled];
     v62 = p_velocity->x;
-    if (v61)
+    if (isRTLEnabled)
     {
       if (p_velocity->x <= 0.0)
       {
 LABEL_77:
-        v63 = [(SBHomeGestureFinalDestinationSwitcherModifier *)self isRTLEnabled];
+        isRTLEnabled2 = [(SBHomeGestureFinalDestinationSwitcherModifier *)self isRTLEnabled];
         v64 = self->_directionSwitchLocation.x - p_initialTouchLocation->x;
-        if (v63)
+        if (isRTLEnabled2)
         {
           v64 = -v64;
         }
@@ -495,9 +495,9 @@ LABEL_88:
       goto LABEL_77;
     }
 
-    v65 = [(SBHomeGestureFinalDestinationSwitcherModifier *)self isRTLEnabled];
+    isRTLEnabled3 = [(SBHomeGestureFinalDestinationSwitcherModifier *)self isRTLEnabled];
     v66 = self->_directionSwitchLocation.x - p_initialTouchLocation->x;
-    if (v65)
+    if (isRTLEnabled3)
     {
       v66 = -v66;
     }
@@ -599,9 +599,9 @@ LABEL_45:
 LABEL_65:
   v55 = [(SBHomeGestureFinalDestinationSwitcherModifier *)self _adjustedFinalDestinationAccountingForEdgeDataDistortion:v37 location:v48, v33];
   v56 = +[SBSetupManager sharedInstance];
-  v57 = [v56 isInSetupMode];
+  isInSetupMode = [v56 isInSetupMode];
 
-  if (v57 && v55 != 4)
+  if (isInSetupMode && v55 != 4)
   {
     v58 = self->_finalDestinationReason;
     self->_finalDestinationReason = @"CurrentLayoutInBuddyBecauseHomeFailed";
@@ -630,18 +630,18 @@ LABEL_65:
 - (id)debugDescription
 {
   v3 = [(SBChainableModifier *)self descriptionBuilderWithMultilinePrefix:&stru_283094718];
-  v4 = [v3 appendSuper];
+  appendSuper = [v3 appendSuper];
   v8 = MEMORY[0x277D85DD0];
   v9 = 3221225472;
   v10 = __65__SBHomeGestureFinalDestinationSwitcherModifier_debugDescription__block_invoke;
   v11 = &unk_2783A92D8;
   v12 = v3;
-  v13 = self;
+  selfCopy = self;
   v5 = v3;
   [v5 appendBodySectionWithName:0 multilinePrefix:@"\t" block:&v8];
-  v6 = [v5 build];
+  build = [v5 build];
 
-  return v6;
+  return build;
 }
 
 id __65__SBHomeGestureFinalDestinationSwitcherModifier_debugDescription__block_invoke(uint64_t a1)
@@ -666,12 +666,12 @@ id __65__SBHomeGestureFinalDestinationSwitcherModifier_debugDescription__block_i
   return [*(a1 + 32) appendBool:*(*(a1 + 40) + 329) withName:@"continuingGesture"];
 }
 
-- (int64_t)_adjustedFinalDestinationAccountingForEdgeDataDistortion:(int64_t)a3 location:(CGPoint)a4
+- (int64_t)_adjustedFinalDestinationAccountingForEdgeDataDistortion:(int64_t)distortion location:(CGPoint)location
 {
-  x = a4.x;
-  [(SBHomeGestureFinalDestinationSwitcherModifier *)self containerViewBounds:a4.x];
+  x = location.x;
+  [(SBHomeGestureFinalDestinationSwitcherModifier *)self containerViewBounds:location.x];
   v8 = fmin(x, vabdd_f64(v7, x)) >= *&kEdgeDistanceToCorrectGestureFinalDestination;
-  if ((a3 - 1) < 2 || v8 || self->_lastFinalDestination != 3.0 || self->_edgeRegionSampleCounter > 10)
+  if ((distortion - 1) < 2 || v8 || self->_lastFinalDestination != 3.0 || self->_edgeRegionSampleCounter > 10)
   {
     if (self->_updateEdgeRegionSampleCounter)
     {
@@ -692,15 +692,15 @@ id __65__SBHomeGestureFinalDestinationSwitcherModifier_debugDescription__block_i
     return 3;
   }
 
-  return a3;
+  return distortion;
 }
 
-- (BOOL)_hasTraveledSufficientDistanceForHomeOrAppSwitcherForMouseEvent:(BOOL)a3
+- (BOOL)_hasTraveledSufficientDistanceForHomeOrAppSwitcherForMouseEvent:(BOOL)event
 {
-  v3 = a3;
+  eventCopy = event;
   [(SBHomeGestureFinalDestinationSwitcherModifier *)self containerViewBounds];
   v6 = &kMinimumYDistanceForHomeOrAppSwitcherForMouseEvent;
-  if (!v3)
+  if (!eventCopy)
   {
     v6 = &kMinimumYDistanceForHomeOrAppSwitcher_0;
   }
@@ -708,7 +708,7 @@ id __65__SBHomeGestureFinalDestinationSwitcherModifier_debugDescription__block_i
   return self->_lastTouchLocation.y <= v5 - *v6;
 }
 
-- (void)_updateAdaptiveThresholdsForCurrentFinalDestination:(int64_t)a3 velocityAverage:(CGPoint)a4
+- (void)_updateAdaptiveThresholdsForCurrentFinalDestination:(int64_t)destination velocityAverage:(CGPoint)average
 {
   [(SBHomeGestureDockSwitcherModifier *)self->_dockModifier isCurrentlyTrackingDock];
   BSFloatByLinearlyInterpolatingFloats();
@@ -716,9 +716,9 @@ id __65__SBHomeGestureFinalDestinationSwitcherModifier_debugDescription__block_i
   self->_adaptivePauseVelocityThresholdForAppSwitcher = fabs(v5);
 }
 
-- (BOOL)_isTranslationPastDistanceThresholdToUnconditionallyGoHome:(double)a3
+- (BOOL)_isTranslationPastDistanceThresholdToUnconditionallyGoHome:(double)home
 {
-  v3 = -a3;
+  v3 = -home;
   [(SBHomeGestureFinalDestinationSwitcherModifier *)self _unconditionalDistanceThresholdForHome];
   return v4 < v3;
 }
@@ -735,52 +735,52 @@ id __65__SBHomeGestureFinalDestinationSwitcherModifier_debugDescription__block_i
 - (void)_applyPrototypeSettings
 {
   v3 = SBMainScreenPointsPerMillimeter();
-  v26 = [(SBHomeGestureFinalDestinationSwitcherModifier *)self homeGestureSettings];
-  [v26 pauseVelocityThresholdForAppSwitcher];
+  homeGestureSettings = [(SBHomeGestureFinalDestinationSwitcherModifier *)self homeGestureSettings];
+  [homeGestureSettings pauseVelocityThresholdForAppSwitcher];
   *&kPauseVelocityThresholdForAppSwitcher_0 = v3 * v4;
-  [v26 velocityXThresholdForUnconditionalArcSwipe];
+  [homeGestureSettings velocityXThresholdForUnconditionalArcSwipe];
   *&kVelocityXThresholdForUnconditionalArcSwipe_0 = v3 * v5;
-  [v26 maximumYDistanceToTriggerArcByDistance];
+  [homeGestureSettings maximumYDistanceToTriggerArcByDistance];
   *&kMaximumYDistanceToTriggerArcByDistance = v3 * v6;
   *&kMinimumYDistanceForHomeOrAppSwitcher_0 = v3 * self->_minYDistanceForHomeOrSwitcher;
-  [v26 minimumYDistanceForHomeOrAppSwitcher];
+  [homeGestureSettings minimumYDistanceForHomeOrAppSwitcher];
   *&kMinimumYDistanceForHomeOrAppSwitcherForMouseEvent = v3 * v7;
-  [v26 minimumYDistanceToConsiderAccelerationDip];
+  [homeGestureSettings minimumYDistanceToConsiderAccelerationDip];
   *&kMinimumYDistanceToConsiderAccelerationDip = v3 * v8;
-  [v26 minimumXDistanceForFirstArcSwipe];
+  [homeGestureSettings minimumXDistanceForFirstArcSwipe];
   *&kMinimumXDistanceForFirstArcSwipe = v3 * v9;
-  [v26 minimumXDistanceToTriggerArcByDistancePortrait];
+  [homeGestureSettings minimumXDistanceToTriggerArcByDistancePortrait];
   *&kMinimumXDistanceToTriggerArcByDistancePortrait = v3 * v10;
-  [v26 minimumXDistanceToTriggerArcByDistanceLandscape];
+  [homeGestureSettings minimumXDistanceToTriggerArcByDistanceLandscape];
   *&kMinimumXDistanceToTriggerArcByDistanceLandscape = v3 * v11;
-  [v26 maximumYDistanceToTriggerArcByFlick];
+  [homeGestureSettings maximumYDistanceToTriggerArcByFlick];
   *&kMaximumYDistanceToTriggerArcByFlick = v3 * v12;
-  [v26 velocityYThresholdForUnconditionalHome];
+  [homeGestureSettings velocityYThresholdForUnconditionalHome];
   *&kVelocityYThresholdForUnconditionalHome = v3 * v13;
-  [v26 minimumYVelocityForHome];
+  [homeGestureSettings minimumYVelocityForHome];
   *&kMinimumYVelocityForHome = v3 * v14;
-  [v26 minimumYVelocityForArcSwipe];
+  [homeGestureSettings minimumYVelocityForArcSwipe];
   *&kMinimumYVelocityForArcSwipe = v3 * v15;
-  [v26 pauseVelocityThresholdForDefiniteAppSwitcher];
+  [homeGestureSettings pauseVelocityThresholdForDefiniteAppSwitcher];
   *&kPauseVelocityThresholdForDefiniteAppSwitcher = v3 * v16;
-  [v26 maximumAdaptivePauseVelocityThresholdForAppSwitcher];
+  [homeGestureSettings maximumAdaptivePauseVelocityThresholdForAppSwitcher];
   *&kMaximumAdaptivePauseVelocityThresholdForAppSwitcher = v3 * v17;
-  kSnapToMaxVelocityThresholdAfterAccelerationDip = [v26 snapToMaxVelocityThresholdAfterAccelerationDip];
-  [v26 maximumAdaptiveVelocityThresholdForDock];
+  kSnapToMaxVelocityThresholdAfterAccelerationDip = [homeGestureSettings snapToMaxVelocityThresholdAfterAccelerationDip];
+  [homeGestureSettings maximumAdaptiveVelocityThresholdForDock];
   *&kMaximumAdaptiveVelocityThresholdForDock = v3 * v18;
-  [v26 appSwitcherVelocityThresholdIncreasingRateFraction];
+  [homeGestureSettings appSwitcherVelocityThresholdIncreasingRateFraction];
   kAppSwitcherVelocityThresholdIncreasingRateFraction = v19;
-  [v26 dockVelocityThresholdIncreasingRateFraction];
+  [homeGestureSettings dockVelocityThresholdIncreasingRateFraction];
   kDockVelocityThresholdIncreasingRateFraction = v20;
-  [v26 adaptiveThresholdsDecreasingRateFraction];
+  [homeGestureSettings adaptiveThresholdsDecreasingRateFraction];
   kAdaptiveThresholdsDecreasingRateFraction = v21;
-  [v26 velocitySlopeThresholdForBottomSwipeUpArc];
+  [homeGestureSettings velocitySlopeThresholdForBottomSwipeUpArc];
   kVelocitySlopeThresholdForBottomSwipeUpArc = v22;
-  [v26 velocitySlopeThresholdForScrunchArc];
+  [homeGestureSettings velocitySlopeThresholdForScrunchArc];
   kVelocitySlopeThresholdForScrunchArc = v23;
-  [v26 velocitySlopeThresholdForCurrentLayout];
+  [homeGestureSettings velocitySlopeThresholdForCurrentLayout];
   kVelocitySlopeThresholdForCurrentLayout = v24;
-  [v26 edgeDistanceToCorrectGestureFinalDestination];
+  [homeGestureSettings edgeDistanceToCorrectGestureFinalDestination];
   *&kEdgeDistanceToCorrectGestureFinalDestination = v3 * v25;
 }
 

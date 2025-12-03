@@ -1,42 +1,42 @@
 @interface PKAddSecureElementPassConfiguration
-- (PKAddSecureElementPassConfiguration)initWithCoder:(id)a3;
-- (PKAddSecureElementPassConfiguration)initWithType:(int64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PKAddSecureElementPassConfiguration)initWithCoder:(id)coder;
+- (PKAddSecureElementPassConfiguration)initWithType:(int64_t)type;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)_extendableDescription:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)updateAllowManagedAppleIDWithEntitlements:(id)a3;
+- (void)_extendableDescription:(id)description;
+- (void)encodeWithCoder:(id)coder;
+- (void)updateAllowManagedAppleIDWithEntitlements:(id)entitlements;
 @end
 
 @implementation PKAddSecureElementPassConfiguration
 
-- (PKAddSecureElementPassConfiguration)initWithType:(int64_t)a3
+- (PKAddSecureElementPassConfiguration)initWithType:(int64_t)type
 {
   v5.receiver = self;
   v5.super_class = PKAddSecureElementPassConfiguration;
   result = [(PKAddSecureElementPassConfiguration *)&v5 init];
   if (result)
   {
-    result->_configurationType = a3;
+    result->_configurationType = type;
   }
 
   return result;
 }
 
-- (void)updateAllowManagedAppleIDWithEntitlements:(id)a3
+- (void)updateAllowManagedAppleIDWithEntitlements:(id)entitlements
 {
-  v7 = a3;
-  if ([v7 secureElementPassProvisioningForMAIDs])
+  entitlementsCopy = entitlements;
+  if ([entitlementsCopy secureElementPassProvisioningForMAIDs])
   {
     v4 = 1;
-    v5 = v7;
+    v5 = entitlementsCopy;
   }
 
   else
   {
-    v6 = [v7 passesAllAccess];
-    v5 = v7;
-    if (v6)
+    passesAllAccess = [entitlementsCopy passesAllAccess];
+    v5 = entitlementsCopy;
+    if (passesAllAccess)
     {
       goto LABEL_6;
     }
@@ -48,13 +48,13 @@
 LABEL_6:
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   configurationType = self->_configurationType;
-  v8 = a3;
-  [v8 encodeInteger:configurationType forKey:@"configurationType"];
-  [v8 encodeObject:self->_issuerIdentifier forKey:@"issuerIdentifier"];
-  [v8 encodeObject:self->_localizedDescription forKey:@"localizedDescription"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:configurationType forKey:@"configurationType"];
+  [coderCopy encodeObject:self->_issuerIdentifier forKey:@"issuerIdentifier"];
+  [coderCopy encodeObject:self->_localizedDescription forKey:@"localizedDescription"];
   allowManagedAppleID = self->_allowManagedAppleID;
   v6 = @"true";
   if (allowManagedAppleID != 1)
@@ -72,27 +72,27 @@ LABEL_6:
     v7 = v6;
   }
 
-  [v8 encodeObject:v7 forKey:@"allowManagedAppleID"];
+  [coderCopy encodeObject:v7 forKey:@"allowManagedAppleID"];
 }
 
-- (PKAddSecureElementPassConfiguration)initWithCoder:(id)a3
+- (PKAddSecureElementPassConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = PKAddSecureElementPassConfiguration;
   v5 = [(PKAddSecureElementPassConfiguration *)&v14 init];
   if (v5)
   {
-    v5->_configurationType = [v4 decodeIntegerForKey:@"configurationType"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"issuerIdentifier"];
+    v5->_configurationType = [coderCopy decodeIntegerForKey:@"configurationType"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"issuerIdentifier"];
     issuerIdentifier = v5->_issuerIdentifier;
     v5->_issuerIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localizedDescription"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localizedDescription"];
     localizedDescription = v5->_localizedDescription;
     v5->_localizedDescription = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"allowManagedAppleID"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"allowManagedAppleID"];
     if ([v10 isEqualToString:@"true"])
     {
       v11 = 1;
@@ -123,13 +123,13 @@ LABEL_6:
   return v3;
 }
 
-- (void)_extendableDescription:(id)a3
+- (void)_extendableDescription:(id)description
 {
   configurationType = self->_configurationType;
-  v8 = a3;
-  [v8 appendFormat:@"configurationType: '%lu'; ", configurationType];
-  [v8 appendFormat:@"issuerIdentifier: '%@'; ", self->_issuerIdentifier];
-  [v8 appendFormat:@"localizedDescription: '%@'; ", self->_localizedDescription];
+  descriptionCopy = description;
+  [descriptionCopy appendFormat:@"configurationType: '%lu'; ", configurationType];
+  [descriptionCopy appendFormat:@"issuerIdentifier: '%@'; ", self->_issuerIdentifier];
+  [descriptionCopy appendFormat:@"localizedDescription: '%@'; ", self->_localizedDescription];
   allowManagedAppleID = self->_allowManagedAppleID;
   v6 = @"true";
   if (allowManagedAppleID != 1)
@@ -147,18 +147,18 @@ LABEL_6:
     v7 = v6;
   }
 
-  [v8 appendFormat:@"allowManagedAppleID: '%@'; ", v7];
+  [descriptionCopy appendFormat:@"allowManagedAppleID: '%@'; ", v7];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5[3] = self->_configurationType;
-  v6 = [(NSString *)self->_issuerIdentifier copyWithZone:a3];
+  v6 = [(NSString *)self->_issuerIdentifier copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(NSString *)self->_localizedDescription copyWithZone:a3];
+  v8 = [(NSString *)self->_localizedDescription copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 

@@ -1,19 +1,19 @@
 @interface REUpNextCollectionViewFlowLayoutAttributes
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGRect)unitFrameOnScreen;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation REUpNextCollectionViewFlowLayoutAttributes
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (v11.receiver = self, v11.super_class = REUpNextCollectionViewFlowLayoutAttributes, [(UICollectionViewLayoutAttributes *)&v11 isEqual:v4]))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (v11.receiver = self, v11.super_class = REUpNextCollectionViewFlowLayoutAttributes, [(UICollectionViewLayoutAttributes *)&v11 isEqual:equalCopy]))
   {
-    [v4 unitFrameOnScreen];
+    [equalCopy unitFrameOnScreen];
     v12.origin.x = v5;
     v12.origin.y = v6;
     v12.size.width = v7;
@@ -40,11 +40,11 @@
   return v5 ^ v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = REUpNextCollectionViewFlowLayoutAttributes;
-  v4 = [(UICollectionViewLayoutAttributes *)&v6 copyWithZone:a3];
+  v4 = [(UICollectionViewLayoutAttributes *)&v6 copyWithZone:zone];
   [(REUpNextCollectionViewFlowLayoutAttributes *)self unitFrameOnScreen];
   [v4 setUnitFrameOnScreen:?];
   return v4;

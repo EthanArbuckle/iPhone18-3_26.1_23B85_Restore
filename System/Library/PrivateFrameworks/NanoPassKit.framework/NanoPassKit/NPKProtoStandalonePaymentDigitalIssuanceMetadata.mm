@@ -1,71 +1,71 @@
 @interface NPKProtoStandalonePaymentDigitalIssuanceMetadata
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addDefaultSuggestions:(id)a3;
-- (void)addServiceProviderAcceptedNetworks:(id)a3;
-- (void)addServiceProviderCapabilities:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addDefaultSuggestions:(id)suggestions;
+- (void)addServiceProviderAcceptedNetworks:(id)networks;
+- (void)addServiceProviderCapabilities:(id)capabilities;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NPKProtoStandalonePaymentDigitalIssuanceMetadata
 
-- (void)addServiceProviderAcceptedNetworks:(id)a3
+- (void)addServiceProviderAcceptedNetworks:(id)networks
 {
-  v4 = a3;
+  networksCopy = networks;
   serviceProviderAcceptedNetworks = self->_serviceProviderAcceptedNetworks;
-  v8 = v4;
+  v8 = networksCopy;
   if (!serviceProviderAcceptedNetworks)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_serviceProviderAcceptedNetworks;
     self->_serviceProviderAcceptedNetworks = v6;
 
-    v4 = v8;
+    networksCopy = v8;
     serviceProviderAcceptedNetworks = self->_serviceProviderAcceptedNetworks;
   }
 
-  [(NSMutableArray *)serviceProviderAcceptedNetworks addObject:v4];
+  [(NSMutableArray *)serviceProviderAcceptedNetworks addObject:networksCopy];
 }
 
-- (void)addServiceProviderCapabilities:(id)a3
+- (void)addServiceProviderCapabilities:(id)capabilities
 {
-  v4 = a3;
+  capabilitiesCopy = capabilities;
   serviceProviderCapabilities = self->_serviceProviderCapabilities;
-  v8 = v4;
+  v8 = capabilitiesCopy;
   if (!serviceProviderCapabilities)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_serviceProviderCapabilities;
     self->_serviceProviderCapabilities = v6;
 
-    v4 = v8;
+    capabilitiesCopy = v8;
     serviceProviderCapabilities = self->_serviceProviderCapabilities;
   }
 
-  [(NSMutableArray *)serviceProviderCapabilities addObject:v4];
+  [(NSMutableArray *)serviceProviderCapabilities addObject:capabilitiesCopy];
 }
 
-- (void)addDefaultSuggestions:(id)a3
+- (void)addDefaultSuggestions:(id)suggestions
 {
-  v4 = a3;
+  suggestionsCopy = suggestions;
   defaultSuggestions = self->_defaultSuggestions;
-  v8 = v4;
+  v8 = suggestionsCopy;
   if (!defaultSuggestions)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_defaultSuggestions;
     self->_defaultSuggestions = v6;
 
-    v4 = v8;
+    suggestionsCopy = v8;
     defaultSuggestions = self->_defaultSuggestions;
   }
 
-  [(NSMutableArray *)defaultSuggestions addObject:v4];
+  [(NSMutableArray *)defaultSuggestions addObject:suggestionsCopy];
 }
 
 - (id)description
@@ -74,20 +74,20 @@
   v8.receiver = self;
   v8.super_class = NPKProtoStandalonePaymentDigitalIssuanceMetadata;
   v4 = [(NPKProtoStandalonePaymentDigitalIssuanceMetadata *)&v8 description];
-  v5 = [(NPKProtoStandalonePaymentDigitalIssuanceMetadata *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NPKProtoStandalonePaymentDigitalIssuanceMetadata *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   serviceProviderIdentifier = self->_serviceProviderIdentifier;
   if (serviceProviderIdentifier)
   {
-    [v3 setObject:serviceProviderIdentifier forKey:@"serviceProviderIdentifier"];
+    [dictionary setObject:serviceProviderIdentifier forKey:@"serviceProviderIdentifier"];
   }
 
   serviceProviderCountryCode = self->_serviceProviderCountryCode;
@@ -135,10 +135,10 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_serviceProviderIdentifier)
   {
     PBDataWriterWriteStringField();
@@ -263,89 +263,89 @@
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v16 = a3;
+  toCopy = to;
   if (self->_serviceProviderIdentifier)
   {
-    [v16 setServiceProviderIdentifier:?];
+    [toCopy setServiceProviderIdentifier:?];
   }
 
   if (self->_serviceProviderCountryCode)
   {
-    [v16 setServiceProviderCountryCode:?];
+    [toCopy setServiceProviderCountryCode:?];
   }
 
   if ([(NPKProtoStandalonePaymentDigitalIssuanceMetadata *)self serviceProviderAcceptedNetworksCount])
   {
-    [v16 clearServiceProviderAcceptedNetworks];
-    v4 = [(NPKProtoStandalonePaymentDigitalIssuanceMetadata *)self serviceProviderAcceptedNetworksCount];
-    if (v4)
+    [toCopy clearServiceProviderAcceptedNetworks];
+    serviceProviderAcceptedNetworksCount = [(NPKProtoStandalonePaymentDigitalIssuanceMetadata *)self serviceProviderAcceptedNetworksCount];
+    if (serviceProviderAcceptedNetworksCount)
     {
-      v5 = v4;
+      v5 = serviceProviderAcceptedNetworksCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(NPKProtoStandalonePaymentDigitalIssuanceMetadata *)self serviceProviderAcceptedNetworksAtIndex:i];
-        [v16 addServiceProviderAcceptedNetworks:v7];
+        [toCopy addServiceProviderAcceptedNetworks:v7];
       }
     }
   }
 
   if ([(NPKProtoStandalonePaymentDigitalIssuanceMetadata *)self serviceProviderCapabilitiesCount])
   {
-    [v16 clearServiceProviderCapabilities];
-    v8 = [(NPKProtoStandalonePaymentDigitalIssuanceMetadata *)self serviceProviderCapabilitiesCount];
-    if (v8)
+    [toCopy clearServiceProviderCapabilities];
+    serviceProviderCapabilitiesCount = [(NPKProtoStandalonePaymentDigitalIssuanceMetadata *)self serviceProviderCapabilitiesCount];
+    if (serviceProviderCapabilitiesCount)
     {
-      v9 = v8;
+      v9 = serviceProviderCapabilitiesCount;
       for (j = 0; j != v9; ++j)
       {
         v11 = [(NPKProtoStandalonePaymentDigitalIssuanceMetadata *)self serviceProviderCapabilitiesAtIndex:j];
-        [v16 addServiceProviderCapabilities:v11];
+        [toCopy addServiceProviderCapabilities:v11];
       }
     }
   }
 
   if (self->_serviceProviderDictJson)
   {
-    [v16 setServiceProviderDictJson:?];
+    [toCopy setServiceProviderDictJson:?];
   }
 
   if (self->_action)
   {
-    [v16 setAction:?];
+    [toCopy setAction:?];
   }
 
   if (self->_merchantID)
   {
-    [v16 setMerchantID:?];
+    [toCopy setMerchantID:?];
   }
 
   if ([(NPKProtoStandalonePaymentDigitalIssuanceMetadata *)self defaultSuggestionsCount])
   {
-    [v16 clearDefaultSuggestions];
-    v12 = [(NPKProtoStandalonePaymentDigitalIssuanceMetadata *)self defaultSuggestionsCount];
-    if (v12)
+    [toCopy clearDefaultSuggestions];
+    defaultSuggestionsCount = [(NPKProtoStandalonePaymentDigitalIssuanceMetadata *)self defaultSuggestionsCount];
+    if (defaultSuggestionsCount)
     {
-      v13 = v12;
+      v13 = defaultSuggestionsCount;
       for (k = 0; k != v13; ++k)
       {
         v15 = [(NPKProtoStandalonePaymentDigitalIssuanceMetadata *)self defaultSuggestionsAtIndex:k];
-        [v16 addDefaultSuggestions:v15];
+        [toCopy addDefaultSuggestions:v15];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v51 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_serviceProviderIdentifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_serviceProviderIdentifier copyWithZone:zone];
   v7 = v5[8];
   v5[8] = v6;
 
-  v8 = [(NSString *)self->_serviceProviderCountryCode copyWithZone:a3];
+  v8 = [(NSString *)self->_serviceProviderCountryCode copyWithZone:zone];
   v9 = v5[6];
   v5[6] = v8;
 
@@ -369,7 +369,7 @@
           objc_enumerationMutation(v10);
         }
 
-        v15 = [*(*(&v44 + 1) + 8 * v14) copyWithZone:a3];
+        v15 = [*(*(&v44 + 1) + 8 * v14) copyWithZone:zone];
         [v5 addServiceProviderAcceptedNetworks:v15];
 
         ++v14;
@@ -402,7 +402,7 @@
           objc_enumerationMutation(v16);
         }
 
-        v21 = [*(*(&v40 + 1) + 8 * v20) copyWithZone:a3];
+        v21 = [*(*(&v40 + 1) + 8 * v20) copyWithZone:zone];
         [v5 addServiceProviderCapabilities:v21];
 
         ++v20;
@@ -415,15 +415,15 @@
     while (v18);
   }
 
-  v22 = [(NSString *)self->_serviceProviderDictJson copyWithZone:a3];
+  v22 = [(NSString *)self->_serviceProviderDictJson copyWithZone:zone];
   v23 = v5[7];
   v5[7] = v22;
 
-  v24 = [(NSString *)self->_action copyWithZone:a3];
+  v24 = [(NSString *)self->_action copyWithZone:zone];
   v25 = v5[1];
   v5[1] = v24;
 
-  v26 = [(NSString *)self->_merchantID copyWithZone:a3];
+  v26 = [(NSString *)self->_merchantID copyWithZone:zone];
   v27 = v5[3];
   v5[3] = v26;
 
@@ -447,7 +447,7 @@
           objc_enumerationMutation(v28);
         }
 
-        v33 = [*(*(&v36 + 1) + 8 * v32) copyWithZone:{a3, v36}];
+        v33 = [*(*(&v36 + 1) + 8 * v32) copyWithZone:{zone, v36}];
         [v5 addDefaultSuggestions:v33];
 
         ++v32;
@@ -464,13 +464,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((serviceProviderIdentifier = self->_serviceProviderIdentifier, !(serviceProviderIdentifier | v4[8])) || -[NSString isEqual:](serviceProviderIdentifier, "isEqual:")) && ((serviceProviderCountryCode = self->_serviceProviderCountryCode, !(serviceProviderCountryCode | v4[6])) || -[NSString isEqual:](serviceProviderCountryCode, "isEqual:")) && ((serviceProviderAcceptedNetworks = self->_serviceProviderAcceptedNetworks, !(serviceProviderAcceptedNetworks | v4[4])) || -[NSMutableArray isEqual:](serviceProviderAcceptedNetworks, "isEqual:")) && ((serviceProviderCapabilities = self->_serviceProviderCapabilities, !(serviceProviderCapabilities | v4[5])) || -[NSMutableArray isEqual:](serviceProviderCapabilities, "isEqual:")) && ((serviceProviderDictJson = self->_serviceProviderDictJson, !(serviceProviderDictJson | v4[7])) || -[NSString isEqual:](serviceProviderDictJson, "isEqual:")) && ((action = self->_action, !(action | v4[1])) || -[NSString isEqual:](action, "isEqual:")) && ((merchantID = self->_merchantID, !(merchantID | v4[3])) || -[NSString isEqual:](merchantID, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((serviceProviderIdentifier = self->_serviceProviderIdentifier, !(serviceProviderIdentifier | equalCopy[8])) || -[NSString isEqual:](serviceProviderIdentifier, "isEqual:")) && ((serviceProviderCountryCode = self->_serviceProviderCountryCode, !(serviceProviderCountryCode | equalCopy[6])) || -[NSString isEqual:](serviceProviderCountryCode, "isEqual:")) && ((serviceProviderAcceptedNetworks = self->_serviceProviderAcceptedNetworks, !(serviceProviderAcceptedNetworks | equalCopy[4])) || -[NSMutableArray isEqual:](serviceProviderAcceptedNetworks, "isEqual:")) && ((serviceProviderCapabilities = self->_serviceProviderCapabilities, !(serviceProviderCapabilities | equalCopy[5])) || -[NSMutableArray isEqual:](serviceProviderCapabilities, "isEqual:")) && ((serviceProviderDictJson = self->_serviceProviderDictJson, !(serviceProviderDictJson | equalCopy[7])) || -[NSString isEqual:](serviceProviderDictJson, "isEqual:")) && ((action = self->_action, !(action | equalCopy[1])) || -[NSString isEqual:](action, "isEqual:")) && ((merchantID = self->_merchantID, !(merchantID | equalCopy[3])) || -[NSString isEqual:](merchantID, "isEqual:")))
   {
     defaultSuggestions = self->_defaultSuggestions;
-    if (defaultSuggestions | v4[2])
+    if (defaultSuggestions | equalCopy[2])
     {
       v13 = [(NSMutableArray *)defaultSuggestions isEqual:?];
     }
@@ -501,16 +501,16 @@
   return v9 ^ [(NSMutableArray *)self->_defaultSuggestions hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (*(v4 + 8))
+  fromCopy = from;
+  if (*(fromCopy + 8))
   {
     [(NPKProtoStandalonePaymentDigitalIssuanceMetadata *)self setServiceProviderIdentifier:?];
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(NPKProtoStandalonePaymentDigitalIssuanceMetadata *)self setServiceProviderCountryCode:?];
   }
@@ -519,7 +519,7 @@
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v5 = *(v4 + 4);
+  v5 = *(fromCopy + 4);
   v6 = [v5 countByEnumeratingWithState:&v29 objects:v35 count:16];
   if (v6)
   {
@@ -547,7 +547,7 @@
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v10 = *(v4 + 5);
+  v10 = *(fromCopy + 5);
   v11 = [v10 countByEnumeratingWithState:&v25 objects:v34 count:16];
   if (v11)
   {
@@ -571,17 +571,17 @@
     while (v12);
   }
 
-  if (*(v4 + 7))
+  if (*(fromCopy + 7))
   {
     [(NPKProtoStandalonePaymentDigitalIssuanceMetadata *)self setServiceProviderDictJson:?];
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(NPKProtoStandalonePaymentDigitalIssuanceMetadata *)self setAction:?];
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(NPKProtoStandalonePaymentDigitalIssuanceMetadata *)self setMerchantID:?];
   }
@@ -590,7 +590,7 @@
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v15 = *(v4 + 2);
+  v15 = *(fromCopy + 2);
   v16 = [v15 countByEnumeratingWithState:&v21 objects:v33 count:16];
   if (v16)
   {

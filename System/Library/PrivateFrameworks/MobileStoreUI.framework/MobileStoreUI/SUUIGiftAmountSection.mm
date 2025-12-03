@@ -1,8 +1,8 @@
 @interface SUUIGiftAmountSection
 - (UIControl)amountControl;
-- (double)heightForCellInTableView:(id)a3 indexPath:(id)a4;
-- (id)tableViewCellForTableView:(id)a3 indexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forIndexPath:(id)a5;
+- (double)heightForCellInTableView:(id)view indexPath:(id)path;
+- (id)tableViewCellForTableView:(id)view indexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forIndexPath:(id)path;
 @end
 
 @implementation SUUIGiftAmountSection
@@ -13,8 +13,8 @@
   if (!amountControl)
   {
     v4 = [SUUIGiftAmountControl alloc];
-    v5 = [(SUUIGiftTableViewSection *)self giftConfiguration];
-    v6 = [(SUUIGiftAmountControl *)v4 initWithGiftConfiguration:v5];
+    giftConfiguration = [(SUUIGiftTableViewSection *)self giftConfiguration];
+    v6 = [(SUUIGiftAmountControl *)v4 initWithGiftConfiguration:giftConfiguration];
     v7 = self->_amountControl;
     self->_amountControl = v6;
 
@@ -25,13 +25,13 @@
   return amountControl;
 }
 
-- (double)heightForCellInTableView:(id)a3 indexPath:(id)a4
+- (double)heightForCellInTableView:(id)view indexPath:(id)path
 {
-  v4 = [MEMORY[0x277D75418] currentDevice];
-  v5 = [v4 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   result = 152.0;
-  if ((v5 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     return 116.0;
   }
@@ -39,30 +39,30 @@
   return result;
 }
 
-- (id)tableViewCellForTableView:(id)a3 indexPath:(id)a4
+- (id)tableViewCellForTableView:(id)view indexPath:(id)path
 {
-  v5 = [a3 dequeueReusableCellWithIdentifier:{@"GAM", a4}];
+  v5 = [view dequeueReusableCellWithIdentifier:{@"GAM", path}];
   if (!v5)
   {
     v5 = [objc_alloc(MEMORY[0x277D75B48]) initWithStyle:0 reuseIdentifier:@"GAM"];
     [v5 setSelectionStyle:0];
   }
 
-  v6 = [(SUUIGiftAmountSection *)self amountControl];
-  v7 = [v5 contentView];
-  [v7 bounds];
-  [v6 setFrame:?];
-  [v7 addSubview:v6];
+  amountControl = [(SUUIGiftAmountSection *)self amountControl];
+  contentView = [v5 contentView];
+  [contentView bounds];
+  [amountControl setFrame:?];
+  [contentView addSubview:amountControl];
 
   return v5;
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forIndexPath:(id)path
 {
-  v7 = a4;
-  v8 = [a3 backgroundColor];
-  [(SUUIGiftAmountControl *)self->_amountControl setBackgroundColor:v8];
-  [v7 setBackgroundColor:v8];
+  cellCopy = cell;
+  backgroundColor = [view backgroundColor];
+  [(SUUIGiftAmountControl *)self->_amountControl setBackgroundColor:backgroundColor];
+  [cellCopy setBackgroundColor:backgroundColor];
 }
 
 @end

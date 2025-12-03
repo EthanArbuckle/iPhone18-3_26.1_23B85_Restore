@@ -1,10 +1,10 @@
 @interface _UIDragInteractionDefaultDriverProvider_MacCatalyst
-- (id)createDefaultDriversForDragInteraction:(id)a3;
+- (id)createDefaultDriversForDragInteraction:(id)interaction;
 @end
 
 @implementation _UIDragInteractionDefaultDriverProvider_MacCatalyst
 
-- (id)createDefaultDriversForDragInteraction:(id)a3
+- (id)createDefaultDriversForDragInteraction:(id)interaction
 {
   v3 = MEMORY[0x1E695DFD8];
   v4 = objc_opt_new();

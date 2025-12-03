@@ -1,15 +1,15 @@
 @interface HFAnalyticsCameraTimelinePinchToZoomEvent
-- (HFAnalyticsCameraTimelinePinchToZoomEvent)initWithData:(id)a3;
+- (HFAnalyticsCameraTimelinePinchToZoomEvent)initWithData:(id)data;
 - (id)payload;
 @end
 
 @implementation HFAnalyticsCameraTimelinePinchToZoomEvent
 
-- (HFAnalyticsCameraTimelinePinchToZoomEvent)initWithData:(id)a3
+- (HFAnalyticsCameraTimelinePinchToZoomEvent)initWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   objc_opt_class();
-  v5 = [v4 objectForKeyedSubscript:@"didPinchToZoom"];
+  v5 = [dataCopy objectForKeyedSubscript:@"didPinchToZoom"];
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
@@ -28,7 +28,7 @@
   }
 
   objc_opt_class();
-  v8 = [v4 objectForKeyedSubscript:@"pinchToZoomCount"];
+  v8 = [dataCopy objectForKeyedSubscript:@"pinchToZoomCount"];
   if (objc_opt_isKindOfClass())
   {
     v9 = v8;
@@ -60,8 +60,8 @@
 {
   v8.receiver = self;
   v8.super_class = HFAnalyticsCameraTimelinePinchToZoomEvent;
-  v3 = [(HFAnalyticsEvent *)&v8 payload];
-  v4 = [v3 mutableCopy];
+  payload = [(HFAnalyticsEvent *)&v8 payload];
+  v4 = [payload mutableCopy];
 
   v5 = [MEMORY[0x277CCABB0] numberWithBool:{-[HFAnalyticsCameraTimelinePinchToZoomEvent didPinchToZoom](self, "didPinchToZoom")}];
   [v4 setObject:v5 forKeyedSubscript:@"didPinchToZoom"];

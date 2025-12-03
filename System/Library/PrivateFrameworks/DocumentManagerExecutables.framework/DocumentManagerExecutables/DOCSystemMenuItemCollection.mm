@@ -1,10 +1,10 @@
 @interface DOCSystemMenuItemCollection
-- (void)rename:(id)a3;
+- (void)rename:(id)rename;
 @end
 
 @implementation DOCSystemMenuItemCollection
 
-- (void)rename:(id)a3
+- (void)rename:(id)rename
 {
   swift_unknownObjectRetain();
   _bridgeAnyObjectToAny(_:)();

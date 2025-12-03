@@ -1,7 +1,7 @@
 @interface _NSKeyValueReturnedValueConsistencyStats
 - (id)currentValue;
 - (void)dealloc;
-- (void)setCurrentValue:(id)a3;
+- (void)setCurrentValue:(id)value;
 @end
 
 @implementation _NSKeyValueReturnedValueConsistencyStats
@@ -29,13 +29,13 @@
   }
 }
 
-- (void)setCurrentValue:(id)a3
+- (void)setCurrentValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   copiedCurrentValue = self->_copiedCurrentValue;
   if (copiedCurrentValue)
   {
-    if (copiedCurrentValue == a3)
+    if (copiedCurrentValue == value)
     {
       return;
     }
@@ -48,17 +48,17 @@
     {
       v7 = v6;
 
-      if (v7 == v3)
+      if (v7 == valueCopy)
       {
         return;
       }
     }
   }
 
-  if ([v3 conformsToProtocol:&unk_1EEF5D7C0])
+  if ([valueCopy conformsToProtocol:&unk_1EEF5D7C0])
   {
-    v8 = [v3 copy];
-    v3 = 0;
+    v8 = [valueCopy copy];
+    valueCopy = 0;
   }
 
   else
@@ -68,7 +68,7 @@
 
   self->_copiedCurrentValue = v8;
 
-  objc_storeWeak(&self->_weakCurrentValue, v3);
+  objc_storeWeak(&self->_weakCurrentValue, valueCopy);
 }
 
 @end

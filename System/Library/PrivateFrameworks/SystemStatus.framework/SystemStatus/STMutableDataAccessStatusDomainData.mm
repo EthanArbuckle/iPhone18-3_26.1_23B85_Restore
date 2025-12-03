@@ -1,9 +1,9 @@
 @interface STMutableDataAccessStatusDomainData
-- (BOOL)applyDiff:(id)a3;
-- (STMutableDataAccessStatusDomainData)initWithAttributionListData:(id)a3;
+- (BOOL)applyDiff:(id)diff;
+- (STMutableDataAccessStatusDomainData)initWithAttributionListData:(id)data;
 - (STMutableListData)attributionListData;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setDataAccessAttributions:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setDataAccessAttributions:(id)attributions;
 @end
 
 @implementation STMutableDataAccessStatusDomainData
@@ -12,14 +12,14 @@
 {
   v4.receiver = self;
   v4.super_class = STMutableDataAccessStatusDomainData;
-  v2 = [(STDataAccessStatusDomainData *)&v4 attributionListData];
+  attributionListData = [(STDataAccessStatusDomainData *)&v4 attributionListData];
 
-  return v2;
+  return attributionListData;
 }
 
-- (STMutableDataAccessStatusDomainData)initWithAttributionListData:(id)a3
+- (STMutableDataAccessStatusDomainData)initWithAttributionListData:(id)data
 {
-  v4 = [a3 mutableCopy];
+  v4 = [data mutableCopy];
   v7.receiver = self;
   v7.super_class = STMutableDataAccessStatusDomainData;
   v5 = [(STDataAccessStatusDomainData *)&v7 _initWithAttributionListData:v4];
@@ -27,36 +27,36 @@
   return v5;
 }
 
-- (void)setDataAccessAttributions:(id)a3
+- (void)setDataAccessAttributions:(id)attributions
 {
-  if (a3)
+  if (attributions)
   {
-    v4 = a3;
-    v5 = [(STMutableDataAccessStatusDomainData *)self attributionListData];
+    attributionsCopy = attributions;
+    attributionListData = [(STMutableDataAccessStatusDomainData *)self attributionListData];
     if (self)
     {
-      self = [v4 sortedArrayUsingComparator:&__block_literal_global_32];
+      self = [attributionsCopy sortedArrayUsingComparator:&__block_literal_global_32];
     }
 
-    [v5 setObjects:self];
+    [attributionListData setObjects:self];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [STDataAccessStatusDomainData allocWithZone:a3];
+  v4 = [STDataAccessStatusDomainData allocWithZone:zone];
 
   return [(STDataAccessStatusDomainData *)v4 initWithData:self];
 }
 
-- (BOOL)applyDiff:(id)a3
+- (BOOL)applyDiff:(id)diff
 {
-  v4 = a3;
+  diffCopy = diff;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   if (isKindOfClass)
   {
-    [v4 applyToMutableData:self];
+    [diffCopy applyToMutableData:self];
   }
 
   return isKindOfClass & 1;

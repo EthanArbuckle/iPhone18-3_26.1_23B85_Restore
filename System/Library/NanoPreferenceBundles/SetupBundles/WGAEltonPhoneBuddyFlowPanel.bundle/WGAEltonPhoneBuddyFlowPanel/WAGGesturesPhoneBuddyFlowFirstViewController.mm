@@ -1,15 +1,15 @@
 @interface WAGGesturesPhoneBuddyFlowFirstViewController
 - (BPSSetupMiniFlowControllerDelegate)miniFlowDelegate;
 - (WAGGesturesPhoneBuddyFlowFirstViewController)init;
-- (double)_heightForLabelWithTheLongestStringAndWidth:(double)a3;
+- (double)_heightForLabelWithTheLongestStringAndWidth:(double)width;
 - (id)_gestureInstructionLabelText;
 - (id)_phoneBuddyFlowPanelLog;
 - (id)suggestedButtonTitle;
 - (id)titleString;
 - (void)_setupViews;
 - (void)dealloc;
-- (void)handleSegmentAction:(id)a3;
-- (void)suggestedButtonPressed:(id)a3;
+- (void)handleSegmentAction:(id)action;
+- (void)suggestedButtonPressed:(id)pressed;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
@@ -24,8 +24,8 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [(WAGGesturesPhoneBuddyFlowFirstViewController *)v2 _phoneBuddyFlowPanelLog];
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+    _phoneBuddyFlowPanelLog = [(WAGGesturesPhoneBuddyFlowFirstViewController *)v2 _phoneBuddyFlowPanelLog];
+    if (os_log_type_enabled(_phoneBuddyFlowPanelLog, OS_LOG_TYPE_DEFAULT))
     {
       v5 = objc_opt_class();
       v6 = NSStringFromClass(v5);
@@ -33,7 +33,7 @@
       v11 = v6;
       v12 = 2080;
       v13 = "[WAGGesturesPhoneBuddyFlowFirstViewController init]";
-      _os_log_impl(&dword_0, v4, OS_LOG_TYPE_DEFAULT, "Elton phone buddy panel -- %@ %s", buf, 0x16u);
+      _os_log_impl(&dword_0, _phoneBuddyFlowPanelLog, OS_LOG_TYPE_DEFAULT, "Elton phone buddy panel -- %@ %s", buf, 0x16u);
     }
 
     [(WAGGesturesPhoneBuddyFlowFirstViewController *)v3 setStyle:2];
@@ -51,8 +51,8 @@
   v6.receiver = self;
   v6.super_class = WAGGesturesPhoneBuddyFlowFirstViewController;
   [(WAGGesturesPhoneBuddyFlowFirstViewController *)&v6 viewDidLoad];
-  v3 = [(WAGGesturesPhoneBuddyFlowFirstViewController *)self _phoneBuddyFlowPanelLog];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  _phoneBuddyFlowPanelLog = [(WAGGesturesPhoneBuddyFlowFirstViewController *)self _phoneBuddyFlowPanelLog];
+  if (os_log_type_enabled(_phoneBuddyFlowPanelLog, OS_LOG_TYPE_DEFAULT))
   {
     v4 = objc_opt_class();
     v5 = NSStringFromClass(v4);
@@ -60,7 +60,7 @@
     v8 = v5;
     v9 = 2080;
     v10 = "[WAGGesturesPhoneBuddyFlowFirstViewController viewDidLoad]";
-    _os_log_impl(&dword_0, v3, OS_LOG_TYPE_DEFAULT, "Elton phone buddy panel -- %@ %s", buf, 0x16u);
+    _os_log_impl(&dword_0, _phoneBuddyFlowPanelLog, OS_LOG_TYPE_DEFAULT, "Elton phone buddy panel -- %@ %s", buf, 0x16u);
   }
 
   [(WAGGesturesPhoneBuddyFlowFirstViewController *)self _setupViews];
@@ -68,8 +68,8 @@
 
 - (void)dealloc
 {
-  v3 = [(WAGGesturesPhoneBuddyFlowFirstViewController *)self _phoneBuddyFlowPanelLog];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  _phoneBuddyFlowPanelLog = [(WAGGesturesPhoneBuddyFlowFirstViewController *)self _phoneBuddyFlowPanelLog];
+  if (os_log_type_enabled(_phoneBuddyFlowPanelLog, OS_LOG_TYPE_DEFAULT))
   {
     v4 = objc_opt_class();
     v5 = NSStringFromClass(v4);
@@ -77,7 +77,7 @@
     v9 = v5;
     v10 = 2080;
     v11 = "[WAGGesturesPhoneBuddyFlowFirstViewController dealloc]";
-    _os_log_impl(&dword_0, v3, OS_LOG_TYPE_DEFAULT, "Elton phone buddy panel --  %@ %s", buf, 0x16u);
+    _os_log_impl(&dword_0, _phoneBuddyFlowPanelLog, OS_LOG_TYPE_DEFAULT, "Elton phone buddy panel --  %@ %s", buf, 0x16u);
   }
 
   v6 = +[NSNotificationCenter defaultCenter];
@@ -90,8 +90,8 @@
 
 - (void)_setupViews
 {
-  v3 = [(WAGGesturesPhoneBuddyFlowFirstViewController *)self _phoneBuddyFlowPanelLog];
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  _phoneBuddyFlowPanelLog = [(WAGGesturesPhoneBuddyFlowFirstViewController *)self _phoneBuddyFlowPanelLog];
+  if (os_log_type_enabled(_phoneBuddyFlowPanelLog, OS_LOG_TYPE_DEFAULT))
   {
     v4 = objc_opt_class();
     v5 = NSStringFromClass(v4);
@@ -99,19 +99,19 @@
     v71 = v5;
     v72 = 2080;
     v73 = "[WAGGesturesPhoneBuddyFlowFirstViewController _setupViews]";
-    _os_log_impl(&dword_0, v3, OS_LOG_TYPE_DEFAULT, "Elton phone buddy panel -- %@ %s", buf, 0x16u);
+    _os_log_impl(&dword_0, _phoneBuddyFlowPanelLog, OS_LOG_TYPE_DEFAULT, "Elton phone buddy panel -- %@ %s", buf, 0x16u);
   }
 
   v6 = +[UIColor blackColor];
-  v7 = [(WAGGesturesPhoneBuddyFlowFirstViewController *)self view];
-  [v7 setBackgroundColor:v6];
+  view = [(WAGGesturesPhoneBuddyFlowFirstViewController *)self view];
+  [view setBackgroundColor:v6];
 
   v8 = objc_alloc_init(UIView);
   containerContentView = self->_containerContentView;
   self->_containerContentView = v8;
 
-  v10 = [(WAGGesturesPhoneBuddyFlowFirstViewController *)self contentView];
-  [v10 addSubview:self->_containerContentView];
+  contentView = [(WAGGesturesPhoneBuddyFlowFirstViewController *)self contentView];
+  [contentView addSubview:self->_containerContentView];
 
   v11 = +[UIColor blackColor];
   [(UIView *)self->_containerContentView setBackgroundColor:v11];
@@ -119,19 +119,19 @@
   v12 = [NSBundle bundleForClass:objc_opt_class()];
   v13 = [v12 pathForResource:@"flick_buddy_flow_panel_instruction_video" ofType:@"m4v"];
 
-  v14 = [(WAGGesturesPhoneBuddyFlowFirstViewController *)self _phoneBuddyFlowPanelLog];
-  if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+  _phoneBuddyFlowPanelLog2 = [(WAGGesturesPhoneBuddyFlowFirstViewController *)self _phoneBuddyFlowPanelLog];
+  if (os_log_type_enabled(_phoneBuddyFlowPanelLog2, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
     v71 = v13;
-    _os_log_impl(&dword_0, v14, OS_LOG_TYPE_DEFAULT, "Elton phone buddy panel -- flick file path is %@", buf, 0xCu);
+    _os_log_impl(&dword_0, _phoneBuddyFlowPanelLog2, OS_LOG_TYPE_DEFAULT, "Elton phone buddy panel -- flick file path is %@", buf, 0xCu);
   }
 
   v67 = v13;
   if (v13)
   {
-    v15 = [NSURL fileURLWithPath:v13];
-    v16 = [[WAGGesturesPhoneBuddyFlowMediaPlayerView alloc] initWithVideoURL:v15 placeholderImageName:@"flick_buddy_flow_panel_instruction_first_frame"];
+    _phoneBuddyFlowPanelLog3 = [NSURL fileURLWithPath:v13];
+    v16 = [[WAGGesturesPhoneBuddyFlowMediaPlayerView alloc] initWithVideoURL:_phoneBuddyFlowPanelLog3 placeholderImageName:@"flick_buddy_flow_panel_instruction_first_frame"];
     flickMediaView = self->_flickMediaView;
     self->_flickMediaView = v16;
 
@@ -142,30 +142,30 @@
 
   else
   {
-    v15 = [(WAGGesturesPhoneBuddyFlowFirstViewController *)self _phoneBuddyFlowPanelLog];
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+    _phoneBuddyFlowPanelLog3 = [(WAGGesturesPhoneBuddyFlowFirstViewController *)self _phoneBuddyFlowPanelLog];
+    if (os_log_type_enabled(_phoneBuddyFlowPanelLog3, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_0, v15, OS_LOG_TYPE_DEFAULT, "Elton phone buddy panel -- flick file path is nil.", buf, 2u);
+      _os_log_impl(&dword_0, _phoneBuddyFlowPanelLog3, OS_LOG_TYPE_DEFAULT, "Elton phone buddy panel -- flick file path is nil.", buf, 2u);
     }
   }
 
   v18 = [NSBundle bundleForClass:objc_opt_class()];
   v19 = [v18 pathForResource:@"elton_instruction" ofType:@"m4v"];
 
-  v20 = [(WAGGesturesPhoneBuddyFlowFirstViewController *)self _phoneBuddyFlowPanelLog];
-  if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
+  _phoneBuddyFlowPanelLog4 = [(WAGGesturesPhoneBuddyFlowFirstViewController *)self _phoneBuddyFlowPanelLog];
+  if (os_log_type_enabled(_phoneBuddyFlowPanelLog4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
     v71 = v19;
-    _os_log_impl(&dword_0, v20, OS_LOG_TYPE_DEFAULT, "Elton phone buddy panel -- flick file path is %@", buf, 0xCu);
+    _os_log_impl(&dword_0, _phoneBuddyFlowPanelLog4, OS_LOG_TYPE_DEFAULT, "Elton phone buddy panel -- flick file path is %@", buf, 0xCu);
   }
 
   v66 = v19;
   if (v19)
   {
-    v21 = [NSURL fileURLWithPath:v19];
-    v22 = [[WAGGesturesPhoneBuddyFlowMediaPlayerView alloc] initWithVideoURL:v21 placeholderImageName:@"elton_first_frame_fpo"];
+    _phoneBuddyFlowPanelLog5 = [NSURL fileURLWithPath:v19];
+    v22 = [[WAGGesturesPhoneBuddyFlowMediaPlayerView alloc] initWithVideoURL:_phoneBuddyFlowPanelLog5 placeholderImageName:@"elton_first_frame_fpo"];
     doubleTapMediaView = self->_doubleTapMediaView;
     self->_doubleTapMediaView = v22;
 
@@ -176,11 +176,11 @@
 
   else
   {
-    v21 = [(WAGGesturesPhoneBuddyFlowFirstViewController *)self _phoneBuddyFlowPanelLog];
-    if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
+    _phoneBuddyFlowPanelLog5 = [(WAGGesturesPhoneBuddyFlowFirstViewController *)self _phoneBuddyFlowPanelLog];
+    if (os_log_type_enabled(_phoneBuddyFlowPanelLog5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_0, v21, OS_LOG_TYPE_DEFAULT, "Elton phone buddy panel -- double tap file path is nil.", buf, 2u);
+      _os_log_impl(&dword_0, _phoneBuddyFlowPanelLog5, OS_LOG_TYPE_DEFAULT, "Elton phone buddy panel -- double tap file path is nil.", buf, 2u);
     }
   }
 
@@ -197,15 +197,15 @@
 
   [(UISegmentedControl *)self->_segmentedControl addTarget:self action:"handleSegmentAction:" forControlEvents:4096];
   [(UISegmentedControl *)self->_segmentedControl setSelectedSegmentIndex:0];
-  v31 = [(WAGGesturesPhoneBuddyFlowFirstViewController *)self contentView];
-  [v31 addSubview:self->_segmentedControl];
+  contentView2 = [(WAGGesturesPhoneBuddyFlowFirstViewController *)self contentView];
+  [contentView2 addSubview:self->_segmentedControl];
 
   v32 = objc_alloc_init(UILabel);
   gestureInstructionLabel = self->_gestureInstructionLabel;
   self->_gestureInstructionLabel = v32;
 
-  v34 = [(WAGGesturesPhoneBuddyFlowFirstViewController *)self _gestureInstructionLabelText];
-  [(UILabel *)self->_gestureInstructionLabel setText:v34];
+  _gestureInstructionLabelText = [(WAGGesturesPhoneBuddyFlowFirstViewController *)self _gestureInstructionLabelText];
+  [(UILabel *)self->_gestureInstructionLabel setText:_gestureInstructionLabelText];
 
   v35 = +[UIColor clearColor];
   [(UILabel *)self->_gestureInstructionLabel setBackgroundColor:v35];
@@ -222,44 +222,44 @@
   }
 
   [(UILabel *)self->_gestureInstructionLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-  v37 = [(WAGGesturesPhoneBuddyFlowFirstViewController *)self contentView];
-  [v37 addSubview:self->_gestureInstructionLabel];
+  contentView3 = [(WAGGesturesPhoneBuddyFlowFirstViewController *)self contentView];
+  [contentView3 addSubview:self->_gestureInstructionLabel];
 
-  v63 = [(UISegmentedControl *)self->_segmentedControl leadingAnchor];
-  v61 = [(UIView *)self->_containerContentView leadingAnchor];
-  v59 = [v63 constraintEqualToAnchor:v61];
+  leadingAnchor = [(UISegmentedControl *)self->_segmentedControl leadingAnchor];
+  leadingAnchor2 = [(UIView *)self->_containerContentView leadingAnchor];
+  v59 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v69[0] = v59;
-  v57 = [(UISegmentedControl *)self->_segmentedControl trailingAnchor];
-  v55 = [(UIView *)self->_containerContentView trailingAnchor];
-  v53 = [v57 constraintEqualToAnchor:v55];
+  trailingAnchor = [(UISegmentedControl *)self->_segmentedControl trailingAnchor];
+  trailingAnchor2 = [(UIView *)self->_containerContentView trailingAnchor];
+  v53 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v69[1] = v53;
-  v38 = [(UISegmentedControl *)self->_segmentedControl topAnchor];
-  v39 = [(UIView *)self->_containerContentView bottomAnchor];
-  v40 = [v38 constraintEqualToAnchor:v39];
+  topAnchor = [(UISegmentedControl *)self->_segmentedControl topAnchor];
+  bottomAnchor = [(UIView *)self->_containerContentView bottomAnchor];
+  v40 = [topAnchor constraintEqualToAnchor:bottomAnchor];
   v69[2] = v40;
-  v41 = [(UISegmentedControl *)self->_segmentedControl bottomAnchor];
-  v42 = [(UILabel *)self->_gestureInstructionLabel topAnchor];
-  v43 = [v41 constraintEqualToAnchor:v42 constant:-20.0];
+  bottomAnchor2 = [(UISegmentedControl *)self->_segmentedControl bottomAnchor];
+  topAnchor2 = [(UILabel *)self->_gestureInstructionLabel topAnchor];
+  v43 = [bottomAnchor2 constraintEqualToAnchor:topAnchor2 constant:-20.0];
   v69[3] = v43;
   v44 = [NSArray arrayWithObjects:v69 count:4];
   [NSLayoutConstraint activateConstraints:v44];
 
-  v64 = [(UILabel *)self->_gestureInstructionLabel leadingAnchor];
-  v62 = [(UISegmentedControl *)self->_segmentedControl leadingAnchor];
-  v60 = [v64 constraintEqualToAnchor:v62];
+  leadingAnchor3 = [(UILabel *)self->_gestureInstructionLabel leadingAnchor];
+  leadingAnchor4 = [(UISegmentedControl *)self->_segmentedControl leadingAnchor];
+  v60 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v68[0] = v60;
-  v58 = [(UILabel *)self->_gestureInstructionLabel trailingAnchor];
-  v56 = [(UISegmentedControl *)self->_segmentedControl trailingAnchor];
-  v54 = [v58 constraintEqualToAnchor:v56];
+  trailingAnchor3 = [(UILabel *)self->_gestureInstructionLabel trailingAnchor];
+  trailingAnchor4 = [(UISegmentedControl *)self->_segmentedControl trailingAnchor];
+  v54 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v68[1] = v54;
-  v45 = [(UILabel *)self->_gestureInstructionLabel topAnchor];
-  v46 = [(UISegmentedControl *)self->_segmentedControl bottomAnchor];
-  v47 = [v45 constraintEqualToAnchor:v46];
+  topAnchor3 = [(UILabel *)self->_gestureInstructionLabel topAnchor];
+  bottomAnchor3 = [(UISegmentedControl *)self->_segmentedControl bottomAnchor];
+  v47 = [topAnchor3 constraintEqualToAnchor:bottomAnchor3];
   v68[2] = v47;
-  v48 = [(UILabel *)self->_gestureInstructionLabel bottomAnchor];
-  v49 = [(WAGGesturesPhoneBuddyFlowFirstViewController *)self contentView];
-  v50 = [v49 bottomAnchor];
-  v51 = [v48 constraintEqualToAnchor:v50 constant:0.0];
+  bottomAnchor4 = [(UILabel *)self->_gestureInstructionLabel bottomAnchor];
+  contentView4 = [(WAGGesturesPhoneBuddyFlowFirstViewController *)self contentView];
+  bottomAnchor5 = [contentView4 bottomAnchor];
+  v51 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5 constant:0.0];
   v68[3] = v51;
   v52 = [NSArray arrayWithObjects:v68 count:4];
   [NSLayoutConstraint activateConstraints:v52];
@@ -270,31 +270,31 @@
   v37.receiver = self;
   v37.super_class = WAGGesturesPhoneBuddyFlowFirstViewController;
   [(WAGGesturesPhoneBuddyFlowFirstViewController *)&v37 viewDidLayoutSubviews];
-  v3 = [(WAGGesturesPhoneBuddyFlowFirstViewController *)self view];
-  v4 = [(WAGGesturesPhoneBuddyFlowFirstViewController *)self headerView];
-  [v4 frame];
+  view = [(WAGGesturesPhoneBuddyFlowFirstViewController *)self view];
+  headerView = [(WAGGesturesPhoneBuddyFlowFirstViewController *)self headerView];
+  [headerView frame];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(WAGGesturesPhoneBuddyFlowFirstViewController *)self scrollView];
-  [v3 convertRect:v13 fromView:{v6, v8, v10, v12}];
+  scrollView = [(WAGGesturesPhoneBuddyFlowFirstViewController *)self scrollView];
+  [view convertRect:scrollView fromView:{v6, v8, v10, v12}];
   MaxY = CGRectGetMaxY(v38);
 
-  v15 = [(WAGGesturesPhoneBuddyFlowFirstViewController *)self view];
-  [v15 bounds];
+  view2 = [(WAGGesturesPhoneBuddyFlowFirstViewController *)self view];
+  [view2 bounds];
   v17 = v16 / 1.38;
 
-  v18 = [(WAGGesturesPhoneBuddyFlowFirstViewController *)self view];
-  [v18 bounds];
+  view3 = [(WAGGesturesPhoneBuddyFlowFirstViewController *)self view];
+  [view3 bounds];
   v20 = v19 * 0.8;
 
   [(UISegmentedControl *)self->_segmentedControl frame];
   v22 = v21;
   [(WAGGesturesPhoneBuddyFlowFirstViewController *)self _heightForLabelWithTheLongestStringAndWidth:v20];
   v24 = v23;
-  v25 = [(WAGGesturesPhoneBuddyFlowFirstViewController *)self buttonTray];
-  [v25 frame];
+  buttonTray = [(WAGGesturesPhoneBuddyFlowFirstViewController *)self buttonTray];
+  [buttonTray frame];
   MinY = CGRectGetMinY(v39);
 
   v27 = MinY - MaxY;
@@ -305,8 +305,8 @@
     v28 = ceilf(v29);
   }
 
-  v30 = [(WAGGesturesPhoneBuddyFlowFirstViewController *)self view];
-  [v30 bounds];
+  view4 = [(WAGGesturesPhoneBuddyFlowFirstViewController *)self view];
+  [view4 bounds];
   v32 = v31;
 
   [(UIView *)self->_containerContentView setFrame:0.0, v28, v32, v17];
@@ -314,8 +314,8 @@
   [(WAGGesturesPhoneBuddyFlowMediaPlayerView *)self->_flickMediaView setFrame:?];
   [(UIView *)self->_containerContentView bounds];
   [(WAGGesturesPhoneBuddyFlowMediaPlayerView *)self->_doubleTapMediaView setFrame:?];
-  v33 = [(WAGGesturesPhoneBuddyFlowFirstViewController *)self view];
-  [v33 frame];
+  view5 = [(WAGGesturesPhoneBuddyFlowFirstViewController *)self view];
+  [view5 frame];
   v35 = (v34 - v20) * 0.5;
   [(UIView *)self->_containerContentView frame];
   [(UISegmentedControl *)self->_segmentedControl setFrame:v35, v28 + CGRectGetMaxY(v40), v20, v22];
@@ -326,7 +326,7 @@
   [(UILabel *)self->_gestureInstructionLabel setFrame:MinX, CGRectGetMaxY(v42) + 20.0, v20, v24];
 }
 
-- (double)_heightForLabelWithTheLongestStringAndWidth:(double)a3
+- (double)_heightForLabelWithTheLongestStringAndWidth:(double)width
 {
   v4 = [NSBundle bundleForClass:objc_opt_class()];
   v5 = [v4 localizedStringForKey:@"CAPTION_FLICK" value:&stru_C438 table:@"Localizable_Flick_Buddy"];
@@ -334,7 +334,7 @@
   v6 = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
   v20 = v6;
   v7 = [NSDictionary dictionaryWithObjects:&v20 forKeys:&v19 count:1];
-  [v5 boundingRectWithSize:1 options:v7 attributes:0 context:{a3, 1.79769313e308}];
+  [v5 boundingRectWithSize:1 options:v7 attributes:0 context:{width, 1.79769313e308}];
   v9 = v8;
 
   v10 = [NSBundle bundleForClass:objc_opt_class()];
@@ -343,7 +343,7 @@
   v12 = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
   v18 = v12;
   v13 = [NSDictionary dictionaryWithObjects:&v18 forKeys:&v17 count:1];
-  [v11 boundingRectWithSize:1 options:v13 attributes:0 context:{a3, 1.79769313e308}];
+  [v11 boundingRectWithSize:1 options:v13 attributes:0 context:{width, 1.79769313e308}];
   v15 = v14;
 
   return fmax(v9, v15);
@@ -351,8 +351,8 @@
 
 - (id)titleString
 {
-  v2 = [(WAGGesturesPhoneBuddyFlowFirstViewController *)self _phoneBuddyFlowPanelLog];
-  if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
+  _phoneBuddyFlowPanelLog = [(WAGGesturesPhoneBuddyFlowFirstViewController *)self _phoneBuddyFlowPanelLog];
+  if (os_log_type_enabled(_phoneBuddyFlowPanelLog, OS_LOG_TYPE_DEFAULT))
   {
     v3 = objc_opt_class();
     v4 = NSStringFromClass(v3);
@@ -360,7 +360,7 @@
     v9 = v4;
     v10 = 2080;
     v11 = "[WAGGesturesPhoneBuddyFlowFirstViewController titleString]";
-    _os_log_impl(&dword_0, v2, OS_LOG_TYPE_DEFAULT, "Elton phone buddy panel -- %@ %s", &v8, 0x16u);
+    _os_log_impl(&dword_0, _phoneBuddyFlowPanelLog, OS_LOG_TYPE_DEFAULT, "Elton phone buddy panel -- %@ %s", &v8, 0x16u);
   }
 
   v5 = [NSBundle bundleForClass:objc_opt_class()];
@@ -371,8 +371,8 @@
 
 - (id)suggestedButtonTitle
 {
-  v2 = [(WAGGesturesPhoneBuddyFlowFirstViewController *)self _phoneBuddyFlowPanelLog];
-  if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
+  _phoneBuddyFlowPanelLog = [(WAGGesturesPhoneBuddyFlowFirstViewController *)self _phoneBuddyFlowPanelLog];
+  if (os_log_type_enabled(_phoneBuddyFlowPanelLog, OS_LOG_TYPE_DEFAULT))
   {
     v3 = objc_opt_class();
     v4 = NSStringFromClass(v3);
@@ -380,7 +380,7 @@
     v9 = v4;
     v10 = 2080;
     v11 = "[WAGGesturesPhoneBuddyFlowFirstViewController suggestedButtonTitle]";
-    _os_log_impl(&dword_0, v2, OS_LOG_TYPE_DEFAULT, "Elton phone buddy panel -- %@ %s", &v8, 0x16u);
+    _os_log_impl(&dword_0, _phoneBuddyFlowPanelLog, OS_LOG_TYPE_DEFAULT, "Elton phone buddy panel -- %@ %s", &v8, 0x16u);
   }
 
   v5 = [NSBundle bundleForClass:objc_opt_class()];
@@ -389,10 +389,10 @@
   return v6;
 }
 
-- (void)suggestedButtonPressed:(id)a3
+- (void)suggestedButtonPressed:(id)pressed
 {
-  v4 = [(WAGGesturesPhoneBuddyFlowFirstViewController *)self _phoneBuddyFlowPanelLog];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  _phoneBuddyFlowPanelLog = [(WAGGesturesPhoneBuddyFlowFirstViewController *)self _phoneBuddyFlowPanelLog];
+  if (os_log_type_enabled(_phoneBuddyFlowPanelLog, OS_LOG_TYPE_DEFAULT))
   {
     v5 = objc_opt_class();
     v6 = NSStringFromClass(v5);
@@ -400,11 +400,11 @@
     v9 = v6;
     v10 = 2080;
     v11 = "[WAGGesturesPhoneBuddyFlowFirstViewController suggestedButtonPressed:]";
-    _os_log_impl(&dword_0, v4, OS_LOG_TYPE_DEFAULT, "Elton phone buddy panel -- %@ %s", &v8, 0x16u);
+    _os_log_impl(&dword_0, _phoneBuddyFlowPanelLog, OS_LOG_TYPE_DEFAULT, "Elton phone buddy panel -- %@ %s", &v8, 0x16u);
   }
 
-  v7 = [(WAGGesturesPhoneBuddyFlowFirstViewController *)self miniFlowDelegate];
-  [v7 miniFlowStepComplete:self];
+  miniFlowDelegate = [(WAGGesturesPhoneBuddyFlowFirstViewController *)self miniFlowDelegate];
+  [miniFlowDelegate miniFlowStepComplete:self];
 }
 
 - (id)_gestureInstructionLabelText
@@ -433,9 +433,9 @@ LABEL_6:
   return v2;
 }
 
-- (void)handleSegmentAction:(id)a3
+- (void)handleSegmentAction:(id)action
 {
-  v4 = [a3 selectedSegmentIndex] != 0;
+  v4 = [action selectedSegmentIndex] != 0;
   if (self->_uiState != v4)
   {
     self->_uiState = v4;

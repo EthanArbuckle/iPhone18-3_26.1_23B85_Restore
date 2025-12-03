@@ -1,21 +1,21 @@
 @interface MFSearchBar
-- (MFSearchBar)initWithCoder:(id)a3;
-- (MFSearchBar)initWithFrame:(CGRect)a3;
+- (MFSearchBar)initWithCoder:(id)coder;
+- (MFSearchBar)initWithFrame:(CGRect)frame;
 - (NSArray)representedObjects;
 - (NSArray)representedSuggestionTokens;
 - (NSArray)selectedRepresentedObjects;
-- (void)replaceSearchBarWithTokens:(id)a3 userQueryString:(id)a4;
-- (void)setRepresentedObjects:(id)a3;
+- (void)replaceSearchBarWithTokens:(id)tokens userQueryString:(id)string;
+- (void)setRepresentedObjects:(id)objects;
 @end
 
 @implementation MFSearchBar
 
-- (MFSearchBar)initWithCoder:(id)a3
+- (MFSearchBar)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = MFSearchBar;
-  v5 = [(MFSearchBar *)&v8 initWithCoder:v4];
+  v5 = [(MFSearchBar *)&v8 initWithCoder:coderCopy];
   v6 = v5;
   if (v5)
   {
@@ -25,11 +25,11 @@
   return v6;
 }
 
-- (MFSearchBar)initWithFrame:(CGRect)a3
+- (MFSearchBar)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = MFSearchBar;
-  v3 = [(MFSearchBar *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MFSearchBar *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -42,25 +42,25 @@
 - (NSArray)representedObjects
 {
   v3 = +[NSMutableArray array];
-  v4 = [(MFSearchBar *)self searchTextField];
-  v5 = [v4 tokens];
-  v6 = [v5 count];
+  searchTextField = [(MFSearchBar *)self searchTextField];
+  tokens = [searchTextField tokens];
+  v6 = [tokens count];
 
   if (v6)
   {
-    v7 = [(MFSearchBar *)self searchTextField];
-    v8 = [v7 tokens];
-    v9 = [v8 ef_map:&stru_100655678];
+    searchTextField2 = [(MFSearchBar *)self searchTextField];
+    tokens2 = [searchTextField2 tokens];
+    v9 = [tokens2 ef_map:&stru_100655678];
     [v3 addObjectsFromArray:v9];
   }
 
-  v10 = [(MFSearchBar *)self text];
-  v11 = [v10 length];
+  text = [(MFSearchBar *)self text];
+  v11 = [text length];
 
   if (v11)
   {
-    v12 = [(MFSearchBar *)self text];
-    [v3 addObject:v12];
+    text2 = [(MFSearchBar *)self text];
+    [v3 addObject:text2];
   }
 
   v13 = [v3 copy];
@@ -68,16 +68,16 @@
   return v13;
 }
 
-- (void)setRepresentedObjects:(id)a3
+- (void)setRepresentedObjects:(id)objects
 {
-  v15 = a3;
-  v16 = [(MFSearchBar *)self searchTextField];
-  v4 = [v16 tokens];
-  v5 = [v4 count];
+  objectsCopy = objects;
+  searchTextField = [(MFSearchBar *)self searchTextField];
+  tokens = [searchTextField tokens];
+  v5 = [tokens count];
 
   while (v5 > 0)
   {
-    [v16 removeTokenAtIndex:--v5];
+    [searchTextField removeTokenAtIndex:--v5];
   }
 
   [(MFSearchBar *)self setText:0];
@@ -85,8 +85,8 @@
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [v15 reverseObjectEnumerator];
-  v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  reverseObjectEnumerator = [objectsCopy reverseObjectEnumerator];
+  v7 = [reverseObjectEnumerator countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
     v8 = *v18;
@@ -97,20 +97,20 @@
       {
         if (*v18 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v10 = *(*(&v17 + 1) + 8 * v9);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v11 = v10;
-          v12 = [v11 image];
-          v13 = [v11 title];
-          v14 = [UISearchToken tokenWithIcon:v12 text:v13];
+          delegate = v10;
+          image = [delegate image];
+          title = [delegate title];
+          v14 = [UISearchToken tokenWithIcon:image text:title];
 
-          [v14 setRepresentedObject:v11];
-          [v16 insertToken:v14 atIndex:0];
+          [v14 setRepresentedObject:delegate];
+          [searchTextField insertToken:v14 atIndex:0];
         }
 
         else
@@ -122,8 +122,8 @@
           }
 
           [(MFSearchBar *)self setText:v10];
-          v11 = [(MFSearchBar *)self delegate];
-          [v11 searchBar:self textDidChange:v10];
+          delegate = [(MFSearchBar *)self delegate];
+          [delegate searchBar:self textDidChange:v10];
         }
 
 LABEL_14:
@@ -131,7 +131,7 @@ LABEL_14:
       }
 
       while (v7 != v9);
-      v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v7 = [reverseObjectEnumerator countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v7);
@@ -141,10 +141,10 @@ LABEL_14:
 - (NSArray)selectedRepresentedObjects
 {
   v3 = +[NSMutableArray array];
-  v4 = [(MFSearchBar *)self searchTextField];
-  v5 = [(MFSearchBar *)self searchTextField];
-  v6 = [v5 selectedTextRange];
-  v7 = [v4 tokensInRange:v6];
+  searchTextField = [(MFSearchBar *)self searchTextField];
+  searchTextField2 = [(MFSearchBar *)self searchTextField];
+  selectedTextRange = [searchTextField2 selectedTextRange];
+  v7 = [searchTextField tokensInRange:selectedTextRange];
 
   if ([v7 count])
   {
@@ -152,16 +152,16 @@ LABEL_14:
     [v3 addObjectsFromArray:v8];
   }
 
-  v9 = [(MFSearchBar *)self searchTextField];
-  v10 = [v9 selectedTextRange];
-  v11 = [v10 isEmpty];
+  searchTextField3 = [(MFSearchBar *)self searchTextField];
+  selectedTextRange2 = [searchTextField3 selectedTextRange];
+  isEmpty = [selectedTextRange2 isEmpty];
 
-  if ((v11 & 1) == 0)
+  if ((isEmpty & 1) == 0)
   {
-    v12 = [(MFSearchBar *)self searchTextField];
-    v13 = [(MFSearchBar *)self searchTextField];
-    v14 = [v13 selectedTextRange];
-    v15 = [v12 textInRange:v14];
+    searchTextField4 = [(MFSearchBar *)self searchTextField];
+    searchTextField5 = [(MFSearchBar *)self searchTextField];
+    selectedTextRange3 = [searchTextField5 selectedTextRange];
+    v15 = [searchTextField4 textInRange:selectedTextRange3];
     [v3 addObject:v15];
   }
 
@@ -172,34 +172,34 @@ LABEL_14:
 
 - (NSArray)representedSuggestionTokens
 {
-  v2 = [(MFSearchBar *)self representedObjects];
-  v3 = [v2 ef_filter:&stru_1006556B8];
+  representedObjects = [(MFSearchBar *)self representedObjects];
+  v3 = [representedObjects ef_filter:&stru_1006556B8];
 
   return v3;
 }
 
-- (void)replaceSearchBarWithTokens:(id)a3 userQueryString:(id)a4
+- (void)replaceSearchBarWithTokens:(id)tokens userQueryString:(id)string
 {
-  v14 = a3;
-  v6 = a4;
-  v7 = [(MFSearchBar *)self searchTextField];
-  [v7 setText:&stru_100662A88];
-  v8 = [v14 ef_map:&stru_1006556F8];
-  if ([v6 length])
+  tokensCopy = tokens;
+  stringCopy = string;
+  searchTextField = [(MFSearchBar *)self searchTextField];
+  [searchTextField setText:&stru_100662A88];
+  v8 = [tokensCopy ef_map:&stru_1006556F8];
+  if ([stringCopy length])
   {
-    [v7 setText:v6];
+    [searchTextField setText:stringCopy];
   }
 
-  [v7 setTokens:v8];
-  v9 = [v7 tokens];
-  v10 = [v9 count];
+  [searchTextField setTokens:v8];
+  tokens = [searchTextField tokens];
+  v10 = [tokens count];
 
-  if (v10 && ![v6 length])
+  if (v10 && ![stringCopy length])
   {
-    v11 = [v7 positionOfTokenAtIndex:v10 - 1];
-    v12 = [v7 endOfDocument];
-    v13 = [v7 textRangeFromPosition:v11 toPosition:v12];
-    [v7 setSelectedTextRange:v13];
+    v11 = [searchTextField positionOfTokenAtIndex:v10 - 1];
+    endOfDocument = [searchTextField endOfDocument];
+    v13 = [searchTextField textRangeFromPosition:v11 toPosition:endOfDocument];
+    [searchTextField setSelectedTextRange:v13];
   }
 }
 

@@ -1,16 +1,16 @@
 @interface UGCPOIEnrichmentModalHeaderViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation UGCPOIEnrichmentModalHeaderViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"UGCPOIEnrichmentModalHeaderView" hasInstanceMethod:@"leadingButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"UGCPOIEnrichmentModalHeaderView" hasInstanceVariable:@"_poiIconView" withType:"UGCPOIEnrichmentHeaderView"];
-  [v3 validateClass:@"UGCPOIEnrichmentModalHeaderView" hasInstanceMethod:@"trailingButton" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"UGCPOIEnrichmentModalHeaderView" hasInstanceMethod:@"leadingButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"UGCPOIEnrichmentModalHeaderView" hasInstanceVariable:@"_poiIconView" withType:"UGCPOIEnrichmentHeaderView"];
+  [validationsCopy validateClass:@"UGCPOIEnrichmentModalHeaderView" hasInstanceMethod:@"trailingButton" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

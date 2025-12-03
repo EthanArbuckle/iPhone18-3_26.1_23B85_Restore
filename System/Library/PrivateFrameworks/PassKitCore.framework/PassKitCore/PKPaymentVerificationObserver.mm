@@ -1,48 +1,48 @@
 @interface PKPaymentVerificationObserver
-- (BOOL)_handleVerificationCode:(id)a3 fromSource:(id)a4;
-- (PKPaymentVerificationObserver)initWithPaymentPass:(id)a3 verificationChannel:(id)a4 identifier:(id)a5;
-- (PKPaymentVerificationObserver)initWithVerificationMethod:(id)a3 identifier:(id)a4;
+- (BOOL)_handleVerificationCode:(id)code fromSource:(id)source;
+- (PKPaymentVerificationObserver)initWithPaymentPass:(id)pass verificationChannel:(id)channel identifier:(id)identifier;
+- (PKPaymentVerificationObserver)initWithVerificationMethod:(id)method identifier:(id)identifier;
 - (PKPaymentVerificationObserverDelegate)delegate;
 - (void)_queue_stop;
 - (void)_startObserving;
 - (void)_startObservingUsingLegacyObserver;
 - (void)dealloc;
-- (void)startObservingVerificationSourceWithTimeout:(double)a3;
+- (void)startObservingVerificationSourceWithTimeout:(double)timeout;
 - (void)stop;
 @end
 
 @implementation PKPaymentVerificationObserver
 
-- (PKPaymentVerificationObserver)initWithPaymentPass:(id)a3 verificationChannel:(id)a4 identifier:(id)a5
+- (PKPaymentVerificationObserver)initWithPaymentPass:(id)pass verificationChannel:(id)channel identifier:(id)identifier
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = [PKPassVerificationMethod methodFromLegacyChannel:a4];
+  passCopy = pass;
+  identifierCopy = identifier;
+  v11 = [PKPassVerificationMethod methodFromLegacyChannel:channel];
   if (v11)
   {
-    v12 = [(PKPaymentVerificationObserver *)self initWithVerificationMethod:v11 identifier:v10];
+    v12 = [(PKPaymentVerificationObserver *)self initWithVerificationMethod:v11 identifier:identifierCopy];
     v13 = v12;
     if (v12)
     {
-      objc_storeStrong(&v12->_pass, a3);
+      objc_storeStrong(&v12->_pass, pass);
     }
 
     self = v13;
-    v14 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v14 = 0;
+    selfCopy = 0;
   }
 
-  return v14;
+  return selfCopy;
 }
 
-- (PKPaymentVerificationObserver)initWithVerificationMethod:(id)a3 identifier:(id)a4
+- (PKPaymentVerificationObserver)initWithVerificationMethod:(id)method identifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
+  methodCopy = method;
+  identifierCopy = identifier;
   v13.receiver = self;
   v13.super_class = PKPaymentVerificationObserver;
   v9 = [(PKPaymentVerificationObserver *)&v13 init];
@@ -52,8 +52,8 @@
     internalQueue = v9->_internalQueue;
     v9->_internalQueue = v10;
 
-    objc_storeStrong(&v9->_verificationMethod, a3);
-    objc_storeStrong(&v9->_identifier, a4);
+    objc_storeStrong(&v9->_verificationMethod, method);
+    objc_storeStrong(&v9->_identifier, identifier);
   }
 
   return v9;
@@ -72,7 +72,7 @@
   [(PKPaymentVerificationObserver *)&v4 dealloc];
 }
 
-- (void)startObservingVerificationSourceWithTimeout:(double)a3
+- (void)startObservingVerificationSourceWithTimeout:(double)timeout
 {
   internalQueue = self->_internalQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -80,7 +80,7 @@
   v4[2] = __77__PKPaymentVerificationObserver_startObservingVerificationSourceWithTimeout___block_invoke;
   v4[3] = &unk_1E79CAED8;
   v4[4] = self;
-  *&v4[5] = a3;
+  *&v4[5] = timeout;
   dispatch_sync(internalQueue, v4);
 }
 
@@ -353,12 +353,12 @@ void __67__PKPaymentVerificationObserver__startObservingUsingLegacyObserver__blo
   [WeakRetained _handleVerificationCode:*(a1 + 40) fromSource:*(a1 + 48)];
 }
 
-- (BOOL)_handleVerificationCode:(id)a3 fromSource:(id)a4
+- (BOOL)_handleVerificationCode:(id)code fromSource:(id)source
 {
   v34 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 length] <= 4)
+  codeCopy = code;
+  sourceCopy = source;
+  if ([codeCopy length] <= 4)
   {
     v8 = PKLogFacilityTypeGetObject(0x26uLL);
     if (os_log_type_enabled(&v8->super, OS_LOG_TYPE_DEFAULT))
@@ -367,7 +367,7 @@ void __67__PKPaymentVerificationObserver__startObservingUsingLegacyObserver__blo
       v26 = 138412803;
       v27 = identifier;
       v28 = 2113;
-      v29 = v6;
+      v29 = codeCopy;
       v30 = 1024;
       LODWORD(v31) = 5;
       v10 = "Observer<%@>: Verification code %{private}@ is not of minimum length %d -- ignoring.";
@@ -384,9 +384,9 @@ LABEL_14:
   if ([(PKPassVerificationMethod *)self->_verificationMethod type]== 1)
   {
     v8 = self->_verificationMethod;
-    v13 = [(PKPassVerificationMethod *)v8 sourceAddress];
-    v14 = [MEMORY[0x1E695CF50] phoneNumberWithStringValue:v13];
-    v15 = [MEMORY[0x1E695CF50] phoneNumberWithStringValue:v7];
+    sourceAddress = [(PKPassVerificationMethod *)v8 sourceAddress];
+    v14 = [MEMORY[0x1E695CF50] phoneNumberWithStringValue:sourceAddress];
+    v15 = [MEMORY[0x1E695CF50] phoneNumberWithStringValue:sourceCopy];
     if (self->_skipSourceCheck || !v14 || ([v14 isLikePhoneNumber:v15] & 1) != 0)
     {
       v16 = PKLogFacilityTypeGetObject(0x26uLL);
@@ -396,7 +396,7 @@ LABEL_14:
         v26 = 138412547;
         v27 = v17;
         v28 = 2113;
-        v29 = v6;
+        v29 = codeCopy;
         _os_log_impl(&dword_1AD337000, v16, OS_LOG_TYPE_DEFAULT, "Observer<%@>: handling valid code %{private}@", &v26, 0x16u);
       }
 
@@ -410,7 +410,7 @@ LABEL_21:
       }
 
       v19 = objc_loadWeakRetained(&self->_delegate);
-      [v19 verificationObserver:self didObserveVerificationCode:v6];
+      [v19 verificationObserver:self didObserveVerificationCode:codeCopy];
       v20 = 1;
     }
 
@@ -420,16 +420,16 @@ LABEL_21:
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
         v22 = self->_identifier;
-        v23 = [v15 stringValue];
-        v24 = [v14 stringValue];
+        stringValue = [v15 stringValue];
+        stringValue2 = [v14 stringValue];
         v26 = 138413059;
         v27 = v22;
         v28 = 2113;
-        v29 = v6;
+        v29 = codeCopy;
         v30 = 2112;
-        v31 = v23;
+        v31 = stringValue;
         v32 = 2112;
-        v33 = v24;
+        v33 = stringValue2;
         _os_log_impl(&dword_1AD337000, v19, OS_LOG_TYPE_DEFAULT, "Observer<%@>: Verification code %{private}@ source address %@ does not match expected source address: %@ -- ignoring", &v26, 0x2Au);
       }
 
@@ -446,7 +446,7 @@ LABEL_21:
     v26 = 138412547;
     v27 = v21;
     v28 = 2113;
-    v29 = v6;
+    v29 = codeCopy;
     v10 = "Observer<%@>: Verification code %{private}@ ignored because method type invalid -- ignoring.";
     p_super = &v8->super;
     v12 = 22;

@@ -1,32 +1,32 @@
 @interface MOConversationAnnotationManager
-- (BOOL)_callLikeInteraction:(id)a3;
-- (BOOL)_messageInteraction:(id)a3;
-- (MOConversationAnnotationManager)initWithUniverse:(id)a3;
-- (id)_actionForBundle:(id)a3 type:(unint64_t)a4;
-- (id)_annotateEvents:(id)a3 significantContact:(id)a4 type:(unint64_t)a5;
-- (id)_findEventsWithBurstyInteractionsFromEvents:(id)a3;
-- (id)_findEventsWithLongDailyCall:(id)a3;
-- (id)_findEventsWithOutgoingMessageBurstFromEvents:(id)a3;
-- (id)_findEventsWithPatternEvents:(id)a3;
-- (id)_getBaseEvents:(id)a3;
-- (id)_getContextEvents:(id)a3;
-- (id)_getWorkVisitEventsDuringCall:(id)a3 withCall:(id)a4;
-- (unint64_t)_outgoingMessageBurstCount:(id)a3 bundleIdPrefix:(id)a4;
-- (void)_buildMappingFromBaseEvents:(id)a3 toContextEvents:(id)a4;
-- (void)_buildMappingFromBaseEvents:(id)a3 toPatternEvents:(id)a4;
-- (void)_calculateEventStats:(id)a3;
-- (void)_performAnnotationWithEvents:(id)a3 withPatternEvents:(id)a4 handler:(id)a5;
-- (void)performAnnotationWithEvents:(id)a3 withPatternEvents:(id)a4 handler:(id)a5;
+- (BOOL)_callLikeInteraction:(id)interaction;
+- (BOOL)_messageInteraction:(id)interaction;
+- (MOConversationAnnotationManager)initWithUniverse:(id)universe;
+- (id)_actionForBundle:(id)bundle type:(unint64_t)type;
+- (id)_annotateEvents:(id)events significantContact:(id)contact type:(unint64_t)type;
+- (id)_findEventsWithBurstyInteractionsFromEvents:(id)events;
+- (id)_findEventsWithLongDailyCall:(id)call;
+- (id)_findEventsWithOutgoingMessageBurstFromEvents:(id)events;
+- (id)_findEventsWithPatternEvents:(id)events;
+- (id)_getBaseEvents:(id)events;
+- (id)_getContextEvents:(id)events;
+- (id)_getWorkVisitEventsDuringCall:(id)call withCall:(id)withCall;
+- (unint64_t)_outgoingMessageBurstCount:(id)count bundleIdPrefix:(id)prefix;
+- (void)_buildMappingFromBaseEvents:(id)events toContextEvents:(id)contextEvents;
+- (void)_buildMappingFromBaseEvents:(id)events toPatternEvents:(id)patternEvents;
+- (void)_calculateEventStats:(id)stats;
+- (void)_performAnnotationWithEvents:(id)events withPatternEvents:(id)patternEvents handler:(id)handler;
+- (void)performAnnotationWithEvents:(id)events withPatternEvents:(id)patternEvents handler:(id)handler;
 @end
 
 @implementation MOConversationAnnotationManager
 
-- (MOConversationAnnotationManager)initWithUniverse:(id)a3
+- (MOConversationAnnotationManager)initWithUniverse:(id)universe
 {
-  v4 = a3;
+  universeCopy = universe;
   v25.receiver = self;
   v25.super_class = MOConversationAnnotationManager;
-  v5 = [(MOAnnotationManager *)&v25 initWithUniverse:v4];
+  v5 = [(MOAnnotationManager *)&v25 initWithUniverse:universeCopy];
   if (v5)
   {
     v6 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
@@ -36,7 +36,7 @@
 
     v9 = objc_opt_class();
     v10 = NSStringFromClass(v9);
-    v11 = [v4 getService:v10];
+    v11 = [universeCopy getService:v10];
     configurationManager = v5->_configurationManager;
     v5->_configurationManager = v11;
 
@@ -66,46 +66,46 @@
   return v5;
 }
 
-- (void)performAnnotationWithEvents:(id)a3 withPatternEvents:(id)a4 handler:(id)a5
+- (void)performAnnotationWithEvents:(id)events withPatternEvents:(id)patternEvents handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(MOConversationAnnotationManager *)self queue];
+  eventsCopy = events;
+  patternEventsCopy = patternEvents;
+  handlerCopy = handler;
+  queue = [(MOConversationAnnotationManager *)self queue];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = __89__MOConversationAnnotationManager_performAnnotationWithEvents_withPatternEvents_handler___block_invoke;
   v15[3] = &unk_1003361C0;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_async(v11, v15);
+  v16 = eventsCopy;
+  v17 = patternEventsCopy;
+  v18 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = patternEventsCopy;
+  v14 = eventsCopy;
+  dispatch_async(queue, v15);
 }
 
-- (void)_performAnnotationWithEvents:(id)a3 withPatternEvents:(id)a4 handler:(id)a5
+- (void)_performAnnotationWithEvents:(id)events withPatternEvents:(id)patternEvents handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(MOConversationAnnotationManager *)self _getBaseEvents:v8];
+  eventsCopy = events;
+  patternEventsCopy = patternEvents;
+  handlerCopy = handler;
+  v11 = [(MOConversationAnnotationManager *)self _getBaseEvents:eventsCopy];
   if ([v11 count])
   {
-    v59 = v10;
-    if (![v9 count])
+    v59 = handlerCopy;
+    if (![patternEventsCopy count])
     {
 
-      v9 = 0;
+      patternEventsCopy = 0;
     }
 
     [(MOConversationAnnotationManager *)self _calculateEventStats:v11];
-    v60 = v9;
-    [(MOConversationAnnotationManager *)self _buildMappingFromBaseEvents:v11 toPatternEvents:v9];
-    v61 = v8;
-    v57 = [(MOConversationAnnotationManager *)self _getContextEvents:v8];
+    v60 = patternEventsCopy;
+    [(MOConversationAnnotationManager *)self _buildMappingFromBaseEvents:v11 toPatternEvents:patternEventsCopy];
+    v61 = eventsCopy;
+    v57 = [(MOConversationAnnotationManager *)self _getContextEvents:eventsCopy];
     [(MOConversationAnnotationManager *)self _buildMappingFromBaseEvents:v11 toContextEvents:?];
     v12 = [(MOConversationAnnotationManager *)self _findEventsWithPatternEvents:v11];
     v13 = [(MOConversationAnnotationManager *)self _findEventsWithBurstyInteractionsFromEvents:v11];
@@ -140,8 +140,8 @@
             [v14 addObject:v20];
             v90 = v20;
             v21 = [NSArray arrayWithObjects:&v90 count:1];
-            v22 = [v20 interactionScoredContact];
-            v23 = [(MOConversationAnnotationManager *)self _annotateEvents:v21 significantContact:v22 type:6];
+            interactionScoredContact = [v20 interactionScoredContact];
+            v23 = [(MOConversationAnnotationManager *)self _annotateEvents:v21 significantContact:interactionScoredContact type:6];
 
             if (v23)
             {
@@ -192,8 +192,8 @@
             [v14 addObject:v29];
             v88 = v29;
             v30 = [NSArray arrayWithObjects:&v88 count:1];
-            v31 = [v29 interactionScoredContact];
-            v32 = [(MOConversationAnnotationManager *)self _annotateEvents:v30 significantContact:v31 type:5];
+            interactionScoredContact2 = [v29 interactionScoredContact];
+            v32 = [(MOConversationAnnotationManager *)self _annotateEvents:v30 significantContact:interactionScoredContact2 type:5];
 
             if (v32)
             {
@@ -241,8 +241,8 @@
             [v14 addObject:v38];
             v86 = v38;
             v39 = [NSArray arrayWithObjects:&v86 count:1];
-            v40 = [v38 interactionScoredContact];
-            v41 = [(MOConversationAnnotationManager *)self _annotateEvents:v39 significantContact:v40 type:4];
+            interactionScoredContact3 = [v38 interactionScoredContact];
+            v41 = [(MOConversationAnnotationManager *)self _annotateEvents:v39 significantContact:interactionScoredContact3 type:4];
 
             if (v41)
             {
@@ -290,8 +290,8 @@
             [v14 addObject:v47];
             v84 = v47;
             v48 = [NSArray arrayWithObjects:&v84 count:1];
-            v49 = [v47 interactionScoredContact];
-            v50 = [(MOConversationAnnotationManager *)self _annotateEvents:v48 significantContact:v49 type:7];
+            interactionScoredContact4 = [v47 interactionScoredContact];
+            v50 = [(MOConversationAnnotationManager *)self _annotateEvents:v48 significantContact:interactionScoredContact4 type:7];
 
             if (v50)
             {
@@ -323,26 +323,26 @@
       _os_log_impl(&_mh_execute_header, v51, OS_LOG_TYPE_INFO, "%s, annotated bundle count, %lu", buf, 0x16u);
     }
 
-    v10 = v59;
+    handlerCopy = v59;
     (*(v59 + 2))(v59, v63, 0);
 
-    v9 = v60;
-    v8 = v61;
+    patternEventsCopy = v60;
+    eventsCopy = v61;
     v11 = v58;
   }
 
   else
   {
-    (*(v10 + 2))(v10, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 }
 
-- (id)_getBaseEvents:(id)a3
+- (id)_getBaseEvents:(id)events
 {
-  v3 = a3;
+  eventsCopy = events;
   v16 = [NSPredicate predicateWithFormat:@"%K = %lu", @"category", 10];
-  v17 = v3;
-  v4 = [v3 filteredArrayUsingPredicate:?];
+  v17 = eventsCopy;
+  v4 = [eventsCopy filteredArrayUsingPredicate:?];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -372,8 +372,8 @@
           _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "%s, filtered event, %@", buf, 0x16u);
         }
 
-        v11 = [v9 interactions];
-        [v11 enumerateObjectsUsingBlock:&__block_literal_global_50];
+        interactions = [v9 interactions];
+        [interactions enumerateObjectsUsingBlock:&__block_literal_global_50];
       }
 
       v6 = [v4 countByEnumeratingWithState:&v18 objects:v28 count:16];
@@ -409,28 +409,28 @@ void __50__MOConversationAnnotationManager__getBaseEvents___block_invoke(id a1, 
   }
 }
 
-- (id)_getContextEvents:(id)a3
+- (id)_getContextEvents:(id)events
 {
-  v3 = a3;
+  eventsCopy = events;
   v4 = [NSPredicate predicateWithFormat:@"%K IN %@", @"category", &off_10036E1C0];
-  v5 = [v3 filteredArrayUsingPredicate:v4];
+  v5 = [eventsCopy filteredArrayUsingPredicate:v4];
 
   return v5;
 }
 
-- (id)_getWorkVisitEventsDuringCall:(id)a3 withCall:(id)a4
+- (id)_getWorkVisitEventsDuringCall:(id)call withCall:(id)withCall
 {
-  v5 = a4;
-  v6 = a3;
+  withCallCopy = withCall;
+  callCopy = call;
   v7 = [NSPredicate predicateWithFormat:@"%K = %lu", @"placeUserType", 2];
-  v8 = [v6 filteredArrayUsingPredicate:v7];
+  v8 = [callCopy filteredArrayUsingPredicate:v7];
 
-  v9 = [v5 endDate];
-  v10 = [NSPredicate predicateWithFormat:@"%K <= %@", @"startDate", v9];
+  endDate = [withCallCopy endDate];
+  v10 = [NSPredicate predicateWithFormat:@"%K <= %@", @"startDate", endDate];
   v18[0] = v10;
-  v11 = [v5 startDate];
+  startDate = [withCallCopy startDate];
 
-  v12 = [NSPredicate predicateWithFormat:@"%K => %@", @"endDate", v11];
+  v12 = [NSPredicate predicateWithFormat:@"%K => %@", @"endDate", startDate];
   v18[1] = v12;
   v13 = [NSArray arrayWithObjects:v18 count:2];
   v14 = [NSCompoundPredicate andPredicateWithSubpredicates:v13];
@@ -441,36 +441,36 @@ void __50__MOConversationAnnotationManager__getBaseEvents___block_invoke(id a1, 
   return v16;
 }
 
-- (BOOL)_callLikeInteraction:(id)a3
+- (BOOL)_callLikeInteraction:(id)interaction
 {
   callLikeInteractionMechanisms = self->_callLikeInteractionMechanisms;
-  v4 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [a3 mechanism]);
+  v4 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [interaction mechanism]);
   LOBYTE(callLikeInteractionMechanisms) = [(NSSet *)callLikeInteractionMechanisms containsObject:v4];
 
   return callLikeInteractionMechanisms;
 }
 
-- (BOOL)_messageInteraction:(id)a3
+- (BOOL)_messageInteraction:(id)interaction
 {
   messageInteractionMechanisms = self->_messageInteractionMechanisms;
-  v4 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [a3 mechanism]);
+  v4 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [interaction mechanism]);
   LOBYTE(messageInteractionMechanisms) = [(NSSet *)messageInteractionMechanisms containsObject:v4];
 
   return messageInteractionMechanisms;
 }
 
-- (id)_findEventsWithBurstyInteractionsFromEvents:(id)a3
+- (id)_findEventsWithBurstyInteractionsFromEvents:(id)events
 {
-  v4 = a3;
-  v5 = [(MOConversationAnnotationManager *)self configurationManager];
-  v6 = [v5 getIntegerSettingForKey:@"kMOConversationAnnotationManagerMinimumInteractionCount" withFallback:10];
+  eventsCopy = events;
+  configurationManager = [(MOConversationAnnotationManager *)self configurationManager];
+  v6 = [configurationManager getIntegerSettingForKey:@"kMOConversationAnnotationManagerMinimumInteractionCount" withFallback:10];
 
   v22 = objc_opt_new();
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  obj = v4;
+  obj = eventsCopy;
   v7 = [obj countByEnumeratingWithState:&v24 objects:v34 count:16];
   if (v7)
   {
@@ -490,12 +490,12 @@ void __50__MOConversationAnnotationManager__getBaseEvents___block_invoke(id a1, 
 
         v13 = *(*(&v24 + 1) + 8 * i);
         stats = self->_stats;
-        v15 = [v13 eventIdentifier];
-        v16 = [(NSMutableDictionary *)stats objectForKeyedSubscript:v15];
+        eventIdentifier = [v13 eventIdentifier];
+        v16 = [(NSMutableDictionary *)stats objectForKeyedSubscript:eventIdentifier];
         v17 = [v16 objectForKey:@"maxBurstLength"];
-        v18 = [v17 unsignedIntValue];
+        unsignedIntValue = [v17 unsignedIntValue];
 
-        if (v18 >= v10)
+        if (unsignedIntValue >= v10)
         {
           v19 = _mo_log_facility_get_os_log(&MOLogFacilityEventBundleManager);
           if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
@@ -505,7 +505,7 @@ void __50__MOConversationAnnotationManager__getBaseEvents___block_invoke(id a1, 
             v30 = 2112;
             v31 = v13;
             v32 = 2048;
-            v33 = v18;
+            v33 = unsignedIntValue;
             _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_INFO, "%s, found event, %@, maxBurstLength, %lu", buf, 0x20u);
           }
 
@@ -522,15 +522,15 @@ void __50__MOConversationAnnotationManager__getBaseEvents___block_invoke(id a1, 
   return v22;
 }
 
-- (id)_findEventsWithOutgoingMessageBurstFromEvents:(id)a3
+- (id)_findEventsWithOutgoingMessageBurstFromEvents:(id)events
 {
-  v4 = a3;
+  eventsCopy = events;
   v20 = objc_opt_new();
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  obj = v4;
+  obj = eventsCopy;
   v5 = [obj countByEnumeratingWithState:&v21 objects:v31 count:16];
   if (v5)
   {
@@ -549,12 +549,12 @@ void __50__MOConversationAnnotationManager__getBaseEvents___block_invoke(id a1, 
 
         v10 = *(*(&v21 + 1) + 8 * i);
         stats = self->_stats;
-        v12 = [v10 eventIdentifier];
-        v13 = [(NSMutableDictionary *)stats objectForKeyedSubscript:v12];
+        eventIdentifier = [v10 eventIdentifier];
+        v13 = [(NSMutableDictionary *)stats objectForKeyedSubscript:eventIdentifier];
         v14 = [v13 objectForKey:@"outgoingMessageBurstCount"];
-        v15 = [v14 unsignedIntValue];
+        unsignedIntValue = [v14 unsignedIntValue];
 
-        if (v15)
+        if (unsignedIntValue)
         {
           v16 = _mo_log_facility_get_os_log(&MOLogFacilityEventBundleManager);
           if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
@@ -564,7 +564,7 @@ void __50__MOConversationAnnotationManager__getBaseEvents___block_invoke(id a1, 
             v27 = 2112;
             v28 = v10;
             v29 = 2048;
-            v30 = v15;
+            v30 = unsignedIntValue;
             _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "%s, found event, %@, outgoingMessageBurstCount, %lu", buf, 0x20u);
           }
 
@@ -581,11 +581,11 @@ void __50__MOConversationAnnotationManager__getBaseEvents___block_invoke(id a1, 
   return v20;
 }
 
-- (id)_findEventsWithLongDailyCall:(id)a3
+- (id)_findEventsWithLongDailyCall:(id)call
 {
-  v4 = a3;
-  v5 = [(MOConversationAnnotationManager *)self configurationManager];
-  [v5 getDoubleSettingForKey:@"kMOConversationAnnotationManagerMinimumDurationDailyCall" withFallback:300.0];
+  callCopy = call;
+  configurationManager = [(MOConversationAnnotationManager *)self configurationManager];
+  [configurationManager getDoubleSettingForKey:@"kMOConversationAnnotationManagerMinimumDurationDailyCall" withFallback:300.0];
   v7 = v6;
 
   v26 = objc_opt_new();
@@ -593,7 +593,7 @@ void __50__MOConversationAnnotationManager__getBaseEvents___block_invoke(id a1, 
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  obj = v4;
+  obj = callCopy;
   v8 = [obj countByEnumeratingWithState:&v28 objects:v39 count:16];
   if (v8)
   {
@@ -612,8 +612,8 @@ void __50__MOConversationAnnotationManager__getBaseEvents___block_invoke(id a1, 
 
         v13 = *(*(&v28 + 1) + 8 * i);
         stats = self->_stats;
-        v15 = [v13 eventIdentifier];
-        v16 = [(NSMutableDictionary *)stats objectForKey:v15];
+        eventIdentifier = [v13 eventIdentifier];
+        v16 = [(NSMutableDictionary *)stats objectForKey:eventIdentifier];
         v17 = [v16 objectForKey:@"aggregatedCallDuration"];
         [v17 doubleValue];
         v19 = v18;
@@ -650,18 +650,18 @@ void __50__MOConversationAnnotationManager__getBaseEvents___block_invoke(id a1, 
   return v23;
 }
 
-- (id)_findEventsWithPatternEvents:(id)a3
+- (id)_findEventsWithPatternEvents:(id)events
 {
-  v4 = a3;
-  v5 = [(MOConversationAnnotationManager *)self configurationManager];
-  v6 = [v5 getIntegerSettingForKey:@"kMOConversationAnnotationManagerMinimumPatternEventCount" withFallback:2];
+  eventsCopy = events;
+  configurationManager = [(MOConversationAnnotationManager *)self configurationManager];
+  v6 = [configurationManager getIntegerSettingForKey:@"kMOConversationAnnotationManagerMinimumPatternEventCount" withFallback:2];
 
   v23 = objc_opt_new();
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  obj = v4;
+  obj = eventsCopy;
   v7 = [obj countByEnumeratingWithState:&v27 objects:v37 count:16];
   if (v7)
   {
@@ -681,8 +681,8 @@ void __50__MOConversationAnnotationManager__getBaseEvents___block_invoke(id a1, 
 
         v13 = *(*(&v27 + 1) + 8 * i);
         eventToPatternEventMap = self->_eventToPatternEventMap;
-        v15 = [v13 eventIdentifier];
-        v16 = [(NSMutableDictionary *)eventToPatternEventMap objectForKey:v15];
+        eventIdentifier = [v13 eventIdentifier];
+        v16 = [(NSMutableDictionary *)eventToPatternEventMap objectForKey:eventIdentifier];
 
         if ([v16 count] >= v10)
         {
@@ -737,39 +737,39 @@ void __64__MOConversationAnnotationManager__findEventsWithPatternEvents___block_
   [v2 addObject:v3];
 }
 
-- (id)_annotateEvents:(id)a3 significantContact:(id)a4 type:(unint64_t)a5
+- (id)_annotateEvents:(id)events significantContact:(id)contact type:(unint64_t)type
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v8 contact];
-  v10 = [v9 localizedFullName];
+  eventsCopy = events;
+  contactCopy = contact;
+  contact = [contactCopy contact];
+  localizedFullName = [contact localizedFullName];
 
-  if (v10)
+  if (localizedFullName)
   {
-    v253 = v8;
+    v253 = contactCopy;
     v11 = [MOEventBundle alloc];
     v12 = +[NSUUID UUID];
     v13 = +[NSDate date];
     v14 = [(MOEventBundle *)v11 initWithBundleIdentifier:v12 creationDate:v13];
 
     v258 = objc_opt_new();
-    [(MOEventBundle *)v14 setEvents:v7];
+    [(MOEventBundle *)v14 setEvents:eventsCopy];
     [(MOEventBundle *)v14 setPropertiesBasedOnEvents];
     [(MOEventBundle *)v14 setInterfaceType:4];
-    v255 = a5;
-    if (a5 == 7)
+    typeCopy = type;
+    if (type == 7)
     {
       [(MOEventBundle *)v14 setIncludedInSummaryBundleOnly:1];
     }
 
     v261 = v14;
-    v264 = [NSMutableArray arrayWithArray:v7];
+    v264 = [NSMutableArray arrayWithArray:eventsCopy];
     v301 = 0u;
     v302 = 0u;
     v303 = 0u;
     v304 = 0u;
-    v254 = v7;
-    obj = v7;
+    v254 = eventsCopy;
+    obj = eventsCopy;
     v15 = [obj countByEnumeratingWithState:&v301 objects:v323 count:16];
     if (v15)
     {
@@ -786,18 +786,18 @@ void __64__MOConversationAnnotationManager__findEventsWithPatternEvents___block_
 
           v19 = *(*(&v301 + 1) + 8 * i);
           eventToPatternEventMap = self->_eventToPatternEventMap;
-          v21 = [v19 eventIdentifier];
-          v22 = [(NSMutableDictionary *)eventToPatternEventMap objectForKey:v21];
+          eventIdentifier = [v19 eventIdentifier];
+          v22 = [(NSMutableDictionary *)eventToPatternEventMap objectForKey:eventIdentifier];
 
           v23 = _mo_log_facility_get_os_log(&MOLogFacilityEventBundleManager);
           if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
           {
-            v35 = [v19 eventIdentifier];
+            eventIdentifier2 = [v19 eventIdentifier];
             v36 = [v22 count];
             *buf = 136315650;
             v306 = "[MOConversationAnnotationManager _annotateEvents:significantContact:type:]";
             v307 = 2112;
-            v308 = v35;
+            v308 = eventIdentifier2;
             v309 = 2048;
             v310 = v36;
             _os_log_debug_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEBUG, "%s, event identifier, %@, pattern event count, %lu", buf, 0x20u);
@@ -805,23 +805,23 @@ void __64__MOConversationAnnotationManager__findEventsWithPatternEvents___block_
 
           if ([v22 count])
           {
-            v24 = [v22 allObjects];
-            [v264 addObjectsFromArray:v24];
+            allObjects = [v22 allObjects];
+            [v264 addObjectsFromArray:allObjects];
           }
 
           eventToContextEventMap = self->_eventToContextEventMap;
-          v26 = [v19 eventIdentifier];
-          v27 = [(NSMutableDictionary *)eventToContextEventMap objectForKey:v26];
+          eventIdentifier3 = [v19 eventIdentifier];
+          v27 = [(NSMutableDictionary *)eventToContextEventMap objectForKey:eventIdentifier3];
 
           v28 = _mo_log_facility_get_os_log(&MOLogFacilityEventBundleManager);
           if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
           {
-            v37 = [v19 eventIdentifier];
+            eventIdentifier4 = [v19 eventIdentifier];
             v38 = [v27 count];
             *buf = 136315650;
             v306 = "[MOConversationAnnotationManager _annotateEvents:significantContact:type:]";
             v307 = 2112;
-            v308 = v37;
+            v308 = eventIdentifier4;
             v309 = 2048;
             v310 = v38;
             _os_log_debug_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEBUG, "%s, event identifier, %@, context event count, %lu", buf, 0x20u);
@@ -829,27 +829,27 @@ void __64__MOConversationAnnotationManager__findEventsWithPatternEvents___block_
 
           if ([v27 count])
           {
-            v29 = [v27 allObjects];
-            [v264 addObjectsFromArray:v29];
+            allObjects2 = [v27 allObjects];
+            [v264 addObjectsFromArray:allObjects2];
           }
 
-          v30 = [v19 significantContactEvent];
-          v31 = [v30 containsOrganizationContact];
+          significantContactEvent = [v19 significantContactEvent];
+          containsOrganizationContact = [significantContactEvent containsOrganizationContact];
 
-          if (v31)
+          if (containsOrganizationContact)
           {
             [v258 setObject:&off_10036BE18 forKey:@"BusinessContact"];
             v32 = _mo_log_facility_get_os_log(&MOLogFacilityBundleQuality);
             if (os_log_type_enabled(v32, OS_LOG_TYPE_INFO))
             {
-              v33 = [v19 eventIdentifier];
-              v34 = [(MOEventBundle *)v261 bundleIdentifier];
+              eventIdentifier5 = [v19 eventIdentifier];
+              bundleIdentifier = [(MOEventBundle *)v261 bundleIdentifier];
               *buf = 136315650;
               v306 = "[MOConversationAnnotationManager _annotateEvents:significantContact:type:]";
               v307 = 2112;
-              v308 = v33;
+              v308 = eventIdentifier5;
               v309 = 2112;
-              v310 = v34;
+              v310 = bundleIdentifier;
               _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_INFO, "%s, event with identifier, %@, contains business contact, therefore update metadata for bundle with identifier, %@", buf, 0x20u);
             }
           }
@@ -862,20 +862,20 @@ void __64__MOConversationAnnotationManager__findEventsWithPatternEvents___block_
     }
 
     [(MOEventBundle *)v261 setEvents:v264];
-    v39 = [(MOConversationAnnotationManager *)self _actionForBundle:v261 type:v255];
+    v39 = [(MOConversationAnnotationManager *)self _actionForBundle:v261 type:typeCopy];
     [(MOEventBundle *)v261 setAction:v39];
 
-    v40 = [(MOEventBundle *)v261 startDate];
-    v41 = [(MOAnnotationManager *)self timeZoneManager];
-    v42 = [MOTime timeForDate:v40 timeZoneManager:v41];
+    startDate = [(MOEventBundle *)v261 startDate];
+    timeZoneManager = [(MOAnnotationManager *)self timeZoneManager];
+    v42 = [MOTime timeForDate:startDate timeZoneManager:timeZoneManager];
     [(MOEventBundle *)v261 setTime:v42];
 
-    v43 = [obj firstObject];
-    v44 = [v43 interactionContacts];
+    firstObject = [obj firstObject];
+    interactionContacts = [firstObject interactionContacts];
     v45 = [NSSortDescriptor sortDescriptorWithKey:@"score" ascending:0];
     v322 = v45;
     v46 = [NSArray arrayWithObjects:&v322 count:1];
-    v47 = [v44 sortedArrayUsingDescriptors:v46];
+    v47 = [interactionContacts sortedArrayUsingDescriptors:v46];
 
     v256 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v47, "count")}];
     v257 = v47;
@@ -907,44 +907,44 @@ void __64__MOConversationAnnotationManager__findEventsWithPatternEvents___block_
         v52 = v51;
 
         v53 = [v257 objectAtIndexedSubscript:v48];
-        v54 = [v53 contact];
-        v55 = [v54 localizedFullName];
+        contact2 = [v53 contact];
+        localizedFullName2 = [contact2 localizedFullName];
 
         v56 = [v257 objectAtIndexedSubscript:v48];
-        v57 = [v56 contact];
-        v58 = [v57 givenName];
+        contact3 = [v56 contact];
+        givenName = [contact3 givenName];
 
         v59 = [v257 objectAtIndexedSubscript:v48];
-        v60 = [v59 contact];
-        v61 = [v60 identifier];
-        v62 = [MOContactUtilities cNContactIdentifierFromPPContactIdentifier:v61];
+        contact4 = [v59 contact];
+        identifier = [contact4 identifier];
+        v62 = [MOContactUtilities cNContactIdentifierFromPPContactIdentifier:identifier];
 
         if (v62)
         {
-          v63 = [[MOPerson alloc] initWithLocalIdentifier:0 name:v55 contactIdentifier:v62 family:0 priorityScore:v49 significanceScore:v52];
+          v63 = [[MOPerson alloc] initWithLocalIdentifier:0 name:localizedFullName2 contactIdentifier:v62 family:0 priorityScore:v49 significanceScore:v52];
           p_super = &v63->super;
           if (v63)
           {
-            if (v58)
+            if (givenName)
             {
-              [(MOPerson *)v63 setGivenName:v58];
+              [(MOPerson *)v63 setGivenName:givenName];
             }
 
-            v65 = [obj firstObject];
-            v66 = [v65 eventIdentifier];
-            [p_super setSourceEventIdentifier:v66];
+            firstObject2 = [obj firstObject];
+            eventIdentifier6 = [firstObject2 eventIdentifier];
+            [p_super setSourceEventIdentifier:eventIdentifier6];
 
             [p_super setSourceEventAccessType:3];
             v67 = _mo_log_facility_get_os_log(&MOLogFacilityEventBundleManager);
             if (os_log_type_enabled(v67, OS_LOG_TYPE_DEBUG))
             {
-              v68 = [(MOEventBundle *)v261 bundleIdentifier];
+              bundleIdentifier2 = [(MOEventBundle *)v261 bundleIdentifier];
               *buf = 136315650;
               v306 = "[MOConversationAnnotationManager _annotateEvents:significantContact:type:]";
               v307 = 2112;
               v308 = p_super;
               v309 = 2112;
-              v310 = v68;
+              v310 = bundleIdentifier2;
               _os_log_debug_impl(&_mh_execute_header, v67, OS_LOG_TYPE_DEBUG, "%s, person, %@, bundle identifier, %@", buf, 0x20u);
             }
 
@@ -970,8 +970,8 @@ void __64__MOConversationAnnotationManager__findEventsWithPatternEvents___block_
     [(MOEventBundle *)v261 setPersons:v256];
     [(MOEventBundle *)v261 setBundleSuperType:3];
     [(MOEventBundle *)v261 setBundleSubType:301];
-    v69 = [(MOEventBundle *)v261 persons];
-    v70 = [v69 count];
+    persons = [(MOEventBundle *)v261 persons];
+    v70 = [persons count];
 
     if (v70 == 1)
     {
@@ -985,17 +985,17 @@ void __64__MOConversationAnnotationManager__findEventsWithPatternEvents___block_
 
     [v258 setObject:v71 forKey:@"isGroupConversation"];
     stats = self->_stats;
-    v73 = [obj firstObject];
-    v74 = [v73 eventIdentifier];
-    v75 = [(NSMutableDictionary *)stats objectForKeyedSubscript:v74];
+    firstObject3 = [obj firstObject];
+    eventIdentifier7 = [firstObject3 eventIdentifier];
+    v75 = [(NSMutableDictionary *)stats objectForKeyedSubscript:eventIdentifier7];
     v76 = [v75 objectForKey:@"callCount"];
     [v76 doubleValue];
     v78 = v77;
 
     v79 = self->_stats;
-    v80 = [obj firstObject];
-    v81 = [v80 eventIdentifier];
-    v82 = [(NSMutableDictionary *)v79 objectForKeyedSubscript:v81];
+    firstObject4 = [obj firstObject];
+    eventIdentifier8 = [firstObject4 eventIdentifier];
+    v82 = [(NSMutableDictionary *)v79 objectForKeyedSubscript:eventIdentifier8];
     v83 = [v82 objectForKey:@"messageCount"];
     [v83 doubleValue];
     v85 = v84;
@@ -1027,8 +1027,8 @@ void __64__MOConversationAnnotationManager__findEventsWithPatternEvents___block_
     v298 = 0u;
     v295 = 0u;
     v296 = 0u;
-    v259 = [(MOEventBundle *)v261 events];
-    v263 = [v259 countByEnumeratingWithState:&v295 objects:v321 count:16];
+    events = [(MOEventBundle *)v261 events];
+    v263 = [events countByEnumeratingWithState:&v295 objects:v321 count:16];
     v88 = 0;
     v89 = 0;
     if (v263)
@@ -1041,7 +1041,7 @@ void __64__MOConversationAnnotationManager__findEventsWithPatternEvents___block_
         {
           if (*v296 != v262)
           {
-            objc_enumerationMutation(v259);
+            objc_enumerationMutation(events);
           }
 
           v266 = v89;
@@ -1050,14 +1050,14 @@ void __64__MOConversationAnnotationManager__findEventsWithPatternEvents___block_
           v92 = _mo_log_facility_get_os_log(&MOLogFacilityEventBundleManager);
           if (os_log_type_enabled(v92, OS_LOG_TYPE_DEBUG))
           {
-            v112 = [v91 eventIdentifier];
-            v113 = [v91 significantContactEvent];
-            v114 = [v113 contactClassificationMap];
-            v115 = [v114 count];
+            eventIdentifier9 = [v91 eventIdentifier];
+            significantContactEvent2 = [v91 significantContactEvent];
+            contactClassificationMap = [significantContactEvent2 contactClassificationMap];
+            v115 = [contactClassificationMap count];
             *buf = 136315650;
             v306 = "[MOConversationAnnotationManager _annotateEvents:significantContact:type:]";
             v307 = 2112;
-            v308 = v112;
+            v308 = eventIdentifier9;
             v309 = 2048;
             v310 = v115;
             _os_log_debug_impl(&_mh_execute_header, v92, OS_LOG_TYPE_DEBUG, "%s, event identifier, %@, contactClassificationMap size, %lu", buf, 0x20u);
@@ -1067,10 +1067,10 @@ void __64__MOConversationAnnotationManager__findEventsWithPatternEvents___block_
           v294 = 0u;
           v291 = 0u;
           v292 = 0u;
-          v93 = [v91 significantContactEvent];
-          v94 = [v93 contactClassificationMap];
+          significantContactEvent3 = [v91 significantContactEvent];
+          contactClassificationMap2 = [significantContactEvent3 contactClassificationMap];
 
-          v95 = [v94 countByEnumeratingWithState:&v291 objects:v320 count:16];
+          v95 = [contactClassificationMap2 countByEnumeratingWithState:&v291 objects:v320 count:16];
           if (v95)
           {
             v96 = v95;
@@ -1082,27 +1082,27 @@ void __64__MOConversationAnnotationManager__findEventsWithPatternEvents___block_
               {
                 if (*v292 != v97)
                 {
-                  objc_enumerationMutation(v94);
+                  objc_enumerationMutation(contactClassificationMap2);
                 }
 
                 v99 = *(*(&v291 + 1) + 8 * j);
                 v100 = _mo_log_facility_get_os_log(&MOLogFacilityEventBundleManager);
                 if (os_log_type_enabled(v100, OS_LOG_TYPE_DEBUG))
                 {
-                  v276 = [v99 contact];
-                  v269 = [v276 identifier];
-                  v273 = [v99 contact];
-                  v272 = [v273 localizedFullName];
-                  v101 = [v272 mask];
-                  v270 = [v91 significantContactEvent];
-                  v102 = [v270 contactClassificationMap];
-                  v103 = [v102 objectForKey:v99];
+                  contact5 = [v99 contact];
+                  identifier2 = [contact5 identifier];
+                  contact6 = [v99 contact];
+                  localizedFullName3 = [contact6 localizedFullName];
+                  mask = [localizedFullName3 mask];
+                  significantContactEvent4 = [v91 significantContactEvent];
+                  contactClassificationMap3 = [significantContactEvent4 contactClassificationMap];
+                  v103 = [contactClassificationMap3 objectForKey:v99];
                   *buf = 136315906;
                   v306 = "[MOConversationAnnotationManager _annotateEvents:significantContact:type:]";
                   v307 = 2112;
-                  v308 = v269;
+                  v308 = identifier2;
                   v309 = 2112;
-                  v310 = v101;
+                  v310 = mask;
                   v311 = 2112;
                   v312 = v103;
                   _os_log_debug_impl(&_mh_execute_header, v100, OS_LOG_TYPE_DEBUG, "%s, contactID, %@, name, %@, classification, %@", buf, 0x2Au);
@@ -1111,7 +1111,7 @@ void __64__MOConversationAnnotationManager__findEventsWithPatternEvents___block_
                 }
               }
 
-              v96 = [v94 countByEnumeratingWithState:&v291 objects:v320 count:16];
+              v96 = [contactClassificationMap2 countByEnumeratingWithState:&v291 objects:v320 count:16];
             }
 
             while (v96);
@@ -1121,11 +1121,11 @@ void __64__MOConversationAnnotationManager__findEventsWithPatternEvents___block_
           v290 = 0u;
           v287 = 0u;
           v288 = 0u;
-          v104 = [v91 significantContactEvent];
-          v105 = [v104 contactClassificationMap];
-          v106 = [v105 allValues];
+          significantContactEvent5 = [v91 significantContactEvent];
+          contactClassificationMap4 = [significantContactEvent5 contactClassificationMap];
+          allValues = [contactClassificationMap4 allValues];
 
-          v107 = [v106 countByEnumeratingWithState:&v287 objects:v319 count:16];
+          v107 = [allValues countByEnumeratingWithState:&v287 objects:v319 count:16];
           if (v107)
           {
             v108 = v107;
@@ -1137,7 +1137,7 @@ void __64__MOConversationAnnotationManager__findEventsWithPatternEvents___block_
               {
                 if (*v288 != v109)
                 {
-                  objc_enumerationMutation(v106);
+                  objc_enumerationMutation(allValues);
                 }
 
                 v111 = *(*(&v287 + 1) + 8 * k);
@@ -1149,7 +1149,7 @@ void __64__MOConversationAnnotationManager__findEventsWithPatternEvents___block_
                 v88 |= ([v111 unsignedIntValue] & 0x200000) >> 21;
               }
 
-              v108 = [v106 countByEnumeratingWithState:&v287 objects:v319 count:16];
+              v108 = [allValues countByEnumeratingWithState:&v287 objects:v319 count:16];
             }
 
             while (v108);
@@ -1164,7 +1164,7 @@ void __64__MOConversationAnnotationManager__findEventsWithPatternEvents___block_
         }
 
         while ((v265 + 1) != v263);
-        v263 = [v259 countByEnumeratingWithState:&v295 objects:v321 count:16];
+        v263 = [events countByEnumeratingWithState:&v295 objects:v321 count:16];
       }
 
       while (v263);
@@ -1200,7 +1200,7 @@ void __64__MOConversationAnnotationManager__findEventsWithPatternEvents___block_
 
     v119 = v258;
     v120 = v261;
-    v121 = v255;
+    v121 = typeCopy;
     if ((v88 | v89))
     {
       if (v88)
@@ -1216,12 +1216,12 @@ void __64__MOConversationAnnotationManager__findEventsWithPatternEvents___block_
       [v258 setObject:&off_10036E770 forKey:v122];
     }
 
-    if ((v255 & 0xFFFFFFFFFFFFFFFDLL) == 4)
+    if ((typeCopy & 0xFFFFFFFFFFFFFFFDLL) == 4)
     {
       v123 = self->_stats;
-      v124 = [obj firstObject];
-      v125 = [v124 eventIdentifier];
-      v126 = [(NSMutableDictionary *)v123 objectForKeyedSubscript:v125];
+      firstObject5 = [obj firstObject];
+      eventIdentifier10 = [firstObject5 eventIdentifier];
+      v126 = [(NSMutableDictionary *)v123 objectForKeyedSubscript:eventIdentifier10];
       v127 = [v126 objectForKey:@"longestCallDuration"];
       [v127 doubleValue];
       v129 = v128;
@@ -1230,9 +1230,9 @@ void __64__MOConversationAnnotationManager__findEventsWithPatternEvents___block_
       [v258 setObject:v130 forKey:@"callDuration"];
 
       v131 = self->_stats;
-      v132 = [obj firstObject];
-      v133 = [v132 eventIdentifier];
-      v134 = [(NSMutableDictionary *)v131 objectForKeyedSubscript:v133];
+      firstObject6 = [obj firstObject];
+      eventIdentifier11 = [firstObject6 eventIdentifier];
+      v134 = [(NSMutableDictionary *)v131 objectForKeyedSubscript:eventIdentifier11];
       v135 = [v134 objectForKey:@"aggregatedCallDuration"];
       [v135 doubleValue];
       v137 = v136;
@@ -1241,17 +1241,17 @@ void __64__MOConversationAnnotationManager__findEventsWithPatternEvents___block_
       [v258 setObject:v138 forKey:@"dailyAggregateCallDuration"];
 
       v139 = self->_stats;
-      v140 = [obj firstObject];
-      v141 = [v140 eventIdentifier];
-      v142 = [(NSMutableDictionary *)v139 objectForKeyedSubscript:v141];
+      firstObject7 = [obj firstObject];
+      eventIdentifier12 = [firstObject7 eventIdentifier];
+      v142 = [(NSMutableDictionary *)v139 objectForKeyedSubscript:eventIdentifier12];
       v143 = [v142 objectForKey:@"callAtWork"];
       [v143 doubleValue];
       v145 = v144;
 
       v146 = self->_stats;
-      v147 = [obj firstObject];
-      v148 = [v147 eventIdentifier];
-      v149 = [(NSMutableDictionary *)v146 objectForKeyedSubscript:v148];
+      firstObject8 = [obj firstObject];
+      eventIdentifier13 = [firstObject8 eventIdentifier];
+      v149 = [(NSMutableDictionary *)v146 objectForKeyedSubscript:eventIdentifier13];
       v150 = [v149 objectForKey:@"callCountForDailyAggregate"];
       [v150 doubleValue];
       v152 = v151;
@@ -1269,16 +1269,16 @@ void __64__MOConversationAnnotationManager__findEventsWithPatternEvents___block_
       v119 = v258;
       [v258 setObject:v153 forKey:@"contactLocationWork"];
       v120 = v261;
-      v121 = v255;
+      v121 = typeCopy;
       goto LABEL_105;
     }
 
-    if (v255 == 5)
+    if (typeCopy == 5)
     {
       v156 = self->_stats;
-      v157 = [obj firstObject];
-      v158 = [v157 eventIdentifier];
-      v159 = [(NSMutableDictionary *)v156 objectForKeyedSubscript:v158];
+      firstObject9 = [obj firstObject];
+      eventIdentifier14 = [firstObject9 eventIdentifier];
+      v159 = [(NSMutableDictionary *)v156 objectForKeyedSubscript:eventIdentifier14];
       v160 = [v159 objectForKey:@"maxBurstLength"];
       [v160 doubleValue];
       v162 = v161;
@@ -1293,15 +1293,15 @@ void __64__MOConversationAnnotationManager__findEventsWithPatternEvents___block_
 
     else
     {
-      if (v255 != 7)
+      if (typeCopy != 7)
       {
 LABEL_105:
-        v172 = [(MOEventBundle *)v120 metaDataForRank];
+        metaDataForRank = [(MOEventBundle *)v120 metaDataForRank];
 
-        if (v172)
+        if (metaDataForRank)
         {
-          v173 = [(MOEventBundle *)v120 metaDataForRank];
-          [v119 addEntriesFromDictionary:v173];
+          metaDataForRank2 = [(MOEventBundle *)v120 metaDataForRank];
+          [v119 addEntriesFromDictionary:metaDataForRank2];
         }
 
         v174 = [NSNumber numberWithUnsignedInteger:v121];
@@ -1311,8 +1311,8 @@ LABEL_105:
         v175 = _mo_log_facility_get_os_log(&MOLogFacilityEventBundleManager);
         if (os_log_type_enabled(v175, OS_LOG_TYPE_INFO))
         {
-          v176 = [(MOEventBundle *)v120 events];
-          v177 = [v176 count];
+          events2 = [(MOEventBundle *)v120 events];
+          v177 = [events2 count];
           *buf = 136315906;
           v306 = "[MOConversationAnnotationManager _annotateEvents:significantContact:type:]";
           v307 = 2112;
@@ -1328,106 +1328,106 @@ LABEL_105:
         v286 = 0u;
         v283 = 0u;
         v284 = 0u;
-        v178 = [(MOEventBundle *)v120 metaDataForRank];
-        v179 = [v178 countByEnumeratingWithState:&v283 objects:v318 count:16];
+        metaDataForRank3 = [(MOEventBundle *)v120 metaDataForRank];
+        v179 = [metaDataForRank3 countByEnumeratingWithState:&v283 objects:v318 count:16];
         if (v179)
         {
           v180 = v179;
           v181 = *v284;
-          v271 = v178;
+          v271 = metaDataForRank3;
           do
           {
             for (m = 0; m != v180; m = m + 1)
             {
               if (*v284 != v181)
               {
-                objc_enumerationMutation(v178);
+                objc_enumerationMutation(metaDataForRank3);
               }
 
               v183 = *(*(&v283 + 1) + 8 * m);
               v184 = _mo_log_facility_get_os_log(&MOLogFacilityEventBundleManager);
               if (os_log_type_enabled(v184, OS_LOG_TYPE_DEBUG))
               {
-                v185 = [(MOEventBundle *)v261 bundleIdentifier];
-                v277 = [(MOEventBundle *)v261 events];
-                v274 = [v277 firstObject];
-                v186 = [v274 eventIdentifier];
-                v187 = [(MOEventBundle *)v261 metaDataForRank];
-                v188 = [v187 objectForKey:v183];
+                bundleIdentifier3 = [(MOEventBundle *)v261 bundleIdentifier];
+                events3 = [(MOEventBundle *)v261 events];
+                firstObject10 = [events3 firstObject];
+                eventIdentifier15 = [firstObject10 eventIdentifier];
+                metaDataForRank4 = [(MOEventBundle *)v261 metaDataForRank];
+                v188 = [metaDataForRank4 objectForKey:v183];
                 *buf = 136316162;
                 v306 = "[MOConversationAnnotationManager _annotateEvents:significantContact:type:]";
                 v307 = 2112;
-                v308 = v185;
+                v308 = bundleIdentifier3;
                 v309 = 2112;
-                v310 = v186;
+                v310 = eventIdentifier15;
                 v311 = 2112;
                 v312 = v183;
                 v313 = 2112;
                 v314 = v188;
                 _os_log_debug_impl(&_mh_execute_header, v184, OS_LOG_TYPE_DEBUG, "%s, bundleID, %@, eventID, %@, metaDataForRank key, %@, metaDataForRank value, %@", buf, 0x34u);
 
-                v178 = v271;
+                metaDataForRank3 = v271;
               }
             }
 
-            v180 = [v178 countByEnumeratingWithState:&v283 objects:v318 count:16];
+            v180 = [metaDataForRank3 countByEnumeratingWithState:&v283 objects:v318 count:16];
           }
 
           while (v180);
         }
 
         [(MOEventBundle *)v261 setIsAggregatedAndSuppressed:1];
-        v189 = [(MOConversationAnnotationManager *)self configurationManager];
-        v190 = [v189 getIntegerSettingForKey:@"kMOConversationAnnotationManagerBundlingFilterNumPatternEvents" withFallback:0];
+        configurationManager = [(MOConversationAnnotationManager *)self configurationManager];
+        v190 = [configurationManager getIntegerSettingForKey:@"kMOConversationAnnotationManagerBundlingFilterNumPatternEvents" withFallback:0];
 
-        v191 = [(MOConversationAnnotationManager *)self configurationManager];
-        [v191 getFloatSettingForKey:@"kMOConversationAnnotationManagerBundlingFilterMinContactScoreForCalls" withFallback:0.0];
+        configurationManager2 = [(MOConversationAnnotationManager *)self configurationManager];
+        [configurationManager2 getFloatSettingForKey:@"kMOConversationAnnotationManagerBundlingFilterMinContactScoreForCalls" withFallback:0.0];
         v193 = v192;
 
-        v194 = [(MOConversationAnnotationManager *)self configurationManager];
+        configurationManager3 = [(MOConversationAnnotationManager *)self configurationManager];
         LODWORD(v195) = 1157840896;
-        [v194 getFloatSettingForKey:@"kMOConversationAnnotationManagerBundlingFilterMinimumDurationForCalls" withFallback:v195];
+        [configurationManager3 getFloatSettingForKey:@"kMOConversationAnnotationManagerBundlingFilterMinimumDurationForCalls" withFallback:v195];
         v197 = v196;
 
-        v198 = [(MOConversationAnnotationManager *)self configurationManager];
+        configurationManager4 = [(MOConversationAnnotationManager *)self configurationManager];
         LODWORD(v199) = 1058642330;
-        [v198 getFloatSettingForKey:@"kMOConversationAnnotationManagerBundlingFilterMaximumContactScoreForBurstyTexts" withFallback:v199];
+        [configurationManager4 getFloatSettingForKey:@"kMOConversationAnnotationManagerBundlingFilterMaximumContactScoreForBurstyTexts" withFallback:v199];
         v201 = v200;
 
-        v202 = [(MOConversationAnnotationManager *)self configurationManager];
+        configurationManager5 = [(MOConversationAnnotationManager *)self configurationManager];
         LODWORD(v203) = 10.0;
-        [v202 getFloatSettingForKey:@"kMOConversationAnnotationManagerMinimumInteractionCount" withFallback:v203];
+        [configurationManager5 getFloatSettingForKey:@"kMOConversationAnnotationManagerMinimumInteractionCount" withFallback:v203];
         v205 = v204;
 
-        v206 = [(MOConversationAnnotationManager *)self configurationManager];
+        configurationManager6 = [(MOConversationAnnotationManager *)self configurationManager];
         LODWORD(v207) = 6.0;
-        [v206 getFloatSettingForKey:@"kMOConversationAnnotationManagerBundlingFilterMaximumBaselineValueForFrequencyAnomaly" withFallback:v207];
+        [configurationManager6 getFloatSettingForKey:@"kMOConversationAnnotationManagerBundlingFilterMaximumBaselineValueForFrequencyAnomaly" withFallback:v207];
         v209 = v208;
 
-        v210 = [(MOConversationAnnotationManager *)self configurationManager];
+        configurationManager7 = [(MOConversationAnnotationManager *)self configurationManager];
         LODWORD(v211) = *"U0B@";
-        [v210 getFloatSettingForKey:@"PD_SCF_TukeyFactorForExponentialDistributionOutlier" withFallback:v211];
+        [configurationManager7 getFloatSettingForKey:@"PD_SCF_TukeyFactorForExponentialDistributionOutlier" withFallback:v211];
         v213 = v212;
 
         v214 = self->_stats;
-        v215 = [obj firstObject];
-        v216 = [v215 eventIdentifier];
-        v217 = [(NSMutableDictionary *)v214 objectForKeyedSubscript:v216];
+        firstObject11 = [obj firstObject];
+        eventIdentifier16 = [firstObject11 eventIdentifier];
+        v217 = [(NSMutableDictionary *)v214 objectForKeyedSubscript:eventIdentifier16];
         v218 = [v217 objectForKey:@"longestCallDuration"];
         [v218 doubleValue];
         v220 = v219;
 
         v221 = self->_stats;
-        v222 = [obj firstObject];
-        v223 = [v222 eventIdentifier];
-        v224 = [(NSMutableDictionary *)v221 objectForKeyedSubscript:v223];
+        firstObject12 = [obj firstObject];
+        eventIdentifier17 = [firstObject12 eventIdentifier];
+        v224 = [(NSMutableDictionary *)v221 objectForKeyedSubscript:eventIdentifier17];
         v225 = [v224 objectForKey:@"maxBurstLength"];
         [v225 doubleValue];
         v227 = v226;
 
-        v228 = [obj firstObject];
-        v229 = [v228 interactionContactScore];
-        [v229 doubleValue];
+        firstObject13 = [obj firstObject];
+        interactionContactScore = [firstObject13 interactionContactScore];
+        [interactionContactScore doubleValue];
         v231 = v230;
 
         v278 = [NSPredicate predicateWithFormat:@"%K = %lu AND %K = %lu", @"category", 10, @"provider", 5];
@@ -1460,14 +1460,14 @@ LABEL_105:
               }
 
               v240 = *(*(&v279 + 1) + 8 * n);
-              v241 = [v240 patterns];
-              v242 = [v241 objectForKeyedSubscript:@"kEventPatternAnomalyFeatureType"];
-              v243 = [v242 intValue];
+              patterns = [v240 patterns];
+              v242 = [patterns objectForKeyedSubscript:@"kEventPatternAnomalyFeatureType"];
+              intValue = [v242 intValue];
 
-              if (v243 == 2)
+              if (intValue == 2)
               {
-                v245 = [v240 patterns];
-                v246 = [v245 objectForKeyedSubscript:@"kEventPatternThresholdValue"];
+                patterns2 = [v240 patterns];
+                v246 = [patterns2 objectForKeyedSubscript:@"kEventPatternThresholdValue"];
                 [v246 doubleValue];
                 v248 = v247;
 
@@ -1488,12 +1488,12 @@ LABEL_105:
         v249 = _mo_log_facility_get_os_log(&MOLogFacilityEventBundleManager);
         if (os_log_type_enabled(v249, OS_LOG_TYPE_INFO))
         {
-          v250 = [(MOEventBundle *)v261 isAggregatedAndSuppressed];
+          isAggregatedAndSuppressed = [(MOEventBundle *)v261 isAggregatedAndSuppressed];
           v251 = [v233 count];
           *buf = 136316418;
           v306 = "[MOConversationAnnotationManager _annotateEvents:significantContact:type:]";
           v307 = 2048;
-          v308 = v250;
+          v308 = isAggregatedAndSuppressed;
           v309 = 2048;
           v310 = v251;
           v311 = 2048;
@@ -1507,15 +1507,15 @@ LABEL_105:
 
         v154 = v261;
         v155 = v154;
-        v8 = v253;
-        v7 = v254;
+        contactCopy = v253;
+        eventsCopy = v254;
         goto LABEL_137;
       }
 
       v165 = self->_stats;
-      v166 = [obj firstObject];
-      v167 = [v166 eventIdentifier];
-      v168 = [(NSMutableDictionary *)v165 objectForKeyedSubscript:v167];
+      firstObject14 = [obj firstObject];
+      eventIdentifier18 = [firstObject14 eventIdentifier];
+      v168 = [(NSMutableDictionary *)v165 objectForKeyedSubscript:eventIdentifier18];
       v169 = [v168 objectForKey:@"outgoingMessageBurstCount"];
       [v169 doubleValue];
       v171 = v170;
@@ -1536,7 +1536,7 @@ LABEL_105:
   v154 = _mo_log_facility_get_os_log(&MOLogFacilityEventBundleManager);
   if (os_log_type_enabled(v154, OS_LOG_TYPE_ERROR))
   {
-    [MOConversationAnnotationManager _annotateEvents:v7 significantContact:v8 type:v154];
+    [MOConversationAnnotationManager _annotateEvents:eventsCopy significantContact:contactCopy type:v154];
   }
 
   v155 = 0;
@@ -1545,22 +1545,22 @@ LABEL_137:
   return v155;
 }
 
-- (unint64_t)_outgoingMessageBurstCount:(id)a3 bundleIdPrefix:(id)a4
+- (unint64_t)_outgoingMessageBurstCount:(id)count bundleIdPrefix:(id)prefix
 {
-  v6 = a3;
-  v31 = a4;
-  v7 = [(MOConversationAnnotationManager *)self configurationManager];
-  [v7 getDoubleSettingForKey:@"kMOConversationAnnotationManagerMaximumOutgoingInteractionInterval" withFallback:600.0];
+  countCopy = count;
+  prefixCopy = prefix;
+  configurationManager = [(MOConversationAnnotationManager *)self configurationManager];
+  [configurationManager getDoubleSettingForKey:@"kMOConversationAnnotationManagerMaximumOutgoingInteractionInterval" withFallback:600.0];
   v9 = v8;
 
-  v10 = [(MOConversationAnnotationManager *)self configurationManager];
-  v29 = [v10 getIntegerSettingForKey:@"kMOConversationAnnotationManagerMinimumOutgoingInteractionCount" withFallback:5];
+  configurationManager2 = [(MOConversationAnnotationManager *)self configurationManager];
+  v29 = [configurationManager2 getIntegerSettingForKey:@"kMOConversationAnnotationManagerMinimumOutgoingInteractionCount" withFallback:5];
 
   v34 = 0u;
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v11 = v6;
+  v11 = countCopy;
   v12 = [v11 countByEnumeratingWithState:&v32 objects:v36 count:16];
   if (v12)
   {
@@ -1581,15 +1581,15 @@ LABEL_137:
         v18 = *(*(&v32 + 1) + 8 * i);
         if ([(MOConversationAnnotationManager *)self _messageInteraction:v18])
         {
-          v19 = [v18 bundleId];
-          v20 = [v19 hasPrefix:v31];
+          bundleId = [v18 bundleId];
+          v20 = [bundleId hasPrefix:prefixCopy];
 
           if (v20)
           {
             if (v14)
             {
-              v21 = [v18 startDate];
-              [v21 timeIntervalSinceDate:v14];
+              startDate = [v18 startDate];
+              [startDate timeIntervalSinceDate:v14];
               v23 = v22;
 
               v24 = 1;
@@ -1603,9 +1603,9 @@ LABEL_137:
               v16 = v24;
             }
 
-            v26 = [v18 endDate];
+            endDate = [v18 endDate];
 
-            v14 = v26;
+            v14 = endDate;
           }
         }
       }
@@ -1636,21 +1636,21 @@ LABEL_137:
   return v27;
 }
 
-- (void)_calculateEventStats:(id)a3
+- (void)_calculateEventStats:(id)stats
 {
-  v4 = a3;
-  v5 = [(MOConversationAnnotationManager *)self configurationManager];
-  [v5 getDoubleSettingForKey:@"kMOConversationAnnotationManagerMaximumInteractionInterval" withFallback:300.0];
+  statsCopy = stats;
+  configurationManager = [(MOConversationAnnotationManager *)self configurationManager];
+  [configurationManager getDoubleSettingForKey:@"kMOConversationAnnotationManagerMaximumInteractionInterval" withFallback:300.0];
   v7 = v6;
 
-  v8 = [(MOConversationAnnotationManager *)self configurationManager];
-  v9 = [v8 getIntegerSettingForKey:@"kMOConversationAnnotationManagerMinimumDurationSingleCall" withFallback:300];
+  configurationManager2 = [(MOConversationAnnotationManager *)self configurationManager];
+  v9 = [configurationManager2 getIntegerSettingForKey:@"kMOConversationAnnotationManagerMinimumDurationSingleCall" withFallback:300];
 
   v103 = 0u;
   v104 = 0u;
   v101 = 0u;
   v102 = 0u;
-  obj = v4;
+  obj = statsCopy;
   v80 = [obj countByEnumeratingWithState:&v101 objects:v133 count:16];
   if (v80)
   {
@@ -1658,7 +1658,7 @@ LABEL_137:
     v11 = v9;
     *&v10 = 136318210;
     v75 = v10;
-    v96 = self;
+    selfCopy = self;
     do
     {
       v12 = 0;
@@ -1671,11 +1671,11 @@ LABEL_137:
 
         v81 = *(*(&v101 + 1) + 8 * v12);
         v82 = v12;
-        v13 = [v81 interactions];
+        interactions = [v81 interactions];
         v14 = [NSSortDescriptor sortDescriptorWithKey:@"startDate" ascending:1];
         v132 = v14;
         v15 = [NSArray arrayWithObjects:&v132 count:1];
-        v16 = [v13 sortedArrayUsingDescriptors:v15];
+        v16 = [interactions sortedArrayUsingDescriptors:v15];
 
         v99 = 0u;
         v100 = 0u;
@@ -1726,34 +1726,34 @@ LABEL_137:
             v27 = *(*(&v97 + 1) + 8 * i);
             if ([(MOConversationAnnotationManager *)self _callLikeInteraction:v27]|| [(MOConversationAnnotationManager *)self _messageInteraction:v27])
             {
-              v28 = [v27 startDate];
-              if (!v28)
+              startDate = [v27 startDate];
+              if (!startDate)
               {
                 goto LABEL_20;
               }
 
-              v29 = v28;
+              v29 = startDate;
               v30 = v21;
               v31 = v20;
-              v32 = [v27 endDate];
+              endDate = [v27 endDate];
 
-              if (!v32)
+              if (!endDate)
               {
                 v20 = v31;
                 v21 = v30;
 LABEL_20:
-                self = v96;
+                self = selfCopy;
                 continue;
               }
 
               if (v19)
               {
-                v33 = [v27 startDate];
-                v34 = [v19 endDate];
-                [v33 timeIntervalSinceDate:v34];
+                startDate2 = [v27 startDate];
+                endDate2 = [v19 endDate];
+                [startDate2 timeIntervalSinceDate:endDate2];
                 v36 = v35;
 
-                if ((-[MOConversationAnnotationManager _callLikeInteraction:](v96, "_callLikeInteraction:", v19) || [v19 direction] == 1 && !objc_msgSend(v27, "direction") || !objc_msgSend(v19, "direction") && objc_msgSend(v27, "direction") == 1) && v36 < v7)
+                if ((-[MOConversationAnnotationManager _callLikeInteraction:](selfCopy, "_callLikeInteraction:", v19) || [v19 direction] == 1 && !objc_msgSend(v27, "direction") || !objc_msgSend(v19, "direction") && objc_msgSend(v27, "direction") == 1) && v36 < v7)
                 {
                   ++v90;
                   v37 = v27;
@@ -1773,17 +1773,17 @@ LABEL_40:
                 v41 = _mo_log_facility_get_os_log(&MOLogFacilityEventBundleManager);
                 if (os_log_type_enabled(v41, OS_LOG_TYPE_DEBUG))
                 {
-                  v83 = [v27 startDate];
-                  v55 = [v27 endDate];
+                  startDate3 = [v27 startDate];
+                  endDate3 = [v27 endDate];
                   *buf = 136316418;
                   v106 = "[MOConversationAnnotationManager _calculateEventStats:]";
                   v107 = 2048;
                   v108 = v93;
                   v109 = 2112;
-                  v110 = v83;
+                  v110 = startDate3;
                   v111 = 2112;
-                  v112 = v55;
-                  v56 = v55;
+                  v112 = endDate3;
+                  v56 = endDate3;
                   v113 = 2048;
                   v114 = v36;
                   v115 = 2048;
@@ -1800,20 +1800,20 @@ LABEL_40:
                 }
 
                 v92 = v42;
-                self = v96;
-                if ([(MOConversationAnnotationManager *)v96 _callLikeInteraction:v27])
+                self = selfCopy;
+                if ([(MOConversationAnnotationManager *)selfCopy _callLikeInteraction:v27])
                 {
-                  v43 = [v27 startDate];
-                  if (v43)
+                  startDate4 = [v27 startDate];
+                  if (startDate4)
                   {
-                    v44 = v43;
-                    v45 = [v27 endDate];
+                    v44 = startDate4;
+                    endDate4 = [v27 endDate];
 
-                    if (v45)
+                    if (endDate4)
                     {
-                      v46 = [v27 endDate];
-                      v47 = [v27 startDate];
-                      [v46 timeIntervalSinceDate:v47];
+                      endDate5 = [v27 endDate];
+                      startDate5 = [v27 startDate];
+                      [endDate5 timeIntervalSinceDate:startDate5];
                       v49 = v48;
 
                       if (v49 > v24)
@@ -1824,10 +1824,10 @@ LABEL_40:
                         v24 = v49;
                       }
 
-                      self = v96;
+                      self = selfCopy;
                       v25 = v25 + v49;
                       ++v87;
-                      v51 = [(MOConversationAnnotationManager *)v96 _getWorkVisitEventsDuringCall:obj withCall:v27];
+                      v51 = [(MOConversationAnnotationManager *)selfCopy _getWorkVisitEventsDuringCall:obj withCall:v27];
                       v52 = [v51 count];
                       v53 = v88;
                       if (v52)
@@ -1851,11 +1851,11 @@ LABEL_58:
                   }
 
                   v21 = v30;
-                  self = v96;
+                  self = selfCopy;
                   goto LABEL_61;
                 }
 
-                if (![(MOConversationAnnotationManager *)v96 _messageInteraction:v27])
+                if (![(MOConversationAnnotationManager *)selfCopy _messageInteraction:v27])
                 {
                   goto LABEL_58;
                 }
@@ -1882,12 +1882,12 @@ LABEL_61:
                 goto LABEL_40;
               }
 
-              v38 = [v27 startDate];
-              v39 = [v95 endDate];
-              [v38 timeIntervalSinceDate:v39];
+              startDate6 = [v27 startDate];
+              endDate6 = [v95 endDate];
+              [startDate6 timeIntervalSinceDate:endDate6];
               v36 = v40;
 
-              if (-[MOConversationAnnotationManager _callLikeInteraction:](v96, "_callLikeInteraction:", v95) || [v95 direction] == 1 && !objc_msgSend(v27, "direction"))
+              if (-[MOConversationAnnotationManager _callLikeInteraction:](selfCopy, "_callLikeInteraction:", v95) || [v95 direction] == 1 && !objc_msgSend(v27, "direction"))
               {
                 v20 = v31;
                 if (v36 >= v7)
@@ -1963,16 +1963,16 @@ LABEL_66:
         v69 = _mo_log_facility_get_os_log(&MOLogFacilityEventBundleManager);
         if (os_log_type_enabled(v69, OS_LOG_TYPE_INFO))
         {
-          v70 = [v81 eventIdentifier];
-          v78 = [v81 interactionScoredContact];
-          v77 = [v78 contact];
-          [v77 localizedFullName];
+          eventIdentifier = [v81 eventIdentifier];
+          interactionScoredContact = [v81 interactionScoredContact];
+          contact = [interactionScoredContact contact];
+          [contact localizedFullName];
           v71 = v76 = v20;
-          v72 = [v71 mask];
+          mask = [v71 mask];
           *buf = v75;
           v106 = "[MOConversationAnnotationManager _calculateEventStats:]";
           v107 = 2112;
-          v108 = v70;
+          v108 = eventIdentifier;
           v109 = 2048;
           v110 = v22;
           v111 = 2048;
@@ -1994,15 +1994,15 @@ LABEL_66:
           v127 = 2048;
           v128 = v92;
           v129 = 2112;
-          v130 = v72;
+          v130 = mask;
           _os_log_impl(&_mh_execute_header, v69, OS_LOG_TYPE_INFO, "%s, event ID, %@, call count, %lu, call count for daily agg., %lu, call at work, %lu, long call at work, %lu, aggregated call duration, %.1f, longest call duration, %.1f, message count, %lu, outgoing message count, %lu, outgoing message burst count, %lu, max burst length, %lu, contact, %@", buf, 0x84u);
 
-          self = v96;
+          self = selfCopy;
         }
 
         stats = self->_stats;
-        v74 = [v81 eventIdentifier];
-        [(NSMutableDictionary *)stats setObject:v58 forKey:v74];
+        eventIdentifier2 = [v81 eventIdentifier];
+        [(NSMutableDictionary *)stats setObject:v58 forKey:eventIdentifier2];
 
         v12 = v82 + 1;
       }
@@ -2015,16 +2015,16 @@ LABEL_66:
   }
 }
 
-- (void)_buildMappingFromBaseEvents:(id)a3 toPatternEvents:(id)a4
+- (void)_buildMappingFromBaseEvents:(id)events toPatternEvents:(id)patternEvents
 {
-  v5 = a3;
-  v6 = a4;
+  eventsCopy = events;
+  patternEventsCopy = patternEvents;
   v7 = objc_opt_new();
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v8 = v5;
+  v8 = eventsCopy;
   v9 = [v8 countByEnumeratingWithState:&v45 objects:v56 count:16];
   if (v9)
   {
@@ -2040,10 +2040,10 @@ LABEL_66:
         }
 
         v13 = *(*(&v45 + 1) + 8 * i);
-        v14 = [v13 eventIdentifier];
-        v15 = [v13 eventIdentifier];
-        v16 = [v15 UUIDString];
-        [v7 setObject:v14 forKey:v16];
+        eventIdentifier = [v13 eventIdentifier];
+        eventIdentifier2 = [v13 eventIdentifier];
+        uUIDString = [eventIdentifier2 UUIDString];
+        [v7 setObject:eventIdentifier forKey:uUIDString];
       }
 
       v10 = [v8 countByEnumeratingWithState:&v45 objects:v56 count:16];
@@ -2058,7 +2058,7 @@ LABEL_66:
   v44 = 0u;
   v41 = 0u;
   v42 = 0u;
-  obj = v6;
+  obj = patternEventsCopy;
   v17 = [obj countByEnumeratingWithState:&v41 objects:v55 count:16];
   if (v17)
   {
@@ -2076,26 +2076,26 @@ LABEL_66:
         }
 
         v21 = *(*(&v41 + 1) + 8 * v20);
-        v22 = [v21 patterns];
-        v23 = [v22 objectForKeyedSubscript:@"kEventPatternAnomalousEventIdentifier"];
+        patterns = [v21 patterns];
+        v23 = [patterns objectForKeyedSubscript:@"kEventPatternAnomalousEventIdentifier"];
 
         v24 = [v7 objectForKey:v23];
 
         if (v24)
         {
-          v25 = [v21 patterns];
+          patterns2 = [v21 patterns];
           v40[0] = _NSConcreteStackBlock;
           v40[1] = 3221225472;
           v40[2] = __79__MOConversationAnnotationManager__buildMappingFromBaseEvents_toPatternEvents___block_invoke;
           v40[3] = &unk_10033EC60;
           v40[4] = v21;
-          [v25 enumerateKeysAndObjectsUsingBlock:v40];
+          [patterns2 enumerateKeysAndObjectsUsingBlock:v40];
 
-          v26 = [v21 patterns];
-          v27 = [v26 objectForKeyedSubscript:@"kEventPatternType"];
-          v28 = [v27 intValue];
+          patterns3 = [v21 patterns];
+          v27 = [patterns3 objectForKeyedSubscript:@"kEventPatternType"];
+          intValue = [v27 intValue];
 
-          if (!v28 && v23 != 0)
+          if (!intValue && v23 != 0)
           {
             v30 = [v7 objectForKey:v23];
             v31 = [(NSMutableDictionary *)self->_eventToPatternEventMap objectForKey:v30];
@@ -2176,16 +2176,16 @@ void __79__MOConversationAnnotationManager__buildMappingFromBaseEvents_toPattern
   }
 }
 
-- (void)_buildMappingFromBaseEvents:(id)a3 toContextEvents:(id)a4
+- (void)_buildMappingFromBaseEvents:(id)events toContextEvents:(id)contextEvents
 {
-  v5 = a3;
-  v87 = a4;
+  eventsCopy = events;
+  contextEventsCopy = contextEvents;
   v85 = objc_opt_new();
   v112 = 0u;
   v113 = 0u;
   v114 = 0u;
   v115 = 0u;
-  obj = v5;
+  obj = eventsCopy;
   v6 = [obj countByEnumeratingWithState:&v112 objects:v129 count:16];
   if (v6)
   {
@@ -2202,24 +2202,24 @@ void __79__MOConversationAnnotationManager__buildMappingFromBaseEvents_toPattern
 
         v9 = *(*(&v112 + 1) + 8 * i);
         v10 = objc_opt_new();
-        v11 = [v9 interactions];
-        v12 = [v11 firstObject];
-        v13 = [v12 sender];
-        v14 = [v13 personId];
+        interactions = [v9 interactions];
+        firstObject = [interactions firstObject];
+        sender = [firstObject sender];
+        personId = [sender personId];
 
-        if (v14)
+        if (personId)
         {
-          v15 = [v9 interactions];
-          v16 = [v15 firstObject];
-          v17 = [v16 sender];
-          v18 = [v17 personId];
-          [v10 addObject:v18];
+          interactions2 = [v9 interactions];
+          firstObject2 = [interactions2 firstObject];
+          sender2 = [firstObject2 sender];
+          personId2 = [sender2 personId];
+          [v10 addObject:personId2];
         }
 
-        v19 = [v9 interactions];
-        v20 = [v19 firstObject];
-        v21 = [v20 recipients];
-        v22 = [v21 count];
+        interactions3 = [v9 interactions];
+        firstObject3 = [interactions3 firstObject];
+        recipients = [firstObject3 recipients];
+        v22 = [recipients count];
 
         if (v22)
         {
@@ -2227,11 +2227,11 @@ void __79__MOConversationAnnotationManager__buildMappingFromBaseEvents_toPattern
           v111 = 0u;
           v108 = 0u;
           v109 = 0u;
-          v23 = [v9 interactions];
-          v24 = [v23 firstObject];
-          v25 = [v24 recipients];
+          interactions4 = [v9 interactions];
+          firstObject4 = [interactions4 firstObject];
+          recipients2 = [firstObject4 recipients];
 
-          v26 = [v25 countByEnumeratingWithState:&v108 objects:v128 count:16];
+          v26 = [recipients2 countByEnumeratingWithState:&v108 objects:v128 count:16];
           if (v26)
           {
             v27 = v26;
@@ -2242,20 +2242,20 @@ void __79__MOConversationAnnotationManager__buildMappingFromBaseEvents_toPattern
               {
                 if (*v109 != v28)
                 {
-                  objc_enumerationMutation(v25);
+                  objc_enumerationMutation(recipients2);
                 }
 
                 v30 = *(*(&v108 + 1) + 8 * j);
-                v31 = [v30 personId];
+                personId3 = [v30 personId];
 
-                if (v31)
+                if (personId3)
                 {
-                  v32 = [v30 personId];
-                  [v10 addObject:v32];
+                  personId4 = [v30 personId];
+                  [v10 addObject:personId4];
                 }
               }
 
-              v27 = [v25 countByEnumeratingWithState:&v108 objects:v128 count:16];
+              v27 = [recipients2 countByEnumeratingWithState:&v108 objects:v128 count:16];
             }
 
             while (v27);
@@ -2314,8 +2314,8 @@ void __79__MOConversationAnnotationManager__buildMappingFromBaseEvents_toPattern
   v103 = 0u;
   v100 = 0u;
   v101 = 0u;
-  v77 = v87;
-  v42 = self;
+  v77 = contextEventsCopy;
+  selfCopy4 = self;
   v80 = [v77 countByEnumeratingWithState:&v100 objects:v126 count:16];
   if (v80)
   {
@@ -2335,13 +2335,13 @@ void __79__MOConversationAnnotationManager__buildMappingFromBaseEvents_toPattern
         v45 = objc_opt_new();
         if ([v44 category] == 9)
         {
-          v46 = [v44 itemSenders];
-          v47 = [v46 count];
+          itemSenders = [v44 itemSenders];
+          v47 = [itemSenders count];
 
           if (v47)
           {
-            v48 = [v44 itemSenders];
-            [v45 addObjectsFromArray:v48];
+            itemSenders2 = [v44 itemSenders];
+            [v45 addObjectsFromArray:itemSenders2];
           }
         }
 
@@ -2414,11 +2414,11 @@ void __79__MOConversationAnnotationManager__buildMappingFromBaseEvents_toPattern
                     }
 
                     v58 = *(*(&v92 + 1) + 8 * m);
-                    v59 = [v58 startDate];
-                    v60 = [v59 startOfDay];
-                    v61 = [v44 startDate];
-                    v62 = [v61 startOfDay];
-                    v63 = [v60 isEqualToDate:v62];
+                    startDate = [v58 startDate];
+                    startOfDay = [startDate startOfDay];
+                    startDate2 = [v44 startDate];
+                    startOfDay2 = [startDate2 startOfDay];
+                    v63 = [startOfDay isEqualToDate:startOfDay2];
 
                     if (v63)
                     {
@@ -2436,24 +2436,24 @@ void __79__MOConversationAnnotationManager__buildMappingFromBaseEvents_toPattern
                         _os_log_impl(&_mh_execute_header, v64, OS_LOG_TYPE_INFO, "%s, contactIdentifier, %@, matching base event, %@, context event, %@", buf, 0x2Au);
                       }
 
-                      v65 = self;
+                      selfCopy3 = self;
                       eventToContextEventMap = self->_eventToContextEventMap;
-                      v67 = [v58 eventIdentifier];
-                      v68 = [(NSMutableDictionary *)eventToContextEventMap objectForKey:v67];
+                      eventIdentifier = [v58 eventIdentifier];
+                      v68 = [(NSMutableDictionary *)eventToContextEventMap objectForKey:eventIdentifier];
 
                       if (!v68)
                       {
                         v69 = self->_eventToContextEventMap;
                         v70 = objc_opt_new();
-                        v71 = [v58 eventIdentifier];
-                        [(NSMutableDictionary *)v69 setObject:v70 forKey:v71];
+                        eventIdentifier2 = [v58 eventIdentifier];
+                        [(NSMutableDictionary *)v69 setObject:v70 forKey:eventIdentifier2];
 
-                        v65 = self;
+                        selfCopy3 = self;
                       }
 
-                      v72 = v65->_eventToContextEventMap;
-                      v73 = [v58 eventIdentifier];
-                      v74 = [(NSMutableDictionary *)v72 objectForKey:v73];
+                      v72 = selfCopy3->_eventToContextEventMap;
+                      eventIdentifier3 = [v58 eventIdentifier];
+                      v74 = [(NSMutableDictionary *)v72 objectForKey:eventIdentifier3];
                       [v74 addObject:v44];
                     }
                   }
@@ -2465,7 +2465,7 @@ void __79__MOConversationAnnotationManager__buildMappingFromBaseEvents_toPattern
               }
 
               v51 = v86 + 1;
-              v42 = self;
+              selfCopy4 = self;
             }
 
             while ((v86 + 1) != v84);
@@ -2485,7 +2485,7 @@ void __79__MOConversationAnnotationManager__buildMappingFromBaseEvents_toPattern
     while (v80);
   }
 
-  [(NSMutableDictionary *)v42->_eventToContextEventMap enumerateKeysAndObjectsUsingBlock:&__block_literal_global_293];
+  [(NSMutableDictionary *)selfCopy4->_eventToContextEventMap enumerateKeysAndObjectsUsingBlock:&__block_literal_global_293];
 }
 
 void __79__MOConversationAnnotationManager__buildMappingFromBaseEvents_toContextEvents___block_invoke(id a1, NSUUID *a2, NSSet *a3, BOOL *a4)
@@ -2505,15 +2505,15 @@ void __79__MOConversationAnnotationManager__buildMappingFromBaseEvents_toContext
   }
 }
 
-- (id)_actionForBundle:(id)a3 type:(unint64_t)a4
+- (id)_actionForBundle:(id)bundle type:(unint64_t)type
 {
-  v5 = a3;
+  bundleCopy = bundle;
   v6 = 0;
-  if (a4 > 3)
+  if (type > 3)
   {
-    if (a4 <= 5)
+    if (type <= 5)
     {
-      if (a4 == 4)
+      if (type == 4)
       {
         v6 = @"call";
         goto LABEL_33;
@@ -2524,9 +2524,9 @@ LABEL_11:
       goto LABEL_33;
     }
 
-    if (a4 != 6)
+    if (type != 6)
     {
-      if (a4 != 7)
+      if (type != 7)
       {
         goto LABEL_33;
       }
@@ -2539,7 +2539,7 @@ LABEL_11:
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
-    obj = [v5 events];
+    obj = [bundleCopy events];
     v8 = [obj countByEnumeratingWithState:&v33 objects:v43 count:16];
     if (!v8)
     {
@@ -2558,19 +2558,19 @@ LABEL_15:
       }
 
       v12 = *(*(&v33 + 1) + 8 * v11);
-      v13 = [v12 patterns];
-      v14 = [v13 objectForKeyedSubscript:@"kEventPatternType"];
+      patterns = [v12 patterns];
+      v14 = [patterns objectForKeyedSubscript:@"kEventPatternType"];
       if ([v14 intValue])
       {
       }
 
       else
       {
-        v15 = [v12 patterns];
-        v16 = [v15 objectForKeyedSubscript:@"kEventPatternAnomalyFeatureType"];
-        v17 = [v16 intValue];
+        patterns2 = [v12 patterns];
+        v16 = [patterns2 objectForKeyedSubscript:@"kEventPatternAnomalyFeatureType"];
+        intValue = [v16 intValue];
 
-        if (v17 == 2)
+        if (intValue == 2)
         {
           v18 = v31;
           v19 = &off_10036BE30;
@@ -2580,19 +2580,19 @@ LABEL_26:
         }
       }
 
-      v20 = [v12 patterns];
-      v21 = [v20 objectForKeyedSubscript:@"kEventPatternType"];
+      patterns3 = [v12 patterns];
+      v21 = [patterns3 objectForKeyedSubscript:@"kEventPatternType"];
       if ([v21 intValue])
       {
       }
 
       else
       {
-        v22 = [v12 patterns];
-        v23 = [v22 objectForKeyedSubscript:@"kEventPatternAnomalyFeatureType"];
-        v24 = [v23 intValue];
+        patterns4 = [v12 patterns];
+        v23 = [patterns4 objectForKeyedSubscript:@"kEventPatternAnomalyFeatureType"];
+        intValue2 = [v23 intValue];
 
-        if (v24 == 1)
+        if (intValue2 == 1)
         {
           v18 = v31;
           v19 = &off_10036BE18;
@@ -2626,12 +2626,12 @@ LABEL_29:
     }
   }
 
-  if (a4 - 1 < 3)
+  if (type - 1 < 3)
   {
     v7 = _mo_log_facility_get_os_log(&MOLogFacilityEventBundleManager);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      [MOConversationAnnotationManager _actionForBundle:a4 type:v7];
+      [MOConversationAnnotationManager _actionForBundle:type type:v7];
     }
 
     v6 = 0;
@@ -2644,7 +2644,7 @@ LABEL_33:
     *buf = 136315650;
     v38 = "[MOConversationAnnotationManager _actionForBundle:type:]";
     v39 = 2112;
-    v40 = v5;
+    v40 = bundleCopy;
     v41 = 2112;
     v42 = v6;
     _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_INFO, "%s, bundle, %@, action name, %@", buf, 0x20u);
@@ -2653,10 +2653,10 @@ LABEL_33:
   if (v6)
   {
     v26 = [[MOAction alloc] initWithActionName:v6 actionType:1 actionSubtype:4];
-    v27 = [v5 events];
-    v28 = [v27 firstObject];
-    v29 = [v28 eventIdentifier];
-    [(MOAction *)v26 setSourceEventIdentifier:v29];
+    events = [bundleCopy events];
+    firstObject = [events firstObject];
+    eventIdentifier = [firstObject eventIdentifier];
+    [(MOAction *)v26 setSourceEventIdentifier:eventIdentifier];
   }
 
   else

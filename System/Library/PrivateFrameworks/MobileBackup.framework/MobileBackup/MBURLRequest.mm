@@ -1,6 +1,6 @@
 @interface MBURLRequest
-+ (MBURLRequest)requestWithMethod:(id)a3 URL:(id)a4;
-+ (MBURLRequest)requestWithURL:(id)a3;
++ (MBURLRequest)requestWithMethod:(id)method URL:(id)l;
++ (MBURLRequest)requestWithURL:(id)l;
 + (id)request;
 - (MBURLRequest)init;
 - (NSDictionary)headers;
@@ -17,18 +17,18 @@
   return v2;
 }
 
-+ (MBURLRequest)requestWithURL:(id)a3
++ (MBURLRequest)requestWithURL:(id)l
 {
   v4 = +[MBURLRequest request];
-  [(MBURLRequest *)v4 setURL:a3];
+  [(MBURLRequest *)v4 setURL:l];
   return v4;
 }
 
-+ (MBURLRequest)requestWithMethod:(id)a3 URL:(id)a4
++ (MBURLRequest)requestWithMethod:(id)method URL:(id)l
 {
   v6 = +[MBURLRequest request];
-  [(MBURLRequest *)v6 setMethod:a3];
-  [(MBURLRequest *)v6 setURL:a4];
+  [(MBURLRequest *)v6 setMethod:method];
+  [(MBURLRequest *)v6 setURL:l];
   return v6;
 }
 

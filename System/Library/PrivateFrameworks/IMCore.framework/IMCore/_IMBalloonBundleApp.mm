@@ -2,27 +2,27 @@
 - (Class)browserClass;
 - (Class)bubbleClass;
 - (Class)dataSourceClass;
-- (_IMBalloonBundleApp)initWithPluginBundle:(id)a3 appBundle:(id)a4;
+- (_IMBalloonBundleApp)initWithPluginBundle:(id)bundle appBundle:(id)appBundle;
 - (void)_loadAppBundle;
 - (void)_loadBundle;
 @end
 
 @implementation _IMBalloonBundleApp
 
-- (_IMBalloonBundleApp)initWithPluginBundle:(id)a3 appBundle:(id)a4
+- (_IMBalloonBundleApp)initWithPluginBundle:(id)bundle appBundle:(id)appBundle
 {
-  v6 = a3;
-  v7 = a4;
+  bundleCopy = bundle;
+  appBundleCopy = appBundle;
   v98.receiver = self;
   v98.super_class = _IMBalloonBundleApp;
-  v8 = [(IMBalloonApp *)&v98 initWithPluginBundle:v6 appBundle:v7];
+  v8 = [(IMBalloonApp *)&v98 initWithPluginBundle:bundleCopy appBundle:appBundleCopy];
   v11 = v8;
   if (v8)
   {
     v12 = objc_msgSend_appBundle(v8, v9, v10);
     v15 = objc_msgSend_bundleIdentifier(v12, v13, v14);
 
-    v18 = objc_msgSend_bundleIdentifier(v6, v16, v17);
+    v18 = objc_msgSend_bundleIdentifier(bundleCopy, v16, v17);
     v20 = objc_msgSend_stringByAppendingFormat_(v18, v19, @":%@:%@", @"0000000000", v15);
 
     v97 = v20;
@@ -30,8 +30,8 @@
     objc_msgSend_setCanSendDataPayloads_(v11, v22, 1);
     objc_msgSend_setShowInBrowser_(v11, v23, 1);
     objc_msgSend_setShowInSendMenu_(v11, v24, 1);
-    v27 = objc_msgSend_infoDictionary(v7, v25, v26);
-    v30 = objc_msgSend_localizedInfoDictionary(v7, v28, v29);
+    v27 = objc_msgSend_infoDictionary(appBundleCopy, v25, v26);
+    v30 = objc_msgSend_localizedInfoDictionary(appBundleCopy, v28, v29);
     v32 = objc_msgSend_objectForKeyedSubscript_(v30, v31, @"CFBundleDisplayName");
     if (v32 || (objc_msgSend_objectForKeyedSubscript_(v30, v33, @"CKBrowserDisplayName"), (v32 = objc_claimAutoreleasedReturnValue()) != 0))
     {

@@ -1,42 +1,42 @@
 @interface PKPrecursorPassCredential
-- (PKPrecursorPassCredential)initWithCoder:(id)a3;
-- (PKPrecursorPassCredential)initWithPassTypeIdentifier:(id)a3 passSerialNumber:(id)a4;
-- (PKPrecursorPassCredential)initWithRemoteCredential:(id)a3;
+- (PKPrecursorPassCredential)initWithCoder:(id)coder;
+- (PKPrecursorPassCredential)initWithPassTypeIdentifier:(id)identifier passSerialNumber:(id)number;
+- (PKPrecursorPassCredential)initWithRemoteCredential:(id)credential;
 - (id)activationMethods;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPrecursorPassCredential
 
-- (PKPrecursorPassCredential)initWithRemoteCredential:(id)a3
+- (PKPrecursorPassCredential)initWithRemoteCredential:(id)credential
 {
-  v5 = a3;
-  v6 = [v5 passTypeIdentifier];
-  v7 = [v5 serialNumber];
-  v8 = [(PKPrecursorPassCredential *)self initWithPassTypeIdentifier:v6 passSerialNumber:v7];
+  credentialCopy = credential;
+  passTypeIdentifier = [credentialCopy passTypeIdentifier];
+  serialNumber = [credentialCopy serialNumber];
+  v8 = [(PKPrecursorPassCredential *)self initWithPassTypeIdentifier:passTypeIdentifier passSerialNumber:serialNumber];
 
   if (v8)
   {
-    objc_storeStrong(&v8->_remoteCredential, a3);
+    objc_storeStrong(&v8->_remoteCredential, credential);
   }
 
   return v8;
 }
 
-- (PKPrecursorPassCredential)initWithPassTypeIdentifier:(id)a3 passSerialNumber:(id)a4
+- (PKPrecursorPassCredential)initWithPassTypeIdentifier:(id)identifier passSerialNumber:(id)number
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  numberCopy = number;
   v12.receiver = self;
   v12.super_class = PKPrecursorPassCredential;
   v9 = [(PKPaymentCredential *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_passTypeIdentifier, a3);
-    objc_storeStrong(&v10->_serialNumber, a4);
+    objc_storeStrong(&v9->_passTypeIdentifier, identifier);
+    objc_storeStrong(&v10->_serialNumber, number);
   }
 
   return v10;
@@ -58,13 +58,13 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_passTypeIdentifier];
-  [v3 safelyAddObject:self->_serialNumber];
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_passTypeIdentifier];
+  [array safelyAddObject:self->_serialNumber];
   v7.receiver = self;
   v7.super_class = PKPrecursorPassCredential;
   v4 = [(PKPaymentCredential *)&v7 hash];
-  v5 = PKCombinedHash(v4, v3);
+  v5 = PKCombinedHash(v4, array);
 
   return v5;
 }
@@ -79,23 +79,23 @@
   return v6;
 }
 
-- (PKPrecursorPassCredential)initWithCoder:(id)a3
+- (PKPrecursorPassCredential)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = PKPrecursorPassCredential;
   v5 = [(PKPaymentCredential *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pasTypeIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pasTypeIdentifier"];
     passTypeIdentifier = v5->_passTypeIdentifier;
     v5->_passTypeIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"serialNumber"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"serialNumber"];
     serialNumber = v5->_serialNumber;
     v5->_serialNumber = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"remoteCredential"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"remoteCredential"];
     remoteCredential = v5->_remoteCredential;
     v5->_remoteCredential = v10;
   }
@@ -103,13 +103,13 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   passTypeIdentifier = self->_passTypeIdentifier;
-  v5 = a3;
-  [v5 encodeObject:passTypeIdentifier forKey:@"pasTypeIdentifier"];
-  [v5 encodeObject:self->_serialNumber forKey:@"serialNumber"];
-  [v5 encodeObject:self->_remoteCredential forKey:@"remoteCredential"];
+  coderCopy = coder;
+  [coderCopy encodeObject:passTypeIdentifier forKey:@"pasTypeIdentifier"];
+  [coderCopy encodeObject:self->_serialNumber forKey:@"serialNumber"];
+  [coderCopy encodeObject:self->_remoteCredential forKey:@"remoteCredential"];
 }
 
 @end

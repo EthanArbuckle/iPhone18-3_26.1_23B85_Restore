@@ -1,33 +1,33 @@
 @interface TUIProgressView
-+ (id)renderModelWithIdentifier:(id)a3 progressId:(id)a4 mode:(id)a5 value:(double)a6 dynamicProgress:(id)a7 paused:(BOOL)a8 color:(id)a9;
-- (double)_computeCurrentValue:(id)a3;
-- (void)_configureWithModel:(id)a3;
++ (id)renderModelWithIdentifier:(id)identifier progressId:(id)id mode:(id)mode value:(double)value dynamicProgress:(id)progress paused:(BOOL)paused color:(id)color;
+- (double)_computeCurrentValue:(id)value;
+- (void)_configureWithModel:(id)model;
 - (void)_setupDeterminateBackgroundLayers;
 - (void)_setupProgressLayer;
 - (void)_teardownDeterminateBackgroundLayers;
-- (void)_updateLayerGeometry:(id)a3;
-- (void)applyLayoutAttributes:(id)a3;
+- (void)_updateLayerGeometry:(id)geometry;
+- (void)applyLayoutAttributes:(id)attributes;
 - (void)dealloc;
-- (void)dynamicProgressChanged:(id)a3;
+- (void)dynamicProgressChanged:(id)changed;
 @end
 
 @implementation TUIProgressView
 
-+ (id)renderModelWithIdentifier:(id)a3 progressId:(id)a4 mode:(id)a5 value:(double)a6 dynamicProgress:(id)a7 paused:(BOOL)a8 color:(id)a9
++ (id)renderModelWithIdentifier:(id)identifier progressId:(id)id mode:(id)mode value:(double)value dynamicProgress:(id)progress paused:(BOOL)paused color:(id)color
 {
-  v10 = a8;
-  v14 = a5;
-  v15 = a9;
-  v16 = a7;
-  v17 = a3;
+  pausedCopy = paused;
+  modeCopy = mode;
+  colorCopy = color;
+  progressCopy = progress;
+  identifierCopy = identifier;
   v18 = objc_alloc_init(_TUIProgressRenderModel);
-  v19 = [v14 lowercaseString];
-  v20 = [v19 caseInsensitiveCompare:@"determinate"];
+  lowercaseString = [modeCopy lowercaseString];
+  v20 = [lowercaseString caseInsensitiveCompare:@"determinate"];
 
   if (v20)
   {
-    v21 = [v14 lowercaseString];
-    v22 = [v21 caseInsensitiveCompare:@"determinate-small"];
+    lowercaseString2 = [modeCopy lowercaseString];
+    v22 = [lowercaseString2 caseInsensitiveCompare:@"determinate-small"];
 
     if (v22)
     {
@@ -46,53 +46,53 @@
   }
 
   [(_TUIProgressRenderModel *)v18 setMode:v23];
-  [(_TUIProgressRenderModel *)v18 setValue:a6];
-  [(_TUIProgressRenderModel *)v18 setDynamicProgress:v16];
+  [(_TUIProgressRenderModel *)v18 setValue:value];
+  [(_TUIProgressRenderModel *)v18 setDynamicProgress:progressCopy];
 
-  [(_TUIProgressRenderModel *)v18 setPaused:v10];
-  [(_TUIProgressRenderModel *)v18 setColor:v15];
+  [(_TUIProgressRenderModel *)v18 setPaused:pausedCopy];
+  [(_TUIProgressRenderModel *)v18 setColor:colorCopy];
 
-  v24 = [[TUIRenderModelView alloc] initWithReuseIdentifier:@"TUIReuseIdentifierProgressView" identifier:v17 submodel:v18];
+  v24 = [[TUIRenderModelView alloc] initWithReuseIdentifier:@"TUIReuseIdentifierProgressView" identifier:identifierCopy submodel:v18];
 
   return v24;
 }
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
   v7.receiver = self;
   v7.super_class = TUIProgressView;
-  v4 = a3;
-  [(TUIReusableBaseView *)&v7 applyLayoutAttributes:v4];
-  v5 = [v4 renderModel];
+  attributesCopy = attributes;
+  [(TUIReusableBaseView *)&v7 applyLayoutAttributes:attributesCopy];
+  renderModel = [attributesCopy renderModel];
 
-  v6 = [v5 submodel];
-  [(TUIProgressView *)self _configureWithModel:v6];
+  submodel = [renderModel submodel];
+  [(TUIProgressView *)self _configureWithModel:submodel];
 }
 
-- (void)_configureWithModel:(id)a3
+- (void)_configureWithModel:(id)model
 {
-  v12 = a3;
-  v5 = [(TUIProgressView *)self dynamicProgress];
-  [v5 unregisterProgressObserver:self];
+  modelCopy = model;
+  dynamicProgress = [(TUIProgressView *)self dynamicProgress];
+  [dynamicProgress unregisterProgressObserver:self];
 
-  objc_storeStrong(&self->_renderModel, a3);
+  objc_storeStrong(&self->_renderModel, model);
   self->_mode = [(_TUIProgressRenderModel *)self->_renderModel mode];
   [(_TUIProgressRenderModel *)self->_renderModel value];
   self->_value = v6;
-  v7 = [(_TUIProgressRenderModel *)self->_renderModel dynamicProgress];
+  dynamicProgress2 = [(_TUIProgressRenderModel *)self->_renderModel dynamicProgress];
   dynamicProgress = self->_dynamicProgress;
-  self->_dynamicProgress = v7;
+  self->_dynamicProgress = dynamicProgress2;
 
   self->_paused = [(_TUIProgressRenderModel *)self->_renderModel paused];
-  v9 = [(_TUIProgressRenderModel *)self->_renderModel color];
-  v10 = v9;
-  if (!v9)
+  color = [(_TUIProgressRenderModel *)self->_renderModel color];
+  v10 = color;
+  if (!color)
   {
     v10 = +[UIColor redColor];
   }
 
   objc_storeStrong(&self->_color, v10);
-  if (!v9)
+  if (!color)
   {
   }
 
@@ -107,26 +107,26 @@
   }
 
   [(TUIProgressView *)self _setupProgressLayer];
-  v11 = [(TUIProgressView *)self dynamicProgress];
-  [v11 registerProgressObserver:self];
+  dynamicProgress3 = [(TUIProgressView *)self dynamicProgress];
+  [dynamicProgress3 registerProgressObserver:self];
 }
 
-- (void)_updateLayerGeometry:(id)a3
+- (void)_updateLayerGeometry:(id)geometry
 {
-  v16 = a3;
+  geometryCopy = geometry;
   [(TUIProgressView *)self bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  [v16 bounds];
+  [geometryCopy bounds];
   v21.origin.x = v5;
   v21.origin.y = v7;
   v21.size.width = v9;
   v21.size.height = v11;
   if (!CGRectEqualToRect(v18, v21))
   {
-    [v16 setBounds:{v5, v7, v9, v11}];
+    [geometryCopy setBounds:{v5, v7, v9, v11}];
   }
 
   v19.origin.x = v5;
@@ -139,10 +139,10 @@
   v20.size.width = v9;
   v20.size.height = v11;
   MidY = CGRectGetMidY(v20);
-  [v16 position];
+  [geometryCopy position];
   if (v15 != MidX || v14 != MidY)
   {
-    [v16 setPosition:{MidX, MidY}];
+    [geometryCopy setPosition:{MidX, MidY}];
   }
 }
 
@@ -157,8 +157,8 @@
     v7 = self->_determinateOuterCircleLayer;
     self->_determinateOuterCircleLayer = v6;
 
-    v8 = [(TUIProgressView *)self layer];
-    [v8 addSublayer:self->_determinateOuterCircleLayer];
+    layer = [(TUIProgressView *)self layer];
+    [layer addSublayer:self->_determinateOuterCircleLayer];
 
     determinateOuterCircleLayer = self->_determinateOuterCircleLayer;
   }
@@ -186,8 +186,8 @@
       v12 = self->_determinateIconLayer;
       self->_determinateIconLayer = v11;
 
-      v13 = [(TUIProgressView *)self layer];
-      [v13 addSublayer:self->_determinateIconLayer];
+      layer2 = [(TUIProgressView *)self layer];
+      [layer2 addSublayer:self->_determinateIconLayer];
 
       determinateIconLayer = self->_determinateIconLayer;
     }
@@ -243,14 +243,14 @@
   self->_determinateIconLayer = 0;
 }
 
-- (double)_computeCurrentValue:(id)a3
+- (double)_computeCurrentValue:(id)value
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && ([v4 progress], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
+  valueCopy = value;
+  v5 = valueCopy;
+  if (valueCopy && ([valueCopy progress], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
   {
-    v7 = [v5 progress];
-    [v7 floatValue];
+    progress = [v5 progress];
+    [progress floatValue];
     value = v8;
   }
 
@@ -271,8 +271,8 @@
     v5 = self->_progressLayer;
     self->_progressLayer = v4;
 
-    v6 = [(TUIProgressView *)self layer];
-    [v6 addSublayer:self->_progressLayer];
+    layer = [(TUIProgressView *)self layer];
+    [layer addSublayer:self->_progressLayer];
 
     progressLayer = self->_progressLayer;
   }
@@ -297,12 +297,12 @@
   }
 }
 
-- (void)dynamicProgressChanged:(id)a3
+- (void)dynamicProgressChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   if (+[NSThread isMainThread])
   {
-    [(TUIProgressView *)self _computeCurrentValue:v4];
+    [(TUIProgressView *)self _computeCurrentValue:changedCopy];
     [(TUIRadialProgressLayer *)self->_progressLayer setValue:?];
   }
 
@@ -313,15 +313,15 @@
     v5[2] = sub_5126C;
     v5[3] = &unk_25DCA0;
     v5[4] = self;
-    v6 = v4;
+    v6 = changedCopy;
     dispatch_async(&_dispatch_main_q, v5);
   }
 }
 
 - (void)dealloc
 {
-  v3 = [(TUIProgressView *)self dynamicProgress];
-  [v3 unregisterProgressObserver:self];
+  dynamicProgress = [(TUIProgressView *)self dynamicProgress];
+  [dynamicProgress unregisterProgressObserver:self];
 
   v4.receiver = self;
   v4.super_class = TUIProgressView;

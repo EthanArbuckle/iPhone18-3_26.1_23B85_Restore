@@ -1,6 +1,6 @@
 @interface JavaMethodMetadata
 - (BOOL)isConstructor;
-- (JavaMethodMetadata)initWithMetadata:(const J2ObjcMethodInfo *)a3;
+- (JavaMethodMetadata)initWithMetadata:(const J2ObjcMethodInfo *)metadata;
 - (id)exceptionTypes;
 - (id)genericSignature;
 - (id)javaName;
@@ -9,14 +9,14 @@
 
 @implementation JavaMethodMetadata
 
-- (JavaMethodMetadata)initWithMetadata:(const J2ObjcMethodInfo *)a3
+- (JavaMethodMetadata)initWithMetadata:(const J2ObjcMethodInfo *)metadata
 {
   v5.receiver = self;
   v5.super_class = JavaMethodMetadata;
   result = [(JavaMethodMetadata *)&v5 init];
   if (result)
   {
-    result->data_ = a3;
+    result->data_ = metadata;
   }
 
   return result;

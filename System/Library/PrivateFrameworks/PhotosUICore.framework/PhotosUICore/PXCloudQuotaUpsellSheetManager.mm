@@ -1,13 +1,13 @@
 @interface PXCloudQuotaUpsellSheetManager
-+ (void)presentUpsellSheetIfNecessaryWithActivationOptions:(int64_t)a3;
++ (void)presentUpsellSheetIfNecessaryWithActivationOptions:(int64_t)options;
 @end
 
 @implementation PXCloudQuotaUpsellSheetManager
 
-+ (void)presentUpsellSheetIfNecessaryWithActivationOptions:(int64_t)a3
++ (void)presentUpsellSheetIfNecessaryWithActivationOptions:(int64_t)options
 {
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v5 = [v4 BOOLForKey:@"PXCloudQuotaUpsellSheetManagerDisabled"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v5 = [standardUserDefaults BOOLForKey:@"PXCloudQuotaUpsellSheetManagerDisabled"];
 
   v6 = PLUserStatusGetLog();
   v7 = v6;
@@ -39,13 +39,13 @@
     [v11 timeIntervalSinceReferenceDate];
     if (v13 - v14 < 86400.0)
     {
-      v15 = PLUserStatusGetLog();
-      if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+      sharedOfferManager = PLUserStatusGetLog();
+      if (os_log_type_enabled(sharedOfferManager, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 0;
         v16 = "Will not request iCloud Quota upsell: Welcome views presented too recently";
 LABEL_14:
-        _os_log_impl(&dword_1A3C1C000, v15, OS_LOG_TYPE_DEFAULT, v16, buf, 2u);
+        _os_log_impl(&dword_1A3C1C000, sharedOfferManager, OS_LOG_TYPE_DEFAULT, v16, buf, 2u);
         goto LABEL_31;
       }
 
@@ -53,10 +53,10 @@ LABEL_14:
     }
   }
 
-  if (a3 == 2)
+  if (options == 2)
   {
-    v15 = PLUserStatusGetLog();
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+    sharedOfferManager = PLUserStatusGetLog();
+    if (os_log_type_enabled(sharedOfferManager, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
       v16 = "Will not request iCloud Quota upsell: Photos launched with some connection options";
@@ -87,7 +87,7 @@ LABEL_32:
 
   v18 = v17;
   _Block_object_dispose(&v39, 8);
-  v15 = [v17 sharedOfferManager];
+  sharedOfferManager = [v17 sharedOfferManager];
   v19 = objc_opt_respondsToSelector();
   v20 = PLUserStatusGetLog();
   v21 = v20;
@@ -139,7 +139,7 @@ LABEL_32:
     v33[2] = __85__PXCloudQuotaUpsellSheetManager_presentUpsellSheetIfNecessaryWithActivationOptions___block_invoke;
     v33[3] = &__block_descriptor_40_e8_B12__0B8l;
     v33[4] = v23;
-    [v15 fetchAndPresentUpsellForBundleIdentifier:v27 event:v28 completion:v33];
+    [sharedOfferManager fetchAndPresentUpsellForBundleIdentifier:v27 event:v28 completion:v33];
 LABEL_27:
     v29 = v10;
     v30 = v29;
@@ -152,9 +152,9 @@ LABEL_27:
     goto LABEL_31;
   }
 
-  v31 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v32 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getICQUIUpsellTriggerEventAppLaunch(void)"];
-  [v31 handleFailureInFunction:v32 file:@"PXCloudQuotaUpsellSheetManager.m" lineNumber:20 description:{@"%s", dlerror()}];
+  [currentHandler handleFailureInFunction:v32 file:@"PXCloudQuotaUpsellSheetManager.m" lineNumber:20 description:{@"%s", dlerror()}];
 
   __break(1u);
 }

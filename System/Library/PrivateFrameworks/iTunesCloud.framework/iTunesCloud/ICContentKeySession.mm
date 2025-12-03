@@ -1,32 +1,32 @@
 @interface ICContentKeySession
 + (NSString)enhancedAudioSharedContentKeyPath;
 + (NSString)pendingInvalidationKeyStorePath;
-+ (id)copyKeysToPendingInvalidationStoreFromPath:(id)a3;
-- (BOOL)_isPrefetchKey:(id)a3;
-- (BOOL)_shouldRequestPersistentKeyForKeyRequest:(id)a3;
++ (id)copyKeysToPendingInvalidationStoreFromPath:(id)path;
+- (BOOL)_isPrefetchKey:(id)key;
+- (BOOL)_shouldRequestPersistentKeyForKeyRequest:(id)request;
 - (ICContentKeySession)init;
-- (ICContentKeySession)initWithRequestContext:(id)a3 keyStore:(id)a4 delegate:(id)a5;
-- (void)_finishProcessingKeyWithIdentifier:(id)a3;
-- (void)_invalidateKeyWithIdentifier:(id)a3 forAdamID:(id)a4 offline:(BOOL)a5 usingAccountDSID:(id)a6 keyData:(id)a7 withCompletion:(id)a8;
-- (void)_performKeyDeliveryRequestForContentKeyRequest:(id)a3 persistResponse:(BOOL)a4 isRenewal:(BOOL)a5;
-- (void)_processKeyWithIdentifier:(id)a3;
+- (ICContentKeySession)initWithRequestContext:(id)context keyStore:(id)store delegate:(id)delegate;
+- (void)_finishProcessingKeyWithIdentifier:(id)identifier;
+- (void)_invalidateKeyWithIdentifier:(id)identifier forAdamID:(id)d offline:(BOOL)offline usingAccountDSID:(id)iD keyData:(id)data withCompletion:(id)completion;
+- (void)_performKeyDeliveryRequestForContentKeyRequest:(id)request persistResponse:(BOOL)response isRenewal:(BOOL)renewal;
+- (void)_processKeyWithIdentifier:(id)identifier;
 - (void)_renewExpiredKeys;
 - (void)_scheduleKeyRefreshTimer;
-- (void)addAsset:(id)a3 shouldPreloadKeys:(BOOL)a4 waitForKeyIdentifiers:(BOOL)a5;
-- (void)contentKeySession:(id)a3 contentKeyRequest:(id)a4 didFailWithError:(id)a5;
-- (void)contentKeySession:(id)a3 contentKeyRequestDidSucceed:(id)a4;
-- (void)contentKeySession:(id)a3 didProvideContentKeyRequest:(id)a4;
-- (void)contentKeySession:(id)a3 didProvidePersistableContentKeyRequest:(id)a4;
-- (void)contentKeySession:(id)a3 didProvideRenewingContentKeyRequest:(id)a4;
+- (void)addAsset:(id)asset shouldPreloadKeys:(BOOL)keys waitForKeyIdentifiers:(BOOL)identifiers;
+- (void)contentKeySession:(id)session contentKeyRequest:(id)request didFailWithError:(id)error;
+- (void)contentKeySession:(id)session contentKeyRequestDidSucceed:(id)succeed;
+- (void)contentKeySession:(id)session didProvideContentKeyRequest:(id)request;
+- (void)contentKeySession:(id)session didProvidePersistableContentKeyRequest:(id)request;
+- (void)contentKeySession:(id)session didProvideRenewingContentKeyRequest:(id)request;
 - (void)dealloc;
-- (void)invalidateKeyWithIdentifier:(id)a3 withCompletion:(id)a4;
+- (void)invalidateKeyWithIdentifier:(id)identifier withCompletion:(id)completion;
 - (void)pauseAutomaticKeyRenewal;
-- (void)processKeyWithIdentifier:(id)a3;
+- (void)processKeyWithIdentifier:(id)identifier;
 - (void)renewAllKeys;
 - (void)resumeAutomaticKeyRenewal;
-- (void)stopSessionInvalidatingKeys:(BOOL)a3 withCompletion:(id)a4;
-- (void)waitForAllKeysToProcessWithTimeout:(double)a3;
-- (void)waitForKeyRenewalsWithCompletionHandler:(id)a3;
+- (void)stopSessionInvalidatingKeys:(BOOL)keys withCompletion:(id)completion;
+- (void)waitForAllKeysToProcessWithTimeout:(double)timeout;
+- (void)waitForKeyRenewalsWithCompletionHandler:(id)handler;
 @end
 
 @implementation ICContentKeySession
@@ -95,10 +95,10 @@
   return v3;
 }
 
-- (BOOL)_shouldRequestPersistentKeyForKeyRequest:(id)a3
+- (BOOL)_shouldRequestPersistentKeyForKeyRequest:(id)request
 {
-  v4 = [a3 identifier];
-  v5 = [(ICContentKeySession *)self _isPrefetchKey:v4];
+  identifier = [request identifier];
+  v5 = [(ICContentKeySession *)self _isPrefetchKey:identifier];
   if ([(ICContentKeySession *)self allowFallbackToStreamingKeys])
   {
     v6 = +[ICDefaults standardDefaults];
@@ -129,53 +129,53 @@
   return v9 & 1;
 }
 
-- (void)_invalidateKeyWithIdentifier:(id)a3 forAdamID:(id)a4 offline:(BOOL)a5 usingAccountDSID:(id)a6 keyData:(id)a7 withCompletion:(id)a8
+- (void)_invalidateKeyWithIdentifier:(id)identifier forAdamID:(id)d offline:(BOOL)offline usingAccountDSID:(id)iD keyData:(id)data withCompletion:(id)completion
 {
-  v11 = a5;
+  offlineCopy = offline;
   v49 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  identifierCopy = identifier;
+  dCopy = d;
+  iDCopy = iD;
+  dataCopy = data;
+  completionCopy = completion;
   v19 = os_log_create("com.apple.amp.iTunesCloud", "Default");
   v20 = v19;
-  if (v17)
+  if (dataCopy)
   {
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
-      v21 = ICCreateLoggableValueForDSID(v16);
+      v21 = ICCreateLoggableValueForDSID(iDCopy);
       *buf = 138544130;
-      v42 = self;
+      selfCopy2 = self;
       v43 = 2114;
-      v44 = v14;
+      v44 = identifierCopy;
       v45 = 1024;
-      v46 = v11;
+      v46 = offlineCopy;
       v47 = 2114;
       v48 = v21;
       _os_log_impl(&dword_1B4491000, v20, OS_LOG_TYPE_DEFAULT, "%{public}@ [SKD] - invalidating key with identifier '%{public}@'. offline=%{BOOL}u, accountDSID=%{public}@", buf, 0x26u);
     }
 
-    [(NSMutableDictionary *)self->_keyRenewalDates removeObjectForKey:v14];
-    adamID = v15;
-    if (!v15)
+    [(NSMutableDictionary *)self->_keyRenewalDates removeObjectForKey:identifierCopy];
+    adamID = dCopy;
+    if (!dCopy)
     {
       adamID = self->_adamID;
     }
 
     v23 = adamID;
-    if (v11)
+    if (offlineCopy)
     {
-      v24 = [[ICContentKeyNonceRequest alloc] initWithStoreRequestContext:self->_requestContext adamID:v23 accountDSID:v16 keyServerURL:self->_offlineLeaseStopNonceURL];
+      v24 = [[ICContentKeyNonceRequest alloc] initWithStoreRequestContext:self->_requestContext adamID:v23 accountDSID:iDCopy keyServerURL:self->_offlineLeaseStopNonceURL];
       v32[0] = MEMORY[0x1E69E9820];
       v32[1] = 3221225472;
       v32[2] = __110__ICContentKeySession__invalidateKeyWithIdentifier_forAdamID_offline_usingAccountDSID_keyData_withCompletion___block_invoke_113;
       v32[3] = &unk_1E7BF7D78;
       v32[4] = self;
-      v33 = v14;
-      v37 = v18;
-      v34 = v17;
-      v35 = v16;
+      v33 = identifierCopy;
+      v37 = completionCopy;
+      v34 = dataCopy;
+      v35 = iDCopy;
       v36 = v23;
       [(ICContentKeyNonceRequest *)v24 performWithResponseHandler:v32];
     }
@@ -185,29 +185,29 @@
       streamingleaseStopURL = self->_streamingleaseStopURL;
       if (streamingleaseStopURL || (streamingleaseStopURL = self->_keyServerURL) != 0)
       {
-        v27 = streamingleaseStopURL;
+        keyServerURL = streamingleaseStopURL;
       }
 
       else
       {
-        v27 = [(ICContentKeySessionPrefetchKeyConfiguration *)self->_prefetchKeyConfiguration keyServerURL];
+        keyServerURL = [(ICContentKeySessionPrefetchKeyConfiguration *)self->_prefetchKeyConfiguration keyServerURL];
       }
 
-      v24 = v27;
+      v24 = keyServerURL;
       keyCertificateURL = self->_keyCertificateURL;
       if (keyCertificateURL)
       {
-        v29 = keyCertificateURL;
+        keyCertificateURL = keyCertificateURL;
       }
 
       else
       {
-        v29 = [(ICContentKeySessionPrefetchKeyConfiguration *)self->_prefetchKeyConfiguration keyCertificateURL];
+        keyCertificateURL = [(ICContentKeySessionPrefetchKeyConfiguration *)self->_prefetchKeyConfiguration keyCertificateURL];
       }
 
-      v30 = v29;
-      v31 = [[ICSecureKeyDeliveryRequest alloc] initWithRequestContext:self->_requestContext serverPlaybackContextData:v17];
-      [(ICSecureKeyDeliveryRequest *)v31 setContentURI:v14];
+      v30 = keyCertificateURL;
+      v31 = [[ICSecureKeyDeliveryRequest alloc] initWithRequestContext:self->_requestContext serverPlaybackContextData:dataCopy];
+      [(ICSecureKeyDeliveryRequest *)v31 setContentURI:identifierCopy];
       [(ICSecureKeyDeliveryRequest *)v31 setShouldIncludeDeviceGUID:1];
       [(ICSecureKeyDeliveryRequest *)v31 setCertificateURL:v30];
       [(ICSecureKeyDeliveryRequest *)v31 setKeyServerURL:v24];
@@ -221,8 +221,8 @@
       v38[2] = __110__ICContentKeySession__invalidateKeyWithIdentifier_forAdamID_offline_usingAccountDSID_keyData_withCompletion___block_invoke;
       v38[3] = &unk_1E7BF7D28;
       v38[4] = self;
-      v39 = v14;
-      v40 = v18;
+      v39 = identifierCopy;
+      v40 = completionCopy;
       [(ICSecureKeyDeliveryRequest *)v31 performWithResponseHandler:v38];
     }
 
@@ -231,22 +231,22 @@
 
   if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
   {
-    v25 = ICCreateLoggableValueForDSID(v16);
+    v25 = ICCreateLoggableValueForDSID(iDCopy);
     *buf = 138544130;
-    v42 = self;
+    selfCopy2 = self;
     v43 = 2114;
-    v44 = v14;
+    v44 = identifierCopy;
     v45 = 1024;
-    v46 = v11;
+    v46 = offlineCopy;
     v47 = 2114;
     v48 = v25;
     _os_log_impl(&dword_1B4491000, v20, OS_LOG_TYPE_ERROR, "%{public}@ [SKD] - not invalidating key with identifier '%{public}@'. offline=%{BOOL}u, accountDSID=%{public}@ as keyData is nil", buf, 0x26u);
   }
 
-  if (v18)
+  if (completionCopy)
   {
     v23 = [MEMORY[0x1E696ABC0] errorWithDomain:@"ICError" code:-7101 userInfo:0];
-    (*(v18 + 2))(v18, v23);
+    (*(completionCopy + 2))(completionCopy, v23);
 LABEL_20:
   }
 }
@@ -511,13 +511,13 @@ LABEL_7:
   (*(a1[6] + 16))();
 }
 
-- (void)_finishProcessingKeyWithIdentifier:(id)a3
+- (void)_finishProcessingKeyWithIdentifier:(id)identifier
 {
   v11 = *MEMORY[0x1E69E9840];
   pendingKeyIdentifiers = self->_pendingKeyIdentifiers;
-  v5 = a3;
-  [(NSMutableSet *)pendingKeyIdentifiers removeObject:v5];
-  [(NSMutableSet *)self->_pendingRenewalKeyIdentifiers removeObject:v5];
+  identifierCopy = identifier;
+  [(NSMutableSet *)pendingKeyIdentifiers removeObject:identifierCopy];
+  [(NSMutableSet *)self->_pendingRenewalKeyIdentifiers removeObject:identifierCopy];
 
   dispatch_semaphore_signal(self->_waitForKeysSemaphore);
   if (![(NSMutableSet *)self->_pendingRenewalKeyIdentifiers count]&& [(NSMutableArray *)self->_renewalCompletionBlocks count])
@@ -530,7 +530,7 @@ LABEL_7:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138543362;
-      v10 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1B4491000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ [SKD] - Finished waiting for key renewals to complete", &v9, 0xCu);
     }
 
@@ -538,22 +538,22 @@ LABEL_7:
   }
 }
 
-- (void)_processKeyWithIdentifier:(id)a3
+- (void)_processKeyWithIdentifier:(id)identifier
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = os_log_create("com.apple.amp.iTunesCloud", "Default");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138543618;
-    v7 = self;
+    selfCopy = self;
     v8 = 2114;
-    v9 = v4;
+    v9 = identifierCopy;
     _os_log_impl(&dword_1B4491000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ [SKD] - Requesting key with identifier %{public}@", &v6, 0x16u);
   }
 
-  [(NSMutableSet *)self->_pendingKeyIdentifiers addObject:v4];
-  [(AVContentKeySession *)self->_contentKeySession processContentKeyRequestWithIdentifier:v4 initializationData:0 options:0];
+  [(NSMutableSet *)self->_pendingKeyIdentifiers addObject:identifierCopy];
+  [(AVContentKeySession *)self->_contentKeySession processContentKeyRequestWithIdentifier:identifierCopy initializationData:0 options:0];
 }
 
 - (void)_renewExpiredKeys
@@ -566,7 +566,7 @@ LABEL_7:
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v18 = self;
+    selfCopy = self;
     v19 = 2114;
     v20 = v4;
     _os_log_impl(&dword_1B4491000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ [SKD] - Renewing key requests due to expire before %{public}@", buf, 0x16u);
@@ -727,7 +727,7 @@ void __40__ICContentKeySession__renewExpiredKeys__block_invoke_2(uint64_t a1, vo
         {
           v12 = *(*&buf[8] + 40);
           *v19 = 138543618;
-          v20 = self;
+          selfCopy = self;
           v21 = 2114;
           v22 = v12;
           _os_log_impl(&dword_1B4491000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@ [SKD] - Scheduling next key refresh at %{public}@", v19, 0x16u);
@@ -780,12 +780,12 @@ void __47__ICContentKeySession__scheduleKeyRefreshTimer__block_invoke_106(uint64
 LABEL_5:
 }
 
-- (void)_performKeyDeliveryRequestForContentKeyRequest:(id)a3 persistResponse:(BOOL)a4 isRenewal:(BOOL)a5
+- (void)_performKeyDeliveryRequestForContentKeyRequest:(id)request persistResponse:(BOOL)response isRenewal:(BOOL)renewal
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = [v8 identifier];
-  v10 = [(ICContentKeySession *)self _isPrefetchKey:v9];
+  responseCopy = response;
+  requestCopy = request;
+  identifier = [requestCopy identifier];
+  v10 = [(ICContentKeySession *)self _isPrefetchKey:identifier];
   v11 = v10;
   v12 = 48;
   if (v10)
@@ -794,35 +794,35 @@ LABEL_5:
   }
 
   v13 = *(&self->super.isa + v12);
-  if (v6 && (offlineLeaseStartURL = self->_offlineLeaseStartURL) != 0 || (offlineLeaseStartURL = self->_keyServerURL) != 0)
+  if (responseCopy && (offlineLeaseStartURL = self->_offlineLeaseStartURL) != 0 || (offlineLeaseStartURL = self->_keyServerURL) != 0)
   {
-    v15 = offlineLeaseStartURL;
+    keyServerURL = offlineLeaseStartURL;
   }
 
   else
   {
-    v15 = [(ICContentKeySessionPrefetchKeyConfiguration *)self->_prefetchKeyConfiguration keyServerURL];
+    keyServerURL = [(ICContentKeySessionPrefetchKeyConfiguration *)self->_prefetchKeyConfiguration keyServerURL];
   }
 
-  v16 = v15;
+  v16 = keyServerURL;
   keyCertificateURL = self->_keyCertificateURL;
   if (keyCertificateURL)
   {
-    v18 = keyCertificateURL;
+    keyCertificateURL = keyCertificateURL;
   }
 
   else
   {
-    v18 = [(ICContentKeySessionPrefetchKeyConfiguration *)self->_prefetchKeyConfiguration keyCertificateURL];
+    keyCertificateURL = [(ICContentKeySessionPrefetchKeyConfiguration *)self->_prefetchKeyConfiguration keyCertificateURL];
   }
 
-  v19 = v18;
-  v20 = [[ICSecureKeyDeliveryRequest alloc] initWithRequestContext:self->_requestContext contentKeyRequest:v8];
+  v19 = keyCertificateURL;
+  v20 = [[ICSecureKeyDeliveryRequest alloc] initWithRequestContext:self->_requestContext contentKeyRequest:requestCopy];
   [(ICSecureKeyDeliveryRequest *)v20 setShouldIncludeDeviceGUID:1];
   [(ICSecureKeyDeliveryRequest *)v20 setCertificateURL:v19];
   [(ICSecureKeyDeliveryRequest *)v20 setKeyServerURL:v16];
   [(ICSecureKeyDeliveryRequest *)v20 setITunesStoreRequest:[(ICContentKeySession *)self isStoreKeyServer]];
-  [(ICSecureKeyDeliveryRequest *)v20 setIsOfflineDownload:v6];
+  [(ICSecureKeyDeliveryRequest *)v20 setIsOfflineDownload:responseCopy];
   if (v11)
   {
     adamID = &unk_1F2C922A8;
@@ -841,15 +841,15 @@ LABEL_5:
   v25[2] = __96__ICContentKeySession__performKeyDeliveryRequestForContentKeyRequest_persistResponse_isRenewal___block_invoke;
   v25[3] = &unk_1E7BF7C90;
   v25[4] = self;
-  v26 = v8;
-  v29 = v6;
-  v27 = v9;
+  v26 = requestCopy;
+  v29 = responseCopy;
+  v27 = identifier;
   v28 = v13;
-  v30 = a5;
+  renewalCopy = renewal;
   v31 = v11;
   v22 = v13;
-  v23 = v9;
-  v24 = v8;
+  v23 = identifier;
+  v24 = requestCopy;
   [(ICSecureKeyDeliveryRequest *)v20 performWithResponseHandler:v25];
 }
 
@@ -1318,83 +1318,83 @@ LABEL_76:
   }
 }
 
-- (BOOL)_isPrefetchKey:(id)a3
+- (BOOL)_isPrefetchKey:(id)key
 {
   prefetchKeyConfiguration = self->_prefetchKeyConfiguration;
-  v4 = a3;
-  v5 = [(ICContentKeySessionPrefetchKeyConfiguration *)prefetchKeyConfiguration keyIdentifiers];
-  v6 = [v5 containsObject:v4];
+  keyCopy = key;
+  keyIdentifiers = [(ICContentKeySessionPrefetchKeyConfiguration *)prefetchKeyConfiguration keyIdentifiers];
+  v6 = [keyIdentifiers containsObject:keyCopy];
 
   return v6;
 }
 
-- (void)contentKeySession:(id)a3 contentKeyRequest:(id)a4 didFailWithError:(id)a5
+- (void)contentKeySession:(id)session contentKeyRequest:(id)request didFailWithError:(id)error
 {
   v20 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
+  requestCopy = request;
+  errorCopy = error;
   v9 = os_log_create("com.apple.amp.iTunesCloud", "Default");
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     contentKeySession = self->_contentKeySession;
-    v11 = [v7 ic_description];
+    ic_description = [requestCopy ic_description];
     v12 = 138544130;
-    v13 = self;
+    selfCopy = self;
     v14 = 2114;
     v15 = contentKeySession;
     v16 = 2114;
-    v17 = v11;
+    v17 = ic_description;
     v18 = 2114;
-    v19 = v8;
+    v19 = errorCopy;
     _os_log_impl(&dword_1B4491000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ [SKD] - contentKeySession:%{public}@ contentKeyRequest:%{public}@ didFailWithError:%{public}@", &v12, 0x2Au);
   }
 }
 
-- (void)contentKeySession:(id)a3 contentKeyRequestDidSucceed:(id)a4
+- (void)contentKeySession:(id)session contentKeyRequestDidSucceed:(id)succeed
 {
   v15 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  succeedCopy = succeed;
   v6 = os_log_create("com.apple.amp.iTunesCloud", "Default");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     contentKeySession = self->_contentKeySession;
-    v8 = [v5 ic_description];
+    ic_description = [succeedCopy ic_description];
     v9 = 138543874;
-    v10 = self;
+    selfCopy = self;
     v11 = 2114;
     v12 = contentKeySession;
     v13 = 2114;
-    v14 = v8;
+    v14 = ic_description;
     _os_log_impl(&dword_1B4491000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ [SKD] - contentKeySession:%{public}@ contentKeyRequestDidSucceed:%{public}@", &v9, 0x20u);
   }
 }
 
-- (void)contentKeySession:(id)a3 didProvideRenewingContentKeyRequest:(id)a4
+- (void)contentKeySession:(id)session didProvideRenewingContentKeyRequest:(id)request
 {
   v29 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  requestCopy = request;
   v6 = os_log_create("com.apple.amp.iTunesCloud", "Analytics");
-  v7 = os_signpost_id_make_with_pointer(v6, v5);
+  v7 = os_signpost_id_make_with_pointer(v6, requestCopy);
 
   v8 = os_log_create("com.apple.amp.iTunesCloud", "Analytics");
   v9 = v8;
   if (v7 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v8))
   {
     *buf = 67240192;
-    LODWORD(v24) = 3;
+    LODWORD(selfCopy3) = 3;
     _os_signpost_emit_with_name_impl(&dword_1B4491000, v9, OS_SIGNPOST_INTERVAL_BEGIN, v7, "ContentKeyRequest", " enableTelemetry=YES type=%{public, signpost.telemetry:number1, name=type}d", buf, 8u);
   }
 
-  v10 = [v5 identifier];
-  v11 = [(ICContentKeySession *)self _isPrefetchKey:v10];
+  identifier = [requestCopy identifier];
+  v11 = [(ICContentKeySession *)self _isPrefetchKey:identifier];
   v12 = os_log_create("com.apple.amp.iTunesCloud", "Default");
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [v5 ic_description];
+    ic_description = [requestCopy ic_description];
     *buf = 138543874;
-    v24 = self;
+    selfCopy3 = self;
     v25 = 2114;
-    v26 = v13;
+    v26 = ic_description;
     v27 = 1024;
     LODWORD(v28) = v11;
     _os_log_impl(&dword_1B4491000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@ [SKD] - handling renewing key request %{public}@. isPrefetchKey=%{BOOL}u", buf, 0x1Cu);
@@ -1403,60 +1403,60 @@ LABEL_76:
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [WeakRetained contentKeySession:self didStartProcessingKey:v10 isPrefetchKey:v11 isPersistable:objc_msgSend(v5 isRenew:{"canProvidePersistableContentKey"), 1}];
+    [WeakRetained contentKeySession:self didStartProcessingKey:identifier isPrefetchKey:v11 isPersistable:objc_msgSend(requestCopy isRenew:{"canProvidePersistableContentKey"), 1}];
   }
 
-  if ([(ICContentKeySession *)self _shouldRequestPersistentKeyForKeyRequest:v5])
+  if ([(ICContentKeySession *)self _shouldRequestPersistentKeyForKeyRequest:requestCopy])
   {
     v15 = os_log_create("com.apple.amp.iTunesCloud", "Default");
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = [v5 ic_description];
+      ic_description2 = [requestCopy ic_description];
       *buf = 138543618;
-      v24 = self;
+      selfCopy3 = self;
       v25 = 2114;
-      v26 = v16;
+      v26 = ic_description2;
       _os_log_impl(&dword_1B4491000, v15, OS_LOG_TYPE_DEFAULT, "%{public}@ [SKD] - Requesting renewal for persistable content key for %{public}@", buf, 0x16u);
     }
 
     pendingPersistentKeyRenewalIdentifiers = self->_pendingPersistentKeyRenewalIdentifiers;
-    v18 = [v5 identifier];
-    [(NSMutableSet *)pendingPersistentKeyRenewalIdentifiers addObject:v18];
+    identifier2 = [requestCopy identifier];
+    [(NSMutableSet *)pendingPersistentKeyRenewalIdentifiers addObject:identifier2];
 
     v22 = 0;
-    LOBYTE(v18) = [v5 respondByRequestingPersistableContentKeyRequestAndReturnError:&v22];
+    LOBYTE(identifier2) = [requestCopy respondByRequestingPersistableContentKeyRequestAndReturnError:&v22];
     v19 = v22;
-    if ((v18 & 1) == 0)
+    if ((identifier2 & 1) == 0)
     {
       v20 = os_log_create("com.apple.amp.iTunesCloud", "Default");
       if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
       {
-        v21 = [v5 ic_description];
+        ic_description3 = [requestCopy ic_description];
         *buf = 138543874;
-        v24 = self;
+        selfCopy3 = self;
         v25 = 2114;
-        v26 = v21;
+        v26 = ic_description3;
         v27 = 2114;
         v28 = v19;
         _os_log_impl(&dword_1B4491000, v20, OS_LOG_TYPE_ERROR, "%{public}@ [SKD] - Failed to request persistable content key renewal for '%{public}@'. err=%{public}@", buf, 0x20u);
       }
 
-      [(NSMutableSet *)self->_pendingPersistentKeyRenewalIdentifiers removeObject:v10];
+      [(NSMutableSet *)self->_pendingPersistentKeyRenewalIdentifiers removeObject:identifier];
     }
   }
 
   else
   {
-    [(ICContentKeySession *)self _performKeyDeliveryRequestForContentKeyRequest:v5 persistResponse:0 isRenewal:1];
+    [(ICContentKeySession *)self _performKeyDeliveryRequestForContentKeyRequest:requestCopy persistResponse:0 isRenewal:1];
   }
 }
 
-- (void)contentKeySession:(id)a3 didProvidePersistableContentKeyRequest:(id)a4
+- (void)contentKeySession:(id)session didProvidePersistableContentKeyRequest:(id)request
 {
   v61[2] = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  requestCopy = request;
   v6 = os_log_create("com.apple.amp.iTunesCloud", "Analytics");
-  v7 = os_signpost_id_make_with_pointer(v6, v5);
+  v7 = os_signpost_id_make_with_pointer(v6, requestCopy);
 
   v8 = os_log_create("com.apple.amp.iTunesCloud", "Analytics");
   v9 = v8;
@@ -1464,24 +1464,24 @@ LABEL_76:
   if (v7 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v8))
   {
     *buf = 67240192;
-    LODWORD(v57) = 2;
+    LODWORD(selfCopy6) = 2;
     _os_signpost_emit_with_name_impl(&dword_1B4491000, v9, OS_SIGNPOST_INTERVAL_BEGIN, v7, "ContentKeyRequest", " enableTelemetry=YES type=%{public, signpost.telemetry:number1, name=type}d", buf, 8u);
   }
 
-  v11 = [v5 identifier];
-  v12 = [(ICContentKeySession *)self _isPrefetchKey:v11];
+  identifier = [requestCopy identifier];
+  v12 = [(ICContentKeySession *)self _isPrefetchKey:identifier];
   pendingPersistentKeyRenewalIdentifiers = self->_pendingPersistentKeyRenewalIdentifiers;
-  v14 = [v5 identifier];
-  v15 = [(NSMutableSet *)pendingPersistentKeyRenewalIdentifiers containsObject:v14];
+  identifier2 = [requestCopy identifier];
+  v15 = [(NSMutableSet *)pendingPersistentKeyRenewalIdentifiers containsObject:identifier2];
 
   v16 = os_log_create("com.apple.amp.iTunesCloud", "Default");
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
-    v17 = [v5 ic_description];
+    ic_description = [requestCopy ic_description];
     *buf = 138544130;
-    v57 = self;
+    selfCopy6 = self;
     v58 = 2114;
-    v59 = v17;
+    v59 = ic_description;
     v60 = 1024;
     LODWORD(v61[0]) = v12;
     WORD2(v61[0]) = 1024;
@@ -1492,7 +1492,7 @@ LABEL_76:
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [WeakRetained contentKeySession:self didStartProcessingKey:v11 isPrefetchKey:v12 isPersistable:1 isRenew:0];
+    [WeakRetained contentKeySession:self didStartProcessingKey:identifier isPrefetchKey:v12 isPersistable:1 isRenew:0];
   }
 
   v19 = 48;
@@ -1505,9 +1505,9 @@ LABEL_76:
   v52 = v20;
   if (self->_bypassCache)
   {
-    v21 = 0;
+    keyData = 0;
     v22 = 0;
-    v23 = 0;
+    expirationDate = 0;
     if (!v15)
     {
       goto LABEL_25;
@@ -1518,9 +1518,9 @@ LABEL_76:
 
   v24 = v20;
   spid = v7;
-  v25 = [v5 identifier];
+  identifier3 = [requestCopy identifier];
   v55 = 0;
-  v26 = [v24 loadKeyForIdentifier:v25 error:&v55];
+  v26 = [v24 loadKeyForIdentifier:identifier3 error:&v55];
   v27 = v55;
 
   if (v27)
@@ -1528,19 +1528,19 @@ LABEL_76:
     v28 = os_log_create("com.apple.amp.iTunesCloud", "Default");
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
     {
-      v29 = [v5 ic_description];
+      ic_description2 = [requestCopy ic_description];
       *buf = 138543874;
-      v57 = self;
+      selfCopy6 = self;
       v58 = 2114;
-      v59 = v29;
+      v59 = ic_description2;
       v60 = 2114;
       v61[0] = v27;
       _os_log_impl(&dword_1B4491000, v28, OS_LOG_TYPE_ERROR, "%{public}@ [SKD] - Failed to load key from store for key request %{public}@. err=%{public}@", buf, 0x20u);
     }
 
-    v21 = 0;
+    keyData = 0;
     v22 = 0;
-    v23 = 0;
+    expirationDate = 0;
     if ((v15 & 1) == 0)
     {
       goto LABEL_25;
@@ -1549,65 +1549,65 @@ LABEL_76:
     goto LABEL_21;
   }
 
-  v50 = [v26 renewalDate];
-  v23 = [v26 expirationDate];
-  v21 = [v26 keyData];
+  renewalDate = [v26 renewalDate];
+  expirationDate = [v26 expirationDate];
+  keyData = [v26 keyData];
 
   if (v15)
   {
-    v22 = v50;
+    v22 = renewalDate;
 LABEL_21:
     v30 = os_log_create("com.apple.amp.iTunesCloud", "Default");
     if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
     {
-      v31 = [v5 ic_description];
+      ic_description3 = [requestCopy ic_description];
       *buf = 138543618;
-      v57 = self;
+      selfCopy6 = self;
       v58 = 2114;
-      v59 = v31;
+      v59 = ic_description3;
       _os_log_impl(&dword_1B4491000, v30, OS_LOG_TYPE_DEFAULT, "%{public}@ [SKD] - Ignoring cached key for renewal of persistent key request %{public}@", buf, 0x16u);
     }
 
     v32 = self->_pendingPersistentKeyRenewalIdentifiers;
-    v33 = [v5 identifier];
-    [(NSMutableSet *)v32 removeObject:v33];
+    identifier4 = [requestCopy identifier];
+    [(NSMutableSet *)v32 removeObject:identifier4];
 LABEL_24:
 
 LABEL_25:
-    [(ICContentKeySession *)self _performKeyDeliveryRequestForContentKeyRequest:v5 persistResponse:1 isRenewal:0];
+    [(ICContentKeySession *)self _performKeyDeliveryRequestForContentKeyRequest:requestCopy persistResponse:1 isRenewal:0];
     goto LABEL_26;
   }
 
-  if (!v21)
+  if (!keyData)
   {
-    v22 = v50;
+    v22 = renewalDate;
     goto LABEL_25;
   }
 
-  v34 = [MEMORY[0x1E695DF00] date];
-  v49 = [v50 compare:v34];
+  date = [MEMORY[0x1E695DF00] date];
+  v49 = [renewalDate compare:date];
 
-  if (v23)
+  if (expirationDate)
   {
-    v35 = [MEMORY[0x1E695DF00] date];
-    v36 = [v23 compare:v35];
+    date2 = [MEMORY[0x1E695DF00] date];
+    v36 = [expirationDate compare:date2];
 
     if (v36 == -1 && self->_refreshExpiredPersistentKeys)
     {
-      v33 = _ICLogCategoryDefault();
-      if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
+      identifier4 = _ICLogCategoryDefault();
+      if (os_log_type_enabled(identifier4, OS_LOG_TYPE_DEFAULT))
       {
-        v37 = [v5 ic_description];
+        ic_description4 = [requestCopy ic_description];
         *buf = 138543874;
-        v57 = self;
+        selfCopy6 = self;
         v58 = 2114;
-        v59 = v37;
+        v59 = ic_description4;
         v60 = 2114;
-        v61[0] = v23;
-        _os_log_impl(&dword_1B4491000, v33, OS_LOG_TYPE_DEFAULT, "%{public}@ [SKD] - Discarding expired cached key for request %{public}@. expirationDate=%{public}@", buf, 0x20u);
+        v61[0] = expirationDate;
+        _os_log_impl(&dword_1B4491000, identifier4, OS_LOG_TYPE_DEFAULT, "%{public}@ [SKD] - Discarding expired cached key for request %{public}@. expirationDate=%{public}@", buf, 0x20u);
       }
 
-      v22 = v50;
+      v22 = renewalDate;
       goto LABEL_24;
     }
   }
@@ -1615,30 +1615,30 @@ LABEL_25:
   v38 = os_log_create("com.apple.amp.iTunesCloud", "Default");
   if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
   {
-    v39 = [v5 ic_description];
+    ic_description5 = [requestCopy ic_description];
     *buf = 138543874;
-    v57 = self;
+    selfCopy6 = self;
     v58 = 2114;
-    v59 = v39;
+    v59 = ic_description5;
     v60 = 2114;
-    v61[0] = v50;
+    v61[0] = renewalDate;
     _os_log_impl(&dword_1B4491000, v38, OS_LOG_TYPE_DEFAULT, "%{public}@ [SKD] - Returning cached key for key request %{public}@. renewalDate=%{public}@", buf, 0x20u);
   }
 
-  v40 = [MEMORY[0x1E6987F68] contentKeyResponseWithFairPlayStreamingKeyResponseData:v21];
-  [v5 processContentKeyResponse:v40];
+  v40 = [MEMORY[0x1E6987F68] contentKeyResponseWithFairPlayStreamingKeyResponseData:keyData];
+  [requestCopy processContentKeyResponse:v40];
   v41 = os_log_create("com.apple.amp.iTunesCloud", "Analytics");
   v42 = v41;
   if (v10 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v41))
   {
     *buf = 136446210;
-    v57 = "FromCache";
+    selfCopy6 = "FromCache";
     _os_signpost_emit_with_name_impl(&dword_1B4491000, v42, OS_SIGNPOST_INTERVAL_END, spid, "ContentKeyRequest", " enableTelemetry=YES result=%{public, signpost.telemetry:string1, name=result}s", buf, 0xCu);
   }
 
   if (WeakRetained && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [WeakRetained contentKeySession:self didFinishProcessingKey:v11 withResponse:0 error:0];
+    [WeakRetained contentKeySession:self didFinishProcessingKey:identifier withResponse:0 error:0];
   }
 
   v43 = +[ICEnvironmentMonitor sharedMonitor];
@@ -1655,13 +1655,13 @@ LABEL_25:
       v45 = _ICLogCategoryDefault();
       if (os_log_type_enabled(v45, OS_LOG_TYPE_DEFAULT))
       {
-        v46 = [v5 ic_description];
+        ic_description6 = [requestCopy ic_description];
         *buf = 138543874;
-        v57 = self;
+        selfCopy6 = self;
         v58 = 2114;
-        v59 = v46;
+        v59 = ic_description6;
         v60 = 2114;
-        v61[0] = v50;
+        v61[0] = renewalDate;
         _os_log_impl(&dword_1B4491000, v45, OS_LOG_TYPE_DEFAULT, "%{public}@ [SKD] - attempting to renew stale persisted key for key request %{public}@. renewalDate=%{public}@", buf, 0x20u);
       }
 
@@ -1672,47 +1672,47 @@ LABEL_25:
       block[2] = __80__ICContentKeySession_contentKeySession_didProvidePersistableContentKeyRequest___block_invoke;
       block[3] = &unk_1E7BFA078;
       block[4] = self;
-      v54 = v5;
+      v54 = requestCopy;
       dispatch_after(v47, accessQueue, block);
     }
   }
 
-  [(ICContentKeySession *)self _finishProcessingKeyWithIdentifier:v11];
+  [(ICContentKeySession *)self _finishProcessingKeyWithIdentifier:identifier];
 
-  v22 = v50;
+  v22 = renewalDate;
 LABEL_26:
 }
 
-- (void)contentKeySession:(id)a3 didProvideContentKeyRequest:(id)a4
+- (void)contentKeySession:(id)session didProvideContentKeyRequest:(id)request
 {
   v32 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [v5 identifier];
-  v7 = [(ICContentKeySession *)self _isPrefetchKey:v6];
+  requestCopy = request;
+  identifier = [requestCopy identifier];
+  v7 = [(ICContentKeySession *)self _isPrefetchKey:identifier];
   if ([(ICContentKeySession *)self allowFallbackToStreamingKeys])
   {
     v8 = +[ICDefaults standardDefaults];
-    v9 = [v8 shouldForceStreamingOnlyKeysForPlayback];
+    shouldForceStreamingOnlyKeysForPlayback = [v8 shouldForceStreamingOnlyKeysForPlayback];
   }
 
   else
   {
-    v9 = 0;
+    shouldForceStreamingOnlyKeysForPlayback = 0;
   }
 
-  v10 = [(ICContentKeySession *)self _shouldRequestPersistentKeyForKeyRequest:v5];
+  v10 = [(ICContentKeySession *)self _shouldRequestPersistentKeyForKeyRequest:requestCopy];
   v11 = os_log_create("com.apple.amp.iTunesCloud", "Default");
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [v5 ic_description];
+    ic_description = [requestCopy ic_description];
     *buf = 138544386;
-    v25 = self;
+    selfCopy3 = self;
     v26 = 2114;
-    v27 = v12;
+    v27 = ic_description;
     v28 = 1024;
     *v29 = v7;
     *&v29[4] = 1024;
-    *&v29[6] = v9;
+    *&v29[6] = shouldForceStreamingOnlyKeysForPlayback;
     v30 = 1024;
     v31 = v10;
     _os_log_impl(&dword_1B4491000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@ [SKD] - handling key request %{public}@. isPrefetchKey=%{BOOL}u, shouldForceStreamingOnlyKeysForPlayback=%{BOOL}u, shouldRequestPersistableKey=%{BOOL}u", buf, 0x28u);
@@ -1726,27 +1726,27 @@ LABEL_26:
   v13 = os_log_create("com.apple.amp.iTunesCloud", "Default");
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [v5 ic_description];
+    ic_description2 = [requestCopy ic_description];
     *buf = 138543618;
-    v25 = self;
+    selfCopy3 = self;
     v26 = 2114;
-    v27 = v14;
+    v27 = ic_description2;
     _os_log_impl(&dword_1B4491000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@ [SKD] - Requesting persistable content key for %{public}@", buf, 0x16u);
   }
 
   v23 = 0;
-  v15 = [v5 respondByRequestingPersistableContentKeyRequestAndReturnError:&v23];
+  v15 = [requestCopy respondByRequestingPersistableContentKeyRequestAndReturnError:&v23];
   WeakRetained = v23;
   if ((v15 & 1) == 0)
   {
     v17 = os_log_create("com.apple.amp.iTunesCloud", "Default");
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
-      v18 = [v5 ic_description];
+      ic_description3 = [requestCopy ic_description];
       *buf = 138543874;
-      v25 = self;
+      selfCopy3 = self;
       v26 = 2114;
-      v27 = v18;
+      v27 = ic_description3;
       v28 = 2114;
       *v29 = WeakRetained;
       _os_log_impl(&dword_1B4491000, v17, OS_LOG_TYPE_ERROR, "%{public}@ [SKD] - Failed to request persistable content key for '%{public}@' - requesting streaming key instead. err=%{public}@", buf, 0x20u);
@@ -1756,26 +1756,26 @@ LABEL_13:
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     if (WeakRetained && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      [WeakRetained contentKeySession:self didStartProcessingKey:v6 isPrefetchKey:v7 isPersistable:0 isRenew:0];
+      [WeakRetained contentKeySession:self didStartProcessingKey:identifier isPrefetchKey:v7 isPersistable:0 isRenew:0];
     }
 
     v19 = os_log_create("com.apple.amp.iTunesCloud", "Analytics");
-    v20 = os_signpost_id_make_with_pointer(v19, v5);
+    v20 = os_signpost_id_make_with_pointer(v19, requestCopy);
 
     v21 = os_log_create("com.apple.amp.iTunesCloud", "Analytics");
     v22 = v21;
     if (v20 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v21))
     {
       *buf = 67240192;
-      LODWORD(v25) = 1;
+      LODWORD(selfCopy3) = 1;
       _os_signpost_emit_with_name_impl(&dword_1B4491000, v22, OS_SIGNPOST_INTERVAL_BEGIN, v20, "ContentKeyRequest", " enableTelemetry=YES type=%{public, signpost.telemetry:number1, name=type}d", buf, 8u);
     }
 
-    [(ICContentKeySession *)self _performKeyDeliveryRequestForContentKeyRequest:v5 persistResponse:0 isRenewal:0];
+    [(ICContentKeySession *)self _performKeyDeliveryRequestForContentKeyRequest:requestCopy persistResponse:0 isRenewal:0];
   }
 }
 
-- (void)waitForAllKeysToProcessWithTimeout:(double)a3
+- (void)waitForAllKeysToProcessWithTimeout:(double)timeout
 {
   v29 = *MEMORY[0x1E69E9840];
   v5 = os_log_create("com.apple.amp.iTunesCloud", "Default");
@@ -1784,7 +1784,7 @@ LABEL_13:
     *buf = 138543618;
     *&buf[4] = self;
     *&buf[12] = 2048;
-    *&buf[14] = a3;
+    *&buf[14] = timeout;
     _os_log_impl(&dword_1B4491000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ [SKD] - Waiting for key requests to complete with timeout %lus", buf, 0x16u);
   }
 
@@ -1814,7 +1814,7 @@ LABEL_13:
       }
 
       *v21 = 138543362;
-      v22 = self;
+      selfCopy3 = self;
       v14 = "%{public}@ [SKD] - Finished waiting for key requests to complete";
       v15 = v9;
       v16 = OS_LOG_TYPE_DEFAULT;
@@ -1827,7 +1827,7 @@ LABEL_13:
       v11 = [(NSMutableSet *)self->_pendingKeyIdentifiers count];
       pendingKeyIdentifiers = self->_pendingKeyIdentifiers;
       *v21 = 138543874;
-      v22 = self;
+      selfCopy3 = self;
       v23 = 2048;
       v24 = v11;
       v25 = 2114;
@@ -1835,7 +1835,7 @@ LABEL_13:
       _os_log_impl(&dword_1B4491000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ [SKD] - Waiting for %lu keys: %{public}@", v21, 0x20u);
     }
 
-    v13 = a3 == 0.0 ? -1 : dispatch_time(0, (a3 * 1000000000.0));
+    v13 = timeout == 0.0 ? -1 : dispatch_time(0, (timeout * 1000000000.0));
     if (dispatch_semaphore_wait(self->_waitForKeysSemaphore, v13))
     {
       break;
@@ -1853,7 +1853,7 @@ LABEL_13:
   v18 = [(NSMutableSet *)self->_pendingKeyIdentifiers count];
   v19 = self->_pendingKeyIdentifiers;
   *v21 = 138543874;
-  v22 = self;
+  selfCopy3 = self;
   v23 = 2048;
   v24 = v18;
   v25 = 2114;
@@ -1876,10 +1876,10 @@ uint64_t __58__ICContentKeySession_waitForAllKeysToProcessWithTimeout___block_in
   return result;
 }
 
-- (void)waitForKeyRenewalsWithCompletionHandler:(id)a3
+- (void)waitForKeyRenewalsWithCompletionHandler:(id)handler
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = [(NSMutableSet *)self->_pendingRenewalKeyIdentifiers count];
   v6 = os_log_create("com.apple.amp.iTunesCloud", "Default");
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
@@ -1890,7 +1890,7 @@ uint64_t __58__ICContentKeySession_waitForAllKeysToProcessWithTimeout___block_in
       v8 = [(NSMutableSet *)self->_pendingRenewalKeyIdentifiers count];
       pendingRenewalKeyIdentifiers = self->_pendingRenewalKeyIdentifiers;
       *buf = 138543874;
-      v14 = self;
+      selfCopy2 = self;
       v15 = 2048;
       v16 = v8;
       v17 = 2114;
@@ -1904,7 +1904,7 @@ uint64_t __58__ICContentKeySession_waitForAllKeysToProcessWithTimeout___block_in
     v11[2] = __63__ICContentKeySession_waitForKeyRenewalsWithCompletionHandler___block_invoke;
     v11[3] = &unk_1E7BF9EC8;
     v11[4] = self;
-    v12 = v4;
+    v12 = handlerCopy;
     dispatch_async(accessQueue, v11);
   }
 
@@ -1913,11 +1913,11 @@ uint64_t __58__ICContentKeySession_waitForAllKeysToProcessWithTimeout___block_in
     if (v7)
     {
       *buf = 138543362;
-      v14 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1B4491000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ [SKD] - No pending key renewals to wait for", buf, 0xCu);
     }
 
-    v4[2](v4);
+    handlerCopy[2](handlerCopy);
   }
 }
 
@@ -1959,16 +1959,16 @@ void __63__ICContentKeySession_waitForKeyRenewalsWithCompletionHandler___block_i
   }
 }
 
-- (void)invalidateKeyWithIdentifier:(id)a3 withCompletion:(id)a4
+- (void)invalidateKeyWithIdentifier:(id)identifier withCompletion:(id)completion
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   keyStore = self->_keyStore;
   if (keyStore)
   {
     v20 = 0;
-    v9 = [(ICContentKeyStoreProtocol *)keyStore loadKeyForIdentifier:v6 error:&v20];
+    v9 = [(ICContentKeyStoreProtocol *)keyStore loadKeyForIdentifier:identifierCopy error:&v20];
     v10 = v20;
     if (v10)
     {
@@ -1976,30 +1976,30 @@ void __63__ICContentKeySession_waitForKeyRenewalsWithCompletionHandler___block_i
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543874;
-        v22 = self;
+        selfCopy = self;
         v23 = 2114;
-        v24 = v6;
+        v24 = identifierCopy;
         v25 = 2114;
         v26 = v10;
         _os_log_impl(&dword_1B4491000, v11, OS_LOG_TYPE_ERROR, "%{public}@ [SKD] - Failed to load key to stop with identifier %{public}@. err=%{public}@", buf, 0x20u);
       }
 
-      v7[2](v7, v10);
+      completionCopy[2](completionCopy, v10);
     }
 
-    v12 = [v9 identifier];
-    v13 = [v9 adamID];
-    v14 = [v9 accountDSID];
-    v15 = [v9 keyData];
+    identifier = [v9 identifier];
+    adamID = [v9 adamID];
+    accountDSID = [v9 accountDSID];
+    keyData = [v9 keyData];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __66__ICContentKeySession_invalidateKeyWithIdentifier_withCompletion___block_invoke;
     v17[3] = &unk_1E7BF80A8;
     v17[4] = self;
     v18 = v9;
-    v19 = v7;
+    v19 = completionCopy;
     v16 = v9;
-    [(ICContentKeySession *)self _invalidateKeyWithIdentifier:v12 forAdamID:v13 offline:1 usingAccountDSID:v14 keyData:v15 withCompletion:v17];
+    [(ICContentKeySession *)self _invalidateKeyWithIdentifier:identifier forAdamID:adamID offline:1 usingAccountDSID:accountDSID keyData:keyData withCompletion:v17];
   }
 }
 
@@ -2027,9 +2027,9 @@ void __66__ICContentKeySession_invalidateKeyWithIdentifier_withCompletion___bloc
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)stopSessionInvalidatingKeys:(BOOL)a3 withCompletion:(id)a4
+- (void)stopSessionInvalidatingKeys:(BOOL)keys withCompletion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v13[0] = 0;
   v13[1] = v13;
   v13[2] = 0x3032000000;
@@ -2041,11 +2041,11 @@ void __66__ICContentKeySession_invalidateKeyWithIdentifier_withCompletion___bloc
   v9[1] = 3221225472;
   v9[2] = __66__ICContentKeySession_stopSessionInvalidatingKeys_withCompletion___block_invoke;
   v9[3] = &unk_1E7BF7C18;
-  v12 = a3;
-  v10 = v6;
+  keysCopy = keys;
+  v10 = completionCopy;
   v11 = v13;
   v9[4] = self;
-  v8 = v6;
+  v8 = completionCopy;
   dispatch_sync(accessQueue, v9);
 
   _Block_object_dispose(v13, 8);
@@ -2412,7 +2412,7 @@ void __35__ICContentKeySession_renewAllKeys__block_invoke(uint64_t a1)
       if (v5)
       {
         *buf = 138543362;
-        v9 = self;
+        selfCopy2 = self;
         _os_log_impl(&dword_1B4491000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ [SKD] - Resuming automatic key renewal", buf, 0xCu);
       }
 
@@ -2430,7 +2430,7 @@ void __35__ICContentKeySession_renewAllKeys__block_invoke(uint64_t a1)
       if (v5)
       {
         *buf = 138543362;
-        v9 = self;
+        selfCopy2 = self;
         _os_log_impl(&dword_1B4491000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ [SKD] - Automatic key renewal will resume when the first key has been requested.", buf, 0xCu);
       }
     }
@@ -2446,7 +2446,7 @@ void __35__ICContentKeySession_renewAllKeys__block_invoke(uint64_t a1)
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v7 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1B4491000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ [SKD] - Pausing automatic key renewal", buf, 0xCu);
     }
 
@@ -2473,48 +2473,48 @@ void __47__ICContentKeySession_pauseAutomaticKeyRenewal__block_invoke(uint64_t a
   }
 }
 
-- (void)processKeyWithIdentifier:(id)a3
+- (void)processKeyWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __48__ICContentKeySession_processKeyWithIdentifier___block_invoke;
   v7[3] = &unk_1E7BFA078;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = identifierCopy;
+  v6 = identifierCopy;
   dispatch_sync(accessQueue, v7);
 }
 
-- (void)addAsset:(id)a3 shouldPreloadKeys:(BOOL)a4 waitForKeyIdentifiers:(BOOL)a5
+- (void)addAsset:(id)asset shouldPreloadKeys:(BOOL)keys waitForKeyIdentifiers:(BOOL)identifiers
 {
-  v6 = a4;
+  keysCopy = keys;
   v20 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  assetCopy = asset;
   v9 = os_log_create("com.apple.amp.iTunesCloud", "Default");
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
-    v15 = self;
+    selfCopy = self;
     v16 = 2114;
-    v17 = v8;
+    v17 = assetCopy;
     v18 = 1024;
-    v19 = v6;
+    v19 = keysCopy;
     _os_log_impl(&dword_1B4491000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ [SKD] - Adding asset %{public}@. shouldPreloadKeys=%{BOOL}u", buf, 0x1Cu);
   }
 
-  [(AVContentKeySession *)self->_contentKeySession addContentKeyRecipient:v8];
-  if (v6)
+  [(AVContentKeySession *)self->_contentKeySession addContentKeyRecipient:assetCopy];
+  if (keysCopy)
   {
     accessQueue = self->_accessQueue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __72__ICContentKeySession_addAsset_shouldPreloadKeys_waitForKeyIdentifiers___block_invoke;
     block[3] = &unk_1E7BF9CB0;
-    v13 = a5;
+    identifiersCopy = identifiers;
     block[4] = self;
-    v12 = v8;
+    v12 = assetCopy;
     dispatch_async(accessQueue, block);
   }
 }
@@ -2889,12 +2889,12 @@ uint64_t __72__ICContentKeySession_addAsset_shouldPreloadKeys_waitForKeyIdentifi
   return v4;
 }
 
-- (ICContentKeySession)initWithRequestContext:(id)a3 keyStore:(id)a4 delegate:(id)a5
+- (ICContentKeySession)initWithRequestContext:(id)context keyStore:(id)store delegate:(id)delegate
 {
   v44 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  contextCopy = context;
+  storeCopy = store;
+  delegateCopy = delegate;
   v39.receiver = self;
   v39.super_class = ICContentKeySession;
   v11 = [(ICContentKeySession *)&v39 init];
@@ -2916,36 +2916,36 @@ uint64_t __72__ICContentKeySession_addAsset_shouldPreloadKeys_waitForKeyIdentifi
     pendingPersistentKeyRenewalIdentifiers = v11->_pendingPersistentKeyRenewalIdentifiers;
     v11->_pendingPersistentKeyRenewalIdentifiers = v18;
 
-    v20 = [v8 copy];
+    v20 = [contextCopy copy];
     requestContext = v11->_requestContext;
     v11->_requestContext = v20;
 
-    objc_storeStrong(&v11->_keyStore, a4);
-    v22 = [MEMORY[0x1E695DF90] dictionary];
+    objc_storeStrong(&v11->_keyStore, store);
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     keyRenewalDates = v11->_keyRenewalDates;
-    v11->_keyRenewalDates = v22;
+    v11->_keyRenewalDates = dictionary;
 
-    v24 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     completedKeyRequests = v11->_completedKeyRequests;
-    v11->_completedKeyRequests = v24;
+    v11->_completedKeyRequests = dictionary2;
 
-    v26 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary3 = [MEMORY[0x1E695DF90] dictionary];
     keyResponses = v11->_keyResponses;
-    v11->_keyResponses = v26;
+    v11->_keyResponses = dictionary3;
 
-    objc_storeWeak(&v11->_delegate, v10);
+    objc_storeWeak(&v11->_delegate, delegateCopy);
     v11->_active = 1;
     v11->_isStoreKeyServer = 1;
     v11->_lock._os_unfair_lock_opaque = 0;
     v28 = +[ICContentKeySession enhancedAudioSharedContentKeyPath];
-    v29 = [MEMORY[0x1E696AC08] defaultManager];
-    [v29 createDirectoryAtPath:v28 withIntermediateDirectories:1 attributes:0 error:0];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    [defaultManager createDirectoryAtPath:v28 withIntermediateDirectories:1 attributes:0 error:0];
 
     v30 = [[ICFileContentKeyStore alloc] initWithPath:v28];
     prefetchedContentKeyStore = v11->_prefetchedContentKeyStore;
     v11->_prefetchedContentKeyStore = v30;
 
-    v32 = [[ICContentKeySessionPrefetchKeyConfiguration alloc] initWithRequestContext:v8];
+    v32 = [[ICContentKeySessionPrefetchKeyConfiguration alloc] initWithRequestContext:contextCopy];
     prefetchKeyConfiguration = v11->_prefetchKeyConfiguration;
     v11->_prefetchKeyConfiguration = v32;
 
@@ -2979,10 +2979,10 @@ uint64_t __72__ICContentKeySession_addAsset_shouldPreloadKeys_waitForKeyIdentifi
   return v6;
 }
 
-+ (id)copyKeysToPendingInvalidationStoreFromPath:(id)a3
++ (id)copyKeysToPendingInvalidationStoreFromPath:(id)path
 {
   v26 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  pathCopy = path;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
@@ -2990,27 +2990,27 @@ uint64_t __72__ICContentKeySession_addAsset_shouldPreloadKeys_waitForKeyIdentifi
   v22 = __Block_byref_object_dispose__31122;
   v23 = 0;
   v4 = +[ICContentKeySession pendingInvalidationKeyStorePath];
-  v5 = [MEMORY[0x1E696AC08] defaultManager];
-  if (([v5 fileExistsAtPath:v4] & 1) == 0)
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  if (([defaultManager fileExistsAtPath:v4] & 1) == 0)
   {
     v17 = 0;
-    [v5 createDirectoryAtPath:v4 withIntermediateDirectories:1 attributes:0 error:&v17];
+    [defaultManager createDirectoryAtPath:v4 withIntermediateDirectories:1 attributes:0 error:&v17];
     v6 = v17;
     if (v6)
     {
       v7 = os_log_create("com.apple.amp.iTunesCloud", "Default");
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
       {
-        v8 = [v6 msv_description];
+        msv_description = [v6 msv_description];
         *buf = 138543362;
-        v25 = v8;
+        v25 = msv_description;
         _os_log_impl(&dword_1B4491000, v7, OS_LOG_TYPE_ERROR, "ICContentKeySession Failed to create key purgatory directory error=%{public}@", buf, 0xCu);
       }
     }
   }
 
   v9 = [[ICFileContentKeyStore alloc] initWithPath:v4];
-  v10 = [[ICFileContentKeyStore alloc] initWithPath:v3];
+  v10 = [[ICFileContentKeyStore alloc] initWithPath:pathCopy];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __66__ICContentKeySession_copyKeysToPendingInvalidationStoreFromPath___block_invoke;

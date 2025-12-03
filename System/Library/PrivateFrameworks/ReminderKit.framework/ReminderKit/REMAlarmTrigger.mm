@@ -1,19 +1,19 @@
 @interface REMAlarmTrigger
 + (id)newObjectID;
-+ (id)objectIDWithUUID:(id)a3;
++ (id)objectIDWithUUID:(id)d;
 - (REMAlarmTrigger)init;
-- (REMAlarmTrigger)initWithAlarmTrigger:(id)a3 objectID:(id)a4;
-- (REMAlarmTrigger)initWithCoder:(id)a3;
-- (REMAlarmTrigger)initWithObjectID:(id)a3;
+- (REMAlarmTrigger)initWithAlarmTrigger:(id)trigger objectID:(id)d;
+- (REMAlarmTrigger)initWithCoder:(id)coder;
+- (REMAlarmTrigger)initWithObjectID:(id)d;
 - (id)_deepCopy;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation REMAlarmTrigger
 
-- (REMAlarmTrigger)initWithObjectID:(id)a3
+- (REMAlarmTrigger)initWithObjectID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v10.receiver = self;
   v10.super_class = REMAlarmTrigger;
   v6 = [(REMAlarmTrigger *)&v10 init];
@@ -25,7 +25,7 @@
   v7 = objc_opt_class();
   if (![v7 isEqual:objc_opt_class()])
   {
-    objc_storeStrong(&v6->_objectID, a3);
+    objc_storeStrong(&v6->_objectID, d);
 LABEL_5:
     v8 = v6;
     goto LABEL_6;
@@ -38,29 +38,29 @@ LABEL_6:
   return v8;
 }
 
-- (REMAlarmTrigger)initWithAlarmTrigger:(id)a3 objectID:(id)a4
+- (REMAlarmTrigger)initWithAlarmTrigger:(id)trigger objectID:(id)d
 {
-  v6 = a4;
-  v7 = [a3 _deepCopy];
+  dCopy = d;
+  _deepCopy = [trigger _deepCopy];
 
-  objectID = v7->_objectID;
-  v7->_objectID = v6;
+  objectID = _deepCopy->_objectID;
+  _deepCopy->_objectID = dCopy;
 
-  return v7;
+  return _deepCopy;
 }
 
 - (REMAlarmTrigger)init
 {
-  v3 = [objc_opt_class() newObjectID];
-  v4 = [(REMAlarmTrigger *)self initWithObjectID:v3];
+  newObjectID = [objc_opt_class() newObjectID];
+  v4 = [(REMAlarmTrigger *)self initWithObjectID:newObjectID];
 
   return v4;
 }
 
-- (REMAlarmTrigger)initWithCoder:(id)a3
+- (REMAlarmTrigger)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"objectID"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"objectID"];
 
   v6 = [(REMAlarmTrigger *)self initWithObjectID:v5];
   return v6;
@@ -77,26 +77,26 @@ LABEL_6:
   return 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(REMAlarmTrigger *)self objectID];
-  [v4 encodeObject:v5 forKey:@"objectID"];
+  coderCopy = coder;
+  objectID = [(REMAlarmTrigger *)self objectID];
+  [coderCopy encodeObject:objectID forKey:@"objectID"];
 }
 
 + (id)newObjectID
 {
-  v3 = [MEMORY[0x1E696AFB0] UUID];
-  v4 = [a1 objectIDWithUUID:v3];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  v4 = [self objectIDWithUUID:uUID];
 
   return v4;
 }
 
-+ (id)objectIDWithUUID:(id)a3
++ (id)objectIDWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = [a1 cdEntityName];
-  v6 = [REMObjectID objectIDWithUUID:v4 entityName:v5];
+  dCopy = d;
+  cdEntityName = [self cdEntityName];
+  v6 = [REMObjectID objectIDWithUUID:dCopy entityName:cdEntityName];
 
   return v6;
 }

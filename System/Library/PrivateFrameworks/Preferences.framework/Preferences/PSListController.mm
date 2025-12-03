@@ -1,162 +1,162 @@
 @interface PSListController
-+ (id)appearanceWhenContainedInInstancesOfClasses:(id)a3;
-+ (void)registerDefaultAppearanceProviderClass:(Class)a3;
-+ (void)registerDefaultNavigationCoordinatorClass:(Class)a3;
-+ (void)registerDefaultSpecifierActionCoordinatorClass:(Class)a3;
-- (BOOL)_getGroup:(int64_t *)a3 row:(int64_t *)a4 ofSpecifierAtIndex:(int64_t)a5 groups:(id)a6;
-- (BOOL)_isEmptyGroup:(unint64_t)a3;
++ (id)appearanceWhenContainedInInstancesOfClasses:(id)classes;
++ (void)registerDefaultAppearanceProviderClass:(Class)class;
++ (void)registerDefaultNavigationCoordinatorClass:(Class)class;
++ (void)registerDefaultSpecifierActionCoordinatorClass:(Class)class;
+- (BOOL)_getGroup:(int64_t *)group row:(int64_t *)row ofSpecifierAtIndex:(int64_t)index groups:(id)groups;
+- (BOOL)_isEmptyGroup:(unint64_t)group;
 - (BOOL)_isRegularWidth;
-- (BOOL)getGroup:(int64_t *)a3 row:(int64_t *)a4 ofSpecifier:(id)a5;
-- (BOOL)getGroup:(int64_t *)a3 row:(int64_t *)a4 ofSpecifierAtIndex:(int64_t)a5;
-- (BOOL)getGroup:(int64_t *)a3 row:(int64_t *)a4 ofSpecifierID:(id)a5;
+- (BOOL)getGroup:(int64_t *)group row:(int64_t *)row ofSpecifier:(id)specifier;
+- (BOOL)getGroup:(int64_t *)group row:(int64_t *)row ofSpecifierAtIndex:(int64_t)index;
+- (BOOL)getGroup:(int64_t *)group row:(int64_t *)row ofSpecifierID:(id)d;
 - (BOOL)handlePendingURL;
-- (BOOL)performActionForSpecifier:(id)a3;
-- (BOOL)performButtonActionForSpecifier:(id)a3;
-- (BOOL)performConfirmationActionForSpecifier:(id)a3;
-- (BOOL)performConfirmationAlternateActionForSpecifier:(id)a3;
-- (BOOL)performConfirmationCancelActionForSpecifier:(id)a3;
-- (BOOL)performLoadActionForSpecifier:(id)a3;
-- (BOOL)prepareHandlingURLForSpecifierID:(id)a3 resourceDictionary:(id)a4 animatePush:(BOOL *)a5;
-- (BOOL)prepareHandlingURLForSpecifierID:(id)a3 resourceDictionary:(id)a4 animatePush:(BOOL *)a5 withCompletion:(id)a6;
+- (BOOL)performActionForSpecifier:(id)specifier;
+- (BOOL)performButtonActionForSpecifier:(id)specifier;
+- (BOOL)performConfirmationActionForSpecifier:(id)specifier;
+- (BOOL)performConfirmationAlternateActionForSpecifier:(id)specifier;
+- (BOOL)performConfirmationCancelActionForSpecifier:(id)specifier;
+- (BOOL)performLoadActionForSpecifier:(id)specifier;
+- (BOOL)prepareHandlingURLForSpecifierID:(id)d resourceDictionary:(id)dictionary animatePush:(BOOL *)push;
+- (BOOL)prepareHandlingURLForSpecifierID:(id)d resourceDictionary:(id)dictionary animatePush:(BOOL *)push withCompletion:(id)completion;
 - (BOOL)shouldSelectResponderOnAppearance;
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4;
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4;
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path;
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path;
 - (NSString)description;
 - (PSListController)init;
 - (PSListControllerAppearanceProvider)appearanceProvider;
 - (PSListControllerNavigationCoordinator)navigationCoordinator;
 - (PSListControllerSpecifierActionCoordinator)specifierActionCoordinator;
-- (_NSRange)rangeOfSpecifiersInGroupID:(id)a3;
-- (double)_getKeyboardIntersectionHeightFromUserInfo:(id)a3;
-- (double)_tableView:(id)a3 heightForCustomInSection:(int64_t)a4 isHeader:(BOOL)a5;
-- (double)tableView:(id)a3 estimatedHeightForRowAtIndexPath:(id)a4;
+- (_NSRange)rangeOfSpecifiersInGroupID:(id)d;
+- (double)_getKeyboardIntersectionHeightFromUserInfo:(id)info;
+- (double)_tableView:(id)view heightForCustomInSection:(int64_t)section isHeader:(BOOL)header;
+- (double)tableView:(id)view estimatedHeightForRowAtIndexPath:(id)path;
 - (float)verticalContentOffset;
-- (id)_createGroupIndices:(id)a3;
-- (id)_customViewForSpecifier:(id)a3 class:(Class)a4 isHeader:(BOOL)a5;
-- (id)_tableView:(id)a3 viewForCustomInSection:(int64_t)a4 isHeader:(BOOL)a5;
+- (id)_createGroupIndices:(id)indices;
+- (id)_customViewForSpecifier:(id)specifier class:(Class)class isHeader:(BOOL)header;
+- (id)_tableView:(id)view viewForCustomInSection:(int64_t)section isHeader:(BOOL)header;
 - (id)bundle;
-- (id)cachedCellForSpecifier:(id)a3;
-- (id)cachedCellForSpecifierID:(id)a3;
-- (id)controllerForRowAtIndexPath:(id)a3;
-- (id)controllerForSpecifier:(id)a3;
+- (id)cachedCellForSpecifier:(id)specifier;
+- (id)cachedCellForSpecifierID:(id)d;
+- (id)controllerForRowAtIndexPath:(id)path;
+- (id)controllerForSpecifier:(id)specifier;
 - (id)findFirstVisibleResponder;
-- (id)getGroupSpecifierForSpecifier:(id)a3;
-- (id)getGroupSpecifierForSpecifierID:(id)a3;
-- (id)indexPathForIndex:(int64_t)a3;
-- (id)indexPathForSpecifier:(id)a3;
-- (id)loadSpecifiersFromPlistName:(id)a3 target:(id)a4;
-- (id)loadSpecifiersFromPlistName:(id)a3 target:(id)a4 bundle:(id)a5;
-- (id)selectSpecifier:(id)a3;
-- (id)specifierAtIndex:(int64_t)a3;
-- (id)specifierAtIndexPath:(id)a3;
-- (id)specifierForID:(id)a3;
+- (id)getGroupSpecifierForSpecifier:(id)specifier;
+- (id)getGroupSpecifierForSpecifierID:(id)d;
+- (id)indexPathForIndex:(int64_t)index;
+- (id)indexPathForSpecifier:(id)specifier;
+- (id)loadSpecifiersFromPlistName:(id)name target:(id)target;
+- (id)loadSpecifiersFromPlistName:(id)name target:(id)target bundle:(id)bundle;
+- (id)selectSpecifier:(id)specifier;
+- (id)specifierAtIndex:(int64_t)index;
+- (id)specifierAtIndexPath:(id)path;
+- (id)specifierForID:(id)d;
 - (id)specifiers;
-- (id)specifiersForIDs:(id)a3;
-- (id)specifiersInGroup:(int64_t)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 detailTextForHeaderInSection:(int64_t)a4;
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (int64_t)_nextGroupInSpecifiersAfterIndex:(int64_t)a3 inArray:(id)a4;
-- (int64_t)indexForIndexPath:(id)a3;
-- (int64_t)indexForRow:(int64_t)a3 inGroup:(int64_t)a4;
-- (int64_t)indexOfGroup:(int64_t)a3;
-- (int64_t)indexOfSpecifier:(id)a3;
-- (int64_t)indexOfSpecifierID:(id)a3;
+- (id)specifiersForIDs:(id)ds;
+- (id)specifiersInGroup:(int64_t)group;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view detailTextForHeaderInSection:(int64_t)section;
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (int64_t)_nextGroupInSpecifiersAfterIndex:(int64_t)index inArray:(id)array;
+- (int64_t)indexForIndexPath:(id)path;
+- (int64_t)indexForRow:(int64_t)row inGroup:(int64_t)group;
+- (int64_t)indexOfGroup:(int64_t)group;
+- (int64_t)indexOfSpecifier:(id)specifier;
+- (int64_t)indexOfSpecifierID:(id)d;
 - (int64_t)numberOfGroups;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)rowsForGroup:(int64_t)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (int64_t)tableView:(id)a3 titleAlignmentForFooterInSection:(int64_t)a4;
-- (int64_t)tableView:(id)a3 titleAlignmentForHeaderInSection:(int64_t)a4;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)rowsForGroup:(int64_t)group;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (int64_t)tableView:(id)view titleAlignmentForFooterInSection:(int64_t)section;
+- (int64_t)tableView:(id)view titleAlignmentForHeaderInSection:(int64_t)section;
 - (int64_t)tableViewStyle;
-- (void)_addIdentifierForSpecifier:(id)a3;
+- (void)_addIdentifierForSpecifier:(id)specifier;
 - (void)_ensureAppearanceProviderAndNavigationCoordinator;
-- (void)_insertContiguousSpecifiers:(id)a3 atIndex:(int64_t)a4 animated:(BOOL)a5;
-- (void)_keyboardWillHide:(id)a3;
-- (void)_keyboardWillShow:(id)a3;
+- (void)_insertContiguousSpecifiers:(id)specifiers atIndex:(int64_t)index animated:(BOOL)animated;
+- (void)_keyboardWillHide:(id)hide;
+- (void)_keyboardWillShow:(id)show;
 - (void)_loadBundleControllers;
-- (void)_moveSpecifierAtIndex:(unint64_t)a3 toIndex:(unint64_t)a4 animated:(BOOL)a5;
-- (void)_performHighlightForSpecifierWithID:(id)a3 tryAgainIfFailed:(BOOL)a4;
-- (void)_removeContiguousSpecifiers:(id)a3 animated:(BOOL)a4;
-- (void)_removeIdentifierForSpecifier:(id)a3;
-- (void)_returnKeyPressed:(id)a3;
-- (void)_scrollToSpecifierWithID:(id)a3 animated:(BOOL)a4;
-- (void)_setContentInset:(double)a3;
-- (void)_showController:(id)a3 animate:(BOOL)a4;
+- (void)_moveSpecifierAtIndex:(unint64_t)index toIndex:(unint64_t)toIndex animated:(BOOL)animated;
+- (void)_performHighlightForSpecifierWithID:(id)d tryAgainIfFailed:(BOOL)failed;
+- (void)_removeContiguousSpecifiers:(id)specifiers animated:(BOOL)animated;
+- (void)_removeIdentifierForSpecifier:(id)specifier;
+- (void)_returnKeyPressed:(id)pressed;
+- (void)_scrollToSpecifierWithID:(id)d animated:(BOOL)animated;
+- (void)_setContentInset:(double)inset;
+- (void)_showController:(id)controller animate:(BOOL)animate;
 - (void)_unloadBundleControllers;
-- (void)_updateRadioGroupSpecifier:(id)a3;
-- (void)_updateSectionContentInsetWithAnimation:(BOOL)a3;
-- (void)addSpecifier:(id)a3 animated:(BOOL)a4;
-- (void)addSpecifiersFromArray:(id)a3 animated:(BOOL)a4;
+- (void)_updateRadioGroupSpecifier:(id)specifier;
+- (void)_updateSectionContentInsetWithAnimation:(BOOL)animation;
+- (void)addSpecifier:(id)specifier animated:(BOOL)animated;
+- (void)addSpecifiersFromArray:(id)array animated:(BOOL)animated;
 - (void)clearPendingURL;
-- (void)confirmationViewAcceptedForSpecifier:(id)a3;
-- (void)confirmationViewAlternateAcceptedForSpecifier:(id)a3;
-- (void)confirmationViewCancelledForSpecifier:(id)a3;
-- (void)contentSizeDidChange:(id)a3;
+- (void)confirmationViewAcceptedForSpecifier:(id)specifier;
+- (void)confirmationViewAlternateAcceptedForSpecifier:(id)specifier;
+- (void)confirmationViewCancelledForSpecifier:(id)specifier;
+- (void)contentSizeDidChange:(id)change;
 - (void)createGroupIndices;
-- (void)dataSource:(id)a3 performUpdates:(id)a4;
+- (void)dataSource:(id)source performUpdates:(id)updates;
 - (void)dealloc;
-- (void)didBecomeActive:(id)a3;
-- (void)dismissConfirmationViewAnimated:(BOOL)a3;
-- (void)dismissPopoverAnimated:(BOOL)a3 completion:(id)a4;
+- (void)didBecomeActive:(id)active;
+- (void)dismissConfirmationViewAnimated:(BOOL)animated;
+- (void)dismissPopoverAnimated:(BOOL)animated completion:(id)completion;
 - (void)formSheetViewWillDisappear;
-- (void)handleScrollPPTTestName:(id)a3;
-- (void)handleURL:(id)a3 withCompletion:(id)a4;
-- (void)highlightSpecifierWithID:(id)a3;
-- (void)insertContiguousSpecifiers:(id)a3 afterSpecifier:(id)a4 animated:(BOOL)a5;
-- (void)insertContiguousSpecifiers:(id)a3 afterSpecifierID:(id)a4 animated:(BOOL)a5;
-- (void)insertContiguousSpecifiers:(id)a3 atEndOfGroup:(int64_t)a4 animated:(BOOL)a5;
-- (void)insertSpecifier:(id)a3 afterSpecifier:(id)a4 animated:(BOOL)a5;
-- (void)insertSpecifier:(id)a3 afterSpecifierID:(id)a4 animated:(BOOL)a5;
-- (void)insertSpecifier:(id)a3 atEndOfGroup:(int64_t)a4 animated:(BOOL)a5;
-- (void)insertSpecifier:(id)a3 atIndex:(int64_t)a4 animated:(BOOL)a5;
-- (void)lazyLoadBundle:(id)a3;
+- (void)handleScrollPPTTestName:(id)name;
+- (void)handleURL:(id)l withCompletion:(id)completion;
+- (void)highlightSpecifierWithID:(id)d;
+- (void)insertContiguousSpecifiers:(id)specifiers afterSpecifier:(id)specifier animated:(BOOL)animated;
+- (void)insertContiguousSpecifiers:(id)specifiers afterSpecifierID:(id)d animated:(BOOL)animated;
+- (void)insertContiguousSpecifiers:(id)specifiers atEndOfGroup:(int64_t)group animated:(BOOL)animated;
+- (void)insertSpecifier:(id)specifier afterSpecifier:(id)afterSpecifier animated:(BOOL)animated;
+- (void)insertSpecifier:(id)specifier afterSpecifierID:(id)d animated:(BOOL)animated;
+- (void)insertSpecifier:(id)specifier atEndOfGroup:(int64_t)group animated:(BOOL)animated;
+- (void)insertSpecifier:(id)specifier atIndex:(int64_t)index animated:(BOOL)animated;
+- (void)lazyLoadBundle:(id)bundle;
 - (void)loadView;
 - (void)loseFocus;
-- (void)performScrollAndHighlightIfOnScreenToSpecifierIdentifier:(id)a3;
-- (void)performScrollAndInvokeSelectionIfOnScreenToSpecifierIdentifier:(id)a3;
-- (void)performSpecifierUpdates:(id)a3;
+- (void)performScrollAndHighlightIfOnScreenToSpecifierIdentifier:(id)identifier;
+- (void)performScrollAndInvokeSelectionIfOnScreenToSpecifierIdentifier:(id)identifier;
+- (void)performSpecifierUpdates:(id)updates;
 - (void)popupViewWillDisappear;
 - (void)prepareSpecifiersMetadata;
-- (void)reloadIconForSpecifierForBundle:(id)a3;
-- (void)reloadSpecifier:(id)a3 animated:(BOOL)a4;
-- (void)reloadSpecifierAtIndex:(int64_t)a3 animated:(BOOL)a4;
-- (void)reloadSpecifierID:(id)a3 animated:(BOOL)a4;
+- (void)reloadIconForSpecifierForBundle:(id)bundle;
+- (void)reloadSpecifier:(id)specifier animated:(BOOL)animated;
+- (void)reloadSpecifierAtIndex:(int64_t)index animated:(BOOL)animated;
+- (void)reloadSpecifierID:(id)d animated:(BOOL)animated;
 - (void)reloadSpecifiers;
-- (void)removeLastSpecifierAnimated:(BOOL)a3;
-- (void)removeSpecifier:(id)a3 animated:(BOOL)a4;
-- (void)removeSpecifierAtIndex:(int64_t)a3 animated:(BOOL)a4;
-- (void)removeSpecifierID:(id)a3 animated:(BOOL)a4;
-- (void)replaceContiguousSpecifiers:(id)a3 withSpecifiers:(id)a4 animated:(BOOL)a5;
+- (void)removeLastSpecifierAnimated:(BOOL)animated;
+- (void)removeSpecifier:(id)specifier animated:(BOOL)animated;
+- (void)removeSpecifierAtIndex:(int64_t)index animated:(BOOL)animated;
+- (void)removeSpecifierID:(id)d animated:(BOOL)animated;
+- (void)replaceContiguousSpecifiers:(id)specifiers withSpecifiers:(id)withSpecifiers animated:(BOOL)animated;
 - (void)returnPressedAtEnd;
-- (void)selectRowForSpecifier:(id)a3;
-- (void)setAppearanceProvider:(id)a3;
-- (void)setCellHighlightingSelectionInvocationRelay:(id)a3;
-- (void)setDesiredVerticalContentOffsetItemNamed:(id)a3;
-- (void)setNavigationCoordinator:(id)a3;
-- (void)setPrefetchingEnabled:(BOOL)a3;
-- (void)setSpecifier:(id)a3;
-- (void)setSpecifierActionCoordinator:(id)a3;
-- (void)setSpecifierDataSource:(id)a3;
-- (void)setSpecifiers:(id)a3;
-- (void)setTitle:(id)a3;
-- (void)showConfirmationViewForSpecifier:(id)a3;
-- (void)showConfirmationViewForSpecifier:(id)a3 useAlert:(BOOL)a4;
-- (void)showController:(id)a3 animate:(BOOL)a4;
-- (void)showPINSheet:(id)a3 allowOptionsButton:(BOOL)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 prefetchRowsAtIndexPaths:(id)a4;
-- (void)updateSpecifiers:(id)a3 withSpecifiers:(id)a4;
-- (void)updateSpecifiersInRange:(_NSRange)a3 withSpecifiers:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)selectRowForSpecifier:(id)specifier;
+- (void)setAppearanceProvider:(id)provider;
+- (void)setCellHighlightingSelectionInvocationRelay:(id)relay;
+- (void)setDesiredVerticalContentOffsetItemNamed:(id)named;
+- (void)setNavigationCoordinator:(id)coordinator;
+- (void)setPrefetchingEnabled:(BOOL)enabled;
+- (void)setSpecifier:(id)specifier;
+- (void)setSpecifierActionCoordinator:(id)coordinator;
+- (void)setSpecifierDataSource:(id)source;
+- (void)setSpecifiers:(id)specifiers;
+- (void)setTitle:(id)title;
+- (void)showConfirmationViewForSpecifier:(id)specifier;
+- (void)showConfirmationViewForSpecifier:(id)specifier useAlert:(BOOL)alert;
+- (void)showController:(id)controller animate:(BOOL)animate;
+- (void)showPINSheet:(id)sheet allowOptionsButton:(BOOL)button;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view prefetchRowsAtIndexPaths:(id)paths;
+- (void)updateSpecifiers:(id)specifiers withSpecifiers:(id)withSpecifiers;
+- (void)updateSpecifiersInRange:(_NSRange)range withSpecifiers:(id)specifiers;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 - (void)viewDidUnload;
-- (void)viewIsAppearing:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewIsAppearing:(BOOL)appearing;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation PSListController
@@ -178,18 +178,18 @@
     v4 = objc_opt_class();
     v2->_subclassOverridesTableViewCellForRowAtIndexPath = v4 != objc_opt_class() && (v5 = objc_opt_class(), v5 != NSClassFromString(&cfstr_Psphotoservice.isa)) && v3 != __listControllerCellForRowAtIndexPath;
     [(PSListController *)v2 _ensureAppearanceProviderAndNavigationCoordinator];
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v6 addObserver:v2 selector:sel__returnKeyPressed_ name:*MEMORY[0x1E69DE038] object:0];
-    [v6 addObserver:v2 selector:sel__keyboardWillShow_ name:*MEMORY[0x1E69DE080] object:0];
-    [v6 addObserver:v2 selector:sel__keyboardWillHide_ name:*MEMORY[0x1E69DE078] object:0];
-    [v6 addObserver:v2 selector:sel__keyboardDidHide_ name:*MEMORY[0x1E69DDF70] object:0];
-    [v6 addObserver:v2 selector:sel_contentSizeDidChange_ name:*MEMORY[0x1E69DDC48] object:0];
-    [v6 addObserver:v2 selector:sel_didBecomeActive_ name:*MEMORY[0x1E69DDAB0] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__returnKeyPressed_ name:*MEMORY[0x1E69DE038] object:0];
+    [defaultCenter addObserver:v2 selector:sel__keyboardWillShow_ name:*MEMORY[0x1E69DE080] object:0];
+    [defaultCenter addObserver:v2 selector:sel__keyboardWillHide_ name:*MEMORY[0x1E69DE078] object:0];
+    [defaultCenter addObserver:v2 selector:sel__keyboardDidHide_ name:*MEMORY[0x1E69DDF70] object:0];
+    [defaultCenter addObserver:v2 selector:sel_contentSizeDidChange_ name:*MEMORY[0x1E69DDC48] object:0];
+    [defaultCenter addObserver:v2 selector:sel_didBecomeActive_ name:*MEMORY[0x1E69DDAB0] object:0];
     v7 = objc_opt_new();
     [(PSListController *)v2 setUrlHandler:v7];
 
-    v8 = [(PSListController *)v2 urlHandler];
-    [v8 setDelegate:v2];
+    urlHandler = [(PSListController *)v2 urlHandler];
+    [urlHandler setDelegate:v2];
   }
 
   return v2;
@@ -231,12 +231,12 @@
   -[PSListController setExtendedLayoutIncludesOpaqueBars:](self, "setExtendedLayoutIncludesOpaqueBars:", [v3 extendedLayoutIncludesOpaqueBars]);
 
   v4 = objc_alloc([(PSListController *)self tableViewClass]);
-  v5 = [(PSListController *)self tableViewStyle];
+  tableViewStyle = [(PSListController *)self tableViewStyle];
   v6 = *MEMORY[0x1E695F058];
   v7 = *(MEMORY[0x1E695F058] + 8);
   v8 = *(MEMORY[0x1E695F058] + 16);
   v9 = *(MEMORY[0x1E695F058] + 24);
-  v10 = [v4 initWithFrame:v5 style:{*MEMORY[0x1E695F058], v7, v8, v9}];
+  v10 = [v4 initWithFrame:tableViewStyle style:{*MEMORY[0x1E695F058], v7, v8, v9}];
   table = self->_table;
   self->_table = v10;
 
@@ -308,8 +308,8 @@
     if (objc_opt_respondsToSelector())
     {
       v43 = self->_table;
-      v44 = [(objc_class *)v42 cellReuseIdentifier];
-      [(UITableView *)v43 registerClass:v42 forCellReuseIdentifier:v44];
+      cellReuseIdentifier = [(objc_class *)v42 cellReuseIdentifier];
+      [(UITableView *)v43 registerClass:v42 forCellReuseIdentifier:cellReuseIdentifier];
     }
   }
 }
@@ -353,7 +353,7 @@
     _os_signpost_emit_with_name_impl(&dword_18B008000, v7, OS_SIGNPOST_INTERVAL_BEGIN, v5, "PSListController.loadSpecifiersInViewDidLoad", "%{public}@: %{public}s", buf, 0x16u);
   }
 
-  v9 = [(PSListController *)self specifiers];
+  specifiers = [(PSListController *)self specifiers];
   [(PSListController *)self _loadBundleControllers];
   v10 = PKLogForCategory(6);
   v11 = v10;
@@ -383,13 +383,13 @@
   v12 = objc_loadWeakRetained(&self->super._rootController);
   if (v12)
   {
-    v13 = [(PSViewController *)self rootController];
+    rootController = [(PSViewController *)self rootController];
     v14 = objc_opt_respondsToSelector();
 
     if (v14)
     {
-      v15 = [(PSViewController *)self rootController];
-      [v15 logSettingsPath];
+      rootController2 = [(PSViewController *)self rootController];
+      [rootController2 logSettingsPath];
     }
   }
 
@@ -423,11 +423,11 @@
     v5 = objc_opt_class();
     v6 = NSStringFromClass(v5);
     v7 = NSStringFromSelector(a2);
-    v8 = [(PSListController *)self viewIfLoaded];
+    viewIfLoaded = [(PSListController *)self viewIfLoaded];
     v9 = @"View is loaded";
     *buf = 138543874;
     v29 = v6;
-    if (!v8)
+    if (!viewIfLoaded)
     {
       v9 = @"View is not loaded";
     }
@@ -439,21 +439,21 @@
     _os_log_impl(&dword_18B008000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@: %{public}@ %@", buf, 0x20u);
   }
 
-  v10 = self;
-  objc_sync_enter(v10);
-  specifiers = v10->_specifiers;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  specifiers = selfCopy->_specifiers;
   if (specifiers && [(NSArray *)specifiers count])
   {
-    v12 = [(NSArray *)v10->_specifiers objectAtIndex:0];
+    v12 = [(NSArray *)selfCopy->_specifiers objectAtIndex:0];
     v13 = v12;
     if (v12 && *(v12 + 56))
     {
-      v14 = [(NSArray *)v10->_specifiers mutableCopy];
+      v14 = [(NSArray *)selfCopy->_specifiers mutableCopy];
       v15 = [PSSpecifier preferenceSpecifierNamed:0 target:0 set:0 get:0 detail:0 cell:0 edit:0];
       [(NSArray *)v14 insertObject:v15 atIndex:0];
 
-      v16 = v10->_specifiers;
-      v10->_specifiers = v14;
+      v16 = selfCopy->_specifiers;
+      selfCopy->_specifiers = v14;
     }
   }
 
@@ -462,18 +462,18 @@
     v13 = 0;
   }
 
-  objc_sync_exit(v10);
+  objc_sync_exit(selfCopy);
 
-  [(PSListController *)v10 createGroupIndices];
-  v17 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{-[NSArray count](v10->_specifiers, "count")}];
-  specifiersByID = v10->_specifiersByID;
-  v10->_specifiersByID = v17;
+  [(PSListController *)selfCopy createGroupIndices];
+  v17 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{-[NSArray count](selfCopy->_specifiers, "count")}];
+  specifiersByID = selfCopy->_specifiersByID;
+  selfCopy->_specifiersByID = v17;
 
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v19 = v10->_specifiers;
+  v19 = selfCopy->_specifiers;
   v20 = [(NSArray *)v19 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v20)
   {
@@ -487,7 +487,7 @@
           objc_enumerationMutation(v19);
         }
 
-        [(PSListController *)v10 _addIdentifierForSpecifier:*(*(&v23 + 1) + 8 * i)];
+        [(PSListController *)selfCopy _addIdentifierForSpecifier:*(*(&v23 + 1) + 8 * i)];
       }
 
       v20 = [(NSArray *)v19 countByEnumeratingWithState:&v23 objects:v27 count:16];
@@ -513,15 +513,15 @@
   v22.receiver = self;
   v22.super_class = PSListController;
   [(PSListController *)&v22 viewDidLayoutSubviews];
-  v3 = [(PSListController *)self view];
-  [v3 bounds];
+  view = [(PSListController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
-  v12 = [MEMORY[0x1E69DC938] currentDevice];
-  if ([v12 sf_isiPad])
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  if ([currentDevice sf_isiPad])
   {
     v13 = PSIsRunningInAssistant();
 
@@ -551,8 +551,8 @@
 
         v17 = v16;
         _Block_object_dispose(&v24, 8);
-        v18 = [v16 sharedStyle];
-        [v18 edgeInsetsForTable:self->_table];
+        sharedStyle = [v16 sharedStyle];
+        [sharedStyle edgeInsetsForTable:self->_table];
         v5 = v19;
         v21 = v20;
 
@@ -572,17 +572,17 @@
 - (BOOL)_isRegularWidth
 {
   v3 = [MEMORY[0x1E69DD1B8] traitCollectionWithHorizontalSizeClass:2];
-  v4 = [(PSListController *)self splitViewController];
-  v5 = [v4 traitCollection];
-  v6 = [v5 containsTraitsInCollection:v3];
+  splitViewController = [(PSListController *)self splitViewController];
+  traitCollection = [splitViewController traitCollection];
+  v6 = [traitCollection containsTraitsInCollection:v3];
 
   return v6;
 }
 
 - (BOOL)shouldSelectResponderOnAppearance
 {
-  v3 = [MEMORY[0x1E69DC938] currentDevice];
-  if ([v3 sf_isiPad] && !self->_hasAppeared)
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  if ([currentDevice sf_isiPad] && !self->_hasAppeared)
   {
     WeakRetained = objc_loadWeakRetained(&self->super._rootController);
     objc_opt_class();
@@ -599,43 +599,43 @@
 
 - (NSString)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v4 = objc_opt_class();
-  v5 = [(PSListController *)self navigationItem];
-  [v3 appendFormat:@"<%@ %p: navItem %@, view %p>", v4, self, v5, self->_table];
+  navigationItem = [(PSListController *)self navigationItem];
+  [string appendFormat:@"<%@ %p: navItem %@, view %p>", v4, self, navigationItem, self->_table];
 
-  return v3;
+  return string;
 }
 
-- (id)loadSpecifiersFromPlistName:(id)a3 target:(id)a4
+- (id)loadSpecifiersFromPlistName:(id)name target:(id)target
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PSListController *)self bundle];
-  v9 = [(PSListController *)self loadSpecifiersFromPlistName:v7 target:v6 bundle:v8];
+  targetCopy = target;
+  nameCopy = name;
+  bundle = [(PSListController *)self bundle];
+  v9 = [(PSListController *)self loadSpecifiersFromPlistName:nameCopy target:targetCopy bundle:bundle];
 
   return v9;
 }
 
-- (id)loadSpecifiersFromPlistName:(id)a3 target:(id)a4 bundle:(id)a5
+- (id)loadSpecifiersFromPlistName:(id)name target:(id)target bundle:(id)bundle
 {
   v29 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  nameCopy = name;
+  bundleCopy = bundle;
   v23 = 0;
   v24 = 0;
-  v10 = a4;
-  v11 = [v9 pathForResource:v8 ofType:@"plist"];
+  targetCopy = target;
+  v11 = [bundleCopy pathForResource:nameCopy ofType:@"plist"];
   if (!v11)
   {
     v12 = _PSLoggingFacility();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [v9 bundlePath];
+      bundlePath = [bundleCopy bundlePath];
       *buf = 138412546;
-      v26 = v8;
+      v26 = nameCopy;
       v27 = 2112;
-      v28 = v13;
+      v28 = bundlePath;
       _os_log_impl(&dword_18B008000, v12, OS_LOG_TYPE_DEFAULT, "Warning: failed to load preferences plist '%@.plist' for bundle %@", buf, 0x16u);
     }
   }
@@ -644,7 +644,7 @@
   v15 = objc_opt_new();
   specifier = self->super._specifier;
   v22 = v15;
-  v17 = SpecifiersFromPlist(v14, specifier, v10, v8, v9, &v23, &v24, self, &v22);
+  v17 = SpecifiersFromPlist(v14, specifier, targetCopy, nameCopy, bundleCopy, &v23, &v24, self, &v22);
 
   v18 = v22;
   v19 = v22;
@@ -668,51 +668,51 @@
 
 - (id)specifiers
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_specifiers)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_specifiers)
   {
-    if (v2->_dataSource)
+    if (selfCopy->_dataSource)
     {
-      v2->_requestingSpecifiersFromDataSource = 1;
-      dataSource = v2->_dataSource;
-      v4 = [(PSListController *)v2 specifier];
-      v5 = [(PSSpecifierDataSource *)dataSource specifiersForSpecifier:v4 observer:v2];
-      specifiers = v2->_specifiers;
-      v2->_specifiers = v5;
+      selfCopy->_requestingSpecifiersFromDataSource = 1;
+      dataSource = selfCopy->_dataSource;
+      specifier = [(PSListController *)selfCopy specifier];
+      v5 = [(PSSpecifierDataSource *)dataSource specifiersForSpecifier:specifier observer:selfCopy];
+      specifiers = selfCopy->_specifiers;
+      selfCopy->_specifiers = v5;
 
-      v2->_requestingSpecifiersFromDataSource = 0;
+      selfCopy->_requestingSpecifiersFromDataSource = 0;
     }
 
     else
     {
-      v7 = [(PSSpecifier *)v2->super._specifier propertyForKey:@"label"];
-      v8 = [(PSSpecifier *)v2->super._specifier target];
-      v9 = [(PSListController *)v2 loadSpecifiersFromPlistName:v7 target:v8];
-      v10 = v2->_specifiers;
-      v2->_specifiers = v9;
+      v7 = [(PSSpecifier *)selfCopy->super._specifier propertyForKey:@"label"];
+      target = [(PSSpecifier *)selfCopy->super._specifier target];
+      v9 = [(PSListController *)selfCopy loadSpecifiersFromPlistName:v7 target:target];
+      v10 = selfCopy->_specifiers;
+      selfCopy->_specifiers = v9;
     }
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  v11 = v2->_specifiers;
+  v11 = selfCopy->_specifiers;
 
   return v11;
 }
 
-- (void)_addIdentifierForSpecifier:(id)a3
+- (void)_addIdentifierForSpecifier:(id)specifier
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 identifier];
-  if (!v5)
+  specifierCopy = specifier;
+  identifier = [specifierCopy identifier];
+  if (!identifier)
   {
-    v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%ld", -[PSListController indexOfSpecifier:](self, "indexOfSpecifier:", v4)];
-    [v4 setProperty:v5 forKey:@"id"];
+    identifier = [MEMORY[0x1E696AEC0] stringWithFormat:@"%ld", -[PSListController indexOfSpecifier:](self, "indexOfSpecifier:", specifierCopy)];
+    [specifierCopy setProperty:identifier forKey:@"id"];
   }
 
-  v6 = v5;
+  v6 = identifier;
   v7 = 0;
   v8 = v6;
   do
@@ -734,15 +734,15 @@
   }
 
   while (v11);
-  [v4 setProperty:v10 forKey:@"id"];
+  [specifierCopy setProperty:v10 forKey:@"id"];
   v12 = _PSLoggingFacility();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [v4 name];
+    name = [specifierCopy name];
     *buf = 138413058;
-    v15 = v13;
+    v15 = name;
     v16 = 2048;
-    v17 = v4;
+    v17 = specifierCopy;
     v18 = 2112;
     v19 = v6;
     v20 = 2112;
@@ -751,36 +751,36 @@
   }
 
 LABEL_10:
-  [(NSMutableDictionary *)self->_specifiersByID setObject:v4 forKey:v10];
+  [(NSMutableDictionary *)self->_specifiersByID setObject:specifierCopy forKey:v10];
 }
 
-- (void)_removeIdentifierForSpecifier:(id)a3
+- (void)_removeIdentifierForSpecifier:(id)specifier
 {
-  v4 = [a3 identifier];
-  if (v4)
+  identifier = [specifier identifier];
+  if (identifier)
   {
-    v5 = v4;
-    [(NSMutableDictionary *)self->_specifiersByID removeObjectForKey:v4];
-    v4 = v5;
+    v5 = identifier;
+    [(NSMutableDictionary *)self->_specifiersByID removeObjectForKey:identifier];
+    identifier = v5;
   }
 }
 
-- (void)setSpecifier:(id)a3
+- (void)setSpecifier:(id)specifier
 {
-  v4 = a3;
-  if (self->super._specifier != v4)
+  specifierCopy = specifier;
+  if (self->super._specifier != specifierCopy)
   {
     v14.receiver = self;
     v14.super_class = PSListController;
-    [(PSViewController *)&v14 setSpecifier:v4];
+    [(PSViewController *)&v14 setSpecifier:specifierCopy];
     v5 = ([(UITableView *)self->_table _displaysCellContentStringsOnTapAndHold]& 1) != 0 || [(PSSpecifier *)self->super._specifier showContentString];
     [(UITableView *)self->_table _setDisplaysCellContentStringsOnTapAndHold:v5];
-    v6 = [(PSSpecifier *)v4 propertyForKey:@"dataSourceClass"];
+    v6 = [(PSSpecifier *)specifierCopy propertyForKey:@"dataSourceClass"];
     v7 = v6;
     if (v6)
     {
-      v8 = [NSClassFromString(v6) sharedInstance];
-      [(PSListController *)self setSpecifierDataSource:v8];
+      nSClassFromString(v6) = [NSClassFromString(v6) sharedInstance];
+      [(PSListController *)self setSpecifierDataSource:nSClassFromString(v6)];
     }
 
     else
@@ -789,7 +789,7 @@ LABEL_10:
     }
 
     objc_opt_class();
-    v9 = [(PSSpecifier *)v4 objectForKeyedSubscript:@"PSListControllerCellHighlightingSelectionInvocationRelayKey"];
+    v9 = [(PSSpecifier *)specifierCopy objectForKeyedSubscript:@"PSListControllerCellHighlightingSelectionInvocationRelayKey"];
     if (objc_opt_isKindOfClass())
     {
       v10 = v9;
@@ -803,52 +803,52 @@ LABEL_10:
     v11 = v10;
     [(PSListController *)self setCellHighlightingSelectionInvocationRelay:v11];
 
-    v12 = [(PSListController *)self title];
+    title = [(PSListController *)self title];
 
-    if (!v12)
+    if (!title)
     {
-      v13 = [(PSSpecifier *)self->super._specifier name];
-      [(PSListController *)self setTitle:v13];
+      name = [(PSSpecifier *)self->super._specifier name];
+      [(PSListController *)self setTitle:name];
     }
   }
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   if ([MEMORY[0x1E696AF00] isMainThread])
   {
     v5.receiver = self;
     v5.super_class = PSListController;
-    [(PSListController *)&v5 setTitle:v4];
+    [(PSListController *)&v5 setTitle:titleCopy];
   }
 }
 
-- (void)setSpecifiers:(id)a3
+- (void)setSpecifiers:(id)specifiers
 {
-  v6 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (v5->_specifiers == v6)
+  specifiersCopy = specifiers;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_specifiers == specifiersCopy)
   {
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
   }
 
   else
   {
-    objc_storeStrong(&v5->_specifiers, a3);
-    objc_sync_exit(v5);
+    objc_storeStrong(&selfCopy->_specifiers, specifiers);
+    objc_sync_exit(selfCopy);
 
-    [(PSListController *)v5 prepareSpecifiersMetadata];
-    [(PSListController *)v5 reload];
+    [(PSListController *)selfCopy prepareSpecifiersMetadata];
+    [(PSListController *)selfCopy reload];
   }
 }
 
-- (id)indexPathForIndex:(int64_t)a3
+- (id)indexPathForIndex:(int64_t)index
 {
   v7 = -1;
   v8 = -1;
-  if ([(PSListController *)self getGroup:&v8 row:&v7 ofSpecifierAtIndex:a3])
+  if ([(PSListController *)self getGroup:&v8 row:&v7 ofSpecifierAtIndex:index])
   {
     if (v7 < 0)
     {
@@ -881,25 +881,25 @@ LABEL_10:
   return v5;
 }
 
-- (id)indexPathForSpecifier:(id)a3
+- (id)indexPathForSpecifier:(id)specifier
 {
-  v4 = [(PSListController *)self indexOfSpecifier:a3];
+  v4 = [(PSListController *)self indexOfSpecifier:specifier];
 
   return [(PSListController *)self indexPathForIndex:v4];
 }
 
-- (int64_t)indexForIndexPath:(id)a3
+- (int64_t)indexForIndexPath:(id)path
 {
-  v4 = a3;
-  if (v4)
+  pathCopy = path;
+  if (pathCopy)
   {
     if (!self->_groups)
     {
       [(PSListController *)self createGroupIndices];
     }
 
-    v5 = [v4 row];
-    v6 = -[PSListController indexOfGroup:](self, "indexOfGroup:", [v4 section]);
+    v5 = [pathCopy row];
+    v6 = -[PSListController indexOfGroup:](self, "indexOfGroup:", [pathCopy section]);
     if (v6 == 0x7FFFFFFFFFFFFFFFLL)
     {
       v7 = 0x7FFFFFFFFFFFFFFFLL;
@@ -919,16 +919,16 @@ LABEL_10:
   return v7;
 }
 
-- (void)reloadSpecifierAtIndex:(int64_t)a3 animated:(BOOL)a4
+- (void)reloadSpecifierAtIndex:(int64_t)index animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v34[1] = *MEMORY[0x1E69E9840];
-  v6 = self;
-  objc_sync_enter(v6);
-  specifiers = v6->_specifiers;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  specifiers = selfCopy->_specifiers;
   if (specifiers)
   {
-    v26 = [(NSArray *)specifiers objectAtIndex:a3];
+    v26 = [(NSArray *)specifiers objectAtIndex:index];
   }
 
   else
@@ -936,25 +936,25 @@ LABEL_10:
     v26 = 0;
   }
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
 
-  v24 = [MEMORY[0x1E69DD250] areAnimationsEnabled];
-  if (!v4)
+  areAnimationsEnabled = [MEMORY[0x1E69DD250] areAnimationsEnabled];
+  if (!animatedCopy)
   {
     [MEMORY[0x1E69DD250] setAnimationsEnabled:0];
   }
 
-  v8 = [(UITableView *)v6->_table indexPathForSelectedRow];
-  v25 = [(PSListController *)v6 indexForIndexPath:v8];
+  indexPathForSelectedRow = [(UITableView *)selfCopy->_table indexPathForSelectedRow];
+  v25 = [(PSListController *)selfCopy indexForIndexPath:indexPathForSelectedRow];
   v31 = 0;
   v32 = 0;
-  if ([(PSListController *)v6 getGroup:&v32 row:&v31 ofSpecifierAtIndex:a3])
+  if ([(PSListController *)selfCopy getGroup:&v32 row:&v31 ofSpecifierAtIndex:index])
   {
-    [(UITableView *)v6->_table beginUpdates];
+    [(UITableView *)selfCopy->_table beginUpdates];
     v23 = [MEMORY[0x1E696AC88] indexPathForRow:v31 inSection:v32];
     if (v31 < 0)
     {
-      v11 = [(PSListController *)v6 specifiersInGroup:v32];
+      v11 = [(PSListController *)selfCopy specifiersInGroup:v32];
       v29 = 0u;
       v30 = 0u;
       v27 = 0u;
@@ -993,9 +993,9 @@ LABEL_10:
         [v16 refreshContentsWithSpecifier:v26];
       }
 
-      table = v6->_table;
+      table = selfCopy->_table;
       v18 = [MEMORY[0x1E696AC90] indexSetWithIndex:v32];
-      if (v4)
+      if (animatedCopy)
       {
         v19 = 0;
       }
@@ -1011,7 +1011,7 @@ LABEL_10:
     else
     {
       objc_opt_class();
-      v9 = [(UITableView *)v6->_table cellForRowAtIndexPath:v23];
+      v9 = [(UITableView *)selfCopy->_table cellForRowAtIndexPath:v23];
       if (objc_opt_isKindOfClass())
       {
         v10 = v9;
@@ -1026,15 +1026,15 @@ LABEL_10:
 
       if (v11)
       {
-        [v11 reloadWithSpecifier:v26 animated:v4];
+        [v11 reloadWithSpecifier:v26 animated:animatedCopy];
       }
 
       else
       {
-        v20 = v6->_table;
+        v20 = selfCopy->_table;
         v34[0] = v23;
         v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v34 count:1];
-        if (v4)
+        if (animatedCopy)
         {
           v22 = 0;
         }
@@ -1048,30 +1048,30 @@ LABEL_10:
       }
     }
 
-    [(UITableView *)v6->_table endUpdates];
+    [(UITableView *)selfCopy->_table endUpdates];
   }
 
-  if (!v4)
+  if (!animatedCopy)
   {
-    [MEMORY[0x1E69DD250] setAnimationsEnabled:v24];
+    [MEMORY[0x1E69DD250] setAnimationsEnabled:areAnimationsEnabled];
   }
 
-  if (v25 == a3)
+  if (v25 == index)
   {
-    [(UITableView *)v6->_table selectRowAtIndexPath:v8 animated:0 scrollPosition:0];
+    [(UITableView *)selfCopy->_table selectRowAtIndexPath:indexPathForSelectedRow animated:0 scrollPosition:0];
   }
 }
 
-- (void)reloadSpecifier:(id)a3 animated:(BOOL)a4
+- (void)reloadSpecifier:(id)specifier animated:(BOOL)animated
 {
-  v4 = a4;
-  v9 = a3;
-  v6 = self;
-  objc_sync_enter(v6);
-  specifiers = v6->_specifiers;
+  animatedCopy = animated;
+  specifierCopy = specifier;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  specifiers = selfCopy->_specifiers;
   if (specifiers)
   {
-    v8 = [(NSArray *)specifiers indexOfObject:v9];
+    v8 = [(NSArray *)specifiers indexOfObject:specifierCopy];
   }
 
   else
@@ -1079,50 +1079,50 @@ LABEL_10:
     v8 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
 
   if (v8 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    [(PSListController *)v6 reloadSpecifierAtIndex:v8 animated:v4];
+    [(PSListController *)selfCopy reloadSpecifierAtIndex:v8 animated:animatedCopy];
   }
 }
 
-- (void)reloadSpecifierID:(id)a3 animated:(BOOL)a4
+- (void)reloadSpecifierID:(id)d animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  dCopy = d;
   v7 = PKLogForCategory(0);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v8 = " not";
     v11 = "[PSListController reloadSpecifierID:animated:]";
     v10 = 136446722;
-    if (v4)
+    if (animatedCopy)
     {
       v8 = "";
     }
 
     v12 = 2114;
-    v13 = v6;
+    v13 = dCopy;
     v14 = 2082;
     v15 = v8;
     _os_log_impl(&dword_18B008000, v7, OS_LOG_TYPE_INFO, "%{public}s: identifier: '%{public}@';%{public}s animated", &v10, 0x20u);
   }
 
-  v9 = [(PSListController *)self specifierForID:v6];
-  [(PSListController *)self reloadSpecifier:v9 animated:v4];
+  v9 = [(PSListController *)self specifierForID:dCopy];
+  [(PSListController *)self reloadSpecifier:v9 animated:animatedCopy];
 }
 
-- (int64_t)indexOfSpecifierID:(id)a3
+- (int64_t)indexOfSpecifierID:(id)d
 {
-  v4 = a3;
-  v5 = [(PSListController *)self specifierForID:v4];
-  v6 = self;
-  objc_sync_enter(v6);
+  dCopy = d;
+  v5 = [(PSListController *)self specifierForID:dCopy];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   if (v5)
   {
-    v7 = [(NSArray *)v6->_specifiers indexOfObject:v5];
+    v7 = [(NSArray *)selfCopy->_specifiers indexOfObject:v5];
   }
 
   else
@@ -1130,20 +1130,20 @@ LABEL_10:
     v7 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
 
-- (int64_t)indexOfSpecifier:(id)a3
+- (int64_t)indexOfSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  specifiers = v5->_specifiers;
+  specifierCopy = specifier;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  specifiers = selfCopy->_specifiers;
   if (specifiers)
   {
-    v7 = [(NSArray *)specifiers indexOfObject:v4];
+    v7 = [(NSArray *)specifiers indexOfObject:specifierCopy];
   }
 
   else
@@ -1151,12 +1151,12 @@ LABEL_10:
     v7 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
 
-- (int64_t)indexOfGroup:(int64_t)a3
+- (int64_t)indexOfGroup:(int64_t)group
 {
   groups = self->_groups;
   if (!groups)
@@ -1167,15 +1167,15 @@ LABEL_10:
 
   v6 = [(NSMutableArray *)groups count];
   v7 = self->_groups;
-  if (v6 <= a3)
+  if (v6 <= group)
   {
     v10 = [(NSMutableArray *)v7 count];
     v11 = objc_opt_class();
     v12 = NSStringFromClass(v11);
-    NSLog(&cfstr_CriticalErrorA.isa, a3, v10, v12);
+    NSLog(&cfstr_CriticalErrorA.isa, group, v10, v12);
 
-    v13 = [MEMORY[0x1E69DC938] currentDevice];
-    LODWORD(v10) = [v13 sf_isInternalInstall];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    LODWORD(v10) = [currentDevice sf_isInternalInstall];
 
     if (!v10)
     {
@@ -1185,20 +1185,20 @@ LABEL_10:
     NSLog(&cfstr_Specifiers.isa, self->_specifiers);
     NSLog(&cfstr_GroupIndices.isa, self->_groups);
     v8 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-    v14 = [v8 bundlePath];
-    v15 = [v14 lastPathComponent];
-    NSLog(&cfstr_PleaseFileABug.isa, v15);
+    bundlePath = [v8 bundlePath];
+    lastPathComponent = [bundlePath lastPathComponent];
+    NSLog(&cfstr_PleaseFileABug.isa, lastPathComponent);
 
-    v9 = 0x7FFFFFFFFFFFFFFFLL;
+    integerValue = 0x7FFFFFFFFFFFFFFFLL;
   }
 
   else
   {
-    v8 = [(NSMutableArray *)v7 objectAtIndex:a3];
-    v9 = [v8 integerValue];
+    v8 = [(NSMutableArray *)v7 objectAtIndex:group];
+    integerValue = [v8 integerValue];
   }
 
-  return v9;
+  return integerValue;
 }
 
 - (int64_t)numberOfGroups
@@ -1213,36 +1213,36 @@ LABEL_10:
   return [(NSMutableArray *)groups count];
 }
 
-- (id)specifierAtIndexPath:(id)a3
+- (id)specifierAtIndexPath:(id)path
 {
-  v4 = [(PSListController *)self indexForIndexPath:a3];
+  v4 = [(PSListController *)self indexForIndexPath:path];
 
   return [(PSListController *)self specifierAtIndex:v4];
 }
 
-- (id)specifierAtIndex:(int64_t)a3
+- (id)specifierAtIndex:(int64_t)index
 {
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(NSArray *)v4->_specifiers count];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = [(NSArray *)selfCopy->_specifiers count];
   v6 = 0;
-  if ((a3 & 0x8000000000000000) == 0 && v5 > a3)
+  if ((index & 0x8000000000000000) == 0 && v5 > index)
   {
-    v6 = [(NSArray *)v4->_specifiers objectAtIndex:a3];
+    v6 = [(NSArray *)selfCopy->_specifiers objectAtIndex:index];
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
-- (id)getGroupSpecifierForSpecifier:(id)a3
+- (id)getGroupSpecifierForSpecifier:(id)specifier
 {
-  if (a3)
+  if (specifier)
   {
     v7 = 0;
     v8 = 0;
-    [(PSListController *)self getGroup:&v8 row:&v7 ofSpecifier:a3];
+    [(PSListController *)self getGroup:&v8 row:&v7 ofSpecifier:specifier];
     v4 = [(PSListController *)self specifiersInGroup:v8];
     if ([v4 count])
     {
@@ -1263,33 +1263,33 @@ LABEL_10:
   return v5;
 }
 
-- (id)getGroupSpecifierForSpecifierID:(id)a3
+- (id)getGroupSpecifierForSpecifierID:(id)d
 {
-  v4 = [(PSListController *)self specifierForID:a3];
+  v4 = [(PSListController *)self specifierForID:d];
   v5 = [(PSListController *)self getGroupSpecifierForSpecifier:v4];
 
   return v5;
 }
 
-- (BOOL)getGroup:(int64_t *)a3 row:(int64_t *)a4 ofSpecifierID:(id)a5
+- (BOOL)getGroup:(int64_t *)group row:(int64_t *)row ofSpecifierID:(id)d
 {
-  v8 = [(PSListController *)self specifierForID:a5];
-  LOBYTE(a4) = [(PSListController *)self getGroup:a3 row:a4 ofSpecifier:v8];
+  v8 = [(PSListController *)self specifierForID:d];
+  LOBYTE(row) = [(PSListController *)self getGroup:group row:row ofSpecifier:v8];
 
-  return a4;
+  return row;
 }
 
-- (BOOL)getGroup:(int64_t *)a3 row:(int64_t *)a4 ofSpecifier:(id)a5
+- (BOOL)getGroup:(int64_t *)group row:(int64_t *)row ofSpecifier:(id)specifier
 {
-  v8 = [(NSArray *)self->_specifiers indexOfObject:a5];
+  v8 = [(NSArray *)self->_specifiers indexOfObject:specifier];
 
-  return [(PSListController *)self getGroup:a3 row:a4 ofSpecifierAtIndex:v8];
+  return [(PSListController *)self getGroup:group row:row ofSpecifierAtIndex:v8];
 }
 
-- (BOOL)_getGroup:(int64_t *)a3 row:(int64_t *)a4 ofSpecifierAtIndex:(int64_t)a5 groups:(id)a6
+- (BOOL)_getGroup:(int64_t *)group row:(int64_t *)row ofSpecifierAtIndex:(int64_t)index groups:(id)groups
 {
-  v9 = a6;
-  v10 = [v9 count];
+  groupsCopy = groups;
+  v10 = [groupsCopy count];
   while (1)
   {
     v11 = v10;
@@ -1298,19 +1298,19 @@ LABEL_10:
       break;
     }
 
-    v13 = [v9 objectAtIndex:v10];
-    v14 = [v13 integerValue];
+    v13 = [groupsCopy objectAtIndex:v10];
+    integerValue = [v13 integerValue];
 
-    if (v14 <= a5)
+    if (integerValue <= index)
     {
-      if (a3)
+      if (group)
       {
-        *a3 = v10;
+        *group = v10;
       }
 
-      if (a4)
+      if (row)
       {
-        *a4 = ~v14 + a5;
+        *row = ~integerValue + index;
       }
 
       break;
@@ -1320,9 +1320,9 @@ LABEL_10:
   return v11 > 0;
 }
 
-- (BOOL)getGroup:(int64_t *)a3 row:(int64_t *)a4 ofSpecifierAtIndex:(int64_t)a5
+- (BOOL)getGroup:(int64_t *)group row:(int64_t *)row ofSpecifierAtIndex:(int64_t)index
 {
-  if (a5 == 0x7FFFFFFFFFFFFFFFLL || !self->_specifiers)
+  if (index == 0x7FFFFFFFFFFFFFFFLL || !self->_specifiers)
   {
     return 0;
   }
@@ -1334,18 +1334,18 @@ LABEL_10:
     groups = self->_groups;
   }
 
-  return [(PSListController *)self _getGroup:a3 row:a4 ofSpecifierAtIndex:a5 groups:groups];
+  return [(PSListController *)self _getGroup:group row:row ofSpecifierAtIndex:index groups:groups];
 }
 
-- (int64_t)indexForRow:(int64_t)a3 inGroup:(int64_t)a4
+- (int64_t)indexForRow:(int64_t)row inGroup:(int64_t)group
 {
-  v5 = [(NSMutableArray *)self->_groups objectAtIndex:a4];
-  v6 = [v5 integerValue];
+  v5 = [(NSMutableArray *)self->_groups objectAtIndex:group];
+  integerValue = [v5 integerValue];
 
-  return a3 + v6 + 1;
+  return row + integerValue + 1;
 }
 
-- (int64_t)rowsForGroup:(int64_t)a3
+- (int64_t)rowsForGroup:(int64_t)group
 {
   if (!self->_groups)
   {
@@ -1354,10 +1354,10 @@ LABEL_10:
 
   table = self->_table;
 
-  return [(UITableView *)table numberOfRowsInSection:a3];
+  return [(UITableView *)table numberOfRowsInSection:group];
 }
 
-- (id)specifiersInGroup:(int64_t)a3
+- (id)specifiersInGroup:(int64_t)group
 {
   if (!self->_groups)
   {
@@ -1365,15 +1365,15 @@ LABEL_10:
   }
 
   specifiers = self->_specifiers;
-  v6 = [(PSListController *)self indexOfGroup:a3];
-  v7 = [(PSListController *)self rowsForGroup:a3]+ 1;
+  v6 = [(PSListController *)self indexOfGroup:group];
+  v7 = [(PSListController *)self rowsForGroup:group]+ 1;
 
   return [(NSArray *)specifiers subarrayWithRange:v6, v7];
 }
 
-- (_NSRange)rangeOfSpecifiersInGroupID:(id)a3
+- (_NSRange)rangeOfSpecifiersInGroupID:(id)d
 {
-  v4 = [(PSListController *)self indexOfSpecifierID:a3];
+  v4 = [(PSListController *)self indexOfSpecifierID:d];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v5 = 0;
@@ -1386,8 +1386,8 @@ LABEL_10:
     {
       v5 = v6;
       v7 = v4 + v6;
-      v8 = [(PSListController *)self specifiers];
-      v9 = [v8 count];
+      specifiers = [(PSListController *)self specifiers];
+      v9 = [specifiers count];
 
       if (v7 >= v9)
       {
@@ -1395,12 +1395,12 @@ LABEL_10:
       }
 
       v10 = [(PSListController *)self specifierAtIndex:v7];
-      v11 = [v10 cellType];
+      cellType = [v10 cellType];
 
       v6 = v5 + 1;
     }
 
-    while (v11);
+    while (cellType);
   }
 
   v12 = v4;
@@ -1410,30 +1410,30 @@ LABEL_10:
   return result;
 }
 
-- (void)insertSpecifier:(id)a3 atIndex:(int64_t)a4 animated:(BOOL)a5
+- (void)insertSpecifier:(id)specifier atIndex:(int64_t)index animated:(BOOL)animated
 {
   if (self->_specifiers)
   {
-    v5 = a5;
+    animatedCopy = animated;
     v8 = MEMORY[0x1E695DEC8];
-    v9 = a3;
-    v10 = [[v8 alloc] initWithObjects:{v9, 0}];
+    specifierCopy = specifier;
+    v10 = [[v8 alloc] initWithObjects:{specifierCopy, 0}];
 
-    [(PSListController *)self insertContiguousSpecifiers:v10 atIndex:a4 animated:v5];
+    [(PSListController *)self insertContiguousSpecifiers:v10 atIndex:index animated:animatedCopy];
   }
 }
 
-- (void)insertSpecifier:(id)a3 afterSpecifier:(id)a4 animated:(BOOL)a5
+- (void)insertSpecifier:(id)specifier afterSpecifier:(id)afterSpecifier animated:(BOOL)animated
 {
-  v5 = a5;
-  v11 = a3;
-  v8 = a4;
+  animatedCopy = animated;
+  specifierCopy = specifier;
+  afterSpecifierCopy = afterSpecifier;
   specifiers = self->_specifiers;
   if (specifiers)
   {
-    if (v8)
+    if (afterSpecifierCopy)
     {
-      v10 = [(NSArray *)specifiers indexOfObject:v8]+ 1;
+      v10 = [(NSArray *)specifiers indexOfObject:afterSpecifierCopy]+ 1;
     }
 
     else
@@ -1441,36 +1441,36 @@ LABEL_10:
       v10 = [(NSArray *)specifiers count];
     }
 
-    [(PSListController *)self insertSpecifier:v11 atIndex:v10 animated:v5];
+    [(PSListController *)self insertSpecifier:specifierCopy atIndex:v10 animated:animatedCopy];
   }
 }
 
-- (void)insertSpecifier:(id)a3 afterSpecifierID:(id)a4 animated:(BOOL)a5
+- (void)insertSpecifier:(id)specifier afterSpecifierID:(id)d animated:(BOOL)animated
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = [(PSListController *)self specifierForID:a4];
-  [(PSListController *)self insertSpecifier:v8 afterSpecifier:v9 animated:v5];
+  animatedCopy = animated;
+  specifierCopy = specifier;
+  v9 = [(PSListController *)self specifierForID:d];
+  [(PSListController *)self insertSpecifier:specifierCopy afterSpecifier:v9 animated:animatedCopy];
 }
 
-- (void)insertSpecifier:(id)a3 atEndOfGroup:(int64_t)a4 animated:(BOOL)a5
+- (void)insertSpecifier:(id)specifier atEndOfGroup:(int64_t)group animated:(BOOL)animated
 {
-  v5 = a5;
-  v8 = a3;
-  v10 = [(NSArray *)self->_specifiers objectAtIndex:[(PSListController *)self tableView:self->_table numberOfRowsInSection:a4]+ [(PSListController *)self indexOfGroup:a4]];
-  v9 = [v10 identifier];
-  [(PSListController *)self insertSpecifier:v8 afterSpecifierID:v9 animated:v5];
+  animatedCopy = animated;
+  specifierCopy = specifier;
+  v10 = [(NSArray *)self->_specifiers objectAtIndex:[(PSListController *)self tableView:self->_table numberOfRowsInSection:group]+ [(PSListController *)self indexOfGroup:group]];
+  identifier = [v10 identifier];
+  [(PSListController *)self insertSpecifier:specifierCopy afterSpecifierID:identifier animated:animatedCopy];
 }
 
-- (void)_insertContiguousSpecifiers:(id)a3 atIndex:(int64_t)a4 animated:(BOOL)a5
+- (void)_insertContiguousSpecifiers:(id)specifiers atIndex:(int64_t)index animated:(BOOL)animated
 {
   v55 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = v8;
+  specifiersCopy = specifiers;
+  v9 = specifiersCopy;
   if (self->_specifiers)
   {
-    v10 = [v8 count];
-    if ((a4 & 0x8000000000000000) == 0 && v10 && [(NSArray *)self->_specifiers count]>= a4)
+    v10 = [specifiersCopy count];
+    if ((index & 0x8000000000000000) == 0 && v10 && [(NSArray *)self->_specifiers count]>= index)
     {
       v52 = -1;
       v53 = -1;
@@ -1481,11 +1481,11 @@ LABEL_10:
       v38 = v9;
       v12 = v9;
       v13 = v12;
-      v37 = a5;
+      animatedCopy = animated;
       v43 = v11;
-      if (a4)
+      if (index)
       {
-        [(PSListController *)self getGroup:&v52 row:&v53 ofSpecifierAtIndex:a4 - 1];
+        [(PSListController *)self getGroup:&v52 row:&v53 ofSpecifierAtIndex:index - 1];
         v15 = v52;
         v14 = v53;
       }
@@ -1507,8 +1507,8 @@ LABEL_10:
       }
 
       v45 = v14;
-      v19 = a4;
-      v20 = self;
+      indexCopy = index;
+      selfCopy = self;
       v47 = [(NSArray *)self->_specifiers mutableCopy];
       v48 = 0u;
       v49 = 0u;
@@ -1522,8 +1522,8 @@ LABEL_10:
         v23 = v21;
         v24 = 0;
         v46 = *v49;
-        v25 = v19;
-        v39 = v19;
+        v25 = indexCopy;
+        v39 = indexCopy;
         do
         {
           for (i = 0; i != v23; ++i)
@@ -1535,7 +1535,7 @@ LABEL_10:
 
             v27 = *(*(&v48 + 1) + 8 * i);
             [v47 insertObject:v27 atIndex:v25];
-            [(PSListController *)v20 _addIdentifierForSpecifier:v27];
+            [(PSListController *)selfCopy _addIdentifierForSpecifier:v27];
             if (*(v27 + 56))
             {
               if ((v24 & 1) == 0)
@@ -1559,15 +1559,15 @@ LABEL_26:
               goto LABEL_26;
             }
 
-            v29 = v41;
-            if (v15 != [(NSMutableArray *)v20->_groups count])
+            integerValue = v41;
+            if (v15 != [(NSMutableArray *)selfCopy->_groups count])
             {
-              v30 = [(NSMutableArray *)v20->_groups objectAtIndex:v15];
-              v29 = [v30 integerValue];
+              v30 = [(NSMutableArray *)selfCopy->_groups objectAtIndex:v15];
+              integerValue = [v30 integerValue];
             }
 
-            v31 = v29 - v19;
-            if (v29 == v19 || v31 < 1)
+            v31 = integerValue - indexCopy;
+            if (integerValue == indexCopy || v31 < 1)
             {
               v24 = 1;
               v22 = v42;
@@ -1585,7 +1585,7 @@ LABEL_26:
               while (v32 < v31 + v53);
               v24 = 1;
               v22 = v42;
-              v19 = v39;
+              indexCopy = v39;
             }
 
 LABEL_28:
@@ -1598,13 +1598,13 @@ LABEL_28:
         while (v23);
       }
 
-      v34 = v20;
+      v34 = selfCopy;
       objc_sync_enter(v34);
-      objc_storeStrong(&v20->_specifiers, v47);
+      objc_storeStrong(&selfCopy->_specifiers, v47);
       objc_sync_exit(v34);
 
       [v34 createGroupIndices];
-      if (v37)
+      if (animatedCopy)
       {
         v35 = 0;
       }
@@ -1633,7 +1633,7 @@ LABEL_28:
       }
 
       [v34[134] endUpdates];
-      if (!v37)
+      if (!animatedCopy)
       {
         [MEMORY[0x1E69DD250] setAnimationsEnabled:1];
       }
@@ -1650,107 +1650,107 @@ LABEL_28:
   }
 }
 
-- (void)insertContiguousSpecifiers:(id)a3 afterSpecifier:(id)a4 animated:(BOOL)a5
+- (void)insertContiguousSpecifiers:(id)specifiers afterSpecifier:(id)specifier animated:(BOOL)animated
 {
-  v5 = a5;
-  v11 = a3;
-  v8 = a4;
+  animatedCopy = animated;
+  specifiersCopy = specifiers;
+  specifierCopy = specifier;
   specifiers = self->_specifiers;
   if (specifiers)
   {
-    v10 = v8 ? [(NSArray *)specifiers indexOfObject:v8]: [(NSArray *)specifiers count]- 1;
+    v10 = specifierCopy ? [(NSArray *)specifiers indexOfObject:specifierCopy]: [(NSArray *)specifiers count]- 1;
     if (v10 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      [(PSListController *)self insertContiguousSpecifiers:v11 atIndex:v10 + 1 animated:v5];
+      [(PSListController *)self insertContiguousSpecifiers:specifiersCopy atIndex:v10 + 1 animated:animatedCopy];
     }
   }
 }
 
-- (void)insertContiguousSpecifiers:(id)a3 afterSpecifierID:(id)a4 animated:(BOOL)a5
+- (void)insertContiguousSpecifiers:(id)specifiers afterSpecifierID:(id)d animated:(BOOL)animated
 {
   if (self->_specifiers)
   {
-    v5 = a5;
-    v8 = a3;
-    v9 = [(PSListController *)self specifierForID:a4];
-    [(PSListController *)self insertContiguousSpecifiers:v8 afterSpecifier:v9 animated:v5];
+    animatedCopy = animated;
+    specifiersCopy = specifiers;
+    v9 = [(PSListController *)self specifierForID:d];
+    [(PSListController *)self insertContiguousSpecifiers:specifiersCopy afterSpecifier:v9 animated:animatedCopy];
   }
 }
 
-- (void)insertContiguousSpecifiers:(id)a3 atEndOfGroup:(int64_t)a4 animated:(BOOL)a5
+- (void)insertContiguousSpecifiers:(id)specifiers atEndOfGroup:(int64_t)group animated:(BOOL)animated
 {
-  v5 = a5;
-  v8 = a3;
-  v10 = [(NSArray *)self->_specifiers objectAtIndex:[(PSListController *)self tableView:self->_table numberOfRowsInSection:a4]+ [(PSListController *)self indexOfGroup:a4]];
-  v9 = [v10 identifier];
-  [(PSListController *)self insertContiguousSpecifiers:v8 afterSpecifierID:v9 animated:v5];
+  animatedCopy = animated;
+  specifiersCopy = specifiers;
+  v10 = [(NSArray *)self->_specifiers objectAtIndex:[(PSListController *)self tableView:self->_table numberOfRowsInSection:group]+ [(PSListController *)self indexOfGroup:group]];
+  identifier = [v10 identifier];
+  [(PSListController *)self insertContiguousSpecifiers:specifiersCopy afterSpecifierID:identifier animated:animatedCopy];
 }
 
-- (void)addSpecifier:(id)a3 animated:(BOOL)a4
+- (void)addSpecifier:(id)specifier animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   specifiers = self->_specifiers;
-  v7 = a3;
-  [(PSListController *)self insertSpecifier:v7 atIndex:[(NSArray *)specifiers count] animated:v4];
+  specifierCopy = specifier;
+  [(PSListController *)self insertSpecifier:specifierCopy atIndex:[(NSArray *)specifiers count] animated:animatedCopy];
 }
 
-- (void)addSpecifiersFromArray:(id)a3 animated:(BOOL)a4
+- (void)addSpecifiersFromArray:(id)array animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   specifiers = self->_specifiers;
-  v7 = a3;
-  [(PSListController *)self insertContiguousSpecifiers:v7 atIndex:[(NSArray *)specifiers count] animated:v4];
+  arrayCopy = array;
+  [(PSListController *)self insertContiguousSpecifiers:arrayCopy atIndex:[(NSArray *)specifiers count] animated:animatedCopy];
 }
 
-- (void)removeSpecifier:(id)a3 animated:(BOOL)a4
+- (void)removeSpecifier:(id)specifier animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v6 = MEMORY[0x1E695DEC8];
-  v7 = a3;
-  v8 = [[v6 alloc] initWithObjects:{v7, 0}];
+  specifierCopy = specifier;
+  v8 = [[v6 alloc] initWithObjects:{specifierCopy, 0}];
 
-  [(PSListController *)self removeContiguousSpecifiers:v8 animated:v4];
+  [(PSListController *)self removeContiguousSpecifiers:v8 animated:animatedCopy];
 }
 
-- (void)removeSpecifierID:(id)a3 animated:(BOOL)a4
+- (void)removeSpecifierID:(id)d animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = [(PSListController *)self specifierForID:a3];
-  [(PSListController *)self removeSpecifier:v6 animated:v4];
+  animatedCopy = animated;
+  v6 = [(PSListController *)self specifierForID:d];
+  [(PSListController *)self removeSpecifier:v6 animated:animatedCopy];
 }
 
-- (void)removeSpecifierAtIndex:(int64_t)a3 animated:(BOOL)a4
+- (void)removeSpecifierAtIndex:(int64_t)index animated:(BOOL)animated
 {
   specifiers = self->_specifiers;
   if (specifiers)
   {
-    v6 = a4;
+    animatedCopy = animated;
     v8 = [(NSArray *)specifiers count];
-    if ((a3 & 0x8000000000000000) == 0 && v8 > a3)
+    if ((index & 0x8000000000000000) == 0 && v8 > index)
     {
-      v9 = [(NSArray *)self->_specifiers objectAtIndex:a3];
-      [(PSListController *)self removeSpecifier:v9 animated:v6];
+      v9 = [(NSArray *)self->_specifiers objectAtIndex:index];
+      [(PSListController *)self removeSpecifier:v9 animated:animatedCopy];
     }
   }
 }
 
-- (void)removeLastSpecifierAnimated:(BOOL)a3
+- (void)removeLastSpecifierAnimated:(BOOL)animated
 {
   specifiers = self->_specifiers;
   if (specifiers)
   {
-    v5 = a3;
-    v6 = [(NSArray *)specifiers lastObject];
-    [(PSListController *)self removeSpecifier:v6 animated:v5];
+    animatedCopy = animated;
+    lastObject = [(NSArray *)specifiers lastObject];
+    [(PSListController *)self removeSpecifier:lastObject animated:animatedCopy];
   }
 }
 
-- (void)_removeContiguousSpecifiers:(id)a3 animated:(BOOL)a4
+- (void)_removeContiguousSpecifiers:(id)specifiers animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v57 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 count];
+  specifiersCopy = specifiers;
+  v7 = [specifiersCopy count];
   if (self->_specifiers)
   {
     v8 = v7 == 0;
@@ -1768,12 +1768,12 @@ LABEL_28:
 
   v54 = -1;
   v9 = [MEMORY[0x1E695DF70] arrayWithCapacity:v7];
-  v10 = [MEMORY[0x1E696AD50] indexSet];
+  indexSet = [MEMORY[0x1E696AD50] indexSet];
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
-  v11 = v6;
+  v11 = specifiersCopy;
   v12 = [v11 countByEnumeratingWithState:&v50 objects:v56 count:16];
   if (!v12)
   {
@@ -1784,14 +1784,14 @@ LABEL_28:
 
   v13 = v12;
   v42 = v9;
-  v43 = v10;
-  v38 = v4;
-  v40 = v6;
+  v43 = indexSet;
+  v38 = animatedCopy;
+  v40 = specifiersCopy;
   v14 = 0;
   v45 = 0;
   LOBYTE(v9) = 0;
   v15 = *v51;
-  v16 = -1;
+  integerValue = -1;
   v17 = -1;
   while (2)
   {
@@ -1810,9 +1810,9 @@ LABEL_28:
       {
 LABEL_27:
 
-        v6 = v40;
+        specifiersCopy = v40;
         v9 = v42;
-        v10 = v43;
+        indexSet = v43;
         goto LABEL_51;
       }
 
@@ -1821,7 +1821,7 @@ LABEL_27:
       {
         [(PSListController *)self getGroup:&v54 row:0 ofSpecifierAtIndex:v20];
         v22 = [(NSMutableArray *)self->_groups objectAtIndex:v54];
-        v16 = [v22 integerValue];
+        integerValue = [v22 integerValue];
 
         v45 = v21;
         v17 = v21;
@@ -1836,7 +1836,7 @@ LABEL_27:
       {
         if ((v9 & 1) == 0)
         {
-          v23 = [MEMORY[0x1E696AC88] indexPathForRow:v17 + ~v16 inSection:v54];
+          v23 = [MEMORY[0x1E696AC88] indexPathForRow:v17 + ~integerValue inSection:v54];
           [v42 insertObject:v23 atIndex:0];
 
           LODWORD(v9) = 0;
@@ -1871,8 +1871,8 @@ LABEL_22:
   if (v9)
   {
     v24 = v54;
-    v4 = v38;
-    v10 = v43;
+    animatedCopy = v38;
+    indexSet = v43;
     if (v24 == [(NSMutableArray *)self->_groups count]- 1)
     {
       v25 = [(NSArray *)self->_specifiers count]- v45;
@@ -1884,19 +1884,19 @@ LABEL_22:
       v25 = [v36 integerValue] - v45;
     }
 
-    v6 = v40;
+    specifiersCopy = v40;
     v9 = v42;
     goto LABEL_30;
   }
 
-  v6 = v40;
+  specifiersCopy = v40;
   v9 = v42;
-  v4 = v38;
-  v10 = v43;
+  animatedCopy = v38;
+  indexSet = v43;
 LABEL_29:
   v25 = [v11 count];
 LABEL_30:
-  if (v4)
+  if (animatedCopy)
   {
     v26 = 0;
   }
@@ -1906,7 +1906,7 @@ LABEL_30:
     v26 = 5;
   }
 
-  if (!v4)
+  if (!animatedCopy)
   {
     [MEMORY[0x1E69DD250] setAnimationsEnabled:0];
   }
@@ -1923,9 +1923,9 @@ LABEL_30:
   if (v28)
   {
     v29 = v28;
-    v44 = v10;
-    v39 = v4;
-    v41 = v6;
+    v44 = indexSet;
+    v39 = animatedCopy;
+    v41 = specifiersCopy;
     v30 = 0;
     v31 = *v47;
     do
@@ -1957,21 +1957,21 @@ LABEL_30:
 
     while (v29);
 
-    v6 = v41;
-    LOBYTE(v4) = v39;
-    v10 = v44;
+    specifiersCopy = v41;
+    LOBYTE(animatedCopy) = v39;
+    indexSet = v44;
   }
 
   [v14 removeObjectsInRange:{v45, v37}];
-  v34 = self;
-  objc_sync_enter(v34);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   objc_storeStrong(&self->_specifiers, v14);
-  objc_sync_exit(v34);
+  objc_sync_exit(selfCopy);
 
-  [(PSListController *)v34 createGroupIndices];
-  if ([v10 count])
+  [(PSListController *)selfCopy createGroupIndices];
+  if ([indexSet count])
   {
-    [(UITableView *)self->_table deleteSections:v10 withRowAnimation:v26];
+    [(UITableView *)self->_table deleteSections:indexSet withRowAnimation:v26];
   }
 
   if ([v9 count])
@@ -1980,7 +1980,7 @@ LABEL_30:
   }
 
   [(UITableView *)self->_table endUpdates];
-  if (!v4)
+  if (!animatedCopy)
   {
     [MEMORY[0x1E69DD250] setAnimationsEnabled:1];
   }
@@ -1998,21 +1998,21 @@ LABEL_52:
   }
 }
 
-- (void)replaceContiguousSpecifiers:(id)a3 withSpecifiers:(id)a4 animated:(BOOL)a5
+- (void)replaceContiguousSpecifiers:(id)specifiers withSpecifiers:(id)withSpecifiers animated:(BOOL)animated
 {
-  v13 = a3;
-  v8 = a4;
-  v9 = [v8 count];
-  v10 = [v13 count];
+  specifiersCopy = specifiers;
+  withSpecifiersCopy = withSpecifiers;
+  v9 = [withSpecifiersCopy count];
+  v10 = [specifiersCopy count];
   if (v9 && v10)
   {
-    v11 = [v13 objectAtIndex:0];
+    v11 = [specifiersCopy objectAtIndex:0];
     v12 = [(PSListController *)self indexOfSpecifier:v11];
-    if (a5)
+    if (animated)
     {
       [(UITableView *)self->_table beginUpdates];
-      [(PSListController *)self _removeContiguousSpecifiers:v13 animated:1];
-      [(PSListController *)self _insertContiguousSpecifiers:v8 atIndex:v12 animated:1];
+      [(PSListController *)self _removeContiguousSpecifiers:specifiersCopy animated:1];
+      [(PSListController *)self _insertContiguousSpecifiers:withSpecifiersCopy atIndex:v12 animated:1];
       [(UITableView *)self->_table endUpdates];
     }
 
@@ -2020,27 +2020,27 @@ LABEL_52:
     {
       [MEMORY[0x1E69DD250] setAnimationsEnabled:0];
       [(UITableView *)self->_table beginUpdates];
-      [(PSListController *)self _removeContiguousSpecifiers:v13 animated:0];
-      [(PSListController *)self _insertContiguousSpecifiers:v8 atIndex:v12 animated:0];
+      [(PSListController *)self _removeContiguousSpecifiers:specifiersCopy animated:0];
+      [(PSListController *)self _insertContiguousSpecifiers:withSpecifiersCopy atIndex:v12 animated:0];
       [(UITableView *)self->_table endUpdates];
       [MEMORY[0x1E69DD250] setAnimationsEnabled:1];
     }
   }
 }
 
-- (int64_t)_nextGroupInSpecifiersAfterIndex:(int64_t)a3 inArray:(id)a4
+- (int64_t)_nextGroupInSpecifiersAfterIndex:(int64_t)index inArray:(id)array
 {
-  v5 = a4;
-  v6 = a3 + 1;
+  arrayCopy = array;
+  v6 = index + 1;
   do
   {
     v7 = v6;
-    if (v6 >= [v5 count])
+    if (v6 >= [arrayCopy count])
     {
       break;
     }
 
-    v8 = [v5 objectAtIndex:v7];
+    v8 = [arrayCopy objectAtIndex:v7];
     v9 = v8[7];
 
     v6 = v7 + 1;
@@ -2051,26 +2051,26 @@ LABEL_52:
   return v7;
 }
 
-- (void)updateSpecifiers:(id)a3 withSpecifiers:(id)a4
+- (void)updateSpecifiers:(id)specifiers withSpecifiers:(id)withSpecifiers
 {
-  v8 = a3;
-  v6 = a4;
-  if ([v8 count])
+  specifiersCopy = specifiers;
+  withSpecifiersCopy = withSpecifiers;
+  if ([specifiersCopy count])
   {
-    v7 = [v8 objectAtIndex:0];
+    v7 = [specifiersCopy objectAtIndex:0];
     if ([(NSArray *)self->_specifiers containsObject:v7])
     {
-      -[PSListController updateSpecifiersInRange:withSpecifiers:](self, "updateSpecifiersInRange:withSpecifiers:", -[NSArray indexOfObject:](self->_specifiers, "indexOfObject:", v7), [v8 count], v6);
+      -[PSListController updateSpecifiersInRange:withSpecifiers:](self, "updateSpecifiersInRange:withSpecifiers:", -[NSArray indexOfObject:](self->_specifiers, "indexOfObject:", v7), [specifiersCopy count], withSpecifiersCopy);
     }
   }
 }
 
-- (void)updateSpecifiersInRange:(_NSRange)a3 withSpecifiers:(id)a4
+- (void)updateSpecifiersInRange:(_NSRange)range withSpecifiers:(id)specifiers
 {
-  length = a3.length;
-  location = a3.location;
-  v80 = a4;
-  if ([v80 count])
+  length = range.length;
+  location = range.location;
+  specifiersCopy = specifiers;
+  if ([specifiersCopy count])
   {
     if (length)
     {
@@ -2079,10 +2079,10 @@ LABEL_52:
       {
         if (location <= [(NSArray *)specifiers count]&& length + location <= [(NSArray *)self->_specifiers count])
         {
-          v8 = [v80 objectAtIndex:0];
+          v8 = [specifiersCopy objectAtIndex:0];
           v88 = -1;
           v89 = -1;
-          v9 = [(PSListController *)self getGroup:&v88 row:&v89 ofSpecifierAtIndex:location];
+          location = [(PSListController *)self getGroup:&v88 row:&v89 ofSpecifierAtIndex:location];
           v10 = v88;
           v86 = -1;
           v87 = -1;
@@ -2091,9 +2091,9 @@ LABEL_52:
             v86 = [(NSMutableArray *)self->_groups count];
           }
 
-          else if (v9)
+          else if (location)
           {
-            v9 = [(PSListController *)self getGroup:&v86 row:&v87 ofSpecifierAtIndex:length + location];
+            location = [(PSListController *)self getGroup:&v86 row:&v87 ofSpecifierAtIndex:length + location];
           }
 
           if (v8[7])
@@ -2106,7 +2106,7 @@ LABEL_52:
             v12 = v89 == -1;
           }
 
-          if (v12 && v87 == -1 && v9)
+          if (v12 && v87 == -1 && location)
           {
             v63 = location;
             v64 = length;
@@ -2116,10 +2116,10 @@ LABEL_52:
             v68 = objc_alloc_init(MEMORY[0x1E696AD50]);
             v17 = objc_alloc_init(MEMORY[0x1E695DF70]);
             v18 = objc_alloc_init(MEMORY[0x1E695DF70]);
-            v75 = [(PSListController *)self _nextGroupInSpecifiersAfterIndex:0 inArray:v80];
+            v75 = [(PSListController *)self _nextGroupInSpecifiersAfterIndex:0 inArray:specifiersCopy];
             v67 = v16;
             v79 = v18;
-            if (![v80 count])
+            if (![specifiersCopy count])
             {
               goto LABEL_68;
             }
@@ -2143,12 +2143,12 @@ LABEL_52:
                 v23 = [(NSMutableArray *)self->_groups objectAtIndex:v19, v63, v64];
                 v24 = -[NSArray objectAtIndex:](v22, "objectAtIndex:", [v23 integerValue]);
 
-                v25 = [v80 objectAtIndex:v20];
+                v25 = [specifiersCopy objectAtIndex:v20];
                 v77 = v24;
-                v26 = [v24 identifier];
+                identifier = [v24 identifier];
                 v76 = v25;
-                v27 = [v25 identifier];
-                v28 = [v26 isEqualToString:v27];
+                identifier2 = [v25 identifier];
+                v28 = [identifier isEqualToString:identifier2];
 
                 v29 = v28;
                 if ((v28 & 1) == 0)
@@ -2165,39 +2165,39 @@ LABEL_52:
 
                 v31 = [v77 propertyForKey:@"footerText"];
                 v74 = [v76 propertyForKey:@"footerText"];
-                v32 = [v77 name];
-                v33 = [v76 name];
+                name = [v77 name];
+                name2 = [v76 name];
                 v72 = v31;
-                if ([v32 isEqualToString:v33] && (v31 != 0) == (v74 != 0))
+                if ([name isEqualToString:name2] && (v31 != 0) == (v74 != 0))
                 {
                   if (!v31 || !v74)
                   {
 
 LABEL_43:
                     v35 = [(NSMutableArray *)self->_groups objectAtIndex:v19];
-                    v36 = [v35 integerValue];
+                    integerValue = [v35 integerValue];
 
                     if (v19 + 1 == [(NSMutableArray *)self->_groups count])
                     {
-                      v37 = [(NSArray *)self->_specifiers count];
+                      integerValue2 = [(NSArray *)self->_specifiers count];
                     }
 
                     else
                     {
                       v38 = [(NSMutableArray *)self->_groups objectAtIndex:v19 + 1];
-                      v37 = [v38 integerValue];
+                      integerValue2 = [v38 integerValue];
                     }
 
-                    v39 = v36 + 1;
+                    v39 = integerValue + 1;
                     if ((v69 + 1) < v75)
                     {
                       v40 = 0;
                       v82 = v69 + 1;
                       v70 = v21;
-                      v78 = v37;
+                      v78 = integerValue2;
                       do
                       {
-                        if (v39 >= v37)
+                        if (v39 >= integerValue2)
                         {
                           goto LABEL_57;
                         }
@@ -2206,13 +2206,13 @@ LABEL_43:
                         v41 = v39;
                         do
                         {
-                          v42 = v37;
-                          v43 = [v80 objectAtIndex:v82];
+                          v42 = integerValue2;
+                          v43 = [specifiersCopy objectAtIndex:v82];
                           v44 = [(NSArray *)self->_specifiers objectAtIndex:v41];
-                          v45 = [v43 identifier];
-                          v46 = [v44 identifier];
-                          v47 = self;
-                          v48 = [v45 isEqualToString:v46];
+                          identifier3 = [v43 identifier];
+                          identifier4 = [v44 identifier];
+                          selfCopy = self;
+                          v48 = [identifier3 isEqualToString:identifier4];
 
                           v83 = v48;
                           if (v48)
@@ -2220,7 +2220,7 @@ LABEL_43:
                             for (; v39 < v41; ++v39)
                             {
                               v49 = MEMORY[0x1E696AC88];
-                              v50 = [(NSMutableArray *)v47->_groups objectAtIndex:v19];
+                              v50 = [(NSMutableArray *)selfCopy->_groups objectAtIndex:v19];
                               v51 = [v49 indexPathForRow:~objc_msgSend(v50 inSection:{"integerValue") + v39, v19}];
                               [v79 addObject:v51];
                             }
@@ -2228,19 +2228,19 @@ LABEL_43:
                             ++v41;
                             ++v81;
                             v39 = v41;
-                            self = v47;
-                            v37 = v78;
+                            self = selfCopy;
+                            integerValue2 = v78;
                           }
 
                           else
                           {
                             ++v41;
-                            self = v47;
-                            v37 = v42;
+                            self = selfCopy;
+                            integerValue2 = v42;
                           }
                         }
 
-                        while (!((v41 >= v37) | v83 & 1));
+                        while (!((v41 >= integerValue2) | v83 & 1));
                         v21 = v70;
                         v17 = v71;
                         v18 = v79;
@@ -2260,8 +2260,8 @@ LABEL_57:
                       while (v82 != v75);
                     }
 
-                    v53 = v37 <= v39;
-                    v54 = v37 - v39;
+                    v53 = integerValue2 <= v39;
+                    v54 = integerValue2 - v39;
                     if (v53)
                     {
                       v16 = v67;
@@ -2322,8 +2322,8 @@ LABEL_66:
               }
 
               v69 = v75;
-              v75 = [(PSListController *)self _nextGroupInSpecifiersAfterIndex:v75 inArray:v80];
-              if (v69 >= [v80 count])
+              v75 = [(PSListController *)self _nextGroupInSpecifiersAfterIndex:v75 inArray:specifiersCopy];
+              if (v69 >= [specifiersCopy count])
               {
 LABEL_68:
                 for (j = v88; j < v86; ++j)
@@ -2344,43 +2344,43 @@ LABEL_68:
                 v84[2] = __59__PSListController_updateSpecifiersInRange_withSpecifiers___block_invoke_2;
                 v84[3] = &unk_1E71DC7B0;
                 v84[4] = self;
-                [v80 enumerateObjectsUsingBlock:v84];
+                [specifiersCopy enumerateObjectsUsingBlock:v84];
                 v61 = [(NSArray *)self->_specifiers mutableCopy];
-                [v61 replaceObjectsInRange:v63 withObjectsFromArray:{v64, v80}];
-                v62 = self;
-                objc_sync_enter(v62);
+                [v61 replaceObjectsInRange:v63 withObjectsFromArray:{v64, specifiersCopy}];
+                selfCopy2 = self;
+                objc_sync_enter(selfCopy2);
                 objc_storeStrong(&self->_specifiers, v61);
-                objc_sync_exit(v62);
+                objc_sync_exit(selfCopy2);
 
-                [(PSListController *)v62 createGroupIndices];
-                [(UITableView *)v62->_table beginUpdates];
+                [(PSListController *)selfCopy2 createGroupIndices];
+                [(UITableView *)selfCopy2->_table beginUpdates];
                 v8 = v65;
                 if ([v68 count])
                 {
-                  [(UITableView *)v62->_table reloadSections:v68 withRowAnimation:0];
+                  [(UITableView *)selfCopy2->_table reloadSections:v68 withRowAnimation:0];
                 }
 
                 if ([v17 count])
                 {
-                  [(UITableView *)v62->_table insertRowsAtIndexPaths:v17 withRowAnimation:0];
+                  [(UITableView *)selfCopy2->_table insertRowsAtIndexPaths:v17 withRowAnimation:0];
                 }
 
                 if ([v15 count])
                 {
-                  [(UITableView *)v62->_table insertSections:v15 withRowAnimation:0];
+                  [(UITableView *)selfCopy2->_table insertSections:v15 withRowAnimation:0];
                 }
 
                 if ([v79 count])
                 {
-                  [(UITableView *)v62->_table deleteRowsAtIndexPaths:v79 withRowAnimation:0];
+                  [(UITableView *)selfCopy2->_table deleteRowsAtIndexPaths:v79 withRowAnimation:0];
                 }
 
                 if ([v67 count])
                 {
-                  [(UITableView *)v62->_table deleteSections:v67 withRowAnimation:0];
+                  [(UITableView *)selfCopy2->_table deleteSections:v67 withRowAnimation:0];
                 }
 
-                [(UITableView *)v62->_table endUpdates];
+                [(UITableView *)selfCopy2->_table endUpdates];
 
                 break;
               }
@@ -2433,20 +2433,20 @@ void __59__PSListController_updateSpecifiersInRange_withSpecifiers___block_invok
 {
   [(PSListController *)self dismissConfirmationViewAnimated:0];
   [(PSSpecifierDataSource *)self->_dataSource removeObserver:self];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(NSArray *)self->_specifiers na_each:&__block_literal_global_11];
   [(PSListController *)self _unloadBundleControllers];
   [(UITableView *)self->_table setDataSource:0];
   [(UITableView *)self->_table setDelegate:0];
   [(UITableView *)self->_table setDataSource:0];
-  v4 = [(PSListController *)self highlightRelayObserver];
-  [(PSListController *)self na_removeNotificationBlockObserver:v4];
+  highlightRelayObserver = [(PSListController *)self highlightRelayObserver];
+  [(PSListController *)self na_removeNotificationBlockObserver:highlightRelayObserver];
 
   [(PSListController *)self setHighlightRelayObserver:0];
-  v5 = [(PSListController *)self selectionRelayObserver];
-  [(PSListController *)self na_removeNotificationBlockObserver:v5];
+  selectionRelayObserver = [(PSListController *)self selectionRelayObserver];
+  [(PSListController *)self na_removeNotificationBlockObserver:selectionRelayObserver];
 
   [(PSListController *)self setSelectionRelayObserver:0];
   v6.receiver = self;
@@ -2462,7 +2462,7 @@ void __27__PSListController_dealloc__block_invoke(uint64_t a1, void *a2)
   [v2 removePropertyForKey:@"cellObject"];
 }
 
-- (void)didBecomeActive:(id)a3
+- (void)didBecomeActive:(id)active
 {
   if ([(PSListController *)self contentSizeDidChange])
   {
@@ -2472,7 +2472,7 @@ void __27__PSListController_dealloc__block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (void)contentSizeDidChange:(id)a3
+- (void)contentSizeDidChange:(id)change
 {
   if ([(PSListControllerNavigationCoordinator *)self->_navigationCoordinator listControllerIsOnTopOfNavigationStack:self searchTopMostViewControllerChildren:0])
   {
@@ -2495,34 +2495,34 @@ void __27__PSListController_dealloc__block_invoke(uint64_t a1, void *a2)
   return [(PSListControllerAppearanceProvider *)appearanceProvider tableViewStyleForListController:self];
 }
 
-- (void)_updateSectionContentInsetWithAnimation:(BOOL)a3
+- (void)_updateSectionContentInsetWithAnimation:(BOOL)animation
 {
-  v3 = a3;
+  animationCopy = animation;
   [(PSListController *)self _ensureAppearanceProviderAndNavigationCoordinator];
   appearanceProvider = self->_appearanceProvider;
-  v6 = [(PSListController *)self _isRegularWidth];
+  _isRegularWidth = [(PSListController *)self _isRegularWidth];
   sectionContentInsetInitialized = self->_sectionContentInsetInitialized;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __60__PSListController__updateSectionContentInsetWithAnimation___block_invoke;
   v8[3] = &unk_1E71DBE20;
   v8[4] = self;
-  [(PSListControllerAppearanceProvider *)appearanceProvider listController:self updateSectionContentInsetAnimated:v3 isRegularWidth:v6 contentInsetInitialized:sectionContentInsetInitialized contentInsetInitializedApplicator:v8];
+  [(PSListControllerAppearanceProvider *)appearanceProvider listController:self updateSectionContentInsetAnimated:animationCopy isRegularWidth:_isRegularWidth contentInsetInitialized:sectionContentInsetInitialized contentInsetInitializedApplicator:v8];
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
   v51.receiver = self;
   v51.super_class = PSListController;
-  [(PSViewController *)&v51 viewIsAppearing:a3];
-  v4 = [MEMORY[0x1E69DC938] currentDevice];
-  if (![v4 sf_isInternalInstall])
+  [(PSViewController *)&v51 viewIsAppearing:appearing];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  if (![currentDevice sf_isInternalInstall])
   {
     goto LABEL_20;
   }
 
-  v5 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v6 = [v5 BOOLForKey:@"ClassNameForListControllersAndCellsOverlayEnabled"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v6 = [standardUserDefaults BOOLForKey:@"ClassNameForListControllersAndCellsOverlayEnabled"];
 
   if (!v6)
   {
@@ -2534,19 +2534,19 @@ void __27__PSListController_dealloc__block_invoke(uint64_t a1, void *a2)
   v9 = [v7 isEqual:v8];
 
   v10 = [(PSListController *)self isMemberOfClass:objc_opt_class()];
-  v11 = [(PSListController *)self classNameLayer];
+  classNameLayer = [(PSListController *)self classNameLayer];
 
-  if (!v11)
+  if (!classNameLayer)
   {
     v12 = objc_alloc_init(_PSViewMarkerLayer);
     [(PSListController *)self setClassNameLayer:v12];
 
-    v13 = [(PSListController *)self view];
-    v14 = [v13 layer];
-    v15 = v14;
-    if (v14)
+    view = [(PSListController *)self view];
+    layer = [view layer];
+    v15 = layer;
+    if (layer)
     {
-      [v14 cornerRadii];
+      [layer cornerRadii];
     }
 
     else
@@ -2557,55 +2557,55 @@ void __27__PSListController_dealloc__block_invoke(uint64_t a1, void *a2)
       v48 = 0u;
     }
 
-    v16 = [(PSListController *)self classNameLayer];
+    classNameLayer2 = [(PSListController *)self classNameLayer];
     v46[0] = v47;
     v46[1] = v48;
     v46[2] = v49;
     v46[3] = v50;
-    [v16 setCustomCornerRadii:v46];
+    [classNameLayer2 setCustomCornerRadii:v46];
 
-    v17 = [(PSListController *)self classNameLayer];
-    [v17 setInheritsSuperLayerBounds:0];
+    classNameLayer3 = [(PSListController *)self classNameLayer];
+    [classNameLayer3 setInheritsSuperLayerBounds:0];
 
-    v18 = [(PSListController *)self view];
-    [v18 bounds];
-    v19 = [(PSListController *)self view];
-    [v19 safeAreaInsets];
-    v20 = [(PSListController *)self view];
-    [v20 safeAreaInsets];
-    v21 = [(PSListController *)self view];
-    [v21 safeAreaInsets];
-    v22 = [(PSListController *)self view];
-    [v22 safeAreaInsets];
+    view2 = [(PSListController *)self view];
+    [view2 bounds];
+    view3 = [(PSListController *)self view];
+    [view3 safeAreaInsets];
+    view4 = [(PSListController *)self view];
+    [view4 safeAreaInsets];
+    view5 = [(PSListController *)self view];
+    [view5 safeAreaInsets];
+    view6 = [(PSListController *)self view];
+    [view6 safeAreaInsets];
     UIRectInset();
     v24 = v23;
     v26 = v25;
     v28 = v27;
     v30 = v29;
 
-    v31 = [(PSListController *)self classNameLayer];
-    [v31 setFrame:{v24, v26, v28, v30}];
+    classNameLayer4 = [(PSListController *)self classNameLayer];
+    [classNameLayer4 setFrame:{v24, v26, v28, v30}];
   }
 
-  v32 = [(PSListController *)self classNameLayer];
-  v33 = [v32 superlayer];
+  classNameLayer5 = [(PSListController *)self classNameLayer];
+  superlayer = [classNameLayer5 superlayer];
 
-  if (!v33)
+  if (!superlayer)
   {
-    v34 = [(PSListController *)self view];
-    v35 = [v34 layer];
-    v36 = [(PSListController *)self classNameLayer];
-    v37 = [(PSListController *)self view];
-    v38 = [v37 layer];
-    v39 = [v38 sublayers];
-    v40 = [v39 lastObject];
-    [v35 insertSublayer:v36 above:v40];
+    view7 = [(PSListController *)self view];
+    layer2 = [view7 layer];
+    classNameLayer6 = [(PSListController *)self classNameLayer];
+    view8 = [(PSListController *)self view];
+    layer3 = [view8 layer];
+    sublayers = [layer3 sublayers];
+    lastObject = [sublayers lastObject];
+    [layer2 insertSublayer:classNameLayer6 above:lastObject];
   }
 
   v41 = objc_opt_class();
   v42 = NSStringFromClass(v41);
-  v43 = [(PSListController *)self classNameLayer];
-  [v43 setLabel:v42];
+  classNameLayer7 = [(PSListController *)self classNameLayer];
+  [classNameLayer7 setLabel:v42];
 
   if (!v9)
   {
@@ -2618,22 +2618,22 @@ void __27__PSListController_dealloc__block_invoke(uint64_t a1, void *a2)
     {
       [MEMORY[0x1E69DC888] systemDarkGreenColor];
     }
-    v44 = ;
+    systemMintColor = ;
     goto LABEL_18;
   }
 
   if ((v10 & 1) == 0)
   {
-    v44 = [MEMORY[0x1E69DC888] systemMintColor];
+    systemMintColor = [MEMORY[0x1E69DC888] systemMintColor];
 LABEL_18:
-    v4 = v44;
+    currentDevice = systemMintColor;
     goto LABEL_19;
   }
 
-  v4 = 0;
+  currentDevice = 0;
 LABEL_19:
-  v45 = [(PSListController *)self classNameLayer];
-  [v45 setAlternateColor:v4];
+  classNameLayer8 = [(PSListController *)self classNameLayer];
+  [classNameLayer8 setAlternateColor:currentDevice];
 
 LABEL_20:
 }
@@ -2651,16 +2651,16 @@ LABEL_20:
   [(PSListController *)&v4 viewDidUnload];
 }
 
-- (id)_createGroupIndices:(id)a3
+- (id)_createGroupIndices:(id)indices
 {
-  v3 = a3;
-  v4 = [v3 count];
+  indicesCopy = indices;
+  v4 = [indicesCopy count];
   v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:v4];
   if (v4)
   {
     for (i = 0; i != v4; ++i)
     {
-      v7 = [v3 objectAtIndex:i];
+      v7 = [indicesCopy objectAtIndex:i];
       if (!v7[7])
       {
         v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:i];
@@ -2674,13 +2674,13 @@ LABEL_20:
 
 - (void)loseFocus
 {
-  v4 = [(UITableView *)self->_table indexPathForSelectedRow];
+  indexPathForSelectedRow = [(UITableView *)self->_table indexPathForSelectedRow];
   [(UITableView *)self->_table endEditing:0];
-  v3 = v4;
-  if (v4)
+  v3 = indexPathForSelectedRow;
+  if (indexPathForSelectedRow)
   {
-    [(UITableView *)self->_table deselectRowAtIndexPath:v4 animated:0];
-    v3 = v4;
+    [(UITableView *)self->_table deselectRowAtIndexPath:indexPathForSelectedRow animated:0];
+    v3 = indexPathForSelectedRow;
   }
 }
 
@@ -2697,77 +2697,77 @@ LABEL_20:
   if (v4 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v5))
   {
     *buf = 138543618;
-    v31 = self;
+    selfCopy = self;
     v32 = 2082;
     v33 = "[PSListController reloadSpecifiers]";
     _os_signpost_emit_with_name_impl(&dword_18B008000, v6, OS_SIGNPOST_INTERVAL_BEGIN, v4, "PSListController.reloadSpecifiers", "%{public}@: %{public}s", buf, 0x16u);
   }
 
-  v7 = [(UITableView *)self->_table indexPathForSelectedRow];
-  if (v7)
+  indexPathForSelectedRow = [(UITableView *)self->_table indexPathForSelectedRow];
+  if (indexPathForSelectedRow)
   {
-    v8 = [(PSListController *)self specifierAtIndex:[(PSListController *)self indexForIndexPath:v7]];
-    v9 = [v8 identifier];
+    v8 = [(PSListController *)self specifierAtIndex:[(PSListController *)self indexForIndexPath:indexPathForSelectedRow]];
+    identifier = [v8 identifier];
   }
 
   else
   {
-    v9 = 0;
+    identifier = 0;
   }
 
-  v10 = self;
-  objc_sync_enter(v10);
-  specifiers = v10->_specifiers;
-  v10->_specifiers = 0;
+  selfCopy2 = self;
+  objc_sync_enter(selfCopy2);
+  specifiers = selfCopy2->_specifiers;
+  selfCopy2->_specifiers = 0;
 
-  specifiersByID = v10->_specifiersByID;
-  v10->_specifiersByID = 0;
+  specifiersByID = selfCopy2->_specifiersByID;
+  selfCopy2->_specifiersByID = 0;
 
-  groups = v10->_groups;
-  v10->_groups = 0;
+  groups = selfCopy2->_groups;
+  selfCopy2->_groups = 0;
 
-  objc_sync_exit(v10);
-  v14 = [(PSListController *)v10 specifiers];
-  [(PSListController *)v10 prepareSpecifiersMetadata];
-  [(PSListController *)v10 reload];
-  WeakRetained = objc_loadWeakRetained(&v10->super._rootController);
-  v16 = [WeakRetained viewControllers];
+  objc_sync_exit(selfCopy2);
+  specifiers = [(PSListController *)selfCopy2 specifiers];
+  [(PSListController *)selfCopy2 prepareSpecifiersMetadata];
+  [(PSListController *)selfCopy2 reload];
+  WeakRetained = objc_loadWeakRetained(&selfCopy2->super._rootController);
+  viewControllers = [WeakRetained viewControllers];
 
-  v17 = [v16 indexOfObject:v10];
-  if ([v16 count] > (v17 + 1))
+  v17 = [viewControllers indexOfObject:selfCopy2];
+  if ([viewControllers count] > (v17 + 1))
   {
-    v18 = [v16 objectAtIndex:?];
+    v18 = [viewControllers objectAtIndex:?];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v19 = [v18 specifier];
-      v20 = [v19 identifier];
-      v21 = [(PSListController *)v10 specifierForID:v20];
+      specifier = [v18 specifier];
+      identifier2 = [specifier identifier];
+      v21 = [(PSListController *)selfCopy2 specifierForID:identifier2];
 
       if (objc_opt_respondsToSelector())
       {
-        v22 = [v18 specifier];
-        [v18 migrateSpecifierMetadataFrom:v22 to:v21];
+        specifier2 = [v18 specifier];
+        [v18 migrateSpecifierMetadataFrom:specifier2 to:v21];
       }
 
       [v18 setSpecifier:v21];
     }
   }
 
-  if (v9)
+  if (identifier)
   {
-    v23 = [(PSListController *)v10 specifierForID:v9];
+    v23 = [(PSListController *)selfCopy2 specifierForID:identifier];
     if (v23)
     {
       table = self->_table;
-      v25 = [(PSListController *)v10 indexPathForIndex:[(PSListController *)v10 indexOfSpecifier:v23]];
+      v25 = [(PSListController *)selfCopy2 indexPathForIndex:[(PSListController *)selfCopy2 indexOfSpecifier:v23]];
       [(UITableView *)table selectRowAtIndexPath:v25 animated:0 scrollPosition:0];
     }
   }
 
-  [(PSListController *)v10 setForceSynchronousIconLoadForCreatedCells:1];
-  v26 = [(UITableView *)self->_table visibleCells];
-  [(PSListController *)v10 setForceSynchronousIconLoadForCreatedCells:0];
+  [(PSListController *)selfCopy2 setForceSynchronousIconLoadForCreatedCells:1];
+  visibleCells = [(UITableView *)self->_table visibleCells];
+  [(PSListController *)selfCopy2 setForceSynchronousIconLoadForCreatedCells:0];
   v27 = PKLogForCategory(6);
   v28 = v27;
   if (v4 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v27))
@@ -2779,7 +2779,7 @@ LABEL_20:
   objc_sync_exit(obj);
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
   groups = self->_groups;
   if (!groups)
@@ -2791,67 +2791,67 @@ LABEL_20:
   return [(NSMutableArray *)groups count];
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  if ([(NSMutableArray *)self->_groups count]- 1 == a4)
+  if ([(NSMutableArray *)self->_groups count]- 1 == section)
   {
     v6 = [(NSArray *)self->_specifiers count];
-    v7 = [(NSMutableArray *)self->_groups objectAtIndex:a4];
+    v7 = [(NSMutableArray *)self->_groups objectAtIndex:section];
     v8 = v6 + ~[v7 integerValue];
   }
 
   else
   {
-    v7 = [(NSMutableArray *)self->_groups objectAtIndex:a4 + 1];
-    v9 = [v7 integerValue];
-    v10 = [(NSMutableArray *)self->_groups objectAtIndex:a4];
-    v8 = v9 + ~[v10 integerValue];
+    v7 = [(NSMutableArray *)self->_groups objectAtIndex:section + 1];
+    integerValue = [v7 integerValue];
+    v10 = [(NSMutableArray *)self->_groups objectAtIndex:section];
+    v8 = integerValue + ~[v10 integerValue];
   }
 
   return v8;
 }
 
-- (id)cachedCellForSpecifier:(id)a3
+- (id)cachedCellForSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = [(PSListController *)self table];
-  v6 = [(PSListController *)self indexPathForSpecifier:v4];
+  specifierCopy = specifier;
+  table = [(PSListController *)self table];
+  v6 = [(PSListController *)self indexPathForSpecifier:specifierCopy];
 
-  v7 = [v5 cellForRowAtIndexPath:v6];
+  v7 = [table cellForRowAtIndexPath:v6];
 
   return v7;
 }
 
-- (id)cachedCellForSpecifierID:(id)a3
+- (id)cachedCellForSpecifierID:(id)d
 {
-  v4 = [(PSListController *)self specifierForID:a3];
+  v4 = [(PSListController *)self specifierForID:d];
   v5 = [(PSListController *)self cachedCellForSpecifier:v4];
 
   return v5;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PSListController *)self indexForIndexPath:v7];
-  v9 = self;
-  objc_sync_enter(v9);
-  v10 = [(NSArray *)v9->_specifiers objectAtIndex:v8];
-  objc_sync_exit(v9);
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(PSListController *)self indexForIndexPath:pathCopy];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v10 = [(NSArray *)selfCopy->_specifiers objectAtIndex:v8];
+  objc_sync_exit(selfCopy);
 
   v11 = [PSTableCell cellClassForSpecifier:v10];
   if (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector())
   {
-    v12 = [(objc_class *)v11 isFromPreferencesFramework];
-    v13 = [(objc_class *)v11 alternativeCellClass];
-    if (v13)
+    isFromPreferencesFramework = [(objc_class *)v11 isFromPreferencesFramework];
+    alternativeCellClass = [(objc_class *)v11 alternativeCellClass];
+    if (alternativeCellClass)
     {
-      v11 = v13;
-      if (v12)
+      v11 = alternativeCellClass;
+      if (isFromPreferencesFramework)
       {
 LABEL_5:
-        v14 = [(objc_class *)v11 cellReuseIdentifier];
+        cellReuseIdentifier = [(objc_class *)v11 cellReuseIdentifier];
         goto LABEL_10;
       }
     }
@@ -2859,7 +2859,7 @@ LABEL_5:
     else
     {
       v11 = [PSTableCell cellClassForSpecifier:v10];
-      if (v12)
+      if (isFromPreferencesFramework)
       {
         goto LABEL_5;
       }
@@ -2869,8 +2869,8 @@ LABEL_5:
   v15 = objc_opt_class();
   if (PSObjc_classIsSubclassOfClass(v11, v15))
   {
-    v16 = [(objc_class *)v11 cellReuseIdentifier];
-    v17 = [v6 dequeueReusableCellWithIdentifier:v16];
+    cellReuseIdentifier2 = [(objc_class *)v11 cellReuseIdentifier];
+    v17 = [viewCopy dequeueReusableCellWithIdentifier:cellReuseIdentifier2];
 
     if (v17)
     {
@@ -2878,12 +2878,12 @@ LABEL_5:
     }
   }
 
-  v14 = [PSTableCell reuseIdentifierForSpecifier:v10];
+  cellReuseIdentifier = [PSTableCell reuseIdentifierForSpecifier:v10];
 LABEL_10:
-  v18 = v14;
-  v17 = [v6 dequeueReusableCellWithIdentifier:v14];
+  v18 = cellReuseIdentifier;
+  v17 = [viewCopy dequeueReusableCellWithIdentifier:cellReuseIdentifier];
 
-  if (v17 || (-[PSListControllerAppearanceProvider cellForSpecifier:inController:](v9->_appearanceProvider, "cellForSpecifier:inController:", v10, v9), v17 = objc_claimAutoreleasedReturnValue(), [v17 _accessibilitySetInterfaceStyleIntent:{objc_msgSend(v6, "_accessibilityInterfaceStyleIntent")}], v17))
+  if (v17 || (-[PSListControllerAppearanceProvider cellForSpecifier:inController:](selfCopy->_appearanceProvider, "cellForSpecifier:inController:", v10, selfCopy), v17 = objc_claimAutoreleasedReturnValue(), [v17 _accessibilitySetInterfaceStyleIntent:{objc_msgSend(viewCopy, "_accessibilityInterfaceStyleIntent")}], v17))
   {
 LABEL_12:
     [v10 setObject:v17 forKeyedSubscript:@"cellObject"];
@@ -2909,7 +2909,7 @@ LABEL_13:
   if (v21)
   {
     [v21 setSpecifier:v10];
-    v22 = [(PSListController *)v9 getGroupSpecifierForSpecifier:v10];
+    v22 = [(PSListController *)selfCopy getGroupSpecifierForSpecifier:v10];
     if ([v22 isRadioGroup])
     {
       objc_opt_class();
@@ -2930,7 +2930,7 @@ LABEL_13:
     }
 
     [v21 refreshCellContentsWithSpecifier:v10];
-    if (v9->_forceSynchronousIconLoadForCreatedCells)
+    if (selfCopy->_forceSynchronousIconLoadForCreatedCells)
     {
       [v21 forceSynchronousIconLoadOnNextIconLoad];
     }
@@ -2939,19 +2939,19 @@ LABEL_13:
   return v19;
 }
 
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path
 {
-  v4 = [(PSListController *)self specifierAtIndex:[(PSListController *)self indexForIndexPath:a4]];
-  v5 = [v4 properties];
-  v6 = [v5 objectForKey:@"enabled"];
+  v4 = [(PSListController *)self specifierAtIndex:[(PSListController *)self indexForIndexPath:path]];
+  properties = [v4 properties];
+  v6 = [properties objectForKey:@"enabled"];
 
   v7 = !v6 || [v6 BOOLValue];
   return v7;
 }
 
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path
 {
-  v5 = [(PSListController *)self indexForIndexPath:a4];
+  v5 = [(PSListController *)self indexForIndexPath:path];
   if (v5 == 0x7FFFFFFFFFFFFFFFLL)
   {
     return 0;
@@ -2963,24 +2963,24 @@ LABEL_13:
   return v6;
 }
 
-- (double)tableView:(id)a3 estimatedHeightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view estimatedHeightForRowAtIndexPath:(id)path
 {
-  v5 = a4;
+  pathCopy = path;
   [(PSListController *)self _ensureAppearanceProviderAndNavigationCoordinator];
-  [(PSListControllerAppearanceProvider *)self->_appearanceProvider estimatedHeightOfRowForCellWithIndexPath:v5 inController:self];
+  [(PSListControllerAppearanceProvider *)self->_appearanceProvider estimatedHeightOfRowForCellWithIndexPath:pathCopy inController:self];
   v7 = v6;
 
   return v7;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
   specifiers = self->_specifiers;
-  v5 = [(NSMutableArray *)self->_groups objectAtIndex:a4];
+  v5 = [(NSMutableArray *)self->_groups objectAtIndex:section];
   v6 = -[NSArray objectAtIndex:](specifiers, "objectAtIndex:", [v5 integerValue]);
 
-  v7 = [v6 name];
-  if ([v7 length])
+  name = [v6 name];
+  if ([name length])
   {
     v8 = [v6 propertyForKey:@"headerCellClass"];
     if (v8)
@@ -2990,7 +2990,7 @@ LABEL_13:
 
     else
     {
-      v9 = v7;
+      v9 = name;
     }
 
     v10 = v9;
@@ -3004,9 +3004,9 @@ LABEL_13:
   return v10;
 }
 
-- (id)tableView:(id)a3 detailTextForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view detailTextForHeaderInSection:(int64_t)section
 {
-  if (-[NSMutableArray count](self->_groups, "count", a3) <= a4 || (-[NSMutableArray objectAtIndex:](self->_groups, "objectAtIndex:", a4), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 integerValue], v8 = -[NSArray count](self->_specifiers, "count"), v6, v7 >= v8))
+  if (-[NSMutableArray count](self->_groups, "count", view) <= section || (-[NSMutableArray objectAtIndex:](self->_groups, "objectAtIndex:", section), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 integerValue], v8 = -[NSArray count](self->_specifiers, "count"), v6, v7 >= v8))
   {
     v13 = 0;
   }
@@ -3014,7 +3014,7 @@ LABEL_13:
   else
   {
     specifiers = self->_specifiers;
-    v10 = [(NSMutableArray *)self->_groups objectAtIndex:a4];
+    v10 = [(NSMutableArray *)self->_groups objectAtIndex:section];
     v11 = -[NSArray objectAtIndex:](specifiers, "objectAtIndex:", [v10 integerValue]);
 
     v12 = [v11 propertyForKey:@"headerDetailText"];
@@ -3032,10 +3032,10 @@ LABEL_13:
   return v13;
 }
 
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section
 {
   specifiers = self->_specifiers;
-  v5 = [(NSMutableArray *)self->_groups objectAtIndex:a4];
+  v5 = [(NSMutableArray *)self->_groups objectAtIndex:section];
   v6 = -[NSArray objectAtIndex:](specifiers, "objectAtIndex:", [v5 integerValue]);
 
   v7 = [v6 propertyForKey:@"footerText"];
@@ -3052,62 +3052,62 @@ LABEL_13:
   return v9;
 }
 
-- (int64_t)tableView:(id)a3 titleAlignmentForHeaderInSection:(int64_t)a4
+- (int64_t)tableView:(id)view titleAlignmentForHeaderInSection:(int64_t)section
 {
   specifiers = self->_specifiers;
-  v5 = [(NSMutableArray *)self->_groups objectAtIndex:a4];
+  v5 = [(NSMutableArray *)self->_groups objectAtIndex:section];
   v6 = -[NSArray objectAtIndex:](specifiers, "objectAtIndex:", [v5 integerValue]);
 
   v7 = [v6 propertyForKey:@"alignment"];
   if (v7 && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v8 = [v7 integerValue];
+    integerValue = [v7 integerValue];
   }
 
   else
   {
-    v8 = 4;
+    integerValue = 4;
   }
 
-  return v8;
+  return integerValue;
 }
 
-- (int64_t)tableView:(id)a3 titleAlignmentForFooterInSection:(int64_t)a4
+- (int64_t)tableView:(id)view titleAlignmentForFooterInSection:(int64_t)section
 {
   specifiers = self->_specifiers;
-  v5 = [(NSMutableArray *)self->_groups objectAtIndex:a4];
+  v5 = [(NSMutableArray *)self->_groups objectAtIndex:section];
   v6 = -[NSArray objectAtIndex:](specifiers, "objectAtIndex:", [v5 integerValue]);
 
   v7 = [v6 propertyForKey:@"footerAlignment"];
   if (v7 && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v8 = [v7 integerValue];
+    integerValue = [v7 integerValue];
   }
 
   else
   {
-    v8 = 4;
+    integerValue = 4;
   }
 
-  return v8;
+  return integerValue;
 }
 
-- (id)_customViewForSpecifier:(id)a3 class:(Class)a4 isHeader:(BOOL)a5
+- (id)_customViewForSpecifier:(id)specifier class:(Class)class isHeader:(BOOL)header
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = v8;
+  headerCopy = header;
+  specifierCopy = specifier;
+  v9 = specifierCopy;
   v10 = PSHeaderViewKey;
-  if (!v5)
+  if (!headerCopy)
   {
     v10 = PSFooterViewKey;
   }
 
   v11 = *v10;
-  v12 = [v8 propertyForKey:*v10];
+  v12 = [specifierCopy propertyForKey:*v10];
   if (!v12)
   {
-    v12 = [[a4 alloc] initWithSpecifier:v9];
+    v12 = [[class alloc] initWithSpecifier:v9];
     [v9 setProperty:v12 forKey:v11];
   }
 
@@ -3117,15 +3117,15 @@ LABEL_13:
   return v12;
 }
 
-- (double)_tableView:(id)a3 heightForCustomInSection:(int64_t)a4 isHeader:(BOOL)a5
+- (double)_tableView:(id)view heightForCustomInSection:(int64_t)section isHeader:(BOOL)header
 {
-  v5 = a5;
+  headerCopy = header;
   specifiers = self->_specifiers;
-  v8 = [(NSMutableArray *)self->_groups objectAtIndex:a4];
+  v8 = [(NSMutableArray *)self->_groups objectAtIndex:section];
   v9 = -[NSArray objectAtIndex:](specifiers, "objectAtIndex:", [v8 integerValue]);
 
   v10 = PSHeaderCellClassGroupKey;
-  if (!v5)
+  if (!headerCopy)
   {
     v10 = PSFooterCellClassGroupKey;
   }
@@ -3137,7 +3137,7 @@ LABEL_13:
     goto LABEL_15;
   }
 
-  v13 = [(PSListController *)self _customViewForSpecifier:v9 class:v12 isHeader:v5];
+  v13 = [(PSListController *)self _customViewForSpecifier:v9 class:v12 isHeader:headerCopy];
   [(UITableView *)self->_table _sectionContentInset];
   v15 = v14;
   v17 = v16;
@@ -3183,17 +3183,17 @@ LABEL_16:
   return v21;
 }
 
-- (id)_tableView:(id)a3 viewForCustomInSection:(int64_t)a4 isHeader:(BOOL)a5
+- (id)_tableView:(id)view viewForCustomInSection:(int64_t)section isHeader:(BOOL)header
 {
-  v5 = a5;
+  headerCopy = header;
   if ([(NSArray *)self->_specifiers count])
   {
     specifiers = self->_specifiers;
-    v9 = [(NSMutableArray *)self->_groups objectAtIndex:a4];
+    v9 = [(NSMutableArray *)self->_groups objectAtIndex:section];
     v10 = -[NSArray objectAtIndex:](specifiers, "objectAtIndex:", [v9 integerValue]);
 
     v11 = PSHeaderCellClassGroupKey;
-    if (!v5)
+    if (!headerCopy)
     {
       v11 = PSFooterCellClassGroupKey;
     }
@@ -3203,17 +3203,17 @@ LABEL_16:
     if (v13)
     {
       v14 = v13;
-      v15 = [(PSListController *)self _customViewForSpecifier:v10 class:v13 isHeader:v5];
-      v16 = [MEMORY[0x1E69DC938] currentDevice];
-      if (([v16 sf_isInternalInstall] & 1) == 0)
+      v15 = [(PSListController *)self _customViewForSpecifier:v10 class:v13 isHeader:headerCopy];
+      currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+      if (([currentDevice sf_isInternalInstall] & 1) == 0)
       {
 LABEL_21:
 
         goto LABEL_22;
       }
 
-      v17 = [MEMORY[0x1E695E000] standardUserDefaults];
-      v18 = [v17 BOOLForKey:@"ClassNameForListControllersAndCellsOverlayEnabled"];
+      standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+      v18 = [standardUserDefaults BOOLForKey:@"ClassNameForListControllersAndCellsOverlayEnabled"];
 
       if (v18)
       {
@@ -3222,30 +3222,30 @@ LABEL_21:
         v21 = [v19 isEqual:v20];
 
         v22 = objc_getAssociatedObject(v15, &__PSViewMarkerLayerKey);
-        v16 = v22;
+        currentDevice = v22;
         if (v22)
         {
-          v23 = [v22 superlayer];
+          superlayer = [v22 superlayer];
 
-          if (!v23)
+          if (!superlayer)
           {
-            v24 = [v15 layer];
-            [v24 addSublayer:v16];
+            layer = [v15 layer];
+            [layer addSublayer:currentDevice];
           }
 
           [v15 bounds];
-          [v16 setFrame:?];
+          [currentDevice setFrame:?];
         }
 
         else
         {
           v25 = NSStringFromClass(v14);
           v26 = objc_alloc_init(_PSViewMarkerLayer);
-          v27 = [v15 layer];
-          v28 = v27;
-          if (v27)
+          layer2 = [v15 layer];
+          v28 = layer2;
+          if (layer2)
           {
-            [v27 cornerRadii];
+            [layer2 cornerRadii];
           }
 
           else
@@ -3263,17 +3263,17 @@ LABEL_21:
           [(_PSViewMarkerLayer *)v26 setCustomCornerRadii:v32];
 
           objc_setAssociatedObject(v15, &__PSViewMarkerLayerKey, v26, 1);
-          v29 = [v15 layer];
-          [v29 addSublayer:v26];
+          layer3 = [v15 layer];
+          [layer3 addSublayer:v26];
 
           [(_PSViewMarkerLayer *)v26 setLabel:v25 subLabel:0 withAlignment:2];
-          v30 = 0;
+          systemDarkRedColor = 0;
           if ((v21 & 1) == 0)
           {
-            v30 = [MEMORY[0x1E69DC888] systemDarkRedColor];
+            systemDarkRedColor = [MEMORY[0x1E69DC888] systemDarkRedColor];
           }
 
-          [(_PSViewMarkerLayer *)v26 setAlternateColor:v30];
+          [(_PSViewMarkerLayer *)v26 setAlternateColor:systemDarkRedColor];
           [v15 bounds];
           [(_PSViewMarkerLayer *)v26 setFrame:?];
         }
@@ -3305,63 +3305,63 @@ LABEL_23:
   return v15;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v23.receiver = self;
   v23.super_class = PSListController;
   [(PSViewController *)&v23 viewWillAppear:?];
   if ([MEMORY[0x1E69DC668] shouldMakeUIForDefaultPNG])
   {
-    v5 = [(PSListController *)self table];
-    [v5 setShowsVerticalScrollIndicator:0];
+    table = [(PSListController *)self table];
+    [table setShowsVerticalScrollIndicator:0];
   }
 
   v6 = [(PSListControllerNavigationCoordinator *)self->_navigationCoordinator listControllerShouldNotDeselectAfterAppearing:self];
-  v7 = [(UITableView *)self->_table indexPathForSelectedRow];
-  if (v7)
+  indexPathForSelectedRow = [(UITableView *)self->_table indexPathForSelectedRow];
+  if (indexPathForSelectedRow)
   {
     if (v6)
     {
       table = self->_table;
-      v9 = [(UITableView *)table indexPathForSelectedRow];
-      [(UITableView *)table scrollToRowAtIndexPath:v9 atScrollPosition:1 animated:1];
+      indexPathForSelectedRow2 = [(UITableView *)table indexPathForSelectedRow];
+      [(UITableView *)table scrollToRowAtIndexPath:indexPathForSelectedRow2 atScrollPosition:1 animated:1];
     }
 
-    else if (v3)
+    else if (appearCopy)
     {
-      v10 = [(PSListController *)self transitionCoordinator];
+      transitionCoordinator = [(PSListController *)self transitionCoordinator];
       v21[0] = MEMORY[0x1E69E9820];
       v21[1] = 3221225472;
       v21[2] = __35__PSListController_viewWillAppear___block_invoke;
       v21[3] = &unk_1E71DC7F8;
       v21[4] = self;
-      v22 = v7;
+      v22 = indexPathForSelectedRow;
       v15 = MEMORY[0x1E69E9820];
       v16 = 3221225472;
       v17 = __35__PSListController_viewWillAppear___block_invoke_2;
       v18 = &unk_1E71DC7F8;
-      v19 = self;
+      selfCopy = self;
       v20 = v22;
-      [v10 animateAlongsideTransition:v21 completion:&v15];
+      [transitionCoordinator animateAlongsideTransition:v21 completion:&v15];
     }
 
     else
     {
-      [(UITableView *)self->_table deselectRowAtIndexPath:v7 animated:0];
+      [(UITableView *)self->_table deselectRowAtIndexPath:indexPathForSelectedRow animated:0];
     }
   }
 
   v11 = [PSListController appearance:v15];
-  v12 = [v11 usesDarkTheme];
+  usesDarkTheme = [v11 usesDarkTheme];
 
-  if (v12)
+  if (usesDarkTheme)
   {
-    v13 = [(PSListController *)self table];
-    [v13 setIndicatorStyle:2];
+    table2 = [(PSListController *)self table];
+    [table2 setIndicatorStyle:2];
 
-    v14 = [(PSListController *)self table];
-    [v14 _accessibilitySetInterfaceStyleIntent:2];
+    table3 = [(PSListController *)self table];
+    [table3 _accessibilitySetInterfaceStyleIntent:2];
   }
 
   self->_hasAppeared = 1;
@@ -3386,9 +3386,9 @@ uint64_t __35__PSListController_viewWillAppear___block_invoke_2(uint64_t a1, voi
   return result;
 }
 
-- (void)_scrollToSpecifierWithID:(id)a3 animated:(BOOL)a4
+- (void)_scrollToSpecifierWithID:(id)d animated:(BOOL)animated
 {
-  v6 = [(PSListController *)self specifierForID:a3];
+  v6 = [(PSListController *)self specifierForID:d];
   if (v6)
   {
     v7 = [(NSArray *)self->_specifiers indexOfObject:v6];
@@ -3409,8 +3409,8 @@ uint64_t __35__PSListController_viewWillAppear___block_invoke_2(uint64_t a1, voi
       block[2] = __54__PSListController__scrollToSpecifierWithID_animated___block_invoke;
       block[3] = &unk_1E71DC820;
       v14 = v9;
-      v15 = self;
-      v16 = a4;
+      selfCopy = self;
+      animatedCopy = animated;
       v12 = v9;
       dispatch_after(v11, MEMORY[0x1E69E96A0], block);
     }
@@ -3476,10 +3476,10 @@ LABEL_11:
   [v5 scrollToRowAtIndexPath:v4 atScrollPosition:1 animated:v6];
 }
 
-- (BOOL)_isEmptyGroup:(unint64_t)a3
+- (BOOL)_isEmptyGroup:(unint64_t)group
 {
-  v4 = a3 + 1;
-  if (a3 + 1 >= [(NSArray *)self->_specifiers count])
+  v4 = group + 1;
+  if (group + 1 >= [(NSArray *)self->_specifiers count])
   {
     return 1;
   }
@@ -3497,8 +3497,8 @@ LABEL_11:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(UITableView *)self->_table visibleCells];
-  v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  visibleCells = [(UITableView *)self->_table visibleCells];
+  v3 = [visibleCells countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v3)
   {
     v4 = 0;
@@ -3511,7 +3511,7 @@ LABEL_11:
       {
         if (*v10 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(visibleCells);
         }
 
         v4 = *(*(&v9 + 1) + 8 * v6);
@@ -3527,7 +3527,7 @@ LABEL_11:
       }
 
       while (v3 != v6);
-      v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v3 = [visibleCells countByEnumeratingWithState:&v9 objects:v13 count:16];
       if (v3)
       {
         continue;
@@ -3542,42 +3542,42 @@ LABEL_11:
   return v3;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v37.receiver = self;
   v37.super_class = PSListController;
-  [(PSViewController *)&v37 viewDidAppear:a3];
-  v4 = [MEMORY[0x1E69DC668] sharedApplication];
-  v5 = [v4 isRunningTest:@"EnterMMCPane"];
+  [(PSViewController *)&v37 viewDidAppear:appear];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  v5 = [mEMORY[0x1E69DC668] isRunningTest:@"EnterMMCPane"];
 
-  v6 = [MEMORY[0x1E69DC668] sharedApplication];
-  v7 = v6;
+  mEMORY[0x1E69DC668]2 = [MEMORY[0x1E69DC668] sharedApplication];
+  mEMORY[0x1E69DC668]4 = mEMORY[0x1E69DC668]2;
   if (v5)
   {
     v8 = @"EnterMMCPane";
 LABEL_5:
-    [v7 finishedTest:v8 extraResults:0];
+    [mEMORY[0x1E69DC668]4 finishedTest:v8 extraResults:0];
 LABEL_6:
 
     goto LABEL_7;
   }
 
-  v9 = [v6 isRunningTest:@"EnterGeneralPane"];
+  v9 = [mEMORY[0x1E69DC668]2 isRunningTest:@"EnterGeneralPane"];
 
-  v10 = [MEMORY[0x1E69DC668] sharedApplication];
-  v7 = v10;
+  mEMORY[0x1E69DC668]3 = [MEMORY[0x1E69DC668] sharedApplication];
+  mEMORY[0x1E69DC668]4 = mEMORY[0x1E69DC668]3;
   if (v9)
   {
     v8 = @"EnterGeneralPane";
     goto LABEL_5;
   }
 
-  v36 = [v10 isRunningTest:@"EnteriCloudPane"];
+  v36 = [mEMORY[0x1E69DC668]3 isRunningTest:@"EnteriCloudPane"];
 
   if (v36)
   {
-    v7 = [MEMORY[0x1E69DC668] sharedApplication];
-    [v7 finishedTest:@"EnteriCloudPane"];
+    mEMORY[0x1E69DC668]4 = [MEMORY[0x1E69DC668] sharedApplication];
+    [mEMORY[0x1E69DC668]4 finishedTest:@"EnteriCloudPane"];
     goto LABEL_6;
   }
 
@@ -3591,20 +3591,20 @@ LABEL_7:
     }
 
     [(PSListController *)self _scrollToSpecifierWithID:offsetItemName animated:0];
-    v11 = self->_offsetItemName;
+    table = self->_offsetItemName;
     self->_offsetItemName = 0;
   }
 
   else
   {
-    v11 = [(PSListController *)self table];
-    [v11 contentSize];
+    table = [(PSListController *)self table];
+    [table contentSize];
     v13 = v12;
-    [v11 contentInset];
+    [table contentInset];
     v15 = v13 + v14;
-    [v11 contentInset];
+    [table contentInset];
     v17 = v15 + v16;
-    [v11 frame];
+    [table frame];
     v19 = v17 - v18;
     verticalContentOffset = self->_verticalContentOffset;
     if (v17 - v18 > 0.0 && v19 < verticalContentOffset)
@@ -3613,15 +3613,15 @@ LABEL_7:
       self->_verticalContentOffset = verticalContentOffset;
     }
 
-    [v11 setContentOffset:{0.0, verticalContentOffset}];
+    [table setContentOffset:{0.0, verticalContentOffset}];
     self->_verticalContentOffset = 0.0;
   }
 
 LABEL_18:
   if ([(PSListController *)self shouldSelectResponderOnAppearance])
   {
-    v23 = [(PSListController *)self findFirstVisibleResponder];
-    [v23 becomeFirstResponder];
+    findFirstVisibleResponder = [(PSListController *)self findFirstVisibleResponder];
+    [findFirstVisibleResponder becomeFirstResponder];
   }
 
   self->_showingSetupController = 0;
@@ -3635,47 +3635,47 @@ LABEL_18:
     self->_highlightItemName = 0;
   }
 
-  v26 = [(PSListController *)self cellHighlightingSelectionInvocationRelay];
-  v27 = [v26 specifierIdentifierToScrollAndHighlight];
-  v28 = [v27 length];
+  cellHighlightingSelectionInvocationRelay = [(PSListController *)self cellHighlightingSelectionInvocationRelay];
+  specifierIdentifierToScrollAndHighlight = [cellHighlightingSelectionInvocationRelay specifierIdentifierToScrollAndHighlight];
+  v28 = [specifierIdentifierToScrollAndHighlight length];
 
   if (v28)
   {
-    v29 = [(PSListController *)self cellHighlightingSelectionInvocationRelay];
-    v30 = [v29 specifierIdentifierToScrollAndHighlight];
-    [(PSListController *)self performScrollAndHighlightIfOnScreenToSpecifierIdentifier:v30];
+    cellHighlightingSelectionInvocationRelay2 = [(PSListController *)self cellHighlightingSelectionInvocationRelay];
+    specifierIdentifierToScrollAndHighlight2 = [cellHighlightingSelectionInvocationRelay2 specifierIdentifierToScrollAndHighlight];
+    [(PSListController *)self performScrollAndHighlightIfOnScreenToSpecifierIdentifier:specifierIdentifierToScrollAndHighlight2];
   }
 
-  v31 = [(PSListController *)self cellHighlightingSelectionInvocationRelay];
-  v32 = [v31 specifierIdentifierToScrollAndSelect];
-  v33 = [v32 length];
+  cellHighlightingSelectionInvocationRelay3 = [(PSListController *)self cellHighlightingSelectionInvocationRelay];
+  specifierIdentifierToScrollAndSelect = [cellHighlightingSelectionInvocationRelay3 specifierIdentifierToScrollAndSelect];
+  v33 = [specifierIdentifierToScrollAndSelect length];
 
   if (v33)
   {
-    v34 = [(PSListController *)self cellHighlightingSelectionInvocationRelay];
-    v35 = [v34 specifierIdentifierToScrollAndSelect];
-    [(PSListController *)self performScrollAndInvokeSelectionIfOnScreenToSpecifierIdentifier:v35];
+    cellHighlightingSelectionInvocationRelay4 = [(PSListController *)self cellHighlightingSelectionInvocationRelay];
+    specifierIdentifierToScrollAndSelect2 = [cellHighlightingSelectionInvocationRelay4 specifierIdentifierToScrollAndSelect];
+    [(PSListController *)self performScrollAndInvokeSelectionIfOnScreenToSpecifierIdentifier:specifierIdentifierToScrollAndSelect2];
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   if ([(PSListController *)self isMovingFromParentViewController])
   {
-    [(PSListController *)self dismissConfirmationViewAnimated:v3];
+    [(PSListController *)self dismissConfirmationViewAnimated:disappearCopy];
   }
 
   v5.receiver = self;
   v5.super_class = PSListController;
-  [(PSViewController *)&v5 viewWillDisappear:v3];
+  [(PSViewController *)&v5 viewWillDisappear:disappearCopy];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = PSListController;
-  [(PSViewController *)&v4 viewDidDisappear:a3];
+  [(PSViewController *)&v4 viewDidDisappear:disappear];
   self->_isVisible = 0;
 }
 
@@ -3692,8 +3692,8 @@ LABEL_18:
   if (navigationCoordinator)
   {
     table = self->_table;
-    v6 = [(UITableView *)table indexPathForSelectedRow];
-    [(UITableView *)table deselectRowAtIndexPath:v6 animated:1];
+    indexPathForSelectedRow = [(UITableView *)table indexPathForSelectedRow];
+    [(UITableView *)table deselectRowAtIndexPath:indexPathForSelectedRow animated:1];
   }
 }
 
@@ -3707,35 +3707,35 @@ LABEL_18:
 
 - (void)returnPressedAtEnd
 {
-  v9 = [(PSListController *)self navigationItem];
-  v2 = [v9 rightBarButtonItem];
-  v3 = [v2 isEnabled];
+  navigationItem = [(PSListController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  isEnabled = [rightBarButtonItem isEnabled];
 
-  if (v3)
+  if (isEnabled)
   {
-    v4 = [v9 rightBarButtonItem];
-    [v4 action];
-    v5 = [v9 rightBarButtonItem];
-    v6 = [v5 target];
-    v7 = [v9 rightBarButtonItem];
+    rightBarButtonItem2 = [navigationItem rightBarButtonItem];
+    [rightBarButtonItem2 action];
+    rightBarButtonItem3 = [navigationItem rightBarButtonItem];
+    target = [rightBarButtonItem3 target];
+    rightBarButtonItem4 = [navigationItem rightBarButtonItem];
     v8 = SFPerformSelector();
   }
 }
 
-- (void)_returnKeyPressed:(id)a3
+- (void)_returnKeyPressed:(id)pressed
 {
   if ([(UITableView *)self->_table _isAncestorOfFirstResponder])
   {
-    v4 = [MEMORY[0x1E69DCBE0] activeInstance];
-    v7 = [v4 delegate];
+    activeInstance = [MEMORY[0x1E69DCBE0] activeInstance];
+    delegate = [activeInstance delegate];
 
     NSClassFromString(&cfstr_Uifieldeditor.isa);
     if (objc_opt_isKindOfClass() & 1) != 0 || (NSClassFromString(&cfstr_Uitextfield.isa), (objc_opt_isKindOfClass()))
     {
-      v5 = [v7 _nextKeyResponder];
-      if (v5)
+      _nextKeyResponder = [delegate _nextKeyResponder];
+      if (_nextKeyResponder)
       {
-        v6 = v5 == v7;
+        v6 = _nextKeyResponder == delegate;
       }
 
       else
@@ -3743,9 +3743,9 @@ LABEL_18:
         v6 = 1;
       }
 
-      if (!v6 && TopToBottomLeftToRightViewCompare(v7, v5) == -1)
+      if (!v6 && TopToBottomLeftToRightViewCompare(delegate, _nextKeyResponder) == -1)
       {
-        [v5 becomeFirstResponder];
+        [_nextKeyResponder becomeFirstResponder];
       }
 
       else
@@ -3756,13 +3756,13 @@ LABEL_18:
   }
 }
 
-- (BOOL)performActionForSpecifier:(id)a3
+- (BOOL)performActionForSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  specifierCopy = specifier;
+  v5 = specifierCopy;
+  if (specifierCopy)
   {
-    [v4 performLegacyAction];
+    [specifierCopy performLegacyAction];
     v6 = 1;
   }
 
@@ -3776,13 +3776,13 @@ LABEL_18:
   return v6;
 }
 
-- (BOOL)performLoadActionForSpecifier:(id)a3
+- (BOOL)performLoadActionForSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  specifierCopy = specifier;
+  v5 = specifierCopy;
+  if (specifierCopy)
   {
-    if ([v4 controllerLoadAction])
+    if ([specifierCopy controllerLoadAction])
     {
       [v5 performControllerLoadAction];
     }
@@ -3805,13 +3805,13 @@ LABEL_18:
   return v7;
 }
 
-- (BOOL)performButtonActionForSpecifier:(id)a3
+- (BOOL)performButtonActionForSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  specifierCopy = specifier;
+  v5 = specifierCopy;
+  if (specifierCopy)
   {
-    if ([v4 buttonAction])
+    if ([specifierCopy buttonAction])
     {
       [v5 performButtonAction];
     }
@@ -3834,13 +3834,13 @@ LABEL_18:
   return v7;
 }
 
-- (BOOL)performConfirmationActionForSpecifier:(id)a3
+- (BOOL)performConfirmationActionForSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  specifierCopy = specifier;
+  v5 = specifierCopy;
+  if (specifierCopy)
   {
-    if ([v4 confirmationAction])
+    if ([specifierCopy confirmationAction])
     {
       [v5 performConfirmationAction];
     }
@@ -3868,13 +3868,13 @@ LABEL_18:
   return v7;
 }
 
-- (BOOL)performConfirmationAlternateActionForSpecifier:(id)a3
+- (BOOL)performConfirmationAlternateActionForSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  specifierCopy = specifier;
+  v5 = specifierCopy;
+  if (specifierCopy)
   {
-    if ([v4 confirmationAlternateAction])
+    if ([specifierCopy confirmationAlternateAction])
     {
       [v5 performConfirmationAlternateAction];
     }
@@ -3902,13 +3902,13 @@ LABEL_18:
   return v7;
 }
 
-- (BOOL)performConfirmationCancelActionForSpecifier:(id)a3
+- (BOOL)performConfirmationCancelActionForSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  specifierCopy = specifier;
+  v5 = specifierCopy;
+  if (specifierCopy)
   {
-    if ([v4 confirmationCancelAction])
+    if ([specifierCopy confirmationCancelAction])
     {
       [v5 performConfirmationCancelAction];
     }
@@ -3933,42 +3933,42 @@ LABEL_18:
   return v6;
 }
 
-- (void)showConfirmationViewForSpecifier:(id)a3 useAlert:(BOOL)a4
+- (void)showConfirmationViewForSpecifier:(id)specifier useAlert:(BOOL)alert
 {
-  v4 = a4;
-  v7 = a3;
-  v8 = [(PSListController *)self presentedViewController];
+  alertCopy = alert;
+  specifierCopy = specifier;
+  presentedViewController = [(PSListController *)self presentedViewController];
 
-  if (v8)
+  if (presentedViewController)
   {
     Name = sel_getName(a2);
-    v10 = [(PSListController *)self presentedViewController];
-    NSLog(&cfstr_SOnWhileAlread.isa, Name, self, v10);
+    presentedViewController2 = [(PSListController *)self presentedViewController];
+    NSLog(&cfstr_SOnWhileAlread.isa, Name, self, presentedViewController2);
   }
 
   else
   {
     v11 = MEMORY[0x1E69DC650];
-    if (v4)
+    if (alertCopy)
     {
-      v12 = [v7 title];
-      v13 = [v7 prompt];
-      v14 = [v11 alertControllerWithTitle:v12 message:v13 preferredStyle:1];
+      title = [specifierCopy title];
+      prompt = [specifierCopy prompt];
+      v14 = [v11 alertControllerWithTitle:title message:prompt preferredStyle:1];
 
       v15 = MEMORY[0x1E69DC648];
-      [v7 okButton];
+      [specifierCopy okButton];
     }
 
     else
     {
-      v16 = [v7 prompt];
-      v14 = [v11 alertControllerWithTitle:v16 message:0 preferredStyle:0];
+      prompt2 = [specifierCopy prompt];
+      v14 = [v11 alertControllerWithTitle:prompt2 message:0 preferredStyle:0];
 
       v15 = MEMORY[0x1E69DC648];
-      [v7 title];
+      [specifierCopy title];
     }
     v17 = ;
-    if ([v7 isDestructive])
+    if ([specifierCopy isDestructive])
     {
       v18 = 2;
     }
@@ -3983,17 +3983,17 @@ LABEL_18:
     v34[2] = __62__PSListController_showConfirmationViewForSpecifier_useAlert___block_invoke;
     v34[3] = &unk_1E71DC000;
     v34[4] = self;
-    v19 = v7;
+    v19 = specifierCopy;
     v35 = v19;
     v20 = [v15 actionWithTitle:v17 style:v18 handler:v34];
     [v14 addAction:v20];
 
-    v21 = [v19 alternateButton];
+    alternateButton = [v19 alternateButton];
 
-    if (v21)
+    if (alternateButton)
     {
       v22 = MEMORY[0x1E69DC648];
-      v23 = [v19 alternateButton];
+      alternateButton2 = [v19 alternateButton];
       if ([v19 isAlternateDestructive])
       {
         v24 = 2;
@@ -4010,23 +4010,23 @@ LABEL_18:
       v32[3] = &unk_1E71DC000;
       v32[4] = self;
       v33 = v19;
-      v25 = [v22 actionWithTitle:v23 style:v24 handler:v32];
+      v25 = [v22 actionWithTitle:alternateButton2 style:v24 handler:v32];
       [v14 addAction:v25];
     }
 
-    v26 = [v19 cancelButton];
+    cancelButton = [v19 cancelButton];
 
-    if (v26)
+    if (cancelButton)
     {
       v27 = MEMORY[0x1E69DC648];
-      v28 = [v19 cancelButton];
+      cancelButton2 = [v19 cancelButton];
       v30[0] = MEMORY[0x1E69E9820];
       v30[1] = 3221225472;
       v30[2] = __62__PSListController_showConfirmationViewForSpecifier_useAlert___block_invoke_3;
       v30[3] = &unk_1E71DC000;
       v30[4] = self;
       v31 = v19;
-      v29 = [v27 actionWithTitle:v28 style:1 handler:v30];
+      v29 = [v27 actionWithTitle:cancelButton2 style:1 handler:v30];
       [v14 addAction:v29];
     }
 
@@ -4034,31 +4034,31 @@ LABEL_18:
   }
 }
 
-- (void)showConfirmationViewForSpecifier:(id)a3
+- (void)showConfirmationViewForSpecifier:(id)specifier
 {
   v4 = MEMORY[0x1E69DC938];
-  v5 = a3;
-  v6 = [v4 currentDevice];
-  -[PSListController showConfirmationViewForSpecifier:useAlert:](self, "showConfirmationViewForSpecifier:useAlert:", v5, [v6 sf_isiPad]);
+  specifierCopy = specifier;
+  currentDevice = [v4 currentDevice];
+  -[PSListController showConfirmationViewForSpecifier:useAlert:](self, "showConfirmationViewForSpecifier:useAlert:", specifierCopy, [currentDevice sf_isiPad]);
 }
 
-- (void)dismissConfirmationViewAnimated:(BOOL)a3
+- (void)dismissConfirmationViewAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(PSListController *)self presentedViewController];
+  animatedCopy = animated;
+  presentedViewController = [(PSListController *)self presentedViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
 
-    [(PSListController *)self dismissViewControllerAnimated:v3 completion:0];
+    [(PSListController *)self dismissViewControllerAnimated:animatedCopy completion:0];
   }
 }
 
-- (void)confirmationViewAcceptedForSpecifier:(id)a3
+- (void)confirmationViewAcceptedForSpecifier:(id)specifier
 {
-  if ([(PSListController *)self performConfirmationActionForSpecifier:a3])
+  if ([(PSListController *)self performConfirmationActionForSpecifier:specifier])
   {
     table = self->_table;
 
@@ -4066,9 +4066,9 @@ LABEL_18:
   }
 }
 
-- (void)confirmationViewAlternateAcceptedForSpecifier:(id)a3
+- (void)confirmationViewAlternateAcceptedForSpecifier:(id)specifier
 {
-  if ([(PSListController *)self performConfirmationAlternateActionForSpecifier:a3])
+  if ([(PSListController *)self performConfirmationAlternateActionForSpecifier:specifier])
   {
     table = self->_table;
 
@@ -4076,9 +4076,9 @@ LABEL_18:
   }
 }
 
-- (void)confirmationViewCancelledForSpecifier:(id)a3
+- (void)confirmationViewCancelledForSpecifier:(id)specifier
 {
-  if ([(PSListController *)self performConfirmationCancelActionForSpecifier:a3])
+  if ([(PSListController *)self performConfirmationCancelActionForSpecifier:specifier])
   {
     table = self->_table;
 
@@ -4086,10 +4086,10 @@ LABEL_18:
   }
 }
 
-- (void)lazyLoadBundle:(id)a3
+- (void)lazyLoadBundle:(id)bundle
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  bundleCopy = bundle;
   v5 = PKLogForCategory(6);
   v6 = os_signpost_id_make_with_pointer(v5, "PSListController.lazyLoadBundle");
 
@@ -4099,44 +4099,44 @@ LABEL_18:
   if (v6 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v7))
   {
     v22 = 138543618;
-    v23 = self;
+    selfCopy3 = self;
     v24 = 2114;
-    v25 = v4;
+    v25 = bundleCopy;
     _os_signpost_emit_with_name_impl(&dword_18B008000, v8, OS_SIGNPOST_INTERVAL_BEGIN, v6, "PSListController.lazyLoadBundle", "%{public}@: lazyLoadBundleWithSpecifier '%{public}@'", &v22, 0x16u);
   }
 
-  v10 = [v4 propertyForKey:@"lazy-bundle"];
+  v10 = [bundleCopy propertyForKey:@"lazy-bundle"];
   if (v10)
   {
     v11 = [MEMORY[0x1E696AAE8] bundleWithPath:v10];
-    v12 = [v4 propertyForKey:@"overridePrincipalClass"];
-    v13 = [v12 BOOLValue];
+    v12 = [bundleCopy propertyForKey:@"overridePrincipalClass"];
+    bOOLValue = [v12 BOOLValue];
 
-    if (v13)
+    if (bOOLValue)
     {
-      v14 = [v4 propertyForKey:@"detail"];
+      v14 = [bundleCopy propertyForKey:@"detail"];
       if (v14)
       {
         v15 = v14;
         v16 = NSClassFromString(v14);
         if (v16)
         {
-          v17 = v16;
+          principalClass = v16;
 
 LABEL_14:
-          v4[6] = v17;
-          if (!v4[8])
+          bundleCopy[6] = principalClass;
+          if (!bundleCopy[8])
           {
-            v19 = [v4 propertyForKey:@"pane"];
-            v4[8] = [v11 classNamed:v19];
+            v19 = [bundleCopy propertyForKey:@"pane"];
+            bundleCopy[8] = [v11 classNamed:v19];
           }
 
-          [v4 setLegacyAction:0];
-          [v4 setControllerLoadAction:0];
-          [v4 removePropertyForKey:@"lazy-bundle"];
+          [bundleCopy setLegacyAction:0];
+          [bundleCopy setControllerLoadAction:0];
+          [bundleCopy removePropertyForKey:@"lazy-bundle"];
           if (objc_opt_respondsToSelector())
           {
-            [v4[6] validateSpecifier:v4];
+            [bundleCopy[6] validateSpecifier:bundleCopy];
           }
 
           v20 = PKLogForCategory(6);
@@ -4144,7 +4144,7 @@ LABEL_14:
           if (v9 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v20))
           {
             v22 = 138543362;
-            v23 = self;
+            selfCopy3 = self;
             _os_signpost_emit_with_name_impl(&dword_18B008000, v21, OS_SIGNPOST_INTERVAL_END, v6, "PSListController.lazyLoadBundle", "%{public}@: Loaded bundle successfully.", &v22, 0xCu);
           }
 
@@ -4152,36 +4152,36 @@ LABEL_14:
         }
 
         [v11 load];
-        v17 = NSClassFromString(v15);
+        principalClass = NSClassFromString(v15);
 
-        if (v17)
+        if (principalClass)
         {
           goto LABEL_14;
         }
       }
     }
 
-    v17 = [v11 principalClass];
+    principalClass = [v11 principalClass];
     goto LABEL_14;
   }
 
-  [v4 setLegacyAction:0];
-  [v4 setControllerLoadAction:0];
+  [bundleCopy setLegacyAction:0];
+  [bundleCopy setControllerLoadAction:0];
   v18 = PKLogForCategory(6);
   v11 = v18;
   if (v9 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v18))
   {
     v22 = 138543362;
-    v23 = self;
+    selfCopy3 = self;
     _os_signpost_emit_with_name_impl(&dword_18B008000, v11, OS_SIGNPOST_INTERVAL_END, v6, "PSListController.lazyLoadBundle", "%{public}@: No bundle path found.", &v22, 0xCu);
   }
 
 LABEL_22:
 }
 
-- (id)controllerForRowAtIndexPath:(id)a3
+- (id)controllerForRowAtIndexPath:(id)path
 {
-  v4 = [(PSListController *)self indexForIndexPath:a3];
+  v4 = [(PSListController *)self indexForIndexPath:path];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL || self->_showingSetupController)
   {
     v5 = 0;
@@ -4196,21 +4196,21 @@ LABEL_22:
   return v5;
 }
 
-- (id)selectSpecifier:(id)a3
+- (id)selectSpecifier:(id)specifier
 {
   v41 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  specifierCopy = specifier;
   v6 = PKLogForCategory(3);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
     v9 = NSStringFromSelector(a2);
-    v10 = [(PSListController *)self viewIfLoaded];
-    v11 = [v10 window];
-    v12 = [(PSListController *)self navigationController];
-    v13 = [(PSListController *)self parentViewController];
-    v14 = [(PSViewController *)self parentController];
+    viewIfLoaded = [(PSListController *)self viewIfLoaded];
+    window = [viewIfLoaded window];
+    navigationController = [(PSListController *)self navigationController];
+    parentViewController = [(PSListController *)self parentViewController];
+    parentController = [(PSViewController *)self parentController];
     v17 = 138546178;
     v18 = v8;
     v19 = 2114;
@@ -4218,38 +4218,38 @@ LABEL_22:
     v21 = 2160;
     v22 = 1752392040;
     v23 = 2112;
-    v24 = v5;
+    v24 = specifierCopy;
     v25 = 2160;
     v26 = 1752392040;
     v27 = 2112;
-    v28 = v11;
+    v28 = window;
     v29 = 2160;
     v30 = 1752392040;
     v31 = 2112;
-    v32 = v12;
+    v32 = navigationController;
     v33 = 2160;
     v34 = 1752392040;
     v35 = 2112;
-    v36 = v13;
+    v36 = parentViewController;
     v37 = 2160;
     v38 = 1752392040;
     v39 = 2112;
-    v40 = v14;
+    v40 = parentController;
     _os_log_impl(&dword_18B008000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: %{public}@ Was called with { specifier: %{mask.hash}@, window of viewIfLoaded: %{mask.hash}@, navigationController: %{mask.hash}@, parentViewController: %{mask.hash}@, parentPreferencesController: %{mask.hash}@ }.", &v17, 0x7Au);
   }
 
-  v15 = [(PSListController *)self controllerForSpecifier:v5];
+  v15 = [(PSListController *)self controllerForSpecifier:specifierCopy];
 
   return v15;
 }
 
-- (id)controllerForSpecifier:(id)a3
+- (id)controllerForSpecifier:(id)specifier
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!CFPreferencesGetAppBooleanValue(@"kDontUseOldAction", @"com.apple.Preferences", 0) && ![v4 confirmationAction] && !objc_msgSend(v4, "controllerLoadAction") && !objc_msgSend(v4, "buttonAction"))
+  specifierCopy = specifier;
+  if (!CFPreferencesGetAppBooleanValue(@"kDontUseOldAction", @"com.apple.Preferences", 0) && ![specifierCopy confirmationAction] && !objc_msgSend(specifierCopy, "controllerLoadAction") && !objc_msgSend(specifierCopy, "buttonAction"))
   {
-    if (*(v4 + 7) == 4 && ![v4 legacyAction])
+    if (*(specifierCopy + 7) == 4 && ![specifierCopy legacyAction])
     {
       v22 = PKLogForCategory(7);
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
@@ -4260,7 +4260,7 @@ LABEL_22:
       goto LABEL_16;
     }
 
-    if ([v4 legacyAction] && -[PSListController performActionForSpecifier:](self, "performActionForSpecifier:", v4) && objc_msgSend(v4, "legacyAction"))
+    if ([specifierCopy legacyAction] && -[PSListController performActionForSpecifier:](self, "performActionForSpecifier:", specifierCopy) && objc_msgSend(specifierCopy, "legacyAction"))
     {
       v5 = PKLogForCategory(7);
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -4272,7 +4272,7 @@ LABEL_22:
     }
   }
 
-  if ([v4 buttonAction] && -[PSListController performButtonActionForSpecifier:](self, "performButtonActionForSpecifier:", v4))
+  if ([specifierCopy buttonAction] && -[PSListController performButtonActionForSpecifier:](self, "performButtonActionForSpecifier:", specifierCopy))
   {
     v5 = PKLogForCategory(7);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -4284,20 +4284,20 @@ LABEL_9:
 
     [(UITableView *)self->_table selectRowAtIndexPath:0 animated:0 scrollPosition:0];
 LABEL_16:
-    v9 = 0;
+    null = 0;
     goto LABEL_45;
   }
 
-  if ([v4 controllerLoadAction] && -[PSListController performLoadActionForSpecifier:](self, "performLoadActionForSpecifier:", v4))
+  if ([specifierCopy controllerLoadAction] && -[PSListController performLoadActionForSpecifier:](self, "performLoadActionForSpecifier:", specifierCopy))
   {
-    v6 = [v4 controllerLoadAction];
+    controllerLoadAction = [specifierCopy controllerLoadAction];
     v7 = PKLogForCategory(7);
     v8 = v7;
-    if (v6)
+    if (controllerLoadAction)
     {
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
       {
-        [PSListController controllerForSpecifier:v4];
+        [PSListController controllerForSpecifier:specifierCopy];
       }
 
       goto LABEL_16;
@@ -4309,31 +4309,31 @@ LABEL_16:
     }
   }
 
-  v10 = [v4 cellType];
-  v11 = [(PSListController *)self table];
-  v12 = [(PSListController *)self indexPathForSpecifier:v4];
-  v13 = [v11 cellForRowAtIndexPath:v12];
+  cellType = [specifierCopy cellType];
+  table = [(PSListController *)self table];
+  v12 = [(PSListController *)self indexPathForSpecifier:specifierCopy];
+  v13 = [table cellForRowAtIndexPath:v12];
 
-  if ((v10 & 0xFFFFFFFFFFFFFFFBLL) == 8)
+  if ((cellType & 0xFFFFFFFFFFFFFFFBLL) == 8)
   {
     [v13 becomeFirstResponder];
   }
 
-  if (v10 <= 0xB && ((1 << v10) & 0xC0E) != 0)
+  if (cellType <= 0xB && ((1 << cellType) & 0xC0E) != 0)
   {
-    v14 = v10 == 3;
+    canBeChecked = cellType == 3;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v14 = [v13 canBeChecked];
+      canBeChecked = [v13 canBeChecked];
     }
 
-    if (v13 && v14)
+    if (v13 && canBeChecked)
     {
-      v15 = [(PSListController *)self getGroupSpecifierForSpecifier:v4];
+      v15 = [(PSListController *)self getGroupSpecifierForSpecifier:specifierCopy];
       if ([v15 isRadioGroup])
       {
-        [v15 setObject:v4 forKeyedSubscript:@"radioGroupCheckedSpecifier"];
+        [v15 setObject:specifierCopy forKeyedSubscript:@"radioGroupCheckedSpecifier"];
         [(PSListController *)self _updateRadioGroupSpecifier:v15];
       }
 
@@ -4343,15 +4343,15 @@ LABEL_16:
         [PSListController controllerForSpecifier:];
       }
 
-      v9 = [MEMORY[0x1E695DFB0] null];
+      null = [MEMORY[0x1E695DFB0] null];
       goto LABEL_44;
     }
 
     if (!v13 || ([v13 isUserInteractionEnabled] & 1) != 0)
     {
-      v9 = CreateDetailControllerInstanceWithClass(*(v4 + 6));
+      null = CreateDetailControllerInstanceWithClass(*(specifierCopy + 6));
       v17 = +[PSListController appearance];
-      [v9 setExtendedLayoutIncludesOpaqueBars:{objc_msgSend(v17, "extendedLayoutIncludesOpaqueBars")}];
+      [null setExtendedLayoutIncludesOpaqueBars:{objc_msgSend(v17, "extendedLayoutIncludesOpaqueBars")}];
 
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
@@ -4359,11 +4359,11 @@ LABEL_16:
       if ((isKindOfClass & 1) == 0)
       {
         WeakRetained = objc_loadWeakRetained(&self->super._rootController);
-        [v9 setRootController:WeakRetained];
+        [null setRootController:WeakRetained];
       }
 
-      [v9 setParentController:self];
-      [v9 setSpecifier:v4];
+      [null setParentController:self];
+      [null setSpecifier:specifierCopy];
       v15 = PKLogForCategory(7);
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
       {
@@ -4371,15 +4371,15 @@ LABEL_16:
         v23 = 141559554;
         v24 = 1752392040;
         v25 = 2112;
-        v26 = v4;
+        v26 = specifierCopy;
         v27 = 2160;
         v28 = 1752392040;
         v29 = 2112;
-        v30 = v9;
+        v30 = null;
         v31 = 2160;
         v32 = 1752392040;
         v33 = 2112;
-        v34 = self;
+        selfCopy = self;
         v35 = 1024;
         v36 = showingSetupController;
         _os_log_debug_impl(&dword_18B008000, v15, OS_LOG_TYPE_DEBUG, "%{mask.hash}@: Action created target controller %{mask.hash}@, set showingSetupController of presenting controller %{mask.hash}@ to %{BOOL}d.", &v23, 0x44u);
@@ -4404,24 +4404,24 @@ LABEL_16:
     }
   }
 
-  v9 = 0;
+  null = 0;
 LABEL_44:
 
 LABEL_45:
 
-  return v9;
+  return null;
 }
 
-- (void)_updateRadioGroupSpecifier:(id)a3
+- (void)_updateRadioGroupSpecifier:(id)specifier
 {
-  v4 = a3;
-  if ([v4 isRadioGroup])
+  specifierCopy = specifier;
+  if ([specifierCopy isRadioGroup])
   {
-    v5 = [(PSListController *)self indexPathForIndex:[(PSListController *)self indexOfSpecifier:v4]];
+    v5 = [(PSListController *)self indexPathForIndex:[(PSListController *)self indexOfSpecifier:specifierCopy]];
     v6 = -[PSListController specifiersInGroup:](self, "specifiersInGroup:", [v5 section]);
 
     objc_opt_class();
-    v7 = [v4 objectForKeyedSubscript:@"radioGroupCheckedSpecifier"];
+    v7 = [specifierCopy objectForKeyedSubscript:@"radioGroupCheckedSpecifier"];
     if (objc_opt_isKindOfClass())
     {
       v8 = v7;
@@ -4473,23 +4473,23 @@ void __47__PSListController__updateRadioGroupSpecifier___block_invoke(uint64_t a
   [v8 setChecked:v9];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v5 = [(PSListController *)self indexForIndexPath:a4];
+  v5 = [(PSListController *)self indexForIndexPath:path];
   if (v5 == 0x7FFFFFFFFFFFFFFFLL || self->_showingSetupController)
   {
     v14 = 0;
 LABEL_4:
     table = self->_table;
-    v7 = [(UITableView *)table indexPathForSelectedRow];
-    v8 = [MEMORY[0x1E695DFB0] null];
-    [(UITableView *)table deselectRowAtIndexPath:v7 animated:v14 == v8];
+    indexPathForSelectedRow = [(UITableView *)table indexPathForSelectedRow];
+    null = [MEMORY[0x1E695DFB0] null];
+    [(UITableView *)table deselectRowAtIndexPath:indexPathForSelectedRow animated:v14 == null];
 
     goto LABEL_5;
   }
 
   v9 = [(NSArray *)self->_specifiers objectAtIndex:v5];
-  v7 = v9;
+  indexPathForSelectedRow = v9;
   v10 = v9[7];
   if (v10 == 4)
   {
@@ -4504,18 +4504,18 @@ LABEL_4:
   if (v10 != 13)
   {
 LABEL_13:
-    if (![(PSListControllerSpecifierActionCoordinator *)self->_specifierActionCoordinator listController:self shouldPerformDefaultDeferredBundleLoadingForSpecifier:v7])
+    if (![(PSListControllerSpecifierActionCoordinator *)self->_specifierActionCoordinator listController:self shouldPerformDefaultDeferredBundleLoadingForSpecifier:indexPathForSelectedRow])
     {
-      [(PSListControllerSpecifierActionCoordinator *)self->_specifierActionCoordinator listController:self presentControllerForSpecifier:v7];
+      [(PSListControllerSpecifierActionCoordinator *)self->_specifierActionCoordinator listController:self presentControllerForSpecifier:indexPathForSelectedRow];
       goto LABEL_19;
     }
 
-    v11 = [(PSListController *)self selectSpecifier:v7];
+    v11 = [(PSListController *)self selectSpecifier:indexPathForSelectedRow];
     if (v11)
     {
       v14 = v11;
-      v12 = [MEMORY[0x1E695DFB0] null];
-      if (v14 == v12)
+      null2 = [MEMORY[0x1E695DFB0] null];
+      if (v14 == null2)
       {
       }
 
@@ -4543,46 +4543,46 @@ LABEL_22:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    [(PSListController *)self performButtonActionForSpecifier:v7];
+    [(PSListController *)self performButtonActionForSpecifier:indexPathForSelectedRow];
     goto LABEL_22;
   }
 
-  [(PSListController *)self showConfirmationViewForSpecifier:v7];
+  [(PSListController *)self showConfirmationViewForSpecifier:indexPathForSelectedRow];
 LABEL_19:
   v14 = 0;
 LABEL_5:
 }
 
-- (id)specifierForID:(id)a3
+- (id)specifierForID:(id)d
 {
   specifiersByID = self->_specifiersByID;
-  v5 = a3;
+  dCopy = d;
   if (specifiersByID)
   {
-    v6 = [(NSMutableDictionary *)specifiersByID objectForKey:v5];
+    v6 = [(NSMutableDictionary *)specifiersByID objectForKey:dCopy];
   }
 
   else
   {
-    v7 = [(PSListController *)self specifiers];
-    v6 = [v7 specifierForID:v5];
+    specifiers = [(PSListController *)self specifiers];
+    v6 = [specifiers specifierForID:dCopy];
 
-    v5 = v7;
+    dCopy = specifiers;
   }
 
   return v6;
 }
 
-- (id)specifiersForIDs:(id)a3
+- (id)specifiersForIDs:(id)ds
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  dsCopy = ds;
+  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(dsCopy, "count")}];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = v4;
+  v6 = dsCopy;
   v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
@@ -4613,17 +4613,17 @@ LABEL_5:
   return v5;
 }
 
-- (void)showController:(id)a3 animate:(BOOL)a4
+- (void)showController:(id)controller animate:(BOOL)animate
 {
-  v4 = a4;
+  animateCopy = animate;
   v33 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  if (v7)
+  controllerCopy = controller;
+  if (controllerCopy)
   {
-    v8 = [(PSListController *)self navigationController];
-    v9 = [v8 childViewControllers];
+    navigationController = [(PSListController *)self navigationController];
+    childViewControllers = [navigationController childViewControllers];
 
-    if ([v9 containsObject:v7])
+    if ([childViewControllers containsObject:controllerCopy])
     {
       v10 = _PSLoggingFacility();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -4644,11 +4644,11 @@ LABEL_5:
       }
     }
 
-    v13 = [(PSListController *)self navigationController];
+    navigationController2 = [(PSListController *)self navigationController];
 
     v14 = PKLogForCategory(3);
     v15 = os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
-    if (v13)
+    if (navigationController2)
     {
       if (v15)
       {
@@ -4662,13 +4662,13 @@ LABEL_5:
         v27 = 2160;
         v28 = 1752392040;
         v29 = 2112;
-        v30 = v7;
+        v30 = controllerCopy;
         v31 = 1024;
-        v32 = v4;
+        v32 = animateCopy;
         _os_log_impl(&dword_18B008000, v14, OS_LOG_TYPE_DEFAULT, "%{public}@: %{public}@ called with %{mask.hash}@, %{BOOL}d", &v23, 0x30u);
       }
 
-      [(PSListController *)self _showController:v7 animate:v4];
+      [(PSListController *)self _showController:controllerCopy animate:animateCopy];
     }
 
     else
@@ -4685,33 +4685,33 @@ LABEL_5:
         v27 = 2160;
         v28 = 1752392040;
         v29 = 2112;
-        v30 = v7;
+        v30 = controllerCopy;
         v31 = 1024;
-        v32 = v4;
+        v32 = animateCopy;
         _os_log_impl(&dword_18B008000, v14, OS_LOG_TYPE_DEFAULT, "%{public}@: %{public}@ called with %{mask.hash}@, %{BOOL}d but navigationController is nil, stashing.", &v23, 0x30u);
       }
 
-      v22 = [[_PSPendingShowControllerPayload alloc] initWithViewControllerToPresent:v7 animate:v4];
+      v22 = [[_PSPendingShowControllerPayload alloc] initWithViewControllerToPresent:controllerCopy animate:animateCopy];
       [(PSViewController *)self setPendingShowControllerPayload:v22];
     }
   }
 
   else
   {
-    v9 = _PSLoggingFacility();
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    childViewControllers = _PSLoggingFacility();
+    if (os_log_type_enabled(childViewControllers, OS_LOG_TYPE_DEFAULT))
     {
       v23 = 136315138;
       v24 = "[PSListController showController:animate:]";
-      _os_log_impl(&dword_18B008000, v9, OS_LOG_TYPE_DEFAULT, "%s: attempted to push nil controller", &v23, 0xCu);
+      _os_log_impl(&dword_18B008000, childViewControllers, OS_LOG_TYPE_DEFAULT, "%s: attempted to push nil controller", &v23, 0xCu);
     }
   }
 }
 
-- (void)_showController:(id)a3 animate:(BOOL)a4
+- (void)_showController:(id)controller animate:(BOOL)animate
 {
-  v4 = a4;
-  v6 = a3;
+  animateCopy = animate;
+  controllerCopy = controller;
   objc_initWeak(&location, self);
   navigationCoordinator = self->_navigationCoordinator;
   WeakRetained = objc_loadWeakRetained(&self->super._rootController);
@@ -4720,7 +4720,7 @@ LABEL_5:
   v9[2] = __44__PSListController__showController_animate___block_invoke;
   v9[3] = &unk_1E71DC870;
   objc_copyWeak(&v10, &location);
-  [(PSListControllerNavigationCoordinator *)navigationCoordinator listController:self pushViewController:v6 givenRootController:WeakRetained withModalStylePopupStateApplicator:v9 animated:v4];
+  [(PSListControllerNavigationCoordinator *)navigationCoordinator listController:self pushViewController:controllerCopy givenRootController:WeakRetained withModalStylePopupStateApplicator:v9 animated:animateCopy];
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(&location);
@@ -4735,46 +4735,46 @@ void __44__PSListController__showController_animate___block_invoke(uint64_t a1, 
   }
 }
 
-- (void)dismissPopoverAnimated:(BOOL)a3 completion:(id)a4
+- (void)dismissPopoverAnimated:(BOOL)animated completion:(id)completion
 {
-  v7 = a4;
-  v5 = [(PSListController *)self presentedViewController];
-  v6 = [v5 modalPresentationStyle];
+  completionCopy = completion;
+  presentedViewController = [(PSListController *)self presentedViewController];
+  modalPresentationStyle = [presentedViewController modalPresentationStyle];
 
-  if (v6 == 7)
+  if (modalPresentationStyle == 7)
   {
-    [(PSListController *)self dismissViewControllerAnimated:1 completion:v7];
+    [(PSListController *)self dismissViewControllerAnimated:1 completion:completionCopy];
     self->_popupIsModal = 0;
   }
 }
 
-- (BOOL)prepareHandlingURLForSpecifierID:(id)a3 resourceDictionary:(id)a4 animatePush:(BOOL *)a5 withCompletion:(id)a6
+- (BOOL)prepareHandlingURLForSpecifierID:(id)d resourceDictionary:(id)dictionary animatePush:(BOOL *)push withCompletion:(id)completion
 {
-  v10 = a6;
-  v11 = [(PSListController *)self prepareHandlingURLForSpecifierID:a3 resourceDictionary:a4 animatePush:a5];
+  completionCopy = completion;
+  v11 = [(PSListController *)self prepareHandlingURLForSpecifierID:d resourceDictionary:dictionary animatePush:push];
   if (!v11)
   {
-    [(PSListController *)self setUrlHandlingCompletion:v10];
+    [(PSListController *)self setUrlHandlingCompletion:completionCopy];
   }
 
   return v11;
 }
 
-- (BOOL)prepareHandlingURLForSpecifierID:(id)a3 resourceDictionary:(id)a4 animatePush:(BOOL *)a5
+- (BOOL)prepareHandlingURLForSpecifierID:(id)d resourceDictionary:(id)dictionary animatePush:(BOOL *)push
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(PSListController *)self shouldDeferPushForSpecifierID:v8 urlDictionary:v9];
+  dCopy = d;
+  dictionaryCopy = dictionary;
+  v10 = [(PSListController *)self shouldDeferPushForSpecifierID:dCopy urlDictionary:dictionaryCopy];
   if (v10)
   {
-    [(PSListController *)self setPendingURLResourceDictionary:v9];
-    [(PSListController *)self setSpecifierIDPendingPush:v8];
-    if (a5)
+    [(PSListController *)self setPendingURLResourceDictionary:dictionaryCopy];
+    [(PSListController *)self setSpecifierIDPendingPush:dCopy];
+    if (push)
     {
-      *a5 = 1;
+      *push = 1;
     }
 
-    v11 = [(PSListController *)self specifiers];
+    specifiers = [(PSListController *)self specifiers];
   }
 
   return !v10;
@@ -4793,8 +4793,8 @@ void __44__PSListController__showController_animate___block_invoke(uint64_t a1, 
   pendingURLResourceDictionary = self->_pendingURLResourceDictionary;
   if (pendingURLResourceDictionary)
   {
-    v4 = [(PSListController *)self urlHandlingCompletion];
-    [(PSListController *)self handleURL:pendingURLResourceDictionary withCompletion:v4];
+    urlHandlingCompletion = [(PSListController *)self urlHandlingCompletion];
+    [(PSListController *)self handleURL:pendingURLResourceDictionary withCompletion:urlHandlingCompletion];
 
     [(PSListController *)self clearPendingURL];
   }
@@ -4802,33 +4802,33 @@ void __44__PSListController__showController_animate___block_invoke(uint64_t a1, 
   return pendingURLResourceDictionary != 0;
 }
 
-- (void)handleURL:(id)a3 withCompletion:(id)a4
+- (void)handleURL:(id)l withCompletion:(id)completion
 {
-  v10 = a3;
-  v6 = a4;
+  lCopy = l;
+  completionCopy = completion;
   if (-[PSViewController isURLHandlingDeferredForViewControllerContainment](self, "isURLHandlingDeferredForViewControllerContainment") && (-[PSListController viewIfLoaded](self, "viewIfLoaded"), v7 = objc_claimAutoreleasedReturnValue(), [v7 window], v8 = objc_claimAutoreleasedReturnValue(), v8, v7, !v8))
   {
-    [(PSViewController *)self setUrlResourceDictionaryPendingViewControllerContainment:v10];
-    [(PSViewController *)self setUrlCompletionHandlerPendingViewControllerContainment:v6];
+    [(PSViewController *)self setUrlResourceDictionaryPendingViewControllerContainment:lCopy];
+    [(PSViewController *)self setUrlCompletionHandlerPendingViewControllerContainment:completionCopy];
   }
 
   else
   {
-    v9 = [(PSListController *)self urlHandler];
-    [v9 handleURL:v10 withCompletion:v6];
+    urlHandler = [(PSListController *)self urlHandler];
+    [urlHandler handleURL:lCopy withCompletion:completionCopy];
   }
 }
 
-- (void)reloadIconForSpecifierForBundle:(id)a3
+- (void)reloadIconForSpecifierForBundle:(id)bundle
 {
-  v14 = a3;
+  bundleCopy = bundle;
   v4 = self->_specifiers;
   v5 = [(NSArray *)v4 count];
   if (v5 < 1)
   {
 LABEL_5:
     WeakRetained = objc_loadWeakRetained(&self->super._parentController);
-    [WeakRetained reloadIconForSpecifierForBundle:v14];
+    [WeakRetained reloadIconForSpecifierForBundle:bundleCopy];
   }
 
   else
@@ -4839,7 +4839,7 @@ LABEL_5:
     {
       WeakRetained = [(NSArray *)v4 objectAtIndex:v7 - 1];
       v9 = [WeakRetained propertyForKey:@"bundle"];
-      v10 = [v9 isEqual:v14];
+      v10 = [v9 isEqual:bundleCopy];
 
       if (v10)
       {
@@ -4852,17 +4852,17 @@ LABEL_5:
       }
     }
 
-    v12 = [(PSListController *)self bundle];
-    v13 = [v12 resourcePath];
-    [WeakRetained setupIconImageWithPath:v13];
+    bundle = [(PSListController *)self bundle];
+    resourcePath = [bundle resourcePath];
+    [WeakRetained setupIconImageWithPath:resourcePath];
 
     [(PSListController *)self reload];
   }
 }
 
-- (double)_getKeyboardIntersectionHeightFromUserInfo:(id)a3
+- (double)_getKeyboardIntersectionHeightFromUserInfo:(id)info
 {
-  v4 = [a3 objectForKey:*MEMORY[0x1E69DDFA0]];
+  v4 = [info objectForKey:*MEMORY[0x1E69DDFA0]];
   [v4 CGRectValue];
   v6 = v5;
   v8 = v7;
@@ -4870,8 +4870,8 @@ LABEL_5:
   v12 = v11;
 
   v13 = MEMORY[0x1E69DCEB0];
-  v14 = [(PSListController *)self view];
-  [v13 convertRect:v14 toView:{v6, v8, v10, v12}];
+  view = [(PSListController *)self view];
+  [v13 convertRect:view toView:{v6, v8, v10, v12}];
   v16 = v15;
   v18 = v17;
   v20 = v19;
@@ -4885,8 +4885,8 @@ LABEL_5:
   result = 0.0;
   if (!IsEmpty)
   {
-    v25 = [(PSListController *)self view];
-    [v25 bounds];
+    view2 = [(PSListController *)self view];
+    [view2 bounds];
     MaxY = CGRectGetMaxY(v29);
     v30.origin.x = v16;
     v30.origin.y = v18;
@@ -4900,7 +4900,7 @@ LABEL_5:
   return result;
 }
 
-- (void)_setContentInset:(double)a3
+- (void)_setContentInset:(double)inset
 {
   [(UITableView *)self->_table contentInset];
   v6 = v5;
@@ -4909,19 +4909,19 @@ LABEL_5:
   [(UITableView *)self->_table setContentInset:?];
   table = self->_table;
 
-  [(UITableView *)table setScrollIndicatorInsets:v6, v8, a3, v10];
+  [(UITableView *)table setScrollIndicatorInsets:v6, v8, inset, v10];
 }
 
-- (void)_keyboardWillShow:(id)a3
+- (void)_keyboardWillShow:(id)show
 {
   v53 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(UITableView *)self->_table superview];
+  showCopy = show;
+  superview = [(UITableView *)self->_table superview];
 
-  if (v5)
+  if (superview)
   {
-    v6 = [v4 userInfo];
-    v7 = [v6 objectForKey:*MEMORY[0x1E69DDFA0]];
+    userInfo = [showCopy userInfo];
+    v7 = [userInfo objectForKey:*MEMORY[0x1E69DDFA0]];
     [v7 CGRectValue];
     v9 = v8;
     v11 = v10;
@@ -4930,7 +4930,7 @@ LABEL_5:
 
     [MEMORY[0x1E69DCEB0] convertRect:self->_table toView:{v9, v11, v13, v15}];
     v17 = v16;
-    v18 = [v6 objectForKey:*MEMORY[0x1E69DDF98]];
+    v18 = [userInfo objectForKey:*MEMORY[0x1E69DDF98]];
     [v18 CGRectValue];
     v20 = v19;
     v22 = v21;
@@ -4941,7 +4941,7 @@ LABEL_5:
     v27 = MEMORY[0x1E695EFF8];
     if (v28 == v17)
     {
-      [(PSListController *)self _getKeyboardIntersectionHeightFromUserInfo:v6];
+      [(PSListController *)self _getKeyboardIntersectionHeightFromUserInfo:userInfo];
       [(PSListController *)self _setContentInset:?];
       p_contentOffsetWithKeyboard = &self->_contentOffsetWithKeyboard;
       if (self->_contentOffsetWithKeyboard.x != v27->x || self->_contentOffsetWithKeyboard.y != v27->y)
@@ -4958,26 +4958,26 @@ LABEL_5:
 
     else
     {
-      v29 = [(UITableView *)self->_table visibleCells];
+      visibleCells = [(UITableView *)self->_table visibleCells];
       v30 = MEMORY[0x1E69DD250];
-      v31 = [v6 objectForKey:*MEMORY[0x1E69DDF40]];
+      v31 = [userInfo objectForKey:*MEMORY[0x1E69DDF40]];
       [v31 floatValue];
       v33 = v32;
-      v34 = [v6 objectForKey:*MEMORY[0x1E69DDF38]];
+      v34 = [userInfo objectForKey:*MEMORY[0x1E69DDF38]];
       v35 = PSAnimationOptionsFromAnimationCurve([v34 integerValue]);
       v50[0] = MEMORY[0x1E69E9820];
       v50[1] = 3221225472;
       v50[2] = __38__PSListController__keyboardWillShow___block_invoke;
       v50[3] = &unk_1E71DC570;
       v50[4] = self;
-      v51 = v6;
+      v51 = userInfo;
       [v30 animateWithDuration:v35 delay:v50 options:0 animations:v33 completion:0.0];
 
       v48 = 0u;
       v49 = 0u;
       v46 = 0u;
       v47 = 0u;
-      v36 = v29;
+      v36 = visibleCells;
       v37 = [v36 countByEnumeratingWithState:&v46 objects:v52 count:16];
       if (v37)
       {
@@ -5028,15 +5028,15 @@ uint64_t __38__PSListController__keyboardWillShow___block_invoke(uint64_t a1)
   return [v2 _setContentInset:?];
 }
 
-- (void)_keyboardWillHide:(id)a3
+- (void)_keyboardWillHide:(id)hide
 {
-  v4 = a3;
-  v5 = [(UITableView *)self->_table superview];
+  hideCopy = hide;
+  superview = [(UITableView *)self->_table superview];
 
-  if (v5)
+  if (superview)
   {
-    v6 = [v4 userInfo];
-    v7 = [v6 objectForKey:*MEMORY[0x1E69DDFA0]];
+    userInfo = [hideCopy userInfo];
+    v7 = [userInfo objectForKey:*MEMORY[0x1E69DDFA0]];
     [v7 CGRectValue];
     v9 = v8;
     v11 = v10;
@@ -5045,7 +5045,7 @@ uint64_t __38__PSListController__keyboardWillShow___block_invoke(uint64_t a1)
 
     [MEMORY[0x1E69DCEB0] convertRect:self->_table toView:{v9, v11, v13, v15}];
     v17 = v16;
-    v18 = [v6 objectForKey:*MEMORY[0x1E69DDF98]];
+    v18 = [userInfo objectForKey:*MEMORY[0x1E69DDF98]];
     [v18 CGRectValue];
     v20 = v19;
     v22 = v21;
@@ -5063,10 +5063,10 @@ uint64_t __38__PSListController__keyboardWillShow___block_invoke(uint64_t a1)
     else
     {
       v28 = MEMORY[0x1E69DD250];
-      v29 = [v6 objectForKey:*MEMORY[0x1E69DDF40]];
+      v29 = [userInfo objectForKey:*MEMORY[0x1E69DDF40]];
       [v29 floatValue];
       v31 = v30;
-      v32 = [v6 objectForKey:*MEMORY[0x1E69DDF38]];
+      v32 = [userInfo objectForKey:*MEMORY[0x1E69DDF38]];
       v33 = PSAnimationOptionsFromAnimationCurve([v32 integerValue]);
       v36[0] = MEMORY[0x1E69E9820];
       v36[1] = 3221225472;
@@ -5078,9 +5078,9 @@ uint64_t __38__PSListController__keyboardWillShow___block_invoke(uint64_t a1)
   }
 }
 
-- (void)selectRowForSpecifier:(id)a3
+- (void)selectRowForSpecifier:(id)specifier
 {
-  if (a3)
+  if (specifier)
   {
     v4 = [(PSListController *)self indexPathForIndex:[(NSArray *)self->_specifiers indexOfObject:?]];
     [(UITableView *)self->_table selectRowAtIndexPath:v4 animated:0 scrollPosition:0];
@@ -5089,40 +5089,40 @@ uint64_t __38__PSListController__keyboardWillShow___block_invoke(uint64_t a1)
 
 - (float)verticalContentOffset
 {
-  v2 = [(PSListController *)self table];
-  [v2 contentOffset];
+  table = [(PSListController *)self table];
+  [table contentOffset];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setDesiredVerticalContentOffsetItemNamed:(id)a3
+- (void)setDesiredVerticalContentOffsetItemNamed:(id)named
 {
-  v4 = [a3 copy];
+  v4 = [named copy];
   offsetItemName = self->_offsetItemName;
   self->_offsetItemName = v4;
 }
 
-- (void)highlightSpecifierWithID:(id)a3
+- (void)highlightSpecifierWithID:(id)d
 {
   if (self->_isVisible)
   {
 
-    [(PSListController *)self _performHighlightForSpecifierWithID:a3 tryAgainIfFailed:1];
+    [(PSListController *)self _performHighlightForSpecifierWithID:d tryAgainIfFailed:1];
   }
 
   else
   {
-    v4 = [a3 copy];
+    v4 = [d copy];
     highlightItemName = self->_highlightItemName;
     self->_highlightItemName = v4;
   }
 }
 
-- (void)_performHighlightForSpecifierWithID:(id)a3 tryAgainIfFailed:(BOOL)a4
+- (void)_performHighlightForSpecifierWithID:(id)d tryAgainIfFailed:(BOOL)failed
 {
-  v4 = a4;
-  v14 = a3;
+  failedCopy = failed;
+  dCopy = d;
   v6 = [(PSListController *)self indexPathForIndex:[(PSListController *)self indexOfSpecifierID:?]];
   if (v6)
   {
@@ -5138,104 +5138,104 @@ uint64_t __38__PSListController__keyboardWillShow___block_invoke(uint64_t a1)
     UIAnimationDragCoefficient();
     v11 = v10 * 0.5;
     [(UITableView *)self->_table scrollToRowAtIndexPath:v7 atScrollPosition:2 animated:1];
-    if (v4)
+    if (failedCopy)
     {
-      [(PSListController *)self performSelector:sel__performHighlightForSpecifierWithID_ withObject:v14 afterDelay:v11];
+      [(PSListController *)self performSelector:sel__performHighlightForSpecifierWithID_ withObject:dCopy afterDelay:v11];
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v12 = [(UITableView *)self->_table visibleCells];
-      v13 = [v12 containsObject:v9];
+      visibleCells = [(UITableView *)self->_table visibleCells];
+      v13 = [visibleCells containsObject:v9];
 
       if (v13)
       {
         [v9 highlightCellForDuration:1 animateUnighlight:0.5];
       }
 
-      else if (v4)
+      else if (failedCopy)
       {
-        [(PSListController *)self performSelector:sel__performHighlightForSpecifierWithID_ withObject:v14 afterDelay:v11];
+        [(PSListController *)self performSelector:sel__performHighlightForSpecifierWithID_ withObject:dCopy afterDelay:v11];
       }
     }
   }
 }
 
-- (void)_moveSpecifierAtIndex:(unint64_t)a3 toIndex:(unint64_t)a4 animated:(BOOL)a5
+- (void)_moveSpecifierAtIndex:(unint64_t)index toIndex:(unint64_t)toIndex animated:(BOOL)animated
 {
-  v5 = a5;
-  v8 = self;
-  objc_sync_enter(v8);
-  if ([(NSArray *)v8->_specifiers count]<= a3 || [(NSArray *)v8->_specifiers count]< a4)
+  animatedCopy = animated;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([(NSArray *)selfCopy->_specifiers count]<= index || [(NSArray *)selfCopy->_specifiers count]< toIndex)
   {
     v9 = 0;
     v14 = 0;
 LABEL_4:
-    objc_sync_exit(v8);
+    objc_sync_exit(selfCopy);
 
     goto LABEL_5;
   }
 
-  v14 = [(PSListController *)v8 indexPathForIndex:a3];
-  v9 = [(PSListController *)v8 indexPathForIndex:a4];
+  v14 = [(PSListController *)selfCopy indexPathForIndex:index];
+  v9 = [(PSListController *)selfCopy indexPathForIndex:toIndex];
   if (!v14 || !v9)
   {
     goto LABEL_4;
   }
 
-  v10 = [(NSArray *)v8->_specifiers mutableCopy];
-  v11 = [(NSArray *)v10 objectAtIndexedSubscript:a3];
-  [(NSArray *)v10 removeObjectAtIndex:a3];
-  [(NSArray *)v10 insertObject:v11 atIndex:a4];
-  specifiers = v8->_specifiers;
-  v8->_specifiers = v10;
+  v10 = [(NSArray *)selfCopy->_specifiers mutableCopy];
+  v11 = [(NSArray *)v10 objectAtIndexedSubscript:index];
+  [(NSArray *)v10 removeObjectAtIndex:index];
+  [(NSArray *)v10 insertObject:v11 atIndex:toIndex];
+  specifiers = selfCopy->_specifiers;
+  selfCopy->_specifiers = v10;
 
-  objc_sync_exit(v8);
-  v13 = [MEMORY[0x1E69DD250] areAnimationsEnabled];
-  [MEMORY[0x1E69DD250] setAnimationsEnabled:v5];
-  [(UITableView *)v8->_table moveRowAtIndexPath:v14 toIndexPath:v9];
-  [MEMORY[0x1E69DD250] setAnimationsEnabled:v13];
+  objc_sync_exit(selfCopy);
+  areAnimationsEnabled = [MEMORY[0x1E69DD250] areAnimationsEnabled];
+  [MEMORY[0x1E69DD250] setAnimationsEnabled:animatedCopy];
+  [(UITableView *)selfCopy->_table moveRowAtIndexPath:v14 toIndexPath:v9];
+  [MEMORY[0x1E69DD250] setAnimationsEnabled:areAnimationsEnabled];
 LABEL_5:
 }
 
-- (void)setSpecifierDataSource:(id)a3
+- (void)setSpecifierDataSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   dataSource = self->_dataSource;
-  if (dataSource != v5)
+  if (dataSource != sourceCopy)
   {
-    v7 = v5;
+    v7 = sourceCopy;
     [(PSSpecifierDataSource *)dataSource removeObserver:self];
-    objc_storeStrong(&self->_dataSource, a3);
+    objc_storeStrong(&self->_dataSource, source);
     [(PSSpecifierDataSource *)self->_dataSource addObserver:self];
-    v5 = v7;
+    sourceCopy = v7;
   }
 }
 
-- (void)dataSource:(id)a3 performUpdates:(id)a4
+- (void)dataSource:(id)source performUpdates:(id)updates
 {
   if (!self->_requestingSpecifiersFromDataSource)
   {
-    [(PSListController *)self performSpecifierUpdates:a4];
+    [(PSListController *)self performSpecifierUpdates:updates];
   }
 }
 
-- (void)performSpecifierUpdates:(id)a3
+- (void)performSpecifierUpdates:(id)updates
 {
-  v4 = a3;
-  v5 = [v4 originalSpecifiers];
-  v6 = [v5 isEqual:self->_specifiers];
+  updatesCopy = updates;
+  originalSpecifiers = [updatesCopy originalSpecifiers];
+  v6 = [originalSpecifiers isEqual:self->_specifiers];
 
   if (v6)
   {
-    v7 = [v4 context];
-    v8 = [v7 updateModelOnly];
+    context = [updatesCopy context];
+    updateModelOnly = [context updateModelOnly];
 
-    if (v8)
+    if (updateModelOnly)
     {
-      v9 = [v4 currentSpecifiers];
-      v10 = [v9 mutableCopy];
+      currentSpecifiers = [updatesCopy currentSpecifiers];
+      v10 = [currentSpecifiers mutableCopy];
       specifiers = self->_specifiers;
       self->_specifiers = v10;
 
@@ -5255,8 +5255,8 @@ LABEL_5:
       aBlock[4] = self;
       aBlock[5] = v22;
       v12 = _Block_copy(aBlock);
-      v13 = [v4 context];
-      v14 = [v13 animated];
+      context2 = [updatesCopy context];
+      animated = [context2 animated];
 
       v18[0] = MEMORY[0x1E69E9820];
       v18[1] = 3221225472;
@@ -5265,11 +5265,11 @@ LABEL_5:
       v15 = v12;
       v18[4] = self;
       v19 = v15;
-      v20 = v14;
-      [v4 enumerateUpdatesUsingBlock:v18];
+      v20 = animated;
+      [updatesCopy enumerateUpdatesUsingBlock:v18];
       v16 = self->_specifiers;
-      v17 = [v4 currentSpecifiers];
-      LOBYTE(v16) = [(NSArray *)v16 isEqual:v17];
+      currentSpecifiers2 = [updatesCopy currentSpecifiers];
+      LOBYTE(v16) = [(NSArray *)v16 isEqual:currentSpecifiers2];
 
       if (v16)
       {
@@ -5366,7 +5366,7 @@ void __44__PSListController_performSpecifierUpdates___block_invoke_2(uint64_t a1
 LABEL_11:
 }
 
-+ (id)appearanceWhenContainedInInstancesOfClasses:(id)a3
++ (id)appearanceWhenContainedInInstancesOfClasses:(id)classes
 {
   if (appearanceWhenContainedInInstancesOfClasses__onceToken != -1)
   {
@@ -5385,15 +5385,15 @@ void __64__PSListController_appearanceWhenContainedInInstancesOfClasses___block_
   appearanceWhenContainedInInstancesOfClasses___listController = v0;
 }
 
-- (void)tableView:(id)a3 prefetchRowsAtIndexPaths:(id)a4
+- (void)tableView:(id)view prefetchRowsAtIndexPaths:(id)paths
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  pathsCopy = paths;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v6 = [pathsCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -5405,7 +5405,7 @@ void __64__PSListController_appearanceWhenContainedInInstancesOfClasses___block_
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(pathsCopy);
         }
 
         v10 = [(PSListController *)self specifierAtIndexPath:*(*(&v11 + 1) + 8 * v9)];
@@ -5418,20 +5418,20 @@ void __64__PSListController_appearanceWhenContainedInInstancesOfClasses___block_
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [pathsCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)setPrefetchingEnabled:(BOOL)a3
+- (void)setPrefetchingEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  self->_prefetchingEnabled = a3;
+  enabledCopy = enabled;
+  self->_prefetchingEnabled = enabled;
   v5 = _PSLoggingFacility();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
-  if (v3)
+  if (enabledCopy)
   {
     if (v6)
     {
@@ -5440,7 +5440,7 @@ void __64__PSListController_appearanceWhenContainedInInstancesOfClasses___block_
     }
 
     table = self->_table;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
@@ -5452,19 +5452,19 @@ void __64__PSListController_appearanceWhenContainedInInstancesOfClasses___block_
     }
 
     table = self->_table;
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  [(UITableView *)table setPrefetchDataSource:v8];
+  [(UITableView *)table setPrefetchDataSource:selfCopy];
 }
 
-- (void)performScrollAndHighlightIfOnScreenToSpecifierIdentifier:(id)a3
+- (void)performScrollAndHighlightIfOnScreenToSpecifierIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(PSListController *)self viewIfLoaded];
-  v6 = [v5 window];
+  identifierCopy = identifier;
+  viewIfLoaded = [(PSListController *)self viewIfLoaded];
+  window = [viewIfLoaded window];
 
-  if (v6)
+  if (window)
   {
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
@@ -5472,7 +5472,7 @@ void __64__PSListController_appearanceWhenContainedInInstancesOfClasses___block_
     aBlock[3] = &unk_1E71DBE20;
     aBlock[4] = self;
     v7 = _Block_copy(aBlock);
-    [(PSListController *)self highlightSpecifierWithID:v4];
+    [(PSListController *)self highlightSpecifierWithID:identifierCopy];
     v7[2](v7);
   }
 }
@@ -5483,13 +5483,13 @@ void __77__PSListController_performScrollAndHighlightIfOnScreenToSpecifierIdenti
   [v1 setSpecifierIdentifierToScrollAndHighlight:0];
 }
 
-- (void)performScrollAndInvokeSelectionIfOnScreenToSpecifierIdentifier:(id)a3
+- (void)performScrollAndInvokeSelectionIfOnScreenToSpecifierIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(PSListController *)self viewIfLoaded];
-  v6 = [v5 window];
+  identifierCopy = identifier;
+  viewIfLoaded = [(PSListController *)self viewIfLoaded];
+  window = [viewIfLoaded window];
 
-  if (v6)
+  if (window)
   {
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
@@ -5497,13 +5497,13 @@ void __77__PSListController_performScrollAndHighlightIfOnScreenToSpecifierIdenti
     aBlock[3] = &unk_1E71DBE20;
     aBlock[4] = self;
     v7 = _Block_copy(aBlock);
-    [(PSListController *)self _scrollToSpecifierWithID:v4 animated:1];
-    v8 = [(PSListController *)self specifierForID:v4];
+    [(PSListController *)self _scrollToSpecifierWithID:identifierCopy animated:1];
+    v8 = [(PSListController *)self specifierForID:identifierCopy];
     if (v8)
     {
-      v9 = [(PSListController *)self table];
+      table = [(PSListController *)self table];
       v10 = [(PSListController *)self indexPathForSpecifier:v8];
-      [(PSListController *)self tableView:v9 didSelectRowAtIndexPath:v10];
+      [(PSListController *)self tableView:table didSelectRowAtIndexPath:v10];
     }
 
     v7[2](v7);
@@ -5516,43 +5516,43 @@ void __83__PSListController_performScrollAndInvokeSelectionIfOnScreenToSpecifier
   [v1 setSpecifierIdentifierToScrollAndSelect:0];
 }
 
-- (void)showPINSheet:(id)a3 allowOptionsButton:(BOOL)a4
+- (void)showPINSheet:(id)sheet allowOptionsButton:(BOOL)button
 {
-  v4 = a4;
-  v7 = a3;
+  buttonCopy = button;
+  sheetCopy = sheet;
   if ([(PSListControllerNavigationCoordinator *)self->_navigationCoordinator listControllerIsOnTopOfNavigationStack:self searchTopMostViewControllerChildren:0])
   {
     v6 = objc_alloc_init(DevicePINSetupController);
-    [(DevicePINSetupController *)v6 setAllowOptionsButton:v4];
+    [(DevicePINSetupController *)v6 setAllowOptionsButton:buttonCopy];
     self->_showingSetupController = 1;
     [(PSSetupController *)v6 setParentController:self];
-    [v7 setProperty:self forKey:@"PINControllerDelegate"];
-    [(PSRootController *)v6 setSpecifier:v7];
-    objc_storeWeak(v7 + 1, self);
+    [sheetCopy setProperty:self forKey:@"PINControllerDelegate"];
+    [(PSRootController *)v6 setSpecifier:sheetCopy];
+    objc_storeWeak(sheetCopy + 1, self);
     [(PSListController *)self showController:v6];
   }
 }
 
-+ (void)registerDefaultAppearanceProviderClass:(Class)a3
++ (void)registerDefaultAppearanceProviderClass:(Class)class
 {
   if (ensureDefaultAppearanceProviderAndNavigationRegistration_onceToken != -1)
   {
     [PSListController _ensureAppearanceProviderAndNavigationCoordinator];
   }
 
-  defaultAppearanceProviderClass = a3;
+  defaultAppearanceProviderClass = class;
 }
 
-- (void)setAppearanceProvider:(id)a3
+- (void)setAppearanceProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   if (ensureDefaultAppearanceProviderAndNavigationRegistration_onceToken != -1)
   {
     [PSListController _ensureAppearanceProviderAndNavigationCoordinator];
   }
 
   appearanceProvider = self->_appearanceProvider;
-  self->_appearanceProvider = v4;
+  self->_appearanceProvider = providerCopy;
 }
 
 - (PSListControllerAppearanceProvider)appearanceProvider
@@ -5567,26 +5567,26 @@ void __83__PSListController_performScrollAndInvokeSelectionIfOnScreenToSpecifier
   return appearanceProvider;
 }
 
-+ (void)registerDefaultNavigationCoordinatorClass:(Class)a3
++ (void)registerDefaultNavigationCoordinatorClass:(Class)class
 {
   if (ensureDefaultAppearanceProviderAndNavigationRegistration_onceToken != -1)
   {
     [PSListController _ensureAppearanceProviderAndNavigationCoordinator];
   }
 
-  defaultNavigationCoordinatorClass = a3;
+  defaultNavigationCoordinatorClass = class;
 }
 
-- (void)setNavigationCoordinator:(id)a3
+- (void)setNavigationCoordinator:(id)coordinator
 {
-  v4 = a3;
+  coordinatorCopy = coordinator;
   if (ensureDefaultAppearanceProviderAndNavigationRegistration_onceToken != -1)
   {
     [PSListController _ensureAppearanceProviderAndNavigationCoordinator];
   }
 
   navigationCoordinator = self->_navigationCoordinator;
-  self->_navigationCoordinator = v4;
+  self->_navigationCoordinator = coordinatorCopy;
 }
 
 - (PSListControllerNavigationCoordinator)navigationCoordinator
@@ -5601,40 +5601,40 @@ void __83__PSListController_performScrollAndInvokeSelectionIfOnScreenToSpecifier
   return navigationCoordinator;
 }
 
-- (void)setCellHighlightingSelectionInvocationRelay:(id)a3
+- (void)setCellHighlightingSelectionInvocationRelay:(id)relay
 {
-  v12 = a3;
-  v5 = [(PSListController *)self highlightRelayObserver];
+  relayCopy = relay;
+  highlightRelayObserver = [(PSListController *)self highlightRelayObserver];
 
-  if (v5)
+  if (highlightRelayObserver)
   {
-    v6 = [(PSListController *)self highlightRelayObserver];
-    [(PSListController *)self na_removeNotificationBlockObserver:v6];
+    highlightRelayObserver2 = [(PSListController *)self highlightRelayObserver];
+    [(PSListController *)self na_removeNotificationBlockObserver:highlightRelayObserver2];
 
     [(PSListController *)self setHighlightRelayObserver:0];
   }
 
-  v7 = [(PSListController *)self selectionRelayObserver];
+  selectionRelayObserver = [(PSListController *)self selectionRelayObserver];
 
-  if (v7)
+  if (selectionRelayObserver)
   {
-    v8 = [(PSListController *)self selectionRelayObserver];
-    [(PSListController *)self na_removeNotificationBlockObserver:v8];
+    selectionRelayObserver2 = [(PSListController *)self selectionRelayObserver];
+    [(PSListController *)self na_removeNotificationBlockObserver:selectionRelayObserver2];
 
     [(PSListController *)self setSelectionRelayObserver:0];
   }
 
-  objc_storeStrong(&self->_cellHighlightingSelectionInvocationRelay, a3);
-  v9 = v12;
-  if (v12)
+  objc_storeStrong(&self->_cellHighlightingSelectionInvocationRelay, relay);
+  v9 = relayCopy;
+  if (relayCopy)
   {
-    v10 = [(PSListController *)self na_addNotificationBlockObserverForObject:v12 keyPath:@"specifierIdentifierToScrollAndHighlight" options:7 usingBlock:&__block_literal_global_917];
+    v10 = [(PSListController *)self na_addNotificationBlockObserverForObject:relayCopy keyPath:@"specifierIdentifierToScrollAndHighlight" options:7 usingBlock:&__block_literal_global_917];
     [(PSListController *)self setHighlightRelayObserver:v10];
 
-    v11 = [(PSListController *)self na_addNotificationBlockObserverForObject:v12 keyPath:@"specifierIdentifierToScrollAndSelect" options:7 usingBlock:&__block_literal_global_922];
+    v11 = [(PSListController *)self na_addNotificationBlockObserverForObject:relayCopy keyPath:@"specifierIdentifierToScrollAndSelect" options:7 usingBlock:&__block_literal_global_922];
     [(PSListController *)self setSelectionRelayObserver:v11];
 
-    v9 = v12;
+    v9 = relayCopy;
   }
 }
 
@@ -5688,37 +5688,37 @@ void __85__PSListController_CustomizationExtras__setCellHighlightingSelectionInv
   }
 }
 
-- (void)handleScrollPPTTestName:(id)a3
+- (void)handleScrollPPTTestName:(id)name
 {
-  v6 = a3;
+  nameCopy = name;
   if (objc_opt_class() && objc_opt_class() && [MEMORY[0x1E69C6C48] isRecapAvailable])
   {
-    v4 = [(PSListController *)self table];
-    v5 = [objc_alloc(MEMORY[0x1E69C6C38]) initWithTestName:v6 scrollView:v4 completionHandler:0];
+    table = [(PSListController *)self table];
+    v5 = [objc_alloc(MEMORY[0x1E69C6C38]) initWithTestName:nameCopy scrollView:table completionHandler:0];
     [MEMORY[0x1E69C6C48] runTestWithParameters:v5];
   }
 }
 
-+ (void)registerDefaultSpecifierActionCoordinatorClass:(Class)a3
++ (void)registerDefaultSpecifierActionCoordinatorClass:(Class)class
 {
   if (ensureDefaultAppearanceProviderAndNavigationRegistration_onceToken != -1)
   {
     [PSListController _ensureAppearanceProviderAndNavigationCoordinator];
   }
 
-  defaultPSListControllerSpecifierActionCoordinatorClass = a3;
+  defaultPSListControllerSpecifierActionCoordinatorClass = class;
 }
 
-- (void)setSpecifierActionCoordinator:(id)a3
+- (void)setSpecifierActionCoordinator:(id)coordinator
 {
-  v4 = a3;
+  coordinatorCopy = coordinator;
   if (ensureDefaultAppearanceProviderAndNavigationRegistration_onceToken != -1)
   {
     [PSListController _ensureAppearanceProviderAndNavigationCoordinator];
   }
 
   specifierActionCoordinator = self->_specifierActionCoordinator;
-  self->_specifierActionCoordinator = v4;
+  self->_specifierActionCoordinator = coordinatorCopy;
 }
 
 - (PSListControllerSpecifierActionCoordinator)specifierActionCoordinator

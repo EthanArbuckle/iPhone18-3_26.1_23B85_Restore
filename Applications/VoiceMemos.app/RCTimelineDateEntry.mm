@@ -1,34 +1,34 @@
 @interface RCTimelineDateEntry
-- (BOOL)isEqual:(id)a3;
-- (RCTimelineDateEntry)initWithDateEntry:(id)a3 updateFidelity:(int64_t)a4 userInfo:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (RCTimelineDateEntry)initWithDateEntry:(id)entry updateFidelity:(int64_t)fidelity userInfo:(id)info;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation RCTimelineDateEntry
 
-- (RCTimelineDateEntry)initWithDateEntry:(id)a3 updateFidelity:(int64_t)a4 userInfo:(id)a5
+- (RCTimelineDateEntry)initWithDateEntry:(id)entry updateFidelity:(int64_t)fidelity userInfo:(id)info
 {
-  v9 = a3;
-  v10 = a5;
+  entryCopy = entry;
+  infoCopy = info;
   v14.receiver = self;
   v14.super_class = RCTimelineDateEntry;
   v11 = [(RCTimelineDateEntry *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_dateEntry, a3);
-    v12->_updateFidelity = a4;
-    objc_storeStrong(&v12->_userInfo, a5);
+    objc_storeStrong(&v11->_dateEntry, entry);
+    v12->_updateFidelity = fidelity;
+    objc_storeStrong(&v12->_userInfo, info);
   }
 
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v15 = 1;
   }
@@ -38,18 +38,18 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(RCTimelineDateEntry *)self dateEntry];
-      v7 = [(RCTimelineDateEntry *)v5 dateEntry];
-      v8 = [v6 isEqual:v7];
+      v5 = equalCopy;
+      dateEntry = [(RCTimelineDateEntry *)self dateEntry];
+      dateEntry2 = [(RCTimelineDateEntry *)v5 dateEntry];
+      v8 = [dateEntry isEqual:dateEntry2];
 
-      v9 = [(RCTimelineDateEntry *)self updateFidelity];
-      v10 = [(RCTimelineDateEntry *)v5 updateFidelity];
-      v11 = [(RCTimelineDateEntry *)self userInfo];
-      v12 = [(RCTimelineDateEntry *)v5 userInfo];
+      updateFidelity = [(RCTimelineDateEntry *)self updateFidelity];
+      updateFidelity2 = [(RCTimelineDateEntry *)v5 updateFidelity];
+      userInfo = [(RCTimelineDateEntry *)self userInfo];
+      userInfo2 = [(RCTimelineDateEntry *)v5 userInfo];
 
-      v13 = [v11 isEqual:v12];
-      if (v9 == v10)
+      v13 = [userInfo isEqual:userInfo2];
+      if (updateFidelity == updateFidelity2)
       {
         v14 = v8;
       }
@@ -73,22 +73,22 @@
 
 - (unint64_t)hash
 {
-  v3 = [(RCTimelineDateEntry *)self dateEntry];
-  v4 = [v3 hash];
+  dateEntry = [(RCTimelineDateEntry *)self dateEntry];
+  v4 = [dateEntry hash];
   v5 = [(RCTimelineDateEntry *)self updateFidelity]^ v4;
-  v6 = [(RCTimelineDateEntry *)self userInfo];
-  v7 = [v6 hash];
+  userInfo = [(RCTimelineDateEntry *)self userInfo];
+  v7 = [userInfo hash];
 
   return v5 ^ v7;
 }
 
 - (id)description
 {
-  v3 = [(RCTimelineDateEntry *)self dateEntry];
-  v4 = [v3 bls_shortLoggingString];
-  v5 = [(RCTimelineDateEntry *)self updateFidelity];
-  v6 = [(RCTimelineDateEntry *)self userInfo];
-  v7 = [NSString stringWithFormat:@"date = %@  updateFidelity = %ld;  userInfo = %@", v4, v5, v6];;
+  dateEntry = [(RCTimelineDateEntry *)self dateEntry];
+  bls_shortLoggingString = [dateEntry bls_shortLoggingString];
+  updateFidelity = [(RCTimelineDateEntry *)self updateFidelity];
+  userInfo = [(RCTimelineDateEntry *)self userInfo];
+  v7 = [NSString stringWithFormat:@"date = %@  updateFidelity = %ld;  userInfo = %@", bls_shortLoggingString, updateFidelity, userInfo];;
 
   return v7;
 }

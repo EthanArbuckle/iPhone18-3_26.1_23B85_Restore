@@ -1,29 +1,29 @@
 @interface HKRemoteFeatureAvailabilityWatchRegionEqualsRule
 - (BOOL)evaluate;
-- (void)processUserInfo:(id)a3;
+- (void)processUserInfo:(id)info;
 @end
 
 @implementation HKRemoteFeatureAvailabilityWatchRegionEqualsRule
 
-- (void)processUserInfo:(id)a3
+- (void)processUserInfo:(id)info
 {
-  v4 = [a3 objectForKeyedSubscript:@"RegionCode"];
+  v4 = [info objectForKeyedSubscript:@"RegionCode"];
   [(HKRemoteFeatureAvailabilityWatchRegionEqualsRule *)self setRegionCode:v4];
 }
 
 - (BOOL)evaluate
 {
-  v3 = [(HKRemoteFeatureAvailabilityWatchRegionEqualsRule *)self regionCode];
+  regionCode = [(HKRemoteFeatureAvailabilityWatchRegionEqualsRule *)self regionCode];
 
-  if (!v3)
+  if (!regionCode)
   {
     return 0;
   }
 
-  v4 = [(HKRemoteFeatureAvailabilityBaseRule *)self dataSource];
-  v5 = [v4 watchRegion];
-  v6 = [(HKRemoteFeatureAvailabilityWatchRegionEqualsRule *)self regionCode];
-  v7 = [v5 isEqualToString:v6];
+  dataSource = [(HKRemoteFeatureAvailabilityBaseRule *)self dataSource];
+  watchRegion = [dataSource watchRegion];
+  regionCode2 = [(HKRemoteFeatureAvailabilityWatchRegionEqualsRule *)self regionCode];
+  v7 = [watchRegion isEqualToString:regionCode2];
 
   return v7;
 }

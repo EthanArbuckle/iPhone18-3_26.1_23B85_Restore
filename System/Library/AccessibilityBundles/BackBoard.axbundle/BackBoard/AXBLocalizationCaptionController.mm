@@ -27,18 +27,18 @@ uint64_t __46__AXBLocalizationCaptionController_controller__block_invoke()
 
 - (void)initializeMonitor
 {
-  v3 = [MEMORY[0x29EDBA068] defaultCenter];
-  [v3 addObserver:self selector:sel__updateFeature name:*MEMORY[0x29EDC8498] object:0];
+  defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__updateFeature name:*MEMORY[0x29EDC8498] object:0];
 
   [(AXBLocalizationCaptionController *)self _updateFeature];
 }
 
 - (void)_updateFeature
 {
-  v3 = [MEMORY[0x29EDBDFA0] sharedInstance];
-  v4 = [v3 localizationQACaptionMode];
+  mEMORY[0x29EDBDFA0] = [MEMORY[0x29EDBDFA0] sharedInstance];
+  localizationQACaptionMode = [mEMORY[0x29EDBDFA0] localizationQACaptionMode];
 
-  if (v4)
+  if (localizationQACaptionMode)
   {
     [MEMORY[0x29EDBD700] startService];
     self->_wasEnabled = 1;

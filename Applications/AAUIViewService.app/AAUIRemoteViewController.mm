@@ -2,9 +2,9 @@
 - (unint64_t)supportedInterfaceOrientations;
 - (void)_acceptCustodianshipInvite;
 - (void)_acceptInheritanceInvite;
-- (void)_buildViewModelWithContextInfo:(id)a3;
-- (void)_callCompletionWithError:(id)a3;
-- (void)_checkManateeAvailabilityForFlowType:(unint64_t)a3 completion:(id)a4;
+- (void)_buildViewModelWithContextInfo:(id)info;
+- (void)_callCompletionWithError:(id)error;
+- (void)_checkManateeAvailabilityForFlowType:(unint64_t)type completion:(id)completion;
 - (void)_declineInheritanceInvite;
 - (void)_dismissAndExit;
 - (void)_dismissBeneficiaryInvitationReminderFollowUp;
@@ -21,15 +21,15 @@
 - (void)_showCustodianInvitationAcceptedView;
 - (void)_showInheritanceInvitationAcceptedView;
 - (void)_showInvitedAsFlow;
-- (void)_userActionResponse:(int)a3;
-- (void)configureWithContext:(id)a3 completion:(id)a4;
+- (void)_userActionResponse:(int)response;
+- (void)configureWithContext:(id)context completion:(id)completion;
 - (void)dealloc;
 - (void)endUIService;
-- (void)handleButtonActions:(id)a3;
+- (void)handleButtonActions:(id)actions;
 - (void)handleCancellation;
 - (void)prepareViewServiceForPresentation;
 - (void)setUpHostProxy;
-- (void)setUpLookupConnection:(id)a3;
+- (void)setUpLookupConnection:(id)connection;
 @end
 
 @implementation AAUIRemoteViewController
@@ -37,9 +37,9 @@
 - (unint64_t)supportedInterfaceOrientations
 {
   v2 = +[UIDevice currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  userInterfaceIdiom = [v2 userInterfaceIdiom];
 
-  if (v3 == 1)
+  if (userInterfaceIdiom == 1)
   {
     return 30;
   }
@@ -94,36 +94,36 @@ LABEL_9:
 {
   v16 = [UIImage systemImageNamed:@"calendar.and.person"];
   v3 = [OBWelcomeController alloc];
-  v4 = [(AAAgeMigrationPromptModelProtocol *)self->_ageMigrationPromptModel title];
-  v5 = [(AAAgeMigrationPromptModelProtocol *)self->_ageMigrationPromptModel message];
-  v6 = [v3 initWithTitle:v4 detailText:v5 icon:v16];
+  title = [(AAAgeMigrationPromptModelProtocol *)self->_ageMigrationPromptModel title];
+  message = [(AAAgeMigrationPromptModelProtocol *)self->_ageMigrationPromptModel message];
+  v6 = [v3 initWithTitle:title detailText:message icon:v16];
 
   [v6 setModalInPresentation:1];
   v7 = +[OBBoldTrayButton boldButton];
-  v8 = [(AAAgeMigrationPromptModelProtocol *)self->_ageMigrationPromptModel secondaryButtonText];
-  [v7 setTitle:v8 forState:0];
+  secondaryButtonText = [(AAAgeMigrationPromptModelProtocol *)self->_ageMigrationPromptModel secondaryButtonText];
+  [v7 setTitle:secondaryButtonText forState:0];
 
   [v7 addTarget:self action:"goToSettingsTapped:" forControlEvents:64];
-  v9 = [v6 buttonTray];
-  [v9 addButton:v7];
+  buttonTray = [v6 buttonTray];
+  [buttonTray addButton:v7];
 
   v10 = +[OBLinkTrayButton linkButton];
-  v11 = [(AAAgeMigrationPromptModelProtocol *)self->_ageMigrationPromptModel primaryButtonText];
-  [v10 setTitle:v11 forState:0];
+  primaryButtonText = [(AAAgeMigrationPromptModelProtocol *)self->_ageMigrationPromptModel primaryButtonText];
+  [v10 setTitle:primaryButtonText forState:0];
 
   [v10 addTarget:self action:"learnMoreTapped:" forControlEvents:64];
-  v12 = [v6 buttonTray];
-  [v12 addButton:v10];
+  buttonTray2 = [v6 buttonTray];
+  [buttonTray2 addButton:v10];
 
   v13 = [[UINavigationController alloc] initWithRootViewController:v6];
   v14 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:1 target:self action:"cancelTapped:"];
-  v15 = [v6 navigationItem];
-  [v15 setRightBarButtonItem:v14];
+  navigationItem = [v6 navigationItem];
+  [navigationItem setRightBarButtonItem:v14];
 
   [(AAUIRemoteViewController *)self presentViewController:v13 animated:1 completion:0];
 }
 
-- (void)_userActionResponse:(int)a3
+- (void)_userActionResponse:(int)response
 {
   ageMigrationPromptModel = self->_ageMigrationPromptModel;
   v6 = _AAUILogSystem();
@@ -137,9 +137,9 @@ LABEL_9:
 
     v8 = _AAUILogSystem();
     v9 = v8;
-    if (a3 > 2)
+    if (response > 2)
     {
-      if (a3 == 3)
+      if (response == 3)
       {
         if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
         {
@@ -153,7 +153,7 @@ LABEL_9:
         goto LABEL_25;
       }
 
-      if (a3 != 5)
+      if (response != 5)
       {
 LABEL_18:
         if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -182,9 +182,9 @@ LABEL_25:
 
     else
     {
-      if (a3 != 1)
+      if (response != 1)
       {
-        if (a3 == 2)
+        if (response == 2)
         {
           if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
           {
@@ -225,19 +225,19 @@ LABEL_25:
   }
 }
 
-- (void)_buildViewModelWithContextInfo:(id)a3
+- (void)_buildViewModelWithContextInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v5 = _AAUILogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v52 = v4;
+    v52 = infoCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Building with context info: %@", buf, 0xCu);
   }
 
-  v6 = [(AAUIOBWelcomeControllerViewModelProtocol *)v4 objectForKeyedSubscript:@"modelData"];
-  v7 = [(AAUIOBWelcomeControllerViewModelProtocol *)v4 objectForKeyedSubscript:@"modelType"];
+  v6 = [(AAUIOBWelcomeControllerViewModelProtocol *)infoCopy objectForKeyedSubscript:@"modelData"];
+  v7 = [(AAUIOBWelcomeControllerViewModelProtocol *)infoCopy objectForKeyedSubscript:@"modelType"];
   v8 = objc_opt_class();
   v9 = NSStringFromClass(v8);
   v10 = [v7 isEqualToString:v9];
@@ -264,7 +264,7 @@ LABEL_25:
     goto LABEL_7;
   }
 
-  v18 = [(AAUIOBWelcomeControllerViewModelProtocol *)v4 objectForKeyedSubscript:@"modelType"];
+  v18 = [(AAUIOBWelcomeControllerViewModelProtocol *)infoCopy objectForKeyedSubscript:@"modelType"];
   v19 = objc_opt_class();
   v20 = NSStringFromClass(v19);
   v21 = [v18 isEqualToString:v20];
@@ -278,13 +278,13 @@ LABEL_25:
     v23 = self->_viewModel;
     self->_viewModel = v22;
 
-    v24 = self;
+    selfCopy3 = self;
     v25 = 1;
   }
 
   else
   {
-    v26 = [(AAUIOBWelcomeControllerViewModelProtocol *)v4 objectForKeyedSubscript:@"modelType"];
+    v26 = [(AAUIOBWelcomeControllerViewModelProtocol *)infoCopy objectForKeyedSubscript:@"modelType"];
     v27 = objc_opt_class();
     v28 = NSStringFromClass(v27);
     v29 = [v26 isEqualToString:v28];
@@ -298,20 +298,20 @@ LABEL_25:
       v31 = self->_viewModel;
       self->_viewModel = v30;
 
-      v24 = self;
+      selfCopy3 = self;
       v25 = 2;
     }
 
     else
     {
-      v32 = [(AAUIOBWelcomeControllerViewModelProtocol *)v4 objectForKeyedSubscript:@"modelType"];
+      v32 = [(AAUIOBWelcomeControllerViewModelProtocol *)infoCopy objectForKeyedSubscript:@"modelType"];
       v33 = objc_opt_class();
       v34 = NSStringFromClass(v33);
       v35 = [v32 isEqualToString:v34];
 
       if (!v35)
       {
-        v39 = [(AAUIOBWelcomeControllerViewModelProtocol *)v4 objectForKeyedSubscript:@"modelType"];
+        v39 = [(AAUIOBWelcomeControllerViewModelProtocol *)infoCopy objectForKeyedSubscript:@"modelType"];
         v40 = objc_opt_class();
         v41 = NSStringFromClass(v40);
         if ([v39 isEqualToString:v41])
@@ -340,7 +340,7 @@ LABEL_7:
         v45 = _AAUILogSystem();
         if (os_log_type_enabled(v45, OS_LOG_TYPE_ERROR))
         {
-          sub_100005F34(v4, v45);
+          sub_100005F34(infoCopy, v45);
         }
 
         v12 = 0;
@@ -367,12 +367,12 @@ LABEL_26:
       v37 = self->_viewModel;
       self->_viewModel = v36;
 
-      v24 = self;
+      selfCopy3 = self;
       v25 = 3;
     }
   }
 
-  [(AAUIRemoteViewController *)v24 setViewServiceFlowType:v25];
+  [(AAUIRemoteViewController *)selfCopy3 setViewServiceFlowType:v25];
 LABEL_15:
   if (![v6 length])
   {
@@ -403,23 +403,23 @@ LABEL_29:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [(AAUIOBWelcomeControllerViewModelProtocol *)self->_viewModel custodianshipInfo];
-    v7 = [v6 status];
+    custodianshipInfo = [(AAUIOBWelcomeControllerViewModelProtocol *)self->_viewModel custodianshipInfo];
+    status = [custodianshipInfo status];
 
     v8 = _AAUILogSystem();
     v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG);
-    if (v7 == 1)
+    if (status == 1)
     {
       if (v9)
       {
         sub_1000061A8();
       }
 
-      v10 = [(AAUIOBWelcomeController *)self->_welcomeController primaryButton];
-      [v10 addTarget:self action:"_acceptInheritanceInvite" forEvents:64];
+      primaryButton = [(AAUIOBWelcomeController *)self->_welcomeController primaryButton];
+      [primaryButton addTarget:self action:"_acceptInheritanceInvite" forEvents:64];
 
-      v11 = [(AAUIOBWelcomeController *)self->_welcomeController secondaryButton];
-      v12 = v11;
+      secondaryButton = [(AAUIOBWelcomeController *)self->_welcomeController secondaryButton];
+      v12 = secondaryButton;
       v13 = "_declineInheritanceInvite";
     }
 
@@ -430,11 +430,11 @@ LABEL_29:
         sub_10000616C();
       }
 
-      v21 = [(AAUIOBWelcomeController *)self->_welcomeController primaryButton];
-      [v21 addTarget:self action:"_legacyContactExitWithoutSettings" forEvents:64];
+      primaryButton2 = [(AAUIOBWelcomeController *)self->_welcomeController primaryButton];
+      [primaryButton2 addTarget:self action:"_legacyContactExitWithoutSettings" forEvents:64];
 
-      v11 = [(AAUIOBWelcomeController *)self->_welcomeController secondaryButton];
-      v12 = v11;
+      secondaryButton = [(AAUIOBWelcomeController *)self->_welcomeController secondaryButton];
+      v12 = secondaryButton;
       v13 = "_goToAccountBeneficiarySettings";
     }
   }
@@ -455,10 +455,10 @@ LABEL_29:
       return;
     }
 
-    v17 = [(AAUIOBWelcomeControllerViewModelProtocol *)self->_viewModel custodianshipInfo];
-    v18 = [v17 status];
+    custodianshipInfo2 = [(AAUIOBWelcomeControllerViewModelProtocol *)self->_viewModel custodianshipInfo];
+    status2 = [custodianshipInfo2 status];
 
-    if (v18 == 1)
+    if (status2 == 1)
     {
       v19 = _AAUILogSystem();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
@@ -466,31 +466,31 @@ LABEL_29:
         sub_100006130();
       }
 
-      v20 = [(AAUIOBWelcomeController *)self->_welcomeController primaryButton];
-      [v20 addTarget:self action:"_acceptCustodianshipInvite" forEvents:64];
+      primaryButton3 = [(AAUIOBWelcomeController *)self->_welcomeController primaryButton];
+      [primaryButton3 addTarget:self action:"_acceptCustodianshipInvite" forEvents:64];
 
-      v11 = [(AAUIOBWelcomeController *)self->_welcomeController secondaryButton];
+      secondaryButton = [(AAUIOBWelcomeController *)self->_welcomeController secondaryButton];
     }
 
     else
     {
-      v22 = [(AAUIOBWelcomeControllerViewModelProtocol *)self->_viewModel custodianshipInfo];
-      v23 = [v22 status];
+      custodianshipInfo3 = [(AAUIOBWelcomeControllerViewModelProtocol *)self->_viewModel custodianshipInfo];
+      status3 = [custodianshipInfo3 status];
 
       v24 = _AAUILogSystem();
       v25 = os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG);
-      if (v23 != 5)
+      if (status3 != 5)
       {
         if (v25)
         {
           sub_1000060B8();
         }
 
-        v26 = [(AAUIOBWelcomeController *)self->_welcomeController primaryButton];
-        [v26 addTarget:self action:"_dismissAndExit" forEvents:64];
+        primaryButton4 = [(AAUIOBWelcomeController *)self->_welcomeController primaryButton];
+        [primaryButton4 addTarget:self action:"_dismissAndExit" forEvents:64];
 
-        v11 = [(AAUIOBWelcomeController *)self->_welcomeController secondaryButton];
-        v12 = v11;
+        secondaryButton = [(AAUIOBWelcomeController *)self->_welcomeController secondaryButton];
+        v12 = secondaryButton;
         v13 = "_goToAccountRecoverySettings";
         goto LABEL_26;
       }
@@ -500,15 +500,15 @@ LABEL_29:
         sub_1000060F4();
       }
 
-      v11 = [(AAUIOBWelcomeController *)self->_welcomeController primaryButton];
+      secondaryButton = [(AAUIOBWelcomeController *)self->_welcomeController primaryButton];
     }
 
-    v12 = v11;
+    v12 = secondaryButton;
     v13 = "_declineCustodianshipInvite";
   }
 
 LABEL_26:
-  [v11 addTarget:self action:v13 forEvents:64];
+  [secondaryButton addTarget:self action:v13 forEvents:64];
 }
 
 - (void)prepareViewServiceForPresentation
@@ -521,9 +521,9 @@ LABEL_26:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)setUpLookupConnection:(id)a3
+- (void)setUpLookupConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v5 = _AALogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -531,10 +531,10 @@ LABEL_26:
   }
 
   v6 = objc_opt_new();
-  [v6 _setEndpoint:v4];
+  [v6 _setEndpoint:connectionCopy];
   v7 = [[NSXPCConnection alloc] initWithListenerEndpoint:v6];
-  v8 = [(AAUIRemoteViewController *)self remoteObjectInterface];
-  [(NSXPCConnection *)v7 setRemoteObjectInterface:v8];
+  remoteObjectInterface = [(AAUIRemoteViewController *)self remoteObjectInterface];
+  [(NSXPCConnection *)v7 setRemoteObjectInterface:remoteObjectInterface];
 
   [(NSXPCConnection *)v7 resume];
   lookupConnection = self->_lookupConnection;
@@ -574,7 +574,7 @@ LABEL_26:
 
 - (void)_setupRemoteProxy
 {
-  v2 = [(AAUIRemoteViewController *)self _remoteViewControllerProxy];
+  _remoteViewControllerProxy = [(AAUIRemoteViewController *)self _remoteViewControllerProxy];
   v3 = _AAUILogSystem();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
@@ -582,44 +582,44 @@ LABEL_26:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Setting up remote proxy", v4, 2u);
   }
 
-  [v2 setShouldDisableFadeInAnimation:1];
-  [v2 setAllowsMenuButtonDismissal:1];
-  [v2 setAllowsSiri:0];
-  [v2 setAllowsAlertStacking:1];
-  [v2 setDesiredHardwareButtonEvents:17];
-  [v2 setSwipeDismissalStyle:0];
-  [v2 setDismissalAnimationStyle:1];
+  [_remoteViewControllerProxy setShouldDisableFadeInAnimation:1];
+  [_remoteViewControllerProxy setAllowsMenuButtonDismissal:1];
+  [_remoteViewControllerProxy setAllowsSiri:0];
+  [_remoteViewControllerProxy setAllowsAlertStacking:1];
+  [_remoteViewControllerProxy setDesiredHardwareButtonEvents:17];
+  [_remoteViewControllerProxy setSwipeDismissalStyle:0];
+  [_remoteViewControllerProxy setDismissalAnimationStyle:1];
 }
 
-- (void)configureWithContext:(id)a3 completion:(id)a4
+- (void)configureWithContext:(id)context completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   v8 = _AAUILogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412290;
-    v12 = v6;
+    v12 = contextCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Configuring remote view service with context %@", &v11, 0xCu);
   }
 
-  v9 = [v6 xpcEndpoint];
-  [(AAUIRemoteViewController *)self setUpLookupConnection:v9];
+  xpcEndpoint = [contextCopy xpcEndpoint];
+  [(AAUIRemoteViewController *)self setUpLookupConnection:xpcEndpoint];
 
-  v10 = [v6 userInfo];
-  [(AAUIRemoteViewController *)self _buildViewModelWithContextInfo:v10];
+  userInfo = [contextCopy userInfo];
+  [(AAUIRemoteViewController *)self _buildViewModelWithContextInfo:userInfo];
 
-  v7[2](v7);
+  completionCopy[2](completionCopy);
 }
 
-- (void)handleButtonActions:(id)a3
+- (void)handleButtonActions:(id)actions
 {
-  v4 = a3;
+  actionsCopy = actions;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v5 = [actionsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -630,7 +630,7 @@ LABEL_26:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(actionsCopy);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
@@ -644,14 +644,14 @@ LABEL_26:
         [v9 sendResponseWithUnHandledEvents:{objc_msgSend(v9, "events") ^ v10}];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [actionsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)_callCompletionWithError:(id)a3
+- (void)_callCompletionWithError:(id)error
 {
   hostProxy = self->_hostProxy;
   v4[0] = _NSConcreteStackBlock;
@@ -659,13 +659,13 @@ LABEL_26:
   v4[2] = sub_100003E50;
   v4[3] = &unk_100010410;
   v4[4] = self;
-  [(AAFlowPresenterHostProtocol *)hostProxy flowFinishedWithError:a3 completion:v4];
+  [(AAFlowPresenterHostProtocol *)hostProxy flowFinishedWithError:error completion:v4];
 }
 
 - (void)endUIService
 {
-  v2 = [(AAUIRemoteViewController *)self _remoteViewControllerProxy];
-  [v2 invalidate];
+  _remoteViewControllerProxy = [(AAUIRemoteViewController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy invalidate];
 }
 
 - (void)_dismissAndExit
@@ -716,17 +716,17 @@ LABEL_26:
   [(AAUIRemoteViewController *)&v4 dealloc];
 }
 
-- (void)_checkManateeAvailabilityForFlowType:(unint64_t)a3 completion:(id)a4
+- (void)_checkManateeAvailabilityForFlowType:(unint64_t)type completion:(id)completion
 {
-  v6 = a4;
-  v7 = [[AAUID2DEncryptionFlowContext alloc] initWithType:a3];
+  completionCopy = completion;
+  v7 = [[AAUID2DEncryptionFlowContext alloc] initWithType:type];
   v8 = [[AAUIManateeStateValidator alloc] initWithFlowContext:v7 withPresentingViewController:self->_welcomeController];
   objc_initWeak(&location, self);
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10000437C;
   v10[3] = &unk_1000104C8;
-  v9 = v6;
+  v9 = completionCopy;
   v11 = v9;
   [v8 verifyAndRepairManateeWithCompletion:v10];
 
@@ -827,9 +827,9 @@ LABEL_26:
 {
   v3 = objc_alloc_init(AAFollowUpController);
   v4 = AAFollowUpIdentifierCustodianInvitationReminder;
-  v5 = [(AAUIOBWelcomeControllerViewModelProtocol *)self->_viewModel custodianshipInfo];
-  v6 = [v5 custodianID];
-  v7 = [NSString stringWithFormat:@"%@-%@", v4, v6];
+  custodianshipInfo = [(AAUIOBWelcomeControllerViewModelProtocol *)self->_viewModel custodianshipInfo];
+  custodianID = [custodianshipInfo custodianID];
+  v7 = [NSString stringWithFormat:@"%@-%@", v4, custodianID];
 
   v8 = _AAUILogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -850,9 +850,9 @@ LABEL_26:
   }
 
   v4 = objc_alloc_init(AAFollowUpController);
-  v5 = [(AAUIOBWelcomeControllerViewModelProtocol *)self->_viewModel custodianshipInfo];
-  v6 = [v5 custodianID];
-  v7 = [NSString stringWithFormat:@"%@-%@", @"com.apple.AAFollowUpIdentifier.beneficiaryInvitationReminder", v6];
+  custodianshipInfo = [(AAUIOBWelcomeControllerViewModelProtocol *)self->_viewModel custodianshipInfo];
+  custodianID = [custodianshipInfo custodianID];
+  v7 = [NSString stringWithFormat:@"%@-%@", @"com.apple.AAFollowUpIdentifier.beneficiaryInvitationReminder", custodianID];
 
   v8 = _AAUILogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))

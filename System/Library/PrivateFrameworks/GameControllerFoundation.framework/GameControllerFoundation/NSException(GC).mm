@@ -7,8 +7,8 @@
 
 + (id)gc_exceptionWithName:()GC error:
 {
-  v7 = [a4 userInfo];
-  v8 = [v7 mutableCopy];
+  userInfo = [a4 userInfo];
+  v8 = [userInfo mutableCopy];
 
   v9 = [v8 objectForKeyedSubscript:*MEMORY[0x1E696A578]];
   v10 = [v8 objectForKeyedSubscript:*MEMORY[0x1E696A588]];
@@ -44,31 +44,31 @@ LABEL_8:
 
   v13 = 0;
 LABEL_9:
-  v14 = [a4 domain];
-  if (v14)
+  domain = [a4 domain];
+  if (domain)
   {
-    [v8 setObject:v14 forKey:@"GC_NSExceptionErrorDomain"];
+    [v8 setObject:domain forKey:@"GC_NSExceptionErrorDomain"];
   }
 
   v15 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(a4, "code")}];
   [v8 setObject:v15 forKey:@"GC_NSExceptionErrorCode"];
 
-  v16 = [a1 exceptionWithName:a3 reason:v13 userInfo:v8];
+  v16 = [self exceptionWithName:a3 reason:v13 userInfo:v8];
 
   return v16;
 }
 
 - (id)gc_error
 {
-  v2 = [a1 userInfo];
-  v3 = [v2 objectForKeyedSubscript:@"GC_NSExceptionErrorDomain"];
+  userInfo = [self userInfo];
+  v3 = [userInfo objectForKeyedSubscript:@"GC_NSExceptionErrorDomain"];
 
-  v4 = [a1 userInfo];
-  v5 = [v4 gc_objectForKey:@"GC_NSExceptionErrorCode" ofClass:objc_opt_class() error:0];
-  v6 = [v5 integerValue];
+  userInfo2 = [self userInfo];
+  v5 = [userInfo2 gc_objectForKey:@"GC_NSExceptionErrorCode" ofClass:objc_opt_class() error:0];
+  integerValue = [v5 integerValue];
 
-  v7 = [a1 userInfo];
-  v8 = [v7 mutableCopy];
+  userInfo3 = [self userInfo];
+  v8 = [userInfo3 mutableCopy];
 
   [v8 removeObjectForKey:@"GC_NSExceptionErrorDomain"];
   [v8 removeObjectForKey:@"GC_NSExceptionErrorCode"];
@@ -77,11 +77,11 @@ LABEL_9:
 
   if (!v10)
   {
-    v11 = [a1 name];
-    v12 = v11;
-    if (v11)
+    name = [self name];
+    v12 = name;
+    if (name)
     {
-      v13 = v11;
+      v13 = name;
     }
 
     else
@@ -93,18 +93,18 @@ LABEL_9:
   }
 
   v14 = *MEMORY[0x1E696A588];
-  v15 = [v8 objectForKey:*MEMORY[0x1E696A588]];
-  if (!v15)
+  reason2 = [v8 objectForKey:*MEMORY[0x1E696A588]];
+  if (!reason2)
   {
-    v16 = [a1 reason];
+    reason = [self reason];
 
-    if (!v16)
+    if (!reason)
     {
       goto LABEL_10;
     }
 
-    v15 = [a1 reason];
-    [v8 setObject:v15 forKey:v14];
+    reason2 = [self reason];
+    [v8 setObject:reason2 forKey:v14];
   }
 
 LABEL_10:
@@ -118,7 +118,7 @@ LABEL_10:
     v17 = @"NSExceptionErrorDomain";
   }
 
-  v18 = [MEMORY[0x1E696ABC0] errorWithDomain:v17 code:v6 userInfo:v8];
+  v18 = [MEMORY[0x1E696ABC0] errorWithDomain:v17 code:integerValue userInfo:v8];
 
   return v18;
 }

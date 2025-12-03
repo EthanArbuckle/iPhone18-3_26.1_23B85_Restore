@@ -1,11 +1,11 @@
 @interface HUDLoadingContentView
-- (_TtC23ShelfKitCollectionViewsP33_8451DF0E636034E0D31DCAF0635FC0CC21HUDLoadingContentView)initWithCoder:(id)a3;
-- (_TtC23ShelfKitCollectionViewsP33_8451DF0E636034E0D31DCAF0635FC0CC21HUDLoadingContentView)initWithFrame:(CGRect)a3;
+- (_TtC23ShelfKitCollectionViewsP33_8451DF0E636034E0D31DCAF0635FC0CC21HUDLoadingContentView)initWithCoder:(id)coder;
+- (_TtC23ShelfKitCollectionViewsP33_8451DF0E636034E0D31DCAF0635FC0CC21HUDLoadingContentView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation HUDLoadingContentView
 
-- (_TtC23ShelfKitCollectionViewsP33_8451DF0E636034E0D31DCAF0635FC0CC21HUDLoadingContentView)initWithCoder:(id)a3
+- (_TtC23ShelfKitCollectionViewsP33_8451DF0E636034E0D31DCAF0635FC0CC21HUDLoadingContentView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC23ShelfKitCollectionViewsP33_8451DF0E636034E0D31DCAF0635FC0CC21HUDLoadingContentView_indicator) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC23ShelfKitCollectionViewsP33_8451DF0E636034E0D31DCAF0635FC0CC21HUDLoadingContentView_label) = 0;
@@ -14,7 +14,7 @@
   return result;
 }
 
-- (_TtC23ShelfKitCollectionViewsP33_8451DF0E636034E0D31DCAF0635FC0CC21HUDLoadingContentView)initWithFrame:(CGRect)a3
+- (_TtC23ShelfKitCollectionViewsP33_8451DF0E636034E0D31DCAF0635FC0CC21HUDLoadingContentView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

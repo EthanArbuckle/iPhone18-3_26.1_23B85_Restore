@@ -1,6 +1,6 @@
 @interface PKPeerPaymentPassActivationViewController
 - (BOOL)_shouldShowAddDebitCardViewController;
-- (PKPeerPaymentPassActivationViewController)initWithPeerPaymentSetupFlowController:(id)a3;
+- (PKPeerPaymentPassActivationViewController)initWithPeerPaymentSetupFlowController:(id)controller;
 - (id)_bodyStringForState;
 - (id)_titleStringForState;
 - (int64_t)_textAlignmentForState;
@@ -8,51 +8,51 @@
 - (void)_handleActivatedState;
 - (void)_invalidateCLInUseAssertion;
 - (void)_presentActivationFailedErrorAlert;
-- (void)_presentDisplayableError:(id)a3;
-- (void)_setState:(unint64_t)a3;
-- (void)_showSpinner:(BOOL)a3;
+- (void)_presentDisplayableError:(id)error;
+- (void)_setState:(unint64_t)state;
+- (void)_showSpinner:(BOOL)spinner;
 - (void)_terminateSetupFlow;
 - (void)dealloc;
-- (void)explanationViewDidSelectContinue:(id)a3;
+- (void)explanationViewDidSelectContinue:(id)continue;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation PKPeerPaymentPassActivationViewController
 
-- (PKPeerPaymentPassActivationViewController)initWithPeerPaymentSetupFlowController:(id)a3
+- (PKPeerPaymentPassActivationViewController)initWithPeerPaymentSetupFlowController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v20.receiver = self;
   v20.super_class = PKPeerPaymentPassActivationViewController;
-  v6 = -[PKExplanationViewController initWithContext:](&v20, sel_initWithContext_, [v5 context]);
+  v6 = -[PKExplanationViewController initWithContext:](&v20, sel_initWithContext_, [controllerCopy context]);
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_peerPaymentSetupFlowController, a3);
+    objc_storeStrong(&v6->_peerPaymentSetupFlowController, controller);
     [(PKPeerPaymentSetupFlowController *)v7->_peerPaymentSetupFlowController setParentViewController:v7];
-    v8 = [(PKPeerPaymentSetupFlowController *)v7->_peerPaymentSetupFlowController configuration];
-    v9 = [v8 peerPaymentSetupConfigurationType];
+    configuration = [(PKPeerPaymentSetupFlowController *)v7->_peerPaymentSetupFlowController configuration];
+    peerPaymentSetupConfigurationType = [configuration peerPaymentSetupConfigurationType];
 
-    if (!v9)
+    if (!peerPaymentSetupConfigurationType)
     {
-      v10 = [(PKPeerPaymentSetupFlowController *)v7->_peerPaymentSetupFlowController configuration];
-      v11 = [v10 setupDelegate];
-      objc_storeWeak(&v7->_setupDelegate, v11);
+      configuration2 = [(PKPeerPaymentSetupFlowController *)v7->_peerPaymentSetupFlowController configuration];
+      setupDelegate = [configuration2 setupDelegate];
+      objc_storeWeak(&v7->_setupDelegate, setupDelegate);
     }
 
     v7->_operations = 58;
-    v12 = [(PKExplanationViewController *)v7 explanationView];
+    explanationView = [(PKExplanationViewController *)v7 explanationView];
     v13 = [PKPeerPaymentSetupFlowHeroView alloc];
-    v14 = [v5 passSnapShot];
-    v15 = [v5 peerPaymentCredential];
-    v16 = [(PKPeerPaymentSetupFlowHeroView *)v13 initWithPeerPaymentPassSnapShot:v14 peerPaymentCredential:v15];
+    passSnapShot = [controllerCopy passSnapShot];
+    peerPaymentCredential = [controllerCopy peerPaymentCredential];
+    v16 = [(PKPeerPaymentSetupFlowHeroView *)v13 initWithPeerPaymentPassSnapShot:passSnapShot peerPaymentCredential:peerPaymentCredential];
     heroView = v7->_heroView;
     v7->_heroView = v16;
 
-    [v12 setHeroView:v7->_heroView];
-    v18 = [(PKPeerPaymentPassActivationViewController *)v7 navigationItem];
-    [v18 setHidesBackButton:1 animated:0];
+    [explanationView setHeroView:v7->_heroView];
+    navigationItem = [(PKPeerPaymentPassActivationViewController *)v7 navigationItem];
+    [navigationItem setHidesBackButton:1 animated:0];
 
     [(PKExplanationViewController *)v7 setShowCancelButton:0];
   }
@@ -65,23 +65,23 @@
   v6.receiver = self;
   v6.super_class = PKPeerPaymentPassActivationViewController;
   [(PKExplanationViewController *)&v6 viewDidLoad];
-  v3 = [(PKExplanationViewController *)self explanationView];
-  v4 = [v3 dockView];
-  v5 = [v4 footerView];
-  [v3 setShowPrivacyView:0];
-  [v3 setDelegate:self];
-  [v3 setTopMargin:12.0];
-  [v5 setSetUpLaterButton:0];
+  explanationView = [(PKExplanationViewController *)self explanationView];
+  dockView = [explanationView dockView];
+  footerView = [dockView footerView];
+  [explanationView setShowPrivacyView:0];
+  [explanationView setDelegate:self];
+  [explanationView setTopMargin:12.0];
+  [footerView setSetUpLaterButton:0];
   [(PKPeerPaymentPassActivationViewController *)self _beginSetup];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   [(PKPeerPaymentPassActivationViewController *)self _invalidateCLInUseAssertion];
   v5.receiver = self;
   v5.super_class = PKPeerPaymentPassActivationViewController;
-  [(PKPeerPaymentPassActivationViewController *)&v5 viewWillDisappear:v3];
+  [(PKPeerPaymentPassActivationViewController *)&v5 viewWillDisappear:disappearCopy];
 }
 
 - (void)dealloc
@@ -103,7 +103,7 @@
   }
 }
 
-- (void)explanationViewDidSelectContinue:(id)a3
+- (void)explanationViewDidSelectContinue:(id)continue
 {
   if (self->_state == 2)
   {
@@ -125,11 +125,11 @@
     _os_log_impl(&dword_1BD026000, v3, OS_LOG_TYPE_DEFAULT, "Terminating setup flow", v9, 2u);
   }
 
-  v4 = [(PKPeerPaymentSetupFlowController *)self->_peerPaymentSetupFlowController flowItemDelegate];
-  v5 = v4;
-  if (v4)
+  flowItemDelegate = [(PKPeerPaymentSetupFlowController *)self->_peerPaymentSetupFlowController flowItemDelegate];
+  v5 = flowItemDelegate;
+  if (flowItemDelegate)
   {
-    [v4 peerPaymentSetupFlowControllerDidFinish:self->_peerPaymentSetupFlowController];
+    [flowItemDelegate peerPaymentSetupFlowControllerDidFinish:self->_peerPaymentSetupFlowController];
   }
 
   else
@@ -143,8 +143,8 @@
 
     else
     {
-      v8 = [(PKPeerPaymentPassActivationViewController *)self presentingViewController];
-      [v8 dismissViewControllerAnimated:1 completion:0];
+      presentingViewController = [(PKPeerPaymentPassActivationViewController *)self presentingViewController];
+      [presentingViewController dismissViewControllerAnimated:1 completion:0];
     }
   }
 }
@@ -209,15 +209,15 @@ void __56__PKPeerPaymentPassActivationViewController__beginSetup__block_invoke(u
   }
 }
 
-- (void)_setState:(unint64_t)a3
+- (void)_setState:(unint64_t)state
 {
-  if (self->_state == a3)
+  if (self->_state == state)
   {
     return;
   }
 
-  self->_state = a3;
-  v21 = [(PKExplanationViewController *)self explanationView];
+  self->_state = state;
+  explanationView = [(PKExplanationViewController *)self explanationView];
   state = self->_state;
   if (!state)
   {
@@ -230,29 +230,29 @@ void __56__PKPeerPaymentPassActivationViewController__beginSetup__block_invoke(u
   {
     if (state == 1)
     {
-      v5 = [(PKPeerPaymentPassActivationViewController *)self _titleStringForState];
-      [v21 setTitleText:v5];
+      _titleStringForState = [(PKPeerPaymentPassActivationViewController *)self _titleStringForState];
+      [explanationView setTitleText:_titleStringForState];
 
-      [v21 setTitleAlignment:{-[PKPeerPaymentPassActivationViewController _textAlignmentForState](self, "_textAlignmentForState")}];
-      v6 = [(PKPeerPaymentPassActivationViewController *)self _bodyStringForState];
-      [v21 setBodyText:v6];
+      [explanationView setTitleAlignment:{-[PKPeerPaymentPassActivationViewController _textAlignmentForState](self, "_textAlignmentForState")}];
+      _bodyStringForState = [(PKPeerPaymentPassActivationViewController *)self _bodyStringForState];
+      [explanationView setBodyText:_bodyStringForState];
 
-      [v21 setBodyTextAlignment:{-[PKPeerPaymentPassActivationViewController _textAlignmentForState](self, "_textAlignmentForState")}];
-      [v21 setTitleLineBreakStrategy:1];
+      [explanationView setBodyTextAlignment:{-[PKPeerPaymentPassActivationViewController _textAlignmentForState](self, "_textAlignmentForState")}];
+      [explanationView setTitleLineBreakStrategy:1];
       [(PKPeerPaymentPassActivationViewController *)self _showSpinner:1];
-      v7 = [(PKExplanationViewController *)self explanationView];
-      v8 = [v7 dockView];
-      [v8 setHidden:1];
+      explanationView2 = [(PKExplanationViewController *)self explanationView];
+      dockView = [explanationView2 dockView];
+      [dockView setHidden:1];
 
-      v9 = [(PKPeerPaymentPassActivationViewController *)self navigationItem];
-      [v9 setRightBarButtonItem:0];
+      navigationItem = [(PKPeerPaymentPassActivationViewController *)self navigationItem];
+      [navigationItem setRightBarButtonItem:0];
 LABEL_15:
     }
 
 LABEL_16:
-    v20 = [(PKPeerPaymentPassActivationViewController *)self view];
-    PKPaymentSetupApplyContextAppearance([(PKExplanationViewController *)self context], v20);
-    [v20 setNeedsLayout];
+    view = [(PKPeerPaymentPassActivationViewController *)self view];
+    PKPaymentSetupApplyContextAppearance([(PKExplanationViewController *)self context], view);
+    [view setNeedsLayout];
 
     goto LABEL_17;
   }
@@ -260,36 +260,36 @@ LABEL_16:
   [(PKExplanationViewController *)self context];
   if (!PKPaymentSetupContextIsSetupAssistant())
   {
-    v10 = [(PKPeerPaymentPassActivationViewController *)self _titleStringForState];
-    [v21 setTitleText:v10];
+    _titleStringForState2 = [(PKPeerPaymentPassActivationViewController *)self _titleStringForState];
+    [explanationView setTitleText:_titleStringForState2];
 
-    [v21 setTitleAlignment:{-[PKPeerPaymentPassActivationViewController _textAlignmentForState](self, "_textAlignmentForState")}];
-    v11 = [(PKPeerPaymentPassActivationViewController *)self _bodyStringForState];
-    [v21 setBodyText:v11];
+    [explanationView setTitleAlignment:{-[PKPeerPaymentPassActivationViewController _textAlignmentForState](self, "_textAlignmentForState")}];
+    _bodyStringForState2 = [(PKPeerPaymentPassActivationViewController *)self _bodyStringForState];
+    [explanationView setBodyText:_bodyStringForState2];
 
-    [v21 setBodyTextAlignment:{-[PKPeerPaymentPassActivationViewController _textAlignmentForState](self, "_textAlignmentForState")}];
-    [v21 setTitleLineBreakStrategy:1];
+    [explanationView setBodyTextAlignment:{-[PKPeerPaymentPassActivationViewController _textAlignmentForState](self, "_textAlignmentForState")}];
+    [explanationView setTitleLineBreakStrategy:1];
     [(PKPeerPaymentPassActivationViewController *)self _showSpinner:0];
-    v12 = [(PKPeerPaymentSetupFlowController *)self->_peerPaymentSetupFlowController peerPaymentCredential];
-    v13 = [v12 flowState];
+    peerPaymentCredential = [(PKPeerPaymentSetupFlowController *)self->_peerPaymentSetupFlowController peerPaymentCredential];
+    flowState = [peerPaymentCredential flowState];
 
-    if (v13 == 2)
+    if (flowState == 2)
     {
       [(PKPeerPaymentSetupFlowHeroView *)self->_heroView startAnimation];
     }
 
-    v14 = [(PKPeerPaymentSetupFlowController *)self->_peerPaymentSetupFlowController peerPaymentWebService];
-    v15 = [v14 targetDevice];
-    [v15 setUserHasDisabledPeerPayment:0];
+    peerPaymentWebService = [(PKPeerPaymentSetupFlowController *)self->_peerPaymentSetupFlowController peerPaymentWebService];
+    targetDevice = [peerPaymentWebService targetDevice];
+    [targetDevice setUserHasDisabledPeerPayment:0];
 
-    v16 = [(PKExplanationViewController *)self explanationView];
-    v9 = [v16 dockView];
+    explanationView3 = [(PKExplanationViewController *)self explanationView];
+    navigationItem = [explanationView3 dockView];
 
-    [v9 setHidden:0];
-    v17 = [(PKPeerPaymentPassActivationViewController *)self _shouldShowAddDebitCardViewController];
-    self->_shouldShowAddDebitCardViewController = v17;
-    v18 = [v9 primaryButton];
-    if (v17)
+    [navigationItem setHidden:0];
+    _shouldShowAddDebitCardViewController = [(PKPeerPaymentPassActivationViewController *)self _shouldShowAddDebitCardViewController];
+    self->_shouldShowAddDebitCardViewController = _shouldShowAddDebitCardViewController;
+    primaryButton = [navigationItem primaryButton];
+    if (_shouldShowAddDebitCardViewController)
     {
       PKLocalizedPaymentString(&cfstr_Continue.isa);
     }
@@ -299,7 +299,7 @@ LABEL_16:
       PKLocalizedPeerPaymentString(&cfstr_PeerPaymentSet.isa);
     }
     v19 = ;
-    [v18 setTitle:v19 forState:0];
+    [primaryButton setTitle:v19 forState:0];
 
     goto LABEL_15;
   }
@@ -320,23 +320,23 @@ LABEL_17:
   else
   {
     v7 = [[PKPaymentAddDebitCardViewController alloc] initWithPeerPaymentSetupFlowController:self->_peerPaymentSetupFlowController];
-    v6 = [(PKPeerPaymentPassActivationViewController *)self navigationController];
-    [v6 pushViewController:v7 animated:1];
+    navigationController = [(PKPeerPaymentPassActivationViewController *)self navigationController];
+    [navigationController pushViewController:v7 animated:1];
   }
 }
 
-- (void)_presentDisplayableError:(id)a3
+- (void)_presentDisplayableError:(id)error
 {
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __70__PKPeerPaymentPassActivationViewController__presentDisplayableError___block_invoke;
   v6[3] = &unk_1E8010970;
   v6[4] = self;
-  v4 = PKAlertForDisplayableErrorWithHandlers(a3, 0, v6, 0);
+  v4 = PKAlertForDisplayableErrorWithHandlers(error, 0, v6, 0);
   if (v4)
   {
-    v5 = [(PKPeerPaymentPassActivationViewController *)self navigationController];
-    [v5 presentViewController:v4 animated:1 completion:0];
+    navigationController = [(PKPeerPaymentPassActivationViewController *)self navigationController];
+    [navigationController presentViewController:v4 animated:1 completion:0];
   }
 
   else
@@ -357,17 +357,17 @@ LABEL_17:
 - (BOOL)_shouldShowAddDebitCardViewController
 {
   v30 = *MEMORY[0x1E69E9840];
-  v3 = [(PKPeerPaymentSetupFlowController *)self->_peerPaymentSetupFlowController provisioningController];
+  provisioningController = [(PKPeerPaymentSetupFlowController *)self->_peerPaymentSetupFlowController provisioningController];
   [(PKExplanationViewController *)self context];
-  if ((PKPaymentSetupContextIsBridge() & 1) != 0 || ([v3 credentialProvisioningQueue], v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "remaining"), v4, v5))
+  if ((PKPaymentSetupContextIsBridge() & 1) != 0 || ([provisioningController credentialProvisioningQueue], v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "remaining"), v4, v5))
   {
     v6 = 0;
   }
 
   else
   {
-    v8 = [(PKPeerPaymentSetupFlowController *)self->_peerPaymentSetupFlowController paymentWebService];
-    v9 = [v8 targetDevice];
+    paymentWebService = [(PKPeerPaymentSetupFlowController *)self->_peerPaymentSetupFlowController paymentWebService];
+    targetDevice = [paymentWebService targetDevice];
 
     [(PKPeerPaymentSetupFlowController *)self->_peerPaymentSetupFlowController passesIncludingPeerPaymentPass:0 isCheckingTotalPassCount:0];
     v23 = 0u;
@@ -388,10 +388,10 @@ LABEL_17:
             objc_enumerationMutation(v10);
           }
 
-          v15 = [*(*(&v23 + 1) + 8 * i) devicePrimaryPaymentApplication];
-          v16 = [v15 paymentType];
+          devicePrimaryPaymentApplication = [*(*(&v23 + 1) + 8 * i) devicePrimaryPaymentApplication];
+          paymentType = [devicePrimaryPaymentApplication paymentType];
 
-          if (v16 == 1)
+          if (paymentType == 1)
           {
 
             v6 = 0;
@@ -412,9 +412,9 @@ LABEL_17:
     if (PKDisableDynamicSEAllocation() && (v17 = [v10 pk_countObjectsPassingTest:&__block_literal_global_21]) != 0)
     {
       v18 = v17;
-      if (v9 && (objc_opt_respondsToSelector() & 1) != 0)
+      if (targetDevice && (objc_opt_respondsToSelector() & 1) != 0)
       {
-        v19 = [v9 maximumPaymentCards];
+        maximumPaymentCards = [targetDevice maximumPaymentCards];
       }
 
       else
@@ -429,10 +429,10 @@ LABEL_17:
           _os_log_impl(&dword_1BD026000, v20, OS_LOG_TYPE_DEFAULT, "%{public}@ - Target device did not respond to max payment cards. Assuming local maximum.", buf, 0xCu);
         }
 
-        v19 = PKMaxPaymentCards();
+        maximumPaymentCards = PKMaxPaymentCards();
       }
 
-      v6 = v19 - 1 >= v18;
+      v6 = maximumPaymentCards - 1 >= v18;
     }
 
     else
@@ -471,20 +471,20 @@ LABEL_5:
 
 - (id)_bodyStringForState
 {
-  v3 = [(PKPeerPaymentSetupFlowController *)self->_peerPaymentSetupFlowController peerPaymentCredential];
-  v4 = v3;
+  peerPaymentCredential = [(PKPeerPaymentSetupFlowController *)self->_peerPaymentSetupFlowController peerPaymentCredential];
+  v4 = peerPaymentCredential;
   if (self->_state == 2)
   {
-    v5 = [v3 flowState];
-    if (v5 == 2)
+    flowState = [peerPaymentCredential flowState];
+    if (flowState == 2)
     {
-      v8 = [v4 pendingPaymentSenderName];
-      v7 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentSet_3.isa, &stru_1F3BD5BF0.isa, v8);
+      pendingPaymentSenderName = [v4 pendingPaymentSenderName];
+      v7 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentSet_3.isa, &stru_1F3BD5BF0.isa, pendingPaymentSenderName);
     }
 
     else
     {
-      if (v5 == 1)
+      if (flowState == 1)
       {
         v6 = @"PEER_PAYMENT_SETUP_ACTIVATED_INCOMING_PAYMENT_MESSAGE";
       }
@@ -527,11 +527,11 @@ LABEL_5:
   return result;
 }
 
-- (void)_showSpinner:(BOOL)a3
+- (void)_showSpinner:(BOOL)spinner
 {
-  v3 = a3;
-  v4 = [(PKExplanationViewController *)self explanationView];
-  [v4 setShowSpinner:v3];
+  spinnerCopy = spinner;
+  explanationView = [(PKExplanationViewController *)self explanationView];
+  [explanationView setShowSpinner:spinnerCopy];
 }
 
 @end

@@ -1,14 +1,14 @@
 @interface MSDContentInstaller
 + (id)sharedInstance;
-- (BOOL)adjustContentUnder:(id)a3;
-- (BOOL)createIntermdediateDirectoriesInPathAndRestoreAttributes:(id)a3;
+- (BOOL)adjustContentUnder:(id)under;
+- (BOOL)createIntermdediateDirectoriesInPathAndRestoreAttributes:(id)attributes;
 - (BOOL)finishInstallContent;
-- (BOOL)hasInheritanceACL:(id)a3;
-- (BOOL)hasXattr:(id)a3 path:(id)a4;
-- (BOOL)isContentRoot:(id)a3;
-- (BOOL)removeXattr:(id)a3;
+- (BOOL)hasInheritanceACL:(id)l;
+- (BOOL)hasXattr:(id)xattr path:(id)path;
+- (BOOL)isContentRoot:(id)root;
+- (BOOL)removeXattr:(id)xattr;
 - (MSDContentInstaller)init;
-- (id)originalPathFor:(id)a3;
+- (id)originalPathFor:(id)for;
 @end
 
 @implementation MSDContentInstaller
@@ -107,8 +107,8 @@
   if ((v18 & 1) == 0)
   {
     v15 = +[MSDLogModel sharedInstance];
-    v20 = [v19 localizedDescription];
-    [v15 logMessage:1 prefix:@"[INF]" message:{@"Cannot remove staging folder: %@", v20}];
+    localizedDescription = [v19 localizedDescription];
+    [v15 logMessage:1 prefix:@"[INF]" message:{@"Cannot remove staging folder: %@", localizedDescription}];
 
 LABEL_12:
   }
@@ -116,11 +116,11 @@ LABEL_12:
   return 1;
 }
 
-- (BOOL)createIntermdediateDirectoriesInPathAndRestoreAttributes:(id)a3
+- (BOOL)createIntermdediateDirectoriesInPathAndRestoreAttributes:(id)attributes
 {
-  v3 = a3;
+  attributesCopy = attributes;
   v4 = +[MSDLogModel sharedInstance];
-  [v4 logMessage:1 prefix:@"[INF]" message:{@"%s - fullPath:  %@", "-[MSDContentInstaller createIntermdediateDirectoriesInPathAndRestoreAttributes:]", v3}];
+  [v4 logMessage:1 prefix:@"[INF]" message:{@"%s - fullPath:  %@", "-[MSDContentInstaller createIntermdediateDirectoriesInPathAndRestoreAttributes:]", attributesCopy}];
 
   v5 = +[NSFileManager defaultManager];
   v15 = 0;
@@ -133,7 +133,7 @@ LABEL_12:
   v13[3] = sub_100002AC4;
   v13[4] = sub_100002AD4;
   v14 = +[NSString string];
-  v6 = [v3 pathComponents];
+  pathComponents = [attributesCopy pathComponents];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100002ADC;
@@ -142,45 +142,45 @@ LABEL_12:
   v7 = v5;
   v10 = v7;
   v12 = &v15;
-  [v6 enumerateObjectsUsingBlock:v9];
+  [pathComponents enumerateObjectsUsingBlock:v9];
 
-  LOBYTE(v6) = *(v16 + 24);
+  LOBYTE(pathComponents) = *(v16 + 24);
   _Block_object_dispose(v13, 8);
 
   _Block_object_dispose(&v15, 8);
-  return v6;
+  return pathComponents;
 }
 
-- (BOOL)isContentRoot:(id)a3
+- (BOOL)isContentRoot:(id)root
 {
-  v4 = a3;
-  if ([(MSDContentInstaller *)self hasXattr:@"ContentRoot" path:v4])
+  rootCopy = root;
+  if ([(MSDContentInstaller *)self hasXattr:@"ContentRoot" path:rootCopy])
   {
     v5 = 1;
   }
 
   else
   {
-    v5 = [(MSDContentInstaller *)self hasXattr:@"ContentRootToRemove" path:v4];
+    v5 = [(MSDContentInstaller *)self hasXattr:@"ContentRootToRemove" path:rootCopy];
   }
 
   return v5;
 }
 
-- (BOOL)hasXattr:(id)a3 path:(id)a4
+- (BOOL)hasXattr:(id)xattr path:(id)path
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v5;
-  v8 = [@"MSDAnnotation" UTF8String];
-  v9 = [v6 fileSystemRepresentation];
-  v10 = getxattr(v9, v8, 0, 0, 0, 1);
+  xattrCopy = xattr;
+  pathCopy = path;
+  v7 = xattrCopy;
+  uTF8String = [@"MSDAnnotation" UTF8String];
+  fileSystemRepresentation = [pathCopy fileSystemRepresentation];
+  v10 = getxattr(fileSystemRepresentation, uTF8String, 0, 0, 0, 1);
   if (v10 < 0)
   {
     if (*__error() != 93)
     {
       v14 = +[MSDLogModel sharedInstance];
-      [v14 logMessage:1 prefix:@"[INF]" message:{@"Could not extract extended file attributes from %@, returned %ld", v6, v10}];
+      [v14 logMessage:1 prefix:@"[INF]" message:{@"Could not extract extended file attributes from %@, returned %ld", pathCopy, v10}];
       v11 = 0;
       v13 = 0;
       v15 = 0;
@@ -194,10 +194,10 @@ LABEL_12:
   else
   {
     v11 = [NSMutableData dataWithLength:v10];
-    v12 = getxattr(v9, v8, [v11 mutableBytes], v10, 0, 1);
+    v12 = getxattr(fileSystemRepresentation, uTF8String, [v11 mutableBytes], v10, 0, 1);
     if (v12 < 0)
     {
-      sub_10000464C(v6, &v17);
+      sub_10000464C(pathCopy, &v17);
       v13 = 0;
       v15 = 0;
       v14 = v17;
@@ -210,7 +210,7 @@ LABEL_12:
     {
       v14 = +[MSDLogModel sharedInstance];
       v15 = 1;
-      [v14 logMessage:1 prefix:@"[INF]" message:{@"%@: Has expected xattr %@", v6, v7}];
+      [v14 logMessage:1 prefix:@"[INF]" message:{@"%@: Has expected xattr %@", pathCopy, v7}];
 LABEL_9:
 
       goto LABEL_10;
@@ -223,24 +223,24 @@ LABEL_10:
   return v15;
 }
 
-- (BOOL)removeXattr:(id)a3
+- (BOOL)removeXattr:(id)xattr
 {
-  v3 = a3;
-  v4 = removexattr([v3 fileSystemRepresentation], objc_msgSend(@"MSDAnnotation", "UTF8String"), 1);
+  xattrCopy = xattr;
+  v4 = removexattr([xattrCopy fileSystemRepresentation], objc_msgSend(@"MSDAnnotation", "UTF8String"), 1);
   if (v4)
   {
-    sub_1000046A8(v3);
+    sub_1000046A8(xattrCopy);
   }
 
   return v4 == 0;
 }
 
-- (BOOL)hasInheritanceACL:(id)a3
+- (BOOL)hasInheritanceACL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   flagset_p = 0;
   entry_p = 0;
-  file = acl_get_file([v3 fileSystemRepresentation], ACL_TYPE_EXTENDED);
+  file = acl_get_file([lCopy fileSystemRepresentation], ACL_TYPE_EXTENDED);
   if (file)
   {
     v8 = file;
@@ -253,7 +253,7 @@ LABEL_10:
           v9 = +[MSDLogModel sharedInstance];
           v10 = [NSString stringWithFormat:@"[ERR] %s", "[MSDContentInstaller hasInheritanceACL:]"];
           v11 = __error();
-          [v9 logMessage:2 prefix:v10 message:{@"Failed to read ACL flagset from %@: %s", v3, strerror(*v11)}];
+          [v9 logMessage:2 prefix:v10 message:{@"Failed to read ACL flagset from %@: %s", lCopy, strerror(*v11)}];
         }
 
         else if (acl_get_flag_np(flagset_p, ACL_ENTRY_DIRECTORY_INHERIT) == 1 && acl_get_flag_np(flagset_p, ACL_ENTRY_FILE_INHERIT) == 1)
@@ -282,7 +282,7 @@ LABEL_10:
     v5 = +[MSDLogModel sharedInstance];
     v6 = [NSString stringWithFormat:@"[ERR] %s", "[MSDContentInstaller hasInheritanceACL:]"];
     v7 = __error();
-    [v5 logMessage:2 prefix:v6 message:{@"Could not read ACL from %@: %s", v3, strerror(*v7), flagset_p}];
+    [v5 logMessage:2 prefix:v6 message:{@"Could not read ACL from %@: %s", lCopy, strerror(*v7), flagset_p}];
   }
 
   v13 = 0;
@@ -291,36 +291,36 @@ LABEL_14:
   return v13;
 }
 
-- (id)originalPathFor:(id)a3
+- (id)originalPathFor:(id)for
 {
-  v3 = a3;
-  v4 = [v3 rangeOfString:@"/private/var/demo_backup/backup"];
+  forCopy = for;
+  v4 = [forCopy rangeOfString:@"/private/var/demo_backup/backup"];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v4 = [v3 rangeOfString:@"/var/demo_backup/backup"];
+    v4 = [forCopy rangeOfString:@"/var/demo_backup/backup"];
   }
 
   if (v4)
   {
-    sub_100004710(v3);
+    sub_100004710(forCopy);
     v6 = 0;
   }
 
   else
   {
-    v6 = [v3 substringFromIndex:v5];
+    v6 = [forCopy substringFromIndex:v5];
   }
 
   return v6;
 }
 
-- (BOOL)adjustContentUnder:(id)a3
+- (BOOL)adjustContentUnder:(id)under
 {
-  v5 = a3;
+  underCopy = under;
   v6 = +[NSFileManager defaultManager];
   v68 = 0;
   v54 = v6;
-  if (![v6 fileExistsAtPath:v5 isDirectory:&v68] || v68 != 1)
+  if (![v6 fileExistsAtPath:underCopy isDirectory:&v68] || v68 != 1)
   {
     v28 = 0;
     v9 = 0;
@@ -330,18 +330,18 @@ LABEL_14:
   }
 
   v67 = 0;
-  v7 = [v6 contentsOfDirectoryAtPath:v5 error:&v67];
+  v7 = [v6 contentsOfDirectoryAtPath:underCopy error:&v67];
   v8 = v67;
   if (!v7)
   {
     +[MSDLogModel sharedInstance];
     objc_claimAutoreleasedReturnValue();
-    v50 = [sub_100003300() localizedDescription];
+    localizedDescription = [sub_100003300() localizedDescription];
     sub_10000330C();
 
     v31 = 0;
     v9 = 0;
-    v37 = 0;
+    stringByDeletingLastPathComponent = 0;
     v10 = 0;
 LABEL_61:
     v36 = 0;
@@ -352,8 +352,8 @@ LABEL_61:
   v66 = 0u;
   v63 = 0u;
   v64 = 0u;
-  v3 = v7;
-  v53 = [v3 countByEnumeratingWithState:&v63 objects:v69 count:16];
+  selfCopy = v7;
+  v53 = [selfCopy countByEnumeratingWithState:&v63 objects:v69 count:16];
   if (!v53)
   {
     v51 = 0;
@@ -366,7 +366,7 @@ LABEL_61:
   v9 = 0;
   v10 = 0;
   v11 = *v64;
-  v52 = v5;
+  v52 = underCopy;
   while (2)
   {
     for (i = 0; i != v53; i = i + 1)
@@ -375,10 +375,10 @@ LABEL_61:
       v14 = v9;
       if (*v64 != v11)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(selfCopy);
       }
 
-      v10 = [v5 stringByAppendingPathComponent:*(*(&v63 + 1) + 8 * i)];
+      v10 = [underCopy stringByAppendingPathComponent:*(*(&v63 + 1) + 8 * i)];
 
       v62 = v8;
       v9 = [v54 attributesOfItemAtPath:v10 error:&v62];
@@ -389,36 +389,36 @@ LABEL_61:
         v43 = @"%s: Cannot get attribute from %@ - %@";
 LABEL_49:
         v44 = +[MSDLogModel sharedInstance];
-        v45 = [v15 localizedDescription];
-        [v44 logMessage:1 prefix:@"[INF]" message:{v43, "-[MSDContentInstaller adjustContentUnder:]", v10, v45}];
+        localizedDescription2 = [v15 localizedDescription];
+        [v44 logMessage:1 prefix:@"[INF]" message:{v43, "-[MSDContentInstaller adjustContentUnder:]", v10, localizedDescription2}];
 
-        v37 = 0;
+        stringByDeletingLastPathComponent = 0;
         v36 = 0;
         v31 = v51;
         goto LABEL_50;
       }
 
-      v16 = [v9 fileType];
-      v17 = [v16 isEqualToString:NSFileTypeSymbolicLink];
+      fileType = [v9 fileType];
+      v17 = [fileType isEqualToString:NSFileTypeSymbolicLink];
 
       if (v17)
       {
         v18 = +[MSDDemoVolumeManager sharedInstance];
-        v19 = [v18 userHomePath];
-        v20 = [@"/private/var/demo_backup/backup" stringByAppendingPathComponent:v19];
+        userHomePath = [v18 userHomePath];
+        v20 = [@"/private/var/demo_backup/backup" stringByAppendingPathComponent:userHomePath];
 
         if (!v20 || [v10 caseInsensitiveCompare:v20])
         {
 
           v8 = v15;
-          v5 = v52;
+          underCopy = v52;
           continue;
         }
 
         v21 = +[MSDLogModel sharedInstance];
         [v21 logMessage:1 prefix:@"[INF]" message:{@"Found wormhole in staging to user volume: %@", v20}];
 
-        v5 = v52;
+        underCopy = v52;
       }
 
       if (![(MSDContentInstaller *)self isNotExtracted:v10])
@@ -442,7 +442,7 @@ LABEL_49:
         v15 = v24;
         v43 = @"%s: Cannot remove item: %@ - Error:  %@";
         v51 = v22;
-        v5 = v52;
+        underCopy = v52;
         goto LABEL_49;
       }
 
@@ -455,8 +455,8 @@ LABEL_49:
         if ((v25 & 1) == 0)
         {
           v26 = +[MSDLogModel sharedInstance];
-          v27 = [v8 localizedDescription];
-          [v26 logMessage:1 prefix:@"[INF]" message:{@"%s: Could not move item %@ to %@.  Error:  %@", "-[MSDContentInstaller adjustContentUnder:]", v22, v10, v27}];
+          localizedDescription3 = [v8 localizedDescription];
+          [v26 logMessage:1 prefix:@"[INF]" message:{@"%s: Could not move item %@ to %@.  Error:  %@", "-[MSDContentInstaller adjustContentUnder:]", v22, v10, localizedDescription3}];
         }
 
         v51 = v22;
@@ -468,10 +468,10 @@ LABEL_49:
         v8 = v24;
       }
 
-      v5 = v52;
+      underCopy = v52;
     }
 
-    v53 = [v3 countByEnumeratingWithState:&v63 objects:v69 count:16];
+    v53 = [selfCopy countByEnumeratingWithState:&v63 objects:v69 count:16];
     if (v53)
     {
       continue;
@@ -488,7 +488,7 @@ LABEL_46:
 LABEL_28:
   if (![sub_1000032F4() isContentRoot:?])
   {
-    v37 = 0;
+    stringByDeletingLastPathComponent = 0;
     v36 = 1;
     goto LABEL_54;
   }
@@ -496,7 +496,7 @@ LABEL_28:
   v29 = [sub_1000032F4() isContentRootToRemove:?];
   [sub_1000032F4() removeXattr:?];
   v30 = v28;
-  v3 = self;
+  selfCopy = self;
   v31 = [sub_1000032F4() originalPathFor:?];
 
   if (![v6 fileExistsAtPath:v31])
@@ -512,10 +512,10 @@ LABEL_28:
   {
     +[MSDLogModel sharedInstance];
     objc_claimAutoreleasedReturnValue();
-    v48 = [sub_100003300() localizedDescription];
+    localizedDescription4 = [sub_100003300() localizedDescription];
     sub_10000330C();
 
-    v37 = 0;
+    stringByDeletingLastPathComponent = 0;
     goto LABEL_61;
   }
 
@@ -525,39 +525,39 @@ LABEL_32:
   if (v29)
   {
     v55 = v15;
-    v33 = [v6 removeItemAtPath:v5 error:&v55];
+    v33 = [v6 removeItemAtPath:underCopy error:&v55];
     v8 = v55;
 
     if ((v33 & 1) == 0)
     {
       v34 = +[MSDLogModel sharedInstance];
-      v35 = [v8 localizedDescription];
-      [v34 logMessage:1 prefix:@"[INF]" message:{@"Failed to remove:  %@ - Error:  %@", v5, v35}];
+      localizedDescription5 = [v8 localizedDescription];
+      [v34 logMessage:1 prefix:@"[INF]" message:{@"Failed to remove:  %@ - Error:  %@", underCopy, localizedDescription5}];
     }
 
-    v3 = +[MSDLogModel sharedInstance];
+    selfCopy = +[MSDLogModel sharedInstance];
     v36 = 1;
-    [v3 logMessage:1 prefix:@"[INF]" message:{@"Removed %@.", v31}];
-    v37 = 0;
+    [selfCopy logMessage:1 prefix:@"[INF]" message:{@"Removed %@.", v31}];
+    stringByDeletingLastPathComponent = 0;
     goto LABEL_51;
   }
 
   v38 = +[MSDLogModel sharedInstance];
-  [v38 logMessage:1 prefix:@"[INF]" message:{@"Moving content root item %@ to %@.", v5, v31}];
+  [v38 logMessage:1 prefix:@"[INF]" message:{@"Moving content root item %@ to %@.", underCopy, v31}];
 
   v6 = v54;
-  v37 = [v31 stringByDeletingLastPathComponent];
-  if (([v54 fileExistsAtPath:v37 isDirectory:&v68] & 1) == 0 && !objc_msgSend(v3, "createIntermdediateDirectoriesInPathAndRestoreAttributes:", v37))
+  stringByDeletingLastPathComponent = [v31 stringByDeletingLastPathComponent];
+  if (([v54 fileExistsAtPath:stringByDeletingLastPathComponent isDirectory:&v68] & 1) == 0 && !objc_msgSend(selfCopy, "createIntermdediateDirectoriesInPathAndRestoreAttributes:", stringByDeletingLastPathComponent))
   {
     v36 = 0;
     v28 = v31;
     goto LABEL_54;
   }
 
-  if (![v3 hasInheritanceACL:v37])
+  if (![selfCopy hasInheritanceACL:stringByDeletingLastPathComponent])
   {
     v56 = v15;
-    v42 = [v54 moveItemAtPath:v5 toPath:v31 error:&v56];
+    v42 = [v54 moveItemAtPath:underCopy toPath:v31 error:&v56];
     v8 = v56;
 
     if (v42)
@@ -568,23 +568,23 @@ LABEL_32:
 
     +[MSDLogModel sharedInstance];
     objc_claimAutoreleasedReturnValue();
-    v47 = [sub_100003300() localizedDescription];
+    localizedDescription6 = [sub_100003300() localizedDescription];
     goto LABEL_60;
   }
 
   +[MSDLogModel sharedInstance];
-  v39 = v3 = v54;
-  [v39 logMessage:1 prefix:@"[INF]" message:{@"Parent folder of content root item has inheritance ACL: %@", v37}];
+  v39 = selfCopy = v54;
+  [v39 logMessage:1 prefix:@"[INF]" message:{@"Parent folder of content root item has inheritance ACL: %@", stringByDeletingLastPathComponent}];
 
   v58 = v15;
-  v40 = [v54 copyItemAtPath:v5 toPath:v31 error:&v58];
+  v40 = [v54 copyItemAtPath:underCopy toPath:v31 error:&v58];
   v8 = v58;
 
   if ((v40 & 1) == 0)
   {
     +[MSDLogModel sharedInstance];
     objc_claimAutoreleasedReturnValue();
-    v47 = [sub_100003300() localizedDescription];
+    localizedDescription6 = [sub_100003300() localizedDescription];
 LABEL_60:
     sub_10000330C();
 
@@ -592,7 +592,7 @@ LABEL_60:
   }
 
   v57 = v8;
-  v41 = [v54 removeItemAtPath:v5 error:&v57];
+  v41 = [v54 removeItemAtPath:underCopy error:&v57];
   v15 = v57;
 
   if (v41)
@@ -602,8 +602,8 @@ LABEL_60:
     goto LABEL_53;
   }
 
-  v3 = +[MSDLogModel sharedInstance];
-  v49 = [v15 localizedDescription];
+  selfCopy = +[MSDLogModel sharedInstance];
+  localizedDescription7 = [v15 localizedDescription];
   sub_10000330C();
 
   v36 = 0;

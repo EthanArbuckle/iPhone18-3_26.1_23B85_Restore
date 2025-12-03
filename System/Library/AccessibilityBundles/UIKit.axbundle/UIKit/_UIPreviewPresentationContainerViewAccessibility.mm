@@ -1,19 +1,19 @@
 @interface _UIPreviewPresentationContainerViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityPerformEscape;
 - (id)accessibilityElements;
 @end
 
 @implementation _UIPreviewPresentationContainerViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v6 = location;
   obj = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v3 = @"_UIPreviewPresentationContainerView";
   v4 = "@";
   [location[0] validateClass:0 hasInstanceMethod:? withFullSignature:?];
@@ -23,15 +23,15 @@
 
 - (id)accessibilityElements
 {
-  v10 = self;
+  selfCopy = self;
   v9[1] = a2;
   v9[0] = [MEMORY[0x29EDB8DE8] array];
   v4 = v9[0];
-  v5 = [(_UIPreviewPresentationContainerViewAccessibility *)v10 safeValueForKey:@"platterView"];
+  v5 = [(_UIPreviewPresentationContainerViewAccessibility *)selfCopy safeValueForKey:@"platterView"];
   [v4 axSafelyAddObject:?];
   *&v2 = MEMORY[0x29EDC9740](v5).n128_u64[0];
   v6 = v9[0];
-  v7 = [(_UIPreviewPresentationContainerViewAccessibility *)v10 safeValueForKey:@"contentView", v2];
+  v7 = [(_UIPreviewPresentationContainerViewAccessibility *)selfCopy safeValueForKey:@"contentView", v2];
   [v6 axSafelyAddObject:?];
   MEMORY[0x29EDC9740](v7);
   v8 = MEMORY[0x29EDC9748](v9[0]);
@@ -44,9 +44,9 @@
 {
   UIAccessibilityPostNotification(*MEMORY[0x29EDC7438], MEMORY[0x29EDB8EA8]);
   AXPerformBlockOnMainThreadAfterDelay();
-  v3 = [MEMORY[0x29EDBA068] defaultCenter];
-  [v3 postNotificationName:@"accessibilityDismissActionSheet" object:0];
-  MEMORY[0x29EDC9740](v3);
+  defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+  [defaultCenter postNotificationName:@"accessibilityDismissActionSheet" object:0];
+  MEMORY[0x29EDC9740](defaultCenter);
   return 1;
 }
 

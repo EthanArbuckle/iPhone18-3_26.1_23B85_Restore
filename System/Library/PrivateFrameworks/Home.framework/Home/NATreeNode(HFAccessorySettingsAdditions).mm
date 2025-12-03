@@ -7,9 +7,9 @@
 
 - (id)hf_sortedAccessorySettingsChildren
 {
-  v1 = [a1 childNodes];
-  v2 = [v1 allObjects];
-  v3 = [v2 sortedArrayUsingComparator:&__block_literal_global_284];
+  childNodes = [self childNodes];
+  allObjects = [childNodes allObjects];
+  v3 = [allObjects sortedArrayUsingComparator:&__block_literal_global_284];
 
   return v3;
 }
@@ -20,24 +20,24 @@
   v5 = a3;
   if (!v5)
   {
-    v25 = [MEMORY[0x277CCA890] currentHandler];
-    [v25 handleFailureInMethod:a2 object:a1 file:@"HFAccessorySettingsEntity.m" lineNumber:424 description:{@"Invalid parameter not satisfying: %@", @"keyPath"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HFAccessorySettingsEntity.m" lineNumber:424 description:{@"Invalid parameter not satisfying: %@", @"keyPath"}];
   }
 
-  v6 = [a1 representedObject];
-  v7 = [v6 keyPath];
-  v8 = [v7 isEqualToString:v5];
+  representedObject = [self representedObject];
+  keyPath = [representedObject keyPath];
+  v8 = [keyPath isEqualToString:v5];
 
   if (v8)
   {
-    v9 = a1;
+    selfCopy2 = self;
   }
 
   else
   {
-    v26 = v6;
+    v26 = representedObject;
     v10 = [v5 componentsSeparatedByString:@"."];
-    v9 = a1;
+    selfCopy2 = self;
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
@@ -58,7 +58,7 @@
             objc_enumerationMutation(v11);
           }
 
-          if (!v9)
+          if (!selfCopy2)
           {
 
             goto LABEL_20;
@@ -76,17 +76,17 @@
           {
             v20 = [(__CFString *)v14 stringByAppendingFormat:@".%@", v17];
 
-            v21 = [v9 childNodes];
+            childNodes = [selfCopy2 childNodes];
             v27[0] = MEMORY[0x277D85DD0];
             v27[1] = 3221225472;
             v27[2] = __63__NATreeNode_HFAccessorySettingsAdditions__hf_nodeWithKeyPath___block_invoke;
             v27[3] = &unk_277E01D68;
             v14 = v20;
             v28 = v14;
-            v22 = [v21 na_firstObjectPassingTest:v27];
+            v22 = [childNodes na_firstObjectPassingTest:v27];
 
             v19 = v28;
-            v9 = v22;
+            selfCopy2 = v22;
           }
         }
 
@@ -105,15 +105,15 @@
       v14 = 0;
     }
 
-    v9 = v9;
+    selfCopy2 = selfCopy2;
 LABEL_20:
 
-    v6 = v26;
+    representedObject = v26;
   }
 
   v23 = *MEMORY[0x277D85DE8];
 
-  return v9;
+  return selfCopy2;
 }
 
 @end

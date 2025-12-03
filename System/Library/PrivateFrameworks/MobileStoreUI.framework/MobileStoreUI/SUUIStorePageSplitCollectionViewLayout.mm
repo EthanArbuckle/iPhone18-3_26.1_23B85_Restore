@@ -1,20 +1,20 @@
 @interface SUUIStorePageSplitCollectionViewLayout
-- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)a3;
-- (CGRect)_frameForLayout:(id)a3 offset:(CGPoint)a4 relativeToEdges:(unint64_t)a5 fromSiblingLayout:(id)a6;
+- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)change;
+- (CGRect)_frameForLayout:(id)layout offset:(CGPoint)offset relativeToEdges:(unint64_t)edges fromSiblingLayout:(id)siblingLayout;
 - (NSArray)indexPathsForPinningItems;
 - (SUUIStorePageSplitCollectionViewLayout)init;
 - (id)_newStorePageCollectionViewLayout;
-- (id)layoutAttributesForUnpinnedItemAtIndexPath:(id)a3;
-- (id)pinnedLayoutAttributesForItemsInRect:(CGRect)a3;
-- (void)_createSectionsToIndexRangesMapTableIfNeededForSublayout:(id)a3;
-- (void)addSublayout:(id)a3 forElementKinds:(id)a4;
-- (void)addSublayout:(id)a3 forItems:(id)a4 inSection:(int64_t)a5 offset:(CGPoint)a6 relativeToEdges:(unint64_t)a7 fromSiblingLayout:(id)a8;
-- (void)addSublayout:(id)a3 forSections:(id)a4 offset:(CGPoint)a5 relativeToEdges:(unint64_t)a6 fromSiblingLayout:(id)a7;
-- (void)addSublayoutsUsingSplitsDescription:(id)a3;
-- (void)removeSublayout:(id)a3;
-- (void)setBackdropGroupName:(id)a3;
-- (void)setRendersWithParallax:(BOOL)a3;
-- (void)setRendersWithPerspective:(BOOL)a3;
+- (id)layoutAttributesForUnpinnedItemAtIndexPath:(id)path;
+- (id)pinnedLayoutAttributesForItemsInRect:(CGRect)rect;
+- (void)_createSectionsToIndexRangesMapTableIfNeededForSublayout:(id)sublayout;
+- (void)addSublayout:(id)sublayout forElementKinds:(id)kinds;
+- (void)addSublayout:(id)sublayout forItems:(id)items inSection:(int64_t)section offset:(CGPoint)offset relativeToEdges:(unint64_t)edges fromSiblingLayout:(id)layout;
+- (void)addSublayout:(id)sublayout forSections:(id)sections offset:(CGPoint)offset relativeToEdges:(unint64_t)edges fromSiblingLayout:(id)layout;
+- (void)addSublayoutsUsingSplitsDescription:(id)description;
+- (void)removeSublayout:(id)sublayout;
+- (void)setBackdropGroupName:(id)name;
+- (void)setRendersWithParallax:(BOOL)parallax;
+- (void)setRendersWithPerspective:(BOOL)perspective;
 @end
 
 @implementation SUUIStorePageSplitCollectionViewLayout
@@ -37,15 +37,15 @@
   return v2;
 }
 
-- (void)addSublayoutsUsingSplitsDescription:(id)a3
+- (void)addSublayoutsUsingSplitsDescription:(id)description
 {
   v52 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SUUIStorePageSplitCollectionViewLayout *)self sublayouts];
-  v6 = [v5 copy];
+  descriptionCopy = description;
+  sublayouts = [(SUUIStorePageSplitCollectionViewLayout *)self sublayouts];
+  v6 = [sublayouts copy];
 
-  v7 = [v4 numberOfSplits];
-  if (v7 == [v6 count])
+  numberOfSplits = [descriptionCopy numberOfSplits];
+  if (numberOfSplits == [v6 count])
   {
     v8 = [objc_alloc(MEMORY[0x277CCAB00]) initWithKeyOptions:512 valueOptions:512 capacity:0];
     v48[0] = MEMORY[0x277D85DD0];
@@ -55,7 +55,7 @@
     v9 = v8;
     v49 = v9;
     v50 = v6;
-    [v4 enumerateSplitsUsingBlock:v48];
+    [descriptionCopy enumerateSplitsUsingBlock:v48];
   }
 
   else
@@ -91,23 +91,23 @@
     while (v12);
   }
 
-  v15 = [v4 topSplit];
+  topSplit = [descriptionCopy topSplit];
   v16 = MEMORY[0x277CBF348];
-  v40 = v15;
-  if (v15)
+  v40 = topSplit;
+  if (topSplit)
   {
-    v17 = v15;
-    v18 = [v9 objectForKey:v15];
-    if (!v18)
+    v17 = topSplit;
+    _newStorePageCollectionViewLayout = [v9 objectForKey:topSplit];
+    if (!_newStorePageCollectionViewLayout)
     {
-      v18 = [(SUUIStorePageSplitCollectionViewLayout *)self _newStorePageCollectionViewLayout];
+      _newStorePageCollectionViewLayout = [(SUUIStorePageSplitCollectionViewLayout *)self _newStorePageCollectionViewLayout];
     }
 
-    v19 = [v17 numberOfPageSections];
-    v20 = [MEMORY[0x277CCAA78] indexSetWithIndexesInRange:{0, v19}];
-    [(SUUIStorePageSplitCollectionViewLayout *)self addSublayout:v18 forSections:v20 offset:0 relativeToEdges:0 fromSiblingLayout:*v16, v16[1]];
+    numberOfPageSections = [v17 numberOfPageSections];
+    v20 = [MEMORY[0x277CCAA78] indexSetWithIndexesInRange:{0, numberOfPageSections}];
+    [(SUUIStorePageSplitCollectionViewLayout *)self addSublayout:_newStorePageCollectionViewLayout forSections:v20 offset:0 relativeToEdges:0 fromSiblingLayout:*v16, v16[1]];
 
-    v43 = v18;
+    v43 = _newStorePageCollectionViewLayout;
     v21 = 4;
   }
 
@@ -115,34 +115,34 @@
   {
     v21 = 0;
     v43 = 0;
-    v19 = 0;
+    numberOfPageSections = 0;
   }
 
-  v22 = [v4 leftSplit];
+  leftSplit = [descriptionCopy leftSplit];
   v42 = v9;
-  if (v22)
+  if (leftSplit)
   {
-    v23 = v4;
-    v24 = [v9 objectForKey:v22];
-    if (!v24)
+    v23 = descriptionCopy;
+    _newStorePageCollectionViewLayout2 = [v9 objectForKey:leftSplit];
+    if (!_newStorePageCollectionViewLayout2)
     {
-      v24 = [(SUUIStorePageSplitCollectionViewLayout *)self _newStorePageCollectionViewLayout];
+      _newStorePageCollectionViewLayout2 = [(SUUIStorePageSplitCollectionViewLayout *)self _newStorePageCollectionViewLayout];
     }
 
-    v25 = [v22 numberOfPageSections];
-    v26 = [v22 sectionContext];
-    [v26 activePageWidth];
-    [v24 setOverrideContentWidth:?];
+    numberOfPageSections2 = [leftSplit numberOfPageSections];
+    sectionContext = [leftSplit sectionContext];
+    [sectionContext activePageWidth];
+    [_newStorePageCollectionViewLayout2 setOverrideContentWidth:?];
 
-    v27 = [MEMORY[0x277CCAA78] indexSetWithIndexesInRange:{v19, v25}];
-    [(SUUIStorePageSplitCollectionViewLayout *)self addSublayout:v24 forSections:v27 offset:v21 relativeToEdges:v43 fromSiblingLayout:*v16, v16[1]];
+    v27 = [MEMORY[0x277CCAA78] indexSetWithIndexesInRange:{numberOfPageSections, numberOfPageSections2}];
+    [(SUUIStorePageSplitCollectionViewLayout *)self addSublayout:_newStorePageCollectionViewLayout2 forSections:v27 offset:v21 relativeToEdges:v43 fromSiblingLayout:*v16, v16[1]];
 
-    v19 += v25;
-    v28 = v24;
+    numberOfPageSections += numberOfPageSections2;
+    v28 = _newStorePageCollectionViewLayout2;
 
     v21 = 8;
     v41 = v28;
-    v4 = v23;
+    descriptionCopy = v23;
     v9 = v42;
   }
 
@@ -152,44 +152,44 @@
     v28 = v43;
   }
 
-  v29 = [v4 rightSplit];
-  if (v29)
+  rightSplit = [descriptionCopy rightSplit];
+  if (rightSplit)
   {
-    v39 = v4;
-    v30 = [v9 objectForKey:v29];
-    if (!v30)
+    v39 = descriptionCopy;
+    _newStorePageCollectionViewLayout3 = [v9 objectForKey:rightSplit];
+    if (!_newStorePageCollectionViewLayout3)
     {
-      v30 = [(SUUIStorePageSplitCollectionViewLayout *)self _newStorePageCollectionViewLayout];
+      _newStorePageCollectionViewLayout3 = [(SUUIStorePageSplitCollectionViewLayout *)self _newStorePageCollectionViewLayout];
     }
 
-    v31 = [v29 numberOfPageSections];
-    v32 = [v29 sectionContext];
-    [v32 activePageWidth];
-    [v30 setOverrideContentWidth:?];
+    numberOfPageSections3 = [rightSplit numberOfPageSections];
+    sectionContext2 = [rightSplit sectionContext];
+    [sectionContext2 activePageWidth];
+    [_newStorePageCollectionViewLayout3 setOverrideContentWidth:?];
 
-    v33 = [MEMORY[0x277CCAA78] indexSetWithIndexesInRange:{v19, v31}];
-    [(SUUIStorePageSplitCollectionViewLayout *)self addSublayout:v30 forSections:v33 offset:v21 relativeToEdges:v28 fromSiblingLayout:*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)];
+    v33 = [MEMORY[0x277CCAA78] indexSetWithIndexesInRange:{numberOfPageSections, numberOfPageSections3}];
+    [(SUUIStorePageSplitCollectionViewLayout *)self addSublayout:_newStorePageCollectionViewLayout3 forSections:v33 offset:v21 relativeToEdges:v28 fromSiblingLayout:*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)];
 
-    v19 += v31;
+    numberOfPageSections += numberOfPageSections3;
     v34 = v41;
 
     v28 = v34;
-    v4 = v39;
+    descriptionCopy = v39;
     v9 = v42;
   }
 
-  v35 = [v4 bottomSplit];
-  if (v35)
+  bottomSplit = [descriptionCopy bottomSplit];
+  if (bottomSplit)
   {
-    v36 = [v9 objectForKey:v35];
-    if (!v36)
+    _newStorePageCollectionViewLayout4 = [v9 objectForKey:bottomSplit];
+    if (!_newStorePageCollectionViewLayout4)
     {
-      v36 = [(SUUIStorePageSplitCollectionViewLayout *)self _newStorePageCollectionViewLayout];
+      _newStorePageCollectionViewLayout4 = [(SUUIStorePageSplitCollectionViewLayout *)self _newStorePageCollectionViewLayout];
     }
 
-    v37 = [v35 numberOfPageSections];
-    v38 = [MEMORY[0x277CCAA78] indexSetWithIndexesInRange:{v19, v37}];
-    [(SUUIStorePageSplitCollectionViewLayout *)self addSublayout:v36 forSections:v38 offset:4 relativeToEdges:v28 fromSiblingLayout:*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)];
+    numberOfPageSections4 = [bottomSplit numberOfPageSections];
+    v38 = [MEMORY[0x277CCAA78] indexSetWithIndexesInRange:{numberOfPageSections, numberOfPageSections4}];
+    [(SUUIStorePageSplitCollectionViewLayout *)self addSublayout:_newStorePageCollectionViewLayout4 forSections:v38 offset:4 relativeToEdges:v28 fromSiblingLayout:*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)];
 
     v9 = v42;
   }
@@ -211,12 +211,12 @@ void __78__SUUIStorePageSplitCollectionViewLayout_addSublayoutsUsingSplitsDescri
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(SUUIStorePageSplitCollectionViewLayout *)self sublayouts];
-  v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  sublayouts = [(SUUIStorePageSplitCollectionViewLayout *)self sublayouts];
+  v3 = [sublayouts countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v3)
   {
     v4 = v3;
-    v5 = 0;
+    array = 0;
     v6 = *v11;
     do
     {
@@ -224,22 +224,22 @@ void __78__SUUIStorePageSplitCollectionViewLayout_addSublayoutsUsingSplitsDescri
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(sublayouts);
         }
 
-        v8 = [*(*(&v10 + 1) + 8 * i) indexPathsForPinningItems];
-        if ([v8 count])
+        indexPathsForPinningItems = [*(*(&v10 + 1) + 8 * i) indexPathsForPinningItems];
+        if ([indexPathsForPinningItems count])
         {
-          if (!v5)
+          if (!array)
           {
-            v5 = [MEMORY[0x277CBEB18] array];
+            array = [MEMORY[0x277CBEB18] array];
           }
 
-          [v5 addObjectsFromArray:v8];
+          [array addObjectsFromArray:indexPathsForPinningItems];
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [sublayouts countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v4);
@@ -247,29 +247,29 @@ void __78__SUUIStorePageSplitCollectionViewLayout_addSublayoutsUsingSplitsDescri
 
   else
   {
-    v5 = 0;
+    array = 0;
   }
 
-  return v5;
+  return array;
 }
 
-- (id)layoutAttributesForUnpinnedItemAtIndexPath:(id)a3
+- (id)layoutAttributesForUnpinnedItemAtIndexPath:(id)path
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 section];
-  v6 = [v4 item];
-  v19 = [MEMORY[0x277CCABB0] numberWithInteger:v5];
+  pathCopy = path;
+  section = [pathCopy section];
+  item = [pathCopy item];
+  v19 = [MEMORY[0x277CCABB0] numberWithInteger:section];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v7 = [(SUUIStorePageSplitCollectionViewLayout *)self sublayouts];
-  v8 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  sublayouts = [(SUUIStorePageSplitCollectionViewLayout *)self sublayouts];
+  v8 = [sublayouts countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v8)
   {
     v9 = v8;
-    v18 = v4;
+    v18 = pathCopy;
     v10 = *v21;
     while (2)
     {
@@ -277,7 +277,7 @@ void __78__SUUIStorePageSplitCollectionViewLayout_addSublayoutsUsingSplitsDescri
       {
         if (*v21 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(sublayouts);
         }
 
         v12 = *(*(&v20 + 1) + 8 * i);
@@ -286,9 +286,9 @@ void __78__SUUIStorePageSplitCollectionViewLayout_addSublayoutsUsingSplitsDescri
         if (v13)
         {
           v15 = [v13 objectForKey:v19];
-          if ([v15 containsIndex:v6])
+          if ([v15 containsIndex:item])
           {
-            v4 = v18;
+            pathCopy = v18;
             v16 = [v12 layoutAttributesForUnpinnedItemAtIndexPath:v18];
 
             goto LABEL_14;
@@ -296,7 +296,7 @@ void __78__SUUIStorePageSplitCollectionViewLayout_addSublayoutsUsingSplitsDescri
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v9 = [sublayouts countByEnumeratingWithState:&v20 objects:v24 count:16];
       if (v9)
       {
         continue;
@@ -306,7 +306,7 @@ void __78__SUUIStorePageSplitCollectionViewLayout_addSublayoutsUsingSplitsDescri
     }
 
     v16 = 0;
-    v4 = v18;
+    pathCopy = v18;
   }
 
   else
@@ -319,12 +319,12 @@ LABEL_14:
   return v16;
 }
 
-- (id)pinnedLayoutAttributesForItemsInRect:(CGRect)a3
+- (id)pinnedLayoutAttributesForItemsInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v22 = *MEMORY[0x277D85DE8];
   v17 = 0u;
   v18 = 0u;
@@ -377,23 +377,23 @@ LABEL_14:
   return v11;
 }
 
-- (void)setBackdropGroupName:(id)a3
+- (void)setBackdropGroupName:(id)name
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  nameCopy = name;
   backdropGroupName = self->_backdropGroupName;
-  if (backdropGroupName != v4 && ![(NSString *)backdropGroupName isEqualToString:v4])
+  if (backdropGroupName != nameCopy && ![(NSString *)backdropGroupName isEqualToString:nameCopy])
   {
-    v6 = [(NSString *)v4 copy];
+    v6 = [(NSString *)nameCopy copy];
     v7 = self->_backdropGroupName;
     self->_backdropGroupName = v6;
 
-    v8 = [(SUUIStorePageSplitCollectionViewLayout *)self sublayouts];
+    sublayouts = [(SUUIStorePageSplitCollectionViewLayout *)self sublayouts];
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v9 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    v9 = [sublayouts countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v9)
     {
       v10 = v9;
@@ -405,14 +405,14 @@ LABEL_14:
         {
           if (*v14 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(sublayouts);
           }
 
-          [*(*(&v13 + 1) + 8 * v12++) setBackdropGroupName:v4];
+          [*(*(&v13 + 1) + 8 * v12++) setBackdropGroupName:nameCopy];
         }
 
         while (v10 != v12);
-        v10 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v10 = [sublayouts countByEnumeratingWithState:&v13 objects:v17 count:16];
       }
 
       while (v10);
@@ -420,19 +420,19 @@ LABEL_14:
   }
 }
 
-- (void)setRendersWithPerspective:(BOOL)a3
+- (void)setRendersWithPerspective:(BOOL)perspective
 {
   v14 = *MEMORY[0x277D85DE8];
-  if (self->_rendersWithPerspective != a3)
+  if (self->_rendersWithPerspective != perspective)
   {
-    v3 = a3;
-    self->_rendersWithPerspective = a3;
-    v4 = [(SUUIStorePageSplitCollectionViewLayout *)self sublayouts];
+    perspectiveCopy = perspective;
+    self->_rendersWithPerspective = perspective;
+    sublayouts = [(SUUIStorePageSplitCollectionViewLayout *)self sublayouts];
     v9 = 0u;
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+    v5 = [sublayouts countByEnumeratingWithState:&v9 objects:v13 count:16];
     if (v5)
     {
       v6 = v5;
@@ -443,13 +443,13 @@ LABEL_14:
         {
           if (*v10 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(sublayouts);
           }
 
-          [*(*(&v9 + 1) + 8 * i) setRendersWithPerspective:v3];
+          [*(*(&v9 + 1) + 8 * i) setRendersWithPerspective:perspectiveCopy];
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+        v6 = [sublayouts countByEnumeratingWithState:&v9 objects:v13 count:16];
       }
 
       while (v6);
@@ -457,18 +457,18 @@ LABEL_14:
   }
 }
 
-- (void)setRendersWithParallax:(BOOL)a3
+- (void)setRendersWithParallax:(BOOL)parallax
 {
   v14 = *MEMORY[0x277D85DE8];
-  if (self->_rendersWithParallax != a3)
+  if (self->_rendersWithParallax != parallax)
   {
-    self->_rendersWithParallax = a3;
-    v4 = [(SUUIStorePageSplitCollectionViewLayout *)self sublayouts];
+    self->_rendersWithParallax = parallax;
+    sublayouts = [(SUUIStorePageSplitCollectionViewLayout *)self sublayouts];
     v9 = 0u;
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+    v5 = [sublayouts countByEnumeratingWithState:&v9 objects:v13 count:16];
     if (v5)
     {
       v6 = v5;
@@ -480,14 +480,14 @@ LABEL_14:
         {
           if (*v10 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(sublayouts);
           }
 
           [*(*(&v9 + 1) + 8 * v8++) setRendersWithParallax:self->_rendersWithParallax];
         }
 
         while (v6 != v8);
-        v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+        v6 = [sublayouts countByEnumeratingWithState:&v9 objects:v13 count:16];
       }
 
       while (v6);
@@ -495,43 +495,43 @@ LABEL_14:
   }
 }
 
-- (void)addSublayout:(id)a3 forElementKinds:(id)a4
+- (void)addSublayout:(id)sublayout forElementKinds:(id)kinds
 {
   rendersWithPerspective = self->_rendersWithPerspective;
-  v7 = a4;
-  v8 = a3;
-  [v8 setRendersWithPerspective:rendersWithPerspective];
-  [v8 setRendersWithParallax:self->_rendersWithParallax];
-  [(NSMutableArray *)self->_orderedSublayouts addObject:v8];
+  kindsCopy = kinds;
+  sublayoutCopy = sublayout;
+  [sublayoutCopy setRendersWithPerspective:rendersWithPerspective];
+  [sublayoutCopy setRendersWithParallax:self->_rendersWithParallax];
+  [(NSMutableArray *)self->_orderedSublayouts addObject:sublayoutCopy];
   v9.receiver = self;
   v9.super_class = SUUIStorePageSplitCollectionViewLayout;
-  [(_UICollectionViewCompositionLayout *)&v9 addSublayout:v8 forElementKinds:v7];
+  [(_UICollectionViewCompositionLayout *)&v9 addSublayout:sublayoutCopy forElementKinds:kindsCopy];
 }
 
-- (void)addSublayout:(id)a3 forItems:(id)a4 inSection:(int64_t)a5 offset:(CGPoint)a6 relativeToEdges:(unint64_t)a7 fromSiblingLayout:(id)a8
+- (void)addSublayout:(id)sublayout forItems:(id)items inSection:(int64_t)section offset:(CGPoint)offset relativeToEdges:(unint64_t)edges fromSiblingLayout:(id)layout
 {
-  y = a6.y;
-  x = a6.x;
-  v15 = a3;
-  v16 = a4;
-  v17 = a8;
-  [v15 setRendersWithPerspective:self->_rendersWithPerspective];
-  [v15 setRendersWithParallax:self->_rendersWithParallax];
-  [(NSMutableArray *)self->_orderedSublayouts addObject:v15];
-  [(SUUIStorePageSplitCollectionViewLayout *)self _createSectionsToIndexRangesMapTableIfNeededForSublayout:v15];
-  v18 = [(NSMapTable *)self->_sublayoutToSectionsToIndexRanges objectForKey:v15];
-  v19 = [MEMORY[0x277CCABB0] numberWithInteger:a5];
+  y = offset.y;
+  x = offset.x;
+  sublayoutCopy = sublayout;
+  itemsCopy = items;
+  layoutCopy = layout;
+  [sublayoutCopy setRendersWithPerspective:self->_rendersWithPerspective];
+  [sublayoutCopy setRendersWithParallax:self->_rendersWithParallax];
+  [(NSMutableArray *)self->_orderedSublayouts addObject:sublayoutCopy];
+  [(SUUIStorePageSplitCollectionViewLayout *)self _createSectionsToIndexRangesMapTableIfNeededForSublayout:sublayoutCopy];
+  v18 = [(NSMapTable *)self->_sublayoutToSectionsToIndexRanges objectForKey:sublayoutCopy];
+  v19 = [MEMORY[0x277CCABB0] numberWithInteger:section];
   v20 = [v18 objectForKey:v19];
   if (v20)
   {
     v21 = v20;
-    [v20 addIndexes:v16];
+    [v20 addIndexes:itemsCopy];
 LABEL_5:
 
     goto LABEL_6;
   }
 
-  v22 = [v16 mutableCopy];
+  v22 = [itemsCopy mutableCopy];
   if (v22)
   {
     v21 = v22;
@@ -542,32 +542,32 @@ LABEL_5:
 LABEL_6:
   v23.receiver = self;
   v23.super_class = SUUIStorePageSplitCollectionViewLayout;
-  [(_UICollectionViewCompositionLayout *)&v23 addSublayout:v15 forItems:v16 inSection:a5 offset:a7 relativeToEdges:v17 fromSiblingLayout:x, y];
+  [(_UICollectionViewCompositionLayout *)&v23 addSublayout:sublayoutCopy forItems:itemsCopy inSection:section offset:edges relativeToEdges:layoutCopy fromSiblingLayout:x, y];
 }
 
-- (void)addSublayout:(id)a3 forSections:(id)a4 offset:(CGPoint)a5 relativeToEdges:(unint64_t)a6 fromSiblingLayout:(id)a7
+- (void)addSublayout:(id)sublayout forSections:(id)sections offset:(CGPoint)offset relativeToEdges:(unint64_t)edges fromSiblingLayout:(id)layout
 {
-  y = a5.y;
-  x = a5.x;
+  y = offset.y;
+  x = offset.x;
   rendersWithPerspective = self->_rendersWithPerspective;
-  v14 = a7;
-  v15 = a4;
-  v16 = a3;
-  [v16 setRendersWithPerspective:rendersWithPerspective];
-  [v16 setRendersWithParallax:self->_rendersWithParallax];
-  [(NSMutableArray *)self->_orderedSublayouts addObject:v16];
-  [(SUUIStorePageSplitCollectionViewLayout *)self _createSectionsToIndexRangesMapTableIfNeededForSublayout:v16];
-  v17 = [(NSMapTable *)self->_sublayoutToSectionsToIndexRanges objectForKey:v16];
+  layoutCopy = layout;
+  sectionsCopy = sections;
+  sublayoutCopy = sublayout;
+  [sublayoutCopy setRendersWithPerspective:rendersWithPerspective];
+  [sublayoutCopy setRendersWithParallax:self->_rendersWithParallax];
+  [(NSMutableArray *)self->_orderedSublayouts addObject:sublayoutCopy];
+  [(SUUIStorePageSplitCollectionViewLayout *)self _createSectionsToIndexRangesMapTableIfNeededForSublayout:sublayoutCopy];
+  v17 = [(NSMapTable *)self->_sublayoutToSectionsToIndexRanges objectForKey:sublayoutCopy];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __108__SUUIStorePageSplitCollectionViewLayout_addSublayout_forSections_offset_relativeToEdges_fromSiblingLayout___block_invoke;
   v20[3] = &unk_2798F6230;
   v21 = v17;
   v18 = v17;
-  [v15 enumerateIndexesUsingBlock:v20];
+  [sectionsCopy enumerateIndexesUsingBlock:v20];
   v19.receiver = self;
   v19.super_class = SUUIStorePageSplitCollectionViewLayout;
-  [(_UICollectionViewCompositionLayout *)&v19 addSublayout:v16 forSections:v15 offset:a6 relativeToEdges:v14 fromSiblingLayout:x, y];
+  [(_UICollectionViewCompositionLayout *)&v19 addSublayout:sublayoutCopy forSections:sectionsCopy offset:edges relativeToEdges:layoutCopy fromSiblingLayout:x, y];
 }
 
 void __108__SUUIStorePageSplitCollectionViewLayout_addSublayout_forSections_offset_relativeToEdges_fromSiblingLayout___block_invoke(uint64_t a1, uint64_t a2)
@@ -578,21 +578,21 @@ void __108__SUUIStorePageSplitCollectionViewLayout_addSublayout_forSections_offs
   [v3 setObject:v4 forKey:v5];
 }
 
-- (CGRect)_frameForLayout:(id)a3 offset:(CGPoint)a4 relativeToEdges:(unint64_t)a5 fromSiblingLayout:(id)a6
+- (CGRect)_frameForLayout:(id)layout offset:(CGPoint)offset relativeToEdges:(unint64_t)edges fromSiblingLayout:(id)siblingLayout
 {
-  y = a4.y;
-  x = a4.x;
-  v11 = a6;
+  y = offset.y;
+  x = offset.x;
+  siblingLayoutCopy = siblingLayout;
   v25.receiver = self;
   v25.super_class = SUUIStorePageSplitCollectionViewLayout;
-  [(_UICollectionViewCompositionLayout *)&v25 _frameForLayout:a3 offset:a5 relativeToEdges:v11 fromSiblingLayout:x, y];
+  [(_UICollectionViewCompositionLayout *)&v25 _frameForLayout:layout offset:edges relativeToEdges:siblingLayoutCopy fromSiblingLayout:x, y];
   v13 = v12;
   v15 = v14;
   v17 = v16;
   v19 = v18;
-  if (a5 & 8) != 0 && (objc_opt_respondsToSelector())
+  if (edges & 8) != 0 && (objc_opt_respondsToSelector())
   {
-    [v11 _frame];
+    [siblingLayoutCopy _frame];
     v15 = v20;
   }
 
@@ -607,22 +607,22 @@ void __108__SUUIStorePageSplitCollectionViewLayout_addSublayout_forSections_offs
   return result;
 }
 
-- (void)removeSublayout:(id)a3
+- (void)removeSublayout:(id)sublayout
 {
   orderedSublayouts = self->_orderedSublayouts;
-  v5 = a3;
-  [(NSMutableArray *)orderedSublayouts removeObjectIdenticalTo:v5];
+  sublayoutCopy = sublayout;
+  [(NSMutableArray *)orderedSublayouts removeObjectIdenticalTo:sublayoutCopy];
   v6.receiver = self;
   v6.super_class = SUUIStorePageSplitCollectionViewLayout;
-  [(_UICollectionViewCompositionLayout *)&v6 removeSublayout:v5];
+  [(_UICollectionViewCompositionLayout *)&v6 removeSublayout:sublayoutCopy];
 }
 
-- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)a3
+- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)change
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = change.size.height;
+  width = change.size.width;
+  y = change.origin.y;
+  x = change.origin.x;
   v21 = *MEMORY[0x277D85DE8];
   [(SUUIStorePageSplitCollectionViewLayout *)self sublayouts];
   v16 = 0u;
@@ -646,7 +646,7 @@ void __108__SUUIStorePageSplitCollectionViewLayout_addSublayout_forSections_offs
         if ([*(*(&v16 + 1) + 8 * i) shouldInvalidateLayoutForBoundsChange:{x, y, width, height}])
         {
 
-          v13 = 1;
+          height = 1;
           goto LABEL_11;
         }
       }
@@ -663,19 +663,19 @@ void __108__SUUIStorePageSplitCollectionViewLayout_addSublayout_forSections_offs
 
   v15.receiver = self;
   v15.super_class = SUUIStorePageSplitCollectionViewLayout;
-  v13 = [(SUUIStorePageSplitCollectionViewLayout *)&v15 shouldInvalidateLayoutForBoundsChange:x, y, width, height];
+  height = [(SUUIStorePageSplitCollectionViewLayout *)&v15 shouldInvalidateLayoutForBoundsChange:x, y, width, height];
 LABEL_11:
 
-  return v13;
+  return height;
 }
 
-- (void)_createSectionsToIndexRangesMapTableIfNeededForSublayout:(id)a3
+- (void)_createSectionsToIndexRangesMapTableIfNeededForSublayout:(id)sublayout
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  sublayoutCopy = sublayout;
+  v5 = sublayoutCopy;
+  if (sublayoutCopy)
   {
-    v10 = v4;
+    v10 = sublayoutCopy;
     if (self->_sublayoutToSectionsToIndexRanges)
     {
       v6 = [objc_alloc(MEMORY[0x277CCAB00]) initWithKeyOptions:0 valueOptions:0 capacity:0];
@@ -701,7 +701,7 @@ LABEL_11:
     v5 = v10;
   }
 
-  MEMORY[0x2821F96F8](v4, v5);
+  MEMORY[0x2821F96F8](sublayoutCopy, v5);
 }
 
 - (id)_newStorePageCollectionViewLayout

@@ -1,49 +1,49 @@
 @interface OADColorContext
-+ (id)colorContextWithScheme:(id)a3 map:(id)a4 palette:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (OADColorContext)initWithScheme:(id)a3 map:(id)a4 palette:(id)a5;
++ (id)colorContextWithScheme:(id)scheme map:(id)map palette:(id)palette;
+- (BOOL)isEqual:(id)equal;
+- (OADColorContext)initWithScheme:(id)scheme map:(id)map palette:(id)palette;
 - (unint64_t)hash;
-- (void)applyThemeOverrides:(id)a3 colorMapOverride:(id)a4;
+- (void)applyThemeOverrides:(id)overrides colorMapOverride:(id)override;
 @end
 
 @implementation OADColorContext
 
-- (OADColorContext)initWithScheme:(id)a3 map:(id)a4 palette:(id)a5
+- (OADColorContext)initWithScheme:(id)scheme map:(id)map palette:(id)palette
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  schemeCopy = scheme;
+  mapCopy = map;
+  paletteCopy = palette;
   v15.receiver = self;
   v15.super_class = OADColorContext;
   v12 = [(OADColorContext *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->mScheme, a3);
-    objc_storeStrong(&v13->mMap, a4);
-    objc_storeStrong(&v13->mPalette, a5);
+    objc_storeStrong(&v12->mScheme, scheme);
+    objc_storeStrong(&v13->mMap, map);
+    objc_storeStrong(&v13->mPalette, palette);
   }
 
   return v13;
 }
 
-+ (id)colorContextWithScheme:(id)a3 map:(id)a4 palette:(id)a5
++ (id)colorContextWithScheme:(id)scheme map:(id)map palette:(id)palette
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [[OADColorContext alloc] initWithScheme:v7 map:v8 palette:v9];
+  schemeCopy = scheme;
+  mapCopy = map;
+  paletteCopy = palette;
+  v10 = [[OADColorContext alloc] initWithScheme:schemeCopy map:mapCopy palette:paletteCopy];
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
   if (v5 == objc_opt_class())
   {
-    v7 = v4;
+    v7 = equalCopy;
     if ((TCObjectEqual(self->mScheme, v7[1]) & 1) != 0 && TCObjectEqual(self->mMap, v7[2]))
     {
       v6 = TCObjectEqual(self->mPalette, v7[3]);
@@ -72,22 +72,22 @@
   return [(OADColorContext *)&v6 hash]+ v4;
 }
 
-- (void)applyThemeOverrides:(id)a3 colorMapOverride:(id)a4
+- (void)applyThemeOverrides:(id)overrides colorMapOverride:(id)override
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [v10 colorScheme];
+  overridesCopy = overrides;
+  overrideCopy = override;
+  colorScheme = [overridesCopy colorScheme];
 
-  if (v7)
+  if (colorScheme)
   {
-    v8 = [v10 colorScheme];
+    colorScheme2 = [overridesCopy colorScheme];
     mScheme = self->mScheme;
-    self->mScheme = v8;
+    self->mScheme = colorScheme2;
   }
 
-  if (v6)
+  if (overrideCopy)
   {
-    objc_storeStrong(&self->mMap, a4);
+    objc_storeStrong(&self->mMap, override);
   }
 }
 

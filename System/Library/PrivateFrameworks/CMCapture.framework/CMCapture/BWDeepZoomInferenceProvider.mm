@@ -1,12 +1,12 @@
 @interface BWDeepZoomInferenceProvider
-- (BWDeepZoomInferenceProvider)initWithConfiguration:(id)a3 resourceProvider:(id)a4;
-- (int)createInputTiles:(id)a3 withInputs:(id)a4 atPosition:(id *)a5 cmdBuffer:;
-- (int)preProcessOutputBuffer:(__CVBuffer *)a3 forMediaKey:(id)a4;
-- (int)prepareForSubmissionWithWorkQueue:(id)a3;
-- (int)prewarmUsingLimitedMemory:(BOOL)a3;
-- (int)propagateInferenceResultForOutputRequirement:(id)a3 storage:(id)a4 propagationSampleBuffer:(opaqueCMSampleBuffer *)a5;
-- (int)submitForSampleBuffer:(opaqueCMSampleBuffer *)a3 usingStorage:(id)a4 withSubmissionTime:(id *)a5 workQueue:(id)a6 completionHandler:(id)a7;
-- (int)writeOutputFor:(id)a3 to:(__CVBuffer *)a4 fromNetworkOutputTiles:(id)a5 withAdditionalPixelBuffers:(id)a6 withInputTilePixelBuffers:(id)a7 withInputFullPixelBuffers:(id)a8 atPosition:(id *)a9 cmdBuffer:;
+- (BWDeepZoomInferenceProvider)initWithConfiguration:(id)configuration resourceProvider:(id)provider;
+- (int)createInputTiles:(id)tiles withInputs:(id)inputs atPosition:(id *)position cmdBuffer:;
+- (int)preProcessOutputBuffer:(__CVBuffer *)buffer forMediaKey:(id)key;
+- (int)prepareForSubmissionWithWorkQueue:(id)queue;
+- (int)prewarmUsingLimitedMemory:(BOOL)memory;
+- (int)propagateInferenceResultForOutputRequirement:(id)requirement storage:(id)storage propagationSampleBuffer:(opaqueCMSampleBuffer *)buffer;
+- (int)submitForSampleBuffer:(opaqueCMSampleBuffer *)buffer usingStorage:(id)storage withSubmissionTime:(id *)time workQueue:(id)queue completionHandler:(id)handler;
+- (int)writeOutputFor:(id)for to:(__CVBuffer *)to fromNetworkOutputTiles:(id)tiles withAdditionalPixelBuffers:(id)buffers withInputTilePixelBuffers:(id)pixelBuffers withInputFullPixelBuffers:(id)fullPixelBuffers atPosition:(id *)position cmdBuffer:;
 - (uint64_t)_tuningParametersForPortType:(uint64_t)result;
 - (unsigned)allowedPixelBufferCompressionDirection;
 - (void)dealloc;
@@ -14,9 +14,9 @@
 
 @implementation BWDeepZoomInferenceProvider
 
-- (BWDeepZoomInferenceProvider)initWithConfiguration:(id)a3 resourceProvider:(id)a4
+- (BWDeepZoomInferenceProvider)initWithConfiguration:(id)configuration resourceProvider:(id)provider
 {
-  if (!a3 || ![a3 version] || !objc_msgSend(a3, "tuningParameters") || objc_msgSend(a3, "type") != 1 && objc_msgSend(a3, "type") != 2 && objc_msgSend(a3, "type") != 3)
+  if (!configuration || ![configuration version] || !objc_msgSend(configuration, "tuningParameters") || objc_msgSend(configuration, "type") != 1 && objc_msgSend(configuration, "type") != 2 && objc_msgSend(configuration, "type") != 3)
   {
     v20 = 0;
     p_super = 0;
@@ -37,7 +37,7 @@
   }
 
   [(NSMutableArray *)v7 addObject:v8];
-  if ([a3 type] != 3)
+  if ([configuration type] != 3)
   {
     goto LABEL_20;
   }
@@ -52,17 +52,17 @@ LABEL_41:
   }
 
   [(NSMutableArray *)v7 addObject:v9];
-  v10 = [a3 stereoPhotoOutputDimensions];
-  if (v10 >= 1 && SHIDWORD(v10) >= 1)
+  stereoPhotoOutputDimensions = [configuration stereoPhotoOutputDimensions];
+  if (stereoPhotoOutputDimensions >= 1 && SHIDWORD(stereoPhotoOutputDimensions) >= 1)
   {
-    v11 = [a3 type];
+    type = [configuration type];
     v12 = @"Lite";
-    if (v11 == 2)
+    if (type == 2)
     {
       v12 = @"Standard";
     }
 
-    if (v11 == 3)
+    if (type == 3)
     {
       v13 = @"Transfer";
     }
@@ -72,39 +72,39 @@ LABEL_41:
       v13 = v12;
     }
 
-    v14 = [a3 tuningParameters];
+    tuningParameters = [configuration tuningParameters];
     v15 = *off_1E798A0D0;
-    if (![objc_msgSend(v14 objectForKeyedSubscript:{*off_1E798A0D0), "objectForKeyedSubscript:", v13}])
+    if (![objc_msgSend(tuningParameters objectForKeyedSubscript:{*off_1E798A0D0), "objectForKeyedSubscript:", v13}])
     {
-      v16 = [objc_msgSend(a3 "tuningParameters")];
+      v16 = [objc_msgSend(configuration "tuningParameters")];
       v17 = [objc_msgSend(v16 objectForKeyedSubscript:{v15), "mutableCopy"}];
-      [v17 setObject:objc_msgSend(objc_msgSend(objc_msgSend(a3 forKeyedSubscript:{"tuningParameters"), "objectForKeyedSubscript:", *off_1E798A0C0), "objectForKeyedSubscript:", v13), v13}];
+      [v17 setObject:objc_msgSend(objc_msgSend(objc_msgSend(configuration forKeyedSubscript:{"tuningParameters"), "objectForKeyedSubscript:", *off_1E798A0C0), "objectForKeyedSubscript:", v13), v13}];
       [v16 setObject:v17 forKeyedSubscript:v15];
-      [a3 setTuningParameters:v16];
+      [configuration setTuningParameters:v16];
     }
   }
 
 LABEL_20:
-  v18 = -[BWInferenceLazyVideoRequirement initWithAttachedMediaKey:preparedByAttachedMediaKey:videoFormatProvider:]([BWInferenceLazyVideoRequirement alloc], "initWithAttachedMediaKey:preparedByAttachedMediaKey:videoFormatProvider:", [a3 outputAttachedMediaKey], objc_msgSend(a3, "outputAttachedMediaKey"), &__block_literal_global_7_0);
+  v18 = -[BWInferenceLazyVideoRequirement initWithAttachedMediaKey:preparedByAttachedMediaKey:videoFormatProvider:]([BWInferenceLazyVideoRequirement alloc], "initWithAttachedMediaKey:preparedByAttachedMediaKey:videoFormatProvider:", [configuration outputAttachedMediaKey], objc_msgSend(configuration, "outputAttachedMediaKey"), &__block_literal_global_7_0);
   p_super = &v18->super;
-  if (v18 && (v37 = v18, v36.receiver = self, v36.super_class = BWDeepZoomInferenceProvider, (self = -[BWTiledEspressoInferenceProvider initWithConfiguration:inputVideoRequirements:outputVideoRequirements:resourceProvider:](&v36, sel_initWithConfiguration_inputVideoRequirements_outputVideoRequirements_resourceProvider_, a3, v7, [MEMORY[0x1E695DEC8] arrayWithObjects:&v37 count:1], a4)) != 0) && BWLoadProcessorBundle(@"SuperResolution", objc_msgSend(a3, "version")))
+  if (v18 && (v37 = v18, v36.receiver = self, v36.super_class = BWDeepZoomInferenceProvider, (self = -[BWTiledEspressoInferenceProvider initWithConfiguration:inputVideoRequirements:outputVideoRequirements:resourceProvider:](&v36, sel_initWithConfiguration_inputVideoRequirements_outputVideoRequirements_resourceProvider_, configuration, v7, [MEMORY[0x1E695DEC8] arrayWithObjects:&v37 count:1], provider)) != 0) && BWLoadProcessorBundle(@"SuperResolution", objc_msgSend(configuration, "version")))
   {
-    v20 = objc_alloc_init(NSClassFromString([MEMORY[0x1E696AEC0] stringWithFormat:@"CMIDeepZoomProcessorV%d", objc_msgSend(a3, "version")]));
+    v20 = objc_alloc_init(NSClassFromString([MEMORY[0x1E696AEC0] stringWithFormat:@"CMIDeepZoomProcessorV%d", objc_msgSend(configuration, "version")]));
     if (v20)
     {
-      [v20 setTuningParameters:{objc_msgSend(a3, "tuningParameters")}];
-      [v20 setMetalCommandQueue:{objc_msgSend(a3, "metalCommandQueue")}];
-      v21 = [a3 type];
-      v22 = [a3 mode];
-      if (v21 == 3)
+      [v20 setTuningParameters:{objc_msgSend(configuration, "tuningParameters")}];
+      [v20 setMetalCommandQueue:{objc_msgSend(configuration, "metalCommandQueue")}];
+      type2 = [configuration type];
+      mode = [configuration mode];
+      if (type2 == 3)
       {
-        v24 = v22 == 5 ? 5 : 3;
-        v23 = v22 == 4 ? 4 : v24;
+        v24 = mode == 5 ? 5 : 3;
+        v23 = mode == 4 ? 4 : v24;
       }
 
       else
       {
-        v23 = v21 == 2 ? 2 : 1;
+        v23 = type2 == 2 ? 2 : 1;
       }
 
       if (![v20 prepareToProcess:v23])
@@ -112,14 +112,14 @@ LABEL_20:
         self->_inputVideoRequirements = v7;
         self->_outputVideoRequirement = p_super;
         self->_deepZoomProcessor = v20;
-        self->_inferenceConfig = a3;
-        v25 = [(BWVideoFormat *)[(BWInferenceVideoFormat *)[(BWInferenceVideoRequirement *)p_super videoFormat] underlyingVideoFormat] formatDescription];
-        if (v25)
+        self->_inferenceConfig = configuration;
+        formatDescription = [(BWVideoFormat *)[(BWInferenceVideoFormat *)[(BWInferenceVideoRequirement *)p_super videoFormat] underlyingVideoFormat] formatDescription];
+        if (formatDescription)
         {
-          v25 = CFRetain(v25);
+          formatDescription = CFRetain(formatDescription);
         }
 
-        self->_outputFormatDescription = v25;
+        self->_outputFormatDescription = formatDescription;
         return self;
       }
     }
@@ -239,7 +239,7 @@ id __70__BWDeepZoomInferenceProvider_initWithConfiguration_resourceProvider___bl
   }
 }
 
-- (int)submitForSampleBuffer:(opaqueCMSampleBuffer *)a3 usingStorage:(id)a4 withSubmissionTime:(id *)a5 workQueue:(id)a6 completionHandler:(id)a7
+- (int)submitForSampleBuffer:(opaqueCMSampleBuffer *)buffer usingStorage:(id)storage withSubmissionTime:(id *)time workQueue:(id)queue completionHandler:(id)handler
 {
   if (*MEMORY[0x1E695FF58] == 1)
   {
@@ -247,21 +247,21 @@ id __70__BWDeepZoomInferenceProvider_initWithConfiguration_resourceProvider___bl
   }
 
   [(CMIDeepZoomProcessor *)self->_deepZoomProcessor finishProcessing];
-  if (!a3)
+  if (!buffer)
   {
     goto LABEL_77;
   }
 
-  v11 = CMGetAttachment(a3, @"StillSettings", 0);
+  v11 = CMGetAttachment(buffer, @"StillSettings", 0);
   if (!v11)
   {
     goto LABEL_78;
   }
 
   v12 = v11;
-  v147 = BWStillImageProcessingFlagsForSampleBuffer(a3);
+  v147 = BWStillImageProcessingFlagsForSampleBuffer(buffer);
   v13 = *off_1E798A3C8;
-  v14 = CMGetAttachment(a3, *off_1E798A3C8, 0);
+  v14 = CMGetAttachment(buffer, *off_1E798A3C8, 0);
   if (!v14)
   {
     goto LABEL_77;
@@ -274,7 +274,7 @@ id __70__BWDeepZoomInferenceProvider_initWithConfiguration_resourceProvider___bl
     goto LABEL_77;
   }
 
-  if ((v17 = v16, [(CMIDeepZoomProcessor *)self->_deepZoomProcessor resetMetadata], [(CMIDeepZoomProcessor *)self->_deepZoomProcessor updateMetadata:v15 forInputFullPixelBuffer:CMSampleBufferGetImageBuffer(a3)], FinalCropRect = FigCaptureMetadataUtilitiesGetFinalCropRect(), v20 = v19, v22 = v21, v24 = v23, v25 = [(BWDeepZoomInferenceConfiguration *)self->_inferenceConfig type], AttachedMedia = a3, v25 == 3) && (AttachedMedia = BWSampleBufferGetAttachedMedia(a3, 0x1F219EC90)) == 0 || (ImageBuffer = CMSampleBufferGetImageBuffer(AttachedMedia)) == 0)
+  if ((v17 = v16, [(CMIDeepZoomProcessor *)self->_deepZoomProcessor resetMetadata], [(CMIDeepZoomProcessor *)self->_deepZoomProcessor updateMetadata:v15 forInputFullPixelBuffer:CMSampleBufferGetImageBuffer(buffer)], FinalCropRect = FigCaptureMetadataUtilitiesGetFinalCropRect(), v20 = v19, v22 = v21, v24 = v23, v25 = [(BWDeepZoomInferenceConfiguration *)self->_inferenceConfig type], AttachedMedia = buffer, v25 == 3) && (AttachedMedia = BWSampleBufferGetAttachedMedia(buffer, 0x1F219EC90)) == 0 || (ImageBuffer = CMSampleBufferGetImageBuffer(AttachedMedia)) == 0)
   {
 LABEL_78:
     v32 = 4294935584;
@@ -293,7 +293,7 @@ LABEL_78:
     goto LABEL_72;
   }
 
-  v142 = a6;
+  queueCopy = queue;
   if (Height < 1)
   {
     goto LABEL_72;
@@ -304,9 +304,9 @@ LABEL_78:
   v140 = v33;
   if (v33)
   {
-    v35 = p_inputReferencePixelBufferDimensions->width;
+    stereoPhotoOutputDimensions = p_inputReferencePixelBufferDimensions->width;
     v36 = self->_inputReferencePixelBufferDimensions.height;
-    v37 = FigCaptureAspectRatioForDimensions(*&v35 | (v36 << 32));
+    v37 = FigCaptureAspectRatioForDimensions(*&stereoPhotoOutputDimensions | (v36 << 32));
     v38 = FigCaptureRectFromDimensions();
     v41 = v40;
     v43 = v42;
@@ -314,14 +314,14 @@ LABEL_78:
 
   else
   {
-    v35 = v34;
+    stereoPhotoOutputDimensions = v34;
     if ((v147 & 0x100000) != 0)
     {
-      v35 = [(BWDeepZoomInferenceConfiguration *)self->_inferenceConfig stereoPhotoOutputDimensions];
+      stereoPhotoOutputDimensions = [(BWDeepZoomInferenceConfiguration *)self->_inferenceConfig stereoPhotoOutputDimensions];
     }
 
-    v36 = HIDWORD(*&v35);
-    v37 = FigCaptureAspectRatioForDimensions(*&v35);
+    v36 = HIDWORD(*&stereoPhotoOutputDimensions);
+    v37 = FigCaptureAspectRatioForDimensions(*&stereoPhotoOutputDimensions);
     FigCaptureMetadataUtilitiesComputeDenormalizedStillImageCropRect(p_inputReferencePixelBufferDimensions->width, self->_inputReferencePixelBufferDimensions.height, FinalCropRect, v20, v22, v24, v37);
     v41 = v44;
     v43 = v45;
@@ -361,7 +361,7 @@ LABEL_77:
     goto LABEL_72;
   }
 
-  var0 = v35.var0;
+  var0 = stereoPhotoOutputDimensions.var0;
   v54 = v36;
   if ([(BWDeepZoomInferenceConfiguration *)self->_inferenceConfig type]!= 3)
   {
@@ -390,9 +390,9 @@ LABEL_57:
         LOWORD(v151) = v118;
         v152.receiver = self;
         v152.super_class = BWDeepZoomInferenceProvider;
-        *&v153[0].a = *&a5->var0;
-        *&v153[0].c = a5->var3;
-        LODWORD(v32) = [(BWTiledEspressoInferenceProvider *)&v152 submitForSampleBuffer:a3 usingStorage:a4 withSubmissionTime:v153 workQueue:v142 completionHandler:a7 currentTileCount:v151];
+        *&v153[0].a = *&time->var0;
+        *&v153[0].c = time->var3;
+        LODWORD(v32) = [(BWTiledEspressoInferenceProvider *)&v152 submitForSampleBuffer:buffer usingStorage:storage withSubmissionTime:v153 workQueue:queueCopy completionHandler:handler currentTileCount:v151];
         goto LABEL_74;
       }
 
@@ -442,10 +442,10 @@ LABEL_57:
         v32 = 4294894098;
       }
 
-      BWSampleBufferRemoveAttachedMedia(a3, 0x1F217BF50);
+      BWSampleBufferRemoveAttachedMedia(buffer, 0x1F217BF50);
 LABEL_72:
-      v126 = a7;
-      if (!a7)
+      handlerCopy2 = handler;
+      if (!handler)
       {
         goto LABEL_74;
       }
@@ -490,7 +490,7 @@ LABEL_72:
     goto LABEL_77;
   }
 
-  v55 = BWSampleBufferGetAttachedMedia(a3, 0x1F219EC90);
+  v55 = BWSampleBufferGetAttachedMedia(buffer, 0x1F219EC90);
   if (!v55)
   {
     goto LABEL_72;
@@ -504,7 +504,7 @@ LABEL_72:
   }
 
   v58 = v57;
-  v59 = CMSampleBufferGetImageBuffer(a3);
+  v59 = CMSampleBufferGetImageBuffer(buffer);
   if (!v59)
   {
     goto LABEL_72;
@@ -583,7 +583,7 @@ LABEL_44:
   *&v153[0].a = *MEMORY[0x1E695EFD0];
   *&v153[0].c = v78;
   *&v153[0].tx = *(MEMORY[0x1E695EFD0] + 32);
-  if (!FigCaptureMetadataUtilitiesComputeNormalizedPixelBufferCoordinateTransformBetweenSampleBuffers(a3, v56, 1, v153))
+  if (!FigCaptureMetadataUtilitiesComputeNormalizedPixelBufferCoordinateTransformBetweenSampleBuffers(buffer, v56, 1, v153))
   {
     ValidBufferRect = FigCaptureMetadataUtilitiesGetValidBufferRect();
     v81 = v80;
@@ -619,7 +619,7 @@ LABEL_44:
     goto LABEL_44;
   }
 
-  if (a7)
+  if (handler)
   {
     v128 = FigCaptureGetFrameworkRadarComponent();
     LODWORD(v155.a) = 0;
@@ -651,9 +651,9 @@ LABEL_44:
     v132 = _os_log_send_and_compose_impl();
     FigCapturePleaseFileRadar(v128, v132, 0, 0, "/Library/Caches/com.apple.xbs/Sources/CameraCapture/CMCapture/Sources/Graph/Inference/DeepZoom/BWDeepZoomInferenceProvider.m", 546, @"LastShownDate:BWDeepZoomInferenceProvider.m:546", @"LastShownBuild:BWDeepZoomInferenceProvider.m:546", 0);
     free(v132);
-    v126 = a7;
+    handlerCopy2 = handler;
 LABEL_73:
-    v126[2](v126, v32, self);
+    handlerCopy2[2](handlerCopy2, v32, self);
     goto LABEL_74;
   }
 
@@ -667,9 +667,9 @@ LABEL_74:
   return v32;
 }
 
-- (int)preProcessOutputBuffer:(__CVBuffer *)a3 forMediaKey:(id)a4
+- (int)preProcessOutputBuffer:(__CVBuffer *)buffer forMediaKey:(id)key
 {
-  result = [(CMIDeepZoomProcessor *)self->_deepZoomProcessor clearOutputBuffer:a3, a4];
+  result = [(CMIDeepZoomProcessor *)self->_deepZoomProcessor clearOutputBuffer:buffer, key];
   if (result)
   {
     return -31710;
@@ -678,7 +678,7 @@ LABEL_74:
   return result;
 }
 
-- (int)prewarmUsingLimitedMemory:(BOOL)a3
+- (int)prewarmUsingLimitedMemory:(BOOL)memory
 {
   result = [(CMIDeepZoomProcessor *)self->_deepZoomProcessor prewarm];
   if (result)
@@ -694,14 +694,14 @@ LABEL_74:
   if (result)
   {
     v3 = result;
-    v4 = [*(result + 112) type];
+    type = [*(result + 112) type];
     v5 = @"Lite";
-    if (v4 == 2)
+    if (type == 2)
     {
       v5 = @"Standard";
     }
 
-    if (v4 == 3)
+    if (type == 3)
     {
       v6 = @"Transfer";
     }
@@ -719,12 +719,12 @@ LABEL_74:
   return result;
 }
 
-- (int)createInputTiles:(id)a3 withInputs:(id)a4 atPosition:(id *)a5 cmdBuffer:
+- (int)createInputTiles:(id)tiles withInputs:(id)inputs atPosition:(id *)position cmdBuffer:
 {
   v6 = v5;
-  v11 = [a3 count];
+  v11 = [tiles count];
   v12 = MEMORY[0x1E695FF58];
-  if (!v11 || ![a4 count])
+  if (!v11 || ![inputs count])
   {
     goto LABEL_13;
   }
@@ -734,7 +734,7 @@ LABEL_74:
     OUTLINED_FUNCTION_5_14();
   }
 
-  if (([a4 count], v13 = objc_msgSend(OUTLINED_FUNCTION_37_0(), "arrayWithCapacity:"), objc_msgSend(a4, "objectForKeyedSubscript:", @"PrimaryFormat"), objc_msgSend(OUTLINED_FUNCTION_37_0(), "setObject:atIndexedSubscript:"), objc_msgSend(v13, "objectAtIndexedSubscript:", 0)) && (!objc_msgSend(a4, "objectForKeyedSubscript:", 0x1F219EC90) || (objc_msgSend(a4, "objectForKeyedSubscript:", 0x1F219EC90), objc_msgSend(OUTLINED_FUNCTION_37_0(), "setObject:atIndexedSubscript:"), objc_msgSend(v13, "objectAtIndexedSubscript:", 1))) && !-[CMIDeepZoomProcessor createInputTiles:atPosition:inputFullPixelBuffers:cmdBuffer:](self->_deepZoomProcessor, "createInputTiles:atPosition:inputFullPixelBuffers:cmdBuffer:", a3, a5, v13, v6))
+  if (([inputs count], v13 = objc_msgSend(OUTLINED_FUNCTION_37_0(), "arrayWithCapacity:"), objc_msgSend(inputs, "objectForKeyedSubscript:", @"PrimaryFormat"), objc_msgSend(OUTLINED_FUNCTION_37_0(), "setObject:atIndexedSubscript:"), objc_msgSend(v13, "objectAtIndexedSubscript:", 0)) && (!objc_msgSend(inputs, "objectForKeyedSubscript:", 0x1F219EC90) || (objc_msgSend(inputs, "objectForKeyedSubscript:", 0x1F219EC90), objc_msgSend(OUTLINED_FUNCTION_37_0(), "setObject:atIndexedSubscript:"), objc_msgSend(v13, "objectAtIndexedSubscript:", 1))) && !-[CMIDeepZoomProcessor createInputTiles:atPosition:inputFullPixelBuffers:cmdBuffer:](self->_deepZoomProcessor, "createInputTiles:atPosition:inputFullPixelBuffers:cmdBuffer:", tiles, position, v13, v6))
   {
     v14 = 0;
   }
@@ -753,25 +753,25 @@ LABEL_13:
   return v14;
 }
 
-- (int)writeOutputFor:(id)a3 to:(__CVBuffer *)a4 fromNetworkOutputTiles:(id)a5 withAdditionalPixelBuffers:(id)a6 withInputTilePixelBuffers:(id)a7 withInputFullPixelBuffers:(id)a8 atPosition:(id *)a9 cmdBuffer:
+- (int)writeOutputFor:(id)for to:(__CVBuffer *)to fromNetworkOutputTiles:(id)tiles withAdditionalPixelBuffers:(id)buffers withInputTilePixelBuffers:(id)pixelBuffers withInputFullPixelBuffers:(id)fullPixelBuffers atPosition:(id *)position cmdBuffer:
 {
   v9 = MEMORY[0x1E695FF58];
-  if (!a4)
+  if (!to)
   {
     goto LABEL_15;
   }
 
-  if (![a5 count])
+  if (![tiles count])
   {
     goto LABEL_15;
   }
 
-  if (![a7 count])
+  if (![pixelBuffers count])
   {
     goto LABEL_15;
   }
 
-  if (![a8 count])
+  if (![fullPixelBuffers count])
   {
     goto LABEL_15;
   }
@@ -787,14 +787,14 @@ LABEL_13:
     OUTLINED_FUNCTION_5_14();
   }
 
-  v15 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(a8, "count")}];
-  [v15 setObject:objc_msgSend(a8 atIndexedSubscript:{"objectForKeyedSubscript:", @"PrimaryFormat", 0}];
-  if ([a8 objectForKeyedSubscript:0x1F219EC90])
+  v15 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(fullPixelBuffers, "count")}];
+  [v15 setObject:objc_msgSend(fullPixelBuffers atIndexedSubscript:{"objectForKeyedSubscript:", @"PrimaryFormat", 0}];
+  if ([fullPixelBuffers objectForKeyedSubscript:0x1F219EC90])
   {
-    [v15 setObject:objc_msgSend(a8 atIndexedSubscript:{"objectForKeyedSubscript:", 0x1F219EC90), 1}];
+    [v15 setObject:objc_msgSend(fullPixelBuffers atIndexedSubscript:{"objectForKeyedSubscript:", 0x1F219EC90), 1}];
   }
 
-  if (![(CMIDeepZoomProcessor *)self->_deepZoomProcessor writeOutputTiles:a5 atPosition:a9 outputPixelBuffer:a4 inputTilePixelBuffers:a7 inputFullPixelBuffers:v15 cmdBuffer:v18])
+  if (![(CMIDeepZoomProcessor *)self->_deepZoomProcessor writeOutputTiles:tiles atPosition:position outputPixelBuffer:to inputTilePixelBuffers:pixelBuffers inputFullPixelBuffers:v15 cmdBuffer:v18])
   {
     v16 = 0;
   }
@@ -813,28 +813,28 @@ LABEL_15:
   return v16;
 }
 
-- (int)propagateInferenceResultForOutputRequirement:(id)a3 storage:(id)a4 propagationSampleBuffer:(opaqueCMSampleBuffer *)a5
+- (int)propagateInferenceResultForOutputRequirement:(id)requirement storage:(id)storage propagationSampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
   target = 0;
-  v8 = [a4 pixelBufferForRequirement:?];
-  v9 = [a3 attachedMediaKey];
+  v8 = [storage pixelBufferForRequirement:?];
+  attachedMediaKey = [requirement attachedMediaKey];
   v10 = 0;
   v11 = -31710;
-  if (a5 && v8)
+  if (buffer && v8)
   {
-    v12 = v9;
+    v12 = attachedMediaKey;
     [(BWDeepZoomInferenceConfiguration *)self->_inferenceConfig outputAttachedMediaKey];
     if (![OUTLINED_FUNCTION_37_0() isEqualToString:?])
     {
       goto LABEL_30;
     }
 
-    if (BWSampleBufferGetAttachedMedia(a5, v12))
+    if (BWSampleBufferGetAttachedMedia(buffer, v12))
     {
       goto LABEL_30;
     }
 
-    BWCMSampleBufferCreateDeepCopyWithNewPixelBuffer(a5, v8, 1, &self->_outputFormatDescription, &target);
+    BWCMSampleBufferCreateDeepCopyWithNewPixelBuffer(buffer, v8, 1, &self->_outputFormatDescription, &target);
     if (!target)
     {
       goto LABEL_30;
@@ -874,8 +874,8 @@ LABEL_15:
           FigCaptureMetadataUtilitiesUpdateMetadataForStillImageCrop(v22, v23, v24, v25, v26, v27, v28, v29, v30, v31, v32);
 LABEL_26:
           CMSetAttachment(target, @"StillImageProcessingFlags", [MEMORY[0x1E696AD98] numberWithUnsignedInt:v19 | 0x20000u], 1u);
-          v48 = [(BWDeepZoomInferenceConfiguration *)self->_inferenceConfig outputAttachedMediaKey];
-          BWSampleBufferSetAttachedMedia(a5, v48, target);
+          outputAttachedMediaKey = [(BWDeepZoomInferenceConfiguration *)self->_inferenceConfig outputAttachedMediaKey];
+          BWSampleBufferSetAttachedMedia(buffer, outputAttachedMediaKey, target);
           v11 = 0;
           goto LABEL_27;
         }
@@ -885,7 +885,7 @@ LABEL_26:
         {
           FigCFDictionarySetCGRect();
           v21 = (v19 & 0x100000) == 0 && -[BWDeepZoomInferenceConfiguration type](self->_inferenceConfig, "type") == 3 && ([v16 isEqualToString:*off_1E798A0D0] & 1) != 0;
-          v33 = [objc_msgSend(v18 requestedSettings];
+          requestedSettings = [objc_msgSend(v18 requestedSettings];
           if (v21)
           {
             LODWORD(v34) = self->_inputReferencePixelBufferDimensions.height;
@@ -898,7 +898,7 @@ LABEL_26:
 
           else
           {
-            v34 = HIDWORD(v33);
+            v34 = HIDWORD(requestedSettings);
           }
 
           v35 = v34;
@@ -937,7 +937,7 @@ LABEL_27:
   return v11;
 }
 
-- (int)prepareForSubmissionWithWorkQueue:(id)a3
+- (int)prepareForSubmissionWithWorkQueue:(id)queue
 {
   if ([(CMIDeepZoomProcessor *)self->_deepZoomProcessor modelNetworkBaseName])
   {
@@ -978,7 +978,7 @@ LABEL_4:
       }
 
       v12 = v9;
-      v37 = a3;
+      queueCopy = queue;
       v13 = objc_alloc_init(MEMORY[0x1E695DF90]);
       if ([-[CMIDeepZoomProcessor modelInputBindingNames](self->_deepZoomProcessor "modelInputBindingNames")])
       {
@@ -1038,17 +1038,17 @@ LABEL_4:
         while (v19);
       }
 
-      v25 = [(BWInferenceVideoFormat *)[(BWInferenceVideoRequirement *)self->_outputVideoRequirement videoFormat] width];
+      width = [(BWInferenceVideoFormat *)[(BWInferenceVideoRequirement *)self->_outputVideoRequirement videoFormat] width];
       [(CMIDeepZoomProcessor *)self->_deepZoomProcessor tileSize];
-      v27 = v25 + v26;
+      v27 = width + v26;
       [(CMIDeepZoomProcessor *)self->_deepZoomProcessor tileOverlap];
       OUTLINED_FUNCTION_3_117();
       v39 = v28;
       [(CMIDeepZoomProcessor *)self->_deepZoomProcessor tileOverlap];
       v30 = v27 / (v39 - v29);
-      v31 = [(BWInferenceVideoFormat *)[(BWInferenceVideoRequirement *)self->_outputVideoRequirement videoFormat] height];
+      height = [(BWInferenceVideoFormat *)[(BWInferenceVideoRequirement *)self->_outputVideoRequirement videoFormat] height];
       [(CMIDeepZoomProcessor *)self->_deepZoomProcessor tileSize];
-      v33 = v31 + v32;
+      v33 = height + v32;
       [(CMIDeepZoomProcessor *)self->_deepZoomProcessor tileOverlap];
       OUTLINED_FUNCTION_3_117();
       v40 = v34;
@@ -1062,7 +1062,7 @@ LABEL_4:
       {
         v44.receiver = self;
         v44.super_class = BWDeepZoomInferenceProvider;
-        if (![(BWTiledEspressoInferenceProvider *)&v44 prepareForSubmissionWithWorkQueue:v37])
+        if (![(BWTiledEspressoInferenceProvider *)&v44 prepareForSubmissionWithWorkQueue:queueCopy])
         {
           v11 = 0;
           goto LABEL_27;

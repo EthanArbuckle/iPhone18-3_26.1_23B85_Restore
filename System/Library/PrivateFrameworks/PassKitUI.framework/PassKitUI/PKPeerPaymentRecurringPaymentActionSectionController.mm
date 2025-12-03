@@ -1,12 +1,12 @@
 @interface PKPeerPaymentRecurringPaymentActionSectionController
 - (PKPeerPaymentRecurringPaymentSectionControllerDelegate)delegate;
-- (id)_decorateListCell:(id)a3 forRowItem:(id)a4;
-- (id)cellRegistrationForItem:(id)a3;
+- (id)_decorateListCell:(id)cell forRowItem:(id)item;
+- (id)cellRegistrationForItem:(id)item;
 - (id)identifiers;
-- (id)snapshotWithPreviousSnapshot:(id)a3 forSectionIdentifier:(id)a4;
+- (id)snapshotWithPreviousSnapshot:(id)snapshot forSectionIdentifier:(id)identifier;
 - (void)_beginSetupFlow;
 - (void)_presentPeerPaymentAddDebitFlow;
-- (void)didSelectItem:(id)a3;
+- (void)didSelectItem:(id)item;
 @end
 
 @implementation PKPeerPaymentRecurringPaymentActionSectionController
@@ -20,9 +20,9 @@
   return v2;
 }
 
-- (void)didSelectItem:(id)a3
+- (void)didSelectItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained deselectCells];
 
@@ -46,8 +46,8 @@
     objc_copyWeak(&v16, &location);
     v9 = [PKPeerPaymentActionController alertControllerForPeerPaymentActionUnableReason:v8 displayableError:v7 addCardActionHandler:&v12];
     v10 = objc_loadWeakRetained(&self->_delegate);
-    v11 = [v10 navigationController];
-    [v11 presentViewController:v9 animated:1 completion:0];
+    navigationController = [v10 navigationController];
+    [navigationController presentViewController:v9 animated:1 completion:0];
 
     objc_destroyWeak(&v16);
     objc_destroyWeak(&location);
@@ -60,7 +60,7 @@ void __70__PKPeerPaymentRecurringPaymentActionSectionController_didSelectItem___
   [WeakRetained _presentPeerPaymentAddDebitFlow];
 }
 
-- (id)snapshotWithPreviousSnapshot:(id)a3 forSectionIdentifier:(id)a4
+- (id)snapshotWithPreviousSnapshot:(id)snapshot forSectionIdentifier:(id)identifier
 {
   v4 = objc_alloc_init(MEMORY[0x1E69DC5D0]);
   [v4 appendItems:&unk_1F3CC86D8];
@@ -68,9 +68,9 @@ void __70__PKPeerPaymentRecurringPaymentActionSectionController_didSelectItem___
   return v4;
 }
 
-- (id)cellRegistrationForItem:(id)a3
+- (id)cellRegistrationForItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   objc_initWeak(&location, self);
   v5 = MEMORY[0x1E69DC800];
   v6 = objc_opt_class();
@@ -110,35 +110,35 @@ void __80__PKPeerPaymentRecurringPaymentActionSectionController_cellRegistration
 
   [(PKNavigationController *)v3 setModalPresentationStyle:v4];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v6 = [WeakRetained navigationController];
-  [v6 presentViewController:v3 animated:1 completion:0];
+  navigationController = [WeakRetained navigationController];
+  [navigationController presentViewController:v3 animated:1 completion:0];
 }
 
 - (void)_presentPeerPaymentAddDebitFlow
 {
   v5 = [PKPeerPaymentActionController startProvisionToAddDebitWithNetworkAllowlist:0];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v4 = [WeakRetained navigationController];
-  [v4 presentViewController:v5 animated:1 completion:0];
+  navigationController = [WeakRetained navigationController];
+  [navigationController presentViewController:v5 animated:1 completion:0];
 }
 
-- (id)_decorateListCell:(id)a3 forRowItem:(id)a4
+- (id)_decorateListCell:(id)cell forRowItem:(id)item
 {
   v4 = MEMORY[0x1E69DCC28];
-  v5 = a3;
-  v6 = [v4 cellConfiguration];
+  cellCopy = cell;
+  cellConfiguration = [v4 cellConfiguration];
   v7 = PKLocalizedPeerPaymentRecurringString(&cfstr_RecurringListA.isa);
-  [v6 setText:v7];
+  [cellConfiguration setText:v7];
 
-  v8 = [v6 textProperties];
-  v9 = [MEMORY[0x1E69DC888] linkColor];
-  [v8 setColor:v9];
+  textProperties = [cellConfiguration textProperties];
+  linkColor = [MEMORY[0x1E69DC888] linkColor];
+  [textProperties setColor:linkColor];
 
-  [v6 setDirectionalLayoutMargins:{10.0, 0.0, 10.0, 8.0}];
-  [v5 setContentConfiguration:v6];
-  [v5 setConfigurationUpdateHandler:&__block_literal_global_221];
+  [cellConfiguration setDirectionalLayoutMargins:{10.0, 0.0, 10.0, 8.0}];
+  [cellCopy setContentConfiguration:cellConfiguration];
+  [cellCopy setConfigurationUpdateHandler:&__block_literal_global_221];
 
-  return v6;
+  return cellConfiguration;
 }
 
 void __85__PKPeerPaymentRecurringPaymentActionSectionController__decorateListCell_forRowItem___block_invoke(uint64_t a1, void *a2, void *a3)

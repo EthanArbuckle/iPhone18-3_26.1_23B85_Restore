@@ -11,7 +11,7 @@
   block[1] = 3221225472;
   block[2] = __62__PXStoryColorGradingConfigurationFactory_sharedConfiguration__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedConfiguration_onceToken != -1)
   {
     dispatch_once(&sharedConfiguration_onceToken, block);
@@ -33,8 +33,8 @@ void __62__PXStoryColorGradingConfigurationFactory_sharedConfiguration__block_in
 {
   v25 = *MEMORY[0x1E69E9840];
   context = objc_autoreleasePoolPush();
-  v4 = [MEMORY[0x1E69BF238] defaultSystemPhotoDataDirectory];
-  v5 = [v4 stringByAppendingPathComponent:@"Configuration"];
+  defaultSystemPhotoDataDirectory = [MEMORY[0x1E69BF238] defaultSystemPhotoDataDirectory];
+  v5 = [defaultSystemPhotoDataDirectory stringByAppendingPathComponent:@"Configuration"];
   v6 = [v5 stringByAppendingPathComponent:@"PXStoryColorGradeConfig"];
   v7 = [v6 stringByAppendingPathExtension:@"plist"];
 
@@ -73,7 +73,7 @@ void __62__PXStoryColorGradingConfigurationFactory_sharedConfiguration__block_in
     block[2] = __59__PXStoryColorGradingConfigurationFactory_newConfiguration__block_invoke;
     block[3] = &unk_1E7745A10;
     v19 = @"PXStoryColorGradeConfig";
-    v20 = a1;
+    selfCopy = self;
     v21 = a2;
     if (newConfiguration_onceToken != -1)
     {

@@ -3,8 +3,8 @@
 - (NSArray)allInputVideoDependencies;
 - (NSArray)allOutputVideoDependencies;
 - (void)dealloc;
-- (void)setDependenciesByInputVideoRequirements:(id)a3;
-- (void)setDependenciesByOutputVideoRequirements:(id)a3;
+- (void)setDependenciesByInputVideoRequirements:(id)requirements;
+- (void)setDependenciesByOutputVideoRequirements:(id)requirements;
 @end
 
 @implementation BWInferenceDependencyProvider
@@ -39,35 +39,35 @@
 
 - (NSArray)allInputVideoDependencies
 {
-  v2 = [(NSMapTable *)self->_dependenciesByInputVideoRequirements dictionaryRepresentation];
+  dictionaryRepresentation = [(NSMapTable *)self->_dependenciesByInputVideoRequirements dictionaryRepresentation];
 
-  return [(NSDictionary *)v2 allKeys];
+  return [(NSDictionary *)dictionaryRepresentation allKeys];
 }
 
 - (NSArray)allOutputVideoDependencies
 {
-  v2 = [(NSMapTable *)self->_dependenciesByOutputVideoRequirements dictionaryRepresentation];
+  dictionaryRepresentation = [(NSMapTable *)self->_dependenciesByOutputVideoRequirements dictionaryRepresentation];
 
-  return [(NSDictionary *)v2 allKeys];
+  return [(NSDictionary *)dictionaryRepresentation allKeys];
 }
 
-- (void)setDependenciesByInputVideoRequirements:(id)a3
+- (void)setDependenciesByInputVideoRequirements:(id)requirements
 {
   dependenciesByInputVideoRequirements = self->_dependenciesByInputVideoRequirements;
-  if (dependenciesByInputVideoRequirements != a3)
+  if (dependenciesByInputVideoRequirements != requirements)
   {
 
-    self->_dependenciesByInputVideoRequirements = a3;
+    self->_dependenciesByInputVideoRequirements = requirements;
   }
 }
 
-- (void)setDependenciesByOutputVideoRequirements:(id)a3
+- (void)setDependenciesByOutputVideoRequirements:(id)requirements
 {
   dependenciesByOutputVideoRequirements = self->_dependenciesByOutputVideoRequirements;
-  if (dependenciesByOutputVideoRequirements != a3)
+  if (dependenciesByOutputVideoRequirements != requirements)
   {
 
-    self->_dependenciesByOutputVideoRequirements = a3;
+    self->_dependenciesByOutputVideoRequirements = requirements;
   }
 }
 

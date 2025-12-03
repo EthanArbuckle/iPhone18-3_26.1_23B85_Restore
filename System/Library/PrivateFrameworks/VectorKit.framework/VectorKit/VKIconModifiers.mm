@@ -1,16 +1,16 @@
 @interface VKIconModifiers
 - (VKIconModifiers)init;
-- (VKIconModifiers)initWithModifiers:(const void *)a3;
+- (VKIconModifiers)initWithModifiers:(const void *)modifiers;
 - (id).cxx_construct;
 - (id)initNavigationModifiers;
 - (id)initSearchResultModifiers;
 - (id)initTransitModifiers;
-- (void)setFillColor:(id)a3;
-- (void)setGlyphColor:(id)a3;
-- (void)setHaloColor:(id)a3;
-- (void)setInteractive:(BOOL)a3;
-- (void)setText:(id)a3;
-- (void)setTransitLineColor:(id)a3;
+- (void)setFillColor:(id)color;
+- (void)setGlyphColor:(id)color;
+- (void)setHaloColor:(id)color;
+- (void)setInteractive:(BOOL)interactive;
+- (void)setText:(id)text;
+- (void)setTransitLineColor:(id)color;
 @end
 
 @implementation VKIconModifiers
@@ -350,51 +350,51 @@ LABEL_53:
   return v3;
 }
 
-- (void)setTransitLineColor:(id)a3
+- (void)setTransitLineColor:(id)color
 {
-  var1 = a3.var1;
-  v4 = *&a3.var2;
-  v5 = vmovn_s32(vcvtq_s32_f32(vmulq_f32(a3, vdupq_n_s32(0x437F0000u))));
+  var1 = color.var1;
+  v4 = *&color.var2;
+  v5 = vmovn_s32(vcvtq_s32_f32(vmulq_f32(color, vdupq_n_s32(0x437F0000u))));
   v6 = vuzp1_s8(v5, v5).u32[0];
   grl::IconModifiers::setTransitLineColor(&self->_iconModifiers, &v6);
 }
 
-- (void)setHaloColor:(id)a3
+- (void)setHaloColor:(id)color
 {
-  var1 = a3.var1;
-  v4 = *&a3.var2;
-  v5 = vmovn_s32(vcvtq_s32_f32(vmulq_f32(a3, vdupq_n_s32(0x437F0000u))));
+  var1 = color.var1;
+  v4 = *&color.var2;
+  v5 = vmovn_s32(vcvtq_s32_f32(vmulq_f32(color, vdupq_n_s32(0x437F0000u))));
   v6 = vuzp1_s8(v5, v5).u32[0];
   grl::IconModifiers::setHaloColor(&self->_iconModifiers, &v6);
 }
 
-- (void)setGlyphColor:(id)a3
+- (void)setGlyphColor:(id)color
 {
-  var1 = a3.var1;
-  v4 = *&a3.var2;
-  v5 = vmovn_s32(vcvtq_s32_f32(vmulq_f32(a3, vdupq_n_s32(0x437F0000u))));
+  var1 = color.var1;
+  v4 = *&color.var2;
+  v5 = vmovn_s32(vcvtq_s32_f32(vmulq_f32(color, vdupq_n_s32(0x437F0000u))));
   v6 = vuzp1_s8(v5, v5).u32[0];
   grl::IconModifiers::setGlyphColor(&self->_iconModifiers, &v6);
 }
 
-- (void)setFillColor:(id)a3
+- (void)setFillColor:(id)color
 {
-  var1 = a3.var1;
-  v5 = *&a3.var2;
-  v6 = vmovn_s32(vcvtq_s32_f32(vmulq_f32(a3, vdupq_n_s32(0x437F0000u))));
+  var1 = color.var1;
+  v5 = *&color.var2;
+  v6 = vmovn_s32(vcvtq_s32_f32(vmulq_f32(color, vdupq_n_s32(0x437F0000u))));
   v7 = vuzp1_s8(v6, v6).u32[0];
   grl::IconModifiers::setFillColor(&self->_iconModifiers, &v7);
   grl::IconModifiers::setGradientBaseColor(&self->_iconModifiers, &v7);
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 length])
+  textCopy = text;
+  v5 = textCopy;
+  if (textCopy && [textCopy length])
   {
-    v6 = [v5 UTF8String];
-    v7 = strlen(v6);
+    uTF8String = [v5 UTF8String];
+    v7 = strlen(uTF8String);
     if (v7 >= 0x7FFFFFFFFFFFFFF8)
     {
       std::__throw_bad_array_new_length[abi:nn200100]();
@@ -409,7 +409,7 @@ LABEL_53:
     *(&__dst.__r_.__value_.__s + 23) = v7;
     if (v7)
     {
-      memmove(&__dst, v6, v7);
+      memmove(&__dst, uTF8String, v7);
     }
 
     __dst.__r_.__value_.__s.__data_[v8] = 0;
@@ -421,9 +421,9 @@ LABEL_53:
   }
 }
 
-- (void)setInteractive:(BOOL)a3
+- (void)setInteractive:(BOOL)interactive
 {
-  if (a3)
+  if (interactive)
   {
     v3 = 2;
   }
@@ -436,18 +436,18 @@ LABEL_53:
   *geo::intern_linear_map<gss::StyleAttribute,unsigned short,unsigned short,geo::allocator_adapter<unsigned char,gss::zone_mallocator>,30ul>::operator[](&self->_queryOverrides, 0x10002u) = v3;
 }
 
-- (VKIconModifiers)initWithModifiers:(const void *)a3
+- (VKIconModifiers)initWithModifiers:(const void *)modifiers
 {
   v4 = [(VKIconModifiers *)self init];
   v5 = v4;
   v6 = v4;
   if (v4)
   {
-    *&v4->_iconModifiers._isClusterIcon = *a3;
+    *&v4->_iconModifiers._isClusterIcon = *modifiers;
     null_state = v4->_iconModifiers._pathScale.var0.__null_state_;
-    if (*(a3 + 16) == 1)
+    if (*(modifiers + 16) == 1)
     {
-      *&v4->_iconModifiers._pathScale.__engaged_ = *(a3 + 5);
+      *&v4->_iconModifiers._pathScale.__engaged_ = *(modifiers + 5);
       if (!null_state)
       {
         v4->_iconModifiers._pathScale.var0.__null_state_ = 1;
@@ -459,61 +459,61 @@ LABEL_53:
       v4->_iconModifiers._pathScale.var0.__null_state_ = 0;
     }
 
-    v4->_iconModifiers._component = *(a3 + 24);
-    if (*(a3 + 25) == 1)
+    v4->_iconModifiers._component = *(modifiers + 24);
+    if (*(modifiers + 25) == 1)
     {
       if (*(&v4->_iconModifiers._component + 1))
       {
         for (i = 0; i != 4; ++i)
         {
-          *(&v4->_iconModifiers._component + i + 2) = *(a3 + i + 26);
+          *(&v4->_iconModifiers._component + i + 2) = *(modifiers + i + 26);
         }
 
 LABEL_17:
-        if (*(a3 + 30) == 1)
+        if (*(modifiers + 30) == 1)
         {
           if (*(&v4->_iconModifiers._transitLineColor._hasValue + 2))
           {
             for (j = 0; j != 4; ++j)
             {
-              *(&v4->_iconModifiers._transitLineColor._hasValue + j + 3) = *(a3 + j + 31);
+              *(&v4->_iconModifiers._transitLineColor._hasValue + j + 3) = *(modifiers + j + 31);
             }
 
 LABEL_26:
-            if (*(a3 + 35) == 1)
+            if (*(modifiers + 35) == 1)
             {
               if (v4->_iconModifiers._transitLineColor._value.data[3])
               {
                 for (k = 0; k != 4; ++k)
                 {
-                  *(&v4->_iconModifiers._glyphColor._hasValue + k) = *(a3 + k + 36);
+                  *(&v4->_iconModifiers._glyphColor._hasValue + k) = *(modifiers + k + 36);
                 }
 
 LABEL_35:
-                if (*(a3 + 40) == 1)
+                if (*(modifiers + 40) == 1)
                 {
                   if (v4->_iconModifiers._glyphColor._value.data[0])
                   {
                     for (m = 0; m != 4; ++m)
                     {
-                      v4->_iconModifiers._glyphColor._value.data[m + 1] = *(a3 + m + 41);
+                      v4->_iconModifiers._glyphColor._value.data[m + 1] = *(modifiers + m + 41);
                     }
 
 LABEL_44:
-                    if (*(a3 + 45) == 1)
+                    if (*(modifiers + 45) == 1)
                     {
                       if (*(&v4->_iconModifiers._gradientBaseColor._hasValue + 1))
                       {
                         for (n = 0; n != 4; ++n)
                         {
-                          *(&v4->_iconModifiers._gradientBaseColor._hasValue + n + 2) = *(a3 + n + 46);
+                          *(&v4->_iconModifiers._gradientBaseColor._hasValue + n + 2) = *(modifiers + n + 46);
                         }
 
 LABEL_53:
                         hasValue = v4->_iconModifiers._fillColor._hasValue;
-                        if (*(a3 + 52) == 1)
+                        if (*(modifiers + 52) == 1)
                         {
-                          v4->_iconModifiers._fillColor._value.type = *(a3 + 14);
+                          v4->_iconModifiers._fillColor._value.type = *(modifiers + 14);
                           if (!hasValue)
                           {
                             v4->_iconModifiers._fillColor._hasValue = 1;
@@ -526,9 +526,9 @@ LABEL_53:
                         }
 
                         v19 = v4->_iconModifiers._haloColor._hasValue;
-                        if (*(a3 + 60) == 1)
+                        if (*(modifiers + 60) == 1)
                         {
-                          v4->_iconModifiers._haloColor._value.type = *(a3 + 16);
+                          v4->_iconModifiers._haloColor._value.type = *(modifiers + 16);
                           if (!v19)
                           {
                             v4->_iconModifiers._haloColor._hasValue = 1;
@@ -540,24 +540,24 @@ LABEL_53:
                           v4->_iconModifiers._haloColor._hasValue = 0;
                         }
 
-                        if (*(a3 + 72) == 1)
+                        if (*(modifiers + 72) == 1)
                         {
                           if (v4->_iconModifiers._fontSize.__engaged_)
                           {
-                            std::string::operator=(&v4->_iconModifiers._tailDirection.__engaged_, (a3 + 80));
+                            std::string::operator=(&v4->_iconModifiers._tailDirection.__engaged_, (modifiers + 80));
                           }
 
                           else
                           {
-                            if (*(a3 + 103) < 0)
+                            if (*(modifiers + 103) < 0)
                             {
-                              std::string::__init_copy_ctor_external(&v4->_iconModifiers._tailDirection.__engaged_, *(a3 + 10), *(a3 + 11));
+                              std::string::__init_copy_ctor_external(&v4->_iconModifiers._tailDirection.__engaged_, *(modifiers + 10), *(modifiers + 11));
                             }
 
                             else
                             {
-                              v20 = *(a3 + 5);
-                              v4->_iconModifiers._textLocale.var0 = *(a3 + 12);
+                              v20 = *(modifiers + 5);
+                              v4->_iconModifiers._textLocale.var0 = *(modifiers + 12);
                               *&v4->_iconModifiers._tailDirection.__engaged_ = v20;
                             }
 
@@ -575,10 +575,10 @@ LABEL_53:
                           v6->_iconModifiers._fontSize.__engaged_ = 0;
                         }
 
-                        if (&v5->_iconModifiers == a3)
+                        if (&v5->_iconModifiers == modifiers)
                         {
 LABEL_123:
-                          std::function<CGImage * ()(gm::Matrix<unsigned int,2,1>,float)>::operator=(&v5->_anon_70[80], a3 + 184);
+                          std::function<CGImage * ()(gm::Matrix<unsigned int,2,1>,float)>::operator=(&v5->_anon_70[80], modifiers + 184);
                           v6->_zoom = -1;
                           v6->_variant = 0;
                           v6->_secondaryVariant = 0;
@@ -586,8 +586,8 @@ LABEL_123:
                           return v6;
                         }
 
-                        v21 = *(a3 + 13);
-                        v22 = a3 + 112;
+                        v21 = *(modifiers + 13);
+                        v22 = modifiers + 112;
                         if (*&v6->_anon_70[24])
                         {
                           v24 = &v6->_anon_70[8];
@@ -792,12 +792,12 @@ LABEL_116:
                           while (v42 != v22);
                         }
 
-                        std::vector<unsigned int>::__assign_with_size[abi:nn200100]<unsigned int *,unsigned int *>(&v5->_anon_70[32], *(a3 + 17), *(a3 + 18), (*(a3 + 18) - *(a3 + 17)) >> 2);
-                        std::vector<geo::Color<unsigned char,4,(geo::ColorSpace)2>>::__assign_with_size[abi:nn200100]<geo::Color<unsigned char,4,(geo::ColorSpace)2>*,geo::Color<unsigned char,4,(geo::ColorSpace)2>*>(&v5->_anon_70[56], *(a3 + 20), *(a3 + 21), (*(a3 + 21) - *(a3 + 20)) >> 2);
+                        std::vector<unsigned int>::__assign_with_size[abi:nn200100]<unsigned int *,unsigned int *>(&v5->_anon_70[32], *(modifiers + 17), *(modifiers + 18), (*(modifiers + 18) - *(modifiers + 17)) >> 2);
+                        std::vector<geo::Color<unsigned char,4,(geo::ColorSpace)2>>::__assign_with_size[abi:nn200100]<geo::Color<unsigned char,4,(geo::ColorSpace)2>*,geo::Color<unsigned char,4,(geo::ColorSpace)2>*>(&v5->_anon_70[56], *(modifiers + 20), *(modifiers + 21), (*(modifiers + 21) - *(modifiers + 20)) >> 2);
                         goto LABEL_123;
                       }
 
-                      *(&v4->_iconModifiers._gradientBaseColor._hasValue + 2) = *(a3 + 46);
+                      *(&v4->_iconModifiers._gradientBaseColor._hasValue + 2) = *(modifiers + 46);
                       v17 = 1;
                     }
 
@@ -815,7 +815,7 @@ LABEL_116:
                     goto LABEL_53;
                   }
 
-                  *(&v4->_iconModifiers._glyphColor._value + 1) = *(a3 + 41);
+                  *(&v4->_iconModifiers._glyphColor._value + 1) = *(modifiers + 41);
                   v15 = 1;
                 }
 
@@ -833,7 +833,7 @@ LABEL_116:
                 goto LABEL_44;
               }
 
-              *&v4->_iconModifiers._glyphColor._hasValue = *(a3 + 9);
+              *&v4->_iconModifiers._glyphColor._hasValue = *(modifiers + 9);
               v13 = 1;
             }
 
@@ -851,7 +851,7 @@ LABEL_116:
             goto LABEL_35;
           }
 
-          *(&v4->_iconModifiers._transitLineColor._hasValue + 3) = *(a3 + 31);
+          *(&v4->_iconModifiers._transitLineColor._hasValue + 3) = *(modifiers + 31);
           v11 = 1;
         }
 
@@ -869,7 +869,7 @@ LABEL_116:
         goto LABEL_26;
       }
 
-      *(&v4->_iconModifiers._component + 2) = *(a3 + 26);
+      *(&v4->_iconModifiers._component + 2) = *(modifiers + 26);
       v9 = 1;
     }
 

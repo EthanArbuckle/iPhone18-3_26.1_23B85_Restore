@@ -1,6 +1,6 @@
 @interface MTRDoorLockClusterDoorLockAlarmEvent
 - (MTRDoorLockClusterDoorLockAlarmEvent)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -21,11 +21,11 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRDoorLockClusterDoorLockAlarmEvent);
-  v5 = [(MTRDoorLockClusterDoorLockAlarmEvent *)self alarmCode];
-  [(MTRDoorLockClusterDoorLockAlarmEvent *)v4 setAlarmCode:v5];
+  alarmCode = [(MTRDoorLockClusterDoorLockAlarmEvent *)self alarmCode];
+  [(MTRDoorLockClusterDoorLockAlarmEvent *)v4 setAlarmCode:alarmCode];
 
   return v4;
 }

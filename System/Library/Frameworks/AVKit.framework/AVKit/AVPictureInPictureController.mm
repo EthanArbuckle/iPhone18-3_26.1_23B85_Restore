@@ -1,66 +1,66 @@
 @interface AVPictureInPictureController
 + (UIImage)pictureInPictureButtonStartImageCompatibleWithTraitCollection:(UITraitCollection *)traitCollection;
 + (UIImage)pictureInPictureButtonStopImageCompatibleWithTraitCollection:(UITraitCollection *)traitCollection;
-+ (id)_imageNamed:(id)a3 compatibileWithTraitCollection:(id)a4;
++ (id)_imageNamed:(id)named compatibileWithTraitCollection:(id)collection;
 - (AVPictureInPictureContentSource)source;
 - (AVPictureInPictureController)init;
 - (AVPictureInPictureController)initWithContentSource:(AVPictureInPictureControllerContentSource *)contentSource;
 - (AVPictureInPictureController)initWithPlayerLayer:(AVPlayerLayer *)playerLayer;
-- (AVPictureInPictureController)initWithSource:(id)a3;
+- (AVPictureInPictureController)initWithSource:(id)source;
 - (AVPictureInPictureControllerExtendedDelegate)_extendedDelegate;
 - (AVPictureInPicturePrerollDelegate)prerollDelegate;
 - (AVPictureInPictureViewController)pictureInPictureViewController;
 - (AVPlayerLayer)playerLayer;
 - (BOOL)_shouldPauseWhenExitingPictureInPicture;
-- (id)_delegateIfRespondsToSelector:(SEL)a3;
+- (id)_delegateIfRespondsToSelector:(SEL)selector;
 - (id)_sbdlPlayerController;
 - (id)activitySessionIdentifier;
 - (id)delegate;
 - (id)sampleBufferDisplayLayer;
 - (int64_t)backgroundPlaybackPolicy;
-- (void)_commonInitWithSource:(id)a3;
-- (void)_configureContentSourceForGenericViewIfNeeded:(id)a3;
-- (void)_configureContentSourceForVideoCallsIfNeeded:(id)a3;
-- (void)_invalidateContentSourceForVideoCallsIfNeeded:(id)a3;
-- (void)_logContentSourceType:(id)a3;
-- (void)_startObservationsForContentSource:(id)a3;
-- (void)_startObservingPlayerLayerContentSource:(id)a3;
-- (void)_startObservingSampleBufferDisplayLayerContentSource:(id)a3;
-- (void)_stopPictureInPictureAndRestoreUserInterface:(BOOL)a3;
+- (void)_commonInitWithSource:(id)source;
+- (void)_configureContentSourceForGenericViewIfNeeded:(id)needed;
+- (void)_configureContentSourceForVideoCallsIfNeeded:(id)needed;
+- (void)_invalidateContentSourceForVideoCallsIfNeeded:(id)needed;
+- (void)_logContentSourceType:(id)type;
+- (void)_startObservationsForContentSource:(id)source;
+- (void)_startObservingPlayerLayerContentSource:(id)source;
+- (void)_startObservingSampleBufferDisplayLayerContentSource:(id)source;
+- (void)_stopPictureInPictureAndRestoreUserInterface:(BOOL)interface;
 - (void)_updateBackgroundPlaybackPolicyFromPlayerController;
 - (void)_updateEnqueuedBufferDimensions;
 - (void)contentSourceVideoRectInWindowChanged;
 - (void)dealloc;
 - (void)invalidate;
 - (void)invalidatePlaybackState;
-- (void)pictureInPicturePlatformAdapter:(id)a3 failedToStartError:(id)a4;
-- (void)pictureInPicturePlatformAdapter:(id)a3 handlePlaybackCommand:(int64_t)a4;
-- (void)pictureInPicturePlatformAdapter:(id)a3 prepareToStopForRestoringUserInterface:(id)a4;
-- (void)pictureInPicturePlatformAdapter:(id)a3 statusDidChange:(int64_t)a4 fromStatus:(int64_t)a5;
+- (void)pictureInPicturePlatformAdapter:(id)adapter failedToStartError:(id)error;
+- (void)pictureInPicturePlatformAdapter:(id)adapter handlePlaybackCommand:(int64_t)command;
+- (void)pictureInPicturePlatformAdapter:(id)adapter prepareToStopForRestoringUserInterface:(id)interface;
+- (void)pictureInPicturePlatformAdapter:(id)adapter statusDidChange:(int64_t)change fromStatus:(int64_t)status;
 - (void)pictureInPicturePlatformAdapterBeginReducingResourcesForEligibleOffScreenState;
 - (void)pictureInPicturePlatformAdapterEndReducingResourcesForEligibleOffScreenState;
-- (void)pictureInPicturePlatformAdapterPrepareToStopForDismissal:(id)a3;
+- (void)pictureInPicturePlatformAdapterPrepareToStopForDismissal:(id)dismissal;
 - (void)reloadPrerollAttributes;
 - (void)sampleBufferDisplayLayerDidAppear;
 - (void)sampleBufferDisplayLayerDidDisappear;
-- (void)sampleBufferDisplayLayerRenderSizeDidChangeToSize:(CGSize)a3;
-- (void)setActivitySessionIdentifier:(id)a3;
-- (void)setAllowsPictureInPictureFromInlineWhenEnteringBackground:(BOOL)a3;
-- (void)setAllowsPictureInPicturePlayback:(BOOL)a3;
-- (void)setBackgroundPlaybackPolicy:(int64_t)a3;
-- (void)setCanPausePlaybackWhenClosingPictureInPicture:(BOOL)a3;
-- (void)setCanStartAutomaticallyWhenEnteringBackground:(BOOL)a3;
+- (void)sampleBufferDisplayLayerRenderSizeDidChangeToSize:(CGSize)size;
+- (void)setActivitySessionIdentifier:(id)identifier;
+- (void)setAllowsPictureInPictureFromInlineWhenEnteringBackground:(BOOL)background;
+- (void)setAllowsPictureInPicturePlayback:(BOOL)playback;
+- (void)setBackgroundPlaybackPolicy:(int64_t)policy;
+- (void)setCanPausePlaybackWhenClosingPictureInPicture:(BOOL)picture;
+- (void)setCanStartAutomaticallyWhenEnteringBackground:(BOOL)background;
 - (void)setContentSource:(AVPictureInPictureControllerContentSource *)contentSource;
-- (void)setControlsStyle:(int64_t)a3;
-- (void)setMicrophoneEnabled:(BOOL)a3;
-- (void)setOtherPictureInPictureActive:(BOOL)a3;
-- (void)setPictureInPictureActive:(BOOL)a3;
-- (void)setPictureInPicturePossible:(BOOL)a3;
-- (void)setPlayerController:(id)a3;
+- (void)setControlsStyle:(int64_t)style;
+- (void)setMicrophoneEnabled:(BOOL)enabled;
+- (void)setOtherPictureInPictureActive:(BOOL)active;
+- (void)setPictureInPictureActive:(BOOL)active;
+- (void)setPictureInPicturePossible:(BOOL)possible;
+- (void)setPlayerController:(id)controller;
 - (void)setRequiresLinearPlayback:(BOOL)requiresLinearPlayback;
-- (void)startObservingPlayerController:(id)a3;
+- (void)startObservingPlayerController:(id)controller;
 - (void)startPictureInPicture;
-- (void)stopObservingPlayerController:(id)a3;
+- (void)stopObservingPlayerController:(id)controller;
 - (void)stopPictureInPicture;
 - (void)stopPictureInPictureEvenWhenInBackground;
 @end
@@ -97,54 +97,54 @@
 
 - (void)_updateEnqueuedBufferDimensions
 {
-  v3 = [(AVPictureInPictureController *)self contentSource];
-  v10 = [v3 sampleBufferDisplayLayer];
+  contentSource = [(AVPictureInPictureController *)self contentSource];
+  sampleBufferDisplayLayer = [contentSource sampleBufferDisplayLayer];
 
-  v4 = v10;
-  if (v10)
+  v4 = sampleBufferDisplayLayer;
+  if (sampleBufferDisplayLayer)
   {
-    [v10 videoRect];
+    [sampleBufferDisplayLayer videoRect];
     v6 = v5;
     v8 = v7;
-    v9 = [(AVPictureInPictureController *)self _sbdlPlayerController];
-    [v9 setEnqueuedBufferDimensions:{v6, v8}];
+    _sbdlPlayerController = [(AVPictureInPictureController *)self _sbdlPlayerController];
+    [_sbdlPlayerController setEnqueuedBufferDimensions:{v6, v8}];
 
     [(AVPictureInPictureController *)self contentSourceVideoRectInWindowChanged];
-    v4 = v10;
+    v4 = sampleBufferDisplayLayer;
   }
 }
 
-- (void)_startObservingSampleBufferDisplayLayerContentSource:(id)a3
+- (void)_startObservingSampleBufferDisplayLayerContentSource:(id)source
 {
-  v4 = a3;
-  v5 = [(AVPictureInPictureController *)self observationController];
-  [v5 startObservingNotificationForName:*MEMORY[0x1E6987AF8] object:v4 notificationCenter:0 observationHandler:&__block_literal_global_118_17761];
+  sourceCopy = source;
+  observationController = [(AVPictureInPictureController *)self observationController];
+  [observationController startObservingNotificationForName:*MEMORY[0x1E6987AF8] object:sourceCopy notificationCenter:0 observationHandler:&__block_literal_global_118_17761];
 
-  v6 = [(AVPictureInPictureController *)self observationController];
-  [v6 startObservingNotificationForName:*MEMORY[0x1E6987B00] object:v4 notificationCenter:0 observationHandler:&__block_literal_global_120_17762];
+  observationController2 = [(AVPictureInPictureController *)self observationController];
+  [observationController2 startObservingNotificationForName:*MEMORY[0x1E6987B00] object:sourceCopy notificationCenter:0 observationHandler:&__block_literal_global_120_17762];
 
   [(AVPictureInPictureController *)self _updateEnqueuedBufferDimensions];
 }
 
 - (void)_updateBackgroundPlaybackPolicyFromPlayerController
 {
-  v4 = [(AVPictureInPictureController *)self playerController];
-  v3 = [v4 player];
-  -[AVPictureInPictureController setBackgroundPlaybackPolicy:](self, "setBackgroundPlaybackPolicy:", [v3 audiovisualBackgroundPlaybackPolicy]);
+  playerController = [(AVPictureInPictureController *)self playerController];
+  player = [playerController player];
+  -[AVPictureInPictureController setBackgroundPlaybackPolicy:](self, "setBackgroundPlaybackPolicy:", [player audiovisualBackgroundPlaybackPolicy]);
 }
 
-- (void)_startObservingPlayerLayerContentSource:(id)a3
+- (void)_startObservingPlayerLayerContentSource:(id)source
 {
   v10[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(AVPictureInPictureController *)self observationController];
-  v6 = [v5 startObserving:v4 keyPath:@"player" includeInitialValue:0 observationHandler:&__block_literal_global_107_17766];
+  sourceCopy = source;
+  observationController = [(AVPictureInPictureController *)self observationController];
+  v6 = [observationController startObserving:sourceCopy keyPath:@"player" includeInitialValue:0 observationHandler:&__block_literal_global_107_17766];
 
-  v7 = [(AVPictureInPictureController *)self observationController];
+  observationController2 = [(AVPictureInPictureController *)self observationController];
   v10[0] = @"videoRect";
   v10[1] = @"readyForDisplay";
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:2];
-  v9 = [v7 startObserving:v4 keyPaths:v8 includeInitialValue:1 observationHandler:&__block_literal_global_116_17768];
+  v9 = [observationController2 startObserving:sourceCopy keyPaths:v8 includeInitialValue:1 observationHandler:&__block_literal_global_116_17768];
 }
 
 void __72__AVPictureInPictureController__startObservingPlayerLayerContentSource___block_invoke(uint64_t a1, void *a2)
@@ -156,128 +156,128 @@ void __72__AVPictureInPictureController__startObservingPlayerLayerContentSource_
   [v2 setPlayerController:v4];
 }
 
-- (void)_startObservationsForContentSource:(id)a3
+- (void)_startObservationsForContentSource:(id)source
 {
-  v5 = a3;
-  v4 = [v5 source];
+  sourceCopy = source;
+  source = [sourceCopy source];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(AVPictureInPictureController *)self _startObservingPlayerLayerContentSource:v4];
+    [(AVPictureInPictureController *)self _startObservingPlayerLayerContentSource:source];
   }
 
   else
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && ([v5 hasInitialRenderSize] & 1) == 0)
+    if ((objc_opt_isKindOfClass() & 1) != 0 && ([sourceCopy hasInitialRenderSize] & 1) == 0)
     {
-      [(AVPictureInPictureController *)self _startObservingSampleBufferDisplayLayerContentSource:v4];
+      [(AVPictureInPictureController *)self _startObservingSampleBufferDisplayLayerContentSource:source];
     }
   }
 }
 
-- (void)_stopPictureInPictureAndRestoreUserInterface:(BOOL)a3
+- (void)_stopPictureInPictureAndRestoreUserInterface:(BOOL)interface
 {
-  v3 = a3;
-  v5 = [(AVPictureInPictureController *)self platformAdapter];
-  if ([v5 status] == 3)
+  interfaceCopy = interface;
+  platformAdapter = [(AVPictureInPictureController *)self platformAdapter];
+  if ([platformAdapter status] == 3)
   {
   }
 
   else
   {
-    v6 = [(AVPictureInPictureController *)self platformAdapter];
-    v7 = [v6 status];
+    platformAdapter2 = [(AVPictureInPictureController *)self platformAdapter];
+    status = [platformAdapter2 status];
 
-    if (v7 != 4)
+    if (status != 4)
     {
       return;
     }
   }
 
-  v8 = [(AVPictureInPictureController *)self platformAdapter];
-  [v8 stopPictureInPictureAndRestoreUserInterface:v3];
+  platformAdapter3 = [(AVPictureInPictureController *)self platformAdapter];
+  [platformAdapter3 stopPictureInPictureAndRestoreUserInterface:interfaceCopy];
 }
 
 - (BOOL)_shouldPauseWhenExitingPictureInPicture
 {
-  v3 = [(AVPictureInPictureController *)self platformAdapter];
-  v4 = [v3 playerController];
-  v5 = ([v4 isExternalPlaybackActive] & 1) == 0 && -[AVPictureInPictureController canPausePlaybackWhenClosingPictureInPicture](self, "canPausePlaybackWhenClosingPictureInPicture");
+  platformAdapter = [(AVPictureInPictureController *)self platformAdapter];
+  playerController = [platformAdapter playerController];
+  v5 = ([playerController isExternalPlaybackActive] & 1) == 0 && -[AVPictureInPictureController canPausePlaybackWhenClosingPictureInPicture](self, "canPausePlaybackWhenClosingPictureInPicture");
 
   return v5;
 }
 
-- (id)_delegateIfRespondsToSelector:(SEL)a3
+- (id)_delegateIfRespondsToSelector:(SEL)selector
 {
-  v4 = [(AVPictureInPictureController *)self delegate];
+  delegate = [(AVPictureInPictureController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [(AVPictureInPictureController *)self delegate];
+    delegate2 = [(AVPictureInPictureController *)self delegate];
   }
 
   else
   {
-    v5 = 0;
+    delegate2 = 0;
   }
 
-  return v5;
+  return delegate2;
 }
 
-- (void)_configureContentSourceForGenericViewIfNeeded:(id)a3
+- (void)_configureContentSourceForGenericViewIfNeeded:(id)needed
 {
-  v7 = a3;
-  v4 = [v7 activeContentViewController];
+  neededCopy = needed;
+  activeContentViewController = [neededCopy activeContentViewController];
 
-  if (v4)
+  if (activeContentViewController)
   {
-    v5 = [v7 activeContentViewController];
-    [v5 setContentSource:v7];
+    activeContentViewController2 = [neededCopy activeContentViewController];
+    [activeContentViewController2 setContentSource:neededCopy];
 
     [(AVPictureInPictureController *)self setControlsStyle:0];
-    v6 = [(AVPictureInPictureController *)self platformAdapter];
-    [v6 _updateStatus];
+    platformAdapter = [(AVPictureInPictureController *)self platformAdapter];
+    [platformAdapter _updateStatus];
   }
 }
 
-- (void)_configureContentSourceForVideoCallsIfNeeded:(id)a3
+- (void)_configureContentSourceForVideoCallsIfNeeded:(id)needed
 {
-  v8 = a3;
-  v4 = [v8 activeVideoCallContentViewController];
+  neededCopy = needed;
+  activeVideoCallContentViewController = [neededCopy activeVideoCallContentViewController];
 
-  if (v4)
+  if (activeVideoCallContentViewController)
   {
-    v5 = [v8 activeVideoCallContentViewController];
-    [v5 setPictureInPictureController:self];
+    activeVideoCallContentViewController2 = [neededCopy activeVideoCallContentViewController];
+    [activeVideoCallContentViewController2 setPictureInPictureController:self];
 
-    v6 = [v8 activeVideoCallContentViewController];
-    [v6 setContentSource:v8];
+    activeVideoCallContentViewController3 = [neededCopy activeVideoCallContentViewController];
+    [activeVideoCallContentViewController3 setContentSource:neededCopy];
 
-    v7 = [v8 activeVideoCallContentViewController];
-    [v7 startObservingSourceView];
+    activeVideoCallContentViewController4 = [neededCopy activeVideoCallContentViewController];
+    [activeVideoCallContentViewController4 startObservingSourceView];
 
     [(AVPictureInPictureController *)self setControlsStyle:2];
   }
 }
 
-- (void)_invalidateContentSourceForVideoCallsIfNeeded:(id)a3
+- (void)_invalidateContentSourceForVideoCallsIfNeeded:(id)needed
 {
-  v5 = a3;
-  v3 = [v5 activeVideoCallContentViewController];
+  neededCopy = needed;
+  activeVideoCallContentViewController = [neededCopy activeVideoCallContentViewController];
 
-  if (v3)
+  if (activeVideoCallContentViewController)
   {
-    v4 = [v5 activeVideoCallContentViewController];
-    [v4 stopObservingSourceView];
+    activeVideoCallContentViewController2 = [neededCopy activeVideoCallContentViewController];
+    [activeVideoCallContentViewController2 stopObservingSourceView];
   }
 }
 
 - (id)_sbdlPlayerController
 {
-  v3 = [(AVPictureInPictureController *)self contentSource];
-  v4 = [v3 sampleBufferDisplayLayer];
-  v5 = [(AVPictureInPictureController *)self playerController];
-  v6 = [v4 avkit_makePlayerControllerIfNeeded:v5];
+  contentSource = [(AVPictureInPictureController *)self contentSource];
+  sampleBufferDisplayLayer = [contentSource sampleBufferDisplayLayer];
+  playerController = [(AVPictureInPictureController *)self playerController];
+  v6 = [sampleBufferDisplayLayer avkit_makePlayerControllerIfNeeded:playerController];
 
   return v6;
 }
@@ -320,10 +320,10 @@ void __72__AVPictureInPictureController__startObservingPlayerLayerContentSource_
   }
 }
 
-- (void)sampleBufferDisplayLayerRenderSizeDidChangeToSize:(CGSize)a3
+- (void)sampleBufferDisplayLayerRenderSizeDidChangeToSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v14 = *MEMORY[0x1E69E9840];
   if ([MEMORY[0x1E696AF00] isMainThread])
   {
@@ -340,8 +340,8 @@ void __72__AVPictureInPictureController__startObservingPlayerLayerContentSource_
       _os_log_impl(&dword_18B49C000, v6, OS_LOG_TYPE_DEFAULT, "%s SampleBufferDisplayLayer Render Size changed: %@", buf, 0x16u);
     }
 
-    v8 = [(AVPictureInPictureController *)self _sbdlPlayerController];
-    [v8 setEnqueuedBufferDimensions:{width, height}];
+    _sbdlPlayerController = [(AVPictureInPictureController *)self _sbdlPlayerController];
+    [_sbdlPlayerController setEnqueuedBufferDimensions:{width, height}];
 
     [(AVPictureInPictureController *)self contentSourceVideoRectInWindowChanged];
   }
@@ -361,8 +361,8 @@ void __72__AVPictureInPictureController__startObservingPlayerLayerContentSource_
 
 - (void)invalidatePlaybackState
 {
-  v2 = [(AVPictureInPictureController *)self _sbdlPlayerController];
-  [v2 invalidatePlaybackState];
+  _sbdlPlayerController = [(AVPictureInPictureController *)self _sbdlPlayerController];
+  [_sbdlPlayerController invalidatePlaybackState];
 }
 
 - (void)setContentSource:(AVPictureInPictureControllerContentSource *)contentSource
@@ -371,65 +371,65 @@ void __72__AVPictureInPictureController__startObservingPlayerLayerContentSource_
   if (self->_contentSource != v5)
   {
     v28 = v5;
-    v6 = [(AVPictureInPictureController *)self observationController];
-    [v6 stopAllObservation];
+    observationController = [(AVPictureInPictureController *)self observationController];
+    [observationController stopAllObservation];
 
-    v7 = [(AVPictureInPictureControllerContentSource *)self->_contentSource sampleBufferDisplayLayer];
-    [v7 avkit_removePictureInPicturePlayerController];
+    sampleBufferDisplayLayer = [(AVPictureInPictureControllerContentSource *)self->_contentSource sampleBufferDisplayLayer];
+    [sampleBufferDisplayLayer avkit_removePictureInPicturePlayerController];
 
     [(AVPictureInPictureController *)self _invalidateContentSourceForVideoCallsIfNeeded:self->_contentSource];
     [(AVPictureInPictureController *)self _configureContentSourceForVideoCallsIfNeeded:self->_contentSource];
     [(AVPictureInPictureController *)self _configureContentSourceForGenericViewIfNeeded:self->_contentSource];
     if ([(AVPictureInPictureController *)self wantsResourceReduction])
     {
-      v8 = [(AVPictureInPictureController *)self source];
-      v9 = [(AVPictureInPictureController *)self pictureInPictureViewController];
-      v10 = [(AVPictureInPictureController *)self playerController];
-      [v8 avkit_endReducingResourcesForPictureInPictureViewController:v9 playerController:v10];
+      source = [(AVPictureInPictureController *)self source];
+      pictureInPictureViewController = [(AVPictureInPictureController *)self pictureInPictureViewController];
+      playerController = [(AVPictureInPictureController *)self playerController];
+      [source avkit_endReducingResourcesForPictureInPictureViewController:pictureInPictureViewController playerController:playerController];
     }
 
     objc_storeStrong(&self->_contentSource, contentSource);
-    v11 = [(AVPictureInPictureControllerContentSource *)v28 source];
-    objc_storeWeak(&self->_source, v11);
+    source2 = [(AVPictureInPictureControllerContentSource *)v28 source];
+    objc_storeWeak(&self->_source, source2);
 
     WeakRetained = objc_loadWeakRetained(&self->_source);
-    v13 = [(AVPictureInPictureController *)self platformAdapter];
-    [v13 setSource:WeakRetained];
+    platformAdapter = [(AVPictureInPictureController *)self platformAdapter];
+    [platformAdapter setSource:WeakRetained];
 
-    v14 = [(AVPictureInPictureController *)self source];
-    v15 = [(AVPictureInPictureController *)self playerController];
-    v16 = [v14 avkit_makePlayerControllerIfNeeded:v15];
+    source3 = [(AVPictureInPictureController *)self source];
+    playerController2 = [(AVPictureInPictureController *)self playerController];
+    v16 = [source3 avkit_makePlayerControllerIfNeeded:playerController2];
 
     if (objc_opt_respondsToSelector())
     {
-      v17 = [(AVPictureInPictureController *)self contentSource];
-      [v17 initialRenderSize];
+      contentSource = [(AVPictureInPictureController *)self contentSource];
+      [contentSource initialRenderSize];
       [v16 setEnqueuedBufferDimensions:?];
     }
 
     [(AVPictureInPictureController *)self setPlayerController:v16];
     if ([(AVPictureInPictureController *)self wantsResourceReduction])
     {
-      v18 = [(AVPictureInPictureController *)self source];
-      v19 = [(AVPictureInPictureController *)self pictureInPictureViewController];
-      v20 = [(AVPictureInPictureController *)self playerController];
-      [v18 avkit_beginReducingResourcesForPictureInPictureViewController:v19 playerController:v20];
+      source4 = [(AVPictureInPictureController *)self source];
+      pictureInPictureViewController2 = [(AVPictureInPictureController *)self pictureInPictureViewController];
+      playerController3 = [(AVPictureInPictureController *)self playerController];
+      [source4 avkit_beginReducingResourcesForPictureInPictureViewController:pictureInPictureViewController2 playerController:playerController3];
     }
 
     v21 = [[AVObservationController alloc] initWithOwner:self];
     observationController = self->_observationController;
     self->_observationController = v21;
 
-    v23 = [(AVPictureInPictureController *)self _sbdlPlayerController];
-    [v23 setPictureInPictureController:self];
+    _sbdlPlayerController = [(AVPictureInPictureController *)self _sbdlPlayerController];
+    [_sbdlPlayerController setPictureInPictureController:self];
 
     [(AVPictureInPictureController *)self _startObservationsForContentSource:v28];
-    v24 = [(AVPictureInPictureController *)self observationController];
-    v25 = [(AVPictureInPictureController *)self platformAdapter];
-    v26 = [v24 startObserving:v25 keyPath:@"anyPictureInPictureActive" includeInitialValue:1 observationHandler:&__block_literal_global_97];
+    observationController2 = [(AVPictureInPictureController *)self observationController];
+    platformAdapter2 = [(AVPictureInPictureController *)self platformAdapter];
+    v26 = [observationController2 startObserving:platformAdapter2 keyPath:@"anyPictureInPictureActive" includeInitialValue:1 observationHandler:&__block_literal_global_97];
 
-    v27 = [(AVPictureInPictureController *)self observationController];
-    [v27 startObservingNotificationForName:@"AVPlayerControllerPIPActivitySessionIdentifierDidChangeNotification" object:0 notificationCenter:0 observationHandler:&__block_literal_global_100];
+    observationController3 = [(AVPictureInPictureController *)self observationController];
+    [observationController3 startObservingNotificationForName:@"AVPlayerControllerPIPActivitySessionIdentifierDidChangeNotification" object:0 notificationCenter:0 observationHandler:&__block_literal_global_100];
 
     [(AVPictureInPictureController *)self contentSourceVideoRectInWindowChanged];
     [(AVPictureInPictureController *)self setAllowsPictureInPicturePlayback:1];
@@ -481,54 +481,54 @@ void __49__AVPictureInPictureController_setContentSource___block_invoke(uint64_t
   }
 }
 
-- (void)pictureInPicturePlatformAdapterPrepareToStopForDismissal:(id)a3
+- (void)pictureInPicturePlatformAdapterPrepareToStopForDismissal:(id)dismissal
 {
   if ([(AVPictureInPictureController *)self _shouldPauseWhenExitingPictureInPicture])
   {
-    v4 = [(AVPictureInPictureController *)self platformAdapter];
-    v5 = [v4 playerController];
+    platformAdapter = [(AVPictureInPictureController *)self platformAdapter];
+    playerController = [platformAdapter playerController];
     v6 = objc_opt_respondsToSelector();
 
-    v9 = [(AVPictureInPictureController *)self platformAdapter];
-    v7 = [v9 playerController];
-    v8 = v7;
+    platformAdapter2 = [(AVPictureInPictureController *)self platformAdapter];
+    playerController2 = [platformAdapter2 playerController];
+    v8 = playerController2;
     if (v6)
     {
-      [v7 pauseForAllCoordinatedPlaybackParticipants:0];
+      [playerController2 pauseForAllCoordinatedPlaybackParticipants:0];
     }
 
     else
     {
-      [v7 setPlaying:0];
+      [playerController2 setPlaying:0];
     }
   }
 }
 
-- (void)pictureInPicturePlatformAdapter:(id)a3 statusDidChange:(int64_t)a4 fromStatus:(int64_t)a5
+- (void)pictureInPicturePlatformAdapter:(id)adapter statusDidChange:(int64_t)change fromStatus:(int64_t)status
 {
   v48 = *MEMORY[0x1E69E9840];
-  v8 = [(AVPictureInPictureController *)self sourceIfRetainedDuringPictureInPicturePlayback];
+  sourceIfRetainedDuringPictureInPicturePlayback = [(AVPictureInPictureController *)self sourceIfRetainedDuringPictureInPicturePlayback];
   v9 = _AVLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315650;
     v43 = "[AVPictureInPictureController pictureInPicturePlatformAdapter:statusDidChange:fromStatus:]";
     v44 = 2048;
-    v45 = a5;
+    statusCopy = status;
     v46 = 2048;
-    v47 = a4;
+    changeCopy = change;
     _os_log_impl(&dword_18B49C000, v9, OS_LOG_TYPE_DEFAULT, "%s old: %ld --> new: %ld", buf, 0x20u);
   }
 
-  v10 = a4 - 3;
-  v11 = a4 == 4;
-  if (a4 != 4 && v10 <= 3)
+  v10 = change - 3;
+  pictureInPictureWasStartedWhenEnteringBackground = change == 4;
+  if (change != 4 && v10 <= 3)
   {
-    v11 = [(AVPictureInPictureController *)self pictureInPictureWasStartedWhenEnteringBackground];
-    if ((((a4 > 0) ^ [(AVPictureInPictureController *)self isPictureInPicturePossible]) & 1) == 0)
+    pictureInPictureWasStartedWhenEnteringBackground = [(AVPictureInPictureController *)self pictureInPictureWasStartedWhenEnteringBackground];
+    if ((((change > 0) ^ [(AVPictureInPictureController *)self isPictureInPicturePossible]) & 1) == 0)
     {
 LABEL_9:
-      if ((a4 == 5) == [(AVPictureInPictureController *)self isPictureInPictureSuspended])
+      if ((change == 5) == [(AVPictureInPictureController *)self isPictureInPictureSuspended])
       {
         goto LABEL_11;
       }
@@ -537,22 +537,22 @@ LABEL_9:
     }
 
 LABEL_8:
-    [(AVPictureInPictureController *)self setPictureInPicturePossible:a4 > 0];
-    v12 = [(AVPictureInPictureController *)self playerController];
-    [v12 setCanTogglePictureInPicture:a4 > 0];
+    [(AVPictureInPictureController *)self setPictureInPicturePossible:change > 0];
+    playerController = [(AVPictureInPictureController *)self playerController];
+    [playerController setCanTogglePictureInPicture:change > 0];
 
     goto LABEL_9;
   }
 
-  if (((a4 > 0) ^ [(AVPictureInPictureController *)self isPictureInPicturePossible]))
+  if (((change > 0) ^ [(AVPictureInPictureController *)self isPictureInPicturePossible]))
   {
     goto LABEL_8;
   }
 
-  if (((a4 == 5) ^ [(AVPictureInPictureController *)self isPictureInPictureSuspended]))
+  if (((change == 5) ^ [(AVPictureInPictureController *)self isPictureInPictureSuspended]))
   {
 LABEL_10:
-    [(AVPictureInPictureController *)self setPictureInPictureSuspended:a4 == 5];
+    [(AVPictureInPictureController *)self setPictureInPictureSuspended:change == 5];
   }
 
 LABEL_11:
@@ -564,42 +564,42 @@ LABEL_11:
   if (v10 < 4 != [(AVPictureInPictureController *)self isPictureInPictureActive])
   {
     [(AVPictureInPictureController *)self setPictureInPictureActive:v10 < 4];
-    v13 = [(AVPictureInPictureController *)self playerController];
-    [v13 setPictureInPictureActive:v10 < 4];
+    playerController2 = [(AVPictureInPictureController *)self playerController];
+    [playerController2 setPictureInPictureActive:v10 < 4];
   }
 
   if (v10 >= 4)
   {
-    v14 = [(AVPictureInPictureController *)self platformAdapter];
-    -[AVPictureInPictureController setOtherPictureInPictureActive:](self, "setOtherPictureInPictureActive:", [v14 isAnyPictureInPictureActive]);
+    platformAdapter = [(AVPictureInPictureController *)self platformAdapter];
+    -[AVPictureInPictureController setOtherPictureInPictureActive:](self, "setOtherPictureInPictureActive:", [platformAdapter isAnyPictureInPictureActive]);
   }
 
-  if (v11 != [(AVPictureInPictureController *)self pictureInPictureWasStartedWhenEnteringBackground])
+  if (pictureInPictureWasStartedWhenEnteringBackground != [(AVPictureInPictureController *)self pictureInPictureWasStartedWhenEnteringBackground])
   {
-    [(AVPictureInPictureController *)self setPictureInPictureWasStartedWhenEnteringBackground:v11];
+    [(AVPictureInPictureController *)self setPictureInPictureWasStartedWhenEnteringBackground:pictureInPictureWasStartedWhenEnteringBackground];
   }
 
-  v15 = [(AVPictureInPictureController *)self retainsSourceDuringPictureInPicturePlayback];
+  retainsSourceDuringPictureInPicturePlayback = [(AVPictureInPictureController *)self retainsSourceDuringPictureInPicturePlayback];
   v16 = 0;
   v17 = 1;
-  if (a4 <= 2)
+  if (change <= 2)
   {
-    if (a4 < 2)
+    if (change < 2)
     {
       v16 = 0;
       v19 = 0;
-      v15 = 0;
+      retainsSourceDuringPictureInPicturePlayback = 0;
     }
 
-    else if (a4 == 2)
+    else if (change == 2)
     {
       v20 = [(AVPictureInPictureController *)self _delegateIfRespondsToSelector:sel_pictureInPictureControllerWillStartPictureInPicture_];
       [v20 pictureInPictureControllerWillStartPictureInPicture:self];
 
       v40 = @"AVPictureInPictureControllerPlaybackStateIsPlayingKey";
       v21 = MEMORY[0x1E696AD98];
-      v22 = [(AVPictureInPictureController *)self playerController];
-      v23 = [v21 numberWithBool:{objc_msgSend(v22, "isPlaying")}];
+      playerController3 = [(AVPictureInPictureController *)self playerController];
+      v23 = [v21 numberWithBool:{objc_msgSend(playerController3, "isPlaying")}];
       v41 = v23;
       v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v41 forKeys:&v40 count:1];
 
@@ -613,15 +613,15 @@ LABEL_11:
     }
   }
 
-  else if (a4 > 5)
+  else if (change > 5)
   {
-    if (a4 == 6)
+    if (change == 6)
     {
       v27 = [(AVPictureInPictureController *)self _delegateIfRespondsToSelector:sel_pictureInPictureControllerWillStopPictureInPicture_];
       [v27 pictureInPictureControllerWillStopPictureInPicture:self];
 
-      v28 = [(AVPictureInPictureController *)self sourceIfRetainedDuringPictureInPicturePlayback];
-      v15 = v28 != 0;
+      sourceIfRetainedDuringPictureInPicturePlayback2 = [(AVPictureInPictureController *)self sourceIfRetainedDuringPictureInPicturePlayback];
+      retainsSourceDuringPictureInPicturePlayback = sourceIfRetainedDuringPictureInPicturePlayback2 != 0;
 
       v16 = 0;
       v17 = 0;
@@ -631,13 +631,13 @@ LABEL_11:
     else
     {
       v19 = 0;
-      if (a4 == 7)
+      if (change == 7)
       {
         v24 = [(AVPictureInPictureController *)self _delegateIfRespondsToSelector:sel_pictureInPictureControllerDidStopPictureInPicture_];
         [v24 pictureInPictureControllerDidStopPictureInPicture:self];
 
-        v25 = [(AVPictureInPictureController *)self sourceIfRetainedDuringPictureInPicturePlayback];
-        v15 = v25 != 0;
+        sourceIfRetainedDuringPictureInPicturePlayback3 = [(AVPictureInPictureController *)self sourceIfRetainedDuringPictureInPicturePlayback];
+        retainsSourceDuringPictureInPicturePlayback = sourceIfRetainedDuringPictureInPicturePlayback3 != 0;
 
         v16 = 0;
         v17 = 0;
@@ -649,10 +649,10 @@ LABEL_11:
   else if (v10 >= 2)
   {
     v19 = 0;
-    if (a4 == 5)
+    if (change == 5)
     {
-      v26 = [(AVPictureInPictureController *)self sourceIfRetainedDuringPictureInPicturePlayback];
-      v15 = v26 != 0;
+      sourceIfRetainedDuringPictureInPicturePlayback4 = [(AVPictureInPictureController *)self sourceIfRetainedDuringPictureInPicturePlayback];
+      retainsSourceDuringPictureInPicturePlayback = sourceIfRetainedDuringPictureInPicturePlayback4 != 0;
 
       v16 = 0;
       v19 = 0;
@@ -661,7 +661,7 @@ LABEL_11:
 
   else
   {
-    if (a5 == 2)
+    if (status == 2)
     {
       v18 = [(AVPictureInPictureController *)self _delegateIfRespondsToSelector:sel_pictureInPictureControllerDidStartPictureInPicture_];
       [v18 pictureInPictureControllerDidStartPictureInPicture:self];
@@ -675,7 +675,7 @@ LABEL_11:
   v29 = _AVLog();
   if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
   {
-    if (v15)
+    if (retainsSourceDuringPictureInPicturePlayback)
     {
       v30 = "YES";
     }
@@ -688,16 +688,16 @@ LABEL_11:
     *buf = 136315650;
     v43 = "[AVPictureInPictureController pictureInPicturePlatformAdapter:statusDidChange:fromStatus:]";
     v44 = 2080;
-    v45 = "shouldRetainSource";
+    statusCopy = "shouldRetainSource";
     v46 = 2080;
-    v47 = v30;
+    changeCopy = v30;
     _os_log_impl(&dword_18B49C000, v29, OS_LOG_TYPE_DEFAULT, "%s %s %s", buf, 0x20u);
   }
 
-  if (v15)
+  if (retainsSourceDuringPictureInPicturePlayback)
   {
-    v31 = [(AVPictureInPictureController *)self source];
-    [(AVPictureInPictureController *)self setSourceIfRetainedDuringPictureInPicturePlayback:v31];
+    source = [(AVPictureInPictureController *)self source];
+    [(AVPictureInPictureController *)self setSourceIfRetainedDuringPictureInPicturePlayback:source];
   }
 
   else
@@ -708,8 +708,8 @@ LABEL_11:
   v32 = _AVLog();
   if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
   {
-    v33 = [(AVPictureInPictureController *)self sourceIfRetainedDuringPictureInPicturePlayback];
-    if (v33)
+    sourceIfRetainedDuringPictureInPicturePlayback5 = [(AVPictureInPictureController *)self sourceIfRetainedDuringPictureInPicturePlayback];
+    if (sourceIfRetainedDuringPictureInPicturePlayback5)
     {
       v34 = "NO";
     }
@@ -722,36 +722,36 @@ LABEL_11:
     *buf = 136315650;
     v43 = "[AVPictureInPictureController pictureInPicturePlatformAdapter:statusDidChange:fromStatus:]";
     v44 = 2080;
-    v45 = "self.sourceIfRetainedDuringPictureInPicturePlayback == nil";
+    statusCopy = "self.sourceIfRetainedDuringPictureInPicturePlayback == nil";
     v46 = 2080;
-    v47 = v34;
+    changeCopy = v34;
     _os_log_impl(&dword_18B49C000, v32, OS_LOG_TYPE_DEFAULT, "%s %s %s", buf, 0x20u);
   }
 
   if ((v17 & 1) == 0)
   {
-    v35 = [(AVPictureInPictureController *)self source];
+    source2 = [(AVPictureInPictureController *)self source];
 
-    if (v35)
+    if (source2)
     {
-      v36 = [(AVPictureInPictureController *)self source];
-      v37 = [MEMORY[0x1E695DF90] dictionaryWithObject:v36 forKey:@"AVPictureInPictureControllerContentSourceKey"];
+      source3 = [(AVPictureInPictureController *)self source];
+      v37 = [MEMORY[0x1E695DF90] dictionaryWithObject:source3 forKey:@"AVPictureInPictureControllerContentSourceKey"];
       v38 = v37;
       if (v16)
       {
         [v37 addEntriesFromDictionary:v16];
       }
 
-      v39 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v39 postNotificationName:v19 object:self userInfo:v38];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter postNotificationName:v19 object:self userInfo:v38];
     }
   }
 }
 
-- (void)pictureInPicturePlatformAdapter:(id)a3 prepareToStopForRestoringUserInterface:(id)a4
+- (void)pictureInPicturePlatformAdapter:(id)adapter prepareToStopForRestoringUserInterface:(id)interface
 {
   v14 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  interfaceCopy = interface;
   v6 = _AVLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -762,67 +762,67 @@ LABEL_11:
     _os_log_impl(&dword_18B49C000, v6, OS_LOG_TYPE_DEFAULT, "%s %d", &v10, 0x12u);
   }
 
-  v7 = [(AVPictureInPictureController *)self delegate];
+  delegate = [(AVPictureInPictureController *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(AVPictureInPictureController *)self delegate];
-    [v9 pictureInPictureController:self restoreUserInterfaceForPictureInPictureStopWithCompletionHandler:v5];
+    delegate2 = [(AVPictureInPictureController *)self delegate];
+    [delegate2 pictureInPictureController:self restoreUserInterfaceForPictureInPictureStopWithCompletionHandler:interfaceCopy];
   }
 
   else
   {
-    v5[2](v5, 1);
+    interfaceCopy[2](interfaceCopy, 1);
   }
 }
 
 - (void)pictureInPicturePlatformAdapterEndReducingResourcesForEligibleOffScreenState
 {
   self->_wantsResourceReduction = 0;
-  v5 = [(AVPictureInPictureController *)self source];
-  v3 = [(AVPictureInPictureController *)self pictureInPictureViewController];
-  v4 = [(AVPictureInPictureController *)self playerController];
-  [v5 avkit_endReducingResourcesForPictureInPictureViewController:v3 playerController:v4];
+  source = [(AVPictureInPictureController *)self source];
+  pictureInPictureViewController = [(AVPictureInPictureController *)self pictureInPictureViewController];
+  playerController = [(AVPictureInPictureController *)self playerController];
+  [source avkit_endReducingResourcesForPictureInPictureViewController:pictureInPictureViewController playerController:playerController];
 }
 
 - (void)pictureInPicturePlatformAdapterBeginReducingResourcesForEligibleOffScreenState
 {
   self->_wantsResourceReduction = 1;
-  v5 = [(AVPictureInPictureController *)self source];
-  v3 = [(AVPictureInPictureController *)self pictureInPictureViewController];
-  v4 = [(AVPictureInPictureController *)self playerController];
-  [v5 avkit_beginReducingResourcesForPictureInPictureViewController:v3 playerController:v4];
+  source = [(AVPictureInPictureController *)self source];
+  pictureInPictureViewController = [(AVPictureInPictureController *)self pictureInPictureViewController];
+  playerController = [(AVPictureInPictureController *)self playerController];
+  [source avkit_beginReducingResourcesForPictureInPictureViewController:pictureInPictureViewController playerController:playerController];
 }
 
-- (void)pictureInPicturePlatformAdapter:(id)a3 handlePlaybackCommand:(int64_t)a4
+- (void)pictureInPicturePlatformAdapter:(id)adapter handlePlaybackCommand:(int64_t)command
 {
   v40[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (a4 <= 5)
+  adapterCopy = adapter;
+  if (command <= 5)
   {
-    if (a4 <= 2)
+    if (command <= 2)
     {
-      if (a4 == 1)
+      if (command == 1)
       {
-        v22 = [(AVPictureInPictureController *)self playerController];
-        v23 = [v22 isPlaying];
+        playerController = [(AVPictureInPictureController *)self playerController];
+        isPlaying = [playerController isPlaying];
 
-        if (v23)
+        if (isPlaying)
         {
           goto LABEL_34;
         }
 
-        v24 = [(AVPictureInPictureController *)self playerController];
-        [v24 togglePlaybackEvenWhenInBackground:self];
+        playerController2 = [(AVPictureInPictureController *)self playerController];
+        [playerController2 togglePlaybackEvenWhenInBackground:self];
 
         v25 = MEMORY[0x1E696AD98];
-        v26 = [(AVPictureInPictureController *)self playerController];
-        v7 = [v25 numberWithBool:{objc_msgSend(v26, "isPlaying")}];
+        playerController3 = [(AVPictureInPictureController *)self playerController];
+        playerController12 = [v25 numberWithBool:{objc_msgSend(playerController3, "isPlaying")}];
 
-        v18 = [MEMORY[0x1E696AD88] defaultCenter];
+        defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
         v39 = @"AVPictureInPictureControllerPlaybackStateIsPlayingKey";
-        v40[0] = v7;
+        v40[0] = playerController12;
         v19 = MEMORY[0x1E695DF20];
         v20 = v40;
         v21 = &v39;
@@ -830,61 +830,61 @@ LABEL_11:
 
       else
       {
-        if (a4 != 2)
+        if (command != 2)
         {
           goto LABEL_34;
         }
 
-        v13 = [(AVPictureInPictureController *)self playerController];
-        v14 = [v13 isPlaying];
+        playerController4 = [(AVPictureInPictureController *)self playerController];
+        isPlaying2 = [playerController4 isPlaying];
 
-        if (!v14)
+        if (!isPlaying2)
         {
           goto LABEL_34;
         }
 
-        v15 = [(AVPictureInPictureController *)self playerController];
-        [v15 togglePlaybackEvenWhenInBackground:self];
+        playerController5 = [(AVPictureInPictureController *)self playerController];
+        [playerController5 togglePlaybackEvenWhenInBackground:self];
 
         v16 = MEMORY[0x1E696AD98];
-        v17 = [(AVPictureInPictureController *)self playerController];
-        v7 = [v16 numberWithBool:{objc_msgSend(v17, "isPlaying")}];
+        playerController6 = [(AVPictureInPictureController *)self playerController];
+        playerController12 = [v16 numberWithBool:{objc_msgSend(playerController6, "isPlaying")}];
 
-        v18 = [MEMORY[0x1E696AD88] defaultCenter];
+        defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
         v37 = @"AVPictureInPictureControllerPlaybackStateIsPlayingKey";
-        v38 = v7;
+        v38 = playerController12;
         v19 = MEMORY[0x1E695DF20];
         v20 = &v38;
         v21 = &v37;
       }
 
       v27 = [v19 dictionaryWithObjects:v20 forKeys:v21 count:1];
-      [v18 postNotificationName:@"AVPictureInPictureControllerUserPlaybackStateDidChangeNotification" object:self userInfo:v27];
+      [defaultCenter postNotificationName:@"AVPictureInPictureControllerUserPlaybackStateDidChangeNotification" object:self userInfo:v27];
 
       goto LABEL_33;
     }
 
-    if (a4 == 3)
+    if (command == 3)
     {
-      v36 = [(AVPictureInPictureController *)self playerController];
-      -[AVPictureInPictureController setWasPlayingWhenPictureInPictureInterruptionBegan:](self, "setWasPlayingWhenPictureInPictureInterruptionBegan:", [v36 isPlaying]);
+      playerController7 = [(AVPictureInPictureController *)self playerController];
+      -[AVPictureInPictureController setWasPlayingWhenPictureInPictureInterruptionBegan:](self, "setWasPlayingWhenPictureInPictureInterruptionBegan:", [playerController7 isPlaying]);
 
-      v28 = [(AVPictureInPictureController *)self playerController];
-      v29 = v28;
+      playerController8 = [(AVPictureInPictureController *)self playerController];
+      v29 = playerController8;
       v30 = 1;
     }
 
     else
     {
-      if (a4 != 4)
+      if (command != 4)
       {
-        v8 = [(AVPictureInPictureController *)self playerController];
-        [v8 setPictureInPictureInterrupted:0];
+        playerController9 = [(AVPictureInPictureController *)self playerController];
+        [playerController9 setPictureInPictureInterrupted:0];
 
         if ([(AVPictureInPictureController *)self wasPlayingWhenPictureInPictureInterruptionBegan])
         {
-          v9 = [(AVPictureInPictureController *)self playerController];
-          [v9 setPlaying:1];
+          playerController10 = [(AVPictureInPictureController *)self playerController];
+          [playerController10 setPlaying:1];
 
           [(AVPictureInPictureController *)self setWasPlayingWhenPictureInPictureInterruptionBegan:0];
         }
@@ -892,78 +892,78 @@ LABEL_11:
         goto LABEL_34;
       }
 
-      v28 = [(AVPictureInPictureController *)self playerController];
-      v29 = v28;
+      playerController8 = [(AVPictureInPictureController *)self playerController];
+      v29 = playerController8;
       v30 = 0;
     }
 
-    [v28 setPictureInPictureInterrupted:v30];
+    [playerController8 setPictureInPictureInterrupted:v30];
 LABEL_31:
 
     goto LABEL_34;
   }
 
-  if (a4 <= 8)
+  if (command <= 8)
   {
-    if (a4 == 6)
+    if (command == 6)
     {
-      v31 = [(AVPictureInPictureController *)self playerController];
-      v29 = v31;
+      playerController11 = [(AVPictureInPictureController *)self playerController];
+      v29 = playerController11;
       v32 = 1;
     }
 
     else
     {
-      if (a4 != 7)
+      if (command != 7)
       {
-        v7 = [(AVPictureInPictureController *)self playerController];
-        [v7 togglePlaybackEvenWhenInBackground:self];
+        playerController12 = [(AVPictureInPictureController *)self playerController];
+        [playerController12 togglePlaybackEvenWhenInBackground:self];
 LABEL_33:
 
         goto LABEL_34;
       }
 
-      v31 = [(AVPictureInPictureController *)self playerController];
-      v29 = v31;
+      playerController11 = [(AVPictureInPictureController *)self playerController];
+      v29 = playerController11;
       v32 = 0;
     }
 
-    [v31 setMuted:v32];
+    [playerController11 setMuted:v32];
     goto LABEL_31;
   }
 
-  switch(a4)
+  switch(command)
   {
     case 9:
-      v7 = [(AVPictureInPictureController *)self prerollDelegate];
-      [v7 pictureInPictureControllerSkipPreroll:self];
+      playerController12 = [(AVPictureInPictureController *)self prerollDelegate];
+      [playerController12 pictureInPictureControllerSkipPreroll:self];
       goto LABEL_33;
     case 10:
-      v33 = [(AVPictureInPictureController *)self delegate];
-      objc_storeWeak(&self->__extendedDelegate, v33);
+      delegate = [(AVPictureInPictureController *)self delegate];
+      objc_storeWeak(&self->__extendedDelegate, delegate);
 
-      v34 = [(AVPictureInPictureController *)self _extendedDelegate];
+      _extendedDelegate = [(AVPictureInPictureController *)self _extendedDelegate];
       v35 = objc_opt_respondsToSelector();
 
       if (v35)
       {
-        v7 = [(AVPictureInPictureController *)self _extendedDelegate];
-        [v7 pictureInPictureControllerDidSkipBackwardInPictureInPicture:self];
+        playerController12 = [(AVPictureInPictureController *)self _extendedDelegate];
+        [playerController12 pictureInPictureControllerDidSkipBackwardInPictureInPicture:self];
         goto LABEL_33;
       }
 
       break;
     case 11:
-      v10 = [(AVPictureInPictureController *)self delegate];
-      objc_storeWeak(&self->__extendedDelegate, v10);
+      delegate2 = [(AVPictureInPictureController *)self delegate];
+      objc_storeWeak(&self->__extendedDelegate, delegate2);
 
-      v11 = [(AVPictureInPictureController *)self _extendedDelegate];
+      _extendedDelegate2 = [(AVPictureInPictureController *)self _extendedDelegate];
       v12 = objc_opt_respondsToSelector();
 
       if (v12)
       {
-        v7 = [(AVPictureInPictureController *)self _extendedDelegate];
-        [v7 pictureInPictureControllerDidSkipForwardInPictureInPicture:self];
+        playerController12 = [(AVPictureInPictureController *)self _extendedDelegate];
+        [playerController12 pictureInPictureControllerDidSkipForwardInPictureInPicture:self];
         goto LABEL_33;
       }
 
@@ -973,103 +973,103 @@ LABEL_33:
 LABEL_34:
 }
 
-- (void)pictureInPicturePlatformAdapter:(id)a3 failedToStartError:(id)a4
+- (void)pictureInPicturePlatformAdapter:(id)adapter failedToStartError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   v6 = [(AVPictureInPictureController *)self _delegateIfRespondsToSelector:sel_pictureInPictureController_failedToStartPictureInPictureWithError_];
-  [v6 pictureInPictureController:self failedToStartPictureInPictureWithError:v5];
+  [v6 pictureInPictureController:self failedToStartPictureInPictureWithError:errorCopy];
 }
 
-- (void)setBackgroundPlaybackPolicy:(int64_t)a3
+- (void)setBackgroundPlaybackPolicy:(int64_t)policy
 {
-  if (a3 <= 1)
+  if (policy <= 1)
   {
-    v3 = 1;
+    policyCopy = 1;
   }
 
   else
   {
-    v3 = a3;
+    policyCopy = policy;
   }
 
-  v4 = [(AVPictureInPictureController *)self platformAdapter];
-  [v4 setBackgroundPlaybackPolicy:v3];
+  platformAdapter = [(AVPictureInPictureController *)self platformAdapter];
+  [platformAdapter setBackgroundPlaybackPolicy:policyCopy];
 }
 
 - (int64_t)backgroundPlaybackPolicy
 {
-  v2 = [(AVPictureInPictureController *)self platformAdapter];
-  v3 = [v2 backgroundPlaybackPolicy];
+  platformAdapter = [(AVPictureInPictureController *)self platformAdapter];
+  backgroundPlaybackPolicy = [platformAdapter backgroundPlaybackPolicy];
 
-  return v3;
+  return backgroundPlaybackPolicy;
 }
 
-- (void)setActivitySessionIdentifier:(id)a3
+- (void)setActivitySessionIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(AVPictureInPictureController *)self platformAdapter];
-  [v5 setActivitySessionIdentifier:v4];
+  identifierCopy = identifier;
+  platformAdapter = [(AVPictureInPictureController *)self platformAdapter];
+  [platformAdapter setActivitySessionIdentifier:identifierCopy];
 }
 
 - (id)activitySessionIdentifier
 {
-  v2 = [(AVPictureInPictureController *)self platformAdapter];
-  v3 = [v2 activitySessionIdentifier];
+  platformAdapter = [(AVPictureInPictureController *)self platformAdapter];
+  activitySessionIdentifier = [platformAdapter activitySessionIdentifier];
 
-  return v3;
+  return activitySessionIdentifier;
 }
 
 - (void)reloadPrerollAttributes
 {
-  v5 = [(AVPictureInPictureController *)self prerollDelegate];
-  v3 = [v5 pictureInPictureControllerPrerollAttributes:self];
-  v4 = [(AVPictureInPictureController *)self platformAdapter];
-  [v4 setPrerollAttributes:v3];
+  prerollDelegate = [(AVPictureInPictureController *)self prerollDelegate];
+  v3 = [prerollDelegate pictureInPictureControllerPrerollAttributes:self];
+  platformAdapter = [(AVPictureInPictureController *)self platformAdapter];
+  [platformAdapter setPrerollAttributes:v3];
 }
 
 - (id)sampleBufferDisplayLayer
 {
-  v3 = [(AVPictureInPictureController *)self source];
+  source = [(AVPictureInPictureController *)self source];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [(AVPictureInPictureController *)self source];
+    source2 = [(AVPictureInPictureController *)self source];
   }
 
   else
   {
-    v4 = 0;
+    source2 = 0;
   }
 
-  return v4;
+  return source2;
 }
 
-- (void)stopObservingPlayerController:(id)a3
+- (void)stopObservingPlayerController:(id)controller
 {
-  v4 = [(AVPictureInPictureController *)self playerControllerIsPlayingObservationToken];
+  playerControllerIsPlayingObservationToken = [(AVPictureInPictureController *)self playerControllerIsPlayingObservationToken];
 
-  if (v4)
+  if (playerControllerIsPlayingObservationToken)
   {
-    v5 = [(AVPictureInPictureController *)self observationController];
-    v6 = [(AVPictureInPictureController *)self playerControllerIsPlayingObservationToken];
-    [v5 stopObserving:v6];
+    observationController = [(AVPictureInPictureController *)self observationController];
+    playerControllerIsPlayingObservationToken2 = [(AVPictureInPictureController *)self playerControllerIsPlayingObservationToken];
+    [observationController stopObserving:playerControllerIsPlayingObservationToken2];
 
     [(AVPictureInPictureController *)self setPlayerControllerIsPlayingObservationToken:0];
   }
 }
 
-- (void)startObservingPlayerController:(id)a3
+- (void)startObservingPlayerController:(id)controller
 {
-  v4 = a3;
-  if (v4)
+  controllerCopy = controller;
+  if (controllerCopy)
   {
-    v5 = [(AVPictureInPictureController *)self observationController];
+    observationController = [(AVPictureInPictureController *)self observationController];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __63__AVPictureInPictureController_startObservingPlayerController___block_invoke;
     v7[3] = &unk_1E72087E0;
-    v8 = v4;
-    v6 = [v5 startObserving:self keyPath:@"playerController.playing" includeInitialValue:1 observationHandler:v7];
+    v8 = controllerCopy;
+    v6 = [observationController startObserving:self keyPath:@"playerController.playing" includeInitialValue:1 observationHandler:v7];
     [(AVPictureInPictureController *)self setPlayerControllerIsPlayingObservationToken:v6];
   }
 }
@@ -1102,17 +1102,17 @@ LABEL_4:
   }
 }
 
-- (void)setPlayerController:(id)a3
+- (void)setPlayerController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   playerController = self->_playerController;
-  v12 = v5;
-  if (playerController != v5)
+  v12 = controllerCopy;
+  if (playerController != controllerCopy)
   {
     v7 = playerController;
-    v8 = [(AVPlayerController *)v7 isPictureInPictureInterrupted];
+    isPictureInPictureInterrupted = [(AVPlayerController *)v7 isPictureInPictureInterrupted];
     [(AVPictureInPictureController *)self stopObservingPlayerController:v7];
-    objc_storeStrong(&self->_playerController, a3);
+    objc_storeStrong(&self->_playerController, controller);
     [(AVPictureInPictureController *)self startObservingPlayerController:v12];
     if ([(AVPictureInPictureController *)self wantsImmediateAssetInspection])
     {
@@ -1121,22 +1121,22 @@ LABEL_4:
 
     [(AVPlayerController *)v12 setAllowsPictureInPicturePlayback:[(AVPictureInPictureController *)self allowsPictureInPicturePlayback]];
     [(AVPlayerController *)v12 setPictureInPictureActive:[(AVPictureInPictureController *)self isPictureInPictureActive]];
-    [(AVPlayerController *)v12 setPictureInPictureInterrupted:v8];
+    [(AVPlayerController *)v12 setPictureInPictureInterrupted:isPictureInPictureInterrupted];
     [(AVPlayerController *)v12 setCanTogglePictureInPicture:[(AVPictureInPictureController *)self isPictureInPicturePossible]];
-    v9 = [(AVPictureInPictureController *)self platformAdapter];
-    [v9 setPlayerController:v12];
+    platformAdapter = [(AVPictureInPictureController *)self platformAdapter];
+    [platformAdapter setPlayerController:v12];
 
-    v10 = [(AVPictureInPictureController *)self platformAdapter];
-    v11 = [v10 pictureInPictureViewController];
-    [v11 setPlayerController:v12];
+    platformAdapter2 = [(AVPictureInPictureController *)self platformAdapter];
+    pictureInPictureViewController = [platformAdapter2 pictureInPictureViewController];
+    [pictureInPictureViewController setPlayerController:v12];
 
     [(AVPictureInPictureController *)self _updateBackgroundPlaybackPolicyFromPlayerController];
   }
 }
 
-- (void)setPictureInPicturePossible:(BOOL)a3
+- (void)setPictureInPicturePossible:(BOOL)possible
 {
-  v3 = a3;
+  possibleCopy = possible;
   v14 = *MEMORY[0x1E69E9840];
   v5 = _AVLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -1146,7 +1146,7 @@ LABEL_4:
     v9 = "[AVPictureInPictureController setPictureInPicturePossible:]";
     v11 = "pictureInPicturePossible";
     v10 = 2080;
-    if (v3)
+    if (possibleCopy)
     {
       v6 = "YES";
     }
@@ -1156,11 +1156,11 @@ LABEL_4:
     _os_log_impl(&dword_18B49C000, v5, OS_LOG_TYPE_DEFAULT, "%s %s %s", &v8, 0x20u);
   }
 
-  self->_pictureInPicturePossible = v3;
-  v7 = [(AVPictureInPictureController *)self playerController];
-  [v7 setCanTogglePictureInPicture:v3];
+  self->_pictureInPicturePossible = possibleCopy;
+  playerController = [(AVPictureInPictureController *)self playerController];
+  [playerController setCanTogglePictureInPicture:possibleCopy];
 
-  if (!v3)
+  if (!possibleCopy)
   {
     if ([(AVPictureInPictureController *)self isPictureInPictureActive])
     {
@@ -1194,17 +1194,17 @@ LABEL_4:
       _os_log_impl(&dword_18B49C000, v5, OS_LOG_TYPE_DEFAULT, "%s %s %s", &v8, 0x20u);
     }
 
-    v7 = [(AVPictureInPictureController *)self platformAdapter];
-    [v7 setRequiresLinearPlayback:v3];
+    platformAdapter = [(AVPictureInPictureController *)self platformAdapter];
+    [platformAdapter setRequiresLinearPlayback:v3];
   }
 }
 
-- (void)setCanPausePlaybackWhenClosingPictureInPicture:(BOOL)a3
+- (void)setCanPausePlaybackWhenClosingPictureInPicture:(BOOL)picture
 {
   v14 = *MEMORY[0x1E69E9840];
-  if (self->_canPausePlaybackWhenClosingPictureInPicture != a3)
+  if (self->_canPausePlaybackWhenClosingPictureInPicture != picture)
   {
-    v3 = a3;
+    pictureCopy = picture;
     v5 = _AVLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
@@ -1213,7 +1213,7 @@ LABEL_4:
       v9 = "[AVPictureInPictureController setCanPausePlaybackWhenClosingPictureInPicture:]";
       v11 = "canPausePlaybackWhenClosingPictureInPicture";
       v10 = 2080;
-      if (v3)
+      if (pictureCopy)
       {
         v6 = "YES";
       }
@@ -1223,19 +1223,19 @@ LABEL_4:
       _os_log_impl(&dword_18B49C000, v5, OS_LOG_TYPE_DEFAULT, "%s %s %s", &v8, 0x20u);
     }
 
-    self->_canPausePlaybackWhenClosingPictureInPicture = v3;
-    v7 = [(AVPictureInPictureController *)self platformAdapter];
-    [v7 setCanPausePlaybackWhenClosingPictureInPicture:v3];
+    self->_canPausePlaybackWhenClosingPictureInPicture = pictureCopy;
+    platformAdapter = [(AVPictureInPictureController *)self platformAdapter];
+    [platformAdapter setCanPausePlaybackWhenClosingPictureInPicture:pictureCopy];
   }
 }
 
-- (void)setCanStartAutomaticallyWhenEnteringBackground:(BOOL)a3
+- (void)setCanStartAutomaticallyWhenEnteringBackground:(BOOL)background
 {
   v14 = *MEMORY[0x1E69E9840];
-  if (self->_canStartAutomaticallyWhenEnteringBackground != a3)
+  if (self->_canStartAutomaticallyWhenEnteringBackground != background)
   {
-    v3 = a3;
-    self->_canStartAutomaticallyWhenEnteringBackground = a3;
+    backgroundCopy = background;
+    self->_canStartAutomaticallyWhenEnteringBackground = background;
     v5 = _AVLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
@@ -1244,7 +1244,7 @@ LABEL_4:
       v9 = "[AVPictureInPictureController setCanStartAutomaticallyWhenEnteringBackground:]";
       v11 = "canStartAutomaticallyWhenEnteringBackground";
       v10 = 2080;
-      if (v3)
+      if (backgroundCopy)
       {
         v6 = "YES";
       }
@@ -1254,18 +1254,18 @@ LABEL_4:
       _os_log_impl(&dword_18B49C000, v5, OS_LOG_TYPE_DEFAULT, "%s %s %s", &v8, 0x20u);
     }
 
-    v7 = [(AVPictureInPictureController *)self platformAdapter];
-    [v7 setCanStartAutomaticallyWhenEnteringBackground:v3];
+    platformAdapter = [(AVPictureInPictureController *)self platformAdapter];
+    [platformAdapter setCanStartAutomaticallyWhenEnteringBackground:backgroundCopy];
   }
 }
 
-- (void)setMicrophoneEnabled:(BOOL)a3
+- (void)setMicrophoneEnabled:(BOOL)enabled
 {
   v14 = *MEMORY[0x1E69E9840];
-  if (self->_microphoneEnabled != a3)
+  if (self->_microphoneEnabled != enabled)
   {
-    v3 = a3;
-    self->_microphoneEnabled = a3;
+    enabledCopy = enabled;
+    self->_microphoneEnabled = enabled;
     v5 = _AVLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
@@ -1274,7 +1274,7 @@ LABEL_4:
       v9 = "[AVPictureInPictureController setMicrophoneEnabled:]";
       v11 = "microphoneEnabled";
       v10 = 2080;
-      if (v3)
+      if (enabledCopy)
       {
         v6 = "YES";
       }
@@ -1284,21 +1284,21 @@ LABEL_4:
       _os_log_impl(&dword_18B49C000, v5, OS_LOG_TYPE_DEFAULT, "%s %s %s", &v8, 0x20u);
     }
 
-    v7 = [(AVPictureInPictureController *)self platformAdapter];
-    [v7 setMicrophoneEnabled:v3];
+    platformAdapter = [(AVPictureInPictureController *)self platformAdapter];
+    [platformAdapter setMicrophoneEnabled:enabledCopy];
   }
 }
 
-- (void)setControlsStyle:(int64_t)a3
+- (void)setControlsStyle:(int64_t)style
 {
-  self->_controlsStyle = a3;
-  v4 = [(AVPictureInPictureController *)self platformAdapter];
-  [v4 setControlsStyle:a3];
+  self->_controlsStyle = style;
+  platformAdapter = [(AVPictureInPictureController *)self platformAdapter];
+  [platformAdapter setControlsStyle:style];
 }
 
-- (void)setOtherPictureInPictureActive:(BOOL)a3
+- (void)setOtherPictureInPictureActive:(BOOL)active
 {
-  v3 = a3;
+  activeCopy = active;
   v10 = *MEMORY[0x1E69E9840];
   v5 = _AVLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -1308,7 +1308,7 @@ LABEL_4:
     *&v8[4] = "[AVPictureInPictureController setOtherPictureInPictureActive:]";
     *&v8[14] = "otherPictureInPictureActive";
     *&v8[12] = 2080;
-    if (v3)
+    if (activeCopy)
     {
       v6 = "YES";
     }
@@ -1318,14 +1318,14 @@ LABEL_4:
     _os_log_impl(&dword_18B49C000, v5, OS_LOG_TYPE_DEFAULT, "%s %s %s", v8, 0x20u);
   }
 
-  self->_otherPictureInPictureActive = v3;
-  v7 = v3 || [(AVPictureInPictureController *)self isPictureInPictureActive];
+  self->_otherPictureInPictureActive = activeCopy;
+  v7 = activeCopy || [(AVPictureInPictureController *)self isPictureInPictureActive];
   [(AVPictureInPictureController *)self _setCanStopPictureInPicture:v7, *v8, *&v8[16]];
 }
 
-- (void)setPictureInPictureActive:(BOOL)a3
+- (void)setPictureInPictureActive:(BOOL)active
 {
-  v3 = a3;
+  activeCopy = active;
   v11 = *MEMORY[0x1E69E9840];
   v5 = _AVLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -1335,7 +1335,7 @@ LABEL_4:
     *&v9[4] = "[AVPictureInPictureController setPictureInPictureActive:]";
     *&v9[14] = "pictureInPictureActive";
     *&v9[12] = 2080;
-    if (v3)
+    if (activeCopy)
     {
       v6 = "YES";
     }
@@ -1345,28 +1345,28 @@ LABEL_4:
     _os_log_impl(&dword_18B49C000, v5, OS_LOG_TYPE_DEFAULT, "%s %s %s", v9, 0x20u);
   }
 
-  self->_pictureInPictureActive = v3;
-  v7 = [(AVPictureInPictureController *)self playerController];
-  [v7 setPictureInPictureActive:v3];
+  self->_pictureInPictureActive = activeCopy;
+  playerController = [(AVPictureInPictureController *)self playerController];
+  [playerController setPictureInPictureActive:activeCopy];
 
-  v8 = v3 || [(AVPictureInPictureController *)self isOtherPictureInPictureActive];
+  v8 = activeCopy || [(AVPictureInPictureController *)self isOtherPictureInPictureActive];
   [(AVPictureInPictureController *)self _setCanStopPictureInPicture:v8, *v9, *&v9[16]];
 }
 
-- (void)setAllowsPictureInPictureFromInlineWhenEnteringBackground:(BOOL)a3
+- (void)setAllowsPictureInPictureFromInlineWhenEnteringBackground:(BOOL)background
 {
-  if (self->_allowsPictureInPictureFromInlineWhenEnteringBackground != a3)
+  if (self->_allowsPictureInPictureFromInlineWhenEnteringBackground != background)
   {
-    v4 = a3;
-    self->_allowsPictureInPictureFromInlineWhenEnteringBackground = a3;
-    v5 = [(AVPictureInPictureController *)self platformAdapter];
-    [v5 setAlwaysStartsAutomaticallyWhenEnteringBackground:v4];
+    backgroundCopy = background;
+    self->_allowsPictureInPictureFromInlineWhenEnteringBackground = background;
+    platformAdapter = [(AVPictureInPictureController *)self platformAdapter];
+    [platformAdapter setAlwaysStartsAutomaticallyWhenEnteringBackground:backgroundCopy];
   }
 }
 
-- (void)setAllowsPictureInPicturePlayback:(BOOL)a3
+- (void)setAllowsPictureInPicturePlayback:(BOOL)playback
 {
-  v3 = a3;
+  playbackCopy = playback;
   v15 = *MEMORY[0x1E69E9840];
   v5 = _AVLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -1376,7 +1376,7 @@ LABEL_4:
     v10 = "[AVPictureInPictureController setAllowsPictureInPicturePlayback:]";
     v12 = "allowsPictureInPicturePlayback";
     v11 = 2080;
-    if (v3)
+    if (playbackCopy)
     {
       v6 = "YES";
     }
@@ -1386,20 +1386,20 @@ LABEL_4:
     _os_log_impl(&dword_18B49C000, v5, OS_LOG_TYPE_DEFAULT, "%s %s %s", &v9, 0x20u);
   }
 
-  self->_allowsPictureInPicturePlayback = v3;
-  v7 = [(AVPictureInPictureController *)self platformAdapter];
-  [v7 setAllowsPictureInPicturePlayback:v3];
+  self->_allowsPictureInPicturePlayback = playbackCopy;
+  platformAdapter = [(AVPictureInPictureController *)self platformAdapter];
+  [platformAdapter setAllowsPictureInPicturePlayback:playbackCopy];
 
-  v8 = [(AVPictureInPictureController *)self playerController];
-  [v8 setAllowsPictureInPicturePlayback:v3];
+  playerController = [(AVPictureInPictureController *)self playerController];
+  [playerController setAllowsPictureInPicturePlayback:playbackCopy];
 }
 
 - (AVPictureInPictureViewController)pictureInPictureViewController
 {
-  v2 = [(AVPictureInPictureController *)self platformAdapter];
-  v3 = [v2 pictureInPictureViewController];
+  platformAdapter = [(AVPictureInPictureController *)self platformAdapter];
+  pictureInPictureViewController = [platformAdapter pictureInPictureViewController];
 
-  return v3;
+  return pictureInPictureViewController;
 }
 
 - (AVPlayerLayer)playerLayer
@@ -1407,26 +1407,26 @@ LABEL_4:
   playerLayer = self->_playerLayer;
   if (playerLayer)
   {
-    v3 = playerLayer;
+    layer = playerLayer;
   }
 
   else
   {
-    v3 = [MEMORY[0x1E69880E0] layer];
+    layer = [MEMORY[0x1E69880E0] layer];
   }
 
-  return v3;
+  return layer;
 }
 
-- (void)_logContentSourceType:(id)a3
+- (void)_logContentSourceType:(id)type
 {
   v9 = *MEMORY[0x1E69E9840];
-  v3 = [a3 avkit_contentSourceType];
+  avkit_contentSourceType = [type avkit_contentSourceType];
   v4 = _AVLog();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
-  if (v3 <= 1)
+  if (avkit_contentSourceType <= 1)
   {
-    if (!v3)
+    if (!avkit_contentSourceType)
     {
       if (v5)
       {
@@ -1439,7 +1439,7 @@ LABEL_4:
       goto LABEL_17;
     }
 
-    if (v3 == 1)
+    if (avkit_contentSourceType == 1)
     {
       if (v5)
       {
@@ -1466,7 +1466,7 @@ LABEL_10:
     goto LABEL_17;
   }
 
-  if (v3 == 2)
+  if (avkit_contentSourceType == 2)
   {
     if (v5)
     {
@@ -1479,7 +1479,7 @@ LABEL_10:
     goto LABEL_17;
   }
 
-  if (v3 != 3)
+  if (avkit_contentSourceType != 3)
   {
     goto LABEL_10;
   }
@@ -1497,20 +1497,20 @@ LABEL_17:
 
 - (void)contentSourceVideoRectInWindowChanged
 {
-  v2 = [(AVPictureInPictureController *)self platformAdapter];
-  [v2 updateLayoutDependentBehaviors];
+  platformAdapter = [(AVPictureInPictureController *)self platformAdapter];
+  [platformAdapter updateLayoutDependentBehaviors];
 }
 
 - (void)invalidate
 {
   if ([(AVPictureInPictureController *)self isPictureInPictureActive])
   {
-    v3 = [(AVPictureInPictureController *)self platformAdapter];
-    [v3 stopPictureInPictureAndRestoreUserInterface:0];
+    platformAdapter = [(AVPictureInPictureController *)self platformAdapter];
+    [platformAdapter stopPictureInPictureAndRestoreUserInterface:0];
   }
 
-  v4 = [(AVPictureInPictureController *)self observationController];
-  [v4 stopAllObservation];
+  observationController = [(AVPictureInPictureController *)self observationController];
+  [observationController stopAllObservation];
 
   [(AVPictureInPictureController *)self setPlayerController:0];
   playerLayer = self->_playerLayer;
@@ -1526,32 +1526,32 @@ LABEL_17:
 
 - (void)stopPictureInPictureEvenWhenInBackground
 {
-  v3 = [(AVPictureInPictureController *)self platformAdapter];
-  -[AVPictureInPictureController _stopPictureInPictureAndRestoreUserInterface:](self, "_stopPictureInPictureAndRestoreUserInterface:", [v3 canAnimatePictureInPictureTransition]);
+  platformAdapter = [(AVPictureInPictureController *)self platformAdapter];
+  -[AVPictureInPictureController _stopPictureInPictureAndRestoreUserInterface:](self, "_stopPictureInPictureAndRestoreUserInterface:", [platformAdapter canAnimatePictureInPictureTransition]);
 }
 
 - (void)stopPictureInPicture
 {
   if (-[AVPictureInPictureController isPictureInPictureActive](self, "isPictureInPictureActive") && (-[AVPictureInPictureController platformAdapter](self, "platformAdapter"), v3 = objc_claimAutoreleasedReturnValue(), v4 = [v3 canAnimatePictureInPictureTransition], v3, v4))
   {
-    v6 = [(AVPictureInPictureController *)self platformAdapter];
-    -[AVPictureInPictureController _stopPictureInPictureAndRestoreUserInterface:](self, "_stopPictureInPictureAndRestoreUserInterface:", [v6 canAnimatePictureInPictureTransition]);
+    platformAdapter = [(AVPictureInPictureController *)self platformAdapter];
+    -[AVPictureInPictureController _stopPictureInPictureAndRestoreUserInterface:](self, "_stopPictureInPictureAndRestoreUserInterface:", [platformAdapter canAnimatePictureInPictureTransition]);
   }
 
   else
   {
-    v6 = [(AVPictureInPictureController *)self platformAdapter];
-    if ([v6 isAnyPictureInPictureActive])
+    platformAdapter = [(AVPictureInPictureController *)self platformAdapter];
+    if ([platformAdapter isAnyPictureInPictureActive])
     {
-      v5 = [(AVPictureInPictureController *)self isPictureInPictureActive];
+      isPictureInPictureActive = [(AVPictureInPictureController *)self isPictureInPictureActive];
 
-      if (v5)
+      if (isPictureInPictureActive)
       {
         return;
       }
 
-      v6 = [(AVPictureInPictureController *)self platformAdapter];
-      [v6 stopPictureInPictureAndRestoreUserInterface:0];
+      platformAdapter = [(AVPictureInPictureController *)self platformAdapter];
+      [platformAdapter stopPictureInPictureAndRestoreUserInterface:0];
     }
   }
 }
@@ -1559,65 +1559,65 @@ LABEL_17:
 - (void)startPictureInPicture
 {
   v13 = *MEMORY[0x1E69E9840];
-  v3 = [(AVPictureInPictureController *)self platformAdapter];
-  v4 = [v3 status];
+  platformAdapter = [(AVPictureInPictureController *)self platformAdapter];
+  status = [platformAdapter status];
 
-  v5 = _AVLog();
-  v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
-  if (v4 == 1)
+  platformAdapter2 = _AVLog();
+  v6 = os_log_type_enabled(platformAdapter2, OS_LOG_TYPE_DEFAULT);
+  if (status == 1)
   {
     if (v6)
     {
-      v7 = [(AVPictureInPictureController *)self playerController];
+      playerController = [(AVPictureInPictureController *)self playerController];
       v9 = 136315394;
       v10 = "[AVPictureInPictureController startPictureInPicture]";
       v11 = 2114;
-      v12 = v7;
-      _os_log_impl(&dword_18B49C000, v5, OS_LOG_TYPE_DEFAULT, "%s starting for playerController %{public}@", &v9, 0x16u);
+      v12 = playerController;
+      _os_log_impl(&dword_18B49C000, platformAdapter2, OS_LOG_TYPE_DEFAULT, "%s starting for playerController %{public}@", &v9, 0x16u);
     }
 
-    v5 = [(AVPictureInPictureController *)self platformAdapter];
-    [v5 startPictureInPicture];
+    platformAdapter2 = [(AVPictureInPictureController *)self platformAdapter];
+    [platformAdapter2 startPictureInPicture];
   }
 
   else if (v6)
   {
-    v8 = [(AVPictureInPictureController *)self platformAdapter];
+    platformAdapter3 = [(AVPictureInPictureController *)self platformAdapter];
     v9 = 136315394;
     v10 = "[AVPictureInPictureController startPictureInPicture]";
     v11 = 1024;
-    LODWORD(v12) = [v8 status];
-    _os_log_impl(&dword_18B49C000, v5, OS_LOG_TYPE_DEFAULT, "%s failed; status = %d", &v9, 0x12u);
+    LODWORD(v12) = [platformAdapter3 status];
+    _os_log_impl(&dword_18B49C000, platformAdapter2, OS_LOG_TYPE_DEFAULT, "%s failed; status = %d", &v9, 0x12u);
   }
 }
 
 - (void)dealloc
 {
-  v3 = [(AVPictureInPictureController *)self source];
-  v4 = [(AVPictureInPictureController *)self platformAdapter];
-  v5 = [v4 pictureInPictureViewController];
+  source = [(AVPictureInPictureController *)self source];
+  platformAdapter = [(AVPictureInPictureController *)self platformAdapter];
+  pictureInPictureViewController = [platformAdapter pictureInPictureViewController];
 
   [(AVPictureInPictureController *)self invalidate];
-  [v3 avkit_stopRoutingVideoToPictureInPictureViewController:v5];
+  [source avkit_stopRoutingVideoToPictureInPictureViewController:pictureInPictureViewController];
 
   v6.receiver = self;
   v6.super_class = AVPictureInPictureController;
   [(AVPictureInPictureController *)&v6 dealloc];
 }
 
-- (void)_commonInitWithSource:(id)a3
+- (void)_commonInitWithSource:(id)source
 {
   v33 = *MEMORY[0x1E69E9840];
   if (self)
   {
-    v4 = a3;
-    objc_storeWeak(&self->_source, v4);
-    [(AVPictureInPictureController *)self _logContentSourceType:v4];
+    sourceCopy = source;
+    objc_storeWeak(&self->_source, sourceCopy);
+    [(AVPictureInPictureController *)self _logContentSourceType:sourceCopy];
     v5 = [[AVObservationController alloc] initWithOwner:self];
     observationController = self->_observationController;
     self->_observationController = v5;
 
-    v7 = [[AVPictureInPicturePlatformAdapter alloc] initWithSource:v4];
+    v7 = [[AVPictureInPicturePlatformAdapter alloc] initWithSource:sourceCopy];
     platformAdapter = self->_platformAdapter;
     self->_platformAdapter = v7;
 
@@ -1625,29 +1625,29 @@ LABEL_17:
     [(AVPictureInPicturePlatformAdapter *)self->_platformAdapter setCanStartAutomaticallyWhenEnteringBackground:1];
     self->_canStartAutomaticallyWhenEnteringBackground = 1;
     self->_canPausePlaybackWhenClosingPictureInPicture = 1;
-    -[AVPictureInPicturePlatformAdapter setManagesWiredSecondScreenPlayback:](self->_platformAdapter, "setManagesWiredSecondScreenPlayback:", [v4 avkit_wantsManagedSecondScreenPlayback]);
+    -[AVPictureInPicturePlatformAdapter setManagesWiredSecondScreenPlayback:](self->_platformAdapter, "setManagesWiredSecondScreenPlayback:", [sourceCopy avkit_wantsManagedSecondScreenPlayback]);
     self->_requiresLinearPlayback = [(AVPictureInPicturePlatformAdapter *)self->_platformAdapter requiresLinearPlayback];
     self->_pictureInPictureActive = 0;
-    v9 = [(AVPictureInPictureController *)self platformAdapter];
-    self->_pictureInPicturePossible = [v9 status] > 0;
+    platformAdapter = [(AVPictureInPictureController *)self platformAdapter];
+    self->_pictureInPicturePossible = [platformAdapter status] > 0;
 
-    v10 = [(AVPictureInPictureController *)self platformAdapter];
-    [v10 setDelegate:self];
+    platformAdapter2 = [(AVPictureInPictureController *)self platformAdapter];
+    [platformAdapter2 setDelegate:self];
 
-    v11 = [(AVPictureInPictureController *)self playerController];
-    v12 = [v4 avkit_makePlayerControllerIfNeeded:v11];
+    playerController = [(AVPictureInPictureController *)self playerController];
+    v12 = [sourceCopy avkit_makePlayerControllerIfNeeded:playerController];
 
     [(AVPictureInPictureController *)self setPlayerController:v12];
-    v13 = [(AVPictureInPictureController *)self playerController];
-    LOBYTE(v11) = objc_opt_respondsToSelector();
+    playerController2 = [(AVPictureInPictureController *)self playerController];
+    LOBYTE(playerController) = objc_opt_respondsToSelector();
 
-    if (v11)
+    if (playerController)
     {
-      v14 = [(AVPictureInPictureController *)self playerController];
-      [v14 setPictureInPictureController:self];
+      playerController3 = [(AVPictureInPictureController *)self playerController];
+      [playerController3 setPictureInPictureController:self];
     }
 
-    v15 = [(AVPictureInPictureController *)self playerController];
+    playerController4 = [(AVPictureInPictureController *)self playerController];
     v16 = objc_opt_respondsToSelector();
 
     if (v16)
@@ -1655,8 +1655,8 @@ LABEL_17:
       v17 = _AVLog();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
-        v18 = [(AVPictureInPictureController *)self contentSource];
-        [v18 initialRenderSize];
+        contentSource = [(AVPictureInPictureController *)self contentSource];
+        [contentSource initialRenderSize];
         v19 = NSStringFromCGSize(v34);
         v29 = 136315394;
         v30 = "[AVPictureInPictureController _commonInitWithSource:]";
@@ -1665,24 +1665,24 @@ LABEL_17:
         _os_log_impl(&dword_18B49C000, v17, OS_LOG_TYPE_DEFAULT, "%s Has initial render size: %@", &v29, 0x16u);
       }
 
-      v20 = [(AVPictureInPictureController *)self _sbdlPlayerController];
-      v21 = [(AVPictureInPictureController *)self contentSource];
-      [v21 initialRenderSize];
-      [v20 setEnqueuedBufferDimensions:?];
+      _sbdlPlayerController = [(AVPictureInPictureController *)self _sbdlPlayerController];
+      contentSource2 = [(AVPictureInPictureController *)self contentSource];
+      [contentSource2 initialRenderSize];
+      [_sbdlPlayerController setEnqueuedBufferDimensions:?];
     }
 
-    v22 = [(AVPictureInPictureController *)self observationController];
-    v23 = [(AVPictureInPictureController *)self platformAdapter];
-    v24 = [v22 startObserving:v23 keyPath:@"anyPictureInPictureActive" includeInitialValue:1 observationHandler:&__block_literal_global_17839];
+    observationController = [(AVPictureInPictureController *)self observationController];
+    platformAdapter3 = [(AVPictureInPictureController *)self platformAdapter];
+    v24 = [observationController startObserving:platformAdapter3 keyPath:@"anyPictureInPictureActive" includeInitialValue:1 observationHandler:&__block_literal_global_17839];
 
-    v25 = [(AVPictureInPictureController *)self observationController];
-    v26 = [v25 startObserving:self keyPath:@"playerController.contentDimensions" includeInitialValue:0 observationHandler:&__block_literal_global_52];
+    observationController2 = [(AVPictureInPictureController *)self observationController];
+    v26 = [observationController2 startObserving:self keyPath:@"playerController.contentDimensions" includeInitialValue:0 observationHandler:&__block_literal_global_52];
 
-    v27 = [(AVPictureInPictureController *)self observationController];
-    [v27 startObservingNotificationForName:@"AVPlayerControllerPIPActivitySessionIdentifierDidChangeNotification" object:0 notificationCenter:0 observationHandler:&__block_literal_global_55];
+    observationController3 = [(AVPictureInPictureController *)self observationController];
+    [observationController3 startObservingNotificationForName:@"AVPlayerControllerPIPActivitySessionIdentifierDidChangeNotification" object:0 notificationCenter:0 observationHandler:&__block_literal_global_55];
 
-    v28 = [(AVPictureInPictureController *)self observationController];
-    [v28 startObservingNotificationForName:*MEMORY[0x1E69879C8] object:0 notificationCenter:0 observationHandler:&__block_literal_global_57];
+    observationController4 = [(AVPictureInPictureController *)self observationController];
+    [observationController4 startObservingNotificationForName:*MEMORY[0x1E69879C8] object:0 notificationCenter:0 observationHandler:&__block_literal_global_57];
   }
 }
 
@@ -1773,13 +1773,13 @@ void __54__AVPictureInPictureController__commonInitWithSource___block_invoke(uin
       v6->_wantsImmediateAssetInspection = 1;
       objc_storeStrong(&v6->_contentSource, contentSource);
       v7->_allowsPictureInPicturePlayback = 1;
-      v8 = [(AVPictureInPictureControllerContentSource *)v5 source];
+      source = [(AVPictureInPictureControllerContentSource *)v5 source];
       v9 = objc_opt_respondsToSelector();
 
       if (v9)
       {
-        v10 = [(AVPictureInPictureControllerContentSource *)v5 source];
-        [(AVPictureInPictureController *)v7 _commonInitWithSource:v10];
+        source2 = [(AVPictureInPictureControllerContentSource *)v5 source];
+        [(AVPictureInPictureController *)v7 _commonInitWithSource:source2];
 
         [(AVPictureInPictureController *)v7 _startObservationsForContentSource:v5];
         [(AVPictureInPictureController *)v7 setAllowsPictureInPicturePlayback:1];
@@ -1805,9 +1805,9 @@ void __54__AVPictureInPictureController__commonInitWithSource___block_invoke(uin
   return v11;
 }
 
-- (AVPictureInPictureController)initWithSource:(id)a3
+- (AVPictureInPictureController)initWithSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   if ([objc_opt_class() isPictureInPictureSupported])
   {
     v8.receiver = self;
@@ -1816,7 +1816,7 @@ void __54__AVPictureInPictureController__commonInitWithSource___block_invoke(uin
     v6 = v5;
     if (v5)
     {
-      [(AVPictureInPictureController *)v5 _commonInitWithSource:v4];
+      [(AVPictureInPictureController *)v5 _commonInitWithSource:sourceCopy];
     }
   }
 
@@ -1860,8 +1860,8 @@ LABEL_5:
   v7 = NSStringFromClass(v6);
   [v3 raise:v4 format:{@"%@ is not a valid initializer. You must call -[%@ initWithPlayerLayer:].", v5, v7}];
 
-  v8 = [MEMORY[0x1E69880E0] layer];
-  v9 = [(AVPictureInPictureController *)self initWithPlayerLayer:v8];
+  layer = [MEMORY[0x1E69880E0] layer];
+  v9 = [(AVPictureInPictureController *)self initWithPlayerLayer:layer];
 
   return v9;
 }
@@ -1870,7 +1870,7 @@ LABEL_5:
 {
   v4 = traitCollection;
   v5 = +[AVPictureInPicturePlatformAdapter stopPictureInPictureButtonImageName];
-  v6 = [a1 _imageNamed:v5 compatibileWithTraitCollection:v4];
+  v6 = [self _imageNamed:v5 compatibileWithTraitCollection:v4];
 
   return v6;
 }
@@ -1879,27 +1879,27 @@ LABEL_5:
 {
   v4 = traitCollection;
   v5 = +[AVPictureInPicturePlatformAdapter startPictureInPictureButtonImageName];
-  v6 = [a1 _imageNamed:v5 compatibileWithTraitCollection:v4];
+  v6 = [self _imageNamed:v5 compatibileWithTraitCollection:v4];
 
   return v6;
 }
 
-+ (id)_imageNamed:(id)a3 compatibileWithTraitCollection:(id)a4
++ (id)_imageNamed:(id)named compatibileWithTraitCollection:(id)collection
 {
-  v5 = a3;
-  v6 = a4;
+  namedCopy = named;
+  collectionCopy = collection;
   v7 = +[AVPictureInPicturePlatformAdapter imageSymbolConfiguration];
   v8 = [v7 configurationByApplyingConfiguration:v7];
   v9 = MEMORY[0x1E69DCAB8];
   if (v7)
   {
-    v10 = [MEMORY[0x1E69DCAB8] systemImageNamed:v5 withConfiguration:v8];
+    v10 = [MEMORY[0x1E69DCAB8] systemImageNamed:namedCopy withConfiguration:v8];
   }
 
   else
   {
     v11 = AVBundle();
-    v10 = [v9 imageNamed:v5 inBundle:v11 compatibleWithTraitCollection:v6];
+    v10 = [v9 imageNamed:namedCopy inBundle:v11 compatibleWithTraitCollection:collectionCopy];
   }
 
   return v10;

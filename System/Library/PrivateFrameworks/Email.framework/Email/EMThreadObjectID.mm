@@ -1,15 +1,15 @@
 @interface EMThreadObjectID
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (EMThreadObjectID)init;
-- (EMThreadObjectID)initWithCoder:(id)a3;
-- (EMThreadObjectID)initWithCollectionItemID:(id)a3 threadScope:(id)a4;
-- (EMThreadObjectID)initWithConversationID:(int64_t)a3 threadScope:(id)a4;
+- (EMThreadObjectID)initWithCoder:(id)coder;
+- (EMThreadObjectID)initWithCollectionItemID:(id)d threadScope:(id)scope;
+- (EMThreadObjectID)initWithConversationID:(int64_t)d threadScope:(id)scope;
 - (NSString)debugDescription;
 - (NSString)ef_publicDescription;
 - (id)cachedSelf;
 - (int64_t)conversationID;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation EMThreadObjectID
@@ -39,11 +39,11 @@
 
   else
   {
-    v4 = [(EMThreadObjectID *)self collectionItemID];
-    v5 = [v4 hash];
+    collectionItemID = [(EMThreadObjectID *)self collectionItemID];
+    v5 = [collectionItemID hash];
 
-    v6 = [(EMThreadObjectID *)self threadScope];
-    v3 = 33 * v5 + [v6 hash] + 5859909;
+    threadScope = [(EMThreadObjectID *)self threadScope];
+    v3 = 33 * v5 + [threadScope hash] + 5859909;
   }
 
   return v3;
@@ -59,19 +59,19 @@ void __30__EMThreadObjectID_cachedSelf__block_invoke()
 
 - (int64_t)conversationID
 {
-  v2 = [(EMThreadObjectID *)self _threadCollectionItemID];
-  v3 = v2;
-  if (v2)
+  _threadCollectionItemID = [(EMThreadObjectID *)self _threadCollectionItemID];
+  v3 = _threadCollectionItemID;
+  if (_threadCollectionItemID)
   {
-    v4 = [v2 conversationID];
+    conversationID = [_threadCollectionItemID conversationID];
   }
 
   else
   {
-    v4 = -1;
+    conversationID = -1;
   }
 
-  return v4;
+  return conversationID;
 }
 
 - (NSString)ef_publicDescription
@@ -80,11 +80,11 @@ void __30__EMThreadObjectID_cachedSelf__block_invoke()
   v11.receiver = self;
   v11.super_class = EMThreadObjectID;
   v4 = [(EMObjectID *)&v11 description];
-  v5 = [(EMThreadObjectID *)self collectionItemID];
-  v6 = [v5 description];
-  v7 = [(EMThreadObjectID *)self threadScope];
-  v8 = [v7 ef_publicDescription];
-  v9 = [v3 initWithFormat:@"%@ %@, %@", v4, v6, v8];
+  collectionItemID = [(EMThreadObjectID *)self collectionItemID];
+  v6 = [collectionItemID description];
+  threadScope = [(EMThreadObjectID *)self threadScope];
+  ef_publicDescription = [threadScope ef_publicDescription];
+  v9 = [v3 initWithFormat:@"%@ %@, %@", v4, v6, ef_publicDescription];
 
   return v9;
 }
@@ -101,15 +101,15 @@ void __30__EMThreadObjectID_cachedSelf__block_invoke()
     v2[5] = v3;
   }
 
-  v5 = [v2 cachedSelf];
+  cachedSelf = [v2 cachedSelf];
 
-  return v5;
+  return cachedSelf;
 }
 
-- (EMThreadObjectID)initWithCollectionItemID:(id)a3 threadScope:(id)a4
+- (EMThreadObjectID)initWithCollectionItemID:(id)d threadScope:(id)scope
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  scopeCopy = scope;
   v14.receiver = self;
   v14.super_class = EMThreadObjectID;
   v9 = [(EMObjectID *)&v14 initAsEphemeralID:0];
@@ -117,35 +117,35 @@ void __30__EMThreadObjectID_cachedSelf__block_invoke()
   v11 = v9;
   if (v9)
   {
-    objc_storeStrong(v9 + 5, a3);
-    objc_storeStrong(v10 + 6, a4);
+    objc_storeStrong(v9 + 5, d);
+    objc_storeStrong(v10 + 6, scope);
   }
 
-  v12 = [v11 cachedSelf];
+  cachedSelf = [v11 cachedSelf];
 
-  return v12;
+  return cachedSelf;
 }
 
-- (EMThreadObjectID)initWithConversationID:(int64_t)a3 threadScope:(id)a4
+- (EMThreadObjectID)initWithConversationID:(int64_t)d threadScope:(id)scope
 {
-  v6 = a4;
-  v7 = [[EMThreadCollectionItemID alloc] initWithConversationID:a3];
-  v8 = [(EMThreadObjectID *)self initWithCollectionItemID:v7 threadScope:v6];
+  scopeCopy = scope;
+  v7 = [[EMThreadCollectionItemID alloc] initWithConversationID:d];
+  v8 = [(EMThreadObjectID *)self initWithCollectionItemID:v7 threadScope:scopeCopy];
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
-  else if (([(EMThreadObjectID *)v4 isMemberOfClass:objc_opt_class()]& 1) != 0)
+  else if (([(EMThreadObjectID *)equalCopy isMemberOfClass:objc_opt_class()]& 1) != 0)
   {
-    v5 = v4;
+    v5 = equalCopy;
     if ([(EMObjectID *)self isEphemeral])
     {
       v12.receiver = self;
@@ -155,13 +155,13 @@ void __30__EMThreadObjectID_cachedSelf__block_invoke()
 
     else
     {
-      v7 = [(EMThreadObjectID *)self collectionItemID];
-      v8 = [(EMThreadObjectID *)v5 collectionItemID];
-      if ([v7 isEqual:v8])
+      collectionItemID = [(EMThreadObjectID *)self collectionItemID];
+      collectionItemID2 = [(EMThreadObjectID *)v5 collectionItemID];
+      if ([collectionItemID isEqual:collectionItemID2])
       {
-        v9 = [(EMThreadObjectID *)self threadScope];
-        v10 = [(EMThreadObjectID *)v5 threadScope];
-        v6 = [v9 isEqual:v10];
+        threadScope = [(EMThreadObjectID *)self threadScope];
+        threadScope2 = [(EMThreadObjectID *)v5 threadScope];
+        v6 = [threadScope isEqual:threadScope2];
       }
 
       else
@@ -179,12 +179,12 @@ void __30__EMThreadObjectID_cachedSelf__block_invoke()
   return v6;
 }
 
-- (EMThreadObjectID)initWithCoder:(id)a3
+- (EMThreadObjectID)initWithCoder:(id)coder
 {
-  v8 = a3;
-  v9 = self;
-  v4 = self;
-  v5 = v8;
+  coderCopy = coder;
+  selfCopy = self;
+  selfCopy2 = self;
+  v5 = coderCopy;
   v6 = EFDecodeCacheableInstance();
 
   return v6;
@@ -213,10 +213,10 @@ id __34__EMThreadObjectID_initWithCoder___block_invoke(uint64_t a1)
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v3 = v4;
+  coderCopy = coder;
+  v3 = coderCopy;
   EFEncodeCacheableInstance();
 }
 
@@ -241,10 +241,10 @@ void __36__EMThreadObjectID_encodeWithCoder___block_invoke(uint64_t a1)
   v11.receiver = self;
   v11.super_class = EMThreadObjectID;
   v4 = [(EMObjectID *)&v11 description];
-  v5 = [(EMThreadObjectID *)self collectionItemID];
-  v6 = [v5 debugDescription];
-  v7 = [(EMThreadObjectID *)self threadScope];
-  v8 = [v7 debugDescription];
+  collectionItemID = [(EMThreadObjectID *)self collectionItemID];
+  v6 = [collectionItemID debugDescription];
+  threadScope = [(EMThreadObjectID *)self threadScope];
+  v8 = [threadScope debugDescription];
   v9 = [v3 initWithFormat:@"%@ %@, %@", v4, v6, v8];
 
   return v9;

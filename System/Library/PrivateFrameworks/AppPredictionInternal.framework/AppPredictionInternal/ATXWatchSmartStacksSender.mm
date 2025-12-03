@@ -1,6 +1,6 @@
 @interface ATXWatchSmartStacksSender
 - (ATXWatchSmartStacksSender)init;
-- (void)blendingLayerDidUpdateUICache:(id)a3;
+- (void)blendingLayerDidUpdateUICache:(id)cache;
 @end
 
 @implementation ATXWatchSmartStacksSender
@@ -15,15 +15,15 @@
   return [(ATXWatchSmartStacksSender *)&v4 init];
 }
 
-- (void)blendingLayerDidUpdateUICache:(id)a3
+- (void)blendingLayerDidUpdateUICache:(id)cache
 {
   v3 = *(&self->super.isa + OBJC_IVAR___ATXWatchSmartStacksSender_smartStackSender);
   if (v3)
   {
     v5 = *(*v3 + 104);
-    v8 = a3;
-    v7 = self;
-    v5(a3);
+    cacheCopy = cache;
+    selfCopy = self;
+    v5(cache);
   }
 }
 

@@ -1,25 +1,25 @@
 @interface PDDPEndpointConfig
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasIsInternal:(BOOL)a3;
-- (void)setHasMescalSignRequests:(BOOL)a3;
-- (void)setHasMescalVerifyResponses:(BOOL)a3;
-- (void)setHasPayloadLimitItems:(BOOL)a3;
-- (void)setHasRequiresAuth:(BOOL)a3;
-- (void)setHasResponseTTLSeconds:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasIsInternal:(BOOL)internal;
+- (void)setHasMescalSignRequests:(BOOL)requests;
+- (void)setHasMescalVerifyResponses:(BOOL)responses;
+- (void)setHasPayloadLimitItems:(BOOL)items;
+- (void)setHasRequiresAuth:(BOOL)auth;
+- (void)setHasResponseTTLSeconds:(BOOL)seconds;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PDDPEndpointConfig
 
-- (void)setHasPayloadLimitItems:(BOOL)a3
+- (void)setHasPayloadLimitItems:(BOOL)items
 {
-  if (a3)
+  if (items)
   {
     v3 = 2;
   }
@@ -32,9 +32,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasResponseTTLSeconds:(BOOL)a3
+- (void)setHasResponseTTLSeconds:(BOOL)seconds
 {
-  if (a3)
+  if (seconds)
   {
     v3 = 4;
   }
@@ -47,9 +47,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasRequiresAuth:(BOOL)a3
+- (void)setHasRequiresAuth:(BOOL)auth
 {
-  if (a3)
+  if (auth)
   {
     v3 = 64;
   }
@@ -62,9 +62,9 @@
   *&self->_has = *&self->_has & 0xBF | v3;
 }
 
-- (void)setHasMescalSignRequests:(BOOL)a3
+- (void)setHasMescalSignRequests:(BOOL)requests
 {
-  if (a3)
+  if (requests)
   {
     v3 = 16;
   }
@@ -77,9 +77,9 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasMescalVerifyResponses:(BOOL)a3
+- (void)setHasMescalVerifyResponses:(BOOL)responses
 {
-  if (a3)
+  if (responses)
   {
     v3 = 32;
   }
@@ -92,9 +92,9 @@
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasIsInternal:(BOOL)a3
+- (void)setHasIsInternal:(BOOL)internal
 {
-  if (a3)
+  if (internal)
   {
     v3 = 8;
   }
@@ -112,8 +112,8 @@
   v7.receiver = self;
   v7.super_class = PDDPEndpointConfig;
   v3 = [(PDDPEndpointConfig *)&v7 description];
-  v4 = [(PDDPEndpointConfig *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(PDDPEndpointConfig *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -232,20 +232,20 @@ LABEL_12:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v13 = v4;
+  toCopy = to;
+  v13 = toCopy;
   if (self->_identifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v13;
+    toCopy = v13;
   }
 
   if (self->_url)
   {
     PBDataWriterWriteStringField();
-    v4 = v13;
+    toCopy = v13;
   }
 
   has = self->_has;
@@ -253,7 +253,7 @@ LABEL_12:
   {
     payloadLimitItems = self->_payloadLimitItems;
     PBDataWriterWriteInt32Field();
-    v4 = v13;
+    toCopy = v13;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -274,7 +274,7 @@ LABEL_7:
 
   payloadLimitBytes = self->_payloadLimitBytes;
   PBDataWriterWriteInt32Field();
-  v4 = v13;
+  toCopy = v13;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -290,7 +290,7 @@ LABEL_8:
 LABEL_21:
   responseTTLSeconds = self->_responseTTLSeconds;
   PBDataWriterWriteInt32Field();
-  v4 = v13;
+  toCopy = v13;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -306,7 +306,7 @@ LABEL_9:
 LABEL_22:
   requiresAuth = self->_requiresAuth;
   PBDataWriterWriteBOOLField();
-  v4 = v13;
+  toCopy = v13;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -322,51 +322,51 @@ LABEL_10:
 LABEL_23:
   mescalSignRequests = self->_mescalSignRequests;
   PBDataWriterWriteBOOLField();
-  v4 = v13;
+  toCopy = v13;
   if ((*&self->_has & 0x20) != 0)
   {
 LABEL_11:
     mescalVerifyResponses = self->_mescalVerifyResponses;
     PBDataWriterWriteBOOLField();
-    v4 = v13;
+    toCopy = v13;
   }
 
 LABEL_12:
   if (self->_serviceId)
   {
     PBDataWriterWriteStringField();
-    v4 = v13;
+    toCopy = v13;
   }
 
   if ((*&self->_has & 8) != 0)
   {
     isInternal = self->_isInternal;
     PBDataWriterWriteBOOLField();
-    v4 = v13;
+    toCopy = v13;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_identifier)
   {
-    [v4 setIdentifier:?];
-    v4 = v6;
+    [toCopy setIdentifier:?];
+    toCopy = v6;
   }
 
   if (self->_url)
   {
     [v6 setUrl:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(v4 + 5) = self->_payloadLimitItems;
-    *(v4 + 52) |= 2u;
+    *(toCopy + 5) = self->_payloadLimitItems;
+    *(toCopy + 52) |= 2u;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -385,8 +385,8 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  *(v4 + 4) = self->_payloadLimitBytes;
-  *(v4 + 52) |= 1u;
+  *(toCopy + 4) = self->_payloadLimitBytes;
+  *(toCopy + 52) |= 1u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -400,8 +400,8 @@ LABEL_8:
   }
 
 LABEL_21:
-  *(v4 + 6) = self->_responseTTLSeconds;
-  *(v4 + 52) |= 4u;
+  *(toCopy + 6) = self->_responseTTLSeconds;
+  *(toCopy + 52) |= 4u;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -415,8 +415,8 @@ LABEL_9:
   }
 
 LABEL_22:
-  *(v4 + 51) = self->_requiresAuth;
-  *(v4 + 52) |= 0x40u;
+  *(toCopy + 51) = self->_requiresAuth;
+  *(toCopy + 52) |= 0x40u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -430,37 +430,37 @@ LABEL_10:
   }
 
 LABEL_23:
-  *(v4 + 49) = self->_mescalSignRequests;
-  *(v4 + 52) |= 0x10u;
+  *(toCopy + 49) = self->_mescalSignRequests;
+  *(toCopy + 52) |= 0x10u;
   if ((*&self->_has & 0x20) != 0)
   {
 LABEL_11:
-    *(v4 + 50) = self->_mescalVerifyResponses;
-    *(v4 + 52) |= 0x20u;
+    *(toCopy + 50) = self->_mescalVerifyResponses;
+    *(toCopy + 52) |= 0x20u;
   }
 
 LABEL_12:
   if (self->_serviceId)
   {
     [v6 setServiceId:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    *(v4 + 48) = self->_isInternal;
-    *(v4 + 52) |= 8u;
+    *(toCopy + 48) = self->_isInternal;
+    *(toCopy + 52) |= 8u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_identifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_identifier copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(NSString *)self->_url copyWithZone:a3];
+  v8 = [(NSString *)self->_url copyWithZone:zone];
   v9 = v5[5];
   v5[5] = v8;
 
@@ -542,7 +542,7 @@ LABEL_7:
   }
 
 LABEL_8:
-  v11 = [(NSString *)self->_serviceId copyWithZone:a3];
+  v11 = [(NSString *)self->_serviceId copyWithZone:zone];
   v12 = v5[4];
   v5[4] = v11;
 
@@ -555,16 +555,16 @@ LABEL_8:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_54;
   }
 
   identifier = self->_identifier;
-  if (identifier | *(v4 + 1))
+  if (identifier | *(equalCopy + 1))
   {
     if (![(NSString *)identifier isEqual:?])
     {
@@ -573,7 +573,7 @@ LABEL_8:
   }
 
   url = self->_url;
-  if (url | *(v4 + 5))
+  if (url | *(equalCopy + 5))
   {
     if (![(NSString *)url isEqual:?])
     {
@@ -582,129 +582,129 @@ LABEL_8:
   }
 
   has = self->_has;
-  v8 = *(v4 + 52);
+  v8 = *(equalCopy + 52);
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 52) & 2) == 0 || self->_payloadLimitItems != *(v4 + 5))
+    if ((*(equalCopy + 52) & 2) == 0 || self->_payloadLimitItems != *(equalCopy + 5))
     {
       goto LABEL_54;
     }
   }
 
-  else if ((*(v4 + 52) & 2) != 0)
+  else if ((*(equalCopy + 52) & 2) != 0)
   {
     goto LABEL_54;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 52) & 1) == 0 || self->_payloadLimitBytes != *(v4 + 4))
+    if ((*(equalCopy + 52) & 1) == 0 || self->_payloadLimitBytes != *(equalCopy + 4))
     {
       goto LABEL_54;
     }
   }
 
-  else if (*(v4 + 52))
+  else if (*(equalCopy + 52))
   {
     goto LABEL_54;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 52) & 4) == 0 || self->_responseTTLSeconds != *(v4 + 6))
+    if ((*(equalCopy + 52) & 4) == 0 || self->_responseTTLSeconds != *(equalCopy + 6))
     {
       goto LABEL_54;
     }
   }
 
-  else if ((*(v4 + 52) & 4) != 0)
+  else if ((*(equalCopy + 52) & 4) != 0)
   {
     goto LABEL_54;
   }
 
   if ((*&self->_has & 0x40) != 0)
   {
-    if ((*(v4 + 52) & 0x40) == 0)
+    if ((*(equalCopy + 52) & 0x40) == 0)
     {
       goto LABEL_54;
     }
 
-    v11 = *(v4 + 51);
+    v11 = *(equalCopy + 51);
     if (self->_requiresAuth)
     {
-      if ((*(v4 + 51) & 1) == 0)
+      if ((*(equalCopy + 51) & 1) == 0)
       {
         goto LABEL_54;
       }
     }
 
-    else if (*(v4 + 51))
+    else if (*(equalCopy + 51))
     {
       goto LABEL_54;
     }
   }
 
-  else if ((*(v4 + 52) & 0x40) != 0)
+  else if ((*(equalCopy + 52) & 0x40) != 0)
   {
     goto LABEL_54;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 52) & 0x10) == 0)
+    if ((*(equalCopy + 52) & 0x10) == 0)
     {
       goto LABEL_54;
     }
 
-    v12 = *(v4 + 49);
+    v12 = *(equalCopy + 49);
     if (self->_mescalSignRequests)
     {
-      if ((*(v4 + 49) & 1) == 0)
+      if ((*(equalCopy + 49) & 1) == 0)
       {
         goto LABEL_54;
       }
     }
 
-    else if (*(v4 + 49))
+    else if (*(equalCopy + 49))
     {
       goto LABEL_54;
     }
   }
 
-  else if ((*(v4 + 52) & 0x10) != 0)
+  else if ((*(equalCopy + 52) & 0x10) != 0)
   {
     goto LABEL_54;
   }
 
   if ((*&self->_has & 0x20) != 0)
   {
-    if ((*(v4 + 52) & 0x20) == 0)
+    if ((*(equalCopy + 52) & 0x20) == 0)
     {
       goto LABEL_54;
     }
 
-    v13 = *(v4 + 50);
+    v13 = *(equalCopy + 50);
     if (self->_mescalVerifyResponses)
     {
-      if ((*(v4 + 50) & 1) == 0)
+      if ((*(equalCopy + 50) & 1) == 0)
       {
         goto LABEL_54;
       }
     }
 
-    else if (*(v4 + 50))
+    else if (*(equalCopy + 50))
     {
       goto LABEL_54;
     }
   }
 
-  else if ((*(v4 + 52) & 0x20) != 0)
+  else if ((*(equalCopy + 52) & 0x20) != 0)
   {
     goto LABEL_54;
   }
 
   serviceId = self->_serviceId;
-  if (serviceId | *(v4 + 4))
+  if (serviceId | *(equalCopy + 4))
   {
     if (![(NSString *)serviceId isEqual:?])
     {
@@ -712,7 +712,7 @@ LABEL_8:
     }
 
     has = self->_has;
-    v8 = *(v4 + 52);
+    v8 = *(equalCopy + 52);
   }
 
   v10 = (v8 & 8) == 0;
@@ -722,13 +722,13 @@ LABEL_8:
     {
       if (self->_isInternal)
       {
-        if (*(v4 + 48))
+        if (*(equalCopy + 48))
         {
           goto LABEL_56;
         }
       }
 
-      else if (!*(v4 + 48))
+      else if (!*(equalCopy + 48))
       {
 LABEL_56:
         v10 = 1;
@@ -841,28 +841,28 @@ LABEL_14:
   return v3 ^ v13 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v6 = v4;
-  if (*(v4 + 1))
+  fromCopy = from;
+  v6 = fromCopy;
+  if (*(fromCopy + 1))
   {
     [(PDDPEndpointConfig *)self setIdentifier:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(PDDPEndpointConfig *)self setUrl:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 52);
+  v5 = *(fromCopy + 52);
   if ((v5 & 2) != 0)
   {
-    self->_payloadLimitItems = *(v4 + 5);
+    self->_payloadLimitItems = *(fromCopy + 5);
     *&self->_has |= 2u;
-    v5 = *(v4 + 52);
+    v5 = *(fromCopy + 52);
     if ((v5 & 1) == 0)
     {
 LABEL_7:
@@ -875,14 +875,14 @@ LABEL_7:
     }
   }
 
-  else if ((*(v4 + 52) & 1) == 0)
+  else if ((*(fromCopy + 52) & 1) == 0)
   {
     goto LABEL_7;
   }
 
-  self->_payloadLimitBytes = *(v4 + 4);
+  self->_payloadLimitBytes = *(fromCopy + 4);
   *&self->_has |= 1u;
-  v5 = *(v4 + 52);
+  v5 = *(fromCopy + 52);
   if ((v5 & 4) == 0)
   {
 LABEL_8:
@@ -895,9 +895,9 @@ LABEL_8:
   }
 
 LABEL_21:
-  self->_responseTTLSeconds = *(v4 + 6);
+  self->_responseTTLSeconds = *(fromCopy + 6);
   *&self->_has |= 4u;
-  v5 = *(v4 + 52);
+  v5 = *(fromCopy + 52);
   if ((v5 & 0x40) == 0)
   {
 LABEL_9:
@@ -910,9 +910,9 @@ LABEL_9:
   }
 
 LABEL_22:
-  self->_requiresAuth = *(v4 + 51);
+  self->_requiresAuth = *(fromCopy + 51);
   *&self->_has |= 0x40u;
-  v5 = *(v4 + 52);
+  v5 = *(fromCopy + 52);
   if ((v5 & 0x10) == 0)
   {
 LABEL_10:
@@ -925,25 +925,25 @@ LABEL_10:
   }
 
 LABEL_23:
-  self->_mescalSignRequests = *(v4 + 49);
+  self->_mescalSignRequests = *(fromCopy + 49);
   *&self->_has |= 0x10u;
-  if ((*(v4 + 52) & 0x20) != 0)
+  if ((*(fromCopy + 52) & 0x20) != 0)
   {
 LABEL_11:
-    self->_mescalVerifyResponses = *(v4 + 50);
+    self->_mescalVerifyResponses = *(fromCopy + 50);
     *&self->_has |= 0x20u;
   }
 
 LABEL_12:
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(PDDPEndpointConfig *)self setServiceId:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if ((*(v4 + 52) & 8) != 0)
+  if ((*(fromCopy + 52) & 8) != 0)
   {
-    self->_isInternal = *(v4 + 48);
+    self->_isInternal = *(fromCopy + 48);
     *&self->_has |= 8u;
   }
 }

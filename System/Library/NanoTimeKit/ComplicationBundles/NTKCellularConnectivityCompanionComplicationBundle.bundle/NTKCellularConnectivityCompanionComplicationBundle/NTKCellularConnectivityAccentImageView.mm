@@ -6,8 +6,8 @@
 
 - (int64_t)_filterStyle
 {
-  v2 = [(NTKCellularConnectivityImageView *)self filterProvider];
-  v3 = [v2 device];
+  filterProvider = [(NTKCellularConnectivityImageView *)self filterProvider];
+  device = [filterProvider device];
   v4 = NTKShowGossamerUI();
 
   if (v4)

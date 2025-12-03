@@ -1,5 +1,5 @@
 @interface TDRenditionKeySpec
-+ (id)keyPathsForValuesAffectingValueForKey:(id)a3;
++ (id)keyPathsForValuesAffectingValueForKey:(id)key;
 - (const)key;
 - (id)copyDataFromAttributes;
 - (id)dataFromAttributes;
@@ -10,19 +10,19 @@
 - (unsigned)nameIdentifier;
 - (unsigned)scaleFactor;
 - (unsigned)subtype;
-- (void)copyAttributesInto:(id)a3;
+- (void)copyAttributesInto:(id)into;
 - (void)dealloc;
-- (void)getKey:(_renditionkeytoken *)a3;
-- (void)setAttributesFromCopyData:(id)a3;
-- (void)setAttributesFromData:(id)a3;
-- (void)setAttributesFromRenditionKey:(const _renditionkeytoken *)a3 withDocument:(id)a4;
-- (void)setDimension1:(unsigned int)a3;
-- (void)setDimension2:(unsigned int)a3;
-- (void)setMemoryClass:(unsigned int)a3;
-- (void)setNameIdentifier:(unsigned int)a3;
-- (void)setScaleFactor:(unsigned int)a3;
-- (void)setScaleFactorString:(id)a3;
-- (void)setSubtype:(unsigned int)a3;
+- (void)getKey:(_renditionkeytoken *)key;
+- (void)setAttributesFromCopyData:(id)data;
+- (void)setAttributesFromData:(id)data;
+- (void)setAttributesFromRenditionKey:(const _renditionkeytoken *)key withDocument:(id)document;
+- (void)setDimension1:(unsigned int)dimension1;
+- (void)setDimension2:(unsigned int)dimension2;
+- (void)setMemoryClass:(unsigned int)class;
+- (void)setNameIdentifier:(unsigned int)identifier;
+- (void)setScaleFactor:(unsigned int)factor;
+- (void)setScaleFactorString:(id)string;
+- (void)setSubtype:(unsigned int)subtype;
 @end
 
 @implementation TDRenditionKeySpec
@@ -40,10 +40,10 @@
   [(TDRenditionKeySpec *)&v4 dealloc];
 }
 
-- (void)setDimension1:(unsigned int)a3
+- (void)setDimension1:(unsigned int)dimension1
 {
   [(TDRenditionKeySpec *)self willChangeValueForKey:@"dimension1"];
-  self->_dimension1 = a3;
+  self->_dimension1 = dimension1;
 
   [(TDRenditionKeySpec *)self didChangeValueForKey:@"dimension1"];
 }
@@ -56,10 +56,10 @@
   return dimension1;
 }
 
-- (void)setDimension2:(unsigned int)a3
+- (void)setDimension2:(unsigned int)dimension2
 {
   [(TDRenditionKeySpec *)self willChangeValueForKey:@"dimension2"];
-  self->_dimension2 = a3;
+  self->_dimension2 = dimension2;
 
   [(TDRenditionKeySpec *)self didChangeValueForKey:@"dimension2"];
 }
@@ -72,10 +72,10 @@
   return dimension2;
 }
 
-- (void)setScaleFactor:(unsigned int)a3
+- (void)setScaleFactor:(unsigned int)factor
 {
   [(TDRenditionKeySpec *)self willChangeValueForKey:@"scaleFactor"];
-  self->_scaleFactor = a3;
+  self->_scaleFactor = factor;
 
   [(TDRenditionKeySpec *)self didChangeValueForKey:@"scaleFactor"];
 }
@@ -88,10 +88,10 @@
   return scaleFactor;
 }
 
-- (void)setSubtype:(unsigned int)a3
+- (void)setSubtype:(unsigned int)subtype
 {
   [(TDRenditionKeySpec *)self willAccessValueForKey:@"subtype"];
-  self->_subtype = a3;
+  self->_subtype = subtype;
 
   [(TDRenditionKeySpec *)self didAccessValueForKey:@"subtype"];
 }
@@ -104,10 +104,10 @@
   return subtype;
 }
 
-- (void)setNameIdentifier:(unsigned int)a3
+- (void)setNameIdentifier:(unsigned int)identifier
 {
   [(TDRenditionKeySpec *)self willAccessValueForKey:@"nameIdentifier"];
-  self->_nameIdentifier = a3;
+  self->_nameIdentifier = identifier;
 
   [(TDRenditionKeySpec *)self didAccessValueForKey:@"nameIdentifier"];
 }
@@ -120,10 +120,10 @@
   return nameIdentifier;
 }
 
-- (void)setMemoryClass:(unsigned int)a3
+- (void)setMemoryClass:(unsigned int)class
 {
   [(TDRenditionKeySpec *)self willAccessValueForKey:@"memoryClass"];
-  self->_memoryClass = a3;
+  self->_memoryClass = class;
 
   [(TDRenditionKeySpec *)self didAccessValueForKey:@"memoryClass"];
 }
@@ -136,12 +136,12 @@
   return memoryClass;
 }
 
-+ (id)keyPathsForValuesAffectingValueForKey:(id)a3
++ (id)keyPathsForValuesAffectingValueForKey:(id)key
 {
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___TDRenditionKeySpec;
   v4 = objc_msgSendSuper2(&v6, sel_keyPathsForValuesAffectingValueForKey_);
-  if ([a3 isEqualToString:@"scaleFactorString"])
+  if ([key isEqualToString:@"scaleFactorString"])
   {
     return [v4 setByAddingObjectsFromSet:{objc_msgSend(MEMORY[0x277CBEB98], "setWithObjects:", @"scaleFactor", 0)}];
   }
@@ -149,41 +149,41 @@
   return v4;
 }
 
-- (void)setScaleFactorString:(id)a3
+- (void)setScaleFactorString:(id)string
 {
-  v4 = [a3 intValue];
+  intValue = [string intValue];
 
-  [(TDRenditionKeySpec *)self setScaleFactor:v4];
+  [(TDRenditionKeySpec *)self setScaleFactor:intValue];
 }
 
-- (void)setAttributesFromRenditionKey:(const _renditionkeytoken *)a3 withDocument:(id)a4
+- (void)setAttributesFromRenditionKey:(const _renditionkeytoken *)key withDocument:(id)document
 {
-  identifier = a3->identifier;
-  if (a3->identifier)
+  identifier = key->identifier;
+  if (key->identifier)
   {
-    v7 = a3 + 1;
+    v7 = key + 1;
     do
     {
       value = v7[-1].value;
       switch(identifier)
       {
         case 1:
-          -[TDRenditionKeySpec setElement:](self, "setElement:", [a4 elementWithIdentifier:value]);
+          -[TDRenditionKeySpec setElement:](self, "setElement:", [document elementWithIdentifier:value]);
           break;
         case 2:
-          -[TDRenditionKeySpec setPart:](self, "setPart:", [a4 partWithIdentifier:value]);
+          -[TDRenditionKeySpec setPart:](self, "setPart:", [document partWithIdentifier:value]);
           break;
         case 3:
-          -[TDRenditionKeySpec setSize:](self, "setSize:", [a4 sizeWithIdentifier:value]);
+          -[TDRenditionKeySpec setSize:](self, "setSize:", [document sizeWithIdentifier:value]);
           break;
         case 4:
-          -[TDRenditionKeySpec setDirection:](self, "setDirection:", [a4 directionWithIdentifier:value]);
+          -[TDRenditionKeySpec setDirection:](self, "setDirection:", [document directionWithIdentifier:value]);
           break;
         case 6:
-          -[TDRenditionKeySpec setValue:](self, "setValue:", [a4 valueWithIdentifier:value]);
+          -[TDRenditionKeySpec setValue:](self, "setValue:", [document valueWithIdentifier:value]);
           break;
         case 7:
-          -[TDRenditionKeySpec setAppearance:](self, "setAppearance:", [a4 appearanceWithIdentifier:value]);
+          -[TDRenditionKeySpec setAppearance:](self, "setAppearance:", [document appearanceWithIdentifier:value]);
           break;
         case 8:
           [(TDRenditionKeySpec *)self setDimension1:value];
@@ -192,22 +192,22 @@
           [(TDRenditionKeySpec *)self setDimension2:value];
           break;
         case 10:
-          -[TDRenditionKeySpec setState:](self, "setState:", [a4 stateWithIdentifier:value]);
+          -[TDRenditionKeySpec setState:](self, "setState:", [document stateWithIdentifier:value]);
           break;
         case 11:
-          -[TDRenditionKeySpec setLayer:](self, "setLayer:", [a4 drawingLayerWithIdentifier:value]);
+          -[TDRenditionKeySpec setLayer:](self, "setLayer:", [document drawingLayerWithIdentifier:value]);
           break;
         case 12:
           [(TDRenditionKeySpec *)self setScaleFactor:value];
           break;
         case 13:
-          -[TDRenditionKeySpec setLocalization:](self, "setLocalization:", [a4 localizationWithIdentifier:value]);
+          -[TDRenditionKeySpec setLocalization:](self, "setLocalization:", [document localizationWithIdentifier:value]);
           break;
         case 14:
-          -[TDRenditionKeySpec setPresentationState:](self, "setPresentationState:", [a4 presentationStateWithIdentifier:value]);
+          -[TDRenditionKeySpec setPresentationState:](self, "setPresentationState:", [document presentationStateWithIdentifier:value]);
           break;
         case 15:
-          -[TDRenditionKeySpec setIdiom:](self, "setIdiom:", [a4 idiomWithIdentifier:value]);
+          -[TDRenditionKeySpec setIdiom:](self, "setIdiom:", [document idiomWithIdentifier:value]);
           break;
         case 16:
           [(TDRenditionKeySpec *)self setSubtype:value];
@@ -216,34 +216,34 @@
           [(TDRenditionKeySpec *)self setNameIdentifier:value];
           break;
         case 18:
-          -[TDRenditionKeySpec setPreviousValue:](self, "setPreviousValue:", [a4 valueWithIdentifier:value]);
+          -[TDRenditionKeySpec setPreviousValue:](self, "setPreviousValue:", [document valueWithIdentifier:value]);
           break;
         case 19:
-          -[TDRenditionKeySpec setPreviousState:](self, "setPreviousState:", [a4 stateWithIdentifier:value]);
+          -[TDRenditionKeySpec setPreviousState:](self, "setPreviousState:", [document stateWithIdentifier:value]);
           break;
         case 20:
-          -[TDRenditionKeySpec setSizeClassHorizontal:](self, "setSizeClassHorizontal:", [a4 sizeClassWithIdentifier:value]);
+          -[TDRenditionKeySpec setSizeClassHorizontal:](self, "setSizeClassHorizontal:", [document sizeClassWithIdentifier:value]);
           break;
         case 21:
-          -[TDRenditionKeySpec setSizeClassVertical:](self, "setSizeClassVertical:", [a4 sizeClassWithIdentifier:value]);
+          -[TDRenditionKeySpec setSizeClassVertical:](self, "setSizeClassVertical:", [document sizeClassWithIdentifier:value]);
           break;
         case 22:
           [(TDRenditionKeySpec *)self setMemoryClass:value];
           break;
         case 23:
-          -[TDRenditionKeySpec setGraphicsFeatureSetClass:](self, "setGraphicsFeatureSetClass:", [a4 graphicsFeatureSetClassWithIdentifier:value]);
+          -[TDRenditionKeySpec setGraphicsFeatureSetClass:](self, "setGraphicsFeatureSetClass:", [document graphicsFeatureSetClassWithIdentifier:value]);
           break;
         case 24:
-          -[TDRenditionKeySpec setGamut:](self, "setGamut:", [a4 displayGamutWithIdentifier:value]);
+          -[TDRenditionKeySpec setGamut:](self, "setGamut:", [document displayGamutWithIdentifier:value]);
           break;
         case 25:
-          -[TDRenditionKeySpec setTarget:](self, "setTarget:", [a4 deploymentTargetWithIdentifier:value]);
+          -[TDRenditionKeySpec setTarget:](self, "setTarget:", [document deploymentTargetWithIdentifier:value]);
           break;
         case 26:
-          -[TDRenditionKeySpec setGlyphSize:](self, "setGlyphSize:", [a4 glyphSizeWithIdentifier:value]);
+          -[TDRenditionKeySpec setGlyphSize:](self, "setGlyphSize:", [document glyphSizeWithIdentifier:value]);
           break;
         case 27:
-          -[TDRenditionKeySpec setGlyphWeight:](self, "setGlyphWeight:", [a4 glyphWeightWithIdentifier:value]);
+          -[TDRenditionKeySpec setGlyphWeight:](self, "setGlyphWeight:", [document glyphWeightWithIdentifier:value]);
           break;
         default:
           NSLog(&cfstr_UnexpectedAttr.isa, a2, value, identifier);
@@ -259,9 +259,9 @@
   }
 }
 
-- (void)getKey:(_renditionkeytoken *)a3
+- (void)getKey:(_renditionkeytoken *)key
 {
-  *a3 = 0;
+  *key = 0;
   [-[TDRenditionKeySpec element](self "element")];
   CUIRenditionKeySetValueForAttribute();
   [-[TDRenditionKeySpec part](self "part")];
@@ -322,8 +322,8 @@
   scratchKey = self->_scratchKey;
   if (!scratchKey)
   {
-    v4 = [(TDRenditionKeySpec *)self attributeCount];
-    if (v4 < 22)
+    attributeCount = [(TDRenditionKeySpec *)self attributeCount];
+    if (attributeCount < 22)
     {
       scratchKey = self->_scratchKey;
       if (!scratchKey)
@@ -335,7 +335,7 @@ LABEL_6:
 
     else
     {
-      scratchKey = malloc_type_malloc(4 * v4 + 4, 0x100004052888210uLL);
+      scratchKey = malloc_type_malloc(4 * attributeCount + 4, 0x100004052888210uLL);
       self->_scratchKey = scratchKey;
       if (!scratchKey)
       {
@@ -359,15 +359,15 @@ LABEL_6:
     v58 = [-[TDRenditionKeySpec size](self "size")];
     v56 = [-[TDRenditionKeySpec direction](self "direction")];
     v54 = [-[TDRenditionKeySpec value](self "value")];
-    v52 = [(TDRenditionKeySpec *)self nameIdentifier];
-    v50 = [(TDRenditionKeySpec *)self dimension1];
-    v48 = [(TDRenditionKeySpec *)self dimension2];
+    nameIdentifier = [(TDRenditionKeySpec *)self nameIdentifier];
+    dimension1 = [(TDRenditionKeySpec *)self dimension1];
+    dimension2 = [(TDRenditionKeySpec *)self dimension2];
     v46 = [-[TDRenditionKeySpec state](self "state")];
     v44 = [-[TDRenditionKeySpec presentationState](self "presentationState")];
     v42 = [-[TDRenditionKeySpec previousState](self "previousState")];
     v13 = [-[TDRenditionKeySpec previousValue](self "previousValue")];
     v14 = [-[TDRenditionKeySpec layer](self "layer")];
-    v15 = [(TDRenditionKeySpec *)self scaleFactor];
+    scaleFactor = [(TDRenditionKeySpec *)self scaleFactor];
     v16 = [-[TDRenditionKeySpec gamut](self "gamut")];
     v17 = [-[TDRenditionKeySpec target](self "target")];
     v18 = [-[TDRenditionKeySpec appearance](self "appearance")];
@@ -379,16 +379,16 @@ LABEL_6:
     v38 = v20;
     v35 = v17;
     v36 = v18;
-    v33 = v15;
+    v33 = scaleFactor;
     v34 = v16;
     v31 = v13;
     v32 = v14;
     v29 = v44;
     v30 = v42;
     v28 = v46;
-    v27 = v48;
-    v26 = v50;
-    v25 = v52;
+    v27 = dimension2;
+    v26 = dimension1;
+    v25 = nameIdentifier;
     v24 = v54;
     v23 = v56;
     v22 = v58;
@@ -402,18 +402,18 @@ LABEL_6:
     v60 = [-[TDRenditionKeySpec element](self "element")];
     v59 = [-[TDRenditionKeySpec part](self "part")];
     v57 = [-[TDRenditionKeySpec value](self "value")];
-    v55 = [(TDRenditionKeySpec *)self nameIdentifier];
-    v53 = [(TDRenditionKeySpec *)self dimension1];
+    nameIdentifier2 = [(TDRenditionKeySpec *)self nameIdentifier];
+    dimension12 = [(TDRenditionKeySpec *)self dimension1];
     v51 = [-[TDRenditionKeySpec state](self "state")];
-    v49 = [(TDRenditionKeySpec *)self scaleFactor];
+    scaleFactor2 = [(TDRenditionKeySpec *)self scaleFactor];
     v47 = [-[TDRenditionKeySpec idiom](self "idiom")];
-    v45 = [(TDRenditionKeySpec *)self subtype];
+    subtype = [(TDRenditionKeySpec *)self subtype];
     v43 = [-[TDRenditionKeySpec gamut](self "gamut")];
     v41 = [-[TDRenditionKeySpec target](self "target")];
     v4 = [-[TDRenditionKeySpec sizeClassHorizontal](self "sizeClassHorizontal")];
     v5 = [-[TDRenditionKeySpec sizeClassVertical](self "sizeClassVertical")];
     v6 = [-[TDRenditionKeySpec graphicsFeatureSetClass](self "graphicsFeatureSetClass")];
-    v7 = [(TDRenditionKeySpec *)self memoryClass];
+    memoryClass = [(TDRenditionKeySpec *)self memoryClass];
     v8 = [-[TDRenditionKeySpec target](self "target")];
     v9 = [-[TDRenditionKeySpec appearance](self "appearance")];
     v10 = [-[TDRenditionKeySpec localization](self "localization")];
@@ -425,17 +425,17 @@ LABEL_6:
     v35 = v8;
     v36 = v9;
     v33 = v6;
-    v34 = v7;
+    v34 = memoryClass;
     v31 = v4;
     v32 = v5;
     v29 = v43;
     v30 = v41;
-    v28 = v45;
+    v28 = subtype;
     v27 = v47;
-    v26 = v49;
+    v26 = scaleFactor2;
     v25 = v51;
-    v24 = v53;
-    v23 = v55;
+    v24 = dimension12;
+    v23 = nameIdentifier2;
     v22 = v57;
     v12 = @"(E)Key\n\telement:   \t%@\n\tpart:      \t%@\n\tvalue:     \t%@\n\tidentifier:\t%u\n\tdimension1:\t%u\n\tstate:     \t%@\n\tscale:     \t%u\n\tidiom:   \t%@\n\tsubtype:      \t%u\n\tgamut:   \t%@\n\ttarget:   \t%@\n\tsizeClassHorizontal:   \t%@\n\tsizeClassVertical:   \t%@\n\tgraphicsFeatureSetClass:      \t%@\n\tmemoryClass:      \t%u\n\ttarget:    \t%@\n\tappearance:      \t%@\n\tlocalization:      \t%@\n\tglyphWeight:\t%@\n\ttglypSize: \t%@\n\tdeployment:   \t%@";
     return [v61 stringWithFormat:v12, v60, v59, v22, v23, v24, v25, v26, v27, v28, v29, v30, v31, v32, v33, v34, v35, v36, v37, v38, v39, v40];
@@ -444,57 +444,57 @@ LABEL_6:
   return 0;
 }
 
-- (void)copyAttributesInto:(id)a3
+- (void)copyAttributesInto:(id)into
 {
-  [a3 setState:{-[TDRenditionKeySpec state](self, "state")}];
-  [a3 setPresentationState:{-[TDRenditionKeySpec presentationState](self, "presentationState")}];
-  [a3 setValue:{-[TDRenditionKeySpec value](self, "value")}];
-  [a3 setSize:{-[TDRenditionKeySpec size](self, "size")}];
-  [a3 setDirection:{-[TDRenditionKeySpec direction](self, "direction")}];
-  [a3 setPart:{-[TDRenditionKeySpec part](self, "part")}];
-  [a3 setElement:{-[TDRenditionKeySpec element](self, "element")}];
-  [a3 setLayer:{-[TDRenditionKeySpec layer](self, "layer")}];
-  [a3 setPreviousState:{-[TDRenditionKeySpec previousState](self, "previousState")}];
-  [a3 setPreviousValue:{-[TDRenditionKeySpec previousValue](self, "previousValue")}];
-  [a3 setNameIdentifier:{-[TDRenditionKeySpec nameIdentifier](self, "nameIdentifier")}];
-  [a3 setDimension1:{-[TDRenditionKeySpec dimension1](self, "dimension1")}];
-  [a3 setDimension2:{-[TDRenditionKeySpec dimension2](self, "dimension2")}];
-  [a3 setScaleFactor:{-[TDRenditionKeySpec scaleFactor](self, "scaleFactor")}];
-  [a3 setIdiom:{-[TDRenditionKeySpec idiom](self, "idiom")}];
-  [a3 setSubtype:{-[TDRenditionKeySpec subtype](self, "subtype")}];
-  [a3 setGamut:{-[TDRenditionKeySpec gamut](self, "gamut")}];
-  [a3 setTarget:{-[TDRenditionKeySpec target](self, "target")}];
-  [a3 setSizeClassHorizontal:{-[TDRenditionKeySpec sizeClassHorizontal](self, "sizeClassHorizontal")}];
-  [a3 setSizeClassVertical:{-[TDRenditionKeySpec sizeClassVertical](self, "sizeClassVertical")}];
-  [a3 setMemoryClass:{-[TDRenditionKeySpec memoryClass](self, "memoryClass")}];
-  [a3 setGraphicsFeatureSetClass:{-[TDRenditionKeySpec graphicsFeatureSetClass](self, "graphicsFeatureSetClass")}];
-  [a3 setAppearance:{-[TDRenditionKeySpec appearance](self, "appearance")}];
-  [a3 setLocalization:{-[TDRenditionKeySpec localization](self, "localization")}];
-  [a3 setGlyphSize:{-[TDRenditionKeySpec glyphSize](self, "glyphSize")}];
-  v5 = [(TDRenditionKeySpec *)self glyphWeight];
+  [into setState:{-[TDRenditionKeySpec state](self, "state")}];
+  [into setPresentationState:{-[TDRenditionKeySpec presentationState](self, "presentationState")}];
+  [into setValue:{-[TDRenditionKeySpec value](self, "value")}];
+  [into setSize:{-[TDRenditionKeySpec size](self, "size")}];
+  [into setDirection:{-[TDRenditionKeySpec direction](self, "direction")}];
+  [into setPart:{-[TDRenditionKeySpec part](self, "part")}];
+  [into setElement:{-[TDRenditionKeySpec element](self, "element")}];
+  [into setLayer:{-[TDRenditionKeySpec layer](self, "layer")}];
+  [into setPreviousState:{-[TDRenditionKeySpec previousState](self, "previousState")}];
+  [into setPreviousValue:{-[TDRenditionKeySpec previousValue](self, "previousValue")}];
+  [into setNameIdentifier:{-[TDRenditionKeySpec nameIdentifier](self, "nameIdentifier")}];
+  [into setDimension1:{-[TDRenditionKeySpec dimension1](self, "dimension1")}];
+  [into setDimension2:{-[TDRenditionKeySpec dimension2](self, "dimension2")}];
+  [into setScaleFactor:{-[TDRenditionKeySpec scaleFactor](self, "scaleFactor")}];
+  [into setIdiom:{-[TDRenditionKeySpec idiom](self, "idiom")}];
+  [into setSubtype:{-[TDRenditionKeySpec subtype](self, "subtype")}];
+  [into setGamut:{-[TDRenditionKeySpec gamut](self, "gamut")}];
+  [into setTarget:{-[TDRenditionKeySpec target](self, "target")}];
+  [into setSizeClassHorizontal:{-[TDRenditionKeySpec sizeClassHorizontal](self, "sizeClassHorizontal")}];
+  [into setSizeClassVertical:{-[TDRenditionKeySpec sizeClassVertical](self, "sizeClassVertical")}];
+  [into setMemoryClass:{-[TDRenditionKeySpec memoryClass](self, "memoryClass")}];
+  [into setGraphicsFeatureSetClass:{-[TDRenditionKeySpec graphicsFeatureSetClass](self, "graphicsFeatureSetClass")}];
+  [into setAppearance:{-[TDRenditionKeySpec appearance](self, "appearance")}];
+  [into setLocalization:{-[TDRenditionKeySpec localization](self, "localization")}];
+  [into setGlyphSize:{-[TDRenditionKeySpec glyphSize](self, "glyphSize")}];
+  glyphWeight = [(TDRenditionKeySpec *)self glyphWeight];
 
-  [a3 setGlyphWeight:v5];
+  [into setGlyphWeight:glyphWeight];
 }
 
 - (id)dataFromAttributes
 {
   v3 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:6];
-  v4 = [(TDRenditionKeySpec *)self state];
-  if (v4)
+  state = [(TDRenditionKeySpec *)self state];
+  if (state)
   {
-    [v3 setObject:objc_msgSend(objc_msgSend(objc_msgSend(v4 forKey:{"objectID"), "URIRepresentation"), "absoluteString"), @"state"}];
+    [v3 setObject:objc_msgSend(objc_msgSend(objc_msgSend(state forKey:{"objectID"), "URIRepresentation"), "absoluteString"), @"state"}];
   }
 
-  v5 = [(TDRenditionKeySpec *)self presentationState];
-  if (v5)
+  presentationState = [(TDRenditionKeySpec *)self presentationState];
+  if (presentationState)
   {
-    [v3 setObject:objc_msgSend(objc_msgSend(objc_msgSend(v5 forKey:{"objectID"), "URIRepresentation"), "absoluteString"), @"presentationState"}];
+    [v3 setObject:objc_msgSend(objc_msgSend(objc_msgSend(presentationState forKey:{"objectID"), "URIRepresentation"), "absoluteString"), @"presentationState"}];
   }
 
-  v6 = [(TDRenditionKeySpec *)self value];
-  if (v6)
+  value = [(TDRenditionKeySpec *)self value];
+  if (value)
   {
-    [v3 setObject:objc_msgSend(objc_msgSend(objc_msgSend(v6 forKey:{"objectID"), "URIRepresentation"), "absoluteString"), @"value"}];
+    [v3 setObject:objc_msgSend(objc_msgSend(objc_msgSend(value forKey:{"objectID"), "URIRepresentation"), "absoluteString"), @"value"}];
   }
 
   v7 = [(TDRenditionKeySpec *)self size];
@@ -503,76 +503,76 @@ LABEL_6:
     [v3 setObject:objc_msgSend(objc_msgSend(objc_msgSend(v7 forKey:{"objectID"), "URIRepresentation"), "absoluteString"), @"size"}];
   }
 
-  v8 = [(TDRenditionKeySpec *)self direction];
-  if (v8)
+  direction = [(TDRenditionKeySpec *)self direction];
+  if (direction)
   {
-    [v3 setObject:objc_msgSend(objc_msgSend(objc_msgSend(v8 forKey:{"objectID"), "URIRepresentation"), "absoluteString"), @"direction"}];
+    [v3 setObject:objc_msgSend(objc_msgSend(objc_msgSend(direction forKey:{"objectID"), "URIRepresentation"), "absoluteString"), @"direction"}];
   }
 
-  v9 = [(TDRenditionKeySpec *)self part];
-  if (v9)
+  part = [(TDRenditionKeySpec *)self part];
+  if (part)
   {
-    [v3 setObject:objc_msgSend(objc_msgSend(objc_msgSend(v9 forKey:{"objectID"), "URIRepresentation"), "absoluteString"), @"part"}];
+    [v3 setObject:objc_msgSend(objc_msgSend(objc_msgSend(part forKey:{"objectID"), "URIRepresentation"), "absoluteString"), @"part"}];
   }
 
-  v10 = [(TDRenditionKeySpec *)self element];
-  if (v10)
+  element = [(TDRenditionKeySpec *)self element];
+  if (element)
   {
-    [v3 setObject:objc_msgSend(objc_msgSend(objc_msgSend(v10 forKey:{"objectID"), "URIRepresentation"), "absoluteString"), @"element"}];
+    [v3 setObject:objc_msgSend(objc_msgSend(objc_msgSend(element forKey:{"objectID"), "URIRepresentation"), "absoluteString"), @"element"}];
   }
 
-  v11 = [(TDRenditionKeySpec *)self layer];
-  if (v11)
+  layer = [(TDRenditionKeySpec *)self layer];
+  if (layer)
   {
-    [v3 setObject:objc_msgSend(objc_msgSend(objc_msgSend(v11 forKey:{"objectID"), "URIRepresentation"), "absoluteString"), @"layer"}];
+    [v3 setObject:objc_msgSend(objc_msgSend(objc_msgSend(layer forKey:{"objectID"), "URIRepresentation"), "absoluteString"), @"layer"}];
   }
 
-  v12 = [(TDRenditionKeySpec *)self idiom];
-  if (v12)
+  idiom = [(TDRenditionKeySpec *)self idiom];
+  if (idiom)
   {
-    [v3 setObject:objc_msgSend(objc_msgSend(objc_msgSend(v12 forKey:{"objectID"), "URIRepresentation"), "absoluteString"), @"idiom"}];
+    [v3 setObject:objc_msgSend(objc_msgSend(objc_msgSend(idiom forKey:{"objectID"), "URIRepresentation"), "absoluteString"), @"idiom"}];
   }
 
-  v13 = [(TDRenditionKeySpec *)self gamut];
-  if (v13)
+  gamut = [(TDRenditionKeySpec *)self gamut];
+  if (gamut)
   {
-    [v3 setObject:objc_msgSend(objc_msgSend(objc_msgSend(v13 forKey:{"objectID"), "URIRepresentation"), "absoluteString"), @"gamut"}];
+    [v3 setObject:objc_msgSend(objc_msgSend(objc_msgSend(gamut forKey:{"objectID"), "URIRepresentation"), "absoluteString"), @"gamut"}];
   }
 
-  v14 = [(TDRenditionKeySpec *)self target];
-  if (v14)
+  target = [(TDRenditionKeySpec *)self target];
+  if (target)
   {
-    [v3 setObject:objc_msgSend(objc_msgSend(objc_msgSend(v14 forKey:{"objectID"), "URIRepresentation"), "absoluteString"), @"target"}];
+    [v3 setObject:objc_msgSend(objc_msgSend(objc_msgSend(target forKey:{"objectID"), "URIRepresentation"), "absoluteString"), @"target"}];
   }
 
-  v15 = [(TDRenditionKeySpec *)self graphicsFeatureSetClass];
-  if (v15)
+  graphicsFeatureSetClass = [(TDRenditionKeySpec *)self graphicsFeatureSetClass];
+  if (graphicsFeatureSetClass)
   {
-    [v3 setObject:objc_msgSend(objc_msgSend(objc_msgSend(v15 forKey:{"objectID"), "URIRepresentation"), "absoluteString"), @"graphicsFeatureSetClass"}];
+    [v3 setObject:objc_msgSend(objc_msgSend(objc_msgSend(graphicsFeatureSetClass forKey:{"objectID"), "URIRepresentation"), "absoluteString"), @"graphicsFeatureSetClass"}];
   }
 
-  v16 = [(TDRenditionKeySpec *)self sizeClassHorizontal];
-  if (v16)
+  sizeClassHorizontal = [(TDRenditionKeySpec *)self sizeClassHorizontal];
+  if (sizeClassHorizontal)
   {
-    [v3 setObject:objc_msgSend(objc_msgSend(objc_msgSend(v16 forKey:{"objectID"), "URIRepresentation"), "absoluteString"), @"sizeClassHorizontal"}];
+    [v3 setObject:objc_msgSend(objc_msgSend(objc_msgSend(sizeClassHorizontal forKey:{"objectID"), "URIRepresentation"), "absoluteString"), @"sizeClassHorizontal"}];
   }
 
-  v17 = [(TDRenditionKeySpec *)self sizeClassVertical];
-  if (v17)
+  sizeClassVertical = [(TDRenditionKeySpec *)self sizeClassVertical];
+  if (sizeClassVertical)
   {
-    [v3 setObject:objc_msgSend(objc_msgSend(objc_msgSend(v17 forKey:{"objectID"), "URIRepresentation"), "absoluteString"), @"sizeClassVertical"}];
+    [v3 setObject:objc_msgSend(objc_msgSend(objc_msgSend(sizeClassVertical forKey:{"objectID"), "URIRepresentation"), "absoluteString"), @"sizeClassVertical"}];
   }
 
-  v18 = [(TDRenditionKeySpec *)self previousState];
-  if (v18)
+  previousState = [(TDRenditionKeySpec *)self previousState];
+  if (previousState)
   {
-    [v3 setObject:objc_msgSend(objc_msgSend(objc_msgSend(v18 forKey:{"objectID"), "URIRepresentation"), "absoluteString"), @"previousState"}];
+    [v3 setObject:objc_msgSend(objc_msgSend(objc_msgSend(previousState forKey:{"objectID"), "URIRepresentation"), "absoluteString"), @"previousState"}];
   }
 
-  v19 = [(TDRenditionKeySpec *)self previousValue];
-  if (v19)
+  previousValue = [(TDRenditionKeySpec *)self previousValue];
+  if (previousValue)
   {
-    [v3 setObject:objc_msgSend(objc_msgSend(objc_msgSend(v19 forKey:{"objectID"), "URIRepresentation"), "absoluteString"), @"previousValue"}];
+    [v3 setObject:objc_msgSend(objc_msgSend(objc_msgSend(previousValue forKey:{"objectID"), "URIRepresentation"), "absoluteString"), @"previousValue"}];
   }
 
   [v3 setObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithInt:", -[TDRenditionKeySpec subtype](self, "subtype")), @"subtype"}];
@@ -581,16 +581,16 @@ LABEL_6:
   [v3 setObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithInt:", -[TDRenditionKeySpec dimension2](self, "dimension2")), @"dimension2"}];
   [v3 setObject:objc_msgSend(MEMORY[0x277CCABB0] forKey:{"numberWithInt:", -[TDRenditionKeySpec scaleFactor](self, "scaleFactor")), @"scaleFactor"}];
   [v3 setObject:objc_msgSend(MEMORY[0x277CCABB0] forKeyedSubscript:{"numberWithUnsignedInt:", -[TDRenditionKeySpec memoryClass](self, "memoryClass")), @"memoryClass"}];
-  v20 = [(TDRenditionKeySpec *)self appearance];
-  if (v20)
+  appearance = [(TDRenditionKeySpec *)self appearance];
+  if (appearance)
   {
-    [v3 setObject:objc_msgSend(objc_msgSend(objc_msgSend(v20 forKey:{"objectID"), "URIRepresentation"), "absoluteString"), @"appearance"}];
+    [v3 setObject:objc_msgSend(objc_msgSend(objc_msgSend(appearance forKey:{"objectID"), "URIRepresentation"), "absoluteString"), @"appearance"}];
   }
 
-  v21 = [(TDRenditionKeySpec *)self localization];
-  if (v21)
+  localization = [(TDRenditionKeySpec *)self localization];
+  if (localization)
   {
-    [v3 setObject:objc_msgSend(objc_msgSend(objc_msgSend(v21 forKey:{"objectID"), "URIRepresentation"), "absoluteString"), @"localization"}];
+    [v3 setObject:objc_msgSend(objc_msgSend(objc_msgSend(localization forKey:{"objectID"), "URIRepresentation"), "absoluteString"), @"localization"}];
   }
 
   v22 = MEMORY[0x277CCAC58];
@@ -598,104 +598,104 @@ LABEL_6:
   return [v22 dataWithPropertyList:v3 format:200 options:0 error:0];
 }
 
-- (void)setAttributesFromData:(id)a3
+- (void)setAttributesFromData:(id)data
 {
-  v4 = [MEMORY[0x277CCAC58] propertyListWithData:a3 options:0 format:0 error:0];
-  v5 = [(TDRenditionKeySpec *)self managedObjectContext];
+  v4 = [MEMORY[0x277CCAC58] propertyListWithData:data options:0 format:0 error:0];
+  managedObjectContext = [(TDRenditionKeySpec *)self managedObjectContext];
   v6 = [v4 objectForKey:@"state"];
   if (v6)
   {
-    -[TDRenditionKeySpec setState:](self, "setState:", [v5 objectWithID:{objc_msgSend(objc_msgSend(v5, "persistentStoreCoordinator"), "managedObjectIDForURIRepresentation:", objc_msgSend(MEMORY[0x277CBEBC0], "URLWithString:", v6))}]);
+    -[TDRenditionKeySpec setState:](self, "setState:", [managedObjectContext objectWithID:{objc_msgSend(objc_msgSend(managedObjectContext, "persistentStoreCoordinator"), "managedObjectIDForURIRepresentation:", objc_msgSend(MEMORY[0x277CBEBC0], "URLWithString:", v6))}]);
   }
 
   v7 = [v4 objectForKey:@"previousState"];
   if (v7)
   {
-    -[TDRenditionKeySpec setPreviousState:](self, "setPreviousState:", [v5 objectWithID:{objc_msgSend(objc_msgSend(v5, "persistentStoreCoordinator"), "managedObjectIDForURIRepresentation:", objc_msgSend(MEMORY[0x277CBEBC0], "URLWithString:", v7))}]);
+    -[TDRenditionKeySpec setPreviousState:](self, "setPreviousState:", [managedObjectContext objectWithID:{objc_msgSend(objc_msgSend(managedObjectContext, "persistentStoreCoordinator"), "managedObjectIDForURIRepresentation:", objc_msgSend(MEMORY[0x277CBEBC0], "URLWithString:", v7))}]);
   }
 
   v8 = [v4 objectForKey:@"presentationState"];
   if (v8)
   {
-    -[TDRenditionKeySpec setPresentationState:](self, "setPresentationState:", [v5 objectWithID:{objc_msgSend(objc_msgSend(v5, "persistentStoreCoordinator"), "managedObjectIDForURIRepresentation:", objc_msgSend(MEMORY[0x277CBEBC0], "URLWithString:", v8))}]);
+    -[TDRenditionKeySpec setPresentationState:](self, "setPresentationState:", [managedObjectContext objectWithID:{objc_msgSend(objc_msgSend(managedObjectContext, "persistentStoreCoordinator"), "managedObjectIDForURIRepresentation:", objc_msgSend(MEMORY[0x277CBEBC0], "URLWithString:", v8))}]);
   }
 
   v9 = [v4 objectForKey:@"value"];
   if (v9)
   {
-    -[TDRenditionKeySpec setValue:](self, "setValue:", [v5 objectWithID:{objc_msgSend(objc_msgSend(v5, "persistentStoreCoordinator"), "managedObjectIDForURIRepresentation:", objc_msgSend(MEMORY[0x277CBEBC0], "URLWithString:", v9))}]);
+    -[TDRenditionKeySpec setValue:](self, "setValue:", [managedObjectContext objectWithID:{objc_msgSend(objc_msgSend(managedObjectContext, "persistentStoreCoordinator"), "managedObjectIDForURIRepresentation:", objc_msgSend(MEMORY[0x277CBEBC0], "URLWithString:", v9))}]);
   }
 
   v10 = [v4 objectForKey:@"previousValue"];
   if (v10)
   {
-    -[TDRenditionKeySpec setPreviousValue:](self, "setPreviousValue:", [v5 objectWithID:{objc_msgSend(objc_msgSend(v5, "persistentStoreCoordinator"), "managedObjectIDForURIRepresentation:", objc_msgSend(MEMORY[0x277CBEBC0], "URLWithString:", v10))}]);
+    -[TDRenditionKeySpec setPreviousValue:](self, "setPreviousValue:", [managedObjectContext objectWithID:{objc_msgSend(objc_msgSend(managedObjectContext, "persistentStoreCoordinator"), "managedObjectIDForURIRepresentation:", objc_msgSend(MEMORY[0x277CBEBC0], "URLWithString:", v10))}]);
   }
 
   v11 = [v4 objectForKey:@"size"];
   if (v11)
   {
-    -[TDRenditionKeySpec setSize:](self, "setSize:", [v5 objectWithID:{objc_msgSend(objc_msgSend(v5, "persistentStoreCoordinator"), "managedObjectIDForURIRepresentation:", objc_msgSend(MEMORY[0x277CBEBC0], "URLWithString:", v11))}]);
+    -[TDRenditionKeySpec setSize:](self, "setSize:", [managedObjectContext objectWithID:{objc_msgSend(objc_msgSend(managedObjectContext, "persistentStoreCoordinator"), "managedObjectIDForURIRepresentation:", objc_msgSend(MEMORY[0x277CBEBC0], "URLWithString:", v11))}]);
   }
 
   v12 = [v4 objectForKey:@"direction"];
   if (v12)
   {
-    -[TDRenditionKeySpec setDirection:](self, "setDirection:", [v5 objectWithID:{objc_msgSend(objc_msgSend(v5, "persistentStoreCoordinator"), "managedObjectIDForURIRepresentation:", objc_msgSend(MEMORY[0x277CBEBC0], "URLWithString:", v12))}]);
+    -[TDRenditionKeySpec setDirection:](self, "setDirection:", [managedObjectContext objectWithID:{objc_msgSend(objc_msgSend(managedObjectContext, "persistentStoreCoordinator"), "managedObjectIDForURIRepresentation:", objc_msgSend(MEMORY[0x277CBEBC0], "URLWithString:", v12))}]);
   }
 
   v13 = [v4 objectForKey:@"part"];
   if (v13)
   {
-    -[TDRenditionKeySpec setPart:](self, "setPart:", [v5 objectWithID:{objc_msgSend(objc_msgSend(v5, "persistentStoreCoordinator"), "managedObjectIDForURIRepresentation:", objc_msgSend(MEMORY[0x277CBEBC0], "URLWithString:", v13))}]);
+    -[TDRenditionKeySpec setPart:](self, "setPart:", [managedObjectContext objectWithID:{objc_msgSend(objc_msgSend(managedObjectContext, "persistentStoreCoordinator"), "managedObjectIDForURIRepresentation:", objc_msgSend(MEMORY[0x277CBEBC0], "URLWithString:", v13))}]);
   }
 
   v14 = [v4 objectForKey:@"element"];
   if (v14)
   {
-    -[TDRenditionKeySpec setElement:](self, "setElement:", [v5 objectWithID:{objc_msgSend(objc_msgSend(v5, "persistentStoreCoordinator"), "managedObjectIDForURIRepresentation:", objc_msgSend(MEMORY[0x277CBEBC0], "URLWithString:", v14))}]);
+    -[TDRenditionKeySpec setElement:](self, "setElement:", [managedObjectContext objectWithID:{objc_msgSend(objc_msgSend(managedObjectContext, "persistentStoreCoordinator"), "managedObjectIDForURIRepresentation:", objc_msgSend(MEMORY[0x277CBEBC0], "URLWithString:", v14))}]);
   }
 
   v15 = [v4 objectForKey:@"layer"];
   if (v15)
   {
-    -[TDRenditionKeySpec setLayer:](self, "setLayer:", [v5 objectWithID:{objc_msgSend(objc_msgSend(v5, "persistentStoreCoordinator"), "managedObjectIDForURIRepresentation:", objc_msgSend(MEMORY[0x277CBEBC0], "URLWithString:", v15))}]);
+    -[TDRenditionKeySpec setLayer:](self, "setLayer:", [managedObjectContext objectWithID:{objc_msgSend(objc_msgSend(managedObjectContext, "persistentStoreCoordinator"), "managedObjectIDForURIRepresentation:", objc_msgSend(MEMORY[0x277CBEBC0], "URLWithString:", v15))}]);
   }
 
   v16 = [v4 objectForKey:@"idiom"];
   if (v16)
   {
-    -[TDRenditionKeySpec setIdiom:](self, "setIdiom:", [v5 objectWithID:{objc_msgSend(objc_msgSend(v5, "persistentStoreCoordinator"), "managedObjectIDForURIRepresentation:", objc_msgSend(MEMORY[0x277CBEBC0], "URLWithString:", v16))}]);
+    -[TDRenditionKeySpec setIdiom:](self, "setIdiom:", [managedObjectContext objectWithID:{objc_msgSend(objc_msgSend(managedObjectContext, "persistentStoreCoordinator"), "managedObjectIDForURIRepresentation:", objc_msgSend(MEMORY[0x277CBEBC0], "URLWithString:", v16))}]);
   }
 
   v17 = [v4 objectForKey:@"gamut"];
   if (v17)
   {
-    -[TDRenditionKeySpec setGamut:](self, "setGamut:", [v5 objectWithID:{objc_msgSend(objc_msgSend(v5, "persistentStoreCoordinator"), "managedObjectIDForURIRepresentation:", objc_msgSend(MEMORY[0x277CBEBC0], "URLWithString:", v17))}]);
+    -[TDRenditionKeySpec setGamut:](self, "setGamut:", [managedObjectContext objectWithID:{objc_msgSend(objc_msgSend(managedObjectContext, "persistentStoreCoordinator"), "managedObjectIDForURIRepresentation:", objc_msgSend(MEMORY[0x277CBEBC0], "URLWithString:", v17))}]);
   }
 
   v18 = [v4 objectForKey:@"target"];
   if (v18)
   {
-    -[TDRenditionKeySpec setTarget:](self, "setTarget:", [v5 objectWithID:{objc_msgSend(objc_msgSend(v5, "persistentStoreCoordinator"), "managedObjectIDForURIRepresentation:", objc_msgSend(MEMORY[0x277CBEBC0], "URLWithString:", v18))}]);
+    -[TDRenditionKeySpec setTarget:](self, "setTarget:", [managedObjectContext objectWithID:{objc_msgSend(objc_msgSend(managedObjectContext, "persistentStoreCoordinator"), "managedObjectIDForURIRepresentation:", objc_msgSend(MEMORY[0x277CBEBC0], "URLWithString:", v18))}]);
   }
 
   v19 = [v4 objectForKey:@"graphicsFeatureSetClass"];
   if (v19)
   {
-    -[TDRenditionKeySpec setGraphicsFeatureSetClass:](self, "setGraphicsFeatureSetClass:", [v5 objectWithID:{objc_msgSend(objc_msgSend(v5, "persistentStoreCoordinator"), "managedObjectIDForURIRepresentation:", objc_msgSend(MEMORY[0x277CBEBC0], "URLWithString:", v19))}]);
+    -[TDRenditionKeySpec setGraphicsFeatureSetClass:](self, "setGraphicsFeatureSetClass:", [managedObjectContext objectWithID:{objc_msgSend(objc_msgSend(managedObjectContext, "persistentStoreCoordinator"), "managedObjectIDForURIRepresentation:", objc_msgSend(MEMORY[0x277CBEBC0], "URLWithString:", v19))}]);
   }
 
   v20 = [v4 objectForKey:@"sizeClassHorizontal"];
   if (v20)
   {
-    -[TDRenditionKeySpec setSizeClassHorizontal:](self, "setSizeClassHorizontal:", [v5 objectWithID:{objc_msgSend(objc_msgSend(v5, "persistentStoreCoordinator"), "managedObjectIDForURIRepresentation:", objc_msgSend(MEMORY[0x277CBEBC0], "URLWithString:", v20))}]);
+    -[TDRenditionKeySpec setSizeClassHorizontal:](self, "setSizeClassHorizontal:", [managedObjectContext objectWithID:{objc_msgSend(objc_msgSend(managedObjectContext, "persistentStoreCoordinator"), "managedObjectIDForURIRepresentation:", objc_msgSend(MEMORY[0x277CBEBC0], "URLWithString:", v20))}]);
   }
 
   v21 = [v4 objectForKey:@"sizeClassVertical"];
   if (v21)
   {
-    -[TDRenditionKeySpec setSizeClassVertical:](self, "setSizeClassVertical:", [v5 objectWithID:{objc_msgSend(objc_msgSend(v5, "persistentStoreCoordinator"), "managedObjectIDForURIRepresentation:", objc_msgSend(MEMORY[0x277CBEBC0], "URLWithString:", v21))}]);
+    -[TDRenditionKeySpec setSizeClassVertical:](self, "setSizeClassVertical:", [managedObjectContext objectWithID:{objc_msgSend(objc_msgSend(managedObjectContext, "persistentStoreCoordinator"), "managedObjectIDForURIRepresentation:", objc_msgSend(MEMORY[0x277CBEBC0], "URLWithString:", v21))}]);
   }
 
   v22 = [v4 objectForKey:@"subtype"];
@@ -737,13 +737,13 @@ LABEL_6:
   v28 = [v4 objectForKey:@"appearance"];
   if (v28)
   {
-    -[TDRenditionKeySpec setAppearance:](self, "setAppearance:", [v5 objectWithID:{objc_msgSend(objc_msgSend(v5, "persistentStoreCoordinator"), "managedObjectIDForURIRepresentation:", objc_msgSend(MEMORY[0x277CBEBC0], "URLWithString:", v28))}]);
+    -[TDRenditionKeySpec setAppearance:](self, "setAppearance:", [managedObjectContext objectWithID:{objc_msgSend(objc_msgSend(managedObjectContext, "persistentStoreCoordinator"), "managedObjectIDForURIRepresentation:", objc_msgSend(MEMORY[0x277CBEBC0], "URLWithString:", v28))}]);
   }
 
   v29 = [v4 objectForKey:@"localization"];
   if (v29)
   {
-    v30 = [v5 objectWithID:{objc_msgSend(objc_msgSend(v5, "persistentStoreCoordinator"), "managedObjectIDForURIRepresentation:", objc_msgSend(MEMORY[0x277CBEBC0], "URLWithString:", v29))}];
+    v30 = [managedObjectContext objectWithID:{objc_msgSend(objc_msgSend(managedObjectContext, "persistentStoreCoordinator"), "managedObjectIDForURIRepresentation:", objc_msgSend(MEMORY[0x277CBEBC0], "URLWithString:", v29))}];
 
     [(TDRenditionKeySpec *)self setLocalization:v30];
   }
@@ -889,9 +889,9 @@ LABEL_6:
   return [v26 copy];
 }
 
-- (void)setAttributesFromCopyData:(id)a3
+- (void)setAttributesFromCopyData:(id)data
 {
-  v4 = [MEMORY[0x277CCAC58] propertyListWithData:a3 options:0 format:0 error:0];
+  v4 = [MEMORY[0x277CCAC58] propertyListWithData:data options:0 format:0 error:0];
   v5 = [v4 objectForKey:@"nameIdentifier"];
   if (v5)
   {

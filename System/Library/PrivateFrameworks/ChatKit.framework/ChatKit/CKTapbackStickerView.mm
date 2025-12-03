@@ -1,13 +1,13 @@
 @interface CKTapbackStickerView
 - (BOOL)isSelected;
-- (CKTapbackStickerView)initWithFrame:(CGRect)a3;
+- (CKTapbackStickerView)initWithFrame:(CGRect)frame;
 - (CKTapbackViewDelegate)delegate;
 - (UIEdgeInsets)platterEdgeInsets;
-- (void)animationTimerFired:(double)a3;
-- (void)configureForTapback:(id)a3 isSelected:(BOOL)a4;
+- (void)animationTimerFired:(double)fired;
+- (void)configureForTapback:(id)tapback isSelected:(BOOL)selected;
 - (void)dealloc;
 - (void)displayScaleChanged;
-- (void)setIsSelected:(BOOL)a3;
+- (void)setIsSelected:(BOOL)selected;
 @end
 
 @implementation CKTapbackStickerView
@@ -36,15 +36,15 @@
 - (void)dealloc
 {
   v3 = objc_opt_self();
-  v4 = self;
-  v5 = [v3 sharedTimer];
-  if (v5)
+  selfCopy = self;
+  sharedTimer = [v3 sharedTimer];
+  if (sharedTimer)
   {
-    v6 = v5;
-    [v5 removeAnimationTimerObserver_];
+    v6 = sharedTimer;
+    [sharedTimer removeAnimationTimerObserver_];
   }
 
-  v7.receiver = v4;
+  v7.receiver = selfCopy;
   v7.super_class = type metadata accessor for TapbackStickerView();
   [(CKTapbackStickerView *)&v7 dealloc];
 }
@@ -56,42 +56,42 @@
   return *(self + v3);
 }
 
-- (void)setIsSelected:(BOOL)a3
+- (void)setIsSelected:(BOOL)selected
 {
   v5 = OBJC_IVAR___CKTapbackStickerView_isSelected;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = selected;
   if (*(self + OBJC_IVAR___CKTapbackStickerView_isPlaceholderImage) == 1)
   {
-    v6 = self;
+    selfCopy = self;
     sub_190B559DC();
   }
 }
 
 - (void)displayScaleChanged
 {
-  v2 = self;
+  selfCopy = self;
   sub_190B55FA8();
 }
 
-- (CKTapbackStickerView)initWithFrame:(CGRect)a3
+- (CKTapbackStickerView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)animationTimerFired:(double)a3
+- (void)animationTimerFired:(double)fired
 {
-  v4 = self;
-  TapbackStickerView.animationTimerFired(_:)(a3);
+  selfCopy = self;
+  TapbackStickerView.animationTimerFired(_:)(fired);
 }
 
-- (void)configureForTapback:(id)a3 isSelected:(BOOL)a4
+- (void)configureForTapback:(id)tapback isSelected:(BOOL)selected
 {
-  v5 = a3;
-  v6 = self;
-  _s7ChatKit18TapbackStickerViewC9configure3for10isSelectedySo9IMTapbackC_SbtF_0(v5);
+  tapbackCopy = tapback;
+  selfCopy = self;
+  _s7ChatKit18TapbackStickerViewC9configure3for10isSelectedySo9IMTapbackC_SbtF_0(tapbackCopy);
 }
 
 @end

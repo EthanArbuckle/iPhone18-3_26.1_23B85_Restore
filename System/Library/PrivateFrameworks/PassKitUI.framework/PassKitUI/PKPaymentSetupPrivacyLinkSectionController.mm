@@ -1,7 +1,7 @@
 @interface PKPaymentSetupPrivacyLinkSectionController
 - (PKPaymentSetupPrivacyLinkSectionController)init;
-- (id)layoutWithLayoutEnvironment:(id)a3 sectionIdentifier:(id)a4;
-- (id)snapshotWithPreviousSnapshot:(id)a3 forSectionIdentifier:(id)a4;
+- (id)layoutWithLayoutEnvironment:(id)environment sectionIdentifier:(id)identifier;
+- (id)snapshotWithPreviousSnapshot:(id)snapshot forSectionIdentifier:(id)identifier;
 @end
 
 @implementation PKPaymentSetupPrivacyLinkSectionController
@@ -36,7 +36,7 @@ void __50__PKPaymentSetupPrivacyLinkSectionController_init__block_invoke(uint64_
   [v3 setPrivacyView:v4];
 }
 
-- (id)snapshotWithPreviousSnapshot:(id)a3 forSectionIdentifier:(id)a4
+- (id)snapshotWithPreviousSnapshot:(id)snapshot forSectionIdentifier:(id)identifier
 {
   v8[1] = *MEMORY[0x1E69E9840];
   v4 = objc_alloc_init(MEMORY[0x1E69DC5D0]);
@@ -48,11 +48,11 @@ void __50__PKPaymentSetupPrivacyLinkSectionController_init__block_invoke(uint64_
   return v4;
 }
 
-- (id)layoutWithLayoutEnvironment:(id)a3 sectionIdentifier:(id)a4
+- (id)layoutWithLayoutEnvironment:(id)environment sectionIdentifier:(id)identifier
 {
-  v5 = a3;
-  v6 = [(PKPaymentSetupListSectionController *)self defaultListLayout];
-  v7 = [MEMORY[0x1E6995580] sectionWithListConfiguration:v6 layoutEnvironment:v5];
+  environmentCopy = environment;
+  defaultListLayout = [(PKPaymentSetupListSectionController *)self defaultListLayout];
+  v7 = [MEMORY[0x1E6995580] sectionWithListConfiguration:defaultListLayout layoutEnvironment:environmentCopy];
 
   return v7;
 }

@@ -1,28 +1,28 @@
 @interface _UILayerHostView
 - (BOOL)inheritsSecurity;
-- (_UILayerHostView)initWithCoder:(id)a3;
-- (_UILayerHostView)initWithFrame:(CGRect)a3 pid:(int)a4 contextID:(unsigned int)a5;
-- (void)setInheritsSecurity:(BOOL)a3;
-- (void)setPid:(int)a3 contextID:(unsigned int)a4;
+- (_UILayerHostView)initWithCoder:(id)coder;
+- (_UILayerHostView)initWithFrame:(CGRect)frame pid:(int)pid contextID:(unsigned int)d;
+- (void)setInheritsSecurity:(BOOL)security;
+- (void)setPid:(int)pid contextID:(unsigned int)d;
 @end
 
 @implementation _UILayerHostView
 
-- (_UILayerHostView)initWithFrame:(CGRect)a3 pid:(int)a4 contextID:(unsigned int)a5
+- (_UILayerHostView)initWithFrame:(CGRect)frame pid:(int)pid contextID:(unsigned int)d
 {
   v15.receiver = self;
   v15.super_class = _UILayerHostView;
-  v7 = [(_UIVisibilityPropagationView *)&v15 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v7 = [(_UIVisibilityPropagationView *)&v15 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v8 = v7;
   if (v7)
   {
-    v7->_pid = a4;
-    v7->_contextID = a5;
-    v9 = [(_UILayerHostView *)v7 layerHost];
-    [v9 setZombificationMode:*MEMORY[0x1E6979E48]];
+    v7->_pid = pid;
+    v7->_contextID = d;
+    layerHost = [(_UILayerHostView *)v7 layerHost];
+    [layerHost setZombificationMode:*MEMORY[0x1E6979E48]];
     if (v8->_contextID)
     {
-      [v9 setContextId:?];
+      [layerHost setContextId:?];
     }
 
     pid = v8->_pid;
@@ -40,19 +40,19 @@
   return v8;
 }
 
-- (_UILayerHostView)initWithCoder:(id)a3
+- (_UILayerHostView)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = _UILayerHostView;
-  return [(_UIVisibilityPropagationView *)&v4 initWithCoder:a3];
+  return [(_UIVisibilityPropagationView *)&v4 initWithCoder:coder];
 }
 
-- (void)setPid:(int)a3 contextID:(unsigned int)a4
+- (void)setPid:(int)pid contextID:(unsigned int)d
 {
-  self->_pid = a3;
-  self->_contextID = a4;
-  v5 = [(_UILayerHostView *)self layerHost];
-  [v5 setContextId:self->_contextID];
+  self->_pid = pid;
+  self->_contextID = d;
+  layerHost = [(_UILayerHostView *)self layerHost];
+  [layerHost setContextId:self->_contextID];
 
   pid = self->_pid;
   if (pid >= 1 && self->_contextID)
@@ -71,19 +71,19 @@
   }
 }
 
-- (void)setInheritsSecurity:(BOOL)a3
+- (void)setInheritsSecurity:(BOOL)security
 {
-  v3 = a3;
-  v4 = [(_UILayerHostView *)self layerHost];
-  [v4 setInheritsSecurity:v3];
+  securityCopy = security;
+  layerHost = [(_UILayerHostView *)self layerHost];
+  [layerHost setInheritsSecurity:securityCopy];
 }
 
 - (BOOL)inheritsSecurity
 {
-  v2 = [(_UILayerHostView *)self layerHost];
-  v3 = [v2 inheritsSecurity];
+  layerHost = [(_UILayerHostView *)self layerHost];
+  inheritsSecurity = [layerHost inheritsSecurity];
 
-  return v3;
+  return inheritsSecurity;
 }
 
 @end

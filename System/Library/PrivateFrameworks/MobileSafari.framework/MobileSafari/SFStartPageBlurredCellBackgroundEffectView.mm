@@ -1,6 +1,6 @@
 @interface SFStartPageBlurredCellBackgroundEffectView
 - (SFStartPageBlurredCellBackgroundEffectView)init;
-- (void)setUsesDefaultCaptureGroup:(BOOL)a3;
+- (void)setUsesDefaultCaptureGroup:(BOOL)group;
 @end
 
 @implementation SFStartPageBlurredCellBackgroundEffectView
@@ -8,10 +8,10 @@
 - (SFStartPageBlurredCellBackgroundEffectView)init
 {
   v10[2] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E69DC730] _sf_defaultStartPageBackgroundEffect];
+  _sf_defaultStartPageBackgroundEffect = [MEMORY[0x1E69DC730] _sf_defaultStartPageBackgroundEffect];
   v9.receiver = self;
   v9.super_class = SFStartPageBlurredCellBackgroundEffectView;
-  v4 = [(SFStartPageBlurredCellBackgroundEffectView *)&v9 initWithEffect:v3];
+  v4 = [(SFStartPageBlurredCellBackgroundEffectView *)&v9 initWithEffect:_sf_defaultStartPageBackgroundEffect];
 
   if (v4)
   {
@@ -28,9 +28,9 @@
   return v4;
 }
 
-- (void)setUsesDefaultCaptureGroup:(BOOL)a3
+- (void)setUsesDefaultCaptureGroup:(BOOL)group
 {
-  if (a3)
+  if (group)
   {
     v3 = @"start-page-cell";
   }

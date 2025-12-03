@@ -1,28 +1,28 @@
 @interface AWDBTLEConnectionStats
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDc0:(BOOL)a3;
-- (void)setHasDc1:(BOOL)a3;
-- (void)setHasDc2:(BOOL)a3;
-- (void)setHasDc3:(BOOL)a3;
-- (void)setHasDc4:(BOOL)a3;
-- (void)setHasDc5:(BOOL)a3;
-- (void)setHasPeakOutage:(BOOL)a3;
-- (void)setHasStart:(BOOL)a3;
-- (void)setHasTotalDuration:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasDc0:(BOOL)dc0;
+- (void)setHasDc1:(BOOL)dc1;
+- (void)setHasDc2:(BOOL)dc2;
+- (void)setHasDc3:(BOOL)dc3;
+- (void)setHasDc4:(BOOL)dc4;
+- (void)setHasDc5:(BOOL)dc5;
+- (void)setHasPeakOutage:(BOOL)outage;
+- (void)setHasStart:(BOOL)start;
+- (void)setHasTotalDuration:(BOOL)duration;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDBTLEConnectionStats
 
-- (void)setHasStart:(BOOL)a3
+- (void)setHasStart:(BOOL)start
 {
-  if (a3)
+  if (start)
   {
     v3 = 256;
   }
@@ -35,9 +35,9 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasPeakOutage:(BOOL)a3
+- (void)setHasPeakOutage:(BOOL)outage
 {
-  if (a3)
+  if (outage)
   {
     v3 = 128;
   }
@@ -50,9 +50,9 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasTotalDuration:(BOOL)a3
+- (void)setHasTotalDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 512;
   }
@@ -65,9 +65,9 @@
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasDc0:(BOOL)a3
+- (void)setHasDc0:(BOOL)dc0
 {
-  if (a3)
+  if (dc0)
   {
     v3 = 2;
   }
@@ -80,9 +80,9 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasDc1:(BOOL)a3
+- (void)setHasDc1:(BOOL)dc1
 {
-  if (a3)
+  if (dc1)
   {
     v3 = 4;
   }
@@ -95,9 +95,9 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasDc2:(BOOL)a3
+- (void)setHasDc2:(BOOL)dc2
 {
-  if (a3)
+  if (dc2)
   {
     v3 = 8;
   }
@@ -110,9 +110,9 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasDc3:(BOOL)a3
+- (void)setHasDc3:(BOOL)dc3
 {
-  if (a3)
+  if (dc3)
   {
     v3 = 16;
   }
@@ -125,9 +125,9 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasDc4:(BOOL)a3
+- (void)setHasDc4:(BOOL)dc4
 {
-  if (a3)
+  if (dc4)
   {
     v3 = 32;
   }
@@ -140,9 +140,9 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasDc5:(BOOL)a3
+- (void)setHasDc5:(BOOL)dc5
 {
-  if (a3)
+  if (dc5)
   {
     v3 = 64;
   }
@@ -164,11 +164,11 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if ((has & 0x100) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_start), @"start"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_start), @"start"}];
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -187,7 +187,7 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_complete), @"complete"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_complete), @"complete"}];
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -201,7 +201,7 @@ LABEL_4:
   }
 
 LABEL_15:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_peakOutage), @"peakOutage"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_peakOutage), @"peakOutage"}];
   has = self->_has;
   if ((has & 0x200) == 0)
   {
@@ -215,7 +215,7 @@ LABEL_5:
   }
 
 LABEL_16:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_totalDuration), @"totalDuration"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_totalDuration), @"totalDuration"}];
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -229,7 +229,7 @@ LABEL_6:
   }
 
 LABEL_17:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_dc0), @"dc0"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_dc0), @"dc0"}];
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -243,7 +243,7 @@ LABEL_7:
   }
 
 LABEL_18:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_dc1), @"dc1"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_dc1), @"dc1"}];
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -257,7 +257,7 @@ LABEL_8:
   }
 
 LABEL_19:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_dc2), @"dc2"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_dc2), @"dc2"}];
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -268,17 +268,17 @@ LABEL_9:
     }
 
 LABEL_21:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_dc4), @"dc4"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_dc4), @"dc4"}];
     if ((*&self->_has & 0x40) == 0)
     {
-      return v3;
+      return dictionary;
     }
 
     goto LABEL_11;
   }
 
 LABEL_20:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_dc3), @"dc3"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_dc3), @"dc3"}];
   has = self->_has;
   if ((has & 0x20) != 0)
   {
@@ -289,13 +289,13 @@ LABEL_10:
   if ((has & 0x40) != 0)
   {
 LABEL_11:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_dc5), @"dc5"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_dc5), @"dc5"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if ((has & 0x100) != 0)
@@ -438,13 +438,13 @@ LABEL_21:
   PBDataWriterWriteUint32Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if ((has & 0x100) != 0)
   {
-    *(a3 + 10) = self->_start;
-    *(a3 + 24) |= 0x100u;
+    *(to + 10) = self->_start;
+    *(to + 24) |= 0x100u;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -463,8 +463,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(a3 + 2) = self->_complete;
-  *(a3 + 24) |= 1u;
+  *(to + 2) = self->_complete;
+  *(to + 24) |= 1u;
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -478,8 +478,8 @@ LABEL_4:
   }
 
 LABEL_14:
-  *(a3 + 9) = self->_peakOutage;
-  *(a3 + 24) |= 0x80u;
+  *(to + 9) = self->_peakOutage;
+  *(to + 24) |= 0x80u;
   has = self->_has;
   if ((has & 0x200) == 0)
   {
@@ -493,8 +493,8 @@ LABEL_5:
   }
 
 LABEL_15:
-  *(a3 + 11) = self->_totalDuration;
-  *(a3 + 24) |= 0x200u;
+  *(to + 11) = self->_totalDuration;
+  *(to + 24) |= 0x200u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -508,8 +508,8 @@ LABEL_6:
   }
 
 LABEL_16:
-  *(a3 + 3) = self->_dc0;
-  *(a3 + 24) |= 2u;
+  *(to + 3) = self->_dc0;
+  *(to + 24) |= 2u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -523,8 +523,8 @@ LABEL_7:
   }
 
 LABEL_17:
-  *(a3 + 4) = self->_dc1;
-  *(a3 + 24) |= 4u;
+  *(to + 4) = self->_dc1;
+  *(to + 24) |= 4u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -538,8 +538,8 @@ LABEL_8:
   }
 
 LABEL_18:
-  *(a3 + 5) = self->_dc2;
-  *(a3 + 24) |= 8u;
+  *(to + 5) = self->_dc2;
+  *(to + 24) |= 8u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -553,8 +553,8 @@ LABEL_9:
   }
 
 LABEL_19:
-  *(a3 + 6) = self->_dc3;
-  *(a3 + 24) |= 0x10u;
+  *(to + 6) = self->_dc3;
+  *(to + 24) |= 0x10u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -565,23 +565,23 @@ LABEL_10:
     }
 
 LABEL_21:
-    *(a3 + 8) = self->_dc5;
-    *(a3 + 24) |= 0x40u;
+    *(to + 8) = self->_dc5;
+    *(to + 24) |= 0x40u;
     return;
   }
 
 LABEL_20:
-  *(a3 + 7) = self->_dc4;
-  *(a3 + 24) |= 0x20u;
+  *(to + 7) = self->_dc4;
+  *(to + 24) |= 0x20u;
   if ((*&self->_has & 0x40) != 0)
   {
     goto LABEL_21;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((has & 0x100) != 0)
   {
@@ -723,22 +723,22 @@ LABEL_11:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     has = self->_has;
-    v7 = *(a3 + 24);
+    v7 = *(equal + 24);
     if ((has & 0x100) != 0)
     {
-      if ((*(a3 + 24) & 0x100) == 0 || self->_start != *(a3 + 10))
+      if ((*(equal + 24) & 0x100) == 0 || self->_start != *(equal + 10))
       {
         goto LABEL_51;
       }
     }
 
-    else if ((*(a3 + 24) & 0x100) != 0)
+    else if ((*(equal + 24) & 0x100) != 0)
     {
 LABEL_51:
       LOBYTE(v5) = 0;
@@ -747,7 +747,7 @@ LABEL_51:
 
     if (has)
     {
-      if ((v7 & 1) == 0 || self->_complete != *(a3 + 2))
+      if ((v7 & 1) == 0 || self->_complete != *(equal + 2))
       {
         goto LABEL_51;
       }
@@ -760,7 +760,7 @@ LABEL_51:
 
     if ((has & 0x80) != 0)
     {
-      if ((v7 & 0x80) == 0 || self->_peakOutage != *(a3 + 9))
+      if ((v7 & 0x80) == 0 || self->_peakOutage != *(equal + 9))
       {
         goto LABEL_51;
       }
@@ -773,20 +773,20 @@ LABEL_51:
 
     if ((*&self->_has & 0x200) != 0)
     {
-      if ((*(a3 + 24) & 0x200) == 0 || self->_totalDuration != *(a3 + 11))
+      if ((*(equal + 24) & 0x200) == 0 || self->_totalDuration != *(equal + 11))
       {
         goto LABEL_51;
       }
     }
 
-    else if ((*(a3 + 24) & 0x200) != 0)
+    else if ((*(equal + 24) & 0x200) != 0)
     {
       goto LABEL_51;
     }
 
     if ((has & 2) != 0)
     {
-      if ((v7 & 2) == 0 || self->_dc0 != *(a3 + 3))
+      if ((v7 & 2) == 0 || self->_dc0 != *(equal + 3))
       {
         goto LABEL_51;
       }
@@ -799,7 +799,7 @@ LABEL_51:
 
     if ((has & 4) != 0)
     {
-      if ((v7 & 4) == 0 || self->_dc1 != *(a3 + 4))
+      if ((v7 & 4) == 0 || self->_dc1 != *(equal + 4))
       {
         goto LABEL_51;
       }
@@ -812,7 +812,7 @@ LABEL_51:
 
     if ((has & 8) != 0)
     {
-      if ((v7 & 8) == 0 || self->_dc2 != *(a3 + 5))
+      if ((v7 & 8) == 0 || self->_dc2 != *(equal + 5))
       {
         goto LABEL_51;
       }
@@ -825,7 +825,7 @@ LABEL_51:
 
     if ((has & 0x10) != 0)
     {
-      if ((v7 & 0x10) == 0 || self->_dc3 != *(a3 + 6))
+      if ((v7 & 0x10) == 0 || self->_dc3 != *(equal + 6))
       {
         goto LABEL_51;
       }
@@ -838,7 +838,7 @@ LABEL_51:
 
     if ((has & 0x20) != 0)
     {
-      if ((v7 & 0x20) == 0 || self->_dc4 != *(a3 + 7))
+      if ((v7 & 0x20) == 0 || self->_dc4 != *(equal + 7))
       {
         goto LABEL_51;
       }
@@ -852,7 +852,7 @@ LABEL_51:
     LOBYTE(v5) = (v7 & 0x40) == 0;
     if ((has & 0x40) != 0)
     {
-      if ((v7 & 0x40) == 0 || self->_dc5 != *(a3 + 8))
+      if ((v7 & 0x40) == 0 || self->_dc5 != *(equal + 8))
       {
         goto LABEL_51;
       }
@@ -1003,14 +1003,14 @@ LABEL_11:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v3 = *(a3 + 24);
+  v3 = *(from + 24);
   if ((v3 & 0x100) != 0)
   {
-    self->_start = *(a3 + 10);
+    self->_start = *(from + 10);
     *&self->_has |= 0x100u;
-    v3 = *(a3 + 24);
+    v3 = *(from + 24);
     if ((v3 & 1) == 0)
     {
 LABEL_3:
@@ -1028,9 +1028,9 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  self->_complete = *(a3 + 2);
+  self->_complete = *(from + 2);
   *&self->_has |= 1u;
-  v3 = *(a3 + 24);
+  v3 = *(from + 24);
   if ((v3 & 0x80) == 0)
   {
 LABEL_4:
@@ -1043,9 +1043,9 @@ LABEL_4:
   }
 
 LABEL_14:
-  self->_peakOutage = *(a3 + 9);
+  self->_peakOutage = *(from + 9);
   *&self->_has |= 0x80u;
-  v3 = *(a3 + 24);
+  v3 = *(from + 24);
   if ((v3 & 0x200) == 0)
   {
 LABEL_5:
@@ -1058,9 +1058,9 @@ LABEL_5:
   }
 
 LABEL_15:
-  self->_totalDuration = *(a3 + 11);
+  self->_totalDuration = *(from + 11);
   *&self->_has |= 0x200u;
-  v3 = *(a3 + 24);
+  v3 = *(from + 24);
   if ((v3 & 2) == 0)
   {
 LABEL_6:
@@ -1073,9 +1073,9 @@ LABEL_6:
   }
 
 LABEL_16:
-  self->_dc0 = *(a3 + 3);
+  self->_dc0 = *(from + 3);
   *&self->_has |= 2u;
-  v3 = *(a3 + 24);
+  v3 = *(from + 24);
   if ((v3 & 4) == 0)
   {
 LABEL_7:
@@ -1088,9 +1088,9 @@ LABEL_7:
   }
 
 LABEL_17:
-  self->_dc1 = *(a3 + 4);
+  self->_dc1 = *(from + 4);
   *&self->_has |= 4u;
-  v3 = *(a3 + 24);
+  v3 = *(from + 24);
   if ((v3 & 8) == 0)
   {
 LABEL_8:
@@ -1103,9 +1103,9 @@ LABEL_8:
   }
 
 LABEL_18:
-  self->_dc2 = *(a3 + 5);
+  self->_dc2 = *(from + 5);
   *&self->_has |= 8u;
-  v3 = *(a3 + 24);
+  v3 = *(from + 24);
   if ((v3 & 0x10) == 0)
   {
 LABEL_9:
@@ -1118,9 +1118,9 @@ LABEL_9:
   }
 
 LABEL_19:
-  self->_dc3 = *(a3 + 6);
+  self->_dc3 = *(from + 6);
   *&self->_has |= 0x10u;
-  v3 = *(a3 + 24);
+  v3 = *(from + 24);
   if ((v3 & 0x20) == 0)
   {
 LABEL_10:
@@ -1130,15 +1130,15 @@ LABEL_10:
     }
 
 LABEL_21:
-    self->_dc5 = *(a3 + 8);
+    self->_dc5 = *(from + 8);
     *&self->_has |= 0x40u;
     return;
   }
 
 LABEL_20:
-  self->_dc4 = *(a3 + 7);
+  self->_dc4 = *(from + 7);
   *&self->_has |= 0x20u;
-  if ((*(a3 + 24) & 0x40) != 0)
+  if ((*(from + 24) & 0x40) != 0)
   {
     goto LABEL_21;
   }

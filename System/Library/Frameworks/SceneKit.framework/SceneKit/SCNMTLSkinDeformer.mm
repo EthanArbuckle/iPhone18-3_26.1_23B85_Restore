@@ -1,10 +1,10 @@
 @interface SCNMTLSkinDeformer
-+ (BOOL)canSkin:(void *)a3 reuseRenderResourceForSkin:;
-- (id)makeReadOnlyBuffersWithBaseGeometry:(__C3DGeometry *)a3 baseMesh:(__C3DMesh *)a4 blitEncoder:(id)a5;
-- (unint64_t)updateWithComputeContext:(id)a3 buffers:(id *)a4;
++ (BOOL)canSkin:(void *)skin reuseRenderResourceForSkin:;
+- (id)makeReadOnlyBuffersWithBaseGeometry:(__C3DGeometry *)geometry baseMesh:(__C3DMesh *)mesh blitEncoder:(id)encoder;
+- (unint64_t)updateWithComputeContext:(id)context buffers:(id *)buffers;
 - (void)dealloc;
-- (void)initWithSkinner:(uint64_t)a3 baseGeometry:(char)a4 outputs:(char)a5 dataKind:(uint64_t)a6 resourceManager:(uint64_t)a7 computeContext:;
-- (void)setupWithComputeContext:(id)a3;
+- (void)initWithSkinner:(uint64_t)skinner baseGeometry:(char)geometry outputs:(char)outputs dataKind:(uint64_t)kind resourceManager:(uint64_t)manager computeContext:;
+- (void)setupWithComputeContext:(id)context;
 @end
 
 @implementation SCNMTLSkinDeformer
@@ -23,7 +23,7 @@
   [(SCNMTLSkinDeformer *)&v4 dealloc];
 }
 
-- (void)setupWithComputeContext:(id)a3
+- (void)setupWithComputeContext:(id)context
 {
   Mesh = C3DGeometryGetMesh(self->_baseGeometry);
   if (!Mesh)
@@ -53,7 +53,7 @@
   v43[1] = 3221225472;
   v43[2] = __46__SCNMTLSkinDeformer_setupWithComputeContext___block_invoke;
   v43[3] = &unk_2782FDC80;
-  v43[4] = a3;
+  v43[4] = context;
   v43[5] = self;
   v43[6] = Mesh;
   v26 = [(SCNMTLResourceManager *)resourceManager renderResourceForSkinner:skinner baseMesh:Mesh dataKind:dataKind provider:v43];
@@ -131,7 +131,7 @@
     v36 = @"skin_copy_as_fallback";
   }
 
-  self->_computePipeline = -[SCNMTLResourceManager computePipelineStateForKernel:withStageDescriptor:stageDescriptorUpdateBlock:constants:constantsHash:](self->_resourceManager, "computePipelineStateForKernel:withStageDescriptor:stageDescriptorUpdateBlock:constants:constantsHash:", v36, [a3 stageInputDescriptor], 0, v29, v35);
+  self->_computePipeline = -[SCNMTLResourceManager computePipelineStateForKernel:withStageDescriptor:stageDescriptorUpdateBlock:constants:constantsHash:](self->_resourceManager, "computePipelineStateForKernel:withStageDescriptor:stageDescriptorUpdateBlock:constants:constantsHash:", v36, [context stageInputDescriptor], 0, v29, v35);
 }
 
 uint64_t __46__SCNMTLSkinDeformer_setupWithComputeContext___block_invoke(uint64_t a1)
@@ -144,7 +144,7 @@ uint64_t __46__SCNMTLSkinDeformer_setupWithComputeContext___block_invoke(uint64_
   return [v3 makeReadOnlyBuffersWithBaseGeometry:v5 baseMesh:v4 blitEncoder:v2];
 }
 
-- (id)makeReadOnlyBuffersWithBaseGeometry:(__C3DGeometry *)a3 baseMesh:(__C3DMesh *)a4 blitEncoder:(id)a5
+- (id)makeReadOnlyBuffersWithBaseGeometry:(__C3DGeometry *)geometry baseMesh:(__C3DMesh *)mesh blitEncoder:(id)encoder
 {
   v132 = *MEMORY[0x277D85DE8];
   OverrideMaterial = C3DGeometryGetOverrideMaterial(self->_skinner);
@@ -163,7 +163,7 @@ uint64_t __46__SCNMTLSkinDeformer_setupWithComputeContext___block_invoke(uint64_
   v125 = 0;
   C3DSkinGetVertexWeightsPointers(OverrideMaterial, &v127, &v126, &v125);
   v124 = 0;
-  PositionDeindexedToOriginalTable = C3DMeshGetPositionDeindexedToOriginalTable(a4, &v124);
+  PositionDeindexedToOriginalTable = C3DMeshGetPositionDeindexedToOriginalTable(mesh, &v124);
   JointsCount = C3DSkinGetJointsCount(OverrideMaterial);
   v20 = JointsCount;
   v21 = 1;
@@ -312,7 +312,7 @@ uint64_t __46__SCNMTLSkinDeformer_setupWithComputeContext___block_invoke(uint64_
     }
 
     v93 = MTLVertexFormat * v123;
-    v94 = [(SCNMTLResourceManager *)self->_resourceManager newPrivateBufferWithBytes:v43 length:v41 blitEncoder:a5];
+    v94 = [(SCNMTLResourceManager *)self->_resourceManager newPrivateBufferWithBytes:v43 length:v41 blitEncoder:encoder];
     if (v17)
     {
       objc_setProperty_nonatomic(v17, v95, v94, 24);
@@ -352,7 +352,7 @@ uint64_t __46__SCNMTLSkinDeformer_setupWithComputeContext___block_invoke(uint64_
 LABEL_105:
       if (v22 == 2)
       {
-        v113 = [(SCNMTLResourceManager *)self->_resourceManager newPrivateBufferWithBytes:v126 length:v93 blitEncoder:a5];
+        v113 = [(SCNMTLResourceManager *)self->_resourceManager newPrivateBufferWithBytes:v126 length:v93 blitEncoder:encoder];
         if (v17)
         {
           objc_setProperty_nonatomic(v17, v114, v113, 32);
@@ -361,7 +361,7 @@ LABEL_105:
 LABEL_115:
         if (v125)
         {
-          v104 = [(SCNMTLResourceManager *)self->_resourceManager newPrivateBufferWithBytes:v125 length:4 * MTLVertexFormat blitEncoder:a5];
+          v104 = [(SCNMTLResourceManager *)self->_resourceManager newPrivateBufferWithBytes:v125 length:4 * MTLVertexFormat blitEncoder:encoder];
           if (!v17)
           {
             return v17;
@@ -387,7 +387,7 @@ LABEL_115:
             while (v98);
           }
 
-          v109 = [(SCNMTLResourceManager *)self->_resourceManager newPrivateBufferWithBytes:v106 length:4 * MTLVertexFormat blitEncoder:a5];
+          v109 = [(SCNMTLResourceManager *)self->_resourceManager newPrivateBufferWithBytes:v106 length:4 * MTLVertexFormat blitEncoder:encoder];
           if (!v17)
           {
             goto LABEL_84;
@@ -448,7 +448,7 @@ LABEL_115:
       v100 = malloc_type_calloc(v93, 1uLL, 0x2A4C9B24uLL);
     }
 
-    v102 = [(SCNMTLResourceManager *)self->_resourceManager newPrivateBufferWithBytes:v100 length:v93 blitEncoder:a5];
+    v102 = [(SCNMTLResourceManager *)self->_resourceManager newPrivateBufferWithBytes:v100 length:v93 blitEncoder:encoder];
     if (v17)
     {
       objc_setProperty_nonatomic(v17, v103, v102, 32);
@@ -476,7 +476,7 @@ LABEL_37:
   v26 = malloc_type_malloc(4 * (baseVertexCount + 1), 0x100004052888210uLL);
   v27 = v26;
   *v26 = 0;
-  v122 = a5;
+  encoderCopy = encoder;
   if (*v25)
   {
     v28 = 0;
@@ -673,19 +673,19 @@ LABEL_48:
     v17->_boneIndexSize = v123;
   }
 
-  v82 = [(SCNMTLResourceManager *)self->_resourceManager newPrivateBufferWithBytes:v36 length:v57 blitEncoder:v122];
+  v82 = [(SCNMTLResourceManager *)self->_resourceManager newPrivateBufferWithBytes:v36 length:v57 blitEncoder:encoderCopy];
   if (v17)
   {
     objc_setProperty_nonatomic(v17, v83, v82, 24);
   }
 
-  v84 = [(SCNMTLResourceManager *)self->_resourceManager newPrivateBufferWithBytes:v53 length:v119 blitEncoder:v122];
+  v84 = [(SCNMTLResourceManager *)self->_resourceManager newPrivateBufferWithBytes:v53 length:v119 blitEncoder:encoderCopy];
   if (v17)
   {
     objc_setProperty_nonatomic(v17, v85, v84, 32);
   }
 
-  v86 = [(SCNMTLResourceManager *)self->_resourceManager newPrivateBufferWithBytes:v55 length:v120 blitEncoder:v122];
+  v86 = [(SCNMTLResourceManager *)self->_resourceManager newPrivateBufferWithBytes:v55 length:v120 blitEncoder:encoderCopy];
   if (v17)
   {
     objc_setProperty_nonatomic(v17, v87, v86, 40);
@@ -703,32 +703,32 @@ LABEL_84:
   return v17;
 }
 
-- (unint64_t)updateWithComputeContext:(id)a3 buffers:(id *)a4
+- (unint64_t)updateWithComputeContext:(id)context buffers:(id *)buffers
 {
-  v7 = [a3 currentFrameHash];
-  if (self->_currentFrameHash == v7)
+  currentFrameHash = [context currentFrameHash];
+  if (self->_currentFrameHash == currentFrameHash)
   {
     return 0;
   }
 
-  self->_currentFrameHash = v7;
-  v9 = [a3 currentComputeEncoder];
-  bzero(v9, 0x678uLL);
+  self->_currentFrameHash = currentFrameHash;
+  currentComputeEncoder = [context currentComputeEncoder];
+  bzero(currentComputeEncoder, 0x678uLL);
   if (!self->_useFallbackCopyKernel)
   {
     vertexWeightIndicesBuffer = self->_vertexWeightIndicesBuffer;
     if (vertexWeightIndicesBuffer)
     {
-      v9->_buffers[1] = vertexWeightIndicesBuffer;
-      v9->_offsets[1] = 0;
-      v9->_buffersToBind[0] |= 2uLL;
-      vertexWeightIndicesBuffer = v9->_buffers[2];
+      currentComputeEncoder->_buffers[1] = vertexWeightIndicesBuffer;
+      currentComputeEncoder->_offsets[1] = 0;
+      currentComputeEncoder->_buffersToBind[0] |= 2uLL;
+      vertexWeightIndicesBuffer = currentComputeEncoder->_buffers[2];
     }
 
     boneIndicesBuffer = self->_boneIndicesBuffer;
     if (vertexWeightIndicesBuffer == boneIndicesBuffer)
     {
-      if (!v9->_offsets[2])
+      if (!currentComputeEncoder->_offsets[2])
       {
         goto LABEL_11;
       }
@@ -736,21 +736,21 @@ LABEL_84:
 
     else
     {
-      v9->_buffers[2] = boneIndicesBuffer;
+      currentComputeEncoder->_buffers[2] = boneIndicesBuffer;
     }
 
-    v9->_offsets[2] = 0;
-    v9->_buffersToBind[0] |= 4uLL;
+    currentComputeEncoder->_offsets[2] = 0;
+    currentComputeEncoder->_buffersToBind[0] |= 4uLL;
 LABEL_11:
     boneWeightsBuffer = self->_boneWeightsBuffer;
-    if (v9->_buffers[3] == boneWeightsBuffer)
+    if (currentComputeEncoder->_buffers[3] == boneWeightsBuffer)
     {
-      if (!v9->_offsets[3])
+      if (!currentComputeEncoder->_offsets[3])
       {
 LABEL_15:
         v62[0] = 0;
         JointMatrices = C3DSkinnerGetJointMatrices(self->_skinner, v62);
-        SCNMTLComputeCommandEncoder::setBytes(v9, JointMatrices, 16 * v62[0], 4uLL);
+        SCNMTLComputeCommandEncoder::setBytes(currentComputeEncoder, JointMatrices, 16 * v62[0], 4uLL);
         v10 = 5;
         goto LABEL_16;
       }
@@ -758,19 +758,19 @@ LABEL_15:
 
     else
     {
-      v9->_buffers[3] = boneWeightsBuffer;
+      currentComputeEncoder->_buffers[3] = boneWeightsBuffer;
     }
 
-    v9->_offsets[3] = 0;
-    v9->_buffersToBind[0] |= 8uLL;
+    currentComputeEncoder->_offsets[3] = 0;
+    currentComputeEncoder->_buffersToBind[0] |= 8uLL;
     goto LABEL_15;
   }
 
   v10 = 1;
 LABEL_16:
-  var1 = a4->var1;
-  var3 = a4->var3;
-  var5 = a4->var5;
+  var1 = buffers->var1;
+  var3 = buffers->var3;
+  var5 = buffers->var5;
   v61 = [(MTLBuffer *)var1 length]/ 0xCuLL;
   if (self->_baseVertexCount != v61)
   {
@@ -781,10 +781,10 @@ LABEL_16:
     }
   }
 
-  SCNMTLComputeCommandEncoder::setBytes(v9, &v61, 4uLL, 0);
-  if (v9->_buffers[v10] == var1)
+  SCNMTLComputeCommandEncoder::setBytes(currentComputeEncoder, &v61, 4uLL, 0);
+  if (currentComputeEncoder->_buffers[v10] == var1)
   {
-    v28 = &v9->_buffers[v10];
+    v28 = &currentComputeEncoder->_buffers[v10];
     v29 = v28[31];
     v27 = v28 + 31;
     if (!v29)
@@ -795,13 +795,13 @@ LABEL_16:
 
   else
   {
-    v26 = &v9->_buffers[v10];
+    v26 = &currentComputeEncoder->_buffers[v10];
     *v26 = var1;
     v27 = v26 + 31;
   }
 
   *v27 = 0;
-  v9->_buffersToBind[0] |= (1 << v10);
+  currentComputeEncoder->_buffersToBind[0] |= (1 << v10);
 LABEL_23:
   if (!self->_skinNormals)
   {
@@ -819,9 +819,9 @@ LABEL_23:
   }
 
   v39 = v10 + 1;
-  if (v9->_buffers[v10 + 1] == var3)
+  if (currentComputeEncoder->_buffers[v10 + 1] == var3)
   {
-    v42 = &v9->_buffers[v39];
+    v42 = &currentComputeEncoder->_buffers[v39];
     v43 = v42[31];
     v41 = v42 + 31;
     if (!v43)
@@ -832,13 +832,13 @@ LABEL_23:
 
   else
   {
-    v40 = &v9->_buffers[v39];
+    v40 = &currentComputeEncoder->_buffers[v39];
     *v40 = var3;
     v41 = v40 + 31;
   }
 
   *v41 = 0;
-  v9->_buffersToBind[0] |= (1 << v39);
+  currentComputeEncoder->_buffersToBind[0] |= (1 << v39);
 LABEL_31:
   if (self->_skinTangents)
   {
@@ -853,18 +853,18 @@ LABEL_31:
     }
 
     v53 = v10 | 2;
-    if (v9->_buffers[v10 | 2] != var5)
+    if (currentComputeEncoder->_buffers[v10 | 2] != var5)
     {
-      v54 = &v9->_buffers[v53];
+      v54 = &currentComputeEncoder->_buffers[v53];
       *v54 = var5;
       v55 = v54 + 31;
 LABEL_38:
       *v55 = 0;
-      v9->_buffersToBind[0] |= (1 << v53);
+      currentComputeEncoder->_buffersToBind[0] |= (1 << v53);
       goto LABEL_39;
     }
 
-    v56 = &v9->_buffers[v53];
+    v56 = &currentComputeEncoder->_buffers[v53];
     v57 = v56[31];
     v55 = v56 + 31;
     if (v57)
@@ -874,54 +874,54 @@ LABEL_38:
   }
 
 LABEL_39:
-  [a3 setStageInputOutputBuffersToEncoder:v9];
+  [context setStageInputOutputBuffersToEncoder:currentComputeEncoder];
   memset(v62, 0, 24);
-  encoder = v9->_encoder;
+  encoder = currentComputeEncoder->_encoder;
   v62[3] = v61;
   v63 = vdupq_n_s64(1uLL);
   [(MTLComputeCommandEncoder *)encoder setStageInRegion:v62];
-  v59 = [(SCNMTLOpenSubdivComputeEvaluator *)self->_computePipeline computeEvaluator];
+  computeEvaluator = [(SCNMTLOpenSubdivComputeEvaluator *)self->_computePipeline computeEvaluator];
   v60 = v61;
-  if (v9->_computePipelineState != v59)
+  if (currentComputeEncoder->_computePipelineState != computeEvaluator)
   {
-    v9->_computePipelineState = v59;
-    [(MTLComputeCommandEncoder *)v9->_encoder setComputePipelineState:v59];
+    currentComputeEncoder->_computePipelineState = computeEvaluator;
+    [(MTLComputeCommandEncoder *)currentComputeEncoder->_encoder setComputePipelineState:computeEvaluator];
   }
 
-  SCNMTLComputeCommandEncoder::dispatchOnGrid1D(v9, v60);
+  SCNMTLComputeCommandEncoder::dispatchOnGrid1D(currentComputeEncoder, v60);
   return 1;
 }
 
-+ (BOOL)canSkin:(void *)a3 reuseRenderResourceForSkin:
++ (BOOL)canSkin:(void *)skin reuseRenderResourceForSkin:
 {
   objc_opt_self();
-  JointsCount = C3DSkinGetJointsCount(a3);
+  JointsCount = C3DSkinGetJointsCount(skin);
   if (JointsCount != C3DSkinGetJointsCount(a2))
   {
     return 0;
   }
 
-  MTLVertexFormat = C3DMeshSourceGetMTLVertexFormat(a3);
+  MTLVertexFormat = C3DMeshSourceGetMTLVertexFormat(skin);
   if (MTLVertexFormat != C3DMeshSourceGetMTLVertexFormat(a2))
   {
     return 0;
   }
 
-  WeightsCount = C3DSkinGetWeightsCount(a3);
+  WeightsCount = C3DSkinGetWeightsCount(skin);
   if (WeightsCount != C3DSkinGetWeightsCount(a2))
   {
     return 0;
   }
 
-  v8 = C3DSkinGetWeightsCount(a3);
-  v9 = C3DMeshSourceGetMTLVertexFormat(a3);
+  v8 = C3DSkinGetWeightsCount(skin);
+  v9 = C3DMeshSourceGetMTLVertexFormat(skin);
   v15 = 0;
   v16 = 0;
   v13 = 0;
   v14 = 0;
   v11 = 0;
   v12 = 0;
-  C3DSkinGetVertexWeightsPointers(a3, &v16, &v14, &v12);
+  C3DSkinGetVertexWeightsPointers(skin, &v16, &v14, &v12);
   C3DSkinGetVertexWeightsPointers(a2, &v15, &v13, &v11);
   if (v16 && v15)
   {
@@ -971,14 +971,14 @@ LABEL_16:
   return result;
 }
 
-- (void)initWithSkinner:(uint64_t)a3 baseGeometry:(char)a4 outputs:(char)a5 dataKind:(uint64_t)a6 resourceManager:(uint64_t)a7 computeContext:
+- (void)initWithSkinner:(uint64_t)skinner baseGeometry:(char)geometry outputs:(char)outputs dataKind:(uint64_t)kind resourceManager:(uint64_t)manager computeContext:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v16.receiver = a1;
+  v16.receiver = self;
   v16.super_class = SCNMTLSkinDeformer;
   v13 = objc_msgSendSuper2(&v16, sel_init);
   if (v13)
@@ -994,12 +994,12 @@ LABEL_16:
     }
 
     v13[1] = v14;
-    v13[2] = a3;
-    *(v13 + 40) = (a4 & 2) != 0;
-    *(v13 + 41) = (a4 & 4) != 0;
-    *(v13 + 24) = a5;
-    v13[4] = a6;
-    [v13 setupWithComputeContext:a7];
+    v13[2] = skinner;
+    *(v13 + 40) = (geometry & 2) != 0;
+    *(v13 + 41) = (geometry & 4) != 0;
+    *(v13 + 24) = outputs;
+    v13[4] = kind;
+    [v13 setupWithComputeContext:manager];
   }
 
   return v13;

@@ -1,20 +1,20 @@
 @interface TSPDistributableArchiveEntry
-- (BOOL)setDataRepresentation:(id)a3 shouldCopy:(BOOL)a4 error:(id *)a5;
-- (TSPDistributableArchiveEntry)initWithIdentifier:(int64_t)a3;
+- (BOOL)setDataRepresentation:(id)representation shouldCopy:(BOOL)copy error:(id *)error;
+- (TSPDistributableArchiveEntry)initWithIdentifier:(int64_t)identifier;
 - (void)dealloc;
-- (void)setOwnedIds:(const void *)a3;
+- (void)setOwnedIds:(const void *)ids;
 @end
 
 @implementation TSPDistributableArchiveEntry
 
-- (TSPDistributableArchiveEntry)initWithIdentifier:(int64_t)a3
+- (TSPDistributableArchiveEntry)initWithIdentifier:(int64_t)identifier
 {
   v6.receiver = self;
   v6.super_class = TSPDistributableArchiveEntry;
   v4 = [(TSPDistributableArchiveEntry *)&v6 init];
   if (v4)
   {
-    v4->_identifier = a3;
+    v4->_identifier = identifier;
     operator new();
   }
 
@@ -35,30 +35,30 @@
   [(TSPDistributableArchiveEntry *)&v4 dealloc];
 }
 
-- (BOOL)setDataRepresentation:(id)a3 shouldCopy:(BOOL)a4 error:(id *)a5
+- (BOOL)setDataRepresentation:(id)representation shouldCopy:(BOOL)copy error:(id *)error
 {
-  v5 = a4;
-  v8 = a3;
-  if (v5)
+  copyCopy = copy;
+  representationCopy = representation;
+  if (copyCopy)
   {
     objectData = self->_objectData;
     self->_objectData = 0;
 
     v10 = objc_alloc(MEMORY[0x277D81118]);
-    v12 = objc_msgSend_initWithDataRepresentation_(v10, v11, v8);
+    v12 = objc_msgSend_initWithDataRepresentation_(v10, v11, representationCopy);
     v13 = self->_objectData;
     self->_objectData = v12;
   }
 
   else
   {
-    objc_storeStrong(&self->_objectData, a3);
+    objc_storeStrong(&self->_objectData, representation);
   }
 
   return 1;
 }
 
-- (void)setOwnedIds:(const void *)a3
+- (void)setOwnedIds:(const void *)ids
 {
   ownedIds = self->_ownedIds;
   if (!ownedIds)
@@ -77,9 +77,9 @@
   *(ownedIds + 2) = 0;
   *(ownedIds + 1) = 0;
   v13 = self->_ownedIds;
-  v14 = *a3;
+  v14 = *ids;
 
-  sub_276AEB408(v13, v14, a3 + 1);
+  sub_276AEB408(v13, v14, ids + 1);
 }
 
 @end

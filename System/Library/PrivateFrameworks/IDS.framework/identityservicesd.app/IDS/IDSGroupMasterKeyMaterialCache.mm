@@ -1,32 +1,32 @@
 @interface IDSGroupMasterKeyMaterialCache
-- (BOOL)hasCachedMasterKeyIdentifier:(id)a3;
-- (BOOL)hasClientReceivedMasterKeyIdentifier:(id)a3;
-- (IDSGroupMasterKeyMaterialCache)initWithIdentifier:(id)a3 initialMembershipURIs:(id)a4 automaticResetInterval:(double)a5 automaticResetBlock:(id)a6 queue:(id)a7;
-- (id)_groupMasterKeyCollectionToBroadcastForDestinationURI:(id)a3 shouldIncludePeerKeys:(BOOL)a4;
+- (BOOL)hasCachedMasterKeyIdentifier:(id)identifier;
+- (BOOL)hasClientReceivedMasterKeyIdentifier:(id)identifier;
+- (IDSGroupMasterKeyMaterialCache)initWithIdentifier:(id)identifier initialMembershipURIs:(id)is automaticResetInterval:(double)interval automaticResetBlock:(id)block queue:(id)queue;
+- (id)_groupMasterKeyCollectionToBroadcastForDestinationURI:(id)i shouldIncludePeerKeys:(BOOL)keys;
 - (id)cachedMasterKeyMaterialCollection;
 - (id)debugDescription;
 - (id)description;
 - (id)remoteMasterKeyMaterialCollectionToSend;
-- (id)sampleMkMCollectionToBroadcast:(id)a3;
+- (id)sampleMkMCollectionToBroadcast:(id)broadcast;
 - (void)_startAutomaticCacheResetTimerIfNeeded;
-- (void)cleanUpMasterKeyMaterialUsingPredicate:(id)a3;
-- (void)noteClientReceiptOfMasterKeyIdentifier:(id)a3;
-- (void)noteReceivedFirstKeyMaterial:(id)a3 forRemoteParticipant:(unint64_t)a4;
-- (void)noteReceivedGroupMasterKeyMaterialCollection:(id)a3;
-- (void)resetCacheWithNewMembershipURIs:(id)a3;
+- (void)cleanUpMasterKeyMaterialUsingPredicate:(id)predicate;
+- (void)noteClientReceiptOfMasterKeyIdentifier:(id)identifier;
+- (void)noteReceivedFirstKeyMaterial:(id)material forRemoteParticipant:(unint64_t)participant;
+- (void)noteReceivedGroupMasterKeyMaterialCollection:(id)collection;
+- (void)resetCacheWithNewMembershipURIs:(id)is;
 - (void)resetClientMasterKeyIdentifierReceipts;
 - (void)resetRemoteMasterKeyMaterialCacheAndCancelResetInterval;
-- (void)updateLastRatchetedKeyMaterial:(id)a3 forRemoteParticipant:(unint64_t)a4;
+- (void)updateLastRatchetedKeyMaterial:(id)material forRemoteParticipant:(unint64_t)participant;
 @end
 
 @implementation IDSGroupMasterKeyMaterialCache
 
-- (IDSGroupMasterKeyMaterialCache)initWithIdentifier:(id)a3 initialMembershipURIs:(id)a4 automaticResetInterval:(double)a5 automaticResetBlock:(id)a6 queue:(id)a7
+- (IDSGroupMasterKeyMaterialCache)initWithIdentifier:(id)identifier initialMembershipURIs:(id)is automaticResetInterval:(double)interval automaticResetBlock:(id)block queue:(id)queue
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a6;
-  v16 = a7;
+  identifierCopy = identifier;
+  isCopy = is;
+  blockCopy = block;
+  queueCopy = queue;
   v42.receiver = self;
   v42.super_class = IDSGroupMasterKeyMaterialCache;
   v17 = [(IDSGroupMasterKeyMaterialCache *)&v42 init];
@@ -36,10 +36,10 @@
     goto LABEL_20;
   }
 
-  objc_storeStrong(&v17->_identifier, a3);
-  objc_storeStrong(&v18->_queue, a7);
-  v18->_automaticResetInterval = a5;
-  v19 = objc_retainBlock(v15);
+  objc_storeStrong(&v17->_identifier, identifier);
+  objc_storeStrong(&v18->_queue, queue);
+  v18->_automaticResetInterval = interval;
+  v19 = objc_retainBlock(blockCopy);
   automaticResetBlock = v18->_automaticResetBlock;
   v18->_automaticResetBlock = v19;
 
@@ -47,9 +47,9 @@
   masterKeyMaterials = v18->_masterKeyMaterials;
   v18->_masterKeyMaterials = v21;
 
-  if (v14)
+  if (isCopy)
   {
-    v23 = v14;
+    v23 = isCopy;
   }
 
   else
@@ -69,10 +69,10 @@
   v18->_remoteParticipantIDToKeyMaterial = v27;
 
   v29 = +[FTDeviceSupport sharedInstance];
-  v30 = [v29 slowCPUDevice];
+  slowCPUDevice = [v29 slowCPUDevice];
 
   v31 = @"ids-groupMKMCache-number-of-broadcast-cache-mkm";
-  if (v30)
+  if (slowCPUDevice)
   {
     v31 = @"ids-groupMKMCache-number-of-broadcast-cache-mkm-slow-cpu";
   }
@@ -100,7 +100,7 @@ LABEL_16:
 
   else
   {
-    if (v30)
+    if (slowCPUDevice)
     {
       v38 = 10;
     }
@@ -136,21 +136,21 @@ LABEL_20:
   return v18;
 }
 
-- (void)resetCacheWithNewMembershipURIs:(id)a3
+- (void)resetCacheWithNewMembershipURIs:(id)is
 {
-  v4 = a3;
+  isCopy = is;
   v5 = +[IDSFoundationLog RealTimeEncryptionController];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Resetting group MkM cache { self: %@ }", &v8, 0xCu);
   }
 
   [(IDSGroupMasterKeyMaterialCache *)self setCurrentLocalMasterKeyMaterial:0];
-  if (v4)
+  if (isCopy)
   {
-    [(IDSGroupMasterKeyMaterialCache *)self setMembershipURIs:v4];
+    [(IDSGroupMasterKeyMaterialCache *)self setMembershipURIs:isCopy];
   }
 
   else
@@ -169,7 +169,7 @@ LABEL_20:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138412290;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Resetting remote MkM cache { self: %@ }", &v5, 0xCu);
   }
 
@@ -179,27 +179,27 @@ LABEL_20:
   [(IDSGroupMasterKeyMaterialCache *)self setInFlightResetBlock:0];
 }
 
-- (void)cleanUpMasterKeyMaterialUsingPredicate:(id)a3
+- (void)cleanUpMasterKeyMaterialUsingPredicate:(id)predicate
 {
-  v4 = a3;
-  v6 = [(IDSGroupMasterKeyMaterialCache *)self masterKeyMaterials];
-  v5 = [v6 filteredSetUsingPredicate:v4];
+  predicateCopy = predicate;
+  masterKeyMaterials = [(IDSGroupMasterKeyMaterialCache *)self masterKeyMaterials];
+  v5 = [masterKeyMaterials filteredSetUsingPredicate:predicateCopy];
 
   [(IDSGroupMasterKeyMaterialCache *)self setMasterKeyMaterials:v5];
 }
 
-- (void)noteReceivedGroupMasterKeyMaterialCollection:(id)a3
+- (void)noteReceivedGroupMasterKeyMaterialCollection:(id)collection
 {
-  v41 = a3;
+  collectionCopy = collection;
   v4 = objc_alloc_init(NSMutableDictionary);
   v43 = objc_alloc_init(NSMutableSet);
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
-  v40 = self;
-  v5 = [(IDSGroupMasterKeyMaterialCache *)self masterKeyMaterials];
-  v6 = [v5 countByEnumeratingWithState:&v52 objects:v60 count:16];
+  selfCopy = self;
+  masterKeyMaterials = [(IDSGroupMasterKeyMaterialCache *)self masterKeyMaterials];
+  v6 = [masterKeyMaterials countByEnumeratingWithState:&v52 objects:v60 count:16];
   if (v6)
   {
     v7 = v6;
@@ -210,7 +210,7 @@ LABEL_20:
       {
         if (*v53 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(masterKeyMaterials);
         }
 
         v10 = *(*(&v52 + 1) + 8 * i);
@@ -239,7 +239,7 @@ LABEL_20:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v52 objects:v60 count:16];
+      v7 = [masterKeyMaterials countByEnumeratingWithState:&v52 objects:v60 count:16];
     }
 
     while (v7);
@@ -249,20 +249,20 @@ LABEL_20:
   v51 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v14 = [v41 masterKeyMaterials];
-  v15 = [v14 countByEnumeratingWithState:&v48 objects:v59 count:16];
+  masterKeyMaterials2 = [collectionCopy masterKeyMaterials];
+  v15 = [masterKeyMaterials2 countByEnumeratingWithState:&v48 objects:v59 count:16];
   if (v15)
   {
     v16 = v15;
     v17 = *v49;
-    v42 = v14;
+    v42 = masterKeyMaterials2;
     do
     {
       for (j = 0; j != v16; j = j + 1)
       {
         if (*v49 != v17)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(masterKeyMaterials2);
         }
 
         v19 = *(*(&v48 + 1) + 8 * j);
@@ -299,12 +299,12 @@ LABEL_20:
           v27 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v19 participantID]);
           [v4 setObject:v24 forKey:v27];
 
-          v14 = v42;
+          masterKeyMaterials2 = v42;
 LABEL_25:
         }
       }
 
-      v16 = [v14 countByEnumeratingWithState:&v48 objects:v59 count:16];
+      v16 = [masterKeyMaterials2 countByEnumeratingWithState:&v48 objects:v59 count:16];
     }
 
     while (v16);
@@ -315,8 +315,8 @@ LABEL_25:
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v29 = [v4 allValues];
-  v30 = [v29 countByEnumeratingWithState:&v44 objects:v58 count:16];
+  allValues = [v4 allValues];
+  v30 = [allValues countByEnumeratingWithState:&v44 objects:v58 count:16];
   if (v30)
   {
     v31 = v30;
@@ -327,52 +327,52 @@ LABEL_25:
       {
         if (*v45 != v32)
         {
-          objc_enumerationMutation(v29);
+          objc_enumerationMutation(allValues);
         }
 
         [v28 addObjectsFromArray:*(*(&v44 + 1) + 8 * k)];
       }
 
-      v31 = [v29 countByEnumeratingWithState:&v44 objects:v58 count:16];
+      v31 = [allValues countByEnumeratingWithState:&v44 objects:v58 count:16];
     }
 
     while (v31);
   }
 
   v34 = [v43 setByAddingObjectsFromArray:v28];
-  [(IDSGroupMasterKeyMaterialCache *)v40 setMasterKeyMaterials:v34];
+  [(IDSGroupMasterKeyMaterialCache *)selfCopy setMasterKeyMaterials:v34];
 
-  v35 = [(IDSGroupMasterKeyMaterialCache *)v40 membershipURIs];
-  v36 = [v41 membershipURIs];
-  v37 = [v35 isSubsetOfSet:v36];
+  membershipURIs = [(IDSGroupMasterKeyMaterialCache *)selfCopy membershipURIs];
+  membershipURIs2 = [collectionCopy membershipURIs];
+  v37 = [membershipURIs isSubsetOfSet:membershipURIs2];
 
   if (v37)
   {
-    v38 = [v41 membershipURIs];
-    [(IDSGroupMasterKeyMaterialCache *)v40 setMembershipURIs:v38];
+    membershipURIs3 = [collectionCopy membershipURIs];
+    [(IDSGroupMasterKeyMaterialCache *)selfCopy setMembershipURIs:membershipURIs3];
   }
 
   v39 = +[IDSFoundationLog RealTimeEncryptionController];
   if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v57 = v40;
+    v57 = selfCopy;
     _os_log_impl(&_mh_execute_header, v39, OS_LOG_TYPE_DEFAULT, "Noted received MkM collection in MkM cache { self: %@ }", buf, 0xCu);
   }
 
-  [(IDSGroupMasterKeyMaterialCache *)v40 _startAutomaticCacheResetTimerIfNeeded];
+  [(IDSGroupMasterKeyMaterialCache *)selfCopy _startAutomaticCacheResetTimerIfNeeded];
 }
 
-- (id)sampleMkMCollectionToBroadcast:(id)a3
+- (id)sampleMkMCollectionToBroadcast:(id)broadcast
 {
-  v4 = a3;
-  v5 = v4;
-  if ([v4 count] > self->_numberOfBroadcastCacheMKM)
+  broadcastCopy = broadcast;
+  v5 = broadcastCopy;
+  if ([broadcastCopy count] > self->_numberOfBroadcastCacheMKM)
   {
     v6 = +[IDSFoundationLog RealTimeEncryptionController];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [v4 count];
+      v7 = [broadcastCopy count];
       numberOfBroadcastCacheMKM = self->_numberOfBroadcastCacheMKM;
       v11 = 134218240;
       v12 = v7;
@@ -381,7 +381,7 @@ LABEL_25:
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Number of peer MkM to broadcast is over maximum permitted value -- introducing sampling { cachedCount: %lu, maximumCountToBroadcast: %u }", &v11, 0x12u);
     }
 
-    v9 = [v4 mutableCopy];
+    v9 = [broadcastCopy mutableCopy];
     [v9 __imRandomizeArray];
     v5 = [v9 subarrayWithRange:{0, self->_numberOfBroadcastCacheMKM}];
   }
@@ -389,14 +389,14 @@ LABEL_25:
   return v5;
 }
 
-- (id)_groupMasterKeyCollectionToBroadcastForDestinationURI:(id)a3 shouldIncludePeerKeys:(BOOL)a4
+- (id)_groupMasterKeyCollectionToBroadcastForDestinationURI:(id)i shouldIncludePeerKeys:(BOOL)keys
 {
-  v4 = a4;
-  v6 = a3;
+  keysCopy = keys;
+  iCopy = i;
   v7 = objc_alloc_init(NSMutableSet);
-  v8 = [(IDSGroupMasterKeyMaterialCache *)self nextLocalMasterKeyMaterial];
+  nextLocalMasterKeyMaterial = [(IDSGroupMasterKeyMaterialCache *)self nextLocalMasterKeyMaterial];
 
-  if (v8)
+  if (nextLocalMasterKeyMaterial)
   {
     v9 = +[IDSFoundationLog RealTimeEncryptionController];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -404,25 +404,25 @@ LABEL_25:
       sub_10091FA80(self);
     }
 
-    v10 = [(IDSGroupMasterKeyMaterialCache *)self nextLocalMasterKeyMaterial];
-    [v7 addObject:v10];
+    nextLocalMasterKeyMaterial2 = [(IDSGroupMasterKeyMaterialCache *)self nextLocalMasterKeyMaterial];
+    [v7 addObject:nextLocalMasterKeyMaterial2];
   }
 
-  v11 = [v6 tokenFreeURI];
-  if (v4)
+  tokenFreeURI = [iCopy tokenFreeURI];
+  if (keysCopy)
   {
-    v12 = [(IDSGroupMasterKeyMaterialCache *)self masterKeyMaterials];
-    if ([v12 count])
+    masterKeyMaterials = [(IDSGroupMasterKeyMaterialCache *)self masterKeyMaterials];
+    if ([masterKeyMaterials count])
     {
-      v13 = [(IDSGroupMasterKeyMaterialCache *)self membershipURIs];
-      if ([v13 containsObject:v6])
+      membershipURIs = [(IDSGroupMasterKeyMaterialCache *)self membershipURIs];
+      if ([membershipURIs containsObject:iCopy])
       {
       }
 
       else
       {
-        v14 = [(IDSGroupMasterKeyMaterialCache *)self membershipURIs];
-        v15 = [v14 containsObject:v11];
+        membershipURIs2 = [(IDSGroupMasterKeyMaterialCache *)self membershipURIs];
+        v15 = [membershipURIs2 containsObject:tokenFreeURI];
 
         if (!v15)
         {
@@ -436,24 +436,24 @@ LABEL_25:
         sub_10091FB10(self);
       }
 
-      v17 = [(IDSGroupMasterKeyMaterialCache *)self masterKeyMaterials];
-      v18 = [v17 allObjects];
-      v12 = [(IDSGroupMasterKeyMaterialCache *)self sampleMkMCollectionToBroadcast:v18];
+      masterKeyMaterials2 = [(IDSGroupMasterKeyMaterialCache *)self masterKeyMaterials];
+      allObjects = [masterKeyMaterials2 allObjects];
+      masterKeyMaterials = [(IDSGroupMasterKeyMaterialCache *)self sampleMkMCollectionToBroadcast:allObjects];
 
-      [v7 addObjectsFromArray:v12];
+      [v7 addObjectsFromArray:masterKeyMaterials];
     }
   }
 
 LABEL_14:
   v19 = [IDSGroupMasterKeyMaterialCollection alloc];
-  v20 = [v7 allObjects];
-  v21 = [(IDSGroupMasterKeyMaterialCache *)self membershipURIs];
-  v22 = [(IDSGroupMasterKeyMaterialCollection *)v19 initWithMasterKeyMaterials:v20 membershipURIs:v21];
+  allObjects2 = [v7 allObjects];
+  membershipURIs3 = [(IDSGroupMasterKeyMaterialCache *)self membershipURIs];
+  v22 = [(IDSGroupMasterKeyMaterialCollection *)v19 initWithMasterKeyMaterials:allObjects2 membershipURIs:membershipURIs3];
 
   [(IDSGroupMasterKeyMaterialCollection *)v22 description];
-  v27 = v26 = v6;
+  v27 = v26 = iCopy;
   v23 = v27;
-  v24 = v6;
+  v24 = iCopy;
   cut_dispatch_log_queue();
 
   return v22;
@@ -461,56 +461,56 @@ LABEL_14:
 
 - (id)cachedMasterKeyMaterialCollection
 {
-  v3 = [(IDSGroupMasterKeyMaterialCache *)self masterKeyMaterials];
-  v4 = [NSMutableSet setWithSet:v3];
+  masterKeyMaterials = [(IDSGroupMasterKeyMaterialCache *)self masterKeyMaterials];
+  v4 = [NSMutableSet setWithSet:masterKeyMaterials];
 
-  v5 = [(IDSGroupMasterKeyMaterialCache *)self currentLocalMasterKeyMaterial];
+  currentLocalMasterKeyMaterial = [(IDSGroupMasterKeyMaterialCache *)self currentLocalMasterKeyMaterial];
 
-  if (v5)
+  if (currentLocalMasterKeyMaterial)
   {
-    v6 = [(IDSGroupMasterKeyMaterialCache *)self currentLocalMasterKeyMaterial];
-    [v4 addObject:v6];
+    currentLocalMasterKeyMaterial2 = [(IDSGroupMasterKeyMaterialCache *)self currentLocalMasterKeyMaterial];
+    [v4 addObject:currentLocalMasterKeyMaterial2];
   }
 
-  v7 = [(IDSGroupMasterKeyMaterialCache *)self nextLocalMasterKeyMaterial];
+  nextLocalMasterKeyMaterial = [(IDSGroupMasterKeyMaterialCache *)self nextLocalMasterKeyMaterial];
 
-  if (v7)
+  if (nextLocalMasterKeyMaterial)
   {
-    v8 = [(IDSGroupMasterKeyMaterialCache *)self nextLocalMasterKeyMaterial];
-    [v4 addObject:v8];
+    nextLocalMasterKeyMaterial2 = [(IDSGroupMasterKeyMaterialCache *)self nextLocalMasterKeyMaterial];
+    [v4 addObject:nextLocalMasterKeyMaterial2];
   }
 
   v9 = [IDSGroupMasterKeyMaterialCollection alloc];
-  v10 = [v4 allObjects];
-  v11 = [(IDSGroupMasterKeyMaterialCache *)self membershipURIs];
-  v12 = [(IDSGroupMasterKeyMaterialCollection *)v9 initWithMasterKeyMaterials:v10 membershipURIs:v11];
+  allObjects = [v4 allObjects];
+  membershipURIs = [(IDSGroupMasterKeyMaterialCache *)self membershipURIs];
+  v12 = [(IDSGroupMasterKeyMaterialCollection *)v9 initWithMasterKeyMaterials:allObjects membershipURIs:membershipURIs];
 
   return v12;
 }
 
 - (id)remoteMasterKeyMaterialCollectionToSend
 {
-  v3 = [(IDSGroupMasterKeyMaterialCache *)self remoteParticipantIDToKeyMaterial];
-  v4 = [v3 allValues];
-  v5 = [NSMutableSet setWithArray:v4];
+  remoteParticipantIDToKeyMaterial = [(IDSGroupMasterKeyMaterialCache *)self remoteParticipantIDToKeyMaterial];
+  allValues = [remoteParticipantIDToKeyMaterial allValues];
+  v5 = [NSMutableSet setWithArray:allValues];
 
   v6 = [IDSGroupMasterKeyMaterialCollection alloc];
-  v7 = [v5 allObjects];
-  v8 = [(IDSGroupMasterKeyMaterialCache *)self membershipURIs];
-  v9 = [(IDSGroupMasterKeyMaterialCollection *)v6 initWithMasterKeyMaterials:v7 membershipURIs:v8];
+  allObjects = [v5 allObjects];
+  membershipURIs = [(IDSGroupMasterKeyMaterialCache *)self membershipURIs];
+  v9 = [(IDSGroupMasterKeyMaterialCollection *)v6 initWithMasterKeyMaterials:allObjects membershipURIs:membershipURIs];
 
   return v9;
 }
 
-- (BOOL)hasCachedMasterKeyIdentifier:(id)a3
+- (BOOL)hasCachedMasterKeyIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(IDSGroupMasterKeyMaterialCache *)self currentLocalMasterKeyMaterial];
-  v6 = [v5 keyIndex];
-  v7 = [v6 UUIDString];
-  v8 = [v4 isEqualToString:v7];
+  identifierCopy = identifier;
+  currentLocalMasterKeyMaterial = [(IDSGroupMasterKeyMaterialCache *)self currentLocalMasterKeyMaterial];
+  keyIndex = [currentLocalMasterKeyMaterial keyIndex];
+  uUIDString = [keyIndex UUIDString];
+  v8 = [identifierCopy isEqualToString:uUIDString];
 
-  if (v8 & 1) != 0 || (-[IDSGroupMasterKeyMaterialCache nextLocalMasterKeyMaterial](self, "nextLocalMasterKeyMaterial"), v9 = objc_claimAutoreleasedReturnValue(), [v9 keyIndex], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "UUIDString"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v4, "isEqualToString:", v11), v11, v10, v9, (v12))
+  if (v8 & 1) != 0 || (-[IDSGroupMasterKeyMaterialCache nextLocalMasterKeyMaterial](self, "nextLocalMasterKeyMaterial"), v9 = objc_claimAutoreleasedReturnValue(), [v9 keyIndex], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "UUIDString"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(identifierCopy, "isEqualToString:", v11), v11, v10, v9, (v12))
   {
     v13 = 1;
   }
@@ -521,14 +521,14 @@ LABEL_14:
     v20 = &v19;
     v21 = 0x2020000000;
     v22 = 0;
-    v14 = [(IDSGroupMasterKeyMaterialCache *)self masterKeyMaterials];
+    masterKeyMaterials = [(IDSGroupMasterKeyMaterialCache *)self masterKeyMaterials];
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = sub_100454580;
     v16[3] = &unk_100BDCB30;
-    v17 = v4;
+    v17 = identifierCopy;
     v18 = &v19;
-    [v14 enumerateObjectsUsingBlock:v16];
+    [masterKeyMaterials enumerateObjectsUsingBlock:v16];
 
     v13 = *(v20 + 24);
     _Block_object_dispose(&v19, 8);
@@ -544,10 +544,10 @@ LABEL_14:
   {
     [(IDSGroupMasterKeyMaterialCache *)self automaticResetInterval];
     v5 = v4;
-    v6 = [(IDSGroupMasterKeyMaterialCache *)self inFlightResetBlock];
-    v7 = objc_retainBlock(v6);
+    inFlightResetBlock = [(IDSGroupMasterKeyMaterialCache *)self inFlightResetBlock];
+    v7 = objc_retainBlock(inFlightResetBlock);
     *buf = 138412802;
-    v17 = self;
+    selfCopy = self;
     v18 = 2048;
     v19 = v5;
     v20 = 2112;
@@ -555,8 +555,8 @@ LABEL_14:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Starting automatic cache reset timer if needed { self: %@, resetInterval: %f, inFlightResetBlock: %@ }", buf, 0x20u);
   }
 
-  v8 = [(IDSGroupMasterKeyMaterialCache *)self inFlightResetBlock];
-  if (v8)
+  inFlightResetBlock2 = [(IDSGroupMasterKeyMaterialCache *)self inFlightResetBlock];
+  if (inFlightResetBlock2)
   {
   }
 
@@ -575,8 +575,8 @@ LABEL_14:
       objc_copyWeak(&v15, buf);
       v12 = dispatch_block_create(DISPATCH_BLOCK_ASSIGN_CURRENT, block);
       [(IDSGroupMasterKeyMaterialCache *)self setInFlightResetBlock:v12];
-      v13 = [(IDSGroupMasterKeyMaterialCache *)self queue];
-      dispatch_after(v11, v13, v12);
+      queue = [(IDSGroupMasterKeyMaterialCache *)self queue];
+      dispatch_after(v11, queue, v12);
 
       objc_destroyWeak(&v15);
       objc_destroyWeak(buf);
@@ -584,28 +584,28 @@ LABEL_14:
   }
 }
 
-- (void)noteClientReceiptOfMasterKeyIdentifier:(id)a3
+- (void)noteClientReceiptOfMasterKeyIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
-    v4 = a3;
-    v6 = [(IDSGroupMasterKeyMaterialCache *)self masterKeyIdentifiersReceivedByClient];
-    v5 = [v6 setByAddingObject:v4];
+    identifierCopy = identifier;
+    masterKeyIdentifiersReceivedByClient = [(IDSGroupMasterKeyMaterialCache *)self masterKeyIdentifiersReceivedByClient];
+    v5 = [masterKeyIdentifiersReceivedByClient setByAddingObject:identifierCopy];
 
     [(IDSGroupMasterKeyMaterialCache *)self setMasterKeyIdentifiersReceivedByClient:v5];
   }
 }
 
-- (BOOL)hasClientReceivedMasterKeyIdentifier:(id)a3
+- (BOOL)hasClientReceivedMasterKeyIdentifier:(id)identifier
 {
-  if (!a3)
+  if (!identifier)
   {
     return 0;
   }
 
-  v4 = a3;
-  v5 = [(IDSGroupMasterKeyMaterialCache *)self masterKeyIdentifiersReceivedByClient];
-  v6 = [v5 containsObject:v4];
+  identifierCopy = identifier;
+  masterKeyIdentifiersReceivedByClient = [(IDSGroupMasterKeyMaterialCache *)self masterKeyIdentifiersReceivedByClient];
+  v6 = [masterKeyIdentifiersReceivedByClient containsObject:identifierCopy];
 
   return v6;
 }
@@ -616,21 +616,21 @@ LABEL_14:
   [(IDSGroupMasterKeyMaterialCache *)self setMasterKeyIdentifiersReceivedByClient:v3];
 }
 
-- (void)noteReceivedFirstKeyMaterial:(id)a3 forRemoteParticipant:(unint64_t)a4
+- (void)noteReceivedFirstKeyMaterial:(id)material forRemoteParticipant:(unint64_t)participant
 {
-  v6 = a3;
-  v7 = [(IDSGroupMasterKeyMaterialCache *)self remoteParticipantIDToKeyMaterial];
-  v8 = [NSNumber numberWithUnsignedLongLong:a4];
-  v9 = [v7 objectForKey:v8];
+  materialCopy = material;
+  remoteParticipantIDToKeyMaterial = [(IDSGroupMasterKeyMaterialCache *)self remoteParticipantIDToKeyMaterial];
+  v8 = [NSNumber numberWithUnsignedLongLong:participant];
+  v9 = [remoteParticipantIDToKeyMaterial objectForKey:v8];
 
-  if (v9 || ([v6 isGeneratedLocally] & 1) != 0)
+  if (v9 || ([materialCopy isGeneratedLocally] & 1) != 0)
   {
-    v10 = +[IDSFoundationLog RealTimeEncryptionController];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+    remoteParticipantIDToKeyMaterial2 = +[IDSFoundationLog RealTimeEncryptionController];
+    if (os_log_type_enabled(remoteParticipantIDToKeyMaterial2, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138412290;
-      v14 = v6;
-      _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Already noted first key material for remote participant: %@ - ignoring", &v13, 0xCu);
+      v14 = materialCopy;
+      _os_log_impl(&_mh_execute_header, remoteParticipantIDToKeyMaterial2, OS_LOG_TYPE_DEFAULT, "Already noted first key material for remote participant: %@ - ignoring", &v13, 0xCu);
     }
   }
 
@@ -640,33 +640,33 @@ LABEL_14:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138412290;
-      v14 = v6;
+      v14 = materialCopy;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Noting first key material for remote participant: %@", &v13, 0xCu);
     }
 
-    v10 = [(IDSGroupMasterKeyMaterialCache *)self remoteParticipantIDToKeyMaterial];
-    v12 = [NSNumber numberWithUnsignedLongLong:a4];
-    [v10 setObject:v6 forKey:v12];
+    remoteParticipantIDToKeyMaterial2 = [(IDSGroupMasterKeyMaterialCache *)self remoteParticipantIDToKeyMaterial];
+    v12 = [NSNumber numberWithUnsignedLongLong:participant];
+    [remoteParticipantIDToKeyMaterial2 setObject:materialCopy forKey:v12];
   }
 }
 
-- (void)updateLastRatchetedKeyMaterial:(id)a3 forRemoteParticipant:(unint64_t)a4
+- (void)updateLastRatchetedKeyMaterial:(id)material forRemoteParticipant:(unint64_t)participant
 {
-  v6 = a3;
-  v8 = [(IDSGroupMasterKeyMaterialCache *)self remoteParticipantIDToKeyMaterial];
-  v7 = [NSNumber numberWithUnsignedLongLong:a4];
-  [v8 setObject:v6 forKey:v7];
+  materialCopy = material;
+  remoteParticipantIDToKeyMaterial = [(IDSGroupMasterKeyMaterialCache *)self remoteParticipantIDToKeyMaterial];
+  v7 = [NSNumber numberWithUnsignedLongLong:participant];
+  [remoteParticipantIDToKeyMaterial setObject:materialCopy forKey:v7];
 }
 
 - (id)description
 {
   v3 = objc_opt_class();
-  v4 = [(IDSGroupMasterKeyMaterialCache *)self identifier];
-  v5 = [(IDSGroupMasterKeyMaterialCache *)self currentLocalMasterKeyMaterial];
-  v6 = [(IDSGroupMasterKeyMaterialCache *)self nextLocalMasterKeyMaterial];
-  v7 = [(IDSGroupMasterKeyMaterialCache *)self membershipURIs];
-  v8 = [(IDSGroupMasterKeyMaterialCache *)self masterKeyMaterials];
-  v9 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<%@: %p identifier: %@, currentLocalMkM: %@, nextLocalMkM: %@, URIs: %@, MkMsCount: %lu>", v3, self, v4, v5, v6, v7, [v8 count]);
+  identifier = [(IDSGroupMasterKeyMaterialCache *)self identifier];
+  currentLocalMasterKeyMaterial = [(IDSGroupMasterKeyMaterialCache *)self currentLocalMasterKeyMaterial];
+  nextLocalMasterKeyMaterial = [(IDSGroupMasterKeyMaterialCache *)self nextLocalMasterKeyMaterial];
+  membershipURIs = [(IDSGroupMasterKeyMaterialCache *)self membershipURIs];
+  masterKeyMaterials = [(IDSGroupMasterKeyMaterialCache *)self masterKeyMaterials];
+  v9 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<%@: %p identifier: %@, currentLocalMkM: %@, nextLocalMkM: %@, URIs: %@, MkMsCount: %lu>", v3, self, identifier, currentLocalMasterKeyMaterial, nextLocalMasterKeyMaterial, membershipURIs, [masterKeyMaterials count]);
 
   return v9;
 }
@@ -674,12 +674,12 @@ LABEL_14:
 - (id)debugDescription
 {
   v3 = objc_opt_class();
-  v4 = [(IDSGroupMasterKeyMaterialCache *)self identifier];
-  v5 = [(IDSGroupMasterKeyMaterialCache *)self currentLocalMasterKeyMaterial];
-  v6 = [(IDSGroupMasterKeyMaterialCache *)self nextLocalMasterKeyMaterial];
-  v7 = [(IDSGroupMasterKeyMaterialCache *)self membershipURIs];
-  v8 = [(IDSGroupMasterKeyMaterialCache *)self masterKeyMaterials];
-  v9 = [NSString stringWithFormat:@"<%@: %p identifier: %@, currentLocalMkM: %@, nextLocalMkM: %@, URIs: %@, MkMs: %@>", v3, self, v4, v5, v6, v7, v8];
+  identifier = [(IDSGroupMasterKeyMaterialCache *)self identifier];
+  currentLocalMasterKeyMaterial = [(IDSGroupMasterKeyMaterialCache *)self currentLocalMasterKeyMaterial];
+  nextLocalMasterKeyMaterial = [(IDSGroupMasterKeyMaterialCache *)self nextLocalMasterKeyMaterial];
+  membershipURIs = [(IDSGroupMasterKeyMaterialCache *)self membershipURIs];
+  masterKeyMaterials = [(IDSGroupMasterKeyMaterialCache *)self masterKeyMaterials];
+  v9 = [NSString stringWithFormat:@"<%@: %p identifier: %@, currentLocalMkM: %@, nextLocalMkM: %@, URIs: %@, MkMs: %@>", v3, self, identifier, currentLocalMasterKeyMaterial, nextLocalMasterKeyMaterial, membershipURIs, masterKeyMaterials];
 
   return v9;
 }

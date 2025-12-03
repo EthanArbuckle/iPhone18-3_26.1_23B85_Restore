@@ -1,10 +1,10 @@
 @interface EKDirectorySearchOperation
 - (EKDirectorySearchOperation)init;
-- (EKDirectorySearchOperation)initWithSource:(id)a3 query:(id)a4 resultsBlock:(id)a5;
-- (id)_processResults:(id)a3 class:(Class)a4;
+- (EKDirectorySearchOperation)initWithSource:(id)source query:(id)query resultsBlock:(id)block;
+- (id)_processResults:(id)results class:(Class)class;
 - (id)_recordTypes;
-- (void)_finishWithError:(id)a3;
-- (void)_processResults:(id)a3;
+- (void)_finishWithError:(id)error;
+- (void)_processResults:(id)results;
 - (void)cancel;
 - (void)main;
 - (void)start;
@@ -18,22 +18,22 @@
   objc_exception_throw(v2);
 }
 
-- (EKDirectorySearchOperation)initWithSource:(id)a3 query:(id)a4 resultsBlock:(id)a5
+- (EKDirectorySearchOperation)initWithSource:(id)source query:(id)query resultsBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sourceCopy = source;
+  queryCopy = query;
+  blockCopy = block;
   v17.receiver = self;
   v17.super_class = EKDirectorySearchOperation;
   v11 = [(EKDirectorySearchOperation *)&v17 init];
   if (v11)
   {
-    v12 = [v8 externalID];
+    externalID = [sourceCopy externalID];
     accountID = v11->_accountID;
-    v11->_accountID = v12;
+    v11->_accountID = externalID;
 
-    objc_storeStrong(&v11->_query, a4);
-    v14 = [v10 copy];
+    objc_storeStrong(&v11->_query, query);
+    v14 = [blockCopy copy];
     resultsBlock = v11->_resultsBlock;
     v11->_resultsBlock = v14;
   }
@@ -55,12 +55,12 @@
   [(EKDirectorySearchOperation *)self willChangeValueForKey:@"isExecuting"];
   self->_isExecuting = 1;
   [(EKDirectorySearchOperation *)self didChangeValueForKey:@"isExecuting"];
-  v3 = [(EKDirectorySearchOperation *)self _recordTypes];
-  v4 = v3;
-  if (v3 && [v3 count])
+  _recordTypes = [(EKDirectorySearchOperation *)self _recordTypes];
+  v4 = _recordTypes;
+  if (_recordTypes && [_recordTypes count])
   {
-    v5 = [(EKDirectorySearchQuery *)self->_query terms];
-    v6 = [(EKDirectorySearchQuery *)self->_query resultLimit];
+    terms = [(EKDirectorySearchQuery *)self->_query terms];
+    resultLimit = [(EKDirectorySearchQuery *)self->_query resultLimit];
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __34__EKDirectorySearchOperation_main__block_invoke;
@@ -73,8 +73,8 @@
     v12[3] = &unk_1E77FE2A0;
     v12[4] = self;
     v8 = _Block_copy(v12);
-    v9 = [MEMORY[0x1E69998A8] sharedConnection];
-    v10 = [v9 performCalendarDirectorySearchWithAccountID:self->_accountID terms:v5 recordTypes:v4 resultLimit:v6 resultsBlock:v7 completionBlock:v8];
+    mEMORY[0x1E69998A8] = [MEMORY[0x1E69998A8] sharedConnection];
+    v10 = [mEMORY[0x1E69998A8] performCalendarDirectorySearchWithAccountID:self->_accountID terms:terms recordTypes:v4 resultLimit:resultLimit resultsBlock:v7 completionBlock:v8];
     searchID = self->_searchID;
     self->_searchID = v10;
   }
@@ -107,8 +107,8 @@ void __34__EKDirectorySearchOperation_main__block_invoke_2(uint64_t a1, void *a2
   v4.receiver = self;
   v4.super_class = EKDirectorySearchOperation;
   [(EKDirectorySearchOperation *)&v4 cancel];
-  v3 = [MEMORY[0x1E69998A8] sharedConnection];
-  [v3 cancelCalendarDirectorySearchWithID:self->_searchID];
+  mEMORY[0x1E69998A8] = [MEMORY[0x1E69998A8] sharedConnection];
+  [mEMORY[0x1E69998A8] cancelCalendarDirectorySearchWithID:self->_searchID];
 }
 
 - (id)_recordTypes
@@ -137,25 +137,25 @@ void __34__EKDirectorySearchOperation_main__block_invoke_2(uint64_t a1, void *a2
   return v3;
 }
 
-- (void)_processResults:(id)a3
+- (void)_processResults:(id)results
 {
   if (self->_resultsBlock)
   {
-    v4 = a3;
+    resultsCopy = results;
     v13 = objc_alloc_init(EKDirectorySearchResultSet);
-    v5 = [v4 objectForKey:*MEMORY[0x1E6999860]];
+    v5 = [resultsCopy objectForKey:*MEMORY[0x1E6999860]];
     v6 = [(EKDirectorySearchOperation *)self _processResults:v5 class:objc_opt_class()];
     [(EKDirectorySearchResultSet *)v13 setGroups:v6];
 
-    v7 = [v4 objectForKey:*MEMORY[0x1E6999868]];
+    v7 = [resultsCopy objectForKey:*MEMORY[0x1E6999868]];
     v8 = [(EKDirectorySearchOperation *)self _processResults:v7 class:objc_opt_class()];
     [(EKDirectorySearchResultSet *)v13 setLocations:v8];
 
-    v9 = [v4 objectForKey:*MEMORY[0x1E6999870]];
+    v9 = [resultsCopy objectForKey:*MEMORY[0x1E6999870]];
     v10 = [(EKDirectorySearchOperation *)self _processResults:v9 class:objc_opt_class()];
     [(EKDirectorySearchResultSet *)v13 setResources:v10];
 
-    v11 = [v4 objectForKey:*MEMORY[0x1E6999878]];
+    v11 = [resultsCopy objectForKey:*MEMORY[0x1E6999878]];
 
     v12 = [(EKDirectorySearchOperation *)self _processResults:v11 class:objc_opt_class()];
     [(EKDirectorySearchResultSet *)v13 setPeople:v12];
@@ -167,10 +167,10 @@ void __34__EKDirectorySearchOperation_main__block_invoke_2(uint64_t a1, void *a2
   }
 }
 
-- (id)_processResults:(id)a3 class:(Class)a4
+- (id)_processResults:(id)results class:(Class)class
 {
-  v5 = a3;
-  v6 = [v5 count];
+  resultsCopy = results;
+  v6 = [resultsCopy count];
   if (v6)
   {
     v7 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:v6];
@@ -178,10 +178,10 @@ void __34__EKDirectorySearchOperation_main__block_invoke_2(uint64_t a1, void *a2
     v10[1] = 3221225472;
     v10[2] = __52__EKDirectorySearchOperation__processResults_class___block_invoke;
     v10[3] = &unk_1E77FE2C8;
-    v12 = a4;
+    classCopy = class;
     v8 = v7;
     v11 = v8;
-    [v5 enumerateObjectsUsingBlock:v10];
+    [resultsCopy enumerateObjectsUsingBlock:v10];
   }
 
   else
@@ -198,12 +198,12 @@ void __52__EKDirectorySearchOperation__processResults_class___block_invoke(uint6
   [*(a1 + 32) addObject:v3];
 }
 
-- (void)_finishWithError:(id)a3
+- (void)_finishWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   if (([(EKDirectorySearchOperation *)self isCancelled]& 1) == 0)
   {
-    [(EKDirectorySearchOperation *)self setError:v4];
+    [(EKDirectorySearchOperation *)self setError:errorCopy];
   }
 
   [(EKDirectorySearchOperation *)self willChangeValueForKey:@"isExecuting"];

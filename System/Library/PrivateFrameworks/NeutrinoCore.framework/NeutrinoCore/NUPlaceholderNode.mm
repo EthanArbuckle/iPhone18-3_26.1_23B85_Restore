@@ -1,30 +1,30 @@
 @interface NUPlaceholderNode
 + (id)emptyNode;
-- (NUPlaceholderNode)initWithInputs:(id)a3;
-- (NUPlaceholderNode)initWithSettings:(id)a3 inputs:(id)a4;
-- (id)_evaluateImage:(id *)a3;
-- (id)nodeByReplayingAgainstCache:(id)a3 pipelineState:(id)a4 error:(id *)a5;
+- (NUPlaceholderNode)initWithInputs:(id)inputs;
+- (NUPlaceholderNode)initWithSettings:(id)settings inputs:(id)inputs;
+- (id)_evaluateImage:(id *)image;
+- (id)nodeByReplayingAgainstCache:(id)cache pipelineState:(id)state error:(id *)error;
 @end
 
 @implementation NUPlaceholderNode
 
-- (id)nodeByReplayingAgainstCache:(id)a3 pipelineState:(id)a4 error:(id *)a5
+- (id)nodeByReplayingAgainstCache:(id)cache pipelineState:(id)state error:(id *)error
 {
-  *a5 = [NUError unsupportedError:@"Cannot evaluate placeholder node" object:self];
+  *error = [NUError unsupportedError:@"Cannot evaluate placeholder node" object:self];
   return 0;
 }
 
-- (id)_evaluateImage:(id *)a3
+- (id)_evaluateImage:(id *)image
 {
-  *a3 = [NUError invalidError:@"Cannot evaluate placeholder" object:self];
+  *image = [NUError invalidError:@"Cannot evaluate placeholder" object:self];
   return 0;
 }
 
-- (NUPlaceholderNode)initWithInputs:(id)a3
+- (NUPlaceholderNode)initWithInputs:(id)inputs
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count] == 1)
+  inputsCopy = inputs;
+  if ([inputsCopy count] == 1)
   {
     v7 = NUAssertLogger_3114();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -45,8 +45,8 @@
         v14 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v15 = MEMORY[0x1E696AF00];
         v16 = v14;
-        v17 = [v15 callStackSymbols];
-        v18 = [v17 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v15 callStackSymbols];
+        v18 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v25 = v14;
         v26 = 2114;
@@ -57,8 +57,8 @@
 
     else if (v11)
     {
-      v12 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v13 = [v12 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v13 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v25 = v13;
       _os_log_error_impl(&dword_1C0184000, v10, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -69,16 +69,16 @@
 
   v23.receiver = self;
   v23.super_class = NUPlaceholderNode;
-  v5 = [(NURenderNode *)&v23 initWithSettings:MEMORY[0x1E695E0F8] inputs:v4];
+  v5 = [(NURenderNode *)&v23 initWithSettings:MEMORY[0x1E695E0F8] inputs:inputsCopy];
 
   return v5;
 }
 
-- (NUPlaceholderNode)initWithSettings:(id)a3 inputs:(id)a4
+- (NUPlaceholderNode)initWithSettings:(id)settings inputs:(id)inputs
 {
   v38 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  settingsCopy = settings;
+  inputsCopy = inputs;
   if (_NULogOnceToken != -1)
   {
     dispatch_once(&_NULogOnceToken, &__block_literal_global_3130);
@@ -122,8 +122,8 @@ LABEL_8:
     {
       v17 = MEMORY[0x1E696AF00];
       v18 = v16;
-      v19 = [v17 callStackSymbols];
-      v20 = [v19 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v17 callStackSymbols];
+      v20 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v35 = v20;
       _os_log_error_impl(&dword_1C0184000, v18, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -139,8 +139,8 @@ LABEL_8:
     v23 = MEMORY[0x1E696AF00];
     v24 = specific;
     v25 = v21;
-    v26 = [v23 callStackSymbols];
-    v27 = [v26 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v23 callStackSymbols];
+    v27 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v35 = specific;
     v36 = 2114;
@@ -158,7 +158,7 @@ LABEL_14:
 
 + (id)emptyNode
 {
-  v2 = [a1 alloc];
+  v2 = [self alloc];
   v3 = [v2 initWithInputs:MEMORY[0x1E695E0F8]];
 
   return v3;

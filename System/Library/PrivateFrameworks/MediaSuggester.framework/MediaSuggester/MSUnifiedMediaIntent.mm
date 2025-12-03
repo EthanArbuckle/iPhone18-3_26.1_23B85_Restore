@@ -1,9 +1,9 @@
 @interface MSUnifiedMediaIntent
 - (MSIntentWrapper)currentIntent;
 - (NSString)description;
-- (void)encodeWithCoder:(id)a3;
-- (void)setBundleID:(id)a3;
-- (void)setCurrentIntent:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setBundleID:(id)d;
+- (void)setCurrentIntent:(id)intent;
 @end
 
 @implementation MSUnifiedMediaIntent
@@ -15,31 +15,31 @@
   return v2;
 }
 
-- (void)setCurrentIntent:(id)a3
+- (void)setCurrentIntent:(id)intent
 {
-  v4 = a3;
-  v5 = self;
-  sub_22C9D1B7C(v4);
+  intentCopy = intent;
+  selfCopy = self;
+  sub_22C9D1B7C(intentCopy);
 }
 
-- (void)setBundleID:(id)a3
+- (void)setBundleID:(id)d
 {
   v4 = sub_22CA20E20();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   sub_22C9D1CA4(v4, v6);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  MSUnifiedMediaIntent.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  MSUnifiedMediaIntent.encode(with:)(coderCopy);
 }
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   MSUnifiedMediaIntent.description.getter();
 
   v3 = sub_22CA20E10();

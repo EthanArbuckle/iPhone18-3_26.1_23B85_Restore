@@ -1,41 +1,41 @@
 @interface TTMergeableStringVersionedDocument
-- (BOOL)rem_isEqual:(id)a3;
-- (TTMergeableStringVersionedDocument)initWithArchive:(const void *)a3 andReplicaID:(id)a4;
-- (TTMergeableStringVersionedDocument)initWithData:(id)a3 andReplicaID:(id)a4;
-- (TTMergeableStringVersionedDocument)initWithMergeableString:(id)a3;
-- (id)clockElementListForReplicaUUID:(id)a3;
-- (id)rem_copyWithReplicaIDForNewEdits:(id)a3;
-- (id)serializeCurrentVersion:(unsigned int *)a3;
-- (unint64_t)mergeWithStringVersionedDocument:(id)a3;
-- (void)mergeVersion:(unsigned int)a3 fromData:(id)a4;
+- (BOOL)rem_isEqual:(id)equal;
+- (TTMergeableStringVersionedDocument)initWithArchive:(const void *)archive andReplicaID:(id)d;
+- (TTMergeableStringVersionedDocument)initWithData:(id)data andReplicaID:(id)d;
+- (TTMergeableStringVersionedDocument)initWithMergeableString:(id)string;
+- (id)clockElementListForReplicaUUID:(id)d;
+- (id)rem_copyWithReplicaIDForNewEdits:(id)edits;
+- (id)serializeCurrentVersion:(unsigned int *)version;
+- (unint64_t)mergeWithStringVersionedDocument:(id)document;
+- (void)mergeVersion:(unsigned int)version fromData:(id)data;
 @end
 
 @implementation TTMergeableStringVersionedDocument
 
-- (id)clockElementListForReplicaUUID:(id)a3
+- (id)clockElementListForReplicaUUID:(id)d
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(TTMergeableStringVersionedDocument *)self mergeableString];
-  [v5 generateIdsForLocalChanges];
+  dCopy = d;
+  mergeableString = [(TTMergeableStringVersionedDocument *)self mergeableString];
+  [mergeableString generateIdsForLocalChanges];
 
-  v6 = [(TTMergeableStringVersionedDocument *)self mergeableString];
-  v7 = [v6 timestamp];
+  mergeableString2 = [(TTMergeableStringVersionedDocument *)self mergeableString];
+  timestamp = [mergeableString2 timestamp];
 
   v8 = MEMORY[0x1E695DF70];
-  v9 = [v7 timestamps];
-  v10 = [v8 arrayWithCapacity:{objc_msgSend(v9, "count")}];
+  timestamps = [timestamp timestamps];
+  v10 = [v8 arrayWithCapacity:{objc_msgSend(timestamps, "count")}];
 
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v11 = [v7 timestamps];
-  v12 = [v11 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  timestamps2 = [timestamp timestamps];
+  v12 = [timestamps2 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v12)
   {
     v13 = v12;
-    v22 = v7;
+    v22 = timestamp;
     v14 = 0;
     v15 = *v24;
     do
@@ -44,10 +44,10 @@
       {
         if (*v24 != v15)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(timestamps2);
         }
 
-        v17 = [*(*(&v23 + 1) + 8 * i) clockElementForUUID:v4];
+        v17 = [*(*(&v23 + 1) + 8 * i) clockElementForUUID:dCopy];
         v18 = v17 != 0;
         if (!v17)
         {
@@ -58,7 +58,7 @@
         [v10 addObject:v17];
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v13 = [timestamps2 countByEnumeratingWithState:&v23 objects:v27 count:16];
     }
 
     while (v13);
@@ -73,7 +73,7 @@
       v19 = 0;
     }
 
-    v7 = v22;
+    timestamp = v22;
   }
 
   else
@@ -87,42 +87,42 @@
   return v19;
 }
 
-- (id)rem_copyWithReplicaIDForNewEdits:(id)a3
+- (id)rem_copyWithReplicaIDForNewEdits:(id)edits
 {
-  v4 = a3;
-  v5 = [(TTVersionedDocument *)self serialize];
-  v6 = [[TTMergeableStringVersionedDocument alloc] initWithData:v5 andReplicaID:v4];
+  editsCopy = edits;
+  serialize = [(TTVersionedDocument *)self serialize];
+  v6 = [[TTMergeableStringVersionedDocument alloc] initWithData:serialize andReplicaID:editsCopy];
 
   return v6;
 }
 
-- (BOOL)rem_isEqual:(id)a3
+- (BOOL)rem_isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v11 = 1;
   }
 
   else
   {
-    v6 = v4;
+    v6 = equalCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [(TTMergeableStringVersionedDocument *)self mergeableString];
-      v8 = [(TTMergeableStringVersionedDocument *)v6 mergeableString];
-      if (v7 == v8)
+      mergeableString = [(TTMergeableStringVersionedDocument *)self mergeableString];
+      mergeableString2 = [(TTMergeableStringVersionedDocument *)v6 mergeableString];
+      if (mergeableString == mergeableString2)
       {
         v11 = 1;
       }
 
       else
       {
-        v9 = [(TTMergeableStringVersionedDocument *)self mergeableString];
-        v10 = [(TTMergeableStringVersionedDocument *)v6 mergeableString];
-        v11 = [v9 isEqual:v10];
+        mergeableString3 = [(TTMergeableStringVersionedDocument *)self mergeableString];
+        mergeableString4 = [(TTMergeableStringVersionedDocument *)v6 mergeableString];
+        v11 = [mergeableString3 isEqual:mergeableString4];
       }
     }
 
@@ -135,94 +135,94 @@
   return v11 & 1;
 }
 
-- (TTMergeableStringVersionedDocument)initWithData:(id)a3 andReplicaID:(id)a4
+- (TTMergeableStringVersionedDocument)initWithData:(id)data andReplicaID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  dCopy = d;
   v12.receiver = self;
   v12.super_class = TTMergeableStringVersionedDocument;
   v8 = [(TTMergeableStringVersionedDocument *)&v12 init];
   if (v8)
   {
-    v9 = [(TTMergeableString *)[TTMergeableAttributedString alloc] initWithReplicaID:v7];
+    v9 = [(TTMergeableString *)[TTMergeableAttributedString alloc] initWithReplicaID:dCopy];
     mergeableString = v8->_mergeableString;
     v8->_mergeableString = v9;
 
-    [(TTVersionedDocument *)v8 loadData:v6];
+    [(TTVersionedDocument *)v8 loadData:dataCopy];
   }
 
   return v8;
 }
 
-- (TTMergeableStringVersionedDocument)initWithMergeableString:(id)a3
+- (TTMergeableStringVersionedDocument)initWithMergeableString:(id)string
 {
-  v5 = a3;
+  stringCopy = string;
   v9.receiver = self;
   v9.super_class = TTMergeableStringVersionedDocument;
   v6 = [(TTMergeableStringVersionedDocument *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_mergeableString, a3);
+    objc_storeStrong(&v6->_mergeableString, string);
     [(TTVersionedDocument *)v7 loadData:0];
   }
 
   return v7;
 }
 
-- (TTMergeableStringVersionedDocument)initWithArchive:(const void *)a3 andReplicaID:(id)a4
+- (TTMergeableStringVersionedDocument)initWithArchive:(const void *)archive andReplicaID:(id)d
 {
-  v6 = a4;
+  dCopy = d;
   v11.receiver = self;
   v11.super_class = TTMergeableStringVersionedDocument;
   v7 = [(TTMergeableStringVersionedDocument *)&v11 init];
   if (v7)
   {
-    v8 = [(TTMergeableString *)[TTMergeableAttributedString alloc] initWithReplicaID:v6];
+    v8 = [(TTMergeableString *)[TTMergeableAttributedString alloc] initWithReplicaID:dCopy];
     mergeableString = v7->_mergeableString;
     v7->_mergeableString = v8;
 
-    [(TTVersionedDocument *)v7 loadArchive:a3];
+    [(TTVersionedDocument *)v7 loadArchive:archive];
   }
 
   return v7;
 }
 
-- (unint64_t)mergeWithStringVersionedDocument:(id)a3
+- (unint64_t)mergeWithStringVersionedDocument:(id)document
 {
-  v4 = a3;
-  v5 = [(TTMergeableStringVersionedDocument *)self mergeableString];
-  v6 = [v4 mergeableString];
-  v7 = [v5 mergeWithString:v6];
+  documentCopy = document;
+  mergeableString = [(TTMergeableStringVersionedDocument *)self mergeableString];
+  mergeableString2 = [documentCopy mergeableString];
+  v7 = [mergeableString mergeWithString:mergeableString2];
 
   if (v7)
   {
     v9.receiver = self;
     v9.super_class = TTMergeableStringVersionedDocument;
-    [(TTVersionedDocument *)&v9 mergeWithVersionedDocument:v4];
+    [(TTVersionedDocument *)&v9 mergeWithVersionedDocument:documentCopy];
   }
 
   return v7;
 }
 
-- (void)mergeVersion:(unsigned int)a3 fromData:(id)a4
+- (void)mergeVersion:(unsigned int)version fromData:(id)data
 {
-  v7 = a4;
-  v5 = [(TTMergeableString *)[TTMergeableAttributedString alloc] initWithData:v7 andReplicaID:0];
+  dataCopy = data;
+  v5 = [(TTMergeableString *)[TTMergeableAttributedString alloc] initWithData:dataCopy andReplicaID:0];
   if (v5)
   {
-    v6 = [(TTMergeableStringVersionedDocument *)self mergeableString];
-    [v6 mergeWithString:v5];
+    mergeableString = [(TTMergeableStringVersionedDocument *)self mergeableString];
+    [mergeableString mergeWithString:v5];
   }
 }
 
-- (id)serializeCurrentVersion:(unsigned int *)a3
+- (id)serializeCurrentVersion:(unsigned int *)version
 {
-  *a3 = +[TTMergeableStringVersionedDocument serializationVersion];
-  v4 = [(TTMergeableStringVersionedDocument *)self mergeableString];
-  v5 = [v4 serialize];
+  *version = +[TTMergeableStringVersionedDocument serializationVersion];
+  mergeableString = [(TTMergeableStringVersionedDocument *)self mergeableString];
+  serialize = [mergeableString serialize];
 
-  return v5;
+  return serialize;
 }
 
 @end

@@ -1,31 +1,31 @@
 @interface _INPBSearchCallHistoryIntent
-- (BOOL)isEqual:(id)a3;
-- (_INPBSearchCallHistoryIntent)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBSearchCallHistoryIntent)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (int)StringAsCallCapabilities:(id)a3;
-- (int)StringAsCallType:(id)a3;
-- (int)StringAsCallTypes:(id)a3;
-- (int)StringAsCapabilities:(id)a3;
-- (int)StringAsPreferredCallProvider:(id)a3;
+- (int)StringAsCallCapabilities:(id)capabilities;
+- (int)StringAsCallType:(id)type;
+- (int)StringAsCallTypes:(id)types;
+- (int)StringAsCapabilities:(id)capabilities;
+- (int)StringAsPreferredCallProvider:(id)provider;
 - (unint64_t)hash;
-- (void)addCallCapabilities:(int)a3;
-- (void)addCallTypes:(int)a3;
-- (void)addCapabilities:(int)a3;
+- (void)addCallCapabilities:(int)capabilities;
+- (void)addCallTypes:(int)types;
+- (void)addCapabilities:(int)capabilities;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)setCallType:(int)a3;
-- (void)setHasPreferredCallProvider:(BOOL)a3;
-- (void)setHasUnseen:(BOOL)a3;
-- (void)setPreferredCallProvider:(int)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setCallType:(int)type;
+- (void)setHasPreferredCallProvider:(BOOL)provider;
+- (void)setHasUnseen:(BOOL)unseen;
+- (void)setPreferredCallProvider:(int)provider;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBSearchCallHistoryIntent
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_callCapabilities.count)
   {
     v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:{-[_INPBSearchCallHistoryIntent callCapabilitiesCount](self, "callCapabilitiesCount")}];
@@ -58,24 +58,24 @@
       while (v5 < [(_INPBSearchCallHistoryIntent *)self callCapabilitiesCount]);
     }
 
-    [v3 setObject:v4 forKeyedSubscript:@"callCapabilities"];
+    [dictionary setObject:v4 forKeyedSubscript:@"callCapabilities"];
   }
 
   if ([(_INPBSearchCallHistoryIntent *)self hasCallType])
   {
-    v8 = [(_INPBSearchCallHistoryIntent *)self callType];
-    v9 = v8 - 2;
-    if (v8 - 2) < 9 && ((0x1EFu >> v9))
+    callType = [(_INPBSearchCallHistoryIntent *)self callType];
+    v9 = callType - 2;
+    if (callType - 2) < 9 && ((0x1EFu >> v9))
     {
       v10 = off_1E72828F8[v9];
     }
 
     else
     {
-      v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v8];
+      v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", callType];
     }
 
-    [v3 setObject:v10 forKeyedSubscript:@"callType"];
+    [dictionary setObject:v10 forKeyedSubscript:@"callType"];
   }
 
   if (self->_callTypes.count)
@@ -105,7 +105,7 @@
       while (v12 < [(_INPBSearchCallHistoryIntent *)self callTypesCount]);
     }
 
-    [v3 setObject:v11 forKeyedSubscript:@"callTypes"];
+    [dictionary setObject:v11 forKeyedSubscript:@"callTypes"];
   }
 
   if (self->_capabilities.count)
@@ -140,48 +140,48 @@
       while (v16 < [(_INPBSearchCallHistoryIntent *)self capabilitiesCount]);
     }
 
-    [v3 setObject:v15 forKeyedSubscript:@"capabilities"];
+    [dictionary setObject:v15 forKeyedSubscript:@"capabilities"];
   }
 
-  v19 = [(_INPBSearchCallHistoryIntent *)self dateCreated];
-  v20 = [v19 dictionaryRepresentation];
-  [v3 setObject:v20 forKeyedSubscript:@"dateCreated"];
+  dateCreated = [(_INPBSearchCallHistoryIntent *)self dateCreated];
+  dictionaryRepresentation = [dateCreated dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"dateCreated"];
 
-  v21 = [(_INPBSearchCallHistoryIntent *)self intentMetadata];
-  v22 = [v21 dictionaryRepresentation];
-  [v3 setObject:v22 forKeyedSubscript:@"intentMetadata"];
+  intentMetadata = [(_INPBSearchCallHistoryIntent *)self intentMetadata];
+  dictionaryRepresentation2 = [intentMetadata dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"intentMetadata"];
 
   if ([(_INPBSearchCallHistoryIntent *)self hasPreferredCallProvider])
   {
-    v23 = [(_INPBSearchCallHistoryIntent *)self preferredCallProvider];
-    if ((v23 - 2) >= 3)
+    preferredCallProvider = [(_INPBSearchCallHistoryIntent *)self preferredCallProvider];
+    if ((preferredCallProvider - 2) >= 3)
     {
-      v24 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v23];
+      v24 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", preferredCallProvider];
     }
 
     else
     {
-      v24 = off_1E7282940[(v23 - 2)];
+      v24 = off_1E7282940[(preferredCallProvider - 2)];
     }
 
-    [v3 setObject:v24 forKeyedSubscript:@"preferredCallProvider"];
+    [dictionary setObject:v24 forKeyedSubscript:@"preferredCallProvider"];
   }
 
-  v25 = [(_INPBSearchCallHistoryIntent *)self recipient];
-  v26 = [v25 dictionaryRepresentation];
-  [v3 setObject:v26 forKeyedSubscript:@"recipient"];
+  recipient = [(_INPBSearchCallHistoryIntent *)self recipient];
+  dictionaryRepresentation3 = [recipient dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"recipient"];
 
-  v27 = [(_INPBSearchCallHistoryIntent *)self targetContact];
-  v28 = [v27 dictionaryRepresentation];
-  [v3 setObject:v28 forKeyedSubscript:@"targetContact"];
+  targetContact = [(_INPBSearchCallHistoryIntent *)self targetContact];
+  dictionaryRepresentation4 = [targetContact dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"targetContact"];
 
   if ([(_INPBSearchCallHistoryIntent *)self hasUnseen])
   {
     v29 = [MEMORY[0x1E696AD98] numberWithBool:{-[_INPBSearchCallHistoryIntent unseen](self, "unseen")}];
-    [v3 setObject:v29 forKeyedSubscript:@"unseen"];
+    [dictionary setObject:v29 forKeyedSubscript:@"unseen"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -226,10 +226,10 @@
   return v3 ^ v13 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_33;
   }
@@ -239,18 +239,18 @@
     goto LABEL_33;
   }
 
-  v5 = [(_INPBSearchCallHistoryIntent *)self hasCallType];
-  if (v5 != [v4 hasCallType])
+  hasCallType = [(_INPBSearchCallHistoryIntent *)self hasCallType];
+  if (hasCallType != [equalCopy hasCallType])
   {
     goto LABEL_33;
   }
 
   if ([(_INPBSearchCallHistoryIntent *)self hasCallType])
   {
-    if ([v4 hasCallType])
+    if ([equalCopy hasCallType])
     {
       callType = self->_callType;
-      if (callType != [v4 callType])
+      if (callType != [equalCopy callType])
       {
         goto LABEL_33;
       }
@@ -262,20 +262,20 @@
     goto LABEL_33;
   }
 
-  v7 = [(_INPBSearchCallHistoryIntent *)self dateCreated];
-  v8 = [v4 dateCreated];
-  if ((v7 != 0) == (v8 == 0))
+  dateCreated = [(_INPBSearchCallHistoryIntent *)self dateCreated];
+  dateCreated2 = [equalCopy dateCreated];
+  if ((dateCreated != 0) == (dateCreated2 == 0))
   {
     goto LABEL_32;
   }
 
-  v9 = [(_INPBSearchCallHistoryIntent *)self dateCreated];
-  if (v9)
+  dateCreated3 = [(_INPBSearchCallHistoryIntent *)self dateCreated];
+  if (dateCreated3)
   {
-    v10 = v9;
-    v11 = [(_INPBSearchCallHistoryIntent *)self dateCreated];
-    v12 = [v4 dateCreated];
-    v13 = [v11 isEqual:v12];
+    v10 = dateCreated3;
+    dateCreated4 = [(_INPBSearchCallHistoryIntent *)self dateCreated];
+    dateCreated5 = [equalCopy dateCreated];
+    v13 = [dateCreated4 isEqual:dateCreated5];
 
     if (!v13)
     {
@@ -287,20 +287,20 @@
   {
   }
 
-  v7 = [(_INPBSearchCallHistoryIntent *)self intentMetadata];
-  v8 = [v4 intentMetadata];
-  if ((v7 != 0) == (v8 == 0))
+  dateCreated = [(_INPBSearchCallHistoryIntent *)self intentMetadata];
+  dateCreated2 = [equalCopy intentMetadata];
+  if ((dateCreated != 0) == (dateCreated2 == 0))
   {
     goto LABEL_32;
   }
 
-  v14 = [(_INPBSearchCallHistoryIntent *)self intentMetadata];
-  if (v14)
+  intentMetadata = [(_INPBSearchCallHistoryIntent *)self intentMetadata];
+  if (intentMetadata)
   {
-    v15 = v14;
-    v16 = [(_INPBSearchCallHistoryIntent *)self intentMetadata];
-    v17 = [v4 intentMetadata];
-    v18 = [v16 isEqual:v17];
+    v15 = intentMetadata;
+    intentMetadata2 = [(_INPBSearchCallHistoryIntent *)self intentMetadata];
+    intentMetadata3 = [equalCopy intentMetadata];
+    v18 = [intentMetadata2 isEqual:intentMetadata3];
 
     if (!v18)
     {
@@ -312,38 +312,38 @@
   {
   }
 
-  v19 = [(_INPBSearchCallHistoryIntent *)self hasPreferredCallProvider];
-  if (v19 != [v4 hasPreferredCallProvider])
+  hasPreferredCallProvider = [(_INPBSearchCallHistoryIntent *)self hasPreferredCallProvider];
+  if (hasPreferredCallProvider != [equalCopy hasPreferredCallProvider])
   {
     goto LABEL_33;
   }
 
   if ([(_INPBSearchCallHistoryIntent *)self hasPreferredCallProvider])
   {
-    if ([v4 hasPreferredCallProvider])
+    if ([equalCopy hasPreferredCallProvider])
     {
       preferredCallProvider = self->_preferredCallProvider;
-      if (preferredCallProvider != [v4 preferredCallProvider])
+      if (preferredCallProvider != [equalCopy preferredCallProvider])
       {
         goto LABEL_33;
       }
     }
   }
 
-  v7 = [(_INPBSearchCallHistoryIntent *)self recipient];
-  v8 = [v4 recipient];
-  if ((v7 != 0) == (v8 == 0))
+  dateCreated = [(_INPBSearchCallHistoryIntent *)self recipient];
+  dateCreated2 = [equalCopy recipient];
+  if ((dateCreated != 0) == (dateCreated2 == 0))
   {
     goto LABEL_32;
   }
 
-  v21 = [(_INPBSearchCallHistoryIntent *)self recipient];
-  if (v21)
+  recipient = [(_INPBSearchCallHistoryIntent *)self recipient];
+  if (recipient)
   {
-    v22 = v21;
-    v23 = [(_INPBSearchCallHistoryIntent *)self recipient];
-    v24 = [v4 recipient];
-    v25 = [v23 isEqual:v24];
+    v22 = recipient;
+    recipient2 = [(_INPBSearchCallHistoryIntent *)self recipient];
+    recipient3 = [equalCopy recipient];
+    v25 = [recipient2 isEqual:recipient3];
 
     if (!v25)
     {
@@ -355,22 +355,22 @@
   {
   }
 
-  v7 = [(_INPBSearchCallHistoryIntent *)self targetContact];
-  v8 = [v4 targetContact];
-  if ((v7 != 0) == (v8 == 0))
+  dateCreated = [(_INPBSearchCallHistoryIntent *)self targetContact];
+  dateCreated2 = [equalCopy targetContact];
+  if ((dateCreated != 0) == (dateCreated2 == 0))
   {
 LABEL_32:
 
     goto LABEL_33;
   }
 
-  v26 = [(_INPBSearchCallHistoryIntent *)self targetContact];
-  if (v26)
+  targetContact = [(_INPBSearchCallHistoryIntent *)self targetContact];
+  if (targetContact)
   {
-    v27 = v26;
-    v28 = [(_INPBSearchCallHistoryIntent *)self targetContact];
-    v29 = [v4 targetContact];
-    v30 = [v28 isEqual:v29];
+    v27 = targetContact;
+    targetContact2 = [(_INPBSearchCallHistoryIntent *)self targetContact];
+    targetContact3 = [equalCopy targetContact];
+    v30 = [targetContact2 isEqual:targetContact3];
 
     if (!v30)
     {
@@ -382,10 +382,10 @@ LABEL_32:
   {
   }
 
-  v33 = [(_INPBSearchCallHistoryIntent *)self hasUnseen];
-  if (v33 == [v4 hasUnseen])
+  hasUnseen = [(_INPBSearchCallHistoryIntent *)self hasUnseen];
+  if (hasUnseen == [equalCopy hasUnseen])
   {
-    if (!-[_INPBSearchCallHistoryIntent hasUnseen](self, "hasUnseen") || ![v4 hasUnseen] || (unseen = self->_unseen, unseen == objc_msgSend(v4, "unseen")))
+    if (!-[_INPBSearchCallHistoryIntent hasUnseen](self, "hasUnseen") || ![equalCopy hasUnseen] || (unseen = self->_unseen, unseen == objc_msgSend(equalCopy, "unseen")))
     {
       v31 = 1;
       goto LABEL_34;
@@ -399,7 +399,7 @@ LABEL_34:
   return v31;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBSearchCallHistoryIntent allocWithZone:](_INPBSearchCallHistoryIntent init];
   PBRepeatedInt32Copy();
@@ -410,10 +410,10 @@ LABEL_34:
 
   PBRepeatedInt32Copy();
   PBRepeatedInt32Copy();
-  v6 = [(_INPBDateTimeRange *)self->_dateCreated copyWithZone:a3];
+  v6 = [(_INPBDateTimeRange *)self->_dateCreated copyWithZone:zone];
   [(_INPBSearchCallHistoryIntent *)v5 setDateCreated:v6];
 
-  v7 = [(_INPBIntentMetadata *)self->_intentMetadata copyWithZone:a3];
+  v7 = [(_INPBIntentMetadata *)self->_intentMetadata copyWithZone:zone];
   [(_INPBSearchCallHistoryIntent *)v5 setIntentMetadata:v7];
 
   if ([(_INPBSearchCallHistoryIntent *)self hasPreferredCallProvider])
@@ -421,10 +421,10 @@ LABEL_34:
     [(_INPBSearchCallHistoryIntent *)v5 setPreferredCallProvider:[(_INPBSearchCallHistoryIntent *)self preferredCallProvider]];
   }
 
-  v8 = [(_INPBContact *)self->_recipient copyWithZone:a3];
+  v8 = [(_INPBContact *)self->_recipient copyWithZone:zone];
   [(_INPBSearchCallHistoryIntent *)v5 setRecipient:v8];
 
-  v9 = [(_INPBContact *)self->_targetContact copyWithZone:a3];
+  v9 = [(_INPBContact *)self->_targetContact copyWithZone:zone];
   [(_INPBSearchCallHistoryIntent *)v5 setTargetContact:v9];
 
   if ([(_INPBSearchCallHistoryIntent *)self hasUnseen])
@@ -435,28 +435,28 @@ LABEL_34:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBSearchCallHistoryIntent *)self data];
+  coderCopy = coder;
+  data = [(_INPBSearchCallHistoryIntent *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBSearchCallHistoryIntent)initWithCoder:(id)a3
+- (_INPBSearchCallHistoryIntent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBSearchCallHistoryIntent *)self initWithData:v6];
+    self = [(_INPBSearchCallHistoryIntent *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -469,10 +469,10 @@ LABEL_34:
   [(_INPBSearchCallHistoryIntent *)&v3 dealloc];
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   p_callCapabilities = &self->_callCapabilities;
-  v22 = a3;
+  toCopy = to;
   if (self->_callCapabilities.count)
   {
     v5 = 0;
@@ -518,19 +518,19 @@ LABEL_34:
     while (v10 < self->_capabilities.count);
   }
 
-  v12 = [(_INPBSearchCallHistoryIntent *)self dateCreated];
+  dateCreated = [(_INPBSearchCallHistoryIntent *)self dateCreated];
 
-  if (v12)
+  if (dateCreated)
   {
-    v13 = [(_INPBSearchCallHistoryIntent *)self dateCreated];
+    dateCreated2 = [(_INPBSearchCallHistoryIntent *)self dateCreated];
     PBDataWriterWriteSubmessage();
   }
 
-  v14 = [(_INPBSearchCallHistoryIntent *)self intentMetadata];
+  intentMetadata = [(_INPBSearchCallHistoryIntent *)self intentMetadata];
 
-  if (v14)
+  if (intentMetadata)
   {
-    v15 = [(_INPBSearchCallHistoryIntent *)self intentMetadata];
+    intentMetadata2 = [(_INPBSearchCallHistoryIntent *)self intentMetadata];
     PBDataWriterWriteSubmessage();
   }
 
@@ -540,19 +540,19 @@ LABEL_34:
     PBDataWriterWriteInt32Field();
   }
 
-  v17 = [(_INPBSearchCallHistoryIntent *)self recipient];
+  recipient = [(_INPBSearchCallHistoryIntent *)self recipient];
 
-  if (v17)
+  if (recipient)
   {
-    v18 = [(_INPBSearchCallHistoryIntent *)self recipient];
+    recipient2 = [(_INPBSearchCallHistoryIntent *)self recipient];
     PBDataWriterWriteSubmessage();
   }
 
-  v19 = [(_INPBSearchCallHistoryIntent *)self targetContact];
+  targetContact = [(_INPBSearchCallHistoryIntent *)self targetContact];
 
-  if (v19)
+  if (targetContact)
   {
-    v20 = [(_INPBSearchCallHistoryIntent *)self targetContact];
+    targetContact2 = [(_INPBSearchCallHistoryIntent *)self targetContact];
     PBDataWriterWriteSubmessage();
   }
 
@@ -563,9 +563,9 @@ LABEL_34:
   }
 }
 
-- (void)setHasUnseen:(BOOL)a3
+- (void)setHasUnseen:(BOOL)unseen
 {
-  if (a3)
+  if (unseen)
   {
     v3 = 4;
   }
@@ -578,20 +578,20 @@ LABEL_34:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (int)StringAsPreferredCallProvider:(id)a3
+- (int)StringAsPreferredCallProvider:(id)provider
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"TELEPHONY_PROVIDER"])
+  providerCopy = provider;
+  if ([providerCopy isEqualToString:@"TELEPHONY_PROVIDER"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"FACETIME_PROVIDER"])
+  else if ([providerCopy isEqualToString:@"FACETIME_PROVIDER"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"THIRD_PARTY_PROVIDER"])
+  else if ([providerCopy isEqualToString:@"THIRD_PARTY_PROVIDER"])
   {
     v4 = 4;
   }
@@ -604,9 +604,9 @@ LABEL_34:
   return v4;
 }
 
-- (void)setHasPreferredCallProvider:(BOOL)a3
+- (void)setHasPreferredCallProvider:(BOOL)provider
 {
-  if (a3)
+  if (provider)
   {
     v3 = 2;
   }
@@ -619,10 +619,10 @@ LABEL_34:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setPreferredCallProvider:(int)a3
+- (void)setPreferredCallProvider:(int)provider
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (provider == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFD;
   }
@@ -630,17 +630,17 @@ LABEL_34:
   else
   {
     *&self->_has = has | 2;
-    self->_preferredCallProvider = a3;
+    self->_preferredCallProvider = provider;
   }
 }
 
-- (int)StringAsCapabilities:(id)a3
+- (int)StringAsCapabilities:(id)capabilities
 {
-  v3 = a3;
+  capabilitiesCopy = capabilities;
   v4 = 1;
-  if (([v3 isEqualToString:@"AUDIO_CALL"] & 1) == 0)
+  if (([capabilitiesCopy isEqualToString:@"AUDIO_CALL"] & 1) == 0)
   {
-    if ([v3 isEqualToString:@"VIDEO_CALL"])
+    if ([capabilitiesCopy isEqualToString:@"VIDEO_CALL"])
     {
       v4 = 2;
     }
@@ -654,53 +654,53 @@ LABEL_34:
   return v4;
 }
 
-- (void)addCapabilities:(int)a3
+- (void)addCapabilities:(int)capabilities
 {
-  if (a3 != 0x7FFFFFFF)
+  if (capabilities != 0x7FFFFFFF)
   {
     PBRepeatedInt32Add();
   }
 }
 
-- (int)StringAsCallTypes:(id)a3
+- (int)StringAsCallTypes:(id)types
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"OUTGOING"])
+  typesCopy = types;
+  if ([typesCopy isEqualToString:@"OUTGOING"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"MISSED"])
+  else if ([typesCopy isEqualToString:@"MISSED"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"RECEIVED"])
+  else if ([typesCopy isEqualToString:@"RECEIVED"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"LATEST"])
+  else if ([typesCopy isEqualToString:@"LATEST"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"VOICEMAIL"])
+  else if ([typesCopy isEqualToString:@"VOICEMAIL"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"RINGING"])
+  else if ([typesCopy isEqualToString:@"RINGING"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"IN_PROGRESS"])
+  else if ([typesCopy isEqualToString:@"IN_PROGRESS"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"ON_HOLD"])
+  else if ([typesCopy isEqualToString:@"ON_HOLD"])
   {
     v4 = 10;
   }
@@ -713,53 +713,53 @@ LABEL_34:
   return v4;
 }
 
-- (void)addCallTypes:(int)a3
+- (void)addCallTypes:(int)types
 {
-  if (a3 != 0x7FFFFFFF)
+  if (types != 0x7FFFFFFF)
   {
     PBRepeatedInt32Add();
   }
 }
 
-- (int)StringAsCallType:(id)a3
+- (int)StringAsCallType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"OUTGOING"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"OUTGOING"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"MISSED"])
+  else if ([typeCopy isEqualToString:@"MISSED"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"RECEIVED"])
+  else if ([typeCopy isEqualToString:@"RECEIVED"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"LATEST"])
+  else if ([typeCopy isEqualToString:@"LATEST"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"VOICEMAIL"])
+  else if ([typeCopy isEqualToString:@"VOICEMAIL"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"RINGING"])
+  else if ([typeCopy isEqualToString:@"RINGING"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"IN_PROGRESS"])
+  else if ([typeCopy isEqualToString:@"IN_PROGRESS"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"ON_HOLD"])
+  else if ([typeCopy isEqualToString:@"ON_HOLD"])
   {
     v4 = 10;
   }
@@ -772,10 +772,10 @@ LABEL_34:
   return v4;
 }
 
-- (void)setCallType:(int)a3
+- (void)setCallType:(int)type
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (type == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFE;
   }
@@ -783,17 +783,17 @@ LABEL_34:
   else
   {
     *&self->_has = has | 1;
-    self->_callType = a3;
+    self->_callType = type;
   }
 }
 
-- (int)StringAsCallCapabilities:(id)a3
+- (int)StringAsCallCapabilities:(id)capabilities
 {
-  v3 = a3;
+  capabilitiesCopy = capabilities;
   v4 = 1;
-  if (([v3 isEqualToString:@"AUDIO_CALL"] & 1) == 0)
+  if (([capabilitiesCopy isEqualToString:@"AUDIO_CALL"] & 1) == 0)
   {
-    if ([v3 isEqualToString:@"VIDEO_CALL"])
+    if ([capabilitiesCopy isEqualToString:@"VIDEO_CALL"])
     {
       v4 = 2;
     }
@@ -807,9 +807,9 @@ LABEL_34:
   return v4;
 }
 
-- (void)addCallCapabilities:(int)a3
+- (void)addCallCapabilities:(int)capabilities
 {
-  if (a3 != 0x7FFFFFFF)
+  if (capabilities != 0x7FFFFFFF)
   {
     PBRepeatedInt32Add();
   }

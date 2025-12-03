@@ -7,20 +7,20 @@
 - (void)performUserInteractionTask
 {
   v3 = objc_alloc(MEMORY[0x1E69C3B48]);
-  v4 = [(PUAssetActionPerformer *)self undoManager];
-  v5 = [v3 initWithUndoManager:v4];
+  undoManager = [(PUAssetActionPerformer *)self undoManager];
+  v5 = [v3 initWithUndoManager:undoManager];
   suggestLessPeopleHelper = self->_suggestLessPeopleHelper;
   self->_suggestLessPeopleHelper = v5;
 
   [(PXSuggestLessPeopleHelper *)self->_suggestLessPeopleHelper setDelegate:self];
   v7 = self->_suggestLessPeopleHelper;
-  v8 = [(PUAssetActionPerformer *)self assets];
+  assets = [(PUAssetActionPerformer *)self assets];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __72__PUPhotoKitSuggestLessPersonActionPerformer_performUserInteractionTask__block_invoke;
   v9[3] = &unk_1E7B80280;
   v9[4] = self;
-  [(PXSuggestLessPeopleHelper *)v7 suggestLessPeopleFromAssets:v8 completionHandler:v9];
+  [(PXSuggestLessPeopleHelper *)v7 suggestLessPeopleFromAssets:assets completionHandler:v9];
 }
 
 void __72__PUPhotoKitSuggestLessPersonActionPerformer_performUserInteractionTask__block_invoke(uint64_t a1, char a2, void *a3)

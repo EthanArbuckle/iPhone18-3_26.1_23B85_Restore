@@ -1,36 +1,36 @@
 @interface PGDejunkerDeduper
-+ (BOOL)useFaceprintsForIdenticalDedupingWithOptions:(id)a3;
-- (BOOL)isJunkForItem:(id)a3;
-- (BOOL)shouldPerformIdenticalDedupingForItemFeature:(id)a3 options:(id)a4;
-- (BOOL)shouldPerformSemanticalDedupingForItemFeature:(id)a3 options:(id)a4;
-- (PGDejunkerDeduper)initWithSimilarityModelClass:(Class)a3;
-- (double)identicalDedupingSimilarityForItemFeature:(id)a3 options:(id)a4;
-- (double)identicalDedupingTimeIntervalForItemFeature:(id)a3 options:(id)a4;
-- (double)semanticalDedupingSimilarityForItemFeature:(id)a3 options:(id)a4;
-- (double)semanticalDedupingTimeIntervalForItemFeature:(id)a3 options:(id)a4;
-- (id)bestItemGroupsBasedOnFaceprintsWithItemGroups:(id)a3 options:(id)a4;
-- (id)bestItemGroupsBasedOnSceneprintsWithItemGroups:(id)a3 forSimilarity:(int64_t)a4 options:(id)a5;
-- (id)bestItemsInItems:(id)a3 options:(id)a4;
-- (id)debugPersonStringForItem:(id)a3;
-- (id)dejunkedDedupedItemsInItems:(id)a3 options:(id)a4 debugInfo:(id)a5 progressBlock:(id)a6;
-- (id)dejunkedItemsWithItems:(id)a3 options:(id)a4 debugInfo:(id)a5 progressBlock:(id)a6;
-- (id)eligibleItemsInItems:(id)a3 options:(id)a4;
-- (id)faceprintByPersonLocalIdentifierByItemIdentifierWithItems:(id)a3;
-- (id)featureWithItem:(id)a3;
-- (id)finalItemsWithItems:(id)a3 options:(id)a4 debugInfo:(id)a5 progressBlock:(id)a6;
-- (id)identicallyDedupedItemsInItems:(id)a3 options:(id)a4 debugInfo:(id)a5 progressBlock:(id)a6;
-- (id)itemsByFeatureWithItems:(id)a3;
-- (id)itemsSortedByScoreWithItems:(id)a3 options:(id)a4;
-- (id)requiredItemsInItems:(id)a3 options:(id)a4 containStronglyRequiredItems:(BOOL *)a5;
-- (id)semanticallyDedupedItemsInItems:(id)a3 options:(id)a4 debugInfo:(id)a5 progressBlock:(id)a6;
-- (id)splitItemGroupsWithItemGroups:(id)a3 maximumNumberOfItemsPerGroup:(unint64_t)a4 debugInfo:(id)a5;
-- (id)splitItemGroupsWithTimeSortedItems:(id)a3 numberOfBuckets:(unint64_t)a4;
-- (id)timeGroupsOfTimeSortedItemsWithTimeSortedItems:(id)a3 timeInterval:(double)a4 maximumTimeGroupExtension:(double)a5;
++ (BOOL)useFaceprintsForIdenticalDedupingWithOptions:(id)options;
+- (BOOL)isJunkForItem:(id)item;
+- (BOOL)shouldPerformIdenticalDedupingForItemFeature:(id)feature options:(id)options;
+- (BOOL)shouldPerformSemanticalDedupingForItemFeature:(id)feature options:(id)options;
+- (PGDejunkerDeduper)initWithSimilarityModelClass:(Class)class;
+- (double)identicalDedupingSimilarityForItemFeature:(id)feature options:(id)options;
+- (double)identicalDedupingTimeIntervalForItemFeature:(id)feature options:(id)options;
+- (double)semanticalDedupingSimilarityForItemFeature:(id)feature options:(id)options;
+- (double)semanticalDedupingTimeIntervalForItemFeature:(id)feature options:(id)options;
+- (id)bestItemGroupsBasedOnFaceprintsWithItemGroups:(id)groups options:(id)options;
+- (id)bestItemGroupsBasedOnSceneprintsWithItemGroups:(id)groups forSimilarity:(int64_t)similarity options:(id)options;
+- (id)bestItemsInItems:(id)items options:(id)options;
+- (id)debugPersonStringForItem:(id)item;
+- (id)dejunkedDedupedItemsInItems:(id)items options:(id)options debugInfo:(id)info progressBlock:(id)block;
+- (id)dejunkedItemsWithItems:(id)items options:(id)options debugInfo:(id)info progressBlock:(id)block;
+- (id)eligibleItemsInItems:(id)items options:(id)options;
+- (id)faceprintByPersonLocalIdentifierByItemIdentifierWithItems:(id)items;
+- (id)featureWithItem:(id)item;
+- (id)finalItemsWithItems:(id)items options:(id)options debugInfo:(id)info progressBlock:(id)block;
+- (id)identicallyDedupedItemsInItems:(id)items options:(id)options debugInfo:(id)info progressBlock:(id)block;
+- (id)itemsByFeatureWithItems:(id)items;
+- (id)itemsSortedByScoreWithItems:(id)items options:(id)options;
+- (id)requiredItemsInItems:(id)items options:(id)options containStronglyRequiredItems:(BOOL *)requiredItems;
+- (id)semanticallyDedupedItemsInItems:(id)items options:(id)options debugInfo:(id)info progressBlock:(id)block;
+- (id)splitItemGroupsWithItemGroups:(id)groups maximumNumberOfItemsPerGroup:(unint64_t)group debugInfo:(id)info;
+- (id)splitItemGroupsWithTimeSortedItems:(id)items numberOfBuckets:(unint64_t)buckets;
+- (id)timeGroupsOfTimeSortedItemsWithTimeSortedItems:(id)items timeInterval:(double)interval maximumTimeGroupExtension:(double)extension;
 @end
 
 @implementation PGDejunkerDeduper
 
-- (id)requiredItemsInItems:(id)a3 options:(id)a4 containStronglyRequiredItems:(BOOL *)a5
+- (id)requiredItemsInItems:(id)items options:(id)options containStronglyRequiredItems:(BOOL *)requiredItems
 {
   v10 = *MEMORY[0x277D85DE8];
   loggingConnection = self->_loggingConnection;
@@ -45,7 +45,7 @@
   return MEMORY[0x277CBEBF8];
 }
 
-- (id)itemsSortedByScoreWithItems:(id)a3 options:(id)a4
+- (id)itemsSortedByScoreWithItems:(id)items options:(id)options
 {
   v9 = *MEMORY[0x277D85DE8];
   loggingConnection = self->_loggingConnection;
@@ -60,7 +60,7 @@
   return MEMORY[0x277CBEBF8];
 }
 
-- (id)featureWithItem:(id)a3
+- (id)featureWithItem:(id)item
 {
   v9 = *MEMORY[0x277D85DE8];
   loggingConnection = self->_loggingConnection;
@@ -77,7 +77,7 @@
   return v4;
 }
 
-- (id)faceprintByPersonLocalIdentifierByItemIdentifierWithItems:(id)a3
+- (id)faceprintByPersonLocalIdentifierByItemIdentifierWithItems:(id)items
 {
   v8 = *MEMORY[0x277D85DE8];
   loggingConnection = self->_loggingConnection;
@@ -92,7 +92,7 @@
   return MEMORY[0x277CBEC10];
 }
 
-- (id)debugPersonStringForItem:(id)a3
+- (id)debugPersonStringForItem:(id)item
 {
   v8 = *MEMORY[0x277D85DE8];
   loggingConnection = self->_loggingConnection;
@@ -107,7 +107,7 @@
   return &stru_2843F5C58;
 }
 
-- (BOOL)isJunkForItem:(id)a3
+- (BOOL)isJunkForItem:(id)item
 {
   v8 = *MEMORY[0x277D85DE8];
   loggingConnection = self->_loggingConnection;
@@ -122,7 +122,7 @@
   return 0;
 }
 
-- (id)bestItemsInItems:(id)a3 options:(id)a4
+- (id)bestItemsInItems:(id)items options:(id)options
 {
   v9 = *MEMORY[0x277D85DE8];
   loggingConnection = self->_loggingConnection;
@@ -137,19 +137,19 @@
   return MEMORY[0x277CBEBF8];
 }
 
-- (id)eligibleItemsInItems:(id)a3 options:(id)a4
+- (id)eligibleItemsInItems:(id)items options:(id)options
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [a4 identifiersOfEligibleItems];
-  if (v6)
+  itemsCopy = items;
+  identifiersOfEligibleItems = [options identifiersOfEligibleItems];
+  if (identifiersOfEligibleItems)
   {
     v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v8 = v5;
+    v8 = itemsCopy;
     v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v9)
     {
@@ -165,8 +165,8 @@
           }
 
           v13 = *(*(&v18 + 1) + 8 * i);
-          v14 = [v13 clsIdentifier];
-          v15 = [v6 containsObject:v14];
+          clsIdentifier = [v13 clsIdentifier];
+          v15 = [identifiersOfEligibleItems containsObject:clsIdentifier];
 
           if (v15)
           {
@@ -183,7 +183,7 @@
 
   else
   {
-    v7 = v5;
+    v7 = itemsCopy;
   }
 
   v16 = *MEMORY[0x277D85DE8];
@@ -191,16 +191,16 @@
   return v7;
 }
 
-- (id)itemsByFeatureWithItems:(id)a3
+- (id)itemsByFeatureWithItems:(id)items
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  itemsCopy = items;
   v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = v4;
+  v6 = itemsCopy;
   v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
@@ -259,14 +259,14 @@ uint64_t __46__PGDejunkerDeduper_timeSortedItemsWithItems___block_invoke(uint64_
   return v8;
 }
 
-- (id)bestItemGroupsBasedOnSceneprintsWithItemGroups:(id)a3 forSimilarity:(int64_t)a4 options:(id)a5
+- (id)bestItemGroupsBasedOnSceneprintsWithItemGroups:(id)groups forSimilarity:(int64_t)similarity options:(id)options
 {
   v46 = *MEMORY[0x277D85DE8];
-  v7 = a5;
-  v8 = [(PGDejunkerDeduper *)self itemsSortedByScoreWithItems:a3 options:v7];
-  v9 = [v7 identifiersOfEligibleItems];
-  v31 = v7;
-  v10 = [(PGDejunkerDeduper *)self requiredItemsInItems:v8 options:v7 containStronglyRequiredItems:0];
+  optionsCopy = options;
+  v8 = [(PGDejunkerDeduper *)self itemsSortedByScoreWithItems:groups options:optionsCopy];
+  identifiersOfEligibleItems = [optionsCopy identifiersOfEligibleItems];
+  v31 = optionsCopy;
+  v10 = [(PGDejunkerDeduper *)self requiredItemsInItems:v8 options:optionsCopy containStronglyRequiredItems:0];
   v34 = [v10 mutableCopy];
   v30 = v10;
   v11 = [MEMORY[0x277CBEB98] setWithArray:v10];
@@ -293,10 +293,10 @@ uint64_t __46__PGDejunkerDeduper_timeSortedItemsWithItems___block_invoke(uint64_
         v16 = *(*(&v40 + 1) + 8 * i);
         if (([v11 containsObject:v16] & 1) == 0)
         {
-          if (!v9 || ([v16 clsIdentifier], v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v9, "containsObject:", v17), v17, v18))
+          if (!identifiersOfEligibleItems || ([v16 clsIdentifier], v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(identifiersOfEligibleItems, "containsObject:", v17), v17, v18))
           {
             v19 = v11;
-            -[CLSSimilarStacker distanceThresholdForSimilarity:withSimilarityModelVersion:](self->_similarStacker, "distanceThresholdForSimilarity:withSimilarityModelVersion:", a4, [v16 clsSimilarityModelVersion]);
+            -[CLSSimilarStacker distanceThresholdForSimilarity:withSimilarityModelVersion:](self->_similarStacker, "distanceThresholdForSimilarity:withSimilarityModelVersion:", similarity, [v16 clsSimilarityModelVersion]);
             v21 = v20;
             v36 = 0u;
             v37 = 0u;
@@ -354,18 +354,18 @@ LABEL_19:
   return v34;
 }
 
-- (id)bestItemGroupsBasedOnFaceprintsWithItemGroups:(id)a3 options:(id)a4
+- (id)bestItemGroupsBasedOnFaceprintsWithItemGroups:(id)groups options:(id)options
 {
   v115 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v72 = a4;
-  v6 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v5, "count")}];
+  groupsCopy = groups;
+  optionsCopy = options;
+  v6 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(groupsCopy, "count")}];
   v66 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v106 = 0u;
   v107 = 0u;
   v108 = 0u;
   v109 = 0u;
-  obj = v5;
+  obj = groupsCopy;
   v7 = [obj countByEnumeratingWithState:&v106 objects:v114 count:16];
   if (v7)
   {
@@ -388,7 +388,7 @@ LABEL_19:
 
         else
         {
-          v12 = [(PGDejunkerDeduper *)self itemsSortedByScoreWithItems:v11 options:v72];
+          v12 = [(PGDejunkerDeduper *)self itemsSortedByScoreWithItems:v11 options:optionsCopy];
           [v6 addObject:v12];
           [v66 addObjectsFromArray:v12];
         }
@@ -401,9 +401,9 @@ LABEL_19:
   }
 
   v85 = [(PGDejunkerDeduper *)self faceprintByPersonLocalIdentifierByItemIdentifierWithItems:v66];
-  [v72 identicalDedupingFaceprintDistance];
+  [optionsCopy identicalDedupingFaceprintDistance];
   v14 = v13;
-  v15 = [v72 identifiersOfEligibleItems];
+  identifiersOfEligibleItems = [optionsCopy identifiersOfEligibleItems];
   v70 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(obj, "count")}];
   v102 = 0u;
   v103 = 0u;
@@ -415,7 +415,7 @@ LABEL_19:
   {
     v17 = v16;
     v18 = *v103;
-    v74 = v15;
+    v74 = identifiersOfEligibleItems;
     v65 = *v103;
     do
     {
@@ -434,7 +434,7 @@ LABEL_19:
         v21 = *(*(&v102 + 1) + 8 * v19);
         if ([v21 count] == 1)
         {
-          v22 = [(PGDejunkerDeduper *)self eligibleItemsInItems:v21 options:v72];
+          v22 = [(PGDejunkerDeduper *)self eligibleItemsInItems:v21 options:optionsCopy];
           if ([v22 count])
           {
             [v70 addObject:v22];
@@ -443,7 +443,7 @@ LABEL_19:
 
         else
         {
-          v23 = [(PGDejunkerDeduper *)self requiredItemsInItems:v21 options:v72 containStronglyRequiredItems:0];
+          v23 = [(PGDejunkerDeduper *)self requiredItemsInItems:v21 options:optionsCopy containStronglyRequiredItems:0];
           v77 = [v23 mutableCopy];
           v71 = v23;
           v24 = [MEMORY[0x277CBEB98] setWithArray:v23];
@@ -473,18 +473,18 @@ LABEL_19:
                 v29 = *(*(&v98 + 1) + 8 * v28);
                 if (([v24 containsObject:v29] & 1) == 0)
                 {
-                  if (!v15 || ([v29 clsIdentifier], v30 = objc_claimAutoreleasedReturnValue(), v31 = objc_msgSend(v15, "containsObject:", v30), v30, v31))
+                  if (!identifiersOfEligibleItems || ([v29 clsIdentifier], v30 = objc_claimAutoreleasedReturnValue(), v31 = objc_msgSend(identifiersOfEligibleItems, "containsObject:", v30), v30, v31))
                   {
                     v82 = v28;
                     v32 = [(PGDejunkerDeduper *)self featureWithItem:v29];
-                    v87 = [v32 personLocalIdentifiers];
+                    personLocalIdentifiers = [v32 personLocalIdentifiers];
 
-                    v33 = [v29 clsIdentifier];
-                    v34 = [v85 objectForKeyedSubscript:v33];
+                    clsIdentifier = [v29 clsIdentifier];
+                    v34 = [v85 objectForKeyedSubscript:clsIdentifier];
 
                     v80 = v29;
-                    v35 = [v29 curationModel];
-                    v36 = [v35 faceModel];
+                    curationModel = [v29 curationModel];
+                    faceModel = [curationModel faceModel];
 
                     v96 = 0u;
                     v97 = 0u;
@@ -497,7 +497,7 @@ LABEL_19:
                       v38 = v37;
                       v39 = *v95;
                       v83 = *v95;
-                      v84 = v36;
+                      v84 = faceModel;
                       while (2)
                       {
                         v40 = 0;
@@ -510,21 +510,21 @@ LABEL_19:
                           }
 
                           v41 = *(*(&v94 + 1) + 8 * v40);
-                          v42 = [v36 version];
-                          v43 = [v41 curationModel];
-                          v44 = [v43 faceModel];
-                          v45 = [v44 version];
+                          version = [faceModel version];
+                          curationModel2 = [v41 curationModel];
+                          faceModel2 = [curationModel2 faceModel];
+                          version2 = [faceModel2 version];
 
-                          if (v42 == v45)
+                          if (version == version2)
                           {
-                            v46 = [v41 clsIdentifier];
-                            v47 = [v85 objectForKeyedSubscript:v46];
+                            clsIdentifier2 = [v41 clsIdentifier];
+                            v47 = [v85 objectForKeyedSubscript:clsIdentifier2];
 
                             v92 = 0u;
                             v93 = 0u;
                             v90 = 0u;
                             v91 = 0u;
-                            v48 = v87;
+                            v48 = personLocalIdentifiers;
                             v49 = [v48 countByEnumeratingWithState:&v90 objects:v110 count:16];
                             if (v49)
                             {
@@ -562,11 +562,11 @@ LABEL_19:
 
                             v59 = [v48 count];
                             v60 = v14;
-                            v36 = v84;
+                            faceModel = v84;
                             if (v14 == -1.0)
                             {
-                              v61 = [v84 distanceNode];
-                              [v61 operatingPoint];
+                              distanceNode = [v84 distanceNode];
+                              [distanceNode operatingPoint];
                               v60 = v62;
                             }
 
@@ -596,7 +596,7 @@ LABEL_19:
                     [v88 addObject:v80];
 LABEL_49:
 
-                    v15 = v74;
+                    identifiersOfEligibleItems = v74;
                     v27 = v75;
                     v24 = v76;
                     v26 = v79;
@@ -635,24 +635,24 @@ LABEL_49:
   return v70;
 }
 
-- (id)splitItemGroupsWithItemGroups:(id)a3 maximumNumberOfItemsPerGroup:(unint64_t)a4 debugInfo:(id)a5
+- (id)splitItemGroupsWithItemGroups:(id)groups maximumNumberOfItemsPerGroup:(unint64_t)group debugInfo:(id)info
 {
   v55 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
+  groupsCopy = groups;
+  infoCopy = info;
   v45 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
-  obj = v7;
+  obj = groupsCopy;
   v9 = [obj countByEnumeratingWithState:&v46 objects:v54 count:16];
   if (v9)
   {
     v10 = v9;
     v11 = *v47;
-    v40 = a4 - 1;
-    v43 = v8;
+    v40 = group - 1;
+    v43 = infoCopy;
     do
     {
       v12 = 0;
@@ -666,11 +666,11 @@ LABEL_49:
 
         v13 = *(*(&v46 + 1) + 8 * v12);
         v14 = [v13 count];
-        if (v14 > a4)
+        if (v14 > group)
         {
           v15 = v11;
-          v16 = a4;
-          v17 = (v40 + v14) / a4;
+          groupCopy = group;
+          v17 = (v40 + v14) / group;
           v18 = [(PGDejunkerDeduper *)self timeSortedItemsWithItems:v13];
           v19 = [(PGDejunkerDeduper *)self splitItemGroupsWithTimeSortedItems:v18 numberOfBuckets:v17];
           [v45 addObjectsFromArray:v19];
@@ -686,48 +686,48 @@ LABEL_49:
             v53 = v36;
             _os_log_debug_impl(&dword_22F0FC000, v34, OS_LOG_TYPE_DEBUG, "DejunkerDeduper: cluster with %lu items, split in %lu", buf, 0x16u);
 
-            if (v8)
+            if (infoCopy)
             {
 LABEL_9:
-              v21 = [v18 lastObject];
-              v22 = [v21 cls_universalDate];
-              v23 = [v18 firstObject];
-              v24 = [v23 cls_universalDate];
-              [v22 timeIntervalSinceDate:v24];
+              lastObject = [v18 lastObject];
+              cls_universalDate = [lastObject cls_universalDate];
+              firstObject = [v18 firstObject];
+              cls_universalDate2 = [firstObject cls_universalDate];
+              [cls_universalDate timeIntervalSinceDate:cls_universalDate2];
               v26 = v25;
 
-              v8 = v43;
+              infoCopy = v43;
               v27 = [MEMORY[0x277CCACA8] stringWithFormat:@"%f sec, %lu items, split in %lu", v26, objc_msgSend(v18, "count"), objc_msgSend(v19, "count")];
               [v43 setState:1 ofCluster:v13 withReason:v27];
             }
           }
 
-          else if (v8)
+          else if (infoCopy)
           {
             goto LABEL_9;
           }
 
-          a4 = v16;
+          group = groupCopy;
           v11 = v15;
           v10 = v41;
           goto LABEL_13;
         }
 
         [v45 addObject:v13];
-        if (!v8)
+        if (!infoCopy)
         {
           goto LABEL_14;
         }
 
         v18 = [(PGDejunkerDeduper *)self timeSortedItemsWithItems:v13];
-        v28 = [v18 lastObject];
-        v29 = [v28 cls_universalDate];
-        v30 = [v18 firstObject];
-        v31 = [v30 cls_universalDate];
-        [v29 timeIntervalSinceDate:v31];
+        lastObject2 = [v18 lastObject];
+        cls_universalDate3 = [lastObject2 cls_universalDate];
+        firstObject2 = [v18 firstObject];
+        cls_universalDate4 = [firstObject2 cls_universalDate];
+        [cls_universalDate3 timeIntervalSinceDate:cls_universalDate4];
         v33 = v32;
 
-        v8 = v43;
+        infoCopy = v43;
         v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"%f sec, %lu items", v33, objc_msgSend(v13, "count")];
         [v43 setState:1 ofCluster:v13 withReason:v19];
 LABEL_13:
@@ -749,17 +749,17 @@ LABEL_14:
   return v45;
 }
 
-- (id)splitItemGroupsWithTimeSortedItems:(id)a3 numberOfBuckets:(unint64_t)a4
+- (id)splitItemGroupsWithTimeSortedItems:(id)items numberOfBuckets:(unint64_t)buckets
 {
   v27 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  itemsCopy = items;
   v20 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v6 = [v5 count];
+  v6 = [itemsCopy count];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  obj = v5;
+  obj = itemsCopy;
   v7 = [obj countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v7)
   {
@@ -772,7 +772,7 @@ LABEL_14:
     {
       v13 = 0;
       v19 = v10;
-      v14 = a4 * v10;
+      v14 = buckets * v10;
       do
       {
         if (*v23 != v12)
@@ -792,7 +792,7 @@ LABEL_14:
 
         [v11 addObject:v15];
         ++v13;
-        v14 += a4;
+        v14 += buckets;
       }
 
       while (v8 != v13);
@@ -813,16 +813,16 @@ LABEL_14:
   return v20;
 }
 
-- (id)timeGroupsOfTimeSortedItemsWithTimeSortedItems:(id)a3 timeInterval:(double)a4 maximumTimeGroupExtension:(double)a5
+- (id)timeGroupsOfTimeSortedItemsWithTimeSortedItems:(id)items timeInterval:(double)interval maximumTimeGroupExtension:(double)extension
 {
   v36 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  itemsCopy = items;
   v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __107__PGDejunkerDeduper_timeGroupsOfTimeSortedItemsWithTimeSortedItems_timeInterval_maximumTimeGroupExtension___block_invoke;
   aBlock[3] = &unk_27887EDC0;
-  v34 = a4 * a5;
+  v34 = interval * extension;
   aBlock[4] = self;
   v10 = v9;
   v33 = v10;
@@ -831,7 +831,7 @@ LABEL_14:
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v12 = v8;
+  v12 = itemsCopy;
   v13 = [v12 countByEnumeratingWithState:&v28 objects:v35 count:16];
   if (!v13)
   {
@@ -858,15 +858,15 @@ LABEL_14:
       }
 
       v20 = *(*(&v28 + 1) + 8 * v18);
-      v21 = [v20 cls_universalDate];
-      v15 = v21;
+      cls_universalDate = [v20 cls_universalDate];
+      v15 = cls_universalDate;
       if (!v16)
       {
         goto LABEL_9;
       }
 
-      [v21 timeIntervalSinceDate:v19];
-      if (v22 > a4)
+      [cls_universalDate timeIntervalSinceDate:v19];
+      if (v22 > interval)
       {
         v11[2](v11, v16);
 LABEL_9:
@@ -973,13 +973,13 @@ void __107__PGDejunkerDeduper_timeGroupsOfTimeSortedItemsWithTimeSortedItems_tim
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (double)semanticalDedupingSimilarityForItemFeature:(id)a3 options:(id)a4
+- (double)semanticalDedupingSimilarityForItemFeature:(id)feature options:(id)options
 {
-  v4 = a3;
+  featureCopy = feature;
   v5 = 4.0;
-  if (([v4 hasPersons] & 1) == 0)
+  if (([featureCopy hasPersons] & 1) == 0)
   {
-    if ([v4 hasPeopleScenes])
+    if ([featureCopy hasPeopleScenes])
     {
       v5 = 3.0;
     }
@@ -993,23 +993,23 @@ void __107__PGDejunkerDeduper_timeGroupsOfTimeSortedItemsWithTimeSortedItems_tim
   return v5;
 }
 
-- (double)semanticalDedupingTimeIntervalForItemFeature:(id)a3 options:(id)a4
+- (double)semanticalDedupingTimeIntervalForItemFeature:(id)feature options:(id)options
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 hasPersons])
+  featureCopy = feature;
+  optionsCopy = options;
+  if ([featureCopy hasPersons])
   {
-    [v6 semanticalDedupingTimeIntervalForPersons];
+    [optionsCopy semanticalDedupingTimeIntervalForPersons];
   }
 
-  else if ([v5 hasPeopleScenes])
+  else if ([featureCopy hasPeopleScenes])
   {
-    [v6 semanticalDedupingTimeIntervalForPeople];
+    [optionsCopy semanticalDedupingTimeIntervalForPeople];
   }
 
   else
   {
-    [v6 semanticalDedupingTimeInterval];
+    [optionsCopy semanticalDedupingTimeInterval];
   }
 
   v8 = v7;
@@ -1017,34 +1017,34 @@ void __107__PGDejunkerDeduper_timeGroupsOfTimeSortedItemsWithTimeSortedItems_tim
   return v8;
 }
 
-- (BOOL)shouldPerformSemanticalDedupingForItemFeature:(id)a3 options:(id)a4
+- (BOOL)shouldPerformSemanticalDedupingForItemFeature:(id)feature options:(id)options
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v6 doNotDedupeVideos] && (objc_msgSend(v5, "isVideo") & 1) != 0)
+  featureCopy = feature;
+  optionsCopy = options;
+  if ([optionsCopy doNotDedupeVideos] && (objc_msgSend(featureCopy, "isVideo") & 1) != 0)
   {
     v7 = 0;
   }
 
   else
   {
-    if ([v5 hasPersons])
+    if ([featureCopy hasPersons])
     {
-      v8 = [v6 dontSemanticallyDedupePersons];
+      dontSemanticallyDedupePersons = [optionsCopy dontSemanticallyDedupePersons];
     }
 
     else
     {
-      if (![v5 hasPeopleScenes])
+      if (![featureCopy hasPeopleScenes])
       {
         v7 = 1;
         goto LABEL_10;
       }
 
-      v8 = [v6 dontSemanticallyDedupePeople];
+      dontSemanticallyDedupePersons = [optionsCopy dontSemanticallyDedupePeople];
     }
 
-    v7 = v8 ^ 1;
+    v7 = dontSemanticallyDedupePersons ^ 1;
   }
 
 LABEL_10:
@@ -1052,13 +1052,13 @@ LABEL_10:
   return v7;
 }
 
-- (double)identicalDedupingSimilarityForItemFeature:(id)a3 options:(id)a4
+- (double)identicalDedupingSimilarityForItemFeature:(id)feature options:(id)options
 {
-  v4 = a3;
+  featureCopy = feature;
   v5 = 1.0;
-  if (([v4 hasPersons] & 1) == 0)
+  if (([featureCopy hasPersons] & 1) == 0)
   {
-    if ([v4 hasPeopleScenes])
+    if ([featureCopy hasPeopleScenes])
     {
       v5 = 1.0;
     }
@@ -1072,18 +1072,18 @@ LABEL_10:
   return v5;
 }
 
-- (double)identicalDedupingTimeIntervalForItemFeature:(id)a3 options:(id)a4
+- (double)identicalDedupingTimeIntervalForItemFeature:(id)feature options:(id)options
 {
-  v5 = a3;
-  v6 = a4;
-  if (([v5 hasPersons] & 1) != 0 || objc_msgSend(v5, "hasPeopleScenes"))
+  featureCopy = feature;
+  optionsCopy = options;
+  if (([featureCopy hasPersons] & 1) != 0 || objc_msgSend(featureCopy, "hasPeopleScenes"))
   {
-    [v6 identicalDedupingTimeIntervalForPeople];
+    [optionsCopy identicalDedupingTimeIntervalForPeople];
   }
 
   else
   {
-    [v6 identicalDedupingTimeInterval];
+    [optionsCopy identicalDedupingTimeInterval];
   }
 
   v8 = v7;
@@ -1091,12 +1091,12 @@ LABEL_10:
   return v8;
 }
 
-- (BOOL)shouldPerformIdenticalDedupingForItemFeature:(id)a3 options:(id)a4
+- (BOOL)shouldPerformIdenticalDedupingForItemFeature:(id)feature options:(id)options
 {
-  v5 = a3;
-  if ([a4 doNotDedupeVideos])
+  featureCopy = feature;
+  if ([options doNotDedupeVideos])
   {
-    v6 = [v5 isVideo] ^ 1;
+    v6 = [featureCopy isVideo] ^ 1;
   }
 
   else
@@ -1107,24 +1107,24 @@ LABEL_10:
   return v6;
 }
 
-- (id)finalItemsWithItems:(id)a3 options:(id)a4 debugInfo:(id)a5 progressBlock:(id)a6
+- (id)finalItemsWithItems:(id)items options:(id)options debugInfo:(id)info progressBlock:(id)block
 {
   v53 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  itemsCopy = items;
+  optionsCopy = options;
+  infoCopy = info;
   v12 = objc_alloc_init(MEMORY[0x277CBEB18]);
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __73__PGDejunkerDeduper_finalItemsWithItems_options_debugInfo_progressBlock___block_invoke;
   aBlock[3] = &unk_27887ED98;
-  v40 = self;
+  selfCopy = self;
   aBlock[4] = self;
-  v42 = v10;
+  v42 = optionsCopy;
   v49 = v42;
   v39 = v12;
   v50 = v39;
-  v38 = v11;
+  v38 = infoCopy;
   v51 = v38;
   v13 = _Block_copy(aBlock);
   v14 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -1133,7 +1133,7 @@ LABEL_10:
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
-  obj = v9;
+  obj = itemsCopy;
   v16 = [obj countByEnumeratingWithState:&v44 objects:v52 count:16];
   v41 = v13;
   if (v16)
@@ -1141,7 +1141,7 @@ LABEL_10:
     v17 = v16;
     v18 = 0;
     v19 = *v45;
-    v20 = self;
+    selfCopy2 = self;
     do
     {
       for (i = 0; i != v17; ++i)
@@ -1153,39 +1153,39 @@ LABEL_10:
         }
 
         v23 = *(*(&v44 + 1) + 8 * i);
-        v24 = [(PGDejunkerDeduper *)v20 featureWithItem:v23];
+        v24 = [(PGDejunkerDeduper *)selfCopy2 featureWithItem:v23];
         if (v22)
         {
           v25 = [v15 containsObject:v24];
-          v26 = [v24 isVideo];
+          isVideo = [v24 isVideo];
           if (v25)
           {
             goto LABEL_24;
           }
 
-          if (v26)
+          if (isVideo)
           {
             goto LABEL_24;
           }
 
-          v27 = [v23 cls_universalDate];
-          v28 = [v22 cls_universalDate];
-          [v27 timeIntervalSinceDate:v28];
+          cls_universalDate = [v23 cls_universalDate];
+          cls_universalDate2 = [v22 cls_universalDate];
+          [cls_universalDate timeIntervalSinceDate:cls_universalDate2];
           v30 = v29;
 
-          v20 = v40;
+          selfCopy2 = selfCopy;
           [v42 finalPassTimeInterval];
           if (v30 >= v31)
           {
             goto LABEL_24;
           }
 
-          [(CLSSimilarStacker *)v40->_similarStacker distanceBetweenItem:v23 andItem:v22];
+          [(CLSSimilarStacker *)selfCopy->_similarStacker distanceBetweenItem:v23 andItem:v22];
           v33 = v32;
           [v42 finalPassDedupingThreshold];
           if (v34 < 0.0)
           {
-            -[CLSSimilarStacker distanceThresholdForSimilarity:withSimilarityModelVersion:](v40->_similarStacker, "distanceThresholdForSimilarity:withSimilarityModelVersion:", 0, [v23 clsSimilarityModelVersion]);
+            -[CLSSimilarStacker distanceThresholdForSimilarity:withSimilarityModelVersion:](selfCopy->_similarStacker, "distanceThresholdForSimilarity:withSimilarityModelVersion:", 0, [v23 clsSimilarityModelVersion]);
           }
 
           if (v33 >= v34)
@@ -1291,28 +1291,28 @@ void __73__PGDejunkerDeduper_finalItemsWithItems_options_debugInfo_progressBlock
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (id)dejunkedItemsWithItems:(id)a3 options:(id)a4 debugInfo:(id)a5 progressBlock:(id)a6
+- (id)dejunkedItemsWithItems:(id)items options:(id)options debugInfo:(id)info progressBlock:(id)block
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a4;
-  v12 = [v11 identifiersOfRequiredItems];
-  v13 = [v11 identifiersOfEligibleItems];
+  itemsCopy = items;
+  infoCopy = info;
+  optionsCopy = options;
+  identifiersOfRequiredItems = [optionsCopy identifiersOfRequiredItems];
+  identifiersOfEligibleItems = [optionsCopy identifiersOfEligibleItems];
 
   v14 = MEMORY[0x277CCAC30];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __76__PGDejunkerDeduper_dejunkedItemsWithItems_options_debugInfo_progressBlock___block_invoke;
   v26[3] = &unk_27887ED48;
-  v15 = v12;
+  v15 = identifiersOfRequiredItems;
   v27 = v15;
-  v16 = v13;
+  v16 = identifiersOfEligibleItems;
   v28 = v16;
-  v29 = self;
+  selfCopy = self;
   v17 = [v14 predicateWithBlock:v26];
-  v18 = [v9 filteredArrayUsingPredicate:v17];
+  v18 = [itemsCopy filteredArrayUsingPredicate:v17];
 
-  if (v10)
+  if (infoCopy)
   {
     v19 = MEMORY[0x277CCAC30];
     v24[0] = MEMORY[0x277D85DD0];
@@ -1322,10 +1322,10 @@ void __73__PGDejunkerDeduper_finalItemsWithItems_options_debugInfo_progressBlock
     v24[4] = self;
     v25 = v15;
     v20 = [v19 predicateWithBlock:v24];
-    v21 = [v9 filteredArrayUsingPredicate:v20];
+    v21 = [itemsCopy filteredArrayUsingPredicate:v20];
 
     v22 = [MEMORY[0x277CBEB98] setWithArray:v21];
-    [v10 setState:2 ofItems:v22 withReason:@"Junk"];
+    [infoCopy setState:2 ofItems:v22 withReason:@"Junk"];
   }
 
   return v18;
@@ -1375,13 +1375,13 @@ uint64_t __76__PGDejunkerDeduper_dejunkedItemsWithItems_options_debugInfo_progre
   return v6;
 }
 
-- (id)semanticallyDedupedItemsInItems:(id)a3 options:(id)a4 debugInfo:(id)a5 progressBlock:(id)a6
+- (id)semanticallyDedupedItemsInItems:(id)items options:(id)options debugInfo:(id)info progressBlock:(id)block
 {
   v95 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v74 = a5;
-  v12 = _Block_copy(a6);
+  itemsCopy = items;
+  optionsCopy = options;
+  infoCopy = info;
+  v12 = _Block_copy(block);
   v13 = 0.0;
   if (v12)
   {
@@ -1409,24 +1409,24 @@ uint64_t __76__PGDejunkerDeduper_dejunkedItemsWithItems_options_debugInfo_progre
     }
   }
 
-  [v74 setStage:@"Semantical"];
-  v16 = [(PGDejunkerDeduper *)self itemsByFeatureWithItems:v10];
+  [infoCopy setStage:@"Semantical"];
+  v16 = [(PGDejunkerDeduper *)self itemsByFeatureWithItems:itemsCopy];
   v17 = [v16 count];
   if (v17)
   {
     v18 = v17;
-    v60 = v10;
+    v60 = itemsCopy;
     similarStacker = self->_similarStacker;
-    [v11 semanticalDedupingThreshold];
+    [optionsCopy semanticalDedupingThreshold];
     [(CLSSimilarStacker *)similarStacker overrideDistanceThreshold:2 forSimilarity:?];
     v20 = self->_similarStacker;
-    [v11 semanticalDedupingThresholdForPeople];
+    [optionsCopy semanticalDedupingThresholdForPeople];
     [(CLSSimilarStacker *)v20 overrideDistanceThreshold:3 forSimilarity:?];
     v21 = self->_similarStacker;
-    [v11 semanticalDedupingThresholdForPersons];
+    [optionsCopy semanticalDedupingThresholdForPersons];
     [(CLSSimilarStacker *)v21 overrideDistanceThreshold:4 forSimilarity:?];
     v22 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v23 = [v11 maximumNumberOfItemsPerSemanticalCluster];
+    maximumNumberOfItemsPerSemanticalCluster = [optionsCopy maximumNumberOfItemsPerSemanticalCluster];
     v83 = 0u;
     v84 = 0u;
     v85 = 0u;
@@ -1439,7 +1439,7 @@ uint64_t __76__PGDejunkerDeduper_dejunkedItemsWithItems_options_debugInfo_progre
       v24 = 1.0 / v18;
       v25 = *v84;
       v26 = 0.0;
-      v64 = v23;
+      v64 = maximumNumberOfItemsPerSemanticalCluster;
       v65 = v12;
       v58 = *v84;
       while (2)
@@ -1485,15 +1485,15 @@ LABEL_63:
 
           v26 = v24 + v26;
           v30 = [obj objectForKeyedSubscript:{v68, v58}];
-          if (-[PGDejunkerDeduper shouldPerformSemanticalDedupingForItemFeature:options:](self, "shouldPerformSemanticalDedupingForItemFeature:options:", v68, v11) && [v30 count] != 1)
+          if (-[PGDejunkerDeduper shouldPerformSemanticalDedupingForItemFeature:options:](self, "shouldPerformSemanticalDedupingForItemFeature:options:", v68, optionsCopy) && [v30 count] != 1)
           {
-            [(PGDejunkerDeduper *)self semanticalDedupingTimeIntervalForItemFeature:v68 options:v11];
+            [(PGDejunkerDeduper *)self semanticalDedupingTimeIntervalForItemFeature:v68 options:optionsCopy];
             v33 = v32;
             v34 = [(PGDejunkerDeduper *)self timeSortedItemsWithItems:v30];
-            [v11 semanticalDedupingMaximumTimeGroupExtension];
+            [optionsCopy semanticalDedupingMaximumTimeGroupExtension];
             v36 = [(PGDejunkerDeduper *)self timeGroupsOfTimeSortedItemsWithTimeSortedItems:v34 timeInterval:v33 maximumTimeGroupExtension:v35];
             v37 = [v36 count];
-            if ([v11 semanticalDedupingProtectSmallClusters])
+            if ([optionsCopy semanticalDedupingProtectSmallClusters])
             {
               v38 = vcvtad_u64_f64(2.0 / [v36 count]) + 2;
             }
@@ -1558,13 +1558,13 @@ LABEL_63:
                   v73 = v41;
                   if ([v34 count] >= v70)
                   {
-                    [(PGDejunkerDeduper *)self semanticalDedupingSimilarityForItemFeature:v68 options:v11];
+                    [(PGDejunkerDeduper *)self semanticalDedupingSimilarityForItemFeature:v68 options:optionsCopy];
                     v46 = v45;
                     v47 = [(CLSSimilarStacker *)self->_similarStacker stackSimilarItems:v34 withSimilarity:v45 timestampSupport:0 progressBlock:0];
                     v69 = v34;
-                    if (v23)
+                    if (maximumNumberOfItemsPerSemanticalCluster)
                     {
-                      v48 = [(PGDejunkerDeduper *)self splitItemGroupsWithItemGroups:v47 maximumNumberOfItemsPerGroup:v23 debugInfo:0];
+                      v48 = [(PGDejunkerDeduper *)self splitItemGroupsWithItemGroups:v47 maximumNumberOfItemsPerGroup:maximumNumberOfItemsPerSemanticalCluster debugInfo:0];
 
                       v47 = v48;
                     }
@@ -1591,15 +1591,15 @@ LABEL_63:
                           v53 = *(*(&v75 + 1) + 8 * i);
                           if ([v53 count] == 1)
                           {
-                            v54 = [(PGDejunkerDeduper *)self eligibleItemsInItems:v53 options:v11];
+                            v54 = [(PGDejunkerDeduper *)self eligibleItemsInItems:v53 options:optionsCopy];
                             [v22 addObjectsFromArray:v54];
                           }
 
                           else
                           {
-                            v54 = [(PGDejunkerDeduper *)self bestItemGroupsBasedOnSceneprintsWithItemGroups:v53 forSimilarity:v46 options:v11];
+                            v54 = [(PGDejunkerDeduper *)self bestItemGroupsBasedOnSceneprintsWithItemGroups:v53 forSimilarity:v46 options:optionsCopy];
                             [v22 addObjectsFromArray:v54];
-                            [v74 dedupItems:v53 toItems:v54 withDedupingType:2];
+                            [infoCopy dedupItems:v53 toItems:v54 withDedupingType:2];
                           }
                         }
 
@@ -1609,7 +1609,7 @@ LABEL_63:
                       while (v50);
                     }
 
-                    v23 = v64;
+                    maximumNumberOfItemsPerSemanticalCluster = v64;
                     v12 = v65;
                     v31 = v66;
                     v30 = v67;
@@ -1618,7 +1618,7 @@ LABEL_63:
 
                   else
                   {
-                    v44 = [(PGDejunkerDeduper *)self eligibleItemsInItems:v34 options:v11];
+                    v44 = [(PGDejunkerDeduper *)self eligibleItemsInItems:v34 options:optionsCopy];
                     [v22 addObjectsFromArray:v44];
                   }
 
@@ -1644,7 +1644,7 @@ LABEL_63:
 
           else
           {
-            v31 = [(PGDejunkerDeduper *)self eligibleItemsInItems:v30 options:v11];
+            v31 = [(PGDejunkerDeduper *)self eligibleItemsInItems:v30 options:optionsCopy];
             [v22 addObjectsFromArray:v31];
           }
 
@@ -1684,12 +1684,12 @@ LABEL_64:
     }
 
     v16 = v59;
-    v10 = v60;
+    itemsCopy = v60;
   }
 
   else
   {
-    v15 = [(PGDejunkerDeduper *)self eligibleItemsInItems:v10 options:v11];
+    v15 = [(PGDejunkerDeduper *)self eligibleItemsInItems:itemsCopy options:optionsCopy];
   }
 
 LABEL_68:
@@ -1698,15 +1698,15 @@ LABEL_68:
   return v15;
 }
 
-- (id)identicallyDedupedItemsInItems:(id)a3 options:(id)a4 debugInfo:(id)a5 progressBlock:(id)a6
+- (id)identicallyDedupedItemsInItems:(id)items options:(id)options debugInfo:(id)info progressBlock:(id)block
 {
   v133 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  itemsCopy = items;
+  optionsCopy = options;
+  infoCopy = info;
+  blockCopy = block;
   v14 = 0.0;
-  v92 = _Block_copy(v13);
+  v92 = _Block_copy(blockCopy);
   if (v92)
   {
     Current = CFAbsoluteTimeGetCurrent();
@@ -1733,25 +1733,25 @@ LABEL_68:
     }
   }
 
-  [v12 setStage:@"Identical"];
-  v17 = [(PGDejunkerDeduper *)self itemsByFeatureWithItems:v10];
+  [infoCopy setStage:@"Identical"];
+  v17 = [(PGDejunkerDeduper *)self itemsByFeatureWithItems:itemsCopy];
   v18 = [v17 count];
   if (v18)
   {
     v19 = v18;
-    v83 = v10;
+    v83 = itemsCopy;
     v84 = v17;
-    v82 = v13;
+    v82 = blockCopy;
     similarStacker = self->_similarStacker;
-    [v11 identicalDedupingThreshold];
+    [optionsCopy identicalDedupingThreshold];
     [(CLSSimilarStacker *)similarStacker overrideDistanceThreshold:0 forSimilarity:?];
     v21 = self->_similarStacker;
-    [v11 identicalDedupingThresholdForPeople];
+    [optionsCopy identicalDedupingThresholdForPeople];
     [(CLSSimilarStacker *)v21 overrideDistanceThreshold:1 forSimilarity:?];
     v22 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v91 = [v11 maximumNumberOfItemsPerIdenticalCluster];
+    maximumNumberOfItemsPerIdenticalCluster = [optionsCopy maximumNumberOfItemsPerIdenticalCluster];
     v94 = 0;
-    if ([objc_opt_class() useFaceprintsForIdenticalDedupingWithOptions:v11])
+    if ([objc_opt_class() useFaceprintsForIdenticalDedupingWithOptions:optionsCopy])
     {
       v94 = objc_alloc_init(MEMORY[0x277CBEB18]);
     }
@@ -1761,7 +1761,7 @@ LABEL_68:
     v119 = 0u;
     v120 = 0u;
     obj = v17;
-    v106 = v12;
+    v106 = infoCopy;
     v86 = [obj countByEnumeratingWithState:&v119 objects:v128 count:16];
     if (v86)
     {
@@ -1815,7 +1815,7 @@ LABEL_92:
           v90 = v28;
           v30 = [obj objectForKeyedSubscript:v27];
           v31 = [(PGDejunkerDeduper *)self timeSortedItemsWithItems:v30];
-          v32 = [(PGDejunkerDeduper *)self shouldPerformIdenticalDedupingForItemFeature:v27 options:v11];
+          v32 = [(PGDejunkerDeduper *)self shouldPerformIdenticalDedupingForItemFeature:v27 options:optionsCopy];
           v89 = v30;
           v98 = v32;
           if ([v30 count] < 2 || !v32)
@@ -1826,14 +1826,14 @@ LABEL_92:
 
           else
           {
-            [(PGDejunkerDeduper *)self identicalDedupingTimeIntervalForItemFeature:v27 options:v11];
+            [(PGDejunkerDeduper *)self identicalDedupingTimeIntervalForItemFeature:v27 options:optionsCopy];
             v35 = v34;
-            [v11 identicalDedupingMaximumTimeGroupExtension];
+            [optionsCopy identicalDedupingMaximumTimeGroupExtension];
             [(PGDejunkerDeduper *)self timeGroupsOfTimeSortedItemsWithTimeSortedItems:v31 timeInterval:v35 maximumTimeGroupExtension:v36];
           }
           v37 = ;
           v25 = v23 + v25;
-          [v12 addClusters:v37 withReason:@"Time Clustering"];
+          [infoCopy addClusters:v37 withReason:@"Time Clustering"];
           v38 = [v37 count];
           v115 = 0u;
           v116 = 0u;
@@ -1892,23 +1892,23 @@ LABEL_92:
                   }
                 }
 
-                if (v12)
+                if (infoCopy)
                 {
-                  v44 = [v31 firstObject];
-                  v101 = [(PGDejunkerDeduper *)self debugPersonStringForItem:v44];
+                  firstObject = [v31 firstObject];
+                  v101 = [(PGDejunkerDeduper *)self debugPersonStringForItem:firstObject];
 
-                  v45 = [v31 lastObject];
-                  v46 = [v45 cls_universalDate];
+                  lastObject = [v31 lastObject];
+                  cls_universalDate = [lastObject cls_universalDate];
                   [v31 firstObject];
                   v47 = v24;
-                  v48 = v12;
+                  v48 = infoCopy;
                   v50 = v49 = v31;
-                  v51 = [v50 cls_universalDate];
-                  [v46 timeIntervalSinceDate:v51];
+                  cls_universalDate2 = [v50 cls_universalDate];
+                  [cls_universalDate timeIntervalSinceDate:cls_universalDate2];
                   v53 = v52;
 
                   v31 = v49;
-                  v12 = v48;
+                  infoCopy = v48;
                   v24 = v47;
 
                   v54 = MEMORY[0x277CCACA8];
@@ -1922,17 +1922,17 @@ LABEL_92:
 
                   v81 = v55;
                   v27 = v97;
-                  v58 = [v54 stringWithFormat:@"%.0f sec, %lu item%@: %@", v53, v81, v57, v101];
-                  [v12 setState:1 ofCluster:v31 withReason:v58];
+                  v101 = [v54 stringWithFormat:@"%.0f sec, %lu item%@: %@", v53, v81, v57, v101];
+                  [infoCopy setState:1 ofCluster:v31 withReason:v101];
                 }
 
                 if (v98 && [v31 count] != 1)
                 {
-                  [(PGDejunkerDeduper *)self identicalDedupingSimilarityForItemFeature:v27 options:v11];
+                  [(PGDejunkerDeduper *)self identicalDedupingSimilarityForItemFeature:v27 options:optionsCopy];
                   v60 = v27;
                   v62 = v61;
                   v59 = [(CLSSimilarStacker *)self->_similarStacker stackSimilarItems:v31 withSimilarity:v61 timestampSupport:0 progressBlock:0];
-                  v102 = [v12 debugInfoForCluster:v31];
+                  v102 = [infoCopy debugInfoForCluster:v31];
                   [v102 setClusters:v59 withReason:@"Similar Stacking"];
                   if (v94 && [v60 hasPersons])
                   {
@@ -1942,9 +1942,9 @@ LABEL_92:
                   else
                   {
                     v93 = v31;
-                    if (v91)
+                    if (maximumNumberOfItemsPerIdenticalCluster)
                     {
-                      v63 = [(PGDejunkerDeduper *)self splitItemGroupsWithItemGroups:v59 maximumNumberOfItemsPerGroup:v91 debugInfo:v102];
+                      v63 = [(PGDejunkerDeduper *)self splitItemGroupsWithItemGroups:v59 maximumNumberOfItemsPerGroup:maximumNumberOfItemsPerIdenticalCluster debugInfo:v102];
 
                       v59 = v63;
                     }
@@ -1971,13 +1971,13 @@ LABEL_92:
                           v68 = *(*(&v111 + 1) + 8 * i);
                           if ([v68 count] == 1)
                           {
-                            v69 = [(PGDejunkerDeduper *)self eligibleItemsInItems:v68 options:v11];
+                            v69 = [(PGDejunkerDeduper *)self eligibleItemsInItems:v68 options:optionsCopy];
                             [v22 addObjectsFromArray:v69];
                           }
 
                           else
                           {
-                            v69 = [(PGDejunkerDeduper *)self bestItemGroupsBasedOnSceneprintsWithItemGroups:v68 forSimilarity:v62 options:v11];
+                            v69 = [(PGDejunkerDeduper *)self bestItemGroupsBasedOnSceneprintsWithItemGroups:v68 forSimilarity:v62 options:optionsCopy];
                             [v22 addObjectsFromArray:v69];
                             [v106 dedupItems:v68 toItems:v69 withDedupingType:1];
                           }
@@ -1989,7 +1989,7 @@ LABEL_92:
                       while (v65);
                     }
 
-                    v12 = v106;
+                    infoCopy = v106;
                     v24 = v92;
                     v31 = v93;
                   }
@@ -1999,7 +1999,7 @@ LABEL_92:
 
                 else
                 {
-                  v59 = [(PGDejunkerDeduper *)self eligibleItemsInItems:v31 options:v11];
+                  v59 = [(PGDejunkerDeduper *)self eligibleItemsInItems:v31 options:optionsCopy];
                   [v22 addObjectsFromArray:v59];
                 }
 
@@ -2059,7 +2059,7 @@ LABEL_66:
 
     if ([v94 count])
     {
-      [(PGDejunkerDeduper *)self bestItemGroupsBasedOnFaceprintsWithItemGroups:v94 options:v11];
+      [(PGDejunkerDeduper *)self bestItemGroupsBasedOnFaceprintsWithItemGroups:v94 options:optionsCopy];
       v107 = 0u;
       v108 = 0u;
       v109 = 0u;
@@ -2097,7 +2097,7 @@ LABEL_66:
         while (v72);
       }
 
-      v12 = v106;
+      infoCopy = v106;
       v24 = v92;
     }
 
@@ -2121,14 +2121,14 @@ LABEL_93:
       v16 = [(PGDejunkerDeduper *)self timeSortedItemsWithItems:v22];
     }
 
-    v13 = v82;
-    v10 = v83;
+    blockCopy = v82;
+    itemsCopy = v83;
     v17 = v84;
   }
 
   else
   {
-    v16 = [(PGDejunkerDeduper *)self eligibleItemsInItems:v10 options:v11];
+    v16 = [(PGDejunkerDeduper *)self eligibleItemsInItems:itemsCopy options:optionsCopy];
   }
 
 LABEL_96:
@@ -2137,14 +2137,14 @@ LABEL_96:
   return v16;
 }
 
-- (id)dejunkedDedupedItemsInItems:(id)a3 options:(id)a4 debugInfo:(id)a5 progressBlock:(id)a6
+- (id)dejunkedDedupedItemsInItems:(id)items options:(id)options debugInfo:(id)info progressBlock:(id)block
 {
   v78 = *MEMORY[0x277D85DE8];
-  v38 = a3;
-  v10 = a4;
-  v11 = a5;
-  v36 = a6;
-  v12 = _Block_copy(v36);
+  itemsCopy = items;
+  optionsCopy = options;
+  infoCopy = info;
+  blockCopy = block;
+  v12 = _Block_copy(blockCopy);
   v64 = 0;
   v65 = &v64;
   v66 = 0x2020000000;
@@ -2153,13 +2153,13 @@ LABEL_96:
   v61 = &v60;
   v62 = 0x2020000000;
   v63 = 0;
-  v37 = v11;
+  v37 = infoCopy;
   if (!v12 || (v13 = CFAbsoluteTimeGetCurrent(), v13 - v61[3] < 0.01) || (v61[3] = v13, v59 = 0, (*(v12 + 2))(v12, &v59, 0.0), v14 = *(v65 + 24) | v59, *(v65 + 24) = v14, (v14 & 1) == 0))
   {
-    [v11 setAgent:@"DejunkerDeduper"];
-    v16 = v38;
+    [infoCopy setAgent:@"DejunkerDeduper"];
+    v16 = itemsCopy;
     v17 = v16;
-    if ([v10 doIdenticalDeduping])
+    if ([optionsCopy doIdenticalDeduping])
     {
       v54[0] = MEMORY[0x277D85DD0];
       v54[1] = 3221225472;
@@ -2169,7 +2169,7 @@ LABEL_96:
       v56 = &v60;
       v57 = &v64;
       v58 = 0x3F847AE147AE147BLL;
-      v17 = [(PGDejunkerDeduper *)self identicallyDedupedItemsInItems:v16 options:v10 debugInfo:v11 progressBlock:v54];
+      v17 = [(PGDejunkerDeduper *)self identicallyDedupedItemsInItems:v16 options:optionsCopy debugInfo:infoCopy progressBlock:v54];
 
       if (*(v65 + 24) == 1)
       {
@@ -2190,7 +2190,7 @@ LABEL_96:
 
     v17 = v17;
     v18 = v17;
-    if ([v10 doSemanticalDeduping])
+    if ([optionsCopy doSemanticalDeduping])
     {
       v49[0] = MEMORY[0x277D85DD0];
       v49[1] = 3221225472;
@@ -2200,7 +2200,7 @@ LABEL_96:
       v51 = &v60;
       v52 = &v64;
       v53 = 0x3F847AE147AE147BLL;
-      v18 = [(PGDejunkerDeduper *)self semanticallyDedupedItemsInItems:v17 options:v10 debugInfo:v11 progressBlock:v49];
+      v18 = [(PGDejunkerDeduper *)self semanticallyDedupedItemsInItems:v17 options:optionsCopy debugInfo:infoCopy progressBlock:v49];
 
       if (*(v65 + 24) == 1)
       {
@@ -2221,7 +2221,7 @@ LABEL_96:
 
     v18 = v18;
     v19 = v18;
-    if ([v10 doDejunk])
+    if ([optionsCopy doDejunk])
     {
       v44[0] = MEMORY[0x277D85DD0];
       v44[1] = 3221225472;
@@ -2231,7 +2231,7 @@ LABEL_96:
       v46 = &v60;
       v47 = &v64;
       v48 = 0x3F847AE147AE147BLL;
-      v19 = [(PGDejunkerDeduper *)self dejunkedItemsWithItems:v18 options:v10 debugInfo:v11 progressBlock:v44];
+      v19 = [(PGDejunkerDeduper *)self dejunkedItemsWithItems:v18 options:optionsCopy debugInfo:infoCopy progressBlock:v44];
 
       if (*(v65 + 24) == 1)
       {
@@ -2249,7 +2249,7 @@ LABEL_96:
         goto LABEL_43;
       }
 
-      if (![v19 count] && objc_msgSend(v10, "returnDedupedJunkIfOnlyJunk"))
+      if (![v19 count] && objc_msgSend(optionsCopy, "returnDedupedJunkIfOnlyJunk"))
       {
         v21 = v18;
 
@@ -2259,7 +2259,7 @@ LABEL_96:
 
     v19 = v19;
     v20 = v19;
-    if ([v10 doFinalPass])
+    if ([optionsCopy doFinalPass])
     {
       v39[0] = MEMORY[0x277D85DD0];
       v39[1] = 3221225472;
@@ -2269,7 +2269,7 @@ LABEL_96:
       v41 = &v60;
       v42 = &v64;
       v43 = 0x3F847AE147AE147BLL;
-      v20 = [(PGDejunkerDeduper *)self finalItemsWithItems:v19 options:v10 debugInfo:v11 progressBlock:v39];
+      v20 = [(PGDejunkerDeduper *)self finalItemsWithItems:v19 options:optionsCopy debugInfo:infoCopy progressBlock:v39];
 
       if (*(v65 + 24) == 1)
       {
@@ -2290,9 +2290,9 @@ LABEL_96:
     if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
     {
       v23 = MEMORY[0x277CCA968];
-      v35 = [v16 firstObject];
-      v34 = [v35 cls_universalDate];
-      v24 = [v23 localizedStringFromDate:v34 dateStyle:2 timeStyle:0];
+      firstObject = [v16 firstObject];
+      cls_universalDate = [firstObject cls_universalDate];
+      v24 = [v23 localizedStringFromDate:cls_universalDate dateStyle:2 timeStyle:0];
       v33 = [v16 count];
       v32 = [v17 count];
       v25 = [v18 count];
@@ -2434,7 +2434,7 @@ void __81__PGDejunkerDeduper_dejunkedDedupedItemsInItems_options_debugInfo_progr
   }
 }
 
-- (PGDejunkerDeduper)initWithSimilarityModelClass:(Class)a3
+- (PGDejunkerDeduper)initWithSimilarityModelClass:(Class)class
 {
   v10.receiver = self;
   v10.super_class = PGDejunkerDeduper;
@@ -2445,7 +2445,7 @@ void __81__PGDejunkerDeduper_dejunkedDedupedItemsInItems_options_debugInfo_progr
     kMeanTimeClusterer = v4->_kMeanTimeClusterer;
     v4->_kMeanTimeClusterer = v5;
 
-    v7 = [objc_alloc(MEMORY[0x277D277B8]) initWithSimilarityModelClass:a3];
+    v7 = [objc_alloc(MEMORY[0x277D277B8]) initWithSimilarityModelClass:class];
     similarStacker = v4->_similarStacker;
     v4->_similarStacker = v7;
 
@@ -2455,20 +2455,20 @@ void __81__PGDejunkerDeduper_dejunkedDedupedItemsInItems_options_debugInfo_progr
   return v4;
 }
 
-+ (BOOL)useFaceprintsForIdenticalDedupingWithOptions:(id)a3
++ (BOOL)useFaceprintsForIdenticalDedupingWithOptions:(id)options
 {
-  v3 = a3;
-  if (([v3 personDedupingType] & 0xFFFFFFFFFFFFFFFELL) == 2)
+  optionsCopy = options;
+  if (([optionsCopy personDedupingType] & 0xFFFFFFFFFFFFFFFELL) == 2)
   {
-    v4 = [v3 useFaceprintsForIdenticalDeduping];
+    useFaceprintsForIdenticalDeduping = [optionsCopy useFaceprintsForIdenticalDeduping];
   }
 
   else
   {
-    v4 = 0;
+    useFaceprintsForIdenticalDeduping = 0;
   }
 
-  return v4;
+  return useFaceprintsForIdenticalDeduping;
 }
 
 uint64_t __73__PGDejunkerDeduper_CLSCurationItem_itemsSortedByScoreWithItems_options___block_invoke(uint64_t a1, void *a2, void *a3)

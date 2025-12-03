@@ -27,14 +27,14 @@
   v5 = [UIColor colorWithRed:0.5 green:0.0 blue:0.0 alpha:0.25];
   [(UIView *)self->_overlayLockView setBackgroundColor:v5];
 
-  v6 = [(AXLocalizationCaptionBackgroundControllerViewController *)self view];
-  [v6 insertSubview:self->_overlayLockView atIndex:0];
+  view = [(AXLocalizationCaptionBackgroundControllerViewController *)self view];
+  [view insertSubview:self->_overlayLockView atIndex:0];
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v3 = [(AXLocalizationCaptionBackgroundControllerViewController *)self view];
-  [v3 frame];
+  view = [(AXLocalizationCaptionBackgroundControllerViewController *)self view];
+  [view frame];
   v5 = v4;
   v7 = v6;
   v9 = v8;

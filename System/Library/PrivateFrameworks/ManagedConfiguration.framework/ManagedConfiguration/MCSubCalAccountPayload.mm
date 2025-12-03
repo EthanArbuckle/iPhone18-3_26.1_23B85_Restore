@@ -1,6 +1,6 @@
 @interface MCSubCalAccountPayload
 - (BOOL)containsSensitiveUserInformation;
-- (MCSubCalAccountPayload)initWithDictionary:(id)a3 profile:(id)a4 outError:(id *)a5;
+- (MCSubCalAccountPayload)initWithDictionary:(id)dictionary profile:(id)profile outError:(id *)error;
 - (NSArray)calendarAccountIdentifiers;
 - (id)payloadDescriptionKeyValueSections;
 - (id)stubDictionary;
@@ -12,21 +12,21 @@
 
 @implementation MCSubCalAccountPayload
 
-- (MCSubCalAccountPayload)initWithDictionary:(id)a3 profile:(id)a4 outError:(id *)a5
+- (MCSubCalAccountPayload)initWithDictionary:(id)dictionary profile:(id)profile outError:(id *)error
 {
   v58 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  dictionaryCopy = dictionary;
+  profileCopy = profile;
   v53.receiver = self;
   v53.super_class = MCSubCalAccountPayload;
-  v10 = [(MCPayload *)&v53 initWithDictionary:v8 profile:v9 outError:a5];
+  v10 = [(MCPayload *)&v53 initWithDictionary:dictionaryCopy profile:profileCopy outError:error];
   if (!v10)
   {
     goto LABEL_15;
   }
 
   v52 = 0;
-  v11 = [v8 MCValidateAndRemoveNonZeroLengthStringWithKey:@"SubCalAccountDescription" isRequired:0 outError:&v52];
+  v11 = [dictionaryCopy MCValidateAndRemoveNonZeroLengthStringWithKey:@"SubCalAccountDescription" isRequired:0 outError:&v52];
   v12 = v52;
   accountDescription = v10->_accountDescription;
   v10->_accountDescription = v11;
@@ -37,7 +37,7 @@
   }
 
   v51 = 0;
-  v14 = [v8 MCValidateAndRemoveNonZeroLengthStringWithKey:@"SubCalAccountUsername" isRequired:0 outError:&v51];
+  v14 = [dictionaryCopy MCValidateAndRemoveNonZeroLengthStringWithKey:@"SubCalAccountUsername" isRequired:0 outError:&v51];
   v12 = v51;
   username = v10->_username;
   v10->_username = v14;
@@ -48,7 +48,7 @@
   }
 
   v50 = 0;
-  v16 = [v8 MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"SubCalAccountUseSSL" isRequired:0 outError:&v50];
+  v16 = [dictionaryCopy MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"SubCalAccountUseSSL" isRequired:0 outError:&v50];
   v12 = v50;
   useSSLNum = v10->_useSSLNum;
   v10->_useSSLNum = v16;
@@ -60,7 +60,7 @@
 
   v10->_useSSL = [(NSNumber *)v10->_useSSLNum BOOLValue];
   v49 = 0;
-  v18 = [v8 MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"VPNUUID" isRequired:0 outError:&v49];
+  v18 = [dictionaryCopy MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"VPNUUID" isRequired:0 outError:&v49];
   v12 = v49;
   VPNUUID = v10->_VPNUUID;
   v10->_VPNUUID = v18;
@@ -70,10 +70,10 @@
     goto LABEL_6;
   }
 
-  if ([v9 isStub])
+  if ([profileCopy isStub])
   {
     v46 = 0;
-    v33 = [v8 MCValidateAndRemoveNonZeroLengthStringWithKey:@"SubCalAccountHostName" isRequired:0 outError:&v46];
+    v33 = [dictionaryCopy MCValidateAndRemoveNonZeroLengthStringWithKey:@"SubCalAccountHostName" isRequired:0 outError:&v46];
     v12 = v46;
     hostname = v10->_hostname;
     v10->_hostname = v33;
@@ -84,7 +84,7 @@
     }
 
     v45 = 0;
-    v35 = [v8 MCValidateAndRemoveNonZeroLengthStringWithKey:@"SubCalAccountPersistentUUID" isRequired:0 outError:&v45];
+    v35 = [dictionaryCopy MCValidateAndRemoveNonZeroLengthStringWithKey:@"SubCalAccountPersistentUUID" isRequired:0 outError:&v45];
     v12 = v45;
     accountPersistentUUID = v10->_accountPersistentUUID;
     v10->_accountPersistentUUID = v35;
@@ -96,14 +96,14 @@
 
     v44 = 0;
     v37 = &v44;
-    v38 = [v8 MCValidateAndRemoveNonZeroLengthStringWithKey:@"ACAccountIdentifier" isRequired:0 outError:&v44];
+    v38 = [dictionaryCopy MCValidateAndRemoveNonZeroLengthStringWithKey:@"ACAccountIdentifier" isRequired:0 outError:&v44];
     v39 = &OBJC_IVAR___MCSubCalAccountPayload__acAccountIdentifier;
   }
 
   else
   {
     v48 = 0;
-    v40 = [v8 MCValidateAndRemoveNonZeroLengthStringWithKey:@"SubCalAccountHostName" isRequired:1 outError:&v48];
+    v40 = [dictionaryCopy MCValidateAndRemoveNonZeroLengthStringWithKey:@"SubCalAccountHostName" isRequired:1 outError:&v48];
     v12 = v48;
     v41 = v10->_hostname;
     v10->_hostname = v40;
@@ -113,10 +113,10 @@
 LABEL_6:
       v20 = [(MCPayload *)v10 malformedPayloadErrorWithError:v12];
       v21 = v20;
-      if (a5)
+      if (error)
       {
         v22 = v20;
-        *a5 = v21;
+        *error = v21;
       }
 
       v23 = _MCLogObjects;
@@ -125,11 +125,11 @@ LABEL_6:
         v24 = v23;
         v25 = objc_opt_class();
         v26 = v25;
-        v27 = [v21 MCVerboseDescription];
+        mCVerboseDescription = [v21 MCVerboseDescription];
         *buf = 138543618;
         v55 = v25;
         v56 = 2114;
-        v57 = v27;
+        v57 = mCVerboseDescription;
         _os_log_impl(&dword_1A795B000, v24, OS_LOG_TYPE_ERROR, "%{public}@ Can't parse payload: %{public}@", buf, 0x16u);
       }
 
@@ -139,7 +139,7 @@ LABEL_6:
 
     v47 = 0;
     v37 = &v47;
-    v38 = [v8 MCValidateAndRemoveNonZeroLengthStringWithKey:@"SubCalAccountPassword" isRequired:0 outError:&v47];
+    v38 = [dictionaryCopy MCValidateAndRemoveNonZeroLengthStringWithKey:@"SubCalAccountPassword" isRequired:0 outError:&v47];
     v39 = &OBJC_IVAR___MCSubCalAccountPayload__password;
   }
 
@@ -154,17 +154,17 @@ LABEL_6:
   }
 
 LABEL_11:
-  if ([v8 count])
+  if ([dictionaryCopy count])
   {
     v28 = _MCLogObjects;
     if (os_log_type_enabled(_MCLogObjects, OS_LOG_TYPE_INFO))
     {
       v29 = v28;
-      v30 = [(MCPayload *)v10 friendlyName];
+      friendlyName = [(MCPayload *)v10 friendlyName];
       *buf = 138543618;
-      v55 = v30;
+      v55 = friendlyName;
       v56 = 2114;
-      v57 = v8;
+      v57 = dictionaryCopy;
       _os_log_impl(&dword_1A795B000, v29, OS_LOG_TYPE_INFO, "Payload “%{public}@” contains ignored fields. They are: %{public}@", buf, 0x16u);
     }
   }
@@ -178,8 +178,8 @@ LABEL_15:
 {
   v6.receiver = self;
   v6.super_class = MCSubCalAccountPayload;
-  v3 = [(MCPayload *)&v6 verboseDescription];
-  v4 = [v3 mutableCopy];
+  verboseDescription = [(MCPayload *)&v6 verboseDescription];
+  v4 = [verboseDescription mutableCopy];
 
   if (self->_accountDescription)
   {
@@ -228,12 +228,12 @@ LABEL_15:
 {
   v12.receiver = self;
   v12.super_class = MCSubCalAccountPayload;
-  v3 = [(MCPayload *)&v12 stubDictionary];
-  v4 = v3;
+  stubDictionary = [(MCPayload *)&v12 stubDictionary];
+  v4 = stubDictionary;
   accountDescription = self->_accountDescription;
   if (accountDescription)
   {
-    [v3 setObject:accountDescription forKey:@"SubCalAccountDescription"];
+    [stubDictionary setObject:accountDescription forKey:@"SubCalAccountDescription"];
   }
 
   hostname = self->_hostname;
@@ -271,8 +271,8 @@ LABEL_15:
 
 - (id)subtitle1Label
 {
-  v2 = [(MCSubCalAccountPayload *)self hostname];
-  if (v2)
+  hostname = [(MCSubCalAccountPayload *)self hostname];
+  if (hostname)
   {
     v3 = @"SUBCAL_SERVER_NAME_COLON";
   }
@@ -289,46 +289,46 @@ LABEL_15:
 
 - (id)subtitle2Label
 {
-  v3 = [(MCSubCalAccountPayload *)self username];
-  if (v3)
+  username = [(MCSubCalAccountPayload *)self username];
+  if (username)
   {
-    v4 = v3;
-    v5 = [(MCSubCalAccountPayload *)self hostname];
+    v4 = username;
+    hostname = [(MCSubCalAccountPayload *)self hostname];
 
-    if (v5)
+    if (hostname)
     {
-      v3 = MCLocalizedString(@"SUBCAL_USERNAME_COLON");
+      username = MCLocalizedString(@"SUBCAL_USERNAME_COLON");
     }
 
     else
     {
-      v3 = 0;
+      username = 0;
     }
   }
 
-  return v3;
+  return username;
 }
 
 - (id)subtitle2Description
 {
-  v3 = [(MCSubCalAccountPayload *)self username];
-  if (v3)
+  username = [(MCSubCalAccountPayload *)self username];
+  if (username)
   {
-    v4 = v3;
-    v5 = [(MCSubCalAccountPayload *)self hostname];
+    v4 = username;
+    hostname = [(MCSubCalAccountPayload *)self hostname];
 
-    if (v5)
+    if (hostname)
     {
-      v3 = [(MCSubCalAccountPayload *)self username];
+      username = [(MCSubCalAccountPayload *)self username];
     }
 
     else
     {
-      v3 = 0;
+      username = 0;
     }
   }
 
-  return v3;
+  return username;
 }
 
 - (id)payloadDescriptionKeyValueSections
@@ -421,8 +421,8 @@ LABEL_15:
     return 1;
   }
 
-  v4 = [(MCSubCalAccountPayload *)self password];
-  v3 = v4 != 0;
+  password = [(MCSubCalAccountPayload *)self password];
+  v3 = password != 0;
 
   return v3;
 }

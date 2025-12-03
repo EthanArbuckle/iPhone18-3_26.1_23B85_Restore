@@ -1,19 +1,19 @@
 @interface QLTransitionContext
-+ (BOOL)useImageTransitionForPreviewController:(id)a3;
-+ (BOOL)useViewTransitionForPreviewController:(id)a3;
-+ (BOOL)useZoomTransitionForPreviewController:(id)a3;
-+ (id)firstChildNavigationControllerFromViewController:(id)a3;
++ (BOOL)useImageTransitionForPreviewController:(id)controller;
++ (BOOL)useViewTransitionForPreviewController:(id)controller;
++ (BOOL)useZoomTransitionForPreviewController:(id)controller;
++ (id)firstChildNavigationControllerFromViewController:(id)controller;
 - (CGPoint)sourceCenter;
 - (CGRect)sourceBounds;
 - (CGRect)sourceFrame;
 - (CGRect)uncroppedFrame;
 - (CGSize)previewItemSize;
-- (QLTransitionContext)initWithCoder:(id)a3;
-- (QLTransitionContext)initWithQLPreviewController:(id)a3 containerView:(id)a4 toViewController:(id)a5;
+- (QLTransitionContext)initWithCoder:(id)coder;
+- (QLTransitionContext)initWithQLPreviewController:(id)controller containerView:(id)view toViewController:(id)viewController;
 - (UIView)sourceViewSnapshot;
 - (id)sourceViewSnapshotImage;
 - (void)_snapshotSourceViewIfNeeded;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)prepareContextToSend;
 - (void)setUpTransitionSourceView;
 @end
@@ -29,51 +29,51 @@
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   [(QLTransitionContext *)self prepareContextToSend];
   topNavigationOffset = self->_topNavigationOffset;
   *&topNavigationOffset = topNavigationOffset;
-  [v4 encodeFloat:@"topNavigationOffset" forKey:topNavigationOffset];
+  [coderCopy encodeFloat:@"topNavigationOffset" forKey:topNavigationOffset];
   hostNavigationOffset = self->_hostNavigationOffset;
   *&hostNavigationOffset = hostNavigationOffset;
-  [v4 encodeFloat:@"hostNavigationOffset" forKey:hostNavigationOffset];
-  [v4 encodeCGRect:@"sourceFrame" forKey:{self->_sourceFrame.origin.x, self->_sourceFrame.origin.y, self->_sourceFrame.size.width, self->_sourceFrame.size.height}];
-  [v4 encodeCGRect:@"uncroppedFrame" forKey:{self->_uncroppedFrame.origin.x, self->_uncroppedFrame.origin.y, self->_uncroppedFrame.size.width, self->_uncroppedFrame.size.height}];
-  v7 = [(QLTransitionContext *)self sourceViewSnapshotImage];
-  [v4 encodeObject:v7 forKey:@"sourceViewSnapshotImage"];
+  [coderCopy encodeFloat:@"hostNavigationOffset" forKey:hostNavigationOffset];
+  [coderCopy encodeCGRect:@"sourceFrame" forKey:{self->_sourceFrame.origin.x, self->_sourceFrame.origin.y, self->_sourceFrame.size.width, self->_sourceFrame.size.height}];
+  [coderCopy encodeCGRect:@"uncroppedFrame" forKey:{self->_uncroppedFrame.origin.x, self->_uncroppedFrame.origin.y, self->_uncroppedFrame.size.width, self->_uncroppedFrame.size.height}];
+  sourceViewSnapshotImage = [(QLTransitionContext *)self sourceViewSnapshotImage];
+  [coderCopy encodeObject:sourceViewSnapshotImage forKey:@"sourceViewSnapshotImage"];
 
   [(QLTransitionContext *)self previewItemSize];
-  [v4 encodeCGSize:@"previewItemSize" forKey:?];
-  [v4 encodeBool:-[QLTransitionContext isSourceTransformed](self forKey:{"isSourceTransformed"), @"isSourceTransformed"}];
-  [v4 encodeCGRect:@"sourceBounds" forKey:{self->_sourceBounds.origin.x, self->_sourceBounds.origin.y, self->_sourceBounds.size.width, self->_sourceBounds.size.height}];
-  [v4 encodeCGPoint:@"sourceCenter" forKey:{self->_sourceCenter.x, self->_sourceCenter.y}];
+  [coderCopy encodeCGSize:@"previewItemSize" forKey:?];
+  [coderCopy encodeBool:-[QLTransitionContext isSourceTransformed](self forKey:{"isSourceTransformed"), @"isSourceTransformed"}];
+  [coderCopy encodeCGRect:@"sourceBounds" forKey:{self->_sourceBounds.origin.x, self->_sourceBounds.origin.y, self->_sourceBounds.size.width, self->_sourceBounds.size.height}];
+  [coderCopy encodeCGPoint:@"sourceCenter" forKey:{self->_sourceCenter.x, self->_sourceCenter.y}];
   v8 = *&self->_sourceTransform.c;
   v9[0] = *&self->_sourceTransform.a;
   v9[1] = v8;
   v9[2] = *&self->_sourceTransform.tx;
-  [v4 encodeCGAffineTransform:v9 forKey:@"sourceTransform"];
+  [coderCopy encodeCGAffineTransform:v9 forKey:@"sourceTransform"];
 }
 
-- (QLTransitionContext)initWithCoder:(id)a3
+- (QLTransitionContext)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v35.receiver = self;
   v35.super_class = QLTransitionContext;
   v5 = [(QLTransitionContext *)&v35 init];
   if (v5)
   {
-    [v4 decodeCGRectForKey:@"sourceFrame"];
+    [coderCopy decodeCGRectForKey:@"sourceFrame"];
     v7 = v6;
     v9 = v8;
     v11 = v10;
     v13 = v12;
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sourceViewSnapshotImage"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sourceViewSnapshotImage"];
     sourceViewSnapshotImage = v5->_sourceViewSnapshotImage;
     v5->_sourceViewSnapshotImage = v14;
 
-    [v4 decodeCGRectForKey:@"uncroppedFrame"];
+    [coderCopy decodeCGRectForKey:@"uncroppedFrame"];
     v5->_uncroppedFrame.origin.x = v16;
     v5->_uncroppedFrame.origin.y = v17;
     v5->_uncroppedFrame.size.width = v18;
@@ -82,25 +82,25 @@
     v5->_sourceFrame.origin.y = v9;
     v5->_sourceFrame.size.width = v11;
     v5->_sourceFrame.size.height = v13;
-    [v4 decodeFloatForKey:@"topNavigationOffset"];
+    [coderCopy decodeFloatForKey:@"topNavigationOffset"];
     v5->_topNavigationOffset = v20;
-    [v4 decodeFloatForKey:@"hostNavigationOffset"];
+    [coderCopy decodeFloatForKey:@"hostNavigationOffset"];
     v5->_hostNavigationOffset = v21;
-    [v4 decodeCGSizeForKey:@"previewItemSize"];
+    [coderCopy decodeCGSizeForKey:@"previewItemSize"];
     v5->_previewItemSize.width = v22;
     v5->_previewItemSize.height = v23;
-    v5->_isSourceTransformed = [v4 decodeBoolForKey:@"isSourceTransformed"];
-    [v4 decodeCGRectForKey:@"sourceBounds"];
+    v5->_isSourceTransformed = [coderCopy decodeBoolForKey:@"isSourceTransformed"];
+    [coderCopy decodeCGRectForKey:@"sourceBounds"];
     v5->_sourceBounds.origin.x = v24;
     v5->_sourceBounds.origin.y = v25;
     v5->_sourceBounds.size.width = v26;
     v5->_sourceBounds.size.height = v27;
-    [v4 decodeCGPointForKey:@"sourceCenter"];
+    [coderCopy decodeCGPointForKey:@"sourceCenter"];
     v5->_sourceCenter.x = v28;
     v5->_sourceCenter.y = v29;
-    if (v4)
+    if (coderCopy)
     {
-      [v4 decodeCGAffineTransformForKey:@"sourceTransform"];
+      [coderCopy decodeCGAffineTransformForKey:@"sourceTransform"];
     }
 
     else
@@ -140,8 +140,8 @@
       [(UIView *)v5 setTransform:v9];
     }
 
-    v6 = [(QLTransitionContext *)self sourceViewSnapshotImage];
-    [(UIView *)v5 setImage:v6];
+    sourceViewSnapshotImage = [(QLTransitionContext *)self sourceViewSnapshotImage];
+    [(UIView *)v5 setImage:sourceViewSnapshotImage];
 
     [(UIView *)v5 setContentMode:1];
     v7 = self->_sourceViewSnapshot;
@@ -161,12 +161,12 @@
     v16[6] = v4;
     v16[9] = v2;
     v16[10] = v3;
-    v7 = [(QLTransitionContext *)self sourceView];
+    sourceView = [(QLTransitionContext *)self sourceView];
 
-    if (v7)
+    if (sourceView)
     {
-      v8 = [(QLTransitionContext *)self sourceView];
-      [v8 bounds];
+      sourceView2 = [(QLTransitionContext *)self sourceView];
+      [sourceView2 bounds];
       v10 = v9;
       v12 = v11;
 
@@ -202,12 +202,12 @@ void __50__QLTransitionContext__snapshotSourceViewIfNeeded__block_invoke(uint64_
   return sourceViewSnapshotImage;
 }
 
-- (QLTransitionContext)initWithQLPreviewController:(id)a3 containerView:(id)a4 toViewController:(id)a5
+- (QLTransitionContext)initWithQLPreviewController:(id)controller containerView:(id)view toViewController:(id)viewController
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8)
+  controllerCopy = controller;
+  viewCopy = view;
+  viewControllerCopy = viewController;
+  if (!controllerCopy)
   {
     goto LABEL_14;
   }
@@ -221,21 +221,21 @@ void __50__QLTransitionContext__snapshotSourceViewIfNeeded__block_invoke(uint64_
     goto LABEL_14;
   }
 
-  objc_storeWeak(&v11->_previewController, v8);
-  if (![QLTransitionContext useZoomTransitionForPreviewController:v8])
+  objc_storeWeak(&v11->_previewController, controllerCopy);
+  if (![QLTransitionContext useZoomTransitionForPreviewController:controllerCopy])
   {
     goto LABEL_14;
   }
 
   if (_os_feature_enabled_impl())
   {
-    v12 = [v10 view];
-    [v12 layoutIfNeeded];
+    view = [viewControllerCopy view];
+    [view layoutIfNeeded];
   }
 
   [(QLTransitionContext *)self setUpTransitionSourceView];
-  v13 = [(QLTransitionContext *)self sourceView];
-  if (!v13)
+  sourceView = [(QLTransitionContext *)self sourceView];
+  if (!sourceView)
   {
     if (self->_sourceViewSnapshotImage)
     {
@@ -243,60 +243,60 @@ void __50__QLTransitionContext__snapshotSourceViewIfNeeded__block_invoke(uint64_
     }
 
 LABEL_14:
-    v41 = 0;
+    selfCopy = 0;
     goto LABEL_15;
   }
 
 LABEL_9:
-  v14 = [QLTransitionContext firstChildNavigationControllerFromViewController:v10];
+  v14 = [QLTransitionContext firstChildNavigationControllerFromViewController:viewControllerCopy];
   if (v14)
   {
     [(QLTransitionContext *)self setTopNavigationOffset:0.0];
-    v15 = [v10 view];
-    v16 = [v15 window];
-    v17 = [v16 windowScene];
-    v18 = [v17 statusBarManager];
-    [v18 statusBarFrame];
+    view2 = [viewControllerCopy view];
+    window = [view2 window];
+    windowScene = [window windowScene];
+    statusBarManager = [windowScene statusBarManager];
+    [statusBarManager statusBarFrame];
     v20 = v19;
     [(QLTransitionContext *)self topNavigationOffset];
     [(QLTransitionContext *)self setTopNavigationOffset:v21 + v20];
 
-    v22 = [v14 navigationBar];
-    [v22 frame];
+    navigationBar = [v14 navigationBar];
+    [navigationBar frame];
     v24 = v23;
     [(QLTransitionContext *)self topNavigationOffset];
     [(QLTransitionContext *)self setTopNavigationOffset:v25 + v24];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_previewController);
-  v27 = [WeakRetained internalNavigationController];
-  v28 = [v27 navigationBar];
-  [v28 frame];
+  internalNavigationController = [WeakRetained internalNavigationController];
+  navigationBar2 = [internalNavigationController navigationBar];
+  [navigationBar2 frame];
   [(QLTransitionContext *)self setHostNavigationOffset:v29];
 
   [(QLTransitionContext *)self hostNavigationOffset];
   if (v30 > 0.0)
   {
-    v31 = [v10 view];
-    v32 = [v31 window];
-    v33 = [v32 windowScene];
-    v34 = [v33 statusBarManager];
-    [v34 statusBarFrame];
+    view3 = [viewControllerCopy view];
+    window2 = [view3 window];
+    windowScene2 = [window2 windowScene];
+    statusBarManager2 = [windowScene2 statusBarManager];
+    [statusBarManager2 statusBarFrame];
     v36 = v35;
     [(QLTransitionContext *)self hostNavigationOffset];
     [(QLTransitionContext *)self setHostNavigationOffset:v37 + v36];
   }
 
-  v38 = [v8 internalCurrentPreviewItem];
-  [v9 bounds];
-  [v38 previewSizeForItemViewControllerSize:{v39, v40}];
+  internalCurrentPreviewItem = [controllerCopy internalCurrentPreviewItem];
+  [viewCopy bounds];
+  [internalCurrentPreviewItem previewSizeForItemViewControllerSize:{v39, v40}];
   [(QLTransitionContext *)self setPreviewItemSize:?];
 
   self = self;
-  v41 = self;
+  selfCopy = self;
 LABEL_15:
 
-  return v41;
+  return selfCopy;
 }
 
 - (void)setUpTransitionSourceView
@@ -305,7 +305,7 @@ LABEL_15:
   v4 = [QLTransitionContext useViewTransitionForPreviewController:WeakRetained];
 
   v5 = objc_loadWeakRetained(&self->_previewController);
-  v6 = [v5 delegate];
+  delegate = [v5 delegate];
   if (v4)
   {
     v7 = objc_opt_respondsToSelector();
@@ -318,10 +318,10 @@ LABEL_15:
       t2.a = 0.0;
       t2.b = 0.0;
       v9 = objc_loadWeakRetained(&self->_previewController);
-      v10 = [v9 delegate];
+      delegate2 = [v9 delegate];
       v11 = objc_loadWeakRetained(&self->_previewController);
-      v12 = [v11 currentPreviewItem];
-      v13 = [v10 previewController:v11 transitionViewForPreviewItem:v12 uncroppedSourceFrame:&t1 realSize:&t2];
+      currentPreviewItem = [v11 currentPreviewItem];
+      v13 = [delegate2 previewController:v11 transitionViewForPreviewItem:currentPreviewItem uncroppedSourceFrame:&t1 realSize:&t2];
 
       [(QLTransitionContext *)self setSourceView:v13];
       c = t1.c;
@@ -339,17 +339,17 @@ LABEL_11:
     else
     {
       v43 = objc_loadWeakRetained(&self->_previewController);
-      v44 = [v43 delegate];
+      delegate3 = [v43 delegate];
       v45 = objc_opt_respondsToSelector();
 
       if (v45)
       {
         memset(&t1, 0, 32);
         v46 = objc_loadWeakRetained(&self->_previewController);
-        v47 = [v46 delegate];
+        delegate4 = [v46 delegate];
         v48 = objc_loadWeakRetained(&self->_previewController);
-        v49 = [v48 currentPreviewItem];
-        v50 = [v47 previewController:v48 transitionViewForPreviewItem:v49 uncroppedSourceFrame:&t1];
+        currentPreviewItem2 = [v48 currentPreviewItem];
+        v50 = [delegate4 previewController:v48 transitionViewForPreviewItem:currentPreviewItem2 uncroppedSourceFrame:&t1];
 
         [(QLTransitionContext *)self setSourceView:v50];
         a = t1.a;
@@ -360,50 +360,50 @@ LABEL_11:
       }
 
       v51 = objc_loadWeakRetained(&self->_previewController);
-      v52 = [v51 delegate];
+      delegate5 = [v51 delegate];
       v53 = objc_loadWeakRetained(&self->_previewController);
-      v54 = [v53 currentPreviewItem];
-      v55 = [v52 previewController:v53 transitionViewForPreviewItem:v54];
+      currentPreviewItem3 = [v53 currentPreviewItem];
+      v55 = [delegate5 previewController:v53 transitionViewForPreviewItem:currentPreviewItem3];
 
       [(QLTransitionContext *)self setSourceView:v55];
     }
 
-    v56 = [(QLTransitionContext *)self sourceView];
-    [v56 bounds];
+    sourceView = [(QLTransitionContext *)self sourceView];
+    [sourceView bounds];
     [(QLTransitionContext *)self setUncroppedFrame:?];
 
 LABEL_14:
-    v57 = [(QLTransitionContext *)self sourceView];
+    sourceView2 = [(QLTransitionContext *)self sourceView];
 
-    if (v57)
+    if (sourceView2)
     {
       [(QLTransitionContext *)self setUsingViewForZoomTransition:1];
-      v58 = [(QLTransitionContext *)self sourceView];
-      v59 = [v58 snapshotViewAfterScreenUpdates:0];
+      sourceView3 = [(QLTransitionContext *)self sourceView];
+      v59 = [sourceView3 snapshotViewAfterScreenUpdates:0];
       [(QLTransitionContext *)self setSourceViewSnapshot:v59];
 
-      v60 = [(QLTransitionContext *)self sourceView];
-      v61 = [(QLTransitionContext *)self sourceView];
-      [v61 bounds];
-      [v60 convertRect:0 toView:?];
+      sourceView4 = [(QLTransitionContext *)self sourceView];
+      sourceView5 = [(QLTransitionContext *)self sourceView];
+      [sourceView5 bounds];
+      [sourceView4 convertRect:0 toView:?];
       [(QLTransitionContext *)self setSourceFrame:?];
 
-      v62 = [(QLTransitionContext *)self sourceView];
-      [v62 bounds];
+      sourceView6 = [(QLTransitionContext *)self sourceView];
+      [sourceView6 bounds];
       [(QLTransitionContext *)self setSourceBounds:?];
 
-      v63 = [(QLTransitionContext *)self sourceView];
-      v64 = [v63 superview];
-      v65 = [(QLTransitionContext *)self sourceView];
-      [v65 center];
-      [v64 convertPoint:0 toView:?];
+      sourceView7 = [(QLTransitionContext *)self sourceView];
+      superview = [sourceView7 superview];
+      sourceView8 = [(QLTransitionContext *)self sourceView];
+      [sourceView8 center];
+      [superview convertPoint:0 toView:?];
       [(QLTransitionContext *)self setSourceCenter:?];
 
-      v66 = [(QLTransitionContext *)self sourceView];
-      v67 = v66;
-      if (v66)
+      sourceView9 = [(QLTransitionContext *)self sourceView];
+      v67 = sourceView9;
+      if (sourceView9)
       {
-        [v66 transform];
+        [sourceView9 transform];
       }
 
       else
@@ -421,26 +421,26 @@ LABEL_14:
       *&t2.tx = *(MEMORY[0x277CBF2C0] + 32);
       if (CGAffineTransformEqualToTransform(&t1, &t2))
       {
-        v69 = self;
+        selfCopy2 = self;
         v70 = 0;
       }
 
       else
       {
-        v69 = self;
+        selfCopy2 = self;
         v70 = 1;
       }
 
-      [(QLTransitionContext *)v69 setIsSourceTransformed:v70];
+      [(QLTransitionContext *)selfCopy2 setIsSourceTransformed:v70];
     }
 
     return;
   }
 
   v18 = objc_loadWeakRetained(&self->_previewController);
-  v19 = [v18 currentPreviewItem];
+  currentPreviewItem4 = [v18 currentPreviewItem];
   v71 = 0;
-  [v6 previewController:v18 frameForPreviewItem:v19 inSourceView:&v71];
+  [delegate previewController:v18 frameForPreviewItem:currentPreviewItem4 inSourceView:&v71];
   v21 = v20;
   v23 = v22;
   v25 = v24;
@@ -454,10 +454,10 @@ LABEL_14:
     v32 = v31;
     memset(&t1, 0, 32);
     v33 = objc_loadWeakRetained(&self->_previewController);
-    v34 = [v33 delegate];
+    delegate6 = [v33 delegate];
     v35 = objc_loadWeakRetained(&self->_previewController);
-    v36 = [v35 currentPreviewItem];
-    v37 = [v34 previewController:v35 transitionImageForPreviewItem:v36 contentRect:&t1];
+    currentPreviewItem5 = [v35 currentPreviewItem];
+    v37 = [delegate6 previewController:v35 transitionImageForPreviewItem:currentPreviewItem5 contentRect:&t1];
 
     sourceViewSnapshotImage = self->_sourceViewSnapshotImage;
     self->_sourceViewSnapshotImage = v37;
@@ -472,29 +472,29 @@ LABEL_14:
   }
 }
 
-+ (BOOL)useZoomTransitionForPreviewController:(id)a3
++ (BOOL)useZoomTransitionForPreviewController:(id)controller
 {
-  v3 = a3;
-  if (UIAccessibilityIsReduceMotionEnabled() || ([v3 parentIsNavigationController] & 1) != 0)
+  controllerCopy = controller;
+  if (UIAccessibilityIsReduceMotionEnabled() || ([controllerCopy parentIsNavigationController] & 1) != 0)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [QLTransitionContext useImageTransitionForPreviewController:v3]|| [QLTransitionContext useViewTransitionForPreviewController:v3];
+    v4 = [QLTransitionContext useImageTransitionForPreviewController:controllerCopy]|| [QLTransitionContext useViewTransitionForPreviewController:controllerCopy];
   }
 
   return v4;
 }
 
-+ (BOOL)useImageTransitionForPreviewController:(id)a3
++ (BOOL)useImageTransitionForPreviewController:(id)controller
 {
-  v3 = a3;
-  v4 = [v3 delegate];
+  controllerCopy = controller;
+  delegate = [controllerCopy delegate];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v3 delegate];
+    delegate2 = [controllerCopy delegate];
     v6 = objc_opt_respondsToSelector();
   }
 
@@ -506,10 +506,10 @@ LABEL_14:
   return v6 & 1;
 }
 
-+ (BOOL)useViewTransitionForPreviewController:(id)a3
++ (BOOL)useViewTransitionForPreviewController:(id)controller
 {
-  v3 = a3;
-  v4 = [v3 delegate];
+  controllerCopy = controller;
+  delegate = [controllerCopy delegate];
   if (objc_opt_respondsToSelector())
   {
     v5 = 1;
@@ -517,7 +517,7 @@ LABEL_14:
 
   else
   {
-    v6 = [v3 delegate];
+    delegate2 = [controllerCopy delegate];
     if (objc_opt_respondsToSelector())
     {
       v5 = 1;
@@ -525,7 +525,7 @@ LABEL_14:
 
     else
     {
-      v7 = [v3 delegate];
+      delegate3 = [controllerCopy delegate];
       v5 = objc_opt_respondsToSelector();
     }
   }
@@ -533,14 +533,14 @@ LABEL_14:
   return v5 & 1;
 }
 
-+ (id)firstChildNavigationControllerFromViewController:(id)a3
++ (id)firstChildNavigationControllerFromViewController:(id)controller
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  controllerCopy = controller;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = controllerCopy;
   }
 
   else
@@ -549,8 +549,8 @@ LABEL_14:
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v5 = [v3 childViewControllers];
-    v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    childViewControllers = [controllerCopy childViewControllers];
+    v6 = [childViewControllers countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v6)
     {
       v7 = v6;
@@ -561,7 +561,7 @@ LABEL_14:
         {
           if (*v14 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(childViewControllers);
           }
 
           v10 = *(*(&v13 + 1) + 8 * i);
@@ -574,7 +574,7 @@ LABEL_14:
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v7 = [childViewControllers countByEnumeratingWithState:&v13 objects:v17 count:16];
         if (v7)
         {
           continue;

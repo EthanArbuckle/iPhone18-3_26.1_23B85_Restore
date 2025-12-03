@@ -1,10 +1,10 @@
 @interface HMDCameraVideoParameterSelection
 + (id)logCategory;
-+ (id)videoResolutionPreferenceForStreamingTierType:(unint64_t)a3;
-- (BOOL)_selectParametersFromCodec:(id)a3 profiles:(id)a4 levels:(id)a5 packetizationModes:(id)a6 videoAttributes:(id)a7;
++ (id)videoResolutionPreferenceForStreamingTierType:(unint64_t)type;
+- (BOOL)_selectParametersFromCodec:(id)codec profiles:(id)profiles levels:(id)levels packetizationModes:(id)modes videoAttributes:(id)attributes;
 - (BOOL)selectVideoParameters;
-- (HMDCameraVideoParameterSelection)initWithSessionID:(id)a3 videoTierParameters:(id)a4 supportedVideoConfiguration:(id)a5 supportedRTPConfiguration:(id)a6 streamingCapabilities:(id)a7;
-- (id)createReselectedVideoParameters:(id)a3;
+- (HMDCameraVideoParameterSelection)initWithSessionID:(id)d videoTierParameters:(id)parameters supportedVideoConfiguration:(id)configuration supportedRTPConfiguration:(id)pConfiguration streamingCapabilities:(id)capabilities;
+- (id)createReselectedVideoParameters:(id)parameters;
 - (id)createSRTPParamters;
 - (id)createSelectedVideoParameters;
 - (id)logIdentifier;
@@ -17,7 +17,7 @@
 {
   v168 = *MEMORY[0x277D85DE8];
   v3 = [HMDVideoResolution arrayWithResolutions:&unk_283E75B00];
-  v4 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v160 = 0u;
   v161 = 0u;
   v162 = 0u;
@@ -38,52 +38,52 @@
         }
 
         v6 = *(*(&v160 + 1) + 8 * v5);
-        v7 = [(HMDCameraVideoParameterSelection *)self videoTierParameters];
-        v8 = [v7 videoTierCombinations];
-        v9 = [v8 objectForKeyedSubscript:v6];
+        videoTierParameters = [(HMDCameraVideoParameterSelection *)self videoTierParameters];
+        videoTierCombinations = [videoTierParameters videoTierCombinations];
+        v9 = [videoTierCombinations objectForKeyedSubscript:v6];
 
         if (v9)
         {
           v10 = [HMDCameraVideoParameterCombination alloc];
           v11 = [[HMDH264Profile alloc] initWithH264Profile:0];
           v12 = [[HMDH264Level alloc] initWithH264Level:0];
-          v13 = [(HMDCameraVideoParameterSelection *)self videoTierParameters];
-          v14 = [v13 videoTierCombinations];
-          v15 = [v14 objectForKeyedSubscript:v6];
+          videoTierParameters2 = [(HMDCameraVideoParameterSelection *)self videoTierParameters];
+          videoTierCombinations2 = [videoTierParameters2 videoTierCombinations];
+          v15 = [videoTierCombinations2 objectForKeyedSubscript:v6];
           v16 = [(HMDCameraVideoParameterCombination *)v10 initWithProfile:v11 level:v12 videoTier:v15];
-          [v4 addObject:v16];
+          [array addObject:v16];
         }
 
-        v17 = [(HMDCameraVideoParameterSelection *)self videoTierParameters];
-        v18 = [v17 videoTierCombinations];
-        v19 = [v18 objectForKeyedSubscript:v6];
+        videoTierParameters3 = [(HMDCameraVideoParameterSelection *)self videoTierParameters];
+        videoTierCombinations3 = [videoTierParameters3 videoTierCombinations];
+        v19 = [videoTierCombinations3 objectForKeyedSubscript:v6];
 
         if (v19)
         {
           v20 = [HMDCameraVideoParameterCombination alloc];
           v21 = [[HMDH264Profile alloc] initWithH264Profile:1];
           v22 = [[HMDH264Level alloc] initWithH264Level:0];
-          v23 = [(HMDCameraVideoParameterSelection *)self videoTierParameters];
-          v24 = [v23 videoTierCombinations];
-          v25 = [v24 objectForKeyedSubscript:v6];
+          videoTierParameters4 = [(HMDCameraVideoParameterSelection *)self videoTierParameters];
+          videoTierCombinations4 = [videoTierParameters4 videoTierCombinations];
+          v25 = [videoTierCombinations4 objectForKeyedSubscript:v6];
           v26 = [(HMDCameraVideoParameterCombination *)v20 initWithProfile:v21 level:v22 videoTier:v25];
-          [v4 addObject:v26];
+          [array addObject:v26];
         }
 
-        v27 = [(HMDCameraVideoParameterSelection *)self videoTierParameters];
-        v28 = [v27 videoTierCombinations];
-        v29 = [v28 objectForKeyedSubscript:v6];
+        videoTierParameters5 = [(HMDCameraVideoParameterSelection *)self videoTierParameters];
+        videoTierCombinations5 = [videoTierParameters5 videoTierCombinations];
+        v29 = [videoTierCombinations5 objectForKeyedSubscript:v6];
 
         if (v29)
         {
           v30 = [HMDCameraVideoParameterCombination alloc];
           v31 = [[HMDH264Profile alloc] initWithH264Profile:2];
           v32 = [[HMDH264Level alloc] initWithH264Level:0];
-          v33 = [(HMDCameraVideoParameterSelection *)self videoTierParameters];
-          v34 = [v33 videoTierCombinations];
-          v35 = [v34 objectForKeyedSubscript:v6];
+          videoTierParameters6 = [(HMDCameraVideoParameterSelection *)self videoTierParameters];
+          videoTierCombinations6 = [videoTierParameters6 videoTierCombinations];
+          v35 = [videoTierCombinations6 objectForKeyedSubscript:v6];
           v36 = [(HMDCameraVideoParameterCombination *)v30 initWithProfile:v31 level:v32 videoTier:v35];
-          [v4 addObject:v36];
+          [array addObject:v36];
         }
 
         ++v5;
@@ -116,52 +116,52 @@
         }
 
         v38 = *(*(&v156 + 1) + 8 * v37);
-        v39 = [(HMDCameraVideoParameterSelection *)self videoTierParameters];
-        v40 = [v39 videoTierCombinations];
-        v41 = [v40 objectForKeyedSubscript:v38];
+        videoTierParameters7 = [(HMDCameraVideoParameterSelection *)self videoTierParameters];
+        videoTierCombinations7 = [videoTierParameters7 videoTierCombinations];
+        v41 = [videoTierCombinations7 objectForKeyedSubscript:v38];
 
         if (v41)
         {
           v42 = [HMDCameraVideoParameterCombination alloc];
           v43 = [[HMDH264Profile alloc] initWithH264Profile:0];
           v44 = [[HMDH264Level alloc] initWithH264Level:1];
-          v45 = [(HMDCameraVideoParameterSelection *)self videoTierParameters];
-          v46 = [v45 videoTierCombinations];
-          v47 = [v46 objectForKeyedSubscript:v38];
+          videoTierParameters8 = [(HMDCameraVideoParameterSelection *)self videoTierParameters];
+          videoTierCombinations8 = [videoTierParameters8 videoTierCombinations];
+          v47 = [videoTierCombinations8 objectForKeyedSubscript:v38];
           v48 = [(HMDCameraVideoParameterCombination *)v42 initWithProfile:v43 level:v44 videoTier:v47];
-          [v4 addObject:v48];
+          [array addObject:v48];
         }
 
-        v49 = [(HMDCameraVideoParameterSelection *)self videoTierParameters];
-        v50 = [v49 videoTierCombinations];
-        v51 = [v50 objectForKeyedSubscript:v38];
+        videoTierParameters9 = [(HMDCameraVideoParameterSelection *)self videoTierParameters];
+        videoTierCombinations9 = [videoTierParameters9 videoTierCombinations];
+        v51 = [videoTierCombinations9 objectForKeyedSubscript:v38];
 
         if (v51)
         {
           v52 = [HMDCameraVideoParameterCombination alloc];
           v53 = [[HMDH264Profile alloc] initWithH264Profile:1];
           v54 = [[HMDH264Level alloc] initWithH264Level:1];
-          v55 = [(HMDCameraVideoParameterSelection *)self videoTierParameters];
-          v56 = [v55 videoTierCombinations];
-          v57 = [v56 objectForKeyedSubscript:v38];
+          videoTierParameters10 = [(HMDCameraVideoParameterSelection *)self videoTierParameters];
+          videoTierCombinations10 = [videoTierParameters10 videoTierCombinations];
+          v57 = [videoTierCombinations10 objectForKeyedSubscript:v38];
           v58 = [(HMDCameraVideoParameterCombination *)v52 initWithProfile:v53 level:v54 videoTier:v57];
-          [v4 addObject:v58];
+          [array addObject:v58];
         }
 
-        v59 = [(HMDCameraVideoParameterSelection *)self videoTierParameters];
-        v60 = [v59 videoTierCombinations];
-        v61 = [v60 objectForKeyedSubscript:v38];
+        videoTierParameters11 = [(HMDCameraVideoParameterSelection *)self videoTierParameters];
+        videoTierCombinations11 = [videoTierParameters11 videoTierCombinations];
+        v61 = [videoTierCombinations11 objectForKeyedSubscript:v38];
 
         if (v61)
         {
           v62 = [HMDCameraVideoParameterCombination alloc];
           v63 = [[HMDH264Profile alloc] initWithH264Profile:2];
           v64 = [[HMDH264Level alloc] initWithH264Level:1];
-          v65 = [(HMDCameraVideoParameterSelection *)self videoTierParameters];
-          v66 = [v65 videoTierCombinations];
-          v67 = [v66 objectForKeyedSubscript:v38];
+          videoTierParameters12 = [(HMDCameraVideoParameterSelection *)self videoTierParameters];
+          videoTierCombinations12 = [videoTierParameters12 videoTierCombinations];
+          v67 = [videoTierCombinations12 objectForKeyedSubscript:v38];
           v68 = [(HMDCameraVideoParameterCombination *)v62 initWithProfile:v63 level:v64 videoTier:v67];
-          [v4 addObject:v68];
+          [array addObject:v68];
         }
 
         ++v37;
@@ -194,52 +194,52 @@
         }
 
         v70 = *(*(&v152 + 1) + 8 * v69);
-        v71 = [(HMDCameraVideoParameterSelection *)self videoTierParameters];
-        v72 = [v71 videoTierCombinations];
-        v73 = [v72 objectForKeyedSubscript:v70];
+        videoTierParameters13 = [(HMDCameraVideoParameterSelection *)self videoTierParameters];
+        videoTierCombinations13 = [videoTierParameters13 videoTierCombinations];
+        v73 = [videoTierCombinations13 objectForKeyedSubscript:v70];
 
         if (v73)
         {
           v74 = [HMDCameraVideoParameterCombination alloc];
           v75 = [[HMDH264Profile alloc] initWithH264Profile:0];
           v76 = [[HMDH264Level alloc] initWithH264Level:2];
-          v77 = [(HMDCameraVideoParameterSelection *)self videoTierParameters];
-          v78 = [v77 videoTierCombinations];
-          v79 = [v78 objectForKeyedSubscript:v70];
+          videoTierParameters14 = [(HMDCameraVideoParameterSelection *)self videoTierParameters];
+          videoTierCombinations14 = [videoTierParameters14 videoTierCombinations];
+          v79 = [videoTierCombinations14 objectForKeyedSubscript:v70];
           v80 = [(HMDCameraVideoParameterCombination *)v74 initWithProfile:v75 level:v76 videoTier:v79];
-          [v4 addObject:v80];
+          [array addObject:v80];
         }
 
-        v81 = [(HMDCameraVideoParameterSelection *)self videoTierParameters];
-        v82 = [v81 videoTierCombinations];
-        v83 = [v82 objectForKeyedSubscript:v70];
+        videoTierParameters15 = [(HMDCameraVideoParameterSelection *)self videoTierParameters];
+        videoTierCombinations15 = [videoTierParameters15 videoTierCombinations];
+        v83 = [videoTierCombinations15 objectForKeyedSubscript:v70];
 
         if (v83)
         {
           v84 = [HMDCameraVideoParameterCombination alloc];
           v85 = [[HMDH264Profile alloc] initWithH264Profile:1];
           v86 = [[HMDH264Level alloc] initWithH264Level:2];
-          v87 = [(HMDCameraVideoParameterSelection *)self videoTierParameters];
-          v88 = [v87 videoTierCombinations];
-          v89 = [v88 objectForKeyedSubscript:v70];
+          videoTierParameters16 = [(HMDCameraVideoParameterSelection *)self videoTierParameters];
+          videoTierCombinations16 = [videoTierParameters16 videoTierCombinations];
+          v89 = [videoTierCombinations16 objectForKeyedSubscript:v70];
           v90 = [(HMDCameraVideoParameterCombination *)v84 initWithProfile:v85 level:v86 videoTier:v89];
-          [v4 addObject:v90];
+          [array addObject:v90];
         }
 
-        v91 = [(HMDCameraVideoParameterSelection *)self videoTierParameters];
-        v92 = [v91 videoTierCombinations];
-        v93 = [v92 objectForKeyedSubscript:v70];
+        videoTierParameters17 = [(HMDCameraVideoParameterSelection *)self videoTierParameters];
+        videoTierCombinations17 = [videoTierParameters17 videoTierCombinations];
+        v93 = [videoTierCombinations17 objectForKeyedSubscript:v70];
 
         if (v93)
         {
           v94 = [HMDCameraVideoParameterCombination alloc];
           v95 = [[HMDH264Profile alloc] initWithH264Profile:2];
           v96 = [[HMDH264Level alloc] initWithH264Level:2];
-          v97 = [(HMDCameraVideoParameterSelection *)self videoTierParameters];
-          v98 = [v97 videoTierCombinations];
-          v99 = [v98 objectForKeyedSubscript:v70];
+          videoTierParameters18 = [(HMDCameraVideoParameterSelection *)self videoTierParameters];
+          videoTierCombinations18 = [videoTierParameters18 videoTierCombinations];
+          v99 = [videoTierCombinations18 objectForKeyedSubscript:v70];
           v100 = [(HMDCameraVideoParameterCombination *)v94 initWithProfile:v95 level:v96 videoTier:v99];
-          [v4 addObject:v100];
+          [array addObject:v100];
         }
 
         ++v69;
@@ -272,52 +272,52 @@
         }
 
         v102 = *(*(&v148 + 1) + 8 * v101);
-        v103 = [(HMDCameraVideoParameterSelection *)self videoTierParameters];
-        v104 = [v103 videoTierCombinations];
-        v105 = [v104 objectForKeyedSubscript:v102];
+        videoTierParameters19 = [(HMDCameraVideoParameterSelection *)self videoTierParameters];
+        videoTierCombinations19 = [videoTierParameters19 videoTierCombinations];
+        v105 = [videoTierCombinations19 objectForKeyedSubscript:v102];
 
         if (v105)
         {
           v106 = [HMDCameraVideoParameterCombination alloc];
           v107 = [[HMDH264Profile alloc] initWithH264Profile:0];
           v108 = [[HMDH264Level alloc] initWithH264Level:3];
-          v109 = [(HMDCameraVideoParameterSelection *)self videoTierParameters];
-          v110 = [v109 videoTierCombinations];
-          v111 = [v110 objectForKeyedSubscript:v102];
+          videoTierParameters20 = [(HMDCameraVideoParameterSelection *)self videoTierParameters];
+          videoTierCombinations20 = [videoTierParameters20 videoTierCombinations];
+          v111 = [videoTierCombinations20 objectForKeyedSubscript:v102];
           v112 = [(HMDCameraVideoParameterCombination *)v106 initWithProfile:v107 level:v108 videoTier:v111];
-          [v4 addObject:v112];
+          [array addObject:v112];
         }
 
-        v113 = [(HMDCameraVideoParameterSelection *)self videoTierParameters];
-        v114 = [v113 videoTierCombinations];
-        v115 = [v114 objectForKeyedSubscript:v102];
+        videoTierParameters21 = [(HMDCameraVideoParameterSelection *)self videoTierParameters];
+        videoTierCombinations21 = [videoTierParameters21 videoTierCombinations];
+        v115 = [videoTierCombinations21 objectForKeyedSubscript:v102];
 
         if (v115)
         {
           v116 = [HMDCameraVideoParameterCombination alloc];
           v117 = [[HMDH264Profile alloc] initWithH264Profile:1];
           v118 = [[HMDH264Level alloc] initWithH264Level:3];
-          v119 = [(HMDCameraVideoParameterSelection *)self videoTierParameters];
-          v120 = [v119 videoTierCombinations];
-          v121 = [v120 objectForKeyedSubscript:v102];
+          videoTierParameters22 = [(HMDCameraVideoParameterSelection *)self videoTierParameters];
+          videoTierCombinations22 = [videoTierParameters22 videoTierCombinations];
+          v121 = [videoTierCombinations22 objectForKeyedSubscript:v102];
           v122 = [(HMDCameraVideoParameterCombination *)v116 initWithProfile:v117 level:v118 videoTier:v121];
-          [v4 addObject:v122];
+          [array addObject:v122];
         }
 
-        v123 = [(HMDCameraVideoParameterSelection *)self videoTierParameters];
-        v124 = [v123 videoTierCombinations];
-        v125 = [v124 objectForKeyedSubscript:v102];
+        videoTierParameters23 = [(HMDCameraVideoParameterSelection *)self videoTierParameters];
+        videoTierCombinations23 = [videoTierParameters23 videoTierCombinations];
+        v125 = [videoTierCombinations23 objectForKeyedSubscript:v102];
 
         if (v125)
         {
           v126 = [HMDCameraVideoParameterCombination alloc];
           v127 = [[HMDH264Profile alloc] initWithH264Profile:2];
           v128 = [[HMDH264Level alloc] initWithH264Level:3];
-          v129 = [(HMDCameraVideoParameterSelection *)self videoTierParameters];
-          v130 = [v129 videoTierCombinations];
-          v131 = [v130 objectForKeyedSubscript:v102];
+          videoTierParameters24 = [(HMDCameraVideoParameterSelection *)self videoTierParameters];
+          videoTierCombinations24 = [videoTierParameters24 videoTierCombinations];
+          v131 = [videoTierCombinations24 objectForKeyedSubscript:v102];
           v132 = [(HMDCameraVideoParameterCombination *)v126 initWithProfile:v127 level:v128 videoTier:v131];
-          [v4 addObject:v132];
+          [array addObject:v132];
         }
 
         ++v101;
@@ -330,27 +330,27 @@
     while (v147);
   }
 
-  v133 = [v4 copy];
+  v133 = [array copy];
   validVideoParameterCombinations = self->_validVideoParameterCombinations;
   self->_validVideoParameterCombinations = v133;
 
   v135 = *MEMORY[0x277D85DE8];
 }
 
-- (id)createReselectedVideoParameters:(id)a3
+- (id)createReselectedVideoParameters:(id)parameters
 {
-  v3 = a3;
+  parametersCopy = parameters;
   v4 = [HMDVideoAttributes alloc];
-  v5 = [v3 videoResolution];
-  v6 = [v3 framerate];
-  v7 = [(HMDVideoAttributes *)v4 initWithResolution:v5 framerate:v6];
+  videoResolution = [parametersCopy videoResolution];
+  framerate = [parametersCopy framerate];
+  v7 = [(HMDVideoAttributes *)v4 initWithResolution:videoResolution framerate:framerate];
 
   v8 = [HMDReselectedRTPParameters alloc];
-  v9 = [v3 maxBitRate];
-  v10 = [v3 minBitRate];
-  v11 = [v3 rtcpInterval];
+  maxBitRate = [parametersCopy maxBitRate];
+  minBitRate = [parametersCopy minBitRate];
+  rtcpInterval = [parametersCopy rtcpInterval];
 
-  v12 = [(HMDReselectedRTPParameters *)v8 initWithMaximumBitrate:v9 minimumBitrate:v10 rtcpInterval:v11];
+  v12 = [(HMDReselectedRTPParameters *)v8 initWithMaximumBitrate:maxBitRate minimumBitrate:minBitRate rtcpInterval:rtcpInterval];
   v13 = [[HMDReselectedVideoParameters alloc] initWithAttribute:v7 rtpParameter:v12];
 
   return v13;
@@ -360,40 +360,40 @@
 {
   v35[1] = *MEMORY[0x277D85DE8];
   v3 = [HMDVideoCodecParameters alloc];
-  v4 = [(HMDCameraVideoParameterSelection *)self selectedProfile];
-  v35[0] = v4;
+  selectedProfile = [(HMDCameraVideoParameterSelection *)self selectedProfile];
+  v35[0] = selectedProfile;
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v35 count:1];
-  v6 = [(HMDCameraVideoParameterSelection *)self selectedLevel];
-  v34 = v6;
+  selectedLevel = [(HMDCameraVideoParameterSelection *)self selectedLevel];
+  v34 = selectedLevel;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:&v34 count:1];
-  v8 = [(HMDCameraVideoParameterSelection *)self selectedPacketizationMode];
-  v33 = v8;
+  selectedPacketizationMode = [(HMDCameraVideoParameterSelection *)self selectedPacketizationMode];
+  v33 = selectedPacketizationMode;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:&v33 count:1];
   v32 = [(HMDVideoCodecParameters *)v3 initWithProfiles:v5 levels:v7 packetizationModes:v9];
 
   v10 = [HMDVideoAttributes alloc];
-  v11 = [(HMDCameraVideoParameterSelection *)self selectedVideoTier];
-  v12 = [v11 videoResolution];
-  v13 = [(HMDCameraVideoParameterSelection *)self selectedVideoTier];
-  v14 = [v13 framerate];
-  v31 = [(HMDVideoAttributes *)v10 initWithResolution:v12 framerate:v14];
+  selectedVideoTier = [(HMDCameraVideoParameterSelection *)self selectedVideoTier];
+  videoResolution = [selectedVideoTier videoResolution];
+  selectedVideoTier2 = [(HMDCameraVideoParameterSelection *)self selectedVideoTier];
+  framerate = [selectedVideoTier2 framerate];
+  v31 = [(HMDVideoAttributes *)v10 initWithResolution:videoResolution framerate:framerate];
 
   v15 = [HMDSelectedRTPParameters alloc];
   v16 = MEMORY[0x277CCABB0];
-  v17 = [(HMDCameraVideoParameterSelection *)self selectedCodecType];
-  [v17 codecType];
+  selectedCodecType = [(HMDCameraVideoParameterSelection *)self selectedCodecType];
+  [selectedCodecType codecType];
   v18 = [v16 numberWithUnsignedInteger:99];
-  v19 = [(HMDCameraVideoParameterSelection *)self selectedVideoTier];
-  v20 = [v19 maxBitRate];
-  v21 = [(HMDCameraVideoParameterSelection *)self selectedVideoTier];
-  v22 = [v21 minBitRate];
-  v23 = [(HMDCameraVideoParameterSelection *)self selectedVideoTier];
-  v24 = [v23 rtcpInterval];
-  v25 = [(HMDSelectedRTPParameters *)v15 initWithPayloadType:v18 maximumBitrate:v20 minimumBitrate:v22 rtcpInterval:v24 comfortNoisePayloadType:0];
+  selectedVideoTier3 = [(HMDCameraVideoParameterSelection *)self selectedVideoTier];
+  maxBitRate = [selectedVideoTier3 maxBitRate];
+  selectedVideoTier4 = [(HMDCameraVideoParameterSelection *)self selectedVideoTier];
+  minBitRate = [selectedVideoTier4 minBitRate];
+  selectedVideoTier5 = [(HMDCameraVideoParameterSelection *)self selectedVideoTier];
+  rtcpInterval = [selectedVideoTier5 rtcpInterval];
+  v25 = [(HMDSelectedRTPParameters *)v15 initWithPayloadType:v18 maximumBitrate:maxBitRate minimumBitrate:minBitRate rtcpInterval:rtcpInterval comfortNoisePayloadType:0];
 
   v26 = [HMDSelectedVideoParameters alloc];
-  v27 = [(HMDCameraVideoParameterSelection *)self selectedCodecType];
-  v28 = [(HMDSelectedVideoParameters *)v26 initWithCodec:v27 codecParameter:v32 attribute:v31 rtpParameter:v25];
+  selectedCodecType2 = [(HMDCameraVideoParameterSelection *)self selectedCodecType];
+  v28 = [(HMDSelectedVideoParameters *)v26 initWithCodec:selectedCodecType2 codecParameter:v32 attribute:v31 rtpParameter:v25];
 
   v29 = *MEMORY[0x277D85DE8];
 
@@ -403,35 +403,35 @@
 - (id)createSRTPParamters
 {
   v3 = objc_opt_class();
-  v4 = [(HMDCameraVideoParameterSelection *)self rtpConfiguration];
-  v5 = [v4 srtpCryptoSuites];
-  v6 = [v3 selectedSRTPParametersFromCryptoSuites:v5];
+  rtpConfiguration = [(HMDCameraVideoParameterSelection *)self rtpConfiguration];
+  srtpCryptoSuites = [rtpConfiguration srtpCryptoSuites];
+  v6 = [v3 selectedSRTPParametersFromCryptoSuites:srtpCryptoSuites];
 
   return v6;
 }
 
-- (BOOL)_selectParametersFromCodec:(id)a3 profiles:(id)a4 levels:(id)a5 packetizationModes:(id)a6 videoAttributes:(id)a7
+- (BOOL)_selectParametersFromCodec:(id)codec profiles:(id)profiles levels:(id)levels packetizationModes:(id)modes videoAttributes:(id)attributes
 {
   v95 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  codecCopy = codec;
+  profilesCopy = profiles;
+  levelsCopy = levels;
+  modesCopy = modes;
+  attributesCopy = attributes;
   v84 = 0u;
   v85 = 0u;
   v86 = 0u;
   v87 = 0u;
-  v17 = v13;
+  v17 = profilesCopy;
   v18 = [v17 countByEnumeratingWithState:&v84 objects:v94 count:16];
   if (v18)
   {
     v19 = *v85;
-    v69 = v14;
-    v70 = v12;
+    v69 = levelsCopy;
+    v70 = codecCopy;
     v67 = v17;
-    v68 = v15;
-    v66 = v16;
+    v68 = modesCopy;
+    v66 = attributesCopy;
     v61 = *v85;
     do
     {
@@ -450,7 +450,7 @@
         v81 = 0u;
         v82 = 0u;
         v83 = 0u;
-        v21 = v14;
+        v21 = levelsCopy;
         v64 = [v21 countByEnumeratingWithState:&v80 objects:v93 count:16];
         if (v64)
         {
@@ -473,7 +473,7 @@
               v77 = 0u;
               v78 = 0u;
               v79 = 0u;
-              obj = v16;
+              obj = attributesCopy;
               v24 = [obj countByEnumeratingWithState:&v76 objects:v92 count:16];
               if (v24)
               {
@@ -490,22 +490,22 @@
 
                     v27 = *(*(&v76 + 1) + 8 * i);
                     v28 = [HMDCameraVideoParameterCombination alloc];
-                    v29 = [(HMDCameraVideoParameterSelection *)self videoTierParameters];
-                    v30 = [v29 videoTierCombinations];
-                    v31 = [v27 videoResolution];
-                    v32 = [v30 objectForKeyedSubscript:v31];
+                    videoTierParameters = [(HMDCameraVideoParameterSelection *)self videoTierParameters];
+                    videoTierCombinations = [videoTierParameters videoTierCombinations];
+                    videoResolution = [v27 videoResolution];
+                    v32 = [videoTierCombinations objectForKeyedSubscript:videoResolution];
                     v33 = [(HMDCameraVideoParameterCombination *)v28 initWithProfile:v74 level:v75 videoTier:v32];
 
-                    v34 = [(HMDCameraVideoParameterSelection *)self validVideoParameterCombinations];
-                    v35 = [v34 indexOfObject:v33];
+                    validVideoParameterCombinations = [(HMDCameraVideoParameterSelection *)self validVideoParameterCombinations];
+                    v35 = [validVideoParameterCombinations indexOfObject:v33];
 
                     if (v35 != 0x7FFFFFFFFFFFFFFFLL)
                     {
-                      v42 = [(HMDCameraVideoParameterSelection *)self validVideoParameterCombinations];
-                      v43 = [v42 objectAtIndex:v35];
+                      validVideoParameterCombinations2 = [(HMDCameraVideoParameterSelection *)self validVideoParameterCombinations];
+                      v43 = [validVideoParameterCombinations2 objectAtIndex:v35];
 
                       v44 = objc_autoreleasePoolPush();
-                      v45 = self;
+                      selfCopy = self;
                       v46 = HMFGetOSLogHandle();
                       if (os_log_type_enabled(v46, OS_LOG_TYPE_INFO))
                       {
@@ -518,49 +518,49 @@
                       }
 
                       objc_autoreleasePoolPop(v44);
-                      v48 = [(HMDCameraVideoParameterSelection *)v45 videoTierParameters];
-                      [v48 updateTierOrder:obj];
+                      videoTierParameters2 = [(HMDCameraVideoParameterSelection *)selfCopy videoTierParameters];
+                      [videoTierParameters2 updateTierOrder:obj];
 
-                      v49 = [(HMDCameraVideoParameterSelection *)v45 videoTierParameters];
-                      v50 = [v43 videoTier];
-                      v51 = [v50 videoResolution];
-                      [v49 selectInitialTierWithAspectRatio:{+[HMDStreamingCapabilities aspectRatioOfResolution:](HMDStreamingCapabilities, "aspectRatioOfResolution:", v51)}];
+                      videoTierParameters3 = [(HMDCameraVideoParameterSelection *)selfCopy videoTierParameters];
+                      videoTier = [v43 videoTier];
+                      videoResolution2 = [videoTier videoResolution];
+                      [videoTierParameters3 selectInitialTierWithAspectRatio:{+[HMDStreamingCapabilities aspectRatioOfResolution:](HMDStreamingCapabilities, "aspectRatioOfResolution:", videoResolution2)}];
 
-                      v12 = v70;
-                      [(HMDCameraVideoParameterSelection *)v45 setSelectedCodecType:v70];
-                      [(HMDCameraVideoParameterSelection *)v45 setSelectedProfile:v74];
-                      [(HMDCameraVideoParameterSelection *)v45 setSelectedLevel:v75];
-                      v15 = v68;
+                      codecCopy = v70;
+                      [(HMDCameraVideoParameterSelection *)selfCopy setSelectedCodecType:v70];
+                      [(HMDCameraVideoParameterSelection *)selfCopy setSelectedProfile:v74];
+                      [(HMDCameraVideoParameterSelection *)selfCopy setSelectedLevel:v75];
+                      modesCopy = v68;
                       v52 = [v68 objectAtIndex:0];
-                      [(HMDCameraVideoParameterSelection *)v45 setSelectedPacketizationMode:v52];
+                      [(HMDCameraVideoParameterSelection *)selfCopy setSelectedPacketizationMode:v52];
 
-                      v53 = [(HMDCameraVideoParameterSelection *)v45 videoTierParameters];
-                      v54 = [v53 currentPickedTier];
-                      [(HMDCameraVideoParameterSelection *)v45 setSelectedVideoTier:v54];
+                      videoTierParameters4 = [(HMDCameraVideoParameterSelection *)selfCopy videoTierParameters];
+                      currentPickedTier = [videoTierParameters4 currentPickedTier];
+                      [(HMDCameraVideoParameterSelection *)selfCopy setSelectedVideoTier:currentPickedTier];
 
-                      v55 = [(HMDCameraVideoParameterSelection *)v45 videoTierParameters];
-                      v56 = [v55 currentPickedTier];
-                      v57 = [v56 framerate];
-                      [(HMDCameraVideoParameterSelection *)v45 setSelectedFramerate:v57];
+                      videoTierParameters5 = [(HMDCameraVideoParameterSelection *)selfCopy videoTierParameters];
+                      currentPickedTier2 = [videoTierParameters5 currentPickedTier];
+                      framerate = [currentPickedTier2 framerate];
+                      [(HMDCameraVideoParameterSelection *)selfCopy setSelectedFramerate:framerate];
 
                       v41 = 1;
-                      v14 = v69;
-                      v16 = v66;
+                      levelsCopy = v69;
+                      attributesCopy = v66;
                       v17 = v67;
                       goto LABEL_30;
                     }
 
                     v36 = objc_autoreleasePoolPush();
-                    v37 = self;
+                    selfCopy2 = self;
                     v38 = HMFGetOSLogHandle();
                     if (os_log_type_enabled(v38, OS_LOG_TYPE_INFO))
                     {
                       v39 = HMFGetLogIdentifier();
-                      v40 = [v27 videoResolution];
+                      videoResolution3 = [v27 videoResolution];
                       *buf = 138543618;
                       v89 = v39;
                       v90 = 2112;
-                      v91 = v40;
+                      v91 = videoResolution3;
                       _os_log_impl(&dword_229538000, v38, OS_LOG_TYPE_INFO, "%{public}@Combination does not exist for video resolution: %@", buf, 0x16u);
                     }
 
@@ -578,11 +578,11 @@
               }
 
               v23 = v65 + 1;
-              v14 = v69;
-              v12 = v70;
+              levelsCopy = v69;
+              codecCopy = v70;
               v17 = v67;
-              v15 = v68;
-              v16 = v66;
+              modesCopy = v68;
+              attributesCopy = v66;
               v21 = v71;
               v22 = v62;
             }
@@ -622,14 +622,14 @@ LABEL_30:
 {
   v125 = *MEMORY[0x277D85DE8];
   v3 = objc_opt_class();
-  v4 = [(HMDCameraVideoParameterSelection *)self videoCodecsPreference];
-  v5 = [(HMDCameraVideoParameterSelection *)self streamingCapabilities];
-  v6 = [v5 supportedVideoCodecs];
-  v7 = [v6 allObjects];
-  v81 = self;
-  v8 = [(HMDCameraVideoParameterSelection *)self supportedVideoStreamConfiguration];
-  v9 = [v8 codecConfigurations];
-  v10 = [v9 allKeys];
+  videoCodecsPreference = [(HMDCameraVideoParameterSelection *)self videoCodecsPreference];
+  streamingCapabilities = [(HMDCameraVideoParameterSelection *)self streamingCapabilities];
+  supportedVideoCodecs = [streamingCapabilities supportedVideoCodecs];
+  allObjects = [supportedVideoCodecs allObjects];
+  selfCopy = self;
+  supportedVideoStreamConfiguration = [(HMDCameraVideoParameterSelection *)self supportedVideoStreamConfiguration];
+  codecConfigurations = [supportedVideoStreamConfiguration codecConfigurations];
+  allKeys = [codecConfigurations allKeys];
   if (supportedVideoCodecs)
   {
     v11 = [HMDVideoCodec arrayWithCodecTypes:?];
@@ -640,7 +640,7 @@ LABEL_30:
     v11 = 0;
   }
 
-  v12 = [v3 selectedParametersFromPreferredParameters:v4 deviceSupportedParameters:v7 cameraSupportedParameters:v10 overriddenParameters:v11 parameterDescription:@"Video-Codecs"];
+  v12 = [v3 selectedParametersFromPreferredParameters:videoCodecsPreference deviceSupportedParameters:allObjects cameraSupportedParameters:allKeys overriddenParameters:v11 parameterDescription:@"Video-Codecs"];
 
   v107 = 0u;
   v108 = 0u;
@@ -653,7 +653,7 @@ LABEL_30:
     v77 = 0;
     v79 = *v106;
     v13 = 0x277CBE000uLL;
-    v14 = self;
+    selfCopy2 = self;
 LABEL_6:
     v15 = 0;
     while (1)
@@ -665,48 +665,48 @@ LABEL_6:
 
       v83 = v15;
       v16 = *(*(&v105 + 1) + 8 * v15);
-      v17 = [(HMDCameraVideoParameterSelection *)v14 supportedVideoStreamConfiguration];
-      v18 = [v17 codecConfigurations];
-      v19 = [v18 objectForKeyedSubscript:v16];
-      v20 = [v19 codecParameters];
+      supportedVideoStreamConfiguration2 = [(HMDCameraVideoParameterSelection *)selfCopy2 supportedVideoStreamConfiguration];
+      codecConfigurations2 = [supportedVideoStreamConfiguration2 codecConfigurations];
+      v19 = [codecConfigurations2 objectForKeyedSubscript:v16];
+      codecParameters = [v19 codecParameters];
 
-      v21 = [(HMDCameraVideoParameterSelection *)v14 supportedVideoStreamConfiguration];
-      v22 = [v21 codecConfigurations];
+      supportedVideoStreamConfiguration3 = [(HMDCameraVideoParameterSelection *)selfCopy2 supportedVideoStreamConfiguration];
+      codecConfigurations3 = [supportedVideoStreamConfiguration3 codecConfigurations];
       v82 = v16;
-      v23 = [v22 objectForKeyedSubscript:v16];
-      v24 = [v23 videoAttributes];
+      v23 = [codecConfigurations3 objectForKeyedSubscript:v16];
+      videoAttributes = [v23 videoAttributes];
 
       v25 = objc_opt_class();
-      v26 = [(HMDCameraVideoParameterSelection *)v14 h264ProfilesPreference];
-      v27 = [(HMDCameraVideoParameterSelection *)v14 streamingCapabilities];
-      v28 = [v27 supportedH264Profiles];
-      v29 = [v28 allObjects];
-      v30 = [v20 h264Profiles];
-      v87 = [v25 selectedParametersFromPreferredParameters:v26 deviceSupportedParameters:v29 cameraSupportedParameters:v30 overriddenParameters:0 parameterDescription:@"H264-Profile"];
+      h264ProfilesPreference = [(HMDCameraVideoParameterSelection *)selfCopy2 h264ProfilesPreference];
+      streamingCapabilities2 = [(HMDCameraVideoParameterSelection *)selfCopy2 streamingCapabilities];
+      supportedH264Profiles = [streamingCapabilities2 supportedH264Profiles];
+      allObjects2 = [supportedH264Profiles allObjects];
+      h264Profiles = [codecParameters h264Profiles];
+      v87 = [v25 selectedParametersFromPreferredParameters:h264ProfilesPreference deviceSupportedParameters:allObjects2 cameraSupportedParameters:h264Profiles overriddenParameters:0 parameterDescription:@"H264-Profile"];
 
       v31 = objc_opt_class();
-      v32 = [(HMDCameraVideoParameterSelection *)v14 h264LevelsPreference];
-      v33 = [(HMDCameraVideoParameterSelection *)v14 streamingCapabilities];
-      v34 = [v33 supportedH264Levels];
-      v35 = [v34 allObjects];
-      v36 = [v20 levels];
-      v86 = [v31 selectedParametersFromPreferredParameters:v32 deviceSupportedParameters:v35 cameraSupportedParameters:v36 overriddenParameters:0 parameterDescription:@"H264-Level"];
+      h264LevelsPreference = [(HMDCameraVideoParameterSelection *)selfCopy2 h264LevelsPreference];
+      streamingCapabilities3 = [(HMDCameraVideoParameterSelection *)selfCopy2 streamingCapabilities];
+      supportedH264Levels = [streamingCapabilities3 supportedH264Levels];
+      allObjects3 = [supportedH264Levels allObjects];
+      levels = [codecParameters levels];
+      v86 = [v31 selectedParametersFromPreferredParameters:h264LevelsPreference deviceSupportedParameters:allObjects3 cameraSupportedParameters:levels overriddenParameters:0 parameterDescription:@"H264-Level"];
 
       v37 = objc_opt_class();
-      v38 = [(HMDCameraVideoParameterSelection *)v14 h264PacketizationPreference];
-      v39 = [(HMDCameraVideoParameterSelection *)v14 streamingCapabilities];
-      v40 = [v39 supportedPacketizationModes];
-      v41 = [v40 allObjects];
-      v88 = v20;
-      v42 = [v20 packetizationModes];
-      v85 = [v37 selectedParametersFromPreferredParameters:v38 deviceSupportedParameters:v41 cameraSupportedParameters:v42 overriddenParameters:0 parameterDescription:@"H264-Packetization"];
+      h264PacketizationPreference = [(HMDCameraVideoParameterSelection *)selfCopy2 h264PacketizationPreference];
+      streamingCapabilities4 = [(HMDCameraVideoParameterSelection *)selfCopy2 streamingCapabilities];
+      supportedPacketizationModes = [streamingCapabilities4 supportedPacketizationModes];
+      allObjects4 = [supportedPacketizationModes allObjects];
+      v88 = codecParameters;
+      packetizationModes = [codecParameters packetizationModes];
+      v85 = [v37 selectedParametersFromPreferredParameters:h264PacketizationPreference deviceSupportedParameters:allObjects4 cameraSupportedParameters:packetizationModes overriddenParameters:0 parameterDescription:@"H264-Packetization"];
 
-      v43 = [*(v13 + 2840) array];
+      array = [*(v13 + 2840) array];
       v101 = 0u;
       v102 = 0u;
       v103 = 0u;
       v104 = 0u;
-      v92 = v24;
+      v92 = videoAttributes;
       v44 = [v92 countByEnumeratingWithState:&v101 objects:v123 count:16];
       if (v44)
       {
@@ -722,12 +722,12 @@ LABEL_6:
             }
 
             v48 = *(*(&v101 + 1) + 8 * i);
-            v49 = [v48 videoResolution];
+            videoResolution = [v48 videoResolution];
 
-            if (v49)
+            if (videoResolution)
             {
-              v50 = [v48 videoResolution];
-              [v43 addObject:v50];
+              videoResolution2 = [v48 videoResolution];
+              [array addObject:videoResolution2];
             }
           }
 
@@ -738,10 +738,10 @@ LABEL_6:
       }
 
       v51 = objc_opt_class();
-      v52 = [(HMDCameraVideoParameterSelection *)v14 videoResolutionsPreference];
-      v53 = [(HMDCameraVideoParameterSelection *)v14 streamingCapabilities];
-      v54 = [v53 supportedVideoResolutions];
-      v55 = [v54 allObjects];
+      videoResolutionsPreference = [(HMDCameraVideoParameterSelection *)selfCopy2 videoResolutionsPreference];
+      streamingCapabilities5 = [(HMDCameraVideoParameterSelection *)selfCopy2 streamingCapabilities];
+      supportedVideoResolutions = [streamingCapabilities5 supportedVideoResolutions];
+      allObjects5 = [supportedVideoResolutions allObjects];
       if (supportedResolutions)
       {
         v56 = [HMDVideoResolution arrayWithResolutions:?];
@@ -752,10 +752,10 @@ LABEL_6:
         v56 = 0;
       }
 
-      v84 = v43;
-      v57 = [v51 selectedParametersFromPreferredParameters:v52 deviceSupportedParameters:v55 cameraSupportedParameters:v43 overriddenParameters:v56 parameterDescription:@"Resolution"];
+      v84 = array;
+      v57 = [v51 selectedParametersFromPreferredParameters:videoResolutionsPreference deviceSupportedParameters:allObjects5 cameraSupportedParameters:array overriddenParameters:v56 parameterDescription:@"Resolution"];
 
-      v58 = [*(v13 + 2840) array];
+      array2 = [*(v13 + 2840) array];
       v97 = 0u;
       v98 = 0u;
       v99 = 0u;
@@ -795,12 +795,12 @@ LABEL_6:
                   }
 
                   v66 = *(*(&v93 + 1) + 8 * k);
-                  v67 = [v66 videoResolution];
-                  v68 = [v60 isEqual:v67];
+                  videoResolution3 = [v66 videoResolution];
+                  v68 = [v60 isEqual:videoResolution3];
 
                   if (v68)
                   {
-                    [v58 addObject:v66];
+                    [array2 addObject:v66];
                   }
                 }
 
@@ -817,10 +817,10 @@ LABEL_6:
         while (v91);
       }
 
-      if ([v87 count] && objc_msgSend(v86, "count") && objc_msgSend(v85, "count") && objc_msgSend(v58, "count"))
+      if ([v87 count] && objc_msgSend(v86, "count") && objc_msgSend(v85, "count") && objc_msgSend(array2, "count"))
       {
-        v14 = v81;
-        v69 = [(HMDCameraVideoParameterSelection *)v81 _selectParametersFromCodec:v82 profiles:v87 levels:v86 packetizationModes:v85 videoAttributes:v58];
+        selfCopy2 = selfCopy;
+        v69 = [(HMDCameraVideoParameterSelection *)selfCopy _selectParametersFromCodec:v82 profiles:v87 levels:v86 packetizationModes:v85 videoAttributes:array2];
         v77 |= v69;
         v70 = v69 ? 2 : 0;
         v13 = 0x277CBE000;
@@ -829,8 +829,8 @@ LABEL_6:
       else
       {
         v71 = objc_autoreleasePoolPush();
-        v14 = v81;
-        v72 = v81;
+        selfCopy2 = selfCopy;
+        v72 = selfCopy;
         v73 = HMFGetOSLogHandle();
         v13 = 0x277CBE000;
         if (os_log_type_enabled(v73, OS_LOG_TYPE_INFO))
@@ -847,7 +847,7 @@ LABEL_6:
           v117 = 2112;
           v118 = v89;
           v119 = 2112;
-          v120 = v58;
+          v120 = array2;
           _os_log_impl(&dword_229538000, v73, OS_LOG_TYPE_INFO, "%{public}@One of the intersected candidates is empty: candidateProfiles: %@, candidateLevels: %@, candidatePacketModes: %@, candidateVideoResolutions: %@, candidateAttributes: %@", buf, 0x3Eu);
         }
 
@@ -888,29 +888,29 @@ LABEL_6:
 
 - (id)logIdentifier
 {
-  v2 = [(HMDCameraParameterSelection *)self sessionID];
-  v3 = [v2 description];
+  sessionID = [(HMDCameraParameterSelection *)self sessionID];
+  v3 = [sessionID description];
 
   return v3;
 }
 
-- (HMDCameraVideoParameterSelection)initWithSessionID:(id)a3 videoTierParameters:(id)a4 supportedVideoConfiguration:(id)a5 supportedRTPConfiguration:(id)a6 streamingCapabilities:(id)a7
+- (HMDCameraVideoParameterSelection)initWithSessionID:(id)d videoTierParameters:(id)parameters supportedVideoConfiguration:(id)configuration supportedRTPConfiguration:(id)pConfiguration streamingCapabilities:(id)capabilities
 {
   v41 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  dCopy = d;
+  parametersCopy = parameters;
+  configurationCopy = configuration;
+  pConfigurationCopy = pConfiguration;
+  capabilitiesCopy = capabilities;
   v36.receiver = self;
   v36.super_class = HMDCameraVideoParameterSelection;
-  v17 = [(HMDCameraParameterSelection *)&v36 initWithSessionID:v12];
+  v17 = [(HMDCameraParameterSelection *)&v36 initWithSessionID:dCopy];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_supportedVideoStreamConfiguration, a5);
-    objc_storeStrong(&v18->_rtpConfiguration, a6);
-    objc_storeStrong(&v18->_streamingCapabilities, a7);
+    objc_storeStrong(&v17->_supportedVideoStreamConfiguration, configuration);
+    objc_storeStrong(&v18->_rtpConfiguration, pConfiguration);
+    objc_storeStrong(&v18->_streamingCapabilities, capabilities);
     v19 = [HMDVideoCodec arrayWithCodecTypes:&unk_283E75A28];
     videoCodecsPreference = v18->_videoCodecsPreference;
     v18->_videoCodecsPreference = v19;
@@ -927,9 +927,9 @@ LABEL_6:
     h264PacketizationPreference = v18->_h264PacketizationPreference;
     v18->_h264PacketizationPreference = v25;
 
-    objc_storeStrong(&v18->_videoTierParameters, a4);
+    objc_storeStrong(&v18->_videoTierParameters, parameters);
     [(HMDCameraVideoParameterSelection *)v18 _generateAllCombinations];
-    v27 = [objc_opt_class() videoResolutionPreferenceForStreamingTierType:{objc_msgSend(v16, "streamingTierType")}];
+    v27 = [objc_opt_class() videoResolutionPreferenceForStreamingTierType:{objc_msgSend(capabilitiesCopy, "streamingTierType")}];
     videoResolutionsPreference = v18->_videoResolutionsPreference;
     v18->_videoResolutionsPreference = v27;
 
@@ -974,31 +974,31 @@ void __47__HMDCameraVideoParameterSelection_logCategory__block_invoke()
   logCategory__hmf_once_v2_150459 = v1;
 }
 
-+ (id)videoResolutionPreferenceForStreamingTierType:(unint64_t)a3
++ (id)videoResolutionPreferenceForStreamingTierType:(unint64_t)type
 {
-  v4 = [MEMORY[0x277CBEB18] array];
-  v5 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   if (_os_feature_enabled_impl())
   {
     v6 = [[HMDVideoResolution alloc] initWithResolution:29];
-    [v4 addObject:v6];
+    [array addObject:v6];
     v7 = [[HMDVideoResolution alloc] initWithResolution:28];
-    [v5 addObject:v7];
+    [array2 addObject:v7];
   }
 
   v20 = [HMDVideoResolution arrayWithResolutions:&unk_283E75A88];
   v8 = [HMDVideoResolution arrayWithResolutions:&unk_283E75AA0];
-  [v4 addObjectsFromArray:v20];
-  [v5 addObjectsFromArray:v8];
+  [array addObjectsFromArray:v20];
+  [array2 addObjectsFromArray:v8];
   v9 = [HMDVideoResolution arrayWithResolutions:&unk_283E75AB8];
   v10 = [HMDVideoResolution arrayWithResolutions:&unk_283E75AD0];
   v11 = [HMDVideoResolution arrayWithResolutions:&unk_283E75AE8];
-  v12 = [MEMORY[0x277CBEB18] array];
-  v13 = v12;
-  v14 = a3 == 0;
-  if (a3)
+  array3 = [MEMORY[0x277CBEB18] array];
+  v13 = array3;
+  v14 = type == 0;
+  if (type)
   {
-    v15 = v4;
+    v15 = array;
   }
 
   else
@@ -1006,7 +1006,7 @@ void __47__HMDCameraVideoParameterSelection_logCategory__block_invoke()
     v15 = v9;
   }
 
-  if (a3)
+  if (type)
   {
     v16 = v9;
   }
@@ -1018,17 +1018,17 @@ void __47__HMDCameraVideoParameterSelection_logCategory__block_invoke()
 
   if (v14)
   {
-    v17 = v4;
+    v17 = array;
   }
 
   else
   {
-    v17 = v5;
+    v17 = array2;
   }
 
   if (v14)
   {
-    v18 = v5;
+    v18 = array2;
   }
 
   else
@@ -1036,7 +1036,7 @@ void __47__HMDCameraVideoParameterSelection_logCategory__block_invoke()
     v18 = v10;
   }
 
-  [v12 addObjectsFromArray:v15];
+  [array3 addObjectsFromArray:v15];
   [v13 addObjectsFromArray:v16];
   [v13 addObjectsFromArray:v17];
   [v13 addObjectsFromArray:v18];

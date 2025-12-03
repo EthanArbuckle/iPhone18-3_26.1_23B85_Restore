@@ -1,5 +1,5 @@
 @interface LabelAndImageView
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (NSString)description;
 - (void)layoutSubviews;
 @end
@@ -8,14 +8,14 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B9FE85C4();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v4 = self;
+  width = fits.width;
+  selfCopy = self;
   sub_1B9FE8A58(width);
   v6 = v5;
   v8 = v7;
@@ -29,7 +29,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B9FE8CA4();
 
   v3 = sub_1BA4A6758();

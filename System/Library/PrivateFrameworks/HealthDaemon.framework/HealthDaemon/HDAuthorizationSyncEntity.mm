@@ -1,42 +1,42 @@
 @interface HDAuthorizationSyncEntity
-+ (BOOL)companionDidChangeForProfile:(id)a3 error:(id *)a4;
-+ (BOOL)generateSyncObjectsForSession:(id)a3 syncAnchorRange:(HDSyncAnchorRange)a4 profile:(id)a5 messageHandler:(id)a6 error:(id *)a7;
-+ (id)createCodableSourceAuthorizationWithSource:(id)a3 syncSession:(id)a4;
-+ (id)decodeSyncObjectWithData:(id)a3;
-+ (id)syncEntityDependenciesForSyncProtocolVersion:(int)a3;
-+ (int64_t)nextSyncAnchorWithSession:(id)a3 startSyncAnchor:(int64_t)a4 profile:(id)a5 error:(id *)a6;
++ (BOOL)companionDidChangeForProfile:(id)profile error:(id *)error;
++ (BOOL)generateSyncObjectsForSession:(id)session syncAnchorRange:(HDSyncAnchorRange)range profile:(id)profile messageHandler:(id)handler error:(id *)error;
++ (id)createCodableSourceAuthorizationWithSource:(id)source syncSession:(id)session;
++ (id)decodeSyncObjectWithData:(id)data;
++ (id)syncEntityDependenciesForSyncProtocolVersion:(int)version;
++ (int64_t)nextSyncAnchorWithSession:(id)session startSyncAnchor:(int64_t)anchor profile:(id)profile error:(id *)error;
 @end
 
 @implementation HDAuthorizationSyncEntity
 
-+ (BOOL)companionDidChangeForProfile:(id)a3 error:(id *)a4
++ (BOOL)companionDidChangeForProfile:(id)profile error:(id *)error
 {
-  v5 = [a3 database];
-  LOBYTE(a4) = [(HDHealthEntity *)HDAuthorizationEntity deleteEntitiesWithPredicate:0 healthDatabase:v5 error:a4];
+  database = [profile database];
+  LOBYTE(error) = [(HDHealthEntity *)HDAuthorizationEntity deleteEntitiesWithPredicate:0 healthDatabase:database error:error];
 
-  return a4;
+  return error;
 }
 
-+ (id)createCodableSourceAuthorizationWithSource:(id)a3 syncSession:(id)a4
++ (id)createCodableSourceAuthorizationWithSource:(id)source syncSession:(id)session
 {
-  v4 = a3;
+  sourceCopy = source;
   v5 = objc_alloc_init(HDCodableSourceAuthorization);
-  v6 = [v4 uuid];
+  uuid = [sourceCopy uuid];
 
-  [(HDCodableSourceAuthorization *)v5 setSourceUUID:v6];
+  [(HDCodableSourceAuthorization *)v5 setSourceUUID:uuid];
 
   return v5;
 }
 
-+ (BOOL)generateSyncObjectsForSession:(id)a3 syncAnchorRange:(HDSyncAnchorRange)a4 profile:(id)a5 messageHandler:(id)a6 error:(id *)a7
++ (BOOL)generateSyncObjectsForSession:(id)session syncAnchorRange:(HDSyncAnchorRange)range profile:(id)profile messageHandler:(id)handler error:(id *)error
 {
-  end = a4.end;
-  start = a4.start;
+  end = range.end;
+  start = range.start;
   v46 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a5;
-  v27 = a6;
-  v14 = [MEMORY[0x277CBEB38] dictionary];
+  sessionCopy = session;
+  profileCopy = profile;
+  handlerCopy = handler;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   objc_opt_self();
   v38 = @"source_id";
   v39 = @"object_type";
@@ -47,7 +47,7 @@
   v44 = @"modification_epoch";
   v45 = @"sync_identity";
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:&v38 count:8];
-  v16 = [v13 database];
+  database = [profileCopy database];
   v38 = 0;
   v39 = &v38;
   v40 = 0x2020000000;
@@ -58,25 +58,25 @@
   v28[3] = &unk_27862FFE0;
   v17 = v15;
   v29 = v17;
-  v35 = a1;
-  v18 = v12;
+  selfCopy = self;
+  v18 = sessionCopy;
   v36 = start;
   v37 = end;
   v30 = v18;
   v34 = &v38;
-  v19 = v16;
+  v19 = database;
   v31 = v19;
-  v20 = v14;
+  v20 = dictionary;
   v32 = v20;
-  v21 = v13;
+  v21 = profileCopy;
   v33 = v21;
-  if ([(HDHealthEntity *)HDAuthorizationEntity performReadTransactionWithHealthDatabase:v19 error:a7 block:v28])
+  if ([(HDHealthEntity *)HDAuthorizationEntity performReadTransactionWithHealthDatabase:v19 error:error block:v28])
   {
     if ([v20 count])
     {
-      [a1 didGenerateCodableSourceAuthorizationsForSyncSession:v18];
-      v22 = [v20 allValues];
-      v23 = [v27 sendCodableChange:v22 resultAnchor:v39[3] sequence:0 done:1 error:a7];
+      [self didGenerateCodableSourceAuthorizationsForSyncSession:v18];
+      allValues = [v20 allValues];
+      v23 = [handlerCopy sendCodableChange:allValues resultAnchor:v39[3] sequence:0 done:1 error:error];
     }
 
     else
@@ -211,24 +211,24 @@ LABEL_16:
   return v23;
 }
 
-+ (int64_t)nextSyncAnchorWithSession:(id)a3 startSyncAnchor:(int64_t)a4 profile:(id)a5 error:(id *)a6
++ (int64_t)nextSyncAnchorWithSession:(id)session startSyncAnchor:(int64_t)anchor profile:(id)profile error:(id *)error
 {
-  v10 = a3;
-  v11 = [a5 database];
-  v12 = [(HDHealthEntity *)HDAuthorizationEntity nextSyncAnchorWithStartAnchor:a4 predicate:0 syncEntityClass:a1 session:v10 orderingTerms:0 limit:0 healthDatabase:v11 error:a6];
+  sessionCopy = session;
+  database = [profile database];
+  v12 = [(HDHealthEntity *)HDAuthorizationEntity nextSyncAnchorWithStartAnchor:anchor predicate:0 syncEntityClass:self session:sessionCopy orderingTerms:0 limit:0 healthDatabase:database error:error];
 
   return v12;
 }
 
-+ (id)decodeSyncObjectWithData:(id)a3
++ (id)decodeSyncObjectWithData:(id)data
 {
-  v3 = a3;
-  v4 = [[HDCodableSourceAuthorization alloc] initWithData:v3];
+  dataCopy = data;
+  v4 = [[HDCodableSourceAuthorization alloc] initWithData:dataCopy];
 
   return v4;
 }
 
-+ (id)syncEntityDependenciesForSyncProtocolVersion:(int)a3
++ (id)syncEntityDependenciesForSyncProtocolVersion:(int)version
 {
   v3 = MEMORY[0x277CBEB98];
   v4 = objc_opt_class();

@@ -1,11 +1,11 @@
 @interface FilesystemDownloadDataConsumer
-- (BOOL)_checkHashForByteCount:(int64_t)a3;
-- (BOOL)_hashAndWriteData:(id)a3 error:(id *)a4;
+- (BOOL)_checkHashForByteCount:(int64_t)count;
+- (BOOL)_hashAndWriteData:(id)data error:(id *)error;
 - (BOOL)_openFile;
-- (BOOL)consumeData:(id)a3 error:(id *)a4;
-- (BOOL)finish:(id *)a3;
-- (FilesystemDownloadDataConsumer)initWithPath:(id)a3 MD5Hashes:(id)a4 numberOfBytesToHash:(int64_t)a5;
-- (void)_truncateToSize:(int64_t)a3;
+- (BOOL)consumeData:(id)data error:(id *)error;
+- (BOOL)finish:(id *)finish;
+- (FilesystemDownloadDataConsumer)initWithPath:(id)path MD5Hashes:(id)hashes numberOfBytesToHash:(int64_t)hash;
+- (void)_truncateToSize:(int64_t)size;
 - (void)dealloc;
 - (void)reset;
 - (void)suspend;
@@ -13,21 +13,21 @@
 
 @implementation FilesystemDownloadDataConsumer
 
-- (FilesystemDownloadDataConsumer)initWithPath:(id)a3 MD5Hashes:(id)a4 numberOfBytesToHash:(int64_t)a5
+- (FilesystemDownloadDataConsumer)initWithPath:(id)path MD5Hashes:(id)hashes numberOfBytesToHash:(int64_t)hash
 {
-  v8 = a3;
-  v9 = a4;
+  pathCopy = path;
+  hashesCopy = hashes;
   v16.receiver = self;
   v16.super_class = FilesystemDownloadDataConsumer;
   v10 = [(FilesystemDownloadDataConsumer *)&v16 init];
   if (v10)
   {
-    v11 = [v9 copy];
+    v11 = [hashesCopy copy];
     v12 = *(v10 + 25);
     *(v10 + 25) = v11;
 
-    *(v10 + 129) = a5;
-    v13 = [v8 copy];
+    *(v10 + 129) = hash;
+    v13 = [pathCopy copy];
     v14 = *(v10 + 137);
     *(v10 + 137) = v13;
 
@@ -55,13 +55,13 @@
   [(FilesystemDownloadDataConsumer *)&v4 dealloc];
 }
 
-- (BOOL)consumeData:(id)a3 error:(id *)a4
+- (BOOL)consumeData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = v6;
+  dataCopy = data;
+  v7 = dataCopy;
   if (*(&self->_md5Context.num + 1) < 1)
   {
-    v10 = write(*(&self->_bytesWritten + 1), [v6 bytes], objc_msgSend(v6, "length"));
+    v10 = write(*(&self->_bytesWritten + 1), [dataCopy bytes], objc_msgSend(dataCopy, "length"));
     if (v10 < 0)
     {
       v9 = [NSError errorWithDomain:NSPOSIXErrorDomain code:*__error() userInfo:0];
@@ -81,13 +81,13 @@
   else
   {
     v15 = 0;
-    v8 = [(FilesystemDownloadDataConsumer *)self _hashAndWriteData:v6 error:&v15];
+    v8 = [(FilesystemDownloadDataConsumer *)self _hashAndWriteData:dataCopy error:&v15];
     v9 = v15;
   }
 
   v12 = (self->_bytesWritten & 0x10000000000) != 0 || *(&self->super._overrideProgress + 1) > 0;
   BYTE5(self->_bytesWritten) = v12;
-  if (a4)
+  if (error)
   {
     v13 = v8;
   }
@@ -100,13 +100,13 @@
   if ((v13 & 1) == 0)
   {
     v9 = v9;
-    *a4 = v9;
+    *error = v9;
   }
 
   return v8;
 }
 
-- (BOOL)finish:(id *)a3
+- (BOOL)finish:(id *)finish
 {
   if (*(&self->_bytesWritten + 1) == -1)
   {
@@ -131,11 +131,11 @@
 
     close(*(&self->_bytesWritten + 1));
     *(&self->_bytesWritten + 1) = -1;
-    if (a3 && !v6)
+    if (finish && !v6)
     {
       v7 = v5;
       v6 = 0;
-      *a3 = v5;
+      *finish = v5;
     }
   }
 
@@ -159,11 +159,11 @@
   }
 }
 
-- (BOOL)_checkHashForByteCount:(int64_t)a3
+- (BOOL)_checkHashForByteCount:(int64_t)count
 {
   CC_MD5_Final(md, (&self->_hashes + 1));
   v5 = ISStringFromDigest();
-  v6 = a3 / *(&self->_md5Context.num + 1);
+  v6 = count / *(&self->_md5Context.num + 1);
   v7 = (ceilf(v6) + -1.0);
   if ([*(&self->_fd + 1) count] <= v7)
   {
@@ -173,19 +173,19 @@
       v8 = +[SSLogConfig sharedConfig];
     }
 
-    v18 = [v8 shouldLog];
+    shouldLog = [v8 shouldLog];
     if ([v8 shouldLogToDisk])
     {
-      v9 = v18 | 2;
+      v9 = shouldLog | 2;
     }
 
     else
     {
-      v9 = v18;
+      v9 = shouldLog;
     }
 
-    v10 = [v8 OSLogObject];
-    if (!os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v8 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v9 &= 2u;
     }
@@ -199,7 +199,7 @@
       *&v25[12] = 2048;
       *&v25[14] = v7;
       *&v25[22] = 2048;
-      v26 = a3;
+      countCopy2 = count;
       *v27 = 2048;
       *&v27[2] = v20;
       v21 = v19;
@@ -212,7 +212,7 @@
         goto LABEL_25;
       }
 
-      v10 = [NSString stringWithCString:v22 encoding:4, v25, v24, *v25, *&v25[8], v26, *v27, *&v27[8]];
+      oSLogObject = [NSString stringWithCString:v22 encoding:4, v25, v24, *v25, *&v25[8], countCopy2, *v27, *&v27[8]];
       free(v22);
       SSFileLog();
       LOBYTE(v9) = 0;
@@ -225,25 +225,25 @@
   LOBYTE(v9) = [v5 isEqualToString:v8];
   if ((v9 & 1) == 0)
   {
-    v10 = +[SSLogConfig sharedDaemonConfig];
-    if (!v10)
+    oSLogObject = +[SSLogConfig sharedDaemonConfig];
+    if (!oSLogObject)
     {
-      v10 = +[SSLogConfig sharedConfig];
+      oSLogObject = +[SSLogConfig sharedConfig];
     }
 
-    v11 = [v10 shouldLog];
-    if ([v10 shouldLogToDisk])
+    shouldLog2 = [oSLogObject shouldLog];
+    if ([oSLogObject shouldLogToDisk])
     {
-      v12 = v11 | 2;
+      v12 = shouldLog2 | 2;
     }
 
     else
     {
-      v12 = v11;
+      v12 = shouldLog2;
     }
 
-    v13 = [v10 OSLogObject];
-    if (!os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+    v10OSLogObject = [oSLogObject OSLogObject];
+    if (!os_log_type_enabled(v10OSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v12 &= 2u;
     }
@@ -257,7 +257,7 @@
       *&v25[12] = 2048;
       *&v25[14] = v15;
       *&v25[22] = 2048;
-      v26 = a3;
+      countCopy2 = count;
       *v27 = 2112;
       *&v27[2] = v5;
       *&v27[10] = 2112;
@@ -273,7 +273,7 @@ LABEL_24:
         goto LABEL_25;
       }
 
-      v13 = [NSString stringWithCString:v17 encoding:4, v25, v24, *v25, *&v25[16], v26, *v27, *&v27[16]];
+      v10OSLogObject = [NSString stringWithCString:v17 encoding:4, v25, v24, *v25, *&v25[16], countCopy2, *v27, *&v27[16]];
       free(v17);
       SSFileLog();
     }
@@ -286,12 +286,12 @@ LABEL_25:
   return v9;
 }
 
-- (BOOL)_hashAndWriteData:(id)a3 error:(id *)a4
+- (BOOL)_hashAndWriteData:(id)data error:(id *)error
 {
-  v6 = a3;
+  dataCopy = data;
   v7 = *(&self->super._overrideProgress + 1);
   v8 = *(&self->_md5Context.num + 1);
-  v9 = [v6 length];
+  v9 = [dataCopy length];
   if (v9 < 1)
   {
 LABEL_13:
@@ -301,7 +301,7 @@ LABEL_13:
   }
 
   v10 = v9;
-  v20 = a4;
+  errorCopy = error;
   v11 = 0;
   v12 = v7 % v8;
   while (1)
@@ -310,7 +310,7 @@ LABEL_13:
     v14 = v13 - v12 >= v10 - v11 ? v10 - v11 : v13 - v12;
     if (v14 >= 1)
     {
-      CC_MD5_Update((&self->_hashes + 1), [v6 bytes] + v11, v14);
+      CC_MD5_Update((&self->_hashes + 1), [dataCopy bytes] + v11, v14);
       v13 = *(&self->_md5Context.num + 1);
     }
 
@@ -320,7 +320,7 @@ LABEL_13:
     }
 
 LABEL_11:
-    v15 = write(*(&self->_bytesWritten + 1), [v6 bytes] + v11, v14);
+    v15 = write(*(&self->_bytesWritten + 1), [dataCopy bytes] + v11, v14);
     if (v15 < v14)
     {
       v16 = ISError();
@@ -346,11 +346,11 @@ LABEL_11:
   v16 = ISError();
   [(FilesystemDownloadDataConsumer *)self _truncateToSize:*(&self->_resumptionOffset + 1)];
 LABEL_16:
-  if (v20)
+  if (errorCopy)
   {
     v18 = v16;
     v17 = 0;
-    *v20 = v16;
+    *errorCopy = v16;
   }
 
   else
@@ -365,8 +365,8 @@ LABEL_19:
 
 - (BOOL)_openFile
 {
-  v3 = [*(&self->_numberOfBytesToHash + 1) fileSystemRepresentation];
-  v4 = open(v3, 522, 420);
+  fileSystemRepresentation = [*(&self->_numberOfBytesToHash + 1) fileSystemRepresentation];
+  v4 = open(fileSystemRepresentation, 522, 420);
   *(&self->_bytesWritten + 1) = v4;
   if (v4 == -1)
   {
@@ -377,7 +377,7 @@ LABEL_19:
   fcntl(*(&self->_bytesWritten + 1), 76, 1);
   CC_MD5_Init((&self->_hashes + 1));
   memset(&v18, 0, sizeof(v18));
-  if (stat(v3, &v18) != -1)
+  if (stat(fileSystemRepresentation, &v18) != -1)
   {
     st_size = v18.st_size;
     *(&self->super._overrideProgress + 1) = v18.st_size;
@@ -445,14 +445,14 @@ LABEL_21:
   return *(&self->_bytesWritten + 1) != -1;
 }
 
-- (void)_truncateToSize:(int64_t)a3
+- (void)_truncateToSize:(int64_t)size
 {
-  ftruncate(*(&self->_bytesWritten + 1), a3);
+  ftruncate(*(&self->_bytesWritten + 1), size);
   CC_MD5_Init((&self->_hashes + 1));
-  *(&self->super._overrideProgress + 1) = a3;
-  BYTE5(self->_bytesWritten) = a3 > 0;
-  *(&self->_path + 1) = a3;
-  *(&self->_resumptionOffset + 1) = a3;
+  *(&self->super._overrideProgress + 1) = size;
+  BYTE5(self->_bytesWritten) = size > 0;
+  *(&self->_path + 1) = size;
+  *(&self->_resumptionOffset + 1) = size;
 }
 
 @end

@@ -1,35 +1,35 @@
 @interface MLITDBGeniusDatabase
 + (id)sharedGeniusDatabase;
-- (BOOL)_copyBlobData:(id *)a3 blobAllocType:(int)a4 table:(id)a5 blobColumn:(id)a6 where:(id)a7;
+- (BOOL)_copyBlobData:(id *)data blobAllocType:(int)type table:(id)table blobColumn:(id)column where:(id)where;
 - (BOOL)_hasAnySongs;
-- (BOOL)_hasRowsInTable:(id)a3;
-- (BOOL)_readBlobForRowID:(unint64_t)a3 intoData:(id)a4 table:(const char *)a5 blobColumn:(const char *)a6;
-- (BOOL)_readBlobIntoData:(id)a3 table:(id)a4 blobColumn:(id)a5 where:(id)a6;
+- (BOOL)_hasRowsInTable:(id)table;
+- (BOOL)_readBlobForRowID:(unint64_t)d intoData:(id)data table:(const char *)table blobColumn:(const char *)column;
+- (BOOL)_readBlobIntoData:(id)data table:(id)table blobColumn:(id)column where:(id)where;
 - (BOOL)hasGeniusDataAvailable;
 - (MLITDBGeniusDatabase)init;
-- (id)_copyBlobDataAndBytesInTable:(id)a3 blobColumn:(id)a4 where:(id)a5;
-- (id)copyGeniusMetadataDataAndBytesForGlobalID:(unint64_t)a3;
-- (id)copyGeniusSimilaritiesDataAndBytesForGlobalID:(unint64_t)a3;
-- (unint64_t)_getInt64ValueInTable:(id)a3 column:(id)a4 where:(id)a5 limit:(unsigned int)a6;
+- (id)_copyBlobDataAndBytesInTable:(id)table blobColumn:(id)column where:(id)where;
+- (id)copyGeniusMetadataDataAndBytesForGlobalID:(unint64_t)d;
+- (id)copyGeniusSimilaritiesDataAndBytesForGlobalID:(unint64_t)d;
+- (unint64_t)_getInt64ValueInTable:(id)table column:(id)column where:(id)where limit:(unsigned int)limit;
 - (unint64_t)defaultMinTrackCount;
 - (unint64_t)defaultTrackCount;
-- (unsigned)_getInt32ValueInTable:(id)a3 column:(id)a4;
-- (void)performGeniusDatabaseReadWithBlock:(id)a3;
+- (unsigned)_getInt32ValueInTable:(id)table column:(id)column;
+- (void)performGeniusDatabaseReadWithBlock:(id)block;
 @end
 
 @implementation MLITDBGeniusDatabase
 
-- (id)copyGeniusSimilaritiesDataAndBytesForGlobalID:(unint64_t)a3
+- (id)copyGeniusSimilaritiesDataAndBytesForGlobalID:(unint64_t)d
 {
-  v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"genius_id = %llu", a3];
+  v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"genius_id = %llu", d];
   v5 = [(MLITDBGeniusDatabase *)self _copyBlobDataAndBytesInTable:@"genius_similarities" blobColumn:@"data" where:v4];
 
   return v5;
 }
 
-- (id)copyGeniusMetadataDataAndBytesForGlobalID:(unint64_t)a3
+- (id)copyGeniusMetadataDataAndBytesForGlobalID:(unint64_t)d
 {
-  v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"genius_id = %llu", a3];
+  v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"genius_id = %llu", d];
   v5 = [(MLITDBGeniusDatabase *)self _copyBlobDataAndBytesInTable:@"genius_metadata" blobColumn:@"data" where:v4];
 
   return v5;
@@ -65,29 +65,29 @@
 
 - (BOOL)hasGeniusDataAvailable
 {
-  v3 = [(MLITDBGeniusDatabase *)self _hasAnySongs];
-  if (v3)
+  _hasAnySongs = [(MLITDBGeniusDatabase *)self _hasAnySongs];
+  if (_hasAnySongs)
   {
 
-    LOBYTE(v3) = [(MLITDBGeniusDatabase *)self _hasRowsInTable:@"genius_metadata"];
+    LOBYTE(_hasAnySongs) = [(MLITDBGeniusDatabase *)self _hasRowsInTable:@"genius_metadata"];
   }
 
-  return v3;
+  return _hasAnySongs;
 }
 
 - (BOOL)_hasAnySongs
 {
   v3 = [ML3BitMaskPredicate predicateWithProperty:@"media_type" mask:1032 value:8];
-  v4 = [(MLITDBGeniusDatabase *)self musicLibrary];
-  v5 = [(ML3Entity *)ML3Track queryWithLibrary:v4 predicate:v3 orderingTerms:0];
-  v6 = [v5 hasEntities];
+  musicLibrary = [(MLITDBGeniusDatabase *)self musicLibrary];
+  v5 = [(ML3Entity *)ML3Track queryWithLibrary:musicLibrary predicate:v3 orderingTerms:0];
+  hasEntities = [v5 hasEntities];
 
-  return v6;
+  return hasEntities;
 }
 
-- (BOOL)_readBlobForRowID:(unint64_t)a3 intoData:(id)a4 table:(const char *)a5 blobColumn:(const char *)a6
+- (BOOL)_readBlobForRowID:(unint64_t)d intoData:(id)data table:(const char *)table blobColumn:(const char *)column
 {
-  v10 = a4;
+  dataCopy = data;
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
@@ -96,17 +96,17 @@
   v13[1] = 3221225472;
   v13[2] = __68__MLITDBGeniusDatabase__readBlobForRowID_intoData_table_blobColumn___block_invoke;
   v13[3] = &unk_2787632C8;
-  v16 = a5;
-  v17 = a6;
-  v18 = a3;
-  v11 = v10;
+  tableCopy = table;
+  columnCopy = column;
+  dCopy = d;
+  v11 = dataCopy;
   v14 = v11;
   v15 = &v19;
   [(MLITDBGeniusDatabase *)self performGeniusDatabaseReadWithBlock:v13];
-  LOBYTE(a5) = *(v20 + 24);
+  LOBYTE(table) = *(v20 + 24);
 
   _Block_object_dispose(&v19, 8);
-  return a5;
+  return table;
 }
 
 void __68__MLITDBGeniusDatabase__readBlobForRowID_intoData_table_blobColumn___block_invoke(void *a1, void *a2)
@@ -124,41 +124,41 @@ void __68__MLITDBGeniusDatabase__readBlobForRowID_intoData_table_blobColumn___bl
   }
 }
 
-- (BOOL)_readBlobIntoData:(id)a3 table:(id)a4 blobColumn:(id)a5 where:(id)a6
+- (BOOL)_readBlobIntoData:(id)data table:(id)table blobColumn:(id)column where:(id)where
 {
-  v13 = a3;
-  v10 = a3;
-  LOBYTE(a6) = [(MLITDBGeniusDatabase *)self _copyBlobData:&v13 blobAllocType:1 table:a4 blobColumn:a5 where:a6];
-  v11 = v13;
+  dataCopy = data;
+  dataCopy2 = data;
+  LOBYTE(where) = [(MLITDBGeniusDatabase *)self _copyBlobData:&dataCopy blobAllocType:1 table:table blobColumn:column where:where];
+  v11 = dataCopy;
 
-  return a6;
+  return where;
 }
 
-- (id)_copyBlobDataAndBytesInTable:(id)a3 blobColumn:(id)a4 where:(id)a5
+- (id)_copyBlobDataAndBytesInTable:(id)table blobColumn:(id)column where:(id)where
 {
   v7 = 0;
-  [(MLITDBGeniusDatabase *)self _copyBlobData:&v7 blobAllocType:0 table:a3 blobColumn:a4 where:a5];
+  [(MLITDBGeniusDatabase *)self _copyBlobData:&v7 blobAllocType:0 table:table blobColumn:column where:where];
   v5 = v7;
 
   return v5;
 }
 
-- (BOOL)_copyBlobData:(id *)a3 blobAllocType:(int)a4 table:(id)a5 blobColumn:(id)a6 where:(id)a7
+- (BOOL)_copyBlobData:(id *)data blobAllocType:(int)type table:(id)table blobColumn:(id)column where:(id)where
 {
-  v10 = a5;
-  v11 = a6;
-  v12 = a7;
-  if ([v12 length])
+  tableCopy = table;
+  columnCopy = column;
+  whereCopy = where;
+  if ([whereCopy length])
   {
-    v13 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@" WHERE %@", v12];
+    whereCopy = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@" WHERE %@", whereCopy];
   }
 
   else
   {
-    v13 = &stru_28408B690;
+    whereCopy = &stru_28408B690;
   }
 
-  v14 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"SELECT %@ FROM %@%@ LIMIT 1", v11, v10, v13];
+  v14 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"SELECT %@ FROM %@%@ LIMIT 1", columnCopy, tableCopy, whereCopy];
   v38 = 0;
   v39 = &v38;
   v40 = 0x2020000000;
@@ -168,9 +168,9 @@ void __68__MLITDBGeniusDatabase__readBlobForRowID_intoData_table_blobColumn___bl
   v36[2] = 0x3032000000;
   v36[3] = __Block_byref_object_copy__12868;
   v36[4] = __Block_byref_object_dispose__12869;
-  if (a3)
+  if (data)
   {
-    v15 = *a3;
+    v15 = *data;
   }
 
   else
@@ -198,14 +198,14 @@ void __68__MLITDBGeniusDatabase__readBlobForRowID_intoData_table_blobColumn___bl
   v16 = v14;
   v22 = v16;
   v23 = v34;
-  v27 = a4;
+  typeCopy = type;
   v24 = v36;
   v25 = &v38;
   v26 = &v28;
   [(MLITDBGeniusDatabase *)self performGeniusDatabaseReadWithBlock:v21];
-  if (a3)
+  if (data)
   {
-    *a3 = v29[5];
+    *data = v29[5];
   }
 
   v17 = *(v39 + 24);
@@ -256,12 +256,12 @@ uint64_t __75__MLITDBGeniusDatabase__copyBlobData_blobAllocType_table_blobColumn
   return MEMORY[0x2821F96F8](v3, v5);
 }
 
-- (unint64_t)_getInt64ValueInTable:(id)a3 column:(id)a4 where:(id)a5 limit:(unsigned int)a6
+- (unint64_t)_getInt64ValueInTable:(id)table column:(id)column where:(id)where limit:(unsigned int)limit
 {
-  v6 = *&a6;
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  v6 = *&limit;
+  tableCopy = table;
+  columnCopy = column;
+  whereCopy = where;
   if (v6)
   {
     v13 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@" LIMIT %d", v6];
@@ -272,17 +272,17 @@ uint64_t __75__MLITDBGeniusDatabase__copyBlobData_blobAllocType_table_blobColumn
     v13 = &stru_28408B690;
   }
 
-  if ([v12 length])
+  if ([whereCopy length])
   {
-    v14 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@" WHERE %@", v12];
+    whereCopy = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@" WHERE %@", whereCopy];
   }
 
   else
   {
-    v14 = &stru_28408B690;
+    whereCopy = &stru_28408B690;
   }
 
-  v15 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"SELECT %@ FROM %@%@%@", v11, v10, v14, v13];
+  v15 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"SELECT %@ FROM %@%@%@", columnCopy, tableCopy, whereCopy, v13];
   v22 = 0;
   v23 = &v22;
   v24 = 0x2020000000;
@@ -319,20 +319,20 @@ uint64_t __65__MLITDBGeniusDatabase__getInt64ValueInTable_column_where_limit___b
   return result;
 }
 
-- (unsigned)_getInt32ValueInTable:(id)a3 column:(id)a4
+- (unsigned)_getInt32ValueInTable:(id)table column:(id)column
 {
-  v6 = a3;
-  v7 = a4;
+  tableCopy = table;
+  columnCopy = column;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
   v17 = 0;
-  v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"SELECT %@ FROM %@ LIMIT 1", v7, v6];
+  tableCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"SELECT %@ FROM %@ LIMIT 1", columnCopy, tableCopy];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __53__MLITDBGeniusDatabase__getInt32ValueInTable_column___block_invoke;
   v11[3] = &unk_2787651A8;
-  v9 = v8;
+  v9 = tableCopy;
   v12 = v9;
   v13 = &v14;
   [(MLITDBGeniusDatabase *)self performGeniusDatabaseReadWithBlock:v11];
@@ -360,19 +360,19 @@ uint64_t __53__MLITDBGeniusDatabase__getInt32ValueInTable_column___block_invoke_
   return result;
 }
 
-- (BOOL)_hasRowsInTable:(id)a3
+- (BOOL)_hasRowsInTable:(id)table
 {
-  v4 = a3;
+  tableCopy = table;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"SELECT COUNT() FROM %@ LIMIT 1", v4];
+  tableCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"SELECT COUNT() FROM %@ LIMIT 1", tableCopy];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __40__MLITDBGeniusDatabase__hasRowsInTable___block_invoke;
   v8[3] = &unk_2787651A8;
-  v6 = v5;
+  v6 = tableCopy;
   v9 = v6;
   v10 = &v11;
   [(MLITDBGeniusDatabase *)self performGeniusDatabaseReadWithBlock:v8];
@@ -405,17 +405,17 @@ uint64_t __40__MLITDBGeniusDatabase__hasRowsInTable___block_invoke_2(uint64_t re
   return result;
 }
 
-- (void)performGeniusDatabaseReadWithBlock:(id)a3
+- (void)performGeniusDatabaseReadWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(MLITDBGeniusDatabase *)self musicLibrary];
+  blockCopy = block;
+  musicLibrary = [(MLITDBGeniusDatabase *)self musicLibrary];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __59__MLITDBGeniusDatabase_performGeniusDatabaseReadWithBlock___block_invoke;
   v7[3] = &unk_278763278;
-  v8 = v4;
-  v6 = v4;
-  [v5 databaseConnectionAllowingWrites:0 withBlock:v7];
+  v8 = blockCopy;
+  v6 = blockCopy;
+  [musicLibrary databaseConnectionAllowingWrites:0 withBlock:v7];
 }
 
 - (MLITDBGeniusDatabase)init

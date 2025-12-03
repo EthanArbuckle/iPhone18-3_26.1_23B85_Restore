@@ -1,7 +1,7 @@
 @interface MapsImpressionsFloatingDebugViewController
 - (MUImpressionsCalculator)calculator;
 - (void)_updateDebugText;
-- (void)setCalculator:(id)a3;
+- (void)setCalculator:(id)calculator;
 - (void)viewDidLoad;
 @end
 
@@ -32,28 +32,28 @@
   debugLabel = self->_debugLabel;
   self->_debugLabel = v3;
 
-  v7 = [(MapsFloatingDebugViewController *)self contentView];
-  [v7 addSubview:self->_debugLabel];
+  contentView = [(MapsFloatingDebugViewController *)self contentView];
+  [contentView addSubview:self->_debugLabel];
 
-  v27 = [(UILabel *)self->_debugLabel topAnchor];
-  v28 = [(MapsFloatingDebugViewController *)self contentView];
-  v26 = [v28 topAnchor];
-  v25 = [v27 constraintEqualToAnchor:v26 constant:5.0];
+  topAnchor = [(UILabel *)self->_debugLabel topAnchor];
+  contentView2 = [(MapsFloatingDebugViewController *)self contentView];
+  topAnchor2 = [contentView2 topAnchor];
+  v25 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:5.0];
   v31[0] = v25;
-  v23 = [(UILabel *)self->_debugLabel bottomAnchor];
-  v24 = [(MapsFloatingDebugViewController *)self contentView];
-  v22 = [v24 bottomAnchor];
-  v21 = [v23 constraintEqualToAnchor:v22 constant:-5.0];
+  bottomAnchor = [(UILabel *)self->_debugLabel bottomAnchor];
+  contentView3 = [(MapsFloatingDebugViewController *)self contentView];
+  bottomAnchor2 = [contentView3 bottomAnchor];
+  v21 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-5.0];
   v31[1] = v21;
-  v20 = [(UILabel *)self->_debugLabel leadingAnchor];
-  v8 = [(MapsFloatingDebugViewController *)self contentView];
-  v9 = [v8 leadingAnchor];
-  v10 = [v20 constraintEqualToAnchor:v9 constant:5.0];
+  leadingAnchor = [(UILabel *)self->_debugLabel leadingAnchor];
+  contentView4 = [(MapsFloatingDebugViewController *)self contentView];
+  leadingAnchor2 = [contentView4 leadingAnchor];
+  v10 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:5.0];
   v31[2] = v10;
-  v11 = [(UILabel *)self->_debugLabel trailingAnchor];
-  v12 = [(MapsFloatingDebugViewController *)self contentView];
-  v13 = [v12 trailingAnchor];
-  v14 = [v11 constraintEqualToAnchor:v13 constant:-5.0];
+  trailingAnchor = [(UILabel *)self->_debugLabel trailingAnchor];
+  contentView5 = [(MapsFloatingDebugViewController *)self contentView];
+  trailingAnchor2 = [contentView5 trailingAnchor];
+  v14 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-5.0];
   v31[3] = v14;
   v15 = [NSArray arrayWithObjects:v31 count:4];
   [v29 addObjectsFromArray:v15];
@@ -62,35 +62,35 @@
   v16 = [UIImageSymbolConfiguration configurationWithPointSize:7 weight:3 scale:35.0];
   v17 = [UIImage systemImageNamed:@"eyeglasses" withConfiguration:v16];
   v18 = [v17 imageWithRenderingMode:2];
-  v19 = [(MapsFloatingDebugViewController *)self thumbnailImageView];
-  [v19 setImage:v18];
+  thumbnailImageView = [(MapsFloatingDebugViewController *)self thumbnailImageView];
+  [thumbnailImageView setImage:v18];
 }
 
 - (void)_updateDebugText
 {
-  v3 = [(MapsImpressionsFloatingDebugViewController *)self view];
-  [v3 setHidden:0];
+  view = [(MapsImpressionsFloatingDebugViewController *)self view];
+  [view setHidden:0];
 
   WeakRetained = objc_loadWeakRetained(&self->_calculator);
-  v4 = [WeakRetained debugState];
-  [(UILabel *)self->_debugLabel setText:v4];
+  debugState = [WeakRetained debugState];
+  [(UILabel *)self->_debugLabel setText:debugState];
 }
 
-- (void)setCalculator:(id)a3
+- (void)setCalculator:(id)calculator
 {
-  v4 = a3;
+  calculatorCopy = calculator;
   WeakRetained = objc_loadWeakRetained(&self->_calculator);
 
-  if (WeakRetained != v4)
+  if (WeakRetained != calculatorCopy)
   {
-    [v4 setObserverBlock:0];
-    objc_storeWeak(&self->_calculator, v4);
+    [calculatorCopy setObserverBlock:0];
+    objc_storeWeak(&self->_calculator, calculatorCopy);
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_100F75B3C;
     v6[3] = &unk_101661B18;
     v6[4] = self;
-    [v4 setObserverBlock:v6];
+    [calculatorCopy setObserverBlock:v6];
   }
 }
 

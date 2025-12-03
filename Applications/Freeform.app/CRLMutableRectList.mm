@@ -1,49 +1,49 @@
 @interface CRLMutableRectList
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)addRect:(CGRect)a3;
-- (void)addRectList:(id)a3;
-- (void)applyTransform:(CGAffineTransform *)a3;
-- (void)setList:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)addRect:(CGRect)rect;
+- (void)addRectList:(id)list;
+- (void)applyTransform:(CGAffineTransform *)transform;
+- (void)setList:(id)list;
 @end
 
 @implementation CRLMutableRectList
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [CRLRectList alloc];
 
   return [(CRLRectList *)v4 initWithRectList:self];
 }
 
-- (void)addRect:(CGRect)a3
+- (void)addRect:(CGRect)rect
 {
-  *&v3 = a3.origin.x;
-  *(&v3 + 1) = *&a3.origin.y;
-  width = a3.size.width;
-  height = a3.size.height;
+  *&v3 = rect.origin.x;
+  *(&v3 + 1) = *&rect.origin.y;
+  width = rect.size.width;
+  height = rect.size.height;
   sub_10020133C(&self->super.mRectList, &v3);
 }
 
-- (void)addRectList:(id)a3
+- (void)addRectList:(id)list
 {
   end = self->super.mRectList.__end_;
-  v5 = a3;
-  v6 = v5[1];
-  v7 = v5[2];
+  listCopy = list;
+  v6 = listCopy[1];
+  v7 = listCopy[2];
 
   sub_100201988(&self->super.mRectList, end, v6, v7, (v7 - v6) >> 5);
 }
 
-- (void)setList:(id)a3
+- (void)setList:(id)list
 {
-  v4 = a3;
-  if (self != v4)
+  listCopy = list;
+  if (self != listCopy)
   {
-    sub_100201CC4(&self->super.mRectList.__begin_, v4[1], v4[2], (v4[2] - v4[1]) >> 5);
+    sub_100201CC4(&self->super.mRectList.__begin_, listCopy[1], listCopy[2], (listCopy[2] - listCopy[1]) >> 5);
   }
 }
 
-- (void)applyTransform:(CGAffineTransform *)a3
+- (void)applyTransform:(CGAffineTransform *)transform
 {
   begin = self->super.mRectList.__begin_;
   v6 = self->super.mRectList.__end_ - begin;
@@ -66,10 +66,10 @@
     do
     {
       v15 = *&p_size[-1].width;
-      v11 = *&a3->c;
-      *&v12.a = *&a3->a;
+      v11 = *&transform->c;
+      *&v12.a = *&transform->a;
       *&v12.c = v11;
-      *&v12.tx = *&a3->tx;
+      *&v12.tx = *&transform->tx;
       *&p_size[-1].width = CGRectApplyAffineTransform(v15, &v12);
       p_size += 2;
       --v9;

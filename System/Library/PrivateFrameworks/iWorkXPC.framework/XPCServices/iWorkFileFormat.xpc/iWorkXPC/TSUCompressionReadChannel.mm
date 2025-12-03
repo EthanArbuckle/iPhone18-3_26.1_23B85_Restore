@@ -1,7 +1,7 @@
 @interface TSUCompressionReadChannel
 - (void)close;
 - (void)dealloc;
-- (void)readWithHandler:(id)a3;
+- (void)readWithHandler:(id)handler;
 @end
 
 @implementation TSUCompressionReadChannel
@@ -44,9 +44,9 @@
   self->_compressor = 0;
 }
 
-- (void)readWithHandler:(id)a3
+- (void)readWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v13[0] = 0;
   v13[1] = v13;
   v13[2] = 0x2020000000;
@@ -60,7 +60,7 @@
   v12 = v13;
   v7 = v5;
   v10 = v7;
-  v8 = v4;
+  v8 = handlerCopy;
   v11 = v8;
   [(TSUStreamReadChannel *)readChannel readWithHandler:v9];
 

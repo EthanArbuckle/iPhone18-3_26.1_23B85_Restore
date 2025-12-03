@@ -1,29 +1,29 @@
 @interface PKPassPaymentPayStateView
-- (BOOL)_canEmphasizeState:(int64_t)a3;
-- (BOOL)labelWillChangeForState:(int64_t)a3 withOverrideText:(id)a4;
-- (PKPassPaymentPayStateView)initWithStyle:(int64_t)a3;
+- (BOOL)_canEmphasizeState:(int64_t)state;
+- (BOOL)labelWillChangeForState:(int64_t)state withOverrideText:(id)text;
+- (PKPassPaymentPayStateView)initWithStyle:(int64_t)style;
 - (PKPassPaymentPayStateViewDelegate)delegate;
-- (id)_attributedTextWithTitle:(id)a3 subtitle:(id)a4;
-- (id)_textForState:(int64_t)a3 textOverride:(id)a4;
+- (id)_attributedTextWithTitle:(id)title subtitle:(id)subtitle;
+- (id)_textForState:(int64_t)state textOverride:(id)override;
 - (id)_titleForUserIntent;
-- (int64_t)_defaultGlyphStateForState:(int64_t)a3;
-- (void)_applyStatePreservingGlyphState:(BOOL)a3 overridingText:(id)a4 animated:(BOOL)a5 completionHandler:(id)a6;
+- (int64_t)_defaultGlyphStateForState:(int64_t)state;
+- (void)_applyStatePreservingGlyphState:(BOOL)state overridingText:(id)text animated:(BOOL)animated completionHandler:(id)handler;
 - (void)_configureLayoutMetrics;
 - (void)_resolveLayout;
 - (void)_showingFailureState;
 - (void)dealloc;
-- (void)emphasizeStateIfPossible:(int64_t)a3 withOverrideText:(id)a4;
-- (void)glyphView:(id)a3 revealingCheckmark:(BOOL)a4;
+- (void)emphasizeStateIfPossible:(int64_t)possible withOverrideText:(id)text;
+- (void)glyphView:(id)view revealingCheckmark:(BOOL)checkmark;
 - (void)layoutSubviews;
-- (void)setBiometricsUnavailableHint:(BOOL)a3 animated:(BOOL)a4;
-- (void)setLabelStateBottomInset:(double)a3;
-- (void)setState:(int64_t)a3 animated:(BOOL)a4 withOverrideText:(id)a5 preserveGlyphState:(BOOL)a6 completionHandler:(id)a7;
-- (void)updateDebugLabel:(id)a3 isErrorState:(BOOL)a4;
+- (void)setBiometricsUnavailableHint:(BOOL)hint animated:(BOOL)animated;
+- (void)setLabelStateBottomInset:(double)inset;
+- (void)setState:(int64_t)state animated:(BOOL)animated withOverrideText:(id)text preserveGlyphState:(BOOL)glyphState completionHandler:(id)handler;
+- (void)updateDebugLabel:(id)label isErrorState:(BOOL)state;
 @end
 
 @implementation PKPassPaymentPayStateView
 
-- (PKPassPaymentPayStateView)initWithStyle:(int64_t)a3
+- (PKPassPaymentPayStateView)initWithStyle:(int64_t)style
 {
   v13.receiver = self;
   v13.super_class = PKPassPaymentPayStateView;
@@ -31,14 +31,14 @@
   v5 = v4;
   if (v4)
   {
-    v4->_style = a3;
+    v4->_style = style;
     v4->_layoutState = 0;
     [(PKPassPaymentPayStateView *)v4 _configureLayoutMetrics];
     v6 = [objc_alloc(MEMORY[0x1E69BC758]) initWithStyle:0];
     glyph = v5->_glyph;
     v5->_glyph = v6;
 
-    [(PKGlyphView *)v5->_glyph setShowQRCode:a3 == 3];
+    [(PKGlyphView *)v5->_glyph setShowQRCode:style == 3];
     [(PKGlyphView *)v5->_glyph updateRasterizationScale:PKUIScreenScale()];
     [(PKGlyphView *)v5->_glyph setDelegate:v5];
     [(PKPassPaymentPayStateView *)v5 addSubview:v5->_glyph];
@@ -50,8 +50,8 @@
 
       [(UILabel *)v5->_debugLabel setNumberOfLines:0];
       v10 = v5->_debugLabel;
-      v11 = [MEMORY[0x1E69DC888] clearColor];
-      [(UILabel *)v10 setBackgroundColor:v11];
+      clearColor = [MEMORY[0x1E69DC888] clearColor];
+      [(UILabel *)v10 setBackgroundColor:clearColor];
 
       [(PKPassPaymentPayStateView *)v5 addSubview:v5->_debugLabel];
     }
@@ -171,20 +171,20 @@ LABEL_6:
   }
 }
 
-- (int64_t)_defaultGlyphStateForState:(int64_t)a3
+- (int64_t)_defaultGlyphStateForState:(int64_t)state
 {
   result = 8;
-  if (a3 > 7)
+  if (state > 7)
   {
-    if (a3 <= 10)
+    if (state <= 10)
     {
       v5 = 11;
-      if (a3 != 8)
+      if (state != 8)
       {
         v5 = 8;
       }
 
-      if ((a3 - 9) >= 2)
+      if ((state - 9) >= 2)
       {
         return v5;
       }
@@ -195,12 +195,12 @@ LABEL_6:
       }
     }
 
-    if (a3 == 11)
+    if (state == 11)
     {
       return 6;
     }
 
-    if (a3 != 12)
+    if (state != 12)
     {
       return result;
     }
@@ -208,9 +208,9 @@ LABEL_6:
     return 7;
   }
 
-  if (a3 <= 3)
+  if (state <= 3)
   {
-    if (!a3)
+    if (!state)
     {
       if (self->_biometricsUnavailableHint)
       {
@@ -223,9 +223,9 @@ LABEL_6:
       }
     }
 
-    if (a3 != 1)
+    if (state != 1)
     {
-      if (a3 == 2)
+      if (state == 2)
       {
         if (self->_userIntentStyle == 1)
         {
@@ -262,7 +262,7 @@ LABEL_33:
     }
   }
 
-  switch(a3)
+  switch(state)
   {
     case 4:
       style = self->_style;
@@ -284,26 +284,26 @@ LABEL_33:
   return result;
 }
 
-- (void)setState:(int64_t)a3 animated:(BOOL)a4 withOverrideText:(id)a5 preserveGlyphState:(BOOL)a6 completionHandler:(id)a7
+- (void)setState:(int64_t)state animated:(BOOL)animated withOverrideText:(id)text preserveGlyphState:(BOOL)glyphState completionHandler:(id)handler
 {
-  v8 = a6;
-  v9 = a4;
-  v14 = a5;
-  v12 = a7;
-  if (v14 || self->_state != a3)
+  glyphStateCopy = glyphState;
+  animatedCopy = animated;
+  textCopy = text;
+  handlerCopy = handler;
+  if (textCopy || self->_state != state)
   {
-    self->_state = a3;
-    [(PKPassPaymentPayStateView *)self _applyStatePreservingGlyphState:v8 overridingText:v14 animated:v9 completionHandler:v12];
+    self->_state = state;
+    [(PKPassPaymentPayStateView *)self _applyStatePreservingGlyphState:glyphStateCopy overridingText:textCopy animated:animatedCopy completionHandler:handlerCopy];
   }
 
   else
   {
-    v13 = [(PKPassPaymentPayStateView *)self _defaultGlyphStateForState:a3];
-    if (v8 && [(PKPassPaymentPayStateView *)self _canPreserveGlyphForState:self->_state]|| v13 == [(PKGlyphView *)self->_glyph state])
+    v13 = [(PKPassPaymentPayStateView *)self _defaultGlyphStateForState:state];
+    if (glyphStateCopy && [(PKPassPaymentPayStateView *)self _canPreserveGlyphForState:self->_state]|| v13 == [(PKGlyphView *)self->_glyph state])
     {
-      if (v12)
+      if (handlerCopy)
       {
-        v12[2](v12, 0);
+        handlerCopy[2](handlerCopy, 0);
       }
     }
 
@@ -314,21 +314,21 @@ LABEL_33:
         [(PKPassPaymentPayStateView *)self _showingFailureState];
       }
 
-      [(PKGlyphView *)self->_glyph setState:v13 animated:v9 completionHandler:v12];
+      [(PKGlyphView *)self->_glyph setState:v13 animated:animatedCopy completionHandler:handlerCopy];
     }
   }
 }
 
-- (void)_applyStatePreservingGlyphState:(BOOL)a3 overridingText:(id)a4 animated:(BOOL)a5 completionHandler:(id)a6
+- (void)_applyStatePreservingGlyphState:(BOOL)state overridingText:(id)text animated:(BOOL)animated completionHandler:(id)handler
 {
-  v6 = a5;
-  v8 = a3;
-  v28 = a6;
-  v10 = [(PKPassPaymentPayStateView *)self _textForState:self->_state textOverride:a4];
+  animatedCopy = animated;
+  stateCopy = state;
+  handlerCopy = handler;
+  v10 = [(PKPassPaymentPayStateView *)self _textForState:self->_state textOverride:text];
   label = self->_label;
   if (label)
   {
-    v12 = [(UILabel *)label attributedText];
+    attributedText = [(UILabel *)label attributedText];
     v13 = PKEqualObjects();
 
     if (v13)
@@ -352,8 +352,8 @@ LABEL_33:
     self->_label = v16;
 
     v18 = self->_label;
-    v19 = [MEMORY[0x1E69DC888] clearColor];
-    [(UILabel *)v18 setBackgroundColor:v19];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(UILabel *)v18 setBackgroundColor:clearColor];
 
     [(UILabel *)self->_label setAlpha:self->_labelAlpha];
     [(UILabel *)self->_label setNumberOfLines:2];
@@ -364,25 +364,25 @@ LABEL_33:
   }
 
 LABEL_7:
-  if (v8 && [(PKPassPaymentPayStateView *)self _canPreserveGlyphForState:self->_state])
+  if (stateCopy && [(PKPassPaymentPayStateView *)self _canPreserveGlyphForState:self->_state])
   {
-    v20 = [(PKGlyphView *)self->_glyph state];
+    state = [(PKGlyphView *)self->_glyph state];
   }
 
   else
   {
-    v20 = [(PKPassPaymentPayStateView *)self _defaultGlyphStateForState:self->_state];
+    state = [(PKPassPaymentPayStateView *)self _defaultGlyphStateForState:self->_state];
   }
 
   glyph = self->_glyph;
   if ((self->_state - 9) >= 2)
   {
-    [(PKGlyphView *)glyph setState:v20 animated:v6 completionHandler:v28];
+    [(PKGlyphView *)glyph setState:state animated:animatedCopy completionHandler:handlerCopy];
   }
 
   else
   {
-    [(PKGlyphView *)glyph setColorMode:3 animated:v6];
+    [(PKGlyphView *)glyph setColorMode:3 animated:animatedCopy];
     v22 = [MEMORY[0x1E69DCAD8] configurationWithPointSize:4 weight:1 scale:45.0];
     v23 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"exclamationmark" withConfiguration:v22];
 
@@ -391,11 +391,11 @@ LABEL_7:
       [(PKPassPaymentPayStateView *)self _showingFailureState];
     }
 
-    [(PKGlyphView *)self->_glyph setState:v20 animated:v6 completionHandler:v28];
+    [(PKGlyphView *)self->_glyph setState:state animated:animatedCopy completionHandler:handlerCopy];
     if (v23)
     {
-      v24 = [(PKGlyphView *)self->_glyph primaryColor];
-      v25 = [v23 _flatImageWithColor:v24];
+      primaryColor = [(PKGlyphView *)self->_glyph primaryColor];
+      v25 = [v23 _flatImageWithColor:primaryColor];
 
       goto LABEL_18;
     }
@@ -404,36 +404,36 @@ LABEL_7:
   v25 = 0;
 LABEL_18:
   v26 = self->_glyph;
-  v27 = [v25 CGImage];
+  cGImage = [v25 CGImage];
   [v25 alignmentRectInsets];
-  [(PKGlyphView *)v26 setCustomImage:v27 withAlignmentEdgeInsets:?];
+  [(PKGlyphView *)v26 setCustomImage:cGImage withAlignmentEdgeInsets:?];
   [(PKPassPaymentPayStateView *)self _resolveLayout];
 }
 
-- (BOOL)labelWillChangeForState:(int64_t)a3 withOverrideText:(id)a4
+- (BOOL)labelWillChangeForState:(int64_t)state withOverrideText:(id)text
 {
-  v5 = [(PKPassPaymentPayStateView *)self _textForState:a3 textOverride:a4];
-  v6 = [(UILabel *)self->_label attributedText];
+  v5 = [(PKPassPaymentPayStateView *)self _textForState:state textOverride:text];
+  attributedText = [(UILabel *)self->_label attributedText];
   v7 = PKEqualObjects();
 
   return v7 ^ 1;
 }
 
-- (void)emphasizeStateIfPossible:(int64_t)a3 withOverrideText:(id)a4
+- (void)emphasizeStateIfPossible:(int64_t)possible withOverrideText:(id)text
 {
-  v6 = a4;
-  if (self->_state == a3)
+  textCopy = text;
+  if (self->_state == possible)
   {
     label = self->_label;
     if (label)
     {
-      v14 = v6;
-      v8 = [(UILabel *)label layer];
-      v9 = [MEMORY[0x1E6979300] pkui_shakeAnimation];
-      v10 = [v8 pkui_addAdditiveAnimation:v9];
+      v14 = textCopy;
+      layer = [(UILabel *)label layer];
+      pkui_shakeAnimation = [MEMORY[0x1E6979300] pkui_shakeAnimation];
+      v10 = [layer pkui_addAdditiveAnimation:pkui_shakeAnimation];
 
       v11 = [v14 length];
-      v6 = v14;
+      textCopy = v14;
       if (v11)
       {
         v12 = self->_label;
@@ -442,20 +442,20 @@ LABEL_18:
 
         [(PKPassPaymentPayStateView *)self setNeedsLayout];
         [(PKPassPaymentPayStateView *)self _resolveLayout];
-        v6 = v14;
+        textCopy = v14;
       }
     }
   }
 }
 
-- (void)updateDebugLabel:(id)a3 isErrorState:(BOOL)a4
+- (void)updateDebugLabel:(id)label isErrorState:(BOOL)state
 {
   debugLabel = self->_debugLabel;
   if (debugLabel)
   {
-    [(UILabel *)debugLabel setText:a3];
+    [(UILabel *)debugLabel setText:label];
     v7 = self->_debugLabel;
-    if (a4)
+    if (state)
     {
       [MEMORY[0x1E69DC888] redColor];
     }
@@ -471,14 +471,14 @@ LABEL_18:
   }
 }
 
-- (BOOL)_canEmphasizeState:(int64_t)a3
+- (BOOL)_canEmphasizeState:(int64_t)state
 {
-  if (a3 == 3)
+  if (state == 3)
   {
     return 1;
   }
 
-  if (a3 == 1)
+  if (state == 1)
   {
     return PKPearlIsAvailable() ^ 1;
   }
@@ -486,12 +486,12 @@ LABEL_18:
   return 0;
 }
 
-- (void)setLabelStateBottomInset:(double)a3
+- (void)setLabelStateBottomInset:(double)inset
 {
-  if (self->_labelStateBottomInset != a3)
+  if (self->_labelStateBottomInset != inset)
   {
-    self->_labelStateBottomInset = a3;
-    if (a3 > 0.0 || self->_layoutState == 1)
+    self->_labelStateBottomInset = inset;
+    if (inset > 0.0 || self->_layoutState == 1)
     {
       [(PKPassPaymentPayStateView *)self setNeedsLayout];
 
@@ -500,18 +500,18 @@ LABEL_18:
   }
 }
 
-- (void)setBiometricsUnavailableHint:(BOOL)a3 animated:(BOOL)a4
+- (void)setBiometricsUnavailableHint:(BOOL)hint animated:(BOOL)animated
 {
-  if (self->_biometricsUnavailableHint == !a3)
+  if (self->_biometricsUnavailableHint == !hint)
   {
-    self->_biometricsUnavailableHint = a3;
+    self->_biometricsUnavailableHint = hint;
     if (!self->_state)
     {
-      v5 = a4;
+      animatedCopy = animated;
       glyph = self->_glyph;
       v7 = [(PKPassPaymentPayStateView *)self _defaultGlyphStateForState:0];
 
-      [(PKGlyphView *)glyph setState:v7 animated:v5 completionHandler:0];
+      [(PKGlyphView *)glyph setState:v7 animated:animatedCopy completionHandler:0];
     }
   }
 }
@@ -536,25 +536,25 @@ LABEL_18:
   }
 }
 
-- (id)_textForState:(int64_t)a3 textOverride:(id)a4
+- (id)_textForState:(int64_t)state textOverride:(id)override
 {
-  v6 = a4;
-  v7 = v6;
+  overrideCopy = override;
+  v7 = overrideCopy;
   style = self->_style;
   if (style == 2)
   {
     v9 = 0;
-    if (a3 <= 6)
+    if (state <= 6)
     {
-      if ((a3 - 4) < 3)
+      if ((state - 4) < 3)
       {
         v10 = @"NFC_PASS_INSTRUCTION";
 LABEL_11:
-        v12 = PKLocalizedString(&v10->isa);
+        _titleForUserIntent = PKLocalizedString(&v10->isa);
         goto LABEL_25;
       }
 
-      if (a3 != 1)
+      if (state != 1)
       {
         goto LABEL_22;
       }
@@ -568,7 +568,7 @@ LABEL_11:
 LABEL_39:
       if (!v7)
       {
-        v12 = PKLocalizedPearlString(&cfstr_GenericPearl.isa);
+        _titleForUserIntent = PKLocalizedPearlString(&cfstr_GenericPearl.isa);
         goto LABEL_25;
       }
 
@@ -577,7 +577,7 @@ LABEL_42:
       goto LABEL_26;
     }
 
-    if ((a3 - 7) < 2)
+    if ((state - 7) < 2)
     {
       v10 = @"NFC_PASS_SUCCESS";
       goto LABEL_11;
@@ -587,18 +587,18 @@ LABEL_42:
   }
 
   v9 = 0;
-  if (a3 > 7)
+  if (state > 7)
   {
-    if (a3 != 8)
+    if (state != 8)
     {
 LABEL_13:
-      if (a3 == 9)
+      if (state == 9)
       {
-        v12 = v6;
+        _titleForUserIntent = overrideCopy;
         goto LABEL_25;
       }
 
-      if (a3 != 10)
+      if (state != 10)
       {
         goto LABEL_31;
       }
@@ -607,28 +607,28 @@ LABEL_13:
       goto LABEL_16;
     }
 
-    if (v6)
+    if (overrideCopy)
     {
       goto LABEL_42;
     }
 
     v11 = @"PAYMENT_SUCCESS";
 LABEL_16:
-    v12 = PKLocalizedPaymentString(&v11->isa);
+    _titleForUserIntent = PKLocalizedPaymentString(&v11->isa);
     goto LABEL_25;
   }
 
-  if ((a3 - 4) >= 4)
+  if ((state - 4) >= 4)
   {
-    if (a3 != 1)
+    if (state != 1)
     {
 LABEL_22:
-      if (a3 != 2)
+      if (state != 2)
       {
         goto LABEL_31;
       }
 
-      v12 = [(PKPassPaymentPayStateView *)self _titleForUserIntent];
+      _titleForUserIntent = [(PKPassPaymentPayStateView *)self _titleForUserIntent];
       goto LABEL_25;
     }
 
@@ -670,11 +670,11 @@ LABEL_22:
   {
     if (self->_homeKeyPass)
     {
-      v12 = PKLocalizedHomeKeyString(&cfstr_NfcPassInstruc.isa);
+      _titleForUserIntent = PKLocalizedHomeKeyString(&cfstr_NfcPassInstruc.isa);
       goto LABEL_25;
     }
 
-    if (v6)
+    if (overrideCopy)
     {
       goto LABEL_42;
     }
@@ -683,15 +683,15 @@ LABEL_22:
     goto LABEL_16;
   }
 
-  if (a3 != 5)
+  if (state != 5)
   {
     goto LABEL_30;
   }
 
-  v12 = PKLocalizedAquamanString(&cfstr_BarcodePayment_9.isa);
+  _titleForUserIntent = PKLocalizedAquamanString(&cfstr_BarcodePayment_9.isa);
 LABEL_25:
-  v13 = v12;
-  if (v12)
+  v13 = _titleForUserIntent;
+  if (_titleForUserIntent)
   {
 LABEL_26:
     v9 = [(PKPassPaymentPayStateView *)self _attributedTextWithTitle:v13];
@@ -729,21 +729,21 @@ LABEL_5:
   return v5;
 }
 
-- (id)_attributedTextWithTitle:(id)a3 subtitle:(id)a4
+- (id)_attributedTextWithTitle:(id)title subtitle:(id)subtitle
 {
-  v5 = a3;
-  v6 = a4;
+  titleCopy = title;
+  subtitleCopy = subtitle;
   v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v8 = *MEMORY[0x1E69DDC30];
   v9 = [MEMORY[0x1E69DB878] systemFontOfSize:{PKScaledValueForValueWithMaximumContentSizeCategory(*MEMORY[0x1E69DDC30], 20.0)}];
   v10 = *MEMORY[0x1E69DB648];
   [v7 setObject:v9 forKeyedSubscript:*MEMORY[0x1E69DB648]];
 
-  v11 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  [v7 setObject:v11 forKeyedSubscript:*MEMORY[0x1E69DB650]];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  [v7 setObject:secondaryLabelColor forKeyedSubscript:*MEMORY[0x1E69DB650]];
 
-  v12 = [MEMORY[0x1E69DC888] clearColor];
-  [v7 setObject:v12 forKeyedSubscript:*MEMORY[0x1E69DB600]];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [v7 setObject:clearColor forKeyedSubscript:*MEMORY[0x1E69DB600]];
 
   v13 = objc_alloc_init(MEMORY[0x1E69DB7C8]);
   [v13 setLineBreakMode:4];
@@ -752,24 +752,24 @@ LABEL_5:
   [v7 setObject:v14 forKeyedSubscript:*MEMORY[0x1E69DB688]];
 
   v15 = objc_alloc_init(MEMORY[0x1E696AD40]);
-  if (v5)
+  if (titleCopy)
   {
-    v16 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v5 attributes:v7];
+    v16 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:titleCopy attributes:v7];
     [v15 appendAttributedString:v16];
   }
 
-  if (v6)
+  if (subtitleCopy)
   {
     v17 = [MEMORY[0x1E69DB878] systemFontOfSize:{PKScaledValueForValueWithMaximumContentSizeCategory(v8, 16.0)}];
     [v7 setObject:v17 forKeyedSubscript:v10];
 
-    if (v5)
+    if (titleCopy)
     {
       v18 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:@"\n" attributes:v7];
       [v15 appendAttributedString:v18];
     }
 
-    v19 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v6 attributes:v7];
+    v19 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:subtitleCopy attributes:v7];
     [v15 appendAttributedString:v19];
   }
 
@@ -837,9 +837,9 @@ LABEL_10:
   }
 }
 
-- (void)glyphView:(id)a3 revealingCheckmark:(BOOL)a4
+- (void)glyphView:(id)view revealingCheckmark:(BOOL)checkmark
 {
-  v4 = a4;
+  checkmarkCopy = checkmark;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v7 = WeakRetained;
   if (WeakRetained)
@@ -849,7 +849,7 @@ LABEL_10:
     v7 = v9;
     if (v8)
     {
-      [v9 payStateView:self revealingCheckmark:v4];
+      [v9 payStateView:self revealingCheckmark:checkmarkCopy];
       v7 = v9;
     }
   }

@@ -1,22 +1,22 @@
 @interface NSFetchIndexDescription
-- (BOOL)isEqual:(id)a3;
-- (NSFetchIndexDescription)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (NSFetchIndexDescription)initWithCoder:(id)coder;
 - (NSFetchIndexDescription)initWithName:(NSString *)name elements:(NSArray *)elements;
-- (NSFetchIndexDescription)initWithName:(id)a3 predicate:(id)a4 elements:(id)a5 entity:(id)a6;
-- (id)copyWithZone:(_NSZone *)a3;
+- (NSFetchIndexDescription)initWithName:(id)name predicate:(id)predicate elements:(id)elements entity:(id)entity;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (int64_t)_compare:(id)a3;
+- (int64_t)_compare:(id)_compare;
 - (uint64_t)_checkElements:(uint64_t)result;
 - (uint64_t)_compoundIndexRepresentation;
-- (uint64_t)_isIndexForProperty:(uint64_t)a1;
+- (uint64_t)_isIndexForProperty:(uint64_t)property;
 - (uint64_t)_isMappedSinglePropertyIndex;
 - (uint64_t)_isPurelyModeledIndex;
 - (uint64_t)_isUnique;
 - (uint64_t)_setIsUnique:(uint64_t)result;
-- (unint64_t)_validateCollationTypeChangeFrom:(uint64_t)a3 to:;
-- (void)_setEntity:(id)a3;
+- (unint64_t)_validateCollationTypeChangeFrom:(uint64_t)from to:;
+- (void)_setEntity:(id)entity;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)setElements:(NSArray *)elements;
 - (void)setName:(NSString *)name;
 - (void)setPartialIndexPredicate:(NSPredicate *)partialIndexPredicate;
@@ -38,23 +38,23 @@
 
 - (uint64_t)_isMappedSinglePropertyIndex
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  if ([*(a1 + 16) count] != 1)
+  if ([*(self + 16) count] != 1)
   {
     return 0;
   }
 
-  v2 = [*(a1 + 16) firstObject];
-  if ([v2 collationType])
+  firstObject = [*(self + 16) firstObject];
+  if ([firstObject collationType])
   {
     return 0;
   }
 
-  return [v2 isAscending];
+  return [firstObject isAscending];
 }
 
 - (uint64_t)_isPurelyModeledIndex
@@ -185,12 +185,12 @@ LABEL_13:
           }
 
           v7 = *(*(&v19 + 1) + 8 * v6);
-          v8 = [v7 property];
-          if (v8)
+          property = [v7 property];
+          if (property)
           {
-            v9 = v8;
-            v10 = [v8 _propertyType];
-            if ((v10 - 4) >= 3 && v10 != 2)
+            v9 = property;
+            _propertyType = [property _propertyType];
+            if ((_propertyType - 4) >= 3 && _propertyType != 2)
             {
               v13 = MEMORY[0x1E695DF30];
               v14 = *MEMORY[0x1E695D940];
@@ -280,7 +280,7 @@ LABEL_21:
   return v7;
 }
 
-- (NSFetchIndexDescription)initWithName:(id)a3 predicate:(id)a4 elements:(id)a5 entity:(id)a6
+- (NSFetchIndexDescription)initWithName:(id)name predicate:(id)predicate elements:(id)elements entity:(id)entity
 {
   v24 = *MEMORY[0x1E69E9840];
   v22.receiver = self;
@@ -288,16 +288,16 @@ LABEL_21:
   v10 = [(NSFetchIndexDescription *)&v22 init];
   if (v10)
   {
-    v10->_name = a3;
-    v10->_elements = [a5 copy];
-    v11 = a4;
-    v10->_entity = a6;
-    v10->_partialIndexPredicate = v11;
+    v10->_name = name;
+    v10->_elements = [elements copy];
+    predicateCopy = predicate;
+    v10->_entity = entity;
+    v10->_partialIndexPredicate = predicateCopy;
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v12 = [a5 countByEnumeratingWithState:&v18 objects:v23 count:16];
+    v12 = [elements countByEnumeratingWithState:&v18 objects:v23 count:16];
     if (v12)
     {
       v13 = v12;
@@ -309,14 +309,14 @@ LABEL_21:
         {
           if (*v19 != v14)
           {
-            objc_enumerationMutation(a5);
+            objc_enumerationMutation(elements);
           }
 
           [(NSFetchIndexElementDescription *)*(*(&v18 + 1) + 8 * v15++) _setIndexDescription:v10];
         }
 
         while (v13 != v15);
-        v13 = [a5 countByEnumeratingWithState:&v18 objects:v23 count:16];
+        v13 = [elements countByEnumeratingWithState:&v18 objects:v23 count:16];
       }
 
       while (v13);
@@ -327,10 +327,10 @@ LABEL_21:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (v4)
   {
     v4[1] = [(NSString *)self->_name copy];
@@ -374,17 +374,17 @@ LABEL_21:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeObject:self->_name forKey:@"NSIndexName"];
-  [a3 encodeObject:self->_elements forKey:@"NSIndexElements"];
-  [a3 encodeObject:self->_entity forKey:@"NSEntity"];
+  [coder encodeObject:self->_name forKey:@"NSIndexName"];
+  [coder encodeObject:self->_elements forKey:@"NSIndexElements"];
+  [coder encodeObject:self->_entity forKey:@"NSEntity"];
   partialIndexPredicate = self->_partialIndexPredicate;
 
-  [a3 encodeObject:partialIndexPredicate forKey:@"NSPartialIndexPredicate"];
+  [coder encodeObject:partialIndexPredicate forKey:@"NSPartialIndexPredicate"];
 }
 
-- (NSFetchIndexDescription)initWithCoder:(id)a3
+- (NSFetchIndexDescription)initWithCoder:(id)coder
 {
   v38 = *MEMORY[0x1E69E9840];
   v36.receiver = self;
@@ -400,7 +400,7 @@ LABEL_21:
     v35 = v5;
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
-    v8 = [a3 decodeObjectOfClasses:objc_msgSend(v6 forKey:{"setWithObjects:", v7, objc_opt_class(), 0), @"NSIndexName"}];
+    v8 = [coder decodeObjectOfClasses:objc_msgSend(v6 forKey:{"setWithObjects:", v7, objc_opt_class(), 0), @"NSIndexName"}];
     v4->_name = v8;
     if (v8 && ([(NSString *)v8 isNSString]& 1) == 0)
     {
@@ -411,7 +411,7 @@ LABEL_21:
     v9 = MEMORY[0x1E695DFD8];
     v10 = objc_opt_class();
     v11 = objc_opt_class();
-    v12 = [a3 decodeObjectOfClasses:objc_msgSend(v9 forKey:{"setWithObjects:", v10, v11, objc_opt_class(), 0), @"NSIndexElements"}];
+    v12 = [coder decodeObjectOfClasses:objc_msgSend(v9 forKey:{"setWithObjects:", v10, v11, objc_opt_class(), 0), @"NSIndexElements"}];
     v4->_elements = v12;
     if (v12)
     {
@@ -443,7 +443,7 @@ LABEL_21:
             objc_opt_class();
             if ((objc_opt_isKindOfClass() & 1) == 0)
             {
-              [a3 failWithError:{objc_msgSend(MEMORY[0x1E696ABC0], "errorWithDomain:code:userInfo:", *MEMORY[0x1E696A250], 4866, &unk_1EF435260)}];
+              [coder failWithError:{objc_msgSend(MEMORY[0x1E696ABC0], "errorWithDomain:code:userInfo:", *MEMORY[0x1E696A250], 4866, &unk_1EF435260)}];
 
               goto LABEL_29;
             }
@@ -460,7 +460,7 @@ LABEL_21:
       }
     }
 
-    v18 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"NSEntity"];
+    v18 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"NSEntity"];
     v4->_entity = v18;
     if (!v18)
     {
@@ -498,7 +498,7 @@ LABEL_21:
 LABEL_23:
         v23 = MEMORY[0x1E695DFD8];
         v24 = objc_opt_class();
-        v4->_partialIndexPredicate = [a3 decodeObjectOfClasses:objc_msgSend(v23 forKey:{"setWithObjects:", v24, objc_opt_class(), 0), @"NSPartialIndexPredicate"}];
+        v4->_partialIndexPredicate = [coder decodeObjectOfClasses:objc_msgSend(v23 forKey:{"setWithObjects:", v24, objc_opt_class(), 0), @"NSPartialIndexPredicate"}];
         if (v5)
         {
           v25 = v5[3];
@@ -519,7 +519,7 @@ LABEL_30:
     }
 
 LABEL_28:
-    [a3 failWithError:{objc_msgSend(MEMORY[0x1E696ABC0], "errorWithDomain:code:userInfo:", *MEMORY[0x1E696A250], 4866, v22)}];
+    [coder failWithError:{objc_msgSend(MEMORY[0x1E696ABC0], "errorWithDomain:code:userInfo:", *MEMORY[0x1E696A250], 4866, v22)}];
 
 LABEL_29:
     v4 = 0;
@@ -531,53 +531,53 @@ LABEL_31:
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     goto LABEL_23;
   }
 
-  if (!a3 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  if (!equal || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    LOBYTE(v6) = 0;
-    return v6;
+    LOBYTE(name) = 0;
+    return name;
   }
 
   name = self->_name;
-  v6 = [a3 name];
-  if (name == v6 || (v7 = v6, LOBYTE(v6) = 0, name) && v7 && (LODWORD(v6) = [(NSString *)name isEqual:?], v6))
+  name = [equal name];
+  if (name == name || (v7 = name, LOBYTE(name) = 0, name) && v7 && (LODWORD(name) = [(NSString *)name isEqual:?], name))
   {
-    v8 = [(NSEntityDescription *)self->_entity name];
-    v6 = [objc_msgSend(a3 "entity")];
-    if (v8 == v6 || (v9 = v6, LOBYTE(v6) = 0, v8) && v9 && (LODWORD(v6) = [(NSString *)v8 isEqual:?], v6))
+    name2 = [(NSEntityDescription *)self->_entity name];
+    name = [objc_msgSend(equal "entity")];
+    if (name2 == name || (v9 = name, LOBYTE(name) = 0, name2) && v9 && (LODWORD(name) = [(NSString *)name2 isEqual:?], name))
     {
       elements = self->_elements;
-      v6 = [a3 elements];
-      if (elements == v6 || (v11 = v6, LOBYTE(v6) = 0, elements) && v11 && (LODWORD(v6) = [(NSArray *)elements isEqual:?], v6))
+      name = [equal elements];
+      if (elements == name || (v11 = name, LOBYTE(name) = 0, elements) && v11 && (LODWORD(name) = [(NSArray *)elements isEqual:?], name))
       {
         partialIndexPredicate = self->_partialIndexPredicate;
-        v6 = [a3 partialIndexPredicate];
-        if (partialIndexPredicate != v6)
+        name = [equal partialIndexPredicate];
+        if (partialIndexPredicate != name)
         {
-          v13 = v6;
-          LOBYTE(v6) = 0;
+          v13 = name;
+          LOBYTE(name) = 0;
           if (partialIndexPredicate && v13)
           {
 
-            LOBYTE(v6) = [(NSPredicate *)partialIndexPredicate isEqual:?];
+            LOBYTE(name) = [(NSPredicate *)partialIndexPredicate isEqual:?];
           }
 
-          return v6;
+          return name;
         }
 
 LABEL_23:
-        LOBYTE(v6) = 1;
+        LOBYTE(name) = 1;
       }
     }
   }
 
-  return v6;
+  return name;
 }
 
 - (id)description
@@ -646,10 +646,10 @@ LABEL_23:
   self->_elements = v5;
 }
 
-- (void)_setEntity:(id)a3
+- (void)_setEntity:(id)entity
 {
   v16 = *MEMORY[0x1E69E9840];
-  self->_entity = a3;
+  self->_entity = entity;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -694,14 +694,14 @@ LABEL_23:
   }
 }
 
-- (unint64_t)_validateCollationTypeChangeFrom:(uint64_t)a3 to:
+- (unint64_t)_validateCollationTypeChangeFrom:(uint64_t)from to:
 {
   v9[1] = *MEMORY[0x1E69E9840];
   if (result)
   {
     v5 = result;
     result = [*(result + 16) count];
-    if (a2 != a3 && result <= 1)
+    if (a2 != from && result <= 1)
     {
       v7 = *MEMORY[0x1E695D940];
       v8 = @"Index";
@@ -714,34 +714,34 @@ LABEL_23:
   return result;
 }
 
-- (uint64_t)_isIndexForProperty:(uint64_t)a1
+- (uint64_t)_isIndexForProperty:(uint64_t)property
 {
-  if (!a1)
+  if (!property)
   {
     return 0;
   }
 
-  if ([*(a1 + 16) count] != 1)
+  if ([*(property + 16) count] != 1)
   {
     return 0;
   }
 
-  v4 = [*(a1 + 16) firstObject];
-  if (![objc_msgSend(a2 "name")] || objc_msgSend(v4, "collationType"))
+  firstObject = [*(property + 16) firstObject];
+  if (![objc_msgSend(a2 "name")] || objc_msgSend(firstObject, "collationType"))
   {
     return 0;
   }
 
-  return [v4 isAscending];
+  return [firstObject isAscending];
 }
 
 - (uint64_t)_compoundIndexRepresentation
 {
   v34 = *MEMORY[0x1E69E9840];
-  if (!a1 || ![*(a1 + 16) count] || objc_msgSend(objc_msgSend(*(a1 + 16), "firstObject"), "collationType") || objc_msgSend(*(a1 + 16), "count") == 1)
+  if (!self || ![*(self + 16) count] || objc_msgSend(objc_msgSend(*(self + 16), "firstObject"), "collationType") || objc_msgSend(*(self + 16), "count") == 1)
   {
 LABEL_5:
-    v2 = 0;
+    array = 0;
     goto LABEL_6;
   }
 
@@ -749,7 +749,7 @@ LABEL_5:
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v5 = *(a1 + 16);
+  v5 = *(self + 16);
   v6 = [v5 countByEnumeratingWithState:&v28 objects:v33 count:16];
   if (v6)
   {
@@ -764,9 +764,9 @@ LABEL_5:
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v28 + 1) + 8 * i) property];
-        v11 = [v10 _propertyType];
-        if ((v11 & 0xFFFFFFFFFFFFFFFBLL) != 2 && (v11 != 5 || !+[_PFRoutines _expressionIsCompoundIndexCompatible:](_PFRoutines, [v10 expression])))
+        property = [*(*(&v28 + 1) + 8 * i) property];
+        _propertyType = [property _propertyType];
+        if ((_propertyType & 0xFFFFFFFFFFFFFFFBLL) != 2 && (_propertyType != 5 || !+[_PFRoutines _expressionIsCompoundIndexCompatible:](_PFRoutines, [property expression])))
         {
           goto LABEL_5;
         }
@@ -778,12 +778,12 @@ LABEL_5:
     while (v7);
   }
 
-  v2 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v12 = *(a1 + 16);
+  v12 = *(self + 16);
   v13 = [v12 countByEnumeratingWithState:&v24 objects:v32 count:16];
   if (!v13)
   {
@@ -802,23 +802,23 @@ LABEL_5:
         objc_enumerationMutation(v12);
       }
 
-      v17 = [*(*(&v24 + 1) + 8 * v16) property];
-      v18 = [v17 _propertyType];
-      if ((v18 & 0xFFFFFFFFFFFFFFFBLL) == 2)
+      property2 = [*(*(&v24 + 1) + 8 * v16) property];
+      _propertyType2 = [property2 _propertyType];
+      if ((_propertyType2 & 0xFFFFFFFFFFFFFFFBLL) == 2)
       {
-        v19 = [v17 name];
+        name = [property2 name];
         goto LABEL_24;
       }
 
-      if (v18 == 5 && +[_PFRoutines _expressionIsCompoundIndexCompatible:](_PFRoutines, [v17 expression]))
+      if (_propertyType2 == 5 && +[_PFRoutines _expressionIsCompoundIndexCompatible:](_PFRoutines, [property2 expression]))
       {
-        v22 = [objc_msgSend(v17 "expression")];
+        v22 = [objc_msgSend(property2 "expression")];
         if (v22 == 3)
         {
-          v19 = [objc_msgSend(v17 "expression")];
+          name = [objc_msgSend(property2 "expression")];
 LABEL_24:
-          v20 = v19;
-          v21 = v2;
+          v20 = name;
+          v21 = array;
 LABEL_25:
           [v21 addObject:v20];
           goto LABEL_31;
@@ -826,7 +826,7 @@ LABEL_25:
 
         if (v22 == 1)
         {
-          v21 = v2;
+          v21 = array;
           v20 = @"self";
           goto LABEL_25;
         }
@@ -844,7 +844,7 @@ LABEL_31:
   while (v23);
 LABEL_6:
   v3 = *MEMORY[0x1E69E9840];
-  return v2;
+  return array;
 }
 
 - (uint64_t)_setIsUnique:(uint64_t)result
@@ -904,10 +904,10 @@ LABEL_6:
   return result;
 }
 
-- (int64_t)_compare:(id)a3
+- (int64_t)_compare:(id)_compare
 {
   v40 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!_compare)
   {
     result = 1;
 LABEL_32:
@@ -915,10 +915,10 @@ LABEL_32:
     return result;
   }
 
-  if (-[NSString isEqualToString:](-[NSEntityDescription name](-[NSFetchIndexDescription entity](self, "entity"), "name"), "isEqualToString:", [objc_msgSend(a3 "entity")]))
+  if (-[NSString isEqualToString:](-[NSEntityDescription name](-[NSFetchIndexDescription entity](self, "entity"), "name"), "isEqualToString:", [objc_msgSend(_compare "entity")]))
   {
     v5 = [(NSArray *)self->_elements count];
-    if (v5 == [*(a3 + 2) count])
+    if (v5 == [*(_compare + 2) count])
     {
       v36 = 0u;
       v37 = 0u;
@@ -946,7 +946,7 @@ LABEL_7:
           v31 = 0u;
           v32 = 0u;
           v33 = 0u;
-          v12 = *(a3 + 2);
+          v12 = *(_compare + 2);
           v13 = [v12 countByEnumeratingWithState:&v30 objects:v38 count:16];
           if (!v13)
           {
@@ -969,11 +969,11 @@ LABEL_7:
               v18 = *(*(&v30 + 1) + 8 * i);
               if ([objc_msgSend(v11 "propertyName")])
               {
-                v19 = [v11 collationType];
-                if (v19 != [v18 collationType])
+                collationType = [v11 collationType];
+                if (collationType != [v18 collationType])
                 {
-                  v25 = [v11 collationType];
-                  v24 = v25 >= [v18 collationType];
+                  collationType2 = [v11 collationType];
+                  v24 = collationType2 >= [v18 collationType];
                   goto LABEL_29;
                 }
 
@@ -1017,7 +1017,7 @@ LABEL_7:
     else
     {
       v23 = [(NSArray *)self->_elements count];
-      v24 = v23 >= [*(a3 + 2) count];
+      v24 = v23 >= [*(_compare + 2) count];
 LABEL_29:
       if (v24)
       {
@@ -1033,11 +1033,11 @@ LABEL_29:
     goto LABEL_32;
   }
 
-  v20 = [(NSEntityDescription *)[(NSFetchIndexDescription *)self entity] name];
-  v21 = [objc_msgSend(a3 "entity")];
+  name = [(NSEntityDescription *)[(NSFetchIndexDescription *)self entity] name];
+  v21 = [objc_msgSend(_compare "entity")];
   v22 = *MEMORY[0x1E69E9840];
 
-  return [(NSString *)v20 compare:v21];
+  return [(NSString *)name compare:v21];
 }
 
 @end

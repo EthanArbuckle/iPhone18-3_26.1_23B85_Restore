@@ -1,21 +1,21 @@
 @interface BSUIAudiobookControlBoxLayout
-- (id)newRenderModelCompatibleWithKind:(unint64_t)a3 context:(id)a4;
+- (id)newRenderModelCompatibleWithKind:(unint64_t)kind context:(id)context;
 @end
 
 @implementation BSUIAudiobookControlBoxLayout
 
-- (id)newRenderModelCompatibleWithKind:(unint64_t)a3 context:(id)a4
+- (id)newRenderModelCompatibleWithKind:(unint64_t)kind context:(id)context
 {
-  [(BSUIAudiobookControlBoxLayout *)self computedNaturalSize:a3];
+  [(BSUIAudiobookControlBoxLayout *)self computedNaturalSize:kind];
   v6 = v5;
   v8 = v7;
   v9 = [(BSUIAudiobookControlBoxLayout *)self box];
-  v10 = [v9 identifier];
+  identifier = [v9 identifier];
   v11 = [(BSUIAudiobookControlBoxLayout *)self box];
-  v12 = [v11 dynamicAudiobookProgress];
+  dynamicAudiobookProgress = [v11 dynamicAudiobookProgress];
   v13 = [(BSUIAudiobookControlBoxLayout *)self box];
-  v14 = [v13 dynamicState];
-  v15 = [BSUIAudiobookControlView renderModelWithIdentifier:v10 dynamicProgress:v12 dynamicState:v14];
+  dynamicState = [v13 dynamicState];
+  v15 = [BSUIAudiobookControlView renderModelWithIdentifier:identifier dynamicProgress:dynamicAudiobookProgress dynamicState:dynamicState];
 
   [v15 setSize:{v6, v8}];
   return v15;

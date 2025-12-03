@@ -1,37 +1,37 @@
 @interface CKEntryViewButton
-+ (id)entryViewButtonImageForType:(int64_t)a3;
-+ (id)entryViewButtonImageForType:(int64_t)a3 color:(char)a4;
-+ (id)entryViewButtonImageWithName:(id)a3 tintColor:(char)a4 shouldSuppressHairline:(BOOL)a5;
-+ (id)entryViewButtonOfType:(int64_t)a3;
-+ (id)entryViewButtonOfType:(int64_t)a3 wantsVibrancy:(BOOL)a4;
-+ (id)imageNameForEntryViewButtonType:(int64_t)a3;
-+ (id)overlayImageForImageNamed:(id)a3 tintColor:(char)a4;
++ (id)entryViewButtonImageForType:(int64_t)type;
++ (id)entryViewButtonImageForType:(int64_t)type color:(char)color;
++ (id)entryViewButtonImageWithName:(id)name tintColor:(char)color shouldSuppressHairline:(BOOL)hairline;
++ (id)entryViewButtonOfType:(int64_t)type;
++ (id)entryViewButtonOfType:(int64_t)type wantsVibrancy:(BOOL)vibrancy;
++ (id)imageNameForEntryViewButtonType:(int64_t)type;
++ (id)overlayImageForImageNamed:(id)named tintColor:(char)color;
 + (void)prewarmEntryViewButtons;
 - (BOOL)isEnabled;
 - (CGSize)intrinsicContentSize;
-- (CKEntryViewButton)initWithFrame:(CGRect)a3 wantsVibrancy:(BOOL)a4;
+- (CKEntryViewButton)initWithFrame:(CGRect)frame wantsVibrancy:(BOOL)vibrancy;
 - (double)blurRadius;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4 modifiers:(int64_t)a5;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region modifiers:(int64_t)modifiers;
 - (void)layoutSubviews;
-- (void)setBlurRadius:(double)a3;
-- (void)setCkTintColor:(char)a3;
+- (void)setBlurRadius:(double)radius;
+- (void)setCkTintColor:(char)color;
 - (void)setDefaultImage;
-- (void)setEnabled:(BOOL)a3;
-- (void)setTintedImageForButtonType:(int64_t)a3 tintColor:(char)a4;
-- (void)setWantsVibrancy:(BOOL)a3;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setTintedImageForButtonType:(int64_t)type tintColor:(char)color;
+- (void)setWantsVibrancy:(BOOL)vibrancy;
 - (void)setupCompositeFilterForButton;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation CKEntryViewButton
 
-+ (id)entryViewButtonOfType:(int64_t)a3 wantsVibrancy:(BOOL)a4
++ (id)entryViewButtonOfType:(int64_t)type wantsVibrancy:(BOOL)vibrancy
 {
-  v4 = a4;
+  vibrancyCopy = vibrancy;
   v6 = [CKEntryViewButton alloc];
-  v7 = [(CKEntryViewButton *)v6 initWithFrame:v4 wantsVibrancy:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
-  [(CKEntryViewButton *)v7 setEntryViewButtonType:a3];
-  if (a3 == 1)
+  v7 = [(CKEntryViewButton *)v6 initWithFrame:vibrancyCopy wantsVibrancy:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
+  [(CKEntryViewButton *)v7 setEntryViewButtonType:type];
+  if (type == 1)
   {
     [(CKEntryViewButton *)v7 setCkTintColor:0xFFFFFFFFLL];
   }
@@ -39,59 +39,59 @@
   return v7;
 }
 
-+ (id)entryViewButtonOfType:(int64_t)a3
++ (id)entryViewButtonOfType:(int64_t)type
 {
   v4 = [CKEntryViewButton alloc];
   v5 = +[CKUIBehavior sharedBehaviors];
-  v6 = [v5 entryViewButtonWantsVibrancy];
-  v7 = [(CKEntryViewButton *)v4 initWithFrame:v6 wantsVibrancy:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
+  entryViewButtonWantsVibrancy = [v5 entryViewButtonWantsVibrancy];
+  v7 = [(CKEntryViewButton *)v4 initWithFrame:entryViewButtonWantsVibrancy wantsVibrancy:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
 
-  [(CKEntryViewButton *)v7 setEntryViewButtonType:a3];
+  [(CKEntryViewButton *)v7 setEntryViewButtonType:type];
 
   return v7;
 }
 
-+ (id)imageNameForEntryViewButtonType:(int64_t)a3
++ (id)imageNameForEntryViewButtonType:(int64_t)type
 {
   v3 = 0;
-  if (a3 > 1)
+  if (type > 1)
   {
-    if (a3 == 2)
+    if (type == 2)
     {
       v4 = +[CKUIBehavior sharedBehaviors];
-      v5 = [v4 entryViewDictationButtonName];
+      entryViewDictationButtonName = [v4 entryViewDictationButtonName];
     }
 
     else
     {
-      if (a3 != 3)
+      if (type != 3)
       {
         goto LABEL_11;
       }
 
       v4 = +[CKUIBehavior sharedBehaviors];
-      v5 = [v4 entryViewKeyboardButtonName];
+      entryViewDictationButtonName = [v4 entryViewKeyboardButtonName];
     }
   }
 
-  else if (a3)
+  else if (type)
   {
-    if (a3 != 1)
+    if (type != 1)
     {
       goto LABEL_11;
     }
 
     v4 = +[CKUIBehavior sharedBehaviors];
-    v5 = [v4 entryViewAudioButtonName];
+    entryViewDictationButtonName = [v4 entryViewAudioButtonName];
   }
 
   else
   {
     v4 = +[CKUIBehavior sharedBehaviors];
-    v5 = [v4 entryViewSendButtonName];
+    entryViewDictationButtonName = [v4 entryViewSendButtonName];
   }
 
-  v3 = v5;
+  v3 = entryViewDictationButtonName;
 
 LABEL_11:
 
@@ -101,63 +101,63 @@ LABEL_11:
 + (void)prewarmEntryViewButtons
 {
   v3 = [objc_opt_class() imageNameForEntryViewButtonType:1];
-  v4 = [a1 entryViewButtonImageWithName:v3 tintColor:0xFFFFFFFFLL shouldSuppressHairline:1];
+  v4 = [self entryViewButtonImageWithName:v3 tintColor:0xFFFFFFFFLL shouldSuppressHairline:1];
   v5 = [objc_opt_class() imageNameForEntryViewButtonType:0];
 
-  v6 = [a1 entryViewButtonImageWithName:v5 tintColor:1 shouldSuppressHairline:1];
+  v6 = [self entryViewButtonImageWithName:v5 tintColor:1 shouldSuppressHairline:1];
   v7 = [objc_opt_class() imageNameForEntryViewButtonType:0];
 
-  v8 = [a1 entryViewButtonImageWithName:v7 tintColor:0 shouldSuppressHairline:1];
+  v8 = [self entryViewButtonImageWithName:v7 tintColor:0 shouldSuppressHairline:1];
   v9 = +[CKUIBehavior sharedBehaviors];
-  v11 = [v9 entryViewDictationButtonName];
+  entryViewDictationButtonName = [v9 entryViewDictationButtonName];
 
-  v10 = [a1 entryViewButtonImageWithName:v11 tintColor:0xFFFFFFFFLL shouldSuppressHairline:0];
+  v10 = [self entryViewButtonImageWithName:entryViewDictationButtonName tintColor:0xFFFFFFFFLL shouldSuppressHairline:0];
 }
 
-+ (id)entryViewButtonImageForType:(int64_t)a3
++ (id)entryViewButtonImageForType:(int64_t)type
 {
-  v4 = [objc_opt_class() imageNameForEntryViewButtonType:a3];
-  v5 = [a1 entryViewButtonImageWithName:v4 tintColor:0xFFFFFFFFLL shouldSuppressHairline:1];
+  v4 = [objc_opt_class() imageNameForEntryViewButtonType:type];
+  v5 = [self entryViewButtonImageWithName:v4 tintColor:0xFFFFFFFFLL shouldSuppressHairline:1];
 
   return v5;
 }
 
-+ (id)entryViewButtonImageForType:(int64_t)a3 color:(char)a4
++ (id)entryViewButtonImageForType:(int64_t)type color:(char)color
 {
-  v4 = a4;
-  v6 = [objc_opt_class() imageNameForEntryViewButtonType:a3];
-  v7 = [a1 entryViewButtonImageWithName:v6 tintColor:v4 shouldSuppressHairline:1];
+  colorCopy = color;
+  v6 = [objc_opt_class() imageNameForEntryViewButtonType:type];
+  v7 = [self entryViewButtonImageWithName:v6 tintColor:colorCopy shouldSuppressHairline:1];
 
   return v7;
 }
 
-- (CKEntryViewButton)initWithFrame:(CGRect)a3 wantsVibrancy:(BOOL)a4
+- (CKEntryViewButton)initWithFrame:(CGRect)frame wantsVibrancy:(BOOL)vibrancy
 {
-  v4 = a4;
+  vibrancyCopy = vibrancy;
   v15.receiver = self;
   v15.super_class = CKEntryViewButton;
-  v5 = [(CKEntryViewButton *)&v15 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(CKEntryViewButton *)&v15 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v5)
   {
     v6 = [objc_alloc(MEMORY[0x1E69DD298]) initWithEffect:0];
     [(CKEntryViewButton *)v5 addSubview:v6];
     [(CKEntryViewButton *)v5 setVibrancyView:v6];
-    [(CKEntryViewButton *)v5 setWantsVibrancy:v4];
-    v7 = [(CKEntryViewButton *)v5 _preferredEntryViewButtonType];
-    v8 = [MEMORY[0x1E69DC738] buttonWithType:v7];
+    [(CKEntryViewButton *)v5 setWantsVibrancy:vibrancyCopy];
+    _preferredEntryViewButtonType = [(CKEntryViewButton *)v5 _preferredEntryViewButtonType];
+    v8 = [MEMORY[0x1E69DC738] buttonWithType:_preferredEntryViewButtonType];
     v9 = v8;
-    if (!v7)
+    if (!_preferredEntryViewButtonType)
     {
       [v8 setAdjustsImageWhenDisabled:0];
     }
 
-    v10 = [v9 imageView];
-    [v10 setContentMode:1];
+    imageView = [v9 imageView];
+    [imageView setContentMode:1];
 
     v11 = objc_alloc_init(CKEntryViewBlurrableButtonContainer);
     [(CKEntryViewBlurrableButtonContainer *)v11 addSubview:v9];
-    v12 = [v6 contentView];
-    [v12 addSubview:v11];
+    contentView = [v6 contentView];
+    [contentView addSubview:v11];
 
     [(CKEntryViewButton *)v5 setButton:v9];
     [(CKEntryViewButton *)v5 setBlurrableButtonContainer:v11];
@@ -178,13 +178,13 @@ LABEL_11:
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(CKEntryViewButton *)self vibrancyView];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  vibrancyView = [(CKEntryViewButton *)self vibrancyView];
+  [vibrancyView setFrame:{v4, v6, v8, v10}];
 
   if (self->_needsOversizedBlurContainer)
   {
-    v12 = [(CKEntryViewButton *)self blurrableButtonContainer];
-    v13 = v12;
+    blurrableButtonContainer = [(CKEntryViewButton *)self blurrableButtonContainer];
+    v13 = blurrableButtonContainer;
     v14 = v4 + -30.0;
     v15 = v6 + -30.0;
     v16 = v8 + 60.0;
@@ -193,54 +193,54 @@ LABEL_11:
 
   else
   {
-    v12 = [(CKEntryViewButton *)self blurrableButtonContainer];
-    v13 = v12;
+    blurrableButtonContainer = [(CKEntryViewButton *)self blurrableButtonContainer];
+    v13 = blurrableButtonContainer;
     v14 = v4;
     v15 = v6;
     v16 = v8;
     v17 = v10;
   }
 
-  [v12 setFrame:{v14, v15, v16, v17}];
+  [blurrableButtonContainer setFrame:{v14, v15, v16, v17}];
 
-  v18 = [(CKEntryViewButton *)self blurrableButtonContainer];
-  [(CKEntryViewButton *)self convertRect:v18 toView:v4, v6, v8, v10];
+  blurrableButtonContainer2 = [(CKEntryViewButton *)self blurrableButtonContainer];
+  [(CKEntryViewButton *)self convertRect:blurrableButtonContainer2 toView:v4, v6, v8, v10];
   v20 = v19;
   v22 = v21;
   v24 = v23;
   v26 = v25;
 
-  v27 = [(CKEntryViewButton *)self button];
-  [v27 setFrame:{v20, v22, v24, v26}];
+  button = [(CKEntryViewButton *)self button];
+  [button setFrame:{v20, v22, v24, v26}];
 }
 
-+ (id)entryViewButtonImageWithName:(id)a3 tintColor:(char)a4 shouldSuppressHairline:(BOOL)a5
++ (id)entryViewButtonImageWithName:(id)name tintColor:(char)color shouldSuppressHairline:(BOOL)hairline
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = a3;
+  hairlineCopy = hairline;
+  colorCopy = color;
+  nameCopy = name;
   if (entryViewButtonImageWithName_tintColor_shouldSuppressHairline__onceToken != -1)
   {
     +[CKEntryViewButton entryViewButtonImageWithName:tintColor:shouldSuppressHairline:];
   }
 
   v9 = +[CKUIBehavior sharedBehaviors];
-  v10 = [v9 theme];
-  v11 = v10;
-  if (v6 == -1)
+  theme = [v9 theme];
+  v11 = theme;
+  if (colorCopy == -1)
   {
-    [v10 entryFieldButtonColor];
+    [theme entryFieldButtonColor];
   }
 
   else
   {
-    [v10 sendButtonColorForColorType:v6];
+    [theme sendButtonColorForColorType:colorCopy];
   }
   v12 = ;
 
   v13 = MEMORY[0x1E696AEC0];
   v14 = [v12 description];
-  v15 = [v13 stringWithFormat:@"%@-%@", v8, v14];
+  v15 = [v13 stringWithFormat:@"%@-%@", nameCopy, v14];
 
   v16 = [entryViewButtonImageWithName_tintColor_shouldSuppressHairline__sDictionary objectForKey:v15];
   if (v16)
@@ -248,42 +248,42 @@ LABEL_11:
     goto LABEL_47;
   }
 
-  v54 = a1;
+  selfCopy = self;
   v17 = [CKEntryViewButton imageNameForEntryViewButtonType:1];
   v18 = [CKEntryViewButton imageNameForEntryViewButtonType:0];
   v60 = [CKEntryViewButton imageNameForEntryViewButtonType:2];
   v19 = [CKEntryViewButton imageNameForEntryViewButtonType:3];
-  v55 = v5;
+  v55 = hairlineCopy;
   v59 = v18;
-  if ([v8 isEqualToString:v17] || objc_msgSend(v8, "isEqualToString:", v18))
+  if ([nameCopy isEqualToString:v17] || objc_msgSend(nameCopy, "isEqualToString:", v18))
   {
-    v20 = [MEMORY[0x1E69DCAB8] ckImageNamed:v8];
+    v20 = [MEMORY[0x1E69DCAB8] ckImageNamed:nameCopy];
   }
 
-  else if (([v8 isEqualToString:v60] & 1) != 0 || objc_msgSend(v8, "isEqualToString:", v19))
+  else if (([nameCopy isEqualToString:v60] & 1) != 0 || objc_msgSend(nameCopy, "isEqualToString:", v19))
   {
-    v20 = [MEMORY[0x1E69DCAB8] systemImageNamed:v8];
+    v20 = [MEMORY[0x1E69DCAB8] systemImageNamed:nameCopy];
   }
 
   else
   {
-    v20 = [MEMORY[0x1E69DCAB8] _systemImageNamed:v8];
+    v20 = [MEMORY[0x1E69DCAB8] _systemImageNamed:nameCopy];
   }
 
   v21 = v20;
   v56 = v12;
   v58 = v19;
-  if (([v8 isEqualToString:v60] & 1) != 0 || (objc_msgSend(v8, "isEqualToString:", v19) & 1) != 0 || objc_msgSend(v8, "isEqualToString:", v17))
+  if (([nameCopy isEqualToString:v60] & 1) != 0 || (objc_msgSend(nameCopy, "isEqualToString:", v19) & 1) != 0 || objc_msgSend(nameCopy, "isEqualToString:", v17))
   {
     v22 = v17;
     v23 = +[CKUIBehavior sharedBehaviors];
-    v24 = [v23 entryViewDefaultSymbolConfiguration];
+    entryViewDefaultSymbolConfiguration = [v23 entryViewDefaultSymbolConfiguration];
 
     v25 = +[CKUIBehavior sharedBehaviors];
-    v26 = [v25 entryViewButtonTintColor];
+    entryViewButtonTintColor = [v25 entryViewButtonTintColor];
 
-    v27 = [MEMORY[0x1E69DCAD8] configurationWithHierarchicalColor:v26];
-    v28 = [v24 configurationByApplyingConfiguration:v27];
+    v27 = [MEMORY[0x1E69DCAD8] configurationWithHierarchicalColor:entryViewButtonTintColor];
+    v28 = [entryViewDefaultSymbolConfiguration configurationByApplyingConfiguration:v27];
     v29 = [v21 imageWithSymbolConfiguration:v28];
 
     v21 = v29;
@@ -295,7 +295,7 @@ LABEL_14:
       v31 = v30;
       v33 = v32;
       v34 = v22;
-      if (([v8 isEqualToString:v59] & 1) != 0 || objc_msgSend(v8, "isEqualToString:", v22))
+      if (([nameCopy isEqualToString:v59] & 1) != 0 || objc_msgSend(nameCopy, "isEqualToString:", v22))
       {
         v12 = v56;
         if (!CKIsRunningInMacCatalyst())
@@ -313,7 +313,7 @@ LABEL_14:
         v12 = v56;
       }
 
-      if ([v8 isEqualToString:v60])
+      if ([nameCopy isEqualToString:v60])
       {
         v37 = +[CKUIBehavior sharedBehaviors];
         [v37 dictationButtonSize];
@@ -321,13 +321,13 @@ LABEL_14:
 
       else
       {
-        if (![v8 isEqualToString:v34])
+        if (![nameCopy isEqualToString:v34])
         {
-          if (([v8 isEqualToString:v58] & 1) == 0)
+          if (([nameCopy isEqualToString:v58] & 1) == 0)
           {
 LABEL_28:
             v43 = CKIsRunningInMacCatalyst();
-            if (([v8 isEqualToString:v60] & 1) == 0 && (objc_msgSend(v8, "isEqualToString:", v58) & 1) == 0 && (objc_msgSend(v8, "isEqualToString:", v34) & 1) == 0 && !v43)
+            if (([nameCopy isEqualToString:v60] & 1) == 0 && (objc_msgSend(nameCopy, "isEqualToString:", v58) & 1) == 0 && (objc_msgSend(nameCopy, "isEqualToString:", v34) & 1) == 0 && !v43)
             {
               [v21 scale];
               v45 = v44;
@@ -336,13 +336,13 @@ LABEL_28:
               UIGraphicsBeginImageContextWithOptions(v62, 0, v45);
               [v12 set];
               [v16 drawInRect:{0.0, 0.0, v31, v33}];
-              v46 = [v54 overlayImageForImageNamed:v8 tintColor:v6];
+              v46 = [selfCopy overlayImageForImageNamed:nameCopy tintColor:colorCopy];
               if (v46)
               {
                 v47 = +[CKUIBehavior sharedBehaviors];
                 [v47 theme];
                 v48 = v57 = v46;
-                v49 = [v48 sendButtonArrowColorForColorType:v6];
+                v49 = [v48 sendButtonArrowColorForColorType:colorCopy];
                 [v49 set];
 
                 v46 = v57;
@@ -370,8 +370,8 @@ LABEL_28:
 
 LABEL_27:
           v40 = +[CKUIBehavior sharedBehaviors];
-          v41 = [v40 entryViewButtonTintColor];
-          v42 = [v16 imageWithTintColor:v41];
+          entryViewButtonTintColor2 = [v40 entryViewButtonTintColor];
+          v42 = [v16 imageWithTintColor:entryViewButtonTintColor2];
 
           v16 = v42;
           goto LABEL_28;
@@ -428,16 +428,16 @@ void __83__CKEntryViewButton_entryViewButtonImageWithName_tintColor_shouldSuppre
   entryViewButtonImageWithName_tintColor_shouldSuppressHairline__sDictionary = v0;
 }
 
-+ (id)overlayImageForImageNamed:(id)a3 tintColor:(char)a4
++ (id)overlayImageForImageNamed:(id)named tintColor:(char)color
 {
-  v4 = a4;
-  v5 = a3;
+  colorCopy = color;
+  namedCopy = named;
   v6 = 0;
-  if (v4 <= 0xF && ((1 << v4) & 0x8003) != 0)
+  if (colorCopy <= 0xF && ((1 << colorCopy) & 0x8003) != 0)
   {
     v7 = +[CKUIBehavior sharedBehaviors];
-    v8 = [v7 entryViewSendButtonName];
-    v9 = [v5 isEqualToString:v8];
+    entryViewSendButtonName = [v7 entryViewSendButtonName];
+    v9 = [namedCopy isEqualToString:entryViewSendButtonName];
 
     if (v9)
     {
@@ -455,91 +455,91 @@ void __83__CKEntryViewButton_entryViewButtonImageWithName_tintColor_shouldSuppre
   return v10;
 }
 
-- (void)setCkTintColor:(char)a3
+- (void)setCkTintColor:(char)color
 {
-  if (self->_ckTintColor != a3)
+  if (self->_ckTintColor != color)
   {
-    self->_ckTintColor = a3;
+    self->_ckTintColor = color;
     [(CKEntryViewButton *)self setDefaultImage];
   }
 }
 
-- (void)setWantsVibrancy:(BOOL)a3
+- (void)setWantsVibrancy:(BOOL)vibrancy
 {
-  if (self->_wantsVibrancy != a3)
+  if (self->_wantsVibrancy != vibrancy)
   {
-    v3 = a3;
+    vibrancyCopy = vibrancy;
     v5 = +[CKUIBehavior sharedBehaviors];
-    v6 = [v5 entryViewButtonWantsVibrancy];
+    entryViewButtonWantsVibrancy = [v5 entryViewButtonWantsVibrancy];
 
-    if (v6)
+    if (entryViewButtonWantsVibrancy)
     {
-      self->_wantsVibrancy = v3;
-      if (v3)
+      self->_wantsVibrancy = vibrancyCopy;
+      if (vibrancyCopy)
       {
-        v9 = [MEMORY[0x1E69DC730] effectWithStyle:1100];
+        vibrancyView2 = [MEMORY[0x1E69DC730] effectWithStyle:1100];
         v7 = [MEMORY[0x1E69DD248] _effectForBlurEffect:? vibrancyStyle:?];
-        v8 = [(CKEntryViewButton *)self vibrancyView];
-        [v8 setEffect:v7];
+        vibrancyView = [(CKEntryViewButton *)self vibrancyView];
+        [vibrancyView setEffect:v7];
       }
 
       else
       {
-        v9 = [(CKEntryViewButton *)self vibrancyView];
-        [v9 setEffect:0];
+        vibrancyView2 = [(CKEntryViewButton *)self vibrancyView];
+        [vibrancyView2 setEffect:0];
       }
     }
   }
 }
 
-- (void)setBlurRadius:(double)a3
+- (void)setBlurRadius:(double)radius
 {
-  v4 = [(CKEntryViewButton *)self blurrableButtonContainer];
-  [v4 setBlurRadius:a3];
+  blurrableButtonContainer = [(CKEntryViewButton *)self blurrableButtonContainer];
+  [blurrableButtonContainer setBlurRadius:radius];
 }
 
 - (double)blurRadius
 {
-  v2 = [(CKEntryViewButton *)self blurrableButtonContainer];
-  [v2 blurRadius];
+  blurrableButtonContainer = [(CKEntryViewButton *)self blurrableButtonContainer];
+  [blurrableButtonContainer blurRadius];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v4 = [(CKEntryViewButton *)self button];
-  [v4 setEnabled:v3];
+  enabledCopy = enabled;
+  button = [(CKEntryViewButton *)self button];
+  [button setEnabled:enabledCopy];
 }
 
 - (BOOL)isEnabled
 {
-  v2 = [(CKEntryViewButton *)self button];
-  v3 = [v2 isEnabled];
+  button = [(CKEntryViewButton *)self button];
+  isEnabled = [button isEnabled];
 
-  return v3;
+  return isEnabled;
 }
 
 - (void)setDefaultImage
 {
-  v3 = [(CKEntryViewButton *)self entryViewButtonType];
+  entryViewButtonType = [(CKEntryViewButton *)self entryViewButtonType];
   ckTintColor = self->_ckTintColor;
 
-  [(CKEntryViewButton *)self setTintedImageForButtonType:v3 tintColor:ckTintColor];
+  [(CKEntryViewButton *)self setTintedImageForButtonType:entryViewButtonType tintColor:ckTintColor];
 }
 
-- (void)setTintedImageForButtonType:(int64_t)a3 tintColor:(char)a4
+- (void)setTintedImageForButtonType:(int64_t)type tintColor:(char)color
 {
-  v4 = a4;
+  colorCopy = color;
   v12 = [CKEntryViewButton imageNameForEntryViewButtonType:?];
   [(CKEntryViewButton *)self setupCompositeFilterForButton];
-  v7 = [objc_opt_class() entryViewButtonImageWithName:v12 tintColor:v4 shouldSuppressHairline:1];
-  v8 = [(CKEntryViewButton *)self button];
-  [v8 setImage:v7 forState:0];
+  v7 = [objc_opt_class() entryViewButtonImageWithName:v12 tintColor:colorCopy shouldSuppressHairline:1];
+  button = [(CKEntryViewButton *)self button];
+  [button setImage:v7 forState:0];
 
-  if (a3)
+  if (type)
   {
     v9 = 0;
   }
@@ -550,15 +550,15 @@ void __83__CKEntryViewButton_entryViewButtonImageWithName_tintColor_shouldSuppre
   }
 
   v10 = v9;
-  v11 = [(CKEntryViewButton *)self button];
-  [v11 setImage:v10 forState:4];
+  button2 = [(CKEntryViewButton *)self button];
+  [button2 setImage:v10 forState:4];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = CKEntryViewButton;
-  [(CKEntryViewButton *)&v4 traitCollectionDidChange:a3];
+  [(CKEntryViewButton *)&v4 traitCollectionDidChange:change];
   [(CKEntryViewButton *)self setupCompositeFilterForButton];
 }
 
@@ -567,35 +567,35 @@ void __83__CKEntryViewButton_entryViewButtonImageWithName_tintColor_shouldSuppre
   if ([(CKEntryViewButton *)self _buttonStyleNeedsBlendFilter])
   {
     v12 = *MEMORY[0x1E6979CE8];
-    v3 = [(CKEntryViewButton *)self traitCollection];
-    v4 = [v3 userInterfaceStyle];
+    traitCollection = [(CKEntryViewButton *)self traitCollection];
+    userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-    if (v4 == 2)
+    if (userInterfaceStyle == 2)
     {
       v5 = *MEMORY[0x1E6979CF8];
 
       v12 = v5;
     }
 
-    v6 = [(CKEntryViewButton *)self button];
-    v7 = [v6 layer];
+    button = [(CKEntryViewButton *)self button];
+    layer = [button layer];
     v8 = [MEMORY[0x1E6979378] filterWithType:v12];
-    [v7 setCompositingFilter:v8];
+    [layer setCompositingFilter:v8];
 
-    v9 = [(CKEntryViewButton *)self button];
-    v10 = [v9 superview];
-    v11 = [v10 layer];
-    [v11 setAllowsGroupBlending:0];
+    button2 = [(CKEntryViewButton *)self button];
+    superview = [button2 superview];
+    layer2 = [superview layer];
+    [layer2 setAllowsGroupBlending:0];
   }
 }
 
 - (CGSize)intrinsicContentSize
 {
-  v3 = [(CKEntryViewButton *)self button];
-  [v3 sizeToFit];
+  button = [(CKEntryViewButton *)self button];
+  [button sizeToFit];
 
-  v4 = [(CKEntryViewButton *)self button];
-  [v4 frame];
+  button2 = [(CKEntryViewButton *)self button];
+  [button2 frame];
   v6 = v5;
   v8 = v7;
 
@@ -606,7 +606,7 @@ void __83__CKEntryViewButton_entryViewButtonImageWithName_tintColor_shouldSuppre
   return result;
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4 modifiers:(int64_t)a5
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region modifiers:(int64_t)modifiers
 {
   v5 = [objc_alloc(MEMORY[0x1E69DD070]) initWithView:self];
   v6 = [MEMORY[0x1E69DCDB8] effectWithPreview:v5];

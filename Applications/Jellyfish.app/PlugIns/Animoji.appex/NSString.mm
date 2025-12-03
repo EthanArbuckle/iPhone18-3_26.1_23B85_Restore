@@ -7,13 +7,13 @@
 - (id)URLEncodedString_ch
 {
   v3 = +[NSMutableString string];
-  v4 = [(NSString *)self UTF8String];
-  v5 = strlen(v4);
+  uTF8String = [(NSString *)self UTF8String];
+  v5 = strlen(uTF8String);
   if (v5 >= 1)
   {
     for (i = v5 & 0x7FFFFFFF; i; --i)
     {
-      v8 = *v4++;
+      v8 = *uTF8String++;
       v7 = v8;
       if (v8 > 57)
       {

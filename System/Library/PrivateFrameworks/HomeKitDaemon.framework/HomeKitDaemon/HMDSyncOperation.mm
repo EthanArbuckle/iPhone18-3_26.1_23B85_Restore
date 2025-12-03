@@ -1,19 +1,19 @@
 @interface HMDSyncOperation
-+ (id)cancelOperationWithBlock:(id)a3;
-+ (id)cloudForcePushSyncOperationWithBlock:(id)a3;
-+ (id)cloudOperation:(id)a3 withBlock:(id)a4 completion:(id)a5;
-+ (id)cloudPushSyncOperationWithBlock:(id)a3;
-+ (id)cloudVerifyAccountSyncOperationWithBlock:(id)a3;
-+ (id)cloudZonePushSyncOperation:(id)a3 block:(id)a4;
-+ (id)postFetchOperationWithBlock:(id)a3;
-+ (id)queryDatabaseOperationWithBlock:(id)a3;
++ (id)cancelOperationWithBlock:(id)block;
++ (id)cloudForcePushSyncOperationWithBlock:(id)block;
++ (id)cloudOperation:(id)operation withBlock:(id)block completion:(id)completion;
++ (id)cloudPushSyncOperationWithBlock:(id)block;
++ (id)cloudVerifyAccountSyncOperationWithBlock:(id)block;
++ (id)cloudZonePushSyncOperation:(id)operation block:(id)block;
++ (id)postFetchOperationWithBlock:(id)block;
++ (id)queryDatabaseOperationWithBlock:(id)block;
 - (NSArray)operationCompletions;
 - (NSString)zoneName;
-- (id)_initWithOptions:(id)a3 syncBlock:(id)a4 completion:(id)a5;
+- (id)_initWithOptions:(id)options syncBlock:(id)block completion:(id)completion;
 - (id)description;
 - (unint64_t)operationType;
 - (void)removeAllOperationCompletions;
-- (void)updateOperationCompletionsWithArray:(id)a3;
+- (void)updateOperationCompletionsWithArray:(id)array;
 @end
 
 @implementation HMDSyncOperation
@@ -26,11 +26,11 @@
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)updateOperationCompletionsWithArray:(id)a3
+- (void)updateOperationCompletionsWithArray:(id)array
 {
-  v4 = a3;
+  arrayCopy = array;
   os_unfair_lock_lock_with_options();
-  [(NSMutableArray *)self->_operationCompletions addObjectsFromArray:v4];
+  [(NSMutableArray *)self->_operationCompletions addObjectsFromArray:arrayCopy];
   os_unfair_lock_unlock(&self->_lock);
 }
 
@@ -45,48 +45,48 @@
 
 - (NSString)zoneName
 {
-  v2 = [(HMDSyncOperation *)self options];
-  v3 = [v2 zoneName];
+  options = [(HMDSyncOperation *)self options];
+  zoneName = [options zoneName];
 
-  return v3;
+  return zoneName;
 }
 
 - (unint64_t)operationType
 {
-  v2 = [(HMDSyncOperation *)self options];
-  v3 = [v2 operationType];
+  options = [(HMDSyncOperation *)self options];
+  operationType = [options operationType];
 
-  return v3;
+  return operationType;
 }
 
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(HMDSyncOperation *)self operationType];
-  if (v5 - 1 > 8)
+  operationType = [(HMDSyncOperation *)self operationType];
+  if (operationType - 1 > 8)
   {
     v6 = @"unknown";
   }
 
   else
   {
-    v6 = off_27867B328[v5 - 1];
+    v6 = off_27867B328[operationType - 1];
   }
 
   v7 = v6;
-  v8 = [(HMDSyncOperation *)self options];
-  v9 = [(HMDSyncOperation *)self identifier];
-  v10 = [v3 stringWithFormat:@"<%@, Operation Type = %@, Options = %@, Identifier = %@>", v4, v7, v8, v9];
+  options = [(HMDSyncOperation *)self options];
+  identifier = [(HMDSyncOperation *)self identifier];
+  v10 = [v3 stringWithFormat:@"<%@, Operation Type = %@, Options = %@, Identifier = %@>", v4, v7, options, identifier];
 
   return v10;
 }
 
-- (id)_initWithOptions:(id)a3 syncBlock:(id)a4 completion:(id)a5
+- (id)_initWithOptions:(id)options syncBlock:(id)block completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  optionsCopy = options;
+  blockCopy = block;
+  completionCopy = completion;
   v23.receiver = self;
   v23.super_class = HMDSyncOperation;
   v12 = [(HMDSyncOperation *)&v23 init];
@@ -94,23 +94,23 @@
   if (v12)
   {
     v12->_lock._os_unfair_lock_opaque = 0;
-    v14 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
     identifier = v13->_identifier;
-    v13->_identifier = v14;
+    v13->_identifier = uUID;
 
-    objc_storeStrong(&v13->_options, a3);
-    v16 = _Block_copy(v10);
+    objc_storeStrong(&v13->_options, options);
+    v16 = _Block_copy(blockCopy);
     operationBlock = v13->_operationBlock;
     v13->_operationBlock = v16;
 
-    v18 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     operationCompletions = v13->_operationCompletions;
-    v13->_operationCompletions = v18;
+    v13->_operationCompletions = array;
 
-    if (v11)
+    if (completionCopy)
     {
       v20 = v13->_operationCompletions;
-      v21 = _Block_copy(v11);
+      v21 = _Block_copy(completionCopy);
       [(NSMutableArray *)v20 addObject:v21];
     }
   }
@@ -118,77 +118,77 @@
   return v13;
 }
 
-+ (id)cloudOperation:(id)a3 withBlock:(id)a4 completion:(id)a5
++ (id)cloudOperation:(id)operation withBlock:(id)block completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[HMDSyncOperation alloc] _initWithOptions:v9 syncBlock:v8 completion:v7];
+  completionCopy = completion;
+  blockCopy = block;
+  operationCopy = operation;
+  v10 = [[HMDSyncOperation alloc] _initWithOptions:operationCopy syncBlock:blockCopy completion:completionCopy];
 
   return v10;
 }
 
-+ (id)cloudZonePushSyncOperation:(id)a3 block:(id)a4
++ (id)cloudZonePushSyncOperation:(id)operation block:(id)block
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[HMDSyncOperationOptions alloc] initWithOperationType:5 zoneName:v6 delayRespected:0];
+  blockCopy = block;
+  operationCopy = operation;
+  v7 = [[HMDSyncOperationOptions alloc] initWithOperationType:5 zoneName:operationCopy delayRespected:0];
 
-  v8 = [[HMDSyncOperation alloc] _initWithOptions:v7 syncBlock:v5 completion:0];
+  v8 = [[HMDSyncOperation alloc] _initWithOptions:v7 syncBlock:blockCopy completion:0];
 
   return v8;
 }
 
-+ (id)cloudVerifyAccountSyncOperationWithBlock:(id)a3
++ (id)cloudVerifyAccountSyncOperationWithBlock:(id)block
 {
-  v3 = a3;
+  blockCopy = block;
   v4 = [[HMDSyncOperationOptions alloc] initWithOperationType:3 zoneName:@"VerifyZones" cloudConflict:0 delayRespected:0];
-  v5 = [[HMDSyncOperation alloc] _initWithOptions:v4 syncBlock:v3 completion:0];
+  v5 = [[HMDSyncOperation alloc] _initWithOptions:v4 syncBlock:blockCopy completion:0];
 
   return v5;
 }
 
-+ (id)cloudForcePushSyncOperationWithBlock:(id)a3
++ (id)cloudForcePushSyncOperationWithBlock:(id)block
 {
-  v3 = a3;
+  blockCopy = block;
   v4 = [[HMDSyncOperationOptions alloc] initWithOperationType:2 zoneName:@"HomeDataBlobZone" delayRespected:0];
-  v5 = [[HMDSyncOperation alloc] _initWithOptions:v4 syncBlock:v3 completion:0];
+  v5 = [[HMDSyncOperation alloc] _initWithOptions:v4 syncBlock:blockCopy completion:0];
 
   return v5;
 }
 
-+ (id)cloudPushSyncOperationWithBlock:(id)a3
++ (id)cloudPushSyncOperationWithBlock:(id)block
 {
-  v3 = a3;
+  blockCopy = block;
   v4 = [[HMDSyncOperationOptions alloc] initWithOperationType:1 zoneName:@"HomeDataBlobZone" delayRespected:0];
-  v5 = [[HMDSyncOperation alloc] _initWithOptions:v4 syncBlock:v3 completion:0];
+  v5 = [[HMDSyncOperation alloc] _initWithOptions:v4 syncBlock:blockCopy completion:0];
 
   return v5;
 }
 
-+ (id)cancelOperationWithBlock:(id)a3
++ (id)cancelOperationWithBlock:(id)block
 {
-  v3 = a3;
+  blockCopy = block;
   v4 = [[HMDSyncOperationOptions alloc] initWithOperationType:7 zoneName:@"CancelAll" cloudConflict:0 delayRespected:0];
-  v5 = [[HMDSyncOperation alloc] _initWithOptions:v4 syncBlock:v3 completion:0];
+  v5 = [[HMDSyncOperation alloc] _initWithOptions:v4 syncBlock:blockCopy completion:0];
 
   return v5;
 }
 
-+ (id)postFetchOperationWithBlock:(id)a3
++ (id)postFetchOperationWithBlock:(id)block
 {
-  v3 = a3;
+  blockCopy = block;
   v4 = [[HMDSyncOperationOptions alloc] initWithOperationType:9 zoneName:@"PostFetch" cloudConflict:0 delayRespected:0];
-  v5 = [[HMDSyncOperation alloc] _initWithOptions:v4 syncBlock:v3 completion:0];
+  v5 = [[HMDSyncOperation alloc] _initWithOptions:v4 syncBlock:blockCopy completion:0];
 
   return v5;
 }
 
-+ (id)queryDatabaseOperationWithBlock:(id)a3
++ (id)queryDatabaseOperationWithBlock:(id)block
 {
-  v3 = a3;
+  blockCopy = block;
   v4 = [[HMDSyncOperationOptions alloc] initWithOperationType:8 zoneName:@"QueryDatabase" cloudConflict:0 delayRespected:0];
-  v5 = [[HMDSyncOperation alloc] _initWithOptions:v4 syncBlock:v3 completion:0];
+  v5 = [[HMDSyncOperation alloc] _initWithOptions:v4 syncBlock:blockCopy completion:0];
 
   return v5;
 }

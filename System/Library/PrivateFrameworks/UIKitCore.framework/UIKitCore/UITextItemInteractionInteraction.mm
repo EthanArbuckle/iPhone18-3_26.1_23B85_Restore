@@ -1,16 +1,16 @@
 @interface UITextItemInteractionInteraction
-+ (BOOL)mightResponder:(id)a3 haveInteractableTextItemAtPoint:(CGPoint)a4 precision:(unint64_t)a5;
-+ (BOOL)mightResponderHaveTextItemInteractions:(id)a3;
++ (BOOL)mightResponder:(id)responder haveInteractableTextItemAtPoint:(CGPoint)point precision:(unint64_t)precision;
++ (BOOL)mightResponderHaveTextItemInteractions:(id)interactions;
 @end
 
 @implementation UITextItemInteractionInteraction
 
-+ (BOOL)mightResponderHaveTextItemInteractions:(id)a3
++ (BOOL)mightResponderHaveTextItemInteractions:(id)interactions
 {
-  v3 = a3;
+  interactionsCopy = interactions;
   if (objc_opt_respondsToSelector())
   {
-    if (([v3 _mightHaveInteractableItems] & 1) == 0)
+    if (([interactionsCopy _mightHaveInteractableItems] & 1) == 0)
     {
 LABEL_7:
       v4 = 0;
@@ -18,7 +18,7 @@ LABEL_7:
     }
   }
 
-  else if ((objc_opt_respondsToSelector() & 1) == 0 || ([v3 mightHaveLinks] & 1) == 0)
+  else if ((objc_opt_respondsToSelector() & 1) == 0 || ([interactionsCopy mightHaveLinks] & 1) == 0)
   {
     goto LABEL_7;
   }
@@ -29,12 +29,12 @@ LABEL_8:
   return v4;
 }
 
-+ (BOOL)mightResponder:(id)a3 haveInteractableTextItemAtPoint:(CGPoint)a4 precision:(unint64_t)a5
++ (BOOL)mightResponder:(id)responder haveInteractableTextItemAtPoint:(CGPoint)point precision:(unint64_t)precision
 {
-  y = a4.y;
-  x = a4.x;
-  v9 = a3;
-  if (![a1 mightResponderHaveTextItemInteractions:v9])
+  y = point.y;
+  x = point.x;
+  responderCopy = responder;
+  if (![self mightResponderHaveTextItemInteractions:responderCopy])
   {
     goto LABEL_6;
   }
@@ -43,7 +43,7 @@ LABEL_8:
   {
     if (objc_opt_respondsToSelector())
     {
-      v11 = [v9 willInteractWithLinkAtPoint:{x, y}];
+      v11 = [responderCopy willInteractWithLinkAtPoint:{x, y}];
       goto LABEL_7;
     }
 
@@ -52,7 +52,7 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v10 = [v9 _textInteractableItemAtPoint:a5 precision:{x, y}];
+  v10 = [responderCopy _textInteractableItemAtPoint:precision precision:{x, y}];
   v11 = v10 != 0;
 
 LABEL_7:

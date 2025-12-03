@@ -7,7 +7,7 @@
 
 - (BOOL)isInitiator
 {
-  v2 = self;
+  selfCopy = self;
   v3 = SFAirDropClient.BoopAtADistance.Transaction.isInitiator.getter();
 
   return v3 & 1;

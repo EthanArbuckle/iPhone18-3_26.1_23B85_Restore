@@ -1,18 +1,18 @@
 @interface PKAMSEnagementMessageCell
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (void)displayDialogRequest:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (void)displayDialogRequest:(id)request;
 - (void)layoutSubviews;
-- (void)messageViewController:(id)a3 didSelectActionWithDialogResult:(id)a4;
+- (void)messageViewController:(id)controller didSelectActionWithDialogResult:(id)result;
 - (void)prepareForReuse;
-- (void)setMessage:(id)a3;
+- (void)setMessage:(id)message;
 @end
 
 @implementation PKAMSEnagementMessageCell
 
-- (void)setMessage:(id)a3
+- (void)setMessage:(id)message
 {
-  v5 = a3;
-  objc_storeStrong(&self->_message, a3);
+  messageCopy = message;
+  objc_storeStrong(&self->_message, message);
   if (self->_message)
   {
     objc_initWeak(&location, self);
@@ -21,13 +21,13 @@
     v9 = __40__PKAMSEnagementMessageCell_setMessage___block_invoke;
     v10 = &unk_1E8010998;
     objc_copyWeak(&v11, &location);
-    [v5 setActionOnViewed:&v7];
+    [messageCopy setActionOnViewed:&v7];
     objc_destroyWeak(&v11);
     objc_destroyWeak(&location);
   }
 
-  v6 = [v5 dialogRequest];
-  [(PKAMSEnagementMessageCell *)self displayDialogRequest:v6];
+  dialogRequest = [messageCopy dialogRequest];
+  [(PKAMSEnagementMessageCell *)self displayDialogRequest:dialogRequest];
 }
 
 void __40__PKAMSEnagementMessageCell_setMessage___block_invoke(uint64_t a1)
@@ -41,24 +41,24 @@ void __40__PKAMSEnagementMessageCell_setMessage___block_invoke(uint64_t a1)
   }
 }
 
-- (void)displayDialogRequest:(id)a3
+- (void)displayDialogRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   dashboardMessageController = self->_dashboardMessageController;
-  v14 = v4;
+  v14 = requestCopy;
   if (dashboardMessageController)
   {
-    v6 = [(AMSUIDashboardMessageViewController *)dashboardMessageController view];
-    [v6 removeFromSuperview];
+    view = [(AMSUIDashboardMessageViewController *)dashboardMessageController view];
+    [view removeFromSuperview];
 
     [(AMSUIDashboardMessageViewController *)self->_dashboardMessageController removeFromParentViewController];
     v7 = self->_dashboardMessageController;
     self->_dashboardMessageController = 0;
 
-    v4 = v14;
+    requestCopy = v14;
   }
 
-  if (v4)
+  if (requestCopy)
   {
     v8 = [objc_alloc(MEMORY[0x1E698CCC0]) initWithRequest:v14];
     v9 = self->_dashboardMessageController;
@@ -67,27 +67,27 @@ void __40__PKAMSEnagementMessageCell_setMessage___block_invoke(uint64_t a1)
     [(AMSUIDashboardMessageViewController *)self->_dashboardMessageController setImpressionsReportingFrequency:0];
     [(AMSUIDashboardMessageViewController *)self->_dashboardMessageController setShouldAutomaticallyReportMetrics:0];
     v10 = objc_alloc_init(MEMORY[0x1E698CCB8]);
-    v11 = [MEMORY[0x1E69DC888] clearColor];
-    [v10 setBackgroundColor:v11];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [v10 setBackgroundColor:clearColor];
 
     [(AMSUIDashboardMessageViewController *)self->_dashboardMessageController setPreferredAppearance:v10];
     [(AMSUIDashboardMessageViewController *)self->_dashboardMessageController setDelegate:self];
-    v12 = [(UIView *)self pkui_viewControllerFromResponderChain];
-    [v12 addChildViewController:self->_dashboardMessageController];
+    pkui_viewControllerFromResponderChain = [(UIView *)self pkui_viewControllerFromResponderChain];
+    [pkui_viewControllerFromResponderChain addChildViewController:self->_dashboardMessageController];
 
-    v13 = [(AMSUIDashboardMessageViewController *)self->_dashboardMessageController view];
-    [(PKAMSEnagementMessageCell *)self addSubview:v13];
+    view2 = [(AMSUIDashboardMessageViewController *)self->_dashboardMessageController view];
+    [(PKAMSEnagementMessageCell *)self addSubview:view2];
 
-    v4 = v14;
+    requestCopy = v14;
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(AMSUIDashboardMessageViewController *)self->_dashboardMessageController view];
-  [v5 sizeThatFits:{width, height}];
+  height = fits.height;
+  width = fits.width;
+  view = [(AMSUIDashboardMessageViewController *)self->_dashboardMessageController view];
+  [view sizeThatFits:{width, height}];
   v7 = v6;
   v9 = v8;
 
@@ -103,9 +103,9 @@ void __40__PKAMSEnagementMessageCell_setMessage___block_invoke(uint64_t a1)
   v4.receiver = self;
   v4.super_class = PKAMSEnagementMessageCell;
   [(PKAMSEnagementMessageCell *)&v4 layoutSubviews];
-  v3 = [(AMSUIDashboardMessageViewController *)self->_dashboardMessageController view];
+  view = [(AMSUIDashboardMessageViewController *)self->_dashboardMessageController view];
   [(PKAMSEnagementMessageCell *)self bounds];
-  [v3 setFrame:?];
+  [view setFrame:?];
 }
 
 - (void)prepareForReuse
@@ -116,19 +116,19 @@ void __40__PKAMSEnagementMessageCell_setMessage___block_invoke(uint64_t a1)
   [(PKAMSEnagementMessageCell *)&v3 prepareForReuse];
 }
 
-- (void)messageViewController:(id)a3 didSelectActionWithDialogResult:(id)a4
+- (void)messageViewController:(id)controller didSelectActionWithDialogResult:(id)result
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 originalRequest];
-  v9 = [v7 selectedActionIdentifier];
+  controllerCopy = controller;
+  resultCopy = result;
+  originalRequest = [resultCopy originalRequest];
+  selectedActionIdentifier = [resultCopy selectedActionIdentifier];
 
-  v10 = [v8 locateActionWithIdentifier:v9];
+  v10 = [originalRequest locateActionWithIdentifier:selectedActionIdentifier];
 
   if (v10)
   {
-    v11 = [v10 style];
-    if (v11 < 2)
+    style = [v10 style];
+    if (style < 2)
     {
       objc_initWeak(&location, self);
       aBlock[0] = MEMORY[0x1E69E9820];
@@ -136,12 +136,12 @@ void __40__PKAMSEnagementMessageCell_setMessage___block_invoke(uint64_t a1)
       aBlock[2] = __83__PKAMSEnagementMessageCell_messageViewController_didSelectActionWithDialogResult___block_invoke;
       aBlock[3] = &unk_1E80110E0;
       objc_copyWeak(&v15, &location);
-      v14 = v6;
-      v12 = _Block_copy(aBlock);
+      v14 = controllerCopy;
+      actionOnDismiss = _Block_copy(aBlock);
 
       objc_destroyWeak(&v15);
       objc_destroyWeak(&location);
-      if (!v12)
+      if (!actionOnDismiss)
       {
         goto LABEL_8;
       }
@@ -149,13 +149,13 @@ void __40__PKAMSEnagementMessageCell_setMessage___block_invoke(uint64_t a1)
       goto LABEL_7;
     }
 
-    if (v11 == 2)
+    if (style == 2)
     {
-      v12 = [(PKDashboardPassMessage *)self->_message actionOnDismiss];
-      if (v12)
+      actionOnDismiss = [(PKDashboardPassMessage *)self->_message actionOnDismiss];
+      if (actionOnDismiss)
       {
 LABEL_7:
-        v12[2](v12);
+        actionOnDismiss[2](actionOnDismiss);
       }
     }
   }

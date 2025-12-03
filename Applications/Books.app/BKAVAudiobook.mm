@@ -1,28 +1,28 @@
 @interface BKAVAudiobook
-+ (id)audiobookWithAssetID:(id)a3 tracks:(id)a4;
-- (BKAVAudiobook)initWithAssetID:(id)a3;
-- (BOOL)isEqualToAudiobook:(id)a3;
++ (id)audiobookWithAssetID:(id)d tracks:(id)tracks;
+- (BKAVAudiobook)initWithAssetID:(id)d;
+- (BOOL)isEqualToAudiobook:(id)audiobook;
 - (BOOL)isSG;
 - (NSArray)chapters;
 - (NSString)description;
 - (double)duration;
 - (id)representativeTrack;
-- (void)addTrack:(id)a3;
-- (void)artworkWithCompletion:(id)a3;
+- (void)addTrack:(id)track;
+- (void)artworkWithCompletion:(id)completion;
 @end
 
 @implementation BKAVAudiobook
 
-+ (id)audiobookWithAssetID:(id)a3 tracks:(id)a4
++ (id)audiobookWithAssetID:(id)d tracks:(id)tracks
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [[BKAVAudiobook alloc] initWithAssetID:v5];
+  dCopy = d;
+  tracksCopy = tracks;
+  v7 = [[BKAVAudiobook alloc] initWithAssetID:dCopy];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v8 = v6;
+  v8 = tracksCopy;
   v9 = [v8 countByEnumeratingWithState:&v17 objects:v23 count:16];
   if (v9)
   {
@@ -70,9 +70,9 @@
   return v7;
 }
 
-- (BKAVAudiobook)initWithAssetID:(id)a3
+- (BKAVAudiobook)initWithAssetID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v11.receiver = self;
   v11.super_class = BKAVAudiobook;
   v6 = [(BKAVAudiobook *)&v11 init];
@@ -82,7 +82,7 @@
     avTracks = v6->_avTracks;
     v6->_avTracks = v7;
 
-    objc_storeStrong(&v6->_assetID, a3);
+    objc_storeStrong(&v6->_assetID, d);
     guid = v6->_guid;
     v6->_guid = &stru_100A30A68;
   }
@@ -115,8 +115,8 @@
             objc_enumerationMutation(v4);
           }
 
-          v9 = [*(*(&v14 + 1) + 8 * v8) chapters];
-          [v3 addObjectsFromArray:v9];
+          chapters = [*(*(&v14 + 1) + 8 * v8) chapters];
+          [v3 addObjectsFromArray:chapters];
 
           v8 = v8 + 1;
         }
@@ -186,16 +186,16 @@
   return self->_duration;
 }
 
-- (void)artworkWithCompletion:(id)a3
+- (void)artworkWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(BKAVAudiobook *)self representativeTrack];
-  if (v5)
+  completionCopy = completion;
+  representativeTrack = [(BKAVAudiobook *)self representativeTrack];
+  if (representativeTrack)
   {
-    v6 = objc_retainBlock(v4);
+    v6 = objc_retainBlock(completionCopy);
     if (v6)
     {
-      v6[2](v6, [v5 artwork]);
+      v6[2](v6, [representativeTrack artwork]);
     }
   }
 
@@ -207,7 +207,7 @@
       sub_100791314(v7);
     }
 
-    v8 = objc_retainBlock(v4);
+    v8 = objc_retainBlock(completionCopy);
     v6 = v8;
     if (v8)
     {
@@ -216,9 +216,9 @@
   }
 }
 
-- (void)addTrack:(id)a3
+- (void)addTrack:(id)track
 {
-  [(NSMutableArray *)self->_avTracks addObject:a3];
+  [(NSMutableArray *)self->_avTracks addObject:track];
   [(BKAVAudiobook *)self setChapterListValid:0];
 
   [(BKAVAudiobook *)self setDurationValid:0];
@@ -239,12 +239,12 @@
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(BKAVAudiobook *)self title];
-  v6 = [(BKAVAudiobook *)self author];
-  v7 = [(BKAVAudiobook *)self representativeTrack];
-  v8 = +[NSMutableString stringWithFormat:](NSMutableString, "stringWithFormat:", @"<%@:%p title=%@ author=%@ artwork=%p tracks=\n", v4, self, v5, v6, [v7 artwork]);
+  title = [(BKAVAudiobook *)self title];
+  author = [(BKAVAudiobook *)self author];
+  representativeTrack = [(BKAVAudiobook *)self representativeTrack];
+  v8 = +[NSMutableString stringWithFormat:](NSMutableString, "stringWithFormat:", @"<%@:%p title=%@ author=%@ artwork=%p tracks=\n", v4, self, title, author, [representativeTrack artwork]);
 
-  v22 = self;
+  selfCopy = self;
   v9 = [(NSMutableArray *)self->_avTracks count];
   if (v9)
   {
@@ -253,7 +253,7 @@
     v12 = v9 - 1;
     do
     {
-      v13 = [(NSMutableArray *)v22->_avTracks objectAtIndexedSubscript:v11];
+      v13 = [(NSMutableArray *)selfCopy->_avTracks objectAtIndexedSubscript:v11];
       v14 = [v13 description];
 
       v25 = 0u;
@@ -307,14 +307,14 @@
   return v8;
 }
 
-- (BOOL)isEqualToAudiobook:(id)a3
+- (BOOL)isEqualToAudiobook:(id)audiobook
 {
-  v4 = a3;
-  v5 = [(BKAVAudiobook *)self assetID];
-  v6 = [v4 assetID];
+  audiobookCopy = audiobook;
+  assetID = [(BKAVAudiobook *)self assetID];
+  assetID2 = [audiobookCopy assetID];
 
-  LOBYTE(v4) = [v5 isEqualToString:v6];
-  return v4;
+  LOBYTE(audiobookCopy) = [assetID isEqualToString:assetID2];
+  return audiobookCopy;
 }
 
 - (BOOL)isSG

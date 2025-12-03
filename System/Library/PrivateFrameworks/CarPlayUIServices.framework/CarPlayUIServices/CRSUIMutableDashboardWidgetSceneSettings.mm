@@ -2,103 +2,103 @@
 - (NSNumber)frameRateLimit;
 - (OS_xpc_object)endpoint;
 - (SBSHomeScreenIconStyleConfiguration)iconStyleConfiguration;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (int64_t)mapStyle;
 - (unint64_t)widgetStyle;
-- (void)setEndpoint:(id)a3;
-- (void)setFrameRateLimit:(id)a3;
-- (void)setIconStyleConfiguration:(id)a3;
-- (void)setMapStyle:(int64_t)a3;
-- (void)setWidgetStyle:(unint64_t)a3;
+- (void)setEndpoint:(id)endpoint;
+- (void)setFrameRateLimit:(id)limit;
+- (void)setIconStyleConfiguration:(id)configuration;
+- (void)setMapStyle:(int64_t)style;
+- (void)setWidgetStyle:(unint64_t)style;
 @end
 
 @implementation CRSUIMutableDashboardWidgetSceneSettings
 
 - (OS_xpc_object)endpoint
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:2883987265];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:2883987265];
 
   return v3;
 }
 
-- (void)setEndpoint:(id)a3
+- (void)setEndpoint:(id)endpoint
 {
-  v4 = a3;
-  v5 = [(FBSSettings *)self otherSettings];
-  [v5 setObject:v4 forSetting:2883987265];
+  endpointCopy = endpoint;
+  otherSettings = [(FBSSettings *)self otherSettings];
+  [otherSettings setObject:endpointCopy forSetting:2883987265];
 }
 
 - (unint64_t)widgetStyle
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:2883987264];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:2883987264];
 
-  v4 = [v3 unsignedIntegerValue];
-  return v4;
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
+  return unsignedIntegerValue;
 }
 
-- (void)setWidgetStyle:(unint64_t)a3
+- (void)setWidgetStyle:(unint64_t)style
 {
-  v5 = [(FBSSettings *)self otherSettings];
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-  [v5 setObject:v4 forSetting:2883987264];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:style];
+  [otherSettings setObject:v4 forSetting:2883987264];
 }
 
 - (NSNumber)frameRateLimit
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:3152422722];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:3152422722];
 
   return v3;
 }
 
-- (void)setFrameRateLimit:(id)a3
+- (void)setFrameRateLimit:(id)limit
 {
-  v4 = a3;
-  v5 = [(FBSSettings *)self otherSettings];
-  [v5 setObject:v4 forSetting:3152422722];
+  limitCopy = limit;
+  otherSettings = [(FBSSettings *)self otherSettings];
+  [otherSettings setObject:limitCopy forSetting:3152422722];
 }
 
 - (int64_t)mapStyle
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:3152422721];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:3152422721];
 
-  v4 = [v3 integerValue];
-  return v4;
+  integerValue = [v3 integerValue];
+  return integerValue;
 }
 
-- (void)setMapStyle:(int64_t)a3
+- (void)setMapStyle:(int64_t)style
 {
-  v5 = [(FBSSettings *)self otherSettings];
-  v4 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
-  [v5 setObject:v4 forSetting:3152422721];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v4 = [MEMORY[0x277CCABB0] numberWithInteger:style];
+  [otherSettings setObject:v4 forSetting:3152422721];
 }
 
 - (SBSHomeScreenIconStyleConfiguration)iconStyleConfiguration
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:3152422723];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  defaultStyleConfiguration = [otherSettings objectForSetting:3152422723];
 
-  if (!v3)
+  if (!defaultStyleConfiguration)
   {
-    v3 = [MEMORY[0x277D66AB0] defaultStyleConfiguration];
+    defaultStyleConfiguration = [MEMORY[0x277D66AB0] defaultStyleConfiguration];
   }
 
-  return v3;
+  return defaultStyleConfiguration;
 }
 
-- (void)setIconStyleConfiguration:(id)a3
+- (void)setIconStyleConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(FBSSettings *)self otherSettings];
-  [v5 setObject:v4 forSetting:3152422723];
+  configurationCopy = configuration;
+  otherSettings = [(FBSSettings *)self otherSettings];
+  [otherSettings setObject:configurationCopy forSetting:3152422723];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [CRSUIDashboardWidgetSceneSettings allocWithZone:a3];
+  v4 = [CRSUIDashboardWidgetSceneSettings allocWithZone:zone];
 
   return [(FBSSettings *)v4 initWithSettings:self];
 }

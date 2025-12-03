@@ -28,7 +28,7 @@
 
 + (CKDatabaseSubscription)new
 {
-  v2 = [a1 alloc];
+  v2 = [self alloc];
   v3 = CKCreateGUID();
   v5 = objc_msgSend_initWithSubscriptionID_(v2, v4, v3);
 

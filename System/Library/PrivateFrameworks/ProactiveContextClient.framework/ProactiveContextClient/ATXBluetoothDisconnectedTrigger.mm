@@ -1,45 +1,45 @@
 @interface ATXBluetoothDisconnectedTrigger
-- (ATXBluetoothDisconnectedTrigger)initWithCoder:(id)a3;
-- (ATXBluetoothDisconnectedTrigger)initWithDeviceIdentifier:(id)a3 deviceName:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (ATXBluetoothDisconnectedTrigger)initWithCoder:(id)coder;
+- (ATXBluetoothDisconnectedTrigger)initWithDeviceIdentifier:(id)identifier deviceName:(id)name;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXBluetoothDisconnectedTrigger
 
-- (ATXBluetoothDisconnectedTrigger)initWithDeviceIdentifier:(id)a3 deviceName:(id)a4
+- (ATXBluetoothDisconnectedTrigger)initWithDeviceIdentifier:(id)identifier deviceName:(id)name
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  nameCopy = name;
   v13.receiver = self;
   v13.super_class = ATXBluetoothDisconnectedTrigger;
   v9 = [(ATXBluetoothDisconnectedTrigger *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_deviceIdentifier, a3);
-    objc_storeStrong(&v10->_deviceName, a4);
+    objc_storeStrong(&v9->_deviceIdentifier, identifier);
+    objc_storeStrong(&v10->_deviceName, name);
     v11 = v10;
   }
 
   return v10;
 }
 
-- (ATXBluetoothDisconnectedTrigger)initWithCoder:(id)a3
+- (ATXBluetoothDisconnectedTrigger)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bluetoothDeviceIdentifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bluetoothDeviceName"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bluetoothDeviceIdentifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bluetoothDeviceName"];
 
   v7 = [(ATXBluetoothDisconnectedTrigger *)self initWithDeviceIdentifier:v5 deviceName:v6];
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   deviceIdentifier = self->_deviceIdentifier;
-  v5 = a3;
-  [v5 encodeObject:deviceIdentifier forKey:@"bluetoothDeviceIdentifier"];
-  [v5 encodeObject:self->_deviceName forKey:@"bluetoothDeviceName"];
+  coderCopy = coder;
+  [coderCopy encodeObject:deviceIdentifier forKey:@"bluetoothDeviceIdentifier"];
+  [coderCopy encodeObject:self->_deviceName forKey:@"bluetoothDeviceName"];
 }
 
 @end

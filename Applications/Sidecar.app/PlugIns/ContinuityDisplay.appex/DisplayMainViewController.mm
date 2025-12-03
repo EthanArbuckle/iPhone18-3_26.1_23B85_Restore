@@ -4,17 +4,17 @@
 - (NSUndoManager)undoManager;
 - (SidecarRequest)request;
 - (unint64_t)preferredScreenEdgesDeferringSystemGestures;
-- (void)_batteryStateChangedWithNote:(id)a3;
+- (void)_batteryStateChangedWithNote:(id)note;
 - (void)loadView;
-- (void)receivedItems:(id)a3;
-- (void)requestDidFinish:(id)a3;
-- (void)requestDidStart:(id)a3;
-- (void)setBackgrounded:(BOOL)a3;
+- (void)receivedItems:(id)items;
+- (void)requestDidFinish:(id)finish;
+- (void)requestDidStart:(id)start;
+- (void)setBackgrounded:(BOOL)backgrounded;
 - (void)sidecarServiceActive;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation DisplayMainViewController
@@ -35,7 +35,7 @@
 
 - (unint64_t)preferredScreenEdgesDeferringSystemGestures
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10002B888();
 
   return v3;
@@ -43,7 +43,7 @@
 
 - (BOOL)prefersHomeIndicatorAutoHidden
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10002B99C();
 
   return v3 & 1;
@@ -51,60 +51,60 @@
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   sub_10002BC74();
 }
 
-- (void)_batteryStateChangedWithNote:(id)a3
+- (void)_batteryStateChangedWithNote:(id)note
 {
   v4 = sub_1000575E0();
   v5 = *(v4 - 8);
   __chkstk_darwin(v4);
   v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1000575A0();
-  v8 = self;
+  selfCopy = self;
   sub_10002C78C();
 
   (*(v5 + 8))(v7, v4);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_10002D570(a3);
+  selfCopy = self;
+  sub_10002D570(appear);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_10002D714(a3);
+  selfCopy = self;
+  sub_10002D714(disappear);
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   swift_unknownObjectRetain();
-  v8 = self;
-  sub_10002D844(a4, width, height);
+  selfCopy = self;
+  sub_10002D844(coordinator, width, height);
   swift_unknownObjectRelease();
 }
 
-- (void)requestDidStart:(id)a3
+- (void)requestDidStart:(id)start
 {
-  v4 = a3;
-  v5 = self;
-  sub_10002D930(v4);
+  startCopy = start;
+  selfCopy = self;
+  sub_10002D930(startCopy);
 }
 
-- (void)requestDidFinish:(id)a3
+- (void)requestDidFinish:(id)finish
 {
-  v4 = a3;
-  v5 = self;
-  sub_10002DB30(v4);
+  finishCopy = finish;
+  selfCopy = self;
+  sub_10002DB30(finishCopy);
 }
 
-- (void)receivedItems:(id)a3
+- (void)receivedItems:(id)items
 {
   sub_100005A1C(0, &unk_10007FAA0);
   sub_100057BF0();
@@ -112,28 +112,28 @@
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000324B0();
 }
 
 - (void)sidecarServiceActive
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000325B0();
 }
 
 - (BOOL)backgrounded
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1000357C0();
 
   return v3 & 1;
 }
 
-- (void)setBackgrounded:(BOOL)a3
+- (void)setBackgrounded:(BOOL)backgrounded
 {
-  v4 = self;
-  sub_100035844(a3);
+  selfCopy = self;
+  sub_100035844(backgrounded);
 }
 
 @end

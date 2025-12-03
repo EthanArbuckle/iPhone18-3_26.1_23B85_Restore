@@ -1,10 +1,10 @@
 @interface HUDAnimator
 + (id)sharedAnimator;
 - (HUDAnimator)init;
-- (id)beginAnimationFromValue:(double)a3 toValue:(double)a4 duration:(double)a5 updateBlock:(id)a6 completionBlock:(id)a7;
-- (void)displayLinkFired:(id)a3;
-- (void)endAnimation:(id)a3;
-- (void)updateAnimation:(id)a3 toValue:(double)a4 duration:(double)a5;
+- (id)beginAnimationFromValue:(double)value toValue:(double)toValue duration:(double)duration updateBlock:(id)block completionBlock:(id)completionBlock;
+- (void)displayLinkFired:(id)fired;
+- (void)endAnimation:(id)animation;
+- (void)updateAnimation:(id)animation toValue:(double)value duration:(double)duration;
 - (void)updateDisplayLink;
 @end
 
@@ -47,26 +47,26 @@
   return v3;
 }
 
-- (id)beginAnimationFromValue:(double)a3 toValue:(double)a4 duration:(double)a5 updateBlock:(id)a6 completionBlock:(id)a7
+- (id)beginAnimationFromValue:(double)value toValue:(double)toValue duration:(double)duration updateBlock:(id)block completionBlock:(id)completionBlock
 {
-  v12 = a6;
-  v13 = a7;
+  blockCopy = block;
+  completionBlockCopy = completionBlock;
   v14 = +[NSUUID UUID];
   displayLinkAccessQueue = self->_displayLinkAccessQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100001AA4;
   block[3] = &unk_1000306F8;
-  v26 = a3;
-  v27 = a4;
-  v28 = a5;
-  v24 = v12;
-  v25 = v13;
+  valueCopy = value;
+  toValueCopy = toValue;
+  durationCopy = duration;
+  v24 = blockCopy;
+  v25 = completionBlockCopy;
   v16 = v14;
   v22 = v16;
-  v23 = self;
-  v17 = v13;
-  v18 = v12;
+  selfCopy = self;
+  v17 = completionBlockCopy;
+  v18 = blockCopy;
   dispatch_sync(displayLinkAccessQueue, block);
   [(HUDAnimator *)self updateDisplayLink];
   v19 = v16;
@@ -74,34 +74,34 @@
   return v16;
 }
 
-- (void)updateAnimation:(id)a3 toValue:(double)a4 duration:(double)a5
+- (void)updateAnimation:(id)animation toValue:(double)value duration:(double)duration
 {
-  v8 = a3;
+  animationCopy = animation;
   displayLinkAccessQueue = self->_displayLinkAccessQueue;
   v11 = _NSConcreteStackBlock;
   v12 = 3221225472;
   v13 = sub_100001C18;
   v14 = &unk_100030748;
-  v15 = self;
-  v16 = v8;
-  v17 = a4;
-  v18 = a5;
-  v10 = v8;
+  selfCopy = self;
+  v16 = animationCopy;
+  valueCopy = value;
+  durationCopy = duration;
+  v10 = animationCopy;
   dispatch_sync(displayLinkAccessQueue, &v11);
   [(HUDAnimator *)self updateDisplayLink:v11];
 }
 
-- (void)endAnimation:(id)a3
+- (void)endAnimation:(id)animation
 {
-  v4 = a3;
+  animationCopy = animation;
   displayLinkAccessQueue = self->_displayLinkAccessQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100001E8C;
   v7[3] = &unk_100030770;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = animationCopy;
+  v6 = animationCopy;
   dispatch_sync(displayLinkAccessQueue, v7);
 }
 
@@ -116,9 +116,9 @@
   dispatch_sync(displayLinkAccessQueue, block);
 }
 
-- (void)displayLinkFired:(id)a3
+- (void)displayLinkFired:(id)fired
 {
-  v4 = a3;
+  firedCopy = fired;
   v18[0] = 0;
   v18[1] = v18;
   v18[2] = 0x3032000000;

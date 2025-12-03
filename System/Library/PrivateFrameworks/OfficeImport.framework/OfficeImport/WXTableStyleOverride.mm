@@ -1,60 +1,60 @@
 @interface WXTableStyleOverride
-+ (void)readFrom:(_xmlNode *)a3 to:(id)a4 state:(id)a5;
++ (void)readFrom:(_xmlNode *)from to:(id)to state:(id)state;
 @end
 
 @implementation WXTableStyleOverride
 
-+ (void)readFrom:(_xmlNode *)a3 to:(id)a4 state:(id)a5
++ (void)readFrom:(_xmlNode *)from to:(id)to state:(id)state
 {
-  v23 = a4;
-  v7 = a5;
-  v8 = [v23 style];
-  v9 = [v7 WXMainNamespace];
-  v10 = OCXFindChild(a3, v9, "pPr");
+  toCopy = to;
+  stateCopy = state;
+  style = [toCopy style];
+  wXMainNamespace = [stateCopy WXMainNamespace];
+  v10 = OCXFindChild(from, wXMainNamespace, "pPr");
 
   if (v10)
   {
-    v11 = [v23 mutableParagraphProperties];
-    [WXParagraphProperties readFrom:v10 to:v11 readBaseStyle:0 state:v7];
+    mutableParagraphProperties = [toCopy mutableParagraphProperties];
+    [WXParagraphProperties readFrom:v10 to:mutableParagraphProperties readBaseStyle:0 state:stateCopy];
 
-    if (v8)
+    if (style)
     {
-      v12 = [v23 paragraphProperties];
-      [v12 setBaseStyle:v8];
+      paragraphProperties = [toCopy paragraphProperties];
+      [paragraphProperties setBaseStyle:style];
     }
   }
 
-  v13 = [v7 WXMainNamespace];
-  v14 = OCXFindChild(a3, v13, "rPr");
+  wXMainNamespace2 = [stateCopy WXMainNamespace];
+  v14 = OCXFindChild(from, wXMainNamespace2, "rPr");
 
   if (v14)
   {
-    v15 = [v23 mutableCharacterProperties];
-    [WXCharacterProperties readFrom:v14 to:v15 state:v7];
+    mutableCharacterProperties = [toCopy mutableCharacterProperties];
+    [WXCharacterProperties readFrom:v14 to:mutableCharacterProperties state:stateCopy];
 
-    if (v8)
+    if (style)
     {
-      v16 = [v23 characterProperties];
-      [v16 setBaseStyle:v8];
+      characterProperties = [toCopy characterProperties];
+      [characterProperties setBaseStyle:style];
     }
   }
 
-  v17 = [v7 WXMainNamespace];
-  v18 = OCXFindChild(a3, v17, "trPr");
+  wXMainNamespace3 = [stateCopy WXMainNamespace];
+  v18 = OCXFindChild(from, wXMainNamespace3, "trPr");
 
   if (v18)
   {
-    v19 = [v23 mutableTableRowProperties];
-    [WXTableRowProperties readFrom:v18 to:v19 state:v7];
+    mutableTableRowProperties = [toCopy mutableTableRowProperties];
+    [WXTableRowProperties readFrom:v18 to:mutableTableRowProperties state:stateCopy];
   }
 
-  v20 = [v7 WXMainNamespace];
-  v21 = OCXFindChild(a3, v20, "tcPr");
+  wXMainNamespace4 = [stateCopy WXMainNamespace];
+  v21 = OCXFindChild(from, wXMainNamespace4, "tcPr");
 
   if (v21)
   {
-    v22 = [v23 mutableTableCellStyleProperties];
-    [WXTableCellProperties readFrom:v21 to:v22 state:v7];
+    mutableTableCellStyleProperties = [toCopy mutableTableCellStyleProperties];
+    [WXTableCellProperties readFrom:v21 to:mutableTableCellStyleProperties state:stateCopy];
   }
 }
 

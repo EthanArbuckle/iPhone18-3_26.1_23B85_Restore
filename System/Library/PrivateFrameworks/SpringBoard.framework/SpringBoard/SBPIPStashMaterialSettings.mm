@@ -1,5 +1,5 @@
 @interface SBPIPStashMaterialSettings
-+ (BOOL)ignoresKey:(id)a3;
++ (BOOL)ignoresKey:(id)key;
 + (id)settingsControllerModule;
 - (void)setDefaultValues;
 @end
@@ -12,8 +12,8 @@
   v4.super_class = SBPIPStashMaterialSettings;
   [(PTSettings *)&v4 setDefaultValues];
   [(SBPIPStashMaterialSettings *)self setChevronCompositingFilter:*MEMORY[0x277CDA5E8]];
-  v3 = [MEMORY[0x277D75348] secondaryLabelColor];
-  [(SBPIPStashMaterialSettings *)self setChevronTintColor:v3];
+  secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+  [(SBPIPStashMaterialSettings *)self setChevronTintColor:secondaryLabelColor];
 
   [(SBPIPStashMaterialSettings *)self setDarkTintAlpha:0.55];
   [(SBPIPStashMaterialSettings *)self setLightTintAlpha:0.15];
@@ -26,23 +26,23 @@
   v29 = [v2 possibleValues:&unk_28336F030 titles:&unk_28336F048];
 
   v3 = [MEMORY[0x277D431B8] rowWithTitle:@"Chevron Filter" valueKeyPath:@"chevronCompositingFilter"];
-  v4 = [MEMORY[0x277CBEB68] null];
+  null = [MEMORY[0x277CBEB68] null];
   v5 = *MEMORY[0x277CDA5E8];
-  v33[0] = v4;
+  v33[0] = null;
   v33[1] = v5;
   v33[2] = *MEMORY[0x277CDA5D8];
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v33 count:3];
   v28 = [v3 possibleValues:v6 titles:&unk_28336F060];
 
   v7 = [MEMORY[0x277D431B8] rowWithTitle:@"Chevron Tint" valueKeyPath:@"chevronTintColor"];
-  v8 = [MEMORY[0x277D75348] labelColor];
-  v32[0] = v8;
-  v9 = [MEMORY[0x277D75348] secondaryLabelColor];
-  v32[1] = v9;
-  v10 = [MEMORY[0x277D75348] tertiaryLabelColor];
-  v32[2] = v10;
-  v11 = [MEMORY[0x277D75348] quaternaryLabelColor];
-  v32[3] = v11;
+  labelColor = [MEMORY[0x277D75348] labelColor];
+  v32[0] = labelColor;
+  secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+  v32[1] = secondaryLabelColor;
+  tertiaryLabelColor = [MEMORY[0x277D75348] tertiaryLabelColor];
+  v32[2] = tertiaryLabelColor;
+  quaternaryLabelColor = [MEMORY[0x277D75348] quaternaryLabelColor];
+  v32[3] = quaternaryLabelColor;
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v32 count:4];
   v27 = [v7 possibleValues:v12 titles:&unk_28336F078];
 
@@ -109,17 +109,17 @@ uint64_t __54__SBPIPStashMaterialSettings_settingsControllerModule__block_invoke
   return [v9 numberWithDouble:v10];
 }
 
-+ (BOOL)ignoresKey:(id)a3
++ (BOOL)ignoresKey:(id)key
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"darkTintColor"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"darkTintColor"])
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"lightTintColor"];
+    v4 = [keyCopy isEqualToString:@"lightTintColor"];
   }
 
   return v4;

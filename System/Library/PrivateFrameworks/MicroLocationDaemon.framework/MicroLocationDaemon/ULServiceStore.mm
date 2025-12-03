@@ -1,21 +1,21 @@
 @interface ULServiceStore
 + (unsigned)maxEntriesInTable;
-- (BOOL)deleteAllServicesWithExceptions:(const void *)a3;
-- (BOOL)deleteAllServicesWithUUIDs:()vector<boost:(std::allocator<boost::uuids::uuid>> *)a3 :uuids::uuid;
+- (BOOL)deleteAllServicesWithExceptions:(const void *)exceptions;
+- (BOOL)deleteAllServicesWithUUIDs:()vector<boost:(std::allocator<boost::uuids::uuid>> *)boost :uuids::uuid;
 - (BOOL)deleteOldestsServicesPerClientAboveMaxCount;
-- (BOOL)deleteServiceForUUID:(uuid)a3;
-- (BOOL)insertDataObjects:(const void *)a3;
+- (BOOL)deleteServiceForUUID:(uuid)d;
+- (BOOL)insertDataObjects:(const void *)objects;
 - (BOOL)updateAllServicesWithMatchingClientId:()basic_string<char withNewClientId:()std:(std::allocator<char>> *)var0 :char_traits<char>;
-- (BOOL)updateAllServicesWithMatchingServiceUUID:(uuid)a3 withNewServiceUUID:(uuid)a4;
-- (BOOL)updateServiceLocationTypes:(uuid)a3 withLocationTypes:(unint64_t)a4;
-- (id)fetchServiceManagedObjectWithUUID:(const uuid *)a3 withManagedObjectContext:(id)a4;
-- (id)getAllServiceUUIDs:(unint64_t)a3;
+- (BOOL)updateAllServicesWithMatchingServiceUUID:(uuid)d withNewServiceUUID:(uuid)iD;
+- (BOOL)updateServiceLocationTypes:(uuid)types withLocationTypes:(unint64_t)locationTypes;
+- (id)fetchServiceManagedObjectWithUUID:(const uuid *)d withManagedObjectContext:(id)context;
+- (id)getAllServiceUUIDs:(unint64_t)ds;
 - (id)insertDataObjects:;
 - (optional<ULServiceDO>)fetchServiceByUUID:()basic_string<char;
 - (uint64_t)insertDataObjects:;
-- (uint64_t)updateLastActiveTime:(uint64_t)a3 forService:(uint64_t)a4;
-- (vector<ULServiceDO,)fetchAllServicesForClientId:(ULServiceStore *)self andUserId:(SEL)a3;
-- (vector<ULServiceDO,)fetchAllServicesForServiceType:(ULServiceStore *)self onlyServicesWithLabels:(SEL)a3;
+- (uint64_t)updateLastActiveTime:(uint64_t)time forService:(uint64_t)service;
+- (vector<ULServiceDO,)fetchAllServicesForClientId:(ULServiceStore *)self andUserId:(SEL)id;
+- (vector<ULServiceDO,)fetchAllServicesForServiceType:(ULServiceStore *)self onlyServicesWithLabels:(SEL)labels;
 - (void)deleteOldestsServicesPerClientAboveMaxCount;
 @end
 
@@ -24,60 +24,60 @@
 + (unsigned)maxEntriesInTable
 {
   v2 = +[ULDefaultsSingleton shared];
-  v3 = [v2 defaultsDictionary];
+  defaultsDictionary = [v2 defaultsDictionary];
 
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"ULServicesTableMaxRows"];
-  v5 = [v3 objectForKey:v4];
+  v5 = [defaultsDictionary objectForKey:v4];
   if (v5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v6 = [v5 unsignedIntValue];
+    unsignedIntValue = [v5 unsignedIntValue];
   }
 
   else
   {
-    v6 = [&unk_286A71BC8 unsignedIntValue];
+    unsignedIntValue = [&unk_286A71BC8 unsignedIntValue];
   }
 
-  v7 = v6;
+  v7 = unsignedIntValue;
 
   return v7;
 }
 
-- (BOOL)insertDataObjects:(const void *)a3
+- (BOOL)insertDataObjects:(const void *)objects
 {
   v7[4] = *MEMORY[0x277D85DE8];
-  v6 = self;
+  selfCopy = self;
   v7[0] = &unk_286A56D00;
-  v7[1] = &v6;
+  v7[1] = &selfCopy;
   v7[3] = v7;
-  inserted = ULDBUtils::insertDataObjects<ULServiceDO,ULServiceMO>(self, a3, v7);
+  inserted = ULDBUtils::insertDataObjects<ULServiceDO,ULServiceMO>(self, objects, v7);
   std::__function::__value_func<ULServiceMO * ()(ULServiceDO const&)>::~__value_func[abi:ne200100](v7);
   v4 = *MEMORY[0x277D85DE8];
   return inserted;
 }
 
-- (BOOL)deleteServiceForUUID:(uuid)a3
+- (BOOL)deleteServiceForUUID:(uuid)d
 {
   v13 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v4 = [MEMORY[0x277CBEB18] array];
-  v5 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDBytes:&v12];
-  v6 = [v5 UUIDString];
+  dCopy = d;
+  array = [MEMORY[0x277CBEB18] array];
+  v5 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDBytes:&dCopy];
+  uUIDString = [v5 UUIDString];
 
-  v7 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K=%@", @"serviceUUID", v6];
-  [v4 addObject:v7];
+  v7 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K=%@", @"serviceUUID", uUIDString];
+  [array addObject:v7];
 
   v8 = objc_opt_class();
   v9 = NSStringFromClass(v8);
-  LOBYTE(self) = [(ULStore *)self batchDeleteObjectsWithEntityName:v9 byAndPredicates:v4 sortDescriptors:0 andLimit:0];
+  LOBYTE(self) = [(ULStore *)self batchDeleteObjectsWithEntityName:v9 byAndPredicates:array sortDescriptors:0 andLimit:0];
 
   v10 = *MEMORY[0x277D85DE8];
   return self;
 }
 
-- (BOOL)deleteAllServicesWithUUIDs:()vector<boost:(std::allocator<boost::uuids::uuid>> *)a3 :uuids::uuid
+- (BOOL)deleteAllServicesWithUUIDs:()vector<boost:(std::allocator<boost::uuids::uuid>> *)boost :uuids::uuid
 {
-  if (a3->var0 == a3->var1)
+  if (boost->var0 == boost->var1)
   {
     if (onceToken_MicroLocation_Default != -1)
     {
@@ -96,26 +96,26 @@
 
   else
   {
-    v4 = ULDBUtils::NSStringArrayFromBoostUUIDs(a3);
-    v5 = [MEMORY[0x277CBEB18] array];
+    v4 = ULDBUtils::NSStringArrayFromBoostUUIDs(boost);
+    array = [MEMORY[0x277CBEB18] array];
     v6 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K in %@", @"serviceUUID", v4];
-    [v5 addObject:v6];
+    [array addObject:v6];
 
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
-    v9 = [(ULStore *)self batchDeleteObjectsWithEntityName:v8 byAndPredicates:v5 sortDescriptors:0 andLimit:0];
+    v9 = [(ULStore *)self batchDeleteObjectsWithEntityName:v8 byAndPredicates:array sortDescriptors:0 andLimit:0];
   }
 
   return v9;
 }
 
-- (BOOL)deleteAllServicesWithExceptions:(const void *)a3
+- (BOOL)deleteAllServicesWithExceptions:(const void *)exceptions
 {
-  v5 = [MEMORY[0x277CBEB18] array];
-  v6 = [MEMORY[0x277CBEB18] array];
-  v7 = *a3;
-  v8 = *(a3 + 1);
-  if (*a3 != v8)
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
+  v7 = *exceptions;
+  v8 = *(exceptions + 1);
+  if (*exceptions != v8)
   {
     do
     {
@@ -126,7 +126,7 @@
       }
 
       v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:v9];
-      [v6 addObject:v10];
+      [array2 addObject:v10];
 
       v7 += 3;
     }
@@ -134,17 +134,17 @@
     while (v7 != v8);
   }
 
-  v11 = [MEMORY[0x277CCAC30] predicateWithFormat:@"NOT (%K IN %@)", @"clientId", v6];
-  [v5 addObject:v11];
+  v11 = [MEMORY[0x277CCAC30] predicateWithFormat:@"NOT (%K IN %@)", @"clientId", array2];
+  [array addObject:v11];
 
   v12 = objc_opt_class();
   v13 = NSStringFromClass(v12);
-  v14 = [(ULStore *)self batchDeleteObjectsWithEntityName:v13 byAndPredicates:v5 sortDescriptors:0 andLimit:0];
+  v14 = [(ULStore *)self batchDeleteObjectsWithEntityName:v13 byAndPredicates:array sortDescriptors:0 andLimit:0];
 
   return v14;
 }
 
-- (vector<ULServiceDO,)fetchAllServicesForServiceType:(ULServiceStore *)self onlyServicesWithLabels:(SEL)a3
+- (vector<ULServiceDO,)fetchAllServicesForServiceType:(ULServiceStore *)self onlyServicesWithLabels:(SEL)labels
 {
   v5 = a5;
   v21[1] = *MEMORY[0x277D85DE8];
@@ -153,20 +153,20 @@
   retstr->var2 = 0;
   retstr->var0 = 0;
   v10 = objc_autoreleasePoolPush();
-  v11 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v12 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K=%u", @"serviceType", a4];
-  [v11 addObject:v12];
+  [array addObject:v12];
 
   if (v5)
   {
     v13 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K.@count > 0", @"labels"];
-    [v11 addObject:v13];
+    [array addObject:v13];
   }
 
   v14 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"lastActiveTimestamp" ascending:0];
   v21[0] = v14;
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:1];
-  [(ULServiceStore *)self _fetchServicesByAndPredicates:v11 sortDescriptors:v15 andLimit:v9];
+  [(ULServiceStore *)self _fetchServicesByAndPredicates:array sortDescriptors:v15 andLimit:v9];
   std::vector<ULServiceDO>::__vdeallocate(&retstr->var0);
   *&retstr->var0 = v18;
   retstr->var2 = v19;
@@ -180,7 +180,7 @@
   return result;
 }
 
-- (vector<ULServiceDO,)fetchAllServicesForClientId:(ULServiceStore *)self andUserId:(SEL)a3
+- (vector<ULServiceDO,)fetchAllServicesForClientId:(ULServiceStore *)self andUserId:(SEL)id
 {
   v22[1] = *MEMORY[0x277D85DE8];
   v8 = ULSettings::get<ULSettings::DatabaseSelectionLimit>();
@@ -188,7 +188,7 @@
   retstr->var2 = 0;
   retstr->var0 = 0;
   v9 = objc_autoreleasePoolPush();
-  v10 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v11 = MEMORY[0x277CCAC30];
   if (*(a4 + 23) >= 0)
   {
@@ -202,12 +202,12 @@
 
   v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:v12];
   v14 = [v11 predicateWithFormat:@"%K=%@", @"clientId", v13];
-  [v10 addObject:v14];
+  [array addObject:v14];
 
   v15 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"lastActiveTimestamp" ascending:0];
   v22[0] = v15;
   v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:1];
-  [(ULServiceStore *)self _fetchServicesByAndPredicates:v10 sortDescriptors:v16 andLimit:v8];
+  [(ULServiceStore *)self _fetchServicesByAndPredicates:array sortDescriptors:v16 andLimit:v8];
   std::vector<ULServiceDO>::__vdeallocate(&retstr->var0);
   *&retstr->var0 = v19;
   retstr->var2 = v20;
@@ -230,17 +230,17 @@
   v24 = 0;
   std::vector<ULServiceDO>::reserve(&v23, 1uLL);
   v7 = objc_autoreleasePoolPush();
-  v8 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v9 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDBytes:&v27];
-  v10 = [v9 UUIDString];
+  uUIDString = [v9 UUIDString];
 
-  v11 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K=%@", @"serviceUUID", v10];
-  [v8 addObject:v11];
+  v11 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K=%@", @"serviceUUID", uUIDString];
+  [array addObject:v11];
 
   v12 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"lastActiveTimestamp" ascending:0];
   v26 = v12;
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:&v26 count:1];
-  [(ULServiceStore *)self _fetchServicesByAndPredicates:v8 sortDescriptors:v13 andLimit:1];
+  [(ULServiceStore *)self _fetchServicesByAndPredicates:array sortDescriptors:v13 andLimit:1];
   std::vector<ULServiceDO>::__vdeallocate(&v23);
   v23 = v21;
   v24 = v22;
@@ -285,39 +285,39 @@
   return result;
 }
 
-- (uint64_t)updateLastActiveTime:(uint64_t)a3 forService:(uint64_t)a4
+- (uint64_t)updateLastActiveTime:(uint64_t)time forService:(uint64_t)service
 {
   v23[2] = *MEMORY[0x277D85DE8];
-  v23[0] = a4;
+  v23[0] = service;
   v23[1] = a5;
-  v7 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v8 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDBytes:v23];
-  v9 = [v8 UUIDString];
+  uUIDString = [v8 UUIDString];
 
-  v10 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K=%@", @"serviceUUID", v9];
-  [v7 addObject:v10];
+  v10 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K=%@", @"serviceUUID", uUIDString];
+  [array addObject:v10];
 
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
   v22 = 0;
-  v11 = [a1 managedObjectContext];
+  managedObjectContext = [self managedObjectContext];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __50__ULServiceStore_updateLastActiveTime_forService___block_invoke;
   v15[3] = &unk_2798D4500;
-  v15[4] = a1;
-  v12 = v7;
+  v15[4] = self;
+  v12 = array;
   v18 = a2;
   v16 = v12;
   v17 = &v19;
-  [v11 performBlockAndWait:v15];
+  [managedObjectContext performBlockAndWait:v15];
 
-  LOBYTE(v7) = *(v20 + 24);
+  LOBYTE(array) = *(v20 + 24);
   _Block_object_dispose(&v19, 8);
 
   v13 = *MEMORY[0x277D85DE8];
-  return v7 & 1;
+  return array & 1;
 }
 
 void __50__ULServiceStore_updateLastActiveTime_forService___block_invoke(uint64_t a1)
@@ -371,38 +371,38 @@ void __50__ULServiceStore_updateLastActiveTime_forService___block_invoke(uint64_
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)updateServiceLocationTypes:(uuid)a3 withLocationTypes:(unint64_t)a4
+- (BOOL)updateServiceLocationTypes:(uuid)types withLocationTypes:(unint64_t)locationTypes
 {
   v23 = *MEMORY[0x277D85DE8];
-  v22 = a3;
-  v6 = [MEMORY[0x277CBEB18] array];
-  v7 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDBytes:&v22];
-  v8 = [v7 UUIDString];
+  typesCopy = types;
+  array = [MEMORY[0x277CBEB18] array];
+  v7 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDBytes:&typesCopy];
+  uUIDString = [v7 UUIDString];
 
-  v9 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K=%@", @"serviceUUID", v8];
-  [v6 addObject:v9];
+  v9 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K=%@", @"serviceUUID", uUIDString];
+  [array addObject:v9];
 
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
   v21 = 0;
-  v10 = [(ULStore *)self managedObjectContext];
+  managedObjectContext = [(ULStore *)self managedObjectContext];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __63__ULServiceStore_updateServiceLocationTypes_withLocationTypes___block_invoke;
   v14[3] = &unk_2798D4500;
   v14[4] = self;
-  v11 = v6;
+  v11 = array;
   v16 = &v18;
-  v17 = a4;
+  locationTypesCopy = locationTypes;
   v15 = v11;
-  [v10 performBlockAndWait:v14];
+  [managedObjectContext performBlockAndWait:v14];
 
-  LOBYTE(v6) = *(v19 + 24);
+  LOBYTE(array) = *(v19 + 24);
   _Block_object_dispose(&v18, 8);
 
   v12 = *MEMORY[0x277D85DE8];
-  return v6 & 1;
+  return array & 1;
 }
 
 void __63__ULServiceStore_updateServiceLocationTypes_withLocationTypes___block_invoke(uint64_t a1)
@@ -507,12 +507,12 @@ void __65__ULServiceStore_updateService_withServiceType_toNewServiceType___block
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (id)getAllServiceUUIDs:(unint64_t)a3
+- (id)getAllServiceUUIDs:(unint64_t)ds
 {
   v5 = objc_autoreleasePoolPush();
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
-  v8 = [(ULStore *)self fetchPropertyForEntityName:v7 propertyToFetch:@"serviceUUID" distinctResults:1 byAndPredicates:0 sortDescriptors:0 andLimit:a3];
+  v8 = [(ULStore *)self fetchPropertyForEntityName:v7 propertyToFetch:@"serviceUUID" distinctResults:1 byAndPredicates:0 sortDescriptors:0 andLimit:ds];
 
   objc_autoreleasePoolPop(v5);
 
@@ -529,81 +529,81 @@ void __65__ULServiceStore_updateService_withServiceType_toNewServiceType___block
     v83[1] = 0;
     v82 = v83;
     v2 = +[ULDefaultsSingleton shared];
-    v3 = [v2 defaultsDictionary];
+    defaultsDictionary = [v2 defaultsDictionary];
 
     v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"ULMaximumNumberOfCreatedUnsupervisedServicesPerClientAfterMaintenance"];
-    v5 = [v3 objectForKey:v4];
+    v5 = [defaultsDictionary objectForKey:v4];
     if (v5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v6 = [v5 unsignedLongValue];
+      unsignedLongValue = [v5 unsignedLongValue];
     }
 
     else
     {
-      v6 = [&unk_286A71B80 unsignedLongValue];
+      unsignedLongValue = [&unk_286A71B80 unsignedLongValue];
     }
 
-    v7 = v6;
+    v7 = unsignedLongValue;
 
     v87.__r_.__value_.__r.__words[0] = 1;
     v80 = &v87;
     std::__tree<std::__value_type<unsigned long long,unsigned long>,std::__map_value_compare<unsigned long long,std::__value_type<unsigned long long,unsigned long>,std::less<unsigned long long>,true>,std::allocator<std::__value_type<unsigned long long,unsigned long>>>::__emplace_unique_key_args<unsigned long long,std::piecewise_construct_t const&,std::tuple<unsigned long long &&>,std::tuple<>>(&v82, &v87)[5] = v7;
     v8 = +[ULDefaultsSingleton shared];
-    v9 = [v8 defaultsDictionary];
+    defaultsDictionary2 = [v8 defaultsDictionary];
 
     v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"ULMaximumNumberOfCreatedBinaryRoiServicesPerClientAfterMaintenance"];
-    v11 = [v9 objectForKey:v10];
+    v11 = [defaultsDictionary2 objectForKey:v10];
     if (v11 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v12 = [v11 unsignedLongValue];
+      unsignedLongValue2 = [v11 unsignedLongValue];
     }
 
     else
     {
-      v12 = [&unk_286A71B80 unsignedLongValue];
+      unsignedLongValue2 = [&unk_286A71B80 unsignedLongValue];
     }
 
-    v13 = v12;
+    v13 = unsignedLongValue2;
 
     v87.__r_.__value_.__r.__words[0] = 2;
     v80 = &v87;
     std::__tree<std::__value_type<unsigned long long,unsigned long>,std::__map_value_compare<unsigned long long,std::__value_type<unsigned long long,unsigned long>,std::less<unsigned long long>,true>,std::allocator<std::__value_type<unsigned long long,unsigned long>>>::__emplace_unique_key_args<unsigned long long,std::piecewise_construct_t const&,std::tuple<unsigned long long &&>,std::tuple<>>(&v82, &v87)[5] = v13;
     v14 = +[ULDefaultsSingleton shared];
-    v15 = [v14 defaultsDictionary];
+    defaultsDictionary3 = [v14 defaultsDictionary];
 
     v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:"ULMaximumNumberOfCreatedMulticlassServicesPerClientAfterMaintenance"];
-    v17 = [v15 objectForKey:v16];
+    v17 = [defaultsDictionary3 objectForKey:v16];
     if (v17 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v18 = [v17 unsignedLongValue];
+      unsignedLongValue3 = [v17 unsignedLongValue];
     }
 
     else
     {
-      v18 = [&unk_286A71B80 unsignedLongValue];
+      unsignedLongValue3 = [&unk_286A71B80 unsignedLongValue];
     }
 
-    v19 = v18;
+    v19 = unsignedLongValue3;
 
     v87.__r_.__value_.__r.__words[0] = 3;
     v80 = &v87;
     std::__tree<std::__value_type<unsigned long long,unsigned long>,std::__map_value_compare<unsigned long long,std::__value_type<unsigned long long,unsigned long>,std::less<unsigned long long>,true>,std::allocator<std::__value_type<unsigned long long,unsigned long>>>::__emplace_unique_key_args<unsigned long long,std::piecewise_construct_t const&,std::tuple<unsigned long long &&>,std::tuple<>>(&v82, &v87)[5] = v19;
     v20 = +[ULDefaultsSingleton shared];
-    v21 = [v20 defaultsDictionary];
+    defaultsDictionary4 = [v20 defaultsDictionary];
 
     v22 = [MEMORY[0x277CCACA8] stringWithUTF8String:"ULMaximumNumberOfCreatedSimilarityListServicesPerClientAfterMaintenance"];
-    v23 = [v21 objectForKey:v22];
+    v23 = [defaultsDictionary4 objectForKey:v22];
     if (v23 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v24 = [v23 unsignedLongValue];
+      unsignedLongValue4 = [v23 unsignedLongValue];
     }
 
     else
     {
-      v24 = [&unk_286A71B98 unsignedLongValue];
+      unsignedLongValue4 = [&unk_286A71B98 unsignedLongValue];
     }
 
-    v25 = v24;
+    v25 = unsignedLongValue4;
 
     v87.__r_.__value_.__r.__words[0] = 4;
     std::__tree<std::__value_type<unsigned long long,unsigned long>,std::__map_value_compare<unsigned long long,std::__value_type<unsigned long long,unsigned long>,std::less<unsigned long long>,true>,std::allocator<std::__value_type<unsigned long long,unsigned long>>>::__emplace_unique_key_args<unsigned long long,std::piecewise_construct_t const&,std::tuple<unsigned long long &&>,std::tuple<>>(&v82, &v87)[5] = v25;
@@ -949,20 +949,20 @@ LABEL_96:
   return v67;
 }
 
-- (BOOL)updateAllServicesWithMatchingServiceUUID:(uuid)a3 withNewServiceUUID:(uuid)a4
+- (BOOL)updateAllServicesWithMatchingServiceUUID:(uuid)d withNewServiceUUID:(uuid)iD
 {
   v19 = *MEMORY[0x277D85DE8];
-  v18 = a3;
-  v17 = a4;
-  v5 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDBytes:&v18];
-  v6 = [v5 UUIDString];
+  dCopy = d;
+  iDCopy = iD;
+  v5 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDBytes:&dCopy];
+  uUIDString = [v5 UUIDString];
 
-  v7 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDBytes:&v17];
-  v8 = [v7 UUIDString];
+  v7 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDBytes:&iDCopy];
+  uUIDString2 = [v7 UUIDString];
 
-  v9 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K = %@", @"serviceUUID", v6];
+  v9 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K = %@", @"serviceUUID", uUIDString];
   v15 = @"serviceUUID";
-  v16 = v8;
+  v16 = uUIDString2;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v16 forKeys:&v15 count:1];
   v11 = objc_opt_class();
   v12 = NSStringFromClass(v11);
@@ -1000,9 +1000,9 @@ LABEL_96:
   return v12;
 }
 
-- (id)fetchServiceManagedObjectWithUUID:(const uuid *)a3 withManagedObjectContext:(id)a4
+- (id)fetchServiceManagedObjectWithUUID:(const uuid *)d withManagedObjectContext:(id)context
 {
-  v6 = a4;
+  contextCopy = context;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -1010,12 +1010,12 @@ LABEL_96:
   v27 = __Block_byref_object_dispose__23;
   v28 = 0;
   v7 = objc_autoreleasePoolPush();
-  v8 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDBytes:a3];
-  v9 = [v8 UUIDString];
+  v8 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDBytes:d];
+  uUIDString = [v8 UUIDString];
 
-  v10 = [MEMORY[0x277CBEB18] array];
-  v11 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K = %@", @"serviceUUID", v9];
-  [v10 addObject:v11];
+  array = [MEMORY[0x277CBEB18] array];
+  v11 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K = %@", @"serviceUUID", uUIDString];
+  [array addObject:v11];
 
   v12 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"lastActiveTimestamp" ascending:0];
   v18[0] = MEMORY[0x277D85DD0];
@@ -1023,10 +1023,10 @@ LABEL_96:
   v18[2] = __77__ULServiceStore_fetchServiceManagedObjectWithUUID_withManagedObjectContext___block_invoke;
   v18[3] = &unk_2798D4840;
   v18[4] = self;
-  v13 = v10;
+  v13 = array;
   v19 = v13;
   v20 = v12;
-  v14 = v6;
+  v14 = contextCopy;
   v21 = v14;
   v22 = &v23;
   v15 = v12;
@@ -1061,14 +1061,14 @@ void __77__ULServiceStore_fetchServiceManagedObjectWithUUID_withManagedObjectCon
 - (void)deleteOldestsServicesPerClientAboveMaxCount
 {
   v6 = a2;
-  v7 = a1;
+  selfCopy = self;
   v240 = *MEMORY[0x277D85DE8];
   v231 = a2;
-  v232 = a1;
+  selfCopy2 = self;
   while (1)
   {
-    v8 = v6 - v7;
-    v9 = 0x2E8BA2E8BA2E8BA3 * ((v6 - v7) >> 3);
+    v8 = v6 - selfCopy;
+    v9 = 0x2E8BA2E8BA2E8BA3 * ((v6 - selfCopy) >> 3);
     v10 = v9 - 2;
     if (v9 <= 2)
     {
@@ -1080,12 +1080,12 @@ void __77__ULServiceStore_fetchServiceManagedObjectWithUUID_withManagedObjectCon
       if (v9 == 2)
       {
         v231 = v6 - 11;
-        if (*(v6 - 8) >= *(v7 + 24))
+        if (*(v6 - 8) >= *(selfCopy + 24))
         {
           goto LABEL_232;
         }
 
-        v98 = &v232;
+        v98 = &selfCopy2;
         v99 = &v231;
         goto LABEL_231;
       }
@@ -1095,12 +1095,12 @@ void __77__ULServiceStore_fetchServiceManagedObjectWithUUID_withManagedObjectCon
 
     if (v9 == 3)
     {
-      *&v238 = v7;
-      *v237 = v7 + 88;
+      *&v238 = selfCopy;
+      *v237 = selfCopy + 88;
       *v235 = v6 - 11;
-      v102 = *(v7 + 112);
+      v102 = *(selfCopy + 112);
       v103 = *(v6 - 8);
-      if (v102 >= *(v7 + 24))
+      if (v102 >= *(selfCopy + 24))
       {
         if (v103 >= v102)
         {
@@ -1145,7 +1145,7 @@ LABEL_231:
     if (v9 == 4)
     {
       v231 = v6 - 11;
-      std::__sort4[abi:ne200100]<std::_ClassicAlgPolicy,-[ULServiceStore deleteOldestsServicesPerClientAboveMaxCount]::$_1 &,ULServiceDO *,0>(v7, (v7 + 88), v7 + 176, (v6 - 11));
+      std::__sort4[abi:ne200100]<std::_ClassicAlgPolicy,-[ULServiceStore deleteOldestsServicesPerClientAboveMaxCount]::$_1 &,ULServiceDO *,0>(selfCopy, (selfCopy + 88), selfCopy + 176, (v6 - 11));
       goto LABEL_232;
     }
 
@@ -1157,14 +1157,14 @@ LABEL_231:
 LABEL_9:
     if (v8 <= 2111)
     {
-      v104 = (v7 + 88);
-      v106 = v7 == v6 || v104 == v6;
+      v104 = (selfCopy + 88);
+      v106 = selfCopy == v6 || v104 == v6;
       if (a4)
       {
         if (!v106)
         {
           v107 = 0;
-          v108 = v7;
+          v108 = selfCopy;
           do
           {
             v109 = v104;
@@ -1194,11 +1194,11 @@ LABEL_9:
               while (1)
               {
                 v117 = v116;
-                v118 = v7 + v116;
-                v119 = *(v7 + v116 + 16);
-                *(v118 + 88) = *(v7 + v116);
+                v118 = selfCopy + v116;
+                v119 = *(selfCopy + v116 + 16);
+                *(v118 + 88) = *(selfCopy + v116);
                 *(v118 + 104) = v119;
-                if (*(v7 + v116 + 143) < 0)
+                if (*(selfCopy + v116 + 143) < 0)
                 {
                   operator delete(*(v118 + 120));
                 }
@@ -1215,9 +1215,9 @@ LABEL_9:
                   operator delete(*(v118 + 152));
                 }
 
-                v122 = v7 + v117;
-                *(v118 + 152) = *(v7 + v117 + 64);
-                *(v118 + 168) = *(v7 + v117 + 80);
+                v122 = selfCopy + v117;
+                *(v118 + 152) = *(selfCopy + v117 + 64);
+                *(v118 + 168) = *(selfCopy + v117 + 80);
                 *(v122 + 87) = 0;
                 *(v122 + 64) = 0;
                 if (!v117)
@@ -1228,12 +1228,12 @@ LABEL_9:
                 v116 = v117 - 88;
                 if (v111 >= *(v122 - 64))
                 {
-                  v123 = v7 + v117;
+                  v123 = selfCopy + v117;
                   goto LABEL_154;
                 }
               }
 
-              v123 = v7;
+              v123 = selfCopy;
 LABEL_154:
               v124 = v238;
               *(v123 + 16) = v239;
@@ -1245,7 +1245,7 @@ LABEL_154:
               }
 
               *(v122 + 32) = v112;
-              v125 = v7 + v117;
+              v125 = selfCopy + v117;
               v126 = *v235;
               *(v125 + 47) = *&v235[7];
               *(v125 + 40) = v126;
@@ -1274,31 +1274,31 @@ LABEL_154:
 
       else if (!v106)
       {
-        v195 = (v7 + 175);
+        v195 = (selfCopy + 175);
         do
         {
           v196 = v104;
-          if (*(v7 + 112) < *(v7 + 24))
+          if (*(selfCopy + 112) < *(selfCopy + 24))
           {
             v197 = *v104;
             *&v239 = v104[2];
             v238 = v197;
             v198 = v104[3];
-            v199 = *(v7 + 120);
-            *v235 = *(v7 + 128);
-            *&v235[7] = *(v7 + 135);
-            v200 = *(v7 + 143);
-            *(v7 + 120) = 0;
-            *(v7 + 128) = 0;
-            *(v7 + 136) = 0;
-            v201 = *(v7 + 144);
-            v202 = *(v7 + 152);
-            v203 = *(v7 + 153);
-            *&v237[14] = *(v7 + 167);
-            v204 = *(v7 + 175);
-            *(v7 + 152) = 0;
-            *(v7 + 160) = 0;
-            *(v7 + 168) = 0;
+            v199 = *(selfCopy + 120);
+            *v235 = *(selfCopy + 128);
+            *&v235[7] = *(selfCopy + 135);
+            v200 = *(selfCopy + 143);
+            *(selfCopy + 120) = 0;
+            *(selfCopy + 128) = 0;
+            *(selfCopy + 136) = 0;
+            v201 = *(selfCopy + 144);
+            v202 = *(selfCopy + 152);
+            v203 = *(selfCopy + 153);
+            *&v237[14] = *(selfCopy + 167);
+            v204 = *(selfCopy + 175);
+            *(selfCopy + 152) = 0;
+            *(selfCopy + 160) = 0;
+            *(selfCopy + 168) = 0;
             v205 = v195;
             *v237 = v203;
             do
@@ -1370,7 +1370,7 @@ LABEL_154:
 
           v104 = (v196 + 88);
           v195 += 88;
-          v7 = v196;
+          selfCopy = v196;
         }
 
         while ((v196 + 88) != v6);
@@ -1381,7 +1381,7 @@ LABEL_154:
 
     if (!a3)
     {
-      if (v7 != v6)
+      if (selfCopy != v6)
       {
         v128 = v10 >> 1;
         v129 = v10 >> 1;
@@ -1391,14 +1391,14 @@ LABEL_154:
           if (v128 >= v129)
           {
             v131 = (2 * v129) | 1;
-            v132 = v7 + 88 * v131;
+            v132 = selfCopy + 88 * v131;
             if (2 * v130 + 2 < v9 && *(v132 + 24) < *(v132 + 112))
             {
               v132 += 88;
               v131 = 2 * v130 + 2;
             }
 
-            v133 = v7 + 88 * v130;
+            v133 = selfCopy + 88 * v130;
             v134 = *(v133 + 24);
             if (*(v132 + 24) >= v134)
             {
@@ -1457,7 +1457,7 @@ LABEL_154:
 
                 v143 = 2 * v131;
                 v131 = (2 * v131) | 1;
-                v132 = v7 + 88 * v131;
+                v132 = selfCopy + 88 * v131;
                 v144 = v143 + 2;
                 if (v144 < v9 && *(v132 + 24) < *(v132 + 112))
                 {
@@ -1519,26 +1519,26 @@ LABEL_154:
         {
           v152 = 0;
           v153 = v6;
-          v154 = *(v7 + 16);
-          v238 = *v7;
+          v154 = *(selfCopy + 16);
+          v238 = *selfCopy;
           v239 = v154;
-          v155 = *(v7 + 32);
-          *v234 = *(v7 + 40);
-          *&v234[7] = *(v7 + 47);
-          v219 = *(v7 + 55);
-          *(v7 + 40) = 0;
-          *(v7 + 48) = 0;
-          *(v7 + 32) = 0;
-          v156 = *(v7 + 56);
-          v224 = *(v7 + 64);
-          v157 = *(v7 + 72);
-          *&v233[7] = *(v7 + 79);
+          v155 = *(selfCopy + 32);
+          *v234 = *(selfCopy + 40);
+          *&v234[7] = *(selfCopy + 47);
+          v219 = *(selfCopy + 55);
+          *(selfCopy + 40) = 0;
+          *(selfCopy + 48) = 0;
+          *(selfCopy + 32) = 0;
+          v156 = *(selfCopy + 56);
+          v224 = *(selfCopy + 64);
+          v157 = *(selfCopy + 72);
+          *&v233[7] = *(selfCopy + 79);
           *v233 = v157;
-          v229 = *(v7 + 87);
-          *(v7 + 64) = 0;
-          *(v7 + 72) = 0;
-          v158 = v7;
-          *(v7 + 80) = 0;
+          v229 = *(selfCopy + 87);
+          *(selfCopy + 64) = 0;
+          *(selfCopy + 72) = 0;
+          v158 = selfCopy;
+          *(selfCopy + 80) = 0;
           do
           {
             v159 = v158 + 88 * v152;
@@ -1689,11 +1689,11 @@ LABEL_154:
             *(v153 - 2) = v173;
             *(v153 - 9) = *&v233[7];
             *(v153 - 1) = v229;
-            v174 = v160 + 88 - v7;
+            v174 = v160 + 88 - selfCopy;
             if (v174 >= 89)
             {
               v175 = (0x2E8BA2E8BA2E8BA3 * (v174 >> 3) - 2) >> 1;
-              v176 = v7 + 88 * v175;
+              v176 = selfCopy + 88 * v175;
               v177 = *(v160 + 24);
               if (*(v176 + 24) < v177)
               {
@@ -1748,7 +1748,7 @@ LABEL_154:
                   }
 
                   v175 = (v175 - 1) >> 1;
-                  v176 = v7 + 88 * v175;
+                  v176 = selfCopy + 88 * v175;
                   v160 = v182;
                 }
 
@@ -1799,39 +1799,39 @@ LABEL_154:
     }
 
     v11 = v9 >> 1;
-    v12 = v7 + 88 * (v9 >> 1);
+    v12 = selfCopy + 88 * (v9 >> 1);
     if (v8 >= 0x2C01)
     {
-      *&v238 = v7;
+      *&v238 = selfCopy;
       *v237 = v12;
       *v235 = v6 - 11;
       v13 = *(v12 + 24);
       v14 = *(v6 - 8);
-      if (v13 >= *(v7 + 24))
+      if (v13 >= *(selfCopy + 24))
       {
         if (v14 >= v13 || (std::_IterOps<std::_ClassicAlgPolicy>::iter_swap[abi:ne200100]<ULServiceDO *&,ULServiceDO *&>(v237, v235), *(*v237 + 24) >= *(v238 + 24)))
         {
 LABEL_26:
-          v21 = v7 + 88 * v11;
+          v21 = selfCopy + 88 * v11;
           v22 = v21 - 88;
-          *&v238 = v7 + 88;
+          *&v238 = selfCopy + 88;
           *v237 = v21 - 88;
           *v235 = v6 - 22;
           v23 = *(v21 - 64);
           v24 = *(v6 - 19);
-          if (v23 >= *(v7 + 112))
+          if (v23 >= *(selfCopy + 112))
           {
             if (v24 >= v23 || (std::_IterOps<std::_ClassicAlgPolicy>::iter_swap[abi:ne200100]<ULServiceDO *&,ULServiceDO *&>(v237, v235), *(*v237 + 24) >= *(v238 + 24)))
             {
 LABEL_39:
-              v27 = v7 + 88 * v11;
+              v27 = selfCopy + 88 * v11;
               v28 = v27 + 88;
-              *&v238 = v7 + 176;
+              *&v238 = selfCopy + 176;
               *v237 = v27 + 88;
               *v235 = v6 - 33;
               v29 = *(v27 + 112);
               v30 = *(v6 - 30);
-              if (v29 >= *(v7 + 200))
+              if (v29 >= *(selfCopy + 200))
               {
                 if (v30 >= v29 || (std::_IterOps<std::_ClassicAlgPolicy>::iter_swap[abi:ne200100]<ULServiceDO *&,ULServiceDO *&>(v237, v235), *(*v237 + 24) >= *(v238 + 24)))
                 {
@@ -1867,38 +1867,38 @@ LABEL_48:
                       if (*(*v235 + 24) >= *(*v237 + 24))
                       {
 LABEL_57:
-                        v37 = *(v7 + 16);
-                        v238 = *v7;
+                        v37 = *(selfCopy + 16);
+                        v238 = *selfCopy;
                         v239 = v37;
-                        v38 = *(v7 + 32);
-                        *v237 = *(v7 + 40);
-                        *&v237[7] = *(v7 + 47);
-                        v39 = *(v7 + 55);
-                        *(v7 + 40) = 0;
-                        *(v7 + 48) = 0;
-                        *(v7 + 32) = 0;
-                        v40 = *(v7 + 56);
-                        v41 = *(v7 + 64);
-                        v42 = *(v7 + 72);
-                        *&v235[7] = *(v7 + 79);
+                        v38 = *(selfCopy + 32);
+                        *v237 = *(selfCopy + 40);
+                        *&v237[7] = *(selfCopy + 47);
+                        v39 = *(selfCopy + 55);
+                        *(selfCopy + 40) = 0;
+                        *(selfCopy + 48) = 0;
+                        *(selfCopy + 32) = 0;
+                        v40 = *(selfCopy + 56);
+                        v41 = *(selfCopy + 64);
+                        v42 = *(selfCopy + 72);
+                        *&v235[7] = *(selfCopy + 79);
                         *v235 = v42;
-                        LOBYTE(v42) = *(v7 + 87);
-                        *(v7 + 64) = 0;
-                        *(v7 + 72) = 0;
-                        *(v7 + 80) = 0;
+                        LOBYTE(v42) = *(selfCopy + 87);
+                        *(selfCopy + 64) = 0;
+                        *(selfCopy + 72) = 0;
+                        *(selfCopy + 80) = 0;
                         v43 = *(v12 + 16);
-                        *v7 = *v12;
-                        *(v7 + 16) = v43;
+                        *selfCopy = *v12;
+                        *(selfCopy + 16) = v43;
                         v44 = *(v12 + 48);
                         v45 = *(v12 + 56);
-                        *(v7 + 32) = *(v12 + 32);
-                        *(v7 + 48) = v44;
-                        *(v7 + 56) = v45;
+                        *(selfCopy + 32) = *(v12 + 32);
+                        *(selfCopy + 48) = v44;
+                        *(selfCopy + 56) = v45;
                         *(v12 + 55) = 0;
                         *(v12 + 32) = 0;
                         v46 = *(v12 + 64);
-                        *(v7 + 80) = *(v12 + 80);
-                        *(v7 + 64) = v46;
+                        *(selfCopy + 80) = *(v12 + 80);
+                        *(selfCopy + 64) = v46;
                         *(v12 + 87) = 0;
                         *(v12 + 64) = 0;
                         v47 = v239;
@@ -2004,9 +2004,9 @@ LABEL_57:
     }
 
     *&v238 = v12;
-    *v237 = v7;
+    *v237 = selfCopy;
     *v235 = v6 - 11;
-    v17 = *(v7 + 24);
+    v17 = *(selfCopy + 24);
     v18 = *(v6 - 8);
     if (v17 < *(v12 + 24))
     {
@@ -2043,38 +2043,38 @@ LABEL_58:
     if (a4)
     {
       v220 = a4;
-      v50 = *(v7 + 24);
+      v50 = *(selfCopy + 24);
     }
 
     else
     {
-      v50 = *(v7 + 24);
-      if (*(v7 - 64) >= v50)
+      v50 = *(selfCopy + 24);
+      if (*(selfCopy - 64) >= v50)
       {
         *v234 = v6;
-        v63 = *v7;
-        *&v239 = *(v7 + 16);
+        v63 = *selfCopy;
+        *&v239 = *(selfCopy + 16);
         v238 = v63;
-        v65 = (v7 + 32);
-        v64 = *(v7 + 32);
-        *v235 = *(v7 + 40);
-        *&v235[7] = *(v7 + 47);
-        v66 = *(v7 + 55);
-        *(v7 + 32) = 0;
-        v67 = (v7 + 64);
-        v221 = *(v7 + 64);
-        *(v7 + 40) = 0;
-        *(v7 + 48) = 0;
-        *&v237[14] = *(v7 + 79);
-        *v237 = *(v7 + 65);
-        v68 = *(v7 + 87);
-        *(v7 + 64) = 0;
-        *(v7 + 72) = 0;
-        *(v7 + 80) = 0;
-        v69 = *(v7 + 56);
+        v65 = (selfCopy + 32);
+        v64 = *(selfCopy + 32);
+        *v235 = *(selfCopy + 40);
+        *&v235[7] = *(selfCopy + 47);
+        v66 = *(selfCopy + 55);
+        *(selfCopy + 32) = 0;
+        v67 = (selfCopy + 64);
+        v221 = *(selfCopy + 64);
+        *(selfCopy + 40) = 0;
+        *(selfCopy + 48) = 0;
+        *&v237[14] = *(selfCopy + 79);
+        *v237 = *(selfCopy + 65);
+        v68 = *(selfCopy + 87);
+        *(selfCopy + 64) = 0;
+        *(selfCopy + 72) = 0;
+        *(selfCopy + 80) = 0;
+        v69 = *(selfCopy + 56);
         if (v50 >= *(v6 - 8))
         {
-          v85 = v7 + 88;
+          v85 = selfCopy + 88;
           do
           {
             v71 = v85;
@@ -2092,7 +2092,7 @@ LABEL_58:
 
         else
         {
-          v70 = v7;
+          v70 = selfCopy;
           do
           {
             v71 = v70 + 88;
@@ -2145,29 +2145,29 @@ LABEL_58:
         }
 
         v91 = (v71 - 88);
-        if (v71 - 88 != v7)
+        if (v71 - 88 != selfCopy)
         {
           v92 = *(v71 - 72);
-          *v7 = *v91;
-          *(v7 + 16) = v92;
-          if (*(v7 + 55) < 0)
+          *selfCopy = *v91;
+          *(selfCopy + 16) = v92;
+          if (*(selfCopy + 55) < 0)
           {
             operator delete(*v65);
           }
 
           v93 = *(v71 - 56);
-          *(v7 + 48) = *(v71 - 40);
+          *(selfCopy + 48) = *(v71 - 40);
           *v65 = v93;
           *(v71 - 33) = 0;
           *(v71 - 56) = 0;
-          *(v7 + 56) = *(v71 - 32);
-          if (*(v7 + 87) < 0)
+          *(selfCopy + 56) = *(v71 - 32);
+          if (*(selfCopy + 87) < 0)
           {
             operator delete(*v67);
           }
 
           v94 = *(v71 - 24);
-          *(v7 + 80) = *(v71 - 8);
+          *(selfCopy + 80) = *(v71 - 8);
           *v67 = v94;
           *(v71 - 1) = 0;
           *(v71 - 24) = 0;
@@ -2200,7 +2200,7 @@ LABEL_58:
         *(v71 - 23) = v97;
         *(v71 - 1) = v68;
         v73 = *v236;
-        v232 = *v236;
+        selfCopy2 = *v236;
         a3 = v226;
         goto LABEL_122;
       }
@@ -2209,35 +2209,35 @@ LABEL_58:
     }
 
     v51 = 0;
-    v52 = *v7;
-    *&v239 = *(v7 + 16);
+    v52 = *selfCopy;
+    *&v239 = *(selfCopy + 16);
     v238 = v52;
-    v53 = (v7 + 32);
-    v215 = *(v7 + 32);
-    *v235 = *(v7 + 40);
-    *&v235[7] = *(v7 + 47);
-    v54 = *(v7 + 55);
-    *(v7 + 32) = 0;
-    *(v7 + 40) = 0;
-    *(v7 + 48) = 0;
-    v55 = *(v7 + 56);
-    v56 = (v7 + 64);
-    v217 = *(v7 + 64);
-    *&v237[14] = *(v7 + 79);
-    *v237 = *(v7 + 65);
-    v57 = *(v7 + 87);
-    *(v7 + 64) = 0;
-    *(v7 + 72) = 0;
-    *(v7 + 80) = 0;
+    v53 = (selfCopy + 32);
+    v215 = *(selfCopy + 32);
+    *v235 = *(selfCopy + 40);
+    *&v235[7] = *(selfCopy + 47);
+    v54 = *(selfCopy + 55);
+    *(selfCopy + 32) = 0;
+    *(selfCopy + 40) = 0;
+    *(selfCopy + 48) = 0;
+    v55 = *(selfCopy + 56);
+    v56 = (selfCopy + 64);
+    v217 = *(selfCopy + 64);
+    *&v237[14] = *(selfCopy + 79);
+    *v237 = *(selfCopy + 65);
+    v57 = *(selfCopy + 87);
+    *(selfCopy + 64) = 0;
+    *(selfCopy + 72) = 0;
+    *(selfCopy + 80) = 0;
     do
     {
-      v58 = *(v7 + v51 + 112);
+      v58 = *(selfCopy + v51 + 112);
       v51 += 88;
     }
 
     while (v58 < v50);
-    v59 = v7 + v51;
-    *v236 = v7 + v51;
+    v59 = selfCopy + v51;
+    *v236 = selfCopy + v51;
     if (v51 == 88)
     {
       while (v59 < v6)
@@ -2268,7 +2268,7 @@ LABEL_58:
 
 LABEL_75:
     *v234 = v60;
-    v73 = v7 + v51;
+    v73 = selfCopy + v51;
     if (v59 < v60)
     {
       do
@@ -2298,29 +2298,29 @@ LABEL_75:
     }
 
     v77 = (v73 - 88);
-    if (v73 - 88 != v7)
+    if (v73 - 88 != selfCopy)
     {
       v78 = *(v73 - 72);
-      *v7 = *v77;
-      *(v7 + 16) = v78;
-      if (*(v7 + 55) < 0)
+      *selfCopy = *v77;
+      *(selfCopy + 16) = v78;
+      if (*(selfCopy + 55) < 0)
       {
         operator delete(*v53);
       }
 
       v79 = *(v73 - 56);
-      *(v7 + 48) = *(v73 - 40);
+      *(selfCopy + 48) = *(v73 - 40);
       *v53 = v79;
       *(v73 - 33) = 0;
       *(v73 - 56) = 0;
-      *(v7 + 56) = *(v73 - 32);
-      if (*(v7 + 87) < 0)
+      *(selfCopy + 56) = *(v73 - 32);
+      if (*(selfCopy + 87) < 0)
       {
         operator delete(*v56);
       }
 
       v80 = *(v73 - 24);
-      *(v7 + 80) = *(v73 - 8);
+      *(selfCopy + 80) = *(v73 - 8);
       *v56 = v80;
       *(v73 - 1) = 0;
       *(v73 - 24) = 0;
@@ -2358,17 +2358,17 @@ LABEL_75:
       goto LABEL_92;
     }
 
-    v84 = std::__insertion_sort_incomplete[abi:ne200100]<std::_ClassicAlgPolicy,-[ULServiceStore deleteOldestsServicesPerClientAboveMaxCount]::$_1 &,ULServiceDO *>(v232, v73 - 88);
+    v84 = std::__insertion_sort_incomplete[abi:ne200100]<std::_ClassicAlgPolicy,-[ULServiceStore deleteOldestsServicesPerClientAboveMaxCount]::$_1 &,ULServiceDO *>(selfCopy2, v73 - 88);
     if (!std::__insertion_sort_incomplete[abi:ne200100]<std::_ClassicAlgPolicy,-[ULServiceStore deleteOldestsServicesPerClientAboveMaxCount]::$_1 &,ULServiceDO *>(v73, v231))
     {
       if (!v84)
       {
 LABEL_92:
-        std::__introsort<std::_ClassicAlgPolicy,[ULServiceStore deleteOldestsServicesPerClientAboveMaxCount]::$_1 &,ULServiceDO *,false>(v232, v73 - 88, v226, v220 & 1);
+        std::__introsort<std::_ClassicAlgPolicy,[ULServiceStore deleteOldestsServicesPerClientAboveMaxCount]::$_1 &,ULServiceDO *,false>(selfCopy2, v73 - 88, v226, v220 & 1);
         a4 = 0;
       }
 
-      v232 = v73;
+      selfCopy2 = v73;
       goto LABEL_122;
     }
 
@@ -2378,30 +2378,30 @@ LABEL_92:
     }
 
     v231 = (v73 - 88);
-    v73 = v232;
+    v73 = selfCopy2;
 LABEL_122:
     v6 = v231;
-    v7 = v73;
+    selfCopy = v73;
   }
 
   v231 = v6 - 11;
-  *&v238 = v7;
-  *v237 = v7 + 88;
-  *v235 = v7 + 176;
-  *v236 = v7 + 264;
+  *&v238 = selfCopy;
+  *v237 = selfCopy + 88;
+  *v235 = selfCopy + 176;
+  *v236 = selfCopy + 264;
   *v234 = v6 - 11;
-  std::__sort4[abi:ne200100]<std::_ClassicAlgPolicy,-[ULServiceStore deleteOldestsServicesPerClientAboveMaxCount]::$_1 &,ULServiceDO *,0>(v7, (v7 + 88), v7 + 176, v7 + 264);
-  if (*(v6 - 8) < *(v7 + 288))
+  std::__sort4[abi:ne200100]<std::_ClassicAlgPolicy,-[ULServiceStore deleteOldestsServicesPerClientAboveMaxCount]::$_1 &,ULServiceDO *,0>(selfCopy, (selfCopy + 88), selfCopy + 176, selfCopy + 264);
+  if (*(v6 - 8) < *(selfCopy + 288))
   {
     std::_IterOps<std::_ClassicAlgPolicy>::iter_swap[abi:ne200100]<ULServiceDO *&,ULServiceDO *&>(v236, v234);
-    if (*(*v236 + 24) < *(v7 + 200))
+    if (*(*v236 + 24) < *(selfCopy + 200))
     {
       std::_IterOps<std::_ClassicAlgPolicy>::iter_swap[abi:ne200100]<ULServiceDO *&,ULServiceDO *&>(v235, v236);
-      if (*(*v235 + 24) < *(v7 + 112))
+      if (*(*v235 + 24) < *(selfCopy + 112))
       {
         std::_IterOps<std::_ClassicAlgPolicy>::iter_swap[abi:ne200100]<ULServiceDO *&,ULServiceDO *&>(v237, v235);
         v100 = *(*v237 + 24);
-        v101 = *(v7 + 24);
+        v101 = *(selfCopy + 24);
         goto LABEL_229;
       }
     }
@@ -2414,7 +2414,7 @@ LABEL_232:
 - (uint64_t)insertDataObjects:
 {
   {
-    return a1 + 8;
+    return self + 8;
   }
 
   else
@@ -2425,8 +2425,8 @@ LABEL_232:
 
 - (id)insertDataObjects:
 {
-  v3 = [**(a1 + 8) managedObjectContext];
-  v4 = [ULServiceMO createFromDO:a2 inManagedObjectContext:v3];
+  managedObjectContext = [**(self + 8) managedObjectContext];
+  v4 = [ULServiceMO createFromDO:a2 inManagedObjectContext:managedObjectContext];
 
   return v4;
 }

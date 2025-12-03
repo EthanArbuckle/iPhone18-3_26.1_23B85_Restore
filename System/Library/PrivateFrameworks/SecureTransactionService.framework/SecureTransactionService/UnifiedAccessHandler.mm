@@ -1,73 +1,73 @@
 @interface UnifiedAccessHandler
-- (id)setActiveCredential:(id)a3;
-- (id)setActiveCredentials:(id)a3;
-- (id)startNFSessionWithCompletion:(id)a3;
-- (id)startTransactionWithAuthorization:(id)a3 options:(unint64_t)a4;
+- (id)setActiveCredential:(id)credential;
+- (id)setActiveCredentials:(id)credentials;
+- (id)startNFSessionWithCompletion:(id)completion;
+- (id)startTransactionWithAuthorization:(id)authorization options:(unint64_t)options;
 - (id)stopTransaction;
-- (void)unifiedAccessSession:(id)a3 didEndTransaction:(id)a4;
-- (void)unifiedAccessSession:(id)a3 didEnterFieldWithNotification:(id)a4;
-- (void)unifiedAccessSession:(id)a3 didExpireTransactionForApplet:(id)a4;
-- (void)unifiedAccessSession:(id)a3 didStartTransaction:(id)a4;
+- (void)unifiedAccessSession:(id)session didEndTransaction:(id)transaction;
+- (void)unifiedAccessSession:(id)session didEnterFieldWithNotification:(id)notification;
+- (void)unifiedAccessSession:(id)session didExpireTransactionForApplet:(id)applet;
+- (void)unifiedAccessSession:(id)session didStartTransaction:(id)transaction;
 @end
 
 @implementation UnifiedAccessHandler
 
-- (id)startNFSessionWithCompletion:(id)a3
+- (id)startNFSessionWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(STSHandler *)self nfHardwareManager];
+  completionCopy = completion;
+  nfHardwareManager = [(STSHandler *)self nfHardwareManager];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = sub_26539EF5C;
   v9[3] = &unk_279B94228;
   v9[4] = self;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 startUnifiedAccessSession:v9];
+  v10 = completionCopy;
+  v6 = completionCopy;
+  v7 = [nfHardwareManager startUnifiedAccessSession:v9];
 
   return v7;
 }
 
-- (id)setActiveCredential:(id)a3
+- (id)setActiveCredential:(id)credential
 {
   v114[2] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  credentialCopy = credential;
   v98.receiver = self;
   v98.super_class = UnifiedAccessHandler;
-  v6 = [(STSHandler *)&v98 setActiveCredential:v5];
-  if (v5)
+  v6 = [(STSHandler *)&v98 setActiveCredential:credentialCopy];
+  if (credentialCopy)
   {
-    v7 = [v5 identifier];
-    if (v7 && (v8 = v7, [v5 secondaryIdentifier], v9 = objc_claimAutoreleasedReturnValue(), v9, v8, v9))
+    identifier = [credentialCopy identifier];
+    if (identifier && (v8 = identifier, [credentialCopy secondaryIdentifier], v9 = objc_claimAutoreleasedReturnValue(), v9, v8, v9))
     {
       nfSession = self->_nfSession;
-      v11 = [v5 identifier];
-      v12 = [v5 secondaryIdentifier];
-      v13 = [(NFUnifiedAccessSession *)nfSession appletsWithIdentifiers:v11 secondaryIdentifier:v12];
+      identifier2 = [credentialCopy identifier];
+      secondaryIdentifier = [credentialCopy secondaryIdentifier];
+      v13 = [(NFUnifiedAccessSession *)nfSession appletsWithIdentifiers:identifier2 secondaryIdentifier:secondaryIdentifier];
 
-      v14 = [v5 identifier];
+      identifier3 = [credentialCopy identifier];
       if (v13)
       {
         v93 = v13;
         sel = a2;
-        v15 = [v5 subIdentifier];
-        sub_265398094(OS_LOG_TYPE_INFO, 0, "[UnifiedAccessHandler setActiveCredential:]", 74, self, @"primaryAid %@ and primaryKeyID %@", v16, v17, v14);
+        subIdentifier = [credentialCopy subIdentifier];
+        sub_265398094(OS_LOG_TYPE_INFO, 0, "[UnifiedAccessHandler setActiveCredential:]", 74, self, @"primaryAid %@ and primaryKeyID %@", v16, v17, identifier3);
 
-        v18 = [v5 secondaryIdentifier];
-        v86 = [v5 secondarySubIdentifier];
-        sub_265398094(OS_LOG_TYPE_INFO, 0, "[UnifiedAccessHandler setActiveCredential:]", 76, self, @"secondaryAid %@ and secondaryKeyID %@", v19, v20, v18);
+        secondaryIdentifier2 = [credentialCopy secondaryIdentifier];
+        secondarySubIdentifier = [credentialCopy secondarySubIdentifier];
+        sub_265398094(OS_LOG_TYPE_INFO, 0, "[UnifiedAccessHandler setActiveCredential:]", 76, self, @"secondaryAid %@ and secondaryKeyID %@", v19, v20, secondaryIdentifier2);
 
-        v21 = [v5 subIdentifier];
-        if (v21 && (v24 = v21, [v5 secondarySubIdentifier], v25 = objc_claimAutoreleasedReturnValue(), v25, v24, v25))
+        subIdentifier2 = [credentialCopy subIdentifier];
+        if (subIdentifier2 && (v24 = subIdentifier2, [credentialCopy secondarySubIdentifier], v25 = objc_claimAutoreleasedReturnValue(), v25, v24, v25))
         {
-          v26 = [v5 identifier];
-          v113[0] = v26;
-          v27 = [v5 subIdentifier];
-          v114[0] = v27;
-          v28 = [v5 secondaryIdentifier];
-          v113[1] = v28;
-          v29 = [v5 secondarySubIdentifier];
-          v114[1] = v29;
+          identifier4 = [credentialCopy identifier];
+          v113[0] = identifier4;
+          subIdentifier3 = [credentialCopy subIdentifier];
+          v114[0] = subIdentifier3;
+          secondaryIdentifier3 = [credentialCopy secondaryIdentifier];
+          v113[1] = secondaryIdentifier3;
+          secondarySubIdentifier2 = [credentialCopy secondarySubIdentifier];
+          v114[1] = secondarySubIdentifier2;
           v30 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v114 forKeys:v113 count:2];
 
           if ([v30 count] == 2)
@@ -98,15 +98,15 @@ LABEL_26:
             if (!v35)
             {
               v80 = MEMORY[0x277CCA9B8];
-              v27 = [MEMORY[0x277CCACA8] stringWithUTF8String:"STS.fwk"];
-              v6 = [v80 errorWithDomain:v27 code:5 userInfo:0];
+              subIdentifier3 = [MEMORY[0x277CCACA8] stringWithUTF8String:"STS.fwk"];
+              v6 = [v80 errorWithDomain:subIdentifier3 code:5 userInfo:0];
             }
 
             v110[1] = v6;
             v110[2] = &unk_2876EDC68;
             v109[2] = @"Line";
             v109[3] = @"Method";
-            v81 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", sel_getName(sel), v86];
+            v81 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", sel_getName(sel), secondarySubIdentifier];
             v110[3] = v81;
             v109[4] = *MEMORY[0x277CCA068];
             v82 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d", sel_getName(sel), 89];
@@ -134,8 +134,8 @@ LABEL_33:
           v112[1] = &unk_2876EDC50;
           v111[1] = @"Line";
           v111[2] = @"Method";
-          v27 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", sel_getName(sel), v86];
-          v112[2] = v27;
+          subIdentifier3 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", sel_getName(sel), secondarySubIdentifier];
+          v112[2] = subIdentifier3;
           v111[3] = *MEMORY[0x277CCA068];
           v63 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d", sel_getName(sel), 86];
           v112[3] = v63;
@@ -154,11 +154,11 @@ LABEL_33:
           v108[1] = &unk_2876EDC80;
           v107[1] = @"Line";
           v107[2] = @"Method";
-          v56 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", sel_getName(a2), v86];
+          v56 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", sel_getName(a2), secondarySubIdentifier];
           v108[2] = v56;
           v107[3] = *MEMORY[0x277CCA068];
-          v27 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d", sel_getName(a2), 93];
-          v108[3] = v27;
+          subIdentifier3 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d", sel_getName(a2), 93];
+          v108[3] = subIdentifier3;
           v63 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v108 forKeys:v107 count:4];
           v61 = [v62 errorWithDomain:v30 code:7 userInfo:v63];
         }
@@ -168,8 +168,8 @@ LABEL_33:
         goto LABEL_24;
       }
 
-      v88 = [v5 secondaryIdentifier];
-      sub_265398094(OS_LOG_TYPE_ERROR, 0, "[UnifiedAccessHandler setActiveCredential:]", 97, self, @"applets not found for identifiers = %@ and/or %@", v64, v65, v14);
+      secondaryIdentifier4 = [credentialCopy secondaryIdentifier];
+      sub_265398094(OS_LOG_TYPE_ERROR, 0, "[UnifiedAccessHandler setActiveCredential:]", 97, self, @"applets not found for identifiers = %@ and/or %@", v64, v65, identifier3);
 
       v66 = MEMORY[0x277CCA9B8];
       v38 = [MEMORY[0x277CCACA8] stringWithUTF8String:"STS.fwk"];
@@ -179,7 +179,7 @@ LABEL_33:
       v106[1] = &unk_2876EDC98;
       v105[1] = @"Line";
       v105[2] = @"Method";
-      v55 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", sel_getName(a2), v88];
+      v55 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", sel_getName(a2), secondaryIdentifier4];
       v106[2] = v55;
       v105[3] = *MEMORY[0x277CCA068];
       v56 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d", sel_getName(a2), 98];
@@ -191,40 +191,40 @@ LABEL_33:
 
     else
     {
-      v39 = [v5 identifier];
+      identifier5 = [credentialCopy identifier];
 
-      if (!v39)
+      if (!identifier5)
       {
         goto LABEL_27;
       }
 
       v40 = self->_nfSession;
-      v41 = [v5 identifier];
-      v38 = [(NFUnifiedAccessSession *)v40 appletWithIdentifier:v41];
+      identifier6 = [credentialCopy identifier];
+      v38 = [(NFUnifiedAccessSession *)v40 appletWithIdentifier:identifier6];
 
       if (v38)
       {
         sela = a2;
         sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[UnifiedAccessHandler setActiveCredential:]", 104, self, @"applet %@", v42, v43, v38);
-        v44 = [v5 identifier];
-        v27 = [v5 subIdentifier];
-        v87 = v27;
-        sub_265398094(OS_LOG_TYPE_INFO, 0, "[UnifiedAccessHandler setActiveCredential:]", 106, self, @"aid %@ and keyID %@", v45, v46, v44);
+        identifier7 = [credentialCopy identifier];
+        subIdentifier3 = [credentialCopy subIdentifier];
+        v87 = subIdentifier3;
+        sub_265398094(OS_LOG_TYPE_INFO, 0, "[UnifiedAccessHandler setActiveCredential:]", 106, self, @"aid %@ and keyID %@", v45, v46, identifier7);
 
-        v47 = [v5 subIdentifier];
+        subIdentifier4 = [credentialCopy subIdentifier];
 
-        if (v47)
+        if (subIdentifier4)
         {
           v50 = MEMORY[0x277CBEB98];
-          v51 = [v5 subIdentifier];
-          v30 = [v50 setWithObject:v51];
+          subIdentifier5 = [credentialCopy subIdentifier];
+          v30 = [v50 setWithObject:subIdentifier5];
 
           v52 = self->_nfSession;
           v96 = v6;
-          LOBYTE(v51) = [(NFUnifiedAccessSession *)v52 setActivePaymentApplet:v38 keys:v30 error:&v96];
+          LOBYTE(subIdentifier5) = [(NFUnifiedAccessSession *)v52 setActivePaymentApplet:v38 keys:v30 error:&v96];
           v35 = v96;
 
-          if (v51)
+          if (subIdentifier5)
           {
             goto LABEL_26;
           }
@@ -242,8 +242,8 @@ LABEL_33:
           if (!v35)
           {
             v57 = MEMORY[0x277CCA9B8];
-            v27 = [MEMORY[0x277CCACA8] stringWithUTF8String:"STS.fwk"];
-            v6 = [v57 errorWithDomain:v27 code:5 userInfo:0];
+            subIdentifier3 = [MEMORY[0x277CCACA8] stringWithUTF8String:"STS.fwk"];
+            v6 = [v57 errorWithDomain:subIdentifier3 code:5 userInfo:0];
           }
 
           v104[1] = v6;
@@ -270,12 +270,12 @@ LABEL_33:
         v102[1] = &unk_2876EDCC8;
         v101[1] = @"Line";
         v101[2] = @"Method";
-        v56 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", sel_getName(sela), v27];
+        v56 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", sel_getName(sela), subIdentifier3];
         v102[2] = v56;
         v101[3] = *MEMORY[0x277CCA068];
         v30 = v75;
-        v27 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d", sel_getName(sela), 116];
-        v102[3] = v27;
+        subIdentifier3 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d", sel_getName(sela), 116];
+        v102[3] = subIdentifier3;
         v76 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v102 forKeys:v101 count:4];
         v61 = [v74 errorWithDomain:v75 code:7 userInfo:v76];
 
@@ -287,8 +287,8 @@ LABEL_25:
         goto LABEL_26;
       }
 
-      v70 = [v5 identifier];
-      sub_265398094(OS_LOG_TYPE_ERROR, 0, "[UnifiedAccessHandler setActiveCredential:]", 119, self, @"applet not found for identifier = %@", v71, v72, v70);
+      identifier8 = [credentialCopy identifier];
+      sub_265398094(OS_LOG_TYPE_ERROR, 0, "[UnifiedAccessHandler setActiveCredential:]", 119, self, @"applet not found for identifier = %@", v71, v72, identifier8);
 
       v66 = MEMORY[0x277CCA9B8];
       v38 = [MEMORY[0x277CCACA8] stringWithUTF8String:"STS.fwk"];
@@ -309,8 +309,8 @@ LABEL_25:
       v69 = v99;
     }
 
-    v27 = [v67 dictionaryWithObjects:v68 forKeys:v69 count:4];
-    v61 = [v66 errorWithDomain:v38 code:8 userInfo:v27];
+    subIdentifier3 = [v67 dictionaryWithObjects:v68 forKeys:v69 count:4];
+    v61 = [v66 errorWithDomain:v38 code:8 userInfo:subIdentifier3];
     goto LABEL_24;
   }
 
@@ -321,17 +321,17 @@ LABEL_27:
   return v6;
 }
 
-- (id)setActiveCredentials:(id)a3
+- (id)setActiveCredentials:(id)credentials
 {
   v139[4] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = v6;
-  if (!v6)
+  credentialsCopy = credentials;
+  v7 = credentialsCopy;
+  if (!credentialsCopy)
   {
     goto LABEL_27;
   }
 
-  v8 = v6;
+  v8 = credentialsCopy;
   v9 = v8;
   if (!self)
   {
@@ -354,7 +354,7 @@ LABEL_27:
     }
 
     v22 = v21;
-    v106 = self;
+    selfCopy = self;
     v107 = v9;
     v108 = a2;
     v109 = v7;
@@ -372,8 +372,8 @@ LABEL_7:
       v25 = *(*(&v118 + 1) + 8 * v24);
       if ([v25 type] != 3)
       {
-        self = v106;
-        sub_265398094(OS_LOG_TYPE_ERROR, 0, "[UnifiedAccessHandler validateCredentials:]", 139, v106, @"Invalid credential types.", v26, v27, Name);
+        self = selfCopy;
+        sub_265398094(OS_LOG_TYPE_ERROR, 0, "[UnifiedAccessHandler validateCredentials:]", 139, selfCopy, @"Invalid credential types.", v26, v27, Name);
         v32 = MEMORY[0x277CCA9B8];
         v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"STS.fwk"];
         v135[0] = *MEMORY[0x277CCA450];
@@ -401,27 +401,27 @@ LABEL_20:
         goto LABEL_21;
       }
 
-      v28 = [v25 identifier];
-      if ([v28 hasPrefix:0x2876E4FF0])
+      identifier = [v25 identifier];
+      if ([identifier hasPrefix:0x2876E4FF0])
       {
         goto LABEL_14;
       }
 
-      v29 = [v25 identifier];
-      if ([v29 hasPrefix:0x2876E5010])
+      identifier2 = [v25 identifier];
+      if ([identifier2 hasPrefix:0x2876E5010])
       {
         break;
       }
 
-      v30 = [v25 identifier];
-      v31 = [v30 hasPrefix:0x2876E5070];
+      identifier3 = [v25 identifier];
+      v31 = [identifier3 hasPrefix:0x2876E5070];
 
       v18 = v111;
       if ((v31 & 1) == 0)
       {
-        v46 = [v25 identifier];
-        self = v106;
-        sub_265398094(OS_LOG_TYPE_ERROR, 0, "[UnifiedAccessHandler validateCredentials:]", 146, v106, @"Not a valid UA or Aliro aid - %@", v47, v48, v46);
+        identifier4 = [v25 identifier];
+        self = selfCopy;
+        sub_265398094(OS_LOG_TYPE_ERROR, 0, "[UnifiedAccessHandler validateCredentials:]", 146, selfCopy, @"Not a valid UA or Aliro aid - %@", v47, v48, identifier4);
 
         v32 = MEMORY[0x277CCA9B8];
         v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"STS.fwk"];
@@ -455,7 +455,7 @@ LABEL_16:
 
         v3 = 0;
         a2 = v108;
-        self = v106;
+        self = selfCopy;
         v9 = v107;
         goto LABEL_22;
       }
@@ -556,7 +556,7 @@ LABEL_27:
     sub_265398094(OS_LOG_TYPE_ERROR, 0, "[UnifiedAccessHandler setActiveCredentials:]", 180, self, @"No resource available", v61, v62, Name);
   }
 
-  v64 = self;
+  selfCopy2 = self;
   v115 = 0u;
   v116 = 0u;
   v113 = 0u;
@@ -577,11 +577,11 @@ LABEL_27:
         }
 
         v69 = *(*(&v113 + 1) + 8 * i);
-        v70 = [v69 subIdentifier];
+        subIdentifier = [v69 subIdentifier];
 
-        if (!v70)
+        if (!subIdentifier)
         {
-          sub_265398094(OS_LOG_TYPE_ERROR, 0, "[UnifiedAccessHandler setActiveCredentials:]", 186, v64, @"Invalid credential provided %@", v71, v72, v69);
+          sub_265398094(OS_LOG_TYPE_ERROR, 0, "[UnifiedAccessHandler setActiveCredentials:]", 186, selfCopy2, @"Invalid credential provided %@", v71, v72, v69);
           v94 = MEMORY[0x277CCA9B8];
           v95 = [MEMORY[0x277CCACA8] stringWithUTF8String:"STS.fwk"];
           v126[0] = *MEMORY[0x277CCA450];
@@ -602,9 +602,9 @@ LABEL_27:
           goto LABEL_52;
         }
 
-        v73 = [v69 subIdentifier];
-        v74 = [v69 identifier];
-        [v63 setObject:v73 forKey:v74];
+        subIdentifier2 = [v69 subIdentifier];
+        identifier5 = [v69 identifier];
+        [v63 setObject:subIdentifier2 forKey:identifier5];
       }
 
       v67 = [v65 countByEnumeratingWithState:&v113 objects:v128 count:16];
@@ -619,7 +619,7 @@ LABEL_27:
 
   if (v7 && ![v63 count])
   {
-    sub_265398094(OS_LOG_TYPE_ERROR, 0, "[UnifiedAccessHandler setActiveCredentials:]", 194, v64, @"Invalid credentials provided %@", v75, v76, v65);
+    sub_265398094(OS_LOG_TYPE_ERROR, 0, "[UnifiedAccessHandler setActiveCredentials:]", 194, selfCopy2, @"Invalid credentials provided %@", v75, v76, v65);
     v101 = MEMORY[0x277CCA9B8];
     v84 = [MEMORY[0x277CCACA8] stringWithUTF8String:"STS.fwk"];
     v124[0] = *MEMORY[0x277CCA450];
@@ -640,7 +640,7 @@ LABEL_49:
     goto LABEL_50;
   }
 
-  nfSession = v64->_nfSession;
+  nfSession = selfCopy2->_nfSession;
   v112 = 0;
   v78 = [(NFUnifiedAccessSession *)nfSession setActivePaymentApplets:v63 error:&v112];
   v79 = v112;
@@ -651,7 +651,7 @@ LABEL_49:
   }
 
   v110 = v7;
-  sub_265398094(OS_LOG_TYPE_ERROR, 0, "[UnifiedAccessHandler setActiveCredentials:]", 197, v64, @"set active applet failed = %@", v80, v81, v79);
+  sub_265398094(OS_LOG_TYPE_ERROR, 0, "[UnifiedAccessHandler setActiveCredentials:]", 197, selfCopy2, @"set active applet failed = %@", v80, v81, v79);
   v83 = MEMORY[0x277CCA9B8];
   v84 = [MEMORY[0x277CCACA8] stringWithUTF8String:"STS.fwk"];
   v122[0] = *MEMORY[0x277CCA450];
@@ -699,16 +699,16 @@ LABEL_53:
   return v60;
 }
 
-- (id)startTransactionWithAuthorization:(id)a3 options:(unint64_t)a4
+- (id)startTransactionWithAuthorization:(id)authorization options:(unint64_t)options
 {
   v44[4] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v10 = v7;
+  authorizationCopy = authorization;
+  v10 = authorizationCopy;
   if (self->_nfSession)
   {
-    sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[UnifiedAccessHandler startTransactionWithAuthorization:options:]", 218, self, @"auth: %@  deferred:%d", v8, v9, v7);
+    sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[UnifiedAccessHandler startTransactionWithAuthorization:options:]", 218, self, @"auth: %@  deferred:%d", v8, v9, authorizationCopy);
     nfSession = self->_nfSession;
-    if (a4)
+    if (options)
     {
       v40 = 0;
       v12 = [(NFUnifiedAccessSession *)nfSession startDeferredCardEmulationWithAuthorization:v10 error:&v40];
@@ -745,7 +745,7 @@ LABEL_53:
       v42[2] = &unk_2876EDDD0;
       v41[2] = @"Line";
       v41[3] = @"Method";
-      v27 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", sel_getName(a2), a4 & 1];
+      v27 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", sel_getName(a2), options & 1];
       v42[3] = v27;
       v41[4] = *MEMORY[0x277CCA068];
       v28 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d", sel_getName(a2), 228];
@@ -764,7 +764,7 @@ LABEL_53:
     {
       v38.receiver = self;
       v38.super_class = UnifiedAccessHandler;
-      v31 = [(STSTransactionHandler *)&v38 startTransactionWithAuthorization:v10 options:a4];
+      v31 = [(STSTransactionHandler *)&v38 startTransactionWithAuthorization:v10 options:options];
     }
   }
 
@@ -798,17 +798,17 @@ LABEL_53:
   v22[4] = *MEMORY[0x277D85DE8];
   v20.receiver = self;
   v20.super_class = UnifiedAccessHandler;
-  v6 = [(STSTransactionHandler *)&v20 stopTransaction];
+  stopTransaction = [(STSTransactionHandler *)&v20 stopTransaction];
   if (self->_nfSession)
   {
     sub_265398094(OS_LOG_TYPE_INFO, 0, "[UnifiedAccessHandler stopTransaction]", 249, self, &stru_2876E3E50, v4, v5, v18);
     nfSession = self->_nfSession;
-    v19 = v6;
+    v19 = stopTransaction;
     [(NFUnifiedAccessSession *)nfSession stopCardEmulation:&v19];
     v8 = v19;
 
     v9 = v8;
-    v6 = v9;
+    stopTransaction = v9;
   }
 
   else
@@ -836,45 +836,45 @@ LABEL_53:
   return v9;
 }
 
-- (void)unifiedAccessSession:(id)a3 didEnterFieldWithNotification:(id)a4
+- (void)unifiedAccessSession:(id)session didEnterFieldWithNotification:(id)notification
 {
-  v5 = a4;
-  sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[UnifiedAccessHandler unifiedAccessSession:didEnterFieldWithNotification:]", 280, self, @"%@", v6, v7, v5);
-  v9 = sub_265399348(v5);
+  notificationCopy = notification;
+  sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[UnifiedAccessHandler unifiedAccessSession:didEnterFieldWithNotification:]", 280, self, @"%@", v6, v7, notificationCopy);
+  v9 = sub_265399348(notificationCopy);
 
-  v8 = [(STSTransactionHandler *)self parent];
-  [v8 fireFieldNotificationEvent:v9];
+  parent = [(STSTransactionHandler *)self parent];
+  [parent fireFieldNotificationEvent:v9];
 }
 
-- (void)unifiedAccessSession:(id)a3 didExpireTransactionForApplet:(id)a4
+- (void)unifiedAccessSession:(id)session didExpireTransactionForApplet:(id)applet
 {
-  sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[UnifiedAccessHandler unifiedAccessSession:didExpireTransactionForApplet:]", 297, self, @"EXPIRED: %@", v4, v5, a4);
-  v7 = [(STSTransactionHandler *)self parent];
-  [v7 fireDidExpireTransaction:1];
+  sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[UnifiedAccessHandler unifiedAccessSession:didExpireTransactionForApplet:]", 297, self, @"EXPIRED: %@", v4, v5, applet);
+  parent = [(STSTransactionHandler *)self parent];
+  [parent fireDidExpireTransaction:1];
 }
 
-- (void)unifiedAccessSession:(id)a3 didStartTransaction:(id)a4
+- (void)unifiedAccessSession:(id)session didStartTransaction:(id)transaction
 {
-  v5 = a4;
-  sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[UnifiedAccessHandler unifiedAccessSession:didStartTransaction:]", 303, self, @"START: %@", v6, v7, v5);
-  v8 = [v5 appletIdentifier];
-  v11 = sub_2653A13E0(self, v8);
+  transactionCopy = transaction;
+  sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[UnifiedAccessHandler unifiedAccessSession:didStartTransaction:]", 303, self, @"START: %@", v6, v7, transactionCopy);
+  appletIdentifier = [transactionCopy appletIdentifier];
+  v11 = sub_2653A13E0(self, appletIdentifier);
 
-  v9 = [[STSTransactionStartEvent alloc] initWithCredential:v11 andNearFieldStartEvent:v5];
-  v10 = [(STSTransactionHandler *)self parent];
-  [v10 fireTransactionStartEvent:v9];
+  v9 = [[STSTransactionStartEvent alloc] initWithCredential:v11 andNearFieldStartEvent:transactionCopy];
+  parent = [(STSTransactionHandler *)self parent];
+  [parent fireTransactionStartEvent:v9];
 }
 
-- (void)unifiedAccessSession:(id)a3 didEndTransaction:(id)a4
+- (void)unifiedAccessSession:(id)session didEndTransaction:(id)transaction
 {
-  v5 = a4;
-  sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[UnifiedAccessHandler unifiedAccessSession:didEndTransaction:]", 314, self, @"END: %@", v6, v7, v5);
-  v8 = [v5 appletIdentifier];
-  v11 = sub_2653A13E0(self, v8);
+  transactionCopy = transaction;
+  sub_265398094(OS_LOG_TYPE_DEFAULT, 0, "[UnifiedAccessHandler unifiedAccessSession:didEndTransaction:]", 314, self, @"END: %@", v6, v7, transactionCopy);
+  appletIdentifier = [transactionCopy appletIdentifier];
+  v11 = sub_2653A13E0(self, appletIdentifier);
 
-  v9 = [[STSTransactionEndEvent alloc] initWithCredential:v11 andNearFieldEndEvent:v5];
-  v10 = [(STSTransactionHandler *)self parent];
-  [v10 fireTransactionEndEvent:v9];
+  v9 = [[STSTransactionEndEvent alloc] initWithCredential:v11 andNearFieldEndEvent:transactionCopy];
+  parent = [(STSTransactionHandler *)self parent];
+  [parent fireTransactionEndEvent:v9];
 }
 
 @end

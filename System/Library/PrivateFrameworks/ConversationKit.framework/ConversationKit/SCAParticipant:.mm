@@ -6,7 +6,7 @@
 
 - (uint64_t)SCSensitivityAnalysis
 {
-  v4 = *__swift_project_boxed_opaque_existential_1((a1 + 32), *(a1 + 56));
+  v4 = *__swift_project_boxed_opaque_existential_1((self + 32), *(self + 56));
   if (a3)
   {
     v5 = a3;

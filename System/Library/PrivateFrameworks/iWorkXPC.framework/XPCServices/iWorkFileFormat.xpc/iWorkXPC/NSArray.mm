@@ -1,46 +1,46 @@
 @interface NSArray
-+ (id)tsu_arrayByUnioningArray:(id)a3 withArray:(id)a4;
-+ (id)tsu_arrayWithCGFloats:(const double *)a3 count:(unint64_t)a4;
-+ (id)tsu_arrayWithInts:(const int *)a3 count:(unint64_t)a4;
-+ (id)tsu_arrayWithNonNilObject:(id)a3;
-+ (id)tsu_arrayWithUIntegers:(const unint64_t *)a3 count:(unint64_t)a4;
-- (BOOL)tsu_allObjectsPassTest:(id)a3;
-- (BOOL)tsu_conformsToAnyUTType:(id)a3;
-- (BOOL)tsu_containsObjectPassingTest:(id)a3;
-- (BOOL)tsu_isHomogeneousForClass:(Class)a3;
++ (id)tsu_arrayByUnioningArray:(id)array withArray:(id)withArray;
++ (id)tsu_arrayWithCGFloats:(const double *)floats count:(unint64_t)count;
++ (id)tsu_arrayWithInts:(const int *)ints count:(unint64_t)count;
++ (id)tsu_arrayWithNonNilObject:(id)object;
++ (id)tsu_arrayWithUIntegers:(const unint64_t *)integers count:(unint64_t)count;
+- (BOOL)tsu_allObjectsPassTest:(id)test;
+- (BOOL)tsu_conformsToAnyUTType:(id)type;
+- (BOOL)tsu_containsObjectPassingTest:(id)test;
+- (BOOL)tsu_isHomogeneousForClass:(Class)class;
 - (id)tsu_UTTypes;
-- (id)tsu_arrayByAddingNonContainedObjectsFromArray:(id)a3;
+- (id)tsu_arrayByAddingNonContainedObjectsFromArray:(id)array;
 - (id)tsu_arrayByFlattening;
-- (id)tsu_arrayByMappingObjectsUsingBlock:(id)a3;
+- (id)tsu_arrayByMappingObjectsUsingBlock:(id)block;
 - (id)tsu_arrayByRemovingFirstObject;
-- (id)tsu_arrayByRemovingObjectsAtIndexes:(id)a3;
-- (id)tsu_arrayByRemovingObjectsIdenticalToObjectsInArray:(id)a3;
+- (id)tsu_arrayByRemovingObjectsAtIndexes:(id)indexes;
+- (id)tsu_arrayByRemovingObjectsIdenticalToObjectsInArray:(id)array;
 - (id)tsu_arrayByReversingOrder;
-- (id)tsu_arrayByTransformingWithBlock:(id)a3;
-- (id)tsu_arrayOfObjectsPassingTest:(id)a3;
-- (id)tsu_arrayWithObjectsInHashTable:(id)a3;
-- (id)tsu_arrayWithObjectsInSet:(id)a3;
-- (id)tsu_firstObjectPassingTest:(id)a3;
-- (id)tsu_indexesOfObjects:(id)a3;
-- (id)tsu_initWithCGFloats:(const double *)a3 count:(unint64_t)a4;
-- (id)tsu_initWithInts:(const int *)a3 count:(unint64_t)a4;
-- (id)tsu_initWithUIntegers:(const unint64_t *)a3 count:(unint64_t)a4;
-- (id)tsu_intersectionWithArray:(id)a3;
+- (id)tsu_arrayByTransformingWithBlock:(id)block;
+- (id)tsu_arrayOfObjectsPassingTest:(id)test;
+- (id)tsu_arrayWithObjectsInHashTable:(id)table;
+- (id)tsu_arrayWithObjectsInSet:(id)set;
+- (id)tsu_firstObjectPassingTest:(id)test;
+- (id)tsu_indexesOfObjects:(id)objects;
+- (id)tsu_initWithCGFloats:(const double *)floats count:(unint64_t)count;
+- (id)tsu_initWithInts:(const int *)ints count:(unint64_t)count;
+- (id)tsu_initWithUIntegers:(const unint64_t *)integers count:(unint64_t)count;
+- (id)tsu_intersectionWithArray:(id)array;
 - (id)tsu_localizedList;
-- (id)tsu_objectPriorToObject:(id)a3;
+- (id)tsu_objectPriorToObject:(id)object;
 - (id)tsu_onlyObject;
-- (id)tsu_rangeCheckedObjectAtIndex:(unint64_t)a3;
+- (id)tsu_rangeCheckedObjectAtIndex:(unint64_t)index;
 - (unint64_t)tsu_indexOfSmallestObject;
-- (void)tsu_enumerateSnapshotObjectsUsingBlock:(id)a3;
+- (void)tsu_enumerateSnapshotObjectsUsingBlock:(id)block;
 @end
 
 @implementation NSArray
 
-- (id)tsu_initWithCGFloats:(const double *)a3 count:(unint64_t)a4
+- (id)tsu_initWithCGFloats:(const double *)floats count:(unint64_t)count
 {
-  if (a4 < 0x11)
+  if (count < 0x11)
   {
-    if (!a4)
+    if (!count)
     {
       return [(NSArray *)self initWithObjects:v11 count:0];
     }
@@ -50,12 +50,12 @@ LABEL_5:
     v8 = 0;
     do
     {
-      *&v7[8 * v8] = [NSNumber numberWithDouble:a3[v8]];
+      *&v7[8 * v8] = [NSNumber numberWithDouble:floats[v8]];
       ++v8;
     }
 
-    while (a4 != v8);
-    v9 = [(NSArray *)self initWithObjects:v7 count:a4];
+    while (count != v8);
+    v9 = [(NSArray *)self initWithObjects:v7 count:count];
     if (v7 != v11)
     {
       free(v7);
@@ -64,27 +64,27 @@ LABEL_5:
     return v9;
   }
 
-  v7 = malloc_type_calloc(a4, 8uLL, 0x80040B8603338uLL);
+  v7 = malloc_type_calloc(count, 8uLL, 0x80040B8603338uLL);
   if (v7)
   {
     goto LABEL_5;
   }
 
-  return [(NSArray *)self initWithObjects:0 count:a4];
+  return [(NSArray *)self initWithObjects:0 count:count];
 }
 
-+ (id)tsu_arrayWithCGFloats:(const double *)a3 count:(unint64_t)a4
++ (id)tsu_arrayWithCGFloats:(const double *)floats count:(unint64_t)count
 {
-  v4 = [[a1 alloc] tsu_initWithCGFloats:a3 count:a4];
+  v4 = [[self alloc] tsu_initWithCGFloats:floats count:count];
 
   return v4;
 }
 
-- (id)tsu_initWithInts:(const int *)a3 count:(unint64_t)a4
+- (id)tsu_initWithInts:(const int *)ints count:(unint64_t)count
 {
-  if (a4 < 0x11)
+  if (count < 0x11)
   {
-    if (!a4)
+    if (!count)
     {
       return [(NSArray *)self initWithObjects:v11 count:0];
     }
@@ -94,12 +94,12 @@ LABEL_5:
     v8 = 0;
     do
     {
-      *&v7[8 * v8] = [NSNumber numberWithInt:a3[v8]];
+      *&v7[8 * v8] = [NSNumber numberWithInt:ints[v8]];
       ++v8;
     }
 
-    while (a4 != v8);
-    v9 = [(NSArray *)self initWithObjects:v7 count:a4];
+    while (count != v8);
+    v9 = [(NSArray *)self initWithObjects:v7 count:count];
     if (v7 != v11)
     {
       free(v7);
@@ -108,40 +108,40 @@ LABEL_5:
     return v9;
   }
 
-  v7 = malloc_type_calloc(a4, 8uLL, 0x80040B8603338uLL);
+  v7 = malloc_type_calloc(count, 8uLL, 0x80040B8603338uLL);
   if (v7)
   {
     goto LABEL_5;
   }
 
-  return [(NSArray *)self initWithObjects:0 count:a4];
+  return [(NSArray *)self initWithObjects:0 count:count];
 }
 
-+ (id)tsu_arrayWithInts:(const int *)a3 count:(unint64_t)a4
++ (id)tsu_arrayWithInts:(const int *)ints count:(unint64_t)count
 {
-  v4 = [[a1 alloc] tsu_initWithInts:a3 count:a4];
+  v4 = [[self alloc] tsu_initWithInts:ints count:count];
 
   return v4;
 }
 
-+ (id)tsu_arrayByUnioningArray:(id)a3 withArray:(id)a4
++ (id)tsu_arrayByUnioningArray:(id)array withArray:(id)withArray
 {
-  if (a3)
+  if (array)
   {
-    return [a3 tsu_arrayByAddingNonContainedObjectsFromArray:a4];
+    return [array tsu_arrayByAddingNonContainedObjectsFromArray:withArray];
   }
 
   else
   {
-    return a4;
+    return withArray;
   }
 }
 
-- (id)tsu_initWithUIntegers:(const unint64_t *)a3 count:(unint64_t)a4
+- (id)tsu_initWithUIntegers:(const unint64_t *)integers count:(unint64_t)count
 {
-  if (a4 < 0x11)
+  if (count < 0x11)
   {
-    if (!a4)
+    if (!count)
     {
       return [(NSArray *)self initWithObjects:v11 count:0];
     }
@@ -151,12 +151,12 @@ LABEL_5:
     v8 = 0;
     do
     {
-      *&v7[8 * v8] = [NSNumber numberWithInteger:a3[v8]];
+      *&v7[8 * v8] = [NSNumber numberWithInteger:integers[v8]];
       ++v8;
     }
 
-    while (a4 != v8);
-    v9 = [(NSArray *)self initWithObjects:v7 count:a4];
+    while (count != v8);
+    v9 = [(NSArray *)self initWithObjects:v7 count:count];
     if (v7 != v11)
     {
       free(v7);
@@ -165,35 +165,35 @@ LABEL_5:
     return v9;
   }
 
-  v7 = malloc_type_calloc(a4, 8uLL, 0x80040B8603338uLL);
+  v7 = malloc_type_calloc(count, 8uLL, 0x80040B8603338uLL);
   if (v7)
   {
     goto LABEL_5;
   }
 
-  return [(NSArray *)self initWithObjects:0 count:a4];
+  return [(NSArray *)self initWithObjects:0 count:count];
 }
 
-+ (id)tsu_arrayWithUIntegers:(const unint64_t *)a3 count:(unint64_t)a4
++ (id)tsu_arrayWithUIntegers:(const unint64_t *)integers count:(unint64_t)count
 {
-  v4 = [[a1 alloc] tsu_initWithUIntegers:a3 count:a4];
+  v4 = [[self alloc] tsu_initWithUIntegers:integers count:count];
 
   return v4;
 }
 
-- (id)tsu_rangeCheckedObjectAtIndex:(unint64_t)a3
+- (id)tsu_rangeCheckedObjectAtIndex:(unint64_t)index
 {
-  if ([(NSArray *)self count]<= a3)
+  if ([(NSArray *)self count]<= index)
   {
     return 0;
   }
 
-  return [(NSArray *)self objectAtIndex:a3];
+  return [(NSArray *)self objectAtIndex:index];
 }
 
-- (id)tsu_objectPriorToObject:(id)a3
+- (id)tsu_objectPriorToObject:(id)object
 {
-  v4 = [(NSArray *)self indexOfObject:a3];
+  v4 = [(NSArray *)self indexOfObject:object];
   if (!v4 || v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
     return 0;
@@ -231,14 +231,14 @@ LABEL_5:
   return v7;
 }
 
-- (id)tsu_indexesOfObjects:(id)a3
+- (id)tsu_indexesOfObjects:(id)objects
 {
   v5 = +[NSMutableIndexSet indexSet];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [a3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v6 = [objects countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -250,7 +250,7 @@ LABEL_5:
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(objects);
         }
 
         v10 = [(NSArray *)self indexOfObject:*(*(&v12 + 1) + 8 * v9)];
@@ -263,7 +263,7 @@ LABEL_5:
       }
 
       while (v7 != v9);
-      v7 = [a3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [objects countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
@@ -272,10 +272,10 @@ LABEL_5:
   return v5;
 }
 
-- (id)tsu_arrayWithObjectsInSet:(id)a3
+- (id)tsu_arrayWithObjectsInSet:(id)set
 {
   v5 = +[NSMutableArray array];
-  if (a3)
+  if (set)
   {
     v14 = 0u;
     v15 = 0u;
@@ -296,7 +296,7 @@ LABEL_5:
           }
 
           v10 = *(*(&v12 + 1) + 8 * i);
-          if ([a3 containsObject:v10])
+          if ([set containsObject:v10])
           {
             [v5 addObject:v10];
           }
@@ -312,10 +312,10 @@ LABEL_5:
   return v5;
 }
 
-- (id)tsu_arrayWithObjectsInHashTable:(id)a3
+- (id)tsu_arrayWithObjectsInHashTable:(id)table
 {
   v5 = +[NSMutableArray array];
-  if (a3)
+  if (table)
   {
     v14 = 0u;
     v15 = 0u;
@@ -336,7 +336,7 @@ LABEL_5:
           }
 
           v10 = *(*(&v12 + 1) + 8 * i);
-          if ([a3 containsObject:v10])
+          if ([table containsObject:v10])
           {
             [v5 addObject:v10];
           }
@@ -352,10 +352,10 @@ LABEL_5:
   return v5;
 }
 
-- (id)tsu_intersectionWithArray:(id)a3
+- (id)tsu_intersectionWithArray:(id)array
 {
   v5 = +[NSMutableArray array];
-  if (a3)
+  if (array)
   {
     v14 = 0u;
     v15 = 0u;
@@ -376,7 +376,7 @@ LABEL_5:
           }
 
           v10 = *(*(&v12 + 1) + 8 * i);
-          if ([a3 indexOfObject:v10] != 0x7FFFFFFFFFFFFFFFLL)
+          if ([array indexOfObject:v10] != 0x7FFFFFFFFFFFFFFFLL)
           {
             [v5 addObject:v10];
           }
@@ -392,9 +392,9 @@ LABEL_5:
   return v5;
 }
 
-- (id)tsu_arrayByRemovingObjectsIdenticalToObjectsInArray:(id)a3
+- (id)tsu_arrayByRemovingObjectsIdenticalToObjectsInArray:(id)array
 {
-  v5 = [a3 count];
+  v5 = [array count];
   if (!v5)
   {
     return self;
@@ -406,7 +406,7 @@ LABEL_5:
   p_super = self;
   do
   {
-    v10 = [a3 objectAtIndex:v7];
+    v10 = [array objectAtIndex:v7];
     v11 = [(NSArray *)p_super indexOfObjectIdenticalTo:v10];
     if (v11 != 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -429,16 +429,16 @@ LABEL_5:
   return p_super;
 }
 
-- (id)tsu_arrayByAddingNonContainedObjectsFromArray:(id)a3
+- (id)tsu_arrayByAddingNonContainedObjectsFromArray:(id)array
 {
-  if (a3 && (v5 = [a3 count]) != 0)
+  if (array && (v5 = [array count]) != 0)
   {
     v6 = v5;
     v7 = 0;
     v8 = 0;
     do
     {
-      v9 = [a3 objectAtIndex:v8];
+      v9 = [array objectAtIndex:v8];
       if (![(NSArray *)self containsObject:v9])
       {
         if (!v7)
@@ -480,8 +480,8 @@ LABEL_5:
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [(NSArray *)self reverseObjectEnumerator];
-  v5 = [(NSEnumerator *)v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  reverseObjectEnumerator = [(NSArray *)self reverseObjectEnumerator];
+  v5 = [(NSEnumerator *)reverseObjectEnumerator countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -493,7 +493,7 @@ LABEL_5:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         [(NSMutableArray *)v3 addObject:*(*(&v10 + 1) + 8 * v8)];
@@ -501,7 +501,7 @@ LABEL_5:
       }
 
       while (v6 != v8);
-      v6 = [(NSEnumerator *)v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [(NSEnumerator *)reverseObjectEnumerator countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
@@ -537,29 +537,29 @@ LABEL_5:
   return [v4 arrayWithArray:v3];
 }
 
-- (id)tsu_arrayByRemovingObjectsAtIndexes:(id)a3
+- (id)tsu_arrayByRemovingObjectsAtIndexes:(id)indexes
 {
-  if (![a3 count])
+  if (![indexes count])
   {
     return self;
   }
 
   v5 = [(NSArray *)self mutableCopy];
-  [v5 removeObjectsAtIndexes:a3];
+  [v5 removeObjectsAtIndexes:indexes];
   v6 = [NSArray arrayWithArray:v5];
 
   return v6;
 }
 
-- (void)tsu_enumerateSnapshotObjectsUsingBlock:(id)a3
+- (void)tsu_enumerateSnapshotObjectsUsingBlock:(id)block
 {
   v4 = [(NSArray *)self copy];
-  [v4 enumerateObjectsUsingBlock:a3];
+  [v4 enumerateObjectsUsingBlock:block];
 }
 
-- (id)tsu_firstObjectPassingTest:(id)a3
+- (id)tsu_firstObjectPassingTest:(id)test
 {
-  if (!a3)
+  if (!test)
   {
     return 0;
   }
@@ -586,7 +586,7 @@ LABEL_4:
     }
 
     v9 = *(*(&v11 + 1) + 8 * v8);
-    if ((*(a3 + 2))(a3, v9))
+    if ((*(test + 2))(test, v9))
     {
       return v9;
     }
@@ -605,9 +605,9 @@ LABEL_4:
   }
 }
 
-- (BOOL)tsu_containsObjectPassingTest:(id)a3
+- (BOOL)tsu_containsObjectPassingTest:(id)test
 {
-  if (a3)
+  if (test)
   {
     v12 = 0u;
     v13 = 0u;
@@ -627,7 +627,7 @@ LABEL_4:
             objc_enumerationMutation(self);
           }
 
-          if ((*(a3 + 2))(a3, *(*(&v10 + 1) + 8 * i)))
+          if ((*(test + 2))(test, *(*(&v10 + 1) + 8 * i)))
           {
             LOBYTE(v5) = 1;
             return v5;
@@ -654,7 +654,7 @@ LABEL_4:
   return v5;
 }
 
-- (BOOL)tsu_isHomogeneousForClass:(Class)a3
+- (BOOL)tsu_isHomogeneousForClass:(Class)class
 {
   v10 = 0u;
   v11 = 0u;
@@ -698,7 +698,7 @@ LABEL_4:
   return 1;
 }
 
-- (BOOL)tsu_allObjectsPassTest:(id)a3
+- (BOOL)tsu_allObjectsPassTest:(id)test
 {
   v11 = 0u;
   v12 = 0u;
@@ -718,7 +718,7 @@ LABEL_3:
         objc_enumerationMutation(self);
       }
 
-      v9 = (*(a3 + 2))(a3, *(*(&v11 + 1) + 8 * v8));
+      v9 = (*(test + 2))(test, *(*(&v11 + 1) + 8 * v8));
       if (!v9)
       {
         break;
@@ -746,16 +746,16 @@ LABEL_9:
   return v9;
 }
 
-- (id)tsu_arrayOfObjectsPassingTest:(id)a3
+- (id)tsu_arrayOfObjectsPassingTest:(id)test
 {
-  if (a3)
+  if (test)
   {
-    v4 = self;
+    selfCopy = self;
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_10008D0D8;
     v9[3] = &unk_1001CD270;
-    v9[4] = a3;
+    v9[4] = test;
     v5 = [(NSArray *)self indexesOfObjectsPassingTest:v9];
     if (!v5)
     {
@@ -768,18 +768,18 @@ LABEL_9:
       return +[NSArray array];
     }
 
-    if ([(NSIndexSet *)v6 containsIndexesInRange:0, [(NSArray *)v4 count]])
+    if ([(NSIndexSet *)v6 containsIndexesInRange:0, [(NSArray *)selfCopy count]])
     {
-      return v4;
+      return selfCopy;
     }
 
-    return [(NSArray *)v4 objectsAtIndexes:v6];
+    return [(NSArray *)selfCopy objectsAtIndexes:v6];
   }
 
   return +[NSArray array];
 }
 
-- (id)tsu_arrayByTransformingWithBlock:(id)a3
+- (id)tsu_arrayByTransformingWithBlock:(id)block
 {
   v5 = [NSMutableArray arrayWithCapacity:[(NSArray *)self count]];
   v7[0] = _NSConcreteStackBlock;
@@ -787,12 +787,12 @@ LABEL_9:
   v7[2] = sub_10008D190;
   v7[3] = &unk_1001CD298;
   v7[4] = v5;
-  v7[5] = a3;
+  v7[5] = block;
   [(NSArray *)self enumerateObjectsUsingBlock:v7];
   return v5;
 }
 
-- (id)tsu_arrayByMappingObjectsUsingBlock:(id)a3
+- (id)tsu_arrayByMappingObjectsUsingBlock:(id)block
 {
   v14 = [NSMutableArray arrayWithCapacity:[(NSArray *)self count]];
   v15 = 0u;
@@ -815,7 +815,7 @@ LABEL_9:
         }
 
         v8 = *(*(&v15 + 1) + 8 * v7);
-        v9 = (*(a3 + 2))(a3, v8);
+        v9 = (*(block + 2))(block, v8);
         if (v9)
         {
           [(NSMutableArray *)v14 addObject:v9];
@@ -954,15 +954,15 @@ LABEL_12:
   return v11;
 }
 
-+ (id)tsu_arrayWithNonNilObject:(id)a3
++ (id)tsu_arrayWithNonNilObject:(id)object
 {
-  if (!a3)
+  if (!object)
   {
     return &__NSArray0__struct;
   }
 
-  v4 = a3;
-  return [NSArray arrayWithObjects:&v4 count:1];
+  objectCopy = object;
+  return [NSArray arrayWithObjects:&objectCopy count:1];
 }
 
 - (id)tsu_UTTypes
@@ -997,10 +997,10 @@ LABEL_12:
   return v3;
 }
 
-- (BOOL)tsu_conformsToAnyUTType:(id)a3
+- (BOOL)tsu_conformsToAnyUTType:(id)type
 {
-  v4 = a3;
-  if ([v4 count])
+  typeCopy = type;
+  if ([typeCopy count])
   {
     [(NSArray *)self tsu_UTTypes];
     v10 = 0u;
@@ -1020,7 +1020,7 @@ LABEL_12:
             objc_enumerationMutation(v5);
           }
 
-          if ([*(*(&v10 + 1) + 8 * i) tsu_conformsToAnyUTType:{v4, v10}])
+          if ([*(*(&v10 + 1) + 8 * i) tsu_conformsToAnyUTType:{typeCopy, v10}])
           {
             LOBYTE(v6) = 1;
             goto LABEL_12;

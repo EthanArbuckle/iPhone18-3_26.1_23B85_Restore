@@ -1,53 +1,53 @@
 @interface NUNICalliopeRenderer
-- (BOOL)isObjectBoundingBoxInsideOrIntersectingFrustum:(NUNICalliopeRenderer *)self max:(SEL)a2 withState:;
-- (NUNICalliopeRenderer)initWithPixelFormat:(unint64_t)a3 textureSuffix:(id)a4 rendererStyle:(unint64_t)a5;
-- (double)buildFrustumPlane:(float32x4_t)a1 p2:(float32x4_t)a2 p3:(float32x4_t)a3;
-- (id)_getOrCreateOffscreenBloomWithViewport:(NUNIViewport)a3;
-- (id)getUniformsBufferForFrameBufferIndex:(unint64_t)a3 pContents:(NUNICalliopeRenderUniforms *)a4 pOffset:(unint64_t *)a5;
-- (id)spheroidAtPoint:(id)a3 scene:(NUNIViewport)a4 viewport:;
-- (int)classifyObjectBoundingBoxVersusFrustum:(NUNICalliopeRenderer *)self max:(SEL)a2 withState:;
-- (void)_computeBloomChainTextures:(id)a3;
-- (void)_renderLocationDot:(const NUNISpheroidStructure *)a3 scene:(const NUNISceneStructure *)a4 uniPtr:(NUNICalliopeRenderUniforms *)a5 viewport:(NUNIViewport)a6 renderEncoder:(id)a7;
-- (void)_renderOffscreenBackgroundWithRenderEncoder:(id)a3 frameBufferIndex:(unint64_t)a4;
-- (void)_renderOffscreenBloomTextureUsingTileShaderWithViewport:(NUNIViewport)a3 renderEncoder:(id)a4;
-- (void)_renderOffscreenBloomTextureWithViewport:(NUNIViewport)a3 sceneTexture:(id)a4 commandBuffer:(id)a5;
-- (void)_renderOffscreenPostWithScene:(const NUNISceneStructure *)a3 viewport:(NUNIViewport)a4 commandBuffer:(id)a5 frameBufferIndex:(unint64_t)a6;
-- (void)_renderOffscreenSceneWithScene:(const NUNISceneStructure *)a3 spheroids:(id)a4 viewport:(NUNIViewport)a5 commandBuffer:(id)a6 frameBufferIndex:(unint64_t)a7 drawableTexture:(id)a8;
-- (void)_renderSaturnRings:(double)a3 frameBufferIndex:(__n128)a4 renderEncoder:(__n128)a5 forwardAngle:(__n128)a6 position:(__n128)a7 isRotated:(float)a8 rotationMatrix:(float)a9 scale:(uint64_t)a10 equatorRotation:(_OWORD *)a11;
-- (void)_renderSpriteSpheroid:(const NUNISpheroidStructure *)a3 frameBufferIndex:(unint64_t)a4 renderEncoder:(id)a5;
-- (void)_setupBloomChainWithViewport:(NUNIViewport)a3 bloomTexture:(id)a4;
-- (void)_updateBaseUniformsForViewport:(NUNIViewport)a3;
-- (void)_updateStateWithScene:(const NUNISceneStructure *)a3 viewport:(NUNIViewport)a4;
-- (void)_updateTextureLODsForPatchSpheroid:(NUNICalliopeRenderer *)self uvRate:(SEL)a2 drawableSize:(unint64_t)a3;
+- (BOOL)isObjectBoundingBoxInsideOrIntersectingFrustum:(NUNICalliopeRenderer *)self max:(SEL)max withState:;
+- (NUNICalliopeRenderer)initWithPixelFormat:(unint64_t)format textureSuffix:(id)suffix rendererStyle:(unint64_t)style;
+- (double)buildFrustumPlane:(float32x4_t)plane p2:(float32x4_t)p2 p3:(float32x4_t)p3;
+- (id)_getOrCreateOffscreenBloomWithViewport:(NUNIViewport)viewport;
+- (id)getUniformsBufferForFrameBufferIndex:(unint64_t)index pContents:(NUNICalliopeRenderUniforms *)contents pOffset:(unint64_t *)offset;
+- (id)spheroidAtPoint:(id)point scene:(NUNIViewport)scene viewport:;
+- (int)classifyObjectBoundingBoxVersusFrustum:(NUNICalliopeRenderer *)self max:(SEL)max withState:;
+- (void)_computeBloomChainTextures:(id)textures;
+- (void)_renderLocationDot:(const NUNISpheroidStructure *)dot scene:(const NUNISceneStructure *)scene uniPtr:(NUNICalliopeRenderUniforms *)ptr viewport:(NUNIViewport)viewport renderEncoder:(id)encoder;
+- (void)_renderOffscreenBackgroundWithRenderEncoder:(id)encoder frameBufferIndex:(unint64_t)index;
+- (void)_renderOffscreenBloomTextureUsingTileShaderWithViewport:(NUNIViewport)viewport renderEncoder:(id)encoder;
+- (void)_renderOffscreenBloomTextureWithViewport:(NUNIViewport)viewport sceneTexture:(id)texture commandBuffer:(id)buffer;
+- (void)_renderOffscreenPostWithScene:(const NUNISceneStructure *)scene viewport:(NUNIViewport)viewport commandBuffer:(id)buffer frameBufferIndex:(unint64_t)index;
+- (void)_renderOffscreenSceneWithScene:(const NUNISceneStructure *)scene spheroids:(id)spheroids viewport:(NUNIViewport)viewport commandBuffer:(id)buffer frameBufferIndex:(unint64_t)index drawableTexture:(id)texture;
+- (void)_renderSaturnRings:(double)rings frameBufferIndex:(__n128)index renderEncoder:(__n128)encoder forwardAngle:(__n128)angle position:(__n128)position isRotated:(float)rotated rotationMatrix:(float)matrix scale:(uint64_t)self0 equatorRotation:(_OWORD *)self1;
+- (void)_renderSpriteSpheroid:(const NUNISpheroidStructure *)spheroid frameBufferIndex:(unint64_t)index renderEncoder:(id)encoder;
+- (void)_setupBloomChainWithViewport:(NUNIViewport)viewport bloomTexture:(id)texture;
+- (void)_updateBaseUniformsForViewport:(NUNIViewport)viewport;
+- (void)_updateStateWithScene:(const NUNISceneStructure *)scene viewport:(NUNIViewport)viewport;
+- (void)_updateTextureLODsForPatchSpheroid:(NUNICalliopeRenderer *)self uvRate:(SEL)rate drawableSize:(unint64_t)size;
 - (void)dealloc;
-- (void)prepareObjectSpaceFrustumWithTransform:(id *)a3 withState:(id *)a4;
-- (void)prepareWorldSpaceFrustumWithTransform:(id *)a3 withState:(id *)a4;
-- (void)purgeUnusedWithScene:(id)a3;
-- (void)renderOffscreenWithScene:(id)a3 viewport:(NUNIViewport)a4 commandBuffer:(id)a5;
-- (void)renderWithScene:(id)a3 viewport:(NUNIViewport)a4 commandBuffer:(id)a5 passDescriptor:(id)a6;
-- (void)setRendererOptions:(id)a3;
+- (void)prepareObjectSpaceFrustumWithTransform:(id *)transform withState:(id *)state;
+- (void)prepareWorldSpaceFrustumWithTransform:(id *)transform withState:(id *)state;
+- (void)purgeUnusedWithScene:(id)scene;
+- (void)renderOffscreenWithScene:(id)scene viewport:(NUNIViewport)viewport commandBuffer:(id)buffer;
+- (void)renderWithScene:(id)scene viewport:(NUNIViewport)viewport commandBuffer:(id)buffer passDescriptor:(id)descriptor;
+- (void)setRendererOptions:(id)options;
 @end
 
 @implementation NUNICalliopeRenderer
 
-- (NUNICalliopeRenderer)initWithPixelFormat:(unint64_t)a3 textureSuffix:(id)a4 rendererStyle:(unint64_t)a5
+- (NUNICalliopeRenderer)initWithPixelFormat:(unint64_t)format textureSuffix:(id)suffix rendererStyle:(unint64_t)style
 {
-  v8 = a4;
+  suffixCopy = suffix;
   v19.receiver = self;
   v19.super_class = NUNICalliopeRenderer;
-  v9 = [(NUNIRenderer *)&v19 initWithPixelFormat:a3 textureSuffix:v8 rendererStyle:a5];
+  v9 = [(NUNIRenderer *)&v19 initWithPixelFormat:format textureSuffix:suffixCopy rendererStyle:style];
   if (v9)
   {
-    v10 = [NUNICalliopeResourceManager sharedInstanceWithDisplayPixelFormat:a3];
+    v10 = [NUNICalliopeResourceManager sharedInstanceWithDisplayPixelFormat:format];
     resourceManager = v9->_resourceManager;
     v9->_resourceManager = v10;
 
     [(NUNICalliopeResourceManager *)v9->_resourceManager addClient];
-    v12 = [MEMORY[0x277CFA798] sharedDevice];
+    mEMORY[0x277CFA798] = [MEMORY[0x277CFA798] sharedDevice];
     device = v9->_device;
-    v9->_device = v12;
+    v9->_device = mEMORY[0x277CFA798];
 
-    v14 = [(NUNICalliopeResourceManager *)v9->_resourceManager textureGroupWithSuffix:v8];
+    v14 = [(NUNICalliopeResourceManager *)v9->_resourceManager textureGroupWithSuffix:suffixCopy];
     textureGroup = v9->_textureGroup;
     v9->_textureGroup = v14;
 
@@ -56,8 +56,8 @@
     v9->_bloomEnabled = [(MTLDevice *)v9->_device supportsFamily:1004];
     v16 = MGGetStringAnswer();
     v9->_useLowerResolutionTextures = [v16 isEqualToString:@"t8010"];
-    v17 = [MEMORY[0x277D75418] currentDevice];
-    v9->_isPhone = [v17 userInterfaceIdiom] == 0;
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    v9->_isPhone = [currentDevice userInterfaceIdiom] == 0;
   }
 
   return v9;
@@ -71,54 +71,54 @@
   [(NUNIRenderer *)&v3 dealloc];
 }
 
-- (void)setRendererOptions:(id)a3
+- (void)setRendererOptions:(id)options
 {
-  objc_storeStrong(&self->_rendererOptions, a3);
-  v5 = a3;
-  v6 = [(NUNIRendererOptions *)self->_rendererOptions changeSequence];
+  objc_storeStrong(&self->_rendererOptions, options);
+  optionsCopy = options;
+  changeSequence = [(NUNIRendererOptions *)self->_rendererOptions changeSequence];
 
-  self->_rendererOptionsChangeSequence = v6 - 1;
+  self->_rendererOptionsChangeSequence = changeSequence - 1;
 }
 
-- (void)purgeUnusedWithScene:(id)a3
+- (void)purgeUnusedWithScene:(id)scene
 {
-  v4 = *([a3 structure] + 56);
-  v11 = [MEMORY[0x277CFA7B0] sharedInstance];
-  v5 = [MEMORY[0x277CFA7C0] nullTexture2D];
+  v4 = *([scene structure] + 56);
+  mEMORY[0x277CFA7B0] = [MEMORY[0x277CFA7B0] sharedInstance];
+  nullTexture2D = [MEMORY[0x277CFA7C0] nullTexture2D];
   for (i = 0; i != 24; ++i)
   {
     if (v4 != i)
     {
-      v7 = [(NUNICalliopeTextureGroup *)self->_textureGroup gradients];
-      v8 = [v7 objectAtIndexedSubscript:i];
+      gradients = [(NUNICalliopeTextureGroup *)self->_textureGroup gradients];
+      v8 = [gradients objectAtIndexedSubscript:i];
 
-      if (v8 != v5)
+      if (v8 != nullTexture2D)
       {
-        v9 = [v8 atlas];
-        v10 = [v9 uuid];
-        [v11 purge:v10];
+        atlas = [v8 atlas];
+        uuid = [atlas uuid];
+        [mEMORY[0x277CFA7B0] purge:uuid];
       }
     }
   }
 }
 
-- (void)_updateStateWithScene:(const NUNISceneStructure *)a3 viewport:(NUNIViewport)a4
+- (void)_updateStateWithScene:(const NUNISceneStructure *)scene viewport:(NUNIViewport)viewport
 {
-  width = a4.width;
-  height = a4.height;
-  v8 = [MEMORY[0x277CFA7B0] sharedInstance];
-  [v8 updateTextureStreaming];
+  width = viewport.width;
+  height = viewport.height;
+  mEMORY[0x277CFA7B0] = [MEMORY[0x277CFA7B0] sharedInstance];
+  [mEMORY[0x277CFA7B0] updateTextureStreaming];
 
-  v76 = *&a3->var0;
-  v67 = *&a3->var3;
-  _Q0 = vsubq_f32(v67, *&a3->var0);
+  v76 = *&scene->var0;
+  v67 = *&scene->var3;
+  _Q0 = vsubq_f32(v67, *&scene->var0);
   _Q1 = vmulq_f32(_Q0, _Q0);
   _S2 = _Q0.i32[2];
   __asm { FMLA            S1, S2, V0.S[2] }
 
   _Q1.f32[0] = sqrtf(_Q1.f32[0]);
   v16 = vdivq_f32(_Q0, vdupq_lane_s32(*_Q1.f32, 0));
-  v17 = *&a3->var5;
+  v17 = *&scene->var5;
   v18 = vextq_s8(vextq_s8(v16, v16, 0xCuLL), v16, 8uLL);
   _Q3 = vextq_s8(vuzp1q_s32(v17, v17), v17, 0xCuLL);
   v19 = vextq_s8(vuzp1q_s32(v16, v16), v16, 0xCuLL);
@@ -144,7 +144,7 @@
     }
   }
 
-  var1 = a3->var8.var0.var1;
+  var1 = scene->var8.var0.var1;
   v26 = vdivq_f32(_Q2, vdupq_lane_s32(*_Q3.f32, 0));
   _Q0 = vmlaq_f32(vmulq_f32(v18, vnegq_f32(vextq_s8(vuzp1q_s32(v26, v26), v26, 0xCuLL))), v19, vextq_s8(vextq_s8(v26, v26, 0xCuLL), v26, 8uLL));
   _Q1 = vmulq_f32(_Q0, _Q0);
@@ -156,7 +156,7 @@
   v74 = v26;
   v30 = width / height;
   v75 = v16;
-  var4 = a3[1].var4;
+  var4 = scene[1].var4;
   if (v30 >= 1.0)
   {
     v32 = 0.34907;
@@ -249,7 +249,7 @@
   *&self->_anon_304[268] = v62;
 }
 
-- (void)_updateTextureLODsForPatchSpheroid:(NUNICalliopeRenderer *)self uvRate:(SEL)a2 drawableSize:(unint64_t)a3
+- (void)_updateTextureLODsForPatchSpheroid:(NUNICalliopeRenderer *)self uvRate:(SEL)rate drawableSize:(unint64_t)size
 {
   v7 = vmul_f32(*v3, v4);
   v8 = fminf(v7.f32[0], v7.f32[1]);
@@ -270,7 +270,7 @@
     v10 = &_NUNIAtlasMipCounts_iphone;
   }
 
-  v5.i32[0] = v10[a3];
+  v5.i32[0] = v10[size];
   v12 = vmovl_u8(v5).u64[0];
   v29 = v12;
   v5.i32[0] = 1067030938;
@@ -281,7 +281,7 @@
 
   v27 = vdupq_lane_s32(v5, 0);
   v28 = vmovl_u16(v12);
-  v33 = vabsq_f32(vmulq_n_f32(vcvtq_f32_u32(vmovl_u16(*&v9[8 * a3])), v11));
+  v33 = vabsq_f32(vmulq_n_f32(vcvtq_f32_u32(vmovl_u16(*&v9[8 * size])), v11));
   v30 = log2f(*&v33.i32[1]);
   v13.f32[0] = log2f(*v33.i32);
   v13.f32[1] = v30;
@@ -299,40 +299,40 @@
   v17.i64[0] = 0x400000004;
   v17.i64[1] = 0x400000004;
   v34 = vminq_s32(vbslq_s8(vcgtq_s32(v28, v18), v18, vaddw_u16(v19, v29)), v17);
-  v20 = [(NUNIRenderer *)self textureSuffix];
+  textureSuffix = [(NUNIRenderer *)self textureSuffix];
   for (i = 0; i != 24; ++i)
   {
-    v22 = [(NUNICalliopeResourceManager *)self->_resourceManager patchTextureGroupForSpheroid:a3 index:i suffix:v20, *&v27, *&v28];
-    v23 = [v22->var0 atlas];
-    [v23 setMaxMipmapLevelsToDrop:v34.i32[0]];
+    v22 = [(NUNICalliopeResourceManager *)self->_resourceManager patchTextureGroupForSpheroid:size index:i suffix:textureSuffix, *&v27, *&v28];
+    atlas = [v22->var0 atlas];
+    [atlas setMaxMipmapLevelsToDrop:v34.i32[0]];
 
-    v24 = [v22->var1 atlas];
-    [v24 setMaxMipmapLevelsToDrop:v34.i32[1]];
+    atlas2 = [v22->var1 atlas];
+    [atlas2 setMaxMipmapLevelsToDrop:v34.i32[1]];
 
-    v25 = [v22->var2 atlas];
-    [v25 setMaxMipmapLevelsToDrop:v34.i32[2]];
+    atlas3 = [v22->var2 atlas];
+    [atlas3 setMaxMipmapLevelsToDrop:v34.i32[2]];
 
-    v26 = [v22->var3 atlas];
-    [v26 setMaxMipmapLevelsToDrop:v34.i32[3]];
+    atlas4 = [v22->var3 atlas];
+    [atlas4 setMaxMipmapLevelsToDrop:v34.i32[3]];
   }
 }
 
-- (void)_updateBaseUniformsForViewport:(NUNIViewport)a3
+- (void)_updateBaseUniformsForViewport:(NUNIViewport)viewport
 {
-  width = a3.width;
+  width = viewport.width;
   v43 = *MEMORY[0x277D85DE8];
-  height = a3.height;
+  height = viewport.height;
   v6 = 0x27FA49000uLL;
   if (__ROR8__(0xEEEEEEEEEEEEEEEFLL * self->_frame, 2) <= 0x444444444444444uLL)
   {
-    v7 = [(NUNIRendererOptions *)self->_rendererOptions changeSequence];
-    if (v7 != self->_rendererOptionsChangeSequence)
+    changeSequence = [(NUNIRendererOptions *)self->_rendererOptions changeSequence];
+    if (changeSequence != self->_rendererOptionsChangeSequence)
     {
       v38 = width;
       v39 = height;
       v8 = 0;
-      self->_rendererOptionsChangeSequence = v7;
-      v9 = self;
+      self->_rendererOptionsChangeSequence = changeSequence;
+      selfCopy = self;
       do
       {
         v10 = _updateBaseUniformsForViewport__optionKeys[v8];
@@ -344,7 +344,7 @@
           __asm { FCVT            H0, D0 }
 
           v18 = *(v6 + 2348);
-          if (*(&v9->super.super.isa + v18) != *&_D0)
+          if (*(&selfCopy->super.super.isa + v18) != *&_D0)
           {
             v19 = v6;
             v20 = NUNILoggingObjectForDomain(0);
@@ -360,12 +360,12 @@
             [v12 doubleValue];
             __asm { FCVT            H0, D0 }
 
-            *(&v9->super.super.isa + v18) = _D0;
+            *(&selfCopy->super.super.isa + v18) = _D0;
             v6 = v19;
           }
         }
 
-        v9 = (v9 + 2);
+        selfCopy = (selfCopy + 2);
         ++v8;
       }
 
@@ -439,9 +439,9 @@
   v37 = *MEMORY[0x277D85DE8];
 }
 
-- (id)getUniformsBufferForFrameBufferIndex:(unint64_t)a3 pContents:(NUNICalliopeRenderUniforms *)a4 pOffset:(unint64_t *)a5
+- (id)getUniformsBufferForFrameBufferIndex:(unint64_t)index pContents:(NUNICalliopeRenderUniforms *)contents pOffset:(unint64_t *)offset
 {
-  v9 = &self->_renderUniformsBuffersCounts[a3];
+  v9 = &self->_renderUniformsBuffersCounts[index];
   capacity = v9->capacity;
   current = v9->current;
   v9->current = current + 1;
@@ -455,19 +455,19 @@
     v13 = capacity + 2;
     v9->capacity = v13;
     v12 = [(MTLDevice *)self->_device newBufferWithLength:(v13 << 8) options:1];
-    objc_storeStrong(&self->_renderUniformsBuffers[a3], v12);
+    objc_storeStrong(&self->_renderUniformsBuffers[index], v12);
   }
 
   else
   {
-    v12 = self->_renderUniformsBuffers[a3];
+    v12 = self->_renderUniformsBuffers[index];
   }
 
-  v14 = [(MTLBuffer *)v12 contents];
-  if (v14)
+  contents = [(MTLBuffer *)v12 contents];
+  if (contents)
   {
-    *a4 = (v14 + (current << 8));
-    *a5 = current << 8;
+    *contents = (contents + (current << 8));
+    *offset = current << 8;
     v15 = v12;
   }
 
@@ -481,19 +481,19 @@
 
     v15 = 0;
     v9->capacity = 0;
-    *a4 = &self->_dummyUniforms;
-    *a5 = 0;
+    *contents = &self->_dummyUniforms;
+    *offset = 0;
   }
 
   return v15;
 }
 
-- (void)_renderOffscreenBackgroundWithRenderEncoder:(id)a3 frameBufferIndex:(unint64_t)a4
+- (void)_renderOffscreenBackgroundWithRenderEncoder:(id)encoder frameBufferIndex:(unint64_t)index
 {
   v32 = 0;
   v33 = 0;
-  v6 = a3;
-  v7 = [(NUNICalliopeRenderer *)self getUniformsBufferForFrameBufferIndex:a4 pContents:&v33 pOffset:&v32];
+  encoderCopy = encoder;
+  v7 = [(NUNICalliopeRenderer *)self getUniformsBufferForFrameBufferIndex:index pContents:&v33 pOffset:&v32];
   v8 = v33;
   *v33 = *&self->_baseUniforms.vsh.{?=;
   v9 = *&self->_anon_421[63];
@@ -528,65 +528,65 @@
   v8[7] = v24;
   v8[8] = v25;
   v8[9] = v26;
-  [v6 setVertexBuffer:v7 offset:v32 atIndex:1];
-  v27 = [(NUNICalliopeResourceManager *)self->_resourceManager renderOffscreenPipelineForStarfield];
-  [v6 setLabel:@"Καλλιόπη Starfield"];
-  [v6 setRenderPipelineState:v27];
-  v28 = [(NUNICalliopeResourceManager *)self->_resourceManager starfieldVerticesBuffer];
-  [v6 setVertexBuffer:v28 offset:0 atIndex:0];
+  [encoderCopy setVertexBuffer:v7 offset:v32 atIndex:1];
+  renderOffscreenPipelineForStarfield = [(NUNICalliopeResourceManager *)self->_resourceManager renderOffscreenPipelineForStarfield];
+  [encoderCopy setLabel:@"Καλλιόπη Starfield"];
+  [encoderCopy setRenderPipelineState:renderOffscreenPipelineForStarfield];
+  starfieldVerticesBuffer = [(NUNICalliopeResourceManager *)self->_resourceManager starfieldVerticesBuffer];
+  [encoderCopy setVertexBuffer:starfieldVerticesBuffer offset:0 atIndex:0];
 
-  v29 = [(NUNICalliopeResourceManager *)self->_resourceManager starfieldIndicesBuffer];
-  [v6 drawIndexedPrimitives:3 indexCount:384150 indexType:0 indexBuffer:v29 indexBufferOffset:0 instanceCount:1 baseVertex:0 baseInstance:0];
+  starfieldIndicesBuffer = [(NUNICalliopeResourceManager *)self->_resourceManager starfieldIndicesBuffer];
+  [encoderCopy drawIndexedPrimitives:3 indexCount:384150 indexType:0 indexBuffer:starfieldIndicesBuffer indexBufferOffset:0 instanceCount:1 baseVertex:0 baseInstance:0];
 
-  v30 = [(NUNICalliopeResourceManager *)self->_resourceManager renderOffscreenPipelineForStar];
-  [v6 setLabel:@"Καλλιόπη Star"];
-  [v6 setRenderPipelineState:v30];
-  v31 = [(NUNICalliopeResourceManager *)self->_resourceManager starVerticesBuffer];
-  [v6 setVertexBuffer:v31 offset:0 atIndex:0];
+  renderOffscreenPipelineForStar = [(NUNICalliopeResourceManager *)self->_resourceManager renderOffscreenPipelineForStar];
+  [encoderCopy setLabel:@"Καλλιόπη Star"];
+  [encoderCopy setRenderPipelineState:renderOffscreenPipelineForStar];
+  starVerticesBuffer = [(NUNICalliopeResourceManager *)self->_resourceManager starVerticesBuffer];
+  [encoderCopy setVertexBuffer:starVerticesBuffer offset:0 atIndex:0];
 
-  [v6 drawPrimitives:4 vertexStart:0 vertexCount:4 instanceCount:702 baseInstance:0];
+  [encoderCopy drawPrimitives:4 vertexStart:0 vertexCount:4 instanceCount:702 baseInstance:0];
 }
 
-- (void)_renderSaturnRings:(double)a3 frameBufferIndex:(__n128)a4 renderEncoder:(__n128)a5 forwardAngle:(__n128)a6 position:(__n128)a7 isRotated:(float)a8 rotationMatrix:(float)a9 scale:(uint64_t)a10 equatorRotation:(_OWORD *)a11
+- (void)_renderSaturnRings:(double)rings frameBufferIndex:(__n128)index renderEncoder:(__n128)encoder forwardAngle:(__n128)angle position:(__n128)position isRotated:(float)rotated rotationMatrix:(float)matrix scale:(uint64_t)self0 equatorRotation:(_OWORD *)self1
 {
-  *&v62[32] = a6;
-  *&v62[48] = a7;
-  *v62 = a4;
-  *&v62[16] = a5;
+  *&v62[32] = angle;
+  *&v62[48] = position;
+  *v62 = index;
+  *&v62[16] = encoder;
   v21 = a13;
   v71 = 0;
   v72 = 0;
-  v22 = [a1 getUniformsBufferForFrameBufferIndex:a12 pContents:&v72 pOffset:&v71];
+  v22 = [self getUniformsBufferForFrameBufferIndex:a12 pContents:&v72 pOffset:&v71];
   [v21 setVertexBuffer:v22 offset:v71 atIndex:1];
   [v21 setFragmentBuffer:v22 offset:v71 atIndex:0];
   v23 = v72;
-  *v72 = *a11;
-  v24 = a11[4];
-  v26 = a11[1];
-  v25 = a11[2];
-  v23[3] = a11[3];
+  *v72 = *rotation;
+  v24 = rotation[4];
+  v26 = rotation[1];
+  v25 = rotation[2];
+  v23[3] = rotation[3];
   v23[4] = v24;
   v23[1] = v26;
   v23[2] = v25;
-  v27 = a11[8];
-  v29 = a11[5];
-  v28 = a11[6];
-  v23[7] = a11[7];
+  v27 = rotation[8];
+  v29 = rotation[5];
+  v28 = rotation[6];
+  v23[7] = rotation[7];
   v23[8] = v27;
   v23[5] = v29;
   v23[6] = v28;
-  v30 = a11[12];
-  v32 = a11[9];
-  v31 = a11[10];
-  v23[11] = a11[11];
+  v30 = rotation[12];
+  v32 = rotation[9];
+  v31 = rotation[10];
+  v23[11] = rotation[11];
   v23[12] = v30;
   v23[9] = v32;
   v23[10] = v31;
-  v33 = [*(a1 + 48) renderOffscreenPipelineForSaturnRing];
-  if (v33)
+  renderOffscreenPipelineForSaturnRing = [*(self + 48) renderOffscreenPipelineForSaturnRing];
+  if (renderOffscreenPipelineForSaturnRing)
   {
-    [v21 setRenderPipelineState:v33];
-    UMFloat4x4MakeScale(a8 * 1.2275);
+    [v21 setRenderPipelineState:renderOffscreenPipelineForSaturnRing];
+    UMFloat4x4MakeScale(rotated * 1.2275);
     if (a14)
     {
       *v35.i64 = UMMul(v34, *v62);
@@ -594,7 +594,7 @@
       v69 = v35;
       v63 = v38;
       v65 = v37;
-      a2 = a2 - a9;
+      a2 = a2 - matrix;
     }
 
     else
@@ -630,7 +630,7 @@
     v77.columns[2] = v49;
     v77.columns[3] = v50;
     v51 = v72;
-    *&v52 = UMMul(*(a1 + 992), v77);
+    *&v52 = UMMul(*(self + 992), v77);
     v51[6] = v52;
     v51[7] = v53;
     v51[8] = v54;
@@ -638,30 +638,30 @@
     *v56.i64 = UMFloat4x4MakeRotateZ(a2);
     *(v72 + 32) = vzip1q_s64(v56, v57);
     [v21 setCullMode:0];
-    v58 = [*(a1 + 48) saturnRingVerticesBuffer];
-    [v21 setVertexBuffer:v58 offset:0 atIndex:0];
+    saturnRingVerticesBuffer = [*(self + 48) saturnRingVerticesBuffer];
+    [v21 setVertexBuffer:saturnRingVerticesBuffer offset:0 atIndex:0];
 
-    v59 = [*(a1 + 56) gradients];
-    v60 = [v59 objectAtIndexedSubscript:7];
+    gradients = [*(self + 56) gradients];
+    v60 = [gradients objectAtIndexedSubscript:7];
 
-    v61 = [v60 atlas];
-    [v61 bind:v21 slot:1];
+    atlas = [v60 atlas];
+    [atlas bind:v21 slot:1];
 
     [v21 drawPrimitives:4 vertexStart:0 vertexCount:26];
   }
 }
 
-- (void)_renderLocationDot:(const NUNISpheroidStructure *)a3 scene:(const NUNISceneStructure *)a4 uniPtr:(NUNICalliopeRenderUniforms *)a5 viewport:(NUNIViewport)a6 renderEncoder:(id)a7
+- (void)_renderLocationDot:(const NUNISpheroidStructure *)dot scene:(const NUNISceneStructure *)scene uniPtr:(NUNICalliopeRenderUniforms *)ptr viewport:(NUNIViewport)viewport renderEncoder:(id)encoder
 {
-  v153 = a7;
-  v12 = [(NUNICalliopeResourceManager *)self->_resourceManager renderOffscreenPipelineForLocationDot];
-  if (v12)
+  encoderCopy = encoder;
+  renderOffscreenPipelineForLocationDot = [(NUNICalliopeResourceManager *)self->_resourceManager renderOffscreenPipelineForLocationDot];
+  if (renderOffscreenPipelineForLocationDot)
   {
     p_state = &self->_state;
-    [v153 setLabel:@"Καλλιόπη LocationDot"];
-    [v153 setRenderPipelineState:v12];
-    v14 = [(NUNICalliopeResourceManager *)self->_resourceManager rectVerticesBuffer];
-    [v153 setVertexBuffer:v14 offset:0 atIndex:0];
+    [encoderCopy setLabel:@"Καλλιόπη LocationDot"];
+    [encoderCopy setRenderPipelineState:renderOffscreenPipelineForLocationDot];
+    rectVerticesBuffer = [(NUNICalliopeResourceManager *)self->_resourceManager rectVerticesBuffer];
+    [encoderCopy setVertexBuffer:rectVerticesBuffer offset:0 atIndex:0];
 
     UMFloat4x4MakeScale(0.11);
     v143 = v16;
@@ -682,8 +682,8 @@
     v149 = v19;
     v134 = v22;
     v139 = v21;
-    distance = a3[4].distance;
-    *v24.i64 = UMFloat4x4MakeRotateX(a3[4].distanceScale * -0.017453);
+    distance = dot[4].distance;
+    *v24.i64 = UMFloat4x4MakeRotateX(dot[4].distanceScale * -0.017453);
     v127 = v25;
     v128 = v24;
     v125 = v27;
@@ -715,8 +715,8 @@
     v150 = v36;
     v135 = v39;
     v140 = v38;
-    equatorRotation = a3->equatorRotation;
-    UMFloat4x4MakeScale(a3[2].equatorRotation * a3[2].opacity);
+    equatorRotation = dot->equatorRotation;
+    UMFloat4x4MakeScale(dot[2].equatorRotation * dot[2].opacity);
     v117 = v158.columns[1];
     v118 = v158.columns[0];
     v115 = v158.columns[3];
@@ -758,7 +758,7 @@
       v141 = v48;
     }
 
-    v54 = *&a3[3].type;
+    v54 = *&dot[3].type;
     *v160.columns[0].i64 = UMFloat4x4MakeTranslate();
     v113 = v160.columns[1];
     v114 = v160.columns[0];
@@ -783,8 +783,8 @@
     *v64.i64 = UMMul(v152, v147, v142, v137, xmmword_25B71A420);
     v123 = v64;
     *v65.i64 = UMMul(v152, v147, v142, v137, xmmword_25B719D40);
-    v66.f32[0] = a6.width;
-    v66.f32[1] = a6.height;
+    v66.f32[0] = viewport.width;
+    v66.f32[1] = viewport.height;
     v67 = vmul_f32(v66, 0x3F0000003F000000);
     v68 = vdiv_f32(vmul_f32(v67, *v123.i8), vdup_laneq_s32(v123, 3));
     *v65.i8 = vdiv_f32(vmul_f32(v67, *v65.i8), vdup_laneq_s32(v65, 3));
@@ -799,7 +799,7 @@
     }
 
     v72 = v71.f32[0] * 0.23077;
-    var1 = a4[1].var8.var0.var1;
+    var1 = scene[1].var8.var0.var1;
     if (v72 <= var1)
     {
       v104 = v147;
@@ -876,24 +876,24 @@
       *v103.i64 = UMMul(*&p_state[12].viewport.width, v178);
     }
 
-    *&a5[96].vsh.{?= = v103;
-    *&a5[112].vsh.{?= = v104;
-    *&a5[128].vsh.{?= = v105;
-    *&a5[144].vsh.{?= = v106;
-    [v153 setCullMode:{1, *&v107, *&v108, *&v109, *&v110}];
-    [v153 drawPrimitives:4 vertexStart:0 vertexCount:4];
-    [v153 setCullMode:0];
+    *&ptr[96].vsh.{?= = v103;
+    *&ptr[112].vsh.{?= = v104;
+    *&ptr[128].vsh.{?= = v105;
+    *&ptr[144].vsh.{?= = v106;
+    [encoderCopy setCullMode:{1, *&v107, *&v108, *&v109, *&v110}];
+    [encoderCopy drawPrimitives:4 vertexStart:0 vertexCount:4];
+    [encoderCopy setCullMode:0];
   }
 }
 
-- (void)_renderSpriteSpheroid:(const NUNISpheroidStructure *)a3 frameBufferIndex:(unint64_t)a4 renderEncoder:(id)a5
+- (void)_renderSpriteSpheroid:(const NUNISpheroidStructure *)spheroid frameBufferIndex:(unint64_t)index renderEncoder:(id)encoder
 {
-  v8 = a5;
+  encoderCopy = encoder;
   v59 = 0;
   v60 = 0;
-  v9 = [(NUNICalliopeRenderer *)self getUniformsBufferForFrameBufferIndex:a4 pContents:&v60 pOffset:&v59];
-  [v8 setVertexBuffer:v9 offset:v59 atIndex:1];
-  [v8 setFragmentBuffer:v9 offset:v59 atIndex:0];
+  v9 = [(NUNICalliopeRenderer *)self getUniformsBufferForFrameBufferIndex:index pContents:&v60 pOffset:&v59];
+  [encoderCopy setVertexBuffer:v9 offset:v59 atIndex:1];
+  [encoderCopy setFragmentBuffer:v9 offset:v59 atIndex:0];
   v10 = v60;
   *v60 = *&self->_baseUniforms.vsh.{?=;
   v11 = *&self->_anon_421[63];
@@ -917,19 +917,19 @@
   v10[12] = v17;
   v10[9] = v19;
   v10[10] = v18;
-  type = a3->type;
-  v21 = [(NUNICalliopeResourceManager *)self->_resourceManager renderOffscreenPipelineForSpheroid:a3->type layer:0 config:0];
+  type = spheroid->type;
+  v21 = [(NUNICalliopeResourceManager *)self->_resourceManager renderOffscreenPipelineForSpheroid:spheroid->type layer:0 config:0];
   if (v21)
   {
-    [v8 setLabel:@"Καλλιόπη SpriteSpheroid"];
-    [v8 setRenderPipelineState:v21];
-    v23 = [(NUNICalliopeResourceManager *)self->_resourceManager discVerticesBuffer];
-    [v8 setVertexBuffer:v23 offset:0 atIndex:0];
+    [encoderCopy setLabel:@"Καλλιόπη SpriteSpheroid"];
+    [encoderCopy setRenderPipelineState:v21];
+    discVerticesBuffer = [(NUNICalliopeResourceManager *)self->_resourceManager discVerticesBuffer];
+    [encoderCopy setVertexBuffer:discVerticesBuffer offset:0 atIndex:0];
 
     v24 = v60;
-    *v60 = s_sprites[a3[4].type];
-    *(v24 + 40) = LODWORD(a3[1].angle);
-    v25 = *&a3[3].type;
+    *v60 = s_sprites[spheroid[4].type];
+    *(v24 + 40) = LODWORD(spheroid[1].angle);
+    v25 = *&spheroid[3].type;
     if (type == 10)
     {
       v58 = xmmword_25B719C90;
@@ -961,7 +961,7 @@
 
     v25.i32[3] = 1.0;
     v55 = v25;
-    v38 = a3[2].equatorRotation * a3[2].opacity;
+    v38 = spheroid[2].equatorRotation * spheroid[2].opacity;
     if (type == 14)
     {
       v38 = v38 + v38;
@@ -987,49 +987,49 @@
     v48[7] = v49;
     v48[8] = v50;
     v48[9] = v51;
-    v52 = [(NUNICalliopeTextureGroup *)self->_textureGroup gradients];
-    v53 = [v52 objectAtIndexedSubscript:type];
+    gradients = [(NUNICalliopeTextureGroup *)self->_textureGroup gradients];
+    v53 = [gradients objectAtIndexedSubscript:type];
 
-    v54 = [v53 atlas];
-    [v54 bind:v8 slot:5];
+    atlas = [v53 atlas];
+    [atlas bind:encoderCopy slot:5];
 
-    [v8 drawPrimitives:4 vertexStart:0 vertexCount:16];
+    [encoderCopy drawPrimitives:4 vertexStart:0 vertexCount:16];
   }
 }
 
-- (void)_renderOffscreenSceneWithScene:(const NUNISceneStructure *)a3 spheroids:(id)a4 viewport:(NUNIViewport)a5 commandBuffer:(id)a6 frameBufferIndex:(unint64_t)a7 drawableTexture:(id)a8
+- (void)_renderOffscreenSceneWithScene:(const NUNISceneStructure *)scene spheroids:(id)spheroids viewport:(NUNIViewport)viewport commandBuffer:(id)buffer frameBufferIndex:(unint64_t)index drawableTexture:(id)texture
 {
   v118[4] = *MEMORY[0x277D85DE8];
-  height = a5.height;
-  v12 = a4;
-  v13 = a6;
-  v81 = a8;
-  [v13 setLabel:@"Καλλιόπη Render"];
+  height = viewport.height;
+  spheroidsCopy = spheroids;
+  bufferCopy = buffer;
+  textureCopy = texture;
+  [bufferCopy setLabel:@"Καλλιόπη Render"];
   if (__PAIR64__(self->_bloomEnabled, self->_bloomDownsampleUsingTileShaders) == 0x100000001)
   {
-    v14 = [(NUNICalliopeRenderer *)self _getOrCreateOffscreenBloomWithViewport:a5];
-    v15 = [v14 renderPassDescriptor];
-    v16 = [v13 renderCommandEncoderWithDescriptor:v15];
+    v14 = [(NUNICalliopeRenderer *)self _getOrCreateOffscreenBloomWithViewport:viewport];
+    renderPassDescriptor = [v14 renderPassDescriptor];
+    v16 = [bufferCopy renderCommandEncoderWithDescriptor:renderPassDescriptor];
 
     [v16 setLabel:@"Clear Bloom Texture"];
     [v16 endEncoding];
   }
 
-  v17 = self->_offscreenScenes[a7];
+  v17 = self->_offscreenScenes[index];
   v18 = v17;
   v79 = height;
-  v80 = v13;
-  if (!v17 || [(NUNCalliopeOffscreen *)v17 width]!= a5.width || [(NUNCalliopeOffscreen *)v18 height]!= height)
+  v80 = bufferCopy;
+  if (!v17 || [(NUNCalliopeOffscreen *)v17 width]!= viewport.width || [(NUNCalliopeOffscreen *)v18 height]!= height)
   {
-    v76 = [MEMORY[0x277CFA798] sharedNilTexture2D];
+    mEMORY[0x277CFA798] = [MEMORY[0x277CFA798] sharedNilTexture2D];
     v19 = objc_opt_new();
     [v19 setTextureType:2];
-    [v19 setWidth:a5.width];
-    [v19 setHeight:*&a5 >> 32];
+    [v19 setWidth:viewport.width];
+    [v19 setHeight:*&viewport >> 32];
     [v19 setDepth:1];
     [v19 setPixelFormat:10];
     v117[0] = *MEMORY[0x277CD2928];
-    v20 = [MEMORY[0x277CCABB0] numberWithInt:a5];
+    v20 = [MEMORY[0x277CCABB0] numberWithInt:viewport];
     v118[0] = v20;
     v117[1] = *MEMORY[0x277CD28D0];
     v21 = [MEMORY[0x277CCABB0] numberWithInt:height];
@@ -1060,39 +1060,39 @@
       v27 = [(MTLDevice *)self->_device newTextureWithDescriptor:v19 iosurface:v28 plane:0];
     }
 
-    v29 = self->_contentMaskSurfaces[a7];
-    self->_contentMaskSurfaces[a7] = v28;
+    v29 = self->_contentMaskSurfaces[index];
+    self->_contentMaskSurfaces[index] = v28;
     v30 = v28;
 
-    v31 = self->_contentMaskTextures[a7];
-    self->_contentMaskTextures[a7] = v27;
+    v31 = self->_contentMaskTextures[index];
+    self->_contentMaskTextures[index] = v27;
     v32 = v27;
 
-    v18 = [[NUNCalliopeOffscreen alloc] initWithDevice:self->_device width:a5 height:v79 texture0:v76 texture1:v32 loadAction:2 clearColor0:0.0 clearColor1:0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0];
-    objc_storeStrong(&self->_offscreenScenes[a7], v18);
+    v18 = [[NUNCalliopeOffscreen alloc] initWithDevice:self->_device width:viewport height:v79 texture0:mEMORY[0x277CFA798] texture1:v32 loadAction:2 clearColor0:0.0 clearColor1:0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0];
+    objc_storeStrong(&self->_offscreenScenes[index], v18);
 
-    v13 = v80;
+    bufferCopy = v80;
   }
 
-  [(NUNCalliopeOffscreen *)v18 setTexture0:v81];
-  v77 = [v81 width];
-  v75 = [v81 height];
-  v33 = [(NUNCalliopeOffscreen *)v18 renderPassDescriptor];
-  [v33 setTileWidth:32];
+  [(NUNCalliopeOffscreen *)v18 setTexture0:textureCopy];
+  width = [textureCopy width];
+  height = [textureCopy height];
+  renderPassDescriptor2 = [(NUNCalliopeOffscreen *)v18 renderPassDescriptor];
+  [renderPassDescriptor2 setTileWidth:32];
 
-  v34 = [(NUNCalliopeOffscreen *)v18 renderPassDescriptor];
-  [v34 setTileHeight:32];
+  renderPassDescriptor3 = [(NUNCalliopeOffscreen *)v18 renderPassDescriptor];
+  [renderPassDescriptor3 setTileHeight:32];
 
   location = &v18->super.isa;
-  v35 = [(NUNCalliopeOffscreen *)v18 renderPassDescriptor];
-  v36 = [v13 renderCommandEncoderWithDescriptor:v35];
+  renderPassDescriptor4 = [(NUNCalliopeOffscreen *)v18 renderPassDescriptor];
+  v36 = [bufferCopy renderCommandEncoderWithDescriptor:renderPassDescriptor4];
 
   memset(v116, 0, sizeof(v116));
   v109 = 0u;
   v110 = 0u;
   v111 = 0u;
   v112 = 0u;
-  v37 = v12;
+  v37 = spheroidsCopy;
   v38 = [v37 countByEnumeratingWithState:&v109 objects:v113 count:16];
   if (v38)
   {
@@ -1108,12 +1108,12 @@
           objc_enumerationMutation(v37);
         }
 
-        v43 = [*(*(&v109 + 1) + 8 * i) structure];
-        if (v43[5].f32[2] > 0.00001 && v43[3].f32[0] > 0.00001 && v43[9].i8[8] == 1)
+        structure = [*(*(&v109 + 1) + 8 * i) structure];
+        if (structure[5].f32[2] > 0.00001 && structure[3].f32[0] > 0.00001 && structure[9].i8[8] == 1)
         {
-          v44 = v43->i32[0];
+          v44 = structure->i32[0];
           _S0 = 0;
-          if ((v43->i32[0] - 10) >= 2)
+          if ((structure->i32[0] - 10) >= 2)
           {
             if (v44 == 13)
             {
@@ -1133,7 +1133,7 @@
                 _S0 = 1258291198;
                 if (v44 != 12)
                 {
-                  _S2 = vsubq_f32(self[784], v43[96]).i32[2];
+                  _S2 = vsubq_f32(self[784], structure[96]).i32[2];
                   __asm { FMLA            S0, S2, V1.S[2] }
                 }
               }
@@ -1143,7 +1143,7 @@
           v51 = &__base[8 * v40];
           *v51 = _S0;
           v51[1] = v40;
-          *(v116 + v40++) = v43;
+          *(v116 + v40++) = structure;
         }
       }
 
@@ -1161,13 +1161,13 @@
   qsort(__base, v40, 8uLL, _NUNICalliopeRenderCompareObject);
   [v36 setLabel:@"Καλλιόπη Offscreen Scene"];
   v88 = 0uLL;
-  *&v89 = a5.width;
+  *&v89 = viewport.width;
   *(&v89 + 1) = v79;
   v90 = xmmword_25B71A440;
   [v36 setViewport:&v88];
   [v36 setCullMode:0];
   [v36 setFrontFacingWinding:0];
-  [(NUNICalliopeRenderer *)self _renderOffscreenBackgroundWithRenderEncoder:v36 frameBufferIndex:a7];
+  [(NUNICalliopeRenderer *)self _renderOffscreenBackgroundWithRenderEncoder:v36 frameBufferIndex:index];
   v107 = 0u;
   v108 = 0u;
   v105 = 0u;
@@ -1192,8 +1192,8 @@
   [(NUNICalliopeRenderer *)self prepareWorldSpaceFrustumWithTransform:&self->_anon_304[220] withState:&v88];
   if (v40 >= 1)
   {
-    *&v52 = v77;
-    *(&v52 + 1) = v75;
+    *&v52 = width;
+    *(&v52 + 1) = height;
     v82 = v52;
     v53 = v40;
     v54 = &v115;
@@ -1205,23 +1205,23 @@
       v57 = 1 << *v56;
       if ((v57 & 0xFBFC00) != 0)
       {
-        [(NUNICalliopeRenderer *)self _renderSpriteSpheroid:v56 frameBufferIndex:a7 renderEncoder:v36];
+        [(NUNICalliopeRenderer *)self _renderSpriteSpheroid:v56 frameBufferIndex:index renderEncoder:v36];
       }
 
       else if ((v57 & 0x3FE) != 0)
       {
-        [(NUNICalliopeRenderer *)self _renderPatchSpheroid:v56 frustumCullingState:&v88 drawableSize:a7 frameBufferIndex:v36 renderEncoder:v82];
+        [(NUNICalliopeRenderer *)self _renderPatchSpheroid:v56 frustumCullingState:&v88 drawableSize:index frameBufferIndex:v36 renderEncoder:v82];
       }
 
       if ((v57 & 8) != 0)
       {
-        v58 = *&a3[1].var6;
+        v58 = *&scene[1].var6;
         if (v58 > 0.00001)
         {
-          var7 = a3[1].var7;
+          var7 = scene[1].var7;
           v86 = 0;
           v87 = 0;
-          v60 = [(NUNICalliopeRenderer *)self getUniformsBufferForFrameBufferIndex:a7 pContents:&v87 pOffset:&v86];
+          v60 = [(NUNICalliopeRenderer *)self getUniformsBufferForFrameBufferIndex:index pContents:&v87 pOffset:&v86];
           [v36 setVertexBuffer:v60 offset:v86 atIndex:1];
           [v36 setFragmentBuffer:v60 offset:v86 atIndex:0];
           v61 = v87;
@@ -1249,8 +1249,8 @@
           *(v61 + 10) = v68;
           v61[40] = v58 * *(v56 + 48);
           v61[41] = var7 - floorf(var7);
-          v61[43] = a3[1].var8.var0.var0;
-          [NUNICalliopeRenderer _renderLocationDot:"_renderLocationDot:scene:uniPtr:viewport:renderEncoder:" scene:v56 uniPtr:a3 viewport:? renderEncoder:?];
+          v61[43] = scene[1].var8.var0.var0;
+          [NUNICalliopeRenderer _renderLocationDot:"_renderLocationDot:scene:uniPtr:viewport:renderEncoder:" scene:v56 uniPtr:scene viewport:? renderEncoder:?];
         }
       }
 
@@ -1265,20 +1265,20 @@
     v71 = v80;
     if (self->_bloomDownsampleUsingTileShaders)
     {
-      [(NUNICalliopeRenderer *)self _renderOffscreenBloomTextureUsingTileShaderWithViewport:a5 renderEncoder:v36];
+      [(NUNICalliopeRenderer *)self _renderOffscreenBloomTextureUsingTileShaderWithViewport:viewport renderEncoder:v36];
       [v36 endEncoding];
     }
 
     else
     {
       [v36 endEncoding];
-      v72 = [location texture0];
-      [(NUNICalliopeRenderer *)self _renderOffscreenBloomTextureWithViewport:a5 sceneTexture:v72 commandBuffer:v80];
+      texture0 = [location texture0];
+      [(NUNICalliopeRenderer *)self _renderOffscreenBloomTextureWithViewport:viewport sceneTexture:texture0 commandBuffer:v80];
     }
 
-    v73 = [v80 computeCommandEncoder];
-    [(NUNICalliopeRenderer *)self _computeBloomChainTextures:v73];
-    [v73 endEncoding];
+    computeCommandEncoder = [v80 computeCommandEncoder];
+    [(NUNICalliopeRenderer *)self _computeBloomChainTextures:computeCommandEncoder];
+    [computeCommandEncoder endEncoding];
   }
 
   else
@@ -1290,15 +1290,15 @@
   v74 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_getOrCreateOffscreenBloomWithViewport:(NUNIViewport)a3
+- (id)_getOrCreateOffscreenBloomWithViewport:(NUNIViewport)viewport
 {
-  v5 = (a3.width >> 2);
-  v6 = *&a3 >> 34;
+  v5 = (viewport.width >> 2);
+  v6 = *&viewport >> 34;
   offscreenBloom = self->_offscreenBloom;
   if (!offscreenBloom || [(NUNCalliopeOffscreen *)offscreenBloom width]!= v5 || [(NUNCalliopeOffscreen *)self->_offscreenBloom height]!= v6)
   {
     v8 = _NUNCalliopeCreateTexture(self->_device, v5, v6, 1, 10, 1);
-    [(NUNICalliopeRenderer *)self _setupBloomChainWithViewport:a3 bloomTexture:v8];
+    [(NUNICalliopeRenderer *)self _setupBloomChainWithViewport:viewport bloomTexture:v8];
     v9 = [NUNCalliopeOffscreen alloc];
     if (self->_bloomDownsampleUsingTileShaders)
     {
@@ -1320,36 +1320,36 @@
   return v13;
 }
 
-- (void)_renderOffscreenBloomTextureUsingTileShaderWithViewport:(NUNIViewport)a3 renderEncoder:(id)a4
+- (void)_renderOffscreenBloomTextureUsingTileShaderWithViewport:(NUNIViewport)viewport renderEncoder:(id)encoder
 {
-  v6 = a4;
-  v7 = [(NUNICalliopeRenderer *)self _getOrCreateOffscreenBloomWithViewport:a3];
-  [v6 pushDebugGroup:@"Καλλιόπη Bloom Downsample"];
-  v8 = [(NUNICalliopeResourceManager *)self->_resourceManager renderOffscreenPipelineForBloomDownsampleUsingTileShader];
-  [v6 setRenderPipelineState:v8];
+  encoderCopy = encoder;
+  v7 = [(NUNICalliopeRenderer *)self _getOrCreateOffscreenBloomWithViewport:viewport];
+  [encoderCopy pushDebugGroup:@"Καλλιόπη Bloom Downsample"];
+  renderOffscreenPipelineForBloomDownsampleUsingTileShader = [(NUNICalliopeResourceManager *)self->_resourceManager renderOffscreenPipelineForBloomDownsampleUsingTileShader];
+  [encoderCopy setRenderPipelineState:renderOffscreenPipelineForBloomDownsampleUsingTileShader];
 
-  v9 = [v7 texture0];
-  [v6 setTileTexture:v9 atIndex:0];
+  texture0 = [v7 texture0];
+  [encoderCopy setTileTexture:texture0 atIndex:0];
 
-  v10[0] = [v6 tileWidth] >> 1;
-  v10[1] = [v6 tileHeight] >> 1;
+  v10[0] = [encoderCopy tileWidth] >> 1;
+  v10[1] = [encoderCopy tileHeight] >> 1;
   v10[2] = 1;
-  [v6 dispatchThreadsPerTile:v10];
-  [v6 setTileTexture:0 atIndex:0];
-  [v6 popDebugGroup];
+  [encoderCopy dispatchThreadsPerTile:v10];
+  [encoderCopy setTileTexture:0 atIndex:0];
+  [encoderCopy popDebugGroup];
 }
 
-- (void)_renderOffscreenBloomTextureWithViewport:(NUNIViewport)a3 sceneTexture:(id)a4 commandBuffer:(id)a5
+- (void)_renderOffscreenBloomTextureWithViewport:(NUNIViewport)viewport sceneTexture:(id)texture commandBuffer:(id)buffer
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [(NUNICalliopeRenderer *)self _getOrCreateOffscreenBloomWithViewport:a3];
-  v11 = [v10 renderPassDescriptor];
-  v12 = [v8 renderCommandEncoderWithDescriptor:v11];
+  bufferCopy = buffer;
+  textureCopy = texture;
+  v10 = [(NUNICalliopeRenderer *)self _getOrCreateOffscreenBloomWithViewport:viewport];
+  renderPassDescriptor = [v10 renderPassDescriptor];
+  v12 = [bufferCopy renderCommandEncoderWithDescriptor:renderPassDescriptor];
 
-  v13 = [(NUNICalliopeResourceManager *)self->_resourceManager renderOffscreenPipelineForBloomDownsample];
+  renderOffscreenPipelineForBloomDownsample = [(NUNICalliopeResourceManager *)self->_resourceManager renderOffscreenPipelineForBloomDownsample];
   [v12 setLabel:@"Καλλιόπη Bloom Downsample"];
-  [v12 setRenderPipelineState:v13];
+  [v12 setRenderPipelineState:renderOffscreenPipelineForBloomDownsample];
   v14[0] = 0;
   v14[1] = 0;
   *&v14[2] = [v10 width];
@@ -1357,22 +1357,22 @@
   v15 = xmmword_25B71A440;
   [v12 setViewport:v14];
   [v12 setCullMode:0];
-  [v12 setFragmentTexture:v9 atIndex:0];
+  [v12 setFragmentTexture:textureCopy atIndex:0];
 
   [v12 drawPrimitives:3 vertexStart:0 vertexCount:3];
   [v12 endEncoding];
 }
 
-- (void)_setupBloomChainWithViewport:(NUNIViewport)a3 bloomTexture:(id)a4
+- (void)_setupBloomChainWithViewport:(NUNIViewport)viewport bloomTexture:(id)texture
 {
-  v30 = a4;
-  if (!v30)
+  textureCopy = texture;
+  if (!textureCopy)
   {
     [NUNICalliopeRenderer _setupBloomChainWithViewport:bloomTexture:];
   }
 
   v6 = 0;
-  v7 = fmaxf(a3.width, a3.height) * 0.025;
+  v7 = fmaxf(viewport.width, viewport.height) * 0.025;
   do
   {
     ++v6;
@@ -1398,8 +1398,8 @@
   p_bloomChain = &self->_bloomChain;
   self->_bloomChain.numLevels = v9;
   v11 = objc_opt_new();
-  [v11 setWidth:{objc_msgSend(v30, "width") >> 1}];
-  [v11 setHeight:{objc_msgSend(v30, "height") >> 1}];
+  [v11 setWidth:{objc_msgSend(textureCopy, "width") >> 1}];
+  [v11 setHeight:{objc_msgSend(textureCopy, "height") >> 1}];
   [v11 setMipmapLevelCount:v9 - 1];
   [v11 setPixelFormat:25];
   [v11 setUsage:3];
@@ -1407,21 +1407,21 @@
   texture = self->_bloomChain.texture;
   self->_bloomChain.texture = v12;
 
-  v14 = [v30 width];
-  v15 = [v30 height];
-  if (!v14)
+  width = [textureCopy width];
+  height = [textureCopy height];
+  if (!width)
   {
     [NUNICalliopeRenderer _setupBloomChainWithViewport:bloomTexture:];
   }
 
-  if (!v15)
+  if (!height)
   {
     [NUNICalliopeRenderer _setupBloomChainWithViewport:bloomTexture:];
   }
 
   v16 = 0;
-  v17.i64[0] = v14;
-  v17.i64[1] = v15;
+  v17.i64[0] = width;
+  v17.i64[1] = height;
   v18 = 16;
   if (v6 < 0x10)
   {
@@ -1449,7 +1449,7 @@
 
     else
     {
-      v23 = v30;
+      v23 = textureCopy;
       v22 = self->_bloomChain.levels[0].texture;
       self->_bloomChain.levels[0].texture = v23;
     }
@@ -1490,24 +1490,24 @@
   }
 }
 
-- (void)_computeBloomChainTextures:(id)a3
+- (void)_computeBloomChainTextures:(id)textures
 {
-  v4 = a3;
-  v5 = [(NUNICalliopeResourceManager *)self->_resourceManager computePipelineForBloomChainDownsample];
-  v6 = [(NUNICalliopeResourceManager *)self->_resourceManager computePipelineForBloomChainUpsample];
-  if (!v5)
+  texturesCopy = textures;
+  computePipelineForBloomChainDownsample = [(NUNICalliopeResourceManager *)self->_resourceManager computePipelineForBloomChainDownsample];
+  computePipelineForBloomChainUpsample = [(NUNICalliopeResourceManager *)self->_resourceManager computePipelineForBloomChainUpsample];
+  if (!computePipelineForBloomChainDownsample)
   {
     [NUNICalliopeRenderer _computeBloomChainTextures:];
   }
 
-  v7 = v6;
-  if (!v6)
+  v7 = computePipelineForBloomChainUpsample;
+  if (!computePipelineForBloomChainUpsample)
   {
     [NUNICalliopeRenderer _computeBloomChainTextures:];
   }
 
-  [v4 pushDebugGroup:@"Καλλιόπη Bloom Chain Downsample"];
-  [v4 setComputePipelineState:v5];
+  [texturesCopy pushDebugGroup:@"Καλλιόπη Bloom Chain Downsample"];
+  [texturesCopy setComputePipelineState:computePipelineForBloomChainDownsample];
   if (self->_bloomChain.numLevels != 1)
   {
     v8 = 0;
@@ -1526,22 +1526,22 @@
       }
 
       ++v8;
-      [v4 setTexture:? atIndex:?];
-      [v4 setTexture:v9->texture atIndex:1];
+      [texturesCopy setTexture:? atIndex:?];
+      [texturesCopy setTexture:v9->texture atIndex:1];
       v17 = *&v9->numThreadgroups.width;
       depth = v9->numThreadgroups.depth;
       v15 = v13;
       v16 = 1;
-      [v4 dispatchThreadgroups:&v17 threadsPerThreadgroup:&v15];
+      [texturesCopy dispatchThreadgroups:&v17 threadsPerThreadgroup:&v15];
       ++v9;
     }
 
     while (v8 < self->_bloomChain.numLevels - 1);
   }
 
-  [v4 popDebugGroup];
-  [v4 pushDebugGroup:@"Καλλιόπη Bloom Chain Upsample"];
-  [v4 setComputePipelineState:v7];
+  [texturesCopy popDebugGroup];
+  [texturesCopy pushDebugGroup:@"Καλλιόπη Bloom Chain Upsample"];
+  [texturesCopy setComputePipelineState:v7];
   numLevels = self->_bloomChain.numLevels;
   v11 = numLevels - 1;
   if (numLevels - 1 >= 2)
@@ -1560,13 +1560,13 @@
         [NUNICalliopeRenderer _computeBloomChainTextures:];
       }
 
-      [v4 setTexture:? atIndex:?];
-      [v4 setTexture:*v12 atIndex:1];
+      [texturesCopy setTexture:? atIndex:?];
+      [texturesCopy setTexture:*v12 atIndex:1];
       v17 = *(v12 + 1);
       depth = v12[3];
       v15 = v14;
       v16 = 1;
-      [v4 dispatchThreadgroups:&v17 threadsPerThreadgroup:&v15];
+      [texturesCopy dispatchThreadgroups:&v17 threadsPerThreadgroup:&v15];
       --v11;
       v12 -= 4;
     }
@@ -1574,20 +1574,20 @@
     while (v11 > 1);
   }
 
-  [v4 popDebugGroup];
+  [texturesCopy popDebugGroup];
 }
 
-- (void)_renderOffscreenPostWithScene:(const NUNISceneStructure *)a3 viewport:(NUNIViewport)a4 commandBuffer:(id)a5 frameBufferIndex:(unint64_t)a6
+- (void)_renderOffscreenPostWithScene:(const NUNISceneStructure *)scene viewport:(NUNIViewport)viewport commandBuffer:(id)buffer frameBufferIndex:(unint64_t)index
 {
-  height = a4.height;
-  v11 = self->_offscreenScenes[a6];
+  height = viewport.height;
+  v11 = self->_offscreenScenes[index];
   v12 = self->_offscreenPosts;
   p_bloomChain = &self->_bloomChain;
   *&self->_anon_421[191] = 1.0 / (self->_bloomChain.numLevels - 1);
   v40 = 0;
   v41 = 0;
-  v14 = a5;
-  v15 = [(NUNICalliopeRenderer *)self getUniformsBufferForFrameBufferIndex:a6 pContents:&v41 pOffset:&v40];
+  bufferCopy = buffer;
+  v15 = [(NUNICalliopeRenderer *)self getUniformsBufferForFrameBufferIndex:index pContents:&v41 pOffset:&v40];
   v16 = v41;
   *v41 = *&self->_baseUniforms.vsh.{?=;
   v17 = *&self->_anon_421[63];
@@ -1611,36 +1611,36 @@
   v16[12] = v23;
   v16[9] = v25;
   v16[10] = v24;
-  if (!v12 || [(NUNCalliopeOffscreen *)v12 width]!= a4.width || [(NUNCalliopeOffscreen *)v12 height]!= height)
+  if (!v12 || [(NUNCalliopeOffscreen *)v12 width]!= viewport.width || [(NUNCalliopeOffscreen *)v12 height]!= height)
   {
-    v26 = [MEMORY[0x277CFA798] sharedNilTexture2D];
+    mEMORY[0x277CFA798] = [MEMORY[0x277CFA798] sharedNilTexture2D];
     v36 = v12;
     v37 = v15;
     v27 = v11;
     v28 = [NUNCalliopeOffscreen alloc];
     device = self->_device;
-    v30 = [(NUNCalliopeOffscreen *)v27 texture1];
+    texture1 = [(NUNCalliopeOffscreen *)v27 texture1];
     v31 = device;
     p_bloomChain = &self->_bloomChain;
-    v12 = [(NUNCalliopeOffscreen *)v28 initWithDevice:v31 width:a4 height:height texture0:v26 texture1:v30 loadAction:1 clearColor0:0.0 clearColor1:0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0];
+    v12 = [(NUNCalliopeOffscreen *)v28 initWithDevice:v31 width:viewport height:height texture0:mEMORY[0x277CFA798] texture1:texture1 loadAction:1 clearColor0:0.0 clearColor1:0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0];
 
     objc_storeStrong(&self->_offscreenPosts, v12);
     v11 = v27;
     v15 = v37;
   }
 
-  v32 = [(NUNCalliopeOffscreen *)v11 texture0];
-  [(NUNCalliopeOffscreen *)v12 setTexture0:v32];
+  texture0 = [(NUNCalliopeOffscreen *)v11 texture0];
+  [(NUNCalliopeOffscreen *)v12 setTexture0:texture0];
 
-  v33 = [(NUNCalliopeOffscreen *)v12 renderPassDescriptor];
-  v34 = [v14 renderCommandEncoderWithDescriptor:v33];
+  renderPassDescriptor = [(NUNCalliopeOffscreen *)v12 renderPassDescriptor];
+  v34 = [bufferCopy renderCommandEncoderWithDescriptor:renderPassDescriptor];
 
-  v35 = [(NUNICalliopeResourceManager *)self->_resourceManager renderOffscreenPipelineForPost];
+  renderOffscreenPipelineForPost = [(NUNICalliopeResourceManager *)self->_resourceManager renderOffscreenPipelineForPost];
   [v34 setLabel:@"Καλλιόπη Post"];
-  [v34 setRenderPipelineState:v35];
+  [v34 setRenderPipelineState:renderOffscreenPipelineForPost];
   v38[0] = 0;
   v38[1] = 0;
-  *&v38[2] = a4.width;
+  *&v38[2] = viewport.width;
   *&v38[3] = height;
   v39 = xmmword_25B71A440;
   [v34 setViewport:v38];
@@ -1651,32 +1651,32 @@
   [v34 endEncoding];
 }
 
-- (void)renderOffscreenWithScene:(id)a3 viewport:(NUNIViewport)a4 commandBuffer:(id)a5
+- (void)renderOffscreenWithScene:(id)scene viewport:(NUNIViewport)viewport commandBuffer:(id)buffer
 {
-  -[NUNICalliopeRenderer _updateStateWithScene:viewport:](self, "_updateStateWithScene:viewport:", [a3 structure], a4);
+  -[NUNICalliopeRenderer _updateStateWithScene:viewport:](self, "_updateStateWithScene:viewport:", [scene structure], viewport);
 
-  [(NUNICalliopeRenderer *)self _updateBaseUniformsForViewport:a4];
+  [(NUNICalliopeRenderer *)self _updateBaseUniformsForViewport:viewport];
 }
 
-- (void)renderWithScene:(id)a3 viewport:(NUNIViewport)a4 commandBuffer:(id)a5 passDescriptor:(id)a6
+- (void)renderWithScene:(id)scene viewport:(NUNIViewport)viewport commandBuffer:(id)buffer passDescriptor:(id)descriptor
 {
-  v18 = a5;
+  bufferCopy = buffer;
   v10 = self->_frame % 3;
-  v11 = a6;
-  v12 = a3;
-  v13 = [v12 structure];
-  v14 = [v11 colorAttachments];
+  descriptorCopy = descriptor;
+  sceneCopy = scene;
+  structure = [sceneCopy structure];
+  colorAttachments = [descriptorCopy colorAttachments];
 
-  v15 = [v14 objectAtIndexedSubscript:0];
+  v15 = [colorAttachments objectAtIndexedSubscript:0];
 
-  v16 = [v15 texture];
+  texture = [v15 texture];
   self->_renderUniformsBuffersCounts[v10].current = 0;
-  v17 = [v12 spheroids];
+  spheroids = [sceneCopy spheroids];
 
-  [(NUNICalliopeRenderer *)self _renderOffscreenSceneWithScene:v13 spheroids:v17 viewport:a4 commandBuffer:v18 frameBufferIndex:v10 drawableTexture:v16];
+  [(NUNICalliopeRenderer *)self _renderOffscreenSceneWithScene:structure spheroids:spheroids viewport:viewport commandBuffer:bufferCopy frameBufferIndex:v10 drawableTexture:texture];
   if (self->_bloomEnabled)
   {
-    [(NUNICalliopeRenderer *)self _renderOffscreenPostWithScene:v13 viewport:a4 commandBuffer:v18 frameBufferIndex:v10];
+    [(NUNICalliopeRenderer *)self _renderOffscreenPostWithScene:structure viewport:viewport commandBuffer:bufferCopy frameBufferIndex:v10];
   }
 
   [(NUNCalliopeOffscreen *)self->_offscreenScenes[v10] setTexture0:0];
@@ -1685,12 +1685,12 @@
   ++self->_frame;
 }
 
-- (void)prepareWorldSpaceFrustumWithTransform:(id *)a3 withState:(id *)a4
+- (void)prepareWorldSpaceFrustumWithTransform:(id *)transform withState:(id *)state
 {
-  v12.columns[2] = *(a3 + 2);
-  v12.columns[3] = *(a3 + 3);
-  v12.columns[0] = *a3;
-  v12.columns[1] = *(a3 + 1);
+  v12.columns[2] = *(transform + 2);
+  v12.columns[3] = *(transform + 3);
+  v12.columns[0] = *transform;
+  v12.columns[1] = *(transform + 1);
   v13 = __invert_f4(v12);
   v5 = 0;
   v6 = 1;
@@ -1699,7 +1699,7 @@
     v7 = 0;
     v8 = v6;
     v9 = &prepareWorldSpaceFrustumWithTransform_withState__projectedPositions + 64 * v5;
-    v10 = a4 + 64 * v5;
+    v10 = state + 64 * v5;
     do
     {
       v11 = vmlaq_laneq_f32(vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(v13.columns[0], COERCE_FLOAT(*&v9[v7])), v13.columns[1], *&v9[v7], 1), v13.columns[2], *&v9[v7], 2), v13.columns[3], *&v9[v7], 3);
@@ -1715,19 +1715,19 @@
   while ((v8 & 1) != 0);
 }
 
-- (void)prepareObjectSpaceFrustumWithTransform:(id *)a3 withState:(id *)a4
+- (void)prepareObjectSpaceFrustumWithTransform:(id *)transform withState:(id *)state
 {
-  v17.columns[2] = *(a3 + 2);
-  v17.columns[3] = *(a3 + 3);
-  v17.columns[0] = *a3;
-  v17.columns[1] = *(a3 + 1);
+  v17.columns[2] = *(transform + 2);
+  v17.columns[3] = *(transform + 3);
+  v17.columns[0] = *transform;
+  v17.columns[1] = *(transform + 1);
   v18 = __invert_f4(v17);
   v6 = 0;
   LOBYTE(v7) = 1;
   do
   {
     v8 = v7;
-    v9 = (a4 + 64 * v6 + 128);
+    v9 = (state + 64 * v6 + 128);
     v7 = 4;
     do
     {
@@ -1741,7 +1741,7 @@
   }
 
   while ((v8 & 1) != 0);
-  v10 = (a4 + 256);
+  v10 = (state + 256);
   v11 = -4;
   do
   {
@@ -1753,21 +1753,21 @@
       v14 = 0;
     }
 
-    [(NUNICalliopeRenderer *)self buildFrustumPlane:*(v10 - 16) p2:*(v10 - 8) p3:*(a4 + 2 * v14 + 24)];
+    [(NUNICalliopeRenderer *)self buildFrustumPlane:*(v10 - 16) p2:*(v10 - 8) p3:*(state + 2 * v14 + 24)];
     *v10 = v15;
     v10 += 2;
     v11 = v13;
   }
 
   while (v13);
-  [(NUNICalliopeRenderer *)self buildFrustumPlane:*(a4 + 16) p2:*(a4 + 18) p3:*(a4 + 20)];
-  *(a4 + 20) = v16;
+  [(NUNICalliopeRenderer *)self buildFrustumPlane:*(state + 16) p2:*(state + 18) p3:*(state + 20)];
+  *(state + 20) = v16;
 }
 
-- (double)buildFrustumPlane:(float32x4_t)a1 p2:(float32x4_t)a2 p3:(float32x4_t)a3
+- (double)buildFrustumPlane:(float32x4_t)plane p2:(float32x4_t)p2 p3:(float32x4_t)p3
 {
-  v3 = vsubq_f32(a2, a1);
-  v4 = vsubq_f32(a3, a2);
+  v3 = vsubq_f32(p2, plane);
+  v4 = vsubq_f32(p3, p2);
   v5 = vmlaq_f32(vmulq_f32(vextq_s8(vuzp1q_s32(v4, v4), v4, 0xCuLL), vnegq_f32(v3)), v4, vextq_s8(vuzp1q_s32(v3, v3), v3, 0xCuLL));
   v6 = vextq_s8(vuzp1q_s32(v5, v5), v5, 0xCuLL);
   v7 = vmulq_f32(v5, v5);
@@ -1778,7 +1778,7 @@
   return result;
 }
 
-- (int)classifyObjectBoundingBoxVersusFrustum:(NUNICalliopeRenderer *)self max:(SEL)a2 withState:
+- (int)classifyObjectBoundingBoxVersusFrustum:(NUNICalliopeRenderer *)self max:(SEL)max withState:
 {
   v5 = 0;
   v6 = 0;
@@ -1841,7 +1841,7 @@
   return result;
 }
 
-- (BOOL)isObjectBoundingBoxInsideOrIntersectingFrustum:(NUNICalliopeRenderer *)self max:(SEL)a2 withState:
+- (BOOL)isObjectBoundingBoxInsideOrIntersectingFrustum:(NUNICalliopeRenderer *)self max:(SEL)max withState:
 {
   v5 = 0;
   v6 = 0;
@@ -1879,18 +1879,18 @@
   return v6;
 }
 
-- (id)spheroidAtPoint:(id)a3 scene:(NUNIViewport)a4 viewport:
+- (id)spheroidAtPoint:(id)point scene:(NUNIViewport)scene viewport:
 {
   v6 = v4;
   v65 = *MEMORY[0x277D85DE8];
-  height = a4.height;
-  v9 = a3;
-  -[NUNICalliopeRenderer _updateStateWithScene:viewport:](self, "_updateStateWithScene:viewport:", [v9 structure], a4);
+  height = scene.height;
+  pointCopy = point;
+  -[NUNICalliopeRenderer _updateStateWithScene:viewport:](self, "_updateStateWithScene:viewport:", [pointCopy structure], scene);
   p_state = &self->_state;
   memset(v64, 0, sizeof(v64));
-  v55 = v9;
-  v11 = [v9 spheroids];
-  v12 = [v11 count];
+  v55 = pointCopy;
+  spheroids = [pointCopy spheroids];
+  v12 = [spheroids count];
   if (v12 < 1)
   {
     v14 = 0;
@@ -1903,18 +1903,18 @@
     v15 = v12 & 0x7FFFFFFF;
     do
     {
-      v16 = [v11 objectAtIndexedSubscript:v13];
-      v17 = [v16 structure];
+      v16 = [spheroids objectAtIndexedSubscript:v13];
+      structure = [v16 structure];
 
-      if (v17[5].f32[2] > 0.00001 && v17[3].f32[0] > 0.00001 && v17[9].i8[8] == 1 && ((1 << v17->i32[0]) & 0x3FE) != 0)
+      if (structure[5].f32[2] > 0.00001 && structure[3].f32[0] > 0.00001 && structure[9].i8[8] == 1 && ((1 << structure->i32[0]) & 0x3FE) != 0)
       {
-        _S2 = vsubq_f32(p_state[32], v17[96]).i32[2];
+        _S2 = vsubq_f32(p_state[32], structure[96]).i32[2];
         __asm { FMLA            S1, S2, V0.S[2] }
 
         v24 = &__base[8 * v14];
         *v24 = _S1;
         v24[1] = v13;
-        *(v64 + v13) = v17;
+        *(v64 + v13) = structure;
         ++v14;
       }
 
@@ -1924,10 +1924,10 @@
     while (v15 != v13);
   }
 
-  width = a4.width;
+  width = scene.width;
   v58 = height;
   qsort(__base, v14, 8uLL, _NUNICalliopeRenderCompareObject);
-  if (a4.width <= height)
+  if (scene.width <= height)
   {
     aspect = p_state->aspect;
   }
@@ -1935,7 +1935,7 @@
   __asm { FMOV            V1.2S, #1.0 }
 
   v27.i32[1] = _D1.i32[1];
-  if (height > a4.width)
+  if (height > scene.width)
   {
     _D1.f32[1] = width / v58;
     v28 = _D1;
@@ -1958,7 +1958,7 @@ LABEL_20:
     v29.f32[1] = height;
     __asm { FMOV            V1.2S, #-1.0 }
 
-    v29.f32[0] = a4.width;
+    v29.f32[0] = scene.width;
     v31 = vmla_f32(COERCE_FLOAT32X2_T(-_D1), COERCE_FLOAT32X2_T(-2.00000048), vdiv_f32(v6, v29));
     v59 = *&p_state[9].aspect;
     v61 = *&p_state[8].fovY;
@@ -1998,7 +1998,7 @@ LABEL_20:
       }
     }
 
-    v52 = [v11 objectAtIndexedSubscript:v36];
+    v52 = [spheroids objectAtIndexedSubscript:v36];
   }
 
   v53 = *MEMORY[0x277D85DE8];

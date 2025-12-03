@@ -1,9 +1,9 @@
 @interface DeactivateSignalIntentResponse
 - (DeactivateSignalIntentResponse)init;
-- (DeactivateSignalIntentResponse)initWithCode:(int64_t)a3 userActivity:(id)a4;
-- (DeactivateSignalIntentResponse)initWithCoder:(id)a3;
+- (DeactivateSignalIntentResponse)initWithCode:(int64_t)code userActivity:(id)activity;
+- (DeactivateSignalIntentResponse)initWithCoder:(id)coder;
 - (int64_t)code;
-- (void)setCode:(int64_t)a3;
+- (void)setCode:(int64_t)code;
 @end
 
 @implementation DeactivateSignalIntentResponse
@@ -15,22 +15,22 @@
   return *(&self->super.super.isa + v3);
 }
 
-- (void)setCode:(int64_t)a3
+- (void)setCode:(int64_t)code
 {
   v5 = OBJC_IVAR___DeactivateSignalIntentResponse_code;
   swift_beginAccess();
-  *(&self->super.super.isa + v5) = a3;
+  *(&self->super.super.isa + v5) = code;
 }
 
-- (DeactivateSignalIntentResponse)initWithCode:(int64_t)a3 userActivity:(id)a4
+- (DeactivateSignalIntentResponse)initWithCode:(int64_t)code userActivity:(id)activity
 {
-  v6 = a4;
+  activityCopy = activity;
   v7 = [(DeactivateSignalIntentResponse *)self init];
   v8 = OBJC_IVAR___DeactivateSignalIntentResponse_code;
   swift_beginAccess();
-  *(&v7->super.super.isa + v8) = a3;
+  *(&v7->super.super.isa + v8) = code;
   v9 = v7;
-  [(DeactivateSignalIntentResponse *)v9 setUserActivity:v6];
+  [(DeactivateSignalIntentResponse *)v9 setUserActivity:activityCopy];
 
   return v9;
 }
@@ -43,13 +43,13 @@
   return [(DeactivateSignalIntentResponse *)&v3 init];
 }
 
-- (DeactivateSignalIntentResponse)initWithCoder:(id)a3
+- (DeactivateSignalIntentResponse)initWithCoder:(id)coder
 {
   *(&self->super.super.isa + OBJC_IVAR___DeactivateSignalIntentResponse_code) = 0;
   v7.receiver = self;
   v7.super_class = type metadata accessor for DeactivateSignalIntentResponse();
-  v4 = a3;
-  v5 = [(DeactivateSignalIntentResponse *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(DeactivateSignalIntentResponse *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

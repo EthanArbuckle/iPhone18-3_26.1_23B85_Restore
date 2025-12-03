@@ -1,50 +1,50 @@
 @interface DADeviceAccessory
-- (BOOL)isEqual:(id)a3;
-- (DADeviceAccessory)initWithAccessory:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (DADeviceAccessory)initWithAccessory:(id)accessory;
 - (DADeviceDelegate)delegate;
 - (NSString)description;
 - (id)_deviceImageName;
 - (id)_marketingName;
 - (id)_serialNumber;
 - (unint64_t)hash;
-- (void)_profileWithCommand:(id)a3;
-- (void)cancelTestWithCommand:(id)a3;
-- (void)deviceConnection:(id)a3 didRecieveCommand:(id)a4;
+- (void)_profileWithCommand:(id)command;
+- (void)cancelTestWithCommand:(id)command;
+- (void)deviceConnection:(id)connection didRecieveCommand:(id)command;
 - (void)end;
-- (void)executeTestWithTestAttributes:(id)a3 parameters:(id)a4 completion:(id)a5;
+- (void)executeTestWithTestAttributes:(id)attributes parameters:(id)parameters completion:(id)completion;
 - (void)idle;
 - (void)resumeTests;
 - (void)start;
-- (void)startTestWithCommand:(id)a3;
+- (void)startTestWithCommand:(id)command;
 - (void)suspendTests;
 @end
 
 @implementation DADeviceAccessory
 
-- (DADeviceAccessory)initWithAccessory:(id)a3
+- (DADeviceAccessory)initWithAccessory:(id)accessory
 {
-  v5 = a3;
+  accessoryCopy = accessory;
   v28.receiver = self;
   v28.super_class = DADeviceAccessory;
   v6 = [(DADeviceAccessory *)&v28 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_accessory, a3);
+    objc_storeStrong(&v6->_accessory, accessory);
     v29[0] = @"productClass";
-    v8 = [(DADeviceAccessory *)v7 _productClass];
-    v30[0] = v8;
+    _productClass = [(DADeviceAccessory *)v7 _productClass];
+    v30[0] = _productClass;
     v29[1] = @"marketingName";
-    v9 = [(DADeviceAccessory *)v7 _marketingName];
-    v30[1] = v9;
+    _marketingName = [(DADeviceAccessory *)v7 _marketingName];
+    v30[1] = _marketingName;
     v29[2] = @"imageName";
-    v10 = [(DADeviceAccessory *)v7 _deviceImageName];
-    v30[2] = v10;
+    _deviceImageName = [(DADeviceAccessory *)v7 _deviceImageName];
+    v30[2] = _deviceImageName;
     v11 = [NSDictionary dictionaryWithObjects:v30 forKeys:v29 count:3];
 
     v12 = [DADeviceState alloc];
-    v13 = [(DADeviceAccessory *)v7 _serialNumber];
-    v14 = [(DADeviceState *)v12 initWithSerialNumber:v13 attributes:v11];
+    _serialNumber = [(DADeviceAccessory *)v7 _serialNumber];
+    v14 = [(DADeviceState *)v12 initWithSerialNumber:_serialNumber attributes:v11];
     state = v7->_state;
     v7->_state = v14;
 
@@ -56,9 +56,9 @@
     accessory = v7->_accessory;
     if (accessory)
     {
-      v20 = [(DAAdapterAccessory *)accessory identifier];
+      identifier = [(DAAdapterAccessory *)accessory identifier];
 
-      v18 = v20;
+      v18 = identifier;
     }
 
     v21 = [[DKReportManager alloc] initWithBundleIdentifier:v18];
@@ -66,8 +66,8 @@
     v7->_reportManager = v21;
 
     v23 = [DADeviceConnectionLocal alloc];
-    v24 = [(DADeviceAccessory *)v7 state];
-    v25 = [(DADeviceConnectionLocal *)v23 initWithState:v24];
+    state = [(DADeviceAccessory *)v7 state];
+    v25 = [(DADeviceConnectionLocal *)v23 initWithState:state];
     connection = v7->_connection;
     v7->_connection = v25;
 
@@ -79,16 +79,16 @@
 
 - (void)start
 {
-  v2 = [(DADeviceAccessory *)self connection];
-  [v2 start];
+  connection = [(DADeviceAccessory *)self connection];
+  [connection start];
 
   +[DADiagnosticAnalyticsManager recordDeviceStart];
 }
 
 - (void)idle
 {
-  v2 = [(DADeviceAccessory *)self connection];
-  [v2 idle];
+  connection = [(DADeviceAccessory *)self connection];
+  [connection idle];
 
   +[DADiagnosticAnalyticsManager recordDeviceIdle];
 }
@@ -99,15 +99,15 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Test launch suspending for %@.", &v6, 0xCu);
   }
 
-  v4 = [(DADeviceAccessory *)self testQueue];
-  [v4 setSuspended:1];
+  testQueue = [(DADeviceAccessory *)self testQueue];
+  [testQueue setSuspended:1];
 
-  v5 = [(DADeviceAccessory *)self diagnosticsManager];
-  [v5 cancelAllDiagnostics];
+  diagnosticsManager = [(DADeviceAccessory *)self diagnosticsManager];
+  [diagnosticsManager cancelAllDiagnostics];
 
   +[DADiagnosticAnalyticsManager recordDeviceSuspendTests];
 }
@@ -118,12 +118,12 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138412290;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Test launch resuming for %@.", &v5, 0xCu);
   }
 
-  v4 = [(DADeviceAccessory *)self testQueue];
-  [v4 setSuspended:0];
+  testQueue = [(DADeviceAccessory *)self testQueue];
+  [testQueue setSuspended:0];
 
   +[DADiagnosticAnalyticsManager recordDeviceResumeTests];
 }
@@ -141,116 +141,116 @@
   +[DADiagnosticAnalyticsManager recordDeviceEnd];
 }
 
-- (void)startTestWithCommand:(id)a3
+- (void)startTestWithCommand:(id)command
 {
-  v12 = a3;
+  commandCopy = command;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [(DADeviceAccessory *)self diagnosticsManager];
-    v5 = [v12 testID];
-    v6 = [v4 attributesForIdentifier:v5];
+    diagnosticsManager = [(DADeviceAccessory *)self diagnosticsManager];
+    testID = [commandCopy testID];
+    v6 = [diagnosticsManager attributesForIdentifier:testID];
 
     if (v6)
     {
-      v7 = [(DADeviceAccessory *)self testQueue];
-      v8 = [v12 parameters];
-      v9 = [v12 completion];
-      v10 = [v9 copy];
-      [v7 enqueueTestWithTestAttributes:v6 parameters:v8 completion:v10];
+      testQueue = [(DADeviceAccessory *)self testQueue];
+      parameters = [commandCopy parameters];
+      completion = [commandCopy completion];
+      v10 = [completion copy];
+      [testQueue enqueueTestWithTestAttributes:v6 parameters:parameters completion:v10];
     }
 
     else
     {
-      v7 = [v12 completion];
-      v8 = [NSError errorWithDomain:DKErrorDomain code:-1000 userInfo:0];
-      (v7)[2](v7, 0, v8);
+      testQueue = [commandCopy completion];
+      parameters = [NSError errorWithDomain:DKErrorDomain code:-1000 userInfo:0];
+      (testQueue)[2](testQueue, 0, parameters);
     }
 
-    v11 = [v12 testID];
-    [DADiagnosticAnalyticsManager recordConnectionDidReceiveStartTestCommand:v11];
+    testID2 = [commandCopy testID];
+    [DADiagnosticAnalyticsManager recordConnectionDidReceiveStartTestCommand:testID2];
   }
 }
 
-- (void)cancelTestWithCommand:(id)a3
+- (void)cancelTestWithCommand:(id)command
 {
-  v6 = a3;
+  commandCopy = command;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [(DADeviceAccessory *)self diagnosticsManager];
-    [v4 cancelAllDiagnostics];
+    diagnosticsManager = [(DADeviceAccessory *)self diagnosticsManager];
+    [diagnosticsManager cancelAllDiagnostics];
 
-    v5 = [v6 testID];
-    [DADiagnosticAnalyticsManager recordConnectionDidReceiveCancelTestCommand:v5];
+    testID = [commandCopy testID];
+    [DADiagnosticAnalyticsManager recordConnectionDidReceiveCancelTestCommand:testID];
   }
 }
 
-- (void)executeTestWithTestAttributes:(id)a3 parameters:(id)a4 completion:(id)a5
+- (void)executeTestWithTestAttributes:(id)attributes parameters:(id)parameters completion:(id)completion
 {
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100022B84;
   v15[3] = &unk_1001BCF18;
-  v16 = a5;
-  v8 = v16;
-  v9 = a4;
-  v10 = a3;
+  completionCopy = completion;
+  v8 = completionCopy;
+  parametersCopy = parameters;
+  attributesCopy = attributes;
   v11 = objc_retainBlock(v15);
-  v12 = [(DADeviceAccessory *)self diagnosticsManager];
-  v13 = [v10 identifier];
-  [v12 beginDiagnosticWithIdentifier:v13 parameters:v9 completion:v11];
+  diagnosticsManager = [(DADeviceAccessory *)self diagnosticsManager];
+  identifier = [attributesCopy identifier];
+  [diagnosticsManager beginDiagnosticWithIdentifier:identifier parameters:parametersCopy completion:v11];
 
-  v14 = [v10 identifier];
+  identifier2 = [attributesCopy identifier];
 
-  [DADiagnosticAnalyticsManager recordExecuteTestWith:v14];
+  [DADiagnosticAnalyticsManager recordExecuteTestWith:identifier2];
 }
 
-- (void)deviceConnection:(id)a3 didRecieveCommand:(id)a4
+- (void)deviceConnection:(id)connection didRecieveCommand:(id)command
 {
-  v7 = a4;
-  v5 = [v7 commandType];
-  if (v5 == 2)
+  commandCopy = command;
+  commandType = [commandCopy commandType];
+  if (commandType == 2)
   {
-    [(DADeviceAccessory *)self _profileWithCommand:v7];
+    [(DADeviceAccessory *)self _profileWithCommand:commandCopy];
   }
 
-  else if (v5 == 1)
+  else if (commandType == 1)
   {
-    [(DADeviceAccessory *)self cancelTestWithCommand:v7];
+    [(DADeviceAccessory *)self cancelTestWithCommand:commandCopy];
   }
 
   else
   {
-    v6 = v7;
-    if (v5)
+    v6 = commandCopy;
+    if (commandType)
     {
       goto LABEL_8;
     }
 
-    [(DADeviceAccessory *)self startTestWithCommand:v7];
+    [(DADeviceAccessory *)self startTestWithCommand:commandCopy];
   }
 
-  v6 = v7;
+  v6 = commandCopy;
 LABEL_8:
 }
 
 - (unint64_t)hash
 {
-  v2 = [(DADeviceAccessory *)self _serialNumber];
-  v3 = [v2 hash];
+  _serialNumber = [(DADeviceAccessory *)self _serialNumber];
+  v3 = [_serialNumber hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   if (objc_opt_respondsToSelector())
   {
-    v5 = [(DADeviceAccessory *)self _serialNumber];
-    v6 = [v4 _serialNumber];
-    v7 = [v5 isEqualToString:v6];
+    _serialNumber = [(DADeviceAccessory *)self _serialNumber];
+    _serialNumber2 = [equalCopy _serialNumber];
+    v7 = [_serialNumber isEqualToString:_serialNumber2];
   }
 
   else
@@ -265,35 +265,35 @@ LABEL_8:
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(DADeviceAccessory *)self state];
-  v6 = [v5 serialNumber];
-  v7 = [NSString stringWithFormat:@"<%@ %p: %@>", v4, self, v6];;
+  state = [(DADeviceAccessory *)self state];
+  serialNumber = [state serialNumber];
+  v7 = [NSString stringWithFormat:@"<%@ %p: %@>", v4, self, serialNumber];;
 
   return v7;
 }
 
-- (void)_profileWithCommand:(id)a3
+- (void)_profileWithCommand:(id)command
 {
-  v4 = a3;
+  commandCopy = command;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v5 = dispatch_group_create();
-    v6 = [v4 profile];
-    [v6 setTests:&__NSArray0__struct];
+    profile = [commandCopy profile];
+    [profile setTests:&__NSArray0__struct];
 
-    v7 = [v4 components];
-    if (v7 && (v8 = v7, [v4 components], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "count"), v9, v8, v10))
+    components = [commandCopy components];
+    if (components && (v8 = components, [commandCopy components], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "count"), v9, v8, v10))
     {
-      v27 = self;
+      selfCopy = self;
       v28 = v5;
       v29 = +[NSMutableSet set];
       v34 = 0u;
       v35 = 0u;
       v36 = 0u;
       v37 = 0u;
-      v11 = [v4 components];
-      v12 = [v11 countByEnumeratingWithState:&v34 objects:v38 count:16];
+      components2 = [commandCopy components];
+      v12 = [components2 countByEnumeratingWithState:&v34 objects:v38 count:16];
       if (v12)
       {
         v13 = v12;
@@ -304,7 +304,7 @@ LABEL_8:
           {
             if (*v35 != v14)
             {
-              objc_enumerationMutation(v11);
+              objc_enumerationMutation(components2);
             }
 
             v16 = *(*(&v34 + 1) + 8 * i);
@@ -321,14 +321,14 @@ LABEL_8:
             }
           }
 
-          v13 = [v11 countByEnumeratingWithState:&v34 objects:v38 count:16];
+          v13 = [components2 countByEnumeratingWithState:&v34 objects:v38 count:16];
         }
 
         while (v13);
       }
 
       v5 = v28;
-      self = v27;
+      self = selfCopy;
     }
 
     else
@@ -344,22 +344,22 @@ LABEL_8:
     }
 
     dispatch_group_enter(v5);
-    v21 = [(DADeviceAccessory *)self reportManager];
+    reportManager = [(DADeviceAccessory *)self reportManager];
     v30[0] = _NSConcreteStackBlock;
     v30[1] = 3221225472;
     v30[2] = sub_1000231B0;
     v30[3] = &unk_1001BD508;
-    v22 = v4;
+    v22 = commandCopy;
     v31 = v22;
     v32 = v5;
     v23 = v5;
-    [v21 reportWithComponentPredicateManifest:v29 completion:v30];
+    [reportManager reportWithComponentPredicateManifest:v29 completion:v30];
 
     v24 = dispatch_time(0, 60000000000);
     dispatch_group_wait(v23, v24);
-    v25 = [v22 completion];
-    v26 = [v22 profile];
-    (v25)[2](v25, v26);
+    completion = [v22 completion];
+    profile2 = [v22 profile];
+    (completion)[2](completion, profile2);
 
     +[DADiagnosticAnalyticsManager recordConnectionDidReceiveProfileCommand];
   }
@@ -367,11 +367,11 @@ LABEL_8:
 
 - (id)_deviceImageName
 {
-  v2 = [(DAAdapterAccessory *)self->_accessory modelNumber];
-  v3 = v2;
-  if (v2)
+  modelNumber = [(DAAdapterAccessory *)self->_accessory modelNumber];
+  v3 = modelNumber;
+  if (modelNumber)
   {
-    v4 = [@"SBC" stringByAppendingFormat:@"-%@", v2];
+    v4 = [@"SBC" stringByAppendingFormat:@"-%@", modelNumber];
   }
 
   else
@@ -384,18 +384,18 @@ LABEL_8:
 
 - (id)_serialNumber
 {
-  v2 = [(DADeviceAccessory *)self accessory];
-  v3 = [v2 serialNumber];
+  accessory = [(DADeviceAccessory *)self accessory];
+  serialNumber = [accessory serialNumber];
 
-  return v3;
+  return serialNumber;
 }
 
 - (id)_marketingName
 {
-  v2 = [(DADeviceAccessory *)self accessory];
-  v3 = [v2 productName];
+  accessory = [(DADeviceAccessory *)self accessory];
+  productName = [accessory productName];
 
-  return v3;
+  return productName;
 }
 
 - (DADeviceDelegate)delegate

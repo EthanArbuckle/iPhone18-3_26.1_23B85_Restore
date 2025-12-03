@@ -1,24 +1,24 @@
 @interface BRCPCSChainBatchInfo
-- (BOOL)containsRecordInfo:(id)a3;
-- (BRCPCSChainBatchInfo)initWithAppLibrary:(id)a3;
-- (void)_chainPreppedRecordToParent:(id)a3;
-- (void)addFullyChainedRecordInfo:(id)a3;
-- (void)chainPreparedRecordBatch:(id)a3;
+- (BOOL)containsRecordInfo:(id)info;
+- (BRCPCSChainBatchInfo)initWithAppLibrary:(id)library;
+- (void)_chainPreppedRecordToParent:(id)parent;
+- (void)addFullyChainedRecordInfo:(id)info;
+- (void)chainPreparedRecordBatch:(id)batch;
 - (void)prepareFirstPhaseRecordBatch;
 @end
 
 @implementation BRCPCSChainBatchInfo
 
-- (BRCPCSChainBatchInfo)initWithAppLibrary:(id)a3
+- (BRCPCSChainBatchInfo)initWithAppLibrary:(id)library
 {
-  v5 = a3;
+  libraryCopy = library;
   v20.receiver = self;
   v20.super_class = BRCPCSChainBatchInfo;
   v6 = [(BRCPCSChainBatchInfo *)&v20 init];
   if (v6)
   {
-    v7 = [v5 mangledID];
-    v8 = [BRCUserDefaults defaultsForMangledID:v7];
+    mangledID = [libraryCopy mangledID];
+    v8 = [BRCUserDefaults defaultsForMangledID:mangledID];
     v6->_should2PhasePCSChain = [v8 should2PhasePCSChain];
 
     v9 = objc_opt_new();
@@ -44,22 +44,22 @@
       v6->_recordsForFirstPhase = v17;
     }
 
-    objc_storeStrong(&v6->_appLibrary, a3);
+    objc_storeStrong(&v6->_appLibrary, library);
   }
 
   return v6;
 }
 
-- (BOOL)containsRecordInfo:(id)a3
+- (BOOL)containsRecordInfo:(id)info
 {
-  v4 = a3;
-  v5 = [v4 itemID];
-  v6 = [v4 itemType];
-  v7 = [(BRCAppLibrary *)self->_appLibrary defaultClientZone];
-  v8 = [v7 serverZone];
-  v9 = [v4 aliasTargetZoneIsShared];
+  infoCopy = info;
+  itemID = [infoCopy itemID];
+  itemType = [infoCopy itemType];
+  defaultClientZone = [(BRCAppLibrary *)self->_appLibrary defaultClientZone];
+  serverZone = [defaultClientZone serverZone];
+  aliasTargetZoneIsShared = [infoCopy aliasTargetZoneIsShared];
 
-  v10 = [v5 structureRecordIDForItemType:v6 zone:v8 aliasTargetZoneIsShared:v9];
+  v10 = [itemID structureRecordIDForItemType:itemType zone:serverZone aliasTargetZoneIsShared:aliasTargetZoneIsShared];
 
   if (v10)
   {
@@ -93,8 +93,8 @@
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v3 = [(NSMutableDictionary *)self->_halfChainedRecordMap objectEnumerator];
-    v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    objectEnumerator = [(NSMutableDictionary *)self->_halfChainedRecordMap objectEnumerator];
+    v4 = [objectEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v4)
     {
       v5 = v4;
@@ -106,18 +106,18 @@
         {
           if (*v12 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(objectEnumerator);
           }
 
           recordsForFirstPhase = self->_recordsForFirstPhase;
-          v9 = [*(*(&v11 + 1) + 8 * v7) record];
-          [(NSMutableArray *)recordsForFirstPhase addObject:v9];
+          record = [*(*(&v11 + 1) + 8 * v7) record];
+          [(NSMutableArray *)recordsForFirstPhase addObject:record];
 
           ++v7;
         }
 
         while (v5 != v7);
-        v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v5 = [objectEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v5);
@@ -127,78 +127,78 @@
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addFullyChainedRecordInfo:(id)a3
+- (void)addFullyChainedRecordInfo:(id)info
 {
   v76 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(BRCAppLibrary *)self->_appLibrary defaultClientZone];
-  v6 = [v5 serverZone];
-  v7 = [v6 zoneID];
+  infoCopy = info;
+  defaultClientZone = [(BRCAppLibrary *)self->_appLibrary defaultClientZone];
+  serverZone = [defaultClientZone serverZone];
+  zoneID = [serverZone zoneID];
 
-  v8 = [v4 itemType];
+  itemType = [infoCopy itemType];
   v9 = 0x277CBC000uLL;
-  if (v8 <= 8 && ((1 << v8) & 0x106) != 0)
+  if (itemType <= 8 && ((1 << itemType) & 0x106) != 0)
   {
-    v10 = [v4 itemID];
-    v11 = [v10 contentsRecordIDInZoneID:v7];
+    itemID = [infoCopy itemID];
+    v11 = [itemID contentsRecordIDInZoneID:zoneID];
 
     v12 = [objc_alloc(MEMORY[0x277CBC5A0]) initWithRecordType:@"content" recordID:v11];
-    v13 = [v4 contentCKInfo];
-    [v12 serializeSystemFields:v13];
+    contentCKInfo = [infoCopy contentCKInfo];
+    [v12 serializeSystemFields:contentCKInfo];
 
     [(NSMutableArray *)self->_fullyChainRecordBatch addObject:v12];
-    [(NSMutableDictionary *)self->_fullyChainRecordInfoMap setObject:v4 forKey:v11];
+    [(NSMutableDictionary *)self->_fullyChainRecordInfoMap setObject:infoCopy forKey:v11];
   }
 
   v14 = brc_bread_crumbs();
   v15 = brc_default_log();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
   {
-    v61 = [v4 itemID];
-    v41 = [v61 debugItemIDString];
-    v59 = [v4 structuralCKInfo];
-    v42 = [v59 etag];
-    [v4 contentCKInfo];
-    v43 = v63 = v7;
-    v44 = [v43 etag];
-    v45 = [v4 parentID];
-    v46 = [v45 debugItemIDString];
+    itemID2 = [infoCopy itemID];
+    debugItemIDString = [itemID2 debugItemIDString];
+    structuralCKInfo = [infoCopy structuralCKInfo];
+    etag = [structuralCKInfo etag];
+    [infoCopy contentCKInfo];
+    v43 = v63 = zoneID;
+    etag2 = [v43 etag];
+    parentID = [infoCopy parentID];
+    debugItemIDString2 = [parentID debugItemIDString];
     *buf = 138413570;
-    v65 = v41;
+    v65 = debugItemIDString;
     v66 = 2112;
-    v67 = v42;
+    v67 = etag;
     v68 = 2112;
-    v69 = v44;
+    v69 = etag2;
     v70 = 2112;
-    v71 = v46;
+    v71 = debugItemIDString2;
     v72 = 2112;
-    v73 = self;
+    selfCopy = self;
     v74 = 2112;
     v75 = v14;
     _os_log_debug_impl(&dword_223E7A000, v15, OS_LOG_TYPE_DEBUG, "[DEBUG] PCS chaining %@ (st:%@, ct:%@) to %@ for op %@%@", buf, 0x3Eu);
 
-    v7 = v63;
+    zoneID = v63;
     v9 = 0x277CBC000;
   }
 
-  v16 = [v4 itemID];
-  v17 = [v4 itemType];
-  v18 = [(BRCAppLibrary *)self->_appLibrary defaultClientZone];
-  v19 = [v18 serverZone];
-  v20 = [v16 structureRecordIDForItemType:v17 zone:v19 aliasTargetZoneIsShared:{objc_msgSend(v4, "aliasTargetZoneIsShared")}];
+  itemID3 = [infoCopy itemID];
+  itemType2 = [infoCopy itemType];
+  defaultClientZone2 = [(BRCAppLibrary *)self->_appLibrary defaultClientZone];
+  serverZone2 = [defaultClientZone2 serverZone];
+  v20 = [itemID3 structureRecordIDForItemType:itemType2 zone:serverZone2 aliasTargetZoneIsShared:{objc_msgSend(infoCopy, "aliasTargetZoneIsShared")}];
 
-  v21 = [v4 itemType];
-  if (v21 > 0xA || ((1 << v21) & 0x611) == 0 || (-[NSMutableDictionary objectForKeyedSubscript:](self->_halfChainedRecordMap, "objectForKeyedSubscript:", v20), v22 = objc_claimAutoreleasedReturnValue(), [v22 record], v23 = objc_claimAutoreleasedReturnValue(), v22, !v23))
+  itemType3 = [infoCopy itemType];
+  if (itemType3 > 0xA || ((1 << itemType3) & 0x611) == 0 || (-[NSMutableDictionary objectForKeyedSubscript:](self->_halfChainedRecordMap, "objectForKeyedSubscript:", v20), v22 = objc_claimAutoreleasedReturnValue(), [v22 record], v23 = objc_claimAutoreleasedReturnValue(), v22, !v23))
   {
     v23 = [objc_alloc(*(v9 + 1440)) initWithRecordType:@"structure" recordID:v20];
-    v24 = [v4 structuralCKInfo];
-    [v23 serializeSystemFields:v24];
+    structuralCKInfo2 = [infoCopy structuralCKInfo];
+    [v23 serializeSystemFields:structuralCKInfo2];
 
-    if ([v4 chainState] != 4 && ((v28 = objc_msgSend(v4, "itemType"), v28 <= 0xA) && ((1 << v28) & 0x611) != 0 || (v47 = objc_msgSend(v4, "itemType"), v47 <= 8) && ((1 << v47) & 0x106) != 0))
+    if ([infoCopy chainState] != 4 && ((v28 = objc_msgSend(infoCopy, "itemType"), v28 <= 0xA) && ((1 << v28) & 0x611) != 0 || (v47 = objc_msgSend(infoCopy, "itemType"), v47 <= 8) && ((1 << v47) & 0x106) != 0))
     {
       [v23 setWantsChainPCS:1];
-      v29 = [v4 itemType];
-      if (v29 > 8 || ((1 << v29) & 0x106) == 0 || !self->_should2PhasePCSChain)
+      itemType4 = [infoCopy itemType];
+      if (itemType4 > 8 || ((1 << itemType4) & 0x106) == 0 || !self->_should2PhasePCSChain)
       {
         goto LABEL_23;
       }
@@ -209,8 +209,8 @@
 
     else
     {
-      v25 = [v4 itemType];
-      if (v25 > 0xA || ((1 << v25) & 0x611) == 0)
+      itemType5 = [infoCopy itemType];
+      if (itemType5 > 0xA || ((1 << itemType5) & 0x611) == 0)
       {
         goto LABEL_23;
       }
@@ -231,11 +231,11 @@
   [(NSMutableDictionary *)self->_halfChainedRecordMap removeObjectForKey:v20];
 LABEL_23:
   [(NSMutableArray *)self->_fullyChainRecordBatch addObject:v23];
-  [(NSMutableDictionary *)self->_fullyChainRecordInfoMap setObject:v4 forKey:v20];
-  v30 = [v4 parentID];
-  v31 = [(BRCAppLibrary *)self->_appLibrary defaultClientZone];
-  v32 = [v31 serverZone];
-  v33 = [v30 structureRecordIDForItemType:0 zone:v32 aliasTargetZoneIsShared:{objc_msgSend(v4, "aliasTargetZoneIsShared")}];
+  [(NSMutableDictionary *)self->_fullyChainRecordInfoMap setObject:infoCopy forKey:v20];
+  parentID2 = [infoCopy parentID];
+  defaultClientZone3 = [(BRCAppLibrary *)self->_appLibrary defaultClientZone];
+  serverZone3 = [defaultClientZone3 serverZone];
+  v33 = [parentID2 structureRecordIDForItemType:0 zone:serverZone3 aliasTargetZoneIsShared:{objc_msgSend(infoCopy, "aliasTargetZoneIsShared")}];
 
   v34 = [(NSMutableDictionary *)self->_halfChainedRecordMap objectForKeyedSubscript:v33];
   if (v34 || ([v33 brc_isZoneRootRecordID] & 1) != 0)
@@ -245,7 +245,7 @@ LABEL_23:
 
   if (([(NSMutableSet *)self->_alreadyHalfChainedRecords containsObject:v33]& 1) == 0)
   {
-    v62 = v7;
+    v62 = zoneID;
     v35 = [(NSMutableDictionary *)self->_fullyChainRecordInfoMap objectForKeyedSubscript:v33];
 
     if (v35)
@@ -255,10 +255,10 @@ LABEL_23:
 
     v34 = [objc_alloc(*(v9 + 1440)) initWithRecordType:@"structure" recordID:v33];
     v60 = [(BRCAppLibrary *)self->_appLibrary db];
-    v36 = [v4 parentID];
-    v37 = [(BRCAppLibrary *)self->_appLibrary defaultClientZone];
-    v38 = [v37 dbRowID];
-    v39 = [v60 fetch:{@"SELECT pcs_state, item_stat_ckinfo FROM server_items WHERE item_id = %@ AND zone_rowid = %@", v36, v38}];
+    parentID3 = [infoCopy parentID];
+    defaultClientZone4 = [(BRCAppLibrary *)self->_appLibrary defaultClientZone];
+    dbRowID = [defaultClientZone4 dbRowID];
+    v39 = [v60 fetch:{@"SELECT pcs_state, item_stat_ckinfo FROM server_items WHERE item_id = %@ AND zone_rowid = %@", parentID3, dbRowID}];
 
     v40 = v39;
     if ([v39 next])
@@ -266,7 +266,7 @@ LABEL_23:
       if ([v39 intAtIndex:0] < 2)
       {
         v56 = [v39 objectOfClass:objc_opt_class() atIndex:1];
-        v7 = v62;
+        zoneID = v62;
         if (!v56)
         {
           [BRCPCSChainBatchInfo addFullyChainedRecordInfo:];
@@ -293,7 +293,7 @@ LABEL_23:
       }
     }
 
-    v7 = v62;
+    zoneID = v62;
 LABEL_41:
 
 LABEL_42:
@@ -302,55 +302,55 @@ LABEL_42:
   v58 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_chainPreppedRecordToParent:(id)a3
+- (void)_chainPreppedRecordToParent:(id)parent
 {
-  v4 = a3;
-  v5 = [v4 recordID];
-  v6 = [(NSMutableDictionary *)self->_fullyChainRecordInfoMap objectForKeyedSubscript:v5];
-  v7 = [v4 recordType];
-  if ([v7 isEqualToString:@"content"])
+  parentCopy = parent;
+  recordID = [parentCopy recordID];
+  v6 = [(NSMutableDictionary *)self->_fullyChainRecordInfoMap objectForKeyedSubscript:recordID];
+  recordType = [parentCopy recordType];
+  if ([recordType isEqualToString:@"content"])
   {
-    v8 = [v6 itemID];
-    v9 = [v5 zoneID];
-    v10 = [v8 pcsChainDocumentStructureReferenceInZoneID:v9];
+    itemID = [v6 itemID];
+    zoneID = [recordID zoneID];
+    v10 = [itemID pcsChainDocumentStructureReferenceInZoneID:zoneID];
 
-    [v4 setParent:v10];
+    [parentCopy setParent:v10];
   }
 
   else
   {
-    if ([v7 isEqualToString:@"structure"])
+    if ([recordType isEqualToString:@"structure"])
     {
-      v11 = [(BRCAppLibrary *)self->_appLibrary defaultClientZone];
-      v12 = [v11 serverZone];
+      defaultClientZone = [(BRCAppLibrary *)self->_appLibrary defaultClientZone];
+      serverZone = [defaultClientZone serverZone];
 
-      v13 = [v6 parentID];
-      v14 = [v13 pcsChainParentReferenceInZone:v12];
+      parentID = [v6 parentID];
+      v14 = [parentID pcsChainParentReferenceInZone:serverZone];
 
-      v15 = [v6 parentID];
-      v16 = [v15 validatingDirectoryReferenceInZone:v12];
+      parentID2 = [v6 parentID];
+      v16 = [parentID2 validatingDirectoryReferenceInZone:serverZone];
 
-      [v4 setParent:v14];
-      [v4 setObject:v16 forKeyedSubscript:@"parent"];
+      [parentCopy setParent:v14];
+      [parentCopy setObject:v16 forKeyedSubscript:@"parent"];
     }
 
     else
     {
-      v12 = brc_bread_crumbs();
+      serverZone = brc_bread_crumbs();
       v17 = brc_default_log();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_FAULT))
       {
-        [(BRCPCSChainBatchInfo *)v12 _chainPreppedRecordToParent:v17, v18, v19, v20, v21, v22, v23];
+        [(BRCPCSChainBatchInfo *)serverZone _chainPreppedRecordToParent:v17, v18, v19, v20, v21, v22, v23];
       }
     }
   }
 }
 
-- (void)chainPreparedRecordBatch:(id)a3
+- (void)chainPreparedRecordBatch:(id)batch
 {
   v48 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
+  batchCopy = batch;
+  v5 = batchCopy;
   if (self->_should2PhasePCSChain)
   {
     v6 = brc_bread_crumbs();
@@ -362,34 +362,34 @@ LABEL_42:
 
     if ([v5 count])
     {
-      v8 = [v5 objectAtIndexedSubscript:0];
+      objectEnumerator = [v5 objectAtIndexedSubscript:0];
       v9 = 1;
     }
 
     else
     {
-      v8 = 0;
+      objectEnumerator = 0;
       v9 = 0;
     }
 
-    v23 = [v8 recordID];
+    recordID = [objectEnumerator recordID];
     if ([(NSMutableArray *)self->_fullyChainRecordBatch count])
     {
       v24 = 0;
       do
       {
         v25 = [(NSMutableArray *)self->_fullyChainRecordBatch objectAtIndexedSubscript:v24];
-        v26 = [v25 recordID];
-        v27 = v26;
-        if (v23 && [v26 isEqual:v23])
+        recordID2 = [v25 recordID];
+        v27 = recordID2;
+        if (recordID && [recordID2 isEqual:recordID])
         {
-          [(NSMutableArray *)self->_fullyChainRecordBatch setObject:v8 atIndexedSubscript:v24];
-          v28 = v8;
+          [(NSMutableArray *)self->_fullyChainRecordBatch setObject:objectEnumerator atIndexedSubscript:v24];
+          v28 = objectEnumerator;
 
           [v28 sanitizeShortTokenFields];
-          v29 = [v28 protectionData];
+          protectionData = [v28 protectionData];
 
-          if (!v29)
+          if (!protectionData)
           {
             [BRCPCSChainBatchInfo chainPreparedRecordBatch:];
           }
@@ -397,19 +397,19 @@ LABEL_42:
           if (v9 >= [v5 count])
           {
 
-            v30 = 0;
-            v8 = 0;
+            recordID3 = 0;
+            objectEnumerator = 0;
           }
 
           else
           {
-            v8 = [v5 objectAtIndexedSubscript:v9];
+            objectEnumerator = [v5 objectAtIndexedSubscript:v9];
 
-            v30 = [v8 recordID];
+            recordID3 = [objectEnumerator recordID];
             ++v9;
           }
 
-          v23 = v30;
+          recordID = recordID3;
         }
 
         else
@@ -425,7 +425,7 @@ LABEL_42:
       while (v24 < [(NSMutableArray *)self->_fullyChainRecordBatch count]);
     }
 
-    v31 = v9 - (v8 != 0);
+    v31 = v9 - (objectEnumerator != 0);
     v32 = [(NSMutableDictionary *)self->_halfChainedRecordMap count]+ v31;
     if (v32 != [v5 count])
     {
@@ -436,8 +436,8 @@ LABEL_42:
     {
       v33 = [v5 objectAtIndexedSubscript:v31];
       halfChainedRecordMap = self->_halfChainedRecordMap;
-      v35 = [v33 recordID];
-      v36 = [(NSMutableDictionary *)halfChainedRecordMap objectForKeyedSubscript:v35];
+      recordID4 = [v33 recordID];
+      v36 = [(NSMutableDictionary *)halfChainedRecordMap objectForKeyedSubscript:recordID4];
 
       if (!v36)
       {
@@ -450,7 +450,7 @@ LABEL_42:
 
   else
   {
-    if ([v4 count])
+    if ([batchCopy count])
     {
       [BRCPCSChainBatchInfo chainPreparedRecordBatch:];
     }
@@ -487,8 +487,8 @@ LABEL_42:
     v41 = 0u;
     v38 = 0u;
     v39 = 0u;
-    v8 = [(NSMutableDictionary *)self->_halfChainedRecordMap objectEnumerator];
-    v15 = [v8 countByEnumeratingWithState:&v38 objects:v46 count:16];
+    objectEnumerator = [(NSMutableDictionary *)self->_halfChainedRecordMap objectEnumerator];
+    v15 = [objectEnumerator countByEnumeratingWithState:&v38 objects:v46 count:16];
     if (v15)
     {
       v16 = v15;
@@ -502,20 +502,20 @@ LABEL_42:
         {
           if (*v39 != v18)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(objectEnumerator);
           }
 
           fullyChainRecordBatch = self->_fullyChainRecordBatch;
-          v22 = [*(*(&v38 + 1) + 8 * v19) record];
+          record = [*(*(&v38 + 1) + 8 * v19) record];
           v17 = v20 + 1;
-          [(NSMutableArray *)fullyChainRecordBatch insertObject:v22 atIndex:v20];
+          [(NSMutableArray *)fullyChainRecordBatch insertObject:record atIndex:v20];
 
           ++v19;
           ++v20;
         }
 
         while (v16 != v19);
-        v16 = [v8 countByEnumeratingWithState:&v38 objects:v46 count:16];
+        v16 = [objectEnumerator countByEnumeratingWithState:&v38 objects:v46 count:16];
       }
 
       while (v16);

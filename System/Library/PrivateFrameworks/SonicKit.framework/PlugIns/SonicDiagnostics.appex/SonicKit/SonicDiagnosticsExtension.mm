@@ -1,12 +1,12 @@
 @interface SonicDiagnosticsExtension
-- (id)attachmentsForParameters:(id)a3;
+- (id)attachmentsForParameters:(id)parameters;
 @end
 
 @implementation SonicDiagnosticsExtension
 
-- (id)attachmentsForParameters:(id)a3
+- (id)attachmentsForParameters:(id)parameters
 {
-  if (a3)
+  if (parameters)
   {
     v4 = sub_1000027FC();
   }
@@ -16,7 +16,7 @@
     v4 = 0;
   }
 
-  v5 = self;
+  selfCopy = self;
   v6 = sub_1000013B0(v4);
 
   if (v6)

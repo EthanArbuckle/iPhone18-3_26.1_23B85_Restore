@@ -1,21 +1,21 @@
 @interface AXTripleClickTableViewCell
-- (AXTripleClickTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (AXTripleClickTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)layoutSubviews;
 @end
 
 @implementation AXTripleClickTableViewCell
 
-- (AXTripleClickTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (AXTripleClickTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v16.receiver = self;
   v16.super_class = AXTripleClickTableViewCell;
-  v4 = [(AXTripleClickTableViewCell *)&v16 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(AXTripleClickTableViewCell *)&v16 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
-    v6 = [(AXTripleClickTableViewCell *)v4 textLabel];
+    textLabel = [(AXTripleClickTableViewCell *)v4 textLabel];
     v7 = UISystemFontBoldForSize();
-    [v6 setFont:v7];
+    [textLabel setFont:v7];
 
     v8 = objc_alloc_init(MEMORY[0x277D75D18]);
     topLine = v5->_topLine;

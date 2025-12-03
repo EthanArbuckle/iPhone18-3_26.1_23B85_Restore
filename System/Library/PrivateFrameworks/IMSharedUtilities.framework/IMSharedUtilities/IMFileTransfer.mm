@@ -1,17 +1,17 @@
 @interface IMFileTransfer
-+ (BOOL)_doesLocalURLRequireArchiving:(id)a3;
-+ (BOOL)canMarkPurgeableWithCKSyncState:(int64_t)a3 transferState:(int64_t)a4 isAudio:(BOOL)a5 isSticker:(BOOL)a6 isGroupPhoto:(BOOL)a7 isPluginPayload:(BOOL)a8 isRichLink:(BOOL)a9;
-+ (BOOL)genmojiFileTransferShouldDisplayAsPermanentlyFailed:(id)a3;
-+ (id)AuxGUIDFromFileTransferGUID:(id)a3;
-+ (id)guidByStrippingAuxPrefix:(id)a3;
++ (BOOL)_doesLocalURLRequireArchiving:(id)archiving;
++ (BOOL)canMarkPurgeableWithCKSyncState:(int64_t)state transferState:(int64_t)transferState isAudio:(BOOL)audio isSticker:(BOOL)sticker isGroupPhoto:(BOOL)photo isPluginPayload:(BOOL)payload isRichLink:(BOOL)link;
++ (BOOL)genmojiFileTransferShouldDisplayAsPermanentlyFailed:(id)failed;
++ (id)AuxGUIDFromFileTransferGUID:(id)d;
++ (id)guidByStrippingAuxPrefix:(id)prefix;
 + (id)whitelistedKeys;
-+ (int64_t)finalTransferStateForThumbnailMode:(int64_t)a3 success:(BOOL)a4;
-+ (int64_t)thumbnailModeForMode:(int64_t)a3 afterDownloadSuccess:(BOOL)a4;
++ (int64_t)finalTransferStateForThumbnailMode:(int64_t)mode success:(BOOL)success;
++ (int64_t)thumbnailModeForMode:(int64_t)mode afterDownloadSuccess:(BOOL)success;
 - (BOOL)_hasLegacyPreviewGenerationState;
 - (BOOL)_isMissingAndDownloadable;
-- (BOOL)_updateWithDictionaryRepresentation:(id)a3;
+- (BOOL)_updateWithDictionaryRepresentation:(id)representation;
 - (BOOL)canMarkPurgeable;
-- (BOOL)canMarkPurgeableIfIsRichLink:(BOOL)a3;
+- (BOOL)canMarkPurgeableIfIsRichLink:(BOOL)link;
 - (BOOL)existsAtLocalPath;
 - (BOOL)isAnimojiV2;
 - (BOOL)isAutoloopVideo;
@@ -41,14 +41,14 @@
 - (id)_auxVideoPathIfItExists;
 - (id)_dictionaryRepresentation;
 - (id)_dictionaryToSend;
-- (id)_initWithGUID:(id)a3 filename:(id)a4 isDirectory:(BOOL)a5 localURL:(id)a6 account:(id)a7 otherPerson:(id)a8 totalBytes:(unint64_t)a9 hfsType:(unsigned int)a10 hfsCreator:(unsigned int)a11 hfsFlags:(unsigned __int16)a12 isIncoming:(BOOL)a13;
+- (id)_initWithGUID:(id)d filename:(id)filename isDirectory:(BOOL)directory localURL:(id)l account:(id)account otherPerson:(id)person totalBytes:(unint64_t)bytes hfsType:(unsigned int)self0 hfsCreator:(unsigned int)self1 hfsFlags:(unsigned __int16)self2 isIncoming:(BOOL)self3;
 - (id)createAndPersistLivePhotoBundleIfNecessary;
 - (id)description;
 - (int64_t)_resolvedPreviewGenerationState;
-- (int64_t)finalTransferStateForSuccess:(BOOL)a3;
+- (int64_t)finalTransferStateForSuccess:(BOOL)success;
 - (int64_t)previewGenerationVersion;
 - (int64_t)thumbnailMode;
-- (int64_t)thumbnailModeAfterDownloadSuccess:(BOOL)a3;
+- (int64_t)thumbnailModeAfterDownloadSuccess:(BOOL)success;
 - (unint64_t)currentBytes;
 - (unint64_t)totalBytes;
 - (void)_calculateTypeInformation;
@@ -56,27 +56,27 @@
 - (void)_clearLegacyPreviewGenerationState;
 - (void)_migratePreviewGenerationState;
 - (void)_resetTransferStateIfAttachmentIsMissingAndDownloadable;
-- (void)_setAccount:(id)a3 otherPerson:(id)a4;
-- (void)_setAveragedTransferRate:(unint64_t)a3 lastAveragedInterval:(double)a4 lastAveragedBytes:(unint64_t)a5;
-- (void)_setCurrentBytes:(unint64_t)a3 totalBytes:(unint64_t)a4;
-- (void)_setDirectory:(BOOL)a3 hfsType:(unsigned int)a4 hfsCreator:(unsigned int)a5 hfsFlags:(unsigned __int16)a6;
-- (void)_setLocalPath:(id)a3;
-- (void)_setLocalURL:(id)a3;
+- (void)_setAccount:(id)account otherPerson:(id)person;
+- (void)_setAveragedTransferRate:(unint64_t)rate lastAveragedInterval:(double)interval lastAveragedBytes:(unint64_t)bytes;
+- (void)_setCurrentBytes:(unint64_t)bytes totalBytes:(unint64_t)totalBytes;
+- (void)_setDirectory:(BOOL)directory hfsType:(unsigned int)type hfsCreator:(unsigned int)creator hfsFlags:(unsigned __int16)flags;
+- (void)_setLocalPath:(id)path;
+- (void)_setLocalURL:(id)l;
 - (void)_setSandboxTokenForExportDownload;
-- (void)_setStartDate:(id)a3;
-- (void)_setTransferDataURL:(id)a3;
-- (void)_updateWithDictionaryRepresentationForWhitelistedKeys:(id)a3;
+- (void)_setStartDate:(id)date;
+- (void)_setTransferDataURL:(id)l;
+- (void)_updateWithDictionaryRepresentationForWhitelistedKeys:(id)keys;
 - (void)dealloc;
 - (void)fixInvalidTransferStateIfNeeded;
-- (void)setAdaptiveImageGlyphContentIdentifier:(id)a3;
-- (void)setIsGenmojiFallback:(BOOL)a3;
-- (void)setIsTemporaryBackwardCompatibilityAsset:(BOOL)a3;
-- (void)setPreviewGenerationVersion:(int64_t)a3;
-- (void)setRefreshDate:(id)a3;
-- (void)setShouldNotTranscribeAudio:(BOOL)a3;
-- (void)setThumbnailMode:(int64_t)a3;
-- (void)setTranscoderUserInfoIsGenmoji:(BOOL)a3;
-- (void)setTranscoderUserInfoObject:(id)a3 forKey:(id)a4;
+- (void)setAdaptiveImageGlyphContentIdentifier:(id)identifier;
+- (void)setIsGenmojiFallback:(BOOL)fallback;
+- (void)setIsTemporaryBackwardCompatibilityAsset:(BOOL)asset;
+- (void)setPreviewGenerationVersion:(int64_t)version;
+- (void)setRefreshDate:(id)date;
+- (void)setShouldNotTranscribeAudio:(BOOL)audio;
+- (void)setThumbnailMode:(int64_t)mode;
+- (void)setTranscoderUserInfoIsGenmoji:(BOOL)genmoji;
+- (void)setTranscoderUserInfoObject:(id)object forKey:(id)key;
 @end
 
 @implementation IMFileTransfer
@@ -84,17 +84,17 @@
 - (id)_dictionaryRepresentation
 {
   [(IMFileTransfer *)self _calculateTypeInformation];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = self->_guid;
   if (v4)
   {
-    CFDictionarySetValue(v3, @"IMFileTransferGUID", v4);
+    CFDictionarySetValue(dictionary, @"IMFileTransferGUID", v4);
   }
 
   v5 = self->_messageGUID;
   if (v5)
   {
-    CFDictionarySetValue(v3, @"IMFileTransferMessageGUID", v5);
+    CFDictionarySetValue(dictionary, @"IMFileTransferMessageGUID", v5);
   }
 
   if (self->_transferState)
@@ -102,7 +102,7 @@
     v6 = [MEMORY[0x1E696AD98] numberWithInteger:?];
     if (v6)
     {
-      CFDictionarySetValue(v3, @"IMFileTransferStateKey", v6);
+      CFDictionarySetValue(dictionary, @"IMFileTransferStateKey", v6);
     }
   }
 
@@ -111,32 +111,32 @@
     v7 = [MEMORY[0x1E696AD98] numberWithBool:1];
     if (v7)
     {
-      CFDictionarySetValue(v3, @"IMFileTransferIsIncomingKey", v7);
+      CFDictionarySetValue(dictionary, @"IMFileTransferIsIncomingKey", v7);
     }
   }
 
   v8 = self->_filename;
   if (v8)
   {
-    CFDictionarySetValue(v3, @"IMFileTransferFilenameKey", v8);
+    CFDictionarySetValue(dictionary, @"IMFileTransferFilenameKey", v8);
   }
 
   v9 = self->_mimeType;
   if (v9)
   {
-    CFDictionarySetValue(v3, @"IMFileTransferMIMETypeKey", v9);
+    CFDictionarySetValue(dictionary, @"IMFileTransferMIMETypeKey", v9);
   }
 
   v10 = self->_utiType;
   if (v10)
   {
-    CFDictionarySetValue(v3, @"IMFileTransferUTITypeKey", v10);
+    CFDictionarySetValue(dictionary, @"IMFileTransferUTITypeKey", v10);
   }
 
   v11 = self->_transferredFilename;
   if (v11)
   {
-    CFDictionarySetValue(v3, @"IMFileTransferTransferredFilenameKey", v11);
+    CFDictionarySetValue(dictionary, @"IMFileTransferTransferredFilenameKey", v11);
   }
 
   if (self->_hfsCreator)
@@ -144,7 +144,7 @@
     v12 = [MEMORY[0x1E696AD98] numberWithInteger:?];
     if (v12)
     {
-      CFDictionarySetValue(v3, @"IMFileTransferHFSCreatorKey", v12);
+      CFDictionarySetValue(dictionary, @"IMFileTransferHFSCreatorKey", v12);
     }
   }
 
@@ -153,7 +153,7 @@
     v13 = [MEMORY[0x1E696AD98] numberWithInteger:?];
     if (v13)
     {
-      CFDictionarySetValue(v3, @"IMFileTransferHFSTypeKey", v13);
+      CFDictionarySetValue(dictionary, @"IMFileTransferHFSTypeKey", v13);
     }
   }
 
@@ -162,134 +162,134 @@
     v14 = [MEMORY[0x1E696AD98] numberWithInteger:?];
     if (v14)
     {
-      CFDictionarySetValue(v3, @"IMFileTransferHFSFlagsKey", v14);
+      CFDictionarySetValue(dictionary, @"IMFileTransferHFSFlagsKey", v14);
     }
   }
 
   v15 = self->_localUserInfo;
   if (v15)
   {
-    CFDictionarySetValue(v3, @"IMFileTransferLocalUserInfoKey", v15);
+    CFDictionarySetValue(dictionary, @"IMFileTransferLocalUserInfoKey", v15);
   }
 
   v16 = self->_transcoderUserInfo;
   if (v16)
   {
-    CFDictionarySetValue(v3, @"sIMFileTransferTranscoderUserInfoKey", v16);
+    CFDictionarySetValue(dictionary, @"sIMFileTransferTranscoderUserInfoKey", v16);
   }
 
   v17 = self->_stickerUserInfo;
   if (v17)
   {
-    CFDictionarySetValue(v3, @"sIMFileTransferStickerUserInfoKey", v17);
+    CFDictionarySetValue(dictionary, @"sIMFileTransferStickerUserInfoKey", v17);
   }
 
   v18 = self->_attributionInfo;
   if (v18)
   {
-    CFDictionarySetValue(v3, @"sIMFileTransferAttributionInfoKey", v18);
+    CFDictionarySetValue(dictionary, @"sIMFileTransferAttributionInfoKey", v18);
   }
 
   v19 = self->_otherPerson;
   if (v19)
   {
-    CFDictionarySetValue(v3, @"IMFileTransferOtherPersonKey", v19);
+    CFDictionarySetValue(dictionary, @"IMFileTransferOtherPersonKey", v19);
   }
 
   v20 = self->_accountID;
   if (v20)
   {
-    CFDictionarySetValue(v3, @"IMFileTransferAccountKey", v20);
+    CFDictionarySetValue(dictionary, @"IMFileTransferAccountKey", v20);
   }
 
   v21 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_currentBytes];
   if (v21)
   {
-    CFDictionarySetValue(v3, @"IMFileTransferCurrentBytesKey", v21);
+    CFDictionarySetValue(dictionary, @"IMFileTransferCurrentBytesKey", v21);
   }
 
   v22 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_totalBytes];
   if (v22)
   {
-    CFDictionarySetValue(v3, @"IMFileTransferTotalBytesKey", v22);
+    CFDictionarySetValue(dictionary, @"IMFileTransferTotalBytesKey", v22);
   }
 
   v23 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_averageTransferRate];
   if (v23)
   {
-    CFDictionarySetValue(v3, @"IMFileTransferAverageRateKey", v23);
+    CFDictionarySetValue(dictionary, @"IMFileTransferAverageRateKey", v23);
   }
 
   v24 = [MEMORY[0x1E696AD98] numberWithBool:self->_auxStateWasDowngraded];
   if (v24)
   {
-    CFDictionarySetValue(v3, @"sIMFileTransferAuxStateWasDowngradedKey", v24);
+    CFDictionarySetValue(dictionary, @"sIMFileTransferAuxStateWasDowngradedKey", v24);
   }
 
   v25 = [MEMORY[0x1E696AD98] numberWithBool:self->_isAuxVideo];
   if (v25)
   {
-    CFDictionarySetValue(v3, @"sIMFileTransferIsAuxVideoKey", v25);
+    CFDictionarySetValue(dictionary, @"sIMFileTransferIsAuxVideoKey", v25);
   }
 
   v26 = [MEMORY[0x1E696AD98] numberWithBool:self->_isScreenshot];
   if (v26)
   {
-    CFDictionarySetValue(v3, @"sIMFileTransferIsScreenshotKey", v26);
+    CFDictionarySetValue(dictionary, @"sIMFileTransferIsScreenshotKey", v26);
   }
 
   v27 = self->_audioTranscriptionText;
   if (v27)
   {
-    CFDictionarySetValue(v3, @"sIMFileTransferAudioTranscriptionTextKey", v27);
+    CFDictionarySetValue(dictionary, @"sIMFileTransferAudioTranscriptionTextKey", v27);
   }
 
   v28 = self->_adaptiveImageGlyphContentIdentifier;
   if (v28)
   {
-    CFDictionarySetValue(v3, @"sIMFileTransferAdaptiveImageGlyphContentIdentifierKey", v28);
+    CFDictionarySetValue(dictionary, @"sIMFileTransferAdaptiveImageGlyphContentIdentifierKey", v28);
   }
 
   v29 = self->_adaptiveImageGlyphContentDescription;
   if (v29)
   {
-    CFDictionarySetValue(v3, @"sIMFileTransferAdaptiveImageGlyphContentDescriptionKey", v29);
+    CFDictionarySetValue(dictionary, @"sIMFileTransferAdaptiveImageGlyphContentDescriptionKey", v29);
   }
 
   v30 = [MEMORY[0x1E696AD98] numberWithBool:self->_isAuxImage];
   if (v30)
   {
-    CFDictionarySetValue(v3, @"sIMFileTransferIsAuxImageKey", v30);
+    CFDictionarySetValue(dictionary, @"sIMFileTransferIsAuxImageKey", v30);
   }
 
   v31 = [MEMORY[0x1E696AD98] numberWithBool:self->_isSticker];
   if (v31)
   {
-    CFDictionarySetValue(v3, @"sIMFileTransferIsStickerKey", v31);
+    CFDictionarySetValue(dictionary, @"sIMFileTransferIsStickerKey", v31);
   }
 
   v32 = [MEMORY[0x1E696AD98] numberWithBool:self->_hideAttachment];
   if (v32)
   {
-    CFDictionarySetValue(v3, @"sIMFileTransferHideAttachmentKey", v32);
+    CFDictionarySetValue(dictionary, @"sIMFileTransferHideAttachmentKey", v32);
   }
 
   v33 = [MEMORY[0x1E696AD98] numberWithBool:self->_cloudKitSyncState != 0];
   if (v33)
   {
-    CFDictionarySetValue(v3, @"sIMFileTransferCloudKitSyncStateKey", v33);
+    CFDictionarySetValue(dictionary, @"sIMFileTransferCloudKitSyncStateKey", v33);
   }
 
   v34 = [MEMORY[0x1E696AD98] numberWithInteger:self->_commSafetySensitive];
   if (v34)
   {
-    CFDictionarySetValue(v3, @"sIMFileTransferIsCommSafetySensitiveKey", v34);
+    CFDictionarySetValue(dictionary, @"sIMFileTransferIsCommSafetySensitiveKey", v34);
   }
 
   v35 = [MEMORY[0x1E696AD98] numberWithInteger:self->_previewGenerationState];
   if (v35)
   {
-    CFDictionarySetValue(v3, @"IMFileTransferPreviewGenerationStateKey", v35);
+    CFDictionarySetValue(dictionary, @"IMFileTransferPreviewGenerationStateKey", v35);
   }
 
   if (self->_isDirectory)
@@ -297,7 +297,7 @@
     v36 = [MEMORY[0x1E696AD98] numberWithBool:1];
     if (v36)
     {
-      CFDictionarySetValue(v3, @"IMFileTransferIsDirectoryKey", v36);
+      CFDictionarySetValue(dictionary, @"IMFileTransferIsDirectoryKey", v36);
     }
   }
 
@@ -306,7 +306,7 @@
     v37 = [MEMORY[0x1E696AD98] numberWithBool:1];
     if (v37)
     {
-      CFDictionarySetValue(v3, @"IMFileTransferShouldAttemptToResumeKey", v37);
+      CFDictionarySetValue(dictionary, @"IMFileTransferShouldAttemptToResumeKey", v37);
     }
   }
 
@@ -315,7 +315,7 @@
     v38 = [MEMORY[0x1E696AD98] numberWithBool:1];
     if (v38)
     {
-      CFDictionarySetValue(v3, @"IMFileTransferShouldForceArchive", v38);
+      CFDictionarySetValue(dictionary, @"IMFileTransferShouldForceArchive", v38);
     }
   }
 
@@ -324,14 +324,14 @@
     v39 = [MEMORY[0x1E696AD98] numberWithInteger:?];
     if (v39)
     {
-      CFDictionarySetValue(v3, @"IMFileTransferErrorReasonKey", v39);
+      CFDictionarySetValue(dictionary, @"IMFileTransferErrorReasonKey", v39);
     }
   }
 
   v40 = self->_errorDescription;
   if (v40)
   {
-    CFDictionarySetValue(v3, @"IMFileTransferErrorDescriptionKey", v40);
+    CFDictionarySetValue(dictionary, @"IMFileTransferErrorDescriptionKey", v40);
   }
 
   startDate = self->_startDate;
@@ -341,7 +341,7 @@
     v42 = [MEMORY[0x1E696AD98] numberWithDouble:?];
     if (v42)
     {
-      CFDictionarySetValue(v3, @"IMFileTransferStartDate", v42);
+      CFDictionarySetValue(dictionary, @"IMFileTransferStartDate", v42);
     }
   }
 
@@ -352,37 +352,37 @@
     v44 = [MEMORY[0x1E696AD98] numberWithDouble:?];
     if (v44)
     {
-      CFDictionarySetValue(v3, @"IMFileTransferCreatedDate", v44);
+      CFDictionarySetValue(dictionary, @"IMFileTransferCreatedDate", v44);
     }
   }
 
   transferDataURL = self->_transferDataURL;
   if (transferDataURL)
   {
-    v46 = [(NSURL *)transferDataURL absoluteString];
-    if (v46)
+    absoluteString = [(NSURL *)transferDataURL absoluteString];
+    if (absoluteString)
     {
-      CFDictionarySetValue(v3, @"IMFileTransferTransferDataURLKey", v46);
+      CFDictionarySetValue(dictionary, @"IMFileTransferTransferDataURLKey", absoluteString);
     }
   }
 
   localURL = self->_localURL;
   if (localURL)
   {
-    v48 = [(NSURL *)localURL absoluteString];
-    if (v48)
+    absoluteString2 = [(NSURL *)localURL absoluteString];
+    if (absoluteString2)
     {
-      CFDictionarySetValue(v3, @"IMFileTransferLocalURLKey", v48);
+      CFDictionarySetValue(dictionary, @"IMFileTransferLocalURLKey", absoluteString2);
     }
   }
 
   temporaryHighQualityLocalURL = self->_temporaryHighQualityLocalURL;
   if (temporaryHighQualityLocalURL)
   {
-    v50 = [(NSURL *)temporaryHighQualityLocalURL absoluteString];
-    if (v50)
+    absoluteString3 = [(NSURL *)temporaryHighQualityLocalURL absoluteString];
+    if (absoluteString3)
     {
-      CFDictionarySetValue(v3, @"IMFileTransferTemporaryHighQualityLocalURLKey", v50);
+      CFDictionarySetValue(dictionary, @"IMFileTransferTemporaryHighQualityLocalURLKey", absoluteString3);
     }
   }
 
@@ -390,28 +390,28 @@
   if (sandboxToken)
   {
     v52 = sandboxToken;
-    CFDictionarySetValue(v3, @"sIMFileTransferSandboxTokenKey", v52);
+    CFDictionarySetValue(dictionary, @"sIMFileTransferSandboxTokenKey", v52);
   }
 
   v53 = [MEMORY[0x1E696AD98] numberWithInteger:self->_updateReason];
   if (v53)
   {
-    CFDictionarySetValue(v3, @"IMFileTransferUpdateReasonKey", v53);
+    CFDictionarySetValue(dictionary, @"IMFileTransferUpdateReasonKey", v53);
   }
 
-  v54 = v3;
-  return v3;
+  v54 = dictionary;
+  return dictionary;
 }
 
 - (void)_calculateTypeInformation
 {
   if (!self->_utiType)
   {
-    v3 = [(NSString *)self->_filename pathExtension];
-    if ([v3 length])
+    pathExtension = [(NSString *)self->_filename pathExtension];
+    if ([pathExtension length])
     {
-      v4 = [MEMORY[0x1E69A60D8] defaultHFSFileManager];
-      v5 = [v4 UTITypeOfPath:self->_filename];
+      defaultHFSFileManager = [MEMORY[0x1E69A60D8] defaultHFSFileManager];
+      v5 = [defaultHFSFileManager UTITypeOfPath:self->_filename];
       utiType = self->_utiType;
       self->_utiType = v5;
     }
@@ -419,8 +419,8 @@
 
   if (!self->_mimeType)
   {
-    v7 = [MEMORY[0x1E69A60D8] defaultHFSFileManager];
-    v8 = [v7 MIMETypeOfPath:self->_filename];
+    defaultHFSFileManager2 = [MEMORY[0x1E69A60D8] defaultHFSFileManager];
+    v8 = [defaultHFSFileManager2 MIMETypeOfPath:self->_filename];
     mimeType = self->_mimeType;
     self->_mimeType = v8;
 
@@ -428,11 +428,11 @@
     {
       if (self->_utiType)
       {
-        v10 = [MEMORY[0x1E69A60D8] defaultHFSFileManager];
-        v14 = [v10 pathExtensionForUTIType:self->_utiType];
+        defaultHFSFileManager3 = [MEMORY[0x1E69A60D8] defaultHFSFileManager];
+        v14 = [defaultHFSFileManager3 pathExtensionForUTIType:self->_utiType];
 
-        v11 = [MEMORY[0x1E69A60D8] defaultHFSFileManager];
-        v12 = [v11 MIMETypeOfPathExtension:v14];
+        defaultHFSFileManager4 = [MEMORY[0x1E69A60D8] defaultHFSFileManager];
+        v12 = [defaultHFSFileManager4 MIMETypeOfPathExtension:v14];
         v13 = self->_mimeType;
         self->_mimeType = v12;
       }
@@ -544,27 +544,27 @@
   self->_commSafetySensitive = 0;
 }
 
-+ (BOOL)genmojiFileTransferShouldDisplayAsPermanentlyFailed:(id)a3
++ (BOOL)genmojiFileTransferShouldDisplayAsPermanentlyFailed:(id)failed
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  failedCopy = failed;
+  v4 = failedCopy;
+  if (!failedCopy)
   {
-    v5 = IMLogHandleForCategory("IMFileTransfer");
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    guid = IMLogHandleForCategory("IMFileTransfer");
+    if (os_log_type_enabled(guid, OS_LOG_TYPE_ERROR))
     {
-      sub_1A88C4724(v5);
+      sub_1A88C4724(guid);
     }
 
     goto LABEL_23;
   }
 
-  v5 = [v3 guid];
-  v6 = [v4 transferState];
+  guid = [failedCopy guid];
+  transferState = [v4 transferState];
   v7 = 0;
-  if (v6 <= 6)
+  if (transferState <= 6)
   {
-    if (v6 == 5)
+    if (transferState == 5)
     {
       if (([v4 existsAtLocalPath] & 1) == 0)
       {
@@ -580,7 +580,7 @@
       v7 = 0;
     }
 
-    else if (v6 == 6)
+    else if (transferState == 6)
     {
       v8 = IMLogHandleForCategory("IMFileTransfer");
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -594,7 +594,7 @@
 
   else
   {
-    switch(v6)
+    switch(transferState)
     {
       case 7:
         v8 = IMLogHandleForCategory("IMFileTransfer");
@@ -658,28 +658,28 @@ LABEL_23:
   [(IMFileTransfer *)&v3 dealloc];
 }
 
-+ (BOOL)_doesLocalURLRequireArchiving:(id)a3
++ (BOOL)_doesLocalURLRequireArchiving:(id)archiving
 {
-  v3 = [a3 path];
-  v4 = [v3 stringByAppendingPathComponent:@"Contents"];
+  path = [archiving path];
+  v4 = [path stringByAppendingPathComponent:@"Contents"];
   v5 = [v4 stringByAppendingPathComponent:@"MacOS"];
 
-  v6 = [v3 stringByAppendingPathComponent:@"Contents"];
+  v6 = [path stringByAppendingPathComponent:@"Contents"];
   v7 = [v6 stringByAppendingPathComponent:@"MacOS"];
 
-  v8 = [MEMORY[0x1E696AC08] defaultManager];
-  if ([v8 fileExistsAtPath:v5])
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  if ([defaultManager fileExistsAtPath:v5])
   {
   }
 
   else
   {
-    v9 = [MEMORY[0x1E696AC08] defaultManager];
-    v10 = [v9 fileExistsAtPath:v7];
+    defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+    v10 = [defaultManager2 fileExistsAtPath:v7];
 
     if ((v10 & 1) == 0)
     {
-      v11 = sub_1A870105C(v3, 0, &v13);
+      v11 = sub_1A870105C(path, 0, &v13);
       goto LABEL_6;
     }
   }
@@ -690,68 +690,68 @@ LABEL_6:
   return v11;
 }
 
-- (id)_initWithGUID:(id)a3 filename:(id)a4 isDirectory:(BOOL)a5 localURL:(id)a6 account:(id)a7 otherPerson:(id)a8 totalBytes:(unint64_t)a9 hfsType:(unsigned int)a10 hfsCreator:(unsigned int)a11 hfsFlags:(unsigned __int16)a12 isIncoming:(BOOL)a13
+- (id)_initWithGUID:(id)d filename:(id)filename isDirectory:(BOOL)directory localURL:(id)l account:(id)account otherPerson:(id)person totalBytes:(unint64_t)bytes hfsType:(unsigned int)self0 hfsCreator:(unsigned int)self1 hfsFlags:(unsigned __int16)self2 isIncoming:(BOOL)self3
 {
   v43 = *MEMORY[0x1E69E9840];
-  v19 = a3;
-  v20 = a4;
-  v21 = a6;
-  v22 = a7;
-  v23 = a8;
+  dCopy = d;
+  filenameCopy = filename;
+  lCopy = l;
+  accountCopy = account;
+  personCopy = person;
   v24 = [(IMFileTransfer *)self init];
   if (v24)
   {
-    v25 = [v19 im_lastPathComponent];
-    v38 = v22;
-    v26 = [v19 isEqualToString:v25];
+    im_lastPathComponent = [dCopy im_lastPathComponent];
+    v38 = accountCopy;
+    v26 = [dCopy isEqualToString:im_lastPathComponent];
 
     if (v26)
     {
-      v22 = v38;
+      accountCopy = v38;
     }
 
     else
     {
-      v22 = v38;
+      accountCopy = v38;
       if (IMOSLoggingEnabled())
       {
         v27 = OSLogHandleForIMFoundationCategory();
         if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
         {
-          [v19 im_lastPathComponent];
+          [dCopy im_lastPathComponent];
           *buf = 138412546;
-          v40 = v19;
+          v40 = dCopy;
           v42 = v41 = 2112;
           v37 = v42;
           _os_log_impl(&dword_1A85E5000, v27, OS_LOG_TYPE_INFO, "tried to init IMFileTransfer with guid that has path specifiers %@. using stripped guid instead %@", buf, 0x16u);
         }
       }
 
-      v28 = [v19 im_lastPathComponent];
+      im_lastPathComponent2 = [dCopy im_lastPathComponent];
 
-      v19 = v28;
+      dCopy = im_lastPathComponent2;
     }
 
-    objc_storeStrong(&v24->_guid, v19);
-    v29 = [v20 im_lastPathComponent];
+    objc_storeStrong(&v24->_guid, dCopy);
+    im_lastPathComponent3 = [filenameCopy im_lastPathComponent];
     filename = v24->_filename;
-    v24->_filename = v29;
+    v24->_filename = im_lastPathComponent3;
 
-    objc_storeStrong(&v24->_accountID, a7);
-    objc_storeStrong(&v24->_otherPerson, a8);
-    v31 = [MEMORY[0x1E695DF00] date];
+    objc_storeStrong(&v24->_accountID, account);
+    objc_storeStrong(&v24->_otherPerson, person);
+    date = [MEMORY[0x1E695DF00] date];
     createdDate = v24->_createdDate;
-    v24->_createdDate = v31;
+    v24->_createdDate = date;
 
-    v24->_isDirectory = a5;
-    v24->_hfsType = a10;
-    v24->_hfsCreator = a11;
-    v24->_hfsFlags = a12;
-    v24->_totalBytes = a9;
-    v24->_isIncoming = a13;
-    if ([v21 isFileURL])
+    v24->_isDirectory = directory;
+    v24->_hfsType = type;
+    v24->_hfsCreator = creator;
+    v24->_hfsFlags = flags;
+    v24->_totalBytes = bytes;
+    v24->_isIncoming = incoming;
+    if ([lCopy isFileURL])
     {
-      [(IMFileTransfer *)v24 _setLocalURL:v21];
+      [(IMFileTransfer *)v24 _setLocalURL:lCopy];
     }
 
     else if (IMOSLoggingEnabled())
@@ -760,7 +760,7 @@ LABEL_6:
       if (os_log_type_enabled(v33, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v40 = v21;
+        v40 = lCopy;
         _os_log_impl(&dword_1A85E5000, v33, OS_LOG_TYPE_INFO, "tried to init IMFileTransfer with non-local URL: %@", buf, 0xCu);
       }
     }
@@ -773,7 +773,7 @@ LABEL_6:
     v24->_adaptiveImageGlyphContentDescription = 0;
 
     v24->_hideAttachment = 0;
-    objc_storeStrong(&v24->_originalGUID, v19);
+    objc_storeStrong(&v24->_originalGUID, dCopy);
     v24->_commSafetySensitive = 0;
     v24->_updateReason = 0;
   }
@@ -781,34 +781,34 @@ LABEL_6:
   return v24;
 }
 
-- (void)_setAccount:(id)a3 otherPerson:(id)a4
+- (void)_setAccount:(id)account otherPerson:(id)person
 {
-  v10 = a3;
-  v7 = a4;
-  if (v10 && self->_accountID != v10)
+  accountCopy = account;
+  personCopy = person;
+  if (accountCopy && self->_accountID != accountCopy)
   {
-    objc_storeStrong(&self->_accountID, a3);
+    objc_storeStrong(&self->_accountID, account);
   }
 
-  if (v7)
+  if (personCopy)
   {
     otherPerson = self->_otherPerson;
     p_otherPerson = &self->_otherPerson;
-    if (otherPerson != v7)
+    if (otherPerson != personCopy)
     {
-      objc_storeStrong(p_otherPerson, a4);
+      objc_storeStrong(p_otherPerson, person);
     }
   }
 }
 
-- (void)_setStartDate:(id)a3
+- (void)_setStartDate:(id)date
 {
-  v5 = a3;
+  dateCopy = date;
   p_startDate = &self->_startDate;
-  if (self->_startDate != v5)
+  if (self->_startDate != dateCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_startDate, a3);
+    v8 = dateCopy;
+    objc_storeStrong(p_startDate, date);
     p_startDate = [(NSDate *)v8 timeIntervalSince1970];
     self->_lastAveragedInterval = v7;
   }
@@ -816,49 +816,49 @@ LABEL_6:
   MEMORY[0x1EEE66BB8](p_startDate);
 }
 
-- (void)_setCurrentBytes:(unint64_t)a3 totalBytes:(unint64_t)a4
+- (void)_setCurrentBytes:(unint64_t)bytes totalBytes:(unint64_t)totalBytes
 {
-  [(IMFileTransfer *)self setCurrentBytes:a3];
+  [(IMFileTransfer *)self setCurrentBytes:bytes];
 
   MEMORY[0x1EEE66B58](self, sel_setTotalBytes_);
 }
 
-- (void)_setAveragedTransferRate:(unint64_t)a3 lastAveragedInterval:(double)a4 lastAveragedBytes:(unint64_t)a5
+- (void)_setAveragedTransferRate:(unint64_t)rate lastAveragedInterval:(double)interval lastAveragedBytes:(unint64_t)bytes
 {
-  self->_averageTransferRate = a3;
-  self->_lastAveragedInterval = a4;
-  self->_lastAveragedBytes = a5;
+  self->_averageTransferRate = rate;
+  self->_lastAveragedInterval = interval;
+  self->_lastAveragedBytes = bytes;
 }
 
-- (void)_setDirectory:(BOOL)a3 hfsType:(unsigned int)a4 hfsCreator:(unsigned int)a5 hfsFlags:(unsigned __int16)a6
+- (void)_setDirectory:(BOOL)directory hfsType:(unsigned int)type hfsCreator:(unsigned int)creator hfsFlags:(unsigned __int16)flags
 {
-  self->_isDirectory = a3;
-  self->_hfsType = a4;
-  self->_hfsCreator = a5;
-  self->_hfsFlags = a6;
+  self->_isDirectory = directory;
+  self->_hfsType = type;
+  self->_hfsCreator = creator;
+  self->_hfsFlags = flags;
 }
 
-- (BOOL)_updateWithDictionaryRepresentation:(id)a3
+- (BOOL)_updateWithDictionaryRepresentation:(id)representation
 {
   v124 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  representationCopy = representation;
   if (self->_guid)
   {
-    v119 = [(IMFileTransfer *)self _dictionaryRepresentation];
+    _dictionaryRepresentation = [(IMFileTransfer *)self _dictionaryRepresentation];
   }
 
   else
   {
-    v119 = 0;
+    _dictionaryRepresentation = 0;
   }
 
   [(IMFileTransfer *)self _clear];
-  v5 = [v4 objectForKey:@"IMFileTransferGUID"];
+  v5 = [representationCopy objectForKey:@"IMFileTransferGUID"];
   v6 = v5;
   if (v5)
   {
-    v7 = [(NSURL *)v5 im_lastPathComponent];
-    v8 = [(NSURL *)v6 isEqualToString:v7];
+    im_lastPathComponent = [(NSURL *)v5 im_lastPathComponent];
+    v8 = [(NSURL *)v6 isEqualToString:im_lastPathComponent];
 
     if (v8)
     {
@@ -872,18 +872,18 @@ LABEL_6:
         v10 = OSLogHandleForIMFoundationCategory();
         if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
         {
-          v11 = [(NSURL *)v6 im_lastPathComponent];
+          im_lastPathComponent2 = [(NSURL *)v6 im_lastPathComponent];
           *buf = 138412546;
           v121 = v6;
           v122 = 2112;
-          v123 = v11;
+          v123 = im_lastPathComponent2;
           _os_log_impl(&dword_1A85E5000, v10, OS_LOG_TYPE_INFO, "tried to update IMFileTransfer with guid that has path specifiers %@. using stripped guid instead %@", buf, 0x16u);
         }
       }
 
-      v12 = [(NSURL *)v6 im_lastPathComponent];
+      im_lastPathComponent3 = [(NSURL *)v6 im_lastPathComponent];
 
-      v9 = v12;
+      v9 = im_lastPathComponent3;
     }
   }
 
@@ -894,12 +894,12 @@ LABEL_6:
 
   v115 = v9;
   objc_storeStrong(&self->_guid, v9);
-  v13 = [v4 objectForKey:@"IMFileTransferMessageGUID"];
+  v13 = [representationCopy objectForKey:@"IMFileTransferMessageGUID"];
   v14 = v13;
   if (v13)
   {
-    v15 = [(NSURL *)v13 im_lastPathComponent];
-    v16 = [(NSURL *)v14 isEqualToString:v15];
+    im_lastPathComponent4 = [(NSURL *)v13 im_lastPathComponent];
+    v16 = [(NSURL *)v14 isEqualToString:im_lastPathComponent4];
 
     if ((v16 & 1) == 0)
     {
@@ -908,118 +908,118 @@ LABEL_6:
         v17 = OSLogHandleForIMFoundationCategory();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
         {
-          v18 = [(NSURL *)v14 im_lastPathComponent];
+          im_lastPathComponent5 = [(NSURL *)v14 im_lastPathComponent];
           *buf = 138412546;
           v121 = v14;
           v122 = 2112;
-          v123 = v18;
+          v123 = im_lastPathComponent5;
           _os_log_impl(&dword_1A85E5000, v17, OS_LOG_TYPE_INFO, "tried to update IMFileTransfer with messageGuid that has path specifiers %@. using stripped message guid instead %@", buf, 0x16u);
         }
       }
 
-      v19 = [(NSURL *)v14 im_lastPathComponent];
+      im_lastPathComponent6 = [(NSURL *)v14 im_lastPathComponent];
 
-      v14 = v19;
+      v14 = im_lastPathComponent6;
     }
   }
 
   objc_storeStrong(&self->_messageGUID, v14);
-  v20 = [v4 objectForKey:@"IMFileTransferStateKey"];
+  v20 = [representationCopy objectForKey:@"IMFileTransferStateKey"];
   self->_transferState = [v20 integerValue];
 
-  v21 = [v4 objectForKey:@"IMFileTransferIsIncomingKey"];
+  v21 = [representationCopy objectForKey:@"IMFileTransferIsIncomingKey"];
   self->_isIncoming = [v21 BOOLValue];
 
-  v22 = [v4 objectForKey:@"IMFileTransferFilenameKey"];
-  v23 = [v22 im_lastPathComponent];
+  v22 = [representationCopy objectForKey:@"IMFileTransferFilenameKey"];
+  im_lastPathComponent7 = [v22 im_lastPathComponent];
   filename = self->_filename;
-  self->_filename = v23;
+  self->_filename = im_lastPathComponent7;
 
-  v25 = [v4 objectForKey:@"IMFileTransferTransferredFilenameKey"];
-  v26 = [v25 im_lastPathComponent];
+  v25 = [representationCopy objectForKey:@"IMFileTransferTransferredFilenameKey"];
+  im_lastPathComponent8 = [v25 im_lastPathComponent];
   transferredFilename = self->_transferredFilename;
-  self->_transferredFilename = v26;
+  self->_transferredFilename = im_lastPathComponent8;
 
-  v28 = [v4 objectForKey:@"IMFileTransferMIMETypeKey"];
+  v28 = [representationCopy objectForKey:@"IMFileTransferMIMETypeKey"];
   mimeType = self->_mimeType;
   self->_mimeType = v28;
 
-  v30 = [v4 objectForKey:@"IMFileTransferUTITypeKey"];
+  v30 = [representationCopy objectForKey:@"IMFileTransferUTITypeKey"];
   utiType = self->_utiType;
   self->_utiType = v30;
 
-  v32 = [v4 objectForKey:@"IMFileTransferHFSCreatorKey"];
+  v32 = [representationCopy objectForKey:@"IMFileTransferHFSCreatorKey"];
   self->_hfsCreator = [v32 integerValue];
 
-  v33 = [v4 objectForKey:@"IMFileTransferHFSTypeKey"];
+  v33 = [representationCopy objectForKey:@"IMFileTransferHFSTypeKey"];
   self->_hfsType = [v33 integerValue];
 
-  v34 = [v4 objectForKey:@"IMFileTransferHFSFlagsKey"];
+  v34 = [representationCopy objectForKey:@"IMFileTransferHFSFlagsKey"];
   self->_hfsFlags = [v34 integerValue];
 
-  v35 = [v4 objectForKey:@"IMFileTransferOtherPersonKey"];
+  v35 = [representationCopy objectForKey:@"IMFileTransferOtherPersonKey"];
   otherPerson = self->_otherPerson;
   self->_otherPerson = v35;
 
-  v37 = [v4 objectForKey:@"IMFileTransferAccountKey"];
+  v37 = [representationCopy objectForKey:@"IMFileTransferAccountKey"];
   accountID = self->_accountID;
   self->_accountID = v37;
 
-  v39 = [v4 objectForKey:@"IMFileTransferCurrentBytesKey"];
+  v39 = [representationCopy objectForKey:@"IMFileTransferCurrentBytesKey"];
   self->_currentBytes = [v39 unsignedLongLongValue];
 
-  v40 = [v4 objectForKey:@"IMFileTransferTotalBytesKey"];
+  v40 = [representationCopy objectForKey:@"IMFileTransferTotalBytesKey"];
   self->_totalBytes = [v40 unsignedLongLongValue];
 
-  v41 = [v4 objectForKey:@"IMFileTransferAverageRateKey"];
+  v41 = [representationCopy objectForKey:@"IMFileTransferAverageRateKey"];
   self->_averageTransferRate = [v41 unsignedLongLongValue];
 
-  v42 = [v4 objectForKey:@"IMFileTransferPreviewGenerationStateKey"];
+  v42 = [representationCopy objectForKey:@"IMFileTransferPreviewGenerationStateKey"];
   self->_previewGenerationState = [v42 unsignedLongLongValue];
 
-  v43 = [v4 objectForKey:@"IMFileTransferIsDirectoryKey"];
+  v43 = [representationCopy objectForKey:@"IMFileTransferIsDirectoryKey"];
   self->_isDirectory = [v43 BOOLValue];
 
-  v44 = [v4 objectForKey:@"IMFileTransferShouldAttemptToResumeKey"];
+  v44 = [representationCopy objectForKey:@"IMFileTransferShouldAttemptToResumeKey"];
   self->_shouldAttemptToResume = [v44 BOOLValue];
 
-  v45 = [v4 objectForKey:@"IMFileTransferShouldForceArchive"];
+  v45 = [representationCopy objectForKey:@"IMFileTransferShouldForceArchive"];
   self->_shouldForceArchive = [v45 BOOLValue];
 
-  v46 = [v4 objectForKey:@"IMFileTransferErrorReasonKey"];
+  v46 = [representationCopy objectForKey:@"IMFileTransferErrorReasonKey"];
   v118 = v46;
   if (v46)
   {
-    v47 = [v46 intValue];
+    intValue = [v46 intValue];
   }
 
   else
   {
-    v47 = 15;
+    intValue = 15;
     if (self->_transferState != 6)
     {
-      v47 = -1;
+      intValue = -1;
     }
   }
 
-  self->_error = v47;
-  v48 = [v4 objectForKey:{@"IMFileTransferErrorDescriptionKey", v115}];
+  self->_error = intValue;
+  v48 = [representationCopy objectForKey:{@"IMFileTransferErrorDescriptionKey", v115}];
   errorDescription = self->_errorDescription;
   self->_errorDescription = v48;
 
-  v50 = [v4 objectForKey:@"IMFileTransferLocalUserInfoKey"];
+  v50 = [representationCopy objectForKey:@"IMFileTransferLocalUserInfoKey"];
   localUserInfo = self->_localUserInfo;
   self->_localUserInfo = v50;
 
-  v52 = [v4 objectForKey:@"sIMFileTransferTranscoderUserInfoKey"];
+  v52 = [representationCopy objectForKey:@"sIMFileTransferTranscoderUserInfoKey"];
   transcoderUserInfo = self->_transcoderUserInfo;
   self->_transcoderUserInfo = v52;
 
-  v54 = [v4 objectForKey:@"sIMFileTransferStickerUserInfoKey"];
+  v54 = [representationCopy objectForKey:@"sIMFileTransferStickerUserInfoKey"];
   stickerUserInfo = self->_stickerUserInfo;
   self->_stickerUserInfo = v54;
 
-  v56 = [v4 objectForKey:@"sIMFileTransferAttributionInfoKey"];
+  v56 = [representationCopy objectForKey:@"sIMFileTransferAttributionInfoKey"];
   attributionInfo = self->_attributionInfo;
   self->_attributionInfo = v56;
 
@@ -1028,7 +1028,7 @@ LABEL_6:
     self->_error = 18;
   }
 
-  v58 = [v4 objectForKey:@"IMFileTransferStartDate"];
+  v58 = [representationCopy objectForKey:@"IMFileTransferStartDate"];
   v117 = v58;
   if (v58)
   {
@@ -1040,7 +1040,7 @@ LABEL_6:
   startDate = self->_startDate;
   self->_startDate = v58;
 
-  v61 = [v4 objectForKey:@"IMFileTransferCreatedDate"];
+  v61 = [representationCopy objectForKey:@"IMFileTransferCreatedDate"];
   v62 = v61;
   if (v61)
   {
@@ -1057,7 +1057,7 @@ LABEL_6:
   createdDate = self->_createdDate;
   self->_createdDate = v64;
 
-  v66 = [v4 objectForKey:@"IMFileTransferTransferDataURLKey"];
+  v66 = [representationCopy objectForKey:@"IMFileTransferTransferDataURLKey"];
   if (v66)
   {
     v67 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:v66];
@@ -1071,7 +1071,7 @@ LABEL_6:
   transferDataURL = self->_transferDataURL;
   self->_transferDataURL = v67;
 
-  v69 = [v4 objectForKey:@"IMFileTransferLocalURLKey"];
+  v69 = [representationCopy objectForKey:@"IMFileTransferLocalURLKey"];
   if (v69)
   {
     v70 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:v69];
@@ -1106,7 +1106,7 @@ LABEL_6:
     self->_localURL = 0;
   }
 
-  v74 = [v4 objectForKey:@"IMFileTransferTemporaryHighQualityLocalURLKey"];
+  v74 = [representationCopy objectForKey:@"IMFileTransferTemporaryHighQualityLocalURLKey"];
   if (v74)
   {
     v75 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:v74];
@@ -1143,130 +1143,130 @@ LABEL_6:
 
   if (!self->_localURL)
   {
-    v79 = [v4 objectForKey:@"IMFileTransferLocalPathKey"];
+    v79 = [representationCopy objectForKey:@"IMFileTransferLocalPathKey"];
     if (v79)
     {
       [(IMFileTransfer *)self _setLocalPath:v79];
     }
   }
 
-  v80 = [v4 objectForKey:@"sIMFileTransferAuxStateWasDowngradedKey"];
+  v80 = [representationCopy objectForKey:@"sIMFileTransferAuxStateWasDowngradedKey"];
   v81 = v80;
   if (v80)
   {
     if (self->_auxStateWasDowngraded)
     {
-      v82 = 1;
+      bOOLValue = 1;
     }
 
     else
     {
-      v82 = [v80 BOOLValue];
+      bOOLValue = [v80 BOOLValue];
     }
 
-    self->_auxStateWasDowngraded = v82;
+    self->_auxStateWasDowngraded = bOOLValue;
   }
 
-  v83 = [v4 objectForKey:@"sIMFileTransferIsAuxImageKey"];
+  v83 = [representationCopy objectForKey:@"sIMFileTransferIsAuxImageKey"];
 
   if (v83)
   {
-    v84 = [v4 objectForKey:@"sIMFileTransferIsAuxImageKey"];
-    v85 = [v84 BOOLValue];
+    v84 = [representationCopy objectForKey:@"sIMFileTransferIsAuxImageKey"];
+    bOOLValue2 = [v84 BOOLValue];
 
-    if ((v85 & 1) != 0 || self->_auxStateWasDowngraded)
+    if ((bOOLValue2 & 1) != 0 || self->_auxStateWasDowngraded)
     {
-      self->_isAuxImage = v85;
+      self->_isAuxImage = bOOLValue2;
     }
   }
 
-  v86 = [v4 objectForKey:@"sIMFileTransferIsAuxVideoKey"];
+  v86 = [representationCopy objectForKey:@"sIMFileTransferIsAuxVideoKey"];
 
   if (v86)
   {
-    v87 = [v4 objectForKey:@"sIMFileTransferIsAuxVideoKey"];
-    v88 = [v87 BOOLValue];
+    v87 = [representationCopy objectForKey:@"sIMFileTransferIsAuxVideoKey"];
+    bOOLValue3 = [v87 BOOLValue];
 
-    if ((v88 & 1) != 0 || self->_auxStateWasDowngraded)
+    if ((bOOLValue3 & 1) != 0 || self->_auxStateWasDowngraded)
     {
-      self->_isAuxVideo = v88;
+      self->_isAuxVideo = bOOLValue3;
     }
   }
 
-  v89 = [v4 objectForKey:@"sIMFileTransferIsScreenshotKey"];
+  v89 = [representationCopy objectForKey:@"sIMFileTransferIsScreenshotKey"];
 
   if (v89)
   {
-    v90 = [v4 objectForKey:@"sIMFileTransferIsScreenshotKey"];
+    v90 = [representationCopy objectForKey:@"sIMFileTransferIsScreenshotKey"];
     self->_isScreenshot = [v90 BOOLValue];
   }
 
-  v91 = [v4 objectForKey:@"sIMFileTransferAudioTranscriptionTextKey"];
+  v91 = [representationCopy objectForKey:@"sIMFileTransferAudioTranscriptionTextKey"];
 
   if (v91)
   {
-    v92 = [v4 objectForKey:@"sIMFileTransferAudioTranscriptionTextKey"];
+    v92 = [representationCopy objectForKey:@"sIMFileTransferAudioTranscriptionTextKey"];
     v93 = [v92 copy];
     audioTranscriptionText = self->_audioTranscriptionText;
     self->_audioTranscriptionText = v93;
   }
 
-  v95 = [v4 objectForKey:@"sIMFileTransferIsStickerKey"];
+  v95 = [representationCopy objectForKey:@"sIMFileTransferIsStickerKey"];
 
   if (v95)
   {
-    v96 = [v4 objectForKey:@"sIMFileTransferIsStickerKey"];
+    v96 = [representationCopy objectForKey:@"sIMFileTransferIsStickerKey"];
     self->_isSticker = [v96 BOOLValue];
   }
 
-  v97 = [v4 objectForKey:@"sIMFileTransferAdaptiveImageGlyphContentIdentifierKey"];
+  v97 = [representationCopy objectForKey:@"sIMFileTransferAdaptiveImageGlyphContentIdentifierKey"];
   adaptiveImageGlyphContentIdentifier = self->_adaptiveImageGlyphContentIdentifier;
   self->_adaptiveImageGlyphContentIdentifier = v97;
 
-  v99 = [v4 objectForKey:@"sIMFileTransferAdaptiveImageGlyphContentDescriptionKey"];
+  v99 = [representationCopy objectForKey:@"sIMFileTransferAdaptiveImageGlyphContentDescriptionKey"];
   adaptiveImageGlyphContentDescription = self->_adaptiveImageGlyphContentDescription;
   self->_adaptiveImageGlyphContentDescription = v99;
 
-  v101 = [v4 objectForKey:@"sIMFileTransferHideAttachmentKey"];
+  v101 = [representationCopy objectForKey:@"sIMFileTransferHideAttachmentKey"];
 
   if (v101)
   {
-    v102 = [v4 objectForKey:@"sIMFileTransferHideAttachmentKey"];
+    v102 = [representationCopy objectForKey:@"sIMFileTransferHideAttachmentKey"];
     self->_hideAttachment = [v102 BOOLValue];
   }
 
-  v103 = [v4 objectForKey:@"sIMFileTransferCloudKitSyncStateKey"];
+  v103 = [representationCopy objectForKey:@"sIMFileTransferCloudKitSyncStateKey"];
 
   if (v103)
   {
-    v104 = [v4 objectForKey:@"sIMFileTransferCloudKitSyncStateKey"];
+    v104 = [representationCopy objectForKey:@"sIMFileTransferCloudKitSyncStateKey"];
     self->_cloudKitSyncState = [v104 BOOLValue];
   }
 
-  v105 = [v4 objectForKey:@"sIMFileTransferIsCommSafetySensitiveKey"];
+  v105 = [representationCopy objectForKey:@"sIMFileTransferIsCommSafetySensitiveKey"];
 
   if (v105)
   {
-    v106 = [v4 objectForKey:@"sIMFileTransferIsCommSafetySensitiveKey"];
+    v106 = [representationCopy objectForKey:@"sIMFileTransferIsCommSafetySensitiveKey"];
     self->_commSafetySensitive = [v106 integerValue];
   }
 
-  v107 = [v4 objectForKey:@"IMFileTransferUpdateReasonKey"];
+  v107 = [representationCopy objectForKey:@"IMFileTransferUpdateReasonKey"];
 
   if (v107)
   {
-    v108 = [v4 objectForKey:@"IMFileTransferUpdateReasonKey"];
+    v108 = [representationCopy objectForKey:@"IMFileTransferUpdateReasonKey"];
     self->_updateReason = [v108 integerValue];
   }
 
-  v109 = [v4 objectForKey:@"sIMFileTransferSandboxTokenKey"];
+  v109 = [representationCopy objectForKey:@"sIMFileTransferSandboxTokenKey"];
   sandboxToken = self->_sandboxToken;
   self->_sandboxToken = v109;
 
-  if (v119)
+  if (_dictionaryRepresentation)
   {
-    v111 = [(IMFileTransfer *)self _dictionaryRepresentation];
-    v112 = [v119 isEqualToDictionary:v111];
+    _dictionaryRepresentation2 = [(IMFileTransfer *)self _dictionaryRepresentation];
+    v112 = [_dictionaryRepresentation isEqualToDictionary:_dictionaryRepresentation2];
 
     v113 = v112 ^ 1;
   }
@@ -1296,18 +1296,18 @@ LABEL_6:
   return v4;
 }
 
-- (void)_updateWithDictionaryRepresentationForWhitelistedKeys:(id)a3
+- (void)_updateWithDictionaryRepresentationForWhitelistedKeys:(id)keys
 {
   v4 = MEMORY[0x1E695DFA8];
-  v5 = a3;
-  v6 = [v5 allKeys];
-  v10 = [v4 setWithArray:v6];
+  keysCopy = keys;
+  allKeys = [keysCopy allKeys];
+  v10 = [v4 setWithArray:allKeys];
 
   v7 = +[IMFileTransfer whitelistedKeys];
   [v10 intersectSet:v7];
 
-  v8 = [v10 allObjects];
-  v9 = [v5 dictionaryWithValuesForKeys:v8];
+  allObjects = [v10 allObjects];
+  v9 = [keysCopy dictionaryWithValuesForKeys:allObjects];
 
   [(IMFileTransfer *)self _updateWithDictionaryRepresentation:v9];
 }
@@ -1315,12 +1315,12 @@ LABEL_6:
 - (id)_dictionaryToSend
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   guid = self->_guid;
   if (guid)
   {
-    CFDictionarySetValue(v3, @"IMFileTransferGUID", guid);
+    CFDictionarySetValue(dictionary, @"IMFileTransferGUID", guid);
   }
 
   messageGUID = self->_messageGUID;
@@ -1380,28 +1380,28 @@ LABEL_6:
   v3 = [(NSDictionary *)self->_localUserInfo objectForKey:@"refresh-date"];
   if (v3 && (-[IMFileTransfer createdDate](self, "createdDate"), v4 = objc_claimAutoreleasedReturnValue(), v5 = [v4 compare:v3], v4, v5 != 1))
   {
-    v6 = v3;
+    createdDate = v3;
   }
 
   else
   {
-    v6 = [(IMFileTransfer *)self createdDate];
+    createdDate = [(IMFileTransfer *)self createdDate];
   }
 
-  v7 = v6;
+  v7 = createdDate;
 
   return v7;
 }
 
 - (NSString)originalFilename
 {
-  v3 = [(IMFileTransfer *)self userInfo];
-  v4 = [v3 objectForKey:@"service"];
+  userInfo = [(IMFileTransfer *)self userInfo];
+  v4 = [userInfo objectForKey:@"service"];
 
   if (v4 && [(__CFString *)IMServiceNameRCS[0] isEqualToString:v4])
   {
-    v5 = [(IMFileTransfer *)self userInfo];
-    v6 = [v5 objectForKey:@"file"];
+    userInfo2 = [(IMFileTransfer *)self userInfo];
+    v6 = [userInfo2 objectForKey:@"file"];
 
     v7 = [v6 objectForKey:@"fileName"];
   }
@@ -1426,30 +1426,30 @@ LABEL_6:
 
 - (BOOL)isDownloadExpired
 {
-  v3 = [(IMFileTransfer *)self userInfo];
-  v4 = [v3 objectForKey:@"service"];
+  userInfo = [(IMFileTransfer *)self userInfo];
+  v4 = [userInfo objectForKey:@"service"];
 
   if (!v4 || ![(__CFString *)IMServiceNameRCS[0] isEqualToString:v4])
   {
-    v11 = [(IMFileTransfer *)self refreshDate];
-    if (!v11)
+    refreshDate = [(IMFileTransfer *)self refreshDate];
+    if (!refreshDate)
     {
-      v11 = [(IMFileTransfer *)self createdDate];
-      if (!v11)
+      refreshDate = [(IMFileTransfer *)self createdDate];
+      if (!refreshDate)
       {
         v12 = 1;
         goto LABEL_12;
       }
     }
 
-    v6 = v11;
+    v6 = refreshDate;
     v7 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:-2678400.0];
     v10 = [v7 compare:v6] == 1;
     goto LABEL_8;
   }
 
-  v5 = [(IMFileTransfer *)self userInfo];
-  v6 = [v5 objectForKey:@"file"];
+  userInfo2 = [(IMFileTransfer *)self userInfo];
+  v6 = [userInfo2 objectForKey:@"file"];
 
   v7 = [v6 objectForKey:@"validUntil"];
   if (v7)
@@ -1470,19 +1470,19 @@ LABEL_12:
   return v12;
 }
 
-- (void)setRefreshDate:(id)a3
+- (void)setRefreshDate:(id)date
 {
-  v9 = a3;
+  dateCopy = date;
   v4 = [(NSDictionary *)self->_localUserInfo objectForKey:@"refresh-date"];
-  v5 = IMSharedHelperAreObjectsLogicallySame(v4, v9);
+  v5 = IMSharedHelperAreObjectsLogicallySame(v4, dateCopy);
 
   if ((v5 & 1) == 0)
   {
     v6 = [(NSDictionary *)self->_localUserInfo mutableCopy];
     v7 = v6;
-    if (v9)
+    if (dateCopy)
     {
-      [(NSDictionary *)v6 setObject:v9 forKey:@"refresh-date"];
+      [(NSDictionary *)v6 setObject:dateCopy forKey:@"refresh-date"];
     }
 
     else
@@ -1497,9 +1497,9 @@ LABEL_12:
 
 - (NSString)displayName
 {
-  v3 = [MEMORY[0x1E69A60D8] defaultHFSFileManager];
-  v4 = [(IMFileTransfer *)self filename];
-  v5 = [v3 displayNameOfFileWithName:v4 hfsFlags:{-[IMFileTransfer hfsFlags](self, "hfsFlags")}];
+  defaultHFSFileManager = [MEMORY[0x1E69A60D8] defaultHFSFileManager];
+  filename = [(IMFileTransfer *)self filename];
+  v5 = [defaultHFSFileManager displayNameOfFileWithName:filename hfsFlags:{-[IMFileTransfer hfsFlags](self, "hfsFlags")}];
 
   return v5;
 }
@@ -1511,48 +1511,48 @@ LABEL_12:
     return 0;
   }
 
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
-  v5 = [(IMFileTransfer *)self localPath];
-  v6 = [v4 fileExistsAtPath:v5];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  localPath = [(IMFileTransfer *)self localPath];
+  v6 = [defaultManager fileExistsAtPath:localPath];
 
   return v6;
 }
 
 - (BOOL)thumbnailExistsAtLocalPath
 {
-  v3 = [(IMFileTransfer *)self isInThumbnailState];
-  if (v3)
+  isInThumbnailState = [(IMFileTransfer *)self isInThumbnailState];
+  if (isInThumbnailState)
   {
-    v4 = [MEMORY[0x1E696AC08] defaultManager];
-    v5 = [(IMFileTransfer *)self localPath];
-    v6 = [v4 fileExistsAtPath:v5];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    localPath = [(IMFileTransfer *)self localPath];
+    v6 = [defaultManager fileExistsAtPath:localPath];
 
-    LOBYTE(v3) = v6;
+    LOBYTE(isInThumbnailState) = v6;
   }
 
-  return v3;
+  return isInThumbnailState;
 }
 
 - (BOOL)isSticker
 {
-  v2 = [(IMFileTransfer *)self stickerUserInfo];
-  v3 = [v2 count] != 0;
+  stickerUserInfo = [(IMFileTransfer *)self stickerUserInfo];
+  v3 = [stickerUserInfo count] != 0;
 
   return v3;
 }
 
 - (BOOL)isContact
 {
-  v3 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-  v4 = [(IMFileTransfer *)self mimeType];
-  v5 = [v4 stringByTrimmingCharactersInSet:v3];
+  whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+  mimeType = [(IMFileTransfer *)self mimeType];
+  v5 = [mimeType stringByTrimmingCharactersInSet:whitespaceCharacterSet];
   v6 = [v5 length];
 
   if (v6)
   {
     v7 = *MEMORY[0x1E6963718];
-    v8 = [(IMFileTransfer *)self mimeType];
-    PreferredIdentifierForTag = UTTypeCreatePreferredIdentifierForTag(v7, v8, 0);
+    mimeType2 = [(IMFileTransfer *)self mimeType];
+    PreferredIdentifierForTag = UTTypeCreatePreferredIdentifierForTag(v7, mimeType2, 0);
 
     CFAutorelease(PreferredIdentifierForTag);
     IsVCard = IMUTTypeIsVCard(PreferredIdentifierForTag);
@@ -1568,42 +1568,42 @@ LABEL_12:
 
 - (BOOL)isAnimojiV2
 {
-  v2 = [(IMFileTransfer *)self transcoderUserInfo];
-  v3 = [v2 objectForKey:@"AVIsAnimojiV2"];
-  v4 = [v3 BOOLValue];
+  transcoderUserInfo = [(IMFileTransfer *)self transcoderUserInfo];
+  v3 = [transcoderUserInfo objectForKey:@"AVIsAnimojiV2"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)wantsAlphaRemoved
 {
-  v2 = [(IMFileTransfer *)self transcoderUserInfo];
-  v3 = [v2 objectForKey:@"AVIsRemoveAlpha"];
-  v4 = [v3 BOOLValue];
+  transcoderUserInfo = [(IMFileTransfer *)self transcoderUserInfo];
+  v3 = [transcoderUserInfo objectForKey:@"AVIsRemoveAlpha"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-- (void)setAdaptiveImageGlyphContentIdentifier:(id)a3
+- (void)setAdaptiveImageGlyphContentIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   p_adaptiveImageGlyphContentIdentifier = &self->_adaptiveImageGlyphContentIdentifier;
-  if (self->_adaptiveImageGlyphContentIdentifier != v5)
+  if (self->_adaptiveImageGlyphContentIdentifier != identifierCopy)
   {
-    objc_storeStrong(p_adaptiveImageGlyphContentIdentifier, a3);
+    objc_storeStrong(p_adaptiveImageGlyphContentIdentifier, identifier);
     p_adaptiveImageGlyphContentIdentifier = [(IMFileTransfer *)self setTranscoderUserInfoIsGenmoji:[(NSString *)self->_adaptiveImageGlyphContentIdentifier length]!= 0];
   }
 
   MEMORY[0x1EEE66BB8](p_adaptiveImageGlyphContentIdentifier);
 }
 
-- (void)setTranscoderUserInfoObject:(id)a3 forKey:(id)a4
+- (void)setTranscoderUserInfoObject:(id)object forKey:(id)key
 {
-  v13 = a3;
-  v6 = a4;
+  objectCopy = object;
+  keyCopy = key;
   v7 = self->_transcoderUserInfo;
   v8 = [(NSDictionary *)v7 objectForKeyedSubscript:@"isGenmoji"];
-  if (([v8 isEqual:v13] & 1) == 0)
+  if (([v8 isEqual:objectCopy] & 1) == 0)
   {
     if (v7)
     {
@@ -1616,14 +1616,14 @@ LABEL_12:
     }
 
     v10 = v9;
-    if (v13)
+    if (objectCopy)
     {
-      [v9 setObject:v13 forKeyedSubscript:v6];
+      [v9 setObject:objectCopy forKeyedSubscript:keyCopy];
     }
 
     else
     {
-      [v9 removeObjectForKey:v6];
+      [v9 removeObjectForKey:keyCopy];
     }
 
     v11 = [v10 copy];
@@ -1632,9 +1632,9 @@ LABEL_12:
   }
 }
 
-- (void)setTranscoderUserInfoIsGenmoji:(BOOL)a3
+- (void)setTranscoderUserInfoIsGenmoji:(BOOL)genmoji
 {
-  if (a3)
+  if (genmoji)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithBool:1];
     [(IMFileTransfer *)self setTranscoderUserInfoObject:v4 forKey:@"isGenmoji"];
@@ -1650,22 +1650,22 @@ LABEL_12:
 - (BOOL)isGenmojiFallback
 {
   v2 = [(NSDictionary *)self->_transcoderUserInfo objectForKeyedSubscript:@"isGenmojiFallback"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)isGenmoji
 {
   v2 = [(NSDictionary *)self->_transcoderUserInfo objectForKeyedSubscript:@"isGenmoji"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (void)setIsGenmojiFallback:(BOOL)a3
+- (void)setIsGenmojiFallback:(BOOL)fallback
 {
-  if (a3)
+  if (fallback)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithBool:1];
     [(IMFileTransfer *)self setTranscoderUserInfoObject:v4 forKey:@"isGenmojiFallback"];
@@ -1680,8 +1680,8 @@ LABEL_12:
 
 - (BOOL)_hasLegacyPreviewGenerationState
 {
-  v2 = [(IMFileTransfer *)self attributionInfo];
-  HasLegacyState = IMFileTransferAttributionInfoHasLegacyState(v2);
+  attributionInfo = [(IMFileTransfer *)self attributionInfo];
+  HasLegacyState = IMFileTransferAttributionInfoHasLegacyState(attributionInfo);
 
   return HasLegacyState;
 }
@@ -1689,9 +1689,9 @@ LABEL_12:
 - (int64_t)_resolvedPreviewGenerationState
 {
   previewGenerationState = self->_previewGenerationState;
-  v4 = [(IMFileTransfer *)self attributionInfo];
-  v5 = [(IMFileTransfer *)self type];
-  v6 = IMFileTransferPreviewGenerationStateWithStoredState(previewGenerationState, v4, v5);
+  attributionInfo = [(IMFileTransfer *)self attributionInfo];
+  type = [(IMFileTransfer *)self type];
+  v6 = IMFileTransferPreviewGenerationStateWithStoredState(previewGenerationState, attributionInfo, type);
 
   return v6;
 }
@@ -1704,9 +1704,9 @@ LABEL_12:
     v3 = IMFileTransferLogHandle();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
-      v4 = [(IMFileTransfer *)self guid];
+      guid = [(IMFileTransfer *)self guid];
       v5 = 138412290;
-      v6 = v4;
+      v6 = guid;
       _os_log_impl(&dword_1A85E5000, v3, OS_LOG_TYPE_DEFAULT, "Migrating transfer GUID %@ to new preview generation state storage", &v5, 0xCu);
     }
 
@@ -1719,8 +1719,8 @@ LABEL_12:
   v6[2] = *MEMORY[0x1E69E9840];
   if ([(IMFileTransfer *)self _hasLegacyPreviewGenerationState])
   {
-    v3 = [(IMFileTransfer *)self attributionInfo];
-    v4 = [v3 mutableCopy];
+    attributionInfo = [(IMFileTransfer *)self attributionInfo];
+    v4 = [attributionInfo mutableCopy];
 
     v6[0] = @"pgens";
     v6[1] = @"pgenp";
@@ -1733,17 +1733,17 @@ LABEL_12:
 
 - (int64_t)previewGenerationVersion
 {
-  v2 = [(IMFileTransfer *)self attributionInfo];
-  v3 = [v2 objectForKeyedSubscript:@"pgenv"];
+  attributionInfo = [(IMFileTransfer *)self attributionInfo];
+  v3 = [attributionInfo objectForKeyedSubscript:@"pgenv"];
 
-  v4 = [v3 integerValue];
-  return v4;
+  integerValue = [v3 integerValue];
+  return integerValue;
 }
 
-- (void)setPreviewGenerationVersion:(int64_t)a3
+- (void)setPreviewGenerationVersion:(int64_t)version
 {
-  v5 = [(IMFileTransfer *)self attributionInfo];
-  v6 = [v5 mutableCopy];
+  attributionInfo = [(IMFileTransfer *)self attributionInfo];
+  v6 = [attributionInfo mutableCopy];
   v7 = v6;
   if (v6)
   {
@@ -1757,7 +1757,7 @@ LABEL_12:
 
   v10 = v8;
 
-  v9 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v9 = [MEMORY[0x1E696AD98] numberWithInteger:version];
   [v10 setObject:v9 forKeyedSubscript:@"pgenv"];
 
   [(IMFileTransfer *)self setAttributionInfo:v10];
@@ -1766,40 +1766,40 @@ LABEL_12:
 - (BOOL)canMarkPurgeable
 {
   v37 = *MEMORY[0x1E69E9840];
-  v3 = [(IMFileTransfer *)self filename];
-  v4 = [v3 pathExtension];
+  filename = [(IMFileTransfer *)self filename];
+  pathExtension = [filename pathExtension];
 
-  v5 = [v4 im_isAudioMessageExtension];
-  v6 = [(IMFileTransfer *)self filename];
-  v7 = [v6 containsString:@"GroupPhotoImage"];
+  im_isAudioMessageExtension = [pathExtension im_isAudioMessageExtension];
+  filename2 = [(IMFileTransfer *)self filename];
+  v7 = [filename2 containsString:@"GroupPhotoImage"];
 
-  v8 = [v4 im_isPluginPayloadExtension];
-  v9 = [(IMFileTransfer *)self attributionInfo];
-  v10 = [v9 objectForKeyedSubscript:@"bundle-id"];
+  im_isPluginPayloadExtension = [pathExtension im_isPluginPayloadExtension];
+  attributionInfo = [(IMFileTransfer *)self attributionInfo];
+  v10 = [attributionInfo objectForKeyedSubscript:@"bundle-id"];
   v11 = [v10 hasPrefix:@"com.apple.messages.URLBalloonProvider"];
 
   LOBYTE(v22) = v11;
-  v12 = [objc_opt_class() canMarkPurgeableWithCKSyncState:-[IMFileTransfer cloudKitSyncState](self transferState:"cloudKitSyncState") isAudio:-[IMFileTransfer transferState](self isSticker:"transferState") isGroupPhoto:v5 isPluginPayload:-[IMFileTransfer isSticker](self isRichLink:{"isSticker"), v7, v8, v22}];
+  v12 = [objc_opt_class() canMarkPurgeableWithCKSyncState:-[IMFileTransfer cloudKitSyncState](self transferState:"cloudKitSyncState") isAudio:-[IMFileTransfer transferState](self isSticker:"transferState") isGroupPhoto:im_isAudioMessageExtension isPluginPayload:-[IMFileTransfer isSticker](self isRichLink:{"isSticker"), v7, im_isPluginPayloadExtension, v22}];
   v13 = IMOffloadingLogHandle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [(IMFileTransfer *)self guid];
-    v15 = [(IMFileTransfer *)self filename];
-    v16 = [(IMFileTransfer *)self cloudKitSyncState];
-    v17 = [(IMFileTransfer *)self transferState];
-    v18 = [(IMFileTransfer *)self hideAttachment];
-    v19 = [(IMFileTransfer *)self attributionInfo];
-    v20 = [v19 objectForKeyedSubscript:@"bundle-id"];
+    guid = [(IMFileTransfer *)self guid];
+    filename3 = [(IMFileTransfer *)self filename];
+    cloudKitSyncState = [(IMFileTransfer *)self cloudKitSyncState];
+    transferState = [(IMFileTransfer *)self transferState];
+    hideAttachment = [(IMFileTransfer *)self hideAttachment];
+    attributionInfo2 = [(IMFileTransfer *)self attributionInfo];
+    v20 = [attributionInfo2 objectForKeyedSubscript:@"bundle-id"];
     *buf = 138413826;
-    v24 = v14;
+    v24 = guid;
     v25 = 2112;
-    v26 = v15;
+    v26 = filename3;
     v27 = 2048;
-    v28 = v16;
+    v28 = cloudKitSyncState;
     v29 = 2048;
-    v30 = v17;
+    v30 = transferState;
     v31 = 1024;
-    v32 = v18;
+    v32 = hideAttachment;
     v33 = 2112;
     v34 = v20;
     v35 = 1024;
@@ -1810,33 +1810,33 @@ LABEL_12:
   return v12;
 }
 
-- (BOOL)canMarkPurgeableIfIsRichLink:(BOOL)a3
+- (BOOL)canMarkPurgeableIfIsRichLink:(BOOL)link
 {
-  v3 = a3;
-  v4 = [(IMFileTransfer *)self filename];
-  v5 = [v4 pathExtension];
+  linkCopy = link;
+  filename = [(IMFileTransfer *)self filename];
+  pathExtension = [filename pathExtension];
 
-  LOBYTE(v3) = [objc_opt_class() canMarkPurgeableIfIsRichLink:v3 isPluginPayload:{objc_msgSend(v5, "im_isPluginPayloadExtension")}];
-  return v3;
+  LOBYTE(linkCopy) = [objc_opt_class() canMarkPurgeableIfIsRichLink:linkCopy isPluginPayload:{objc_msgSend(pathExtension, "im_isPluginPayloadExtension")}];
+  return linkCopy;
 }
 
-+ (BOOL)canMarkPurgeableWithCKSyncState:(int64_t)a3 transferState:(int64_t)a4 isAudio:(BOOL)a5 isSticker:(BOOL)a6 isGroupPhoto:(BOOL)a7 isPluginPayload:(BOOL)a8 isRichLink:(BOOL)a9
++ (BOOL)canMarkPurgeableWithCKSyncState:(int64_t)state transferState:(int64_t)transferState isAudio:(BOOL)audio isSticker:(BOOL)sticker isGroupPhoto:(BOOL)photo isPluginPayload:(BOOL)payload isRichLink:(BOOL)link
 {
-  if (a3 != 1 || a4 != 5 || a5 || a6 || a7)
+  if (state != 1 || transferState != 5 || audio || sticker || photo)
   {
     return 0;
   }
 
   else
   {
-    return [a1 canMarkPurgeableIfIsRichLink:a9 isPluginPayload:a8];
+    return [self canMarkPurgeableIfIsRichLink:link isPluginPayload:payload];
   }
 }
 
 - (BOOL)isLocation
 {
-  v2 = [(IMFileTransfer *)self mimeType];
-  v3 = [v2 isEqualToString:@"text/x-vlocation"];
+  mimeType = [(IMFileTransfer *)self mimeType];
+  v3 = [mimeType isEqualToString:@"text/x-vlocation"];
 
   return v3;
 }
@@ -1848,8 +1848,8 @@ LABEL_12:
     return 0;
   }
 
-  v3 = [(IMFileTransfer *)self stickerUserInfo];
-  v4 = [v3 objectForKey:@"srecipe"];
+  stickerUserInfo = [(IMFileTransfer *)self stickerUserInfo];
+  v4 = [stickerUserInfo objectForKey:@"srecipe"];
   v5 = [v4 length] != 0;
 
   return v5;
@@ -1857,43 +1857,43 @@ LABEL_12:
 
 - (BOOL)isAutoloopVideo
 {
-  v2 = [(IMFileTransfer *)self transcoderUserInfo];
-  v3 = [v2 objectForKey:@"AVIsAutoloopVideo"];
-  v4 = [v3 BOOLValue];
+  transcoderUserInfo = [(IMFileTransfer *)self transcoderUserInfo];
+  v3 = [transcoderUserInfo objectForKey:@"AVIsAutoloopVideo"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)isOpusAudioMessage
 {
-  v2 = [(IMFileTransfer *)self transcoderUserInfo];
-  v3 = [v2 objectForKey:@"AVIsOpusAudioMessage"];
-  v4 = [v3 BOOLValue];
+  transcoderUserInfo = [(IMFileTransfer *)self transcoderUserInfo];
+  v3 = [transcoderUserInfo objectForKey:@"AVIsOpusAudioMessage"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)isHEVCWithAlphaVideo
 {
-  v2 = [(IMFileTransfer *)self transcoderUserInfo];
-  v3 = [v2 objectForKey:@"AVIsHEVCWithAlphaVideo"];
-  v4 = [v3 BOOLValue];
+  transcoderUserInfo = [(IMFileTransfer *)self transcoderUserInfo];
+  v3 = [transcoderUserInfo objectForKey:@"AVIsHEVCWithAlphaVideo"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)shouldNotTranscribeAudio
 {
-  v2 = [(IMFileTransfer *)self transcoderUserInfo];
-  v3 = [v2 objectForKey:@"DoNotTranscribeAudio"];
-  v4 = [v3 BOOLValue];
+  transcoderUserInfo = [(IMFileTransfer *)self transcoderUserInfo];
+  v3 = [transcoderUserInfo objectForKey:@"DoNotTranscribeAudio"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-- (void)setShouldNotTranscribeAudio:(BOOL)a3
+- (void)setShouldNotTranscribeAudio:(BOOL)audio
 {
-  if (a3)
+  if (audio)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithBool:1];
     [(IMFileTransfer *)self setTranscoderUserInfoObject:v4 forKey:@"DoNotTranscribeAudio"];
@@ -1908,25 +1908,25 @@ LABEL_12:
 
 - (int64_t)thumbnailMode
 {
-  v2 = [(IMFileTransfer *)self userInfo];
-  v3 = [v2 objectForKey:@"thumbMode"];
-  v4 = [v3 intValue];
+  userInfo = [(IMFileTransfer *)self userInfo];
+  v3 = [userInfo objectForKey:@"thumbMode"];
+  intValue = [v3 intValue];
 
-  return v4;
+  return intValue;
 }
 
-- (void)setThumbnailMode:(int64_t)a3
+- (void)setThumbnailMode:(int64_t)mode
 {
   v5 = [(NSDictionary *)self->_localUserInfo objectForKey:@"thumbMode"];
-  v6 = [v5 intValue];
+  intValue = [v5 intValue];
 
-  if (v6 != a3)
+  if (intValue != mode)
   {
     v7 = [(NSDictionary *)self->_localUserInfo mutableCopy];
     v8 = v7;
-    if (a3)
+    if (mode)
     {
-      v9 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+      v9 = [MEMORY[0x1E696AD98] numberWithInteger:mode];
       [(NSDictionary *)v8 setObject:v9 forKey:@"thumbMode"];
     }
 
@@ -1942,21 +1942,21 @@ LABEL_12:
 
 - (BOOL)isTemporaryBackwardCompatibilityAsset
 {
-  v2 = [(IMFileTransfer *)self userInfo];
-  v3 = [v2 objectForKey:@"isTemporaryBackwardCompatibilityAsset"];
-  v4 = [v3 BOOLValue];
+  userInfo = [(IMFileTransfer *)self userInfo];
+  v3 = [userInfo objectForKey:@"isTemporaryBackwardCompatibilityAsset"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-- (void)setIsTemporaryBackwardCompatibilityAsset:(BOOL)a3
+- (void)setIsTemporaryBackwardCompatibilityAsset:(BOOL)asset
 {
-  v3 = a3;
-  if ([(IMFileTransfer *)self isTemporaryBackwardCompatibilityAsset]!= a3)
+  assetCopy = asset;
+  if ([(IMFileTransfer *)self isTemporaryBackwardCompatibilityAsset]!= asset)
   {
     v5 = [(NSDictionary *)self->_localUserInfo mutableCopy];
     v6 = v5;
-    if (v3)
+    if (assetCopy)
     {
       v7 = [MEMORY[0x1E696AD98] numberWithBool:1];
       [(NSDictionary *)v6 setObject:v7 forKey:@"isTemporaryBackwardCompatibilityAsset"];
@@ -1972,75 +1972,75 @@ LABEL_12:
   }
 }
 
-- (void)_setTransferDataURL:(id)a3
+- (void)_setTransferDataURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   transferDataURL = self->_transferDataURL;
   p_transferDataURL = &self->_transferDataURL;
-  if (transferDataURL != v5)
+  if (transferDataURL != lCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_transferDataURL, a3);
-    v5 = v8;
+    v8 = lCopy;
+    objc_storeStrong(p_transferDataURL, l);
+    lCopy = v8;
   }
 }
 
 - (NSString)localPath
 {
-  v2 = [(IMFileTransfer *)self localURL];
-  v3 = [v2 path];
+  localURL = [(IMFileTransfer *)self localURL];
+  path = [localURL path];
 
-  return v3;
+  return path;
 }
 
 - (NSString)temporaryHighQualityLocalPath
 {
-  v2 = [(IMFileTransfer *)self temporaryHighQualityLocalURL];
-  v3 = [v2 path];
+  temporaryHighQualityLocalURL = [(IMFileTransfer *)self temporaryHighQualityLocalURL];
+  path = [temporaryHighQualityLocalURL path];
 
-  return v3;
+  return path;
 }
 
 - (NSString)permanentHighQualityLocalPath
 {
-  v2 = [(IMFileTransfer *)self localPath];
-  v3 = [v2 __im_filePathWithVariant:@"-hq"];
+  localPath = [(IMFileTransfer *)self localPath];
+  v3 = [localPath __im_filePathWithVariant:@"-hq"];
 
   return v3;
 }
 
-- (void)_setLocalPath:(id)a3
+- (void)_setLocalPath:(id)path
 {
-  if (a3)
+  if (path)
   {
-    v4 = [MEMORY[0x1E695DFF8] fileURLWithPath:a3 isDirectory:0];
+    v4 = [MEMORY[0x1E695DFF8] fileURLWithPath:path isDirectory:0];
     [(IMFileTransfer *)self _setLocalURL:v4];
   }
 }
 
-- (void)_setLocalURL:(id)a3
+- (void)_setLocalURL:(id)l
 {
-  v5 = a3;
-  v10 = v5;
-  if (self->_localURL != v5)
+  lCopy = l;
+  v10 = lCopy;
+  if (self->_localURL != lCopy)
   {
-    objc_storeStrong(&self->_localURL, a3);
-    v5 = v10;
+    objc_storeStrong(&self->_localURL, l);
+    lCopy = v10;
   }
 
-  if (v5)
+  if (lCopy)
   {
-    v6 = [(NSURL *)v5 path];
-    v7 = [v6 lastPathComponent];
+    path = [(NSURL *)lCopy path];
+    lastPathComponent = [path lastPathComponent];
 
     filename = self->_filename;
     p_filename = &self->_filename;
-    if (filename != v7)
+    if (filename != lastPathComponent)
     {
-      objc_storeStrong(p_filename, v7);
+      objc_storeStrong(p_filename, lastPathComponent);
     }
 
-    v5 = v10;
+    lCopy = v10;
   }
 }
 
@@ -2065,15 +2065,15 @@ LABEL_12:
   v15 = MEMORY[0x1E696AEC0];
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v14 = [(IMFileTransfer *)self transferState];
-  v5 = [(IMFileTransfer *)self cloudKitSyncState];
-  v6 = [(IMFileTransfer *)self localURL];
-  v7 = [(IMFileTransfer *)self transferredFilename];
-  v8 = [(IMFileTransfer *)self guid];
-  v9 = [(IMFileTransfer *)self error];
+  transferState = [(IMFileTransfer *)self transferState];
+  cloudKitSyncState = [(IMFileTransfer *)self cloudKitSyncState];
+  localURL = [(IMFileTransfer *)self localURL];
+  transferredFilename = [(IMFileTransfer *)self transferredFilename];
+  guid = [(IMFileTransfer *)self guid];
+  error = [(IMFileTransfer *)self error];
   totalBytes = self->_totalBytes;
-  v11 = [(IMFileTransfer *)self createdDate];
-  v12 = [v15 stringWithFormat:@"[%@: %p  state: %ld  sync state: %ld  local path: %@  transferred name: %@  guid: %@  error: %d  total bytes: %d  created: %@ commSafety: %d update reason: %ld]", v4, self, v14, v5, v6, v7, v8, v9, totalBytes, v11, -[IMFileTransfer commSafetySensitive](self, "commSafetySensitive"), -[IMFileTransfer updateReason](self, "updateReason")];
+  createdDate = [(IMFileTransfer *)self createdDate];
+  v12 = [v15 stringWithFormat:@"[%@: %p  state: %ld  sync state: %ld  local path: %@  transferred name: %@  guid: %@  error: %d  total bytes: %d  created: %@ commSafety: %d update reason: %ld]", v4, self, transferState, cloudKitSyncState, localURL, transferredFilename, guid, error, totalBytes, createdDate, -[IMFileTransfer commSafetySensitive](self, "commSafetySensitive"), -[IMFileTransfer updateReason](self, "updateReason")];
 
   return v12;
 }
@@ -2082,12 +2082,12 @@ LABEL_12:
 {
   if ([(IMFileTransfer *)self transferState]== 5 && !self->_totalBytes)
   {
-    v3 = [(IMFileTransfer *)self localPath];
-    if ([v3 length])
+    localPath = [(IMFileTransfer *)self localPath];
+    if ([localPath length])
     {
-      v4 = [MEMORY[0x1E69A60D8] defaultHFSFileManager];
+      defaultHFSFileManager = [MEMORY[0x1E69A60D8] defaultHFSFileManager];
       v8 = 0;
-      v5 = [v4 attributesOfItemAtPath:v3 error:&v8];
+      v5 = [defaultHFSFileManager attributesOfItemAtPath:localPath error:&v8];
       v6 = v8;
 
       self->_totalBytes = [v5 fileSize];
@@ -2107,12 +2107,12 @@ LABEL_12:
   return MEMORY[0x1EEE66B58](self, sel_totalBytes);
 }
 
-+ (id)AuxGUIDFromFileTransferGUID:(id)a3
++ (id)AuxGUIDFromFileTransferGUID:(id)d
 {
-  v3 = a3;
-  if (v3)
+  dCopy = d;
+  if (dCopy)
   {
-    v4 = [@"Aux_" stringByAppendingString:v3];
+    v4 = [@"Aux_" stringByAppendingString:dCopy];
   }
 
   else
@@ -2133,13 +2133,13 @@ LABEL_12:
   return v4;
 }
 
-+ (id)guidByStrippingAuxPrefix:(id)a3
++ (id)guidByStrippingAuxPrefix:(id)prefix
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  prefixCopy = prefix;
+  v4 = prefixCopy;
+  if (prefixCopy)
   {
-    v5 = [v3 stringByReplacingOccurrencesOfString:@"Aux_" withString:&stru_1F1BB91F0];
+    v5 = [prefixCopy stringByReplacingOccurrencesOfString:@"Aux_" withString:&stru_1F1BB91F0];
   }
 
   else
@@ -2160,39 +2160,39 @@ LABEL_12:
   return v5;
 }
 
-- (int64_t)finalTransferStateForSuccess:(BOOL)a3
+- (int64_t)finalTransferStateForSuccess:(BOOL)success
 {
   [(IMFileTransfer *)self thumbnailMode];
 
   return MEMORY[0x1EEE66B58](IMFileTransfer, sel_finalTransferStateForThumbnailMode_success_);
 }
 
-+ (int64_t)finalTransferStateForThumbnailMode:(int64_t)a3 success:(BOOL)a4
++ (int64_t)finalTransferStateForThumbnailMode:(int64_t)mode success:(BOOL)success
 {
   v4 = 9;
-  if (a4)
+  if (success)
   {
     v4 = 5;
   }
 
   v5 = 5;
-  if (!a4)
+  if (!success)
   {
     v5 = 0;
   }
 
   v6 = 9;
-  if (!a4)
+  if (!success)
   {
     v6 = 0;
   }
 
-  if (a3 == 1)
+  if (mode == 1)
   {
     v5 = v6;
   }
 
-  if (a3 == 2)
+  if (mode == 2)
   {
     return v4;
   }
@@ -2203,15 +2203,15 @@ LABEL_12:
   }
 }
 
-+ (int64_t)thumbnailModeForMode:(int64_t)a3 afterDownloadSuccess:(BOOL)a4
++ (int64_t)thumbnailModeForMode:(int64_t)mode afterDownloadSuccess:(BOOL)success
 {
-  v4 = a3 - 1;
-  if (a4)
+  v4 = mode - 1;
+  if (success)
   {
-    v4 = a3 == 1;
+    v4 = mode == 1;
   }
 
-  if (a3)
+  if (mode)
   {
     return v4;
   }
@@ -2222,7 +2222,7 @@ LABEL_12:
   }
 }
 
-- (int64_t)thumbnailModeAfterDownloadSuccess:(BOOL)a3
+- (int64_t)thumbnailModeAfterDownloadSuccess:(BOOL)success
 {
   [(IMFileTransfer *)self thumbnailMode];
 
@@ -2232,9 +2232,9 @@ LABEL_12:
 - (id)createAndPersistLivePhotoBundleIfNecessary
 {
   v55 = *MEMORY[0x1E69E9840];
-  v3 = [(IMFileTransfer *)self localPath];
-  v4 = [(IMFileTransfer *)self guid];
-  v5 = [v3 __im_livePhotoBundlePathWithGUID:v4];
+  localPath = [(IMFileTransfer *)self localPath];
+  guid = [(IMFileTransfer *)self guid];
+  v5 = [localPath __im_livePhotoBundlePathWithGUID:guid];
 
   if (v5)
   {
@@ -2245,24 +2245,24 @@ LABEL_12:
   v7 = IMFileTransferLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [(IMFileTransfer *)self guid];
+    guid2 = [(IMFileTransfer *)self guid];
     *buf = 138412290;
-    *&buf[4] = v8;
+    *&buf[4] = guid2;
     _os_log_impl(&dword_1A85E5000, v7, OS_LOG_TYPE_DEFAULT, "Live Photo bundle path didn't exist for transfer with GUID %@", buf, 0xCu);
   }
 
-  v9 = [(IMFileTransfer *)self localPath];
-  v10 = [(IMFileTransfer *)self _auxVideoPathIfItExists];
-  v11 = v10;
-  if (v9)
+  localPath2 = [(IMFileTransfer *)self localPath];
+  _auxVideoPathIfItExists = [(IMFileTransfer *)self _auxVideoPathIfItExists];
+  v11 = _auxVideoPathIfItExists;
+  if (localPath2)
   {
-    if (v10)
+    if (_auxVideoPathIfItExists)
     {
-      if (![v9 isEqualToString:v10])
+      if (![localPath2 isEqualToString:_auxVideoPathIfItExists])
       {
-        v12 = [v9 stringByDeletingLastPathComponent];
-        v17 = [(IMFileTransfer *)self guid];
-        v18 = [v12 stringByAppendingPathComponent:v17];
+        stringByDeletingLastPathComponent = [localPath2 stringByDeletingLastPathComponent];
+        guid3 = [(IMFileTransfer *)self guid];
+        v18 = [stringByDeletingLastPathComponent stringByAppendingPathComponent:guid3];
         v46 = 0;
         v47 = &v46;
         v48 = 0x2020000000;
@@ -2313,13 +2313,13 @@ LABEL_12:
         v26 = [v24 alloc];
         *buf = *MEMORY[0x1E6960C70];
         *&buf[16] = *(MEMORY[0x1E6960C70] + 16);
-        v27 = [v26 initWithPathToVideo:v11 pathToImage:v9 imageDisplayTime:buf pairingIdentifier:0];
+        v27 = [v26 initWithPathToVideo:v11 pathToImage:localPath2 imageDisplayTime:buf pairingIdentifier:0];
         v28 = IMFileTransferLogHandle();
         if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
         {
-          v29 = [(IMFileTransfer *)self guid];
+          guid4 = [(IMFileTransfer *)self guid];
           *buf = 138412546;
-          *&buf[4] = v29;
+          *&buf[4] = guid4;
           *&buf[12] = 2112;
           *&buf[14] = v23;
           _os_log_impl(&dword_1A85E5000, v28, OS_LOG_TYPE_DEFAULT, "Creating live photo bundle for transfer %@ at path %@", buf, 0x16u);
@@ -2334,9 +2334,9 @@ LABEL_12:
           v34 = IMFileTransferLogHandle();
           if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
           {
-            v35 = [(IMFileTransfer *)self guid];
+            guid5 = [(IMFileTransfer *)self guid];
             *buf = 138412546;
-            *&buf[4] = v35;
+            *&buf[4] = guid5;
             *&buf[12] = 2112;
             *&buf[14] = v23;
             _os_log_impl(&dword_1A85E5000, v34, OS_LOG_TYPE_DEFAULT, "Successfully created live photo bundle for transfer %@ at path %@", buf, 0x16u);
@@ -2357,9 +2357,9 @@ LABEL_12:
             v39 = IMLogHandleForCategory("IMFileTransfer");
             if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
             {
-              v41 = [(IMFileTransfer *)self guid];
+              guid6 = [(IMFileTransfer *)self guid];
               *buf = 138412802;
-              *&buf[4] = v41;
+              *&buf[4] = guid6;
               *&buf[12] = 2112;
               *&buf[14] = v30;
               *&buf[22] = 2112;
@@ -2376,9 +2376,9 @@ LABEL_12:
           v37 = IMLogHandleForCategory("IMFileTransfer");
           if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
           {
-            v40 = [(IMFileTransfer *)self guid];
+            guid7 = [(IMFileTransfer *)self guid];
             *buf = 138412802;
-            *&buf[4] = v40;
+            *&buf[4] = guid7;
             *&buf[12] = 2112;
             *&buf[14] = v23;
             *&buf[22] = 2112;
@@ -2392,40 +2392,40 @@ LABEL_12:
         goto LABEL_15;
       }
 
-      v12 = IMFileTransferLogHandle();
-      if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+      stringByDeletingLastPathComponent = IMFileTransferLogHandle();
+      if (os_log_type_enabled(stringByDeletingLastPathComponent, OS_LOG_TYPE_DEFAULT))
       {
-        v13 = [(IMFileTransfer *)self guid];
+        guid8 = [(IMFileTransfer *)self guid];
         *buf = 138412290;
-        *&buf[4] = v13;
-        _os_log_impl(&dword_1A85E5000, v12, OS_LOG_TYPE_DEFAULT, "Live Photo bundle could not be created because the image and video complement paths are the same for transfer with GUID %@", buf, 0xCu);
+        *&buf[4] = guid8;
+        _os_log_impl(&dword_1A85E5000, stringByDeletingLastPathComponent, OS_LOG_TYPE_DEFAULT, "Live Photo bundle could not be created because the image and video complement paths are the same for transfer with GUID %@", buf, 0xCu);
       }
     }
 
     else
     {
-      v12 = IMFileTransferLogHandle();
-      if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+      stringByDeletingLastPathComponent = IMFileTransferLogHandle();
+      if (os_log_type_enabled(stringByDeletingLastPathComponent, OS_LOG_TYPE_DEFAULT))
       {
-        v15 = [(IMFileTransfer *)self guid];
+        guid9 = [(IMFileTransfer *)self guid];
         *buf = 138412290;
-        *&buf[4] = v15;
-        _os_log_impl(&dword_1A85E5000, v12, OS_LOG_TYPE_DEFAULT, "Live Photo bundle could not be created because the video complement path didn't exist for transfer with GUID %@", buf, 0xCu);
+        *&buf[4] = guid9;
+        _os_log_impl(&dword_1A85E5000, stringByDeletingLastPathComponent, OS_LOG_TYPE_DEFAULT, "Live Photo bundle could not be created because the video complement path didn't exist for transfer with GUID %@", buf, 0xCu);
       }
     }
   }
 
   else
   {
-    v12 = IMFileTransferLogHandle();
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+    stringByDeletingLastPathComponent = IMFileTransferLogHandle();
+    if (os_log_type_enabled(stringByDeletingLastPathComponent, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [(IMFileTransfer *)self guid];
+      guid10 = [(IMFileTransfer *)self guid];
       *buf = 138412546;
-      *&buf[4] = v14;
+      *&buf[4] = guid10;
       *&buf[12] = 2112;
       *&buf[14] = v11;
-      _os_log_impl(&dword_1A85E5000, v12, OS_LOG_TYPE_DEFAULT, "Live Photo bundle could not be created because the image path didn't exist for transfer with GUID %@, videoComplementPath: %@", buf, 0x16u);
+      _os_log_impl(&dword_1A85E5000, stringByDeletingLastPathComponent, OS_LOG_TYPE_DEFAULT, "Live Photo bundle could not be created because the image path didn't exist for transfer with GUID %@, videoComplementPath: %@", buf, 0x16u);
     }
   }
 
@@ -2439,25 +2439,25 @@ LABEL_16:
 
 - (id)_auxVideoPathIfItExists
 {
-  v3 = [(IMFileTransfer *)self localPath];
-  v4 = [v3 stringByDeletingPathExtension];
+  localPath = [(IMFileTransfer *)self localPath];
+  stringByDeletingPathExtension = [localPath stringByDeletingPathExtension];
 
-  v5 = [v4 stringByAppendingPathExtension:@"MOV"];
+  v5 = [stringByDeletingPathExtension stringByAppendingPathExtension:@"MOV"];
 
-  v6 = [MEMORY[0x1E696AC08] defaultManager];
-  v7 = [v6 fileExistsAtPath:v5];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v7 = [defaultManager fileExistsAtPath:v5];
 
   if ((v7 & 1) == 0)
   {
-    v8 = [(IMFileTransfer *)self localPath];
-    v9 = [v8 stringByDeletingPathExtension];
+    localPath2 = [(IMFileTransfer *)self localPath];
+    stringByDeletingPathExtension2 = [localPath2 stringByDeletingPathExtension];
 
-    v5 = [v9 stringByAppendingPathExtension:@"mov"];
+    v5 = [stringByDeletingPathExtension2 stringByAppendingPathExtension:@"mov"];
 
-    v10 = [MEMORY[0x1E696AC08] defaultManager];
-    LOBYTE(v9) = [v10 fileExistsAtPath:v5];
+    defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+    LOBYTE(stringByDeletingPathExtension2) = [defaultManager2 fileExistsAtPath:v5];
 
-    if ((v9 & 1) == 0)
+    if ((stringByDeletingPathExtension2 & 1) == 0)
     {
 
       v5 = 0;
@@ -2469,14 +2469,14 @@ LABEL_16:
 
 - (BOOL)_isMissingAndDownloadable
 {
-  v3 = [(IMFileTransfer *)self _isCloudKitEnabled];
-  v4 = [(IMFileTransfer *)self existsAtLocalPath];
-  if (!v4 && !v3)
+  _isCloudKitEnabled = [(IMFileTransfer *)self _isCloudKitEnabled];
+  existsAtLocalPath = [(IMFileTransfer *)self existsAtLocalPath];
+  if (!existsAtLocalPath && !_isCloudKitEnabled)
   {
-    v4 = [(IMFileTransfer *)self isDownloadExpired];
+    existsAtLocalPath = [(IMFileTransfer *)self isDownloadExpired];
   }
 
-  return !v4;
+  return !existsAtLocalPath;
 }
 
 - (void)_resetTransferStateIfAttachmentIsMissingAndDownloadable
@@ -2489,7 +2489,7 @@ LABEL_16:
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
       v4 = 138412290;
-      v5 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1A85E5000, v3, OS_LOG_TYPE_DEFAULT, "File not on disk, but in cloudkit or MMCS. Resetting state: %@", &v4, 0xCu);
     }
   }
@@ -2498,9 +2498,9 @@ LABEL_16:
 - (void)_setSandboxTokenForExportDownload
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = [(IMFileTransfer *)self localPath];
-  v4 = [v3 stringByDeletingLastPathComponent];
-  [v4 UTF8String];
+  localPath = [(IMFileTransfer *)self localPath];
+  stringByDeletingLastPathComponent = [localPath stringByDeletingLastPathComponent];
+  [stringByDeletingLastPathComponent UTF8String];
   v5 = sandbox_extension_issue_file();
 
   if (v5)
@@ -2514,10 +2514,10 @@ LABEL_16:
     v7 = IMFileTransferLogHandle();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(IMFileTransfer *)self localPath];
+      localPath2 = [(IMFileTransfer *)self localPath];
       v9 = *__error();
       v10 = 138412546;
-      v11 = v8;
+      v11 = localPath2;
       v12 = 1024;
       v13 = v9;
       _os_log_impl(&dword_1A85E5000, v7, OS_LOG_TYPE_DEFAULT, "Failed to issue sandbox extension for path %@, errno %d", &v10, 0x12u);

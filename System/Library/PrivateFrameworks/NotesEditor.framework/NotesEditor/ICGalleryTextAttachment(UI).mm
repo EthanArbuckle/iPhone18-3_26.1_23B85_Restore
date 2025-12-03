@@ -9,27 +9,27 @@
 - (double)attachmentSizeForTextContainer:()UI
 {
   v4 = a3;
-  if ([a1 effectiveAttachmentViewSizeForTextContainer:v4] != 1)
+  if ([self effectiveAttachmentViewSizeForTextContainer:v4] != 1)
   {
-    [a1 availableWidthForTextContainer:v4];
+    [self availableWidthForTextContainer:v4];
     v14 = v13;
     if (ICInternalSettingsIsTextKit2Enabled())
     {
-      v15 = [v4 textLayoutManager];
+      textLayoutManager = [v4 textLayoutManager];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
       if (isKindOfClass)
       {
-        v7 = [v4 textLayoutManager];
+        textLayoutManager2 = [v4 textLayoutManager];
         objc_opt_class();
-        v17 = [a1 viewIdentifier];
-        v18 = [v7 existingAttachmentViewForIdentifier:v17];
+        viewIdentifier = [self viewIdentifier];
+        v18 = [textLayoutManager2 existingAttachmentViewForIdentifier:viewIdentifier];
         v10 = ICDynamicCast();
 
 LABEL_12:
-        v28 = [a1 attachment];
-        [ICGalleryAttachmentView sizeOfViewForAttachment:v28 textViewContentWidth:v10 existingView:v14];
+        attachment = [self attachment];
+        [ICGalleryAttachmentView sizeOfViewForAttachment:attachment textViewContentWidth:v10 existingView:v14];
         v12 = v29;
 
         goto LABEL_13;
@@ -38,18 +38,18 @@ LABEL_12:
 
     else
     {
-      v24 = [v4 layoutManager];
+      layoutManager = [v4 layoutManager];
       objc_opt_class();
       v25 = objc_opt_isKindOfClass();
 
       if (v25)
       {
         objc_opt_class();
-        v26 = [v4 layoutManager];
-        v7 = ICCheckedDynamicCast();
+        layoutManager2 = [v4 layoutManager];
+        textLayoutManager2 = ICCheckedDynamicCast();
 
         objc_opt_class();
-        v27 = [v7 viewForTextAttachmentNoCreate:a1];
+        v27 = [textLayoutManager2 viewForTextAttachmentNoCreate:self];
         v10 = ICDynamicCast();
 
         goto LABEL_12;
@@ -57,25 +57,25 @@ LABEL_12:
     }
 
     v31 = MEMORY[0x277D36798];
-    v7 = [a1 attachment];
-    [v31 sizeOfViewForAttachment:v7 textViewContentWidth:v14];
+    textLayoutManager2 = [self attachment];
+    [v31 sizeOfViewForAttachment:textLayoutManager2 textViewContentWidth:v14];
     goto LABEL_16;
   }
 
   if (!ICInternalSettingsIsTextKit2Enabled())
   {
-    v19 = [v4 layoutManager];
+    layoutManager3 = [v4 layoutManager];
     objc_opt_class();
     v20 = objc_opt_isKindOfClass();
 
     if (v20)
     {
       objc_opt_class();
-      v21 = [v4 layoutManager];
-      v22 = [a1 viewForLayoutManager:v21];
-      v7 = ICCheckedDynamicCast();
+      layoutManager4 = [v4 layoutManager];
+      v22 = [self viewForLayoutManager:layoutManager4];
+      textLayoutManager2 = ICCheckedDynamicCast();
 
-      [v7 attachmentSizeForTextContainer:v4];
+      [textLayoutManager2 attachmentSizeForTextContainer:v4];
 LABEL_16:
       v12 = v23;
       goto LABEL_17;
@@ -83,12 +83,12 @@ LABEL_16:
 
 LABEL_14:
     v30 = MEMORY[0x277D366A0];
-    v7 = [a1 attachment];
-    [v30 sizeForAttachment:v7 usesSmallSize:1];
+    textLayoutManager2 = [self attachment];
+    [v30 sizeForAttachment:textLayoutManager2 usesSmallSize:1];
     goto LABEL_16;
   }
 
-  v5 = [v4 textLayoutManager];
+  textLayoutManager3 = [v4 textLayoutManager];
   objc_opt_class();
   v6 = objc_opt_isKindOfClass();
 
@@ -97,10 +97,10 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  v7 = [v4 textLayoutManager];
+  textLayoutManager2 = [v4 textLayoutManager];
   objc_opt_class();
-  v8 = [a1 viewIdentifier];
-  v9 = [v7 existingAttachmentViewForIdentifier:v8];
+  viewIdentifier2 = [self viewIdentifier];
+  v9 = [textLayoutManager2 existingAttachmentViewForIdentifier:viewIdentifier2];
   v10 = ICCheckedDynamicCast();
 
   [v10 attachmentSizeForTextContainer:v4];
@@ -113,7 +113,7 @@ LABEL_17:
 
 - (id)attachmentViewClassForTextContainer:()UI
 {
-  [a1 effectiveAttachmentViewSizeForTextContainer:?];
+  [self effectiveAttachmentViewSizeForTextContainer:?];
   v1 = objc_opt_class();
 
   return v1;

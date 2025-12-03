@@ -1,21 +1,21 @@
 @interface BAAgentSystemConnection
-- (BAAgentSystemConnection)initWithNSXPCConnection:(id)a3 error:(id *)a4;
+- (BAAgentSystemConnection)initWithNSXPCConnection:(id)connection error:(id *)error;
 - (NSString)debugDescription;
-- (void)applicationEventPerformedWithDescriptor:(id)a3 completionHandler:(id)a4;
-- (void)applicationPrepareWithDescriptor:(id)a3 completionHandler:(id)a4;
-- (void)applicationShouldTriggerPeriodicWithIdentifier:(id)a3 bundleURLPath:(id)a4 completionHandler:(id)a5;
-- (void)reportProgressForIdentifier:(id)a3 progressInfo:(id)a4;
-- (void)runDebugCommand:(id)a3 reply:(id)a4;
-- (void)updateAppStoreProgressObservationWithConfiguration:(id)a3 completionHandler:(id)a4;
+- (void)applicationEventPerformedWithDescriptor:(id)descriptor completionHandler:(id)handler;
+- (void)applicationPrepareWithDescriptor:(id)descriptor completionHandler:(id)handler;
+- (void)applicationShouldTriggerPeriodicWithIdentifier:(id)identifier bundleURLPath:(id)path completionHandler:(id)handler;
+- (void)reportProgressForIdentifier:(id)identifier progressInfo:(id)info;
+- (void)runDebugCommand:(id)command reply:(id)reply;
+- (void)updateAppStoreProgressObservationWithConfiguration:(id)configuration completionHandler:(id)handler;
 @end
 
 @implementation BAAgentSystemConnection
 
-- (BAAgentSystemConnection)initWithNSXPCConnection:(id)a3 error:(id *)a4
+- (BAAgentSystemConnection)initWithNSXPCConnection:(id)connection error:(id *)error
 {
   v12.receiver = self;
   v12.super_class = BAAgentSystemConnection;
-  v4 = [(BAAgentConnection *)&v12 initWithNSXPCConnection:a3 error:a4];
+  v4 = [(BAAgentConnection *)&v12 initWithNSXPCConnection:connection error:error];
   v5 = v4;
   if (v4)
   {
@@ -25,78 +25,78 @@
     v7 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___BAAgentSystemXPCProtocol];
     [v7 setClass:objc_opt_class() forSelector:"applicationPrepareWithDescriptor:completionHandler:" argumentIndex:0 ofReply:0];
     [v7 setClass:objc_opt_class() forSelector:"applicationEventPerformedWithDescriptor:completionHandler:" argumentIndex:0 ofReply:0];
-    v8 = [(BAAgentConnection *)v5 connection];
-    [v8 setRemoteObjectInterface:v6];
+    connection = [(BAAgentConnection *)v5 connection];
+    [connection setRemoteObjectInterface:v6];
 
-    v9 = [(BAAgentConnection *)v5 connection];
-    [v9 setExportedInterface:v7];
+    connection2 = [(BAAgentConnection *)v5 connection];
+    [connection2 setExportedInterface:v7];
 
-    v10 = [(BAAgentConnection *)v5 connection];
-    [v10 setExportedObject:v5];
+    connection3 = [(BAAgentConnection *)v5 connection];
+    [connection3 setExportedObject:v5];
   }
 
   return v5;
 }
 
-- (void)applicationPrepareWithDescriptor:(id)a3 completionHandler:(id)a4
+- (void)applicationPrepareWithDescriptor:(id)descriptor completionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 appBundleIdentifier];
-  v8 = [v7 _baassets_validUTI];
+  descriptorCopy = descriptor;
+  handlerCopy = handler;
+  appBundleIdentifier = [descriptorCopy appBundleIdentifier];
+  _baassets_validUTI = [appBundleIdentifier _baassets_validUTI];
 
-  if (v8 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  if (_baassets_validUTI && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v9 = +[BAAgentCore sharedCore];
-    [v9 applicationPrepareWithDescriptor:v5];
+    [v9 applicationPrepareWithDescriptor:descriptorCopy];
 
-    v6[2](v6, 1, 0);
+    handlerCopy[2](handlerCopy, 1, 0);
   }
 
   else
   {
     v14 = NSLocalizedDescriptionKey;
-    v10 = [v5 appBundleIdentifier];
-    v11 = [NSString stringWithFormat:@"Invalid application identifier supplied: %@", v10];
+    appBundleIdentifier2 = [descriptorCopy appBundleIdentifier];
+    v11 = [NSString stringWithFormat:@"Invalid application identifier supplied: %@", appBundleIdentifier2];
     v15 = v11;
     v12 = [NSDictionary dictionaryWithObjects:&v15 forKeys:&v14 count:1];
 
     v13 = [NSError errorWithDomain:@"BAAgentSystemConnectionErrorDomain" code:1 userInfo:v12];
-    (v6)[2](v6, 0, v13);
+    (handlerCopy)[2](handlerCopy, 0, v13);
   }
 }
 
-- (void)applicationEventPerformedWithDescriptor:(id)a3 completionHandler:(id)a4
+- (void)applicationEventPerformedWithDescriptor:(id)descriptor completionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 appBundleIdentifier];
-  v8 = [v7 _baassets_validUTI];
+  descriptorCopy = descriptor;
+  handlerCopy = handler;
+  appBundleIdentifier = [descriptorCopy appBundleIdentifier];
+  _baassets_validUTI = [appBundleIdentifier _baassets_validUTI];
 
-  if (v8)
+  if (_baassets_validUTI)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      if ([v5 automaticInstall] && objc_msgSend(v5, "eventType") == 10)
+      if ([descriptorCopy automaticInstall] && objc_msgSend(descriptorCopy, "eventType") == 10)
       {
         v9 = sub_10001060C();
         if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543362;
-          v29 = v8;
+          v29 = _baassets_validUTI;
           _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "App Store sent an [Installing] event during an automatic install for: (%{public}@). Dropping event...", buf, 0xCu);
         }
 
         goto LABEL_28;
       }
 
-      v14 = [v5 eventType];
-      if (v14 > 19)
+      eventType = [descriptorCopy eventType];
+      if (eventType > 19)
       {
-        if (v14 <= 21)
+        if (eventType <= 21)
         {
-          if (v14 == 20)
+          if (eventType == 20)
           {
             v15 = 4;
           }
@@ -109,9 +109,9 @@
           goto LABEL_25;
         }
 
-        if (v14 != 22)
+        if (eventType != 22)
         {
-          if (v14 == 30)
+          if (eventType == 30)
           {
             v15 = 6;
             goto LABEL_25;
@@ -121,21 +121,21 @@
         }
 
         v9 = +[BAAgentCore sharedCore];
-        v16 = [v5 appBundleIdentifier];
-        -[NSObject applicationInstallCanceledWithIdentifier:userInitiated:](v9, "applicationInstallCanceledWithIdentifier:userInitiated:", v16, [v5 userInitiated]);
+        appBundleIdentifier2 = [descriptorCopy appBundleIdentifier];
+        -[NSObject applicationInstallCanceledWithIdentifier:userInitiated:](v9, "applicationInstallCanceledWithIdentifier:userInitiated:", appBundleIdentifier2, [descriptorCopy userInitiated]);
       }
 
       else
       {
-        if (v14 > 10)
+        if (eventType > 10)
         {
-          if (v14 == 11)
+          if (eventType == 11)
           {
             v15 = 2;
             goto LABEL_25;
           }
 
-          if (v14 == 12)
+          if (eventType == 12)
           {
             v15 = 3;
             goto LABEL_25;
@@ -143,31 +143,31 @@
 
 LABEL_31:
           v26 = NSLocalizedDescriptionKey;
-          v21 = [v5 eventType];
-          v22 = [v5 appBundleIdentifier];
-          v23 = [NSString stringWithFormat:@"Invalid eventType supplied (%lu) for: %@", v21, v22];
+          eventType2 = [descriptorCopy eventType];
+          appBundleIdentifier3 = [descriptorCopy appBundleIdentifier];
+          v23 = [NSString stringWithFormat:@"Invalid eventType supplied (%lu) for: %@", eventType2, appBundleIdentifier3];
           v27 = v23;
           v24 = [NSDictionary dictionaryWithObjects:&v27 forKeys:&v26 count:1];
 
           v25 = [NSError errorWithDomain:@"BAAgentSystemConnectionErrorDomain" code:2 userInfo:v24];
-          v6[2](v6, 0, v25);
+          handlerCopy[2](handlerCopy, 0, v25);
 
           goto LABEL_30;
         }
 
-        if (v14 != 5)
+        if (eventType != 5)
         {
-          if (v14 == 10)
+          if (eventType == 10)
           {
             v15 = 1;
 LABEL_25:
             v18 = +[BAAgentCore sharedCore];
-            v19 = [v5 appBundleIdentifier];
-            v20 = [v5 appBundleURL];
-            [v18 handleApplicationEvent:v15 identifier:v19 bundleURLPath:v20 userInitiated:{objc_msgSend(v5, "userInitiated")}];
+            appBundleIdentifier4 = [descriptorCopy appBundleIdentifier];
+            appBundleURL = [descriptorCopy appBundleURL];
+            [v18 handleApplicationEvent:v15 identifier:appBundleIdentifier4 bundleURLPath:appBundleURL userInitiated:{objc_msgSend(descriptorCopy, "userInitiated")}];
 
 LABEL_29:
-            v6[2](v6, 1, 0);
+            handlerCopy[2](handlerCopy, 1, 0);
             goto LABEL_30;
           }
 
@@ -175,9 +175,9 @@ LABEL_29:
         }
 
         v9 = +[BAAgentCore sharedCore];
-        v16 = [v5 appBundleIdentifier];
-        v17 = [v5 appBundleURL];
-        -[NSObject applicationPlaceholderReadyWithIdentifier:placeholderBundleURL:userInitiated:](v9, "applicationPlaceholderReadyWithIdentifier:placeholderBundleURL:userInitiated:", v16, v17, [v5 userInitiated]);
+        appBundleIdentifier2 = [descriptorCopy appBundleIdentifier];
+        appBundleURL2 = [descriptorCopy appBundleURL];
+        -[NSObject applicationPlaceholderReadyWithIdentifier:placeholderBundleURL:userInitiated:](v9, "applicationPlaceholderReadyWithIdentifier:placeholderBundleURL:userInitiated:", appBundleIdentifier2, appBundleURL2, [descriptorCopy userInitiated]);
       }
 
 LABEL_28:
@@ -186,54 +186,54 @@ LABEL_28:
   }
 
   v30 = NSLocalizedDescriptionKey;
-  v10 = [v5 appBundleIdentifier];
-  v11 = [NSString stringWithFormat:@"Invalid application identifier supplied: %@", v10];
+  appBundleIdentifier5 = [descriptorCopy appBundleIdentifier];
+  v11 = [NSString stringWithFormat:@"Invalid application identifier supplied: %@", appBundleIdentifier5];
   v31 = v11;
   v12 = [NSDictionary dictionaryWithObjects:&v31 forKeys:&v30 count:1];
 
   v13 = [NSError errorWithDomain:@"BAAgentSystemConnectionErrorDomain" code:1 userInfo:v12];
-  v6[2](v6, 0, v13);
+  handlerCopy[2](handlerCopy, 0, v13);
 
 LABEL_30:
 }
 
-- (void)applicationShouldTriggerPeriodicWithIdentifier:(id)a3 bundleURLPath:(id)a4 completionHandler:(id)a5
+- (void)applicationShouldTriggerPeriodicWithIdentifier:(id)identifier bundleURLPath:(id)path completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v7 _baassets_validUTI];
-  if (v10 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  identifierCopy = identifier;
+  pathCopy = path;
+  handlerCopy = handler;
+  _baassets_validUTI = [identifierCopy _baassets_validUTI];
+  if (_baassets_validUTI && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v11 = +[BAAgentCore sharedCore];
-    [v11 handleApplicationEvent:7 identifier:v10 bundleURLPath:v8 userInitiated:0];
+    [v11 handleApplicationEvent:7 identifier:_baassets_validUTI bundleURLPath:pathCopy userInitiated:0];
 
-    v9[2](v9, 1, 0);
+    handlerCopy[2](handlerCopy, 1, 0);
   }
 
   else
   {
-    v12 = [NSString stringWithFormat:@"Invalid application identifier supplied: %@", v7, NSLocalizedDescriptionKey];
-    v16 = v12;
+    nSLocalizedDescriptionKey = [NSString stringWithFormat:@"Invalid application identifier supplied: %@", identifierCopy, NSLocalizedDescriptionKey];
+    v16 = nSLocalizedDescriptionKey;
     v13 = [NSDictionary dictionaryWithObjects:&v16 forKeys:&v15 count:1];
 
     v14 = [NSError errorWithDomain:@"BAAgentSystemConnectionErrorDomain" code:1 userInfo:v13];
-    (v9)[2](v9, 0, v14);
+    (handlerCopy)[2](handlerCopy, 0, v14);
   }
 }
 
-- (void)runDebugCommand:(id)a3 reply:(id)a4
+- (void)runDebugCommand:(id)command reply:(id)reply
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 objectForKey:@"command"];
-  v8 = [v7 lowercaseString];
+  replyCopy = reply;
+  commandCopy = command;
+  v7 = [commandCopy objectForKey:@"command"];
+  lowercaseString = [v7 lowercaseString];
 
-  v9 = [v6 objectForKey:@"arguments"];
+  v9 = [commandCopy objectForKey:@"arguments"];
 
-  if (![v8 isEqualToString:@"state"])
+  if (![lowercaseString isEqualToString:@"state"])
   {
-    if ([v8 isEqualToString:@"shutdown"])
+    if ([lowercaseString isEqualToString:@"shutdown"])
     {
       if ([v9 count])
       {
@@ -241,24 +241,24 @@ LABEL_30:
       }
 
 LABEL_6:
-      v10 = +[BAAgentCore sharedCore];
-      [v10 _debugShutdown];
+      _baassets_validUTI = +[BAAgentCore sharedCore];
+      [_baassets_validUTI _debugShutdown];
       goto LABEL_77;
     }
 
-    if ([v8 isEqualToString:@"force_periodic"])
+    if ([lowercaseString isEqualToString:@"force_periodic"])
     {
       if (![v9 count])
       {
-        v10 = +[BAAgentCore sharedCore];
-        [v10 doPeriodicUpdateCheck];
+        _baassets_validUTI = +[BAAgentCore sharedCore];
+        [_baassets_validUTI doPeriodicUpdateCheck];
         goto LABEL_77;
       }
 
       goto LABEL_78;
     }
 
-    if ([v8 isEqualToString:@"reset"])
+    if ([lowercaseString isEqualToString:@"reset"])
     {
       if ([v9 count])
       {
@@ -271,16 +271,16 @@ LABEL_6:
       goto LABEL_6;
     }
 
-    if ([v8 isEqualToString:@"downloads-allowed"])
+    if ([lowercaseString isEqualToString:@"downloads-allowed"])
     {
       if ([v9 count] != 1)
       {
         goto LABEL_78;
       }
 
-      v10 = [v9 objectAtIndex:0];
-      v12 = [v10 lowercaseString];
-      v13 = [v12 isEqualToString:@"clear"];
+      _baassets_validUTI = [v9 objectAtIndex:0];
+      lowercaseString2 = [_baassets_validUTI lowercaseString];
+      v13 = [lowercaseString2 isEqualToString:@"clear"];
 
       if (v13)
       {
@@ -292,8 +292,8 @@ LABEL_6:
 
       else
       {
-        v28 = [v10 lowercaseString];
-        v29 = [v28 isEqualToString:@"yes"];
+        lowercaseString3 = [_baassets_validUTI lowercaseString];
+        v29 = [lowercaseString3 isEqualToString:@"yes"];
 
         if (v29)
         {
@@ -304,8 +304,8 @@ LABEL_6:
 
         else
         {
-          v36 = [v10 lowercaseString];
-          v37 = [v36 isEqualToString:@"no"];
+          lowercaseString4 = [_baassets_validUTI lowercaseString];
+          v37 = [lowercaseString4 isEqualToString:@"no"];
 
           if (!v37)
           {
@@ -326,14 +326,14 @@ LABEL_76:
       goto LABEL_77;
     }
 
-    if (![v8 isEqualToString:@"consume-extension-time"])
+    if (![lowercaseString isEqualToString:@"consume-extension-time"])
     {
-      if ([v8 isEqualToString:@"reset-extension-time"])
+      if ([lowercaseString isEqualToString:@"reset-extension-time"])
       {
         if ([v9 count] != 1)
         {
-          v10 = sub_100010584();
-          if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+          _baassets_validUTI = sub_100010584();
+          if (os_log_type_enabled(_baassets_validUTI, OS_LOG_TYPE_ERROR))
           {
             sub_1000486C8();
           }
@@ -342,9 +342,9 @@ LABEL_76:
         }
 
         v25 = [v9 objectAtIndex:0];
-        v10 = [v25 _baassets_validUTI];
+        _baassets_validUTI = [v25 _baassets_validUTI];
 
-        if (!v10 || ![v10 length])
+        if (!_baassets_validUTI || ![_baassets_validUTI length])
         {
           v15 = sub_100010584();
           if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -356,7 +356,7 @@ LABEL_76:
         }
 
         v26 = +[BAAgentCore sharedCore];
-        v15 = [v26 applicationInfoForIdentifier:v10];
+        v15 = [v26 applicationInfoForIdentifier:_baassets_validUTI];
 
         v19 = sub_100010584();
         v27 = os_log_type_enabled(v19, OS_LOG_TYPE_INFO);
@@ -365,7 +365,7 @@ LABEL_76:
           if (v27)
           {
             *buf = 138543362;
-            v48 = v10;
+            v48 = _baassets_validUTI;
             _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_INFO, "Resetting extension runtime for %{public}@", buf, 0xCu);
           }
 
@@ -383,20 +383,20 @@ LABEL_75:
         }
 
         *buf = 138543362;
-        v48 = v10;
+        v48 = _baassets_validUTI;
       }
 
       else
       {
-        if (![v8 isEqualToString:@"send-telemetry-event"])
+        if (![lowercaseString isEqualToString:@"send-telemetry-event"])
         {
           goto LABEL_78;
         }
 
         if ([v9 count] != 1)
         {
-          v10 = sub_100010584();
-          if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+          _baassets_validUTI = sub_100010584();
+          if (os_log_type_enabled(_baassets_validUTI, OS_LOG_TYPE_ERROR))
           {
             sub_100048660();
           }
@@ -405,9 +405,9 @@ LABEL_75:
         }
 
         v30 = [v9 objectAtIndex:0];
-        v10 = [v30 _baassets_validUTI];
+        _baassets_validUTI = [v30 _baassets_validUTI];
 
-        if (!v10 || ![v10 length])
+        if (!_baassets_validUTI || ![_baassets_validUTI length])
         {
           v15 = sub_100010584();
           if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -419,15 +419,15 @@ LABEL_75:
         }
 
         v31 = +[BAAgentCore sharedCore];
-        v15 = [v31 applicationInfoIfExistsForIdentifier:v10];
+        v15 = [v31 applicationInfoIfExistsForIdentifier:_baassets_validUTI];
 
         if (v15)
         {
-          v19 = [v10 stringByAppendingString:@"1CB2CF25-5012-4A61-85D5-2FF468AE9203"];
+          v19 = [_baassets_validUTI stringByAppendingString:@"1CB2CF25-5012-4A61-85D5-2FF468AE9203"];
           v32 = [BAContentRequestTelemetry alloc];
-          v33 = [v15 installSource];
+          installSource = [v15 installSource];
           v34 = +[NSSet set];
-          v23 = [(BAContentRequestTelemetry *)v32 initWithContentRequest:3 applicationIdentifier:v19 installSource:v33 downloads:v34];
+          v23 = [(BAContentRequestTelemetry *)v32 initWithContentRequest:3 applicationIdentifier:v19 installSource:installSource downloads:v34];
 
           [BATelemetrySender sendContentRequestTelemetryEvent:v23];
           goto LABEL_74;
@@ -440,7 +440,7 @@ LABEL_75:
         }
 
         *buf = 138543362;
-        v48 = v10;
+        v48 = _baassets_validUTI;
       }
 
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_INFO, "Unable to get application runtime info for identifier: %{public}@", buf, 0xCu);
@@ -449,8 +449,8 @@ LABEL_75:
 
     if ([v9 count] != 2)
     {
-      v10 = sub_100010584();
-      if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+      _baassets_validUTI = sub_100010584();
+      if (os_log_type_enabled(_baassets_validUTI, OS_LOG_TYPE_ERROR))
       {
         sub_100048730();
       }
@@ -459,16 +459,16 @@ LABEL_75:
     }
 
     v18 = [v9 objectAtIndex:0];
-    v10 = [v18 _baassets_validUTI];
+    _baassets_validUTI = [v18 _baassets_validUTI];
 
     v15 = [v9 objectAtIndex:1];
     v19 = [NSScanner scannerWithString:v15];
     v46 = 0;
     [v19 scanInteger:&v46];
     v20 = [v15 substringFromIndex:[v19 scanLocation]];
-    v21 = [v20 lowercaseString];
+    lowercaseString5 = [v20 lowercaseString];
     v22 = +[NSCharacterSet whitespaceAndNewlineCharacterSet];
-    v23 = [v21 stringByTrimmingCharactersInSet:v22];
+    v23 = [lowercaseString5 stringByTrimmingCharactersInSet:v22];
 
     if ([(BAContentRequestTelemetry *)v23 length]== 1)
     {
@@ -486,16 +486,16 @@ LABEL_54:
         if (v24)
         {
           v38 = +[BAAgentCore sharedCore];
-          v39 = [v38 applicationInfoForIdentifier:v10];
+          v39 = [v38 applicationInfoForIdentifier:_baassets_validUTI];
 
           if (!v39)
           {
-            v45 = sub_100010584();
-            if (os_log_type_enabled(v45, OS_LOG_TYPE_INFO))
+            sharedCore = sub_100010584();
+            if (os_log_type_enabled(sharedCore, OS_LOG_TYPE_INFO))
             {
               *buf = 138543362;
-              v48 = v10;
-              _os_log_impl(&_mh_execute_header, v45, OS_LOG_TYPE_INFO, "Unable to get application runtime info for identifier: %{public}@", buf, 0xCu);
+              v48 = _baassets_validUTI;
+              _os_log_impl(&_mh_execute_header, sharedCore, OS_LOG_TYPE_INFO, "Unable to get application runtime info for identifier: %{public}@", buf, 0xCu);
             }
 
             goto LABEL_73;
@@ -512,7 +512,7 @@ LABEL_54:
               *buf = 134218242;
               v48 = v46;
               v49 = 2114;
-              v50 = v10;
+              v50 = _baassets_validUTI;
               v44 = "Removing %ld seconds to %{public}@";
               goto LABEL_71;
             }
@@ -526,7 +526,7 @@ LABEL_54:
               *buf = 134218242;
               v48 = v46;
               v49 = 2114;
-              v50 = v10;
+              v50 = _baassets_validUTI;
               v44 = "Added %ld seconds to %{public}@";
 LABEL_71:
               _os_log_impl(&_mh_execute_header, v41, OS_LOG_TYPE_INFO, v44, buf, 0x16u);
@@ -534,8 +534,8 @@ LABEL_71:
           }
 
           [v39 _debugConsumeTime:v46];
-          v45 = [p_vtable + 107 sharedCore];
-          [v45 saveApplicationState];
+          sharedCore = [p_vtable + 107 sharedCore];
+          [sharedCore saveApplicationState];
 LABEL_73:
         }
 
@@ -571,24 +571,24 @@ LABEL_42:
 
   if (![v9 count])
   {
-    v10 = +[BAAgentCore sharedCore];
-    [v10 _printDebugState];
+    _baassets_validUTI = +[BAAgentCore sharedCore];
+    [_baassets_validUTI _printDebugState];
 LABEL_77:
   }
 
 LABEL_78:
-  v5[2](v5);
+  replyCopy[2](replyCopy);
 }
 
-- (void)updateAppStoreProgressObservationWithConfiguration:(id)a3 completionHandler:(id)a4
+- (void)updateAppStoreProgressObservationWithConfiguration:(id)configuration completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  handlerCopy = handler;
   os_unfair_lock_lock(&self->_progressConfigLock);
-  [(BAAgentSystemConnection *)self setClientProgressConfiguration:v6];
+  [(BAAgentSystemConnection *)self setClientProgressConfiguration:configurationCopy];
   os_unfair_lock_unlock(&self->_progressConfigLock);
-  v16 = v6;
-  v8 = sub_100048498(v6);
+  v16 = configurationCopy;
+  v8 = sub_100048498(configurationCopy);
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -623,28 +623,28 @@ LABEL_78:
     while (v10);
   }
 
-  v7[2](v7, 1, 0);
+  handlerCopy[2](handlerCopy, 1, 0);
 }
 
-- (void)reportProgressForIdentifier:(id)a3 progressInfo:(id)a4
+- (void)reportProgressForIdentifier:(id)identifier progressInfo:(id)info
 {
-  v13 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  infoCopy = info;
   os_unfair_lock_lock(&self->_progressConfigLock);
-  v7 = [(BAAgentSystemConnection *)self clientProgressConfiguration];
+  clientProgressConfiguration = [(BAAgentSystemConnection *)self clientProgressConfiguration];
 
-  if (v7)
+  if (clientProgressConfiguration)
   {
-    v8 = [(BAAgentSystemConnection *)self clientProgressConfiguration];
-    v9 = sub_100048498(v8);
-    v10 = [v9 containsObject:v13];
+    clientProgressConfiguration2 = [(BAAgentSystemConnection *)self clientProgressConfiguration];
+    v9 = sub_100048498(clientProgressConfiguration2);
+    v10 = [v9 containsObject:identifierCopy];
 
     os_unfair_lock_unlock(&self->_progressConfigLock);
     if (v10)
     {
-      v11 = [(BAAgentConnection *)self connection];
-      v12 = [v11 remoteObjectProxyWithErrorHandler:&stru_1000794F8];
-      [v12 receiveAppStoreProgressWithAppBundleIdentifier:v13 progressInfo:v6];
+      connection = [(BAAgentConnection *)self connection];
+      v12 = [connection remoteObjectProxyWithErrorHandler:&stru_1000794F8];
+      [v12 receiveAppStoreProgressWithAppBundleIdentifier:identifierCopy progressInfo:infoCopy];
     }
   }
 
@@ -656,8 +656,8 @@ LABEL_78:
 
 - (NSString)debugDescription
 {
-  v2 = [(BAAgentConnection *)self connection];
-  v3 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"System Connection\nPID: %d", [v2 processIdentifier]);
+  connection = [(BAAgentConnection *)self connection];
+  v3 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"System Connection\nPID: %d", [connection processIdentifier]);
 
   return v3;
 }

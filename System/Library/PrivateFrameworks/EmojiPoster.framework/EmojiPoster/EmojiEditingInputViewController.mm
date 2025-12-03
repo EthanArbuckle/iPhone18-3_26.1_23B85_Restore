@@ -1,33 +1,33 @@
 @interface EmojiEditingInputViewController
-- (BOOL)textView:(id)a3 shouldChangeTextInRange:(_NSRange)a4 replacementText:(id)a5;
-- (_TtC11EmojiPoster31EmojiEditingInputViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (BOOL)textView:(id)view shouldChangeTextInRange:(_NSRange)range replacementText:(id)text;
+- (_TtC11EmojiPoster31EmojiEditingInputViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)didTapCloseButton;
 - (void)didTapDeleteButton;
-- (void)textViewDidChange:(id)a3;
+- (void)textViewDidChange:(id)change;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewIsAppearing:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewIsAppearing:(BOOL)appearing;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation EmojiEditingInputViewController
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_24A00FF80();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_24A011528(a3);
+  selfCopy = self;
+  sub_24A011528(appear);
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
-  v4 = self;
-  sub_24A011908(a3);
+  selfCopy = self;
+  sub_24A011908(appearing);
 }
 
 - (void)viewDidLayoutSubviews
@@ -51,20 +51,20 @@
   }
 }
 
-- (void)textViewDidChange:(id)a3
+- (void)textViewDidChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
+  changeCopy = change;
+  selfCopy = self;
   sub_24A013650();
 }
 
-- (BOOL)textView:(id)a3 shouldChangeTextInRange:(_NSRange)a4 replacementText:(id)a5
+- (BOOL)textView:(id)view shouldChangeTextInRange:(_NSRange)range replacementText:(id)text
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   sub_24A021698();
-  v9 = a3;
-  v10 = self;
+  viewCopy = view;
+  selfCopy = self;
   LOBYTE(length) = sub_24A013C74(location, length);
 
   return length & 1;
@@ -79,7 +79,7 @@
     v4 = *(v3 + 1);
     swift_getObjectType();
     v5 = *(v4 + 24);
-    v6 = self;
+    selfCopy = self;
     v5();
     swift_unknownObjectRelease();
   }
@@ -87,11 +87,11 @@
 
 - (void)didTapDeleteButton
 {
-  v2 = self;
+  selfCopy = self;
   sub_24A0122E8();
 }
 
-- (_TtC11EmojiPoster31EmojiEditingInputViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC11EmojiPoster31EmojiEditingInputViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

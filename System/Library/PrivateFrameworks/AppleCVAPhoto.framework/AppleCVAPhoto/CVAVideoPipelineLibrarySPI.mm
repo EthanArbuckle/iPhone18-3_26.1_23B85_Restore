@@ -1,15 +1,15 @@
 @interface CVAVideoPipelineLibrarySPI
-+ (BOOL)updateRequestWithLiveData:(id)a3 mattingRequest:(id)a4 faceKitProcessOutput:(id)a5 error:(id *)a6;
-+ (id)identifyGPU:(id)a3;
++ (BOOL)updateRequestWithLiveData:(id)data mattingRequest:(id)request faceKitProcessOutput:(id)output error:(id *)error;
++ (id)identifyGPU:(id)u;
 @end
 
 @implementation CVAVideoPipelineLibrarySPI
 
-+ (id)identifyGPU:(id)a3
++ (id)identifyGPU:(id)u
 {
-  v3 = a3;
-  v4 = [v3 name];
-  if ([v4 containsString:@"Apple"])
+  uCopy = u;
+  name = [uCopy name];
+  if ([name containsString:@"Apple"])
   {
     NSSelectorFromString(&cfstr_Architecture.isa);
     v5 = objc_opt_respondsToSelector();
@@ -20,19 +20,19 @@
       goto LABEL_14;
     }
 
-    v4 = [v3 architecture];
-    v6 = [v4 name];
-    v7 = [v6 stringByReplacingOccurrencesOfString:@"applegpu_" withString:&stru_1F59FA3B0];
-    v8 = [v4 revision];
-    if ([v8 containsString:@"A"])
+    name = [uCopy architecture];
+    v4Name = [name name];
+    v7 = [v4Name stringByReplacingOccurrencesOfString:@"applegpu_" withString:&stru_1F59FA3B0];
+    revision = [name revision];
+    if ([revision containsString:@"A"])
     {
       v9 = 1;
     }
 
     else if ([(__CFString *)v7 containsString:@"g16p"])
     {
-      v10 = [v4 revision];
-      v9 = [v10 containsString:@"B0"];
+      revision2 = [name revision];
+      v9 = [revision2 containsString:@"B0"];
     }
 
     else
@@ -43,9 +43,9 @@
     if ((v9 & ([(__CFString *)v7 containsString:@"g17p"]^ 1)) == 1)
     {
       v11 = MEMORY[0x1E696AEC0];
-      v12 = [v4 revision];
-      v13 = [v12 lowercaseString];
-      v14 = [v11 stringWithFormat:@"%@_%@", v7, v13];
+      revision3 = [name revision];
+      lowercaseString = [revision3 lowercaseString];
+      v14 = [v11 stringWithFormat:@"%@_%@", v7, lowercaseString];
 
       v7 = v14;
     }
@@ -61,36 +61,36 @@ LABEL_14:
   return v7;
 }
 
-+ (BOOL)updateRequestWithLiveData:(id)a3 mattingRequest:(id)a4 faceKitProcessOutput:(id)a5 error:(id *)a6
++ (BOOL)updateRequestWithLiveData:(id)data mattingRequest:(id)request faceKitProcessOutput:(id)output error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dataCopy = data;
+  requestCopy = request;
+  outputCopy = output;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   if (isKindOfClass)
   {
-    v12 = v8;
+    v12 = dataCopy;
     v13 = v12;
-    if (v9)
+    if (requestCopy)
     {
-      v14 = [v12 background];
+      background = [v12 background];
 
-      if (v14)
+      if (background)
       {
-        v15 = [v13 background];
-        [v15 setMattingRequest:v9];
+        background2 = [v13 background];
+        [background2 setMattingRequest:requestCopy];
       }
     }
 
-    if (v10)
+    if (outputCopy)
     {
-      v16 = [v13 light];
+      light = [v13 light];
 
-      if (v16)
+      if (light)
       {
-        v17 = [v13 light];
-        [v17 setFaceKitProcessOutput:v10];
+        light2 = [v13 light];
+        [light2 setFaceKitProcessOutput:outputCopy];
       }
     }
   }

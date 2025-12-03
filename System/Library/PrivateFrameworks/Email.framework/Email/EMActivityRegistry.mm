@@ -1,7 +1,7 @@
 @interface EMActivityRegistry
 + (NSXPCInterface)remoteInterface;
-- (EMActivityRegistry)initWithRemoteConnection:(id)a3;
-- (id)registerActivityObserver:(id)a3;
+- (EMActivityRegistry)initWithRemoteConnection:(id)connection;
+- (id)registerActivityObserver:(id)observer;
 @end
 
 @implementation EMActivityRegistry
@@ -9,8 +9,8 @@
 + (NSXPCInterface)remoteInterface
 {
   v3 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F46418E0];
-  v4 = [a1 observerInterface];
-  [v3 setInterface:v4 forSelector:sel_registerActivityObserver_completion_ argumentIndex:0 ofReply:0];
+  observerInterface = [self observerInterface];
+  [v3 setInterface:observerInterface forSelector:sel_registerActivityObserver_completion_ argumentIndex:0 ofReply:0];
 
   v5 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F461EBF8];
   [v3 setInterface:v5 forSelector:sel_registerActivityObserver_completion_ argumentIndex:0 ofReply:1];
@@ -23,33 +23,33 @@
   return v3;
 }
 
-- (EMActivityRegistry)initWithRemoteConnection:(id)a3
+- (EMActivityRegistry)initWithRemoteConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v11.receiver = self;
   v11.super_class = EMActivityRegistry;
   v6 = [(EMActivityRegistry *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_connection, a3);
-    v8 = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
+    objc_storeStrong(&v6->_connection, connection);
+    weakToStrongObjectsMapTable = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
     observerWrappersByObserver = v7->_observerWrappersByObserver;
-    v7->_observerWrappersByObserver = v8;
+    v7->_observerWrappersByObserver = weakToStrongObjectsMapTable;
   }
 
   return v7;
 }
 
-- (id)registerActivityObserver:(id)a3
+- (id)registerActivityObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v5 = [_EMActivityRegistryObserverWrapper alloc];
-  v6 = [(EMActivityRegistry *)self connection];
-  v7 = [(_EMActivityRegistryObserverWrapper *)v5 initWithConnection:v6 registry:self observer:v4];
+  connection = [(EMActivityRegistry *)self connection];
+  v7 = [(_EMActivityRegistryObserverWrapper *)v5 initWithConnection:connection registry:self observer:observerCopy];
 
   os_unfair_lock_lock(&self->_lock);
-  [(NSMapTable *)self->_observerWrappersByObserver setObject:v7 forKey:v4];
+  [(NSMapTable *)self->_observerWrappersByObserver setObject:v7 forKey:observerCopy];
   os_unfair_lock_unlock(&self->_lock);
   v8 = MEMORY[0x1E699B7F8];
   v13[0] = MEMORY[0x1E69E9820];
@@ -58,8 +58,8 @@
   v13[3] = &unk_1E826C230;
   v9 = v7;
   v14 = v9;
-  v15 = self;
-  v10 = v4;
+  selfCopy = self;
+  v10 = observerCopy;
   v16 = v10;
   v11 = [v8 tokenWithCancelationBlock:v13];
   [(_EMActivityRegistryObserverWrapper *)v9 _startObservingIfNecessary];

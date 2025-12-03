@@ -1,86 +1,86 @@
 @interface MPSGraphExecutable
-+ (MPSGraphExecutable)executableWithMLIRSourceFromURL:(id)a3 executableDescriptor:(id)a4 error:(id *)a5;
-+ (MPSGraphExecutable)executableWithMPSGraphPackageAtURL:(id)a3 compilationDescriptor:(id)a4 error:(id *)a5;
-+ (id)executablesWithMLIRSourceForMultipleModules:(id)a3 executableDescriptor:(id)a4 regionNames:(id)a5;
++ (MPSGraphExecutable)executableWithMLIRSourceFromURL:(id)l executableDescriptor:(id)descriptor error:(id *)error;
++ (MPSGraphExecutable)executableWithMPSGraphPackageAtURL:(id)l compilationDescriptor:(id)descriptor error:(id *)error;
++ (id)executablesWithMLIRSourceForMultipleModules:(id)modules executableDescriptor:(id)descriptor regionNames:(id)names;
 + (void)executablesWithMLIRSourceForMultipleModules:executableDescriptor:regionNames:;
-+ (void)prepareExecDescriptorAndRuntimeSpecialization:(id)a3 device:(id)a4 executableExecutionDescriptor:(id)a5;
++ (void)prepareExecDescriptorAndRuntimeSpecialization:(id)specialization device:(id)device executableExecutionDescriptor:(id)descriptor;
 - (BOOL)checkSpecializationValidForSingleEntry;
-- (BOOL)isExecutableForFeeds:(id)a3 targetTensors:(id)a4 targetOperations:(id)a5 compilationDescriptor:(id)a6;
-- (BOOL)sendANEStreamingSessionSignal:(id)a3 sessionDescriptor:(id)a4 report:(id)a5;
-- (FuncOp)getEntryFuncOpForModule:(ModuleOp)a3;
-- (MPSGraphExecutable)initWithCoreMLPackage:(id)a3 executableDescriptor:(id)a4;
-- (MPSGraphExecutable)initWithCoreMLPackageAtURL:(id)a3 compilationDescriptor:(id)a4;
-- (MPSGraphExecutable)initWithGraph:(id)a3 device:(id)a4 feeds:(id)a5 targetTensors:(id)a6 targetOperations:(id)a7 executableDescriptor:(id)a8;
-- (MPSGraphExecutable)initWithMILProgram:(void *)a3 executableDescriptor:(id)a4;
-- (MPSGraphExecutable)initWithMILProgramWithURL:(id)a3 executableDescriptor:(id)a4;
-- (MPSGraphExecutable)initWithMLIRBytecode:(id)a3 executableDescriptor:(id)a4;
-- (MPSGraphExecutable)initWithMLIRCommon:()unique_ptr<llvm:(std:(id)a4 :(id *)a5 default_delete<llvm::MemoryBuffer>>)a3 :MemoryBuffer executableDescriptor:error:;
-- (MPSGraphExecutable)initWithMLIRCoreML:(StringRef)a3 executableDescriptor:(id)a4 error:(id *)a5;
-- (MPSGraphExecutable)initWithMLIRModule:(ModuleOp)a3 executableDescriptor:(id)a4;
-- (MPSGraphExecutable)initWithMLIRSource:(id)a3 executableDescriptor:(id)a4;
-- (MPSGraphExecutable)initWithMLIRSourceFromURL:(id)a3 executableDescriptor:(id)a4;
+- (BOOL)isExecutableForFeeds:(id)feeds targetTensors:(id)tensors targetOperations:(id)operations compilationDescriptor:(id)descriptor;
+- (BOOL)sendANEStreamingSessionSignal:(id)signal sessionDescriptor:(id)descriptor report:(id)report;
+- (FuncOp)getEntryFuncOpForModule:(ModuleOp)module;
+- (MPSGraphExecutable)initWithCoreMLPackage:(id)package executableDescriptor:(id)descriptor;
+- (MPSGraphExecutable)initWithCoreMLPackageAtURL:(id)l compilationDescriptor:(id)descriptor;
+- (MPSGraphExecutable)initWithGraph:(id)graph device:(id)device feeds:(id)feeds targetTensors:(id)tensors targetOperations:(id)operations executableDescriptor:(id)descriptor;
+- (MPSGraphExecutable)initWithMILProgram:(void *)program executableDescriptor:(id)descriptor;
+- (MPSGraphExecutable)initWithMILProgramWithURL:(id)l executableDescriptor:(id)descriptor;
+- (MPSGraphExecutable)initWithMLIRBytecode:(id)bytecode executableDescriptor:(id)descriptor;
+- (MPSGraphExecutable)initWithMLIRCommon:()unique_ptr<llvm:(std:(id)llvm :(id *)a5 default_delete<llvm::MemoryBuffer>>)a3 :MemoryBuffer executableDescriptor:error:;
+- (MPSGraphExecutable)initWithMLIRCoreML:(StringRef)l executableDescriptor:(id)descriptor error:(id *)error;
+- (MPSGraphExecutable)initWithMLIRModule:(ModuleOp)module executableDescriptor:(id)descriptor;
+- (MPSGraphExecutable)initWithMLIRSource:(id)source executableDescriptor:(id)descriptor;
+- (MPSGraphExecutable)initWithMLIRSourceFromURL:(id)l executableDescriptor:(id)descriptor;
 - (MPSGraphExecutable)initWithMPSGraphPackageAtURL:(NSURL *)mpsgraphPackageURL compilationDescriptor:(MPSGraphCompilationDescriptor *)compilationDescriptor;
-- (MPSGraphExecutable)initWithMPSGraphPackageAtURL:(id)a3 adapterExecutable:(id)a4 compilationDescriptor:(id)a5;
-- (MPSGraphExecutable)initWithMPSGraphPackageAtURLCommon:(id)a3 compilationDescriptor:(id)a4 error:(id *)a5;
-- (MPSGraphExecutable)initWithSpecializedMLIRModule:(ModuleOp)a3 device:(id)a4 shapedEntryPoint:(id)a5 compilationDescriptor:(id)a6 executableDescriptor:(id)a7;
+- (MPSGraphExecutable)initWithMPSGraphPackageAtURL:(id)l adapterExecutable:(id)executable compilationDescriptor:(id)descriptor;
+- (MPSGraphExecutable)initWithMPSGraphPackageAtURLCommon:(id)common compilationDescriptor:(id)descriptor error:(id *)error;
+- (MPSGraphExecutable)initWithSpecializedMLIRModule:(ModuleOp)module device:(id)device shapedEntryPoint:(id)point compilationDescriptor:(id)descriptor executableDescriptor:(id)executableDescriptor;
 - (MPSGraphExecutableCacheValue)specializeWithDevice:(MPSGraphExecutableCacheValue *__return_ptr)retstr shapedEntryPoint:compilationDescriptor:;
-- (MPSGraphModuleKey)getDeviceCacheKeyForEntryPoint:(SEL)a3 device:(id)a4 compilationDescriptor:(id)a5;
-- (MPSGraphModuleKey)getDeviceCacheKeyForTransformedEntryPoint:(SEL)a3 device:(id)a4 compilationDescriptor:(id)a5;
-- (MPSGraphModuleKey)getDeviceCacheKeyForTransformedEntryPointImpl:(SEL)a3 deviceDescriptor:(id)a4 compilationDescriptor:(id)a5;
+- (MPSGraphModuleKey)getDeviceCacheKeyForEntryPoint:(SEL)point device:(id)device compilationDescriptor:(id)descriptor;
+- (MPSGraphModuleKey)getDeviceCacheKeyForTransformedEntryPoint:(SEL)point device:(id)device compilationDescriptor:(id)descriptor;
+- (MPSGraphModuleKey)getDeviceCacheKeyForTransformedEntryPointImpl:(SEL)impl deviceDescriptor:(id)descriptor compilationDescriptor:(id)compilationDescriptor;
 - (NSArray)encodeToCommandBuffer:(MPSCommandBuffer *)commandBuffer inputsArray:(NSArray *)inputsArray resultsArray:(NSArray *)resultsArray executionDescriptor:(MPSGraphExecutableExecutionDescriptor *)executionDescriptor;
 - (NSArray)getOutputTypesWithDevice:(MPSGraphDevice *)device inputTypes:(NSArray *)inputTypes compilationDescriptor:(MPSGraphCompilationDescriptor *)compilationDescriptor;
 - (NSArray)runAsyncWithMTLCommandQueue:(id)commandQueue inputsArray:(NSArray *)inputsArray resultsArray:(NSArray *)resultsArray executionDescriptor:(MPSGraphExecutableExecutionDescriptor *)executionDescriptor;
 - (NSArray)runWithMTLCommandQueue:(id)commandQueue inputsArray:(NSArray *)inputsArray resultsArray:(NSArray *)resultsArray executionDescriptor:(MPSGraphExecutableExecutionDescriptor *)executionDescriptor;
-- (OwningOpRef<mlir::ModuleOp>)cloneForFeeds:(id)a3 targetTensors:(id)a4 targetOperations:(id)a5;
-- (ReturnOp)returnOpForFunctionInModule:(ModuleOp)a3;
-- (SmallVector<MPSGraphExecutableCacheValue,)specializedModuleWithDevice:(MPSGraphExecutable *)self shapedEntryPoints:(SEL)a3 compilationDescriptor:(id)a4 error:(id)a5;
+- (OwningOpRef<mlir::ModuleOp>)cloneForFeeds:(id)feeds targetTensors:(id)tensors targetOperations:(id)operations;
+- (ReturnOp)returnOpForFunctionInModule:(ModuleOp)module;
+- (SmallVector<MPSGraphExecutableCacheValue,)specializedModuleWithDevice:(MPSGraphExecutable *)self shapedEntryPoints:(SEL)points compilationDescriptor:(id)descriptor error:(id)error;
 - (__n128)getNewRuntimeForDevice:specializedModule:shapedEntryPoints:compilationDescriptor:;
 - (id).cxx_construct;
-- (id)allocateTensorDataTargetsForDevice:(id)a3 shapedEntryPoint:(id)a4;
-- (id)applyOptionsToEntryPoint:(id)a3 compilationDescriptor:(id)a4;
-- (id)createMLIRLibraryWithMPSGraphPackage:(id)a3 packageKey:(id)a4 appendOptimizedModules:(BOOL)a5;
+- (id)allocateTensorDataTargetsForDevice:(id)device shapedEntryPoint:(id)point;
+- (id)applyOptionsToEntryPoint:(id)point compilationDescriptor:(id)descriptor;
+- (id)createMLIRLibraryWithMPSGraphPackage:(id)package packageKey:(id)key appendOptimizedModules:(BOOL)modules;
 - (id)debugDescription;
-- (id)emitObjCToURL:(id)a3 test:(BOOL)a4;
+- (id)emitObjCToURL:(id)l test:(BOOL)test;
 - (id)emitViewerSPI;
-- (id)emitViewerSPIWithDevice:(id)a3 inputShapes:(id)a4 compilationDescriptor:(id)a5;
-- (id)encodeWithMPSCommandBuffer:(id)a3 inputsArray:(id)a4 resultsArray:(id)a5 executionDescriptor:(id)a6;
+- (id)emitViewerSPIWithDevice:(id)device inputShapes:(id)shapes compilationDescriptor:(id)descriptor;
+- (id)encodeWithMPSCommandBuffer:(id)buffer inputsArray:(id)array resultsArray:(id)resultsArray executionDescriptor:(id)descriptor;
 - (id)functionNames;
-- (id)getDataFilesFromMPSGraphPackageAtURLCommon:(id)a3 error:(id *)a4;
-- (id)getDefaultEntryPointWithShapes:(id)a3;
+- (id)getDataFilesFromMPSGraphPackageAtURLCommon:(id)common error:(id *)error;
+- (id)getDefaultEntryPointWithShapes:(id)shapes;
 - (id)getFunctionReflectionData;
 - (id)getIR;
 - (id)getInputShapes;
-- (id)getInputShapesForFuncOp:(FuncOp)a3;
-- (id)getInputShapesForFunction:(id)a3;
-- (id)getInputShapesForFunction:(id)a3 error:(id *)a4;
-- (id)getOperationsToVisitForOperation:(id)a3 visitedOperations:(id)a4;
+- (id)getInputShapesForFuncOp:(FuncOp)op;
+- (id)getInputShapesForFunction:(id)function;
+- (id)getInputShapesForFunction:(id)function error:(id *)error;
+- (id)getOperationsToVisitForOperation:(id)operation visitedOperations:(id)operations;
 - (id)getOutputShapes;
-- (id)getOutputShapesForFuncOp:(FuncOp)a3;
-- (id)getOutputShapesForFunction:(id)a3;
-- (id)getOutputTypesWithDevice:(id)a3 entryPoint:(id)a4 compilationDescriptor:(id)a5;
-- (id)getOutputTypesWithDevice:(id)a3 shapedEntryPoint:(id)a4 compilationDescriptor:(id)a5;
-- (id)getStateInputPositionsWithEntryFunctionName:(id)a3;
-- (id)getTargetShapesForDevice:(id)a3 inputsArray:(id)a4;
-- (id)getTensorDataArraysWithDevice:(id)a3 feedsDictionary:(id)a4 resultsDictionary:(id)a5 inputsArray:(id)a6 resultsArray:(id)a7 executableExecutionDescriptor:(id)a8;
-- (id)initializeWithMLIRModule:(ModuleOp)a3 executableDescriptor:(id)a4;
-- (id)inputNamesForFuncOp:(FuncOp)a3;
-- (id)inputNamesForFunction:(id)a3;
-- (id)lazyInitWithModuleURL:(id)a3 executableDescriptor:(id)a4 callablesDescription:(id)a5 moduleResourcesLoader:(shared_ptr<ModuleResourcesLoader>)a6;
-- (id)newExecutableWithDevice:(id)a3 inputsArray:(id)a4 intermediateOperations:(id)a5 executionDescriptor:(id)a6;
-- (id)optimizedBytecode:(id)a3 inputShapes:(id)a4 compilationDescriptor:(id)a5;
+- (id)getOutputShapesForFuncOp:(FuncOp)op;
+- (id)getOutputShapesForFunction:(id)function;
+- (id)getOutputTypesWithDevice:(id)device entryPoint:(id)point compilationDescriptor:(id)descriptor;
+- (id)getOutputTypesWithDevice:(id)device shapedEntryPoint:(id)point compilationDescriptor:(id)descriptor;
+- (id)getStateInputPositionsWithEntryFunctionName:(id)name;
+- (id)getTargetShapesForDevice:(id)device inputsArray:(id)array;
+- (id)getTensorDataArraysWithDevice:(id)device feedsDictionary:(id)dictionary resultsDictionary:(id)resultsDictionary inputsArray:(id)array resultsArray:(id)resultsArray executableExecutionDescriptor:(id)descriptor;
+- (id)initializeWithMLIRModule:(ModuleOp)module executableDescriptor:(id)descriptor;
+- (id)inputNamesForFuncOp:(FuncOp)op;
+- (id)inputNamesForFunction:(id)function;
+- (id)lazyInitWithModuleURL:(id)l executableDescriptor:(id)descriptor callablesDescription:(id)description moduleResourcesLoader:(shared_ptr<ModuleResourcesLoader>)loader;
+- (id)newExecutableWithDevice:(id)device inputsArray:(id)array intermediateOperations:(id)operations executionDescriptor:(id)descriptor;
+- (id)optimizedBytecode:(id)bytecode inputShapes:(id)shapes compilationDescriptor:(id)descriptor;
 - (id)optimizedBytecodeForAllExistingSpecializations;
-- (id)outputNamesForFuncOp:(FuncOp)a3;
-- (id)outputNamesForFunction:(id)a3;
-- (id)resourceBlob:(id)a3 resourceName:(id)a4 error:(id *)a5;
-- (id)runAsyncWithCommandQueue:(id)a3 inputsArray:(id)a4 resultsArray:(id)a5 executionDescriptor:(id)a6;
-- (id)runAsyncWithDevice:(id)a3 inputsArray:(id)a4 resultsArray:(id)a5 executionDescriptor:(id)a6;
-- (id)runInternalWithDevice:(id)a3 commandBuffer:(id)a4 feeds:(id)a5 results:(id)a6 executableExecutionDescriptor:(id)a7 mpsGraphOwnedCommandBuffer:(BOOL)a8;
-- (id)runInternalWithDevice:(id)a3 commandBuffer:(id)a4 feedsDictionary:(id)a5 resultsDictionary:(id)a6 executableExecutionDescriptor:(id)a7 mpsGraphOwnedCommandBuffer:(BOOL)a8;
-- (id)runWithDevice:(id)a3 inputsArray:(id)a4 intermediateOperations:(id)a5 resultsArray:(id)a6 executionDescriptor:(id)a7;
-- (id)runWithDevice:(id)a3 inputsArray:(id)a4 resultsArray:(id)a5 executionDescriptor:(id)a6;
-- (id)runWithMTLCommandQueue:(id)a3 inputsArray:(id)a4 resultsArray:(id)a5;
-- (uint64_t)applyOptimizationPassesWithDevice:(uint64_t)a1 module:(uint64_t)a2 compilationID:compilationDescriptor:perEntryPointFuncOpMLIRName:;
-- (uint64_t)applyOptimizationPassesWithDevice:(uint64_t)a1 module:compilationID:compilationDescriptor:perEntryPointFuncOpMLIRName:;
+- (id)outputNamesForFuncOp:(FuncOp)op;
+- (id)outputNamesForFunction:(id)function;
+- (id)resourceBlob:(id)blob resourceName:(id)name error:(id *)error;
+- (id)runAsyncWithCommandQueue:(id)queue inputsArray:(id)array resultsArray:(id)resultsArray executionDescriptor:(id)descriptor;
+- (id)runAsyncWithDevice:(id)device inputsArray:(id)array resultsArray:(id)resultsArray executionDescriptor:(id)descriptor;
+- (id)runInternalWithDevice:(id)device commandBuffer:(id)buffer feeds:(id)feeds results:(id)results executableExecutionDescriptor:(id)descriptor mpsGraphOwnedCommandBuffer:(BOOL)commandBuffer;
+- (id)runInternalWithDevice:(id)device commandBuffer:(id)buffer feedsDictionary:(id)dictionary resultsDictionary:(id)resultsDictionary executableExecutionDescriptor:(id)descriptor mpsGraphOwnedCommandBuffer:(BOOL)commandBuffer;
+- (id)runWithDevice:(id)device inputsArray:(id)array intermediateOperations:(id)operations resultsArray:(id)resultsArray executionDescriptor:(id)descriptor;
+- (id)runWithDevice:(id)device inputsArray:(id)array resultsArray:(id)resultsArray executionDescriptor:(id)descriptor;
+- (id)runWithMTLCommandQueue:(id)queue inputsArray:(id)array resultsArray:(id)resultsArray;
+- (uint64_t)applyOptimizationPassesWithDevice:(uint64_t)device module:(uint64_t)module compilationID:compilationDescriptor:perEntryPointFuncOpMLIRName:;
+- (uint64_t)applyOptimizationPassesWithDevice:(uint64_t)device module:compilationID:compilationDescriptor:perEntryPointFuncOpMLIRName:;
 - (uint64_t)applyOptimizationPassesWithDevice:module:compilationID:compilationDescriptor:perEntryPointFuncOpMLIRName:;
 - (uint64_t)getNewRuntimeForDevice:specializedModule:shapedEntryPoints:compilationDescriptor:;
 - (uint64_t)initWithMPSGraphPackageAtURLCommon:compilationDescriptor:error:;
@@ -91,45 +91,45 @@
 - (unint64_t)getOptimizedNoDeviceModulesSize;
 - (unint64_t)getResourcesTotalSize;
 - (unint64_t)getTotalANEJITCompilations;
-- (vector<mlir::NamedAttribute,)getAttributesFromDescriptors:(MPSGraphExecutable *)self context:(SEL)a3 deviceDescriptor:(id)a4;
+- (vector<mlir::NamedAttribute,)getAttributesFromDescriptors:(MPSGraphExecutable *)self context:(SEL)context deviceDescriptor:(id)descriptor;
 - (vector<mlir::Type,)convertMPSGraphShapesToMLIRTypes:(MPSGraphExecutable *)self;
-- (vector<mlir::Type,)convertMPSGraphShapesToMLIRTypes:(MPSGraphExecutable *)self funcOp:(SEL)a3 compilationDescriptor:(id)a4;
+- (vector<mlir::Type,)convertMPSGraphShapesToMLIRTypes:(MPSGraphExecutable *)self funcOp:(SEL)op compilationDescriptor:(id)descriptor;
 - (void)allCommonSetup;
 - (void)aneRegionOpsHashSet:;
-- (void)aneRegionOpsHashSet:(void *)a3;
-- (void)applyEntryPointToSymbolAndFileNameMap:(id)a3 device:(id)a4 compilationDescriptor:(id)a5;
-- (void)applyInputTypes:(const void *)a3 toFunction:(FuncOp)a4;
-- (void)applyOptimizationPassesWithDevice:(id)a3 module:(ModuleOp)a4 compilationID:(unint64_t)a5 compilationDescriptor:(id)a6 perEntryPointFuncOpMLIRName:(const void *)a7;
-- (void)applyOptimizationPassesWithDevice:(uint64_t)a1 module:compilationID:compilationDescriptor:perEntryPointFuncOpMLIRName:;
-- (void)checkCallablesForModule:(void *)a3;
+- (void)aneRegionOpsHashSet:(void *)set;
+- (void)applyEntryPointToSymbolAndFileNameMap:(id)map device:(id)device compilationDescriptor:(id)descriptor;
+- (void)applyInputTypes:(const void *)types toFunction:(FuncOp)function;
+- (void)applyOptimizationPassesWithDevice:(id)device module:(ModuleOp)module compilationID:(unint64_t)d compilationDescriptor:(id)descriptor perEntryPointFuncOpMLIRName:(const void *)name;
+- (void)applyOptimizationPassesWithDevice:(uint64_t)device module:compilationID:compilationDescriptor:perEntryPointFuncOpMLIRName:;
+- (void)checkCallablesForModule:(void *)module;
 - (void)commonPostInit:()unique_ptr<InMemoryModuleRef;
-- (void)commonPreInitWithDescriptor:(id)a3;
+- (void)commonPreInitWithDescriptor:(id)descriptor;
 - (void)createMLIRLibraryWithMPSGraphPackage:packageKey:appendOptimizedModules:;
-- (void)createMetalPackageAtURL:(id)a3 descriptor:(id)a4;
+- (void)createMetalPackageAtURL:(id)l descriptor:(id)descriptor;
 - (void)dealloc;
 - (void)dump;
-- (void)dumpArrayOfTensorData:(id)a3 basePath:(id)a4 separator:(id)a5 invocationCount:(unint64_t)a6;
+- (void)dumpArrayOfTensorData:(id)data basePath:(id)path separator:(id)separator invocationCount:(unint64_t)count;
 - (void)dumpCompiledProducts;
-- (void)dumpModuleWithEV:(ModuleOp)a3;
-- (void)emitObjUnitTestToUrl:(id)a3;
-- (void)emitViewerSPIToURL:(id)a3;
-- (void)getNewRuntimeForDevice:(id)a3 specializedModule:(void *)a4 shapedEntryPoints:(id)a5 compilationDescriptor:(id)a6;
+- (void)dumpModuleWithEV:(ModuleOp)v;
+- (void)emitObjUnitTestToUrl:(id)url;
+- (void)emitViewerSPIToURL:(id)l;
+- (void)getNewRuntimeForDevice:(id)device specializedModule:(void *)module shapedEntryPoints:(id)points compilationDescriptor:(id)descriptor;
 - (void)getNewRuntimeForDevice:specializedModule:shapedEntryPoints:compilationDescriptor:;
-- (void)getRuntimeSpecializationAndEntryFunction:(id)a3 shapedEntryPoint:(id)a4 perEntryPointToSymbolAndFileNameMap:(id)a5 entryFuncOp:(void *)a6 runtime:(BaseRuntime *)a7;
+- (void)getRuntimeSpecializationAndEntryFunction:(id)function shapedEntryPoint:(id)point perEntryPointToSymbolAndFileNameMap:(id)map entryFuncOp:(void *)op runtime:(BaseRuntime *)runtime;
 - (void)initializeFuncNamesInOriginalModule;
 - (void)newExecutableWithDevice:inputsArray:intermediateOperations:executionDescriptor:;
 - (void)optimizeOriginalModule;
-- (void)serializeOptimizedBytecode:(ModuleOp)a3 :(id)a4 :(id)a5;
+- (void)serializeOptimizedBytecode:(ModuleOp)bytecode :(id)a4 :(id)a5;
 - (void)serializeToMPSGraphPackageAtURL:(NSURL *)url descriptor:(MPSGraphExecutableSerializationDescriptor *)descriptor;
-- (void)specializeForMultipleInputTypesWithDevice:(id)a3 multipleInputTypes:(id)a4 compilationDescriptor:(id)a5;
+- (void)specializeForMultipleInputTypesWithDevice:(id)device multipleInputTypes:(id)types compilationDescriptor:(id)descriptor;
 - (void)specializeWithDevice:(MPSGraphDevice *)device inputTypes:(NSArray *)inputTypes compilationDescriptor:(MPSGraphCompilationDescriptor *)compilationDescriptor;
-- (void)specializeWithDevice:(id)a3 entryPoints:(id)a4 compilationDescriptor:(id)a5;
-- (void)specializeWithDevice:(id)a3 entryPoints:(id)a4 compilationDescriptor:(id)a5 error:(id *)a6;
-- (void)specializeWithDevice:(id)a3 inputShapes:(id)a4 compilationDescriptor:(id)a5;
-- (void)specializeWithDevice:(id)a3 shapedEntryPoints:(id)a4 compilationDescriptor:(id)a5 error:(id *)a6;
-- (void)specializedModuleWithDevice:(void *)a1 shapedEntryPoints:compilationDescriptor:error:;
+- (void)specializeWithDevice:(id)device entryPoints:(id)points compilationDescriptor:(id)descriptor;
+- (void)specializeWithDevice:(id)device entryPoints:(id)points compilationDescriptor:(id)descriptor error:(id *)error;
+- (void)specializeWithDevice:(id)device inputShapes:(id)shapes compilationDescriptor:(id)descriptor;
+- (void)specializeWithDevice:(id)device shapedEntryPoints:(id)points compilationDescriptor:(id)descriptor error:(id *)error;
+- (void)specializedModuleWithDevice:(void *)device shapedEntryPoints:compilationDescriptor:error:;
 - (void)specializedModuleWithDevice:shapedEntryPoints:compilationDescriptor:error:;
-- (void)unloadEntryPointToSymbolAndFileNameMap:(id)a3 device:(id)a4 compilationDescriptor:(id)a5;
+- (void)unloadEntryPointToSymbolAndFileNameMap:(id)map device:(id)device compilationDescriptor:(id)descriptor;
 @end
 
 @implementation MPSGraphExecutable
@@ -151,13 +151,13 @@ void __36__MPSGraphExecutable_allCommonSetup__block_invoke(mlir *a1)
   ParseEnvironmentOptions("main", "MPSGRAPH_MLIR_CL", "");
 }
 
-- (void)commonPreInitWithDescriptor:(id)a3
+- (void)commonPreInitWithDescriptor:(id)descriptor
 {
-  v4 = a3;
+  descriptorCopy = descriptor;
   v5 = objc_alloc_init(MEMORY[0x1E696AB78]);
   [v5 setDateFormat:@"yyyy-MM-dd_HH_mm_ss"];
-  v6 = [MEMORY[0x1E695DF00] date];
-  v7 = [v5 stringFromDate:v6];
+  date = [MEMORY[0x1E695DF00] date];
+  v7 = [v5 stringFromDate:date];
   v8 = *(self + 94);
   *(self + 94) = v7;
 
@@ -165,27 +165,27 @@ void __36__MPSGraphExecutable_allCommonSetup__block_invoke(mlir *a1)
   *(self + 95) = 0;
   *(self + 204) = 0;
   *(self + 103) = 0;
-  v9 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v10 = *(self + 101);
-  *(self + 101) = v9;
+  *(self + 101) = defaultManager;
 
   *(self + 97) = 0;
-  v11 = [v4 compilationDescriptor];
-  if (v11 && ([v4 compilationDescriptor], v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "dispatchQueue"), v13 = objc_claimAutoreleasedReturnValue(), v13, v12, v11, v13))
+  compilationDescriptor = [descriptorCopy compilationDescriptor];
+  if (compilationDescriptor && ([descriptorCopy compilationDescriptor], v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "dispatchQueue"), v13 = objc_claimAutoreleasedReturnValue(), v13, v12, compilationDescriptor, v13))
   {
-    v14 = [v4 compilationDescriptor];
-    v15 = [v14 dispatchQueue];
+    compilationDescriptor2 = [descriptorCopy compilationDescriptor];
+    dispatchQueue = [compilationDescriptor2 dispatchQueue];
     v16 = *(self + 73);
-    *(self + 73) = v15;
+    *(self + 73) = dispatchQueue;
 
-    if (!v4)
+    if (!descriptorCopy)
     {
 LABEL_4:
       v17 = objc_opt_new();
       v18 = *(self + 46);
       *(self + 46) = v17;
 
-      v19 = *(self + 47);
+      perDeviceDescriptorCompilationOptions = *(self + 47);
       *(self + 47) = 0;
       goto LABEL_7;
     }
@@ -197,19 +197,19 @@ LABEL_4:
     v21 = *(self + 73);
     *(self + 73) = v20;
 
-    if (!v4)
+    if (!descriptorCopy)
     {
       goto LABEL_4;
     }
   }
 
-  v22 = [v4 compilationDescriptor];
-  v23 = [v22 copy];
+  compilationDescriptor3 = [descriptorCopy compilationDescriptor];
+  v23 = [compilationDescriptor3 copy];
   v24 = *(self + 46);
   *(self + 46) = v23;
 
-  v19 = [v4 perDeviceDescriptorCompilationOptions];
-  v25 = [v19 copy];
+  perDeviceDescriptorCompilationOptions = [descriptorCopy perDeviceDescriptorCompilationOptions];
+  v25 = [perDeviceDescriptorCompilationOptions copy];
   v26 = *(self + 47);
   *(self + 47) = v25;
 
@@ -257,15 +257,15 @@ LABEL_10:
   *(self + 840) = byte_1EED2BC9A;
   if (byte_1EED2BCA4)
   {
-    v29 = 1;
+    printANEPlacementAnalysis = 1;
   }
 
   else
   {
-    v29 = [*(self + 46) printANEPlacementAnalysis];
+    printANEPlacementAnalysis = [*(self + 46) printANEPlacementAnalysis];
   }
 
-  *(self + 841) = v29;
+  *(self + 841) = printANEPlacementAnalysis;
   *(self + 842) = byte_1EED2BCB8;
   *(self + 843) = byte_1EED2BCB9;
   *(self + 844) = byte_1EED2BCBB;
@@ -306,9 +306,9 @@ LABEL_10:
   }
 
   v32 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-  v33 = [v32 bundleIdentifier];
+  bundleIdentifier = [v32 bundleIdentifier];
 
-  v34 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@/mpsgraph-%d-%@-%lu", v31, v33, getpid(), *(self + 94), *(self + 93)];
+  v34 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@/mpsgraph-%d-%@-%lu", v31, bundleIdentifier, getpid(), *(self + 94), *(self + 93)];
   v35 = *(self + 115);
   *(self + 115) = v34;
 
@@ -318,11 +318,11 @@ LABEL_10:
     if ((v52 & 1) == 0 && MTLReportFailureTypeEnabled())
     {
       v45 = *(self + 115);
-      v44 = [0 localizedFailureReason];
-      v46 = [v44 cStringUsingEncoding:4];
-      v47 = [0 localizedDescription];
+      localizedFailureReason = [0 localizedFailureReason];
+      v46 = [localizedFailureReason cStringUsingEncoding:4];
+      localizedDescription = [0 localizedDescription];
       v49 = v46;
-      v50 = [v47 cStringUsingEncoding:4];
+      v50 = [localizedDescription cStringUsingEncoding:4];
       v48 = v45;
       MTLReportFailure();
 
@@ -343,12 +343,12 @@ LABEL_10:
     v36 = v40;
     if ((v39 & 1) == 0)
     {
-      v41 = [v40 localizedFailureReason];
-      v42 = [v41 cStringUsingEncoding:4];
-      v43 = [v36 localizedDescription];
-      NSLog(&cfstr_ErrorCreatingD.isa, v42, [v43 cStringUsingEncoding:4]);
+      localizedFailureReason2 = [v40 localizedFailureReason];
+      v42 = [localizedFailureReason2 cStringUsingEncoding:4];
+      localizedDescription2 = [v36 localizedDescription];
+      NSLog(&cfstr_ErrorCreatingD.isa, v42, [localizedDescription2 cStringUsingEncoding:4]);
 
-      v44 = *(self + 115);
+      localizedFailureReason = *(self + 115);
       *(self + 115) = 0;
 LABEL_32:
     }
@@ -709,7 +709,7 @@ char *__50__MPSGraphExecutable_commonPreInitWithDescriptor___block_invoke()
 - (void)commonPostInit:()unique_ptr<InMemoryModuleRef
 {
   v39 = *MEMORY[0x1E69E9840];
-  v35 = self;
+  selfCopy = self;
   v4 = *a3.var0;
   *a3.var0 = 0;
   v5 = *(self + 37);
@@ -733,7 +733,7 @@ char *__50__MPSGraphExecutable_commonPreInitWithDescriptor___block_invoke()
     v8 = 0;
   }
 
-  v31[0] = &v35;
+  v31[0] = &selfCopy;
   v31[1] = &v32;
   v31[2] = &v34;
   v31[3] = &v33;
@@ -812,8 +812,8 @@ char *__50__MPSGraphExecutable_commonPreInitWithDescriptor___block_invoke()
     while (v19);
   }
 
-  v22 = *(v35 + 48);
-  *(v35 + 48) = v13;
+  v22 = *(selfCopy + 48);
+  *(selfCopy + 48) = v13;
 
   mlir::verify(v34, 1);
   if ((mlir::verify(v34, 1) & 1) == 0)
@@ -825,15 +825,15 @@ char *__50__MPSGraphExecutable_commonPreInitWithDescriptor___block_invoke()
   }
 }
 
-- (MPSGraphExecutable)initWithGraph:(id)a3 device:(id)a4 feeds:(id)a5 targetTensors:(id)a6 targetOperations:(id)a7 executableDescriptor:(id)a8
+- (MPSGraphExecutable)initWithGraph:(id)graph device:(id)device feeds:(id)feeds targetTensors:(id)tensors targetOperations:(id)operations executableDescriptor:(id)descriptor
 {
   v36 = *MEMORY[0x1E69E9840];
-  obj = a3;
-  v22 = a4;
-  v23 = a5;
-  v24 = a6;
-  v25 = a7;
-  v26 = a8;
+  obj = graph;
+  deviceCopy = device;
+  feedsCopy = feeds;
+  tensorsCopy = tensors;
+  operationsCopy = operations;
+  descriptorCopy = descriptor;
   v35.receiver = self;
   v35.super_class = MPSGraphExecutable;
   v14 = [(MPSGraphExecutable *)&v35 init];
@@ -880,10 +880,10 @@ char *__50__MPSGraphExecutable_commonPreInitWithDescriptor___block_invoke()
     }
 
 LABEL_8:
-    [v15 commonPreInitWithDescriptor:{v26, v21, v22, v23, v24, v25}];
+    [v15 commonPreInitWithDescriptor:{descriptorCopy, v21, deviceCopy, feedsCopy, tensorsCopy, operationsCopy}];
     v28 = 0x2B2B07DC2B2B07D8;
     v29 = obj;
-    v30 = [v26 compilerOptions];
+    compilerOptions = [descriptorCopy compilerOptions];
     v31 = 0;
     v32 = 0;
     kdebug_trace();
@@ -907,16 +907,16 @@ void __101__MPSGraphExecutable_initWithGraph_device_feeds_targetTensors_targetOp
   std::vector<unsigned long>::push_back[abi:ne200100](*(*(a1 + 40) + 8) + 48, &v6);
 }
 
-- (MPSGraphExecutable)initWithMLIRModule:(ModuleOp)a3 executableDescriptor:(id)a4
+- (MPSGraphExecutable)initWithMLIRModule:(ModuleOp)module executableDescriptor:(id)descriptor
 {
-  v6 = a4;
+  descriptorCopy = descriptor;
   v11.receiver = self;
   v11.super_class = MPSGraphExecutable;
   v7 = [(MPSGraphExecutable *)&v11 init];
   v8 = v7;
   if (v7)
   {
-    v9 = [(MPSGraphExecutable *)v7 initializeWithMLIRModule:a3.state executableDescriptor:v6];
+    v9 = [(MPSGraphExecutable *)v7 initializeWithMLIRModule:module.state executableDescriptor:descriptorCopy];
   }
 
   else
@@ -927,22 +927,22 @@ void __101__MPSGraphExecutable_initWithGraph_device_feeds_targetTensors_targetOp
   return v9;
 }
 
-- (MPSGraphExecutable)initWithSpecializedMLIRModule:(ModuleOp)a3 device:(id)a4 shapedEntryPoint:(id)a5 compilationDescriptor:(id)a6 executableDescriptor:(id)a7
+- (MPSGraphExecutable)initWithSpecializedMLIRModule:(ModuleOp)module device:(id)device shapedEntryPoint:(id)point compilationDescriptor:(id)descriptor executableDescriptor:(id)executableDescriptor
 {
   v46[12] = *MEMORY[0x1E69E9840];
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  deviceCopy = device;
+  pointCopy = point;
+  descriptorCopy = descriptor;
+  executableDescriptorCopy = executableDescriptor;
   v44.receiver = self;
   v44.super_class = MPSGraphExecutable;
   v16 = [(MPSGraphExecutable *)&v44 init];
   v17 = v16;
   if (v16)
   {
-    v18 = [(MPSGraphExecutable *)v16 initializeWithMLIRModule:a3.state executableDescriptor:v15];
+    v18 = [(MPSGraphExecutable *)v16 initializeWithMLIRModule:module.state executableDescriptor:executableDescriptorCopy];
     *(v17 + 854) = 1;
-    [(MPSGraphExecutable *)v17 getDeviceCacheKeyForEntryPoint:v13 device:v12 compilationDescriptor:v14];
+    [(MPSGraphExecutable *)v17 getDeviceCacheKeyForEntryPoint:pointCopy device:deviceCopy compilationDescriptor:descriptorCopy];
     v42[0] = 0;
     v42[1] = 0;
     v43 = 0;
@@ -968,7 +968,7 @@ void __101__MPSGraphExecutable_initWithGraph_device_feeds_targetTensors_targetOp
     v39 = 0;
     v40 = 0;
     v41 = 0;
-    v21 = mlir::OpBuilder::clone(v20, a3.state, v34);
+    v21 = mlir::OpBuilder::clone(v20, module.state, v34);
     v32[0] = 0;
     v32[1] = 0;
     v33 = 0;
@@ -1024,15 +1024,15 @@ void __101__MPSGraphExecutable_initWithGraph_device_feeds_targetTensors_targetOp
   return 0;
 }
 
-- (id)lazyInitWithModuleURL:(id)a3 executableDescriptor:(id)a4 callablesDescription:(id)a5 moduleResourcesLoader:(shared_ptr<ModuleResourcesLoader>)a6
+- (id)lazyInitWithModuleURL:(id)l executableDescriptor:(id)descriptor callablesDescription:(id)description moduleResourcesLoader:(shared_ptr<ModuleResourcesLoader>)loader
 {
   v21 = *MEMORY[0x1E69E9840];
-  a3;
-  v9 = a4;
-  a5;
+  l;
+  descriptorCopy = descriptor;
+  description;
   objc_storeWeak(self + 33, 0);
   *(self + 116) = 1;
-  [(MPSGraphExecutable *)self commonPreInitWithDescriptor:v9];
+  [(MPSGraphExecutable *)self commonPreInitWithDescriptor:descriptorCopy];
   *(self + 36) = 0;
   llvm::SourceMgr::SourceMgr(v17);
   v10 = *(self + 34);
@@ -1085,16 +1085,16 @@ void __101__MPSGraphExecutable_initWithGraph_device_feeds_targetTensors_targetOp
   operator new();
 }
 
-- (id)initializeWithMLIRModule:(ModuleOp)a3 executableDescriptor:(id)a4
+- (id)initializeWithMLIRModule:(ModuleOp)module executableDescriptor:(id)descriptor
 {
   v38[10] = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  descriptorCopy = descriptor;
   objc_storeWeak(self + 33, 0);
   *(self + 116) = 1;
-  [(MPSGraphExecutable *)self commonPreInitWithDescriptor:v6];
-  if ([v6 isCoreMLBytecode])
+  [(MPSGraphExecutable *)self commonPreInitWithDescriptor:descriptorCopy];
+  if ([descriptorCopy isCoreMLBytecode])
   {
-    Context = mlir::Attribute::getContext((a3.state + 24));
+    Context = mlir::Attribute::getContext((module.state + 24));
     mlir::PassManager::PassManager(v38, Context, "any", 3uLL, 1);
     mlir::createCoreMLFlattenGraphPass(&v35);
     mlir::OpPassManager::addPass(v38, &v35);
@@ -1114,13 +1114,13 @@ void __101__MPSGraphExecutable_initWithGraph_device_feeds_targetTensors_targetOp
       (*(*v10 + 8))(v10);
     }
 
-    if (mlir::moduleHasIndependentAdapters(a3.state, v9))
+    if (mlir::moduleHasIndependentAdapters(module.state, v9))
     {
-      v11 = [(MPSGraphExecutable *)self getMutableWeightsFilePath];
+      getMutableWeightsFilePath = [(MPSGraphExecutable *)self getMutableWeightsFilePath];
       v28[0] = 0;
-      v12 = v11;
-      v13 = [v11 UTF8String];
-      v14 = strlen(v13);
+      v12 = getMutableWeightsFilePath;
+      uTF8String = [getMutableWeightsFilePath UTF8String];
+      v14 = strlen(uTF8String);
       if (v14 >= 0x7FFFFFFFFFFFFFF8)
       {
         std::string::__throw_length_error[abi:ne200100]();
@@ -1135,7 +1135,7 @@ void __101__MPSGraphExecutable_initWithGraph_device_feeds_targetTensors_targetOp
       v30 = v14;
       if (v14)
       {
-        memmove(&__p, v13, v14);
+        memmove(&__p, uTF8String, v14);
       }
 
       *(&__p + v15) = 0;
@@ -1166,7 +1166,7 @@ void __101__MPSGraphExecutable_initWithGraph_device_feeds_targetTensors_targetOp
       }
     }
 
-    v19.var0.var0 = a3.state;
+    v19.var0.var0 = module.state;
     if (!mlir::PassManager::run(v38, v19) && MTLReportFailureTypeEnabled())
     {
       MTLReportFailure();
@@ -1228,10 +1228,10 @@ void __101__MPSGraphExecutable_initWithGraph_device_feeds_targetTensors_targetOp
   mlir::Operation::clone();
 }
 
-- (MPSGraphExecutable)initWithCoreMLPackage:(id)a3 executableDescriptor:(id)a4
+- (MPSGraphExecutable)initWithCoreMLPackage:(id)package executableDescriptor:(id)descriptor
 {
-  v6 = a3;
-  v7 = a4;
+  packageCopy = package;
+  descriptorCopy = descriptor;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -1291,9 +1291,9 @@ LABEL_4:
   v21 = &v22;
   v12 = v8;
   v20 = v12;
-  [v10 compileModelAtURL:v6 completionHandler:&v16];
+  [v10 compileModelAtURL:packageCopy completionHandler:&v16];
   dispatch_semaphore_wait(v12, 0xFFFFFFFFFFFFFFFFLL);
-  v13 = [(MPSGraphExecutable *)self initWithMILProgramWithURL:v23[5] executableDescriptor:v7, v16, v17, v18, v19];
+  v13 = [(MPSGraphExecutable *)self initWithMILProgramWithURL:v23[5] executableDescriptor:descriptorCopy, v16, v17, v18, v19];
 
   _Block_object_dispose(&v22, 8);
   return v13;
@@ -1397,22 +1397,22 @@ LABEL_15:
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (MPSGraphExecutable)initWithCoreMLPackageAtURL:(id)a3 compilationDescriptor:(id)a4
+- (MPSGraphExecutable)initWithCoreMLPackageAtURL:(id)l compilationDescriptor:(id)descriptor
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  descriptorCopy = descriptor;
   v8 = objc_opt_new();
-  [v8 setCompilationDescriptor:v7];
-  v9 = [(MPSGraphExecutable *)self initWithCoreMLPackage:v6 executableDescriptor:v8];
+  [v8 setCompilationDescriptor:descriptorCopy];
+  v9 = [(MPSGraphExecutable *)self initWithCoreMLPackage:lCopy executableDescriptor:v8];
 
   return v9;
 }
 
-- (MPSGraphExecutable)initWithMILProgramWithURL:(id)a3 executableDescriptor:(id)a4
+- (MPSGraphExecutable)initWithMILProgramWithURL:(id)l executableDescriptor:(id)descriptor
 {
-  v5 = a3;
-  v32 = a4;
-  MIL::MILContext::Make(&__dst, v32);
+  lCopy = l;
+  descriptorCopy = descriptor;
+  MIL::MILContext::Make(&__dst, descriptorCopy);
   v43 = __dst.__r_.__value_.__r.__words[0];
   if (__dst.__r_.__value_.__r.__words[0])
   {
@@ -1423,7 +1423,7 @@ LABEL_15:
   MEMORY[0x1E12E5060](0);
   MEMORY[0x1E12E5070](0);
   v42 = 0;
-  v6 = [MEMORY[0x1E696AEC0] stringWithContentsOfURL:v5 encoding:4 error:&v42];
+  v6 = [MEMORY[0x1E696AEC0] stringWithContentsOfURL:lCopy encoding:4 error:&v42];
   v7 = v42;
   v30 = v7;
   if (v7)
@@ -1431,18 +1431,18 @@ LABEL_15:
     v26 = v7;
     if (MTLReportFailureTypeEnabled())
     {
-      v27 = [v5 absoluteString];
-      [v27 UTF8String];
-      v28 = [v26 localizedFailureReason];
-      [v28 cStringUsingEncoding:4];
-      v29 = [v26 localizedDescription];
-      [v29 cStringUsingEncoding:4];
+      absoluteString = [lCopy absoluteString];
+      [absoluteString UTF8String];
+      localizedFailureReason = [v26 localizedFailureReason];
+      [localizedFailureReason cStringUsingEncoding:4];
+      localizedDescription = [v26 localizedDescription];
+      [localizedDescription cStringUsingEncoding:4];
       MTLReportFailure();
     }
   }
 
-  v8 = [v6 UTF8String];
-  v9 = strlen(v8);
+  uTF8String = [v6 UTF8String];
+  v9 = strlen(uTF8String);
   if (v9 > 0x7FFFFFFFFFFFFFF7)
   {
     std::string::__throw_length_error[abi:ne200100]();
@@ -1457,23 +1457,23 @@ LABEL_15:
   *(&__dst.__r_.__value_.__s + 23) = v9;
   if (v9)
   {
-    v9 = memmove(&__dst, v8, v9);
+    v9 = memmove(&__dst, uTF8String, v9);
   }
 
   __dst.__r_.__value_.__s.__data_[v10] = 0;
   MIL::ParserOptions::Make(&v33, v9);
-  v11 = [v5 pathComponents];
+  pathComponents = [lCopy pathComponents];
   v12 = MEMORY[0x1E696AEC0];
-  v13 = [v11 subarrayWithRange:{0, objc_msgSend(v11, "count") - 1}];
+  v13 = [pathComponents subarrayWithRange:{0, objc_msgSend(pathComponents, "count") - 1}];
   v14 = [v12 pathWithComponents:v13];
 
   v40 = 0;
-  v15 = [MEMORY[0x1E696AC08] defaultManager];
-  [v15 fileExistsAtPath:v14 isDirectory:&v40];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  [defaultManager fileExistsAtPath:v14 isDirectory:&v40];
   [v14 length];
   v16 = v33;
-  v17 = [v14 UTF8String];
-  v18 = strlen(v17);
+  uTF8String2 = [v14 UTF8String];
+  v18 = strlen(uTF8String2);
   if (v18 > 0x7FFFFFFFFFFFFFF7)
   {
     std::string::__throw_length_error[abi:ne200100]();
@@ -1488,7 +1488,7 @@ LABEL_15:
   v39 = v18;
   if (v18)
   {
-    memmove(&__p, v17, v18);
+    memmove(&__p, uTF8String2, v18);
   }
 
   *(&__p + v19) = 0;
@@ -1537,7 +1537,7 @@ LABEL_15:
     (*(*v22 + 8))(v22);
   }
 
-  v23 = [[MPSGraphExecutable alloc] initWithMILProgram:v20 executableDescriptor:v32];
+  v23 = [[MPSGraphExecutable alloc] initWithMILProgram:v20 executableDescriptor:descriptorCopy];
   if (v20)
   {
     (*(*v20 + 8))(v20);
@@ -1558,52 +1558,52 @@ LABEL_15:
   return v23;
 }
 
-- (MPSGraphExecutable)initWithMILProgram:(void *)a3 executableDescriptor:(id)a4
+- (MPSGraphExecutable)initWithMILProgram:(void *)program executableDescriptor:(id)descriptor
 {
   v8 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  descriptorCopy = descriptor;
   v6 = [(MPSGraphExecutable *)self init];
   *(v6 + 116) = 1;
-  [(MPSGraphExecutable *)v6 commonPreInitWithDescriptor:v5];
-  [v5 compilerOptions];
+  [(MPSGraphExecutable *)v6 commonPreInitWithDescriptor:descriptorCopy];
+  [descriptorCopy compilerOptions];
   lowerMILProgram();
 }
 
-- (MPSGraphExecutable)initWithMLIRSourceFromURL:(id)a3 executableDescriptor:(id)a4
+- (MPSGraphExecutable)initWithMLIRSourceFromURL:(id)l executableDescriptor:(id)descriptor
 {
-  v6 = a4;
+  descriptorCopy = descriptor;
   v16 = 0;
-  v7 = [MEMORY[0x1E696AEC0] stringWithContentsOfURL:a3 encoding:4 error:&v16];
+  v7 = [MEMORY[0x1E696AEC0] stringWithContentsOfURL:l encoding:4 error:&v16];
   v8 = v16;
   if (v8 && MTLReportFailureTypeEnabled())
   {
-    v11 = [v8 localizedFailureReason];
-    v12 = [v11 cStringUsingEncoding:4];
-    v13 = [v8 localizedDescription];
+    localizedFailureReason = [v8 localizedFailureReason];
+    v12 = [localizedFailureReason cStringUsingEncoding:4];
+    localizedDescription = [v8 localizedDescription];
     v14 = v12;
-    v15 = [v13 cStringUsingEncoding:4];
+    v15 = [localizedDescription cStringUsingEncoding:4];
     MTLReportFailure();
   }
 
-  v9 = [(MPSGraphExecutable *)self initWithMLIRSource:v7 executableDescriptor:v6, v14, v15];
+  v9 = [(MPSGraphExecutable *)self initWithMLIRSource:v7 executableDescriptor:descriptorCopy, v14, v15];
 
   return v9;
 }
 
-- (MPSGraphExecutable)initWithMLIRCommon:()unique_ptr<llvm:(std:(id)a4 :(id *)a5 default_delete<llvm::MemoryBuffer>>)a3 :MemoryBuffer executableDescriptor:error:
+- (MPSGraphExecutable)initWithMLIRCommon:()unique_ptr<llvm:(std:(id)llvm :(id *)a5 default_delete<llvm::MemoryBuffer>>)a3 :MemoryBuffer executableDescriptor:error:
 {
   v7 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  llvmCopy = llvm;
   [(MPSGraphExecutable *)self allCommonSetup];
   operator new();
 }
 
-- (MPSGraphExecutable)initWithMLIRCoreML:(StringRef)a3 executableDescriptor:(id)a4 error:(id *)a5
+- (MPSGraphExecutable)initWithMLIRCoreML:(StringRef)l executableDescriptor:(id)descriptor error:(id *)error
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = l.var1;
+  var0 = l.var0;
   v27[5] = *MEMORY[0x1E69E9840];
-  v8 = a4;
+  descriptorCopy = descriptor;
   [(MPSGraphExecutable *)self allCommonSetup];
   v11 = 0u;
   v12 = 0x1000000000;
@@ -1630,7 +1630,7 @@ LABEL_15:
     mlir::Block::~Block(v26);
     if (v10)
     {
-      [(MPSGraphExecutable *)self initializeWithMLIRModule:v10 executableDescriptor:v8];
+      [(MPSGraphExecutable *)self initializeWithMLIRModule:v10 executableDescriptor:descriptorCopy];
       objc_claimAutoreleasedReturnValue();
       if (v10)
       {
@@ -1648,20 +1648,20 @@ LABEL_15:
   mlir::ParserConfig::~ParserConfig(&v16);
 }
 
-- (MPSGraphExecutable)initWithMLIRSource:(id)a3 executableDescriptor:(id)a4
+- (MPSGraphExecutable)initWithMLIRSource:(id)source executableDescriptor:(id)descriptor
 {
-  v6 = a3;
-  v7 = a4;
+  sourceCopy = source;
+  descriptorCopy = descriptor;
   v22.receiver = self;
   v22.super_class = MPSGraphExecutable;
   v8 = [(MPSGraphExecutable *)&v22 init];
   if (v8)
   {
-    v9 = [v6 UTF8String];
-    v10 = v9;
-    if (v9)
+    uTF8String = [sourceCopy UTF8String];
+    v10 = uTF8String;
+    if (uTF8String)
     {
-      v11 = strlen(v9);
+      v11 = strlen(uTF8String);
     }
 
     else
@@ -1669,10 +1669,10 @@ LABEL_15:
       v11 = 0;
     }
 
-    if ([v7 isCoreMLBytecode])
+    if ([descriptorCopy isCoreMLBytecode])
     {
       v21 = 0;
-      v12 = [(MPSGraphExecutable *)v8 initWithMLIRCoreML:v10 executableDescriptor:v11 error:v7, &v21];
+      v12 = [(MPSGraphExecutable *)v8 initWithMLIRCoreML:v10 executableDescriptor:v11 error:descriptorCopy, &v21];
       v13 = v21;
     }
 
@@ -1682,7 +1682,7 @@ LABEL_15:
       v19 = v20;
       v20 = 0;
       v18 = 0;
-      v12 = [(MPSGraphExecutable *)v8 initWithMLIRCommon:&v19 executableDescriptor:v7 error:&v18];
+      v12 = [(MPSGraphExecutable *)v8 initWithMLIRCommon:&v19 executableDescriptor:descriptorCopy error:&v18];
       v13 = v18;
       v14 = v19;
       v19 = 0;
@@ -1707,7 +1707,7 @@ LABEL_15:
 
         if (MTLReportFailureTypeEnabled())
         {
-          v17 = [v13 localizedDescription];
+          localizedDescription = [v13 localizedDescription];
           MTLReportFailure();
         }
       }
@@ -1727,31 +1727,31 @@ LABEL_15:
   return v12;
 }
 
-- (MPSGraphExecutable)initWithMLIRBytecode:(id)a3 executableDescriptor:(id)a4
+- (MPSGraphExecutable)initWithMLIRBytecode:(id)bytecode executableDescriptor:(id)descriptor
 {
-  v6 = a3;
-  v7 = a4;
+  bytecodeCopy = bytecode;
+  descriptorCopy = descriptor;
   v21.receiver = self;
   v21.super_class = MPSGraphExecutable;
   v8 = [(MPSGraphExecutable *)&v21 init];
   if (v8)
   {
-    v9 = [v6 bytes];
-    v10 = [v6 length];
-    if ([v7 isCoreMLBytecode])
+    bytes = [bytecodeCopy bytes];
+    v10 = [bytecodeCopy length];
+    if ([descriptorCopy isCoreMLBytecode])
     {
       v20 = 0;
-      v11 = [(MPSGraphExecutable *)v8 initWithMLIRCoreML:v9 executableDescriptor:v10 error:v7, &v20];
+      v11 = [(MPSGraphExecutable *)v8 initWithMLIRCoreML:bytes executableDescriptor:v10 error:descriptorCopy, &v20];
       v12 = v20;
     }
 
     else
     {
-      llvm::MemoryBuffer::getMemBuffer(v9, v10, "", 0, &v19);
+      llvm::MemoryBuffer::getMemBuffer(bytes, v10, "", 0, &v19);
       v18 = v19;
       v19 = 0;
       v17 = 0;
-      v11 = [(MPSGraphExecutable *)v8 initWithMLIRCommon:&v18 executableDescriptor:v7 error:&v17];
+      v11 = [(MPSGraphExecutable *)v8 initWithMLIRCommon:&v18 executableDescriptor:descriptorCopy error:&v17];
       v12 = v17;
       v13 = v18;
       v18 = 0;
@@ -1776,7 +1776,7 @@ LABEL_15:
 
         if (MTLReportFailureTypeEnabled())
         {
-          v16 = [v12 localizedDescription];
+          localizedDescription = [v12 localizedDescription];
           MTLReportFailure();
         }
       }
@@ -1796,22 +1796,22 @@ LABEL_15:
   return v11;
 }
 
-+ (MPSGraphExecutable)executableWithMLIRSourceFromURL:(id)a3 executableDescriptor:(id)a4 error:(id *)a5
++ (MPSGraphExecutable)executableWithMLIRSourceFromURL:(id)l executableDescriptor:(id)descriptor error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  lCopy = l;
+  descriptorCopy = descriptor;
   v23 = 0;
-  v9 = [MEMORY[0x1E696AEC0] stringWithContentsOfURL:v7 encoding:4 error:&v23];
+  v9 = [MEMORY[0x1E696AEC0] stringWithContentsOfURL:lCopy encoding:4 error:&v23];
   v10 = v23;
   v11 = v10;
   if (v9)
   {
-    v12 = [v9 UTF8String];
-    if (v12)
+    uTF8String = [v9 UTF8String];
+    if (uTF8String)
     {
-      v13 = v12;
-      v14 = strlen(v12);
-      v12 = v13;
+      v13 = uTF8String;
+      v14 = strlen(uTF8String);
+      uTF8String = v13;
     }
 
     else
@@ -1819,11 +1819,11 @@ LABEL_15:
       v14 = 0;
     }
 
-    llvm::MemoryBuffer::getMemBuffer(v12, v14, "", 0, &v22);
+    llvm::MemoryBuffer::getMemBuffer(uTF8String, v14, "", 0, &v22);
     v17 = [MPSGraphExecutable alloc];
     v21 = v22;
     v22 = 0;
-    v16 = [(MPSGraphExecutable *)v17 initWithMLIRCommon:&v21 executableDescriptor:v8 error:a5];
+    v16 = [(MPSGraphExecutable *)v17 initWithMLIRCommon:&v21 executableDescriptor:descriptorCopy error:error];
     v18 = v21;
     v21 = 0;
     if (v18)
@@ -1839,11 +1839,11 @@ LABEL_15:
     }
   }
 
-  else if (a5)
+  else if (error)
   {
     v15 = v10;
     v16 = 0;
-    *a5 = v11;
+    *error = v11;
   }
 
   else
@@ -1854,7 +1854,7 @@ LABEL_15:
   return v16;
 }
 
-- (void)serializeOptimizedBytecode:(ModuleOp)a3 :(id)a4 :(id)a5
+- (void)serializeOptimizedBytecode:(ModuleOp)bytecode :(id)a4 :(id)a5
 {
   v8 = a4;
   v9 = a5;
@@ -1873,7 +1873,7 @@ LABEL_15:
     v13 = mlir::OpPrintingFlags::OpPrintingFlags(&v28);
     mlir::OpPrintingFlags::enableDebugInfo(v13, 1, 0);
     mlir::OpPrintingFlags::elideLargeResourceString(&v28, 0);
-    Context = mlir::Attribute::getContext((a3.state + 24));
+    Context = mlir::Attribute::getContext((bytecode.state + 24));
     mlir::PassManager::PassManager(&v20, Context, "any", 3uLL, 1);
     v18[0] = v28;
     v18[1] = v29;
@@ -1887,7 +1887,7 @@ LABEL_15:
       (*(*v15 + 8))(v15);
     }
 
-    v16.var0.var0 = a3.state;
+    v16.var0.var0 = bytecode.state;
     if (!mlir::PassManager::run(&v20, v16))
     {
       if (MTLReportFailureTypeEnabled())
@@ -1915,13 +1915,13 @@ LABEL_15:
   v31.var1 = 13;
   mlir::BytecodeWriterConfig::BytecodeWriterConfig(v18, v31);
   mlir::BytecodeWriterConfig::setElideResourceDataFlag(v18, 1);
-  mlir::writeBytecodeToFile(a3.state, &v20, v18, v17);
+  mlir::writeBytecodeToFile(bytecode.state, &v20, v18, v17);
 }
 
 - (id)optimizedBytecodeForAllExistingSpecializations
 {
   std::mutex::lock((self + 72));
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = *(self + 55) + 32 * *(self + 114);
   if (*(self + 112))
   {
@@ -1941,24 +1941,24 @@ LABEL_15:
     llvm::DenseMapIterator<llvm::DenseSet<MPSGraphModuleKey,MPSGraphModuleKeyInfo>,std::unique_ptr<MPSGraphExecutableSpecializedModule>,MPSGraphModuleKeysSetInfo,llvm::detail::DenseMapPair<llvm::DenseSet<MPSGraphModuleKey,MPSGraphModuleKeyInfo>,std::unique_ptr<MPSGraphExecutableSpecializedModule>>,true>::AdvancePastEmptyBuckets(v9.i64);
   }
 
-  v7 = [MEMORY[0x1E695DF20] dictionaryWithDictionary:v3];
+  v7 = [MEMORY[0x1E695DF20] dictionaryWithDictionary:dictionary];
 
   std::mutex::unlock((self + 72));
 
   return v7;
 }
 
-- (id)optimizedBytecode:(id)a3 inputShapes:(id)a4 compilationDescriptor:(id)a5
+- (id)optimizedBytecode:(id)bytecode inputShapes:(id)shapes compilationDescriptor:(id)descriptor
 {
   v72[5] = *MEMORY[0x1E69E9840];
-  v49 = a3;
-  v50 = a4;
-  v51 = a5;
-  v7 = [(MPSGraphExecutable *)self getDefaultEntryPointWithShapes:v50];
+  bytecodeCopy = bytecode;
+  shapesCopy = shapes;
+  descriptorCopy = descriptor;
+  v7 = [(MPSGraphExecutable *)self getDefaultEntryPointWithShapes:shapesCopy];
   v69 = v7;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v69 count:1];
   v60 = 0;
-  [(MPSGraphExecutable *)self specializedModuleWithDevice:v49 shapedEntryPoints:v8 compilationDescriptor:v51 error:&v60];
+  [(MPSGraphExecutable *)self specializedModuleWithDevice:bytecodeCopy shapedEntryPoints:v8 compilationDescriptor:descriptorCopy error:&v60];
   v52 = v60;
 
   if (v71 != 1 && MTLReportFailureTypeEnabled())
@@ -1967,12 +1967,12 @@ LABEL_15:
   }
 
   std::mutex::lock((self + 72));
-  v9 = [MEMORY[0x1E695DF90] dictionary];
-  v10 = v9;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v10 = dictionary;
   if (v71)
   {
     v11 = v70;
-    v55 = v9;
+    v55 = dictionary;
     v12 = (*(*v11[1] + 24))(v11[1], 0);
     v13 = *v11;
     __p = 0;
@@ -2217,7 +2217,7 @@ LABEL_11:
     goto LABEL_38;
   }
 
-  v44 = [MEMORY[0x1E695DF20] dictionaryWithDictionary:v9];
+  v44 = [MEMORY[0x1E695DF20] dictionaryWithDictionary:dictionary];
 
   std::mutex::unlock((self + 72));
   v45 = v70;
@@ -2248,16 +2248,16 @@ LABEL_11:
   return v44;
 }
 
-- (id)resourceBlob:(id)a3 resourceName:(id)a4 error:(id *)a5
+- (id)resourceBlob:(id)blob resourceName:(id)name error:(id *)error
 {
   v80[16] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v58 = a4;
-  v8 = v7;
+  blobCopy = blob;
+  nameCopy = name;
+  v8 = blobCopy;
   v9 = MEMORY[0x1E696ACB0];
   v59 = v8;
   v10 = [v8 dataUsingEncoding:4];
-  v55 = a5;
+  errorCopy = error;
   v71 = 0;
   v60 = [v9 JSONObjectWithData:v10 options:4 error:&v71];
   v57 = v71;
@@ -2416,9 +2416,9 @@ LABEL_26:
     v73 = @"No module was found with the given signature. Pass a valid string signature in byteCodeSignature that is associated with an optimized module.";
     v40 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v73 forKeys:&v72 count:{1, v54}];
     v41 = MEMORY[0x1E696ABC0];
-    v42 = [MEMORY[0x1E696AAE8] mainBundle];
-    v43 = [v42 bundleIdentifier];
-    *v55 = [v41 errorWithDomain:v43 code:-1000 userInfo:v40];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
+    *errorCopy = [v41 errorWithDomain:bundleIdentifier code:-1000 userInfo:v40];
 
     goto LABEL_43;
   }
@@ -2429,14 +2429,14 @@ LABEL_26:
     MTLReportFailure();
   }
 
-  v33 = v58;
+  v33 = nameCopy;
   Manager = mlir::mps::MPSResourceBlobManagerInterface::getManager(*(v32 + 24), v34);
   v36 = v33;
-  v37 = [v33 UTF8String];
-  v38 = v37;
-  if (v37)
+  uTF8String = [v33 UTF8String];
+  v38 = uTF8String;
+  if (uTF8String)
   {
-    v39 = strlen(v37);
+    v39 = strlen(uTF8String);
   }
 
   else
@@ -2464,9 +2464,9 @@ LABEL_43:
     v46 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v80 forKeys:&__src count:1];
 
     v52 = MEMORY[0x1E696ABC0];
-    v48 = [MEMORY[0x1E696AAE8] mainBundle];
-    v49 = [v48 bundleIdentifier];
-    v50 = [v52 errorWithDomain:v49 code:-1000 userInfo:v46];
+    mainBundle2 = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier2 = [mainBundle2 bundleIdentifier];
+    v50 = [v52 errorWithDomain:bundleIdentifier2 code:-1000 userInfo:v46];
   }
 
   else
@@ -2477,26 +2477,26 @@ LABEL_43:
     v46 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v80 forKeys:&__src count:1];
 
     v47 = MEMORY[0x1E696ABC0];
-    v48 = [MEMORY[0x1E696AAE8] mainBundle];
-    v49 = [v48 bundleIdentifier];
-    v50 = [v47 errorWithDomain:v49 code:-1000 userInfo:v46];
+    mainBundle2 = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier2 = [mainBundle2 bundleIdentifier];
+    v50 = [v47 errorWithDomain:bundleIdentifier2 code:-1000 userInfo:v46];
   }
 
-  *v55 = v50;
+  *errorCopy = v50;
 
   goto LABEL_51;
 }
 
-- (id)getDataFilesFromMPSGraphPackageAtURLCommon:(id)a3 error:(id *)a4
+- (id)getDataFilesFromMPSGraphPackageAtURLCommon:(id)common error:(id *)error
 {
-  v5 = a3;
-  v6 = [[MPSGraphPackage alloc] initWithSourcePackageURL:v5 error:a4];
+  commonCopy = common;
+  v6 = [[MPSGraphPackage alloc] initWithSourcePackageURL:commonCopy error:error];
   v7 = v6;
   if (v6)
   {
-    v8 = [(MPSGraphPackage *)v6 getMLIRLibrary];
-    v9 = [v8 getDict];
-    v10 = [v9 objectForKeyedSubscript:@"Data File Names"];
+    getMLIRLibrary = [(MPSGraphPackage *)v6 getMLIRLibrary];
+    getDict = [getMLIRLibrary getDict];
+    v10 = [getDict objectForKeyedSubscript:@"Data File Names"];
   }
 
   else
@@ -2507,12 +2507,12 @@ LABEL_43:
   return v10;
 }
 
-- (MPSGraphExecutable)initWithMPSGraphPackageAtURLCommon:(id)a3 compilationDescriptor:(id)a4 error:(id *)a5
+- (MPSGraphExecutable)initWithMPSGraphPackageAtURLCommon:(id)common compilationDescriptor:(id)descriptor error:(id *)error
 {
   v122 = *MEMORY[0x1E69E9840];
-  v101 = a3;
-  v79 = a4;
-  v100 = a5;
+  commonCopy = common;
+  descriptorCopy = descriptor;
+  errorCopy = error;
   v102 = 0;
   v99.receiver = self;
   v99.super_class = MPSGraphExecutable;
@@ -2520,40 +2520,40 @@ LABEL_43:
 
   [(MPSGraphExecutable *)v102 allCommonSetup];
   v8 = [MPSGraphPackage alloc];
-  v9 = [(MPSGraphPackage *)v8 initWithSourcePackageURL:v101 error:v100];
+  v9 = [(MPSGraphPackage *)v8 initWithSourcePackageURL:commonCopy error:errorCopy];
   v10 = v9;
   v78 = v9;
   if (v9)
   {
-    v77 = [(MPSGraphPackage *)v9 getMLIRLibrary];
-    v98 = [v77 getDict];
+    getMLIRLibrary = [(MPSGraphPackage *)v9 getMLIRLibrary];
+    getDict = [getMLIRLibrary getDict];
     v76 = objc_opt_new();
-    [v76 setCompilationDescriptor:v79];
-    v11 = [v98 objectForKeyedSubscript:@"Original"];
+    [v76 setCompilationDescriptor:descriptorCopy];
+    v11 = [getDict objectForKeyedSubscript:@"Original"];
     v75 = v11;
     if (v11)
     {
-      v97 = [v101 URLByAppendingPathComponent:v11];
-      v96 = [MEMORY[0x1E696AC08] defaultManager];
-      v12 = [v97 path];
-      v13 = [v96 fileExistsAtPath:v12];
+      v97 = [commonCopy URLByAppendingPathComponent:v11];
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+      path = [v97 path];
+      v13 = [defaultManager fileExistsAtPath:path];
 
       if (v13)
       {
-        v74 = [v77 getCallablesDescription];
-        v15 = [v77 getResourceStorageMode];
-        v95 = v15;
-        if (v15 != 1)
+        getCallablesDescription = [getMLIRLibrary getCallablesDescription];
+        getResourceStorageMode = [getMLIRLibrary getResourceStorageMode];
+        v95 = getResourceStorageMode;
+        if (getResourceStorageMode != 1)
         {
           goto LABEL_66;
         }
 
         Manager = mlir::mps::MPSResourceBlobManagerInterface::getManager(*(v102 + 34), v14);
         v16 = objc_opt_new();
-        v17 = [v98 objectForKeyedSubscript:@"Original Resources Used"];
+        v17 = [getDict objectForKeyedSubscript:@"Original Resources Used"];
         [v16 addObjectsFromArray:v17];
 
-        [v98 objectForKeyedSubscript:@"Optimized Resources Used"];
+        [getDict objectForKeyedSubscript:@"Optimized Resources Used"];
         v93 = 0u;
         v94 = 0u;
         v91 = 0u;
@@ -2581,7 +2581,7 @@ LABEL_43:
           while (v19);
         }
 
-        [v98 objectForKeyedSubscript:@"Optimized No Device Resources Used"];
+        [getDict objectForKeyedSubscript:@"Optimized No Device Resources Used"];
         v89 = 0u;
         v90 = 0u;
         v87 = 0u;
@@ -2609,22 +2609,22 @@ LABEL_43:
           while (v24);
         }
 
-        v28 = v101;
+        v28 = commonCopy;
         v29 = +[MPSGraphPackage getResourceFileName];
         v80 = [v28 URLByAppendingPathComponent:v29];
 
-        if ([v16 count] && (v30 = v96, objc_msgSend(v80, "path"), v31 = objc_claimAutoreleasedReturnValue(), LOBYTE(v30) = objc_msgSend(v30, "fileExistsAtPath:", v31), v31, (v30 & 1) == 0))
+        if ([v16 count] && (v30 = defaultManager, objc_msgSend(v80, "path"), v31 = objc_claimAutoreleasedReturnValue(), LOBYTE(v30) = objc_msgSend(v30, "fileExistsAtPath:", v31), v31, (v30 & 1) == 0))
         {
           v67 = MEMORY[0x1E696ABC0];
           v107 = *MEMORY[0x1E696A578];
           v68 = MEMORY[0x1E696AEC0];
           obj = +[MPSGraphPackage getResourceFileName];
-          v69 = [v80 absoluteString];
-          v70 = [v68 stringWithFormat:@"Error: %@ missing at %@", obj, v69];
+          absoluteString = [v80 absoluteString];
+          v70 = [v68 stringWithFormat:@"Error: %@ missing at %@", obj, absoluteString];
           v108 = v70;
           v71 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v108 forKeys:&v107 count:1];
           v72 = [v67 errorWithDomain:@"com.apple.mps" code:-20 userInfo:v71];
-          *v100 = v72;
+          *errorCopy = v72;
         }
 
         else
@@ -2650,8 +2650,8 @@ LABEL_23:
               objc_enumerationMutation(obj);
             }
 
-            v35 = [*(*(&v83 + 1) + 8 * v34) UTF8String];
-            v36 = strlen(v35);
+            uTF8String = [*(*(&v83 + 1) + 8 * v34) UTF8String];
+            v36 = strlen(uTF8String);
             if (v36 > 0x7FFFFFFFFFFFFFF7)
             {
               std::string::__throw_length_error[abi:ne200100]();
@@ -2666,7 +2666,7 @@ LABEL_23:
             v121 = v36;
             if (v36)
             {
-              memmove(&__dst, v35, v36);
+              memmove(&__dst, uTF8String, v36);
             }
 
             *(&__dst + v37) = 0;
@@ -2758,34 +2758,34 @@ LABEL_23:
               {
 LABEL_63:
 
-                v48 = [v76 compilationDescriptor];
-                v49 = [v48 constantData];
+                compilationDescriptor = [v76 compilationDescriptor];
+                constantData = [compilationDescriptor constantData];
 
-                if (v49)
+                if (constantData)
                 {
-                  [v49 loadIntoResourceManager:Manager];
+                  [constantData loadIntoResourceManager:Manager];
                 }
 
-                v15 = v95;
+                getResourceStorageMode = v95;
 LABEL_66:
-                v50 = v101;
-                v51 = [v98 objectForKeyedSubscript:@"Original Resources Used"];
-                v52 = [v98 objectForKeyedSubscript:@"Resource Offsets"];
-                getModuleResourcesLoader(&__dst, v50, v15, v51, v52);
+                v50 = commonCopy;
+                v51 = [getDict objectForKeyedSubscript:@"Original Resources Used"];
+                v52 = [getDict objectForKeyedSubscript:@"Resource Offsets"];
+                getModuleResourcesLoader(&__dst, v50, getResourceStorageMode, v51, v52);
               }
 
               goto LABEL_23;
             }
           }
 
-          if (v100)
+          if (errorCopy)
           {
             v44 = MEMORY[0x1E696ABC0];
             v104 = *MEMORY[0x1E696A578];
             v105 = @"Could not create correct resource name";
             v65 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v105 forKeys:&v104 count:1];
             v66 = [v44 errorWithDomain:@"com.apple.mps" code:-19 userInfo:v65];
-            *v100 = v66;
+            *errorCopy = v66;
 
             LOBYTE(v44) = v121;
           }
@@ -2802,12 +2802,12 @@ LABEL_66:
         v60 = MEMORY[0x1E696ABC0];
         v111 = *MEMORY[0x1E696A578];
         v61 = MEMORY[0x1E696AEC0];
-        v74 = [v97 absoluteString];
-        v62 = [v61 stringWithFormat:@"Error: Original module missing at %@", v74];
+        getCallablesDescription = [v97 absoluteString];
+        v62 = [v61 stringWithFormat:@"Error: Original module missing at %@", getCallablesDescription];
         v112 = v62;
         v63 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v112 forKeys:&v111 count:1];
         v64 = [v60 errorWithDomain:@"com.apple.mps" code:-20 userInfo:v63];
-        *v100 = v64;
+        *errorCopy = v64;
       }
 
       v10 = 0;
@@ -2815,18 +2815,18 @@ LABEL_66:
 
     else
     {
-      if (v100)
+      if (errorCopy)
       {
         v53 = MEMORY[0x1E696ABC0];
         v113 = *MEMORY[0x1E696A578];
         v54 = MEMORY[0x1E696AEC0];
-        v55 = [v101 absoluteString];
+        absoluteString2 = [commonCopy absoluteString];
         v56 = getMPSGraphPackageVersionString();
-        v57 = [v54 stringWithFormat:@"Error: No valid MPSGraph Package Version found in .mpsgraphpackage with URL: %@ \nThis OS supports MPSGraph Package Version up to %@", v55, v56];
+        v57 = [v54 stringWithFormat:@"Error: No valid MPSGraph Package Version found in .mpsgraphpackage with URL: %@ \nThis OS supports MPSGraph Package Version up to %@", absoluteString2, v56];
         v114 = v57;
         v58 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v114 forKeys:&v113 count:1];
         v59 = [v53 errorWithDomain:@"com.apple.mps" code:-20 userInfo:v58];
-        *v100 = v59;
+        *errorCopy = v59;
       }
 
       v10 = 0;
@@ -2851,7 +2851,7 @@ LABEL_66:
   {
     v26 = *MEMORY[0x1E696A578];
     v27 = *v36;
-    v33 = a1;
+    selfCopy = self;
     do
     {
       v8 = 0;
@@ -2866,35 +2866,35 @@ LABEL_66:
         v30 = v8;
         v9 = *(*(&v35 + 1) + 8 * v8);
         v10 = [obj objectForKeyedSubscript:v9];
-        v11 = **a1;
+        v11 = **self;
         v31 = v10;
         v12 = [v10 objectForKeyedSubscript:@"File Name"];
         v32 = [v11 URLByAppendingPathComponent:v12];
 
-        v13 = *v33[1];
-        v14 = [v32 path];
-        LOBYTE(v13) = [v13 fileExistsAtPath:v14];
+        v13 = *selfCopy[1];
+        path = [v32 path];
+        LOBYTE(v13) = [v13 fileExistsAtPath:path];
 
         if (v13)
         {
-          v15 = **v33;
-          v16 = *v33[4];
+          v15 = **selfCopy;
+          v16 = *selfCopy[4];
           v17 = [v25 objectForKeyedSubscript:v9];
-          v18 = [*v33[5] objectForKeyedSubscript:@"Resource Offsets"];
+          v18 = [*selfCopy[5] objectForKeyedSubscript:@"Resource Offsets"];
           getModuleResourcesLoader(&v34, v15, v16, v17, v18);
         }
 
         v19 = MEMORY[0x1E696ABC0];
         v39 = v26;
         v20 = MEMORY[0x1E696AEC0];
-        v21 = [*v33[3] absoluteString];
-        v22 = [v20 stringWithFormat:@"Error: optimized module missing at %@", v21];
+        absoluteString = [*selfCopy[3] absoluteString];
+        v22 = [v20 stringWithFormat:@"Error: optimized module missing at %@", absoluteString];
         v40 = v22;
         v23 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v40 forKeys:&v39 count:1];
-        **v33[2] = [v19 errorWithDomain:@"com.apple.mps" code:-20 userInfo:v23];
+        **selfCopy[2] = [v19 errorWithDomain:@"com.apple.mps" code:-20 userInfo:v23];
 
         v8 = v30 + 1;
-        a1 = v33;
+        self = selfCopy;
       }
 
       while (v30 + 1 != v28);
@@ -2924,8 +2924,8 @@ LABEL_66:
     {
       if (v10)
       {
-        v12 = [v10 localizedDescription];
-        NSLog(&stru_1F5B5DFD0.isa, v12);
+        localizedDescription = [v10 localizedDescription];
+        NSLog(&stru_1F5B5DFD0.isa, localizedDescription);
       }
 
       else
@@ -2943,20 +2943,20 @@ LABEL_66:
   return v9;
 }
 
-- (MPSGraphExecutable)initWithMPSGraphPackageAtURL:(id)a3 adapterExecutable:(id)a4 compilationDescriptor:(id)a5
+- (MPSGraphExecutable)initWithMPSGraphPackageAtURL:(id)l adapterExecutable:(id)executable compilationDescriptor:(id)descriptor
 {
   v30 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v9)
+  lCopy = l;
+  executableCopy = executable;
+  descriptorCopy = descriptor;
+  v11 = descriptorCopy;
+  if (executableCopy)
   {
-    if (v10)
+    if (descriptorCopy)
     {
-      v12 = [v10 callables];
+      callables = [descriptorCopy callables];
 
-      if (v12)
+      if (callables)
       {
         NSLog(&cfstr_ProvidedBothAn.isa);
         goto LABEL_16;
@@ -2969,18 +2969,18 @@ LABEL_66:
     }
 
     v28 = 0;
-    v13 = [[MPSGraphPackage alloc] initWithSourcePackageURL:v8 error:&v28];
+    v13 = [[MPSGraphPackage alloc] initWithSourcePackageURL:lCopy error:&v28];
     v23 = v28;
     if (v13)
     {
-      v22 = [(MPSGraphPackage *)v13 getMLIRLibrary];
-      v21 = [v22 getCallablesDescription];
+      getMLIRLibrary = [(MPSGraphPackage *)v13 getMLIRLibrary];
+      getCallablesDescription = [getMLIRLibrary getCallablesDescription];
       v14 = objc_opt_new();
       v26 = 0u;
       v27 = 0u;
       v24 = 0u;
       v25 = 0u;
-      v15 = v21;
+      v15 = getCallablesDescription;
       v16 = [v15 countByEnumeratingWithState:&v24 objects:v29 count:16];
       if (v16)
       {
@@ -2995,7 +2995,7 @@ LABEL_66:
               objc_enumerationMutation(v15);
             }
 
-            [v14 setObject:v9 forKey:*(*(&v24 + 1) + 8 * v18++)];
+            [v14 setObject:executableCopy forKey:*(*(&v24 + 1) + 8 * v18++)];
           }
 
           while (v16 != v18);
@@ -3010,23 +3010,23 @@ LABEL_66:
   }
 
 LABEL_16:
-  v19 = [[MPSGraphExecutable alloc] initWithMPSGraphPackageAtURL:v8 compilationDescriptor:v11];
+  v19 = [[MPSGraphExecutable alloc] initWithMPSGraphPackageAtURL:lCopy compilationDescriptor:v11];
 
   return v19;
 }
 
-+ (MPSGraphExecutable)executableWithMPSGraphPackageAtURL:(id)a3 compilationDescriptor:(id)a4 error:(id *)a5
++ (MPSGraphExecutable)executableWithMPSGraphPackageAtURL:(id)l compilationDescriptor:(id)descriptor error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [[MPSGraphExecutable alloc] initWithMPSGraphPackageAtURLCommon:v7 compilationDescriptor:v8 error:a5];
+  lCopy = l;
+  descriptorCopy = descriptor;
+  v9 = [[MPSGraphExecutable alloc] initWithMPSGraphPackageAtURLCommon:lCopy compilationDescriptor:descriptorCopy error:error];
 
   return v9;
 }
 
-- (ReturnOp)returnOpForFunctionInModule:(ModuleOp)a3
+- (ReturnOp)returnOpForFunctionInModule:(ModuleOp)module
 {
-  v3.var0 = [(MPSGraphExecutable *)self getEntryFuncOpForModule:a3.state];
+  v3.var0 = [(MPSGraphExecutable *)self getEntryFuncOpForModule:module.state];
   if (!v3.var0)
   {
     v8 = MTLReportFailureTypeEnabled();
@@ -3063,19 +3063,19 @@ LABEL_16:
   return Terminator;
 }
 
-+ (id)executablesWithMLIRSourceForMultipleModules:(id)a3 executableDescriptor:(id)a4 regionNames:(id)a5
++ (id)executablesWithMLIRSourceForMultipleModules:(id)modules executableDescriptor:(id)descriptor regionNames:(id)names
 {
   v11[36] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v11[3] = a4;
-  v11[2] = a5;
+  modulesCopy = modules;
+  v11[3] = descriptor;
+  v11[2] = names;
   v11[1] = objc_opt_new();
-  v8 = [v7 UTF8String];
-  if (v8)
+  uTF8String = [modulesCopy UTF8String];
+  if (uTF8String)
   {
-    v9 = v8;
-    v10 = strlen(v8);
-    v8 = v9;
+    v9 = uTF8String;
+    v10 = strlen(uTF8String);
+    uTF8String = v9;
   }
 
   else
@@ -3083,23 +3083,23 @@ LABEL_16:
     v10 = 0;
   }
 
-  llvm::MemoryBuffer::getMemBuffer(v8, v10, "", 0, v11);
+  llvm::MemoryBuffer::getMemBuffer(uTF8String, v10, "", 0, v11);
   operator new();
 }
 
-- (BOOL)isExecutableForFeeds:(id)a3 targetTensors:(id)a4 targetOperations:(id)a5 compilationDescriptor:(id)a6
+- (BOOL)isExecutableForFeeds:(id)feeds targetTensors:(id)tensors targetOperations:(id)operations compilationDescriptor:(id)descriptor
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [v12 count];
+  feedsCopy = feeds;
+  tensorsCopy = tensors;
+  operationsCopy = operations;
+  descriptorCopy = descriptor;
+  v14 = [operationsCopy count];
   if (v14 == [*(self + 90) count])
   {
-    v15 = [v11 count];
+    v15 = [tensorsCopy count];
     if (v15 == [*(self + 89) count])
     {
-      v16 = [v10 count];
+      v16 = [feedsCopy count];
       if (v16 == [*(self + 92) count])
       {
         v55 = 0;
@@ -3112,7 +3112,7 @@ LABEL_16:
         v52[2] = __96__MPSGraphExecutable_isExecutableForFeeds_targetTensors_targetOperations_compilationDescriptor___block_invoke;
         v52[3] = &unk_1E86D4FB0;
         v54 = &v55;
-        v53 = v12;
+        v53 = operationsCopy;
         [v17 enumerateObjectsUsingBlock:v52];
         v18 = *(self + 89);
         v49[0] = MEMORY[0x1E69E9820];
@@ -3120,16 +3120,16 @@ LABEL_16:
         v49[2] = __96__MPSGraphExecutable_isExecutableForFeeds_targetTensors_targetOperations_compilationDescriptor___block_invoke_2;
         v49[3] = &unk_1E86D4FD8;
         v51 = &v55;
-        v50 = v11;
+        v50 = tensorsCopy;
         [v18 enumerateObjectsUsingBlock:v49];
-        if ([v13 compilerOptions])
+        if ([descriptorCopy compilerOptions])
         {
           v19 = *(self + 92);
           v46[0] = MEMORY[0x1E69E9820];
           v46[1] = 3221225472;
           v46[2] = __96__MPSGraphExecutable_isExecutableForFeeds_targetTensors_targetOperations_compilationDescriptor___block_invoke_3;
           v46[3] = &unk_1E86D5000;
-          v47 = v10;
+          v47 = feedsCopy;
           v48 = &v55;
           [v19 enumerateKeysAndObjectsUsingBlock:v46];
         }
@@ -3139,7 +3139,7 @@ LABEL_16:
           v20 = v56;
           if (*(v56 + 24) == 1)
           {
-            v21 = [*(self + 46) isEqualTo:v13];
+            v21 = [*(self + 46) isEqualTo:descriptorCopy];
 LABEL_9:
             v20 = v56;
 LABEL_34:
@@ -3161,57 +3161,57 @@ LABEL_34:
           }
 
 LABEL_17:
-          v25 = [v13 aneCompilerSpatialSplitting];
-          v26 = v25 == [*(self + 46) aneCompilerSpatialSplitting];
+          aneCompilerSpatialSplitting = [descriptorCopy aneCompilerSpatialSplitting];
+          v26 = aneCompilerSpatialSplitting == [*(self + 46) aneCompilerSpatialSplitting];
           v27 = v26 | byte_1EED2BC81;
           v20 = v56;
           *(v56 + 24) = v27 & 1;
           if (v27)
           {
-            v28 = [v13 enableANEFWToFWSignal];
-            v29 = [*(self + 46) enableANEFWToFWSignal];
-            v30 = word_1EED2BC90 | ~(v28 ^ v29);
+            enableANEFWToFWSignal = [descriptorCopy enableANEFWToFWSignal];
+            enableANEFWToFWSignal2 = [*(self + 46) enableANEFWToFWSignal];
+            v30 = word_1EED2BC90 | ~(enableANEFWToFWSignal ^ enableANEFWToFWSignal2);
             v20 = v56;
-            *(v56 + 24) = word_1EED2BC90 & 1 | (((v28 ^ v29) & 1) == 0);
+            *(v56 + 24) = word_1EED2BC90 & 1 | (((enableANEFWToFWSignal ^ enableANEFWToFWSignal2) & 1) == 0);
             if (v30)
             {
-              v31 = [v13 enableANELateLatch];
-              v32 = [*(self + 46) enableANELateLatch];
-              v33 = byte_1EED2BC92 | ~(v31 ^ v32);
+              enableANELateLatch = [descriptorCopy enableANELateLatch];
+              enableANELateLatch2 = [*(self + 46) enableANELateLatch];
+              v33 = byte_1EED2BC92 | ~(enableANELateLatch ^ enableANELateLatch2);
               v20 = v56;
-              *(v56 + 24) = byte_1EED2BC92 & 1 | (((v31 ^ v32) & 1) == 0);
+              *(v56 + 24) = byte_1EED2BC92 & 1 | (((enableANELateLatch ^ enableANELateLatch2) & 1) == 0);
               if (v33)
               {
-                v34 = [v13 enableANECHWRankPromotion];
-                v35 = [*(self + 46) enableANECHWRankPromotion];
-                v36 = byte_1EED2BC93 | ~(v34 ^ v35);
+                enableANECHWRankPromotion = [descriptorCopy enableANECHWRankPromotion];
+                enableANECHWRankPromotion2 = [*(self + 46) enableANECHWRankPromotion];
+                v36 = byte_1EED2BC93 | ~(enableANECHWRankPromotion ^ enableANECHWRankPromotion2);
                 v20 = v56;
-                *(v56 + 24) = byte_1EED2BC93 & 1 | (((v34 ^ v35) & 1) == 0);
+                *(v56 + 24) = byte_1EED2BC93 & 1 | (((enableANECHWRankPromotion ^ enableANECHWRankPromotion2) & 1) == 0);
                 if (v36)
                 {
-                  v37 = [v13 entryFunctionName];
-                  v38 = [*(self + 46) entryFunctionName];
-                  *(v56 + 24) = v37 == v38;
+                  entryFunctionName = [descriptorCopy entryFunctionName];
+                  entryFunctionName2 = [*(self + 46) entryFunctionName];
+                  *(v56 + 24) = entryFunctionName == entryFunctionName2;
 
                   v20 = v56;
                   if (v56[3])
                   {
-                    v39 = [v13 callables];
-                    v40 = [*(self + 46) callables];
-                    *(v56 + 24) = v39 == v40;
+                    callables = [descriptorCopy callables];
+                    callables2 = [*(self + 46) callables];
+                    *(v56 + 24) = callables == callables2;
 
                     v20 = v56;
                     if (v56[3])
                     {
-                      v41 = [v13 minimumNumberOfOpsInParallelRegion];
-                      v42 = v41 == [*(self + 46) minimumNumberOfOpsInParallelRegion];
+                      minimumNumberOfOpsInParallelRegion = [descriptorCopy minimumNumberOfOpsInParallelRegion];
+                      v42 = minimumNumberOfOpsInParallelRegion == [*(self + 46) minimumNumberOfOpsInParallelRegion];
                       v43 = v42 | byte_1EED2BCC1;
                       v20 = v56;
                       *(v56 + 24) = v43 & 1;
                       if (v43)
                       {
-                        v44 = [v13 maximumNumberOfParallelEncodingRegions];
-                        v45 = v44 == [*(self + 46) maximumNumberOfParallelEncodingRegions];
+                        maximumNumberOfParallelEncodingRegions = [descriptorCopy maximumNumberOfParallelEncodingRegions];
+                        v45 = maximumNumberOfParallelEncodingRegions == [*(self + 46) maximumNumberOfParallelEncodingRegions];
                         v21 = v45 | byte_1EED2BCD0;
                         goto LABEL_9;
                       }
@@ -3254,11 +3254,11 @@ LABEL_28:
 
         if (v56[3])
         {
-          v23 = [v13 compilerOptions];
-          v24 = [*(self + 46) compilerOptions];
+          compilerOptions = [descriptorCopy compilerOptions];
+          compilerOptions2 = [*(self + 46) compilerOptions];
           v20 = v56;
-          *(v56 + 24) = v23 == v24;
-          if (v23 == v24)
+          *(v56 + 24) = compilerOptions == compilerOptions2;
+          if (compilerOptions == compilerOptions2)
           {
             goto LABEL_17;
           }
@@ -3337,12 +3337,12 @@ void __96__MPSGraphExecutable_isExecutableForFeeds_targetTensors_targetOperation
   *(v8 + 24) = v9;
 }
 
-- (id)getOperationsToVisitForOperation:(id)a3 visitedOperations:(id)a4
+- (id)getOperationsToVisitForOperation:(id)operation visitedOperations:(id)operations
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E695DF70] array];
-  v8 = v5[5];
+  operationCopy = operation;
+  operationsCopy = operations;
+  array = [MEMORY[0x1E695DF70] array];
+  v8 = operationCopy[5];
   if (v8)
   {
     v9 = *(v8 + 8);
@@ -3350,23 +3350,23 @@ void __96__MPSGraphExecutable_isExecutableForFeeds_targetTensors_targetOperation
     v25[1] = 3221225472;
     v25[2] = __73__MPSGraphExecutable_getOperationsToVisitForOperation_visitedOperations___block_invoke;
     v25[3] = &unk_1E86D5028;
-    v26 = v6;
-    v27 = v7;
+    v26 = operationsCopy;
+    v27 = array;
     [v9 enumerateObjectsUsingBlock:v25];
   }
 
-  v10 = [v5 inputTensors];
+  inputTensors = [operationCopy inputTensors];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __73__MPSGraphExecutable_getOperationsToVisitForOperation_visitedOperations___block_invoke_2;
   v22[3] = &unk_1E86D4E20;
-  v11 = v6;
+  v11 = operationsCopy;
   v23 = v11;
-  v12 = v7;
+  v12 = array;
   v24 = v12;
-  [v10 enumerateObjectsUsingBlock:v22];
+  [inputTensors enumerateObjectsUsingBlock:v22];
 
-  v13 = [v5 controlDependencies];
+  controlDependencies = [operationCopy controlDependencies];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __73__MPSGraphExecutable_getOperationsToVisitForOperation_visitedOperations___block_invoke_3;
@@ -3375,7 +3375,7 @@ void __96__MPSGraphExecutable_isExecutableForFeeds_targetTensors_targetOperation
   v20 = v14;
   v15 = v12;
   v21 = v15;
-  [v13 enumerateObjectsUsingBlock:v19];
+  [controlDependencies enumerateObjectsUsingBlock:v19];
 
   v16 = v21;
   v17 = v15;
@@ -3416,18 +3416,18 @@ void __73__MPSGraphExecutable_getOperationsToVisitForOperation_visitedOperations
   }
 }
 
-- (id)newExecutableWithDevice:(id)a3 inputsArray:(id)a4 intermediateOperations:(id)a5 executionDescriptor:(id)a6
+- (id)newExecutableWithDevice:(id)device inputsArray:(id)array intermediateOperations:(id)operations executionDescriptor:(id)descriptor
 {
   v75 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v70 = a5;
-  v12 = a6;
-  if (v10)
+  deviceCopy = device;
+  arrayCopy = array;
+  operationsCopy = operations;
+  descriptorCopy = descriptor;
+  if (deviceCopy)
   {
-    if (v12)
+    if (descriptorCopy)
     {
-      v13 = v12;
+      v13 = descriptorCopy;
     }
 
     else
@@ -3437,10 +3437,10 @@ void __73__MPSGraphExecutable_getOperationsToVisitForOperation_visitedOperations
 
     v14 = v13;
     v15 = [MPSGraphExecutableShapedEntryPoint alloc];
-    v16 = [v14 entryFunctionName];
-    v17 = [(MPSGraphExecutableShapedEntryPoint *)v15 initWithEntryFunctionName:v16 inputTypes:v11];
+    entryFunctionName = [v14 entryFunctionName];
+    v17 = [(MPSGraphExecutableShapedEntryPoint *)v15 initWithEntryFunctionName:entryFunctionName inputTypes:arrayCopy];
 
-    [(MPSGraphExecutable *)self specializeWithDevice:v10 shapedEntryPoint:v17 compilationDescriptor:0];
+    [(MPSGraphExecutable *)self specializeWithDevice:deviceCopy shapedEntryPoint:v17 compilationDescriptor:0];
     v18 = (*(*v68 + 24))(v68, 0);
     v19 = *(self + 36);
     if (!v19)
@@ -3505,12 +3505,12 @@ void __73__MPSGraphExecutable_getOperationsToVisitForOperation_visitedOperations
     v54 = 0;
     v55 = 0;
     v72 = &v69;
-    v73 = &v70;
+    v73 = &operationsCopy;
     p_p = &__p;
     mlir::detail::walk<mlir::ForwardIterator>(v20, llvm::function_ref<void ()(mlir::Operation *)>::callback_fn<[MPSGraphExecutable newExecutableWithDevice:inputsArray:intermediateOperations:executionDescriptor:]::$_16>, &v72, 1);
     v51 = v26;
     v50 = v20;
-    v52 = self;
+    selfCopy = self;
     if (__p != v54)
     {
       operator new();
@@ -3608,8 +3608,8 @@ LABEL_27:
       while (v30 != v58);
     }
 
-    mlir::OpBuilder::create<mlir::func::ReturnOp,std::vector<mlir::Value> &>(*(v52 + 36), v51, &__p);
-    v43 = *(v52 + 36);
+    mlir::OpBuilder::create<mlir::func::ReturnOp,std::vector<mlir::Value> &>(*(selfCopy + 36), v51, &__p);
+    v43 = *(selfCopy + 36);
     ArgumentTypes = mlir::Block::getArgumentTypes(v23);
     mlir::ValueRange::ValueRange(&v72, ArgumentTypes, (v45 - ArgumentTypes) >> 3);
     mlir::TypeRange::TypeRange(v71, v72, v73);
@@ -3629,7 +3629,7 @@ LABEL_27:
     if (mlir::verify(v50, 1))
     {
       v48 = objc_opt_new();
-      [[MPSGraphExecutable alloc] initWithSpecializedMLIRModule:v50 device:v10 shapedEntryPoint:v17 compilationDescriptor:0 executableDescriptor:v48];
+      [[MPSGraphExecutable alloc] initWithSpecializedMLIRModule:v50 device:deviceCopy shapedEntryPoint:v17 compilationDescriptor:0 executableDescriptor:v48];
     }
 
     if (__p)
@@ -3650,25 +3650,25 @@ LABEL_27:
   return 0;
 }
 
-- (id)runWithDevice:(id)a3 inputsArray:(id)a4 intermediateOperations:(id)a5 resultsArray:(id)a6 executionDescriptor:(id)a7
+- (id)runWithDevice:(id)device inputsArray:(id)array intermediateOperations:(id)operations resultsArray:(id)resultsArray executionDescriptor:(id)descriptor
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
-  v16 = [(MPSGraphExecutable *)self newExecutableWithDevice:v12 inputsArray:v13 intermediateOperations:a5 executionDescriptor:v15];
-  v17 = [v16 runWithDevice:v12 inputsArray:v13 resultsArray:v14 executionDescriptor:v15];
+  deviceCopy = device;
+  arrayCopy = array;
+  resultsArrayCopy = resultsArray;
+  descriptorCopy = descriptor;
+  v16 = [(MPSGraphExecutable *)self newExecutableWithDevice:deviceCopy inputsArray:arrayCopy intermediateOperations:operations executionDescriptor:descriptorCopy];
+  v17 = [v16 runWithDevice:deviceCopy inputsArray:arrayCopy resultsArray:resultsArrayCopy executionDescriptor:descriptorCopy];
 
   return v17;
 }
 
-- (OwningOpRef<mlir::ModuleOp>)cloneForFeeds:(id)a3 targetTensors:(id)a4 targetOperations:(id)a5
+- (OwningOpRef<mlir::ModuleOp>)cloneForFeeds:(id)feeds targetTensors:(id)tensors targetOperations:(id)operations
 {
   v107 = v5;
   v143 = *MEMORY[0x1E69E9840];
-  v108 = a3;
-  v111 = a4;
-  v110 = a5;
+  feedsCopy = feeds;
+  tensorsCopy = tensors;
+  operationsCopy = operations;
   v129[0] = 0;
   v129[1] = 0;
   v130 = 0;
@@ -3678,7 +3678,7 @@ LABEL_27:
   v134 = 0;
   v135 = 0;
   v136 = 0;
-  v115 = self;
+  selfCopy = self;
   v9 = *(self + 36);
   WeakRetained = objc_loadWeakRetained(self + 33);
   v109 = mlir::OpBuilder::clone(v9, WeakRetained[8], v129);
@@ -3687,14 +3687,14 @@ LABEL_27:
   obj = *(self + 91);
   if ([obj countByEnumeratingWithState:v128 objects:v139 count:16])
   {
-    v11 = [*(self + 92) objectForKeyedSubscript:{**(&v128[0] + 1), v107, v108}];
+    v11 = [*(self + 92) objectForKeyedSubscript:{**(&v128[0] + 1), v107, feedsCopy}];
     v12 = *(self + 36);
-    v13 = [v11 shape];
-    v14 = [v11 dataType];
-    v15 = v13;
+    shape = [v11 shape];
+    dataType = [v11 dataType];
+    v15 = shape;
     v16 = *v12;
     v17 = v15;
-    MLIRElementType = getMLIRElementType(v16, v14);
+    MLIRElementType = getMLIRElementType(v16, dataType);
     v19 = v17;
     v20 = v19;
     if (v19)
@@ -3751,9 +3751,9 @@ LABEL_27:
   v127 = 0;
   while (1)
   {
-    if (v32 >= [v111 count])
+    if (v32 >= [tensorsCopy count])
     {
-      v50 = *(v115 + 36);
+      v50 = *(selfCopy + 36);
       v51 = *(((v114 + 16 * ((var0[11] >> 23) & 1) + ((var0[11] >> 21) & 0x7F8) + 7) & 0xFFFFFFFFFFFFFFF8) + 32 * var0[10] + 8);
       if (v51)
       {
@@ -3767,16 +3767,16 @@ LABEL_27:
 
       *(v50 + 16) = v52;
       *(v50 + 24) = v52 + 32;
-      mlir::OpBuilder::create<mlir::func::ReturnOp,std::vector<mlir::Value> &>(*(v115 + 36), v31, &__p);
-      for (i = 0; i < [*(v115 + 91) count]; ++i)
+      mlir::OpBuilder::create<mlir::func::ReturnOp,std::vector<mlir::Value> &>(*(selfCopy + 36), v31, &__p);
+      for (i = 0; i < [*(selfCopy + 91) count]; ++i)
       {
-        v54 = [*(v115 + 91) objectAtIndexedSubscript:i];
-        v55 = [v54 value];
+        v54 = [*(selfCopy + 91) objectAtIndexedSubscript:i];
+        value = [v54 value];
         v56 = mlir::Block::addArgument(v28, *([v54 value] + 8) & 0xFFFFFFFFFFFFFFF8, v31);
-        v57 = 0x9DDFEA08EB382D69 * ((8 * v55 - 0xAE502812AA7333) ^ HIDWORD(v55));
-        v58 = 0x9DDFEA08EB382D69 * (HIDWORD(v55) ^ (v57 >> 47) ^ v57);
+        v57 = 0x9DDFEA08EB382D69 * ((8 * value - 0xAE502812AA7333) ^ HIDWORD(value));
+        v58 = 0x9DDFEA08EB382D69 * (HIDWORD(value) ^ (v57 >> 47) ^ v57);
         v59 = (v130 - 1) & (-348639895 * ((v58 >> 47) ^ v58));
-        if (*(v129[0] + 2 * v59) != v55)
+        if (*(v129[0] + 2 * v59) != value)
         {
           v65 = 1;
           do
@@ -3785,7 +3785,7 @@ LABEL_27:
             v59 = v66 & (v130 - 1);
           }
 
-          while (*(v129[0] + 2 * v59) != v55);
+          while (*(v129[0] + 2 * v59) != value);
         }
 
         v60 = *(v129[0] + 2 * v59 + 1);
@@ -3826,7 +3826,7 @@ LABEL_27:
         operator new();
       }
 
-      v67 = *(v115 + 36);
+      v67 = *(selfCopy + 36);
       ArgumentTypes = mlir::Block::getArgumentTypes(v28);
       mlir::ValueRange::ValueRange(&v140, ArgumentTypes, (v69 - ArgumentTypes) >> 3);
       mlir::TypeRange::TypeRange(&v137, v140, *(&v140 + 1));
@@ -3847,28 +3847,28 @@ LABEL_27:
       v138[1] = 0;
       v137 = v138;
       v72 = MEMORY[0x1E695DF70];
-      v73 = objc_loadWeakRetained(v115 + 33);
+      v73 = objc_loadWeakRetained(selfCopy + 33);
       v74 = [v72 arrayWithCapacity:{objc_msgSend(v73[10], "count")}];
 
-      v75 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
       v76 = 0;
       v140 = 0u;
       v141 = 0u;
       v142 = 1065353216;
-      while (v76 < [v110 count])
+      while (v76 < [operationsCopy count])
       {
-        v77 = [v110 objectAtIndexedSubscript:v76];
+        v77 = [operationsCopy objectAtIndexedSubscript:v76];
         [v74 addObject:v77];
 
         ++v76;
       }
 
-      for (j = 0; j < [v111 count]; ++j)
+      for (j = 0; j < [tensorsCopy count]; ++j)
       {
-        v79 = [v111 objectAtIndexedSubscript:j];
-        v80 = [v79 operation];
+        v79 = [tensorsCopy objectAtIndexedSubscript:j];
+        operation = [v79 operation];
 
-        [v74 addObject:v80];
+        [v74 addObject:operation];
       }
 
       while (1)
@@ -3878,7 +3878,7 @@ LABEL_27:
           v122 = 0;
           v123 = 0;
           v124 = 0;
-          v95 = objc_loadWeakRetained(v115 + 33);
+          v95 = objc_loadWeakRetained(selfCopy + 33);
           v96 = [v95[10] count];
           if (v96)
           {
@@ -3893,7 +3893,7 @@ LABEL_27:
           v119 = 0;
           v120 = 0;
           v121 = 0;
-          v97 = objc_loadWeakRetained(v115 + 33);
+          v97 = objc_loadWeakRetained(selfCopy + 33);
           v98 = [v97[10] count];
           if (v98)
           {
@@ -3905,7 +3905,7 @@ LABEL_27:
             std::vector<std::shared_ptr<MIL::IRArgument>>::__throw_length_error[abi:ne200100]();
           }
 
-          v99 = objc_loadWeakRetained(v115 + 33);
+          v99 = objc_loadWeakRetained(selfCopy + 33);
           v118 = &v122;
           v100 = v99[8];
           v116 = &v118;
@@ -3987,8 +3987,8 @@ LABEL_27:
         }
 
 LABEL_100:
-        [v75 setObject:v81 forKey:v81];
-        v94 = [(MPSGraphExecutable *)v115 getOperationsToVisitForOperation:v81 visitedOperations:v75];
+        [dictionary setObject:v81 forKey:v81];
+        v94 = [(MPSGraphExecutable *)selfCopy getOperationsToVisitForOperation:v81 visitedOperations:dictionary];
         [v74 removeObjectAtIndex:0];
         [v74 addObjectsFromArray:v94];
       }
@@ -4083,18 +4083,18 @@ LABEL_99:
       operator new();
     }
 
-    v34 = [v111 objectAtIndexedSubscript:v32];
-    v35 = [v34 value];
+    v34 = [tensorsCopy objectAtIndexedSubscript:v32];
+    value2 = [v34 value];
     if (!v130)
     {
       goto LABEL_26;
     }
 
-    v36 = 0x9DDFEA08EB382D69 * ((8 * v35 - 0xAE502812AA7333) ^ HIDWORD(v35));
-    v37 = 0x9DDFEA08EB382D69 * (HIDWORD(v35) ^ (v36 >> 47) ^ v36);
+    v36 = 0x9DDFEA08EB382D69 * ((8 * value2 - 0xAE502812AA7333) ^ HIDWORD(value2));
+    v37 = 0x9DDFEA08EB382D69 * (HIDWORD(value2) ^ (v36 >> 47) ^ v36);
     v38 = (v130 - 1) & (-348639895 * ((v37 >> 47) ^ v37));
     v39 = *(v129[0] + 2 * v38);
-    if (v39 != v35)
+    if (v39 != value2)
     {
       break;
     }
@@ -4174,7 +4174,7 @@ LABEL_28:
     v49 = v38 + v48++;
     v38 = v49 & (v130 - 1);
     v39 = *(v129[0] + 2 * v38);
-    if (v39 == v35)
+    if (v39 == value2)
     {
       goto LABEL_25;
     }
@@ -4185,18 +4185,18 @@ LABEL_26:
   goto LABEL_28;
 }
 
-- (FuncOp)getEntryFuncOpForModule:(ModuleOp)a3
+- (FuncOp)getEntryFuncOpForModule:(ModuleOp)module
 {
-  v5 = [*(self + 46) entryFunctionName];
+  entryFunctionName = [*(self + 46) entryFunctionName];
 
-  if (v5)
+  if (entryFunctionName)
   {
-    v6 = [*(self + 46) entryFunctionName];
-    v7 = [v6 UTF8String];
-    v8 = v7;
-    if (v7)
+    entryFunctionName2 = [*(self + 46) entryFunctionName];
+    uTF8String = [entryFunctionName2 UTF8String];
+    v8 = uTF8String;
+    if (uTF8String)
     {
-      v9 = strlen(v7);
+      v9 = strlen(uTF8String);
     }
 
     else
@@ -4204,12 +4204,12 @@ LABEL_26:
       v9 = 0;
     }
 
-    Context = mlir::Attribute::getContext((a3.state + 24));
+    Context = mlir::Attribute::getContext((module.state + 24));
     v17 = 261;
     v16[0] = v8;
     v16[1] = v9;
     v12 = mlir::StringAttr::get(Context, v16);
-    v13 = mlir::SymbolTable::lookupSymbolIn(a3.state, v12);
+    v13 = mlir::SymbolTable::lookupSymbolIn(module.state, v12);
     if (v13 && *(*(v13 + 6) + 16) == &mlir::detail::TypeIDResolver<mlir::func::FuncOp,void>::id)
     {
       v15.var0 = v13;
@@ -4233,7 +4233,7 @@ LABEL_26:
   else
   {
 
-    return getFuncOpInModule(a3.state);
+    return getFuncOpInModule(module.state);
   }
 
   return v10;
@@ -4241,25 +4241,25 @@ LABEL_26:
 
 - (void)optimizeOriginalModule
 {
-  v2 = self;
+  selfCopy = self;
   v85 = *MEMORY[0x1E69E9840];
   std::mutex::lock((self + 8));
-  v3 = atomic_load(v2 + 708);
+  v3 = atomic_load(selfCopy + 708);
   if ((v3 & 1) == 0)
   {
     v76 = 0;
-    v55 = v2;
-    v54 = OriginalModuleRef::get(v2 + 37, &v76);
+    v55 = selfCopy;
+    v54 = OriginalModuleRef::get(selfCopy + 37, &v76);
     v4 = v76;
     if (v4)
     {
 LABEL_73:
 
-      v2 = v55;
+      selfCopy = v55;
       goto LABEL_74;
     }
 
-    v5 = *(v2 + 47);
+    v5 = *(selfCopy + 47);
     if (v5)
     {
       v53 = &v82;
@@ -4295,9 +4295,9 @@ LABEL_73:
 
               v9 = [*(v55 + 47) objectForKeyedSubscript:v8];
               v10 = MEMORY[0x1E696ACB0];
-              v11 = [v9 aneCompilerOptions];
+              aneCompilerOptions = [v9 aneCompilerOptions];
               v71 = 0;
-              v12 = [v10 dataWithJSONObject:v11 options:2 error:&v71];
+              v12 = [v10 dataWithJSONObject:aneCompilerOptions options:2 error:&v71];
               v57 = v71;
 
               if (!v12 && MTLReportFailureTypeEnabled())
@@ -4307,13 +4307,13 @@ LABEL_73:
 
               v13 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:v12 encoding:4];
               Context = mlir::Attribute::getContext((v54 + 24));
-              v15 = [v8 architecture];
-              v16 = v15;
-              v17 = [v15 UTF8String];
-              v18 = v17;
-              if (v17)
+              architecture = [v8 architecture];
+              v16 = architecture;
+              uTF8String = [architecture UTF8String];
+              v18 = uTF8String;
+              if (uTF8String)
               {
-                v19 = strlen(v17);
+                v19 = strlen(uTF8String);
               }
 
               else
@@ -4321,13 +4321,13 @@ LABEL_73:
                 v19 = 0;
               }
 
-              v20 = [v8 gpuCoreCount];
+              gpuCoreCount = [v8 gpuCoreCount];
               v21 = v13;
-              v22 = [v13 UTF8String];
-              v23 = v22;
-              if (v22)
+              uTF8String2 = [v13 UTF8String];
+              v23 = uTF8String2;
+              if (uTF8String2)
               {
-                v24 = strlen(v22);
+                v24 = strlen(uTF8String2);
               }
 
               else
@@ -4335,7 +4335,7 @@ LABEL_73:
                 v24 = 0;
               }
 
-              v25 = mlir::mps_spi::DeviceDescriptorOptionsAttr::get(Context, v18, v19, v20, v23, v24);
+              v25 = mlir::mps_spi::DeviceDescriptorOptionsAttr::get(Context, v18, v19, gpuCoreCount, v23, v24);
               v26 = DWORD2(v81);
               if (DWORD2(v81) >= HIDWORD(v81))
               {
@@ -4592,7 +4592,7 @@ LABEL_42:
   }
 
 LABEL_74:
-  std::mutex::unlock((v2 + 8));
+  std::mutex::unlock((selfCopy + 8));
 }
 
 - (vector<mlir::Type,)convertMPSGraphShapesToMLIRTypes:(MPSGraphExecutable *)self
@@ -4668,9 +4668,9 @@ void __55__MPSGraphExecutable_convertMPSGraphShapesToMLIRTypes___block_invoke(ui
   std::vector<mlir::Type>::push_back[abi:ne200100](*(*(a1 + 40) + 8) + 48, v12);
 }
 
-- (vector<mlir::Type,)convertMPSGraphShapesToMLIRTypes:(MPSGraphExecutable *)self funcOp:(SEL)a3 compilationDescriptor:(id)a4
+- (vector<mlir::Type,)convertMPSGraphShapesToMLIRTypes:(MPSGraphExecutable *)self funcOp:(SEL)op compilationDescriptor:(id)descriptor
 {
-  v10 = a4;
+  descriptorCopy = descriptor;
   v11 = a6;
   v23 = 0;
   v24 = &v23;
@@ -4688,7 +4688,7 @@ void __55__MPSGraphExecutable_convertMPSGraphShapesToMLIRTypes___block_invoke(ui
   v22[4] = __Block_byref_object_dispose__717;
   v22[5] = 0;
   v22[6] = a5.var0;
-  v12 = [v10 count];
+  v12 = [descriptorCopy count];
   if (v12 > (v31 - __p) >> 3)
   {
     if (!(v12 >> 61))
@@ -4708,7 +4708,7 @@ void __55__MPSGraphExecutable_convertMPSGraphShapesToMLIRTypes___block_invoke(ui
   v13 = v11;
   v19 = v13;
   v21 = &v23;
-  [v10 enumerateObjectsUsingBlock:v18];
+  [descriptorCopy enumerateObjectsUsingBlock:v18];
   v14 = v24;
   retstr->var1 = 0;
   retstr->var2 = 0;
@@ -4918,17 +4918,17 @@ LABEL_8:
 LABEL_30:
 }
 
-- (vector<mlir::NamedAttribute,)getAttributesFromDescriptors:(MPSGraphExecutable *)self context:(SEL)a3 deviceDescriptor:(id)a4
+- (vector<mlir::NamedAttribute,)getAttributesFromDescriptors:(MPSGraphExecutable *)self context:(SEL)context deviceDescriptor:(id)descriptor
 {
   v65 = *MEMORY[0x1E69E9840];
-  v9 = a4;
+  descriptorCopy = descriptor;
   v10 = a6;
-  v41 = v9;
+  v41 = descriptorCopy;
   v43 = v10;
   v44 = retstr;
-  if (v9)
+  if (descriptorCopy)
   {
-    [v9 getNamedAttrArray:a5 deviceDescriptor:{v10, v9, v10, retstr}];
+    [descriptorCopy getNamedAttrArray:a5 deviceDescriptor:{v10, descriptorCopy, v10, retstr}];
   }
 
   else
@@ -4938,20 +4938,20 @@ LABEL_30:
     retstr->var2 = 0;
   }
 
-  v11 = [*(self + 46) entryFunctionName];
+  entryFunctionName = [*(self + 46) entryFunctionName];
 
-  if (v11)
+  if (entryFunctionName)
   {
     v48 = "mps.entryFunctionName";
     LOWORD(v52) = 259;
     v12 = mlir::StringAttr::get(a5, &v48);
-    v13 = [*(self + 46) entryFunctionName];
-    v14 = v13;
-    v15 = [v13 UTF8String];
+    entryFunctionName2 = [*(self + 46) entryFunctionName];
+    v14 = entryFunctionName2;
+    uTF8String = [entryFunctionName2 UTF8String];
     v63 = 257;
-    if (*v15)
+    if (*uTF8String)
     {
-      *&v62[0] = v15;
+      *&v62[0] = uTF8String;
       v16 = 3;
     }
 
@@ -5005,11 +5005,11 @@ LABEL_30:
         p_p = &__p;
         llvm::raw_ostream::SetBufferAndMode(&v48, 0, 0, 0);
         v23 = v22;
-        v24 = [v22 UTF8String];
-        v25 = v24;
-        if (v24)
+        uTF8String2 = [v22 UTF8String];
+        v25 = uTF8String2;
+        if (uTF8String2)
         {
-          v26 = strlen(v24);
+          v26 = strlen(uTF8String2);
           if (v26 > v51 - v52)
           {
             v27 = llvm::raw_ostream::write(&v48, v25, v26);
@@ -5044,11 +5044,11 @@ LABEL_23:
 LABEL_24:
         v29 = [*(self + 48) objectForKeyedSubscript:v22];
         v30 = v29;
-        v31 = [v29 UTF8String];
-        v32 = v31;
-        if (v31)
+        uTF8String3 = [v29 UTF8String];
+        v32 = uTF8String3;
+        if (uTF8String3)
         {
-          v33 = strlen(v31);
+          v33 = strlen(uTF8String3);
           v34 = v27[4];
           if (v33 <= v27[3] - v34)
           {
@@ -5335,9 +5335,9 @@ LABEL_43:
     return v4;
   }
 
-  v5 = [*(self + 46) entryFunctionName];
+  entryFunctionName = [*(self + 46) entryFunctionName];
 
-  if (!v5)
+  if (!entryFunctionName)
   {
     v10 = 4;
     strcpy(__p, "main");
@@ -5371,44 +5371,44 @@ LABEL_13:
   return v4;
 }
 
-- (id)applyOptionsToEntryPoint:(id)a3 compilationDescriptor:(id)a4
+- (id)applyOptionsToEntryPoint:(id)point compilationDescriptor:(id)descriptor
 {
-  v6 = a3;
-  if (!a4)
+  pointCopy = point;
+  if (!descriptor)
   {
-    a4 = *(self + 46);
+    descriptor = *(self + 46);
   }
 
-  v7 = a4;
-  v8 = [v6 shapedInputTypes];
-  if (([v7 compilerOptions] & 1) == 0)
+  descriptorCopy = descriptor;
+  shapedInputTypes = [pointCopy shapedInputTypes];
+  if (([descriptorCopy compilerOptions] & 1) == 0)
   {
 
-    v8 = 0;
+    shapedInputTypes = 0;
   }
 
   v9 = [MPSGraphExecutableShapedEntryPoint alloc];
-  v10 = [v6 entryFunctionName];
-  v11 = [(MPSGraphExecutableShapedEntryPoint *)v9 initWithEntryFunctionName:v10 inputTypes:v8];
+  entryFunctionName = [pointCopy entryFunctionName];
+  v11 = [(MPSGraphExecutableShapedEntryPoint *)v9 initWithEntryFunctionName:entryFunctionName inputTypes:shapedInputTypes];
 
   return v11;
 }
 
-- (MPSGraphModuleKey)getDeviceCacheKeyForTransformedEntryPointImpl:(SEL)a3 deviceDescriptor:(id)a4 compilationDescriptor:(id)a5
+- (MPSGraphModuleKey)getDeviceCacheKeyForTransformedEntryPointImpl:(SEL)impl deviceDescriptor:(id)descriptor compilationDescriptor:(id)compilationDescriptor
 {
   v18[6] = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = a5;
+  descriptorCopy = descriptor;
+  compilationDescriptorCopy = compilationDescriptor;
   if (!a6)
   {
     a6 = *(self + 46);
   }
 
   v12 = a6;
-  v13 = [v10 entryFunctionName];
-  if (v13)
+  entryFunctionName = [descriptorCopy entryFunctionName];
+  if (entryFunctionName)
   {
-    [v10 entryFunctionName];
+    [descriptorCopy entryFunctionName];
   }
 
   else
@@ -5417,10 +5417,10 @@ LABEL_13:
   }
   v14 = ;
 
-  v15 = [v10 shapedInputTypes];
-  getFlatShapes(v17, v15);
+  shapedInputTypes = [descriptorCopy shapedInputTypes];
+  getFlatShapes(v17, shapedInputTypes);
 
-  MPSGraphModuleKey::MPSGraphModuleKey(retstr, v17, v12, *(self + 48), v14, v11);
+  MPSGraphModuleKey::MPSGraphModuleKey(retstr, v17, v12, *(self + 48), v14, compilationDescriptorCopy);
   if (v17[0] != v18)
   {
     free(v17[0]);
@@ -5429,61 +5429,61 @@ LABEL_13:
   return result;
 }
 
-- (MPSGraphModuleKey)getDeviceCacheKeyForTransformedEntryPoint:(SEL)a3 device:(id)a4 compilationDescriptor:(id)a5
+- (MPSGraphModuleKey)getDeviceCacheKeyForTransformedEntryPoint:(SEL)point device:(id)device compilationDescriptor:(id)descriptor
 {
-  v12 = a4;
+  deviceCopy = device;
   v9 = a6;
-  v10 = [a5 deviceDescriptor];
-  [(MPSGraphExecutable *)self getDeviceCacheKeyForTransformedEntryPointImpl:v12 deviceDescriptor:v10 compilationDescriptor:v9];
+  deviceDescriptor = [descriptor deviceDescriptor];
+  [(MPSGraphExecutable *)self getDeviceCacheKeyForTransformedEntryPointImpl:deviceCopy deviceDescriptor:deviceDescriptor compilationDescriptor:v9];
 
   return result;
 }
 
-- (MPSGraphModuleKey)getDeviceCacheKeyForEntryPoint:(SEL)a3 device:(id)a4 compilationDescriptor:(id)a5
+- (MPSGraphModuleKey)getDeviceCacheKeyForEntryPoint:(SEL)point device:(id)device compilationDescriptor:(id)descriptor
 {
-  v12 = a5;
+  descriptorCopy = descriptor;
   v9 = a6;
-  v10 = [(MPSGraphExecutable *)self applyOptionsToEntryPoint:a4 compilationDescriptor:v9];
-  [(MPSGraphExecutable *)self getDeviceCacheKeyForTransformedEntryPoint:v10 device:v12 compilationDescriptor:v9];
+  v10 = [(MPSGraphExecutable *)self applyOptionsToEntryPoint:device compilationDescriptor:v9];
+  [(MPSGraphExecutable *)self getDeviceCacheKeyForTransformedEntryPoint:v10 device:descriptorCopy compilationDescriptor:v9];
 
   return result;
 }
 
-- (BOOL)sendANEStreamingSessionSignal:(id)a3 sessionDescriptor:(id)a4 report:(id)a5
+- (BOOL)sendANEStreamingSessionSignal:(id)signal sessionDescriptor:(id)descriptor report:(id)report
 {
   v51[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  signalCopy = signal;
+  descriptorCopy = descriptor;
+  reportCopy = report;
   v47 = 0;
   v48 = 0;
   v11 = [MPSGraphExecutableShapedEntryPoint alloc];
-  v12 = [v9 shapedEntryPoint];
-  v13 = [v12 entryFunctionName];
-  v14 = [v9 shapedEntryPoint];
-  v15 = [v14 inputTypes];
-  v16 = getShapesFromTypes(v15);
-  v17 = [(MPSGraphExecutableShapedEntryPoint *)v11 initWithEntryFunctionName:v13 inputTypes:v16];
+  shapedEntryPoint = [descriptorCopy shapedEntryPoint];
+  entryFunctionName = [shapedEntryPoint entryFunctionName];
+  shapedEntryPoint2 = [descriptorCopy shapedEntryPoint];
+  inputTypes = [shapedEntryPoint2 inputTypes];
+  v16 = getShapesFromTypes(inputTypes);
+  v17 = [(MPSGraphExecutableShapedEntryPoint *)v11 initWithEntryFunctionName:entryFunctionName inputTypes:v16];
 
-  v18 = [v9 perEntryPointToSymbolAndFileNameMap];
+  perEntryPointToSymbolAndFileNameMap = [descriptorCopy perEntryPointToSymbolAndFileNameMap];
 
-  if (v18)
+  if (perEntryPointToSymbolAndFileNameMap)
   {
-    v19 = [v9 shapedEntryPoint];
-    [v19 entryFunctionName];
+    shapedEntryPoint3 = [descriptorCopy shapedEntryPoint];
+    [shapedEntryPoint3 entryFunctionName];
 
-    v20 = [v9 shapedEntryPoint];
-    v21 = [v20 entryFunctionName];
+    shapedEntryPoint4 = [descriptorCopy shapedEntryPoint];
+    entryFunctionName2 = [shapedEntryPoint4 entryFunctionName];
 
-    if (!v21 && MTLReportFailureTypeEnabled())
+    if (!entryFunctionName2 && MTLReportFailureTypeEnabled())
     {
-      v41 = [v9 shapedEntryPoint];
-      v42 = [v41 entryFunctionName];
+      shapedEntryPoint5 = [descriptorCopy shapedEntryPoint];
+      entryFunctionName3 = [shapedEntryPoint5 entryFunctionName];
       MTLReportFailure();
     }
 
-    v22 = [v9 perEntryPointToSymbolAndFileNameMap];
-    v23 = [(MPSGraphExecutable *)self getRuntimeSpecializationAndEntryFunction:v8 shapedEntryPoint:v17 perEntryPointToSymbolAndFileNameMap:v22 entryFuncOp:&v47 runtime:&v48];
+    perEntryPointToSymbolAndFileNameMap2 = [descriptorCopy perEntryPointToSymbolAndFileNameMap];
+    v23 = [(MPSGraphExecutable *)self getRuntimeSpecializationAndEntryFunction:signalCopy shapedEntryPoint:v17 perEntryPointToSymbolAndFileNameMap:perEntryPointToSymbolAndFileNameMap2 entryFuncOp:&v47 runtime:&v48];
 
     v24 = v48;
     if (v48[75])
@@ -5496,14 +5496,14 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  v26 = [v9 compilationDescriptor];
-  [(MPSGraphExecutable *)self specializeWithDevice:v8 shapedEntryPoint:v17 compilationDescriptor:v26];
+  compilationDescriptor = [descriptorCopy compilationDescriptor];
+  [(MPSGraphExecutable *)self specializeWithDevice:signalCopy shapedEntryPoint:v17 compilationDescriptor:compilationDescriptor];
 
-  v27 = v8;
+  v27 = signalCopy;
   v51[0] = v17;
   v28 = [MEMORY[0x1E695DEC8] arrayWithObjects:v51 count:1];
-  v29 = [v9 compilationDescriptor];
-  v24 = [(MPSGraphExecutable *)self getNewRuntimeForDevice:v27 specializedModule:v43 shapedEntryPoints:v28 compilationDescriptor:v29];
+  compilationDescriptor2 = [descriptorCopy compilationDescriptor];
+  v24 = [(MPSGraphExecutable *)self getNewRuntimeForDevice:v27 specializedModule:v43 shapedEntryPoints:v28 compilationDescriptor:compilationDescriptor2];
   v48 = v24;
 
   v30 = (*(*v44 + 24))(v44, 0);
@@ -5568,28 +5568,28 @@ LABEL_15:
   }
 
 LABEL_4:
-  v25 = MPSRuntime::aneStreamingSessionSignal(v24, v9, v47, v23, v10);
+  v25 = MPSRuntime::aneStreamingSessionSignal(v24, descriptorCopy, v47, v23, reportCopy);
 LABEL_18:
 
   return v25;
 }
 
-- (void)getRuntimeSpecializationAndEntryFunction:(id)a3 shapedEntryPoint:(id)a4 perEntryPointToSymbolAndFileNameMap:(id)a5 entryFuncOp:(void *)a6 runtime:(BaseRuntime *)a7
+- (void)getRuntimeSpecializationAndEntryFunction:(id)function shapedEntryPoint:(id)point perEntryPointToSymbolAndFileNameMap:(id)map entryFuncOp:(void *)op runtime:(BaseRuntime *)runtime
 {
   v53[5] = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v44 = v13;
-  v15 = [(MPSGraphExecutableEntryPointToSymbolAndFileNameMap *)v14 perEntryPointMap];
-  v16 = [v15 allKeys];
+  functionCopy = function;
+  pointCopy = point;
+  mapCopy = map;
+  v44 = pointCopy;
+  perEntryPointMap = [(MPSGraphExecutableEntryPointToSymbolAndFileNameMap *)mapCopy perEntryPointMap];
+  allKeys = [perEntryPointMap allKeys];
 
   v45 = 0;
-  [(MPSGraphExecutable *)self specializedModuleWithDevice:v12 shapedEntryPoints:v16 compilationDescriptor:0 error:&v45];
+  [(MPSGraphExecutable *)self specializedModuleWithDevice:functionCopy shapedEntryPoints:allKeys compilationDescriptor:0 error:&v45];
   v43 = v45;
   v17 = *v51;
-  *a7 = [(MPSGraphExecutable *)self getNewRuntimeForDevice:v12 specializedModule:*v51 shapedEntryPoints:v16 compilationDescriptor:0];
-  [(MPSGraphExecutable *)self getDeviceCacheKeyForEntryPoint:v13 device:v12 compilationDescriptor:0];
+  *runtime = [(MPSGraphExecutable *)self getNewRuntimeForDevice:functionCopy specializedModule:*v51 shapedEntryPoints:allKeys compilationDescriptor:0];
+  [(MPSGraphExecutable *)self getDeviceCacheKeyForEntryPoint:pointCopy device:functionCopy compilationDescriptor:0];
   v18 = llvm::DenseMapBase<llvm::DenseMap<MPSGraphModuleKey,std::string,MPSGraphModuleKeyInfo,llvm::detail::DenseMapPair<MPSGraphModuleKey,std::string>>,MPSGraphModuleKey,std::string,MPSGraphModuleKeyInfo,llvm::detail::DenseMapPair<MPSGraphModuleKey,std::string>>::doFind<MPSGraphModuleKey>(v17[1], *(v17 + 6), &v49);
   v19 = *(v17 + 6);
   if (v18)
@@ -5657,13 +5657,13 @@ LABEL_18:
     v32 = 0;
   }
 
-  *a6 = v32;
-  v33 = *a7;
-  SpecializationOrNil = RuntimeSpecializationsCache::getSpecializationOrNil(*(*a7 + 85), v14);
+  *op = v32;
+  v33 = *runtime;
+  SpecializationOrNil = RuntimeSpecializationsCache::getSpecializationOrNil(*(*runtime + 85), mapCopy);
   if (!SpecializationOrNil)
   {
-    createToPerEntryFuncOpSymbolMap(v46, v14, v16, v51, v52);
-    RuntimeSpecializationsCache::getOrCreateSpecialization(*(v33 + 85), v14);
+    createToPerEntryFuncOpSymbolMap(v46, mapCopy, allKeys, v51, v52);
+    RuntimeSpecializationsCache::getOrCreateSpecialization(*(v33 + 85), mapCopy);
     v35 = v46[0];
     if (v47)
     {
@@ -5725,12 +5725,12 @@ LABEL_18:
   return SpecializationOrNil;
 }
 
-- (SmallVector<MPSGraphExecutableCacheValue,)specializedModuleWithDevice:(MPSGraphExecutable *)self shapedEntryPoints:(SEL)a3 compilationDescriptor:(id)a4 error:(id)a5
+- (SmallVector<MPSGraphExecutableCacheValue,)specializedModuleWithDevice:(MPSGraphExecutable *)self shapedEntryPoints:(SEL)points compilationDescriptor:(id)descriptor error:(id)error
 {
   v139 = *MEMORY[0x1E69E9840];
   v119[0] = self;
-  v118 = a4;
-  v95 = a5;
+  descriptorCopy = descriptor;
+  errorCopy = error;
   v10 = a6;
   v11 = v10;
   if (!v10)
@@ -5748,12 +5748,12 @@ LABEL_18:
     v13 = v117;
   }
 
-  v14 = [(MPSGraphCompilationDescriptor *)v13 callables];
-  if (v14)
+  callables = [(MPSGraphCompilationDescriptor *)v13 callables];
+  if (callables)
   {
-    v15 = [(MPSGraphCompilationDescriptor *)v117 callables];
-    v16 = [*(v119[0] + 46) callables];
-    v17 = [v15 isEqual:v16];
+    callables2 = [(MPSGraphCompilationDescriptor *)v117 callables];
+    callables3 = [*(v119[0] + 46) callables];
+    v17 = [callables2 isEqual:callables3];
 
     if ((v17 & 1) == 0)
     {
@@ -5764,26 +5764,26 @@ LABEL_18:
     }
   }
 
-  [v95 count];
-  if (![v95 count] && MTLReportFailureTypeEnabled())
+  [errorCopy count];
+  if (![errorCopy count] && MTLReportFailureTypeEnabled())
   {
     MTLReportFailure();
   }
 
-  if ([v95 count] == 1)
+  if ([errorCopy count] == 1)
   {
-    v18 = [v95 objectAtIndexedSubscript:0];
-    v19 = [v18 entryFunctionName];
+    v18 = [errorCopy objectAtIndexedSubscript:0];
+    entryFunctionName = [v18 entryFunctionName];
 
-    v116 = v19 == 0;
-    if (!v19)
+    v116 = entryFunctionName == 0;
+    if (!entryFunctionName)
     {
-      v20 = [(MPSGraphCompilationDescriptor *)v117 entryFunctionName];
-      if (v20)
+      entryFunctionName2 = [(MPSGraphCompilationDescriptor *)v117 entryFunctionName];
+      if (entryFunctionName2)
       {
-        v21 = [(MPSGraphCompilationDescriptor *)v117 entryFunctionName];
-        v22 = [*(v119[0] + 46) entryFunctionName];
-        v23 = [v21 isEqual:v22];
+        entryFunctionName3 = [(MPSGraphCompilationDescriptor *)v117 entryFunctionName];
+        entryFunctionName4 = [*(v119[0] + 46) entryFunctionName];
+        v23 = [entryFunctionName3 isEqual:entryFunctionName4];
 
         if ((v23 & 1) == 0)
         {
@@ -5803,21 +5803,21 @@ LABEL_18:
     v116 = 0;
   }
 
-  if (!v118 && MTLReportFailureTypeEnabled())
+  if (!descriptorCopy && MTLReportFailureTypeEnabled())
   {
     MTLReportFailure();
   }
 
-  v24 = [(MPSGraphCompilationDescriptor *)v117 entryFunctionName];
-  if (v24)
+  entryFunctionName5 = [(MPSGraphCompilationDescriptor *)v117 entryFunctionName];
+  if (entryFunctionName5)
   {
 
     goto LABEL_21;
   }
 
-  v25 = [*(v119[0] + 46) entryFunctionName];
+  entryFunctionName6 = [*(v119[0] + 46) entryFunctionName];
 
-  if (v25)
+  if (entryFunctionName6)
   {
 LABEL_21:
     if (MTLReportFailureTypeEnabled())
@@ -5830,7 +5830,7 @@ LABEL_21:
   v115 = 0u;
   v112 = 0u;
   v113 = 0u;
-  v26 = v95;
+  v26 = errorCopy;
   v27 = [v26 countByEnumeratingWithState:&v112 objects:v138 count:16];
   if (v27)
   {
@@ -5848,8 +5848,8 @@ LABEL_21:
         v30 = *(*(&v112 + 1) + 8 * v29);
         [v30 entryFunctionName];
 
-        v31 = [v30 entryFunctionName];
-        LODWORD(v30) = v31 == 0;
+        entryFunctionName7 = [v30 entryFunctionName];
+        LODWORD(v30) = entryFunctionName7 == 0;
 
         if (v30 && MTLReportFailureTypeEnabled())
         {
@@ -5868,12 +5868,12 @@ LABEL_21:
   }
 
 LABEL_35:
-  v111 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v95, "count")}];
+  v111 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(errorCopy, "count")}];
   v107 = 0u;
   v108 = 0u;
   v109 = 0u;
   v110 = 0u;
-  v96 = v95;
+  v96 = errorCopy;
   v33 = [v96 countByEnumeratingWithState:&v107 objects:v137 count:16];
   if (v33)
   {
@@ -5900,7 +5900,7 @@ LABEL_35:
   v104 = 0;
   v105 = 0;
   v106 = 0;
-  if (v118)
+  if (descriptorCopy)
   {
     v37 = [v111 count];
     if (0xAAAAAAAAAAAAAAABLL * ((v106 - v104) >> 5) < v37)
@@ -5932,7 +5932,7 @@ LABEL_35:
             objc_enumerationMutation(v38);
           }
 
-          [v119[0] getDeviceCacheKeyForTransformedEntryPoint:*(*(&v100 + 1) + 8 * j) device:v118 compilationDescriptor:v117];
+          [v119[0] getDeviceCacheKeyForTransformedEntryPoint:*(*(&v100 + 1) + 8 * j) device:descriptorCopy compilationDescriptor:v117];
           v42 = v105;
           if (v105 >= v106)
           {
@@ -6010,7 +6010,7 @@ LABEL_66:
     }
   }
 
-  v99[0] = &v118;
+  v99[0] = &descriptorCopy;
   v99[1] = v119;
   v99[2] = &v111;
   v99[3] = &v104;
@@ -6068,7 +6068,7 @@ LABEL_66:
     v97[0] = 0;
     v97[1] = 0;
     v98 = 0;
-    if (v118)
+    if (descriptorCopy)
     {
       std::mutex::lock((v119[0] + 72));
       *&v123 = v104;
@@ -6089,8 +6089,8 @@ LABEL_119:
       v121.__r_.__value_.__r.__words[0] = v119;
       v121.__r_.__value_.__l.__size_ = &v117;
       v121.__r_.__value_.__r.__words[2] = &v128;
-      v122 = &v118;
-      if (v118)
+      v122 = &descriptorCopy;
+      if (descriptorCopy)
       {
         v76 = v119[0];
         std::mutex::lock((v119[0] + 72));
@@ -6239,15 +6239,15 @@ LABEL_108:
             }
 
             v125 = 1;
-            if (!v118)
+            if (!descriptorCopy)
             {
-              v90 = [(MPSGraphCompilationDescriptor *)v117 compilationCompletionHandler];
-              v91 = v90 == 0;
+              compilationCompletionHandler = [(MPSGraphCompilationDescriptor *)v117 compilationCompletionHandler];
+              v91 = compilationCompletionHandler == 0;
 
               if (!v91)
               {
-                v92 = [(MPSGraphCompilationDescriptor *)v117 compilationCompletionHandler];
-                (v92)[2](v92, v119[0], 0);
+                compilationCompletionHandler2 = [(MPSGraphCompilationDescriptor *)v117 compilationCompletionHandler];
+                (compilationCompletionHandler2)[2](compilationCompletionHandler2, v119[0], 0);
               }
 
               v120 = v123;
@@ -6370,8 +6370,8 @@ LABEL_137:
   v44[5] = *MEMORY[0x1E69E9840];
   if (!**a2)
   {
-    *a1 = a1 + 2;
-    a1[1] = 0x100000000;
+    *self = self + 2;
+    self[1] = 0x100000000;
     return;
   }
 
@@ -6532,13 +6532,13 @@ LABEL_137:
   v29 = v43;
   if ([**(a2 + 16) count] == v29)
   {
-    v30 = [**(a2 + 32) compilationCompletionHandler];
-    v31 = v30 == 0;
+    compilationCompletionHandler = [**(a2 + 32) compilationCompletionHandler];
+    v31 = compilationCompletionHandler == 0;
 
     if (!v31)
     {
-      v32 = [**(a2 + 32) compilationCompletionHandler];
-      v32[2](v32, **(a2 + 8), 0);
+      compilationCompletionHandler2 = [**(a2 + 32) compilationCompletionHandler];
+      compilationCompletionHandler2[2](compilationCompletionHandler2, **(a2 + 8), 0);
     }
 
     *v37 = v37 + 2;
@@ -6601,10 +6601,10 @@ LABEL_51:
   std::mutex::unlock((v38 + 72));
 }
 
-- (void)specializedModuleWithDevice:(void *)a1 shapedEntryPoints:compilationDescriptor:error:
+- (void)specializedModuleWithDevice:(void *)device shapedEntryPoints:compilationDescriptor:error:
 {
-  v2 = *a1;
-  *a1 = 0;
+  v2 = *device;
+  *device = 0;
   if (v2)
   {
     v3 = v2[2];
@@ -6642,7 +6642,7 @@ LABEL_51:
     MEMORY[0x1E12E5B90](v2, 0x1020C4025F8E444);
   }
 
-  return a1;
+  return device;
 }
 
 - (void)specializeWithDevice:(MPSGraphDevice *)device inputTypes:(NSArray *)inputTypes compilationDescriptor:(MPSGraphCompilationDescriptor *)compilationDescriptor
@@ -6653,36 +6653,36 @@ LABEL_51:
   [(MPSGraphExecutable *)self specializeWithDevice:v10 inputShapes:v9 compilationDescriptor:v8];
 }
 
-- (void)specializeForMultipleInputTypesWithDevice:(id)a3 multipleInputTypes:(id)a4 compilationDescriptor:(id)a5
+- (void)specializeForMultipleInputTypesWithDevice:(id)device multipleInputTypes:(id)types compilationDescriptor:(id)descriptor
 {
   v27 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  [v9 count];
-  if (![v9 count] && MTLReportFailureTypeEnabled())
+  deviceCopy = device;
+  typesCopy = types;
+  descriptorCopy = descriptor;
+  [typesCopy count];
+  if (![typesCopy count] && MTLReportFailureTypeEnabled())
   {
     MTLReportFailure();
   }
 
-  if ([v10 waitForCompilationCompletion])
+  if ([descriptorCopy waitForCompilationCompletion])
   {
     memset(v26.__cv_.__opaque, 0, sizeof(v26.__cv_.__opaque));
     v26.__cv_.__sig = 1018212795;
     memset(v25.__m_.__opaque, 0, sizeof(v25.__m_.__opaque));
-    v24 = [v9 count];
+    v24 = [typesCopy count];
     v25.__m_.__sig = 850045863;
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __105__MPSGraphExecutable_specializeForMultipleInputTypesWithDevice_multipleInputTypes_compilationDescriptor___block_invoke;
     v17[3] = &unk_1E86D50F0;
-    v18 = v10;
-    v19 = self;
-    v20 = v8;
+    v18 = descriptorCopy;
+    selfCopy = self;
+    v20 = deviceCopy;
     v21 = &v25;
     v22 = &v24;
     v23 = &v26;
-    [v9 enumerateObjectsUsingBlock:v17];
+    [typesCopy enumerateObjectsUsingBlock:v17];
     __lk.__m_ = &v25;
     __lk.__owns_ = 1;
     std::mutex::lock(&v25);
@@ -6707,9 +6707,9 @@ LABEL_51:
     v13[2] = __105__MPSGraphExecutable_specializeForMultipleInputTypesWithDevice_multipleInputTypes_compilationDescriptor___block_invoke_3;
     v13[3] = &unk_1E86D5118;
     v13[4] = self;
-    v14 = v8;
-    v15 = v10;
-    [v9 enumerateObjectsUsingBlock:v13];
+    v14 = deviceCopy;
+    v15 = descriptorCopy;
+    [typesCopy enumerateObjectsUsingBlock:v13];
   }
 }
 
@@ -6766,10 +6766,10 @@ void __105__MPSGraphExecutable_specializeForMultipleInputTypesWithDevice_multipl
   std::mutex::unlock(v4);
 }
 
-- (id)getDefaultEntryPointWithShapes:(id)a3
+- (id)getDefaultEntryPointWithShapes:(id)shapes
 {
-  v3 = a3;
-  v4 = [[MPSGraphExecutableShapedEntryPoint alloc] initWithEntryFunctionName:0 inputTypes:v3];
+  shapesCopy = shapes;
+  v4 = [[MPSGraphExecutableShapedEntryPoint alloc] initWithEntryFunctionName:0 inputTypes:shapesCopy];
 
   return v4;
 }
@@ -6785,38 +6785,38 @@ void __105__MPSGraphExecutable_specializeForMultipleInputTypesWithDevice_multipl
   return v12;
 }
 
-- (id)getOutputTypesWithDevice:(id)a3 entryPoint:(id)a4 compilationDescriptor:(id)a5
+- (id)getOutputTypesWithDevice:(id)device entryPoint:(id)point compilationDescriptor:(id)descriptor
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 inputTypes];
-  v12 = getShapesFromTypes(v11);
+  deviceCopy = device;
+  pointCopy = point;
+  descriptorCopy = descriptor;
+  inputTypes = [pointCopy inputTypes];
+  v12 = getShapesFromTypes(inputTypes);
 
   v13 = [MPSGraphExecutableShapedEntryPoint alloc];
-  v14 = [v9 entryFunctionName];
-  v15 = [(MPSGraphExecutableShapedEntryPoint *)v13 initWithEntryFunctionName:v14 inputTypes:v12];
-  v16 = [(MPSGraphExecutable *)self getOutputTypesWithDevice:v8 shapedEntryPoint:v15 compilationDescriptor:v10];
+  entryFunctionName = [pointCopy entryFunctionName];
+  v15 = [(MPSGraphExecutableShapedEntryPoint *)v13 initWithEntryFunctionName:entryFunctionName inputTypes:v12];
+  v16 = [(MPSGraphExecutable *)self getOutputTypesWithDevice:deviceCopy shapedEntryPoint:v15 compilationDescriptor:descriptorCopy];
 
   return v16;
 }
 
-- (id)getOutputTypesWithDevice:(id)a3 shapedEntryPoint:(id)a4 compilationDescriptor:(id)a5
+- (id)getOutputTypesWithDevice:(id)device shapedEntryPoint:(id)point compilationDescriptor:(id)descriptor
 {
   v48[5] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (*(self + 46) != v10)
+  deviceCopy = device;
+  pointCopy = point;
+  descriptorCopy = descriptor;
+  v11 = descriptorCopy;
+  if (*(self + 46) != descriptorCopy)
   {
-    overrideCompilationDescriptorWithEV(v10);
+    overrideCompilationDescriptorWithEV(descriptorCopy);
   }
 
-  v45 = v9;
+  v45 = pointCopy;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v45 count:1];
   v42 = 0;
-  [(MPSGraphExecutable *)self specializedModuleWithDevice:v8 shapedEntryPoints:v12 compilationDescriptor:v11 error:&v42];
+  [(MPSGraphExecutable *)self specializedModuleWithDevice:deviceCopy shapedEntryPoints:v12 compilationDescriptor:v11 error:&v42];
   v13 = v42;
 
   v14 = v46;
@@ -6946,40 +6946,40 @@ LABEL_19:
   return v34;
 }
 
-- (void)specializeWithDevice:(id)a3 inputShapes:(id)a4 compilationDescriptor:(id)a5
+- (void)specializeWithDevice:(id)device inputShapes:(id)shapes compilationDescriptor:(id)descriptor
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(MPSGraphExecutable *)self getDefaultEntryPointWithShapes:v9];
+  deviceCopy = device;
+  shapesCopy = shapes;
+  descriptorCopy = descriptor;
+  v11 = [(MPSGraphExecutable *)self getDefaultEntryPointWithShapes:shapesCopy];
   v15[0] = v11;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
   v14 = 0;
-  [(MPSGraphExecutable *)self specializeWithDevice:v8 shapedEntryPoints:v12 compilationDescriptor:v10 error:&v14];
+  [(MPSGraphExecutable *)self specializeWithDevice:deviceCopy shapedEntryPoints:v12 compilationDescriptor:descriptorCopy error:&v14];
   v13 = v14;
 }
 
-- (void)specializeWithDevice:(id)a3 entryPoints:(id)a4 compilationDescriptor:(id)a5
+- (void)specializeWithDevice:(id)device entryPoints:(id)points compilationDescriptor:(id)descriptor
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  deviceCopy = device;
+  pointsCopy = points;
+  descriptorCopy = descriptor;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
   v17 = __Block_byref_object_copy__5;
   v18 = __Block_byref_object_dispose__5;
-  v19 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v9, "count")}];
+  v19 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(pointsCopy, "count")}];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __77__MPSGraphExecutable_specializeWithDevice_entryPoints_compilationDescriptor___block_invoke;
   v13[3] = &unk_1E86D5140;
   v13[4] = &v14;
-  [v9 enumerateObjectsUsingBlock:v13];
+  [pointsCopy enumerateObjectsUsingBlock:v13];
   v11 = v15[5];
   v12 = 0;
-  [(MPSGraphExecutable *)self specializeWithDevice:v8 shapedEntryPoints:v11 compilationDescriptor:v10 error:&v12];
+  [(MPSGraphExecutable *)self specializeWithDevice:deviceCopy shapedEntryPoints:v11 compilationDescriptor:descriptorCopy error:&v12];
   _Block_object_dispose(&v14, 8);
 }
 
@@ -6995,24 +6995,24 @@ void __77__MPSGraphExecutable_specializeWithDevice_entryPoints_compilationDescri
   [v3 addObject:v8];
 }
 
-- (void)specializeWithDevice:(id)a3 entryPoints:(id)a4 compilationDescriptor:(id)a5 error:(id *)a6
+- (void)specializeWithDevice:(id)device entryPoints:(id)points compilationDescriptor:(id)descriptor error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  deviceCopy = device;
+  pointsCopy = points;
+  descriptorCopy = descriptor;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
   v17 = __Block_byref_object_copy__5;
   v18 = __Block_byref_object_dispose__5;
-  v19 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v11, "count")}];
+  v19 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(pointsCopy, "count")}];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __83__MPSGraphExecutable_specializeWithDevice_entryPoints_compilationDescriptor_error___block_invoke;
   v13[3] = &unk_1E86D5140;
   v13[4] = &v14;
-  [v11 enumerateObjectsUsingBlock:v13];
-  [(MPSGraphExecutable *)self specializeWithDevice:v10 shapedEntryPoints:v15[5] compilationDescriptor:v12 error:a6];
+  [pointsCopy enumerateObjectsUsingBlock:v13];
+  [(MPSGraphExecutable *)self specializeWithDevice:deviceCopy shapedEntryPoints:v15[5] compilationDescriptor:descriptorCopy error:error];
   _Block_object_dispose(&v14, 8);
 }
 
@@ -7028,15 +7028,15 @@ void __83__MPSGraphExecutable_specializeWithDevice_entryPoints_compilationDescri
   [v3 addObject:v8];
 }
 
-- (void)specializeWithDevice:(id)a3 shapedEntryPoints:(id)a4 compilationDescriptor:(id)a5 error:(id *)a6
+- (void)specializeWithDevice:(id)device shapedEntryPoints:(id)points compilationDescriptor:(id)descriptor error:(id *)error
 {
   v25[5] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if ([v12 waitForCompilationCompletion])
+  deviceCopy = device;
+  pointsCopy = points;
+  descriptorCopy = descriptor;
+  if ([descriptorCopy waitForCompilationCompletion])
   {
-    [(MPSGraphExecutable *)self specializedModuleWithDevice:v10 shapedEntryPoints:v11 compilationDescriptor:v12 error:a6];
+    [(MPSGraphExecutable *)self specializedModuleWithDevice:deviceCopy shapedEntryPoints:pointsCopy compilationDescriptor:descriptorCopy error:error];
     v13 = v23;
     if (v24)
     {
@@ -7068,15 +7068,15 @@ void __83__MPSGraphExecutable_specializeWithDevice_entryPoints_compilationDescri
     std::mutex::lock((self + 592));
     atomic_fetch_add(self + 176, 1u);
     std::mutex::unlock((self + 592));
-    v16 = [v12 dispatchQueue];
-    if (v16)
+    dispatchQueue = [descriptorCopy dispatchQueue];
+    if (dispatchQueue)
     {
-      v17 = [v12 dispatchQueue];
+      dispatchQueue2 = [descriptorCopy dispatchQueue];
     }
 
     else
     {
-      v17 = *(self + 73);
+      dispatchQueue2 = *(self + 73);
     }
 
     block[0] = MEMORY[0x1E69E9820];
@@ -7084,12 +7084,12 @@ void __83__MPSGraphExecutable_specializeWithDevice_entryPoints_compilationDescri
     block[2] = __89__MPSGraphExecutable_specializeWithDevice_shapedEntryPoints_compilationDescriptor_error___block_invoke;
     block[3] = &unk_1E86D5168;
     block[4] = self;
-    v19 = v10;
-    v20 = v11;
-    v21 = v12;
-    v22 = a6;
-    dispatch_async(v17, block);
-    if (v16)
+    v19 = deviceCopy;
+    v20 = pointsCopy;
+    v21 = descriptorCopy;
+    errorCopy = error;
+    dispatch_async(dispatchQueue2, block);
+    if (dispatchQueue)
     {
     }
   }
@@ -7197,11 +7197,11 @@ LABEL_10:
   return result;
 }
 
-- (void)checkCallablesForModule:(void *)a3
+- (void)checkCallablesForModule:(void *)module
 {
-  v5 = *(*a3 + 40);
-  v4 = *(*a3 + 44);
-  v6 = *a3 + 16 * ((v4 >> 23) & 1);
+  v5 = *(*module + 40);
+  v4 = *(*module + 44);
+  v6 = *module + 16 * ((v4 >> 23) & 1);
   v51 = 0;
   v52 = 0;
   v50 = &v51;
@@ -7236,7 +7236,7 @@ LABEL_10:
       v13 = v50;
       if (v50 != &v51)
       {
-        v48 = self;
+        selfCopy = self;
         do
         {
           if (*(v13 + 55) < 0)
@@ -7250,8 +7250,8 @@ LABEL_10:
           }
 
           v15 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{v14, v47}];
-          v16 = [*(self + 46) callables];
-          v17 = [v16 objectForKeyedSubscript:v15];
+          callables = [*(self + 46) callables];
+          v17 = [callables objectForKeyedSubscript:v15];
 
           if (v17)
           {
@@ -7301,11 +7301,11 @@ LABEL_10:
 
           else
           {
-            v27 = *a3;
+            v27 = *module;
             v28 = *(v13 + 55);
             v29 = v13[4];
             v30 = v13[5];
-            Context = mlir::Attribute::getContext((*a3 + 24));
+            Context = mlir::Attribute::getContext((*module + 24));
             if (v28 >= 0)
             {
               v32 = v28;
@@ -7380,7 +7380,7 @@ LABEL_10:
               }
             }
 
-            self = v48;
+            self = selfCopy;
           }
 
           v44 = v13[1];
@@ -7418,12 +7418,12 @@ LABEL_10:
   std::__tree<std::string>::destroy(&v50, v51);
 }
 
-- (void)applyInputTypes:(const void *)a3 toFunction:(FuncOp)a4
+- (void)applyInputTypes:(const void *)types toFunction:(FuncOp)function
 {
   v19[2] = *MEMORY[0x1E69E9840];
-  var0 = a4.var0;
+  var0 = function.var0;
   v5 = *(self + 34);
-  mlir::ValueRange::ValueRange(v19, *a3, (*(a3 + 1) - *a3) >> 3);
+  mlir::ValueRange::ValueRange(v19, *types, (*(types + 1) - *types) >> 3);
   FunctionType = mlir::func::FuncOp::getFunctionType(&var0);
   Results = mlir::FunctionType::getResults(&FunctionType);
   mlir::ValueRange::ValueRange(v18, Results, v7);
@@ -7459,7 +7459,7 @@ LABEL_10:
         v15 = 0;
       }
 
-      *(*(*(v15 + 48) + v13) + 8) = *(*(*(v15 + 48) + v13) + 8) & 7 | *(*a3 + v13);
+      *(*(*(v15 + 48) + v13) + 8) = *(*(*(v15 + 48) + v13) + 8) & 7 | *(*types + v13);
       v13 += 8;
     }
 
@@ -7469,24 +7469,24 @@ LABEL_10:
   mlir::mps::inferTypes(v12, v11);
 }
 
-- (void)applyOptimizationPassesWithDevice:(id)a3 module:(ModuleOp)a4 compilationID:(unint64_t)a5 compilationDescriptor:(id)a6 perEntryPointFuncOpMLIRName:(const void *)a7
+- (void)applyOptimizationPassesWithDevice:(id)device module:(ModuleOp)module compilationID:(unint64_t)d compilationDescriptor:(id)descriptor perEntryPointFuncOpMLIRName:(const void *)name
 {
-  state = a4.state;
+  state = module.state;
   v324 = *MEMORY[0x1E69E9840];
-  v309 = a4.state;
-  v9 = a3;
-  v249 = a6;
-  v247 = v9;
-  if (v9)
+  v309 = module.state;
+  deviceCopy = device;
+  descriptorCopy = descriptor;
+  v247 = deviceCopy;
+  if (deviceCopy)
   {
-    v246 = [v9 deviceDescriptor];
+    deviceDescriptor = [deviceCopy deviceDescriptor];
 
     state = v309;
   }
 
   else
   {
-    v246 = 0;
+    deviceDescriptor = 0;
   }
 
   Context = mlir::Attribute::getContext((state + 24));
@@ -7495,7 +7495,7 @@ LABEL_10:
   v11 = mlir::StringAttr::get(Context, &v310);
   v12 = mlir::Attribute::getContext((v309 + 24));
   v13 = mlir::IntegerType::get(v12, 64, 2u);
-  v14 = mlir::IntegerAttr::get(v13, [v249 aneCompilerSpatialSplitting]);
+  v14 = mlir::IntegerAttr::get(v13, [descriptorCopy aneCompilerSpatialSplitting]);
   mlir::Operation::setAttr(state, v11, v14);
   v15 = mlir::Attribute::getContext((v309 + 24));
   *&v310 = "mps.aneEnableFWToFWSignal";
@@ -7503,7 +7503,7 @@ LABEL_10:
   v16 = mlir::StringAttr::get(v15, &v310);
   v17 = mlir::Attribute::getContext((v309 + 24));
   v18 = mlir::IntegerType::get(v17, 1, 0);
-  v19 = mlir::IntegerAttr::get(v18, [v249 enableANEFWToFWSignal]);
+  v19 = mlir::IntegerAttr::get(v18, [descriptorCopy enableANEFWToFWSignal]);
   mlir::Operation::setAttr(v309, v16, v19);
   v20 = mlir::Attribute::getContext((v309 + 24));
   *&v310 = "mps.aneEnableLateLatch";
@@ -7511,7 +7511,7 @@ LABEL_10:
   v21 = mlir::StringAttr::get(v20, &v310);
   v22 = mlir::Attribute::getContext((v309 + 24));
   v23 = mlir::IntegerType::get(v22, 1, 0);
-  v24 = mlir::IntegerAttr::get(v23, [v249 enableANELateLatch]);
+  v24 = mlir::IntegerAttr::get(v23, [descriptorCopy enableANELateLatch]);
   mlir::Operation::setAttr(v309, v21, v24);
   v25 = mlir::Attribute::getContext((v309 + 24));
   *&v310 = "mps.enableANECHWRankPromotion";
@@ -7519,9 +7519,9 @@ LABEL_10:
   v26 = mlir::StringAttr::get(v25, &v310);
   v27 = mlir::Attribute::getContext((v309 + 24));
   v28 = mlir::IntegerType::get(v27, 1, 0);
-  v29 = mlir::IntegerAttr::get(v28, [v249 enableANECHWRankPromotion]);
+  v29 = mlir::IntegerAttr::get(v28, [descriptorCopy enableANECHWRankPromotion]);
   mlir::Operation::setAttr(v309, v26, v29);
-  v30 = [v249 compilerOptions];
+  compilerOptions = [descriptorCopy compilerOptions];
   if (!*(v309 + 47) || (v325.var0 = "mps_spi.per_device_compilation_options", v325.var1 = 38, InherentAttr = mlir::Operation::getInherentAttr(v309, v325), (v32 & 1) == 0))
   {
     v326.var0 = "mps_spi.per_device_compilation_options";
@@ -7537,10 +7537,10 @@ LABEL_10:
     v300[0] = v35;
     if (v34)
     {
-      if (v246 && ![v246 type])
+      if (deviceDescriptor && ![deviceDescriptor type])
       {
-        [v246 hasANE];
-        if (([v246 hasANE] & 1) == 0 && MTLReportFailureTypeEnabled())
+        [deviceDescriptor hasANE];
+        if (([deviceDescriptor hasANE] & 1) == 0 && MTLReportFailureTypeEnabled())
         {
           MTLReportFailure();
         }
@@ -7551,13 +7551,13 @@ LABEL_10:
         {
           *&__dst = *Value;
           v124 = mlir::AffineMapAttr::getValue(&__dst);
-          v125 = [v246 architecture];
-          v126 = v125;
-          v127 = [v125 UTF8String];
-          v128 = v127;
-          if (v127)
+          architecture = [deviceDescriptor architecture];
+          v126 = architecture;
+          uTF8String = [architecture UTF8String];
+          v128 = uTF8String;
+          if (uTF8String)
           {
-            v129 = strlen(v127);
+            v129 = strlen(uTF8String);
           }
 
           else
@@ -7570,7 +7570,7 @@ LABEL_10:
           if (v131 == v129 && (!v129 || !memcmp(AttrData, v128, v129)))
           {
             Position = mlir::AffineDimExpr::getPosition(&__dst);
-            v133 = [v246 gpuCoreCount] == Position;
+            v133 = [deviceDescriptor gpuCoreCount] == Position;
 
             if (v133)
             {
@@ -7603,12 +7603,12 @@ LABEL_10:
   }
 
   v39 = mlir::Attribute::getContext((v309 + 24));
-  v40 = [v249 compilerOptions];
+  compilerOptions2 = [descriptorCopy compilerOptions];
   v306 = v39;
   shouldPrintOpOnDiagnostic = mlir::MLIRContext::shouldPrintOpOnDiagnostic(v39);
-  mlir::MLIRContext::printOpOnDiagnostic(v39, (v40 & 0x1000) != 0);
+  mlir::MLIRContext::printOpOnDiagnostic(v39, (compilerOptions2 & 0x1000) != 0);
   DiagEngine = mlir::MLIRContext::getDiagEngine(v39);
-  LOBYTE(v310) = (v40 & 0x1000) >> 12;
+  LOBYTE(v310) = (compilerOptions2 & 0x1000) >> 12;
   __p.i64[1] = &_MergedGlobals_85 + 2;
   v308 = mlir::DiagnosticEngine::registerHandler(DiagEngine, &v310);
   v42 = __p.i8[8];
@@ -7635,22 +7635,22 @@ LABEL_10:
     }
   }
 
-  if (v246 && ![v246 type] && objc_msgSend(v246, "hasANE"))
+  if (deviceDescriptor && ![deviceDescriptor type] && objc_msgSend(deviceDescriptor, "hasANE"))
   {
-    v44 = [v246 architecture];
-    ANECFamily = getANECFamily(v44);
+    architecture2 = [deviceDescriptor architecture];
+    ANECFamily = getANECFamily(architecture2);
     v45 = v309;
     v46 = mlir::Attribute::getContext((v309 + 24));
     *&v310 = "mps.aneArch";
     LOWORD(v312) = 259;
     v47 = mlir::StringAttr::get(v46, &v310);
     v48 = mlir::Attribute::getContext((v309 + 24));
-    v49 = v44;
-    v50 = [(NSString *)v44 UTF8String];
+    v49 = architecture2;
+    uTF8String2 = [(NSString *)architecture2 UTF8String];
     v301 = 257;
-    if (*v50)
+    if (*uTF8String2)
     {
-      v300[0] = v50;
+      v300[0] = uTF8String2;
       v51 = 3;
     }
 
@@ -7672,7 +7672,7 @@ LABEL_10:
     v243 = 0;
   }
 
-  v52 = [v246 gpuCoreCount];
+  gpuCoreCount = [deviceDescriptor gpuCoreCount];
   v53 = *(self + 40);
   v54 = *(self + 82);
   if (v54)
@@ -7755,8 +7755,8 @@ LABEL_50:
   v305 = 0u;
   v302 = 0u;
   v303 = 0u;
-  v65 = [v249 callables];
-  v66 = [v65 countByEnumeratingWithState:&v302 objects:v323 count:16];
+  callables = [descriptorCopy callables];
+  v66 = [callables countByEnumeratingWithState:&v302 objects:v323 count:16];
   if (!v66)
   {
     goto LABEL_77;
@@ -7769,12 +7769,12 @@ LABEL_50:
     {
       if (*v303 != v67)
       {
-        objc_enumerationMutation(v65);
+        objc_enumerationMutation(callables);
       }
 
       v69 = *(*(&v302 + 1) + 8 * j);
-      v70 = [v249 callables];
-      v71 = [v70 objectForKey:v69];
+      callables2 = [descriptorCopy callables];
+      v71 = [callables2 objectForKey:v69];
 
       v72 = *(v71 + 320);
       v73 = *(v71 + 328);
@@ -7857,14 +7857,14 @@ LABEL_68:
 LABEL_75:
     }
 
-    v66 = [v65 countByEnumeratingWithState:&v302 objects:v323 count:16];
+    v66 = [callables countByEnumeratingWithState:&v302 objects:v323 count:16];
   }
 
   while (v66);
 LABEL_77:
 
   v84 = mlir::Attribute::getContext((v309 + 24));
-  if (([v249 compilerOptions] & 0x20) != 0)
+  if (([descriptorCopy compilerOptions] & 0x20) != 0)
   {
     mlir::PassManager::enableVerifier(v300, 1);
   }
@@ -7926,7 +7926,7 @@ LABEL_84:
 LABEL_90:
   mlir::PassManager::enableTiming(v300);
 LABEL_91:
-  if (([v249 compilerOptions] & 0x200) != 0)
+  if (([descriptorCopy compilerOptions] & 0x200) != 0)
   {
     mlir::mps::createConvertF32ToF16Pass(&v310);
     v89 = v310;
@@ -7949,7 +7949,7 @@ LABEL_91:
   }
 
   v92 = mlir::OpPassManager::nest(v300, "func.func", 9uLL);
-  if ([v249 compilerOptions])
+  if ([descriptorCopy compilerOptions])
   {
     mlir::mps::createTypeInferencePass(&v310);
     v93 = v310;
@@ -7971,9 +7971,9 @@ LABEL_91:
     }
   }
 
-  if ([v249 layoutConversionPassConfig])
+  if ([descriptorCopy layoutConversionPassConfig])
   {
-    v96 = vmovn_s64(vceqzq_s64(vandq_s8(vdupq_n_s32([v249 layoutConversionPassConfig] - 1), xmmword_1E0970220)));
+    v96 = vmovn_s64(vceqzq_s64(vandq_s8(vdupq_n_s32([descriptorCopy layoutConversionPassConfig] - 1), xmmword_1E0970220)));
     *&v310 = vsub_s32(vbic_s8(0x200000002, v96), v96);
     mlir::mps::createLayoutConversionPass(&v310, &__dst);
     v97 = __dst;
@@ -8023,9 +8023,9 @@ LABEL_91:
     (*(*v103 + 8))(v103);
   }
 
-  if (([v249 compilerOptions] & 0x100) != 0)
+  if (([descriptorCopy compilerOptions] & 0x100) != 0)
   {
-    LODWORD(__dst) = (v30 & 0x8000) >> 15;
+    LODWORD(__dst) = (compilerOptions & 0x8000) >> 15;
     BYTE4(__dst) = byte_1EED2BCBE;
     mlir::mps::createCommonRuntimeCanonicalizationPass(&__dst, &v310);
     v104 = v310;
@@ -8047,7 +8047,7 @@ LABEL_91:
     }
   }
 
-  if ([v249 compilerOptions])
+  if ([descriptorCopy compilerOptions])
   {
     mlir::mps::createTypeInferencePass(&v310);
     v107 = v310;
@@ -8069,7 +8069,7 @@ LABEL_91:
     }
   }
 
-  if (([v249 compilerOptions] & 4) != 0)
+  if (([descriptorCopy compilerOptions] & 4) != 0)
   {
     mlir::createCSEPass(&v292);
     mlir::OpPassManager::addPass(v92, &v292);
@@ -8081,8 +8081,8 @@ LABEL_91:
     }
   }
 
-  v111 = [v249 preferredDevice];
-  v112 = [v249 allowedComputeDevices];
+  preferredDevice = [descriptorCopy preferredDevice];
+  allowedComputeDevices = [descriptorCopy allowedComputeDevices];
   if (ANECFamily < 2)
   {
     v113 = 1;
@@ -8090,14 +8090,14 @@ LABEL_91:
 
   else
   {
-    v113 = v111;
+    v113 = preferredDevice;
   }
 
   if (byte_1EED2BC97 == 1)
   {
     v114 = byte_1EED2BC96;
     v291 = 0;
-    if (!v246)
+    if (!deviceDescriptor)
     {
       goto LABEL_205;
     }
@@ -8105,9 +8105,9 @@ LABEL_91:
 
   else
   {
-    v114 = [v249 compilerOptions] & 0x80;
+    v114 = [descriptorCopy compilerOptions] & 0x80;
     v291 = 0;
-    if (!v246)
+    if (!deviceDescriptor)
     {
       goto LABEL_205;
     }
@@ -8117,7 +8117,7 @@ LABEL_91:
   {
     if (ANECFamily >= 2)
     {
-      v115 = v112 & 2;
+      v115 = allowedComputeDevices & 2;
     }
 
     else
@@ -8127,16 +8127,16 @@ LABEL_91:
 
     if (v115 || (*(self + 107) & 0x8000000000000000) == 0)
     {
-      if ((v30 & 0x8000) != 0)
+      if ((compilerOptions & 0x8000) != 0)
       {
-        [MEMORY[0x1E696AEC0] stringWithFormat:@"%@/scratchPad_%llu", *(self + 115), a5];
+        [MEMORY[0x1E696AEC0] stringWithFormat:@"%@/scratchPad_%llu", *(self + 115), d];
         objc_claimAutoreleasedReturnValue();
         operator new();
       }
 
       if (*(self + 839) == 1)
       {
-        mlir::createMPSPlacementPass(ANECFamily, v52, 2, 1, &v290);
+        mlir::createMPSPlacementPass(ANECFamily, gpuCoreCount, 2, 1, &v290);
         mlir::OpPassManager::addPass(v300, &v290);
         v116 = v290;
         v290 = 0;
@@ -8170,9 +8170,9 @@ LABEL_91:
         BYTE2(v310) = v119;
         BYTE3(v310) = v118 == 1;
         BYTE4(v310) = *(self + 840);
-        *(&v310 + 1) = v52;
+        *(&v310 + 1) = gpuCoreCount;
         __p = vextq_s8(xmmword_1EED2BCA8, xmmword_1EED2BCA8, 8uLL);
-        std::to_string(&__dst, a5);
+        std::to_string(&__dst, d);
         if (SHIBYTE(v313) < 0)
         {
           operator delete(v312);
@@ -8294,8 +8294,8 @@ LABEL_91:
       }
     }
 
-    v152 = 0xAAAAAAAAAAAAAAABLL * ((*(a7 + 1) - *a7) >> 3);
-    *&v310 = *a7;
+    v152 = 0xAAAAAAAAAAAAAAABLL * ((*(name + 1) - *name) >> 3);
+    *&v310 = *name;
     *(&v310 + 1) = v152;
     mlir::mps::createUnreachableFunctionRemovalPass(&v310, &__dst);
     v153 = __dst;
@@ -8316,7 +8316,7 @@ LABEL_91:
       (*(*v155 + 8))(v155);
     }
 
-    if (([v249 compilerOptions] & 4) != 0)
+    if (([descriptorCopy compilerOptions] & 4) != 0)
     {
       mlir::createCSEPass(&v279);
       mlir::OpPassManager::addPass(v300, &v279);
@@ -8356,7 +8356,7 @@ LABEL_91:
       (*(*v160 + 8))(v160);
     }
 
-    if (([v249 compilerOptions] & 4) != 0)
+    if (([descriptorCopy compilerOptions] & 4) != 0)
     {
       mlir::createCSEPass(&v276);
       mlir::OpPassManager::addPass(v300, &v276);
@@ -8370,7 +8370,7 @@ LABEL_91:
   }
 
 LABEL_205:
-  if (v246)
+  if (deviceDescriptor)
   {
     [(MPSGraphExecutable *)self checkCallablesForModule:&v309];
     v310 = 0uLL;
@@ -8396,8 +8396,8 @@ LABEL_205:
 
   else
   {
-    v164 = [v247 metalDevice];
-    v163 = v164 != 0;
+    metalDevice = [v247 metalDevice];
+    v163 = metalDevice != 0;
   }
 
   if ([v247 type])
@@ -8416,7 +8416,7 @@ LABEL_213:
   {
     if (v163)
     {
-      v170 = [v247 metalDevice];
+      metalDevice2 = [v247 metalDevice];
       MPSDevice = MPSDevice::GetMPSDevice();
 
       v163 = 1;
@@ -8448,7 +8448,7 @@ LABEL_214:
   {
     if (v163)
     {
-      v168 = [v247 metalDevice];
+      metalDevice3 = [v247 metalDevice];
       v169 = MPSDevice::GetMPSDevice();
 
       LOBYTE(v273[0]) = *(v169 + 1472) < 10;
@@ -8465,11 +8465,11 @@ LABEL_214:
     }
 
     BYTE1(v275) = 1;
-    HIBYTE(v273[0]) = ([v249 compilerOptions] & 0x400) == 0;
+    HIBYTE(v273[0]) = ([descriptorCopy compilerOptions] & 0x400) == 0;
     v274 = 5;
   }
 
-  if (([v249 compilerOptions] & 0x100) != 0)
+  if (([descriptorCopy compilerOptions] & 0x100) != 0)
   {
     mlir::mps::createCommonRuntimeCanonicalizationPass(&v310);
     v172 = v310;
@@ -8513,7 +8513,7 @@ LABEL_214:
     }
   }
 
-  if (([v249 compilerOptions] & 0x100) != 0)
+  if (([descriptorCopy compilerOptions] & 0x100) != 0)
   {
     mlir::mps::createCommonRuntimeCanonicalizationPass(&v310);
     v178 = v310;
@@ -8559,7 +8559,7 @@ LABEL_214:
     }
   }
 
-  if (([v249 compilerOptions] & 0x100) != 0)
+  if (([descriptorCopy compilerOptions] & 0x100) != 0)
   {
     mlir::mps::createCommonRuntimeCanonicalizationPass(&v310);
     v184 = v310;
@@ -8603,7 +8603,7 @@ LABEL_214:
     }
   }
 
-  if ([v249 compilerOptions])
+  if ([descriptorCopy compilerOptions])
   {
     mlir::mps::createTypeInferencePass(&v310);
     v190 = v310;
@@ -8625,7 +8625,7 @@ LABEL_214:
     }
   }
 
-  if (([v249 compilerOptions] & 8) != 0)
+  if (([descriptorCopy compilerOptions] & 8) != 0)
   {
     mlir::createCanonicalizerPass(&v265);
     mlir::OpPassManager::addPass(v162, &v265);
@@ -8637,7 +8637,7 @@ LABEL_214:
     }
   }
 
-  if (([v249 compilerOptions] & 4) != 0)
+  if (([descriptorCopy compilerOptions] & 4) != 0)
   {
     mlir::createCSEPass(&v264);
     mlir::OpPassManager::addPass(v162, &v264);
@@ -8651,7 +8651,7 @@ LABEL_214:
 
   if (v247 && ![v247 type])
   {
-    v195 = [v249 compilerOptions];
+    compilerOptions3 = [descriptorCopy compilerOptions];
     v196 = byte_1EED2BCBF;
     mlir::mps::createRefineDynamicShapeInfoPass(&v310);
     v197 = v310;
@@ -8672,7 +8672,7 @@ LABEL_214:
       (*(*v199 + 8))(v199);
     }
 
-    if (v196 & 1 | ((v195 & 0x800) != 0))
+    if (v196 & 1 | ((compilerOptions3 & 0x800) != 0))
     {
       LOBYTE(__dst) = 1;
       mlir::mps::createGPURegionFormationPass(&__dst, &v310);
@@ -8694,10 +8694,10 @@ LABEL_214:
         (*(*v202 + 8))(v202);
       }
 
-      if ((v195 & 0x800) != 0 && [v249 maximumNumberOfParallelEncodingRegions] >= 2)
+      if ((compilerOptions3 & 0x800) != 0 && [descriptorCopy maximumNumberOfParallelEncodingRegions] >= 2)
       {
-        *&v310 = [v249 minimumNumberOfOpsInParallelRegion];
-        *(&v310 + 1) = [v249 maximumNumberOfParallelEncodingRegions];
+        *&v310 = [descriptorCopy minimumNumberOfOpsInParallelRegion];
+        *(&v310 + 1) = [descriptorCopy maximumNumberOfParallelEncodingRegions];
         mlir::mpsx::createGPURegionParallelEncodePass(&v310, &__dst);
         v203 = __dst;
         *&__dst = 0;
@@ -8719,11 +8719,11 @@ LABEL_214:
       }
     }
 
-    if (([v249 compilerOptions] & 2) != 0)
+    if (([descriptorCopy compilerOptions] & 2) != 0)
     {
       if (v163)
       {
-        v206 = [v247 metalDevice];
+        metalDevice4 = [v247 metalDevice];
         MPSDevice::GetMPSDevice();
       }
 
@@ -8742,7 +8742,7 @@ LABEL_214:
     (*(*v207 + 8))(v207);
   }
 
-  if (v247 && ([v249 compilerOptions] & 0x4000) != 0)
+  if (v247 && ([descriptorCopy compilerOptions] & 0x4000) != 0)
   {
     v209 = ((v309 + 16 * ((*(v309 + 11) >> 23) & 1) + ((*(v309 + 11) >> 21) & 0x7F8) + 71) & 0xFFFFFFFFFFFFFFF8) + 32 * *(v309 + 10);
     v210 = *(v209 + 8);
@@ -8932,7 +8932,7 @@ LABEL_300:
     MTLReportFailure();
   }
 
-  [(MPSGraphExecutable *)self getAttributesFromDescriptors:v249 context:mlir::Attribute::getContext((v309 + 24)) deviceDescriptor:0];
+  [(MPSGraphExecutable *)self getAttributesFromDescriptors:descriptorCopy context:mlir::Attribute::getContext((v309 + 24)) deviceDescriptor:0];
   v237 = *(&__dst + 1);
   for (k = __dst; k != v237; ++k)
   {
@@ -8973,7 +8973,7 @@ LABEL_300:
   mlir::DiagnosticEngine::eraseHandler(v242, v308);
 }
 
-- (void)dumpModuleWithEV:(ModuleOp)a3
+- (void)dumpModuleWithEV:(ModuleOp)v
 {
   has_internal_diagnostics = os_variant_has_internal_diagnostics();
   if (*(self + 96))
@@ -9021,7 +9021,7 @@ LABEL_300:
 
     if ((*(self + 768) & 2) != 0)
     {
-      mlir::Operation::print(a3.state, &v42, v41);
+      mlir::Operation::print(v.state, &v42, v41);
     }
 
     else
@@ -9049,11 +9049,11 @@ LABEL_300:
 
       v26 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v9];
       v10 = MEMORY[0x1E696AEC0];
-      v11 = [*(self + 98) stringByDeletingPathExtension];
+      stringByDeletingPathExtension = [*(self + 98) stringByDeletingPathExtension];
       v12 = getpid();
       v13 = *(self + 94);
-      v14 = [*(self + 98) pathExtension];
-      v15 = [v10 stringWithFormat:@"%@_net-%d-%@.%@", v11, v12, v13, v14];
+      pathExtension = [*(self + 98) pathExtension];
+      v15 = [v10 stringWithFormat:@"%@_net-%d-%@.%@", stringByDeletingPathExtension, v12, v13, pathExtension];
 
       v40 = 0;
       [v26 writeToFile:v15 atomically:1 encoding:4 error:&v40];
@@ -9074,10 +9074,10 @@ LABEL_300:
         llvm::raw_ostream::SetBufferAndMode(&v30, 0, 0, 0);
         if ((*(self + 768) & 2) == 0)
         {
-          a3.state = OriginalModuleRef::get(self + 37, 0);
+          v.state = OriginalModuleRef::get(self + 37, 0);
         }
 
-        Context = mlir::Attribute::getContext((a3.state + 24));
+        Context = mlir::Attribute::getContext((v.state + 24));
         mlir::PassManager::PassManager(v29, Context, "any", 3uLL, 1);
         mlir::createPrintOpGraphPass(&v30, &v28);
         mlir::OpPassManager::addPass(v29, &v28);
@@ -9088,7 +9088,7 @@ LABEL_300:
           (*(*v18 + 8))(v18);
         }
 
-        v19.var0.var0 = a3.state;
+        v19.var0.var0 = v.state;
         if (!mlir::PassManager::run(v29, v19) && MTLReportFailureTypeEnabled())
         {
           MTLReportFailure();
@@ -9106,8 +9106,8 @@ LABEL_300:
 
         v21 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v20];
         v22 = MEMORY[0x1E696AEC0];
-        v23 = [*(self + 98) stringByDeletingPathExtension];
-        v24 = [v22 stringWithFormat:@"%@_net-%d-%@.dot", v23, getpid(), *(self + 94)];
+        stringByDeletingPathExtension2 = [*(self + 98) stringByDeletingPathExtension];
+        v24 = [v22 stringWithFormat:@"%@_net-%d-%@.dot", stringByDeletingPathExtension2, getpid(), *(self + 94)];
 
         v27 = 0;
         [v21 writeToFile:v24 atomically:1 encoding:4 error:&v27];
@@ -9155,8 +9155,8 @@ LABEL_29:
     [*(self + 101) createDirectoryAtPath:v2 withIntermediateDirectories:1 attributes:0 error:0];
     v17 = 0;
     v4 = *(self + 99);
-    v5 = [*(self + 115) lastPathComponent];
-    v6 = [v4 stringByAppendingFormat:@"/%@", v5];
+    lastPathComponent = [*(self + 115) lastPathComponent];
+    v6 = [v4 stringByAppendingFormat:@"/%@", lastPathComponent];
 
     if ([*(self + 101) fileExistsAtPath:v6 isDirectory:&v17])
     {
@@ -9201,7 +9201,7 @@ LABEL_29:
   }
 }
 
-- (void)aneRegionOpsHashSet:(void *)a3
+- (void)aneRegionOpsHashSet:(void *)set
 {
   v38[4] = *MEMORY[0x1E69E9840];
   CC_SHA256_Init(&c);
@@ -9222,8 +9222,8 @@ LABEL_29:
   v23 = &unk_1F5B3FB30;
   v30 = v31;
   llvm::raw_ostream::SetBufferAndMode(&v23, 0, 0, 0);
-  v4 = *a3;
-  if (!*(*a3 + 47) || (v39.var0 = "mps.aneHashSalt", v39.var1 = 15, InherentAttr = mlir::Operation::getInherentAttr(*a3, v39), (v6 & 1) == 0))
+  v4 = *set;
+  if (!*(*set + 47) || (v39.var0 = "mps.aneHashSalt", v39.var1 = 15, InherentAttr = mlir::Operation::getInherentAttr(*set, v39), (v6 & 1) == 0))
   {
     v40.var0 = "mps.aneHashSalt";
     v40.var1 = 15;
@@ -9242,8 +9242,8 @@ LABEL_29:
     }
   }
 
-  v10 = *a3;
-  if (!*(*a3 + 47) || (v41.var0 = "mps.aneCompilerSpatialSplitting", v41.var1 = 31, v11 = mlir::Operation::getInherentAttr(*a3, v41), (v12 & 1) == 0))
+  v10 = *set;
+  if (!*(*set + 47) || (v41.var0 = "mps.aneCompilerSpatialSplitting", v41.var1 = 31, v11 = mlir::Operation::getInherentAttr(*set, v41), (v12 & 1) == 0))
   {
     v42.var0 = "mps.aneCompilerSpatialSplitting";
     v42.var1 = 31;
@@ -9262,8 +9262,8 @@ LABEL_29:
     }
   }
 
-  v16 = *a3;
-  if (!*(*a3 + 47) || (v43.var0 = "mps_spi.device_compilation_options", v43.var1 = 34, v17 = mlir::Operation::getInherentAttr(*a3, v43), (v18 & 1) == 0))
+  v16 = *set;
+  if (!*(*set + 47) || (v43.var0 = "mps_spi.device_compilation_options", v43.var1 = 34, v17 = mlir::Operation::getInherentAttr(*set, v43), (v18 & 1) == 0))
   {
     v44.var0 = "mps_spi.device_compilation_options";
     v44.var1 = 34;
@@ -9301,91 +9301,91 @@ LABEL_29:
 
 - (void)aneRegionOpsHashSet:
 {
-  v12 = *a1;
-  v13 = *(*a1 + 23);
+  v12 = *self;
+  v13 = *(*self + 23);
   if (v13 < 0)
   {
     v12 = *v12;
-    v13 = *(*a1 + 8);
+    v13 = *(*self + 8);
   }
 
   CC_SHA256_Update(c, v12, v13);
-  v14 = *(a1 + 8);
+  v14 = *(self + 8);
   v15 = *(v14 + 8) - *v14;
   if (v15 >= 1)
   {
     bzero(*v14, v15);
   }
 
-  CC_SHA256_Final(*(a1 + 16), c);
-  v16 = **(a1 + 8);
-  snprintf(v16, 3uLL, "%02X", **(a1 + 16));
-  snprintf(v16 + 2, 3uLL, "%02X", *(*(a1 + 16) + 1));
-  snprintf(v16 + 4, 3uLL, "%02X", *(*(a1 + 16) + 2));
-  snprintf(v16 + 6, 3uLL, "%02X", *(*(a1 + 16) + 3));
-  snprintf(v16 + 8, 3uLL, "%02X", *(*(a1 + 16) + 4));
-  snprintf(v16 + 10, 3uLL, "%02X", *(*(a1 + 16) + 5));
-  snprintf(v16 + 12, 3uLL, "%02X", *(*(a1 + 16) + 6));
-  snprintf(v16 + 14, 3uLL, "%02X", *(*(a1 + 16) + 7));
-  snprintf(v16 + 16, 3uLL, "%02X", *(*(a1 + 16) + 8));
-  snprintf(v16 + 18, 3uLL, "%02X", *(*(a1 + 16) + 9));
-  snprintf(v16 + 20, 3uLL, "%02X", *(*(a1 + 16) + 10));
-  snprintf(v16 + 22, 3uLL, "%02X", *(*(a1 + 16) + 11));
-  snprintf(v16 + 24, 3uLL, "%02X", *(*(a1 + 16) + 12));
-  snprintf(v16 + 26, 3uLL, "%02X", *(*(a1 + 16) + 13));
-  snprintf(v16 + 28, 3uLL, "%02X", *(*(a1 + 16) + 14));
-  snprintf(v16 + 30, 3uLL, "%02X", *(*(a1 + 16) + 15));
-  snprintf(v16 + 32, 3uLL, "%02X", *(*(a1 + 16) + 16));
-  snprintf(v16 + 34, 3uLL, "%02X", *(*(a1 + 16) + 17));
-  snprintf(v16 + 36, 3uLL, "%02X", *(*(a1 + 16) + 18));
-  snprintf(v16 + 38, 3uLL, "%02X", *(*(a1 + 16) + 19));
-  snprintf(v16 + 40, 3uLL, "%02X", *(*(a1 + 16) + 20));
-  snprintf(v16 + 42, 3uLL, "%02X", *(*(a1 + 16) + 21));
-  snprintf(v16 + 44, 3uLL, "%02X", *(*(a1 + 16) + 22));
-  snprintf(v16 + 46, 3uLL, "%02X", *(*(a1 + 16) + 23));
-  snprintf(v16 + 48, 3uLL, "%02X", *(*(a1 + 16) + 24));
-  snprintf(v16 + 50, 3uLL, "%02X", *(*(a1 + 16) + 25));
-  snprintf(v16 + 52, 3uLL, "%02X", *(*(a1 + 16) + 26));
-  snprintf(v16 + 54, 3uLL, "%02X", *(*(a1 + 16) + 27));
-  snprintf(v16 + 56, 3uLL, "%02X", *(*(a1 + 16) + 28));
-  snprintf(v16 + 58, 3uLL, "%02X", *(*(a1 + 16) + 29));
-  snprintf(v16 + 60, 3uLL, "%02X", *(*(a1 + 16) + 30));
-  snprintf(v16 + 62, 3uLL, "%02X", *(*(a1 + 16) + 31));
+  CC_SHA256_Final(*(self + 16), c);
+  v16 = **(self + 8);
+  snprintf(v16, 3uLL, "%02X", **(self + 16));
+  snprintf(v16 + 2, 3uLL, "%02X", *(*(self + 16) + 1));
+  snprintf(v16 + 4, 3uLL, "%02X", *(*(self + 16) + 2));
+  snprintf(v16 + 6, 3uLL, "%02X", *(*(self + 16) + 3));
+  snprintf(v16 + 8, 3uLL, "%02X", *(*(self + 16) + 4));
+  snprintf(v16 + 10, 3uLL, "%02X", *(*(self + 16) + 5));
+  snprintf(v16 + 12, 3uLL, "%02X", *(*(self + 16) + 6));
+  snprintf(v16 + 14, 3uLL, "%02X", *(*(self + 16) + 7));
+  snprintf(v16 + 16, 3uLL, "%02X", *(*(self + 16) + 8));
+  snprintf(v16 + 18, 3uLL, "%02X", *(*(self + 16) + 9));
+  snprintf(v16 + 20, 3uLL, "%02X", *(*(self + 16) + 10));
+  snprintf(v16 + 22, 3uLL, "%02X", *(*(self + 16) + 11));
+  snprintf(v16 + 24, 3uLL, "%02X", *(*(self + 16) + 12));
+  snprintf(v16 + 26, 3uLL, "%02X", *(*(self + 16) + 13));
+  snprintf(v16 + 28, 3uLL, "%02X", *(*(self + 16) + 14));
+  snprintf(v16 + 30, 3uLL, "%02X", *(*(self + 16) + 15));
+  snprintf(v16 + 32, 3uLL, "%02X", *(*(self + 16) + 16));
+  snprintf(v16 + 34, 3uLL, "%02X", *(*(self + 16) + 17));
+  snprintf(v16 + 36, 3uLL, "%02X", *(*(self + 16) + 18));
+  snprintf(v16 + 38, 3uLL, "%02X", *(*(self + 16) + 19));
+  snprintf(v16 + 40, 3uLL, "%02X", *(*(self + 16) + 20));
+  snprintf(v16 + 42, 3uLL, "%02X", *(*(self + 16) + 21));
+  snprintf(v16 + 44, 3uLL, "%02X", *(*(self + 16) + 22));
+  snprintf(v16 + 46, 3uLL, "%02X", *(*(self + 16) + 23));
+  snprintf(v16 + 48, 3uLL, "%02X", *(*(self + 16) + 24));
+  snprintf(v16 + 50, 3uLL, "%02X", *(*(self + 16) + 25));
+  snprintf(v16 + 52, 3uLL, "%02X", *(*(self + 16) + 26));
+  snprintf(v16 + 54, 3uLL, "%02X", *(*(self + 16) + 27));
+  snprintf(v16 + 56, 3uLL, "%02X", *(*(self + 16) + 28));
+  snprintf(v16 + 58, 3uLL, "%02X", *(*(self + 16) + 29));
+  snprintf(v16 + 60, 3uLL, "%02X", *(*(self + 16) + 30));
+  snprintf(v16 + 62, 3uLL, "%02X", *(*(self + 16) + 31));
   v16[64] = 95;
-  CC_SHA256_Final(*(a1 + 16), a3);
-  snprintf(v16 + 65, 3uLL, "%02X", **(a1 + 16));
-  snprintf(v16 + 67, 3uLL, "%02X", *(*(a1 + 16) + 1));
-  snprintf(v16 + 69, 3uLL, "%02X", *(*(a1 + 16) + 2));
-  snprintf(v16 + 71, 3uLL, "%02X", *(*(a1 + 16) + 3));
-  snprintf(v16 + 73, 3uLL, "%02X", *(*(a1 + 16) + 4));
-  snprintf(v16 + 75, 3uLL, "%02X", *(*(a1 + 16) + 5));
-  snprintf(v16 + 77, 3uLL, "%02X", *(*(a1 + 16) + 6));
-  snprintf(v16 + 79, 3uLL, "%02X", *(*(a1 + 16) + 7));
-  snprintf(v16 + 81, 3uLL, "%02X", *(*(a1 + 16) + 8));
-  snprintf(v16 + 83, 3uLL, "%02X", *(*(a1 + 16) + 9));
-  snprintf(v16 + 85, 3uLL, "%02X", *(*(a1 + 16) + 10));
-  snprintf(v16 + 87, 3uLL, "%02X", *(*(a1 + 16) + 11));
-  snprintf(v16 + 89, 3uLL, "%02X", *(*(a1 + 16) + 12));
-  snprintf(v16 + 91, 3uLL, "%02X", *(*(a1 + 16) + 13));
-  snprintf(v16 + 93, 3uLL, "%02X", *(*(a1 + 16) + 14));
-  snprintf(v16 + 95, 3uLL, "%02X", *(*(a1 + 16) + 15));
-  snprintf(v16 + 97, 3uLL, "%02X", *(*(a1 + 16) + 16));
-  snprintf(v16 + 99, 3uLL, "%02X", *(*(a1 + 16) + 17));
-  snprintf(v16 + 101, 3uLL, "%02X", *(*(a1 + 16) + 18));
-  snprintf(v16 + 103, 3uLL, "%02X", *(*(a1 + 16) + 19));
-  snprintf(v16 + 105, 3uLL, "%02X", *(*(a1 + 16) + 20));
-  snprintf(v16 + 107, 3uLL, "%02X", *(*(a1 + 16) + 21));
-  snprintf(v16 + 109, 3uLL, "%02X", *(*(a1 + 16) + 22));
-  snprintf(v16 + 111, 3uLL, "%02X", *(*(a1 + 16) + 23));
-  snprintf(v16 + 113, 3uLL, "%02X", *(*(a1 + 16) + 24));
-  snprintf(v16 + 115, 3uLL, "%02X", *(*(a1 + 16) + 25));
-  snprintf(v16 + 117, 3uLL, "%02X", *(*(a1 + 16) + 26));
-  snprintf(v16 + 119, 3uLL, "%02X", *(*(a1 + 16) + 27));
-  snprintf(v16 + 121, 3uLL, "%02X", *(*(a1 + 16) + 28));
-  snprintf(v16 + 123, 3uLL, "%02X", *(*(a1 + 16) + 29));
-  snprintf(v16 + 125, 3uLL, "%02X", *(*(a1 + 16) + 30));
-  snprintf(v16 + 127, 3uLL, "%02X", *(*(a1 + 16) + 31));
-  Context = mlir::Attribute::getContext((**(a1 + 24) + 24));
+  CC_SHA256_Final(*(self + 16), a3);
+  snprintf(v16 + 65, 3uLL, "%02X", **(self + 16));
+  snprintf(v16 + 67, 3uLL, "%02X", *(*(self + 16) + 1));
+  snprintf(v16 + 69, 3uLL, "%02X", *(*(self + 16) + 2));
+  snprintf(v16 + 71, 3uLL, "%02X", *(*(self + 16) + 3));
+  snprintf(v16 + 73, 3uLL, "%02X", *(*(self + 16) + 4));
+  snprintf(v16 + 75, 3uLL, "%02X", *(*(self + 16) + 5));
+  snprintf(v16 + 77, 3uLL, "%02X", *(*(self + 16) + 6));
+  snprintf(v16 + 79, 3uLL, "%02X", *(*(self + 16) + 7));
+  snprintf(v16 + 81, 3uLL, "%02X", *(*(self + 16) + 8));
+  snprintf(v16 + 83, 3uLL, "%02X", *(*(self + 16) + 9));
+  snprintf(v16 + 85, 3uLL, "%02X", *(*(self + 16) + 10));
+  snprintf(v16 + 87, 3uLL, "%02X", *(*(self + 16) + 11));
+  snprintf(v16 + 89, 3uLL, "%02X", *(*(self + 16) + 12));
+  snprintf(v16 + 91, 3uLL, "%02X", *(*(self + 16) + 13));
+  snprintf(v16 + 93, 3uLL, "%02X", *(*(self + 16) + 14));
+  snprintf(v16 + 95, 3uLL, "%02X", *(*(self + 16) + 15));
+  snprintf(v16 + 97, 3uLL, "%02X", *(*(self + 16) + 16));
+  snprintf(v16 + 99, 3uLL, "%02X", *(*(self + 16) + 17));
+  snprintf(v16 + 101, 3uLL, "%02X", *(*(self + 16) + 18));
+  snprintf(v16 + 103, 3uLL, "%02X", *(*(self + 16) + 19));
+  snprintf(v16 + 105, 3uLL, "%02X", *(*(self + 16) + 20));
+  snprintf(v16 + 107, 3uLL, "%02X", *(*(self + 16) + 21));
+  snprintf(v16 + 109, 3uLL, "%02X", *(*(self + 16) + 22));
+  snprintf(v16 + 111, 3uLL, "%02X", *(*(self + 16) + 23));
+  snprintf(v16 + 113, 3uLL, "%02X", *(*(self + 16) + 24));
+  snprintf(v16 + 115, 3uLL, "%02X", *(*(self + 16) + 25));
+  snprintf(v16 + 117, 3uLL, "%02X", *(*(self + 16) + 26));
+  snprintf(v16 + 119, 3uLL, "%02X", *(*(self + 16) + 27));
+  snprintf(v16 + 121, 3uLL, "%02X", *(*(self + 16) + 28));
+  snprintf(v16 + 123, 3uLL, "%02X", *(*(self + 16) + 29));
+  snprintf(v16 + 125, 3uLL, "%02X", *(*(self + 16) + 30));
+  snprintf(v16 + 127, 3uLL, "%02X", *(*(self + 16) + 31));
+  Context = mlir::Attribute::getContext((**(self + 24) + 24));
   v18 = 1;
   v24 = 1;
   if (*v16)
@@ -9413,17 +9413,17 @@ LABEL_29:
   EmitViewerSPI::EmitViewerSPI(v6, WeakRetained, self, v4);
 }
 
-- (id)emitViewerSPIWithDevice:(id)a3 inputShapes:(id)a4 compilationDescriptor:(id)a5
+- (id)emitViewerSPIWithDevice:(id)device inputShapes:(id)shapes compilationDescriptor:(id)descriptor
 {
   v21 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(MPSGraphExecutable *)self getDefaultEntryPointWithShapes:v9];
+  deviceCopy = device;
+  shapesCopy = shapes;
+  descriptorCopy = descriptor;
+  v11 = [(MPSGraphExecutable *)self getDefaultEntryPointWithShapes:shapesCopy];
   v19 = v11;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v19 count:1];
   v17 = 0;
-  [(MPSGraphExecutable *)self specializedModuleWithDevice:v8 shapedEntryPoints:v12 compilationDescriptor:v10 error:&v17];
+  [(MPSGraphExecutable *)self specializedModuleWithDevice:deviceCopy shapedEntryPoints:v12 compilationDescriptor:descriptorCopy error:&v17];
   v13 = v17;
 
   std::mutex::lock((self + 200));
@@ -9432,34 +9432,34 @@ LABEL_29:
   EmitViewerSPI::EmitViewerSPI(v18, WeakRetained, self, v15);
 }
 
-- (void)emitViewerSPIToURL:(id)a3
+- (void)emitViewerSPIToURL:(id)l
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  lCopy = l;
   std::mutex::lock((self + 8));
   WeakRetained = objc_loadWeakRetained(self + 33);
   v6 = OriginalModuleRef::get(self + 37, 0);
   EmitViewerSPI::EmitViewerSPI(v7, WeakRetained, self, v6);
 }
 
-- (id)emitObjCToURL:(id)a3 test:(BOOL)a4
+- (id)emitObjCToURL:(id)l test:(BOOL)test
 {
   v10 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  lCopy = l;
   std::mutex::lock((self + 8));
   WeakRetained = objc_loadWeakRetained(self + 33);
   v7 = OriginalModuleRef::get(self + 37, 0);
   EmitObjC::EmitObjC(v9, WeakRetained, self, v7);
 }
 
-- (void)emitObjUnitTestToUrl:(id)a3
+- (void)emitObjUnitTestToUrl:(id)url
 {
   v10 = *MEMORY[0x1E69E9840];
-  [a3 path];
-  v4 = [objc_claimAutoreleasedReturnValue() lastPathComponent];
-  v5 = [v4 stringByDeletingPathExtension];
+  [url path];
+  lastPathComponent = [objc_claimAutoreleasedReturnValue() lastPathComponent];
+  stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
 
-  v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"test_%@_buildExecutable", v5];
+  v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"test_%@_buildExecutable", stringByDeletingPathExtension];
   std::mutex::lock((self + 8));
   WeakRetained = objc_loadWeakRetained(self + 33);
   v8 = OriginalModuleRef::get(self + 37, 0);
@@ -9609,15 +9609,15 @@ LABEL_6:
   return v5;
 }
 
-- (id)createMLIRLibraryWithMPSGraphPackage:(id)a3 packageKey:(id)a4 appendOptimizedModules:(BOOL)a5
+- (id)createMLIRLibraryWithMPSGraphPackage:(id)package packageKey:(id)key appendOptimizedModules:(BOOL)modules
 {
-  v5 = a5;
+  modulesCopy = modules;
   v113[1] = *MEMORY[0x1E69E9840];
-  v105 = self;
-  v104 = a3;
-  v85 = a4;
-  v103 = [v104 getMLIRLibrary];
-  v87 = v85;
+  selfCopy = self;
+  packageCopy = package;
+  keyCopy = key;
+  getMLIRLibrary = [packageCopy getMLIRLibrary];
+  v87 = keyCopy;
   MPSGraphOperatingSystemVersion::MPSGraphOperatingSystemVersion(&v108, v87);
   if (v108 < 4 || v108 == 4 && v109.__r_.__value_.__l.__data_ <= 20)
   {
@@ -9654,43 +9654,43 @@ LABEL_16:
   v9 = objc_opt_new();
   v98.var0 = &v102;
   v98.var1 = &v101;
-  v98.var2 = &v103;
-  v99 = &v105;
-  v100 = &v104;
+  v98.var2 = &getMLIRLibrary;
+  v99 = &selfCopy;
+  v100 = &packageCopy;
   v101 = v9;
-  if (([v103 originalFileExists] & 1) == 0)
+  if (([getMLIRLibrary originalFileExists] & 1) == 0)
   {
-    [(MPSGraphExecutable *)v105 optimizeOriginalModule];
-    v10 = [v104 createFileHandle];
-    v11 = v105;
-    std::mutex::lock((v105 + 8));
-    v12 = v104;
-    v13 = OriginalModuleRef::get(v105 + 37, 0);
-    [v12 createVersionedBytecodeFromMlirModule:v13 packageKey:v87 fileHandle:v10 resourceStorageMode:v102 downgradedModuleCallback:{llvm::function_ref<void ()(mlir::mps::serialization::ModuleOp)>::callback_fn<-[MPSGraphExecutable createMLIRLibraryWithMPSGraphPackage:packageKey:appendOptimizedModules:]::$_31>, &v98}];
-    [v103 addOriginalMLIRFile:v10];
+    [(MPSGraphExecutable *)selfCopy optimizeOriginalModule];
+    createFileHandle = [packageCopy createFileHandle];
+    v11 = selfCopy;
+    std::mutex::lock((selfCopy + 8));
+    v12 = packageCopy;
+    v13 = OriginalModuleRef::get(selfCopy + 37, 0);
+    [v12 createVersionedBytecodeFromMlirModule:v13 packageKey:v87 fileHandle:createFileHandle resourceStorageMode:v102 downgradedModuleCallback:{llvm::function_ref<void ()(mlir::mps::serialization::ModuleOp)>::callback_fn<-[MPSGraphExecutable createMLIRLibraryWithMPSGraphPackage:packageKey:appendOptimizedModules:]::$_31>, &v98}];
+    [getMLIRLibrary addOriginalMLIRFile:createFileHandle];
     std::mutex::unlock((v11 + 8));
   }
 
-  v86 = [v103 getBinaryResourceFiles];
-  if (v5)
+  getBinaryResourceFiles = [getMLIRLibrary getBinaryResourceFiles];
+  if (modulesCopy)
   {
-    v14 = v105;
-    std::mutex::lock((v105 + 200));
-    v15 = v105;
-    std::mutex::lock((v105 + 72));
-    v16 = *(v105 + 55) + 32 * *(v105 + 114);
+    v14 = selfCopy;
+    std::mutex::lock((selfCopy + 200));
+    v15 = selfCopy;
+    std::mutex::lock((selfCopy + 72));
+    v16 = *(selfCopy + 55) + 32 * *(selfCopy + 114);
     v83 = 72;
     v84 = v15;
-    if (*(v105 + 112))
+    if (*(selfCopy + 112))
     {
-      *&v108 = *(v105 + 55);
+      *&v108 = *(selfCopy + 55);
       *(&v108 + 1) = v16;
       llvm::DenseMapIterator<llvm::DenseSet<MPSGraphModuleKey,MPSGraphModuleKeyInfo>,std::unique_ptr<MPSGraphExecutableSpecializedModule>,MPSGraphModuleKeysSetInfo,llvm::detail::DenseMapPair<llvm::DenseSet<MPSGraphModuleKey,MPSGraphModuleKeyInfo>,std::unique_ptr<MPSGraphExecutableSpecializedModule>>,true>::AdvancePastEmptyBuckets(&v108);
     }
 
     v97 = vdupq_n_s64(v16);
     v17 = v97.i64[0];
-    if (v97.i64[0] != *(v105 + 55) + 32 * *(v105 + 114))
+    if (v97.i64[0] != *(selfCopy + 55) + 32 * *(selfCopy + 114))
     {
       v18 = *(v97.i64[0] + 24);
       v88 = *v18;
@@ -9765,8 +9765,8 @@ LABEL_16:
             operator delete(v108);
           }
 
-          v31 = (v105 + 440);
-          v32 = llvm::DenseMapBase<llvm::DenseMap<MPSGraphModuleKey,MPSGraphExecutableCacheValue,MPSGraphModuleKeyInfo,llvm::detail::DenseMapPair<MPSGraphModuleKey,MPSGraphExecutableCacheValue>>,MPSGraphModuleKey,MPSGraphExecutableCacheValue,MPSGraphModuleKeyInfo,llvm::detail::DenseMapPair<MPSGraphModuleKey,MPSGraphExecutableCacheValue>>::doFind<MPSGraphModuleKey>(*(v105 + 58), *(v105 + 120), v24);
+          v31 = (selfCopy + 440);
+          v32 = llvm::DenseMapBase<llvm::DenseMap<MPSGraphModuleKey,MPSGraphExecutableCacheValue,MPSGraphModuleKeyInfo,llvm::detail::DenseMapPair<MPSGraphModuleKey,MPSGraphExecutableCacheValue>>,MPSGraphModuleKey,MPSGraphExecutableCacheValue,MPSGraphModuleKeyInfo,llvm::detail::DenseMapPair<MPSGraphModuleKey,MPSGraphExecutableCacheValue>>::doFind<MPSGraphModuleKey>(*(selfCopy + 58), *(selfCopy + 120), v24);
           v33 = v32;
           if (v32)
           {
@@ -9801,19 +9801,19 @@ LABEL_16:
           llvm::DenseMapIterator<MPSGraphModuleKey,llvm::detail::DenseSetEmpty,MPSGraphModuleKeyInfo,llvm::detail::DenseSetPair<MPSGraphModuleKey>,true>::AdvancePastEmptyBuckets(v96);
         }
 
-        if ([v103 optimizedModuleWithSignature:v89])
+        if ([getMLIRLibrary optimizedModuleWithSignature:v89])
         {
-          v35 = [v103 getOptimizedModules];
-          v36 = [v35 objectForKeyedSubscript:v89];
+          getOptimizedModules = [getMLIRLibrary getOptimizedModules];
+          v36 = [getOptimizedModules objectForKeyedSubscript:v89];
           v37 = [v36 objectForKeyedSubscript:@"File Name"];
 
-          v38 = [v103 getOptimizedModules];
-          v39 = [v38 objectForKeyedSubscript:v89];
+          getOptimizedModules2 = [getMLIRLibrary getOptimizedModules];
+          v39 = [getOptimizedModules2 objectForKeyedSubscript:v89];
           v40 = [v39 objectForKeyedSubscript:@"Used Binary File Resource Ids"];
 
           if (v37)
           {
-            v41 = v37;
+            createFileHandle2 = v37;
           }
 
           else
@@ -9823,16 +9823,16 @@ LABEL_16:
               MTLReportFailure();
             }
 
-            v41 = 0;
+            createFileHandle2 = 0;
           }
         }
 
         else
         {
-          v41 = [v104 createFileHandle];
-          v42 = v104;
+          createFileHandle2 = [packageCopy createFileHandle];
+          v42 = packageCopy;
           v43 = (*(*v88 + 24))(v88, 0);
-          [v42 createBytecodeFromMlirModule:v43 fileHandle:v41 resourceStorageMode:v102];
+          [v42 createBytecodeFromMlirModule:v43 fileHandle:createFileHandle2 resourceStorageMode:v102];
           if (v102)
           {
             v44 = (*(*v88 + 24))(v88, 0);
@@ -9877,13 +9877,13 @@ LABEL_16:
             v54 = [(MPSGraphModuleKey *)v45 allObjects:v83];
 
             [v101 addObjectsFromArray:v54];
-            [v103 addOptimizedResourcesUsed:v54 withSignature:v89];
+            [getMLIRLibrary addOptimizedResourcesUsed:v54 withSignature:v89];
           }
 
           (*(*v88 + 40))(&v108);
           if (v109.__r_.__value_.__s.__data_[0] == 1)
           {
-            v55 = [v104 addBinaryResourceFile:v108 withFileType:v86 toBinaryResourceFileDict:?];
+            v55 = [packageCopy addBinaryResourceFile:v108 withFileType:getBinaryResourceFiles toBinaryResourceFileDict:?];
             v113[0] = v55;
             v40 = [MEMORY[0x1E695DEC8] arrayWithObjects:v113 count:1];
 
@@ -9900,7 +9900,7 @@ LABEL_16:
 
         v111[0] = @"File Name";
         v111[1] = @"Key to Symbol Name";
-        v112[0] = v41;
+        v112[0] = createFileHandle2;
         v112[1] = v91;
         v111[2] = @"Used In Cache";
         v112[2] = v90;
@@ -9912,7 +9912,7 @@ LABEL_16:
           [v57 setObject:v40 forKeyedSubscript:@"Used Binary File Resource Ids"];
         }
 
-        [v103 setOptimizedModule:v57 withSignature:v89];
+        [getMLIRLibrary setOptimizedModule:v57 withSignature:v89];
 
         v17 = v97.i64[0];
       }
@@ -9925,12 +9925,12 @@ LABEL_16:
     std::mutex::unlock((v14 + 200));
   }
 
-  [v103 setCallablesDescription:{*(v105 + 48), v83, v84}];
-  [v103 setResourceStorageMode:v102];
+  [getMLIRLibrary setCallablesDescription:{*(selfCopy + 48), v83, v84}];
+  [getMLIRLibrary setResourceStorageMode:v102];
   if ([v101 count])
   {
-    Manager = mlir::mps::MPSResourceBlobManagerInterface::getManager(*(v105 + 34), v58);
-    v60 = [v103 getResourceOffsetsLibrary];
+    Manager = mlir::mps::MPSResourceBlobManagerInterface::getManager(*(selfCopy + 34), v58);
+    getResourceOffsetsLibrary = [getMLIRLibrary getResourceOffsetsLibrary];
     *&v108 = &v109;
     *(&v108 + 1) = 0xA00000000;
     v92 = 0u;
@@ -9952,17 +9952,17 @@ LABEL_16:
           }
 
           v66 = *(*(&v92 + 1) + 8 * i);
-          v67 = [v60 objectForKeyedSubscript:v66];
+          v67 = [getResourceOffsetsLibrary objectForKeyedSubscript:v66];
           v68 = v67 == 0;
 
           if (v68)
           {
             v69 = v66;
-            v70 = [v66 UTF8String];
-            v71 = v70;
-            if (v70)
+            uTF8String = [v66 UTF8String];
+            v71 = uTF8String;
+            if (uTF8String)
             {
-              v72 = strlen(v70);
+              v72 = strlen(uTF8String);
             }
 
             else
@@ -9995,8 +9995,8 @@ LABEL_16:
       while (v62);
     }
 
-    v75 = [v104 writeResources:{v108, DWORD2(v108)}];
-    [v60 addEntriesFromDictionary:v75];
+    v75 = [packageCopy writeResources:{v108, DWORD2(v108)}];
+    [getResourceOffsetsLibrary addEntriesFromDictionary:v75];
 
     if (v108 != &v109)
     {
@@ -10005,8 +10005,8 @@ LABEL_16:
   }
 
   v76 = objc_opt_new();
-  v77 = *(v105 + 49);
-  for (j = *(v105 + 50); v77 != j; v77 += 3)
+  v77 = *(selfCopy + 49);
+  for (j = *(selfCopy + 50); v77 != j; v77 += 3)
   {
     v79 = v77;
     if (*(v77 + 23) < 0)
@@ -10018,8 +10018,8 @@ LABEL_16:
     [v76 addObject:v80];
   }
 
-  [v103 addSymbolsWithMutableWeights:v76];
-  v81 = v103;
+  [getMLIRLibrary addSymbolsWithMutableWeights:v76];
+  v81 = getMLIRLibrary;
 
   return v81;
 }
@@ -10027,9 +10027,9 @@ LABEL_16:
 - (id)getFunctionReflectionData
 {
   v269 = *MEMORY[0x1E69E9840];
-  v2 = [(MPSGraphExecutable *)self functionNames];
-  v3 = v2;
-  if (!v2 || ![v2 count])
+  functionNames = [(MPSGraphExecutable *)self functionNames];
+  v3 = functionNames;
+  if (!functionNames || ![functionNames count])
   {
     v178 = 0;
     goto LABEL_409;
@@ -10082,8 +10082,8 @@ LABEL_16:
         for (j = 0; j < [v245 count]; j = v248 + 1)
         {
           v5 = [v245 objectAtIndexedSubscript:j];
-          v6 = [v5 shape];
-          v7 = v6 == 0;
+          shape = [v5 shape];
+          v7 = shape == 0;
 
           v248 = j;
           if (v7)
@@ -10093,8 +10093,8 @@ LABEL_16:
 
           else
           {
-            v8 = [v5 shape];
-            v9 = [v8 count] != 0;
+            shape2 = [v5 shape];
+            v9 = [shape2 count] != 0;
 
             if (v9)
             {
@@ -10109,8 +10109,8 @@ LABEL_16:
 
           v11 = [v234 objectAtIndexedSubscript:j];
           v12 = v11;
-          v13 = [v11 UTF8String];
-          v14 = strlen(v13);
+          uTF8String = [v11 UTF8String];
+          v14 = strlen(uTF8String);
           if (v14 > 0x7FFFFFFFFFFFFFF7)
           {
             std::string::__throw_length_error[abi:ne200100]();
@@ -10127,7 +10127,7 @@ LABEL_16:
           v253 = v14;
           if (v14)
           {
-            memmove(&__dst, v13, v14);
+            memmove(&__dst, uTF8String, v14);
           }
 
           *(&__dst + v15) = 0;
@@ -10725,9 +10725,9 @@ LABEL_170:
           if (v73 < [v244 count])
           {
             v74 = [v244 objectAtIndexedSubscript:v73];
-            v75 = [v74 shape];
+            shape3 = [v74 shape];
             v247 = v73;
-            v76 = v75 == 0;
+            v76 = shape3 == 0;
 
             if (v76)
             {
@@ -10736,8 +10736,8 @@ LABEL_170:
 
             else
             {
-              v77 = [v74 shape];
-              v78 = [v77 count] != 0;
+              shape4 = [v74 shape];
+              v78 = [shape4 count] != 0;
 
               if (v78)
               {
@@ -10752,8 +10752,8 @@ LABEL_170:
 
             v80 = [v233 objectAtIndexedSubscript:v247];
             v81 = v80;
-            v82 = [v80 UTF8String];
-            v83 = strlen(v82);
+            uTF8String2 = [v80 UTF8String];
+            v83 = strlen(uTF8String2);
             if (v83 > 0x7FFFFFFFFFFFFFF7)
             {
               std::string::__throw_length_error[abi:ne200100]();
@@ -10770,7 +10770,7 @@ LABEL_170:
             v253 = v83;
             if (v83)
             {
-              memmove(&__dst, v82, v83);
+              memmove(&__dst, uTF8String2, v83);
             }
 
             *(&__dst + v84) = 0;
@@ -11352,8 +11352,8 @@ LABEL_325:
         }
 
         v141 = v230;
-        v142 = [v230 UTF8String];
-        v143 = strlen(v142);
+        uTF8String3 = [v230 UTF8String];
+        v143 = strlen(uTF8String3);
         if (v143 > 0x7FFFFFFFFFFFFFF7)
         {
           std::string::__throw_length_error[abi:ne200100]();
@@ -11368,7 +11368,7 @@ LABEL_325:
         v253 = v143;
         if (v143)
         {
-          memmove(&__dst, v142, v143);
+          memmove(&__dst, uTF8String3, v143);
         }
 
         *(&__dst + v144) = 0;
@@ -11935,19 +11935,19 @@ LABEL_5:
     v9 = 0;
     if (MTLReportFailureTypeEnabled())
     {
-      v28 = [(NSURL *)v41 absoluteString];
-      v29 = [v40 localizedFailureReason];
+      absoluteString = [(NSURL *)v41 absoluteString];
+      localizedFailureReason = [v40 localizedFailureReason];
       v33 = [v40 description];
-      v34 = [v40 code];
-      v30 = v28;
-      v32 = v29;
+      code = [v40 code];
+      v30 = absoluteString;
+      v32 = localizedFailureReason;
       MTLReportFailure();
 
       v9 = 0;
     }
   }
 
-  v10 = [v9 URLByAppendingPathComponent:{@"temporary.mpsgraphpackage", v30, v32, v33, v34}];
+  v10 = [v9 URLByAppendingPathComponent:{@"temporary.mpsgraphpackage", v30, v32, v33, code}];
   v11 = [[MPSGraphPackage alloc] initWithPackageURL:v41 temporaryPackageURL:v10 append:[(MPSGraphExecutableSerializationDescriptor *)v7 append]];
   __lk.__m_ = (self + 592);
   __lk.__owns_ = 1;
@@ -11962,10 +11962,10 @@ LABEL_5:
     std::mutex::unlock(__lk.__m_);
   }
 
-  v14 = [(MPSGraphExecutableSerializationDescriptor *)v7 deploymentPlatform];
+  deploymentPlatform = [(MPSGraphExecutableSerializationDescriptor *)v7 deploymentPlatform];
   __lk = v46;
   v45 = v47;
-  v15 = [(MPSGraphPackage *)v11 getPackageKeyForPlatform:v14 andMinimumDeploymentTarget:&__lk];
+  v15 = [(MPSGraphPackage *)v11 getPackageKeyForPlatform:deploymentPlatform andMinimumDeploymentTarget:&__lk];
   active_platform = dyld_get_active_platform();
   v17 = active_platform;
   if (active_platform == 1)
@@ -12007,15 +12007,15 @@ LABEL_19:
   v19 = [(MPSGraphPackage *)v11 getPackageKeyForPlatform:v18 andMinimumDeploymentTarget:&__lk, v31];
   v20 = -[MPSGraphExecutable createMLIRLibraryWithMPSGraphPackage:packageKey:appendOptimizedModules:](self, "createMLIRLibraryWithMPSGraphPackage:packageKey:appendOptimizedModules:", v11, v15, [v15 isEqualToString:v19]);
   [(MPSGraphPackage *)v11 setMLIRLibrary:v20 withPackageKey:v15];
-  v21 = [(MPSGraphPackage *)v11 getPlistData];
+  getPlistData = [(MPSGraphPackage *)v11 getPlistData];
   v22 = [v10 URLByAppendingPathComponent:@"manifest.plist"];
-  [v21 writeToURL:v22 atomically:1];
+  [getPlistData writeToURL:v22 atomically:1];
 
-  v23 = [(MPSGraphExecutable *)self getFunctionReflectionData];
-  if (v23)
+  getFunctionReflectionData = [(MPSGraphExecutable *)self getFunctionReflectionData];
+  if (getFunctionReflectionData)
   {
     v24 = [v10 URLByAppendingPathComponent:@"reflection.fb"];
-    [v23 writeToURL:v24 atomically:1];
+    [getFunctionReflectionData writeToURL:v24 atomically:1];
   }
 
   v25 = *(self + 101);
@@ -12024,36 +12024,36 @@ LABEL_19:
   v27 = v42;
   if ((v26 & 1) == 0 && MTLReportFailureTypeEnabled())
   {
-    v38 = [(NSURL *)v41 absoluteString];
-    v37 = [v10 absoluteString];
-    v36 = [v27 localizedFailureReason];
+    absoluteString2 = [(NSURL *)v41 absoluteString];
+    absoluteString3 = [v10 absoluteString];
+    localizedFailureReason2 = [v27 localizedFailureReason];
     v35 = [v27 description];
     [v27 code];
     MTLReportFailure();
   }
 }
 
-- (void)createMetalPackageAtURL:(id)a3 descriptor:(id)a4
+- (void)createMetalPackageAtURL:(id)l descriptor:(id)descriptor
 {
-  v6 = a3;
-  v31 = a4;
+  lCopy = l;
+  descriptorCopy = descriptor;
   v7 = *(self + 101);
   v34 = 0;
-  v8 = [v7 URLForDirectory:99 inDomain:1 appropriateForURL:v6 create:0 error:&v34];
+  v8 = [v7 URLForDirectory:99 inDomain:1 appropriateForURL:lCopy create:0 error:&v34];
   v9 = v34;
   if (!v8 && MTLReportFailureTypeEnabled())
   {
-    v21 = [v6 absoluteString];
-    v22 = [v9 localizedFailureReason];
+    absoluteString = [lCopy absoluteString];
+    localizedFailureReason = [v9 localizedFailureReason];
     v25 = [v9 description];
-    v26 = [v9 code];
-    v23 = v21;
-    v24 = v22;
+    code = [v9 code];
+    v23 = absoluteString;
+    v24 = localizedFailureReason;
     MTLReportFailure();
   }
 
-  v10 = [v8 URLByAppendingPathComponent:{@"temporary.metalpackage", v23, v24, v25, v26}];
-  v11 = [[MetalPackage alloc] initWithPackageURL:v6 temporaryPackageURL:v10];
+  v10 = [v8 URLByAppendingPathComponent:{@"temporary.metalpackage", v23, v24, v25, code}];
+  v11 = [[MetalPackage alloc] initWithPackageURL:lCopy temporaryPackageURL:v10];
   __lk.__m_ = (self + 592);
   __lk.__owns_ = 1;
   std::mutex::lock((self + 592));
@@ -12070,20 +12070,20 @@ LABEL_19:
   v14 = [v10 URLByAppendingPathComponent:@"/"];
   v15 = [v14 URLByAppendingPathComponent:@"library.mpsgraphpackage"];
 
-  [(MPSGraphExecutable *)self serializeToMPSGraphPackageAtURL:v15 descriptor:v31];
-  v16 = [(MetalPackage *)v11 getJsonData];
+  [(MPSGraphExecutable *)self serializeToMPSGraphPackageAtURL:v15 descriptor:descriptorCopy];
+  getJsonData = [(MetalPackage *)v11 getJsonData];
   v17 = [v10 URLByAppendingPathComponent:@"manifest.json"];
-  [v16 writeToURL:v17 atomically:1];
+  [getJsonData writeToURL:v17 atomically:1];
 
   v18 = *(self + 101);
   v32 = 0;
-  v19 = [v18 replaceItemAtURL:v6 withItemAtURL:v10 backupItemName:0 options:1 resultingItemURL:0 error:&v32];
+  v19 = [v18 replaceItemAtURL:lCopy withItemAtURL:v10 backupItemName:0 options:1 resultingItemURL:0 error:&v32];
   v20 = v32;
   if ((v19 & 1) == 0 && MTLReportFailureTypeEnabled())
   {
-    v30 = [v6 absoluteString];
-    v29 = [v10 absoluteString];
-    v28 = [v20 localizedFailureReason];
+    absoluteString2 = [lCopy absoluteString];
+    absoluteString3 = [v10 absoluteString];
+    localizedFailureReason2 = [v20 localizedFailureReason];
     v27 = [v20 description];
     [v20 code];
     MTLReportFailure();
@@ -12161,23 +12161,23 @@ LABEL_19:
   return v5;
 }
 
-- (id)getInputShapesForFunction:(id)a3
+- (id)getInputShapesForFunction:(id)function
 {
   v5 = 0;
-  v3 = [(MPSGraphExecutable *)self getInputShapesForFunction:a3 error:&v5];
+  v3 = [(MPSGraphExecutable *)self getInputShapesForFunction:function error:&v5];
 
   return v3;
 }
 
-- (id)getInputShapesForFunction:(id)a3 error:(id *)a4
+- (id)getInputShapesForFunction:(id)function error:(id *)error
 {
   v74 = *MEMORY[0x1E69E9840];
-  v62 = a3;
+  functionCopy = function;
   std::mutex::lock((self + 72));
   if (*(self + 709) == 1)
   {
     v7 = (*(self + 55) + 32 * *(self + 114));
-    v60 = self;
+    selfCopy = self;
     if (*(self + 112))
     {
       __dst[0] = *(self + 55);
@@ -12187,14 +12187,14 @@ LABEL_19:
 
     v66 = vdupq_n_s64(v7);
     v58 = self + 440;
-    v59 = a4;
+    errorCopy = error;
     v9 = *(self + 55) + 32 * *(self + 114);
     v8 = v66.i64[0];
     if (v66.i64[0] != v9)
     {
       v10 = *(v66.i64[0] + 24);
-      v11 = (*(**v10 + 24))(*v10, a4);
-      if (*a4)
+      v11 = (*(**v10 + 24))(*v10, error);
+      if (*error)
       {
 LABEL_6:
         v66.i64[0] = v8 + 32;
@@ -12271,12 +12271,12 @@ LABEL_23:
           v29 = v73.__r_.__value_.__r.__words[0];
         }
 
-        v30 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{v29, v58, v59}];
-        if ([v30 hasPrefix:v62] && (objc_msgSend(v30, "containsString:", @"ANE_region") & 1) == 0)
+        v30 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{v29, v58, errorCopy}];
+        if ([v30 hasPrefix:functionCopy] && (objc_msgSend(v30, "containsString:", @"ANE_region") & 1) == 0)
         {
           v32 = v30;
-          v33 = [v30 UTF8String];
-          v34 = strlen(v33);
+          uTF8String = [v30 UTF8String];
+          v34 = strlen(uTF8String);
           if (v34 >= 0x7FFFFFFFFFFFFFF8)
           {
             std::string::__throw_length_error[abi:ne200100]();
@@ -12291,7 +12291,7 @@ LABEL_23:
           v64 = v34;
           if (v34)
           {
-            memmove(__p, v33, v34);
+            memmove(__p, uTF8String, v34);
           }
 
           *(__p + v35) = 0;
@@ -12338,7 +12338,7 @@ LABEL_23:
             v44 = 0;
           }
 
-          v4 = [(MPSGraphExecutable *)v60 getInputShapesForFuncOp:v44];
+          v4 = [(MPSGraphExecutable *)selfCopy getInputShapesForFuncOp:v44];
           if (v64 < 0)
           {
             operator delete(__p[0]);
@@ -12364,7 +12364,7 @@ LABEL_23:
 
         if (!v31)
         {
-          self = v60;
+          self = selfCopy;
           goto LABEL_70;
         }
 
@@ -12392,22 +12392,22 @@ LABEL_22:
       goto LABEL_22;
     }
 
-    self = v60;
+    self = selfCopy;
   }
 
   std::mutex::lock((self + 8));
-  v45 = OriginalModuleRef::get(self + 37, a4);
-  if (!*a4)
+  v45 = OriginalModuleRef::get(self + 37, error);
+  if (!*error)
   {
     v46 = v45;
-    v61 = self;
-    v47 = v62;
+    selfCopy2 = self;
+    v47 = functionCopy;
     v48 = v47;
-    v49 = [v47 UTF8String];
-    v50 = v49;
-    if (v49)
+    uTF8String2 = [v47 UTF8String];
+    v50 = uTF8String2;
+    if (uTF8String2)
     {
-      v51 = strlen(v49);
+      v51 = strlen(uTF8String2);
     }
 
     else
@@ -12428,8 +12428,8 @@ LABEL_22:
 
       if (v56)
       {
-        self = v61;
-        v4 = [(MPSGraphExecutable *)v61 getInputShapesForFuncOp:v55];
+        self = selfCopy2;
+        v4 = [(MPSGraphExecutable *)selfCopy2 getInputShapesForFuncOp:v55];
         goto LABEL_69;
       }
     }
@@ -12439,7 +12439,7 @@ LABEL_22:
     }
 
     v4 = 0;
-    self = v61;
+    self = selfCopy2;
     goto LABEL_69;
   }
 
@@ -12452,12 +12452,12 @@ LABEL_70:
   return v4;
 }
 
-- (id)getInputShapesForFuncOp:(FuncOp)a3
+- (id)getInputShapesForFuncOp:(FuncOp)op
 {
-  if (a3.var0)
+  if (op.var0)
   {
     v4 = [MEMORY[0x1E695E0F0] mutableCopy];
-    v5 = (((a3.var0 + 16 * ((*(a3.var0 + 11) >> 23) & 1) + ((*(a3.var0 + 11) >> 21) & 0x7F8) + 71) & 0xFFFFFFFFFFFFFFF8) + 32 * *(a3.var0 + 10));
+    v5 = (((op.var0 + 16 * ((*(op.var0 + 11) >> 23) & 1) + ((*(op.var0 + 11) >> 21) & 0x7F8) + 71) & 0xFFFFFFFFFFFFFFF8) + 32 * *(op.var0 + 10));
     if (*v5 != v5)
     {
       v6 = v5[1];
@@ -12482,9 +12482,9 @@ LABEL_70:
   return v4;
 }
 
-- (id)inputNamesForFunction:(id)a3
+- (id)inputNamesForFunction:(id)function
 {
-  v4 = a3;
+  functionCopy = function;
   std::mutex::lock((self + 8));
   v18 = 0;
   v5 = OriginalModuleRef::get(self + 37, &v18);
@@ -12494,12 +12494,12 @@ LABEL_70:
     goto LABEL_2;
   }
 
-  v9 = v4;
-  v10 = [v9 UTF8String];
-  v11 = v10;
-  if (v10)
+  v9 = functionCopy;
+  uTF8String = [v9 UTF8String];
+  v11 = uTF8String;
+  if (uTF8String)
   {
-    v12 = strlen(v10);
+    v12 = strlen(uTF8String);
   }
 
   else
@@ -12537,11 +12537,11 @@ LABEL_3:
   return v7;
 }
 
-- (id)inputNamesForFuncOp:(FuncOp)a3
+- (id)inputNamesForFuncOp:(FuncOp)op
 {
-  var0 = a3.var0;
-  v26 = a3.var0;
-  if (a3.var0)
+  var0 = op.var0;
+  v26 = op.var0;
+  if (op.var0)
   {
     v4 = [MEMORY[0x1E695E0F0] mutableCopy];
     v25 = *&var0[4 * ((var0[11] >> 23) & 1) + 16];
@@ -12656,9 +12656,9 @@ LABEL_33:
   return var0;
 }
 
-- (id)outputNamesForFunction:(id)a3
+- (id)outputNamesForFunction:(id)function
 {
-  v4 = a3;
+  functionCopy = function;
   std::mutex::lock((self + 8));
   v18 = 0;
   v5 = OriginalModuleRef::get(self + 37, &v18);
@@ -12668,12 +12668,12 @@ LABEL_33:
     goto LABEL_2;
   }
 
-  v9 = v4;
-  v10 = [v9 UTF8String];
-  v11 = v10;
-  if (v10)
+  v9 = functionCopy;
+  uTF8String = [v9 UTF8String];
+  v11 = uTF8String;
+  if (uTF8String)
   {
-    v12 = strlen(v10);
+    v12 = strlen(uTF8String);
   }
 
   else
@@ -12711,11 +12711,11 @@ LABEL_3:
   return v7;
 }
 
-- (id)outputNamesForFuncOp:(FuncOp)a3
+- (id)outputNamesForFuncOp:(FuncOp)op
 {
-  var0 = a3.var0;
-  v26 = a3.var0;
-  if (a3.var0)
+  var0 = op.var0;
+  v26 = op.var0;
+  if (op.var0)
   {
     v4 = [MEMORY[0x1E695E0F0] mutableCopy];
     v25 = *&var0[4 * ((var0[11] >> 23) & 1) + 20];
@@ -12830,11 +12830,11 @@ LABEL_33:
   return var0;
 }
 
-- (id)getStateInputPositionsWithEntryFunctionName:(id)a3
+- (id)getStateInputPositionsWithEntryFunctionName:(id)name
 {
   v62 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v49 = v4;
+  nameCopy = name;
+  v49 = nameCopy;
   std::mutex::lock((self + 72));
   if (*(self + 709) != 1)
   {
@@ -12842,7 +12842,7 @@ LABEL_33:
   }
 
   v5 = (*(self + 55) + 32 * *(self + 114));
-  v48 = self;
+  selfCopy = self;
   if (*(self + 112))
   {
     __dst[0] = *(self + 55);
@@ -12860,7 +12860,7 @@ LABEL_66:
     v45 = OriginalModuleRef::get(self + 37, 0);
     if (v45)
     {
-      v50 = getStateArray(v45, v4);
+      v50 = getStateArray(v45, nameCopy);
     }
 
     else
@@ -12968,15 +12968,15 @@ LABEL_23:
     }
 
     v26 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{v25, v47}];
-    if (![v26 hasPrefix:v4])
+    if (![v26 hasPrefix:nameCopy])
     {
       v31 = 1;
       goto LABEL_59;
     }
 
     v27 = v26;
-    v28 = [v26 UTF8String];
-    v29 = strlen(v28);
+    uTF8String = [v26 UTF8String];
+    v29 = strlen(uTF8String);
     if (v29 >= 0x7FFFFFFFFFFFFFF8)
     {
       std::string::__throw_length_error[abi:ne200100]();
@@ -12991,7 +12991,7 @@ LABEL_23:
     v52 = v29;
     if (v29)
     {
-      memmove(__p, v28, v29);
+      memmove(__p, uTF8String, v29);
     }
 
     *(__p + v30) = 0;
@@ -13020,7 +13020,7 @@ LABEL_23:
     v55[1] = v36;
     v38 = mlir::StringAttr::get(Context, v55);
     v39 = mlir::SymbolTable::lookupSymbolIn(v8, v38);
-    v4 = v49;
+    nameCopy = v49;
     if (v39)
     {
       if (*(*(v39 + 6) + 16) == &mlir::detail::TypeIDResolver<mlir::func::FuncOp,void>::id)
@@ -13113,7 +13113,7 @@ LABEL_59:
     llvm::DenseMapIterator<MPSGraphModuleKey,std::string,MPSGraphModuleKeyInfo,llvm::detail::DenseMapPair<MPSGraphModuleKey,std::string>,true>::AdvancePastEmptyBuckets(&v53);
   }
 
-  self = v48;
+  self = selfCopy;
 LABEL_70:
   std::mutex::unlock((self + 72));
 
@@ -13160,9 +13160,9 @@ LABEL_70:
   return v5;
 }
 
-- (id)getOutputShapesForFunction:(id)a3
+- (id)getOutputShapesForFunction:(id)function
 {
-  v4 = a3;
+  functionCopy = function;
   std::mutex::lock((self + 8));
   v18 = 0;
   v5 = OriginalModuleRef::get(self + 37, &v18);
@@ -13172,12 +13172,12 @@ LABEL_70:
     goto LABEL_2;
   }
 
-  v9 = v4;
-  v10 = [v9 UTF8String];
-  v11 = v10;
-  if (v10)
+  v9 = functionCopy;
+  uTF8String = [v9 UTF8String];
+  v11 = uTF8String;
+  if (uTF8String)
   {
-    v12 = strlen(v10);
+    v12 = strlen(uTF8String);
   }
 
   else
@@ -13215,10 +13215,10 @@ LABEL_3:
   return v7;
 }
 
-- (id)getOutputShapesForFuncOp:(FuncOp)a3
+- (id)getOutputShapesForFuncOp:(FuncOp)op
 {
-  var0 = a3.var0;
-  if (a3.var0)
+  var0 = op.var0;
+  if (op.var0)
   {
     v3 = [MEMORY[0x1E695E0F0] mutableCopy];
     FunctionType = mlir::func::FuncOp::getFunctionType(&var0);
@@ -13251,12 +13251,12 @@ LABEL_3:
   return v3;
 }
 
-- (id)getTargetShapesForDevice:(id)a3 inputsArray:(id)a4
+- (id)getTargetShapesForDevice:(id)device inputsArray:(id)array
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MPSGraphExecutable *)self getDefaultEntryPointWithShapes:v7];
-  [(MPSGraphExecutable *)self specializeWithDevice:v6 shapedEntryPoint:v8 compilationDescriptor:0];
+  deviceCopy = device;
+  arrayCopy = array;
+  v8 = [(MPSGraphExecutable *)self getDefaultEntryPointWithShapes:arrayCopy];
+  [(MPSGraphExecutable *)self specializeWithDevice:deviceCopy shapedEntryPoint:v8 compilationDescriptor:0];
 
   v9.var0 = [(MPSGraphExecutable *)self returnOpForFunctionInModule:(*(*v16 + 24))(v16, 0)];
   if ((*(v9.var0 + 46) & 0x80) != 0)
@@ -13292,54 +13292,54 @@ LABEL_3:
   return v11;
 }
 
-- (id)getTensorDataArraysWithDevice:(id)a3 feedsDictionary:(id)a4 resultsDictionary:(id)a5 inputsArray:(id)a6 resultsArray:(id)a7 executableExecutionDescriptor:(id)a8
+- (id)getTensorDataArraysWithDevice:(id)device feedsDictionary:(id)dictionary resultsDictionary:(id)resultsDictionary inputsArray:(id)array resultsArray:(id)resultsArray executableExecutionDescriptor:(id)descriptor
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v41 = a7;
-  v18 = a8;
+  deviceCopy = device;
+  dictionaryCopy = dictionary;
+  resultsDictionaryCopy = resultsDictionary;
+  arrayCopy = array;
+  resultsArrayCopy = resultsArray;
+  descriptorCopy = descriptor;
   v19 = *(self + 91);
   v45[0] = MEMORY[0x1E69E9820];
   v45[1] = 3221225472;
   v45[2] = __141__MPSGraphExecutable_getTensorDataArraysWithDevice_feedsDictionary_resultsDictionary_inputsArray_resultsArray_executableExecutionDescriptor___block_invoke;
   v45[3] = &unk_1E86D4E20;
-  v20 = v17;
+  v20 = arrayCopy;
   v46 = v20;
-  v47 = v15;
-  v39 = v16;
+  v47 = dictionaryCopy;
+  v39 = resultsDictionaryCopy;
   v40 = v47;
   [v19 enumerateObjectsUsingBlock:v45];
-  if (v16)
+  if (resultsDictionaryCopy)
   {
-    v21 = v16;
+    v21 = resultsDictionaryCopy;
   }
 
   else
   {
-    v37 = v18;
-    v38 = v14;
+    v37 = descriptorCopy;
+    v38 = deviceCopy;
     v22 = [MPSGraphExecutableShapedEntryPoint alloc];
-    v23 = [v18 entryFunctionName];
-    v24 = [(MPSGraphExecutableShapedEntryPoint *)v22 initWithEntryFunctionName:v23 inputTypes:v20];
+    entryFunctionName = [descriptorCopy entryFunctionName];
+    v24 = [(MPSGraphExecutableShapedEntryPoint *)v22 initWithEntryFunctionName:entryFunctionName inputTypes:v20];
 
     v25 = v24;
-    v26 = [(MPSGraphExecutable *)self allocateTensorDataTargetsForDevice:v14 shapedEntryPoint:v24];
-    v27 = [MEMORY[0x1E695DF90] dictionary];
+    v26 = [(MPSGraphExecutable *)self allocateTensorDataTargetsForDevice:deviceCopy shapedEntryPoint:v24];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     for (i = 0; [*(self + 89) count] > i; ++i)
     {
       v29 = [v26 objectAtIndexedSubscript:i];
       v30 = [*(self + 89) objectAtIndexedSubscript:i];
-      [v27 setObject:v29 forKey:v30];
+      [dictionary setObject:v29 forKey:v30];
 
       v24 = v25;
     }
 
-    v21 = [MEMORY[0x1E695DF20] dictionaryWithDictionary:v27];
+    v21 = [MEMORY[0x1E695DF20] dictionaryWithDictionary:dictionary];
 
-    v18 = v37;
-    v14 = v38;
+    descriptorCopy = v37;
+    deviceCopy = v38;
   }
 
   v31 = *(self + 89);
@@ -13347,7 +13347,7 @@ LABEL_3:
   v42[1] = 3221225472;
   v42[2] = __141__MPSGraphExecutable_getTensorDataArraysWithDevice_feedsDictionary_resultsDictionary_inputsArray_resultsArray_executableExecutionDescriptor___block_invoke_2;
   v42[3] = &unk_1E86D4E20;
-  v32 = v41;
+  v32 = resultsArrayCopy;
   v43 = v32;
   v33 = v21;
   v44 = v33;
@@ -13372,23 +13372,23 @@ void __141__MPSGraphExecutable_getTensorDataArraysWithDevice_feedsDictionary_res
   [v2 addObject:?];
 }
 
-- (id)runWithMTLCommandQueue:(id)a3 inputsArray:(id)a4 resultsArray:(id)a5
+- (id)runWithMTLCommandQueue:(id)queue inputsArray:(id)array resultsArray:(id)resultsArray
 {
-  v5 = [(MPSGraphExecutable *)self runWithMTLCommandQueue:a3 inputsArray:a4 resultsArray:a5 executionDescriptor:0];
+  v5 = [(MPSGraphExecutable *)self runWithMTLCommandQueue:queue inputsArray:array resultsArray:resultsArray executionDescriptor:0];
 
   return v5;
 }
 
-- (id)runWithDevice:(id)a3 inputsArray:(id)a4 resultsArray:(id)a5 executionDescriptor:(id)a6
+- (id)runWithDevice:(id)device inputsArray:(id)array resultsArray:(id)resultsArray executionDescriptor:(id)descriptor
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = v13;
-  if (v13)
+  deviceCopy = device;
+  arrayCopy = array;
+  resultsArrayCopy = resultsArray;
+  descriptorCopy = descriptor;
+  v14 = descriptorCopy;
+  if (descriptorCopy)
   {
-    v15 = v13;
+    v15 = descriptorCopy;
   }
 
   else
@@ -13398,24 +13398,24 @@ void __141__MPSGraphExecutable_getTensorDataArraysWithDevice_feedsDictionary_res
 
   v16 = v15;
   [v15 setWaitUntilCompleted:1];
-  v17 = [(MPSGraphExecutable *)self runAsyncWithDevice:v10 inputsArray:v11 resultsArray:v12 executionDescriptor:v16];
+  v17 = [(MPSGraphExecutable *)self runAsyncWithDevice:deviceCopy inputsArray:arrayCopy resultsArray:resultsArrayCopy executionDescriptor:v16];
 
   return v17;
 }
 
-- (id)runAsyncWithDevice:(id)a3 inputsArray:(id)a4 resultsArray:(id)a5 executionDescriptor:(id)a6
+- (id)runAsyncWithDevice:(id)device inputsArray:(id)array resultsArray:(id)resultsArray executionDescriptor:(id)descriptor
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  deviceCopy = device;
+  arrayCopy = array;
+  resultsArrayCopy = resultsArray;
+  descriptorCopy = descriptor;
   v14 = objc_autoreleasePoolPush();
-  if (!v13)
+  if (!descriptorCopy)
   {
-    v13 = objc_opt_new();
+    descriptorCopy = objc_opt_new();
   }
 
-  v15 = [(MPSGraphExecutable *)self runInternalWithDevice:v10 commandBuffer:0 feeds:v11 results:v12 executableExecutionDescriptor:v13 mpsGraphOwnedCommandBuffer:1];
+  v15 = [(MPSGraphExecutable *)self runInternalWithDevice:deviceCopy commandBuffer:0 feeds:arrayCopy results:resultsArrayCopy executableExecutionDescriptor:descriptorCopy mpsGraphOwnedCommandBuffer:1];
   objc_autoreleasePoolPop(v14);
 
   return v15;
@@ -13457,8 +13457,8 @@ void __141__MPSGraphExecutable_getTensorDataArraysWithDevice_feedsDictionary_res
     v12 = objc_opt_new();
   }
 
-  v15 = [v14 device];
-  v16 = [MPSGraphDevice deviceWithMTLDevice:v15];
+  device = [v14 device];
+  v16 = [MPSGraphDevice deviceWithMTLDevice:device];
 
   v17 = [(MPSGraphExecutable *)self runInternalWithDevice:v16 commandBuffer:v14 feeds:v10 results:v11 executableExecutionDescriptor:v12 mpsGraphOwnedCommandBuffer:1];
 
@@ -13467,9 +13467,9 @@ void __141__MPSGraphExecutable_getTensorDataArraysWithDevice_feedsDictionary_res
   return v17;
 }
 
-- (id)runAsyncWithCommandQueue:(id)a3 inputsArray:(id)a4 resultsArray:(id)a5 executionDescriptor:(id)a6
+- (id)runAsyncWithCommandQueue:(id)queue inputsArray:(id)array resultsArray:(id)resultsArray executionDescriptor:(id)descriptor
 {
-  v6 = [(MPSGraphExecutable *)self runAsyncWithMTLCommandQueue:a3 inputsArray:a4 resultsArray:a5 executionDescriptor:a6];
+  v6 = [(MPSGraphExecutable *)self runAsyncWithMTLCommandQueue:queue inputsArray:array resultsArray:resultsArray executionDescriptor:descriptor];
 
   return v6;
 }
@@ -13481,39 +13481,39 @@ void __141__MPSGraphExecutable_getTensorDataArraysWithDevice_feedsDictionary_res
   return v6;
 }
 
-- (id)encodeWithMPSCommandBuffer:(id)a3 inputsArray:(id)a4 resultsArray:(id)a5 executionDescriptor:(id)a6
+- (id)encodeWithMPSCommandBuffer:(id)buffer inputsArray:(id)array resultsArray:(id)resultsArray executionDescriptor:(id)descriptor
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!v13)
+  bufferCopy = buffer;
+  arrayCopy = array;
+  resultsArrayCopy = resultsArray;
+  descriptorCopy = descriptor;
+  if (!descriptorCopy)
   {
-    v13 = objc_opt_new();
+    descriptorCopy = objc_opt_new();
   }
 
-  v14 = v13;
-  v15 = [v10 device];
-  v16 = [MPSGraphDevice deviceWithMTLDevice:v15];
+  v14 = descriptorCopy;
+  device = [bufferCopy device];
+  v16 = [MPSGraphDevice deviceWithMTLDevice:device];
 
-  v17 = [(MPSGraphExecutable *)self runInternalWithDevice:v16 commandBuffer:v10 feeds:v11 results:v12 executableExecutionDescriptor:v14 mpsGraphOwnedCommandBuffer:0];
+  v17 = [(MPSGraphExecutable *)self runInternalWithDevice:v16 commandBuffer:bufferCopy feeds:arrayCopy results:resultsArrayCopy executableExecutionDescriptor:v14 mpsGraphOwnedCommandBuffer:0];
 
   return v17;
 }
 
-- (void)getNewRuntimeForDevice:(id)a3 specializedModule:(void *)a4 shapedEntryPoints:(id)a5 compilationDescriptor:(id)a6
+- (void)getNewRuntimeForDevice:(id)device specializedModule:(void *)module shapedEntryPoints:(id)points compilationDescriptor:(id)descriptor
 {
   v29 = *MEMORY[0x1E69E9840];
-  v25 = a3;
-  v10 = a5;
-  v11 = a6;
-  (*(**a4 + 16))();
-  if ((*(**a4 + 16))() != 2 && MTLReportFailureTypeEnabled())
+  deviceCopy = device;
+  pointsCopy = points;
+  descriptorCopy = descriptor;
+  (*(**module + 16))();
+  if ((*(**module + 16))() != 2 && MTLReportFailureTypeEnabled())
   {
     MTLReportFailure();
   }
 
-  (*(**a4 + 24))(*a4, 0);
+  (*(**module + 24))(*module, 0);
   std::mutex::lock((self + 136));
   v12 = (self + 416);
   v13 = *(self + 108);
@@ -13523,9 +13523,9 @@ void __141__MPSGraphExecutable_getTensorDataArraysWithDevice_feedsDictionary_res
   }
 
   v14 = *v12;
-  v15 = (v13 - 1) & ((a4 >> 4) ^ (a4 >> 9));
+  v15 = (v13 - 1) & ((module >> 4) ^ (module >> 9));
   v16 = *(*v12 + 16 * v15);
-  if (v16 != a4)
+  if (v16 != module)
   {
     v22 = 1;
     while (v16 != -4096)
@@ -13533,7 +13533,7 @@ void __141__MPSGraphExecutable_getTensorDataArraysWithDevice_feedsDictionary_res
       v23 = v15 + v22++;
       v15 = v23 & (v13 - 1);
       v16 = *(v14 + 16 * v15);
-      if (v16 == a4)
+      if (v16 == module)
       {
         goto LABEL_4;
       }
@@ -13575,14 +13575,14 @@ LABEL_8:
     }
   }
 
-  v18 = [v11 compilerOptions] & 0x80;
+  v18 = [descriptorCopy compilerOptions] & 0x80;
 LABEL_15:
   LOBYTE(v28) = v18 != 0;
-  [v11 compilerOptions];
-  [v11 compilerOptions];
+  [descriptorCopy compilerOptions];
+  [descriptorCopy compilerOptions];
   if ((byte_1EED2BCE2 & 1) == 0)
   {
-    [v11 compilerOptions];
+    [descriptorCopy compilerOptions];
   }
 
   __lk.__m_ = v17;
@@ -13615,16 +13615,16 @@ LABEL_15:
   return v20;
 }
 
-- (id)allocateTensorDataTargetsForDevice:(id)a3 shapedEntryPoint:(id)a4
+- (id)allocateTensorDataTargetsForDevice:(id)device shapedEntryPoint:(id)point
 {
   v34[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E695DF70] array];
-  [(MPSGraphExecutable *)self specializeWithDevice:v6 shapedEntryPoint:v7 compilationDescriptor:0];
-  v34[0] = v7;
+  deviceCopy = device;
+  pointCopy = point;
+  array = [MEMORY[0x1E695DF70] array];
+  [(MPSGraphExecutable *)self specializeWithDevice:deviceCopy shapedEntryPoint:pointCopy compilationDescriptor:0];
+  v34[0] = pointCopy;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v34 count:1];
-  v10 = [(MPSGraphExecutable *)self getNewRuntimeForDevice:v6 specializedModule:v28 shapedEntryPoints:v9 compilationDescriptor:0];
+  v10 = [(MPSGraphExecutable *)self getNewRuntimeForDevice:deviceCopy specializedModule:v28 shapedEntryPoints:v9 compilationDescriptor:0];
 
   v11 = (*(*v29 + 24))(v29, 0);
   v12 = v31;
@@ -13695,26 +13695,26 @@ LABEL_15:
   return v26;
 }
 
-- (void)applyEntryPointToSymbolAndFileNameMap:(id)a3 device:(id)a4 compilationDescriptor:(id)a5
+- (void)applyEntryPointToSymbolAndFileNameMap:(id)map device:(id)device compilationDescriptor:(id)descriptor
 {
   v26 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 perEntryPointMap];
-  v12 = [v11 count];
+  mapCopy = map;
+  deviceCopy = device;
+  descriptorCopy = descriptor;
+  perEntryPointMap = [mapCopy perEntryPointMap];
+  v12 = [perEntryPointMap count];
 
   if (v12)
   {
-    v13 = [v8 perEntryPointMap];
-    v14 = [v13 allKeys];
+    perEntryPointMap2 = [mapCopy perEntryPointMap];
+    allKeys = [perEntryPointMap2 allKeys];
 
     v23 = 0;
-    [(MPSGraphExecutable *)self specializedModuleWithDevice:v9 shapedEntryPoints:v14 compilationDescriptor:v10 error:&v23];
+    [(MPSGraphExecutable *)self specializedModuleWithDevice:deviceCopy shapedEntryPoints:allKeys compilationDescriptor:descriptorCopy error:&v23];
     v15 = v23;
-    v16 = [(MPSGraphExecutable *)self getNewRuntimeForDevice:v9 specializedModule:*v24 shapedEntryPoints:v14 compilationDescriptor:0];
-    createToPerEntryFuncOpSymbolMap(&v21, v8, v14, v24, v25);
-    RuntimeSpecializationsCache::getOrCreateSpecialization(v16[85], v8);
+    v16 = [(MPSGraphExecutable *)self getNewRuntimeForDevice:deviceCopy specializedModule:*v24 shapedEntryPoints:allKeys compilationDescriptor:0];
+    createToPerEntryFuncOpSymbolMap(&v21, mapCopy, allKeys, v24, v25);
+    RuntimeSpecializationsCache::getOrCreateSpecialization(v16[85], mapCopy);
     v17 = v21;
     if (v22)
     {
@@ -13744,24 +13744,24 @@ LABEL_15:
   }
 }
 
-- (void)unloadEntryPointToSymbolAndFileNameMap:(id)a3 device:(id)a4 compilationDescriptor:(id)a5
+- (void)unloadEntryPointToSymbolAndFileNameMap:(id)map device:(id)device compilationDescriptor:(id)descriptor
 {
   v22[5] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(MPSGraphExecutableEntryPointToSymbolAndFileNameMap *)v8 perEntryPointMap];
-  v12 = [v11 count];
+  mapCopy = map;
+  deviceCopy = device;
+  descriptorCopy = descriptor;
+  perEntryPointMap = [(MPSGraphExecutableEntryPointToSymbolAndFileNameMap *)mapCopy perEntryPointMap];
+  v12 = [perEntryPointMap count];
 
   if (v12)
   {
-    v13 = [(MPSGraphExecutableEntryPointToSymbolAndFileNameMap *)v8 perEntryPointMap];
-    v14 = [v13 allKeys];
+    perEntryPointMap2 = [(MPSGraphExecutableEntryPointToSymbolAndFileNameMap *)mapCopy perEntryPointMap];
+    allKeys = [perEntryPointMap2 allKeys];
 
     v19 = 0;
-    [(MPSGraphExecutable *)self specializedModuleWithDevice:v9 shapedEntryPoints:v14 compilationDescriptor:v10 error:&v19];
+    [(MPSGraphExecutable *)self specializedModuleWithDevice:deviceCopy shapedEntryPoints:allKeys compilationDescriptor:descriptorCopy error:&v19];
     v15 = v19;
-    RuntimeSpecializationsCache::removeSpecialization(*([(MPSGraphExecutable *)self getNewRuntimeForDevice:v9 specializedModule:*v20 shapedEntryPoints:v14 compilationDescriptor:0]+ 680), v8);
+    RuntimeSpecializationsCache::removeSpecialization(*([(MPSGraphExecutable *)self getNewRuntimeForDevice:deviceCopy specializedModule:*v20 shapedEntryPoints:allKeys compilationDescriptor:0]+ 680), mapCopy);
     v16 = v20;
     if (v21)
     {
@@ -13789,57 +13789,57 @@ LABEL_15:
   }
 }
 
-- (id)runInternalWithDevice:(id)a3 commandBuffer:(id)a4 feedsDictionary:(id)a5 resultsDictionary:(id)a6 executableExecutionDescriptor:(id)a7 mpsGraphOwnedCommandBuffer:(BOOL)a8
+- (id)runInternalWithDevice:(id)device commandBuffer:(id)buffer feedsDictionary:(id)dictionary resultsDictionary:(id)resultsDictionary executableExecutionDescriptor:(id)descriptor mpsGraphOwnedCommandBuffer:(BOOL)commandBuffer
 {
-  v8 = a8;
+  commandBufferCopy = commandBuffer;
   v52 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v32 = a5;
-  v33 = a6;
-  v37 = v14;
-  v38 = a7;
-  v35 = v15;
-  v16 = [v14 type];
-  v17 = [v15 commandBuffer];
-  v18 = [v17 device];
+  deviceCopy = device;
+  bufferCopy = buffer;
+  dictionaryCopy = dictionary;
+  resultsDictionaryCopy = resultsDictionary;
+  v37 = deviceCopy;
+  descriptorCopy = descriptor;
+  v35 = bufferCopy;
+  type = [deviceCopy type];
+  commandBuffer = [bufferCopy commandBuffer];
+  device = [commandBuffer device];
   v46 = 0x2B2B07EC2B2B07E8;
-  v47 = self;
-  v48 = v16;
-  v49 = [v18 registryID];
-  v50 = self;
+  selfCopy = self;
+  v48 = type;
+  registryID = [device registryID];
+  selfCopy2 = self;
   kdebug_trace();
 
-  v36 = [MEMORY[0x1E695DF70] array];
-  v34 = [MEMORY[0x1E695DF70] array];
-  v31 = [MPSGraphExecutable getTensorDataArraysWithDevice:"getTensorDataArraysWithDevice:feedsDictionary:resultsDictionary:inputsArray:resultsArray:executableExecutionDescriptor:" feedsDictionary:v14 resultsDictionary:v32 inputsArray:v33 resultsArray:v36 executableExecutionDescriptor:?];
-  if (![v14 type])
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
+  v31 = [MPSGraphExecutable getTensorDataArraysWithDevice:"getTensorDataArraysWithDevice:feedsDictionary:resultsDictionary:inputsArray:resultsArray:executableExecutionDescriptor:" feedsDictionary:deviceCopy resultsDictionary:dictionaryCopy inputsArray:resultsDictionaryCopy resultsArray:array executableExecutionDescriptor:?];
+  if (![deviceCopy type])
   {
-    if (!v15)
+    if (!bufferCopy)
     {
-      v19 = [v14 metalDevice];
-      v20 = [v19 newCommandQueue];
+      metalDevice = [deviceCopy metalDevice];
+      newCommandQueue = [metalDevice newCommandQueue];
 
-      v35 = [MEMORY[0x1E6974450] commandBufferFromCommandQueue:v20];
+      v35 = [MEMORY[0x1E6974450] commandBufferFromCommandQueue:newCommandQueue];
 
-      v8 = 1;
+      commandBufferCopy = 1;
     }
 
-    v21 = [v38 scheduledGraphHandler];
+    scheduledGraphHandler = [descriptorCopy scheduledGraphHandler];
 
-    if (v21)
+    if (scheduledGraphHandler)
     {
       v43[0] = MEMORY[0x1E69E9820];
       v43[1] = 3221225472;
       v43[2] = __149__MPSGraphExecutable_runInternalWithDevice_commandBuffer_feedsDictionary_resultsDictionary_executableExecutionDescriptor_mpsGraphOwnedCommandBuffer___block_invoke;
       v43[3] = &unk_1E86D5190;
-      v44 = v38;
+      v44 = descriptorCopy;
       v45 = v31;
       [v35 addScheduledHandler:v43];
     }
   }
 
-  v22 = [(MPSGraphExecutable *)self runInternalWithDevice:v14 commandBuffer:v35 feeds:v36 results:v34 executableExecutionDescriptor:v38 mpsGraphOwnedCommandBuffer:v8];
+  v22 = [(MPSGraphExecutable *)self runInternalWithDevice:deviceCopy commandBuffer:v35 feeds:array results:array2 executableExecutionDescriptor:descriptorCopy mpsGraphOwnedCommandBuffer:commandBufferCopy];
   v23 = [MEMORY[0x1E695E0F8] mutableCopy];
   v41 = 0u;
   v42 = 0u;
@@ -13884,17 +13884,17 @@ void __149__MPSGraphExecutable_runInternalWithDevice_commandBuffer_feedsDictiona
   (v3)[2](v3, v4, v5);
 }
 
-- (void)dumpArrayOfTensorData:(id)a3 basePath:(id)a4 separator:(id)a5 invocationCount:(unint64_t)a6
+- (void)dumpArrayOfTensorData:(id)data basePath:(id)path separator:(id)separator invocationCount:(unint64_t)count
 {
   v71 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v49 = a4;
-  v9 = a5;
+  dataCopy = data;
+  pathCopy = path;
+  separatorCopy = separator;
   v66 = 0u;
   v67 = 0u;
   v68 = 0u;
   v69 = 0u;
-  obj = v8;
+  obj = dataCopy;
   v10 = [obj countByEnumeratingWithState:&v66 objects:v70 count:16];
   if (v10)
   {
@@ -13911,9 +13911,9 @@ void __149__MPSGraphExecutable_runInternalWithDevice_commandBuffer_feedsDictiona
         }
 
         v14 = *(*(&v66 + 1) + 8 * i);
-        v15 = v49;
-        v16 = [v49 UTF8String];
-        v17 = strlen(v16);
+        v15 = pathCopy;
+        uTF8String = [pathCopy UTF8String];
+        v17 = strlen(uTF8String);
         if (v17 > 0x7FFFFFFFFFFFFFF7)
         {
           std::string::__throw_length_error[abi:ne200100]();
@@ -13928,7 +13928,7 @@ void __149__MPSGraphExecutable_runInternalWithDevice_commandBuffer_feedsDictiona
         *(&__dst.__r_.__value_.__s + 23) = v17;
         if (v17)
         {
-          memmove(&__dst, v16, v17);
+          memmove(&__dst, uTF8String, v17);
         }
 
         __dst.__r_.__value_.__s.__data_[v18] = 0;
@@ -13941,7 +13941,7 @@ void __149__MPSGraphExecutable_runInternalWithDevice_commandBuffer_feedsDictiona
         v19->__r_.__value_.__l.__size_ = 0;
         v19->__r_.__value_.__r.__words[2] = 0;
         v19->__r_.__value_.__r.__words[0] = 0;
-        std::to_string(&v56, a6);
+        std::to_string(&v56, count);
         if ((v56.__r_.__value_.__r.__words[2] & 0x8000000000000000) == 0)
         {
           v21 = &v56;
@@ -13969,9 +13969,9 @@ void __149__MPSGraphExecutable_runInternalWithDevice_commandBuffer_feedsDictiona
         v23->__r_.__value_.__l.__size_ = 0;
         v23->__r_.__value_.__r.__words[2] = 0;
         v23->__r_.__value_.__r.__words[0] = 0;
-        v25 = v9;
-        v26 = [v9 UTF8String];
-        v27 = strlen(v26);
+        v25 = separatorCopy;
+        uTF8String2 = [separatorCopy UTF8String];
+        v27 = strlen(uTF8String2);
         if (v27 > 0x7FFFFFFFFFFFFFF7)
         {
           std::string::__throw_length_error[abi:ne200100]();
@@ -13986,7 +13986,7 @@ void __149__MPSGraphExecutable_runInternalWithDevice_commandBuffer_feedsDictiona
         v55 = v27;
         if (v27)
         {
-          memmove(v54, v26, v27);
+          memmove(v54, uTF8String2, v27);
         }
 
         *(v54 + v28) = 0;
@@ -14173,18 +14173,18 @@ LABEL_64:
         }
 
 LABEL_47:
-        v39 = [v14 mpsndarray];
+        mpsndarray = [v14 mpsndarray];
         v40 = 0;
         ++v11;
         v41 = [v14 dataType] >> 3;
-        while (v40 < [v39 numberOfDimensions])
+        while (v40 < [mpsndarray numberOfDimensions])
         {
-          v41 *= [v39 lengthOfDimension:v40++];
+          v41 *= [mpsndarray lengthOfDimension:v40++];
         }
 
         v42 = [MEMORY[0x1E695DF88] dataWithLength:v41];
         v43 = v42;
-        [v39 readBytes:objc_msgSend(v42 strideBytes:{"mutableBytes"), 0}];
+        [mpsndarray readBytes:objc_msgSend(v42 strideBytes:{"mutableBytes"), 0}];
         if (v65 >= 0)
         {
           p_p = &__p;
@@ -14212,27 +14212,27 @@ LABEL_47:
   }
 }
 
-- (id)runInternalWithDevice:(id)a3 commandBuffer:(id)a4 feeds:(id)a5 results:(id)a6 executableExecutionDescriptor:(id)a7 mpsGraphOwnedCommandBuffer:(BOOL)a8
+- (id)runInternalWithDevice:(id)device commandBuffer:(id)buffer feeds:(id)feeds results:(id)results executableExecutionDescriptor:(id)descriptor mpsGraphOwnedCommandBuffer:(BOOL)commandBuffer
 {
-  v105 = a8;
+  commandBufferCopy = commandBuffer;
   v162[1] = *MEMORY[0x1E69E9840];
-  v111 = a3;
-  v108 = a4;
-  v109 = a5;
-  v13 = a6;
-  v14 = a7;
-  v114 = v14;
+  deviceCopy = device;
+  bufferCopy = buffer;
+  feedsCopy = feeds;
+  resultsCopy = results;
+  descriptorCopy = descriptor;
+  v114 = descriptorCopy;
   if (*(self + 100))
   {
-    v15 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
     v153 = 0;
-    v16 = [v15 createDirectoryAtPath:@"/tmp/feeds" withIntermediateDirectories:1 attributes:0 error:&v153];
+    v16 = [defaultManager createDirectoryAtPath:@"/tmp/feeds" withIntermediateDirectories:1 attributes:0 error:&v153];
     v17 = v153;
     v18 = v17;
     if (v16)
     {
       ++qword_1ECE75450;
-      [(MPSGraphExecutable *)self dumpArrayOfTensorData:v109 basePath:@"/tmp/feeds" separator:@"_feed_" invocationCount:?];
+      [(MPSGraphExecutable *)self dumpArrayOfTensorData:feedsCopy basePath:@"/tmp/feeds" separator:@"_feed_" invocationCount:?];
     }
 
     else
@@ -14240,12 +14240,12 @@ LABEL_47:
       NSLog(&cfstr_FailedToCreate_13.isa, @"/tmp/feeds", v17);
     }
 
-    v14 = v114;
+    descriptorCopy = v114;
   }
 
-  if (v14[5])
+  if (descriptorCopy[5])
   {
-    v19 = [[MPSGraphInternalCommandBuffer alloc] initWithMPSCommandBuffer:v108 executableExecutionDescriptor:v114];
+    v19 = [[MPSGraphInternalCommandBuffer alloc] initWithMPSCommandBuffer:bufferCopy executableExecutionDescriptor:v114];
     if (v19)
     {
 LABEL_8:
@@ -14257,7 +14257,7 @@ LABEL_8:
 
   else
   {
-    v19 = v108;
+    v19 = bufferCopy;
     if (v19)
     {
       goto LABEL_8;
@@ -14266,46 +14266,46 @@ LABEL_8:
 
   v101 = 0;
 LABEL_11:
-  v20 = [v111 type];
-  v21 = [(MPSCommandBuffer *)v19 commandBuffer];
-  v22 = [v21 device];
+  type = [deviceCopy type];
+  commandBuffer = [(MPSCommandBuffer *)v19 commandBuffer];
+  device = [commandBuffer device];
   v152[1] = 0x2B2B07EC2B2B07E8;
   v152[2] = self;
-  v152[3] = v20;
-  v152[4] = [v22 registryID];
+  v152[3] = type;
+  v152[4] = [device registryID];
   v152[5] = self;
   kdebug_trace();
 
-  v23 = [v114 enableProfilingOpNames];
-  *(self + 833) = (v23 | byte_1EED2BCA0) & 1;
+  enableProfilingOpNames = [v114 enableProfilingOpNames];
+  *(self + 833) = (enableProfilingOpNames | byte_1EED2BCA0) & 1;
   *(self + 834) = [v114 briefProfilingOpNames];
   if (*(self + 841))
   {
-    v24 = 1;
+    generateRuntimeExecutionReport = 1;
   }
 
   else
   {
-    v24 = [v114 generateRuntimeExecutionReport];
+    generateRuntimeExecutionReport = [v114 generateRuntimeExecutionReport];
   }
 
-  *(self + 841) = v24;
+  *(self + 841) = generateRuntimeExecutionReport;
   *(self + 835) = [v114 simulateANECompileFailure];
   *(self + 836) = [v114 simulateANELoadModelFailure];
   *(self + 847) = [v114 disableANECaching];
   *(self + 848) = [v114 disableANEFallback];
   v25 = [MPSGraphExecutableShapedEntryPoint alloc];
-  v26 = [v114 entryFunctionName];
-  v110 = [(MPSGraphExecutableShapedEntryPoint *)v25 initWithEntryFunctionName:v26 inputTypes:v109];
+  entryFunctionName = [v114 entryFunctionName];
+  v110 = [(MPSGraphExecutableShapedEntryPoint *)v25 initWithEntryFunctionName:entryFunctionName inputTypes:feedsCopy];
 
-  if (v13)
+  if (resultsCopy)
   {
-    v112 = v13;
+    v112 = resultsCopy;
   }
 
   else
   {
-    v112 = [(MPSGraphExecutable *)self allocateTensorDataTargetsForDevice:v111 shapedEntryPoint:v110];
+    v112 = [(MPSGraphExecutable *)self allocateTensorDataTargetsForDevice:deviceCopy shapedEntryPoint:v110];
 
     if (!v112)
     {
@@ -14320,13 +14320,13 @@ LABEL_11:
 
   v152[0] = 0;
   v151 = 0;
-  v27 = [v114 perEntryPointToSymbolAndFileNameMap];
-  v28 = v27 == 0;
+  perEntryPointToSymbolAndFileNameMap = [v114 perEntryPointToSymbolAndFileNameMap];
+  v28 = perEntryPointToSymbolAndFileNameMap == 0;
 
   if (v28)
   {
-    [(MPSGraphExecutable *)self specializeWithDevice:v111 shapedEntryPoint:v110 compilationDescriptor:0];
-    v32 = v111;
+    [(MPSGraphExecutable *)self specializeWithDevice:deviceCopy shapedEntryPoint:v110 compilationDescriptor:0];
+    v32 = deviceCopy;
 
     v162[0] = v110;
     v33 = [MEMORY[0x1E695DEC8] arrayWithObjects:v162 count:1];
@@ -14394,17 +14394,17 @@ LABEL_31:
 
   [(MPSGraphExecutableShapedEntryPoint *)v110 entryFunctionName];
 
-  v29 = [(MPSGraphExecutableShapedEntryPoint *)v110 entryFunctionName];
-  v30 = v29 == 0;
+  entryFunctionName2 = [(MPSGraphExecutableShapedEntryPoint *)v110 entryFunctionName];
+  v30 = entryFunctionName2 == 0;
 
   if (v30 && MTLReportFailureTypeEnabled())
   {
-    v99 = [(MPSGraphExecutableShapedEntryPoint *)v110 entryFunctionName];
+    entryFunctionName3 = [(MPSGraphExecutableShapedEntryPoint *)v110 entryFunctionName];
     MTLReportFailure();
   }
 
-  v31 = [v114 perEntryPointToSymbolAndFileNameMap];
-  v102 = [(MPSGraphExecutable *)self getRuntimeSpecializationAndEntryFunction:v111 shapedEntryPoint:v110 perEntryPointToSymbolAndFileNameMap:v31 entryFuncOp:&v151 runtime:v152];
+  perEntryPointToSymbolAndFileNameMap2 = [v114 perEntryPointToSymbolAndFileNameMap];
+  v102 = [(MPSGraphExecutable *)self getRuntimeSpecializationAndEntryFunction:deviceCopy shapedEntryPoint:v110 perEntryPointToSymbolAndFileNameMap:perEntryPointToSymbolAndFileNameMap2 entryFuncOp:&v151 runtime:v152];
 
 LABEL_32:
   __lk.__m_ = (self + 592);
@@ -14458,13 +14458,13 @@ LABEL_64:
   }
 
   v106 = [[MPSGraphCaptureContext alloc] initWithOutputFolderPath:v100 graphName:v103];
-  v47 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v109, "count")}];
+  v47 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(feedsCopy, "count")}];
   v145 = 0u;
   v146 = 0u;
   v143 = 0u;
   v144 = 0u;
-  v48 = [(MPSGraphExecutable *)self feedTensors];
-  v49 = [v48 countByEnumeratingWithState:&v143 objects:v161 count:16];
+  feedTensors = [(MPSGraphExecutable *)self feedTensors];
+  v49 = [feedTensors countByEnumeratingWithState:&v143 objects:v161 count:16];
   if (v49)
   {
     v50 = *v144;
@@ -14474,27 +14474,27 @@ LABEL_64:
       {
         if (*v144 != v50)
         {
-          objc_enumerationMutation(v48);
+          objc_enumerationMutation(feedTensors);
         }
 
-        v52 = [*(*(&v143 + 1) + 8 * i) name];
-        [v47 addObject:v52];
+        name = [*(*(&v143 + 1) + 8 * i) name];
+        [v47 addObject:name];
       }
 
-      v49 = [v48 countByEnumeratingWithState:&v143 objects:v161 count:16];
+      v49 = [feedTensors countByEnumeratingWithState:&v143 objects:v161 count:16];
     }
 
     while (v49);
   }
 
-  [(MPSGraphCaptureContext *)v106 setFeeds:v109 names:v47];
-  v53 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v13, "count")}];
+  [(MPSGraphCaptureContext *)v106 setFeeds:feedsCopy names:v47];
+  v53 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(resultsCopy, "count")}];
   v141 = 0u;
   v142 = 0u;
   v139 = 0u;
   v140 = 0u;
-  v54 = [(MPSGraphExecutable *)self targetTensors];
-  v55 = [v54 countByEnumeratingWithState:&v139 objects:v160 count:16];
+  targetTensors = [(MPSGraphExecutable *)self targetTensors];
+  v55 = [targetTensors countByEnumeratingWithState:&v139 objects:v160 count:16];
   if (v55)
   {
     v56 = *v140;
@@ -14504,56 +14504,56 @@ LABEL_64:
       {
         if (*v140 != v56)
         {
-          objc_enumerationMutation(v54);
+          objc_enumerationMutation(targetTensors);
         }
 
-        v58 = [*(*(&v139 + 1) + 8 * j) name];
-        [v53 addObject:v58];
+        name2 = [*(*(&v139 + 1) + 8 * j) name];
+        [v53 addObject:name2];
       }
 
-      v55 = [v54 countByEnumeratingWithState:&v139 objects:v160 count:16];
+      v55 = [targetTensors countByEnumeratingWithState:&v139 objects:v160 count:16];
     }
 
     while (v55);
   }
 
-  [(MPSGraphCaptureContext *)v106 setResults:v13 names:v53];
+  [(MPSGraphCaptureContext *)v106 setResults:resultsCopy names:v53];
   objc_storeStrong((v152[0] + 208), v106);
 
   v59 = v106;
 LABEL_65:
-  if (![v111 type] || *(self + 837) == 1)
+  if (![deviceCopy type] || *(self + 837) == 1)
   {
     v104 = v152[0];
     if (!v19)
     {
       v60 = MEMORY[0x1E6974450];
-      v61 = [v111 metalDevice];
-      v62 = [v61 newCommandQueue];
-      v19 = [v60 commandBufferFromCommandQueue:v62];
+      metalDevice = [deviceCopy metalDevice];
+      newCommandQueue = [metalDevice newCommandQueue];
+      v19 = [v60 commandBufferFromCommandQueue:newCommandQueue];
 
-      v105 = 1;
+      commandBufferCopy = 1;
     }
 
     v107 = v59;
-    v63 = [(MPSCommandBuffer *)v19 commandBuffer];
-    v64 = [v63 globalTraceObjectID];
+    commandBuffer2 = [(MPSCommandBuffer *)v19 commandBuffer];
+    globalTraceObjectID = [commandBuffer2 globalTraceObjectID];
     __lk.__m_ = 0x2B2B07E42B2B07E0;
     *&__lk.__owns_ = self;
-    v155 = v64;
+    v155 = globalTraceObjectID;
     v156 = v104;
     v157 = 0;
     kdebug_trace();
 
-    v65 = [v114 completionGraphHandler];
-    if (v65)
+    completionGraphHandler = [v114 completionGraphHandler];
+    if (completionGraphHandler)
     {
     }
 
     else
     {
-      v66 = [v114 scheduledGraphHandler];
-      v67 = v66 == 0;
+      scheduledGraphHandler = [v114 scheduledGraphHandler];
+      v67 = scheduledGraphHandler == 0;
 
       if (v67)
       {
@@ -14569,17 +14569,17 @@ LABEL_75:
           v71 = 0;
         }
 
-        v72 = [v114 breakUpMetalEncoders];
+        breakUpMetalEncoders = [v114 breakUpMetalEncoders];
         v73 = byte_1EED2BCA1;
-        v74 = [v114 scheduledGraphHandler];
-        if (v74)
+        scheduledGraphHandler2 = [v114 scheduledGraphHandler];
+        if (scheduledGraphHandler2)
         {
         }
 
         else
         {
-          v75 = [v114 scheduledHandler];
-          v76 = v75 == 0;
+          scheduledHandler = [v114 scheduledHandler];
+          v76 = scheduledHandler == 0;
 
           if (v76)
           {
@@ -14591,7 +14591,7 @@ LABEL_82:
             v131[4] = self;
             [(MPSGraphInternalCommandBuffer *)v19 addScheduledHandler:v131];
             v130 = 1;
-            v78 = MPSRuntime::evaluateOps(v104, v151, v102, v109, v112, v114, v19, v71 & 1, (v72 | v73) & 1, v105, &v130);
+            v78 = MPSRuntime::evaluateOps(v104, v151, v102, feedsCopy, v112, v114, v19, v71 & 1, (breakUpMetalEncoders | v73) & 1, commandBufferCopy, &v130);
 
             v113 = v78;
             v79 = v113;
@@ -14615,8 +14615,8 @@ LABEL_82:
                       objc_enumerationMutation(v80);
                     }
 
-                    v84 = [*(*(&v126 + 1) + 8 * k) mpsndarray];
-                    [v84 synchronizeOnCommandBuffer:v19];
+                    mpsndarray = [*(*(&v126 + 1) + 8 * k) mpsndarray];
+                    [mpsndarray synchronizeOnCommandBuffer:v19];
                   }
 
                   v81 = [v80 countByEnumeratingWithState:&v126 objects:v159 count:16];
@@ -14643,8 +14643,8 @@ LABEL_82:
                       objc_enumerationMutation(v85);
                     }
 
-                    v89 = [*(*(&v122 + 1) + 8 * m) mpsndarray];
-                    [v89 synchronizeOnCommandBuffer:v19];
+                    mpsndarray2 = [*(*(&v122 + 1) + 8 * m) mpsndarray];
+                    [mpsndarray2 synchronizeOnCommandBuffer:v19];
                   }
 
                   v86 = [v85 countByEnumeratingWithState:&v122 objects:v158 count:16];
@@ -14656,9 +14656,9 @@ LABEL_82:
               v79 = v113;
             }
 
-            v90 = [(MPSCommandBuffer *)v19 commandBuffer];
-            v91 = [v114 completionGraphHandler];
-            if (v91 || ([v114 completionHandler], (v91 = objc_claimAutoreleasedReturnValue()) != 0))
+            commandBuffer3 = [(MPSCommandBuffer *)v19 commandBuffer];
+            completionGraphHandler2 = [v114 completionGraphHandler];
+            if (completionGraphHandler2 || ([v114 completionHandler], (completionGraphHandler2 = objc_claimAutoreleasedReturnValue()) != 0))
             {
 
               v79 = v113;
@@ -14676,7 +14676,7 @@ LABEL_82:
             v118 = v114;
             v119 = v70;
             v120 = v79;
-            v121 = self;
+            selfCopy = self;
             [(MPSGraphInternalCommandBuffer *)v19 addCompletedHandler:v117];
             v130 = 1;
 
@@ -14687,24 +14687,24 @@ LABEL_104:
             v115[2] = __129__MPSGraphExecutable_runInternalWithDevice_commandBuffer_feeds_results_executableExecutionDescriptor_mpsGraphOwnedCommandBuffer___block_invoke_5;
             v115[3] = &unk_1E86D5190;
             v115[4] = self;
-            v13 = v79;
-            v116 = v13;
+            resultsCopy = v79;
+            v116 = resultsCopy;
             [(MPSGraphInternalCommandBuffer *)v19 addCompletedHandler:v115];
             if (v130 == 1)
             {
-              if (v105)
+              if (commandBufferCopy)
               {
                 [(MPSGraphInternalCommandBuffer *)v19 commit];
               }
 
               if ([v114 waitUntilCompleted])
               {
-                if (!v105)
+                if (!commandBufferCopy)
                 {
                   [(MPSGraphInternalCommandBuffer *)v19 commitAndContinue];
                 }
 
-                [v90 waitUntilCompleted];
+                [commandBuffer3 waitUntilCompleted];
               }
             }
 
@@ -14722,13 +14722,13 @@ LABEL_104:
             v114[7] = &v92[-v101];
 
             kdebug_trace();
-            v112 = v13;
+            v112 = resultsCopy;
             v59 = v107;
             goto LABEL_115;
           }
         }
 
-        v77 = [(MPSCommandBuffer *)v19 commandBuffer];
+        commandBuffer4 = [(MPSCommandBuffer *)v19 commandBuffer];
         v132[0] = MEMORY[0x1E69E9820];
         v132[1] = 3221225472;
         v132[2] = __129__MPSGraphExecutable_runInternalWithDevice_commandBuffer_feeds_results_executableExecutionDescriptor_mpsGraphOwnedCommandBuffer___block_invoke_2;
@@ -14736,7 +14736,7 @@ LABEL_104:
         v133 = v114;
         v134 = v70;
         v135 = v112;
-        [v77 addScheduledHandler:v132];
+        [commandBuffer4 addScheduledHandler:v132];
 
         goto LABEL_82;
       }
@@ -14756,9 +14756,9 @@ LABEL_104:
     goto LABEL_75;
   }
 
-  if ([v111 type] == 1)
+  if ([deviceCopy type] == 1)
   {
-    (*(*v152[0] + 16))(v152[0], v109, v112, v114);
+    (*(*v152[0] + 16))(v152[0], feedsCopy, v112, v114);
   }
 
   else if (MTLReportFailureTypeEnabled())
@@ -14794,9 +14794,9 @@ LABEL_119:
 
 LABEL_120:
   v96 = v112;
-  if (v13)
+  if (resultsCopy)
   {
-    v96 = v13;
+    v96 = resultsCopy;
   }
 
   v97 = v96;
@@ -15105,32 +15105,32 @@ LABEL_4:
   return 0;
 }
 
-+ (void)prepareExecDescriptorAndRuntimeSpecialization:(id)a3 device:(id)a4 executableExecutionDescriptor:(id)a5
++ (void)prepareExecDescriptorAndRuntimeSpecialization:(id)specialization device:(id)device executableExecutionDescriptor:(id)descriptor
 {
   v25[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v9 entryFunctionName];
-  v11 = [v7 getInputShapesForFunction:v10];
-  v12 = [[MPSGraphExecutableEntryPoint alloc] initWithEntryFunctionName:v10 inputTypes:v11];
+  specializationCopy = specialization;
+  deviceCopy = device;
+  descriptorCopy = descriptor;
+  entryFunctionName = [descriptorCopy entryFunctionName];
+  v11 = [specializationCopy getInputShapesForFunction:entryFunctionName];
+  v12 = [[MPSGraphExecutableEntryPoint alloc] initWithEntryFunctionName:entryFunctionName inputTypes:v11];
   v13 = [MPSGraphExecutableEntryPointToSymbolAndFileNameMap alloc];
   v24 = v12;
   v14 = objc_opt_new();
   v25[0] = v14;
   v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v25 forKeys:&v24 count:1];
   v16 = [(MPSGraphExecutableEntryPointToSymbolAndFileNameMap *)v13 initWithPerEntryPointMap:v15];
-  [v9 setPerEntryPointToSymbolAndFileNameMap:v16];
+  [descriptorCopy setPerEntryPointToSymbolAndFileNameMap:v16];
 
   v17 = [MPSGraphExecutableShapedEntryPoint alloc];
   v18 = getShapesFromTypes(v11);
-  v19 = [(MPSGraphExecutableShapedEntryPoint *)v17 initWithEntryFunctionName:v10 inputTypes:v18];
+  v19 = [(MPSGraphExecutableShapedEntryPoint *)v17 initWithEntryFunctionName:entryFunctionName inputTypes:v18];
 
   v22 = 0;
   v23 = 0;
-  v20 = [MPSGraphDevice deviceWithMTLDevice:v8];
-  v21 = [v9 perEntryPointToSymbolAndFileNameMap];
-  [v7 getRuntimeSpecializationAndEntryFunction:v20 shapedEntryPoint:v19 perEntryPointToSymbolAndFileNameMap:v21 entryFuncOp:&v22 runtime:&v23];
+  v20 = [MPSGraphDevice deviceWithMTLDevice:deviceCopy];
+  perEntryPointToSymbolAndFileNameMap = [descriptorCopy perEntryPointToSymbolAndFileNameMap];
+  [specializationCopy getRuntimeSpecializationAndEntryFunction:v20 shapedEntryPoint:v19 perEntryPointToSymbolAndFileNameMap:perEntryPointToSymbolAndFileNameMap entryFuncOp:&v22 runtime:&v23];
 }
 
 - (id).cxx_construct
@@ -15209,7 +15209,7 @@ LABEL_4:
   v4 = *(*(a2 + 6) + 16);
   if (a2 && v4 == &mlir::detail::TypeIDResolver<mlir::placement::TensorToMemref,void>::id)
   {
-    v5 = *a1;
+    v5 = *self;
     if (*(a2 + 9))
     {
       v6 = a2 - 16;
@@ -15221,11 +15221,11 @@ LABEL_4:
     }
 
     NextResultAtOffset = mlir::detail::OpResultImpl::getNextResultAtOffset(v6, 0);
-    v8 = *(*a1 + 4);
+    v8 = *(*self + 4);
     if (v8)
     {
       v9 = *(*(a2 + 9) + 24);
-      v10 = **a1;
+      v10 = **self;
       v11 = 0x9DDFEA08EB382D69 * ((8 * v9 - 0xAE502812AA7333) ^ HIDWORD(v9));
       v12 = 0x9DDFEA08EB382D69 * (HIDWORD(v9) ^ (v11 >> 47) ^ v11);
       v13 = (-348639895 * ((v12 >> 47) ^ v12)) & (v8 - 1);
@@ -15260,7 +15260,7 @@ LABEL_8:
 
   if (a2 && v4 == &mlir::detail::TypeIDResolver<mlir::placement::MemrefToTensor,void>::id)
   {
-    v5 = *a1;
+    v5 = *self;
     if (*(a2 + 9))
     {
       v15 = a2 - 16;
@@ -15272,11 +15272,11 @@ LABEL_8:
     }
 
     NextResultAtOffset = mlir::detail::OpResultImpl::getNextResultAtOffset(v15, 0);
-    v16 = *(*a1 + 4);
+    v16 = *(*self + 4);
     if (v16)
     {
       v17 = *(*(a2 + 9) + 24);
-      v10 = **a1;
+      v10 = **self;
       v18 = 0x9DDFEA08EB382D69 * ((8 * v17 - 0xAE502812AA7333) ^ HIDWORD(v17));
       v19 = 0x9DDFEA08EB382D69 * (HIDWORD(v17) ^ (v18 >> 47) ^ v18);
       v13 = (-348639895 * ((v19 >> 47) ^ v19)) & (v16 - 1);
@@ -15329,7 +15329,7 @@ LABEL_33:
   v43 = v22;
   if (!v22)
   {
-    mlir::OpBuilder::clone(*a1[1], a2, *a1);
+    mlir::OpBuilder::clone(*self[1], a2, *self);
     return;
   }
 
@@ -15345,11 +15345,11 @@ LABEL_33:
     {
 LABEL_25:
       v26 = v24 + 32 * v25;
-      v27 = *(*a1 + 4);
+      v27 = *(*self + 4);
       if (v27)
       {
         v28 = *(v26 + 24);
-        v29 = **a1;
+        v29 = **self;
         v30 = 0x9DDFEA08EB382D69 * ((8 * v28 - 0xAE502812AA7333) ^ HIDWORD(v28));
         v31 = 0x9DDFEA08EB382D69 * (HIDWORD(v28) ^ (v30 >> 47) ^ v30);
         v32 = (-348639895 * ((v31 >> 47) ^ v31)) & (v27 - 1);
@@ -15387,7 +15387,7 @@ LABEL_25:
     }
   }
 
-  mlir::OpBuilder::create<mlir::func::ReturnOp,std::vector<mlir::Value> &>(*a1[1], *(v43 + 3), &__p);
+  mlir::OpBuilder::create<mlir::func::ReturnOp,std::vector<mlir::Value> &>(*self[1], *(v43 + 3), &__p);
   if (__p)
   {
     v41 = __p;
@@ -15428,7 +15428,7 @@ LABEL_25:
     operator delete(__p[0]);
   }
 
-  if ([**(a1 + 8) containsObject:v6])
+  if ([**(self + 8) containsObject:v6])
   {
     v7 = *(a2 + 36);
     if (v7)
@@ -15446,7 +15446,7 @@ LABEL_25:
       for (i = 0; i != v7; ++i)
       {
         NextResultAtOffset = mlir::detail::OpResultImpl::getNextResultAtOffset(v8, i);
-        std::vector<mlir::Value>::push_back[abi:ne200100](*(a1 + 16), &NextResultAtOffset);
+        std::vector<mlir::Value>::push_back[abi:ne200100](*(self + 16), &NextResultAtOffset);
       }
     }
   }
@@ -15457,7 +15457,7 @@ LABEL_25:
   v2 = *(a2 + 8);
   if (v2 == "Z44[MPSGraphExecutable optimizeOriginalModule]E3$_5")
   {
-    return a1 + 8;
+    return self + 8;
   }
 
   if (((v2 & "Z44[MPSGraphExecutable optimizeOriginalModule]E3$_5" & 0x8000000000000000) != 0) == __OFSUB__(v2, "Z44[MPSGraphExecutable optimizeOriginalModule]E3$_5"))
@@ -15465,12 +15465,12 @@ LABEL_25:
     return 0;
   }
 
-  v4 = a1;
+  selfCopy = self;
   v5 = strcmp((v2 & 0x7FFFFFFFFFFFFFFFLL), ("Z44[MPSGraphExecutable optimizeOriginalModule]E3$_5" & 0x7FFFFFFFFFFFFFFFLL));
-  a1 = v4;
+  self = selfCopy;
   if (!v5)
   {
-    return a1 + 8;
+    return self + 8;
   }
 
   return 0;
@@ -15481,7 +15481,7 @@ LABEL_25:
   v2 = *(a2 + 8);
   if (v2 == "Z127[MPSGraphExecutable applyOptimizationPassesWithDevice:module:compilationID:compilationDescriptor:perEntryPointFuncOpMLIRName:]E3$_9")
   {
-    return a1 + 8;
+    return self + 8;
   }
 
   if (((v2 & "Z127[MPSGraphExecutable applyOptimizationPassesWithDevice:module:compilationID:compilationDescriptor:perEntryPointFuncOpMLIRName:]E3$_9" & 0x8000000000000000) != 0) == __OFSUB__(v2, "Z127[MPSGraphExecutable applyOptimizationPassesWithDevice:module:compilationID:compilationDescriptor:perEntryPointFuncOpMLIRName:]E3$_9"))
@@ -15489,40 +15489,40 @@ LABEL_25:
     return 0;
   }
 
-  v4 = a1;
+  selfCopy = self;
   v5 = strcmp((v2 & 0x7FFFFFFFFFFFFFFFLL), ("Z127[MPSGraphExecutable applyOptimizationPassesWithDevice:module:compilationID:compilationDescriptor:perEntryPointFuncOpMLIRName:]E3$_9" & 0x7FFFFFFFFFFFFFFFLL));
-  a1 = v4;
+  self = selfCopy;
   if (!v5)
   {
-    return a1 + 8;
+    return self + 8;
   }
 
   return 0;
 }
 
-- (uint64_t)applyOptimizationPassesWithDevice:(uint64_t)a1 module:compilationID:compilationDescriptor:perEntryPointFuncOpMLIRName:
+- (uint64_t)applyOptimizationPassesWithDevice:(uint64_t)device module:compilationID:compilationDescriptor:perEntryPointFuncOpMLIRName:
 {
 
-  return MPSGraphDelegateCompiler.precompilationDescriptor.modify(a1, v2);
+  return MPSGraphDelegateCompiler.precompilationDescriptor.modify(device, v2);
 }
 
-- (void)applyOptimizationPassesWithDevice:(uint64_t)a1 module:compilationID:compilationDescriptor:perEntryPointFuncOpMLIRName:
+- (void)applyOptimizationPassesWithDevice:(uint64_t)device module:compilationID:compilationDescriptor:perEntryPointFuncOpMLIRName:
 {
-  MPSGraphDelegateCompiler.precompilationDescriptor.modify(a1, v2);
+  MPSGraphDelegateCompiler.precompilationDescriptor.modify(device, v2);
 
   JUMPOUT(0x1E12E5B90);
 }
 
-- (uint64_t)applyOptimizationPassesWithDevice:(uint64_t)a1 module:(uint64_t)a2 compilationID:compilationDescriptor:perEntryPointFuncOpMLIRName:
+- (uint64_t)applyOptimizationPassesWithDevice:(uint64_t)device module:(uint64_t)module compilationID:compilationDescriptor:perEntryPointFuncOpMLIRName:
 {
-  result = (*(*a2 + 32))(a2);
+  result = (*(*module + 32))(module);
   if (v4 == 20)
   {
     v5 = *result == 0x696765722D656E61 && *(result + 8) == 0x616D726F662D6E6FLL;
     if (v5 && *(result + 16) == 1852795252)
     {
-      v7 = *(a1 + 16);
-      v8 = **(a1 + 8);
+      v7 = *(device + 16);
+      v8 = **(device + 8);
 
       return [v7 dumpModuleWithEV:v8];
     }
@@ -15534,7 +15534,7 @@ LABEL_25:
 - (void)createMLIRLibraryWithMPSGraphPackage:packageKey:appendOptimizedModules:
 {
   v43[6] = *MEMORY[0x1E69E9840];
-  if (**a1 == 1)
+  if (**self == 1)
   {
     v4 = objc_opt_new();
     v7 = *(this + 10);
@@ -15576,20 +15576,20 @@ LABEL_25:
       v4 = __dst;
     }
 
-    v15 = [v4 allObjects];
+    allObjects = [v4 allObjects];
 
-    [**(a1 + 8) addObjectsFromArray:v15];
-    [**(a1 + 16) addOriginalResourcesUsed:v15];
+    [**(self + 8) addObjectsFromArray:allObjects];
+    [**(self + 16) addOriginalResourcesUsed:allObjects];
   }
 
   mlir::mps::getFilePathsInModule(this, &p_p_dst);
-  v16 = [**(a1 + 24) getMutableWeightsFilePath];
-  if ([*(**(a1 + 24) + 808) fileExistsAtPath:v16])
+  getMutableWeightsFilePath = [**(self + 24) getMutableWeightsFilePath];
+  if ([*(**(self + 24) + 808) fileExistsAtPath:getMutableWeightsFilePath])
   {
-    v17 = [v16 lastPathComponent];
-    v18 = v17;
-    v19 = [v17 UTF8String];
-    v20 = strlen(v19);
+    lastPathComponent = [getMutableWeightsFilePath lastPathComponent];
+    v18 = lastPathComponent;
+    uTF8String = [lastPathComponent UTF8String];
+    v20 = strlen(uTF8String);
     if (v20 >= 0x7FFFFFFFFFFFFFF8)
     {
       std::string::__throw_length_error[abi:ne200100]();
@@ -15604,7 +15604,7 @@ LABEL_25:
     v38 = v20;
     if (v20)
     {
-      memmove(&__dst, v19, v20);
+      memmove(&__dst, uTF8String, v20);
     }
 
     *(&__dst + v21) = 0;
@@ -15665,8 +15665,8 @@ LABEL_25:
     while (v28);
   }
 
-  [**(a1 + 16) addDataFileNames:v26];
-  [**(a1 + 32) copyDataFiles:p_p_dst currentBasePath:v41 location:{*(**(a1 + 24) + 920), *(this + 3)}];
+  [**(self + 16) addDataFileNames:v26];
+  [**(self + 32) copyDataFiles:p_p_dst currentBasePath:v41 location:{*(**(self + 24) + 920), *(this + 3)}];
 
   v31 = p_p_dst;
   if (v41)
@@ -15700,10 +15700,10 @@ LABEL_25:
 - (__n128)getNewRuntimeForDevice:specializedModule:shapedEntryPoints:compilationDescriptor:
 {
   *a2 = &unk_1F5B542E0;
-  result = *(a1 + 8);
-  v3 = *(a1 + 24);
-  v4 = *(a1 + 40);
-  *(a2 + 56) = *(a1 + 56);
+  result = *(self + 8);
+  v3 = *(self + 24);
+  v4 = *(self + 40);
+  *(a2 + 56) = *(self + 56);
   *(a2 + 40) = v4;
   *(a2 + 24) = v3;
   *(a2 + 8) = result;
@@ -15714,12 +15714,12 @@ LABEL_25:
 {
   v30[2] = *MEMORY[0x1E69E9840];
   *a2 = 0;
-  v3 = [*(**(a1 + 8) + 368) callables];
-  if (![**(a1 + 16) type] || **(a1 + 24) == 1)
+  callables = [*(**(self + 8) + 368) callables];
+  if (![**(self + 16) type] || **(self + 24) == 1)
   {
     v28 = v30;
     v29 = 0x100000000;
-    v4 = **(a1 + 56);
+    v4 = **(self + 56);
     v5 = *(v4 + 8);
     v6 = *(v4 + 24);
     if (*(v4 + 16))
@@ -15744,7 +15744,7 @@ LABEL_25:
       v9 = v23[0];
       if (v23[0] == v8)
       {
-        (*(****(a1 + 56) + 32))(***(a1 + 56));
+        (*(****(self + 56) + 32))(***(self + 56));
         operator new();
       }
 
@@ -15763,7 +15763,7 @@ LABEL_25:
 
       v11 = HIBYTE(__p.__r_.__value_.__r.__words[2]);
       v12 = *&__p.__r_.__value_.__l.__data_;
-      v13 = **(a1 + 64);
+      v13 = **(self + 64);
       Context = mlir::Attribute::getContext((v13 + 6));
       if ((v11 & 0x80u) == 0)
       {
@@ -15833,7 +15833,7 @@ LABEL_24:
     }
   }
 
-  if ([**(a1 + 16) type] == 1)
+  if ([**(self + 16) type] == 1)
   {
     operator new();
   }
@@ -15849,7 +15849,7 @@ LABEL_24:
   v2 = *(a2 + 8);
   if (v2 == "Z103[MPSGraphExecutable getNewRuntimeForDevice:specializedModule:shapedEntryPoints:compilationDescriptor:]E4$_10")
   {
-    return a1 + 8;
+    return self + 8;
   }
 
   if (((v2 & "Z103[MPSGraphExecutable getNewRuntimeForDevice:specializedModule:shapedEntryPoints:compilationDescriptor:]E4$_10" & 0x8000000000000000) != 0) == __OFSUB__(v2, "Z103[MPSGraphExecutable getNewRuntimeForDevice:specializedModule:shapedEntryPoints:compilationDescriptor:]E4$_10"))
@@ -15857,12 +15857,12 @@ LABEL_24:
     return 0;
   }
 
-  v4 = a1;
+  selfCopy = self;
   v5 = strcmp((v2 & 0x7FFFFFFFFFFFFFFFLL), ("Z103[MPSGraphExecutable getNewRuntimeForDevice:specializedModule:shapedEntryPoints:compilationDescriptor:]E4$_10" & 0x7FFFFFFFFFFFFFFFLL));
-  a1 = v4;
+  self = selfCopy;
   if (!v5)
   {
-    return a1 + 8;
+    return self + 8;
   }
 
   return 0;

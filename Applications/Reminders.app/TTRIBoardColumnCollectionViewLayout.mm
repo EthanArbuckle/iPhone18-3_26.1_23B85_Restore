@@ -1,12 +1,12 @@
 @interface TTRIBoardColumnCollectionViewLayout
 + (Class)layoutAttributesClass;
 - (CGSize)collectionViewContentSize;
-- (_TtC9Reminders35TTRIBoardColumnCollectionViewLayout)initWithCoder:(id)a3;
-- (_TtC9Reminders35TTRIBoardColumnCollectionViewLayout)initWithSection:(id)a3;
-- (_TtC9Reminders35TTRIBoardColumnCollectionViewLayout)initWithSection:(id)a3 configuration:(id)a4;
-- (_TtC9Reminders35TTRIBoardColumnCollectionViewLayout)initWithSectionProvider:(id)a3;
-- (_TtC9Reminders35TTRIBoardColumnCollectionViewLayout)initWithSectionProvider:(id)a3 configuration:(id)a4;
-- (id)layoutAttributesForItemAtIndexPath:(id)a3;
+- (_TtC9Reminders35TTRIBoardColumnCollectionViewLayout)initWithCoder:(id)coder;
+- (_TtC9Reminders35TTRIBoardColumnCollectionViewLayout)initWithSection:(id)section;
+- (_TtC9Reminders35TTRIBoardColumnCollectionViewLayout)initWithSection:(id)section configuration:(id)configuration;
+- (_TtC9Reminders35TTRIBoardColumnCollectionViewLayout)initWithSectionProvider:(id)provider;
+- (_TtC9Reminders35TTRIBoardColumnCollectionViewLayout)initWithSectionProvider:(id)provider configuration:(id)configuration;
+- (id)layoutAttributesForItemAtIndexPath:(id)path;
 - (void)prepareLayout;
 @end
 
@@ -14,7 +14,7 @@
 
 - (void)prepareLayout
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000941CC();
 }
 
@@ -42,7 +42,7 @@
   return result;
 }
 
-- (id)layoutAttributesForItemAtIndexPath:(id)a3
+- (id)layoutAttributesForItemAtIndexPath:(id)path
 {
   ObjectType = swift_getObjectType();
   v5 = type metadata accessor for IndexPath();
@@ -50,9 +50,9 @@
   __chkstk_darwin(v5);
   v8 = &v14 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v9 = self;
+  selfCopy = self;
   isa = IndexPath._bridgeToObjectiveC()().super.isa;
-  v14.receiver = v9;
+  v14.receiver = selfCopy;
   v14.super_class = ObjectType;
   v11 = [(TTRIBoardColumnCollectionViewLayout *)&v14 layoutAttributesForItemAtIndexPath:isa];
 
@@ -73,41 +73,41 @@
   return v12;
 }
 
-- (_TtC9Reminders35TTRIBoardColumnCollectionViewLayout)initWithSection:(id)a3
+- (_TtC9Reminders35TTRIBoardColumnCollectionViewLayout)initWithSection:(id)section
 {
   ObjectType = swift_getObjectType();
   v6 = OBJC_IVAR____TtC9Reminders35TTRIBoardColumnCollectionViewLayout_helper;
   type metadata accessor for TTRBoardColumnCollectionViewLayoutHelper();
   swift_allocObject();
-  v7 = a3;
+  sectionCopy = section;
   *(&self->super.super.super.isa + v6) = TTRBoardColumnCollectionViewLayoutHelper.init(topLevelItemSpacing:subtaskSpacing:)();
   v10.receiver = self;
   v10.super_class = ObjectType;
-  v8 = [(TTRIBoardColumnCollectionViewLayout *)&v10 initWithSection:v7];
+  v8 = [(TTRIBoardColumnCollectionViewLayout *)&v10 initWithSection:sectionCopy];
 
   return v8;
 }
 
-- (_TtC9Reminders35TTRIBoardColumnCollectionViewLayout)initWithSection:(id)a3 configuration:(id)a4
+- (_TtC9Reminders35TTRIBoardColumnCollectionViewLayout)initWithSection:(id)section configuration:(id)configuration
 {
   ObjectType = swift_getObjectType();
   v8 = OBJC_IVAR____TtC9Reminders35TTRIBoardColumnCollectionViewLayout_helper;
   type metadata accessor for TTRBoardColumnCollectionViewLayoutHelper();
   swift_allocObject();
-  v9 = a3;
-  v10 = a4;
+  sectionCopy = section;
+  configurationCopy = configuration;
   *(&self->super.super.super.isa + v8) = TTRBoardColumnCollectionViewLayoutHelper.init(topLevelItemSpacing:subtaskSpacing:)();
   v13.receiver = self;
   v13.super_class = ObjectType;
-  v11 = [(TTRIBoardColumnCollectionViewLayout *)&v13 initWithSection:v9 configuration:v10];
+  v11 = [(TTRIBoardColumnCollectionViewLayout *)&v13 initWithSection:sectionCopy configuration:configurationCopy];
 
   return v11;
 }
 
-- (_TtC9Reminders35TTRIBoardColumnCollectionViewLayout)initWithSectionProvider:(id)a3
+- (_TtC9Reminders35TTRIBoardColumnCollectionViewLayout)initWithSectionProvider:(id)provider
 {
   ObjectType = swift_getObjectType();
-  v6 = _Block_copy(a3);
+  v6 = _Block_copy(provider);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
   v8 = OBJC_IVAR____TtC9Reminders35TTRIBoardColumnCollectionViewLayout_helper;
@@ -130,16 +130,16 @@
   return v10;
 }
 
-- (_TtC9Reminders35TTRIBoardColumnCollectionViewLayout)initWithSectionProvider:(id)a3 configuration:(id)a4
+- (_TtC9Reminders35TTRIBoardColumnCollectionViewLayout)initWithSectionProvider:(id)provider configuration:(id)configuration
 {
   ObjectType = swift_getObjectType();
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(provider);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   v10 = OBJC_IVAR____TtC9Reminders35TTRIBoardColumnCollectionViewLayout_helper;
   type metadata accessor for TTRBoardColumnCollectionViewLayoutHelper();
   swift_allocObject();
-  v11 = a4;
+  configurationCopy = configuration;
   *(&self->super.super.super.isa + v10) = TTRBoardColumnCollectionViewLayoutHelper.init(topLevelItemSpacing:subtaskSpacing:)();
   aBlock[4] = sub_100094E1C;
   aBlock[5] = v9;
@@ -151,23 +151,23 @@
 
   v15.receiver = self;
   v15.super_class = ObjectType;
-  v13 = [(TTRIBoardColumnCollectionViewLayout *)&v15 initWithSectionProvider:v12 configuration:v11];
+  v13 = [(TTRIBoardColumnCollectionViewLayout *)&v15 initWithSectionProvider:v12 configuration:configurationCopy];
 
   _Block_release(v12);
   return v13;
 }
 
-- (_TtC9Reminders35TTRIBoardColumnCollectionViewLayout)initWithCoder:(id)a3
+- (_TtC9Reminders35TTRIBoardColumnCollectionViewLayout)initWithCoder:(id)coder
 {
   ObjectType = swift_getObjectType();
   v6 = OBJC_IVAR____TtC9Reminders35TTRIBoardColumnCollectionViewLayout_helper;
   type metadata accessor for TTRBoardColumnCollectionViewLayoutHelper();
   swift_allocObject();
-  v7 = a3;
+  coderCopy = coder;
   *(&self->super.super.super.isa + v6) = TTRBoardColumnCollectionViewLayoutHelper.init(topLevelItemSpacing:subtaskSpacing:)();
   v10.receiver = self;
   v10.super_class = ObjectType;
-  v8 = [(TTRIBoardColumnCollectionViewLayout *)&v10 initWithCoder:v7];
+  v8 = [(TTRIBoardColumnCollectionViewLayout *)&v10 initWithCoder:coderCopy];
 
   if (v8)
   {

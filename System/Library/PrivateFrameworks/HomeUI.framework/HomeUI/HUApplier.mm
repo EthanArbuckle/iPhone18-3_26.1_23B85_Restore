@@ -1,23 +1,23 @@
 @interface HUApplier
-+ (void)registerStandaloneApplier:(id)a3;
-- (BOOL)complete:(BOOL)a3;
++ (void)registerStandaloneApplier:(id)applier;
+- (BOOL)complete:(BOOL)complete;
 - (BOOL)start;
 - (HUApplier)init;
-- (void)addApplierBlock:(id)a3;
-- (void)addCompletionBlock:(id)a3;
-- (void)updateProgress:(double)a3;
+- (void)addApplierBlock:(id)block;
+- (void)addCompletionBlock:(id)block;
+- (void)updateProgress:(double)progress;
 @end
 
 @implementation HUApplier
 
-+ (void)registerStandaloneApplier:(id)a3
++ (void)registerStandaloneApplier:(id)applier
 {
   v3 = _MergedGlobals_614;
-  v4 = a3;
-  v6 = v4;
+  applierCopy = applier;
+  v6 = applierCopy;
   if (v3 == -1)
   {
-    v5 = v4;
+    v5 = applierCopy;
   }
 
   else
@@ -43,60 +43,60 @@ void __39__HUApplier_registerStandaloneApplier___block_invoke()
   v2 = [(HUApplier *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     applierBlocks = v2->_applierBlocks;
-    v2->_applierBlocks = v3;
+    v2->_applierBlocks = array;
 
-    v5 = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
     completionBlocks = v2->_completionBlocks;
-    v2->_completionBlocks = v5;
+    v2->_completionBlocks = array2;
   }
 
   return v2;
 }
 
-- (void)addApplierBlock:(id)a3
+- (void)addApplierBlock:(id)block
 {
-  v9 = a3;
-  if (!v9)
+  blockCopy = block;
+  if (!blockCopy)
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"HUApplier.m" lineNumber:49 description:{@"Invalid parameter not satisfying: %@", @"applier"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HUApplier.m" lineNumber:49 description:{@"Invalid parameter not satisfying: %@", @"applier"}];
   }
 
   if ([(HUApplier *)self state])
   {
     [(HUApplier *)self progress];
-    v9[2]();
+    blockCopy[2]();
   }
 
   if (![(HUApplier *)self _hasCompleted])
   {
     applierBlocks = self->_applierBlocks;
-    v6 = [v9 copy];
+    v6 = [blockCopy copy];
     v7 = _Block_copy(v6);
     [(NSMutableArray *)applierBlocks addObject:v7];
   }
 }
 
-- (void)addCompletionBlock:(id)a3
+- (void)addCompletionBlock:(id)block
 {
-  v9 = a3;
-  if (!v9)
+  blockCopy = block;
+  if (!blockCopy)
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"HUApplier.m" lineNumber:60 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HUApplier.m" lineNumber:60 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
   }
 
   if ([(HUApplier *)self _hasCompleted])
   {
-    v9[2](v9, [(HUApplier *)self state]== 3);
+    blockCopy[2](blockCopy, [(HUApplier *)self state]== 3);
   }
 
   else
   {
     completionBlocks = self->_completionBlocks;
-    v6 = [v9 copy];
+    v6 = [blockCopy copy];
     v7 = _Block_copy(v6);
     [(NSMutableArray *)completionBlocks addObject:v7];
   }
@@ -104,21 +104,21 @@ void __39__HUApplier_registerStandaloneApplier___block_invoke()
 
 - (BOOL)start
 {
-  v3 = [(HUApplier *)self state];
-  if (!v3)
+  state = [(HUApplier *)self state];
+  if (!state)
   {
     self->_state = 1;
   }
 
-  return v3 == 0;
+  return state == 0;
 }
 
-- (void)updateProgress:(double)a3
+- (void)updateProgress:(double)progress
 {
   v15 = *MEMORY[0x277D85DE8];
   if ([(HUApplier *)self state]== 1)
   {
-    self->_progress = a3;
+    self->_progress = progress;
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
@@ -139,7 +139,7 @@ void __39__HUApplier_registerStandaloneApplier___block_invoke()
             objc_enumerationMutation(v5);
           }
 
-          (*(*(*(&v10 + 1) + 8 * v9++) + 16))(a3);
+          (*(*(*(&v10 + 1) + 8 * v9++) + 16))(progress);
         }
 
         while (v7 != v9);
@@ -151,15 +151,15 @@ void __39__HUApplier_registerStandaloneApplier___block_invoke()
   }
 }
 
-- (BOOL)complete:(BOOL)a3
+- (BOOL)complete:(BOOL)complete
 {
-  v3 = a3;
+  completeCopy = complete;
   v18 = *MEMORY[0x277D85DE8];
-  v5 = [(HUApplier *)self _hasCompleted];
-  if (!v5)
+  _hasCompleted = [(HUApplier *)self _hasCompleted];
+  if (!_hasCompleted)
   {
     v6 = 2;
-    if (v3)
+    if (completeCopy)
     {
       v6 = 3;
     }
@@ -199,7 +199,7 @@ void __39__HUApplier_registerStandaloneApplier___block_invoke()
     [(NSMutableArray *)self->_completionBlocks removeAllObjects];
   }
 
-  return !v5;
+  return !_hasCompleted;
 }
 
 @end

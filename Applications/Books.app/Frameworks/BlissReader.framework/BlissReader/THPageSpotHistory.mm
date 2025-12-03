@@ -1,8 +1,8 @@
 @interface THPageSpotHistory
-+ (id)bookspotWithPageIndex:(unint64_t)a3;
-+ (unint64_t)pageIndexFromBookspot:(id)a3;
-- (BOOL)gotoBookspot:(id)a3 minor:(BOOL)a4;
-- (BOOL)gotoBookspotPageIndex:(unint64_t)a3 minor:(BOOL)a4;
++ (id)bookspotWithPageIndex:(unint64_t)index;
++ (unint64_t)pageIndexFromBookspot:(id)bookspot;
+- (BOOL)gotoBookspot:(id)bookspot minor:(BOOL)minor;
+- (BOOL)gotoBookspotPageIndex:(unint64_t)index minor:(BOOL)minor;
 - (BOOL)gotoNextBookspot;
 - (BOOL)gotoPrevBookspot;
 - (BOOL)p_gotoNextDistinctBookspot;
@@ -14,7 +14,7 @@
 - (THPageSpotHistory)init;
 - (id)curBookspot;
 - (id)dictionaryRepresentation;
-- (id)p_bookspotAtCursor:(unint64_t)a3;
+- (id)p_bookspotAtCursor:(unint64_t)cursor;
 - (id)p_nextBookspot;
 - (id)p_nextDistinctBookspot;
 - (id)p_nextImmediateBookspot;
@@ -28,12 +28,12 @@
 - (void)dealloc;
 - (void)p_cleanseStack;
 - (void)p_clearUpperStack;
-- (void)p_pushBookspot:(id)a3;
-- (void)p_removeStackItemAtIndex:(unint64_t)a3;
-- (void)p_setBookspot:(id)a3;
+- (void)p_pushBookspot:(id)bookspot;
+- (void)p_removeStackItemAtIndex:(unint64_t)index;
+- (void)p_setBookspot:(id)bookspot;
 - (void)recordCurrentLocationInHistory;
-- (void)recordOutgoingMajorNavigationJumpSuppressingToolbar:(BOOL)a3;
-- (void)resetWithDictionaryRepresentation:(id)a3;
+- (void)recordOutgoingMajorNavigationJumpSuppressingToolbar:(BOOL)toolbar;
+- (void)resetWithDictionaryRepresentation:(id)representation;
 @end
 
 @implementation THPageSpotHistory
@@ -60,19 +60,19 @@
   [(THPageSpotHistory *)&v3 dealloc];
 }
 
-- (void)resetWithDictionaryRepresentation:(id)a3
+- (void)resetWithDictionaryRepresentation:(id)representation
 {
   [(THPageSpotHistory *)self setCursorIndex:0];
   [(THPageSpotHistory *)self setRejectDuplicates:1];
   [(THPageSpotHistory *)self setSeekDistinctSpots:1];
   [(THPageSpotHistory *)self setStackLimit:20];
-  if (!a3)
+  if (!representation)
   {
     goto LABEL_8;
   }
 
-  v5 = [a3 objectForKey:@"stack"];
-  v6 = [a3 objectForKey:@"cursor"];
+  v5 = [representation objectForKey:@"stack"];
+  v6 = [representation objectForKey:@"cursor"];
   v7 = v6;
   if (v5)
   {
@@ -142,9 +142,9 @@ LABEL_9:
   return v4;
 }
 
-- (void)recordOutgoingMajorNavigationJumpSuppressingToolbar:(BOOL)a3
+- (void)recordOutgoingMajorNavigationJumpSuppressingToolbar:(BOOL)toolbar
 {
-  v3 = a3;
+  toolbarCopy = toolbar;
   [(THPageSpotHistory *)self recordCurrentLocationInHistory];
   v5 = [THPageSpotHistory pageIndexFromBookspot:[(THPageSpotHistory *)self curBookspot]]== 0x7FFFFFFFFFFFFFFFLL;
   v6 = [[THPageLocation alloc] initWithAbsolutePageIndex:0x7FFFFFFFFFFFFFFFLL];
@@ -156,7 +156,7 @@ LABEL_9:
   v9[1] = @"minor";
   v10[1] = [NSNumber numberWithBool:v5];
   v9[2] = @"suppressToolbar";
-  v10[2] = [NSNumber numberWithBool:v3];
+  v10[2] = [NSNumber numberWithBool:toolbarCopy];
   [(NSNotificationCenter *)v7 postNotificationName:v8 object:[NSDictionary dictionaryWithObjects:v10 forKeys:v9 count:3]];
 }
 
@@ -164,23 +164,23 @@ LABEL_9:
 {
   if ([(THPageSpotHistoryDelegate *)[(THPageSpotHistory *)self delegate] currentAbsolutePageIndex]== 0x7FFFFFFFFFFFFFFFLL)
   {
-    v3 = 0;
+    currentBookspotLocation = 0;
   }
 
   else
   {
-    v3 = [(THPageSpotHistoryDelegate *)[(THPageSpotHistory *)self delegate] currentBookspotLocation];
+    currentBookspotLocation = [(THPageSpotHistoryDelegate *)[(THPageSpotHistory *)self delegate] currentBookspotLocation];
   }
 
-  [(THPageSpotHistory *)self gotoBookspot:v3 minor:1];
+  [(THPageSpotHistory *)self gotoBookspot:currentBookspotLocation minor:1];
 }
 
-- (void)p_removeStackItemAtIndex:(unint64_t)a3
+- (void)p_removeStackItemAtIndex:(unint64_t)index
 {
-  if ([(NSMutableArray *)[(THPageSpotHistory *)self stack] count]> a3)
+  if ([(NSMutableArray *)[(THPageSpotHistory *)self stack] count]> index)
   {
-    [(NSMutableArray *)[(THPageSpotHistory *)self stack] removeObjectAtIndex:a3];
-    if ([(THPageSpotHistory *)self cursorIndex]> a3)
+    [(NSMutableArray *)[(THPageSpotHistory *)self stack] removeObjectAtIndex:index];
+    if ([(THPageSpotHistory *)self cursorIndex]> index)
     {
       [(THPageSpotHistory *)self setCursorIndex:[(THPageSpotHistory *)self cursorIndex]- 1];
     }
@@ -252,11 +252,11 @@ LABEL_9:
   }
 }
 
-- (void)p_pushBookspot:(id)a3
+- (void)p_pushBookspot:(id)bookspot
 {
-  if (!-[THPageSpotHistory rejectDuplicates](self, "rejectDuplicates") || ([a3 isEqual:{-[THPageSpotHistory curBookspot](self, "curBookspot")}] & 1) == 0)
+  if (!-[THPageSpotHistory rejectDuplicates](self, "rejectDuplicates") || ([bookspot isEqual:{-[THPageSpotHistory curBookspot](self, "curBookspot")}] & 1) == 0)
   {
-    [(NSMutableArray *)[(THPageSpotHistory *)self stack] addObject:a3];
+    [(NSMutableArray *)[(THPageSpotHistory *)self stack] addObject:bookspot];
     [(THPageSpotHistory *)self setCursorIndex:[(NSMutableArray *)[(THPageSpotHistory *)self stack] count]- 1];
 
     [(THPageSpotHistory *)self p_cleanseStack];
@@ -265,49 +265,49 @@ LABEL_9:
 
 - (void)p_clearUpperStack
 {
-  v3 = [(THPageSpotHistory *)self cursorIndex];
-  if (v3 < [(NSMutableArray *)[(THPageSpotHistory *)self stack] count]- 1)
+  cursorIndex = [(THPageSpotHistory *)self cursorIndex];
+  if (cursorIndex < [(NSMutableArray *)[(THPageSpotHistory *)self stack] count]- 1)
   {
-    v4 = [(THPageSpotHistory *)self cursorIndex];
+    cursorIndex2 = [(THPageSpotHistory *)self cursorIndex];
     v5 = [(NSMutableArray *)[(THPageSpotHistory *)self stack] count];
     v6 = ~[(THPageSpotHistory *)self cursorIndex];
-    v7 = [(THPageSpotHistory *)self stack];
+    stack = [(THPageSpotHistory *)self stack];
 
-    [(NSMutableArray *)v7 removeObjectsInRange:v4 + 1, &v5[v6]];
+    [(NSMutableArray *)stack removeObjectsInRange:cursorIndex2 + 1, &v5[v6]];
   }
 }
 
-- (id)p_bookspotAtCursor:(unint64_t)a3
+- (id)p_bookspotAtCursor:(unint64_t)cursor
 {
-  if ([(NSMutableArray *)[(THPageSpotHistory *)self stack] count]<= a3)
+  if ([(NSMutableArray *)[(THPageSpotHistory *)self stack] count]<= cursor)
   {
     return 0;
   }
 
-  v5 = [(THPageSpotHistory *)self stack];
+  stack = [(THPageSpotHistory *)self stack];
 
-  return [(NSMutableArray *)v5 objectAtIndex:a3];
+  return [(NSMutableArray *)stack objectAtIndex:cursor];
 }
 
-- (void)p_setBookspot:(id)a3
+- (void)p_setBookspot:(id)bookspot
 {
-  if (a3)
+  if (bookspot)
   {
-    v5 = [(THPageSpotHistory *)self stack];
-    v6 = [(THPageSpotHistory *)self cursorIndex];
+    stack = [(THPageSpotHistory *)self stack];
+    cursorIndex = [(THPageSpotHistory *)self cursorIndex];
 
-    [(NSMutableArray *)v5 replaceObjectAtIndex:v6 withObject:a3];
+    [(NSMutableArray *)stack replaceObjectAtIndex:cursorIndex withObject:bookspot];
   }
 }
 
-+ (id)bookspotWithPageIndex:(unint64_t)a3
++ (id)bookspotWithPageIndex:(unint64_t)index
 {
-  v3 = [[THPageLocation alloc] initWithAbsolutePageIndex:a3];
+  v3 = [[THPageLocation alloc] initWithAbsolutePageIndex:index];
 
   return v3;
 }
 
-+ (unint64_t)pageIndexFromBookspot:(id)a3
++ (unint64_t)pageIndexFromBookspot:(id)bookspot
 {
   objc_opt_class();
   v3 = TSUDynamicCast();
@@ -321,9 +321,9 @@ LABEL_9:
 
 - (id)curBookspot
 {
-  v3 = [(THPageSpotHistory *)self cursorIndex];
+  cursorIndex = [(THPageSpotHistory *)self cursorIndex];
 
-  return [(THPageSpotHistory *)self p_bookspotAtCursor:v3];
+  return [(THPageSpotHistory *)self p_bookspotAtCursor:cursorIndex];
 }
 
 - (unint64_t)p_prevImmediateBookspotCursorIndex
@@ -341,9 +341,9 @@ LABEL_9:
 
 - (id)p_prevImmediateBookspot
 {
-  v3 = [(THPageSpotHistory *)self cursorIndex];
-  v5 = [-[THPageSpotHistory curBookspot](self "curBookspot")] == 0x7FFFFFFFFFFFFFFFLL && v3 != 0;
-  v6 = v3 - v5;
+  cursorIndex = [(THPageSpotHistory *)self cursorIndex];
+  v5 = [-[THPageSpotHistory curBookspot](self "curBookspot")] == 0x7FFFFFFFFFFFFFFFLL && cursorIndex != 0;
+  v6 = cursorIndex - v5;
   if (!v6)
   {
     return 0;
@@ -381,22 +381,22 @@ LABEL_9:
 
 - (unint64_t)p_prevDistinctBookspotCursorIndex
 {
-  v3 = [(THPageSpotHistory *)self cursorIndex];
-  v4 = [(THPageSpotHistory *)self curBookspot];
-  if ([v4 pageIndex] == 0x7FFFFFFFFFFFFFFFLL && v3)
+  cursorIndex = [(THPageSpotHistory *)self cursorIndex];
+  curBookspot = [(THPageSpotHistory *)self curBookspot];
+  if ([curBookspot pageIndex] == 0x7FFFFFFFFFFFFFFFLL && cursorIndex)
   {
-    --v3;
+    --cursorIndex;
   }
 
   else
   {
-    if (v3)
+    if (cursorIndex)
     {
-      while (v3)
+      while (cursorIndex)
       {
-        if (([v4 isEqual:{-[THPageSpotHistory p_bookspotAtCursor:](self, "p_bookspotAtCursor:", --v3)}] & 1) == 0)
+        if (([curBookspot isEqual:{-[THPageSpotHistory p_bookspotAtCursor:](self, "p_bookspotAtCursor:", --cursorIndex)}] & 1) == 0)
         {
-          return v3;
+          return cursorIndex;
         }
       }
     }
@@ -404,32 +404,32 @@ LABEL_9:
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  return v3;
+  return cursorIndex;
 }
 
 - (id)p_prevDistinctBookspot
 {
-  v3 = [(THPageSpotHistory *)self p_prevDistinctBookspotCursorIndex];
-  if (v3 == 0x7FFFFFFFFFFFFFFFLL)
+  p_prevDistinctBookspotCursorIndex = [(THPageSpotHistory *)self p_prevDistinctBookspotCursorIndex];
+  if (p_prevDistinctBookspotCursorIndex == 0x7FFFFFFFFFFFFFFFLL)
   {
     return 0;
   }
 
-  return [(THPageSpotHistory *)self p_bookspotAtCursor:v3];
+  return [(THPageSpotHistory *)self p_bookspotAtCursor:p_prevDistinctBookspotCursorIndex];
 }
 
 - (unint64_t)p_nextDistinctBookspotCursorIndex
 {
-  v3 = [(THPageSpotHistory *)self curBookspot];
+  curBookspot = [(THPageSpotHistory *)self curBookspot];
   v4 = [(THPageSpotHistory *)self cursorIndex]+ 1;
   if (v4 < [(NSMutableArray *)[(THPageSpotHistory *)self stack] count])
   {
-    v5 = [(THPageSpotHistory *)self cursorIndex];
-    while (++v5 < [(NSMutableArray *)[(THPageSpotHistory *)self stack] count])
+    cursorIndex = [(THPageSpotHistory *)self cursorIndex];
+    while (++cursorIndex < [(NSMutableArray *)[(THPageSpotHistory *)self stack] count])
     {
-      if (([v3 isEqual:{-[THPageSpotHistory p_bookspotAtCursor:](self, "p_bookspotAtCursor:", v5)}] & 1) == 0)
+      if (([curBookspot isEqual:{-[THPageSpotHistory p_bookspotAtCursor:](self, "p_bookspotAtCursor:", cursorIndex)}] & 1) == 0)
       {
-        return v5;
+        return cursorIndex;
       }
     }
   }
@@ -439,22 +439,22 @@ LABEL_9:
 
 - (id)p_nextDistinctBookspot
 {
-  v3 = [(THPageSpotHistory *)self p_nextDistinctBookspotCursorIndex];
-  if (v3 == 0x7FFFFFFFFFFFFFFFLL)
+  p_nextDistinctBookspotCursorIndex = [(THPageSpotHistory *)self p_nextDistinctBookspotCursorIndex];
+  if (p_nextDistinctBookspotCursorIndex == 0x7FFFFFFFFFFFFFFFLL)
   {
     return 0;
   }
 
-  return [(THPageSpotHistory *)self p_bookspotAtCursor:v3];
+  return [(THPageSpotHistory *)self p_bookspotAtCursor:p_nextDistinctBookspotCursorIndex];
 }
 
-- (BOOL)gotoBookspot:(id)a3 minor:(BOOL)a4
+- (BOOL)gotoBookspot:(id)bookspot minor:(BOOL)minor
 {
-  if (a3)
+  if (bookspot)
   {
-    if (a4)
+    if (minor)
     {
-      [(THPageSpotHistory *)self p_setBookspot:a3];
+      [(THPageSpotHistory *)self p_setBookspot:bookspot];
       if ([(THPageSpotHistory *)self clearUpperStackOnMinorPaging])
       {
         [(THPageSpotHistory *)self p_clearUpperStack];
@@ -464,65 +464,65 @@ LABEL_9:
     else
     {
       [(THPageSpotHistory *)self p_clearUpperStack];
-      [(THPageSpotHistory *)self p_pushBookspot:a3];
+      [(THPageSpotHistory *)self p_pushBookspot:bookspot];
     }
   }
 
-  return a3 != 0;
+  return bookspot != 0;
 }
 
 - (BOOL)p_gotoPrevImmediateBookspot
 {
-  v3 = [(THPageSpotHistory *)self p_hasPrevBookspot];
-  if (v3)
+  p_hasPrevBookspot = [(THPageSpotHistory *)self p_hasPrevBookspot];
+  if (p_hasPrevBookspot)
   {
     [(THPageSpotHistory *)self setCursorIndex:[(THPageSpotHistory *)self cursorIndex]- 1];
   }
 
   [(THPageSpotHistory *)self p_cleanseStack];
-  return v3;
+  return p_hasPrevBookspot;
 }
 
 - (BOOL)p_gotoNextImmediateBookspot
 {
-  v3 = [(THPageSpotHistory *)self p_hasNextBookspot];
-  if (v3)
+  p_hasNextBookspot = [(THPageSpotHistory *)self p_hasNextBookspot];
+  if (p_hasNextBookspot)
   {
     [(THPageSpotHistory *)self setCursorIndex:[(THPageSpotHistory *)self cursorIndex]+ 1];
   }
 
   [(THPageSpotHistory *)self p_cleanseStack];
-  return v3;
+  return p_hasNextBookspot;
 }
 
 - (BOOL)p_gotoPrevDistinctBookspot
 {
-  v3 = [(THPageSpotHistory *)self p_prevDistinctBookspotCursorIndex];
-  if (v3 != 0x7FFFFFFFFFFFFFFFLL)
+  p_prevDistinctBookspotCursorIndex = [(THPageSpotHistory *)self p_prevDistinctBookspotCursorIndex];
+  if (p_prevDistinctBookspotCursorIndex != 0x7FFFFFFFFFFFFFFFLL)
   {
-    [(THPageSpotHistory *)self setCursorIndex:v3];
+    [(THPageSpotHistory *)self setCursorIndex:p_prevDistinctBookspotCursorIndex];
   }
 
   [(THPageSpotHistory *)self p_cleanseStack];
-  return v3 != 0x7FFFFFFFFFFFFFFFLL;
+  return p_prevDistinctBookspotCursorIndex != 0x7FFFFFFFFFFFFFFFLL;
 }
 
 - (BOOL)p_gotoNextDistinctBookspot
 {
-  v3 = [(THPageSpotHistory *)self p_nextDistinctBookspotCursorIndex];
-  if (v3 != 0x7FFFFFFFFFFFFFFFLL)
+  p_nextDistinctBookspotCursorIndex = [(THPageSpotHistory *)self p_nextDistinctBookspotCursorIndex];
+  if (p_nextDistinctBookspotCursorIndex != 0x7FFFFFFFFFFFFFFFLL)
   {
-    [(THPageSpotHistory *)self setCursorIndex:v3];
+    [(THPageSpotHistory *)self setCursorIndex:p_nextDistinctBookspotCursorIndex];
   }
 
   [(THPageSpotHistory *)self p_cleanseStack];
-  return v3 != 0x7FFFFFFFFFFFFFFFLL;
+  return p_nextDistinctBookspotCursorIndex != 0x7FFFFFFFFFFFFFFFLL;
 }
 
 - (BOOL)gotoPrevBookspot
 {
-  v3 = [(THPageSpotHistory *)self hasPrevBookspot];
-  if (v3)
+  hasPrevBookspot = [(THPageSpotHistory *)self hasPrevBookspot];
+  if (hasPrevBookspot)
   {
     [(THPageSpotHistory *)self recordCurrentLocationInHistory];
     if ([(THPageSpotHistory *)self seekDistinctSpots])
@@ -538,18 +538,18 @@ LABEL_9:
     objc_opt_class();
     [(THPageSpotHistory *)self curBookspot];
     v4 = TSUDynamicCast();
-    v5 = [(THPageSpotHistory *)self delegate];
+    delegate = [(THPageSpotHistory *)self delegate];
 
-    LOBYTE(v3) = [(THPageSpotHistoryDelegate *)v5 jumpToPageLocation:v4 touchHistory:0 minor:1];
+    LOBYTE(hasPrevBookspot) = [(THPageSpotHistoryDelegate *)delegate jumpToPageLocation:v4 touchHistory:0 minor:1];
   }
 
-  return v3;
+  return hasPrevBookspot;
 }
 
 - (BOOL)gotoNextBookspot
 {
-  v3 = [(THPageSpotHistory *)self hasNextBookspot];
-  if (v3)
+  hasNextBookspot = [(THPageSpotHistory *)self hasNextBookspot];
+  if (hasNextBookspot)
   {
     [(THPageSpotHistory *)self recordCurrentLocationInHistory];
     if ([(THPageSpotHistory *)self seekDistinctSpots])
@@ -565,20 +565,20 @@ LABEL_9:
     objc_opt_class();
     [(THPageSpotHistory *)self curBookspot];
     v4 = TSUDynamicCast();
-    v5 = [(THPageSpotHistory *)self delegate];
+    delegate = [(THPageSpotHistory *)self delegate];
 
-    LOBYTE(v3) = [(THPageSpotHistoryDelegate *)v5 jumpToPageLocation:v4 touchHistory:0 minor:1];
+    LOBYTE(hasNextBookspot) = [(THPageSpotHistoryDelegate *)delegate jumpToPageLocation:v4 touchHistory:0 minor:1];
   }
 
-  return v3;
+  return hasNextBookspot;
 }
 
-- (BOOL)gotoBookspotPageIndex:(unint64_t)a3 minor:(BOOL)a4
+- (BOOL)gotoBookspotPageIndex:(unint64_t)index minor:(BOOL)minor
 {
-  v4 = a4;
-  v6 = [THPageSpotHistory bookspotWithPageIndex:a3];
+  minorCopy = minor;
+  v6 = [THPageSpotHistory bookspotWithPageIndex:index];
 
-  return [(THPageSpotHistory *)self gotoBookspot:v6 minor:v4];
+  return [(THPageSpotHistory *)self gotoBookspot:v6 minor:minorCopy];
 }
 
 - (BOOL)p_hasPrevBookspot

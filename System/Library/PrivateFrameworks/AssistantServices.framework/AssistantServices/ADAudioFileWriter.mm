@@ -1,14 +1,14 @@
 @interface ADAudioFileWriter
 + (id)_generateTemporaryFileURL;
 + (id)_savedAudioFilesDirectory;
-- (id)_initWithType:(int64_t)a3 pathGenerator:(id)a4 xorFileHandle:(id)a5 priority:(unsigned int)a6;
+- (id)_initWithType:(int64_t)type pathGenerator:(id)generator xorFileHandle:(id)handle priority:(unsigned int)priority;
 - (void)_close;
 - (void)_delete;
-- (void)appendAudioData:(id)a3;
+- (void)appendAudioData:(id)data;
 - (void)cancel;
-- (void)configureWithAudioStreamBasicDescription:(const AudioStreamBasicDescription *)a3;
+- (void)configureWithAudioStreamBasicDescription:(const AudioStreamBasicDescription *)description;
 - (void)dealloc;
-- (void)flushWithCompletion:(id)a3;
+- (void)flushWithCompletion:(id)completion;
 @end
 
 @implementation ADAudioFileWriter
@@ -24,40 +24,40 @@
   dispatch_async(queue, block);
 }
 
-- (void)flushWithCompletion:(id)a3
+- (void)flushWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10008E090;
   v7[3] = &unk_10051E038;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)appendAudioData:(id)a3
+- (void)appendAudioData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10008E3A4;
   v7[3] = &unk_10051E010;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dataCopy;
+  v6 = dataCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)configureWithAudioStreamBasicDescription:(const AudioStreamBasicDescription *)a3
+- (void)configureWithAudioStreamBasicDescription:(const AudioStreamBasicDescription *)description
 {
-  v5 = *&a3->mBytesPerPacket;
-  v12 = *&a3->mSampleRate;
+  v5 = *&description->mBytesPerPacket;
+  v12 = *&description->mSampleRate;
   v13 = v5;
-  v14 = *&a3->mBitsPerChannel;
+  v14 = *&description->mBitsPerChannel;
   v6 = AFSiriLogContextSpeech;
   if (os_log_type_enabled(AFSiriLogContextSpeech, OS_LOG_TYPE_INFO))
   {
@@ -143,11 +143,11 @@
   [(ADAudioFileWriter *)&v3 dealloc];
 }
 
-- (id)_initWithType:(int64_t)a3 pathGenerator:(id)a4 xorFileHandle:(id)a5 priority:(unsigned int)a6
+- (id)_initWithType:(int64_t)type pathGenerator:(id)generator xorFileHandle:(id)handle priority:(unsigned int)priority
 {
-  v11 = a4;
-  v12 = a5;
-  if (!a3)
+  generatorCopy = generator;
+  handleCopy = handle;
+  if (!type)
   {
     v20 = +[NSAssertionHandler currentHandler];
     [v20 handleFailureInMethod:a2 object:self file:@"ADAudioFileWriter.m" lineNumber:59 description:{@"Invalid parameter not satisfying: %@", @"type != AFAudioFileTypeNone"}];
@@ -159,7 +159,7 @@
   if (v13)
   {
     v14 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v15 = dispatch_queue_attr_make_with_qos_class(v14, a6, 0);
+    v15 = dispatch_queue_attr_make_with_qos_class(v14, priority, 0);
 
     v16 = dispatch_queue_create("AudioFileWriterQueue", v15);
     queue = v13->_queue;
@@ -171,9 +171,9 @@
     block[2] = sub_10008EF58;
     block[3] = &unk_10051C0D8;
     v22 = v13;
-    v25 = a3;
-    v23 = v12;
-    v24 = v11;
+    typeCopy = type;
+    v23 = handleCopy;
+    v24 = generatorCopy;
     dispatch_async(v18, block);
   }
 
@@ -182,8 +182,8 @@
 
 + (id)_generateTemporaryFileURL
 {
-  v2 = [a1 _savedAudioFilesDirectory];
-  v3 = [v2 URLByAppendingPathComponent:@"SavedAudioFile"];
+  _savedAudioFilesDirectory = [self _savedAudioFilesDirectory];
+  v3 = [_savedAudioFilesDirectory URLByAppendingPathComponent:@"SavedAudioFile"];
 
   return v3;
 }

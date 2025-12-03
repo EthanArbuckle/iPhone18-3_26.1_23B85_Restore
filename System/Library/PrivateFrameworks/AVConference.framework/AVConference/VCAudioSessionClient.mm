@@ -1,5 +1,5 @@
 @interface VCAudioSessionClient
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
 @end
 
@@ -15,9 +15,9 @@
   [(VCAudioSessionClient *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setMediaProperties:self->_mediaProperties];
   [v4 setNotificationClient:{-[VCAudioSessionClient notificationClient](self, "notificationClient")}];
   return v4;

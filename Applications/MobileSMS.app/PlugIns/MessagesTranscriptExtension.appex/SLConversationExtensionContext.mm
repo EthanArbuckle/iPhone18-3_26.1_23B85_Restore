@@ -2,7 +2,7 @@
 + (id)_extensionAuxiliaryHostProtocol;
 + (id)_extensionAuxiliaryVendorProtocol;
 - (id)remoteProxy;
-- (void)openURL:(id)a3 completionHandler:(id)a4;
+- (void)openURL:(id)l completionHandler:(id)handler;
 - (void)requestDismissal;
 @end
 
@@ -34,24 +34,24 @@
 
 - (id)remoteProxy
 {
-  v2 = [(SLConversationExtensionContext *)self _auxiliaryConnection];
-  v3 = [v2 remoteObjectProxy];
+  _auxiliaryConnection = [(SLConversationExtensionContext *)self _auxiliaryConnection];
+  remoteObjectProxy = [_auxiliaryConnection remoteObjectProxy];
 
-  return v3;
+  return remoteObjectProxy;
 }
 
 - (void)requestDismissal
 {
-  v2 = [(SLConversationExtensionContext *)self remoteProxy];
-  [v2 requestDismissal];
+  remoteProxy = [(SLConversationExtensionContext *)self remoteProxy];
+  [remoteProxy requestDismissal];
 }
 
-- (void)openURL:(id)a3 completionHandler:(id)a4
+- (void)openURL:(id)l completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SLConversationExtensionContext *)self remoteProxy];
-  [v8 openURL:v7 completionHandler:v6];
+  handlerCopy = handler;
+  lCopy = l;
+  remoteProxy = [(SLConversationExtensionContext *)self remoteProxy];
+  [remoteProxy openURL:lCopy completionHandler:handlerCopy];
 }
 
 @end

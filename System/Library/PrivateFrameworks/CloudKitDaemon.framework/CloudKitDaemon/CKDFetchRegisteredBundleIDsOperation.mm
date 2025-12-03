@@ -1,31 +1,31 @@
 @interface CKDFetchRegisteredBundleIDsOperation
-- (CKDFetchRegisteredBundleIDsOperation)initWithOperationInfo:(id)a3 container:(id)a4;
-- (id)_unitTestBundleIDsByContainerID:(id)a3;
+- (CKDFetchRegisteredBundleIDsOperation)initWithOperationInfo:(id)info container:(id)container;
+- (id)_unitTestBundleIDsByContainerID:(id)d;
 - (id)activityCreate;
 - (void)main;
 @end
 
 @implementation CKDFetchRegisteredBundleIDsOperation
 
-- (id)_unitTestBundleIDsByContainerID:(id)a3
+- (id)_unitTestBundleIDsByContainerID:(id)d
 {
   v3 = qword_280D58368;
-  v5 = a3;
+  dCopy = d;
   if (v3 != -1)
   {
     dispatch_once(&qword_280D58368, &unk_28385D860);
   }
 
-  v6 = objc_msgSend_objectForKeyedSubscript_(qword_280D58370, v4, v5);
+  v6 = objc_msgSend_objectForKeyedSubscript_(qword_280D58370, v4, dCopy);
 
   return v6;
 }
 
-- (CKDFetchRegisteredBundleIDsOperation)initWithOperationInfo:(id)a3 container:(id)a4
+- (CKDFetchRegisteredBundleIDsOperation)initWithOperationInfo:(id)info container:(id)container
 {
   v5.receiver = self;
   v5.super_class = CKDFetchRegisteredBundleIDsOperation;
-  return [(CKDOperation *)&v5 initWithOperationInfo:a3 container:a4];
+  return [(CKDOperation *)&v5 initWithOperationInfo:info container:container];
 }
 
 - (id)activityCreate
@@ -56,7 +56,7 @@
     *location = 138544130;
     *&location[4] = v17;
     v39 = 2048;
-    v40 = self;
+    selfCopy = self;
     v41 = 2114;
     v42 = v22;
     v43 = 2112;

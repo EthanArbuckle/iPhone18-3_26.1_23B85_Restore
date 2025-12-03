@@ -1,12 +1,12 @@
 @interface QuickReplyToMeBubbleView
-- (_TtC8Business24QuickReplyToMeBubbleView)initWithCoder:(id)a3;
-- (_TtC8Business24QuickReplyToMeBubbleView)initWithFrame:(CGRect)a3;
-- (void)tapGestureRecognized:(id)a3;
+- (_TtC8Business24QuickReplyToMeBubbleView)initWithCoder:(id)coder;
+- (_TtC8Business24QuickReplyToMeBubbleView)initWithFrame:(CGRect)frame;
+- (void)tapGestureRecognized:(id)recognized;
 @end
 
 @implementation QuickReplyToMeBubbleView
 
-- (_TtC8Business24QuickReplyToMeBubbleView)initWithCoder:(id)a3
+- (_TtC8Business24QuickReplyToMeBubbleView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC8Business24QuickReplyToMeBubbleView_lastButtonBottomConstraint) = 0;
   *&self->model[OBJC_IVAR____TtC8Business24QuickReplyToMeBubbleView_delegate] = 0;
@@ -16,38 +16,38 @@
   return result;
 }
 
-- (void)tapGestureRecognized:(id)a3
+- (void)tapGestureRecognized:(id)recognized
 {
-  v4 = a3;
-  v12 = self;
-  v5 = [(QuickReplyToMeBubbleView *)v4 view];
-  if (v5)
+  recognizedCopy = recognized;
+  selfCopy = self;
+  view = [(QuickReplyToMeBubbleView *)recognizedCopy view];
+  if (view)
   {
-    v6 = v5;
+    v6 = view;
     type metadata accessor for QuickReplyItemButton();
     v7 = swift_dynamicCastClass();
     if (v7)
     {
       v8 = [v7 tag];
-      v9 = *&v12->model[OBJC_IVAR____TtC8Business24QuickReplyToMeBubbleView_onItemSelected];
-      (*(&v12->super.super.super.isa + OBJC_IVAR____TtC8Business24QuickReplyToMeBubbleView_onItemSelected))(*(&v12->super.super.super.isa + OBJC_IVAR____TtC8Business24QuickReplyToMeBubbleView_model), *&v12->model[OBJC_IVAR____TtC8Business24QuickReplyToMeBubbleView_model], v12->model[OBJC_IVAR____TtC8Business24QuickReplyToMeBubbleView_model + 8], v8);
+      v9 = *&selfCopy->model[OBJC_IVAR____TtC8Business24QuickReplyToMeBubbleView_onItemSelected];
+      (*(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC8Business24QuickReplyToMeBubbleView_onItemSelected))(*(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC8Business24QuickReplyToMeBubbleView_model), *&selfCopy->model[OBJC_IVAR____TtC8Business24QuickReplyToMeBubbleView_model], selfCopy->model[OBJC_IVAR____TtC8Business24QuickReplyToMeBubbleView_model + 8], v8);
       v10 = v6;
     }
 
     else
     {
-      v10 = v4;
-      v4 = v6;
+      v10 = recognizedCopy;
+      recognizedCopy = v6;
     }
 
-    v11 = v4;
+    v11 = recognizedCopy;
 
-    v4 = v12;
-    v12 = v11;
+    recognizedCopy = selfCopy;
+    selfCopy = v11;
   }
 }
 
-- (_TtC8Business24QuickReplyToMeBubbleView)initWithFrame:(CGRect)a3
+- (_TtC8Business24QuickReplyToMeBubbleView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

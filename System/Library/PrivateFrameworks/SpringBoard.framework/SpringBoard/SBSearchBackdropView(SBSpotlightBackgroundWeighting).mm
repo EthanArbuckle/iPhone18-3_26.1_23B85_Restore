@@ -6,14 +6,14 @@
 
 - (uint64_t)setSpotlightBackgroundWeighting:()SBSpotlightBackgroundWeighting
 {
-  v4 = [a1 isTransitioningToBlurred];
+  isTransitioningToBlurred = [self isTransitioningToBlurred];
   v5 = 1.0 - a2;
-  if (v4)
+  if (isTransitioningToBlurred)
   {
     v5 = a2;
   }
 
-  return [a1 setTransitionProgress:v5];
+  return [self setTransitionProgress:v5];
 }
 
 @end

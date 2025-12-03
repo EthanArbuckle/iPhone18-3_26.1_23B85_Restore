@@ -1,8 +1,8 @@
 @interface BLSHFlipbookFramesHistogram
-+ (BLSHFlipbookFramesHistogram)histogramWithReferenceDate:(id)a3 flipbookFrames:(id)a4;
-+ (BLSHFlipbookFramesHistogram)histogramWithReferenceDate:(id)a3 iteratePresentationDatesBlock:(id)a4;
++ (BLSHFlipbookFramesHistogram)histogramWithReferenceDate:(id)date flipbookFrames:(id)frames;
++ (BLSHFlipbookFramesHistogram)histogramWithReferenceDate:(id)date iteratePresentationDatesBlock:(id)block;
 - (id)description;
-- (uint64_t)initWithTotalCount:(void *)a3 averagePresentationTimeFromNow:(uint64_t)a4 medianPresentationTimeFromNow:(uint64_t)a5 presentationTimeHistogram:(uint64_t)a6 intervalUntilFirstFrame:(void *)a7 presentationDuration:(double)a8 memoryUsage:(double)a9 averageMemoryUsage:(double)a10 medianMemoryUsage:(double)a11 memoryUsageHistogram:(float)a12 lowestAPL:(float)a13 averageAPL:(float)a14 medianAPL:(float)a15 highestAPL:(uint64_t)a16 lowestAPLDimming:(int)a17 averageAPLDimming:(int)a18 medianAPLDimming:(int)a19 highestAPLDimming:(int)a20;
+- (uint64_t)initWithTotalCount:(void *)count averagePresentationTimeFromNow:(uint64_t)now medianPresentationTimeFromNow:(uint64_t)fromNow presentationTimeHistogram:(uint64_t)histogram intervalUntilFirstFrame:(void *)frame presentationDuration:(double)duration memoryUsage:(double)usage averageMemoryUsage:(double)self0 medianMemoryUsage:(double)self1 memoryUsageHistogram:(float)self2 lowestAPL:(float)self3 averageAPL:(float)self4 medianAPL:(float)self5 highestAPL:(uint64_t)self6 lowestAPLDimming:(int)self7 averageAPLDimming:(int)self8 medianAPLDimming:(int)self9 highestAPLDimming:(int)aPLDimming;
 - (unsigned)count1to2Min;
 - (unsigned)count2to3Min;
 - (unsigned)count3to4Min;
@@ -10,31 +10,31 @@
 - (unsigned)count5to6Min;
 - (unsigned)countLessThan1Min;
 - (unsigned)countMoreThan6Min;
-- (void)stream:(void *)a3 appendRawHistogram:(void *)a4 withLabel:(void *)a5 headingBlock:;
+- (void)stream:(void *)stream appendRawHistogram:(void *)histogram withLabel:(void *)label headingBlock:;
 @end
 
 @implementation BLSHFlipbookFramesHistogram
 
-+ (BLSHFlipbookFramesHistogram)histogramWithReferenceDate:(id)a3 flipbookFrames:(id)a4
++ (BLSHFlipbookFramesHistogram)histogramWithReferenceDate:(id)date flipbookFrames:(id)frames
 {
   v96 = *MEMORY[0x277D85DE8];
-  v84 = a3;
-  v5 = a4;
-  v75 = [v5 count];
-  v6 = [MEMORY[0x277CBEAA8] distantFuture];
-  v7 = [MEMORY[0x277CBEAA8] distantPast];
-  v83 = [MEMORY[0x277CBEB18] array];
+  dateCopy = date;
+  framesCopy = frames;
+  v75 = [framesCopy count];
+  distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+  distantPast = [MEMORY[0x277CBEAA8] distantPast];
+  array = [MEMORY[0x277CBEB18] array];
   memset(v95, 0, sizeof(v95));
-  v82 = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   memset(v94, 0, sizeof(v94));
-  v81 = [MEMORY[0x277CBEB18] array];
-  v79 = [MEMORY[0x277CBEB18] array];
-  v80 = [MEMORY[0x277CBEA80] autoupdatingCurrentCalendar];
+  array3 = [MEMORY[0x277CBEB18] array];
+  array4 = [MEMORY[0x277CBEB18] array];
+  autoupdatingCurrentCalendar = [MEMORY[0x277CBEA80] autoupdatingCurrentCalendar];
   v89 = 0u;
   v90 = 0u;
   v91 = 0u;
   v92 = 0u;
-  obj = v5;
+  obj = framesCopy;
   v85 = [obj countByEnumeratingWithState:&v89 objects:v93 count:16];
   v8 = 0;
   v9 = 0;
@@ -52,8 +52,8 @@
     do
     {
       v16 = 0;
-      v17 = v7;
-      v18 = v6;
+      v17 = distantPast;
+      v18 = distantFuture;
       do
       {
         if (*v90 != v77)
@@ -62,58 +62,58 @@
         }
 
         v19 = *(*(&v89 + 1) + 8 * v16);
-        v20 = [v19 bls_specifier];
-        v21 = [v20 presentationDate];
+        bls_specifier = [v19 bls_specifier];
+        presentationDate = [bls_specifier presentationDate];
 
-        v88 = [v18 earlierDate:v21];
+        v88 = [v18 earlierDate:presentationDate];
 
-        v7 = [v17 laterDate:v21];
+        distantPast = [v17 laterDate:presentationDate];
 
-        [v21 timeIntervalSinceDate:v84];
+        [presentationDate timeIntervalSinceDate:dateCopy];
         v22 = 0.0;
         if (v23 > 0.0)
         {
-          [v21 timeIntervalSinceDate:v84];
+          [presentationDate timeIntervalSinceDate:dateCopy];
           v22 = v24;
         }
 
         v25 = [MEMORY[0x277CCABB0] numberWithDouble:v22];
-        [v83 addObject:v25];
+        [array addObject:v25];
 
-        v26 = [v80 components:64 fromDate:v84 toDate:v21 options:0];
+        v26 = [autoupdatingCurrentCalendar components:64 fromDate:dateCopy toDate:presentationDate options:0];
         if ([v26 minute] < 0 || objc_msgSend(v26, "minute") <= 14)
         {
           v27 = v8;
           if ([v26 minute] < 0)
           {
-            v28 = 0;
+            minute = 0;
           }
 
           else
           {
-            v28 = [v26 minute];
+            minute = [v26 minute];
           }
         }
 
         else
         {
           v27 = v8;
-          v28 = 15;
+          minute = 15;
         }
 
-        ++*(v95 + v28);
+        ++*(v95 + minute);
         v29 = v87;
-        if (v28 > v87)
+        if (minute > v87)
         {
-          v29 = v28;
+          v29 = minute;
         }
 
         v87 = v29;
-        v30 = [v19 memoryUsage];
-        v31 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v30];
-        [v82 addObject:v31];
+        memoryUsage = [v19 memoryUsage];
+        v31 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:memoryUsage];
+        [array2 addObject:v31];
 
-        v32 = __clz(v30 | 1) ^ 0x3F;
+        v32 = __clz(memoryUsage | 1) ^ 0x3F;
         if (v32 <= 0xA)
         {
           v33 = 10;
@@ -144,7 +144,7 @@
         [v19 apl];
         v37 = v36;
         v38 = [MEMORY[0x277CCABB0] numberWithFloat:?];
-        [v81 addObject:v38];
+        [array3 addObject:v38];
 
         v15 = v15 + v37;
         if (v37 < v14)
@@ -161,7 +161,7 @@
         v8 = v27;
         v40 = v39;
         v41 = [MEMORY[0x277CCABB0] numberWithFloat:?];
-        [v79 addObject:v41];
+        [array4 addObject:v41];
 
         v86 = v86 + v40;
         if (v40 < v12)
@@ -175,11 +175,11 @@
         }
 
         v10 = v10 + v22;
-        v9 += v30;
+        v9 += memoryUsage;
 
         ++v16;
-        v17 = v7;
-        v6 = v88;
+        v17 = distantPast;
+        distantFuture = v88;
         v18 = v88;
       }
 
@@ -202,11 +202,11 @@
     v10 = 0.0;
   }
 
-  [v7 timeIntervalSinceDate:v6];
+  [distantPast timeIntervalSinceDate:distantFuture];
   v74 = v42;
-  [v6 timeIntervalSinceDate:v84];
+  [distantFuture timeIntervalSinceDate:dateCopy];
   v72 = v43;
-  v78 = [v83 sortedArrayUsingSelector:sel_compare_];
+  v78 = [array sortedArrayUsingSelector:sel_compare_];
   [v78 bls_doubleMedian];
   v71 = v44;
   v45 = v10 / v75;
@@ -216,13 +216,13 @@
   }
 
   v69 = v45;
-  v73 = [v82 sortedArrayUsingSelector:sel_compare_];
-  v70 = [v73 bls_unsignedIntegerMedian];
-  v46 = [v81 count];
+  v73 = [array2 sortedArrayUsingSelector:sel_compare_];
+  bls_unsignedIntegerMedian = [v73 bls_unsignedIntegerMedian];
+  v46 = [array3 count];
   if (v46)
   {
     v47 = v46;
-    v48 = [v81 sortedArrayUsingSelector:sel_compare_];
+    v48 = [array3 sortedArrayUsingSelector:sel_compare_];
     [v48 bls_doubleMedian];
     v50 = v49;
     v51 = v15 / v47;
@@ -236,11 +236,11 @@
     v50 = NAN;
   }
 
-  v52 = [v79 count];
+  v52 = [array4 count];
   if (v52)
   {
     v53 = v52;
-    v54 = [v79 sortedArrayUsingSelector:sel_compare_];
+    v54 = [array4 sortedArrayUsingSelector:sel_compare_];
     [v54 bls_doubleMedian];
     v56 = v55;
     v57 = v86 / v53;
@@ -273,55 +273,55 @@
   }
 
   v64 = [BLSHFlipbookFramesHistogram alloc];
-  v66 = [(BLSHFlipbookFramesHistogram *)v64 initWithTotalCount:v75 averagePresentationTimeFromNow:v58 medianPresentationTimeFromNow:v9 presentationTimeHistogram:v9 / v75 intervalUntilFirstFrame:v70 presentationDuration:v61 memoryUsage:v69 averageMemoryUsage:v71 medianMemoryUsage:v72 memoryUsageHistogram:v74 lowestAPL:v14 averageAPL:v51 medianAPL:v50 highestAPL:v13 lowestAPLDimming:v65 averageAPLDimming:SLODWORD(v12) medianAPLDimming:SLODWORD(v57) highestAPLDimming:SLODWORD(v56), SLODWORD(v11)];
+  v66 = [(BLSHFlipbookFramesHistogram *)v64 initWithTotalCount:v75 averagePresentationTimeFromNow:v58 medianPresentationTimeFromNow:v9 presentationTimeHistogram:v9 / v75 intervalUntilFirstFrame:bls_unsignedIntegerMedian presentationDuration:v61 memoryUsage:v69 averageMemoryUsage:v71 medianMemoryUsage:v72 memoryUsageHistogram:v74 lowestAPL:v14 averageAPL:v51 medianAPL:v50 highestAPL:v13 lowestAPLDimming:v65 averageAPLDimming:SLODWORD(v12) medianAPLDimming:SLODWORD(v57) highestAPLDimming:SLODWORD(v56), SLODWORD(v11)];
 
   v67 = *MEMORY[0x277D85DE8];
 
   return v66;
 }
 
-- (uint64_t)initWithTotalCount:(void *)a3 averagePresentationTimeFromNow:(uint64_t)a4 medianPresentationTimeFromNow:(uint64_t)a5 presentationTimeHistogram:(uint64_t)a6 intervalUntilFirstFrame:(void *)a7 presentationDuration:(double)a8 memoryUsage:(double)a9 averageMemoryUsage:(double)a10 medianMemoryUsage:(double)a11 memoryUsageHistogram:(float)a12 lowestAPL:(float)a13 averageAPL:(float)a14 medianAPL:(float)a15 highestAPL:(uint64_t)a16 lowestAPLDimming:(int)a17 averageAPLDimming:(int)a18 medianAPLDimming:(int)a19 highestAPLDimming:(int)a20
+- (uint64_t)initWithTotalCount:(void *)count averagePresentationTimeFromNow:(uint64_t)now medianPresentationTimeFromNow:(uint64_t)fromNow presentationTimeHistogram:(uint64_t)histogram intervalUntilFirstFrame:(void *)frame presentationDuration:(double)duration memoryUsage:(double)usage averageMemoryUsage:(double)self0 medianMemoryUsage:(double)self1 memoryUsageHistogram:(float)self2 lowestAPL:(float)self3 averageAPL:(float)self4 medianAPL:(float)self5 highestAPL:(uint64_t)self6 lowestAPLDimming:(int)self7 averageAPLDimming:(int)self8 medianAPLDimming:(int)self9 highestAPLDimming:(int)aPLDimming
 {
-  v35 = a3;
-  v36 = a7;
-  if (a1)
+  countCopy = count;
+  frameCopy = frame;
+  if (self)
   {
-    if ([v35 count] <= 6)
+    if ([countCopy count] <= 6)
     {
-      [BLSHFlipbookFramesHistogram initWithTotalCount:a1 averagePresentationTimeFromNow:? medianPresentationTimeFromNow:? presentationTimeHistogram:? intervalUntilFirstFrame:? presentationDuration:? memoryUsage:? averageMemoryUsage:? medianMemoryUsage:? memoryUsageHistogram:? lowestAPL:? averageAPL:? medianAPL:? highestAPL:? lowestAPLDimming:? averageAPLDimming:? medianAPLDimming:? highestAPLDimming:?];
+      [BLSHFlipbookFramesHistogram initWithTotalCount:self averagePresentationTimeFromNow:? medianPresentationTimeFromNow:? presentationTimeHistogram:? intervalUntilFirstFrame:? presentationDuration:? memoryUsage:? averageMemoryUsage:? medianMemoryUsage:? memoryUsageHistogram:? lowestAPL:? averageAPL:? medianAPL:? highestAPL:? lowestAPLDimming:? averageAPLDimming:? medianAPLDimming:? highestAPLDimming:?];
     }
 
-    v39.receiver = a1;
+    v39.receiver = self;
     v39.super_class = BLSHFlipbookFramesHistogram;
     v37 = objc_msgSendSuper2(&v39, sel_init);
-    a1 = v37;
+    self = v37;
     if (v37)
     {
       *(v37 + 5) = a2;
-      *(v37 + 6) = a8;
-      *(v37 + 7) = a9;
-      objc_storeStrong(v37 + 8, a3);
-      *(a1 + 72) = a10;
-      *(a1 + 80) = a11;
-      *(a1 + 88) = a4;
-      *(a1 + 96) = a5;
-      *(a1 + 104) = a6;
-      objc_storeStrong((a1 + 112), a7);
-      *(a1 + 8) = a12;
-      *(a1 + 12) = a13;
-      *(a1 + 16) = a14;
-      *(a1 + 20) = a15;
-      *(a1 + 24) = a17;
-      *(a1 + 28) = a18;
-      *(a1 + 32) = a19;
-      *(a1 + 36) = a20;
+      *(v37 + 6) = duration;
+      *(v37 + 7) = usage;
+      objc_storeStrong(v37 + 8, count);
+      *(self + 72) = memoryUsage;
+      *(self + 80) = medianMemoryUsage;
+      *(self + 88) = now;
+      *(self + 96) = fromNow;
+      *(self + 104) = histogram;
+      objc_storeStrong((self + 112), frame);
+      *(self + 8) = usageHistogram;
+      *(self + 12) = l;
+      *(self + 16) = pL;
+      *(self + 20) = aPL;
+      *(self + 24) = dimming;
+      *(self + 28) = lDimming;
+      *(self + 32) = pLDimming;
+      *(self + 36) = aPLDimming;
     }
   }
 
-  return a1;
+  return self;
 }
 
-+ (BLSHFlipbookFramesHistogram)histogramWithReferenceDate:(id)a3 iteratePresentationDatesBlock:(id)a4
++ (BLSHFlipbookFramesHistogram)histogramWithReferenceDate:(id)date iteratePresentationDatesBlock:(id)block
 {
   v4 = [BLSHFlipbookFramesHistogram alloc];
   v6 = [(BLSHFlipbookFramesHistogram *)v4 initWithTotalCount:&unk_28338DF00 averagePresentationTimeFromNow:0 medianPresentationTimeFromNow:0 presentationTimeHistogram:0 intervalUntilFirstFrame:MEMORY[0x277CBEBF8] presentationDuration:0.0 memoryUsage:0.0 averageMemoryUsage:0.0 medianMemoryUsage:0.0 memoryUsageHistogram:NAN lowestAPL:NAN averageAPL:NAN medianAPL:NAN highestAPL:v5 lowestAPLDimming:2143289344 averageAPLDimming:2143289344 medianAPLDimming:2143289344 highestAPLDimming:2143289344];
@@ -332,57 +332,57 @@
 - (unsigned)countLessThan1Min
 {
   v2 = [(NSArray *)self->_presentationTimeHistogram objectAtIndex:0];
-  v3 = [v2 unsignedIntValue];
+  unsignedIntValue = [v2 unsignedIntValue];
 
-  return v3;
+  return unsignedIntValue;
 }
 
 - (unsigned)count1to2Min
 {
   v2 = [(NSArray *)self->_presentationTimeHistogram objectAtIndex:1];
-  v3 = [v2 unsignedIntValue];
+  unsignedIntValue = [v2 unsignedIntValue];
 
-  return v3;
+  return unsignedIntValue;
 }
 
 - (unsigned)count2to3Min
 {
   v2 = [(NSArray *)self->_presentationTimeHistogram objectAtIndex:2];
-  v3 = [v2 unsignedIntValue];
+  unsignedIntValue = [v2 unsignedIntValue];
 
-  return v3;
+  return unsignedIntValue;
 }
 
 - (unsigned)count3to4Min
 {
   v2 = [(NSArray *)self->_presentationTimeHistogram objectAtIndex:3];
-  v3 = [v2 unsignedIntValue];
+  unsignedIntValue = [v2 unsignedIntValue];
 
-  return v3;
+  return unsignedIntValue;
 }
 
 - (unsigned)count4to5Min
 {
   v2 = [(NSArray *)self->_presentationTimeHistogram objectAtIndex:4];
-  v3 = [v2 unsignedIntValue];
+  unsignedIntValue = [v2 unsignedIntValue];
 
-  return v3;
+  return unsignedIntValue;
 }
 
 - (unsigned)count5to6Min
 {
   v2 = [(NSArray *)self->_presentationTimeHistogram objectAtIndex:5];
-  v3 = [v2 unsignedIntValue];
+  unsignedIntValue = [v2 unsignedIntValue];
 
-  return v3;
+  return unsignedIntValue;
 }
 
 - (unsigned)countMoreThan6Min
 {
   v2 = [(NSArray *)self->_presentationTimeHistogram objectAtIndex:6];
-  v3 = [v2 unsignedIntValue];
+  unsignedIntValue = [v2 unsignedIntValue];
 
-  return v3;
+  return unsignedIntValue;
 }
 
 - (id)description
@@ -394,13 +394,13 @@
   v14[3] = &unk_27841E538;
   v4 = v3;
   v15 = v4;
-  v16 = self;
+  selfCopy = self;
   [v4 appendProem:self block:v14];
   v8 = MEMORY[0x277D85DD0];
   v9 = 3221225472;
   v10 = __42__BLSHFlipbookFramesHistogram_description__block_invoke_2;
   v11 = &unk_27841E538;
-  v12 = self;
+  selfCopy2 = self;
   v13 = v4;
   v5 = v4;
   [v5 appendBodySectionWithName:0 openDelimiter:&stru_283373E60 closeDelimiter:&stru_283373E60 block:&v8];
@@ -449,13 +449,13 @@ void __42__BLSHFlipbookFramesHistogram_description__block_invoke_2(uint64_t a1)
   [(BLSHFlipbookFramesHistogram *)v2 stream:v3 appendRawHistogram:v4 withLabel:@"memory" headingBlock:&__block_literal_global_76_0];
 }
 
-- (void)stream:(void *)a3 appendRawHistogram:(void *)a4 withLabel:(void *)a5 headingBlock:
+- (void)stream:(void *)stream appendRawHistogram:(void *)histogram withLabel:(void *)label headingBlock:
 {
   v9 = a2;
-  v10 = a3;
-  v11 = a4;
-  v19 = a5;
-  if (a1)
+  streamCopy = stream;
+  histogramCopy = histogram;
+  labelCopy = label;
+  if (self)
   {
     v35[0] = 0;
     v35[1] = v35;
@@ -466,18 +466,18 @@ void __42__BLSHFlipbookFramesHistogram_description__block_invoke_2(uint64_t a1)
     v34[2] = __80__BLSHFlipbookFramesHistogram_stream_appendRawHistogram_withLabel_headingBlock___block_invoke;
     v34[3] = &unk_27841FE38;
     v34[4] = v35;
-    [v10 enumerateObjectsUsingBlock:v34];
+    [streamCopy enumerateObjectsUsingBlock:v34];
     v33[0] = 0;
     v33[1] = v33;
     v33[2] = 0x2020000000;
-    v33[3] = [v10 count] - 1;
+    v33[3] = [streamCopy count] - 1;
     v32[0] = MEMORY[0x277D85DD0];
     v32[1] = 3221225472;
     v32[2] = __80__BLSHFlipbookFramesHistogram_stream_appendRawHistogram_withLabel_headingBlock___block_invoke_2;
     v32[3] = &unk_27841FE38;
     v32[4] = v33;
-    [v10 enumerateObjectsWithOptions:2 usingBlock:v32];
-    v12 = [v11 length];
+    [streamCopy enumerateObjectsWithOptions:2 usingBlock:v32];
+    v12 = [histogramCopy length];
     if (v12 <= [@"count" length])
     {
       v13 = [@"count" length];
@@ -485,20 +485,20 @@ void __42__BLSHFlipbookFramesHistogram_description__block_invoke_2(uint64_t a1)
 
     else
     {
-      v13 = [v11 length];
+      v13 = [histogramCopy length];
     }
 
     v14 = v13;
-    v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"%*s", v13, objc_msgSend(v11, "UTF8String")];
+    v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"%*s", v13, objc_msgSend(histogramCopy, "UTF8String")];
     v26[0] = MEMORY[0x277D85DD0];
     v26[1] = 3221225472;
     v26[2] = __80__BLSHFlipbookFramesHistogram_stream_appendRawHistogram_withLabel_headingBlock___block_invoke_4;
     v26[3] = &unk_27841FEA8;
-    v16 = v10;
+    v16 = streamCopy;
     v27 = v16;
     v30 = v35;
     v31 = v33;
-    v17 = v19;
+    v17 = labelCopy;
     v28 = v17;
     v29 = &__block_literal_global_88;
     [v9 appendCustomFormatWithName:v15 block:v26];

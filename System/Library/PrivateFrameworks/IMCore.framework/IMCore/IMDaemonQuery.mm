@@ -1,29 +1,29 @@
 @interface IMDaemonQuery
-- (IMDaemonQuery)initWithID:(id)a3 key:(id)a4 completionHandler:(id)a5;
+- (IMDaemonQuery)initWithID:(id)d key:(id)key completionHandler:(id)handler;
 - (id)description;
 @end
 
 @implementation IMDaemonQuery
 
-- (IMDaemonQuery)initWithID:(id)a3 key:(id)a4 completionHandler:(id)a5
+- (IMDaemonQuery)initWithID:(id)d key:(id)key completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  keyCopy = key;
+  handlerCopy = handler;
   v29.receiver = self;
   v29.super_class = IMDaemonQuery;
   v13 = [(IMDaemonQuery *)&v29 init];
   if (v13)
   {
-    v14 = objc_msgSend_copy(v8, v11, v12);
+    v14 = objc_msgSend_copy(dCopy, v11, v12);
     ID = v13->_ID;
     v13->_ID = v14;
 
-    v18 = objc_msgSend_copy(v9, v16, v17);
+    v18 = objc_msgSend_copy(keyCopy, v16, v17);
     key = v13->_key;
     v13->_key = v18;
 
-    v22 = objc_msgSend_copy(v10, v20, v21);
+    v22 = objc_msgSend_copy(handlerCopy, v20, v21);
     completionHandler = v13->_completionHandler;
     v13->_completionHandler = v22;
 

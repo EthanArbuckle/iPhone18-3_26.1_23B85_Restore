@@ -1,11 +1,11 @@
 @interface _UIVisualStyleRegistry
 + (_UIVisualStyleRegistry)defaultRegistry;
-+ (id)registryForIdiom:(int64_t)a3;
-+ (id)registryForTraitEnvironment:(id)a3;
-- (Class)visualStyleClassForStylableClass:(Class)a3;
-- (Class)visualStyleClassForView:(id)a3;
++ (id)registryForIdiom:(int64_t)idiom;
++ (id)registryForTraitEnvironment:(id)environment;
+- (Class)visualStyleClassForStylableClass:(Class)class;
+- (Class)visualStyleClassForView:(id)view;
 - (_UIVisualStyleRegistry)init;
-- (void)registerVisualStyleClass:(Class)a3 forStylableClass:(Class)a4;
+- (void)registerVisualStyleClass:(Class)class forStylableClass:(Class)stylableClass;
 @end
 
 @implementation _UIVisualStyleRegistry
@@ -40,7 +40,7 @@
   return v2;
 }
 
-+ (id)registryForIdiom:(int64_t)a3
++ (id)registryForIdiom:(int64_t)idiom
 {
   v4 = __idiomToRegistry;
   if (!__idiomToRegistry)
@@ -52,55 +52,55 @@
     v4 = __idiomToRegistry;
   }
 
-  v7 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v7 = [MEMORY[0x1E696AD98] numberWithInteger:idiom];
   v8 = [v4 objectForKeyedSubscript:v7];
 
   if (!v8)
   {
     v8 = objc_opt_new();
     v9 = __idiomToRegistry;
-    v10 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+    v10 = [MEMORY[0x1E696AD98] numberWithInteger:idiom];
     [v9 setObject:v8 forKeyedSubscript:v10];
   }
 
   return v8;
 }
 
-+ (id)registryForTraitEnvironment:(id)a3
++ (id)registryForTraitEnvironment:(id)environment
 {
-  v4 = [a3 traitCollection];
-  v5 = [a1 registryForIdiom:{objc_msgSend(v4, "userInterfaceIdiom")}];
+  traitCollection = [environment traitCollection];
+  v5 = [self registryForIdiom:{objc_msgSend(traitCollection, "userInterfaceIdiom")}];
 
   return v5;
 }
 
-- (Class)visualStyleClassForView:(id)a3
+- (Class)visualStyleClassForView:(id)view
 {
   v4 = objc_opt_class();
 
   return [(_UIVisualStyleRegistry *)self visualStyleClassForStylableClass:v4];
 }
 
-- (Class)visualStyleClassForStylableClass:(Class)a3
+- (Class)visualStyleClassForStylableClass:(Class)class
 {
   v25 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!class)
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"_UIVisualStyleRegistry.m" lineNumber:95 description:{@"Invalid parameter not satisfying: %@", @"stylableClass != Nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIVisualStyleRegistry.m" lineNumber:95 description:{@"Invalid parameter not satisfying: %@", @"stylableClass != Nil"}];
   }
 
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    v22 = NSStringFromClass(a3);
-    [v21 handleFailureInMethod:a2 object:self file:@"_UIVisualStyleRegistry.m" lineNumber:96 description:{@"Cannot determine visual style class for class %@, since class does not conform to _UIVisualStyleStylable.", v22}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    v22 = NSStringFromClass(class);
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"_UIVisualStyleRegistry.m" lineNumber:96 description:{@"Cannot determine visual style class for class %@, since class does not conform to _UIVisualStyleStylable.", v22}];
   }
 
-  v6 = [(objc_class *)a3 visualStyleRegistryIdentity];
-  v7 = [(NSMutableDictionary *)self->__classToVisualStyleClass objectForKeyedSubscript:v6];
-  v8 = [(NSMutableDictionary *)self->__classToVisualStyleClass allKeys];
-  v9 = [v8 count];
+  visualStyleRegistryIdentity = [(objc_class *)class visualStyleRegistryIdentity];
+  v7 = [(NSMutableDictionary *)self->__classToVisualStyleClass objectForKeyedSubscript:visualStyleRegistryIdentity];
+  allKeys = [(NSMutableDictionary *)self->__classToVisualStyleClass allKeys];
+  v9 = [allKeys count];
 
   if (!v9)
   {
@@ -120,12 +120,12 @@ LABEL_10:
     goto LABEL_17;
   }
 
-  v13 = [objc_opt_class() defaultRegistry];
+  defaultRegistry = [objc_opt_class() defaultRegistry];
 
-  if (v13 != self)
+  if (defaultRegistry != self)
   {
     v14 = +[_UIVisualStyleRegistry defaultRegistry];
-    v15 = [v14 visualStyleClassForStylableClass:a3];
+    v15 = [v14 visualStyleClassForStylableClass:class];
 
     if (v15)
     {
@@ -138,7 +138,7 @@ LABEL_10:
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
     v17 = v16;
-    v18 = NSStringFromClass(a3);
+    v18 = NSStringFromClass(class);
     *buf = 138412290;
     v24 = v18;
     _os_log_impl(&dword_188A29000, v17, OS_LOG_TYPE_DEFAULT, "Note: no default visual style class registered as fallback for stylable class %@", buf, 0xCu);
@@ -150,17 +150,17 @@ LABEL_17:
   return v12;
 }
 
-- (void)registerVisualStyleClass:(Class)a3 forStylableClass:(Class)a4
+- (void)registerVisualStyleClass:(Class)class forStylableClass:(Class)stylableClass
 {
-  if (a3 && (objc_opt_respondsToSelector() & 1) == 0)
+  if (class && (objc_opt_respondsToSelector() & 1) == 0)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    v9 = NSStringFromClass(a4);
-    [v8 handleFailureInMethod:a2 object:self file:@"_UIVisualStyleRegistry.m" lineNumber:126 description:{@"Cannot determine visual style class for class %@, since class does not conform to _UIVisualStyleStylable.", v9}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    v9 = NSStringFromClass(stylableClass);
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIVisualStyleRegistry.m" lineNumber:126 description:{@"Cannot determine visual style class for class %@, since class does not conform to _UIVisualStyleStylable.", v9}];
   }
 
-  v10 = [(objc_class *)a4 visualStyleRegistryIdentity];
-  [(NSMutableDictionary *)self->__classToVisualStyleClass setObject:a3 forKeyedSubscript:v10];
+  visualStyleRegistryIdentity = [(objc_class *)stylableClass visualStyleRegistryIdentity];
+  [(NSMutableDictionary *)self->__classToVisualStyleClass setObject:class forKeyedSubscript:visualStyleRegistryIdentity];
 }
 
 @end

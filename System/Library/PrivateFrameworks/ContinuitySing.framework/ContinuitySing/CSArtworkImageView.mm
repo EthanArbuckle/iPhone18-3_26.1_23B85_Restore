@@ -1,20 +1,20 @@
 @interface CSArtworkImageView
-- (CSArtworkImageView)initWithCoder:(id)a3;
-- (CSArtworkImageView)initWithFrame:(CGRect)a3;
-- (CSArtworkImageView)initWithImage:(id)a3;
-- (CSArtworkImageView)initWithImage:(id)a3 highlightedImage:(id)a4;
+- (CSArtworkImageView)initWithCoder:(id)coder;
+- (CSArtworkImageView)initWithFrame:(CGRect)frame;
+- (CSArtworkImageView)initWithImage:(id)image;
+- (CSArtworkImageView)initWithImage:(id)image highlightedImage:(id)highlightedImage;
 - (MPCPlayerResponseItem)content;
-- (void)setContent:(id)a3;
+- (void)setContent:(id)content;
 @end
 
 @implementation CSArtworkImageView
 
-- (CSArtworkImageView)initWithFrame:(CGRect)a3
+- (CSArtworkImageView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   sub_244257BB8();
   sub_244257BA8();
   sub_244257B68();
@@ -26,16 +26,16 @@
   *(&self->super.super.super.super.isa + OBJC_IVAR___CSArtworkImageView_content) = 0;
   v13.receiver = self;
   v13.super_class = type metadata accessor for ArtworkImageView();
-  v8 = [(CSArtworkImageView *)&v13 initWithFrame:x, y, width, height];
+  height = [(CSArtworkImageView *)&v13 initWithFrame:x, y, width, height];
   v9 = objc_opt_self();
-  v10 = v8;
-  v11 = [v9 grayColor];
-  [(CSArtworkImageView *)v10 setTintColor:v11];
+  v10 = height;
+  grayColor = [v9 grayColor];
+  [(CSArtworkImageView *)v10 setTintColor:grayColor];
 
   return v10;
 }
 
-- (CSArtworkImageView)initWithCoder:(id)a3
+- (CSArtworkImageView)initWithCoder:(id)coder
 {
   sub_244257BB8();
   sub_244257BA8();
@@ -68,7 +68,7 @@
   return v4;
 }
 
-- (void)setContent:(id)a3
+- (void)setContent:(id)content
 {
   sub_244257BB8();
   sub_244257BA8();
@@ -78,12 +78,12 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v5 = a3;
-  v6 = self;
-  sub_24424D6FC(a3);
+  contentCopy = content;
+  selfCopy = self;
+  sub_24424D6FC(content);
 }
 
-- (CSArtworkImageView)initWithImage:(id)a3
+- (CSArtworkImageView)initWithImage:(id)image
 {
   sub_244257BB8();
   sub_244257BA8();
@@ -98,7 +98,7 @@
   return result;
 }
 
-- (CSArtworkImageView)initWithImage:(id)a3 highlightedImage:(id)a4
+- (CSArtworkImageView)initWithImage:(id)image highlightedImage:(id)highlightedImage
 {
   sub_244257BB8();
   sub_244257BA8();

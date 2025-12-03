@@ -1,14 +1,14 @@
 @interface SKUIDonationViewController
 - (NSOperationQueue)operationQueue;
-- (SKUIDonationViewController)initWithCharityIdentifier:(id)a3;
-- (SKUIDonationViewController)initWithURL:(id)a3;
+- (SKUIDonationViewController)initWithCharityIdentifier:(id)identifier;
+- (SKUIDonationViewController)initWithURL:(id)l;
 - (id)_initSKUIDonationViewController;
-- (void)_configurationDidLoadWithResult:(BOOL)a3 error:(id)a4;
-- (void)_finishAuthenticateWithResponse:(id)a3 error:(id)a4;
+- (void)_configurationDidLoadWithResult:(BOOL)result error:(id)error;
+- (void)_finishAuthenticateWithResponse:(id)response error:(id)error;
 - (void)_initSKUIDonationViewController;
 - (void)_loadDonationConfiguration;
-- (void)setClientContext:(id)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)setClientContext:(id)context;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation SKUIDonationViewController
@@ -21,9 +21,9 @@
   }
 
   v3 = objc_alloc_init(MEMORY[0x277D75D28]);
-  v4 = [v3 view];
-  v5 = [MEMORY[0x277D75348] _systemBackgroundColor];
-  [v4 setBackgroundColor:v5];
+  view = [v3 view];
+  _systemBackgroundColor = [MEMORY[0x277D75348] _systemBackgroundColor];
+  [view setBackgroundColor:_systemBackgroundColor];
 
   v9.receiver = self;
   v9.super_class = SKUIDonationViewController;
@@ -38,23 +38,23 @@
   return v7;
 }
 
-- (SKUIDonationViewController)initWithCharityIdentifier:(id)a3
+- (SKUIDonationViewController)initWithCharityIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(SKUIDonationViewController *)self _initSKUIDonationViewController];
-  if (v5)
+  identifierCopy = identifier;
+  _initSKUIDonationViewController = [(SKUIDonationViewController *)self _initSKUIDonationViewController];
+  if (_initSKUIDonationViewController)
   {
-    v6 = [v4 copy];
-    charityID = v5->_charityID;
-    v5->_charityID = v6;
+    v6 = [identifierCopy copy];
+    charityID = _initSKUIDonationViewController->_charityID;
+    _initSKUIDonationViewController->_charityID = v6;
   }
 
-  return v5;
+  return _initSKUIDonationViewController;
 }
 
-- (SKUIDonationViewController)initWithURL:(id)a3
+- (SKUIDonationViewController)initWithURL:(id)l
 {
-  v4 = [a3 valueForQueryParameter:@"charity"];
+  v4 = [l valueForQueryParameter:@"charity"];
   v5 = [(SKUIDonationViewController *)self initWithCharityIdentifier:v4];
 
   return v5;
@@ -76,13 +76,13 @@
   return operationQueue;
 }
 
-- (void)setClientContext:(id)a3
+- (void)setClientContext:(id)context
 {
-  v5 = a3;
-  if (self->_clientContext != v5)
+  contextCopy = context;
+  if (self->_clientContext != contextCopy)
   {
-    v9 = v5;
-    objc_storeStrong(&self->_clientContext, a3);
+    v9 = contextCopy;
+    objc_storeStrong(&self->_clientContext, context);
     placeholderViewController = self->_placeholderViewController;
     clientContext = self->_clientContext;
     if (clientContext)
@@ -97,13 +97,13 @@
     v8 = ;
     [(UIViewController *)placeholderViewController setTitle:v8];
 
-    v5 = v9;
+    contextCopy = v9;
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   if (!self->_donationConfiguration)
   {
     v5 = objc_alloc_init(MEMORY[0x277D751E0]);
@@ -122,14 +122,14 @@
     v7 = ;
     [v5 setTitle:v7];
 
-    v8 = [(SKUIDonationViewController *)self topViewController];
-    v9 = [v8 navigationItem];
-    [v9 setLeftBarButtonItem:v5];
+    topViewController = [(SKUIDonationViewController *)self topViewController];
+    navigationItem = [topViewController navigationItem];
+    [navigationItem setLeftBarButtonItem:v5];
 
-    v10 = [MEMORY[0x277D69A20] defaultStore];
-    v11 = [v10 activeAccount];
+    defaultStore = [MEMORY[0x277D69A20] defaultStore];
+    activeAccount = [defaultStore activeAccount];
 
-    if (v11)
+    if (activeAccount)
     {
       [(SKUIDonationViewController *)self _loadDonationConfiguration];
     }
@@ -138,8 +138,8 @@
     {
       objc_initWeak(&location, self);
       v12 = objc_alloc(MEMORY[0x277D69A50]);
-      v13 = [MEMORY[0x277D69A58] contextForSignIn];
-      v14 = [v12 initWithAuthenticationContext:v13];
+      contextForSignIn = [MEMORY[0x277D69A58] contextForSignIn];
+      v14 = [v12 initWithAuthenticationContext:contextForSignIn];
 
       v16[0] = MEMORY[0x277D85DD0];
       v16[1] = 3221225472;
@@ -155,7 +155,7 @@
 
   v15.receiver = self;
   v15.super_class = SKUIDonationViewController;
-  [(SKUIDonationViewController *)&v15 viewWillAppear:v3];
+  [(SKUIDonationViewController *)&v15 viewWillAppear:appearCopy];
 }
 
 void __45__SKUIDonationViewController_viewWillAppear___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -182,10 +182,10 @@ void __45__SKUIDonationViewController_viewWillAppear___block_invoke_2(uint64_t a
   [WeakRetained _finishAuthenticateWithResponse:*(a1 + 32) error:*(a1 + 40)];
 }
 
-- (void)_configurationDidLoadWithResult:(BOOL)a3 error:(id)a4
+- (void)_configurationDidLoadWithResult:(BOOL)result error:(id)error
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  errorCopy = error;
   donationConfiguration = self->_donationConfiguration;
   if (self->_charityID)
   {
@@ -194,8 +194,8 @@ void __45__SKUIDonationViewController_viewWillAppear___block_invoke_2(uint64_t a
     {
 LABEL_3:
       v8 = [[SKUIDonationAmountViewController alloc] initWithCharity:v7 configuration:self->_donationConfiguration];
-      v9 = [(SKUIDonationViewController *)self operationQueue];
-      [(SKUIDonationStepViewController *)v8 setOperationQueue:v9];
+      operationQueue = [(SKUIDonationViewController *)self operationQueue];
+      [(SKUIDonationStepViewController *)v8 setOperationQueue:operationQueue];
 
       [(SKUIDonationConfiguration *)self->_donationConfiguration loadLogoForCharity:v7];
       v16[0] = v8;
@@ -207,10 +207,10 @@ LABEL_3:
 
   else
   {
-    v12 = [(SKUIDonationConfiguration *)donationConfiguration allCharities];
-    if ([v12 count])
+    allCharities = [(SKUIDonationConfiguration *)donationConfiguration allCharities];
+    if ([allCharities count])
     {
-      v7 = [v12 objectAtIndex:0];
+      v7 = [allCharities objectAtIndex:0];
     }
 
     else
@@ -224,14 +224,14 @@ LABEL_3:
     }
   }
 
-  if (![SKUINetworkErrorViewController canDisplayError:v5])
+  if (![SKUINetworkErrorViewController canDisplayError:errorCopy])
   {
-    NSLog(&cfstr_DonationError.isa, v5);
+    NSLog(&cfstr_DonationError.isa, errorCopy);
     [(SKUIDonationViewController *)self dismissViewControllerAnimated:1 completion:0];
     goto LABEL_11;
   }
 
-  v8 = [[SKUINetworkErrorViewController alloc] initWithError:v5];
+  v8 = [[SKUINetworkErrorViewController alloc] initWithError:errorCopy];
   [(SKUIDonationAmountViewController *)v8 setClientContext:self->_clientContext];
   v15 = v8;
   v10 = MEMORY[0x277CBEA60];
@@ -245,18 +245,18 @@ LABEL_11:
   self->_placeholderViewController = 0;
 }
 
-- (void)_finishAuthenticateWithResponse:(id)a3 error:(id)a4
+- (void)_finishAuthenticateWithResponse:(id)response error:(id)error
 {
-  v7 = a3;
-  v6 = a4;
-  if (v7 && [v7 authenticateResponseType] == 4)
+  responseCopy = response;
+  errorCopy = error;
+  if (responseCopy && [responseCopy authenticateResponseType] == 4)
   {
     [(SKUIDonationViewController *)self _loadDonationConfiguration];
   }
 
   else
   {
-    [(SKUIDonationViewController *)self _configurationDidLoadWithResult:0 error:v6];
+    [(SKUIDonationViewController *)self _configurationDidLoadWithResult:0 error:errorCopy];
   }
 }
 
@@ -264,9 +264,9 @@ LABEL_11:
 {
   objc_initWeak(&location, self);
   v3 = [SKUIDonationConfiguration alloc];
-  v4 = [(SKUIDonationViewController *)self operationQueue];
-  v5 = [(SKUIDonationViewController *)self clientContext];
-  v6 = [(SKUIDonationConfiguration *)v3 initWithOperationQueue:v4 clientContext:v5];
+  operationQueue = [(SKUIDonationViewController *)self operationQueue];
+  clientContext = [(SKUIDonationViewController *)self clientContext];
+  v6 = [(SKUIDonationConfiguration *)v3 initWithOperationQueue:operationQueue clientContext:clientContext];
   donationConfiguration = self->_donationConfiguration;
   self->_donationConfiguration = v6;
 

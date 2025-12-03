@@ -1,5 +1,5 @@
 @interface WKFormAccessoryViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)axDoneItem;
 - (id)axNextItem;
 - (id)axPreviousItem;
@@ -8,12 +8,12 @@
 
 @implementation WKFormAccessoryViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"WKFormAccessoryView" hasInstanceVariable:@"_nextItem" withType:"{RetainPtr<UIBarButtonItem>=m_ptr@UIBarButtonItem}"];
-  [v3 validateClass:@"WKFormAccessoryView" hasInstanceVariable:@"_previousItem" withType:"{RetainPtr<UIBarButtonItem>=m_ptr@UIBarButtonItem}"];
-  [v3 validateClass:@"WKFormAccessoryView" hasInstanceVariable:@"_doneButton" withType:"{RetainPtr<UIBarButtonItem>=m_ptr@UIBarButtonItem}"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"WKFormAccessoryView" hasInstanceVariable:@"_nextItem" withType:"{RetainPtr<UIBarButtonItem>=m_ptr@UIBarButtonItem}"];
+  [validationsCopy validateClass:@"WKFormAccessoryView" hasInstanceVariable:@"_previousItem" withType:"{RetainPtr<UIBarButtonItem>=m_ptr@UIBarButtonItem}"];
+  [validationsCopy validateClass:@"WKFormAccessoryView" hasInstanceVariable:@"_doneButton" withType:"{RetainPtr<UIBarButtonItem>=m_ptr@UIBarButtonItem}"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -21,17 +21,17 @@
   v9.receiver = self;
   v9.super_class = WKFormAccessoryViewAccessibility;
   [(WKFormAccessoryViewAccessibility *)&v9 _accessibilityLoadAccessibilityInformation];
-  v3 = [(WKFormAccessoryViewAccessibility *)self axNextItem];
+  axNextItem = [(WKFormAccessoryViewAccessibility *)self axNextItem];
   v4 = accessibilityLocalizedString(@"next.button");
-  [v3 setAccessibilityLabel:v4];
+  [axNextItem setAccessibilityLabel:v4];
 
-  v5 = [(WKFormAccessoryViewAccessibility *)self axPreviousItem];
+  axPreviousItem = [(WKFormAccessoryViewAccessibility *)self axPreviousItem];
   v6 = accessibilityLocalizedString(@"previous.button");
-  [v5 setAccessibilityLabel:v6];
+  [axPreviousItem setAccessibilityLabel:v6];
 
-  v7 = [(WKFormAccessoryViewAccessibility *)self axDoneItem];
+  axDoneItem = [(WKFormAccessoryViewAccessibility *)self axDoneItem];
   v8 = accessibilityLocalizedString(@"done.button");
-  [v7 setAccessibilityLabel:v8];
+  [axDoneItem setAccessibilityLabel:v8];
 }
 
 - (id)axNextItem

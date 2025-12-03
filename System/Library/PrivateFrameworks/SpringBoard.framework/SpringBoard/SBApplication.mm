@@ -1,33 +1,33 @@
 @interface SBApplication
 + (BOOL)KJHKJHw39rq9w87q903475q0983rskjd;
 + (BOOL)_displayZoomSizesOnThisDeviceNeedRedaction;
-+ (CGSize)_defaultLaunchingSizeForClassicMode:(int64_t)a3;
-+ (CGSize)_defaultLaunchingSizeForDisplayConfiguration:(id)a3 classicMode:(int64_t)a4;
-+ (CGSize)_standardCanvasSizeForClassicMode:(int64_t)a3;
++ (CGSize)_defaultLaunchingSizeForClassicMode:(int64_t)mode;
++ (CGSize)_defaultLaunchingSizeForDisplayConfiguration:(id)configuration classicMode:(int64_t)mode;
++ (CGSize)_standardCanvasSizeForClassicMode:(int64_t)mode;
 + (id)_appStateKeysToPrefetch;
 + (id)_deviceSafeAreaInsets;
-+ (id)restrictedClassicModeDisplayConfigurationForDisplayConfiguration:(id)a3 classicMode:(int64_t)a4;
-+ (id)snapshotSortDescriptorForCustomSafeAreaInsets:(id)a3;
-+ (id)snapshotSortDescriptorForImageScale:(double)a3;
-+ (id)snapshotSortDescriptorForInterfaceOrientationMask:(unint64_t)a3;
-+ (id)snapshotSortDescriptorForLaunchInterfaceIdentifier:(id)a3;
-+ (id)snapshotSortDescriptorForNames:(id)a3;
-+ (id)snapshotSortDescriptorForReferenceSize:(CGSize)a3;
-+ (id)snapshotSortDescriptorForRequiredOSVersion:(id)a3;
-+ (id)snapshotSortDescriptorForScheme:(id)a3;
-+ (id)snapshotSortDescriptorForStatusBarStateMask:(unint64_t)a3;
-+ (id)snapshotSortDescriptorForUIUserInterfaceStyle:(int64_t)a3;
-+ (id)snapshotSortDescriptorsForNames:(id)a3 scheme:(id)a4 imageScale:(double)a5 referenceSize:(CGSize)a6 userInterfaceStyle:(int64_t)a7 statusBarStateMask:(unint64_t)a8 interfaceOrientationMask:(unint64_t)a9 requiredOSVersion:(id)a10;
-+ (int64_t)_bestAvailableClassicModeForHostingExtensionContainedInApplication:(BOOL)a3;
-+ (int64_t)_bestClassicModeForScreenType:(unint64_t)a3;
-+ (int64_t)_classicModeForLaunchingSize:(CGSize)a3;
-+ (int64_t)_classicModeReplacingMoreSpaceWithEquivalentStandardCanvasForClassicMode:(int64_t)a3;
-+ (unint64_t)_canonicalScreenTypeForClassicMode:(int64_t)a3;
-+ (unint64_t)_niceScreenTypeForClassicType:(unint64_t)a3 matchingAValidDisplayZoomModeOnScreenType:(unint64_t)a4;
-+ (unint64_t)_unobscuredScreenTypeForScreenType:(uint64_t)a1;
++ (id)restrictedClassicModeDisplayConfigurationForDisplayConfiguration:(id)configuration classicMode:(int64_t)mode;
++ (id)snapshotSortDescriptorForCustomSafeAreaInsets:(id)insets;
++ (id)snapshotSortDescriptorForImageScale:(double)scale;
++ (id)snapshotSortDescriptorForInterfaceOrientationMask:(unint64_t)mask;
++ (id)snapshotSortDescriptorForLaunchInterfaceIdentifier:(id)identifier;
++ (id)snapshotSortDescriptorForNames:(id)names;
++ (id)snapshotSortDescriptorForReferenceSize:(CGSize)size;
++ (id)snapshotSortDescriptorForRequiredOSVersion:(id)version;
++ (id)snapshotSortDescriptorForScheme:(id)scheme;
++ (id)snapshotSortDescriptorForStatusBarStateMask:(unint64_t)mask;
++ (id)snapshotSortDescriptorForUIUserInterfaceStyle:(int64_t)style;
++ (id)snapshotSortDescriptorsForNames:(id)names scheme:(id)scheme imageScale:(double)scale referenceSize:(CGSize)size userInterfaceStyle:(int64_t)style statusBarStateMask:(unint64_t)mask interfaceOrientationMask:(unint64_t)orientationMask requiredOSVersion:(id)self0;
++ (int64_t)_bestAvailableClassicModeForHostingExtensionContainedInApplication:(BOOL)application;
++ (int64_t)_bestClassicModeForScreenType:(unint64_t)type;
++ (int64_t)_classicModeForLaunchingSize:(CGSize)size;
++ (int64_t)_classicModeReplacingMoreSpaceWithEquivalentStandardCanvasForClassicMode:(int64_t)mode;
++ (unint64_t)_canonicalScreenTypeForClassicMode:(int64_t)mode;
++ (unint64_t)_niceScreenTypeForClassicType:(unint64_t)type matchingAValidDisplayZoomModeOnScreenType:(unint64_t)screenType;
++ (unint64_t)_unobscuredScreenTypeForScreenType:(uint64_t)type;
 + (void)_markAllManifestsForReingestion;
 + (void)_reingestStaticDefaultImagesForAllApps;
-- (BOOL)_canLaunchInClassicMode:(int64_t)a3;
+- (BOOL)_canLaunchInClassicMode:(int64_t)mode;
 - (BOOL)_classicAppScaledOnPhone;
 - (BOOL)_classicAppScaledPadOnPad;
 - (BOOL)_classicAppScaledPhoneOnPad;
@@ -43,143 +43,143 @@
 - (BOOL)classicAppWithRoundedCorners;
 - (BOOL)classicAppZoomedIn;
 - (BOOL)classicAppZoomedInOrRequiresHiDPI;
-- (BOOL)hasRegisteredBackgroundActivityWithIdentifier:(id)a3;
-- (BOOL)icon:(id)a3 launchFromLocation:(id)a4 context:(id)a5;
-- (BOOL)iconAllowsLaunch:(id)a3;
-- (BOOL)iconCompleteUninstall:(id)a3;
-- (BOOL)includesStatusBarInClassicJailForInterfaceOrientation:(int64_t)a3;
+- (BOOL)hasRegisteredBackgroundActivityWithIdentifier:(id)identifier;
+- (BOOL)icon:(id)icon launchFromLocation:(id)location context:(id)context;
+- (BOOL)iconAllowsLaunch:(id)launch;
+- (BOOL)iconCompleteUninstall:(id)uninstall;
+- (BOOL)includesStatusBarInClassicJailForInterfaceOrientation:(int64_t)orientation;
 - (BOOL)isAnyTerminationAssertionInEffect;
 - (BOOL)isFaceTime;
 - (BOOL)isMedusaCapable;
 - (BOOL)isMobilePhone;
 - (BOOL)isPaperBoard;
-- (BOOL)isSameExecutableAsApplication:(id)a3;
+- (BOOL)isSameExecutableAsApplication:(id)application;
 - (BOOL)isSetup;
 - (BOOL)isSpotlight;
 - (BOOL)isSpringBoard;
-- (BOOL)isTimedOutForIcon:(id)a3;
+- (BOOL)isTimedOutForIcon:(id)icon;
 - (BOOL)isUninstallSupported;
 - (BOOL)isUninstalled;
 - (BOOL)onlySupportsOneOrientation;
 - (BOOL)restrictedToTheEmbeddedDisplayInChamois;
-- (BOOL)shouldReceiveSourceApplicationContextFromOriginatingApplication:(id)a3;
+- (BOOL)shouldReceiveSourceApplicationContextFromOriginatingApplication:(id)application;
 - (BOOL)supportsChamoisOnExternalDisplay;
-- (BOOL)supportsMixedOrientationForSwitcherWindowManagementContext:(id)a3 displayIdentity:(id)a4;
-- (BOOL)supportsMultiWindowLayoutsForSwitcherWindowManagementContext:(id)a3 displayIdentity:(id)a4;
+- (BOOL)supportsMixedOrientationForSwitcherWindowManagementContext:(id)context displayIdentity:(id)identity;
+- (BOOL)supportsMultiWindowLayoutsForSwitcherWindowManagementContext:(id)context displayIdentity:(id)identity;
 - (BOOL)supportsMultitaskingShelf;
 - (BOOL)suppressesControlCenter;
 - (BOOL)wantsAutoLaunchForVOIP;
-- (CGRect)snapshotFrameForClassicInsideBounds:(CGRect)a3 forOrientation:(int64_t)a4 scaleFactor:(CGSize *)a5 inReferenceSpace:(BOOL)a6;
-- (CGSize)defaultLaunchingSizeForDisplayConfiguration:(id)a3;
-- (CGSize)snapshotSizeAdjustedForLegacyStatusBarBasedOnSize:(CGSize)a3 interfaceOrientation:(int64_t)a4 contentFrame:(CGRect *)a5;
+- (CGRect)snapshotFrameForClassicInsideBounds:(CGRect)bounds forOrientation:(int64_t)orientation scaleFactor:(CGSize *)factor inReferenceSpace:(BOOL)space;
+- (CGSize)defaultLaunchingSizeForDisplayConfiguration:(id)configuration;
+- (CGSize)snapshotSizeAdjustedForLegacyStatusBarBasedOnSize:(CGSize)size interfaceOrientation:(int64_t)orientation contentFrame:(CGRect *)frame;
 - (NSArray)dynamicApplicationShortcutItems;
 - (NSDate)nextWakeDate;
-- (SBApplication)initWithApplicationInfo:(id)a3;
+- (SBApplication)initWithApplicationInfo:(id)info;
 - (SBApplicationAppProtectionAssistant)appProtectionAssistant;
 - (SBApplicationInfo)info;
 - (SBApplicationWakeScheduler)legacyVOIPPeriodicWakeScheduler;
 - (id)_classicModeForHostingExtensionContainedInThisApplicationInUnknownHostingHierarchy;
 - (id)_defaultLaunchImageBaseName;
-- (id)_defaultPNGNameFromSuspensionSettingsWithExpiration:(double *)a3 sceneID:(id)a4;
-- (id)_defaultPNGNameUsingFallbacksWithSceneID:(id)a3 contentOverridesContext:(id)a4;
-- (id)_normalizeSnapshotName:(id)a3;
-- (id)_preferredImagePathByScaleInBundle:(id)a3 resourceName:(id)a4 ofType:(id)a5 scale:(double)a6 outScale:(double *)a7;
-- (id)_preferredImagePathInBundle:(id)a3 baseResourceName:(id)a4 ofType:(id)a5 forMainScene:(BOOL)a6 size:(CGSize)a7 scale:(double)a8 outScale:(double *)a9;
-- (id)_prepareInitializationContextIfNecessaryForLaunchOnDisplayConfiguration:(id)a3;
-- (id)_sceneIdentifierForStoredPersistenceIdentifier:(id)a3;
-- (id)_snapshotManifestCreateIfNeeded:(BOOL)a3;
-- (id)_snapshotsWithImageName:(id)a3 sceneHandle:(id)a4 referenceSize:(CGSize)a5 requireExactSize:(BOOL)a6 launchingScale:(double)a7 contentTypeMask:(unint64_t)a8 statusBarStateMask:(unint64_t)a9 launchingOrientation:(int64_t)a10 contentOverridesContext:(id)a11 userInterfaceStyle:(int64_t)a12 displayEdgeInfo:(id)a13;
-- (id)_windowSceneFromApplicationSceneHandle:(id)a3;
+- (id)_defaultPNGNameFromSuspensionSettingsWithExpiration:(double *)expiration sceneID:(id)d;
+- (id)_defaultPNGNameUsingFallbacksWithSceneID:(id)d contentOverridesContext:(id)context;
+- (id)_normalizeSnapshotName:(id)name;
+- (id)_preferredImagePathByScaleInBundle:(id)bundle resourceName:(id)name ofType:(id)type scale:(double)scale outScale:(double *)outScale;
+- (id)_preferredImagePathInBundle:(id)bundle baseResourceName:(id)name ofType:(id)type forMainScene:(BOOL)scene size:(CGSize)size scale:(double)scale outScale:(double *)outScale;
+- (id)_prepareInitializationContextIfNecessaryForLaunchOnDisplayConfiguration:(id)configuration;
+- (id)_sceneIdentifierForStoredPersistenceIdentifier:(id)identifier;
+- (id)_snapshotManifestCreateIfNeeded:(BOOL)needed;
+- (id)_snapshotsWithImageName:(id)name sceneHandle:(id)handle referenceSize:(CGSize)size requireExactSize:(BOOL)exactSize launchingScale:(double)scale contentTypeMask:(unint64_t)mask statusBarStateMask:(unint64_t)stateMask launchingOrientation:(int64_t)self0 contentOverridesContext:(id)self1 userInterfaceStyle:(int64_t)self2 displayEdgeInfo:(id)self3;
+- (id)_windowSceneFromApplicationSceneHandle:(id)handle;
 - (id)backgroundActivityAttributionsByIdentifier;
 - (id)badgeValue;
-- (id)bestSnapshotWithImageName:(id)a3 sceneHandle:(id)a4 variantID:(id)a5 scale:(double)a6 referenceSize:(CGSize)a7 requireExactSize:(BOOL)a8 contentTypeMask:(unint64_t)a9 statusBarStateMask:(unint64_t)a10 launchingOrientation:(int64_t)a11 contentOverridesContext:(id)a12 userInterfaceStyle:(int64_t)a13 displayEdgeInfo:(id)a14;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)folderFallbackTitleForIcon:(id)a3;
-- (id)folderTitleOptionsForIcon:(id)a3;
-- (id)iTunesCategoriesOrderedByRelevancyForIcon:(id)a3;
-- (id)icon:(id)a3 displayNameForObscuredDisabledLaunchForLocation:(id)a4;
-- (id)lastWindowLayoutAttributesForDisplayOrdinal:(int64_t)a3;
-- (id)mostRecentSceneSnapshotsForSceneHandle:(id)a3 scale:(double)a4 launchingOrientation:(int64_t)a5;
-- (id)restrictedClassicModeDisplayConfigurationForDisplayConfiguration:(id)a3;
+- (id)bestSnapshotWithImageName:(id)name sceneHandle:(id)handle variantID:(id)d scale:(double)scale referenceSize:(CGSize)size requireExactSize:(BOOL)exactSize contentTypeMask:(unint64_t)mask statusBarStateMask:(unint64_t)self0 launchingOrientation:(int64_t)self1 contentOverridesContext:(id)self2 userInterfaceStyle:(int64_t)self3 displayEdgeInfo:(id)self4;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)folderFallbackTitleForIcon:(id)icon;
+- (id)folderTitleOptionsForIcon:(id)icon;
+- (id)iTunesCategoriesOrderedByRelevancyForIcon:(id)icon;
+- (id)icon:(id)icon displayNameForObscuredDisabledLaunchForLocation:(id)location;
+- (id)lastWindowLayoutAttributesForDisplayOrdinal:(int64_t)ordinal;
+- (id)mostRecentSceneSnapshotsForSceneHandle:(id)handle scale:(double)scale launchingOrientation:(int64_t)orientation;
+- (id)restrictedClassicModeDisplayConfigurationForDisplayConfiguration:(id)configuration;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
-- (id)tagsForIcon:(id)a3;
+- (id)tagsForIcon:(id)icon;
 - (int)dataUsage;
 - (int64_t)_classicMode;
 - (int64_t)_classicModeFromSupportedTypes;
 - (int64_t)_defaultClassicMode;
-- (int64_t)dataOwnershipRoleAsDragDropTargetForIcon:(id)a3;
-- (int64_t)labelAccessoryTypeForIcon:(id)a3;
-- (int64_t)preferredSizingPolicyForSwitcherWindowManagementContext:(id)a3 displayIdentity:(id)a4 contentOrientation:(int64_t)a5 containerOrientation:(int64_t)a6;
+- (int64_t)dataOwnershipRoleAsDragDropTargetForIcon:(id)icon;
+- (int64_t)labelAccessoryTypeForIcon:(id)icon;
+- (int64_t)preferredSizingPolicyForSwitcherWindowManagementContext:(id)context displayIdentity:(id)identity contentOrientation:(int64_t)orientation containerOrientation:(int64_t)containerOrientation;
 - (uint64_t)_bypassesClassicMode;
 - (uint64_t)_isNewEnoughToKnowAbout2020Phones;
 - (uint64_t)_isNewEnoughToKnowAboutRoundPads;
-- (uint64_t)_screenTypeForClassicMode:(uint64_t)a1;
+- (uint64_t)_screenTypeForClassicMode:(uint64_t)mode;
 - (unint64_t)_appRestrictionReason;
 - (unint64_t)_supportedTypeForClassicModeNone;
-- (unint64_t)supportedSizingPoliciesForSwitcherWindowManagementContext:(id)a3 displayIdentity:(id)a4 contentOrientation:(int64_t)a5 containerOrientation:(int64_t)a6;
-- (void)__noteSnapshotDidUpdate:(int64_t)a3 forSceneIdentifier:(id)a4;
+- (unint64_t)supportedSizingPoliciesForSwitcherWindowManagementContext:(id)context displayIdentity:(id)identity contentOrientation:(int64_t)orientation containerOrientation:(int64_t)containerOrientation;
+- (void)__noteSnapshotDidUpdate:(int64_t)update forSceneIdentifier:(id)identifier;
 - (void)_calculateSupportedTypesForSplashBoard;
 - (void)_calculateSupportedTypesLazilyIfNecessary;
-- (void)_classicModeForHostingExtensionContainedInApplication:(void *)a1;
+- (void)_classicModeForHostingExtensionContainedInApplication:(void *)application;
 - (void)_clearSceneTitles;
-- (void)_didExitWithContext:(id)a3;
+- (void)_didExitWithContext:(id)context;
 - (void)_didSuspend;
-- (void)_ingestDefaultPNGsInManifest:(id)a3 withLaunchImageBaseName:(id)a4;
-- (void)_ingestInfoPlistImagesInManifest:(id)a3;
+- (void)_ingestDefaultPNGsInManifest:(id)manifest withLaunchImageBaseName:(id)name;
+- (void)_ingestInfoPlistImagesInManifest:(id)manifest;
 - (void)_invalidateBackgroundActivityAttributions;
-- (void)_lockStateDidChange:(id)a3;
+- (void)_lockStateDidChange:(id)change;
 - (void)_noteIconDataSourceDidChange;
-- (void)_noteProcess:(id)a3 didChangeToState:(id)a4;
-- (void)_noteSnapshotDidUpdateForSceneIdentifiers:(id)a3;
-- (void)_processDidLaunch:(id)a3;
-- (void)_processWillLaunch:(id)a3;
+- (void)_noteProcess:(id)process didChangeToState:(id)state;
+- (void)_noteSnapshotDidUpdateForSceneIdentifiers:(id)identifiers;
+- (void)_processDidLaunch:(id)launch;
+- (void)_processWillLaunch:(id)launch;
 - (void)_purgeAndResetStaticDefaultImagesInSnapshotManifest;
 - (void)_purgeStaticDefaultImagesInSnapshotManifest;
 - (void)_recalculateApplicationSupportedTypes;
 - (void)_reingestStaticDefaultImagesInSnapshotManifest;
 - (void)_resetLaunchImageIngestionStatus;
-- (void)_setClassicAppZoomedIn:(BOOL)a3;
-- (void)_setDataUsage:(int)a3;
-- (void)_setNewlyInstalled:(BOOL)a3;
-- (void)_setRecentlyUpdated:(BOOL)a3;
-- (void)_updateProcess:(id)a3 withState:(id)a4;
+- (void)_setClassicAppZoomedIn:(BOOL)in;
+- (void)_setDataUsage:(int)usage;
+- (void)_setNewlyInstalled:(BOOL)installed;
+- (void)_setRecentlyUpdated:(BOOL)updated;
+- (void)_updateProcess:(id)process withState:(id)state;
 - (void)_updateRecentlyUpdatedTimer;
-- (void)_xbactivity_saveSnapshotForSceneHandle:(id)a3 context:(id)a4 completion:(id)a5;
+- (void)_xbactivity_saveSnapshotForSceneHandle:(id)handle context:(id)context completion:(id)completion;
 - (void)clearLastWindowLayoutAttributes;
 - (void)clearNewlyInstalledAndRecentlyUpdatedStatus;
-- (void)createDownscaledVariantForSnapshot:(id)a3 sceneHandle:(id)a4 scaleFactor:(double)a5 didSaveImage:(id)a6;
+- (void)createDownscaledVariantForSnapshot:(id)snapshot sceneHandle:(id)handle scaleFactor:(double)factor didSaveImage:(id)image;
 - (void)dealloc;
 - (void)deleteAllSnapshots;
-- (void)deleteSnapshotForContext:(id)a3;
+- (void)deleteSnapshotForContext:(id)context;
 - (void)flushSnapshotsForAllScenes;
 - (void)flushSnapshotsForAllScenesIncludingAllLegacyImages;
-- (void)flushSnapshotsForSceneID:(id)a3;
-- (void)launchFromIcon:(id)a3 location:(id)a4 context:(id)a5;
-- (void)manifest:(id)a3 didPurgeProtectedContentSnapshotsWithGroupIdentifiers:(id)a4;
-- (void)preHeatForUserLaunchIfNecessaryWithAbsoluteTime:(unint64_t)a3 andContinuousTime:(unint64_t)a4;
+- (void)flushSnapshotsForSceneID:(id)d;
+- (void)launchFromIcon:(id)icon location:(id)location context:(id)context;
+- (void)manifest:(id)manifest didPurgeProtectedContentSnapshotsWithGroupIdentifiers:(id)identifiers;
+- (void)preHeatForUserLaunchIfNecessaryWithAbsoluteTime:(unint64_t)time andContinuousTime:(unint64_t)continuousTime;
 - (void)purgeCaches;
 - (void)refreshLaunchImagesInSnapshotManifestIfNeeded;
-- (void)releaseBackgroundActivityAttribution:(id)a3;
-- (void)saveSnapshotForSceneHandle:(id)a3 context:(id)a4 completion:(id)a5;
-- (void)saveSuspendSnapshot:(id)a3 forSceneHandle:(id)a4;
-- (void)setBadgeValue:(id)a3;
-- (void)setConnectedToExternalAccessory:(BOOL)a3;
-- (void)setDynamicApplicationShortcutItems:(id)a3;
-- (void)setHasDisplayedLaunchAlert:(BOOL)a3 forType:(unint64_t)a4;
-- (void)setInfo:(id)a3;
-- (void)setLastWindowLayoutAttributes:(id)a3 forDisplayOrdinal:(int64_t)a4;
-- (void)setNextWakeDate:(id)a3;
-- (void)setNowRecordingApplication:(BOOL)a3;
-- (void)setPlayingAudio:(BOOL)a3;
-- (void)setShowsProgress:(BOOL)a3;
-- (void)setUninstalled:(BOOL)a3;
-- (void)setUsesBackgroundNetwork:(BOOL)a3;
-- (void)setUsesEdgeNetwork:(BOOL)a3;
-- (void)setUsesWiFiNetwork:(BOOL)a3;
-- (void)setWantsAutoLaunchForVOIP:(BOOL)a3;
-- (void)takeBackgroundActivityAttribution:(id)a3;
+- (void)releaseBackgroundActivityAttribution:(id)attribution;
+- (void)saveSnapshotForSceneHandle:(id)handle context:(id)context completion:(id)completion;
+- (void)saveSuspendSnapshot:(id)snapshot forSceneHandle:(id)handle;
+- (void)setBadgeValue:(id)value;
+- (void)setConnectedToExternalAccessory:(BOOL)accessory;
+- (void)setDynamicApplicationShortcutItems:(id)items;
+- (void)setHasDisplayedLaunchAlert:(BOOL)alert forType:(unint64_t)type;
+- (void)setInfo:(id)info;
+- (void)setLastWindowLayoutAttributes:(id)attributes forDisplayOrdinal:(int64_t)ordinal;
+- (void)setNextWakeDate:(id)date;
+- (void)setNowRecordingApplication:(BOOL)application;
+- (void)setPlayingAudio:(BOOL)audio;
+- (void)setShowsProgress:(BOOL)progress;
+- (void)setUninstalled:(BOOL)uninstalled;
+- (void)setUsesBackgroundNetwork:(BOOL)network;
+- (void)setUsesEdgeNetwork:(BOOL)network;
+- (void)setUsesWiFiNetwork:(BOOL)network;
+- (void)setWantsAutoLaunchForVOIP:(BOOL)p;
+- (void)takeBackgroundActivityAttribution:(id)attribution;
 - (void)uninstall;
 @end
 
@@ -187,10 +187,10 @@
 
 - (SBApplicationInfo)info
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_appInfo;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_appInfo;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -233,30 +233,30 @@
 
   else
   {
-    v8 = [MEMORY[0x277D75418] currentDevice];
-    v9 = [v8 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v9 != 1)
+    if (userInterfaceIdiom != 1)
     {
 LABEL_9:
-      v6 = [objc_opt_class() _deviceHasDynamicIsland];
-      v7 = __sb__runningInSpringBoard();
-      if (v7)
+      _deviceHasDynamicIsland = [objc_opt_class() _deviceHasDynamicIsland];
+      mainScreen2 = __sb__runningInSpringBoard();
+      if (mainScreen2)
       {
         __sb__mainScreenReferenceBounds();
       }
 
       else
       {
-        v2 = [MEMORY[0x277D759A0] mainScreen];
-        [v2 _referenceBounds];
+        mainScreen = [MEMORY[0x277D759A0] mainScreen];
+        [mainScreen _referenceBounds];
       }
 
       BSSizeRoundForScale();
       v12 = MEMORY[0x277D66E30];
       if (BSSizeEqualToSize())
       {
-        v13 = [(SBApplication *)self _supportsApplicationType:0x2000]& v6;
+        v13 = [(SBApplication *)self _supportsApplicationType:0x2000]& _deviceHasDynamicIsland;
       }
 
       else
@@ -264,7 +264,7 @@ LABEL_9:
         v13 = 0;
       }
 
-      if ((v7 & 1) == 0)
+      if ((mainScreen2 & 1) == 0)
       {
       }
 
@@ -273,22 +273,22 @@ LABEL_9:
         goto LABEL_313;
       }
 
-      v7 = __sb__runningInSpringBoard();
-      if (v7)
+      mainScreen2 = __sb__runningInSpringBoard();
+      if (mainScreen2)
       {
         __sb__mainScreenReferenceBounds();
       }
 
       else
       {
-        v2 = [MEMORY[0x277D759A0] mainScreen];
-        [v2 _referenceBounds];
+        mainScreen = [MEMORY[0x277D759A0] mainScreen];
+        [mainScreen _referenceBounds];
       }
 
       BSSizeRoundForScale();
       if (BSSizeEqualToSize())
       {
-        v16 = [(SBApplication *)self _supportsApplicationType:4096]& v6;
+        v16 = [(SBApplication *)self _supportsApplicationType:4096]& _deviceHasDynamicIsland;
       }
 
       else
@@ -296,7 +296,7 @@ LABEL_9:
         v16 = 0;
       }
 
-      if ((v7 & 1) == 0)
+      if ((mainScreen2 & 1) == 0)
       {
       }
 
@@ -305,16 +305,16 @@ LABEL_9:
         goto LABEL_313;
       }
 
-      v7 = __sb__runningInSpringBoard();
-      if (v7)
+      mainScreen2 = __sb__runningInSpringBoard();
+      if (mainScreen2)
       {
         __sb__mainScreenReferenceBounds();
       }
 
       else
       {
-        v2 = [MEMORY[0x277D759A0] mainScreen];
-        [v2 _referenceBounds];
+        mainScreen = [MEMORY[0x277D759A0] mainScreen];
+        [mainScreen _referenceBounds];
       }
 
       BSSizeRoundForScale();
@@ -328,7 +328,7 @@ LABEL_9:
         v19 = 0;
       }
 
-      if ((v7 & 1) == 0)
+      if ((mainScreen2 & 1) == 0)
       {
       }
 
@@ -337,22 +337,22 @@ LABEL_9:
         goto LABEL_313;
       }
 
-      v7 = __sb__runningInSpringBoard();
-      if (v7)
+      mainScreen2 = __sb__runningInSpringBoard();
+      if (mainScreen2)
       {
         __sb__mainScreenReferenceBounds();
       }
 
       else
       {
-        v2 = [MEMORY[0x277D759A0] mainScreen];
-        [v2 _referenceBounds];
+        mainScreen = [MEMORY[0x277D759A0] mainScreen];
+        [mainScreen _referenceBounds];
       }
 
       BSSizeRoundForScale();
       if (BSSizeEqualToSize())
       {
-        v28 = [(SBApplication *)self _supportsApplicationType:0x4000]& v6;
+        v28 = [(SBApplication *)self _supportsApplicationType:0x4000]& _deviceHasDynamicIsland;
       }
 
       else
@@ -360,7 +360,7 @@ LABEL_9:
         v28 = 0;
       }
 
-      if ((v7 & 1) == 0)
+      if ((mainScreen2 & 1) == 0)
       {
       }
 
@@ -369,16 +369,16 @@ LABEL_9:
         goto LABEL_313;
       }
 
-      v7 = __sb__runningInSpringBoard();
-      if (v7)
+      mainScreen2 = __sb__runningInSpringBoard();
+      if (mainScreen2)
       {
         __sb__mainScreenReferenceBounds();
       }
 
       else
       {
-        v2 = [MEMORY[0x277D759A0] mainScreen];
-        [v2 _referenceBounds];
+        mainScreen = [MEMORY[0x277D759A0] mainScreen];
+        [mainScreen _referenceBounds];
       }
 
       BSSizeRoundForScale();
@@ -392,7 +392,7 @@ LABEL_9:
         v45 = 0;
       }
 
-      if ((v7 & 1) == 0)
+      if ((mainScreen2 & 1) == 0)
       {
       }
 
@@ -401,22 +401,22 @@ LABEL_9:
         goto LABEL_313;
       }
 
-      v7 = __sb__runningInSpringBoard();
-      if (v7)
+      mainScreen2 = __sb__runningInSpringBoard();
+      if (mainScreen2)
       {
         __sb__mainScreenReferenceBounds();
       }
 
       else
       {
-        v2 = [MEMORY[0x277D759A0] mainScreen];
-        [v2 _referenceBounds];
+        mainScreen = [MEMORY[0x277D759A0] mainScreen];
+        [mainScreen _referenceBounds];
       }
 
       BSSizeRoundForScale();
       if (BSSizeEqualToSize())
       {
-        v57 = [(SBApplication *)self _supportsApplicationType:512]& v6;
+        v57 = [(SBApplication *)self _supportsApplicationType:512]& _deviceHasDynamicIsland;
       }
 
       else
@@ -424,7 +424,7 @@ LABEL_9:
         v57 = 0;
       }
 
-      if ((v7 & 1) == 0)
+      if ((mainScreen2 & 1) == 0)
       {
       }
 
@@ -433,22 +433,22 @@ LABEL_9:
         goto LABEL_313;
       }
 
-      v7 = __sb__runningInSpringBoard();
-      if (v7)
+      mainScreen2 = __sb__runningInSpringBoard();
+      if (mainScreen2)
       {
         __sb__mainScreenReferenceBounds();
       }
 
       else
       {
-        v2 = [MEMORY[0x277D759A0] mainScreen];
-        [v2 _referenceBounds];
+        mainScreen = [MEMORY[0x277D759A0] mainScreen];
+        [mainScreen _referenceBounds];
       }
 
       BSSizeRoundForScale();
       if (BSSizeEqualToSize())
       {
-        v61 = [(SBApplication *)self _supportsApplicationType:256]& v6;
+        v61 = [(SBApplication *)self _supportsApplicationType:256]& _deviceHasDynamicIsland;
       }
 
       else
@@ -456,7 +456,7 @@ LABEL_9:
         v61 = 0;
       }
 
-      if ((v7 & 1) == 0)
+      if ((mainScreen2 & 1) == 0)
       {
       }
 
@@ -465,16 +465,16 @@ LABEL_9:
         goto LABEL_313;
       }
 
-      v7 = __sb__runningInSpringBoard();
-      if (v7)
+      mainScreen2 = __sb__runningInSpringBoard();
+      if (mainScreen2)
       {
         __sb__mainScreenReferenceBounds();
       }
 
       else
       {
-        v2 = [MEMORY[0x277D759A0] mainScreen];
-        [v2 _referenceBounds];
+        mainScreen = [MEMORY[0x277D759A0] mainScreen];
+        [mainScreen _referenceBounds];
       }
 
       BSSizeRoundForScale();
@@ -488,7 +488,7 @@ LABEL_9:
         v65 = 0;
       }
 
-      if ((v7 & 1) == 0)
+      if ((mainScreen2 & 1) == 0)
       {
       }
 
@@ -497,16 +497,16 @@ LABEL_9:
         goto LABEL_313;
       }
 
-      v7 = __sb__runningInSpringBoard();
-      if (v7)
+      mainScreen2 = __sb__runningInSpringBoard();
+      if (mainScreen2)
       {
         __sb__mainScreenReferenceBounds();
       }
 
       else
       {
-        v2 = [MEMORY[0x277D759A0] mainScreen];
-        [v2 _referenceBounds];
+        mainScreen = [MEMORY[0x277D759A0] mainScreen];
+        [mainScreen _referenceBounds];
       }
 
       BSSizeRoundForScale();
@@ -520,7 +520,7 @@ LABEL_9:
         v69 = 0;
       }
 
-      if ((v7 & 1) == 0)
+      if ((mainScreen2 & 1) == 0)
       {
       }
 
@@ -529,16 +529,16 @@ LABEL_9:
         goto LABEL_313;
       }
 
-      v7 = __sb__runningInSpringBoard();
-      if (v7)
+      mainScreen2 = __sb__runningInSpringBoard();
+      if (mainScreen2)
       {
         __sb__mainScreenReferenceBounds();
       }
 
       else
       {
-        v2 = [MEMORY[0x277D759A0] mainScreen];
-        [v2 _referenceBounds];
+        mainScreen = [MEMORY[0x277D759A0] mainScreen];
+        [mainScreen _referenceBounds];
       }
 
       BSSizeRoundForScale();
@@ -552,7 +552,7 @@ LABEL_9:
         v73 = 0;
       }
 
-      if ((v7 & 1) == 0)
+      if ((mainScreen2 & 1) == 0)
       {
       }
 
@@ -561,16 +561,16 @@ LABEL_9:
         goto LABEL_313;
       }
 
-      v7 = __sb__runningInSpringBoard();
-      if (v7)
+      mainScreen2 = __sb__runningInSpringBoard();
+      if (mainScreen2)
       {
         __sb__mainScreenReferenceBounds();
       }
 
       else
       {
-        v2 = [MEMORY[0x277D759A0] mainScreen];
-        [v2 _referenceBounds];
+        mainScreen = [MEMORY[0x277D759A0] mainScreen];
+        [mainScreen _referenceBounds];
       }
 
       BSSizeRoundForScale();
@@ -585,7 +585,7 @@ LABEL_9:
         v77 = 0;
       }
 
-      if ((v7 & 1) == 0)
+      if ((mainScreen2 & 1) == 0)
       {
       }
 
@@ -594,16 +594,16 @@ LABEL_9:
         goto LABEL_313;
       }
 
-      v7 = __sb__runningInSpringBoard();
-      if (v7)
+      mainScreen2 = __sb__runningInSpringBoard();
+      if (mainScreen2)
       {
         __sb__mainScreenReferenceBounds();
       }
 
       else
       {
-        v2 = [MEMORY[0x277D759A0] mainScreen];
-        [v2 _referenceBounds];
+        mainScreen = [MEMORY[0x277D759A0] mainScreen];
+        [mainScreen _referenceBounds];
       }
 
       BSSizeRoundForScale();
@@ -618,7 +618,7 @@ LABEL_9:
         v81 = 0;
       }
 
-      if ((v7 & 1) == 0)
+      if ((mainScreen2 & 1) == 0)
       {
       }
 
@@ -627,16 +627,16 @@ LABEL_9:
         goto LABEL_313;
       }
 
-      v7 = __sb__runningInSpringBoard();
-      if (v7)
+      mainScreen2 = __sb__runningInSpringBoard();
+      if (mainScreen2)
       {
         __sb__mainScreenReferenceBounds();
       }
 
       else
       {
-        v2 = [MEMORY[0x277D759A0] mainScreen];
-        [v2 _referenceBounds];
+        mainScreen = [MEMORY[0x277D759A0] mainScreen];
+        [mainScreen _referenceBounds];
       }
 
       BSSizeRoundForScale();
@@ -651,7 +651,7 @@ LABEL_9:
         v85 = 0;
       }
 
-      if ((v7 & 1) == 0)
+      if ((mainScreen2 & 1) == 0)
       {
       }
 
@@ -672,8 +672,8 @@ LABEL_313:
 
         else
         {
-          v7 = [MEMORY[0x277D759A0] mainScreen];
-          [v7 _referenceBounds];
+          mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+          [mainScreen2 _referenceBounds];
         }
 
         BSSizeRoundForScale();
@@ -705,8 +705,8 @@ LABEL_313:
 
         else
         {
-          v7 = [MEMORY[0x277D759A0] mainScreen];
-          [v7 _referenceBounds];
+          mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+          [mainScreen2 _referenceBounds];
         }
 
         BSSizeRoundForScale();
@@ -740,14 +740,14 @@ LABEL_313:
 
       else
       {
-        v2 = [MEMORY[0x277D759A0] mainScreen];
-        [v2 _referenceBounds];
+        mainScreen = [MEMORY[0x277D759A0] mainScreen];
+        [mainScreen _referenceBounds];
       }
 
       BSSizeRoundForScale();
       if (BSSizeLessThanSize())
       {
-        v95 = [(SBApplication *)self _supportsApplicationType:0x2000]& v6;
+        v95 = [(SBApplication *)self _supportsApplicationType:0x2000]& _deviceHasDynamicIsland;
       }
 
       else
@@ -773,14 +773,14 @@ LABEL_313:
 
       else
       {
-        v2 = [MEMORY[0x277D759A0] mainScreen];
-        [v2 _referenceBounds];
+        mainScreen = [MEMORY[0x277D759A0] mainScreen];
+        [mainScreen _referenceBounds];
       }
 
       BSSizeRoundForScale();
       if (BSSizeLessThanSize())
       {
-        v101 = [(SBApplication *)self _supportsApplicationType:4096]& v6;
+        v101 = [(SBApplication *)self _supportsApplicationType:4096]& _deviceHasDynamicIsland;
       }
 
       else
@@ -806,46 +806,46 @@ LABEL_313:
 
       else
       {
-        v2 = [MEMORY[0x277D759A0] mainScreen];
-        [v2 _referenceBounds];
+        mainScreen = [MEMORY[0x277D759A0] mainScreen];
+        [mainScreen _referenceBounds];
       }
 
       BSSizeRoundForScale();
       if (BSSizeLessThanSize())
       {
-        v107 = [(SBApplication *)self _supportsApplicationType:512]& v6;
+        mainScreen4 = [(SBApplication *)self _supportsApplicationType:512]& _deviceHasDynamicIsland;
       }
 
       else
       {
-        v107 = 0;
+        mainScreen4 = 0;
       }
 
       if ((v105 & 1) == 0)
       {
       }
 
-      if (v107)
+      if (mainScreen4)
       {
         return 11;
       }
 
-      v110 = __sb__runningInSpringBoard();
-      if (v110)
+      mainScreen3 = __sb__runningInSpringBoard();
+      if (mainScreen3)
       {
         __sb__mainScreenReferenceBounds();
       }
 
       else
       {
-        v2 = [MEMORY[0x277D759A0] mainScreen];
-        [v2 _referenceBounds];
+        mainScreen = [MEMORY[0x277D759A0] mainScreen];
+        [mainScreen _referenceBounds];
       }
 
       BSSizeRoundForScale();
       if (BSSizeLessThanSize())
       {
-        v112 = [(SBApplication *)self _supportsApplicationType:256]& v6;
+        v112 = [(SBApplication *)self _supportsApplicationType:256]& _deviceHasDynamicIsland;
       }
 
       else
@@ -853,7 +853,7 @@ LABEL_313:
         v112 = 0;
       }
 
-      if ((v110 & 1) == 0)
+      if ((mainScreen3 & 1) == 0)
       {
       }
 
@@ -871,8 +871,8 @@ LABEL_313:
 
       else
       {
-        v110 = [MEMORY[0x277D759A0] mainScreen];
-        [v110 _referenceBounds];
+        mainScreen3 = [MEMORY[0x277D759A0] mainScreen];
+        [mainScreen3 _referenceBounds];
       }
 
       BSSizeRoundForScale();
@@ -901,8 +901,8 @@ LABEL_313:
 
         else
         {
-          v110 = [MEMORY[0x277D759A0] mainScreen];
-          [v110 _referenceBounds];
+          mainScreen3 = [MEMORY[0x277D759A0] mainScreen];
+          [mainScreen3 _referenceBounds];
         }
 
         BSSizeRoundForScale();
@@ -931,8 +931,8 @@ LABEL_313:
 
           else
           {
-            v110 = [MEMORY[0x277D759A0] mainScreen];
-            [v110 _referenceBounds];
+            mainScreen3 = [MEMORY[0x277D759A0] mainScreen];
+            [mainScreen3 _referenceBounds];
           }
 
           BSSizeRoundForScale();
@@ -961,26 +961,26 @@ LABEL_313:
 
             else
             {
-              v110 = [MEMORY[0x277D759A0] mainScreen];
-              [v110 _referenceBounds];
+              mainScreen3 = [MEMORY[0x277D759A0] mainScreen];
+              [mainScreen3 _referenceBounds];
             }
 
             BSSizeRoundForScale();
             if (BSSizeLessThanSize())
             {
-              v135 = [(SBApplication *)self _supportsApplicationType:64];
+              mainScreen5 = [(SBApplication *)self _supportsApplicationType:64];
             }
 
             else
             {
-              v135 = 0;
+              mainScreen5 = 0;
             }
 
             if ((v132 & 1) == 0)
             {
             }
 
-            if (v135)
+            if (mainScreen5)
             {
               return 6;
             }
@@ -994,28 +994,28 @@ LABEL_313:
 
             else
             {
-              v110 = [MEMORY[0x277D759A0] mainScreen];
-              [v110 _referenceBounds];
+              mainScreen3 = [MEMORY[0x277D759A0] mainScreen];
+              [mainScreen3 _referenceBounds];
             }
 
             BSSizeRoundForScale();
             if (BSSizeGreaterThanOrEqualToSize() && [(SBApplication *)self _supportsApplicationType:16])
             {
-              v135 = __sb__runningInSpringBoard();
-              if (v135)
+              mainScreen5 = __sb__runningInSpringBoard();
+              if (mainScreen5)
               {
                 __sb__mainScreenReferenceBounds();
               }
 
               else
               {
-                v107 = [MEMORY[0x277D759A0] mainScreen];
-                [v107 _referenceBounds];
+                mainScreen4 = [MEMORY[0x277D759A0] mainScreen];
+                [mainScreen4 _referenceBounds];
               }
 
               BSSizeRoundForScale();
               v141 = v153 > v169;
-              if ((v135 & 1) == 0)
+              if ((mainScreen5 & 1) == 0)
               {
               }
             }
@@ -1051,28 +1051,28 @@ LABEL_313:
 
             else
             {
-              v110 = [MEMORY[0x277D759A0] mainScreen];
-              [v110 _referenceBounds];
+              mainScreen3 = [MEMORY[0x277D759A0] mainScreen];
+              [mainScreen3 _referenceBounds];
             }
 
             BSSizeRoundForScale();
             if (BSSizeGreaterThanOrEqualToSize() && [(SBApplication *)self _supportsApplicationType:8])
             {
-              v135 = __sb__runningInSpringBoard();
-              if (v135)
+              mainScreen5 = __sb__runningInSpringBoard();
+              if (mainScreen5)
               {
                 __sb__mainScreenReferenceBounds();
               }
 
               else
               {
-                v107 = [MEMORY[0x277D759A0] mainScreen];
-                [v107 _referenceBounds];
+                mainScreen4 = [MEMORY[0x277D759A0] mainScreen];
+                [mainScreen4 _referenceBounds];
               }
 
               BSSizeRoundForScale();
               v147 = v160 > v168;
-              if ((v135 & 1) == 0)
+              if ((mainScreen5 & 1) == 0)
               {
               }
             }
@@ -1105,8 +1105,8 @@ LABEL_524:
 
                 else
                 {
-                  v110 = [MEMORY[0x277D759A0] mainScreen];
-                  [v110 _referenceBounds];
+                  mainScreen3 = [MEMORY[0x277D759A0] mainScreen];
+                  [mainScreen3 _referenceBounds];
                 }
 
                 BSSizeRoundForScale();
@@ -1121,8 +1121,8 @@ LABEL_524:
 
                   else
                   {
-                    v135 = [MEMORY[0x277D759A0] mainScreen];
-                    [v135 _referenceBounds];
+                    mainScreen5 = [MEMORY[0x277D759A0] mainScreen];
+                    [mainScreen5 _referenceBounds];
                   }
 
                   BSSizeRoundForScale();
@@ -1159,10 +1159,10 @@ LABEL_524:
     }
   }
 
-  v7 = SBFEffectiveHomeButtonType();
+  mainScreen2 = SBFEffectiveHomeButtonType();
   if (![(SBApplication *)self _supportsApplicationType:2])
   {
-    if (v7 == 2)
+    if (mainScreen2 == 2)
     {
       if ([(SBApplication *)self _supportsApplicationType:2048])
       {
@@ -1175,8 +1175,8 @@ LABEL_524:
 
         else
         {
-          v7 = [MEMORY[0x277D759A0] mainScreen];
-          [v7 _referenceBounds];
+          mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+          [mainScreen2 _referenceBounds];
         }
 
         BSSizeRoundForScale();
@@ -1211,8 +1211,8 @@ LABEL_524:
 
         else
         {
-          v7 = [MEMORY[0x277D759A0] mainScreen];
-          [v7 _referenceBounds];
+          mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+          [mainScreen2 _referenceBounds];
         }
 
         BSSizeRoundForScale();
@@ -1247,8 +1247,8 @@ LABEL_524:
 
         else
         {
-          v7 = [MEMORY[0x277D759A0] mainScreen];
-          [v7 _referenceBounds];
+          mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+          [mainScreen2 _referenceBounds];
         }
 
         BSSizeRoundForScale();
@@ -1283,8 +1283,8 @@ LABEL_524:
 
         else
         {
-          v7 = [MEMORY[0x277D759A0] mainScreen];
-          [v7 _referenceBounds];
+          mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+          [mainScreen2 _referenceBounds];
         }
 
         BSSizeRoundForScale();
@@ -1329,7 +1329,7 @@ LABEL_156:
 
   v10 = __sb__runningInSpringBoard();
   v11 = v10;
-  if (v7 == 2)
+  if (mainScreen2 == 2)
   {
     if (v10)
     {
@@ -1338,8 +1338,8 @@ LABEL_156:
 
     else
     {
-      v7 = [MEMORY[0x277D759A0] mainScreen];
-      [v7 _referenceBounds];
+      mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen2 _referenceBounds];
     }
 
     BSSizeRoundForScale();
@@ -1371,8 +1371,8 @@ LABEL_156:
 
     else
     {
-      v7 = [MEMORY[0x277D759A0] mainScreen];
-      [v7 _referenceBounds];
+      mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen2 _referenceBounds];
     }
 
     BSSizeRoundForScale();
@@ -1404,8 +1404,8 @@ LABEL_156:
 
     else
     {
-      v7 = [MEMORY[0x277D759A0] mainScreen];
-      [v7 _referenceBounds];
+      mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen2 _referenceBounds];
     }
 
     BSSizeRoundForScale();
@@ -1437,8 +1437,8 @@ LABEL_156:
 
     else
     {
-      v7 = [MEMORY[0x277D759A0] mainScreen];
-      [v7 _referenceBounds];
+      mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen2 _referenceBounds];
     }
 
     BSSizeRoundForScale();
@@ -1470,8 +1470,8 @@ LABEL_156:
 
     else
     {
-      v7 = [MEMORY[0x277D759A0] mainScreen];
-      [v7 _referenceBounds];
+      mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen2 _referenceBounds];
     }
 
     BSSizeRoundForScale();
@@ -1503,8 +1503,8 @@ LABEL_156:
 
     else
     {
-      v7 = [MEMORY[0x277D759A0] mainScreen];
-      [v7 _referenceBounds];
+      mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen2 _referenceBounds];
     }
 
     BSSizeRoundForScale();
@@ -1536,8 +1536,8 @@ LABEL_156:
 
     else
     {
-      v7 = [MEMORY[0x277D759A0] mainScreen];
-      [v7 _referenceBounds];
+      mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen2 _referenceBounds];
     }
 
     BSSizeRoundForScale();
@@ -1569,8 +1569,8 @@ LABEL_156:
 
     else
     {
-      v7 = [MEMORY[0x277D759A0] mainScreen];
-      [v7 _referenceBounds];
+      mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen2 _referenceBounds];
     }
 
     BSSizeRoundForScale();
@@ -1602,8 +1602,8 @@ LABEL_156:
 
     else
     {
-      v7 = [MEMORY[0x277D759A0] mainScreen];
-      [v7 _referenceBounds];
+      mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen2 _referenceBounds];
     }
 
     BSSizeRoundForScale();
@@ -1635,8 +1635,8 @@ LABEL_156:
 
     else
     {
-      v7 = [MEMORY[0x277D759A0] mainScreen];
-      [v7 _referenceBounds];
+      mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen2 _referenceBounds];
     }
 
     BSSizeRoundForScale();
@@ -1668,8 +1668,8 @@ LABEL_156:
 
     else
     {
-      v7 = [MEMORY[0x277D759A0] mainScreen];
-      [v7 _referenceBounds];
+      mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen2 _referenceBounds];
     }
 
     BSSizeRoundForScale();
@@ -1701,8 +1701,8 @@ LABEL_156:
 
     else
     {
-      v7 = [MEMORY[0x277D759A0] mainScreen];
-      [v7 _referenceBounds];
+      mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen2 _referenceBounds];
     }
 
     BSSizeRoundForScale();
@@ -1734,8 +1734,8 @@ LABEL_156:
 
     else
     {
-      v7 = [MEMORY[0x277D759A0] mainScreen];
-      [v7 _referenceBounds];
+      mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen2 _referenceBounds];
     }
 
     BSSizeRoundForScale();
@@ -1767,8 +1767,8 @@ LABEL_156:
 
     else
     {
-      v7 = [MEMORY[0x277D759A0] mainScreen];
-      [v7 _referenceBounds];
+      mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen2 _referenceBounds];
     }
 
     BSSizeRoundForScale();
@@ -1800,8 +1800,8 @@ LABEL_156:
 
     else
     {
-      v7 = [MEMORY[0x277D759A0] mainScreen];
-      [v7 _referenceBounds];
+      mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen2 _referenceBounds];
     }
 
     BSSizeRoundForScale();
@@ -1833,8 +1833,8 @@ LABEL_156:
 
     else
     {
-      v7 = [MEMORY[0x277D759A0] mainScreen];
-      [v7 _referenceBounds];
+      mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen2 _referenceBounds];
     }
 
     BSSizeRoundForScale();
@@ -1866,8 +1866,8 @@ LABEL_156:
 
     else
     {
-      v7 = [MEMORY[0x277D759A0] mainScreen];
-      [v7 _referenceBounds];
+      mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen2 _referenceBounds];
     }
 
     BSSizeRoundForScale();
@@ -1899,8 +1899,8 @@ LABEL_156:
 
     else
     {
-      v7 = [MEMORY[0x277D759A0] mainScreen];
-      [v7 _referenceBounds];
+      mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen2 _referenceBounds];
     }
 
     BSSizeRoundForScale();
@@ -1932,8 +1932,8 @@ LABEL_156:
 
     else
     {
-      v7 = [MEMORY[0x277D759A0] mainScreen];
-      [v7 _referenceBounds];
+      mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen2 _referenceBounds];
     }
 
     BSSizeRoundForScale();
@@ -1965,8 +1965,8 @@ LABEL_156:
 
     else
     {
-      v7 = [MEMORY[0x277D759A0] mainScreen];
-      [v7 _referenceBounds];
+      mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen2 _referenceBounds];
     }
 
     BSSizeRoundForScale();
@@ -1998,8 +1998,8 @@ LABEL_156:
 
     else
     {
-      v7 = [MEMORY[0x277D759A0] mainScreen];
-      [v7 _referenceBounds];
+      mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen2 _referenceBounds];
     }
 
     BSSizeRoundForScale();
@@ -2031,8 +2031,8 @@ LABEL_156:
 
     else
     {
-      v7 = [MEMORY[0x277D759A0] mainScreen];
-      [v7 _referenceBounds];
+      mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen2 _referenceBounds];
     }
 
     BSSizeRoundForScale();
@@ -2064,8 +2064,8 @@ LABEL_156:
 
     else
     {
-      v7 = [MEMORY[0x277D759A0] mainScreen];
-      [v7 _referenceBounds];
+      mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen2 _referenceBounds];
     }
 
     BSSizeRoundForScale();
@@ -2097,8 +2097,8 @@ LABEL_156:
 
     else
     {
-      v7 = [MEMORY[0x277D759A0] mainScreen];
-      [v7 _referenceBounds];
+      mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen2 _referenceBounds];
     }
 
     BSSizeRoundForScale();
@@ -2145,8 +2145,8 @@ LABEL_167:
 
   else
   {
-    v7 = [MEMORY[0x277D759A0] mainScreen];
-    [v7 _referenceBounds];
+    mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen2 _referenceBounds];
   }
 
   BSSizeRoundForScale();
@@ -2178,8 +2178,8 @@ LABEL_167:
 
   else
   {
-    v7 = [MEMORY[0x277D759A0] mainScreen];
-    [v7 _referenceBounds];
+    mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen2 _referenceBounds];
   }
 
   BSSizeRoundForScale();
@@ -2211,8 +2211,8 @@ LABEL_167:
 
   else
   {
-    v7 = [MEMORY[0x277D759A0] mainScreen];
-    [v7 _referenceBounds];
+    mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen2 _referenceBounds];
   }
 
   BSSizeRoundForScale();
@@ -2244,8 +2244,8 @@ LABEL_167:
 
   else
   {
-    v7 = [MEMORY[0x277D759A0] mainScreen];
-    [v7 _referenceBounds];
+    mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen2 _referenceBounds];
   }
 
   BSSizeRoundForScale();
@@ -2267,8 +2267,8 @@ LABEL_167:
   }
 
 LABEL_183:
-  v7 = [MEMORY[0x277D759A0] mainScreen];
-  [v7 _referenceBounds];
+  mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen2 _referenceBounds];
 LABEL_184:
   BSSizeRoundForScale();
   if (BSSizeGreaterThanOrEqualToSize())
@@ -2311,23 +2311,23 @@ LABEL_332:
     goto LABEL_332;
   }
 
-  v5 = 168;
+  currentDevice = 168;
   if ([(SBApplicationInfo *)self->_appInfo usesSplashBoard])
   {
     [(SBApplication *)self _calculateSupportedTypesForSplashBoard];
     goto LABEL_332;
   }
 
-  v6 = MGCopyAnswer();
-  v7 = [(SBApplication *)self _snapshotManifest];
-  v8 = [MEMORY[0x277D656A0] predicate];
-  [v8 setContentTypeMask:4];
-  [v8 setRequiredOSVersion:v6];
-  v9 = [v7 defaultGroupIdentifier];
-  v116 = [v7 snapshotsForGroupID:v9 matchingPredicate:v8];
+  mainScreen6 = MGCopyAnswer();
+  _snapshotManifest = [(SBApplication *)self _snapshotManifest];
+  predicate = [MEMORY[0x277D656A0] predicate];
+  [predicate setContentTypeMask:4];
+  [predicate setRequiredOSVersion:mainScreen6];
+  defaultGroupIdentifier = [_snapshotManifest defaultGroupIdentifier];
+  v116 = [_snapshotManifest snapshotsForGroupID:defaultGroupIdentifier matchingPredicate:predicate];
 
-  v114 = v8;
-  v115 = v7;
+  v114 = predicate;
+  v115 = _snapshotManifest;
   if (![(SBApplication *)self _supportsApplicationType:2])
   {
     goto LABEL_84;
@@ -2339,39 +2339,39 @@ LABEL_332:
   {
     if (SBFEffectiveDeviceClass() != 2)
     {
-      v9 = 0;
+      defaultGroupIdentifier = 0;
       goto LABEL_17;
     }
   }
 
   else
   {
-    v103 = [(SBApplication(Classic_Internal) *)&v136 _calculateSupportedTypesLazilyIfNecessary];
-    v7 = v136;
-    if (!v103)
+    _calculateSupportedTypesLazilyIfNecessary = [(SBApplication(Classic_Internal) *)&v136 _calculateSupportedTypesLazilyIfNecessary];
+    _snapshotManifest = v136;
+    if (!_calculateSupportedTypesLazilyIfNecessary)
     {
-      v9 = 0;
+      defaultGroupIdentifier = 0;
 LABEL_16:
 
       goto LABEL_17;
     }
   }
 
-  v5 = __sb__runningInSpringBoard();
-  if (v5)
+  currentDevice = __sb__runningInSpringBoard();
+  if (currentDevice)
   {
     __sb__mainScreenReferenceBounds();
   }
 
   else
   {
-    v2 = [MEMORY[0x277D759A0] mainScreen];
-    [v2 _referenceBounds];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen _referenceBounds];
   }
 
   BSSizeRoundForScale();
-  v9 = v12 >= *(MEMORY[0x277D66E30] + 280);
-  if ((v5 & 1) == 0)
+  defaultGroupIdentifier = v12 >= *(MEMORY[0x277D66E30] + 280);
+  if ((currentDevice & 1) == 0)
   {
   }
 
@@ -2394,8 +2394,8 @@ LABEL_17:
 
   else
   {
-    v5 = [MEMORY[0x277D75418] currentDevice];
-    if ([v5 userInterfaceIdiom] != 1)
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice userInterfaceIdiom] != 1)
     {
       v15 = 0;
 LABEL_28:
@@ -2404,21 +2404,21 @@ LABEL_28:
     }
   }
 
-  v2 = __sb__runningInSpringBoard();
-  if (v2)
+  mainScreen = __sb__runningInSpringBoard();
+  if (mainScreen)
   {
     __sb__mainScreenReferenceBounds();
   }
 
   else
   {
-    v3 = [MEMORY[0x277D759A0] mainScreen];
-    [v3 _referenceBounds];
+    mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen2 _referenceBounds];
   }
 
   BSSizeRoundForScale();
   v15 = v16 >= *(MEMORY[0x277D66E30] + 264);
-  if ((v2 & 1) == 0)
+  if ((mainScreen & 1) == 0)
   {
   }
 
@@ -2441,8 +2441,8 @@ LABEL_29:
 
   else
   {
-    v5 = [MEMORY[0x277D75418] currentDevice];
-    if ([v5 userInterfaceIdiom] != 1 || SBFEffectiveHomeButtonType() != 2)
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice userInterfaceIdiom] != 1 || SBFEffectiveHomeButtonType() != 2)
     {
       v19 = 0;
 LABEL_42:
@@ -2451,21 +2451,21 @@ LABEL_42:
     }
   }
 
-  v2 = __sb__runningInSpringBoard();
-  if (v2)
+  mainScreen = __sb__runningInSpringBoard();
+  if (mainScreen)
   {
     __sb__mainScreenReferenceBounds();
   }
 
   else
   {
-    v3 = [MEMORY[0x277D759A0] mainScreen];
-    [v3 _referenceBounds];
+    mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen2 _referenceBounds];
   }
 
   BSSizeRoundForScale();
   v19 = v20 >= *(MEMORY[0x277D66E30] + 344);
-  if ((v2 & 1) == 0)
+  if ((mainScreen & 1) == 0)
   {
   }
 
@@ -2479,10 +2479,10 @@ LABEL_43:
   v22 = v21;
   if (!v21)
   {
-    v2 = [MEMORY[0x277D75418] currentDevice];
-    if ([v2 userInterfaceIdiom] != 1 || SBFEffectiveHomeButtonType() != 2)
+    mainScreen = [MEMORY[0x277D75418] currentDevice];
+    if ([mainScreen userInterfaceIdiom] != 1 || SBFEffectiveHomeButtonType() != 2)
     {
-      v23 = 0;
+      isPeaceBLinked = 0;
       goto LABEL_59;
     }
 
@@ -2496,14 +2496,14 @@ LABEL_49:
 
     else
     {
-      v126 = [MEMORY[0x277D759A0] mainScreen];
-      [v126 _referenceBounds];
+      mainScreen3 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen3 _referenceBounds];
     }
 
     BSSizeRoundForScale();
     if (v26 >= *(MEMORY[0x277D66E30] + 440))
     {
-      v23 = [(SBApplicationInfo *)self->_appInfo isPeaceBLinked];
+      isPeaceBLinked = [(SBApplicationInfo *)self->_appInfo isPeaceBLinked];
       if (v25)
       {
         goto LABEL_58;
@@ -2512,7 +2512,7 @@ LABEL_49:
 
     else
     {
-      v23 = 0;
+      isPeaceBLinked = 0;
       if (v25)
       {
 LABEL_58:
@@ -2535,7 +2535,7 @@ LABEL_59:
     goto LABEL_49;
   }
 
-  v23 = 0;
+  isPeaceBLinked = 0;
 LABEL_60:
   v134 = 0u;
   v135 = 0u;
@@ -2546,13 +2546,13 @@ LABEL_60:
   if (!v28)
   {
 
-    v8 = v114;
-    v7 = v115;
+    predicate = v114;
+    _snapshotManifest = v115;
     goto LABEL_82;
   }
 
   v29 = v28;
-  v113 = v6;
+  v113 = mainScreen6;
   v30 = *v133;
   do
   {
@@ -2564,10 +2564,10 @@ LABEL_60:
       }
 
       [*(*(&v132 + 1) + 8 * i) referenceSize];
-      if (v9 && BSSizeEqualToSize())
+      if (defaultGroupIdentifier && BSSizeEqualToSize())
       {
         supportedTypes = self->_supportedTypes;
-        if (v23)
+        if (isPeaceBLinked)
         {
           v33 = supportedTypes | 0x18000000;
         }
@@ -2600,9 +2600,9 @@ LABEL_76:
 
   while (v29);
 
-  v6 = v113;
-  v8 = v114;
-  v7 = v115;
+  mainScreen6 = v113;
+  predicate = v114;
+  _snapshotManifest = v115;
   if (!self)
   {
     goto LABEL_84;
@@ -2620,25 +2620,25 @@ LABEL_84:
     goto LABEL_331;
   }
 
-  v34 = __sb__runningInSpringBoard();
-  v35 = 0x277D75000uLL;
+  mainScreen4 = __sb__runningInSpringBoard();
+  currentDevice2 = 0x277D75000uLL;
   v36 = MEMORY[0x277D66E30];
-  if (!v34)
+  if (!mainScreen4)
   {
-    v8 = [MEMORY[0x277D75418] currentDevice];
-    if (![v8 userInterfaceIdiom])
+    predicate = [MEMORY[0x277D75418] currentDevice];
+    if (![predicate userInterfaceIdiom])
     {
       goto LABEL_91;
     }
 
-    v7 = 0;
+    _snapshotManifest = 0;
     v37 = 1;
 LABEL_96:
-    v9 = [MEMORY[0x277D75418] currentDevice];
-    v40 = [v9 userInterfaceIdiom];
+    defaultGroupIdentifier = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [defaultGroupIdentifier userInterfaceIdiom];
 
-    v123 = (v40 & 0xFFFFFFFFFFFFFFFBLL) == 1;
-    if ((v7 & 1) == 0)
+    v123 = (userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1;
+    if ((_snapshotManifest & 1) == 0)
     {
       goto LABEL_100;
     }
@@ -2655,13 +2655,13 @@ LABEL_97:
 
   if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
   {
-    v7 = 0;
+    _snapshotManifest = 0;
     v37 = 0;
     goto LABEL_96;
   }
 
 LABEL_91:
-  v37 = v34 ^ 1;
+  v37 = mainScreen4 ^ 1;
   v38 = __sb__runningInSpringBoard();
   if (v38)
   {
@@ -2670,14 +2670,14 @@ LABEL_91:
 
   else
   {
-    v34 = [MEMORY[0x277D759A0] mainScreen];
-    [v34 _referenceBounds];
+    mainScreen4 = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen4 _referenceBounds];
   }
 
   BSSizeRoundForScale();
   if (v39 < v36[5])
   {
-    v7 = v38 ^ 1u;
+    _snapshotManifest = v38 ^ 1u;
     goto LABEL_96;
   }
 
@@ -2694,23 +2694,23 @@ LABEL_101:
   }
 
 LABEL_102:
-  v41 = __sb__runningInSpringBoard();
-  if (!v41)
+  mainScreen5 = __sb__runningInSpringBoard();
+  if (!mainScreen5)
   {
-    v8 = [MEMORY[0x277D75418] currentDevice];
-    if (![v8 userInterfaceIdiom])
+    predicate = [MEMORY[0x277D75418] currentDevice];
+    if (![predicate userInterfaceIdiom])
     {
       goto LABEL_108;
     }
 
-    v7 = 0;
+    _snapshotManifest = 0;
     v42 = 1;
 LABEL_113:
-    v9 = [MEMORY[0x277D75418] currentDevice];
-    v45 = [v9 userInterfaceIdiom];
+    defaultGroupIdentifier = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom2 = [defaultGroupIdentifier userInterfaceIdiom];
 
-    v122 = (v45 & 0xFFFFFFFFFFFFFFFBLL) == 1;
-    if ((v7 & 1) == 0)
+    v122 = (userInterfaceIdiom2 & 0xFFFFFFFFFFFFFFFBLL) == 1;
+    if ((_snapshotManifest & 1) == 0)
     {
       goto LABEL_117;
     }
@@ -2727,13 +2727,13 @@ LABEL_114:
 
   if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
   {
-    v7 = 0;
+    _snapshotManifest = 0;
     v42 = 0;
     goto LABEL_113;
   }
 
 LABEL_108:
-  v42 = v41 ^ 1;
+  v42 = mainScreen5 ^ 1;
   v43 = __sb__runningInSpringBoard();
   if (v43)
   {
@@ -2742,14 +2742,14 @@ LABEL_108:
 
   else
   {
-    v41 = [MEMORY[0x277D759A0] mainScreen];
-    [v41 _referenceBounds];
+    mainScreen5 = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen5 _referenceBounds];
   }
 
   BSSizeRoundForScale();
   if (v44 < v36[7])
   {
-    v7 = v43 ^ 1u;
+    _snapshotManifest = v43 ^ 1u;
     goto LABEL_113;
   }
 
@@ -2788,8 +2788,8 @@ LABEL_125:
 
       else
       {
-        v7 = [MEMORY[0x277D759A0] mainScreen];
-        [v7 _referenceBounds];
+        _snapshotManifest = [MEMORY[0x277D759A0] mainScreen];
+        [_snapshotManifest _referenceBounds];
       }
 
       v48 = v49 ^ 1;
@@ -2809,8 +2809,8 @@ LABEL_125:
 
   else
   {
-    v8 = [MEMORY[0x277D75418] currentDevice];
-    if (![v8 userInterfaceIdiom])
+    predicate = [MEMORY[0x277D75418] currentDevice];
+    if (![predicate userInterfaceIdiom])
     {
       goto LABEL_125;
     }
@@ -2846,8 +2846,8 @@ LABEL_135:
 
     else
     {
-      v9 = [MEMORY[0x277D759A0] mainScreen];
-      [v9 _referenceBounds];
+      defaultGroupIdentifier = [MEMORY[0x277D759A0] mainScreen];
+      [defaultGroupIdentifier _referenceBounds];
     }
 
     BSSizeRoundForScale();
@@ -2860,7 +2860,7 @@ LABEL_135:
     if (v51)
     {
 LABEL_147:
-      v35 = 0x277D75000uLL;
+      currentDevice2 = 0x277D75000uLL;
       if (!v48)
       {
         goto LABEL_148;
@@ -2883,8 +2883,8 @@ LABEL_156:
 
   else
   {
-    v35 = [MEMORY[0x277D75418] currentDevice];
-    if ([v35 userInterfaceIdiom] == 1)
+    currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice2 userInterfaceIdiom] == 1)
     {
       if (SBFEffectiveHomeButtonType() == 2)
       {
@@ -2898,7 +2898,7 @@ LABEL_156:
     v127 = 0;
   }
 
-  v35 = 0x277D75000;
+  currentDevice2 = 0x277D75000;
 LABEL_158:
   if (v48)
   {
@@ -2913,7 +2913,7 @@ LABEL_148:
 
 LABEL_150:
   v56 = __sb__runningInSpringBoard();
-  v113 = v6;
+  v113 = mainScreen6;
   if (v56)
   {
     if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
@@ -2935,8 +2935,8 @@ LABEL_161:
 
       else
       {
-        v6 = [MEMORY[0x277D759A0] mainScreen];
-        [v6 _referenceBounds];
+        mainScreen6 = [MEMORY[0x277D759A0] mainScreen];
+        [mainScreen6 _referenceBounds];
       }
 
       v58 = v59 ^ 1;
@@ -2956,8 +2956,8 @@ LABEL_161:
 
   else
   {
-    v9 = [*(v35 + 1048) currentDevice];
-    if (![v9 userInterfaceIdiom])
+    defaultGroupIdentifier = [*(currentDevice2 + 1048) currentDevice];
+    if (![defaultGroupIdentifier userInterfaceIdiom])
     {
       goto LABEL_161;
     }
@@ -2984,7 +2984,7 @@ LABEL_165:
     }
 
 LABEL_171:
-    v126 = v9;
+    mainScreen3 = defaultGroupIdentifier;
     v63 = v36;
     v64 = __sb__runningInSpringBoard();
     v65 = v64;
@@ -2995,8 +2995,8 @@ LABEL_171:
 
     else
     {
-      v9 = [MEMORY[0x277D759A0] mainScreen];
-      [v9 _referenceBounds];
+      defaultGroupIdentifier = [MEMORY[0x277D759A0] mainScreen];
+      [defaultGroupIdentifier _referenceBounds];
     }
 
     BSSizeRoundForScale();
@@ -3006,11 +3006,11 @@ LABEL_171:
     }
 
     v36 = v63;
-    v9 = v126;
+    defaultGroupIdentifier = mainScreen3;
     if (v61)
     {
 LABEL_183:
-      v35 = 0x277D75000uLL;
+      currentDevice2 = 0x277D75000uLL;
       if (!v58)
       {
         goto LABEL_184;
@@ -3033,8 +3033,8 @@ LABEL_192:
 
   else
   {
-    v35 = [*(v35 + 1048) currentDevice];
-    if ([v35 userInterfaceIdiom] == 1)
+    currentDevice2 = [*(currentDevice2 + 1048) currentDevice];
+    if ([currentDevice2 userInterfaceIdiom] == 1)
     {
       if (SBFEffectiveHomeButtonType() == 2)
       {
@@ -3048,7 +3048,7 @@ LABEL_192:
     v62 = 0;
   }
 
-  v35 = 0x277D75000;
+  currentDevice2 = 0x277D75000;
 LABEL_194:
   if (v58)
   {
@@ -3084,15 +3084,15 @@ LABEL_197:
 
       else
       {
-        v124 = [MEMORY[0x277D759A0] mainScreen];
-        [v124 _referenceBounds];
+        mainScreen7 = [MEMORY[0x277D759A0] mainScreen];
+        [mainScreen7 _referenceBounds];
       }
 
       v70 = v71 ^ 1;
       BSSizeRoundForScale();
       if (v77 >= v36[13])
       {
-        LODWORD(v126) = 1;
+        LODWORD(mainScreen3) = 1;
         goto LABEL_230;
       }
     }
@@ -3105,8 +3105,8 @@ LABEL_197:
 
   else
   {
-    v9 = [*(v35 + 1048) currentDevice];
-    if (![v9 userInterfaceIdiom])
+    defaultGroupIdentifier = [*(currentDevice2 + 1048) currentDevice];
+    if (![defaultGroupIdentifier userInterfaceIdiom])
     {
       goto LABEL_197;
     }
@@ -3122,18 +3122,18 @@ LABEL_201:
   {
     if (SBFEffectiveDeviceClass() != 2)
     {
-      LODWORD(v126) = 0;
+      LODWORD(mainScreen3) = 0;
       goto LABEL_230;
     }
 
     if (SBFEffectiveHomeButtonType() != 2)
     {
-      LODWORD(v126) = 0;
+      LODWORD(mainScreen3) = 0;
       goto LABEL_219;
     }
 
 LABEL_207:
-    v119 = v9;
+    v119 = defaultGroupIdentifier;
     v74 = v36;
     v75 = __sb__runningInSpringBoard();
     v76 = v75;
@@ -3144,24 +3144,24 @@ LABEL_207:
 
     else
     {
-      v9 = [MEMORY[0x277D759A0] mainScreen];
-      [v9 _referenceBounds];
+      defaultGroupIdentifier = [MEMORY[0x277D759A0] mainScreen];
+      [defaultGroupIdentifier _referenceBounds];
     }
 
     BSSizeRoundForScale();
-    v6 = v78 >= v74[55];
-    LODWORD(v126) = v78 >= v74[55];
+    mainScreen6 = v78 >= v74[55];
+    LODWORD(mainScreen3) = v78 >= v74[55];
     if ((v76 & 1) == 0)
     {
     }
 
     v36 = v74;
-    v9 = v119;
+    defaultGroupIdentifier = v119;
     if (v73)
     {
 LABEL_219:
-      v35 = 0x277D75000uLL;
-      v79 = v124;
+      currentDevice2 = 0x277D75000uLL;
+      v79 = mainScreen7;
       if (!v70)
       {
         goto LABEL_220;
@@ -3184,24 +3184,24 @@ LABEL_228:
 
   else
   {
-    v35 = [*(v35 + 1048) currentDevice];
-    if ([v35 userInterfaceIdiom] == 1)
+    currentDevice2 = [*(currentDevice2 + 1048) currentDevice];
+    if ([currentDevice2 userInterfaceIdiom] == 1)
     {
       if (SBFEffectiveHomeButtonType() == 2)
       {
         goto LABEL_207;
       }
 
-      LODWORD(v126) = 0;
+      LODWORD(mainScreen3) = 0;
       goto LABEL_228;
     }
 
-    LODWORD(v126) = 0;
+    LODWORD(mainScreen3) = 0;
   }
 
-  v35 = 0x277D75000;
+  currentDevice2 = 0x277D75000;
 LABEL_230:
-  v79 = v124;
+  v79 = mainScreen7;
   if (v70)
   {
     goto LABEL_231;
@@ -3219,13 +3219,13 @@ LABEL_222:
   {
     if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
     {
-      v81 = 0;
+      currentDevice3 = 0;
       v82 = 0;
       goto LABEL_237;
     }
 
 LABEL_233:
-    v81 = v80 ^ 1u;
+    currentDevice3 = v80 ^ 1u;
     if (SBFEffectiveHomeButtonType() == 2)
     {
       v83 = __sb__runningInSpringBoard();
@@ -3236,8 +3236,8 @@ LABEL_233:
 
       else
       {
-        v6 = [MEMORY[0x277D759A0] mainScreen];
-        [v6 _referenceBounds];
+        mainScreen6 = [MEMORY[0x277D759A0] mainScreen];
+        [mainScreen6 _referenceBounds];
       }
 
       v82 = v83 ^ 1;
@@ -3257,14 +3257,14 @@ LABEL_233:
 
   else
   {
-    v9 = [*(v35 + 1048) currentDevice];
-    if (![v9 userInterfaceIdiom])
+    defaultGroupIdentifier = [*(currentDevice2 + 1048) currentDevice];
+    if (![defaultGroupIdentifier userInterfaceIdiom])
     {
       goto LABEL_233;
     }
 
     v82 = 0;
-    v81 = 1;
+    currentDevice3 = 1;
   }
 
 LABEL_237:
@@ -3285,7 +3285,7 @@ LABEL_237:
     }
 
 LABEL_243:
-    v120 = v9;
+    v120 = defaultGroupIdentifier;
     v86 = v36;
     v87 = __sb__runningInSpringBoard();
     v88 = v87;
@@ -3296,8 +3296,8 @@ LABEL_243:
 
     else
     {
-      v9 = [MEMORY[0x277D759A0] mainScreen];
-      [v9 _referenceBounds];
+      defaultGroupIdentifier = [MEMORY[0x277D759A0] mainScreen];
+      [defaultGroupIdentifier _referenceBounds];
     }
 
     BSSizeRoundForScale();
@@ -3307,11 +3307,11 @@ LABEL_243:
     }
 
     v36 = v86;
-    v9 = v120;
+    defaultGroupIdentifier = v120;
     if (v85)
     {
 LABEL_255:
-      v35 = 0x277D75000uLL;
+      currentDevice2 = 0x277D75000uLL;
       if (!v82)
       {
         goto LABEL_256;
@@ -3319,7 +3319,7 @@ LABEL_255:
 
 LABEL_269:
 
-      if ((v81 & 1) == 0)
+      if ((currentDevice3 & 1) == 0)
       {
         goto LABEL_258;
       }
@@ -3334,8 +3334,8 @@ LABEL_266:
 
   else
   {
-    v35 = [*(v35 + 1048) currentDevice];
-    if ([v35 userInterfaceIdiom] == 1)
+    currentDevice2 = [*(currentDevice2 + 1048) currentDevice];
+    if ([currentDevice2 userInterfaceIdiom] == 1)
     {
       if (SBFEffectiveHomeButtonType() == 2)
       {
@@ -3349,7 +3349,7 @@ LABEL_266:
     v125 = 0;
   }
 
-  v35 = 0x277D75000;
+  currentDevice2 = 0x277D75000;
 LABEL_268:
   if (v82)
   {
@@ -3357,7 +3357,7 @@ LABEL_268:
   }
 
 LABEL_256:
-  if (v81)
+  if (currentDevice3)
   {
     goto LABEL_257;
   }
@@ -3367,7 +3367,7 @@ LABEL_258:
   v92 = v91;
   if (v91)
   {
-    v93 = v126;
+    v93 = mainScreen3;
     if (SBFEffectiveDeviceClass() && SBFEffectiveDeviceClass() != 1)
     {
       v94 = 0;
@@ -3390,15 +3390,15 @@ LABEL_300:
 
   else
   {
-    v81 = [*(v35 + 1048) currentDevice];
-    if ([v81 userInterfaceIdiom])
+    currentDevice3 = [*(currentDevice2 + 1048) currentDevice];
+    if ([currentDevice3 userInterfaceIdiom])
     {
       v94 = 0;
-      v93 = v126;
+      v93 = mainScreen3;
       goto LABEL_300;
     }
 
-    v93 = v126;
+    v93 = mainScreen3;
     if (SBFEffectiveHomeButtonType() != 2)
     {
       v94 = 0;
@@ -3415,8 +3415,8 @@ LABEL_300:
 
   else
   {
-    v126 = [MEMORY[0x277D759A0] mainScreen];
-    [v126 _referenceBounds];
+    mainScreen3 = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen3 _referenceBounds];
   }
 
   BSSizeRoundForScale();
@@ -3432,15 +3432,15 @@ LABEL_300:
   v101 = v100;
   if (!v100)
   {
-    v102 = [MEMORY[0x277D75418] currentDevice];
-    if ([v102 userInterfaceIdiom])
+    currentDevice4 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice4 userInterfaceIdiom])
     {
 
       v94 = 1;
       goto LABEL_297;
     }
 
-    v118 = v102;
+    v118 = currentDevice4;
     if (SBFEffectiveHomeButtonType() == 2)
     {
       goto LABEL_288;
@@ -3467,8 +3467,8 @@ LABEL_288:
 
     else
     {
-      v117 = [MEMORY[0x277D759A0] mainScreen];
-      [v117 _referenceBounds];
+      mainScreen8 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen8 _referenceBounds];
     }
 
     BSSizeRoundForScale();
@@ -3576,13 +3576,13 @@ LABEL_327:
 
 LABEL_330:
 
-  v6 = v113;
-  v8 = v114;
-  v7 = v115;
+  mainScreen6 = v113;
+  predicate = v114;
+  _snapshotManifest = v115;
 LABEL_331:
 
 LABEL_332:
-  v112 = [(SBApplication *)self _snapshotManifest];
+  _snapshotManifest2 = [(SBApplication *)self _snapshotManifest];
   self->_calculatedSupportedTypes = 1;
 }
 
@@ -3608,29 +3608,29 @@ LABEL_332:
 
 - (BOOL)isMedusaCapable
 {
-  if (![(SBApplicationInfo *)self->_appInfo wantsFullScreen]|| (v3 = [(SBApplication *)self isClassic]))
+  if (![(SBApplicationInfo *)self->_appInfo wantsFullScreen]|| (usesSplashBoard = [(SBApplication *)self isClassic]))
   {
     if (self->_calculatedSupportedTypes)
     {
-      v4 = [(SBApplication *)self isClassic];
+      isClassic = [(SBApplication *)self isClassic];
 LABEL_5:
-      LOBYTE(v3) = !v4;
-      return v3;
+      LOBYTE(usesSplashBoard) = !isClassic;
+      return usesSplashBoard;
     }
 
-    v3 = [(SBApplicationInfo *)self->_appInfo usesSplashBoard];
-    if (v3)
+    usesSplashBoard = [(SBApplicationInfo *)self->_appInfo usesSplashBoard];
+    if (usesSplashBoard)
     {
-      v3 = [(SBApplicationInfo *)self->_appInfo isMonarchLinked];
-      if (v3)
+      usesSplashBoard = [(SBApplicationInfo *)self->_appInfo isMonarchLinked];
+      if (usesSplashBoard)
       {
-        v4 = [(SBApplication *)self _isClassicViaOverride];
+        isClassic = [(SBApplication *)self _isClassicViaOverride];
         goto LABEL_5;
       }
     }
   }
 
-  return v3;
+  return usesSplashBoard;
 }
 
 - (int64_t)_classicMode
@@ -3665,8 +3665,8 @@ LABEL_5:
     return v3;
   }
 
-  v4 = [MEMORY[0x277D75418] currentDevice];
-  if ([v4 userInterfaceIdiom] == 1)
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  if ([currentDevice userInterfaceIdiom] == 1)
   {
     v3 = ![(SBApplication *)self _classicAppScaledPadOnPad];
   }
@@ -3681,8 +3681,8 @@ LABEL_5:
 
 - (BOOL)isSetup
 {
-  v2 = [(SBApplication *)self bundleIdentifier];
-  v3 = [v2 isEqualToString:@"com.apple.purplebuddy"];
+  bundleIdentifier = [(SBApplication *)self bundleIdentifier];
+  v3 = [bundleIdentifier isEqualToString:@"com.apple.purplebuddy"];
 
   return v3;
 }
@@ -3695,8 +3695,8 @@ LABEL_5:
   }
 
   v3 = alwaysMaximizedInChamois_sAlwaysMaximizedBundleIDs;
-  v4 = [(SBApplication *)self bundleIdentifier];
-  LOBYTE(v3) = [v3 containsObject:v4];
+  bundleIdentifier = [(SBApplication *)self bundleIdentifier];
+  LOBYTE(v3) = [v3 containsObject:bundleIdentifier];
 
   return v3;
 }
@@ -3706,16 +3706,16 @@ LABEL_5:
   v2 = _deviceSafeAreaInsets_deviceSafeAreaInsets;
   if (!_deviceSafeAreaInsets_deviceSafeAreaInsets)
   {
-    v3 = [MEMORY[0x277D77750] sb_thisDeviceDisplayEdgeInfo];
-    v4 = [v3 safeAreaInsetsPortrait];
+    sb_thisDeviceDisplayEdgeInfo = [MEMORY[0x277D77750] sb_thisDeviceDisplayEdgeInfo];
+    safeAreaInsetsPortrait = [sb_thisDeviceDisplayEdgeInfo safeAreaInsetsPortrait];
     v5 = objc_alloc(MEMORY[0x277D656B0]);
-    [v4 topInset];
+    [safeAreaInsetsPortrait topInset];
     v7 = v6;
-    [v4 leftInset];
+    [safeAreaInsetsPortrait leftInset];
     v9 = v8;
-    [v4 bottomInset];
+    [safeAreaInsetsPortrait bottomInset];
     v11 = v10;
-    [v4 rightInset];
+    [safeAreaInsetsPortrait rightInset];
     v13 = [v5 initWithTop:v7 left:v9 bottom:v11 right:v12];
     v14 = _deviceSafeAreaInsets_deviceSafeAreaInsets;
     _deviceSafeAreaInsets_deviceSafeAreaInsets = v13;
@@ -3755,8 +3755,8 @@ LABEL_5:
 
   else
   {
-    v2 = [MEMORY[0x277D75418] currentDevice];
-    if ([v2 userInterfaceIdiom] || SBFEffectiveHomeButtonType() != 2)
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice userInterfaceIdiom] || SBFEffectiveHomeButtonType() != 2)
     {
 LABEL_16:
 
@@ -3791,14 +3791,14 @@ LABEL_17:
 
 - (BOOL)classicAppWithRoundedCorners
 {
-  v2 = [(SBApplication *)self _classicMode];
+  _classicMode = [(SBApplication *)self _classicMode];
 
-  return SBApplicationClassicModeExpectsRoundedCorners(v2);
+  return SBApplicationClassicModeExpectsRoundedCorners(_classicMode);
 }
 
 - (BOOL)classicAppScaledWithAspectRatioCloseEnoughToBeTreatedAsFullScreen
 {
-  v5 = [(SBApplication *)self _classicMode];
+  _classicMode = [(SBApplication *)self _classicMode];
   v6 = __sb__runningInSpringBoard();
   v7 = v6;
   if (v6)
@@ -3808,14 +3808,14 @@ LABEL_17:
 
   else
   {
-    v2 = [MEMORY[0x277D759A0] mainScreen];
-    [v2 _referenceBounds];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen _referenceBounds];
   }
 
   BSSizeRoundForScale();
   if (BSSizeEqualToSize())
   {
-    v8 = v5 == 19;
+    v8 = _classicMode == 19;
     goto LABEL_14;
   }
 
@@ -3828,8 +3828,8 @@ LABEL_17:
 
   else
   {
-    v3 = [MEMORY[0x277D759A0] mainScreen];
-    [v3 _referenceBounds];
+    mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen2 _referenceBounds];
   }
 
   BSSizeRoundForScale();
@@ -3844,7 +3844,7 @@ LABEL_17:
     goto LABEL_13;
   }
 
-  v8 = v5 == 19;
+  v8 = _classicMode == 19;
   if ((v10 & 1) == 0)
   {
 LABEL_13:
@@ -3869,13 +3869,13 @@ LABEL_14:
 
   else
   {
-    v2 = [MEMORY[0x277D759A0] mainScreen];
-    [v2 _referenceBounds];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen _referenceBounds];
   }
 
   BSSizeRoundForScale();
   v13 = BSSizeEqualToSize();
-  if (v5 == 18)
+  if (_classicMode == 18)
   {
     v14 = v13;
   }
@@ -3903,14 +3903,14 @@ LABEL_14:
 
   else
   {
-    v2 = [MEMORY[0x277D759A0] mainScreen];
-    [v2 _referenceBounds];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen _referenceBounds];
   }
 
   BSSizeRoundForScale();
   v17 = BSSizeEqualToSize();
-  v18 = v5 == 22;
-  if (v5 == 22)
+  v18 = _classicMode == 22;
+  if (_classicMode == 22)
   {
     v19 = v17;
   }
@@ -3938,8 +3938,8 @@ LABEL_14:
 
   else
   {
-    v2 = [MEMORY[0x277D759A0] mainScreen];
-    [v2 _referenceBounds];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen _referenceBounds];
   }
 
   BSSizeRoundForScale();
@@ -3954,14 +3954,14 @@ LABEL_14:
 
     else
     {
-      v3 = [MEMORY[0x277D759A0] mainScreen];
-      [v3 _referenceBounds];
+      mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen2 _referenceBounds];
     }
 
     BSSizeRoundForScale();
     if (BSSizeEqualToSize())
     {
-      v22 = v5 == 17;
+      v22 = _classicMode == 17;
       goto LABEL_54;
     }
 
@@ -3974,14 +3974,14 @@ LABEL_14:
 
     else
     {
-      v4 = [MEMORY[0x277D759A0] mainScreen];
-      [v4 _referenceBounds];
+      mainScreen3 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen3 _referenceBounds];
     }
 
     BSSizeRoundForScale();
     if (BSSizeEqualToSize())
     {
-      v22 = v5 == 17;
+      v22 = _classicMode == 17;
       if (v26)
       {
 LABEL_54:
@@ -4024,7 +4024,7 @@ LABEL_56:
     goto LABEL_54;
   }
 
-  v22 = v5 == 17;
+  v22 = _classicMode == 17;
   if (v21)
   {
     goto LABEL_56;
@@ -4047,8 +4047,8 @@ LABEL_60:
 
   else
   {
-    v2 = [MEMORY[0x277D759A0] mainScreen];
-    [v2 _referenceBounds];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen _referenceBounds];
   }
 
   BSSizeRoundForScale();
@@ -4063,13 +4063,13 @@ LABEL_60:
 
     else
     {
-      v3 = [MEMORY[0x277D759A0] mainScreen];
-      [v3 _referenceBounds];
+      mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen2 _referenceBounds];
     }
 
     BSSizeRoundForScale();
     v31 = BSSizeEqualToSize();
-    v18 = v5 == 22 ? v31 : 0;
+    v18 = _classicMode == 22 ? v31 : 0;
     if ((v30 & 1) == 0)
     {
     }
@@ -4093,13 +4093,13 @@ LABEL_60:
 
   else
   {
-    v2 = [MEMORY[0x277D759A0] mainScreen];
-    [v2 _referenceBounds];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen _referenceBounds];
   }
 
   BSSizeRoundForScale();
   v34 = BSSizeEqualToSize();
-  if (v5 == 24)
+  if (_classicMode == 24)
   {
     v35 = v34;
   }
@@ -4127,13 +4127,13 @@ LABEL_60:
 
   else
   {
-    v2 = [MEMORY[0x277D759A0] mainScreen];
-    [v2 _referenceBounds];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen _referenceBounds];
   }
 
   BSSizeRoundForScale();
   v38 = BSSizeEqualToSize();
-  if (v5 == 23)
+  if (_classicMode == 23)
   {
     v39 = v38;
   }
@@ -4161,13 +4161,13 @@ LABEL_60:
 
   else
   {
-    v2 = [MEMORY[0x277D759A0] mainScreen];
-    [v2 _referenceBounds];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen _referenceBounds];
   }
 
   BSSizeRoundForScale();
   v42 = BSSizeEqualToSize();
-  if (v5 == 20)
+  if (_classicMode == 20)
   {
     v43 = v42;
   }
@@ -4195,13 +4195,13 @@ LABEL_60:
 
   else
   {
-    v2 = [MEMORY[0x277D759A0] mainScreen];
-    [v2 _referenceBounds];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen _referenceBounds];
   }
 
   BSSizeRoundForScale();
   v46 = BSSizeEqualToSize();
-  if (v5 == 19)
+  if (_classicMode == 19)
   {
     v47 = v46;
   }
@@ -4229,13 +4229,13 @@ LABEL_60:
 
   else
   {
-    v2 = [MEMORY[0x277D759A0] mainScreen];
-    [v2 _referenceBounds];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen _referenceBounds];
   }
 
   BSSizeRoundForScale();
   v52 = BSSizeEqualToSize();
-  if (v5 == 18)
+  if (_classicMode == 18)
   {
     v48 = v52;
   }
@@ -4301,8 +4301,8 @@ LABEL_60:
 
   else
   {
-    v2 = [MEMORY[0x277D75418] currentDevice];
-    if ([v2 userInterfaceIdiom])
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice userInterfaceIdiom])
     {
       v6 = 0;
 LABEL_14:
@@ -4320,8 +4320,8 @@ LABEL_14:
 
   else
   {
-    v3 = [MEMORY[0x277D759A0] mainScreen];
-    [v3 _referenceBounds];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen _referenceBounds];
   }
 
   BSSizeRoundForScale();
@@ -4340,23 +4340,23 @@ LABEL_14:
 
 - (BOOL)_classicAppScaledPadOnPad
 {
-  v2 = [(SBApplication *)self _classicMode];
+  _classicMode = [(SBApplication *)self _classicMode];
 
-  return SBApplicationClassicModeRepresentsPad(v2);
+  return SBApplicationClassicModeRepresentsPad(_classicMode);
 }
 
 - (BOOL)isSpotlight
 {
-  v2 = [(SBApplication *)self bundleIdentifier];
-  v3 = [v2 isEqualToString:@"com.apple.Spotlight"];
+  bundleIdentifier = [(SBApplication *)self bundleIdentifier];
+  v3 = [bundleIdentifier isEqualToString:@"com.apple.Spotlight"];
 
   return v3;
 }
 
 - (BOOL)isPaperBoard
 {
-  v2 = [(SBApplication *)self bundleIdentifier];
-  v3 = [v2 isEqualToString:@"com.apple.PaperBoard"];
+  bundleIdentifier = [(SBApplication *)self bundleIdentifier];
+  v3 = [bundleIdentifier isEqualToString:@"com.apple.PaperBoard"];
 
   return v3;
 }
@@ -4391,8 +4391,8 @@ LABEL_14:
 {
   if (self->_launchWillBePrevented)
   {
-    v2 = [(SBApplication *)self processState];
-    v3 = [v2 isRunning] ^ 1;
+    processState = [(SBApplication *)self processState];
+    v3 = [processState isRunning] ^ 1;
   }
 
   else
@@ -4406,7 +4406,7 @@ LABEL_14:
 - (id)backgroundActivityAttributionsByIdentifier
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+  strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -4429,10 +4429,10 @@ LABEL_14:
         v8 = *(*(&v15 + 1) + 8 * i);
         v9 = [(NSMapTable *)self->_backgroundActivityAttributionsByIdentifier objectForKey:v8];
         v10 = MEMORY[0x277CBEB98];
-        v11 = [v9 allObjects];
-        v12 = [v10 setWithArray:v11];
+        allObjects = [v9 allObjects];
+        v12 = [v10 setWithArray:allObjects];
 
-        [v3 setObject:v12 forKey:v8];
+        [strongToStrongObjectsMapTable setObject:v12 forKey:v8];
       }
 
       v5 = [(NSMapTable *)obj countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -4441,7 +4441,7 @@ LABEL_14:
     while (v5);
   }
 
-  return v3;
+  return strongToStrongObjectsMapTable;
 }
 
 - (BOOL)_isNewlyInstalled
@@ -4455,9 +4455,9 @@ LABEL_14:
   if ((*(self + 80) & 0x38) == 0)
   {
     v5 = [(FBSApplicationDataStore *)self->_dataStore safeObjectForKey:@"SBApplicationIsNewlyInstalled" ofType:objc_opt_class()];
-    v6 = [v5 BOOLValue];
+    bOOLValue = [v5 BOOLValue];
 
-    if (v6)
+    if (bOOLValue)
     {
       v4 = 8;
     }
@@ -4479,9 +4479,9 @@ LABEL_14:
   if (!v2)
   {
     v4 = [(FBSApplicationDataStore *)self->_dataStore safeObjectForKey:@"SBApplicationRecentlyUpdated" ofType:objc_opt_class()];
-    v5 = [v4 BOOLValue];
+    bOOLValue = [v4 BOOLValue];
 
-    if (v5)
+    if (bOOLValue)
     {
       v2 = 1;
     }
@@ -4499,25 +4499,25 @@ LABEL_14:
 
 - (BOOL)isUninstalled
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  uninstalled = v2->_uninstalled;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  uninstalled = selfCopy->_uninstalled;
+  objc_sync_exit(selfCopy);
 
   return uninstalled;
 }
 
 - (void)_noteIconDataSourceDidChange
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 postNotificationName:@"SBApplicationIconDataSourceDidChangeNotification" object:self userInfo:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"SBApplicationIconDataSourceDidChangeNotification" object:self userInfo:0];
 }
 
 - (NSArray)dynamicApplicationShortcutItems
 {
   v3 = +[SBApplicationShortcutStoreManager sharedManager];
-  v4 = [(SBApplication *)self bundleIdentifier];
-  v5 = [v3 applicationShortcutItemsForBundleIdentifier:v4 withVersion:{-[SBApplicationInfo dynamicApplicationShortcutItemsVersion](self->_appInfo, "dynamicApplicationShortcutItemsVersion")}];
+  bundleIdentifier = [(SBApplication *)self bundleIdentifier];
+  v5 = [v3 applicationShortcutItemsForBundleIdentifier:bundleIdentifier withVersion:{-[SBApplicationInfo dynamicApplicationShortcutItemsVersion](self->_appInfo, "dynamicApplicationShortcutItemsVersion")}];
 
   return v5;
 }
@@ -4537,17 +4537,17 @@ LABEL_14:
 
 - (id)succinctDescription
 {
-  v2 = [(SBApplication *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBApplication *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
 {
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
-  v4 = [(SBApplication *)self bundleIdentifier];
-  v5 = [v3 appendObject:v4 withName:0];
+  bundleIdentifier = [(SBApplication *)self bundleIdentifier];
+  v5 = [v3 appendObject:bundleIdentifier withName:0];
 
   return v3;
 }
@@ -4562,17 +4562,17 @@ LABEL_14:
 
 - (BOOL)isUninstallSupported
 {
-  v3 = [(SBApplicationInfo *)self->_appInfo uninstallCapability];
-  if (!v3 || v3 == 2 && !MGGetBoolAnswer())
+  uninstallCapability = [(SBApplicationInfo *)self->_appInfo uninstallCapability];
+  if (!uninstallCapability || uninstallCapability == 2 && !MGGetBoolAnswer())
   {
     return 0;
   }
 
-  v4 = [(SBApplication *)self bundleIdentifier];
-  if ([v4 isEqualToString:@"com.apple.mobileme.fmf1"])
+  bundleIdentifier = [(SBApplication *)self bundleIdentifier];
+  if ([bundleIdentifier isEqualToString:@"com.apple.mobileme.fmf1"])
   {
-    v5 = [MEMORY[0x277D262A0] sharedConnection];
-    v6 = [v5 effectiveBoolValueForSetting:*MEMORY[0x277D25EA8]] == 1;
+    mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+    v6 = [mEMORY[0x277D262A0] effectiveBoolValueForSetting:*MEMORY[0x277D25EA8]] == 1;
   }
 
   else
@@ -4589,11 +4589,11 @@ LABEL_14:
   v3 = SBLogWorkspace();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = [(SBApplication *)self bundleIdentifier];
+    bundleIdentifier = [(SBApplication *)self bundleIdentifier];
     v6 = 136315394;
     v7 = "[SBApplication _didSuspend]";
     v8 = 2114;
-    v9 = v4;
+    v9 = bundleIdentifier;
     _os_log_impl(&dword_21ED4E000, v3, OS_LOG_TYPE_INFO, "%s %{public}@", &v6, 0x16u);
   }
 
@@ -4616,27 +4616,27 @@ LABEL_14:
     return 0;
   }
 
-  v4 = [(SBApplication *)self _dataStore];
-  v5 = [(SBApplication *)self _baseSceneIdentifier];
-  v6 = [v4 sceneStoreForIdentifier:v5 creatingIfNecessary:0];
+  _dataStore = [(SBApplication *)self _dataStore];
+  _baseSceneIdentifier = [(SBApplication *)self _baseSceneIdentifier];
+  v6 = [_dataStore sceneStoreForIdentifier:_baseSceneIdentifier creatingIfNecessary:0];
 
   v7 = [v6 safeObjectForKey:@"classicAppZoomedIn" ofType:objc_opt_class()];
-  LOBYTE(v4) = [v7 BOOLValue];
+  LOBYTE(_dataStore) = [v7 BOOLValue];
 
-  return v4;
+  return _dataStore;
 }
 
 - (BOOL)classicAppRequiresHiDPI
 {
-  v3 = [(SBApplication *)self isClassic];
-  if (v3)
+  isClassic = [(SBApplication *)self isClassic];
+  if (isClassic)
   {
     appInfo = self->_appInfo;
 
-    LOBYTE(v3) = [(SBApplicationInfo *)appInfo requiresHiDPI];
+    LOBYTE(isClassic) = [(SBApplicationInfo *)appInfo requiresHiDPI];
   }
 
-  return v3;
+  return isClassic;
 }
 
 - (BOOL)classicAppZoomedInOrRequiresHiDPI
@@ -4681,30 +4681,30 @@ LABEL_14:
     return 0;
   }
 
-  v3 = [(SBApplication *)self _classicMode];
+  _classicMode = [(SBApplication *)self _classicMode];
 
-  return SBApplicationClassicModeWantsSafeAreaInsets(v3);
+  return SBApplicationClassicModeWantsSafeAreaInsets(_classicMode);
 }
 
-- (BOOL)includesStatusBarInClassicJailForInterfaceOrientation:(int64_t)a3
+- (BOOL)includesStatusBarInClassicJailForInterfaceOrientation:(int64_t)orientation
 {
-  LODWORD(v5) = [(SBApplication *)self isClassic];
-  if (v5)
+  LODWORD(_classicMode) = [(SBApplication *)self isClassic];
+  if (_classicMode)
   {
-    v6 = [MEMORY[0x277D75418] currentDevice];
-    v7 = [v6 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if ((v7 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+    if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
     {
       if ([(SBApplication *)self _classicAppScaledPhoneOnPad])
       {
-        LOBYTE(v5) = 0;
+        LOBYTE(_classicMode) = 0;
       }
 
       else if (SBFEffectiveHomeButtonType() == 2 && ![(SBApplication *)self classicAppScaledWithAspectRatioCloseEnoughToBeTreatedAsFullScreen])
       {
-        LODWORD(v5) = [(SBApplication *)self classicAppWithOwnSafeArea];
-        if (v5)
+        LODWORD(_classicMode) = [(SBApplication *)self classicAppWithOwnSafeArea];
+        if (_classicMode)
         {
           if (__sb__runningInSpringBoard())
           {
@@ -4716,68 +4716,68 @@ LABEL_14:
 
           else
           {
-            v13 = [MEMORY[0x277D759A0] mainScreen];
-            [v13 _referenceBounds];
+            mainScreen = [MEMORY[0x277D759A0] mainScreen];
+            [mainScreen _referenceBounds];
             BSSizeRoundForScale();
             v10 = v14;
             v12 = v15;
           }
 
           v16 = objc_opt_class();
-          v17 = [MEMORY[0x277D759A0] mainScreen];
-          v18 = [v17 displayConfiguration];
-          [v16 _defaultLaunchingSizeForDisplayConfiguration:v18 classicMode:{-[SBApplication _classicMode](self, "_classicMode")}];
+          mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+          displayConfiguration = [mainScreen2 displayConfiguration];
+          [v16 _defaultLaunchingSizeForDisplayConfiguration:displayConfiguration classicMode:{-[SBApplication _classicMode](self, "_classicMode")}];
           v20 = v19;
           v22 = v21;
 
           if (v20 == v10 && v22 == v12)
           {
 
-            LOBYTE(v5) = [(SBApplication *)self classicAppFullScreen];
+            LOBYTE(_classicMode) = [(SBApplication *)self classicAppFullScreen];
           }
 
-          else if ((a3 - 3) >= 2)
+          else if ((orientation - 3) >= 2)
           {
-            LOBYTE(v5) = v12 / v10 < v22 / v20;
+            LOBYTE(_classicMode) = v12 / v10 < v22 / v20;
           }
 
           else
           {
-            LOBYTE(v5) = v12 / v10 > v22 / v20;
+            LOBYTE(_classicMode) = v12 / v10 > v22 / v20;
           }
         }
       }
 
       else
       {
-        LOBYTE(v5) = 1;
+        LOBYTE(_classicMode) = 1;
       }
     }
 
     else
     {
       v8 = SBFEffectiveHomeButtonType();
-      v5 = [(SBApplication *)self _classicMode];
+      _classicMode = [(SBApplication *)self _classicMode];
       if (v8 == 2)
       {
 
-        LOBYTE(v5) = SBApplicationClassicModeExpectsRoundedCorners(v5);
+        LOBYTE(_classicMode) = SBApplicationClassicModeExpectsRoundedCorners(_classicMode);
       }
 
       else
       {
-        LOBYTE(v5) = v5 != 1;
+        LOBYTE(_classicMode) = _classicMode != 1;
       }
     }
   }
 
-  return v5;
+  return _classicMode;
 }
 
-- (CGSize)defaultLaunchingSizeForDisplayConfiguration:(id)a3
+- (CGSize)defaultLaunchingSizeForDisplayConfiguration:(id)configuration
 {
-  v4 = a3;
-  [objc_opt_class() _defaultLaunchingSizeForDisplayConfiguration:v4 classicMode:{-[SBApplication _classicMode](self, "_classicMode")}];
+  configurationCopy = configuration;
+  [objc_opt_class() _defaultLaunchingSizeForDisplayConfiguration:configurationCopy classicMode:{-[SBApplication _classicMode](self, "_classicMode")}];
   v6 = v5;
   v8 = v7;
 
@@ -4788,34 +4788,34 @@ LABEL_14:
   return result;
 }
 
-- (id)restrictedClassicModeDisplayConfigurationForDisplayConfiguration:(id)a3
+- (id)restrictedClassicModeDisplayConfigurationForDisplayConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [objc_opt_class() restrictedClassicModeDisplayConfigurationForDisplayConfiguration:v4 classicMode:{-[SBApplication _classicMode](self, "_classicMode")}];
+  configurationCopy = configuration;
+  v5 = [objc_opt_class() restrictedClassicModeDisplayConfigurationForDisplayConfiguration:configurationCopy classicMode:{-[SBApplication _classicMode](self, "_classicMode")}];
 
   return v5;
 }
 
-+ (id)restrictedClassicModeDisplayConfigurationForDisplayConfiguration:(id)a3 classicMode:(int64_t)a4
++ (id)restrictedClassicModeDisplayConfigurationForDisplayConfiguration:(id)configuration classicMode:(int64_t)mode
 {
-  v6 = a3;
-  v7 = [v6 identity];
-  v8 = v7;
-  if ((a4 - 1) <= 0xFFFFFFFFFFFFFFFDLL && [v7 isMainRootDisplay])
+  configurationCopy = configuration;
+  identity = [configurationCopy identity];
+  v8 = identity;
+  if ((mode - 1) <= 0xFFFFFFFFFFFFFFFDLL && [identity isMainRootDisplay])
   {
-    [a1 _defaultLaunchingSizeForDisplayConfiguration:v6 classicMode:a4];
+    [self _defaultLaunchingSizeForDisplayConfiguration:configurationCopy classicMode:mode];
     v10 = v9;
     v12 = v11;
-    v13 = [v6 currentMode];
-    v14 = [v13 _copyWithOverrideSize:{v10, v12}];
+    currentMode = [configurationCopy currentMode];
+    v14 = [currentMode _copyWithOverrideSize:{v10, v12}];
 
-    v15 = [v6 copyWithOverrideMode:v14];
-    if (SBApplicationClassicModeRepresentsMoreSpace(a4))
+    v15 = [configurationCopy copyWithOverrideMode:v14];
+    if (SBApplicationClassicModeRepresentsMoreSpace(mode))
     {
       [v15 pixelSize];
       v17 = v16;
       v19 = v18;
-      [a1 _standardCanvasSizeForClassicMode:a4];
+      [self _standardCanvasSizeForClassicMode:mode];
       v21 = v20;
       v23 = v22;
       [v15 pointScale];
@@ -4848,45 +4848,45 @@ LABEL_14:
       }
     }
 
-    v6 = v15;
+    configurationCopy = v15;
   }
 
-  return v6;
+  return configurationCopy;
 }
 
-- (void)_setClassicAppZoomedIn:(BOOL)a3
+- (void)_setClassicAppZoomedIn:(BOOL)in
 {
-  v3 = a3;
+  inCopy = in;
   if ([(SBApplication *)self _classicAppScaledPhoneOnPad]&& ![(SBApplicationInfo *)self->_appInfo requiresHiDPI])
   {
-    v5 = [(SBApplication *)self _dataStore];
-    v6 = [(SBApplication *)self _baseSceneIdentifier];
-    v8 = [v5 sceneStoreForIdentifier:v6 creatingIfNecessary:1];
+    _dataStore = [(SBApplication *)self _dataStore];
+    _baseSceneIdentifier = [(SBApplication *)self _baseSceneIdentifier];
+    v8 = [_dataStore sceneStoreForIdentifier:_baseSceneIdentifier creatingIfNecessary:1];
 
-    v7 = [MEMORY[0x277CCABB0] numberWithBool:v3];
+    v7 = [MEMORY[0x277CCABB0] numberWithBool:inCopy];
     [v8 setObject:v7 forKey:@"classicAppZoomedIn"];
   }
 }
 
-- (BOOL)_canLaunchInClassicMode:(int64_t)a3
+- (BOOL)_canLaunchInClassicMode:(int64_t)mode
 {
-  v6 = self;
+  selfCopy = self;
   [(SBApplication *)self _calculateSupportedTypesLazilyIfNecessary];
-  if ([(SBApplication *)v6 _bypassesClassicMode])
+  if ([(SBApplication *)selfCopy _bypassesClassicMode])
   {
-    LOBYTE(v6) = a3 != -1;
-    return v6;
+    LOBYTE(selfCopy) = mode != -1;
+    return selfCopy;
   }
 
-  switch(a3)
+  switch(mode)
   {
     case 0:
-      v26 = [(SBApplication *)v6 _supportedTypeForClassicModeNone];
-      v27 = v6;
+      _supportedTypeForClassicModeNone = [(SBApplication *)selfCopy _supportedTypeForClassicModeNone];
+      v27 = selfCopy;
       goto LABEL_43;
     case 1:
-      v27 = v6;
-      v26 = 1;
+      v27 = selfCopy;
+      _supportedTypeForClassicModeNone = 1;
       goto LABEL_43;
     case 2:
       v22 = __sb__runningInSpringBoard();
@@ -4898,8 +4898,8 @@ LABEL_14:
 
       else
       {
-        v3 = [MEMORY[0x277D759A0] mainScreen];
-        [v3 _referenceBounds];
+        mainScreen = [MEMORY[0x277D759A0] mainScreen];
+        [mainScreen _referenceBounds];
       }
 
       BSSizeRoundForScale();
@@ -4908,7 +4908,7 @@ LABEL_14:
         goto LABEL_126;
       }
 
-      v13 = v6;
+      v13 = selfCopy;
       v14 = 4;
       goto LABEL_124;
     case 3:
@@ -4921,8 +4921,8 @@ LABEL_14:
 
       else
       {
-        v3 = [MEMORY[0x277D759A0] mainScreen];
-        [v3 _referenceBounds];
+        mainScreen = [MEMORY[0x277D759A0] mainScreen];
+        [mainScreen _referenceBounds];
       }
 
       BSSizeRoundForScale();
@@ -4931,7 +4931,7 @@ LABEL_14:
         goto LABEL_126;
       }
 
-      v13 = v6;
+      v13 = selfCopy;
       v14 = 8;
       goto LABEL_124;
     case 4:
@@ -4944,8 +4944,8 @@ LABEL_14:
 
       else
       {
-        v3 = [MEMORY[0x277D759A0] mainScreen];
-        [v3 _referenceBounds];
+        mainScreen = [MEMORY[0x277D759A0] mainScreen];
+        [mainScreen _referenceBounds];
       }
 
       BSSizeRoundForScale();
@@ -4954,7 +4954,7 @@ LABEL_14:
         goto LABEL_126;
       }
 
-      v13 = v6;
+      v13 = selfCopy;
       v14 = 16;
       goto LABEL_124;
     case 5:
@@ -4967,8 +4967,8 @@ LABEL_14:
 
       else
       {
-        v3 = [MEMORY[0x277D759A0] mainScreen];
-        [v3 _referenceBounds];
+        mainScreen = [MEMORY[0x277D759A0] mainScreen];
+        [mainScreen _referenceBounds];
       }
 
       BSSizeRoundForScale();
@@ -4977,7 +4977,7 @@ LABEL_14:
         goto LABEL_126;
       }
 
-      v13 = v6;
+      v13 = selfCopy;
       v14 = 32;
       goto LABEL_124;
     case 6:
@@ -4990,8 +4990,8 @@ LABEL_14:
 
       else
       {
-        v3 = [MEMORY[0x277D759A0] mainScreen];
-        [v3 _referenceBounds];
+        mainScreen = [MEMORY[0x277D759A0] mainScreen];
+        [mainScreen _referenceBounds];
       }
 
       BSSizeRoundForScale();
@@ -5000,7 +5000,7 @@ LABEL_14:
         goto LABEL_126;
       }
 
-      v13 = v6;
+      v13 = selfCopy;
       v14 = 64;
       goto LABEL_124;
     case 7:
@@ -5013,8 +5013,8 @@ LABEL_14:
 
       else
       {
-        v3 = [MEMORY[0x277D759A0] mainScreen];
-        [v3 _referenceBounds];
+        mainScreen = [MEMORY[0x277D759A0] mainScreen];
+        [mainScreen _referenceBounds];
       }
 
       BSSizeRoundForScale();
@@ -5023,7 +5023,7 @@ LABEL_14:
         goto LABEL_126;
       }
 
-      v13 = v6;
+      v13 = selfCopy;
       v14 = 128;
       goto LABEL_124;
     case 8:
@@ -5036,8 +5036,8 @@ LABEL_14:
 
       else
       {
-        v3 = [MEMORY[0x277D759A0] mainScreen];
-        [v3 _referenceBounds];
+        mainScreen = [MEMORY[0x277D759A0] mainScreen];
+        [mainScreen _referenceBounds];
       }
 
       BSSizeRoundForScale();
@@ -5046,7 +5046,7 @@ LABEL_14:
         goto LABEL_126;
       }
 
-      v13 = v6;
+      v13 = selfCopy;
       v14 = 1024;
       goto LABEL_124;
     case 9:
@@ -5059,8 +5059,8 @@ LABEL_14:
 
       else
       {
-        v3 = [MEMORY[0x277D759A0] mainScreen];
-        [v3 _referenceBounds];
+        mainScreen = [MEMORY[0x277D759A0] mainScreen];
+        [mainScreen _referenceBounds];
       }
 
       BSSizeRoundForScale();
@@ -5069,7 +5069,7 @@ LABEL_14:
         goto LABEL_126;
       }
 
-      v13 = v6;
+      v13 = selfCopy;
       v14 = 2048;
       goto LABEL_124;
     case 10:
@@ -5082,8 +5082,8 @@ LABEL_14:
 
       else
       {
-        v3 = [MEMORY[0x277D759A0] mainScreen];
-        [v3 _referenceBounds];
+        mainScreen = [MEMORY[0x277D759A0] mainScreen];
+        [mainScreen _referenceBounds];
       }
 
       BSSizeRoundForScale();
@@ -5092,7 +5092,7 @@ LABEL_14:
         goto LABEL_126;
       }
 
-      v13 = v6;
+      v13 = selfCopy;
       v14 = 256;
       goto LABEL_124;
     case 11:
@@ -5105,8 +5105,8 @@ LABEL_14:
 
       else
       {
-        v3 = [MEMORY[0x277D759A0] mainScreen];
-        [v3 _referenceBounds];
+        mainScreen = [MEMORY[0x277D759A0] mainScreen];
+        [mainScreen _referenceBounds];
       }
 
       BSSizeRoundForScale();
@@ -5115,7 +5115,7 @@ LABEL_14:
         goto LABEL_126;
       }
 
-      v13 = v6;
+      v13 = selfCopy;
       v14 = 512;
       goto LABEL_124;
     case 12:
@@ -5128,8 +5128,8 @@ LABEL_14:
 
       else
       {
-        v3 = [MEMORY[0x277D759A0] mainScreen];
-        [v3 _referenceBounds];
+        mainScreen = [MEMORY[0x277D759A0] mainScreen];
+        [mainScreen _referenceBounds];
       }
 
       BSSizeRoundForScale();
@@ -5138,7 +5138,7 @@ LABEL_14:
         goto LABEL_126;
       }
 
-      v13 = v6;
+      v13 = selfCopy;
       v14 = 4096;
       goto LABEL_124;
     case 13:
@@ -5151,8 +5151,8 @@ LABEL_14:
 
       else
       {
-        v3 = [MEMORY[0x277D759A0] mainScreen];
-        [v3 _referenceBounds];
+        mainScreen = [MEMORY[0x277D759A0] mainScreen];
+        [mainScreen _referenceBounds];
       }
 
       BSSizeRoundForScale();
@@ -5161,11 +5161,11 @@ LABEL_14:
         goto LABEL_126;
       }
 
-      v13 = v6;
+      v13 = selfCopy;
       v14 = 0x2000;
       goto LABEL_124;
     case 14:
-      if (![(SBApplication *)v6 _supportsApplicationType:2])
+      if (![(SBApplication *)selfCopy _supportsApplicationType:2])
       {
         goto LABEL_51;
       }
@@ -5179,15 +5179,15 @@ LABEL_14:
 
       else
       {
-        v3 = [MEMORY[0x277D759A0] mainScreen];
-        [v3 _referenceBounds];
+        mainScreen = [MEMORY[0x277D759A0] mainScreen];
+        [mainScreen _referenceBounds];
       }
 
       BSSizeRoundForScale();
-      LODWORD(v6) = BSSizeEqualToSize() ^ 1;
+      LODWORD(selfCopy) = BSSizeEqualToSize() ^ 1;
       if (v12)
       {
-        return v6;
+        return selfCopy;
       }
 
       goto LABEL_128;
@@ -5201,8 +5201,8 @@ LABEL_14:
 
       else
       {
-        v3 = [MEMORY[0x277D759A0] mainScreen];
-        [v3 _referenceBounds];
+        mainScreen = [MEMORY[0x277D759A0] mainScreen];
+        [mainScreen _referenceBounds];
       }
 
       BSSizeRoundForScale();
@@ -5222,8 +5222,8 @@ LABEL_14:
 
       else
       {
-        v3 = [MEMORY[0x277D759A0] mainScreen];
-        [v3 _referenceBounds];
+        mainScreen = [MEMORY[0x277D759A0] mainScreen];
+        [mainScreen _referenceBounds];
       }
 
       BSSizeRoundForScale();
@@ -5233,30 +5233,30 @@ LABEL_14:
       }
 
 LABEL_94:
-      v13 = v6;
+      v13 = selfCopy;
       v14 = 0x8000000;
       goto LABEL_124;
     case 17:
       if (!__sb__runningInSpringBoard())
       {
-        v36 = [MEMORY[0x277D75418] currentDevice];
-        LOBYTE(v6) = [v36 userInterfaceIdiom] == 1 && -[SBApplication _supportsApplicationType:](v6, "_supportsApplicationType:", 0x20000);
+        currentDevice = [MEMORY[0x277D75418] currentDevice];
+        LOBYTE(selfCopy) = [currentDevice userInterfaceIdiom] == 1 && -[SBApplication _supportsApplicationType:](selfCopy, "_supportsApplicationType:", 0x20000);
 
-        return v6;
+        return selfCopy;
       }
 
       if (SBFEffectiveDeviceClass() != 2)
       {
 LABEL_51:
-        LOBYTE(v6) = 0;
-        return v6;
+        LOBYTE(selfCopy) = 0;
+        return selfCopy;
       }
 
-      v27 = v6;
-      v26 = 0x20000;
+      v27 = selfCopy;
+      _supportedTypeForClassicModeNone = 0x20000;
 LABEL_43:
 
-      return [(SBApplication *)v27 _supportsApplicationType:v26];
+      return [(SBApplication *)v27 _supportsApplicationType:_supportedTypeForClassicModeNone];
     case 18:
     case 19:
       v7 = __sb__runningInSpringBoard();
@@ -5268,20 +5268,20 @@ LABEL_43:
 
       else
       {
-        v3 = [MEMORY[0x277D759A0] mainScreen];
-        [v3 _referenceBounds];
+        mainScreen = [MEMORY[0x277D759A0] mainScreen];
+        [mainScreen _referenceBounds];
       }
 
       BSSizeRoundForScale();
-      if (BSSizeEqualToSize() && [(SBApplication *)v6 _supportsApplicationType:0x10000])
+      if (BSSizeEqualToSize() && [(SBApplication *)selfCopy _supportsApplicationType:0x10000])
       {
-        LOBYTE(v6) = 1;
+        LOBYTE(selfCopy) = 1;
         if ((v8 & 1) == 0)
         {
           goto LABEL_128;
         }
 
-        return v6;
+        return selfCopy;
       }
 
       v17 = __sb__runningInSpringBoard();
@@ -5293,14 +5293,14 @@ LABEL_43:
 
       else
       {
-        v4 = [MEMORY[0x277D759A0] mainScreen];
-        [v4 _referenceBounds];
+        mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+        [mainScreen2 _referenceBounds];
       }
 
       BSSizeRoundForScale();
       if (BSSizeLessThanSize())
       {
-        LOBYTE(v6) = [(SBApplication *)v6 _supportsApplicationType:0x100000];
+        LOBYTE(selfCopy) = [(SBApplication *)selfCopy _supportsApplicationType:0x100000];
         if (v18)
         {
           goto LABEL_127;
@@ -5309,7 +5309,7 @@ LABEL_43:
 
       else
       {
-        LOBYTE(v6) = 0;
+        LOBYTE(selfCopy) = 0;
         if (v18)
         {
           goto LABEL_127;
@@ -5318,7 +5318,7 @@ LABEL_43:
 
       if (v8)
       {
-        return v6;
+        return selfCopy;
       }
 
       goto LABEL_128;
@@ -5332,8 +5332,8 @@ LABEL_43:
 
       else
       {
-        v3 = [MEMORY[0x277D759A0] mainScreen];
-        [v3 _referenceBounds];
+        mainScreen = [MEMORY[0x277D759A0] mainScreen];
+        [mainScreen _referenceBounds];
       }
 
       BSSizeRoundForScale();
@@ -5342,7 +5342,7 @@ LABEL_43:
         goto LABEL_126;
       }
 
-      v13 = v6;
+      v13 = selfCopy;
       v14 = 0x2000000;
       goto LABEL_124;
     case 21:
@@ -5356,8 +5356,8 @@ LABEL_43:
 
       else
       {
-        v3 = [MEMORY[0x277D759A0] mainScreen];
-        [v3 _referenceBounds];
+        mainScreen = [MEMORY[0x277D759A0] mainScreen];
+        [mainScreen _referenceBounds];
       }
 
       BSSizeRoundForScale();
@@ -5366,7 +5366,7 @@ LABEL_43:
         goto LABEL_126;
       }
 
-      v13 = v6;
+      v13 = selfCopy;
       v14 = 0x1000000;
       goto LABEL_124;
     case 22:
@@ -5379,8 +5379,8 @@ LABEL_43:
 
       else
       {
-        v3 = [MEMORY[0x277D759A0] mainScreen];
-        [v3 _referenceBounds];
+        mainScreen = [MEMORY[0x277D759A0] mainScreen];
+        [mainScreen _referenceBounds];
       }
 
       BSSizeRoundForScale();
@@ -5389,7 +5389,7 @@ LABEL_43:
         goto LABEL_126;
       }
 
-      v13 = v6;
+      v13 = selfCopy;
       v14 = 0x10000000;
       goto LABEL_124;
     case 23:
@@ -5402,36 +5402,36 @@ LABEL_43:
 
       else
       {
-        v3 = [MEMORY[0x277D759A0] mainScreen];
-        [v3 _referenceBounds];
+        mainScreen = [MEMORY[0x277D759A0] mainScreen];
+        [mainScreen _referenceBounds];
       }
 
       BSSizeRoundForScale();
       if (BSSizeGreaterThanOrEqualToSize())
       {
-        v13 = v6;
+        v13 = selfCopy;
         v14 = 0x40000000;
 LABEL_124:
-        LOBYTE(v6) = [(SBApplication *)v13 _supportsApplicationType:v14];
+        LOBYTE(selfCopy) = [(SBApplication *)v13 _supportsApplicationType:v14];
         if (v8)
         {
-          return v6;
+          return selfCopy;
         }
 
 LABEL_128:
 
-        return v6;
+        return selfCopy;
       }
 
 LABEL_126:
-      LOBYTE(v6) = 0;
+      LOBYTE(selfCopy) = 0;
 LABEL_127:
       if ((v8 & 1) == 0)
       {
         goto LABEL_128;
       }
 
-      return v6;
+      return selfCopy;
     default:
       goto LABEL_51;
   }
@@ -5444,21 +5444,21 @@ LABEL_127:
   [(SBApplication *)self _calculateSupportedTypesLazilyIfNecessary];
 }
 
-+ (int64_t)_bestAvailableClassicModeForHostingExtensionContainedInApplication:(BOOL)a3
++ (int64_t)_bestAvailableClassicModeForHostingExtensionContainedInApplication:(BOOL)application
 {
-  v3 = a3;
+  applicationCopy = application;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __101__SBApplication_Classic_Private___bestAvailableClassicModeForHostingExtensionContainedInApplication___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_bestAvailableClassicModeForHostingExtensionContainedInApplication__onceToken != -1)
   {
     dispatch_once(&_bestAvailableClassicModeForHostingExtensionContainedInApplication__onceToken, block);
   }
 
   v4 = &_bestAvailableClassicModeForHostingExtensionContainedInApplication__sLargestValidClassicModePad;
-  if (!v3)
+  if (!applicationCopy)
   {
     v4 = &_bestAvailableClassicModeForHostingExtensionContainedInApplication__sLargestValidClassicModePhone;
   }
@@ -5684,10 +5684,10 @@ LABEL_38:
   return -1;
 }
 
-+ (unint64_t)_canonicalScreenTypeForClassicMode:(int64_t)a3
++ (unint64_t)_canonicalScreenTypeForClassicMode:(int64_t)mode
 {
   result = 0;
-  switch(a3)
+  switch(mode)
   {
     case -1:
       result = 0x7FFFFFFFFFFFFFFFLL;
@@ -5768,20 +5768,20 @@ LABEL_38:
   return result;
 }
 
-+ (int64_t)_bestClassicModeForScreenType:(unint64_t)a3
++ (int64_t)_bestClassicModeForScreenType:(unint64_t)type
 {
-  if (a3 > 99)
+  if (type > 99)
   {
-    if (a3 <= 108)
+    if (type <= 108)
     {
-      if (a3 > 103)
+      if (type > 103)
       {
-        if (a3 - 106 < 2)
+        if (type - 106 < 2)
         {
           return 18;
         }
 
-        if (a3 == 104)
+        if (type == 104)
         {
           return 16;
         }
@@ -5789,12 +5789,12 @@ LABEL_38:
 
       else
       {
-        if (a3 - 100 < 2)
+        if (type - 100 < 2)
         {
           return 14;
         }
 
-        if (a3 == 103)
+        if (type == 103)
         {
           return 15;
         }
@@ -5803,14 +5803,14 @@ LABEL_38:
 
     else
     {
-      if (a3 <= 111)
+      if (type <= 111)
       {
-        if (a3 == 109)
+        if (type == 109)
         {
           return 19;
         }
 
-        if (a3 == 110)
+        if (type == 110)
         {
           return 21;
         }
@@ -5818,9 +5818,9 @@ LABEL_38:
         return 22;
       }
 
-      if (a3 <= 113)
+      if (type <= 113)
       {
-        if (a3 == 112)
+        if (type == 112)
         {
           return 17;
         }
@@ -5831,12 +5831,12 @@ LABEL_38:
         }
       }
 
-      if (a3 == 114)
+      if (type == 114)
       {
         return 20;
       }
 
-      if (a3 == 116)
+      if (type == 116)
       {
         return 23;
       }
@@ -5846,7 +5846,7 @@ LABEL_38:
   }
 
   result = 2;
-  switch(a3)
+  switch(type)
   {
     case 0uLL:
       return result;
@@ -5898,12 +5898,12 @@ LABEL_38:
   return result;
 }
 
-+ (unint64_t)_niceScreenTypeForClassicType:(unint64_t)a3 matchingAValidDisplayZoomModeOnScreenType:(unint64_t)a4
++ (unint64_t)_niceScreenTypeForClassicType:(unint64_t)type matchingAValidDisplayZoomModeOnScreenType:(unint64_t)screenType
 {
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
-  v11 = a3;
+  typeCopy = type;
   SBHGetScreenSpecification();
   SBHGetScreenSpecification();
   HasHomeButton = SBHScreenTypeHasHomeButton();
@@ -5912,7 +5912,7 @@ LABEL_38:
     SBHEnumerateScreenTypes();
   }
 
-  v6 = [(SBApplication *)a1 _unobscuredScreenTypeForScreenType:?];
+  v6 = [(SBApplication *)self _unobscuredScreenTypeForScreenType:?];
   v9[3] = v6;
   _Block_object_dispose(&v8, 8);
   return v6;
@@ -5939,7 +5939,7 @@ uint64_t __106__SBApplication_Classic_Private___niceScreenTypeForClassicType_mat
   return result;
 }
 
-+ (unint64_t)_unobscuredScreenTypeForScreenType:(uint64_t)a1
++ (unint64_t)_unobscuredScreenTypeForScreenType:(uint64_t)type
 {
   objc_opt_self();
   if (a2 >= 0x1F && a2 - 100 >= 0x13)
@@ -5996,8 +5996,8 @@ LABEL_3:
 
       else
       {
-        v2 = [MEMORY[0x277D759A0] mainScreen];
-        [v2 _referenceBounds];
+        mainScreen = [MEMORY[0x277D759A0] mainScreen];
+        [mainScreen _referenceBounds];
       }
 
       BSSizeRoundForScale();
@@ -6020,8 +6020,8 @@ LABEL_3:
 
       else
       {
-        v2 = [MEMORY[0x277D759A0] mainScreen];
-        [v2 _referenceBounds];
+        mainScreen = [MEMORY[0x277D759A0] mainScreen];
+        [mainScreen _referenceBounds];
       }
 
       BSSizeRoundForScale();
@@ -6044,8 +6044,8 @@ LABEL_3:
 
       else
       {
-        v2 = [MEMORY[0x277D759A0] mainScreen];
-        [v2 _referenceBounds];
+        mainScreen = [MEMORY[0x277D759A0] mainScreen];
+        [mainScreen _referenceBounds];
       }
 
       BSSizeRoundForScale();
@@ -6068,8 +6068,8 @@ LABEL_3:
 
       else
       {
-        v2 = [MEMORY[0x277D759A0] mainScreen];
-        [v2 _referenceBounds];
+        mainScreen = [MEMORY[0x277D759A0] mainScreen];
+        [mainScreen _referenceBounds];
       }
 
       BSSizeRoundForScale();
@@ -6092,8 +6092,8 @@ LABEL_3:
 
       else
       {
-        v2 = [MEMORY[0x277D759A0] mainScreen];
-        [v2 _referenceBounds];
+        mainScreen = [MEMORY[0x277D759A0] mainScreen];
+        [mainScreen _referenceBounds];
       }
 
       BSSizeRoundForScale();
@@ -6116,8 +6116,8 @@ LABEL_3:
 
       else
       {
-        v2 = [MEMORY[0x277D759A0] mainScreen];
-        [v2 _referenceBounds];
+        mainScreen = [MEMORY[0x277D759A0] mainScreen];
+        [mainScreen _referenceBounds];
       }
 
       BSSizeRoundForScale();
@@ -6140,8 +6140,8 @@ LABEL_3:
 
       else
       {
-        v2 = [MEMORY[0x277D759A0] mainScreen];
-        [v2 _referenceBounds];
+        mainScreen = [MEMORY[0x277D759A0] mainScreen];
+        [mainScreen _referenceBounds];
       }
 
       BSSizeRoundForScale();
@@ -6164,8 +6164,8 @@ LABEL_3:
 
       else
       {
-        v2 = [MEMORY[0x277D759A0] mainScreen];
-        [v2 _referenceBounds];
+        mainScreen = [MEMORY[0x277D759A0] mainScreen];
+        [mainScreen _referenceBounds];
       }
 
       BSSizeRoundForScale();
@@ -6188,8 +6188,8 @@ LABEL_3:
 
       else
       {
-        v2 = [MEMORY[0x277D759A0] mainScreen];
-        [v2 _referenceBounds];
+        mainScreen = [MEMORY[0x277D759A0] mainScreen];
+        [mainScreen _referenceBounds];
       }
 
       BSSizeRoundForScale();
@@ -6212,8 +6212,8 @@ LABEL_3:
 
       else
       {
-        v2 = [MEMORY[0x277D759A0] mainScreen];
-        [v2 _referenceBounds];
+        mainScreen = [MEMORY[0x277D759A0] mainScreen];
+        [mainScreen _referenceBounds];
       }
 
       BSSizeRoundForScale();
@@ -6236,8 +6236,8 @@ LABEL_3:
 
       else
       {
-        v2 = [MEMORY[0x277D759A0] mainScreen];
-        [v2 _referenceBounds];
+        mainScreen = [MEMORY[0x277D759A0] mainScreen];
+        [mainScreen _referenceBounds];
       }
 
       BSSizeRoundForScale();
@@ -6260,8 +6260,8 @@ LABEL_3:
 
       else
       {
-        v2 = [MEMORY[0x277D759A0] mainScreen];
-        [v2 _referenceBounds];
+        mainScreen = [MEMORY[0x277D759A0] mainScreen];
+        [mainScreen _referenceBounds];
       }
 
       BSSizeRoundForScale();
@@ -6284,8 +6284,8 @@ LABEL_3:
 
       else
       {
-        v2 = [MEMORY[0x277D759A0] mainScreen];
-        [v2 _referenceBounds];
+        mainScreen = [MEMORY[0x277D759A0] mainScreen];
+        [mainScreen _referenceBounds];
       }
 
       BSSizeRoundForScale();
@@ -6300,10 +6300,10 @@ LABEL_3:
 
   else
   {
-    v8 = [MEMORY[0x277D75418] currentDevice];
-    v2 = [v8 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    mainScreen = [currentDevice userInterfaceIdiom];
 
-    if (v2 != 1)
+    if (mainScreen != 1)
     {
       goto LABEL_3;
     }
@@ -6318,8 +6318,8 @@ LABEL_3:
 
   else
   {
-    v2 = [MEMORY[0x277D759A0] mainScreen];
-    [v2 _referenceBounds];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen _referenceBounds];
   }
 
   BSSizeRoundForScale();
@@ -6342,8 +6342,8 @@ LABEL_3:
 
   else
   {
-    v2 = [MEMORY[0x277D759A0] mainScreen];
-    [v2 _referenceBounds];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen _referenceBounds];
   }
 
   BSSizeRoundForScale();
@@ -6366,19 +6366,19 @@ LABEL_3:
 
   else
   {
-    v2 = [MEMORY[0x277D759A0] mainScreen];
-    [v2 _referenceBounds];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen _referenceBounds];
   }
 
   BSSizeRoundForScale();
-  v25 = BSSizeEqualToSize();
+  currentDevice2 = BSSizeEqualToSize();
   if ((v23 & 1) == 0)
   {
   }
 
   v26 = __sb__runningInSpringBoard();
   v27 = v26;
-  if (v25)
+  if (currentDevice2)
   {
     if (v26)
     {
@@ -6390,8 +6390,8 @@ LABEL_3:
 
     else
     {
-      v25 = [MEMORY[0x277D75418] currentDevice];
-      if ([v25 userInterfaceIdiom] != 1 || SBFEffectiveHomeButtonType() != 2)
+      currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+      if ([currentDevice2 userInterfaceIdiom] != 1 || SBFEffectiveHomeButtonType() != 2)
       {
         v12 = 0x8000000;
 LABEL_93:
@@ -6409,8 +6409,8 @@ LABEL_93:
 
     else
     {
-      v3 = [MEMORY[0x277D759A0] mainScreen];
-      [v3 _referenceBounds];
+      mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen2 _referenceBounds];
     }
 
     BSSizeRoundForScale();
@@ -6443,8 +6443,8 @@ LABEL_93:
 
     else
     {
-      v2 = [MEMORY[0x277D759A0] mainScreen];
-      [v2 _referenceBounds];
+      mainScreen = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen _referenceBounds];
     }
 
     BSSizeRoundForScale();
@@ -6469,8 +6469,8 @@ LABEL_93:
 
       else
       {
-        v2 = [MEMORY[0x277D759A0] mainScreen];
-        [v2 _referenceBounds];
+        mainScreen = [MEMORY[0x277D759A0] mainScreen];
+        [mainScreen _referenceBounds];
       }
 
       BSSizeRoundForScale();
@@ -6495,8 +6495,8 @@ LABEL_93:
 
         else
         {
-          v2 = [MEMORY[0x277D759A0] mainScreen];
-          [v2 _referenceBounds];
+          mainScreen = [MEMORY[0x277D759A0] mainScreen];
+          [mainScreen _referenceBounds];
         }
 
         BSSizeRoundForScale();
@@ -6521,8 +6521,8 @@ LABEL_93:
 
           else
           {
-            v2 = [MEMORY[0x277D759A0] mainScreen];
-            [v2 _referenceBounds];
+            mainScreen = [MEMORY[0x277D759A0] mainScreen];
+            [mainScreen _referenceBounds];
           }
 
           BSSizeRoundForScale();
@@ -6547,8 +6547,8 @@ LABEL_93:
 
             else
             {
-              v2 = [MEMORY[0x277D759A0] mainScreen];
-              [v2 _referenceBounds];
+              mainScreen = [MEMORY[0x277D759A0] mainScreen];
+              [mainScreen _referenceBounds];
             }
 
             BSSizeRoundForScale();
@@ -6573,8 +6573,8 @@ LABEL_93:
 
               else
               {
-                v2 = [MEMORY[0x277D759A0] mainScreen];
-                [v2 _referenceBounds];
+                mainScreen = [MEMORY[0x277D759A0] mainScreen];
+                [mainScreen _referenceBounds];
               }
 
               BSSizeRoundForScale();
@@ -6599,8 +6599,8 @@ LABEL_93:
 
                 else
                 {
-                  v2 = [MEMORY[0x277D759A0] mainScreen];
-                  [v2 _referenceBounds];
+                  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+                  [mainScreen _referenceBounds];
                 }
 
                 BSSizeRoundForScale();
@@ -6625,8 +6625,8 @@ LABEL_93:
 
                   else
                   {
-                    v2 = [MEMORY[0x277D759A0] mainScreen];
-                    [v2 _referenceBounds];
+                    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+                    [mainScreen _referenceBounds];
                   }
 
                   BSSizeRoundForScale();
@@ -6651,8 +6651,8 @@ LABEL_93:
 
                     else
                     {
-                      v2 = [MEMORY[0x277D759A0] mainScreen];
-                      [v2 _referenceBounds];
+                      mainScreen = [MEMORY[0x277D759A0] mainScreen];
+                      [mainScreen _referenceBounds];
                     }
 
                     BSSizeRoundForScale();
@@ -6686,8 +6686,8 @@ LABEL_93:
 
                       else
                       {
-                        v86 = [MEMORY[0x277D75418] currentDevice];
-                        if ([v86 userInterfaceIdiom] == 1)
+                        currentDevice3 = [MEMORY[0x277D75418] currentDevice];
+                        if ([currentDevice3 userInterfaceIdiom] == 1)
                         {
                           if (SBFEffectiveHomeButtonType() == 2)
                           {
@@ -6724,9 +6724,9 @@ LABEL_93:
   return v12;
 }
 
-+ (CGSize)_defaultLaunchingSizeForClassicMode:(int64_t)a3
++ (CGSize)_defaultLaunchingSizeForClassicMode:(int64_t)mode
 {
-  switch(a3)
+  switch(mode)
   {
     case -1:
     case 0:
@@ -6816,11 +6816,11 @@ LABEL_12:
   return result;
 }
 
-+ (CGSize)_defaultLaunchingSizeForDisplayConfiguration:(id)a3 classicMode:(int64_t)a4
++ (CGSize)_defaultLaunchingSizeForDisplayConfiguration:(id)configuration classicMode:(int64_t)mode
 {
-  if ((a4 - 1) > 0xFFFFFFFFFFFFFFFDLL)
+  if ((mode - 1) > 0xFFFFFFFFFFFFFFFDLL)
   {
-    [a3 bounds];
+    [configuration bounds];
     v6 = v8;
     v7 = v9;
   }
@@ -6828,7 +6828,7 @@ LABEL_12:
   else
   {
 
-    [a1 _defaultLaunchingSizeForClassicMode:a4];
+    [self _defaultLaunchingSizeForClassicMode:mode];
   }
 
   result.height = v7;
@@ -6836,34 +6836,34 @@ LABEL_12:
   return result;
 }
 
-+ (int64_t)_classicModeReplacingMoreSpaceWithEquivalentStandardCanvasForClassicMode:(int64_t)a3
++ (int64_t)_classicModeReplacingMoreSpaceWithEquivalentStandardCanvasForClassicMode:(int64_t)mode
 {
-  if ((a3 + 1) > 0x18)
+  if ((mode + 1) > 0x18)
   {
     return 22;
   }
 
   else
   {
-    return qword_21F8A53A8[a3 + 1];
+    return qword_21F8A53A8[mode + 1];
   }
 }
 
-+ (CGSize)_standardCanvasSizeForClassicMode:(int64_t)a3
++ (CGSize)_standardCanvasSizeForClassicMode:(int64_t)mode
 {
-  v3 = a3;
-  if (SBApplicationClassicModeRepresentsMoreSpace(a3))
+  modeCopy = mode;
+  if (SBApplicationClassicModeRepresentsMoreSpace(mode))
   {
-    v3 = [a1 _classicModeReplacingMoreSpaceWithEquivalentStandardCanvasForClassicMode:v3];
+    modeCopy = [self _classicModeReplacingMoreSpaceWithEquivalentStandardCanvasForClassicMode:modeCopy];
   }
 
-  [a1 _defaultLaunchingSizeForClassicMode:v3];
+  [self _defaultLaunchingSizeForClassicMode:modeCopy];
   result.height = v6;
   result.width = v5;
   return result;
 }
 
-+ (int64_t)_classicModeForLaunchingSize:(CGSize)a3
++ (int64_t)_classicModeForLaunchingSize:(CGSize)size
 {
   v4 = __sb__runningInSpringBoard();
   v5 = v4;
@@ -6874,8 +6874,8 @@ LABEL_12:
 
   else
   {
-    v3 = [MEMORY[0x277D759A0] mainScreen];
-    [v3 _referenceBounds];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen _referenceBounds];
   }
 
   BSSizeRoundForScale();
@@ -6889,10 +6889,10 @@ LABEL_12:
     return 0;
   }
 
-  v8 = [MEMORY[0x277D75418] currentDevice];
-  v9 = [v8 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v9 & 0xFFFFFFFFFFFFFFFBLL) != 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 1)
   {
     goto LABEL_27;
   }
@@ -7053,60 +7053,60 @@ void __67__SBApplication_Classic_Internal__KJHKJHw39rq9w87q903475q0983rskjd__blo
   v3 = XBLogFileManifest();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(SBApplication *)self info];
-    v5 = [v4 bundleIdentifier];
+    info = [(SBApplication *)self info];
+    bundleIdentifier = [info bundleIdentifier];
     buf = 138543362;
-    v61 = v5;
+    v61 = bundleIdentifier;
     _os_log_impl(&dword_21ED4E000, v3, OS_LOG_TYPE_DEFAULT, "[%{public}@] Start flushSnapshotsForAllScenesIncludingAllLegacyImages", &buf, 0xCu);
   }
 
-  v49 = [(SBApplication *)self _snapshotManifest];
-  v6 = [MEMORY[0x277CCAA00] defaultManager];
-  v52 = [v49 containerPath];
-  v7 = [(SBApplication *)self info];
+  _snapshotManifest = [(SBApplication *)self _snapshotManifest];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  containerPath = [_snapshotManifest containerPath];
+  info2 = [(SBApplication *)self info];
   v8 = XBCachesPathForApplicationInfo();
   v48 = [v8 stringByAppendingPathComponent:@"LaunchImages"];
 
   v9 = XBLogFileManifest();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [(SBApplication *)self info];
-    v11 = [v10 bundleIdentifier];
+    info3 = [(SBApplication *)self info];
+    bundleIdentifier2 = [info3 bundleIdentifier];
     buf = 138543618;
-    v61 = v11;
+    v61 = bundleIdentifier2;
     v62 = 2114;
     v63[0] = v48;
     _os_log_impl(&dword_21ED4E000, v9, OS_LOG_TYPE_DEFAULT, "[%{public}@] removing legacy snapshot folder at %{public}@", &buf, 0x16u);
   }
 
-  [v6 removeItemAtPath:v48 error:0];
-  v12 = [(SBApplication *)self isSystemApplication];
-  v13 = [(SBApplication *)self isInternalApplication];
+  [defaultManager removeItemAtPath:v48 error:0];
+  isSystemApplication = [(SBApplication *)self isSystemApplication];
+  isInternalApplication = [(SBApplication *)self isInternalApplication];
   v14 = XBLogFileManifest();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [(SBApplication *)self info];
-    v16 = [v15 bundleIdentifier];
+    info4 = [(SBApplication *)self info];
+    bundleIdentifier3 = [info4 bundleIdentifier];
     buf = 138543874;
-    v61 = v16;
+    v61 = bundleIdentifier3;
     v62 = 1024;
-    LODWORD(v63[0]) = v12;
+    LODWORD(v63[0]) = isSystemApplication;
     WORD2(v63[0]) = 1024;
-    *(v63 + 6) = v13;
+    *(v63 + 6) = isInternalApplication;
     _os_log_impl(&dword_21ED4E000, v14, OS_LOG_TYPE_DEFAULT, "[%{public}@] we think we might have SplashBoard-generated images we want to keep. isSystemApplication: %d; isInternalApplication: %d", &buf, 0x18u);
   }
 
-  if (v12 || v13)
+  if (isSystemApplication || isInternalApplication)
   {
-    v17 = [MEMORY[0x277D656A0] predicate];
-    [v17 setContentTypeMask:2];
-    v46 = v17;
-    v18 = [v49 defaultGroupIdentifier];
-    v47 = [v49 snapshotsForGroupID:v18 matchingPredicate:v46];
+    predicate = [MEMORY[0x277D656A0] predicate];
+    [predicate setContentTypeMask:2];
+    v46 = predicate;
+    defaultGroupIdentifier = [_snapshotManifest defaultGroupIdentifier];
+    v47 = [_snapshotManifest snapshotsForGroupID:defaultGroupIdentifier matchingPredicate:v46];
 
     if ([v47 count])
     {
-      v19 = [v6 subpathsOfDirectoryAtPath:v52 error:0];
+      v19 = [defaultManager subpathsOfDirectoryAtPath:containerPath error:0];
       v50 = [v47 bs_mapNoNulls:&__block_literal_global_35];
       v56 = 0u;
       v57 = 0u;
@@ -7127,39 +7127,39 @@ void __67__SBApplication_Classic_Internal__KJHKJHw39rq9w87q903475q0983rskjd__blo
             }
 
             v24 = *(*(&v54 + 1) + 8 * i);
-            v25 = [v52 stringByAppendingPathExtension:v24];
+            v25 = [containerPath stringByAppendingPathExtension:v24];
             v53 = 0;
-            if ([v6 fileExistsAtPath:v25 isDirectory:&v53])
+            if ([defaultManager fileExistsAtPath:v25 isDirectory:&v53])
             {
               if (v53 == 1)
               {
-                v26 = XBLogFileManifest();
-                if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
+                lastPathComponent = XBLogFileManifest();
+                if (os_log_type_enabled(lastPathComponent, OS_LOG_TYPE_INFO))
                 {
-                  v27 = [(SBApplication *)self info];
-                  v28 = [v27 bundleIdentifier];
+                  info5 = [(SBApplication *)self info];
+                  bundleIdentifier4 = [info5 bundleIdentifier];
                   buf = 138543618;
-                  v61 = v28;
+                  v61 = bundleIdentifier4;
                   v62 = 2114;
                   v63[0] = v25;
-                  _os_log_impl(&dword_21ED4E000, v26, OS_LOG_TYPE_INFO, "[%{public}@] SKIP removing path because it's a directory: %{public}@", &buf, 0x16u);
+                  _os_log_impl(&dword_21ED4E000, lastPathComponent, OS_LOG_TYPE_INFO, "[%{public}@] SKIP removing path because it's a directory: %{public}@", &buf, 0x16u);
                 }
               }
 
               else
               {
-                v26 = [v24 lastPathComponent];
-                if ([v50 containsObject:v26])
+                lastPathComponent = [v24 lastPathComponent];
+                if ([v50 containsObject:lastPathComponent])
                 {
                   v31 = XBLogFileManifest();
                   if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
                   {
-                    v32 = [(SBApplication *)self info];
-                    v33 = [v32 bundleIdentifier];
+                    info6 = [(SBApplication *)self info];
+                    bundleIdentifier5 = [info6 bundleIdentifier];
                     buf = 138543618;
-                    v61 = v33;
+                    v61 = bundleIdentifier5;
                     v62 = 2114;
-                    v63[0] = v26;
+                    v63[0] = lastPathComponent;
                     _os_log_impl(&dword_21ED4E000, v31, OS_LOG_TYPE_INFO, "[%{public}@] SKIP removing snapshot because it's in our filenamesForExclusion: %{public}@", &buf, 0x16u);
                   }
                 }
@@ -7169,32 +7169,32 @@ void __67__SBApplication_Classic_Internal__KJHKJHw39rq9w87q903475q0983rskjd__blo
                   v34 = XBLogFileManifest();
                   if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
                   {
-                    v35 = [(SBApplication *)self info];
-                    v36 = [v35 bundleIdentifier];
+                    info7 = [(SBApplication *)self info];
+                    bundleIdentifier6 = [info7 bundleIdentifier];
                     buf = 138543618;
-                    v61 = v36;
+                    v61 = bundleIdentifier6;
                     v62 = 2114;
                     v63[0] = v25;
                     _os_log_impl(&dword_21ED4E000, v34, OS_LOG_TYPE_DEFAULT, "[%{public}@] removing SplashBoard-generated images at: %{public}@", &buf, 0x16u);
                   }
 
-                  [v6 removeItemAtPath:v25 error:0];
+                  [defaultManager removeItemAtPath:v25 error:0];
                 }
               }
             }
 
             else
             {
-              v26 = XBLogFileManifest();
-              if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
+              lastPathComponent = XBLogFileManifest();
+              if (os_log_type_enabled(lastPathComponent, OS_LOG_TYPE_INFO))
               {
-                v29 = [(SBApplication *)self info];
-                v30 = [v29 bundleIdentifier];
+                info8 = [(SBApplication *)self info];
+                bundleIdentifier7 = [info8 bundleIdentifier];
                 buf = 138543618;
-                v61 = v30;
+                v61 = bundleIdentifier7;
                 v62 = 2114;
                 v63[0] = v25;
-                _os_log_impl(&dword_21ED4E000, v26, OS_LOG_TYPE_INFO, "[%{public}@] SKIP removing path because it doesn't exist: %{public}@", &buf, 0x16u);
+                _os_log_impl(&dword_21ED4E000, lastPathComponent, OS_LOG_TYPE_INFO, "[%{public}@] SKIP removing path because it doesn't exist: %{public}@", &buf, 0x16u);
               }
             }
           }
@@ -7211,10 +7211,10 @@ void __67__SBApplication_Classic_Internal__KJHKJHw39rq9w87q903475q0983rskjd__blo
     v37 = XBLogFileManifest();
     if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
     {
-      v38 = [(SBApplication *)self info];
-      v39 = [v38 bundleIdentifier];
+      info9 = [(SBApplication *)self info];
+      bundleIdentifier8 = [info9 bundleIdentifier];
       buf = 138543618;
-      v61 = v39;
+      v61 = bundleIdentifier8;
       v62 = 2114;
       v63[0] = v46;
       _os_log_impl(&dword_21ED4E000, v37, OS_LOG_TYPE_DEFAULT, "[%{public}@] nothing to keep after searching for snapshots we care about and finding nothing. predicate: %{public}@", &buf, 0x16u);
@@ -7224,64 +7224,64 @@ void __67__SBApplication_Classic_Internal__KJHKJHw39rq9w87q903475q0983rskjd__blo
   v40 = XBLogFileManifest();
   if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
   {
-    v41 = [(SBApplication *)self info];
-    v42 = [v41 bundleIdentifier];
+    info10 = [(SBApplication *)self info];
+    bundleIdentifier9 = [info10 bundleIdentifier];
     buf = 138543618;
-    v61 = v42;
+    v61 = bundleIdentifier9;
     v62 = 2114;
-    v63[0] = v52;
+    v63[0] = containerPath;
     _os_log_impl(&dword_21ED4E000, v40, OS_LOG_TYPE_DEFAULT, "[%{public}@] removing all files in folder: %{public}@", &buf, 0x16u);
   }
 
-  [v6 removeItemAtPath:v52 error:0];
+  [defaultManager removeItemAtPath:containerPath error:0];
 LABEL_36:
   v43 = XBLogFileManifest();
   if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
   {
-    v44 = [(SBApplication *)self info];
-    v45 = [v44 bundleIdentifier];
+    info11 = [(SBApplication *)self info];
+    bundleIdentifier10 = [info11 bundleIdentifier];
     buf = 138543362;
-    v61 = v45;
+    v61 = bundleIdentifier10;
     _os_log_impl(&dword_21ED4E000, v43, OS_LOG_TYPE_DEFAULT, "[%{public}@] Finished flushSnapshotsForAllScenesIncludingAllLegacyImages", &buf, 0xCu);
   }
 
   os_activity_scope_leave(&state);
 }
 
-- (void)flushSnapshotsForSceneID:(id)a3
+- (void)flushSnapshotsForSceneID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v7.opaque[0] = 0;
   v7.opaque[1] = 0;
   v5 = _os_activity_create(&dword_21ED4E000, "XBMigration", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
   os_activity_scope_enter(v5, &v7);
 
   v6 = [(SBApplication *)self _snapshotManifest:v7.opaque[0]];
-  [v6 deleteSnapshotsForGroupID:v4 predicateBuilder:&__block_literal_global_37];
+  [v6 deleteSnapshotsForGroupID:dCopy predicateBuilder:&__block_literal_global_37];
 
   os_activity_scope_leave(&v7);
 }
 
-- (void)saveSnapshotForSceneHandle:(id)a3 context:(id)a4 completion:(id)a5
+- (void)saveSnapshotForSceneHandle:(id)handle context:(id)context completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  handleCopy = handle;
+  contextCopy = context;
+  completionCopy = completion;
   v12.opaque[0] = 0;
   v12.opaque[1] = 0;
   v11 = _os_activity_create(&dword_21ED4E000, "XBCapture", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_IF_NONE_PRESENT);
   os_activity_scope_enter(v11, &v12);
 
-  [(SBApplication *)self _xbactivity_saveSnapshotForSceneHandle:v8 context:v9 completion:v10, v12.opaque[0], v12.opaque[1]];
+  [(SBApplication *)self _xbactivity_saveSnapshotForSceneHandle:handleCopy context:contextCopy completion:completionCopy, v12.opaque[0], v12.opaque[1]];
   os_activity_scope_leave(&v12);
 }
 
-- (void)saveSuspendSnapshot:(id)a3 forSceneHandle:(id)a4
+- (void)saveSuspendSnapshot:(id)snapshot forSceneHandle:(id)handle
 {
   v49 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v39 = a4;
-  if (!v6)
+  snapshotCopy = snapshot;
+  handleCopy = handle;
+  if (!snapshotCopy)
   {
     [SBApplication(Snapshots) saveSuspendSnapshot:a2 forSceneHandle:self];
   }
@@ -7291,56 +7291,56 @@ LABEL_36:
   v7 = _os_activity_create(&dword_21ED4E000, "XBCapture", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
   os_activity_scope_enter(v7, &state);
 
-  v8 = [v39 sceneIfExists];
-  v9 = v8;
-  if (v8 && ([v8 settings], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "interfaceOrientation"), v10, objc_msgSend(v9, "uiClientSettings"), v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "sb_effectiveInterfaceOrientation"), v12, v11 != v13))
+  sceneIfExists = [handleCopy sceneIfExists];
+  v9 = sceneIfExists;
+  if (sceneIfExists && ([sceneIfExists settings], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "interfaceOrientation"), v10, objc_msgSend(v9, "uiClientSettings"), v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "sb_effectiveInterfaceOrientation"), v12, v11 != v13))
   {
-    v14 = XBLogCapture();
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+    _snapshotManifest = XBLogCapture();
+    if (os_log_type_enabled(_snapshotManifest, OS_LOG_TYPE_ERROR))
     {
-      v33 = [(SBApplication *)self bundleIdentifier];
+      bundleIdentifier = [(SBApplication *)self bundleIdentifier];
       v34 = BSInterfaceOrientationDescription();
       v35 = BSInterfaceOrientationDescription();
       *buf = 138543874;
-      v44 = v33;
+      v44 = bundleIdentifier;
       v45 = 2114;
       v46 = v34;
       v47 = 2114;
       v48 = v35;
-      _os_log_error_impl(&dword_21ED4E000, v14, OS_LOG_TYPE_ERROR, "<%{public}@> Suspend snapshot cancelled due to orientation mismatch; settings are: %{public}@ but client settings are %{public}@.", buf, 0x20u);
+      _os_log_error_impl(&dword_21ED4E000, _snapshotManifest, OS_LOG_TYPE_ERROR, "<%{public}@> Suspend snapshot cancelled due to orientation mismatch; settings are: %{public}@ but client settings are %{public}@.", buf, 0x20u);
     }
   }
 
   else
   {
-    v14 = [(SBApplication *)self _snapshotManifest];
-    v15 = [v6 scene];
-    v16 = [v15 identifier];
-    [v14 deleteSnapshotsForGroupID:v16 predicateBuilder:&__block_literal_global_49];
+    _snapshotManifest = [(SBApplication *)self _snapshotManifest];
+    scene = [snapshotCopy scene];
+    identifier = [scene identifier];
+    [_snapshotManifest deleteSnapshotsForGroupID:identifier predicateBuilder:&__block_literal_global_49];
 
-    v17 = [v9 uiClientSettings];
-    v18 = [v14 createSnapshotForSceneSnapshot:v6 withName:@"SBSuspendSnapshot" uiClientSettings:v17];
+    uiClientSettings = [v9 uiClientSettings];
+    v18 = [_snapshotManifest createSnapshotForSceneSnapshot:snapshotCopy withName:@"SBSuspendSnapshot" uiClientSettings:uiClientSettings];
 
     v19 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:5.0];
     [v18 setExpirationDate:v19];
 
     [v18 beginImageAccessUntilExpiration];
-    v37 = [v6 scene];
-    v20 = [SBApp windowSceneManager];
-    v21 = [v20 embeddedDisplayWindowScene];
-    v22 = [v21 _fbsDisplayConfiguration];
+    scene2 = [snapshotCopy scene];
+    windowSceneManager = [SBApp windowSceneManager];
+    embeddedDisplayWindowScene = [windowSceneManager embeddedDisplayWindowScene];
+    _fbsDisplayConfiguration = [embeddedDisplayWindowScene _fbsDisplayConfiguration];
 
-    v23 = [v37 settings];
-    v24 = [v23 displayConfiguration];
-    v25 = v24;
-    if (v24)
+    settings = [scene2 settings];
+    displayConfiguration = [settings displayConfiguration];
+    v25 = displayConfiguration;
+    if (displayConfiguration)
     {
-      v26 = v24;
+      v26 = displayConfiguration;
     }
 
     else
     {
-      v26 = v22;
+      v26 = _fbsDisplayConfiguration;
     }
 
     v27 = v26;
@@ -7354,15 +7354,15 @@ LABEL_36:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v28 = [v18 statusBarSettings];
-      v29 = v39;
-      v30 = [v29 statusBarEffectiveStyleRequestWithStyle:{_SBStatusBarStyleFromLegacyStyle(objc_msgSend(v28, "style"))}];
-      if (v28 && ([v28 isHidden] & 1) == 0)
+      statusBarSettings = [v18 statusBarSettings];
+      v29 = handleCopy;
+      v30 = [v29 statusBarEffectiveStyleRequestWithStyle:{_SBStatusBarStyleFromLegacyStyle(objc_msgSend(statusBarSettings, "style"))}];
+      if (statusBarSettings && ([statusBarSettings isHidden] & 1) == 0)
       {
-        v36 = [v28 mutableCopy];
+        v36 = [statusBarSettings mutableCopy];
         [v30 legibilityStyle];
         v31 = _UIStatusBarStyleFromLegibilityStyle();
-        if (v31 != [v28 style])
+        if (v31 != [statusBarSettings style])
         {
           [v30 legibilityStyle];
           [v36 setStyle:_UIStatusBarStyleFromLegibilityStyle()];
@@ -7372,14 +7372,14 @@ LABEL_36:
       }
     }
 
-    v32 = [[SBSceneSnapshotDataProvider alloc] initWithSceneSnapshot:v6 scaleFactor:1.0];
+    v32 = [[SBSceneSnapshotDataProvider alloc] initWithSceneSnapshot:snapshotCopy scaleFactor:1.0];
     v40[0] = MEMORY[0x277D85DD0];
     v40[1] = 3221225472;
     v40[2] = __63__SBApplication_Snapshots__saveSuspendSnapshot_forSceneHandle___block_invoke_2;
     v40[3] = &unk_2783A8BF0;
     v40[4] = self;
-    v41 = v6;
-    [v14 generateImageForSnapshot:v18 dataProvider:v32 writeToFile:0 imageGeneratedHandler:v40 imageDataSavedHandler:0];
+    v41 = snapshotCopy;
+    [_snapshotManifest generateImageForSnapshot:v18 dataProvider:v32 writeToFile:0 imageGeneratedHandler:v40 imageDataSavedHandler:0];
   }
 
   os_activity_scope_leave(&state);
@@ -7415,33 +7415,33 @@ void __63__SBApplication_Snapshots__saveSuspendSnapshot_forSceneHandle___block_i
   [v1 _noteSnapshotDidUpdateForSceneIdentifier:v2];
 }
 
-- (void)createDownscaledVariantForSnapshot:(id)a3 sceneHandle:(id)a4 scaleFactor:(double)a5 didSaveImage:(id)a6
+- (void)createDownscaledVariantForSnapshot:(id)snapshot sceneHandle:(id)handle scaleFactor:(double)factor didSaveImage:(id)image
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  v14 = [v11 variantID];
-  v15 = [v14 isEqualToString:@"downscaled"];
+  snapshotCopy = snapshot;
+  handleCopy = handle;
+  imageCopy = image;
+  variantID = [snapshotCopy variantID];
+  v15 = [variantID isEqualToString:@"downscaled"];
 
   if (v15)
   {
     [SBApplication(Snapshots) createDownscaledVariantForSnapshot:a2 sceneHandle:self scaleFactor:? didSaveImage:?];
   }
 
-  v16 = [(SBApplication *)self _snapshotManifest];
+  _snapshotManifest = [(SBApplication *)self _snapshotManifest];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __100__SBApplication_Snapshots__createDownscaledVariantForSnapshot_sceneHandle_scaleFactor_didSaveImage___block_invoke;
   v21[3] = &unk_2783AA4F8;
-  v22 = v11;
-  v23 = v12;
-  v26 = a5;
-  v24 = v16;
-  v25 = v13;
-  v17 = v13;
-  v18 = v16;
-  v19 = v12;
-  v20 = v11;
+  v22 = snapshotCopy;
+  v23 = handleCopy;
+  factorCopy = factor;
+  v24 = _snapshotManifest;
+  v25 = imageCopy;
+  v17 = imageCopy;
+  v18 = _snapshotManifest;
+  v19 = handleCopy;
+  v20 = snapshotCopy;
   [v18 beginSnapshotAccessTransaction:v21 completion:0];
 }
 
@@ -7512,7 +7512,7 @@ uint64_t __100__SBApplication_Snapshots__createDownscaledVariantForSnapshot_scen
 
 - (void)deleteAllSnapshots
 {
-  v3 = [(SBApplication *)self _snapshotManifest];
+  _snapshotManifest = [(SBApplication *)self _snapshotManifest];
   v4[4] = self;
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
@@ -7523,7 +7523,7 @@ uint64_t __100__SBApplication_Snapshots__createDownscaledVariantForSnapshot_scen
   v4[1] = 3221225472;
   v4[2] = __46__SBApplication_Snapshots__deleteAllSnapshots__block_invoke_3;
   v4[3] = &unk_2783A8C18;
-  [v3 beginSnapshotAccessTransaction:v5 completion:v4];
+  [_snapshotManifest beginSnapshotAccessTransaction:v5 completion:v4];
 }
 
 void __46__SBApplication_Snapshots__deleteAllSnapshots__block_invoke(uint64_t a1)
@@ -7542,17 +7542,17 @@ void __46__SBApplication_Snapshots__deleteAllSnapshots__block_invoke_3(uint64_t 
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (void)deleteSnapshotForContext:(id)a3
+- (void)deleteSnapshotForContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   v5 = _os_activity_create(&dword_21ED4E000, "XBInvalidate", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_IF_NONE_PRESENT);
   os_activity_scope_enter(v5, &state);
 
-  v6 = [v4 sceneID];
-  [v4 scale];
-  if (!v6 || v7 == 0.0)
+  sceneID = [contextCopy sceneID];
+  [contextCopy scale];
+  if (!sceneID || v7 == 0.0)
   {
     v9 = XBLogFileManifest();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -7563,20 +7563,20 @@ void __46__SBApplication_Snapshots__deleteAllSnapshots__block_invoke_3(uint64_t 
 
   else
   {
-    v8 = [(SBApplication *)self _snapshotManifest];
+    _snapshotManifest = [(SBApplication *)self _snapshotManifest];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __53__SBApplication_Snapshots__deleteSnapshotForContext___block_invoke;
     v12[3] = &unk_2783A92D8;
     v12[4] = self;
-    v13 = v4;
+    v13 = contextCopy;
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __53__SBApplication_Snapshots__deleteSnapshotForContext___block_invoke_3;
     v10[3] = &unk_2783A92D8;
     v10[4] = self;
-    v11 = v6;
-    [v8 beginSnapshotAccessTransaction:v12 completion:v10];
+    v11 = sceneID;
+    [_snapshotManifest beginSnapshotAccessTransaction:v12 completion:v10];
   }
 
   os_activity_scope_leave(&state);
@@ -7622,33 +7622,33 @@ void __53__SBApplication_Snapshots__deleteSnapshotForContext___block_invoke_3(ui
   dispatch_async(MEMORY[0x277D85CD0], v2);
 }
 
-- (void)manifest:(id)a3 didPurgeProtectedContentSnapshotsWithGroupIdentifiers:(id)a4
+- (void)manifest:(id)manifest didPurgeProtectedContentSnapshotsWithGroupIdentifiers:(id)identifiers
 {
-  v5 = a4;
+  identifiersCopy = identifiers;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __91__SBApplication_Snapshots__manifest_didPurgeProtectedContentSnapshotsWithGroupIdentifiers___block_invoke;
   v7[3] = &unk_2783A92D8;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = identifiersCopy;
+  v6 = identifiersCopy;
   dispatch_async(MEMORY[0x277D85CD0], v7);
 }
 
-- (void)_xbactivity_saveSnapshotForSceneHandle:(id)a3 context:(id)a4 completion:(id)a5
+- (void)_xbactivity_saveSnapshotForSceneHandle:(id)handle context:(id)context completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 sceneIfExists];
-  if (v11)
+  handleCopy = handle;
+  contextCopy = context;
+  completionCopy = completion;
+  sceneIfExists = [handleCopy sceneIfExists];
+  if (sceneIfExists)
   {
-    v12 = [v8 sceneIdentifier];
-    v13 = [v9 name];
-    [v9 scale];
+    sceneIdentifier = [handleCopy sceneIdentifier];
+    name = [contextCopy name];
+    [contextCopy scale];
     v15 = v14;
-    [v9 frame];
-    if (!v12 || (v20 = MEMORY[0x277CBF3A0], CGRectEqualToRect(*&v16, *MEMORY[0x277CBF3A0])))
+    [contextCopy frame];
+    if (!sceneIdentifier || (v20 = MEMORY[0x277CBF3A0], CGRectEqualToRect(*&v16, *MEMORY[0x277CBF3A0])))
     {
       v21 = XBLogCapture();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -7658,15 +7658,15 @@ void __53__SBApplication_Snapshots__deleteSnapshotForContext___block_invoke_3(ui
 
 LABEL_6:
 
-      if (v10)
+      if (completionCopy)
       {
-        v10[2](v10, 1);
+        completionCopy[2](completionCopy, 1);
       }
 
       goto LABEL_8;
     }
 
-    if (!v9)
+    if (!contextCopy)
     {
       v21 = XBLogCapture();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -7677,22 +7677,22 @@ LABEL_6:
       goto LABEL_6;
     }
 
-    v22 = [v9 sceneID];
-    v23 = [v12 isEqualToString:v22];
+    sceneID = [contextCopy sceneID];
+    v23 = [sceneIdentifier isEqualToString:sceneID];
 
     if ((v23 & 1) == 0)
     {
       v21 = XBLogCapture();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
       {
-        [SBApplication(Snapshots) _xbactivity_saveSnapshotForSceneHandle:v12 context:v9 completion:v21];
+        [SBApplication(Snapshots) _xbactivity_saveSnapshotForSceneHandle:sceneIdentifier context:contextCopy completion:v21];
       }
 
       goto LABEL_6;
     }
 
-    v24 = [v11 uiPresentationManager];
-    if (v24)
+    uiPresentationManager = [sceneIfExists uiPresentationManager];
+    if (uiPresentationManager)
     {
       if (v15 <= 0.0)
       {
@@ -7702,17 +7702,17 @@ LABEL_6:
           [SBApplication(Snapshots) _xbactivity_saveSnapshotForSceneHandle:context:completion:];
         }
 
-        if (v10)
+        if (completionCopy)
         {
-          v10[2](v10, 1);
+          completionCopy[2](completionCopy, 1);
         }
 
         goto LABEL_37;
       }
 
-      if ([v11 isActive])
+      if ([sceneIfExists isActive])
       {
-        v53 = v24;
+        v53 = uiPresentationManager;
         v100 = 0;
         v101 = &v100;
         v102 = 0x3032000000;
@@ -7731,33 +7731,33 @@ LABEL_6:
         v25 = v20[1];
         v93 = *v20;
         v94 = v25;
-        v56 = [v11 uiClientSettings];
+        uiClientSettings = [sceneIfExists uiClientSettings];
         v81[0] = MEMORY[0x277D85DD0];
         v81[1] = 3221225472;
         v81[2] = __86__SBApplication_Snapshots___xbactivity_saveSnapshotForSceneHandle_context_completion___block_invoke;
         v81[3] = &unk_2783AA548;
-        v82 = v9;
-        v83 = v11;
-        v84 = self;
+        v82 = contextCopy;
+        v83 = sceneIfExists;
+        selfCopy = self;
         v86 = &v100;
         v87 = &v95;
         v88 = &v89;
-        v58 = v8;
+        v58 = handleCopy;
         v85 = v58;
         v26 = [v83 prepareSnapshotWithConfigurator:v81];
         [v101[5] interfaceOrientation];
         v27 = XBInterfaceOrientationMaskForInterfaceOrientationPair();
-        v51 = [MEMORY[0x277CBEAA8] date];
-        v60 = [(SBApplication *)self _snapshotManifest];
-        v28 = [MEMORY[0x277D656A0] predicate];
-        [v28 setContentTypeMask:1];
-        [v28 setReferenceSize:{v96[4], v96[5]}];
-        [v28 setInterfaceOrientationMask:v27];
-        v29 = [MEMORY[0x277D65680] normalizeSnapshotName:v13];
-        [v28 setName:v29];
-        v61 = v28;
+        date = [MEMORY[0x277CBEAA8] date];
+        _snapshotManifest = [(SBApplication *)self _snapshotManifest];
+        predicate = [MEMORY[0x277D656A0] predicate];
+        [predicate setContentTypeMask:1];
+        [predicate setReferenceSize:{v96[4], v96[5]}];
+        [predicate setInterfaceOrientationMask:v27];
+        v29 = [MEMORY[0x277D65680] normalizeSnapshotName:name];
+        [predicate setName:v29];
+        v61 = predicate;
 
-        [v28 setUserInterfaceStyle:XBGetUIUserInterfaceStyleForSceneSnapshot(v26)];
+        [predicate setUserInterfaceStyle:XBGetUIUserInterfaceStyleForSceneSnapshot(v26)];
         v54 = XBGetCustomSafeAreaInsetsForSceneSnapshot(v26);
         if (__sb__runningInSpringBoard())
         {
@@ -7769,65 +7769,65 @@ LABEL_6:
 
         else
         {
-          v32 = [MEMORY[0x277D75418] currentDevice];
-          v33 = [v32 userInterfaceIdiom];
+          currentDevice = [MEMORY[0x277D75418] currentDevice];
+          userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-          if (v33 != 1)
+          if (userInterfaceIdiom != 1)
           {
 LABEL_36:
-            v49 = [v60 snapshotsForGroupID:v12 matchingPredicate:v61];
-            v34 = [v60 createSnapshotForSceneSnapshot:v26 withName:v13 uiClientSettings:v56];
+            v49 = [_snapshotManifest snapshotsForGroupID:sceneIdentifier matchingPredicate:v61];
+            v34 = [_snapshotManifest createSnapshotForSceneSnapshot:v26 withName:name uiClientSettings:uiClientSettings];
             [v34 setReferenceSize:{v96[4], v96[5]}];
             [v34 setContentFrame:{v90[4], v90[5], v90[6], v90[7]}];
             v55 = v34;
             [(SBApplication *)self _windowSceneFromApplicationSceneHandle:v58];
             v48 = v62 = v26;
-            v35 = [v48 switcherController];
-            [v35 scaleForDownscaledSnapshotGenerationForSceneHandle:v58];
+            switcherController = [v48 switcherController];
+            [switcherController scaleForDownscaledSnapshotGenerationForSceneHandle:v58];
             v37 = v36;
 
             v38 = [[SBSceneSnapshotDataProvider alloc] initWithSceneSnapshot:v26 scaleFactor:1.0];
             v39 = [[SBSceneSnapshotDataProvider alloc] initWithSceneSnapshot:v62 scaleFactor:v37];
-            v40 = [(SBSceneSnapshotDataProvider *)v38 fallbackSnapshotDataProvider];
-            v46 = [(SBSceneSnapshotDataProvider *)v39 fallbackSnapshotDataProvider];
+            fallbackSnapshotDataProvider = [(SBSceneSnapshotDataProvider *)v38 fallbackSnapshotDataProvider];
+            fallbackSnapshotDataProvider2 = [(SBSceneSnapshotDataProvider *)v39 fallbackSnapshotDataProvider];
             queue = dispatch_get_global_queue(21, 0);
             block[0] = MEMORY[0x277D85DD0];
             block[1] = 3221225472;
             block[2] = __86__SBApplication_Snapshots___xbactivity_saveSnapshotForSceneHandle_context_completion___block_invoke_2;
             block[3] = &unk_2783AA5E8;
-            v65 = v60;
+            v65 = _snapshotManifest;
             v66 = v55;
-            v67 = v40;
+            v67 = fallbackSnapshotDataProvider;
             v68 = v62;
-            v69 = v13;
-            v70 = v56;
+            v69 = name;
+            v70 = uiClientSettings;
             v79 = &v95;
             v80 = &v89;
-            v71 = v46;
+            v71 = fallbackSnapshotDataProvider2;
             v72 = v39;
             v73 = v38;
-            v74 = self;
+            selfCopy2 = self;
             v75 = v49;
-            v76 = v12;
-            v77 = v51;
-            v78 = v10;
-            v52 = v51;
+            v76 = sceneIdentifier;
+            v77 = date;
+            v78 = completionCopy;
+            v52 = date;
             v50 = v49;
             v59 = v38;
             v45 = v39;
-            v47 = v46;
-            v57 = v56;
+            v47 = fallbackSnapshotDataProvider2;
+            v57 = uiClientSettings;
             v63 = v62;
-            v41 = v40;
+            v41 = fallbackSnapshotDataProvider;
             v42 = v55;
-            v43 = v60;
+            v43 = _snapshotManifest;
             dispatch_async(queue, block);
 
             _Block_object_dispose(&v89, 8);
             _Block_object_dispose(&v95, 8);
             _Block_object_dispose(&v100, 8);
 
-            v24 = v53;
+            uiPresentationManager = v53;
 LABEL_37:
 
 LABEL_8:
@@ -7842,7 +7842,7 @@ LABEL_8:
       v30 = XBLogCapture();
       if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
       {
-        [SBApplication(Snapshots) _xbactivity_saveSnapshotForSceneHandle:v11 context:v30 completion:?];
+        [SBApplication(Snapshots) _xbactivity_saveSnapshotForSceneHandle:sceneIfExists context:v30 completion:?];
       }
     }
 
@@ -7855,17 +7855,17 @@ LABEL_8:
       }
     }
 
-    if (v10)
+    if (completionCopy)
     {
-      v10[2](v10, 4);
+      completionCopy[2](completionCopy, 4);
     }
 
     goto LABEL_37;
   }
 
-  if (v10)
+  if (completionCopy)
   {
-    v10[2](v10, 3);
+    completionCopy[2](completionCopy, 3);
   }
 
 LABEL_11:
@@ -8224,15 +8224,15 @@ void __86__SBApplication_Snapshots___xbactivity_saveSnapshotForSceneHandle_conte
   dispatch_async(MEMORY[0x277D85CD0], v3);
 }
 
-- (void)_noteSnapshotDidUpdateForSceneIdentifiers:(id)a3
+- (void)_noteSnapshotDidUpdateForSceneIdentifiers:(id)identifiers
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifiersCopy = identifiers;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [identifiersCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -8244,7 +8244,7 @@ void __86__SBApplication_Snapshots___xbactivity_saveSnapshotForSceneHandle_conte
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(identifiersCopy);
         }
 
         ++self->_appSnapshotSequenceID;
@@ -8253,26 +8253,26 @@ void __86__SBApplication_Snapshots___xbactivity_saveSnapshotForSceneHandle_conte
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [identifiersCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)__noteSnapshotDidUpdate:(int64_t)a3 forSceneIdentifier:(id)a4
+- (void)__noteSnapshotDidUpdate:(int64_t)update forSceneIdentifier:(id)identifier
 {
   v19[2] = *MEMORY[0x277D85DE8];
   v7 = MEMORY[0x277CCAB98];
-  v8 = a4;
-  v9 = [v7 defaultCenter];
-  if (a4)
+  identifierCopy = identifier;
+  defaultCenter = [v7 defaultCenter];
+  if (identifier)
   {
     v18[0] = @"SBApplicationSnapshotChangedSequenceUserInfoKey";
-    v10 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+    v10 = [MEMORY[0x277CCABB0] numberWithInteger:update];
     v18[1] = @"SBApplicationSnapshotChangedSceneIdentifierUserInfoKey";
     v19[0] = v10;
-    v19[1] = v8;
+    v19[1] = identifierCopy;
     v11 = MEMORY[0x277CBEAC0];
     v12 = v19;
     v13 = v18;
@@ -8282,7 +8282,7 @@ void __86__SBApplication_Snapshots___xbactivity_saveSnapshotForSceneHandle_conte
   else
   {
     v16 = @"SBApplicationSnapshotChangedSequenceUserInfoKey";
-    v10 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+    v10 = [MEMORY[0x277CCABB0] numberWithInteger:update];
     v17 = v10;
     v11 = MEMORY[0x277CBEAC0];
     v12 = &v17;
@@ -8292,25 +8292,25 @@ void __86__SBApplication_Snapshots___xbactivity_saveSnapshotForSceneHandle_conte
 
   v15 = [v11 dictionaryWithObjects:v12 forKeys:v13 count:v14];
 
-  [v9 postNotificationName:@"SBApplicationSnapshotChangedNotification" object:self userInfo:v15];
+  [defaultCenter postNotificationName:@"SBApplicationSnapshotChangedNotification" object:self userInfo:v15];
 }
 
-- (CGRect)snapshotFrameForClassicInsideBounds:(CGRect)a3 forOrientation:(int64_t)a4 scaleFactor:(CGSize *)a5 inReferenceSpace:(BOOL)a6
+- (CGRect)snapshotFrameForClassicInsideBounds:(CGRect)bounds forOrientation:(int64_t)orientation scaleFactor:(CGSize *)factor inReferenceSpace:(BOOL)space
 {
-  v6 = a6;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  spaceCopy = space;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v15 = 1.0;
   v14 = 1.0;
   if ([(SBApplication *)self isClassic])
   {
     rect_8 = y;
     rect_24 = height;
-    v16 = [(SBApplication *)self classicAppScaled];
-    v17 = [MEMORY[0x277D0AA90] mainConfiguration];
-    [(SBApplication *)self defaultLaunchingSizeForDisplayConfiguration:v17];
+    classicAppScaled = [(SBApplication *)self classicAppScaled];
+    mainConfiguration = [MEMORY[0x277D0AA90] mainConfiguration];
+    [(SBApplication *)self defaultLaunchingSizeForDisplayConfiguration:mainConfiguration];
     BSRectWithSize();
     v19 = v18;
     rect_16 = v20;
@@ -8320,12 +8320,12 @@ void __86__SBApplication_Snapshots___xbactivity_saveSnapshotForSceneHandle_conte
     rect = x;
     if ([(SBApplication *)self classicAppPhoneAppRunningOnPad])
     {
-      v25 = [(SBApplication *)self classicAppZoomedInOrRequiresHiDPI];
+      classicAppZoomedInOrRequiresHiDPI = [(SBApplication *)self classicAppZoomedInOrRequiresHiDPI];
       v26 = 1.0;
       v27 = 1.0;
-      if (v25)
+      if (classicAppZoomedInOrRequiresHiDPI)
       {
-        v27 = SBClassicUtilitiesScaleFactorForPhoneAppZoomedIn(a4, v22, v24);
+        v27 = SBClassicUtilitiesScaleFactorForPhoneAppZoomedIn(orientation, v22, v24);
         v26 = v27;
       }
     }
@@ -8334,7 +8334,7 @@ void __86__SBApplication_Snapshots___xbactivity_saveSnapshotForSceneHandle_conte
     {
       v26 = 1.0;
       v27 = 1.0;
-      if (v16)
+      if (classicAppScaled)
       {
         v28 = v19;
         if ([(SBApplication *)self classicAppFullScreen:1.0])
@@ -8388,8 +8388,8 @@ void __86__SBApplication_Snapshots___xbactivity_saveSnapshotForSceneHandle_conte
     }
 
     v62 = width;
-    v32 = a4 - 3;
-    if (v6)
+    v32 = orientation - 3;
+    if (spaceCopy)
     {
       v33 = v24;
     }
@@ -8399,7 +8399,7 @@ void __86__SBApplication_Snapshots___xbactivity_saveSnapshotForSceneHandle_conte
       v33 = v22;
     }
 
-    if (v6)
+    if (spaceCopy)
     {
       v34 = v22;
     }
@@ -8525,10 +8525,10 @@ LABEL_37:
     v14 = v61;
   }
 
-  if (a5)
+  if (factor)
   {
-    a5->width = v15;
-    a5->height = v14;
+    factor->width = v15;
+    factor->height = v14;
   }
 
   v53 = x;
@@ -8542,24 +8542,24 @@ LABEL_37:
   return result;
 }
 
-- (CGSize)snapshotSizeAdjustedForLegacyStatusBarBasedOnSize:(CGSize)a3 interfaceOrientation:(int64_t)a4 contentFrame:(CGRect *)a5
+- (CGSize)snapshotSizeAdjustedForLegacyStatusBarBasedOnSize:(CGSize)size interfaceOrientation:(int64_t)orientation contentFrame:(CGRect *)frame
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   BSRectWithSize();
   v11 = v10;
   v13 = v12;
   v15 = v14;
   v17 = v16;
-  v18 = [(SBApplication *)self info];
-  v19 = [v18 isStatusBarLegacy];
+  info = [(SBApplication *)self info];
+  isStatusBarLegacy = [info isStatusBarLegacy];
 
-  if (!v19)
+  if (!isStatusBarLegacy)
   {
     goto LABEL_20;
   }
 
-  if ((a4 - 1) <= 1)
+  if ((orientation - 1) <= 1)
   {
     v20 = *MEMORY[0x277D66090];
     if (width != *MEMORY[0x277D66090] || (v21 = *(MEMORY[0x277D66090] + 8), height != v21 - *MEMORY[0x277D76F08]))
@@ -8580,7 +8580,7 @@ LABEL_37:
 
     if (v20 != *MEMORY[0x277CBF3A8] || v21 != *(MEMORY[0x277CBF3A8] + 8))
     {
-      if (a4 == 1)
+      if (orientation == 1)
       {
         v13 = v13 + *MEMORY[0x277D76F08];
       }
@@ -8596,7 +8596,7 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  if ((a4 - 3) > 1)
+  if ((orientation - 3) > 1)
   {
     goto LABEL_20;
   }
@@ -8613,18 +8613,18 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  if (a4 == 4)
+  if (orientation == 4)
   {
     v11 = v11 + *MEMORY[0x277D76F08];
   }
 
 LABEL_21:
-  if (a5)
+  if (frame)
   {
-    a5->origin.x = v11;
-    a5->origin.y = v13;
-    a5->size.width = width;
-    a5->size.height = height;
+    frame->origin.x = v11;
+    frame->origin.y = v13;
+    frame->size.width = width;
+    frame->size.height = height;
   }
 
   result.height = v21;
@@ -8632,22 +8632,22 @@ LABEL_21:
   return result;
 }
 
-- (id)_windowSceneFromApplicationSceneHandle:(id)a3
+- (id)_windowSceneFromApplicationSceneHandle:(id)handle
 {
   v3 = SBApp;
-  v4 = a3;
-  v5 = [v3 windowSceneManager];
-  v6 = [v4 displayIdentity];
+  handleCopy = handle;
+  windowSceneManager = [v3 windowSceneManager];
+  displayIdentity = [handleCopy displayIdentity];
 
-  v7 = [v5 windowSceneForDisplayIdentity:v6];
+  v7 = [windowSceneManager windowSceneForDisplayIdentity:displayIdentity];
 
   return v7;
 }
 
-- (SBApplication)initWithApplicationInfo:(id)a3
+- (SBApplication)initWithApplicationInfo:(id)info
 {
-  v6 = a3;
-  if (!v6)
+  infoCopy = info;
+  if (!infoCopy)
   {
     [(SBApplication *)a2 initWithApplicationInfo:?];
   }
@@ -8658,10 +8658,10 @@ LABEL_21:
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_appInfo, a3);
-    v9 = [v6 bundleIdentifier];
+    objc_storeStrong(&v7->_appInfo, info);
+    bundleIdentifier = [infoCopy bundleIdentifier];
     bundleIdentifier = v8->_bundleIdentifier;
-    v8->_bundleIdentifier = v9;
+    v8->_bundleIdentifier = bundleIdentifier;
 
     v11 = [MEMORY[0x277D0AC98] storeForApplication:v8->_bundleIdentifier];
     dataStore = v8->_dataStore;
@@ -8685,8 +8685,8 @@ LABEL_21:
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(SBApplicationWakeScheduler *)self->_legacyVOIPPeriodicWakeScheduler invalidate];
   v4.receiver = self;
@@ -8694,13 +8694,13 @@ LABEL_21:
   [(SBApplication *)&v4 dealloc];
 }
 
-- (BOOL)isSameExecutableAsApplication:(id)a3
+- (BOOL)isSameExecutableAsApplication:(id)application
 {
-  v4 = [a3 bundleIdentifier];
-  if (v4)
+  bundleIdentifier = [application bundleIdentifier];
+  if (bundleIdentifier)
   {
-    v5 = [(SBApplication *)self bundleIdentifier];
-    v6 = [v5 isEqualToString:v4];
+    bundleIdentifier2 = [(SBApplication *)self bundleIdentifier];
+    v6 = [bundleIdentifier2 isEqualToString:bundleIdentifier];
   }
 
   else
@@ -8711,7 +8711,7 @@ LABEL_21:
   return v6;
 }
 
-- (void)setUninstalled:(BOOL)a3
+- (void)setUninstalled:(BOOL)uninstalled
 {
   obj = self;
   objc_sync_enter(obj);
@@ -8729,18 +8729,18 @@ LABEL_21:
     obj->_synchronized_snapshotManifest = 0;
 
     objc_sync_exit(obj);
-    v5 = [MEMORY[0x277CCAB98] sbh_leafIconDataSourceNotificationCenter];
-    [(SBApplication *)v5 postNotificationName:*MEMORY[0x277D66738] object:obj];
-    v3 = v5;
+    sbh_leafIconDataSourceNotificationCenter = [MEMORY[0x277CCAB98] sbh_leafIconDataSourceNotificationCenter];
+    [(SBApplication *)sbh_leafIconDataSourceNotificationCenter postNotificationName:*MEMORY[0x277D66738] object:obj];
+    v3 = sbh_leafIconDataSourceNotificationCenter;
   }
 }
 
-- (void)setDynamicApplicationShortcutItems:(id)a3
+- (void)setDynamicApplicationShortcutItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   v6 = +[SBApplicationShortcutStoreManager sharedManager];
-  v5 = [(SBApplication *)self bundleIdentifier];
-  [v6 setApplicationShortcutItems:v4 forBundleIdentifier:v5 withVersion:{-[SBApplicationInfo dynamicApplicationShortcutItemsVersion](self->_appInfo, "dynamicApplicationShortcutItemsVersion")}];
+  bundleIdentifier = [(SBApplication *)self bundleIdentifier];
+  [v6 setApplicationShortcutItems:itemsCopy forBundleIdentifier:bundleIdentifier withVersion:{-[SBApplicationInfo dynamicApplicationShortcutItemsVersion](self->_appInfo, "dynamicApplicationShortcutItemsVersion")}];
 }
 
 - (SBApplicationWakeScheduler)legacyVOIPPeriodicWakeScheduler
@@ -8757,11 +8757,11 @@ LABEL_21:
   return v5;
 }
 
-- (void)setShowsProgress:(BOOL)a3
+- (void)setShowsProgress:(BOOL)progress
 {
-  v5 = [(SBApplication *)self showsProgress];
+  showsProgress = [(SBApplication *)self showsProgress];
   showsProgressCount = self->_showsProgressCount;
-  if (a3)
+  if (progress)
   {
     v7 = 1;
   }
@@ -8778,30 +8778,30 @@ LABEL_21:
 
   self->_showsProgressCount = showsProgressCount + v7;
 LABEL_6:
-  if (v5 != [(SBApplication *)self showsProgress])
+  if (showsProgress != [(SBApplication *)self showsProgress])
   {
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v8 postNotificationName:@"SBApplicationShowsProgressChangedNotification" object:self userInfo:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"SBApplicationShowsProgressChangedNotification" object:self userInfo:0];
   }
 }
 
 - (BOOL)wantsAutoLaunchForVOIP
 {
-  v3 = [(SBApplicationInfo *)self->_appInfo supportsLegacyVOIPBackgroundMode];
-  if (v3)
+  supportsLegacyVOIPBackgroundMode = [(SBApplicationInfo *)self->_appInfo supportsLegacyVOIPBackgroundMode];
+  if (supportsLegacyVOIPBackgroundMode)
   {
     v4 = [(FBSApplicationDataStore *)self->_dataStore safeObjectForKey:@"SBApplicationAutoLaunchForVoIP" ofType:objc_opt_class()];
-    v5 = [v4 BOOLValue];
+    bOOLValue = [v4 BOOLValue];
 
-    LOBYTE(v3) = v5;
+    LOBYTE(supportsLegacyVOIPBackgroundMode) = bOOLValue;
   }
 
-  return v3;
+  return supportsLegacyVOIPBackgroundMode;
 }
 
-- (void)setWantsAutoLaunchForVOIP:(BOOL)a3
+- (void)setWantsAutoLaunchForVOIP:(BOOL)p
 {
-  v3 = a3;
+  pCopy = p;
   v13 = *MEMORY[0x277D85DE8];
   if ([(SBApplicationInfo *)self->_appInfo supportsLegacyVOIPBackgroundMode])
   {
@@ -8812,61 +8812,61 @@ LABEL_6:
       v9 = 138543618;
       v10 = bundleIdentifier;
       v11 = 1024;
-      v12 = v3;
+      v12 = pCopy;
       _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "Application %{public}@ wants auto-launch for VoIP: %{BOOL}u", &v9, 0x12u);
     }
 
     dataStore = self->_dataStore;
-    v8 = [MEMORY[0x277CCABB0] numberWithBool:v3];
+    v8 = [MEMORY[0x277CCABB0] numberWithBool:pCopy];
     [(FBSApplicationDataStore *)dataStore setObject:v8 forKey:@"SBApplicationAutoLaunchForVoIP"];
   }
 }
 
-- (void)setPlayingAudio:(BOOL)a3
+- (void)setPlayingAudio:(BOOL)audio
 {
-  if (self->_isPlayingAudio != a3)
+  if (self->_isPlayingAudio != audio)
   {
-    self->_isPlayingAudio = a3;
+    self->_isPlayingAudio = audio;
     [(FBApplicationProcess *)self->_process setNowPlayingWithAudio:?];
   }
 }
 
-- (void)setNowRecordingApplication:(BOOL)a3
+- (void)setNowRecordingApplication:(BOOL)application
 {
-  if (self->_isNowRecordingApplication != a3)
+  if (self->_isNowRecordingApplication != application)
   {
-    self->_isNowRecordingApplication = a3;
+    self->_isNowRecordingApplication = application;
     [(FBApplicationProcess *)self->_process setRecordingAudio:?];
   }
 }
 
-- (void)setConnectedToExternalAccessory:(BOOL)a3
+- (void)setConnectedToExternalAccessory:(BOOL)accessory
 {
-  if (self->_isConnectedToExternalAccessory != a3)
+  if (self->_isConnectedToExternalAccessory != accessory)
   {
-    self->_isConnectedToExternalAccessory = a3;
+    self->_isConnectedToExternalAccessory = accessory;
     [(FBApplicationProcess *)self->_process setConnectedToExternalAccessory:?];
   }
 }
 
-- (void)setUsesEdgeNetwork:(BOOL)a3
+- (void)setUsesEdgeNetwork:(BOOL)network
 {
-  v3 = a3;
-  v5 = [(SBApplication *)self dataUsage];
-  if ((v5 & 1) != v3)
+  networkCopy = network;
+  dataUsage = [(SBApplication *)self dataUsage];
+  if ((dataUsage & 1) != networkCopy)
   {
 
-    [(SBApplication *)self _setDataUsage:v5 & 0xFFFFFFFE | v3];
+    [(SBApplication *)self _setDataUsage:dataUsage & 0xFFFFFFFE | networkCopy];
   }
 }
 
-- (void)setUsesWiFiNetwork:(BOOL)a3
+- (void)setUsesWiFiNetwork:(BOOL)network
 {
-  v3 = a3;
-  v5 = [(SBApplication *)self dataUsage];
-  if ((v5 & 2) != v3)
+  networkCopy = network;
+  dataUsage = [(SBApplication *)self dataUsage];
+  if ((dataUsage & 2) != networkCopy)
   {
-    if (v3)
+    if (networkCopy)
     {
       v6 = 2;
     }
@@ -8876,33 +8876,33 @@ LABEL_6:
       v6 = 0;
     }
 
-    [(SBApplication *)self _setDataUsage:v5 & 0xFFFFFFFD | v6];
+    [(SBApplication *)self _setDataUsage:dataUsage & 0xFFFFFFFD | v6];
   }
 }
 
 - (BOOL)suppressesControlCenter
 {
-  v3 = [MEMORY[0x277D262A0] sharedConnection];
-  if ([v3 isControlCenterAllowed])
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  if ([mEMORY[0x277D262A0] isControlCenterAllowed])
   {
-    v4 = [MEMORY[0x277D262A0] sharedConnection];
-    if ([v4 isControlCenterAllowedInApps])
+    mEMORY[0x277D262A0]2 = [MEMORY[0x277D262A0] sharedConnection];
+    if ([mEMORY[0x277D262A0]2 isControlCenterAllowedInApps])
     {
-      v5 = [(SBApplicationInfo *)self->_appInfo disallowsControlCenter];
+      disallowsControlCenter = [(SBApplicationInfo *)self->_appInfo disallowsControlCenter];
     }
 
     else
     {
-      v5 = 1;
+      disallowsControlCenter = 1;
     }
   }
 
   else
   {
-    v5 = 1;
+    disallowsControlCenter = 1;
   }
 
-  return v5;
+  return disallowsControlCenter;
 }
 
 - (BOOL)supportsMultitaskingShelf
@@ -8914,11 +8914,11 @@ LABEL_6:
 
   else
   {
-    v4 = [(SBApplication *)self info];
-    if ([v4 supportsMultiwindow])
+    info = [(SBApplication *)self info];
+    if ([info supportsMultiwindow])
     {
-      v5 = [(SBApplication *)self bundleIdentifier];
-      v3 = [v5 isEqualToString:@"com.apple.InCallService"] ^ 1;
+      bundleIdentifier = [(SBApplication *)self bundleIdentifier];
+      v3 = [bundleIdentifier isEqualToString:@"com.apple.InCallService"] ^ 1;
     }
 
     else
@@ -8930,9 +8930,9 @@ LABEL_6:
   return v3;
 }
 
-- (id)lastWindowLayoutAttributesForDisplayOrdinal:(int64_t)a3
+- (id)lastWindowLayoutAttributesForDisplayOrdinal:(int64_t)ordinal
 {
-  v4 = SBStringFromDisplayOrdinal(a3);
+  v4 = SBStringFromDisplayOrdinal(ordinal);
   v5 = [(NSMutableDictionary *)self->_cachedLastWindowLayoutAttributesPerDisplayOrdinal objectForKey:v4];
   if (v5)
   {
@@ -8952,8 +8952,8 @@ LABEL_6:
   if (!v8)
   {
 LABEL_6:
-    v10 = [MEMORY[0x277CBEB68] null];
-    [(NSMutableDictionary *)cachedLastWindowLayoutAttributesPerDisplayOrdinal setObject:v10 forKey:v4];
+    null = [MEMORY[0x277CBEB68] null];
+    [(NSMutableDictionary *)cachedLastWindowLayoutAttributesPerDisplayOrdinal setObject:null forKey:v4];
 
     v5 = 0;
     goto LABEL_7;
@@ -8964,7 +8964,7 @@ LABEL_6:
 LABEL_7:
 
 LABEL_8:
-  v11 = [MEMORY[0x277CBEB68] null];
+  null2 = [MEMORY[0x277CBEB68] null];
   if (BSEqualObjects())
   {
     v12 = 0;
@@ -8980,15 +8980,15 @@ LABEL_8:
   return v12;
 }
 
-- (void)setLastWindowLayoutAttributes:(id)a3 forDisplayOrdinal:(int64_t)a4
+- (void)setLastWindowLayoutAttributes:(id)attributes forDisplayOrdinal:(int64_t)ordinal
 {
-  v17 = a3;
-  v6 = SBStringFromDisplayOrdinal(a4);
-  if (v17)
+  attributesCopy = attributes;
+  v6 = SBStringFromDisplayOrdinal(ordinal);
+  if (attributesCopy)
   {
     v7 = objc_opt_class();
-    v8 = [(SBDisplayItemLayoutAttributes *)v17 plistRepresentation];
-    v9 = SBSafeCast(v7, v8);
+    plistRepresentation = [(SBDisplayItemLayoutAttributes *)attributesCopy plistRepresentation];
+    v9 = SBSafeCast(v7, plistRepresentation);
 
     if (v9)
     {
@@ -9004,7 +9004,7 @@ LABEL_8:
       [(FBSApplicationDataStore *)self->_dataStore setObject:v11 forKey:@"SBApplicationLastWindowSizePerDisplayOrdinalKey"];
     }
 
-    [(NSMutableDictionary *)self->_cachedLastWindowLayoutAttributesPerDisplayOrdinal setObject:v17 forKey:v6];
+    [(NSMutableDictionary *)self->_cachedLastWindowLayoutAttributesPerDisplayOrdinal setObject:attributesCopy forKey:v6];
   }
 
   else
@@ -9029,8 +9029,8 @@ LABEL_8:
     }
 
     cachedLastWindowLayoutAttributesPerDisplayOrdinal = self->_cachedLastWindowLayoutAttributesPerDisplayOrdinal;
-    v16 = [MEMORY[0x277CBEB68] null];
-    [(NSMutableDictionary *)cachedLastWindowLayoutAttributesPerDisplayOrdinal setObject:v16 forKey:v6];
+    null = [MEMORY[0x277CBEB68] null];
+    [(NSMutableDictionary *)cachedLastWindowLayoutAttributesPerDisplayOrdinal setObject:null forKey:v6];
   }
 }
 
@@ -9038,12 +9038,12 @@ LABEL_8:
 {
   v16 = *MEMORY[0x277D85DE8];
   [(FBSApplicationDataStore *)self->_dataStore removeObjectForKey:@"SBApplicationLastWindowSizePerDisplayOrdinalKey"];
-  v3 = [(NSMutableDictionary *)self->_cachedLastWindowLayoutAttributesPerDisplayOrdinal allKeys];
+  allKeys = [(NSMutableDictionary *)self->_cachedLastWindowLayoutAttributesPerDisplayOrdinal allKeys];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v4 = [allKeys countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -9055,31 +9055,31 @@ LABEL_8:
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allKeys);
         }
 
         v8 = *(*(&v11 + 1) + 8 * v7);
         cachedLastWindowLayoutAttributesPerDisplayOrdinal = self->_cachedLastWindowLayoutAttributesPerDisplayOrdinal;
-        v10 = [MEMORY[0x277CBEB68] null];
-        [(NSMutableDictionary *)cachedLastWindowLayoutAttributesPerDisplayOrdinal setObject:v10 forKey:v8];
+        null = [MEMORY[0x277CBEB68] null];
+        [(NSMutableDictionary *)cachedLastWindowLayoutAttributesPerDisplayOrdinal setObject:null forKey:v8];
 
         ++v7;
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [allKeys countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);
   }
 }
 
-- (void)setHasDisplayedLaunchAlert:(BOOL)a3 forType:(unint64_t)a4
+- (void)setHasDisplayedLaunchAlert:(BOOL)alert forType:(unint64_t)type
 {
   displayedLaunchAlerts = self->_displayedLaunchAlerts;
-  v5 = displayedLaunchAlerts & ~a4;
-  v6 = displayedLaunchAlerts | a4;
-  if (!a3)
+  v5 = displayedLaunchAlerts & ~type;
+  v6 = displayedLaunchAlerts | type;
+  if (!alert)
   {
     v6 = v5;
   }
@@ -9087,22 +9087,22 @@ LABEL_8:
   self->_displayedLaunchAlerts = v6;
 }
 
-- (void)takeBackgroundActivityAttribution:(id)a3
+- (void)takeBackgroundActivityAttribution:(id)attribution
 {
-  v12 = a3;
+  attributionCopy = attribution;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [SBApplication takeBackgroundActivityAttribution:];
   }
 
-  v4 = v12;
+  v4 = attributionCopy;
   if (!self->_backgroundActivityAttributions)
   {
     v5 = [objc_alloc(MEMORY[0x277CCAA50]) initWithOptions:0 capacity:1];
     backgroundActivityAttributions = self->_backgroundActivityAttributions;
     self->_backgroundActivityAttributions = v5;
 
-    v4 = v12;
+    v4 = attributionCopy;
   }
 
   if (!self->_backgroundActivityAttributionsByIdentifier)
@@ -9111,15 +9111,15 @@ LABEL_8:
     backgroundActivityAttributionsByIdentifier = self->_backgroundActivityAttributionsByIdentifier;
     self->_backgroundActivityAttributionsByIdentifier = v7;
 
-    v4 = v12;
+    v4 = attributionCopy;
   }
 
   if (![(NSHashTable *)self->_backgroundActivityAttributions containsObject:v4])
   {
-    [(NSHashTable *)self->_backgroundActivityAttributions addObject:v12];
-    v9 = [v12 backgroundActivityIdentifier];
+    [(NSHashTable *)self->_backgroundActivityAttributions addObject:attributionCopy];
+    backgroundActivityIdentifier = [attributionCopy backgroundActivityIdentifier];
     v10 = *MEMORY[0x277D6BC00];
-    if ([v9 isEqualToString:*MEMORY[0x277D6BC00]])
+    if ([backgroundActivityIdentifier isEqualToString:*MEMORY[0x277D6BC00]])
     {
       v11 = [(NSMapTable *)self->_backgroundActivityAttributionsByIdentifier objectForKey:v10];
       if (![v11 count])
@@ -9130,16 +9130,16 @@ LABEL_8:
 
     if ((STUIBackgroundActivityIdentiferRepresentsStyleOverride() & 1) == 0)
     {
-      [SBApp addApp:self forBackgroundActivityWithIdentifier:v9];
+      [SBApp addApp:self forBackgroundActivityWithIdentifier:backgroundActivityIdentifier];
     }
 
-    SBAddBackgroundActivityAttributionByIdentifier(v12, self->_backgroundActivityAttributionsByIdentifier);
+    SBAddBackgroundActivityAttributionByIdentifier(attributionCopy, self->_backgroundActivityAttributionsByIdentifier);
   }
 }
 
-- (void)releaseBackgroundActivityAttribution:(id)a3
+- (void)releaseBackgroundActivityAttribution:(id)attribution
 {
-  v10 = a3;
+  attributionCopy = attribution;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [SBApplication releaseBackgroundActivityAttribution:];
@@ -9148,13 +9148,13 @@ LABEL_8:
   backgroundActivityAttributions = self->_backgroundActivityAttributions;
   if (backgroundActivityAttributions)
   {
-    if ([(NSHashTable *)backgroundActivityAttributions containsObject:v10])
+    if ([(NSHashTable *)backgroundActivityAttributions containsObject:attributionCopy])
     {
-      [(NSHashTable *)self->_backgroundActivityAttributions removeObject:v10];
-      SBRemoveBackgroundActivityAttributionByIdentifier(v10, self->_backgroundActivityAttributionsByIdentifier);
-      v5 = [v10 backgroundActivityIdentifier];
+      [(NSHashTable *)self->_backgroundActivityAttributions removeObject:attributionCopy];
+      SBRemoveBackgroundActivityAttributionByIdentifier(attributionCopy, self->_backgroundActivityAttributionsByIdentifier);
+      backgroundActivityIdentifier = [attributionCopy backgroundActivityIdentifier];
       v6 = *MEMORY[0x277D6BC00];
-      if ([v5 isEqualToString:*MEMORY[0x277D6BC00]])
+      if ([backgroundActivityIdentifier isEqualToString:*MEMORY[0x277D6BC00]])
       {
         v7 = [(NSMapTable *)self->_backgroundActivityAttributionsByIdentifier objectForKey:v6];
         if (![v7 count])
@@ -9165,7 +9165,7 @@ LABEL_8:
 
       if ((STUIBackgroundActivityIdentiferRepresentsStyleOverride() & 1) == 0)
       {
-        [SBApp removeApp:self forBackgroundActivityWithIdentifier:v5];
+        [SBApp removeApp:self forBackgroundActivityWithIdentifier:backgroundActivityIdentifier];
       }
     }
 
@@ -9183,27 +9183,27 @@ LABEL_8:
   }
 }
 
-- (BOOL)hasRegisteredBackgroundActivityWithIdentifier:(id)a3
+- (BOOL)hasRegisteredBackgroundActivityWithIdentifier:(id)identifier
 {
-  v3 = [(NSMapTable *)self->_backgroundActivityAttributionsByIdentifier objectForKey:a3];
+  v3 = [(NSMapTable *)self->_backgroundActivityAttributionsByIdentifier objectForKey:identifier];
   v4 = [v3 count] != 0;
 
   return v4;
 }
 
-- (BOOL)shouldReceiveSourceApplicationContextFromOriginatingApplication:(id)a3
+- (BOOL)shouldReceiveSourceApplicationContextFromOriginatingApplication:(id)application
 {
-  v4 = a3;
-  if (v4)
+  applicationCopy = application;
+  if (applicationCopy)
   {
     v5 = self->_appInfo;
     if ([(SBApplicationInfo *)v5 isYukonLinked])
     {
-      v6 = SBWorkspaceApplicationForIdentifier(v4);
-      v7 = [v6 info];
+      v6 = SBWorkspaceApplicationForIdentifier(applicationCopy);
+      info = [v6 info];
 
-      v8 = [v7 teamIdentifier];
-      v9 = [(SBApplicationInfo *)v5 teamIdentifier];
+      teamIdentifier = [info teamIdentifier];
+      teamIdentifier2 = [(SBApplicationInfo *)v5 teamIdentifier];
       if ([(SBApplicationInfo *)v5 isSystemApplication]|| [(SBApplicationInfo *)v5 alwaysReceivesOpenURLSource])
       {
         v10 = 1;
@@ -9211,7 +9211,7 @@ LABEL_8:
 
       else
       {
-        v10 = [v8 isEqualToString:v9];
+        v10 = [teamIdentifier isEqualToString:teamIdentifier2];
       }
     }
 
@@ -9236,34 +9236,34 @@ LABEL_8:
   [(SBApplication *)self _setRecentlyUpdated:0];
 }
 
-- (void)preHeatForUserLaunchIfNecessaryWithAbsoluteTime:(unint64_t)a3 andContinuousTime:(unint64_t)a4
+- (void)preHeatForUserLaunchIfNecessaryWithAbsoluteTime:(unint64_t)time andContinuousTime:(unint64_t)continuousTime
 {
   v34 = *MEMORY[0x277D85DE8];
-  v26 = [(SBApplication *)self processState:a3];
+  v26 = [(SBApplication *)self processState:time];
   if ([v26 isRunning])
   {
   }
 
   else
   {
-    v5 = [(SBApplicationInfo *)self->_appInfo usesSplashBoard];
+    usesSplashBoard = [(SBApplicationInfo *)self->_appInfo usesSplashBoard];
 
-    if (v5)
+    if (usesSplashBoard)
     {
-      v6 = [MEMORY[0x277D759A0] mainScreen];
-      v7 = [MEMORY[0x277D656A0] predicate];
-      [v7 setContentTypeMask:6];
-      [v6 _referenceBounds];
-      [v7 setReferenceSize:{v8, v9}];
-      [v6 scale];
-      [v7 setImageScale:?];
-      v10 = [SBApp statusBarOrientationForEmbeddedDisplay];
-      if ([(SBApplicationInfo *)self->_appInfo supportsInterfaceOrientation:v10])
+      mainScreen = [MEMORY[0x277D759A0] mainScreen];
+      predicate = [MEMORY[0x277D656A0] predicate];
+      [predicate setContentTypeMask:6];
+      [mainScreen _referenceBounds];
+      [predicate setReferenceSize:{v8, v9}];
+      [mainScreen scale];
+      [predicate setImageScale:?];
+      statusBarOrientationForEmbeddedDisplay = [SBApp statusBarOrientationForEmbeddedDisplay];
+      if ([(SBApplicationInfo *)self->_appInfo supportsInterfaceOrientation:statusBarOrientationForEmbeddedDisplay])
       {
         v11 = XBInterfaceOrientationMaskForInterfaceOrientationPair();
       }
 
-      else if ((v10 - 1) >= 2)
+      else if ((statusBarOrientationForEmbeddedDisplay - 1) >= 2)
       {
         v11 = 2;
       }
@@ -9273,10 +9273,10 @@ LABEL_8:
         v11 = 24;
       }
 
-      [v7 setInterfaceOrientationMask:v11];
+      [predicate setInterfaceOrientationMask:v11];
       v12 = [(SBApplication *)self _snapshotManifestCreateIfNeeded:0];
-      v13 = [v12 defaultGroupIdentifier];
-      v14 = [v12 snapshotsForGroupID:v13 matchingPredicate:v7];
+      defaultGroupIdentifier = [v12 defaultGroupIdentifier];
+      v14 = [v12 snapshotsForGroupID:defaultGroupIdentifier matchingPredicate:predicate];
 
       v29 = 0u;
       v30 = 0u;
@@ -9298,9 +9298,9 @@ LABEL_13:
           }
 
           v20 = *(*(&v27 + 1) + 8 * v19);
-          v21 = [v20 path];
+          path = [v20 path];
 
-          if (v21)
+          if (path)
           {
             break;
           }
@@ -9339,8 +9339,8 @@ LABEL_19:
         _os_log_impl(&dword_21ED4E000, v23, OS_LOG_TYPE_DEFAULT, "No default launch images found for %@, pre-warming SplashBoard under the expectation it will be required.", buf, 0xCu);
       }
 
-      v25 = [MEMORY[0x277D656B8] sharedInstance];
-      [v25 preheatServiceWithTimeout:2.0];
+      mEMORY[0x277D656B8] = [MEMORY[0x277D656B8] sharedInstance];
+      [mEMORY[0x277D656B8] preheatServiceWithTimeout:2.0];
 
       v22 = 0;
 LABEL_24:
@@ -9350,28 +9350,28 @@ LABEL_24:
 
 - (NSDate)nextWakeDate
 {
-  v2 = [(SBApplication *)self legacyVOIPPeriodicWakeScheduler];
-  v3 = [v2 scheduledDate];
+  legacyVOIPPeriodicWakeScheduler = [(SBApplication *)self legacyVOIPPeriodicWakeScheduler];
+  scheduledDate = [legacyVOIPPeriodicWakeScheduler scheduledDate];
 
-  return v3;
+  return scheduledDate;
 }
 
-- (void)setNextWakeDate:(id)a3
+- (void)setNextWakeDate:(id)date
 {
-  v7 = a3;
-  v4 = [(SBApplication *)self info];
-  v5 = [v4 supportsLegacyVOIPBackgroundMode];
+  dateCopy = date;
+  info = [(SBApplication *)self info];
+  supportsLegacyVOIPBackgroundMode = [info supportsLegacyVOIPBackgroundMode];
 
-  if (v5)
+  if (supportsLegacyVOIPBackgroundMode)
   {
-    v6 = [(SBApplication *)self legacyVOIPPeriodicWakeScheduler];
-    [v6 scheduleWakeForDate:v7];
+    legacyVOIPPeriodicWakeScheduler = [(SBApplication *)self legacyVOIPPeriodicWakeScheduler];
+    [legacyVOIPPeriodicWakeScheduler scheduleWakeForDate:dateCopy];
   }
 }
 
-- (void)setUsesBackgroundNetwork:(BOOL)a3
+- (void)setUsesBackgroundNetwork:(BOOL)network
 {
-  if (a3)
+  if (network)
   {
     v4 = 1;
   }
@@ -9388,29 +9388,29 @@ LABEL_24:
 
   *(self + 43) += v4;
 LABEL_6:
-  v5 = [(SBApplication *)self dataUsage];
-  if ((v5 & 8) != (*(self + 43) != 0))
+  dataUsage = [(SBApplication *)self dataUsage];
+  if ((dataUsage & 8) != (*(self + 43) != 0))
   {
-    v6 = v5 & 0xFFFFFFF7 | (8 * (*(self + 43) != 0));
+    v6 = dataUsage & 0xFFFFFFF7 | (8 * (*(self + 43) != 0));
 
     [(SBApplication *)self _setDataUsage:v6];
   }
 }
 
-- (void)setBadgeValue:(id)a3
+- (void)setBadgeValue:(id)value
 {
-  v4 = a3;
-  v10 = v4;
-  if (!v4 || (objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v4 = v10, (isKindOfClass & 1) != 0) || (objc_opt_class(), v6 = objc_opt_isKindOfClass(), v4 = v10, (v6 & 1) != 0))
+  valueCopy = value;
+  v10 = valueCopy;
+  if (!valueCopy || (objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), valueCopy = v10, (isKindOfClass & 1) != 0) || (objc_opt_class(), v6 = objc_opt_isKindOfClass(), valueCopy = v10, (v6 & 1) != 0))
   {
-    if ([v4 isEqual:&unk_28336FCF8])
+    if ([valueCopy isEqual:&unk_28336FCF8])
     {
 
       v10 = 0;
     }
 
-    v7 = [(SBApplication *)self badgeValue];
-    if (([v7 isEqual:v10] & 1) == 0)
+    badgeValue = [(SBApplication *)self badgeValue];
+    if (([badgeValue isEqual:v10] & 1) == 0)
     {
       dataStore = self->_dataStore;
       if (v10)
@@ -9431,24 +9431,24 @@ LABEL_6:
   }
 }
 
-- (id)_sceneIdentifierForStoredPersistenceIdentifier:(id)a3
+- (id)_sceneIdentifierForStoredPersistenceIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__4;
   v16 = __Block_byref_object_dispose__4;
   v17 = 0;
-  v5 = [(SBApplication *)self _dataStore];
+  _dataStore = [(SBApplication *)self _dataStore];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __64__SBApplication__sceneIdentifierForStoredPersistenceIdentifier___block_invoke;
   v9[3] = &unk_2783ABB00;
-  v6 = v4;
+  v6 = identifierCopy;
   v10 = v6;
   v11 = &v12;
-  [v5 enumerateSceneStoresUsingBlock:v9];
+  [_dataStore enumerateSceneStoresUsingBlock:v9];
   v7 = v13[5];
 
   _Block_object_dispose(&v12, 8);
@@ -9530,83 +9530,83 @@ void __34__SBApplication__clearSceneTitles__block_invoke(uint64_t a1)
   _Block_object_dispose(&v12, 8);
 }
 
-- (id)_snapshotManifestCreateIfNeeded:(BOOL)a3
+- (id)_snapshotManifestCreateIfNeeded:(BOOL)needed
 {
-  v3 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  if (v3 && !v4->_synchronized_snapshotManifest && !v4->_uninstalled && v4->_appInfo)
+  neededCopy = needed;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (neededCopy && !selfCopy->_synchronized_snapshotManifest && !selfCopy->_uninstalled && selfCopy->_appInfo)
   {
-    v5 = [objc_alloc(MEMORY[0x277D65698]) initWithApplicationInfo:v4->_appInfo];
-    synchronized_snapshotManifest = v4->_synchronized_snapshotManifest;
-    v4->_synchronized_snapshotManifest = v5;
+    v5 = [objc_alloc(MEMORY[0x277D65698]) initWithApplicationInfo:selfCopy->_appInfo];
+    synchronized_snapshotManifest = selfCopy->_synchronized_snapshotManifest;
+    selfCopy->_synchronized_snapshotManifest = v5;
 
-    [(XBApplicationSnapshotManifest *)v4->_synchronized_snapshotManifest setDelegate:v4];
+    [(XBApplicationSnapshotManifest *)selfCopy->_synchronized_snapshotManifest setDelegate:selfCopy];
   }
 
-  v7 = v4->_synchronized_snapshotManifest;
-  objc_sync_exit(v4);
+  v7 = selfCopy->_synchronized_snapshotManifest;
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
 
-- (void)setInfo:(id)a3
+- (void)setInfo:(id)info
 {
-  v6 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (v5->_appInfo == v6)
+  infoCopy = info;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_appInfo == infoCopy)
   {
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
   }
 
   else
   {
-    objc_storeStrong(&v5->_appInfo, a3);
-    objc_sync_exit(v5);
+    objc_storeStrong(&selfCopy->_appInfo, info);
+    objc_sync_exit(selfCopy);
 
-    [(SBApplication *)v5 _noteIconDataSourceDidChange];
+    [(SBApplication *)selfCopy _noteIconDataSourceDidChange];
   }
 }
 
-- (id)_prepareInitializationContextIfNecessaryForLaunchOnDisplayConfiguration:(id)a3
+- (id)_prepareInitializationContextIfNecessaryForLaunchOnDisplayConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  initializationContext = v5->_initializationContext;
+  configurationCopy = configuration;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  initializationContext = selfCopy->_initializationContext;
   if (!initializationContext)
   {
-    v7 = [[SBApplicationSupportServiceRequestContext alloc] initWithApplication:v5 launchDisplayConfiguration:v4];
-    v8 = v5->_initializationContext;
-    v5->_initializationContext = v7;
+    v7 = [[SBApplicationSupportServiceRequestContext alloc] initWithApplication:selfCopy launchDisplayConfiguration:configurationCopy];
+    v8 = selfCopy->_initializationContext;
+    selfCopy->_initializationContext = v7;
 
-    initializationContext = v5->_initializationContext;
+    initializationContext = selfCopy->_initializationContext;
   }
 
   v9 = initializationContext;
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   [(SBApplicationSupportServiceRequestContext *)v9 applicationInitializationContextWithCompletion:&__block_literal_global_17];
 
   return v9;
 }
 
-- (void)_noteProcess:(id)a3 didChangeToState:(id)a4
+- (void)_noteProcess:(id)process didChangeToState:(id)state
 {
-  v7 = a3;
-  v6 = a4;
-  if ([v6 isRunning])
+  processCopy = process;
+  stateCopy = state;
+  if ([stateCopy isRunning])
   {
-    [(SBApplication *)self _updateProcess:v7 withState:v6];
+    [(SBApplication *)self _updateProcess:processCopy withState:stateCopy];
   }
 }
 
-- (void)_processWillLaunch:(id)a3
+- (void)_processWillLaunch:(id)launch
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  launchCopy = launch;
+  if (!launchCopy)
   {
     [(SBApplication *)a2 _processWillLaunch:?];
   }
@@ -9614,23 +9614,23 @@ void __34__SBApplication__clearSceneTitles__block_invoke(uint64_t a1)
   v6 = SBLogWorkspace();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
-    v7 = [(SBApplication *)self bundleIdentifier];
+    bundleIdentifier = [(SBApplication *)self bundleIdentifier];
     v13 = 136315394;
     v14 = "[SBApplication _processWillLaunch:]";
     v15 = 2114;
-    v16 = v7;
+    v16 = bundleIdentifier;
     _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_INFO, "%s %{public}@", &v13, 0x16u);
   }
 
-  v8 = [v5 state];
-  [(SBApplication *)self _updateProcess:v5 withState:v8];
+  state = [launchCopy state];
+  [(SBApplication *)self _updateProcess:launchCopy withState:state];
 
   [(SBApplication *)self _setNewlyInstalled:0];
   [(SBApplication *)self _setRecentlyUpdated:0];
   v9 = [(SBApplication *)self _prepareInitializationContextIfNecessaryForLaunchOnDisplayConfiguration:0];
-  v10 = [v5 executionContext];
-  v11 = [v10 environment];
-  v12 = [v11 objectForKey:@"CLASSIC_OVERRIDE"];
+  executionContext = [launchCopy executionContext];
+  environment = [executionContext environment];
+  v12 = [environment objectForKey:@"CLASSIC_OVERRIDE"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -9639,28 +9639,28 @@ void __34__SBApplication__clearSceneTitles__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_processDidLaunch:(id)a3
+- (void)_processDidLaunch:(id)launch
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  launchCopy = launch;
   v5 = SBLogWorkspace();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [(SBApplication *)self bundleIdentifier];
+    bundleIdentifier = [(SBApplication *)self bundleIdentifier];
     v11 = 136315394;
     v12 = "[SBApplication _processDidLaunch:]";
     v13 = 2114;
-    v14 = v6;
+    v14 = bundleIdentifier;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_INFO, "%s %{public}@", &v11, 0x16u);
   }
 
-  v7 = [v4 state];
-  [(SBApplication *)self _updateProcess:v4 withState:v7];
+  state = [launchCopy state];
+  [(SBApplication *)self _updateProcess:launchCopy withState:state];
 
-  v8 = [v4 executionContext];
+  executionContext = [launchCopy executionContext];
 
-  v9 = [v8 environment];
-  v10 = [v9 objectForKey:@"CLASSIC"];
+  environment = [executionContext environment];
+  v10 = [environment objectForKey:@"CLASSIC"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -9669,27 +9669,27 @@ void __34__SBApplication__clearSceneTitles__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_didExitWithContext:(id)a3
+- (void)_didExitWithContext:(id)context
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  contextCopy = context;
   v6 = SBLogWorkspace();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
-    v7 = [(SBApplication *)self bundleIdentifier];
+    bundleIdentifier = [(SBApplication *)self bundleIdentifier];
     *buf = 136315394;
     v20 = "[SBApplication _didExitWithContext:]";
     v21 = 2114;
-    v22 = v7;
+    v22 = bundleIdentifier;
     _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_INFO, "%s %{public}@", buf, 0x16u);
   }
 
-  objc_storeStrong(&self->_lastExitContext, a3);
-  v8 = [MEMORY[0x277CCAC38] processInfo];
-  v9 = [v8 environment];
-  v10 = [v9 objectForKey:@"SB_DISABLE_FAILED_LAUNCH_COUNTER"];
+  objc_storeStrong(&self->_lastExitContext, context);
+  processInfo = [MEMORY[0x277CCAC38] processInfo];
+  environment = [processInfo environment];
+  v10 = [environment objectForKey:@"SB_DISABLE_FAILED_LAUNCH_COUNTER"];
 
-  if (([v5 exitReason] & 1) == 0 && !v10)
+  if (([contextCopy exitReason] & 1) == 0 && !v10)
   {
     v11 = self->_failedLaunchCount + 1;
     self->_failedLaunchCount = v11;
@@ -9706,37 +9706,37 @@ void __34__SBApplication__clearSceneTitles__block_invoke(uint64_t a1)
   self->_applicationRestorationCheckState = 0;
   self->_showsProgressCount = 0;
   self->_currentClassicMode = -1;
-  v13 = self;
-  objc_sync_enter(v13);
-  initializationContext = v13->_initializationContext;
-  v13->_initializationContext = 0;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  initializationContext = selfCopy->_initializationContext;
+  selfCopy->_initializationContext = 0;
 
-  objc_sync_exit(v13);
-  v15 = [SBApp menuButtonInterceptApp];
-  v16 = [(SBApplication *)v13 isSameExecutableAsApplication:v15];
+  objc_sync_exit(selfCopy);
+  menuButtonInterceptApp = [SBApp menuButtonInterceptApp];
+  v16 = [(SBApplication *)selfCopy isSameExecutableAsApplication:menuButtonInterceptApp];
 
   if (v16)
   {
     [SBApp setMenuButtonInterceptApp:0 forever:0];
   }
 
-  [SBApp setAppRegisteredForVolumeEvents:v13 isActive:0];
-  [SBApp setAppRegisteredForLockButtonEvents:v13 isActive:0];
-  *(v13 + 43) = 0;
-  [(SBApplication *)v13 setUsesBackgroundNetwork:0];
-  [(SBApplication *)v13 purgeCaches];
-  [(SBApplication *)v13 _invalidateBackgroundActivityAttributions];
-  [(SBApplication *)v13 _updateProcess:0 withState:0];
-  [(SBApplication *)v13 setPlayingAudio:0];
-  [(SBApplication *)v13 setNowRecordingApplication:0];
-  [(SBApplication *)v13 setConnectedToExternalAccessory:0];
-  if (v13->_launchWillBePrevented)
+  [SBApp setAppRegisteredForVolumeEvents:selfCopy isActive:0];
+  [SBApp setAppRegisteredForLockButtonEvents:selfCopy isActive:0];
+  *(selfCopy + 43) = 0;
+  [(SBApplication *)selfCopy setUsesBackgroundNetwork:0];
+  [(SBApplication *)selfCopy purgeCaches];
+  [(SBApplication *)selfCopy _invalidateBackgroundActivityAttributions];
+  [(SBApplication *)selfCopy _updateProcess:0 withState:0];
+  [(SBApplication *)selfCopy setPlayingAudio:0];
+  [(SBApplication *)selfCopy setNowRecordingApplication:0];
+  [(SBApplication *)selfCopy setConnectedToExternalAccessory:0];
+  if (selfCopy->_launchWillBePrevented)
   {
-    [(SBApplication *)v13 _noteIconDataSourceDidChange];
+    [(SBApplication *)selfCopy _noteIconDataSourceDidChange];
   }
 
-  v17 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v17 postNotificationName:@"SBApplicationDidExitNotification" object:v13];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"SBApplicationDidExitNotification" object:selfCopy];
 }
 
 uint64_t __37__SBApplication__didExitWithContext___block_invoke(uint64_t result)
@@ -9765,14 +9765,14 @@ uint64_t __37__SBApplication__didExitWithContext___block_invoke(uint64_t result)
   return v2;
 }
 
-- (void)_setDataUsage:(int)a3
+- (void)_setDataUsage:(int)usage
 {
   if (self->_dataFlagsIsSet)
   {
     v4 = *(self + 84);
     self->_dataFlagsIsSet = 1;
-    *(self + 84) = a3;
-    if (v4 == a3)
+    *(self + 84) = usage;
+    if (v4 == usage)
     {
       return;
     }
@@ -9781,26 +9781,26 @@ uint64_t __37__SBApplication__didExitWithContext___block_invoke(uint64_t result)
   else
   {
     self->_dataFlagsIsSet = 1;
-    *(self + 84) = a3;
+    *(self + 84) = usage;
   }
 
-  v9 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v5 = *MEMORY[0x277D67A00];
   v6 = MEMORY[0x277CBEAC0];
-  v7 = [(SBApplication *)self bundleIdentifier];
-  v8 = [v6 dictionaryWithObject:v7 forKey:*MEMORY[0x277D67B20]];
-  [v9 postNotificationName:v5 object:self userInfo:v8];
+  bundleIdentifier = [(SBApplication *)self bundleIdentifier];
+  v8 = [v6 dictionaryWithObject:bundleIdentifier forKey:*MEMORY[0x277D67B20]];
+  [defaultCenter postNotificationName:v5 object:self userInfo:v8];
 }
 
-- (void)_updateProcess:(id)a3 withState:(id)a4
+- (void)_updateProcess:(id)process withState:(id)state
 {
   v23 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = [(SBApplication *)self _internalProcessState];
-  if (v7)
+  processCopy = process;
+  stateCopy = state;
+  _internalProcessState = [(SBApplication *)self _internalProcessState];
+  if (processCopy)
   {
-    v10 = [[SBApplicationProcessState alloc] _initWithProcess:v7 stateSnapshot:v8];
+    v10 = [[SBApplicationProcessState alloc] _initWithProcess:processCopy stateSnapshot:stateCopy];
   }
 
   else
@@ -9808,34 +9808,34 @@ uint64_t __37__SBApplication__didExitWithContext___block_invoke(uint64_t result)
     v10 = 0;
   }
 
-  if (self->_process != v7)
+  if (self->_process != processCopy)
   {
-    objc_storeStrong(&self->_process, a3);
+    objc_storeStrong(&self->_process, process);
   }
 
   [(SBApplication *)self _setInternalProcessState:v10];
   v11 = SBLogCommon();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [(SBApplication *)self bundleIdentifier];
+    bundleIdentifier = [(SBApplication *)self bundleIdentifier];
     *buf = 138543618;
-    v20 = v12;
+    v20 = bundleIdentifier;
     v21 = 2114;
     v22 = v10;
     _os_log_impl(&dword_21ED4E000, v11, OS_LOG_TYPE_DEFAULT, "Application process state changed for %{public}@: %{public}@", buf, 0x16u);
   }
 
-  v13 = [v9 taskState];
-  v14 = [v8 taskState];
-  if (v13 != 3 && v14 == 3)
+  taskState = [_internalProcessState taskState];
+  taskState2 = [stateCopy taskState];
+  if (taskState != 3 && taskState2 == 3)
   {
     [(SBApplication *)self _didSuspend];
   }
 
-  if (v9)
+  if (_internalProcessState)
   {
     v17 = @"previousProcessState";
-    v18 = v9;
+    v18 = _internalProcessState;
     v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v18 forKeys:&v17 count:1];
   }
 
@@ -9844,20 +9844,20 @@ uint64_t __37__SBApplication__didExitWithContext___block_invoke(uint64_t result)
     v15 = 0;
   }
 
-  v16 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v16 postNotificationName:@"SBApplicationProcessStateDidChange" object:self userInfo:v15];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"SBApplicationProcessStateDidChange" object:self userInfo:v15];
 }
 
-- (void)_setNewlyInstalled:(BOOL)a3
+- (void)_setNewlyInstalled:(BOOL)installed
 {
-  v3 = a3;
-  if ([(SBApplication *)self _isNewlyInstalled]!= a3)
+  installedCopy = installed;
+  if ([(SBApplication *)self _isNewlyInstalled]!= installed)
   {
     dataStore = self->_dataStore;
-    v6 = [MEMORY[0x277CCABB0] numberWithBool:v3];
+    v6 = [MEMORY[0x277CCABB0] numberWithBool:installedCopy];
     [(FBSApplicationDataStore *)dataStore setObject:v6 forKey:@"SBApplicationIsNewlyInstalled"];
 
-    if (v3)
+    if (installedCopy)
     {
       v7 = 8;
     }
@@ -9873,17 +9873,17 @@ uint64_t __37__SBApplication__didExitWithContext___block_invoke(uint64_t result)
   }
 }
 
-- (void)_setRecentlyUpdated:(BOOL)a3
+- (void)_setRecentlyUpdated:(BOOL)updated
 {
-  v3 = a3;
+  updatedCopy = updated;
   v15 = *MEMORY[0x277D85DE8];
-  if ([(SBApplication *)self _isRecentlyUpdated]!= a3)
+  if ([(SBApplication *)self _isRecentlyUpdated]!= updated)
   {
     dataStore = self->_dataStore;
-    v6 = [MEMORY[0x277CCABB0] numberWithBool:v3];
+    v6 = [MEMORY[0x277CCABB0] numberWithBool:updatedCopy];
     [(FBSApplicationDataStore *)dataStore setObject:v6 forKey:@"SBApplicationRecentlyUpdated"];
 
-    if (v3)
+    if (updatedCopy)
     {
       v7 = 1;
     }
@@ -9896,7 +9896,7 @@ uint64_t __37__SBApplication__didExitWithContext___block_invoke(uint64_t result)
     *(self + 80) = *(self + 80) & 0xF8 | v7;
     v8 = SBLogCommon();
     v9 = os_log_type_enabled(v8, OS_LOG_TYPE_INFO);
-    if (v3)
+    if (updatedCopy)
     {
       if (v9)
       {
@@ -9925,10 +9925,10 @@ LABEL_10:
 
 - (void)_updateRecentlyUpdatedTimer
 {
-  v3 = [(SBApplication *)self _isRecentlyUpdated];
+  _isRecentlyUpdated = [(SBApplication *)self _isRecentlyUpdated];
   v4 = [(FBSApplicationDataStore *)self->_dataStore safeObjectForKey:@"SBApplicationRecentlyUpdatedTimerStartDate" ofType:objc_opt_class()];
   v13 = v4;
-  if (v3)
+  if (_isRecentlyUpdated)
   {
     if (v4)
     {
@@ -9946,29 +9946,29 @@ LABEL_10:
       if (v7 && ([v7 isUILocked] & 1) == 0)
       {
         dataStore = self->_dataStore;
-        v10 = [MEMORY[0x277CBEAA8] date];
-        [(FBSApplicationDataStore *)dataStore setObject:v10 forKey:@"SBApplicationRecentlyUpdatedTimerStartDate"];
+        date = [MEMORY[0x277CBEAA8] date];
+        [(FBSApplicationDataStore *)dataStore setObject:date forKey:@"SBApplicationRecentlyUpdatedTimerStartDate"];
       }
 
-      v11 = [MEMORY[0x277CCAB98] defaultCenter];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
       v12 = *MEMORY[0x277D67A48];
-      [v11 removeObserver:self name:*MEMORY[0x277D67A48] object:0];
-      [v11 addObserver:self selector:sel__lockStateDidChange_ name:v12 object:0];
+      [defaultCenter removeObserver:self name:*MEMORY[0x277D67A48] object:0];
+      [defaultCenter addObserver:self selector:sel__lockStateDidChange_ name:v12 object:0];
     }
   }
 
   else
   {
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v6 removeObserver:self name:*MEMORY[0x277D67A48] object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 removeObserver:self name:*MEMORY[0x277D67A48] object:0];
 
     [(FBSApplicationDataStore *)self->_dataStore removeObjectForKey:@"SBApplicationRecentlyUpdatedTimerStartDate"];
   }
 }
 
-- (void)_lockStateDidChange:(id)a3
+- (void)_lockStateDidChange:(id)change
 {
-  v6 = a3;
+  changeCopy = change;
   if ([(SBApplication *)self _isRecentlyUpdated])
   {
     [(SBApplication *)self _updateRecentlyUpdatedTimer];
@@ -9976,17 +9976,17 @@ LABEL_10:
 
   else
   {
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    v5 = [v6 name];
-    [v4 removeObserver:self name:v5 object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    name = [changeCopy name];
+    [defaultCenter removeObserver:self name:name object:0];
   }
 }
 
 - (void)_invalidateBackgroundActivityAttributions
 {
-  v1 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v0 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[SBApplication _invalidateBackgroundActivityAttributions]"];
-  [v1 handleFailureInFunction:v0 file:@"SBApplication.m" lineNumber:1135 description:@"this call must be made on the main thread"];
+  [currentHandler handleFailureInFunction:v0 file:@"SBApplication.m" lineNumber:1135 description:@"this call must be made on the main thread"];
 }
 
 uint64_t __58__SBApplication__invalidateBackgroundActivityAttributions__block_invoke(uint64_t a1, void *a2)
@@ -10025,16 +10025,16 @@ uint64_t __58__SBApplication__invalidateBackgroundActivityAttributions__block_in
   return v6;
 }
 
-- (void)launchFromIcon:(id)a3 location:(id)a4 context:(id)a5
+- (void)launchFromIcon:(id)icon location:(id)location context:(id)context
 {
   v27 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  iconCopy = icon;
+  locationCopy = location;
+  contextCopy = context;
   v11 = objc_opt_self();
   if (objc_opt_isKindOfClass())
   {
-    v12 = v10;
+    v12 = contextCopy;
   }
 
   else
@@ -10044,12 +10044,12 @@ uint64_t __58__SBApplication__invalidateBackgroundActivityAttributions__block_in
 
   v13 = v12;
 
-  v14 = [v13 activationSettings];
-  v15 = [v13 actions];
+  activationSettings = [v13 activationSettings];
+  actions = [v13 actions];
 
-  if (v14)
+  if (activationSettings)
   {
-    v16 = v14;
+    v16 = activationSettings;
   }
 
   else
@@ -10061,18 +10061,18 @@ uint64_t __58__SBApplication__invalidateBackgroundActivityAttributions__block_in
   v18 = SBLogIcon();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
   {
-    v19 = [(SBApplication *)self bundleIdentifier];
+    bundleIdentifier = [(SBApplication *)self bundleIdentifier];
     v21 = 138412802;
-    v22 = v19;
+    v22 = bundleIdentifier;
     v23 = 2112;
-    v24 = v8;
+    v24 = iconCopy;
     v25 = 2112;
-    v26 = v9;
+    v26 = locationCopy;
     _os_log_impl(&dword_21ED4E000, v18, OS_LOG_TYPE_INFO, "Launching application %@ from icon %@, location: %@", &v21, 0x20u);
   }
 
   v20 = +[SBUIController sharedInstance];
-  [v20 activateApplication:self fromIcon:v8 location:v9 activationSettings:v17 actions:v15];
+  [v20 activateApplication:self fromIcon:iconCopy location:locationCopy activationSettings:v17 actions:actions];
 }
 
 - (void)uninstall
@@ -10081,13 +10081,13 @@ uint64_t __58__SBApplication__invalidateBackgroundActivityAttributions__block_in
   [v3 uninstallApplication:self];
 }
 
-- (id)icon:(id)a3 displayNameForObscuredDisabledLaunchForLocation:(id)a4
+- (id)icon:(id)icon displayNameForObscuredDisabledLaunchForLocation:(id)location
 {
-  v5 = [(SBApplication *)self displayName:a3];
+  v5 = [(SBApplication *)self displayName:icon];
   if ([(SBApplication *)self isCacheCleaningTerminationAssertionHeld])
   {
-    v6 = [MEMORY[0x277CCA8D8] mainBundle];
-    v7 = [v6 localizedStringForKey:@"CLEANING_ICON_LABEL" value:&stru_283094718 table:@"SpringBoard"];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v7 = [mainBundle localizedStringForKey:@"CLEANING_ICON_LABEL" value:&stru_283094718 table:@"SpringBoard"];
 
     v5 = v7;
   }
@@ -10095,7 +10095,7 @@ uint64_t __58__SBApplication__invalidateBackgroundActivityAttributions__block_in
   return v5;
 }
 
-- (int64_t)labelAccessoryTypeForIcon:(id)a3
+- (int64_t)labelAccessoryTypeForIcon:(id)icon
 {
   if (([(SBApplicationInfo *)self->_appInfo isBlockedForScreenTimeExpiration]& 1) != 0)
   {
@@ -10120,7 +10120,7 @@ uint64_t __58__SBApplication__invalidateBackgroundActivityAttributions__block_in
   return 0;
 }
 
-- (BOOL)iconCompleteUninstall:(id)a3
+- (BOOL)iconCompleteUninstall:(id)uninstall
 {
   v4 = +[SBApplicationController sharedInstance];
   [v4 uninstallApplication:self];
@@ -10128,7 +10128,7 @@ uint64_t __58__SBApplication__invalidateBackgroundActivityAttributions__block_in
   return 1;
 }
 
-- (BOOL)iconAllowsLaunch:(id)a3
+- (BOOL)iconAllowsLaunch:(id)launch
 {
   if ([(SBApplication *)self isAnyTerminationAssertionInEffect])
   {
@@ -10141,21 +10141,21 @@ uint64_t __58__SBApplication__invalidateBackgroundActivityAttributions__block_in
   }
 }
 
-- (BOOL)icon:(id)a3 launchFromLocation:(id)a4 context:(id)a5
+- (BOOL)icon:(id)icon launchFromLocation:(id)location context:(id)context
 {
   v31 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v10 iconView];
+  iconCopy = icon;
+  locationCopy = location;
+  contextCopy = context;
+  iconView = [contextCopy iconView];
   if (objc_opt_respondsToSelector())
   {
-    v12 = [v10 actions];
+    actions = [contextCopy actions];
   }
 
   else
   {
-    v12 = 0;
+    actions = 0;
   }
 
   v13 = objc_opt_self();
@@ -10163,36 +10163,36 @@ uint64_t __58__SBApplication__invalidateBackgroundActivityAttributions__block_in
 
   if ((isKindOfClass & 1) == 0)
   {
-    if (!v11)
+    if (!iconView)
     {
       goto LABEL_13;
     }
 
-    v15 = objc_alloc_init(SBActivationSettings);
-    v16 = [v11 _sbWindowScene];
-    if (-[SBApplication restrictedToTheEmbeddedDisplayInChamois](self, "restrictedToTheEmbeddedDisplayInChamois") && [v16 isExtendedDisplayWindowScene])
+    activationSettings = objc_alloc_init(SBActivationSettings);
+    _sbWindowScene = [iconView _sbWindowScene];
+    if (-[SBApplication restrictedToTheEmbeddedDisplayInChamois](self, "restrictedToTheEmbeddedDisplayInChamois") && [_sbWindowScene isExtendedDisplayWindowScene])
     {
-      v17 = [SBApp windowSceneManager];
-      v18 = [v17 embeddedDisplayWindowScene];
+      windowSceneManager = [SBApp windowSceneManager];
+      embeddedDisplayWindowScene = [windowSceneManager embeddedDisplayWindowScene];
 
-      v16 = v18;
+      _sbWindowScene = embeddedDisplayWindowScene;
     }
 
-    [(SBActivationSettings *)v15 setObject:v16 forActivationSetting:69];
+    [(SBActivationSettings *)activationSettings setObject:_sbWindowScene forActivationSetting:69];
 
-    if (!v15)
+    if (!activationSettings)
     {
       goto LABEL_13;
     }
 
 LABEL_12:
-    v19 = v15;
+    v19 = activationSettings;
     v20 = v19;
     goto LABEL_14;
   }
 
-  v15 = [v10 activationSettings];
-  if (v15)
+  activationSettings = [contextCopy activationSettings];
+  if (activationSettings)
   {
     goto LABEL_12;
   }
@@ -10204,64 +10204,64 @@ LABEL_14:
   v21 = SBLogIcon();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
   {
-    v22 = [(SBApplication *)self bundleIdentifier];
+    bundleIdentifier = [(SBApplication *)self bundleIdentifier];
     v25 = 138412802;
-    v26 = v22;
+    v26 = bundleIdentifier;
     v27 = 2112;
-    v28 = v8;
+    v28 = iconCopy;
     v29 = 2114;
-    v30 = v9;
+    v30 = locationCopy;
     _os_log_impl(&dword_21ED4E000, v21, OS_LOG_TYPE_DEFAULT, "Launching application %@ from icon %@, location: %{public}@", &v25, 0x20u);
   }
 
   v23 = +[SBUIController sharedInstance];
-  [v23 activateApplication:self fromIcon:v8 location:v9 activationSettings:v19 actions:v12];
+  [v23 activateApplication:self fromIcon:iconCopy location:locationCopy activationSettings:v19 actions:actions];
 
   return 1;
 }
 
-- (BOOL)isTimedOutForIcon:(id)a3
+- (BOOL)isTimedOutForIcon:(id)icon
 {
-  v3 = [(SBApplication *)self info];
-  v4 = [v3 isBlockedForScreenTimeExpiration];
+  info = [(SBApplication *)self info];
+  isBlockedForScreenTimeExpiration = [info isBlockedForScreenTimeExpiration];
 
-  return v4;
+  return isBlockedForScreenTimeExpiration;
 }
 
-- (id)folderTitleOptionsForIcon:(id)a3
+- (id)folderTitleOptionsForIcon:(id)icon
 {
-  v3 = [(SBApplication *)self info];
-  v4 = [v3 folderNames];
+  info = [(SBApplication *)self info];
+  folderNames = [info folderNames];
 
-  return v4;
+  return folderNames;
 }
 
-- (id)folderFallbackTitleForIcon:(id)a3
+- (id)folderFallbackTitleForIcon:(id)icon
 {
-  v3 = [(SBApplication *)self info];
-  v4 = [v3 fallbackFolderName];
-  if (!v4)
+  info = [(SBApplication *)self info];
+  fallbackFolderName = [info fallbackFolderName];
+  if (!fallbackFolderName)
   {
-    v5 = [v3 folderNames];
-    v4 = [v5 firstObject];
+    folderNames = [info folderNames];
+    fallbackFolderName = [folderNames firstObject];
   }
 
-  return v4;
+  return fallbackFolderName;
 }
 
-- (id)tagsForIcon:(id)a3
+- (id)tagsForIcon:(id)icon
 {
-  v3 = [(SBApplication *)self info];
-  v4 = [v3 tags];
+  info = [(SBApplication *)self info];
+  tags = [info tags];
 
-  return v4;
+  return tags;
 }
 
-- (int64_t)dataOwnershipRoleAsDragDropTargetForIcon:(id)a3
+- (int64_t)dataOwnershipRoleAsDragDropTargetForIcon:(id)icon
 {
-  v4 = [MEMORY[0x277D262A0] sharedConnection];
-  v5 = [(SBApplication *)self bundleIdentifier];
-  v6 = [v4 dragDropTargetManagementStateForBundleID:v5];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  bundleIdentifier = [(SBApplication *)self bundleIdentifier];
+  v6 = [mEMORY[0x277D262A0] dragDropTargetManagementStateForBundleID:bundleIdentifier];
 
   if (v6 > 3)
   {
@@ -10274,34 +10274,34 @@ LABEL_14:
   }
 }
 
-- (id)iTunesCategoriesOrderedByRelevancyForIcon:(id)a3
+- (id)iTunesCategoriesOrderedByRelevancyForIcon:(id)icon
 {
-  v3 = [(SBApplication *)self info];
-  v4 = [v3 iTunesCategoriesOrderedByRelevancy];
+  info = [(SBApplication *)self info];
+  iTunesCategoriesOrderedByRelevancy = [info iTunesCategoriesOrderedByRelevancy];
 
-  return v4;
+  return iTunesCategoriesOrderedByRelevancy;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBApplication *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBApplication *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(SBApplication *)self succinctDescriptionBuilder];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(SBApplication *)self succinctDescriptionBuilder];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __55__SBApplication_descriptionBuilderWithMultilinePrefix___block_invoke;
   v9[3] = &unk_2783A92D8;
-  v6 = v5;
+  v6 = succinctDescriptionBuilder;
   v10 = v6;
-  v11 = self;
-  [v6 appendBodySectionWithName:0 multilinePrefix:v4 block:v9];
+  selfCopy = self;
+  [v6 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v9];
 
   v7 = v6;
   return v6;
@@ -10316,39 +10316,39 @@ void __55__SBApplication_descriptionBuilderWithMultilinePrefix___block_invoke(ui
 
 - (unint64_t)_appRestrictionReason
 {
-  v2 = [(SBApplication *)self info];
-  v3 = [v2 applicationIdentity];
-  v4 = [v3 findApplicationRecordWithError:0];
-  v5 = [v4 applicationState];
-  v6 = [v5 restrictionReason];
+  info = [(SBApplication *)self info];
+  applicationIdentity = [info applicationIdentity];
+  v4 = [applicationIdentity findApplicationRecordWithError:0];
+  applicationState = [v4 applicationState];
+  restrictionReason = [applicationState restrictionReason];
 
-  return v6;
+  return restrictionReason;
 }
 
-+ (id)snapshotSortDescriptorsForNames:(id)a3 scheme:(id)a4 imageScale:(double)a5 referenceSize:(CGSize)a6 userInterfaceStyle:(int64_t)a7 statusBarStateMask:(unint64_t)a8 interfaceOrientationMask:(unint64_t)a9 requiredOSVersion:(id)a10
++ (id)snapshotSortDescriptorsForNames:(id)names scheme:(id)scheme imageScale:(double)scale referenceSize:(CGSize)size userInterfaceStyle:(int64_t)style statusBarStateMask:(unint64_t)mask interfaceOrientationMask:(unint64_t)orientationMask requiredOSVersion:(id)self0
 {
-  height = a6.height;
-  width = a6.width;
-  v19 = a10;
-  v20 = a4;
-  v21 = a3;
-  v37 = [a1 snapshotSortDescriptorForNames:v21];
-  v22 = [a1 snapshotSortDescriptorForScheme:v20];
+  height = size.height;
+  width = size.width;
+  versionCopy = version;
+  schemeCopy = scheme;
+  namesCopy = names;
+  v37 = [self snapshotSortDescriptorForNames:namesCopy];
+  v22 = [self snapshotSortDescriptorForScheme:schemeCopy];
 
-  v33 = [a1 snapshotSortDescriptorForInterfaceOrientationMask:a9];
-  v34 = [a1 snapshotSortDescriptorForStatusBarStateMask:a8];
-  v23 = [a1 snapshotSortDescriptorForImageScale:a5];
-  v35 = [a1 snapshotSortDescriptorForReferenceSize:{width, height}];
-  v24 = [a1 snapshotSortDescriptorForContentTypeMask];
-  v36 = [a1 snapshotSortDescriptorForRequiredOSVersion:v19];
+  v33 = [self snapshotSortDescriptorForInterfaceOrientationMask:orientationMask];
+  v34 = [self snapshotSortDescriptorForStatusBarStateMask:mask];
+  v23 = [self snapshotSortDescriptorForImageScale:scale];
+  v35 = [self snapshotSortDescriptorForReferenceSize:{width, height}];
+  snapshotSortDescriptorForContentTypeMask = [self snapshotSortDescriptorForContentTypeMask];
+  v36 = [self snapshotSortDescriptorForRequiredOSVersion:versionCopy];
 
-  v25 = [a1 snapshotSortDescriptorPreferringProtectedContent];
-  v32 = [a1 snapshotSortDescriptorForCreationDate];
-  v26 = [a1 snapshotSortDescriptorForUIUserInterfaceStyle:a7];
+  snapshotSortDescriptorPreferringProtectedContent = [self snapshotSortDescriptorPreferringProtectedContent];
+  snapshotSortDescriptorForCreationDate = [self snapshotSortDescriptorForCreationDate];
+  v26 = [self snapshotSortDescriptorForUIUserInterfaceStyle:style];
   v27 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v28 = [v21 count];
+  v28 = [namesCopy count];
 
-  if (v20 != 0 && v28 == 0)
+  if (schemeCopy != 0 && v28 == 0)
   {
     v29 = v22;
   }
@@ -10358,7 +10358,7 @@ void __55__SBApplication_descriptionBuilderWithMultilinePrefix___block_invoke(ui
     v29 = v37;
   }
 
-  if (v20 != 0 && v28 == 0)
+  if (schemeCopy != 0 && v28 == 0)
   {
     v30 = v37;
   }
@@ -10373,68 +10373,68 @@ void __55__SBApplication_descriptionBuilderWithMultilinePrefix___block_invoke(ui
   [v27 addObject:v33];
   [v27 addObject:v26];
   [v27 addObject:v34];
-  [v27 addObject:v24];
+  [v27 addObject:snapshotSortDescriptorForContentTypeMask];
   [v27 addObject:v23];
   [v27 addObject:v35];
-  [v27 addObject:v25];
-  [v27 addObject:v32];
+  [v27 addObject:snapshotSortDescriptorPreferringProtectedContent];
+  [v27 addObject:snapshotSortDescriptorForCreationDate];
   [v27 addObject:v36];
 
   return v27;
 }
 
-+ (id)snapshotSortDescriptorForNames:(id)a3
++ (id)snapshotSortDescriptorForNames:(id)names
 {
-  v3 = a3;
+  namesCopy = names;
   v4 = MEMORY[0x277D656A8];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __65__SBApplication_SnapshotSorting__snapshotSortDescriptorForNames___block_invoke;
   v8[3] = &unk_2783B59E0;
-  v9 = v3;
-  v5 = v3;
+  v9 = namesCopy;
+  v5 = namesCopy;
   v6 = [v4 sortDescriptorWithKey:1 ascending:1 comparator:v8];
 
   return v6;
 }
 
-+ (id)snapshotSortDescriptorForScheme:(id)a3
++ (id)snapshotSortDescriptorForScheme:(id)scheme
 {
-  v3 = a3;
+  schemeCopy = scheme;
   v4 = MEMORY[0x277D656A8];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __66__SBApplication_SnapshotSorting__snapshotSortDescriptorForScheme___block_invoke;
   v8[3] = &unk_2783B59E0;
-  v9 = v3;
-  v5 = v3;
+  v9 = schemeCopy;
+  v5 = schemeCopy;
   v6 = [v4 sortDescriptorWithKey:2 ascending:1 comparator:v8];
 
   return v6;
 }
 
-+ (id)snapshotSortDescriptorForLaunchInterfaceIdentifier:(id)a3
++ (id)snapshotSortDescriptorForLaunchInterfaceIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = MEMORY[0x277D656A8];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __85__SBApplication_SnapshotSorting__snapshotSortDescriptorForLaunchInterfaceIdentifier___block_invoke;
   v8[3] = &unk_2783B59E0;
-  v9 = v3;
-  v5 = v3;
+  v9 = identifierCopy;
+  v5 = identifierCopy;
   v6 = [v4 sortDescriptorWithKey:3 ascending:1 comparator:v8];
 
   return v6;
 }
 
-+ (id)snapshotSortDescriptorForImageScale:(double)a3
++ (id)snapshotSortDescriptorForImageScale:(double)scale
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __70__SBApplication_SnapshotSorting__snapshotSortDescriptorForImageScale___block_invoke;
   v5[3] = &__block_descriptor_40_e31_q24__0__NSNumber_8__NSNumber_16l;
-  *&v5[4] = a3;
+  *&v5[4] = scale;
   v3 = [MEMORY[0x277D656A8] sortDescriptorWithKey:6 ascending:1 comparator:v5];
 
   return v3;
@@ -10487,13 +10487,13 @@ uint64_t __70__SBApplication_SnapshotSorting__snapshotSortDescriptorForImageScal
   return v11;
 }
 
-+ (id)snapshotSortDescriptorForReferenceSize:(CGSize)a3
++ (id)snapshotSortDescriptorForReferenceSize:(CGSize)size
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __73__SBApplication_SnapshotSorting__snapshotSortDescriptorForReferenceSize___block_invoke;
   v5[3] = &__block_descriptor_48_e29_q24__0__NSValue_8__NSValue_16l;
-  v6 = a3;
+  sizeCopy = size;
   v3 = [MEMORY[0x277D656A8] sortDescriptorWithKey:5 ascending:1 comparator:v5];
 
   return v3;
@@ -10540,13 +10540,13 @@ uint64_t __82__SBApplication_SnapshotSorting__snapshotSortDescriptorPreferringPr
   }
 }
 
-+ (id)snapshotSortDescriptorForStatusBarStateMask:(unint64_t)a3
++ (id)snapshotSortDescriptorForStatusBarStateMask:(unint64_t)mask
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __78__SBApplication_SnapshotSorting__snapshotSortDescriptorForStatusBarStateMask___block_invoke;
   v5[3] = &__block_descriptor_40_e53_q24__0__XBStatusBarSettings_8__XBStatusBarSettings_16l;
-  v5[4] = a3;
+  v5[4] = mask;
   v3 = [MEMORY[0x277D656A8] sortDescriptorWithKey:8 ascending:1 comparator:v5];
 
   return v3;
@@ -10575,13 +10575,13 @@ uint64_t __78__SBApplication_SnapshotSorting__snapshotSortDescriptorForStatusBar
   }
 }
 
-+ (id)snapshotSortDescriptorForInterfaceOrientationMask:(unint64_t)a3
++ (id)snapshotSortDescriptorForInterfaceOrientationMask:(unint64_t)mask
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __84__SBApplication_SnapshotSorting__snapshotSortDescriptorForInterfaceOrientationMask___block_invoke;
   v5[3] = &__block_descriptor_40_e31_q24__0__NSNumber_8__NSNumber_16l;
-  v5[4] = a3;
+  v5[4] = mask;
   v3 = [MEMORY[0x277D656A8] sortDescriptorWithKey:4 ascending:1 comparator:v5];
 
   return v3;
@@ -10670,16 +10670,16 @@ uint64_t __84__SBApplication_SnapshotSorting__snapshotSortDescriptorForInterface
   }
 }
 
-+ (id)snapshotSortDescriptorForRequiredOSVersion:(id)a3
++ (id)snapshotSortDescriptorForRequiredOSVersion:(id)version
 {
-  v3 = a3;
+  versionCopy = version;
   v4 = MEMORY[0x277D656A8];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __77__SBApplication_SnapshotSorting__snapshotSortDescriptorForRequiredOSVersion___block_invoke;
   v8[3] = &unk_2783B59E0;
-  v9 = v3;
-  v5 = v3;
+  v9 = versionCopy;
+  v5 = versionCopy;
   v6 = [v4 sortDescriptorWithKey:9 ascending:1 comparator:v8];
 
   return v6;
@@ -10753,13 +10753,13 @@ LABEL_16:
   return v11;
 }
 
-+ (id)snapshotSortDescriptorForUIUserInterfaceStyle:(int64_t)a3
++ (id)snapshotSortDescriptorForUIUserInterfaceStyle:(int64_t)style
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __80__SBApplication_SnapshotSorting__snapshotSortDescriptorForUIUserInterfaceStyle___block_invoke;
   v5[3] = &__block_descriptor_40_e31_q24__0__NSNumber_8__NSNumber_16l;
-  v5[4] = a3;
+  v5[4] = style;
   v3 = [MEMORY[0x277D656A8] sortDescriptorWithKey:12 ascending:1 comparator:v5];
 
   return v3;
@@ -10802,16 +10802,16 @@ uint64_t __80__SBApplication_SnapshotSorting__snapshotSortDescriptorForUIUserInt
   }
 }
 
-+ (id)snapshotSortDescriptorForCustomSafeAreaInsets:(id)a3
++ (id)snapshotSortDescriptorForCustomSafeAreaInsets:(id)insets
 {
-  v3 = a3;
+  insetsCopy = insets;
   v4 = MEMORY[0x277D656A8];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __80__SBApplication_SnapshotSorting__snapshotSortDescriptorForCustomSafeAreaInsets___block_invoke;
   v8[3] = &unk_2783B5AA8;
-  v9 = v3;
-  v5 = v3;
+  v9 = insetsCopy;
+  v5 = insetsCopy;
   v6 = [v4 sortDescriptorWithKey:13 ascending:1 comparator:v8];
 
   return v6;
@@ -10873,8 +10873,8 @@ void __62__SBApplication_ChamoisCapabilities__alwaysMaximizedInChamois__block_in
   }
 
   v3 = restrictedToTheEmbeddedDisplayInChamois_sRestrictedToEmbeddedBundleIDs;
-  v4 = [(SBApplication *)self bundleIdentifier];
-  LOBYTE(v3) = [v3 containsObject:v4];
+  bundleIdentifier = [(SBApplication *)self bundleIdentifier];
+  LOBYTE(v3) = [v3 containsObject:bundleIdentifier];
 
   return v3;
 }
@@ -10918,13 +10918,13 @@ void __77__SBApplication_ChamoisCapabilities__restrictedToTheEmbeddedDisplayInCh
   return (v2 | v3) & 1;
 }
 
-- (int64_t)preferredSizingPolicyForSwitcherWindowManagementContext:(id)a3 displayIdentity:(id)a4 contentOrientation:(int64_t)a5 containerOrientation:(int64_t)a6
+- (int64_t)preferredSizingPolicyForSwitcherWindowManagementContext:(id)context displayIdentity:(id)identity contentOrientation:(int64_t)orientation containerOrientation:(int64_t)containerOrientation
 {
-  v10 = a3;
-  v11 = [a4 isExternal];
-  v12 = [v10 isChamoisOrFlexibleWindowing];
+  contextCopy = context;
+  isExternal = [identity isExternal];
+  isChamoisOrFlexibleWindowing = [contextCopy isChamoisOrFlexibleWindowing];
 
-  if (!v12 || [(SBApplication *)self alwaysMaximizedInChamois])
+  if (!isChamoisOrFlexibleWindowing || [(SBApplication *)self alwaysMaximizedInChamois])
   {
     return 2;
   }
@@ -10934,10 +10934,10 @@ void __77__SBApplication_ChamoisCapabilities__restrictedToTheEmbeddedDisplayInCh
     return 0;
   }
 
-  if ((v11 & 1) == 0)
+  if ((isExternal & 1) == 0)
   {
-    v14 = [(SBApplication *)self classicAppFullScreen];
-    if (a5 == a6 && v14)
+    classicAppFullScreen = [(SBApplication *)self classicAppFullScreen];
+    if (orientation == containerOrientation && classicAppFullScreen)
     {
       return 2;
     }
@@ -10946,21 +10946,21 @@ void __77__SBApplication_ChamoisCapabilities__restrictedToTheEmbeddedDisplayInCh
   return 1;
 }
 
-- (unint64_t)supportedSizingPoliciesForSwitcherWindowManagementContext:(id)a3 displayIdentity:(id)a4 contentOrientation:(int64_t)a5 containerOrientation:(int64_t)a6
+- (unint64_t)supportedSizingPoliciesForSwitcherWindowManagementContext:(id)context displayIdentity:(id)identity contentOrientation:(int64_t)orientation containerOrientation:(int64_t)containerOrientation
 {
-  v10 = a3;
-  v11 = [a4 isExternal];
+  contextCopy = context;
+  isExternal = [identity isExternal];
   v12 = SBFIsFullScreenLetterboxingAvailable();
-  v13 = [v10 isMedusaEnabled];
+  isMedusaEnabled = [contextCopy isMedusaEnabled];
   if (!v12)
   {
-    if (!v13)
+    if (!isMedusaEnabled)
     {
-      if ([v10 isChamoisOrFlexibleWindowing] && !-[SBApplication alwaysMaximizedInChamois](self, "alwaysMaximizedInChamois"))
+      if ([contextCopy isChamoisOrFlexibleWindowing] && !-[SBApplication alwaysMaximizedInChamois](self, "alwaysMaximizedInChamois"))
       {
         if (![(SBApplication *)self supportsChamoisSceneResizing])
         {
-          if ((v11 & 1) != 0 || (v16 = [(SBApplication *)self classicAppFullScreen], a5 != a6) || !v16)
+          if ((isExternal & 1) != 0 || (v16 = [(SBApplication *)self classicAppFullScreen], orientation != containerOrientation) || !v16)
           {
             v14 = 3;
             goto LABEL_17;
@@ -10974,7 +10974,7 @@ void __77__SBApplication_ChamoisCapabilities__restrictedToTheEmbeddedDisplayInCh
     }
 
 LABEL_11:
-    if (([(SBApplication *)self isMedusaCapable]& (v11 ^ 1)) != 0)
+    if (([(SBApplication *)self isMedusaCapable]& (isExternal ^ 1)) != 0)
     {
       v14 = 5;
     }
@@ -10987,26 +10987,26 @@ LABEL_11:
     goto LABEL_17;
   }
 
-  if (v13)
+  if (isMedusaEnabled)
   {
     goto LABEL_11;
   }
 
-  if (![v10 isChamoisOrFlexibleWindowing] || -[SBApplication alwaysMaximizedInChamois](self, "alwaysMaximizedInChamois"))
+  if (![contextCopy isChamoisOrFlexibleWindowing] || -[SBApplication alwaysMaximizedInChamois](self, "alwaysMaximizedInChamois"))
   {
 LABEL_16:
     v14 = 4;
     goto LABEL_17;
   }
 
-  if ([(SBApplication *)self supportsChamoisSceneResizing]|| !(v11 & 1 | ![(SBApplication *)self classicAppFullScreen]) && (a5 == a6 || [(SBApplication *)self onlySupportsOneOrientation]))
+  if ([(SBApplication *)self supportsChamoisSceneResizing]|| !(isExternal & 1 | ![(SBApplication *)self classicAppFullScreen]) && (orientation == containerOrientation || [(SBApplication *)self onlySupportsOneOrientation]))
   {
 LABEL_19:
     v14 = 5;
     goto LABEL_17;
   }
 
-  if (([(SBApplication *)self classicAppFullScreen]& v11) != 0)
+  if (([(SBApplication *)self classicAppFullScreen]& isExternal) != 0)
   {
     v14 = 5;
   }
@@ -11021,15 +11021,15 @@ LABEL_17:
   return v14;
 }
 
-- (BOOL)supportsMultiWindowLayoutsForSwitcherWindowManagementContext:(id)a3 displayIdentity:(id)a4
+- (BOOL)supportsMultiWindowLayoutsForSwitcherWindowManagementContext:(id)context displayIdentity:(id)identity
 {
-  v5 = a3;
-  if ([v5 isChamoisOrFlexibleWindowing])
+  contextCopy = context;
+  if ([contextCopy isChamoisOrFlexibleWindowing])
   {
     LODWORD(self) = ![(SBApplication *)self alwaysMaximizedInChamois];
   }
 
-  else if ([v5 isMedusaEnabled])
+  else if ([contextCopy isMedusaEnabled])
   {
     LOBYTE(self) = [(SBApplication *)self isMedusaCapable];
   }
@@ -11042,9 +11042,9 @@ LABEL_17:
   return self;
 }
 
-- (BOOL)supportsMixedOrientationForSwitcherWindowManagementContext:(id)a3 displayIdentity:(id)a4
+- (BOOL)supportsMixedOrientationForSwitcherWindowManagementContext:(id)context displayIdentity:(id)identity
 {
-  if ([a3 isChamoisOrFlexibleWindowing])
+  if ([context isChamoisOrFlexibleWindowing])
   {
     return ![(SBApplication *)self supportsChamoisSceneResizing];
   }
@@ -11052,25 +11052,25 @@ LABEL_17:
   return [(SBApplication *)self classicAppPhoneAppRunningOnPad];
 }
 
-- (id)bestSnapshotWithImageName:(id)a3 sceneHandle:(id)a4 variantID:(id)a5 scale:(double)a6 referenceSize:(CGSize)a7 requireExactSize:(BOOL)a8 contentTypeMask:(unint64_t)a9 statusBarStateMask:(unint64_t)a10 launchingOrientation:(int64_t)a11 contentOverridesContext:(id)a12 userInterfaceStyle:(int64_t)a13 displayEdgeInfo:(id)a14
+- (id)bestSnapshotWithImageName:(id)name sceneHandle:(id)handle variantID:(id)d scale:(double)scale referenceSize:(CGSize)size requireExactSize:(BOOL)exactSize contentTypeMask:(unint64_t)mask statusBarStateMask:(unint64_t)self0 launchingOrientation:(int64_t)self1 contentOverridesContext:(id)self2 userInterfaceStyle:(int64_t)self3 displayEdgeInfo:(id)self4
 {
-  v15 = a8;
-  height = a7.height;
-  width = a7.width;
+  exactSizeCopy = exactSize;
+  height = size.height;
+  width = size.width;
   v54 = *MEMORY[0x277D85DE8];
-  v22 = a3;
-  v23 = a4;
-  v24 = a5;
+  nameCopy = name;
+  handleCopy = handle;
+  dCopy = d;
   if (width == *MEMORY[0x277CBF3A8] && height == *(MEMORY[0x277CBF3A8] + 8))
   {
     v32 = SBLogCommon();
     if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
     {
-      v39 = [v23 sceneIdentifier];
+      sceneIdentifier = [handleCopy sceneIdentifier];
       *buf = 138543618;
-      v51 = v22;
+      v51 = nameCopy;
       v52 = 2114;
-      v53 = v39;
+      v53 = sceneIdentifier;
       _os_log_impl(&dword_21ED4E000, v32, OS_LOG_TYPE_DEFAULT, "A snapshot was requested with an empty reference size for name: <%{public}@> in scene <%{public}@>.", buf, 0x16u);
     }
 
@@ -11079,8 +11079,8 @@ LABEL_17:
 
   else
   {
-    v26 = v15;
-    v27 = [(SBApplication *)self _snapshotsWithImageName:v22 sceneHandle:v23 referenceSize:v15 requireExactSize:a9 launchingScale:a10 contentTypeMask:a11 statusBarStateMask:width launchingOrientation:height contentOverridesContext:a6 userInterfaceStyle:a12 displayEdgeInfo:a13, a14];
+    v26 = exactSizeCopy;
+    info = [(SBApplication *)self _snapshotsWithImageName:nameCopy sceneHandle:handleCopy referenceSize:exactSizeCopy requireExactSize:mask launchingScale:stateMask contentTypeMask:orientation statusBarStateMask:width launchingOrientation:height contentOverridesContext:scale userInterfaceStyle:context displayEdgeInfo:style, info];
     v28 = +[SBAppSwitcherDomain rootSettings];
     [v28 snapshotAspectRatioAcceptanceThreshold];
     v30 = v29;
@@ -11098,12 +11098,12 @@ LABEL_17:
     v44 = 0u;
     v45 = 0u;
     v46 = 0u;
-    v32 = v27;
+    v32 = info;
     v33 = [v32 countByEnumeratingWithState:&v43 objects:v49 count:16];
     if (v33)
     {
       v34 = v33;
-      v42 = v22;
+      v42 = nameCopy;
       v35 = *v44;
       while (2)
       {
@@ -11115,9 +11115,9 @@ LABEL_17:
           }
 
           v37 = *(*(&v43 + 1) + 8 * i);
-          if (v24)
+          if (dCopy)
           {
-            v38 = [*(*(&v43 + 1) + 8 * i) variantWithIdentifier:v24];
+            v38 = [*(*(&v43 + 1) + 8 * i) variantWithIdentifier:dCopy];
             if (v38 && ((v31)[2](v31, v38) & 1) != 0)
             {
               goto LABEL_22;
@@ -11142,7 +11142,7 @@ LABEL_17:
 
       v38 = 0;
 LABEL_22:
-      v22 = v42;
+      nameCopy = v42;
     }
 
     else
@@ -11184,25 +11184,25 @@ uint64_t __231__SBApplication_DefaultImage__bestSnapshotWithImageName_sceneHandl
   return v5;
 }
 
-- (id)mostRecentSceneSnapshotsForSceneHandle:(id)a3 scale:(double)a4 launchingOrientation:(int64_t)a5
+- (id)mostRecentSceneSnapshotsForSceneHandle:(id)handle scale:(double)scale launchingOrientation:(int64_t)orientation
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = [(SBApplication *)self _snapshotManifest];
-  v9 = [v7 sceneIdentifier];
+  handleCopy = handle;
+  _snapshotManifest = [(SBApplication *)self _snapshotManifest];
+  sceneIdentifier = [handleCopy sceneIdentifier];
 
-  v10 = [MEMORY[0x277D656A0] predicate];
-  [v10 setContentTypeMask:1];
-  [v10 setImageScale:a4];
-  [v10 setInterfaceOrientationMask:XBInterfaceOrientationMaskForInterfaceOrientationPair()];
-  v11 = [MEMORY[0x277D65688] fetchRequest];
-  [v11 setPredicate:v10];
-  v12 = [objc_opt_class() snapshotSortDescriptorForCreationDate];
-  v17[0] = v12;
+  predicate = [MEMORY[0x277D656A0] predicate];
+  [predicate setContentTypeMask:1];
+  [predicate setImageScale:scale];
+  [predicate setInterfaceOrientationMask:XBInterfaceOrientationMaskForInterfaceOrientationPair()];
+  fetchRequest = [MEMORY[0x277D65688] fetchRequest];
+  [fetchRequest setPredicate:predicate];
+  snapshotSortDescriptorForCreationDate = [objc_opt_class() snapshotSortDescriptorForCreationDate];
+  v17[0] = snapshotSortDescriptorForCreationDate;
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:1];
-  [v11 setSortDescriptors:v13];
+  [fetchRequest setSortDescriptors:v13];
 
-  v14 = [v8 snapshotsForGroupID:v9 fetchRequest:v11];
+  v14 = [_snapshotManifest snapshotsForGroupID:sceneIdentifier fetchRequest:fetchRequest];
   v15 = [v14 bs_filter:&__block_literal_global_314];
 
   return v15;
@@ -11229,19 +11229,19 @@ uint64_t __97__SBApplication_DefaultImage__mostRecentSceneSnapshotsForSceneHandl
   return v3;
 }
 
-- (id)_snapshotsWithImageName:(id)a3 sceneHandle:(id)a4 referenceSize:(CGSize)a5 requireExactSize:(BOOL)a6 launchingScale:(double)a7 contentTypeMask:(unint64_t)a8 statusBarStateMask:(unint64_t)a9 launchingOrientation:(int64_t)a10 contentOverridesContext:(id)a11 userInterfaceStyle:(int64_t)a12 displayEdgeInfo:(id)a13
+- (id)_snapshotsWithImageName:(id)name sceneHandle:(id)handle referenceSize:(CGSize)size requireExactSize:(BOOL)exactSize launchingScale:(double)scale contentTypeMask:(unint64_t)mask statusBarStateMask:(unint64_t)stateMask launchingOrientation:(int64_t)self0 contentOverridesContext:(id)self1 userInterfaceStyle:(int64_t)self2 displayEdgeInfo:(id)self3
 {
-  v14 = a6;
-  height = a5.height;
-  width = a5.width;
+  exactSizeCopy = exactSize;
+  height = size.height;
+  width = size.width;
   v113[2] = *MEMORY[0x277D85DE8];
-  v21 = a3;
-  v22 = a4;
-  v23 = a11;
-  v108 = a13;
-  if (v22)
+  nameCopy = name;
+  handleCopy = handle;
+  contextCopy = context;
+  infoCopy = info;
+  if (handleCopy)
   {
-    if (!v14)
+    if (!exactSizeCopy)
     {
       goto LABEL_8;
     }
@@ -11250,7 +11250,7 @@ uint64_t __97__SBApplication_DefaultImage__mostRecentSceneSnapshotsForSceneHandl
   else
   {
     [SBApplication(DefaultImage) _snapshotsWithImageName:a2 sceneHandle:self referenceSize:? requireExactSize:? launchingScale:? contentTypeMask:? statusBarStateMask:? launchingOrientation:? contentOverridesContext:? userInterfaceStyle:? displayEdgeInfo:?];
-    if (!v14)
+    if (!exactSizeCopy)
     {
       goto LABEL_8;
     }
@@ -11262,7 +11262,7 @@ uint64_t __97__SBApplication_DefaultImage__mostRecentSceneSnapshotsForSceneHandl
   }
 
 LABEL_8:
-  v103 = [v22 sceneIdentifier];
+  sceneIdentifier = [handleCopy sceneIdentifier];
   v25 = [SBApplication _defaultPNGNameUsingFallbacksWithSceneID:"_defaultPNGNameUsingFallbacksWithSceneID:contentOverridesContext:" contentOverridesContext:?];
   v26 = [(SBApplication *)self _normalizeSnapshotName:v25];
 
@@ -11278,41 +11278,41 @@ LABEL_8:
   v27 = ;
   v28 = v27;
   v111 = v26;
-  if (v21)
+  if (nameCopy)
   {
-    [v27 addObject:v21];
+    [v27 addObject:nameCopy];
   }
 
-  v102 = v21;
-  v29 = [(SBApplication *)self _snapshotManifest];
-  v30 = [MEMORY[0x277D65688] fetchRequest];
-  v31 = [MEMORY[0x277D656A0] predicate];
-  if (v29)
+  v102 = nameCopy;
+  _snapshotManifest = [(SBApplication *)self _snapshotManifest];
+  fetchRequest = [MEMORY[0x277D65688] fetchRequest];
+  predicate = [MEMORY[0x277D656A0] predicate];
+  if (_snapshotManifest)
   {
     v101 = v28;
-    v97 = v29;
-    v32 = [v29 defaultGroupIdentifier];
+    v97 = _snapshotManifest;
+    defaultGroupIdentifier = [_snapshotManifest defaultGroupIdentifier];
     v106 = MGCopyAnswer();
-    if (v14)
+    if (exactSizeCopy)
     {
-      [v31 setReferenceSize:{width, height}];
+      [predicate setReferenceSize:{width, height}];
     }
 
-    [v31 setContentTypeMask:a8];
-    [v31 setStatusBarStateMask:a9];
-    [v31 setRequiredOSVersion:v106];
-    v33 = [v22 application];
-    v34 = [v33 info];
-    v35 = [v34 xb_userInterfaceStyleForRequestedUserInterfaceStyle:a12];
+    [predicate setContentTypeMask:mask];
+    [predicate setStatusBarStateMask:stateMask];
+    [predicate setRequiredOSVersion:v106];
+    application = [handleCopy application];
+    info = [application info];
+    v35 = [info xb_userInterfaceStyleForRequestedUserInterfaceStyle:style];
 
     v94 = v35;
-    [v31 setUserInterfaceStyle:v35];
-    v36 = [v108 safeAreaInsetsPortrait];
-    v100 = v32;
-    v96 = v36;
-    if (v36)
+    [predicate setUserInterfaceStyle:v35];
+    safeAreaInsetsPortrait = [infoCopy safeAreaInsetsPortrait];
+    v100 = defaultGroupIdentifier;
+    v96 = safeAreaInsetsPortrait;
+    if (safeAreaInsetsPortrait)
     {
-      v37 = v36;
+      v37 = safeAreaInsetsPortrait;
       v38 = objc_alloc(MEMORY[0x277D656B0]);
       [v37 topInset];
       v40 = v39;
@@ -11322,17 +11322,17 @@ LABEL_8:
       v44 = v43;
       [v37 rightInset];
       v46 = [v38 initWithTop:v40 left:v42 bottom:v44 right:v45];
-      v47 = [objc_opt_class() _deviceSafeAreaInsets];
-      v48 = [v47 isEqual:v46];
+      _deviceSafeAreaInsets = [objc_opt_class() _deviceSafeAreaInsets];
+      v48 = [_deviceSafeAreaInsets isEqual:v46];
 
       if (!v48)
       {
         v57 = v46;
-        v50 = v30;
+        v50 = fetchRequest;
         if (v57)
         {
           v98 = v57;
-          [v31 setCustomSafeAreaInsets:?];
+          [predicate setCustomSafeAreaInsets:?];
           v49 = 0;
         }
 
@@ -11343,14 +11343,14 @@ LABEL_8:
         }
 
 LABEL_26:
-        [v50 setPredicate:v31];
-        v58 = [v23 activationSettings];
-        v59 = [v22 effectiveStatusBarStyleRequestForActivationSettings:v58];
+        [v50 setPredicate:predicate];
+        activationSettings = [contextCopy activationSettings];
+        v59 = [handleCopy effectiveStatusBarStyleRequestForActivationSettings:activationSettings];
 
         v95 = v59;
-        v60 = [v59 isDoubleHeight];
-        v61 = v23;
-        v62 = v60 & (a9 >> 2);
+        isDoubleHeight = [v59 isDoubleHeight];
+        v61 = contextCopy;
+        v62 = isDoubleHeight & (stateMask >> 2);
         if (v62)
         {
           v63 = 4;
@@ -11358,33 +11358,33 @@ LABEL_26:
 
         else
         {
-          v63 = a9 & 0xFFFFFFFFFFFFFFFBLL;
+          v63 = stateMask & 0xFFFFFFFFFFFFFFFBLL;
         }
 
         v99 = v61;
         v64 = [v61 url];
-        v104 = [v64 scheme];
+        scheme = [v64 scheme];
 
         if (v111)
         {
-          v65 = [(SBApplication *)self info];
-          if ([v65 usesSplashBoard])
+          info2 = [(SBApplication *)self info];
+          if ([info2 usesSplashBoard])
           {
           }
 
           else
           {
 
-            if ((a8 & 4) != 0)
+            if ((mask & 4) != 0)
             {
               v90 = v49;
-              v92 = a10;
-              v66 = [MEMORY[0x277D656A0] predicate];
-              [v66 setName:v111];
-              v113[0] = v103;
+              orientationCopy = orientation;
+              predicate2 = [MEMORY[0x277D656A0] predicate];
+              [predicate2 setName:v111];
+              v113[0] = sceneIdentifier;
               v113[1] = v100;
               v67 = [MEMORY[0x277CBEA60] arrayWithObjects:v113 count:2];
-              v68 = [v97 snapshotsForGroupIDs:v67 matchingPredicate:v66];
+              v68 = [v97 snapshotsForGroupIDs:v67 matchingPredicate:predicate2];
               v69 = [v68 count];
 
               if (!v69)
@@ -11392,34 +11392,34 @@ LABEL_26:
                 [(SBApplication *)self _ingestDefaultPNGsInManifest:v97 withLaunchImageBaseName:v111];
               }
 
-              a10 = v92;
+              orientation = orientationCopy;
               v49 = v90;
             }
           }
         }
 
         v70 = objc_opt_class();
-        v105 = [v70 snapshotSortDescriptorsForNames:v101 scheme:v104 imageScale:a12 referenceSize:v63 userInterfaceStyle:XBInterfaceOrientationMaskForInterfaceOrientationPair() statusBarStateMask:v106 interfaceOrientationMask:a7 requiredOSVersion:{width, height}];
-        [v30 setSortDescriptors:?];
-        v71 = [(SBApplication *)self info];
-        v72 = [v71 usesSplashBoard];
+        v105 = [v70 snapshotSortDescriptorsForNames:v101 scheme:scheme imageScale:style referenceSize:v63 userInterfaceStyle:XBInterfaceOrientationMaskForInterfaceOrientationPair() statusBarStateMask:v106 interfaceOrientationMask:scale requiredOSVersion:{width, height}];
+        [fetchRequest setSortDescriptors:?];
+        info3 = [(SBApplication *)self info];
+        usesSplashBoard = [info3 usesSplashBoard];
 
-        if ((a8 & 2) != 0 && v72)
+        if ((mask & 2) != 0 && usesSplashBoard)
         {
           v73 = MEMORY[0x277D65678];
-          v74 = [(SBApplication *)self info];
-          v91 = [v73 compatibilityInfoForAppInfo:v74];
+          info4 = [(SBApplication *)self info];
+          v91 = [v73 compatibilityInfoForAppInfo:info4];
 
-          v93 = a10;
-          if (a8)
+          orientationCopy2 = orientation;
+          if (mask)
           {
-            v76 = [v99 activationSettings];
-            v75 = [v22 isStatusBarHiddenForActivationSettings:v76 withOrientation:a10];
+            activationSettings2 = [v99 activationSettings];
+            v75 = [handleCopy isStatusBarHiddenForActivationSettings:activationSettings2 withOrientation:orientation];
           }
 
           else
           {
-            v75 = [v22 defaultStatusBarHiddenForOrientation:a10];
+            v75 = [handleCopy defaultStatusBarHiddenForOrientation:orientation];
           }
 
           v77 = 1;
@@ -11428,60 +11428,60 @@ LABEL_26:
             v77 = 2;
           }
 
-          if ((a9 & v75) != 0)
+          if ((stateMask & v75) != 0)
           {
             v77 = 0;
           }
 
           v110 = v77;
           v78 = objc_alloc_init(MEMORY[0x277D656C0]);
-          v79 = [MEMORY[0x277D0AAD8] sharedInstance];
-          v80 = [v79 sceneWithIdentifier:v103];
-          v81 = [v80 settings];
+          mEMORY[0x277D0AAD8] = [MEMORY[0x277D0AAD8] sharedInstance];
+          v80 = [mEMORY[0x277D0AAD8] sceneWithIdentifier:sceneIdentifier];
+          settings = [v80 settings];
 
-          v82 = [v81 displayConfiguration];
+          displayConfiguration = [settings displayConfiguration];
           if ((v49 & 1) == 0)
           {
             [v78 setCustomSafeAreaInsets:v98];
           }
 
-          v83 = [SBApp windowSceneManager];
-          v84 = [v83 embeddedDisplayWindowScene];
-          v85 = [v84 _fbsDisplayConfiguration];
+          windowSceneManager = [SBApp windowSceneManager];
+          embeddedDisplayWindowScene = [windowSceneManager embeddedDisplayWindowScene];
+          _fbsDisplayConfiguration = [embeddedDisplayWindowScene _fbsDisplayConfiguration];
 
-          if (v82)
+          if (displayConfiguration)
           {
-            v86 = v82;
+            v86 = displayConfiguration;
           }
 
           else
           {
-            v86 = v85;
+            v86 = _fbsDisplayConfiguration;
           }
 
           [v78 setDisplayConfiguration:v86];
           [v78 setGroupID:v100];
           [v78 setReferenceSize:{width, height}];
           [v78 setStatusBarState:v110];
-          [v78 setInterfaceOrientation:v93];
-          [v78 setUrlSchemeName:v104];
+          [v78 setInterfaceOrientation:orientationCopy2];
+          [v78 setUrlSchemeName:scheme];
           [v78 setLaunchInterfaceIdentifier:v111];
           [v78 setUserInterfaceStyle:v94];
           v87 = [objc_alloc(MEMORY[0x277D65690]) initWithApplicationCompatibilityInfo:v91 launchRequest:v78 timeout:2.0];
-          [v30 setFallbackGenerationContext:v87];
+          [fetchRequest setFallbackGenerationContext:v87];
         }
 
-        v51 = v22;
+        v51 = handleCopy;
         v53 = v100;
-        v112[0] = v103;
+        v112[0] = sceneIdentifier;
         v112[1] = v100;
         v88 = [MEMORY[0x277CBEA60] arrayWithObjects:v112 count:2];
-        v55 = v103;
+        v55 = sceneIdentifier;
         v52 = v97;
-        v54 = [v97 snapshotsForGroupIDs:v88 fetchRequest:v30];
+        v54 = [v97 snapshotsForGroupIDs:v88 fetchRequest:fetchRequest];
 
-        v23 = v99;
-        v56 = v108;
+        contextCopy = v99;
+        v56 = infoCopy;
         v28 = v101;
         goto LABEL_52;
       }
@@ -11489,11 +11489,11 @@ LABEL_26:
 
     v98 = 0;
     v49 = 1;
-    v50 = v30;
+    v50 = fetchRequest;
     goto LABEL_26;
   }
 
-  v51 = v22;
+  v51 = handleCopy;
   v52 = 0;
   v53 = SBLogCommon();
   if (os_log_type_enabled(v53, OS_LOG_TYPE_ERROR))
@@ -11502,8 +11502,8 @@ LABEL_26:
   }
 
   v54 = 0;
-  v55 = v103;
-  v56 = v108;
+  v55 = sceneIdentifier;
+  v56 = infoCopy;
 LABEL_52:
 
   return v54;
@@ -11512,9 +11512,9 @@ LABEL_52:
 - (id)_defaultLaunchImageBaseName
 {
   v2 = MEMORY[0x277D65680];
-  v3 = [(SBApplication *)self info];
-  v4 = [v3 launchImageFile];
-  v5 = [v2 normalizeSnapshotName:v4];
+  info = [(SBApplication *)self info];
+  launchImageFile = [info launchImageFile];
+  v5 = [v2 normalizeSnapshotName:launchImageFile];
   v6 = v5;
   if (v5)
   {
@@ -11531,24 +11531,24 @@ LABEL_52:
   return v7;
 }
 
-- (id)_normalizeSnapshotName:(id)a3
+- (id)_normalizeSnapshotName:(id)name
 {
-  v4 = [MEMORY[0x277D65680] normalizeSnapshotName:a3];
+  v4 = [MEMORY[0x277D65680] normalizeSnapshotName:name];
   if (v4)
   {
-    v5 = [(SBApplication *)self info];
-    v6 = [v5 usesSplashBoard];
+    info = [(SBApplication *)self info];
+    usesSplashBoard = [info usesSplashBoard];
 
-    if (v6)
+    if (usesSplashBoard)
     {
       v7 = MEMORY[0x277D65678];
-      v8 = [(SBApplication *)self info];
-      v9 = [v7 compatibilityInfoForAppInfo:v8];
+      info2 = [(SBApplication *)self info];
+      _defaultLaunchImageBaseName = [v7 compatibilityInfoForAppInfo:info2];
 
-      v10 = [v9 defaultLaunchInterface];
-      v11 = [v10 identifier];
+      defaultLaunchInterface = [_defaultLaunchImageBaseName defaultLaunchInterface];
+      identifier = [defaultLaunchInterface identifier];
 
-      if (![v11 isEqualToString:v4])
+      if (![identifier isEqualToString:v4])
       {
 LABEL_8:
 
@@ -11558,15 +11558,15 @@ LABEL_8:
 
     else
     {
-      v9 = [(SBApplication *)self _defaultLaunchImageBaseName];
-      if (![v9 isEqualToString:v4])
+      _defaultLaunchImageBaseName = [(SBApplication *)self _defaultLaunchImageBaseName];
+      if (![_defaultLaunchImageBaseName isEqualToString:v4])
       {
 LABEL_9:
 
         goto LABEL_10;
       }
 
-      v11 = v4;
+      identifier = v4;
     }
 
     v4 = 0;
@@ -11578,38 +11578,38 @@ LABEL_10:
   return v4;
 }
 
-- (id)_defaultPNGNameUsingFallbacksWithSceneID:(id)a3 contentOverridesContext:(id)a4
+- (id)_defaultPNGNameUsingFallbacksWithSceneID:(id)d contentOverridesContext:(id)context
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [a4 requestedLaunchIdentifier];
-  if (v7 && (-[SBApplication info](self, "info"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 prefersSavedSnapshots], v8, !v9))
+  dCopy = d;
+  requestedLaunchIdentifier = [context requestedLaunchIdentifier];
+  if (requestedLaunchIdentifier && (-[SBApplication info](self, "info"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 prefersSavedSnapshots], v8, !v9))
   {
     v11 = @"fallbacks for scene id";
   }
 
   else
   {
-    v10 = [(SBApplication *)self _defaultPNGNameFromSuspensionSettingsWithExpiration:0 sceneID:v6];
+    v10 = [(SBApplication *)self _defaultPNGNameFromSuspensionSettingsWithExpiration:0 sceneID:dCopy];
 
     if (!v10)
     {
-      v7 = 0;
+      requestedLaunchIdentifier = 0;
       goto LABEL_10;
     }
 
     v11 = @"suspension settings";
-    v7 = v10;
+    requestedLaunchIdentifier = v10;
   }
 
   v12 = SBLogCommon();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
-    v13 = [(SBApplication *)self bundleIdentifier];
+    bundleIdentifier = [(SBApplication *)self bundleIdentifier];
     v15 = 138543874;
-    v16 = v13;
+    v16 = bundleIdentifier;
     v17 = 2114;
-    v18 = v7;
+    v18 = requestedLaunchIdentifier;
     v19 = 2114;
     v20 = v11;
     _os_log_impl(&dword_21ED4E000, v12, OS_LOG_TYPE_INFO, "[defaultImage] <%{public}@> default image name %{public}@ calculated from %{public}@", &v15, 0x20u);
@@ -11617,20 +11617,20 @@ LABEL_10:
 
 LABEL_10:
 
-  return v7;
+  return requestedLaunchIdentifier;
 }
 
-- (id)_defaultPNGNameFromSuspensionSettingsWithExpiration:(double *)a3 sceneID:(id)a4
+- (id)_defaultPNGNameFromSuspensionSettingsWithExpiration:(double *)expiration sceneID:(id)d
 {
-  v6 = a4;
-  v7 = [(SBApplication *)self _dataStore];
-  v8 = [v7 sceneStoreForIdentifier:v6 creatingIfNecessary:0];
+  dCopy = d;
+  _dataStore = [(SBApplication *)self _dataStore];
+  v8 = [_dataStore sceneStoreForIdentifier:dCopy creatingIfNecessary:0];
 
   v9 = [v8 safeObjectForKey:@"expirationAbsoluteTime" ofType:objc_opt_class()];
   [v9 doubleValue];
-  if (a3)
+  if (expiration)
   {
-    *a3 = v10;
+    *expiration = v10;
   }
 
   if (v9 && v10 <= CFAbsoluteTimeGetCurrent())
@@ -11649,9 +11649,9 @@ LABEL_10:
 
   v12 = [v8 safeObjectForKey:@"expirationAbsoluteTime" ofType:objc_opt_class()];
   [v12 doubleValue];
-  if (a3)
+  if (expiration)
   {
-    *a3 = v13;
+    *expiration = v13;
   }
 
   if (v12 && v13 <= CFAbsoluteTimeGetCurrent())
@@ -11672,19 +11672,19 @@ LABEL_15:
 - (void)refreshLaunchImagesInSnapshotManifestIfNeeded
 {
   v58 = *MEMORY[0x277D85DE8];
-  v3 = [(SBApplication *)self info];
-  v4 = [v3 usesSplashBoard];
+  info = [(SBApplication *)self info];
+  usesSplashBoard = [info usesSplashBoard];
 
-  if ((v4 & 1) == 0)
+  if ((usesSplashBoard & 1) == 0)
   {
-    v5 = [(SBApplication *)self _dataStore];
-    v6 = [(SBApplication *)self _snapshotManifest];
+    _dataStore = [(SBApplication *)self _dataStore];
+    _snapshotManifest = [(SBApplication *)self _snapshotManifest];
     v34 = *MEMORY[0x277D67E90];
-    v7 = [v5 safeObjectForKey:*MEMORY[0x277D67E90] ofType:objc_opt_class()];
+    v7 = [_dataStore safeObjectForKey:*MEMORY[0x277D67E90] ofType:objc_opt_class()];
     if (!v7)
     {
-      [v5 removeObjectForKey:@"SBLastBundleSequenceNumberForLaunchImageIngestion"];
-      [v5 removeObjectForKey:@"SBLastIngestorVersionForLaunchImageIngestion"];
+      [_dataStore removeObjectForKey:@"SBLastBundleSequenceNumberForLaunchImageIngestion"];
+      [_dataStore removeObjectForKey:@"SBLastIngestorVersionForLaunchImageIngestion"];
     }
 
     v33 = *MEMORY[0x277D67E98];
@@ -11700,8 +11700,8 @@ LABEL_15:
     }
 
     v36 = v8;
-    v10 = [(SBApplication *)self info];
-    v11 = [v10 cacheGUID];
+    info2 = [(SBApplication *)self info];
+    cacheGUID = [info2 cacheGUID];
 
     v35 = v9;
     if (v9)
@@ -11716,13 +11716,13 @@ LABEL_15:
 
     v32 = *MEMORY[0x277D67EA8];
     v13 = [v7 bs_safeStringForKey:?];
-    v14 = [(SBApplication *)self info];
-    v15 = [v14 installInstanceID];
+    info3 = [(SBApplication *)self info];
+    installInstanceID = [info3 installInstanceID];
 
-    v37 = v11;
+    v37 = cacheGUID;
     if (v13)
     {
-      v16 = [v15 isEqual:v13] ^ 1;
+      v16 = [installInstanceID isEqual:v13] ^ 1;
     }
 
     else
@@ -11732,11 +11732,11 @@ LABEL_15:
 
     v17 = *MEMORY[0x277D67EA0];
     v18 = [v7 bs_safeNumberForKey:*MEMORY[0x277D67EA0]];
-    v19 = [v18 integerValue];
-    if (((v12 | v16) & 1) == 0 && v18 && v19 == 5)
+    integerValue = [v18 integerValue];
+    if (((v12 | v16) & 1) == 0 && v18 && integerValue == 5)
     {
-      v20 = v5;
-      v21 = v6;
+      v20 = _dataStore;
+      v21 = _snapshotManifest;
       v23 = v36;
       v22 = v37;
     }
@@ -11744,12 +11744,12 @@ LABEL_15:
     else
     {
       v24 = SBLogWorkspace();
-      v31 = v5;
+      v31 = _dataStore;
       if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
       {
-        v29 = [(SBApplication *)self bundleIdentifier];
+        bundleIdentifier = [(SBApplication *)self bundleIdentifier];
         *buf = 138545154;
-        v43 = v29;
+        v43 = bundleIdentifier;
         v44 = 2112;
         v45 = v36;
         v46 = 2112;
@@ -11757,7 +11757,7 @@ LABEL_15:
         v48 = 2112;
         v49 = v13;
         v50 = 2112;
-        v51 = v15;
+        v51 = installInstanceID;
         v52 = 2112;
         v53 = v18;
         v54 = 2048;
@@ -11768,13 +11768,13 @@ LABEL_15:
       }
 
       v25 = XBLogFileManifest();
-      v21 = v6;
+      v21 = _snapshotManifest;
       v23 = v36;
       if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
       {
-        v30 = [(SBApplication *)self bundleIdentifier];
+        bundleIdentifier2 = [(SBApplication *)self bundleIdentifier];
         *buf = 138545154;
-        v43 = v30;
+        v43 = bundleIdentifier2;
         v44 = 2112;
         v45 = v36;
         v46 = 2112;
@@ -11782,7 +11782,7 @@ LABEL_15:
         v48 = 2112;
         v49 = v13;
         v50 = 2112;
-        v51 = v15;
+        v51 = installInstanceID;
         v52 = 2112;
         v53 = v18;
         v54 = 2048;
@@ -11801,9 +11801,9 @@ LABEL_15:
       [v39 beginSnapshotAccessTransaction:v38 completion:0];
       v40[0] = v33;
       v22 = v37;
-      v26 = [v37 UUIDString];
-      v41[0] = v26;
-      v41[1] = v15;
+      uUIDString = [v37 UUIDString];
+      v41[0] = uUIDString;
+      v41[1] = installInstanceID;
       v40[1] = v32;
       v40[2] = v17;
       v27 = [MEMORY[0x277CCABB0] numberWithInteger:5];
@@ -11841,10 +11841,10 @@ void __94__SBApplication_DefaultImage_ManifestIngestion__refreshLaunchImagesInSn
 
 - (void)_resetLaunchImageIngestionStatus
 {
-  v3 = [(SBApplication *)self info];
-  v4 = [v3 usesSplashBoard];
+  info = [(SBApplication *)self info];
+  usesSplashBoard = [info usesSplashBoard];
 
-  if ((v4 & 1) == 0)
+  if ((usesSplashBoard & 1) == 0)
   {
     v5 = XBLogFileManifest();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -11852,17 +11852,17 @@ void __94__SBApplication_DefaultImage_ManifestIngestion__refreshLaunchImagesInSn
       [(SBApplication(DefaultImage_ManifestIngestion) *)self _resetLaunchImageIngestionStatus];
     }
 
-    v6 = [(SBApplication *)self _dataStore];
-    [v6 setObject:MEMORY[0x277CBEC10] forKey:*MEMORY[0x277D67E90]];
+    _dataStore = [(SBApplication *)self _dataStore];
+    [_dataStore setObject:MEMORY[0x277CBEC10] forKey:*MEMORY[0x277D67E90]];
   }
 }
 
 - (void)_purgeAndResetStaticDefaultImagesInSnapshotManifest
 {
-  v3 = [(SBApplication *)self info];
-  v4 = [v3 usesSplashBoard];
+  info = [(SBApplication *)self info];
+  usesSplashBoard = [info usesSplashBoard];
 
-  if ((v4 & 1) == 0)
+  if ((usesSplashBoard & 1) == 0)
   {
     [(SBApplication *)self _purgeStaticDefaultImagesInSnapshotManifest];
 
@@ -11872,10 +11872,10 @@ void __94__SBApplication_DefaultImage_ManifestIngestion__refreshLaunchImagesInSn
 
 - (void)_reingestStaticDefaultImagesInSnapshotManifest
 {
-  v3 = [(SBApplication *)self info];
-  v4 = [v3 usesSplashBoard];
+  info = [(SBApplication *)self info];
+  usesSplashBoard = [info usesSplashBoard];
 
-  if ((v4 & 1) == 0)
+  if ((usesSplashBoard & 1) == 0)
   {
     v5 = XBLogFileManifest();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -11897,9 +11897,9 @@ void __94__SBApplication_DefaultImage_ManifestIngestion__refreshLaunchImagesInSn
   v10 = 0u;
   v11 = 0u;
   v2 = +[SBApplicationController sharedInstance];
-  v3 = [v2 allApplications];
+  allApplications = [v2 allApplications];
 
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  v4 = [allApplications countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -11911,14 +11911,14 @@ void __94__SBApplication_DefaultImage_ManifestIngestion__refreshLaunchImagesInSn
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allApplications);
         }
 
         [*(*(&v8 + 1) + 8 * v7++) _resetLaunchImageIngestionStatus];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [allApplications countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
@@ -11933,9 +11933,9 @@ void __94__SBApplication_DefaultImage_ManifestIngestion__refreshLaunchImagesInSn
   v10 = 0u;
   v11 = 0u;
   v2 = +[SBApplicationController sharedInstance];
-  v3 = [v2 allApplications];
+  allApplications = [v2 allApplications];
 
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  v4 = [allApplications countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -11947,14 +11947,14 @@ void __94__SBApplication_DefaultImage_ManifestIngestion__refreshLaunchImagesInSn
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allApplications);
         }
 
         [*(*(&v8 + 1) + 8 * v7++) _reingestStaticDefaultImagesInSnapshotManifest];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [allApplications countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
@@ -11963,47 +11963,47 @@ void __94__SBApplication_DefaultImage_ManifestIngestion__refreshLaunchImagesInSn
 
 - (void)_purgeStaticDefaultImagesInSnapshotManifest
 {
-  v3 = [(SBApplication *)self _snapshotManifest];
-  v2 = [v3 defaultGroupIdentifier];
-  [v3 deleteSnapshotsForGroupID:v2 predicateBuilder:&__block_literal_global_64_0];
+  _snapshotManifest = [(SBApplication *)self _snapshotManifest];
+  defaultGroupIdentifier = [_snapshotManifest defaultGroupIdentifier];
+  [_snapshotManifest deleteSnapshotsForGroupID:defaultGroupIdentifier predicateBuilder:&__block_literal_global_64_0];
 }
 
-- (void)_ingestDefaultPNGsInManifest:(id)a3 withLaunchImageBaseName:(id)a4
+- (void)_ingestDefaultPNGsInManifest:(id)manifest withLaunchImageBaseName:(id)name
 {
   v175 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v150 = a4;
-  if (!v150)
+  manifestCopy = manifest;
+  nameCopy = name;
+  if (!nameCopy)
   {
     [SBApplication(DefaultImage_ManifestIngestion) _ingestDefaultPNGsInManifest:a2 withLaunchImageBaseName:self];
   }
 
-  v8 = [(SBApplication *)self info];
+  info = [(SBApplication *)self info];
   v9 = objc_alloc(MEMORY[0x277CF0BB8]);
-  v10 = [v8 bundleURL];
-  v11 = [v9 initWithURL:v10];
+  bundleURL = [info bundleURL];
+  v11 = [v9 initWithURL:bundleURL];
 
-  v12 = [v7 defaultGroupIdentifier];
-  v136 = [v8 backgroundStyle];
-  v13 = [v8 statusBarHidden];
-  v14 = [v8 defaultStatusBarStyle];
+  defaultGroupIdentifier = [manifestCopy defaultGroupIdentifier];
+  backgroundStyle = [info backgroundStyle];
+  statusBarHidden = [info statusBarHidden];
+  defaultStatusBarStyle = [info defaultStatusBarStyle];
   v15 = objc_alloc_init(MEMORY[0x277D656C8]);
-  [v15 setHidden:v13];
-  [v15 setStyle:v14];
-  v16 = [MEMORY[0x277CCAA00] defaultManager];
-  v17 = [v11 bundlePath];
+  [v15 setHidden:statusBarHidden];
+  [v15 setStyle:defaultStatusBarStyle];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  bundlePath = [v11 bundlePath];
   v168 = 0;
-  v18 = [v16 contentsOfDirectoryAtPath:v17 error:&v168];
+  v18 = [defaultManager contentsOfDirectoryAtPath:bundlePath error:&v168];
   v19 = v168;
   if (!v19)
   {
-    v131 = v16;
-    v132 = v17;
-    v142 = self;
-    v135 = v12;
-    v133 = v8;
-    v140 = v7;
-    v129 = [MEMORY[0x277CCAC30] predicateWithFormat:@"(self BEGINSWITH %@) AND (pathExtension ==[c] 'png')", v150];
+    v131 = defaultManager;
+    v132 = bundlePath;
+    selfCopy = self;
+    v135 = defaultGroupIdentifier;
+    v133 = info;
+    v140 = manifestCopy;
+    nameCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"(self BEGINSWITH %@) AND (pathExtension ==[c] 'png')", nameCopy];
     v20 = [v18 filteredArrayUsingPredicate:?];
     v21 = MEMORY[0x277CCACA8];
     v22 = +[SBApplicationLaunchImageParameters validInfoPlistOrientationKeys];
@@ -12075,13 +12075,13 @@ void __94__SBApplication_DefaultImage_ManifestIngestion__refreshLaunchImagesInSn
         {
           v41 = objc_autoreleasePoolPush();
           v42 = [v11 pathForResource:v40 ofType:0];
-          v157 = [v42 pathExtension];
+          pathExtension = [v42 pathExtension];
           if (([MEMORY[0x277D65680] isValidImageFileExtension:?] & 1) == 0)
           {
             v67 = XBLogFileManifest();
             if (os_log_type_enabled(v67, OS_LOG_TYPE_ERROR))
             {
-              [(SBApplication *)v142 bundleIdentifier];
+              [(SBApplication *)selfCopy bundleIdentifier];
               v69 = v68 = v41;
               *buf = 138543874;
               *&buf[4] = v69;
@@ -12098,8 +12098,8 @@ void __94__SBApplication_DefaultImage_ManifestIngestion__refreshLaunchImagesInSn
           }
 
           v154 = v41;
-          v43 = [v40 stringByDeletingPathExtension];
-          v44 = [v43 stringByReplacingOccurrencesOfString:v150 withString:&stru_283094718];
+          stringByDeletingPathExtension = [v40 stringByDeletingPathExtension];
+          v44 = [stringByDeletingPathExtension stringByReplacingOccurrencesOfString:nameCopy withString:&stru_283094718];
 
           v45 = [v149 firstMatchInString:v44 options:0 range:{0, -[NSObject length](v44, "length")}];
           v46 = v45;
@@ -12225,7 +12225,7 @@ LABEL_43:
             {
               v98 = [v97 rangeAtIndex:1];
               v88 = [v67 substringWithRange:v98, v99];
-              if (-[SBApplication isSystemApplication](v142, "isSystemApplication") || ([v133 urlSchemes], v100 = objc_claimAutoreleasedReturnValue(), v101 = objc_msgSend(v100, "containsObject:", v88), v100, (v101 & 1) != 0))
+              if (-[SBApplication isSystemApplication](selfCopy, "isSystemApplication") || ([v133 urlSchemes], v100 = objc_claimAutoreleasedReturnValue(), v101 = objc_msgSend(v100, "containsObject:", v88), v100, (v101 & 1) != 0))
               {
                 v102 = [v97 rangeAtIndex:0];
                 v104 = [v67 stringByReplacingCharactersInRange:v102 withString:v103, &stru_283094718];
@@ -12255,9 +12255,9 @@ LABEL_79:
                 goto LABEL_80;
               }
 
-              v111 = [(SBApplication *)v142 bundleIdentifier];
+              bundleIdentifier = [(SBApplication *)selfCopy bundleIdentifier];
               *buf = 138543874;
-              *&buf[4] = v111;
+              *&buf[4] = bundleIdentifier;
               *&buf[12] = 2114;
               *&buf[14] = v88;
               *&buf[22] = 2114;
@@ -12280,9 +12280,9 @@ LABEL_49:
                   v107 = XBLogFileManifest();
                   if (os_log_type_enabled(v107, OS_LOG_TYPE_DEBUG))
                   {
-                    v123 = [(SBApplication *)v142 bundleIdentifier];
+                    bundleIdentifier2 = [(SBApplication *)selfCopy bundleIdentifier];
                     *buf = 138543618;
-                    *&buf[4] = v123;
+                    *&buf[4] = bundleIdentifier2;
                     *&buf[12] = 2114;
                     *&buf[14] = v40;
                     _os_log_debug_impl(&dword_21ED4E000, v107, OS_LOG_TYPE_DEBUG, "[legacy ingest] [%{public}@] Need to load the image to get size for %{public}@", buf, 0x16u);
@@ -12294,15 +12294,15 @@ LABEL_49:
                   [v108 size];
                   if (v109 == v34 && v110 == v35)
                   {
-                    v111 = XBLogFileManifest();
-                    if (os_log_type_enabled(v111, OS_LOG_TYPE_ERROR))
+                    bundleIdentifier = XBLogFileManifest();
+                    if (os_log_type_enabled(bundleIdentifier, OS_LOG_TYPE_ERROR))
                     {
-                      v124 = [(SBApplication *)v142 bundleIdentifier];
+                      bundleIdentifier3 = [(SBApplication *)selfCopy bundleIdentifier];
                       *buf = 138543618;
-                      *&buf[4] = v124;
+                      *&buf[4] = bundleIdentifier3;
                       *&buf[12] = 2114;
                       *&buf[14] = v40;
-                      _os_log_error_impl(&dword_21ED4E000, v111, OS_LOG_TYPE_ERROR, "[legacy ingest] [%{public}@] zero image size for %{public}@", buf, 0x16u);
+                      _os_log_error_impl(&dword_21ED4E000, bundleIdentifier, OS_LOG_TYPE_ERROR, "[legacy ingest] [%{public}@] zero image size for %{public}@", buf, 0x16u);
                     }
 
                     goto LABEL_61;
@@ -12339,22 +12339,22 @@ LABEL_49:
               v113 = *(MEMORY[0x277CBF3A0] + 16);
               *buf = *MEMORY[0x277CBF3A0];
               *&buf[16] = v113;
-              [(SBApplication *)v142 snapshotSizeAdjustedForLegacyStatusBarBasedOnSize:v106 interfaceOrientation:buf contentFrame:v61, v60];
+              [(SBApplication *)selfCopy snapshotSizeAdjustedForLegacyStatusBarBasedOnSize:v106 interfaceOrientation:buf contentFrame:v61, v60];
               v115 = v114;
               v117 = v116;
               v118 = [v140 createSnapshotWithGroupID:v135];
               v119 = XBLogFileManifest();
               if (os_log_type_enabled(v119, OS_LOG_TYPE_DEBUG))
               {
-                v138 = [(SBApplication *)v142 bundleIdentifier];
+                bundleIdentifier4 = [(SBApplication *)selfCopy bundleIdentifier];
                 *v169 = 138543618;
-                v170 = v138;
+                v170 = bundleIdentifier4;
                 v171 = 2114;
                 v172 = v40;
                 _os_log_debug_impl(&dword_21ED4E000, v119, OS_LOG_TYPE_DEBUG, "[legacy ingest] [%{public}@] going to save %{public}@", v169, 0x16u);
               }
 
-              v120 = [(SBApplication *)v142 _normalizeSnapshotName:v150];
+              v120 = [(SBApplication *)selfCopy _normalizeSnapshotName:nameCopy];
               [v118 setName:v120];
 
               [v118 setScheme:v88];
@@ -12365,27 +12365,27 @@ LABEL_49:
               [v118 setInterfaceOrientation:v139];
               v15 = v145;
               [v118 setStatusBarSettings:v145];
-              [v118 setBackgroundStyle:v136];
+              [v118 setBackgroundStyle:backgroundStyle];
               v121 = objc_alloc_init(MEMORY[0x277D656D0]);
               [v121 setScale:v47];
-              [v121 setOpaque:v136 == 0];
+              [v121 setOpaque:backgroundStyle == 0];
               [v140 saveSnapshot:v118 atPath:v42 withContext:v121];
 
               v11 = v141;
               goto LABEL_78;
             }
 
-            v105 = XBLogFileManifest();
-            if (os_log_type_enabled(v105, OS_LOG_TYPE_ERROR))
+            bundleIdentifier6 = XBLogFileManifest();
+            if (os_log_type_enabled(bundleIdentifier6, OS_LOG_TYPE_ERROR))
             {
-              v122 = [(SBApplication *)v142 bundleIdentifier];
+              bundleIdentifier5 = [(SBApplication *)selfCopy bundleIdentifier];
               *buf = 138543874;
-              *&buf[4] = v122;
+              *&buf[4] = bundleIdentifier5;
               *&buf[12] = 2114;
               *&buf[14] = v67;
               *&buf[22] = 2114;
               *&buf[24] = v40;
-              _os_log_error_impl(&dword_21ED4E000, v105, OS_LOG_TYPE_ERROR, "[legacy ingest] [%{public}@] Extranenous content ('%{public}@') left over after processing permitted modifiers in %{public}@, skipping...", buf, 0x20u);
+              _os_log_error_impl(&dword_21ED4E000, bundleIdentifier6, OS_LOG_TYPE_ERROR, "[legacy ingest] [%{public}@] Extranenous content ('%{public}@') left over after processing permitted modifiers in %{public}@, skipping...", buf, 0x20u);
 
               v11 = v141;
             }
@@ -12399,9 +12399,9 @@ LABEL_49:
               goto LABEL_77;
             }
 
-            v105 = [(SBApplication *)v142 bundleIdentifier];
+            bundleIdentifier6 = [(SBApplication *)selfCopy bundleIdentifier];
             *buf = 138543618;
-            *&buf[4] = v105;
+            *&buf[4] = bundleIdentifier6;
             *&buf[12] = 2114;
             *&buf[14] = v40;
             _os_log_error_impl(&dword_21ED4E000, v97, OS_LOG_TYPE_ERROR, "[legacy ingest] [%{public}@] Invalid size modifiers for %{public}@, skipping...", buf, 0x16u);
@@ -12413,9 +12413,9 @@ LABEL_49:
         v66 = XBLogFileManifest();
         if (os_log_type_enabled(v66, OS_LOG_TYPE_DEBUG))
         {
-          v112 = [(SBApplication *)v142 bundleIdentifier];
+          bundleIdentifier7 = [(SBApplication *)selfCopy bundleIdentifier];
           *buf = 138543618;
-          *&buf[4] = v112;
+          *&buf[4] = bundleIdentifier7;
           *&buf[12] = 2114;
           *&buf[14] = v40;
           _os_log_debug_impl(&dword_21ED4E000, v66, OS_LOG_TYPE_DEBUG, "[legacy ingest] [%{public}@] Candidate isn't a string: %{public}@, skipping...", buf, 0x16u);
@@ -12432,20 +12432,20 @@ LABEL_80:
       {
 LABEL_84:
 
-        v7 = v140;
-        v8 = v133;
-        v12 = v135;
-        v16 = v131;
-        v17 = v132;
+        manifestCopy = v140;
+        info = v133;
+        defaultGroupIdentifier = v135;
+        defaultManager = v131;
+        bundlePath = v132;
         if (![v30 count])
         {
           v126 = XBLogFileManifest();
           if (os_log_type_enabled(v126, OS_LOG_TYPE_DEBUG))
           {
-            [SBApplication(DefaultImage_ManifestIngestion) _ingestDefaultPNGsInManifest:v142 withLaunchImageBaseName:?];
+            [SBApplication(DefaultImage_ManifestIngestion) _ingestDefaultPNGsInManifest:selfCopy withLaunchImageBaseName:?];
           }
 
-          v17 = v132;
+          bundlePath = v132;
         }
 
         v18 = v130;
@@ -12456,40 +12456,40 @@ LABEL_84:
   }
 }
 
-- (void)_ingestInfoPlistImagesInManifest:(id)a3
+- (void)_ingestInfoPlistImagesInManifest:(id)manifest
 {
   v65 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SBApplication *)self info];
-  v6 = [v5 launchImageInfo];
-  if ([v6 count])
+  manifestCopy = manifest;
+  info = [(SBApplication *)self info];
+  launchImageInfo = [info launchImageInfo];
+  if ([launchImageInfo count])
   {
-    v50 = v4;
-    v47 = [v4 defaultGroupIdentifier];
-    v7 = [(SBApplication *)self classicAppScaled];
-    v45 = [v5 backgroundStyle];
-    v8 = [MEMORY[0x277D759A0] mainScreen];
-    [v8 scale];
+    v50 = manifestCopy;
+    defaultGroupIdentifier = [manifestCopy defaultGroupIdentifier];
+    classicAppScaled = [(SBApplication *)self classicAppScaled];
+    backgroundStyle = [info backgroundStyle];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     v10 = v9;
 
     v57 = v10;
     v11 = objc_alloc_init(MEMORY[0x277D656C8]);
-    [v11 setHidden:{objc_msgSend(v5, "statusBarHidden")}];
-    v44 = v5;
+    [v11 setHidden:{objc_msgSend(info, "statusBarHidden")}];
+    v44 = info;
     v46 = v11;
-    [v11 setStyle:{objc_msgSend(v5, "defaultStatusBarStyle")}];
+    [v11 setStyle:{objc_msgSend(info, "defaultStatusBarStyle")}];
     v12 = objc_alloc(MEMORY[0x277CF0BB8]);
-    v13 = self;
-    v14 = [(SBApplication *)self info];
-    v15 = [v14 bundleURL];
-    v51 = [v12 initWithURL:v15];
+    selfCopy = self;
+    info2 = [(SBApplication *)self info];
+    bundleURL = [info2 bundleURL];
+    v51 = [v12 initWithURL:bundleURL];
 
     v55 = 0u;
     v56 = 0u;
     v53 = 0u;
     v54 = 0u;
-    v43 = v6;
-    obj = v6;
+    v43 = launchImageInfo;
+    obj = launchImageInfo;
     v16 = [obj countByEnumeratingWithState:&v53 objects:v64 count:16];
     if (!v16)
     {
@@ -12500,8 +12500,8 @@ LABEL_84:
     v18 = *v54;
     v19 = *MEMORY[0x277CBF3A8];
     v20 = *(MEMORY[0x277CBF3A8] + 8);
-    v48 = v13;
-    v49 = v7;
+    v48 = selfCopy;
+    v49 = classicAppScaled;
     while (1)
     {
       v21 = 0;
@@ -12523,9 +12523,9 @@ LABEL_84:
             goto LABEL_26;
           }
 
-          v33 = [(SBApplication *)v13 bundleIdentifier];
+          bundleIdentifier = [(SBApplication *)selfCopy bundleIdentifier];
           *buf = 138543618;
-          v59 = v33;
+          v59 = bundleIdentifier;
           v60 = 2114;
           v61 = v22;
           _os_log_error_impl(&dword_21ED4E000, v31, OS_LOG_TYPE_ERROR, "[.plist ingest] [%{public}@] skipping parameters: %{public}@ because it specifies a zero size.", buf, 0x16u);
@@ -12534,26 +12534,26 @@ LABEL_84:
 
         v27 = v24;
         v28 = v25;
-        v29 = [v22 defaultPNGName];
-        v30 = [v22 extension];
-        v31 = [(SBApplication *)v13 _preferredImagePathInBundle:v51 baseResourceName:v29 ofType:v30 forMainScene:!v7 size:&v57 scale:v27 outScale:v28, v57];
+        defaultPNGName = [v22 defaultPNGName];
+        extension = [v22 extension];
+        v31 = [(SBApplication *)selfCopy _preferredImagePathInBundle:v51 baseResourceName:defaultPNGName ofType:extension forMainScene:!classicAppScaled size:&v57 scale:v27 outScale:v28, v57];
 
         objc_opt_class();
-        LOBYTE(v30) = objc_opt_isKindOfClass();
+        LOBYTE(extension) = objc_opt_isKindOfClass();
         v32 = XBLogFileManifest();
-        v33 = v32;
-        if ((v30 & 1) == 0)
+        bundleIdentifier = v32;
+        if ((extension & 1) == 0)
         {
           if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
           {
-            v40 = [(SBApplication *)v13 bundleIdentifier];
+            bundleIdentifier2 = [(SBApplication *)selfCopy bundleIdentifier];
             *buf = 138543874;
-            v59 = v40;
+            v59 = bundleIdentifier2;
             v60 = 2114;
             v61 = v31;
             v62 = 2114;
             v63 = v22;
-            _os_log_error_impl(&dword_21ED4E000, v33, OS_LOG_TYPE_ERROR, "[.plist ingest] [%{public}@] Incorrect image path type (requires NSString) in ('%{public}@'), skipping...\n%{public}@", buf, 0x20u);
+            _os_log_error_impl(&dword_21ED4E000, bundleIdentifier, OS_LOG_TYPE_ERROR, "[.plist ingest] [%{public}@] Incorrect image path type (requires NSString) in ('%{public}@'), skipping...\n%{public}@", buf, 0x20u);
           }
 
 LABEL_22:
@@ -12563,43 +12563,43 @@ LABEL_22:
 
         if (os_log_type_enabled(v32, OS_LOG_TYPE_DEBUG))
         {
-          v39 = [(SBApplication *)v13 bundleIdentifier];
+          bundleIdentifier3 = [(SBApplication *)selfCopy bundleIdentifier];
           *buf = 138543618;
-          v59 = v39;
+          v59 = bundleIdentifier3;
           v60 = 2114;
           v61 = v22;
-          _os_log_debug_impl(&dword_21ED4E000, v33, OS_LOG_TYPE_DEBUG, "[.plist ingest] [%{public}@] going to save %{public}@", buf, 0x16u);
+          _os_log_debug_impl(&dword_21ED4E000, bundleIdentifier, OS_LOG_TYPE_DEBUG, "[.plist ingest] [%{public}@] going to save %{public}@", buf, 0x16u);
         }
 
-        v34 = [v31 pathExtension];
-        if ([MEMORY[0x277D65680] isValidImageFileExtension:v34])
+        pathExtension = [v31 pathExtension];
+        if ([MEMORY[0x277D65680] isValidImageFileExtension:pathExtension])
         {
-          v35 = [v50 createSnapshotWithGroupID:v47];
+          v35 = [v50 createSnapshotWithGroupID:defaultGroupIdentifier];
           [v35 setContentType:2];
           [v35 setFullScreen:1];
           [v35 setReferenceSize:v27, v28];
           [v35 setInterfaceOrientation:[v22 interfaceOrientation]];
-          v36 = [v22 minOSVersionString];
-          [v35 setRequiredOSVersion:v36];
+          minOSVersionString = [v22 minOSVersionString];
+          [v35 setRequiredOSVersion:minOSVersionString];
 
           [v35 setStatusBarSettings:v46];
-          [v35 setBackgroundStyle:v45];
+          [v35 setBackgroundStyle:backgroundStyle];
           v37 = objc_alloc_init(MEMORY[0x277D656D0]);
           [v37 setScale:v57];
-          [v37 setOpaque:v45 == 0];
+          [v37 setOpaque:backgroundStyle == 0];
           v38 = XBLogFileManifest();
           if (os_log_type_enabled(v38, OS_LOG_TYPE_DEBUG))
           {
-            v41 = [(SBApplication *)v48 bundleIdentifier];
+            bundleIdentifier4 = [(SBApplication *)v48 bundleIdentifier];
             *buf = 138543618;
-            v59 = v41;
+            v59 = bundleIdentifier4;
             v60 = 2114;
             v61 = v35;
             _os_log_debug_impl(&dword_21ED4E000, v38, OS_LOG_TYPE_DEBUG, "[.plist ingest] [%{public}@] going to save snapshot: %{public}@", buf, 0x16u);
           }
 
           [v50 saveSnapshot:v35 atPath:v31 withContext:v37];
-          v13 = v48;
+          selfCopy = v48;
         }
 
         else
@@ -12607,16 +12607,16 @@ LABEL_22:
           v35 = XBLogFileManifest();
           if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
           {
-            v42 = [(SBApplication *)v13 bundleIdentifier];
+            bundleIdentifier5 = [(SBApplication *)selfCopy bundleIdentifier];
             *buf = 138543618;
-            v59 = v42;
+            v59 = bundleIdentifier5;
             v60 = 2114;
             v61 = v31;
             _os_log_error_impl(&dword_21ED4E000, v35, OS_LOG_TYPE_ERROR, "[.plist ingest] [%{public}@] references a path: <%{public}@> with an unsupported image file extension; skipping...", buf, 0x16u);
           }
         }
 
-        v7 = v49;
+        classicAppScaled = v49;
 LABEL_26:
 
         objc_autoreleasePoolPop(v23);
@@ -12629,16 +12629,16 @@ LABEL_26:
       {
 LABEL_28:
 
-        v4 = v50;
-        v6 = v43;
-        v5 = v44;
+        manifestCopy = v50;
+        launchImageInfo = v43;
+        info = v44;
         goto LABEL_31;
       }
     }
   }
 
-  v47 = XBLogFileManifest();
-  if (os_log_type_enabled(v47, OS_LOG_TYPE_DEBUG))
+  defaultGroupIdentifier = XBLogFileManifest();
+  if (os_log_type_enabled(defaultGroupIdentifier, OS_LOG_TYPE_DEBUG))
   {
     [SBApplication(DefaultImage_ManifestIngestion) _ingestInfoPlistImagesInManifest:?];
   }
@@ -12646,13 +12646,13 @@ LABEL_28:
 LABEL_31:
 }
 
-- (id)_preferredImagePathInBundle:(id)a3 baseResourceName:(id)a4 ofType:(id)a5 forMainScene:(BOOL)a6 size:(CGSize)a7 scale:(double)a8 outScale:(double *)a9
+- (id)_preferredImagePathInBundle:(id)bundle baseResourceName:(id)name ofType:(id)type forMainScene:(BOOL)scene size:(CGSize)size scale:(double)scale outScale:(double *)outScale
 {
-  height = a7.height;
-  width = a7.width;
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
+  height = size.height;
+  width = size.width;
+  bundleCopy = bundle;
+  nameCopy = name;
+  typeCopy = type;
   v20 = __sb__runningInSpringBoard();
   v21 = v20;
   if (v20)
@@ -12661,7 +12661,7 @@ LABEL_31:
     {
 LABEL_30:
       v30 = SBFModifiedImageNameForName();
-      v31 = [(SBApplication *)self _preferredImagePathByScaleInBundle:v17 resourceName:v30 ofType:v19 scale:a9 outScale:a8];
+      v31 = [(SBApplication *)self _preferredImagePathByScaleInBundle:bundleCopy resourceName:v30 ofType:typeCopy scale:outScale outScale:scale];
 
       if (v31)
       {
@@ -12674,8 +12674,8 @@ LABEL_30:
 
   else
   {
-    v9 = [MEMORY[0x277D75418] currentDevice];
-    if (![v9 userInterfaceIdiom])
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    if (![currentDevice userInterfaceIdiom])
     {
 
       goto LABEL_30;
@@ -12695,8 +12695,8 @@ LABEL_30:
 
   else
   {
-    v34 = [MEMORY[0x277D75418] currentDevice];
-    if ([v34 userInterfaceIdiom] != 1)
+    currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+    if ([currentDevice2 userInterfaceIdiom] != 1)
     {
       v23 = 0;
       v35 = 1;
@@ -12713,8 +12713,8 @@ LABEL_30:
 
   else
   {
-    v33 = [MEMORY[0x277D759A0] mainScreen];
-    [v33 _referenceBounds];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen _referenceBounds];
   }
 
   BSSizeRoundForScale();
@@ -12737,8 +12737,8 @@ LABEL_24:
 
   v23 = v24 ^ 1;
 LABEL_17:
-  v26 = [MEMORY[0x277D759A0] mainScreen];
-  [v26 _referenceBounds];
+  mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen2 _referenceBounds];
   v29 = height != v28 || width != v27;
 
   if (!v23)
@@ -12772,24 +12772,24 @@ LABEL_26:
   }
 
 LABEL_31:
-  v31 = [(SBApplication *)self _preferredImagePathByScaleInBundle:v17 resourceName:v18 ofType:v19 scale:a9 outScale:a8];
+  v31 = [(SBApplication *)self _preferredImagePathByScaleInBundle:bundleCopy resourceName:nameCopy ofType:typeCopy scale:outScale outScale:scale];
 LABEL_32:
 
   return v31;
 }
 
-- (id)_preferredImagePathByScaleInBundle:(id)a3 resourceName:(id)a4 ofType:(id)a5 scale:(double)a6 outScale:(double *)a7
+- (id)_preferredImagePathByScaleInBundle:(id)bundle resourceName:(id)name ofType:(id)type scale:(double)scale outScale:(double *)outScale
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  bundleCopy = bundle;
+  nameCopy = name;
+  typeCopy = type;
   v14 = &_preferredImagePathByScaleInBundle_resourceName_ofType_scale_outScale____suffixIndices1;
-  if (a6 == 3.0)
+  if (scale == 3.0)
   {
     v14 = &_preferredImagePathByScaleInBundle_resourceName_ofType_scale_outScale____suffixIndices3;
   }
 
-  if (a6 == 2.0)
+  if (scale == 2.0)
   {
     v15 = &_preferredImagePathByScaleInBundle_resourceName_ofType_scale_outScale____suffixIndices2;
   }
@@ -12807,33 +12807,33 @@ LABEL_32:
 
   else
   {
-    v23 = a7;
-    v24 = v12;
+    outScaleCopy = outScale;
+    v24 = nameCopy;
     while (2)
     {
       ++v15;
       v18 = _preferredImagePathByScaleInBundle_resourceName_ofType_scale_outScale____suffixes[v16];
-      v19 = [v12 stringByAppendingString:v18];
+      v19 = [nameCopy stringByAppendingString:v18];
       for (i = 0; i != 3; ++i)
       {
-        v21 = [v19 stringByAppendingString:{_preferredImagePathByScaleInBundle_resourceName_ofType_scale_outScale____deviceModifiers[i], v23}];
-        v17 = [v11 pathForResource:v21 ofType:v13];
+        v21 = [v19 stringByAppendingString:{_preferredImagePathByScaleInBundle_resourceName_ofType_scale_outScale____deviceModifiers[i], outScaleCopy}];
+        v17 = [bundleCopy pathForResource:v21 ofType:typeCopy];
 
         if (v17)
         {
-          if (v23)
+          if (outScaleCopy)
           {
-            *v23 = _preferredImagePathByScaleInBundle_resourceName_ofType_scale_outScale____suffixScales[v16];
+            *outScaleCopy = _preferredImagePathByScaleInBundle_resourceName_ofType_scale_outScale____suffixScales[v16];
           }
 
-          v12 = v24;
+          nameCopy = v24;
           goto LABEL_17;
         }
       }
 
       v17 = 0;
       v16 = *v15;
-      v12 = v24;
+      nameCopy = v24;
       if (*v15 != 0x7FFFFFFFFFFFFFFFLL)
       {
         continue;
@@ -12850,33 +12850,33 @@ LABEL_17:
 
 - (BOOL)isSpringBoard
 {
-  v2 = [(SBApplication *)self bundleIdentifier];
+  bundleIdentifier = [(SBApplication *)self bundleIdentifier];
   v3 = FBSystemAppBundleID();
-  v4 = [v2 isEqualToString:v3];
+  v4 = [bundleIdentifier isEqualToString:v3];
 
   return v4;
 }
 
 - (BOOL)isMobilePhone
 {
-  v2 = [(SBApplication *)self bundleIdentifier];
-  v3 = [v2 isEqualToString:@"com.apple.mobilephone"];
+  bundleIdentifier = [(SBApplication *)self bundleIdentifier];
+  v3 = [bundleIdentifier isEqualToString:@"com.apple.mobilephone"];
 
   return v3;
 }
 
 - (BOOL)isFaceTime
 {
-  v2 = [(SBApplication *)self bundleIdentifier];
-  v3 = [v2 isEqualToString:@"com.apple.facetime"];
+  bundleIdentifier = [(SBApplication *)self bundleIdentifier];
+  v3 = [bundleIdentifier isEqualToString:@"com.apple.facetime"];
 
   return v3;
 }
 
-- (void)_classicModeForHostingExtensionContainedInApplication:(void *)a1
+- (void)_classicModeForHostingExtensionContainedInApplication:(void *)application
 {
   v3 = a2;
-  if (a1)
+  if (application)
   {
     if ([objc_opt_class() KJHKJHw39rq9w87q903475q0983rskjd])
     {
@@ -12886,12 +12886,12 @@ LABEL_17:
     else
     {
       v5 = objc_opt_class();
-      v6 = [MEMORY[0x277D75418] currentDevice];
-      v7 = [v6 userInterfaceIdiom];
+      currentDevice = [MEMORY[0x277D75418] currentDevice];
+      userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-      if ((v7 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+      if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
       {
-        v8 = [a1 _classicAppScaledPhoneOnPad] ^ 1;
+        v8 = [application _classicAppScaledPhoneOnPad] ^ 1;
       }
 
       else
@@ -12904,30 +12904,30 @@ LABEL_17:
 
     if (([(SBApplication *)v3 _bypassesClassicMode]& 1) != 0 || (v4 + 1) <= 1)
     {
-      a1 = [a1 _classicMode];
+      application = [application _classicMode];
     }
 
     else
     {
-      v9 = [MEMORY[0x277D759A0] mainScreen];
-      v10 = [v9 displayConfiguration];
+      mainScreen = [MEMORY[0x277D759A0] mainScreen];
+      displayConfiguration = [mainScreen displayConfiguration];
 
-      v11 = [a1 _classicMode];
-      [objc_opt_class() _defaultLaunchingSizeForDisplayConfiguration:v10 classicMode:v11];
-      [objc_opt_class() _defaultLaunchingSizeForDisplayConfiguration:v10 classicMode:v4];
+      _classicMode = [application _classicMode];
+      [objc_opt_class() _defaultLaunchingSizeForDisplayConfiguration:displayConfiguration classicMode:_classicMode];
+      [objc_opt_class() _defaultLaunchingSizeForDisplayConfiguration:displayConfiguration classicMode:v4];
       if (BSSizeLessThanSize())
       {
-        a1 = v11;
+        application = _classicMode;
       }
 
       else
       {
-        a1 = v4;
+        application = v4;
       }
     }
   }
 
-  return a1;
+  return application;
 }
 
 - (id)_classicModeForHostingExtensionContainedInThisApplicationInUnknownHostingHierarchy
@@ -12943,10 +12943,10 @@ LABEL_17:
     else
     {
       v3 = objc_opt_class();
-      v4 = [MEMORY[0x277D75418] currentDevice];
-      v5 = [v4 userInterfaceIdiom];
+      currentDevice = [MEMORY[0x277D75418] currentDevice];
+      userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-      v2 = [v3 _bestAvailableClassicModeForHostingExtensionContainedInApplication:(v5 & 0xFFFFFFFFFFFFFFFBLL) == 1];
+      v2 = [v3 _bestAvailableClassicModeForHostingExtensionContainedInApplication:(userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1];
     }
 
     if ([v1[21] disablesClassicMode] & 1) != 0 || (objc_msgSend(v1[21], "hasViewServicesEntitlement"))
@@ -12956,7 +12956,7 @@ LABEL_17:
 
     else
     {
-      v6 = [v1 isSystemApplication];
+      isSystemApplication = [v1 isSystemApplication];
       if ((v2 - 1) >= 0xFFFFFFFFFFFFFFFELL)
       {
         v7 = 0;
@@ -12967,7 +12967,7 @@ LABEL_17:
         v7 = v2;
       }
 
-      if (v6)
+      if (isSystemApplication)
       {
         return 0;
       }
@@ -12982,27 +12982,27 @@ LABEL_17:
   return result;
 }
 
-- (uint64_t)_screenTypeForClassicMode:(uint64_t)a1
+- (uint64_t)_screenTypeForClassicMode:(uint64_t)mode
 {
-  v2 = a1;
-  if (!a1)
+  modeCopy = mode;
+  if (!mode)
   {
-    return v2;
+    return modeCopy;
   }
 
   if ((a2 - 1) <= 0xFFFFFFFFFFFFFFFDLL)
   {
     v4 = +[SBPlatformController sharedInstance];
-    v5 = [v4 isRoundCornerPad];
-    v6 = [v4 isRoundCornerPhone];
-    v7 = [v2 info];
-    v8 = [v7 isAzulLinked];
+    isRoundCornerPad = [v4 isRoundCornerPad];
+    isRoundCornerPhone = [v4 isRoundCornerPhone];
+    info = [modeCopy info];
+    isAzulLinked = [info isAzulLinked];
 
-    if (v8 || ((v5 | v6) & 1) == 0)
+    if (isAzulLinked || ((isRoundCornerPad | isRoundCornerPhone) & 1) == 0)
     {
       v13 = SBHScreenTypeForCurrentDevice();
       v14 = [objc_opt_class() _canonicalScreenTypeForClassicMode:a2];
-      v2 = [objc_opt_class() _niceScreenTypeForClassicType:v14 matchingAValidDisplayZoomModeOnScreenType:v13];
+      modeCopy = [objc_opt_class() _niceScreenTypeForClassicType:v14 matchingAValidDisplayZoomModeOnScreenType:v13];
     }
 
     else
@@ -13010,21 +13010,21 @@ LABEL_17:
       v9 = SBApplicationClassicModeExpectsRoundedCorners(a2);
       v10 = SBApplicationClassicModeRepresentsPad(a2);
       v11 = SBApplicationClassicModeRepresentsPhone(a2);
-      if (v5)
+      if (isRoundCornerPad)
       {
         if (v10 && v9)
         {
-          v2 = 111;
+          modeCopy = 111;
         }
 
         else if ((v11 & v9) != 0)
         {
-          v2 = 3;
+          modeCopy = 3;
         }
 
         else
         {
-          v2 = 100;
+          modeCopy = 100;
         }
       }
 
@@ -13032,23 +13032,23 @@ LABEL_17:
       {
         if ((v11 & 1) == 0)
         {
-          v15 = [MEMORY[0x277CCA890] currentHandler];
-          [v15 handleFailureInMethod:sel__screenTypeForClassicMode_ object:v2 file:@"SBApplication+Classic.m" lineNumber:839 description:@"Not valid to have non-phone classic modes on a phone"];
+          currentHandler = [MEMORY[0x277CCA890] currentHandler];
+          [currentHandler handleFailureInMethod:sel__screenTypeForClassicMode_ object:modeCopy file:@"SBApplication+Classic.m" lineNumber:839 description:@"Not valid to have non-phone classic modes on a phone"];
         }
 
         if (v9)
         {
-          v2 = 3;
+          modeCopy = 3;
         }
 
         else
         {
-          v2 = 1;
+          modeCopy = 1;
         }
       }
     }
 
-    return v2;
+    return modeCopy;
   }
 
   return SBHScreenTypeForCurrentDevice();
@@ -13091,82 +13091,82 @@ LABEL_17:
 
 - (void)_calculateSupportedTypesForSplashBoard
 {
-  v3 = [(SBApplicationInfo *)self->_appInfo isMonarchLinked];
-  v4 = [(SBApplicationInfo *)self->_appInfo isTigrisLinked];
-  v29 = [(SBApplicationInfo *)self->_appInfo isPeaceLinked];
-  v5 = [(SBApplicationInfo *)self->_appInfo isYukonLinked];
-  v6 = [(SBApplicationInfo *)self->_appInfo isAzulLinked];
+  isMonarchLinked = [(SBApplicationInfo *)self->_appInfo isMonarchLinked];
+  isTigrisLinked = [(SBApplicationInfo *)self->_appInfo isTigrisLinked];
+  isPeaceLinked = [(SBApplicationInfo *)self->_appInfo isPeaceLinked];
+  isYukonLinked = [(SBApplicationInfo *)self->_appInfo isYukonLinked];
+  isAzulLinked = [(SBApplicationInfo *)self->_appInfo isAzulLinked];
   isNewEnoughToKnowAbout2020 = [(SBApplication *)self _isNewEnoughToKnowAbout2020Phones];
-  v7 = [(SBApplicationInfo *)self->_appInfo isPeaceBLinked];
-  v8 = [(SBApplicationInfo *)self->_appInfo isSkyLinked];
-  v9 = [(SBApplicationInfo *)self->_appInfo isSydneyLinked];
-  v30 = [(SBApplicationInfo *)self->_appInfo isCrystalLinked];
-  v10 = [(SBApplicationInfo *)self->_appInfo isLuckLinked];
+  isPeaceBLinked = [(SBApplicationInfo *)self->_appInfo isPeaceBLinked];
+  isSkyLinked = [(SBApplicationInfo *)self->_appInfo isSkyLinked];
+  isSydneyLinked = [(SBApplicationInfo *)self->_appInfo isSydneyLinked];
+  isCrystalLinked = [(SBApplicationInfo *)self->_appInfo isCrystalLinked];
+  isLuckLinked = [(SBApplicationInfo *)self->_appInfo isLuckLinked];
   if ([(SBApplication *)self _supportsApplicationType:2])
   {
-    v11 = [(SBApplicationInfo *)self->_appInfo wantsFullScreen];
-    if (v11)
+    wantsFullScreen = [(SBApplicationInfo *)self->_appInfo wantsFullScreen];
+    if (wantsFullScreen)
     {
-      v12 = v4;
+      v12 = isTigrisLinked;
     }
 
     else
     {
-      v12 = v3;
+      v12 = isMonarchLinked;
     }
 
-    if (v11)
+    if (wantsFullScreen)
     {
-      v13 = v7;
-    }
-
-    else
-    {
-      v13 = v3;
-    }
-
-    if (v11)
-    {
-      v14 = v6;
+      v13 = isPeaceBLinked;
     }
 
     else
     {
-      v14 = v3;
+      v13 = isMonarchLinked;
     }
 
-    if (v11)
+    if (wantsFullScreen)
     {
-      v15 = v5;
-    }
-
-    else
-    {
-      v15 = v3;
-    }
-
-    if (v11)
-    {
-      v16 = v8;
+      v14 = isAzulLinked;
     }
 
     else
     {
-      v16 = v3;
+      v14 = isMonarchLinked;
     }
 
-    if (v11)
+    if (wantsFullScreen)
     {
-      v17 = v9;
+      v15 = isYukonLinked;
     }
 
     else
     {
-      v17 = v3;
+      v15 = isMonarchLinked;
+    }
+
+    if (wantsFullScreen)
+    {
+      v16 = isSkyLinked;
+    }
+
+    else
+    {
+      v16 = isMonarchLinked;
+    }
+
+    if (wantsFullScreen)
+    {
+      v17 = isSydneyLinked;
+    }
+
+    else
+    {
+      v17 = isMonarchLinked;
     }
 
     v18 = 2;
-    if (v3)
+    if (isMonarchLinked)
     {
       v18 = 134217730;
     }
@@ -13230,24 +13230,24 @@ LABEL_39:
   if ([(SBApplication *)self _supportsApplicationType:1])
   {
     v21 = 29;
-    if (v4)
+    if (isTigrisLinked)
     {
       v21 = 93;
     }
 
     v22 = self->_supportedTypes | v21;
     v23 = v22 | 0x400;
-    if (!v29)
+    if (!isPeaceLinked)
     {
       v23 = v22;
     }
 
     self->_supportedTypes = v23;
-    v24 = v9 || v30;
-    if (((v10 | isNewEnoughToKnowAbout2020 | v6) & 1) != 0 || v24)
+    v24 = isSydneyLinked || isCrystalLinked;
+    if (((isLuckLinked | isNewEnoughToKnowAbout2020 | isAzulLinked) & 1) != 0 || v24)
     {
       v25 = 32;
-      if (!v6)
+      if (!isAzulLinked)
       {
         v25 = 0;
       }
@@ -13259,12 +13259,12 @@ LABEL_39:
 
       v26 = v23 | v25;
       v27 = v26 | 0x1100;
-      if (!v9)
+      if (!isSydneyLinked)
       {
         v27 = v26;
       }
 
-      if (v30)
+      if (isCrystalLinked)
       {
         v27 |= 0x2200uLL;
       }
@@ -13279,7 +13279,7 @@ LABEL_39:
         v28 = v26;
       }
 
-      if (v10)
+      if (isLuckLinked)
       {
         v28 = v27 | 0x4000;
       }

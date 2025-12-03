@@ -1,5 +1,5 @@
 @interface CNUIDataCollectorSGLogger
-+ (id)loggerWithSGSuggestionsServiceProvider:(id)a3 schedulerProvider:(id)a4;
++ (id)loggerWithSGSuggestionsServiceProvider:(id)provider schedulerProvider:(id)schedulerProvider;
 @end
 
 @implementation CNUIDataCollectorSGLogger
@@ -25,11 +25,11 @@ void __54___CNUIDataCollectorSGLogger_performBlockWithService___block_invoke(uin
   (*(*(a1 + 40) + 16))();
 }
 
-+ (id)loggerWithSGSuggestionsServiceProvider:(id)a3 schedulerProvider:(id)a4
++ (id)loggerWithSGSuggestionsServiceProvider:(id)provider schedulerProvider:(id)schedulerProvider
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[_CNUIDataCollectorSGLogger alloc] initWithSuggestionsServiceProvider:v6 schedulerProvider:v5];
+  schedulerProviderCopy = schedulerProvider;
+  providerCopy = provider;
+  v7 = [[_CNUIDataCollectorSGLogger alloc] initWithSuggestionsServiceProvider:providerCopy schedulerProvider:schedulerProviderCopy];
 
   return v7;
 }

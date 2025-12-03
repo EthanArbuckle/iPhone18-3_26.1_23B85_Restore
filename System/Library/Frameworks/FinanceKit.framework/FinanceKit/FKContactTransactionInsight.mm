@@ -1,21 +1,21 @@
 @interface FKContactTransactionInsight
-- (BOOL)isEqual:(id)a3;
-- (FKContactTransactionInsight)initWithPeerPaymentCounterpartHandle:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (FKContactTransactionInsight)initWithPeerPaymentCounterpartHandle:(id)handle;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation FKContactTransactionInsight
 
-- (FKContactTransactionInsight)initWithPeerPaymentCounterpartHandle:(id)a3
+- (FKContactTransactionInsight)initWithPeerPaymentCounterpartHandle:(id)handle
 {
-  v4 = a3;
+  handleCopy = handle;
   v9.receiver = self;
   v9.super_class = FKContactTransactionInsight;
   v5 = [(FKContactTransactionInsight *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [handleCopy copy];
     peerPaymentCounterpartHandle = v5->_peerPaymentCounterpartHandle;
     v5->_peerPaymentCounterpartHandle = v6;
   }
@@ -23,10 +23,10 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_opt_class() allocWithZone:a3];
-  v6 = [(NSString *)self->_peerPaymentCounterpartHandle copyWithZone:a3];
+  v5 = [objc_opt_class() allocWithZone:zone];
+  v6 = [(NSString *)self->_peerPaymentCounterpartHandle copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
@@ -42,16 +42,16 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  p_isa = &v4->super.isa;
-  if (self == v4)
+  equalCopy = equal;
+  p_isa = &equalCopy->super.isa;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = FKEqualObjects(self->_peerPaymentCounterpartHandle, p_isa[1]);
   }

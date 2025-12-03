@@ -1,9 +1,9 @@
 @interface _SSVPlayActivityEndpointRevisionInformation
-- (BOOL)isEqual:(id)a3;
-- (_SSVPlayActivityEndpointRevisionInformation)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_SSVPlayActivityEndpointRevisionInformation)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _SSVPlayActivityEndpointRevisionInformation
@@ -16,23 +16,23 @@
   return v5 ^ [(NSString *)revisionVersionToken hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     goto LABEL_9;
   }
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || self->_currentRevision != v4->_currentRevision || (additionalPendingRevisionsIndexSet = self->_additionalPendingRevisionsIndexSet, additionalPendingRevisionsIndexSet != v4->_additionalPendingRevisionsIndexSet) && ![(NSIndexSet *)additionalPendingRevisionsIndexSet isEqualToIndexSet:?])
+  if ((objc_opt_isKindOfClass() & 1) == 0 || self->_currentRevision != equalCopy->_currentRevision || (additionalPendingRevisionsIndexSet = self->_additionalPendingRevisionsIndexSet, additionalPendingRevisionsIndexSet != equalCopy->_additionalPendingRevisionsIndexSet) && ![(NSIndexSet *)additionalPendingRevisionsIndexSet isEqualToIndexSet:?])
   {
     v7 = 0;
     goto LABEL_10;
   }
 
   revisionVersionToken = self->_revisionVersionToken;
-  if (revisionVersionToken == v4->_revisionVersionToken)
+  if (revisionVersionToken == equalCopy->_revisionVersionToken)
   {
 LABEL_9:
     v7 = 1;
@@ -45,52 +45,52 @@ LABEL_10:
   return v7;
 }
 
-- (_SSVPlayActivityEndpointRevisionInformation)initWithCoder:(id)a3
+- (_SSVPlayActivityEndpointRevisionInformation)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeInt64ForKey:@"CurrentRevision"];
-  if (v5)
+  coderCopy = coder;
+  selfCopy = [coderCopy decodeInt64ForKey:@"CurrentRevision"];
+  if (selfCopy)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"RevisionVersionToken"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"RevisionVersionToken"];
     if ([v6 length])
     {
       v7 = [(_SSVPlayActivityEndpointRevisionInformation *)self init];
       if (v7)
       {
-        v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AdditionalPendingRevisions"];
+        v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AdditionalPendingRevisions"];
         additionalPendingRevisionsIndexSet = v7->_additionalPendingRevisionsIndexSet;
         v7->_additionalPendingRevisionsIndexSet = v8;
         v10 = v8;
 
-        v7->_currentRevision = v5;
+        v7->_currentRevision = selfCopy;
         objc_storeStrong(&v7->_revisionVersionToken, v6);
       }
 
       self = v7;
-      v5 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v5 = 0;
+      selfCopy = 0;
     }
   }
 
-  return v5;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   additionalPendingRevisionsIndexSet = self->_additionalPendingRevisionsIndexSet;
-  v5 = a3;
-  [v5 encodeObject:additionalPendingRevisionsIndexSet forKey:@"AdditionalPendingRevisions"];
-  [v5 encodeInt64:self->_currentRevision forKey:@"CurrentRevision"];
-  [v5 encodeObject:self->_revisionVersionToken forKey:@"RevisionVersionToken"];
+  coderCopy = coder;
+  [coderCopy encodeObject:additionalPendingRevisionsIndexSet forKey:@"AdditionalPendingRevisions"];
+  [coderCopy encodeInt64:self->_currentRevision forKey:@"CurrentRevision"];
+  [coderCopy encodeObject:self->_revisionVersionToken forKey:@"RevisionVersionToken"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = v4;
   if (v4)
   {

@@ -1,13 +1,13 @@
 @interface EmbeddingCache
 + (id)embeddingCaches;
-- (BOOL)dbWriteValueWithKey:(int64_t)a3 data:(const void *)a4 dataLen:(int)a5;
-- (BOOL)put:(const char *)a3 value:(id)a4;
-- (BOOL)put:(const char *)a3 value:(id)a4 bundle:(const char *)a5;
-- (id)dbFetchValueWithKey:(int64_t)a3;
-- (id)get:(const char *)a3;
-- (id)get:(const char *)a3 bundle:(const char *)a4;
+- (BOOL)dbWriteValueWithKey:(int64_t)key data:(const void *)data dataLen:(int)len;
+- (BOOL)put:(const char *)put value:(id)value;
+- (BOOL)put:(const char *)put value:(id)value bundle:(const char *)bundle;
+- (id)dbFetchValueWithKey:(int64_t)key;
+- (id)get:(const char *)get;
+- (id)get:(const char *)get bundle:(const char *)bundle;
 - (unsigned)hitRate;
-- (void)closeAndDeleteStore:(id)a3;
+- (void)closeAndDeleteStore:(id)store;
 - (void)flush;
 - (void)populateFifoStore;
 @end
@@ -33,14 +33,14 @@ void __33__EmbeddingCache_embeddingCaches__block_invoke()
   embeddingCaches_stores = v0;
 }
 
-- (BOOL)dbWriteValueWithKey:(int64_t)a3 data:(const void *)a4 dataLen:(int)a5
+- (BOOL)dbWriteValueWithKey:(int64_t)key data:(const void *)data dataLen:(int)len
 {
   dsi = self->_dsi;
   obj = db_create_obj();
   v14 = obj;
   if (obj)
   {
-    *obj = a3;
+    *obj = key;
     v9 = self->_dsi;
     if (db_add_field())
     {
@@ -86,13 +86,13 @@ LABEL_13:
   return 0;
 }
 
-- (id)dbFetchValueWithKey:(int64_t)a3
+- (id)dbFetchValueWithKey:(int64_t)key
 {
   dsi = self->_dsi;
   db_get_obj();
-  v4 = [MEMORY[0x277CBEA90] data];
+  data = [MEMORY[0x277CBEA90] data];
 
-  return v4;
+  return data;
 }
 
 - (void)populateFifoStore
@@ -112,15 +112,15 @@ BOOL __35__EmbeddingCache_populateFifoStore__block_invoke(uint64_t a1, uint64_t 
   return *(*(a1 + 32) + 400056) < 100000;
 }
 
-- (void)closeAndDeleteStore:(id)a3
+- (void)closeAndDeleteStore:(id)store
 {
   dsi = self->_dsi;
-  v5 = a3;
+  storeCopy = store;
   db_release_datastore();
   parentDirFd = self->_parentDirFd;
-  v7 = [v5 UTF8String];
+  uTF8String = [storeCopy UTF8String];
 
-  MEMORY[0x282187490](parentDirFd, v7, 270336);
+  MEMORY[0x282187490](parentDirFd, uTF8String, 270336);
 }
 
 - (void)flush
@@ -132,10 +132,10 @@ BOOL __35__EmbeddingCache_populateFifoStore__block_invoke(uint64_t a1, uint64_t 
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)put:(const char *)a3 value:(id)a4
+- (BOOL)put:(const char *)put value:(id)value
 {
-  v6 = a4;
-  if (a3 && (v7 = strlen(a3), v8 = MurmurHash3_x86_32(a3, v7), -[EmbeddingCache dbWriteValueWithKey:data:dataLen:](self, "dbWriteValueWithKey:data:dataLen:", v8, [v6 bytes], objc_msgSend(v6, "length"))))
+  valueCopy = value;
+  if (put && (v7 = strlen(put), v8 = MurmurHash3_x86_32(put, v7), -[EmbeddingCache dbWriteValueWithKey:data:dataLen:](self, "dbWriteValueWithKey:data:dataLen:", v8, [valueCopy bytes], objc_msgSend(valueCopy, "length"))))
   {
     p_fifo = &self->_fifo;
     self->_fifo.index %= 100000;
@@ -156,13 +156,13 @@ BOOL __35__EmbeddingCache_populateFifoStore__block_invoke(uint64_t a1, uint64_t 
   return v10;
 }
 
-- (id)get:(const char *)a3
+- (id)get:(const char *)get
 {
-  if (a3)
+  if (get)
   {
-    v5 = strlen(a3);
-    v6 = [(EmbeddingCache *)self dbFetchValueWithKey:MurmurHash3_x86_32(a3, v5)];
-    v7 = [v6 length];
+    v5 = strlen(get);
+    data = [(EmbeddingCache *)self dbFetchValueWithKey:MurmurHash3_x86_32(get, v5)];
+    v7 = [data length];
     v8 = 40;
     if (!v7)
     {
@@ -174,10 +174,10 @@ BOOL __35__EmbeddingCache_populateFifoStore__block_invoke(uint64_t a1, uint64_t 
 
   else
   {
-    v6 = [MEMORY[0x277CBEA90] data];
+    data = [MEMORY[0x277CBEA90] data];
   }
 
-  return v6;
+  return data;
 }
 
 - (unsigned)hitRate
@@ -195,11 +195,11 @@ BOOL __35__EmbeddingCache_populateFifoStore__block_invoke(uint64_t a1, uint64_t 
   }
 }
 
-- (BOOL)put:(const char *)a3 value:(id)a4 bundle:(const char *)a5
+- (BOOL)put:(const char *)put value:(id)value bundle:(const char *)bundle
 {
   v22 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  if (a3 && (v9 = strlen(a3), v10 = MurmurHash3_x86_32(a3, v9), -[EmbeddingCache dbWriteValueWithKey:data:dataLen:](self, "dbWriteValueWithKey:data:dataLen:", v10, [v8 bytes], objc_msgSend(v8, "length"))))
+  valueCopy = value;
+  if (put && (v9 = strlen(put), v10 = MurmurHash3_x86_32(put, v9), -[EmbeddingCache dbWriteValueWithKey:data:dataLen:](self, "dbWriteValueWithKey:data:dataLen:", v10, [valueCopy bytes], objc_msgSend(valueCopy, "length"))))
   {
     if (!self->_unlimitedCapacity)
     {
@@ -222,13 +222,13 @@ BOOL __35__EmbeddingCache_populateFifoStore__block_invoke(uint64_t a1, uint64_t 
       strlen(__str);
       fd_write();
       v13 = self->_stringFd;
-      strlen(a5);
+      strlen(bundle);
       fd_write();
       v14 = self->_stringFd;
       v15 = 1;
       fd_write();
       v16 = self->_stringFd;
-      strlen(a3);
+      strlen(put);
       fd_write();
       v17 = self->_stringFd;
       fd_write();
@@ -249,18 +249,18 @@ BOOL __35__EmbeddingCache_populateFifoStore__block_invoke(uint64_t a1, uint64_t 
   return v15;
 }
 
-- (id)get:(const char *)a3 bundle:(const char *)a4
+- (id)get:(const char *)get bundle:(const char *)bundle
 {
   v13 = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!get)
   {
-    v7 = [MEMORY[0x277CBEA90] data];
+    data = [MEMORY[0x277CBEA90] data];
     goto LABEL_9;
   }
 
-  v6 = strlen(a3);
-  v7 = [(EmbeddingCache *)self dbFetchValueWithKey:MurmurHash3_x86_32(a3, v6)];
-  if ([v7 length])
+  v6 = strlen(get);
+  data = [(EmbeddingCache *)self dbFetchValueWithKey:MurmurHash3_x86_32(get, v6)];
+  if ([data length])
   {
     ++self->_stats.hitCount;
     if (!self->_stringFd)
@@ -292,7 +292,7 @@ BOOL __35__EmbeddingCache_populateFifoStore__block_invoke(uint64_t a1, uint64_t 
 LABEL_9:
   v9 = *MEMORY[0x277D85DE8];
 
-  return v7;
+  return data;
 }
 
 - (void)dbWriteValueWithKey:(uint64_t)a1 data:dataLen:.cold.1(uint64_t a1)

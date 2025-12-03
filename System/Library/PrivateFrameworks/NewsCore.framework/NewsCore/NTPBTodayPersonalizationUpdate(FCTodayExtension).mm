@@ -30,8 +30,8 @@
 
   if (v7)
   {
-    v6 = [a1 events];
-    [v6 addObject:v7];
+    events = [self events];
+    [events addObject:v7];
   }
 }
 

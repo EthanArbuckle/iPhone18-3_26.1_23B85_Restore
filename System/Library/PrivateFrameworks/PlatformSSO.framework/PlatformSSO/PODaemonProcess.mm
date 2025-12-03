@@ -1,41 +1,41 @@
 @interface PODaemonProcess
 + (id)_prebootSyncQueue;
-- (BOOL)_initDataVaultIfNeededWithError:(id *)a3;
-- (BOOL)_removeDeviceConfigurationForIdentifier:(id)a3 syncToPreboot:(BOOL)a4 error:(id *)a5;
-- (BOOL)_removeLoginConfigurationForIdentifier:(id)a3 syncToPreboot:(BOOL)a4 error:(id *)a5;
-- (BOOL)_removeUserConfigurationForIdentifier:(id)a3 syncToPreboot:(BOOL)a4 error:(id *)a5;
-- (BOOL)_saveDeviceConfiguration:(id)a3 identifier:(id)a4 syncToPreboot:(BOOL)a5 error:(id *)a6;
-- (BOOL)_saveLoginConfiguration:(id)a3 identifier:(id)a4 syncToPreboot:(BOOL)a5 error:(id *)a6;
-- (BOOL)_saveUserConfigurationData:(id)a3 forIdentifier:(id)a4 syncToPreboot:(BOOL)a5 error:(id *)a6;
-- (BOOL)_saveUserLoginStateList:(id)a3 error:(id *)a4;
-- (BOOL)_updateGroupForRight:(id)a3 newGroup:(id)a4;
+- (BOOL)_initDataVaultIfNeededWithError:(id *)error;
+- (BOOL)_removeDeviceConfigurationForIdentifier:(id)identifier syncToPreboot:(BOOL)preboot error:(id *)error;
+- (BOOL)_removeLoginConfigurationForIdentifier:(id)identifier syncToPreboot:(BOOL)preboot error:(id *)error;
+- (BOOL)_removeUserConfigurationForIdentifier:(id)identifier syncToPreboot:(BOOL)preboot error:(id *)error;
+- (BOOL)_saveDeviceConfiguration:(id)configuration identifier:(id)identifier syncToPreboot:(BOOL)preboot error:(id *)error;
+- (BOOL)_saveLoginConfiguration:(id)configuration identifier:(id)identifier syncToPreboot:(BOOL)preboot error:(id *)error;
+- (BOOL)_saveUserConfigurationData:(id)data forIdentifier:(id)identifier syncToPreboot:(BOOL)preboot error:(id *)error;
+- (BOOL)_saveUserLoginStateList:(id)list error:(id *)error;
+- (BOOL)_updateGroupForRight:(id)right newGroup:(id)group;
 - (POConfigurationManager)configurationManager;
 - (PODaemonProcess)init;
-- (PODaemonProcess)initWithXPCConnection:(id)a3;
+- (PODaemonProcess)initWithXPCConnection:(id)connection;
 - (SOConfigurationHost)configurationHost;
 - (void)_disableAccessKeyDefaults;
-- (void)_disablePlatformSSORuleForLogin:(id)a3;
-- (void)_disablePlatformSSORuleForScreensaver:(id)a3;
+- (void)_disablePlatformSSORuleForLogin:(id)login;
+- (void)_disablePlatformSSORuleForScreensaver:(id)screensaver;
 - (void)_disableTemporarySessionDefaults;
 - (void)_enableAccessKeyDefaults;
-- (void)_enablePlatformSSORuleForLogin:(id)a3;
-- (void)_enablePlatformSSORuleForScreensaver:(id)a3;
+- (void)_enablePlatformSSORuleForLogin:(id)login;
+- (void)_enablePlatformSSORuleForScreensaver:(id)screensaver;
 - (void)_enableTemporarySessionDefaults;
 - (void)connectionInvalidated;
-- (void)createAppSSOCachePathWithCompletion:(id)a3;
-- (void)disablePlatformSSORulesAndDefaults:(id)a3;
-- (void)enablePlatformSSORulesAndDefaults:(id)a3;
+- (void)createAppSSOCachePathWithCompletion:(id)completion;
+- (void)disablePlatformSSORulesAndDefaults:(id)defaults;
+- (void)enablePlatformSSORulesAndDefaults:(id)defaults;
 - (void)handleAuthRights;
 - (void)handleStartup;
-- (void)migrateConfiguration:(BOOL)a3 completion:(id)a4;
-- (void)removeDeviceConfigurationForIdentifier:(id)a3 completion:(id)a4;
-- (void)removeLoginConfigurationForIdentifier:(id)a3 completion:(id)a4;
-- (void)removeUserConfigurationForIdentifier:(id)a3 completion:(id)a4;
-- (void)resetStoredConfigurationWithCompletion:(id)a3;
-- (void)saveAppSSOConfiguration:(id)a3 completion:(id)a4;
-- (void)saveDeviceConfiguration:(id)a3 identifier:(id)a4 completion:(id)a5;
-- (void)saveDeviceConfigurationSyncAllConfigToPreboot:(id)a3 identifier:(id)a4 completion:(id)a5;
-- (void)saveLoginConfiguration:(id)a3 identifier:(id)a4 completion:(id)a5;
+- (void)migrateConfiguration:(BOOL)configuration completion:(id)completion;
+- (void)removeDeviceConfigurationForIdentifier:(id)identifier completion:(id)completion;
+- (void)removeLoginConfigurationForIdentifier:(id)identifier completion:(id)completion;
+- (void)removeUserConfigurationForIdentifier:(id)identifier completion:(id)completion;
+- (void)resetStoredConfigurationWithCompletion:(id)completion;
+- (void)saveAppSSOConfiguration:(id)configuration completion:(id)completion;
+- (void)saveDeviceConfiguration:(id)configuration identifier:(id)identifier completion:(id)completion;
+- (void)saveDeviceConfigurationSyncAllConfigToPreboot:(id)preboot identifier:(id)identifier completion:(id)completion;
+- (void)saveLoginConfiguration:(id)configuration identifier:(id)identifier completion:(id)completion;
 @end
 
 @implementation PODaemonProcess
@@ -54,8 +54,8 @@
     v3->_directoryServices = v4;
 
     v6 = [POUserGroupManager alloc];
-    v7 = [(PODaemonCoreProcess *)v3 _defaultConfigurationPath];
-    v8 = [(POUserGroupManager *)v6 initWithFilePath:v7];
+    _defaultConfigurationPath = [(PODaemonCoreProcess *)v3 _defaultConfigurationPath];
+    v8 = [(POUserGroupManager *)v6 initWithFilePath:_defaultConfigurationPath];
     userGroupManager = v3->_userGroupManager;
     v3->_userGroupManager = v8;
 
@@ -74,16 +74,16 @@
   return v3;
 }
 
-- (PODaemonProcess)initWithXPCConnection:(id)a3
+- (PODaemonProcess)initWithXPCConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v5 = PO_LOG_PODaemonProcess();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [PODaemonProcess initWithXPCConnection:];
   }
 
-  v6 = [v4 valueForEntitlement:@"com.apple.private.platformsso.agent"];
+  v6 = [connectionCopy valueForEntitlement:@"com.apple.private.platformsso.agent"];
   v7 = v6;
   if (v6 && ([v6 BOOLValue] & 1) != 0)
   {
@@ -91,20 +91,20 @@
     v9 = v8;
     if (v8)
     {
-      objc_storeWeak(&v8->_xpcConnection, v4);
+      objc_storeWeak(&v8->_xpcConnection, connectionCopy);
     }
 
     self = v9;
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
     v11 = __41__PODaemonProcess_initWithXPCConnection___block_invoke();
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 id __41__PODaemonProcess_initWithXPCConnection___block_invoke()
@@ -128,7 +128,7 @@ id __41__PODaemonProcess_initWithXPCConnection___block_invoke()
     v5 = 136315394;
     v6 = "[PODaemonProcess connectionInvalidated]";
     v7 = 2112;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_25E831000, v3, OS_LOG_TYPE_DEFAULT, "%s  on %@", &v5, 0x16u);
   }
 
@@ -160,8 +160,8 @@ uint64_t __36__PODaemonProcess__prebootSyncQueue__block_invoke()
   if (!configurationManager)
   {
     v4 = [POConfigurationManager alloc];
-    v5 = [(PODaemonProcess *)self directoryServices];
-    v6 = [(POConfigurationManager *)v4 initWithUserName:0 directoryServices:v5 sharedOnly:1];
+    directoryServices = [(PODaemonProcess *)self directoryServices];
+    v6 = [(POConfigurationManager *)v4 initWithUserName:0 directoryServices:directoryServices sharedOnly:1];
     v7 = self->_configurationManager;
     self->_configurationManager = v6;
 
@@ -197,16 +197,16 @@ uint64_t __36__PODaemonProcess__prebootSyncQueue__block_invoke()
   [(PODaemonProcess *)self _initDataVaultIfNeededWithError:0];
 }
 
-- (void)migrateConfiguration:(BOOL)a3 completion:(id)a4
+- (void)migrateConfiguration:(BOOL)configuration completion:(id)completion
 {
-  v4 = a4;
+  completionCopy = completion;
   v5 = PO_LOG_PODaemonProcess();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [PODaemonProcess migrateConfiguration:completion:];
   }
 
-  v4[2](v4, 1, 0);
+  completionCopy[2](completionCopy, 1, 0);
 }
 
 - (void)handleAuthRights
@@ -233,38 +233,38 @@ void __35__PODaemonProcess_handleAuthRights__block_invoke(uint64_t a1, int a2)
   }
 }
 
-- (BOOL)_removeDeviceConfigurationForIdentifier:(id)a3 syncToPreboot:(BOOL)a4 error:(id *)a5
+- (BOOL)_removeDeviceConfigurationForIdentifier:(id)identifier syncToPreboot:(BOOL)preboot error:(id *)error
 {
   v31 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  identifierCopy = identifier;
   v8 = PO_LOG_PODaemonProcess();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315650;
     v26 = "[PODaemonProcess _removeDeviceConfigurationForIdentifier:syncToPreboot:error:]";
     v27 = 2114;
-    v28 = v7;
+    v28 = identifierCopy;
     v29 = 2112;
-    v30 = self;
+    selfCopy = self;
     _os_log_impl(&dword_25E831000, v8, OS_LOG_TYPE_DEFAULT, "%s identifier = %{public}@ on %@", buf, 0x20u);
   }
 
-  v9 = [(PODaemonCoreProcess *)self _defaultConfigurationPath];
-  v10 = v9;
-  if (v7)
+  _defaultConfigurationPath = [(PODaemonCoreProcess *)self _defaultConfigurationPath];
+  v10 = _defaultConfigurationPath;
+  if (identifierCopy)
   {
-    v11 = [MEMORY[0x277CCACA8] stringWithFormat:*MEMORY[0x277D3D2A0], v7];
-    v12 = [v10 URLByAppendingPathComponent:v11];
+    identifierCopy = [MEMORY[0x277CCACA8] stringWithFormat:*MEMORY[0x277D3D2A0], identifierCopy];
+    v12 = [v10 URLByAppendingPathComponent:identifierCopy];
   }
 
   else
   {
-    v12 = [v9 URLByAppendingPathComponent:*MEMORY[0x277D3D2A8]];
+    v12 = [_defaultConfigurationPath URLByAppendingPathComponent:*MEMORY[0x277D3D2A8]];
   }
 
-  v13 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v24 = 0;
-  v14 = [v13 removeItemAtURL:v12 error:&v24];
+  v14 = [defaultManager removeItemAtURL:v12 error:&v24];
   v15 = v24;
 
   if (v14)
@@ -272,8 +272,8 @@ void __35__PODaemonProcess_handleAuthRights__block_invoke(uint64_t a1, int a2)
     goto LABEL_9;
   }
 
-  v16 = [v15 userInfo];
-  v17 = [v16 objectForKeyedSubscript:@"NSUnderlyingError"];
+  userInfo = [v15 userInfo];
+  v17 = [userInfo objectForKeyedSubscript:@"NSUnderlyingError"];
 
   if ([v17 code] == 2)
   {
@@ -290,10 +290,10 @@ LABEL_9:
   v22[3] = &unk_279A3A088;
   v23 = v15;
   v19 = __79__PODaemonProcess__removeDeviceConfigurationForIdentifier_syncToPreboot_error___block_invoke(v22);
-  if (a5)
+  if (error)
   {
     v19 = v19;
-    *a5 = v19;
+    *error = v19;
   }
 
   v18 = 0;
@@ -315,31 +315,31 @@ id __79__PODaemonProcess__removeDeviceConfigurationForIdentifier_syncToPreboot_e
   return v1;
 }
 
-- (void)resetStoredConfigurationWithCompletion:(id)a3
+- (void)resetStoredConfigurationWithCompletion:(id)completion
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = PO_LOG_PODaemonProcess();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v20 = "[PODaemonProcess resetStoredConfigurationWithCompletion:]";
     v21 = 2112;
-    v22 = self;
+    selfCopy = self;
     _os_log_impl(&dword_25E831000, v5, OS_LOG_TYPE_DEFAULT, "%s  on %@", buf, 0x16u);
   }
 
-  v6 = [(PODaemonCoreProcess *)self _defaultConfigurationPath];
+  _defaultConfigurationPath = [(PODaemonCoreProcess *)self _defaultConfigurationPath];
   [(PODaemonProcess *)self setDataVaultInitialized:0];
-  v7 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v18 = 0;
-  v8 = [v7 removeItemAtURL:v6 error:&v18];
+  v8 = [defaultManager removeItemAtURL:_defaultConfigurationPath error:&v18];
   v9 = v18;
 
   if ((v8 & 1) == 0)
   {
-    v10 = [v9 userInfo];
-    v11 = [v10 objectForKeyedSubscript:@"NSUnderlyingError"];
+    userInfo = [v9 userInfo];
+    v11 = [userInfo objectForKeyedSubscript:@"NSUnderlyingError"];
 
     if ([v11 code] != 2)
     {
@@ -349,21 +349,21 @@ id __79__PODaemonProcess__removeDeviceConfigurationForIdentifier_syncToPreboot_e
       v16[3] = &unk_279A3A088;
       v17 = v9;
       v14 = __58__PODaemonProcess_resetStoredConfigurationWithCompletion___block_invoke(v16);
-      v4[2](v4, 0, v14);
+      completionCopy[2](completionCopy, 0, v14);
 
       goto LABEL_8;
     }
   }
 
   [(PODaemonProcess *)self _initDataVaultIfNeededWithError:0];
-  v12 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v12 removeObjectForKey:@"com.apple.AuthRightCheck"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults removeObjectForKey:@"com.apple.AuthRightCheck"];
 
-  v13 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v13 removeObjectForKey:@"com.apple.MigrationCheck"];
+  standardUserDefaults2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults2 removeObjectForKey:@"com.apple.MigrationCheck"];
 
   [MEMORY[0x277D3D1D8] updateTriggerFile];
-  v4[2](v4, 1, 0);
+  completionCopy[2](completionCopy, 1, 0);
 LABEL_8:
 
   v15 = *MEMORY[0x277D85DE8];
@@ -381,63 +381,63 @@ id __58__PODaemonProcess_resetStoredConfigurationWithCompletion___block_invoke(u
   return v1;
 }
 
-- (void)removeDeviceConfigurationForIdentifier:(id)a3 completion:(id)a4
+- (void)removeDeviceConfigurationForIdentifier:(id)identifier completion:(id)completion
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v8 = PO_LOG_PODaemonProcess();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315650;
     v14 = "[PODaemonProcess removeDeviceConfigurationForIdentifier:completion:]";
     v15 = 2114;
-    v16 = v6;
+    v16 = identifierCopy;
     v17 = 2112;
-    v18 = self;
+    selfCopy = self;
     _os_log_impl(&dword_25E831000, v8, OS_LOG_TYPE_DEFAULT, "%s identifier = %{public}@ on %@", buf, 0x20u);
   }
 
   v12 = 0;
-  v9 = [(PODaemonProcess *)self _removeDeviceConfigurationForIdentifier:v6 syncToPreboot:1 error:&v12];
+  v9 = [(PODaemonProcess *)self _removeDeviceConfigurationForIdentifier:identifierCopy syncToPreboot:1 error:&v12];
   v10 = v12;
-  v7[2](v7, v9, v10);
+  completionCopy[2](completionCopy, v9, v10);
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_removeLoginConfigurationForIdentifier:(id)a3 syncToPreboot:(BOOL)a4 error:(id *)a5
+- (BOOL)_removeLoginConfigurationForIdentifier:(id)identifier syncToPreboot:(BOOL)preboot error:(id *)error
 {
   v31 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  identifierCopy = identifier;
   v8 = PO_LOG_PODaemonProcess();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315650;
     v26 = "[PODaemonProcess _removeLoginConfigurationForIdentifier:syncToPreboot:error:]";
     v27 = 2114;
-    v28 = v7;
+    v28 = identifierCopy;
     v29 = 2112;
-    v30 = self;
+    selfCopy = self;
     _os_log_impl(&dword_25E831000, v8, OS_LOG_TYPE_DEFAULT, "%s identifier = %{public}@ on %@", buf, 0x20u);
   }
 
-  v9 = [(PODaemonCoreProcess *)self _defaultConfigurationPath];
-  v10 = v9;
-  if (v7)
+  _defaultConfigurationPath = [(PODaemonCoreProcess *)self _defaultConfigurationPath];
+  v10 = _defaultConfigurationPath;
+  if (identifierCopy)
   {
-    v11 = [MEMORY[0x277CCACA8] stringWithFormat:*MEMORY[0x277D3D2B0], v7];
-    v12 = [v10 URLByAppendingPathComponent:v11];
+    identifierCopy = [MEMORY[0x277CCACA8] stringWithFormat:*MEMORY[0x277D3D2B0], identifierCopy];
+    v12 = [v10 URLByAppendingPathComponent:identifierCopy];
   }
 
   else
   {
-    v12 = [v9 URLByAppendingPathComponent:*MEMORY[0x277D3D2B8]];
+    v12 = [_defaultConfigurationPath URLByAppendingPathComponent:*MEMORY[0x277D3D2B8]];
   }
 
-  v13 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v24 = 0;
-  v14 = [v13 removeItemAtURL:v12 error:&v24];
+  v14 = [defaultManager removeItemAtURL:v12 error:&v24];
   v15 = v24;
 
   if (v14)
@@ -445,8 +445,8 @@ id __58__PODaemonProcess_resetStoredConfigurationWithCompletion___block_invoke(u
     goto LABEL_9;
   }
 
-  v16 = [v15 userInfo];
-  v17 = [v16 objectForKeyedSubscript:@"NSUnderlyingError"];
+  userInfo = [v15 userInfo];
+  v17 = [userInfo objectForKeyedSubscript:@"NSUnderlyingError"];
 
   if ([v17 code] == 2)
   {
@@ -463,10 +463,10 @@ LABEL_9:
   v22[3] = &unk_279A3A088;
   v23 = v15;
   v19 = __78__PODaemonProcess__removeLoginConfigurationForIdentifier_syncToPreboot_error___block_invoke(v22);
-  if (a5)
+  if (error)
   {
     v19 = v19;
-    *a5 = v19;
+    *error = v19;
   }
 
   v18 = 0;
@@ -488,54 +488,54 @@ id __78__PODaemonProcess__removeLoginConfigurationForIdentifier_syncToPreboot_er
   return v1;
 }
 
-- (void)removeLoginConfigurationForIdentifier:(id)a3 completion:(id)a4
+- (void)removeLoginConfigurationForIdentifier:(id)identifier completion:(id)completion
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v8 = PO_LOG_PODaemonProcess();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315650;
     v14 = "[PODaemonProcess removeLoginConfigurationForIdentifier:completion:]";
     v15 = 2114;
-    v16 = v6;
+    v16 = identifierCopy;
     v17 = 2112;
-    v18 = self;
+    selfCopy = self;
     _os_log_impl(&dword_25E831000, v8, OS_LOG_TYPE_DEFAULT, "%s identifier = %{public}@ on %@", buf, 0x20u);
   }
 
   v12 = 0;
-  v9 = [(PODaemonProcess *)self _removeLoginConfigurationForIdentifier:v6 syncToPreboot:1 error:&v12];
+  v9 = [(PODaemonProcess *)self _removeLoginConfigurationForIdentifier:identifierCopy syncToPreboot:1 error:&v12];
   v10 = v12;
-  v7[2](v7, v9, v10);
+  completionCopy[2](completionCopy, v9, v10);
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_removeUserConfigurationForIdentifier:(id)a3 syncToPreboot:(BOOL)a4 error:(id *)a5
+- (BOOL)_removeUserConfigurationForIdentifier:(id)identifier syncToPreboot:(BOOL)preboot error:(id *)error
 {
   v30 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  identifierCopy = identifier;
   v8 = PO_LOG_PODaemonProcess();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315650;
     v25 = "[PODaemonProcess _removeUserConfigurationForIdentifier:syncToPreboot:error:]";
     v26 = 2114;
-    v27 = v7;
+    v27 = identifierCopy;
     v28 = 2112;
-    v29 = self;
+    selfCopy = self;
     _os_log_impl(&dword_25E831000, v8, OS_LOG_TYPE_DEFAULT, "%s identifier = %{public}@ on %@", buf, 0x20u);
   }
 
-  v9 = [(PODaemonCoreProcess *)self _defaultConfigurationPath];
-  v10 = [MEMORY[0x277CCACA8] stringWithFormat:*MEMORY[0x277D3D2D8], v7];
-  v11 = [v9 URLByAppendingPathComponent:v10];
+  _defaultConfigurationPath = [(PODaemonCoreProcess *)self _defaultConfigurationPath];
+  identifierCopy = [MEMORY[0x277CCACA8] stringWithFormat:*MEMORY[0x277D3D2D8], identifierCopy];
+  v11 = [_defaultConfigurationPath URLByAppendingPathComponent:identifierCopy];
 
-  v12 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v23 = 0;
-  v13 = [v12 removeItemAtURL:v11 error:&v23];
+  v13 = [defaultManager removeItemAtURL:v11 error:&v23];
   v14 = v23;
 
   if (v13)
@@ -543,8 +543,8 @@ id __78__PODaemonProcess__removeLoginConfigurationForIdentifier_syncToPreboot_er
     goto LABEL_6;
   }
 
-  v15 = [v14 userInfo];
-  v16 = [v15 objectForKeyedSubscript:@"NSUnderlyingError"];
+  userInfo = [v14 userInfo];
+  v16 = [userInfo objectForKeyedSubscript:@"NSUnderlyingError"];
 
   if ([v16 code] == 2)
   {
@@ -561,10 +561,10 @@ LABEL_6:
   v21[3] = &unk_279A3A088;
   v22 = v14;
   v18 = __77__PODaemonProcess__removeUserConfigurationForIdentifier_syncToPreboot_error___block_invoke(v21);
-  if (a5)
+  if (error)
   {
     v18 = v18;
-    *a5 = v18;
+    *error = v18;
   }
 
   v17 = 0;
@@ -586,51 +586,51 @@ id __77__PODaemonProcess__removeUserConfigurationForIdentifier_syncToPreboot_err
   return v1;
 }
 
-- (void)removeUserConfigurationForIdentifier:(id)a3 completion:(id)a4
+- (void)removeUserConfigurationForIdentifier:(id)identifier completion:(id)completion
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v8 = PO_LOG_PODaemonProcess();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315650;
     v14 = "[PODaemonProcess removeUserConfigurationForIdentifier:completion:]";
     v15 = 2114;
-    v16 = v6;
+    v16 = identifierCopy;
     v17 = 2112;
-    v18 = self;
+    selfCopy = self;
     _os_log_impl(&dword_25E831000, v8, OS_LOG_TYPE_DEFAULT, "%s identifier = %{public}@ on %@", buf, 0x20u);
   }
 
   v12 = 0;
-  v9 = [(PODaemonProcess *)self _removeUserConfigurationForIdentifier:v6 syncToPreboot:1 error:&v12];
+  v9 = [(PODaemonProcess *)self _removeUserConfigurationForIdentifier:identifierCopy syncToPreboot:1 error:&v12];
   v10 = v12;
-  v7[2](v7, v9, v10);
+  completionCopy[2](completionCopy, v9, v10);
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_saveDeviceConfiguration:(id)a3 identifier:(id)a4 syncToPreboot:(BOOL)a5 error:(id *)a6
+- (BOOL)_saveDeviceConfiguration:(id)configuration identifier:(id)identifier syncToPreboot:(BOOL)preboot error:(id *)error
 {
   v35 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
+  configurationCopy = configuration;
+  identifierCopy = identifier;
   v11 = PO_LOG_PODaemonProcess();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315650;
     v30 = "[PODaemonProcess _saveDeviceConfiguration:identifier:syncToPreboot:error:]";
     v31 = 2114;
-    v32 = v10;
+    v32 = identifierCopy;
     v33 = 2112;
-    v34 = self;
+    selfCopy = self;
     _os_log_impl(&dword_25E831000, v11, OS_LOG_TYPE_DEFAULT, "%s identifier = %{public}@ on %@", buf, 0x20u);
   }
 
   if ([MEMORY[0x277D3D1D8] platformSSODevModeEnabled])
   {
-    v12 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v9 encoding:4];
+    v12 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:configurationCopy encoding:4];
     v13 = PO_LOG_PODaemonProcess();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
     {
@@ -638,21 +638,21 @@ id __77__PODaemonProcess__removeUserConfigurationForIdentifier_syncToPreboot_err
     }
   }
 
-  v14 = [(PODaemonCoreProcess *)self _defaultConfigurationPath];
-  v15 = v14;
-  if (v10)
+  _defaultConfigurationPath = [(PODaemonCoreProcess *)self _defaultConfigurationPath];
+  v15 = _defaultConfigurationPath;
+  if (identifierCopy)
   {
-    v16 = [MEMORY[0x277CCACA8] stringWithFormat:*MEMORY[0x277D3D2A0], v10];
-    v17 = [v15 URLByAppendingPathComponent:v16];
+    identifierCopy = [MEMORY[0x277CCACA8] stringWithFormat:*MEMORY[0x277D3D2A0], identifierCopy];
+    v17 = [v15 URLByAppendingPathComponent:identifierCopy];
   }
 
   else
   {
-    v17 = [v14 URLByAppendingPathComponent:*MEMORY[0x277D3D2A8]];
+    v17 = [_defaultConfigurationPath URLByAppendingPathComponent:*MEMORY[0x277D3D2A8]];
   }
 
   v28 = 0;
-  v18 = [(PODaemonCoreProcess *)self writeData:v9 toPath:v17 saveError:&v28];
+  v18 = [(PODaemonCoreProcess *)self writeData:configurationCopy toPath:v17 saveError:&v28];
   v19 = v28;
   v20 = v19;
   if (v18)
@@ -661,9 +661,9 @@ id __77__PODaemonProcess__removeUserConfigurationForIdentifier_syncToPreboot_err
     v21 = PO_LOG_PODaemonProcess();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
     {
-      v22 = [v17 path];
+      path = [v17 path];
       *buf = 138543362;
-      v30 = v22;
+      v30 = path;
       _os_log_impl(&dword_25E831000, v21, OS_LOG_TYPE_INFO, "device config written to file: %{public}@", buf, 0xCu);
     }
   }
@@ -676,10 +676,10 @@ id __77__PODaemonProcess__removeUserConfigurationForIdentifier_syncToPreboot_err
     v26[3] = &unk_279A3A088;
     v27 = v19;
     v23 = __75__PODaemonProcess__saveDeviceConfiguration_identifier_syncToPreboot_error___block_invoke(v26);
-    if (a6)
+    if (error)
     {
       v23 = v23;
-      *a6 = v23;
+      *error = v23;
     }
 
     v21 = v27;
@@ -701,80 +701,80 @@ id __75__PODaemonProcess__saveDeviceConfiguration_identifier_syncToPreboot_error
   return v1;
 }
 
-- (void)saveDeviceConfiguration:(id)a3 identifier:(id)a4 completion:(id)a5
+- (void)saveDeviceConfiguration:(id)configuration identifier:(id)identifier completion:(id)completion
 {
   v22 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
+  identifierCopy = identifier;
+  completionCopy = completion;
+  configurationCopy = configuration;
   v11 = PO_LOG_PODaemonProcess();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315650;
     v17 = "[PODaemonProcess saveDeviceConfiguration:identifier:completion:]";
     v18 = 2114;
-    v19 = v8;
+    v19 = identifierCopy;
     v20 = 2112;
-    v21 = self;
+    selfCopy = self;
     _os_log_impl(&dword_25E831000, v11, OS_LOG_TYPE_DEFAULT, "%s identifier = %{public}@ on %@", buf, 0x20u);
   }
 
   v15 = 0;
-  v12 = [(PODaemonProcess *)self _saveDeviceConfiguration:v10 identifier:v8 syncToPreboot:1 error:&v15];
+  v12 = [(PODaemonProcess *)self _saveDeviceConfiguration:configurationCopy identifier:identifierCopy syncToPreboot:1 error:&v15];
 
   v13 = v15;
-  v9[2](v9, v12, v13);
+  completionCopy[2](completionCopy, v12, v13);
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)saveDeviceConfigurationSyncAllConfigToPreboot:(id)a3 identifier:(id)a4 completion:(id)a5
+- (void)saveDeviceConfigurationSyncAllConfigToPreboot:(id)preboot identifier:(id)identifier completion:(id)completion
 {
   v22 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
+  identifierCopy = identifier;
+  completionCopy = completion;
+  prebootCopy = preboot;
   v11 = PO_LOG_PODaemonProcess();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315650;
     v17 = "[PODaemonProcess saveDeviceConfigurationSyncAllConfigToPreboot:identifier:completion:]";
     v18 = 2114;
-    v19 = v8;
+    v19 = identifierCopy;
     v20 = 2112;
-    v21 = self;
+    selfCopy = self;
     _os_log_impl(&dword_25E831000, v11, OS_LOG_TYPE_DEFAULT, "%s identifier = %{public}@ on %@", buf, 0x20u);
   }
 
   v15 = 0;
-  v12 = [(PODaemonProcess *)self _saveDeviceConfiguration:v10 identifier:v8 syncToPreboot:0 error:&v15];
+  v12 = [(PODaemonProcess *)self _saveDeviceConfiguration:prebootCopy identifier:identifierCopy syncToPreboot:0 error:&v15];
 
   v13 = v15;
-  v9[2](v9, v12, v13);
+  completionCopy[2](completionCopy, v12, v13);
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_saveLoginConfiguration:(id)a3 identifier:(id)a4 syncToPreboot:(BOOL)a5 error:(id *)a6
+- (BOOL)_saveLoginConfiguration:(id)configuration identifier:(id)identifier syncToPreboot:(BOOL)preboot error:(id *)error
 {
   v35 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
+  configurationCopy = configuration;
+  identifierCopy = identifier;
   v11 = PO_LOG_PODaemonProcess();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315650;
     v30 = "[PODaemonProcess _saveLoginConfiguration:identifier:syncToPreboot:error:]";
     v31 = 2114;
-    v32 = v10;
+    v32 = identifierCopy;
     v33 = 2112;
-    v34 = self;
+    selfCopy = self;
     _os_log_impl(&dword_25E831000, v11, OS_LOG_TYPE_DEFAULT, "%s identifier = %{public}@ on %@", buf, 0x20u);
   }
 
   if ([MEMORY[0x277D3D1D8] platformSSODevModeEnabled])
   {
-    v12 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v9 encoding:4];
+    v12 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:configurationCopy encoding:4];
     v13 = PO_LOG_PODaemonProcess();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
     {
@@ -782,21 +782,21 @@ id __75__PODaemonProcess__saveDeviceConfiguration_identifier_syncToPreboot_error
     }
   }
 
-  v14 = [(PODaemonCoreProcess *)self _defaultConfigurationPath];
-  v15 = v14;
-  if (v10)
+  _defaultConfigurationPath = [(PODaemonCoreProcess *)self _defaultConfigurationPath];
+  v15 = _defaultConfigurationPath;
+  if (identifierCopy)
   {
-    v16 = [MEMORY[0x277CCACA8] stringWithFormat:*MEMORY[0x277D3D2B0], v10];
-    v17 = [v15 URLByAppendingPathComponent:v16];
+    identifierCopy = [MEMORY[0x277CCACA8] stringWithFormat:*MEMORY[0x277D3D2B0], identifierCopy];
+    v17 = [v15 URLByAppendingPathComponent:identifierCopy];
   }
 
   else
   {
-    v17 = [v14 URLByAppendingPathComponent:*MEMORY[0x277D3D2B8]];
+    v17 = [_defaultConfigurationPath URLByAppendingPathComponent:*MEMORY[0x277D3D2B8]];
   }
 
   v28 = 0;
-  v18 = [(PODaemonCoreProcess *)self writeData:v9 toPath:v17 saveError:&v28];
+  v18 = [(PODaemonCoreProcess *)self writeData:configurationCopy toPath:v17 saveError:&v28];
   v19 = v28;
   v20 = v19;
   if (v18)
@@ -805,9 +805,9 @@ id __75__PODaemonProcess__saveDeviceConfiguration_identifier_syncToPreboot_error
     v21 = PO_LOG_PODaemonProcess();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
     {
-      v22 = [v17 path];
+      path = [v17 path];
       *buf = 138543362;
-      v30 = v22;
+      v30 = path;
       _os_log_impl(&dword_25E831000, v21, OS_LOG_TYPE_INFO, "login config written to file: %{public}@", buf, 0xCu);
     }
   }
@@ -820,10 +820,10 @@ id __75__PODaemonProcess__saveDeviceConfiguration_identifier_syncToPreboot_error
     v26[3] = &unk_279A3A088;
     v27 = v19;
     v23 = __74__PODaemonProcess__saveLoginConfiguration_identifier_syncToPreboot_error___block_invoke(v26);
-    if (a6)
+    if (error)
     {
       v23 = v23;
-      *a6 = v23;
+      *error = v23;
     }
 
     v21 = v27;
@@ -845,53 +845,53 @@ id __74__PODaemonProcess__saveLoginConfiguration_identifier_syncToPreboot_error_
   return v1;
 }
 
-- (void)saveLoginConfiguration:(id)a3 identifier:(id)a4 completion:(id)a5
+- (void)saveLoginConfiguration:(id)configuration identifier:(id)identifier completion:(id)completion
 {
   v22 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
+  identifierCopy = identifier;
+  completionCopy = completion;
+  configurationCopy = configuration;
   v11 = PO_LOG_PODaemonProcess();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315650;
     v17 = "[PODaemonProcess saveLoginConfiguration:identifier:completion:]";
     v18 = 2114;
-    v19 = v8;
+    v19 = identifierCopy;
     v20 = 2112;
-    v21 = self;
+    selfCopy = self;
     _os_log_impl(&dword_25E831000, v11, OS_LOG_TYPE_DEFAULT, "%s identifier = %{public}@ on %@", buf, 0x20u);
   }
 
   v15 = 0;
-  v12 = [(PODaemonProcess *)self _saveLoginConfiguration:v10 identifier:v8 syncToPreboot:1 error:&v15];
+  v12 = [(PODaemonProcess *)self _saveLoginConfiguration:configurationCopy identifier:identifierCopy syncToPreboot:1 error:&v15];
 
   v13 = v15;
-  v9[2](v9, v12, v13);
+  completionCopy[2](completionCopy, v12, v13);
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_saveUserConfigurationData:(id)a3 forIdentifier:(id)a4 syncToPreboot:(BOOL)a5 error:(id *)a6
+- (BOOL)_saveUserConfigurationData:(id)data forIdentifier:(id)identifier syncToPreboot:(BOOL)preboot error:(id *)error
 {
   v34 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
+  dataCopy = data;
+  identifierCopy = identifier;
   v11 = PO_LOG_PODaemonProcess();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315650;
     v29 = "[PODaemonProcess _saveUserConfigurationData:forIdentifier:syncToPreboot:error:]";
     v30 = 2114;
-    v31 = v10;
+    v31 = identifierCopy;
     v32 = 2112;
-    v33 = self;
+    selfCopy = self;
     _os_log_impl(&dword_25E831000, v11, OS_LOG_TYPE_DEFAULT, "%s identifier = %{public}@ on %@", buf, 0x20u);
   }
 
   if ([MEMORY[0x277D3D1D8] platformSSODevModeEnabled])
   {
-    v12 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v9 encoding:4];
+    v12 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:dataCopy encoding:4];
     v13 = PO_LOG_PODaemonProcess();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
     {
@@ -899,12 +899,12 @@ id __74__PODaemonProcess__saveLoginConfiguration_identifier_syncToPreboot_error_
     }
   }
 
-  v14 = [(PODaemonCoreProcess *)self _defaultConfigurationPath];
-  v15 = [MEMORY[0x277CCACA8] stringWithFormat:*MEMORY[0x277D3D2D8], v10];
-  v16 = [v14 URLByAppendingPathComponent:v15];
+  _defaultConfigurationPath = [(PODaemonCoreProcess *)self _defaultConfigurationPath];
+  identifierCopy = [MEMORY[0x277CCACA8] stringWithFormat:*MEMORY[0x277D3D2D8], identifierCopy];
+  v16 = [_defaultConfigurationPath URLByAppendingPathComponent:identifierCopy];
 
   v27 = 0;
-  v17 = [(PODaemonCoreProcess *)self writeData:v9 toPath:v16 saveError:&v27];
+  v17 = [(PODaemonCoreProcess *)self writeData:dataCopy toPath:v16 saveError:&v27];
   v18 = v27;
   v19 = v18;
   if (v17)
@@ -913,9 +913,9 @@ id __74__PODaemonProcess__saveLoginConfiguration_identifier_syncToPreboot_error_
     v20 = PO_LOG_PODaemonProcess();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
     {
-      v21 = [v16 path];
+      path = [v16 path];
       *buf = 138543362;
-      v29 = v21;
+      v29 = path;
       _os_log_impl(&dword_25E831000, v20, OS_LOG_TYPE_INFO, "user config written to file: %{public}@", buf, 0xCu);
     }
   }
@@ -928,10 +928,10 @@ id __74__PODaemonProcess__saveLoginConfiguration_identifier_syncToPreboot_error_
     v25[3] = &unk_279A3A088;
     v26 = v18;
     v22 = __80__PODaemonProcess__saveUserConfigurationData_forIdentifier_syncToPreboot_error___block_invoke(v25);
-    if (a6)
+    if (error)
     {
       v22 = v22;
-      *a6 = v22;
+      *error = v22;
     }
 
     v20 = v26;
@@ -953,9 +953,9 @@ id __80__PODaemonProcess__saveUserConfigurationData_forIdentifier_syncToPreboot_
   return v1;
 }
 
-- (BOOL)_saveUserLoginStateList:(id)a3 error:(id *)a4
+- (BOOL)_saveUserLoginStateList:(id)list error:(id *)error
 {
-  v6 = a3;
+  listCopy = list;
   v7 = PO_LOG_PODaemonProcess();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -964,14 +964,14 @@ id __80__PODaemonProcess__saveUserConfigurationData_forIdentifier_syncToPreboot_
 
   v10.receiver = self;
   v10.super_class = PODaemonProcess;
-  v8 = [(PODaemonCoreProcess *)&v10 _saveUserLoginStateList:v6 error:a4];
+  v8 = [(PODaemonCoreProcess *)&v10 _saveUserLoginStateList:listCopy error:error];
 
   return v8;
 }
 
-- (void)enablePlatformSSORulesAndDefaults:(id)a3
+- (void)enablePlatformSSORulesAndDefaults:(id)defaults
 {
-  v4 = a3;
+  defaultsCopy = defaults;
   v5 = PO_LOG_PODaemonProcess();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -982,9 +982,9 @@ id __80__PODaemonProcess__saveUserConfigurationData_forIdentifier_syncToPreboot_
   v8 = 3221225472;
   v9 = __53__PODaemonProcess_enablePlatformSSORulesAndDefaults___block_invoke;
   v10 = &unk_279A3AB20;
-  v11 = self;
-  v12 = v4;
-  v6 = v4;
+  selfCopy = self;
+  v12 = defaultsCopy;
+  v6 = defaultsCopy;
   [(PODaemonProcess *)self _enablePlatformSSORuleForLogin:&v7];
   [(PODaemonProcess *)self _enableAccessKeyDefaults:v7];
   [(PODaemonProcess *)self _enableTemporarySessionDefaults];
@@ -1003,21 +1003,21 @@ uint64_t __53__PODaemonProcess_enablePlatformSSORulesAndDefaults___block_invoke(
   }
 }
 
-- (void)_enablePlatformSSORuleForScreensaver:(id)a3
+- (void)_enablePlatformSSORuleForScreensaver:(id)screensaver
 {
-  v3 = a3;
+  screensaverCopy = screensaver;
   v4 = PO_LOG_PODaemonProcess();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
     [PODaemonProcess enablePlatformSSORulesAndDefaults:];
   }
 
-  (*(v3 + 2))(v3, 0, 0);
+  (*(screensaverCopy + 2))(screensaverCopy, 0, 0);
 }
 
-- (void)disablePlatformSSORulesAndDefaults:(id)a3
+- (void)disablePlatformSSORulesAndDefaults:(id)defaults
 {
-  v4 = a3;
+  defaultsCopy = defaults;
   v5 = PO_LOG_PODaemonProcess();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -1028,9 +1028,9 @@ uint64_t __53__PODaemonProcess_enablePlatformSSORulesAndDefaults___block_invoke(
   v8 = 3221225472;
   v9 = __54__PODaemonProcess_disablePlatformSSORulesAndDefaults___block_invoke;
   v10 = &unk_279A3AB20;
-  v11 = self;
-  v12 = v4;
-  v6 = v4;
+  selfCopy = self;
+  v12 = defaultsCopy;
+  v6 = defaultsCopy;
   [(PODaemonProcess *)self _disablePlatformSSORuleForLogin:&v7];
   [(PODaemonProcess *)self _disableAccessKeyDefaults:v7];
   [(PODaemonProcess *)self _disableTemporarySessionDefaults];
@@ -1049,40 +1049,40 @@ uint64_t __54__PODaemonProcess_disablePlatformSSORulesAndDefaults___block_invoke
   }
 }
 
-- (void)_disablePlatformSSORuleForScreensaver:(id)a3
+- (void)_disablePlatformSSORuleForScreensaver:(id)screensaver
 {
-  v3 = a3;
+  screensaverCopy = screensaver;
   v4 = PO_LOG_PODaemonProcess();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
     [PODaemonProcess disablePlatformSSORulesAndDefaults:];
   }
 
-  (*(v3 + 2))(v3, 0, 0);
+  (*(screensaverCopy + 2))(screensaverCopy, 0, 0);
 }
 
-- (void)_enablePlatformSSORuleForLogin:(id)a3
+- (void)_enablePlatformSSORuleForLogin:(id)login
 {
-  v3 = a3;
+  loginCopy = login;
   v4 = PO_LOG_PODaemonProcess();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
     [PODaemonProcess _enablePlatformSSORuleForLogin:];
   }
 
-  (*(v3 + 2))(v3, 0, 0);
+  (*(loginCopy + 2))(loginCopy, 0, 0);
 }
 
-- (void)_disablePlatformSSORuleForLogin:(id)a3
+- (void)_disablePlatformSSORuleForLogin:(id)login
 {
-  v3 = a3;
+  loginCopy = login;
   v4 = PO_LOG_PODaemonProcess();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
     [PODaemonProcess _enablePlatformSSORuleForLogin:];
   }
 
-  (*(v3 + 2))(v3, 0, 0);
+  (*(loginCopy + 2))(loginCopy, 0, 0);
 }
 
 - (void)_enableAccessKeyDefaults
@@ -1116,18 +1116,18 @@ uint64_t __54__PODaemonProcess_disablePlatformSSORulesAndDefaults___block_invoke
           v11 = MEMORY[0x277CBEBF8];
         }
 
-        v12 = [v11 mutableCopy];
-        if (!v12)
+        array = [v11 mutableCopy];
+        if (!array)
         {
-          v12 = [MEMORY[0x277CBEB18] array];
+          array = [MEMORY[0x277CBEB18] array];
         }
 
-        if (([v12 containsObject:@"com.apple.PlatformSSO.AccessKey"] & 1) == 0)
+        if (([array containsObject:@"com.apple.PlatformSSO.AccessKey"] & 1) == 0)
         {
-          [v12 addObject:@"com.apple.PlatformSSO.AccessKey"];
+          [array addObject:@"com.apple.PlatformSSO.AccessKey"];
         }
 
-        CFPreferencesSetValue(@"PreloadedTokens", v12, @"com.apple.security.smartcard", v8, v9);
+        CFPreferencesSetValue(@"PreloadedTokens", array, @"com.apple.security.smartcard", v8, v9);
 
         if (!CFPreferencesSynchronize(@"com.apple.security.smartcard", v8, v9))
         {
@@ -1222,10 +1222,10 @@ id __43__PODaemonProcess__enableAccessKeyDefaults__block_invoke()
     v5 = v4;
     if (v4)
     {
-      v6 = [v4 supportsCreateTemporaryUsers];
+      supportsCreateTemporaryUsers = [v4 supportsCreateTemporaryUsers];
       v7 = PO_LOG_PODaemonProcess();
       v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG);
-      if (v6)
+      if (supportsCreateTemporaryUsers)
       {
         if (v8)
         {
@@ -1290,10 +1290,10 @@ id __43__PODaemonProcess__enableAccessKeyDefaults__block_invoke()
   }
 }
 
-- (BOOL)_updateGroupForRight:(id)a3 newGroup:(id)a4
+- (BOOL)_updateGroupForRight:(id)right newGroup:(id)group
 {
-  v5 = a3;
-  v6 = a4;
+  rightCopy = right;
+  groupCopy = group;
   v7 = PO_LOG_PODaemonProcess();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -1303,33 +1303,33 @@ id __43__PODaemonProcess__enableAccessKeyDefaults__block_invoke()
   return 1;
 }
 
-- (void)saveAppSSOConfiguration:(id)a3 completion:(id)a4
+- (void)saveAppSSOConfiguration:(id)configuration completion:(id)completion
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  completionCopy = completion;
   v8 = PO_LOG_PODaemonProcess();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315650;
     v16 = "[PODaemonProcess saveAppSSOConfiguration:completion:]";
     v17 = 2114;
-    v18 = v6;
+    v18 = configurationCopy;
     v19 = 2112;
-    v20 = self;
+    selfCopy = self;
     _os_log_impl(&dword_25E831000, v8, OS_LOG_TYPE_DEFAULT, "%s configuration = %{public}@ on %@", buf, 0x20u);
   }
 
-  v9 = [getSOConfigurationManagerClass() defaultManager];
-  if (v9)
+  defaultManager = [getSOConfigurationManagerClass() defaultManager];
+  if (defaultManager)
   {
-    v10 = [getSOConfigurationManagerClass() defaultManager];
+    defaultManager2 = [getSOConfigurationManagerClass() defaultManager];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __54__PODaemonProcess_saveAppSSOConfiguration_completion___block_invoke_102;
     v13[3] = &unk_279A3A588;
-    v14 = v7;
-    [v10 saveConfigurationData:v6 completion:v13];
+    v14 = completionCopy;
+    [defaultManager2 saveConfigurationData:configurationCopy completion:v13];
 
     v11 = v14;
   }
@@ -1337,7 +1337,7 @@ id __43__PODaemonProcess__enableAccessKeyDefaults__block_invoke()
   else
   {
     v11 = __54__PODaemonProcess_saveAppSSOConfiguration_completion___block_invoke();
-    (*(v7 + 2))(v7, 0, v11);
+    (*(completionCopy + 2))(completionCopy, 0, v11);
   }
 
   v12 = *MEMORY[0x277D85DE8];
@@ -1388,17 +1388,17 @@ id __54__PODaemonProcess_saveAppSSOConfiguration_completion___block_invoke_2()
   return v0;
 }
 
-- (void)createAppSSOCachePathWithCompletion:(id)a3
+- (void)createAppSSOCachePathWithCompletion:(id)completion
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = PO_LOG_PODaemonProcess();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v19 = "[PODaemonProcess createAppSSOCachePathWithCompletion:]";
     v20 = 2112;
-    v21 = self;
+    selfCopy = self;
     _os_log_impl(&dword_25E831000, v5, OS_LOG_TYPE_DEFAULT, "%s  on %@", buf, 0x16u);
   }
 
@@ -1408,15 +1408,15 @@ id __54__PODaemonProcess_saveAppSSOConfiguration_completion___block_invoke_2()
   v8 = v17;
   if (v7)
   {
-    v9 = [v6 _defaultCacheFile];
-    v10 = [v9 stringByDeletingLastPathComponent];
+    _defaultCacheFile = [v6 _defaultCacheFile];
+    stringByDeletingLastPathComponent = [_defaultCacheFile stringByDeletingLastPathComponent];
 
     v16 = 0;
-    v11 = [v6 _initCachePath:v10 ifNeededWithError:&v16];
+    v11 = [v6 _initCachePath:stringByDeletingLastPathComponent ifNeededWithError:&v16];
     v12 = v16;
     if (v11)
     {
-      v4[2](v4, 1, 0);
+      completionCopy[2](completionCopy, 1, 0);
     }
 
     else
@@ -1427,7 +1427,7 @@ id __54__PODaemonProcess_saveAppSSOConfiguration_completion___block_invoke_2()
         [PODaemonProcess createAppSSOCachePathWithCompletion:];
       }
 
-      (v4)[2](v4, 0, v12);
+      (completionCopy)[2](completionCopy, 0, v12);
     }
   }
 
@@ -1439,13 +1439,13 @@ id __54__PODaemonProcess_saveAppSSOConfiguration_completion___block_invoke_2()
       [PODaemonProcess createAppSSOCachePathWithCompletion:];
     }
 
-    (v4)[2](v4, 0, v8);
+    (completionCopy)[2](completionCopy, 0, v8);
   }
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_initDataVaultIfNeededWithError:(id *)a3
+- (BOOL)_initDataVaultIfNeededWithError:(id *)error
 {
   v54 = *MEMORY[0x277D85DE8];
   v5 = PO_LOG_PODaemonProcess();
@@ -1454,14 +1454,14 @@ id __54__PODaemonProcess_saveAppSSOConfiguration_completion___block_invoke_2()
     *buf = 136315394;
     v51 = "[PODaemonProcess _initDataVaultIfNeededWithError:]";
     v52 = 2112;
-    v53 = self;
+    selfCopy = self;
     _os_log_impl(&dword_25E831000, v5, OS_LOG_TYPE_DEFAULT, "%s  on %@", buf, 0x16u);
   }
 
-  v6 = [(PODaemonCoreProcess *)self _defaultConfigurationPath];
-  v7 = self;
-  objc_sync_enter(v7);
-  if (![(PODaemonProcess *)v7 dataVaultInitialized])
+  _defaultConfigurationPath = [(PODaemonCoreProcess *)self _defaultConfigurationPath];
+  selfCopy2 = self;
+  objc_sync_enter(selfCopy2);
+  if (![(PODaemonProcess *)selfCopy2 dataVaultInitialized])
   {
     v9 = *MEMORY[0x277CCA120];
     v48[0] = *MEMORY[0x277CCA160];
@@ -1471,15 +1471,15 @@ id __54__PODaemonProcess_saveAppSSOConfiguration_completion___block_invoke_2()
     v48[2] = *MEMORY[0x277CCA180];
     v49[2] = &unk_28708C3F0;
     v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v49 forKeys:v48 count:3];
-    v11 = [MEMORY[0x277CCAA00] defaultManager];
-    v12 = [v6 path];
-    v13 = [v11 fileExistsAtPath:v12 isDirectory:0];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    path = [_defaultConfigurationPath path];
+    v13 = [defaultManager fileExistsAtPath:path isDirectory:0];
 
     if ((v13 & 1) == 0)
     {
-      v14 = [MEMORY[0x277CCAA00] defaultManager];
+      defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
       v47 = 0;
-      v15 = [v14 createDirectoryAtURL:v6 withIntermediateDirectories:1 attributes:v10 error:&v47];
+      v15 = [defaultManager2 createDirectoryAtURL:_defaultConfigurationPath withIntermediateDirectories:1 attributes:v10 error:&v47];
       v16 = v47;
 
       if (v16)
@@ -1496,36 +1496,36 @@ id __54__PODaemonProcess_saveAppSSOConfiguration_completion___block_invoke_2()
           [PODaemonProcess _initDataVaultIfNeededWithError:];
         }
 
-        if (!a3)
+        if (!error)
         {
           goto LABEL_34;
         }
 
         v32 = v16;
         v8 = 0;
-        *a3 = v16;
+        *error = v16;
         goto LABEL_35;
       }
 
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
-        v19 = [v6 path];
+        path2 = [_defaultConfigurationPath path];
         *buf = 138543362;
-        v51 = v19;
+        v51 = path2;
         _os_log_impl(&dword_25E831000, v18, OS_LOG_TYPE_DEFAULT, "created configuration directory at %{public}@", buf, 0xCu);
       }
     }
 
-    v20 = [MEMORY[0x277CCAA00] defaultManager];
-    v21 = [v6 path];
+    defaultManager3 = [MEMORY[0x277CCAA00] defaultManager];
+    path3 = [_defaultConfigurationPath path];
     v46 = 0;
-    v22 = [v20 setAttributes:v10 ofItemAtPath:v21 error:&v46];
+    v22 = [defaultManager3 setAttributes:v10 ofItemAtPath:path3 error:&v46];
     v16 = v46;
 
     if (v22)
     {
-      v23 = v6;
-      [v6 fileSystemRepresentation];
+      v23 = _defaultConfigurationPath;
+      [_defaultConfigurationPath fileSystemRepresentation];
       v24 = rootless_check_datavault_flag();
       if (v24)
       {
@@ -1539,20 +1539,20 @@ id __54__PODaemonProcess_saveAppSSOConfiguration_completion___block_invoke_2()
             [(PODaemonProcess *)v27 _initDataVaultIfNeededWithError:buf];
           }
 
-          if (a3)
+          if (error)
           {
             v28 = MEMORY[0x277D3D1F0];
             v29 = MEMORY[0x277CCACA8];
             v30 = __error();
             v31 = [v29 stringWithFormat:@"Failed to check the state of datavault: %s", strerror(*v30)];
-            *a3 = [v28 internalErrorWithMessage:v31];
+            *error = [v28 internalErrorWithMessage:v31];
           }
 
           goto LABEL_34;
         }
 
-        v33 = v6;
-        [v6 fileSystemRepresentation];
+        v33 = _defaultConfigurationPath;
+        [_defaultConfigurationPath fileSystemRepresentation];
         v34 = rootless_convert_to_datavault();
         v35 = PO_LOG_PODaemonProcess();
         v36 = v35;
@@ -1565,13 +1565,13 @@ id __54__PODaemonProcess_saveAppSSOConfiguration_completion___block_invoke_2()
             [(PODaemonProcess *)v39 _initDataVaultIfNeededWithError:buf];
           }
 
-          if (a3)
+          if (error)
           {
             v40 = MEMORY[0x277D3D1F0];
             v41 = MEMORY[0x277CCACA8];
             v42 = __error();
             v43 = [v41 stringWithFormat:@"Failed to convert to datavault: %s", strerror(*v42)];
-            *a3 = [v40 internalErrorWithMessage:v43];
+            *error = [v40 internalErrorWithMessage:v43];
           }
 
           goto LABEL_34;
@@ -1579,20 +1579,20 @@ id __54__PODaemonProcess_saveAppSSOConfiguration_completion___block_invoke_2()
 
         if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
         {
-          v37 = [v6 path];
+          path4 = [_defaultConfigurationPath path];
           *buf = 138543362;
-          v51 = v37;
+          v51 = path4;
           _os_log_impl(&dword_25E831000, v36, OS_LOG_TYPE_DEFAULT, "successfully created datavault at %{public}@", buf, 0xCu);
         }
       }
 
       v8 = 1;
-      [(PODaemonProcess *)v7 setDataVaultInitialized:1];
+      [(PODaemonProcess *)selfCopy2 setDataVaultInitialized:1];
     }
 
     else
     {
-      if (!a3)
+      if (!error)
       {
 LABEL_34:
         v8 = 0;
@@ -1600,7 +1600,7 @@ LABEL_34:
       }
 
       [MEMORY[0x277D3D1F0] internalErrorWithMessage:@"Failed to set data vault attributes"];
-      *a3 = v8 = 0;
+      *error = v8 = 0;
     }
 
 LABEL_35:
@@ -1610,7 +1610,7 @@ LABEL_35:
 
   v8 = 1;
 LABEL_36:
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy2);
 
   v44 = *MEMORY[0x277D85DE8];
   return v8;

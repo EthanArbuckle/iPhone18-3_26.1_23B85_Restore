@@ -1,39 +1,39 @@
 @interface GDXPCInternalService
-- (BOOL)behaviorUnderstandingClearEntityTaggingInjectedTagsWithError:(id *)a3;
-- (BOOL)behaviorUnderstandingInjectTagForPersonID:(id)a3 tagType:(id)a4 confidence:(double)a5 error:(id *)a6;
-- (BOOL)behaviorUnderstandingMockEntityRelevanceContextWithDate:(id)a3 error:(id *)a4;
-- (BOOL)benchmarkWithError:(id *)a3;
-- (BOOL)clearStatusWithError:(id *)a3;
-- (BOOL)runDeltaUpdatePipelineWithSource:(id)a3 error:(id *)a4;
-- (BOOL)runToMatchingPipelineWithError:(id *)a3;
-- (BOOL)stopPipelineWithError:(id *)a3;
+- (BOOL)behaviorUnderstandingClearEntityTaggingInjectedTagsWithError:(id *)error;
+- (BOOL)behaviorUnderstandingInjectTagForPersonID:(id)d tagType:(id)type confidence:(double)confidence error:(id *)error;
+- (BOOL)behaviorUnderstandingMockEntityRelevanceContextWithDate:(id)date error:(id *)error;
+- (BOOL)benchmarkWithError:(id *)error;
+- (BOOL)clearStatusWithError:(id *)error;
+- (BOOL)runDeltaUpdatePipelineWithSource:(id)source error:(id *)error;
+- (BOOL)runToMatchingPipelineWithError:(id *)error;
+- (BOOL)stopPipelineWithError:(id *)error;
 - (GDXPCInternalService)init;
-- (id)behaviorUnderstandingEvaluateForBehaviorType:(id)a3 queryName:(id)a4 inferenceServiceInstanceId:(id)a5 error:(id *)a6;
-- (id)behaviorUnderstandingFeaturizeBehaviorOfType:(id)a3 identifier:(id)a4 usingContextAt:(id)a5 error:(id *)a6;
-- (id)behaviorUnderstandingFeaturizedBehaviorsForFeatureName:(id)a3 behaviorType:(id)a4 error:(id *)a5;
-- (id)behaviorUnderstandingHistogramsOfKind:(id)a3 behaviorType:(id)a4 viewName:(id)a5 error:(id *)a6;
-- (id)behaviorUnderstandingRecentBehaviorsOfType:(id)a3 error:(id *)a4;
-- (id)behaviorUnderstandingSampleEntityTaggingFeaturesForPersonID:(id)a3 error:(id *)a4;
-- (id)behaviorUnderstandingShowEntityTaggingInjectedTagsWithError:(id *)a3;
-- (id)behaviorUnderstandingStatusWithError:(id *)a3;
-- (id)contextDataForSource:(id)a3 startDate:(id)a4 endDate:(id)a5 error:(id *)a6;
-- (id)featureKeysWithError:(id *)a3;
-- (id)generateActivityCentricLifeEventsFromStartDate:(id)a3 toEndDate:(id)a4 error:(id *)a5;
-- (id)statsWithError:(id *)a3;
-- (id)statusWithError:(id *)a3;
-- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)a3;
-- (id)triplesQueryWithQuery:(id)a3;
-- (id)validateGraph:(id *)a3;
-- (id)vectorSearchBenchmarkWithConfigFilePath:(id)a3 error:(id *)a4;
-- (id)viewInfoWithViewQuery:(id)a3 rows:(id)a4 error:(id *)a5;
-- (id)viewSqlWithName:(id)a3 statement:(id)a4 error:(id *)a5;
+- (id)behaviorUnderstandingEvaluateForBehaviorType:(id)type queryName:(id)name inferenceServiceInstanceId:(id)id error:(id *)error;
+- (id)behaviorUnderstandingFeaturizeBehaviorOfType:(id)type identifier:(id)identifier usingContextAt:(id)at error:(id *)error;
+- (id)behaviorUnderstandingFeaturizedBehaviorsForFeatureName:(id)name behaviorType:(id)type error:(id *)error;
+- (id)behaviorUnderstandingHistogramsOfKind:(id)kind behaviorType:(id)type viewName:(id)name error:(id *)error;
+- (id)behaviorUnderstandingRecentBehaviorsOfType:(id)type error:(id *)error;
+- (id)behaviorUnderstandingSampleEntityTaggingFeaturesForPersonID:(id)d error:(id *)error;
+- (id)behaviorUnderstandingShowEntityTaggingInjectedTagsWithError:(id *)error;
+- (id)behaviorUnderstandingStatusWithError:(id *)error;
+- (id)contextDataForSource:(id)source startDate:(id)date endDate:(id)endDate error:(id *)error;
+- (id)featureKeysWithError:(id *)error;
+- (id)generateActivityCentricLifeEventsFromStartDate:(id)date toEndDate:(id)endDate error:(id *)error;
+- (id)statsWithError:(id *)error;
+- (id)statusWithError:(id *)error;
+- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)handler;
+- (id)triplesQueryWithQuery:(id)query;
+- (id)validateGraph:(id *)graph;
+- (id)vectorSearchBenchmarkWithConfigFilePath:(id)path error:(id *)error;
+- (id)viewInfoWithViewQuery:(id)query rows:(id)rows error:(id *)error;
+- (id)viewSqlWithName:(id)name statement:(id)statement error:(id *)error;
 - (void)dealloc;
 - (void)locked_establishConnection;
 @end
 
 @implementation GDXPCInternalService
 
-- (id)featureKeysWithError:(id *)a3
+- (id)featureKeysWithError:(id *)error
 {
   v19 = 0;
   v20 = &v19;
@@ -69,9 +69,9 @@
   [v6 featureKeys:v10];
 
   v7 = v20[5];
-  if (a3 && !v7)
+  if (error && !v7)
   {
-    *a3 = v14[5];
+    *error = v14[5];
     v7 = v20[5];
   }
 
@@ -83,11 +83,11 @@
   return v8;
 }
 
-- (id)viewSqlWithName:(id)a3 statement:(id)a4 error:(id *)a5
+- (id)viewSqlWithName:(id)name statement:(id)statement error:(id *)error
 {
   v35 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  nameCopy = name;
+  statementCopy = statement;
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
@@ -104,7 +104,7 @@
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v34 = v8;
+    v34 = nameCopy;
     _os_log_impl(&dword_1ABA78000, v10, OS_LOG_TYPE_DEFAULT, "GDXPCInternalService: viewSql called [name=%@].", buf, 0xCu);
   }
 
@@ -112,7 +112,7 @@
   v18[1] = 3221225472;
   v18[2] = sub_1ABF1484C;
   v18[3] = &unk_1E79626B8;
-  v11 = v8;
+  v11 = nameCopy;
   v19 = v11;
   v20 = &v21;
   v12 = [(GDXPCInternalService *)self synchronousRemoteObjectProxyWithErrorHandler:v18];
@@ -122,12 +122,12 @@
   v17[3] = &unk_1E79627E8;
   v17[4] = &v27;
   v17[5] = &v21;
-  [v12 viewSqlWithName:v11 statement:v9 completion:v17];
+  [v12 viewSqlWithName:v11 statement:statementCopy completion:v17];
 
   v13 = v28[5];
-  if (a5 && !v13)
+  if (error && !v13)
   {
-    *a5 = v22[5];
+    *error = v22[5];
     v13 = v28[5];
   }
 
@@ -141,10 +141,10 @@
   return v14;
 }
 
-- (id)viewInfoWithViewQuery:(id)a3 rows:(id)a4 error:(id *)a5
+- (id)viewInfoWithViewQuery:(id)query rows:(id)rows error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  queryCopy = query;
+  rowsCopy = rows;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -176,12 +176,12 @@
   v15[3] = &unk_1E79625F0;
   v15[4] = &v24;
   v15[5] = &v18;
-  [v11 viewInfoWithViewQuery:v8 rows:v9 completion:v15];
+  [v11 viewInfoWithViewQuery:queryCopy rows:rowsCopy completion:v15];
 
   v12 = v25[5];
-  if (a5 && !v12)
+  if (error && !v12)
   {
-    *a5 = v19[5];
+    *error = v19[5];
     v12 = v25[5];
   }
 
@@ -193,7 +193,7 @@
   return v13;
 }
 
-- (BOOL)behaviorUnderstandingClearEntityTaggingInjectedTagsWithError:(id *)a3
+- (BOOL)behaviorUnderstandingClearEntityTaggingInjectedTagsWithError:(id *)error
 {
   v18 = 0;
   v19 = &v18;
@@ -227,9 +227,9 @@
   v9[5] = &v12;
   [v6 behaviorUnderstandingClearEntityTaggingInjectedTagsWithCompletion:v9];
   v7 = *(v19 + 24);
-  if (a3 && (v19[3] & 1) == 0)
+  if (error && (v19[3] & 1) == 0)
   {
-    *a3 = v13[5];
+    *error = v13[5];
     v7 = *(v19 + 24);
   }
 
@@ -238,7 +238,7 @@
   return v7 & 1;
 }
 
-- (id)behaviorUnderstandingShowEntityTaggingInjectedTagsWithError:(id *)a3
+- (id)behaviorUnderstandingShowEntityTaggingInjectedTagsWithError:(id *)error
 {
   v19 = 0;
   v20 = &v19;
@@ -274,9 +274,9 @@
   v10[5] = &v13;
   [v6 behaviorUnderstandingShowEntityTaggingInjectedTagsWithCompletion:v10];
   v7 = v20[5];
-  if (a3 && !v7)
+  if (error && !v7)
   {
-    *a3 = v14[5];
+    *error = v14[5];
     v7 = v20[5];
   }
 
@@ -288,10 +288,10 @@
   return v8;
 }
 
-- (BOOL)behaviorUnderstandingInjectTagForPersonID:(id)a3 tagType:(id)a4 confidence:(double)a5 error:(id *)a6
+- (BOOL)behaviorUnderstandingInjectTagForPersonID:(id)d tagType:(id)type confidence:(double)confidence error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
+  dCopy = d;
+  typeCopy = type;
   v25 = 0;
   v26 = &v25;
   v27 = 0x2020000000;
@@ -322,11 +322,11 @@
   v16[3] = &unk_1E79628A0;
   v16[4] = &v25;
   v16[5] = &v19;
-  [v13 behaviorUnderstandingInjectTagForPersonID:v10 tagType:v11 confidence:v16 completion:a5];
+  [v13 behaviorUnderstandingInjectTagForPersonID:dCopy tagType:typeCopy confidence:v16 completion:confidence];
   v14 = *(v26 + 24);
-  if (a6 && (v26[3] & 1) == 0)
+  if (error && (v26[3] & 1) == 0)
   {
-    *a6 = v20[5];
+    *error = v20[5];
     v14 = *(v26 + 24);
   }
 
@@ -336,10 +336,10 @@
   return v14 & 1;
 }
 
-- (BOOL)behaviorUnderstandingMockEntityRelevanceContextWithDate:(id)a3 error:(id *)a4
+- (BOOL)behaviorUnderstandingMockEntityRelevanceContextWithDate:(id)date error:(id *)error
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  dateCopy = date;
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
@@ -354,7 +354,7 @@
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v25 = v6;
+    v25 = dateCopy;
     _os_log_impl(&dword_1ABA78000, v7, OS_LOG_TYPE_DEFAULT, "GDXPCInternalService: Behavior Understanding mockEntityRelevanceContext called with date: %@", buf, 0xCu);
   }
 
@@ -371,12 +371,12 @@
   v12[3] = &unk_1E79628A0;
   v12[4] = &v20;
   v12[5] = &v14;
-  [v8 behaviorUnderstandingMockEntityRelevanceContextWithDate:v6 completion:v12];
+  [v8 behaviorUnderstandingMockEntityRelevanceContextWithDate:dateCopy completion:v12];
 
   v9 = *(v21 + 24);
-  if (a4 && (v21[3] & 1) == 0)
+  if (error && (v21[3] & 1) == 0)
   {
-    *a4 = v15[5];
+    *error = v15[5];
     v9 = *(v21 + 24);
   }
 
@@ -387,11 +387,11 @@
   return v9 & 1;
 }
 
-- (id)generateActivityCentricLifeEventsFromStartDate:(id)a3 toEndDate:(id)a4 error:(id *)a5
+- (id)generateActivityCentricLifeEventsFromStartDate:(id)date toEndDate:(id)endDate error:(id *)error
 {
   v34 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  dateCopy = date;
+  endDateCopy = endDate;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -408,9 +408,9 @@
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v31 = v8;
+    v31 = dateCopy;
     v32 = 2112;
-    v33 = v9;
+    v33 = endDateCopy;
     _os_log_impl(&dword_1ABA78000, v10, OS_LOG_TYPE_DEFAULT, "GDXPCInternalService: generateActivityCentricLifeEvents called [startDate: %@, endDate: %@].", buf, 0x16u);
   }
 
@@ -427,12 +427,12 @@
   v16[3] = &unk_1E79625F0;
   v16[4] = &v24;
   v16[5] = &v18;
-  [v11 generateActivityCentricLifeEventsFromStartDate:v8 toEndDate:v9 completion:v16];
+  [v11 generateActivityCentricLifeEventsFromStartDate:dateCopy toEndDate:endDateCopy completion:v16];
 
   v12 = v25[5];
-  if (a5 && !v12)
+  if (error && !v12)
   {
-    *a5 = v19[5];
+    *error = v19[5];
     v12 = v25[5];
   }
 
@@ -445,10 +445,10 @@
   return v13;
 }
 
-- (id)behaviorUnderstandingSampleEntityTaggingFeaturesForPersonID:(id)a3 error:(id *)a4
+- (id)behaviorUnderstandingSampleEntityTaggingFeaturesForPersonID:(id)d error:(id *)error
 {
   v33 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  dCopy = d;
   v25 = 0;
   v26 = &v25;
   v27 = 0x3032000000;
@@ -465,7 +465,7 @@
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v32 = v6;
+    v32 = dCopy;
     _os_log_impl(&dword_1ABA78000, v7, OS_LOG_TYPE_DEFAULT, "GDXPCInternalService: Behavior Understanding sampleEntityTaggingFeatures called [personID=%@].", buf, 0xCu);
   }
 
@@ -473,7 +473,7 @@
   v15[1] = 3221225472;
   v15[2] = sub_1ABF1615C;
   v15[3] = &unk_1E79625C8;
-  v8 = v6;
+  v8 = dCopy;
   v16 = v8;
   v17 = &v19;
   v18 = &v25;
@@ -487,9 +487,9 @@
   [v9 behaviorUnderstandingSampleEntityTaggingFeaturesForPersonID:v8 completion:v14];
 
   v10 = v26[5];
-  if (a4 && !v10)
+  if (error && !v10)
   {
-    *a4 = v20[5];
+    *error = v20[5];
     v10 = v26[5];
   }
 
@@ -503,12 +503,12 @@
   return v11;
 }
 
-- (id)behaviorUnderstandingEvaluateForBehaviorType:(id)a3 queryName:(id)a4 inferenceServiceInstanceId:(id)a5 error:(id *)a6
+- (id)behaviorUnderstandingEvaluateForBehaviorType:(id)type queryName:(id)name inferenceServiceInstanceId:(id)id error:(id *)error
 {
   v47 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  typeCopy = type;
+  nameCopy = name;
+  idCopy = id;
   v35 = 0;
   v36 = &v35;
   v37 = 0x3032000000;
@@ -525,11 +525,11 @@
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v42 = v10;
+    v42 = typeCopy;
     v43 = 2112;
-    v44 = v11;
+    v44 = nameCopy;
     v45 = 2112;
-    v46 = v12;
+    v46 = idCopy;
     _os_log_impl(&dword_1ABA78000, v13, OS_LOG_TYPE_DEFAULT, "GDXPCInternalService: Behavior Understanding evaluate called [behaviorType=%@, queryName=%@, inferenceServiceInstanceId=%@].", buf, 0x20u);
   }
 
@@ -537,11 +537,11 @@
   v23[1] = 3221225472;
   v23[2] = sub_1ABF165EC;
   v23[3] = &unk_1E7962618;
-  v14 = v10;
+  v14 = typeCopy;
   v24 = v14;
-  v15 = v11;
+  v15 = nameCopy;
   v25 = v15;
-  v16 = v12;
+  v16 = idCopy;
   v26 = v16;
   v27 = &v29;
   v28 = &v35;
@@ -555,9 +555,9 @@
   [v17 behaviorUnderstandingEvaluateForBehaviorType:v14 queryName:v15 inferenceServiceInstanceId:v16 completion:v22];
 
   v18 = v36[5];
-  if (a6 && !v18)
+  if (error && !v18)
   {
-    *a6 = v30[5];
+    *error = v30[5];
     v18 = v36[5];
   }
 
@@ -571,12 +571,12 @@
   return v19;
 }
 
-- (id)contextDataForSource:(id)a3 startDate:(id)a4 endDate:(id)a5 error:(id *)a6
+- (id)contextDataForSource:(id)source startDate:(id)date endDate:(id)endDate error:(id *)error
 {
   v47 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  sourceCopy = source;
+  dateCopy = date;
+  endDateCopy = endDate;
   v35 = 0;
   v36 = &v35;
   v37 = 0x3032000000;
@@ -593,11 +593,11 @@
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v42 = v11;
+    v42 = dateCopy;
     v43 = 2112;
-    v44 = v12;
+    v44 = endDateCopy;
     v45 = 2112;
-    v46 = v10;
+    v46 = sourceCopy;
     _os_log_impl(&dword_1ABA78000, v13, OS_LOG_TYPE_DEFAULT, "GDXPCInternalService: ContextData fetch called [startDate=%@, endDate=%@, source=%@].", buf, 0x20u);
   }
 
@@ -605,11 +605,11 @@
   v23[1] = 3221225472;
   v23[2] = sub_1ABF16F4C;
   v23[3] = &unk_1E7962618;
-  v14 = v11;
+  v14 = dateCopy;
   v24 = v14;
-  v15 = v12;
+  v15 = endDateCopy;
   v25 = v15;
-  v16 = v10;
+  v16 = sourceCopy;
   v26 = v16;
   v27 = &v29;
   v28 = &v35;
@@ -623,9 +623,9 @@
   [v17 contextDataForSource:v16 startDate:v14 endDate:v15 completion:v22];
 
   v18 = v36[5];
-  if (a6 && !v18)
+  if (error && !v18)
   {
-    *a6 = v30[5];
+    *error = v30[5];
     v18 = v36[5];
   }
 
@@ -639,11 +639,11 @@
   return v19;
 }
 
-- (id)behaviorUnderstandingFeaturizedBehaviorsForFeatureName:(id)a3 behaviorType:(id)a4 error:(id *)a5
+- (id)behaviorUnderstandingFeaturizedBehaviorsForFeatureName:(id)name behaviorType:(id)type error:(id *)error
 {
   v40 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  nameCopy = name;
+  typeCopy = type;
   v30 = 0;
   v31 = &v30;
   v32 = 0x3032000000;
@@ -660,9 +660,9 @@
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v37 = v8;
+    v37 = nameCopy;
     v38 = 2112;
-    v39 = v9;
+    v39 = typeCopy;
     _os_log_impl(&dword_1ABA78000, v10, OS_LOG_TYPE_DEFAULT, "GDXPCInternalService: Behavior Understanding featurizedBehaviors called [featureName=%@, behaviorType=%@].", buf, 0x16u);
   }
 
@@ -670,9 +670,9 @@
   v19[1] = 3221225472;
   v19[2] = sub_1ABF173C0;
   v19[3] = &unk_1E7962640;
-  v11 = v8;
+  v11 = nameCopy;
   v20 = v11;
-  v12 = v9;
+  v12 = typeCopy;
   v21 = v12;
   v22 = &v24;
   v23 = &v30;
@@ -686,9 +686,9 @@
   [v13 behaviorUnderstandingFeaturizedBehaviorsForFeatureName:v11 behaviorType:v12 completion:v18];
 
   v14 = v31[5];
-  if (a5 && !v14)
+  if (error && !v14)
   {
-    *a5 = v25[5];
+    *error = v25[5];
     v14 = v31[5];
   }
 
@@ -702,12 +702,12 @@
   return v15;
 }
 
-- (id)behaviorUnderstandingHistogramsOfKind:(id)a3 behaviorType:(id)a4 viewName:(id)a5 error:(id *)a6
+- (id)behaviorUnderstandingHistogramsOfKind:(id)kind behaviorType:(id)type viewName:(id)name error:(id *)error
 {
   v43 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  kindCopy = kind;
+  typeCopy = type;
+  nameCopy = name;
   v33 = 0;
   v34 = &v33;
   v35 = 0x3032000000;
@@ -724,9 +724,9 @@
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v40 = v10;
+    v40 = kindCopy;
     v41 = 2112;
-    v42 = v11;
+    v42 = typeCopy;
     _os_log_impl(&dword_1ABA78000, v13, OS_LOG_TYPE_DEFAULT, "GDXPCInternalService: Behavior Understanding histograms called [kind=%@, behaviorType=%@].", buf, 0x16u);
   }
 
@@ -734,9 +734,9 @@
   v22[1] = 3221225472;
   v22[2] = sub_1ABF1783C;
   v22[3] = &unk_1E7962640;
-  v14 = v10;
+  v14 = kindCopy;
   v23 = v14;
-  v15 = v11;
+  v15 = typeCopy;
   v24 = v15;
   v25 = &v27;
   v26 = &v33;
@@ -747,12 +747,12 @@
   v21[3] = &unk_1E7962668;
   v21[4] = &v33;
   v21[5] = &v27;
-  [v16 behaviorUnderstandingHistogramsOfKind:v14 behaviorType:v15 viewName:v12 completion:v21];
+  [v16 behaviorUnderstandingHistogramsOfKind:v14 behaviorType:v15 viewName:nameCopy completion:v21];
 
   v17 = v34[5];
-  if (a6 && !v17)
+  if (error && !v17)
   {
-    *a6 = v28[5];
+    *error = v28[5];
     v17 = v34[5];
   }
 
@@ -766,12 +766,12 @@
   return v18;
 }
 
-- (id)behaviorUnderstandingFeaturizeBehaviorOfType:(id)a3 identifier:(id)a4 usingContextAt:(id)a5 error:(id *)a6
+- (id)behaviorUnderstandingFeaturizeBehaviorOfType:(id)type identifier:(id)identifier usingContextAt:(id)at error:(id *)error
 {
   v47 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  typeCopy = type;
+  identifierCopy = identifier;
+  atCopy = at;
   v35 = 0;
   v36 = &v35;
   v37 = 0x3032000000;
@@ -788,11 +788,11 @@
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v42 = v10;
+    v42 = typeCopy;
     v43 = 2112;
-    v44 = v11;
+    v44 = identifierCopy;
     v45 = 2112;
-    v46 = v12;
+    v46 = atCopy;
     _os_log_impl(&dword_1ABA78000, v13, OS_LOG_TYPE_DEFAULT, "GDXPCInternalService: Behavior Understanding featurizeBehavior called [type=%@, identifier=%@, date=%@].", buf, 0x20u);
   }
 
@@ -800,11 +800,11 @@
   v23[1] = 3221225472;
   v23[2] = sub_1ABF17CD4;
   v23[3] = &unk_1E7962618;
-  v14 = v10;
+  v14 = typeCopy;
   v24 = v14;
-  v15 = v11;
+  v15 = identifierCopy;
   v25 = v15;
-  v16 = v12;
+  v16 = atCopy;
   v26 = v16;
   v27 = &v29;
   v28 = &v35;
@@ -818,9 +818,9 @@
   [v17 behaviorUnderstandingFeaturizeBehaviorOfType:v14 identifier:v15 usingContextAt:v16 completion:v22];
 
   v18 = v36[5];
-  if (a6 && !v18)
+  if (error && !v18)
   {
-    *a6 = v30[5];
+    *error = v30[5];
     v18 = v36[5];
   }
 
@@ -834,10 +834,10 @@
   return v19;
 }
 
-- (id)behaviorUnderstandingRecentBehaviorsOfType:(id)a3 error:(id *)a4
+- (id)behaviorUnderstandingRecentBehaviorsOfType:(id)type error:(id *)error
 {
   v33 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  typeCopy = type;
   v25 = 0;
   v26 = &v25;
   v27 = 0x3032000000;
@@ -854,7 +854,7 @@
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v32 = v6;
+    v32 = typeCopy;
     _os_log_impl(&dword_1ABA78000, v7, OS_LOG_TYPE_DEFAULT, "GDXPCInternalService: Behavior Understanding recentBehaviorsOfType called [type=%@].", buf, 0xCu);
   }
 
@@ -862,7 +862,7 @@
   v15[1] = 3221225472;
   v15[2] = sub_1ABF18108;
   v15[3] = &unk_1E79625C8;
-  v8 = v6;
+  v8 = typeCopy;
   v16 = v8;
   v17 = &v19;
   v18 = &v25;
@@ -876,9 +876,9 @@
   [v9 behaviorUnderstandingRecentBehaviorsOfType:v8 completion:v14];
 
   v10 = v26[5];
-  if (a4 && !v10)
+  if (error && !v10)
   {
-    *a4 = v20[5];
+    *error = v20[5];
     v10 = v26[5];
   }
 
@@ -892,7 +892,7 @@
   return v11;
 }
 
-- (id)behaviorUnderstandingStatusWithError:(id *)a3
+- (id)behaviorUnderstandingStatusWithError:(id *)error
 {
   v19 = 0;
   v20 = &v19;
@@ -929,9 +929,9 @@
   [v6 behaviorUnderstandingStatusWithCompletion:v10];
 
   v7 = v20[5];
-  if (a3 && !v7)
+  if (error && !v7)
   {
-    *a3 = v14[5];
+    *error = v14[5];
     v7 = v20[5];
   }
 
@@ -943,9 +943,9 @@
   return v8;
 }
 
-- (id)vectorSearchBenchmarkWithConfigFilePath:(id)a3 error:(id *)a4
+- (id)vectorSearchBenchmarkWithConfigFilePath:(id)path error:(id *)error
 {
-  v6 = a3;
+  pathCopy = path;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -978,12 +978,12 @@
   v12[3] = &unk_1E79627E8;
   v12[4] = &v21;
   v12[5] = &v15;
-  [v8 vectorSearchBenchmarkWithConfigFilePath:v6 completion:v12];
+  [v8 vectorSearchBenchmarkWithConfigFilePath:pathCopy completion:v12];
 
   v9 = v22[5];
-  if (a4 && !v9)
+  if (error && !v9)
   {
-    *a4 = v16[5];
+    *error = v16[5];
     v9 = v22[5];
   }
 
@@ -995,7 +995,7 @@
   return v10;
 }
 
-- (id)validateGraph:(id *)a3
+- (id)validateGraph:(id *)graph
 {
   v19 = 0;
   v20 = &v19;
@@ -1032,9 +1032,9 @@
   [v6 validateGraphWithCompletion:v10];
 
   v7 = v20[5];
-  if (a3 && v7)
+  if (graph && v7)
   {
-    *a3 = v14[5];
+    *graph = v14[5];
     v7 = v20[5];
   }
 
@@ -1046,7 +1046,7 @@
   return v8;
 }
 
-- (BOOL)benchmarkWithError:(id *)a3
+- (BOOL)benchmarkWithError:(id *)error
 {
   v18 = 0;
   v19 = &v18;
@@ -1081,9 +1081,9 @@
   [v6 benchmarkWithCompletion:v9];
 
   v7 = *(v19 + 24);
-  if (a3 && (v19[3] & 1) == 0)
+  if (error && (v19[3] & 1) == 0)
   {
-    *a3 = v13[5];
+    *error = v13[5];
     v7 = *(v19 + 24);
   }
 
@@ -1093,7 +1093,7 @@
   return v7 & 1;
 }
 
-- (BOOL)runToMatchingPipelineWithError:(id *)a3
+- (BOOL)runToMatchingPipelineWithError:(id *)error
 {
   v18 = 0;
   v19 = &v18;
@@ -1128,9 +1128,9 @@
   [v6 runToMatchingPipelineWithCompletion:v9];
 
   v7 = *(v19 + 24);
-  if (a3 && (v19[3] & 1) == 0)
+  if (error && (v19[3] & 1) == 0)
   {
-    *a3 = v13[5];
+    *error = v13[5];
     v7 = *(v19 + 24);
   }
 
@@ -1140,9 +1140,9 @@
   return v7 & 1;
 }
 
-- (BOOL)runDeltaUpdatePipelineWithSource:(id)a3 error:(id *)a4
+- (BOOL)runDeltaUpdatePipelineWithSource:(id)source error:(id *)error
 {
-  v6 = a3;
+  sourceCopy = source;
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
@@ -1173,12 +1173,12 @@
   v11[3] = &unk_1E79628A0;
   v11[4] = &v20;
   v11[5] = &v14;
-  [v8 runDeltaUpdatePipelineWithSource:v6 completion:v11];
+  [v8 runDeltaUpdatePipelineWithSource:sourceCopy completion:v11];
 
   v9 = *(v21 + 24);
-  if (a4 && (v21[3] & 1) == 0)
+  if (error && (v21[3] & 1) == 0)
   {
-    *a4 = v15[5];
+    *error = v15[5];
     v9 = *(v21 + 24);
   }
 
@@ -1188,7 +1188,7 @@
   return v9 & 1;
 }
 
-- (BOOL)stopPipelineWithError:(id *)a3
+- (BOOL)stopPipelineWithError:(id *)error
 {
   v18 = 0;
   v19 = &v18;
@@ -1222,9 +1222,9 @@
   v9[5] = &v12;
   [v6 stopPipelineWithCompletion:v9];
   v7 = *(v19 + 24);
-  if (a3 && (v19[3] & 1) == 0)
+  if (error && (v19[3] & 1) == 0)
   {
-    *a3 = v13[5];
+    *error = v13[5];
     v7 = *(v19 + 24);
   }
 
@@ -1233,9 +1233,9 @@
   return v7 & 1;
 }
 
-- (id)triplesQueryWithQuery:(id)a3
+- (id)triplesQueryWithQuery:(id)query
 {
-  v4 = a3;
+  queryCopy = query;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -1255,7 +1255,7 @@
   v9[2] = sub_1ABF1A5B4;
   v9[3] = &unk_1E7962578;
   v9[4] = &v11;
-  [v6 triplesQueryWithQuery:v4 completion:v9];
+  [v6 triplesQueryWithQuery:queryCopy completion:v9];
 
   v7 = v12[5];
   _Block_object_dispose(&v11, 8);
@@ -1263,7 +1263,7 @@
   return v7;
 }
 
-- (id)statsWithError:(id *)a3
+- (id)statsWithError:(id *)error
 {
   v19 = 0;
   v20 = &v19;
@@ -1299,9 +1299,9 @@
   [v6 statsWithCompletion:v10];
 
   v7 = v20[5];
-  if (a3 && !v7)
+  if (error && !v7)
   {
-    *a3 = v14[5];
+    *error = v14[5];
     v7 = v20[5];
   }
 
@@ -1313,7 +1313,7 @@
   return v8;
 }
 
-- (BOOL)clearStatusWithError:(id *)a3
+- (BOOL)clearStatusWithError:(id *)error
 {
   v18 = 0;
   v19 = &v18;
@@ -1348,9 +1348,9 @@
   [v6 clearStatusWithCompletion:v9];
 
   v7 = *(v19 + 24);
-  if (a3 && (v19[3] & 1) == 0)
+  if (error && (v19[3] & 1) == 0)
   {
-    *a3 = v13[5];
+    *error = v13[5];
     v7 = *(v19 + 24);
   }
 
@@ -1360,7 +1360,7 @@
   return v7 & 1;
 }
 
-- (id)statusWithError:(id *)a3
+- (id)statusWithError:(id *)error
 {
   v19 = 0;
   v20 = &v19;
@@ -1397,9 +1397,9 @@
   [v6 statusWithCompletion:v10];
 
   v7 = v20[5];
-  if (a3 && !v7)
+  if (error && !v7)
   {
-    *a3 = v14[5];
+    *error = v14[5];
     v7 = v20[5];
   }
 
@@ -1411,14 +1411,14 @@
   return v8;
 }
 
-- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)a3
+- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  [(GDXPCInternalService *)v5 locked_establishConnection];
-  v6 = [(NSXPCConnection *)v5->_connection synchronousRemoteObjectProxyWithErrorHandler:v4];
-  objc_sync_exit(v5);
+  handlerCopy = handler;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(GDXPCInternalService *)selfCopy locked_establishConnection];
+  v6 = [(NSXPCConnection *)selfCopy->_connection synchronousRemoteObjectProxyWithErrorHandler:handlerCopy];
+  objc_sync_exit(selfCopy);
 
   return v6;
 }

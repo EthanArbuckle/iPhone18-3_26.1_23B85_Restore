@@ -10,36 +10,36 @@
 - (NSString)objc_clientDescription;
 - (NSURL)callerBundleURL;
 - (NSUUID)deviceVendorID;
-- (_TtC9storekitd6Client)initWithAuditTokenData:(id)a3;
-- (_TtC9storekitd6Client)initWithBundleIdentifier:(id)a3;
-- (_TtC9storekitd6Client)initWithConnection:(id)a3 overridesDictionary:(id)a4;
-- (_TtC9storekitd6Client)initWithURL:(id)a3 overridesDictionary:(id)a4;
+- (_TtC9storekitd6Client)initWithAuditTokenData:(id)data;
+- (_TtC9storekitd6Client)initWithBundleIdentifier:(id)identifier;
+- (_TtC9storekitd6Client)initWithConnection:(id)connection overridesDictionary:(id)dictionary;
+- (_TtC9storekitd6Client)initWithURL:(id)l overridesDictionary:(id)dictionary;
 - (char)objc_clientType;
-- (id)queryWith:(BOOL)a3 customReceiptURL:(id)a4;
+- (id)queryWith:(BOOL)with customReceiptURL:(id)l;
 @end
 
 @implementation Client
 
 - (ACAccount)account
 {
-  v2 = self;
-  v3 = sub_1001A81B0(v2);
+  selfCopy = self;
+  v3 = sub_1001A81B0(selfCopy);
 
   return v3;
 }
 
 - (NSString)accountMediaType
 {
-  v2 = self;
-  v3 = sub_1001AA204(v2);
+  selfCopy = self;
+  v3 = sub_1001AA204(selfCopy);
 
   return v3;
 }
 
 - (AMSBagProtocol)bag
 {
-  v2 = self;
-  v3 = sub_1001A7AB4(v2);
+  selfCopy = self;
+  v3 = sub_1001A7AB4(selfCopy);
 
   return v3;
 }
@@ -60,7 +60,7 @@
 
 - (BOOL)canMakePayments
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1001A7C68();
 
   return v3 & 1;
@@ -68,8 +68,8 @@
 
 - (NSString)currentAccountToken
 {
-  v2 = self;
-  sub_1001A82CC(v2);
+  selfCopy = self;
+  sub_1001A82CC(selfCopy);
   v4 = v3;
 
   if (v4)
@@ -104,7 +104,7 @@
 
 - (AMSProcessInfo)processInfo
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1001A8808();
 
   return v3;
@@ -112,40 +112,40 @@
 
 - (AMSURLRequestEncoder)urlRequestEncoder
 {
-  v2 = self;
-  v3 = sub_1001A9564(v2);
+  selfCopy = self;
+  v3 = sub_1001A9564(selfCopy);
 
   return v3;
 }
 
 - (AMSURLSession)urlSession
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1001A9498();
 
   return v3;
 }
 
-- (_TtC9storekitd6Client)initWithConnection:(id)a3 overridesDictionary:(id)a4
+- (_TtC9storekitd6Client)initWithConnection:(id)connection overridesDictionary:(id)dictionary
 {
-  if (a4)
+  if (dictionary)
   {
     type metadata accessor for SKClientOverridesKey(0);
     sub_1001B3300(&qword_1003CC3A8, type metadata accessor for SKClientOverridesKey);
     static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v5 = a3;
+  connectionCopy = connection;
   sub_1001AB4E8();
   return result;
 }
 
-- (_TtC9storekitd6Client)initWithURL:(id)a3 overridesDictionary:(id)a4
+- (_TtC9storekitd6Client)initWithURL:(id)l overridesDictionary:(id)dictionary
 {
   v5 = type metadata accessor for URL();
   __chkstk_darwin(v5 - 8);
   static URL._unconditionallyBridgeFromObjectiveC(_:)();
-  if (a4)
+  if (dictionary)
   {
     type metadata accessor for SKClientOverridesKey(0);
     sub_1001B3300(&qword_1003CC3A8, type metadata accessor for SKClientOverridesKey);
@@ -156,28 +156,28 @@
   return result;
 }
 
-- (_TtC9storekitd6Client)initWithBundleIdentifier:(id)a3
+- (_TtC9storekitd6Client)initWithBundleIdentifier:(id)identifier
 {
   static String._unconditionallyBridgeFromObjectiveC(_:)();
   sub_1001ADC78();
   return result;
 }
 
-- (_TtC9storekitd6Client)initWithAuditTokenData:(id)a3
+- (_TtC9storekitd6Client)initWithAuditTokenData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   static Data._unconditionallyBridgeFromObjectiveC(_:)();
 
   sub_1001AE0B0();
   return result;
 }
 
-- (id)queryWith:(BOOL)a3 customReceiptURL:(id)a4
+- (id)queryWith:(BOOL)with customReceiptURL:(id)l
 {
   v6 = sub_100080FB4(&unk_1003D0540);
   __chkstk_darwin(v6 - 8);
   v8 = &v14 - v7;
-  if (a4)
+  if (l)
   {
     static URL._unconditionallyBridgeFromObjectiveC(_:)();
     v9 = type metadata accessor for URL();
@@ -191,7 +191,7 @@
   }
 
   sub_100081DFC(v8, v10, 1, v9);
-  v11 = self;
+  selfCopy = self;
   sub_1001A8A94();
 
   sub_10013B1E8(v8, &unk_1003D0540);
@@ -204,15 +204,15 @@
 
 - (char)objc_clientType
 {
-  v2 = self;
-  v3 = sub_1001AA4F4(v2);
+  selfCopy = self;
+  v3 = sub_1001AA4F4(selfCopy);
 
   return v3;
 }
 
 - (NSString)objc_clientDescription
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001B33F4();
 
   v3 = String._bridgeToObjectiveC()();

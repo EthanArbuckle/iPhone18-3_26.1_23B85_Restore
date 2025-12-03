@@ -1,14 +1,14 @@
 @interface SBFairPlayFamilyLeaveAlertItem
-- (SBFairPlayFamilyLeaveAlertItem)initWithAppInfo:(id)a3;
-- (void)configure:(BOOL)a3 requirePasscodeForActions:(BOOL)a4;
+- (SBFairPlayFamilyLeaveAlertItem)initWithAppInfo:(id)info;
+- (void)configure:(BOOL)configure requirePasscodeForActions:(BOOL)actions;
 @end
 
 @implementation SBFairPlayFamilyLeaveAlertItem
 
-- (SBFairPlayFamilyLeaveAlertItem)initWithAppInfo:(id)a3
+- (SBFairPlayFamilyLeaveAlertItem)initWithAppInfo:(id)info
 {
-  v6 = a3;
-  if (!v6)
+  infoCopy = info;
+  if (!infoCopy)
   {
     [(SBFairPlayFamilyLeaveAlertItem *)a2 initWithAppInfo:?];
   }
@@ -19,25 +19,25 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_appInfo, a3);
+    objc_storeStrong(&v7->_appInfo, info);
   }
 
   return v8;
 }
 
-- (void)configure:(BOOL)a3 requirePasscodeForActions:(BOOL)a4
+- (void)configure:(BOOL)configure requirePasscodeForActions:(BOOL)actions
 {
-  v5 = [(SBAlertItem *)self alertController:a3];
-  v6 = [MEMORY[0x277CCA8D8] mainBundle];
-  v7 = [v6 localizedStringForKey:@"FAIRPLAY_FAMILY_LEAVE_ALERT_TITLE" value:&stru_283094718 table:@"SpringBoard"];
+  v5 = [(SBAlertItem *)self alertController:configure];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v7 = [mainBundle localizedStringForKey:@"FAIRPLAY_FAMILY_LEAVE_ALERT_TITLE" value:&stru_283094718 table:@"SpringBoard"];
   [v5 setTitle:v7];
 
-  v8 = [MEMORY[0x277CCA8D8] mainBundle];
-  v9 = [v8 localizedStringForKey:@"FAIRPLAY_FAMILY_LEAVE_ALERT_MESSAGE" value:&stru_283094718 table:@"SpringBoard"];
+  mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+  v9 = [mainBundle2 localizedStringForKey:@"FAIRPLAY_FAMILY_LEAVE_ALERT_MESSAGE" value:&stru_283094718 table:@"SpringBoard"];
   [v5 setMessage:v9];
 
-  v10 = [MEMORY[0x277CCA8D8] mainBundle];
-  v11 = [v10 localizedStringForKey:@"FAIRPLAY_FAMILY_LEAVE_CANCEL" value:&stru_283094718 table:@"SpringBoard"];
+  mainBundle3 = [MEMORY[0x277CCA8D8] mainBundle];
+  v11 = [mainBundle3 localizedStringForKey:@"FAIRPLAY_FAMILY_LEAVE_CANCEL" value:&stru_283094718 table:@"SpringBoard"];
 
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
@@ -48,13 +48,13 @@
   [v5 addAction:v12];
 
   v13 = +[SBApplicationController sharedInstance];
-  v14 = [v13 restrictionController];
-  LOBYTE(v9) = [v14 isApplicationIdentifierRestricted:@"com.apple.AppStore"];
+  restrictionController = [v13 restrictionController];
+  LOBYTE(v9) = [restrictionController isApplicationIdentifierRestricted:@"com.apple.AppStore"];
 
   if ((v9 & 1) == 0)
   {
-    v15 = [MEMORY[0x277CCA8D8] mainBundle];
-    v16 = [v15 localizedStringForKey:@"FAIRPLAY_FAMILY_LEAVE_APP_STORE" value:&stru_283094718 table:@"SpringBoard"];
+    mainBundle4 = [MEMORY[0x277CCA8D8] mainBundle];
+    v16 = [mainBundle4 localizedStringForKey:@"FAIRPLAY_FAMILY_LEAVE_APP_STORE" value:&stru_283094718 table:@"SpringBoard"];
 
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;

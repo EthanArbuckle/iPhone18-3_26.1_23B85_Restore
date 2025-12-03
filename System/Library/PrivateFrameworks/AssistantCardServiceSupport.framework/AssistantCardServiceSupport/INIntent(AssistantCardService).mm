@@ -6,23 +6,23 @@
 
 - (id)acs_utteranceForCardService
 {
-  v2 = [a1 launchId];
+  launchId = [self launchId];
 
-  if (!v2)
+  if (!launchId)
   {
-    v9 = [a1 _title];
+    _title = [self _title];
     goto LABEL_10;
   }
 
-  v3 = [a1 launchId];
+  launchId2 = [self launchId];
   INExtractAppInfoFromSiriLaunchId();
   v4 = 0;
 
   v5 = [MEMORY[0x277CC1E60] applicationProxyForIdentifier:v4];
-  v6 = [v5 appState];
-  v7 = [v6 isValid];
+  appState = [v5 appState];
+  isValid = [appState isValid];
 
-  if (v7)
+  if (isValid)
   {
     v8 = v5;
   }
@@ -31,27 +31,27 @@
   {
     v8 = [MEMORY[0x277CC1E60] applicationProxyForSystemPlaceholder:v4];
 
-    v10 = [v8 appState];
-    v11 = [v10 isValid];
+    appState2 = [v8 appState];
+    isValid2 = [appState2 isValid];
 
-    if ((v11 & 1) == 0)
+    if ((isValid2 & 1) == 0)
     {
-      v9 = [a1 _title];
+      _title = [self _title];
       goto LABEL_9;
     }
 
     v5 = v8;
   }
 
-  v12 = [v5 localizedName];
+  localizedName = [v5 localizedName];
   v13 = MEMORY[0x277CCACA8];
-  v14 = [a1 _title];
-  v9 = [v13 stringWithFormat:@"%@ using %@", v14, v12];
+  _title2 = [self _title];
+  _title = [v13 stringWithFormat:@"%@ using %@", _title2, localizedName];
 
 LABEL_9:
 LABEL_10:
 
-  return v9;
+  return _title;
 }
 
 @end

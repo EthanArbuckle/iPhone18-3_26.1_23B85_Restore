@@ -1,13 +1,13 @@
 @interface IDSSendReason
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (IDSSendReason)init;
-- (IDSSendReason)initWithGenericReason:(int64_t)a3 genericSubreason:(int64_t)a4 genericPathID:(id)a5;
+- (IDSSendReason)initWithGenericReason:(int64_t)reason genericSubreason:(int64_t)subreason genericPathID:(id)d;
 - (NSString)pathID;
 - (int64_t)reason;
 - (int64_t)subreason;
-- (void)setPathID:(id)a3;
-- (void)setReason:(int64_t)a3;
-- (void)setSubreason:(int64_t)a3;
+- (void)setPathID:(id)d;
+- (void)setReason:(int64_t)reason;
+- (void)setSubreason:(int64_t)subreason;
 @end
 
 @implementation IDSSendReason
@@ -19,11 +19,11 @@
   return *(self + v3);
 }
 
-- (void)setReason:(int64_t)a3
+- (void)setReason:(int64_t)reason
 {
   v5 = OBJC_IVAR___IDSSendReason_reason;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = reason;
 }
 
 - (int64_t)subreason
@@ -33,11 +33,11 @@
   return *(self + v3);
 }
 
-- (void)setSubreason:(int64_t)a3
+- (void)setSubreason:(int64_t)subreason
 {
   v5 = OBJC_IVAR___IDSSendReason_subreason;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = subreason;
 }
 
 - (NSString)pathID
@@ -49,7 +49,7 @@
   return v2;
 }
 
-- (void)setPathID:(id)a3
+- (void)setPathID:(id)d
 {
   v4 = sub_1A7E22290();
   v6 = v5;
@@ -59,11 +59,11 @@
   v7[1] = v6;
 }
 
-- (IDSSendReason)initWithGenericReason:(int64_t)a3 genericSubreason:(int64_t)a4 genericPathID:(id)a5
+- (IDSSendReason)initWithGenericReason:(int64_t)reason genericSubreason:(int64_t)subreason genericPathID:(id)d
 {
   v8 = sub_1A7E22290();
-  *(self + OBJC_IVAR___IDSSendReason_reason) = a3;
-  *(self + OBJC_IVAR___IDSSendReason_subreason) = a4;
+  *(self + OBJC_IVAR___IDSSendReason_reason) = reason;
+  *(self + OBJC_IVAR___IDSSendReason_subreason) = subreason;
   v9 = (self + OBJC_IVAR___IDSSendReason_pathID);
   *v9 = v8;
   v9[1] = v10;
@@ -72,11 +72,11 @@
   return [(IDSSendReason *)&v12 init];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_1A7E22AA0();
     swift_unknownObjectRelease();
@@ -85,7 +85,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = IDSSendReason.isEqual(_:)(v8);

@@ -1,21 +1,21 @@
 @interface BookmarksTableViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_axUnhideSearchBar;
-- (void)tableView:(id)a3 moveRowAtIndexPath:(id)a4 toIndexPath:(id)a5;
+- (void)tableView:(id)view moveRowAtIndexPath:(id)path toIndexPath:(id)indexPath;
 - (void)viewDidLoad;
 @end
 
 @implementation BookmarksTableViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"BookmarksTableViewController" isKindOfClass:@"UITableViewController"];
-  [v3 validateClass:@"BookmarksTableViewController" hasInstanceMethod:@"_bookmarkAtIndexPath:" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"WebBookmark" hasInstanceMethod:@"isFolder" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"BookmarksTableViewController" hasInstanceVariable:@"_searchBar" withType:"UISearchBar"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"BookmarksTableViewController" isKindOfClass:@"UITableViewController"];
+  [validationsCopy validateClass:@"BookmarksTableViewController" hasInstanceMethod:@"_bookmarkAtIndexPath:" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"WebBookmark" hasInstanceMethod:@"isFolder" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"BookmarksTableViewController" hasInstanceVariable:@"_searchBar" withType:"UISearchBar"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -30,7 +30,7 @@
 {
   objc_opt_class();
   v3 = __UIAccessibilityCastAsClass();
-  v4 = [v3 tableView];
+  tableView = [v3 tableView];
 
   if (UIAccessibilityIsVoiceOverRunning() || UIAccessibilityIsSwitchControlRunning())
   {
@@ -38,7 +38,7 @@
 
     if (v5)
     {
-      [v4 setContentInset:{*MEMORY[0x29EDC80C8], *(MEMORY[0x29EDC80C8] + 8), *(MEMORY[0x29EDC80C8] + 16), *(MEMORY[0x29EDC80C8] + 24)}];
+      [tableView setContentInset:{*MEMORY[0x29EDC80C8], *(MEMORY[0x29EDC80C8] + 8), *(MEMORY[0x29EDC80C8] + 16), *(MEMORY[0x29EDC80C8] + 24)}];
     }
   }
 }
@@ -51,14 +51,14 @@
   [(BookmarksTableViewControllerAccessibility *)self _axUnhideSearchBar];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v23.receiver = self;
   v23.super_class = BookmarksTableViewControllerAccessibility;
-  v8 = [(BookmarksTableViewControllerAccessibility *)&v23 tableView:v6 cellForRowAtIndexPath:v7];
-  if ([v7 section] == 2)
+  v8 = [(BookmarksTableViewControllerAccessibility *)&v23 tableView:viewCopy cellForRowAtIndexPath:pathCopy];
+  if ([pathCopy section] == 2)
   {
     v17 = 0;
     v18 = &v17;
@@ -66,7 +66,7 @@
     v20 = __Block_byref_object_copy_;
     v21 = __Block_byref_object_dispose_;
     v22 = 0;
-    v16 = v7;
+    v16 = pathCopy;
     AXPerformSafeBlock();
     v9 = v18[5];
 
@@ -96,14 +96,14 @@ uint64_t __77__BookmarksTableViewControllerAccessibility_tableView_cellForRowAtI
   return MEMORY[0x2A1C71028]();
 }
 
-- (void)tableView:(id)a3 moveRowAtIndexPath:(id)a4 toIndexPath:(id)a5
+- (void)tableView:(id)view moveRowAtIndexPath:(id)path toIndexPath:(id)indexPath
 {
   v11.receiver = self;
   v11.super_class = BookmarksTableViewControllerAccessibility;
-  v7 = a5;
-  v8 = a3;
-  [(BookmarksTableViewControllerAccessibility *)&v11 tableView:v8 moveRowAtIndexPath:a4 toIndexPath:v7];
-  v9 = [v8 cellForRowAtIndexPath:{v7, v11.receiver, v11.super_class}];
+  indexPathCopy = indexPath;
+  viewCopy = view;
+  [(BookmarksTableViewControllerAccessibility *)&v11 tableView:viewCopy moveRowAtIndexPath:path toIndexPath:indexPathCopy];
+  v9 = [viewCopy cellForRowAtIndexPath:{indexPathCopy, v11.receiver, v11.super_class}];
 
   v10 = [v9 _accessibilityFindDescendant:&__block_literal_global_0];
   if (v10)

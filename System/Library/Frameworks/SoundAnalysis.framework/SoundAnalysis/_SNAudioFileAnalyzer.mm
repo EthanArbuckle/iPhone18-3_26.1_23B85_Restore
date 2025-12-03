@@ -1,19 +1,19 @@
 @interface _SNAudioFileAnalyzer
-- (BOOL)addRequest:(id)a3 withObserver:(id)a4 error:(id *)a5;
+- (BOOL)addRequest:(id)request withObserver:(id)observer error:(id *)error;
 - (NSString)detailedDescription;
-- (_SNAudioFileAnalyzer)initWithURL:(id)a3 error:(id *)a4;
+- (_SNAudioFileAnalyzer)initWithURL:(id)l error:(id *)error;
 - (void)analyze;
-- (void)analyzeInRange:(id *)a3;
-- (void)analyzeWithCompletionHandler:(id)a3;
+- (void)analyzeInRange:(id *)range;
+- (void)analyzeWithCompletionHandler:(id)handler;
 - (void)removeAllRequests;
-- (void)removeRequest:(id)a3;
+- (void)removeRequest:(id)request;
 @end
 
 @implementation _SNAudioFileAnalyzer
 
-- (_SNAudioFileAnalyzer)initWithURL:(id)a3 error:(id *)a4
+- (_SNAudioFileAnalyzer)initWithURL:(id)l error:(id *)error
 {
-  if (a3)
+  if (l)
   {
     swift_unknownObjectRetain();
     sub_1C9A93318();
@@ -29,27 +29,27 @@
   return sub_1C99AF3C0(v6);
 }
 
-- (void)analyzeInRange:(id *)a3
+- (void)analyzeInRange:(id *)range
 {
-  var3 = a3->var1.var3;
-  v5[0] = a3->var0.var0;
-  v5[1] = *&a3->var0.var1;
-  v6 = *&a3->var0.var3;
-  v7 = *&a3->var1.var1;
+  var3 = range->var1.var3;
+  v5[0] = range->var0.var0;
+  v5[1] = *&range->var0.var1;
+  v6 = *&range->var0.var3;
+  v7 = *&range->var1.var1;
   v8 = var3;
-  v4 = self;
+  selfCopy = self;
   sub_1C99B00BC(v5);
 }
 
 - (void)analyze
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C99B031C();
 }
 
-- (void)analyzeWithCompletionHandler:(id)a3
+- (void)analyzeWithCompletionHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = v4;
@@ -64,19 +64,19 @@
     v6 = 0;
   }
 
-  v8 = self;
+  selfCopy = self;
   sub_1C99B0390(v7, v6);
   sub_1C979AFD4(v7);
 }
 
-- (BOOL)addRequest:(id)a3 withObserver:(id)a4 error:(id *)a5
+- (BOOL)addRequest:(id)request withObserver:(id)observer error:(id *)error
 {
-  if (!a3)
+  if (!request)
   {
     memset(v12, 0, sizeof(v12));
     swift_unknownObjectRetain();
-    v8 = self;
-    if (a4)
+    selfCopy = self;
+    if (observer)
     {
       goto LABEL_3;
     }
@@ -87,12 +87,12 @@ LABEL_5:
   }
 
   swift_unknownObjectRetain();
-  v7 = self;
+  selfCopy2 = self;
   swift_unknownObjectRetain();
   sub_1C9A93318();
   swift_unknownObjectRelease();
   sub_1C97A2D34(v11, v12);
-  if (!a4)
+  if (!observer)
   {
     goto LABEL_5;
   }
@@ -109,11 +109,11 @@ LABEL_6:
   return 1;
 }
 
-- (void)removeRequest:(id)a3
+- (void)removeRequest:(id)request
 {
-  if (a3)
+  if (request)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_1C9A93318();
     swift_unknownObjectRelease();
@@ -122,7 +122,7 @@ LABEL_6:
   else
   {
     memset(v6, 0, sizeof(v6));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   sub_1C99B0B80(v6);
@@ -132,13 +132,13 @@ LABEL_6:
 
 - (void)removeAllRequests
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C99B0CCC();
 }
 
 - (NSString)detailedDescription
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C99B0D94();
 
   v3 = sub_1C9A92478();

@@ -1,13 +1,13 @@
 @interface IFTSchemaIFTRequestContent
-- (BOOL)isEqual:(id)a3;
-- (IFTSchemaIFTRequestContent)initWithDictionary:(id)a3;
-- (IFTSchemaIFTRequestContent)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (IFTSchemaIFTRequestContent)initWithDictionary:(id)dictionary;
+- (IFTSchemaIFTRequestContent)initWithJSON:(id)n;
 - (IFTSchemaIFTRequestContentSpeechContent)speech;
 - (IFTSchemaIFTRequestContentStopContent)stop;
 - (IFTSchemaIFTRequestContentTextContent)text;
 - (IFTSchemaIFTSystemPromptResolution)promptResolution;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
@@ -15,24 +15,24 @@
 - (void)deleteSpeech;
 - (void)deleteStop;
 - (void)deleteText;
-- (void)setPromptResolution:(id)a3;
-- (void)setSpeech:(id)a3;
-- (void)setStop:(id)a3;
-- (void)setText:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setPromptResolution:(id)resolution;
+- (void)setSpeech:(id)speech;
+- (void)setStop:(id)stop;
+- (void)setText:(id)text;
+- (void)writeTo:(id)to;
 @end
 
 @implementation IFTSchemaIFTRequestContent
 
-- (IFTSchemaIFTRequestContent)initWithDictionary:(id)a3
+- (IFTSchemaIFTRequestContent)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v16.receiver = self;
   v16.super_class = IFTSchemaIFTRequestContent;
   v5 = [(IFTSchemaIFTRequestContent *)&v16 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"text"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"text"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -40,7 +40,7 @@
       [(IFTSchemaIFTRequestContent *)v5 setText:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"speech"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"speech"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -48,7 +48,7 @@
       [(IFTSchemaIFTRequestContent *)v5 setSpeech:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"promptResolution"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"promptResolution"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -56,7 +56,7 @@
       [(IFTSchemaIFTRequestContent *)v5 setPromptResolution:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"stop"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"stop"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -70,30 +70,30 @@
   return v5;
 }
 
-- (IFTSchemaIFTRequestContent)initWithJSON:(id)a3
+- (IFTSchemaIFTRequestContent)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(IFTSchemaIFTRequestContent *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(IFTSchemaIFTRequestContent *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(IFTSchemaIFTRequestContent *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -106,74 +106,74 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_promptResolution)
   {
-    v4 = [(IFTSchemaIFTRequestContent *)self promptResolution];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    promptResolution = [(IFTSchemaIFTRequestContent *)self promptResolution];
+    dictionaryRepresentation = [promptResolution dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"promptResolution"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"promptResolution"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"promptResolution"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"promptResolution"];
     }
   }
 
   if (self->_speech)
   {
-    v7 = [(IFTSchemaIFTRequestContent *)self speech];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    speech = [(IFTSchemaIFTRequestContent *)self speech];
+    dictionaryRepresentation2 = [speech dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"speech"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"speech"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"speech"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"speech"];
     }
   }
 
   if (self->_stop)
   {
-    v10 = [(IFTSchemaIFTRequestContent *)self stop];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    stop = [(IFTSchemaIFTRequestContent *)self stop];
+    dictionaryRepresentation3 = [stop dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"stop"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"stop"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"stop"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"stop"];
     }
   }
 
   if (self->_text)
   {
-    v13 = [(IFTSchemaIFTRequestContent *)self text];
-    v14 = [v13 dictionaryRepresentation];
-    if (v14)
+    text = [(IFTSchemaIFTRequestContent *)self text];
+    dictionaryRepresentation4 = [text dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v14 forKeyedSubscript:@"text"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"text"];
     }
 
     else
     {
-      v15 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v15 forKeyedSubscript:@"text"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"text"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -184,34 +184,34 @@
   return v4 ^ v5 ^ [(IFTSchemaIFTRequestContentStopContent *)self->_stop hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_23;
   }
 
   whichOneof_Requestcontent = self->_whichOneof_Requestcontent;
-  if (whichOneof_Requestcontent != [v4 whichOneof_Requestcontent])
+  if (whichOneof_Requestcontent != [equalCopy whichOneof_Requestcontent])
   {
     goto LABEL_23;
   }
 
-  v6 = [(IFTSchemaIFTRequestContent *)self text];
-  v7 = [v4 text];
-  if ((v6 != 0) == (v7 == 0))
+  text = [(IFTSchemaIFTRequestContent *)self text];
+  text2 = [equalCopy text];
+  if ((text != 0) == (text2 == 0))
   {
     goto LABEL_22;
   }
 
-  v8 = [(IFTSchemaIFTRequestContent *)self text];
-  if (v8)
+  text3 = [(IFTSchemaIFTRequestContent *)self text];
+  if (text3)
   {
-    v9 = v8;
-    v10 = [(IFTSchemaIFTRequestContent *)self text];
-    v11 = [v4 text];
-    v12 = [v10 isEqual:v11];
+    v9 = text3;
+    text4 = [(IFTSchemaIFTRequestContent *)self text];
+    text5 = [equalCopy text];
+    v12 = [text4 isEqual:text5];
 
     if (!v12)
     {
@@ -223,20 +223,20 @@
   {
   }
 
-  v6 = [(IFTSchemaIFTRequestContent *)self speech];
-  v7 = [v4 speech];
-  if ((v6 != 0) == (v7 == 0))
+  text = [(IFTSchemaIFTRequestContent *)self speech];
+  text2 = [equalCopy speech];
+  if ((text != 0) == (text2 == 0))
   {
     goto LABEL_22;
   }
 
-  v13 = [(IFTSchemaIFTRequestContent *)self speech];
-  if (v13)
+  speech = [(IFTSchemaIFTRequestContent *)self speech];
+  if (speech)
   {
-    v14 = v13;
-    v15 = [(IFTSchemaIFTRequestContent *)self speech];
-    v16 = [v4 speech];
-    v17 = [v15 isEqual:v16];
+    v14 = speech;
+    speech2 = [(IFTSchemaIFTRequestContent *)self speech];
+    speech3 = [equalCopy speech];
+    v17 = [speech2 isEqual:speech3];
 
     if (!v17)
     {
@@ -248,20 +248,20 @@
   {
   }
 
-  v6 = [(IFTSchemaIFTRequestContent *)self promptResolution];
-  v7 = [v4 promptResolution];
-  if ((v6 != 0) == (v7 == 0))
+  text = [(IFTSchemaIFTRequestContent *)self promptResolution];
+  text2 = [equalCopy promptResolution];
+  if ((text != 0) == (text2 == 0))
   {
     goto LABEL_22;
   }
 
-  v18 = [(IFTSchemaIFTRequestContent *)self promptResolution];
-  if (v18)
+  promptResolution = [(IFTSchemaIFTRequestContent *)self promptResolution];
+  if (promptResolution)
   {
-    v19 = v18;
-    v20 = [(IFTSchemaIFTRequestContent *)self promptResolution];
-    v21 = [v4 promptResolution];
-    v22 = [v20 isEqual:v21];
+    v19 = promptResolution;
+    promptResolution2 = [(IFTSchemaIFTRequestContent *)self promptResolution];
+    promptResolution3 = [equalCopy promptResolution];
+    v22 = [promptResolution2 isEqual:promptResolution3];
 
     if (!v22)
     {
@@ -273,12 +273,12 @@
   {
   }
 
-  v6 = [(IFTSchemaIFTRequestContent *)self stop];
-  v7 = [v4 stop];
-  if ((v6 != 0) != (v7 == 0))
+  text = [(IFTSchemaIFTRequestContent *)self stop];
+  text2 = [equalCopy stop];
+  if ((text != 0) != (text2 == 0))
   {
-    v23 = [(IFTSchemaIFTRequestContent *)self stop];
-    if (!v23)
+    stop = [(IFTSchemaIFTRequestContent *)self stop];
+    if (!stop)
     {
 
 LABEL_26:
@@ -286,10 +286,10 @@ LABEL_26:
       goto LABEL_24;
     }
 
-    v24 = v23;
-    v25 = [(IFTSchemaIFTRequestContent *)self stop];
-    v26 = [v4 stop];
-    v27 = [v25 isEqual:v26];
+    v24 = stop;
+    stop2 = [(IFTSchemaIFTRequestContent *)self stop];
+    stop3 = [equalCopy stop];
+    v27 = [stop2 isEqual:stop3];
 
     if (v27)
     {
@@ -309,42 +309,42 @@ LABEL_24:
   return v28;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v13 = a3;
-  v4 = [(IFTSchemaIFTRequestContent *)self text];
+  toCopy = to;
+  text = [(IFTSchemaIFTRequestContent *)self text];
 
-  if (v4)
+  if (text)
   {
-    v5 = [(IFTSchemaIFTRequestContent *)self text];
+    text2 = [(IFTSchemaIFTRequestContent *)self text];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(IFTSchemaIFTRequestContent *)self speech];
+  speech = [(IFTSchemaIFTRequestContent *)self speech];
 
-  if (v6)
+  if (speech)
   {
-    v7 = [(IFTSchemaIFTRequestContent *)self speech];
+    speech2 = [(IFTSchemaIFTRequestContent *)self speech];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(IFTSchemaIFTRequestContent *)self promptResolution];
+  promptResolution = [(IFTSchemaIFTRequestContent *)self promptResolution];
 
-  if (v8)
+  if (promptResolution)
   {
-    v9 = [(IFTSchemaIFTRequestContent *)self promptResolution];
+    promptResolution2 = [(IFTSchemaIFTRequestContent *)self promptResolution];
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(IFTSchemaIFTRequestContent *)self stop];
+  stop = [(IFTSchemaIFTRequestContent *)self stop];
 
-  v11 = v13;
-  if (v10)
+  v11 = toCopy;
+  if (stop)
   {
-    v12 = [(IFTSchemaIFTRequestContent *)self stop];
+    stop2 = [(IFTSchemaIFTRequestContent *)self stop];
     PBDataWriterWriteSubmessage();
 
-    v11 = v13;
+    v11 = toCopy;
   }
 }
 
@@ -373,9 +373,9 @@ LABEL_24:
   return v3;
 }
 
-- (void)setStop:(id)a3
+- (void)setStop:(id)stop
 {
-  v4 = a3;
+  stopCopy = stop;
   text = self->_text;
   self->_text = 0;
 
@@ -385,9 +385,9 @@ LABEL_24:
   promptResolution = self->_promptResolution;
   self->_promptResolution = 0;
 
-  self->_whichOneof_Requestcontent = 4 * (v4 != 0);
+  self->_whichOneof_Requestcontent = 4 * (stopCopy != 0);
   stop = self->_stop;
-  self->_stop = v4;
+  self->_stop = stopCopy;
 }
 
 - (void)deletePromptResolution
@@ -415,9 +415,9 @@ LABEL_24:
   return v3;
 }
 
-- (void)setPromptResolution:(id)a3
+- (void)setPromptResolution:(id)resolution
 {
-  v4 = a3;
+  resolutionCopy = resolution;
   text = self->_text;
   self->_text = 0;
 
@@ -428,14 +428,14 @@ LABEL_24:
   self->_stop = 0;
 
   v8 = 3;
-  if (!v4)
+  if (!resolutionCopy)
   {
     v8 = 0;
   }
 
   self->_whichOneof_Requestcontent = v8;
   promptResolution = self->_promptResolution;
-  self->_promptResolution = v4;
+  self->_promptResolution = resolutionCopy;
 }
 
 - (void)deleteSpeech
@@ -463,9 +463,9 @@ LABEL_24:
   return v3;
 }
 
-- (void)setSpeech:(id)a3
+- (void)setSpeech:(id)speech
 {
-  v4 = a3;
+  speechCopy = speech;
   text = self->_text;
   self->_text = 0;
 
@@ -475,9 +475,9 @@ LABEL_24:
   stop = self->_stop;
   self->_stop = 0;
 
-  self->_whichOneof_Requestcontent = 2 * (v4 != 0);
+  self->_whichOneof_Requestcontent = 2 * (speechCopy != 0);
   speech = self->_speech;
-  self->_speech = v4;
+  self->_speech = speechCopy;
 }
 
 - (void)deleteText
@@ -505,9 +505,9 @@ LABEL_24:
   return v3;
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   speech = self->_speech;
   self->_speech = 0;
 
@@ -517,49 +517,49 @@ LABEL_24:
   stop = self->_stop;
   self->_stop = 0;
 
-  self->_whichOneof_Requestcontent = v4 != 0;
+  self->_whichOneof_Requestcontent = textCopy != 0;
   text = self->_text;
-  self->_text = v4;
+  self->_text = textCopy;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v19.receiver = self;
   v19.super_class = IFTSchemaIFTRequestContent;
-  v5 = [(SISchemaInstrumentationMessage *)&v19 applySensitiveConditionsPolicy:v4];
-  v6 = [(IFTSchemaIFTRequestContent *)self text];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v19 applySensitiveConditionsPolicy:policyCopy];
+  text = [(IFTSchemaIFTRequestContent *)self text];
+  v7 = [text applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(IFTSchemaIFTRequestContent *)self deleteText];
   }
 
-  v9 = [(IFTSchemaIFTRequestContent *)self speech];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  speech = [(IFTSchemaIFTRequestContent *)self speech];
+  v10 = [speech applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(IFTSchemaIFTRequestContent *)self deleteSpeech];
   }
 
-  v12 = [(IFTSchemaIFTRequestContent *)self promptResolution];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  promptResolution = [(IFTSchemaIFTRequestContent *)self promptResolution];
+  v13 = [promptResolution applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(IFTSchemaIFTRequestContent *)self deletePromptResolution];
   }
 
-  v15 = [(IFTSchemaIFTRequestContent *)self stop];
-  v16 = [v15 applySensitiveConditionsPolicy:v4];
-  v17 = [v16 suppressMessage];
+  stop = [(IFTSchemaIFTRequestContent *)self stop];
+  v16 = [stop applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v16 suppressMessage];
 
-  if (v17)
+  if (suppressMessage4)
   {
     [(IFTSchemaIFTRequestContent *)self deleteStop];
   }

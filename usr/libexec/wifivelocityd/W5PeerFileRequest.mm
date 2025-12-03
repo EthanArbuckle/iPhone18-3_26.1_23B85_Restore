@@ -1,23 +1,23 @@
 @interface W5PeerFileRequest
-- (W5PeerFileRequest)initWithPeer:(id)a3 requestType:(int64_t)a4 remotePath:(id)a5 transferManager:(id)a6 reply:(id)a7;
+- (W5PeerFileRequest)initWithPeer:(id)peer requestType:(int64_t)type remotePath:(id)path transferManager:(id)manager reply:(id)reply;
 - (int64_t)controlFlags;
-- (void)handleResponse:(id)a3;
+- (void)handleResponse:(id)response;
 @end
 
 @implementation W5PeerFileRequest
 
-- (W5PeerFileRequest)initWithPeer:(id)a3 requestType:(int64_t)a4 remotePath:(id)a5 transferManager:(id)a6 reply:(id)a7
+- (W5PeerFileRequest)initWithPeer:(id)peer requestType:(int64_t)type remotePath:(id)path transferManager:(id)manager reply:(id)reply
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  peerCopy = peer;
+  pathCopy = path;
+  managerCopy = manager;
+  replyCopy = reply;
   v16 = NSRandomData();
-  v17 = [v16 bytes];
+  bytes = [v16 bytes];
   v18 = [v16 length];
   v34 = [v16 length];
-  v33 = v17;
-  v19 = v13;
+  v33 = bytes;
+  v19 = pathCopy;
   v20 = NSPrintF();
   targetID = self->_targetID;
   self->_targetID = v20;
@@ -26,7 +26,7 @@
   v36.super_class = W5PeerFileRequest;
   v22 = [(W5PeerFileRequest *)&v36 init:v33];
   v23 = v22;
-  if (v12 && v22 && (objc_storeStrong(&v22->_peer, a3), v15) && (v24 = objc_retainBlock(v15), reply = v23->_reply, v23->_reply = v24, reply, v13) && v14 && (objc_storeStrong(&v23->_transferManager, a6), v23->_targetID))
+  if (peerCopy && v22 && (objc_storeStrong(&v22->_peer, peer), replyCopy) && (v24 = objc_retainBlock(replyCopy), reply = v23->_reply, v23->_reply = v24, reply, pathCopy) && managerCopy && (objc_storeStrong(&v23->_transferManager, manager), v23->_targetID))
   {
     identifier = v23->_identifier;
     v23->_discoveryFlags = 1;
@@ -36,16 +36,16 @@
     requestPayload = v23->_requestPayload;
     v23->_requestPayload = v27;
 
-    v29 = [(W5PeerFileRequest *)v23 _currentVersion];
-    [(W5PeerFileTransferRequestPayload *)v23->_requestPayload setVersion:v29];
+    _currentVersion = [(W5PeerFileRequest *)v23 _currentVersion];
+    [(W5PeerFileTransferRequestPayload *)v23->_requestPayload setVersion:_currentVersion];
 
-    [(W5PeerFileTransferRequestPayload *)v23->_requestPayload setRemotePath:v13];
-    [(W5PeerFileTransferRequestPayload *)v23->_requestPayload setType:a4];
-    if (a4 == 1)
+    [(W5PeerFileTransferRequestPayload *)v23->_requestPayload setRemotePath:pathCopy];
+    [(W5PeerFileTransferRequestPayload *)v23->_requestPayload setType:type];
+    if (type == 1)
     {
       [(W5PeerFileTransferRequestPayload *)v23->_requestPayload setTargetID:v23->_targetID];
-      v30 = [(W5FileTransferManager *)v23->_transferManager publicKeySelf];
-      [(W5PeerFileTransferRequestPayload *)v23->_requestPayload setPublicKey:v30];
+      publicKeySelf = [(W5FileTransferManager *)v23->_transferManager publicKeySelf];
+      [(W5PeerFileTransferRequestPayload *)v23->_requestPayload setPublicKey:publicKeySelf];
 
       [(W5FileTransferManager *)v23->_transferManager initializeReceiverWithTargetID:v23->_targetID];
     }
@@ -72,68 +72,68 @@
   return v23;
 }
 
-- (void)handleResponse:(id)a3
+- (void)handleResponse:(id)response
 {
-  v4 = a3;
-  v5 = [v4 error];
+  responseCopy = response;
+  error = [responseCopy error];
 
-  if (v5)
+  if (error)
   {
-    v6 = [(W5PeerFileRequest *)self reply];
-    v7 = [v4 error];
-    v6[2](v6, v7, 0);
+    reply = [(W5PeerFileRequest *)self reply];
+    error2 = [responseCopy error];
+    reply[2](reply, error2, 0);
 LABEL_12:
 
     goto LABEL_13;
   }
 
-  v6 = [v4 payload];
-  if ([v6 status] != 1)
+  reply = [responseCopy payload];
+  if ([reply status] != 1)
   {
-    v16 = [v6 error];
+    error3 = [reply error];
 
-    v7 = [(W5PeerFileRequest *)self reply];
-    if (!v16)
+    error2 = [(W5PeerFileRequest *)self reply];
+    if (!error3)
     {
       v20 = NSLocalizedFailureReasonErrorKey;
       v21 = @"W5PeerFileResponseUndefinedError";
       v17 = [NSDictionary dictionaryWithObjects:&v21 forKeys:&v20 count:1];
       v18 = [NSError errorWithDomain:@"com.apple.wifivelocity.error" code:12 userInfo:v17];
-      (v7)[2](v7, v18, 0);
+      (error2)[2](error2, v18, 0);
 
       goto LABEL_12;
     }
 
-    v15 = [v6 error];
-    (v7)[2](v7, v15, 0);
+    error4 = [reply error];
+    (error2)[2](error2, error4, 0);
     goto LABEL_10;
   }
 
-  v8 = [v6 publicKey];
+  publicKey = [reply publicKey];
 
-  if (v8)
+  if (publicKey)
   {
     transferManager = self->_transferManager;
-    v10 = [v6 publicKey];
+    publicKey2 = [reply publicKey];
     v19[0] = _NSConcreteStackBlock;
     v19[1] = 3221225472;
     v19[2] = sub_100014F9C;
     v19[3] = &unk_1000E1678;
     v19[4] = self;
-    [(W5FileTransferManager *)transferManager startW5FileReceiverWithPeerPublicKey:v10 reply:v19];
+    [(W5FileTransferManager *)transferManager startW5FileReceiverWithPeerPublicKey:publicKey2 reply:v19];
 
     v11 = [[NSURL alloc] initFileURLWithPath:@"/var/run/com.apple.wifivelocity"];
     v12 = [NSString stringWithFormat:@"%@.rpftd", self->_targetID];
     v13 = [v11 URLByAppendingPathComponent:v12 isDirectory:1];
   }
 
-  v14 = [v6 files];
+  files = [reply files];
 
-  if (v14)
+  if (files)
   {
-    v7 = [(W5PeerFileRequest *)self reply];
-    v15 = [v6 files];
-    (v7)[2](v7, 0, v15);
+    error2 = [(W5PeerFileRequest *)self reply];
+    error4 = [reply files];
+    (error2)[2](error2, 0, error4);
 LABEL_10:
 
     goto LABEL_12;
@@ -144,10 +144,10 @@ LABEL_13:
 
 - (int64_t)controlFlags
 {
-  v2 = [(W5PeerFileRequest *)self peer];
-  v3 = [v2 controlFlags];
+  peer = [(W5PeerFileRequest *)self peer];
+  controlFlags = [peer controlFlags];
 
-  return v3;
+  return controlFlags;
 }
 
 @end

@@ -1,6 +1,6 @@
 @interface PUPhotosPreviewPresentationController
 - (PUPhotosPreviewPresentationControllerDelegate)photosPreviewingDelegate;
-- (void)_revealTransitionDidComplete:(BOOL)a3;
+- (void)_revealTransitionDidComplete:(BOOL)complete;
 @end
 
 @implementation PUPhotosPreviewPresentationController
@@ -12,16 +12,16 @@
   return WeakRetained;
 }
 
-- (void)_revealTransitionDidComplete:(BOOL)a3
+- (void)_revealTransitionDidComplete:(BOOL)complete
 {
-  v3 = a3;
-  v5 = [(PUPhotosPreviewPresentationController *)self photosPreviewingDelegate];
-  v6 = [(PUPhotosPreviewPresentationController *)self presentedViewController];
-  [v5 photosPreviewPresentationController:self willPresentPreviewViewController:v6];
+  completeCopy = complete;
+  photosPreviewingDelegate = [(PUPhotosPreviewPresentationController *)self photosPreviewingDelegate];
+  presentedViewController = [(PUPhotosPreviewPresentationController *)self presentedViewController];
+  [photosPreviewingDelegate photosPreviewPresentationController:self willPresentPreviewViewController:presentedViewController];
 
   v7.receiver = self;
   v7.super_class = PUPhotosPreviewPresentationController;
-  [(_UIPreviewPresentationController *)&v7 _revealTransitionDidComplete:v3];
+  [(_UIPreviewPresentationController *)&v7 _revealTransitionDidComplete:completeCopy];
 }
 
 @end

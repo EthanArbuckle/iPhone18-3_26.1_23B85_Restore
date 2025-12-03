@@ -1,5 +1,5 @@
 @interface PUCropMaskView
-- (PUCropMaskView)initWithFrame:(CGRect)a3;
+- (PUCropMaskView)initWithFrame:(CGRect)frame;
 - (void)_updateColor;
 @end
 
@@ -8,9 +8,9 @@
 - (void)_updateColor
 {
   v3 = +[PUInterfaceManager currentTheme];
-  v4 = [v3 photoEditingBackgroundColor];
+  photoEditingBackgroundColor = [v3 photoEditingBackgroundColor];
 
-  v19 = [v4 colorWithAlphaComponent:0.5];
+  v19 = [photoEditingBackgroundColor colorWithAlphaComponent:0.5];
 
   [(PUCropMaskView *)self setBackgroundColor:v19];
   opaqueView = self->_opaqueView;
@@ -22,14 +22,14 @@
   }
 
   v7 = +[PUPhotoEditProtoSettings sharedInstance];
-  v8 = [v7 cropMaskBlurred];
+  cropMaskBlurred = [v7 cropMaskBlurred];
 
-  if (v8)
+  if (cropMaskBlurred)
   {
-    v9 = [(PUCropMaskView *)self traitCollection];
-    v10 = [v9 userInterfaceStyle];
+    traitCollection = [(PUCropMaskView *)self traitCollection];
+    userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-    if (v10 == 2)
+    if (userInterfaceStyle == 2)
     {
       v11 = 2030;
     }
@@ -54,8 +54,8 @@
     [(PUCropMaskView *)self frame];
     v12 = [v15 initWithFrame:?];
     v16 = +[PUInterfaceManager currentTheme];
-    v17 = [v16 photoEditingBackgroundColor];
-    [(UIView *)v12 setBackgroundColor:v17];
+    photoEditingBackgroundColor2 = [v16 photoEditingBackgroundColor];
+    [(UIView *)v12 setBackgroundColor:photoEditingBackgroundColor2];
 
     [(UIView *)v12 setAutoresizingMask:18];
     [(PUCropMaskView *)self addSubview:v12];
@@ -65,12 +65,12 @@
   self->_opaqueView = v12;
 }
 
-- (PUCropMaskView)initWithFrame:(CGRect)a3
+- (PUCropMaskView)initWithFrame:(CGRect)frame
 {
   v9[1] = *MEMORY[0x1E69E9840];
   v8.receiver = self;
   v8.super_class = PUCropMaskView;
-  v3 = [(PUCropMaskView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PUCropMaskView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

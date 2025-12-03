@@ -1,14 +1,14 @@
 @interface ICSCalendarServerAccessValue
-+ (id)calendarServerAccessFromCode:(int)a3;
-+ (id)calendarServerAccessFromICSString:(id)a3;
-- (void)_ICSStringWithOptions:(unint64_t)a3 appendingToString:(id)a4;
++ (id)calendarServerAccessFromCode:(int)code;
++ (id)calendarServerAccessFromICSString:(id)string;
+- (void)_ICSStringWithOptions:(unint64_t)options appendingToString:(id)string;
 @end
 
 @implementation ICSCalendarServerAccessValue
 
-+ (id)calendarServerAccessFromICSString:(id)a3
++ (id)calendarServerAccessFromICSString:(id)string
 {
-  v3 = [ICSCalendar calendarServerAccessFromICSString:a3];
+  v3 = [ICSCalendar calendarServerAccessFromICSString:string];
   if (v3)
   {
     v4 = [ICSCalendarServerAccessValue calendarServerAccessFromCode:v3];
@@ -22,19 +22,19 @@
   return v4;
 }
 
-+ (id)calendarServerAccessFromCode:(int)a3
++ (id)calendarServerAccessFromCode:(int)code
 {
-  v3 = [(ICSPredefinedValue *)[ICSCalendarServerAccessValue alloc] initWithLong:a3];
+  v3 = [(ICSPredefinedValue *)[ICSCalendarServerAccessValue alloc] initWithLong:code];
 
   return v3;
 }
 
-- (void)_ICSStringWithOptions:(unint64_t)a3 appendingToString:(id)a4
+- (void)_ICSStringWithOptions:(unint64_t)options appendingToString:(id)string
 {
-  v4 = a3;
-  v6 = a4;
+  optionsCopy = options;
+  stringCopy = string;
   v7 = [ICSCalendar ICSStringFromCalendarServerAccess:[(ICSPredefinedValue *)self longValue]];
-  iCalendarAppendStringToStringWithOptions(v7, v6, v4);
+  iCalendarAppendStringToStringWithOptions(v7, stringCopy, optionsCopy);
 }
 
 @end

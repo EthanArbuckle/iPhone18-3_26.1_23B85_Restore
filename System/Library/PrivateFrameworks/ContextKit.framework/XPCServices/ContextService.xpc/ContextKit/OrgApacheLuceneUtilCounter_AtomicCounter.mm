@@ -1,13 +1,13 @@
 @interface OrgApacheLuceneUtilCounter_AtomicCounter
 - (OrgApacheLuceneUtilCounter_AtomicCounter)init;
-- (int64_t)addAndGetWithLong:(int64_t)a3;
+- (int64_t)addAndGetWithLong:(int64_t)long;
 - (int64_t)get;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneUtilCounter_AtomicCounter
 
-- (int64_t)addAndGetWithLong:(int64_t)a3
+- (int64_t)addAndGetWithLong:(int64_t)long
 {
   count = self->count_;
   if (!count)
@@ -15,7 +15,7 @@
     JreThrowNullPointerException();
   }
 
-  return [(JavaUtilConcurrentAtomicAtomicLong *)count addAndGetWithLong:a3];
+  return [(JavaUtilConcurrentAtomicAtomicLong *)count addAndGetWithLong:long];
 }
 
 - (int64_t)get

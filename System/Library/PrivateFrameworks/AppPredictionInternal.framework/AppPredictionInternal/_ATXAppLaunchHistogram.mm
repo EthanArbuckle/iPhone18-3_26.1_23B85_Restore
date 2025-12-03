@@ -1,37 +1,37 @@
 @interface _ATXAppLaunchHistogram
-- (BOOL)bundleHasBeenLaunched:(id)a3;
-- (BOOL)removeHistoryForBundleId:(id)a3;
+- (BOOL)bundleHasBeenLaunched:(id)launched;
+- (BOOL)removeHistoryForBundleId:(id)id;
 - (NSString)description;
-- (_ATXAppLaunchHistogram)initWithCoder:(id)a3;
-- (_ATXAppLaunchHistogram)initWithType:(int64_t)a3;
-- (double)averageLaunchesPerBundleId:(id)a3;
+- (_ATXAppLaunchHistogram)initWithCoder:(id)coder;
+- (_ATXAppLaunchHistogram)initWithType:(int64_t)type;
+- (double)averageLaunchesPerBundleId:(id)id;
 - (double)entropy;
-- (double)entropyForBundleId:(id)a3;
-- (double)entropyForDate:(id)a3;
-- (double)launchPopularityWithBundleId:(id)a3 date:(id)a4;
-- (double)overallLaunchPopularityForBundleId:(id)a3;
-- (double)relativeLaunchPopularityWithBundleId:(id)a3 date:(id)a4;
-- (double)relativeLaunchPopularityWithBundleId:(id)a3 date:(id)a4 distanceScale:(float)a5;
-- (double)relativeLaunchPopularityWithBundleId:(id)a3 elapsedTime:(double)a4 distanceScale:(float)a5;
+- (double)entropyForBundleId:(id)id;
+- (double)entropyForDate:(id)date;
+- (double)launchPopularityWithBundleId:(id)id date:(id)date;
+- (double)overallLaunchPopularityForBundleId:(id)id;
+- (double)relativeLaunchPopularityWithBundleId:(id)id date:(id)date;
+- (double)relativeLaunchPopularityWithBundleId:(id)id date:(id)date distanceScale:(float)scale;
+- (double)relativeLaunchPopularityWithBundleId:(id)id elapsedTime:(double)time distanceScale:(float)scale;
 - (double)totalLaunches;
-- (double)totalLaunchesForBundleIds:(id)a3;
-- (double)totalLaunchesForBundleIds:(id)a3 forDate:(id)a4 distanceScale:(float)a5;
-- (double)totalTimeOfDayLaunchesForDate:(id)a3;
-- (double)totalTimeOfDayLaunchesForDate:(id)a3 distanceScale:(float)a4;
-- (double)totalTimeOfDayLaunchesForElapsedTime:(double)a3;
-- (double)totalTimeOfDayLaunchesForElapsedTime:(double)a3 distanceScale:(float)a4;
-- (double)unsmoothedLaunchesForBundleIds:(id)a3 forLocalTime:(unsigned __int16)a4;
-- (int)removeHistoryForBundleIds:(id)a3;
-- (unsigned)_eventIdforBundleId:(id)a3;
-- (unsigned)_localTimeWithDate:(id)a3 timeZone:(id)a4;
+- (double)totalLaunchesForBundleIds:(id)ids;
+- (double)totalLaunchesForBundleIds:(id)ids forDate:(id)date distanceScale:(float)scale;
+- (double)totalTimeOfDayLaunchesForDate:(id)date;
+- (double)totalTimeOfDayLaunchesForDate:(id)date distanceScale:(float)scale;
+- (double)totalTimeOfDayLaunchesForElapsedTime:(double)time;
+- (double)totalTimeOfDayLaunchesForElapsedTime:(double)time distanceScale:(float)scale;
+- (double)unsmoothedLaunchesForBundleIds:(id)ids forLocalTime:(unsigned __int16)time;
+- (int)removeHistoryForBundleIds:(id)ids;
+- (unsigned)_eventIdforBundleId:(id)id;
+- (unsigned)_localTimeWithDate:(id)date timeZone:(id)zone;
 - (unsigned)bucketCount;
-- (void)_addLaunchWithBundleId:(id)a3 date:(id)a4 timeZone:(id)a5 arbitraryWeight:(float)a6;
-- (void)addLaunchWithBundleId:(id)a3 elapsedTime:(double)a4 weight:(float)a5;
+- (void)_addLaunchWithBundleId:(id)id date:(id)date timeZone:(id)zone arbitraryWeight:(float)weight;
+- (void)addLaunchWithBundleId:(id)id elapsedTime:(double)time weight:(float)weight;
 - (void)dealloc;
-- (void)decayByFactor:(double)a3;
-- (void)decayWithHalfLifeInDays:(double)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)resetHistogram:(id)a3;
+- (void)decayByFactor:(double)factor;
+- (void)decayWithHalfLifeInDays:(double)days;
+- (void)encodeWithCoder:(id)coder;
+- (void)resetHistogram:(id)histogram;
 @end
 
 @implementation _ATXAppLaunchHistogram
@@ -44,13 +44,13 @@
   [(_ATXAppLaunchHistogram *)&v3 dealloc];
 }
 
-- (_ATXAppLaunchHistogram)initWithType:(int64_t)a3
+- (_ATXAppLaunchHistogram)initWithType:(int64_t)type
 {
-  v3 = self;
+  selfCopy = self;
   v4 = 0;
   v5 = 1;
   v6 = 86400;
-  switch(a3)
+  switch(type)
   {
     case 0:
     case 1:
@@ -1004,21 +1004,21 @@ LABEL_260:
       break;
     default:
 LABEL_7:
-      v3 = [(_ATXAppLaunchHistogram *)self initWithHistogram:0 bucketCount:v5 filter:v4 timeBase:v6];
-      v7 = v3;
+      selfCopy = [(_ATXAppLaunchHistogram *)self initWithHistogram:0 bucketCount:v5 filter:v4 timeBase:v6];
+      v7 = selfCopy;
       break;
   }
 
   return v7;
 }
 
-- (unsigned)_localTimeWithDate:(id)a3 timeZone:(id)a4
+- (unsigned)_localTimeWithDate:(id)date timeZone:(id)zone
 {
-  v7 = a3;
-  v8 = a4;
+  dateCopy = date;
+  zoneCopy = zone;
   pthread_mutex_lock(&self->_prevLocaltimeLock);
   prevDate = self->_prevDate;
-  if (prevDate && (prevDate == v7 || [(NSDate *)v7 isEqualToDate:?]) && (self->_prevTimeZone == v8 || [(NSTimeZone *)v8 isEqualToTimeZone:?]))
+  if (prevDate && (prevDate == dateCopy || [(NSDate *)dateCopy isEqualToDate:?]) && (self->_prevTimeZone == zoneCopy || [(NSTimeZone *)zoneCopy isEqualToTimeZone:?]))
   {
     LOWORD(v10) = self->_prevLocaltime;
     pthread_mutex_unlock(&self->_prevLocaltimeLock);
@@ -1030,49 +1030,49 @@ LABEL_7:
     v16 = 0;
     v17 = 0;
     v15 = 0;
-    v11 = [MEMORY[0x277CBEA80] currentCalendar];
-    v12 = v11;
-    if (v8)
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+    v12 = currentCalendar;
+    if (zoneCopy)
     {
-      [v11 setTimeZone:v8];
+      [currentCalendar setTimeZone:zoneCopy];
     }
 
-    v13 = [v12 component:512 fromDate:v7];
-    [v12 getHour:&v17 minute:&v16 second:&v15 nanosecond:0 fromDate:v7];
+    v13 = [v12 component:512 fromDate:dateCopy];
+    [v12 getHour:&v17 minute:&v16 second:&v15 nanosecond:0 fromDate:dateCopy];
     v10 = (3600 * v17 + 86400 * v13 + 60 * v16 + v15 - 86400) % self->_timeBase / self->_secondsPerLocaltimeInterval;
     pthread_mutex_lock(&self->_prevLocaltimeLock);
     self->_prevLocaltime = v10;
-    objc_storeStrong(&self->_prevDate, a3);
-    objc_storeStrong(&self->_prevTimeZone, a4);
+    objc_storeStrong(&self->_prevDate, date);
+    objc_storeStrong(&self->_prevTimeZone, zone);
     pthread_mutex_unlock(&self->_prevLocaltimeLock);
   }
 
   return v10;
 }
 
-- (unsigned)_eventIdforBundleId:(id)a3
+- (unsigned)_eventIdforBundleId:(id)id
 {
-  v3 = a3;
+  idCopy = id;
   v4 = +[ATXHistogramBundleIdTable sharedInstance];
-  v5 = [v4 intern:v3];
+  v5 = [v4 intern:idCopy];
 
   return v5;
 }
 
-- (void)_addLaunchWithBundleId:(id)a3 date:(id)a4 timeZone:(id)a5 arbitraryWeight:(float)a6
+- (void)_addLaunchWithBundleId:(id)id date:(id)date timeZone:(id)zone arbitraryWeight:(float)weight
 {
-  v11 = a4;
-  v12 = a5;
-  if (a3)
+  dateCopy = date;
+  zoneCopy = zone;
+  if (id)
   {
-    v13 = [(_ATXAppLaunchHistogram *)self _eventIdforBundleId:a3];
-    v14 = [(_ATXAppLaunchHistogram *)self _localTimeWithDate:v11 timeZone:v12];
+    v13 = [(_ATXAppLaunchHistogram *)self _eventIdforBundleId:id];
+    v14 = [(_ATXAppLaunchHistogram *)self _localTimeWithDate:dateCopy timeZone:zoneCopy];
     lock = self->_lock;
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __79___ATXAppLaunchHistogram__addLaunchWithBundleId_date_timeZone_arbitraryWeight___block_invoke;
     v17[3] = &__block_descriptor_40_e28_v16__0__ATXGuardedHistData_8l;
-    v18 = a6;
+    weightCopy = weight;
     v19 = v13;
     v20 = v14;
     [(_PASLock *)lock runWithLockAcquired:v17];
@@ -1088,22 +1088,22 @@ LABEL_7:
   }
 }
 
-- (void)addLaunchWithBundleId:(id)a3 elapsedTime:(double)a4 weight:(float)a5
+- (void)addLaunchWithBundleId:(id)id elapsedTime:(double)time weight:(float)weight
 {
-  v9 = a3;
-  if (v9)
+  idCopy = id;
+  if (idCopy)
   {
-    if (a5 >= 0.0 && a5 <= 1.0)
+    if (weight >= 0.0 && weight <= 1.0)
     {
-      v12 = [(_ATXAppLaunchHistogram *)self _eventIdforBundleId:v9];
-      v13 = a4 % self->_timeBase;
+      v12 = [(_ATXAppLaunchHistogram *)self _eventIdforBundleId:idCopy];
+      v13 = time % self->_timeBase;
       secondsPerLocaltimeInterval = self->_secondsPerLocaltimeInterval;
       lock = self->_lock;
       v16[0] = MEMORY[0x277D85DD0];
       v16[1] = 3221225472;
       v16[2] = __67___ATXAppLaunchHistogram_addLaunchWithBundleId_elapsedTime_weight___block_invoke;
       v16[3] = &__block_descriptor_40_e28_v16__0__ATXGuardedHistData_8l;
-      v17 = a5;
+      weightCopy = weight;
       v18 = v12;
       v19 = v13 / secondsPerLocaltimeInterval;
       [(_PASLock *)lock runWithLockAcquired:v16];
@@ -1129,24 +1129,24 @@ LABEL_7:
 LABEL_12:
 }
 
-- (void)resetHistogram:(id)a3
+- (void)resetHistogram:(id)histogram
 {
-  v4 = a3;
+  histogramCopy = histogram;
   lock = self->_lock;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __41___ATXAppLaunchHistogram_resetHistogram___block_invoke;
   v7[3] = &unk_27859B610;
-  v8 = v4;
-  v6 = v4;
+  v8 = histogramCopy;
+  v6 = histogramCopy;
   [(_PASLock *)lock runWithLockAcquired:v7];
 }
 
-- (BOOL)removeHistoryForBundleId:(id)a3
+- (BOOL)removeHistoryForBundleId:(id)id
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  idCopy = id;
+  v6 = idCopy;
+  if (idCopy)
   {
     v14 = 0;
     v15 = &v14;
@@ -1157,7 +1157,7 @@ LABEL_12:
     v11[1] = 3221225472;
     v11[2] = __51___ATXAppLaunchHistogram_removeHistoryForBundleId___block_invoke;
     v11[3] = &unk_27859B638;
-    v12 = v5;
+    v12 = idCopy;
     v13 = &v14;
     [(_PASLock *)lock runWithLockAcquired:v11];
     v8 = *(v15 + 24);
@@ -1179,9 +1179,9 @@ LABEL_12:
   return v8 & 1;
 }
 
-- (int)removeHistoryForBundleIds:(id)a3
+- (int)removeHistoryForBundleIds:(id)ids
 {
-  v4 = a3;
+  idsCopy = ids;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -1191,7 +1191,7 @@ LABEL_12:
   v8[1] = 3221225472;
   v8[2] = __52___ATXAppLaunchHistogram_removeHistoryForBundleIds___block_invoke;
   v8[3] = &unk_27859B638;
-  v6 = v4;
+  v6 = idsCopy;
   v9 = v6;
   v10 = &v11;
   [(_PASLock *)lock runWithLockAcquired:v8];
@@ -1201,14 +1201,14 @@ LABEL_12:
   return lock;
 }
 
-- (double)launchPopularityWithBundleId:(id)a3 date:(id)a4
+- (double)launchPopularityWithBundleId:(id)id date:(id)date
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  idCopy = id;
+  dateCopy = date;
+  if (idCopy)
   {
-    v8 = [(_ATXAppLaunchHistogram *)self _localTimeWithDate:v7];
-    v9 = [(_ATXAppLaunchHistogram *)self _eventIdforBundleId:v6];
+    v8 = [(_ATXAppLaunchHistogram *)self _localTimeWithDate:dateCopy];
+    v9 = [(_ATXAppLaunchHistogram *)self _eventIdforBundleId:idCopy];
     v17 = 0;
     v18 = &v17;
     v19 = 0x2020000000;
@@ -1241,21 +1241,21 @@ LABEL_12:
   return v11;
 }
 
-- (double)relativeLaunchPopularityWithBundleId:(id)a3 date:(id)a4
+- (double)relativeLaunchPopularityWithBundleId:(id)id date:(id)date
 {
   LODWORD(v4) = 1.0;
-  [(_ATXAppLaunchHistogram *)self relativeLaunchPopularityWithBundleId:a3 date:a4 distanceScale:v4];
+  [(_ATXAppLaunchHistogram *)self relativeLaunchPopularityWithBundleId:id date:date distanceScale:v4];
   return result;
 }
 
-- (double)relativeLaunchPopularityWithBundleId:(id)a3 date:(id)a4 distanceScale:(float)a5
+- (double)relativeLaunchPopularityWithBundleId:(id)id date:(id)date distanceScale:(float)scale
 {
-  v8 = a3;
-  v9 = a4;
-  if (v8)
+  idCopy = id;
+  dateCopy = date;
+  if (idCopy)
   {
-    v10 = [(_ATXAppLaunchHistogram *)self _localTimeWithDate:v9];
-    v11 = [(_ATXAppLaunchHistogram *)self _eventIdforBundleId:v8];
+    v10 = [(_ATXAppLaunchHistogram *)self _localTimeWithDate:dateCopy];
+    v11 = [(_ATXAppLaunchHistogram *)self _eventIdforBundleId:idCopy];
     v20 = 0;
     v21 = &v20;
     v22 = 0x2020000000;
@@ -1269,7 +1269,7 @@ LABEL_12:
     v16[5] = &v20;
     v18 = v11;
     v19 = v10;
-    v17 = a5;
+    scaleCopy = scale;
     [(_PASLock *)lock runWithLockAcquired:v16];
     v13 = v21[3];
     _Block_object_dispose(&v20, 8);
@@ -1289,13 +1289,13 @@ LABEL_12:
   return v13;
 }
 
-- (double)relativeLaunchPopularityWithBundleId:(id)a3 elapsedTime:(double)a4 distanceScale:(float)a5
+- (double)relativeLaunchPopularityWithBundleId:(id)id elapsedTime:(double)time distanceScale:(float)scale
 {
-  v8 = a3;
-  if (v8)
+  idCopy = id;
+  if (idCopy)
   {
-    v9 = a4 % self->_timeBase / self->_secondsPerLocaltimeInterval;
-    v10 = [(_ATXAppLaunchHistogram *)self _eventIdforBundleId:v8];
+    v9 = time % self->_timeBase / self->_secondsPerLocaltimeInterval;
+    v10 = [(_ATXAppLaunchHistogram *)self _eventIdforBundleId:idCopy];
     v19 = 0;
     v20 = &v19;
     v21 = 0x2020000000;
@@ -1309,7 +1309,7 @@ LABEL_12:
     v15[5] = &v19;
     v17 = v10;
     v18 = v9;
-    v16 = a5;
+    scaleCopy = scale;
     [(_PASLock *)lock runWithLockAcquired:v15];
     v12 = v20[3];
     _Block_object_dispose(&v19, 8);
@@ -1329,10 +1329,10 @@ LABEL_12:
   return v12;
 }
 
-- (double)totalTimeOfDayLaunchesForDate:(id)a3 distanceScale:(float)a4
+- (double)totalTimeOfDayLaunchesForDate:(id)date distanceScale:(float)scale
 {
-  v6 = a3;
-  v7 = [(_ATXAppLaunchHistogram *)self _localTimeWithDate:v6];
+  dateCopy = date;
+  v7 = [(_ATXAppLaunchHistogram *)self _localTimeWithDate:dateCopy];
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
@@ -1344,7 +1344,7 @@ LABEL_12:
   v11[3] = &unk_27859B6B0;
   v11[4] = &v14;
   v13 = v7;
-  v12 = a4;
+  scaleCopy = scale;
   [(_PASLock *)lock runWithLockAcquired:v11];
   v9 = v15[3];
   _Block_object_dispose(&v14, 8);
@@ -1352,20 +1352,20 @@ LABEL_12:
   return v9;
 }
 
-- (double)totalTimeOfDayLaunchesForDate:(id)a3
+- (double)totalTimeOfDayLaunchesForDate:(id)date
 {
   LODWORD(v3) = 1.0;
-  [(_ATXAppLaunchHistogram *)self totalTimeOfDayLaunchesForDate:a3 distanceScale:v3];
+  [(_ATXAppLaunchHistogram *)self totalTimeOfDayLaunchesForDate:date distanceScale:v3];
   return result;
 }
 
-- (double)totalTimeOfDayLaunchesForElapsedTime:(double)a3 distanceScale:(float)a4
+- (double)totalTimeOfDayLaunchesForElapsedTime:(double)time distanceScale:(float)scale
 {
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 0;
-  v4 = a3 % self->_timeBase;
+  v4 = time % self->_timeBase;
   secondsPerLocaltimeInterval = self->_secondsPerLocaltimeInterval;
   lock = self->_lock;
   v9[0] = MEMORY[0x277D85DD0];
@@ -1374,26 +1374,26 @@ LABEL_12:
   v9[3] = &unk_27859B6B0;
   v9[4] = &v12;
   v11 = v4 / secondsPerLocaltimeInterval;
-  v10 = a4;
+  scaleCopy = scale;
   [(_PASLock *)lock runWithLockAcquired:v9];
   v7 = v13[3];
   _Block_object_dispose(&v12, 8);
   return v7;
 }
 
-- (double)totalTimeOfDayLaunchesForElapsedTime:(double)a3
+- (double)totalTimeOfDayLaunchesForElapsedTime:(double)time
 {
   LODWORD(v3) = 1.0;
-  [(_ATXAppLaunchHistogram *)self totalTimeOfDayLaunchesForElapsedTime:a3 distanceScale:v3];
+  [(_ATXAppLaunchHistogram *)self totalTimeOfDayLaunchesForElapsedTime:time distanceScale:v3];
   return result;
 }
 
-- (double)overallLaunchPopularityForBundleId:(id)a3
+- (double)overallLaunchPopularityForBundleId:(id)id
 {
-  v4 = a3;
-  if (v4)
+  idCopy = id;
+  if (idCopy)
   {
-    v5 = [(_ATXAppLaunchHistogram *)self _eventIdforBundleId:v4];
+    v5 = [(_ATXAppLaunchHistogram *)self _eventIdforBundleId:idCopy];
     v12 = 0;
     v13 = &v12;
     v14 = 0x2020000000;
@@ -1443,13 +1443,13 @@ LABEL_12:
   return v3;
 }
 
-- (double)averageLaunchesPerBundleId:(id)a3
+- (double)averageLaunchesPerBundleId:(id)id
 {
-  v4 = a3;
-  if ([v4 count])
+  idCopy = id;
+  if ([idCopy count])
   {
-    [(_ATXAppLaunchHistogram *)self totalLaunchesForBundleIds:v4];
-    v6 = v5 / [v4 count];
+    [(_ATXAppLaunchHistogram *)self totalLaunchesForBundleIds:idCopy];
+    v6 = v5 / [idCopy count];
   }
 
   else
@@ -1460,9 +1460,9 @@ LABEL_12:
   return v6;
 }
 
-- (double)totalLaunchesForBundleIds:(id)a3
+- (double)totalLaunchesForBundleIds:(id)ids
 {
-  v4 = a3;
+  idsCopy = ids;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
@@ -1472,9 +1472,9 @@ LABEL_12:
   v9[1] = 3221225472;
   v9[2] = __52___ATXAppLaunchHistogram_totalLaunchesForBundleIds___block_invoke;
   v9[3] = &unk_27859B728;
-  v6 = v4;
+  v6 = idsCopy;
   v10 = v6;
-  v11 = self;
+  selfCopy = self;
   v12 = &v13;
   [(_PASLock *)lock runWithLockAcquired:v9];
   v7 = v14[3];
@@ -1483,11 +1483,11 @@ LABEL_12:
   return v7;
 }
 
-- (double)totalLaunchesForBundleIds:(id)a3 forDate:(id)a4 distanceScale:(float)a5
+- (double)totalLaunchesForBundleIds:(id)ids forDate:(id)date distanceScale:(float)scale
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(_ATXAppLaunchHistogram *)self _localTimeWithDate:v9];
+  idsCopy = ids;
+  dateCopy = date;
+  v10 = [(_ATXAppLaunchHistogram *)self _localTimeWithDate:dateCopy];
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
@@ -1497,12 +1497,12 @@ LABEL_12:
   v15[1] = 3221225472;
   v15[2] = __74___ATXAppLaunchHistogram_totalLaunchesForBundleIds_forDate_distanceScale___block_invoke;
   v15[3] = &unk_27859B750;
-  v12 = v8;
+  v12 = idsCopy;
   v16 = v12;
-  v17 = self;
+  selfCopy = self;
   v18 = &v21;
   v20 = v10;
-  v19 = a5;
+  scaleCopy = scale;
   [(_PASLock *)lock runWithLockAcquired:v15];
   v13 = v22[3];
 
@@ -1510,9 +1510,9 @@ LABEL_12:
   return v13;
 }
 
-- (double)unsmoothedLaunchesForBundleIds:(id)a3 forLocalTime:(unsigned __int16)a4
+- (double)unsmoothedLaunchesForBundleIds:(id)ids forLocalTime:(unsigned __int16)time
 {
-  v6 = a3;
+  idsCopy = ids;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
@@ -1522,11 +1522,11 @@ LABEL_12:
   v11[1] = 3221225472;
   v11[2] = __70___ATXAppLaunchHistogram_unsmoothedLaunchesForBundleIds_forLocalTime___block_invoke;
   v11[3] = &unk_27859B778;
-  v8 = v6;
+  v8 = idsCopy;
   v12 = v8;
-  v13 = self;
+  selfCopy = self;
   v14 = &v16;
-  v15 = a4;
+  timeCopy = time;
   [(_PASLock *)lock runWithLockAcquired:v11];
   v9 = v17[3];
 
@@ -1534,12 +1534,12 @@ LABEL_12:
   return v9;
 }
 
-- (BOOL)bundleHasBeenLaunched:(id)a3
+- (BOOL)bundleHasBeenLaunched:(id)launched
 {
-  v5 = a3;
-  if (v5)
+  launchedCopy = launched;
+  if (launchedCopy)
   {
-    v6 = [(_ATXAppLaunchHistogram *)self _eventIdforBundleId:v5];
+    v6 = [(_ATXAppLaunchHistogram *)self _eventIdforBundleId:launchedCopy];
     v13 = 0;
     v14 = &v13;
     v15 = 0x2020000000;
@@ -1570,35 +1570,35 @@ LABEL_12:
   return v8;
 }
 
-- (void)decayByFactor:(double)a3
+- (void)decayByFactor:(double)factor
 {
   lock = self->_lock;
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __40___ATXAppLaunchHistogram_decayByFactor___block_invoke;
   v4[3] = &__block_descriptor_40_e28_v16__0__ATXGuardedHistData_8l;
-  *&v4[4] = a3;
+  *&v4[4] = factor;
   [(_PASLock *)lock runWithLockAcquired:v4];
 }
 
-- (void)decayWithHalfLifeInDays:(double)a3
+- (void)decayWithHalfLifeInDays:(double)days
 {
   lock = self->_lock;
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __50___ATXAppLaunchHistogram_decayWithHalfLifeInDays___block_invoke;
   v4[3] = &__block_descriptor_40_e28_v16__0__ATXGuardedHistData_8l;
-  *&v4[4] = a3;
+  *&v4[4] = days;
   [(_PASLock *)lock runWithLockAcquired:v4];
 }
 
-- (_ATXAppLaunchHistogram)initWithCoder:(id)a3
+- (_ATXAppLaunchHistogram)initWithCoder:(id)coder
 {
   v4 = 86400;
-  v5 = a3;
-  if ([v5 containsValueForKey:@"timeBase"])
+  coderCopy = coder;
+  if ([coderCopy containsValueForKey:@"timeBase"])
   {
-    v6 = [v5 decodeInt32ForKey:@"timeBase"];
+    v6 = [coderCopy decodeInt32ForKey:@"timeBase"];
     v7 = v6;
     if (v6 <= 0)
     {
@@ -1615,11 +1615,11 @@ LABEL_12:
     }
   }
 
-  v9 = [v5 error];
+  error = [coderCopy error];
 
-  if (!v9)
+  if (!error)
   {
-    v10 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"histogram"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"histogram"];
     if (v10)
     {
       v12 = [[ATXHistogramData alloc] initWithTimeHistogram:v10];
@@ -1629,7 +1629,7 @@ LABEL_12:
       v16 = objc_opt_class();
       v17 = [v14 initWithObjects:{v15, v16, objc_opt_class(), 0}];
       objc_autoreleasePoolPop(v13);
-      v18 = [v5 decodeObjectOfClasses:v17 forKey:@"bundleIdToEventId"];
+      v18 = [coderCopy decodeObjectOfClasses:v17 forKey:@"bundleIdToEventId"];
 
       if (v18)
       {
@@ -1638,7 +1638,7 @@ LABEL_12:
         [(ATXHistogramData *)v12 applyPermutationToA:v20];
 
         self = [(_ATXAppLaunchHistogram *)self initWithHistogram:v12 bucketCount:[v10 pointsPerTimeInterval] filter:[v10 applyFilter] timeBase:v4];
-        v11 = self;
+        selfCopy2 = self;
       }
 
       else
@@ -1646,62 +1646,62 @@ LABEL_12:
         v25 = __atxlog_handle_default();
         if (os_log_type_enabled(v25, OS_LOG_TYPE_FAULT))
         {
-          [_ATXAppLaunchHistogram initWithCoder:v5];
+          [_ATXAppLaunchHistogram initWithCoder:coderCopy];
         }
 
-        v11 = 0;
+        selfCopy2 = 0;
       }
 
       goto LABEL_26;
     }
 
-    v12 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"histogramData"];
-    v21 = [v5 error];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"histogramData"];
+    error2 = [coderCopy error];
 
-    if (v21 || !v12)
+    if (error2 || !v12)
     {
       v24 = __atxlog_handle_default();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_FAULT))
       {
-        [_ATXAppLaunchHistogram initWithCoder:v5];
+        [_ATXAppLaunchHistogram initWithCoder:coderCopy];
       }
     }
 
     else
     {
-      v22 = [v5 decodeInt32ForKey:@"bucketCount"];
-      v23 = [v5 error];
+      v22 = [coderCopy decodeInt32ForKey:@"bucketCount"];
+      error3 = [coderCopy error];
 
-      if (v23)
+      if (error3)
       {
         v24 = __atxlog_handle_default();
         if (os_log_type_enabled(v24, OS_LOG_TYPE_FAULT))
         {
-          [_ATXAppLaunchHistogram initWithCoder:v5];
+          [_ATXAppLaunchHistogram initWithCoder:coderCopy];
         }
       }
 
       else
       {
-        v27 = [v5 decodeBoolForKey:@"filter"];
-        v28 = [v5 error];
+        v27 = [coderCopy decodeBoolForKey:@"filter"];
+        error4 = [coderCopy error];
 
-        if (!v28)
+        if (!error4)
         {
           self = [(_ATXAppLaunchHistogram *)self initWithHistogram:v12 bucketCount:v22 filter:v27 timeBase:v4];
-          v11 = self;
+          selfCopy2 = self;
           goto LABEL_26;
         }
 
         v24 = __atxlog_handle_default();
         if (os_log_type_enabled(v24, OS_LOG_TYPE_FAULT))
         {
-          [_ATXAppLaunchHistogram initWithCoder:v5];
+          [_ATXAppLaunchHistogram initWithCoder:coderCopy];
         }
       }
     }
 
-    v11 = 0;
+    selfCopy2 = 0;
 LABEL_26:
 
     goto LABEL_27;
@@ -1710,25 +1710,25 @@ LABEL_26:
   v10 = __atxlog_handle_default();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
   {
-    [_ATXAppLaunchHistogram initWithCoder:v5];
+    [_ATXAppLaunchHistogram initWithCoder:coderCopy];
   }
 
-  v11 = 0;
+  selfCopy2 = 0;
 LABEL_27:
 
-  return v11;
+  return selfCopy2;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   lock = self->_lock;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __42___ATXAppLaunchHistogram_encodeWithCoder___block_invoke;
   v7[3] = &unk_27859B610;
-  v8 = v4;
-  v6 = v4;
+  v8 = coderCopy;
+  v6 = coderCopy;
   [(_PASLock *)lock runWithLockAcquired:v7];
   [v6 encodeInt32:self->_timeBase forKey:@"timeBase"];
 }
@@ -1754,10 +1754,10 @@ LABEL_27:
   return v3;
 }
 
-- (double)entropyForBundleId:(id)a3
+- (double)entropyForBundleId:(id)id
 {
-  v4 = a3;
-  v5 = [(_ATXAppLaunchHistogram *)self _eventIdforBundleId:v4];
+  idCopy = id;
+  v5 = [(_ATXAppLaunchHistogram *)self _eventIdforBundleId:idCopy];
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -1776,10 +1776,10 @@ LABEL_27:
   return v7;
 }
 
-- (double)entropyForDate:(id)a3
+- (double)entropyForDate:(id)date
 {
-  v4 = a3;
-  v5 = [(_ATXAppLaunchHistogram *)self _localTimeWithDate:v4];
+  dateCopy = date;
+  v5 = [(_ATXAppLaunchHistogram *)self _localTimeWithDate:dateCopy];
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;

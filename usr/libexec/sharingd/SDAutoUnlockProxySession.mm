@@ -1,12 +1,12 @@
 @interface SDAutoUnlockProxySession
-- (SDAutoUnlockProxySession)initWithDevice:(id)a3 sessionID:(id)a4 bleDevice:(id)a5;
+- (SDAutoUnlockProxySession)initWithDevice:(id)device sessionID:(id)d bleDevice:(id)bleDevice;
 - (id)results;
 - (void)_start;
 - (void)addObservers;
-- (void)deviceConnected:(id)a3;
-- (void)handleFoundBLEDevice:(id)a3;
+- (void)deviceConnected:(id)connected;
+- (void)handleFoundBLEDevice:(id)device;
 - (void)invalidate;
-- (void)notifyDelegateWithError:(id)a3;
+- (void)notifyDelegateWithError:(id)error;
 - (void)removeObservers;
 - (void)sendProxyTrigger;
 - (void)start;
@@ -14,16 +14,16 @@
 
 @implementation SDAutoUnlockProxySession
 
-- (SDAutoUnlockProxySession)initWithDevice:(id)a3 sessionID:(id)a4 bleDevice:(id)a5
+- (SDAutoUnlockProxySession)initWithDevice:(id)device sessionID:(id)d bleDevice:(id)bleDevice
 {
-  v9 = a5;
+  bleDeviceCopy = bleDevice;
   v13.receiver = self;
   v13.super_class = SDAutoUnlockProxySession;
-  v10 = [(SDAutoUnlockPairingSession *)&v13 initWithDevice:a3 sessionID:a4];
+  v10 = [(SDAutoUnlockPairingSession *)&v13 initWithDevice:device sessionID:d];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_bleDevice, a5);
+    objc_storeStrong(&v10->_bleDevice, bleDevice);
     [(SDAutoUnlockProxySession *)v11 addObservers];
   }
 
@@ -32,21 +32,21 @@
 
 - (void)start
 {
-  v3 = [(SDAutoUnlockPairingSession *)self sessionQueue];
+  sessionQueue = [(SDAutoUnlockPairingSession *)self sessionQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001197C0;
   block[3] = &unk_1008CDEA0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(sessionQueue, block);
 }
 
 - (void)_start
 {
   [(SDAutoUnlockProxySession *)self setActiveConnection:1];
   v3 = +[SDNearbyAgent sharedNearbyAgent];
-  v4 = [(SDAutoUnlockProxySession *)self bleDevice];
-  [v3 startUnlockBLEConnectionWithDevice:v4 encrypted:1];
+  bleDevice = [(SDAutoUnlockProxySession *)self bleDevice];
+  [v3 startUnlockBLEConnectionWithDevice:bleDevice encrypted:1];
 
   [(SDAutoUnlockProxySession *)self setState:1];
 
@@ -65,8 +65,8 @@
     if ([(SDAutoUnlockProxySession *)self activeConnection])
     {
       v3 = +[SDNearbyAgent sharedNearbyAgent];
-      v4 = [(SDAutoUnlockProxySession *)self bleDevice];
-      [v3 stopUnlockBLEConnectionWithDevice:v4];
+      bleDevice = [(SDAutoUnlockProxySession *)self bleDevice];
+      [v3 stopUnlockBLEConnectionWithDevice:bleDevice];
     }
   }
 }
@@ -87,8 +87,8 @@
 {
   v3 = objc_opt_new();
   [v3 setObject:&__kCFBooleanTrue forKeyedSubscript:SDAutoUnlockManagerMetricUsingProxyDeviceKey];
-  v4 = [(SDAutoUnlockProxySession *)self model];
-  [v3 setObject:v4 forKeyedSubscript:SDAutoUnlockManagerMetricProxyDeviceModelKey];
+  model = [(SDAutoUnlockProxySession *)self model];
+  [v3 setObject:model forKeyedSubscript:SDAutoUnlockManagerMetricProxyDeviceModelKey];
 
   if ([(SDAutoUnlockProxySession *)self proxyRSSI])
   {
@@ -107,18 +107,18 @@
   return v3;
 }
 
-- (void)deviceConnected:(id)a3
+- (void)deviceConnected:(id)connected
 {
-  v10 = [a3 userInfo];
-  v4 = [v10 objectForKeyedSubscript:SFBluetoothNotificationKeyPeerDevice];
-  v5 = [v4 identifier];
-  v6 = [(SDAutoUnlockProxySession *)self bleDevice];
-  v7 = [v6 identifier];
-  v8 = [v5 isEqual:v7];
+  userInfo = [connected userInfo];
+  v4 = [userInfo objectForKeyedSubscript:SFBluetoothNotificationKeyPeerDevice];
+  identifier = [v4 identifier];
+  bleDevice = [(SDAutoUnlockProxySession *)self bleDevice];
+  identifier2 = [bleDevice identifier];
+  v8 = [identifier isEqual:identifier2];
 
   if (v8)
   {
-    v9 = [v10 objectForKeyedSubscript:SFBluetoothNotificationKeyConnectTime];
+    v9 = [userInfo objectForKeyedSubscript:SFBluetoothNotificationKeyConnectTime];
     [v9 doubleValue];
     [(SDAutoUnlockProxySession *)self setConnectionTime:?];
 
@@ -129,16 +129,16 @@
   }
 }
 
-- (void)handleFoundBLEDevice:(id)a3
+- (void)handleFoundBLEDevice:(id)device
 {
-  v4 = a3;
-  -[SDAutoUnlockProxySession setProxyRSSI:](self, "setProxyRSSI:", [v4 rssi]);
+  deviceCopy = device;
+  -[SDAutoUnlockProxySession setProxyRSSI:](self, "setProxyRSSI:", [deviceCopy rssi]);
   v5 = +[NSDate date];
-  v6 = [(SDAutoUnlockProxySession *)self startDate];
-  [v5 timeIntervalSinceDate:v6];
+  startDate = [(SDAutoUnlockProxySession *)self startDate];
+  [v5 timeIntervalSinceDate:startDate];
   [(SDAutoUnlockProxySession *)self setProxyDiscoveryTime:?];
 
-  if (sub_1001116DC(v4))
+  if (sub_1001116DC(deviceCopy))
   {
     v7 = auto_unlock_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -147,45 +147,45 @@
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Proxy available for unlock", v13, 2u);
     }
 
-    v8 = [(SDAutoUnlockPairingSession *)self delegate];
-    [(__CFString *)v8 sessionDidStartConnection:self];
+    delegate = [(SDAutoUnlockPairingSession *)self delegate];
+    [(__CFString *)delegate sessionDidStartConnection:self];
   }
 
   else
   {
-    if (sub_10011170C(v4))
+    if (sub_10011170C(deviceCopy))
     {
-      v8 = SFLocalizedStringForKey();
+      delegate = SFLocalizedStringForKey();
       v9 = 135;
     }
 
     else
     {
-      v8 = @"Watch Not On Wrist";
+      delegate = @"Watch Not On Wrist";
       v9 = 144;
     }
 
     v10 = SFAutoUnlockErrorDomain;
     v14 = NSLocalizedDescriptionKey;
-    v15 = v8;
+    v15 = delegate;
     v11 = [NSDictionary dictionaryWithObjects:&v15 forKeys:&v14 count:1];
     v12 = [NSError errorWithDomain:v10 code:v9 userInfo:v11];
     [(SDAutoUnlockProxySession *)self notifyDelegateWithError:v12];
   }
 }
 
-- (void)notifyDelegateWithError:(id)a3
+- (void)notifyDelegateWithError:(id)error
 {
-  v7 = a3;
+  errorCopy = error;
   if (![(SDAutoUnlockProxySession *)self notified])
   {
-    v4 = [(SDAutoUnlockPairingSession *)self delegate];
+    delegate = [(SDAutoUnlockPairingSession *)self delegate];
     v5 = objc_opt_respondsToSelector();
 
     if (v5)
     {
-      v6 = [(SDAutoUnlockPairingSession *)self delegate];
-      [v6 session:self didCompleteWithError:v7];
+      delegate2 = [(SDAutoUnlockPairingSession *)self delegate];
+      [delegate2 session:self didCompleteWithError:errorCopy];
 
       [(SDAutoUnlockProxySession *)self setNotified:1];
     }
@@ -203,17 +203,17 @@
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Sending SDAutoUnlockMessageTypeProxyTrigger", buf, 2u);
   }
 
-  v5 = [v3 data];
-  v6 = [(SDAutoUnlockPairingSession *)self wrapPayload:v5 withType:307];
+  data = [v3 data];
+  v6 = [(SDAutoUnlockPairingSession *)self wrapPayload:data withType:307];
 
   v7 = +[SDNearbyAgent sharedNearbyAgent];
-  v8 = [(SDAutoUnlockProxySession *)self bleDevice];
+  bleDevice = [(SDAutoUnlockProxySession *)self bleDevice];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100119FF0;
   v9[3] = &unk_1008CDF90;
   v9[4] = self;
-  [v7 sendUnlockData:v6 toBLEDevice:v8 completion:v9];
+  [v7 sendUnlockData:v6 toBLEDevice:bleDevice completion:v9];
 
   [(SDAutoUnlockPairingSession *)self restartResponseTimer:sub_1001F0530(35)];
 }

@@ -1,24 +1,24 @@
 @interface PLAssetsdNotificationClient
 - (void)asyncNotifyEndOfInterestForUnrenderedCinematicVideoItems;
-- (void)asyncNotifyExpiringMomentShareWithUUIDs:(id)a3 thumbnailImageData:(id)a4 notificationTitle:(id)a5 notificationSubtitle:(id)a6;
-- (void)asyncNotifyInterestingMemoryNotificationForColletionID:(id)a3 notificationDeliveryDate:(id)a4;
-- (void)asyncNotifyInterestingMemoryNotificationViewedForColletionID:(id)a3;
-- (void)asyncNotifyPhotosChallengeNewQuestionsWithNotificationDeliveryDate:(id)a3;
-- (void)asyncNotifyPhotosChallengeSubmissionWithNotificationDeliveryDate:(id)a3;
-- (void)asyncNotifyReadyToViewMomentShareWithUUID:(id)a3;
-- (void)asyncNotifyReportAsJunkPhotoStreamInvitationForAlbumWithCloudGUID:(id)a3;
-- (void)asyncNotifyResponseToPhotoStreamInvitationForAlbumWithCloudGUID:(id)a3 acceptInvitation:(BOOL)a4;
-- (void)asyncNotifySharedLibrarySuggestionsWithNotificationDeliveryDate:(id)a3;
+- (void)asyncNotifyExpiringMomentShareWithUUIDs:(id)ds thumbnailImageData:(id)data notificationTitle:(id)title notificationSubtitle:(id)subtitle;
+- (void)asyncNotifyInterestingMemoryNotificationForColletionID:(id)d notificationDeliveryDate:(id)date;
+- (void)asyncNotifyInterestingMemoryNotificationViewedForColletionID:(id)d;
+- (void)asyncNotifyPhotosChallengeNewQuestionsWithNotificationDeliveryDate:(id)date;
+- (void)asyncNotifyPhotosChallengeSubmissionWithNotificationDeliveryDate:(id)date;
+- (void)asyncNotifyReadyToViewMomentShareWithUUID:(id)d;
+- (void)asyncNotifyReportAsJunkPhotoStreamInvitationForAlbumWithCloudGUID:(id)d;
+- (void)asyncNotifyResponseToPhotoStreamInvitationForAlbumWithCloudGUID:(id)d acceptInvitation:(BOOL)invitation;
+- (void)asyncNotifySharedLibrarySuggestionsWithNotificationDeliveryDate:(id)date;
 - (void)asyncNotifyStartOfInterestForUnrenderedCinematicVideoItems;
-- (void)asyncNotifyUserViewedNotificationWithAlbumCloudGUID:(id)a3;
+- (void)asyncNotifyUserViewedNotificationWithAlbumCloudGUID:(id)d;
 @end
 
 @implementation PLAssetsdNotificationClient
 
-- (void)asyncNotifySharedLibrarySuggestionsWithNotificationDeliveryDate:(id)a3
+- (void)asyncNotifySharedLibrarySuggestionsWithNotificationDeliveryDate:(id)date
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  dateCopy = date;
   v18 = 0u;
   *sel = 0u;
   v17 = 0u;
@@ -44,10 +44,10 @@
     _os_signpost_emit_with_name_impl(&dword_1AA9BD000, v10, OS_SIGNPOST_INTERVAL_BEGIN, v8, "PLXPC Sync", "%{public}s", buf, 0xCu);
   }
 
-  v12 = [(PLAssetsdBaseClient *)self proxyFactory];
-  v13 = [v12 _unboostingRemoteObjectProxy];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
+  _unboostingRemoteObjectProxy = [proxyFactory _unboostingRemoteObjectProxy];
 
-  [v13 noteSharedLibrarySuggestionsWithNotificationDeliveryDate:v5];
+  [_unboostingRemoteObjectProxy noteSharedLibrarySuggestionsWithNotificationDeliveryDate:dateCopy];
   if (v17 == 1)
   {
     os_activity_scope_leave((&v18 + 8));
@@ -95,10 +95,10 @@
     _os_signpost_emit_with_name_impl(&dword_1AA9BD000, v8, OS_SIGNPOST_INTERVAL_BEGIN, v6, "PLXPC Sync", "%{public}s", buf, 0xCu);
   }
 
-  v10 = [(PLAssetsdBaseClient *)self proxyFactory];
-  v11 = [v10 _unboostingRemoteObjectProxy];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
+  _unboostingRemoteObjectProxy = [proxyFactory _unboostingRemoteObjectProxy];
 
-  [v11 notifyEndOfInterestForUnrenderedCinematicVideoItems];
+  [_unboostingRemoteObjectProxy notifyEndOfInterestForUnrenderedCinematicVideoItems];
   if (v15 == 1)
   {
     os_activity_scope_leave((&v16 + 8));
@@ -146,10 +146,10 @@
     _os_signpost_emit_with_name_impl(&dword_1AA9BD000, v8, OS_SIGNPOST_INTERVAL_BEGIN, v6, "PLXPC Sync", "%{public}s", buf, 0xCu);
   }
 
-  v10 = [(PLAssetsdBaseClient *)self proxyFactory];
-  v11 = [v10 _unboostingRemoteObjectProxy];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
+  _unboostingRemoteObjectProxy = [proxyFactory _unboostingRemoteObjectProxy];
 
-  [v11 notifyStartOfInterestForUnrenderedCinematicVideoItems];
+  [_unboostingRemoteObjectProxy notifyStartOfInterestForUnrenderedCinematicVideoItems];
   if (v15 == 1)
   {
     os_activity_scope_leave((&v16 + 8));
@@ -169,26 +169,26 @@
   }
 }
 
-- (void)asyncNotifyPhotosChallengeNewQuestionsWithNotificationDeliveryDate:(id)a3
+- (void)asyncNotifyPhotosChallengeNewQuestionsWithNotificationDeliveryDate:(id)date
 {
-  v4 = a3;
-  v6 = [(PLAssetsdBaseClient *)self proxyFactory];
-  v5 = [v6 _unboostingRemoteObjectProxy];
-  [v5 notePhotosChallengeNewQuestionsWithNotificationDeliveryDate:v4];
+  dateCopy = date;
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
+  _unboostingRemoteObjectProxy = [proxyFactory _unboostingRemoteObjectProxy];
+  [_unboostingRemoteObjectProxy notePhotosChallengeNewQuestionsWithNotificationDeliveryDate:dateCopy];
 }
 
-- (void)asyncNotifyPhotosChallengeSubmissionWithNotificationDeliveryDate:(id)a3
+- (void)asyncNotifyPhotosChallengeSubmissionWithNotificationDeliveryDate:(id)date
 {
-  v4 = a3;
-  v6 = [(PLAssetsdBaseClient *)self proxyFactory];
-  v5 = [v6 _unboostingRemoteObjectProxy];
-  [v5 notePhotosChallengeSubmissionWithNotificationDeliveryDate:v4];
+  dateCopy = date;
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
+  _unboostingRemoteObjectProxy = [proxyFactory _unboostingRemoteObjectProxy];
+  [_unboostingRemoteObjectProxy notePhotosChallengeSubmissionWithNotificationDeliveryDate:dateCopy];
 }
 
-- (void)asyncNotifyReadyToViewMomentShareWithUUID:(id)a3
+- (void)asyncNotifyReadyToViewMomentShareWithUUID:(id)d
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  dCopy = d;
   v18 = 0u;
   *sel = 0u;
   v17 = 0u;
@@ -214,9 +214,9 @@
     _os_signpost_emit_with_name_impl(&dword_1AA9BD000, v10, OS_SIGNPOST_INTERVAL_BEGIN, v8, "PLXPC Sync", "%{public}s", buf, 0xCu);
   }
 
-  v12 = [(PLAssetsdBaseClient *)self proxyFactory];
-  v13 = [v12 _unboostingRemoteObjectProxy];
-  [v13 noteReadyToViewMomentShareWithUUID:v5];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
+  _unboostingRemoteObjectProxy = [proxyFactory _unboostingRemoteObjectProxy];
+  [_unboostingRemoteObjectProxy noteReadyToViewMomentShareWithUUID:dCopy];
 
   if (v17 == 1)
   {
@@ -237,13 +237,13 @@
   }
 }
 
-- (void)asyncNotifyExpiringMomentShareWithUUIDs:(id)a3 thumbnailImageData:(id)a4 notificationTitle:(id)a5 notificationSubtitle:(id)a6
+- (void)asyncNotifyExpiringMomentShareWithUUIDs:(id)ds thumbnailImageData:(id)data notificationTitle:(id)title notificationSubtitle:(id)subtitle
 {
   v31 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  dsCopy = ds;
+  dataCopy = data;
+  titleCopy = title;
+  subtitleCopy = subtitle;
   v27 = 0u;
   *sel = 0u;
   v26 = 0u;
@@ -269,9 +269,9 @@
     _os_signpost_emit_with_name_impl(&dword_1AA9BD000, v19, OS_SIGNPOST_INTERVAL_BEGIN, v17, "PLXPC Sync", "%{public}s", buf, 0xCu);
   }
 
-  v21 = [(PLAssetsdBaseClient *)self proxyFactory];
-  v22 = [v21 _unboostingRemoteObjectProxy];
-  [v22 noteGoingToExpireCMMsAlertWithCMMUUIDs:v11 thumbnailImageData:v12 notificationTitle:v13 notificationSubtitle:v14];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
+  _unboostingRemoteObjectProxy = [proxyFactory _unboostingRemoteObjectProxy];
+  [_unboostingRemoteObjectProxy noteGoingToExpireCMMsAlertWithCMMUUIDs:dsCopy thumbnailImageData:dataCopy notificationTitle:titleCopy notificationSubtitle:subtitleCopy];
 
   if (v26 == 1)
   {
@@ -292,10 +292,10 @@
   }
 }
 
-- (void)asyncNotifyReportAsJunkPhotoStreamInvitationForAlbumWithCloudGUID:(id)a3
+- (void)asyncNotifyReportAsJunkPhotoStreamInvitationForAlbumWithCloudGUID:(id)d
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  dCopy = d;
   v18 = 0u;
   *sel = 0u;
   v17 = 0u;
@@ -321,9 +321,9 @@
     _os_signpost_emit_with_name_impl(&dword_1AA9BD000, v10, OS_SIGNPOST_INTERVAL_BEGIN, v8, "PLXPC Sync", "%{public}s", buf, 0xCu);
   }
 
-  v12 = [(PLAssetsdBaseClient *)self proxyFactory];
-  v13 = [v12 _unboostingRemoteObjectProxy];
-  [v13 reportAsJunkPhotoStreamInvitationForAlbumWithCloudGUID:v5];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
+  _unboostingRemoteObjectProxy = [proxyFactory _unboostingRemoteObjectProxy];
+  [_unboostingRemoteObjectProxy reportAsJunkPhotoStreamInvitationForAlbumWithCloudGUID:dCopy];
 
   if (v17 == 1)
   {
@@ -344,10 +344,10 @@
   }
 }
 
-- (void)asyncNotifyInterestingMemoryNotificationViewedForColletionID:(id)a3
+- (void)asyncNotifyInterestingMemoryNotificationViewedForColletionID:(id)d
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  dCopy = d;
   v18 = 0u;
   *sel = 0u;
   v17 = 0u;
@@ -373,9 +373,9 @@
     _os_signpost_emit_with_name_impl(&dword_1AA9BD000, v10, OS_SIGNPOST_INTERVAL_BEGIN, v8, "PLXPC Sync", "%{public}s", buf, 0xCu);
   }
 
-  v12 = [(PLAssetsdBaseClient *)self proxyFactory];
-  v13 = [v12 _unboostingRemoteObjectProxy];
-  [v13 noteInterestingMemoryAlertViewedWithUUID:v5];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
+  _unboostingRemoteObjectProxy = [proxyFactory _unboostingRemoteObjectProxy];
+  [_unboostingRemoteObjectProxy noteInterestingMemoryAlertViewedWithUUID:dCopy];
 
   if (v17 == 1)
   {
@@ -396,11 +396,11 @@
   }
 }
 
-- (void)asyncNotifyInterestingMemoryNotificationForColletionID:(id)a3 notificationDeliveryDate:(id)a4
+- (void)asyncNotifyInterestingMemoryNotificationForColletionID:(id)d notificationDeliveryDate:(id)date
 {
   v25 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  dateCopy = date;
   v21 = 0u;
   *sel = 0u;
   v20 = 0u;
@@ -426,9 +426,9 @@
     _os_signpost_emit_with_name_impl(&dword_1AA9BD000, v13, OS_SIGNPOST_INTERVAL_BEGIN, v11, "PLXPC Sync", "%{public}s", buf, 0xCu);
   }
 
-  v15 = [(PLAssetsdBaseClient *)self proxyFactory];
-  v16 = [v15 _unboostingRemoteObjectProxy];
-  [v16 noteInterestingMemoryAlertWithMemoryUUID:v7 notificationDeliveryDate:v8];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
+  _unboostingRemoteObjectProxy = [proxyFactory _unboostingRemoteObjectProxy];
+  [_unboostingRemoteObjectProxy noteInterestingMemoryAlertWithMemoryUUID:dCopy notificationDeliveryDate:dateCopy];
 
   if (v20 == 1)
   {
@@ -449,11 +449,11 @@
   }
 }
 
-- (void)asyncNotifyResponseToPhotoStreamInvitationForAlbumWithCloudGUID:(id)a3 acceptInvitation:(BOOL)a4
+- (void)asyncNotifyResponseToPhotoStreamInvitationForAlbumWithCloudGUID:(id)d acceptInvitation:(BOOL)invitation
 {
-  v4 = a4;
+  invitationCopy = invitation;
   v24 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  dCopy = d;
   v20 = 0u;
   *sel = 0u;
   v19 = 0u;
@@ -479,9 +479,9 @@
     _os_signpost_emit_with_name_impl(&dword_1AA9BD000, v12, OS_SIGNPOST_INTERVAL_BEGIN, v10, "PLXPC Sync", "%{public}s", buf, 0xCu);
   }
 
-  v14 = [(PLAssetsdBaseClient *)self proxyFactory];
-  v15 = [v14 _unboostingRemoteObjectProxy];
-  [v15 respondToPhotoStreamInvitationWithAlbumCloudGUID:v7 acceptInvitation:v4];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
+  _unboostingRemoteObjectProxy = [proxyFactory _unboostingRemoteObjectProxy];
+  [_unboostingRemoteObjectProxy respondToPhotoStreamInvitationWithAlbumCloudGUID:dCopy acceptInvitation:invitationCopy];
 
   if (v19 == 1)
   {
@@ -502,10 +502,10 @@
   }
 }
 
-- (void)asyncNotifyUserViewedNotificationWithAlbumCloudGUID:(id)a3
+- (void)asyncNotifyUserViewedNotificationWithAlbumCloudGUID:(id)d
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  dCopy = d;
   v18 = 0u;
   *sel = 0u;
   v17 = 0u;
@@ -531,9 +531,9 @@
     _os_signpost_emit_with_name_impl(&dword_1AA9BD000, v10, OS_SIGNPOST_INTERVAL_BEGIN, v8, "PLXPC Sync", "%{public}s", buf, 0xCu);
   }
 
-  v12 = [(PLAssetsdBaseClient *)self proxyFactory];
-  v13 = [v12 _unboostingRemoteObjectProxy];
-  [v13 userViewedNotificationWithAlbumCloudGUID:v5];
+  proxyFactory = [(PLAssetsdBaseClient *)self proxyFactory];
+  _unboostingRemoteObjectProxy = [proxyFactory _unboostingRemoteObjectProxy];
+  [_unboostingRemoteObjectProxy userViewedNotificationWithAlbumCloudGUID:dCopy];
 
   if (v17 == 1)
   {

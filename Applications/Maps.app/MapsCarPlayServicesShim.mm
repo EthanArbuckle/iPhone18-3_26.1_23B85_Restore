@@ -1,6 +1,6 @@
 @interface MapsCarPlayServicesShim
 + (void)openMapsCarPlayApplicationSuspended;
-+ (void)openMapsCarPlayApplicationWithCompletion:(id)a3;
++ (void)openMapsCarPlayApplicationWithCompletion:(id)completion;
 @end
 
 @implementation MapsCarPlayServicesShim
@@ -16,9 +16,9 @@
   [v4 openApplication:@"com.apple.Maps" withOptions:v3 completion:&stru_10162F040];
 }
 
-+ (void)openMapsCarPlayApplicationWithCompletion:(id)a3
++ (void)openMapsCarPlayApplicationWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = sub_100005610();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
@@ -31,8 +31,8 @@
   v7[1] = 3221225472;
   v7[2] = sub_100934F88;
   v7[3] = &unk_10163C108;
-  v8 = v3;
-  v6 = v3;
+  v8 = completionCopy;
+  v6 = completionCopy;
   [v5 openApplication:@"com.apple.Maps" withOptions:0 completion:v7];
 }
 

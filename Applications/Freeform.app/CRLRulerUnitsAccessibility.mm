@@ -1,21 +1,21 @@
 @interface CRLRulerUnitsAccessibility
-+ (double)crlaxConvertPoints:(double)a3 toMeasurementUnits:(unint64_t)a4;
-+ (id)crlaxCastFrom:(id)a3;
-+ (id)crlaxLocalizedDescriptionForUnits:(unint64_t)a3;
-+ (id)crlaxLocalizedDescriptionForUnits:(unint64_t)a3 value:(double)a4;
++ (double)crlaxConvertPoints:(double)points toMeasurementUnits:(unint64_t)units;
++ (id)crlaxCastFrom:(id)from;
++ (id)crlaxLocalizedDescriptionForUnits:(unint64_t)units;
++ (id)crlaxLocalizedDescriptionForUnits:(unint64_t)units value:(double)value;
 + (unint64_t)crlaxMeasurementUnitsForCurrentLocale;
 - (NSString)crlaxLocalizedCompatibleRulerUnitsForCanvas;
-- (double)crlaxConvertPointsToRulerUnits:(double)a3;
+- (double)crlaxConvertPointsToRulerUnits:(double)units;
 - (unint64_t)crlaxRulerUnits;
 @end
 
 @implementation CRLRulerUnitsAccessibility
 
-+ (id)crlaxCastFrom:(id)a3
++ (id)crlaxCastFrom:(id)from
 {
-  v3 = a3;
+  fromCopy = from;
   v4 = objc_opt_class();
-  v5 = __CRLAccessibilityCastAsSafeCategory(v4, v3, 0, 0);
+  v5 = __CRLAccessibilityCastAsSafeCategory(v4, fromCopy, 0, 0);
 
   return v5;
 }
@@ -24,25 +24,25 @@
 {
   v2 = +[NSLocale currentLocale];
   v3 = [v2 objectForKey:NSLocaleUsesMetricSystem];
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-+ (double)crlaxConvertPoints:(double)a3 toMeasurementUnits:(unint64_t)a4
++ (double)crlaxConvertPoints:(double)points toMeasurementUnits:(unint64_t)units
 {
-  if (a4 == 1)
+  if (units == 1)
   {
     v5 = &qword_101462BC0;
     goto LABEL_5;
   }
 
-  if (!a4)
+  if (!units)
   {
     v5 = &qword_101462BB8;
 LABEL_5:
     v6 = *v5;
-    return a3 / v6;
+    return points / v6;
   }
 
   v6 = 1.0;
@@ -55,12 +55,12 @@ LABEL_5:
     }
   }
 
-  return a3 / v6;
+  return points / v6;
 }
 
-+ (id)crlaxLocalizedDescriptionForUnits:(unint64_t)a3
++ (id)crlaxLocalizedDescriptionForUnits:(unint64_t)units
 {
-  if (a3 >= 5)
+  if (units >= 5)
   {
     if (CRLAccessibilityShouldPerformValidationChecks())
     {
@@ -76,7 +76,7 @@ LABEL_5:
 
   else
   {
-    v3 = *(&off_10184D3C8 + a3);
+    v3 = *(&off_10184D3C8 + units);
     v4 = +[NSBundle mainBundle];
     v5 = [v4 localizedStringForKey:v3 value:0 table:0];
   }
@@ -84,9 +84,9 @@ LABEL_5:
   return v5;
 }
 
-+ (id)crlaxLocalizedDescriptionForUnits:(unint64_t)a3 value:(double)a4
++ (id)crlaxLocalizedDescriptionForUnits:(unint64_t)units value:(double)value
 {
-  if (a3 >= 5)
+  if (units >= 5)
   {
     if (CRLAccessibilityShouldPerformValidationChecks())
     {
@@ -102,10 +102,10 @@ LABEL_5:
 
   else
   {
-    v5 = CRLAccessibilityStringsDictKey(*(&off_10184D3F0 + a3));
+    v5 = CRLAccessibilityStringsDictKey(*(&off_10184D3F0 + units));
     if (v5)
     {
-      v6 = [NSString localizedStringWithFormat:v5, *&a4];
+      v6 = [NSString localizedStringWithFormat:v5, *&value];
       goto LABEL_8;
     }
   }
@@ -116,10 +116,10 @@ LABEL_8:
   return v6;
 }
 
-- (double)crlaxConvertPointsToRulerUnits:(double)a3
+- (double)crlaxConvertPointsToRulerUnits:(double)units
 {
-  v4 = [(CRLRulerUnitsAccessibility *)self crlaxTarget];
-  [v4 convertPointsToRulerUnits:a3];
+  crlaxTarget = [(CRLRulerUnitsAccessibility *)self crlaxTarget];
+  [crlaxTarget convertPointsToRulerUnits:units];
   v6 = v5;
 
   return v6;
@@ -128,17 +128,17 @@ LABEL_8:
 - (NSString)crlaxLocalizedCompatibleRulerUnitsForCanvas
 {
   v3 = objc_opt_class();
-  v4 = [(CRLRulerUnitsAccessibility *)self crlaxRulerUnits];
+  crlaxRulerUnits = [(CRLRulerUnitsAccessibility *)self crlaxRulerUnits];
 
-  return [v3 crlaxLocalizedDescriptionForUnits:v4];
+  return [v3 crlaxLocalizedDescriptionForUnits:crlaxRulerUnits];
 }
 
 - (unint64_t)crlaxRulerUnits
 {
-  v2 = [(CRLRulerUnitsAccessibility *)self crlaxTarget];
-  v3 = [v2 rulerUnits];
+  crlaxTarget = [(CRLRulerUnitsAccessibility *)self crlaxTarget];
+  rulerUnits = [crlaxTarget rulerUnits];
 
-  return v3;
+  return rulerUnits;
 }
 
 @end

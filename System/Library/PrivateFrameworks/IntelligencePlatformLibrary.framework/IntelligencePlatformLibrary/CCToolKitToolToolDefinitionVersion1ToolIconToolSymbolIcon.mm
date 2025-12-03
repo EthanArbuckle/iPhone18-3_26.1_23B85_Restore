@@ -1,40 +1,40 @@
 @interface CCToolKitToolToolDefinitionVersion1ToolIconToolSymbolIcon
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
-- (CCToolKitToolToolDefinitionVersion1ToolIconToolSymbolIcon)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (CCToolKitToolToolDefinitionVersion1ToolIconToolSymbolIcon)initWithName:(id)a3 style:(unsigned int)a4 foreground:(id)a5 background:(id)a6 error:(id *)a7;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
+- (CCToolKitToolToolDefinitionVersion1ToolIconToolSymbolIcon)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (CCToolKitToolToolDefinitionVersion1ToolIconToolSymbolIcon)initWithName:(id)name style:(unsigned int)style foreground:(id)foreground background:(id)background error:(id *)error;
 - (NSString)background;
 - (NSString)foreground;
 - (NSString)name;
 - (id)jsonDictionary;
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4;
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type;
 @end
 
 @implementation CCToolKitToolToolDefinitionVersion1ToolIconToolSymbolIcon
 
-- (CCToolKitToolToolDefinitionVersion1ToolIconToolSymbolIcon)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCToolKitToolToolDefinitionVersion1ToolIconToolSymbolIcon)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
   v8 = 0;
   if (IsInstanceOfExpectedClass)
   {
-    v9 = [v6 objectForKeyedSubscript:@"name"];
-    v10 = [v6 objectForKeyedSubscript:@"style"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"name"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"style"];
     v11 = v10;
     if (v10)
     {
-      v12 = [v10 unsignedIntegerValue];
+      unsignedIntegerValue = [v10 unsignedIntegerValue];
     }
 
     else
     {
-      v12 = 0;
+      unsignedIntegerValue = 0;
     }
 
-    v14 = [v6 objectForKeyedSubscript:@"foreground"];
-    v15 = [v6 objectForKeyedSubscript:@"background"];
-    v13 = [[CCToolKitToolToolDefinitionVersion1ToolIconToolSymbolIcon alloc] initWithName:v9 style:v12 foreground:v14 background:v15 error:a4];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"foreground"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"background"];
+    v13 = [[CCToolKitToolToolDefinitionVersion1ToolIconToolSymbolIcon alloc] initWithName:v9 style:unsignedIntegerValue foreground:v14 background:v15 error:error];
   }
 
   else
@@ -51,8 +51,8 @@
   v3 = objc_opt_new();
   if (self->_name)
   {
-    v4 = [(CCToolKitToolToolDefinitionVersion1ToolIconToolSymbolIcon *)self name];
-    [v3 setObject:v4 forKeyedSubscript:@"name"];
+    name = [(CCToolKitToolToolDefinitionVersion1ToolIconToolSymbolIcon *)self name];
+    [v3 setObject:name forKeyedSubscript:@"name"];
   }
 
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[CCToolKitToolToolDefinitionVersion1ToolIconToolSymbolIcon style](self, "style")}];
@@ -60,14 +60,14 @@
 
   if (self->_foreground)
   {
-    v6 = [(CCToolKitToolToolDefinitionVersion1ToolIconToolSymbolIcon *)self foreground];
-    [v3 setObject:v6 forKeyedSubscript:@"foreground"];
+    foreground = [(CCToolKitToolToolDefinitionVersion1ToolIconToolSymbolIcon *)self foreground];
+    [v3 setObject:foreground forKeyedSubscript:@"foreground"];
   }
 
   if (self->_background)
   {
-    v7 = [(CCToolKitToolToolDefinitionVersion1ToolIconToolSymbolIcon *)self background];
-    [v3 setObject:v7 forKeyedSubscript:@"background"];
+    background = [(CCToolKitToolToolDefinitionVersion1ToolIconToolSymbolIcon *)self background];
+    [v3 setObject:background forKeyedSubscript:@"background"];
   }
 
   v8 = [v3 copy];
@@ -75,15 +75,15 @@
   return v8;
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type
 {
-  v11 = a3;
+  blockCopy = block;
   if (self->_name)
   {
     v5 = objc_alloc(MEMORY[0x1E69939F0]);
     v6 = *MEMORY[0x1E69939A8];
     v7 = [v5 initWithFieldType:v6 stringValue:self->_name];
-    v11[2](v11, v7);
+    blockCopy[2](blockCopy, v7);
   }
 
   else
@@ -92,18 +92,18 @@
   }
 
   v8 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:v6 enumValue:self->_style];
-  v11[2](v11, v8);
+  blockCopy[2](blockCopy, v8);
 
   if (self->_foreground)
   {
     v9 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:v6 stringValue:self->_foreground];
-    v11[2](v11, v9);
+    blockCopy[2](blockCopy, v9);
   }
 
   if (self->_background)
   {
     v10 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:v6 stringValue:self->_background];
-    v11[2](v11, v10);
+    blockCopy[2](blockCopy, v10);
   }
 }
 
@@ -128,10 +128,10 @@
   return v2;
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v6];
+  dataCopy = data;
+  v7 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v8 = MEMORY[0x1E6993AB8];
   v9 = MEMORY[0x1E6993AB0];
   v10 = MEMORY[0x1E6993AA8];
@@ -142,7 +142,7 @@
 
   v11 = 0;
   v12 = MEMORY[0x1E6993AA0];
-  v44 = v6;
+  v44 = dataCopy;
   while (2)
   {
     if (*&v7[*v10])
@@ -229,12 +229,12 @@ LABEL_34:
             {
               v34 = objc_opt_class();
               NSStringFromClass(v34);
-              v36 = v35 = a4;
+              v36 = v35 = error;
               v37 = *&v7[*v10];
               v11 = CCSkipFieldErrorForMessage();
 
-              a4 = v35;
-              v6 = v44;
+              error = v35;
+              dataCopy = v44;
               goto LABEL_44;
             }
 
@@ -346,13 +346,13 @@ LABEL_51:
   return v42;
 }
 
-- (CCToolKitToolToolDefinitionVersion1ToolIconToolSymbolIcon)initWithName:(id)a3 style:(unsigned int)a4 foreground:(id)a5 background:(id)a6 error:(id *)a7
+- (CCToolKitToolToolDefinitionVersion1ToolIconToolSymbolIcon)initWithName:(id)name style:(unsigned int)style foreground:(id)foreground background:(id)background error:(id *)error
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
+  nameCopy = name;
+  foregroundCopy = foreground;
+  backgroundCopy = background;
   v15 = objc_opt_new();
-  if (v12)
+  if (nameCopy)
   {
     objc_opt_class();
     IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
@@ -363,24 +363,24 @@ LABEL_51:
     }
 
     CCPBDataWriterWriteStringField();
-    if (!a4)
+    if (!style)
     {
 LABEL_4:
       v18 = v17;
-      if (v13)
+      if (foregroundCopy)
       {
         goto LABEL_5;
       }
 
 LABEL_12:
       v17 = v18;
-      if (!v14)
+      if (!backgroundCopy)
       {
 LABEL_15:
-        v24 = [v15 immutableData];
-        self = [(CCItemMessage *)self initWithData:v24 error:a7];
+        immutableData = [v15 immutableData];
+        self = [(CCItemMessage *)self initWithData:immutableData error:error];
 
-        v20 = self;
+        selfCopy = self;
         goto LABEL_18;
       }
 
@@ -393,7 +393,7 @@ LABEL_13:
       if (!v22)
       {
         CCSetError();
-        v20 = 0;
+        selfCopy = 0;
         v17 = v23;
         goto LABEL_18;
       }
@@ -407,7 +407,7 @@ LABEL_13:
   else
   {
     v17 = 0;
-    if (!a4)
+    if (!style)
     {
       goto LABEL_4;
     }
@@ -419,13 +419,13 @@ LABEL_13:
   if (!v21)
   {
     CCSetError();
-    v20 = 0;
+    selfCopy = 0;
     v17 = v18;
     goto LABEL_18;
   }
 
   CCPBDataWriterWriteUint32Field();
-  if (!v13)
+  if (!foregroundCopy)
   {
     goto LABEL_12;
   }
@@ -438,7 +438,7 @@ LABEL_5:
   if (v19)
   {
     CCPBDataWriterWriteStringField();
-    if (!v14)
+    if (!backgroundCopy)
     {
       goto LABEL_15;
     }
@@ -448,10 +448,10 @@ LABEL_5:
 
 LABEL_8:
   CCSetError();
-  v20 = 0;
+  selfCopy = 0;
 LABEL_18:
 
-  return v20;
+  return selfCopy;
 }
 
 @end

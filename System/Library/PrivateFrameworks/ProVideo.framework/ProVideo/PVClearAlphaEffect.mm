@@ -1,25 +1,25 @@
 @interface PVClearAlphaEffect
-+ (void)registerEffectWithID:(id)a3 displayName:(id)a4;
-- (HGRef<HGNode>)hgNodeForTime:(id *)a3 inputs:(const void *)a4 renderer:(const void *)a5 igContext:(HGRef<PVInstructionGraphContext>)a6;
++ (void)registerEffectWithID:(id)d displayName:(id)name;
+- (HGRef<HGNode>)hgNodeForTime:(id *)time inputs:(const void *)inputs renderer:(const void *)renderer igContext:(HGRef<PVInstructionGraphContext>)context;
 @end
 
 @implementation PVClearAlphaEffect
 
-+ (void)registerEffectWithID:(id)a3 displayName:(id)a4
++ (void)registerEffectWithID:(id)d displayName:(id)name
 {
-  v9 = a3;
-  v5 = a4;
-  v6 = [MEMORY[0x277CBEB38] dictionaryWithObjectsAndKeys:{v5, @"FFEffectProperty_DisplayName", @"Helium", @"FFEffectProperty_Category", @"effect.video.filter", @"FFEffectProperty_EffectType", 0}];
-  [PVEffect registerEffectClass:objc_opt_class() forEffectID:v9 withProperties:v6];
-  v7 = [MEMORY[0x277CBEB38] dictionaryWithObjectsAndKeys:{v5, @"displayName", @"BuiltIn", @"contentGroup", 0}];
+  dCopy = d;
+  nameCopy = name;
+  v6 = [MEMORY[0x277CBEB38] dictionaryWithObjectsAndKeys:{nameCopy, @"FFEffectProperty_DisplayName", @"Helium", @"FFEffectProperty_Category", @"effect.video.filter", @"FFEffectProperty_EffectType", 0}];
+  [PVEffect registerEffectClass:objc_opt_class() forEffectID:dCopy withProperties:v6];
+  v7 = [MEMORY[0x277CBEB38] dictionaryWithObjectsAndKeys:{nameCopy, @"displayName", @"BuiltIn", @"contentGroup", 0}];
   v8 = +[PVContentRegistry sharedInstance];
-  [v8 registerContentClass:objc_opt_class() forID:v9 type:@"effect.video.filter" withProperties:v7];
+  [v8 registerContentClass:objc_opt_class() forID:dCopy type:@"effect.video.filter" withProperties:v7];
 }
 
-- (HGRef<HGNode>)hgNodeForTime:(id *)a3 inputs:(const void *)a4 renderer:(const void *)a5 igContext:(HGRef<PVInstructionGraphContext>)a6
+- (HGRef<HGNode>)hgNodeForTime:(id *)time inputs:(const void *)inputs renderer:(const void *)renderer igContext:(HGRef<PVInstructionGraphContext>)context
 {
   v8 = v6;
-  PVInputHGNodeMap<unsigned int>::GetNode(a4, 0, &v13);
+  PVInputHGNodeMap<unsigned int>::GetNode(inputs, 0, &v13);
   v9 = v13;
   *v8 = v13;
   if (v9)

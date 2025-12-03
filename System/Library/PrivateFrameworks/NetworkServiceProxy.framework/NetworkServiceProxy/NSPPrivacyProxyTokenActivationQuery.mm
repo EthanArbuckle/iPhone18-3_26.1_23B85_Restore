@@ -1,37 +1,37 @@
 @interface NSPPrivacyProxyTokenActivationQuery
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsAuthType:(id)a3;
+- (int)StringAsAuthType:(id)type;
 - (unint64_t)hash;
-- (void)addAuxiliaryAuthArray:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addAuxiliaryAuthArray:(id)array;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NSPPrivacyProxyTokenActivationQuery
 
-- (int)StringAsAuthType:(id)a3
+- (int)StringAsAuthType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"UNKNOWN"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"BAA"])
+  else if ([typeCopy isEqualToString:@"BAA"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"ANISETTE"])
+  else if ([typeCopy isEqualToString:@"ANISETTE"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"TOKEN"])
+  else if ([typeCopy isEqualToString:@"TOKEN"])
   {
     v4 = 4;
   }
@@ -44,22 +44,22 @@
   return v4;
 }
 
-- (void)addAuxiliaryAuthArray:(id)a3
+- (void)addAuxiliaryAuthArray:(id)array
 {
-  v4 = a3;
+  arrayCopy = array;
   auxiliaryAuthArrays = self->_auxiliaryAuthArrays;
-  v8 = v4;
+  v8 = arrayCopy;
   if (!auxiliaryAuthArrays)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_auxiliaryAuthArrays;
     self->_auxiliaryAuthArrays = v6;
 
-    v4 = v8;
+    arrayCopy = v8;
     auxiliaryAuthArrays = self->_auxiliaryAuthArrays;
   }
 
-  [(NSMutableArray *)auxiliaryAuthArrays addObject:v4];
+  [(NSMutableArray *)auxiliaryAuthArrays addObject:arrayCopy];
 }
 
 - (id)description
@@ -68,8 +68,8 @@
   v8.receiver = self;
   v8.super_class = NSPPrivacyProxyTokenActivationQuery;
   v4 = [(NSPPrivacyProxyTokenActivationQuery *)&v8 description];
-  v5 = [(NSPPrivacyProxyTokenActivationQuery *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NSPPrivacyProxyTokenActivationQuery *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -77,7 +77,7 @@
 - (id)dictionaryRepresentation
 {
   v25 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   authType = self->_authType;
   if (authType < 5 && ((0x17u >> authType) & 1) != 0)
   {
@@ -89,26 +89,26 @@
     v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", self->_authType];
   }
 
-  [v3 setObject:v5 forKey:@"authType"];
+  [dictionary setObject:v5 forKey:@"authType"];
 
   baaParameters = self->_baaParameters;
   if (baaParameters)
   {
-    v7 = [(NSPPrivacyProxyBAAValidation *)baaParameters dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"baaParameters"];
+    dictionaryRepresentation = [(NSPPrivacyProxyBAAValidation *)baaParameters dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"baaParameters"];
   }
 
   tokenInfo = self->_tokenInfo;
   if (tokenInfo)
   {
-    v9 = [(NSPPrivacyProxyTokenInfo *)tokenInfo dictionaryRepresentation];
-    [v3 setObject:v9 forKey:@"tokenInfo"];
+    dictionaryRepresentation2 = [(NSPPrivacyProxyTokenInfo *)tokenInfo dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"tokenInfo"];
   }
 
   authInfo = self->_authInfo;
   if (authInfo)
   {
-    [v3 setObject:authInfo forKey:@"authInfo"];
+    [dictionary setObject:authInfo forKey:@"authInfo"];
   }
 
   if ([(NSMutableArray *)self->_auxiliaryAuthArrays count])
@@ -133,8 +133,8 @@
             objc_enumerationMutation(v12);
           }
 
-          v17 = [*(*(&v20 + 1) + 8 * i) dictionaryRepresentation];
-          [v11 addObject:v17];
+          dictionaryRepresentation3 = [*(*(&v20 + 1) + 8 * i) dictionaryRepresentation];
+          [v11 addObject:dictionaryRepresentation3];
         }
 
         v14 = [(NSMutableArray *)v12 countByEnumeratingWithState:&v20 objects:v24 count:16];
@@ -143,18 +143,18 @@
       while (v14);
     }
 
-    [v3 setObject:v11 forKey:@"auxiliaryAuthArray"];
+    [dictionary setObject:v11 forKey:@"auxiliaryAuthArray"];
   }
 
   v18 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   authType = self->_authType;
   PBDataWriterWriteInt32Field();
   if (self->_baaParameters)
@@ -208,18 +208,18 @@
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v4[4] = self->_authType;
-  v9 = v4;
+  toCopy = to;
+  toCopy[4] = self->_authType;
+  v9 = toCopy;
   if (self->_baaParameters)
   {
-    [v4 setBaaParameters:?];
-    v4 = v9;
+    [toCopy setBaaParameters:?];
+    toCopy = v9;
   }
 
-  [v4 setTokenInfo:self->_tokenInfo];
+  [toCopy setTokenInfo:self->_tokenInfo];
   if (self->_authInfo)
   {
     [v9 setAuthInfo:?];
@@ -228,10 +228,10 @@
   if ([(NSPPrivacyProxyTokenActivationQuery *)self auxiliaryAuthArraysCount])
   {
     [v9 clearAuxiliaryAuthArrays];
-    v5 = [(NSPPrivacyProxyTokenActivationQuery *)self auxiliaryAuthArraysCount];
-    if (v5)
+    auxiliaryAuthArraysCount = [(NSPPrivacyProxyTokenActivationQuery *)self auxiliaryAuthArraysCount];
+    if (auxiliaryAuthArraysCount)
     {
-      v6 = v5;
+      v6 = auxiliaryAuthArraysCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(NSPPrivacyProxyTokenActivationQuery *)self auxiliaryAuthArrayAtIndex:i];
@@ -241,20 +241,20 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(v5 + 16) = self->_authType;
-  v6 = [(NSPPrivacyProxyBAAValidation *)self->_baaParameters copyWithZone:a3];
+  v6 = [(NSPPrivacyProxyBAAValidation *)self->_baaParameters copyWithZone:zone];
   v7 = *(v5 + 32);
   *(v5 + 32) = v6;
 
-  v8 = [(NSPPrivacyProxyTokenInfo *)self->_tokenInfo copyWithZone:a3];
+  v8 = [(NSPPrivacyProxyTokenInfo *)self->_tokenInfo copyWithZone:zone];
   v9 = *(v5 + 40);
   *(v5 + 40) = v8;
 
-  v10 = [(NSData *)self->_authInfo copyWithZone:a3];
+  v10 = [(NSData *)self->_authInfo copyWithZone:zone];
   v11 = *(v5 + 8);
   *(v5 + 8) = v10;
 
@@ -278,7 +278,7 @@
           objc_enumerationMutation(v12);
         }
 
-        v17 = [*(*(&v20 + 1) + 8 * v16) copyWithZone:{a3, v20}];
+        v17 = [*(*(&v20 + 1) + 8 * v16) copyWithZone:{zone, v20}];
         [v5 addAuxiliaryAuthArray:v17];
 
         ++v16;
@@ -295,13 +295,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && self->_authType == *(v4 + 4) && ((baaParameters = self->_baaParameters, !(baaParameters | v4[4])) || -[NSPPrivacyProxyBAAValidation isEqual:](baaParameters, "isEqual:")) && ((tokenInfo = self->_tokenInfo, !(tokenInfo | v4[5])) || -[NSPPrivacyProxyTokenInfo isEqual:](tokenInfo, "isEqual:")) && ((authInfo = self->_authInfo, !(authInfo | v4[1])) || -[NSData isEqual:](authInfo, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && self->_authType == *(equalCopy + 4) && ((baaParameters = self->_baaParameters, !(baaParameters | equalCopy[4])) || -[NSPPrivacyProxyBAAValidation isEqual:](baaParameters, "isEqual:")) && ((tokenInfo = self->_tokenInfo, !(tokenInfo | equalCopy[5])) || -[NSPPrivacyProxyTokenInfo isEqual:](tokenInfo, "isEqual:")) && ((authInfo = self->_authInfo, !(authInfo | equalCopy[1])) || -[NSData isEqual:](authInfo, "isEqual:")))
   {
     auxiliaryAuthArrays = self->_auxiliaryAuthArrays;
-    if (auxiliaryAuthArrays | v4[3])
+    if (auxiliaryAuthArrays | equalCopy[3])
     {
       v9 = [(NSMutableArray *)auxiliaryAuthArrays isEqual:?];
     }
@@ -329,13 +329,13 @@
   return v6 ^ [(NSMutableArray *)self->_auxiliaryAuthArrays hash]^ v3;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  self->_authType = *(v4 + 4);
+  fromCopy = from;
+  self->_authType = *(fromCopy + 4);
   baaParameters = self->_baaParameters;
-  v6 = *(v4 + 4);
+  v6 = *(fromCopy + 4);
   if (baaParameters)
   {
     if (v6)
@@ -350,7 +350,7 @@
   }
 
   tokenInfo = self->_tokenInfo;
-  v8 = *(v4 + 5);
+  v8 = *(fromCopy + 5);
   if (tokenInfo)
   {
     if (v8)
@@ -364,7 +364,7 @@
     [(NSPPrivacyProxyTokenActivationQuery *)self setTokenInfo:?];
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(NSPPrivacyProxyTokenActivationQuery *)self setAuthInfo:?];
   }
@@ -373,7 +373,7 @@
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v9 = *(v4 + 3);
+  v9 = *(fromCopy + 3);
   v10 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v10)
   {

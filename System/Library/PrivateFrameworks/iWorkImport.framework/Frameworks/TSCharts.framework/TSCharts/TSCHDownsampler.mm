@@ -1,29 +1,29 @@
 @interface TSCHDownsampler
-+ (id)downsampleDataForSeries:(id)a3 threshold:(unint64_t)a4;
-+ (id)p_downsampleDataUsingGridPartitioningWithSeries:(id)a3 xAxis:(id)a4 yAxis:(id)a5;
-+ (id)p_downsampleDataUsingGridPartitioningWithSeries:(id)a3 xAxis:(id)a4 yAxis:(id)a5 sizeAxis:(id)a6;
-+ (id)p_downsampleDataUsingTrianglesWithSeries:(id)a3 toValueCount:(unint64_t)a4 radiusAxis:(id)a5 angleAxis:(id)a6;
-+ (id)p_downsampleDataUsingTrianglesWithSeries:(id)a3 toValueCount:(unint64_t)a4 xAxis:(id)a5 yAxis:(id)a6 stacked:(BOOL)a7;
++ (id)downsampleDataForSeries:(id)series threshold:(unint64_t)threshold;
++ (id)p_downsampleDataUsingGridPartitioningWithSeries:(id)series xAxis:(id)axis yAxis:(id)yAxis;
++ (id)p_downsampleDataUsingGridPartitioningWithSeries:(id)series xAxis:(id)axis yAxis:(id)yAxis sizeAxis:(id)sizeAxis;
++ (id)p_downsampleDataUsingTrianglesWithSeries:(id)series toValueCount:(unint64_t)count radiusAxis:(id)axis angleAxis:(id)angleAxis;
++ (id)p_downsampleDataUsingTrianglesWithSeries:(id)series toValueCount:(unint64_t)count xAxis:(id)axis yAxis:(id)yAxis stacked:(BOOL)stacked;
 @end
 
 @implementation TSCHDownsampler
 
-+ (id)downsampleDataForSeries:(id)a3 threshold:(unint64_t)a4
++ (id)downsampleDataForSeries:(id)series threshold:(unint64_t)threshold
 {
-  v6 = a3;
-  v11 = objc_msgSend_model(v6, v7, v8, v9, v10);
-  v16 = objc_msgSend_axisIDForAxisType_(v6, v12, v13, v14, v15, 1);
+  seriesCopy = series;
+  v11 = objc_msgSend_model(seriesCopy, v7, v8, v9, v10);
+  v16 = objc_msgSend_axisIDForAxisType_(seriesCopy, v12, v13, v14, v15, 1);
   v21 = objc_msgSend_axisForID_(v11, v17, v18, v19, v20, v16);
 
-  v26 = objc_msgSend_axisIDForAxisType_(v6, v22, v23, v24, v25, 2);
+  v26 = objc_msgSend_axisIDForAxisType_(seriesCopy, v22, v23, v24, v25, 2);
   v31 = objc_msgSend_axisForID_(v11, v27, v28, v29, v30, v26);
 
-  v36 = objc_msgSend_seriesType(v6, v32, v33, v34, v35);
+  v36 = objc_msgSend_seriesType(seriesCopy, v32, v33, v34, v35);
   v41 = objc_msgSend_scatterSeries(TSCHChartSeriesType, v37, v38, v39, v40);
 
   if (v36 == v41)
   {
-    v72 = objc_msgSend_p_downsampleDataUsingGridPartitioningWithSeries_xAxis_yAxis_(a1, v42, v43, v44, v45, v6, v21, v31);
+    v72 = objc_msgSend_p_downsampleDataUsingGridPartitioningWithSeries_xAxis_yAxis_(self, v42, v43, v44, v45, seriesCopy, v21, v31);
 LABEL_17:
     v98 = v72;
     goto LABEL_18;
@@ -37,13 +37,13 @@ LABEL_17:
 
     if (v36 == v51)
     {
-      v99 = objc_msgSend_axisIDForAxisType_(v6, v52, v53, v54, v55, 5);
+      v99 = objc_msgSend_axisIDForAxisType_(seriesCopy, v52, v53, v54, v55, 5);
       v104 = objc_msgSend_axisForID_(v11, v100, v101, v102, v103, v99);
 
-      v109 = objc_msgSend_axisIDForAxisType_(v6, v105, v106, v107, v108, 6);
+      v109 = objc_msgSend_axisIDForAxisType_(seriesCopy, v105, v106, v107, v108, 6);
       v114 = objc_msgSend_axisForID_(v11, v110, v111, v112, v113, v109);
 
-      v98 = objc_msgSend_p_downsampleDataUsingTrianglesWithSeries_toValueCount_radiusAxis_angleAxis_(a1, v115, v116, v117, v118, v6, a4, v104, v114);
+      v98 = objc_msgSend_p_downsampleDataUsingTrianglesWithSeries_toValueCount_radiusAxis_angleAxis_(self, v115, v116, v117, v118, seriesCopy, threshold, v104, v114);
 
       goto LABEL_18;
     }
@@ -59,13 +59,13 @@ LABEL_17:
 
         if (v36 != v67)
         {
-          objc_msgSend_p_downsampleDataUsingTrianglesWithSeries_toValueCount_xAxis_yAxis_stacked_(a1, v68, v69, v70, v71, v6, a4, v21, v31, 0);
+          objc_msgSend_p_downsampleDataUsingTrianglesWithSeries_toValueCount_xAxis_yAxis_stacked_(self, v68, v69, v70, v71, seriesCopy, threshold, v21, v31, 0);
           v72 = LABEL_16:;
           goto LABEL_17;
         }
 
 LABEL_15:
-        objc_msgSend_p_downsampleDataUsingTrianglesWithSeries_toValueCount_xAxis_yAxis_stacked_(a1, v68, v69, v70, v71, v6, a4, v21, v31, 1);
+        objc_msgSend_p_downsampleDataUsingTrianglesWithSeries_toValueCount_xAxis_yAxis_stacked_(self, v68, v69, v70, v71, seriesCopy, threshold, v21, v31, 1);
         goto LABEL_16;
       }
     }
@@ -73,7 +73,7 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  v73 = objc_msgSend_axisIDForAxisType_(v6, v47, v48, v49, v50, 4);
+  v73 = objc_msgSend_axisIDForAxisType_(seriesCopy, v47, v48, v49, v50, 4);
   v78 = objc_msgSend_axisForID_(v11, v74, v75, v76, v77, v73);
 
   if (!v78)
@@ -86,20 +86,20 @@ LABEL_15:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v94, v95, v96, v97);
   }
 
-  v98 = objc_msgSend_p_downsampleDataUsingGridPartitioningWithSeries_xAxis_yAxis_sizeAxis_(a1, v79, v80, v81, v82, v6, v21, v31, v78);
+  v98 = objc_msgSend_p_downsampleDataUsingGridPartitioningWithSeries_xAxis_yAxis_sizeAxis_(self, v79, v80, v81, v82, seriesCopy, v21, v31, v78);
 
 LABEL_18:
 
   return v98;
 }
 
-+ (id)p_downsampleDataUsingTrianglesWithSeries:(id)a3 toValueCount:(unint64_t)a4 xAxis:(id)a5 yAxis:(id)a6 stacked:(BOOL)a7
++ (id)p_downsampleDataUsingTrianglesWithSeries:(id)series toValueCount:(unint64_t)count xAxis:(id)axis yAxis:(id)yAxis stacked:(BOOL)stacked
 {
-  v7 = a7;
-  v11 = a3;
-  v12 = a6;
-  v13 = a5;
-  v18 = objc_msgSend_model(v11, v14, v15, v16, v17);
+  stackedCopy = stacked;
+  seriesCopy = series;
+  yAxisCopy = yAxis;
+  axisCopy = axis;
+  v18 = objc_msgSend_model(seriesCopy, v14, v15, v16, v17);
   v23 = objc_msgSend_numberOfValues(v18, v19, v20, v21, v22);
 
   objc_opt_class();
@@ -110,16 +110,16 @@ LABEL_18:
 
   if (v24 | v25)
   {
-    if (v7)
+    if (stackedCopy)
     {
       v61[0] = MEMORY[0x277D85DD0];
       v61[1] = 3221225472;
       v61[2] = sub_27628F448;
       v61[3] = &unk_27A6B7310;
-      v62 = v11;
+      v62 = seriesCopy;
       v63 = v24;
       v64 = v25;
-      v30 = sub_27628EC28(v23, a4, v61);
+      v30 = sub_27628EC28(v23, count, v61);
 
       v31 = v62;
     }
@@ -130,10 +130,10 @@ LABEL_18:
       v57[1] = 3221225472;
       v57[2] = sub_27628F6A8;
       v57[3] = &unk_27A6B7310;
-      v58 = v11;
+      v58 = seriesCopy;
       v59 = v24;
       v60 = v25;
-      v30 = sub_27628EC28(v23, a4, v57);
+      v30 = sub_27628EC28(v23, count, v57);
 
       v31 = v58;
     }
@@ -154,27 +154,27 @@ LABEL_18:
   return v30;
 }
 
-+ (id)p_downsampleDataUsingTrianglesWithSeries:(id)a3 toValueCount:(unint64_t)a4 radiusAxis:(id)a5 angleAxis:(id)a6
++ (id)p_downsampleDataUsingTrianglesWithSeries:(id)series toValueCount:(unint64_t)count radiusAxis:(id)axis angleAxis:(id)angleAxis
 {
-  v9 = a3;
-  v10 = a6;
-  v11 = a5;
-  v16 = objc_msgSend_model(v9, v12, v13, v14, v15);
+  seriesCopy = series;
+  angleAxisCopy = angleAxis;
+  axisCopy = axis;
+  v16 = objc_msgSend_model(seriesCopy, v12, v13, v14, v15);
   v21 = objc_msgSend_numberOfValues(v16, v17, v18, v19, v20);
 
   objc_opt_class();
   v22 = TSUDynamicCast();
 
-  if (v10 && v22)
+  if (angleAxisCopy && v22)
   {
     v53[0] = MEMORY[0x277D85DD0];
     v53[1] = 3221225472;
     v53[2] = sub_27628F994;
     v53[3] = &unk_27A6B7310;
-    v54 = v9;
+    v54 = seriesCopy;
     v55 = v22;
-    v56 = v10;
-    v27 = sub_27628EC28(v21, a4, v53);
+    v56 = angleAxisCopy;
+    v27 = sub_27628EC28(v21, count, v53);
   }
 
   else
@@ -192,20 +192,20 @@ LABEL_18:
   return v27;
 }
 
-+ (id)p_downsampleDataUsingGridPartitioningWithSeries:(id)a3 xAxis:(id)a4 yAxis:(id)a5
++ (id)p_downsampleDataUsingGridPartitioningWithSeries:(id)series xAxis:(id)axis yAxis:(id)yAxis
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v138 = v7;
-  v14 = objc_msgSend_model(v7, v10, v11, v12, v13);
+  seriesCopy = series;
+  axisCopy = axis;
+  yAxisCopy = yAxis;
+  v138 = seriesCopy;
+  v14 = objc_msgSend_model(seriesCopy, v10, v11, v12, v13);
   v19 = objc_msgSend_numberOfValues(v14, v15, v16, v17, v18);
 
   objc_opt_class();
-  v131 = v8;
+  v131 = axisCopy;
   v20 = TSUDynamicCast();
   objc_opt_class();
-  v130 = v9;
+  v130 = yAxisCopy;
   v21 = TSUDynamicCast();
   v135 = objc_msgSend_indexSet(MEMORY[0x277CCAB58], v22, v23, v24, v25);
   v134 = objc_msgSend_dictionary(MEMORY[0x277CBEB38], v26, v27, v28, v29);
@@ -325,20 +325,20 @@ LABEL_14:
   return v128;
 }
 
-+ (id)p_downsampleDataUsingGridPartitioningWithSeries:(id)a3 xAxis:(id)a4 yAxis:(id)a5 sizeAxis:(id)a6
++ (id)p_downsampleDataUsingGridPartitioningWithSeries:(id)series xAxis:(id)axis yAxis:(id)yAxis sizeAxis:(id)sizeAxis
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v147 = a6;
-  v16 = objc_msgSend_model(v9, v12, v13, v14, v15);
+  seriesCopy = series;
+  axisCopy = axis;
+  yAxisCopy = yAxis;
+  sizeAxisCopy = sizeAxis;
+  v16 = objc_msgSend_model(seriesCopy, v12, v13, v14, v15);
   v21 = objc_msgSend_numberOfValues(v16, v17, v18, v19, v20);
 
   objc_opt_class();
-  v144 = v10;
+  v144 = axisCopy;
   v22 = TSUDynamicCast();
   objc_opt_class();
-  v142 = v11;
+  v142 = yAxisCopy;
   v23 = TSUDynamicCast();
   v146 = objc_msgSend_indexSet(MEMORY[0x277CCAB58], v24, v25, v26, v27);
   v148 = objc_msgSend_dictionary(MEMORY[0x277CBEB38], v28, v29, v30, v31);
@@ -347,10 +347,10 @@ LABEL_14:
   if (v21)
   {
     v40 = 0;
-    v145 = v9;
+    v145 = seriesCopy;
     do
     {
-      v41 = v9;
+      v41 = seriesCopy;
       v42 = v22;
       v44 = v23;
       if (v22)
@@ -409,7 +409,7 @@ LABEL_14:
       {
         v74 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x277CCABB0], v35, v37, v38, v39, v73);
         v75 = MEMORY[0x277CCABB0];
-        v80 = objc_msgSend_valueForAxis_valueIndex_(v41, v76, v77, v78, v79, v147, v40);
+        v80 = objc_msgSend_valueForAxis_valueIndex_(v41, v76, v77, v78, v79, sizeAxisCopy, v40);
         objc_msgSend_doubleValue(v80, v81, v82, v83, v84);
         v89 = objc_msgSend_numberWithDouble_(v75, v85, v86, v87, v88);
 
@@ -438,7 +438,7 @@ LABEL_18:
           v135 = objc_msgSend_pairWithFirst_second_(v125, v131, v132, v133, v134, v130, v89);
           objc_msgSend_setObject_forKeyedSubscript_(v148, v136, v137, v138, v139, v135, v74);
 
-          v9 = v145;
+          seriesCopy = v145;
         }
       }
 

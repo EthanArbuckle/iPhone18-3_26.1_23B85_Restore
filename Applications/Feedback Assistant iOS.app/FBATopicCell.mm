@@ -4,10 +4,10 @@
 - (NSLayoutConstraint)topicToBottomOfView;
 - (NSString)itemIdentifier;
 - (UILabel)formName;
-- (_TtC18Feedback_Assistant12FBATopicCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (void)setDisclosesMoreForms:(BOOL)a3;
-- (void)setFormStub:(id)a3;
-- (void)setItemIdentifier:(id)a3;
+- (_TtC18Feedback_Assistant12FBATopicCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (void)setDisclosesMoreForms:(BOOL)forms;
+- (void)setFormStub:(id)stub;
+- (void)setItemIdentifier:(id)identifier;
 @end
 
 @implementation FBATopicCell
@@ -22,7 +22,7 @@
   return v4;
 }
 
-- (void)setItemIdentifier:(id)a3
+- (void)setItemIdentifier:(id)identifier
 {
   v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v5 = (self + OBJC_IVAR____TtC18Feedback_Assistant12FBATopicCell_itemIdentifier);
@@ -59,27 +59,27 @@
   return v2;
 }
 
-- (void)setFormStub:(id)a3
+- (void)setFormStub:(id)stub
 {
   v4 = *(self + OBJC_IVAR____TtC18Feedback_Assistant12FBATopicCell_formStub);
-  *(self + OBJC_IVAR____TtC18Feedback_Assistant12FBATopicCell_formStub) = a3;
-  v5 = a3;
-  v6 = self;
+  *(self + OBJC_IVAR____TtC18Feedback_Assistant12FBATopicCell_formStub) = stub;
+  stubCopy = stub;
+  selfCopy = self;
 
   sub_100047A5C();
 }
 
-- (void)setDisclosesMoreForms:(BOOL)a3
+- (void)setDisclosesMoreForms:(BOOL)forms
 {
-  v4 = self;
-  sub_100047C94(a3);
+  selfCopy = self;
+  sub_100047C94(forms);
 }
 
-- (_TtC18Feedback_Assistant12FBATopicCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC18Feedback_Assistant12FBATopicCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
-    a4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
+    identifier = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = v5;
   }
 
@@ -88,7 +88,7 @@
     v6 = 0;
   }
 
-  return sub_100047CFC(a3, a4, v6);
+  return sub_100047CFC(style, identifier, v6);
 }
 
 @end

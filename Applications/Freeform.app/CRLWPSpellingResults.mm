@@ -1,21 +1,21 @@
 @interface CRLWPSpellingResults
-- (_NSRange)rangeOfMisspelledWordAtCharIndex:(unint64_t)a3;
-- (void)addResult:(id)a3 forRange:(_NSRange)a4;
+- (_NSRange)rangeOfMisspelledWordAtCharIndex:(unint64_t)index;
+- (void)addResult:(id)result forRange:(_NSRange)range;
 @end
 
 @implementation CRLWPSpellingResults
 
-- (void)addResult:(id)a3 forRange:(_NSRange)a4
+- (void)addResult:(id)result forRange:(_NSRange)range
 {
   v4.receiver = self;
   v4.super_class = CRLWPSpellingResults;
-  [(CRLWPCheckingResults *)&v4 addResult:a3 forRange:a4.location, a4.length];
+  [(CRLWPCheckingResults *)&v4 addResult:result forRange:range.location, range.length];
 }
 
-- (_NSRange)rangeOfMisspelledWordAtCharIndex:(unint64_t)a3
+- (_NSRange)rangeOfMisspelledWordAtCharIndex:(unint64_t)index
 {
-  v4 = [(CRLWPCheckingResults *)self ranges];
-  v5 = [v4 rangeContainingPosition:a3];
+  ranges = [(CRLWPCheckingResults *)self ranges];
+  v5 = [ranges rangeContainingPosition:index];
   v7 = v6;
 
   v8 = v5;

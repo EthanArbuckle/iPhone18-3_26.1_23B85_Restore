@@ -1,11 +1,11 @@
 @interface NDOUniversalLinkUtilities
-+ (BOOL)isValidPath:(id)a3;
++ (BOOL)isValidPath:(id)path;
 - (NDOUniversalLinkUtilities)init;
 @end
 
 @implementation NDOUniversalLinkUtilities
 
-+ (BOOL)isValidPath:(id)a3
++ (BOOL)isValidPath:(id)path
 {
   v3 = sub_25BD797B8();
   valid = _sSo25NDOUniversalLinkUtilitiesC17NewDeviceOutreachE11isValidPathySbSSFZ_0(v3, v4);

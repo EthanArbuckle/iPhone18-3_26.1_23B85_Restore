@@ -1,35 +1,35 @@
 @interface C2MetricOperationOptions
-- (BOOL)isEqual:(id)a3;
-- (C2MetricOperationOptions)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (C2MetricOperationOptions)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation C2MetricOperationOptions
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [C2MetricOperationOptions allocWithZone:a3];
+  v4 = [C2MetricOperationOptions allocWithZone:zone];
   if (v4)
   {
-    v5 = [(C2MetricOperationOptions *)self operationGroup];
-    [(C2MetricOperationOptions *)v4 setOperationGroup:v5];
+    operationGroup = [(C2MetricOperationOptions *)self operationGroup];
+    [(C2MetricOperationOptions *)v4 setOperationGroup:operationGroup];
 
-    v6 = [(C2MetricOperationOptions *)self operationId];
-    [(C2MetricOperationOptions *)v4 setOperationId:v6];
+    operationId = [(C2MetricOperationOptions *)self operationId];
+    [(C2MetricOperationOptions *)v4 setOperationId:operationId];
 
-    v7 = [(C2MetricOperationOptions *)self operationType];
-    [(C2MetricOperationOptions *)v4 setOperationType:v7];
+    operationType = [(C2MetricOperationOptions *)self operationType];
+    [(C2MetricOperationOptions *)v4 setOperationType:operationType];
   }
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v12 = 1;
   }
@@ -39,11 +39,11 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       operationGroup = self->_operationGroup;
-      v7 = [(C2MetricOperationOptions *)v5 operationGroup];
-      v8 = v7;
-      if (operationGroup == v7)
+      operationGroup = [(C2MetricOperationOptions *)v5 operationGroup];
+      v8 = operationGroup;
+      if (operationGroup == operationGroup)
       {
       }
 
@@ -55,8 +55,8 @@
           goto LABEL_19;
         }
 
-        v10 = [(C2MetricOperationOptions *)v5 operationGroup];
-        v11 = [(C2MetricOperationGroupOptions *)v9 isEqual:v10];
+        operationGroup2 = [(C2MetricOperationOptions *)v5 operationGroup];
+        v11 = [(C2MetricOperationGroupOptions *)v9 isEqual:operationGroup2];
 
         if (!v11)
         {
@@ -65,9 +65,9 @@
       }
 
       operationId = self->_operationId;
-      v14 = [(C2MetricOperationOptions *)v5 operationId];
-      v8 = v14;
-      if (operationId == v14)
+      operationId = [(C2MetricOperationOptions *)v5 operationId];
+      v8 = operationId;
+      if (operationId == operationId)
       {
       }
 
@@ -79,8 +79,8 @@
           goto LABEL_19;
         }
 
-        v16 = [(C2MetricOperationOptions *)v5 operationId];
-        v17 = [(NSString *)v15 isEqual:v16];
+        operationId2 = [(C2MetricOperationOptions *)v5 operationId];
+        v17 = [(NSString *)v15 isEqual:operationId2];
 
         if (!v17)
         {
@@ -89,9 +89,9 @@
       }
 
       operationType = self->_operationType;
-      v19 = [(C2MetricOperationOptions *)v5 operationType];
-      v8 = v19;
-      if (operationType == v19)
+      operationType = [(C2MetricOperationOptions *)v5 operationType];
+      v8 = operationType;
+      if (operationType == operationType)
       {
 
 LABEL_24:
@@ -102,8 +102,8 @@ LABEL_24:
       v20 = self->_operationType;
       if (v20)
       {
-        v21 = [(C2MetricOperationOptions *)v5 operationType];
-        v22 = [(NSString *)v20 isEqual:v21];
+        operationType2 = [(C2MetricOperationOptions *)v5 operationType];
+        v22 = [(NSString *)v20 isEqual:operationType2];
 
         if (v22)
         {
@@ -137,32 +137,32 @@ LABEL_22:
   return v4 ^ [(NSString *)self->_operationType hash];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   operationGroup = self->_operationGroup;
-  v5 = a3;
-  [v5 encodeObject:operationGroup forKey:@"operationGroup"];
-  [v5 encodeObject:self->_operationId forKey:@"operationId"];
-  [v5 encodeObject:self->_operationType forKey:@"operationType"];
+  coderCopy = coder;
+  [coderCopy encodeObject:operationGroup forKey:@"operationGroup"];
+  [coderCopy encodeObject:self->_operationId forKey:@"operationId"];
+  [coderCopy encodeObject:self->_operationType forKey:@"operationType"];
 }
 
-- (C2MetricOperationOptions)initWithCoder:(id)a3
+- (C2MetricOperationOptions)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = C2MetricOperationOptions;
   v5 = [(C2MetricOperationOptions *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"operationGroup"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"operationGroup"];
     operationGroup = v5->_operationGroup;
     v5->_operationGroup = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"operationId"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"operationId"];
     operationId = v5->_operationId;
     v5->_operationId = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"operationType"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"operationType"];
     operationType = v5->_operationType;
     v5->_operationType = v10;
   }

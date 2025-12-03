@@ -1,37 +1,37 @@
 @interface SiriActivityAssertion
-- (SiriActivityAssertion)initWithIdentifier:(id)a3 reference:(id)a4 reason:(id)a5 timestamp:(double)a6 invalidationBlock:(id)a7;
+- (SiriActivityAssertion)initWithIdentifier:(id)identifier reference:(id)reference reason:(id)reason timestamp:(double)timestamp invalidationBlock:(id)block;
 - (void)dealloc;
 - (void)invalidate;
-- (void)invalidatedAtTimestamp:(double)a3;
+- (void)invalidatedAtTimestamp:(double)timestamp;
 @end
 
 @implementation SiriActivityAssertion
 
-- (SiriActivityAssertion)initWithIdentifier:(id)a3 reference:(id)a4 reason:(id)a5 timestamp:(double)a6 invalidationBlock:(id)a7
+- (SiriActivityAssertion)initWithIdentifier:(id)identifier reference:(id)reference reason:(id)reason timestamp:(double)timestamp invalidationBlock:(id)block
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  identifierCopy = identifier;
+  referenceCopy = reference;
+  reasonCopy = reason;
+  blockCopy = block;
   v26.receiver = self;
   v26.super_class = SiriActivityAssertion;
   v16 = [(SiriActivityAssertion *)&v26 init];
   if (v16)
   {
-    v17 = [v12 copy];
+    v17 = [identifierCopy copy];
     identifier = v16->_identifier;
     v16->_identifier = v17;
 
-    v19 = [v14 copy];
+    v19 = [reasonCopy copy];
     reason = v16->_reason;
     v16->_reason = v19;
 
-    v21 = [v13 copy];
+    v21 = [referenceCopy copy];
     reference = v16->_reference;
     v16->_reference = v21;
 
-    v16->_timestamp = a6;
-    v23 = [v15 copy];
+    v16->_timestamp = timestamp;
+    v23 = [blockCopy copy];
     invalidationBlock = v16->_invalidationBlock;
     v16->_invalidationBlock = v23;
   }
@@ -72,7 +72,7 @@
   [(SiriActivityAssertion *)self invalidatedAtTimestamp:Current];
 }
 
-- (void)invalidatedAtTimestamp:(double)a3
+- (void)invalidatedAtTimestamp:(double)timestamp
 {
   invalidationBlock = self->_invalidationBlock;
   if (invalidationBlock)
@@ -81,7 +81,7 @@
     v6 = self->_invalidationBlock;
     self->_invalidationBlock = 0;
 
-    v7 = SiriSystemUpTimeFromCFAbsoluteCurrentTime(a3);
+    v7 = SiriSystemUpTimeFromCFAbsoluteCurrentTime(timestamp);
     v8[2](v8, self, v7);
   }
 }

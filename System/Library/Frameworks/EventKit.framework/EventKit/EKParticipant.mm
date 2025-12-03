@@ -1,16 +1,16 @@
 @interface EKParticipant
-+ (BOOL)canonicalizedEqualityTestValue1:(id)a3 value2:(id)a4 key:(id)a5 object1:(id)a6 object2:(id)a7;
-+ (EKParticipant)participantWithName:(id)a3 emailAddress:(id)a4 phoneNumber:(id)a5 url:(id)a6;
++ (BOOL)canonicalizedEqualityTestValue1:(id)value1 value2:(id)value2 key:(id)key object1:(id)object1 object2:(id)object2;
++ (EKParticipant)participantWithName:(id)name emailAddress:(id)address phoneNumber:(id)number url:(id)url;
 + (id)knownIdentityKeysForComparison;
 + (id)knownRelationshipWeakKeys;
 + (id)knownSingleValueKeysForComparison;
 - (ABRecordRef)ABRecordWithAddressBook:(ABAddressBookRef)addressBook;
 - (BOOL)isCurrentUserForScheduling;
-- (BOOL)isEqualToParticipant:(id)a3;
+- (BOOL)isEqualToParticipant:(id)participant;
 - (BOOL)isLocationRoom;
 - (BOOL)needsResponse;
 - (BOOL)scheduleForceSend;
-- (EKParticipant)initWithName:(id)a3 emailAddress:(id)a4 phoneNumber:(id)a5 url:(id)a6;
+- (EKParticipant)initWithName:(id)name emailAddress:(id)address phoneNumber:(id)number url:(id)url;
 - (NSPredicate)contactPredicate;
 - (NSString)description;
 - (NSString)name;
@@ -23,28 +23,28 @@
 - (id)newContact;
 - (id)rsvpStatusDisplayString;
 - (int)scheduleStatus;
-- (void)setURL:(id)a3;
+- (void)setURL:(id)l;
 @end
 
 @implementation EKParticipant
 
-+ (EKParticipant)participantWithName:(id)a3 emailAddress:(id)a4 phoneNumber:(id)a5 url:(id)a6
++ (EKParticipant)participantWithName:(id)name emailAddress:(id)address phoneNumber:(id)number url:(id)url
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [[a1 alloc] initWithName:v13 emailAddress:v12 phoneNumber:v11 url:v10];
+  urlCopy = url;
+  numberCopy = number;
+  addressCopy = address;
+  nameCopy = name;
+  v14 = [[self alloc] initWithName:nameCopy emailAddress:addressCopy phoneNumber:numberCopy url:urlCopy];
 
   return v14;
 }
 
-- (EKParticipant)initWithName:(id)a3 emailAddress:(id)a4 phoneNumber:(id)a5 url:(id)a6
+- (EKParticipant)initWithName:(id)name emailAddress:(id)address phoneNumber:(id)number url:(id)url
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  nameCopy = name;
+  addressCopy = address;
+  numberCopy = number;
+  urlCopy = url;
   v14 = [(EKObject *)self init];
   if (!v14)
   {
@@ -54,58 +54,58 @@
   v15 = EKUUIDString();
   [(EKParticipant *)v14 setUUID:v15];
 
-  v16 = [v10 copy];
+  v16 = [nameCopy copy];
   [(EKParticipant *)v14 setDisplayNameRaw:v16];
 
-  if (v13)
+  if (urlCopy)
   {
-    v17 = [v13 copy];
+    v17 = [urlCopy copy];
     [(EKParticipant *)v14 setURL:v17];
 LABEL_9:
 
     goto LABEL_10;
   }
 
-  if ([v11 length])
+  if ([addressCopy length])
   {
     v18 = MEMORY[0x1E695DFF8];
-    v19 = [v11 stringAddingMailto];
+    stringAddingMailto = [addressCopy stringAddingMailto];
 LABEL_8:
-    v17 = v19;
-    v20 = [v18 URLWithString:v19];
+    v17 = stringAddingMailto;
+    v20 = [v18 URLWithString:stringAddingMailto];
     [(EKParticipant *)v14 setURL:v20];
 
     goto LABEL_9;
   }
 
-  if ([v12 length])
+  if ([numberCopy length])
   {
     v18 = MEMORY[0x1E695DFF8];
-    v19 = [v12 stringAddingTel];
+    stringAddingMailto = [numberCopy stringAddingTel];
     goto LABEL_8;
   }
 
 LABEL_10:
-  if (v11)
+  if (addressCopy)
   {
-    [(EKParticipant *)v14 setEmailAddress:v11];
+    [(EKParticipant *)v14 setEmailAddress:addressCopy];
   }
 
-  else if ([v13 cal_hasSchemeMailto])
+  else if ([urlCopy cal_hasSchemeMailto])
   {
-    v21 = [v13 cal_resourceSpecifierNoLeadingSlashes];
-    [(EKParticipant *)v14 setEmailAddress:v21];
+    cal_resourceSpecifierNoLeadingSlashes = [urlCopy cal_resourceSpecifierNoLeadingSlashes];
+    [(EKParticipant *)v14 setEmailAddress:cal_resourceSpecifierNoLeadingSlashes];
   }
 
-  if (v12)
+  if (numberCopy)
   {
-    [(EKParticipant *)v14 setPhoneNumber:v12];
+    [(EKParticipant *)v14 setPhoneNumber:numberCopy];
   }
 
-  else if ([v13 cal_hasSchemeTel])
+  else if ([urlCopy cal_hasSchemeTel])
   {
-    v22 = [v13 cal_resourceSpecifierNoLeadingSlashes];
-    [(EKParticipant *)v14 setPhoneNumber:v22];
+    cal_resourceSpecifierNoLeadingSlashes2 = [urlCopy cal_resourceSpecifierNoLeadingSlashes];
+    [(EKParticipant *)v14 setPhoneNumber:cal_resourceSpecifierNoLeadingSlashes2];
   }
 
   [(EKObject *)v14 updatePersistentValueForKeyIfNeeded:*MEMORY[0x1E6992B08]];
@@ -196,87 +196,87 @@ void __42__EKParticipant_knownRelationshipWeakKeys__block_invoke()
 
 - (NSString)name
 {
-  v3 = [(EKParticipant *)self displayNameRaw];
-  if (!v3)
+  displayNameRaw = [(EKParticipant *)self displayNameRaw];
+  if (!displayNameRaw)
   {
-    v4 = [(EKParticipant *)self firstName];
-    v5 = [(EKParticipant *)self lastName];
-    v3 = DisplayNameStringForIdentityWithProperties();
+    firstName = [(EKParticipant *)self firstName];
+    lastName = [(EKParticipant *)self lastName];
+    displayNameRaw = DisplayNameStringForIdentityWithProperties();
   }
 
-  return v3;
+  return displayNameRaw;
 }
 
 - (id)nameUsingAddressAsBackup
 {
-  v3 = [(EKParticipant *)self name];
-  if (![v3 length])
+  name = [(EKParticipant *)self name];
+  if (![name length])
   {
-    v4 = [(EKParticipant *)self emailAddress];
+    emailAddress = [(EKParticipant *)self emailAddress];
 
-    v3 = v4;
+    name = emailAddress;
   }
 
-  if (![v3 length])
+  if (![name length])
   {
-    v5 = [(EKParticipant *)self phoneNumber];
+    phoneNumber = [(EKParticipant *)self phoneNumber];
 
-    v3 = v5;
+    name = phoneNumber;
   }
 
-  if (![v3 length])
+  if (![name length])
   {
     v6 = [(EKParticipant *)self URL];
-    v7 = [v6 absoluteString];
+    absoluteString = [v6 absoluteString];
 
-    v3 = v7;
+    name = absoluteString;
   }
 
-  return v3;
+  return name;
 }
 
 - (BOOL)needsResponse
 {
   v3 = objc_opt_class();
-  v4 = [(EKParticipant *)self participantStatus];
+  participantStatus = [(EKParticipant *)self participantStatus];
 
-  return [v3 needsResponseForParticipantStatus:v4];
+  return [v3 needsResponseForParticipantStatus:participantStatus];
 }
 
 - (NSURL)URL
 {
-  v3 = [(EKParticipant *)self URLString];
-  if (!v3 || ([MEMORY[0x1E695DFF8] URLWithString:v3], (v4 = objc_claimAutoreleasedReturnValue()) == 0))
+  uRLString = [(EKParticipant *)self URLString];
+  if (!uRLString || ([MEMORY[0x1E695DFF8] URLWithString:uRLString], (uRLForNoMail = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v5 = [(EKParticipant *)self emailAddress];
+    emailAddress = [(EKParticipant *)self emailAddress];
 
-    if (v5)
+    if (emailAddress)
     {
       v6 = MEMORY[0x1E695DFF8];
-      v7 = [(EKParticipant *)self emailAddress];
-      v8 = [v7 stringAddingMailto];
+      emailAddress2 = [(EKParticipant *)self emailAddress];
+      stringAddingMailto = [emailAddress2 stringAddingMailto];
     }
 
     else
     {
-      v9 = [(EKParticipant *)self phoneNumber];
+      phoneNumber = [(EKParticipant *)self phoneNumber];
 
-      if (!v9)
+      if (!phoneNumber)
       {
 LABEL_8:
-        v4 = [MEMORY[0x1E695DFF8] URLForNoMail];
+        uRLForNoMail = [MEMORY[0x1E695DFF8] URLForNoMail];
         goto LABEL_9;
       }
 
       v6 = MEMORY[0x1E695DFF8];
-      v7 = [(EKParticipant *)self phoneNumber];
-      v8 = [v7 stringAddingTel];
+      emailAddress2 = [(EKParticipant *)self phoneNumber];
+      stringAddingMailto = [emailAddress2 stringAddingTel];
     }
 
-    v10 = v8;
-    v4 = [v6 URLWithString:v8];
+    v10 = stringAddingMailto;
+    uRLForNoMail = [v6 URLWithString:stringAddingMailto];
 
-    if (v4)
+    if (uRLForNoMail)
     {
       goto LABEL_9;
     }
@@ -286,67 +286,67 @@ LABEL_8:
 
 LABEL_9:
 
-  return v4;
+  return uRLForNoMail;
 }
 
-- (void)setURL:(id)a3
+- (void)setURL:(id)l
 {
-  v4 = [a3 absoluteString];
-  [(EKParticipant *)self setURLString:v4];
+  absoluteString = [l absoluteString];
+  [(EKParticipant *)self setURLString:absoluteString];
 }
 
 - (BOOL)scheduleForceSend
 {
   v2 = [(EKObject *)self singleChangedValueForKey:*MEMORY[0x1E6992B90]];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (BOOL)isEqualToParticipant:(id)a3
+- (BOOL)isEqualToParticipant:(id)participant
 {
-  v4 = a3;
+  participantCopy = participant;
   v5 = objc_opt_class();
-  v6 = [(EKParticipant *)self URLString];
-  v7 = [(EKParticipant *)self emailAddress];
-  v8 = [(EKParticipant *)self phoneNumber];
-  v9 = [v4 URLString];
-  v10 = [v4 emailAddress];
-  v11 = [v4 phoneNumber];
+  uRLString = [(EKParticipant *)self URLString];
+  emailAddress = [(EKParticipant *)self emailAddress];
+  phoneNumber = [(EKParticipant *)self phoneNumber];
+  uRLString2 = [participantCopy URLString];
+  emailAddress2 = [participantCopy emailAddress];
+  phoneNumber2 = [participantCopy phoneNumber];
 
-  LOBYTE(v4) = [v5 doesParticipantURLString:v6 email:v7 andPhoneNumber:v8 matchParticipantURLString:v9 email:v10 andPhoneNumber:v11];
-  return v4;
+  LOBYTE(participantCopy) = [v5 doesParticipantURLString:uRLString email:emailAddress andPhoneNumber:phoneNumber matchParticipantURLString:uRLString2 email:emailAddress2 andPhoneNumber:phoneNumber2];
+  return participantCopy;
 }
 
-+ (BOOL)canonicalizedEqualityTestValue1:(id)a3 value2:(id)a4 key:(id)a5 object1:(id)a6 object2:(id)a7
++ (BOOL)canonicalizedEqualityTestValue1:(id)value1 value2:(id)value2 key:(id)key object1:(id)object1 object2:(id)object2
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if ([v14 isEqualToString:*MEMORY[0x1E6992B38]])
+  value1Copy = value1;
+  value2Copy = value2;
+  keyCopy = key;
+  object1Copy = object1;
+  object2Copy = object2;
+  if ([keyCopy isEqualToString:*MEMORY[0x1E6992B38]])
   {
-    if (v12 | v13 && ([v12 isEqual:v13] & 1) == 0)
+    if (value1Copy | value2Copy && ([value1Copy isEqual:value2Copy] & 1) == 0)
     {
-      if ((v12 == 0) != (v13 == 0))
+      if ((value1Copy == 0) != (value2Copy == 0))
       {
         v17 = 0;
       }
 
       else
       {
-        v19 = v16;
-        v20 = v15;
+        v19 = object2Copy;
+        v20 = object1Copy;
         v26 = objc_opt_class();
-        v21 = [v20 emailAddress];
-        v22 = [v20 phoneNumber];
+        emailAddress = [v20 emailAddress];
+        phoneNumber = [v20 phoneNumber];
 
-        v23 = [v19 emailAddress];
-        v24 = [v19 phoneNumber];
+        emailAddress2 = [v19 emailAddress];
+        phoneNumber2 = [v19 phoneNumber];
 
-        v25 = v21;
-        v17 = [v26 doesParticipantURLString:v12 email:v21 andPhoneNumber:v22 matchParticipantURLString:v13 email:v23 andPhoneNumber:v24];
+        v25 = emailAddress;
+        v17 = [v26 doesParticipantURLString:value1Copy email:emailAddress andPhoneNumber:phoneNumber matchParticipantURLString:value2Copy email:emailAddress2 andPhoneNumber:phoneNumber2];
       }
     }
 
@@ -358,9 +358,9 @@ LABEL_9:
 
   else
   {
-    v27.receiver = a1;
+    v27.receiver = self;
     v27.super_class = &OBJC_METACLASS___EKParticipant;
-    v17 = objc_msgSendSuper2(&v27, sel_canonicalizedEqualityTestValue1_value2_key_object1_object2_, v12, v13, v14, v15, v16);
+    v17 = objc_msgSendSuper2(&v27, sel_canonicalizedEqualityTestValue1_value2_key_object1_object2_, value1Copy, value2Copy, keyCopy, object1Copy, object2Copy);
   }
 
   return v17;
@@ -369,39 +369,39 @@ LABEL_9:
 - (id)nameComponents
 {
   v2 = MEMORY[0x1E6993018];
-  v3 = [(EKParticipant *)self name];
-  v4 = [v2 personNameComponentsFromString:v3];
+  name = [(EKParticipant *)self name];
+  v4 = [v2 personNameComponentsFromString:name];
 
   return v4;
 }
 
 - (id)displayString
 {
-  v3 = [(EKParticipant *)self emailAddress];
-  if (([v3 resemblesEmailAddress] & 1) == 0)
+  emailAddress = [(EKParticipant *)self emailAddress];
+  if (([emailAddress resemblesEmailAddress] & 1) == 0)
   {
 
-    v3 = 0;
+    emailAddress = 0;
   }
 
-  v4 = [(EKParticipant *)self name];
+  name = [(EKParticipant *)self name];
   v5 = [(EKParticipant *)self URL];
-  if ([v4 length])
+  if ([name length])
   {
-    v6 = [MEMORY[0x1E696AD60] stringWithString:v4];
-    if (![v3 length])
+    v6 = [MEMORY[0x1E696AD60] stringWithString:name];
+    if (![emailAddress length])
     {
       goto LABEL_9;
     }
 
-    v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@" <%@>", v3];
-    [v6 appendString:v7];
+    absoluteString = [MEMORY[0x1E696AEC0] stringWithFormat:@" <%@>", emailAddress];
+    [v6 appendString:absoluteString];
     goto LABEL_6;
   }
 
-  if ([v3 length])
+  if ([emailAddress length])
   {
-    v6 = [MEMORY[0x1E696AD60] stringWithString:v3];
+    v6 = [MEMORY[0x1E696AD60] stringWithString:emailAddress];
   }
 
   else
@@ -409,8 +409,8 @@ LABEL_9:
     if (v5)
     {
       v9 = MEMORY[0x1E696AD60];
-      v7 = [v5 absoluteString];
-      v6 = [v9 stringWithString:v7];
+      absoluteString = [v5 absoluteString];
+      v6 = [v9 stringWithString:absoluteString];
 LABEL_6:
 
       goto LABEL_9;
@@ -426,17 +426,17 @@ LABEL_9:
 
 - (id)rsvpStatusDisplayString
 {
-  v2 = [(EKParticipant *)self participantStatus];
+  participantStatus = [(EKParticipant *)self participantStatus];
   v3 = EKBundle();
   v4 = v3;
-  if ((v2 - 2) > 2)
+  if ((participantStatus - 2) > 2)
   {
     v5 = @"No response";
   }
 
   else
   {
-    v5 = off_1E77FE178[v2 - 2];
+    v5 = off_1E77FE178[participantStatus - 2];
   }
 
   v6 = [v3 localizedStringForKey:v5 value:&stru_1F1B49D68 table:0];
@@ -499,61 +499,61 @@ void __41__EKParticipant_ABRecordWithAddressBook___block_invoke(uint64_t a1, voi
 - (id)newContact
 {
   v3 = MEMORY[0x1E695CD58];
-  v4 = [(EKParticipant *)self name];
-  v5 = [(EKParticipant *)self emailAddress];
-  v6 = [v3 contactWithDisplayName:v4 emailOrPhoneNumber:v5];
+  name = [(EKParticipant *)self name];
+  emailAddress = [(EKParticipant *)self emailAddress];
+  v6 = [v3 contactWithDisplayName:name emailOrPhoneNumber:emailAddress];
 
   return v6;
 }
 
 - (id)existingContact
 {
-  v3 = [MEMORY[0x1E6992F50] defaultProvider];
-  v4 = [(EKParticipant *)self contactPredicate];
-  v5 = [MEMORY[0x1E695CD58] CalKeys];
-  v6 = [v3 unifiedContactsMatchingPredicate:v4 keysToFetch:v5];
-  v7 = [v6 firstObject];
+  defaultProvider = [MEMORY[0x1E6992F50] defaultProvider];
+  contactPredicate = [(EKParticipant *)self contactPredicate];
+  calKeys = [MEMORY[0x1E695CD58] CalKeys];
+  v6 = [defaultProvider unifiedContactsMatchingPredicate:contactPredicate keysToFetch:calKeys];
+  firstObject = [v6 firstObject];
 
-  return v7;
+  return firstObject;
 }
 
 - (int)scheduleStatus
 {
   v2 = [(EKObject *)self singleChangedValueForKey:*MEMORY[0x1E6992B98]];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (BOOL)isCurrentUserForScheduling
 {
-  v3 = [(EKParticipant *)self owner];
-  v4 = [v3 selfAttendee];
-  v5 = [v4 URL];
-  v6 = [v5 absoluteString];
+  owner = [(EKParticipant *)self owner];
+  selfAttendee = [owner selfAttendee];
+  v5 = [selfAttendee URL];
+  absoluteString = [v5 absoluteString];
   v7 = [(EKParticipant *)self URL];
-  v8 = [v7 absoluteString];
-  v9 = [v6 isEqualToString:v8];
+  absoluteString2 = [v7 absoluteString];
+  v9 = [absoluteString isEqualToString:absoluteString2];
 
   return v9;
 }
 
 - (id)generateSemanticIdentifier
 {
-  v3 = [(EKParticipant *)self emailAddress];
-  v4 = v3;
-  if (v3)
+  emailAddress = [(EKParticipant *)self emailAddress];
+  v4 = emailAddress;
+  if (emailAddress)
   {
-    v5 = v3;
+    absoluteString = emailAddress;
   }
 
   else
   {
-    v6 = [(EKParticipant *)self phoneNumber];
-    v7 = v6;
-    if (v6)
+    phoneNumber = [(EKParticipant *)self phoneNumber];
+    v7 = phoneNumber;
+    if (phoneNumber)
     {
-      v5 = v6;
+      absoluteString = phoneNumber;
     }
 
     else
@@ -562,57 +562,57 @@ void __41__EKParticipant_ABRecordWithAddressBook___block_invoke(uint64_t a1, voi
       v9 = v8;
       if (v8)
       {
-        v5 = [v8 absoluteString];
+        absoluteString = [v8 absoluteString];
       }
 
       else
       {
-        v10 = [(EKParticipant *)self name];
-        v11 = v10;
-        if (v10)
+        name = [(EKParticipant *)self name];
+        v11 = name;
+        if (name)
         {
-          v5 = v10;
+          absoluteString = name;
         }
 
         else
         {
-          v12 = [(EKParticipant *)self firstName];
-          v13 = [(EKParticipant *)self lastName];
-          if (v12 | v13)
+          firstName = [(EKParticipant *)self firstName];
+          lastName = [(EKParticipant *)self lastName];
+          if (firstName | lastName)
           {
-            v14 = [MEMORY[0x1E696AD60] string];
-            v15 = v14;
-            if (v12)
+            string = [MEMORY[0x1E696AD60] string];
+            v15 = string;
+            if (firstName)
             {
-              [v14 appendFormat:@"FIRST=%@;", v12];
+              [string appendFormat:@"FIRST=%@;", firstName];
             }
 
-            if (v13)
+            if (lastName)
             {
-              [v15 appendFormat:@"LAST=%@;", v13];
+              [v15 appendFormat:@"LAST=%@;", lastName];
             }
 
-            v5 = [v15 copy];
+            absoluteString = [v15 copy];
           }
 
           else
           {
-            v5 = 0;
+            absoluteString = 0;
           }
         }
       }
     }
   }
 
-  return v5;
+  return absoluteString;
 }
 
 - (NSString)description
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(EKParticipant *)self name];
-  v6 = [v3 stringWithFormat:@"<%@: %p>(name = %@)", v4, self, v5];
+  name = [(EKParticipant *)self name];
+  v6 = [v3 stringWithFormat:@"<%@: %p>(name = %@)", v4, self, name];
 
   return v6;
 }
@@ -642,35 +642,35 @@ uint64_t __40__EKParticipant_specialComparisonBlocks__block_invoke(uint64_t a1, 
 
 - (NSPredicate)contactPredicate
 {
-  v3 = [(EKParticipant *)self emailAddress];
+  emailAddress = [(EKParticipant *)self emailAddress];
 
-  if (v3)
+  if (emailAddress)
   {
     v4 = MEMORY[0x1E695CD58];
-    v5 = [(EKParticipant *)self emailAddress];
-    v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"-[CNContact predicateForContactMatchingEKParticipantWithName:emailAddress:URL:predicateDescription:]"];
-    v7 = [v4 predicateForContactMatchingEKParticipantWithName:0 emailAddress:v5 URL:0 predicateDescription:v6];
+    emailAddress2 = [(EKParticipant *)self emailAddress];
+    emailAddress3 = [MEMORY[0x1E696AEC0] stringWithFormat:@"-[CNContact predicateForContactMatchingEKParticipantWithName:emailAddress:URL:predicateDescription:]"];
+    v7 = [v4 predicateForContactMatchingEKParticipantWithName:0 emailAddress:emailAddress2 URL:0 predicateDescription:emailAddress3];
 LABEL_5:
     v11 = v7;
     goto LABEL_6;
   }
 
-  v8 = [(EKParticipant *)self phoneNumber];
+  phoneNumber = [(EKParticipant *)self phoneNumber];
 
   v9 = MEMORY[0x1E695CD58];
-  if (v8)
+  if (phoneNumber)
   {
     v10 = MEMORY[0x1E695CF50];
-    v5 = [(EKParticipant *)self phoneNumber];
-    v6 = [v10 phoneNumberWithStringValue:v5];
-    v7 = [v9 predicateForContactsMatchingPhoneNumber:v6];
+    emailAddress2 = [(EKParticipant *)self phoneNumber];
+    emailAddress3 = [v10 phoneNumberWithStringValue:emailAddress2];
+    v7 = [v9 predicateForContactsMatchingPhoneNumber:emailAddress3];
     goto LABEL_5;
   }
 
-  v5 = [(EKParticipant *)self name];
-  v6 = [(EKParticipant *)self emailAddress];
+  emailAddress2 = [(EKParticipant *)self name];
+  emailAddress3 = [(EKParticipant *)self emailAddress];
   v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"-[CNContact predicateForContactMatchingEKParticipantWithName:emailAddress:URL:predicateDescription:]"];
-  v11 = [v9 predicateForContactMatchingEKParticipantWithName:v5 emailAddress:v6 URL:0 predicateDescription:v13];
+  v11 = [v9 predicateForContactMatchingEKParticipantWithName:emailAddress2 emailAddress:emailAddress3 URL:0 predicateDescription:v13];
 
 LABEL_6:
 

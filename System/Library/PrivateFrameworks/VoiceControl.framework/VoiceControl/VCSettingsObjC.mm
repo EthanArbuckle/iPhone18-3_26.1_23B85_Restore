@@ -1,6 +1,6 @@
 @interface VCSettingsObjC
 + (VCSettingsObjC)shared;
-+ (id)voiceControlLocaleIdentifierFromString:(id)a3;
++ (id)voiceControlLocaleIdentifierFromString:(id)string;
 - (BOOL)carPlayDebugOverlayUIEnabled;
 - (BOOL)enabled;
 - (BOOL)showUserHints;
@@ -8,8 +8,8 @@
 - (NSLocale)activeLocale;
 - (NSString)alwaysShowOverlayType;
 - (VCSettingsObjC)init;
-- (id)bestSupportedLocaleFor:(id)a3;
-- (void)setPreferredLocale:(id)a3;
+- (id)bestSupportedLocaleFor:(id)for;
+- (void)setPreferredLocale:(id)locale;
 @end
 
 @implementation VCSettingsObjC
@@ -60,14 +60,14 @@
   return v2;
 }
 
-- (id)bestSupportedLocaleFor:(id)a3
+- (id)bestSupportedLocaleFor:(id)for
 {
   v4 = sub_2723FE344();
   v5 = *(v4 - 8);
   v6 = *(v5 + 64);
   MEMORY[0x28223BE20](v4);
   v8 = &v15 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
-  if (a3)
+  if (for)
   {
     v9 = sub_2723FE5B4();
     v11 = v10;
@@ -94,9 +94,9 @@
   return v12;
 }
 
-- (void)setPreferredLocale:(id)a3
+- (void)setPreferredLocale:(id)locale
 {
-  if (a3)
+  if (locale)
   {
     v4 = sub_2723FE5B4();
     v6 = v5;
@@ -108,7 +108,7 @@
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   _sSo14VCSettingsObjCC12VoiceControlE18setPreferredLocaleyySSSgF_0(v4, v6);
 }
 
@@ -133,7 +133,7 @@
   return v9;
 }
 
-+ (id)voiceControlLocaleIdentifierFromString:(id)a3
++ (id)voiceControlLocaleIdentifierFromString:(id)string
 {
   v3 = sub_2723FE2D4();
   v4 = *(v3 - 8);

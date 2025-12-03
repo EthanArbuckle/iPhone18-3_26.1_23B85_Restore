@@ -2,31 +2,31 @@
 + (id)makeAdministrator;
 + (void)initialize;
 - (CKVocabularyAdministrator)init;
-- (CKVocabularyAdministrator)initWithAdminService:(id)a3 timeout:(double)a4 queue:(id)a5;
+- (CKVocabularyAdministrator)initWithAdminService:(id)service timeout:(double)timeout queue:(id)queue;
 - (id)rawSpeechProfileConverter;
-- (id)rawSpeechProfileConverterOmittingItemTypes:(id)a3;
-- (id)simulateEventHandling:(BOOL)a3;
-- (int64_t)_synchronouslyWrapRequest:(id)a3;
-- (int64_t)beginEvaluation:(id)a3 options:(unsigned __int16)a4;
+- (id)rawSpeechProfileConverterOmittingItemTypes:(id)types;
+- (id)simulateEventHandling:(BOOL)handling;
+- (int64_t)_synchronouslyWrapRequest:(id)request;
+- (int64_t)beginEvaluation:(id)evaluation options:(unsigned __int16)options;
 - (int64_t)endEvaluation;
-- (int64_t)executeEvaluationTask:(unsigned __int16)a3;
-- (void)_triggerMigration:(BOOL)a3 completeAfterTrigger:(BOOL)a4 completion:(id)a5;
-- (void)beginEvaluation:(id)a3 options:(unsigned __int16)a4 completion:(id)a5;
-- (void)captureVocabularySnapshot:(id)a3 completion:(id)a4;
-- (void)deleteAllItemsWithUserId:(id)a3 completion:(id)a4;
-- (void)deleteAllItemsWithUserId:(id)a3 deviceId:(id)a4 completion:(id)a5;
-- (void)endEvaluation:(id)a3;
-- (void)executeEvaluationTask:(unsigned __int16)a3 completion:(id)a4;
-- (void)rebuildSpeechProfileForUserId:(id)a3 completion:(id)a4;
-- (void)triggerMaintenance:(id)a3;
-- (void)triggerMigration:(BOOL)a3 completion:(id)a4;
+- (int64_t)executeEvaluationTask:(unsigned __int16)task;
+- (void)_triggerMigration:(BOOL)migration completeAfterTrigger:(BOOL)trigger completion:(id)completion;
+- (void)beginEvaluation:(id)evaluation options:(unsigned __int16)options completion:(id)completion;
+- (void)captureVocabularySnapshot:(id)snapshot completion:(id)completion;
+- (void)deleteAllItemsWithUserId:(id)id completion:(id)completion;
+- (void)deleteAllItemsWithUserId:(id)id deviceId:(id)deviceId completion:(id)completion;
+- (void)endEvaluation:(id)evaluation;
+- (void)executeEvaluationTask:(unsigned __int16)task completion:(id)completion;
+- (void)rebuildSpeechProfileForUserId:(id)id completion:(id)completion;
+- (void)triggerMaintenance:(id)maintenance;
+- (void)triggerMigration:(BOOL)migration completion:(id)completion;
 @end
 
 @implementation CKVocabularyAdministrator
 
-- (int64_t)_synchronouslyWrapRequest:(id)a3
+- (int64_t)_synchronouslyWrapRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = dispatch_group_create();
   v20 = 0;
   v21 = &v20;
@@ -49,7 +49,7 @@
   v15[4] = self;
   v8 = v7;
   v16 = v8;
-  v4[2](v4, v15);
+  requestCopy[2](requestCopy, v15);
   v9 = dispatch_time(0, (self->_timeout * 1000000000.0));
   if (dispatch_group_wait(v6, v9))
   {
@@ -108,22 +108,22 @@ void __55__CKVocabularyAdministrator__synchronouslyWrapRequest___block_invoke_26
   dispatch_async(v3, v4);
 }
 
-- (int64_t)executeEvaluationTask:(unsigned __int16)a3
+- (int64_t)executeEvaluationTask:(unsigned __int16)task
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __51__CKVocabularyAdministrator_executeEvaluationTask___block_invoke;
   v4[3] = &unk_1E831EBA8;
   v4[4] = self;
-  v5 = a3;
+  taskCopy = task;
   return [(CKVocabularyAdministrator *)self _synchronouslyWrapRequest:v4];
 }
 
-- (void)executeEvaluationTask:(unsigned __int16)a3 completion:(id)a4
+- (void)executeEvaluationTask:(unsigned __int16)task completion:(id)completion
 {
-  v4 = a3;
+  taskCopy = task;
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  completionCopy = completion;
   if (+[CKVAssistantSettingsBridge isCustomerInstall])
   {
     v7 = CKLogContextVocabulary;
@@ -135,22 +135,22 @@ void __55__CKVocabularyAdministrator__synchronouslyWrapRequest___block_invoke_26
     }
 
 LABEL_7:
-    if (v6)
+    if (completionCopy)
     {
-      v6[2](v6, 3);
+      completionCopy[2](completionCopy, 3);
     }
 
     goto LABEL_15;
   }
 
-  if (v4 >= 2)
+  if (taskCopy >= 2)
   {
     v8 = CKLogContextVocabulary;
     if (os_log_type_enabled(CKLogContextVocabulary, OS_LOG_TYPE_INFO))
     {
       v9 = MEMORY[0x1E696AD98];
       v10 = v8;
-      v11 = [v9 numberWithUnsignedShort:v4];
+      v11 = [v9 numberWithUnsignedShort:taskCopy];
       *buf = 136315394;
       v21 = "[CKVocabularyAdministrator executeEvaluationTask:completion:]";
       v22 = 2112;
@@ -161,9 +161,9 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  if (v4)
+  if (taskCopy)
   {
-    v12 = 4 * (v4 == 1);
+    v12 = 4 * (taskCopy == 1);
   }
 
   else
@@ -188,7 +188,7 @@ LABEL_7:
   v17[1] = 3221225472;
   v17[2] = __62__CKVocabularyAdministrator_executeEvaluationTask_completion___block_invoke;
   v17[3] = &unk_1E831EB80;
-  v18 = v6;
+  v18 = completionCopy;
   v19 = v12;
   [(CKVAdminService *)adminService handleTask:v12 reason:17 completion:v17];
 
@@ -252,10 +252,10 @@ uint64_t __62__CKVocabularyAdministrator_executeEvaluationTask_completion___bloc
   return [(CKVocabularyAdministrator *)self _synchronouslyWrapRequest:v3];
 }
 
-- (void)endEvaluation:(id)a3
+- (void)endEvaluation:(id)evaluation
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  evaluationCopy = evaluation;
   v5 = +[CKVAssistantSettingsBridge isCustomerInstall];
   v6 = CKLogContextVocabulary;
   v7 = os_log_type_enabled(CKLogContextVocabulary, OS_LOG_TYPE_INFO);
@@ -268,9 +268,9 @@ uint64_t __62__CKVocabularyAdministrator_executeEvaluationTask_completion___bloc
       _os_log_impl(&dword_1C8683000, v6, OS_LOG_TYPE_INFO, "%s Not supported on customer install.", buf, 0xCu);
     }
 
-    if (v4)
+    if (evaluationCopy)
     {
-      v4[2](v4, 3);
+      evaluationCopy[2](evaluationCopy, 3);
     }
   }
 
@@ -288,7 +288,7 @@ uint64_t __62__CKVocabularyAdministrator_executeEvaluationTask_completion___bloc
     v9[1] = 3221225472;
     v9[2] = __43__CKVocabularyAdministrator_endEvaluation___block_invoke;
     v9[3] = &unk_1E831EAB8;
-    v10 = v4;
+    v10 = evaluationCopy;
     [(CKVAdminService *)adminService endEvaluation:v9];
   }
 }
@@ -331,28 +331,28 @@ uint64_t __43__CKVocabularyAdministrator_endEvaluation___block_invoke(uint64_t a
   return result;
 }
 
-- (int64_t)beginEvaluation:(id)a3 options:(unsigned __int16)a4
+- (int64_t)beginEvaluation:(id)evaluation options:(unsigned __int16)options
 {
-  v6 = a3;
+  evaluationCopy = evaluation;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __53__CKVocabularyAdministrator_beginEvaluation_options___block_invoke;
   v10[3] = &unk_1E831EB30;
   v10[4] = self;
-  v11 = v6;
-  v12 = a4;
-  v7 = v6;
+  v11 = evaluationCopy;
+  optionsCopy = options;
+  v7 = evaluationCopy;
   v8 = [(CKVocabularyAdministrator *)self _synchronouslyWrapRequest:v10];
 
   return v8;
 }
 
-- (void)beginEvaluation:(id)a3 options:(unsigned __int16)a4 completion:(id)a5
+- (void)beginEvaluation:(id)evaluation options:(unsigned __int16)options completion:(id)completion
 {
-  v6 = a4;
+  optionsCopy = options;
   v20 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  evaluationCopy = evaluation;
+  completionCopy = completion;
   if (+[CKVAssistantSettingsBridge isCustomerInstall])
   {
     v10 = CKLogContextVocabulary;
@@ -361,7 +361,7 @@ uint64_t __43__CKVocabularyAdministrator_endEvaluation___block_invoke(uint64_t a
       *buf = 136315138;
       v17 = "[CKVocabularyAdministrator beginEvaluation:options:completion:]";
       _os_log_impl(&dword_1C8683000, v10, OS_LOG_TYPE_INFO, "%s Not supported on customer install.", buf, 0xCu);
-      if (!v9)
+      if (!completionCopy)
       {
         goto LABEL_12;
       }
@@ -372,7 +372,7 @@ uint64_t __43__CKVocabularyAdministrator_endEvaluation___block_invoke(uint64_t a
 
   else
   {
-    if (v8)
+    if (evaluationCopy)
     {
       v11 = CKLogContextVocabulary;
       if (os_log_type_enabled(CKLogContextVocabulary, OS_LOG_TYPE_INFO))
@@ -380,7 +380,7 @@ uint64_t __43__CKVocabularyAdministrator_endEvaluation___block_invoke(uint64_t a
         *buf = 136315394;
         v17 = "[CKVocabularyAdministrator beginEvaluation:options:completion:]";
         v18 = 1024;
-        v19 = v6;
+        v19 = optionsCopy;
         _os_log_impl(&dword_1C8683000, v11, OS_LOG_TYPE_INFO, "%s Submitting request to begin evaluation with options: %X", buf, 0x12u);
       }
 
@@ -389,8 +389,8 @@ uint64_t __43__CKVocabularyAdministrator_endEvaluation___block_invoke(uint64_t a
       v14[1] = 3221225472;
       v14[2] = __64__CKVocabularyAdministrator_beginEvaluation_options_completion___block_invoke;
       v14[3] = &unk_1E831EAB8;
-      v15 = v9;
-      [(CKVAdminService *)adminService beginEvaluation:v8 clean:(v6 & 1) == 0 completion:v14];
+      v15 = completionCopy;
+      [(CKVAdminService *)adminService beginEvaluation:evaluationCopy clean:(optionsCopy & 1) == 0 completion:v14];
 
       goto LABEL_12;
     }
@@ -401,7 +401,7 @@ uint64_t __43__CKVocabularyAdministrator_endEvaluation___block_invoke(uint64_t a
       *buf = 136315138;
       v17 = "[CKVocabularyAdministrator beginEvaluation:options:completion:]";
       _os_log_error_impl(&dword_1C8683000, v13, OS_LOG_TYPE_ERROR, "%s Profile cannot be nil.", buf, 0xCu);
-      if (!v9)
+      if (!completionCopy)
       {
         goto LABEL_12;
       }
@@ -410,10 +410,10 @@ uint64_t __43__CKVocabularyAdministrator_endEvaluation___block_invoke(uint64_t a
     }
   }
 
-  if (v9)
+  if (completionCopy)
   {
 LABEL_11:
-    (*(v9 + 2))(v9, 3);
+    (*(completionCopy + 2))(completionCopy, 3);
   }
 
 LABEL_12:
@@ -457,10 +457,10 @@ uint64_t __64__CKVocabularyAdministrator_beginEvaluation_options_completion___bl
   return result;
 }
 
-- (id)rawSpeechProfileConverterOmittingItemTypes:(id)a3
+- (id)rawSpeechProfileConverterOmittingItemTypes:(id)types
 {
-  v3 = a3;
-  v4 = [[CKVEvaluationProfileBuilder alloc] initWithOmittedItemTypes:v3];
+  typesCopy = types;
+  v4 = [[CKVEvaluationProfileBuilder alloc] initWithOmittedItemTypes:typesCopy];
 
   return v4;
 }
@@ -472,17 +472,17 @@ uint64_t __64__CKVocabularyAdministrator_beginEvaluation_options_completion___bl
   return v2;
 }
 
-- (void)rebuildSpeechProfileForUserId:(id)a3 completion:(id)a4
+- (void)rebuildSpeechProfileForUserId:(id)id completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   adminService = self->_adminService;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __70__CKVocabularyAdministrator_rebuildSpeechProfileForUserId_completion___block_invoke;
   v9[3] = &unk_1E831EAB8;
-  v10 = v6;
-  v8 = v6;
-  [(CKVAdminService *)adminService rebuildSpeechProfileForUserId:a3 completion:v9];
+  v10 = completionCopy;
+  v8 = completionCopy;
+  [(CKVAdminService *)adminService rebuildSpeechProfileForUserId:id completion:v9];
 }
 
 uint64_t __70__CKVocabularyAdministrator_rebuildSpeechProfileForUserId_completion___block_invoke(uint64_t a1, uint64_t a2)
@@ -506,13 +506,13 @@ uint64_t __70__CKVocabularyAdministrator_rebuildSpeechProfileForUserId_completio
   return result;
 }
 
-- (void)deleteAllItemsWithUserId:(id)a3 deviceId:(id)a4 completion:(id)a5
+- (void)deleteAllItemsWithUserId:(id)id deviceId:(id)deviceId completion:(id)completion
 {
   v18 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (![v8 length])
+  idCopy = id;
+  deviceIdCopy = deviceId;
+  completionCopy = completion;
+  if (![idCopy length])
   {
     v12 = CKLogContextVocabulary;
     if (!os_log_type_enabled(CKLogContextVocabulary, OS_LOG_TYPE_ERROR))
@@ -526,19 +526,19 @@ uint64_t __70__CKVocabularyAdministrator_rebuildSpeechProfileForUserId_completio
     goto LABEL_11;
   }
 
-  if (![v9 length])
+  if (![deviceIdCopy length])
   {
     v12 = CKLogContextVocabulary;
     if (!os_log_type_enabled(CKLogContextVocabulary, OS_LOG_TYPE_ERROR))
     {
 LABEL_7:
-      if (!v10)
+      if (!completionCopy)
       {
         goto LABEL_9;
       }
 
 LABEL_8:
-      v10[2](v10, 3);
+      completionCopy[2](completionCopy, 3);
       goto LABEL_9;
     }
 
@@ -547,7 +547,7 @@ LABEL_8:
     v13 = "%s deviceId cannot be empty.";
 LABEL_11:
     _os_log_error_impl(&dword_1C8683000, v12, OS_LOG_TYPE_ERROR, v13, buf, 0xCu);
-    if (!v10)
+    if (!completionCopy)
     {
       goto LABEL_9;
     }
@@ -560,8 +560,8 @@ LABEL_11:
   v14[1] = 3221225472;
   v14[2] = __74__CKVocabularyAdministrator_deleteAllItemsWithUserId_deviceId_completion___block_invoke;
   v14[3] = &unk_1E831EAB8;
-  v15 = v10;
-  [(CKVAdminService *)adminService deleteAllItemsWithUserId:v8 deviceId:v9 completion:v14];
+  v15 = completionCopy;
+  [(CKVAdminService *)adminService deleteAllItemsWithUserId:idCopy deviceId:deviceIdCopy completion:v14];
 
 LABEL_9:
 }
@@ -587,12 +587,12 @@ uint64_t __74__CKVocabularyAdministrator_deleteAllItemsWithUserId_deviceId_compl
   return result;
 }
 
-- (void)deleteAllItemsWithUserId:(id)a3 completion:(id)a4
+- (void)deleteAllItemsWithUserId:(id)id completion:(id)completion
 {
   v14 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (![v6 length])
+  idCopy = id;
+  completionCopy = completion;
+  if (![idCopy length])
   {
     v9 = CKLogContextVocabulary;
     if (os_log_type_enabled(CKLogContextVocabulary, OS_LOG_TYPE_ERROR))
@@ -600,18 +600,18 @@ uint64_t __74__CKVocabularyAdministrator_deleteAllItemsWithUserId_deviceId_compl
       *buf = 136315138;
       v13 = "[CKVocabularyAdministrator deleteAllItemsWithUserId:completion:]";
       _os_log_error_impl(&dword_1C8683000, v9, OS_LOG_TYPE_ERROR, "%s userId cannot be empty.", buf, 0xCu);
-      if (!v7)
+      if (!completionCopy)
       {
         goto LABEL_6;
       }
     }
 
-    else if (!v7)
+    else if (!completionCopy)
     {
       goto LABEL_6;
     }
 
-    v7[2](v7, 3);
+    completionCopy[2](completionCopy, 3);
     goto LABEL_6;
   }
 
@@ -620,8 +620,8 @@ uint64_t __74__CKVocabularyAdministrator_deleteAllItemsWithUserId_deviceId_compl
   v10[1] = 3221225472;
   v10[2] = __65__CKVocabularyAdministrator_deleteAllItemsWithUserId_completion___block_invoke;
   v10[3] = &unk_1E831EAB8;
-  v11 = v7;
-  [(CKVAdminService *)adminService deleteAllItemsWithUserId:v6 completion:v10];
+  v11 = completionCopy;
+  [(CKVAdminService *)adminService deleteAllItemsWithUserId:idCopy completion:v10];
 
 LABEL_6:
 }
@@ -647,9 +647,9 @@ uint64_t __65__CKVocabularyAdministrator_deleteAllItemsWithUserId_completion___b
   return result;
 }
 
-- (id)simulateEventHandling:(BOOL)a3
+- (id)simulateEventHandling:(BOOL)handling
 {
-  v3 = a3;
+  handlingCopy = handling;
   v26 = *MEMORY[0x1E69E9840];
   if (+[CKVAssistantSettingsBridge isCustomerInstall])
   {
@@ -683,7 +683,7 @@ uint64_t __65__CKVocabularyAdministrator_deleteAllItemsWithUserId_completion___b
     v14[4] = self;
     v9 = v7;
     v15 = v9;
-    [(CKVAdminService *)adminService startEventSimulation:v3 completion:v14];
+    [(CKVAdminService *)adminService startEventSimulation:handlingCopy completion:v14];
     v10 = dispatch_time(0, (self->_timeout * 1000000000.0));
     if (dispatch_group_wait(v9, v10))
     {
@@ -741,11 +741,11 @@ void __51__CKVocabularyAdministrator_simulateEventHandling___block_invoke(uint64
   dispatch_group_leave(*(a1 + 40));
 }
 
-- (void)captureVocabularySnapshot:(id)a3 completion:(id)a4
+- (void)captureVocabularySnapshot:(id)snapshot completion:(id)completion
 {
   v14 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  snapshotCopy = snapshot;
+  completionCopy = completion;
   if (+[CKVAssistantSettingsBridge isCustomerInstall])
   {
     v8 = CKLogContextVocabulary;
@@ -756,9 +756,9 @@ void __51__CKVocabularyAdministrator_simulateEventHandling___block_invoke(uint64
       _os_log_impl(&dword_1C8683000, v8, OS_LOG_TYPE_INFO, "%s Not supported on customer install.", buf, 0xCu);
     }
 
-    if (v7)
+    if (completionCopy)
     {
-      v7[2](v7, 3, 0);
+      completionCopy[2](completionCopy, 3, 0);
     }
   }
 
@@ -769,8 +769,8 @@ void __51__CKVocabularyAdministrator_simulateEventHandling___block_invoke(uint64
     v10[1] = 3221225472;
     v10[2] = __66__CKVocabularyAdministrator_captureVocabularySnapshot_completion___block_invoke;
     v10[3] = &unk_1E831EAE0;
-    v11 = v7;
-    [(CKVAdminService *)adminService captureVocabularySnapshot:v6 completion:v10];
+    v11 = completionCopy;
+    [(CKVAdminService *)adminService captureVocabularySnapshot:snapshotCopy completion:v10];
   }
 }
 
@@ -795,10 +795,10 @@ uint64_t __66__CKVocabularyAdministrator_captureVocabularySnapshot_completion___
   return result;
 }
 
-- (void)triggerMaintenance:(id)a3
+- (void)triggerMaintenance:(id)maintenance
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  maintenanceCopy = maintenance;
   if (+[CKVAssistantSettingsBridge isCustomerInstall])
   {
     v5 = CKLogContextVocabulary;
@@ -809,9 +809,9 @@ uint64_t __66__CKVocabularyAdministrator_captureVocabularySnapshot_completion___
       _os_log_impl(&dword_1C8683000, v5, OS_LOG_TYPE_INFO, "%s Not supported on customer install.", buf, 0xCu);
     }
 
-    if (v4)
+    if (maintenanceCopy)
     {
-      v4[2](v4, 3);
+      maintenanceCopy[2](maintenanceCopy, 3);
     }
   }
 
@@ -822,7 +822,7 @@ uint64_t __66__CKVocabularyAdministrator_captureVocabularySnapshot_completion___
     v7[1] = 3221225472;
     v7[2] = __48__CKVocabularyAdministrator_triggerMaintenance___block_invoke;
     v7[3] = &unk_1E831EAB8;
-    v8 = v4;
+    v8 = maintenanceCopy;
     [(CKVAdminService *)adminService triggerMaintenance:v7];
   }
 }
@@ -848,17 +848,17 @@ uint64_t __48__CKVocabularyAdministrator_triggerMaintenance___block_invoke(uint6
   return result;
 }
 
-- (void)_triggerMigration:(BOOL)a3 completeAfterTrigger:(BOOL)a4 completion:(id)a5
+- (void)_triggerMigration:(BOOL)migration completeAfterTrigger:(BOOL)trigger completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
-  v8 = a5;
+  triggerCopy = trigger;
+  migrationCopy = migration;
+  completionCopy = completion;
   v26[0] = 0;
   v26[1] = v26;
   v26[2] = 0x2020000000;
   v26[3] = 0;
   v9 = @"completed";
-  if (v5)
+  if (triggerCopy)
   {
     v9 = @"triggered";
   }
@@ -871,7 +871,7 @@ uint64_t __48__CKVocabularyAdministrator_triggerMaintenance___block_invoke(uint6
   v25 = v26;
   v11 = v10;
   v23 = v11;
-  v12 = v8;
+  v12 = completionCopy;
   v24 = v12;
   v13 = _Block_copy(aBlock);
   adminService = self->_adminService;
@@ -882,8 +882,8 @@ uint64_t __48__CKVocabularyAdministrator_triggerMaintenance___block_invoke(uint6
   v20[4] = self;
   v15 = v13;
   v21 = v15;
-  [(CKVAdminService *)adminService triggerMigration:v6 completeAfterTrigger:v5 completion:v20];
-  if (v5)
+  [(CKVAdminService *)adminService triggerMigration:migrationCopy completeAfterTrigger:triggerCopy completion:v20];
+  if (triggerCopy)
   {
     v16 = dispatch_time(0, 3000000000);
     queue = self->_queue;
@@ -980,11 +980,11 @@ void __79__CKVocabularyAdministrator__triggerMigration_completeAfterTrigger_comp
   dispatch_async(v3, v4);
 }
 
-- (void)triggerMigration:(BOOL)a3 completion:(id)a4
+- (void)triggerMigration:(BOOL)migration completion:(id)completion
 {
-  v4 = a3;
+  migrationCopy = migration;
   v10 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  completionCopy = completion;
   if (+[CKVAssistantSettingsBridge isCustomerInstall])
   {
     v7 = CKLogContextVocabulary;
@@ -995,15 +995,15 @@ void __79__CKVocabularyAdministrator__triggerMigration_completeAfterTrigger_comp
       _os_log_impl(&dword_1C8683000, v7, OS_LOG_TYPE_INFO, "%s Not supported on customer install.", &v8, 0xCu);
     }
 
-    if (v6)
+    if (completionCopy)
     {
-      v6[2](v6, 3);
+      completionCopy[2](completionCopy, 3);
     }
   }
 
   else
   {
-    [(CKVocabularyAdministrator *)self _triggerMigration:v4 completeAfterTrigger:0 completion:v6];
+    [(CKVocabularyAdministrator *)self _triggerMigration:migrationCopy completeAfterTrigger:0 completion:completionCopy];
   }
 }
 
@@ -1013,19 +1013,19 @@ void __79__CKVocabularyAdministrator__triggerMigration_completeAfterTrigger_comp
   objc_exception_throw(v2);
 }
 
-- (CKVocabularyAdministrator)initWithAdminService:(id)a3 timeout:(double)a4 queue:(id)a5
+- (CKVocabularyAdministrator)initWithAdminService:(id)service timeout:(double)timeout queue:(id)queue
 {
-  v9 = a3;
-  v10 = a5;
+  serviceCopy = service;
+  queueCopy = queue;
   v14.receiver = self;
   v14.super_class = CKVocabularyAdministrator;
   v11 = [(CKVocabularyAdministrator *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_adminService, a3);
-    v12->_timeout = a4;
-    objc_storeStrong(&v12->_queue, a5);
+    objc_storeStrong(&v11->_adminService, service);
+    v12->_timeout = timeout;
+    objc_storeStrong(&v12->_queue, queue);
   }
 
   return v12;
@@ -1042,9 +1042,9 @@ void __79__CKVocabularyAdministrator__triggerMigration_completeAfterTrigger_comp
 + (id)makeAdministrator
 {
   v2 = +[CKVAdministratorFactory sharedAdministratorFactory];
-  v3 = [v2 administrator];
+  administrator = [v2 administrator];
 
-  return v3;
+  return administrator;
 }
 
 @end

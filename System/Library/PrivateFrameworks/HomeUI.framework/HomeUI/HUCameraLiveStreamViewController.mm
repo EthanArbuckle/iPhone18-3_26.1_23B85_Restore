@@ -1,26 +1,26 @@
 @interface HUCameraLiveStreamViewController
 - (HFCameraLiveStreamControllerDelegate)liveStreamControllerDelegate;
-- (HUCameraLiveStreamViewController)initWithCameraProfile:(id)a3;
+- (HUCameraLiveStreamViewController)initWithCameraProfile:(id)profile;
 - (HUCameraView)cameraView;
-- (void)setShouldRespectAspectRatio:(BOOL)a3;
-- (void)streamControllerStateDidUpdate:(id)a3;
+- (void)setShouldRespectAspectRatio:(BOOL)ratio;
+- (void)streamControllerStateDidUpdate:(id)update;
 - (void)viewDidLoad;
 @end
 
 @implementation HUCameraLiveStreamViewController
 
-- (HUCameraLiveStreamViewController)initWithCameraProfile:(id)a3
+- (HUCameraLiveStreamViewController)initWithCameraProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v12.receiver = self;
   v12.super_class = HUCameraLiveStreamViewController;
   v5 = [(HUCameraLiveStreamViewController *)&v12 init];
   if (v5)
   {
     v6 = objc_alloc(MEMORY[0x277D144B0]);
-    v7 = [v4 accessory];
-    v8 = [v7 home];
-    v9 = [v6 initWithHome:v8 cameraProfile:v4];
+    accessory = [profileCopy accessory];
+    home = [accessory home];
+    v9 = [v6 initWithHome:home cameraProfile:profileCopy];
     liveStreamController = v5->_liveStreamController;
     v5->_liveStreamController = v9;
 
@@ -35,71 +35,71 @@
   v17.receiver = self;
   v17.super_class = HUCameraLiveStreamViewController;
   [(HUCameraLiveStreamViewController *)&v17 viewDidLoad];
-  v3 = [(HUCameraLiveStreamViewController *)self view];
-  [v3 setUserInteractionEnabled:0];
+  view = [(HUCameraLiveStreamViewController *)self view];
+  [view setUserInteractionEnabled:0];
 
-  v4 = [(HUCameraLiveStreamViewController *)self view];
-  v5 = [(HUCameraLiveStreamViewController *)self cameraView];
-  [v4 addSubview:v5];
+  view2 = [(HUCameraLiveStreamViewController *)self view];
+  cameraView = [(HUCameraLiveStreamViewController *)self cameraView];
+  [view2 addSubview:cameraView];
 
-  v6 = [(HUCameraLiveStreamViewController *)self shouldRespectAspectRatio];
-  v7 = [(HUCameraLiveStreamViewController *)self cameraView];
-  [v7 setShouldRespectAspectRatio:v6];
+  shouldRespectAspectRatio = [(HUCameraLiveStreamViewController *)self shouldRespectAspectRatio];
+  cameraView2 = [(HUCameraLiveStreamViewController *)self cameraView];
+  [cameraView2 setShouldRespectAspectRatio:shouldRespectAspectRatio];
 
   v8 = MEMORY[0x277CCAAD0];
-  v9 = [(HUCameraLiveStreamViewController *)self cameraView];
-  v10 = [(HUCameraLiveStreamViewController *)self view];
-  v11 = [v8 hu_constraintsSizingAnchorProvider:v9 toAnchorProvider:v10];
+  cameraView3 = [(HUCameraLiveStreamViewController *)self cameraView];
+  view3 = [(HUCameraLiveStreamViewController *)self view];
+  v11 = [v8 hu_constraintsSizingAnchorProvider:cameraView3 toAnchorProvider:view3];
   [v8 activateConstraints:v11];
 
-  v12 = [(HUCameraLiveStreamViewController *)self liveStreamController];
-  [v12 startStreaming];
+  liveStreamController = [(HUCameraLiveStreamViewController *)self liveStreamController];
+  [liveStreamController startStreaming];
 
-  v13 = [(HUCameraLiveStreamViewController *)self liveStreamController];
-  v14 = [v13 streamState];
+  liveStreamController2 = [(HUCameraLiveStreamViewController *)self liveStreamController];
+  streamState = [liveStreamController2 streamState];
 
-  if (v14 == 2)
+  if (streamState == 2)
   {
-    v15 = [(HUCameraLiveStreamViewController *)self liveStreamControllerDelegate];
-    v16 = [(HUCameraLiveStreamViewController *)self liveStreamController];
-    [v15 streamControllerStateDidUpdate:v16];
+    liveStreamControllerDelegate = [(HUCameraLiveStreamViewController *)self liveStreamControllerDelegate];
+    liveStreamController3 = [(HUCameraLiveStreamViewController *)self liveStreamController];
+    [liveStreamControllerDelegate streamControllerStateDidUpdate:liveStreamController3];
   }
 }
 
-- (void)setShouldRespectAspectRatio:(BOOL)a3
+- (void)setShouldRespectAspectRatio:(BOOL)ratio
 {
-  if (self->_shouldRespectAspectRatio != a3)
+  if (self->_shouldRespectAspectRatio != ratio)
   {
-    self->_shouldRespectAspectRatio = a3;
+    self->_shouldRespectAspectRatio = ratio;
     [(HUCameraView *)self->_cameraView setShouldRespectAspectRatio:?];
   }
 }
 
-- (void)streamControllerStateDidUpdate:(id)a3
+- (void)streamControllerStateDidUpdate:(id)update
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  updateCopy = update;
   v5 = HFLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412546;
-    v12 = self;
+    selfCopy = self;
     v13 = 2112;
-    v14 = v4;
+    v14 = updateCopy;
     _os_log_impl(&dword_20CEB6000, v5, OS_LOG_TYPE_DEFAULT, "%@ did update: %@", &v11, 0x16u);
   }
 
-  v6 = [(HUCameraLiveStreamViewController *)self liveStreamController];
-  v7 = [v6 liveCameraSource];
-  v8 = [(HUCameraLiveStreamViewController *)self cameraView];
-  [v8 setCameraSource:v7];
+  liveStreamController = [(HUCameraLiveStreamViewController *)self liveStreamController];
+  liveCameraSource = [liveStreamController liveCameraSource];
+  cameraView = [(HUCameraLiveStreamViewController *)self cameraView];
+  [cameraView setCameraSource:liveCameraSource];
 
-  v9 = [(HUCameraLiveStreamViewController *)self liveStreamControllerDelegate];
+  liveStreamControllerDelegate = [(HUCameraLiveStreamViewController *)self liveStreamControllerDelegate];
 
-  if (v9)
+  if (liveStreamControllerDelegate)
   {
-    v10 = [(HUCameraLiveStreamViewController *)self liveStreamControllerDelegate];
-    [v10 streamControllerStateDidUpdate:v4];
+    liveStreamControllerDelegate2 = [(HUCameraLiveStreamViewController *)self liveStreamControllerDelegate];
+    [liveStreamControllerDelegate2 streamControllerStateDidUpdate:updateCopy];
   }
 }
 
@@ -111,9 +111,9 @@
     v4 = [[HUCameraView alloc] initWithBadgeView:0];
     [(HUCameraView *)v4 setTranslatesAutoresizingMaskIntoConstraints:0];
     [(HUCameraView *)v4 setShouldRespectAspectRatio:[(HUCameraLiveStreamViewController *)self shouldRespectAspectRatio]];
-    v5 = [(HUCameraLiveStreamViewController *)self liveStreamController];
-    v6 = [v5 liveCameraSource];
-    [(HUCameraView *)v4 setCameraSource:v6];
+    liveStreamController = [(HUCameraLiveStreamViewController *)self liveStreamController];
+    liveCameraSource = [liveStreamController liveCameraSource];
+    [(HUCameraView *)v4 setCameraSource:liveCameraSource];
 
     v7 = self->_cameraView;
     self->_cameraView = v4;

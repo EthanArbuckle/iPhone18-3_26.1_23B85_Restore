@@ -1,42 +1,42 @@
 @interface AMDCoreMLDataProvider
-- (AMDCoreMLDataProvider)initWithInputs:(int64_t)a3 featureSizeMap:(id)a4 inputDictionary:(id)a5;
-- (id)fetchData:(int64_t)a3 error:(id *)a4 errorDomain:(id)a5;
+- (AMDCoreMLDataProvider)initWithInputs:(int64_t)inputs featureSizeMap:(id)map inputDictionary:(id)dictionary;
+- (id)fetchData:(int64_t)data error:(id *)error errorDomain:(id)domain;
 @end
 
 @implementation AMDCoreMLDataProvider
 
-- (AMDCoreMLDataProvider)initWithInputs:(int64_t)a3 featureSizeMap:(id)a4 inputDictionary:(id)a5
+- (AMDCoreMLDataProvider)initWithInputs:(int64_t)inputs featureSizeMap:(id)map inputDictionary:(id)dictionary
 {
-  v12 = self;
+  selfCopy = self;
   v11 = a2;
-  v10 = a3;
+  inputsCopy = inputs;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, map);
   v8 = 0;
-  objc_storeStrong(&v8, a5);
-  v12->_length = v10;
-  objc_storeStrong(&v12->_inputDictionary, v8);
-  objc_storeStrong(&v12->_featureSizeMap, location);
-  v12->_currentIndex = 0;
-  v7 = MEMORY[0x277D82BE0](v12);
+  objc_storeStrong(&v8, dictionary);
+  selfCopy->_length = inputsCopy;
+  objc_storeStrong(&selfCopy->_inputDictionary, v8);
+  objc_storeStrong(&selfCopy->_featureSizeMap, location);
+  selfCopy->_currentIndex = 0;
+  v7 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(&v8, 0);
   objc_storeStrong(&location, 0);
-  objc_storeStrong(&v12, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v7;
 }
 
-- (id)fetchData:(int64_t)a3 error:(id *)a4 errorDomain:(id)a5
+- (id)fetchData:(int64_t)data error:(id *)error errorDomain:(id)domain
 {
   v59 = *MEMORY[0x277D85DE8];
-  v51 = self;
+  selfCopy = self;
   v50 = a2;
-  v49 = a3;
-  v48 = a4;
+  dataCopy = data;
+  errorCopy = error;
   location = 0;
-  objc_storeStrong(&location, a5);
+  objc_storeStrong(&location, domain);
   v46 = objc_alloc_init(MEMORY[0x277CBEB38]);
   memset(__b, 0, sizeof(__b));
-  obj = MEMORY[0x277D82BE0](v51->_featureSizeMap);
+  obj = MEMORY[0x277D82BE0](selfCopy->_featureSizeMap);
   v30 = [obj countByEnumeratingWithState:__b objects:v58 count:16];
   if (v30)
   {
@@ -52,15 +52,15 @@
       }
 
       v45 = *(__b[1] + 8 * v27);
-      v43 = [(NSDictionary *)v51->_featureSizeMap objectForKey:v45];
+      v43 = [(NSDictionary *)selfCopy->_featureSizeMap objectForKey:v45];
       if (v43)
       {
-        v41 = [(NSDictionary *)v51->_inputDictionary objectForKey:v45];
+        v41 = [(NSDictionary *)selfCopy->_inputDictionary objectForKey:v45];
         if (v41)
         {
-          currentIndex = v51->_currentIndex;
+          currentIndex = selfCopy->_currentIndex;
           v40 = 4 * currentIndex * [v43 longValue];
-          v21 = v49;
+          v21 = dataCopy;
           v39 = 4 * v21 * [v43 longValue];
           v38 = v40 + v39;
           v22 = v40;
@@ -84,7 +84,7 @@
             }
 
             v15 = MEMORY[0x277CBFF48];
-            v17 = [MEMORY[0x277CCABB0] numberWithInteger:v49];
+            v17 = [MEMORY[0x277CCABB0] numberWithInteger:dataCopy];
             v57[0] = v17;
             v57[1] = v43;
             v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v57 count:2];
@@ -102,7 +102,7 @@
             v9 = objc_alloc(MEMORY[0x277CCA9B8]);
             v18 = [v9 initWithDomain:location code:91 userInfo:0];
             v10 = v18;
-            *v48 = v18;
+            *errorCopy = v18;
             v52 = 0;
             v42 = 1;
           }
@@ -113,7 +113,7 @@
           v7 = objc_alloc(MEMORY[0x277CCA9B8]);
           v23 = [v7 initWithDomain:location code:81 userInfo:0];
           v8 = v23;
-          *v48 = v23;
+          *errorCopy = v23;
           v52 = 0;
           v42 = 1;
         }
@@ -126,7 +126,7 @@
         v5 = objc_alloc(MEMORY[0x277CCA9B8]);
         v24 = [v5 initWithDomain:location code:80 userInfo:0];
         v6 = v24;
-        *v48 = v24;
+        *errorCopy = v24;
         v52 = 0;
         v42 = 1;
       }
@@ -160,13 +160,13 @@ LABEL_20:
   if (!v42)
   {
     v12 = objc_alloc(MEMORY[0x277CBFED0]);
-    v32 = [v12 initWithDictionary:v46 error:v48];
+    v32 = [v12 initWithDictionary:v46 error:errorCopy];
     v31 = [MEMORY[0x277CBEBF8] mutableCopy];
     [v31 addObject:v32];
-    v51->_currentIndex += v49;
-    if (v51->_currentIndex + v49 > v51->_length)
+    selfCopy->_currentIndex += dataCopy;
+    if (selfCopy->_currentIndex + dataCopy > selfCopy->_length)
     {
-      v51->_currentIndex = 0;
+      selfCopy->_currentIndex = 0;
     }
 
     v52 = [objc_alloc(MEMORY[0x277CBFEB0]) initWithFeatureProviderArray:v31];

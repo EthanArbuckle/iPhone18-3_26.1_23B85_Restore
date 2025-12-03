@@ -1,7 +1,7 @@
 @interface STStorageOtherDetailController
 - (id)detailedText;
 - (id)specifiers;
-- (id)valueForSpecifier:(id)a3;
+- (id)valueForSpecifier:(id)specifier;
 - (void)viewDidLoad;
 @end
 
@@ -45,7 +45,7 @@
     v14 = [[STSizeInvestigationComponent alloc] initWithPaths:&off_30030];
     v44[4] = v14;
     v43[5] = @"com.apple.mobilemail";
-    v36 = self;
+    selfCopy = self;
     v15 = [[STSizeInvestigationComponent alloc] initWithPaths:&off_30048];
     v44[5] = v15;
     v43[6] = @"com.apple.Health";
@@ -55,21 +55,21 @@
     v17 = [[STSizeInvestigationComponent alloc] initWithPaths:&off_30078];
     v44[7] = v17;
     v18 = [NSDictionary dictionaryWithObjects:v44 forKeys:v43 count:8];
-    appComponents = v36->_appComponents;
-    v36->_appComponents = v18;
+    appComponents = selfCopy->_appComponents;
+    selfCopy->_appComponents = v18;
 
-    v20 = v36;
+    v20 = selfCopy;
     v35 = [[STStorageApp alloc] initWithBundleIdentifier:@"com.apple.fakeapp.MediaAppPlaceholder" name:@"Media apps" vendorName:0];
     v21 = [[STSizeVector alloc] initWithFixed:0 docsAndData:0 purgeable:0];
-    v22 = [NSMutableDictionary dictionaryWithCapacity:[(NSArray *)v36->_apps count]];
-    bundleApps = v36->_bundleApps;
-    v36->_bundleApps = v22;
+    v22 = [NSMutableDictionary dictionaryWithCapacity:[(NSArray *)selfCopy->_apps count]];
+    bundleApps = selfCopy->_bundleApps;
+    selfCopy->_bundleApps = v22;
 
     v39 = 0u;
     v40 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v24 = v36->_apps;
+    v24 = selfCopy->_apps;
     v25 = [(NSArray *)v24 countByEnumeratingWithState:&v37 objects:v42 count:16];
     if (v25)
     {
@@ -86,21 +86,21 @@
 
           v29 = *(*(&v37 + 1) + 8 * i);
           v30 = v20->_bundleApps;
-          v31 = [v29 bundleIdentifier];
-          [(NSMutableDictionary *)v30 setObject:v29 forKeyedSubscript:v31];
+          bundleIdentifier = [v29 bundleIdentifier];
+          [(NSMutableDictionary *)v30 setObject:v29 forKeyedSubscript:bundleIdentifier];
 
-          v32 = [v29 bundleIdentifier];
-          LODWORD(v31) = [&off_30090 containsObject:v32];
+          bundleIdentifier2 = [v29 bundleIdentifier];
+          LODWORD(bundleIdentifier) = [&off_30090 containsObject:bundleIdentifier2];
 
-          if (v31)
+          if (bundleIdentifier)
           {
-            v33 = [v29 appSize];
-            v34 = [v21 plus:v33];
+            appSize = [v29 appSize];
+            v34 = [v21 plus:appSize];
 
             v21 = v34;
           }
 
-          v20 = v36;
+          v20 = selfCopy;
         }
 
         v26 = [(NSArray *)v24 countByEnumeratingWithState:&v37 objects:v42 count:16];
@@ -126,7 +126,7 @@
   v52 = 0u;
   v49 = 0u;
   v50 = 0u;
-  v44 = self;
+  selfCopy = self;
   v7 = self->_detailedOthersSizes;
   v8 = [(NSMutableDictionary *)v7 countByEnumeratingWithState:&v49 objects:v54 count:16];
   if (v8)
@@ -178,32 +178,32 @@
           objc_enumerationMutation(obj);
         }
 
-        v20 = [(NSDictionary *)v44->_appComponents objectForKeyedSubscript:*(*(&v45 + 1) + 8 * v19)];
+        v20 = [(NSDictionary *)selfCopy->_appComponents objectForKeyedSubscript:*(*(&v45 + 1) + 8 * v19)];
         if ([v20 shouldReturn])
         {
           v42 = [v20 app];
-          v41 = [v42 appSize];
-          [v41 docsAndData];
+          appSize = [v42 appSize];
+          [appSize docsAndData];
           v37 = STFormattedSize();
           v40 = [v20 app];
-          v39 = [v40 appSize];
-          [v39 purgeable];
+          appSize2 = [v40 appSize];
+          [appSize2 purgeable];
           v21 = STFormattedSize();
           v22 = [v20 app];
-          v23 = [v22 appSize];
-          [v23 fixed];
+          appSize3 = [v22 appSize];
+          [appSize3 fixed];
           v24 = STFormattedSize();
           v25 = [v20 app];
-          v26 = [v25 appSize];
-          [v26 dynamic];
+          appSize4 = [v25 appSize];
+          [appSize4 dynamic];
           v27 = STFormattedSize();
           v38 = [NSString stringWithFormat:@"Docs&Data : %@ / Purgeable : %@ / Fixed : %@ / Dynamic : %@", v37, v21, v24, v27];
 
           v28 = [v20 app];
-          v29 = [v28 bundleIdentifier];
-          v30 = [v20 reportedDiff];
-          v31 = [v20 reportedString];
-          v32 = [NSString stringWithFormat:@"%@ \tDiff : %@ \n\t%@\n\t%@\n\n", v29, v30, v31, v38];
+          bundleIdentifier = [v28 bundleIdentifier];
+          reportedDiff = [v20 reportedDiff];
+          reportedString = [v20 reportedString];
+          v32 = [NSString stringWithFormat:@"%@ \tDiff : %@ \n\t%@\n\t%@\n\n", bundleIdentifier, reportedDiff, reportedString, v38];
 
           v17 = v35;
           v18 = v34;
@@ -223,9 +223,9 @@
   return v43;
 }
 
-- (id)valueForSpecifier:(id)a3
+- (id)valueForSpecifier:(id)specifier
 {
-  v3 = [a3 propertyForKey:PSValueKey];
+  v3 = [specifier propertyForKey:PSValueKey];
   [v3 longLongValue];
   v4 = STFormattedSize();
 
@@ -247,7 +247,7 @@
   if (STStorageIsInternalInstall())
   {
     v76 = v6;
-    v79 = [(STStorageOtherDetailController *)self logSizes];
+    logSizes = [(STStorageOtherDetailController *)self logSizes];
     v8 = [NSMutableArray arrayWithCapacity:10];
     v9 = [STStorageHeaderLabelCell specifierWithTitle:@"Internal Only"];
     [v8 addObject:v9];
@@ -257,11 +257,11 @@
       v10 = +[PSSpecifier emptyGroupSpecifier];
       [v8 addObject:v10];
 
-      v11 = [(STStorageOptionTip *)self->_ttrOptionTip specifier];
-      [v8 addObject:v11];
+      specifier = [(STStorageOptionTip *)self->_ttrOptionTip specifier];
+      [v8 addObject:specifier];
 
-      v12 = [(STStorageOptionTip *)self->_ttrOptionTip infoSpecifier];
-      [v8 addObject:v12];
+      infoSpecifier = [(STStorageOptionTip *)self->_ttrOptionTip infoSpecifier];
+      [v8 addObject:infoSpecifier];
 
       v13 = +[PSSpecifier emptyGroupSpecifier];
       [v8 addObject:v13];
@@ -321,7 +321,7 @@
       while (v18);
     }
 
-    v25 = [NSMutableDictionary dictionaryWithDictionary:v79];
+    v25 = [NSMutableDictionary dictionaryWithDictionary:logSizes];
     [v25 addEntriesFromDictionary:self->_detailedLogSizes];
     v26 = [v25 keysSortedByValueWithOptions:16 usingComparator:&stru_2CFB8];
     obja = [NSMutableArray arrayWithCapacity:20];
@@ -329,7 +329,7 @@
     v98 = 0u;
     v99 = 0u;
     v100 = 0u;
-    v27 = v79;
+    v27 = logSizes;
     v28 = [v27 countByEnumeratingWithState:&v97 objects:v108 count:16];
     if (v28)
     {
@@ -345,10 +345,10 @@
           }
 
           v32 = [v27 objectForKey:*(*(&v97 + 1) + 8 * j)];
-          v33 = [v32 longLongValue];
-          if (v33 >= 1)
+          longLongValue = [v32 longLongValue];
+          if (longLongValue >= 1)
           {
-            self->_szLogs += v33;
+            self->_szLogs += longLongValue;
           }
         }
 
@@ -437,8 +437,8 @@
           v52 = [(NSDictionary *)self->_appComponents objectForKeyedSubscript:*(*(&v89 + 1) + 8 * m)];
           if ([v52 shouldReturn])
           {
-            v53 = [v52 specifier];
-            [v84 addObject:v53];
+            specifier2 = [v52 specifier];
+            [v84 addObject:specifier2];
           }
         }
 

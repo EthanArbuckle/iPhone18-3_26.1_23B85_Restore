@@ -1,31 +1,31 @@
 @interface PKApplyVerificationSMSOTPViewController
-- (PKApplyVerificationSMSOTPViewController)initWithController:(id)a3 setupDelegate:(id)a4 context:(int64_t)a5 verificationPage:(id)a6;
-- (unint64_t)_smsOTPViewEntryErrorFromError:(id)a3;
+- (PKApplyVerificationSMSOTPViewController)initWithController:(id)controller setupDelegate:(id)delegate context:(int64_t)context verificationPage:(id)page;
+- (unint64_t)_smsOTPViewEntryErrorFromError:(id)error;
 - (void)_cancelApplication;
 - (void)_nextButtonPressed;
 - (void)_requestNewCode;
-- (void)_submitCode:(id)a3 skippedVerification:(BOOL)a4;
+- (void)_submitCode:(id)code skippedVerification:(BOOL)verification;
 - (void)_terminateFlow;
-- (void)_updateViewWithEntryError:(unint64_t)a3 source:(unint64_t)a4;
+- (void)_updateViewWithEntryError:(unint64_t)error source:(unint64_t)source;
 - (void)_withdrawApplication;
-- (void)oneTimeCodeView:(id)a3 didEnterCode:(id)a4;
-- (void)showNavigationBarSpinner:(BOOL)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)oneTimeCodeView:(id)view didEnterCode:(id)code;
+- (void)showNavigationBarSpinner:(BOOL)spinner;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
 @implementation PKApplyVerificationSMSOTPViewController
 
-- (PKApplyVerificationSMSOTPViewController)initWithController:(id)a3 setupDelegate:(id)a4 context:(int64_t)a5 verificationPage:(id)a6
+- (PKApplyVerificationSMSOTPViewController)initWithController:(id)controller setupDelegate:(id)delegate context:(int64_t)context verificationPage:(id)page
 {
-  v11 = a6;
+  pageCopy = page;
   v20.receiver = self;
   v20.super_class = PKApplyVerificationSMSOTPViewController;
-  v12 = [(PKApplyExplanationViewController *)&v20 initWithController:a3 setupDelegate:a4 context:a5 applyPage:v11];
+  v12 = [(PKApplyExplanationViewController *)&v20 initWithController:controller setupDelegate:delegate context:context applyPage:pageCopy];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_verificationPage, a6);
+    objc_storeStrong(&v12->_verificationPage, page);
     [(PKExplanationViewController *)v13 setShowCancelButton:1];
     v14 = objc_alloc(MEMORY[0x1E69DC708]);
     v15 = PKLocalizedPaymentString(&cfstr_Next.isa);
@@ -33,21 +33,21 @@
     nextButton = v13->_nextButton;
     v13->_nextButton = v16;
 
-    v18 = [(PKApplyVerificationSMSOTPViewController *)v13 navigationItem];
-    [v18 setRightBarButtonItem:v13->_nextButton];
+    navigationItem = [(PKApplyVerificationSMSOTPViewController *)v13 navigationItem];
+    [navigationItem setRightBarButtonItem:v13->_nextButton];
   }
 
   return v13;
 }
 
-- (void)showNavigationBarSpinner:(BOOL)a3
+- (void)showNavigationBarSpinner:(BOOL)spinner
 {
-  v3 = a3;
+  spinnerCopy = spinner;
   v5.receiver = self;
   v5.super_class = PKApplyVerificationSMSOTPViewController;
   [(PKApplyExplanationViewController *)&v5 showNavigationBarSpinner:?];
-  self->_showingSpinner = v3;
-  [(PKOneTimeCodeView *)self->_otpView setDisableEntry:v3];
+  self->_showingSpinner = spinnerCopy;
+  [(PKOneTimeCodeView *)self->_otpView setDisableEntry:spinnerCopy];
 }
 
 - (void)viewDidLoad
@@ -55,18 +55,18 @@
   v14.receiver = self;
   v14.super_class = PKApplyVerificationSMSOTPViewController;
   [(PKApplyExplanationViewController *)&v14 viewDidLoad];
-  v3 = [(PKExplanationViewController *)self explanationView];
+  explanationView = [(PKExplanationViewController *)self explanationView];
   v4 = [[PKOneTimeCodeView alloc] initWithCodeLength:[(PKApplyVerificationPage *)self->_verificationPage verificationCodeLength] delegate:self];
   otpView = self->_otpView;
   self->_otpView = v4;
 
   v6 = self->_otpView;
-  v7 = [(PKApplyVerificationSMSOTPViewController *)self view];
-  v8 = [v7 backgroundColor];
-  [(PKOneTimeCodeView *)v6 setBackgroundColor:v8];
+  view = [(PKApplyVerificationSMSOTPViewController *)self view];
+  backgroundColor = [view backgroundColor];
+  [(PKOneTimeCodeView *)v6 setBackgroundColor:backgroundColor];
 
-  [v3 setBodyView:self->_otpView];
-  [v3 setReverseBodyViewAndBodyButtonOrder:1];
+  [explanationView setBodyView:self->_otpView];
+  [explanationView setReverseBodyViewAndBodyButtonOrder:1];
   [(PKApplyVerificationSMSOTPViewController *)self _updateViewWithEntryError:0 source:0];
   objc_initWeak(&location, self);
   v11[0] = MEMORY[0x1E69E9820];
@@ -117,18 +117,18 @@ void __54__PKApplyVerificationSMSOTPViewController_viewDidLoad__block_invoke_2(u
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = PKApplyVerificationSMSOTPViewController;
-  [(PKApplyExplanationViewController *)&v4 viewDidAppear:a3];
+  [(PKApplyExplanationViewController *)&v4 viewDidAppear:appear];
   [(PKApplyVerificationSMSOTPViewController *)self _updateViewWithEntryError:0 source:0];
   [(PKOneTimeCodeView *)self->_otpView becomeFirstResponder];
 }
 
-- (void)oneTimeCodeView:(id)a3 didEnterCode:(id)a4
+- (void)oneTimeCodeView:(id)view didEnterCode:(id)code
 {
-  if (self->_otpView == a3)
+  if (self->_otpView == view)
   {
     [(PKApplyVerificationSMSOTPViewController *)self _updateViewWithEntryError:0 source:1];
   }
@@ -137,16 +137,16 @@ void __54__PKApplyVerificationSMSOTPViewController_viewDidLoad__block_invoke_2(u
 - (void)_nextButtonPressed
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v3 = [(PKApplyExplanationViewController *)self controller];
-  v4 = [(PKApplyExplanationViewController *)self currentPage];
-  v5 = [(PKApplyVerificationSMSOTPViewController *)self analyticsPageTag];
+  controller = [(PKApplyExplanationViewController *)self controller];
+  currentPage = [(PKApplyExplanationViewController *)self currentPage];
+  analyticsPageTag = [(PKApplyVerificationSMSOTPViewController *)self analyticsPageTag];
   v8 = *MEMORY[0x1E69BA440];
   v9[0] = *MEMORY[0x1E69BAB18];
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:&v8 count:1];
-  [v3 reportAnalyticsDictionaryForPage:v4 pageTag:v5 additionalValues:v6];
+  [controller reportAnalyticsDictionaryForPage:currentPage pageTag:analyticsPageTag additionalValues:v6];
 
-  v7 = [(PKOneTimeCodeView *)self->_otpView currentCode];
-  [(PKApplyVerificationSMSOTPViewController *)self _submitCode:v7 skippedVerification:0];
+  currentCode = [(PKOneTimeCodeView *)self->_otpView currentCode];
+  [(PKApplyVerificationSMSOTPViewController *)self _submitCode:currentCode skippedVerification:0];
 }
 
 - (void)_requestNewCode
@@ -157,22 +157,22 @@ void __54__PKApplyVerificationSMSOTPViewController_viewDidLoad__block_invoke_2(u
   v3 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(PKApplyExplanationViewController *)self controller];
-    v5 = [v4 featureApplication];
-    v6 = [v5 applicationIdentifier];
+    controller = [(PKApplyExplanationViewController *)self controller];
+    featureApplication = [controller featureApplication];
+    applicationIdentifier = [featureApplication applicationIdentifier];
     *buf = 138412290;
-    v13 = v6;
+    v13 = applicationIdentifier;
     _os_log_impl(&dword_1BD026000, v3, OS_LOG_TYPE_DEFAULT, "Requesting new otp code for application %@", buf, 0xCu);
   }
 
-  v7 = [(PKApplyExplanationViewController *)self controller];
+  controller2 = [(PKApplyExplanationViewController *)self controller];
   verificationPage = self->_verificationPage;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __58__PKApplyVerificationSMSOTPViewController__requestNewCode__block_invoke;
   v9[3] = &unk_1E80148F0;
   objc_copyWeak(&v10, &location);
-  [v7 resendVerificationForPage:verificationPage completion:v9];
+  [controller2 resendVerificationForPage:verificationPage completion:v9];
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(&location);
@@ -236,25 +236,25 @@ void __58__PKApplyVerificationSMSOTPViewController__requestNewCode__block_invoke
 LABEL_9:
 }
 
-- (void)_submitCode:(id)a3 skippedVerification:(BOOL)a4
+- (void)_submitCode:(id)code skippedVerification:(BOOL)verification
 {
-  v4 = a4;
+  verificationCopy = verification;
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  codeCopy = code;
   objc_initWeak(&location, self);
   [(PKApplyVerificationSMSOTPViewController *)self showNavigationBarSpinner:1];
-  v7 = [(PKApplyExplanationViewController *)self controller];
-  v8 = [v7 featureApplication];
-  v9 = [v8 applicationIdentifier];
+  controller = [(PKApplyExplanationViewController *)self controller];
+  featureApplication = [controller featureApplication];
+  applicationIdentifier = [featureApplication applicationIdentifier];
 
   v10 = PKLogFacilityTypeGetObject();
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
-  if (v4)
+  if (verificationCopy)
   {
     if (v11)
     {
       *buf = 138412290;
-      v20 = v9;
+      v20 = applicationIdentifier;
       v12 = "User skipped sms otp for application %@";
 LABEL_6:
       _os_log_impl(&dword_1BD026000, v10, OS_LOG_TYPE_DEFAULT, v12, buf, 0xCu);
@@ -264,22 +264,22 @@ LABEL_6:
   else if (v11)
   {
     *buf = 138412290;
-    v20 = v9;
+    v20 = applicationIdentifier;
     v12 = "Submitting otp code for application %@";
     goto LABEL_6;
   }
 
   v13 = objc_alloc_init(MEMORY[0x1E69B85E8]);
-  [v13 setData:v6];
-  [v13 setSkippedVerification:v4];
-  v14 = [(PKApplyExplanationViewController *)self controller];
+  [v13 setData:codeCopy];
+  [v13 setSkippedVerification:verificationCopy];
+  controller2 = [(PKApplyExplanationViewController *)self controller];
   verificationPage = self->_verificationPage;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __75__PKApplyVerificationSMSOTPViewController__submitCode_skippedVerification___block_invoke;
   v16[3] = &unk_1E80162F0;
   objc_copyWeak(&v17, &location);
-  [v14 submitVerificationPage:verificationPage verificationInfo:v13 completion:v16];
+  [controller2 submitVerificationPage:verificationPage verificationInfo:v13 completion:v16];
 
   objc_destroyWeak(&v17);
   objc_destroyWeak(&location);
@@ -384,26 +384,26 @@ uint64_t __75__PKApplyVerificationSMSOTPViewController__submitCode_skippedVerifi
   return result;
 }
 
-- (unint64_t)_smsOTPViewEntryErrorFromError:(id)a3
+- (unint64_t)_smsOTPViewEntryErrorFromError:(id)error
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  errorCopy = error;
+  v4 = errorCopy;
+  if (errorCopy)
   {
-    v5 = [v3 domain];
-    v6 = [v5 isEqualToString:*MEMORY[0x1E69BB840]];
+    domain = [errorCopy domain];
+    v6 = [domain isEqualToString:*MEMORY[0x1E69BB840]];
 
     if (v6)
     {
-      v7 = [v4 userInfo];
-      v8 = [v7 objectForKeyedSubscript:*MEMORY[0x1E696AA08]];
+      userInfo = [v4 userInfo];
+      v8 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E696AA08]];
 
       v4 = v8;
     }
 
-    v9 = [v4 domain];
+    domain2 = [v4 domain];
     v10 = *MEMORY[0x1E69BC300];
-    v11 = v9;
+    v11 = domain2;
     v12 = v11;
     if (v11 == v10)
     {
@@ -425,16 +425,16 @@ uint64_t __75__PKApplyVerificationSMSOTPViewController__submitCode_skippedVerifi
       }
     }
 
-    v15 = [v4 code];
-    if (v15 > 40455)
+    code = [v4 code];
+    if (code > 40455)
     {
-      if (v15 == 40456)
+      if (code == 40456)
       {
         v14 = 2;
         goto LABEL_17;
       }
 
-      if (v15 == 40457)
+      if (code == 40457)
       {
         v14 = 3;
         goto LABEL_17;
@@ -443,13 +443,13 @@ uint64_t __75__PKApplyVerificationSMSOTPViewController__submitCode_skippedVerifi
       goto LABEL_16;
     }
 
-    if (v15 == 40423)
+    if (code == 40423)
     {
       v14 = 5;
       goto LABEL_17;
     }
 
-    if (v15 == 40454)
+    if (code == 40454)
     {
       v14 = 4;
       goto LABEL_17;
@@ -474,13 +474,13 @@ LABEL_17:
   aBlock[3] = &unk_1E8010970;
   aBlock[4] = self;
   v3 = _Block_copy(aBlock);
-  v4 = [(PKApplyExplanationViewController *)self controller];
-  v5 = [v4 cancelAlertWithContinueAction:v3];
+  controller = [(PKApplyExplanationViewController *)self controller];
+  v5 = [controller cancelAlertWithContinueAction:v3];
 
   if (v5)
   {
-    v6 = [(PKApplyVerificationSMSOTPViewController *)self navigationController];
-    [v6 presentViewController:v5 animated:1 completion:0];
+    navigationController = [(PKApplyVerificationSMSOTPViewController *)self navigationController];
+    [navigationController presentViewController:v5 animated:1 completion:0];
   }
 
   else
@@ -511,13 +511,13 @@ uint64_t __61__PKApplyVerificationSMSOTPViewController__cancelApplication__block
 {
   [(PKApplyVerificationSMSOTPViewController *)self showNavigationBarSpinner:1];
   objc_initWeak(&location, self);
-  v3 = [(PKApplyExplanationViewController *)self controller];
+  controller = [(PKApplyExplanationViewController *)self controller];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __63__PKApplyVerificationSMSOTPViewController__withdrawApplication__block_invoke;
   v4[3] = &unk_1E80162F0;
   objc_copyWeak(&v5, &location);
-  [v3 withdrawApplicationWithCompletion:v4];
+  [controller withdrawApplicationWithCompletion:v4];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -578,35 +578,35 @@ uint64_t __63__PKApplyVerificationSMSOTPViewController__withdrawApplication__blo
 
 - (void)_terminateFlow
 {
-  v3 = [(PKApplyExplanationViewController *)self setupDelegate];
-  v5 = v3;
-  if (v3)
+  setupDelegate = [(PKApplyExplanationViewController *)self setupDelegate];
+  v5 = setupDelegate;
+  if (setupDelegate)
   {
-    [v3 viewControllerDidTerminateSetupFlow:self];
+    [setupDelegate viewControllerDidTerminateSetupFlow:self];
   }
 
   else
   {
-    v4 = [(PKApplyVerificationSMSOTPViewController *)self presentingViewController];
-    [v4 dismissViewControllerAnimated:1 completion:0];
+    presentingViewController = [(PKApplyVerificationSMSOTPViewController *)self presentingViewController];
+    [presentingViewController dismissViewControllerAnimated:1 completion:0];
   }
 }
 
-- (void)_updateViewWithEntryError:(unint64_t)a3 source:(unint64_t)a4
+- (void)_updateViewWithEntryError:(unint64_t)error source:(unint64_t)source
 {
-  v19 = [(PKExplanationViewController *)self explanationView];
-  if (a3 == 1)
+  explanationView = [(PKExplanationViewController *)self explanationView];
+  if (error == 1)
   {
-    a3 = [(PKOneTimeCodeView *)self->_otpView entryError];
+    error = [(PKOneTimeCodeView *)self->_otpView entryError];
   }
 
   v7 = 36.0;
-  if (a3 > 3)
+  if (error > 3)
   {
-    if (a3 - 4 < 2)
+    if (error - 4 < 2)
     {
       v12 = PKLocalizedPaymentString(&cfstr_ContinueWithPh.isa);
-      [v19 setBodyButtonText:v12];
+      [explanationView setBodyButtonText:v12];
 
       v9 = 0;
       v11 = 0;
@@ -622,31 +622,31 @@ uint64_t __63__PKApplyVerificationSMSOTPViewController__withdrawApplication__blo
     v11 = 0;
   }
 
-  else if (a3)
+  else if (error)
   {
-    v8 = a3 == 2;
+    v8 = error == 2;
     v9 = 0;
-    v10 = a3 != 2 && a3 == 3;
+    v10 = error != 2 && error == 3;
     v11 = 0;
     v7 = 36.0;
   }
 
   else
   {
-    v14 = [(PKOneTimeCodeView *)self->_otpView currentCode];
-    v15 = [v14 length];
-    v16 = [(PKApplyVerificationPage *)self->_verificationPage verificationCodeLength];
+    currentCode = [(PKOneTimeCodeView *)self->_otpView currentCode];
+    v15 = [currentCode length];
+    verificationCodeLength = [(PKApplyVerificationPage *)self->_verificationPage verificationCodeLength];
 
     v10 = 0;
-    v17 = a4 == 1;
-    v9 = v15 == v16;
-    v11 = v15 == v16 && v17;
+    v17 = source == 1;
+    v9 = v15 == verificationCodeLength;
+    v11 = v15 == verificationCodeLength && v17;
     v8 = !v11;
     v7 = 24.0;
   }
 
   v18 = PKLocalizedPaymentString(&cfstr_SendNewCode.isa);
-  [v19 setBodyButtonText:v18];
+  [explanationView setBodyButtonText:v18];
 
   if (v8)
   {
@@ -660,11 +660,11 @@ LABEL_19:
   [(PKOneTimeCodeView *)self->_otpView resignFirstResponder];
 LABEL_20:
   self->_isBodyButtonSkipToDocUpload = v13;
-  [v19 setBodyViewPadding:v7];
+  [explanationView setBodyViewPadding:v7];
   [(PKOneTimeCodeView *)self->_otpView setDisableEntry:v10];
   [(UIBarButtonItem *)self->_nextButton setEnabled:v9];
-  [(PKOneTimeCodeView *)self->_otpView setEntryError:a3];
-  [v19 setNeedsLayout];
+  [(PKOneTimeCodeView *)self->_otpView setEntryError:error];
+  [explanationView setNeedsLayout];
   if (v11)
   {
     [(PKApplyVerificationSMSOTPViewController *)self _nextButtonPressed];

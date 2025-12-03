@@ -2,16 +2,16 @@
 - (CAMSemanticStyleStatusIndicator)init;
 - (CGRect)_platterFrame;
 - (CGSize)intrinsicContentSize;
-- (id)_generatePlatterImageWithRenderer:(id)a3 colors:(id)a4 size:(CGSize)a5;
+- (id)_generatePlatterImageWithRenderer:(id)renderer colors:(id)colors size:(CGSize)size;
 - (int64_t)_visibleTickCount;
-- (void)_updateGradientAlphasAnimated:(BOOL)a3;
+- (void)_updateGradientAlphasAnimated:(BOOL)animated;
 - (void)_updateGradientImages;
-- (void)_updateImageOrientationAnimated:(BOOL)a3;
-- (void)_updatePlatterStrokeProgressAnimated:(BOOL)a3;
+- (void)_updateImageOrientationAnimated:(BOOL)animated;
+- (void)_updatePlatterStrokeProgressAnimated:(BOOL)animated;
 - (void)_updateStrokePath;
-- (void)_updateTicksAnimated:(BOOL)a3;
+- (void)_updateTicksAnimated:(BOOL)animated;
 - (void)layoutSubviews;
-- (void)setSemanticStyle:(id)a3 animated:(BOOL)a4;
+- (void)setSemanticStyle:(id)style animated:(BOOL)animated;
 @end
 
 @implementation CAMSemanticStyleStatusIndicator
@@ -36,8 +36,8 @@
     stackSymbolView = v2->__stackSymbolView;
     v2->__stackSymbolView = v7;
 
-    v9 = [MEMORY[0x1E69DC888] whiteColor];
-    [(UIImageView *)v2->__stackSymbolView setTintColor:v9];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [(UIImageView *)v2->__stackSymbolView setTintColor:whiteColor];
 
     [(CAMSemanticStyleStatusIndicator *)v2 addSubview:v2->__stackSymbolView];
     v10 = objc_alloc_init(MEMORY[0x1E69DD250]);
@@ -52,115 +52,115 @@
 
     v14 = *MEMORY[0x1E6979DD0];
     [(CALayer *)v2->__neutralPlatterLayer setContentsGravity:*MEMORY[0x1E6979DD0]];
-    v15 = [(CAMSemanticStyleStatusIndicator *)v2 traitCollection];
-    [v15 displayScale];
+    traitCollection = [(CAMSemanticStyleStatusIndicator *)v2 traitCollection];
+    [traitCollection displayScale];
     [(CALayer *)v2->__neutralPlatterLayer setContentsScale:?];
 
     v105[0] = @"bounds";
-    v16 = [MEMORY[0x1E695DFB0] null];
-    v106[0] = v16;
+    null = [MEMORY[0x1E695DFB0] null];
+    v106[0] = null;
     v105[1] = @"position";
-    v17 = [MEMORY[0x1E695DFB0] null];
-    v106[1] = v17;
+    null2 = [MEMORY[0x1E695DFB0] null];
+    v106[1] = null2;
     v105[2] = @"opacity";
-    v18 = [MEMORY[0x1E695DFB0] null];
-    v106[2] = v18;
+    null3 = [MEMORY[0x1E695DFB0] null];
+    v106[2] = null3;
     v105[3] = @"contents";
-    v19 = [MEMORY[0x1E695DFB0] null];
-    v106[3] = v19;
+    null4 = [MEMORY[0x1E695DFB0] null];
+    v106[3] = null4;
     v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v106 forKeys:v105 count:4];
     [(CALayer *)v2->__neutralPlatterLayer setActions:v20];
 
-    v21 = [(UIView *)v2->__platterView layer];
-    [v21 addSublayer:v2->__neutralPlatterLayer];
+    layer = [(UIView *)v2->__platterView layer];
+    [layer addSublayer:v2->__neutralPlatterLayer];
 
     v22 = objc_alloc_init(MEMORY[0x1E6979398]);
     coolPlatterLayer = v2->__coolPlatterLayer;
     v2->__coolPlatterLayer = v22;
 
     [(CALayer *)v2->__coolPlatterLayer setContentsGravity:v14];
-    v24 = [(CAMSemanticStyleStatusIndicator *)v2 traitCollection];
-    [v24 displayScale];
+    traitCollection2 = [(CAMSemanticStyleStatusIndicator *)v2 traitCollection];
+    [traitCollection2 displayScale];
     [(CALayer *)v2->__coolPlatterLayer setContentsScale:?];
 
     v103[0] = @"bounds";
-    v25 = [MEMORY[0x1E695DFB0] null];
-    v104[0] = v25;
+    null5 = [MEMORY[0x1E695DFB0] null];
+    v104[0] = null5;
     v103[1] = @"position";
-    v26 = [MEMORY[0x1E695DFB0] null];
-    v104[1] = v26;
+    null6 = [MEMORY[0x1E695DFB0] null];
+    v104[1] = null6;
     v103[2] = @"opacity";
-    v27 = [MEMORY[0x1E695DFB0] null];
-    v104[2] = v27;
+    null7 = [MEMORY[0x1E695DFB0] null];
+    v104[2] = null7;
     v103[3] = @"contents";
-    v28 = [MEMORY[0x1E695DFB0] null];
-    v104[3] = v28;
+    null8 = [MEMORY[0x1E695DFB0] null];
+    v104[3] = null8;
     v29 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v104 forKeys:v103 count:4];
     [(CALayer *)v2->__coolPlatterLayer setActions:v29];
 
-    v30 = [(UIView *)v2->__platterView layer];
-    [v30 addSublayer:v2->__coolPlatterLayer];
+    layer2 = [(UIView *)v2->__platterView layer];
+    [layer2 addSublayer:v2->__coolPlatterLayer];
 
     v31 = objc_alloc_init(MEMORY[0x1E6979398]);
     warmPlatterLayer = v2->__warmPlatterLayer;
     v2->__warmPlatterLayer = v31;
 
     [(CALayer *)v2->__warmPlatterLayer setContentsGravity:v14];
-    v33 = [(CAMSemanticStyleStatusIndicator *)v2 traitCollection];
-    [v33 displayScale];
+    traitCollection3 = [(CAMSemanticStyleStatusIndicator *)v2 traitCollection];
+    [traitCollection3 displayScale];
     [(CALayer *)v2->__warmPlatterLayer setContentsScale:?];
 
     v101[0] = @"bounds";
-    v34 = [MEMORY[0x1E695DFB0] null];
-    v102[0] = v34;
+    null9 = [MEMORY[0x1E695DFB0] null];
+    v102[0] = null9;
     v101[1] = @"position";
-    v35 = [MEMORY[0x1E695DFB0] null];
-    v102[1] = v35;
+    null10 = [MEMORY[0x1E695DFB0] null];
+    v102[1] = null10;
     v101[2] = @"opacity";
-    v36 = [MEMORY[0x1E695DFB0] null];
-    v102[2] = v36;
+    null11 = [MEMORY[0x1E695DFB0] null];
+    v102[2] = null11;
     v101[3] = @"contents";
-    v37 = [MEMORY[0x1E695DFB0] null];
-    v102[3] = v37;
+    null12 = [MEMORY[0x1E695DFB0] null];
+    v102[3] = null12;
     v38 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v102 forKeys:v101 count:4];
     [(CALayer *)v2->__warmPlatterLayer setActions:v38];
 
-    v39 = [(UIView *)v2->__platterView layer];
-    [v39 addSublayer:v2->__warmPlatterLayer];
+    layer3 = [(UIView *)v2->__platterView layer];
+    [layer3 addSublayer:v2->__warmPlatterLayer];
 
     v40 = objc_alloc_init(MEMORY[0x1E6979398]);
     platterMaskLayer = v2->__platterMaskLayer;
     v2->__platterMaskLayer = v40;
 
     v99[0] = @"bounds";
-    v42 = [MEMORY[0x1E695DFB0] null];
+    null13 = [MEMORY[0x1E695DFB0] null];
     v99[1] = @"position";
-    v100[0] = v42;
-    v43 = [MEMORY[0x1E695DFB0] null];
-    v100[1] = v43;
+    v100[0] = null13;
+    null14 = [MEMORY[0x1E695DFB0] null];
+    v100[1] = null14;
     v44 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v100 forKeys:v99 count:2];
     [(CALayer *)v2->__platterMaskLayer setActions:v44];
 
     v45 = v2->__platterMaskLayer;
-    v46 = [(UIView *)v2->__platterView layer];
-    [v46 setMask:v45];
+    layer4 = [(UIView *)v2->__platterView layer];
+    [layer4 setMask:v45];
 
     v47 = objc_alloc_init(MEMORY[0x1E6979398]);
     maskBackgroundLayer = v2->__maskBackgroundLayer;
     v2->__maskBackgroundLayer = v47;
 
-    v49 = [MEMORY[0x1E69DC888] whiteColor];
-    -[CALayer setBackgroundColor:](v2->__maskBackgroundLayer, "setBackgroundColor:", [v49 CGColor]);
+    whiteColor2 = [MEMORY[0x1E69DC888] whiteColor];
+    -[CALayer setBackgroundColor:](v2->__maskBackgroundLayer, "setBackgroundColor:", [whiteColor2 CGColor]);
 
     v97[0] = @"bounds";
-    v50 = [MEMORY[0x1E695DFB0] null];
-    v98[0] = v50;
+    null15 = [MEMORY[0x1E695DFB0] null];
+    v98[0] = null15;
     v97[1] = @"position";
-    v51 = [MEMORY[0x1E695DFB0] null];
-    v98[1] = v51;
+    null16 = [MEMORY[0x1E695DFB0] null];
+    v98[1] = null16;
     v97[2] = @"opacity";
-    v52 = [MEMORY[0x1E695DFB0] null];
-    v98[2] = v52;
+    null17 = [MEMORY[0x1E695DFB0] null];
+    v98[2] = null17;
     v53 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v98 forKeys:v97 count:3];
     [(CALayer *)v2->__maskBackgroundLayer setActions:v53];
 
@@ -169,26 +169,26 @@
     maskStrokeLayer = v2->__maskStrokeLayer;
     v2->__maskStrokeLayer = v54;
 
-    v56 = [MEMORY[0x1E69DC888] whiteColor];
-    -[CAShapeLayer setStrokeColor:](v2->__maskStrokeLayer, "setStrokeColor:", [v56 CGColor]);
+    whiteColor3 = [MEMORY[0x1E69DC888] whiteColor];
+    -[CAShapeLayer setStrokeColor:](v2->__maskStrokeLayer, "setStrokeColor:", [whiteColor3 CGColor]);
 
     [(CAShapeLayer *)v2->__maskStrokeLayer setFillColor:0];
     [(CAShapeLayer *)v2->__maskStrokeLayer setLineWidth:1.0];
     v95[0] = @"bounds";
-    v57 = [MEMORY[0x1E695DFB0] null];
-    v96[0] = v57;
+    null18 = [MEMORY[0x1E695DFB0] null];
+    v96[0] = null18;
     v95[1] = @"position";
-    v58 = [MEMORY[0x1E695DFB0] null];
-    v96[1] = v58;
+    null19 = [MEMORY[0x1E695DFB0] null];
+    v96[1] = null19;
     v95[2] = @"path";
-    v59 = [MEMORY[0x1E695DFB0] null];
-    v96[2] = v59;
+    null20 = [MEMORY[0x1E695DFB0] null];
+    v96[2] = null20;
     v95[3] = @"strokeStart";
-    v60 = [MEMORY[0x1E695DFB0] null];
-    v96[3] = v60;
+    null21 = [MEMORY[0x1E695DFB0] null];
+    v96[3] = null21;
     v95[4] = @"strokeEnd";
-    v61 = [MEMORY[0x1E695DFB0] null];
-    v96[4] = v61;
+    null22 = [MEMORY[0x1E695DFB0] null];
+    v96[4] = null22;
     v62 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v96 forKeys:v95 count:5];
     [(CAShapeLayer *)v2->__maskStrokeLayer setActions:v62];
 
@@ -198,20 +198,20 @@
     v2->__maskTickReplicatorLayer = v63;
 
     v93[0] = @"bounds";
-    v65 = [MEMORY[0x1E695DFB0] null];
-    v94[0] = v65;
+    null23 = [MEMORY[0x1E695DFB0] null];
+    v94[0] = null23;
     v93[1] = @"position";
-    v66 = [MEMORY[0x1E695DFB0] null];
-    v94[1] = v66;
+    null24 = [MEMORY[0x1E695DFB0] null];
+    v94[1] = null24;
     v93[2] = @"instanceCount";
-    v67 = [MEMORY[0x1E695DFB0] null];
-    v94[2] = v67;
+    null25 = [MEMORY[0x1E695DFB0] null];
+    v94[2] = null25;
     v93[3] = @"instanceTransform";
-    v68 = [MEMORY[0x1E695DFB0] null];
-    v94[3] = v68;
+    null26 = [MEMORY[0x1E695DFB0] null];
+    v94[3] = null26;
     v93[4] = @"hidden";
-    v69 = [MEMORY[0x1E695DFB0] null];
-    v94[4] = v69;
+    null27 = [MEMORY[0x1E695DFB0] null];
+    v94[4] = null27;
     v70 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v94 forKeys:v93 count:5];
     [(CAReplicatorLayer *)v2->__maskTickReplicatorLayer setActions:v70];
 
@@ -220,20 +220,20 @@
     maskSmallTickLayer = v2->__maskSmallTickLayer;
     v2->__maskSmallTickLayer = v71;
 
-    v73 = [MEMORY[0x1E69DC888] whiteColor];
-    -[CALayer setBackgroundColor:](v2->__maskSmallTickLayer, "setBackgroundColor:", [v73 CGColor]);
+    whiteColor4 = [MEMORY[0x1E69DC888] whiteColor];
+    -[CALayer setBackgroundColor:](v2->__maskSmallTickLayer, "setBackgroundColor:", [whiteColor4 CGColor]);
 
-    v74 = [(CAMSemanticStyleStatusIndicator *)v2 traitCollection];
-    [v74 displayScale];
+    traitCollection4 = [(CAMSemanticStyleStatusIndicator *)v2 traitCollection];
+    [traitCollection4 displayScale];
     [(CALayer *)v2->__maskSmallTickLayer setRasterizationScale:?];
 
     [(CALayer *)v2->__maskSmallTickLayer setAllowsEdgeAntialiasing:1];
     v91[0] = @"bounds";
-    v75 = [MEMORY[0x1E695DFB0] null];
+    null28 = [MEMORY[0x1E695DFB0] null];
     v91[1] = @"position";
-    v92[0] = v75;
-    v76 = [MEMORY[0x1E695DFB0] null];
-    v92[1] = v76;
+    v92[0] = null28;
+    null29 = [MEMORY[0x1E695DFB0] null];
+    v92[1] = null29;
     v77 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v92 forKeys:v91 count:2];
     [(CALayer *)v2->__maskSmallTickLayer setActions:v77];
 
@@ -242,23 +242,23 @@
     maskLargeTickLayer = v2->__maskLargeTickLayer;
     v2->__maskLargeTickLayer = v78;
 
-    v80 = [MEMORY[0x1E69DC888] whiteColor];
-    -[CALayer setBackgroundColor:](v2->__maskLargeTickLayer, "setBackgroundColor:", [v80 CGColor]);
+    whiteColor5 = [MEMORY[0x1E69DC888] whiteColor];
+    -[CALayer setBackgroundColor:](v2->__maskLargeTickLayer, "setBackgroundColor:", [whiteColor5 CGColor]);
 
-    v81 = [(CAMSemanticStyleStatusIndicator *)v2 traitCollection];
-    [v81 displayScale];
+    traitCollection5 = [(CAMSemanticStyleStatusIndicator *)v2 traitCollection];
+    [traitCollection5 displayScale];
     [(CALayer *)v2->__maskLargeTickLayer setRasterizationScale:?];
 
     [(CALayer *)v2->__maskLargeTickLayer setAllowsEdgeAntialiasing:1];
     v89[0] = @"bounds";
-    v82 = [MEMORY[0x1E695DFB0] null];
-    v90[0] = v82;
+    null30 = [MEMORY[0x1E695DFB0] null];
+    v90[0] = null30;
     v89[1] = @"position";
-    v83 = [MEMORY[0x1E695DFB0] null];
-    v90[1] = v83;
+    null31 = [MEMORY[0x1E695DFB0] null];
+    v90[1] = null31;
     v89[2] = @"hidden";
-    v84 = [MEMORY[0x1E695DFB0] null];
-    v90[2] = v84;
+    null32 = [MEMORY[0x1E695DFB0] null];
+    v90[2] = null32;
     v85 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v90 forKeys:v89 count:3];
     [(CALayer *)v2->__maskLargeTickLayer setActions:v85];
 
@@ -273,33 +273,33 @@
   return v2;
 }
 
-- (void)_updateImageOrientationAnimated:(BOOL)a3
+- (void)_updateImageOrientationAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(CAMSemanticStyleStatusIndicator *)self _stackSymbolView];
-  [CAMView rotateView:v5 toInterfaceOrientation:[(CAMControlStatusIndicator *)self orientation] animated:v3];
+  animatedCopy = animated;
+  _stackSymbolView = [(CAMSemanticStyleStatusIndicator *)self _stackSymbolView];
+  [CAMView rotateView:_stackSymbolView toInterfaceOrientation:[(CAMControlStatusIndicator *)self orientation] animated:animatedCopy];
 
-  v6 = [(CAMSemanticStyleStatusIndicator *)self _platterView];
-  [CAMView rotateView:v6 toInterfaceOrientation:[(CAMControlStatusIndicator *)self orientation] animated:v3];
+  _platterView = [(CAMSemanticStyleStatusIndicator *)self _platterView];
+  [CAMView rotateView:_platterView toInterfaceOrientation:[(CAMControlStatusIndicator *)self orientation] animated:animatedCopy];
 }
 
-- (void)setSemanticStyle:(id)a3 animated:(BOOL)a4
+- (void)setSemanticStyle:(id)style animated:(BOOL)animated
 {
-  v4 = a4;
-  v7 = a3;
+  animatedCopy = animated;
+  styleCopy = style;
   if (![(CAMSemanticStyle *)self->_semanticStyle isEqualToSemanticStyle:?])
   {
-    objc_storeStrong(&self->_semanticStyle, a3);
-    [(CAMSemanticStyleStatusIndicator *)self _updateTicksAnimated:v4];
-    [(CAMSemanticStyleStatusIndicator *)self _updatePlatterStrokeProgressAnimated:v4];
-    [(CAMSemanticStyleStatusIndicator *)self _updateGradientAlphasAnimated:v4];
+    objc_storeStrong(&self->_semanticStyle, style);
+    [(CAMSemanticStyleStatusIndicator *)self _updateTicksAnimated:animatedCopy];
+    [(CAMSemanticStyleStatusIndicator *)self _updatePlatterStrokeProgressAnimated:animatedCopy];
+    [(CAMSemanticStyleStatusIndicator *)self _updateGradientAlphasAnimated:animatedCopy];
   }
 }
 
 - (int64_t)_visibleTickCount
 {
-  v3 = [(CAMSemanticStyleStatusIndicator *)self semanticStyle];
-  [v3 sceneBias];
+  semanticStyle = [(CAMSemanticStyleStatusIndicator *)self semanticStyle];
+  [semanticStyle sceneBias];
   v5 = fabs(v4);
 
   if (v5 < 0.005)
@@ -307,8 +307,8 @@
     return 36;
   }
 
-  v7 = [(CAMSemanticStyleStatusIndicator *)self semanticStyle];
-  [v7 sceneBias];
+  semanticStyle2 = [(CAMSemanticStyleStatusIndicator *)self semanticStyle];
+  [semanticStyle2 sceneBias];
   v9 = vcvtpd_s64_f64((1.0 - fabs(v8)) * 36.0);
 
   if (v9 <= 1)
@@ -322,20 +322,20 @@
   }
 }
 
-- (id)_generatePlatterImageWithRenderer:(id)a3 colors:(id)a4 size:(CGSize)a5
+- (id)_generatePlatterImageWithRenderer:(id)renderer colors:(id)colors size:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
-  v8 = a4;
+  height = size.height;
+  width = size.width;
+  colorsCopy = colors;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __81__CAMSemanticStyleStatusIndicator__generatePlatterImageWithRenderer_colors_size___block_invoke;
   v12[3] = &unk_1E76FA550;
-  v13 = v8;
+  v13 = colorsCopy;
   v14 = width;
   v15 = height;
-  v9 = v8;
-  v10 = [a3 imageWithActions:v12];
+  v9 = colorsCopy;
+  v10 = [renderer imageWithActions:v12];
 
   return v10;
 }
@@ -409,9 +409,9 @@ void __81__CAMSemanticStyleStatusIndicator__generatePlatterImageWithRenderer_col
   [(CAMSemanticStyleStatusIndicator *)self _platterFrame];
   v4 = v3;
   v6 = v5;
-  v7 = [MEMORY[0x1E69DCA80] preferredFormat];
-  [v7 setPreferredRange:2];
-  v8 = [objc_alloc(MEMORY[0x1E69DCA78]) initWithSize:v7 format:{v4, v6}];
+  preferredFormat = [MEMORY[0x1E69DCA80] preferredFormat];
+  [preferredFormat setPreferredRange:2];
+  v8 = [objc_alloc(MEMORY[0x1E69DCA78]) initWithSize:preferredFormat format:{v4, v6}];
   v9 = [MEMORY[0x1E69DC888] colorWithWhite:1.0 alpha:0.6];
   v29[0] = v9;
   v10 = [MEMORY[0x1E69DC888] colorWithWhite:1.0 alpha:0.6];
@@ -419,38 +419,38 @@ void __81__CAMSemanticStyleStatusIndicator__generatePlatterImageWithRenderer_col
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v29 count:2];
   v12 = [(CAMSemanticStyleStatusIndicator *)self _generatePlatterImageWithRenderer:v8 colors:v11 size:v4, v6];
 
-  v13 = [MEMORY[0x1E69DC888] systemBlueColor];
-  v28[0] = v13;
-  v14 = [MEMORY[0x1E69DC888] systemCyanColor];
-  v28[1] = v14;
+  systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+  v28[0] = systemBlueColor;
+  systemCyanColor = [MEMORY[0x1E69DC888] systemCyanColor];
+  v28[1] = systemCyanColor;
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v28 count:2];
   v16 = [(CAMSemanticStyleStatusIndicator *)self _generatePlatterImageWithRenderer:v8 colors:v15 size:v4, v6];
 
-  v17 = [MEMORY[0x1E69DC888] systemRedColor];
-  v27[0] = v17;
-  v18 = [MEMORY[0x1E69DC888] systemYellowColor];
-  v27[1] = v18;
+  systemRedColor = [MEMORY[0x1E69DC888] systemRedColor];
+  v27[0] = systemRedColor;
+  systemYellowColor = [MEMORY[0x1E69DC888] systemYellowColor];
+  v27[1] = systemYellowColor;
   v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v27 count:2];
   v20 = [(CAMSemanticStyleStatusIndicator *)self _generatePlatterImageWithRenderer:v8 colors:v19 size:v4, v6];
 
-  v21 = [v12 CGImage];
-  v22 = [(CAMSemanticStyleStatusIndicator *)self _neutralPlatterLayer];
-  [v22 setContents:v21];
+  cGImage = [v12 CGImage];
+  _neutralPlatterLayer = [(CAMSemanticStyleStatusIndicator *)self _neutralPlatterLayer];
+  [_neutralPlatterLayer setContents:cGImage];
 
-  v23 = [v16 CGImage];
-  v24 = [(CAMSemanticStyleStatusIndicator *)self _coolPlatterLayer];
-  [v24 setContents:v23];
+  cGImage2 = [v16 CGImage];
+  _coolPlatterLayer = [(CAMSemanticStyleStatusIndicator *)self _coolPlatterLayer];
+  [_coolPlatterLayer setContents:cGImage2];
 
-  v25 = [v20 CGImage];
-  v26 = [(CAMSemanticStyleStatusIndicator *)self _warmPlatterLayer];
-  [v26 setContents:v25];
+  cGImage3 = [v20 CGImage];
+  _warmPlatterLayer = [(CAMSemanticStyleStatusIndicator *)self _warmPlatterLayer];
+  [_warmPlatterLayer setContents:cGImage3];
 }
 
-- (void)_updateGradientAlphasAnimated:(BOOL)a3
+- (void)_updateGradientAlphasAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(CAMSemanticStyleStatusIndicator *)self semanticStyle];
-  [v5 warmthBias];
+  animatedCopy = animated;
+  semanticStyle = [(CAMSemanticStyleStatusIndicator *)self semanticStyle];
+  [semanticStyle warmthBias];
 
   CEKProgressClamped();
   v7 = v6;
@@ -459,24 +459,24 @@ void __81__CAMSemanticStyleStatusIndicator__generatePlatterImageWithRenderer_col
   v10 = -(v9 * (v9 + -2.0));
   CEKInterpolateClamped();
   v12 = v11;
-  if (v3)
+  if (animatedCopy)
   {
     v13 = [MEMORY[0x1E69793D0] functionWithName:*MEMORY[0x1E6979EB8]];
     v14 = [MEMORY[0x1E6979318] animationWithKeyPath:@"opacity"];
-    v15 = [(CAMSemanticStyleStatusIndicator *)self _coolPlatterLayer];
-    v16 = [v15 presentationLayer];
-    v17 = v16;
-    if (v16)
+    _coolPlatterLayer = [(CAMSemanticStyleStatusIndicator *)self _coolPlatterLayer];
+    presentationLayer = [_coolPlatterLayer presentationLayer];
+    v17 = presentationLayer;
+    if (presentationLayer)
     {
-      v18 = v16;
+      _coolPlatterLayer2 = presentationLayer;
     }
 
     else
     {
-      v18 = [(CAMSemanticStyleStatusIndicator *)self _coolPlatterLayer];
+      _coolPlatterLayer2 = [(CAMSemanticStyleStatusIndicator *)self _coolPlatterLayer];
     }
 
-    v19 = v18;
+    v19 = _coolPlatterLayer2;
 
     v20 = MEMORY[0x1E696AD98];
     v52 = v19;
@@ -489,24 +489,24 @@ void __81__CAMSemanticStyleStatusIndicator__generatePlatterImageWithRenderer_col
 
     [v14 setDuration:0.5];
     [v14 setTimingFunction:v13];
-    v23 = [(CAMSemanticStyleStatusIndicator *)self _coolPlatterLayer];
-    [v23 addAnimation:v14 forKey:@"opacityAnimation"];
+    _coolPlatterLayer3 = [(CAMSemanticStyleStatusIndicator *)self _coolPlatterLayer];
+    [_coolPlatterLayer3 addAnimation:v14 forKey:@"opacityAnimation"];
 
     v24 = [MEMORY[0x1E6979318] animationWithKeyPath:@"opacity"];
-    v25 = [(CAMSemanticStyleStatusIndicator *)self _warmPlatterLayer];
-    v26 = [v25 presentationLayer];
-    v27 = v26;
-    if (v26)
+    _warmPlatterLayer = [(CAMSemanticStyleStatusIndicator *)self _warmPlatterLayer];
+    presentationLayer2 = [_warmPlatterLayer presentationLayer];
+    v27 = presentationLayer2;
+    if (presentationLayer2)
     {
-      v28 = v26;
+      _warmPlatterLayer2 = presentationLayer2;
     }
 
     else
     {
-      v28 = [(CAMSemanticStyleStatusIndicator *)self _warmPlatterLayer];
+      _warmPlatterLayer2 = [(CAMSemanticStyleStatusIndicator *)self _warmPlatterLayer];
     }
 
-    v29 = v28;
+    v29 = _warmPlatterLayer2;
 
     v30 = MEMORY[0x1E696AD98];
     [v29 opacity];
@@ -518,24 +518,24 @@ void __81__CAMSemanticStyleStatusIndicator__generatePlatterImageWithRenderer_col
 
     [v24 setDuration:0.5];
     [v24 setTimingFunction:v13];
-    v33 = [(CAMSemanticStyleStatusIndicator *)self _warmPlatterLayer];
-    [v33 addAnimation:v24 forKey:@"opacityAnimation"];
+    _warmPlatterLayer3 = [(CAMSemanticStyleStatusIndicator *)self _warmPlatterLayer];
+    [_warmPlatterLayer3 addAnimation:v24 forKey:@"opacityAnimation"];
 
     v34 = [MEMORY[0x1E6979318] animationWithKeyPath:@"opacity"];
-    v35 = [(CAMSemanticStyleStatusIndicator *)self _maskBackgroundLayer];
-    v36 = [v35 presentationLayer];
-    v37 = v36;
-    if (v36)
+    _maskBackgroundLayer = [(CAMSemanticStyleStatusIndicator *)self _maskBackgroundLayer];
+    presentationLayer3 = [_maskBackgroundLayer presentationLayer];
+    v37 = presentationLayer3;
+    if (presentationLayer3)
     {
-      v38 = v36;
+      _maskBackgroundLayer2 = presentationLayer3;
     }
 
     else
     {
-      v38 = [(CAMSemanticStyleStatusIndicator *)self _maskBackgroundLayer];
+      _maskBackgroundLayer2 = [(CAMSemanticStyleStatusIndicator *)self _maskBackgroundLayer];
     }
 
-    v39 = v38;
+    v39 = _maskBackgroundLayer2;
 
     v40 = MEMORY[0x1E696AD98];
     [v39 opacity];
@@ -547,54 +547,54 @@ void __81__CAMSemanticStyleStatusIndicator__generatePlatterImageWithRenderer_col
 
     [v34 setDuration:0.5];
     [v34 setTimingFunction:v13];
-    v43 = [(CAMSemanticStyleStatusIndicator *)self _maskBackgroundLayer];
-    [v43 addAnimation:v34 forKey:@"opacityAnimation"];
+    _maskBackgroundLayer3 = [(CAMSemanticStyleStatusIndicator *)self _maskBackgroundLayer];
+    [_maskBackgroundLayer3 addAnimation:v34 forKey:@"opacityAnimation"];
   }
 
-  v45 = [(CAMSemanticStyleStatusIndicator *)self _coolPlatterLayer];
+  _coolPlatterLayer4 = [(CAMSemanticStyleStatusIndicator *)self _coolPlatterLayer];
   v44 = v8;
   *&v46 = v44;
-  [v45 setOpacity:v46];
+  [_coolPlatterLayer4 setOpacity:v46];
 
-  v48 = [(CAMSemanticStyleStatusIndicator *)self _warmPlatterLayer];
+  _warmPlatterLayer4 = [(CAMSemanticStyleStatusIndicator *)self _warmPlatterLayer];
   v47 = v10;
   *&v49 = v47;
-  [v48 setOpacity:v49];
+  [_warmPlatterLayer4 setOpacity:v49];
 
-  v53 = [(CAMSemanticStyleStatusIndicator *)self _maskBackgroundLayer];
+  _maskBackgroundLayer4 = [(CAMSemanticStyleStatusIndicator *)self _maskBackgroundLayer];
   v50 = v12;
   *&v51 = v50;
-  [v53 setOpacity:v51];
+  [_maskBackgroundLayer4 setOpacity:v51];
 }
 
-- (void)_updateTicksAnimated:(BOOL)a3
+- (void)_updateTicksAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v46[2] = *MEMORY[0x1E69E9840];
-  v5 = [(CAMSemanticStyleStatusIndicator *)self _visibleTickCount];
-  v6 = [(CAMSemanticStyleStatusIndicator *)self semanticStyle];
-  [v6 sceneBias];
+  _visibleTickCount = [(CAMSemanticStyleStatusIndicator *)self _visibleTickCount];
+  semanticStyle = [(CAMSemanticStyleStatusIndicator *)self semanticStyle];
+  [semanticStyle sceneBias];
   v8 = dbl_1A3A68770[v7 > 0.0];
 
   memset(&v43, 0, sizeof(v43));
   CATransform3DMakeRotation(&v43, v8, 0.0, 0.0, 1.0);
-  if (v3)
+  if (animatedCopy)
   {
     v9 = [MEMORY[0x1E69793D0] functionWithName:*MEMORY[0x1E6979EB8]];
-    v10 = [(CAMSemanticStyleStatusIndicator *)self _maskTickReplicatorLayer];
-    v11 = [v10 presentationLayer];
-    v12 = v11;
-    if (v11)
+    _maskTickReplicatorLayer = [(CAMSemanticStyleStatusIndicator *)self _maskTickReplicatorLayer];
+    presentationLayer = [_maskTickReplicatorLayer presentationLayer];
+    v12 = presentationLayer;
+    if (presentationLayer)
     {
-      v13 = v11;
+      _maskTickReplicatorLayer2 = presentationLayer;
     }
 
     else
     {
-      v13 = [(CAMSemanticStyleStatusIndicator *)self _maskTickReplicatorLayer];
+      _maskTickReplicatorLayer2 = [(CAMSemanticStyleStatusIndicator *)self _maskTickReplicatorLayer];
     }
 
-    v14 = v13;
+    v14 = _maskTickReplicatorLayer2;
 
     memset(&v42, 0, sizeof(v42));
     if (v14)
@@ -602,30 +602,30 @@ void __81__CAMSemanticStyleStatusIndicator__generatePlatterImageWithRenderer_col
       [v14 instanceTransform];
     }
 
-    v15 = [v14 instanceCount];
+    instanceCount = [v14 instanceCount];
     a = v42;
     b = v43;
     v16 = CATransform3DEqualToTransform(&a, &b);
-    v17 = [(CAMSemanticStyleStatusIndicator *)self semanticStyle];
-    [v17 sceneBias];
+    semanticStyle2 = [(CAMSemanticStyleStatusIndicator *)self semanticStyle];
+    [semanticStyle2 sceneBias];
     v19 = v18;
 
     if (!v16 || v19 == 0.0)
     {
-      v24 = (36 - v15) / (36 - v15 - v5 + 36);
+      v24 = (36 - instanceCount) / (36 - instanceCount - _visibleTickCount + 36);
       v20 = [MEMORY[0x1E6979318] animationWithKeyPath:@"instanceCount"];
-      v25 = [MEMORY[0x1E696AD98] numberWithInteger:v15 + 1];
+      v25 = [MEMORY[0x1E696AD98] numberWithInteger:instanceCount + 1];
       [v20 setFromValue:v25];
 
       [v20 setToValue:&unk_1F16C79B8];
       [v20 setDuration:v24 * 0.5];
-      v23 = [MEMORY[0x1E6979318] animationWithKeyPath:@"instanceCount"];
-      [v23 setFromValue:&unk_1F16C79B8];
-      v26 = [MEMORY[0x1E696AD98] numberWithInteger:v5 + 1];
-      [v23 setToValue:v26];
+      _maskTickReplicatorLayer4 = [MEMORY[0x1E6979318] animationWithKeyPath:@"instanceCount"];
+      [_maskTickReplicatorLayer4 setFromValue:&unk_1F16C79B8];
+      v26 = [MEMORY[0x1E696AD98] numberWithInteger:_visibleTickCount + 1];
+      [_maskTickReplicatorLayer4 setToValue:v26];
 
-      [v23 setDuration:(1.0 - v24) * 0.5];
-      [v23 setBeginTime:v24 * 0.5];
+      [_maskTickReplicatorLayer4 setDuration:(1.0 - v24) * 0.5];
+      [_maskTickReplicatorLayer4 setBeginTime:v24 * 0.5];
       v27 = [MEMORY[0x1E6979390] animationWithKeyPath:@"instanceTransform"];
       a = v42;
       v28 = [MEMORY[0x1E696B098] valueWithCATransform3D:&a];
@@ -647,59 +647,59 @@ void __81__CAMSemanticStyleStatusIndicator__generatePlatterImageWithRenderer_col
 
       [v27 setDuration:0.5];
       [v27 setCalculationMode:*MEMORY[0x1E69795A0]];
-      v34 = [MEMORY[0x1E6979308] animation];
-      [v34 setDuration:0.5];
+      animation = [MEMORY[0x1E6979308] animation];
+      [animation setDuration:0.5];
       v44[0] = v20;
-      v44[1] = v23;
+      v44[1] = _maskTickReplicatorLayer4;
       v44[2] = v27;
       v35 = [MEMORY[0x1E695DEC8] arrayWithObjects:v44 count:3];
-      [v34 setAnimations:v35];
+      [animation setAnimations:v35];
 
-      [v34 setTimingFunction:v30];
-      v36 = [(CAMSemanticStyleStatusIndicator *)self _maskTickReplicatorLayer];
-      [v36 addAnimation:v34 forKey:@"instanceCountAnimation"];
+      [animation setTimingFunction:v30];
+      _maskTickReplicatorLayer3 = [(CAMSemanticStyleStatusIndicator *)self _maskTickReplicatorLayer];
+      [_maskTickReplicatorLayer3 addAnimation:animation forKey:@"instanceCountAnimation"];
     }
 
     else
     {
       v20 = [MEMORY[0x1E6979318] animationWithKeyPath:@"instanceCount"];
-      v21 = [MEMORY[0x1E696AD98] numberWithInteger:v15 + 1];
+      v21 = [MEMORY[0x1E696AD98] numberWithInteger:instanceCount + 1];
       [v20 setFromValue:v21];
 
-      v22 = [MEMORY[0x1E696AD98] numberWithInteger:v5 + 1];
+      v22 = [MEMORY[0x1E696AD98] numberWithInteger:_visibleTickCount + 1];
       [v20 setToValue:v22];
 
       [v20 setDuration:0.5];
       [v20 setTimingFunction:v9];
-      v23 = [(CAMSemanticStyleStatusIndicator *)self _maskTickReplicatorLayer];
-      [v23 addAnimation:v20 forKey:@"instanceCountAnimation"];
+      _maskTickReplicatorLayer4 = [(CAMSemanticStyleStatusIndicator *)self _maskTickReplicatorLayer];
+      [_maskTickReplicatorLayer4 addAnimation:v20 forKey:@"instanceCountAnimation"];
     }
   }
 
-  v37 = [(CAMSemanticStyleStatusIndicator *)self _maskTickReplicatorLayer];
-  [v37 setInstanceCount:v5];
+  _maskTickReplicatorLayer5 = [(CAMSemanticStyleStatusIndicator *)self _maskTickReplicatorLayer];
+  [_maskTickReplicatorLayer5 setInstanceCount:_visibleTickCount];
 
   v39 = v43;
-  v38 = [(CAMSemanticStyleStatusIndicator *)self _maskTickReplicatorLayer];
+  _maskTickReplicatorLayer6 = [(CAMSemanticStyleStatusIndicator *)self _maskTickReplicatorLayer];
   v42 = v39;
-  [v38 setInstanceTransform:&v42];
+  [_maskTickReplicatorLayer6 setInstanceTransform:&v42];
 }
 
-- (void)_updatePlatterStrokeProgressAnimated:(BOOL)a3
+- (void)_updatePlatterStrokeProgressAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v67[4] = *MEMORY[0x1E69E9840];
-  v5 = [(CAMSemanticStyleStatusIndicator *)self semanticStyle];
-  [v5 sceneBias];
+  semanticStyle = [(CAMSemanticStyleStatusIndicator *)self semanticStyle];
+  [semanticStyle sceneBias];
   v7 = v6;
 
   v8 = 0.0;
   v9 = 0.0;
   if (v7 != 0.0)
   {
-    v10 = [(CAMSemanticStyleStatusIndicator *)self _visibleTickCount];
+    _visibleTickCount = [(CAMSemanticStyleStatusIndicator *)self _visibleTickCount];
     [(CAMSemanticStyleStatusIndicator *)self _platterFrame];
-    v9 = 1.0 - ((v11 * 3.14159265 + -36.0) / 36.0 + fmax(v10 + -0.5, 0.0) + fmax(v10 + -1.0, 0.0) * ((v11 * 3.14159265 + -36.0) / 36.0)) / (v11 * 3.14159265);
+    v9 = 1.0 - ((v11 * 3.14159265 + -36.0) / 36.0 + fmax(_visibleTickCount + -0.5, 0.0) + fmax(_visibleTickCount + -1.0, 0.0) * ((v11 * 3.14159265 + -36.0) / 36.0)) / (v11 * 3.14159265);
   }
 
   v12 = v7 < 0.0;
@@ -728,23 +728,23 @@ void __81__CAMSemanticStyleStatusIndicator__generatePlatterImageWithRenderer_col
     v8 = 1.0 - v9;
   }
 
-  if (v3)
+  if (animatedCopy)
   {
     v15 = [MEMORY[0x1E69793D0] functionWithName:*MEMORY[0x1E6979EB8]];
-    v16 = [(CAMSemanticStyleStatusIndicator *)self _maskStrokeLayer];
-    v17 = [v16 presentationLayer];
-    v18 = v17;
-    if (v17)
+    _maskStrokeLayer = [(CAMSemanticStyleStatusIndicator *)self _maskStrokeLayer];
+    presentationLayer = [_maskStrokeLayer presentationLayer];
+    v18 = presentationLayer;
+    if (presentationLayer)
     {
-      v19 = v17;
+      _maskStrokeLayer2 = presentationLayer;
     }
 
     else
     {
-      v19 = [(CAMSemanticStyleStatusIndicator *)self _maskStrokeLayer];
+      _maskStrokeLayer2 = [(CAMSemanticStyleStatusIndicator *)self _maskStrokeLayer];
     }
 
-    v20 = v19;
+    v20 = _maskStrokeLayer2;
 
     [v20 strokeEnd];
     v22 = v21;
@@ -844,16 +844,16 @@ void __81__CAMSemanticStyleStatusIndicator__generatePlatterImageWithRenderer_col
       [v34 setToValue:v61];
 
       [v34 setDuration:0.5];
-      v38 = [MEMORY[0x1E6979308] animation];
-      [v38 setDuration:0.5];
+      animation = [MEMORY[0x1E6979308] animation];
+      [animation setDuration:0.5];
       v66[0] = v30;
       v66[1] = v34;
       v62 = [MEMORY[0x1E695DEC8] arrayWithObjects:v66 count:2];
-      [v38 setAnimations:v62];
+      [animation setAnimations:v62];
 
-      [v38 setTimingFunction:v15];
-      v41 = [(CAMSemanticStyleStatusIndicator *)self _maskStrokeLayer];
-      [v41 addAnimation:v38 forKey:@"strokeProgressAnimation"];
+      [animation setTimingFunction:v15];
+      _maskStrokeLayer3 = [(CAMSemanticStyleStatusIndicator *)self _maskStrokeLayer];
+      [_maskStrokeLayer3 addAnimation:animation forKey:@"strokeProgressAnimation"];
     }
 
     else
@@ -899,44 +899,44 @@ void __81__CAMSemanticStyleStatusIndicator__generatePlatterImageWithRenderer_col
       [v34 setToValue:v37];
 
       [v34 setDuration:v27 * 0.5];
-      v38 = [MEMORY[0x1E6979318] animationWithKeyPath:@"strokeStart"];
+      animation = [MEMORY[0x1E6979318] animationWithKeyPath:@"strokeStart"];
       v39 = [MEMORY[0x1E696AD98] numberWithDouble:v29];
-      [v38 setFromValue:v39];
+      [animation setFromValue:v39];
 
       v40 = [MEMORY[0x1E696AD98] numberWithDouble:v8];
-      [v38 setToValue:v40];
+      [animation setToValue:v40];
 
-      [v38 setDuration:v65 * 0.5];
-      [v38 setBeginTime:v27 * 0.5];
-      v41 = [MEMORY[0x1E6979318] animationWithKeyPath:@"strokeEnd"];
+      [animation setDuration:v65 * 0.5];
+      [animation setBeginTime:v27 * 0.5];
+      _maskStrokeLayer3 = [MEMORY[0x1E6979318] animationWithKeyPath:@"strokeEnd"];
       v42 = [MEMORY[0x1E696AD98] numberWithDouble:v29];
-      [v41 setFromValue:v42];
+      [_maskStrokeLayer3 setFromValue:v42];
 
       v43 = [MEMORY[0x1E696AD98] numberWithDouble:v14];
-      [v41 setToValue:v43];
+      [_maskStrokeLayer3 setToValue:v43];
 
-      [v41 setDuration:v65 * 0.5];
-      [v41 setBeginTime:v27 * 0.5];
-      v44 = [MEMORY[0x1E6979308] animation];
-      [v44 setDuration:0.5];
+      [_maskStrokeLayer3 setDuration:v65 * 0.5];
+      [_maskStrokeLayer3 setBeginTime:v27 * 0.5];
+      animation2 = [MEMORY[0x1E6979308] animation];
+      [animation2 setDuration:0.5];
       v67[0] = v30;
       v67[1] = v34;
-      v67[2] = v38;
-      v67[3] = v41;
+      v67[2] = animation;
+      v67[3] = _maskStrokeLayer3;
       v45 = [MEMORY[0x1E695DEC8] arrayWithObjects:v67 count:4];
-      [v44 setAnimations:v45];
+      [animation2 setAnimations:v45];
 
-      [v44 setTimingFunction:v15];
-      v46 = [(CAMSemanticStyleStatusIndicator *)self _maskStrokeLayer];
-      [v46 addAnimation:v44 forKey:@"strokeProgressAnimation"];
+      [animation2 setTimingFunction:v15];
+      _maskStrokeLayer4 = [(CAMSemanticStyleStatusIndicator *)self _maskStrokeLayer];
+      [_maskStrokeLayer4 addAnimation:animation2 forKey:@"strokeProgressAnimation"];
     }
   }
 
-  v63 = [(CAMSemanticStyleStatusIndicator *)self _maskStrokeLayer];
-  [v63 setStrokeStart:v8];
+  _maskStrokeLayer5 = [(CAMSemanticStyleStatusIndicator *)self _maskStrokeLayer];
+  [_maskStrokeLayer5 setStrokeStart:v8];
 
-  v64 = [(CAMSemanticStyleStatusIndicator *)self _maskStrokeLayer];
-  [v64 setStrokeEnd:v14];
+  _maskStrokeLayer6 = [(CAMSemanticStyleStatusIndicator *)self _maskStrokeLayer];
+  [_maskStrokeLayer6 setStrokeEnd:v14];
 }
 
 - (void)_updateStrokePath
@@ -950,10 +950,10 @@ void __81__CAMSemanticStyleStatusIndicator__generatePlatterImageWithRenderer_col
   width = v13.size.width;
   UIRectGetCenter();
   v8 = [MEMORY[0x1E69DC728] bezierPathWithArcCenter:1 radius:v6 startAngle:v7 endAngle:CAMPixelWidthForView(self) + width * 0.5 + -0.5 clockwise:{-1.57079633, 4.71238898}];
-  v9 = [v8 CGPath];
+  cGPath = [v8 CGPath];
 
-  v10 = [(CAMSemanticStyleStatusIndicator *)self _maskStrokeLayer];
-  [v10 setPath:v9];
+  _maskStrokeLayer = [(CAMSemanticStyleStatusIndicator *)self _maskStrokeLayer];
+  [_maskStrokeLayer setPath:cGPath];
 }
 
 - (CGRect)_platterFrame
@@ -980,90 +980,90 @@ void __81__CAMSemanticStyleStatusIndicator__generatePlatterImageWithRenderer_col
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(CAMSemanticStyleStatusIndicator *)self _stackSymbolView];
+  _stackSymbolView = [(CAMSemanticStyleStatusIndicator *)self _stackSymbolView];
   [(CAMSemanticStyleStatusIndicator *)self alignmentRectForFrame:v4, v6, v8, v10];
   UIRectGetCenter();
   v13 = *MEMORY[0x1E695EFF8];
   v12 = *(MEMORY[0x1E695EFF8] + 8);
-  [v11 intrinsicContentSize];
-  [v11 frameForAlignmentRect:{v13, v12, v14, v15}];
+  [_stackSymbolView intrinsicContentSize];
+  [_stackSymbolView frameForAlignmentRect:{v13, v12, v14, v15}];
   v17 = v16;
   v19 = v18;
   UIRectCenteredAboutPointScale();
   UIRectGetCenter();
-  [v11 setCenter:?];
-  [v11 setBounds:{v13, v12, v17, v19}];
+  [_stackSymbolView setCenter:?];
+  [_stackSymbolView setBounds:{v13, v12, v17, v19}];
   [(CAMSemanticStyleStatusIndicator *)self _platterFrame];
   v21 = v20;
   v23 = v22;
   v25 = v24;
   v27 = v26;
-  v28 = [(CAMSemanticStyleStatusIndicator *)self _platterView];
-  CAMViewSetBoundsAndCenterForFrame(v28, v21, v23, v25, v27);
+  _platterView = [(CAMSemanticStyleStatusIndicator *)self _platterView];
+  CAMViewSetBoundsAndCenterForFrame(_platterView, v21, v23, v25, v27);
 
   UIRectGetCenter();
   v30 = v29;
   v32 = v31;
-  v33 = [(CAMSemanticStyleStatusIndicator *)self _neutralPlatterLayer];
-  [v33 setPosition:{v30, v32}];
+  _neutralPlatterLayer = [(CAMSemanticStyleStatusIndicator *)self _neutralPlatterLayer];
+  [_neutralPlatterLayer setPosition:{v30, v32}];
 
-  v34 = [(CAMSemanticStyleStatusIndicator *)self _neutralPlatterLayer];
-  [v34 setBounds:{v13, v12, v25, v27}];
+  _neutralPlatterLayer2 = [(CAMSemanticStyleStatusIndicator *)self _neutralPlatterLayer];
+  [_neutralPlatterLayer2 setBounds:{v13, v12, v25, v27}];
 
-  v35 = [(CAMSemanticStyleStatusIndicator *)self _coolPlatterLayer];
-  [v35 setPosition:{v30, v32}];
+  _coolPlatterLayer = [(CAMSemanticStyleStatusIndicator *)self _coolPlatterLayer];
+  [_coolPlatterLayer setPosition:{v30, v32}];
 
-  v36 = [(CAMSemanticStyleStatusIndicator *)self _coolPlatterLayer];
-  [v36 setFrame:{v13, v12, v25, v27}];
+  _coolPlatterLayer2 = [(CAMSemanticStyleStatusIndicator *)self _coolPlatterLayer];
+  [_coolPlatterLayer2 setFrame:{v13, v12, v25, v27}];
 
-  v37 = [(CAMSemanticStyleStatusIndicator *)self _warmPlatterLayer];
-  [v37 setPosition:{v30, v32}];
+  _warmPlatterLayer = [(CAMSemanticStyleStatusIndicator *)self _warmPlatterLayer];
+  [_warmPlatterLayer setPosition:{v30, v32}];
 
-  v38 = [(CAMSemanticStyleStatusIndicator *)self _warmPlatterLayer];
-  [v38 setBounds:{v13, v12, v25, v27}];
+  _warmPlatterLayer2 = [(CAMSemanticStyleStatusIndicator *)self _warmPlatterLayer];
+  [_warmPlatterLayer2 setBounds:{v13, v12, v25, v27}];
 
-  v39 = [(CAMSemanticStyleStatusIndicator *)self _platterMaskLayer];
-  [v39 setPosition:{v30, v32}];
+  _platterMaskLayer = [(CAMSemanticStyleStatusIndicator *)self _platterMaskLayer];
+  [_platterMaskLayer setPosition:{v30, v32}];
 
-  v40 = [(CAMSemanticStyleStatusIndicator *)self _platterMaskLayer];
-  [v40 setBounds:{v13, v12, v25, v27}];
+  _platterMaskLayer2 = [(CAMSemanticStyleStatusIndicator *)self _platterMaskLayer];
+  [_platterMaskLayer2 setBounds:{v13, v12, v25, v27}];
 
-  v41 = [(CAMSemanticStyleStatusIndicator *)self _maskBackgroundLayer];
-  [v41 setPosition:{v30, v32}];
+  _maskBackgroundLayer = [(CAMSemanticStyleStatusIndicator *)self _maskBackgroundLayer];
+  [_maskBackgroundLayer setPosition:{v30, v32}];
 
-  v42 = [(CAMSemanticStyleStatusIndicator *)self _maskBackgroundLayer];
-  [v42 setBounds:{v13, v12, v25, v27}];
+  _maskBackgroundLayer2 = [(CAMSemanticStyleStatusIndicator *)self _maskBackgroundLayer];
+  [_maskBackgroundLayer2 setBounds:{v13, v12, v25, v27}];
 
-  v43 = [(CAMSemanticStyleStatusIndicator *)self _maskStrokeLayer];
-  [v43 setPosition:{v30, v32}];
+  _maskStrokeLayer = [(CAMSemanticStyleStatusIndicator *)self _maskStrokeLayer];
+  [_maskStrokeLayer setPosition:{v30, v32}];
 
-  v44 = [(CAMSemanticStyleStatusIndicator *)self _maskStrokeLayer];
-  [v44 setBounds:{v13, v12, v25, v27}];
+  _maskStrokeLayer2 = [(CAMSemanticStyleStatusIndicator *)self _maskStrokeLayer];
+  [_maskStrokeLayer2 setBounds:{v13, v12, v25, v27}];
 
-  v45 = [(CAMSemanticStyleStatusIndicator *)self _maskTickReplicatorLayer];
-  [v45 setPosition:{v30, v32}];
+  _maskTickReplicatorLayer = [(CAMSemanticStyleStatusIndicator *)self _maskTickReplicatorLayer];
+  [_maskTickReplicatorLayer setPosition:{v30, v32}];
 
-  v46 = [(CAMSemanticStyleStatusIndicator *)self _maskTickReplicatorLayer];
-  [v46 setBounds:{v13, v12, v25, v27}];
+  _maskTickReplicatorLayer2 = [(CAMSemanticStyleStatusIndicator *)self _maskTickReplicatorLayer];
+  [_maskTickReplicatorLayer2 setBounds:{v13, v12, v25, v27}];
 
   v47 = CAMPixelWidthForView(self) + 1.0;
   UIPointRoundToViewScale();
   v49 = v48;
   v51 = v50;
-  v52 = [(CAMSemanticStyleStatusIndicator *)self _maskSmallTickLayer];
-  [v52 setFrame:{v49, v51, 1.0, v47}];
+  _maskSmallTickLayer = [(CAMSemanticStyleStatusIndicator *)self _maskSmallTickLayer];
+  [_maskSmallTickLayer setFrame:{v49, v51, 1.0, v47}];
 
-  v53 = [(CAMSemanticStyleStatusIndicator *)self _maskLargeTickLayer];
-  [v53 setFrame:{v49, v51, 1.0, 2.0}];
+  _maskLargeTickLayer = [(CAMSemanticStyleStatusIndicator *)self _maskLargeTickLayer];
+  [_maskLargeTickLayer setFrame:{v49, v51, 1.0, 2.0}];
 
   [(CAMSemanticStyleStatusIndicator *)self _updateStrokePath];
 }
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = [(CAMSemanticStyleStatusIndicator *)self _stackSymbolView];
-  v3 = [v2 image];
-  [v3 size];
+  _stackSymbolView = [(CAMSemanticStyleStatusIndicator *)self _stackSymbolView];
+  image = [_stackSymbolView image];
+  [image size];
   v5 = v4;
   v7 = v6;
 

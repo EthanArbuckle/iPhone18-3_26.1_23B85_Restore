@@ -1,10 +1,10 @@
 @interface ApertureTemplateView
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CGSize)sizeThatFits:(CGSize)a3 forLayoutMode:(int64_t)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CGSize)sizeThatFits:(CGSize)fits forLayoutMode:(int64_t)mode;
 - (_TtC16CommunicationsUI20ApertureTemplateView)init;
-- (_TtC16CommunicationsUI20ApertureTemplateView)initWithCoder:(id)a3;
-- (_TtC16CommunicationsUI20ApertureTemplateView)initWithFrame:(CGRect)a3;
+- (_TtC16CommunicationsUI20ApertureTemplateView)initWithCoder:(id)coder;
+- (_TtC16CommunicationsUI20ApertureTemplateView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation ApertureTemplateView
@@ -17,14 +17,14 @@
   v3 = [(ApertureTemplateView *)&v8 initWithFrame:0.0, 0.0, 0.0, 0.0];
   v4 = objc_opt_self();
   v5 = v3;
-  v6 = [v4 blueColor];
-  [(ApertureTemplateView *)v5 setBackgroundColor:v6];
+  blueColor = [v4 blueColor];
+  [(ApertureTemplateView *)v5 setBackgroundColor:blueColor];
 
   [(ApertureTemplateView *)v5 setTranslatesAutoresizingMaskIntoConstraints:0];
   return v5;
 }
 
-- (_TtC16CommunicationsUI20ApertureTemplateView)initWithCoder:(id)a3
+- (_TtC16CommunicationsUI20ApertureTemplateView)initWithCoder:(id)coder
 {
   swift_unknownObjectWeakInit();
   result = sub_1C2E766F4();
@@ -32,12 +32,12 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3 forLayoutMode:(int64_t)a4
+- (CGSize)sizeThatFits:(CGSize)fits forLayoutMode:(int64_t)mode
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = self;
-  sub_1C2DD5F08(a4, width, height);
+  height = fits.height;
+  width = fits.width;
+  selfCopy = self;
+  sub_1C2DD5F08(mode, width, height);
   v9 = v8;
   v11 = v10;
 
@@ -48,11 +48,11 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = fits.height;
+  width = fits.width;
+  selfCopy = self;
   sub_1C2DD615C(width, height);
   v7 = v6;
   v9 = v8;
@@ -66,7 +66,7 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C2DD6334();
   v4 = v3;
   v6 = v5;
@@ -78,7 +78,7 @@
   return result;
 }
 
-- (_TtC16CommunicationsUI20ApertureTemplateView)initWithFrame:(CGRect)a3
+- (_TtC16CommunicationsUI20ApertureTemplateView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

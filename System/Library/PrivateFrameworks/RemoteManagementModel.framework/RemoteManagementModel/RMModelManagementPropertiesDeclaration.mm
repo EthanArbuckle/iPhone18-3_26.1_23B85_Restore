@@ -1,29 +1,29 @@
 @interface RMModelManagementPropertiesDeclaration
-+ (id)buildRequiredOnlyWithIdentifier:(id)a3;
-+ (id)buildWithIdentifier:(id)a3;
++ (id)buildRequiredOnlyWithIdentifier:(id)identifier;
++ (id)buildWithIdentifier:(id)identifier;
 + (id)supportedOS;
-- (BOOL)loadPayloadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializePayloadWithType:(signed __int16)a3;
+- (BOOL)loadPayloadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializePayloadWithType:(signed __int16)type;
 @end
 
 @implementation RMModelManagementPropertiesDeclaration
 
-+ (id)buildWithIdentifier:(id)a3
++ (id)buildWithIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = objc_opt_new();
   [v4 setDeclarationType:@"com.apple.management.properties"];
-  if (v3)
+  if (identifierCopy)
   {
-    [v4 setDeclarationIdentifier:v3];
+    [v4 setDeclarationIdentifier:identifierCopy];
   }
 
   else
   {
-    v5 = [MEMORY[0x277CCAD78] UUID];
-    v6 = [v5 UUIDString];
-    [v4 setDeclarationIdentifier:v6];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    [v4 setDeclarationIdentifier:uUIDString];
   }
 
   [v4 updateServerToken];
@@ -31,21 +31,21 @@
   return v4;
 }
 
-+ (id)buildRequiredOnlyWithIdentifier:(id)a3
++ (id)buildRequiredOnlyWithIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = objc_opt_new();
   [v4 setDeclarationType:@"com.apple.management.properties"];
-  if (v3)
+  if (identifierCopy)
   {
-    [v4 setDeclarationIdentifier:v3];
+    [v4 setDeclarationIdentifier:identifierCopy];
   }
 
   else
   {
-    v5 = [MEMORY[0x277CCAD78] UUID];
-    v6 = [v5 UUIDString];
-    [v4 setDeclarationIdentifier:v6];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    [v4 setDeclarationIdentifier:uUIDString];
   }
 
   [v4 updateServerToken];
@@ -105,13 +105,13 @@
   return v11;
 }
 
-- (BOOL)loadPayloadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5
+- (BOOL)loadPayloadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  dictionaryCopy = dictionary;
   v7 = MEMORY[0x277CBEB58];
-  v8 = [v6 allKeys];
-  v9 = [v7 setWithArray:v8];
+  allKeys = [dictionaryCopy allKeys];
+  v9 = [v7 setWithArray:allKeys];
 
   v10 = +[RMModelManagementPropertiesDeclaration allowedPayloadKeys];
   [v9 minusSet:v10];
@@ -121,7 +121,7 @@
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v12 = v6;
+  v12 = dictionaryCopy;
   v13 = [v12 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v13)
   {
@@ -160,7 +160,7 @@
   return 1;
 }
 
-- (id)serializePayloadWithType:(signed __int16)a3
+- (id)serializePayloadWithType:(signed __int16)type
 {
   v21 = *MEMORY[0x277D85DE8];
   v4 = objc_opt_new();
@@ -168,8 +168,8 @@
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [(RMModelManagementPropertiesDeclaration *)self payloadANY];
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  payloadANY = [(RMModelManagementPropertiesDeclaration *)self payloadANY];
+  v6 = [payloadANY countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
     v7 = v6;
@@ -180,16 +180,16 @@
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(payloadANY);
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
-        v11 = [(RMModelManagementPropertiesDeclaration *)self payloadANY];
-        v12 = [v11 objectForKeyedSubscript:v10];
+        payloadANY2 = [(RMModelManagementPropertiesDeclaration *)self payloadANY];
+        v12 = [payloadANY2 objectForKeyedSubscript:v10];
         [v4 setObject:v12 forKeyedSubscript:v10];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v7 = [payloadANY countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v7);
@@ -201,11 +201,11 @@
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = RMModelManagementPropertiesDeclaration;
-  v4 = [(RMModelDeclarationBase *)&v8 copyWithZone:a3];
+  v4 = [(RMModelDeclarationBase *)&v8 copyWithZone:zone];
   v5 = [(NSDictionary *)self->_payloadANY copy];
   v6 = v4[6];
   v4[6] = v5;

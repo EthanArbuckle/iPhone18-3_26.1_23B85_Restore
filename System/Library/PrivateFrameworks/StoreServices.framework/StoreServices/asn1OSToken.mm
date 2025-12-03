@@ -1,20 +1,20 @@
 @interface asn1OSToken
-- (id)_initWithID:(unint64_t)a3 class:(unsigned __int8)a4 length:(unint64_t)a5 content:(const char *)a6 opaque:(BOOL)a7;
+- (id)_initWithID:(unint64_t)d class:(unsigned __int8)class length:(unint64_t)length content:(const char *)content opaque:(BOOL)opaque;
 - (id)stringValue;
 - (void)dealloc;
 @end
 
 @implementation asn1OSToken
 
-- (id)_initWithID:(unint64_t)a3 class:(unsigned __int8)a4 length:(unint64_t)a5 content:(const char *)a6 opaque:(BOOL)a7
+- (id)_initWithID:(unint64_t)d class:(unsigned __int8)class length:(unint64_t)length content:(const char *)content opaque:(BOOL)opaque
 {
-  v7 = a7;
-  v10 = a4;
+  opaqueCopy = opaque;
+  classCopy = class;
   v16.receiver = self;
   v16.super_class = asn1OSToken;
   v12 = [(asn1OSToken *)&v16 init];
   v13 = v12;
-  if (a3 != 4 || v10)
+  if (d != 4 || classCopy)
   {
     v14 = v12;
     return 0;
@@ -24,16 +24,16 @@
   {
     v12->super.mClass = 0;
     v12->super.mIdentifier = 4;
-    v12->super.mLength = a5;
-    v12->super.mContent = a6;
-    if (v7)
+    v12->super.mLength = length;
+    v12->super.mContent = content;
+    if (opaqueCopy)
     {
       v12->mValue = 0;
     }
 
     else
     {
-      v12->mValue = [asn1Token readTokenFromBuffer:a6];
+      v12->mValue = [asn1Token readTokenFromBuffer:content];
     }
   }
 

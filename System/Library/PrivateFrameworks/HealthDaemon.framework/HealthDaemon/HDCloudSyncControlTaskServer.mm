@@ -1,71 +1,71 @@
 @interface HDCloudSyncControlTaskServer
-+ (BOOL)validateClient:(id)a3 error:(id *)a4;
-- (id)remote_disableCloudSyncAndDeleteAllCloudDataWithCompletion:(id)a3;
-- (id)remote_fetchCloudSyncProgressWithCompletion:(id)a3;
-- (id)remote_forceCloudResetWithCompletion:(id)a3;
-- (id)remote_forceCloudSyncDataUploadForProfileWithCompletion:(id)a3;
-- (id)remote_forceCloudSyncWithOptions:(unint64_t)a3 reason:(int64_t)a4 completion:(id)a5;
-- (void)remote_accountConfigurationDidChangeWithCompletion:(id)a3;
-- (void)remote_cloudSyncEntityVersions:(id)a3;
-- (void)remote_cloudSyncProtocolVersion:(id)a3;
-- (void)remote_disableCloudSyncWithCompletion:(id)a3;
-- (void)remote_enableCloudSyncWithCompletion:(id)a3;
-- (void)remote_fetchCloudSyncStatusWithCompletion:(id)a3;
-- (void)remote_modifyRecordsToCreate:(id)a3 recordsToDelete:(id)a4 completion:(id)a5;
-- (void)remote_oldestSampleStartDateInHealthDatabaseWithCompletion:(id)a3;
-- (void)remote_requestDataRefreshWithCompletion:(id)a3;
-- (void)remote_syncWithRequest:(id)a3 reason:(id)a4 completion:(id)a5;
++ (BOOL)validateClient:(id)client error:(id *)error;
+- (id)remote_disableCloudSyncAndDeleteAllCloudDataWithCompletion:(id)completion;
+- (id)remote_fetchCloudSyncProgressWithCompletion:(id)completion;
+- (id)remote_forceCloudResetWithCompletion:(id)completion;
+- (id)remote_forceCloudSyncDataUploadForProfileWithCompletion:(id)completion;
+- (id)remote_forceCloudSyncWithOptions:(unint64_t)options reason:(int64_t)reason completion:(id)completion;
+- (void)remote_accountConfigurationDidChangeWithCompletion:(id)completion;
+- (void)remote_cloudSyncEntityVersions:(id)versions;
+- (void)remote_cloudSyncProtocolVersion:(id)version;
+- (void)remote_disableCloudSyncWithCompletion:(id)completion;
+- (void)remote_enableCloudSyncWithCompletion:(id)completion;
+- (void)remote_fetchCloudSyncStatusWithCompletion:(id)completion;
+- (void)remote_modifyRecordsToCreate:(id)create recordsToDelete:(id)delete completion:(id)completion;
+- (void)remote_oldestSampleStartDateInHealthDatabaseWithCompletion:(id)completion;
+- (void)remote_requestDataRefreshWithCompletion:(id)completion;
+- (void)remote_syncWithRequest:(id)request reason:(id)reason completion:(id)completion;
 @end
 
 @implementation HDCloudSyncControlTaskServer
 
-+ (BOOL)validateClient:(id)a3 error:(id *)a4
++ (BOOL)validateClient:(id)client error:(id *)error
 {
   v5 = *MEMORY[0x277CCC8B0];
-  v6 = a3;
-  LOBYTE(v5) = [v6 hasRequiredEntitlement:v5 error:a4];
-  LOBYTE(a4) = [v6 hasRequiredArrayEntitlement:*MEMORY[0x277CCC8C0] containing:*MEMORY[0x277CCBD28] error:a4];
+  clientCopy = client;
+  LOBYTE(v5) = [clientCopy hasRequiredEntitlement:v5 error:error];
+  LOBYTE(error) = [clientCopy hasRequiredArrayEntitlement:*MEMORY[0x277CCC8C0] containing:*MEMORY[0x277CCBD28] error:error];
 
-  return (v5 | a4) & 1;
+  return (v5 | error) & 1;
 }
 
-- (void)remote_syncWithRequest:(id)a3 reason:(id)a4 completion:(id)a5
+- (void)remote_syncWithRequest:(id)request reason:(id)reason completion:(id)completion
 {
   v31 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  reasonCopy = reason;
+  completionCopy = completion;
   _HKInitializeLogging();
   v11 = *MEMORY[0x277CCC328];
   if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
-    v26 = self;
+    selfCopy = self;
     v27 = 2114;
-    v28 = v8;
+    v28 = requestCopy;
     v29 = 2114;
-    v30 = v9;
+    v30 = reasonCopy;
     _os_log_impl(&dword_228986000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@: Cloud Sync Requested: %{public}@ Reason: %{public}@", buf, 0x20u);
   }
 
-  v12 = [[HDCloudSyncContext alloc] initForPurpose:0 options:HDOptionsForRequest(v8) reason:1];
-  [v12 setSyncRequest:v8];
-  v13 = [v9 isEqualToString:@"hkctl"];
-  v14 = [(HDStandardTaskServer *)self profile];
-  v15 = [v14 daemon];
-  v16 = [v15 cloudSyncCoordinator];
-  v17 = v16;
+  v12 = [[HDCloudSyncContext alloc] initForPurpose:0 options:HDOptionsForRequest(requestCopy) reason:1];
+  [v12 setSyncRequest:requestCopy];
+  v13 = [reasonCopy isEqualToString:@"hkctl"];
+  profile = [(HDStandardTaskServer *)self profile];
+  daemon = [profile daemon];
+  cloudSyncCoordinator = [daemon cloudSyncCoordinator];
+  v17 = cloudSyncCoordinator;
   if (v13)
   {
     v24 = 0;
-    v18 = [v16 scheduleSyncForAllProfilesViaGatedBackgroundTask:0 context:v12 reason:v9 error:&v24];
+    v18 = [cloudSyncCoordinator scheduleSyncForAllProfilesViaGatedBackgroundTask:0 context:v12 reason:reasonCopy error:&v24];
     v19 = v24;
   }
 
   else
   {
     v23 = 0;
-    v18 = [v16 scheduleSyncForAllProfilesViaGatedBackgroundTask:1 context:v12 reason:v9 error:&v23];
+    v18 = [cloudSyncCoordinator scheduleSyncForAllProfilesViaGatedBackgroundTask:1 context:v12 reason:reasonCopy error:&v23];
     v19 = v23;
   }
 
@@ -73,22 +73,22 @@
 
   if (v18)
   {
-    v10[2](v10, 1, 0);
+    completionCopy[2](completionCopy, 1, 0);
   }
 
   else
   {
-    v21 = [v20 hk_sanitizedError];
-    (v10)[2](v10, 0, v21);
+    hk_sanitizedError = [v20 hk_sanitizedError];
+    (completionCopy)[2](completionCopy, 0, hk_sanitizedError);
   }
 
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (id)remote_forceCloudSyncWithOptions:(unint64_t)a3 reason:(int64_t)a4 completion:(id)a5
+- (id)remote_forceCloudSyncWithOptions:(unint64_t)options reason:(int64_t)reason completion:(id)completion
 {
   v29 = *MEMORY[0x277D85DE8];
-  v8 = a5;
+  completionCopy = completion;
   _HKInitializeLogging();
   v9 = *MEMORY[0x277CCC328];
   if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
@@ -97,7 +97,7 @@
     v11 = HKCloudSyncOptionsToString();
     v12 = HKCloudSyncReasonToString();
     *buf = 138543874;
-    v24 = self;
+    selfCopy = self;
     v25 = 2114;
     v26 = v11;
     v27 = 2114;
@@ -105,17 +105,17 @@
     _os_log_impl(&dword_228986000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@: Cloud Sync Triggered by options: %{public}@ reason: %{public}@", buf, 0x20u);
   }
 
-  v13 = [[HDCloudSyncContext alloc] initForPurpose:0 options:a3 reason:a4];
-  v14 = [(HDStandardTaskServer *)self profile];
-  v15 = [v14 daemon];
-  v16 = [v15 cloudSyncCoordinator];
+  v13 = [[HDCloudSyncContext alloc] initForPurpose:0 options:options reason:reason];
+  profile = [(HDStandardTaskServer *)self profile];
+  daemon = [profile daemon];
+  cloudSyncCoordinator = [daemon cloudSyncCoordinator];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __83__HDCloudSyncControlTaskServer_remote_forceCloudSyncWithOptions_reason_completion___block_invoke;
   v21[3] = &unk_2786130D8;
-  v22 = v8;
-  v17 = v8;
-  v18 = [v16 syncAllProfilesWithContext:v13 completion:v21];
+  v22 = completionCopy;
+  v17 = completionCopy;
+  v18 = [cloudSyncCoordinator syncAllProfilesWithContext:v13 completion:v21];
 
   v19 = *MEMORY[0x277D85DE8];
 
@@ -129,20 +129,20 @@ void __83__HDCloudSyncControlTaskServer_remote_forceCloudSyncWithOptions_reason_
   (*(v4 + 16))(v4, a2, v5);
 }
 
-- (id)remote_forceCloudResetWithCompletion:(id)a3
+- (id)remote_forceCloudResetWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = [[HDCloudSyncContext alloc] initForPurpose:8 options:0 reason:4];
-  v6 = [(HDStandardTaskServer *)self profile];
-  v7 = [v6 daemon];
-  v8 = [v7 cloudSyncCoordinator];
+  profile = [(HDStandardTaskServer *)self profile];
+  daemon = [profile daemon];
+  cloudSyncCoordinator = [daemon cloudSyncCoordinator];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __69__HDCloudSyncControlTaskServer_remote_forceCloudResetWithCompletion___block_invoke;
   v12[3] = &unk_2786130D8;
-  v13 = v4;
-  v9 = v4;
-  v10 = [v8 resetAllProfilesWithContext:v5 completion:v12];
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = [cloudSyncCoordinator resetAllProfilesWithContext:v5 completion:v12];
 
   return v10;
 }
@@ -154,34 +154,34 @@ void __69__HDCloudSyncControlTaskServer_remote_forceCloudResetWithCompletion___b
   (*(v4 + 16))(v4, a2, v5);
 }
 
-- (id)remote_forceCloudSyncDataUploadForProfileWithCompletion:(id)a3
+- (id)remote_forceCloudSyncDataUploadForProfileWithCompletion:(id)completion
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   _HKInitializeLogging();
   v5 = *MEMORY[0x277CCC328];
   if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [(HDStandardTaskServer *)self profile];
-    v8 = [v7 profileIdentifier];
+    profile = [(HDStandardTaskServer *)self profile];
+    profileIdentifier = [profile profileIdentifier];
     *buf = 138543618;
-    v19 = self;
+    selfCopy = self;
     v20 = 2114;
-    v21 = v8;
+    v21 = profileIdentifier;
     _os_log_impl(&dword_228986000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: Cloud Sync Data Upload Triggered for profileIdentifier: %{public}@", buf, 0x16u);
   }
 
   v9 = [[HDCloudSyncContext alloc] initForPurpose:2 options:66 reason:21];
-  v10 = [(HDStandardTaskServer *)self profile];
-  v11 = [v10 cloudSyncManager];
+  profile2 = [(HDStandardTaskServer *)self profile];
+  cloudSyncManager = [profile2 cloudSyncManager];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __88__HDCloudSyncControlTaskServer_remote_forceCloudSyncDataUploadForProfileWithCompletion___block_invoke;
   v16[3] = &unk_2786130D8;
-  v17 = v4;
-  v12 = v4;
-  v13 = [v11 syncWithContext:v9 completion:v16];
+  v17 = completionCopy;
+  v12 = completionCopy;
+  v13 = [cloudSyncManager syncWithContext:v9 completion:v16];
 
   v14 = *MEMORY[0x277D85DE8];
 
@@ -227,41 +227,41 @@ void __140__HDCloudSyncControlTaskServer_remote_fetchCloudDescriptionUseDescript
   }
 }
 
-- (void)remote_modifyRecordsToCreate:(id)a3 recordsToDelete:(id)a4 completion:(id)a5
+- (void)remote_modifyRecordsToCreate:(id)create recordsToDelete:(id)delete completion:(id)completion
 {
-  v14 = a3;
-  v8 = a4;
-  v9 = a5;
+  createCopy = create;
+  deleteCopy = delete;
+  completionCopy = completion;
   v10 = [[HDCloudSyncContext alloc] initForPurpose:7 options:0 reason:5];
-  v11 = [(HDStandardTaskServer *)self profile];
-  v12 = [v11 cloudSyncManager];
+  profile = [(HDStandardTaskServer *)self profile];
+  cloudSyncManager = [profile cloudSyncManager];
 
-  if (v12)
+  if (cloudSyncManager)
   {
-    [v12 modifyRecordsWithContext:v10 recordsToCreate:v14 recordsToDelete:v8 completion:v9];
+    [cloudSyncManager modifyRecordsWithContext:v10 recordsToCreate:createCopy recordsToDelete:deleteCopy completion:completionCopy];
   }
 
   else
   {
     v13 = [MEMORY[0x277CCA9B8] hk_error:110 description:@"Profile does not support sync."];
-    v9[2](v9, 0, v13);
+    completionCopy[2](completionCopy, 0, v13);
   }
 }
 
-- (void)remote_fetchCloudSyncStatusWithCompletion:(id)a3
+- (void)remote_fetchCloudSyncStatusWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(HDStandardTaskServer *)self profile];
-  v6 = [v5 daemon];
-  v7 = [v6 cloudSyncCoordinator];
-  v8 = [v7 syncStatusProvider];
+  completionCopy = completion;
+  profile = [(HDStandardTaskServer *)self profile];
+  daemon = [profile daemon];
+  cloudSyncCoordinator = [daemon cloudSyncCoordinator];
+  syncStatusProvider = [cloudSyncCoordinator syncStatusProvider];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __74__HDCloudSyncControlTaskServer_remote_fetchCloudSyncStatusWithCompletion___block_invoke;
   v10[3] = &unk_278623C20;
-  v11 = v4;
-  v9 = v4;
-  [v8 fetchSyncStatusWithCompletion:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [syncStatusProvider fetchSyncStatusWithCompletion:v10];
 }
 
 void __74__HDCloudSyncControlTaskServer_remote_fetchCloudSyncStatusWithCompletion___block_invoke(uint64_t a1, uint64_t a2, void *a3, uint64_t a4, void *a5)
@@ -277,20 +277,20 @@ void __74__HDCloudSyncControlTaskServer_remote_fetchCloudSyncStatusWithCompletio
   (*(v8 + 16))(v8, a2, v13, v11, a4, v12);
 }
 
-- (id)remote_disableCloudSyncAndDeleteAllCloudDataWithCompletion:(id)a3
+- (id)remote_disableCloudSyncAndDeleteAllCloudDataWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(HDStandardTaskServer *)self profile];
-  v6 = [v5 daemon];
-  v7 = [v6 cloudSyncCoordinator];
-  v8 = [v7 accountProvider];
+  completionCopy = completion;
+  profile = [(HDStandardTaskServer *)self profile];
+  daemon = [profile daemon];
+  cloudSyncCoordinator = [daemon cloudSyncCoordinator];
+  accountProvider = [cloudSyncCoordinator accountProvider];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __91__HDCloudSyncControlTaskServer_remote_disableCloudSyncAndDeleteAllCloudDataWithCompletion___block_invoke;
   v12[3] = &unk_2786130D8;
-  v13 = v4;
-  v9 = v4;
-  v10 = [v8 disableAndDeleteAllSyncDataWithCompletion:v12];
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = [accountProvider disableAndDeleteAllSyncDataWithCompletion:v12];
 
   return v10;
 }
@@ -302,20 +302,20 @@ void __91__HDCloudSyncControlTaskServer_remote_disableCloudSyncAndDeleteAllCloud
   (*(v4 + 16))(v4, a2, v5);
 }
 
-- (void)remote_disableCloudSyncWithCompletion:(id)a3
+- (void)remote_disableCloudSyncWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(HDStandardTaskServer *)self profile];
-  v6 = [v5 daemon];
-  v7 = [v6 cloudSyncCoordinator];
-  v8 = [v7 accountProvider];
+  completionCopy = completion;
+  profile = [(HDStandardTaskServer *)self profile];
+  daemon = [profile daemon];
+  cloudSyncCoordinator = [daemon cloudSyncCoordinator];
+  accountProvider = [cloudSyncCoordinator accountProvider];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __70__HDCloudSyncControlTaskServer_remote_disableCloudSyncWithCompletion___block_invoke;
   v10[3] = &unk_2786130D8;
-  v11 = v4;
-  v9 = v4;
-  [v8 disableSyncLocallyWithCompletion:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [accountProvider disableSyncLocallyWithCompletion:v10];
 }
 
 void __70__HDCloudSyncControlTaskServer_remote_disableCloudSyncWithCompletion___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -325,20 +325,20 @@ void __70__HDCloudSyncControlTaskServer_remote_disableCloudSyncWithCompletion___
   (*(v4 + 16))(v4, a2, v5);
 }
 
-- (void)remote_enableCloudSyncWithCompletion:(id)a3
+- (void)remote_enableCloudSyncWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(HDStandardTaskServer *)self profile];
-  v6 = [v5 daemon];
-  v7 = [v6 cloudSyncCoordinator];
-  v8 = [v7 accountProvider];
+  completionCopy = completion;
+  profile = [(HDStandardTaskServer *)self profile];
+  daemon = [profile daemon];
+  cloudSyncCoordinator = [daemon cloudSyncCoordinator];
+  accountProvider = [cloudSyncCoordinator accountProvider];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __69__HDCloudSyncControlTaskServer_remote_enableCloudSyncWithCompletion___block_invoke;
   v10[3] = &unk_2786130D8;
-  v11 = v4;
-  v9 = v4;
-  [v8 enableSyncLocallyWithCompletion:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [accountProvider enableSyncLocallyWithCompletion:v10];
 }
 
 void __69__HDCloudSyncControlTaskServer_remote_enableCloudSyncWithCompletion___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -348,20 +348,20 @@ void __69__HDCloudSyncControlTaskServer_remote_enableCloudSyncWithCompletion___b
   (*(v4 + 16))(v4, a2, v5);
 }
 
-- (void)remote_accountConfigurationDidChangeWithCompletion:(id)a3
+- (void)remote_accountConfigurationDidChangeWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(HDStandardTaskServer *)self profile];
-  v6 = [v5 daemon];
-  v7 = [v6 cloudSyncCoordinator];
-  v8 = [v7 accountProvider];
+  completionCopy = completion;
+  profile = [(HDStandardTaskServer *)self profile];
+  daemon = [profile daemon];
+  cloudSyncCoordinator = [daemon cloudSyncCoordinator];
+  accountProvider = [cloudSyncCoordinator accountProvider];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __83__HDCloudSyncControlTaskServer_remote_accountConfigurationDidChangeWithCompletion___block_invoke;
   v10[3] = &unk_2786130D8;
-  v11 = v4;
-  v9 = v4;
-  [v8 accountConfigurationDidChangeWithCompletion:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [accountProvider accountConfigurationDidChangeWithCompletion:v10];
 }
 
 void __83__HDCloudSyncControlTaskServer_remote_accountConfigurationDidChangeWithCompletion___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -371,59 +371,59 @@ void __83__HDCloudSyncControlTaskServer_remote_accountConfigurationDidChangeWith
   (*(v4 + 16))(v4, a2, v5);
 }
 
-- (void)remote_oldestSampleStartDateInHealthDatabaseWithCompletion:(id)a3
+- (void)remote_oldestSampleStartDateInHealthDatabaseWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(HDStandardTaskServer *)self profile];
-  v6 = HDOldestSampleStartDate(v5);
+  completionCopy = completion;
+  profile = [(HDStandardTaskServer *)self profile];
+  v6 = HDOldestSampleStartDate(profile);
 
-  v4[2](v4, v6, 0);
+  completionCopy[2](completionCopy, v6, 0);
 }
 
-- (void)remote_cloudSyncProtocolVersion:(id)a3
+- (void)remote_cloudSyncProtocolVersion:(id)version
 {
   v4 = MEMORY[0x277CCABB0];
-  v5 = a3;
+  versionCopy = version;
   v6 = [v4 numberWithInt:17];
-  (*(a3 + 2))(v5, v6, 0);
+  (*(version + 2))(versionCopy, v6, 0);
 }
 
-- (void)remote_cloudSyncEntityVersions:(id)a3
+- (void)remote_cloudSyncEntityVersions:(id)versions
 {
-  v5 = a3;
-  v8 = [(HDStandardTaskServer *)self profile];
-  v6 = [v8 syncEngine];
-  v7 = [v6 allSyncEntityVersionsByIdentifier];
-  (*(a3 + 2))(v5, v7, 0);
+  versionsCopy = versions;
+  profile = [(HDStandardTaskServer *)self profile];
+  syncEngine = [profile syncEngine];
+  allSyncEntityVersionsByIdentifier = [syncEngine allSyncEntityVersionsByIdentifier];
+  (*(versions + 2))(versionsCopy, allSyncEntityVersionsByIdentifier, 0);
 }
 
-- (id)remote_fetchCloudSyncProgressWithCompletion:(id)a3
+- (id)remote_fetchCloudSyncProgressWithCompletion:(id)completion
 {
-  v3 = [(HDStandardTaskServer *)self profile];
-  v4 = [v3 daemon];
-  v5 = [v4 cloudSyncCoordinator];
-  v6 = [v5 syncStatusProvider];
-  v7 = [v6 currentSyncProgress];
+  profile = [(HDStandardTaskServer *)self profile];
+  daemon = [profile daemon];
+  cloudSyncCoordinator = [daemon cloudSyncCoordinator];
+  syncStatusProvider = [cloudSyncCoordinator syncStatusProvider];
+  currentSyncProgress = [syncStatusProvider currentSyncProgress];
 
-  return v7;
+  return currentSyncProgress;
 }
 
-- (void)remote_requestDataRefreshWithCompletion:(id)a3
+- (void)remote_requestDataRefreshWithCompletion:(id)completion
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   _HKInitializeLogging();
   v5 = *MEMORY[0x277CCC328];
   if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138543362;
-    v10 = self;
+    selfCopy = self;
     _os_log_impl(&dword_228986000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ Requesting data refresh (#t0)", &v9, 0xCu);
   }
 
-  v6 = [(HDStandardTaskServer *)self profile];
-  v7 = [v6 cloudSyncManager];
-  [v7 requestDataUploadWithCompletion:v4];
+  profile = [(HDStandardTaskServer *)self profile];
+  cloudSyncManager = [profile cloudSyncManager];
+  [cloudSyncManager requestDataUploadWithCompletion:completionCopy];
 
   v8 = *MEMORY[0x277D85DE8];
 }

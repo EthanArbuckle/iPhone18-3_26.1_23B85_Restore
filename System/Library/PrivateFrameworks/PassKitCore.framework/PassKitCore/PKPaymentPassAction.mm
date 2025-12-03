@@ -1,33 +1,33 @@
 @interface PKPaymentPassAction
-+ (id)effectiveActionForActions:(id)a3;
++ (id)effectiveActionForActions:(id)actions;
 - (BOOL)isActionAvailable;
 - (BOOL)remoteContentRequiresAppletData;
 - (NSDate)availableFrom;
 - (NSDate)availableUntil;
 - (NSString)title;
-- (PKPaymentPassAction)initWithCoder:(id)a3;
-- (PKPaymentPassAction)initWithDictionary:(id)a3 bundle:(id)a4;
-- (PKPaymentPassAction)initWithDictionary:(id)a3 localizations:(id)a4;
+- (PKPaymentPassAction)initWithCoder:(id)coder;
+- (PKPaymentPassAction)initWithDictionary:(id)dictionary bundle:(id)bundle;
+- (PKPaymentPassAction)initWithDictionary:(id)dictionary localizations:(id)localizations;
 - (id)_initForFlightSharing;
-- (id)_initWithAppClipURL:(id)a3;
-- (id)_initWithBusinessChatIdentifier:(id)a3;
-- (id)_initWithContext:(int64_t)a3;
-- (id)_initWithExternalURL:(id)a3 title:(id)a4;
-- (id)_initWithImage:(id)a3 title:(id)a4;
-- (id)actionUpdatedWithDictionary:(id)a3 localizations:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_initWithAppClipURL:(id)l;
+- (id)_initWithBusinessChatIdentifier:(id)identifier;
+- (id)_initWithContext:(int64_t)context;
+- (id)_initWithExternalURL:(id)l title:(id)title;
+- (id)_initWithImage:(id)image title:(id)title;
+- (id)actionUpdatedWithDictionary:(id)dictionary localizations:(id)localizations;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)_processLocalizableStrings:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_processLocalizableStrings:(id)strings;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPaymentPassAction
 
-- (PKPaymentPassAction)initWithDictionary:(id)a3 localizations:(id)a4
+- (PKPaymentPassAction)initWithDictionary:(id)dictionary localizations:(id)localizations
 {
   v187 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  localizationsCopy = localizations;
   v184.receiver = self;
   v184.super_class = PKPaymentPassAction;
   v8 = [(PKPaymentPassAction *)&v184 init];
@@ -36,83 +36,83 @@
   if (v8)
   {
     v8->_reverseButtonTitleForLegacySuica = 0;
-    v11 = [v6 copy];
+    v11 = [dictionaryCopy copy];
     rawDictionary = v9->_rawDictionary;
     v9->_rawDictionary = v11;
 
-    v13 = [v7 copy];
+    v13 = [localizationsCopy copy];
     localizations = v9->_localizations;
     v9->_localizations = v13;
 
-    v15 = [v6 PKStringForKey:@"identifier"];
+    v15 = [dictionaryCopy PKStringForKey:@"identifier"];
     v16 = [v15 copy];
     identifier = v9->_identifier;
     v9->_identifier = v16;
 
-    v18 = [v6 PKStringForKey:@"type"];
+    v18 = [dictionaryCopy PKStringForKey:@"type"];
     v9->_type = PKPaymentPassActionTypeFromString(v18);
 
     v19 = [PKPaymentPassActionRemoteConfiguration alloc];
-    v20 = [v6 PKDictionaryForKey:@"remoteContentConfiguration"];
+    v20 = [dictionaryCopy PKDictionaryForKey:@"remoteContentConfiguration"];
     v21 = [(PKPaymentPassActionRemoteConfiguration *)v19 initWithDictionary:v20];
     remoteContentConfiguration = v9->_remoteContentConfiguration;
     v9->_remoteContentConfiguration = v21;
 
-    if (!v9->_remoteContentConfiguration && [v6 PKBoolForKey:@"hasRemoteContent"])
+    if (!v9->_remoteContentConfiguration && [dictionaryCopy PKBoolForKey:@"hasRemoteContent"])
     {
-      v23 = -[PKPaymentPassActionRemoteConfiguration initWithRequiresAppletData:appletDataRequiresEncryption:]([PKPaymentPassActionRemoteConfiguration alloc], "initWithRequiresAppletData:appletDataRequiresEncryption:", [v6 PKBoolForKey:@"remoteContentRequiresAppletData"], 1);
+      v23 = -[PKPaymentPassActionRemoteConfiguration initWithRequiresAppletData:appletDataRequiresEncryption:]([PKPaymentPassActionRemoteConfiguration alloc], "initWithRequiresAppletData:appletDataRequiresEncryption:", [dictionaryCopy PKBoolForKey:@"remoteContentRequiresAppletData"], 1);
       v24 = v9->_remoteContentConfiguration;
       v9->_remoteContentConfiguration = v23;
     }
 
     v25 = [PKPaymentPassActionExternalActionContent alloc];
-    v26 = [v6 PKDictionaryForKey:@"externalActionContent"];
+    v26 = [dictionaryCopy PKDictionaryForKey:@"externalActionContent"];
     v27 = [(PKPaymentPassActionExternalActionContent *)v25 initWithDictionary:v26];
     externalActionContent = v9->_externalActionContent;
     v9->_externalActionContent = v27;
 
-    v29 = [v6 PKStringForKey:@"title"];
+    v29 = [dictionaryCopy PKStringForKey:@"title"];
     v30 = [v29 copy];
     title = v9->_title;
     v9->_title = v30;
 
-    v32 = [v6 PKStringForKey:@"description"];
+    v32 = [dictionaryCopy PKStringForKey:@"description"];
     v33 = [v32 copy];
     actionDescription = v9->_actionDescription;
     v9->_actionDescription = v33;
 
-    v35 = [v6 PKStringForKey:@"confirmationTitle"];
+    v35 = [dictionaryCopy PKStringForKey:@"confirmationTitle"];
     v36 = [v35 copy];
     confirmationTitle = v9->_confirmationTitle;
     v9->_confirmationTitle = v36;
 
-    v9->_featured = [v6 PKBoolForKey:@"featured"];
-    v38 = [v6 PKStringForKey:@"relevantPropertyIdentifier"];
+    v9->_featured = [dictionaryCopy PKBoolForKey:@"featured"];
+    v38 = [dictionaryCopy PKStringForKey:@"relevantPropertyIdentifier"];
     v39 = [v38 copy];
     relevantPropertyIdentifier = v9->_relevantPropertyIdentifier;
     v9->_relevantPropertyIdentifier = v39;
 
-    v41 = [v6 PKStringForKey:@"associatedPlanIdentifier"];
+    v41 = [dictionaryCopy PKStringForKey:@"associatedPlanIdentifier"];
     v42 = [v41 copy];
     associatedPlanIdentifier = v9->_associatedPlanIdentifier;
     v9->_associatedPlanIdentifier = v42;
 
-    v44 = [v6 PKStringForKey:@"associatedEnteredValueIdentifier"];
+    v44 = [dictionaryCopy PKStringForKey:@"associatedEnteredValueIdentifier"];
     v45 = [v44 copy];
     associatedEnteredValueIdentifier = v9->_associatedEnteredValueIdentifier;
     v9->_associatedEnteredValueIdentifier = v45;
 
-    v47 = [v6 PKStringForKey:@"associatedAutoTopUpIdentifier"];
+    v47 = [dictionaryCopy PKStringForKey:@"associatedAutoTopUpIdentifier"];
     v48 = [v47 copy];
     associatedAutoTopUpIdentifier = v9->_associatedAutoTopUpIdentifier;
     v9->_associatedAutoTopUpIdentifier = v48;
 
-    v50 = [v6 PKDictionaryForKey:@"appletData"];
+    v50 = [dictionaryCopy PKDictionaryForKey:@"appletData"];
     v51 = [v50 copy];
     appletData = v9->_appletData;
     v9->_appletData = v51;
 
-    v53 = [v6 PKStringForKey:@"availableFrom"];
+    v53 = [dictionaryCopy PKStringForKey:@"availableFrom"];
     v183 = 0.0;
     v54 = _PKParseW3CDTSCompleteDatePlusHoursMinutesAndOptionalSeconds(v53, 0, &v183);
     availableFromRaw = v9->_availableFromRaw;
@@ -123,56 +123,56 @@
       v9->_availableFromOffsetFromUTC = v183;
     }
 
-    v56 = [v6 PKDateForKey:@"availableUntil"];
+    v56 = [dictionaryCopy PKDateForKey:@"availableUntil"];
     v57 = [v56 copy];
     availableUntilRaw = v9->_availableUntilRaw;
     v9->_availableUntilRaw = v57;
 
-    v59 = [v6 PKStringForKey:@"unavailableBeforeReason"];
+    v59 = [dictionaryCopy PKStringForKey:@"unavailableBeforeReason"];
     v60 = [v59 copy];
     unavailableBeforeReason = v9->_unavailableBeforeReason;
     v9->_unavailableBeforeReason = v60;
 
-    v62 = [v6 PKStringForKey:@"unavailableAfterReason"];
+    v62 = [dictionaryCopy PKStringForKey:@"unavailableAfterReason"];
     v63 = [v62 copy];
     unavailableAfterReason = v9->_unavailableAfterReason;
     v9->_unavailableAfterReason = v63;
 
-    v65 = [v6 PKStringForKey:@"unavailableActionReason"];
+    v65 = [dictionaryCopy PKStringForKey:@"unavailableActionReason"];
     v66 = [v65 copy];
     unavailableActionReason = v9->_unavailableActionReason;
     v9->_unavailableActionReason = v66;
 
-    v68 = [v6 PKStringForKey:@"unavailableActionTitle"];
+    v68 = [dictionaryCopy PKStringForKey:@"unavailableActionTitle"];
     v69 = [v68 copy];
     unavailableActionTitle = v9->_unavailableActionTitle;
     v9->_unavailableActionTitle = v69;
 
-    v71 = [v6 PKStringForKey:@"unavailableActionURL"];
+    v71 = [dictionaryCopy PKStringForKey:@"unavailableActionURL"];
     v72 = [v71 copy];
     unavailableActionURL = v9->_unavailableActionURL;
     v9->_unavailableActionURL = v72;
 
-    v9->_unavailableActionBehavior = [v6 PKIntegerForKey:@"unavailableActionBehavior"];
-    v74 = [v6 PKStringForKey:@"serviceProviderIdentifier"];
+    v9->_unavailableActionBehavior = [dictionaryCopy PKIntegerForKey:@"unavailableActionBehavior"];
+    v74 = [dictionaryCopy PKStringForKey:@"serviceProviderIdentifier"];
     v75 = [v74 copy];
     serviceProviderIdentifier = v9->_serviceProviderIdentifier;
     v9->_serviceProviderIdentifier = v75;
 
-    v77 = [v6 PKStringForKey:@"serviceProviderLocalizedDisplayName"];
+    v77 = [dictionaryCopy PKStringForKey:@"serviceProviderLocalizedDisplayName"];
     v78 = [v77 copy];
     serviceProviderLocalizedDisplayName = v9->_serviceProviderLocalizedDisplayName;
     v9->_serviceProviderLocalizedDisplayName = v78;
 
-    v80 = [v6 PKStringForKey:@"serviceProviderCountryCode"];
+    v80 = [dictionaryCopy PKStringForKey:@"serviceProviderCountryCode"];
     v81 = [v80 copy];
     serviceProviderCountryCode = v9->_serviceProviderCountryCode;
     v9->_serviceProviderCountryCode = v81;
 
-    v83 = [v6 PKArrayContaining:objc_opt_class() forKey:@"serviceProviderAcceptedNetworks"];
+    v83 = [dictionaryCopy PKArrayContaining:objc_opt_class() forKey:@"serviceProviderAcceptedNetworks"];
     if (!v83)
     {
-      v83 = [v6 PKArrayContaining:objc_opt_class() forKey:@"serviceProviderSupportedNetworks"];
+      v83 = [dictionaryCopy PKArrayContaining:objc_opt_class() forKey:@"serviceProviderSupportedNetworks"];
     }
 
     v84 = +[PKServiceProviderPaymentRequest availableNetworks];
@@ -180,10 +180,10 @@
     serviceProviderAcceptedNetworks = v9->_serviceProviderAcceptedNetworks;
     v9->_serviceProviderAcceptedNetworks = v85;
 
-    v87 = [v6 PKArrayContaining:objc_opt_class() forKey:@"serviceProviderCapabilities"];
+    v87 = [dictionaryCopy PKArrayContaining:objc_opt_class() forKey:@"serviceProviderCapabilities"];
     v9->_serviceProviderCapabilities = PKMerchantCapabilityFromStrings(v87);
 
-    v88 = [v6 PKSetForKey:@"serviceProviderSupportedCountries"];
+    v88 = [dictionaryCopy PKSetForKey:@"serviceProviderSupportedCountries"];
     if ([v88 count])
     {
       v89 = v88;
@@ -202,7 +202,7 @@
       {
         if (type == 3)
         {
-          auxiliaryPassInformationItemIdentifier = [v6 PKStringForKey:@"url"];
+          auxiliaryPassInformationItemIdentifier = [dictionaryCopy PKStringForKey:@"url"];
           if (auxiliaryPassInformationItemIdentifier)
           {
             v134 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:auxiliaryPassInformationItemIdentifier];
@@ -214,7 +214,7 @@
           goto LABEL_77;
         }
 
-        auxiliaryPassInformationItemIdentifier = [v6 PKDictionaryForKey:@"vehicleFunctionActions"];
+        auxiliaryPassInformationItemIdentifier = [dictionaryCopy PKDictionaryForKey:@"vehicleFunctionActions"];
         if (!auxiliaryPassInformationItemIdentifier)
         {
           goto LABEL_77;
@@ -248,7 +248,7 @@ LABEL_70:
 
       if (type == 1)
       {
-        auxiliaryPassInformationItemIdentifier = [v6 PKDictionaryForKey:@"item"];
+        auxiliaryPassInformationItemIdentifier = [dictionaryCopy PKDictionaryForKey:@"item"];
         if (auxiliaryPassInformationItemIdentifier)
         {
           v133 = [[PKEnteredValueActionItem alloc] initWithDictionary:auxiliaryPassInformationItemIdentifier];
@@ -265,30 +265,30 @@ LABEL_70:
         goto LABEL_78;
       }
 
-      v167 = v7;
+      v167 = localizationsCopy;
       v168 = v88;
       v165 = v83;
       v166 = v53;
-      v94 = [v6 PKStringForKey:@"headerText"];
+      v94 = [dictionaryCopy PKStringForKey:@"headerText"];
       v95 = [v94 copy];
       headerText = v9->_headerText;
       v9->_headerText = v95;
 
-      v97 = [v6 PKStringForKey:@"footerText"];
+      v97 = [dictionaryCopy PKStringForKey:@"footerText"];
       v98 = [v97 copy];
       footerText = v9->_footerText;
       v9->_footerText = v98;
 
-      [v6 PKDoubleForKey:@"availableFromRelative"];
+      [dictionaryCopy PKDoubleForKey:@"availableFromRelative"];
       v9->_availableFromRelative = v100;
-      [v6 PKDoubleForKey:@"availableUntilRelative"];
+      [dictionaryCopy PKDoubleForKey:@"availableUntilRelative"];
       v9->_availableUntilRelative = v101;
       auxiliaryPassInformationItemIdentifier = objc_alloc_init(MEMORY[0x1E695DF70]);
       v179 = 0u;
       v180 = 0u;
       v181 = 0u;
       v182 = 0u;
-      v102 = [v6 PKArrayForKey:@"items"];
+      v102 = [dictionaryCopy PKArrayForKey:@"items"];
       v103 = [v102 countByEnumeratingWithState:&v179 objects:v186 count:16];
       if (v103)
       {
@@ -327,14 +327,14 @@ LABEL_70:
 
       if ([(NSArray *)v9->_selectedActionItems count]== 1)
       {
-        v111 = [(NSArray *)v9->_selectedActionItems firstObject];
-        v112 = [v111 amount];
-        v113 = [v111 currency];
-        v164 = PKFormattedCurrencyStringFromNumber(v112, v113);
+        firstObject = [(NSArray *)v9->_selectedActionItems firstObject];
+        amount = [firstObject amount];
+        currency = [firstObject currency];
+        v164 = PKFormattedCurrencyStringFromNumber(amount, currency);
 
         v114 = v9->_actionDescription;
-        v115 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-        v116 = [(NSString *)v114 stringByTrimmingCharactersInSet:v115];
+        whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+        v116 = [(NSString *)v114 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
         if (v116)
         {
           v117 = v116;
@@ -344,7 +344,7 @@ LABEL_70:
           v88 = v168;
           if (v118)
           {
-            v7 = v167;
+            localizationsCopy = v167;
             v10 = &unk_1ADB86000;
             v119 = v164;
             if (!v164 || [(NSString *)v9->_actionDescription containsString:v164])
@@ -372,7 +372,7 @@ LABEL_75:
 LABEL_74:
         v119 = v164;
         v160 = v164;
-        v7 = v167;
+        localizationsCopy = v167;
         v10 = &unk_1ADB86000;
         goto LABEL_75;
       }
@@ -385,20 +385,20 @@ LABEL_74:
         switch(type)
         {
           case 7:
-            v135 = [v6 PKStringForKey:@"auxiliaryPassInformationIdentifier"];
+            v135 = [dictionaryCopy PKStringForKey:@"auxiliaryPassInformationIdentifier"];
             auxiliaryPassInformationIdentifier = v9->_auxiliaryPassInformationIdentifier;
             v9->_auxiliaryPassInformationIdentifier = v135;
 
-            v137 = [v6 PKStringForKey:@"auxiliaryPassInformationItemIdentifier"];
+            v137 = [dictionaryCopy PKStringForKey:@"auxiliaryPassInformationItemIdentifier"];
             auxiliaryPassInformationItemIdentifier = v9->_auxiliaryPassInformationItemIdentifier;
             v9->_auxiliaryPassInformationItemIdentifier = v137;
             goto LABEL_77;
           case 8:
-            auxiliaryPassInformationItemIdentifier = [v6 PKStringForKey:@"context"];
+            auxiliaryPassInformationItemIdentifier = [dictionaryCopy PKStringForKey:@"context"];
             v9->_context = PKPassTileContextFromString(auxiliaryPassInformationItemIdentifier);
             goto LABEL_77;
           case 10:
-            auxiliaryPassInformationItemIdentifier = [v6 PKStringForKey:@"url"];
+            auxiliaryPassInformationItemIdentifier = [dictionaryCopy PKStringForKey:@"url"];
             if (auxiliaryPassInformationItemIdentifier)
             {
               v92 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:auxiliaryPassInformationItemIdentifier];
@@ -419,17 +419,17 @@ LABEL_78:
 
       if (type != 5)
       {
-        v126 = [v6 PKStringForKey:@"headerText"];
+        v126 = [dictionaryCopy PKStringForKey:@"headerText"];
         v127 = [v126 copy];
         v128 = v9->_headerText;
         v9->_headerText = v127;
 
-        v129 = [v6 PKStringForKey:@"footerText"];
+        v129 = [dictionaryCopy PKStringForKey:@"footerText"];
         v130 = [v129 copy];
         v131 = v9->_footerText;
         v9->_footerText = v130;
 
-        auxiliaryPassInformationItemIdentifier = [v6 PKDictionaryForKey:@"item"];
+        auxiliaryPassInformationItemIdentifier = [dictionaryCopy PKDictionaryForKey:@"item"];
         if (auxiliaryPassInformationItemIdentifier)
         {
           v132 = [[PKAutoTopUpActionItem alloc] initWithDictionary:auxiliaryPassInformationItemIdentifier];
@@ -443,16 +443,16 @@ LABEL_77:
         goto LABEL_78;
       }
 
-      v167 = v7;
+      v167 = localizationsCopy;
       v168 = v88;
       v165 = v83;
       v166 = v53;
-      v138 = [v6 PKStringForKey:@"headerText"];
+      v138 = [dictionaryCopy PKStringForKey:@"headerText"];
       v139 = [v138 copy];
       v140 = v9->_headerText;
       v9->_headerText = v139;
 
-      v141 = [v6 PKStringForKey:@"footerText"];
+      v141 = [dictionaryCopy PKStringForKey:@"footerText"];
       v142 = [v141 copy];
       v143 = v9->_footerText;
       v9->_footerText = v142;
@@ -462,7 +462,7 @@ LABEL_77:
       v176 = 0u;
       v177 = 0u;
       v178 = 0u;
-      v144 = [v6 PKArrayForKey:@"items"];
+      v144 = [dictionaryCopy PKArrayForKey:@"items"];
       v145 = [v144 countByEnumeratingWithState:&v175 objects:v185 count:16];
       if (v145)
       {
@@ -501,14 +501,14 @@ LABEL_77:
 
       if ([(NSArray *)v9->_purchaseNewActionItems count]== 1)
       {
-        v111 = [(NSArray *)v9->_purchaseNewActionItems firstObject];
-        v153 = [v111 amount];
-        v154 = [v111 currency];
-        v164 = PKFormattedCurrencyStringFromNumber(v153, v154);
+        firstObject = [(NSArray *)v9->_purchaseNewActionItems firstObject];
+        amount2 = [firstObject amount];
+        currency2 = [firstObject currency];
+        v164 = PKFormattedCurrencyStringFromNumber(amount2, currency2);
 
         v155 = v9->_actionDescription;
-        v156 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-        v157 = [(NSString *)v155 stringByTrimmingCharactersInSet:v156];
+        whitespaceCharacterSet2 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+        v157 = [(NSString *)v155 stringByTrimmingCharactersInSet:whitespaceCharacterSet2];
         v83 = v165;
         v88 = v168;
         if (v157)
@@ -519,7 +519,7 @@ LABEL_77:
           if (v159)
           {
             v119 = v164;
-            v7 = v167;
+            localizationsCopy = v167;
             v10 = &unk_1ADB86000;
             if ([(NSString *)v9->_actionDescription containsString:v164])
             {
@@ -541,7 +541,7 @@ LABEL_76:
     }
 
     v53 = v166;
-    v7 = v167;
+    localizationsCopy = v167;
     v10 = &unk_1ADB86000;
     v83 = v165;
     goto LABEL_70;
@@ -605,25 +605,25 @@ id __56__PKPaymentPassAction_initWithDictionary_localizations___block_invoke_2(u
   return v7;
 }
 
-- (PKPaymentPassAction)initWithDictionary:(id)a3 bundle:(id)a4
+- (PKPaymentPassAction)initWithDictionary:(id)dictionary bundle:(id)bundle
 {
-  v6 = a3;
-  if (a4)
+  dictionaryCopy = dictionary;
+  if (bundle)
   {
-    v7 = [a4 pathForResource:@"actions" ofType:@"strings"];
-    a4 = [MEMORY[0x1E695DF20] dictionaryWithContentsOfFile:v7];
-    self = [(PKPaymentPassAction *)self initWithDictionary:v6 localizations:a4];
+    v7 = [bundle pathForResource:@"actions" ofType:@"strings"];
+    bundle = [MEMORY[0x1E695DF20] dictionaryWithContentsOfFile:v7];
+    self = [(PKPaymentPassAction *)self initWithDictionary:dictionaryCopy localizations:bundle];
   }
 
-  v8 = [(PKPaymentPassAction *)self initWithDictionary:v6 localizations:a4];
+  v8 = [(PKPaymentPassAction *)self initWithDictionary:dictionaryCopy localizations:bundle];
 
   return v8;
 }
 
-- (id)_initWithExternalURL:(id)a3 title:(id)a4
+- (id)_initWithExternalURL:(id)l title:(id)title
 {
-  v7 = a3;
-  v8 = a4;
+  lCopy = l;
+  titleCopy = title;
   v12.receiver = self;
   v12.super_class = PKPaymentPassAction;
   v9 = [(PKPaymentPassAction *)&v12 init];
@@ -631,16 +631,16 @@ id __56__PKPaymentPassAction_initWithDictionary_localizations___block_invoke_2(u
   if (v9)
   {
     v9->_type = 3;
-    objc_storeStrong(&v9->_externalURL, a3);
-    objc_storeStrong(p_isa + 3, a4);
+    objc_storeStrong(&v9->_externalURL, l);
+    objc_storeStrong(p_isa + 3, title);
   }
 
   return p_isa;
 }
 
-- (id)_initWithAppClipURL:(id)a3
+- (id)_initWithAppClipURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v9.receiver = self;
   v9.super_class = PKPaymentPassAction;
   v6 = [(PKPaymentPassAction *)&v9 init];
@@ -648,13 +648,13 @@ id __56__PKPaymentPassAction_initWithDictionary_localizations___block_invoke_2(u
   if (v6)
   {
     v6->_type = 10;
-    objc_storeStrong(&v6->_appClipURL, a3);
+    objc_storeStrong(&v6->_appClipURL, l);
   }
 
   return v7;
 }
 
-- (id)_initWithContext:(int64_t)a3
+- (id)_initWithContext:(int64_t)context
 {
   v5.receiver = self;
   v5.super_class = PKPaymentPassAction;
@@ -662,16 +662,16 @@ id __56__PKPaymentPassAction_initWithDictionary_localizations___block_invoke_2(u
   if (result)
   {
     *(result + 8) = 8;
-    *(result + 34) = a3;
+    *(result + 34) = context;
   }
 
   return result;
 }
 
-- (id)_initWithImage:(id)a3 title:(id)a4
+- (id)_initWithImage:(id)image title:(id)title
 {
-  v7 = a3;
-  v8 = a4;
+  imageCopy = image;
+  titleCopy = title;
   v12.receiver = self;
   v12.super_class = PKPaymentPassAction;
   v9 = [(PKPaymentPassAction *)&v12 init];
@@ -679,8 +679,8 @@ id __56__PKPaymentPassAction_initWithDictionary_localizations___block_invoke_2(u
   if (v9)
   {
     v9->_type = 9;
-    objc_storeStrong(&v9->_image, a3);
-    objc_storeStrong(p_isa + 3, a4);
+    objc_storeStrong(&v9->_image, image);
+    objc_storeStrong(p_isa + 3, title);
   }
 
   return p_isa;
@@ -699,9 +699,9 @@ id __56__PKPaymentPassAction_initWithDictionary_localizations___block_invoke_2(u
   return result;
 }
 
-- (id)_initWithBusinessChatIdentifier:(id)a3
+- (id)_initWithBusinessChatIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = PKPaymentPassAction;
   v6 = [(PKPaymentPassAction *)&v9 init];
@@ -709,7 +709,7 @@ id __56__PKPaymentPassAction_initWithDictionary_localizations___block_invoke_2(u
   if (v6)
   {
     v6->_type = 14;
-    objc_storeStrong(&v6->_businessChatIdentifier, a3);
+    objc_storeStrong(&v6->_businessChatIdentifier, identifier);
   }
 
   return v7;
@@ -726,18 +726,18 @@ id __56__PKPaymentPassAction_initWithDictionary_localizations___block_invoke_2(u
   return *(&self->super.isa + v2);
 }
 
-- (void)_processLocalizableStrings:(id)a3
+- (void)_processLocalizableStrings:(id)strings
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  stringsCopy = strings;
+  if (stringsCopy)
   {
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v5 = [(PKPaymentPassAction *)self _localizableKeys];
-    v6 = [v5 countByEnumeratingWithState:&v22 objects:v27 count:16];
+    _localizableKeys = [(PKPaymentPassAction *)self _localizableKeys];
+    v6 = [_localizableKeys countByEnumeratingWithState:&v22 objects:v27 count:16];
     if (v6)
     {
       v7 = v6;
@@ -748,14 +748,14 @@ id __56__PKPaymentPassAction_initWithDictionary_localizations___block_invoke_2(u
         {
           if (*v23 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(_localizableKeys);
           }
 
           v10 = *(*(&v22 + 1) + 8 * i);
           v11 = [(PKPaymentPassAction *)self valueForKey:v10];
           if (v11)
           {
-            v12 = v4[2](v4, v11);
+            v12 = stringsCopy[2](stringsCopy, v11);
             if (v12)
             {
               [(PKPaymentPassAction *)self setValue:v12 forKey:v10];
@@ -763,14 +763,14 @@ id __56__PKPaymentPassAction_initWithDictionary_localizations___block_invoke_2(u
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v22 objects:v27 count:16];
+        v7 = [_localizableKeys countByEnumeratingWithState:&v22 objects:v27 count:16];
       }
 
       while (v7);
     }
 
-    [(PKEnteredValueActionItem *)self->_enteredValueItem _processLocalizableStrings:v4];
-    [(PKAutoTopUpActionItem *)self->_autoTopUpItem _processLocalizableStrings:v4];
+    [(PKEnteredValueActionItem *)self->_enteredValueItem _processLocalizableStrings:stringsCopy];
+    [(PKAutoTopUpActionItem *)self->_autoTopUpItem _processLocalizableStrings:stringsCopy];
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
@@ -790,7 +790,7 @@ id __56__PKPaymentPassAction_initWithDictionary_localizations___block_invoke_2(u
             objc_enumerationMutation(v13);
           }
 
-          [*(*(&v18 + 1) + 8 * j) _processLocalizableStrings:{v4, v18}];
+          [*(*(&v18 + 1) + 8 * j) _processLocalizableStrings:{stringsCopy, v18}];
         }
 
         v15 = [(NSArray *)v13 countByEnumeratingWithState:&v18 objects:v26 count:16];
@@ -801,19 +801,19 @@ id __56__PKPaymentPassAction_initWithDictionary_localizations___block_invoke_2(u
   }
 }
 
-- (id)actionUpdatedWithDictionary:(id)a3 localizations:(id)a4
+- (id)actionUpdatedWithDictionary:(id)dictionary localizations:(id)localizations
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PKPaymentPassAction *)self identifier];
-  v9 = [v6 PKStringForKey:@"identifier"];
-  v10 = [v8 isEqualToString:v9];
+  dictionaryCopy = dictionary;
+  localizationsCopy = localizations;
+  identifier = [(PKPaymentPassAction *)self identifier];
+  v9 = [dictionaryCopy PKStringForKey:@"identifier"];
+  v10 = [identifier isEqualToString:v9];
 
   if (v10)
   {
     v11 = [(NSDictionary *)self->_rawDictionary mutableCopy];
-    [v11 addEntriesFromDictionary:v6];
-    v12 = [objc_alloc(objc_opt_class()) initWithDictionary:v11 localizations:v7];
+    [v11 addEntriesFromDictionary:dictionaryCopy];
+    v12 = [objc_alloc(objc_opt_class()) initWithDictionary:v11 localizations:localizationsCopy];
     v13 = v12;
     if (v12)
     {
@@ -864,11 +864,11 @@ id __65__PKPaymentPassAction_actionUpdatedWithDictionary_localizations___block_i
   return v7;
 }
 
-+ (id)effectiveActionForActions:(id)a3
++ (id)effectiveActionForActions:(id)actions
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && [v3 count])
+  actionsCopy = actions;
+  v4 = actionsCopy;
+  if (actionsCopy && [actionsCopy count])
   {
     v5 = [v4 pk_firstObjectPassingTest:&__block_literal_global_71];
   }
@@ -885,13 +885,13 @@ id __65__PKPaymentPassAction_actionUpdatedWithDictionary_localizations___block_i
 {
   if (self->_type == 2 && (associatedPlan = self->_associatedPlan) != 0 && !self->_availableFromRaw && self->_availableFromRelative != 0.0 && (-[PKTransitCommutePlan startDate](associatedPlan, "startDate"), (v9 = objc_claimAutoreleasedReturnValue()) != 0) && (v10 = v9, [v9 dateByAddingTimeInterval:self->_availableFromRelative], v11 = objc_claimAutoreleasedReturnValue(), v10, v11))
   {
-    v4 = v11;
-    v5 = v4;
+    distantPast = v11;
+    v5 = distantPast;
   }
 
   else
   {
-    v4 = [MEMORY[0x1E695DF00] distantPast];
+    distantPast = [MEMORY[0x1E695DF00] distantPast];
     v5 = 0;
   }
 
@@ -902,7 +902,7 @@ id __65__PKPaymentPassAction_actionUpdatedWithDictionary_localizations___block_i
 
   else
   {
-    availableFromRaw = v4;
+    availableFromRaw = distantPast;
   }
 
   v7 = availableFromRaw;
@@ -914,13 +914,13 @@ id __65__PKPaymentPassAction_actionUpdatedWithDictionary_localizations___block_i
 {
   if (self->_type == 2 && (associatedPlan = self->_associatedPlan) != 0 && !self->_availableUntilRaw && self->_availableUntilRelative != 0.0 && (-[PKTransitCommutePlan expiryDate](associatedPlan, "expiryDate"), (v9 = objc_claimAutoreleasedReturnValue()) != 0) && (v10 = v9, [v9 dateByAddingTimeInterval:self->_availableUntilRelative], v11 = objc_claimAutoreleasedReturnValue(), v10, v11))
   {
-    v4 = v11;
-    v5 = v4;
+    distantFuture = v11;
+    v5 = distantFuture;
   }
 
   else
   {
-    v4 = [MEMORY[0x1E695DF00] distantFuture];
+    distantFuture = [MEMORY[0x1E695DF00] distantFuture];
     v5 = 0;
   }
 
@@ -931,7 +931,7 @@ id __65__PKPaymentPassAction_actionUpdatedWithDictionary_localizations___block_i
 
   else
   {
-    availableUntilRaw = v4;
+    availableUntilRaw = distantFuture;
   }
 
   v7 = availableUntilRaw;
@@ -946,10 +946,10 @@ id __65__PKPaymentPassAction_actionUpdatedWithDictionary_localizations___block_i
     return 0;
   }
 
-  v4 = [(PKPaymentPassAction *)self availableFrom];
-  v5 = [(PKPaymentPassAction *)self availableUntil];
-  v6 = [MEMORY[0x1E695DF00] date];
-  v3 = [v6 compare:v4] == 1 && objc_msgSend(v6, "compare:", v5) == -1;
+  availableFrom = [(PKPaymentPassAction *)self availableFrom];
+  availableUntil = [(PKPaymentPassAction *)self availableUntil];
+  date = [MEMORY[0x1E695DF00] date];
+  v3 = [date compare:availableFrom] == 1 && objc_msgSend(date, "compare:", availableUntil) == -1;
 
   return v3;
 }
@@ -965,9 +965,9 @@ id __65__PKPaymentPassAction_actionUpdatedWithDictionary_localizations___block_i
   return remoteContentConfiguration;
 }
 
-- (PKPaymentPassAction)initWithCoder:(id)a3
+- (PKPaymentPassAction)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v139.receiver = self;
   v139.super_class = PKPaymentPassAction;
   v5 = [(PKPaymentPassAction *)&v139 init];
@@ -979,7 +979,7 @@ id __65__PKPaymentPassAction_actionUpdatedWithDictionary_localizations___block_i
     v9 = objc_opt_class();
     v10 = objc_opt_class();
     v138 = [v6 setWithObjects:{v7, v8, v9, v10, objc_opt_class(), 0}];
-    v11 = [v4 decodeObjectOfClasses:? forKey:?];
+    v11 = [coderCopy decodeObjectOfClasses:? forKey:?];
     v12 = [v11 copy];
     rawDictionary = v5->_rawDictionary;
     v5->_rawDictionary = v12;
@@ -991,136 +991,136 @@ id __65__PKPaymentPassAction_actionUpdatedWithDictionary_localizations___block_i
     v18 = objc_opt_class();
     v19 = objc_opt_class();
     v137 = [v14 setWithObjects:{v15, v16, v17, v18, v19, objc_opt_class(), 0}];
-    v20 = [v4 decodeObjectOfClasses:? forKey:?];
+    v20 = [coderCopy decodeObjectOfClasses:? forKey:?];
     v21 = [v20 copy];
     localizations = v5->_localizations;
     v5->_localizations = v21;
 
-    v23 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     v24 = [v23 copy];
     identifier = v5->_identifier;
     v5->_identifier = v24;
 
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"type"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"type"];
     v5->_type = PKPaymentPassActionTypeFromString(v26);
 
-    v27 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"remoteContentConfiguration"];
+    v27 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"remoteContentConfiguration"];
     remoteContentConfiguration = v5->_remoteContentConfiguration;
     v5->_remoteContentConfiguration = v27;
 
-    v29 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"externalActionContent"];
+    v29 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"externalActionContent"];
     externalActionContent = v5->_externalActionContent;
     v5->_externalActionContent = v29;
 
-    v31 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+    v31 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
     v32 = [v31 copy];
     title = v5->_title;
     v5->_title = v32;
 
-    v34 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"actionDescription"];
+    v34 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"actionDescription"];
     v35 = [v34 copy];
     actionDescription = v5->_actionDescription;
     v5->_actionDescription = v35;
 
-    v37 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"confirmationTitle"];
+    v37 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"confirmationTitle"];
     v38 = [v37 copy];
     confirmationTitle = v5->_confirmationTitle;
     v5->_confirmationTitle = v38;
 
-    v5->_featured = [v4 decodeBoolForKey:@"featured"];
-    v40 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"appletData"];
+    v5->_featured = [coderCopy decodeBoolForKey:@"featured"];
+    v40 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"appletData"];
     appletData = v5->_appletData;
     v5->_appletData = v40;
 
-    v42 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"relevantPropertyIdentifier"];
+    v42 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"relevantPropertyIdentifier"];
     v43 = [v42 copy];
     relevantPropertyIdentifier = v5->_relevantPropertyIdentifier;
     v5->_relevantPropertyIdentifier = v43;
 
-    v45 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"associatedPlanIdentifier"];
+    v45 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"associatedPlanIdentifier"];
     v46 = [v45 copy];
     associatedPlanIdentifier = v5->_associatedPlanIdentifier;
     v5->_associatedPlanIdentifier = v46;
 
-    v48 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"associatedEnteredValueIdentifier"];
+    v48 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"associatedEnteredValueIdentifier"];
     v49 = [v48 copy];
     associatedEnteredValueIdentifier = v5->_associatedEnteredValueIdentifier;
     v5->_associatedEnteredValueIdentifier = v49;
 
-    v51 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"associatedAutoTopUpIdentifier"];
+    v51 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"associatedAutoTopUpIdentifier"];
     v52 = [v51 copy];
     associatedAutoTopUpIdentifier = v5->_associatedAutoTopUpIdentifier;
     v5->_associatedAutoTopUpIdentifier = v52;
 
-    v54 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"associatedPlan"];
+    v54 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"associatedPlan"];
     v55 = [v54 copy];
     associatedPlan = v5->_associatedPlan;
     v5->_associatedPlan = v55;
 
-    v57 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"availableFrom"];
+    v57 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"availableFrom"];
     v58 = [v57 copy];
     availableFromRaw = v5->_availableFromRaw;
     v5->_availableFromRaw = v58;
 
-    [v4 decodeDoubleForKey:@"availableFromOffsetFromUTC"];
+    [coderCopy decodeDoubleForKey:@"availableFromOffsetFromUTC"];
     v5->_availableFromOffsetFromUTC = v60;
-    v61 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"availableUntil"];
+    v61 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"availableUntil"];
     v62 = [v61 copy];
     availableUntilRaw = v5->_availableUntilRaw;
     v5->_availableUntilRaw = v62;
 
-    [v4 decodeDoubleForKey:@"availableFromRelative"];
+    [coderCopy decodeDoubleForKey:@"availableFromRelative"];
     v5->_availableFromRelative = v64;
-    [v4 decodeDoubleForKey:@"availableUntilRelative"];
+    [coderCopy decodeDoubleForKey:@"availableUntilRelative"];
     v5->_availableUntilRelative = v65;
-    v66 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"unavailableBeforeReason"];
+    v66 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"unavailableBeforeReason"];
     v67 = [v66 copy];
     unavailableBeforeReason = v5->_unavailableBeforeReason;
     v5->_unavailableBeforeReason = v67;
 
-    v69 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"unavailableAfterReason"];
+    v69 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"unavailableAfterReason"];
     v70 = [v69 copy];
     unavailableAfterReason = v5->_unavailableAfterReason;
     v5->_unavailableAfterReason = v70;
 
-    v72 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"unavailableActionReason"];
+    v72 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"unavailableActionReason"];
     v73 = [v72 copy];
     unavailableActionReason = v5->_unavailableActionReason;
     v5->_unavailableActionReason = v73;
 
-    v75 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"unavailableActionTitle"];
+    v75 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"unavailableActionTitle"];
     v76 = [v75 copy];
     unavailableActionTitle = v5->_unavailableActionTitle;
     v5->_unavailableActionTitle = v76;
 
-    v78 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"unavailableActionURL"];
+    v78 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"unavailableActionURL"];
     v79 = [v78 copy];
     unavailableActionURL = v5->_unavailableActionURL;
     v5->_unavailableActionURL = v79;
 
-    v5->_unavailableActionBehavior = [v4 decodeIntegerForKey:@"unavailableActionBehavior"];
-    v81 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"serviceProviderIdentifier"];
+    v5->_unavailableActionBehavior = [coderCopy decodeIntegerForKey:@"unavailableActionBehavior"];
+    v81 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"serviceProviderIdentifier"];
     v82 = [v81 copy];
     serviceProviderIdentifier = v5->_serviceProviderIdentifier;
     v5->_serviceProviderIdentifier = v82;
 
-    v84 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"serviceProviderLocalizedDisplayName"];
+    v84 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"serviceProviderLocalizedDisplayName"];
     v85 = [v84 copy];
     serviceProviderLocalizedDisplayName = v5->_serviceProviderLocalizedDisplayName;
     v5->_serviceProviderLocalizedDisplayName = v85;
 
-    v87 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"serviceProviderCountryCode"];
+    v87 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"serviceProviderCountryCode"];
     v88 = [v87 copy];
     serviceProviderCountryCode = v5->_serviceProviderCountryCode;
     v5->_serviceProviderCountryCode = v88;
 
-    v90 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"serviceProviderCapabilities"];
+    v90 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"serviceProviderCapabilities"];
     v5->_serviceProviderCapabilities = [v90 unsignedIntegerValue];
 
     v91 = MEMORY[0x1E695DFD8];
     v92 = objc_opt_class();
     v93 = [v91 setWithObjects:{v92, objc_opt_class(), 0}];
-    v94 = [v4 decodeObjectOfClasses:v93 forKey:@"serviceProviderAcceptedNetworks"];
+    v94 = [coderCopy decodeObjectOfClasses:v93 forKey:@"serviceProviderAcceptedNetworks"];
     v95 = [v94 copy];
     serviceProviderAcceptedNetworks = v5->_serviceProviderAcceptedNetworks;
     v5->_serviceProviderAcceptedNetworks = v95;
@@ -1128,24 +1128,24 @@ id __65__PKPaymentPassAction_actionUpdatedWithDictionary_localizations___block_i
     v97 = MEMORY[0x1E695DFD8];
     v98 = objc_opt_class();
     v99 = [v97 setWithObjects:{v98, objc_opt_class(), 0}];
-    v100 = [v4 decodeObjectOfClasses:v99 forKey:@"serviceProviderSupportedCountries"];
+    v100 = [coderCopy decodeObjectOfClasses:v99 forKey:@"serviceProviderSupportedCountries"];
     serviceProviderSupportedCountries = v5->_serviceProviderSupportedCountries;
     v5->_serviceProviderSupportedCountries = v100;
 
-    v102 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"enteredValueItem"];
+    v102 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"enteredValueItem"];
     enteredValueItem = v5->_enteredValueItem;
     v5->_enteredValueItem = v102;
 
-    v104 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"autoTopUpItem"];
+    v104 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"autoTopUpItem"];
     autoTopUpItem = v5->_autoTopUpItem;
     v5->_autoTopUpItem = v104;
 
-    v106 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"headerText"];
+    v106 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"headerText"];
     v107 = [v106 copy];
     headerText = v5->_headerText;
     v5->_headerText = v107;
 
-    v109 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"footerText"];
+    v109 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"footerText"];
     v110 = [v109 copy];
     footerText = v5->_footerText;
     v5->_footerText = v110;
@@ -1153,44 +1153,44 @@ id __65__PKPaymentPassAction_actionUpdatedWithDictionary_localizations___block_i
     v112 = MEMORY[0x1E695DFD8];
     v113 = objc_opt_class();
     v114 = [v112 setWithObjects:{v113, objc_opt_class(), 0}];
-    v115 = [v4 decodeObjectOfClasses:v114 forKey:@"selectedActionItems"];
+    v115 = [coderCopy decodeObjectOfClasses:v114 forKey:@"selectedActionItems"];
     v116 = [v115 copy];
     selectedActionItems = v5->_selectedActionItems;
     v5->_selectedActionItems = v116;
 
-    v118 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"externalURL"];
+    v118 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"externalURL"];
     externalURL = v5->_externalURL;
     v5->_externalURL = v118;
 
-    v120 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"appClipURL"];
+    v120 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"appClipURL"];
     appClipURL = v5->_appClipURL;
     v5->_appClipURL = v120;
 
     v122 = objc_alloc(MEMORY[0x1E695DFD8]);
     v123 = objc_opt_class();
     v124 = [v122 initWithObjects:{v123, objc_opt_class(), 0}];
-    v125 = [v4 decodeObjectOfClasses:v124 forKey:@"vehicleFunctionActions"];
+    v125 = [coderCopy decodeObjectOfClasses:v124 forKey:@"vehicleFunctionActions"];
     vehicleFunctionActions = v5->_vehicleFunctionActions;
     v5->_vehicleFunctionActions = v125;
 
-    v127 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"auxiliaryPassInformationIdentifier"];
+    v127 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"auxiliaryPassInformationIdentifier"];
     auxiliaryPassInformationIdentifier = v5->_auxiliaryPassInformationIdentifier;
     v5->_auxiliaryPassInformationIdentifier = v127;
 
-    v129 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"auxiliaryPassInformationItemIdentifier"];
+    v129 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"auxiliaryPassInformationItemIdentifier"];
     auxiliaryPassInformationItemIdentifier = v5->_auxiliaryPassInformationItemIdentifier;
     v5->_auxiliaryPassInformationItemIdentifier = v129;
 
-    v131 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"context"];
+    v131 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"context"];
     v5->_context = PKPassTileContextFromString(v131);
 
-    v132 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"image"];
+    v132 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"image"];
     image = v5->_image;
     v5->_image = v132;
 
-    if (!v5->_remoteContentConfiguration && [v4 decodeBoolForKey:@"hasRemoteContent"])
+    if (!v5->_remoteContentConfiguration && [coderCopy decodeBoolForKey:@"hasRemoteContent"])
     {
-      v134 = -[PKPaymentPassActionRemoteConfiguration initWithRequiresAppletData:appletDataRequiresEncryption:]([PKPaymentPassActionRemoteConfiguration alloc], "initWithRequiresAppletData:appletDataRequiresEncryption:", [v4 decodeBoolForKey:@"remoteContentRequiresAppletData"], 1);
+      v134 = -[PKPaymentPassActionRemoteConfiguration initWithRequiresAppletData:appletDataRequiresEncryption:]([PKPaymentPassActionRemoteConfiguration alloc], "initWithRequiresAppletData:appletDataRequiresEncryption:", [coderCopy decodeBoolForKey:@"remoteContentRequiresAppletData"], 1);
       v135 = v5->_remoteContentConfiguration;
       v5->_remoteContentConfiguration = v134;
     }
@@ -1199,220 +1199,220 @@ id __65__PKPaymentPassAction_actionUpdatedWithDictionary_localizations___block_i
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   rawDictionary = self->_rawDictionary;
-  v8 = a3;
-  [v8 encodeObject:rawDictionary forKey:@"rawDictionary"];
-  [v8 encodeObject:self->_localizations forKey:@"localizations"];
-  [v8 encodeObject:self->_identifier forKey:@"identifier"];
-  [v8 encodeObject:self->_remoteContentConfiguration forKey:@"remoteContentConfiguration"];
-  [v8 encodeObject:self->_externalActionContent forKey:@"externalActionContent"];
+  coderCopy = coder;
+  [coderCopy encodeObject:rawDictionary forKey:@"rawDictionary"];
+  [coderCopy encodeObject:self->_localizations forKey:@"localizations"];
+  [coderCopy encodeObject:self->_identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_remoteContentConfiguration forKey:@"remoteContentConfiguration"];
+  [coderCopy encodeObject:self->_externalActionContent forKey:@"externalActionContent"];
   v5 = PKPaymentPassActionTypeToString(self->_type);
-  [v8 encodeObject:v5 forKey:@"type"];
+  [coderCopy encodeObject:v5 forKey:@"type"];
 
-  [v8 encodeObject:self->_appletData forKey:@"appletData"];
-  [v8 encodeObject:self->_title forKey:@"title"];
-  [v8 encodeObject:self->_actionDescription forKey:@"actionDescription"];
-  [v8 encodeObject:self->_confirmationTitle forKey:@"confirmationTitle"];
-  [v8 encodeBool:self->_featured forKey:@"featured"];
-  [v8 encodeObject:self->_relevantPropertyIdentifier forKey:@"relevantPropertyIdentifier"];
-  [v8 encodeObject:self->_associatedPlanIdentifier forKey:@"associatedPlanIdentifier"];
-  [v8 encodeObject:self->_associatedEnteredValueIdentifier forKey:@"associatedEnteredValueIdentifier"];
-  [v8 encodeObject:self->_associatedAutoTopUpIdentifier forKey:@"associatedAutoTopUpIdentifier"];
-  [v8 encodeObject:self->_associatedPlan forKey:@"associatedPlan"];
-  [v8 encodeObject:self->_availableFromRaw forKey:@"availableFrom"];
-  [v8 encodeDouble:@"availableFromOffsetFromUTC" forKey:self->_availableFromOffsetFromUTC];
-  [v8 encodeObject:self->_availableUntilRaw forKey:@"availableUntil"];
-  [v8 encodeDouble:@"availableFromRelative" forKey:self->_availableFromRelative];
-  [v8 encodeDouble:@"availableUntilRelative" forKey:self->_availableUntilRelative];
-  [v8 encodeObject:self->_unavailableBeforeReason forKey:@"unavailableBeforeReason"];
-  [v8 encodeObject:self->_unavailableAfterReason forKey:@"unavailableAfterReason"];
-  [v8 encodeObject:self->_unavailableActionReason forKey:@"unavailableActionReason"];
-  [v8 encodeObject:self->_unavailableActionTitle forKey:@"unavailableActionTitle"];
-  [v8 encodeObject:self->_unavailableActionURL forKey:@"unavailableActionURL"];
-  [v8 encodeInteger:self->_unavailableActionBehavior forKey:@"unavailableActionBehavior"];
-  [v8 encodeObject:self->_serviceProviderIdentifier forKey:@"serviceProviderIdentifier"];
-  [v8 encodeObject:self->_serviceProviderLocalizedDisplayName forKey:@"serviceProviderLocalizedDisplayName"];
-  [v8 encodeObject:self->_serviceProviderCountryCode forKey:@"serviceProviderCountryCode"];
-  [v8 encodeObject:self->_serviceProviderAcceptedNetworks forKey:@"serviceProviderAcceptedNetworks"];
+  [coderCopy encodeObject:self->_appletData forKey:@"appletData"];
+  [coderCopy encodeObject:self->_title forKey:@"title"];
+  [coderCopy encodeObject:self->_actionDescription forKey:@"actionDescription"];
+  [coderCopy encodeObject:self->_confirmationTitle forKey:@"confirmationTitle"];
+  [coderCopy encodeBool:self->_featured forKey:@"featured"];
+  [coderCopy encodeObject:self->_relevantPropertyIdentifier forKey:@"relevantPropertyIdentifier"];
+  [coderCopy encodeObject:self->_associatedPlanIdentifier forKey:@"associatedPlanIdentifier"];
+  [coderCopy encodeObject:self->_associatedEnteredValueIdentifier forKey:@"associatedEnteredValueIdentifier"];
+  [coderCopy encodeObject:self->_associatedAutoTopUpIdentifier forKey:@"associatedAutoTopUpIdentifier"];
+  [coderCopy encodeObject:self->_associatedPlan forKey:@"associatedPlan"];
+  [coderCopy encodeObject:self->_availableFromRaw forKey:@"availableFrom"];
+  [coderCopy encodeDouble:@"availableFromOffsetFromUTC" forKey:self->_availableFromOffsetFromUTC];
+  [coderCopy encodeObject:self->_availableUntilRaw forKey:@"availableUntil"];
+  [coderCopy encodeDouble:@"availableFromRelative" forKey:self->_availableFromRelative];
+  [coderCopy encodeDouble:@"availableUntilRelative" forKey:self->_availableUntilRelative];
+  [coderCopy encodeObject:self->_unavailableBeforeReason forKey:@"unavailableBeforeReason"];
+  [coderCopy encodeObject:self->_unavailableAfterReason forKey:@"unavailableAfterReason"];
+  [coderCopy encodeObject:self->_unavailableActionReason forKey:@"unavailableActionReason"];
+  [coderCopy encodeObject:self->_unavailableActionTitle forKey:@"unavailableActionTitle"];
+  [coderCopy encodeObject:self->_unavailableActionURL forKey:@"unavailableActionURL"];
+  [coderCopy encodeInteger:self->_unavailableActionBehavior forKey:@"unavailableActionBehavior"];
+  [coderCopy encodeObject:self->_serviceProviderIdentifier forKey:@"serviceProviderIdentifier"];
+  [coderCopy encodeObject:self->_serviceProviderLocalizedDisplayName forKey:@"serviceProviderLocalizedDisplayName"];
+  [coderCopy encodeObject:self->_serviceProviderCountryCode forKey:@"serviceProviderCountryCode"];
+  [coderCopy encodeObject:self->_serviceProviderAcceptedNetworks forKey:@"serviceProviderAcceptedNetworks"];
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_serviceProviderCapabilities];
-  [v8 encodeObject:v6 forKey:@"serviceProviderCapabilities"];
+  [coderCopy encodeObject:v6 forKey:@"serviceProviderCapabilities"];
 
-  [v8 encodeObject:self->_serviceProviderSupportedCountries forKey:@"serviceProviderSupportedCountries"];
-  [v8 encodeObject:self->_enteredValueItem forKey:@"enteredValueItem"];
-  [v8 encodeObject:self->_autoTopUpItem forKey:@"autoTopUpItem"];
-  [v8 encodeObject:self->_headerText forKey:@"headerText"];
-  [v8 encodeObject:self->_footerText forKey:@"footerText"];
-  [v8 encodeObject:self->_selectedActionItems forKey:@"selectedActionItems"];
-  [v8 encodeObject:self->_externalURL forKey:@"externalURL"];
-  [v8 encodeObject:self->_appClipURL forKey:@"appClipURL"];
-  [v8 encodeObject:self->_vehicleFunctionActions forKey:@"vehicleFunctionActions"];
-  [v8 encodeObject:self->_auxiliaryPassInformationIdentifier forKey:@"auxiliaryPassInformationIdentifier"];
-  [v8 encodeObject:self->_auxiliaryPassInformationItemIdentifier forKey:@"auxiliaryPassInformationItemIdentifier"];
+  [coderCopy encodeObject:self->_serviceProviderSupportedCountries forKey:@"serviceProviderSupportedCountries"];
+  [coderCopy encodeObject:self->_enteredValueItem forKey:@"enteredValueItem"];
+  [coderCopy encodeObject:self->_autoTopUpItem forKey:@"autoTopUpItem"];
+  [coderCopy encodeObject:self->_headerText forKey:@"headerText"];
+  [coderCopy encodeObject:self->_footerText forKey:@"footerText"];
+  [coderCopy encodeObject:self->_selectedActionItems forKey:@"selectedActionItems"];
+  [coderCopy encodeObject:self->_externalURL forKey:@"externalURL"];
+  [coderCopy encodeObject:self->_appClipURL forKey:@"appClipURL"];
+  [coderCopy encodeObject:self->_vehicleFunctionActions forKey:@"vehicleFunctionActions"];
+  [coderCopy encodeObject:self->_auxiliaryPassInformationIdentifier forKey:@"auxiliaryPassInformationIdentifier"];
+  [coderCopy encodeObject:self->_auxiliaryPassInformationItemIdentifier forKey:@"auxiliaryPassInformationItemIdentifier"];
   v7 = PKPassTileContextToString(self->_context);
-  [v8 encodeObject:v7 forKey:@"context"];
+  [coderCopy encodeObject:v7 forKey:@"context"];
 
-  [v8 encodeObject:self->_image forKey:@"image"];
-  [v8 encodeBool:-[PKPaymentPassAction hasRemoteContent](self forKey:{"hasRemoteContent"), @"hasRemoteContent"}];
-  [v8 encodeBool:-[PKPaymentPassAction remoteContentRequiresAppletData](self forKey:{"remoteContentRequiresAppletData"), @"remoteContentRequiresAppletData"}];
+  [coderCopy encodeObject:self->_image forKey:@"image"];
+  [coderCopy encodeBool:-[PKPaymentPassAction hasRemoteContent](self forKey:{"hasRemoteContent"), @"hasRemoteContent"}];
+  [coderCopy encodeBool:-[PKPaymentPassAction remoteContentRequiresAppletData](self forKey:{"remoteContentRequiresAppletData"), @"remoteContentRequiresAppletData"}];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_opt_class() allocWithZone:a3];
-  v6 = [(NSDictionary *)self->_rawDictionary copyWithZone:a3];
+  v5 = [objc_opt_class() allocWithZone:zone];
+  v6 = [(NSDictionary *)self->_rawDictionary copyWithZone:zone];
   v7 = *(v5 + 8);
   *(v5 + 8) = v6;
 
-  v8 = [(NSDictionary *)self->_localizations copyWithZone:a3];
+  v8 = [(NSDictionary *)self->_localizations copyWithZone:zone];
   v9 = *(v5 + 16);
   *(v5 + 16) = v8;
 
-  v10 = [(NSString *)self->_identifier copyWithZone:a3];
+  v10 = [(NSString *)self->_identifier copyWithZone:zone];
   v11 = *(v5 + 56);
   *(v5 + 56) = v10;
 
   *(v5 + 64) = self->_type;
-  v12 = [(PKPaymentPassActionRemoteConfiguration *)self->_remoteContentConfiguration copyWithZone:a3];
+  v12 = [(PKPaymentPassActionRemoteConfiguration *)self->_remoteContentConfiguration copyWithZone:zone];
   v13 = *(v5 + 72);
   *(v5 + 72) = v12;
 
-  v14 = [(PKPaymentPassActionExternalActionContent *)self->_externalActionContent copyWithZone:a3];
+  v14 = [(PKPaymentPassActionExternalActionContent *)self->_externalActionContent copyWithZone:zone];
   v15 = *(v5 + 88);
   *(v5 + 88) = v14;
 
-  v16 = [(NSDictionary *)self->_appletData copyWithZone:a3];
+  v16 = [(NSDictionary *)self->_appletData copyWithZone:zone];
   v17 = *(v5 + 80);
   *(v5 + 80) = v16;
 
-  v18 = [(NSString *)self->_title copyWithZone:a3];
+  v18 = [(NSString *)self->_title copyWithZone:zone];
   v19 = *(v5 + 24);
   *(v5 + 24) = v18;
 
-  v20 = [(NSString *)self->_actionDescription copyWithZone:a3];
+  v20 = [(NSString *)self->_actionDescription copyWithZone:zone];
   v21 = *(v5 + 96);
   *(v5 + 96) = v20;
 
-  v22 = [(NSString *)self->_confirmationTitle copyWithZone:a3];
+  v22 = [(NSString *)self->_confirmationTitle copyWithZone:zone];
   v23 = *(v5 + 104);
   *(v5 + 104) = v22;
 
   *(v5 + 49) = self->_featured;
-  v24 = [(NSString *)self->_relevantPropertyIdentifier copyWithZone:a3];
+  v24 = [(NSString *)self->_relevantPropertyIdentifier copyWithZone:zone];
   v25 = *(v5 + 112);
   *(v5 + 112) = v24;
 
-  v26 = [(NSString *)self->_associatedPlanIdentifier copyWithZone:a3];
+  v26 = [(NSString *)self->_associatedPlanIdentifier copyWithZone:zone];
   v27 = *(v5 + 128);
   *(v5 + 128) = v26;
 
-  v28 = [(NSString *)self->_associatedEnteredValueIdentifier copyWithZone:a3];
+  v28 = [(NSString *)self->_associatedEnteredValueIdentifier copyWithZone:zone];
   v29 = *(v5 + 120);
   *(v5 + 120) = v28;
 
-  v30 = [(NSString *)self->_associatedAutoTopUpIdentifier copyWithZone:a3];
+  v30 = [(NSString *)self->_associatedAutoTopUpIdentifier copyWithZone:zone];
   v31 = *(v5 + 136);
   *(v5 + 136) = v30;
 
-  v32 = [(PKTransitCommutePlan *)self->_associatedPlan copyWithZone:a3];
+  v32 = [(PKTransitCommutePlan *)self->_associatedPlan copyWithZone:zone];
   v33 = *(v5 + 144);
   *(v5 + 144) = v32;
 
-  v34 = [(NSDate *)self->_availableFromRaw copyWithZone:a3];
+  v34 = [(NSDate *)self->_availableFromRaw copyWithZone:zone];
   v35 = *(v5 + 32);
   *(v5 + 32) = v34;
 
   *(v5 + 152) = self->_availableFromOffsetFromUTC;
   *(v5 + 328) = self->_availableFromRelative;
   *(v5 + 336) = self->_availableUntilRelative;
-  v36 = [(NSDate *)self->_availableUntilRaw copyWithZone:a3];
+  v36 = [(NSDate *)self->_availableUntilRaw copyWithZone:zone];
   v37 = *(v5 + 40);
   *(v5 + 40) = v36;
 
-  v38 = [(NSString *)self->_unavailableBeforeReason copyWithZone:a3];
+  v38 = [(NSString *)self->_unavailableBeforeReason copyWithZone:zone];
   v39 = *(v5 + 160);
   *(v5 + 160) = v38;
 
-  v40 = [(NSString *)self->_unavailableAfterReason copyWithZone:a3];
+  v40 = [(NSString *)self->_unavailableAfterReason copyWithZone:zone];
   v41 = *(v5 + 168);
   *(v5 + 168) = v40;
 
-  v42 = [(NSString *)self->_unavailableActionReason copyWithZone:a3];
+  v42 = [(NSString *)self->_unavailableActionReason copyWithZone:zone];
   v43 = *(v5 + 176);
   *(v5 + 176) = v42;
 
-  v44 = [(NSString *)self->_unavailableActionTitle copyWithZone:a3];
+  v44 = [(NSString *)self->_unavailableActionTitle copyWithZone:zone];
   v45 = *(v5 + 184);
   *(v5 + 184) = v44;
 
-  v46 = [(NSString *)self->_unavailableActionURL copyWithZone:a3];
+  v46 = [(NSString *)self->_unavailableActionURL copyWithZone:zone];
   v47 = *(v5 + 192);
   *(v5 + 192) = v46;
 
   *(v5 + 200) = self->_unavailableActionBehavior;
-  v48 = [(NSString *)self->_serviceProviderIdentifier copyWithZone:a3];
+  v48 = [(NSString *)self->_serviceProviderIdentifier copyWithZone:zone];
   v49 = *(v5 + 208);
   *(v5 + 208) = v48;
 
-  v50 = [(NSString *)self->_serviceProviderLocalizedDisplayName copyWithZone:a3];
+  v50 = [(NSString *)self->_serviceProviderLocalizedDisplayName copyWithZone:zone];
   v51 = *(v5 + 216);
   *(v5 + 216) = v50;
 
-  v52 = [(NSString *)self->_serviceProviderCountryCode copyWithZone:a3];
+  v52 = [(NSString *)self->_serviceProviderCountryCode copyWithZone:zone];
   v53 = *(v5 + 224);
   *(v5 + 224) = v52;
 
-  v54 = [(NSArray *)self->_serviceProviderAcceptedNetworks copyWithZone:a3];
+  v54 = [(NSArray *)self->_serviceProviderAcceptedNetworks copyWithZone:zone];
   v55 = *(v5 + 232);
   *(v5 + 232) = v54;
 
   *(v5 + 248) = self->_serviceProviderCapabilities;
-  v56 = [(NSSet *)self->_serviceProviderSupportedCountries copyWithZone:a3];
+  v56 = [(NSSet *)self->_serviceProviderSupportedCountries copyWithZone:zone];
   v57 = *(v5 + 240);
   *(v5 + 240) = v56;
 
-  v58 = [(PKEnteredValueActionItem *)self->_enteredValueItem copyWithZone:a3];
+  v58 = [(PKEnteredValueActionItem *)self->_enteredValueItem copyWithZone:zone];
   v59 = *(v5 + 376);
   *(v5 + 376) = v58;
 
-  v60 = [(PKAutoTopUpActionItem *)self->_autoTopUpItem copyWithZone:a3];
+  v60 = [(PKAutoTopUpActionItem *)self->_autoTopUpItem copyWithZone:zone];
   v61 = *(v5 + 344);
   *(v5 + 344) = v60;
 
-  v62 = [(NSString *)self->_headerText copyWithZone:a3];
+  v62 = [(NSString *)self->_headerText copyWithZone:zone];
   v63 = *(v5 + 352);
   *(v5 + 352) = v62;
 
-  v64 = [(NSString *)self->_footerText copyWithZone:a3];
+  v64 = [(NSString *)self->_footerText copyWithZone:zone];
   v65 = *(v5 + 360);
   *(v5 + 360) = v64;
 
-  v66 = [(NSArray *)self->_selectedActionItems copyWithZone:a3];
+  v66 = [(NSArray *)self->_selectedActionItems copyWithZone:zone];
   v67 = *(v5 + 368);
   *(v5 + 368) = v66;
 
-  v68 = [(NSArray *)self->_purchaseNewActionItems copyWithZone:a3];
+  v68 = [(NSArray *)self->_purchaseNewActionItems copyWithZone:zone];
   v69 = *(v5 + 296);
   *(v5 + 296) = v68;
 
-  v70 = [(NSURL *)self->_externalURL copyWithZone:a3];
+  v70 = [(NSURL *)self->_externalURL copyWithZone:zone];
   v71 = *(v5 + 320);
   *(v5 + 320) = v70;
 
-  v72 = [(NSURL *)self->_appClipURL copyWithZone:a3];
+  v72 = [(NSURL *)self->_appClipURL copyWithZone:zone];
   v73 = *(v5 + 312);
   *(v5 + 312) = v72;
 
-  v74 = [(NSDictionary *)self->_vehicleFunctionActions copyWithZone:a3];
+  v74 = [(NSDictionary *)self->_vehicleFunctionActions copyWithZone:zone];
   v75 = *(v5 + 304);
   *(v5 + 304) = v74;
 
-  v76 = [(NSString *)self->_auxiliaryPassInformationIdentifier copyWithZone:a3];
+  v76 = [(NSString *)self->_auxiliaryPassInformationIdentifier copyWithZone:zone];
   v77 = *(v5 + 280);
   *(v5 + 280) = v76;
 
-  v78 = [(NSString *)self->_auxiliaryPassInformationItemIdentifier copyWithZone:a3];
+  v78 = [(NSString *)self->_auxiliaryPassInformationItemIdentifier copyWithZone:zone];
   v79 = *(v5 + 288);
   *(v5 + 288) = v78;
 

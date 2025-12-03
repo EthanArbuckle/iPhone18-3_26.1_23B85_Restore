@@ -1,34 +1,34 @@
 @interface DiagnosticStatisticsManager
-- (DiagnosticStatisticsManager)initWithWorkspace:(id)a3 queue:(id)a4;
+- (DiagnosticStatisticsManager)initWithWorkspace:(id)workspace queue:(id)queue;
 - (double)_calculateAverageCasesPerDayFromDailyAggregatedStatistics;
-- (id)_createDiagnosticCaseUsageForDomain:(id)a3 type:(id)a4 subType:(id)a5 process:(id)a6;
-- (id)_retrieveDiagnosticCaseUsageForDomain:(id)a3 type:(id)a4 subType:(id)a5 process:(id)a6 onOrAfter:(id)a7 create:(BOOL)a8;
-- (int64_t)_removeDiagnosticCaseUsageMatchingDomain:(id)a3 type:(id)a4 subType:(id)a5 process:(id)a6;
-- (void)_checkFileWritingLimits:(id)a3;
-- (void)_updateCaseStatisticsWith:(id)a3;
-- (void)_updateDailyCaseStatisticsWith:(id)a3;
-- (void)_updateDiagnosticCaseUsageForDomain:(id)a3 type:(id)a4 subType:(id)a5 process:(id)a6 lastSeen:(id)a7 dampeningType:(BOOL)a8;
+- (id)_createDiagnosticCaseUsageForDomain:(id)domain type:(id)type subType:(id)subType process:(id)process;
+- (id)_retrieveDiagnosticCaseUsageForDomain:(id)domain type:(id)type subType:(id)subType process:(id)process onOrAfter:(id)after create:(BOOL)create;
+- (int64_t)_removeDiagnosticCaseUsageMatchingDomain:(id)domain type:(id)type subType:(id)subType process:(id)process;
+- (void)_checkFileWritingLimits:(id)limits;
+- (void)_updateCaseStatisticsWith:(id)with;
+- (void)_updateDailyCaseStatisticsWith:(id)with;
+- (void)_updateDiagnosticCaseUsageForDomain:(id)domain type:(id)type subType:(id)subType process:(id)process lastSeen:(id)seen dampeningType:(BOOL)dampeningType;
 - (void)cleanupDiagnosticCaseUsage;
-- (void)getDiagnosticCaseUsageStatistics:(id)a3;
+- (void)getDiagnosticCaseUsageStatistics:(id)statistics;
 - (void)resetDiagnosticCaseUsage;
-- (void)updateCaseStatisticsWith:(id)a3;
+- (void)updateCaseStatisticsWith:(id)with;
 @end
 
 @implementation DiagnosticStatisticsManager
 
-- (DiagnosticStatisticsManager)initWithWorkspace:(id)a3 queue:(id)a4
+- (DiagnosticStatisticsManager)initWithWorkspace:(id)workspace queue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
+  workspaceCopy = workspace;
+  queueCopy = queue;
   v14.receiver = self;
   v14.super_class = DiagnosticStatisticsManager;
   v9 = [(DiagnosticStatisticsManager *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_queue, a4);
-    objc_storeStrong(&v10->_workspace, a3);
-    v11 = [[DiagnosticCaseUsageAnalytics alloc] initWithWorkspace:v7 withCache:0];
+    objc_storeStrong(&v9->_queue, queue);
+    objc_storeStrong(&v10->_workspace, workspace);
+    v11 = [[DiagnosticCaseUsageAnalytics alloc] initWithWorkspace:workspaceCopy withCache:0];
     caseUsageSpace = v10->_caseUsageSpace;
     v10->_caseUsageSpace = v11;
   }
@@ -36,27 +36,27 @@
   return v10;
 }
 
-- (void)_checkFileWritingLimits:(id)a3
+- (void)_checkFileWritingLimits:(id)limits
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 dampeningType])
+  limitsCopy = limits;
+  if ([limitsCopy dampeningType])
   {
     *buf = 0;
     v28 = buf;
     v29 = 0x2020000000;
     v30 = 0;
-    [v4 caseOpenedTime];
+    [limitsCopy caseOpenedTime];
     if (v5 > 100000000.0)
     {
-      [v4 caseOpenedTime];
+      [limitsCopy caseOpenedTime];
       v8 = v10;
     }
 
     else
     {
-      v6 = [MEMORY[0x277CBEAA8] date];
-      [v6 timeIntervalSince1970];
+      date = [MEMORY[0x277CBEAA8] date];
+      [date timeIntervalSince1970];
       v8 = v7;
     }
 
@@ -80,11 +80,11 @@
     v26[4] = buf;
     [v12 enumerateObjectsUsingBlock:v26];
     v15 = +[ABCAdministrator sharedInstance];
-    v16 = [v15 configurationManager];
-    v17 = [v16 dampenedIPSLimit];
+    configurationManager = [v15 configurationManager];
+    dampenedIPSLimit = [configurationManager dampenedIPSLimit];
 
     v18 = *(v28 + 3);
-    if (v18 > v17)
+    if (v18 > dampenedIPSLimit)
     {
       v19 = casemanagementLogHandle();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
@@ -93,7 +93,7 @@
         *v31 = 134218240;
         v32 = v24;
         v33 = 2048;
-        v34 = v17;
+        v34 = dampenedIPSLimit;
         v21 = "Surpassed limit for dampened cases. Will not write out ips file. (%ld > %ld)";
         v22 = v19;
         v23 = OS_LOG_TYPE_INFO;
@@ -110,7 +110,7 @@
         *v31 = 134218240;
         v32 = v20;
         v33 = 2048;
-        v34 = v17;
+        v34 = dampenedIPSLimit;
         v21 = "Still under limit for dampened cases. Allowing write out of ips file. (%ld <= %ld)";
         v22 = v19;
         v23 = OS_LOG_TYPE_DEBUG;
@@ -119,7 +119,7 @@ LABEL_15:
       }
     }
 
-    [v4 allowIPSFileOutput:v18 <= v17];
+    [limitsCopy allowIPSFileOutput:v18 <= dampenedIPSLimit];
     _Block_object_dispose(buf, 8);
     goto LABEL_17;
   }
@@ -162,25 +162,25 @@ void __55__DiagnosticStatisticsManager__checkFileWritingLimits___block_invoke(ui
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateCaseStatisticsWith:(id)a3
+- (void)updateCaseStatisticsWith:(id)with
 {
-  v4 = a3;
-  [(DiagnosticStatisticsManager *)self _updateCaseStatisticsWith:v4];
-  [(DiagnosticStatisticsManager *)self _updateDailyCaseStatisticsWith:v4];
+  withCopy = with;
+  [(DiagnosticStatisticsManager *)self _updateCaseStatisticsWith:withCopy];
+  [(DiagnosticStatisticsManager *)self _updateDailyCaseStatisticsWith:withCopy];
 }
 
-- (void)getDiagnosticCaseUsageStatistics:(id)a3
+- (void)getDiagnosticCaseUsageStatistics:(id)statistics
 {
-  v4 = a3;
-  v5 = [(DiagnosticStatisticsManager *)self queue];
+  statisticsCopy = statistics;
+  queue = [(DiagnosticStatisticsManager *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __64__DiagnosticStatisticsManager_getDiagnosticCaseUsageStatistics___block_invoke;
   v7[3] = &unk_278CEFEB0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = statisticsCopy;
+  v6 = statisticsCopy;
+  dispatch_async(queue, v7);
 }
 
 void __64__DiagnosticStatisticsManager_getDiagnosticCaseUsageStatistics___block_invoke(uint64_t a1)
@@ -345,19 +345,19 @@ void __64__DiagnosticStatisticsManager_getDiagnosticCaseUsageStatistics___block_
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateCaseStatisticsWith:(id)a3
+- (void)_updateCaseStatisticsWith:(id)with
 {
-  v4 = a3;
+  withCopy = with;
   v5 = MEMORY[0x277CBEAA8];
-  [v4 caseOpenedTime];
+  [withCopy caseOpenedTime];
   v6 = [v5 dateWithTimeIntervalSince1970:?];
   if (v6)
   {
-    v7 = [v4 caseDomain];
-    v8 = [v4 caseType];
-    v9 = [v4 caseSubType];
-    v10 = [v4 caseDetectedProcess];
-    -[DiagnosticStatisticsManager _updateDiagnosticCaseUsageForDomain:type:subType:process:lastSeen:dampeningType:](self, "_updateDiagnosticCaseUsageForDomain:type:subType:process:lastSeen:dampeningType:", v7, v8, v9, v10, v6, [v4 dampeningType] != 0);
+    caseDomain = [withCopy caseDomain];
+    caseType = [withCopy caseType];
+    caseSubType = [withCopy caseSubType];
+    caseDetectedProcess = [withCopy caseDetectedProcess];
+    -[DiagnosticStatisticsManager _updateDiagnosticCaseUsageForDomain:type:subType:process:lastSeen:dampeningType:](self, "_updateDiagnosticCaseUsageForDomain:type:subType:process:lastSeen:dampeningType:", caseDomain, caseType, caseSubType, caseDetectedProcess, v6, [withCopy dampeningType] != 0);
   }
 
   else
@@ -371,22 +371,22 @@ void __64__DiagnosticStatisticsManager_getDiagnosticCaseUsageStatistics___block_
   }
 }
 
-- (void)_updateDiagnosticCaseUsageForDomain:(id)a3 type:(id)a4 subType:(id)a5 process:(id)a6 lastSeen:(id)a7 dampeningType:(BOOL)a8
+- (void)_updateDiagnosticCaseUsageForDomain:(id)domain type:(id)type subType:(id)subType process:(id)process lastSeen:(id)seen dampeningType:(BOOL)dampeningType
 {
   v43 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = [(DiagnosticStatisticsManager *)self _retrieveDiagnosticCaseUsageForDomain:v14 type:v15 subType:v16 process:v17];
+  domainCopy = domain;
+  typeCopy = type;
+  subTypeCopy = subType;
+  processCopy = process;
+  seenCopy = seen;
+  v19 = [(DiagnosticStatisticsManager *)self _retrieveDiagnosticCaseUsageForDomain:domainCopy type:typeCopy subType:subTypeCopy process:processCopy];
   if ([v19 count] == 1)
   {
-    v20 = [v19 firstObject];
-    if (v20)
+    firstObject = [v19 firstObject];
+    if (firstObject)
     {
-      v21 = v20;
-      v31 = a8;
+      v21 = firstObject;
+      dampeningTypeCopy = dampeningType;
       v22 = casemanagementLogHandle();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
       {
@@ -395,30 +395,30 @@ void __64__DiagnosticStatisticsManager_getDiagnosticCaseUsageStatistics___block_
         _os_log_impl(&dword_241804000, v22, OS_LOG_TYPE_INFO, "Updating DiagCaseUsage: %@", buf, 0xCu);
       }
 
-      v32 = [v21 lastSeen];
-      v23 = [v21 casesSeen];
-      [v21 setCasesSeen:(v23 + 1)];
-      [v21 setLastSeen:v18];
+      lastSeen = [v21 lastSeen];
+      casesSeen = [v21 casesSeen];
+      [v21 setCasesSeen:(casesSeen + 1)];
+      [v21 setLastSeen:seenCopy];
       [v21 interarrival_mean];
-      if (v23 >= 1)
+      if (casesSeen >= 1)
       {
         v25 = v24;
-        [v18 timeIntervalSinceDate:v32];
+        [seenCopy timeIntervalSinceDate:lastSeen];
         v27 = v26;
-        [MathUtility computeNewMeanFromValue:"computeNewMeanFromValue:currentMean:currentCount:" currentMean:(v23 - 1) currentCount:?];
+        [MathUtility computeNewMeanFromValue:"computeNewMeanFromValue:currentMean:currentCount:" currentMean:(casesSeen - 1) currentCount:?];
         [v21 setInterarrival_mean:?];
-        if (v23 != 1)
+        if (casesSeen != 1)
         {
           [v21 interarrival_var];
-          [MathUtility computeNewVarianceFromValue:(v23 - 1) currentMean:v27 currentCount:v25 currentVariance:v28];
+          [MathUtility computeNewVarianceFromValue:(casesSeen - 1) currentMean:v27 currentCount:v25 currentVariance:v28];
           [v21 setInterarrival_var:?];
         }
       }
 
-      if (!v31)
+      if (!dampeningTypeCopy)
       {
         [v21 setCasesAccepted:[v21 casesAccepted]+ 1];
-        [v21 setLastAccepted:v18];
+        [v21 setLastAccepted:seenCopy];
       }
 
       [(ObjectAnalytics *)self->_caseUsageSpace save];
@@ -435,13 +435,13 @@ void __64__DiagnosticStatisticsManager_getDiagnosticCaseUsageStatistics___block_
       *buf = 134219010;
       v34 = [v19 count];
       v35 = 2112;
-      v36 = v14;
+      v36 = domainCopy;
       v37 = 2112;
-      v38 = v15;
+      v38 = typeCopy;
       v39 = 2112;
-      v40 = v16;
+      v40 = subTypeCopy;
       v41 = 2112;
-      v42 = v17;
+      v42 = processCopy;
       _os_log_impl(&dword_241804000, v29, OS_LOG_TYPE_INFO, "Found %ld DiagCaseUsage objects that matched with (%@, %@, %@, %@)", buf, 0x34u);
     }
   }
@@ -458,15 +458,15 @@ LABEL_16:
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateDailyCaseStatisticsWith:(id)a3
+- (void)_updateDailyCaseStatisticsWith:(id)with
 {
   v42 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  [v4 caseOpenedTime];
+  withCopy = with;
+  [withCopy caseOpenedTime];
   v6 = v5;
   if (v5 >= 100000000.0)
   {
-    v9 = [v4 dampeningType];
+    dampeningType = [withCopy dampeningType];
     v10 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:(86400 * (v6 / 0x15180))];
     v11 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:v6];
     *&buf = 0;
@@ -516,30 +516,30 @@ LABEL_16:
     if (v14)
     {
 LABEL_10:
-      v18 = [v14 lastSeen];
-      v19 = [*(*(&buf + 1) + 40) casesSeen];
-      [*(*(&buf + 1) + 40) setCasesSeen:(v19 + 1)];
+      lastSeen = [v14 lastSeen];
+      casesSeen = [*(*(&buf + 1) + 40) casesSeen];
+      [*(*(&buf + 1) + 40) setCasesSeen:(casesSeen + 1)];
       [*(*(&buf + 1) + 40) setLastSeen:v11];
       [*(*(&buf + 1) + 40) interarrival_mean];
-      if (v19 >= 1)
+      if (casesSeen >= 1)
       {
         v21 = v20;
-        [v11 timeIntervalSinceDate:v18];
+        [v11 timeIntervalSinceDate:lastSeen];
         v23 = v22;
-        [MathUtility computeNewMeanFromValue:"computeNewMeanFromValue:currentMean:currentCount:" currentMean:(v19 - 1) currentCount:?];
+        [MathUtility computeNewMeanFromValue:"computeNewMeanFromValue:currentMean:currentCount:" currentMean:(casesSeen - 1) currentCount:?];
         [*(*(&buf + 1) + 40) setInterarrival_mean:?];
-        if (v19 != 1)
+        if (casesSeen != 1)
         {
           [*(*(&buf + 1) + 40) interarrival_var];
-          [MathUtility computeNewVarianceFromValue:(v19 - 1) currentMean:v23 currentCount:v21 currentVariance:v24];
+          [MathUtility computeNewVarianceFromValue:(casesSeen - 1) currentMean:v23 currentCount:v21 currentVariance:v24];
           [*(*(&buf + 1) + 40) setInterarrival_var:?];
         }
       }
 
-      if (!v9)
+      if (!dampeningType)
       {
-        v25 = [*(*(&buf + 1) + 40) casesAccepted];
-        [*(*(&buf + 1) + 40) setCasesAccepted:(v25 + 1)];
+        casesAccepted = [*(*(&buf + 1) + 40) casesAccepted];
+        [*(*(&buf + 1) + 40) setCasesAccepted:(casesAccepted + 1)];
         [*(*(&buf + 1) + 40) setLastAccepted:v11];
       }
 
@@ -548,12 +548,12 @@ LABEL_10:
 
     else
     {
-      v18 = casemanagementLogHandle();
-      if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
+      lastSeen = casemanagementLogHandle();
+      if (os_log_type_enabled(lastSeen, OS_LOG_TYPE_DEFAULT))
       {
         *v33 = 138412290;
         v34 = v7;
-        _os_log_impl(&dword_241804000, v18, OS_LOG_TYPE_DEFAULT, "Aggregated DiagnosticCaseUsage for case on GMT date %@ is nil.", v33, 0xCu);
+        _os_log_impl(&dword_241804000, lastSeen, OS_LOG_TYPE_DEFAULT, "Aggregated DiagnosticCaseUsage for case on GMT date %@ is nil.", v33, 0xCu);
       }
     }
 
@@ -565,7 +565,7 @@ LABEL_10:
     v7 = casemanagementLogHandle();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      [v4 caseOpenedTime];
+      [withCopy caseOpenedTime];
       LODWORD(buf) = 134217984;
       *(&buf + 4) = v8;
       _os_log_impl(&dword_241804000, v7, OS_LOG_TYPE_ERROR, "DiagnosticCase has an invalid timeStamp! (%.0lf)", &buf, 0xCu);
@@ -605,45 +605,45 @@ void __62__DiagnosticStatisticsManager__updateDailyCaseStatisticsWith___block_in
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_retrieveDiagnosticCaseUsageForDomain:(id)a3 type:(id)a4 subType:(id)a5 process:(id)a6 onOrAfter:(id)a7 create:(BOOL)a8
+- (id)_retrieveDiagnosticCaseUsageForDomain:(id)domain type:(id)type subType:(id)subType process:(id)process onOrAfter:(id)after create:(BOOL)create
 {
-  v8 = a8;
+  createCopy = create;
   v45 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  if ([v14 length] && objc_msgSend(v15, "length"))
+  domainCopy = domain;
+  typeCopy = type;
+  subTypeCopy = subType;
+  processCopy = process;
+  afterCopy = after;
+  if ([domainCopy length] && objc_msgSend(typeCopy, "length"))
   {
-    v34 = v8;
-    v36 = self;
+    v34 = createCopy;
+    selfCopy = self;
     v19 = MEMORY[0x277CBEB18];
-    v20 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K == %@ AND %K == %@", @"domain", v14, @"type", v15];
-    v21 = [v19 arrayWithObjects:{v20, 0}];
+    typeCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K == %@ AND %K == %@", @"domain", domainCopy, @"type", typeCopy];
+    v21 = [v19 arrayWithObjects:{typeCopy, 0}];
 
-    if ([v16 length])
+    if ([subTypeCopy length])
     {
-      v22 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K == %@", @"subtype", v16];
-      [v21 addObject:v22];
+      subTypeCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K == %@", @"subtype", subTypeCopy];
+      [v21 addObject:subTypeCopy];
     }
 
-    if ([v17 length])
+    if ([processCopy length])
     {
-      v23 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K == %@", @"process", v17];
-      [v21 addObject:v23];
+      processCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K == %@", @"process", processCopy];
+      [v21 addObject:processCopy];
     }
 
-    if (v18)
+    if (afterCopy)
     {
-      v24 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K >= %@", @"lastSeen", v18];
-      [v21 addObject:v24];
+      afterCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K >= %@", @"lastSeen", afterCopy];
+      [v21 addObject:afterCopy];
     }
 
-    v35 = v18;
+    v35 = afterCopy;
     v25 = [MEMORY[0x277CCA920] andPredicateWithSubpredicates:v21];
     v26 = [objc_alloc(MEMORY[0x277CCAC98]) initWithKey:@"lastSeen" ascending:0];
-    v27 = [(ObjectAnalytics *)v36->_caseUsageSpace fetchEntitiesFreeForm:v25 sortDesc:v26];
+    v27 = [(ObjectAnalytics *)selfCopy->_caseUsageSpace fetchEntitiesFreeForm:v25 sortDesc:v26];
     if ([v27 count] || !v34)
     {
       v31 = v27;
@@ -655,22 +655,22 @@ void __62__DiagnosticStatisticsManager__updateDailyCaseStatisticsWith___block_in
       if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
       {
         *buf = 138413058;
-        v38 = v14;
+        v38 = domainCopy;
         v39 = 2112;
-        v40 = v15;
+        v40 = typeCopy;
         v41 = 2112;
-        v42 = v16;
+        v42 = subTypeCopy;
         v43 = 2112;
-        v44 = v17;
+        v44 = processCopy;
         _os_log_impl(&dword_241804000, v28, OS_LOG_TYPE_INFO, "Creating a new DiagnosticCaseUsage with domain %@, type %@, subtype %@, process %@.", buf, 0x2Au);
       }
 
       v29 = MEMORY[0x277CBEA60];
-      v30 = [(DiagnosticStatisticsManager *)v36 _createDiagnosticCaseUsageForDomain:v14 type:v15 subType:v16 process:v17];
+      v30 = [(DiagnosticStatisticsManager *)selfCopy _createDiagnosticCaseUsageForDomain:domainCopy type:typeCopy subType:subTypeCopy process:processCopy];
       v31 = [v29 arrayWithObject:v30];
     }
 
-    v18 = v35;
+    afterCopy = v35;
   }
 
   else
@@ -690,20 +690,20 @@ void __62__DiagnosticStatisticsManager__updateDailyCaseStatisticsWith___block_in
   return v31;
 }
 
-- (id)_createDiagnosticCaseUsageForDomain:(id)a3 type:(id)a4 subType:(id)a5 process:(id)a6
+- (id)_createDiagnosticCaseUsageForDomain:(id)domain type:(id)type subType:(id)subType process:(id)process
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(ObjectAnalytics *)self->_caseUsageSpace createEntity];
-  v15 = v14;
-  if (v14)
+  domainCopy = domain;
+  typeCopy = type;
+  subTypeCopy = subType;
+  processCopy = process;
+  createEntity = [(ObjectAnalytics *)self->_caseUsageSpace createEntity];
+  v15 = createEntity;
+  if (createEntity)
   {
-    [v14 setDomain:v10];
-    [v15 setType:v11];
-    [v15 setSubtype:v12];
-    [v15 setProcess:v13];
+    [createEntity setDomain:domainCopy];
+    [v15 setType:typeCopy];
+    [v15 setSubtype:subTypeCopy];
+    [v15 setProcess:processCopy];
   }
 
   return v15;
@@ -711,10 +711,10 @@ void __62__DiagnosticStatisticsManager__updateDailyCaseStatisticsWith___block_in
 
 - (double)_calculateAverageCasesPerDayFromDailyAggregatedStatistics
 {
-  v3 = [MEMORY[0x277CBEAA8] date];
-  [v3 timeIntervalSince1970];
+  date = [MEMORY[0x277CBEAA8] date];
+  [date timeIntervalSince1970];
   v5 = v4;
-  [v3 timeIntervalSince1970];
+  [date timeIntervalSince1970];
   v7 = (v5 + 86400 * (v6 / 0x15180) - v6);
   v8 = [(DiagnosticStatisticsManager *)self _retrieveDiagnosticCaseUsageForDomain:@"DAILY_AGGREGATE" type:@"DAILY_AGGREGATE" subType:@"DAILY_AGGREGATE" process:@"DAILY_AGGREGATE" onOrAfter:0 create:0];
   v17 = 0;
@@ -781,32 +781,32 @@ void __88__DiagnosticStatisticsManager__calculateAverageCasesPerDayFromDailyAggr
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (int64_t)_removeDiagnosticCaseUsageMatchingDomain:(id)a3 type:(id)a4 subType:(id)a5 process:(id)a6
+- (int64_t)_removeDiagnosticCaseUsageMatchingDomain:(id)domain type:(id)type subType:(id)subType process:(id)process
 {
   v26 = *MEMORY[0x277D85DE8];
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  typeCopy = type;
+  subTypeCopy = subType;
+  processCopy = process;
   v13 = MEMORY[0x277CBEB18];
-  v14 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K == %@", @"domain", a3];
-  v15 = [v13 arrayWithObject:v14];
+  domain = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K == %@", @"domain", domain];
+  v15 = [v13 arrayWithObject:domain];
 
-  if ([v10 length])
+  if ([typeCopy length])
   {
-    v16 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K == %@", @"type", v10];
-    [v15 addObject:v16];
+    typeCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K == %@", @"type", typeCopy];
+    [v15 addObject:typeCopy];
   }
 
-  if ([v11 length])
+  if ([subTypeCopy length])
   {
-    v17 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K == %@", @"subtype", v11];
-    [v15 addObject:v17];
+    subTypeCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K == %@", @"subtype", subTypeCopy];
+    [v15 addObject:subTypeCopy];
   }
 
-  if ([v12 length])
+  if ([processCopy length])
   {
-    v18 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K == %@", @"process", v12];
-    [v15 addObject:v18];
+    processCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K == %@", @"process", processCopy];
+    [v15 addObject:processCopy];
   }
 
   v19 = [MEMORY[0x277CCA920] andPredicateWithSubpredicates:v15];
@@ -828,13 +828,13 @@ void __88__DiagnosticStatisticsManager__calculateAverageCasesPerDayFromDailyAggr
 
 - (void)resetDiagnosticCaseUsage
 {
-  v3 = [(DiagnosticStatisticsManager *)self queue];
+  queue = [(DiagnosticStatisticsManager *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __55__DiagnosticStatisticsManager_resetDiagnosticCaseUsage__block_invoke;
   block[3] = &unk_278CEFE88;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 uint64_t __55__DiagnosticStatisticsManager_resetDiagnosticCaseUsage__block_invoke(uint64_t a1)
@@ -851,13 +851,13 @@ uint64_t __55__DiagnosticStatisticsManager_resetDiagnosticCaseUsage__block_invok
 
 - (void)cleanupDiagnosticCaseUsage
 {
-  v3 = [(DiagnosticStatisticsManager *)self queue];
+  queue = [(DiagnosticStatisticsManager *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __57__DiagnosticStatisticsManager_cleanupDiagnosticCaseUsage__block_invoke;
   block[3] = &unk_278CEFE88;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 void __57__DiagnosticStatisticsManager_cleanupDiagnosticCaseUsage__block_invoke(uint64_t a1)

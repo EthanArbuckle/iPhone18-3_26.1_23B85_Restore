@@ -1,39 +1,39 @@
 @interface InvitedUser
-+ (id)predicateForChannel:(id)a3;
-+ (id)predicateForInvitedHandle:(id)a3;
-+ (id)predicateForSenderHandle:(id)a3;
++ (id)predicateForChannel:(id)channel;
++ (id)predicateForInvitedHandle:(id)handle;
++ (id)predicateForSenderHandle:(id)handle;
 @end
 
 @implementation InvitedUser
 
-+ (id)predicateForInvitedHandle:(id)a3
++ (id)predicateForInvitedHandle:(id)handle
 {
   v3 = MEMORY[0x277CCAC30];
-  v4 = a3;
+  handleCopy = handle;
   v5 = +[InvitedUser invitedHandleKeyPath];
-  v6 = [v3 predicateWithFormat:@"%K == %@", v5, v4];
+  handleCopy = [v3 predicateWithFormat:@"%K == %@", v5, handleCopy];
 
-  return v6;
+  return handleCopy;
 }
 
-+ (id)predicateForSenderHandle:(id)a3
++ (id)predicateForSenderHandle:(id)handle
 {
   v3 = MEMORY[0x277CCAC30];
-  v4 = a3;
+  handleCopy = handle;
   v5 = +[InvitedUser senderHandleKeyPath];
-  v6 = [v3 predicateWithFormat:@"%K == %@", v5, v4];
+  handleCopy = [v3 predicateWithFormat:@"%K == %@", v5, handleCopy];
 
-  return v6;
+  return handleCopy;
 }
 
-+ (id)predicateForChannel:(id)a3
++ (id)predicateForChannel:(id)channel
 {
   v3 = MEMORY[0x277CCAC30];
-  v4 = a3;
+  channelCopy = channel;
   v5 = +[InvitedUser channelKeyPath];
-  v6 = [v3 predicateWithFormat:@"%K == %@", v5, v4];
+  channelCopy = [v3 predicateWithFormat:@"%K == %@", v5, channelCopy];
 
-  return v6;
+  return channelCopy;
 }
 
 @end

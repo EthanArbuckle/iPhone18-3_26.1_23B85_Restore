@@ -1,11 +1,11 @@
 @interface ATXHomeScreenPageAppRanker
-- (id)appsInAscendingOrderOfHistoricalUsage:(id)a3;
-- (id)appsInAscendingOrderOfHistoricalUsageForPage:(unint64_t)a3;
+- (id)appsInAscendingOrderOfHistoricalUsage:(id)usage;
+- (id)appsInAscendingOrderOfHistoricalUsageForPage:(unint64_t)page;
 @end
 
 @implementation ATXHomeScreenPageAppRanker
 
-- (id)appsInAscendingOrderOfHistoricalUsageForPage:(unint64_t)a3
+- (id)appsInAscendingOrderOfHistoricalUsageForPage:(unint64_t)page
 {
   v22 = *MEMORY[0x1E69E9840];
   v5 = objc_opt_new();
@@ -33,7 +33,7 @@
         }
 
         v14 = *(*(&v16 + 1) + 8 * i);
-        if ([v14 pageIndex] == a3)
+        if ([v14 pageIndex] == page)
         {
           v12 = [(ATXHomeScreenPageAppRanker *)self appsInAscendingOrderOfHistoricalUsage:v14];
           goto LABEL_12;
@@ -60,10 +60,10 @@ LABEL_12:
   return v12;
 }
 
-- (id)appsInAscendingOrderOfHistoricalUsage:(id)a3
+- (id)appsInAscendingOrderOfHistoricalUsage:(id)usage
 {
-  v3 = [a3 nonFolderAppsOnPage];
-  v4 = [v3 mutableCopy];
+  nonFolderAppsOnPage = [usage nonFolderAppsOnPage];
+  v4 = [nonFolderAppsOnPage mutableCopy];
 
   v5 = objc_opt_new();
   v6 = [objc_alloc(MEMORY[0x1E695DF00]) initWithTimeIntervalSinceNow:-2419200.0];
@@ -72,9 +72,9 @@ LABEL_12:
 
   v9 = BiomeLibrary();
   v10 = [v9 App];
-  v11 = [v10 InFocus];
+  inFocus = [v10 InFocus];
   v12 = [MEMORY[0x1E696AD98] numberWithDouble:v8];
-  v13 = [v11 atx_publisherFromStartTime:v12];
+  v13 = [inFocus atx_publisherFromStartTime:v12];
 
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
@@ -86,17 +86,17 @@ LABEL_12:
   v15 = v4;
   v16 = [v13 sinkWithCompletion:&__block_literal_global_26 receiveInput:v25];
   [v15 minusSet:v14];
-  v17 = [v15 allObjects];
-  v18 = [v17 mutableCopy];
+  allObjects = [v15 allObjects];
+  v18 = [allObjects mutableCopy];
 
-  v19 = [v14 allObjects];
+  allObjects2 = [v14 allObjects];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __68__ATXHomeScreenPageAppRanker_appsInAscendingOrderOfHistoricalUsage___block_invoke_3;
   v23[3] = &unk_1E80C17F0;
   v24 = v14;
   v20 = v14;
-  v21 = [v19 sortedArrayUsingComparator:v23];
+  v21 = [allObjects2 sortedArrayUsingComparator:v23];
   [v18 addObjectsFromArray:v21];
 
   return v18;

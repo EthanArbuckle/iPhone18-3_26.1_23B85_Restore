@@ -1,30 +1,30 @@
 @interface _CNAutocompletePeopleSuggesterPredictionSearchStrategy
-- (_CNAutocompletePeopleSuggesterPredictionSearchStrategy)initWithContactStore:(id)a3;
-- (id)searchResultsForFetchRequest:(id)a3;
+- (_CNAutocompletePeopleSuggesterPredictionSearchStrategy)initWithContactStore:(id)store;
+- (id)searchResultsForFetchRequest:(id)request;
 @end
 
 @implementation _CNAutocompletePeopleSuggesterPredictionSearchStrategy
 
-- (_CNAutocompletePeopleSuggesterPredictionSearchStrategy)initWithContactStore:(id)a3
+- (_CNAutocompletePeopleSuggesterPredictionSearchStrategy)initWithContactStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v10.receiver = self;
   v10.super_class = _CNAutocompletePeopleSuggesterPredictionSearchStrategy;
   v6 = [(_CNAutocompletePeopleSuggesterPredictionSearchStrategy *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_contactStore, a3);
+    objc_storeStrong(&v6->_contactStore, store);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (id)searchResultsForFetchRequest:(id)a3
+- (id)searchResultsForFetchRequest:(id)request
 {
-  v4 = a3;
-  v5 = [[_CNAutocompletePeopleSuggesterPredictionSearchStrategyTask alloc] initWithRequest:v4 contactStore:self->_contactStore];
+  requestCopy = request;
+  v5 = [[_CNAutocompletePeopleSuggesterPredictionSearchStrategyTask alloc] initWithRequest:requestCopy contactStore:self->_contactStore];
 
   v6 = [(_CNAutocompletePeopleSuggesterPredictionSearchStrategyTask *)v5 run:0];
 

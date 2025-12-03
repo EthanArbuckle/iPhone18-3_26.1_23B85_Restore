@@ -1,11 +1,11 @@
 @interface CLSCurationDebugCluster
-- (CLSCurationDebugCluster)initWithDebugItems:(id)a3 reason:(id)a4;
+- (CLSCurationDebugCluster)initWithDebugItems:(id)items reason:(id)reason;
 - (id)allDebugItems;
 - (id)dictionaryRepresentation;
 - (id)timestamp;
-- (void)addDebugClusters:(id)a3;
-- (void)resetWithReason:(id)a3 agent:(id)a4 stage:(id)a5;
-- (void)setDebugClusters:(id)a3;
+- (void)addDebugClusters:(id)clusters;
+- (void)resetWithReason:(id)reason agent:(id)agent stage:(id)stage;
+- (void)setDebugClusters:(id)clusters;
 @end
 
 @implementation CLSCurationDebugCluster
@@ -33,18 +33,18 @@
           objc_enumerationMutation(v3);
         }
 
-        v9 = [*(*(&v25 + 1) + 8 * i) timestamp];
-        v10 = v9;
+        timestamp = [*(*(&v25 + 1) + 8 * i) timestamp];
+        v10 = timestamp;
         if (v6)
         {
-          v11 = [v6 earlierDate:v9];
+          v11 = [v6 earlierDate:timestamp];
 
           v6 = v11;
         }
 
         else
         {
-          v6 = v9;
+          v6 = timestamp;
         }
       }
 
@@ -78,18 +78,18 @@
           objc_enumerationMutation(v12);
         }
 
-        v17 = [*(*(&v21 + 1) + 8 * j) timestamp];
-        v18 = v17;
+        timestamp2 = [*(*(&v21 + 1) + 8 * j) timestamp];
+        v18 = timestamp2;
         if (v6)
         {
-          v19 = [v6 earlierDate:v17];
+          v19 = [v6 earlierDate:timestamp2];
 
           v6 = v19;
         }
 
         else
         {
-          v6 = v17;
+          v6 = timestamp2;
         }
       }
 
@@ -107,12 +107,12 @@
   v61 = *MEMORY[0x277D85DE8];
   v52.receiver = self;
   v52.super_class = CLSCurationDebugCluster;
-  v3 = [(CLSCurationDebugObject *)&v52 dictionaryRepresentation];
-  v4 = [v3 mutableCopy];
+  dictionaryRepresentation = [(CLSCurationDebugObject *)&v52 dictionaryRepresentation];
+  v4 = [dictionaryRepresentation mutableCopy];
 
   v5 = MEMORY[0x277CCABB0];
-  v6 = [(CLSCurationDebugCluster *)self allDebugItems];
-  v7 = [v5 numberWithUnsignedInteger:{objc_msgSend(v6, "count")}];
+  allDebugItems = [(CLSCurationDebugCluster *)self allDebugItems];
+  v7 = [v5 numberWithUnsignedInteger:{objc_msgSend(allDebugItems, "count")}];
   v39 = v4;
   [v4 setObject:v7 forKeyedSubscript:@"totalNumberOfItems"];
 
@@ -220,17 +220,17 @@
             v20 = v34;
           }
 
-          v35 = [v31 dictionaryRepresentation];
-          [v19 addObject:v35];
+          dictionaryRepresentation2 = [v31 dictionaryRepresentation];
+          [v19 addObject:dictionaryRepresentation2];
         }
 
         else
         {
-          v36 = [v30 item];
-          v35 = [v36 clsIdentifier];
-          [v20 addObject:v35];
+          item = [v30 item];
+          dictionaryRepresentation2 = [item clsIdentifier];
+          [v20 addObject:dictionaryRepresentation2];
 
-          v31 = v36;
+          v31 = item;
         }
       }
 
@@ -253,18 +253,18 @@
   return v39;
 }
 
-- (void)resetWithReason:(id)a3 agent:(id)a4 stage:(id)a5
+- (void)resetWithReason:(id)reason agent:(id)agent stage:(id)stage
 {
   v25 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  reasonCopy = reason;
+  agentCopy = agent;
+  stageCopy = stage;
   v23.receiver = self;
   v23.super_class = CLSCurationDebugCluster;
-  [(CLSCurationDebugObject *)&v23 resetWithReason:v8 agent:v9 stage:v10];
-  v11 = [(CLSCurationDebugCluster *)self allDebugItems];
+  [(CLSCurationDebugObject *)&v23 resetWithReason:reasonCopy agent:agentCopy stage:stageCopy];
+  allDebugItems = [(CLSCurationDebugCluster *)self allDebugItems];
   unclusteredDebugItems = self->_unclusteredDebugItems;
-  self->_unclusteredDebugItems = v11;
+  self->_unclusteredDebugItems = allDebugItems;
 
   v21 = 0u;
   v22 = 0u;
@@ -286,7 +286,7 @@
           objc_enumerationMutation(v13);
         }
 
-        [*(*(&v19 + 1) + 8 * v17++) resetWithReason:v8 agent:v9 stage:{v10, v19}];
+        [*(*(&v19 + 1) + 8 * v17++) resetWithReason:reasonCopy agent:agentCopy stage:{stageCopy, v19}];
       }
 
       while (v15 != v17);
@@ -300,10 +300,10 @@
   self->_debugClusters = 0;
 }
 
-- (void)addDebugClusters:(id)a3
+- (void)addDebugClusters:(id)clusters
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  clustersCopy = clusters;
   debugClusters = self->_debugClusters;
   if (debugClusters)
   {
@@ -316,14 +316,14 @@
   }
 
   v7 = v6;
-  [v6 unionSet:v4];
+  [v6 unionSet:clustersCopy];
   objc_storeStrong(&self->_debugClusters, v7);
   v8 = [(NSSet *)self->_unclusteredDebugItems mutableCopy];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v9 = v4;
+  v9 = clustersCopy;
   v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v10)
   {
@@ -339,8 +339,8 @@
           objc_enumerationMutation(v9);
         }
 
-        v14 = [*(*(&v16 + 1) + 8 * v13) allDebugItems];
-        [(NSSet *)v8 minusSet:v14];
+        allDebugItems = [*(*(&v16 + 1) + 8 * v13) allDebugItems];
+        [(NSSet *)v8 minusSet:allDebugItems];
 
         ++v13;
       }
@@ -356,11 +356,11 @@
   self->_unclusteredDebugItems = v8;
 }
 
-- (void)setDebugClusters:(id)a3
+- (void)setDebugClusters:(id)clusters
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
+  clustersCopy = clusters;
+  v5 = clustersCopy;
   if (self->_debugClusters)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
@@ -372,7 +372,7 @@
 
   else
   {
-    v6 = [v4 copy];
+    v6 = [clustersCopy copy];
     debugClusters = self->_debugClusters;
     self->_debugClusters = v6;
 
@@ -397,8 +397,8 @@
             objc_enumerationMutation(v9);
           }
 
-          v14 = [*(*(&v16 + 1) + 8 * v13) allDebugItems];
-          [(NSSet *)v8 minusSet:v14];
+          allDebugItems = [*(*(&v16 + 1) + 8 * v13) allDebugItems];
+          [(NSSet *)v8 minusSet:allDebugItems];
 
           ++v13;
         }
@@ -441,8 +441,8 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v12 + 1) + 8 * i) allDebugItems];
-          [(NSSet *)v4 unionSet:v10];
+          allDebugItems = [*(*(&v12 + 1) + 8 * i) allDebugItems];
+          [(NSSet *)v4 unionSet:allDebugItems];
         }
 
         v7 = [(NSSet *)v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -460,20 +460,20 @@
   return v4;
 }
 
-- (CLSCurationDebugCluster)initWithDebugItems:(id)a3 reason:(id)a4
+- (CLSCurationDebugCluster)initWithDebugItems:(id)items reason:(id)reason
 {
-  v6 = a3;
-  v7 = a4;
+  itemsCopy = items;
+  reasonCopy = reason;
   v12.receiver = self;
   v12.super_class = CLSCurationDebugCluster;
   v8 = [(CLSCurationDebugObject *)&v12 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [itemsCopy copy];
     unclusteredDebugItems = v8->_unclusteredDebugItems;
     v8->_unclusteredDebugItems = v9;
 
-    objc_storeStrong(&v8->_reason, a4);
+    objc_storeStrong(&v8->_reason, reason);
   }
 
   return v8;

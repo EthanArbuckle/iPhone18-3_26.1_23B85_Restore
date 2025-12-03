@@ -1,17 +1,17 @@
 @interface _UIScreenRoutePickerViewController
 - (_UIScreenRoutePickerViewController)init;
-- (_UIScreenRoutePickerViewController)initWithCoder:(id)a3;
-- (id)_presentationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5;
-- (int64_t)adaptivePresentationStyleForPresentationController:(id)a3 traitCollection:(id)a4;
+- (_UIScreenRoutePickerViewController)initWithCoder:(id)coder;
+- (id)_presentationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController;
+- (int64_t)adaptivePresentationStyleForPresentationController:(id)controller traitCollection:(id)collection;
 - (int64_t)modalPresentationStyle;
-- (void)_addCustomChildViewController:(id)a3;
-- (void)_commonInitWithCompletion:(id)a3;
-- (void)_setChildViewController:(id)a3;
+- (void)_addCustomChildViewController:(id)controller;
+- (void)_commonInitWithCompletion:(id)completion;
+- (void)_setChildViewController:(id)controller;
 - (void)dealloc;
 - (void)disconnectRoute;
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3;
-- (void)setCurrentOutputDeviceEnabled:(BOOL)a3;
-- (void)setModalPresentationStyle:(int64_t)a3;
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container;
+- (void)setCurrentOutputDeviceEnabled:(BOOL)enabled;
+- (void)setModalPresentationStyle:(int64_t)style;
 @end
 
 @implementation _UIScreenRoutePickerViewController
@@ -33,9 +33,9 @@
 - (void)dealloc
 {
   v3 = self->_childViewController;
-  v4 = [(_UIResilientRemoteViewContainerViewController *)v3 remoteViewController];
-  v5 = [v4 serviceViewControllerProxy];
-  [v5 _invalidate];
+  remoteViewController = [(_UIResilientRemoteViewContainerViewController *)v3 remoteViewController];
+  serviceViewControllerProxy = [remoteViewController serviceViewControllerProxy];
+  [serviceViewControllerProxy _invalidate];
 
   v6 = dispatch_time(0, 15000000000);
   block[0] = MEMORY[0x1E69E9820];
@@ -51,21 +51,21 @@
   [(UIViewController *)&v8 dealloc];
 }
 
-- (void)_commonInitWithCompletion:(id)a3
+- (void)_commonInitWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = dispatch_semaphore_create(0);
   remoteViewControllerSemaphore = self->_remoteViewControllerSemaphore;
   self->_remoteViewControllerSemaphore = v5;
 
   [(UIViewController *)self _beginDelayingPresentation:0 cancellationHandler:3.0];
-  v7 = [(UIViewController *)self view];
-  [v7 setUserInteractionEnabled:0];
+  view = [(UIViewController *)self view];
+  [view setUserInteractionEnabled:0];
 
   if (_UISolariumEnabled())
   {
-    v8 = [(UIViewController *)self popoverPresentationController];
-    [v8 setDelegate:self];
+    popoverPresentationController = [(UIViewController *)self popoverPresentationController];
+    [popoverPresentationController setDelegate:self];
   }
 
   else
@@ -83,8 +83,8 @@
 
     [(_UIScreenRoutePickerViewController *)self setModalPresentationStyle:[(UIViewController *)v9 modalPresentationStyle]];
     [(UIViewController *)self setModalTransitionStyle:[(UIViewController *)v9 modalTransitionStyle]];
-    v12 = [(UIViewController *)v9 transitioningDelegate];
-    [(UIViewController *)self setTransitioningDelegate:v12];
+    transitioningDelegate = [(UIViewController *)v9 transitioningDelegate];
+    [(UIViewController *)self setTransitioningDelegate:transitioningDelegate];
 
     objc_destroyWeak(&v24);
     objc_destroyWeak(&location);
@@ -99,7 +99,7 @@
   v19 = __64___UIScreenRoutePickerViewController__commonInitWithCompletion___block_invoke_2;
   v20 = &unk_1E710CB60;
   objc_copyWeak(&v22, &location);
-  v15 = v4;
+  v15 = completionCopy;
   v21 = v15;
   v16 = [_UIResilientRemoteViewContainerViewController instantiateWithExtension:v14 completion:&v17];
   [(_UIScreenRoutePickerViewController *)self _setChildViewController:v16, v17, v18, v19, v20];
@@ -110,21 +110,21 @@
   objc_destroyWeak(&location);
 }
 
-- (_UIScreenRoutePickerViewController)initWithCoder:(id)a3
+- (_UIScreenRoutePickerViewController)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = _UIScreenRoutePickerViewController;
-  return [(UIViewController *)&v4 initWithCoder:a3];
+  return [(UIViewController *)&v4 initWithCoder:coder];
 }
 
-- (void)_setChildViewController:(id)a3
+- (void)_setChildViewController:(id)controller
 {
-  v10 = a3;
-  v5 = [(UIViewController *)self->_childViewController view];
-  [v5 removeFromSuperview];
+  controllerCopy = controller;
+  view = [(UIViewController *)self->_childViewController view];
+  [view removeFromSuperview];
 
   [(UIViewController *)self->_childViewController removeFromParentViewController];
-  objc_storeStrong(&self->_childViewController, a3);
+  objc_storeStrong(&self->_childViewController, controller);
   childViewController = self->_childViewController;
   if (childViewController)
   {
@@ -141,16 +141,16 @@
   }
 }
 
-- (void)_addCustomChildViewController:(id)a3
+- (void)_addCustomChildViewController:(id)controller
 {
-  v6 = a3;
-  [v6 willMoveToParentViewController:self];
-  [(UIViewController *)self addChildViewController:v6];
-  v4 = [(UIViewController *)self view];
-  v5 = [v6 view];
-  [v4 addSubview:v5];
+  controllerCopy = controller;
+  [controllerCopy willMoveToParentViewController:self];
+  [(UIViewController *)self addChildViewController:controllerCopy];
+  view = [(UIViewController *)self view];
+  view2 = [controllerCopy view];
+  [view addSubview:view2];
 
-  [v6 didMoveToParentViewController:self];
+  [controllerCopy didMoveToParentViewController:self];
 }
 
 - (void)disconnectRoute
@@ -164,7 +164,7 @@
   dispatch_async(v3, block);
 }
 
-- (void)setCurrentOutputDeviceEnabled:(BOOL)a3
+- (void)setCurrentOutputDeviceEnabled:(BOOL)enabled
 {
   v5 = dispatch_get_global_queue(17, 0);
   v6[0] = MEMORY[0x1E69E9820];
@@ -172,20 +172,20 @@
   v6[2] = __68___UIScreenRoutePickerViewController_setCurrentOutputDeviceEnabled___block_invoke;
   v6[3] = &unk_1E70F35E0;
   v6[4] = self;
-  v7 = a3;
+  enabledCopy = enabled;
   dispatch_async(v5, v6);
 }
 
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container
 {
   v4.receiver = self;
   v4.super_class = _UIScreenRoutePickerViewController;
-  [(UIViewController *)&v4 preferredContentSizeDidChangeForChildContentContainer:a3];
+  [(UIViewController *)&v4 preferredContentSizeDidChangeForChildContentContainer:container];
   [(UIViewController *)self->_childViewController preferredContentSize];
   [(UIViewController *)self setPreferredContentSize:?];
 }
 
-- (int64_t)adaptivePresentationStyleForPresentationController:(id)a3 traitCollection:(id)a4
+- (int64_t)adaptivePresentationStyleForPresentationController:(id)controller traitCollection:(id)collection
 {
   if (self->_alertController)
   {
@@ -198,18 +198,18 @@
   }
 }
 
-- (id)_presentationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5
+- (id)_presentationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController
 {
   if (self->_alertController)
   {
-    v5 = [(UIAlertController *)self->_alertController _presentationControllerForPresentedController:a3 presentingController:a4 sourceController:a5];
+    v5 = [(UIAlertController *)self->_alertController _presentationControllerForPresentedController:controller presentingController:presentingController sourceController:sourceController];
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = _UIScreenRoutePickerViewController;
-    v5 = [(UIViewController *)&v7 _presentationControllerForPresentedController:a3 presentingController:a4 sourceController:a5];
+    v5 = [(UIViewController *)&v7 _presentationControllerForPresentedController:controller presentingController:presentingController sourceController:sourceController];
   }
 
   return v5;
@@ -229,13 +229,13 @@
   }
 }
 
-- (void)setModalPresentationStyle:(int64_t)a3
+- (void)setModalPresentationStyle:(int64_t)style
 {
   if (self->_alertController)
   {
     alertController = self->_alertController;
 
-    [(UIAlertController *)alertController setModalPresentationStyle:a3];
+    [(UIAlertController *)alertController setModalPresentationStyle:style];
   }
 
   else
@@ -244,7 +244,7 @@
     v8 = v4;
     v6.receiver = self;
     v6.super_class = _UIScreenRoutePickerViewController;
-    [(UIViewController *)&v6 setModalPresentationStyle:a3];
+    [(UIViewController *)&v6 setModalPresentationStyle:style];
   }
 }
 

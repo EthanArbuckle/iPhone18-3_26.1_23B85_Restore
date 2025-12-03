@@ -1,22 +1,22 @@
 @interface SBSUIBuddyMultitaskingFlow
 - (OBWelcomeController)viewController;
 - (SBSUIBuddyMultitaskingFlow)init;
-- (SBSUIBuddyMultitaskingFlow)initWithDataSource:(id)a3;
+- (SBSUIBuddyMultitaskingFlow)initWithDataSource:(id)source;
 - (id)_packageURL;
 - (id)buildViewController;
-- (id)makeViewControllerWithCompletion:(id)a3;
+- (id)makeViewControllerWithCompletion:(id)completion;
 - (void)_configureAndLayoutPackageView;
 - (void)_handleContinueButtonAction;
 - (void)_updateInitialSelectedOptionView;
-- (void)setSelectedOption:(int64_t)a3;
-- (void)userDidTapOnMultitaskingOption:(int64_t)a3;
+- (void)setSelectedOption:(int64_t)option;
+- (void)userDidTapOnMultitaskingOption:(int64_t)option;
 @end
 
 @implementation SBSUIBuddyMultitaskingFlow
 
-- (SBSUIBuddyMultitaskingFlow)initWithDataSource:(id)a3
+- (SBSUIBuddyMultitaskingFlow)initWithDataSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   v10.receiver = self;
   v10.super_class = SBSUIBuddyMultitaskingFlow;
   v6 = [(SBSUIBuddyMultitaskingFlow *)&v10 init];
@@ -26,7 +26,7 @@
     sbDefaults = v6->_sbDefaults;
     v6->_sbDefaults = v7;
 
-    objc_storeStrong(&v6->_dataSource, a3);
+    objc_storeStrong(&v6->_dataSource, source);
   }
 
   return v6;
@@ -34,15 +34,15 @@
 
 - (SBSUIBuddyMultitaskingFlow)init
 {
-  v3 = [MEMORY[0x1E69D41F8] sharedInstance];
-  v4 = [(SBSUIBuddyMultitaskingFlow *)self initWithDataSource:v3];
+  mEMORY[0x1E69D41F8] = [MEMORY[0x1E69D41F8] sharedInstance];
+  v4 = [(SBSUIBuddyMultitaskingFlow *)self initWithDataSource:mEMORY[0x1E69D41F8]];
 
   return v4;
 }
 
-- (id)makeViewControllerWithCompletion:(id)a3
+- (id)makeViewControllerWithCompletion:(id)completion
 {
-  [(SBSUIBuddyMultitaskingFlow *)self setCompletionHandler:a3];
+  [(SBSUIBuddyMultitaskingFlow *)self setCompletionHandler:completion];
 
   return [(SBSUIBuddyMultitaskingFlow *)self buildViewController];
 }
@@ -120,8 +120,8 @@
   [(UIStackView *)self->_optionsStackView setAlignment:3];
   [(UIStackView *)self->_optionsStackView setDistribution:1];
   [(UIStackView *)self->_optionsStackView setSpacing:1.17549435e-38];
-  v24 = [v10 contentView];
-  [v24 addSubview:self->_optionsStackView];
+  contentView = [v10 contentView];
+  [contentView addSubview:self->_optionsStackView];
 
   v62 = 0;
   v63 = &v62;
@@ -141,60 +141,60 @@
 
   v26 = v25;
   _Block_object_dispose(&v62, 8);
-  v27 = [v25 boldButton];
+  boldButton = [v25 boldButton];
   continueButton = self->_continueButton;
-  self->_continueButton = v27;
+  self->_continueButton = boldButton;
 
   v29 = self->_continueButton;
-  v30 = [(SBSUIBuddyMultitaskingFlowOptionView *)self->_fullScreenAppsOptionView isSelected]|| [(SBSUIBuddyMultitaskingFlowOptionView *)self->_windowedAppsOptionView isSelected];
-  [(OBTrayButton *)v29 setEnabled:v30];
+  isSelected = [(SBSUIBuddyMultitaskingFlowOptionView *)self->_fullScreenAppsOptionView isSelected]|| [(SBSUIBuddyMultitaskingFlowOptionView *)self->_windowedAppsOptionView isSelected];
+  [(OBTrayButton *)v29 setEnabled:isSelected];
   v31 = self->_continueButton;
   v32 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
   v33 = [v32 localizedStringForKey:@"BUDDY_MULTITASKING_FLOW_CONTINUE_BUTTON_LABEL" value:&stru_1F1D7ED48 table:@"SpringBoardUIServices"];
   [(OBTrayButton *)v31 setTitle:v33 forState:0];
 
   [(OBTrayButton *)self->_continueButton addTarget:self action:sel__handleContinueButtonAction forControlEvents:64];
-  v34 = [v10 buttonTray];
-  [v34 addButton:self->_continueButton];
+  buttonTray = [v10 buttonTray];
+  [buttonTray addButton:self->_continueButton];
 
-  v35 = [MEMORY[0x1E695DF70] array];
-  v36 = [(UIStackView *)self->_optionsStackView leadingAnchor];
-  v37 = [v10 contentView];
-  v38 = [v37 leadingAnchor];
-  v39 = [v36 constraintEqualToAnchor:v38];
-  [v35 addObject:v39];
+  array = [MEMORY[0x1E695DF70] array];
+  leadingAnchor = [(UIStackView *)self->_optionsStackView leadingAnchor];
+  contentView2 = [v10 contentView];
+  leadingAnchor2 = [contentView2 leadingAnchor];
+  v39 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
+  [array addObject:v39];
 
-  v40 = [(UIStackView *)self->_optionsStackView trailingAnchor];
-  v41 = [v10 contentView];
-  v42 = [v41 trailingAnchor];
-  v43 = [v40 constraintEqualToAnchor:v42];
-  [v35 addObject:v43];
+  trailingAnchor = [(UIStackView *)self->_optionsStackView trailingAnchor];
+  contentView3 = [v10 contentView];
+  trailingAnchor2 = [contentView3 trailingAnchor];
+  v43 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
+  [array addObject:v43];
 
-  v44 = [(UIStackView *)self->_optionsStackView bottomAnchor];
-  v45 = [v10 contentView];
-  v46 = [v45 bottomAnchor];
-  v47 = [v44 constraintEqualToAnchor:v46];
-  [v35 addObject:v47];
+  bottomAnchor = [(UIStackView *)self->_optionsStackView bottomAnchor];
+  contentView4 = [v10 contentView];
+  bottomAnchor2 = [contentView4 bottomAnchor];
+  v47 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
+  [array addObject:v47];
 
-  v48 = [(UIStackView *)self->_optionsStackView centerXAnchor];
-  v49 = [v10 contentView];
-  v50 = [v49 centerXAnchor];
-  v51 = [v48 constraintEqualToAnchor:v50];
-  [v35 addObject:v51];
+  centerXAnchor = [(UIStackView *)self->_optionsStackView centerXAnchor];
+  contentView5 = [v10 contentView];
+  centerXAnchor2 = [contentView5 centerXAnchor];
+  v51 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
+  [array addObject:v51];
 
-  v52 = [(SBSUIBuddyMultitaskingFlowOptionView *)self->_fullScreenAppsOptionView heightAnchor];
-  v53 = [(SBSUIBuddyMultitaskingFlowOptionView *)self->_windowedAppsOptionView heightAnchor];
-  v54 = [v52 constraintEqualToAnchor:v53];
-  [v35 addObject:v54];
+  heightAnchor = [(SBSUIBuddyMultitaskingFlowOptionView *)self->_fullScreenAppsOptionView heightAnchor];
+  heightAnchor2 = [(SBSUIBuddyMultitaskingFlowOptionView *)self->_windowedAppsOptionView heightAnchor];
+  v54 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
+  [array addObject:v54];
 
-  [MEMORY[0x1E696ACD8] activateConstraints:v35];
+  [MEMORY[0x1E696ACD8] activateConstraints:array];
 
   return v10;
 }
 
 - (void)_configureAndLayoutPackageView
 {
-  v3 = [(SBSUIBuddyMultitaskingFlow *)self viewController];
+  viewController = [(SBSUIBuddyMultitaskingFlow *)self viewController];
   packageView = self->_packageView;
   if (packageView)
   {
@@ -202,39 +202,39 @@
   }
 
   v5 = [SBCAAutoPlayingPackageView alloc];
-  v6 = [(SBSUIBuddyMultitaskingFlow *)self _packageURL];
-  v7 = [(SBCAAutoPlayingPackageView *)v5 initWithURL:v6 startingState:@"start" endingState:@"return"];
+  _packageURL = [(SBSUIBuddyMultitaskingFlow *)self _packageURL];
+  v7 = [(SBCAAutoPlayingPackageView *)v5 initWithURL:_packageURL startingState:@"start" endingState:@"return"];
   v8 = self->_packageView;
   self->_packageView = v7;
 
   [(SBCAAutoPlayingPackageView *)self->_packageView setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v3 availableContentViewHeight];
+  [viewController availableContentViewHeight];
   v10 = v9;
   [(UIStackView *)self->_optionsStackView frame];
   v12 = (v10 - v11) * 0.75;
   [(SBCAAutoPlayingPackageView *)self->_packageView frame];
   v14 = v12 / v13;
-  v15 = [(SBCAAutoPlayingPackageView *)self->_packageView layer];
-  [v15 setCornerRadius:v14 * 47.0];
+  layer = [(SBCAAutoPlayingPackageView *)self->_packageView layer];
+  [layer setCornerRadius:v14 * 47.0];
 
-  v16 = [(SBCAAutoPlayingPackageView *)self->_packageView layer];
-  [v16 setMasksToBounds:1];
+  layer2 = [(SBCAAutoPlayingPackageView *)self->_packageView layer];
+  [layer2 setMasksToBounds:1];
 
-  v17 = [v3 traitCollection];
-  v18 = [v17 userInterfaceStyle];
+  traitCollection = [viewController traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  v19 = [(SBCAAutoPlayingPackageView *)self->_packageView layer];
-  v20 = v19;
+  layer3 = [(SBCAAutoPlayingPackageView *)self->_packageView layer];
+  v20 = layer3;
   v21 = MEMORY[0x1E6979CE8];
-  if (v18 != 1)
+  if (userInterfaceStyle != 1)
   {
     v21 = MEMORY[0x1E6979CF8];
   }
 
-  [v19 setCompositingFilter:*v21];
+  [layer3 setCompositingFilter:*v21];
 
-  v22 = [(SBCAAutoPlayingPackageView *)self->_packageView layer];
-  if (v18 == 1)
+  layer4 = [(SBCAAutoPlayingPackageView *)self->_packageView layer];
+  if (userInterfaceStyle == 1)
   {
     [MEMORY[0x1E69DC888] blackColor];
   }
@@ -245,50 +245,50 @@
   }
   v23 = ;
   v24 = [v23 colorWithAlphaComponent:0.1];
-  [v22 setBorderColor:{objc_msgSend(v24, "cgColor")}];
+  [layer4 setBorderColor:{objc_msgSend(v24, "cgColor")}];
 
-  v25 = [(SBCAAutoPlayingPackageView *)self->_packageView layer];
-  [v25 setBorderWidth:1.0];
+  layer5 = [(SBCAAutoPlayingPackageView *)self->_packageView layer];
+  [layer5 setBorderWidth:1.0];
 
-  v26 = [v3 presentingViewController];
-  v27 = [v26 view];
-  v28 = [v27 effectiveUserInterfaceLayoutDirection];
+  presentingViewController = [viewController presentingViewController];
+  view = [presentingViewController view];
+  effectiveUserInterfaceLayoutDirection = [view effectiveUserInterfaceLayoutDirection];
 
-  if (v28 == 1)
+  if (effectiveUserInterfaceLayoutDirection == 1)
   {
-    v29 = [(SBCAAutoPlayingPackageView *)self->_packageView layer];
+    layer6 = [(SBCAAutoPlayingPackageView *)self->_packageView layer];
     CATransform3DMakeRotation(&v48, 3.14159265, 0.0, 1.0, 0.0);
-    [v29 setTransform:&v48];
+    [layer6 setTransform:&v48];
   }
 
-  v30 = [v3 contentView];
-  [v30 addSubview:self->_packageView];
+  contentView = [viewController contentView];
+  [contentView addSubview:self->_packageView];
 
-  v31 = [(SBCAAutoPlayingPackageView *)self->_packageView topAnchor];
-  v32 = [v3 contentView];
-  v33 = [v32 topAnchor];
-  v34 = [v31 constraintEqualToAnchor:v33];
+  topAnchor = [(SBCAAutoPlayingPackageView *)self->_packageView topAnchor];
+  contentView2 = [viewController contentView];
+  topAnchor2 = [contentView2 topAnchor];
+  v34 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v34 setActive:1];
 
-  v35 = [(SBCAAutoPlayingPackageView *)self->_packageView bottomAnchor];
-  v36 = [(UIStackView *)self->_optionsStackView topAnchor];
-  v37 = [v35 constraintEqualToAnchor:v36 constant:-25.0];
+  bottomAnchor = [(SBCAAutoPlayingPackageView *)self->_packageView bottomAnchor];
+  topAnchor3 = [(UIStackView *)self->_optionsStackView topAnchor];
+  v37 = [bottomAnchor constraintEqualToAnchor:topAnchor3 constant:-25.0];
   [v37 setActive:1];
 
-  v38 = [(SBCAAutoPlayingPackageView *)self->_packageView centerXAnchor];
-  v39 = [v3 contentView];
-  v40 = [v39 centerXAnchor];
-  v41 = [v38 constraintEqualToAnchor:v40];
+  centerXAnchor = [(SBCAAutoPlayingPackageView *)self->_packageView centerXAnchor];
+  contentView3 = [viewController contentView];
+  centerXAnchor2 = [contentView3 centerXAnchor];
+  v41 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [v41 setActive:1];
 
-  v42 = [(SBCAAutoPlayingPackageView *)self->_packageView heightAnchor];
-  v43 = [v42 constraintEqualToConstant:v12];
+  heightAnchor = [(SBCAAutoPlayingPackageView *)self->_packageView heightAnchor];
+  v43 = [heightAnchor constraintEqualToConstant:v12];
   [v43 setActive:1];
 
   [(SBCAAutoPlayingPackageView *)self->_packageView frame];
   v45 = v14 * v44;
-  v46 = [(SBCAAutoPlayingPackageView *)self->_packageView widthAnchor];
-  v47 = [v46 constraintEqualToConstant:v45];
+  widthAnchor = [(SBCAAutoPlayingPackageView *)self->_packageView widthAnchor];
+  v47 = [widthAnchor constraintEqualToConstant:v45];
   [v47 setActive:1];
 }
 
@@ -305,18 +305,18 @@
     v4 = off_1E78A0668[v3];
   }
 
-  v5 = [(SBSUIBuddyMultitaskingFlow *)self viewController];
-  v6 = [v5 traitCollection];
-  v7 = [v6 userInterfaceStyle];
+  viewController = [(SBSUIBuddyMultitaskingFlow *)self viewController];
+  traitCollection = [viewController traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  if (v7 > 2)
+  if (userInterfaceStyle > 2)
   {
     v8 = 0;
   }
 
   else
   {
-    v8 = off_1E78A0680[v7];
+    v8 = off_1E78A0680[userInterfaceStyle];
   }
 
   v9 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
@@ -333,25 +333,25 @@
   completionHandler = self->_completionHandler;
   if (completionHandler)
   {
-    v4 = [(SBSUIBuddyMultitaskingFlow *)self selectedOption];
+    selectedOption = [(SBSUIBuddyMultitaskingFlow *)self selectedOption];
     v5 = completionHandler[2];
 
-    v5(completionHandler, v4);
+    v5(completionHandler, selectedOption);
   }
 }
 
 - (void)_updateInitialSelectedOptionView
 {
-  v3 = [(SBSBuddyMultitaskingFlow *)self->_dataSource userPreviouslySelectedMultitaskingOptionInViewController];
+  userPreviouslySelectedMultitaskingOptionInViewController = [(SBSBuddyMultitaskingFlow *)self->_dataSource userPreviouslySelectedMultitaskingOptionInViewController];
 
-  if (v3)
+  if (userPreviouslySelectedMultitaskingOptionInViewController)
   {
-    v4 = [(SBSBuddyMultitaskingFlow *)self->_dataSource userPreviouslySelectedMultitaskingOptionInViewController];
-    v5 = [v4 integerValue];
+    userPreviouslySelectedMultitaskingOptionInViewController2 = [(SBSBuddyMultitaskingFlow *)self->_dataSource userPreviouslySelectedMultitaskingOptionInViewController];
+    integerValue = [userPreviouslySelectedMultitaskingOptionInViewController2 integerValue];
 
 LABEL_9:
 
-    [(SBSUIBuddyMultitaskingFlow *)self setSelectedOption:v5];
+    [(SBSUIBuddyMultitaskingFlow *)self setSelectedOption:integerValue];
     return;
   }
 
@@ -359,23 +359,23 @@ LABEL_9:
   [(SBSUIBuddyMultitaskingFlow *)self _currentDeviceMemorySizeInGigabytes];
   if (v7 >= 8.0 && v6)
   {
-    v5 = 1;
+    integerValue = 1;
     goto LABEL_9;
   }
 }
 
-- (void)setSelectedOption:(int64_t)a3
+- (void)setSelectedOption:(int64_t)option
 {
-  self->_selectedOption = a3;
-  [(SBSUIBuddyMultitaskingFlowOptionView *)self->_fullScreenAppsOptionView setSelected:a3 == 0];
+  self->_selectedOption = option;
+  [(SBSUIBuddyMultitaskingFlowOptionView *)self->_fullScreenAppsOptionView setSelected:option == 0];
   windowedAppsOptionView = self->_windowedAppsOptionView;
 
-  [(SBSUIBuddyMultitaskingFlowOptionView *)windowedAppsOptionView setSelected:a3 == 1];
+  [(SBSUIBuddyMultitaskingFlowOptionView *)windowedAppsOptionView setSelected:option == 1];
 }
 
-- (void)userDidTapOnMultitaskingOption:(int64_t)a3
+- (void)userDidTapOnMultitaskingOption:(int64_t)option
 {
-  [(SBSUIBuddyMultitaskingFlow *)self setSelectedOption:a3];
+  [(SBSUIBuddyMultitaskingFlow *)self setSelectedOption:option];
   [(SBSUIBuddyMultitaskingFlow *)self _configureAndLayoutPackageView];
   dataSource = self->_dataSource;
   v5 = [MEMORY[0x1E696AD98] numberWithInteger:{-[SBSUIBuddyMultitaskingFlow selectedOption](self, "selectedOption")}];

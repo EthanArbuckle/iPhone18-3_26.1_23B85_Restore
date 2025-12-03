@@ -1,9 +1,9 @@
 @interface _UIVisualEffectViewEntry
-- (BOOL)isSameTypeOfEffect:(id)a3;
+- (BOOL)isSameTypeOfEffect:(id)effect;
 - (NSString)description;
 - (id)copyForTransitionOut;
-- (id)copyForTransitionToEffect:(id)a3;
-- (void)applyEffectAsRequested:(BOOL)a3 toView:(id)a4;
+- (id)copyForTransitionToEffect:(id)effect;
+- (void)applyEffectAsRequested:(BOOL)requested toView:(id)view;
 @end
 
 @implementation _UIVisualEffectViewEntry
@@ -15,31 +15,31 @@
   return [(_UIVisualEffectViewReversingEntry *)v3 initWithViewEntry:self];
 }
 
-- (void)applyEffectAsRequested:(BOOL)a3 toView:(id)a4
+- (void)applyEffectAsRequested:(BOOL)requested toView:(id)view
 {
-  if (a3)
+  if (requested)
   {
-    [(_UIVisualEffectViewEntry *)self applyRequestedEffectToView:a4];
+    [(_UIVisualEffectViewEntry *)self applyRequestedEffectToView:view];
   }
 
   else
   {
-    [(_UIVisualEffectViewEntry *)self applyIdentityEffectToView:a4];
+    [(_UIVisualEffectViewEntry *)self applyIdentityEffectToView:view];
   }
 }
 
-- (BOOL)isSameTypeOfEffect:(id)a3
+- (BOOL)isSameTypeOfEffect:(id)effect
 {
-  v3 = a3;
-  v4 = [v3 isMemberOfClass:objc_opt_class()];
+  effectCopy = effect;
+  v4 = [effectCopy isMemberOfClass:objc_opt_class()];
 
   return v4;
 }
 
-- (id)copyForTransitionToEffect:(id)a3
+- (id)copyForTransitionToEffect:(id)effect
 {
-  v4 = a3;
-  v5 = [[_UIVisualEffectViewTransitioningEntry alloc] initWithSourceEntry:self destinationEntry:v4];
+  effectCopy = effect;
+  v5 = [[_UIVisualEffectViewTransitioningEntry alloc] initWithSourceEntry:self destinationEntry:effectCopy];
 
   return v5;
 }

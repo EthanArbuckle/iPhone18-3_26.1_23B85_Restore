@@ -1,32 +1,32 @@
 @interface PKPushRegistry
 + (id)_pushTypeToMachServiceName;
 + (void)_assertIfCallKitNotLinked;
-- (BOOL)_selfTaskHasEntitlement:(__CFString *)a3;
+- (BOOL)_selfTaskHasEntitlement:(__CFString *)entitlement;
 - (NSData)pushTokenForType:(PKPushType)type;
 - (NSMutableDictionary)pushTypeToConnection;
 - (NSMutableDictionary)pushTypeToToken;
 - (NSSet)desiredPushTypes;
 - (PKPushRegistry)initWithQueue:(dispatch_queue_t)queue;
-- (id)_createConnectionForPushType:(id)a3;
+- (id)_createConnectionForPushType:(id)type;
 - (id)delegate;
 - (void)_noteIncomingCallReported;
-- (void)_registerForPushType:(id)a3;
-- (void)_renewConnectionForPushTypeIfRegistered:(id)a3;
+- (void)_registerForPushType:(id)type;
+- (void)_renewConnectionForPushTypeIfRegistered:(id)registered;
 - (void)_terminateAppIfThereAreUnhandledVoIPPushes;
-- (void)_unregisterForPushType:(id)a3;
-- (void)complicationPayloadReceived:(id)a3;
+- (void)_unregisterForPushType:(id)type;
+- (void)complicationPayloadReceived:(id)received;
 - (void)complicationRegistrationFailed;
-- (void)complicationRegistrationSucceededWithDeviceToken:(id)a3;
+- (void)complicationRegistrationSucceededWithDeviceToken:(id)token;
 - (void)dealloc;
-- (void)fileProviderPayloadReceived:(id)a3;
+- (void)fileProviderPayloadReceived:(id)received;
 - (void)fileProviderRegistrationFailed;
-- (void)fileProviderRegistrationSucceededWithDeviceToken:(id)a3;
-- (void)remoteUserNotificationPayloadReceived:(id)a3 completionHandler:(id)a4;
-- (void)remoteUserNotificationRegistrationSucceededWithDeviceToken:(id)a3;
+- (void)fileProviderRegistrationSucceededWithDeviceToken:(id)token;
+- (void)remoteUserNotificationPayloadReceived:(id)received completionHandler:(id)handler;
+- (void)remoteUserNotificationRegistrationSucceededWithDeviceToken:(id)token;
 - (void)setDesiredPushTypes:(NSSet *)desiredPushTypes;
-- (void)voipPayloadReceived:(id)a3 mustPostCall:(BOOL)a4 withCompletionHandler:(id)a5;
+- (void)voipPayloadReceived:(id)received mustPostCall:(BOOL)call withCompletionHandler:(id)handler;
 - (void)voipRegistrationFailed;
-- (void)voipRegistrationSucceededWithDeviceToken:(id)a3;
+- (void)voipRegistrationSucceededWithDeviceToken:(id)token;
 @end
 
 @implementation PKPushRegistry
@@ -37,9 +37,9 @@
   pushTypeToToken = self->_pushTypeToToken;
   if (!pushTypeToToken)
   {
-    v4 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v5 = self->_pushTypeToToken;
-    self->_pushTypeToToken = v4;
+    self->_pushTypeToToken = dictionary;
 
     pushTypeToToken = self->_pushTypeToToken;
   }
@@ -53,9 +53,9 @@
   pushTypeToConnection = self->_pushTypeToConnection;
   if (!pushTypeToConnection)
   {
-    v4 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v5 = self->_pushTypeToConnection;
-    self->_pushTypeToConnection = v4;
+    self->_pushTypeToConnection = dictionary;
 
     pushTypeToConnection = self->_pushTypeToConnection;
   }
@@ -144,8 +144,8 @@
     v20 = &unk_278B54EF8;
     objc_copyWeak(&v21, &location);
     notify_register_dispatch("com.apple.pushkit.launch.fileprovider", &v5->_fileProviderToken, v14, &v17);
-    v15 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v15 addObserver:v5 selector:sel__noteIncomingCallReported name:@"PKPushIncomingCallReportedNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v5 selector:sel__noteIncomingCallReported name:@"PKPushIncomingCallReportedNotification" object:0];
 
     objc_destroyWeak(&v21);
     objc_destroyWeak(&v23);
@@ -174,17 +174,17 @@ void __32__PKPushRegistry_initWithQueue___block_invoke_3(uint64_t a1)
   [WeakRetained _renewConnectionForPushTypeIfRegistered:@"PKPushTypeFileProvider"];
 }
 
-- (void)voipRegistrationSucceededWithDeviceToken:(id)a3
+- (void)voipRegistrationSucceededWithDeviceToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   ivarQueue = self->_ivarQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __59__PKPushRegistry_voipRegistrationSucceededWithDeviceToken___block_invoke;
   v7[3] = &unk_278B54DC0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = tokenCopy;
+  v6 = tokenCopy;
   dispatch_async(ivarQueue, v7);
 }
 
@@ -215,21 +215,21 @@ void __59__PKPushRegistry_voipRegistrationSucceededWithDeviceToken___block_invok
   [v2 pushRegistry:*(a1 + 40) didUpdatePushCredentials:v3 forType:@"PKPushTypeVoIP"];
 }
 
-- (void)voipPayloadReceived:(id)a3 mustPostCall:(BOOL)a4 withCompletionHandler:(id)a5
+- (void)voipPayloadReceived:(id)received mustPostCall:(BOOL)call withCompletionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  receivedCopy = received;
+  handlerCopy = handler;
   delegateQueue = self->_delegateQueue;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __73__PKPushRegistry_voipPayloadReceived_mustPostCall_withCompletionHandler___block_invoke;
   v13[3] = &unk_278B54F20;
-  v16 = a4;
+  callCopy = call;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
+  v14 = receivedCopy;
+  v15 = handlerCopy;
+  v11 = handlerCopy;
+  v12 = receivedCopy;
   dispatch_async(delegateQueue, v13);
 }
 
@@ -307,17 +307,17 @@ void __40__PKPushRegistry_voipRegistrationFailed__block_invoke(uint64_t a1)
   }
 }
 
-- (void)complicationRegistrationSucceededWithDeviceToken:(id)a3
+- (void)complicationRegistrationSucceededWithDeviceToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   ivarQueue = self->_ivarQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __67__PKPushRegistry_complicationRegistrationSucceededWithDeviceToken___block_invoke;
   v7[3] = &unk_278B54DC0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = tokenCopy;
+  v6 = tokenCopy;
   dispatch_async(ivarQueue, v7);
 }
 
@@ -348,17 +348,17 @@ void __67__PKPushRegistry_complicationRegistrationSucceededWithDeviceToken___blo
   [v2 pushRegistry:*(a1 + 40) didUpdatePushCredentials:v3 forType:@"PKPushTypeComplication"];
 }
 
-- (void)complicationPayloadReceived:(id)a3
+- (void)complicationPayloadReceived:(id)received
 {
-  v4 = a3;
+  receivedCopy = received;
   delegateQueue = self->_delegateQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __46__PKPushRegistry_complicationPayloadReceived___block_invoke;
   v7[3] = &unk_278B54DC0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = receivedCopy;
+  selfCopy = self;
+  v6 = receivedCopy;
   dispatch_async(delegateQueue, v7);
 }
 
@@ -413,17 +413,17 @@ void __48__PKPushRegistry_complicationRegistrationFailed__block_invoke(uint64_t 
   }
 }
 
-- (void)fileProviderRegistrationSucceededWithDeviceToken:(id)a3
+- (void)fileProviderRegistrationSucceededWithDeviceToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   ivarQueue = self->_ivarQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __67__PKPushRegistry_fileProviderRegistrationSucceededWithDeviceToken___block_invoke;
   v7[3] = &unk_278B54DC0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = tokenCopy;
+  v6 = tokenCopy;
   dispatch_async(ivarQueue, v7);
 }
 
@@ -454,17 +454,17 @@ void __67__PKPushRegistry_fileProviderRegistrationSucceededWithDeviceToken___blo
   [v2 pushRegistry:*(a1 + 40) didUpdatePushCredentials:v3 forType:@"PKPushTypeFileProvider"];
 }
 
-- (void)fileProviderPayloadReceived:(id)a3
+- (void)fileProviderPayloadReceived:(id)received
 {
-  v4 = a3;
+  receivedCopy = received;
   delegateQueue = self->_delegateQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __46__PKPushRegistry_fileProviderPayloadReceived___block_invoke;
   v7[3] = &unk_278B54DC0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = receivedCopy;
+  selfCopy = self;
+  v6 = receivedCopy;
   dispatch_async(delegateQueue, v7);
 }
 
@@ -519,17 +519,17 @@ void __48__PKPushRegistry_fileProviderRegistrationFailed__block_invoke(uint64_t 
   }
 }
 
-- (void)remoteUserNotificationRegistrationSucceededWithDeviceToken:(id)a3
+- (void)remoteUserNotificationRegistrationSucceededWithDeviceToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   ivarQueue = self->_ivarQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __77__PKPushRegistry_remoteUserNotificationRegistrationSucceededWithDeviceToken___block_invoke;
   v7[3] = &unk_278B54DC0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = tokenCopy;
+  v6 = tokenCopy;
   dispatch_async(ivarQueue, v7);
 }
 
@@ -560,20 +560,20 @@ void __77__PKPushRegistry_remoteUserNotificationRegistrationSucceededWithDeviceT
   [v2 pushRegistry:*(a1 + 40) didUpdatePushCredentials:v3 forType:@"PKPushTypeUserNotifications"];
 }
 
-- (void)remoteUserNotificationPayloadReceived:(id)a3 completionHandler:(id)a4
+- (void)remoteUserNotificationPayloadReceived:(id)received completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  receivedCopy = received;
+  handlerCopy = handler;
   delegateQueue = self->_delegateQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __74__PKPushRegistry_remoteUserNotificationPayloadReceived_completionHandler___block_invoke;
   block[3] = &unk_278B54D98;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = receivedCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = receivedCopy;
   dispatch_async(delegateQueue, block);
 }
 
@@ -594,18 +594,18 @@ void __74__PKPushRegistry_remoteUserNotificationPayloadReceived_completionHandle
   v4 = dlopen("/System/Library/Frameworks/CallKit.framework/CallKit", 16);
   if (dyld_program_sdk_at_least() && !v4)
   {
-    v5 = [MEMORY[0x277CCA890] currentHandler];
-    [v5 handleFailureInMethod:a2 object:a1 file:@"PKPushRegistry.m" lineNumber:304 description:@"PushKit apps that use VoIP push must link the CallKit framework."];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PKPushRegistry.m" lineNumber:304 description:@"PushKit apps that use VoIP push must link the CallKit framework."];
   }
 }
 
-- (BOOL)_selfTaskHasEntitlement:(__CFString *)a3
+- (BOOL)_selfTaskHasEntitlement:(__CFString *)entitlement
 {
   v4 = SecTaskCreateFromSelf(0);
   v5 = v4;
   if (v4)
   {
-    v6 = SecTaskCopyValueForEntitlement(v4, a3, 0);
+    v6 = SecTaskCopyValueForEntitlement(v4, entitlement, 0);
     CFRelease(v5);
     if (v6)
     {
@@ -636,8 +636,8 @@ void __74__PKPushRegistry_remoteUserNotificationPayloadReceived_completionHandle
     }
 
     NSLog(&cfstr_AppsRecevingVo.isa);
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"PKPushRegistry.m" lineNumber:349 description:@"Killing app because it never posted an incoming call to the system after receiving a PushKit VoIP push."];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PKPushRegistry.m" lineNumber:349 description:@"Killing app because it never posted an incoming call to the system after receiving a PushKit VoIP push."];
   }
 }
 
@@ -660,53 +660,53 @@ uint64_t __43__PKPushRegistry__noteIncomingCallReported__block_invoke(uint64_t a
   return result;
 }
 
-- (void)_registerForPushType:(id)a3
+- (void)_registerForPushType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   dispatch_assert_queue_V2(self->_ivarQueue);
-  v5 = [(PKPushRegistry *)self pushTypeToConnection];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  pushTypeToConnection = [(PKPushRegistry *)self pushTypeToConnection];
+  v6 = [pushTypeToConnection objectForKeyedSubscript:typeCopy];
 
   if (!v6)
   {
-    if ([v4 isEqualToString:@"PKPushTypeUserNotifications"])
+    if ([typeCopy isEqualToString:@"PKPushTypeUserNotifications"])
     {
       v6 = 0;
     }
 
     else
     {
-      v6 = [(PKPushRegistry *)self _createConnectionForPushType:v4];
-      v7 = [(PKPushRegistry *)self pushTypeToConnection];
-      [v7 setObject:v6 forKeyedSubscript:v4];
+      v6 = [(PKPushRegistry *)self _createConnectionForPushType:typeCopy];
+      pushTypeToConnection2 = [(PKPushRegistry *)self pushTypeToConnection];
+      [pushTypeToConnection2 setObject:v6 forKeyedSubscript:typeCopy];
     }
   }
 
-  if ([v4 isEqualToString:@"PKPushTypeVoIP"])
+  if ([typeCopy isEqualToString:@"PKPushTypeVoIP"])
   {
     +[PKPushRegistry _assertIfCallKitNotLinked];
-    v8 = [v6 remoteObjectProxy];
-    [v8 voipRegister];
+    remoteObjectProxy = [v6 remoteObjectProxy];
+    [remoteObjectProxy voipRegister];
 LABEL_11:
 
     goto LABEL_12;
   }
 
-  if ([v4 isEqualToString:@"PKPushTypeComplication"])
+  if ([typeCopy isEqualToString:@"PKPushTypeComplication"])
   {
-    v8 = [v6 remoteObjectProxy];
-    [v8 complicationRegister];
+    remoteObjectProxy = [v6 remoteObjectProxy];
+    [remoteObjectProxy complicationRegister];
     goto LABEL_11;
   }
 
-  if ([v4 isEqualToString:@"PKPushTypeFileProvider"])
+  if ([typeCopy isEqualToString:@"PKPushTypeFileProvider"])
   {
-    v8 = [v6 remoteObjectProxy];
-    [v8 fileProviderRegister];
+    remoteObjectProxy = [v6 remoteObjectProxy];
+    [remoteObjectProxy fileProviderRegister];
     goto LABEL_11;
   }
 
-  if ([v4 isEqualToString:@"PKPushTypeUserNotifications"])
+  if ([typeCopy isEqualToString:@"PKPushTypeUserNotifications"])
   {
     v9 = +[PKUserNotificationsRemoteNotificationServiceConnection sharedInstance];
     v10[0] = MEMORY[0x277D85DD0];
@@ -752,15 +752,15 @@ void __39__PKPushRegistry__registerForPushType___block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)_unregisterForPushType:(id)a3
+- (void)_unregisterForPushType:(id)type
 {
-  v4 = a3;
-  if (v4)
+  typeCopy = type;
+  if (typeCopy)
   {
-    v13 = v4;
+    v13 = typeCopy;
     dispatch_assert_queue_V2(self->_ivarQueue);
-    v5 = [(PKPushRegistry *)self pushTypeToConnection];
-    v6 = [v5 objectForKeyedSubscript:v13];
+    pushTypeToConnection = [(PKPushRegistry *)self pushTypeToConnection];
+    v6 = [pushTypeToConnection objectForKeyedSubscript:v13];
 
     v7 = v13;
     if (!v6)
@@ -773,8 +773,8 @@ void __39__PKPushRegistry__registerForPushType___block_invoke_2(uint64_t a1)
       else
       {
         v6 = [(PKPushRegistry *)self _createConnectionForPushType:v13];
-        v8 = [(PKPushRegistry *)self pushTypeToConnection];
-        [v8 setObject:v6 forKeyedSubscript:v13];
+        pushTypeToConnection2 = [(PKPushRegistry *)self pushTypeToConnection];
+        [pushTypeToConnection2 setObject:v6 forKeyedSubscript:v13];
       }
 
       v7 = v13;
@@ -782,20 +782,20 @@ void __39__PKPushRegistry__registerForPushType___block_invoke_2(uint64_t a1)
 
     if ([v7 isEqualToString:@"PKPushTypeVoIP"])
     {
-      v9 = [v6 remoteObjectProxy];
-      [v9 voipUnregister];
+      remoteObjectProxy = [v6 remoteObjectProxy];
+      [remoteObjectProxy voipUnregister];
     }
 
     else if ([v13 isEqualToString:@"PKPushTypeComplication"])
     {
-      v9 = [v6 remoteObjectProxy];
-      [v9 complicationUnregister];
+      remoteObjectProxy = [v6 remoteObjectProxy];
+      [remoteObjectProxy complicationUnregister];
     }
 
     else if ([v13 isEqualToString:@"PKPushTypeFileProvider"])
     {
-      v9 = [v6 remoteObjectProxy];
-      [v9 fileProviderUnregister];
+      remoteObjectProxy = [v6 remoteObjectProxy];
+      [remoteObjectProxy fileProviderUnregister];
     }
 
     else
@@ -803,19 +803,19 @@ void __39__PKPushRegistry__registerForPushType___block_invoke_2(uint64_t a1)
       if (![v13 isEqualToString:@"PKPushTypeUserNotifications"])
       {
 LABEL_16:
-        v10 = [(PKPushRegistry *)self pushTypeToConnection];
-        v11 = [v10 objectForKeyedSubscript:v13];
+        pushTypeToConnection3 = [(PKPushRegistry *)self pushTypeToConnection];
+        v11 = [pushTypeToConnection3 objectForKeyedSubscript:v13];
         [v11 invalidate];
 
-        v12 = [(PKPushRegistry *)self pushTypeToConnection];
-        [v12 removeObjectForKey:v13];
+        pushTypeToConnection4 = [(PKPushRegistry *)self pushTypeToConnection];
+        [pushTypeToConnection4 removeObjectForKey:v13];
 
-        v4 = v13;
+        typeCopy = v13;
         goto LABEL_17;
       }
 
-      v9 = +[PKUserNotificationsRemoteNotificationServiceConnection sharedInstance];
-      [v9 unregisterPushRegistry:self];
+      remoteObjectProxy = +[PKUserNotificationsRemoteNotificationServiceConnection sharedInstance];
+      [remoteObjectProxy unregisterPushRegistry:self];
     }
 
     goto LABEL_16;
@@ -824,28 +824,28 @@ LABEL_16:
 LABEL_17:
 }
 
-- (id)_createConnectionForPushType:(id)a3
+- (id)_createConnectionForPushType:(id)type
 {
-  v4 = a3;
-  v5 = [objc_opt_class() _pushTypeToMachServiceName];
-  v6 = v5;
-  if (!v5)
+  typeCopy = type;
+  _pushTypeToMachServiceName = [objc_opt_class() _pushTypeToMachServiceName];
+  v6 = _pushTypeToMachServiceName;
+  if (!_pushTypeToMachServiceName)
   {
     v8 = 0;
     goto LABEL_14;
   }
 
-  v7 = [v5 objectForKeyedSubscript:v4];
+  v7 = [_pushTypeToMachServiceName objectForKeyedSubscript:typeCopy];
   if (v7)
   {
     v8 = [objc_alloc(MEMORY[0x277CCAE80]) initWithMachServiceName:v7 options:4096];
-    if ([v4 isEqualToString:@"PKPushTypeVoIP"])
+    if ([typeCopy isEqualToString:@"PKPushTypeVoIP"])
     {
       v9 = &protocolRef_PKVoIPXPCClient;
       v10 = &protocolRef_PKVoIPXPCServer;
     }
 
-    else if ([v4 isEqualToString:@"PKPushTypeComplication"])
+    else if ([typeCopy isEqualToString:@"PKPushTypeComplication"])
     {
       v9 = &protocolRef_PKComplicationXPCClient;
       v10 = &protocolRef_PKComplicationXPCServer;
@@ -853,7 +853,7 @@ LABEL_17:
 
     else
     {
-      if (![v4 isEqualToString:@"PKPushTypeFileProvider"])
+      if (![typeCopy isEqualToString:@"PKPushTypeFileProvider"])
       {
 LABEL_12:
         [v8 setExportedObject:self];
@@ -882,23 +882,23 @@ LABEL_14:
   return v8;
 }
 
-- (void)_renewConnectionForPushTypeIfRegistered:(id)a3
+- (void)_renewConnectionForPushTypeIfRegistered:(id)registered
 {
-  v9 = a3;
+  registeredCopy = registered;
   dispatch_assert_queue_V2(self->_ivarQueue);
-  v4 = [(PKPushRegistry *)self pushTypeToConnection];
-  v5 = [v4 objectForKeyedSubscript:v9];
+  pushTypeToConnection = [(PKPushRegistry *)self pushTypeToConnection];
+  v5 = [pushTypeToConnection objectForKeyedSubscript:registeredCopy];
 
   if (v5)
   {
-    v6 = [(PKPushRegistry *)self pushTypeToConnection];
-    v7 = [v6 objectForKeyedSubscript:v9];
+    pushTypeToConnection2 = [(PKPushRegistry *)self pushTypeToConnection];
+    v7 = [pushTypeToConnection2 objectForKeyedSubscript:registeredCopy];
     [v7 invalidate];
 
-    v8 = [(PKPushRegistry *)self pushTypeToConnection];
-    [v8 removeObjectForKey:v9];
+    pushTypeToConnection3 = [(PKPushRegistry *)self pushTypeToConnection];
+    [pushTypeToConnection3 removeObjectForKey:registeredCopy];
 
-    [(PKPushRegistry *)self _registerForPushType:v9];
+    [(PKPushRegistry *)self _registerForPushType:registeredCopy];
   }
 }
 
@@ -911,7 +911,7 @@ LABEL_14:
   v7[2] = __38__PKPushRegistry_setDesiredPushTypes___block_invoke;
   v7[3] = &unk_278B54DC0;
   v8 = v4;
-  v9 = self;
+  selfCopy = self;
   v6 = v4;
   dispatch_sync(ivarQueue, v7);
 }

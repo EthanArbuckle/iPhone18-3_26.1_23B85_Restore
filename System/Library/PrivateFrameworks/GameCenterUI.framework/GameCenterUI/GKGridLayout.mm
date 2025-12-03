@@ -1,83 +1,83 @@
 @interface GKGridLayout
 - (BOOL)_areWePortrait;
-- (BOOL)shouldSlideInSupplementaryElementOfKind:(id)a3 forUpdateItem:(id)a4 atIndexPath:(id)a5;
-- (BOOL)shouldSlideOutSupplementaryElementOfKind:(id)a3 forUpdateItem:(id)a4 atIndexPath:(id)a5;
+- (BOOL)shouldSlideInSupplementaryElementOfKind:(id)kind forUpdateItem:(id)item atIndexPath:(id)path;
+- (BOOL)shouldSlideOutSupplementaryElementOfKind:(id)kind forUpdateItem:(id)item atIndexPath:(id)path;
 - (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)result;
-- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)result withScrollingVelocity:(CGPoint)a4;
+- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)result withScrollingVelocity:(CGPoint)velocity;
 - (CGRect)layoutBounds;
-- (CGSize)_sizeAdjustedForTabBarSettingsBasedOnSize:(CGSize)a3;
+- (CGSize)_sizeAdjustedForTabBarSettingsBasedOnSize:(CGSize)size;
 - (CGSize)collectionViewContentSize;
 - (CGSize)laidOutContentSize;
 - (CGSize)minimumLaidOutContentSize;
 - (CGSize)oldLaidOutContentSize;
 - (GKGridLayout)init;
 - (GKSectionMetrics)defaultSectionMetricsInternal;
-- (double)applyBottomPinningToAttributes:(id)a3 minY:(double)a4 maxY:(double)a5;
-- (double)applyTopPinningToAttributes:(id)a3 minY:(double)a4 maxY:(double)a5;
-- (double)calculatedBottomPaddingForSection:(int64_t)a3;
-- (double)layoutBottomPinningAttributes:(id)a3 minY:(double)a4 maxY:(double)a5;
-- (double)layoutTopPinningAttributes:(id)a3 minY:(double)a4 maxY:(double)a5;
+- (double)applyBottomPinningToAttributes:(id)attributes minY:(double)y maxY:(double)maxY;
+- (double)applyTopPinningToAttributes:(id)attributes minY:(double)y maxY:(double)maxY;
+- (double)calculatedBottomPaddingForSection:(int64_t)section;
+- (double)layoutBottomPinningAttributes:(id)attributes minY:(double)y maxY:(double)maxY;
+- (double)layoutTopPinningAttributes:(id)attributes minY:(double)y maxY:(double)maxY;
 - (double)scale;
-- (double)yOffsetForSection:(int64_t)a3;
+- (double)yOffsetForSection:(int64_t)section;
 - (double)yOffsetForSlidingUpdate;
-- (id)_animationForReusableView:(id)a3 toLayoutAttributes:(id)a4 type:(unint64_t)a5;
-- (id)_existingPresentationDataForSection:(int64_t)a3;
-- (id)_gkDescriptionWithChildren:(int64_t)a3;
-- (id)finalLayoutAttributesForDisappearingItemAtIndexPath:(id)a3;
-- (id)finalLayoutAttributesForDisappearingSupplementaryElementOfKind:(id)a3 atIndexPath:(id)a4;
-- (id)finalLayoutAttributesForSlidingAwayItemAtIndexPath:(id)a3;
-- (id)firstVisibleIndexAtOrAfterItem:(int64_t)a3 itemCount:(int64_t)a4 inSection:(int64_t)a5;
-- (id)indexPathsToDeleteForSupplementaryViewOfKind:(id)a3;
-- (id)initialLayoutAttributesForAppearingItemAtIndexPath:(id)a3;
-- (id)initialLayoutAttributesForAppearingSupplementaryElementOfKind:(id)a3 atIndexPath:(id)a4;
-- (id)initialLayoutAttributesForSlidingInItemAtIndexPath:(id)a3;
-- (id)invalidationContextForBoundsChange:(CGRect)a3;
-- (id)layoutAttributesForDecorationViewOfKind:(id)a3 atIndexPath:(id)a4;
-- (id)layoutAttributesForElementsInRect:(CGRect)a3;
-- (id)layoutAttributesForItemAtIndexPath:(id)a3;
-- (id)layoutAttributesForSupplementaryViewOfKind:(id)a3 atIndexPath:(id)a4;
-- (id)metricDataForKey:(id)a3;
-- (id)metricDataForSection:(int64_t)a3;
-- (id)metricsForSection:(int64_t)a3;
-- (id)presentationDataForSection:(int64_t)a3;
-- (id)revealMoreForSectionIndex:(int64_t)a3;
-- (id)revealMoreForSectionIndex:(int64_t)a3 revealCount:(unint64_t)a4 andDeleteItemCount:(unint64_t)a5;
-- (int64_t)_prepareOverlayLayoutForSection:(int64_t)a3 offset:(int64_t)a4;
-- (int64_t)_prepareSupplementaryLayoutForSection:(int64_t)a3 atLocation:(unint64_t)a4 offset:(int64_t)a5 globalOffset:(int64_t *)a6;
-- (int64_t)indexOfSupplementaryMetricsOfKind:(id)a3 inList:(id)a4;
+- (id)_animationForReusableView:(id)view toLayoutAttributes:(id)attributes type:(unint64_t)type;
+- (id)_existingPresentationDataForSection:(int64_t)section;
+- (id)_gkDescriptionWithChildren:(int64_t)children;
+- (id)finalLayoutAttributesForDisappearingItemAtIndexPath:(id)path;
+- (id)finalLayoutAttributesForDisappearingSupplementaryElementOfKind:(id)kind atIndexPath:(id)path;
+- (id)finalLayoutAttributesForSlidingAwayItemAtIndexPath:(id)path;
+- (id)firstVisibleIndexAtOrAfterItem:(int64_t)item itemCount:(int64_t)count inSection:(int64_t)section;
+- (id)indexPathsToDeleteForSupplementaryViewOfKind:(id)kind;
+- (id)initialLayoutAttributesForAppearingItemAtIndexPath:(id)path;
+- (id)initialLayoutAttributesForAppearingSupplementaryElementOfKind:(id)kind atIndexPath:(id)path;
+- (id)initialLayoutAttributesForSlidingInItemAtIndexPath:(id)path;
+- (id)invalidationContextForBoundsChange:(CGRect)change;
+- (id)layoutAttributesForDecorationViewOfKind:(id)kind atIndexPath:(id)path;
+- (id)layoutAttributesForElementsInRect:(CGRect)rect;
+- (id)layoutAttributesForItemAtIndexPath:(id)path;
+- (id)layoutAttributesForSupplementaryViewOfKind:(id)kind atIndexPath:(id)path;
+- (id)metricDataForKey:(id)key;
+- (id)metricDataForSection:(int64_t)section;
+- (id)metricsForSection:(int64_t)section;
+- (id)presentationDataForSection:(int64_t)section;
+- (id)revealMoreForSectionIndex:(int64_t)index;
+- (id)revealMoreForSectionIndex:(int64_t)index revealCount:(unint64_t)count andDeleteItemCount:(unint64_t)itemCount;
+- (int64_t)_prepareOverlayLayoutForSection:(int64_t)section offset:(int64_t)offset;
+- (int64_t)_prepareSupplementaryLayoutForSection:(int64_t)section atLocation:(unint64_t)location offset:(int64_t)offset globalOffset:(int64_t *)globalOffset;
+- (int64_t)indexOfSupplementaryMetricsOfKind:(id)kind inList:(id)list;
 - (int64_t)searchResultsCount;
-- (unint64_t)_prepareItemLayoutForSection:(int64_t)a3;
-- (unint64_t)currentMaxVisibleItemCountForSection:(int64_t)a3;
-- (unint64_t)filteredTotalItemCountForSection:(int64_t)a3;
+- (unint64_t)_prepareItemLayoutForSection:(int64_t)section;
+- (unint64_t)currentMaxVisibleItemCountForSection:(int64_t)section;
+- (unint64_t)filteredTotalItemCountForSection:(int64_t)section;
 - (unint64_t)sectionsPerRow;
 - (void)_filterPinnedAttributes;
-- (void)_prepareSegmentedBoxLayoutWithOffset:(int64_t)a3;
+- (void)_prepareSegmentedBoxLayoutWithOffset:(int64_t)offset;
 - (void)_resetState;
 - (void)calculateCollectionViewContentSize;
-- (void)enumerateSectionsIndexesOverlappingYOffset:(double)a3 block:(id)a4;
+- (void)enumerateSectionsIndexesOverlappingYOffset:(double)offset block:(id)block;
 - (void)finalizeAnimatedBoundsChange;
 - (void)finalizeCollectionViewUpdates;
-- (void)finalizeGlobalPresentationDataWithSectionRange:(_NSRange)a3;
-- (void)finalizePinnedAttributes:(id)a3 forSection:(int64_t)a4 footer:(BOOL)a5;
+- (void)finalizeGlobalPresentationDataWithSectionRange:(_NSRange)range;
+- (void)finalizePinnedAttributes:(id)attributes forSection:(int64_t)section footer:(BOOL)footer;
 - (void)forceFullInvalidate;
 - (void)fullyRebuildLayout;
-- (void)invalidateLayoutWithContext:(id)a3;
-- (void)prepareForAnimatedBoundsChange:(CGRect)a3;
-- (void)prepareForCollectionViewUpdates:(id)a3;
-- (void)prepareForUpdate:(unint64_t)a3 inDataSource:(id)a4;
+- (void)invalidateLayoutWithContext:(id)context;
+- (void)prepareForAnimatedBoundsChange:(CGRect)change;
+- (void)prepareForCollectionViewUpdates:(id)updates;
+- (void)prepareForUpdate:(unint64_t)update inDataSource:(id)source;
 - (void)prepareLayout;
 - (void)refreshMetrics;
-- (void)setLandscapeInterleavedSectionsCount:(unint64_t)a3;
-- (void)setLeftLayoutGuideOffset:(double)a3;
-- (void)setMetricData:(id)a3 forSection:(int64_t)a4;
-- (void)setPortraitInterleavedSectionsCount:(unint64_t)a3;
-- (void)setRightLayoutGuideOffset:(double)a3;
-- (void)setShowPlaceholder:(BOOL)a3;
-- (void)setUpdateType:(unint64_t)a3;
-- (void)setVisibleIndexPathsFilter:(id)a3;
+- (void)setLandscapeInterleavedSectionsCount:(unint64_t)count;
+- (void)setLeftLayoutGuideOffset:(double)offset;
+- (void)setMetricData:(id)data forSection:(int64_t)section;
+- (void)setPortraitInterleavedSectionsCount:(unint64_t)count;
+- (void)setRightLayoutGuideOffset:(double)offset;
+- (void)setShowPlaceholder:(BOOL)placeholder;
+- (void)setUpdateType:(unint64_t)type;
+- (void)setVisibleIndexPathsFilter:(id)filter;
 - (void)updatePinnableAreas;
 - (void)updatePresentationDataForLastInterleavedSections;
-- (void)updatePresentationDataInSection:(int64_t)a3 withAttributes:(id)a4 supplementaryLocation:(unint64_t)a5;
+- (void)updatePresentationDataInSection:(int64_t)section withAttributes:(id)attributes supplementaryLocation:(unint64_t)location;
 @end
 
 @implementation GKGridLayout
@@ -165,8 +165,8 @@
 
 - (double)scale
 {
-  v2 = [MEMORY[0x277D759A0] mainScreen];
-  [v2 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v4 = v3;
 
   return v4;
@@ -174,8 +174,8 @@
 
 - (CGRect)layoutBounds
 {
-  v2 = [(GKGridLayout *)self collectionView];
-  [v2 bounds];
+  collectionView = [(GKGridLayout *)self collectionView];
+  [collectionView bounds];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -208,110 +208,110 @@
   return result;
 }
 
-- (void)setUpdateType:(unint64_t)a3
+- (void)setUpdateType:(unint64_t)type
 {
   updateType = self->_updateType;
-  if (updateType != a3)
+  if (updateType != type)
   {
-    if (updateType != 6 && a3 != 3 && a3 != 6)
+    if (updateType != 6 && type != 3 && type != 6)
     {
       v8 = MEMORY[0x277CCACA8];
-      v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+      v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:type];
       v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_updateType];
       v11 = [v8 stringWithFormat:@"Multiple update types attempted for the same collection view update loop (%@ vs %@)", v9, v10];
       v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter/Frameworks/GameCenterUI/iOS/Framework/GKGridLayout.m"];
-      v13 = [v12 lastPathComponent];
-      v14 = [v8 stringWithFormat:@"%@ (_updateType == GKGridLayoutUpdateInvalid || updateType == GKGridLayoutUpdateInvalid || updateType == GKGridLayoutUpdateRotation)\n[%s (%s:%d)]", v11, "-[GKGridLayout setUpdateType:]", objc_msgSend(v13, "UTF8String"), 378];
+      lastPathComponent = [v12 lastPathComponent];
+      v14 = [v8 stringWithFormat:@"%@ (_updateType == GKGridLayoutUpdateInvalid || updateType == GKGridLayoutUpdateInvalid || updateType == GKGridLayoutUpdateRotation)\n[%s (%s:%d)]", v11, "-[GKGridLayout setUpdateType:]", objc_msgSend(lastPathComponent, "UTF8String"), 378];
 
       [MEMORY[0x277CBEAD8] raise:@"GameKit Exception" format:{@"%@", v14}];
     }
 
-    self->_updateType = a3;
+    self->_updateType = type;
   }
 }
 
-- (id)_gkDescriptionWithChildren:(int64_t)a3
+- (id)_gkDescriptionWithChildren:(int64_t)children
 {
   v5 = _gkTabStringForTabLevel();
-  v6 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   v29.receiver = self;
   v29.super_class = GKGridLayout;
   v7 = [(GKGridLayout *)&v29 description];
-  [v6 appendFormat:@"%@%@ {\n", v5, v7];
+  [string appendFormat:@"%@%@ {\n", v5, v7];
 
   dataSourceMetrics = self->_dataSourceMetrics;
   if (dataSourceMetrics)
   {
     v9 = MEMORY[0x277CCACA8];
-    v10 = [(GKDataSourceMetrics *)dataSourceMetrics _gkDescriptionWithChildren:a3 + 2];
+    v10 = [(GKDataSourceMetrics *)dataSourceMetrics _gkDescriptionWithChildren:children + 2];
     v11 = [v9 stringWithFormat:@"    %@dataSourceMetrics: {\n%@", v5, v10];
-    [v6 appendString:v11];
+    [string appendString:v11];
 
     v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@    }\n", v5];
-    [v6 appendString:v12];
+    [string appendString:v12];
   }
 
-  v13 = [(GKGridLayout *)self collectionView];
-  v14 = [v13 numberOfSections];
+  collectionView = [(GKGridLayout *)self collectionView];
+  numberOfSections = [collectionView numberOfSections];
 
-  if (v14)
+  if (numberOfSections)
   {
     v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"    %@----------\n", v5];
-    [v6 appendString:v15];
+    [string appendString:v15];
 
     v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"    %@metricData: {\n", v5];
-    [v6 appendString:v16];
+    [string appendString:v16];
 
-    for (i = 0; i != v14; ++i)
+    for (i = 0; i != numberOfSections; ++i)
     {
       v18 = [(GKGridLayout *)self metricDataForSection:i];
-      v19 = [v18 _gkDescriptionWithChildren:a3 + 2];
-      v20 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-      [v19 stringByTrimmingCharactersInSet:v20];
-      v21 = self;
-      v23 = v22 = a3;
+      v19 = [v18 _gkDescriptionWithChildren:children + 2];
+      whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+      [v19 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
+      selfCopy = self;
+      v23 = v22 = children;
 
       v24 = [MEMORY[0x277CCABB0] numberWithInteger:i];
-      v25 = [v18 layoutKey];
-      [v6 appendFormat:@"        %@%@ - %@ - %@", v5, v24, v25, v23];
+      layoutKey = [v18 layoutKey];
+      [string appendFormat:@"        %@%@ - %@ - %@", v5, v24, layoutKey, v23];
 
-      a3 = v22;
-      self = v21;
+      children = v22;
+      self = selfCopy;
     }
 
     v26 = [MEMORY[0x277CCACA8] stringWithFormat:@"    %@}\n", v5];
-    [v6 appendString:v26];
+    [string appendString:v26];
   }
 
   v27 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@}\n", v5];
-  [v6 appendString:v27];
+  [string appendString:v27];
 
-  return v6;
+  return string;
 }
 
-- (id)metricDataForKey:(id)a3
+- (id)metricDataForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_keyToMetricData objectForKeyedSubscript:v4];
+  keyCopy = key;
+  v5 = [(NSMutableDictionary *)self->_keyToMetricData objectForKeyedSubscript:keyCopy];
   if (!v5)
   {
     v5 = objc_alloc_init(GKMetricData);
-    [(NSMutableDictionary *)self->_keyToMetricData setObject:v5 forKeyedSubscript:v4];
+    [(NSMutableDictionary *)self->_keyToMetricData setObject:v5 forKeyedSubscript:keyCopy];
   }
 
   return v5;
 }
 
-- (id)metricDataForSection:(int64_t)a3
+- (id)metricDataForSection:(int64_t)section
 {
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  if (section == 0x7FFFFFFFFFFFFFFFLL)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = a3 + 1;
+    v4 = section + 1;
   }
 
   v5 = [(NSPointerArray *)self->_sectionToMetricData count];
@@ -324,7 +324,7 @@
   return v6;
 }
 
-- (unint64_t)filteredTotalItemCountForSection:(int64_t)a3
+- (unint64_t)filteredTotalItemCountForSection:(int64_t)section
 {
   v17 = *MEMORY[0x277D85DE8];
   visibleIndexPathsFilter = self->_visibleIndexPathsFilter;
@@ -353,7 +353,7 @@
           objc_enumerationMutation(v5);
         }
 
-        if ([*(*(&v12 + 1) + 8 * i) section] == a3)
+        if ([*(*(&v12 + 1) + 8 * i) section] == section)
         {
           ++v8;
         }
@@ -373,18 +373,18 @@
   return v8;
 }
 
-- (void)setMetricData:(id)a3 forSection:(int64_t)a4
+- (void)setMetricData:(id)data forSection:(int64_t)section
 {
-  v7 = a3;
-  [v7 setFilteredTotalItemCount:{-[GKGridLayout filteredTotalItemCountForSection:](self, "filteredTotalItemCountForSection:", a4)}];
-  if (a4 == 0x7FFFFFFFFFFFFFFFLL)
+  dataCopy = data;
+  [dataCopy setFilteredTotalItemCount:{-[GKGridLayout filteredTotalItemCountForSection:](self, "filteredTotalItemCountForSection:", section)}];
+  if (section == 0x7FFFFFFFFFFFFFFFLL)
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = a4 + 1;
+    v6 = section + 1;
   }
 
   if ([(NSPointerArray *)self->_sectionToMetricData count]<= v6)
@@ -392,39 +392,39 @@
     [(NSPointerArray *)self->_sectionToMetricData setCount:v6 + 1];
   }
 
-  [(NSPointerArray *)self->_sectionToMetricData replacePointerAtIndex:v6 withPointer:v7];
+  [(NSPointerArray *)self->_sectionToMetricData replacePointerAtIndex:v6 withPointer:dataCopy];
 }
 
-- (void)setPortraitInterleavedSectionsCount:(unint64_t)a3
+- (void)setPortraitInterleavedSectionsCount:(unint64_t)count
 {
-  if (!a3)
+  if (!count)
   {
     v5 = MEMORY[0x277CCACA8];
     v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"Assertion failed"];
     v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter/Frameworks/GameCenterUI/iOS/Framework/GKGridLayout.m"];
-    v8 = [v7 lastPathComponent];
-    v9 = [v5 stringWithFormat:@"%@ (portraitInterleavedSectionsCount > 0)\n[%s (%s:%d)]", v6, "-[GKGridLayout setPortraitInterleavedSectionsCount:]", objc_msgSend(v8, "UTF8String"), 472];
+    lastPathComponent = [v7 lastPathComponent];
+    v9 = [v5 stringWithFormat:@"%@ (portraitInterleavedSectionsCount > 0)\n[%s (%s:%d)]", v6, "-[GKGridLayout setPortraitInterleavedSectionsCount:]", objc_msgSend(lastPathComponent, "UTF8String"), 472];
 
     [MEMORY[0x277CBEAD8] raise:@"GameKit Exception" format:{@"%@", v9}];
   }
 
-  self->_portraitInterleavedSectionsCount = a3;
+  self->_portraitInterleavedSectionsCount = count;
 }
 
-- (void)setLandscapeInterleavedSectionsCount:(unint64_t)a3
+- (void)setLandscapeInterleavedSectionsCount:(unint64_t)count
 {
-  if (!a3)
+  if (!count)
   {
     v5 = MEMORY[0x277CCACA8];
     v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"Assertion failed"];
     v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter/Frameworks/GameCenterUI/iOS/Framework/GKGridLayout.m"];
-    v8 = [v7 lastPathComponent];
-    v9 = [v5 stringWithFormat:@"%@ (landscapeInterleavedSectionsCount > 0)\n[%s (%s:%d)]", v6, "-[GKGridLayout setLandscapeInterleavedSectionsCount:]", objc_msgSend(v8, "UTF8String"), 478];
+    lastPathComponent = [v7 lastPathComponent];
+    v9 = [v5 stringWithFormat:@"%@ (landscapeInterleavedSectionsCount > 0)\n[%s (%s:%d)]", v6, "-[GKGridLayout setLandscapeInterleavedSectionsCount:]", objc_msgSend(lastPathComponent, "UTF8String"), 478];
 
     [MEMORY[0x277CBEAD8] raise:@"GameKit Exception" format:{@"%@", v9}];
   }
 
-  self->_landscapeInterleavedSectionsCount = a3;
+  self->_landscapeInterleavedSectionsCount = count;
 }
 
 - (GKSectionMetrics)defaultSectionMetricsInternal
@@ -441,12 +441,12 @@
   return defaultSectionMetricsInternal;
 }
 
-- (id)metricsForSection:(int64_t)a3
+- (id)metricsForSection:(int64_t)section
 {
-  v3 = [(GKGridLayout *)self metricDataForSection:a3];
-  v4 = [v3 sectionMetrics];
+  v3 = [(GKGridLayout *)self metricDataForSection:section];
+  sectionMetrics = [v3 sectionMetrics];
 
-  return v4;
+  return sectionMetrics;
 }
 
 - (int64_t)searchResultsCount
@@ -463,12 +463,12 @@
   }
 }
 
-- (void)setVisibleIndexPathsFilter:(id)a3
+- (void)setVisibleIndexPathsFilter:(id)filter
 {
-  v5 = a3;
-  if (self->_visibleIndexPathsFilter != v5 && ([(NSSet *)v5 isEqual:?]& 1) == 0)
+  filterCopy = filter;
+  if (self->_visibleIndexPathsFilter != filterCopy && ([(NSSet *)filterCopy isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_visibleIndexPathsFilter, a3);
+    objc_storeStrong(&self->_visibleIndexPathsFilter, filter);
     [(GKGridLayout *)self updatePlaceholderVisibility];
     [(GKGridLayout *)self invalidateLayout];
   }
@@ -476,29 +476,29 @@
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setLeftLayoutGuideOffset:(double)a3
+- (void)setLeftLayoutGuideOffset:(double)offset
 {
-  if (self->_leftLayoutGuideOffset != a3)
+  if (self->_leftLayoutGuideOffset != offset)
   {
-    self->_leftLayoutGuideOffset = a3;
+    self->_leftLayoutGuideOffset = offset;
     [(GKGridLayout *)self invalidateLayout];
   }
 }
 
-- (void)setRightLayoutGuideOffset:(double)a3
+- (void)setRightLayoutGuideOffset:(double)offset
 {
-  if (self->_rightLayoutGuideOffset != a3)
+  if (self->_rightLayoutGuideOffset != offset)
   {
-    self->_rightLayoutGuideOffset = a3;
+    self->_rightLayoutGuideOffset = offset;
     [(GKGridLayout *)self invalidateLayout];
   }
 }
 
-- (void)setShowPlaceholder:(BOOL)a3
+- (void)setShowPlaceholder:(BOOL)placeholder
 {
-  if (self->_showPlaceholder != a3)
+  if (self->_showPlaceholder != placeholder)
   {
-    self->_showPlaceholder = a3;
+    self->_showPlaceholder = placeholder;
     [(GKGridLayout *)self updatePlaceholderVisibility];
     v5 = objc_alloc_init(GKGridLayoutInvalidationContext);
     [(GKGridLayoutInvalidationContext *)v5 setInvalidatePlaceholderVisibility:1];
@@ -506,14 +506,14 @@
   }
 }
 
-- (CGSize)_sizeAdjustedForTabBarSettingsBasedOnSize:(CGSize)a3
+- (CGSize)_sizeAdjustedForTabBarSettingsBasedOnSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(GKGridLayout *)self layoutBounds];
   v7 = v6;
-  v8 = [(GKGridLayout *)self collectionView];
-  [v8 contentInset];
+  collectionView = [(GKGridLayout *)self collectionView];
+  [collectionView contentInset];
   v10 = v9;
   v12 = v11;
 
@@ -617,8 +617,8 @@
   {
     [(GKGridLayout *)self layoutBounds:result.x];
     v6 = v5;
-    v7 = [(GKGridLayout *)self collectionView];
-    [v7 contentInset];
+    collectionView = [(GKGridLayout *)self collectionView];
+    [collectionView contentInset];
     v9 = v8;
 
     v10 = v6;
@@ -654,7 +654,7 @@
   return result;
 }
 
-- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)result withScrollingVelocity:(CGPoint)a4
+- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)result withScrollingVelocity:(CGPoint)velocity
 {
   self->_hideSearchBarOnAppear = 0;
   self->_hideAboveSegmentOnAppear = 0;
@@ -663,8 +663,8 @@
 
 - (void)refreshMetrics
 {
-  v3 = [(GKGridLayout *)self collectionView];
-  v5 = [v3 dataSource];
+  collectionView = [(GKGridLayout *)self collectionView];
+  dataSource = [collectionView dataSource];
 
   if (!self->_metricsInvalidationCount)
   {
@@ -672,22 +672,22 @@
     if (objc_opt_isKindOfClass())
     {
       ++self->_metricsInvalidationCount;
-      v4 = [v5 createMetricsTreeWithGridLayout:self];
+      v4 = [dataSource createMetricsTreeWithGridLayout:self];
       [(GKGridLayout *)self setDataSourceMetrics:v4];
       --self->_metricsInvalidationCount;
     }
   }
 }
 
-- (void)invalidateLayoutWithContext:(id)a3
+- (void)invalidateLayoutWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [v4 invalidateDataSourceCounts];
-  v6 = [v4 invalidateEverything];
-  v7 = [v4 invalidateBoundsChange];
-  v8 = [v4 invalidatePlaceholderVisibility];
-  v9 = [v4 invalidatePinnableAreas];
-  if ((v5 & 1) == 0 && (v6 & 1) == 0 && (v7 & 1) == 0 && (v8 & 1) == 0 && !v9)
+  contextCopy = context;
+  invalidateDataSourceCounts = [contextCopy invalidateDataSourceCounts];
+  invalidateEverything = [contextCopy invalidateEverything];
+  invalidateBoundsChange = [contextCopy invalidateBoundsChange];
+  invalidatePlaceholderVisibility = [contextCopy invalidatePlaceholderVisibility];
+  invalidatePinnableAreas = [contextCopy invalidatePinnableAreas];
+  if ((invalidateDataSourceCounts & 1) == 0 && (invalidateEverything & 1) == 0 && (invalidateBoundsChange & 1) == 0 && (invalidatePlaceholderVisibility & 1) == 0 && !invalidatePinnableAreas)
   {
     v10 = 0xFFFFFFFFFFFFLL;
 LABEL_16:
@@ -695,20 +695,20 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  if (v5)
+  if (invalidateDataSourceCounts)
   {
     self->_invalidationFlags |= 0xFFFFFFFFFFFFuLL;
-    if (!v6)
+    if (!invalidateEverything)
     {
 LABEL_9:
-      if (!v8)
+      if (!invalidatePlaceholderVisibility)
       {
         goto LABEL_10;
       }
 
 LABEL_14:
       self->_invalidationFlags |= 4uLL;
-      if (!v9)
+      if (!invalidatePinnableAreas)
       {
         goto LABEL_17;
       }
@@ -717,19 +717,19 @@ LABEL_14:
     }
   }
 
-  else if (!v6)
+  else if (!invalidateEverything)
   {
     goto LABEL_9;
   }
 
   self->_invalidationFlags |= 0xFFFFFFFFFFFFuLL;
-  if (v8)
+  if (invalidatePlaceholderVisibility)
   {
     goto LABEL_14;
   }
 
 LABEL_10:
-  if (v9)
+  if (invalidatePinnableAreas)
   {
 LABEL_15:
     v10 = 8;
@@ -739,7 +739,7 @@ LABEL_15:
 LABEL_17:
   v11.receiver = self;
   v11.super_class = GKGridLayout;
-  [(GKGridLayout *)&v11 invalidateLayoutWithContext:v4];
+  [(GKGridLayout *)&v11 invalidateLayoutWithContext:contextCopy];
 
   if ((self->_invalidationFlags & 5) != 0)
   {
@@ -755,12 +755,12 @@ LABEL_17:
   [(GKGridLayout *)self invalidateLayoutWithContext:v3];
 }
 
-- (id)invalidationContextForBoundsChange:(CGRect)a3
+- (id)invalidationContextForBoundsChange:(CGRect)change
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = change.size.height;
+  width = change.size.width;
+  y = change.origin.y;
+  x = change.origin.x;
   [(GKGridLayout *)self layoutBounds];
   if (v9 != width || v8 != height)
   {
@@ -769,23 +769,23 @@ LABEL_17:
 
   v13.receiver = self;
   v13.super_class = GKGridLayout;
-  v11 = [(GKGridLayout *)&v13 invalidationContextForBoundsChange:x, y, width, height];
-  [v11 setInvalidateBoundsChange:1];
+  height = [(GKGridLayout *)&v13 invalidationContextForBoundsChange:x, y, width, height];
+  [height setInvalidateBoundsChange:1];
 
-  return v11;
+  return height;
 }
 
 - (void)forceFullInvalidate
 {
   self->_invalidationFlags |= 0xFFFFFFFFFFFFuLL;
-  v2 = [(GKGridLayout *)self collectionView];
-  [v2 reloadData];
+  collectionView = [(GKGridLayout *)self collectionView];
+  [collectionView reloadData];
 }
 
-- (double)calculatedBottomPaddingForSection:(int64_t)a3
+- (double)calculatedBottomPaddingForSection:(int64_t)section
 {
   v3 = 0.0;
-  if (a3 != 0x7FFFFFFFFFFFFFFFLL)
+  if (section != 0x7FFFFFFFFFFFFFFFLL)
   {
     v6 = [(GKGridLayout *)self metricsForSection:?];
     [v6 padding];
@@ -794,14 +794,14 @@ LABEL_17:
     {
       v8 = [v6 listForLocation:1];
       v9 = [(GKGridLayout *)self indexOfSupplementaryMetricsOfKind:@"IncrementalReveal" inList:v8];
-      v10 = [(GKGridLayout *)self metricDataForSection:a3];
-      v11 = [(GKGridLayout *)self collectionView];
-      v12 = [v11 numberOfItemsInSection:a3];
+      v10 = [(GKGridLayout *)self metricDataForSection:section];
+      collectionView = [(GKGridLayout *)self collectionView];
+      v12 = [collectionView numberOfItemsInSection:section];
 
-      v13 = [v10 filteredTotalItemCount];
-      if (v12 >= v13)
+      filteredTotalItemCount = [v10 filteredTotalItemCount];
+      if (v12 >= filteredTotalItemCount)
       {
-        v12 = v13;
+        v12 = filteredTotalItemCount;
       }
 
       if (v12 > [v10 currentMaxVisibleItemCount] && objc_msgSend(v6, "incrementalRevealItemCount") && v9 != 0x7FFFFFFFFFFFFFFFLL)
@@ -818,16 +818,16 @@ LABEL_17:
 
 - (void)updatePresentationDataForLastInterleavedSections
 {
-  v3 = [(GKGridLayout *)self sectionsPerRow];
-  v4 = [(GKGridLayout *)self collectionView];
-  v5 = [v4 numberOfSections];
+  sectionsPerRow = [(GKGridLayout *)self sectionsPerRow];
+  collectionView = [(GKGridLayout *)self collectionView];
+  numberOfSections = [collectionView numberOfSections];
 
-  if (v3)
+  if (sectionsPerRow)
   {
-    v6 = v5 - 1;
+    v6 = numberOfSections - 1;
     v7 = 0.0;
     v8 = v6;
-    v9 = v3;
+    v9 = sectionsPerRow;
     do
     {
       v10 = [(GKGridLayout *)self presentationDataForSection:v8];
@@ -848,26 +848,26 @@ LABEL_17:
       [v12 setMaxY:v7];
 
       --v6;
-      --v3;
+      --sectionsPerRow;
     }
 
-    while (v3);
+    while (sectionsPerRow);
   }
 }
 
-- (void)updatePresentationDataInSection:(int64_t)a3 withAttributes:(id)a4 supplementaryLocation:(unint64_t)a5
+- (void)updatePresentationDataInSection:(int64_t)section withAttributes:(id)attributes supplementaryLocation:(unint64_t)location
 {
-  v14 = a4;
-  v8 = [(GKGridLayout *)self presentationDataForSection:a3];
+  attributesCopy = attributes;
+  v8 = [(GKGridLayout *)self presentationDataForSection:section];
   v9 = v8;
-  if (v14)
+  if (attributesCopy)
   {
-    [v8 updateWithLayoutAttributes:v14 supplementaryLocation:a5];
+    [v8 updateWithLayoutAttributes:attributesCopy supplementaryLocation:location];
   }
 
-  else if (a3 != 0x7FFFFFFFFFFFFFFFLL && a5)
+  else if (section != 0x7FFFFFFFFFFFFFFFLL && location)
   {
-    [(GKGridLayout *)self calculatedBottomPaddingForSection:a3];
+    [(GKGridLayout *)self calculatedBottomPaddingForSection:section];
     v11 = v10;
     [v9 showMoreMaxY];
     [v9 setShowMoreMaxY:v11 + v12];
@@ -876,10 +876,10 @@ LABEL_17:
   }
 }
 
-- (void)finalizeGlobalPresentationDataWithSectionRange:(_NSRange)a3
+- (void)finalizeGlobalPresentationDataWithSectionRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v6 = [(GKGridLayout *)self presentationDataForSection:0x7FFFFFFFFFFFFFFFLL];
   v7 = [(GKGridLayout *)self presentationDataForSection:location];
   v8 = [(GKGridLayout *)self presentationDataForSection:length + location - 1];
@@ -908,13 +908,13 @@ LABEL_17:
     v9 = [(GKGridLayout *)self metricDataForSection:0x7FFFFFFFFFFFFFFFLL];
     [v6 headerMaxY];
     self->_segmentedHeaderPinningOffset = v10;
-    v11 = [v9 headerPinnableAttributes];
+    headerPinnableAttributes = [v9 headerPinnableAttributes];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __63__GKGridLayout_finalizeGlobalPresentationDataWithSectionRange___block_invoke;
     v12[3] = &unk_27966A4F8;
     v12[4] = self;
-    [v11 enumerateObjectsUsingBlock:v12];
+    [headerPinnableAttributes enumerateObjectsUsingBlock:v12];
   }
 }
 
@@ -936,16 +936,16 @@ uint64_t __63__GKGridLayout_finalizeGlobalPresentationDataWithSectionRange___blo
   return result;
 }
 
-- (id)_existingPresentationDataForSection:(int64_t)a3
+- (id)_existingPresentationDataForSection:(int64_t)section
 {
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  if (section == 0x7FFFFFFFFFFFFFFFLL)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = a3 + 1;
+    v4 = section + 1;
   }
 
   if ([(NSPointerArray *)self->_sectionToPresentationData count]<= v4)
@@ -958,21 +958,21 @@ uint64_t __63__GKGridLayout_finalizeGlobalPresentationDataWithSectionRange___blo
   return [(NSPointerArray *)sectionToPresentationData pointerAtIndex:v4];
 }
 
-- (id)presentationDataForSection:(int64_t)a3
+- (id)presentationDataForSection:(int64_t)section
 {
   v5 = [(GKGridLayout *)self _existingPresentationDataForSection:?];
   if (!v5)
   {
-    if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+    if (section == 0x7FFFFFFFFFFFFFFFLL)
     {
       v6 = 0;
     }
 
     else
     {
-      if (a3)
+      if (section)
       {
-        v7 = a3 - 1;
+        v7 = section - 1;
       }
 
       else
@@ -983,15 +983,15 @@ uint64_t __63__GKGridLayout_finalizeGlobalPresentationDataWithSectionRange___blo
       v6 = [(GKGridLayout *)self _existingPresentationDataForSection:v7];
     }
 
-    v5 = [[GKSectionPresentationData alloc] initWithSection:a3 presentationData:v6];
-    if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+    v5 = [[GKSectionPresentationData alloc] initWithSection:section presentationData:v6];
+    if (section == 0x7FFFFFFFFFFFFFFFLL)
     {
       v8 = 0;
     }
 
     else
     {
-      v8 = a3 + 1;
+      v8 = section + 1;
     }
 
     [(NSPointerArray *)self->_sectionToPresentationData replacePointerAtIndex:v8 withPointer:v5];
@@ -1002,17 +1002,17 @@ uint64_t __63__GKGridLayout_finalizeGlobalPresentationDataWithSectionRange___blo
 
 - (BOOL)_areWePortrait
 {
-  v2 = [MEMORY[0x277D75128] sharedApplication];
-  v3 = ([v2 statusBarOrientation] - 1) < 2;
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  v3 = ([mEMORY[0x277D75128] statusBarOrientation] - 1) < 2;
 
   return v3;
 }
 
 - (unint64_t)sectionsPerRow
 {
-  v3 = [(GKGridLayout *)self _areWePortrait];
+  _areWePortrait = [(GKGridLayout *)self _areWePortrait];
   v4 = &OBJC_IVAR___GKGridLayout__landscapeInterleavedSectionsCount;
-  if (v3)
+  if (_areWePortrait)
   {
     v4 = &OBJC_IVAR___GKGridLayout__portraitInterleavedSectionsCount;
   }
@@ -1020,15 +1020,15 @@ uint64_t __63__GKGridLayout_finalizeGlobalPresentationDataWithSectionRange___blo
   return *(&self->super.super.isa + *v4);
 }
 
-- (double)yOffsetForSection:(int64_t)a3
+- (double)yOffsetForSection:(int64_t)section
 {
   v3 = 0.0;
-  if (a3 != 0x7FFFFFFFFFFFFFFFLL)
+  if (section != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v6 = [(GKGridLayout *)self sectionsPerRow];
-    if (a3 >= v6)
+    sectionsPerRow = [(GKGridLayout *)self sectionsPerRow];
+    if (section >= sectionsPerRow)
     {
-      v7 = a3 - v6;
+      v7 = section - sectionsPerRow;
     }
 
     else
@@ -1044,9 +1044,9 @@ uint64_t __63__GKGridLayout_finalizeGlobalPresentationDataWithSectionRange___blo
   return v3;
 }
 
-- (void)enumerateSectionsIndexesOverlappingYOffset:(double)a3 block:(id)a4
+- (void)enumerateSectionsIndexesOverlappingYOffset:(double)offset block:(id)block
 {
-  v14 = a4;
+  blockCopy = block;
   v6 = [(NSPointerArray *)self->_sectionToPresentationData count];
   if (v6 >= 2)
   {
@@ -1055,28 +1055,28 @@ uint64_t __63__GKGridLayout_finalizeGlobalPresentationDataWithSectionRange___blo
     {
       v9 = [(NSPointerArray *)self->_sectionToPresentationData pointerAtIndex:i];
       [v9 minY];
-      if (v10 <= a3 && ([v9 maxY], v11 >= a3) || (-[GKGridLayout sectionsWithPinnedHeaders](self, "sectionsWithPinnedHeaders"), v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "containsIndex:", i), v12, v13))
+      if (v10 <= offset && ([v9 maxY], v11 >= offset) || (-[GKGridLayout sectionsWithPinnedHeaders](self, "sectionsWithPinnedHeaders"), v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "containsIndex:", i), v12, v13))
       {
-        v14[2](v14, i - 1);
+        blockCopy[2](blockCopy, i - 1);
       }
     }
   }
 }
 
-- (int64_t)indexOfSupplementaryMetricsOfKind:(id)a3 inList:(id)a4
+- (int64_t)indexOfSupplementaryMetricsOfKind:(id)kind inList:(id)list
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 count];
+  kindCopy = kind;
+  listCopy = list;
+  v7 = [listCopy count];
   if (v7)
   {
     v8 = v7;
     v9 = 0;
     while (1)
     {
-      v10 = [v6 objectAtIndexedSubscript:v9];
-      v11 = [v10 kind];
-      v12 = [v11 isEqualToString:v5];
+      v10 = [listCopy objectAtIndexedSubscript:v9];
+      kind = [v10 kind];
+      v12 = [kind isEqualToString:kindCopy];
 
       if (v12)
       {
@@ -1099,33 +1099,33 @@ LABEL_5:
   return v9;
 }
 
-- (int64_t)_prepareSupplementaryLayoutForSection:(int64_t)a3 atLocation:(unint64_t)a4 offset:(int64_t)a5 globalOffset:(int64_t *)a6
+- (int64_t)_prepareSupplementaryLayoutForSection:(int64_t)section atLocation:(unint64_t)location offset:(int64_t)offset globalOffset:(int64_t *)globalOffset
 {
   v130[1] = *MEMORY[0x277D85DE8];
-  v127 = [(GKGridLayout *)self collectionView];
-  v9 = [(GKGridLayout *)self metricDataForSection:a3];
+  collectionView = [(GKGridLayout *)self collectionView];
+  v9 = [(GKGridLayout *)self metricDataForSection:section];
   v10 = v9;
-  if (a4)
+  if (location)
   {
-    if (a4 != 1)
+    if (location != 1)
     {
       goto LABEL_6;
     }
 
-    v11 = [v9 footerPinnableAttributes];
+    footerPinnableAttributes = [v9 footerPinnableAttributes];
   }
 
   else
   {
-    v11 = [v9 headerPinnableAttributes];
+    footerPinnableAttributes = [v9 headerPinnableAttributes];
   }
 
-  v12 = v11;
-  [v11 removeAllObjects];
+  v12 = footerPinnableAttributes;
+  [footerPinnableAttributes removeAllObjects];
 
 LABEL_6:
   v13 = 0.0;
-  if (a3 != 0x7FFFFFFFFFFFFFFFLL)
+  if (section != 0x7FFFFFFFFFFFFFFFLL)
   {
     v14 = [(GKGridLayoutMetrics *)self->_dataSourceMetrics supplementaryMetricsForKey:@"SegmentedBoxMetricKey"];
 
@@ -1145,8 +1145,8 @@ LABEL_6:
   v117 = v15;
   v120 = v17;
   v115 = v18;
-  v122 = [v127 dataSource];
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  dataSource = [collectionView dataSource];
+  if (section == 0x7FFFFFFFFFFFFFFFLL)
   {
     v129 = 0;
     dataSourceMetrics = self->_dataSourceMetrics;
@@ -1154,13 +1154,13 @@ LABEL_6:
 
   else
   {
-    v129 = [(GKGridLayout *)self metricsForSection:a3];
+    v129 = [(GKGridLayout *)self metricsForSection:section];
     dataSourceMetrics = v129;
   }
 
   v102 = dataSourceMetrics;
-  v126 = [(GKGridLayoutMetrics *)v102 listForLocation:a4];
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  v126 = [(GKGridLayoutMetrics *)v102 listForLocation:location];
+  if (section == 0x7FFFFFFFFFFFFFFFLL)
   {
     [v10 filteredTotalItemCount];
     v125 = 0;
@@ -1170,19 +1170,19 @@ LABEL_6:
 
   else
   {
-    v20 = [v127 numberOfItemsInSection:a3];
-    v21 = [v10 filteredTotalItemCount];
+    v20 = [collectionView numberOfItemsInSection:section];
+    filteredTotalItemCount = [v10 filteredTotalItemCount];
     v114 = v20;
-    if (v20 >= v21)
+    if (v20 >= filteredTotalItemCount)
     {
-      v20 = v21;
+      v20 = filteredTotalItemCount;
     }
 
-    v22 = [v10 currentMaxVisibleItemCount];
+    currentMaxVisibleItemCount = [v10 currentMaxVisibleItemCount];
     v125 = v20;
-    if (v20 >= v22)
+    if (v20 >= currentMaxVisibleItemCount)
     {
-      v23 = v22;
+      v23 = currentMaxVisibleItemCount;
     }
 
     else
@@ -1193,8 +1193,8 @@ LABEL_6:
     v121 = v23;
   }
 
-  v24 = [(GKGridLayout *)self presentationDataForSection:a3];
-  if (a4 == 1)
+  v24 = [(GKGridLayout *)self presentationDataForSection:section];
+  if (location == 1)
   {
     v109 = [(GKGridLayout *)self indexOfSupplementaryMetricsOfKind:@"IncrementalReveal" inList:v126];
   }
@@ -1204,16 +1204,16 @@ LABEL_6:
     v109 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v26 = v125 == v121 || a3 == 0x7FFFFFFFFFFFFFFFLL || [(GKDataSourceMetrics *)v129 incrementalRevealItemCount]== 0;
+  v26 = v125 == v121 || section == 0x7FFFFFFFFFFFFFFFLL || [(GKDataSourceMetrics *)v129 incrementalRevealItemCount]== 0;
   v108 = v26;
-  if (a4)
+  if (location)
   {
     [v24 itemsMaxY];
   }
 
   else
   {
-    [(GKGridLayout *)self yOffsetForSection:a3];
+    [(GKGridLayout *)self yOffsetForSection:section];
   }
 
   v28 = v27;
@@ -1243,16 +1243,16 @@ LABEL_6:
   }
 
   v118 = v35;
-  v36 = [(GKGridLayout *)self sectionsPerRow];
-  v119 = a3 / v36;
-  if (a3 != 0x7FFFFFFFFFFFFFFFLL)
+  sectionsPerRow = [(GKGridLayout *)self sectionsPerRow];
+  v119 = section / sectionsPerRow;
+  if (section != 0x7FFFFFFFFFFFFFFFLL)
   {
     [(GKDataSourceMetrics *)v129 marginBetweenItems];
-    if (a3 % v36)
+    if (section % sectionsPerRow)
     {
       v38 = v37 * 0.5;
       v118 = v38;
-      if (a3 % v36 != v36 - 1)
+      if (section % sectionsPerRow != sectionsPerRow - 1)
       {
         v34 = v38;
       }
@@ -1266,7 +1266,7 @@ LABEL_6:
 
   v123 = v10;
   v39 = [v126 count];
-  v104 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   [(GKGridLayout *)self scale];
   v41 = v40;
   v113 = v39;
@@ -1275,7 +1275,7 @@ LABEL_6:
     v103 = 0;
     v110 = 0;
     v42 = 0;
-    v43 = a3 != 0x7FFFFFFFFFFFFFFFLL;
+    v43 = section != 0x7FFFFFFFFFFFFFFFLL;
     if (v125)
     {
       v44 = 0;
@@ -1283,26 +1283,26 @@ LABEL_6:
 
     else
     {
-      v44 = a3 != 0x7FFFFFFFFFFFFFFFLL;
+      v44 = section != 0x7FFFFFFFFFFFFFFFLL;
     }
 
-    if (v36 <= 1)
+    if (sectionsPerRow <= 1)
     {
       v43 = 0;
     }
 
     v111 = v43;
     v112 = v44;
-    v107 = v36;
-    v105 = (v120 + v13 * 2.0) / v36;
-    v106 = v36;
+    v107 = sectionsPerRow;
+    v105 = (v120 + v13 * 2.0) / sectionsPerRow;
+    v106 = sectionsPerRow;
     do
     {
       v45 = [v126 objectAtIndexedSubscript:v42];
-      [v45 sizeForCollectionView:v127];
+      [v45 sizeForCollectionView:collectionView];
       v47 = v46;
       v49 = v48;
-      v50 = [v45 isHidden];
+      isHidden = [v45 isHidden];
       if (v49 == 0.0)
       {
         v51 = 1;
@@ -1310,7 +1310,7 @@ LABEL_6:
 
       else
       {
-        v51 = v50;
+        v51 = isHidden;
       }
 
       if (v47 == 0.0)
@@ -1327,8 +1327,8 @@ LABEL_6:
       {
         if ([(GKDataSourceMetrics *)v129 shouldShowSectionHeadersWhenNoItems])
         {
-          v53 = [v45 kind];
-          if ([v53 isEqualToString:@"SectionHeader"])
+          kind = [v45 kind];
+          if ([kind isEqualToString:@"SectionHeader"])
           {
             v52 |= [(GKGridLayout *)self sectionsPerRow]== 1;
           }
@@ -1345,12 +1345,12 @@ LABEL_6:
         }
       }
 
-      v54 = [v45 kind];
-      if ([v54 isEqualToString:@"IncrementalReveal"])
+      kind2 = [v45 kind];
+      if ([kind2 isEqualToString:@"IncrementalReveal"])
       {
-        v55 = [(GKDataSourceMetrics *)v129 shouldAlwaysIncludeShowMore];
+        shouldAlwaysIncludeShowMore = [(GKDataSourceMetrics *)v129 shouldAlwaysIncludeShowMore];
 
-        if ((v55 & 1) == 0)
+        if ((shouldAlwaysIncludeShowMore & 1) == 0)
         {
           v52 = v108 | v52 & 1;
         }
@@ -1360,20 +1360,20 @@ LABEL_6:
       {
       }
 
-      if ([v45 shouldUseGlobalIndexing] && a6)
+      if ([v45 shouldUseGlobalIndexing] && globalOffset)
       {
         if (!v110)
         {
           v110 = [(GKGridLayout *)self presentationDataForSection:0x7FFFFFFFFFFFFFFFLL];
         }
 
-        v56 = *a6++;
+        v56 = *globalOffset++;
         v57 = [MEMORY[0x277CCAA70] indexPathWithIndex:v56];
       }
 
       else
       {
-        if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+        if (section == 0x7FFFFFFFFFFFFFFFLL)
         {
           [MEMORY[0x277CCAA70] indexPathWithIndex:?];
         }
@@ -1383,7 +1383,7 @@ LABEL_6:
           [MEMORY[0x277CCAA70] indexPathForItem:? inSection:?];
         }
         v57 = ;
-        ++a5;
+        ++offset;
       }
 
       if (self->_displayingOverlay)
@@ -1391,16 +1391,16 @@ LABEL_6:
         v52 |= [v57 length] > 1;
       }
 
-      v58 = [v45 kind];
-      v59 = [(UICollectionViewLayoutAttributes *)GKCollectionViewLayoutAttributes layoutAttributesForSupplementaryViewOfKind:v58 withIndexPath:v57];
+      kind3 = [v45 kind];
+      v59 = [(UICollectionViewLayoutAttributes *)GKCollectionViewLayoutAttributes layoutAttributesForSupplementaryViewOfKind:kind3 withIndexPath:v57];
 
-      if (a4 == 1)
+      if (location == 1)
       {
         v60 = v109 == 0x7FFFFFFFFFFFFFFFLL || v42 > v109;
         v61 = !v60;
         if (((v61 | v52) & 1) == 0)
         {
-          [(GKGridLayout *)self calculatedBottomPaddingForSection:a3];
+          [(GKGridLayout *)self calculatedBottomPaddingForSection:section];
           v28 = v28 + v62;
           v103 = 1;
         }
@@ -1412,7 +1412,7 @@ LABEL_6:
       {
         v63 = v105;
         v47 = (v47 + v13 * 2.0) / v106;
-        v64 = (v47 + v13 * -2.0) * (a3 - v119 * v107);
+        v64 = (v47 + v13 * -2.0) * (section - v119 * v107);
       }
 
       v65 = round(v64 + (v63 - v47) * 0.5);
@@ -1434,7 +1434,7 @@ LABEL_6:
       }
 
       v70 = v69 + v13 * -2.0;
-      if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+      if (section == 0x7FFFFFFFFFFFFFFFLL)
       {
         v70 = v69;
         v71 = v65;
@@ -1446,7 +1446,7 @@ LABEL_6:
       }
 
       [v59 setFrame:{floor(v41 * v71) / v41, floor(v41 * v28) / v41, floor(v41 * v70) / v41, floor(v41 * v49) / v41}];
-      if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+      if (section == 0x7FFFFFFFFFFFFFFFLL)
       {
         if ([v45 shouldPin])
         {
@@ -1465,7 +1465,7 @@ LABEL_6:
       }
 
       [v59 setZIndex:v72];
-      [v59 setDataSource:v122];
+      [v59 setDataSource:dataSource];
       [v59 setSectionMetrics:v129];
       [v59 setSupplementaryMetrics:v45];
       [v59 setAllSectionItemsVisible:v125 == v121];
@@ -1473,7 +1473,7 @@ LABEL_6:
       [v59 setCurrentTotalItemCount:v125];
       [v59 setMaxTotalItemCount:v114];
       [v59 setCurrentVisibleItemCount:{objc_msgSend(v123, "currentMaxVisibleItemCount")}];
-      [v59 setGridLayoutLocation:a4];
+      [v59 setGridLayoutLocation:location];
       [v59 setLeadingMargin:v118];
       [v59 setTrailingMargin:v34];
       if (v52)
@@ -1489,24 +1489,24 @@ LABEL_6:
       [v59 setHidden:v52 & 1];
       [v59 setAlpha:v73];
       indexPathToSupplementary = self->_indexPathToSupplementary;
-      v75 = [v59 indexPath];
-      [(NSMutableDictionary *)indexPathToSupplementary setObject:v59 forKeyedSubscript:v75];
+      indexPath = [v59 indexPath];
+      [(NSMutableDictionary *)indexPathToSupplementary setObject:v59 forKeyedSubscript:indexPath];
 
       [(NSMutableArray *)self->_laidOutAttributes addObject:v59];
       knownSupplementaryKinds = self->_knownSupplementaryKinds;
-      v77 = [v45 kind];
-      [(NSMutableSet *)knownSupplementaryKinds addObject:v77];
+      kind4 = [v45 kind];
+      [(NSMutableSet *)knownSupplementaryKinds addObject:kind4];
 
       if (v52 & 1 | (([v45 shouldPinGlobal] & 1) == 0))
       {
         if (!(v52 & 1 | (([v45 shouldPin] & 1) == 0)))
         {
-          if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+          if (section == 0x7FFFFFFFFFFFFFFFLL)
           {
             [v59 setIsPartOfGlobalPinningGroup:1];
           }
 
-          [v104 addObject:v59];
+          [array addObject:v59];
           [(NSMutableOrderedSet *)self->_laidOutPinnableAttributes addObject:v59];
         }
       }
@@ -1517,7 +1517,7 @@ LABEL_6:
         v78 = [(GKGridLayout *)self metricDataForSection:0x7FFFFFFFFFFFFFFFLL];
         v130[0] = v59;
         v79 = [MEMORY[0x277CBEA60] arrayWithObjects:v130 count:1];
-        [v78 addAttributes:v79 forLocation:a4];
+        [v78 addAttributes:v79 forLocation:location];
 
         [(NSMutableOrderedSet *)self->_laidOutPinnableAttributes addObject:v59];
       }
@@ -1525,15 +1525,15 @@ LABEL_6:
       [(NSMutableDictionary *)self->_indexPathToMetrics setObject:v45 forKeyedSubscript:v57];
       if ((v52 & 1) == 0)
       {
-        [(GKGridLayout *)self updatePresentationDataInSection:a3 withAttributes:v59 supplementaryLocation:a4];
+        [(GKGridLayout *)self updatePresentationDataInSection:section withAttributes:v59 supplementaryLocation:location];
         [v59 frame];
         v28 = v28 + v80;
       }
 
-      v81 = [v45 kind];
-      v82 = [v81 isEqualToString:@"SearchBar"];
+      kind5 = [v45 kind];
+      v82 = [kind5 isEqualToString:@"SearchBar"];
 
-      if (!a4 && (v82 & ~v52 & (a3 == 0x7FFFFFFFFFFFFFFFLL)) != 0 && self->_hiddenSearchBarOffset == 0.0)
+      if (!location && (v82 & ~v52 & (section == 0x7FFFFFFFFFFFFFFFLL)) != 0 && self->_hiddenSearchBarOffset == 0.0)
       {
         self->_hiddenSearchBarOffset = v28;
       }
@@ -1550,17 +1550,17 @@ LABEL_6:
     v103 = 0;
   }
 
-  v83 = v104;
+  v83 = array;
   v84 = v123;
-  if ([v104 count])
+  if ([array count])
   {
-    [v123 addAttributes:v104 forLocation:a4];
+    [v123 addAttributes:array forLocation:location];
   }
 
-  if ((a4 != 1) | v103 & 1)
+  if ((location != 1) | v103 & 1)
   {
-    v85 = a3 != 0x7FFFFFFFFFFFFFFFLL;
-    if (a4)
+    v85 = section != 0x7FFFFFFFFFFFFFFFLL;
+    if (location)
     {
       v85 = 1;
     }
@@ -1573,52 +1573,52 @@ LABEL_6:
       [v87 setZIndex:0x7FFFFFFFFFFFFFFFLL];
       v88 = *MEMORY[0x277CBF348];
       v89 = *(MEMORY[0x277CBF348] + 8);
-      v90 = [(GKGridLayout *)self collectionView];
-      [v90 bounds];
+      collectionView2 = [(GKGridLayout *)self collectionView];
+      [collectionView2 bounds];
       v92 = v91;
-      v93 = [(GKGridLayout *)self collectionView];
-      [v93 contentOffset];
+      collectionView3 = [(GKGridLayout *)self collectionView];
+      [collectionView3 contentOffset];
       v95 = v94;
-      v96 = [(GKGridLayout *)self collectionView];
-      [v96 contentInset];
+      collectionView4 = [(GKGridLayout *)self collectionView];
+      [collectionView4 contentInset];
       [v87 setFrame:{floor(v41 * v88) / v41, floor(v41 * v89) / v41, floor(v41 * v92) / v41, floor(v41 * (v95 + v97)) / v41}];
 
       [v87 setHidden:!self->_displayClipView];
       [(NSMutableArray *)self->_laidOutAttributes addObject:v87];
       v98 = self->_indexPathToSupplementary;
-      v99 = [v87 indexPath];
-      [(NSMutableDictionary *)v98 setObject:v87 forKeyedSubscript:v99];
+      indexPath2 = [v87 indexPath];
+      [(NSMutableDictionary *)v98 setObject:v87 forKeyedSubscript:indexPath2];
 
-      v83 = v104;
+      v83 = array;
       v84 = v123;
       [(GKGridLayout *)self setClipViewAttributes:v87];
 
-      ++a5;
+      ++offset;
     }
   }
 
   else
   {
-    [(GKGridLayout *)self updatePresentationDataInSection:a3 withAttributes:0 supplementaryLocation:1];
+    [(GKGridLayout *)self updatePresentationDataInSection:section withAttributes:0 supplementaryLocation:1];
   }
 
-  return a5;
+  return offset;
 }
 
-- (int64_t)_prepareOverlayLayoutForSection:(int64_t)a3 offset:(int64_t)a4
+- (int64_t)_prepareOverlayLayoutForSection:(int64_t)section offset:(int64_t)offset
 {
-  v7 = [(GKGridLayout *)self collectionView];
-  v58 = [(GKGridLayout *)self metricDataForSection:a3];
+  collectionView = [(GKGridLayout *)self collectionView];
+  v58 = [(GKGridLayout *)self metricDataForSection:section];
   [(GKGridLayout *)self layoutBounds];
   v9 = v8;
   [(GKGridLayout *)self scale];
   v11 = v10;
-  [v7 contentInset];
+  [collectionView contentInset];
   v13 = v12;
   v15 = v14;
-  v56 = v7;
-  v55 = [v7 dataSource];
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  v56 = collectionView;
+  dataSource = [collectionView dataSource];
+  if (section == 0x7FFFFFFFFFFFFFFFLL)
   {
     v54 = 0;
     dataSourceMetrics = self->_dataSourceMetrics;
@@ -1626,26 +1626,26 @@ LABEL_6:
 
   else
   {
-    v54 = [(GKGridLayout *)self metricsForSection:a3];
+    v54 = [(GKGridLayout *)self metricsForSection:section];
     dataSourceMetrics = v54;
   }
 
   v50 = dataSourceMetrics;
   v57 = [(GKGridLayoutMetrics *)v50 listForLocation:2];
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  if (section == 0x7FFFFFFFFFFFFFFFLL)
   {
     v17 = 0;
   }
 
   else
   {
-    v17 = [v7 numberOfItemsInSection:a3];
+    v17 = [collectionView numberOfItemsInSection:section];
   }
 
-  v18 = [v58 filteredTotalItemCount];
-  if (v17 >= v18)
+  filteredTotalItemCount = [v58 filteredTotalItemCount];
+  if (v17 >= filteredTotalItemCount)
   {
-    v19 = v18;
+    v19 = filteredTotalItemCount;
   }
 
   else
@@ -1654,7 +1654,7 @@ LABEL_6:
   }
 
   v53 = v19;
-  v49 = [(GKGridLayout *)self presentationDataForSection:a3];
+  v49 = [(GKGridLayout *)self presentationDataForSection:section];
   [v49 headerMaxY];
   v21 = v20;
   v52 = [v57 count];
@@ -1689,8 +1689,8 @@ LABEL_6:
 
         else
         {
-          v32 = [v25 kind];
-          v33 = [v32 isEqualToString:@"SearchPlaceholderMetricKey"];
+          kind = [v25 kind];
+          v33 = [kind isEqualToString:@"SearchPlaceholderMetricKey"];
 
           if (v33)
           {
@@ -1704,27 +1704,27 @@ LABEL_6:
         }
       }
 
-      if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+      if (section == 0x7FFFFFFFFFFFFFFFLL)
       {
-        v34 = [MEMORY[0x277CCAA70] indexPathWithIndex:a4];
+        v34 = [MEMORY[0x277CCAA70] indexPathWithIndex:offset];
         v35 = 0x7FFFFFFFFFFFFFFELL;
       }
 
       else
       {
-        v34 = [MEMORY[0x277CCAA70] indexPathForItem:a4 inSection:a3];
+        v34 = [MEMORY[0x277CCAA70] indexPathForItem:offset inSection:section];
         v35 = 1;
       }
 
-      ++a4;
-      v36 = [v25 kind];
-      v37 = [(UICollectionViewLayoutAttributes *)GKCollectionViewLayoutAttributes layoutAttributesForSupplementaryViewOfKind:v36 withIndexPath:v34];
+      ++offset;
+      kind2 = [v25 kind];
+      v37 = [(UICollectionViewLayoutAttributes *)GKCollectionViewLayoutAttributes layoutAttributesForSupplementaryViewOfKind:kind2 withIndexPath:v34];
 
       UIRectCenteredXInRect();
       v39 = v38;
       [v37 setFrame:{floor(v11 * v40) / v11, floor(v11 * v38) / v11, floor(v11 * v41) / v11, floor(v11 * v42) / v11}];
       [v37 setZIndex:v35];
-      [v37 setDataSource:v55];
+      [v37 setDataSource:dataSource];
       [v37 setSectionMetrics:v54];
       [v37 setSupplementaryMetrics:v25];
       [v37 setAllSectionItemsVisible:1];
@@ -1746,13 +1746,13 @@ LABEL_6:
       [v37 setHidden:v27];
       [v37 setAlpha:v43];
       indexPathToSupplementary = self->_indexPathToSupplementary;
-      v45 = [v37 indexPath];
-      [(NSMutableDictionary *)indexPathToSupplementary setObject:v37 forKeyedSubscript:v45];
+      indexPath = [v37 indexPath];
+      [(NSMutableDictionary *)indexPathToSupplementary setObject:v37 forKeyedSubscript:indexPath];
 
       [(NSMutableArray *)self->_laidOutAttributes addObject:v37];
       knownSupplementaryKinds = self->_knownSupplementaryKinds;
-      v47 = [v25 kind];
-      [(NSMutableSet *)knownSupplementaryKinds addObject:v47];
+      kind3 = [v25 kind];
+      [(NSMutableSet *)knownSupplementaryKinds addObject:kind3];
 
       [(NSMutableDictionary *)self->_indexPathToMetrics setObject:v25 forKeyedSubscript:v34];
       ++v22;
@@ -1761,29 +1761,29 @@ LABEL_6:
     while (v52 != v22);
   }
 
-  return a4;
+  return offset;
 }
 
-- (void)_prepareSegmentedBoxLayoutWithOffset:(int64_t)a3
+- (void)_prepareSegmentedBoxLayoutWithOffset:(int64_t)offset
 {
   v5 = [(GKGridLayoutMetrics *)self->_dataSourceMetrics supplementaryMetricsForKey:@"SegmentedBoxMetricKey"];
   if (v5)
   {
     v53 = v5;
-    v6 = [(GKGridLayout *)self collectionView];
+    collectionView = [(GKGridLayout *)self collectionView];
     [(GKGridLayout *)self scale];
     v8 = v7;
     [(GKGridLayout *)self layoutBounds];
     v10 = v9;
-    [v6 contentInset];
+    [collectionView contentInset];
     v13 = v10 - (v11 + v12);
-    v14 = [v6 dataSource];
+    dataSource = [collectionView dataSource];
     v15 = v13 == 0.0 || self->_laidOutContentSize.height == 0.0;
     v52 = [(GKGridLayoutMetrics *)self->_dataSourceMetrics supplementaryMetricsForKey:@"SegmentedControlMetricKey"];
     [v52 desiredHeight];
-    v16 = [MEMORY[0x277CCAA70] indexPathWithIndex:a3];
-    v17 = [v53 kind];
-    v18 = [(UICollectionViewLayoutAttributes *)GKCollectionViewLayoutAttributes layoutAttributesForSupplementaryViewOfKind:v17 withIndexPath:v16];
+    v16 = [MEMORY[0x277CCAA70] indexPathWithIndex:offset];
+    kind = [v53 kind];
+    v18 = [(UICollectionViewLayoutAttributes *)GKCollectionViewLayoutAttributes layoutAttributesForSupplementaryViewOfKind:kind withIndexPath:v16];
 
     UIRectCenteredXInRect();
     x = v55.origin.x;
@@ -1792,7 +1792,7 @@ LABEL_6:
     height = v55.size.height;
     CGRectGetMaxY(v55);
     [v18 setFrame:{floor(v8 * x) / v8, floor(v8 * y) / v8, floor(v8 * width) / v8, floor(v8 * height) / v8}];
-    [v18 setDataSource:v14];
+    [v18 setDataSource:dataSource];
     [v18 setSupplementaryMetrics:v53];
     [v18 setUnpinnedY:y];
     [v18 setGridLayoutLocation:3];
@@ -1806,24 +1806,24 @@ LABEL_6:
     [v18 setAlpha:v23];
     [v18 setZIndex:-3000];
     indexPathToSupplementary = self->_indexPathToSupplementary;
-    v25 = [v18 indexPath];
-    [(NSMutableDictionary *)indexPathToSupplementary setObject:v18 forKeyedSubscript:v25];
+    indexPath = [v18 indexPath];
+    [(NSMutableDictionary *)indexPathToSupplementary setObject:v18 forKeyedSubscript:indexPath];
 
     [(NSMutableArray *)self->_laidOutAttributes addObject:v18];
     knownSupplementaryKinds = self->_knownSupplementaryKinds;
-    v27 = [v53 kind];
-    [(NSMutableSet *)knownSupplementaryKinds addObject:v27];
+    kind2 = [v53 kind];
+    [(NSMutableSet *)knownSupplementaryKinds addObject:kind2];
 
     [(NSMutableDictionary *)self->_indexPathToMetrics setObject:v53 forKeyedSubscript:v16];
     v28 = [(GKGridLayoutMetrics *)self->_dataSourceMetrics supplementaryMetricsForKey:@"ContentBoxMetricKey"];
     if (v28)
     {
-      v51 = v6;
-      v29 = [v6 numberOfSections];
-      if (v29)
+      v51 = collectionView;
+      numberOfSections = [collectionView numberOfSections];
+      if (numberOfSections)
       {
         v30 = 0;
-        v31 = v29 - 1;
+        v31 = numberOfSections - 1;
         do
         {
           v32 = [(GKGridLayout *)self presentationDataForSection:v30];
@@ -1841,15 +1841,15 @@ LABEL_6:
       }
 
       v37 = v36 <= 0.0 || v15;
-      v38 = [MEMORY[0x277CCAA70] indexPathWithIndex:a3 + 1];
+      v38 = [MEMORY[0x277CCAA70] indexPathWithIndex:offset + 1];
 
-      v39 = [v28 kind];
-      v40 = [(UICollectionViewLayoutAttributes *)GKCollectionViewLayoutAttributes layoutAttributesForSupplementaryViewOfKind:v39 withIndexPath:v38];
+      kind3 = [v28 kind];
+      v40 = [(UICollectionViewLayoutAttributes *)GKCollectionViewLayoutAttributes layoutAttributesForSupplementaryViewOfKind:kind3 withIndexPath:v38];
 
       UIRectCenteredXInRect();
       v42 = v41;
       [v40 setFrame:{floor(v8 * v43) / v8, floor(v8 * v41) / v8, floor(v8 * v44) / v8, floor(v8 * v45) / v8}];
-      [v40 setDataSource:v14];
+      [v40 setDataSource:dataSource];
       [v40 setSupplementaryMetrics:v28];
       [v40 setUnpinnedY:v42];
       [v40 setGridLayoutLocation:4];
@@ -1863,30 +1863,30 @@ LABEL_6:
       [v40 setAlpha:v46];
       [v40 setZIndex:-2999];
       v47 = self->_indexPathToSupplementary;
-      v48 = [v40 indexPath];
-      [(NSMutableDictionary *)v47 setObject:v40 forKeyedSubscript:v48];
+      indexPath2 = [v40 indexPath];
+      [(NSMutableDictionary *)v47 setObject:v40 forKeyedSubscript:indexPath2];
 
       [(NSMutableArray *)self->_laidOutAttributes addObject:v40];
       v49 = self->_knownSupplementaryKinds;
-      v50 = [v28 kind];
-      [(NSMutableSet *)v49 addObject:v50];
+      kind4 = [v28 kind];
+      [(NSMutableSet *)v49 addObject:kind4];
 
       [(NSMutableDictionary *)self->_indexPathToMetrics setObject:v28 forKeyedSubscript:v38];
       v18 = v40;
       v16 = v38;
-      v6 = v51;
+      collectionView = v51;
     }
 
     v5 = v53;
   }
 }
 
-- (id)firstVisibleIndexAtOrAfterItem:(int64_t)a3 itemCount:(int64_t)a4 inSection:(int64_t)a5
+- (id)firstVisibleIndexAtOrAfterItem:(int64_t)item itemCount:(int64_t)count inSection:(int64_t)section
 {
-  v6 = a3;
+  itemCopy = item;
   if (self->_visibleIndexPathsFilter)
   {
-    if (a3 >= a4)
+    if (item >= count)
     {
 LABEL_5:
       v9 = 0;
@@ -1896,15 +1896,15 @@ LABEL_5:
     {
       while (1)
       {
-        v9 = [MEMORY[0x277CCAA70] indexPathForItem:v6 inSection:a5];
+        v9 = [MEMORY[0x277CCAA70] indexPathForItem:itemCopy inSection:section];
         if ([(NSSet *)self->_visibleIndexPathsFilter containsObject:v9])
         {
           break;
         }
 
-        ++v6;
+        ++itemCopy;
 
-        if (a4 == v6)
+        if (count == itemCopy)
         {
           goto LABEL_5;
         }
@@ -1914,25 +1914,25 @@ LABEL_5:
 
   else
   {
-    v9 = [MEMORY[0x277CCAA70] indexPathForItem:a3 inSection:a5];
+    v9 = [MEMORY[0x277CCAA70] indexPathForItem:item inSection:section];
   }
 
   return v9;
 }
 
-- (unint64_t)_prepareItemLayoutForSection:(int64_t)a3
+- (unint64_t)_prepareItemLayoutForSection:(int64_t)section
 {
-  v3 = a3;
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  sectionCopy = section;
+  if (section == 0x7FFFFFFFFFFFFFFFLL)
   {
     v5 = MEMORY[0x277CCACA8];
     v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"Assertion failed"];
     v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter/Frameworks/GameCenterUI/iOS/Framework/GKGridLayout.m"];
-    v8 = [v7 lastPathComponent];
-    v9 = [v5 stringWithFormat:@"%@ (sectionIdx != GKGlobalSection)\n[%s (%s:%d)]", v6, "-[GKGridLayout _prepareItemLayoutForSection:]", objc_msgSend(v8, "UTF8String"), 1305];
+    lastPathComponent = [v7 lastPathComponent];
+    1305 = [v5 stringWithFormat:@"%@ (sectionIdx != GKGlobalSection)\n[%s (%s:%d)]", v6, "-[GKGridLayout _prepareItemLayoutForSection:]", objc_msgSend(lastPathComponent, "UTF8String"), 1305];
 
-    v3 = 0x7FFFFFFFFFFFFFFFLL;
-    [MEMORY[0x277CBEAD8] raise:@"GameKit Exception" format:{@"%@", v9}];
+    sectionCopy = 0x7FFFFFFFFFFFFFFFLL;
+    [MEMORY[0x277CBEAD8] raise:@"GameKit Exception" format:{@"%@", 1305}];
   }
 
   v10 = [(GKGridLayoutMetrics *)self->_dataSourceMetrics supplementaryMetricsForKey:@"SegmentedBoxMetricKey"];
@@ -1947,19 +1947,19 @@ LABEL_5:
     v11 = 0.0;
   }
 
-  v113 = [(GKGridLayout *)self metricDataForSection:v3];
-  v121 = [(GKGridLayout *)self metricsForSection:v3];
-  v12 = v3;
-  v13 = [(GKGridLayout *)self sectionsPerRow];
-  v14 = [(GKGridLayout *)self collectionView];
+  v113 = [(GKGridLayout *)self metricDataForSection:sectionCopy];
+  v121 = [(GKGridLayout *)self metricsForSection:sectionCopy];
+  v12 = sectionCopy;
+  sectionsPerRow = [(GKGridLayout *)self sectionsPerRow];
+  collectionView = [(GKGridLayout *)self collectionView];
   [(GKGridLayout *)self layoutBounds];
   v114 = v18;
   v115 = v17;
-  v19 = (v16 + v11 * -2.0) / v13;
-  v20 = v12 % v13;
-  if (v13 >= 2)
+  v19 = (v16 + v11 * -2.0) / sectionsPerRow;
+  v20 = v12 % sectionsPerRow;
+  if (sectionsPerRow >= 2)
   {
-    v15 = v11 + (v12 % v13) * v19;
+    v15 = v11 + (v12 % sectionsPerRow) * v19;
   }
 
   else
@@ -1969,7 +1969,7 @@ LABEL_5:
 
   v116 = v15;
   v117 = v19;
-  v110 = [v14 dataSource];
+  dataSource = [collectionView dataSource];
   if (v12 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v21 = 0;
@@ -1977,13 +1977,13 @@ LABEL_5:
 
   else
   {
-    v21 = [v14 numberOfItemsInSection:v12];
+    v21 = [collectionView numberOfItemsInSection:v12];
   }
 
-  v22 = [v113 filteredTotalItemCount];
-  if (v21 >= v22)
+  filteredTotalItemCount = [v113 filteredTotalItemCount];
+  if (v21 >= filteredTotalItemCount)
   {
-    v23 = v22;
+    v23 = filteredTotalItemCount;
   }
 
   else
@@ -2001,11 +2001,11 @@ LABEL_5:
   v106 = v31;
   v107 = v30;
   v32 = v117 - (v30 + v31);
-  [v121 itemSizeForCollectionView:v14];
+  [v121 itemSizeForCollectionView:collectionView];
   v120 = v34;
-  if (v13 >= 2)
+  if (sectionsPerRow >= 2)
   {
-    v35 = (v33 + v11 * 2.0) / v13;
+    v35 = (v33 + v11 * 2.0) / sectionsPerRow;
   }
 
   else
@@ -2034,10 +2034,10 @@ LABEL_5:
     v38 = v37;
   }
 
-  v39 = [v113 currentMaxVisibleItemCount];
-  if (v112 >= v39)
+  currentMaxVisibleItemCount = [v113 currentMaxVisibleItemCount];
+  if (v112 >= currentMaxVisibleItemCount)
   {
-    v40 = v39;
+    v40 = currentMaxVisibleItemCount;
   }
 
   else
@@ -2088,8 +2088,8 @@ LABEL_5:
   v102 = v42;
   v44 = v40 / v38;
   v45 = vcvtps_u32_f32(v44);
-  v46 = [(NSMutableArray *)self->_laidOutAttributes lastObject];
-  [v46 frame];
+  lastObject = [(NSMutableArray *)self->_laidOutAttributes lastObject];
+  [lastObject frame];
   MaxY = CGRectGetMaxY(v124);
   if (self->_shouldLayoutRTL)
   {
@@ -2115,9 +2115,9 @@ LABEL_5:
   v108 = v49;
   if (v45)
   {
-    v93 = v46;
+    v93 = lastObject;
     v94 = v40;
-    v95 = v14;
+    v95 = collectionView;
     v50 = 0;
     v51 = v45;
     v52 = 0;
@@ -2135,8 +2135,8 @@ LABEL_5:
     v97 = floorf(v57);
     *&v55 = v55;
     v96 = floorf(*&v55);
-    v123 = v13 - 1;
-    v58 = a3;
+    v123 = sectionsPerRow - 1;
+    sectionCopy3 = section;
     while (1)
     {
       v59 = v116 + v107;
@@ -2149,8 +2149,8 @@ LABEL_5:
         v59 = CGRectGetMaxX(v125) - v107 - v41;
       }
 
-      v60 = [v121 alignment];
-      if (v60 == 2)
+      alignment = [v121 alignment];
+      if (alignment == 2)
       {
         v61 = !self->_shouldLayoutRTL;
         v62 = v100;
@@ -2159,7 +2159,7 @@ LABEL_5:
 
       else
       {
-        if (v60 != 1)
+        if (alignment != 1)
         {
           goto LABEL_57;
         }
@@ -2178,8 +2178,8 @@ LABEL_5:
 LABEL_57:
       if (v50 == v103)
       {
-        v64 = [v121 lastLineItemAlignment];
-        if (v64 == 2)
+        lastLineItemAlignment = [v121 lastLineItemAlignment];
+        if (lastLineItemAlignment == 2)
         {
           v67 = v96;
           if (self->_shouldLayoutRTL)
@@ -2192,7 +2192,7 @@ LABEL_67:
           v59 = v59 + v65;
         }
 
-        else if (v64 == 1)
+        else if (lastLineItemAlignment == 1)
         {
           v65 = v97;
           if (self->_shouldLayoutRTL)
@@ -2222,7 +2222,7 @@ LABEL_69:
         do
         {
           v73 = v52;
-          v52 = [(GKGridLayout *)self firstVisibleIndexAtOrAfterItem:v53 itemCount:v21 inSection:v58];
+          v52 = [(GKGridLayout *)self firstVisibleIndexAtOrAfterItem:v53 itemCount:v21 inSection:sectionCopy3];
 
           if (v52)
           {
@@ -2280,7 +2280,7 @@ LABEL_69:
             }
 
             [v74 setFrame:{floor(v71 * v80) / v71, v119, floor(v71 * v78) / v71, v118}];
-            [v74 setDataSource:v110];
+            [v74 setDataSource:dataSource];
             [v74 setSectionMetrics:v121];
             [v74 setCurrentTotalItemCount:v112];
             [v74 setMaxTotalItemCount:v21];
@@ -2338,11 +2338,11 @@ LABEL_69:
             [v74 setTrailingMargin:v85];
             [v74 setHidden:self->_displayingOverlay];
             indexPathToItem = self->_indexPathToItem;
-            v90 = [v74 indexPath];
-            [(NSMutableDictionary *)indexPathToItem setObject:v74 forKeyedSubscript:v90];
+            indexPath = [v74 indexPath];
+            [(NSMutableDictionary *)indexPathToItem setObject:v74 forKeyedSubscript:indexPath];
 
             [(NSMutableArray *)self->_laidOutAttributes addObject:v74];
-            [(GKGridLayout *)self updatePresentationDataInSection:a3 withAttributes:v74 supplementaryLocation:-1];
+            [(GKGridLayout *)self updatePresentationDataInSection:section withAttributes:v74 supplementaryLocation:-1];
             v91 = -v41;
             if (!self->_shouldLayoutRTL)
             {
@@ -2351,7 +2351,7 @@ LABEL_69:
 
             v59 = v59 + v91;
 
-            v58 = a3;
+            sectionCopy3 = section;
           }
 
           v53 = [v52 item] + 1;
@@ -2368,8 +2368,8 @@ LABEL_69:
       {
 
         v40 = v94;
-        v14 = v95;
-        v46 = v93;
+        collectionView = v95;
+        lastObject = v93;
         break;
       }
     }
@@ -2391,10 +2391,10 @@ LABEL_69:
       do
       {
         v6 = [(GKGridLayout *)self metricDataForSection:v5];
-        v7 = [v6 layoutKey];
+        layoutKey = [v6 layoutKey];
         oldSectionToMetricKeys = self->_oldSectionToMetricKeys;
         v9 = [MEMORY[0x277CCABB0] numberWithLong:v5];
-        [(NSMutableDictionary *)oldSectionToMetricKeys setObject:v7 forKeyedSubscript:v9];
+        [(NSMutableDictionary *)oldSectionToMetricKeys setObject:layoutKey forKeyedSubscript:v9];
 
         ++v5;
       }
@@ -2403,8 +2403,8 @@ LABEL_69:
     }
 
     v10 = [(GKGridLayout *)self metricDataForSection:0x7FFFFFFFFFFFFFFFLL];
-    v11 = [v10 layoutKey];
-    [(NSMutableDictionary *)self->_oldSectionToMetricKeys setObject:v11 forKeyedSubscript:&unk_286188D48];
+    layoutKey2 = [v10 layoutKey];
+    [(NSMutableDictionary *)self->_oldSectionToMetricKeys setObject:layoutKey2 forKeyedSubscript:&unk_286188D48];
   }
 
   [(NSPointerArray *)self->_sectionToMetricData setCount:0];
@@ -2441,8 +2441,8 @@ LABEL_69:
 - (void)fullyRebuildLayout
 {
   [(GKGridLayout *)self _resetState];
-  v3 = [(GKGridLayout *)self collectionView];
-  v4 = [v3 numberOfSections];
+  collectionView = [(GKGridLayout *)self collectionView];
+  numberOfSections = [collectionView numberOfSections];
   dataSourceMetrics = self->_dataSourceMetrics;
   if (!dataSourceMetrics)
   {
@@ -2457,9 +2457,9 @@ LABEL_69:
   [v6 setOverlayOffset:v7];
   v12 = [(GKGridLayout *)self _prepareOverlayLayoutForSection:0x7FFFFFFFFFFFFFFFLL offset:v7];
   [v6 setNumOverlays:{v12 + ~objc_msgSend(v6, "numHeaders")}];
-  if (v4)
+  if (numberOfSections)
   {
-    for (i = 0; i != v4; ++i)
+    for (i = 0; i != numberOfSections; ++i)
     {
       v9 = [(GKGridLayout *)self presentationDataForSection:i];
       v10 = [(GKGridLayout *)self _prepareSupplementaryLayoutForSection:i atLocation:0 offset:0 globalOffset:&v12];
@@ -2474,7 +2474,7 @@ LABEL_69:
     [(GKGridLayout *)self updatePresentationDataForLastInterleavedSections];
   }
 
-  [(GKGridLayout *)self finalizeGlobalPresentationDataWithSectionRange:0, v4];
+  [(GKGridLayout *)self finalizeGlobalPresentationDataWithSectionRange:0, numberOfSections];
   v11 = v12;
   v12 = [(GKGridLayout *)self _prepareSupplementaryLayoutForSection:0x7FFFFFFFFFFFFFFFLL atLocation:1 offset:v12 globalOffset:0];
   [v6 setNumFooters:v11 - v12];
@@ -2483,16 +2483,16 @@ LABEL_69:
   [(GKGridLayout *)self _filterPinnedAttributes];
 }
 
-- (double)applyBottomPinningToAttributes:(id)a3 minY:(double)a4 maxY:(double)a5
+- (double)applyBottomPinningToAttributes:(id)attributes minY:(double)y maxY:(double)maxY
 {
-  v6 = a3;
-  v7 = [v6 count];
+  attributesCopy = attributes;
+  v7 = [attributesCopy count];
   if (v7 >= 1)
   {
     v8 = v7 + 1;
     do
     {
-      v9 = [v6 objectAtIndexedSubscript:v8 - 2];
+      v9 = [attributesCopy objectAtIndexedSubscript:v8 - 2];
       [v9 frame];
       v11 = v10;
       v13 = v12;
@@ -2504,19 +2504,19 @@ LABEL_69:
       v21.size.width = v13;
       v21.size.height = v15;
       MaxY = CGRectGetMaxY(v21);
-      if (MaxY <= a5)
+      if (MaxY <= maxY)
       {
         v19 = v17;
       }
 
       else
       {
-        v19 = a5 - v15;
+        v19 = maxY - v15;
       }
 
-      if (MaxY > a5)
+      if (MaxY > maxY)
       {
-        a5 = a5 - v15;
+        maxY = maxY - v15;
       }
 
       [v9 setFrame:{v11, v19, v13, v15}];
@@ -2527,133 +2527,133 @@ LABEL_69:
     while (v8 > 1);
   }
 
-  return a5;
+  return maxY;
 }
 
-- (double)applyTopPinningToAttributes:(id)a3 minY:(double)a4 maxY:(double)a5
+- (double)applyTopPinningToAttributes:(id)attributes minY:(double)y maxY:(double)maxY
 {
-  v7 = a3;
-  v8 = [v7 count];
+  attributesCopy = attributes;
+  v8 = [attributesCopy count];
   if (v8 >= 1)
   {
     v9 = v8;
     for (i = 0; i != v9; ++i)
     {
-      v11 = [v7 objectAtIndexedSubscript:i];
+      v11 = [attributesCopy objectAtIndexedSubscript:i];
       [v11 frame];
       v13 = v12;
       v15 = v14;
       v17 = v16;
       [v11 unpinnedY];
-      if (v18 >= a4)
+      if (v18 >= y)
       {
-        v20 = v18;
+        yCopy = v18;
       }
 
       else
       {
         v23.origin.x = v13;
-        v23.origin.y = a4;
+        v23.origin.y = y;
         v23.size.width = v15;
         v23.size.height = v17;
         MaxY = CGRectGetMaxY(v23);
-        if (MaxY - a5 <= 0.0)
+        if (MaxY - maxY <= 0.0)
         {
-          v20 = a4;
-          a4 = MaxY;
+          yCopy = y;
+          y = MaxY;
         }
 
         else
         {
-          if (MaxY - a5 >= v17)
+          if (MaxY - maxY >= v17)
           {
             [v11 unpinnedY];
-            v20 = v21;
+            yCopy = v21;
           }
 
           else
           {
             v24.origin.x = v13;
-            v24.origin.y = a4;
+            v24.origin.y = y;
             v24.size.width = v15;
             v24.size.height = v17;
-            v20 = a5 - CGRectGetHeight(v24);
+            yCopy = maxY - CGRectGetHeight(v24);
           }
 
-          a4 = a5;
+          y = maxY;
         }
       }
 
-      [v11 setFrame:{v13, v20, v15, v17}];
+      [v11 setFrame:{v13, yCopy, v15, v17}];
     }
   }
 
-  return a4;
+  return y;
 }
 
-- (double)layoutBottomPinningAttributes:(id)a3 minY:(double)a4 maxY:(double)a5
+- (double)layoutBottomPinningAttributes:(id)attributes minY:(double)y maxY:(double)maxY
 {
-  v8 = a3;
-  [(GKGridLayout *)self applyBottomPinningToAttributes:v8 minY:a4 maxY:a5];
-  v10 = v9;
-  if (v9 < a4)
+  attributesCopy = attributes;
+  [(GKGridLayout *)self applyBottomPinningToAttributes:attributesCopy minY:y maxY:maxY];
+  yCopy = v9;
+  if (v9 < y)
   {
-    [(GKGridLayout *)self applyTopPinningToAttributes:v8 minY:a4 maxY:1.79769313e308];
-    v10 = a4;
+    [(GKGridLayout *)self applyTopPinningToAttributes:attributesCopy minY:y maxY:1.79769313e308];
+    yCopy = y;
   }
 
-  return v10;
+  return yCopy;
 }
 
-- (double)layoutTopPinningAttributes:(id)a3 minY:(double)a4 maxY:(double)a5
+- (double)layoutTopPinningAttributes:(id)attributes minY:(double)y maxY:(double)maxY
 {
-  [(GKGridLayout *)self applyTopPinningToAttributes:a3 minY:a4 maxY:?];
-  if (result > a5)
+  [(GKGridLayout *)self applyTopPinningToAttributes:attributes minY:y maxY:?];
+  if (result > maxY)
   {
-    return a5;
+    return maxY;
   }
 
   return result;
 }
 
-- (void)finalizePinnedAttributes:(id)a3 forSection:(int64_t)a4 footer:(BOOL)a5
+- (void)finalizePinnedAttributes:(id)attributes forSection:(int64_t)section footer:(BOOL)footer
 {
-  v8 = a3;
+  attributesCopy = attributes;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
   v17 = 0;
-  v9 = [v8 count];
+  v9 = [attributesCopy count];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __59__GKGridLayout_finalizePinnedAttributes_forSection_footer___block_invoke;
   v12[3] = &unk_27966A520;
-  v13 = a5;
+  footerCopy = footer;
   v12[4] = &v14;
   v12[5] = v9;
-  [v8 enumerateObjectsUsingBlock:v12];
-  if (!a5)
+  [attributesCopy enumerateObjectsUsingBlock:v12];
+  if (!footer)
   {
-    if (a4 == 0x7FFFFFFFFFFFFFFFLL)
+    if (section == 0x7FFFFFFFFFFFFFFFLL)
     {
       v10 = 0;
     }
 
     else
     {
-      v10 = a4 + 1;
+      v10 = section + 1;
     }
 
     if (v15[3])
     {
-      v11 = [(GKGridLayout *)self sectionsWithPinnedHeaders];
-      [v11 addIndex:v10];
+      sectionsWithPinnedHeaders = [(GKGridLayout *)self sectionsWithPinnedHeaders];
+      [sectionsWithPinnedHeaders addIndex:v10];
     }
 
     else
     {
-      v11 = [(GKGridLayout *)self sectionsWithPinnedHeaders];
-      [v11 removeIndex:v10];
+      sectionsWithPinnedHeaders = [(GKGridLayout *)self sectionsWithPinnedHeaders];
+      [sectionsWithPinnedHeaders removeIndex:v10];
     }
   }
 
@@ -2683,13 +2683,13 @@ void __59__GKGridLayout_finalizePinnedAttributes_forSection_footer___block_invok
 
 - (void)_filterPinnedAttributes
 {
-  v3 = [(GKGridLayout *)self collectionView];
-  if (([v3 numberOfSections] - 0x7FFFFFFFFFFFFFFFLL) >= 0x8000000000000002)
+  collectionView = [(GKGridLayout *)self collectionView];
+  if (([collectionView numberOfSections] - 0x7FFFFFFFFFFFFFFFLL) >= 0x8000000000000002)
   {
-    [v3 contentOffset];
+    [collectionView contentOffset];
     v5 = v4;
     height = self->_laidOutContentSize.height;
-    [v3 contentInset];
+    [collectionView contentInset];
     v8 = v7;
     v10 = v9;
     [(GKGridLayout *)self layoutBounds];
@@ -2715,20 +2715,20 @@ void __59__GKGridLayout_finalizePinnedAttributes_forSection_footer___block_invok
     }
 
     v18 = [(GKGridLayout *)self metricDataForSection:0x7FFFFFFFFFFFFFFFLL];
-    v19 = [v18 headerPinnableAttributes];
-    if (v19)
+    headerPinnableAttributes = [v18 headerPinnableAttributes];
+    if (headerPinnableAttributes)
     {
-      [(GKGridLayout *)self layoutTopPinningAttributes:v19 minY:v15 maxY:v17];
+      [(GKGridLayout *)self layoutTopPinningAttributes:headerPinnableAttributes minY:v15 maxY:v17];
       v15 = v20;
-      [(GKGridLayout *)self finalizePinnedAttributes:v19 forSection:0x7FFFFFFFFFFFFFFFLL footer:0];
+      [(GKGridLayout *)self finalizePinnedAttributes:headerPinnableAttributes forSection:0x7FFFFFFFFFFFFFFFLL footer:0];
     }
 
-    v21 = [v18 footerPinnableAttributes];
-    if (v21)
+    footerPinnableAttributes = [v18 footerPinnableAttributes];
+    if (footerPinnableAttributes)
     {
-      [(GKGridLayout *)self layoutBottomPinningAttributes:v21 minY:v15 maxY:v17];
+      [(GKGridLayout *)self layoutBottomPinningAttributes:footerPinnableAttributes minY:v15 maxY:v17];
       v17 = v22;
-      [(GKGridLayout *)self finalizePinnedAttributes:v21 forSection:0x7FFFFFFFFFFFFFFFLL footer:1];
+      [(GKGridLayout *)self finalizePinnedAttributes:footerPinnableAttributes forSection:0x7FFFFFFFFFFFFFFFLL footer:1];
     }
 
     v24[0] = MEMORY[0x277D85DD0];
@@ -2796,14 +2796,14 @@ void __39__GKGridLayout__filterPinnedAttributes__block_invoke_2(uint64_t a1, uin
   }
 }
 
-- (id)layoutAttributesForElementsInRect:(CGRect)a3
+- (id)layoutAttributesForElementsInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v21 = *MEMORY[0x277D85DE8];
-  v8 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   [(GKGridLayout *)self _filterPinnedAttributes];
   v18 = 0u;
   v19 = 0u;
@@ -2832,7 +2832,7 @@ void __39__GKGridLayout__filterPinnedAttributes__block_invoke_2(uint64_t a1, uin
         v24.size.height = height;
         if (CGRectIntersectsRect(v23, v24))
         {
-          [v8 addObject:v14];
+          [array addObject:v14];
         }
       }
 
@@ -2842,21 +2842,21 @@ void __39__GKGridLayout__filterPinnedAttributes__block_invoke_2(uint64_t a1, uin
     while (v11);
   }
 
-  return v8;
+  return array;
 }
 
-- (id)layoutAttributesForItemAtIndexPath:(id)a3
+- (id)layoutAttributesForItemAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_indexPathToItem objectForKeyedSubscript:v4];
+  pathCopy = path;
+  v5 = [(NSMutableDictionary *)self->_indexPathToItem objectForKeyedSubscript:pathCopy];
   if (!v5)
   {
     v5 = [objc_msgSend(objc_opt_class() "layoutAttributesClass")];
-    v6 = -[GKGridLayout metricsForSection:](self, "metricsForSection:", [v4 section]);
+    v6 = -[GKGridLayout metricsForSection:](self, "metricsForSection:", [pathCopy section]);
     v7 = *MEMORY[0x277CBF348];
     v8 = *(MEMORY[0x277CBF348] + 8);
-    v9 = [(GKGridLayout *)self collectionView];
-    [v6 itemSizeForCollectionView:v9];
+    collectionView = [(GKGridLayout *)self collectionView];
+    [v6 itemSizeForCollectionView:collectionView];
     [v5 setFrame:{v7, v8, v10, v11}];
 
     [v5 setAlpha:0.0];
@@ -2866,87 +2866,87 @@ void __39__GKGridLayout__filterPinnedAttributes__block_invoke_2(uint64_t a1, uin
   return v5;
 }
 
-- (id)layoutAttributesForSupplementaryViewOfKind:(id)a3 atIndexPath:(id)a4
+- (id)layoutAttributesForSupplementaryViewOfKind:(id)kind atIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NSMutableDictionary *)self->_indexPathToSupplementary objectForKeyedSubscript:v7];
+  kindCopy = kind;
+  pathCopy = path;
+  v8 = [(NSMutableDictionary *)self->_indexPathToSupplementary objectForKeyedSubscript:pathCopy];
   if (!v8)
   {
     v8 = [objc_msgSend(objc_opt_class() "layoutAttributesClass")];
     [v8 setAlpha:0.0];
-    [(NSMutableSet *)self->_knownSupplementaryKinds addObject:v6];
+    [(NSMutableSet *)self->_knownSupplementaryKinds addObject:kindCopy];
   }
 
   return v8;
 }
 
-- (id)layoutAttributesForDecorationViewOfKind:(id)a3 atIndexPath:(id)a4
+- (id)layoutAttributesForDecorationViewOfKind:(id)kind atIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NSMutableDictionary *)self->_indexPathToDecoration objectForKeyedSubscript:v7];
+  kindCopy = kind;
+  pathCopy = path;
+  v8 = [(NSMutableDictionary *)self->_indexPathToDecoration objectForKeyedSubscript:pathCopy];
   if (!v8)
   {
     v8 = [objc_msgSend(objc_opt_class() "layoutAttributesClass")];
     [v8 setAlpha:0.0];
-    [(NSMutableSet *)self->_knownSupplementaryKinds addObject:v6];
+    [(NSMutableSet *)self->_knownSupplementaryKinds addObject:kindCopy];
   }
 
   return v8;
 }
 
-- (unint64_t)currentMaxVisibleItemCountForSection:(int64_t)a3
+- (unint64_t)currentMaxVisibleItemCountForSection:(int64_t)section
 {
-  v3 = [(GKGridLayout *)self metricDataForSection:a3];
+  v3 = [(GKGridLayout *)self metricDataForSection:section];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 currentMaxVisibleItemCount];
+    currentMaxVisibleItemCount = [v3 currentMaxVisibleItemCount];
   }
 
   else
   {
-    v5 = 0x7FFFFFFFFFFFFFFFLL;
+    currentMaxVisibleItemCount = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  return v5;
+  return currentMaxVisibleItemCount;
 }
 
-- (id)revealMoreForSectionIndex:(int64_t)a3
+- (id)revealMoreForSectionIndex:(int64_t)index
 {
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  if (index == 0x7FFFFFFFFFFFFFFFLL)
   {
     v5 = MEMORY[0x277CCACA8];
     v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"Assertion failed"];
     v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter/Frameworks/GameCenterUI/iOS/Framework/GKGridLayout.m"];
-    v8 = [v7 lastPathComponent];
-    v9 = [v5 stringWithFormat:@"%@ (section != GKGlobalSection)\n[%s (%s:%d)]", v6, "-[GKGridLayout revealMoreForSectionIndex:]", objc_msgSend(v8, "UTF8String"), 1834];
+    lastPathComponent = [v7 lastPathComponent];
+    1834 = [v5 stringWithFormat:@"%@ (section != GKGlobalSection)\n[%s (%s:%d)]", v6, "-[GKGridLayout revealMoreForSectionIndex:]", objc_msgSend(lastPathComponent, "UTF8String"), 1834];
 
-    [MEMORY[0x277CBEAD8] raise:@"GameKit Exception" format:{@"%@", v9}];
+    [MEMORY[0x277CBEAD8] raise:@"GameKit Exception" format:{@"%@", 1834}];
   }
 
-  v10 = [(GKGridLayout *)self metricDataForSection:a3];
-  v11 = [v10 sectionMetrics];
-  v12 = -[GKGridLayout revealMoreForSectionIndex:revealCount:andDeleteItemCount:](self, "revealMoreForSectionIndex:revealCount:andDeleteItemCount:", a3, [v11 incrementalRevealItemCount], 0);
+  v10 = [(GKGridLayout *)self metricDataForSection:index];
+  sectionMetrics = [v10 sectionMetrics];
+  v12 = -[GKGridLayout revealMoreForSectionIndex:revealCount:andDeleteItemCount:](self, "revealMoreForSectionIndex:revealCount:andDeleteItemCount:", index, [sectionMetrics incrementalRevealItemCount], 0);
 
   return v12;
 }
 
-- (id)revealMoreForSectionIndex:(int64_t)a3 revealCount:(unint64_t)a4 andDeleteItemCount:(unint64_t)a5
+- (id)revealMoreForSectionIndex:(int64_t)index revealCount:(unint64_t)count andDeleteItemCount:(unint64_t)itemCount
 {
-  if (a4)
+  if (count)
   {
     v9 = [(GKGridLayout *)self metricDataForSection:?];
-    v10 = [v9 sectionMetrics];
-    v34 = self;
-    v35 = [(GKGridLayout *)self collectionView];
-    v11 = [v35 numberOfItemsInSection:a3];
-    v12 = [v9 currentMaxVisibleItemCount];
-    v13 = v12;
-    if (v11 >= v12)
+    sectionMetrics = [v9 sectionMetrics];
+    selfCopy = self;
+    collectionView = [(GKGridLayout *)self collectionView];
+    v11 = [collectionView numberOfItemsInSection:index];
+    currentMaxVisibleItemCount = [v9 currentMaxVisibleItemCount];
+    v13 = currentMaxVisibleItemCount;
+    if (v11 >= currentMaxVisibleItemCount)
     {
-      v14 = v12;
+      v14 = currentMaxVisibleItemCount;
     }
 
     else
@@ -2954,21 +2954,21 @@ void __39__GKGridLayout__filterPinnedAttributes__block_invoke_2(uint64_t a1, uin
       v14 = v11;
     }
 
-    if (a4 >= v11 - v14)
+    if (count >= v11 - v14)
     {
-      v15 = v11 - v14;
+      countCopy = v11 - v14;
     }
 
     else
     {
-      v15 = a4;
+      countCopy = count;
     }
 
-    v16 = v15 - a5 + [v9 currentMaxVisibleItemCount];
-    v17 = [v10 maximumVisibleItemCount];
-    if (v16 <= v17)
+    v16 = countCopy - itemCount + [v9 currentMaxVisibleItemCount];
+    maximumVisibleItemCount = [sectionMetrics maximumVisibleItemCount];
+    if (v16 <= maximumVisibleItemCount)
     {
-      v18 = v17;
+      v18 = maximumVisibleItemCount;
     }
 
     else
@@ -2977,30 +2977,30 @@ void __39__GKGridLayout__filterPinnedAttributes__block_invoke_2(uint64_t a1, uin
     }
 
     [v9 setCurrentMaxVisibleItemCount:v18];
-    if (v11 == a5)
+    if (v11 == itemCount)
     {
       [v9 setCurrentMaxVisibleItemCount:-1];
     }
 
-    v19 = [MEMORY[0x277CBEB58] setWithCapacity:v15];
+    v19 = [MEMORY[0x277CBEB58] setWithCapacity:countCopy];
     if (v11 > v13)
     {
-      if (v15 <= 1)
+      if (countCopy <= 1)
       {
         v20 = 1;
       }
 
       else
       {
-        v20 = v15;
+        v20 = countCopy;
       }
 
-      v21 = v14 - a5;
+      v21 = v14 - itemCount;
       do
       {
         if (v14 < v11)
         {
-          v22 = [MEMORY[0x277CCAA70] indexPathForItem:v21 inSection:a3];
+          v22 = [MEMORY[0x277CCAA70] indexPathForItem:v21 inSection:index];
           [v19 addObject:v22];
         }
 
@@ -3014,44 +3014,44 @@ void __39__GKGridLayout__filterPinnedAttributes__block_invoke_2(uint64_t a1, uin
 
     if ([v9 currentMaxVisibleItemCount] >= v11)
     {
-      v24 = v10;
-      v23 = [v10 shouldAlwaysIncludeShowMore] ^ 1;
+      v24 = sectionMetrics;
+      v23 = [sectionMetrics shouldAlwaysIncludeShowMore] ^ 1;
     }
 
     else
     {
       LOBYTE(v23) = 0;
-      v24 = v10;
+      v24 = sectionMetrics;
     }
 
-    v34->_noMoreShowMore = v23;
+    selfCopy->_noMoreShowMore = v23;
     v26 = [v24 listForLocation:1];
-    v27 = [(GKGridLayout *)v34 presentationDataForSection:a3];
-    v28 = [(GKGridLayout *)v34 indexOfSupplementaryMetricsOfKind:@"IncrementalReveal" inList:v26];
+    v27 = [(GKGridLayout *)selfCopy presentationDataForSection:index];
+    v28 = [(GKGridLayout *)selfCopy indexOfSupplementaryMetricsOfKind:@"IncrementalReveal" inList:v26];
     if (v28 != 0x7FFFFFFFFFFFFFFFLL)
     {
       v29 = v28;
-      v30 = [v27 numHeaders];
-      v31 = [v27 numOverlays];
-      v32 = [MEMORY[0x277CCAA70] indexPathForItem:v30 + v31 + v29 inSection:a3];
-      [(GKGridLayout *)v34 setIndexPathOfTouchedShowMore:v32];
+      numHeaders = [v27 numHeaders];
+      numOverlays = [v27 numOverlays];
+      v32 = [MEMORY[0x277CCAA70] indexPathForItem:numHeaders + numOverlays + v29 inSection:index];
+      [(GKGridLayout *)selfCopy setIndexPathOfTouchedShowMore:v32];
     }
 
-    [(GKGridLayout *)v34 setRevealedIndexPaths:v19];
-    v25 = [v19 allObjects];
+    [(GKGridLayout *)selfCopy setRevealedIndexPaths:v19];
+    allObjects = [v19 allObjects];
   }
 
   else
   {
-    v25 = 0;
+    allObjects = 0;
   }
 
-  return v25;
+  return allObjects;
 }
 
-- (id)initialLayoutAttributesForSlidingInItemAtIndexPath:(id)a3
+- (id)initialLayoutAttributesForSlidingInItemAtIndexPath:(id)path
 {
-  v4 = [(NSMutableDictionary *)self->_indexPathToItem objectForKeyedSubscript:a3];
+  v4 = [(NSMutableDictionary *)self->_indexPathToItem objectForKeyedSubscript:path];
   v5 = [v4 copy];
 
   [v5 frame];
@@ -3073,9 +3073,9 @@ void __39__GKGridLayout__filterPinnedAttributes__block_invoke_2(uint64_t a1, uin
   return v5;
 }
 
-- (id)finalLayoutAttributesForSlidingAwayItemAtIndexPath:(id)a3
+- (id)finalLayoutAttributesForSlidingAwayItemAtIndexPath:(id)path
 {
-  v4 = [(NSMutableDictionary *)self->_oldIndexPathToItem objectForKeyedSubscript:a3];
+  v4 = [(NSMutableDictionary *)self->_oldIndexPathToItem objectForKeyedSubscript:path];
   v5 = [v4 copy];
 
   [v5 frame];
@@ -3097,17 +3097,17 @@ void __39__GKGridLayout__filterPinnedAttributes__block_invoke_2(uint64_t a1, uin
   return v5;
 }
 
-- (id)initialLayoutAttributesForAppearingItemAtIndexPath:(id)a3
+- (id)initialLayoutAttributesForAppearingItemAtIndexPath:(id)path
 {
   v80 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([(NSMutableSet *)self->_revealedIndexPaths containsObject:v4])
+  pathCopy = path;
+  if ([(NSMutableSet *)self->_revealedIndexPaths containsObject:pathCopy])
   {
-    v5 = [(GKGridLayout *)self layoutAttributesForItemAtIndexPath:v4];
-    v6 = [v5 copy];
+    v5 = [(GKGridLayout *)self layoutAttributesForItemAtIndexPath:pathCopy];
+    indexPathAfterUpdate11 = [v5 copy];
 
-    [v6 setAlpha:0.0];
-    if (!v6)
+    [indexPathAfterUpdate11 setAlpha:0.0];
+    if (!indexPathAfterUpdate11)
     {
       goto LABEL_56;
     }
@@ -3117,14 +3117,14 @@ void __39__GKGridLayout__filterPinnedAttributes__block_invoke_2(uint64_t a1, uin
 
   if (self->_updateType - 1 <= 1)
   {
-    v7 = [(GKGridLayout *)self collectionView];
-    v8 = [v7 dataSource];
+    collectionView = [(GKGridLayout *)self collectionView];
+    dataSource = [collectionView dataSource];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       dataSourceForUpdate = self->_dataSourceForUpdate;
-      v10 = [v8 dataSourceForSection:{objc_msgSend(v4, "section")}];
+      v10 = [dataSource dataSourceForSection:{objc_msgSend(pathCopy, "section")}];
       LODWORD(dataSourceForUpdate) = [(GKCollectionViewDataSource *)dataSourceForUpdate containsDataSource:v10];
 
       if (dataSourceForUpdate)
@@ -3134,14 +3134,14 @@ void __39__GKGridLayout__filterPinnedAttributes__block_invoke_2(uint64_t a1, uin
         v73 = 0u;
         v74 = 0u;
         v11 = self->_currentUpdateItems;
-        v6 = [(NSArray *)v11 countByEnumeratingWithState:&v73 objects:v79 count:16];
-        if (v6)
+        indexPathAfterUpdate11 = [(NSArray *)v11 countByEnumeratingWithState:&v73 objects:v79 count:16];
+        if (indexPathAfterUpdate11)
         {
-          v60 = self;
+          selfCopy = self;
           v12 = *v74;
           while (2)
           {
-            for (i = 0; i != v6; i = i + 1)
+            for (i = 0; i != indexPathAfterUpdate11; i = i + 1)
             {
               if (*v74 != v12)
               {
@@ -3151,24 +3151,24 @@ void __39__GKGridLayout__filterPinnedAttributes__block_invoke_2(uint64_t a1, uin
               v14 = *(*(&v73 + 1) + 8 * i);
               if (![v14 updateAction])
               {
-                v15 = [v14 indexPathAfterUpdate];
-                if ([v15 isEqual:v4])
+                indexPathAfterUpdate = [v14 indexPathAfterUpdate];
+                if ([indexPathAfterUpdate isEqual:pathCopy])
                 {
 
 LABEL_53:
-                  self = v60;
-                  v6 = [(GKGridLayout *)v60 initialLayoutAttributesForSlidingInItemAtIndexPath:v4];
+                  self = selfCopy;
+                  indexPathAfterUpdate11 = [(GKGridLayout *)selfCopy initialLayoutAttributesForSlidingInItemAtIndexPath:pathCopy];
                   goto LABEL_54;
                 }
 
-                v16 = [v14 indexPathAfterUpdate];
-                v17 = [v16 section];
-                if (v17 == [v4 section])
+                indexPathAfterUpdate2 = [v14 indexPathAfterUpdate];
+                section = [indexPathAfterUpdate2 section];
+                if (section == [pathCopy section])
                 {
-                  v18 = [v14 indexPathAfterUpdate];
-                  v19 = [v18 item];
+                  indexPathAfterUpdate3 = [v14 indexPathAfterUpdate];
+                  item = [indexPathAfterUpdate3 item];
 
-                  if (v19 == 0x7FFFFFFFFFFFFFFFLL)
+                  if (item == 0x7FFFFFFFFFFFFFFFLL)
                   {
                     goto LABEL_53;
                   }
@@ -3180,8 +3180,8 @@ LABEL_53:
               }
             }
 
-            v6 = [(NSArray *)v11 countByEnumeratingWithState:&v73 objects:v79 count:16];
-            if (v6)
+            indexPathAfterUpdate11 = [(NSArray *)v11 countByEnumeratingWithState:&v73 objects:v79 count:16];
+            if (indexPathAfterUpdate11)
             {
               continue;
             }
@@ -3189,13 +3189,13 @@ LABEL_53:
             break;
           }
 
-          self = v60;
+          self = selfCopy;
         }
 
 LABEL_54:
 
 LABEL_55:
-        if (!v6)
+        if (!indexPathAfterUpdate11)
         {
           goto LABEL_56;
         }
@@ -3204,19 +3204,19 @@ LABEL_55:
       }
 
       oldSectionToMetricKeys = self->_oldSectionToMetricKeys;
-      v36 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v4, "section")}];
+      v36 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(pathCopy, "section")}];
       v37 = [(NSMutableDictionary *)oldSectionToMetricKeys objectForKeyedSubscript:v36];
-      v38 = -[GKGridLayout metricDataForSection:](self, "metricDataForSection:", [v4 section]);
+      v38 = -[GKGridLayout metricDataForSection:](self, "metricDataForSection:", [pathCopy section]);
       v39 = [v37 isEqual:v38];
 
       if ((v39 & 1) == 0)
       {
-        v6 = [(GKGridLayout *)self initialLayoutAttributesForSlidingInItemAtIndexPath:v4];
+        indexPathAfterUpdate11 = [(GKGridLayout *)self initialLayoutAttributesForSlidingInItemAtIndexPath:pathCopy];
         goto LABEL_55;
       }
     }
 
-    v6 = 0;
+    indexPathAfterUpdate11 = 0;
     goto LABEL_55;
   }
 
@@ -3228,12 +3228,12 @@ LABEL_55:
   v20 = [(NSArray *)obj countByEnumeratingWithState:&v69 objects:v78 count:16];
   if (!v20)
   {
-    v6 = 0;
+    indexPathAfterUpdate11 = 0;
     goto LABEL_49;
   }
 
   v21 = v20;
-  v61 = self;
+  selfCopy2 = self;
   v22 = *v70;
   while (2)
   {
@@ -3247,27 +3247,27 @@ LABEL_55:
       v24 = *(*(&v69 + 1) + 8 * j);
       if (![v24 updateAction])
       {
-        v25 = [v24 indexPathAfterUpdate];
-        if ([v25 isEqual:v4])
+        indexPathAfterUpdate4 = [v24 indexPathAfterUpdate];
+        if ([indexPathAfterUpdate4 isEqual:pathCopy])
         {
 
 LABEL_47:
-          self = v61;
-          v47 = [(NSMutableDictionary *)v61->_indexPathToItem objectForKeyedSubscript:v4];
-          v6 = [v47 copy];
+          self = selfCopy2;
+          v47 = [(NSMutableDictionary *)selfCopy2->_indexPathToItem objectForKeyedSubscript:pathCopy];
+          indexPathAfterUpdate11 = [v47 copy];
 
           v46 = 0.0;
           goto LABEL_48;
         }
 
-        v26 = [v24 indexPathAfterUpdate];
-        if ([v26 item] == 0x7FFFFFFFFFFFFFFFLL)
+        indexPathAfterUpdate5 = [v24 indexPathAfterUpdate];
+        if ([indexPathAfterUpdate5 item] == 0x7FFFFFFFFFFFFFFFLL)
         {
-          v27 = [v24 indexPathAfterUpdate];
-          v28 = [v27 section];
-          v29 = [v4 section];
+          indexPathAfterUpdate6 = [v24 indexPathAfterUpdate];
+          section2 = [indexPathAfterUpdate6 section];
+          section3 = [pathCopy section];
 
-          if (v28 == v29)
+          if (section2 == section3)
           {
             goto LABEL_47;
           }
@@ -3283,34 +3283,34 @@ LABEL_47:
         continue;
       }
 
-      v30 = [v24 indexPathAfterUpdate];
-      if ([v30 isEqual:v4])
+      indexPathAfterUpdate7 = [v24 indexPathAfterUpdate];
+      if ([indexPathAfterUpdate7 isEqual:pathCopy])
       {
 
 LABEL_45:
-        self = v61;
-        oldIndexPathToItem = v61->_oldIndexPathToItem;
+        self = selfCopy2;
+        oldIndexPathToItem = selfCopy2->_oldIndexPathToItem;
         v41 = MEMORY[0x277CCAA70];
-        v42 = [v4 item];
-        v43 = [v24 indexPathBeforeUpdate];
-        v44 = [v41 indexPathForItem:v42 inSection:{objc_msgSend(v43, "section")}];
+        item2 = [pathCopy item];
+        indexPathBeforeUpdate = [v24 indexPathBeforeUpdate];
+        v44 = [v41 indexPathForItem:item2 inSection:{objc_msgSend(indexPathBeforeUpdate, "section")}];
         v45 = [(NSMutableDictionary *)oldIndexPathToItem objectForKeyedSubscript:v44];
-        v6 = [v45 copy];
+        indexPathAfterUpdate11 = [v45 copy];
 
         v46 = 1.0;
 LABEL_48:
-        [v6 setAlpha:v46];
+        [indexPathAfterUpdate11 setAlpha:v46];
         goto LABEL_49;
       }
 
-      v31 = [v24 indexPathAfterUpdate];
-      if ([v31 item] == 0x7FFFFFFFFFFFFFFFLL)
+      indexPathAfterUpdate8 = [v24 indexPathAfterUpdate];
+      if ([indexPathAfterUpdate8 item] == 0x7FFFFFFFFFFFFFFFLL)
       {
-        v32 = [v24 indexPathAfterUpdate];
-        v33 = [v32 section];
-        v34 = [v4 section];
+        indexPathAfterUpdate9 = [v24 indexPathAfterUpdate];
+        section4 = [indexPathAfterUpdate9 section];
+        section5 = [pathCopy section];
 
-        if (v33 == v34)
+        if (section4 == section5)
         {
           goto LABEL_45;
         }
@@ -3330,15 +3330,15 @@ LABEL_48:
     break;
   }
 
-  v6 = 0;
-  self = v61;
+  indexPathAfterUpdate11 = 0;
+  self = selfCopy2;
 LABEL_49:
 
-  if (!v6)
+  if (!indexPathAfterUpdate11)
   {
 LABEL_56:
-    v62 = self;
-    obja = v4;
+    selfCopy3 = self;
+    obja = pathCopy;
     v67 = 0u;
     v68 = 0u;
     v65 = 0u;
@@ -3361,26 +3361,26 @@ LABEL_56:
           v53 = *(*(&v65 + 1) + 8 * k);
           if ([v53 updateAction] != 4 && objc_msgSend(v53, "updateAction") != 2)
           {
-            v54 = [v53 indexPathAfterUpdate];
-            v55 = [v54 item];
-            if (v55 == 0x7FFFFFFFFFFFFFFFLL)
+            indexPathAfterUpdate10 = [v53 indexPathAfterUpdate];
+            item3 = [indexPathAfterUpdate10 item];
+            if (item3 == 0x7FFFFFFFFFFFFFFFLL)
             {
-              v6 = [v53 indexPathAfterUpdate];
-              v56 = [v6 section];
-              if (v56 == [obja section])
+              indexPathAfterUpdate11 = [v53 indexPathAfterUpdate];
+              section6 = [indexPathAfterUpdate11 section];
+              if (section6 == [obja section])
               {
 
 LABEL_72:
-                v6 = 0;
-                v4 = obja;
+                indexPathAfterUpdate11 = 0;
+                pathCopy = obja;
                 goto LABEL_73;
               }
             }
 
-            v57 = [v53 indexPathAfterUpdate];
-            v58 = [v57 isEqual:obja];
+            indexPathAfterUpdate12 = [v53 indexPathAfterUpdate];
+            v58 = [indexPathAfterUpdate12 isEqual:obja];
 
-            if (v55 == 0x7FFFFFFFFFFFFFFFLL)
+            if (item3 == 0x7FFFFFFFFFFFFFFFLL)
             {
             }
 
@@ -3401,33 +3401,33 @@ LABEL_72:
       }
     }
 
-    v4 = obja;
-    v48 = [(NSMutableDictionary *)v62->_indexPathToItem objectForKeyedSubscript:obja];
-    v6 = [(NSArray *)v48 copy];
+    pathCopy = obja;
+    v48 = [(NSMutableDictionary *)selfCopy3->_indexPathToItem objectForKeyedSubscript:obja];
+    indexPathAfterUpdate11 = [(NSArray *)v48 copy];
 LABEL_73:
   }
 
 LABEL_74:
 
-  return v6;
+  return indexPathAfterUpdate11;
 }
 
-- (id)finalLayoutAttributesForDisappearingItemAtIndexPath:(id)a3
+- (id)finalLayoutAttributesForDisappearingItemAtIndexPath:(id)path
 {
   v70 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  pathCopy = path;
   if (self->_updateType - 1 > 1)
   {
     v62 = 0u;
     v63 = 0u;
     v60 = 0u;
     v61 = 0u;
-    v6 = self->_currentUpdateItems;
-    v19 = [(NSArray *)v6 countByEnumeratingWithState:&v60 objects:v68 count:16];
+    dataSource = self->_currentUpdateItems;
+    v19 = [(NSArray *)dataSource countByEnumeratingWithState:&v60 objects:v68 count:16];
     if (v19)
     {
       v20 = v19;
-      v57 = self;
+      selfCopy = self;
       v21 = *v61;
       while (2)
       {
@@ -3437,36 +3437,36 @@ LABEL_74:
         {
           if (*v61 != v21)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(dataSource);
           }
 
           v23 = *(*(&v60 + 1) + 8 * v22);
           if ([v23 updateAction] == 3)
           {
-            v24 = [v23 indexPathBeforeUpdate];
-            if ([v24 isEqual:v4])
+            indexPathBeforeUpdate = [v23 indexPathBeforeUpdate];
+            if ([indexPathBeforeUpdate isEqual:pathCopy])
             {
 
 LABEL_39:
-              v37 = [v23 indexPathAfterUpdate];
-              v38 = [v37 item];
+              indexPathAfterUpdate = [v23 indexPathAfterUpdate];
+              item = [indexPathAfterUpdate item];
 
-              self = v57;
-              indexPathToItem = v57->_indexPathToItem;
-              if (v38 == 0x7FFFFFFFFFFFFFFFLL)
+              self = selfCopy;
+              indexPathToItem = selfCopy->_indexPathToItem;
+              if (item == 0x7FFFFFFFFFFFFFFFLL)
               {
                 v40 = MEMORY[0x277CCAA70];
-                v41 = [v4 item];
-                v42 = [v23 indexPathAfterUpdate];
-                v43 = [v40 indexPathForItem:v41 inSection:{objc_msgSend(v42, "section")}];
+                item2 = [pathCopy item];
+                indexPathAfterUpdate2 = [v23 indexPathAfterUpdate];
+                v43 = [v40 indexPathForItem:item2 inSection:{objc_msgSend(indexPathAfterUpdate2, "section")}];
                 v44 = [(NSMutableDictionary *)indexPathToItem objectForKeyedSubscript:v43];
                 v10 = [v44 copy];
               }
 
               else
               {
-                v42 = [v23 indexPathAfterUpdate];
-                v43 = [(NSMutableDictionary *)indexPathToItem objectForKeyedSubscript:v42];
+                indexPathAfterUpdate2 = [v23 indexPathAfterUpdate];
+                v43 = [(NSMutableDictionary *)indexPathToItem objectForKeyedSubscript:indexPathAfterUpdate2];
                 v10 = [v43 copy];
               }
 
@@ -3474,20 +3474,20 @@ LABEL_39:
               goto LABEL_51;
             }
 
-            v25 = [v23 indexPathBeforeUpdate];
-            if ([v25 item] == 0x7FFFFFFFFFFFFFFFLL)
+            indexPathBeforeUpdate2 = [v23 indexPathBeforeUpdate];
+            if ([indexPathBeforeUpdate2 item] == 0x7FFFFFFFFFFFFFFFLL)
             {
-              v26 = [v23 indexPathBeforeUpdate];
-              v27 = [v26 section];
+              indexPathBeforeUpdate3 = [v23 indexPathBeforeUpdate];
+              section = [indexPathBeforeUpdate3 section];
               v28 = v21;
-              v29 = v6;
-              v30 = v4;
-              v31 = [v4 section];
+              v29 = dataSource;
+              v30 = pathCopy;
+              section2 = [pathCopy section];
 
-              v32 = v27 == v31;
+              v32 = section == section2;
               v20 = v59;
-              v4 = v30;
-              v6 = v29;
+              pathCopy = v30;
+              dataSource = v29;
               v21 = v28;
               if (v32)
               {
@@ -3502,21 +3502,21 @@ LABEL_39:
 
           if ([v23 updateAction] == 1)
           {
-            v33 = [v23 indexPathBeforeUpdate];
-            if ([v33 item] == 0x7FFFFFFFFFFFFFFFLL)
+            indexPathBeforeUpdate4 = [v23 indexPathBeforeUpdate];
+            if ([indexPathBeforeUpdate4 item] == 0x7FFFFFFFFFFFFFFFLL)
             {
             }
 
             else
             {
-              v34 = [v23 indexPathBeforeUpdate];
-              v35 = [v34 section];
-              v36 = [v4 section];
+              indexPathBeforeUpdate5 = [v23 indexPathBeforeUpdate];
+              section3 = [indexPathBeforeUpdate5 section];
+              section4 = [pathCopy section];
 
-              if (v35 != v36)
+              if (section3 != section4)
               {
-                self = v57;
-                v51 = [(NSMutableDictionary *)v57->_indexPathToItem objectForKeyedSubscript:v4];
+                self = selfCopy;
+                v51 = [(NSMutableDictionary *)selfCopy->_indexPathToItem objectForKeyedSubscript:pathCopy];
                 v10 = [v51 copy];
 
                 goto LABEL_51;
@@ -3528,7 +3528,7 @@ LABEL_39:
         }
 
         while (v20 != v22);
-        v20 = [(NSArray *)v6 countByEnumeratingWithState:&v60 objects:v68 count:16];
+        v20 = [(NSArray *)dataSource countByEnumeratingWithState:&v60 objects:v68 count:16];
         if (v20)
         {
           continue;
@@ -3538,7 +3538,7 @@ LABEL_39:
       }
 
       v10 = 0;
-      self = v57;
+      self = selfCopy;
       goto LABEL_51;
     }
 
@@ -3547,8 +3547,8 @@ LABEL_37:
     goto LABEL_51;
   }
 
-  v5 = [(GKGridLayout *)self collectionView];
-  v6 = [v5 dataSource];
+  collectionView = [(GKGridLayout *)self collectionView];
+  dataSource = [collectionView dataSource];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -3557,7 +3557,7 @@ LABEL_37:
   }
 
   dataSourceForUpdate = self->_dataSourceForUpdate;
-  v8 = -[NSArray dataSourceForSection:](v6, "dataSourceForSection:", [v4 section]);
+  v8 = -[NSArray dataSourceForSection:](dataSource, "dataSourceForSection:", [pathCopy section]);
   LODWORD(dataSourceForUpdate) = [(GKCollectionViewDataSource *)dataSourceForUpdate containsDataSource:v8];
 
   if (dataSourceForUpdate)
@@ -3570,8 +3570,8 @@ LABEL_37:
     v10 = [(NSArray *)v9 countByEnumeratingWithState:&v64 objects:v69 count:16];
     if (v10)
     {
-      v58 = v6;
-      v56 = self;
+      v58 = dataSource;
+      selfCopy2 = self;
       v11 = *v65;
       while (2)
       {
@@ -3585,24 +3585,24 @@ LABEL_37:
           v13 = *(*(&v64 + 1) + 8 * i);
           if ([v13 updateAction] == 1)
           {
-            v14 = [v13 indexPathBeforeUpdate];
-            if ([v14 isEqual:v4])
+            indexPathBeforeUpdate6 = [v13 indexPathBeforeUpdate];
+            if ([indexPathBeforeUpdate6 isEqual:pathCopy])
             {
 
 LABEL_48:
-              self = v56;
-              v10 = [(GKGridLayout *)v56 finalLayoutAttributesForSlidingAwayItemAtIndexPath:v4];
+              self = selfCopy2;
+              v10 = [(GKGridLayout *)selfCopy2 finalLayoutAttributesForSlidingAwayItemAtIndexPath:pathCopy];
               goto LABEL_49;
             }
 
-            v15 = [v13 indexPathBeforeUpdate];
-            v16 = [v15 section];
-            if (v16 == [v4 section])
+            indexPathBeforeUpdate7 = [v13 indexPathBeforeUpdate];
+            section5 = [indexPathBeforeUpdate7 section];
+            if (section5 == [pathCopy section])
             {
-              v17 = [v13 indexPathBeforeUpdate];
-              v18 = [v17 item];
+              indexPathBeforeUpdate8 = [v13 indexPathBeforeUpdate];
+              item3 = [indexPathBeforeUpdate8 item];
 
-              if (v18 == 0x7FFFFFFFFFFFFFFFLL)
+              if (item3 == 0x7FFFFFFFFFFFFFFFLL)
               {
                 goto LABEL_48;
               }
@@ -3623,31 +3623,31 @@ LABEL_48:
         break;
       }
 
-      self = v56;
+      self = selfCopy2;
 LABEL_49:
-      v6 = v58;
+      dataSource = v58;
     }
 
     goto LABEL_50;
   }
 
   oldSectionToMetricKeys = self->_oldSectionToMetricKeys;
-  v46 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v4, "section")}];
+  v46 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(pathCopy, "section")}];
   v47 = [(NSMutableDictionary *)oldSectionToMetricKeys objectForKeyedSubscript:v46];
-  v48 = -[GKGridLayout metricDataForSection:](self, "metricDataForSection:", [v4 section]);
-  v49 = [v48 layoutKey];
-  v50 = [v47 isEqual:v49];
+  v48 = -[GKGridLayout metricDataForSection:](self, "metricDataForSection:", [pathCopy section]);
+  layoutKey = [v48 layoutKey];
+  v50 = [v47 isEqual:layoutKey];
 
   if (v50)
   {
-    v9 = [(NSMutableDictionary *)self->_indexPathToItem objectForKeyedSubscript:v4];
+    v9 = [(NSMutableDictionary *)self->_indexPathToItem objectForKeyedSubscript:pathCopy];
     v10 = [(NSArray *)v9 copy];
 LABEL_50:
 
     goto LABEL_51;
   }
 
-  v10 = [(GKGridLayout *)self finalLayoutAttributesForSlidingAwayItemAtIndexPath:v4];
+  v10 = [(GKGridLayout *)self finalLayoutAttributesForSlidingAwayItemAtIndexPath:pathCopy];
 LABEL_51:
 
   if (v10 || [(NSArray *)self->_currentUpdateItems count])
@@ -3666,7 +3666,7 @@ LABEL_54:
     }
   }
 
-  v53 = [(NSMutableDictionary *)self->_indexPathToItem objectForKeyedSubscript:v4];
+  v53 = [(NSMutableDictionary *)self->_indexPathToItem objectForKeyedSubscript:pathCopy];
   v54 = [v53 copy];
 
   v10 = v54;
@@ -3675,22 +3675,22 @@ LABEL_56:
   return v10;
 }
 
-- (BOOL)shouldSlideInSupplementaryElementOfKind:(id)a3 forUpdateItem:(id)a4 atIndexPath:(id)a5
+- (BOOL)shouldSlideInSupplementaryElementOfKind:(id)kind forUpdateItem:(id)item atIndexPath:(id)path
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (![v9 updateAction] && (objc_msgSend(v8, "isEqualToString:", @"SegmentedBox") & 1) == 0)
+  kindCopy = kind;
+  itemCopy = item;
+  pathCopy = path;
+  if (![itemCopy updateAction] && (objc_msgSend(kindCopy, "isEqualToString:", @"SegmentedBox") & 1) == 0)
   {
-    if ([v10 length] < 2)
+    if ([pathCopy length] < 2)
     {
-      v13 = [(NSMutableDictionary *)self->_indexPathToMetrics objectForKeyedSubscript:v10];
-      v14 = [v9 indexPathAfterUpdate];
-      if ([v14 section] != 0x7FFFFFFFFFFFFFFFLL)
+      indexPathAfterUpdate3 = [(NSMutableDictionary *)self->_indexPathToMetrics objectForKeyedSubscript:pathCopy];
+      indexPathAfterUpdate = [itemCopy indexPathAfterUpdate];
+      if ([indexPathAfterUpdate section] != 0x7FFFFFFFFFFFFFFFLL)
       {
-        v15 = [v13 animateWithSection];
-        v16 = [v9 indexPathAfterUpdate];
-        v17 = v15 == [v16 section];
+        animateWithSection = [indexPathAfterUpdate3 animateWithSection];
+        indexPathAfterUpdate2 = [itemCopy indexPathAfterUpdate];
+        v17 = animateWithSection == [indexPathAfterUpdate2 section];
 LABEL_12:
         v11 = v17;
 
@@ -3700,8 +3700,8 @@ LABEL_12:
 
     else
     {
-      v13 = [v9 indexPathAfterUpdate];
-      if ([v13 isEqual:v10])
+      indexPathAfterUpdate3 = [itemCopy indexPathAfterUpdate];
+      if ([indexPathAfterUpdate3 isEqual:pathCopy])
       {
         v11 = 1;
 LABEL_18:
@@ -3709,12 +3709,12 @@ LABEL_18:
         goto LABEL_4;
       }
 
-      v14 = [v9 indexPathAfterUpdate];
-      v18 = [v14 section];
-      if (v18 == [v10 section])
+      indexPathAfterUpdate = [itemCopy indexPathAfterUpdate];
+      section = [indexPathAfterUpdate section];
+      if (section == [pathCopy section])
       {
-        v16 = [v9 indexPathAfterUpdate];
-        v17 = [v16 item] == 0x7FFFFFFFFFFFFFFFLL;
+        indexPathAfterUpdate2 = [itemCopy indexPathAfterUpdate];
+        v17 = [indexPathAfterUpdate2 item] == 0x7FFFFFFFFFFFFFFFLL;
         goto LABEL_12;
       }
     }
@@ -3731,11 +3731,11 @@ LABEL_4:
   return v11;
 }
 
-- (id)initialLayoutAttributesForAppearingSupplementaryElementOfKind:(id)a3 atIndexPath:(id)a4
+- (id)initialLayoutAttributesForAppearingSupplementaryElementOfKind:(id)kind atIndexPath:(id)path
 {
   v51 = *MEMORY[0x277D85DE8];
-  v44 = a3;
-  v6 = a4;
+  kindCopy = kind;
+  pathCopy = path;
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
@@ -3764,7 +3764,7 @@ LABEL_3:
     v11 = *(*(&v46 + 1) + 8 * v10);
     if (self->_updateType - 1 <= 1)
     {
-      if ([(GKGridLayout *)self shouldSlideInSupplementaryElementOfKind:v44 forUpdateItem:*(*(&v46 + 1) + 8 * v10) atIndexPath:v6])
+      if ([(GKGridLayout *)self shouldSlideInSupplementaryElementOfKind:kindCopy forUpdateItem:*(*(&v46 + 1) + 8 * v10) atIndexPath:pathCopy])
       {
         break;
       }
@@ -3775,26 +3775,26 @@ LABEL_3:
       goto LABEL_15;
     }
 
-    v12 = [v11 indexPathBeforeUpdate];
-    if ([v12 item] != 0x7FFFFFFFFFFFFFFFLL)
+    indexPathBeforeUpdate = [v11 indexPathBeforeUpdate];
+    if ([indexPathBeforeUpdate item] != 0x7FFFFFFFFFFFFFFFLL)
     {
       goto LABEL_14;
     }
 
-    v13 = [v11 indexPathAfterUpdate];
-    v14 = [v13 section];
-    if (v14 != [v6 section])
+    indexPathAfterUpdate = [v11 indexPathAfterUpdate];
+    section = [indexPathAfterUpdate section];
+    if (section != [pathCopy section])
     {
 
 LABEL_14:
       goto LABEL_15;
     }
 
-    v15 = [v6 length];
+    v15 = [pathCopy length];
 
     if (v15 >= 2)
     {
-      v40 = [(GKGridLayout *)self layoutAttributesForSupplementaryViewOfKind:v44 atIndexPath:v6];
+      v40 = [(GKGridLayout *)self layoutAttributesForSupplementaryViewOfKind:kindCopy atIndexPath:pathCopy];
       v41 = [v40 copy];
 
       [v41 setAlpha:1.0];
@@ -3806,34 +3806,34 @@ LABEL_29:
 LABEL_15:
     if ([v11 updateAction] == 3)
     {
-      v16 = [v11 indexPathAfterUpdate];
-      if ([v16 item] != 0x7FFFFFFFFFFFFFFFLL && !self->_movedItemsInUpdateCarrySections)
+      indexPathAfterUpdate2 = [v11 indexPathAfterUpdate];
+      if ([indexPathAfterUpdate2 item] != 0x7FFFFFFFFFFFFFFFLL && !self->_movedItemsInUpdateCarrySections)
       {
         goto LABEL_22;
       }
 
-      v17 = [v11 indexPathAfterUpdate];
-      v18 = [v17 section];
-      if (v18 != [v6 section])
+      indexPathAfterUpdate3 = [v11 indexPathAfterUpdate];
+      section2 = [indexPathAfterUpdate3 section];
+      if (section2 != [pathCopy section])
       {
 
 LABEL_22:
         goto LABEL_23;
       }
 
-      v19 = [v6 length];
+      v19 = [pathCopy length];
 
       if (v19 >= 2)
       {
         oldIndexPathToSupplementary = self->_oldIndexPathToSupplementary;
         v35 = MEMORY[0x277CCAA70];
-        v36 = [v6 item];
-        v37 = [v11 indexPathBeforeUpdate];
-        v38 = [v35 indexPathForItem:v36 inSection:{objc_msgSend(v37, "section")}];
+        item = [pathCopy item];
+        indexPathBeforeUpdate2 = [v11 indexPathBeforeUpdate];
+        v38 = [v35 indexPathForItem:item inSection:{objc_msgSend(indexPathBeforeUpdate2, "section")}];
         v39 = [(NSMutableDictionary *)oldIndexPathToSupplementary objectForKeyedSubscript:v38];
         v41 = [v39 copy];
 
-        [v41 setIndexPath:v6];
+        [v41 setIndexPath:pathCopy];
         goto LABEL_29;
       }
     }
@@ -3852,7 +3852,7 @@ LABEL_23:
   }
 
   v20 = 0x27F1DA000uLL;
-  v21 = [(NSMutableDictionary *)self->_indexPathToSupplementary objectForKeyedSubscript:v6];
+  v21 = [(NSMutableDictionary *)self->_indexPathToSupplementary objectForKeyedSubscript:pathCopy];
   v41 = [v21 copy];
 
   [v41 frame];
@@ -3878,7 +3878,7 @@ LABEL_30:
   }
 
 LABEL_31:
-  v42 = [*(&self->super.super.isa + *(v20 + 1256)) objectForKeyedSubscript:{v6, v44}];
+  v42 = [*(&self->super.super.isa + *(v20 + 1256)) objectForKeyedSubscript:{pathCopy, kindCopy}];
   v41 = [v42 copy];
 
 LABEL_32:
@@ -3888,12 +3888,12 @@ LABEL_32:
 
 - (double)yOffsetForSlidingUpdate
 {
-  v3 = [(GKGridLayout *)self collectionView];
-  [v3 contentOffset];
+  collectionView = [(GKGridLayout *)self collectionView];
+  [collectionView contentOffset];
   v5 = v4;
-  [v3 frame];
+  [collectionView frame];
   v7 = v6;
-  [v3 contentInset];
+  [collectionView contentInset];
   v9 = v5 + v7 - v8;
   height = self->_laidOutContentSize.height;
   if (v9 <= height)
@@ -3909,22 +3909,22 @@ LABEL_32:
   return v11;
 }
 
-- (BOOL)shouldSlideOutSupplementaryElementOfKind:(id)a3 forUpdateItem:(id)a4 atIndexPath:(id)a5
+- (BOOL)shouldSlideOutSupplementaryElementOfKind:(id)kind forUpdateItem:(id)item atIndexPath:(id)path
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v9 updateAction] == 1 && (objc_msgSend(v8, "isEqualToString:", @"SegmentedBox") & 1) == 0)
+  kindCopy = kind;
+  itemCopy = item;
+  pathCopy = path;
+  if ([itemCopy updateAction] == 1 && (objc_msgSend(kindCopy, "isEqualToString:", @"SegmentedBox") & 1) == 0)
   {
-    if ([v10 length] < 2)
+    if ([pathCopy length] < 2)
     {
-      v12 = [(NSMutableDictionary *)self->_indexPathToMetrics objectForKeyedSubscript:v10];
-      v13 = [v9 indexPathBeforeUpdate];
-      if ([v13 section] != 0x7FFFFFFFFFFFFFFFLL)
+      indexPathBeforeUpdate3 = [(NSMutableDictionary *)self->_indexPathToMetrics objectForKeyedSubscript:pathCopy];
+      indexPathBeforeUpdate = [itemCopy indexPathBeforeUpdate];
+      if ([indexPathBeforeUpdate section] != 0x7FFFFFFFFFFFFFFFLL)
       {
-        v14 = [v12 animateWithSection];
-        v15 = [v9 indexPathBeforeUpdate];
-        v16 = v14 == [v15 section];
+        animateWithSection = [indexPathBeforeUpdate3 animateWithSection];
+        indexPathBeforeUpdate2 = [itemCopy indexPathBeforeUpdate];
+        v16 = animateWithSection == [indexPathBeforeUpdate2 section];
 LABEL_11:
         v11 = v16;
 
@@ -3934,8 +3934,8 @@ LABEL_11:
 
     else
     {
-      v12 = [v9 indexPathBeforeUpdate];
-      if ([v12 isEqual:v10])
+      indexPathBeforeUpdate3 = [itemCopy indexPathBeforeUpdate];
+      if ([indexPathBeforeUpdate3 isEqual:pathCopy])
       {
         v11 = 1;
 LABEL_17:
@@ -3943,12 +3943,12 @@ LABEL_17:
         goto LABEL_18;
       }
 
-      v13 = [v9 indexPathBeforeUpdate];
-      v17 = [v13 section];
-      if (v17 == [v10 section])
+      indexPathBeforeUpdate = [itemCopy indexPathBeforeUpdate];
+      section = [indexPathBeforeUpdate section];
+      if (section == [pathCopy section])
       {
-        v15 = [v9 indexPathBeforeUpdate];
-        v16 = [v15 item] == 0x7FFFFFFFFFFFFFFFLL;
+        indexPathBeforeUpdate2 = [itemCopy indexPathBeforeUpdate];
+        v16 = [indexPathBeforeUpdate2 item] == 0x7FFFFFFFFFFFFFFFLL;
         goto LABEL_11;
       }
     }
@@ -3965,11 +3965,11 @@ LABEL_18:
   return v11;
 }
 
-- (id)finalLayoutAttributesForDisappearingSupplementaryElementOfKind:(id)a3 atIndexPath:(id)a4
+- (id)finalLayoutAttributesForDisappearingSupplementaryElementOfKind:(id)kind atIndexPath:(id)path
 {
   v49 = *MEMORY[0x277D85DE8];
-  v42 = a3;
-  v6 = a4;
+  kindCopy = kind;
+  pathCopy = path;
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
@@ -3997,7 +3997,7 @@ LABEL_3:
     v11 = *(*(&v44 + 1) + 8 * v10);
     if (self->_updateType - 1 <= 1)
     {
-      if ([(GKGridLayout *)self shouldSlideOutSupplementaryElementOfKind:v42 forUpdateItem:*(*(&v44 + 1) + 8 * v10) atIndexPath:v6])
+      if ([(GKGridLayout *)self shouldSlideOutSupplementaryElementOfKind:kindCopy forUpdateItem:*(*(&v44 + 1) + 8 * v10) atIndexPath:pathCopy])
       {
         break;
       }
@@ -4008,26 +4008,26 @@ LABEL_3:
       goto LABEL_15;
     }
 
-    v12 = [v11 indexPathBeforeUpdate];
-    if ([v12 item] != 0x7FFFFFFFFFFFFFFFLL)
+    indexPathBeforeUpdate = [v11 indexPathBeforeUpdate];
+    if ([indexPathBeforeUpdate item] != 0x7FFFFFFFFFFFFFFFLL)
     {
       goto LABEL_14;
     }
 
-    v13 = [v11 indexPathBeforeUpdate];
-    v14 = [v13 section];
-    if (v14 != [v6 section])
+    indexPathBeforeUpdate2 = [v11 indexPathBeforeUpdate];
+    section = [indexPathBeforeUpdate2 section];
+    if (section != [pathCopy section])
     {
 
 LABEL_14:
       goto LABEL_15;
     }
 
-    v15 = [v6 length];
+    v15 = [pathCopy length];
 
     if (v15 >= 2)
     {
-      v39 = [(NSMutableDictionary *)self->_oldIndexPathToSupplementary objectForKeyedSubscript:v6];
+      v39 = [(NSMutableDictionary *)self->_oldIndexPathToSupplementary objectForKeyedSubscript:pathCopy];
       [v39 setAlpha:0.0];
       goto LABEL_29;
     }
@@ -4035,34 +4035,34 @@ LABEL_14:
 LABEL_15:
     if ([v11 updateAction] == 3)
     {
-      v16 = [v11 indexPathBeforeUpdate];
-      if ([v16 item] != 0x7FFFFFFFFFFFFFFFLL && !self->_movedItemsInUpdateCarrySections)
+      indexPathBeforeUpdate3 = [v11 indexPathBeforeUpdate];
+      if ([indexPathBeforeUpdate3 item] != 0x7FFFFFFFFFFFFFFFLL && !self->_movedItemsInUpdateCarrySections)
       {
         goto LABEL_22;
       }
 
-      v17 = [v11 indexPathBeforeUpdate];
-      v18 = [v17 section];
-      if (v18 != [v6 section])
+      indexPathBeforeUpdate4 = [v11 indexPathBeforeUpdate];
+      section2 = [indexPathBeforeUpdate4 section];
+      if (section2 != [pathCopy section])
       {
 
 LABEL_22:
         goto LABEL_23;
       }
 
-      v19 = [v6 length];
+      v19 = [pathCopy length];
 
       if (v19 >= 2)
       {
         indexPathToSupplementary = self->_indexPathToSupplementary;
         v34 = MEMORY[0x277CCAA70];
-        v35 = [v6 item];
-        v36 = [v11 indexPathAfterUpdate];
-        v37 = [v34 indexPathForItem:v35 inSection:{objc_msgSend(v36, "section")}];
+        item = [pathCopy item];
+        indexPathAfterUpdate = [v11 indexPathAfterUpdate];
+        v37 = [v34 indexPathForItem:item inSection:{objc_msgSend(indexPathAfterUpdate, "section")}];
         v38 = [(NSMutableDictionary *)indexPathToSupplementary objectForKeyedSubscript:v37];
         v39 = [v38 copy];
 
-        [v39 setIndexPath:v6];
+        [v39 setIndexPath:pathCopy];
         goto LABEL_29;
       }
     }
@@ -4080,7 +4080,7 @@ LABEL_23:
     }
   }
 
-  v20 = [(NSMutableDictionary *)self->_oldIndexPathToSupplementary objectForKeyedSubscript:v6];
+  v20 = [(NSMutableDictionary *)self->_oldIndexPathToSupplementary objectForKeyedSubscript:pathCopy];
   v39 = [v20 copy];
 
   [v39 frame];
@@ -4106,33 +4106,33 @@ LABEL_29:
   }
 
 LABEL_30:
-  v40 = [(NSMutableDictionary *)self->_indexPathToSupplementary objectForKeyedSubscript:v6, v42];
-  v39 = [v40 copy];
+  kindCopy = [(NSMutableDictionary *)self->_indexPathToSupplementary objectForKeyedSubscript:pathCopy, kindCopy];
+  v39 = [kindCopy copy];
 
 LABEL_31:
 
   return v39;
 }
 
-- (id)indexPathsToDeleteForSupplementaryViewOfKind:(id)a3
+- (id)indexPathsToDeleteForSupplementaryViewOfKind:(id)kind
 {
-  v4 = [MEMORY[0x277CBEB18] array];
-  v5 = v4;
+  array = [MEMORY[0x277CBEB18] array];
+  v5 = array;
   if (self->_noMoreShowMore && self->_indexPathOfTouchedShowMore)
   {
-    [v4 addObject:?];
+    [array addObject:?];
   }
 
   return v5;
 }
 
-- (void)prepareForCollectionViewUpdates:(id)a3
+- (void)prepareForCollectionViewUpdates:(id)updates
 {
-  v4 = a3;
-  [(GKGridLayout *)self setCurrentUpdateItems:v4];
+  updatesCopy = updates;
+  [(GKGridLayout *)self setCurrentUpdateItems:updatesCopy];
   v5.receiver = self;
   v5.super_class = GKGridLayout;
-  [(GKGridLayout *)&v5 prepareForCollectionViewUpdates:v4];
+  [(GKGridLayout *)&v5 prepareForCollectionViewUpdates:updatesCopy];
 }
 
 - (void)finalizeCollectionViewUpdates
@@ -4149,22 +4149,22 @@ LABEL_31:
   self->_oldLaidOutContentSize = self->_laidOutContentSize;
 }
 
-- (void)prepareForAnimatedBoundsChange:(CGRect)a3
+- (void)prepareForAnimatedBoundsChange:(CGRect)change
 {
   v6.receiver = self;
   v6.super_class = GKGridLayout;
-  [(GKGridLayout *)&v6 prepareForAnimatedBoundsChange:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
-  v4 = [(GKGridLayout *)self collectionView];
-  v5 = [v4 dataSource];
+  [(GKGridLayout *)&v6 prepareForAnimatedBoundsChange:change.origin.x, change.origin.y, change.size.width, change.size.height];
+  collectionView = [(GKGridLayout *)self collectionView];
+  dataSource = [collectionView dataSource];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
 
-    v5 = 0;
+    dataSource = 0;
   }
 
-  [(GKGridLayout *)self prepareForUpdate:3 inDataSource:v5];
+  [(GKGridLayout *)self prepareForUpdate:3 inDataSource:dataSource];
 }
 
 - (void)finalizeAnimatedBoundsChange
@@ -4176,19 +4176,19 @@ LABEL_31:
   [(GKGridLayout *)self setDataSourceForUpdate:0];
 }
 
-- (void)prepareForUpdate:(unint64_t)a3 inDataSource:(id)a4
+- (void)prepareForUpdate:(unint64_t)update inDataSource:(id)source
 {
-  v6 = a4;
-  [(GKGridLayout *)self setUpdateType:a3];
-  [(GKGridLayout *)self setDataSourceForUpdate:v6];
+  sourceCopy = source;
+  [(GKGridLayout *)self setUpdateType:update];
+  [(GKGridLayout *)self setDataSourceForUpdate:sourceCopy];
 }
 
-- (id)_animationForReusableView:(id)a3 toLayoutAttributes:(id)a4 type:(unint64_t)a5
+- (id)_animationForReusableView:(id)view toLayoutAttributes:(id)attributes type:(unint64_t)type
 {
   v36 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  if (a5 != 2 || self->_updateType || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || [v9 representedElementCategory])
+  viewCopy = view;
+  attributesCopy = attributes;
+  if (type != 2 || self->_updateType || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || [attributesCopy representedElementCategory])
   {
     v10 = 0;
     goto LABEL_6;
@@ -4205,7 +4205,7 @@ LABEL_31:
     goto LABEL_28;
   }
 
-  v27 = v8;
+  v27 = viewCopy;
   v28 = v13;
   v14 = *v32;
   while (2)
@@ -4220,11 +4220,11 @@ LABEL_31:
       v16 = *(*(&v31 + 1) + 8 * i);
       if ([v16 updateAction] == 1)
       {
-        v17 = [v9 indexPath];
-        v18 = [v16 indexPathBeforeUpdate];
-        if ([v17 isEqual:v18])
+        indexPath = [attributesCopy indexPath];
+        indexPathBeforeUpdate = [v16 indexPathBeforeUpdate];
+        if ([indexPath isEqual:indexPathBeforeUpdate])
         {
-          [v9 alpha];
+          [attributesCopy alpha];
           v20 = v19;
 
           if (v20 == 0.0)
@@ -4235,16 +4235,16 @@ LABEL_31:
 
         else
         {
-          v21 = [v9 indexPath];
-          v22 = [v21 section];
-          v23 = [v16 indexPathBeforeUpdate];
-          if (v22 != [v23 section])
+          indexPath2 = [attributesCopy indexPath];
+          section = [indexPath2 section];
+          indexPathBeforeUpdate2 = [v16 indexPathBeforeUpdate];
+          if (section != [indexPathBeforeUpdate2 section])
           {
             goto LABEL_23;
           }
 
-          v24 = [v16 indexPathBeforeUpdate];
-          if ([v24 item] != 0x7FFFFFFFFFFFFFFFLL)
+          indexPathBeforeUpdate3 = [v16 indexPathBeforeUpdate];
+          if ([indexPathBeforeUpdate3 item] != 0x7FFFFFFFFFFFFFFFLL)
           {
 
 LABEL_23:
@@ -4252,7 +4252,7 @@ LABEL_23:
             continue;
           }
 
-          [v9 alpha];
+          [attributesCopy alpha];
           v26 = v25;
 
           v13 = v28;
@@ -4263,7 +4263,7 @@ LABEL_27:
             v29[1] = 3221225472;
             v29[2] = __66__GKGridLayout__animationForReusableView_toLayoutAttributes_type___block_invoke;
             v29[3] = &unk_27966A570;
-            v8 = v27;
+            viewCopy = v27;
             v30 = v27;
             v10 = [v29 copy];
 
@@ -4282,7 +4282,7 @@ LABEL_27:
     break;
   }
 
-  v8 = v27;
+  viewCopy = v27;
 LABEL_28:
 
 LABEL_6:

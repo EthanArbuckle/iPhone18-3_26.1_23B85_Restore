@@ -1,40 +1,40 @@
 @interface BKUserSortOrderManager
-+ (BOOL)resortAscendingSortKeyedObjects:(id)a3;
-+ (BOOL)resortDescendingSortKeyedObjects:(id)a3;
-+ (id)nextSortKeyForCollection:(id)a3;
-+ (void)resetDescendingSortKeyedObjects:(id)a3;
-+ (void)saveSortedBooksArray:(id)a3 inCollection:(id)a4 inLibrary:(id)a5;
-+ (void)saveSortedCollectionsArray:(id)a3 inLibraryManager:(id)a4;
++ (BOOL)resortAscendingSortKeyedObjects:(id)objects;
++ (BOOL)resortDescendingSortKeyedObjects:(id)objects;
++ (id)nextSortKeyForCollection:(id)collection;
++ (void)resetDescendingSortKeyedObjects:(id)objects;
++ (void)saveSortedBooksArray:(id)array inCollection:(id)collection inLibrary:(id)library;
++ (void)saveSortedCollectionsArray:(id)array inLibraryManager:(id)manager;
 @end
 
 @implementation BKUserSortOrderManager
 
-+ (id)nextSortKeyForCollection:(id)a3
++ (id)nextSortKeyForCollection:(id)collection
 {
-  v3 = [a3 maxSortKey];
-  v4 = [[NSNumber alloc] initWithLongLong:{objc_msgSend(v3, "longLongValue") + 10000}];
+  maxSortKey = [collection maxSortKey];
+  v4 = [[NSNumber alloc] initWithLongLong:{objc_msgSend(maxSortKey, "longLongValue") + 10000}];
 
   return v4;
 }
 
-+ (void)saveSortedBooksArray:(id)a3 inCollection:(id)a4 inLibrary:(id)a5
++ (void)saveSortedBooksArray:(id)array inCollection:(id)collection inLibrary:(id)library
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  arrayCopy = array;
+  collectionCopy = collection;
+  libraryCopy = library;
   if (!+[NSThread isMainThread])
   {
     sub_90DFC();
   }
 
-  v24 = v8;
-  v10 = [NSPredicate predicateWithFormat:@"collection == %@", v8];
-  v11 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v7 count]);
+  v24 = collectionCopy;
+  collectionCopy = [NSPredicate predicateWithFormat:@"collection == %@", collectionCopy];
+  v11 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [arrayCopy count]);
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v12 = v7;
+  v12 = arrayCopy;
   v13 = [v12 countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v13)
   {
@@ -50,13 +50,13 @@
           objc_enumerationMutation(v12);
         }
 
-        v17 = [*(*(&v25 + 1) + 8 * v16) collectionMembers];
-        v18 = [v17 filteredSetUsingPredicate:v10];
-        v19 = [v18 anyObject];
+        collectionMembers = [*(*(&v25 + 1) + 8 * v16) collectionMembers];
+        v18 = [collectionMembers filteredSetUsingPredicate:collectionCopy];
+        anyObject = [v18 anyObject];
 
-        if (v19)
+        if (anyObject)
         {
-          [v11 addObject:v19];
+          [v11 addObject:anyObject];
         }
 
         v16 = v16 + 1;
@@ -71,52 +71,52 @@
 
   if ([BKUserSortOrderManager resortDescendingSortKeyedObjects:v11])
   {
-    v20 = [v9 uiChildContext];
-    v21 = [v20 hasChanges];
+    uiChildContext = [libraryCopy uiChildContext];
+    hasChanges = [uiChildContext hasChanges];
 
-    if (v21)
+    if (hasChanges)
     {
-      v22 = [v9 uiChildContext];
-      [v22 setSaveContext:2];
+      uiChildContext2 = [libraryCopy uiChildContext];
+      [uiChildContext2 setSaveContext:2];
 
-      v23 = [v9 uiChildContext];
-      [v23 save:0];
+      uiChildContext3 = [libraryCopy uiChildContext];
+      [uiChildContext3 save:0];
     }
   }
 }
 
-+ (void)saveSortedCollectionsArray:(id)a3 inLibraryManager:(id)a4
++ (void)saveSortedCollectionsArray:(id)array inLibraryManager:(id)manager
 {
-  v5 = a4;
-  [a3 valueForKey:@"collectionID"];
+  managerCopy = manager;
+  [array valueForKey:@"collectionID"];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_50CB4;
   v8[3] = &unk_D58E0;
-  v10 = v9 = v5;
+  v10 = v9 = managerCopy;
   v6 = v10;
-  v7 = v5;
+  v7 = managerCopy;
   [v7 performNamed:@"saveSortedCollectionsArray" workerQueueBlock:v8];
 }
 
-+ (BOOL)resortAscendingSortKeyedObjects:(id)a3
++ (BOOL)resortAscendingSortKeyedObjects:(id)objects
 {
-  v3 = [a3 reverseObjectEnumerator];
-  v4 = [v3 allObjects];
+  reverseObjectEnumerator = [objects reverseObjectEnumerator];
+  allObjects = [reverseObjectEnumerator allObjects];
 
-  LOBYTE(v3) = [BKUserSortOrderManager resortDescendingSortKeyedObjects:v4];
-  return v3;
+  LOBYTE(reverseObjectEnumerator) = [BKUserSortOrderManager resortDescendingSortKeyedObjects:allObjects];
+  return reverseObjectEnumerator;
 }
 
-+ (void)resetDescendingSortKeyedObjects:(id)a3
++ (void)resetDescendingSortKeyedObjects:(id)objects
 {
-  v3 = a3;
-  v4 = [v3 count];
+  objectsCopy = objects;
+  v4 = [objectsCopy count];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = objectsCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -150,10 +150,10 @@
   }
 }
 
-+ (BOOL)resortDescendingSortKeyedObjects:(id)a3
++ (BOOL)resortDescendingSortKeyedObjects:(id)objects
 {
-  v3 = a3;
-  v4 = [v3 count];
+  objectsCopy = objects;
+  v4 = [objectsCopy count];
   if (v4 >= 1)
   {
     v43 = 0;
@@ -161,7 +161,7 @@
     v6 = 0;
     v7 = 0;
     v8 = 1;
-    v44 = v3;
+    v44 = objectsCopy;
     v45 = v4;
     v9 = v4;
     v10 = 1;
@@ -171,30 +171,30 @@
       v5 = v6;
 
       v6 = v7;
-      v7 = [v3 objectAtIndex:v8 - 1];
+      v7 = [objectsCopy objectAtIndex:v8 - 1];
 
       if (v6)
       {
         if (v5 && v7)
         {
           v12 = [v6 valueForKey:@"sortKey"];
-          v13 = [v12 longLongValue];
+          longLongValue = [v12 longLongValue];
           v14 = [v7 valueForKey:@"sortKey"];
-          v15 = [v14 longLongValue];
+          longLongValue2 = [v14 longLongValue];
 
-          if (v13 <= v15)
+          if (longLongValue <= longLongValue2)
           {
             v24 = [v5 valueForKey:@"sortKey"];
-            v25 = [v24 longLongValue];
+            longLongValue3 = [v24 longLongValue];
             v26 = [v7 valueForKey:@"sortKey"];
-            v27 = [v26 longLongValue];
-            v41 = v25;
-            v28 = v25 - v27;
+            longLongValue4 = [v26 longLongValue];
+            v41 = longLongValue3;
+            v28 = longLongValue3 - longLongValue4;
 
             if (v28 < 2)
             {
-              v3 = v44;
-              if (v41 == v27 || v28 == 1)
+              objectsCopy = v44;
+              if (v41 == longLongValue4 || v28 == 1)
               {
 LABEL_26:
 
@@ -205,14 +205,14 @@ LABEL_26:
               if (v9 == &dword_0 + 1)
               {
                 v30 = [v6 valueForKey:@"sortKey"];
-                v31 = [v30 longLongValue];
+                longLongValue5 = [v30 longLongValue];
 
-                if (v31 < 2)
+                if (longLongValue5 < 2)
                 {
                   goto LABEL_26;
                 }
 
-                v22 = [NSNumber numberWithLongLong:v31 >> 1];
+                v22 = [NSNumber numberWithLongLong:longLongValue5 >> 1];
                 [v7 setValue:v22 forKey:@"sortKey"];
               }
 
@@ -226,9 +226,9 @@ LABEL_26:
                 v42 = v28;
                 v32 = -v28;
                 v33 = [v5 valueForKey:@"sortKey"];
-                v34 = [v33 longLongValue];
+                longLongValue6 = [v33 longLongValue];
 
-                if (v34 <= v32)
+                if (longLongValue6 <= v32)
                 {
                   goto LABEL_26;
                 }
@@ -251,7 +251,7 @@ LABEL_26:
               v29 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v22 longLongValue] + (v28 >> 1));
               [v6 setValue:v29 forKey:@"sortKey"];
 
-              v3 = v44;
+              objectsCopy = v44;
               v21 = v45;
             }
 
@@ -261,18 +261,18 @@ LABEL_24:
             goto LABEL_25;
           }
 
-          v3 = v44;
+          objectsCopy = v44;
         }
 
         else if (v7)
         {
           v16 = [v6 valueForKey:@"sortKey"];
-          v17 = [v16 longLongValue];
+          longLongValue7 = [v16 longLongValue];
           v18 = [v7 valueForKey:@"sortKey"];
-          v19 = [v18 longLongValue];
+          longLongValue8 = [v18 longLongValue];
 
-          v20 = v17 <= v19;
-          v3 = v44;
+          v20 = longLongValue7 <= longLongValue8;
+          objectsCopy = v44;
           v21 = v45;
           if (!v20)
           {
@@ -312,7 +312,7 @@ LABEL_28:
 
   if (v10)
   {
-    [BKUserSortOrderManager resetDescendingSortKeyedObjects:v3];
+    [BKUserSortOrderManager resetDescendingSortKeyedObjects:objectsCopy];
     v38 = 1;
   }
 

@@ -16,8 +16,8 @@
     v6 = +[NSMutableArray array];
     v10.receiver = self;
     v10.super_class = MyAutoLockController;
-    v7 = [(MyAutoLockController *)&v10 specifiers];
-    [v6 addObjectsFromArray:v7];
+    specifiers = [(MyAutoLockController *)&v10 specifiers];
+    [v6 addObjectsFromArray:specifiers];
 
     v8 = *&self->PSListItemsController_opaque[v4];
     *&self->PSListItemsController_opaque[v4] = v6;

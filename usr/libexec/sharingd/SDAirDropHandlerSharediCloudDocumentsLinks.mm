@@ -1,7 +1,7 @@
 @interface SDAirDropHandlerSharediCloudDocumentsLinks
 - (BOOL)canHandleTransfer;
-- (BOOL)urlIsCloudDocument:(id)a3;
-- (SDAirDropHandlerSharediCloudDocumentsLinks)initWithTransfer:(id)a3;
+- (BOOL)urlIsCloudDocument:(id)document;
+- (SDAirDropHandlerSharediCloudDocumentsLinks)initWithTransfer:(id)transfer;
 - (id)candidateIdentifiers;
 - (id)suitableContentsDescription;
 - (int64_t)transferTypes;
@@ -9,32 +9,32 @@
 
 @implementation SDAirDropHandlerSharediCloudDocumentsLinks
 
-- (SDAirDropHandlerSharediCloudDocumentsLinks)initWithTransfer:(id)a3
+- (SDAirDropHandlerSharediCloudDocumentsLinks)initWithTransfer:(id)transfer
 {
   v4.receiver = self;
   v4.super_class = SDAirDropHandlerSharediCloudDocumentsLinks;
-  return [(SDAirDropHandler *)&v4 initWithTransfer:a3 bundleIdentifier:@"com.apple.CloudKit.ShareBear"];
+  return [(SDAirDropHandler *)&v4 initWithTransfer:transfer bundleIdentifier:@"com.apple.CloudKit.ShareBear"];
 }
 
 - (id)candidateIdentifiers
 {
   v3 = objc_opt_new();
-  v4 = [(SDAirDropHandler *)self bundleProxy];
+  bundleProxy = [(SDAirDropHandler *)self bundleProxy];
 
-  if (v4)
+  if (bundleProxy)
   {
-    v5 = [(SDAirDropHandler *)self bundleProxy];
-    v6 = [v5 bundleIdentifier];
-    [v3 addObject:v6];
+    bundleProxy2 = [(SDAirDropHandler *)self bundleProxy];
+    bundleIdentifier = [bundleProxy2 bundleIdentifier];
+    [v3 addObject:bundleIdentifier];
   }
 
   return v3;
 }
 
-- (BOOL)urlIsCloudDocument:(id)a3
+- (BOOL)urlIsCloudDocument:(id)document
 {
   v21 = 0;
-  v4 = [LSAppLink appLinksWithURL:a3 limit:-1 error:&v21];
+  v4 = [LSAppLink appLinksWithURL:document limit:-1 error:&v21];
   v5 = v21;
   v6 = v5;
   if (v4)
@@ -49,7 +49,7 @@
 
   if (v7)
   {
-    v14 = [(SDAirDropHandlerSharediCloudDocumentsLinks *)self candidateIdentifiers];
+    candidateIdentifiers = [(SDAirDropHandlerSharediCloudDocumentsLinks *)self candidateIdentifiers];
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
@@ -68,10 +68,10 @@
             objc_enumerationMutation(v8);
           }
 
-          v12 = [*(*(&v17 + 1) + 8 * i) targetApplicationRecord];
-          v13 = [v12 bundleIdentifier];
+          targetApplicationRecord = [*(*(&v17 + 1) + 8 * i) targetApplicationRecord];
+          bundleIdentifier = [targetApplicationRecord bundleIdentifier];
 
-          if (v13 && ([v14 containsObject:v13]& 1) != 0)
+          if (bundleIdentifier && ([candidateIdentifiers containsObject:bundleIdentifier]& 1) != 0)
           {
 
             LOBYTE(v9) = 1;
@@ -94,12 +94,12 @@ LABEL_20:
 
   else
   {
-    v14 = airdrop_log();
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+    candidateIdentifiers = airdrop_log();
+    if (os_log_type_enabled(candidateIdentifiers, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
       v24 = v6;
-      _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Failed to get app links with error %@", buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, candidateIdentifiers, OS_LOG_TYPE_DEFAULT, "Failed to get app links with error %@", buf, 0xCu);
     }
 
     LOBYTE(v9) = 0;
@@ -119,10 +119,10 @@ LABEL_20:
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(SDAirDropHandler *)self transfer];
-  v4 = [v3 completedURLs];
+  transfer = [(SDAirDropHandler *)self transfer];
+  completedURLs = [transfer completedURLs];
 
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [completedURLs countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -133,7 +133,7 @@ LABEL_20:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(completedURLs);
         }
 
         if (![(SDAirDropHandlerSharediCloudDocumentsLinks *)self urlIsCloudDocument:*(*(&v11 + 1) + 8 * i)])
@@ -143,7 +143,7 @@ LABEL_20:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [completedURLs countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v6)
       {
         continue;
@@ -168,33 +168,33 @@ LABEL_13:
 
 - (id)suitableContentsDescription
 {
-  v23 = [(SDAirDropHandler *)self senderName];
-  v3 = [(SDAirDropHandler *)self totalSharedItemsCount];
-  v4 = [(SDAirDropHandler *)self transfer];
-  v5 = [v4 completedURLs];
-  v6 = [v5 firstObject];
+  senderName = [(SDAirDropHandler *)self senderName];
+  totalSharedItemsCount = [(SDAirDropHandler *)self totalSharedItemsCount];
+  transfer = [(SDAirDropHandler *)self transfer];
+  completedURLs = [transfer completedURLs];
+  firstObject = [completedURLs firstObject];
 
   v7 = SFSharediCloudDocumentsLinkToAppName();
-  v8 = [v7 lowercaseString];
+  lowercaseString = [v7 lowercaseString];
 
   v9 = SFSharediCloudDocumentsLinkToFileName();
   v10 = v9;
   v11 = 0;
-  if (v3 == 1 && v8 && v9)
+  if (totalSharedItemsCount == 1 && lowercaseString && v9)
   {
-    if ([v8 isEqual:@"keynote"])
+    if ([lowercaseString isEqual:@"keynote"])
     {
       v12 = @"SHARED_KEYNOTE_DOCUMENT_LINK";
       goto LABEL_10;
     }
 
-    if ([v8 isEqual:@"numbers"])
+    if ([lowercaseString isEqual:@"numbers"])
     {
       v12 = @"SHARED_NUMBERS_DOCUMENT_LINK";
       goto LABEL_10;
     }
 
-    if ([v8 isEqual:@"pages"])
+    if ([lowercaseString isEqual:@"pages"])
     {
       v12 = @"SHARED_PAGES_DOCUMENT_LINK";
 LABEL_10:
@@ -206,7 +206,7 @@ LABEL_10:
       v11 = [(SDAirDropHandler *)self alertMessageLocalizedKeyForTypeDicts:v14];
 
       v15 = SFLocalizedStringForKey();
-      v16 = [NSString localizedStringWithFormat:v15, v23, v10];
+      v16 = [NSString localizedStringWithFormat:v15, senderName, v10];
 
       v17 = v11;
       if (v16)
@@ -222,7 +222,7 @@ LABEL_10:
 
 LABEL_13:
   v24 = @"SHARED_ICLOUD_DOCUMENT_LINK";
-  v18 = [NSNumber numberWithUnsignedInteger:v3];
+  v18 = [NSNumber numberWithUnsignedInteger:totalSharedItemsCount];
   v25 = v18;
   v19 = [NSDictionary dictionaryWithObjects:&v25 forKeys:&v24 count:1];
   v26 = v19;
@@ -230,7 +230,7 @@ LABEL_13:
   v17 = [(SDAirDropHandler *)self alertMessageLocalizedKeyForTypeDicts:v20];
 
   v21 = SFLocalizedStringForKey();
-  v16 = [NSString localizedStringWithFormat:v21, v23, v3];
+  v16 = [NSString localizedStringWithFormat:v21, senderName, totalSharedItemsCount];
 
 LABEL_14:
 

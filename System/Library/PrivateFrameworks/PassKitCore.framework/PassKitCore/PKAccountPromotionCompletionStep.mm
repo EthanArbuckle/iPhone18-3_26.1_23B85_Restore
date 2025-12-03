@@ -1,32 +1,32 @@
 @interface PKAccountPromotionCompletionStep
-+ (id)completionStepsFromDictionaries:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToAccountPromotionCompletionStep:(id)a3;
-- (PKAccountPromotionCompletionStep)initWithCoder:(id)a3;
-- (PKAccountPromotionCompletionStep)initWithDictionary:(id)a3 index:(int64_t)a4;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)completionStepsFromDictionaries:(id)dictionaries;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToAccountPromotionCompletionStep:(id)step;
+- (PKAccountPromotionCompletionStep)initWithCoder:(id)coder;
+- (PKAccountPromotionCompletionStep)initWithDictionary:(id)dictionary index:(int64_t)index;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)_initWithCompletionStepDictionary:(id)a3 index:(int64_t)a4;
-- (void)encodeWithCoder:(id)a3;
+- (void)_initWithCompletionStepDictionary:(id)dictionary index:(int64_t)index;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKAccountPromotionCompletionStep
 
-+ (id)completionStepsFromDictionaries:(id)a3
++ (id)completionStepsFromDictionaries:(id)dictionaries
 {
-  if (a3)
+  if (dictionaries)
   {
     v3 = MEMORY[0x1E695DF70];
-    v4 = a3;
-    v5 = [v3 arrayWithCapacity:{objc_msgSend(v4, "count")}];
+    dictionariesCopy = dictionaries;
+    v5 = [v3 arrayWithCapacity:{objc_msgSend(dictionariesCopy, "count")}];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __68__PKAccountPromotionCompletionStep_completionStepsFromDictionaries___block_invoke;
     v9[3] = &unk_1E79DBD50;
     v10 = v5;
     v6 = v5;
-    [v4 enumerateObjectsUsingBlock:v9];
+    [dictionariesCopy enumerateObjectsUsingBlock:v9];
 
     v7 = [v6 copy];
   }
@@ -52,10 +52,10 @@ void __68__PKAccountPromotionCompletionStep_completionStepsFromDictionaries___bl
   }
 }
 
-- (PKAccountPromotionCompletionStep)initWithDictionary:(id)a3 index:(int64_t)a4
+- (PKAccountPromotionCompletionStep)initWithDictionary:(id)dictionary index:(int64_t)index
 {
-  v6 = a3;
-  if (v6)
+  dictionaryCopy = dictionary;
+  if (dictionaryCopy)
   {
     v11.receiver = self;
     v11.super_class = PKAccountPromotionCompletionStep;
@@ -63,41 +63,41 @@ void __68__PKAccountPromotionCompletionStep_completionStepsFromDictionaries___bl
     v8 = v7;
     if (v7)
     {
-      [(PKAccountPromotionCompletionStep *)v7 _initWithCompletionStepDictionary:v6 index:a4];
+      [(PKAccountPromotionCompletionStep *)v7 _initWithCompletionStepDictionary:dictionaryCopy index:index];
     }
 
     self = v8;
-    v9 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
-- (void)_initWithCompletionStepDictionary:(id)a3 index:(int64_t)a4
+- (void)_initWithCompletionStepDictionary:(id)dictionary index:(int64_t)index
 {
-  self->_index = a4;
-  v5 = a3;
-  v6 = [v5 PKStringForKey:@"type"];
+  self->_index = index;
+  dictionaryCopy = dictionary;
+  v6 = [dictionaryCopy PKStringForKey:@"type"];
   self->_progressType = PKAccountPromotionCompletionStepProgressTypeFromString(v6);
 
-  v7 = [v5 PKStringForKey:@"currencyCode"];
+  v7 = [dictionaryCopy PKStringForKey:@"currencyCode"];
   currencyCode = self->_currencyCode;
   self->_currencyCode = v7;
 
-  v9 = [v5 PKDecimalNumberFromStringForKey:@"endValue"];
+  v9 = [dictionaryCopy PKDecimalNumberFromStringForKey:@"endValue"];
   endValue = self->_endValue;
   self->_endValue = v9;
 
-  v11 = [v5 PKDecimalNumberFromStringForKey:@"currentValue"];
+  v11 = [dictionaryCopy PKDecimalNumberFromStringForKey:@"currentValue"];
   currentValue = self->_currentValue;
   self->_currentValue = v11;
 
-  LOBYTE(v6) = [v5 PKBoolForKey:@"completed"];
+  LOBYTE(v6) = [dictionaryCopy PKBoolForKey:@"completed"];
   self->_completed = v6;
 }
 
@@ -118,11 +118,11 @@ void __68__PKAccountPromotionCompletionStep_completionStepsFromDictionaries___bl
 
   [v3 appendFormat:@"progressType: '%@'; ", v5];
   [v3 appendFormat:@"currencyCode: '%@'; ", self->_currencyCode];
-  v6 = [(NSDecimalNumber *)self->_currentValue stringValue];
-  [v3 appendFormat:@"currentValue: '%@'; ", v6];
+  stringValue = [(NSDecimalNumber *)self->_currentValue stringValue];
+  [v3 appendFormat:@"currentValue: '%@'; ", stringValue];
 
-  v7 = [(NSDecimalNumber *)self->_endValue stringValue];
-  [v3 appendFormat:@"endValue: '%@'; ", v7];
+  stringValue2 = [(NSDecimalNumber *)self->_endValue stringValue];
+  [v3 appendFormat:@"endValue: '%@'; ", stringValue2];
 
   if (self->_completed)
   {
@@ -140,33 +140,33 @@ void __68__PKAccountPromotionCompletionStep_completionStepsFromDictionaries___bl
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKAccountPromotionCompletionStep *)self isEqualToAccountPromotionCompletionStep:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKAccountPromotionCompletionStep *)self isEqualToAccountPromotionCompletionStep:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToAccountPromotionCompletionStep:(id)a3
+- (BOOL)isEqualToAccountPromotionCompletionStep:(id)step
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4 || self->_index != v4[3] || self->_progressType != v4[2])
+  stepCopy = step;
+  v5 = stepCopy;
+  if (!stepCopy || self->_index != stepCopy[3] || self->_progressType != stepCopy[2])
   {
     goto LABEL_21;
   }
 
-  v6 = v4[4];
+  v6 = stepCopy[4];
   v7 = self->_currencyCode;
   v8 = v6;
   v9 = v8;
@@ -245,41 +245,41 @@ LABEL_22:
   return v7;
 }
 
-- (PKAccountPromotionCompletionStep)initWithCoder:(id)a3
+- (PKAccountPromotionCompletionStep)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = PKAccountPromotionCompletionStep;
   v5 = [(PKAccountPromotionCompletionStep *)&v14 init];
   if (v5)
   {
-    v5->_index = [v4 decodeIntegerForKey:@"index"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"type"];
+    v5->_index = [coderCopy decodeIntegerForKey:@"index"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"type"];
     v5->_progressType = PKAccountPromotionCompletionStepProgressTypeFromString(v6);
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"currencyCode"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"currencyCode"];
     currencyCode = v5->_currencyCode;
     v5->_currencyCode = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"endValue"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"endValue"];
     endValue = v5->_endValue;
     v5->_endValue = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"currentValue"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"currentValue"];
     currentValue = v5->_currentValue;
     v5->_currentValue = v11;
 
-    v5->_completed = [v4 decodeBoolForKey:@"completed"];
+    v5->_completed = [coderCopy decodeBoolForKey:@"completed"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   index = self->_index;
-  v7 = a3;
-  [v7 encodeInteger:index forKey:@"index"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:index forKey:@"index"];
   progressType = self->_progressType;
   if (progressType > 4)
   {
@@ -291,27 +291,27 @@ LABEL_22:
     v6 = off_1E79DBD70[progressType];
   }
 
-  [v7 encodeObject:v6 forKey:@"type"];
-  [v7 encodeObject:self->_currencyCode forKey:@"currencyCode"];
-  [v7 encodeObject:self->_endValue forKey:@"endValue"];
-  [v7 encodeObject:self->_currentValue forKey:@"currentValue"];
-  [v7 encodeBool:self->_completed forKey:@"completed"];
+  [coderCopy encodeObject:v6 forKey:@"type"];
+  [coderCopy encodeObject:self->_currencyCode forKey:@"currencyCode"];
+  [coderCopy encodeObject:self->_endValue forKey:@"endValue"];
+  [coderCopy encodeObject:self->_currentValue forKey:@"currentValue"];
+  [coderCopy encodeBool:self->_completed forKey:@"completed"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(v5 + 24) = self->_index;
   *(v5 + 16) = self->_progressType;
-  v6 = [(NSString *)self->_currencyCode copyWithZone:a3];
+  v6 = [(NSString *)self->_currencyCode copyWithZone:zone];
   v7 = *(v5 + 32);
   *(v5 + 32) = v6;
 
-  v8 = [(NSDecimalNumber *)self->_endValue copyWithZone:a3];
+  v8 = [(NSDecimalNumber *)self->_endValue copyWithZone:zone];
   v9 = *(v5 + 40);
   *(v5 + 40) = v8;
 
-  v10 = [(NSDecimalNumber *)self->_currentValue copyWithZone:a3];
+  v10 = [(NSDecimalNumber *)self->_currentValue copyWithZone:zone];
   v11 = *(v5 + 48);
   *(v5 + 48) = v10;
 

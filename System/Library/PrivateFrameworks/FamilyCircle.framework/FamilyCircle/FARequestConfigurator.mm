@@ -1,76 +1,76 @@
 @interface FARequestConfigurator
 - (BOOL)_canConnectToAPS;
-- (FARequestConfigurator)initWithAccount:(id)a3;
+- (FARequestConfigurator)initWithAccount:(id)account;
 - (id)_account;
 - (id)_accountStore;
 - (id)_akSigningController;
 - (id)_authContext;
 - (id)_familyGrandSlamSigner;
-- (id)_familyTokenForGrandSlamAccount:(id)a3 andTokenID:(id)a4;
-- (id)_fresnoPayloadWithAdditionalPayload:(id)a3;
+- (id)_familyTokenForGrandSlamAccount:(id)account andTokenID:(id)d;
+- (id)_fresnoPayloadWithAdditionalPayload:(id)payload;
 - (id)_grandSlamAccount;
 - (id)_grandSlamSigner;
 - (id)_serviceOwnersManager;
-- (void)_addAccountForServiceType:(id)a3 toPayload:(id)a4 forKey:(id)a5;
+- (void)_addAccountForServiceType:(id)type toPayload:(id)payload forKey:(id)key;
 - (void)_canConnectToAPS;
-- (void)_resourceLoadDelegate:(id)a3;
-- (void)addFresnoHeadersToRequest:(id)a3;
-- (void)addFresnoHeadersToRequest:(id)a3 withCompletion:(id)a4;
-- (void)addFresnoPayloadToRequest:(id)a3 additionalPayload:(id)a4;
-- (void)addPayload:(id)a3 toRequest:(id)a4;
-- (void)pushTokenWithCompletion:(id)a3;
-- (void)renewCredentialsWithCompletion:(id)a3;
-- (void)signURLRequest:(id)a3;
-- (void)updateWithEphemeralAuthResults:(id)a3;
+- (void)_resourceLoadDelegate:(id)delegate;
+- (void)addFresnoHeadersToRequest:(id)request;
+- (void)addFresnoHeadersToRequest:(id)request withCompletion:(id)completion;
+- (void)addFresnoPayloadToRequest:(id)request additionalPayload:(id)payload;
+- (void)addPayload:(id)payload toRequest:(id)request;
+- (void)pushTokenWithCompletion:(id)completion;
+- (void)renewCredentialsWithCompletion:(id)completion;
+- (void)signURLRequest:(id)request;
+- (void)updateWithEphemeralAuthResults:(id)results;
 @end
 
 @implementation FARequestConfigurator
 
-- (FARequestConfigurator)initWithAccount:(id)a3
+- (FARequestConfigurator)initWithAccount:(id)account
 {
-  v5 = a3;
+  accountCopy = account;
   v6 = [(FARequestConfigurator *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_account, a3);
+    objc_storeStrong(&v6->_account, account);
     v7->_attachSetupHeader = 1;
   }
 
   return v7;
 }
 
-- (void)updateWithEphemeralAuthResults:(id)a3
+- (void)updateWithEphemeralAuthResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   v5 = _FALogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [FARequestConfigurator updateWithEphemeralAuthResults:v5];
   }
 
-  [(FARequestConfigurator *)self setEphemeralAuthResults:v4];
-  v6 = [[FARequestEphemeralSigner alloc] initWithEphemeralAuthResults:v4];
+  [(FARequestConfigurator *)self setEphemeralAuthResults:resultsCopy];
+  v6 = [[FARequestEphemeralSigner alloc] initWithEphemeralAuthResults:resultsCopy];
 
   [(FARequestConfigurator *)self setSigner:v6];
-  v7 = [(FARequestEphemeralSigner *)v6 account];
+  account = [(FARequestEphemeralSigner *)v6 account];
   account = self->_account;
-  self->_account = v7;
+  self->_account = account;
 }
 
-- (void)addFresnoHeadersToRequest:(id)a3 withCompletion:(id)a4
+- (void)addFresnoHeadersToRequest:(id)request withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __66__FARequestConfigurator_addFresnoHeadersToRequest_withCompletion___block_invoke;
   aBlock[3] = &unk_1E7CA4A88;
   aBlock[4] = self;
-  v8 = v6;
+  v8 = requestCopy;
   v17 = v8;
-  v18 = v7;
-  v9 = v7;
+  v18 = completionCopy;
+  v9 = completionCopy;
   v10 = _Block_copy(aBlock);
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
@@ -233,30 +233,30 @@ void __66__FARequestConfigurator_addFresnoHeadersToRequest_withCompletion___bloc
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)signURLRequest:(id)a3
+- (void)signURLRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(FARequestConfigurator *)self signer];
+  requestCopy = request;
+  signer = [(FARequestConfigurator *)self signer];
 
-  if (v5)
+  if (signer)
   {
     [(FARequestConfigurator *)self signer];
   }
 
   else
   {
-    v6 = [(FARequestConfigurator *)self _grandSlamSigner];
-    [v6 signURLRequest:v4];
+    _grandSlamSigner = [(FARequestConfigurator *)self _grandSlamSigner];
+    [_grandSlamSigner signURLRequest:requestCopy];
 
     [(FARequestConfigurator *)self _familyGrandSlamSigner];
   }
   v7 = ;
-  [v7 signURLRequest:v4];
+  [v7 signURLRequest:requestCopy];
 }
 
-- (void)addFresnoHeadersToRequest:(id)a3
+- (void)addFresnoHeadersToRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = _FALogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -271,7 +271,7 @@ void __66__FARequestConfigurator_addFresnoHeadersToRequest_withCompletion___bloc
   v8[3] = &unk_1E7CA4B28;
   v9 = v6;
   v7 = v6;
-  [(FARequestConfigurator *)self addFresnoHeadersToRequest:v4 withCompletion:v8];
+  [(FARequestConfigurator *)self addFresnoHeadersToRequest:requestCopy withCompletion:v8];
 
   dispatch_semaphore_wait(v7, 0xFFFFFFFFFFFFFFFFLL);
 }
@@ -332,14 +332,14 @@ LABEL_5:
   return v5;
 }
 
-- (void)pushTokenWithCompletion:(id)a3
+- (void)pushTokenWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __49__FARequestConfigurator_pushTokenWithCompletion___block_invoke;
   aBlock[3] = &unk_1E7CA4B50;
-  v5 = v4;
+  v5 = completionCopy;
   aBlock[4] = self;
   v13 = v5;
   v6 = _Block_copy(aBlock);
@@ -413,17 +413,17 @@ void __49__FARequestConfigurator_pushTokenWithCompletion___block_invoke_94(uint6
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addFresnoPayloadToRequest:(id)a3 additionalPayload:(id)a4
+- (void)addFresnoPayloadToRequest:(id)request additionalPayload:(id)payload
 {
-  v6 = a3;
-  v7 = [(FARequestConfigurator *)self _fresnoPayloadWithAdditionalPayload:a4];
-  v8 = [v6 HTTPBody];
+  requestCopy = request;
+  v7 = [(FARequestConfigurator *)self _fresnoPayloadWithAdditionalPayload:payload];
+  hTTPBody = [requestCopy HTTPBody];
 
-  if (v8)
+  if (hTTPBody)
   {
     v9 = MEMORY[0x1E696AE40];
-    v10 = [v6 HTTPBody];
-    v11 = [v9 propertyListWithData:v10 options:1 format:0 error:0];
+    hTTPBody2 = [requestCopy HTTPBody];
+    v11 = [v9 propertyListWithData:hTTPBody2 options:1 format:0 error:0];
 
     v12 = objc_opt_self();
     isKindOfClass = objc_opt_isKindOfClass();
@@ -443,21 +443,21 @@ void __49__FARequestConfigurator_pushTokenWithCompletion___block_invoke_94(uint6
     [FARequestConfigurator addFresnoPayloadToRequest:v7 additionalPayload:v15];
   }
 
-  [v6 aa_setBodyWithParameters:v7];
-  [v6 setValue:@"application/x-plist" forHTTPHeaderField:@"Content-Type"];
+  [requestCopy aa_setBodyWithParameters:v7];
+  [requestCopy setValue:@"application/x-plist" forHTTPHeaderField:@"Content-Type"];
 }
 
-- (void)addPayload:(id)a3 toRequest:(id)a4
+- (void)addPayload:(id)payload toRequest:(id)request
 {
-  v5 = a4;
-  [v5 aa_setBodyWithParameters:a3];
-  [v5 setValue:@"application/x-plist" forHTTPHeaderField:@"Content-Type"];
+  requestCopy = request;
+  [requestCopy aa_setBodyWithParameters:payload];
+  [requestCopy setValue:@"application/x-plist" forHTTPHeaderField:@"Content-Type"];
 }
 
-- (void)renewCredentialsWithCompletion:(id)a3
+- (void)renewCredentialsWithCompletion:(id)completion
 {
   v18[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   v5 = *MEMORY[0x1E6959AA8];
   v18[0] = MEMORY[0x1E695E118];
   v6 = *MEMORY[0x1E6959A90];
@@ -468,16 +468,16 @@ void __49__FARequestConfigurator_pushTokenWithCompletion___block_invoke_94(uint6
   v18[1] = v7;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:v17 count:2];
 
-  v9 = [(FARequestConfigurator *)self _account];
-  if (v9)
+  _account = [(FARequestConfigurator *)self _account];
+  if (_account)
   {
-    v10 = [(FARequestConfigurator *)self _accountStore];
+    _accountStore = [(FARequestConfigurator *)self _accountStore];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __56__FARequestConfigurator_renewCredentialsWithCompletion___block_invoke;
     v14[3] = &unk_1E7CA4B78;
-    v15 = v4;
-    [v10 renewCredentialsForAccount:v9 options:v8 completion:v14];
+    v15 = completionCopy;
+    [_accountStore renewCredentialsForAccount:_account options:v8 completion:v14];
   }
 
   else
@@ -489,7 +489,7 @@ void __49__FARequestConfigurator_pushTokenWithCompletion___block_invoke_94(uint6
       _os_log_impl(&dword_1B70B0000, v11, OS_LOG_TYPE_DEFAULT, "No primary Apple account found. Not attempting credential renwal.", v13, 2u);
     }
 
-    (*(v4 + 2))(v4, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 
   v12 = *MEMORY[0x1E69E9840];
@@ -518,10 +518,10 @@ void __56__FARequestConfigurator_renewCredentialsWithCompletion___block_invoke(u
   account = self->_account;
   if (!account)
   {
-    v4 = [(FARequestConfigurator *)self _accountStore];
-    v5 = [v4 aa_primaryAppleAccount];
+    _accountStore = [(FARequestConfigurator *)self _accountStore];
+    aa_primaryAppleAccount = [_accountStore aa_primaryAppleAccount];
     v6 = self->_account;
-    self->_account = v5;
+    self->_account = aa_primaryAppleAccount;
 
     account = self->_account;
   }
@@ -534,9 +534,9 @@ void __56__FARequestConfigurator_renewCredentialsWithCompletion___block_invoke(u
   accountStore = self->_accountStore;
   if (!accountStore)
   {
-    v4 = [MEMORY[0x1E6959A48] defaultStore];
+    defaultStore = [MEMORY[0x1E6959A48] defaultStore];
     v5 = self->_accountStore;
-    self->_accountStore = v4;
+    self->_accountStore = defaultStore;
 
     accountStore = self->_accountStore;
   }
@@ -549,9 +549,9 @@ void __56__FARequestConfigurator_renewCredentialsWithCompletion___block_invoke(u
   grandSlamAccount = self->_grandSlamAccount;
   if (!grandSlamAccount)
   {
-    v4 = [(FARequestConfigurator *)self _accountStore];
-    v5 = [(FARequestConfigurator *)self _account];
-    v6 = [v4 aa_grandSlamAccountForiCloudAccount:v5];
+    _accountStore = [(FARequestConfigurator *)self _accountStore];
+    _account = [(FARequestConfigurator *)self _account];
+    v6 = [_accountStore aa_grandSlamAccountForiCloudAccount:_account];
     v7 = self->_grandSlamAccount;
     self->_grandSlamAccount = v6;
 
@@ -567,9 +567,9 @@ void __56__FARequestConfigurator_renewCredentialsWithCompletion___block_invoke(u
   if (!grandSlamSigner)
   {
     v4 = objc_alloc(MEMORY[0x1E698B8D0]);
-    v5 = [(FARequestConfigurator *)self _accountStore];
-    v6 = [(FARequestConfigurator *)self _grandSlamAccount];
-    v7 = [v4 initWithAccountStore:v5 grandSlamAccount:v6 appTokenID:*MEMORY[0x1E698B7C0]];
+    _accountStore = [(FARequestConfigurator *)self _accountStore];
+    _grandSlamAccount = [(FARequestConfigurator *)self _grandSlamAccount];
+    v7 = [v4 initWithAccountStore:_accountStore grandSlamAccount:_grandSlamAccount appTokenID:*MEMORY[0x1E698B7C0]];
     v8 = self->_grandSlamSigner;
     self->_grandSlamSigner = v7;
 
@@ -585,9 +585,9 @@ void __56__FARequestConfigurator_renewCredentialsWithCompletion___block_invoke(u
   if (!familyGrandSlamSigner)
   {
     v4 = objc_alloc(MEMORY[0x1E698B8D0]);
-    v5 = [(FARequestConfigurator *)self _accountStore];
-    v6 = [(FARequestConfigurator *)self _grandSlamAccount];
-    v7 = [v4 initWithAccountStore:v5 grandSlamAccount:v6 appTokenID:*MEMORY[0x1E698B7B8]];
+    _accountStore = [(FARequestConfigurator *)self _accountStore];
+    _grandSlamAccount = [(FARequestConfigurator *)self _grandSlamAccount];
+    v7 = [v4 initWithAccountStore:_accountStore grandSlamAccount:_grandSlamAccount appTokenID:*MEMORY[0x1E698B7B8]];
     v8 = self->_familyGrandSlamSigner;
     self->_familyGrandSlamSigner = v7;
 
@@ -613,14 +613,14 @@ void __56__FARequestConfigurator_renewCredentialsWithCompletion___block_invoke(u
   return akSigningController;
 }
 
-- (void)_resourceLoadDelegate:(id)a3
+- (void)_resourceLoadDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __47__FARequestConfigurator__resourceLoadDelegate___block_invoke;
   aBlock[3] = &unk_1E7CA4B50;
-  v5 = v4;
+  v5 = delegateCopy;
   aBlock[4] = self;
   v13 = v5;
   v6 = _Block_copy(aBlock);
@@ -633,14 +633,14 @@ void __56__FARequestConfigurator_renewCredentialsWithCompletion___block_invoke(u
   else
   {
     v8 = objc_alloc_init(MEMORY[0x1E698DCC0]);
-    v9 = [(FARequestConfigurator *)self _authContext];
+    _authContext = [(FARequestConfigurator *)self _authContext];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __47__FARequestConfigurator__resourceLoadDelegate___block_invoke_2;
     v10[3] = &unk_1E7CA4BA0;
     v10[4] = self;
     v11 = v7;
-    [v8 getServerUILoadDelegateWithContext:v9 completion:v10];
+    [v8 getServerUILoadDelegateWithContext:_authContext completion:v10];
   }
 }
 
@@ -679,9 +679,9 @@ void __47__FARequestConfigurator__resourceLoadDelegate___block_invoke_2(uint64_t
     self->_authContext = v4;
 
     v6 = self->_authContext;
-    v7 = [(FARequestConfigurator *)self _account];
-    v8 = [v7 aa_altDSID];
-    [(AKAppleIDAuthenticationContext *)v6 setAltDSID:v8];
+    _account = [(FARequestConfigurator *)self _account];
+    aa_altDSID = [_account aa_altDSID];
+    [(AKAppleIDAuthenticationContext *)v6 setAltDSID:aa_altDSID];
 
     authContext = self->_authContext;
   }
@@ -689,14 +689,14 @@ void __47__FARequestConfigurator__resourceLoadDelegate___block_invoke_2(uint64_t
   return authContext;
 }
 
-- (id)_fresnoPayloadWithAdditionalPayload:(id)a3
+- (id)_fresnoPayloadWithAdditionalPayload:(id)payload
 {
-  v4 = a3;
+  payloadCopy = payload;
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v6 = v5;
-  if (v4)
+  if (payloadCopy)
   {
-    [v5 addEntriesFromDictionary:v4];
+    [v5 addEntriesFromDictionary:payloadCopy];
   }
 
   [(FARequestConfigurator *)self _addAccountForServiceType:*MEMORY[0x1E698C218] toPayload:v6 forKey:@"iCloudAccountDetails"];
@@ -705,34 +705,34 @@ void __47__FARequestConfigurator__resourceLoadDelegate___block_invoke_2(uint64_t
   return v6;
 }
 
-- (void)_addAccountForServiceType:(id)a3 toPayload:(id)a4 forKey:(id)a5
+- (void)_addAccountForServiceType:(id)type toPayload:(id)payload forKey:(id)key
 {
   v32 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  typeCopy = type;
+  payloadCopy = payload;
+  keyCopy = key;
   v11 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v12 = [(FARequestConfigurator *)self signer];
+  signer = [(FARequestConfigurator *)self signer];
 
-  if (v12)
+  if (signer)
   {
-    if (*MEMORY[0x1E698C218] == v8)
+    if (*MEMORY[0x1E698C218] == typeCopy)
     {
-      v13 = [(FARequestConfigurator *)self signer];
-      v14 = [v13 accountInfoPayload];
-      v15 = [v14 mutableCopy];
+      signer2 = [(FARequestConfigurator *)self signer];
+      accountInfoPayload = [signer2 accountInfoPayload];
+      v15 = [accountInfoPayload mutableCopy];
 
       v11 = v15;
     }
 
 LABEL_16:
     v18 = [v11 copy];
-    [v9 setObject:v18 forKey:v10];
+    [payloadCopy setObject:v18 forKey:keyCopy];
     goto LABEL_17;
   }
 
-  v16 = [(FARequestConfigurator *)self _serviceOwnersManager];
-  v17 = [v16 accountForService:v8];
+  _serviceOwnersManager = [(FARequestConfigurator *)self _serviceOwnersManager];
+  v17 = [_serviceOwnersManager accountForService:typeCopy];
 
   v18 = _FALogSystem();
   v19 = os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT);
@@ -745,31 +745,31 @@ LABEL_16:
       _os_log_impl(&dword_1B70B0000, v18, OS_LOG_TYPE_DEFAULT, "Account for service - %@", buf, 0xCu);
     }
 
-    v20 = [v17 username];
-    if (v20)
+    username = [v17 username];
+    if (username)
     {
-      [v11 setObject:v20 forKeyedSubscript:*MEMORY[0x1E698BA88]];
+      [v11 setObject:username forKeyedSubscript:*MEMORY[0x1E698BA88]];
     }
 
-    v21 = [(FARequestConfigurator *)self _serviceOwnersManager];
-    v22 = [v21 DSIDForAccount:v17 service:v8];
+    _serviceOwnersManager2 = [(FARequestConfigurator *)self _serviceOwnersManager];
+    v22 = [_serviceOwnersManager2 DSIDForAccount:v17 service:typeCopy];
 
     if (v22)
     {
       [v11 setObject:v22 forKeyedSubscript:*MEMORY[0x1E698BA90]];
     }
 
-    v29 = v20;
-    v23 = [(FARequestConfigurator *)self _serviceOwnersManager];
-    v24 = [v23 altDSIDForAccount:v17 service:v8];
+    v29 = username;
+    _serviceOwnersManager3 = [(FARequestConfigurator *)self _serviceOwnersManager];
+    v24 = [_serviceOwnersManager3 altDSIDForAccount:v17 service:typeCopy];
 
     if (v24)
     {
       [v11 setObject:v24 forKeyedSubscript:*MEMORY[0x1E698BA80]];
     }
 
-    v25 = [(FARequestConfigurator *)self _accountStore];
-    v26 = [v25 aa_grandSlamAccountForAltDSID:v24];
+    _accountStore = [(FARequestConfigurator *)self _accountStore];
+    v26 = [_accountStore aa_grandSlamAccountForAltDSID:v24];
 
     v27 = [(FARequestConfigurator *)self _familyTokenForGrandSlamAccount:v26 andTokenID:*MEMORY[0x1E698B7B8]];
     if (v27)
@@ -783,7 +783,7 @@ LABEL_16:
   if (v19)
   {
     *buf = 138412290;
-    v31 = v8;
+    v31 = typeCopy;
     _os_log_impl(&dword_1B70B0000, v18, OS_LOG_TYPE_DEFAULT, "No Account found for serviceType - %@", buf, 0xCu);
   }
 
@@ -792,17 +792,17 @@ LABEL_17:
   v28 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_familyTokenForGrandSlamAccount:(id)a3 andTokenID:(id)a4
+- (id)_familyTokenForGrandSlamAccount:(id)account andTokenID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  accountCopy = account;
+  dCopy = d;
+  if (accountCopy)
   {
-    v8 = [(FARequestConfigurator *)self _accountStore];
-    v9 = [v8 credentialForAccount:v6 serviceID:v7];
+    _accountStore = [(FARequestConfigurator *)self _accountStore];
+    v9 = [_accountStore credentialForAccount:accountCopy serviceID:dCopy];
 
-    v10 = [v9 token];
-    if (!v10)
+    token = [v9 token];
+    if (!token)
     {
       v11 = _FALogSystem();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -822,10 +822,10 @@ LABEL_17:
       _os_log_impl(&dword_1B70B0000, v9, OS_LOG_TYPE_DEFAULT, "No grandslam account, unable to fetch token", buf, 2u);
     }
 
-    v10 = 0;
+    token = 0;
   }
 
-  return v10;
+  return token;
 }
 
 - (id)_serviceOwnersManager
@@ -834,8 +834,8 @@ LABEL_17:
   if (!serviceOwnersManager)
   {
     v4 = objc_alloc(MEMORY[0x1E698C268]);
-    v5 = [(FARequestConfigurator *)self _accountStore];
-    v6 = [v4 initWithAccountStore:v5];
+    _accountStore = [(FARequestConfigurator *)self _accountStore];
+    v6 = [v4 initWithAccountStore:_accountStore];
     v7 = self->_serviceOwnersManager;
     self->_serviceOwnersManager = v6;
 
@@ -849,7 +849,7 @@ LABEL_17:
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_1B70B0000, a2, OS_LOG_TYPE_ERROR, "Error reading entitlement: %@", &v3, 0xCu);
   v2 = *MEMORY[0x1E69E9840];
 }

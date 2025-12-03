@@ -1,15 +1,15 @@
 @interface RemindersSiriSnippetFactory
 - (_TtC21RemindersSiriUIPlugin27RemindersSiriSnippetFactory)init;
-- (id)viewControllerForSnippet:(id)a3;
+- (id)viewControllerForSnippet:(id)snippet;
 @end
 
 @implementation RemindersSiriSnippetFactory
 
-- (id)viewControllerForSnippet:(id)a3
+- (id)viewControllerForSnippet:(id)snippet
 {
-  v5 = a3;
-  v6 = self;
-  v7 = _s21RemindersSiriUIPlugin0aB14SnippetFactoryC14viewController3forSo0b6UIBased4ViewG0CSgSo11SAUISnippetCSg_tF_0(a3);
+  snippetCopy = snippet;
+  selfCopy = self;
+  v7 = _s21RemindersSiriUIPlugin0aB14SnippetFactoryC14viewController3forSo0b6UIBased4ViewG0CSgSo11SAUISnippetCSg_tF_0(snippet);
 
   return v7;
 }

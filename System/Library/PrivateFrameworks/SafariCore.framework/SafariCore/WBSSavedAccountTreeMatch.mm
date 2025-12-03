@@ -1,34 +1,34 @@
 @interface WBSSavedAccountTreeMatch
-+ (BOOL)userName:(id)a3 matchesQuery:(id)a4;
-+ (BOOL)userNameString:(id)a3 matchesPotentiallyObfuscatedUserNameString:(id)a4;
++ (BOOL)userName:(id)name matchesQuery:(id)query;
++ (BOOL)userNameString:(id)string matchesPotentiallyObfuscatedUserNameString:(id)nameString;
 - (NSMutableArray)flattenedSavedAccountsFromTree;
-- (WBSSavedAccountTreeMatch)initWithDomain:(id)a3 savedAccountTree:(id)a4 matchLevel:(int64_t)a5;
+- (WBSSavedAccountTreeMatch)initWithDomain:(id)domain savedAccountTree:(id)tree matchLevel:(int64_t)level;
 - (void)pruneDontSaveTrees;
-- (void)pruneTreesWithoutPasswordOrMatchingPasskeyIdentifiers:(id)a3;
-- (void)pruneUsernameTreesNotMatchingTitleQuery:(id)a3;
-- (void)pruneUsernameTreesNotMatchingUserNameQuery:(id)a3 orPasskeyIdentifiers:(id)a4;
+- (void)pruneTreesWithoutPasswordOrMatchingPasskeyIdentifiers:(id)identifiers;
+- (void)pruneUsernameTreesNotMatchingTitleQuery:(id)query;
+- (void)pruneUsernameTreesNotMatchingUserNameQuery:(id)query orPasskeyIdentifiers:(id)identifiers;
 @end
 
 @implementation WBSSavedAccountTreeMatch
 
-- (WBSSavedAccountTreeMatch)initWithDomain:(id)a3 savedAccountTree:(id)a4 matchLevel:(int64_t)a5
+- (WBSSavedAccountTreeMatch)initWithDomain:(id)domain savedAccountTree:(id)tree matchLevel:(int64_t)level
 {
-  v8 = a3;
-  v9 = a4;
+  domainCopy = domain;
+  treeCopy = tree;
   v17.receiver = self;
   v17.super_class = WBSSavedAccountTreeMatch;
   v10 = [(WBSSavedAccountTreeMatch *)&v17 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [domainCopy copy];
     domain = v10->_domain;
     v10->_domain = v11;
 
-    v13 = deepMutableDictionaryCopy(v9);
+    v13 = deepMutableDictionaryCopy(treeCopy);
     accountStoreTreeMatchingSearchCriteria = v10->_accountStoreTreeMatchingSearchCriteria;
     v10->_accountStoreTreeMatchingSearchCriteria = v13;
 
-    v10->_matchLevel = a5;
+    v10->_matchLevel = level;
     v15 = v10;
   }
 
@@ -38,13 +38,13 @@
 - (NSMutableArray)flattenedSavedAccountsFromTree
 {
   v27 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v4 = [(NSMutableDictionary *)self->_accountStoreTreeMatchingSearchCriteria allValues];
-  v5 = [v4 countByEnumeratingWithState:&v21 objects:v26 count:16];
+  allValues = [(NSMutableDictionary *)self->_accountStoreTreeMatchingSearchCriteria allValues];
+  v5 = [allValues countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v5)
   {
     v6 = v5;
@@ -55,7 +55,7 @@
       {
         if (*v22 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allValues);
         }
 
         v9 = *(*(&v21 + 1) + 8 * i);
@@ -63,8 +63,8 @@
         v18 = 0u;
         v19 = 0u;
         v20 = 0u;
-        v10 = [v9 allValues];
-        v11 = [v10 countByEnumeratingWithState:&v17 objects:v25 count:16];
+        allValues2 = [v9 allValues];
+        v11 = [allValues2 countByEnumeratingWithState:&v17 objects:v25 count:16];
         if (v11)
         {
           v12 = v11;
@@ -75,20 +75,20 @@
             {
               if (*v18 != v13)
               {
-                objc_enumerationMutation(v10);
+                objc_enumerationMutation(allValues2);
               }
 
-              [v3 addObjectsFromArray:*(*(&v17 + 1) + 8 * j)];
+              [array addObjectsFromArray:*(*(&v17 + 1) + 8 * j)];
             }
 
-            v12 = [v10 countByEnumeratingWithState:&v17 objects:v25 count:16];
+            v12 = [allValues2 countByEnumeratingWithState:&v17 objects:v25 count:16];
           }
 
           while (v12);
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v21 objects:v26 count:16];
+      v6 = [allValues countByEnumeratingWithState:&v21 objects:v26 count:16];
     }
 
     while (v6);
@@ -96,7 +96,7 @@
 
   v15 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return array;
 }
 
 - (void)pruneDontSaveTrees
@@ -106,26 +106,26 @@
   [(NSMutableDictionary *)accountStoreTreeMatchingSearchCriteria removeObjectForKey:v3];
 }
 
-- (void)pruneUsernameTreesNotMatchingUserNameQuery:(id)a3 orPasskeyIdentifiers:(id)a4
+- (void)pruneUsernameTreesNotMatchingUserNameQuery:(id)query orPasskeyIdentifiers:(id)identifiers
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 matchingType];
-  v9 = [v6 string];
-  v10 = v9;
-  if (v8 || [v9 length])
+  queryCopy = query;
+  identifiersCopy = identifiers;
+  matchingType = [queryCopy matchingType];
+  string = [queryCopy string];
+  v10 = string;
+  if (matchingType || [string length])
   {
-    v11 = [v7 safari_setByApplyingBlock:&__block_literal_global_67];
-    v12 = [(NSMutableDictionary *)self->_accountStoreTreeMatchingSearchCriteria allKeys];
+    v11 = [identifiersCopy safari_setByApplyingBlock:&__block_literal_global_67];
+    allKeys = [(NSMutableDictionary *)self->_accountStoreTreeMatchingSearchCriteria allKeys];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __92__WBSSavedAccountTreeMatch_pruneUsernameTreesNotMatchingUserNameQuery_orPasskeyIdentifiers___block_invoke_2;
     v15[3] = &unk_1E7CF4F78;
     v15[4] = self;
-    v16 = v6;
+    v16 = queryCopy;
     v17 = v11;
     v13 = v11;
-    v14 = [v12 safari_filterObjectsUsingBlock:v15];
+    v14 = [allKeys safari_filterObjectsUsingBlock:v15];
 
     [(NSMutableDictionary *)self->_accountStoreTreeMatchingSearchCriteria removeObjectsForKeys:v14];
   }
@@ -217,16 +217,16 @@ uint64_t __92__WBSSavedAccountTreeMatch_pruneUsernameTreesNotMatchingUserNameQue
   return v5 & 1;
 }
 
-+ (BOOL)userName:(id)a3 matchesQuery:(id)a4
++ (BOOL)userName:(id)name matchesQuery:(id)query
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 matchingType];
-  v9 = [v7 string];
+  nameCopy = name;
+  queryCopy = query;
+  matchingType = [queryCopy matchingType];
+  string = [queryCopy string];
 
-  if ([v9 hasPrefix:@"+1"])
+  if ([string hasPrefix:@"+1"])
   {
-    v10 = [v9 substringFromIndex:2];
+    v10 = [string substringFromIndex:2];
   }
 
   else
@@ -234,35 +234,35 @@ uint64_t __92__WBSSavedAccountTreeMatch_pruneUsernameTreesNotMatchingUserNameQue
     v10 = 0;
   }
 
-  v11 = [v9 componentsSeparatedByString:@"@"];
-  v12 = [v11 firstObject];
+  v11 = [string componentsSeparatedByString:@"@"];
+  firstObject = [v11 firstObject];
 
-  if (v12)
+  if (firstObject)
   {
-    v13 = v12;
+    v13 = firstObject;
   }
 
   else
   {
-    v13 = v9;
+    v13 = string;
   }
 
   v14 = v13;
-  if (v8 == 1)
+  if (matchingType == 1)
   {
-    v4 = [v6 isEqualToString:v9];
+    v4 = [nameCopy isEqualToString:string];
   }
 
-  else if (!v8)
+  else if (!matchingType)
   {
     v15 = [MEMORY[0x1E696AB08] characterSetWithCharactersInString:@"•*"];
     v16 = [v14 safari_stringByTrimmingTrailingCharactersInCharacterSet:v15];
 
-    v17 = [v6 rangeOfString:v16 options:9];
-    v18 = [objc_opt_class() userNameString:v6 matchesPotentiallyObfuscatedUserNameString:v9];
+    v17 = [nameCopy rangeOfString:v16 options:9];
+    v18 = [objc_opt_class() userNameString:nameCopy matchesPotentiallyObfuscatedUserNameString:string];
     if ([v10 length])
     {
-      v19 = [v6 rangeOfString:v10 options:9] != 0x7FFFFFFFFFFFFFFFLL;
+      v19 = [nameCopy rangeOfString:v10 options:9] != 0x7FFFFFFFFFFFFFFFLL;
     }
 
     else
@@ -284,20 +284,20 @@ uint64_t __92__WBSSavedAccountTreeMatch_pruneUsernameTreesNotMatchingUserNameQue
   return v4 & 1;
 }
 
-- (void)pruneUsernameTreesNotMatchingTitleQuery:(id)a3
+- (void)pruneUsernameTreesNotMatchingTitleQuery:(id)query
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_accountStoreTreeMatchingSearchCriteria allKeys];
+  queryCopy = query;
+  allKeys = [(NSMutableDictionary *)self->_accountStoreTreeMatchingSearchCriteria allKeys];
   v8 = MEMORY[0x1E69E9820];
   v9 = 3221225472;
   v10 = __68__WBSSavedAccountTreeMatch_pruneUsernameTreesNotMatchingTitleQuery___block_invoke;
   v11 = &unk_1E7CF4FC8;
-  v12 = self;
-  v13 = v4;
-  v6 = v4;
-  v7 = [v5 safari_filterObjectsUsingBlock:&v8];
+  selfCopy = self;
+  v13 = queryCopy;
+  v6 = queryCopy;
+  v7 = [allKeys safari_filterObjectsUsingBlock:&v8];
 
-  [(NSMutableDictionary *)self->_accountStoreTreeMatchingSearchCriteria removeObjectsForKeys:v7, v8, v9, v10, v11, v12];
+  [(NSMutableDictionary *)self->_accountStoreTreeMatchingSearchCriteria removeObjectsForKeys:v7, v8, v9, v10, v11, selfCopy];
 }
 
 uint64_t __68__WBSSavedAccountTreeMatch_pruneUsernameTreesNotMatchingTitleQuery___block_invoke(uint64_t a1, void *a2)
@@ -387,12 +387,12 @@ void __68__WBSSavedAccountTreeMatch_pruneUsernameTreesNotMatchingTitleQuery___bl
   v17 = *MEMORY[0x1E69E9840];
 }
 
-+ (BOOL)userNameString:(id)a3 matchesPotentiallyObfuscatedUserNameString:(id)a4
++ (BOOL)userNameString:(id)string matchesPotentiallyObfuscatedUserNameString:(id)nameString
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 length];
-  if (v7 == [v6 length])
+  stringCopy = string;
+  nameStringCopy = nameString;
+  v7 = [stringCopy length];
+  if (v7 == [nameStringCopy length])
   {
     v8 = [MEMORY[0x1E696AB08] characterSetWithCharactersInString:@"*•"];
     if (v7)
@@ -400,8 +400,8 @@ void __68__WBSSavedAccountTreeMatch_pruneUsernameTreesNotMatchingTitleQuery___bl
       v9 = 0;
       for (i = 0; i != v7; v9 = i >= v7)
       {
-        v11 = [v6 characterAtIndex:i];
-        if (([v8 characterIsMember:v11] & 1) == 0 && objc_msgSend(v5, "characterAtIndex:", i) != v11)
+        v11 = [nameStringCopy characterAtIndex:i];
+        if (([v8 characterIsMember:v11] & 1) == 0 && objc_msgSend(stringCopy, "characterAtIndex:", i) != v11)
         {
           break;
         }
@@ -424,10 +424,10 @@ void __68__WBSSavedAccountTreeMatch_pruneUsernameTreesNotMatchingTitleQuery___bl
   return v9;
 }
 
-- (void)pruneTreesWithoutPasswordOrMatchingPasskeyIdentifiers:(id)a3
+- (void)pruneTreesWithoutPasswordOrMatchingPasskeyIdentifiers:(id)identifiers
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = [a3 safari_setByApplyingBlock:&__block_literal_global_19_3];
+  v4 = [identifiers safari_setByApplyingBlock:&__block_literal_global_19_3];
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
@@ -453,8 +453,8 @@ void __68__WBSSavedAccountTreeMatch_pruneUsernameTreesNotMatchingTitleQuery___bl
         v27 = 0u;
         v28 = 0u;
         v29 = 0u;
-        v7 = [v6 allKeys];
-        v8 = [v7 countByEnumeratingWithState:&v26 objects:v34 count:16];
+        allKeys = [v6 allKeys];
+        v8 = [allKeys countByEnumeratingWithState:&v26 objects:v34 count:16];
         if (v8)
         {
           v9 = v8;
@@ -465,17 +465,17 @@ void __68__WBSSavedAccountTreeMatch_pruneUsernameTreesNotMatchingTitleQuery___bl
             {
               if (*v27 != v10)
               {
-                objc_enumerationMutation(v7);
+                objc_enumerationMutation(allKeys);
               }
 
               v12 = *(*(&v26 + 1) + 8 * i);
               v13 = [v6 objectForKeyedSubscript:v12];
-              v14 = [v12 integerValue];
+              integerValue = [v12 integerValue];
               v21[0] = MEMORY[0x1E69E9820];
               v21[1] = 3221225472;
               v21[2] = __82__WBSSavedAccountTreeMatch_pruneTreesWithoutPasswordOrMatchingPasskeyIdentifiers___block_invoke_2;
               v21[3] = &unk_1E7CF4FF0;
-              v24 = v14;
+              v24 = integerValue;
               v15 = v4;
               v25 = 256;
               v22 = v15;
@@ -487,7 +487,7 @@ void __68__WBSSavedAccountTreeMatch_pruneUsernameTreesNotMatchingTitleQuery___bl
               }
             }
 
-            v9 = [v7 countByEnumeratingWithState:&v26 objects:v34 count:16];
+            v9 = [allKeys countByEnumeratingWithState:&v26 objects:v34 count:16];
           }
 
           while (v9);

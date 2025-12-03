@@ -1,15 +1,15 @@
 @interface HLPHelpBookController
-- (id)dynamicServerSectionsForIdentifiers:(id)a3 level:(int64_t)a4 parent:(id)a5 tocMap:(id)a6;
-- (id)helpItemForID:(id)a3;
-- (id)helpTopicItemForID:(id)a3;
-- (id)helpTopicItemForName:(id)a3;
-- (id)sectionsForChildrenIdentifiers:(id)a3 level:(int64_t)a4 parent:(id)a5 sectionsMap:(id)a6 topicsMap:(id)a7;
+- (id)dynamicServerSectionsForIdentifiers:(id)identifiers level:(int64_t)level parent:(id)parent tocMap:(id)map;
+- (id)helpItemForID:(id)d;
+- (id)helpTopicItemForID:(id)d;
+- (id)helpTopicItemForName:(id)name;
+- (id)sectionsForChildrenIdentifiers:(id)identifiers level:(int64_t)level parent:(id)parent sectionsMap:(id)map topicsMap:(id)topicsMap;
 - (id)systemLanguages;
-- (void)addAsideTopic:(id)a3;
+- (void)addAsideTopic:(id)topic;
 - (void)dealloc;
-- (void)fetchDataWithDataType:(int64_t)a3 identifier:(id)a4 completionHandler:(id)a5;
-- (void)processData:(id)a3 formattedData:(id)a4;
-- (void)processFileURLWithCompletionHandler:(id)a3;
+- (void)fetchDataWithDataType:(int64_t)type identifier:(id)identifier completionHandler:(id)handler;
+- (void)processData:(id)data formattedData:(id)formattedData;
+- (void)processFileURLWithCompletionHandler:(id)handler;
 @end
 
 @implementation HLPHelpBookController
@@ -27,21 +27,21 @@
   [(HLPRemoteDataController *)&v4 dealloc];
 }
 
-- (void)fetchDataWithDataType:(int64_t)a3 identifier:(id)a4 completionHandler:(id)a5
+- (void)fetchDataWithDataType:(int64_t)type identifier:(id)identifier completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
+  handlerCopy = handler;
+  identifierCopy = identifier;
   v10 = +[HLPCommonDefines contentRequestHeaderFields];
   [(HLPRemoteDataController *)self setHeaderFields:v10];
 
   v11.receiver = self;
   v11.super_class = HLPHelpBookController;
-  [(HLPRemoteDataController *)&v11 fetchDataWithDataType:a3 identifier:v9 completionHandler:v8];
+  [(HLPRemoteDataController *)&v11 fetchDataWithDataType:type identifier:identifierCopy completionHandler:handlerCopy];
 }
 
-- (void)processFileURLWithCompletionHandler:(id)a3
+- (void)processFileURLWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = [(HLPRemoteDataController *)self URL];
   v6 = [v5 checkResourceIsReachableAndReturnError:0];
 
@@ -63,7 +63,7 @@
       v13[2] = __61__HLPHelpBookController_processFileURLWithCompletionHandler___block_invoke;
       v13[3] = &unk_279706BE8;
       v13[4] = self;
-      v14 = v4;
+      v14 = handlerCopy;
       dispatch_async(MEMORY[0x277D85CD0], v13);
     }
   }
@@ -78,11 +78,11 @@ uint64_t __61__HLPHelpBookController_processFileURLWithCompletionHandler___block
   return v2();
 }
 
-- (void)processData:(id)a3 formattedData:(id)a4
+- (void)processData:(id)data formattedData:(id)formattedData
 {
   v112[1] = *MEMORY[0x277D85DE8];
-  v101 = a3;
-  v6 = a4;
+  dataCopy = data;
+  formattedDataCopy = formattedData;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -93,30 +93,30 @@ uint64_t __61__HLPHelpBookController_processFileURLWithCompletionHandler___block
   helpItemMap = self->_helpItemMap;
   self->_helpItemMap = v7;
 
-  v103 = self;
-  v100 = v6;
+  selfCopy = self;
+  v100 = formattedDataCopy;
   if (self->_serverType != 1)
   {
     self->_hasSectionIcon = 0;
-    v64 = v6;
+    v64 = formattedDataCopy;
     v65 = [v64 objectForKeyedSubscript:@"birdseed_version"];
-    v103->_contentFormatVersion = [v65 integerValue];
+    selfCopy->_contentFormatVersion = [v65 integerValue];
 
     v66 = [v64 objectForKeyedSubscript:@"version"];
-    contentVersion = v103->_contentVersion;
-    v103->_contentVersion = v66;
+    contentVersion = selfCopy->_contentVersion;
+    selfCopy->_contentVersion = v66;
 
     v68 = [v64 objectForKeyedSubscript:@"copyright_text"];
-    copyrightText = v103->_copyrightText;
-    v103->_copyrightText = v68;
+    copyrightText = selfCopy->_copyrightText;
+    selfCopy->_copyrightText = v68;
 
     v70 = [v64 objectForKeyedSubscript:@"landing"];
-    welcomeTopicIdentifier = v103->_welcomeTopicIdentifier;
-    v103->_welcomeTopicIdentifier = v70;
+    welcomeTopicIdentifier = selfCopy->_welcomeTopicIdentifier;
+    selfCopy->_welcomeTopicIdentifier = v70;
 
     v72 = [v64 objectForKeyedSubscript:@"copyright"];
-    copyrightTopicIdentifier = v103->_copyrightTopicIdentifier;
-    v103->_copyrightTopicIdentifier = v72;
+    copyrightTopicIdentifier = selfCopy->_copyrightTopicIdentifier;
+    selfCopy->_copyrightTopicIdentifier = v72;
 
     v74 = [v64 objectForKeyedSubscript:@"sections"];
     v75 = MEMORY[0x277CBEB38];
@@ -128,9 +128,9 @@ uint64_t __61__HLPHelpBookController_processFileURLWithCompletionHandler___block
 
     v79 = [v64 objectForKeyedSubscript:@"toc"];
 
-    v63 = [(HLPHelpBookController *)v103 sectionsForChildrenIdentifiers:v79 level:0 parent:0 sectionsMap:v74 topicsMap:v77];
+    v63 = [(HLPHelpBookController *)selfCopy sectionsForChildrenIdentifiers:v79 level:0 parent:0 sectionsMap:v74 topicsMap:v77];
 
-    if (v103->_contentFormatVersion <= 4)
+    if (selfCopy->_contentFormatVersion <= 4)
     {
       v80 = @"glossary";
     }
@@ -145,7 +145,7 @@ uint64_t __61__HLPHelpBookController_processFileURLWithCompletionHandler___block
     v104[1] = 3221225472;
     v104[2] = __51__HLPHelpBookController_processData_formattedData___block_invoke;
     v104[3] = &unk_279706CB0;
-    v104[4] = v103;
+    v104[4] = selfCopy;
     v105 = v81;
     v82 = v81;
     [v77 enumerateKeysAndObjectsUsingBlock:v104];
@@ -153,7 +153,7 @@ uint64_t __61__HLPHelpBookController_processFileURLWithCompletionHandler___block
     goto LABEL_45;
   }
 
-  v102 = [v6 objectForKeyedSubscript:@"bookResponse"];
+  v102 = [formattedDataCopy objectForKeyedSubscript:@"bookResponse"];
   v96 = [v102 objectForKeyedSubscript:@"meta"];
   v9 = [v102 objectForKeyedSubscript:@"bookId"];
   bookId = self->_bookId;
@@ -165,9 +165,9 @@ uint64_t __61__HLPHelpBookController_processFileURLWithCompletionHandler___block
   self->_contentVersion = v11;
 
   v13 = [v102 objectForKeyedSubscript:@"copyrightId"];
-  v14 = [v13 uppercaseString];
+  uppercaseString = [v13 uppercaseString];
   v15 = self->_copyrightTopicIdentifier;
-  self->_copyrightTopicIdentifier = v14;
+  self->_copyrightTopicIdentifier = uppercaseString;
 
   v16 = [v102 objectForKeyedSubscript:@"copyrightText"];
   v17 = self->_copyrightText;
@@ -185,11 +185,11 @@ uint64_t __61__HLPHelpBookController_processFileURLWithCompletionHandler___block
     self->_locale = v20;
 
     v22 = MEMORY[0x277CCA8D8];
-    v23 = [(HLPHelpBookController *)self systemLanguages];
+    systemLanguages = [(HLPHelpBookController *)self systemLanguages];
     v112[0] = v98;
     v24 = [MEMORY[0x277CBEA60] arrayWithObjects:v112 count:1];
-    v25 = [v22 preferredLocalizationsFromArray:v23 forPreferences:v24];
-    [(HLPHelpLocale *)v103->_locale setIsoCodes:v25];
+    v25 = [v22 preferredLocalizationsFromArray:systemLanguages forPreferences:v24];
+    [(HLPHelpLocale *)selfCopy->_locale setIsoCodes:v25];
   }
 
   v97 = [v102 objectForKeyedSubscript:@"miscAttributes"];
@@ -203,30 +203,30 @@ uint64_t __61__HLPHelpBookController_processFileURLWithCompletionHandler___block
     if (v29)
     {
       v30 = [v29 objectForKeyedSubscript:@"remoteSearchTree"];
-      remoteSearchPath = v103->_remoteSearchPath;
-      v103->_remoteSearchPath = v30;
+      remoteSearchPath = selfCopy->_remoteSearchPath;
+      selfCopy->_remoteSearchPath = v30;
 
-      v32 = [(NSString *)v103->_remoteSearchPath lastPathComponent];
-      v33 = [v32 isEqualToString:@"searchTree.json"];
+      lastPathComponent = [(NSString *)selfCopy->_remoteSearchPath lastPathComponent];
+      v33 = [lastPathComponent isEqualToString:@"searchTree.json"];
 
       if ((v33 & 1) == 0)
       {
-        v34 = v103->_remoteSearchPath;
-        v103->_remoteSearchPath = 0;
+        v34 = selfCopy->_remoteSearchPath;
+        selfCopy->_remoteSearchPath = 0;
       }
 
-      v35 = [(NSString *)v103->_remoteCSSearchIndex lastPathComponent];
-      v36 = [v35 isEqualToString:@"search.cshelpindex"];
+      lastPathComponent2 = [(NSString *)selfCopy->_remoteCSSearchIndex lastPathComponent];
+      v36 = [lastPathComponent2 isEqualToString:@"search.cshelpindex"];
 
       if ((v36 & 1) == 0)
       {
-        remoteCSSearchIndex = v103->_remoteCSSearchIndex;
-        v103->_remoteCSSearchIndex = 0;
+        remoteCSSearchIndex = selfCopy->_remoteCSSearchIndex;
+        selfCopy->_remoteCSSearchIndex = 0;
       }
 
       v38 = [v29 objectForKeyedSubscript:@"iconBaseUrl"];
-      iconBasePath = v103->_iconBasePath;
-      v103->_iconBasePath = v38;
+      iconBasePath = selfCopy->_iconBasePath;
+      selfCopy->_iconBasePath = v38;
     }
   }
 
@@ -235,7 +235,7 @@ uint64_t __61__HLPHelpBookController_processFileURLWithCompletionHandler___block
   if (objc_opt_isKindOfClass())
   {
     v40 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v99, "count")}];
-    v103->_hasSectionIcon = 0;
+    selfCopy->_hasSectionIcon = 0;
     v106 = 0u;
     v107 = 0u;
     v108 = 0u;
@@ -259,7 +259,7 @@ uint64_t __61__HLPHelpBookController_processFileURLWithCompletionHandler___block
           if ([v46 length])
           {
             [v40 setObject:v45 forKeyedSubscript:v46];
-            v47 = [(NSMutableDictionary *)v103->_helpItemMap objectForKeyedSubscript:v46];
+            v47 = [(NSMutableDictionary *)selfCopy->_helpItemMap objectForKeyedSubscript:v46];
             v48 = v47 == 0;
 
             if (v48)
@@ -274,7 +274,7 @@ uint64_t __61__HLPHelpBookController_processFileURLWithCompletionHandler___block
 
                 [(HLPHelpTopicItem *)v50 setGlossaryIdentifierString:@"aside"];
                 [(HLPHelpItem *)v50 setIdentifier:v46];
-                [(NSMutableDictionary *)v103->_helpItemMap setObject:v50 forKeyedSubscript:v46];
+                [(NSMutableDictionary *)selfCopy->_helpItemMap setObject:v50 forKeyedSubscript:v46];
               }
             }
           }
@@ -286,35 +286,35 @@ uint64_t __61__HLPHelpBookController_processFileURLWithCompletionHandler___block
       while (v42);
     }
 
-    if ([(NSString *)v103->_copyrightTopicIdentifier length])
+    if ([(NSString *)selfCopy->_copyrightTopicIdentifier length])
     {
-      if (!v103->_copyrightText)
+      if (!selfCopy->_copyrightText)
       {
         goto LABEL_32;
       }
 
-      v52 = [(HLPHelpBookController *)v103 helpItemForID:v103->_copyrightTopicIdentifier];
+      v52 = [(HLPHelpBookController *)selfCopy helpItemForID:selfCopy->_copyrightTopicIdentifier];
       if (!v52)
       {
         v52 = objc_alloc_init(HLPHelpTopicItem);
         [(HLPHelpItem *)v52 setServerType:1];
-        [(NSMutableDictionary *)v103->_helpItemMap setObject:v52 forKeyedSubscript:v103->_copyrightTopicIdentifier];
+        [(NSMutableDictionary *)selfCopy->_helpItemMap setObject:v52 forKeyedSubscript:selfCopy->_copyrightTopicIdentifier];
       }
 
-      [(HLPHelpItem *)v52 setName:v103->_copyrightText];
-      [(HLPHelpItem *)v52 setIdentifier:v103->_copyrightTopicIdentifier];
-      [(HLPHelpTopicItem *)v52 setHrefID:v103->_copyrightTopicIdentifier];
+      [(HLPHelpItem *)v52 setName:selfCopy->_copyrightText];
+      [(HLPHelpItem *)v52 setIdentifier:selfCopy->_copyrightTopicIdentifier];
+      [(HLPHelpTopicItem *)v52 setHrefID:selfCopy->_copyrightTopicIdentifier];
     }
 
-    v53 = v103;
-    if (v103->_copyrightText)
+    v53 = selfCopy;
+    if (selfCopy->_copyrightText)
     {
 LABEL_35:
       v61 = [v40 objectForKeyedSubscript:v53->_welcomeTopicIdentifier];
       v62 = [v61 objectForKeyedSubscript:@"children"];
       if ([v62 count])
       {
-        v63 = [(HLPHelpBookController *)v103 dynamicServerSectionsForIdentifiers:v62 level:0 parent:0 tocMap:v40];
+        v63 = [(HLPHelpBookController *)selfCopy dynamicServerSectionsForIdentifiers:v62 level:0 parent:0 tocMap:v40];
       }
 
       else
@@ -329,18 +329,18 @@ LABEL_32:
     v54 = +[HLPCommonDefines HLPBundle];
     v55 = [v54 localizedStringForKey:@"Copyright © %ld Apple Inc. All rights reserved." value:&stru_2864756F0 table:0];
 
-    v56 = [MEMORY[0x277CBEA80] currentCalendar];
-    v57 = [MEMORY[0x277CBEAA8] date];
-    v58 = [v56 components:4 fromDate:v57];
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+    date = [MEMORY[0x277CBEAA8] date];
+    v58 = [currentCalendar components:4 fromDate:date];
 
     if ([v58 year] >= 1)
     {
       v59 = [MEMORY[0x277CCACA8] stringWithFormat:v55, objc_msgSend(v58, "year")];
-      v60 = v103->_copyrightText;
-      v103->_copyrightText = v59;
+      v60 = selfCopy->_copyrightText;
+      selfCopy->_copyrightText = v59;
     }
 
-    v53 = v103;
+    v53 = selfCopy;
     goto LABEL_35;
   }
 
@@ -348,27 +348,27 @@ LABEL_32:
 LABEL_44:
 
 LABEL_45:
-  if (v103->_hasSectionIcon)
+  if (selfCopy->_hasSectionIcon)
   {
-    v83 = [MEMORY[0x277CBEAF8] preferredLanguages];
-    v84 = [v83 firstObject];
+    preferredLanguages = [MEMORY[0x277CBEAF8] preferredLanguages];
+    firstObject = [preferredLanguages firstObject];
 
     v85 = MEMORY[0x277CCA8D8];
-    v86 = [(HLPHelpBookController *)v103 systemLanguages];
-    v110 = v84;
+    systemLanguages2 = [(HLPHelpBookController *)selfCopy systemLanguages];
+    v110 = firstObject;
     v87 = [MEMORY[0x277CBEA60] arrayWithObjects:&v110 count:1];
-    v88 = [v85 preferredLocalizationsFromArray:v86 forPreferences:v87];
+    v88 = [v85 preferredLocalizationsFromArray:systemLanguages2 forPreferences:v87];
 
-    v89 = [v88 firstObject];
-    v90 = v89;
-    if (v89)
+    firstObject2 = [v88 firstObject];
+    v90 = firstObject2;
+    if (firstObject2)
     {
-      v91 = v89;
+      v91 = firstObject2;
     }
 
     else
     {
-      v91 = v84;
+      v91 = firstObject;
     }
 
     v92 = +[HLPImageCacheController sharedInstance];
@@ -376,13 +376,13 @@ LABEL_45:
   }
 
   v93 = objc_alloc_init(HLPHelpSectionItem);
-  rootSectionItem = v103->_rootSectionItem;
-  v103->_rootSectionItem = v93;
+  rootSectionItem = selfCopy->_rootSectionItem;
+  selfCopy->_rootSectionItem = v93;
 
-  [(HLPHelpSectionItem *)v103->_rootSectionItem setOpen:1];
-  [(HLPHelpSectionItem *)v103->_rootSectionItem setChildren:v63];
+  [(HLPHelpSectionItem *)selfCopy->_rootSectionItem setOpen:1];
+  [(HLPHelpSectionItem *)selfCopy->_rootSectionItem setChildren:v63];
 
-  v6 = v100;
+  formattedDataCopy = v100;
 LABEL_51:
 
   v95 = *MEMORY[0x277D85DE8];
@@ -410,40 +410,40 @@ void __51__HLPHelpBookController_processData_formattedData___block_invoke(uint64
 
 - (id)systemLanguages
 {
-  v3 = [MEMORY[0x277CBEAF8] systemLanguages];
-  v4 = [(HLPHelpBookController *)self additionalSupportedLanguages];
-  v5 = [v4 count];
+  systemLanguages = [MEMORY[0x277CBEAF8] systemLanguages];
+  additionalSupportedLanguages = [(HLPHelpBookController *)self additionalSupportedLanguages];
+  v5 = [additionalSupportedLanguages count];
 
   if (v5)
   {
-    v6 = [(HLPHelpBookController *)self additionalSupportedLanguages];
-    v7 = [v3 arrayByAddingObjectsFromArray:v6];
+    additionalSupportedLanguages2 = [(HLPHelpBookController *)self additionalSupportedLanguages];
+    v7 = [systemLanguages arrayByAddingObjectsFromArray:additionalSupportedLanguages2];
 
-    v3 = v7;
+    systemLanguages = v7;
   }
 
-  return v3;
+  return systemLanguages;
 }
 
-- (id)dynamicServerSectionsForIdentifiers:(id)a3 level:(int64_t)a4 parent:(id)a5 tocMap:(id)a6
+- (id)dynamicServerSectionsForIdentifiers:(id)identifiers level:(int64_t)level parent:(id)parent tocMap:(id)map
 {
   v46 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
-  v37 = [MEMORY[0x277CBEB18] array];
+  identifiersCopy = identifiers;
+  parentCopy = parent;
+  mapCopy = map;
+  array = [MEMORY[0x277CBEB18] array];
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v12 = v9;
+  v12 = identifiersCopy;
   v13 = [v12 countByEnumeratingWithState:&v41 objects:v45 count:16];
   if (v13)
   {
     v14 = v13;
     v15 = 0x27F4D9000uLL;
     v16 = *v42;
-    v40 = self;
+    selfCopy = self;
     v35 = v12;
     v38 = *v42;
     do
@@ -460,7 +460,7 @@ void __51__HLPHelpBookController_processData_formattedData___block_invoke(uint64
         v18 = *(*(&v41 + 1) + 8 * v17);
         if (([v18 isEqualToString:{*(&self->super.super.isa + *(v15 + 2296)), v35}] & 1) == 0)
         {
-          v19 = [v11 objectForKeyedSubscript:v18];
+          v19 = [mapCopy objectForKeyedSubscript:v18];
           v20 = v19;
           if (v19)
           {
@@ -472,38 +472,38 @@ void __51__HLPHelpBookController_processData_formattedData___block_invoke(uint64
             {
               if (!v23)
               {
-                v24 = [(HLPHelpItem *)[HLPHelpSectionItem alloc] initWithDictionary:v20 helpBookURL:v40->_helpBookURL serverType:v40->_serverType];
+                v24 = [(HLPHelpItem *)[HLPHelpSectionItem alloc] initWithDictionary:v20 helpBookURL:selfCopy->_helpBookURL serverType:selfCopy->_serverType];
                 [(HLPHelpItem *)v24 setIdentifier:v18];
               }
 
-              v26 = [(HLPHelpBookController *)v40 dynamicServerSectionsForIdentifiers:v21 level:a4 + 1 parent:v24 tocMap:v11];
+              v26 = [(HLPHelpBookController *)selfCopy dynamicServerSectionsForIdentifiers:v21 level:level + 1 parent:v24 tocMap:mapCopy];
               [(HLPHelpSectionItem *)v24 setChildren:v26];
             }
 
             v27 = [v20 objectForKeyedSubscript:@"icon"];
-            if ([v27 length] && -[NSString length](v40->_iconBasePath, "length"))
+            if ([v27 length] && -[NSString length](selfCopy->_iconBasePath, "length"))
             {
-              v28 = [(NSString *)v40->_iconBasePath stringByAppendingPathComponent:v27];
+              v28 = [(NSString *)selfCopy->_iconBasePath stringByAppendingPathComponent:v27];
               [MEMORY[0x277CBEBC0] URLWithString:v28];
-              v29 = v11;
-              v31 = v30 = v10;
+              v29 = mapCopy;
+              v31 = v30 = parentCopy;
               [(HLPHelpItem *)v24 setIconURL:v31];
 
-              v10 = v30;
-              v11 = v29;
-              v40->_hasSectionIcon = 1;
+              parentCopy = v30;
+              mapCopy = v29;
+              selfCopy->_hasSectionIcon = 1;
               v12 = v35;
               v14 = v36;
             }
 
-            [(HLPHelpItem *)v24 setParent:v10];
-            [(HLPHelpItem *)v24 setLevel:a4];
+            [(HLPHelpItem *)v24 setParent:parentCopy];
+            [(HLPHelpItem *)v24 setLevel:level];
             if (v24)
             {
-              [v37 addObject:v24];
+              [array addObject:v24];
             }
 
-            self = v40;
+            self = selfCopy;
             v15 = 0x27F4D9000;
             v16 = v38;
           }
@@ -519,9 +519,9 @@ void __51__HLPHelpBookController_processData_formattedData___block_invoke(uint64
     while (v14);
   }
 
-  if ([v37 count])
+  if ([array count])
   {
-    v32 = [MEMORY[0x277CBEA60] arrayWithArray:v37];
+    v32 = [MEMORY[0x277CBEA60] arrayWithArray:array];
   }
 
   else
@@ -534,11 +534,11 @@ void __51__HLPHelpBookController_processData_formattedData___block_invoke(uint64
   return v32;
 }
 
-- (id)sectionsForChildrenIdentifiers:(id)a3 level:(int64_t)a4 parent:(id)a5 sectionsMap:(id)a6 topicsMap:(id)a7
+- (id)sectionsForChildrenIdentifiers:(id)identifiers level:(int64_t)level parent:(id)parent sectionsMap:(id)map topicsMap:(id)topicsMap
 {
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
+  parentCopy = parent;
+  mapCopy = map;
+  topicsMapCopy = topicsMap;
   if (self->_contentFormatVersion <= 4)
   {
     v15 = @"glossary";
@@ -551,25 +551,25 @@ void __51__HLPHelpBookController_processData_formattedData___block_invoke(uint64
 
   v16 = v15;
   v17 = MEMORY[0x277CBEB18];
-  v18 = a3;
-  v19 = [v17 array];
+  identifiersCopy = identifiers;
+  array = [v17 array];
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
   v27[2] = __91__HLPHelpBookController_sectionsForChildrenIdentifiers_level_parent_sectionsMap_topicsMap___block_invoke;
   v27[3] = &unk_279706CD8;
-  v20 = v13;
+  v20 = mapCopy;
   v28 = v20;
-  v29 = self;
-  v34 = a4;
-  v21 = v14;
+  selfCopy = self;
+  levelCopy = level;
+  v21 = topicsMapCopy;
   v30 = v21;
   v22 = v16;
   v31 = v22;
-  v23 = v12;
+  v23 = parentCopy;
   v32 = v23;
-  v24 = v19;
+  v24 = array;
   v33 = v24;
-  [v18 enumerateObjectsUsingBlock:v27];
+  [identifiersCopy enumerateObjectsUsingBlock:v27];
 
   if ([v24 count])
   {
@@ -658,9 +658,9 @@ void __91__HLPHelpBookController_sectionsForChildrenIdentifiers_level_parent_sec
   }
 }
 
-- (id)helpTopicItemForID:(id)a3
+- (id)helpTopicItemForID:(id)d
 {
-  v3 = [(HLPHelpBookController *)self helpItemForID:a3];
+  v3 = [(HLPHelpBookController *)self helpItemForID:d];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -677,27 +677,27 @@ void __91__HLPHelpBookController_sectionsForChildrenIdentifiers_level_parent_sec
   return v4;
 }
 
-- (id)helpTopicItemForName:(id)a3
+- (id)helpTopicItemForName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = __Block_byref_object_copy_;
   v17 = __Block_byref_object_dispose_;
   v18 = 0;
-  if ([v4 length])
+  if ([nameCopy length])
   {
-    v5 = [v4 lowercaseString];
-    v6 = [(NSMutableDictionary *)self->_helpItemMap allValues];
+    lowercaseString = [nameCopy lowercaseString];
+    allValues = [(NSMutableDictionary *)self->_helpItemMap allValues];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __46__HLPHelpBookController_helpTopicItemForName___block_invoke;
     v10[3] = &unk_279706A78;
-    v7 = v5;
+    v7 = lowercaseString;
     v11 = v7;
     v12 = &v13;
-    [v6 enumerateObjectsUsingBlock:v10];
+    [allValues enumerateObjectsUsingBlock:v10];
   }
 
   v8 = v14[5];
@@ -727,37 +727,37 @@ uint64_t __46__HLPHelpBookController_helpTopicItemForName___block_invoke(uint64_
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)addAsideTopic:(id)a3
+- (void)addAsideTopic:(id)topic
 {
-  v11 = a3;
-  v4 = [v11 identifier];
-  if (v4)
+  topicCopy = topic;
+  identifier = [topicCopy identifier];
+  if (identifier)
   {
-    v5 = v4;
+    v5 = identifier;
     helpItemMap = self->_helpItemMap;
-    v7 = [v11 identifier];
-    v8 = [(NSMutableDictionary *)helpItemMap objectForKeyedSubscript:v7];
+    identifier2 = [topicCopy identifier];
+    v8 = [(NSMutableDictionary *)helpItemMap objectForKeyedSubscript:identifier2];
 
     if (!v8)
     {
       v9 = self->_helpItemMap;
-      v10 = [v11 identifier];
-      [(NSMutableDictionary *)v9 setObject:v11 forKeyedSubscript:v10];
+      identifier3 = [topicCopy identifier];
+      [(NSMutableDictionary *)v9 setObject:topicCopy forKeyedSubscript:identifier3];
     }
   }
 }
 
-- (id)helpItemForID:(id)a3
+- (id)helpItemForID:(id)d
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_helpItemMap objectForKeyedSubscript:v4];
+  dCopy = d;
+  v5 = [(NSMutableDictionary *)self->_helpItemMap objectForKeyedSubscript:dCopy];
   if (!v5)
   {
     if (self->_serverType == 1)
     {
       helpItemMap = self->_helpItemMap;
-      v7 = [v4 uppercaseString];
-      v5 = [(NSMutableDictionary *)helpItemMap objectForKeyedSubscript:v7];
+      uppercaseString = [dCopy uppercaseString];
+      v5 = [(NSMutableDictionary *)helpItemMap objectForKeyedSubscript:uppercaseString];
     }
 
     else

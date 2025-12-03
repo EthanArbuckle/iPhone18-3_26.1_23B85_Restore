@@ -1,19 +1,19 @@
 @interface QLStateManagerProxy
 - (QLPreviewControllerStateProtocolHostOnly)stateManager;
-- (id)methodSignatureForSelector:(SEL)a3;
-- (void)forwardInvocation:(id)a3;
+- (id)methodSignatureForSelector:(SEL)selector;
+- (void)forwardInvocation:(id)invocation;
 @end
 
 @implementation QLStateManagerProxy
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
   WeakRetained = objc_loadWeakRetained(&self->_stateManager);
 
   if (WeakRetained)
   {
     v6 = objc_loadWeakRetained(&self->_stateManager);
-    v7 = [v6 methodSignatureForSelector:a3];
+    v7 = [v6 methodSignatureForSelector:selector];
   }
 
   else
@@ -26,15 +26,15 @@
   return v7;
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
-  v6 = a3;
+  invocationCopy = invocation;
   WeakRetained = objc_loadWeakRetained(&self->_stateManager);
 
   if (WeakRetained)
   {
     v5 = objc_loadWeakRetained(&self->_stateManager);
-    [v6 invokeWithTarget:v5];
+    [invocationCopy invokeWithTarget:v5];
   }
 }
 

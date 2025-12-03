@@ -37,35 +37,35 @@
 - (id)build
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCA900] URLQueryAllowedCharacterSet];
+  uRLQueryAllowedCharacterSet = [MEMORY[0x277CCA900] URLQueryAllowedCharacterSet];
   v4 = [@"tap-to-radar://new" mutableCopy];
-  v5 = [(NSString *)self->_title stringByAddingPercentEncodingWithAllowedCharacters:v3];
+  v5 = [(NSString *)self->_title stringByAddingPercentEncodingWithAllowedCharacters:uRLQueryAllowedCharacterSet];
   [v4 appendFormat:@"?Title=%@", v5];
 
-  v6 = [(NSString *)self->_classification stringByAddingPercentEncodingWithAllowedCharacters:v3];
+  v6 = [(NSString *)self->_classification stringByAddingPercentEncodingWithAllowedCharacters:uRLQueryAllowedCharacterSet];
   [v4 appendFormat:@"&Classification=%@", v6];
 
-  v7 = [(NSString *)self->_componentName stringByAddingPercentEncodingWithAllowedCharacters:v3];
+  v7 = [(NSString *)self->_componentName stringByAddingPercentEncodingWithAllowedCharacters:uRLQueryAllowedCharacterSet];
   [v4 appendFormat:@"&ComponentName=%@", v7];
 
-  v8 = [(NSString *)self->_componentVersion stringByAddingPercentEncodingWithAllowedCharacters:v3];
+  v8 = [(NSString *)self->_componentVersion stringByAddingPercentEncodingWithAllowedCharacters:uRLQueryAllowedCharacterSet];
   [v4 appendFormat:@"&ComponentVersion=%@", v8];
 
-  v9 = [(NSString *)self->_componentID stringByAddingPercentEncodingWithAllowedCharacters:v3];
+  v9 = [(NSString *)self->_componentID stringByAddingPercentEncodingWithAllowedCharacters:uRLQueryAllowedCharacterSet];
   [v4 appendFormat:@"&ComponentID=%@", v9];
 
-  v10 = [(NSString *)self->_reproducibility stringByAddingPercentEncodingWithAllowedCharacters:v3];
+  v10 = [(NSString *)self->_reproducibility stringByAddingPercentEncodingWithAllowedCharacters:uRLQueryAllowedCharacterSet];
   [v4 appendFormat:@"&Reproducibility=%@", v10];
 
   v11 = [(NSArray *)self->_extensionIdentifiers componentsJoinedByString:@", "];
-  v12 = [v11 stringByAddingPercentEncodingWithAllowedCharacters:v3];
+  v12 = [v11 stringByAddingPercentEncodingWithAllowedCharacters:uRLQueryAllowedCharacterSet];
   [v4 appendFormat:@"&ExtensionIdentifiers=%@", v12];
 
   v13 = [(NSArray *)self->_remoteDeviceSelections componentsJoinedByString:@", "];
-  v14 = [v13 stringByAddingPercentEncodingWithAllowedCharacters:v3];
+  v14 = [v13 stringByAddingPercentEncodingWithAllowedCharacters:uRLQueryAllowedCharacterSet];
   [v4 appendFormat:@"&RemoteDeviceSelections=%@", v14];
 
-  v15 = [(NSString *)self->_radarDescription stringByAddingPercentEncodingWithAllowedCharacters:v3];
+  v15 = [(NSString *)self->_radarDescription stringByAddingPercentEncodingWithAllowedCharacters:uRLQueryAllowedCharacterSet];
   [v4 appendFormat:@"&Description=%@", v15];
 
   v16 = *MEMORY[0x277D21260];

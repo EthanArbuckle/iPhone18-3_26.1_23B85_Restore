@@ -1,65 +1,65 @@
 @interface ODDSiriSchemaODDMANetworkAccessTypes
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (ODDSiriSchemaODDMANetworkAccessTypes)initWithDictionary:(id)a3;
-- (ODDSiriSchemaODDMANetworkAccessTypes)initWithJSON:(id)a3;
+- (ODDSiriSchemaODDMANetworkAccessTypes)initWithDictionary:(id)dictionary;
+- (ODDSiriSchemaODDMANetworkAccessTypes)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasCellularAccessResponse:(BOOL)a3;
-- (void)setHasConstrainedNetworkAccessRequest:(BOOL)a3;
-- (void)setHasConstrainedNetworkAccessResponse:(BOOL)a3;
-- (void)setHasExpensiveNetworkAccessRequest:(BOOL)a3;
-- (void)setHasExpensiveNetworkAccessResponse:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasCellularAccessResponse:(BOOL)response;
+- (void)setHasConstrainedNetworkAccessRequest:(BOOL)request;
+- (void)setHasConstrainedNetworkAccessResponse:(BOOL)response;
+- (void)setHasExpensiveNetworkAccessRequest:(BOOL)request;
+- (void)setHasExpensiveNetworkAccessResponse:(BOOL)response;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ODDSiriSchemaODDMANetworkAccessTypes
 
-- (ODDSiriSchemaODDMANetworkAccessTypes)initWithDictionary:(id)a3
+- (ODDSiriSchemaODDMANetworkAccessTypes)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = ODDSiriSchemaODDMANetworkAccessTypes;
   v5 = [(ODDSiriSchemaODDMANetworkAccessTypes *)&v14 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"cellularAccessRequest"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"cellularAccessRequest"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ODDSiriSchemaODDMANetworkAccessTypes setCellularAccessRequest:](v5, "setCellularAccessRequest:", [v6 BOOLValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"cellularAccessResponse"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"cellularAccessResponse"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ODDSiriSchemaODDMANetworkAccessTypes setCellularAccessResponse:](v5, "setCellularAccessResponse:", [v7 BOOLValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"constrainedNetworkAccessRequest"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"constrainedNetworkAccessRequest"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ODDSiriSchemaODDMANetworkAccessTypes setConstrainedNetworkAccessRequest:](v5, "setConstrainedNetworkAccessRequest:", [v8 BOOLValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"constrainedNetworkAccessResponse"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"constrainedNetworkAccessResponse"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ODDSiriSchemaODDMANetworkAccessTypes setConstrainedNetworkAccessResponse:](v5, "setConstrainedNetworkAccessResponse:", [v9 BOOLValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"expensiveNetworkAccessRequest"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"expensiveNetworkAccessRequest"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ODDSiriSchemaODDMANetworkAccessTypes setExpensiveNetworkAccessRequest:](v5, "setExpensiveNetworkAccessRequest:", [v10 BOOLValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"expensiveNetworkAccessResponse"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"expensiveNetworkAccessResponse"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -72,30 +72,30 @@
   return v5;
 }
 
-- (ODDSiriSchemaODDMANetworkAccessTypes)initWithJSON:(id)a3
+- (ODDSiriSchemaODDMANetworkAccessTypes)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ODDSiriSchemaODDMANetworkAccessTypes *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ODDSiriSchemaODDMANetworkAccessTypes *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ODDSiriSchemaODDMANetworkAccessTypes *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -108,12 +108,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = *(&self->_expensiveNetworkAccessResponse + 1);
   if (v4)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[ODDSiriSchemaODDMANetworkAccessTypes cellularAccessRequest](self, "cellularAccessRequest")}];
-    [v3 setObject:v7 forKeyedSubscript:@"cellularAccessRequest"];
+    [dictionary setObject:v7 forKeyedSubscript:@"cellularAccessRequest"];
 
     v4 = *(&self->_expensiveNetworkAccessResponse + 1);
     if ((v4 & 2) == 0)
@@ -134,7 +134,7 @@ LABEL_3:
   }
 
   v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[ODDSiriSchemaODDMANetworkAccessTypes cellularAccessResponse](self, "cellularAccessResponse")}];
-  [v3 setObject:v8 forKeyedSubscript:@"cellularAccessResponse"];
+  [dictionary setObject:v8 forKeyedSubscript:@"cellularAccessResponse"];
 
   v4 = *(&self->_expensiveNetworkAccessResponse + 1);
   if ((v4 & 4) == 0)
@@ -150,7 +150,7 @@ LABEL_4:
 
 LABEL_13:
   v9 = [MEMORY[0x1E696AD98] numberWithBool:{-[ODDSiriSchemaODDMANetworkAccessTypes constrainedNetworkAccessRequest](self, "constrainedNetworkAccessRequest")}];
-  [v3 setObject:v9 forKeyedSubscript:@"constrainedNetworkAccessRequest"];
+  [dictionary setObject:v9 forKeyedSubscript:@"constrainedNetworkAccessRequest"];
 
   v4 = *(&self->_expensiveNetworkAccessResponse + 1);
   if ((v4 & 8) == 0)
@@ -166,7 +166,7 @@ LABEL_5:
 
 LABEL_14:
   v10 = [MEMORY[0x1E696AD98] numberWithBool:{-[ODDSiriSchemaODDMANetworkAccessTypes constrainedNetworkAccessResponse](self, "constrainedNetworkAccessResponse")}];
-  [v3 setObject:v10 forKeyedSubscript:@"constrainedNetworkAccessResponse"];
+  [dictionary setObject:v10 forKeyedSubscript:@"constrainedNetworkAccessResponse"];
 
   v4 = *(&self->_expensiveNetworkAccessResponse + 1);
   if ((v4 & 0x10) == 0)
@@ -182,19 +182,19 @@ LABEL_6:
 
 LABEL_15:
   v11 = [MEMORY[0x1E696AD98] numberWithBool:{-[ODDSiriSchemaODDMANetworkAccessTypes expensiveNetworkAccessRequest](self, "expensiveNetworkAccessRequest")}];
-  [v3 setObject:v11 forKeyedSubscript:@"expensiveNetworkAccessRequest"];
+  [dictionary setObject:v11 forKeyedSubscript:@"expensiveNetworkAccessRequest"];
 
   if ((*(&self->_expensiveNetworkAccessResponse + 1) & 0x20) != 0)
   {
 LABEL_7:
     v5 = [MEMORY[0x1E696AD98] numberWithBool:{-[ODDSiriSchemaODDMANetworkAccessTypes expensiveNetworkAccessResponse](self, "expensiveNetworkAccessResponse")}];
-    [v3 setObject:v5 forKeyedSubscript:@"expensiveNetworkAccessResponse"];
+    [dictionary setObject:v5 forKeyedSubscript:@"expensiveNetworkAccessResponse"];
   }
 
 LABEL_8:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -279,16 +279,16 @@ LABEL_7:
   return v3 ^ v2 ^ v4 ^ v5 ^ v6 ^ v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_26;
   }
 
   v5 = *(&self->_expensiveNetworkAccessResponse + 1);
-  v6 = v4[14];
+  v6 = equalCopy[14];
   if ((v5 & 1) != (v6 & 1))
   {
     goto LABEL_26;
@@ -297,13 +297,13 @@ LABEL_7:
   if (v5)
   {
     cellularAccessRequest = self->_cellularAccessRequest;
-    if (cellularAccessRequest != [v4 cellularAccessRequest])
+    if (cellularAccessRequest != [equalCopy cellularAccessRequest])
     {
       goto LABEL_26;
     }
 
     v5 = *(&self->_expensiveNetworkAccessResponse + 1);
-    v6 = v4[14];
+    v6 = equalCopy[14];
   }
 
   v8 = (v5 >> 1) & 1;
@@ -315,13 +315,13 @@ LABEL_7:
   if (v8)
   {
     cellularAccessResponse = self->_cellularAccessResponse;
-    if (cellularAccessResponse != [v4 cellularAccessResponse])
+    if (cellularAccessResponse != [equalCopy cellularAccessResponse])
     {
       goto LABEL_26;
     }
 
     v5 = *(&self->_expensiveNetworkAccessResponse + 1);
-    v6 = v4[14];
+    v6 = equalCopy[14];
   }
 
   v10 = (v5 >> 2) & 1;
@@ -333,13 +333,13 @@ LABEL_7:
   if (v10)
   {
     constrainedNetworkAccessRequest = self->_constrainedNetworkAccessRequest;
-    if (constrainedNetworkAccessRequest != [v4 constrainedNetworkAccessRequest])
+    if (constrainedNetworkAccessRequest != [equalCopy constrainedNetworkAccessRequest])
     {
       goto LABEL_26;
     }
 
     v5 = *(&self->_expensiveNetworkAccessResponse + 1);
-    v6 = v4[14];
+    v6 = equalCopy[14];
   }
 
   v12 = (v5 >> 3) & 1;
@@ -351,13 +351,13 @@ LABEL_7:
   if (v12)
   {
     constrainedNetworkAccessResponse = self->_constrainedNetworkAccessResponse;
-    if (constrainedNetworkAccessResponse != [v4 constrainedNetworkAccessResponse])
+    if (constrainedNetworkAccessResponse != [equalCopy constrainedNetworkAccessResponse])
     {
       goto LABEL_26;
     }
 
     v5 = *(&self->_expensiveNetworkAccessResponse + 1);
-    v6 = v4[14];
+    v6 = equalCopy[14];
   }
 
   v14 = (v5 >> 4) & 1;
@@ -369,10 +369,10 @@ LABEL_7:
   if (v14)
   {
     expensiveNetworkAccessRequest = self->_expensiveNetworkAccessRequest;
-    if (expensiveNetworkAccessRequest == [v4 expensiveNetworkAccessRequest])
+    if (expensiveNetworkAccessRequest == [equalCopy expensiveNetworkAccessRequest])
     {
       v5 = *(&self->_expensiveNetworkAccessResponse + 1);
-      v6 = v4[14];
+      v6 = equalCopy[14];
       goto LABEL_22;
     }
 
@@ -391,7 +391,7 @@ LABEL_22:
   if (v16)
   {
     expensiveNetworkAccessResponse = self->_expensiveNetworkAccessResponse;
-    if (expensiveNetworkAccessResponse != [v4 expensiveNetworkAccessResponse])
+    if (expensiveNetworkAccessResponse != [equalCopy expensiveNetworkAccessResponse])
     {
       goto LABEL_26;
     }
@@ -403,9 +403,9 @@ LABEL_27:
   return v18;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   v4 = *(&self->_expensiveNetworkAccessResponse + 1);
   if (v4)
   {
@@ -480,9 +480,9 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)setHasExpensiveNetworkAccessResponse:(BOOL)a3
+- (void)setHasExpensiveNetworkAccessResponse:(BOOL)response
 {
-  if (a3)
+  if (response)
   {
     v3 = 32;
   }
@@ -495,9 +495,9 @@ LABEL_8:
   *(&self->_expensiveNetworkAccessResponse + 1) = *(&self->_expensiveNetworkAccessResponse + 1) & 0xDF | v3;
 }
 
-- (void)setHasExpensiveNetworkAccessRequest:(BOOL)a3
+- (void)setHasExpensiveNetworkAccessRequest:(BOOL)request
 {
-  if (a3)
+  if (request)
   {
     v3 = 16;
   }
@@ -510,9 +510,9 @@ LABEL_8:
   *(&self->_expensiveNetworkAccessResponse + 1) = *(&self->_expensiveNetworkAccessResponse + 1) & 0xEF | v3;
 }
 
-- (void)setHasConstrainedNetworkAccessResponse:(BOOL)a3
+- (void)setHasConstrainedNetworkAccessResponse:(BOOL)response
 {
-  if (a3)
+  if (response)
   {
     v3 = 8;
   }
@@ -525,9 +525,9 @@ LABEL_8:
   *(&self->_expensiveNetworkAccessResponse + 1) = *(&self->_expensiveNetworkAccessResponse + 1) & 0xF7 | v3;
 }
 
-- (void)setHasConstrainedNetworkAccessRequest:(BOOL)a3
+- (void)setHasConstrainedNetworkAccessRequest:(BOOL)request
 {
-  if (a3)
+  if (request)
   {
     v3 = 4;
   }
@@ -540,9 +540,9 @@ LABEL_8:
   *(&self->_expensiveNetworkAccessResponse + 1) = *(&self->_expensiveNetworkAccessResponse + 1) & 0xFB | v3;
 }
 
-- (void)setHasCellularAccessResponse:(BOOL)a3
+- (void)setHasCellularAccessResponse:(BOOL)response
 {
-  if (a3)
+  if (response)
   {
     v3 = 2;
   }

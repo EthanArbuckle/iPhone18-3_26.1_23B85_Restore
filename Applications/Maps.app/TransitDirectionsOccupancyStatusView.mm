@@ -1,17 +1,17 @@
 @interface TransitDirectionsOccupancyStatusView
-- (TransitDirectionsOccupancyStatusView)initWithFrame:(CGRect)a3;
+- (TransitDirectionsOccupancyStatusView)initWithFrame:(CGRect)frame;
 - (id)bottomView;
 - (id)topView;
 - (void)_updateContent;
-- (void)setOccupancyStatus:(int64_t)a3;
+- (void)setOccupancyStatus:(int64_t)status;
 @end
 
 @implementation TransitDirectionsOccupancyStatusView
 
 - (void)_updateContent
 {
-  v3 = [(TransitDirectionsOccupancyStatusView *)self occupancyStatus];
-  if (v3 > 4)
+  occupancyStatus = [(TransitDirectionsOccupancyStatusView *)self occupancyStatus];
+  if (occupancyStatus > 4)
   {
     v7 = 0;
     v6 = 0;
@@ -19,8 +19,8 @@
 
   else
   {
-    v4 = *(&off_1016270D0 + v3);
-    v7 = [UIImage imageNamed:*(&off_1016270A8 + v3)];
+    v4 = *(&off_1016270D0 + occupancyStatus);
+    v7 = [UIImage imageNamed:*(&off_1016270A8 + occupancyStatus)];
     v5 = +[NSBundle mainBundle];
     v6 = [v5 localizedStringForKey:v4 value:@"localized string not found" table:0];
   }
@@ -29,11 +29,11 @@
   [(UILabel *)self->_label setText:v6];
 }
 
-- (void)setOccupancyStatus:(int64_t)a3
+- (void)setOccupancyStatus:(int64_t)status
 {
-  if (self->_occupancyStatus != a3)
+  if (self->_occupancyStatus != status)
   {
-    self->_occupancyStatus = a3;
+    self->_occupancyStatus = status;
     [(TransitDirectionsOccupancyStatusView *)self _updateContent];
   }
 }
@@ -93,8 +93,8 @@
     [(UIImageView *)self->_imageView setContentCompressionResistancePriority:1 forAxis:v8];
     LODWORD(v9) = 1148846080;
     [(UIImageView *)self->_imageView setContentCompressionResistancePriority:0 forAxis:v9];
-    v10 = [(UIImageView *)self->_imageView heightAnchor];
-    v11 = [v10 constraintEqualToConstant:20.0];
+    heightAnchor = [(UIImageView *)self->_imageView heightAnchor];
+    v11 = [heightAnchor constraintEqualToConstant:20.0];
     [v11 setActive:1];
 
     [(TransitDirectionsOccupancyStatusView *)self addSubview:self->_imageView];
@@ -104,11 +104,11 @@
   return imageView;
 }
 
-- (TransitDirectionsOccupancyStatusView)initWithFrame:(CGRect)a3
+- (TransitDirectionsOccupancyStatusView)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = TransitDirectionsOccupancyStatusView;
-  v3 = [(TransitDirectionsBoardingInfoStackView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(TransitDirectionsBoardingInfoStackView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

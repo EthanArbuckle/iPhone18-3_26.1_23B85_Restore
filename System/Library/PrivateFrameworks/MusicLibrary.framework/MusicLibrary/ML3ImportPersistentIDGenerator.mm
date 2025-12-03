@@ -1,13 +1,13 @@
 @interface ML3ImportPersistentIDGenerator
-- (ML3ImportPersistentIDGenerator)initWithDatabaseConnection:(id)a3 tableName:(id)a4;
-- (int64_t)nextPersistentIDForImportItem:(shared_ptr<ML3ImportItem>)a3;
-- (void)addIdMapping:(id)a3 forProperty:(unsigned int)a4;
-- (void)removePersistentIDFromIdMapping:(int64_t)a3;
+- (ML3ImportPersistentIDGenerator)initWithDatabaseConnection:(id)connection tableName:(id)name;
+- (int64_t)nextPersistentIDForImportItem:(shared_ptr<ML3ImportItem>)item;
+- (void)addIdMapping:(id)mapping forProperty:(unsigned int)property;
+- (void)removePersistentIDFromIdMapping:(int64_t)mapping;
 @end
 
 @implementation ML3ImportPersistentIDGenerator
 
-- (void)removePersistentIDFromIdMapping:(int64_t)a3
+- (void)removePersistentIDFromIdMapping:(int64_t)mapping
 {
   v26 = *MEMORY[0x277D85DE8];
   v20 = 0u;
@@ -30,7 +30,7 @@
         }
 
         v7 = [(NSMutableDictionary *)self->_pregeneratedIdMappings objectForKey:*(*(&v20 + 1) + 8 * v6)];
-        v8 = [MEMORY[0x277CCABB0] numberWithLongLong:a3];
+        v8 = [MEMORY[0x277CCABB0] numberWithLongLong:mapping];
         v9 = [v7 allKeysForObject:v8];
 
         v18 = 0u;
@@ -73,15 +73,15 @@
   }
 }
 
-- (int64_t)nextPersistentIDForImportItem:(shared_ptr<ML3ImportItem>)a3
+- (int64_t)nextPersistentIDForImportItem:(shared_ptr<ML3ImportItem>)item
 {
-  var0 = a3.var0;
+  var0 = item.var0;
   v35 = *MEMORY[0x277D85DE8];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  obj = [(NSMutableDictionary *)self->_pregeneratedIdMappings allKeys:a3.var0];
+  obj = [(NSMutableDictionary *)self->_pregeneratedIdMappings allKeys:item.var0];
   v5 = [obj countByEnumeratingWithState:&v29 objects:v34 count:16];
   if (!v5)
   {
@@ -92,7 +92,7 @@ LABEL_13:
     {
       v28.receiver = self;
       v28.super_class = ML3ImportPersistentIDGenerator;
-      v6 = objc_msgSendSuper2(&v28, v21, v21);
+      longLongValue = objc_msgSendSuper2(&v28, v21, v21);
       v26 = 0u;
       v27 = 0u;
       v24 = 0u;
@@ -112,13 +112,13 @@ LABEL_13:
             }
 
             v15 = [(NSMutableDictionary *)self->_pregeneratedIdMappings objectForKey:*(*(&v24 + 1) + 8 * i)];
-            v16 = [MEMORY[0x277CCABB0] numberWithLongLong:v6];
+            v16 = [MEMORY[0x277CCABB0] numberWithLongLong:longLongValue];
             v17 = [v15 allKeysForObject:v16];
             v18 = [v17 count] == 0;
 
             if (!v18)
             {
-              v6 = 0;
+              longLongValue = 0;
             }
           }
 
@@ -129,11 +129,11 @@ LABEL_13:
       }
     }
 
-    while (!v6);
-    return v6;
+    while (!longLongValue);
+    return longLongValue;
   }
 
-  v6 = 0;
+  longLongValue = 0;
   v20 = *v30;
   do
   {
@@ -151,7 +151,7 @@ LABEL_13:
 
       if (v11)
       {
-        v6 = [v11 longLongValue];
+        longLongValue = [v11 longLongValue];
       }
     }
 
@@ -160,35 +160,35 @@ LABEL_13:
 
   while (v5);
 
-  if (!v6)
+  if (!longLongValue)
   {
     goto LABEL_13;
   }
 
-  return v6;
+  return longLongValue;
 }
 
-- (void)addIdMapping:(id)a3 forProperty:(unsigned int)a4
+- (void)addIdMapping:(id)mapping forProperty:(unsigned int)property
 {
-  v4 = *&a4;
+  v4 = *&property;
   pregeneratedIdMappings = self->_pregeneratedIdMappings;
-  v7 = [a3 mutableCopy];
+  v7 = [mapping mutableCopy];
   v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v4];
   [(NSMutableDictionary *)pregeneratedIdMappings setObject:v7 forKey:v6];
 }
 
-- (ML3ImportPersistentIDGenerator)initWithDatabaseConnection:(id)a3 tableName:(id)a4
+- (ML3ImportPersistentIDGenerator)initWithDatabaseConnection:(id)connection tableName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  nameCopy = name;
   v12.receiver = self;
   v12.super_class = ML3ImportPersistentIDGenerator;
-  v8 = [(ML3PersistentIDGenerator *)&v12 initWithDatabaseConnection:v6 tableName:v7];
+  v8 = [(ML3PersistentIDGenerator *)&v12 initWithDatabaseConnection:connectionCopy tableName:nameCopy];
   if (v8)
   {
-    v9 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     pregeneratedIdMappings = v8->_pregeneratedIdMappings;
-    v8->_pregeneratedIdMappings = v9;
+    v8->_pregeneratedIdMappings = dictionary;
   }
 
   return v8;

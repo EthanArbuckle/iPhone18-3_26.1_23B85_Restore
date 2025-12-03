@@ -1,12 +1,12 @@
 @interface APExpiredObservabilityBatchesReporter
 - (APExpiredObservabilityBatchesReporter)init;
-- (APExpiredObservabilityBatchesReporter)initWithBatchPath:(id)a3;
+- (APExpiredObservabilityBatchesReporter)initWithBatchPath:(id)path;
 - (void)run;
 @end
 
 @implementation APExpiredObservabilityBatchesReporter
 
-- (APExpiredObservabilityBatchesReporter)initWithBatchPath:(id)a3
+- (APExpiredObservabilityBatchesReporter)initWithBatchPath:(id)path
 {
   v4 = sub_100398F58();
   v5 = (self + OBJC_IVAR___APExpiredObservabilityBatchesReporter_batchPath);
@@ -19,7 +19,7 @@
 
 - (void)run
 {
-  v2 = self;
+  selfCopy = self;
   sub_100362A94();
 }
 

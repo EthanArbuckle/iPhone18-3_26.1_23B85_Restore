@@ -1,14 +1,14 @@
 @interface STPresetsClient
-- (void)currentConfigurationForUserID:(id)a3 completionHandler:(id)a4;
+- (void)currentConfigurationForUserID:(id)d completionHandler:(id)handler;
 @end
 
 @implementation STPresetsClient
 
-- (void)currentConfigurationForUserID:(id)a3 completionHandler:(id)a4
+- (void)currentConfigurationForUserID:(id)d completionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   v6 = objc_opt_new();
-  (*(a4 + 2))(v5, v6, 0);
+  (*(handler + 2))(handlerCopy, v6, 0);
 }
 
 @end

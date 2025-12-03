@@ -1,53 +1,53 @@
 @interface SRPhotoplethysmogramAccelerometerSample
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToAccelSample:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToAccelSample:(id)sample;
 - (NSMeasurement)samplingFrequency;
 - (NSMeasurement)x;
 - (NSMeasurement)y;
 - (NSMeasurement)z;
-- (SRPhotoplethysmogramAccelerometerSample)initWithCoder:(id)a3;
-- (SRPhotoplethysmogramAccelerometerSample)initWithHAPPGAccelSample:(id)a3;
-- (SRPhotoplethysmogramAccelerometerSample)initWithTimestamp:(int64_t)a3 frequency:(double)a4 x:(double)a5 y:(double)a6 z:(double)a7;
+- (SRPhotoplethysmogramAccelerometerSample)initWithCoder:(id)coder;
+- (SRPhotoplethysmogramAccelerometerSample)initWithHAPPGAccelSample:(id)sample;
+- (SRPhotoplethysmogramAccelerometerSample)initWithTimestamp:(int64_t)timestamp frequency:(double)frequency x:(double)x y:(double)y z:(double)z;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SRPhotoplethysmogramAccelerometerSample
 
-- (SRPhotoplethysmogramAccelerometerSample)initWithTimestamp:(int64_t)a3 frequency:(double)a4 x:(double)a5 y:(double)a6 z:(double)a7
+- (SRPhotoplethysmogramAccelerometerSample)initWithTimestamp:(int64_t)timestamp frequency:(double)frequency x:(double)x y:(double)y z:(double)z
 {
   v13.receiver = self;
   v13.super_class = SRPhotoplethysmogramAccelerometerSample;
   result = [(SRPhotoplethysmogramAccelerometerSample *)&v13 init];
   if (result)
   {
-    result->_nanosecondsSinceStart = a3;
-    result->_rawFrequency = a4;
-    result->_rawX = a5;
-    result->_rawY = a6;
-    result->_rawZ = a7;
+    result->_nanosecondsSinceStart = timestamp;
+    result->_rawFrequency = frequency;
+    result->_rawX = x;
+    result->_rawY = y;
+    result->_rawZ = z;
   }
 
   return result;
 }
 
-- (SRPhotoplethysmogramAccelerometerSample)initWithHAPPGAccelSample:(id)a3
+- (SRPhotoplethysmogramAccelerometerSample)initWithHAPPGAccelSample:(id)sample
 {
-  v5 = [a3 timestamp];
-  v6 = [a3 samplingFrequency];
-  [a3 x];
+  timestamp = [sample timestamp];
+  samplingFrequency = [sample samplingFrequency];
+  [sample x];
   v8 = v7;
-  [a3 y];
+  [sample y];
   v10 = v9;
-  [a3 z];
+  [sample z];
 
-  return [(SRPhotoplethysmogramAccelerometerSample *)self initWithTimestamp:v5 frequency:v6 x:v8 y:v10 z:v11];
+  return [(SRPhotoplethysmogramAccelerometerSample *)self initWithTimestamp:timestamp frequency:samplingFrequency x:v8 y:v10 z:v11];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
@@ -58,19 +58,19 @@
     return 0;
   }
 
-  return [(SRPhotoplethysmogramAccelerometerSample *)self isEqualToAccelSample:a3];
+  return [(SRPhotoplethysmogramAccelerometerSample *)self isEqualToAccelSample:equal];
 }
 
-- (BOOL)isEqualToAccelSample:(id)a3
+- (BOOL)isEqualToAccelSample:(id)sample
 {
-  v5 = [(SRPhotoplethysmogramAccelerometerSample *)self nanosecondsSinceStart];
-  if (v5 != [a3 nanosecondsSinceStart] || !-[NSMeasurement isEqual:](-[SRPhotoplethysmogramAccelerometerSample samplingFrequency](self, "samplingFrequency"), "isEqual:", objc_msgSend(a3, "samplingFrequency")) || !-[NSMeasurement isEqual:](-[SRPhotoplethysmogramAccelerometerSample x](self, "x"), "isEqual:", objc_msgSend(a3, "x")) || !-[NSMeasurement isEqual:](-[SRPhotoplethysmogramAccelerometerSample y](self, "y"), "isEqual:", objc_msgSend(a3, "y")))
+  nanosecondsSinceStart = [(SRPhotoplethysmogramAccelerometerSample *)self nanosecondsSinceStart];
+  if (nanosecondsSinceStart != [sample nanosecondsSinceStart] || !-[NSMeasurement isEqual:](-[SRPhotoplethysmogramAccelerometerSample samplingFrequency](self, "samplingFrequency"), "isEqual:", objc_msgSend(sample, "samplingFrequency")) || !-[NSMeasurement isEqual:](-[SRPhotoplethysmogramAccelerometerSample x](self, "x"), "isEqual:", objc_msgSend(sample, "x")) || !-[NSMeasurement isEqual:](-[SRPhotoplethysmogramAccelerometerSample y](self, "y"), "isEqual:", objc_msgSend(sample, "y")))
   {
     return 0;
   }
 
   v6 = [(SRPhotoplethysmogramAccelerometerSample *)self z];
-  v7 = [a3 z];
+  v7 = [sample z];
 
   return [(NSMeasurement *)v6 isEqual:v7];
 }
@@ -91,37 +91,37 @@
   return [v3 stringWithFormat:@"%@ (%p): nanosecondsSinceStart: %lld, frequency: %f, x: %f, y: %f, z: %f", NSStringFromClass(v4), self, -[SRPhotoplethysmogramAccelerometerSample nanosecondsSinceStart](self, "nanosecondsSinceStart"), *&self->_rawFrequency, *&self->_rawX, *&self->_rawY, *&self->_rawZ];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
-  [a3 encodeInt64:self->_nanosecondsSinceStart forKey:@"nanosecondsSinceStart"];
-  [a3 encodeDouble:@"frequency" forKey:self->_rawFrequency];
-  [a3 encodeDouble:@"x" forKey:self->_rawX];
-  [a3 encodeDouble:@"y" forKey:self->_rawY];
+  [coder encodeInt64:self->_nanosecondsSinceStart forKey:@"nanosecondsSinceStart"];
+  [coder encodeDouble:@"frequency" forKey:self->_rawFrequency];
+  [coder encodeDouble:@"x" forKey:self->_rawX];
+  [coder encodeDouble:@"y" forKey:self->_rawY];
   rawZ = self->_rawZ;
 
-  [a3 encodeDouble:@"z" forKey:rawZ];
+  [coder encodeDouble:@"z" forKey:rawZ];
 }
 
-- (SRPhotoplethysmogramAccelerometerSample)initWithCoder:(id)a3
+- (SRPhotoplethysmogramAccelerometerSample)initWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
-  v6 = [a3 decodeInt64ForKey:@"nanosecondsSinceStart"];
-  [a3 decodeDoubleForKey:@"frequency"];
+  v6 = [coder decodeInt64ForKey:@"nanosecondsSinceStart"];
+  [coder decodeDoubleForKey:@"frequency"];
   v8 = v7;
-  [a3 decodeDoubleForKey:@"x"];
+  [coder decodeDoubleForKey:@"x"];
   v10 = v9;
-  [a3 decodeDoubleForKey:@"y"];
+  [coder decodeDoubleForKey:@"y"];
   v12 = v11;
-  [a3 decodeDoubleForKey:@"z"];
+  [coder decodeDoubleForKey:@"z"];
 
   return [(SRPhotoplethysmogramAccelerometerSample *)self initWithTimestamp:v6 frequency:v8 x:v10 y:v12 z:v13];
 }

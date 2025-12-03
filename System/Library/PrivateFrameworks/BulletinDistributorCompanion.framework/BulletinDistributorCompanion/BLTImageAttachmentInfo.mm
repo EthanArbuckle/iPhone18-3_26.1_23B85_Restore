@@ -1,19 +1,19 @@
 @interface BLTImageAttachmentInfo
-+ (id)imageAttachmentInfoForImageURL:(id)a3;
++ (id)imageAttachmentInfoForImageURL:(id)l;
 - (CGSize)size;
 @end
 
 @implementation BLTImageAttachmentInfo
 
-+ (id)imageAttachmentInfoForImageURL:(id)a3
++ (id)imageAttachmentInfoForImageURL:(id)l
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  lCopy = l;
   v4 = objc_opt_new();
-  v5 = [*MEMORY[0x277CE1E10] identifier];
-  [v4 setContentType:v5];
+  identifier = [*MEMORY[0x277CE1E10] identifier];
+  [v4 setContentType:identifier];
 
-  v6 = CGImageSourceCreateWithURL(v3, 0);
+  v6 = CGImageSourceCreateWithURL(lCopy, 0);
   if (v6)
   {
     v7 = v6;
@@ -27,8 +27,8 @@
       v11 = CFDictionaryGetValue(v9, *MEMORY[0x277CD3368]);
       if (([v11 BOOLValue]& 1) == 0)
       {
-        v12 = [*MEMORY[0x277CE1DC0] identifier];
-        [v4 setContentType:v12];
+        identifier2 = [*MEMORY[0x277CE1DC0] identifier];
+        [v4 setContentType:identifier2];
       }
 
       v13 = CFDictionaryGetValue(v10, *MEMORY[0x277CD3448]);
@@ -44,7 +44,7 @@
       v11 = blt_ids_log();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
-        [(BLTImageAttachmentInfo *)v3 imageAttachmentInfoForImageURL:v11];
+        [(BLTImageAttachmentInfo *)lCopy imageAttachmentInfoForImageURL:v11];
       }
 
       v15 = 0;
@@ -56,7 +56,7 @@
     v8 = blt_ids_log();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      [(BLTImageAttachmentInfo *)v3 imageAttachmentInfoForImageURL:v8];
+      [(BLTImageAttachmentInfo *)lCopy imageAttachmentInfoForImageURL:v8];
     }
 
     v15 = 0;

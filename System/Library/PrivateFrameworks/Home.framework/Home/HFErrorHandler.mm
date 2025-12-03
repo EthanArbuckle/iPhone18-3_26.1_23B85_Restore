@@ -1,18 +1,18 @@
 @interface HFErrorHandler
-+ (id)_descriptionForHFErrorCode:(int64_t)a3;
-+ (id)_descriptionForHMErrorCode:(int64_t)a3;
-+ (id)_descriptionForHMHomeAddWalletKeyErrorCode:(int64_t)a3;
-+ (id)descriptionLocalizationKeyForError:(id)a3;
-+ (id)localizedDescriptionForError:(id)a3;
++ (id)_descriptionForHFErrorCode:(int64_t)code;
++ (id)_descriptionForHMErrorCode:(int64_t)code;
++ (id)_descriptionForHMHomeAddWalletKeyErrorCode:(int64_t)code;
++ (id)descriptionLocalizationKeyForError:(id)error;
++ (id)localizedDescriptionForError:(id)error;
 + (id)sharedHandler;
-- (BOOL)_isErrorIndicativeOfApplicationBug:(id)a3 operationType:(id)a4 options:(id)a5;
-- (BOOL)_isErrorPermanent:(id)a3 operationType:(id)a4 options:(id)a5;
-- (BOOL)canIgnoreError:(id)a3 operationType:(id)a4;
-- (id)_localizedDescriptionForError:(id)a3 operationType:(id)a4 options:(id)a5;
-- (id)_localizedStringOrNilIfNotFoundForKey:(id)a3;
-- (id)_localizedTitleForError:(id)a3 operationType:(id)a4 options:(id)a5;
-- (void)handleError:(id)a3 operationType:(id)a4 options:(id)a5 retryBlock:(id)a6 cancelBlock:(id)a7;
-- (void)logError:(id)a3 operationDescription:(id)a4;
+- (BOOL)_isErrorIndicativeOfApplicationBug:(id)bug operationType:(id)type options:(id)options;
+- (BOOL)_isErrorPermanent:(id)permanent operationType:(id)type options:(id)options;
+- (BOOL)canIgnoreError:(id)error operationType:(id)type;
+- (id)_localizedDescriptionForError:(id)error operationType:(id)type options:(id)options;
+- (id)_localizedStringOrNilIfNotFoundForKey:(id)key;
+- (id)_localizedTitleForError:(id)error operationType:(id)type options:(id)options;
+- (void)handleError:(id)error operationType:(id)type options:(id)options retryBlock:(id)block cancelBlock:(id)cancelBlock;
+- (void)logError:(id)error operationDescription:(id)description;
 @end
 
 @implementation HFErrorHandler
@@ -23,7 +23,7 @@
   block[1] = 3221225472;
   block[2] = __31__HFErrorHandler_sharedHandler__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_280E02E78 != -1)
   {
     dispatch_once(&qword_280E02E78, block);
@@ -41,91 +41,91 @@ void __31__HFErrorHandler_sharedHandler__block_invoke(uint64_t a1)
   _MergedGlobals_240 = v1;
 }
 
-- (void)handleError:(id)a3 operationType:(id)a4 options:(id)a5 retryBlock:(id)a6 cancelBlock:(id)a7
+- (void)handleError:(id)error operationType:(id)type options:(id)options retryBlock:(id)block cancelBlock:(id)cancelBlock
 {
   v100 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if (v12)
+  errorCopy = error;
+  typeCopy = type;
+  optionsCopy = options;
+  blockCopy = block;
+  cancelBlockCopy = cancelBlock;
+  if (errorCopy)
   {
     if ([MEMORY[0x277CCACC8] isMainThread])
     {
-      v17 = [(HFErrorHandler *)self presentingAlertOperationType];
-      v18 = [v17 isEqual:v13];
+      presentingAlertOperationType = [(HFErrorHandler *)self presentingAlertOperationType];
+      v18 = [presentingAlertOperationType isEqual:typeCopy];
 
       if (v18)
       {
         v19 = HFLogForCategory(0);
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
         {
-          v20 = [objc_opt_class() descriptionLocalizationKeyForError:v12];
+          v20 = [objc_opt_class() descriptionLocalizationKeyForError:errorCopy];
           *buf = 138543874;
           v95 = v20;
           v96 = 2114;
-          v97 = v12;
+          v97 = errorCopy;
           v98 = 2114;
-          v99 = v13;
+          v99 = typeCopy;
           _os_log_impl(&dword_20D9BF000, v19, OS_LOG_TYPE_DEFAULT, "HFErrorHandler: Suppressing error: %{public}@ <%{public}@> for operation: %{public}@ because an alert for that operation is actively being presented", buf, 0x20u);
         }
       }
 
       else
       {
-        if (!v13)
+        if (!typeCopy)
         {
-          v21 = [v12 userInfo];
-          v13 = [v21 objectForKeyedSubscript:@"HFErrorUserInfoOperationKey"];
+          userInfo = [errorCopy userInfo];
+          typeCopy = [userInfo objectForKeyedSubscript:@"HFErrorUserInfoOperationKey"];
         }
 
-        v22 = [v12 userInfo];
-        v23 = [v22 objectForKeyedSubscript:@"HFErrorUserInfoOptionsKey"];
+        userInfo2 = [errorCopy userInfo];
+        v23 = [userInfo2 objectForKeyedSubscript:@"HFErrorUserInfoOptionsKey"];
 
         if (v23)
         {
-          if (v14)
+          if (optionsCopy)
           {
-            v24 = [v14 mutableCopy];
+            dictionary = [optionsCopy mutableCopy];
           }
 
           else
           {
-            v24 = [MEMORY[0x277CBEB38] dictionary];
+            dictionary = [MEMORY[0x277CBEB38] dictionary];
           }
 
-          v25 = v24;
-          [v24 addEntriesFromDictionary:v23];
+          v25 = dictionary;
+          [dictionary addEntriesFromDictionary:v23];
 
-          v14 = v25;
+          optionsCopy = v25;
         }
 
-        if ([(HFErrorHandler *)self _isErrorIndicativeOfApplicationBug:v12 operationType:v13 options:v14])
+        if ([(HFErrorHandler *)self _isErrorIndicativeOfApplicationBug:errorCopy operationType:typeCopy options:optionsCopy])
         {
-          NSLog(&cfstr_ReceivedErrorT.isa, v12, v13);
+          NSLog(&cfstr_ReceivedErrorT.isa, errorCopy, typeCopy);
         }
 
-        v26 = [(HFErrorHandler *)self canIgnoreError:v12 operationType:v13];
+        v26 = [(HFErrorHandler *)self canIgnoreError:errorCopy operationType:typeCopy];
         v27 = HFLogForCategory(0);
         v28 = v27;
         if (v26)
         {
           if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
           {
-            v29 = [objc_opt_class() descriptionLocalizationKeyForError:v12];
+            v29 = [objc_opt_class() descriptionLocalizationKeyForError:errorCopy];
             *buf = 138543874;
-            v95 = v13;
+            v95 = typeCopy;
             v96 = 2114;
             v97 = v29;
             v98 = 2114;
-            v99 = v12;
+            v99 = errorCopy;
             _os_log_impl(&dword_20D9BF000, v28, OS_LOG_TYPE_DEFAULT, "HFErrorHandler: [Ignore] Operation: %{public}@ encountered error: %{public}@ <%{public}@>", buf, 0x20u);
           }
 
-          if (v16)
+          if (cancelBlockCopy)
           {
-            v16[2](v16);
+            cancelBlockCopy[2](cancelBlockCopy);
           }
         }
 
@@ -133,23 +133,23 @@ void __31__HFErrorHandler_sharedHandler__block_invoke(uint64_t a1)
         {
           if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
           {
-            v60 = [objc_opt_class() descriptionLocalizationKeyForError:v12];
+            v60 = [objc_opt_class() descriptionLocalizationKeyForError:errorCopy];
             *buf = 138543874;
-            v95 = v13;
+            v95 = typeCopy;
             v96 = 2114;
             v97 = v60;
             v98 = 2114;
-            v99 = v12;
+            v99 = errorCopy;
             _os_log_error_impl(&dword_20D9BF000, v28, OS_LOG_TYPE_ERROR, "HFErrorHandler: Operation: %{public}@ encountered error: %{public}@ <%{public}@>", buf, 0x20u);
           }
 
           v67 = v23;
 
-          v30 = [(HFErrorHandler *)self _localizedTitleForError:v12 operationType:v13 options:v14];
-          v31 = [(HFErrorHandler *)self _localizedDescriptionForError:v12 operationType:v13 options:v14];
-          if (v15)
+          v30 = [(HFErrorHandler *)self _localizedTitleForError:errorCopy operationType:typeCopy options:optionsCopy];
+          v31 = [(HFErrorHandler *)self _localizedDescriptionForError:errorCopy operationType:typeCopy options:optionsCopy];
+          if (blockCopy)
           {
-            v32 = ![(HFErrorHandler *)self _isErrorPermanent:v12 operationType:v13 options:v14];
+            v32 = ![(HFErrorHandler *)self _isErrorPermanent:errorCopy operationType:typeCopy options:optionsCopy];
           }
 
           else
@@ -157,19 +157,19 @@ void __31__HFErrorHandler_sharedHandler__block_invoke(uint64_t a1)
             v32 = 0;
           }
 
-          v68 = [v14 objectForKeyedSubscript:@"HFErrorHandlerOptionPresentingViewControllerForAlert"];
+          hf_topmostViewController = [optionsCopy objectForKeyedSubscript:@"HFErrorHandlerOptionPresentingViewControllerForAlert"];
           v69 = v31;
-          if (!v68)
+          if (!hf_topmostViewController)
           {
             v33 = v30;
-            v34 = [MEMORY[0x277D75128] sharedApplication];
-            v35 = [v34 keyWindow];
+            mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+            keyWindow = [mEMORY[0x277D75128] keyWindow];
 
-            v36 = [v35 rootViewController];
-            v68 = [v36 hf_topmostViewController];
-            if (!v68)
+            rootViewController = [keyWindow rootViewController];
+            hf_topmostViewController = [rootViewController hf_topmostViewController];
+            if (!hf_topmostViewController)
             {
-              NSLog(&cfstr_NoViewControll.isa, v35, v36);
+              NSLog(&cfstr_NoViewControll.isa, keyWindow, rootViewController);
             }
 
             v30 = v33;
@@ -187,13 +187,13 @@ void __31__HFErrorHandler_sharedHandler__block_invoke(uint64_t a1)
           if (v32)
           {
             v38 = _HFLocalizedStringWithDefaultValue(@"HFErrorButtonTitleTryAgain", @"HFErrorButtonTitleTryAgain", 1);
-            v39 = [v14 objectForKeyedSubscript:@"HFErrorHandlerOptionRetryButtonText"];
+            v39 = [optionsCopy objectForKeyedSubscript:@"HFErrorHandlerOptionRetryButtonText"];
             objc_opt_class();
             isKindOfClass = objc_opt_isKindOfClass();
 
             if (isKindOfClass)
             {
-              v41 = [v14 objectForKeyedSubscript:@"HFErrorHandlerOptionRetryButtonText"];
+              v41 = [optionsCopy objectForKeyedSubscript:@"HFErrorHandlerOptionRetryButtonText"];
 
               v38 = v41;
             }
@@ -204,9 +204,9 @@ void __31__HFErrorHandler_sharedHandler__block_invoke(uint64_t a1)
             v81 = __75__HFErrorHandler_handleError_operationType_options_retryBlock_cancelBlock___block_invoke_303;
             v82 = &unk_277DF8C68;
             v65 = &v83;
-            v83 = v12;
+            v83 = errorCopy;
             v64 = &v85;
-            v85 = v15;
+            v85 = blockCopy;
             v43 = v37;
             v86 = v43;
             v84 = v38;
@@ -215,13 +215,13 @@ void __31__HFErrorHandler_sharedHandler__block_invoke(uint64_t a1)
             [v70 addAction:v44];
 
             v45 = _HFLocalizedStringWithDefaultValue(@"HFErrorButtonTitleCancel", @"HFErrorButtonTitleCancel", 1);
-            v46 = [v14 objectForKeyedSubscript:@"HFErrorHandlerOptionCancelButtonTextKey"];
+            v46 = [optionsCopy objectForKeyedSubscript:@"HFErrorHandlerOptionCancelButtonTextKey"];
             objc_opt_class();
             v47 = objc_opt_isKindOfClass();
 
             if (v47)
             {
-              v48 = [v14 objectForKeyedSubscript:@"HFErrorHandlerOptionCancelButtonTextKey"];
+              v48 = [optionsCopy objectForKeyedSubscript:@"HFErrorHandlerOptionCancelButtonTextKey"];
 
               v45 = v48;
             }
@@ -231,7 +231,7 @@ void __31__HFErrorHandler_sharedHandler__block_invoke(uint64_t a1)
             v75[1] = 3221225472;
             v75[2] = __75__HFErrorHandler_handleError_operationType_options_retryBlock_cancelBlock___block_invoke_308;
             v75[3] = &unk_277DF8C90;
-            v77 = v16;
+            v77 = cancelBlockCopy;
             v78 = v43;
             v76 = v45;
             v62 = v43;
@@ -254,7 +254,7 @@ void __31__HFErrorHandler_sharedHandler__block_invoke(uint64_t a1)
             v71[2] = __75__HFErrorHandler_handleError_operationType_options_retryBlock_cancelBlock___block_invoke_312;
             v71[3] = &unk_277DF8C90;
             v65 = &v73;
-            v73 = v16;
+            v73 = cancelBlockCopy;
             v74 = v37;
             v64 = &v74;
             v54 = &v72;
@@ -268,8 +268,8 @@ void __31__HFErrorHandler_sharedHandler__block_invoke(uint64_t a1)
             [v70 addAction:v53];
           }
 
-          [(HFErrorHandler *)self setPresentingAlertOperationType:v13];
-          [v68 presentViewController:v52 animated:1 completion:0];
+          [(HFErrorHandler *)self setPresentingAlertOperationType:typeCopy];
+          [hf_topmostViewController presentViewController:v52 animated:1 completion:0];
 
           v23 = v67;
         }
@@ -283,13 +283,13 @@ void __31__HFErrorHandler_sharedHandler__block_invoke(uint64_t a1)
       block[2] = __75__HFErrorHandler_handleError_operationType_options_retryBlock_cancelBlock___block_invoke;
       block[3] = &unk_277DF8C18;
       block[4] = self;
-      v89 = v12;
-      v13 = v13;
-      v90 = v13;
-      v14 = v14;
-      v91 = v14;
-      v92 = v15;
-      v93 = v16;
+      v89 = errorCopy;
+      typeCopy = typeCopy;
+      v90 = typeCopy;
+      optionsCopy = optionsCopy;
+      v91 = optionsCopy;
+      v92 = blockCopy;
+      v93 = cancelBlockCopy;
       dispatch_async(MEMORY[0x277D85CD0], block);
     }
   }
@@ -383,26 +383,26 @@ uint64_t __75__HFErrorHandler_handleError_operationType_options_retryBlock_cance
   return result;
 }
 
-- (void)logError:(id)a3 operationDescription:(id)a4
+- (void)logError:(id)error operationDescription:(id)description
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  errorCopy = error;
+  descriptionCopy = description;
+  if (errorCopy)
   {
     v7 = HFLogForCategory(0);
     v8 = os_log_type_enabled(v7, OS_LOG_TYPE_ERROR);
-    if (v6)
+    if (descriptionCopy)
     {
       if (v8)
       {
-        v9 = [objc_opt_class() descriptionLocalizationKeyForError:v5];
+        v9 = [objc_opt_class() descriptionLocalizationKeyForError:errorCopy];
         v14 = 138543874;
-        v15 = v6;
+        v15 = descriptionCopy;
         v16 = 2114;
         v17 = v9;
         v18 = 2114;
-        v19 = v5;
+        v19 = errorCopy;
         v10 = "HFErrorHandler: [Log] Operation: %{public}@ encountered error: %{public}@ <%{public}@>";
         v11 = v7;
         v12 = 32;
@@ -413,11 +413,11 @@ LABEL_9:
 
     else if (v8)
     {
-      v9 = [objc_opt_class() descriptionLocalizationKeyForError:v5];
+      v9 = [objc_opt_class() descriptionLocalizationKeyForError:errorCopy];
       v14 = 138543618;
       v15 = v9;
       v16 = 2114;
-      v17 = v5;
+      v17 = errorCopy;
       v10 = "HFErrorHandler: Encountered error: %{public}@ <%{public}@>";
       v11 = v7;
       v12 = 22;
@@ -428,29 +428,29 @@ LABEL_9:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)canIgnoreError:(id)a3 operationType:(id)a4
+- (BOOL)canIgnoreError:(id)error operationType:(id)type
 {
-  v5 = a3;
-  v6 = [v5 domain];
-  v7 = [v6 isEqualToString:*MEMORY[0x277CCFD28]];
+  errorCopy = error;
+  domain = [errorCopy domain];
+  v7 = [domain isEqualToString:*MEMORY[0x277CCFD28]];
 
   if (v7)
   {
-    v8 = [v5 code];
-    v9 = (v8 - 15) <= 0x35 && ((1 << (v8 - 15)) & 0x24000003800101) != 0 || v8 == 1 && a4 == @"HFOperationModifyUserAccess";
+    code = [errorCopy code];
+    v9 = (code - 15) <= 0x35 && ((1 << (code - 15)) & 0x24000003800101) != 0 || code == 1 && type == @"HFOperationModifyUserAccess";
   }
 
   else
   {
-    v10 = [v5 domain];
-    v11 = [v10 isEqualToString:@"HFErrorDomain"];
+    domain2 = [errorCopy domain];
+    v11 = [domain2 isEqualToString:@"HFErrorDomain"];
 
     if (v11)
     {
-      v12 = [v5 code];
-      if (v12 <= 0x34)
+      code2 = [errorCopy code];
+      if (code2 <= 0x34)
       {
-        v9 = 0x10402000000000uLL >> v12;
+        v9 = 0x10402000000000uLL >> code2;
       }
 
       else
@@ -468,46 +468,46 @@ LABEL_9:
   return v9 & 1;
 }
 
-- (BOOL)_isErrorIndicativeOfApplicationBug:(id)a3 operationType:(id)a4 options:(id)a5
+- (BOOL)_isErrorIndicativeOfApplicationBug:(id)bug operationType:(id)type options:(id)options
 {
   v17[3] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v7 isEqualToString:@"HFOperationNamingObject"])
+  bugCopy = bug;
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"HFOperationNamingObject"])
   {
     LOBYTE(v8) = 0;
     goto LABEL_15;
   }
 
-  v9 = [v6 domain];
-  v10 = [v9 isEqualToString:*MEMORY[0x277CCFD28]];
+  domain = [bugCopy domain];
+  v10 = [domain isEqualToString:*MEMORY[0x277CCFD28]];
 
   if (v10)
   {
-    v11 = [v6 code];
-    if (v11 <= 0x3E)
+    code = [bugCopy code];
+    if (code <= 0x3E)
     {
-      if (((1 << v11) & 0x41003000597800E8) != 0)
+      if (((1 << code) & 0x41003000597800E8) != 0)
       {
 LABEL_14:
         LOBYTE(v8) = 1;
         goto LABEL_15;
       }
 
-      if (((1 << v11) & 0x8480000000000) != 0)
+      if (((1 << code) & 0x8480000000000) != 0)
       {
         v17[0] = @"HFOperationChangePassword";
         v17[1] = @"HFOperationEditServiceGroup";
         v17[2] = @"HFOperationEditService";
         v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:3];
-        LOBYTE(v8) = [v12 containsObject:v7] ^ 1;
+        LOBYTE(v8) = [v12 containsObject:typeCopy] ^ 1;
 
         goto LABEL_15;
       }
     }
 
     LOBYTE(v8) = 0;
-    if (v11 - 69 <= 0xB && ((1 << (v11 - 69)) & 0x80F) != 0)
+    if (code - 69 <= 0xB && ((1 << (code - 69)) & 0x80F) != 0)
     {
       goto LABEL_14;
     }
@@ -515,15 +515,15 @@ LABEL_14:
 
   else
   {
-    v13 = [v6 domain];
-    v8 = [v13 isEqualToString:@"HFErrorDomain"];
+    domain2 = [bugCopy domain];
+    v8 = [domain2 isEqualToString:@"HFErrorDomain"];
 
     if (v8)
     {
-      v14 = [v6 code];
-      if (v14 <= 0x33)
+      code2 = [bugCopy code];
+      if (code2 <= 0x33)
       {
-        LOBYTE(v8) = 0xC000200000000uLL >> v14;
+        LOBYTE(v8) = 0xC000200000000uLL >> code2;
       }
 
       else
@@ -539,16 +539,16 @@ LABEL_15:
   return v8 & 1;
 }
 
-- (BOOL)_isErrorPermanent:(id)a3 operationType:(id)a4 options:(id)a5
+- (BOOL)_isErrorPermanent:(id)permanent operationType:(id)type options:(id)options
 {
-  v5 = a3;
-  v6 = [v5 domain];
-  v7 = [v6 isEqualToString:*MEMORY[0x277CCFD28]];
+  permanentCopy = permanent;
+  domain = [permanentCopy domain];
+  v7 = [domain isEqualToString:*MEMORY[0x277CCFD28]];
 
   if (v7)
   {
-    v8 = [v5 code];
-    if (((v8 - 4) > 0x3F || ((1 << (v8 - 4)) & 0xF8AF402000005C71) == 0) && ((v8 - 73) > 0xC || ((1 << (v8 - 73)) & 0x1E73) == 0) && v8 != 2040)
+    code = [permanentCopy code];
+    if (((code - 4) > 0x3F || ((1 << (code - 4)) & 0xF8AF402000005C71) == 0) && ((code - 73) > 0xC || ((1 << (code - 73)) & 0x1E73) == 0) && code != 2040)
     {
       goto LABEL_19;
     }
@@ -556,13 +556,13 @@ LABEL_15:
     goto LABEL_13;
   }
 
-  v9 = [v5 domain];
-  v10 = [v9 isEqualToString:@"HFErrorDomain"];
+  domain2 = [permanentCopy domain];
+  v10 = [domain2 isEqualToString:@"HFErrorDomain"];
 
   if (v10)
   {
-    v11 = [v5 code];
-    if (v11 - 74 <= 0x1C && ((1 << (v11 - 74)) & 0x1F0001AF) != 0 || (v12 = 1, v11 <= 0x29) && ((1 << v11) & 0x28C00000020) != 0)
+    code2 = [permanentCopy code];
+    if (code2 - 74 <= 0x1C && ((1 << (code2 - 74)) & 0x1F0001AF) != 0 || (v12 = 1, code2 <= 0x29) && ((1 << code2) & 0x28C00000020) != 0)
     {
 LABEL_13:
       v12 = 0;
@@ -571,8 +571,8 @@ LABEL_13:
 
   else
   {
-    v14 = [v5 domain];
-    v15 = [v14 isEqualToString:*MEMORY[0x277CD06D8]];
+    domain3 = [permanentCopy domain];
+    v15 = [domain3 isEqualToString:*MEMORY[0x277CD06D8]];
 
     if (!v15)
     {
@@ -581,10 +581,10 @@ LABEL_19:
       goto LABEL_14;
     }
 
-    v16 = [v5 code];
-    if (v16 <= 8)
+    code3 = [permanentCopy code];
+    if (code3 <= 8)
     {
-      v12 = 0xD9u >> v16;
+      v12 = 0xD9u >> code3;
     }
 
     else
@@ -598,15 +598,15 @@ LABEL_14:
   return v12 & 1;
 }
 
-- (id)_localizedTitleForError:(id)a3 operationType:(id)a4 options:(id)a5
+- (id)_localizedTitleForError:(id)error operationType:(id)type options:(id)options
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
-  v11 = [v9 objectForKeyedSubscript:@"HFErrorUserInfoOptionTitleKey"];
-  v12 = [v9 objectForKeyedSubscript:@"HFErrorHandlerOptionFailedItemName"];
+  typeCopy = type;
+  optionsCopy = options;
+  errorCopy = error;
+  v11 = [optionsCopy objectForKeyedSubscript:@"HFErrorUserInfoOptionTitleKey"];
+  v12 = [optionsCopy objectForKeyedSubscript:@"HFErrorHandlerOptionFailedItemName"];
 
-  v13 = [objc_opt_class() descriptionLocalizationKeyForError:v10];
+  v13 = [objc_opt_class() descriptionLocalizationKeyForError:errorCopy];
 
   if (v11)
   {
@@ -621,7 +621,7 @@ LABEL_3:
     goto LABEL_17;
   }
 
-  v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"HFError_%@_%@_withName_title", v8, v13];
+  v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"HFError_%@_%@_withName_title", typeCopy, v13];
   v17 = [(HFErrorHandler *)self _localizedStringOrNilIfNotFoundForKey:v16];
   if (v17)
   {
@@ -630,9 +630,9 @@ LABEL_3:
 
   else
   {
-    v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"HFError_%@_withName_title", v8];
+    typeCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"HFError_%@_withName_title", typeCopy];
 
-    v18 = [(HFErrorHandler *)self _localizedStringOrNilIfNotFoundForKey:v19];
+    v18 = [(HFErrorHandler *)self _localizedStringOrNilIfNotFoundForKey:typeCopy];
     if (!v18)
     {
 LABEL_15:
@@ -640,7 +640,7 @@ LABEL_15:
       goto LABEL_17;
     }
 
-    v16 = v19;
+    v16 = typeCopy;
   }
 
   if (([v18 containsString:@"%@"] & 1) == 0)
@@ -650,7 +650,7 @@ LABEL_15:
 
   if (![v18 containsString:@"%@"])
   {
-    v19 = v16;
+    typeCopy = v16;
     goto LABEL_15;
   }
 
@@ -667,13 +667,13 @@ LABEL_15:
   NSLog(&cfstr_CouldnTLocaliz_0.isa, v18, v20);
 
 LABEL_17:
-  v22 = [MEMORY[0x277CCACA8] stringWithFormat:@"HFError_%@_%@_title", v8, v13];
+  v22 = [MEMORY[0x277CCACA8] stringWithFormat:@"HFError_%@_%@_title", typeCopy, v13];
   v15 = [(HFErrorHandler *)self _localizedStringOrNilIfNotFoundForKey:v22];
 
   if (!v15)
   {
-    v23 = [MEMORY[0x277CCACA8] stringWithFormat:@"HFError_%@_title", v8];
-    v15 = [(HFErrorHandler *)self _localizedStringOrNilIfNotFoundForKey:v23];
+    typeCopy2 = [MEMORY[0x277CCACA8] stringWithFormat:@"HFError_%@_title", typeCopy];
+    v15 = [(HFErrorHandler *)self _localizedStringOrNilIfNotFoundForKey:typeCopy2];
 
     if (!v15)
     {
@@ -687,21 +687,21 @@ LABEL_19:
   return v15;
 }
 
-+ (id)localizedDescriptionForError:(id)a3
++ (id)localizedDescriptionForError:(id)error
 {
-  v3 = a3;
+  errorCopy = error;
   v4 = +[HFErrorHandler sharedHandler];
-  v5 = [v4 _localizedDescriptionForError:v3 operationType:&stru_2824B1A78 options:MEMORY[0x277CBEC10]];
+  v5 = [v4 _localizedDescriptionForError:errorCopy operationType:&stru_2824B1A78 options:MEMORY[0x277CBEC10]];
 
   return v5;
 }
 
-- (id)_localizedDescriptionForError:(id)a3 operationType:(id)a4 options:(id)a5
+- (id)_localizedDescriptionForError:(id)error operationType:(id)type options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v10 objectForKeyedSubscript:@"HFErrorUserInfoOptionDescriptionKey"];
+  errorCopy = error;
+  typeCopy = type;
+  optionsCopy = options;
+  v11 = [optionsCopy objectForKeyedSubscript:@"HFErrorUserInfoOptionDescriptionKey"];
   v12 = v11;
   if (v11)
   {
@@ -709,14 +709,14 @@ LABEL_19:
     goto LABEL_12;
   }
 
-  v14 = [objc_opt_class() descriptionLocalizationKeyForError:v8];
-  v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"HFError_%@_%@_description", v9, v14];
+  v14 = [objc_opt_class() descriptionLocalizationKeyForError:errorCopy];
+  v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"HFError_%@_%@_description", typeCopy, v14];
   v16 = [(HFErrorHandler *)self _localizedStringOrNilIfNotFoundForKey:v15];
   if (v16)
   {
     v13 = v16;
 LABEL_6:
-    v18 = [v10 objectForKeyedSubscript:@"HFErrorHandlerOptionFailedItemName"];
+    v18 = [optionsCopy objectForKeyedSubscript:@"HFErrorHandlerOptionFailedItemName"];
     if (v18)
     {
       v22 = 0;
@@ -750,11 +750,11 @@ LABEL_12:
   return v13;
 }
 
-- (id)_localizedStringOrNilIfNotFoundForKey:(id)a3
+- (id)_localizedStringOrNilIfNotFoundForKey:(id)key
 {
-  v3 = a3;
-  v4 = _HFLocalizedStringWithDefaultValue(v3, 0, 0);
-  if (([v4 isEqualToString:&stru_2824B1A78] & 1) != 0 || objc_msgSend(v4, "isEqualToString:", v3))
+  keyCopy = key;
+  v4 = _HFLocalizedStringWithDefaultValue(keyCopy, 0, 0);
+  if (([v4 isEqualToString:&stru_2824B1A78] & 1) != 0 || objc_msgSend(v4, "isEqualToString:", keyCopy))
   {
 
     v4 = 0;
@@ -763,40 +763,40 @@ LABEL_12:
   return v4;
 }
 
-+ (id)descriptionLocalizationKeyForError:(id)a3
++ (id)descriptionLocalizationKeyForError:(id)error
 {
-  v4 = a3;
-  v5 = [v4 domain];
-  v6 = [v5 isEqualToString:*MEMORY[0x277CCFD28]];
+  errorCopy = error;
+  domain = [errorCopy domain];
+  v6 = [domain isEqualToString:*MEMORY[0x277CCFD28]];
 
   if (v6)
   {
     v7 = MEMORY[0x277CCACA8];
-    v8 = [a1 _descriptionForHMErrorCode:{objc_msgSend(v4, "code")}];
+    v8 = [self _descriptionForHMErrorCode:{objc_msgSend(errorCopy, "code")}];
     [v7 stringWithFormat:@"HMErrorCode%@", v8];
     v15 = LABEL_7:;
 
     goto LABEL_8;
   }
 
-  v9 = [v4 domain];
-  v10 = [v9 isEqualToString:*MEMORY[0x277CD06D8]];
+  domain2 = [errorCopy domain];
+  v10 = [domain2 isEqualToString:*MEMORY[0x277CD06D8]];
 
   if (v10)
   {
     v11 = MEMORY[0x277CCACA8];
-    v8 = [a1 _descriptionForHMHomeAddWalletKeyErrorCode:{objc_msgSend(v4, "code")}];
+    v8 = [self _descriptionForHMHomeAddWalletKeyErrorCode:{objc_msgSend(errorCopy, "code")}];
     [v11 stringWithFormat:@"HMHomeAddWalletKeyErrorCode%@", v8];
     goto LABEL_7;
   }
 
-  v12 = [v4 domain];
-  v13 = [v12 isEqualToString:@"HFErrorDomain"];
+  domain3 = [errorCopy domain];
+  v13 = [domain3 isEqualToString:@"HFErrorDomain"];
 
   if (v13)
   {
     v14 = MEMORY[0x277CCACA8];
-    v8 = [a1 _descriptionForHFErrorCode:{objc_msgSend(v4, "code")}];
+    v8 = [self _descriptionForHFErrorCode:{objc_msgSend(errorCopy, "code")}];
     [v14 stringWithFormat:@"HFErrorCode%@", v8];
     goto LABEL_7;
   }
@@ -807,10 +807,10 @@ LABEL_8:
   return v15;
 }
 
-+ (id)_descriptionForHMHomeAddWalletKeyErrorCode:(int64_t)a3
++ (id)_descriptionForHMHomeAddWalletKeyErrorCode:(int64_t)code
 {
   v14 = *MEMORY[0x277D85DE8];
-  if (a3 >= 9)
+  if (code >= 9)
   {
     v6 = HFLogForCategory(0x49uLL);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -818,9 +818,9 @@ LABEL_8:
       v8 = 136315650;
       v9 = "+[HFErrorHandler _descriptionForHMHomeAddWalletKeyErrorCode:]";
       v10 = 2112;
-      v11 = a1;
+      selfCopy = self;
       v12 = 2048;
-      v13 = a3;
+      codeCopy = code;
       _os_log_error_impl(&dword_20D9BF000, v6, OS_LOG_TYPE_ERROR, "%s(%@) UNKNOWN HOMEKIT ERROR %ld", &v8, 0x20u);
     }
 
@@ -829,19 +829,19 @@ LABEL_8:
 
   else
   {
-    result = off_277DF8CB0[a3];
+    result = off_277DF8CB0[code];
   }
 
   v7 = *MEMORY[0x277D85DE8];
   return result;
 }
 
-+ (id)_descriptionForHMErrorCode:(int64_t)a3
++ (id)_descriptionForHMErrorCode:(int64_t)code
 {
-  if (a3 <= 2000)
+  if (code <= 2000)
   {
     v6 = @"AccessDenied";
-    switch(a3)
+    switch(code)
     {
       case -1:
         v6 = @"UnexpectedError";
@@ -1256,20 +1256,20 @@ LABEL_8:
     return v6;
   }
 
-  if (a3 <= 2299)
+  if (code <= 2299)
   {
-    if (a3 > 2005)
+    if (code > 2005)
     {
-      if (a3 <= 2099)
+      if (code <= 2099)
       {
-        if (a3 == 2006)
+        if (code == 2006)
         {
           v6 = @"QuotaExceeded";
         }
 
         else
         {
-          if (a3 != 2040)
+          if (code != 2040)
           {
             goto LABEL_394;
           }
@@ -1280,7 +1280,7 @@ LABEL_8:
 
       else
       {
-        switch(a3)
+        switch(code)
         {
           case 2100:
             v6 = @"NoTargetAccessory";
@@ -1300,9 +1300,9 @@ LABEL_8:
       }
     }
 
-    else if (a3 <= 2002)
+    else if (code <= 2002)
     {
-      if (a3 == 2001)
+      if (code == 2001)
       {
         v6 = @"OperationCanceledByUser";
       }
@@ -1313,12 +1313,12 @@ LABEL_8:
       }
     }
 
-    else if (a3 == 2003)
+    else if (code == 2003)
     {
       v6 = @"SecureAccessDenied";
     }
 
-    else if (a3 == 2004)
+    else if (code == 2004)
     {
       v6 = @"UnsupportedSetupPayload";
     }
@@ -1329,18 +1329,18 @@ LABEL_8:
     }
   }
 
-  else if (a3 <= 2500)
+  else if (code <= 2500)
   {
-    if (a3 <= 2400)
+    if (code <= 2400)
     {
-      if (a3 == 2300)
+      if (code == 2300)
       {
         v6 = @"VoiceShortcutWithSimilarNameExists";
       }
 
       else
       {
-        if (a3 != 2400)
+        if (code != 2400)
         {
           goto LABEL_394;
         }
@@ -1351,7 +1351,7 @@ LABEL_8:
 
     else
     {
-      switch(a3)
+      switch(code)
       {
         case 2401:
           v6 = @"AccessorySuspendedLocally";
@@ -1373,14 +1373,14 @@ LABEL_8:
 
   else
   {
-    if (a3 <= 2503)
+    if (code <= 2503)
     {
-      if (a3 == 2501)
+      if (code == 2501)
       {
         v6 = @"HomeUIServiceTerminated";
       }
 
-      else if (a3 == 2502)
+      else if (code == 2502)
       {
         v6 = @"HomeUIServiceBackgrounded";
       }
@@ -1393,7 +1393,7 @@ LABEL_8:
       return v6;
     }
 
-    switch(a3)
+    switch(code)
     {
       case 2504:
         v6 = @"AccessoryBrowserStopped";
@@ -1409,7 +1409,7 @@ LABEL_8:
         return v6;
       default:
 LABEL_394:
-        v6 = [a1 _descriptionForHMHomeAddWalletKeyErrorCode:v3];
+        v6 = [self _descriptionForHMHomeAddWalletKeyErrorCode:v3];
 LABEL_395:
 
         return v6;
@@ -1419,16 +1419,16 @@ LABEL_395:
   return v6;
 }
 
-+ (id)_descriptionForHFErrorCode:(int64_t)a3
++ (id)_descriptionForHFErrorCode:(int64_t)code
 {
-  if ((a3 + 1) > 0x6A)
+  if ((code + 1) > 0x6A)
   {
     return 0;
   }
 
   else
   {
-    return *(&off_277DF8CF8 + a3 + 1);
+    return *(&off_277DF8CF8 + code + 1);
   }
 }
 

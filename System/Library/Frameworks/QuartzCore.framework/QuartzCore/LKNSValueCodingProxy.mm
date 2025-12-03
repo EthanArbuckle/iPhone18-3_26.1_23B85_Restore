@@ -1,8 +1,8 @@
 @interface LKNSValueCodingProxy
-- (LKNSValueCodingProxy)initWithCoder:(id)a3;
-- (LKNSValueCodingProxy)initWithObject:(id)a3;
+- (LKNSValueCodingProxy)initWithCoder:(id)coder;
+- (LKNSValueCodingProxy)initWithObject:(id)object;
 - (id)decodedObject;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LKNSValueCodingProxy
@@ -115,7 +115,7 @@
   return [v19 valueWithPoint:{v17, v18}];
 }
 
-- (LKNSValueCodingProxy)initWithCoder:(id)a3
+- (LKNSValueCodingProxy)initWithCoder:(id)coder
 {
   v81 = *MEMORY[0x1E69E9840];
   v80.receiver = self;
@@ -123,7 +123,7 @@
   v4 = [(LKNSValueCodingProxy *)&v80 init];
   if (v4)
   {
-    v5 = [a3 decodeIntForKey:@"kind"];
+    v5 = [coder decodeIntForKey:@"kind"];
     v4->_kind = v5;
     if (v5 <= 5)
     {
@@ -136,7 +136,7 @@
             return v4;
           }
 
-          [a3 decodeFloatForKey:@"width"];
+          [coder decodeFloatForKey:@"width"];
           p_u = &v4->_u;
           v4->_u.point.x = v19;
           v21 = @"height";
@@ -144,13 +144,13 @@
 
         else
         {
-          [a3 decodeFloatForKey:@"x"];
+          [coder decodeFloatForKey:@"x"];
           p_u = &v4->_u;
           v4->_u.point.x = v22;
           v21 = @"y";
         }
 
-        [a3 decodeFloatForKey:v21];
+        [coder decodeFloatForKey:v21];
         p_u->point.y = v23;
         return v4;
       }
@@ -158,49 +158,49 @@
       switch(v5)
       {
         case 2:
-          [a3 decodeFloatForKey:@"x"];
+          [coder decodeFloatForKey:@"x"];
           v4->_u.point.x = v51;
-          [a3 decodeFloatForKey:@"y"];
+          [coder decodeFloatForKey:@"y"];
           v4->_u.point.y = v52;
-          [a3 decodeFloatForKey:@"width"];
+          [coder decodeFloatForKey:@"width"];
           v4->_u.rect.size.width = v53;
-          [a3 decodeFloatForKey:@"height"];
+          [coder decodeFloatForKey:@"height"];
           v4->_u.rect.size.height = v54;
           break;
         case 3:
-          if ([a3 containsValueForKey:@"m11"])
+          if ([coder containsValueForKey:@"m11"])
           {
-            [a3 decodeFloatForKey:@"m11"];
+            [coder decodeFloatForKey:@"m11"];
             v4->_u.point.x = v24;
-            [a3 decodeFloatForKey:@"m12"];
+            [coder decodeFloatForKey:@"m12"];
             v4->_u.point.y = v25;
-            [a3 decodeFloatForKey:@"m13"];
+            [coder decodeFloatForKey:@"m13"];
             v4->_u.rect.size.width = v26;
-            [a3 decodeFloatForKey:@"m14"];
+            [coder decodeFloatForKey:@"m14"];
             v4->_u.rect.size.height = v27;
-            [a3 decodeFloatForKey:@"m21"];
+            [coder decodeFloatForKey:@"m21"];
             v4->_u.transform.m21 = v28;
-            [a3 decodeFloatForKey:@"m22"];
+            [coder decodeFloatForKey:@"m22"];
             v4->_u.transform.m22 = v29;
-            [a3 decodeFloatForKey:@"m23"];
+            [coder decodeFloatForKey:@"m23"];
             v4->_u.transform.m23 = v30;
-            [a3 decodeFloatForKey:@"m24"];
+            [coder decodeFloatForKey:@"m24"];
             v4->_u.transform.m24 = v31;
-            [a3 decodeFloatForKey:@"m31"];
+            [coder decodeFloatForKey:@"m31"];
             v4->_u.transform.m31 = v32;
-            [a3 decodeFloatForKey:@"m32"];
+            [coder decodeFloatForKey:@"m32"];
             v4->_u.transform.m32 = v33;
-            [a3 decodeFloatForKey:@"m33"];
+            [coder decodeFloatForKey:@"m33"];
             v4->_u.transform.m33 = v34;
-            [a3 decodeFloatForKey:@"m34"];
+            [coder decodeFloatForKey:@"m34"];
             v4->_u.transform.m34 = v35;
-            [a3 decodeFloatForKey:@"m41"];
+            [coder decodeFloatForKey:@"m41"];
             v4->_u.transform.m41 = v36;
-            [a3 decodeFloatForKey:@"m42"];
+            [coder decodeFloatForKey:@"m42"];
             v4->_u.transform.m42 = v37;
-            [a3 decodeFloatForKey:@"m43"];
+            [coder decodeFloatForKey:@"m43"];
             v4->_u.transform.m43 = v38;
-            [a3 decodeFloatForKey:@"m44"];
+            [coder decodeFloatForKey:@"m44"];
             v4->_u.transform.m44 = v39;
           }
 
@@ -211,9 +211,9 @@
 
           break;
         case 5:
-          [a3 decodeDoubleForKey:@"x"];
+          [coder decodeDoubleForKey:@"x"];
           v4->_u.point.x = v9;
-          [a3 decodeDoubleForKey:@"y"];
+          [coder decodeDoubleForKey:@"y"];
           v4->_u.point.y = v10;
           v4->_kind = 0;
           break;
@@ -226,9 +226,9 @@
       {
         if (v5 == 6)
         {
-          [a3 decodeDoubleForKey:@"width"];
+          [coder decodeDoubleForKey:@"width"];
           v4->_u.point.x = v55;
-          [a3 decodeDoubleForKey:@"height"];
+          [coder decodeDoubleForKey:@"height"];
           v4->_u.point.y = v56;
           v44 = 1;
         }
@@ -237,22 +237,22 @@
         {
           if (v5 != 7)
           {
-            [a3 decodeFloatForKey:@"x"];
+            [coder decodeFloatForKey:@"x"];
             v4->_u.point.x = v6;
-            [a3 decodeFloatForKey:@"y"];
+            [coder decodeFloatForKey:@"y"];
             v4->_u.point.y = v7;
-            [a3 decodeFloatForKey:@"z"];
+            [coder decodeFloatForKey:@"z"];
             v4->_u.rect.size.width = v8;
             return v4;
           }
 
-          [a3 decodeDoubleForKey:@"x"];
+          [coder decodeDoubleForKey:@"x"];
           v4->_u.point.x = v40;
-          [a3 decodeDoubleForKey:@"y"];
+          [coder decodeDoubleForKey:@"y"];
           v4->_u.point.y = v41;
-          [a3 decodeDoubleForKey:@"width"];
+          [coder decodeDoubleForKey:@"width"];
           v4->_u.rect.size.width = v42;
-          [a3 decodeDoubleForKey:@"height"];
+          [coder decodeDoubleForKey:@"height"];
           v4->_u.rect.size.height = v43;
           v44 = 2;
         }
@@ -264,61 +264,61 @@
       switch(v5)
       {
         case 9:
-          [a3 decodeFloatForKey:@"m11"];
+          [coder decodeFloatForKey:@"m11"];
           v4->_u.color_matrix.m11 = v57;
-          [a3 decodeFloatForKey:@"m12"];
+          [coder decodeFloatForKey:@"m12"];
           v4->_u.color_matrix.m12 = v58;
-          [a3 decodeFloatForKey:@"m13"];
+          [coder decodeFloatForKey:@"m13"];
           v4->_u.color_matrix.m13 = v59;
-          [a3 decodeFloatForKey:@"m14"];
+          [coder decodeFloatForKey:@"m14"];
           v4->_u.color_matrix.m14 = v60;
-          [a3 decodeFloatForKey:@"m15"];
+          [coder decodeFloatForKey:@"m15"];
           v4->_u.color_matrix.m15 = v61;
-          [a3 decodeFloatForKey:@"m21"];
+          [coder decodeFloatForKey:@"m21"];
           v4->_u.color_matrix.m21 = v62;
-          [a3 decodeFloatForKey:@"m22"];
+          [coder decodeFloatForKey:@"m22"];
           v4->_u.color_matrix.m22 = v63;
-          [a3 decodeFloatForKey:@"m23"];
+          [coder decodeFloatForKey:@"m23"];
           v4->_u.color_matrix.m23 = v64;
-          [a3 decodeFloatForKey:@"m24"];
+          [coder decodeFloatForKey:@"m24"];
           v4->_u.color_matrix.m24 = v65;
-          [a3 decodeFloatForKey:@"m25"];
+          [coder decodeFloatForKey:@"m25"];
           v4->_u.color_matrix.m25 = v66;
-          [a3 decodeFloatForKey:@"m31"];
+          [coder decodeFloatForKey:@"m31"];
           v4->_u.color_matrix.m31 = v67;
-          [a3 decodeFloatForKey:@"m32"];
+          [coder decodeFloatForKey:@"m32"];
           v4->_u.color_matrix.m32 = v68;
-          [a3 decodeFloatForKey:@"m33"];
+          [coder decodeFloatForKey:@"m33"];
           v4->_u.color_matrix.m33 = v69;
-          [a3 decodeFloatForKey:@"m34"];
+          [coder decodeFloatForKey:@"m34"];
           v4->_u.color_matrix.m34 = v70;
-          [a3 decodeFloatForKey:@"m35"];
+          [coder decodeFloatForKey:@"m35"];
           v4->_u.color_matrix.m35 = v71;
-          [a3 decodeFloatForKey:@"m41"];
+          [coder decodeFloatForKey:@"m41"];
           v4->_u.color_matrix.m41 = v72;
-          [a3 decodeFloatForKey:@"m42"];
+          [coder decodeFloatForKey:@"m42"];
           v4->_u.color_matrix.m42 = v73;
-          [a3 decodeFloatForKey:@"m43"];
+          [coder decodeFloatForKey:@"m43"];
           v4->_u.color_matrix.m43 = v74;
-          [a3 decodeFloatForKey:@"m44"];
+          [coder decodeFloatForKey:@"m44"];
           v4->_u.color_matrix.m44 = v75;
-          [a3 decodeFloatForKey:@"m45"];
+          [coder decodeFloatForKey:@"m45"];
           v4->_u.color_matrix.m45 = v76;
           break;
         case 10:
-          if ([a3 containsValueForKey:@"a"])
+          if ([coder containsValueForKey:@"a"])
           {
-            [a3 decodeFloatForKey:@"a"];
+            [coder decodeFloatForKey:@"a"];
             v4->_u.point.x = v45;
-            [a3 decodeFloatForKey:@"b"];
+            [coder decodeFloatForKey:@"b"];
             v4->_u.point.y = v46;
-            [a3 decodeFloatForKey:@"c"];
+            [coder decodeFloatForKey:@"c"];
             v4->_u.rect.size.width = v47;
-            [a3 decodeFloatForKey:@"d"];
+            [coder decodeFloatForKey:@"d"];
             v4->_u.rect.size.height = v48;
-            [a3 decodeFloatForKey:@"tx"];
+            [coder decodeFloatForKey:@"tx"];
             v4->_u.transform.m21 = v49;
-            [a3 decodeFloatForKey:@"ty"];
+            [coder decodeFloatForKey:@"ty"];
             v4->_u.transform.m22 = v50;
           }
 
@@ -333,21 +333,21 @@
 
           break;
         case 11:
-          [a3 decodeFloatForKey:@"min_max_w"];
+          [coder decodeFloatForKey:@"min_max_w"];
           v4->_u.point.x = v11;
-          [a3 decodeFloatForKey:@"min_max_h"];
+          [coder decodeFloatForKey:@"min_max_h"];
           v4->_u.point.y = v12;
-          [a3 decodeFloatForKey:@"max_max_w"];
+          [coder decodeFloatForKey:@"max_max_w"];
           v4->_u.rect.size.width = v13;
-          [a3 decodeFloatForKey:@"max_max_h"];
+          [coder decodeFloatForKey:@"max_max_h"];
           v4->_u.rect.size.height = v14;
-          [a3 decodeFloatForKey:@"max_min_w"];
+          [coder decodeFloatForKey:@"max_min_w"];
           v4->_u.transform.m21 = v15;
-          [a3 decodeFloatForKey:@"max_min_h"];
+          [coder decodeFloatForKey:@"max_min_h"];
           v4->_u.transform.m22 = v16;
-          [a3 decodeFloatForKey:@"min_min_w"];
+          [coder decodeFloatForKey:@"min_min_w"];
           v4->_u.transform.m23 = v17;
-          [a3 decodeFloatForKey:@"min_min_h"];
+          [coder decodeFloatForKey:@"min_min_h"];
           v4->_u.transform.m24 = v18;
           break;
       }
@@ -357,10 +357,10 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v75 = *MEMORY[0x1E69E9840];
-  [a3 encodeInt:self->_kind forKey:@"kind"];
+  [coder encodeInt:self->_kind forKey:@"kind"];
   kind = self->_kind;
   if (kind > 7)
   {
@@ -371,10 +371,10 @@
       {
         x = p_u->point.x;
         *&x = p_u->point.x;
-        [a3 encodeFloat:@"x" forKey:x];
+        [coder encodeFloat:@"x" forKey:x];
         y = p_u->point.y;
         *&y = y;
-        [a3 encodeFloat:@"y" forKey:y];
+        [coder encodeFloat:@"y" forKey:y];
         width = p_u->rect.size.width;
         *&width = width;
         v29 = @"z";
@@ -383,43 +383,43 @@
       else
       {
         *&v5 = p_u->color_matrix.m11;
-        [a3 encodeFloat:@"m11" forKey:v5];
+        [coder encodeFloat:@"m11" forKey:v5];
         *&v11 = p_u->color_matrix.m12;
-        [a3 encodeFloat:@"m12" forKey:v11];
+        [coder encodeFloat:@"m12" forKey:v11];
         *&v12 = p_u->color_matrix.m13;
-        [a3 encodeFloat:@"m13" forKey:v12];
+        [coder encodeFloat:@"m13" forKey:v12];
         *&v13 = p_u->color_matrix.m14;
-        [a3 encodeFloat:@"m14" forKey:v13];
+        [coder encodeFloat:@"m14" forKey:v13];
         *&v14 = p_u->color_matrix.m15;
-        [a3 encodeFloat:@"m15" forKey:v14];
+        [coder encodeFloat:@"m15" forKey:v14];
         *&v15 = p_u->color_matrix.m21;
-        [a3 encodeFloat:@"m21" forKey:v15];
+        [coder encodeFloat:@"m21" forKey:v15];
         *&v16 = p_u->color_matrix.m22;
-        [a3 encodeFloat:@"m22" forKey:v16];
+        [coder encodeFloat:@"m22" forKey:v16];
         *&v17 = p_u->color_matrix.m23;
-        [a3 encodeFloat:@"m23" forKey:v17];
+        [coder encodeFloat:@"m23" forKey:v17];
         *&v18 = p_u->color_matrix.m24;
-        [a3 encodeFloat:@"m24" forKey:v18];
+        [coder encodeFloat:@"m24" forKey:v18];
         *&v19 = p_u->color_matrix.m25;
-        [a3 encodeFloat:@"m25" forKey:v19];
+        [coder encodeFloat:@"m25" forKey:v19];
         *&v20 = p_u->color_matrix.m31;
-        [a3 encodeFloat:@"m31" forKey:v20];
+        [coder encodeFloat:@"m31" forKey:v20];
         *&v21 = p_u->color_matrix.m32;
-        [a3 encodeFloat:@"m32" forKey:v21];
+        [coder encodeFloat:@"m32" forKey:v21];
         *&v22 = p_u->color_matrix.m33;
-        [a3 encodeFloat:@"m33" forKey:v22];
+        [coder encodeFloat:@"m33" forKey:v22];
         *&v23 = p_u->color_matrix.m34;
-        [a3 encodeFloat:@"m34" forKey:v23];
+        [coder encodeFloat:@"m34" forKey:v23];
         *&v24 = p_u->color_matrix.m35;
-        [a3 encodeFloat:@"m35" forKey:v24];
+        [coder encodeFloat:@"m35" forKey:v24];
         *&v25 = p_u->color_matrix.m41;
-        [a3 encodeFloat:@"m41" forKey:v25];
+        [coder encodeFloat:@"m41" forKey:v25];
         *&v26 = p_u->color_matrix.m42;
-        [a3 encodeFloat:@"m42" forKey:v26];
+        [coder encodeFloat:@"m42" forKey:v26];
         *&v27 = p_u->color_matrix.m43;
-        [a3 encodeFloat:@"m43" forKey:v27];
+        [coder encodeFloat:@"m43" forKey:v27];
         *&v28 = p_u->color_matrix.m44;
-        [a3 encodeFloat:@"m44" forKey:v28];
+        [coder encodeFloat:@"m44" forKey:v28];
         *&width = p_u->color_matrix.m45;
         v29 = @"m45";
       }
@@ -437,25 +437,25 @@
       v46 = &self->_u;
       v47 = v46->point.x;
       *&v47 = v46->point.x;
-      [a3 encodeFloat:@"min_max_w" forKey:v47];
+      [coder encodeFloat:@"min_max_w" forKey:v47];
       v48 = v46->point.y;
       *&v48 = v48;
-      [a3 encodeFloat:@"min_max_h" forKey:v48];
+      [coder encodeFloat:@"min_max_h" forKey:v48];
       v49 = v46->rect.size.width;
       *&v49 = v49;
-      [a3 encodeFloat:@"max_max_w" forKey:v49];
+      [coder encodeFloat:@"max_max_w" forKey:v49];
       height = v46->rect.size.height;
       *&height = height;
-      [a3 encodeFloat:@"max_max_h" forKey:height];
+      [coder encodeFloat:@"max_max_h" forKey:height];
       m21 = v46->transform.m21;
       *&m21 = m21;
-      [a3 encodeFloat:@"max_min_w" forKey:m21];
+      [coder encodeFloat:@"max_min_w" forKey:m21];
       m22 = v46->transform.m22;
       *&m22 = m22;
-      [a3 encodeFloat:@"max_min_h" forKey:m22];
+      [coder encodeFloat:@"max_min_h" forKey:m22];
       m23 = v46->transform.m23;
       *&m23 = m23;
-      [a3 encodeFloat:@"min_min_w" forKey:m23];
+      [coder encodeFloat:@"min_min_w" forKey:m23];
       width = v46->transform.m24;
       *&width = width;
       v29 = @"min_min_h";
@@ -471,22 +471,22 @@
     {
       v64 = v62->point.x;
       *&v64 = v62->point.x;
-      [a3 encodeFloat:@"a" forKey:v64];
+      [coder encodeFloat:@"a" forKey:v64];
       v65 = v62->point.y;
       *&v65 = v65;
-      [a3 encodeFloat:@"b" forKey:v65];
+      [coder encodeFloat:@"b" forKey:v65];
       v66 = v62->rect.size.width;
       *&v66 = v66;
-      [a3 encodeFloat:@"c" forKey:v66];
+      [coder encodeFloat:@"c" forKey:v66];
       v67 = v62->rect.size.height;
       *&v67 = v67;
-      [a3 encodeFloat:@"d" forKey:v67];
+      [coder encodeFloat:@"d" forKey:v67];
       v68 = v62->transform.m21;
       *&v68 = v68;
-      [a3 encodeFloat:@"tx" forKey:v68];
+      [coder encodeFloat:@"tx" forKey:v68];
       v69 = v62->transform.m22;
       *&v69 = v69;
-      [a3 encodeFloat:@"ty" forKey:v69];
+      [coder encodeFloat:@"ty" forKey:v69];
     }
   }
 
@@ -504,7 +504,7 @@
         v7 = &self->_u;
         v8 = v7->point.x;
         *&v8 = v7->point.x;
-        [a3 encodeFloat:@"width" forKey:v8];
+        [coder encodeFloat:@"width" forKey:v8];
         width = v7->point.y;
         goto LABEL_19;
       }
@@ -512,13 +512,13 @@
       v54 = &self->_u;
       v55 = v54->point.x;
       *&v55 = v54->point.x;
-      [a3 encodeFloat:@"x" forKey:v55];
+      [coder encodeFloat:@"x" forKey:v55];
       width = v54->point.y;
       *&width = width;
       v29 = @"y";
 LABEL_20:
 
-      [a3 encodeFloat:v29 forKey:width];
+      [coder encodeFloat:v29 forKey:width];
       return;
     }
 
@@ -527,13 +527,13 @@ LABEL_20:
       v58 = &self->_u;
       v59 = v58->point.x;
       *&v59 = v58->point.x;
-      [a3 encodeFloat:@"x" forKey:v59];
+      [coder encodeFloat:@"x" forKey:v59];
       v60 = v58->point.y;
       *&v60 = v60;
-      [a3 encodeFloat:@"y" forKey:v60];
+      [coder encodeFloat:@"y" forKey:v60];
       v61 = v58->rect.size.width;
       *&v61 = v61;
-      [a3 encodeFloat:@"width" forKey:v61];
+      [coder encodeFloat:@"width" forKey:v61];
       width = v58->rect.size.height;
 LABEL_19:
       *&width = width;
@@ -552,49 +552,49 @@ LABEL_19:
     {
 LABEL_12:
       *&v31 = v31;
-      [a3 encodeFloat:@"m11" forKey:v31];
+      [coder encodeFloat:@"m11" forKey:v31];
       v32 = v30->point.y;
       *&v32 = v32;
-      [a3 encodeFloat:@"m12" forKey:v32];
+      [coder encodeFloat:@"m12" forKey:v32];
       v33 = v30->rect.size.width;
       *&v33 = v33;
-      [a3 encodeFloat:@"m13" forKey:v33];
+      [coder encodeFloat:@"m13" forKey:v33];
       v34 = v30->rect.size.height;
       *&v34 = v34;
-      [a3 encodeFloat:@"m14" forKey:v34];
+      [coder encodeFloat:@"m14" forKey:v34];
       v35 = v30->transform.m21;
       *&v35 = v35;
-      [a3 encodeFloat:@"m21" forKey:v35];
+      [coder encodeFloat:@"m21" forKey:v35];
       v36 = v30->transform.m22;
       *&v36 = v36;
-      [a3 encodeFloat:@"m22" forKey:v36];
+      [coder encodeFloat:@"m22" forKey:v36];
       v37 = v30->transform.m23;
       *&v37 = v37;
-      [a3 encodeFloat:@"m23" forKey:v37];
+      [coder encodeFloat:@"m23" forKey:v37];
       m24 = v30->transform.m24;
       *&m24 = m24;
-      [a3 encodeFloat:@"m24" forKey:m24];
+      [coder encodeFloat:@"m24" forKey:m24];
       m31 = v30->transform.m31;
       *&m31 = m31;
-      [a3 encodeFloat:@"m31" forKey:m31];
+      [coder encodeFloat:@"m31" forKey:m31];
       m32 = v30->transform.m32;
       *&m32 = m32;
-      [a3 encodeFloat:@"m32" forKey:m32];
+      [coder encodeFloat:@"m32" forKey:m32];
       m33 = v30->transform.m33;
       *&m33 = m33;
-      [a3 encodeFloat:@"m33" forKey:m33];
+      [coder encodeFloat:@"m33" forKey:m33];
       m34 = v30->transform.m34;
       *&m34 = m34;
-      [a3 encodeFloat:@"m34" forKey:m34];
+      [coder encodeFloat:@"m34" forKey:m34];
       m41 = v30->transform.m41;
       *&m41 = m41;
-      [a3 encodeFloat:@"m41" forKey:m41];
+      [coder encodeFloat:@"m41" forKey:m41];
       m42 = v30->transform.m42;
       *&m42 = m42;
-      [a3 encodeFloat:@"m42" forKey:m42];
+      [coder encodeFloat:@"m42" forKey:m42];
       m43 = v30->transform.m43;
       *&m43 = m43;
-      [a3 encodeFloat:@"m43" forKey:m43];
+      [coder encodeFloat:@"m43" forKey:m43];
       width = v30->transform.m44;
       *&width = width;
       v29 = @"m44";
@@ -620,7 +620,7 @@ LABEL_12:
   }
 }
 
-- (LKNSValueCodingProxy)initWithObject:(id)a3
+- (LKNSValueCodingProxy)initWithObject:(id)object
 {
   v43 = *MEMORY[0x1E69E9840];
   v34.receiver = self;
@@ -631,14 +631,14 @@ LABEL_12:
     return v4;
   }
 
-  v5 = [a3 objCType];
-  v6 = v5;
-  if (v5)
+  objCType = [object objCType];
+  v6 = objCType;
+  if (objCType)
   {
-    if (!strcmp(v5, "{CGRect={CGPoint=dd}{CGSize=dd}}"))
+    if (!strcmp(objCType, "{CGRect={CGPoint=dd}{CGSize=dd}}"))
     {
       v4->_kind = 2;
-      [a3 rectValue];
+      [object rectValue];
       v4->_u.point.x = v10;
       v4->_u.point.y = v11;
       v4->_u.rect.size.width = v12;
@@ -649,7 +649,7 @@ LABEL_12:
     if (!strcmp(v6, "{CGPoint=dd}"))
     {
       v4->_kind = 0;
-      [a3 pointValue];
+      [object pointValue];
     }
 
     else
@@ -659,9 +659,9 @@ LABEL_12:
         if (!strcmp(v6, "{CATransform3D=dddddddddddddddd}"))
         {
           v4->_kind = 3;
-          if (a3)
+          if (object)
           {
-            [a3 CATransform3DValue];
+            [object CATransform3DValue];
           }
 
           else
@@ -696,7 +696,7 @@ LABEL_12:
         if (!strcmp(v6, "{CAPoint3D=ddd}"))
         {
           v4->_kind = 8;
-          [a3 CAPoint3DValue];
+          [object CAPoint3DValue];
           v4->_u.point.x = v19;
           v4->_u.point.y = v20;
           v4->_u.rect.size.width = v21;
@@ -706,9 +706,9 @@ LABEL_12:
         if (!strcmp(v6, "{CACornerRadii={CGSize=dd}{CGSize=dd}{CGSize=dd}{CGSize=dd}}"))
         {
           v4->_kind = 11;
-          if (a3)
+          if (object)
           {
-            [a3 CACornerRadiiValue];
+            [object CACornerRadiiValue];
           }
 
           else
@@ -736,9 +736,9 @@ LABEL_12:
           if (!v7)
           {
             *p_kind = 10;
-            if (a3)
+            if (object)
             {
-              [a3 CA_CGAffineTransformValue];
+              [object CA_CGAffineTransformValue];
             }
 
             else
@@ -761,9 +761,9 @@ LABEL_12:
 
 LABEL_20:
         v4->_kind = 9;
-        if (a3)
+        if (object)
         {
-          [a3 CAColorMatrixValue];
+          [object CAColorMatrixValue];
         }
 
         else
@@ -787,7 +787,7 @@ LABEL_20:
       }
 
       v4->_kind = 1;
-      [a3 sizeValue];
+      [object sizeValue];
     }
 
     v4->_u.point.x = v14;

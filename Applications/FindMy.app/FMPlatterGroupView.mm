@@ -1,8 +1,8 @@
 @interface FMPlatterGroupView
 - (_TtC6FindMy18FMPlatterGroupView)init;
-- (_TtC6FindMy18FMPlatterGroupView)initWithCoder:(id)a3;
-- (_TtC6FindMy18FMPlatterGroupView)initWithFrame:(CGRect)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (_TtC6FindMy18FMPlatterGroupView)initWithCoder:(id)coder;
+- (_TtC6FindMy18FMPlatterGroupView)initWithFrame:(CGRect)frame;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation FMPlatterGroupView
@@ -23,7 +23,7 @@
   return v6;
 }
 
-- (_TtC6FindMy18FMPlatterGroupView)initWithCoder:(id)a3
+- (_TtC6FindMy18FMPlatterGroupView)initWithCoder:(id)coder
 {
   v3 = OBJC_IVAR____TtC6FindMy18FMPlatterGroupView_contentStackView;
   *(&self->super.super.super.isa + v3) = [objc_allocWithZone(UIStackView) init];
@@ -32,14 +32,14 @@
   return result;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_1001203C8(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_1001203C8(change);
 }
 
-- (_TtC6FindMy18FMPlatterGroupView)initWithFrame:(CGRect)a3
+- (_TtC6FindMy18FMPlatterGroupView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

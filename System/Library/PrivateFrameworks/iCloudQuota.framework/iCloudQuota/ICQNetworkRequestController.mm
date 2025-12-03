@@ -1,46 +1,46 @@
 @interface ICQNetworkRequestController
 - (ICQNetworkRequestController)init;
-- (ICQNetworkRequestController)initWithSession:(id)a3 numberOfSecondsBetweenRetries:(id)a4;
-- (void)executeRequest:(id)a3 acceptedStatusCodes:(id)a4 renewHeadersBlock:(id)a5 completion:(id)a6;
+- (ICQNetworkRequestController)initWithSession:(id)session numberOfSecondsBetweenRetries:(id)retries;
+- (void)executeRequest:(id)request acceptedStatusCodes:(id)codes renewHeadersBlock:(id)block completion:(id)completion;
 @end
 
 @implementation ICQNetworkRequestController
 
 - (ICQNetworkRequestController)init
 {
-  v3 = [MEMORY[0x277CCAD38] defaultSessionConfiguration];
+  defaultSessionConfiguration = [MEMORY[0x277CCAD38] defaultSessionConfiguration];
   v4 = [objc_alloc(MEMORY[0x277CF0188]) initWithIdentifier:@"ICQNetworkRequestControllerSession"];
-  [v3 set_appleIDContext:v4];
+  [defaultSessionConfiguration set_appleIDContext:v4];
 
-  v5 = [MEMORY[0x277CCAD30] sessionWithConfiguration:v3];
+  v5 = [MEMORY[0x277CCAD30] sessionWithConfiguration:defaultSessionConfiguration];
   v6 = [(ICQNetworkRequestController *)self initWithSession:v5];
 
   return v6;
 }
 
-- (ICQNetworkRequestController)initWithSession:(id)a3 numberOfSecondsBetweenRetries:(id)a4
+- (ICQNetworkRequestController)initWithSession:(id)session numberOfSecondsBetweenRetries:(id)retries
 {
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  retriesCopy = retries;
   v13.receiver = self;
   v13.super_class = ICQNetworkRequestController;
   v8 = [(ICQNetworkRequestController *)&v13 init];
   session = v8->_session;
-  v8->_session = v6;
-  v10 = v6;
+  v8->_session = sessionCopy;
+  v10 = sessionCopy;
 
   numberOfSecondsBetweenRetries = v8->_numberOfSecondsBetweenRetries;
-  v8->_numberOfSecondsBetweenRetries = v7;
+  v8->_numberOfSecondsBetweenRetries = retriesCopy;
 
   return v8;
 }
 
-- (void)executeRequest:(id)a3 acceptedStatusCodes:(id)a4 renewHeadersBlock:(id)a5 completion:(id)a6
+- (void)executeRequest:(id)request acceptedStatusCodes:(id)codes renewHeadersBlock:(id)block completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  requestCopy = request;
+  codesCopy = codes;
+  blockCopy = block;
+  completionCopy = completion;
   v14 = [(NSArray *)self->_numberOfSecondsBetweenRetries copy];
   objc_initWeak(&location, self);
   v43[0] = 0;
@@ -48,7 +48,7 @@
   v43[2] = 0x3032000000;
   v43[3] = __Block_byref_object_copy_;
   v43[4] = __Block_byref_object_dispose_;
-  v44 = [v10 mutableCopy];
+  v44 = [requestCopy mutableCopy];
   v41[0] = 0;
   v41[1] = v41;
   v41[2] = 0x2020000000;
@@ -71,17 +71,17 @@
   v23[3] = &unk_27A6515E0;
   objc_copyWeak(&v32, &location);
   v23[4] = self;
-  v17 = v13;
+  v17 = completionCopy;
   v26 = v17;
   v28 = &v33;
   v29 = v43;
-  v18 = v11;
+  v18 = codesCopy;
   v24 = v18;
   v30 = v41;
   v31 = v39;
   v19 = v14;
   v25 = v19;
-  v20 = v12;
+  v20 = blockCopy;
   v27 = v20;
   v21 = [(ICQRetryController *)v15 initWithMaxNumberOfRetries:v16 block:v23];
   v22 = v34[5];

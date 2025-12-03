@@ -1,14 +1,14 @@
 @interface _PUWallpaperPosterEditorDebugEnvironment
 - ($A7FE26C25444B3FF39E196F68C4B7864)deviceAttitude;
 - (CGRect)px_floatingObscurableBounds;
-- (CGRect)px_maximumTitleBoundsForLayout:(unint64_t)a3;
-- (CGRect)px_minimumTitleBoundsForLayout:(unint64_t)a3;
+- (CGRect)px_maximumTitleBoundsForLayout:(unint64_t)layout;
+- (CGRect)px_minimumTitleBoundsForLayout:(unint64_t)layout;
 - (CGRect)px_salientContentRectangle;
-- (CGRect)px_titleBoundsForLayout:(unint64_t)a3;
+- (CGRect)px_titleBoundsForLayout:(unint64_t)layout;
 - (PUMutablePosterConfiguration)pu_targetConfiguration;
 - (_PUWallpaperPosterEditorDebugEnvironment)init;
-- (_PUWallpaperPosterEditorDebugEnvironment)initWithPosterDescriptor:(id)a3;
-- (_PUWallpaperPosterEditorDebugEnvironment)initWithSourcePosterConfiguration:(id)a3;
+- (_PUWallpaperPosterEditorDebugEnvironment)initWithPosterDescriptor:(id)descriptor;
+- (_PUWallpaperPosterEditorDebugEnvironment)initWithSourcePosterConfiguration:(id)configuration;
 - (int64_t)pu_posterType;
 @end
 
@@ -35,7 +35,7 @@
   return self;
 }
 
-- (CGRect)px_maximumTitleBoundsForLayout:(unint64_t)a3
+- (CGRect)px_maximumTitleBoundsForLayout:(unint64_t)layout
 {
   v3 = *MEMORY[0x1E695F058];
   v4 = *(MEMORY[0x1E695F058] + 8);
@@ -48,7 +48,7 @@
   return result;
 }
 
-- (CGRect)px_minimumTitleBoundsForLayout:(unint64_t)a3
+- (CGRect)px_minimumTitleBoundsForLayout:(unint64_t)layout
 {
   v3 = *MEMORY[0x1E695F058];
   v4 = *(MEMORY[0x1E695F058] + 8);
@@ -61,7 +61,7 @@
   return result;
 }
 
-- (CGRect)px_titleBoundsForLayout:(unint64_t)a3
+- (CGRect)px_titleBoundsForLayout:(unint64_t)layout
 {
   v3 = *MEMORY[0x1E695F058];
   v4 = *(MEMORY[0x1E695F058] + 8);
@@ -96,50 +96,50 @@
 
 - (int64_t)pu_posterType
 {
-  v3 = [(_PUWallpaperPosterEditorDebugEnvironment *)self posterDescriptor];
+  posterDescriptor = [(_PUWallpaperPosterEditorDebugEnvironment *)self posterDescriptor];
 
-  if (v3)
+  if (posterDescriptor)
   {
-    v4 = [(_PUWallpaperPosterEditorDebugEnvironment *)self posterDescriptor];
+    posterDescriptor2 = [(_PUWallpaperPosterEditorDebugEnvironment *)self posterDescriptor];
 LABEL_5:
-    v6 = v4;
-    v7 = [v4 posterType];
+    v6 = posterDescriptor2;
+    posterType = [posterDescriptor2 posterType];
 
-    return v7;
+    return posterType;
   }
 
-  v5 = [(_PUWallpaperPosterEditorDebugEnvironment *)self sourcePosterConfiguration];
+  sourcePosterConfiguration = [(_PUWallpaperPosterEditorDebugEnvironment *)self sourcePosterConfiguration];
 
-  if (v5)
+  if (sourcePosterConfiguration)
   {
-    v4 = [(_PUWallpaperPosterEditorDebugEnvironment *)self sourcePosterConfiguration];
+    posterDescriptor2 = [(_PUWallpaperPosterEditorDebugEnvironment *)self sourcePosterConfiguration];
     goto LABEL_5;
   }
 
   return 0;
 }
 
-- (_PUWallpaperPosterEditorDebugEnvironment)initWithSourcePosterConfiguration:(id)a3
+- (_PUWallpaperPosterEditorDebugEnvironment)initWithSourcePosterConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v6 = [(_PUWallpaperPosterEditorDebugEnvironment *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_sourcePosterConfiguration, a3);
+    objc_storeStrong(&v6->_sourcePosterConfiguration, configuration);
   }
 
   return v7;
 }
 
-- (_PUWallpaperPosterEditorDebugEnvironment)initWithPosterDescriptor:(id)a3
+- (_PUWallpaperPosterEditorDebugEnvironment)initWithPosterDescriptor:(id)descriptor
 {
-  v5 = a3;
+  descriptorCopy = descriptor;
   v6 = [(_PUWallpaperPosterEditorDebugEnvironment *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_posterDescriptor, a3);
+    objc_storeStrong(&v6->_posterDescriptor, descriptor);
   }
 
   return v7;
@@ -159,8 +159,8 @@ LABEL_5:
     targetAssetDirectory = v2->_targetAssetDirectory;
     v2->_targetAssetDirectory = v6;
 
-    v8 = [MEMORY[0x1E696AC08] defaultManager];
-    [v8 createDirectoryAtURL:v2->_targetAssetDirectory withIntermediateDirectories:0 attributes:0 error:0];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    [defaultManager createDirectoryAtURL:v2->_targetAssetDirectory withIntermediateDirectories:0 attributes:0 error:0];
   }
 
   return v2;

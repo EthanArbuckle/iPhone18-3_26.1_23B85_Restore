@@ -1,26 +1,26 @@
 @interface MPModelStorePlatformMetadataGenericObjectBuilder
-- (MPModelStorePlatformMetadataGenericObjectBuilder)initWithRequestedProperties:(id)a3;
-- (id)genericObjectForStorePlatformMetadata:(id)a3 radioStationContainsVideo:(BOOL)a4 userIdentity:(id)a5;
+- (MPModelStorePlatformMetadataGenericObjectBuilder)initWithRequestedProperties:(id)properties;
+- (id)genericObjectForStorePlatformMetadata:(id)metadata radioStationContainsVideo:(BOOL)video userIdentity:(id)identity;
 @end
 
 @implementation MPModelStorePlatformMetadataGenericObjectBuilder
 
-- (id)genericObjectForStorePlatformMetadata:(id)a3 radioStationContainsVideo:(BOOL)a4 userIdentity:(id)a5
+- (id)genericObjectForStorePlatformMetadata:(id)metadata radioStationContainsVideo:(BOOL)video userIdentity:(id)identity
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = v9;
+  metadataCopy = metadata;
+  identityCopy = identity;
+  v10 = identityCopy;
   if ((*&self->_requestedSongProperties & 1) == 0)
   {
-    v130 = v9;
-    v131 = v8;
-    v132 = a4;
-    v11 = [(MPModelStorePlatformMetadataGenericObjectBuilder *)self requestedProperties];
-    v12 = [v11 relationships];
-    v13 = [v12 objectForKey:@"MPModelRelationshipGenericSong"];
+    v130 = identityCopy;
+    v131 = metadataCopy;
+    videoCopy = video;
+    requestedProperties = [(MPModelStorePlatformMetadataGenericObjectBuilder *)self requestedProperties];
+    relationships = [requestedProperties relationships];
+    v13 = [relationships objectForKey:@"MPModelRelationshipGenericSong"];
 
-    v14 = [v13 properties];
-    if ([v14 containsObject:@"MPModelPropertySongTitle"])
+    properties = [v13 properties];
+    if ([properties containsObject:@"MPModelPropertySongTitle"])
     {
       v15 = 2;
     }
@@ -31,7 +31,7 @@
     }
 
     *&self->_requestedSongProperties = *&self->_requestedSongProperties & 0xFFFFFFFFFFFFFFFDLL | v15;
-    if ([v14 containsObject:@"MPModelPropertySongDuration"])
+    if ([properties containsObject:@"MPModelPropertySongDuration"])
     {
       v16 = 4;
     }
@@ -42,7 +42,7 @@
     }
 
     *&self->_requestedSongProperties = *&self->_requestedSongProperties & 0xFFFFFFFFFFFFFFFBLL | v16;
-    if ([v14 containsObject:@"MPModelPropertySongTrackNumber"])
+    if ([properties containsObject:@"MPModelPropertySongTrackNumber"])
     {
       v17 = 8;
     }
@@ -53,7 +53,7 @@
     }
 
     *&self->_requestedSongProperties = *&self->_requestedSongProperties & 0xFFFFFFFFFFFFFFF7 | v17;
-    v18 = [v14 containsObject:@"_MPModelPropertySongTrackCount"];
+    v18 = [properties containsObject:@"_MPModelPropertySongTrackCount"];
     v19 = 16;
     if (!v18)
     {
@@ -61,7 +61,7 @@
     }
 
     *&self->_requestedSongProperties = *&self->_requestedSongProperties & 0xFFFFFFFFFFFFFFEFLL | v19;
-    v20 = [v14 containsObject:@"MPModelPropertySongDiscNumber"];
+    v20 = [properties containsObject:@"MPModelPropertySongDiscNumber"];
     v21 = 32;
     if (!v20)
     {
@@ -69,7 +69,7 @@
     }
 
     *&self->_requestedSongProperties = *&self->_requestedSongProperties & 0xFFFFFFFFFFFFFFDFLL | v21;
-    v22 = [v14 containsObject:@"MPModelPropertySongExplicit"];
+    v22 = [properties containsObject:@"MPModelPropertySongExplicit"];
     v23 = 128;
     if (!v22)
     {
@@ -77,7 +77,7 @@
     }
 
     *&self->_requestedSongProperties = *&self->_requestedSongProperties & 0xFFFFFFFFFFFFFF7FLL | v23;
-    v24 = [v14 containsObject:@"MPModelPropertySongArtistUploadedContent"];
+    v24 = [properties containsObject:@"MPModelPropertySongArtistUploadedContent"];
     v25 = 256;
     if (!v24)
     {
@@ -85,7 +85,7 @@
     }
 
     *&self->_requestedSongProperties = *&self->_requestedSongProperties & 0xFFFFFFFFFFFFFEFFLL | v25;
-    v26 = [v14 containsObject:@"MPModelPropertySongHasVideo"];
+    v26 = [properties containsObject:@"MPModelPropertySongHasVideo"];
     v27 = 512;
     if (!v26)
     {
@@ -93,7 +93,7 @@
     }
 
     *&self->_requestedSongProperties = *&self->_requestedSongProperties & 0xFFFFFFFFFFFFFDFFLL | v27;
-    v28 = [v14 containsObject:@"MPModelPropertySongArtwork"];
+    v28 = [properties containsObject:@"MPModelPropertySongArtwork"];
     v29 = 1024;
     if (!v28)
     {
@@ -101,7 +101,7 @@
     }
 
     *&self->_requestedSongProperties = *&self->_requestedSongProperties & 0xFFFFFFFFFFFFFBFFLL | v29;
-    v30 = [v14 containsObject:@"MPModelPropertySongCopyrightText"];
+    v30 = [properties containsObject:@"MPModelPropertySongCopyrightText"];
     v31 = 2048;
     if (!v30)
     {
@@ -109,7 +109,7 @@
     }
 
     *&self->_requestedSongProperties = *&self->_requestedSongProperties & 0xFFFFFFFFFFFFF7FFLL | v31;
-    v32 = [v14 containsObject:@"MPModelPropertySongLibraryAdded"];
+    v32 = [properties containsObject:@"MPModelPropertySongLibraryAdded"];
     v33 = 0x40000;
     if (!v32)
     {
@@ -117,7 +117,7 @@
     }
 
     *&self->_requestedSongProperties = *&self->_requestedSongProperties & 0xFFFFFFFFFFFBFFFFLL | v33;
-    v34 = [v14 containsObject:@"MPModelPropertySongShouldShowComposer"];
+    v34 = [properties containsObject:@"MPModelPropertySongShouldShowComposer"];
     v35 = 0x100000;
     if (!v34)
     {
@@ -125,7 +125,7 @@
     }
 
     *&self->_requestedSongProperties = *&self->_requestedSongProperties & 0xFFFFFFFFFFEFFFFFLL | v35;
-    v36 = [v14 containsObject:@"MPModelPropertySongVolumeNormalization"];
+    v36 = [properties containsObject:@"MPModelPropertySongVolumeNormalization"];
     v37 = 0x200000;
     if (!v36)
     {
@@ -133,7 +133,7 @@
     }
 
     *&self->_requestedSongProperties = *&self->_requestedSongProperties & 0xFFFFFFFFFFDFFFFFLL | v37;
-    v38 = [v14 containsObject:@"MPModelPropertySongKeepLocalEnableState"];
+    v38 = [properties containsObject:@"MPModelPropertySongKeepLocalEnableState"];
     v39 = 4096;
     if (!v38)
     {
@@ -141,7 +141,7 @@
     }
 
     *&self->_requestedSongProperties = *&self->_requestedSongProperties & 0xFFFFFFFFFFFFEFFFLL | v39;
-    v40 = [v14 containsObject:@"MPModelPropertySongKeepLocalManagedStatus"];
+    v40 = [properties containsObject:@"MPModelPropertySongKeepLocalManagedStatus"];
     v41 = 0x2000;
     if (!v40)
     {
@@ -149,7 +149,7 @@
     }
 
     *&self->_requestedSongProperties = *&self->_requestedSongProperties & 0xFFFFFFFFFFFFDFFFLL | v41;
-    v42 = [v14 containsObject:@"MPModelPropertySongKeepLocalManagedStatusReason"];
+    v42 = [properties containsObject:@"MPModelPropertySongKeepLocalManagedStatusReason"];
     v43 = 0x4000;
     if (!v42)
     {
@@ -157,7 +157,7 @@
     }
 
     *&self->_requestedSongProperties = *&self->_requestedSongProperties & 0xFFFFFFFFFFFFBFFFLL | v43;
-    v44 = [v14 containsObject:@"MPModelPropertySongKeepLocalConstraints"];
+    v44 = [properties containsObject:@"MPModelPropertySongKeepLocalConstraints"];
     v45 = 0x8000;
     if (!v44)
     {
@@ -165,7 +165,7 @@
     }
 
     *&self->_requestedSongProperties = *&self->_requestedSongProperties & 0xFFFFFFFFFFFF7FFFLL | v45;
-    v46 = [v14 containsObject:@"MPModelPropertySongLibraryAddEligible"];
+    v46 = [properties containsObject:@"MPModelPropertySongLibraryAddEligible"];
     v47 = 0x80000;
     if (!v46)
     {
@@ -173,7 +173,7 @@
     }
 
     *&self->_requestedSongProperties = *&self->_requestedSongProperties & 0xFFFFFFFFFFF7FFFFLL | v47;
-    v48 = [v14 containsObject:@"MPModelPropertySongGrouping"];
+    v48 = [properties containsObject:@"MPModelPropertySongGrouping"];
     v49 = 64;
     if (!v48)
     {
@@ -181,7 +181,7 @@
     }
 
     *&self->_requestedSongProperties = *&self->_requestedSongProperties & 0xFFFFFFFFFFFFFFBFLL | v49;
-    v50 = [v14 containsObject:@"MPModelPropertySongHasCloudSyncSource"];
+    v50 = [properties containsObject:@"MPModelPropertySongHasCloudSyncSource"];
     v51 = 0x10000;
     if (!v50)
     {
@@ -189,7 +189,7 @@
     }
 
     *&self->_requestedSongProperties = *&self->_requestedSongProperties & 0xFFFFFFFFFFFEFFFFLL | v51;
-    v52 = [v14 containsObject:@"MPModelPropertySongYear"];
+    v52 = [properties containsObject:@"MPModelPropertySongYear"];
     v53 = 0x400000;
     if (!v52)
     {
@@ -197,7 +197,7 @@
     }
 
     *&self->_requestedSongProperties = *&self->_requestedSongProperties & 0xFFFFFFFFFFBFFFFFLL | v53;
-    v54 = [v14 containsObject:@"MPModelPropertySongUserRating"];
+    v54 = [properties containsObject:@"MPModelPropertySongUserRating"];
     v55 = 0x800000;
     if (!v54)
     {
@@ -205,7 +205,7 @@
     }
 
     *&self->_requestedSongProperties = *&self->_requestedSongProperties & 0xFFFFFFFFFF7FFFFFLL | v55;
-    v56 = [v14 containsObject:@"MPModelPropertySongCloudStatus"];
+    v56 = [properties containsObject:@"MPModelPropertySongCloudStatus"];
     v57 = 0x1000000;
     if (!v56)
     {
@@ -213,7 +213,7 @@
     }
 
     *&self->_requestedSongProperties = *&self->_requestedSongProperties & 0xFFFFFFFFFEFFFFFFLL | v57;
-    v58 = [v14 containsObject:@"MPModelPropertySongGaplessInfo"];
+    v58 = [properties containsObject:@"MPModelPropertySongGaplessInfo"];
     v59 = 0x2000000;
     if (!v58)
     {
@@ -221,7 +221,7 @@
     }
 
     *&self->_requestedSongProperties = *&self->_requestedSongProperties & 0xFFFFFFFFFDFFFFFFLL | v59;
-    v60 = [v14 containsObject:@"MPModelPropertySongVolumeAdjustment"];
+    v60 = [properties containsObject:@"MPModelPropertySongVolumeAdjustment"];
     v61 = 0x4000000;
     if (!v60)
     {
@@ -229,7 +229,7 @@
     }
 
     *&self->_requestedSongProperties = *&self->_requestedSongProperties & 0xFFFFFFFFFBFFFFFFLL | v61;
-    v62 = [v14 containsObject:@"MPModelPropertySongTraits"];
+    v62 = [properties containsObject:@"MPModelPropertySongTraits"];
     v63 = 0x8000000;
     if (!v62)
     {
@@ -237,7 +237,7 @@
     }
 
     *&self->_requestedSongProperties = *&self->_requestedSongProperties & 0xFFFFFFFFF7FFFFFFLL | v63;
-    v64 = [v14 containsObject:@"MPModelPropertySongSupportsExtendedLyricsAttribute"];
+    v64 = [properties containsObject:@"MPModelPropertySongSupportsExtendedLyricsAttribute"];
     v65 = 0x10000000;
     if (!v64)
     {
@@ -245,7 +245,7 @@
     }
 
     *&self->_requestedSongProperties = *&self->_requestedSongProperties & 0xFFFFFFFFEFFFFFFFLL | v65;
-    v66 = [v14 containsObject:@"MPModelPropertySongIsFavorite"];
+    v66 = [properties containsObject:@"MPModelPropertySongIsFavorite"];
     v67 = 0x20000000;
     if (!v66)
     {
@@ -253,7 +253,7 @@
     }
 
     *&self->_requestedSongProperties = *&self->_requestedSongProperties & 0xFFFFFFFFDFFFFFFFLL | v67;
-    v68 = [v14 containsObject:@"MPModelPropertySongIsDisliked"];
+    v68 = [properties containsObject:@"MPModelPropertySongIsDisliked"];
     v69 = 0x40000000;
     if (!v68)
     {
@@ -261,7 +261,7 @@
     }
 
     *&self->_requestedSongProperties = *&self->_requestedSongProperties & 0xFFFFFFFFBFFFFFFFLL | v69;
-    v70 = [v14 containsObject:@"MPModelPropertySongDateFavorited"];
+    v70 = [properties containsObject:@"MPModelPropertySongDateFavorited"];
     v71 = 0x80000000;
     if (!v70)
     {
@@ -269,7 +269,7 @@
     }
 
     *&self->_requestedSongProperties = *&self->_requestedSongProperties & 0xFFFFFFFF7FFFFFFFLL | v71;
-    v72 = [v14 containsObject:@"MPModelPropertySongHasCredits"];
+    v72 = [properties containsObject:@"MPModelPropertySongHasCredits"];
     v73 = 0x100000000;
     if (!v72)
     {
@@ -277,7 +277,7 @@
     }
 
     *&self->_requestedSongProperties = *&self->_requestedSongProperties & 0xFFFFFFFEFFFFFFFFLL | v73;
-    v74 = [v14 containsObject:@"MPModelPropertySongIsPinned"];
+    v74 = [properties containsObject:@"MPModelPropertySongIsPinned"];
     v75 = 0x200000000;
     if (!v74)
     {
@@ -285,7 +285,7 @@
     }
 
     *&self->_requestedSongProperties = *&self->_requestedSongProperties & 0xFFFFFFFDFFFFFFFFLL | v75;
-    v76 = [v14 containsObject:@"MPModelPropertySongImmersiveDeeplinkURL"];
+    v76 = [properties containsObject:@"MPModelPropertySongImmersiveDeeplinkURL"];
     v77 = 0x400000000;
     if (!v76)
     {
@@ -293,7 +293,7 @@
     }
 
     *&self->_requestedSongProperties = *&self->_requestedSongProperties & 0xFFFFFFFBFFFFFFFFLL | v77;
-    v78 = [v14 containsObject:@"MPModelPropertySongDateReleased"];
+    v78 = [properties containsObject:@"MPModelPropertySongDateReleased"];
     v79 = 0x800000000;
     if (!v78)
     {
@@ -301,7 +301,7 @@
     }
 
     *&self->_requestedSongProperties = *&self->_requestedSongProperties & 0xFFFFFFF7FFFFFFFFLL | v79;
-    v80 = [v14 containsObject:@"MPModelPropertySongClassicalWork"];
+    v80 = [properties containsObject:@"MPModelPropertySongClassicalWork"];
     v81 = 0x1000000000;
     if (!v80)
     {
@@ -309,7 +309,7 @@
     }
 
     *&self->_requestedSongProperties = *&self->_requestedSongProperties & 0xFFFFFFEFFFFFFFFFLL | v81;
-    v82 = [v14 containsObject:@"MPModelPropertySongClassicalMovement"];
+    v82 = [properties containsObject:@"MPModelPropertySongClassicalMovement"];
     v83 = 0x2000000000;
     if (!v82)
     {
@@ -317,7 +317,7 @@
     }
 
     *&self->_requestedSongProperties = *&self->_requestedSongProperties & 0xFFFFFFDFFFFFFFFFLL | v83;
-    v84 = [v14 containsObject:@"MPModelPropertySongClassicalMovementCount"];
+    v84 = [properties containsObject:@"MPModelPropertySongClassicalMovementCount"];
     v85 = 0x4000000000;
     if (!v84)
     {
@@ -325,7 +325,7 @@
     }
 
     *&self->_requestedSongProperties = *&self->_requestedSongProperties & 0xFFFFFFBFFFFFFFFFLL | v85;
-    v86 = [v14 containsObject:@"MPModelPropertySongClassicalMovementNumber"];
+    v86 = [properties containsObject:@"MPModelPropertySongClassicalMovementNumber"];
     v87 = 0x8000000000;
     if (!v86)
     {
@@ -334,14 +334,14 @@
 
     *&self->_requestedSongProperties = *&self->_requestedSongProperties & 0xFFFFFF7FFFFFFFFFLL | v87;
     v129 = v13;
-    v88 = [v13 relationships];
-    v89 = [v88 objectForKey:@"MPModelRelationshipSongAlbum"];
+    relationships2 = [v13 relationships];
+    v89 = [relationships2 objectForKey:@"MPModelRelationshipSongAlbum"];
     v90 = v89;
     if (v89)
     {
-      v91 = [v89 properties];
+      properties2 = [v89 properties];
       *&self->_requestedSongProperties.album |= 1u;
-      if ([v91 containsObject:@"MPModelPropertyAlbumTitle"])
+      if ([properties2 containsObject:@"MPModelPropertyAlbumTitle"])
       {
         v92 = 2;
       }
@@ -352,7 +352,7 @@
       }
 
       *&self->_requestedSongProperties.album = *&self->_requestedSongProperties.album & 0xFD | v92;
-      if ([v91 containsObject:@"MPModelPropertyAlbumReleaseDateComponents"])
+      if ([properties2 containsObject:@"MPModelPropertyAlbumReleaseDateComponents"])
       {
         v93 = 4;
       }
@@ -363,7 +363,7 @@
       }
 
       *&self->_requestedSongProperties.album = *&self->_requestedSongProperties.album & 0xFB | v93;
-      if ([v91 containsObject:@"MPModelPropertyAlbumYear"])
+      if ([properties2 containsObject:@"MPModelPropertyAlbumYear"])
       {
         v94 = 8;
       }
@@ -374,18 +374,18 @@
       }
 
       *&self->_requestedSongProperties.album = *&self->_requestedSongProperties.album & 0xF7 | v94;
-      v95 = [v90 relationships];
-      v96 = [v95 objectForKey:@"MPModelRelationshipAlbumArtist"];
+      relationships3 = [v90 relationships];
+      v96 = [relationships3 objectForKey:@"MPModelRelationshipAlbumArtist"];
       *&self->_requestedSongProperties.album = *&self->_requestedSongProperties.album & 0xEF | (16 * (v96 != 0));
     }
 
-    v97 = [v88 objectForKey:@"MPModelRelationshipSongArtist"];
+    v97 = [relationships2 objectForKey:@"MPModelRelationshipSongArtist"];
     v98 = v97;
     if (v97)
     {
-      v99 = [v97 properties];
+      properties3 = [v97 properties];
       *&self->_requestedSongProperties.artist |= 1u;
-      if ([v99 containsObject:@"MPModelPropertyPersonName"])
+      if ([properties3 containsObject:@"MPModelPropertyPersonName"])
       {
         v100 = 2;
       }
@@ -399,13 +399,13 @@
     }
 
     v128 = v98;
-    v101 = [v88 objectForKey:@"MPModelRelationshipSongComposer"];
+    v101 = [relationships2 objectForKey:@"MPModelRelationshipSongComposer"];
     v102 = v101;
     if (v101)
     {
-      v103 = [v101 properties];
+      properties4 = [v101 properties];
       *&self->_requestedSongProperties.composer |= 1u;
-      if ([v103 containsObject:@"MPModelPropertyPersonName"])
+      if ([properties4 containsObject:@"MPModelPropertyPersonName"])
       {
         v104 = 2;
       }
@@ -418,13 +418,13 @@
       *&self->_requestedSongProperties.composer = *&self->_requestedSongProperties.composer & 0xFD | v104;
     }
 
-    v105 = [v88 objectForKey:@"MPModelRelationshipSongGenre"];
+    v105 = [relationships2 objectForKey:@"MPModelRelationshipSongGenre"];
     v106 = v105;
     if (v105)
     {
-      v107 = [v105 properties];
+      properties5 = [v105 properties];
       *&self->_requestedSongProperties.genre |= 1u;
-      if ([v107 containsObject:@"MPModelPropertyGenreName"])
+      if ([properties5 containsObject:@"MPModelPropertyGenreName"])
       {
         v108 = 2;
       }
@@ -437,19 +437,19 @@
       *&self->_requestedSongProperties.genre = *&self->_requestedSongProperties.genre & 0xFD | v108;
     }
 
-    v109 = [v88 objectForKey:@"MPModelRelationshipSongHomeSharingAsset"];
+    v109 = [relationships2 objectForKey:@"MPModelRelationshipSongHomeSharingAsset"];
     if (v109)
     {
       *&self->_requestedSongProperties.homeSharingAsset |= 1u;
     }
 
-    v110 = [v88 objectForKey:@"MPModelRelationshipSongLyrics"];
+    v110 = [relationships2 objectForKey:@"MPModelRelationshipSongLyrics"];
     v111 = v110;
     if (v110)
     {
-      v112 = [v110 properties];
+      properties6 = [v110 properties];
       *&self->_requestedSongProperties.lyrics |= 1u;
-      if ([v112 containsObject:@"MPModelPropertyLyricsText"])
+      if ([properties6 containsObject:@"MPModelPropertyLyricsText"])
       {
         v113 = 2;
       }
@@ -460,7 +460,7 @@
       }
 
       *&self->_requestedSongProperties.lyrics = *&self->_requestedSongProperties.lyrics & 0xFD | v113;
-      if ([v112 containsObject:@"MPModelPropertyLyricsHasStoreLyrics"])
+      if ([properties6 containsObject:@"MPModelPropertyLyricsHasStoreLyrics"])
       {
         v114 = 4;
       }
@@ -471,7 +471,7 @@
       }
 
       *&self->_requestedSongProperties.lyrics = *&self->_requestedSongProperties.lyrics & 0xFB | v114;
-      if ([v112 containsObject:@"MPModelPropertyLyricsHasTimeSyncedLyrics"])
+      if ([properties6 containsObject:@"MPModelPropertyLyricsHasTimeSyncedLyrics"])
       {
         v115 = 8;
       }
@@ -484,17 +484,17 @@
       *&self->_requestedSongProperties.lyrics = *&self->_requestedSongProperties.lyrics & 0xF7 | v115;
     }
 
-    v116 = [v88 objectForKey:@"MPModelRelationshipSongLocalFileAsset"];
+    v116 = [relationships2 objectForKey:@"MPModelRelationshipSongLocalFileAsset"];
     if (v116)
     {
       *&self->_requestedSongProperties |= 0x20000uLL;
     }
 
-    v117 = [v88 objectForKey:@"MPModelRelationshipSongStoreAsset"];
+    v117 = [relationships2 objectForKey:@"MPModelRelationshipSongStoreAsset"];
     storeAssetProperties = self->_storeAssetProperties;
     self->_storeAssetProperties = v117;
 
-    v119 = [v88 objectForKey:@"MPModelRelationshipSongPlaybackPosition"];
+    v119 = [relationships2 objectForKey:@"MPModelRelationshipSongPlaybackPosition"];
     if (v119)
     {
       v120 = [(MPStoreModelObjectBuilder *)[MPStoreModelPlaybackPositionBuilder alloc] initWithRequestedPropertySet:v119];
@@ -504,9 +504,9 @@
 
     *&self->_requestedSongProperties |= 1uLL;
 
-    a4 = v132;
+    video = videoCopy;
     v10 = v130;
-    v8 = v131;
+    metadataCopy = v131;
   }
 
   v122 = [MPModelGenericObject alloc];
@@ -515,12 +515,12 @@
   v133[1] = 3221225472;
   v133[2] = __129__MPModelStorePlatformMetadataGenericObjectBuilder_genericObjectForStorePlatformMetadata_radioStationContainsVideo_userIdentity___block_invoke;
   v133[3] = &unk_1E767E428;
-  v134 = v8;
-  v135 = self;
+  v134 = metadataCopy;
+  selfCopy = self;
   v136 = v10;
-  v137 = a4;
+  videoCopy2 = video;
   v124 = v10;
-  v125 = v8;
+  v125 = metadataCopy;
   v126 = [(MPModelObject *)v122 initWithIdentifiers:v123 block:v133];
 
   return v126;
@@ -1618,15 +1618,15 @@ void __129__MPModelStorePlatformMetadataGenericObjectBuilder_genericObjectForSto
   }
 }
 
-- (MPModelStorePlatformMetadataGenericObjectBuilder)initWithRequestedProperties:(id)a3
+- (MPModelStorePlatformMetadataGenericObjectBuilder)initWithRequestedProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   v9.receiver = self;
   v9.super_class = MPModelStorePlatformMetadataGenericObjectBuilder;
   v5 = [(MPModelStorePlatformMetadataGenericObjectBuilder *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [propertiesCopy copy];
     requestedProperties = v5->_requestedProperties;
     v5->_requestedProperties = v6;
   }

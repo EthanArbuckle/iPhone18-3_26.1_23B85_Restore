@@ -1,14 +1,14 @@
 @interface SDRPNearFieldController
 + (id)supportedApplicationLabels;
-- (BOOL)supportsApplicationLabel:(id)a3;
+- (BOOL)supportsApplicationLabel:(id)label;
 - (NSString)currentApplicationLabel;
-- (SDRPNearFieldController)initWithDispatchQueue:(id)a3 delegate:(id)a4;
+- (SDRPNearFieldController)initWithDispatchQueue:(id)queue delegate:(id)delegate;
 - (SDRPNearFieldControllerDelegate)delegate;
 - (SDRPNearFieldTransaction)currentTransaction;
 - (int64_t)currentPreferredPollingType;
 - (void)invalidate;
-- (void)invalidateTransaction:(id)a3 updatedPkData:(id)a4 bonjourListenerUUID:(id)a5;
-- (void)startPolling:(int64_t)a3 applicationLabel:(id)a4 pkData:(id)a5 bonjourListenerUUID:(id)a6;
+- (void)invalidateTransaction:(id)transaction updatedPkData:(id)data bonjourListenerUUID:(id)d;
+- (void)startPolling:(int64_t)polling applicationLabel:(id)label pkData:(id)data bonjourListenerUUID:(id)d;
 - (void)stop;
 @end
 
@@ -26,19 +26,19 @@
   return v3;
 }
 
-- (BOOL)supportsApplicationLabel:(id)a3
+- (BOOL)supportsApplicationLabel:(id)label
 {
-  v3 = a3;
-  v4 = [objc_opt_class() supportedApplicationLabels];
-  v5 = [v4 containsObject:v3];
+  labelCopy = label;
+  supportedApplicationLabels = [objc_opt_class() supportedApplicationLabels];
+  v5 = [supportedApplicationLabels containsObject:labelCopy];
 
   return v5;
 }
 
-- (SDRPNearFieldController)initWithDispatchQueue:(id)a3 delegate:(id)a4
+- (SDRPNearFieldController)initWithDispatchQueue:(id)queue delegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  queueCopy = queue;
+  delegateCopy = delegate;
   v15.receiver = self;
   v15.super_class = SDRPNearFieldController;
   v9 = [(SDRPNearFieldController *)&v15 init];
@@ -51,8 +51,8 @@
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "SDRPNearFieldController init", v14, 2u);
     }
 
-    objc_storeStrong(&v9->_dispatchQueue, a3);
-    v11 = [[RPNearFieldController alloc] initWithDispatchQueue:v7 delegate:v8];
+    objc_storeStrong(&v9->_dispatchQueue, queue);
+    v11 = [[RPNearFieldController alloc] initWithDispatchQueue:queueCopy delegate:delegateCopy];
     nearFieldController = v9->_nearFieldController;
     v9->_nearFieldController = v11;
   }
@@ -62,41 +62,41 @@
 
 - (SDRPNearFieldControllerDelegate)delegate
 {
-  v2 = [(SDRPNearFieldController *)self nearFieldController];
-  v3 = [v2 delegate];
+  nearFieldController = [(SDRPNearFieldController *)self nearFieldController];
+  delegate = [nearFieldController delegate];
 
-  return v3;
+  return delegate;
 }
 
 - (int64_t)currentPreferredPollingType
 {
-  v2 = [(SDRPNearFieldController *)self nearFieldController];
-  v3 = [v2 currentPreferredPollingType];
+  nearFieldController = [(SDRPNearFieldController *)self nearFieldController];
+  currentPreferredPollingType = [nearFieldController currentPreferredPollingType];
 
-  return v3;
+  return currentPreferredPollingType;
 }
 
 - (NSString)currentApplicationLabel
 {
-  v2 = [(SDRPNearFieldController *)self nearFieldController];
-  v3 = [v2 currentApplicationLabel];
+  nearFieldController = [(SDRPNearFieldController *)self nearFieldController];
+  currentApplicationLabel = [nearFieldController currentApplicationLabel];
 
-  return v3;
+  return currentApplicationLabel;
 }
 
 - (SDRPNearFieldTransaction)currentTransaction
 {
-  v2 = [(SDRPNearFieldController *)self nearFieldController];
-  v3 = [v2 currentTransaction];
+  nearFieldController = [(SDRPNearFieldController *)self nearFieldController];
+  currentTransaction = [nearFieldController currentTransaction];
 
-  return v3;
+  return currentTransaction;
 }
 
-- (void)startPolling:(int64_t)a3 applicationLabel:(id)a4 pkData:(id)a5 bonjourListenerUUID:(id)a6
+- (void)startPolling:(int64_t)polling applicationLabel:(id)label pkData:(id)data bonjourListenerUUID:(id)d
 {
-  v10 = a5;
-  v11 = a6;
-  v12 = a4;
+  dataCopy = data;
+  dCopy = d;
+  labelCopy = label;
   v13 = airdrop_log();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
@@ -109,17 +109,17 @@
   {
     v15 = v14;
     v16 = +[SDRPNearFieldController supportedApplicationLabels];
-    v17 = [v15 initWithApplicationLabel:v12 supportedApplicationLabels:v16 pkData:v10 bonjourListenerUUID:v11];
+    v17 = [v15 initWithApplicationLabel:labelCopy supportedApplicationLabels:v16 pkData:dataCopy bonjourListenerUUID:dCopy];
   }
 
   else
   {
-    v17 = [v14 initWithApplicationLabel:v12 pkData:v10 bonjourListenerUUID:v11];
+    v17 = [v14 initWithApplicationLabel:labelCopy pkData:dataCopy bonjourListenerUUID:dCopy];
   }
 
-  [(SDRPNearFieldController *)self setCurrentApplicationLabel:v12];
+  [(SDRPNearFieldController *)self setCurrentApplicationLabel:labelCopy];
 
-  [(RPNearFieldController *)self->_nearFieldController startPolling:a3 context:v17];
+  [(RPNearFieldController *)self->_nearFieldController startPolling:polling context:v17];
 }
 
 - (void)stop
@@ -150,33 +150,33 @@
   [(SDRPNearFieldController *)self setCurrentApplicationLabel:0];
 }
 
-- (void)invalidateTransaction:(id)a3 updatedPkData:(id)a4 bonjourListenerUUID:(id)a5
+- (void)invalidateTransaction:(id)transaction updatedPkData:(id)data bonjourListenerUUID:(id)d
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  dCopy = d;
+  dataCopy = data;
+  transactionCopy = transaction;
   v11 = [RPNearFieldContext alloc];
   if (objc_opt_respondsToSelector())
   {
-    v12 = v11;
-    v13 = [(SDRPNearFieldController *)self currentApplicationLabel];
+    currentApplicationLabel2 = v11;
+    currentApplicationLabel = [(SDRPNearFieldController *)self currentApplicationLabel];
     v14 = +[SDRPNearFieldController supportedApplicationLabels];
-    v17 = [v12 initWithApplicationLabel:v13 supportedApplicationLabels:v14 pkData:v9 bonjourListenerUUID:v8];
+    v17 = [currentApplicationLabel2 initWithApplicationLabel:currentApplicationLabel supportedApplicationLabels:v14 pkData:dataCopy bonjourListenerUUID:dCopy];
 
-    v15 = v9;
-    v8 = v14;
-    v9 = v13;
+    v15 = dataCopy;
+    dCopy = v14;
+    dataCopy = currentApplicationLabel;
   }
 
   else
   {
     nearFieldController = self->_nearFieldController;
     v15 = v11;
-    v12 = [(RPNearFieldController *)nearFieldController currentApplicationLabel];
-    v17 = [v15 initWithApplicationLabel:v12 pkData:v9 bonjourListenerUUID:v8];
+    currentApplicationLabel2 = [(RPNearFieldController *)nearFieldController currentApplicationLabel];
+    v17 = [v15 initWithApplicationLabel:currentApplicationLabel2 pkData:dataCopy bonjourListenerUUID:dCopy];
   }
 
-  [(RPNearFieldController *)self->_nearFieldController invalidateTransaction:v10 context:v17];
+  [(RPNearFieldController *)self->_nearFieldController invalidateTransaction:transactionCopy context:v17];
 }
 
 @end

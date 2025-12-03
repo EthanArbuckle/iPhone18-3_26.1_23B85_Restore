@@ -2,16 +2,16 @@
 - (BOOL)canScroll;
 - (CGSize)contentSize;
 - (THInteractiveScrollLayer)init;
-- (id)swapIntoView:(id)a3;
+- (id)swapIntoView:(id)view;
 - (void)dealloc;
 - (void)layoutSublayers;
-- (void)setBottomContentPadding:(double)a3;
-- (void)setBottomFadeImage:(id)a3;
-- (void)setContentLayer:(id)a3;
-- (void)setShowFadeImages:(BOOL)a3;
-- (void)setTopContentPadding:(double)a3;
-- (void)setTopFadeImage:(id)a3;
-- (void)swapOutOfView:(id)a3;
+- (void)setBottomContentPadding:(double)padding;
+- (void)setBottomFadeImage:(id)image;
+- (void)setContentLayer:(id)layer;
+- (void)setShowFadeImages:(BOOL)images;
+- (void)setTopContentPadding:(double)padding;
+- (void)setTopFadeImage:(id)image;
+- (void)swapOutOfView:(id)view;
 @end
 
 @implementation THInteractiveScrollLayer
@@ -41,14 +41,14 @@
   [(THInteractiveScrollLayer *)&v3 dealloc];
 }
 
-- (void)setContentLayer:(id)a3
+- (void)setContentLayer:(id)layer
 {
   contentLayer = self->_contentLayer;
-  if (contentLayer != a3)
+  if (contentLayer != layer)
   {
     [(CALayer *)contentLayer removeFromSuperlayer];
 
-    self->_contentLayer = a3;
+    self->_contentLayer = layer;
     [(CAScrollLayer *)self->_scrollLayer setContentOffset:CGPointZero.x, CGPointZero.y];
     scrollLayer = self->_scrollLayer;
     v7 = self->_contentLayer;
@@ -57,53 +57,53 @@
   }
 }
 
-- (void)setTopFadeImage:(id)a3
+- (void)setTopFadeImage:(id)image
 {
   topFadeImage = self->_topFadeImage;
-  if (topFadeImage != a3)
+  if (topFadeImage != image)
   {
 
-    self->_topFadeImage = a3;
+    self->_topFadeImage = image;
 
     [(THInteractiveScrollLayer *)self setNeedsLayout];
   }
 }
 
-- (void)setBottomFadeImage:(id)a3
+- (void)setBottomFadeImage:(id)image
 {
   bottomFadeImage = self->_bottomFadeImage;
-  if (bottomFadeImage != a3)
+  if (bottomFadeImage != image)
   {
 
-    self->_bottomFadeImage = a3;
+    self->_bottomFadeImage = image;
 
     [(THInteractiveScrollLayer *)self setNeedsLayout];
   }
 }
 
-- (void)setShowFadeImages:(BOOL)a3
+- (void)setShowFadeImages:(BOOL)images
 {
-  if (self->_showFadeImages != a3)
+  if (self->_showFadeImages != images)
   {
-    self->_showFadeImages = a3;
+    self->_showFadeImages = images;
     [(THInteractiveScrollLayer *)self setNeedsLayout];
   }
 }
 
-- (void)setTopContentPadding:(double)a3
+- (void)setTopContentPadding:(double)padding
 {
-  if (self->_topContentPadding != a3)
+  if (self->_topContentPadding != padding)
   {
-    self->_topContentPadding = a3;
+    self->_topContentPadding = padding;
     [(THInteractiveScrollLayer *)self setNeedsLayout];
   }
 }
 
-- (void)setBottomContentPadding:(double)a3
+- (void)setBottomContentPadding:(double)padding
 {
-  if (self->_bottomContentPadding != a3)
+  if (self->_bottomContentPadding != padding)
   {
-    self->_bottomContentPadding = a3;
+    self->_bottomContentPadding = padding;
     [(THInteractiveScrollLayer *)self setNeedsLayout];
   }
 }
@@ -153,7 +153,7 @@
   [(CALayer *)self->_bottomFadeLayer setHidden:!self->_showFadeImages];
 }
 
-- (id)swapIntoView:(id)a3
+- (id)swapIntoView:(id)view
 {
   if ([(THInteractiveScrollLayer *)self needsLayout])
   {
@@ -197,9 +197,9 @@
   [v8 setContentOffset:?];
   objc_setAssociatedObject(v6, &off_45F0F8, v8, &dword_0 + 1);
 
-  if (a3)
+  if (view)
   {
-    v18 = [a3 objectForKey:@"scrollViewBlock"];
+    v18 = [view objectForKey:@"scrollViewBlock"];
     if (v18)
     {
       v18[2](v18, v8);
@@ -209,11 +209,11 @@
   return v6;
 }
 
-- (void)swapOutOfView:(id)a3
+- (void)swapOutOfView:(id)view
 {
   [(CAScrollLayer *)self->_scrollLayer addSublayer:self->_contentLayer];
   objc_opt_class();
-  objc_getAssociatedObject(a3, &off_45F0F8);
+  objc_getAssociatedObject(view, &off_45F0F8);
   v5 = TSUDynamicCast();
   if (!v5)
   {

@@ -1,6 +1,6 @@
 @interface OfflineMapFooterActionsSectionController
 - (OfflineMapDetailsActionSectionControllerDelegate)actionDelegate;
-- (OfflineMapFooterActionsSectionController)initWithSubscriptionInfo:(id)a3;
+- (OfflineMapFooterActionsSectionController)initWithSubscriptionInfo:(id)info;
 - (void)_commonInit;
 @end
 
@@ -35,8 +35,8 @@
   objc_copyWeak(&v16, &location);
   [(FooterContaineeAction *)self->_removeAction setActionBlock:&v12];
   [(SimpleContaineeAction *)self->_removeAction setAccessibilityIdentifier:@"DeleteMapButton", v12, v13, v14, v15];
-  v8 = [(SimpleContaineeAction *)self->_removeAction title];
-  [(FooterContaineeAction *)self->_removeAction setAccessibilityLabel:v8];
+  title = [(SimpleContaineeAction *)self->_removeAction title];
+  [(FooterContaineeAction *)self->_removeAction setAccessibilityLabel:title];
 
   v18 = self->_removeAction;
   v9 = [NSArray arrayWithObjects:&v18 count:1];
@@ -50,11 +50,11 @@
   objc_destroyWeak(&location);
 }
 
-- (OfflineMapFooterActionsSectionController)initWithSubscriptionInfo:(id)a3
+- (OfflineMapFooterActionsSectionController)initWithSubscriptionInfo:(id)info
 {
   v6.receiver = self;
   v6.super_class = OfflineMapFooterActionsSectionController;
-  v3 = [(OfflineMapSectionController *)&v6 initWithSubscriptionInfo:a3];
+  v3 = [(OfflineMapSectionController *)&v6 initWithSubscriptionInfo:info];
   v4 = v3;
   if (v3)
   {

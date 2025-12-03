@@ -1,33 +1,33 @@
 @interface OKWidgetLabelViewProxy
 + (id)supportedSettings;
-+ (void)setupJavascriptContext:(id)a3;
-- (BOOL)prepareForDisplay:(BOOL)a3;
-- (BOOL)prepareForUnload:(BOOL)a3;
-- (BOOL)prepareForWarmup:(BOOL)a3;
-- (OKWidgetLabelViewProxy)initWithWidget:(id)a3;
++ (void)setupJavascriptContext:(id)context;
+- (BOOL)prepareForDisplay:(BOOL)display;
+- (BOOL)prepareForUnload:(BOOL)unload;
+- (BOOL)prepareForWarmup:(BOOL)warmup;
+- (OKWidgetLabelViewProxy)initWithWidget:(id)widget;
 - (float)settingFontSize;
 - (id)layoutSettingsKeys;
 - (id)settingFontName;
 - (id)settingText;
 - (id)settingTextColor;
-- (id)valueForUndefinedKey:(id)a3;
+- (id)valueForUndefinedKey:(id)key;
 - (int64_t)settingTextAlignment;
 - (void)dealloc;
-- (void)setSettingFontName:(id)a3;
-- (void)setSettingFontSize:(float)a3;
-- (void)setSettingText:(id)a3;
-- (void)setSettingTextAlignment:(int64_t)a3;
-- (void)setSettingTextBackgroundColor:(id)a3;
-- (void)setSettingTextColor:(id)a3;
+- (void)setSettingFontName:(id)name;
+- (void)setSettingFontSize:(float)size;
+- (void)setSettingText:(id)text;
+- (void)setSettingTextAlignment:(int64_t)alignment;
+- (void)setSettingTextBackgroundColor:(id)color;
+- (void)setSettingTextColor:(id)color;
 @end
 
 @implementation OKWidgetLabelViewProxy
 
-- (OKWidgetLabelViewProxy)initWithWidget:(id)a3
+- (OKWidgetLabelViewProxy)initWithWidget:(id)widget
 {
   v6.receiver = self;
   v6.super_class = OKWidgetLabelViewProxy;
-  v3 = [(OKWidgetViewProxy *)&v6 initWithWidget:a3];
+  v3 = [(OKWidgetViewProxy *)&v6 initWithWidget:widget];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x277D756B8]);
@@ -76,7 +76,7 @@
 + (id)supportedSettings
 {
   v26[10] = *MEMORY[0x277D85DE8];
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS___OKWidgetLabelViewProxy;
   v2 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:{objc_msgSendSuper2(&v4, sel_supportedSettings)}];
   v25[0] = @"fontFileName";
@@ -149,25 +149,25 @@
   return v2;
 }
 
-- (id)valueForUndefinedKey:(id)a3
+- (id)valueForUndefinedKey:(id)key
 {
   v4.receiver = self;
   v4.super_class = OKWidgetLabelViewProxy;
-  return [(OKWidgetViewProxy *)&v4 valueForUndefinedKey:a3];
+  return [(OKWidgetViewProxy *)&v4 valueForUndefinedKey:key];
 }
 
 - (int64_t)settingTextAlignment
 {
-  v2 = [(OKWidgetLabelViewProxy *)self label];
+  label = [(OKWidgetLabelViewProxy *)self label];
 
-  return [v2 textAlignment];
+  return [label textAlignment];
 }
 
-- (void)setSettingTextAlignment:(int64_t)a3
+- (void)setSettingTextAlignment:(int64_t)alignment
 {
-  v4 = [(OKWidgetLabelViewProxy *)self label];
+  label = [(OKWidgetLabelViewProxy *)self label];
 
-  [v4 setTextAlignment:a3];
+  [label setTextAlignment:alignment];
 }
 
 - (id)settingFontName
@@ -177,7 +177,7 @@
   return [v2 fontName];
 }
 
-- (void)setSettingFontName:(id)a3
+- (void)setSettingFontName:(id)name
 {
   v5 = [-[OKWidgetLabelViewProxy label](self "label")];
   if (v5)
@@ -199,10 +199,10 @@
     v7 = v9 * 12.0;
   }
 
-  v11 = [v8 fontWithName:a3 size:v7];
-  v12 = [(OKWidgetLabelViewProxy *)self label];
+  v11 = [v8 fontWithName:name size:v7];
+  label = [(OKWidgetLabelViewProxy *)self label];
 
-  [v12 setFont:v11];
+  [label setFont:v11];
 }
 
 - (float)settingFontSize
@@ -224,7 +224,7 @@
   return v7 / v8;
 }
 
-- (void)setSettingFontSize:(float)a3
+- (void)setSettingFontSize:(float)size
 {
   [(OKWidgetViewProxy *)self layoutFactor];
   v6 = v5;
@@ -242,7 +242,7 @@
       v10 = v6;
     }
 
-    v11 = [v9 fontWithSize:v10 * a3];
+    v11 = [v9 fontWithSize:v10 * size];
   }
 
   else
@@ -257,77 +257,77 @@
       v12 = v6;
     }
 
-    v11 = [MEMORY[0x277D74300] systemFontOfSize:v12 * a3];
+    v11 = [MEMORY[0x277D74300] systemFontOfSize:v12 * size];
   }
 
   v13 = v11;
-  v14 = [(OKWidgetLabelViewProxy *)self label];
+  label = [(OKWidgetLabelViewProxy *)self label];
 
-  [v14 setFont:v13];
+  [label setFont:v13];
 }
 
 - (id)settingTextColor
 {
-  v2 = [(OKWidgetLabelViewProxy *)self label];
+  label = [(OKWidgetLabelViewProxy *)self label];
 
-  return [v2 textColor];
+  return [label textColor];
 }
 
-- (void)setSettingTextColor:(id)a3
+- (void)setSettingTextColor:(id)color
 {
-  v4 = [(OKWidgetLabelViewProxy *)self label];
+  label = [(OKWidgetLabelViewProxy *)self label];
 
-  [v4 setTextColor:a3];
+  [label setTextColor:color];
 }
 
-- (void)setSettingTextBackgroundColor:(id)a3
+- (void)setSettingTextBackgroundColor:(id)color
 {
-  v4 = [(OKWidgetLabelViewProxy *)self label];
+  label = [(OKWidgetLabelViewProxy *)self label];
 
-  [v4 setBackgroundColor:a3];
+  [label setBackgroundColor:color];
 }
 
 - (id)settingText
 {
-  v2 = [(OKWidgetLabelViewProxy *)self label];
+  label = [(OKWidgetLabelViewProxy *)self label];
 
-  return [v2 text];
+  return [label text];
 }
 
-- (void)setSettingText:(id)a3
+- (void)setSettingText:(id)text
 {
-  v4 = [(OKWidgetLabelViewProxy *)self label];
+  label = [(OKWidgetLabelViewProxy *)self label];
 
-  [v4 setText:a3];
+  [label setText:text];
 }
 
-- (BOOL)prepareForDisplay:(BOOL)a3
-{
-  v4.receiver = self;
-  v4.super_class = OKWidgetLabelViewProxy;
-  return [(OKWidgetViewProxy *)&v4 prepareForDisplay:a3];
-}
-
-- (BOOL)prepareForWarmup:(BOOL)a3
+- (BOOL)prepareForDisplay:(BOOL)display
 {
   v4.receiver = self;
   v4.super_class = OKWidgetLabelViewProxy;
-  return [(OKWidgetViewProxy *)&v4 prepareForWarmup:a3];
+  return [(OKWidgetViewProxy *)&v4 prepareForDisplay:display];
 }
 
-- (BOOL)prepareForUnload:(BOOL)a3
+- (BOOL)prepareForWarmup:(BOOL)warmup
 {
   v4.receiver = self;
   v4.super_class = OKWidgetLabelViewProxy;
-  return [(OKWidgetViewProxy *)&v4 prepareForUnload:a3];
+  return [(OKWidgetViewProxy *)&v4 prepareForWarmup:warmup];
 }
 
-+ (void)setupJavascriptContext:(id)a3
+- (BOOL)prepareForUnload:(BOOL)unload
 {
-  [a3 setObject:objc_opt_class() forKeyedSubscript:@"OKWidgetLabelView"];
+  v4.receiver = self;
+  v4.super_class = OKWidgetLabelViewProxy;
+  return [(OKWidgetViewProxy *)&v4 prepareForUnload:unload];
+}
+
++ (void)setupJavascriptContext:(id)context
+{
+  [context setObject:objc_opt_class() forKeyedSubscript:@"OKWidgetLabelView"];
   v4 = objc_opt_class();
 
-  [OKSettings exportClassSettings:v4 toJavaScriptContext:a3];
+  [OKSettings exportClassSettings:v4 toJavaScriptContext:context];
 }
 
 @end

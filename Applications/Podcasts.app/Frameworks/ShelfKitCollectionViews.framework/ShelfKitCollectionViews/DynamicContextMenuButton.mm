@@ -1,8 +1,8 @@
 @interface DynamicContextMenuButton
 - (CGSize)intrinsicContentSize;
 - (UIColor)tintColor;
-- (_TtC23ShelfKitCollectionViews24DynamicContextMenuButton)initWithCoder:(id)a3;
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4;
+- (_TtC23ShelfKitCollectionViews24DynamicContextMenuButton)initWithCoder:(id)coder;
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location;
 @end
 
 @implementation DynamicContextMenuButton
@@ -15,7 +15,7 @@
   return result;
 }
 
-- (_TtC23ShelfKitCollectionViews24DynamicContextMenuButton)initWithCoder:(id)a3
+- (_TtC23ShelfKitCollectionViews24DynamicContextMenuButton)initWithCoder:(id)coder
 {
   *&self->button[OBJC_IVAR____TtC23ShelfKitCollectionViews24DynamicContextMenuButton_configProvider] = 0;
   swift_unknownObjectWeakInit();
@@ -28,12 +28,12 @@
   return result;
 }
 
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
-  v8 = self;
+  y = location.y;
+  x = location.x;
+  interactionCopy = interaction;
+  selfCopy = self;
   v9 = sub_E4508(x, y);
 
   return v9;
@@ -41,9 +41,9 @@
 
 - (UIColor)tintColor
 {
-  v2 = [*(&self->super.super.super.super.isa + OBJC_IVAR____TtC23ShelfKitCollectionViews24DynamicContextMenuButton_button) tintColor];
+  tintColor = [*(&self->super.super.super.super.isa + OBJC_IVAR____TtC23ShelfKitCollectionViews24DynamicContextMenuButton_button) tintColor];
 
-  return v2;
+  return tintColor;
 }
 
 @end

@@ -1,33 +1,33 @@
 @interface REMeshPartDescriptor
 + (NSArray)coreAttributeNames;
-- (BOOL)validateAttribute:(id)a3 withName:(id)a4 payloadSize:(FixedInlineArray<unsigned)long required:(8UL> *)a5 error:(BOOL)a6;
-- (BOOL)validateWithPayloadSize:(const void *)a3 error:(id *)a4;
-- (MeshPart)meshPartWithPayloadBuffer:(SEL)a3 partIndexInModel:(const void *)a4;
-- (REMeshPartDescriptor)initWithCoder:(id)a3;
-- (REMeshPartDescriptor)initWithMeshAssetPart:(const void *)a3 partTransform:(id *)a4 payloadBuilder:(void *)a5;
-- (REMeshPartDescriptor)initWithName:(__n128)a3 vertexCount:(__n128)a4 indexCount:(__n128)a5 instanceCount:(__n128)a6 attributes:(__n128)a7 materialIndex:(uint64_t)a8 boundingBoxMin:(void *)a9 boundingBoxMax:(unsigned int)a10 doubleSidedFlag:(unsigned int)a11 windingOrderIsCCW:(unsigned int)a12 transform:(void *)a13 preSplitVertexCount:(unsigned int)a14 patchCount:(unsigned __int8)a15;
-- (REMeshPartDescriptor)initWithResourceDefinition:(const void *)a3 meshPart:(const void *)a4 payloadBuilder:(void *)a5;
+- (BOOL)validateAttribute:(id)attribute withName:(id)name payloadSize:(FixedInlineArray<unsigned)long required:(8UL> *)required error:(BOOL)error;
+- (BOOL)validateWithPayloadSize:(const void *)size error:(id *)error;
+- (MeshPart)meshPartWithPayloadBuffer:(SEL)buffer partIndexInModel:(const void *)model;
+- (REMeshPartDescriptor)initWithCoder:(id)coder;
+- (REMeshPartDescriptor)initWithMeshAssetPart:(const void *)part partTransform:(id *)transform payloadBuilder:(void *)builder;
+- (REMeshPartDescriptor)initWithName:(__n128)name vertexCount:(__n128)count indexCount:(__n128)indexCount instanceCount:(__n128)instanceCount attributes:(__n128)attributes materialIndex:(uint64_t)index boundingBoxMin:(void *)min boundingBoxMax:(unsigned int)self0 doubleSidedFlag:(unsigned int)self1 windingOrderIsCCW:(unsigned int)self2 transform:(void *)self3 preSplitVertexCount:(unsigned int)self4 patchCount:(unsigned __int8)self5;
+- (REMeshPartDescriptor)initWithResourceDefinition:(const void *)definition meshPart:(const void *)part payloadBuilder:(void *)builder;
 - (unint64_t)estimateContainerSize;
 - (unint64_t)indexBufferSize;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation REMeshPartDescriptor
 
-- (REMeshPartDescriptor)initWithMeshAssetPart:(const void *)a3 partTransform:(id *)a4 payloadBuilder:(void *)a5
+- (REMeshPartDescriptor)initWithMeshAssetPart:(const void *)part partTransform:(id *)transform payloadBuilder:(void *)builder
 {
   v46 = *MEMORY[0x1E69E9840];
-  v40 = [MEMORY[0x1E696AEC0] stringWithUTF8String:*(a3 + 10)];
+  v40 = [MEMORY[0x1E696AEC0] stringWithUTF8String:*(part + 10)];
   v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v9 = *(a3 + 2);
+  v9 = *(part + 2);
   if (!v9)
   {
 LABEL_12:
-    v19 = *(a3 + 58);
+    v19 = *(part + 58);
     if (v19)
     {
       v20 = 0;
-      v21 = *(a3 + 27);
+      v21 = *(part + 27);
       while (1)
       {
         v22 = *v21;
@@ -39,7 +39,7 @@ LABEL_12:
 
         if (v19 == ++v20)
         {
-          LODWORD(v20) = *(a3 + 58);
+          LODWORD(v20) = *(part + 58);
           break;
         }
       }
@@ -53,15 +53,15 @@ LABEL_12:
     if (v20 == v19)
     {
 LABEL_39:
-      v33 = *(a3 + 195) == 1;
-      if (!*(a3 + 194))
+      v33 = *(part + 195) == 1;
+      if (!*(part + 194))
       {
         v33 = 2;
       }
 
-      if (*(a3 + 192))
+      if (*(part + 192))
       {
-        v34 = *(a3 + 193);
+        v34 = *(part + 193);
       }
 
       else
@@ -69,16 +69,16 @@ LABEL_39:
         v34 = 2;
       }
 
-      HIDWORD(v38) = *(a3 + 15);
-      LODWORD(v39) = *(a3 + 16);
+      HIDWORD(v38) = *(part + 15);
+      LODWORD(v39) = *(part + 16);
       BYTE1(v38) = v33;
       LOBYTE(v38) = v34;
-      v35 = [(REMeshPartDescriptor *)self initWithName:v40 vertexCount:*(a3 + 12) indexCount:*(a3 + 10) instanceCount:*(a3 + 13) attributes:v8 materialIndex:*(a3 + 28) boundingBoxMin:*(a3 + 12) boundingBoxMax:*(a3 + 14) doubleSidedFlag:*a4 windingOrderIsCCW:*(a4 + 2) transform:*(a4 + 4) preSplitVertexCount:*(a4 + 6) patchCount:v38, v39];
+      v35 = [(REMeshPartDescriptor *)self initWithName:v40 vertexCount:*(part + 12) indexCount:*(part + 10) instanceCount:*(part + 13) attributes:v8 materialIndex:*(part + 28) boundingBoxMin:*(part + 12) boundingBoxMax:*(part + 14) doubleSidedFlag:*transform windingOrderIsCCW:*(transform + 2) transform:*(transform + 4) preSplitVertexCount:*(transform + 6) patchCount:v38, v39];
       self = v35;
       goto LABEL_45;
     }
 
-    v23 = *(a3 + 27);
+    v23 = *(part + 27);
     while (1)
     {
       v24 = v23 + 80 * v20;
@@ -120,17 +120,17 @@ LABEL_39:
       }
 
 LABEL_30:
-      if (*(a3 + 58) <= (v20 + 1))
+      if (*(part + 58) <= (v20 + 1))
       {
         v32 = v20 + 1;
       }
 
       else
       {
-        v32 = *(a3 + 58);
+        v32 = *(part + 58);
       }
 
-      v23 = *(a3 + 27);
+      v23 = *(part + 27);
       while (v32 - 1 != v20)
       {
         LODWORD(v20) = v20 + 1;
@@ -149,7 +149,7 @@ LABEL_38:
     }
   }
 
-  v10 = *(a3 + 4);
+  v10 = *(part + 4);
   v11 = 80 * v9;
   while (1)
   {
@@ -182,7 +182,7 @@ LABEL_38:
       goto LABEL_11;
     }
 
-    v18 = [[REMeshAttributeDescriptor alloc] initWithMeshAssetBuffer:v10 payloadBuilder:a5];
+    v18 = [[REMeshAttributeDescriptor alloc] initWithMeshAssetBuffer:v10 payloadBuilder:builder];
     if (!v18)
     {
       break;
@@ -213,14 +213,14 @@ LABEL_45:
   return v35;
 }
 
-- (REMeshPartDescriptor)initWithResourceDefinition:(const void *)a3 meshPart:(const void *)a4 payloadBuilder:(void *)a5
+- (REMeshPartDescriptor)initWithResourceDefinition:(const void *)definition meshPart:(const void *)part payloadBuilder:(void *)builder
 {
   v9 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v44 = self;
-  v10 = *(a3 + 7);
-  v11 = *(a3 + 5);
-  v12 = *(a4 + 4);
-  v13 = *(a4 + 2);
+  selfCopy = self;
+  v10 = *(definition + 7);
+  v11 = *(definition + 5);
+  v12 = *(part + 4);
+  v13 = *(part + 2);
   v14 = v9;
   if (v46)
   {
@@ -306,9 +306,9 @@ LABEL_45:
   else
   {
 LABEL_21:
-    if (*(a4 + 114))
+    if (*(part + 114))
     {
-      v34 = *(a4 + 115) == 1;
+      v34 = *(part + 115) == 1;
     }
 
     else
@@ -324,20 +324,20 @@ LABEL_21:
       [v36 count];
     }
 
-    if (*(a4 + 6))
+    if (*(part + 6))
     {
-      v37 = *(a4 + 7);
+      v37 = *(part + 7);
     }
 
     else
     {
-      v37 = a4 + 49;
+      v37 = part + 49;
     }
 
     v38 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v37];
-    if (*(a4 + 112))
+    if (*(part + 112))
     {
-      v39 = *(a4 + 113);
+      v39 = *(part + 113);
     }
 
     else
@@ -345,11 +345,11 @@ LABEL_21:
       v39 = 2;
     }
 
-    HIDWORD(v42) = *(a4 + 30);
+    HIDWORD(v42) = *(part + 30);
     LODWORD(v43) = 0;
     BYTE1(v42) = v34;
     LOBYTE(v42) = v39;
-    v40 = [REMeshPartDescriptor initWithName:v44 vertexCount:"initWithName:vertexCount:indexCount:instanceCount:attributes:materialIndex:boundingBoxMin:boundingBoxMax:doubleSidedFlag:windingOrderIsCCW:transform:preSplitVertexCount:patchCount:" indexCount:v38 instanceCount:*(a4 + 10) attributes:*(a4 + 12) materialIndex:*MEMORY[0x1E69E9B18] boundingBoxMin:*(MEMORY[0x1E69E9B18] + 16) boundingBoxMax:*(MEMORY[0x1E69E9B18] + 32) doubleSidedFlag:*(MEMORY[0x1E69E9B18] + 48) windingOrderIsCCW:v42 transform:v43 preSplitVertexCount:? patchCount:?];
+    v40 = [REMeshPartDescriptor initWithName:selfCopy vertexCount:"initWithName:vertexCount:indexCount:instanceCount:attributes:materialIndex:boundingBoxMin:boundingBoxMax:doubleSidedFlag:windingOrderIsCCW:transform:preSplitVertexCount:patchCount:" indexCount:v38 instanceCount:*(part + 10) attributes:*(part + 12) materialIndex:*MEMORY[0x1E69E9B18] boundingBoxMin:*(MEMORY[0x1E69E9B18] + 16) boundingBoxMax:*(MEMORY[0x1E69E9B18] + 32) doubleSidedFlag:*(MEMORY[0x1E69E9B18] + 48) windingOrderIsCCW:v42 transform:v43 preSplitVertexCount:? patchCount:?];
 
     re::FixedArray<re::MeshVertexAttributeBuffers::Attribute>::deinit(&v45);
     return v40;
@@ -358,7 +358,7 @@ LABEL_21:
   return result;
 }
 
-- (MeshPart)meshPartWithPayloadBuffer:(SEL)a3 partIndexInModel:(const void *)a4
+- (MeshPart)meshPartWithPayloadBuffer:(SEL)buffer partIndexInModel:(const void *)model
 {
   v72 = *MEMORY[0x1E69E9840];
   result = [(REMeshPartDescriptor *)self materialIndex];
@@ -373,8 +373,8 @@ LABEL_21:
     ++v68;
     if ([(REMeshPartDescriptor *)self isIndexed])
     {
-      v11 = [(REMeshPartDescriptor *)self indexType];
-      if (v11 == 1)
+      indexType = [(REMeshPartDescriptor *)self indexType];
+      if (indexType == 1)
       {
         v12 = 36;
       }
@@ -384,7 +384,7 @@ LABEL_21:
         v12 = 0;
       }
 
-      if (v11)
+      if (indexType)
       {
         v13 = v12;
       }
@@ -395,7 +395,7 @@ LABEL_21:
       }
 
       LOWORD(v63[0]) = v13;
-      re::MeshPayloadBuffers::slice(a4, 4, [(REMeshPartDescriptor *)self indexPayloadOffset], [(REMeshPartDescriptor *)self indexBufferSize]);
+      re::MeshPayloadBuffers::slice(model, 4, [(REMeshPartDescriptor *)self indexPayloadOffset], [(REMeshPartDescriptor *)self indexBufferSize]);
       v65 = 0xFFFFFFFF00000000;
       re::DynamicArray<re::NamedVertexBuffer>::add(v66, v62);
       if (v64 != -1)
@@ -430,13 +430,13 @@ LABEL_21:
           }
 
           v18 = *(*(&v58 + 1) + 8 * i);
-          v19 = [(REMeshPartDescriptor *)self coreAttributes];
-          v20 = [v19 objectForKeyedSubscript:v18];
+          coreAttributes = [(REMeshPartDescriptor *)self coreAttributes];
+          v20 = [coreAttributes objectForKeyedSubscript:v18];
 
           if (v20)
           {
             v21 = v18;
-            [v20 addBufferToArray:v66 name:objc_msgSend(v18 payloadBuffer:{"UTF8String"), a4}];
+            [v20 addBufferToArray:v66 name:objc_msgSend(v18 payloadBuffer:{"UTF8String"), model}];
           }
         }
 
@@ -450,8 +450,8 @@ LABEL_21:
     v57 = 0u;
     v54 = 0u;
     v55 = 0u;
-    v22 = [(REMeshPartDescriptor *)self customAttributes];
-    v23 = [v22 countByEnumeratingWithState:&v54 objects:v70 count:16];
+    customAttributes = [(REMeshPartDescriptor *)self customAttributes];
+    v23 = [customAttributes countByEnumeratingWithState:&v54 objects:v70 count:16];
     if (v23)
     {
       v24 = *v55;
@@ -461,18 +461,18 @@ LABEL_21:
         {
           if (*v55 != v24)
           {
-            objc_enumerationMutation(v22);
+            objc_enumerationMutation(customAttributes);
           }
 
           v26 = *(*(&v54 + 1) + 8 * j);
-          v27 = [(REMeshPartDescriptor *)self customAttributes];
-          v28 = [v27 objectForKeyedSubscript:v26];
+          customAttributes2 = [(REMeshPartDescriptor *)self customAttributes];
+          v28 = [customAttributes2 objectForKeyedSubscript:v26];
 
           v29 = v26;
-          [v28 addBufferToArray:v66 name:objc_msgSend(v26 payloadBuffer:{"UTF8String"), a4}];
+          [v28 addBufferToArray:v66 name:objc_msgSend(v26 payloadBuffer:{"UTF8String"), model}];
         }
 
-        v23 = [v22 countByEnumeratingWithState:&v54 objects:v70 count:16];
+        v23 = [customAttributes countByEnumeratingWithState:&v54 objects:v70 count:16];
       }
 
       while (v23);
@@ -498,22 +498,22 @@ LABEL_21:
       v51 = [(REMeshPartDescriptor *)self windingOrderIsCCW]== 1;
     }
 
-    v32 = [(REMeshPartDescriptor *)self name];
-    v33 = v32;
-    v34 = [v32 UTF8String];
+    name = [(REMeshPartDescriptor *)self name];
+    v33 = name;
+    uTF8String = [name UTF8String];
     v47 = 0;
     v48 = &str_67;
     v35 = v69;
     v36 = v67;
-    v37 = [(REMeshPartDescriptor *)self indexCount];
-    v38 = [(REMeshPartDescriptor *)self vertexCount];
-    LODWORD(v34) = [(REMeshPartDescriptor *)self instanceCount];
+    indexCount = [(REMeshPartDescriptor *)self indexCount];
+    vertexCount = [(REMeshPartDescriptor *)self vertexCount];
+    LODWORD(uTF8String) = [(REMeshPartDescriptor *)self instanceCount];
     [(REMeshPartDescriptor *)self transform];
     v62[0] = v39;
     v62[1] = v40;
     v63[0] = v41;
     v63[1] = v42;
-    v43 = re::MeshPart::MeshPart(retstr, &v47, v46, v35, v36, v37, v38, v34, v53, v45, v62, v49, [(REMeshPartDescriptor *)self preSplitVertexCount], [(REMeshPartDescriptor *)self patchCount]);
+    v43 = re::MeshPart::MeshPart(retstr, &v47, v46, v35, v36, indexCount, vertexCount, uTF8String, v53, v45, v62, v49, [(REMeshPartDescriptor *)self preSplitVertexCount], [(REMeshPartDescriptor *)self patchCount]);
     if (v47)
     {
       if (v47)
@@ -618,12 +618,12 @@ void __42__REMeshPartDescriptor_coreAttributeNames__block_invoke()
   _MergedGlobals_104 = v5;
 }
 
-- (REMeshPartDescriptor)initWithName:(__n128)a3 vertexCount:(__n128)a4 indexCount:(__n128)a5 instanceCount:(__n128)a6 attributes:(__n128)a7 materialIndex:(uint64_t)a8 boundingBoxMin:(void *)a9 boundingBoxMax:(unsigned int)a10 doubleSidedFlag:(unsigned int)a11 windingOrderIsCCW:(unsigned int)a12 transform:(void *)a13 preSplitVertexCount:(unsigned int)a14 patchCount:(unsigned __int8)a15
+- (REMeshPartDescriptor)initWithName:(__n128)name vertexCount:(__n128)count indexCount:(__n128)indexCount instanceCount:(__n128)instanceCount attributes:(__n128)attributes materialIndex:(uint64_t)index boundingBoxMin:(void *)min boundingBoxMax:(unsigned int)self0 doubleSidedFlag:(unsigned int)self1 windingOrderIsCCW:(unsigned int)self2 transform:(void *)self3 preSplitVertexCount:(unsigned int)self4 patchCount:(unsigned __int8)self5
 {
   v62 = *MEMORY[0x1E69E9840];
-  v52 = a9;
-  v53 = a13;
-  v58.receiver = a1;
+  minCopy = min;
+  transformCopy = transform;
+  v58.receiver = self;
   v58.super_class = REMeshPartDescriptor;
   v24 = [(REMeshPartDescriptor *)&v58 init];
   if (!v24)
@@ -633,12 +633,12 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  v25 = [v52 copy];
-  v45 = a14;
+  v25 = [minCopy copy];
+  vertexCountCopy = vertexCount;
   name = v24->_name;
   v24->_name = v25;
 
-  v27 = [v53 mutableCopy];
+  v27 = [transformCopy mutableCopy];
   v28 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"indexTriangles"];
   v29 = objc_claimAutoreleasedReturnValue();
 
@@ -649,8 +649,8 @@ LABEL_18:
   if (!v29)
   {
 LABEL_8:
-    v24->_vertexCount = a10;
-    v24->_instanceCount = a12;
+    v24->_vertexCount = max;
+    v24->_instanceCount = w;
     v33 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v56 = 0u;
     v57 = 0u;
@@ -688,33 +688,33 @@ LABEL_8:
     customAttributes = v24->_customAttributes;
     v24->_customAttributes = v40;
 
-    v24->_materialIndex = v45;
+    v24->_materialIndex = vertexCountCopy;
     *v24->_boundingBoxMin = a2;
-    *v24->_boundingBoxMax = a3;
-    v24->_doubleSidedFlag = a15;
+    *v24->_boundingBoxMax = name;
+    v24->_doubleSidedFlag = patchCount;
     v24->_windingOrderIsCCW = a16;
-    *&v24[1].super.isa = a4;
-    *&v24[1]._indexCount = a5;
-    *&v24[1]._instanceCount = a6;
-    *&v24[1]._indexType = a7;
+    *&v24[1].super.isa = count;
+    *&v24[1]._indexCount = indexCount;
+    *&v24[1]._instanceCount = instanceCount;
+    *&v24[1]._indexType = attributes;
     v24->_preSplitVertexCount = a17;
     v24->_patchCount = a18;
 
     goto LABEL_18;
   }
 
-  v30 = [v29 format];
-  v31 = [v29 payloadOffset];
-  v24->_indexPayloadOffset = v31;
-  v24->_indexCount = a11;
+  format = [v29 format];
+  payloadOffset = [v29 payloadOffset];
+  v24->_indexPayloadOffset = payloadOffset;
+  v24->_indexCount = flag;
   v24->_isIndexed = 1;
-  if (v30 == 36)
+  if (format == 36)
   {
     v32 = 1;
     goto LABEL_7;
   }
 
-  if (v30 == 49)
+  if (format == 49)
   {
     v32 = 0;
 LABEL_7:
@@ -722,11 +722,11 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v44 = *re::assetTypesLogObjects(v31);
+  v44 = *re::assetTypesLogObjects(payloadOffset);
   if (os_log_type_enabled(v44, OS_LOG_TYPE_FAULT))
   {
     *buf = 67109120;
-    v61 = v30;
+    v61 = format;
     _os_log_fault_impl(&dword_1E1C61000, v44, OS_LOG_TYPE_FAULT, "Unknown MTLVertexFormat (%d) for index buffer", buf, 8u);
   }
 
@@ -736,27 +736,27 @@ LABEL_19:
   return v42;
 }
 
-- (REMeshPartDescriptor)initWithCoder:(id)a3
+- (REMeshPartDescriptor)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
   name = self->_name;
   self->_name = v5;
 
   v62 = self->_name;
-  v64 = [v4 decodeIntegerForKey:@"vertexCount"];
+  v64 = [coderCopy decodeIntegerForKey:@"vertexCount"];
   self->_vertexCount = v64;
-  v63 = [v4 decodeIntegerForKey:@"instanceCount"];
+  v63 = [coderCopy decodeIntegerForKey:@"instanceCount"];
   self->_instanceCount = v63;
-  v7 = [v4 decodeIntegerForKey:@"preSplitVertexCount"];
+  v7 = [coderCopy decodeIntegerForKey:@"preSplitVertexCount"];
   self->_preSplitVertexCount = v7;
-  v8 = [v4 decodeIntegerForKey:@"patchCount"];
+  v8 = [coderCopy decodeIntegerForKey:@"patchCount"];
   self->_patchCount = v8;
   v9 = MEMORY[0x1E695DFD8];
   v10 = objc_opt_class();
   v11 = objc_opt_class();
   v12 = [v9 setWithObjects:{v10, v11, objc_opt_class(), 0}];
-  v13 = [v4 decodeObjectOfClasses:v12 forKey:@"coreAttributes"];
+  v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"coreAttributes"];
   coreAttributes = self->_coreAttributes;
   self->_coreAttributes = v13;
 
@@ -764,16 +764,16 @@ LABEL_19:
   v16 = objc_opt_class();
   v17 = objc_opt_class();
   v18 = [v15 setWithObjects:{v16, v17, objc_opt_class(), 0}];
-  v19 = [v4 decodeObjectOfClasses:v18 forKey:@"customAttributes"];
+  v19 = [coderCopy decodeObjectOfClasses:v18 forKey:@"customAttributes"];
   customAttributes = self->_customAttributes;
   self->_customAttributes = v19;
 
-  v21 = [v4 decodeIntegerForKey:@"indexPayloadOffset"];
+  v21 = [coderCopy decodeIntegerForKey:@"indexPayloadOffset"];
   self->_indexPayloadOffset = v21;
-  v22 = [v4 decodeIntegerForKey:@"indexCount"];
+  v22 = [coderCopy decodeIntegerForKey:@"indexCount"];
   self->_indexCount = v22;
-  self->_isIndexed = [v4 decodeBoolForKey:@"isIndexed"];
-  v23 = validateMTLIndexType([v4 decodeIntegerForKey:@"indexType"], &self->_indexType);
+  self->_isIndexed = [coderCopy decodeBoolForKey:@"isIndexed"];
+  v23 = validateMTLIndexType([coderCopy decodeIntegerForKey:@"indexType"], &self->_indexType);
   if (v62)
   {
     v24 = v23;
@@ -784,29 +784,29 @@ LABEL_19:
     v24 = 0;
   }
 
-  v25 = [v4 decodeIntegerForKey:@"materialIndex"];
+  v25 = [coderCopy decodeIntegerForKey:@"materialIndex"];
   *self->_boundingBoxMin = 0;
   self->_materialIndex = v25;
   v26 = (v25 | v21 | v8 | v7 | v63 | v64 | v22) >> 32 != 0;
   *&self->_boundingBoxMin[8] = 0;
-  [v4 decodeFloatForKey:@"boundingBoxMin.x"];
+  [coderCopy decodeFloatForKey:@"boundingBoxMin.x"];
   *self->_boundingBoxMin = v27;
-  [v4 decodeFloatForKey:@"boundingBoxMin.y"];
+  [coderCopy decodeFloatForKey:@"boundingBoxMin.y"];
   *&self->_boundingBoxMin[4] = v28;
-  [v4 decodeFloatForKey:@"boundingBoxMin.z"];
+  [coderCopy decodeFloatForKey:@"boundingBoxMin.z"];
   *self->_boundingBoxMax = 0;
   *&self->_boundingBoxMin[8] = v29;
   *&self->_boundingBoxMax[8] = 0;
-  [v4 decodeFloatForKey:@"boundingBoxMax.x"];
+  [coderCopy decodeFloatForKey:@"boundingBoxMax.x"];
   *self->_boundingBoxMax = v30;
-  [v4 decodeFloatForKey:@"boundingBoxMax.y"];
+  [coderCopy decodeFloatForKey:@"boundingBoxMax.y"];
   *&self->_boundingBoxMax[4] = v31;
-  [v4 decodeFloatForKey:@"boundingBoxMax.z"];
+  [coderCopy decodeFloatForKey:@"boundingBoxMax.z"];
   *&self->_boundingBoxMax[8] = v32;
-  v33 = validateMeshPartOptionalFlag([v4 decodeIntegerForKey:@"doubleSidedFlag"], &self->_doubleSidedFlag);
-  v34 = validateMeshPartOptionalFlag([v4 decodeIntegerForKey:@"windingOrderIsCCW"], &self->_windingOrderIsCCW);
+  v33 = validateMeshPartOptionalFlag([coderCopy decodeIntegerForKey:@"doubleSidedFlag"], &self->_doubleSidedFlag);
+  v34 = validateMeshPartOptionalFlag([coderCopy decodeIntegerForKey:@"windingOrderIsCCW"], &self->_windingOrderIsCCW);
   v65 = 0;
-  v35 = [v4 decodeBytesForKey:@"transform" returnedLength:&v65];
+  v35 = [coderCopy decodeBytesForKey:@"transform" returnedLength:&v65];
   if (v65 != 64)
   {
     if (!v26)
@@ -903,10 +903,10 @@ LABEL_19:
     }
 
     v59 = LABEL_35:;
-    [v4 failWithError:v59];
+    [coderCopy failWithError:v59];
 LABEL_39:
 
-    v60 = 0;
+    selfCopy = 0;
     goto LABEL_40;
   }
 
@@ -923,57 +923,57 @@ LABEL_36:
   if (((v33 && v34 && v24) & v58 & 1) == 0)
   {
     v59 = LABEL_38:;
-    [v4 failWithError:v59];
+    [coderCopy failWithError:v59];
     goto LABEL_39;
   }
 
-  v60 = self;
+  selfCopy = self;
 LABEL_40:
 
-  return v60;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v10 = a3;
-  [v10 encodeObject:self->_name forKey:@"name"];
-  [v10 encodeInteger:self->_vertexCount forKey:@"vertexCount"];
-  [v10 encodeInteger:self->_instanceCount forKey:@"instanceCount"];
-  [v10 encodeInteger:self->_preSplitVertexCount forKey:@"preSplitVertexCount"];
-  [v10 encodeInteger:self->_patchCount forKey:@"patchCount"];
-  [v10 encodeObject:self->_coreAttributes forKey:@"coreAttributes"];
-  [v10 encodeObject:self->_customAttributes forKey:@"customAttributes"];
-  [v10 encodeInteger:self->_indexPayloadOffset forKey:@"indexPayloadOffset"];
-  [v10 encodeInteger:self->_indexCount forKey:@"indexCount"];
-  [v10 encodeBool:self->_isIndexed forKey:@"isIndexed"];
-  [v10 encodeInteger:self->_indexType forKey:@"indexType"];
-  [v10 encodeInteger:self->_materialIndex forKey:@"materialIndex"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_name forKey:@"name"];
+  [coderCopy encodeInteger:self->_vertexCount forKey:@"vertexCount"];
+  [coderCopy encodeInteger:self->_instanceCount forKey:@"instanceCount"];
+  [coderCopy encodeInteger:self->_preSplitVertexCount forKey:@"preSplitVertexCount"];
+  [coderCopy encodeInteger:self->_patchCount forKey:@"patchCount"];
+  [coderCopy encodeObject:self->_coreAttributes forKey:@"coreAttributes"];
+  [coderCopy encodeObject:self->_customAttributes forKey:@"customAttributes"];
+  [coderCopy encodeInteger:self->_indexPayloadOffset forKey:@"indexPayloadOffset"];
+  [coderCopy encodeInteger:self->_indexCount forKey:@"indexCount"];
+  [coderCopy encodeBool:self->_isIndexed forKey:@"isIndexed"];
+  [coderCopy encodeInteger:self->_indexType forKey:@"indexType"];
+  [coderCopy encodeInteger:self->_materialIndex forKey:@"materialIndex"];
   LODWORD(v4) = *self->_boundingBoxMin;
-  [v10 encodeFloat:@"boundingBoxMin.x" forKey:v4];
+  [coderCopy encodeFloat:@"boundingBoxMin.x" forKey:v4];
   LODWORD(v5) = *&self->_boundingBoxMin[4];
-  [v10 encodeFloat:@"boundingBoxMin.y" forKey:v5];
+  [coderCopy encodeFloat:@"boundingBoxMin.y" forKey:v5];
   LODWORD(v6) = *&self->_boundingBoxMin[8];
-  [v10 encodeFloat:@"boundingBoxMin.z" forKey:v6];
+  [coderCopy encodeFloat:@"boundingBoxMin.z" forKey:v6];
   LODWORD(v7) = *self->_boundingBoxMax;
-  [v10 encodeFloat:@"boundingBoxMax.x" forKey:v7];
+  [coderCopy encodeFloat:@"boundingBoxMax.x" forKey:v7];
   LODWORD(v8) = *&self->_boundingBoxMax[4];
-  [v10 encodeFloat:@"boundingBoxMax.y" forKey:v8];
+  [coderCopy encodeFloat:@"boundingBoxMax.y" forKey:v8];
   LODWORD(v9) = *&self->_boundingBoxMax[8];
-  [v10 encodeFloat:@"boundingBoxMax.z" forKey:v9];
-  [v10 encodeInteger:self->_doubleSidedFlag forKey:@"doubleSidedFlag"];
-  [v10 encodeInteger:self->_windingOrderIsCCW forKey:@"windingOrderIsCCW"];
-  [v10 encodeBytes:&self[1] length:64 forKey:@"transform"];
+  [coderCopy encodeFloat:@"boundingBoxMax.z" forKey:v9];
+  [coderCopy encodeInteger:self->_doubleSidedFlag forKey:@"doubleSidedFlag"];
+  [coderCopy encodeInteger:self->_windingOrderIsCCW forKey:@"windingOrderIsCCW"];
+  [coderCopy encodeBytes:&self[1] length:64 forKey:@"transform"];
 }
 
-- (BOOL)validateAttribute:(id)a3 withName:(id)a4 payloadSize:(FixedInlineArray<unsigned)long required:(8UL> *)a5 error:(BOOL)a6
+- (BOOL)validateAttribute:(id)attribute withName:(id)name payloadSize:(FixedInlineArray<unsigned)long required:(8UL> *)required error:(BOOL)error
 {
-  v8 = a6;
-  v12 = a3;
-  v13 = a4;
-  v14 = v13;
-  if (!v12)
+  errorCopy = error;
+  attributeCopy = attribute;
+  nameCopy = name;
+  v14 = nameCopy;
+  if (!attributeCopy)
   {
-    if (v8)
+    if (errorCopy)
     {
 LABEL_27:
       v27 = 0;
@@ -983,16 +983,16 @@ LABEL_27:
     goto LABEL_24;
   }
 
-  v15 = [v13 UTF8String];
-  if (v15)
+  uTF8String = [nameCopy UTF8String];
+  if (uTF8String)
   {
-    v17 = *v15;
-    if (*v15)
+    v17 = *uTF8String;
+    if (*uTF8String)
     {
-      v18 = v15[1];
+      v18 = uTF8String[1];
       if (v18)
       {
-        v19 = (v15 + 2);
+        v19 = (uTF8String + 2);
         do
         {
           v17 = 31 * v17 + v18;
@@ -1011,7 +1011,7 @@ LABEL_27:
   }
 
   v29[0] = 2 * v17;
-  v29[1] = v15;
+  v29[1] = uTF8String;
   v21 = re::bufferIdentifierForMeshAttribute(v29, v16);
   v22 = v21;
   if (v29[0])
@@ -1021,29 +1021,29 @@ LABEL_27:
     }
   }
 
-  if (([v12 validateWithPayloadSize:a5->var0[v22] error:a7] & 1) == 0)
+  if (([attributeCopy validateWithPayloadSize:required->var0[v22] error:a7] & 1) == 0)
   {
     goto LABEL_27;
   }
 
-  v23 = [v12 stepFunction];
-  if (v23 == 3)
+  stepFunction = [attributeCopy stepFunction];
+  if (stepFunction == 3)
   {
-    v25 = [v12 count];
+    v25 = [attributeCopy count];
     patchCount = self->_patchCount;
   }
 
   else
   {
-    if (v23 != 1)
+    if (stepFunction != 1)
     {
-      if (v23)
+      if (stepFunction)
       {
         v24 = @"REMeshAttributeDescriptor: unsupported vertex step function";
         goto LABEL_26;
       }
 
-      if (![v12 count])
+      if (![attributeCopy count])
       {
         v24 = @"REMeshAttributeDescriptor: vertex count is 0";
 LABEL_26:
@@ -1053,7 +1053,7 @@ LABEL_26:
       goto LABEL_24;
     }
 
-    v25 = [v12 count];
+    v25 = [attributeCopy count];
     patchCount = self->_vertexCount;
   }
 
@@ -1070,7 +1070,7 @@ LABEL_28:
   return v27;
 }
 
-- (BOOL)validateWithPayloadSize:(const void *)a3 error:(id *)a4
+- (BOOL)validateWithPayloadSize:(const void *)size error:(id *)error
 {
   v49 = *MEMORY[0x1E69E9840];
   if (self->_isIndexed)
@@ -1083,11 +1083,11 @@ LABEL_28:
     else
     {
       indexPayloadOffset = self->_indexPayloadOffset;
-      v7 = [(REMeshPartDescriptor *)self indexBufferSize];
-      if (!__CFADD__(indexPayloadOffset, v7))
+      indexBufferSize = [(REMeshPartDescriptor *)self indexBufferSize];
+      if (!__CFADD__(indexPayloadOffset, indexBufferSize))
       {
-        v9 = *(a3 + 4);
-        if (v9 > indexPayloadOffset && indexPayloadOffset + v7 <= v9)
+        v9 = *(size + 4);
+        if (v9 > indexPayloadOffset && indexPayloadOffset + indexBufferSize <= v9)
         {
           goto LABEL_9;
         }
@@ -1139,13 +1139,13 @@ LABEL_9:
         if (v13)
         {
           v18 = [(NSDictionary *)self->_coreAttributes objectForKeyedSubscript:v15];
-          v19 = *(a3 + 1);
-          v39 = *a3;
+          v19 = *(size + 1);
+          v39 = *size;
           v40 = v19;
-          v20 = *(a3 + 3);
-          v41 = *(a3 + 2);
+          v20 = *(size + 3);
+          v41 = *(size + 2);
           v42 = v20;
-          v13 = [(REMeshPartDescriptor *)self validateAttribute:v18 withName:v15 payloadSize:&v39 required:v17 error:a4];
+          v13 = [(REMeshPartDescriptor *)self validateAttribute:v18 withName:v15 payloadSize:&v39 required:v17 error:error];
         }
 
         else
@@ -1202,13 +1202,13 @@ LABEL_9:
         v29 = [(NSDictionary *)self->_customAttributes objectForKeyedSubscript:v24];
         if (v28)
         {
-          v30 = *(a3 + 1);
-          v39 = *a3;
+          v30 = *(size + 1);
+          v39 = *size;
           v40 = v30;
-          v31 = *(a3 + 3);
-          v41 = *(a3 + 2);
+          v31 = *(size + 3);
+          v41 = *(size + 2);
           v42 = v31;
-          v13 = [(REMeshPartDescriptor *)self validateAttribute:v29 withName:v24 payloadSize:&v39 required:1 error:a4];
+          v13 = [(REMeshPartDescriptor *)self validateAttribute:v29 withName:v24 payloadSize:&v39 required:1 error:error];
         }
 
         else
@@ -1291,8 +1291,8 @@ LABEL_9:
   v57 = 0u;
   v58 = 0u;
   v59 = 0u;
-  v14 = [(NSDictionary *)self->_coreAttributes allKeys];
-  v15 = [v14 countByEnumeratingWithState:&v56 objects:v63 count:16];
+  allKeys = [(NSDictionary *)self->_coreAttributes allKeys];
+  v15 = [allKeys countByEnumeratingWithState:&v56 objects:v63 count:16];
   v16 = v8 + InstanceSize + v10 + 8 * v12 + 8 * v13;
   if (v15)
   {
@@ -1304,7 +1304,7 @@ LABEL_9:
       {
         if (*v57 != v17)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(allKeys);
         }
 
         v19 = *(*(&v56 + 1) + 8 * v18);
@@ -1325,7 +1325,7 @@ LABEL_9:
       }
 
       while (v15 != v18);
-      v15 = [v14 countByEnumeratingWithState:&v56 objects:v63 count:16];
+      v15 = [allKeys countByEnumeratingWithState:&v56 objects:v63 count:16];
     }
 
     while (v15);
@@ -1335,8 +1335,8 @@ LABEL_9:
   v55 = 0u;
   v52 = 0u;
   v53 = 0u;
-  v22 = [(NSDictionary *)self->_coreAttributes allValues];
-  v23 = [v22 countByEnumeratingWithState:&v52 objects:v62 count:16];
+  allValues = [(NSDictionary *)self->_coreAttributes allValues];
+  v23 = [allValues countByEnumeratingWithState:&v52 objects:v62 count:16];
   if (v23)
   {
     v24 = *v53;
@@ -1347,14 +1347,14 @@ LABEL_9:
       {
         if (*v53 != v24)
         {
-          objc_enumerationMutation(v22);
+          objc_enumerationMutation(allValues);
         }
 
         v16 += [*(*(&v52 + 1) + 8 * v25++) estimateContainerSize];
       }
 
       while (v23 != v25);
-      v23 = [v22 countByEnumeratingWithState:&v52 objects:v62 count:16];
+      v23 = [allValues countByEnumeratingWithState:&v52 objects:v62 count:16];
     }
 
     while (v23);
@@ -1379,8 +1379,8 @@ LABEL_9:
   v51 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v31 = [(NSDictionary *)self->_customAttributes allKeys];
-  v32 = [v31 countByEnumeratingWithState:&v48 objects:v61 count:16];
+  allKeys2 = [(NSDictionary *)self->_customAttributes allKeys];
+  v32 = [allKeys2 countByEnumeratingWithState:&v48 objects:v61 count:16];
   v33 = v27 + v16 + 8 * v29 + 8 * v30;
   if (v32)
   {
@@ -1392,7 +1392,7 @@ LABEL_9:
       {
         if (*v49 != v34)
         {
-          objc_enumerationMutation(v31);
+          objc_enumerationMutation(allKeys2);
         }
 
         v36 = *(*(&v48 + 1) + 8 * v35);
@@ -1413,7 +1413,7 @@ LABEL_9:
       }
 
       while (v32 != v35);
-      v32 = [v31 countByEnumeratingWithState:&v48 objects:v61 count:16];
+      v32 = [allKeys2 countByEnumeratingWithState:&v48 objects:v61 count:16];
     }
 
     while (v32);
@@ -1423,8 +1423,8 @@ LABEL_9:
   v47 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v39 = [(NSDictionary *)self->_customAttributes allValues];
-  v40 = [v39 countByEnumeratingWithState:&v44 objects:v60 count:16];
+  allValues2 = [(NSDictionary *)self->_customAttributes allValues];
+  v40 = [allValues2 countByEnumeratingWithState:&v44 objects:v60 count:16];
   if (v40)
   {
     v41 = *v45;
@@ -1435,14 +1435,14 @@ LABEL_9:
       {
         if (*v45 != v41)
         {
-          objc_enumerationMutation(v39);
+          objc_enumerationMutation(allValues2);
         }
 
         v33 += [*(*(&v44 + 1) + 8 * v42++) estimateContainerSize];
       }
 
       while (v40 != v42);
-      v40 = [v39 countByEnumeratingWithState:&v44 objects:v60 count:16];
+      v40 = [allValues2 countByEnumeratingWithState:&v44 objects:v60 count:16];
     }
 
     while (v40);

@@ -1,31 +1,31 @@
 @interface POIShapeSearchResult
-- (POIShapeSearchResult)initWithMapView:(id)a3 searchResult:(id)a4;
+- (POIShapeSearchResult)initWithMapView:(id)view searchResult:(id)result;
 @end
 
 @implementation POIShapeSearchResult
 
-- (POIShapeSearchResult)initWithMapView:(id)a3 searchResult:(id)a4
+- (POIShapeSearchResult)initWithMapView:(id)view searchResult:(id)result
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v6 routeData];
+  resultCopy = result;
+  viewCopy = view;
+  routeData = [resultCopy routeData];
 
-  if (v8)
+  if (routeData)
   {
-    v9 = [v6 composedWaypoint];
+    composedWaypoint = [resultCopy composedWaypoint];
   }
 
   else
   {
     v10 = [GEOComposedWaypoint alloc];
-    v11 = [v6 mapItem];
-    v12 = [v11 _geoMapItem];
-    v9 = [v10 initWithMapItem:v12];
+    mapItem = [resultCopy mapItem];
+    _geoMapItem = [mapItem _geoMapItem];
+    composedWaypoint = [v10 initWithMapItem:_geoMapItem];
   }
 
   v15.receiver = self;
   v15.super_class = POIShapeSearchResult;
-  v13 = [(POIShapeComposedWaypoint *)&v15 initWithMapView:v7 composedWaypoint:v9];
+  v13 = [(POIShapeComposedWaypoint *)&v15 initWithMapView:viewCopy composedWaypoint:composedWaypoint];
 
   return v13;
 }

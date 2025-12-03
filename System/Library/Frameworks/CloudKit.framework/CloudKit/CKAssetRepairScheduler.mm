@@ -1,24 +1,24 @@
 @interface CKAssetRepairScheduler
-+ (id)nameForEvent:(int64_t)a3;
-+ (int64_t)canCopyFromFileURL:(id)a3 toDirectoryURL:(id)a4;
-+ (unint64_t)estimatedSizeForAssetOrPackage:(id)a3;
++ (id)nameForEvent:(int64_t)event;
++ (int64_t)canCopyFromFileURL:(id)l toDirectoryURL:(id)rL;
++ (unint64_t)estimatedSizeForAssetOrPackage:(id)package;
 - (BOOL)hasPendingWork;
-- (CKAssetRepairScheduler)initWithContainer:(id)a3 repairContainerOverrides:(id)a4;
+- (CKAssetRepairScheduler)initWithContainer:(id)container repairContainerOverrides:(id)overrides;
 - (CKAssetRepairSchedulerDelegate)delegate;
 - (NSURL)temporaryAssetDirectory;
 - (double)defaultSuspensionTime;
 - (double)requestTimeout;
 - (id)allRemainingRequestableAssets;
 - (id)allRemainingUploadableAssets;
-- (id)clonedAsset:(id)a3 withError:(id *)a4;
+- (id)clonedAsset:(id)asset withError:(id *)error;
 - (int64_t)cacheCountLimit;
 - (int64_t)repairBatchCountLimit;
 - (int64_t)repairRetryCount;
-- (void)addUploadRequestsWithMetadata:(id)a3 requestBlocks:(id)a4;
+- (void)addUploadRequestsWithMetadata:(id)metadata requestBlocks:(id)blocks;
 - (void)cancelAllOperations;
 - (void)clearAssetCache;
 - (void)dealloc;
-- (void)removeUploadRequestWithRecordID:(id)a3;
+- (void)removeUploadRequestWithRecordID:(id)d;
 @end
 
 @implementation CKAssetRepairScheduler
@@ -84,16 +84,16 @@
   }
 }
 
-+ (id)nameForEvent:(int64_t)a3
++ (id)nameForEvent:(int64_t)event
 {
-  if (a3 > 3)
+  if (event > 3)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_1E70BF3E8[a3];
+    return off_1E70BF3E8[event];
   }
 }
 
@@ -105,10 +105,10 @@
   [(CKAssetRepairScheduler *)&v4 dealloc];
 }
 
-- (CKAssetRepairScheduler)initWithContainer:(id)a3 repairContainerOverrides:(id)a4
+- (CKAssetRepairScheduler)initWithContainer:(id)container repairContainerOverrides:(id)overrides
 {
-  v6 = a3;
-  v7 = a4;
+  containerCopy = container;
+  overridesCopy = overrides;
   v76.receiver = self;
   v76.super_class = CKAssetRepairScheduler;
   v8 = [(CKAssetRepairScheduler *)&v76 init];
@@ -121,7 +121,7 @@
     v8->_defaultSuspensionTime = -1.0;
     v8->_repairRetryCount = -1;
     v12 = MEMORY[0x1E696AEC0];
-    v13 = objc_msgSend_containerIdentifier(v6, v9, v10);
+    v13 = objc_msgSend_containerIdentifier(containerCopy, v9, v10);
     v15 = objc_msgSend_stringWithFormat_(v12, v14, @"%@.%@", @"com.apple.cloudkit.datarepair.internal", v13);
     v16 = v15;
     v19 = objc_msgSend_UTF8String(v16, v17, v18);
@@ -131,7 +131,7 @@
     v11->_internalQueue = v21;
 
     v23 = MEMORY[0x1E696AEC0];
-    v26 = objc_msgSend_containerIdentifier(v6, v24, v25);
+    v26 = objc_msgSend_containerIdentifier(containerCopy, v24, v25);
     v28 = objc_msgSend_stringWithFormat_(v23, v27, @"%@.%@", @"com.apple.cloudkit.datarepair.callback", v26);
     v29 = v28;
     v32 = objc_msgSend_UTF8String(v29, v30, v31);
@@ -155,8 +155,8 @@
     objc_msgSend_setName_(v11->_uploadOperationQueue, v42, @"com.apple.cloudkit.datarepair.upload");
     objc_msgSend_setQualityOfService_(v11->_uploadOperationQueue, v43, 25);
     objc_msgSend_setMaxConcurrentOperationCount_(v11->_uploadOperationQueue, v44, 1);
-    objc_storeWeak(&v11->_container, v6);
-    v47 = objc_msgSend_copy(v7, v45, v46);
+    objc_storeWeak(&v11->_container, containerCopy);
+    v47 = objc_msgSend_copy(overridesCopy, v45, v46);
     repairContainerOverrides = v11->_repairContainerOverrides;
     v11->_repairContainerOverrides = v47;
 
@@ -190,24 +190,24 @@
   return v11;
 }
 
-- (void)addUploadRequestsWithMetadata:(id)a3 requestBlocks:(id)a4
+- (void)addUploadRequestsWithMetadata:(id)metadata requestBlocks:(id)blocks
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  metadataCopy = metadata;
+  blocksCopy = blocks;
   v8 = _os_activity_create(&dword_1883EA000, "client/data-repair-add-to-scheduler", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v8, &state);
-  v11 = objc_msgSend_count(v6, v9, v10);
-  if (v11 != objc_msgSend_count(v7, v12, v13))
+  v11 = objc_msgSend_count(metadataCopy, v9, v10);
+  if (v11 != objc_msgSend_count(blocksCopy, v12, v13))
   {
     v20 = [CKException alloc];
     v22 = objc_msgSend_initWithName_format_(v20, v21, *MEMORY[0x1E695D940], @"Arrays must have the same number of elements");
     objc_exception_throw(v22);
   }
 
-  if (objc_msgSend_count(v6, v14, v15))
+  if (objc_msgSend_count(metadataCopy, v14, v15))
   {
     if (ck_log_initialization_predicate != -1)
     {
@@ -218,7 +218,7 @@
     if (os_log_type_enabled(ck_log_facility_data_repair, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v29 = v6;
+      v29 = metadataCopy;
       _os_log_debug_impl(&dword_1883EA000, v16, OS_LOG_TYPE_DEBUG, "Adding upload requests: %@", buf, 0xCu);
       if (self)
       {
@@ -236,9 +236,9 @@ LABEL_8:
       v23[1] = 3221225472;
       v23[2] = sub_188627AD4;
       v23[3] = &unk_1E70BC360;
-      v24 = v6;
-      v25 = v7;
-      v26 = self;
+      v24 = metadataCopy;
+      v25 = blocksCopy;
+      selfCopy = self;
       ck_call_or_dispatch_sync_if_not_key(v18, &self->_internalQueue, v23);
 
       goto LABEL_9;
@@ -254,14 +254,14 @@ LABEL_9:
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeUploadRequestWithRecordID:(id)a3
+- (void)removeUploadRequestWithRecordID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = _os_activity_create(&dword_1883EA000, "client/data-repair-remove-from-scheduler", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v5, &state);
-  if (v4)
+  if (dCopy)
   {
     if (self)
     {
@@ -279,7 +279,7 @@ LABEL_9:
     v8[2] = sub_188627E10;
     v8[3] = &unk_1E70BEEC0;
     v8[4] = self;
-    v9 = v4;
+    v9 = dCopy;
     ck_call_or_dispatch_sync_if_not_key(v7, &self->_internalQueue, v8);
   }
 
@@ -316,13 +316,13 @@ LABEL_9:
   os_activity_scope_leave(&v4);
 }
 
-- (id)clonedAsset:(id)a3 withError:(id *)a4
+- (id)clonedAsset:(id)asset withError:(id *)error
 {
   v122 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  if (a4)
+  assetCopy = asset;
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
   v9 = objc_msgSend_temporaryAssetDirectory(self, v6, v7);
@@ -338,18 +338,18 @@ LABEL_9:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v41 = v8;
+      v41 = assetCopy;
       v118 = 0;
       v16 = objc_msgSend_packageWithError_(CKPackage, v42, &v118);
       v43 = v118;
       if (v43)
       {
         v38 = v43;
-        if (a4)
+        if (error)
         {
           v46 = v43;
           v40 = 0;
-          *a4 = v38;
+          *error = v38;
         }
 
         else
@@ -369,7 +369,7 @@ LABEL_9:
         if (v107)
         {
           v106 = *v115;
-          v104 = a4;
+          errorCopy = error;
           v108 = v16;
           while (2)
           {
@@ -381,7 +381,7 @@ LABEL_9:
               }
 
               v55 = *(*(&v114 + 1) + 8 * i);
-              v56 = objc_msgSend_UUID(MEMORY[0x1E696AFB0], v52, v53, v104);
+              v56 = objc_msgSend_UUID(MEMORY[0x1E696AFB0], v52, v53, errorCopy);
               v59 = objc_msgSend_UUIDString(v56, v57, v58);
 
               v62 = objc_msgSend_temporaryAssetDirectory(self, v60, v61);
@@ -446,11 +446,11 @@ LABEL_37:
                     while (v94);
                   }
 
-                  if (v104)
+                  if (errorCopy)
                   {
                     v103 = v81;
                     v40 = 0;
-                    *v104 = v81;
+                    *errorCopy = v81;
                   }
 
                   else
@@ -501,7 +501,7 @@ LABEL_13:
     goto LABEL_19;
   }
 
-  v10 = v8;
+  v10 = assetCopy;
   v13 = objc_msgSend_UUID(MEMORY[0x1E696AFB0], v11, v12);
   v16 = objc_msgSend_UUIDString(v13, v14, v15);
 
@@ -533,11 +533,11 @@ LABEL_13:
     if (v38)
     {
 LABEL_7:
-      if (a4)
+      if (error)
       {
         v39 = v38;
         v40 = 0;
-        *a4 = v38;
+        *error = v38;
       }
 
       else
@@ -670,15 +670,15 @@ LABEL_19:
   return v5;
 }
 
-+ (unint64_t)estimatedSizeForAssetOrPackage:(id)a3
++ (unint64_t)estimatedSizeForAssetOrPackage:(id)package
 {
-  v3 = a3;
+  packageCopy = package;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (objc_msgSend_hasSize(v3, v4, v5))
+    if (objc_msgSend_hasSize(packageCopy, v4, v5))
     {
-      v8 = objc_msgSend_size(v3, v6, v7);
+      v8 = objc_msgSend_size(packageCopy, v6, v7);
     }
 
     else
@@ -693,7 +693,7 @@ LABEL_19:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = objc_msgSend_size_(v3, v9, 0);
+      v8 = objc_msgSend_size_(packageCopy, v9, 0);
       if (!v8)
       {
         objc_opt_self();
@@ -711,20 +711,20 @@ LABEL_19:
   return v8;
 }
 
-+ (int64_t)canCopyFromFileURL:(id)a3 toDirectoryURL:(id)a4
++ (int64_t)canCopyFromFileURL:(id)l toDirectoryURL:(id)rL
 {
   v100[2] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  lCopy = l;
+  rLCopy = rL;
   v88 = 0;
   v7 = *MEMORY[0x1E695DD70];
   v87 = 0;
-  objc_msgSend_getResourceValue_forKey_error_(v5, v8, &v88, v7, &v87);
+  objc_msgSend_getResourceValue_forKey_error_(lCopy, v8, &v88, v7, &v87);
   v9 = v88;
   v85 = 0;
   v86 = 0;
   v10 = v87;
-  objc_msgSend_getResourceValue_forKey_error_(v6, v11, &v86, v7, &v85);
+  objc_msgSend_getResourceValue_forKey_error_(rLCopy, v11, &v86, v7, &v85);
   v12 = v86;
   v13 = v85;
 
@@ -736,7 +736,7 @@ LABEL_19:
       v84 = 0;
       v17 = *MEMORY[0x1E695DE38];
       v83 = 0;
-      objc_msgSend_getResourceValue_forKey_error_(v5, v16, &v84, v17, &v83);
+      objc_msgSend_getResourceValue_forKey_error_(lCopy, v16, &v84, v17, &v83);
       v18 = v84;
       v19 = v83;
 
@@ -772,7 +772,7 @@ LABEL_19:
     v82 = 0;
     v26 = *MEMORY[0x1E695DB50];
     v81 = 0;
-    objc_msgSend_getResourceValue_forKey_error_(v5, v22, &v82, v26, &v81);
+    objc_msgSend_getResourceValue_forKey_error_(lCopy, v22, &v82, v26, &v81);
     v27 = v82;
     v25 = v81;
     v24 = v12;
@@ -787,7 +787,7 @@ LABEL_19:
 LABEL_14:
   v75 = v28;
   v29 = objc_msgSend_defaultManager(MEMORY[0x1E696AC08], v22, v23);
-  v32 = objc_msgSend_path(v6, v30, v31);
+  v32 = objc_msgSend_path(rLCopy, v30, v31);
   v80 = v25;
   v34 = objc_msgSend_attributesOfFileSystemForPath_error_(v29, v33, v32, &v80);
   v35 = v80;
@@ -822,7 +822,7 @@ LABEL_15:
   {
     v73 = dispatch_semaphore_create(0);
     v99[0] = @"CACHE_DELETE_VOLUME";
-    v50 = objc_msgSend_path(v6, v48, v49);
+    v50 = objc_msgSend_path(rLCopy, v48, v49);
     v99[1] = @"CACHE_DELETE_AMOUNT";
     v100[0] = v50;
     v52 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x1E696AD98], v51, v47);
@@ -855,7 +855,7 @@ LABEL_15:
     }
 
     v60 = objc_msgSend_defaultManager(MEMORY[0x1E696AC08], v57, v58);
-    v63 = objc_msgSend_path(v6, v61, v62);
+    v63 = objc_msgSend_path(rLCopy, v61, v62);
     v77 = 0;
     v65 = objc_msgSend_attributesOfFileSystemForPath_error_(v60, v64, v63, &v77);
     v35 = v77;
@@ -897,9 +897,9 @@ LABEL_15:
 
       v90 = v71;
       v91 = 2112;
-      v92 = v5;
+      v92 = lCopy;
       v93 = 2112;
-      v94 = v6;
+      v94 = rLCopy;
       v95 = 2048;
       v96 = v41;
       v97 = 2048;

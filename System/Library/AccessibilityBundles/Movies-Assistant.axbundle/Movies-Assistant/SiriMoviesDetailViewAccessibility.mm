@@ -1,19 +1,19 @@
 @interface SiriMoviesDetailViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (SiriMoviesDetailViewAccessibility)initWithFrame:(CGRect)a3 movieDetailSnippet:(id)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (SiriMoviesDetailViewAccessibility)initWithFrame:(CGRect)frame movieDetailSnippet:(id)snippet;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation SiriMoviesDetailViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SiriMoviesDetailView" hasInstanceMethod:@"watchTrailerButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SiriMoviesDetailView" hasInstanceMethod:@"reviewsButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SiriMoviesDetailView" hasInstanceVariable:@"_movieInfoView" withType:"SiriMoviesMovieInfoView"];
-  [v3 validateClass:@"SiriMoviesMovieInfoView" hasInstanceVariable:@"_runtimeValueLabel" withType:"UILabel"];
-  [v3 validateClass:@"UILabel" hasInstanceMethod:@"text" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SiriMoviesDetailView" hasInstanceMethod:@"watchTrailerButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SiriMoviesDetailView" hasInstanceMethod:@"reviewsButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SiriMoviesDetailView" hasInstanceVariable:@"_movieInfoView" withType:"SiriMoviesMovieInfoView"];
+  [validationsCopy validateClass:@"SiriMoviesMovieInfoView" hasInstanceVariable:@"_runtimeValueLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"UILabel" hasInstanceMethod:@"text" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -32,8 +32,8 @@
   v7 = [(SiriMoviesDetailViewAccessibility *)self safeValueForKey:@"_movieInfoView"];
   v8 = [v7 safeValueForKey:@"_runtimeValueLabel"];
   v9 = [v8 safeValueForKey:@"text"];
-  v10 = [MEMORY[0x29EDB9F50] whitespaceCharacterSet];
-  v11 = [v9 componentsSeparatedByCharactersInSet:v10];
+  whitespaceCharacterSet = [MEMORY[0x29EDB9F50] whitespaceCharacterSet];
+  v11 = [v9 componentsSeparatedByCharactersInSet:whitespaceCharacterSet];
 
   if ([v11 count] < 2)
   {
@@ -44,12 +44,12 @@
   else
   {
     v12 = [v11 objectAtIndex:0];
-    v13 = [MEMORY[0x29EDB9F50] letterCharacterSet];
-    v14 = [v12 stringByTrimmingCharactersInSet:v13];
+    letterCharacterSet = [MEMORY[0x29EDB9F50] letterCharacterSet];
+    v14 = [v12 stringByTrimmingCharactersInSet:letterCharacterSet];
 
     v15 = [v11 objectAtIndex:1];
-    v16 = [MEMORY[0x29EDB9F50] letterCharacterSet];
-    v17 = [v15 stringByTrimmingCharactersInSet:v16];
+    letterCharacterSet2 = [MEMORY[0x29EDB9F50] letterCharacterSet];
+    v17 = [v15 stringByTrimmingCharactersInSet:letterCharacterSet2];
   }
 
   v18 = MEMORY[0x29EDBA0F8];
@@ -64,11 +64,11 @@
   [v8 setAccessibilityLabel:{v24, v23, @"__AXStringForVariablesSentinel"}];
 }
 
-- (SiriMoviesDetailViewAccessibility)initWithFrame:(CGRect)a3 movieDetailSnippet:(id)a4
+- (SiriMoviesDetailViewAccessibility)initWithFrame:(CGRect)frame movieDetailSnippet:(id)snippet
 {
   v6.receiver = self;
   v6.super_class = SiriMoviesDetailViewAccessibility;
-  v4 = [(SiriMoviesDetailViewAccessibility *)&v6 initWithFrame:a4 movieDetailSnippet:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v4 = [(SiriMoviesDetailViewAccessibility *)&v6 initWithFrame:snippet movieDetailSnippet:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(SiriMoviesDetailViewAccessibility *)v4 _accessibilityLoadAccessibilityInformation];
 
   return v4;

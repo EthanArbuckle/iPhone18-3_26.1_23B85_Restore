@@ -1,23 +1,23 @@
 @interface GCSettingsDpadRemapController
-- (id)getCustomizationValue:(id)a3;
+- (id)getCustomizationValue:(id)value;
 - (id)newSpecifiers;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (void)initSettings;
 - (void)loadDevice;
-- (void)setCustomization:(id)a3 forSpecifier:(id)a4;
-- (void)setCustomization:(id)a3 toValue:(BOOL)a4 forDpad:(id)a5;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)setCustomization:(id)customization forSpecifier:(id)specifier;
+- (void)setCustomization:(id)customization toValue:(BOOL)value forDpad:(id)dpad;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation GCSettingsDpadRemapController
 
 - (void)initSettings
 {
-  v5 = [(GCSettingsDpadRemapController *)self parentController];
-  v3 = [v5 settings];
+  parentController = [(GCSettingsDpadRemapController *)self parentController];
+  settings = [parentController settings];
   settings = self->_settings;
-  self->_settings = v3;
+  self->_settings = settings;
 }
 
 - (void)loadDevice
@@ -27,72 +27,72 @@
   _objc_release_x1();
 }
 
-- (void)setCustomization:(id)a3 toValue:(BOOL)a4 forDpad:(id)a5
+- (void)setCustomization:(id)customization toValue:(BOOL)value forDpad:(id)dpad
 {
-  v6 = a4;
-  v13 = a3;
-  v8 = [(GCControllerSettings *)self->_settings settingsForElement:a5];
+  valueCopy = value;
+  customizationCopy = customization;
+  v8 = [(GCControllerSettings *)self->_settings settingsForElement:dpad];
   v9 = sub_9E38(@"INVERT_HORIZONTALLY_TITLE");
-  v10 = [v13 isEqualToString:v9];
+  v10 = [customizationCopy isEqualToString:v9];
 
   if (v10)
   {
-    [v8 setInvertHorizontally:v6];
+    [v8 setInvertHorizontally:valueCopy];
   }
 
   else
   {
     v11 = sub_9E38(@"INVERT_VERTICALLY_TITLE");
-    v12 = [v13 isEqualToString:v11];
+    v12 = [customizationCopy isEqualToString:v11];
 
     if (v12)
     {
-      [v8 setInvertVertically:v6];
+      [v8 setInvertVertically:valueCopy];
     }
 
     else
     {
-      [v8 setSwapAxes:v6];
+      [v8 setSwapAxes:valueCopy];
     }
   }
 }
 
-- (void)setCustomization:(id)a3 forSpecifier:(id)a4
+- (void)setCustomization:(id)customization forSpecifier:(id)specifier
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(GCSettingsDpadRemapController *)self specifier];
-  v14 = [v8 propertyForKey:@"ControllerElement"];
+  specifierCopy = specifier;
+  customizationCopy = customization;
+  specifier = [(GCSettingsDpadRemapController *)self specifier];
+  v14 = [specifier propertyForKey:@"ControllerElement"];
 
-  v9 = [(GCSettingsDpadRemapController *)self parentController];
-  v10 = [v9 elements];
-  v11 = [v10 objectForKeyedSubscript:v14];
+  parentController = [(GCSettingsDpadRemapController *)self parentController];
+  elements = [parentController elements];
+  v11 = [elements objectForKeyedSubscript:v14];
 
-  v12 = [v6 propertyForKey:PSIDKey];
+  v12 = [specifierCopy propertyForKey:PSIDKey];
 
-  v13 = [v7 BOOLValue];
-  [(GCSettingsDpadRemapController *)self setCustomization:v12 toValue:v13 forDpad:v11];
+  bOOLValue = [customizationCopy BOOLValue];
+  [(GCSettingsDpadRemapController *)self setCustomization:v12 toValue:bOOLValue forDpad:v11];
 }
 
-- (id)getCustomizationValue:(id)a3
+- (id)getCustomizationValue:(id)value
 {
-  v4 = a3;
-  v5 = [(GCSettingsDpadRemapController *)self specifier];
-  v6 = [v5 propertyForKey:@"ControllerElement"];
+  valueCopy = value;
+  specifier = [(GCSettingsDpadRemapController *)self specifier];
+  v6 = [specifier propertyForKey:@"ControllerElement"];
 
-  v7 = [(GCSettingsDpadRemapController *)self parentController];
-  v8 = [v7 elements];
-  v9 = [v8 objectForKeyedSubscript:v6];
+  parentController = [(GCSettingsDpadRemapController *)self parentController];
+  elements = [parentController elements];
+  v9 = [elements objectForKeyedSubscript:v6];
 
-  v10 = [v4 propertyForKey:PSIDKey];
+  v10 = [valueCopy propertyForKey:PSIDKey];
 
   v11 = [(GCControllerSettings *)self->_settings settingsForElement:v9];
   v12 = sub_9E38(@"INVERT_HORIZONTALLY_TITLE");
-  LODWORD(v8) = [v10 isEqualToString:v12];
+  LODWORD(elements) = [v10 isEqualToString:v12];
 
-  if (v8)
+  if (elements)
   {
-    v13 = [v11 invertHorizontally];
+    invertHorizontally = [v11 invertHorizontally];
   }
 
   else
@@ -102,16 +102,16 @@
 
     if (v15)
     {
-      v13 = [v11 invertVertically];
+      invertHorizontally = [v11 invertVertically];
     }
 
     else
     {
-      v13 = [v11 swapAxes];
+      invertHorizontally = [v11 swapAxes];
     }
   }
 
-  v16 = [NSNumber numberWithBool:v13];
+  v16 = [NSNumber numberWithBool:invertHorizontally];
 
   return v16;
 }
@@ -122,9 +122,9 @@
   v4 = *&self->PSListController_opaque[OBJC_IVAR___PSListController__specifiers];
   if (!v4)
   {
-    v5 = [(GCSettingsDpadRemapController *)self newSpecifiers];
+    newSpecifiers = [(GCSettingsDpadRemapController *)self newSpecifiers];
     v6 = *&self->PSListController_opaque[v3];
-    *&self->PSListController_opaque[v3] = v5;
+    *&self->PSListController_opaque[v3] = newSpecifiers;
 
     v4 = *&self->PSListController_opaque[v3];
   }
@@ -139,14 +139,14 @@
   [(GCSettingsDpadRemapController *)self initSettings];
   if (self->_device)
   {
-    v3 = [(GCSettingsDpadRemapController *)self parentController];
-    v4 = [v3 dstDpads];
+    parentController = [(GCSettingsDpadRemapController *)self parentController];
+    dstDpads = [parentController dstDpads];
 
     v25 = 0u;
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v5 = v4;
+    v5 = dstDpads;
     v6 = [v5 countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v6)
     {
@@ -203,38 +203,38 @@
   return v22;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
+  pathCopy = path;
   v26.receiver = self;
   v26.super_class = GCSettingsDpadRemapController;
-  v7 = [(GCSettingsDpadRemapController *)&v26 tableView:a3 cellForRowAtIndexPath:v6];
-  if (![v6 section])
+  v7 = [(GCSettingsDpadRemapController *)&v26 tableView:view cellForRowAtIndexPath:pathCopy];
+  if (![pathCopy section])
   {
-    v25 = [(GCSettingsDpadRemapController *)self specifierAtIndexPath:v6];
+    v25 = [(GCSettingsDpadRemapController *)self specifierAtIndexPath:pathCopy];
     v8 = [v25 propertyForKey:@"ControllerElement"];
-    v9 = [(GCSettingsDpadRemapController *)self parentController];
-    v10 = [v9 elements];
-    v11 = [v10 objectForKeyedSubscript:v8];
+    parentController = [(GCSettingsDpadRemapController *)self parentController];
+    elements = [parentController elements];
+    v11 = [elements objectForKeyedSubscript:v8];
 
-    v12 = [v11 unmappedSfSymbolsName];
-    sub_A26C(v7, v12);
+    unmappedSfSymbolsName = [v11 unmappedSfSymbolsName];
+    sub_A26C(v7, unmappedSfSymbolsName);
 
-    v13 = [v7 titleLabel];
-    v14 = [v11 unmappedLocalizedName];
-    [v13 setText:v14];
+    titleLabel = [v7 titleLabel];
+    unmappedLocalizedName = [v11 unmappedLocalizedName];
+    [titleLabel setText:unmappedLocalizedName];
 
-    v15 = [(GCSettingsDpadRemapController *)self specifier];
-    v16 = [v15 propertyForKey:@"ControllerElement"];
+    specifier = [(GCSettingsDpadRemapController *)self specifier];
+    v16 = [specifier propertyForKey:@"ControllerElement"];
 
-    v17 = [(GCSettingsDpadRemapController *)self parentController];
-    v18 = [v17 elements];
-    v19 = [v18 objectForKeyedSubscript:v16];
+    parentController2 = [(GCSettingsDpadRemapController *)self parentController];
+    elements2 = [parentController2 elements];
+    v19 = [elements2 objectForKeyedSubscript:v16];
 
     v20 = [(GCControllerSettings *)self->_settings mappingForElement:v19];
-    v21 = [v11 primaryAlias];
-    v22 = [v20 primaryAlias];
-    v23 = [v21 isEqualToString:v22];
+    primaryAlias = [v11 primaryAlias];
+    primaryAlias2 = [v20 primaryAlias];
+    v23 = [primaryAlias isEqualToString:primaryAlias2];
 
     [v7 setChecked:v23];
   }
@@ -242,31 +242,31 @@
   return v7;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v18 = a3;
-  v6 = a4;
-  if (![v6 section])
+  viewCopy = view;
+  pathCopy = path;
+  if (![pathCopy section])
   {
-    v7 = [(GCSettingsDpadRemapController *)self specifierAtIndexPath:v6];
-    v8 = [(GCSettingsDpadRemapController *)self specifier];
-    v9 = [v8 propertyForKey:@"ControllerElement"];
+    v7 = [(GCSettingsDpadRemapController *)self specifierAtIndexPath:pathCopy];
+    specifier = [(GCSettingsDpadRemapController *)self specifier];
+    v9 = [specifier propertyForKey:@"ControllerElement"];
 
-    v10 = [(GCSettingsDpadRemapController *)self parentController];
-    v11 = [v10 elements];
-    v12 = [v11 objectForKeyedSubscript:v9];
+    parentController = [(GCSettingsDpadRemapController *)self parentController];
+    elements = [parentController elements];
+    v12 = [elements objectForKeyedSubscript:v9];
 
     v13 = [v7 propertyForKey:@"ControllerElement"];
-    v14 = [(GCSettingsDpadRemapController *)self parentController];
-    v15 = [v14 elements];
-    v16 = [v15 objectForKeyedSubscript:v13];
+    parentController2 = [(GCSettingsDpadRemapController *)self parentController];
+    elements2 = [parentController2 elements];
+    v16 = [elements2 objectForKeyedSubscript:v13];
 
     [(GCControllerSettings *)self->_settings setMappingForElement:v12 toElement:v16];
-    v17 = [(GCSettingsDpadRemapController *)self parentController];
-    [v17 reloadSpecifiers];
+    parentController3 = [(GCSettingsDpadRemapController *)self parentController];
+    [parentController3 reloadSpecifiers];
 
     [(GCSettingsDpadRemapController *)self reloadSpecifiers];
-    [v18 deselectRowAtIndexPath:v6 animated:1];
+    [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
   }
 }
 

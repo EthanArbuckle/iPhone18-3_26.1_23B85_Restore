@@ -1,8 +1,8 @@
 @interface MSPSharedTripCapabilityFetchingPeer
 - (NSOrderedSet)requestedHandles;
 - (id)_requestedHandles;
-- (id)removeRequestedHandles:(id)a3;
-- (void)updateRequestedHandles:(id)a3 added:(id *)a4 removed:(id *)a5;
+- (id)removeRequestedHandles:(id)handles;
+- (void)updateRequestedHandles:(id)handles added:(id *)added removed:(id *)removed;
 @end
 
 @implementation MSPSharedTripCapabilityFetchingPeer
@@ -24,41 +24,41 @@
 
 - (NSOrderedSet)requestedHandles
 {
-  v2 = [(MSPSharedTripCapabilityFetchingPeer *)self _requestedHandles];
-  v3 = [v2 copy];
+  _requestedHandles = [(MSPSharedTripCapabilityFetchingPeer *)self _requestedHandles];
+  v3 = [_requestedHandles copy];
 
   return v3;
 }
 
-- (void)updateRequestedHandles:(id)a3 added:(id *)a4 removed:(id *)a5
+- (void)updateRequestedHandles:(id)handles added:(id *)added removed:(id *)removed
 {
   v23 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  if ([v8 count] || self->_requestedHandles)
+  handlesCopy = handles;
+  if ([handlesCopy count] || self->_requestedHandles)
   {
-    v9 = [objc_alloc(MEMORY[0x277CBEB40]) initWithArray:v8];
+    v9 = [objc_alloc(MEMORY[0x277CBEB40]) initWithArray:handlesCopy];
     [v9 minusOrderedSet:self->_requestedHandles];
-    if (a4)
+    if (added)
     {
-      *a4 = [v9 copy];
+      *added = [v9 copy];
     }
 
     v10 = [(NSMutableOrderedSet *)self->_requestedHandles set];
     v11 = [v10 mutableCopy];
 
-    v12 = [MEMORY[0x277CBEB98] setWithArray:v8];
+    v12 = [MEMORY[0x277CBEB98] setWithArray:handlesCopy];
     [v11 minusSet:v12];
 
-    if (a5)
+    if (removed)
     {
-      *a5 = [v11 copy];
+      *removed = [v11 copy];
     }
 
     v13 = MSPGetSharedTripCapabilityFetchingLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
     {
       v17 = 138478339;
-      v18 = v8;
+      v18 = handlesCopy;
       v19 = 2113;
       v20 = v9;
       v21 = 2113;
@@ -66,23 +66,23 @@
       _os_log_impl(&dword_25813A000, v13, OS_LOG_TYPE_DEBUG, "[Peer] Updated contacts: %{private}@\n\tAdded: %{private}@\n\tRemoved: %{private}@", &v17, 0x20u);
     }
 
-    v14 = [(MSPSharedTripCapabilityFetchingPeer *)self _requestedHandles];
-    [v14 removeAllObjects];
+    _requestedHandles = [(MSPSharedTripCapabilityFetchingPeer *)self _requestedHandles];
+    [_requestedHandles removeAllObjects];
 
-    v15 = [(MSPSharedTripCapabilityFetchingPeer *)self _requestedHandles];
-    [v15 addObjectsFromArray:v8];
+    _requestedHandles2 = [(MSPSharedTripCapabilityFetchingPeer *)self _requestedHandles];
+    [_requestedHandles2 addObjectsFromArray:handlesCopy];
   }
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (id)removeRequestedHandles:(id)a3
+- (id)removeRequestedHandles:(id)handles
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 count] || self->_requestedHandles)
+  handlesCopy = handles;
+  if ([handlesCopy count] || self->_requestedHandles)
   {
-    v5 = [MEMORY[0x277CBEB98] setWithArray:v4];
+    v5 = [MEMORY[0x277CBEB98] setWithArray:handlesCopy];
     v6 = [(NSMutableOrderedSet *)self->_requestedHandles set];
     v7 = [v6 mutableCopy];
 

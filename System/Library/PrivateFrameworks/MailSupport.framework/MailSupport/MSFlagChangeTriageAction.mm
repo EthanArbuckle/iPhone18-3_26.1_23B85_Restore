@@ -1,66 +1,66 @@
 @interface MSFlagChangeTriageAction
 - (BOOL)shouldOverrideFlagState;
-- (MSFlagChangeTriageAction)initWithMessageListSelection:(id)a3 origin:(int64_t)a4 actor:(int64_t)a5 delegate:(id)a6 reason:(int64_t)a7;
-- (MSFlagChangeTriageAction)initWithQuery:(id)a3 origin:(int64_t)a4 actor:(int64_t)a5 delegate:(id)a6 reason:(int64_t)a7;
+- (MSFlagChangeTriageAction)initWithMessageListSelection:(id)selection origin:(int64_t)origin actor:(int64_t)actor delegate:(id)delegate reason:(int64_t)reason;
+- (MSFlagChangeTriageAction)initWithQuery:(id)query origin:(int64_t)origin actor:(int64_t)actor delegate:(id)delegate reason:(int64_t)reason;
 - (id)_changeAction;
-- (void)_toggleFlagWithBuilder:(id)a3;
+- (void)_toggleFlagWithBuilder:(id)builder;
 @end
 
 @implementation MSFlagChangeTriageAction
 
-- (MSFlagChangeTriageAction)initWithQuery:(id)a3 origin:(int64_t)a4 actor:(int64_t)a5 delegate:(id)a6 reason:(int64_t)a7
+- (MSFlagChangeTriageAction)initWithQuery:(id)query origin:(int64_t)origin actor:(int64_t)actor delegate:(id)delegate reason:(int64_t)reason
 {
   v9.receiver = self;
   v9.super_class = MSFlagChangeTriageAction;
-  result = [(MSTriageAction *)&v9 initWithQuery:a3 origin:a4 actor:a5 delegate:a6];
+  result = [(MSTriageAction *)&v9 initWithQuery:query origin:origin actor:actor delegate:delegate];
   if (result)
   {
-    result->_reason = a7;
+    result->_reason = reason;
   }
 
   return result;
 }
 
-- (MSFlagChangeTriageAction)initWithMessageListSelection:(id)a3 origin:(int64_t)a4 actor:(int64_t)a5 delegate:(id)a6 reason:(int64_t)a7
+- (MSFlagChangeTriageAction)initWithMessageListSelection:(id)selection origin:(int64_t)origin actor:(int64_t)actor delegate:(id)delegate reason:(int64_t)reason
 {
   v9.receiver = self;
   v9.super_class = MSFlagChangeTriageAction;
-  result = [(MSTriageAction *)&v9 initWithMessageListSelection:a3 origin:a4 actor:a5 delegate:a6];
+  result = [(MSTriageAction *)&v9 initWithMessageListSelection:selection origin:origin actor:actor delegate:delegate];
   if (result)
   {
-    result->_reason = a7;
+    result->_reason = reason;
   }
 
   return result;
 }
 
-- (void)_toggleFlagWithBuilder:(id)a3
+- (void)_toggleFlagWithBuilder:(id)builder
 {
-  v5 = a3;
+  builderCopy = builder;
   [(MSFlagChangeTriageAction *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[MSFlagChangeTriageAction _toggleFlagWithBuilder:]", "MSFlagChangeTriageAction.m", 38, "0");
 }
 
 - (BOOL)shouldOverrideFlagState
 {
-  v3 = [(MSTriageAction *)self messageListItemSelection];
-  if ([v3 isSelectAll])
+  messageListItemSelection = [(MSTriageAction *)self messageListItemSelection];
+  if ([messageListItemSelection isSelectAll])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(MSTriageAction *)self messageListItemSelection];
-    if ([v5 isActingOnSender])
+    messageListItemSelection2 = [(MSTriageAction *)self messageListItemSelection];
+    if ([messageListItemSelection2 isActingOnSender])
     {
       v4 = 1;
     }
 
     else
     {
-      v6 = [(MSTriageAction *)self query];
-      v4 = v6 != 0;
+      query = [(MSTriageAction *)self query];
+      v4 = query != 0;
     }
   }
 
@@ -76,35 +76,35 @@
   v17[3] = &unk_27985B590;
   v17[4] = self;
   v4 = [v3 initWithBuilder:v17];
-  v5 = [(MSTriageAction *)self messageListItemSelection];
-  v6 = [v5 isSelectAll];
+  messageListItemSelection = [(MSTriageAction *)self messageListItemSelection];
+  isSelectAll = [messageListItemSelection isSelectAll];
 
-  if (v6)
+  if (isSelectAll)
   {
     v7 = objc_alloc(MEMORY[0x277D06DF0]);
-    v8 = [(MSTriageAction *)self messageListItemSelection];
-    v9 = [v8 mailboxes];
-    v10 = [(MSTriageAction *)self messageListItemSelection];
-    v11 = [v10 messageListItems];
-    v12 = [v7 initWithMailboxes:v9 messageListItemsToExclude:v11 flagChange:v4 origin:-[MSTriageAction origin](self actor:{"origin"), -[MSTriageAction actor](self, "actor")}];
+    messageListItemSelection2 = [(MSTriageAction *)self messageListItemSelection];
+    mailboxes = [messageListItemSelection2 mailboxes];
+    messageListItemSelection3 = [(MSTriageAction *)self messageListItemSelection];
+    messageListItems = [messageListItemSelection3 messageListItems];
+    v12 = [v7 initWithMailboxes:mailboxes messageListItemsToExclude:messageListItems flagChange:v4 origin:-[MSTriageAction origin](self actor:{"origin"), -[MSTriageAction actor](self, "actor")}];
   }
 
   else
   {
-    v13 = [(MSTriageAction *)self query];
+    query = [(MSTriageAction *)self query];
 
-    if (v13)
+    if (query)
     {
       v14 = objc_alloc(MEMORY[0x277D06DE8]);
-      v8 = [(MSTriageAction *)self query];
-      v12 = [v14 initWithQuery:v8 origin:-[MSTriageAction origin](self actor:"origin") flagChange:{-[MSTriageAction actor](self, "actor"), v4}];
+      messageListItemSelection2 = [(MSTriageAction *)self query];
+      v12 = [v14 initWithQuery:messageListItemSelection2 origin:-[MSTriageAction origin](self actor:"origin") flagChange:{-[MSTriageAction actor](self, "actor"), v4}];
       goto LABEL_7;
     }
 
     v15 = objc_alloc(MEMORY[0x277D06DE8]);
-    v8 = [(MSTriageAction *)self messageListItemSelection];
-    v9 = [v8 messageListItems];
-    v12 = [v15 initWithMessageListItems:v9 origin:-[MSTriageAction origin](self actor:"origin") flagChange:{-[MSTriageAction actor](self, "actor"), v4}];
+    messageListItemSelection2 = [(MSTriageAction *)self messageListItemSelection];
+    mailboxes = [messageListItemSelection2 messageListItems];
+    v12 = [v15 initWithMessageListItems:mailboxes origin:-[MSTriageAction origin](self actor:"origin") flagChange:{-[MSTriageAction actor](self, "actor"), v4}];
   }
 
 LABEL_7:

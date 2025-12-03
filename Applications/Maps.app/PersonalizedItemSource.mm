@@ -1,10 +1,10 @@
 @interface PersonalizedItemSource
-+ (id)clientFeatureIDFromAdornment:(id)a3 mapItem:(id)a4;
-- (PersonalizedItemSource)initWithSourceType:(int64_t)a3 sourceSubtype:(int64_t)a4;
++ (id)clientFeatureIDFromAdornment:(id)adornment mapItem:(id)item;
+- (PersonalizedItemSource)initWithSourceType:(int64_t)type sourceSubtype:(int64_t)subtype;
 - (id)_observers;
 - (void)_notifyObserversItemsDidChange;
-- (void)addObserver:(id)a3;
-- (void)removeObserver:(id)a3;
+- (void)addObserver:(id)observer;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation PersonalizedItemSource
@@ -58,40 +58,40 @@
   return observers;
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(PersonalizedItemSource *)self _observers];
-  [v5 removeObject:v4];
+  observerCopy = observer;
+  _observers = [(PersonalizedItemSource *)self _observers];
+  [_observers removeObject:observerCopy];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(PersonalizedItemSource *)self _observers];
-  [v5 addObject:v4];
+  observerCopy = observer;
+  _observers = [(PersonalizedItemSource *)self _observers];
+  [_observers addObject:observerCopy];
 }
 
-- (PersonalizedItemSource)initWithSourceType:(int64_t)a3 sourceSubtype:(int64_t)a4
+- (PersonalizedItemSource)initWithSourceType:(int64_t)type sourceSubtype:(int64_t)subtype
 {
   v7.receiver = self;
   v7.super_class = PersonalizedItemSource;
   result = [(PersonalizedItemSource *)&v7 init];
   if (result)
   {
-    result->_sourceType = a3;
-    result->_sourceSubtype = a4;
+    result->_sourceType = type;
+    result->_sourceSubtype = subtype;
   }
 
   return result;
 }
 
-+ (id)clientFeatureIDFromAdornment:(id)a3 mapItem:(id)a4
++ (id)clientFeatureIDFromAdornment:(id)adornment mapItem:(id)item
 {
-  v5 = a4;
-  v6 = [a3 styleAttributes];
-  v7 = [v6 poiType];
-  [v5 _coordinate];
+  itemCopy = item;
+  styleAttributes = [adornment styleAttributes];
+  poiType = [styleAttributes poiType];
+  [itemCopy _coordinate];
   v9 = fabs(v8);
   v10 = floor(v9 + 0.5);
   v11 = (v9 - v10) * 1.84467441e19;
@@ -109,8 +109,8 @@
     v15 = v14;
   }
 
-  v16 = v15 ^ v7;
-  [v5 _coordinate];
+  v16 = v15 ^ poiType;
+  [itemCopy _coordinate];
   v18 = fabs(v17);
   v19 = floor(v18 + 0.5);
   v20 = (v18 - v19) * 1.84467441e19;
@@ -130,14 +130,14 @@
 
   v25 = v16 ^ v24;
 
-  v26 = [v5 _geoMapItem];
-  v27 = [v26 name];
+  _geoMapItem = [itemCopy _geoMapItem];
+  name = [_geoMapItem name];
 
-  if (v27)
+  if (name)
   {
-    v28 = [v5 _geoMapItem];
-    v29 = [v28 name];
-    v25 ^= [v29 hash];
+    _geoMapItem2 = [itemCopy _geoMapItem];
+    name2 = [_geoMapItem2 name];
+    v25 ^= [name2 hash];
   }
 
   v30 = [PersonalizedItemClientFeatureIDAdornment adornmentWithClientFeatureID:v25];

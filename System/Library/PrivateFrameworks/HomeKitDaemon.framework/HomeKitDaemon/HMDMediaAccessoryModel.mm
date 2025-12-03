@@ -1,6 +1,6 @@
 @interface HMDMediaAccessoryModel
-+ (id)cd_getMKFMediaAccessoryFromAccessory:(id)a3;
-+ (id)cd_getMKFMediaAccessoryFromAccessoryUUID:(id)a3;
++ (id)cd_getMKFMediaAccessoryFromAccessory:(id)accessory;
++ (id)cd_getMKFMediaAccessoryFromAccessoryUUID:(id)d;
 + (id)properties;
 @end
 
@@ -12,7 +12,7 @@
   block[1] = 3221225472;
   block[2] = __36__HMDMediaAccessoryModel_properties__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (properties_onceToken_97552 != -1)
   {
     dispatch_once(&properties_onceToken_97552, block);
@@ -34,18 +34,18 @@ void __36__HMDMediaAccessoryModel_properties__block_invoke(uint64_t a1)
   properties__properties_97553 = v3;
 }
 
-+ (id)cd_getMKFMediaAccessoryFromAccessory:(id)a3
++ (id)cd_getMKFMediaAccessoryFromAccessory:(id)accessory
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  accessoryCopy = accessory;
+  if (!accessoryCopy)
   {
     _HMFPreconditionFailure();
   }
 
-  v5 = v4;
+  v5 = accessoryCopy;
   v17 = 0;
-  v6 = [HMDBackingStore cdlsFetchManagedObjectWithUUID:v4 ofManagedObjectType:objc_opt_class() error:&v17];
+  v6 = [HMDBackingStore cdlsFetchManagedObjectWithUUID:accessoryCopy ofManagedObjectType:objc_opt_class() error:&v17];
   v7 = v17;
   v8 = v7;
   if (v6)
@@ -66,7 +66,7 @@ void __36__HMDMediaAccessoryModel_properties__block_invoke(uint64_t a1)
   else
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = a1;
+    selfCopy = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
@@ -89,11 +89,11 @@ void __36__HMDMediaAccessoryModel_properties__block_invoke(uint64_t a1)
   return v14;
 }
 
-+ (id)cd_getMKFMediaAccessoryFromAccessoryUUID:(id)a3
++ (id)cd_getMKFMediaAccessoryFromAccessoryUUID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = objc_opt_class();
-  v5 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v3];
+  v5 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:dCopy];
 
   v6 = [v4 cd_getMKFMediaAccessoryFromAccessory:v5];
 

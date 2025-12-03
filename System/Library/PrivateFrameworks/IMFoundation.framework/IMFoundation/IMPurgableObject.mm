@@ -1,5 +1,5 @@
 @interface IMPurgableObject
-- (IMPurgableObject)initWithSetupBlock:(id)a3 cleanupBlock:(id)a4 queue:(id)a5;
+- (IMPurgableObject)initWithSetupBlock:(id)block cleanupBlock:(id)cleanupBlock queue:(id)queue;
 - (id)instance;
 - (void)_cleanupInstance;
 - (void)_setupInstance;
@@ -8,27 +8,27 @@
 
 @implementation IMPurgableObject
 
-- (IMPurgableObject)initWithSetupBlock:(id)a3 cleanupBlock:(id)a4 queue:(id)a5
+- (IMPurgableObject)initWithSetupBlock:(id)block cleanupBlock:(id)cleanupBlock queue:(id)queue
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  blockCopy = block;
+  cleanupBlockCopy = cleanupBlock;
+  queueCopy = queue;
   v21.receiver = self;
   v21.super_class = IMPurgableObject;
   v13 = [(IMPurgableObject *)&v21 init];
   if (v13)
   {
-    v14 = objc_msgSend_copy(v9, v11, v12);
+    v14 = objc_msgSend_copy(cleanupBlockCopy, v11, v12);
     cleanupBlock = v13->_cleanupBlock;
     v13->_cleanupBlock = v14;
 
-    v18 = objc_msgSend_copy(v8, v16, v17);
+    v18 = objc_msgSend_copy(blockCopy, v16, v17);
     setupBlock = v13->_setupBlock;
     v13->_setupBlock = v18;
 
-    if (v10)
+    if (queueCopy)
     {
-      objc_storeStrong(&v13->_queue, a5);
+      objc_storeStrong(&v13->_queue, queue);
     }
   }
 

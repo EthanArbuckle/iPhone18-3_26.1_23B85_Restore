@@ -1,12 +1,12 @@
 @interface CKVSnapshotManager
 + (id)sharedInstance;
-+ (id)writeProfileToFile:(id)a3 withFilename:(id)a4 inDirectory:(id)a5 error:(id *)a6;
++ (id)writeProfileToFile:(id)file withFilename:(id)filename inDirectory:(id)directory error:(id *)error;
 - (BOOL)_purgeProfileSnapshots;
-- (CKVSnapshotManager)initWithRootDirectoryURL:(id)a3 setEnumerator:(id)a4;
-- (id)_buildProfile:(id)a3 error:(id *)a4;
-- (id)_getFilesSortedByCreationDateForDirectoryPath:(id)a3;
-- (id)captureInMemory:(id *)a3;
-- (id)captureToFileInDirectory:(id)a3 error:(id *)a4;
+- (CKVSnapshotManager)initWithRootDirectoryURL:(id)l setEnumerator:(id)enumerator;
+- (id)_buildProfile:(id)profile error:(id *)error;
+- (id)_getFilesSortedByCreationDateForDirectoryPath:(id)path;
+- (id)captureInMemory:(id *)memory;
+- (id)captureToFileInDirectory:(id)directory error:(id *)error;
 - (void)cleanup;
 @end
 
@@ -15,9 +15,9 @@
 - (BOOL)_purgeProfileSnapshots
 {
   v29 = *MEMORY[0x1E69E9840];
-  v3 = [(NSURL *)self->_rootDirectoryURL path];
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
-  v5 = [(CKVSnapshotManager *)self _getFilesSortedByCreationDateForDirectoryPath:v3];
+  path = [(NSURL *)self->_rootDirectoryURL path];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v5 = [(CKVSnapshotManager *)self _getFilesSortedByCreationDateForDirectoryPath:path];
   v6 = v5;
   if (!v5)
   {
@@ -33,16 +33,16 @@
     goto LABEL_20;
   }
 
-  v21 = v3;
+  v21 = path;
   v8 = 0;
   v9 = 0;
   v10 = v7 - 1;
   while (1)
   {
     v11 = [v6 objectAtIndex:{v10, v21}];
-    v12 = [v11 firstObject];
-    v13 = [v11 lastObject];
-    [v13 timeIntervalSinceNow];
+    firstObject = [v11 firstObject];
+    lastObject = [v11 lastObject];
+    [lastObject timeIntervalSinceNow];
     if (fabs(v14) >= 43200.0 || (v9 + 1) >= 0xB)
     {
       break;
@@ -60,7 +60,7 @@ LABEL_12:
   }
 
   v22 = v8;
-  v16 = [v4 removeItemAtURL:v12 error:&v22];
+  v16 = [defaultManager removeItemAtURL:firstObject error:&v22];
   v17 = v22;
 
   if (v16)
@@ -75,7 +75,7 @@ LABEL_12:
     *buf = 136315650;
     v24 = "[CKVSnapshotManager _purgeProfileSnapshots]";
     v25 = 2112;
-    v26 = v12;
+    v26 = firstObject;
     v27 = 2112;
     v28 = v17;
     _os_log_error_impl(&dword_1C8683000, v19, OS_LOG_TYPE_ERROR, "%s Failed to remove snapshot %@ error: %@", buf, 0x20u);
@@ -83,7 +83,7 @@ LABEL_12:
 
   v18 = 0;
 LABEL_19:
-  v3 = v21;
+  path = v21;
 LABEL_20:
 
   return v18;
@@ -102,10 +102,10 @@ LABEL_20:
       _os_log_impl(&dword_1C8683000, v3, OS_LOG_TYPE_INFO, "%s Removing snapshot directory following purge failure", buf, 0xCu);
     }
 
-    v4 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
     rootDirectoryURL = self->_rootDirectoryURL;
     v9 = 0;
-    v6 = [v4 removeItemAtURL:rootDirectoryURL error:&v9];
+    v6 = [defaultManager removeItemAtURL:rootDirectoryURL error:&v9];
     v7 = v9;
 
     if ((v6 & 1) == 0)
@@ -123,19 +123,19 @@ LABEL_20:
   }
 }
 
-- (id)_getFilesSortedByCreationDateForDirectoryPath:(id)a3
+- (id)_getFilesSortedByCreationDateForDirectoryPath:(id)path
 {
   v42 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
-  if ([v4 fileExistsAtPath:v3])
+  pathCopy = path;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  if ([defaultManager fileExistsAtPath:pathCopy])
   {
     v33 = 0;
-    v5 = [v4 contentsOfDirectoryAtPath:v3 error:&v33];
+    v5 = [defaultManager contentsOfDirectoryAtPath:pathCopy error:&v33];
     v6 = v33;
     if (v5)
     {
-      v24 = v4;
+      v24 = defaultManager;
       v26 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v5, "count")}];
       v29 = 0u;
       v30 = 0u;
@@ -158,8 +158,8 @@ LABEL_20:
               objc_enumerationMutation(obj);
             }
 
-            v12 = v3;
-            v13 = [v3 stringByAppendingPathComponent:{*(*(&v29 + 1) + 8 * i), v23}];
+            v12 = pathCopy;
+            v13 = [pathCopy stringByAppendingPathComponent:{*(*(&v29 + 1) + 8 * i), v23}];
             v14 = [MEMORY[0x1E695DFF8] fileURLWithPath:v13];
             v27 = 0;
             v28 = 0;
@@ -182,8 +182,8 @@ LABEL_20:
               }
 
               v18 = 0;
-              v3 = v12;
-              v4 = v24;
+              pathCopy = v12;
+              defaultManager = v24;
               v20 = v26;
               goto LABEL_22;
             }
@@ -194,7 +194,7 @@ LABEL_20:
             [v26 addObject:v17];
 
             v6 = 0;
-            v3 = v12;
+            pathCopy = v12;
           }
 
           v8 = [obj countByEnumeratingWithState:&v29 objects:v35 count:16];
@@ -216,7 +216,7 @@ LABEL_20:
 
       v20 = v26;
       v18 = [v26 sortedArrayUsingComparator:&__block_literal_global_1120];
-      v4 = v24;
+      defaultManager = v24;
 LABEL_22:
 
       v6 = v16;
@@ -231,7 +231,7 @@ LABEL_22:
         *buf = 136315650;
         v37 = "[CKVSnapshotManager _getFilesSortedByCreationDateForDirectoryPath:]";
         v38 = 2112;
-        v39 = v3;
+        v39 = pathCopy;
         v40 = 2112;
         v41 = v6;
         _os_log_error_impl(&dword_1C8683000, v21, OS_LOG_TYPE_ERROR, "%s Failed to scan files at path: %@ error: %@", buf, 0x20u);
@@ -259,13 +259,13 @@ uint64_t __68__CKVSnapshotManager__getFilesSortedByCreationDateForDirectoryPath_
   return v7;
 }
 
-- (id)captureInMemory:(id *)a3
+- (id)captureInMemory:(id *)memory
 {
-  v4 = [(CKVSnapshotManager *)self _buildProfile:0 error:a3];
+  v4 = [(CKVSnapshotManager *)self _buildProfile:0 error:memory];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 buildWithError:a3];
+    v6 = [v4 buildWithError:memory];
   }
 
   else
@@ -276,23 +276,23 @@ uint64_t __68__CKVSnapshotManager__getFilesSortedByCreationDateForDirectoryPath_
   return v6;
 }
 
-- (id)captureToFileInDirectory:(id)a3 error:(id *)a4
+- (id)captureToFileInDirectory:(id)directory error:(id *)error
 {
-  v6 = a3;
-  if (!v6)
+  directoryCopy = directory;
+  if (!directoryCopy)
   {
-    v6 = self->_rootDirectoryURL;
+    directoryCopy = self->_rootDirectoryURL;
   }
 
   v7 = KVGetOrCreateDirectoryURL();
 
   if (v7)
   {
-    v8 = [(CKVSnapshotManager *)self _buildProfile:v6 error:a4];
+    v8 = [(CKVSnapshotManager *)self _buildProfile:directoryCopy error:error];
     v9 = v8;
     if (v8)
     {
-      v10 = [v8 finishWritingWithError:a4];
+      v10 = [v8 finishWritingWithError:error];
     }
 
     else
@@ -309,12 +309,12 @@ uint64_t __68__CKVSnapshotManager__getFilesSortedByCreationDateForDirectoryPath_
   return v10;
 }
 
-- (id)_buildProfile:(id)a3 error:(id *)a4
+- (id)_buildProfile:(id)profile error:(id *)error
 {
   v77 = *MEMORY[0x1E69E9840];
-  v41 = a3;
-  v38 = a4;
-  v40 = [(CCSetEnumerator *)self->_setEnumerator allSets:a4];
+  profileCopy = profile;
+  errorCopy = error;
+  v40 = [(CCSetEnumerator *)self->_setEnumerator allSets:error];
   v6 = v40;
   if (v40)
   {
@@ -372,7 +372,7 @@ uint64_t __68__CKVSnapshotManager__getFilesSortedByCreationDateForDirectoryPath_
       v15 = @"to file";
       *buf = 136315650;
       *&buf[4] = "[CKVSnapshotManager _buildProfile:error:]";
-      if (!v41)
+      if (!profileCopy)
       {
         v15 = @"in memory";
       }
@@ -384,17 +384,17 @@ uint64_t __68__CKVSnapshotManager__getFilesSortedByCreationDateForDirectoryPath_
       _os_log_impl(&dword_1C8683000, v14, OS_LOG_TYPE_INFO, "%s Capturing vocabulary snapshot %@ for %u sets.", buf, 0x1Cu);
     }
 
-    v39 = [MEMORY[0x1E69ABD10] capturedWithDatasetCount:v13 error:v38];
+    v39 = [MEMORY[0x1E69ABD10] capturedWithDatasetCount:v13 error:errorCopy];
     if (v39)
     {
-      if (v41)
+      if (profileCopy)
       {
-        [MEMORY[0x1E69ABD08] fileWriterWithProfileInfo:v39 targetDirectory:v41 format:2 error:v38];
+        [MEMORY[0x1E69ABD08] fileWriterWithProfileInfo:v39 targetDirectory:profileCopy format:2 error:errorCopy];
       }
 
       else
       {
-        [MEMORY[0x1E69ABD08] builderWithProfileInfo:v39 format:2 error:v38];
+        [MEMORY[0x1E69ABD08] builderWithProfileInfo:v39 format:2 error:errorCopy];
       }
       v43 = ;
       if (v43)
@@ -430,20 +430,20 @@ LABEL_26:
 
             v19 = *(*(&v55 + 1) + 8 * v18);
             context = objc_autoreleasePoolPush();
-            v20 = [v19 changePublisher];
-            v21 = [v20 localItemInstanceCount];
+            changePublisher = [v19 changePublisher];
+            localItemInstanceCount = [changePublisher localItemInstanceCount];
             v22 = [MEMORY[0x1E695DF00] now];
             v23 = objc_alloc(MEMORY[0x1E69ABCC8]);
             [v19 itemType];
             v24 = KVItemTypeFromCascadeItemType();
             v25 = [v19 descriptorWithKey:v44];
-            v26 = [v25 value];
+            value = [v25 value];
             v27 = (*&buf[8] + 40);
             v54 = *(*&buf[8] + 40);
-            LODWORD(v37) = v21;
-            v28 = [v23 initWithItemType:v24 originAppId:v26 deviceId:0 userId:0 lastModifiedTime:0 capturedTime:v22 itemCount:v37 error:&v54];
+            LODWORD(v37) = localItemInstanceCount;
+            v28 = [v23 initWithItemType:v24 originAppId:value deviceId:0 userId:0 lastModifiedTime:0 capturedTime:v22 itemCount:v37 error:&v54];
             objc_storeStrong(v27, v54);
-            v29 = v20;
+            v29 = changePublisher;
 
             if (v28 && (v30 = (*&buf[8] + 40), v53 = *(*&buf[8] + 40), [v43 addDataset:v28 error:&v53], v31 = objc_claimAutoreleasedReturnValue(), objc_storeStrong(v30, v53), v31))
             {
@@ -461,7 +461,7 @@ LABEL_26:
               v32 = v31;
               v49 = v32;
               v51 = &v59;
-              v33 = [v20 sinkWithCompletion:v52 shouldContinue:v48];
+              v33 = [changePublisher sinkWithCompletion:v52 shouldContinue:v48];
               v34 = *(v60 + 24);
               if (v34 == 1)
               {
@@ -610,16 +610,16 @@ LABEL_13:
   return v14;
 }
 
-- (CKVSnapshotManager)initWithRootDirectoryURL:(id)a3 setEnumerator:(id)a4
+- (CKVSnapshotManager)initWithRootDirectoryURL:(id)l setEnumerator:(id)enumerator
 {
   v23 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  lCopy = l;
+  enumeratorCopy = enumerator;
   v16.receiver = self;
   v16.super_class = CKVSnapshotManager;
   v9 = [(CKVSnapshotManager *)&v16 init];
   v10 = v9;
-  if (!v9 || (objc_storeStrong(&v9->_rootDirectoryURL, a3), objc_storeStrong(&v10->_setEnumerator, a4), (rootDirectoryURL = v10->_rootDirectoryURL) != 0) && v10->_setEnumerator)
+  if (!v9 || (objc_storeStrong(&v9->_rootDirectoryURL, l), objc_storeStrong(&v10->_setEnumerator, enumerator), (rootDirectoryURL = v10->_rootDirectoryURL) != 0) && v10->_setEnumerator)
   {
     v12 = v10;
   }
@@ -645,15 +645,15 @@ LABEL_13:
   return v12;
 }
 
-+ (id)writeProfileToFile:(id)a3 withFilename:(id)a4 inDirectory:(id)a5 error:(id *)a6
++ (id)writeProfileToFile:(id)file withFilename:(id)filename inDirectory:(id)directory error:(id *)error
 {
   v34 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a5;
+  fileCopy = file;
+  directoryCopy = directory;
   v11 = MEMORY[0x1E69ABD08];
-  v12 = a4;
-  v13 = [v9 profileInfo];
-  v14 = [v11 fileWriterWithProfileInfo:v13 targetDirectory:v10 filename:v12 format:2 error:a6];
+  filenameCopy = filename;
+  profileInfo = [fileCopy profileInfo];
+  v14 = [v11 fileWriterWithProfileInfo:profileInfo targetDirectory:directoryCopy filename:filenameCopy format:2 error:error];
 
   if (!v14)
   {
@@ -664,13 +664,13 @@ LABEL_13:
   if (os_log_type_enabled(CKLogContextVocabulary, OS_LOG_TYPE_INFO))
   {
     v16 = v15;
-    v17 = [v10 path];
+    path = [directoryCopy path];
     *buf = 136315650;
     v29 = "+[CKVSnapshotManager writeProfileToFile:withFilename:inDirectory:error:]";
     v30 = 2112;
-    v31 = v9;
+    v31 = fileCopy;
     v32 = 2112;
-    v33 = v17;
+    v33 = path;
     _os_log_impl(&dword_1C8683000, v16, OS_LOG_TYPE_INFO, "%s Writing profile: %@ to file in targetDirectory: %@", buf, 0x20u);
   }
 
@@ -680,12 +680,12 @@ LABEL_13:
   v25 = &unk_1E831E710;
   v18 = v14;
   v26 = v18;
-  v27 = a6;
-  v19 = [v9 enumerateDatasetsWithError:a6 usingBlock:&v22];
+  errorCopy = error;
+  v19 = [fileCopy enumerateDatasetsWithError:error usingBlock:&v22];
 
   if (v19)
   {
-    v20 = [v18 finishWritingWithError:{a6, v22, v23, v24, v25}];
+    v20 = [v18 finishWritingWithError:{error, v22, v23, v24, v25}];
   }
 
   else
@@ -740,7 +740,7 @@ BOOL __72__CKVSnapshotManager_writeProfileToFile_withFilename_inDirectory_error_
   block[1] = 3221225472;
   block[2] = __36__CKVSnapshotManager_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_1151 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_1151, block);

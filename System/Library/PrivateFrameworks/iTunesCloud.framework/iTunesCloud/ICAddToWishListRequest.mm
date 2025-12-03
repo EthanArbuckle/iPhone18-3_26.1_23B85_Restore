@@ -1,8 +1,8 @@
 @interface ICAddToWishListRequest
-- (ICAddToWishListRequest)initWithRequestContext:(id)a3 buyParams:(id)a4 storeItemID:(int64_t)a5 itemName:(id)a6 itemKind:(id)a7;
-- (ICAddToWishListRequest)initWithRequestContext:(id)a3 platformMetadataItem:(id)a4;
+- (ICAddToWishListRequest)initWithRequestContext:(id)context buyParams:(id)params storeItemID:(int64_t)d itemName:(id)name itemKind:(id)kind;
+- (ICAddToWishListRequest)initWithRequestContext:(id)context platformMetadataItem:(id)item;
 - (void)execute;
-- (void)performWithResponseHandler:(id)a3;
+- (void)performWithResponseHandler:(id)handler;
 @end
 
 @implementation ICAddToWishListRequest
@@ -16,7 +16,7 @@
     storeItemID = self->_storeItemID;
     itemName = self->_itemName;
     *buf = 138543874;
-    v10 = self;
+    selfCopy = self;
     v11 = 2048;
     v12 = storeItemID;
     v13 = 2114;
@@ -137,66 +137,66 @@ void __33__ICAddToWishListRequest_execute__block_invoke_3(uint64_t a1, void *a2,
   [*(a1 + 32) finishWithError:v5];
 }
 
-- (void)performWithResponseHandler:(id)a3
+- (void)performWithResponseHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __53__ICAddToWishListRequest_performWithResponseHandler___block_invoke;
   v6[3] = &unk_1E7BFA490;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   [(ICRequestOperation *)self performRequestWithCompletionHandler:v6];
 }
 
-- (ICAddToWishListRequest)initWithRequestContext:(id)a3 platformMetadataItem:(id)a4
+- (ICAddToWishListRequest)initWithRequestContext:(id)context platformMetadataItem:(id)item
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v6 offerWithType:@"buy"];
-  v9 = [v6 title];
-  v10 = v9;
-  if (v9)
+  itemCopy = item;
+  contextCopy = context;
+  v8 = [itemCopy offerWithType:@"buy"];
+  title = [itemCopy title];
+  v10 = title;
+  if (title)
   {
-    v11 = v9;
+    name = title;
   }
 
   else
   {
-    v11 = [v6 name];
+    name = [itemCopy name];
   }
 
-  v12 = v11;
+  v12 = name;
 
-  v13 = [v8 buyParameters];
-  v14 = [v6 storeAdamID];
-  v15 = [v6 kind];
-  v16 = [(ICAddToWishListRequest *)self initWithRequestContext:v7 buyParams:v13 storeItemID:v14 itemName:v12 itemKind:v15];
+  buyParameters = [v8 buyParameters];
+  storeAdamID = [itemCopy storeAdamID];
+  kind = [itemCopy kind];
+  v16 = [(ICAddToWishListRequest *)self initWithRequestContext:contextCopy buyParams:buyParameters storeItemID:storeAdamID itemName:v12 itemKind:kind];
 
   return v16;
 }
 
-- (ICAddToWishListRequest)initWithRequestContext:(id)a3 buyParams:(id)a4 storeItemID:(int64_t)a5 itemName:(id)a6 itemKind:(id)a7
+- (ICAddToWishListRequest)initWithRequestContext:(id)context buyParams:(id)params storeItemID:(int64_t)d itemName:(id)name itemKind:(id)kind
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a6;
-  v16 = a7;
+  contextCopy = context;
+  paramsCopy = params;
+  nameCopy = name;
+  kindCopy = kind;
   v22.receiver = self;
   v22.super_class = ICAddToWishListRequest;
   v17 = [(ICRequestOperation *)&v22 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_requestContext, a3);
-    v19 = [v14 copy];
+    objc_storeStrong(&v17->_requestContext, context);
+    v19 = [paramsCopy copy];
     buyParams = v18->_buyParams;
     v18->_buyParams = v19;
 
-    v18->_storeItemID = a5;
-    objc_storeStrong(&v18->_itemName, a6);
-    objc_storeStrong(&v18->_itemKind, a7);
+    v18->_storeItemID = d;
+    objc_storeStrong(&v18->_itemName, name);
+    objc_storeStrong(&v18->_itemKind, kind);
   }
 
   return v18;

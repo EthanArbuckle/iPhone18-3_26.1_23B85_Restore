@@ -1,12 +1,12 @@
 @interface LPTextView
-+ (id)attributedString:(id)a3 resolvedAgainstStyle:(id)a4 withEmphasizedTextExpression:(id)a5 tintColor:(id)a6 lineBreakMode:(int64_t)a7 usesVibrancy:(BOOL)a8 forLTR:(BOOL)a9 withFont:(id)a10 userInterfaceStyle:(int64_t)a11;
-+ (id)attributedStringHidingNonColoredRanges:(id)a3;
++ (id)attributedString:(id)string resolvedAgainstStyle:(id)style withEmphasizedTextExpression:(id)expression tintColor:(id)color lineBreakMode:(int64_t)mode usesVibrancy:(BOOL)vibrancy forLTR:(BOOL)r withFont:(id)self0 userInterfaceStyle:(int64_t)self1;
++ (id)attributedStringHidingNonColoredRanges:(id)ranges;
 - (BOOL)_lp_isLTR;
 - (BOOL)_needsColoredGlyphsView;
 - (BOOL)textIsTruncated;
 - (CGRect)textRect;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (LPTextView)initWithHost:(id)a3 text:(id)a4 style:(id)a5;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (LPTextView)initWithHost:(id)host text:(id)text style:(id)style;
 - (UIEdgeInsets)effectiveInsets;
 - (double)firstLineLeading;
 - (double)lastLineDescent;
@@ -17,42 +17,42 @@
 - (int64_t)computedNumberOfLines;
 - (int64_t)effectiveMaximumNumberOfLines;
 - (void)_buildSubviewsIfNeeded;
-- (void)_createTextViewWithAttributedString:(id)a3;
+- (void)_createTextViewWithAttributedString:(id)string;
 - (void)_updateAttributedString;
 - (void)_updateEffectViewEffect;
 - (void)_userInterfaceStyleDidChange;
-- (void)applyAttributedString:(id)a3;
+- (void)applyAttributedString:(id)string;
 - (void)layoutComponentView;
-- (void)setContentInset:(UIEdgeInsets)a3;
-- (void)setEmphasizedTextExpression:(id)a3;
-- (void)setFont:(id)a3;
-- (void)setOverrideMaximumNumberOfLines:(int64_t)a3;
+- (void)setContentInset:(UIEdgeInsets)inset;
+- (void)setEmphasizedTextExpression:(id)expression;
+- (void)setFont:(id)font;
+- (void)setOverrideMaximumNumberOfLines:(int64_t)lines;
 @end
 
 @implementation LPTextView
 
-- (LPTextView)initWithHost:(id)a3 text:(id)a4 style:(id)a5
+- (LPTextView)initWithHost:(id)host text:(id)text style:(id)style
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  hostCopy = host;
+  textCopy = text;
+  styleCopy = style;
   v23.receiver = self;
   v23.super_class = LPTextView;
-  v11 = [(LPComponentView *)&v23 initWithHost:v8];
+  v11 = [(LPComponentView *)&v23 initWithHost:hostCopy];
   if (v11)
   {
-    v12 = truncatedAttributedStringAtMaximumMetadataLength(v9);
+    v12 = truncatedAttributedStringAtMaximumMetadataLength(textCopy);
     attributedString = v11->_attributedString;
     v11->_attributedString = v12;
 
-    v14 = [v10 adjustedForString:v11->_attributedString];
+    v14 = [styleCopy adjustedForString:v11->_attributedString];
     style = v11->_style;
     v11->_style = v14;
 
-    v16 = [(LPTextViewStyle *)v11->_style font];
+    font = [(LPTextViewStyle *)v11->_style font];
     font = v11->_font;
-    v11->_font = v16;
+    v11->_font = font;
 
     v18 = objc_opt_self();
     v24[0] = v18;
@@ -69,27 +69,27 @@
 {
   if (!self->_textView)
   {
-    v3 = [(LPTextView *)self effectiveAttributedString];
-    [(LPTextView *)self _createTextViewWithAttributedString:v3];
+    effectiveAttributedString = [(LPTextView *)self effectiveAttributedString];
+    [(LPTextView *)self _createTextViewWithAttributedString:effectiveAttributedString];
 
-    v4 = [(LPTextViewStyle *)self->_style compositingFilter];
+    compositingFilter = [(LPTextViewStyle *)self->_style compositingFilter];
 
-    if (v4)
+    if (compositingFilter)
     {
-      v5 = [(LPTextViewStyle *)self->_style compositingFilter];
-      v6 = [(UILabel *)self->_textView layer];
-      [v6 setCompositingFilter:v5];
+      compositingFilter2 = [(LPTextViewStyle *)self->_style compositingFilter];
+      layer = [(UILabel *)self->_textView layer];
+      [layer setCompositingFilter:compositingFilter2];
     }
 
     if (+[LPSettings showDebugIndicators])
     {
-      v7 = [MEMORY[0x1E69DC888] greenColor];
-      v8 = [v7 CGColor];
-      v9 = [(UILabel *)self->_textView layer];
-      [v9 setBorderColor:v8];
+      greenColor = [MEMORY[0x1E69DC888] greenColor];
+      cGColor = [greenColor CGColor];
+      layer2 = [(UILabel *)self->_textView layer];
+      [layer2 setBorderColor:cGColor];
 
-      v10 = [(UILabel *)self->_textView layer];
-      [v10 setBorderWidth:0.5];
+      layer3 = [(UILabel *)self->_textView layer];
+      [layer3 setBorderWidth:0.5];
     }
 
     [(UIFont *)self->_font ascender];
@@ -101,11 +101,11 @@
 
 - (BOOL)_lp_isLTR
 {
-  v2 = self;
-  v3 = v2;
-  if (v2)
+  selfCopy = self;
+  v3 = selfCopy;
+  if (selfCopy)
   {
-    v4 = v2;
+    v4 = selfCopy;
     do
     {
       objc_opt_class();
@@ -114,19 +114,19 @@
         break;
       }
 
-      v5 = [v4 semanticContentAttribute];
-      v6 = v5 == 3;
-      if (v5 == 3 || [v4 semanticContentAttribute] == 4)
+      semanticContentAttribute = [v4 semanticContentAttribute];
+      _lp_isLTR = semanticContentAttribute == 3;
+      if (semanticContentAttribute == 3 || [v4 semanticContentAttribute] == 4)
       {
         goto LABEL_10;
       }
 
-      v7 = [v4 superview];
+      superview = [v4 superview];
 
-      v4 = v7;
+      v4 = superview;
     }
 
-    while (v7);
+    while (superview);
   }
 
   else
@@ -136,62 +136,62 @@
 
   v9.receiver = v3;
   v9.super_class = LPTextView;
-  v6 = [(UIView *)&v9 _lp_isLTR];
+  _lp_isLTR = [(UIView *)&v9 _lp_isLTR];
 LABEL_10:
 
-  return v6;
+  return _lp_isLTR;
 }
 
 - (id)effectiveAttributedString
 {
-  v3 = [(LPComponentView *)self host];
-  v4 = [v3 allowsVibrancyForComponentView:self];
+  host = [(LPComponentView *)self host];
+  v4 = [host allowsVibrancyForComponentView:self];
 
   if (v4)
   {
-    v5 = [(LPTextViewStyle *)self->_style color];
-    v6 = vibrancyEffectStyleForColor(v5);
+    color = [(LPTextViewStyle *)self->_style color];
+    v6 = vibrancyEffectStyleForColor(color);
     v4 = v6 != 0;
   }
 
-  v7 = [(UIView *)self _lp_prefersDarkInterface];
+  _lp_prefersDarkInterface = [(UIView *)self _lp_prefersDarkInterface];
   attributedString = self->_attributedString;
   style = self->_style;
   emphasizedTextExpression = self->_emphasizedTextExpression;
-  v11 = [(UIView *)self _lp_tintColor];
+  _lp_tintColor = [(UIView *)self _lp_tintColor];
   LOBYTE(v14) = [(LPTextView *)self _lp_isLTR];
-  v12 = [LPTextView attributedString:attributedString resolvedAgainstStyle:style withEmphasizedTextExpression:emphasizedTextExpression tintColor:v11 lineBreakMode:4 usesVibrancy:v4 forLTR:v14 withFont:self->_font userInterfaceStyle:v7];
+  v12 = [LPTextView attributedString:attributedString resolvedAgainstStyle:style withEmphasizedTextExpression:emphasizedTextExpression tintColor:_lp_tintColor lineBreakMode:4 usesVibrancy:v4 forLTR:v14 withFont:self->_font userInterfaceStyle:_lp_prefersDarkInterface];
 
   return v12;
 }
 
-+ (id)attributedString:(id)a3 resolvedAgainstStyle:(id)a4 withEmphasizedTextExpression:(id)a5 tintColor:(id)a6 lineBreakMode:(int64_t)a7 usesVibrancy:(BOOL)a8 forLTR:(BOOL)a9 withFont:(id)a10 userInterfaceStyle:(int64_t)a11
++ (id)attributedString:(id)string resolvedAgainstStyle:(id)style withEmphasizedTextExpression:(id)expression tintColor:(id)color lineBreakMode:(int64_t)mode usesVibrancy:(BOOL)vibrancy forLTR:(BOOL)r withFont:(id)self0 userInterfaceStyle:(int64_t)self1
 {
   v105[3] = *MEMORY[0x1E69E9840];
-  v78 = a3;
-  v16 = a4;
-  v77 = a5;
-  v73 = a6;
-  v75 = a10;
-  v17 = [v16 textAlignment];
+  stringCopy = string;
+  styleCopy = style;
+  expressionCopy = expression;
+  colorCopy = color;
+  fontCopy = font;
+  textAlignment = [styleCopy textAlignment];
   v18 = 2;
-  if (a9)
+  if (r)
   {
     v18 = 0;
   }
 
   v19 = 2;
-  if (!a9)
+  if (!r)
   {
     v19 = 0;
   }
 
-  if (v17 != 1)
+  if (textAlignment != 1)
   {
-    v19 = v17 == 2;
+    v19 = textAlignment == 2;
   }
 
-  if (v17)
+  if (textAlignment)
   {
     v20 = v19;
   }
@@ -201,25 +201,25 @@ LABEL_10:
     v20 = v18;
   }
 
-  v21 = [MEMORY[0x1E69DB7C8] defaultParagraphStyle];
-  v22 = [v21 mutableCopy];
+  defaultParagraphStyle = [MEMORY[0x1E69DB7C8] defaultParagraphStyle];
+  v22 = [defaultParagraphStyle mutableCopy];
 
   v74 = v22;
   [v22 setAlignment:v20];
-  [v22 setLineBreakMode:a7];
-  [v16 hyphenationFactor];
+  [v22 setLineBreakMode:mode];
+  [styleCopy hyphenationFactor];
   [v22 setHyphenationFactor:?];
-  v23 = [v16 paragraphSpacing];
-  [v23 value];
+  paragraphSpacing = [styleCopy paragraphSpacing];
+  [paragraphSpacing value];
   [v22 setParagraphSpacing:?];
 
   v97[0] = MEMORY[0x1E69E9820];
   v97[1] = 3221225472;
   v97[2] = __153__LPTextView_attributedString_resolvedAgainstStyle_withEmphasizedTextExpression_tintColor_lineBreakMode_usesVibrancy_forLTR_withFont_userInterfaceStyle___block_invoke;
   v97[3] = &unk_1E7A36B80;
-  v24 = v16;
+  v24 = styleCopy;
   v98 = v24;
-  v99 = a8;
+  vibrancyCopy = vibrancy;
   v25 = __153__LPTextView_attributedString_resolvedAgainstStyle_withEmphasizedTextExpression_tintColor_lineBreakMode_usesVibrancy_forLTR_withFont_userInterfaceStyle___block_invoke(v97);
   v91 = 0;
   v92 = &v91;
@@ -231,7 +231,7 @@ LABEL_10:
   v104[0] = *MEMORY[0x1E69DB648];
   v104[1] = v27;
   v70 = v27;
-  v105[0] = v75;
+  v105[0] = fontCopy;
   v105[1] = v25;
   v72 = v25;
   v104[2] = *MEMORY[0x1E69DB688];
@@ -239,8 +239,8 @@ LABEL_10:
   v28 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v105 forKeys:v104 count:3];
   v96 = [v26 dictionaryWithDictionary:v28];
 
-  v29 = [v78 length];
-  v30 = [v78 attribute:@"LPOverrideThemeAttribute" atIndex:0 longestEffectiveRange:0 inRange:{0, v29}];
+  v29 = [stringCopy length];
+  v30 = [stringCopy attribute:@"LPOverrideThemeAttribute" atIndex:0 longestEffectiveRange:0 inRange:{0, v29}];
   LODWORD(v28) = [v30 BOOLValue];
 
   if (v28)
@@ -254,19 +254,19 @@ LABEL_10:
     v85[2] = __153__LPTextView_attributedString_resolvedAgainstStyle_withEmphasizedTextExpression_tintColor_lineBreakMode_usesVibrancy_forLTR_withFont_userInterfaceStyle___block_invoke_13;
     v85[3] = &unk_1E7A36BA8;
     v87 = v89;
-    v86 = v78;
+    v86 = stringCopy;
     v88 = &v91;
     [v86 enumerateAttributesInRange:0 options:v29 usingBlock:{0, v85}];
 
     _Block_object_dispose(v89, 8);
   }
 
-  v71 = [v78 mutableCopy];
-  v31 = [v24 shadow];
+  v71 = [stringCopy mutableCopy];
+  shadow = [v24 shadow];
 
-  if (v31)
+  if (shadow)
   {
-    if (a11 == 1)
+    if (interfaceStyle == 1)
     {
       v32 = 2;
     }
@@ -277,20 +277,20 @@ LABEL_10:
     }
 
     v33 = [MEMORY[0x1E69DD1B8] traitCollectionWithUserInterfaceStyle:v32];
-    v34 = [v24 shadow];
-    v35 = [v34 valueForAppearance:v33];
+    shadow2 = [v24 shadow];
+    v35 = [shadow2 valueForAppearance:v33];
 
     if (v35)
     {
       v36 = objc_alloc_init(MEMORY[0x1E69DB7D8]);
-      v37 = [v35 offset];
-      [v37 asSize];
+      offset = [v35 offset];
+      [offset asSize];
       [v36 setShadowOffset:?];
 
       [v35 radius];
       [v36 setShadowBlurRadius:?];
-      v38 = [v35 color];
-      [v36 setShadowColor:v38];
+      color = [v35 color];
+      [v36 setShadowColor:color];
 
       [v71 addAttribute:*MEMORY[0x1E69DB6A8] value:v36 range:{0, v29}];
     }
@@ -301,34 +301,34 @@ LABEL_10:
   v82[1] = 3221225472;
   v82[2] = __153__LPTextView_attributedString_resolvedAgainstStyle_withEmphasizedTextExpression_tintColor_lineBreakMode_usesVibrancy_forLTR_withFont_userInterfaceStyle___block_invoke_17;
   v82[3] = &unk_1E7A36BD0;
-  v40 = v75;
+  v40 = fontCopy;
   v83 = v40;
   v41 = v71;
   v84 = v41;
-  [v78 enumerateAttribute:v39 inRange:0 options:v29 usingBlock:{0, v82}];
+  [stringCopy enumerateAttribute:v39 inRange:0 options:v29 usingBlock:{0, v82}];
   [v41 addAttributes:v92[5] range:{0, v29}];
-  if (v77)
+  if (expressionCopy)
   {
-    v42 = [v78 string];
+    string = [stringCopy string];
     v79[0] = MEMORY[0x1E69E9820];
     v79[1] = 3221225472;
     v79[2] = __153__LPTextView_attributedString_resolvedAgainstStyle_withEmphasizedTextExpression_tintColor_lineBreakMode_usesVibrancy_forLTR_withFont_userInterfaceStyle___block_invoke_2;
     v79[3] = &unk_1E7A36BF8;
     v80 = v41;
-    v81 = v73;
-    [v77 enumerateMatchesInString:v42 options:0 range:0 usingBlock:{v29, v79}];
+    v81 = colorCopy;
+    [expressionCopy enumerateMatchesInString:string options:0 range:0 usingBlock:{v29, v79}];
   }
 
-  v43 = [v24 leadingGlyph];
-  v76 = [v43 image];
+  leadingGlyph = [v24 leadingGlyph];
+  image = [leadingGlyph image];
 
-  if (v76)
+  if (image)
   {
-    v44 = [v76 platformImage];
+    platformImage = [image platformImage];
     v45 = MEMORY[0x1E69DCAD8];
     [v40 pointSize];
     v47 = [v45 configurationWithPointSize:objc_msgSend(v40 weight:{"_lp_symbolWeight"), v46}];
-    v48 = [v44 imageWithConfiguration:v47];
+    v48 = [platformImage imageWithConfiguration:v47];
     v49 = [v48 imageWithRenderingMode:2];
 
     v50 = objc_alloc_init(MEMORY[0x1E69DB7F0]);
@@ -340,8 +340,8 @@ LABEL_10:
     [v52 appendAttributedString:v53];
 
     v102 = v70;
-    v54 = [v24 leadingGlyph];
-    [v54 opacity];
+    leadingGlyph2 = [v24 leadingGlyph];
+    [leadingGlyph2 opacity];
     v55 = [v72 colorWithAlphaComponent:?];
     v103 = v55;
     v56 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v103 forKeys:&v102 count:1];
@@ -350,13 +350,13 @@ LABEL_10:
     [v41 insertAttributedString:v52 atIndex:0];
   }
 
-  v57 = [v24 trailingGlyph];
-  v58 = [v57 image];
+  trailingGlyph = [v24 trailingGlyph];
+  image2 = [trailingGlyph image];
 
-  if (v58)
+  if (image2)
   {
-    v59 = [v58 platformImage];
-    v60 = [v59 imageWithRenderingMode:2];
+    platformImage2 = [image2 platformImage];
+    v60 = [platformImage2 imageWithRenderingMode:2];
 
     v61 = objc_alloc_init(MEMORY[0x1E69DB7F0]);
     [v61 setImage:v60];
@@ -367,9 +367,9 @@ LABEL_10:
     [v63 appendAttributedString:v64];
 
     v100 = v70;
-    v65 = [v24 trailingGlyph];
-    v66 = [v65 color];
-    v101 = v66;
+    trailingGlyph2 = [v24 trailingGlyph];
+    color2 = [trailingGlyph2 color];
+    v101 = color2;
     v67 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v101 forKeys:&v100 count:1];
     [v63 addAttributes:v67 range:{0, 2}];
 
@@ -493,10 +493,10 @@ void __153__LPTextView_attributedString_resolvedAgainstStyle_withEmphasizedTextE
   [v5 addAttributes:v6 range:{v7, v8}];
 }
 
-+ (id)attributedStringHidingNonColoredRanges:(id)a3
++ (id)attributedStringHidingNonColoredRanges:(id)ranges
 {
   v25 = *MEMORY[0x1E69E9840];
-  v3 = [a3 mutableCopy];
+  v3 = [ranges mutableCopy];
   v4 = [v3 length];
   v5 = [MEMORY[0x1E695DFA8] set];
   [v3 fixAttributesInRange:{0, v4}];
@@ -528,9 +528,9 @@ void __153__LPTextView_attributedString_resolvedAgainstStyle_withEmphasizedTextE
         }
 
         v13 = *(*(&v18 + 1) + 8 * i);
-        v14 = [MEMORY[0x1E69DC888] clearColor];
-        v15 = [v13 rangeValue];
-        [v3 addAttribute:v11 value:v14 range:{v15, v16}];
+        clearColor = [MEMORY[0x1E69DC888] clearColor];
+        rangeValue = [v13 rangeValue];
+        [v3 addAttribute:v11 value:clearColor range:{rangeValue, v16}];
       }
 
       v9 = [v8 countByEnumeratingWithState:&v18 objects:v24 count:16];
@@ -556,22 +556,22 @@ void __53__LPTextView_attributedStringHidingNonColoredRanges___block_invoke(uint
   }
 }
 
-- (void)setContentInset:(UIEdgeInsets)a3
+- (void)setContentInset:(UIEdgeInsets)inset
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = inset.top;
+  v3.f64[1] = inset.left;
+  v4.f64[0] = inset.bottom;
+  v4.f64[1] = inset.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(v3, *&self->_contentInset.top), vceqq_f64(v4, *&self->_contentInset.bottom)))) & 1) == 0)
   {
-    self->_contentInset = a3;
+    self->_contentInset = inset;
   }
 }
 
 - (double)firstLineLeading
 {
-  v2 = [(LPTextViewStyle *)self->_style firstLineLeading];
-  [v2 value];
+  firstLineLeading = [(LPTextViewStyle *)self->_style firstLineLeading];
+  [firstLineLeading value];
   v4 = v3;
 
   return v4;
@@ -579,8 +579,8 @@ void __53__LPTextView_attributedStringHidingNonColoredRanges___block_invoke(uint
 
 - (double)lastLineDescent
 {
-  v2 = [(LPTextViewStyle *)self->_style lastLineDescent];
-  [v2 value];
+  lastLineDescent = [(LPTextViewStyle *)self->_style lastLineDescent];
+  [lastLineDescent value];
   v4 = v3;
 
   return v4;
@@ -588,10 +588,10 @@ void __53__LPTextView_attributedStringHidingNonColoredRanges___block_invoke(uint
 
 - (BOOL)textIsTruncated
 {
-  v2 = self;
+  selfCopy = self;
   v13[1] = *MEMORY[0x1E69E9840];
-  v3 = [(UILabel *)self->_textView _lp_getAttributedString];
-  v4 = [v3 mutableCopy];
+  _lp_getAttributedString = [(UILabel *)self->_textView _lp_getAttributedString];
+  v4 = [_lp_getAttributedString mutableCopy];
 
   v5 = objc_alloc_init(MEMORY[0x1E69DB7C8]);
   [v5 setLineBreakMode:0xFFFFLL];
@@ -600,13 +600,13 @@ void __53__LPTextView_attributedStringHidingNonColoredRanges___block_invoke(uint
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:&v12 count:1];
   [v4 addAttributes:v6 range:{0, objc_msgSend(v4, "length") - 1}];
 
-  [(LPTextView *)v2 textRect];
+  [(LPTextView *)selfCopy textRect];
   [v4 boundingRectWithSize:1 options:0 context:{v7, 1.79769313e308}];
   v9 = v8;
-  [(LPTextView *)v2 textRect];
-  LOBYTE(v2) = v9 > v10;
+  [(LPTextView *)selfCopy textRect];
+  LOBYTE(selfCopy) = v9 > v10;
 
-  return v2;
+  return selfCopy;
 }
 
 - (int64_t)computedNumberOfLines
@@ -617,22 +617,22 @@ void __53__LPTextView_attributedStringHidingNonColoredRanges___block_invoke(uint
   return [(UILabel *)textView _measuredNumberOfLines];
 }
 
-- (void)setOverrideMaximumNumberOfLines:(int64_t)a3
+- (void)setOverrideMaximumNumberOfLines:(int64_t)lines
 {
-  self->_overrideMaximumNumberOfLines = a3;
+  self->_overrideMaximumNumberOfLines = lines;
   [(UILabel *)self->_textView setNumberOfLines:[(LPTextView *)self effectiveMaximumNumberOfLines]];
-  v4 = [(LPTextView *)self effectiveMaximumNumberOfLines];
+  effectiveMaximumNumberOfLines = [(LPTextView *)self effectiveMaximumNumberOfLines];
   coloredGlyphsView = self->_coloredGlyphsView;
 
-  [(UILabel *)coloredGlyphsView setNumberOfLines:v4];
+  [(UILabel *)coloredGlyphsView setNumberOfLines:effectiveMaximumNumberOfLines];
 }
 
-- (void)setFont:(id)a3
+- (void)setFont:(id)font
 {
-  v7 = a3;
+  fontCopy = font;
   if (([(UIFont *)self->_font isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_font, a3);
+    objc_storeStrong(&self->_font, font);
     [(UIFont *)self->_font ascender];
     self->_ascender = v5;
     [(UIFont *)self->_font descender];
@@ -643,8 +643,8 @@ void __53__LPTextView_attributedStringHidingNonColoredRanges___block_invoke(uint
 
 - (UIEdgeInsets)effectiveInsets
 {
-  v3 = [(LPTextViewStyle *)self->_style padding];
-  [v3 asInsetsForLTR:{-[LPTextView _lp_isLTR](self, "_lp_isLTR")}];
+  padding = [(LPTextViewStyle *)self->_style padding];
+  [padding asInsetsForLTR:{-[LPTextView _lp_isLTR](self, "_lp_isLTR")}];
   v5 = v4 + self->_contentInset.top;
   v7 = v6 + self->_contentInset.left;
   v9 = v8 + self->_contentInset.bottom;
@@ -715,10 +715,10 @@ void __53__LPTextView_attributedStringHidingNonColoredRanges___block_invoke(uint
   [(UILabel *)textView setFrame:v7, v8, v9, v10];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   [(LPTextView *)self _buildSubviewsIfNeeded];
   [(LPTextView *)self effectiveInsets];
   v7 = v6;
@@ -735,13 +735,13 @@ void __53__LPTextView_attributedStringHidingNonColoredRanges___block_invoke(uint
 
 - (void)_updateAttributedString
 {
-  v3 = [(LPTextView *)self effectiveAttributedString];
+  effectiveAttributedString = [(LPTextView *)self effectiveAttributedString];
   [(LPTextView *)self applyAttributedString:?];
 }
 
-- (void)setEmphasizedTextExpression:(id)a3
+- (void)setEmphasizedTextExpression:(id)expression
 {
-  objc_storeStrong(&self->_emphasizedTextExpression, a3);
+  objc_storeStrong(&self->_emphasizedTextExpression, expression);
 
   [(LPTextView *)self _updateAttributedString];
 }
@@ -770,16 +770,16 @@ void __53__LPTextView_attributedStringHidingNonColoredRanges___block_invoke(uint
 
 - (BOOL)_needsColoredGlyphsView
 {
-  v3 = [(LPComponentView *)self host];
-  v4 = [v3 allowsVibrancyForComponentView:self];
+  host = [(LPComponentView *)self host];
+  v4 = [host allowsVibrancyForComponentView:self];
 
   if ((v4 & 1) == 0)
   {
     return 0;
   }
 
-  v5 = [(LPTextViewStyle *)self->_style color];
-  v6 = vibrancyEffectStyleForColor(v5);
+  color = [(LPTextViewStyle *)self->_style color];
+  v6 = vibrancyEffectStyleForColor(color);
 
   if (v6)
   {
@@ -796,20 +796,20 @@ void __53__LPTextView_attributedStringHidingNonColoredRanges___block_invoke(uint
 
 - (void)_updateEffectViewEffect
 {
-  v10 = [(LPComponentView *)self host];
-  v3 = [v10 allowsVibrancyForComponentView:self];
+  host = [(LPComponentView *)self host];
+  v3 = [host allowsVibrancyForComponentView:self];
 
   if (v3)
   {
-    v4 = [(LPTextViewStyle *)self->_style color];
-    v11 = vibrancyEffectStyleForColor(v4);
+    color = [(LPTextViewStyle *)self->_style color];
+    v11 = vibrancyEffectStyleForColor(color);
 
     v5 = v11;
     if (v11)
     {
       v6 = MEMORY[0x1E69DC730];
-      v7 = [(LPComponentView *)self host];
-      v8 = [v6 effectWithStyle:{objc_msgSend(v7, "blurEffectStyleBehindComponentView:", self)}];
+      host2 = [(LPComponentView *)self host];
+      v8 = [v6 effectWithStyle:{objc_msgSend(host2, "blurEffectStyleBehindComponentView:", self)}];
 
       v9 = [MEMORY[0x1E69DD248] effectForBlurEffect:v8 style:{objc_msgSend(v11, "integerValue")}];
       [(UIVisualEffectView *)self->_effectView setEffect:v9];
@@ -819,20 +819,20 @@ void __53__LPTextView_attributedStringHidingNonColoredRanges___block_invoke(uint
   }
 }
 
-- (void)_createTextViewWithAttributedString:(id)a3
+- (void)_createTextViewWithAttributedString:(id)string
 {
-  v15 = a3;
-  v4 = [(LPTextView *)self _createLabel];
+  stringCopy = string;
+  _createLabel = [(LPTextView *)self _createLabel];
   textView = self->_textView;
-  self->_textView = v4;
+  self->_textView = _createLabel;
 
-  v6 = [(LPComponentView *)self host];
-  v7 = [v6 allowsVibrancyForComponentView:self];
+  host = [(LPComponentView *)self host];
+  v7 = [host allowsVibrancyForComponentView:self];
 
   if (v7)
   {
-    v8 = [(LPTextViewStyle *)self->_style color];
-    v9 = vibrancyEffectStyleForColor(v8);
+    color = [(LPTextViewStyle *)self->_style color];
+    v9 = vibrancyEffectStyleForColor(color);
 
     if (v9)
     {
@@ -841,15 +841,15 @@ void __53__LPTextView_attributedStringHidingNonColoredRanges___block_invoke(uint
       self->_effectView = v10;
 
       [(LPTextView *)self _updateEffectViewEffect];
-      v12 = [(UIVisualEffectView *)self->_effectView contentView];
-      [v12 addSubview:self->_textView];
+      contentView = [(UIVisualEffectView *)self->_effectView contentView];
+      [contentView addSubview:self->_textView];
 
       [(LPTextView *)self addSubview:self->_effectView];
       if ([(LPTextView *)self _needsColoredGlyphsView])
       {
-        v13 = [(LPTextView *)self _createLabel];
+        _createLabel2 = [(LPTextView *)self _createLabel];
         coloredGlyphsView = self->_coloredGlyphsView;
-        self->_coloredGlyphsView = v13;
+        self->_coloredGlyphsView = _createLabel2;
 
         [(LPTextView *)self addSubview:self->_coloredGlyphsView];
       }
@@ -861,16 +861,16 @@ void __53__LPTextView_attributedStringHidingNonColoredRanges___block_invoke(uint
     [(LPTextView *)self addSubview:self->_textView];
   }
 
-  [(LPTextView *)self applyAttributedString:v15];
+  [(LPTextView *)self applyAttributedString:stringCopy];
 }
 
-- (void)applyAttributedString:(id)a3
+- (void)applyAttributedString:(id)string
 {
-  v5 = a3;
+  stringCopy = string;
   [(UILabel *)self->_textView setAttributedText:?];
   if (self->_coloredGlyphsView)
   {
-    v4 = [LPTextView attributedStringHidingNonColoredRanges:v5];
+    v4 = [LPTextView attributedStringHidingNonColoredRanges:stringCopy];
     [(UILabel *)self->_coloredGlyphsView setAttributedText:v4];
   }
 }

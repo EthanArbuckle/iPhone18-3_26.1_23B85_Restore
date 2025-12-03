@@ -10,58 +10,58 @@
 
 - (id)accessibilityLabel
 {
-  v3 = [(ConversationControlsButtonAccessibility *)self accessibilityIdentifier];
-  if ([v3 isEqualToString:@"joinButton"])
+  accessibilityIdentifier = [(ConversationControlsButtonAccessibility *)self accessibilityIdentifier];
+  if ([accessibilityIdentifier isEqualToString:@"joinButton"])
   {
     v4 = @"join.call";
   }
 
-  else if ([v3 isEqualToString:@"cancelButton"])
+  else if ([accessibilityIdentifier isEqualToString:@"cancelButton"])
   {
     v4 = @"cancel.join.call";
   }
 
-  else if ([v3 isEqualToString:@"leaveButton"])
+  else if ([accessibilityIdentifier isEqualToString:@"leaveButton"])
   {
     v4 = @"leave.call";
   }
 
-  else if ([v3 isEqualToString:@"openMessagesButton"])
+  else if ([accessibilityIdentifier isEqualToString:@"openMessagesButton"])
   {
     v4 = @"open.messages";
   }
 
-  else if ([v3 isEqualToString:@"toggleAudioRouteMenuButton"])
+  else if ([accessibilityIdentifier isEqualToString:@"toggleAudioRouteMenuButton"])
   {
     v4 = @"audio.route";
   }
 
-  else if ([v3 isEqualToString:@"toggleMicMenuButton"])
+  else if ([accessibilityIdentifier isEqualToString:@"toggleMicMenuButton"])
   {
     v4 = @"mute";
   }
 
-  else if ([v3 isEqualToString:@"toggleVideoButton"])
+  else if ([accessibilityIdentifier isEqualToString:@"toggleVideoButton"])
   {
     v4 = @"camera";
   }
 
   else
   {
-    if (![v3 isEqualToString:@"shareMenuButton"])
+    if (![accessibilityIdentifier isEqualToString:@"shareMenuButton"])
     {
       v9.receiver = self;
       v9.super_class = ConversationControlsButtonAccessibility;
-      v7 = [(ConversationControlsButtonAccessibility *)&v9 accessibilityLabel];
-      if ([v7 length])
+      accessibilityLabel = [(ConversationControlsButtonAccessibility *)&v9 accessibilityLabel];
+      if ([accessibilityLabel length])
       {
-        v5 = v7;
+        text = accessibilityLabel;
       }
 
       else
       {
-        v8 = [(ConversationControlsButtonAccessibility *)self _axGetLabelSubview];
-        v5 = [v8 text];
+        _axGetLabelSubview = [(ConversationControlsButtonAccessibility *)self _axGetLabelSubview];
+        text = [_axGetLabelSubview text];
       }
 
       goto LABEL_18;
@@ -70,16 +70,16 @@
     v4 = @"share.content";
   }
 
-  v5 = accessibilityLocalizedString(v4);
+  text = accessibilityLocalizedString(v4);
 LABEL_18:
 
-  return v5;
+  return text;
 }
 
 - (id)accessibilityValue
 {
-  v3 = [(ConversationControlsButtonAccessibility *)self accessibilityIdentifier];
-  if (([v3 isEqualToString:@"toggleVideoButton"] & 1) != 0 || objc_msgSend(v3, "isEqualToString:", @"toggleMicMenuButton"))
+  accessibilityIdentifier = [(ConversationControlsButtonAccessibility *)self accessibilityIdentifier];
+  if (([accessibilityIdentifier isEqualToString:@"toggleVideoButton"] & 1) != 0 || objc_msgSend(accessibilityIdentifier, "isEqualToString:", @"toggleMicMenuButton"))
   {
     if ([(ConversationControlsButtonAccessibility *)self safeBoolForKey:@"isSelected"])
     {
@@ -107,8 +107,8 @@ LABEL_18:
   v6.receiver = self;
   v6.super_class = ConversationControlsButtonAccessibility;
   v3 = *MEMORY[0x29EDC7F70] | [(ConversationControlsButtonAccessibility *)&v6 accessibilityTraits];
-  v4 = [(ConversationControlsButtonAccessibility *)self accessibilityIdentifier];
-  if (([v4 isEqualToString:@"toggleVideoButton"] & 1) != 0 || objc_msgSend(v4, "isEqualToString:", @"toggleMicMenuButton"))
+  accessibilityIdentifier = [(ConversationControlsButtonAccessibility *)self accessibilityIdentifier];
+  if (([accessibilityIdentifier isEqualToString:@"toggleVideoButton"] & 1) != 0 || objc_msgSend(accessibilityIdentifier, "isEqualToString:", @"toggleMicMenuButton"))
   {
     v3 &= ~*MEMORY[0x29EDC7FC0];
   }
@@ -118,25 +118,25 @@ LABEL_18:
 
 - (id)accessibilityPath
 {
-  v3 = [(ConversationControlsButtonAccessibility *)self accessibilityIdentifier];
+  accessibilityIdentifier = [(ConversationControlsButtonAccessibility *)self accessibilityIdentifier];
   v13.receiver = self;
   v13.super_class = ConversationControlsButtonAccessibility;
-  v4 = [(ConversationControlsButtonAccessibility *)&v13 accessibilityPath];
-  if (([v3 isEqualToString:@"joinButton"] & 1) != 0 || objc_msgSend(v3, "isEqualToString:", @"leaveButton"))
+  accessibilityPath = [(ConversationControlsButtonAccessibility *)&v13 accessibilityPath];
+  if (([accessibilityIdentifier isEqualToString:@"joinButton"] & 1) != 0 || objc_msgSend(accessibilityIdentifier, "isEqualToString:", @"leaveButton"))
   {
-    [v4 bounds];
+    [accessibilityPath bounds];
     AX_CGRectGetCenter();
     v6 = v5;
     v8 = v7;
     CGAffineTransformMakeScale(&v12, 1.3, 1.3);
-    [v4 applyTransform:&v12];
-    [v4 bounds];
+    [accessibilityPath applyTransform:&v12];
+    [accessibilityPath bounds];
     AX_CGRectGetCenter();
     CGAffineTransformMakeTranslation(&v12, v6 - v9, v8 - v10);
-    [v4 applyTransform:&v12];
+    [accessibilityPath applyTransform:&v12];
   }
 
-  return v4;
+  return accessibilityPath;
 }
 
 - (id)_axGetLabelSubview

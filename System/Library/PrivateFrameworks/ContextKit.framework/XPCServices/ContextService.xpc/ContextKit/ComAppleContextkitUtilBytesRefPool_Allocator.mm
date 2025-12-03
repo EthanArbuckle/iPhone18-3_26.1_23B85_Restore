@@ -1,12 +1,12 @@
 @interface ComAppleContextkitUtilBytesRefPool_Allocator
-- (void)recycleByteBlocksWithJavaUtilList:(id)a3;
+- (void)recycleByteBlocksWithJavaUtilList:(id)list;
 @end
 
 @implementation ComAppleContextkitUtilBytesRefPool_Allocator
 
-- (void)recycleByteBlocksWithJavaUtilList:(id)a3
+- (void)recycleByteBlocksWithJavaUtilList:(id)list
 {
-  if (!a3 || (v4 = [a3 toArrayWithNSObjectArray:{+[IOSObjectArray arrayWithLength:type:](IOSObjectArray, "arrayWithLength:type:", objc_msgSend(a3, "size"), IOSClass_arrayType(+[IOSClass byteClass](IOSClass, "byteClass"), 1u))}]) == 0)
+  if (!list || (v4 = [list toArrayWithNSObjectArray:{+[IOSObjectArray arrayWithLength:type:](IOSObjectArray, "arrayWithLength:type:", objc_msgSend(list, "size"), IOSClass_arrayType(+[IOSClass byteClass](IOSClass, "byteClass"), 1u))}]) == 0)
   {
     JreThrowNullPointerException();
   }

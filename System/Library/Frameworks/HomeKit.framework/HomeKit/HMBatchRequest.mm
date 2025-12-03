@@ -1,95 +1,95 @@
 @interface HMBatchRequest
-+ (BOOL)validateRequestTypes:(id)a3 requestClass:(Class)a4;
-+ (id)batchRequestWithExecuteRequests:(id)a3;
-+ (id)batchRequestWithReadRequests:(id)a3;
-+ (id)batchRequestWithWriteRequests:(id)a3;
-- (HMBatchRequest)initWithRequests:(id)a3 requestClass:(Class)a4;
-- (void)setClientContext:(id)a3;
-- (void)setReportContext:(id)a3;
++ (BOOL)validateRequestTypes:(id)types requestClass:(Class)class;
++ (id)batchRequestWithExecuteRequests:(id)requests;
++ (id)batchRequestWithReadRequests:(id)requests;
++ (id)batchRequestWithWriteRequests:(id)requests;
+- (HMBatchRequest)initWithRequests:(id)requests requestClass:(Class)class;
+- (void)setClientContext:(id)context;
+- (void)setReportContext:(id)context;
 @end
 
 @implementation HMBatchRequest
 
-- (void)setReportContext:(id)a3
+- (void)setReportContext:(id)context
 {
-  v4 = [a3 copy];
+  v4 = [context copy];
   reportContext = self->_reportContext;
   self->_reportContext = v4;
 
   MEMORY[0x1EEE66BB8](v4, reportContext);
 }
 
-- (void)setClientContext:(id)a3
+- (void)setClientContext:(id)context
 {
-  v4 = [a3 copy];
+  v4 = [context copy];
   clientContext = self->_clientContext;
   self->_clientContext = v4;
 
   MEMORY[0x1EEE66BB8](v4, clientContext);
 }
 
-- (HMBatchRequest)initWithRequests:(id)a3 requestClass:(Class)a4
+- (HMBatchRequest)initWithRequests:(id)requests requestClass:(Class)class
 {
-  v6 = a3;
-  if ([HMBatchRequest validateRequestTypes:v6 requestClass:a4])
+  requestsCopy = requests;
+  if ([HMBatchRequest validateRequestTypes:requestsCopy requestClass:class])
   {
     v12.receiver = self;
     v12.super_class = HMBatchRequest;
     v7 = [(HMBatchRequest *)&v12 init];
     if (v7)
     {
-      v8 = [v6 copy];
+      v8 = [requestsCopy copy];
       requests = v7->_requests;
       v7->_requests = v8;
     }
 
     self = v7;
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-+ (id)batchRequestWithExecuteRequests:(id)a3
++ (id)batchRequestWithExecuteRequests:(id)requests
 {
-  v3 = a3;
-  v4 = [[HMBatchRequest alloc] initWithRequests:v3 requestClass:objc_opt_class()];
+  requestsCopy = requests;
+  v4 = [[HMBatchRequest alloc] initWithRequests:requestsCopy requestClass:objc_opt_class()];
 
   return v4;
 }
 
-+ (id)batchRequestWithWriteRequests:(id)a3
++ (id)batchRequestWithWriteRequests:(id)requests
 {
-  v3 = a3;
-  v4 = [[HMBatchRequest alloc] initWithRequests:v3 requestClass:objc_opt_class()];
+  requestsCopy = requests;
+  v4 = [[HMBatchRequest alloc] initWithRequests:requestsCopy requestClass:objc_opt_class()];
 
   return v4;
 }
 
-+ (id)batchRequestWithReadRequests:(id)a3
++ (id)batchRequestWithReadRequests:(id)requests
 {
-  v3 = a3;
-  v4 = [[HMBatchRequest alloc] initWithRequests:v3 requestClass:objc_opt_class()];
+  requestsCopy = requests;
+  v4 = [[HMBatchRequest alloc] initWithRequests:requestsCopy requestClass:objc_opt_class()];
 
   return v4;
 }
 
-+ (BOOL)validateRequestTypes:(id)a3 requestClass:(Class)a4
++ (BOOL)validateRequestTypes:(id)types requestClass:(Class)class
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count])
+  typesCopy = types;
+  if ([typesCopy count])
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v5 = v4;
+    v5 = typesCopy;
     v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v6)
     {

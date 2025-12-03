@@ -1,9 +1,9 @@
 @interface HKClinicalDocumentIndexingRequest
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HKClinicalDocumentIndexingRequest)init;
-- (HKClinicalDocumentIndexingRequest)initWithCoder:(id)a3;
-- (HKClinicalDocumentIndexingRequest)initWithMedicalRecord:(id)a3 attachmentIdentifiers:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (HKClinicalDocumentIndexingRequest)initWithCoder:(id)coder;
+- (HKClinicalDocumentIndexingRequest)initWithMedicalRecord:(id)record attachmentIdentifiers:(id)identifiers;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKClinicalDocumentIndexingRequest
@@ -18,20 +18,20 @@
   return 0;
 }
 
-- (HKClinicalDocumentIndexingRequest)initWithMedicalRecord:(id)a3 attachmentIdentifiers:(id)a4
+- (HKClinicalDocumentIndexingRequest)initWithMedicalRecord:(id)record attachmentIdentifiers:(id)identifiers
 {
-  v6 = a3;
-  v7 = a4;
+  recordCopy = record;
+  identifiersCopy = identifiers;
   v14.receiver = self;
   v14.super_class = HKClinicalDocumentIndexingRequest;
   v8 = [(HKClinicalDocumentIndexingRequest *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [recordCopy copy];
     medicalRecord = v8->_medicalRecord;
     v8->_medicalRecord = v9;
 
-    v11 = [v7 copy];
+    v11 = [identifiersCopy copy];
     attachmentIdentifiers = v8->_attachmentIdentifiers;
     v8->_attachmentIdentifiers = v11;
   }
@@ -39,13 +39,13 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
-  v7 = v6;
-  if (self != v6)
+  equalCopy = equal;
+  v7 = equalCopy;
+  if (self != equalCopy)
   {
-    v8 = v6;
+    v8 = equalCopy;
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -56,14 +56,14 @@ LABEL_18:
     }
 
     medicalRecord = self->_medicalRecord;
-    v10 = [(HKClinicalDocumentIndexingRequest *)v8 medicalRecord];
-    if (medicalRecord == v10)
+    medicalRecord = [(HKClinicalDocumentIndexingRequest *)v8 medicalRecord];
+    if (medicalRecord == medicalRecord)
     {
       goto LABEL_9;
     }
 
-    v11 = [(HKClinicalDocumentIndexingRequest *)v8 medicalRecord];
-    if (!v11)
+    medicalRecord2 = [(HKClinicalDocumentIndexingRequest *)v8 medicalRecord];
+    if (!medicalRecord2)
     {
       v13 = 0;
 LABEL_17:
@@ -71,16 +71,16 @@ LABEL_17:
       goto LABEL_18;
     }
 
-    v3 = v11;
+    v3 = medicalRecord2;
     v12 = self->_medicalRecord;
-    v4 = [(HKClinicalDocumentIndexingRequest *)v8 medicalRecord];
-    if ([(HKMedicalRecord *)v12 isEqual:v4])
+    medicalRecord3 = [(HKClinicalDocumentIndexingRequest *)v8 medicalRecord];
+    if ([(HKMedicalRecord *)v12 isEqual:medicalRecord3])
     {
 LABEL_9:
       attachmentIdentifiers = self->_attachmentIdentifiers;
-      v15 = [(HKClinicalDocumentIndexingRequest *)v8 attachmentIdentifiers];
-      v16 = v15;
-      if (attachmentIdentifiers == v15)
+      attachmentIdentifiers = [(HKClinicalDocumentIndexingRequest *)v8 attachmentIdentifiers];
+      v16 = attachmentIdentifiers;
+      if (attachmentIdentifiers == attachmentIdentifiers)
       {
 
         v13 = 1;
@@ -88,13 +88,13 @@ LABEL_9:
 
       else
       {
-        v17 = [(HKClinicalDocumentIndexingRequest *)v8 attachmentIdentifiers];
-        if (v17)
+        attachmentIdentifiers2 = [(HKClinicalDocumentIndexingRequest *)v8 attachmentIdentifiers];
+        if (attachmentIdentifiers2)
         {
-          v18 = v17;
+          v18 = attachmentIdentifiers2;
           v19 = self->_attachmentIdentifiers;
-          v20 = [(HKClinicalDocumentIndexingRequest *)v8 attachmentIdentifiers];
-          v13 = [(NSArray *)v19 isEqualToArray:v20];
+          attachmentIdentifiers3 = [(HKClinicalDocumentIndexingRequest *)v8 attachmentIdentifiers];
+          v13 = [(NSArray *)v19 isEqualToArray:attachmentIdentifiers3];
         }
 
         else
@@ -104,7 +104,7 @@ LABEL_9:
         }
       }
 
-      if (medicalRecord == v10)
+      if (medicalRecord == medicalRecord)
       {
         goto LABEL_17;
       }
@@ -124,19 +124,19 @@ LABEL_19:
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   medicalRecord = self->_medicalRecord;
-  v5 = a3;
-  [v5 encodeObject:medicalRecord forKey:@"MedicalRecord"];
-  [v5 encodeObject:self->_attachmentIdentifiers forKey:@"AttachmentIdentifiers"];
+  coderCopy = coder;
+  [coderCopy encodeObject:medicalRecord forKey:@"MedicalRecord"];
+  [coderCopy encodeObject:self->_attachmentIdentifiers forKey:@"AttachmentIdentifiers"];
 }
 
-- (HKClinicalDocumentIndexingRequest)initWithCoder:(id)a3
+- (HKClinicalDocumentIndexingRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MedicalRecord"];
-  v6 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"AttachmentIdentifiers"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MedicalRecord"];
+  v6 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"AttachmentIdentifiers"];
   v7 = v6;
   if (v5)
   {
@@ -150,17 +150,17 @@ LABEL_19:
 
   if (v8)
   {
-    [v4 hrs_failWithCocoaValueNotFoundError];
-    v9 = 0;
+    [coderCopy hrs_failWithCocoaValueNotFoundError];
+    selfCopy = 0;
   }
 
   else
   {
     self = [(HKClinicalDocumentIndexingRequest *)self initWithMedicalRecord:v5 attachmentIdentifiers:v6];
-    v9 = self;
+    selfCopy = self;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 @end

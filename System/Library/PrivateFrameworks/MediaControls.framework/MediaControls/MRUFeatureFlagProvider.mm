@@ -7,26 +7,26 @@
 
 + (BOOL)isPlatterLiveWaveformEnabled
 {
-  v2 = [a1 isAutobahnEnabled];
-  if (v2)
+  isAutobahnEnabled = [self isAutobahnEnabled];
+  if (isAutobahnEnabled)
   {
 
-    LOBYTE(v2) = _os_feature_enabled_impl();
+    LOBYTE(isAutobahnEnabled) = _os_feature_enabled_impl();
   }
 
-  return v2;
+  return isAutobahnEnabled;
 }
 
 + (BOOL)isCayenneControlCenterEnabled
 {
-  v2 = [a1 isCayenneEnabled];
-  if (v2)
+  isCayenneEnabled = [self isCayenneEnabled];
+  if (isCayenneEnabled)
   {
 
-    LOBYTE(v2) = _os_feature_enabled_impl();
+    LOBYTE(isCayenneEnabled) = _os_feature_enabled_impl();
   }
 
-  return v2;
+  return isCayenneEnabled;
 }
 
 @end

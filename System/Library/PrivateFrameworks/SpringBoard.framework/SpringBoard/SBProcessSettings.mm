@@ -1,11 +1,11 @@
 @interface SBProcessSettings
 - (SBProcessSettings)init;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)keyDescriptionForSetting:(unint64_t)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)keyDescriptionForSetting:(unint64_t)setting;
 - (id)succinctDescription;
-- (void)applyProcessSettings:(id)a3;
+- (void)applyProcessSettings:(id)settings;
 - (void)dealloc;
 @end
 
@@ -36,41 +36,41 @@
   [(SBProcessSettings *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 applyProcessSettings:self];
   return v4;
 }
 
-- (void)applyProcessSettings:(id)a3
+- (void)applyProcessSettings:(id)settings
 {
-  if (a3)
+  if (settings)
   {
-    [(BSMutableSettings *)self->_settings applySettings:*(a3 + 1)];
+    [(BSMutableSettings *)self->_settings applySettings:*(settings + 1)];
   }
 }
 
 - (id)succinctDescription
 {
-  v2 = [(SBProcessSettings *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBProcessSettings *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBProcessSettings *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBProcessSettings *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(SBProcessSettings *)self succinctDescriptionBuilder];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(SBProcessSettings *)self succinctDescriptionBuilder];
   settings = self->_settings;
   if (settings && ([(BSMutableSettings *)settings isEmpty]& 1) == 0)
   {
@@ -78,29 +78,29 @@
     v9[1] = 3221225472;
     v9[2] = __59__SBProcessSettings_descriptionBuilderWithMultilinePrefix___block_invoke;
     v9[3] = &unk_2783A92D8;
-    v10 = v5;
-    v11 = self;
-    [v10 appendBodySectionWithName:0 multilinePrefix:v4 block:v9];
+    v10 = succinctDescriptionBuilder;
+    selfCopy = self;
+    [v10 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v9];
   }
 
   else
   {
-    v7 = [v5 appendObject:@"(empty)" withName:0];
+    v7 = [succinctDescriptionBuilder appendObject:@"(empty)" withName:0];
   }
 
-  return v5;
+  return succinctDescriptionBuilder;
 }
 
-- (id)keyDescriptionForSetting:(unint64_t)a3
+- (id)keyDescriptionForSetting:(unint64_t)setting
 {
-  if (a3 > 9)
+  if (setting > 9)
   {
     return 0;
   }
 
   else
   {
-    return off_2783BAAE0[a3];
+    return off_2783BAAE0[setting];
   }
 }
 

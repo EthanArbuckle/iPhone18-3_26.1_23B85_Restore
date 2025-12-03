@@ -1,41 +1,41 @@
 @interface RatDataUsageState
-+ (BOOL)calculateDeltaAndUpdateInterfaceInfo:(id)a3 withCounters:(id)a4 withResponseBlock:(id)a5;
-+ (BOOL)updateInterfaceInfo:(id)a3 withCounters:(id)a4;
-+ (id)deriveCellularRadioTech:(id)a3 andRegistrationState:(id)a4 andIsSatelliteSystem:(BOOL)a5 andIsStewieActive:(BOOL)a6 andIsAirplaneModeActive:(BOOL)a7;
++ (BOOL)calculateDeltaAndUpdateInterfaceInfo:(id)info withCounters:(id)counters withResponseBlock:(id)block;
++ (BOOL)updateInterfaceInfo:(id)info withCounters:(id)counters;
++ (id)deriveCellularRadioTech:(id)tech andRegistrationState:(id)state andIsSatelliteSystem:(BOOL)system andIsStewieActive:(BOOL)active andIsAirplaneModeActive:(BOOL)modeActive;
 + (id)fetchInterfaceCounters;
-- (RatDataUsageState)initWithContext:(id)a3 cellularRegistrationState:(id)a4 isCellularLowDataModeEnabled:(BOOL)a5 isCellularInterfaceExpensive:(BOOL)a6 isSatelliteSystem:(BOOL)a7 isStewieActive:(BOOL)a8;
+- (RatDataUsageState)initWithContext:(id)context cellularRegistrationState:(id)state isCellularLowDataModeEnabled:(BOOL)enabled isCellularInterfaceExpensive:(BOOL)expensive isSatelliteSystem:(BOOL)system isStewieActive:(BOOL)active;
 - (void)submitToCA;
-- (void)submitToCAWithCounters:(id)a3;
-- (void)updateCellularRadioTechTo:(id)a3;
-- (void)updateIsCellularInterfaceExpensiveTo:(BOOL)a3;
-- (void)updateIsLowDataModeEnabledTo:(BOOL)a3;
-- (void)updateNetworkPathsToPrimary:(id)a3 secondary:(id)a4;
-- (void)updateRegistrationStateTo:(id)a3;
+- (void)submitToCAWithCounters:(id)counters;
+- (void)updateCellularRadioTechTo:(id)to;
+- (void)updateIsCellularInterfaceExpensiveTo:(BOOL)to;
+- (void)updateIsLowDataModeEnabledTo:(BOOL)to;
+- (void)updateNetworkPathsToPrimary:(id)primary secondary:(id)secondary;
+- (void)updateRegistrationStateTo:(id)to;
 @end
 
 @implementation RatDataUsageState
 
-- (RatDataUsageState)initWithContext:(id)a3 cellularRegistrationState:(id)a4 isCellularLowDataModeEnabled:(BOOL)a5 isCellularInterfaceExpensive:(BOOL)a6 isSatelliteSystem:(BOOL)a7 isStewieActive:(BOOL)a8
+- (RatDataUsageState)initWithContext:(id)context cellularRegistrationState:(id)state isCellularLowDataModeEnabled:(BOOL)enabled isCellularInterfaceExpensive:(BOOL)expensive isSatelliteSystem:(BOOL)system isStewieActive:(BOOL)active
 {
-  v15 = a3;
-  v16 = a4;
+  contextCopy = context;
+  stateCopy = state;
   v25.receiver = self;
   v25.super_class = RatDataUsageState;
   v17 = [(RatDataUsageState *)&v25 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_contextUUID, a3);
+    objc_storeStrong(&v17->_contextUUID, context);
     v19 = clock_gettime_nsec_np(_CLOCK_MONOTONIC_RAW);
     rawCellularRadioTech = v18->_rawCellularRadioTech;
     v18->_startTime = v19;
     v18->_rawCellularRadioTech = 0;
 
-    objc_storeStrong(&v18->_cellularRegistrationState, a4);
-    v18->_isCellularLowDataModeEnabled = a5;
-    v18->_isCellularInterfaceExpensive = a6;
-    v18->_isSatelliteSystem = a7;
-    v18->_isStewieActive = a8;
+    objc_storeStrong(&v18->_cellularRegistrationState, state);
+    v18->_isCellularLowDataModeEnabled = enabled;
+    v18->_isCellularInterfaceExpensive = expensive;
+    v18->_isSatelliteSystem = system;
+    v18->_isStewieActive = active;
     v18->_isAirplaneModeActive = 0;
     primary = v18->_primary;
     v18->_primary = 0;
@@ -49,22 +49,22 @@
   return v18;
 }
 
-- (void)updateNetworkPathsToPrimary:(id)a3 secondary:(id)a4
+- (void)updateNetworkPathsToPrimary:(id)primary secondary:(id)secondary
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(RatDataUsageState *)self primary];
-  if (v7 | v9)
+  primaryCopy = primary;
+  secondaryCopy = secondary;
+  primary = [(RatDataUsageState *)self primary];
+  if (primaryCopy | primary)
   {
-    v19 = [(RatDataUsageState *)self primary];
-    if (!v7 || !v19)
+    primary2 = [(RatDataUsageState *)self primary];
+    if (!primaryCopy || !primary2)
     {
       goto LABEL_19;
     }
 
-    v18 = [(RatDataUsageState *)self primary];
-    v10 = [v18 index];
-    if (v10 != [v7 index])
+    primary3 = [(RatDataUsageState *)self primary];
+    index = [primary3 index];
+    if (index != [primaryCopy index])
     {
 LABEL_18:
 
@@ -73,29 +73,29 @@ LABEL_19:
     }
   }
 
-  v11 = [(RatDataUsageState *)self secondary];
-  if (!(v8 | v11))
+  secondary = [(RatDataUsageState *)self secondary];
+  if (!(secondaryCopy | secondary))
   {
-    if (v7 | v9)
+    if (primaryCopy | primary)
     {
     }
 
     goto LABEL_15;
   }
 
-  v12 = [(RatDataUsageState *)self secondary];
-  v13 = v12;
-  if (!v8 || !v12)
+  secondary2 = [(RatDataUsageState *)self secondary];
+  v13 = secondary2;
+  if (!secondaryCopy || !secondary2)
   {
 
-    if (!(v7 | v9))
+    if (!(primaryCopy | primary))
     {
 LABEL_20:
 
 LABEL_21:
       v15 = +[RatDataUsageState fetchInterfaceCounters];
       [(RatDataUsageState *)self submitToCAWithCounters:v15];
-      if (v7 && ![RatDataUsageState updateInterfaceInfo:v7 withCounters:v15])
+      if (primaryCopy && ![RatDataUsageState updateInterfaceInfo:primaryCopy withCounters:v15])
       {
         if (os_log_type_enabled(*(qword_1002DBE98 + 48), OS_LOG_TYPE_ERROR))
         {
@@ -103,7 +103,7 @@ LABEL_21:
         }
       }
 
-      else if (v8 && ![RatDataUsageState updateInterfaceInfo:v8 withCounters:v15])
+      else if (secondaryCopy && ![RatDataUsageState updateInterfaceInfo:secondaryCopy withCounters:v15])
       {
         if (os_log_type_enabled(*(qword_1002DBE98 + 48), OS_LOG_TYPE_ERROR))
         {
@@ -113,8 +113,8 @@ LABEL_21:
 
       else
       {
-        objc_storeStrong(&self->_primary, a3);
-        objc_storeStrong(&self->_secondary, a4);
+        objc_storeStrong(&self->_primary, primary);
+        objc_storeStrong(&self->_secondary, secondary);
       }
 
       goto LABEL_31;
@@ -123,15 +123,15 @@ LABEL_21:
     goto LABEL_18;
   }
 
-  v14 = [(RatDataUsageState *)self secondary];
-  v17 = [v14 index];
-  v16 = [v8 index];
+  secondary3 = [(RatDataUsageState *)self secondary];
+  index2 = [secondary3 index];
+  index3 = [secondaryCopy index];
 
-  if (v7 | v9)
+  if (primaryCopy | primary)
   {
   }
 
-  if (v17 != v16)
+  if (index2 != index3)
   {
     goto LABEL_21;
   }
@@ -145,38 +145,38 @@ LABEL_15:
 LABEL_31:
 }
 
-- (void)updateCellularRadioTechTo:(id)a3
+- (void)updateCellularRadioTechTo:(id)to
 {
-  v5 = a3;
-  v6 = [(RatDataUsageState *)self rawCellularRadioTech];
-  if (!v6 || (-[RatDataUsageState rawCellularRadioTech](self, "rawCellularRadioTech"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v5 isEqualToString:v7], v7, v6, (v8 & 1) == 0))
+  toCopy = to;
+  rawCellularRadioTech = [(RatDataUsageState *)self rawCellularRadioTech];
+  if (!rawCellularRadioTech || (-[RatDataUsageState rawCellularRadioTech](self, "rawCellularRadioTech"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [toCopy isEqualToString:v7], v7, rawCellularRadioTech, (v8 & 1) == 0))
   {
     if (os_log_type_enabled(*(qword_1002DBE98 + 48), OS_LOG_TYPE_DEBUG))
     {
       sub_1001FC0A0();
     }
 
-    v9 = [(RatDataUsageState *)self rawCellularRadioTech];
-    v10 = [(RatDataUsageState *)self cellularRegistrationState];
-    v11 = [RatDataUsageState deriveCellularRadioTech:v9 andRegistrationState:v10 andIsSatelliteSystem:[(RatDataUsageState *)self isSatelliteSystem] andIsStewieActive:[(RatDataUsageState *)self isStewieActive] andIsAirplaneModeActive:[(RatDataUsageState *)self isAirplaneModeActive]];
+    rawCellularRadioTech2 = [(RatDataUsageState *)self rawCellularRadioTech];
+    cellularRegistrationState = [(RatDataUsageState *)self cellularRegistrationState];
+    v11 = [RatDataUsageState deriveCellularRadioTech:rawCellularRadioTech2 andRegistrationState:cellularRegistrationState andIsSatelliteSystem:[(RatDataUsageState *)self isSatelliteSystem] andIsStewieActive:[(RatDataUsageState *)self isStewieActive] andIsAirplaneModeActive:[(RatDataUsageState *)self isAirplaneModeActive]];
 
-    v12 = [(RatDataUsageState *)self cellularRegistrationState];
-    v13 = [RatDataUsageState deriveCellularRadioTech:v5 andRegistrationState:v12 andIsSatelliteSystem:[(RatDataUsageState *)self isSatelliteSystem] andIsStewieActive:[(RatDataUsageState *)self isStewieActive] andIsAirplaneModeActive:[(RatDataUsageState *)self isAirplaneModeActive]];
+    cellularRegistrationState2 = [(RatDataUsageState *)self cellularRegistrationState];
+    v13 = [RatDataUsageState deriveCellularRadioTech:toCopy andRegistrationState:cellularRegistrationState2 andIsSatelliteSystem:[(RatDataUsageState *)self isSatelliteSystem] andIsStewieActive:[(RatDataUsageState *)self isStewieActive] andIsAirplaneModeActive:[(RatDataUsageState *)self isAirplaneModeActive]];
 
     if (([v11 isEqualToString:v13] & 1) == 0)
     {
       [(RatDataUsageState *)self submitToCA];
     }
 
-    objc_storeStrong(&self->_rawCellularRadioTech, a3);
+    objc_storeStrong(&self->_rawCellularRadioTech, to);
   }
 }
 
-- (void)updateRegistrationStateTo:(id)a3
+- (void)updateRegistrationStateTo:(id)to
 {
-  v5 = a3;
-  v6 = [(RatDataUsageState *)self cellularRegistrationState];
-  v7 = [v5 isEqual:v6];
+  toCopy = to;
+  cellularRegistrationState = [(RatDataUsageState *)self cellularRegistrationState];
+  v7 = [toCopy isEqual:cellularRegistrationState];
 
   if ((v7 & 1) == 0)
   {
@@ -185,37 +185,37 @@ LABEL_31:
       sub_1001FC110();
     }
 
-    v8 = [(RatDataUsageState *)self rawCellularRadioTech];
-    v9 = [(RatDataUsageState *)self cellularRegistrationState];
-    v10 = [RatDataUsageState deriveCellularRadioTech:v8 andRegistrationState:v9 andIsSatelliteSystem:[(RatDataUsageState *)self isSatelliteSystem] andIsStewieActive:[(RatDataUsageState *)self isStewieActive] andIsAirplaneModeActive:[(RatDataUsageState *)self isAirplaneModeActive]];
+    rawCellularRadioTech = [(RatDataUsageState *)self rawCellularRadioTech];
+    cellularRegistrationState2 = [(RatDataUsageState *)self cellularRegistrationState];
+    v10 = [RatDataUsageState deriveCellularRadioTech:rawCellularRadioTech andRegistrationState:cellularRegistrationState2 andIsSatelliteSystem:[(RatDataUsageState *)self isSatelliteSystem] andIsStewieActive:[(RatDataUsageState *)self isStewieActive] andIsAirplaneModeActive:[(RatDataUsageState *)self isAirplaneModeActive]];
 
-    v11 = [(RatDataUsageState *)self rawCellularRadioTech];
-    v12 = [RatDataUsageState deriveCellularRadioTech:v11 andRegistrationState:v5 andIsSatelliteSystem:[(RatDataUsageState *)self isSatelliteSystem] andIsStewieActive:[(RatDataUsageState *)self isStewieActive] andIsAirplaneModeActive:[(RatDataUsageState *)self isAirplaneModeActive]];
+    rawCellularRadioTech2 = [(RatDataUsageState *)self rawCellularRadioTech];
+    v12 = [RatDataUsageState deriveCellularRadioTech:rawCellularRadioTech2 andRegistrationState:toCopy andIsSatelliteSystem:[(RatDataUsageState *)self isSatelliteSystem] andIsStewieActive:[(RatDataUsageState *)self isStewieActive] andIsAirplaneModeActive:[(RatDataUsageState *)self isAirplaneModeActive]];
 
     if (([v10 isEqualToString:v12] & 1) == 0)
     {
       [(RatDataUsageState *)self submitToCA];
     }
 
-    objc_storeStrong(&self->_cellularRegistrationState, a3);
+    objc_storeStrong(&self->_cellularRegistrationState, to);
   }
 }
 
-- (void)updateIsLowDataModeEnabledTo:(BOOL)a3
+- (void)updateIsLowDataModeEnabledTo:(BOOL)to
 {
-  if ([(RatDataUsageState *)self isCellularLowDataModeEnabled]!= a3)
+  if ([(RatDataUsageState *)self isCellularLowDataModeEnabled]!= to)
   {
     [(RatDataUsageState *)self submitToCA];
-    self->_isCellularLowDataModeEnabled = a3;
+    self->_isCellularLowDataModeEnabled = to;
   }
 }
 
-- (void)updateIsCellularInterfaceExpensiveTo:(BOOL)a3
+- (void)updateIsCellularInterfaceExpensiveTo:(BOOL)to
 {
-  if ([(RatDataUsageState *)self isCellularInterfaceExpensive]!= a3)
+  if ([(RatDataUsageState *)self isCellularInterfaceExpensive]!= to)
   {
     [(RatDataUsageState *)self submitToCA];
-    self->_isCellularInterfaceExpensive = a3;
+    self->_isCellularInterfaceExpensive = to;
   }
 }
 
@@ -225,9 +225,9 @@ LABEL_31:
   [(RatDataUsageState *)self submitToCAWithCounters:?];
 }
 
-- (void)submitToCAWithCounters:(id)a3
+- (void)submitToCAWithCounters:(id)counters
 {
-  v4 = a3;
+  countersCopy = counters;
   v5 = clock_gettime_nsec_np(_CLOCK_MONOTONIC_RAW);
   if (v5 < [(RatDataUsageState *)self startTime])
   {
@@ -247,7 +247,7 @@ LABEL_4:
     goto LABEL_47;
   }
 
-  if (!v4)
+  if (!countersCopy)
   {
     if (os_log_type_enabled(*(qword_1002DBE98 + 48), OS_LOG_TYPE_ERROR))
     {
@@ -289,12 +289,12 @@ LABEL_4:
   v53 = &v52;
   v54 = 0x2020000000;
   v55 = 0;
-  v8 = [(RatDataUsageState *)self primary];
-  v9 = v8 == 0;
+  primary = [(RatDataUsageState *)self primary];
+  v9 = primary == 0;
 
   if (!v9)
   {
-    v10 = [(RatDataUsageState *)self primary];
+    primary2 = [(RatDataUsageState *)self primary];
     v51[0] = _NSConcreteStackBlock;
     v51[1] = 3221225472;
     v51[2] = sub_10002D800;
@@ -303,7 +303,7 @@ LABEL_4:
     v51[5] = &v76;
     v51[6] = &v72;
     v51[7] = &v68;
-    v11 = [RatDataUsageState calculateDeltaAndUpdateInterfaceInfo:v10 withCounters:v4 withResponseBlock:v51];
+    v11 = [RatDataUsageState calculateDeltaAndUpdateInterfaceInfo:primary2 withCounters:countersCopy withResponseBlock:v51];
 
     if ((v11 & 1) == 0)
     {
@@ -317,12 +317,12 @@ LABEL_4:
     }
   }
 
-  v13 = [(RatDataUsageState *)self secondary];
-  v14 = v13 == 0;
+  secondary = [(RatDataUsageState *)self secondary];
+  v14 = secondary == 0;
 
   if (!v14)
   {
-    v15 = [(RatDataUsageState *)self secondary];
+    secondary2 = [(RatDataUsageState *)self secondary];
     v50[0] = _NSConcreteStackBlock;
     v50[1] = 3221225472;
     v50[2] = sub_10002D834;
@@ -331,7 +331,7 @@ LABEL_4:
     v50[5] = &v60;
     v50[6] = &v56;
     v50[7] = &v52;
-    v16 = [RatDataUsageState calculateDeltaAndUpdateInterfaceInfo:v15 withCounters:v4 withResponseBlock:v50];
+    v16 = [RatDataUsageState calculateDeltaAndUpdateInterfaceInfo:secondary2 withCounters:countersCopy withResponseBlock:v50];
 
     if ((v16 & 1) == 0)
     {
@@ -354,9 +354,9 @@ LABEL_4:
     {
       if ([(RatDataUsageState *)self isCellularInterfaceExpensive])
       {
-        v20 = [(RatDataUsageState *)self isCellularLowDataModeEnabled];
+        isCellularLowDataModeEnabled = [(RatDataUsageState *)self isCellularLowDataModeEnabled];
         v21 = @"Standard";
-        if (v20)
+        if (isCellularLowDataModeEnabled)
         {
           v21 = @"Low";
         }
@@ -368,9 +368,9 @@ LABEL_4:
       }
 
       v45 = v21;
-      v22 = [(RatDataUsageState *)self rawCellularRadioTech];
-      v23 = [(RatDataUsageState *)self cellularRegistrationState];
-      v46 = [RatDataUsageState deriveCellularRadioTech:v22 andRegistrationState:v23 andIsSatelliteSystem:[(RatDataUsageState *)self isSatelliteSystem] andIsStewieActive:[(RatDataUsageState *)self isStewieActive] andIsAirplaneModeActive:[(RatDataUsageState *)self isAirplaneModeActive]];
+      rawCellularRadioTech = [(RatDataUsageState *)self rawCellularRadioTech];
+      cellularRegistrationState = [(RatDataUsageState *)self cellularRegistrationState];
+      v46 = [RatDataUsageState deriveCellularRadioTech:rawCellularRadioTech andRegistrationState:cellularRegistrationState andIsSatelliteSystem:[(RatDataUsageState *)self isSatelliteSystem] andIsStewieActive:[(RatDataUsageState *)self isStewieActive] andIsAirplaneModeActive:[(RatDataUsageState *)self isAirplaneModeActive]];
 
       if (v46)
       {
@@ -379,38 +379,38 @@ LABEL_4:
         v85[0] = v46;
         v85[1] = v45;
         v84[2] = @"primary_network_path";
-        v43 = [(RatDataUsageState *)self primary];
-        if (v43)
+        primary3 = [(RatDataUsageState *)self primary];
+        if (primary3)
         {
-          v42 = [(RatDataUsageState *)self primary];
-          v24 = [v42 typeAsString];
+          primary4 = [(RatDataUsageState *)self primary];
+          typeAsString = [primary4 typeAsString];
         }
 
         else
         {
-          v24 = +[NSNull null];
-          v42 = v24;
+          typeAsString = +[NSNull null];
+          primary4 = typeAsString;
         }
 
-        v37 = v24;
-        v85[2] = v24;
+        v37 = typeAsString;
+        v85[2] = typeAsString;
         v84[3] = @"secondary_network_path";
-        v44 = [(RatDataUsageState *)self secondary];
-        if (v44)
+        secondary3 = [(RatDataUsageState *)self secondary];
+        if (secondary3)
         {
-          v41 = [(RatDataUsageState *)self secondary];
-          v26 = [v41 typeAsString];
+          secondary4 = [(RatDataUsageState *)self secondary];
+          typeAsString2 = [secondary4 typeAsString];
         }
 
         else
         {
-          v26 = +[NSNull null];
-          v41 = v26;
+          typeAsString2 = +[NSNull null];
+          secondary4 = typeAsString2;
         }
 
-        v85[3] = v26;
+        v85[3] = typeAsString2;
         v84[4] = @"duration_ms";
-        v86 = [NSNumber numberWithUnsignedLongLong:v19, v26];
+        v86 = [NSNumber numberWithUnsignedLongLong:v19, typeAsString2];
         v84[5] = @"rx_primary_bytes";
         v40 = v86;
         v39 = [NSNumber numberWithUnsignedLongLong:v81[3]];
@@ -438,11 +438,11 @@ LABEL_4:
         v94 = v33;
         v38 = [NSDictionary dictionaryWithObjects:v85 forKeys:v84 count:13];
 
-        if (v44)
+        if (secondary3)
         {
         }
 
-        if (v43)
+        if (primary3)
         {
         }
 
@@ -489,15 +489,15 @@ LABEL_4:
 LABEL_47:
 }
 
-+ (id)deriveCellularRadioTech:(id)a3 andRegistrationState:(id)a4 andIsSatelliteSystem:(BOOL)a5 andIsStewieActive:(BOOL)a6 andIsAirplaneModeActive:(BOOL)a7
++ (id)deriveCellularRadioTech:(id)tech andRegistrationState:(id)state andIsSatelliteSystem:(BOOL)system andIsStewieActive:(BOOL)active andIsAirplaneModeActive:(BOOL)modeActive
 {
-  v7 = a7;
-  v8 = a6;
-  v11 = a3;
-  v12 = a4;
-  v13 = v7 || v8;
+  modeActiveCopy = modeActive;
+  activeCopy = active;
+  techCopy = tech;
+  stateCopy = state;
+  v13 = modeActiveCopy || activeCopy;
   v14 = "Satellite";
-  if (v7)
+  if (modeActiveCopy)
   {
     v14 = "AirplaneMode";
   }
@@ -512,12 +512,12 @@ LABEL_47:
     v15 = "LTE NTN";
   }
 
-  if ((v13 & 1) != 0 || a5)
+  if ((v13 & 1) != 0 || system)
   {
     goto LABEL_10;
   }
 
-  if ([WISTelephonyUtils isRegistrationDisplayStatusOutOfService:v12])
+  if ([WISTelephonyUtils isRegistrationDisplayStatusOutOfService:stateCopy])
   {
     v15 = "NoService";
 LABEL_10:
@@ -525,7 +525,7 @@ LABEL_10:
     goto LABEL_12;
   }
 
-  v16 = v11;
+  v16 = techCopy;
 LABEL_12:
   v17 = v16;
 
@@ -601,21 +601,21 @@ LABEL_16:
           }
 
           v12 = [v10 objectForKey:{@"rx_bytes", v26}];
-          v13 = [v12 unsignedLongLongValue];
+          unsignedLongLongValue = [v12 unsignedLongLongValue];
 
           v14 = [v10 objectForKey:@"tx_bytes"];
-          v15 = [v14 unsignedLongLongValue];
+          unsignedLongLongValue2 = [v14 unsignedLongLongValue];
 
           v16 = [v10 objectForKey:@"rx_packets"];
-          v17 = [v16 unsignedLongLongValue];
+          unsignedLongLongValue3 = [v16 unsignedLongLongValue];
 
           v18 = [v31 objectForKey:@"tx_packets"];
-          v19 = [v18 unsignedLongLongValue];
+          unsignedLongLongValue4 = [v18 unsignedLongLongValue];
 
-          v8 += v13;
-          v7 += v15;
-          v9 += v17;
-          v28 += v19;
+          v8 += unsignedLongLongValue;
+          v7 += unsignedLongLongValue2;
+          v9 += unsignedLongLongValue3;
+          v28 += unsignedLongLongValue4;
         }
 
         v34[0] = @"rx_bytes";
@@ -651,33 +651,33 @@ LABEL_19:
   return v3;
 }
 
-+ (BOOL)calculateDeltaAndUpdateInterfaceInfo:(id)a3 withCounters:(id)a4 withResponseBlock:(id)a5
++ (BOOL)calculateDeltaAndUpdateInterfaceInfo:(id)info withCounters:(id)counters withResponseBlock:(id)block
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (!v8)
+  infoCopy = info;
+  countersCopy = counters;
+  blockCopy = block;
+  if (!countersCopy)
   {
     v20 = 0;
     goto LABEL_16;
   }
 
-  v28 = v9;
-  v10 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [v7 index]);
-  v11 = [v8 objectForKey:v10];
+  v28 = blockCopy;
+  v10 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [infoCopy index]);
+  v11 = [countersCopy objectForKey:v10];
 
   v12 = [v11 objectForKey:@"rx_bytes"];
   v13 = [v11 objectForKey:@"tx_bytes"];
   v14 = [v11 objectForKey:@"rx_packets"];
   v15 = [v11 objectForKey:@"tx_packets"];
-  v16 = [v12 unsignedLongLongValue];
-  v17 = [v13 unsignedLongLongValue];
-  v27 = [v14 unsignedLongLongValue];
-  v26 = [v15 unsignedLongLongValue];
-  v18 = [v7 isCountersSet];
+  unsignedLongLongValue = [v12 unsignedLongLongValue];
+  unsignedLongLongValue2 = [v13 unsignedLongLongValue];
+  unsignedLongLongValue3 = [v14 unsignedLongLongValue];
+  unsignedLongLongValue4 = [v15 unsignedLongLongValue];
+  isCountersSet = [infoCopy isCountersSet];
   if (v12)
   {
-    v19 = v18;
+    v19 = isCountersSet;
   }
 
   else
@@ -691,7 +691,7 @@ LABEL_19:
   }
 
   v20 = 0;
-  if (v16 < [v7 rxByteCounter])
+  if (unsignedLongLongValue < [infoCopy rxByteCounter])
   {
     goto LABEL_14;
   }
@@ -702,7 +702,7 @@ LABEL_19:
   }
 
   v20 = 0;
-  if (v17 < [v7 txByteCounter])
+  if (unsignedLongLongValue2 < [infoCopy txByteCounter])
   {
     goto LABEL_14;
   }
@@ -713,19 +713,19 @@ LABEL_19:
   }
 
   v20 = 0;
-  if (v27 < [v7 rxPacketCounter] || !v15)
+  if (unsignedLongLongValue3 < [infoCopy rxPacketCounter] || !v15)
   {
     goto LABEL_14;
   }
 
-  if (v26 >= [v7 txPacketCounter])
+  if (unsignedLongLongValue4 >= [infoCopy txPacketCounter])
   {
-    v25 = [v7 rxByteCounter];
-    v24 = [v7 txByteCounter];
-    v23 = [v7 rxPacketCounter];
-    v22 = [v7 txPacketCounter];
-    [v7 updateRxByteCounterTo:v16 andTxByteCounterTo:v17 andRxPacketCounterTo:v27 andTxPacketCounterTo:v26];
-    v28[2](v28, v16 - v25, v17 - v24, v27 - v23, v26 - v22);
+    rxByteCounter = [infoCopy rxByteCounter];
+    txByteCounter = [infoCopy txByteCounter];
+    rxPacketCounter = [infoCopy rxPacketCounter];
+    txPacketCounter = [infoCopy txPacketCounter];
+    [infoCopy updateRxByteCounterTo:unsignedLongLongValue andTxByteCounterTo:unsignedLongLongValue2 andRxPacketCounterTo:unsignedLongLongValue3 andTxPacketCounterTo:unsignedLongLongValue4];
+    v28[2](v28, unsignedLongLongValue - rxByteCounter, unsignedLongLongValue2 - txByteCounter, unsignedLongLongValue3 - rxPacketCounter, unsignedLongLongValue4 - txPacketCounter);
     v20 = 1;
   }
 
@@ -737,21 +737,21 @@ LABEL_13:
 
 LABEL_14:
 
-  v9 = v28;
+  blockCopy = v28;
 LABEL_16:
 
   return v20;
 }
 
-+ (BOOL)updateInterfaceInfo:(id)a3 withCounters:(id)a4
++ (BOOL)updateInterfaceInfo:(id)info withCounters:(id)counters
 {
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  infoCopy = info;
+  countersCopy = counters;
+  if (countersCopy)
   {
-    v19 = v5;
-    v7 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [v5 index]);
-    v8 = [v6 objectForKey:v7];
+    v19 = infoCopy;
+    v7 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [infoCopy index]);
+    v8 = [countersCopy objectForKey:v7];
 
     v9 = [v8 objectForKey:@"rx_bytes"];
     v10 = [v8 objectForKey:@"tx_bytes"];
@@ -775,7 +775,7 @@ LABEL_16:
       [v19 updateRxByteCounterTo:objc_msgSend(v9 andTxByteCounterTo:"unsignedLongLongValue") andRxPacketCounterTo:objc_msgSend(v10 andTxPacketCounterTo:{"unsignedLongLongValue"), objc_msgSend(v11, "unsignedLongLongValue"), objc_msgSend(v12, "unsignedLongLongValue")}];
     }
 
-    v5 = v19;
+    infoCopy = v19;
   }
 
   else

@@ -1,18 +1,18 @@
 @interface CMDiagramPointListBaseMapper
-- (void)mapAt:(id)a3 withState:(id)a4;
-- (void)mapTextAt:(id)a3 withBounds:(id)a4 isCentered:(BOOL)a5 includeChildren:(BOOL)a6 withState:(id)a7;
+- (void)mapAt:(id)at withState:(id)state;
+- (void)mapTextAt:(id)at withBounds:(id)bounds isCentered:(BOOL)centered includeChildren:(BOOL)children withState:(id)state;
 @end
 
 @implementation CMDiagramPointListBaseMapper
 
-- (void)mapAt:(id)a3 withState:(id)a4
+- (void)mapAt:(id)at withState:(id)state
 {
-  v6 = a3;
-  v7 = a4;
+  atCopy = at;
+  stateCopy = state;
   v8 = objc_alloc_init(CMDrawableStyle);
   [(CMDiagramPointMapper *)self applyDiagramStyleToShapeProperties];
-  v9 = [(CMDiagramPointMapper *)self stroke];
-  [v9 width];
+  stroke = [(CMDiagramPointMapper *)self stroke];
+  [stroke width];
   v11 = v10;
   v12 = v10 * 0.5;
   if (v11 <= 1.5)
@@ -39,30 +39,30 @@
   v20 = [OIXMLElement elementWithType:3];
   [v19 bounds];
   [(CMDrawableStyle *)v8 addPositionProperties:?];
-  v21 = [(CMDiagramPointMapper *)self fill];
-  v22 = [CMColorProperty nsColorFromOADFill:v21 state:v7];
+  fill = [(CMDiagramPointMapper *)self fill];
+  v22 = [CMColorProperty nsColorFromOADFill:fill state:stateCopy];
 
   [(CMStyle *)v8 appendPropertyForName:0x286F07DF0 color:v22];
   v23 = [CMBordersProperty alloc];
-  [(CMBordersProperty *)v23 setFromOadStroke:v9 atLocation:0 state:v7];
-  v24 = [(CMBordersProperty *)v23 cssString];
-  [(CMStyle *)v8 appendPropertyString:v24];
+  [(CMBordersProperty *)v23 setFromOadStroke:stroke atLocation:0 state:stateCopy];
+  cssString = [(CMBordersProperty *)v23 cssString];
+  [(CMStyle *)v8 appendPropertyString:cssString];
 
-  [v6 addChild:v20];
+  [atCopy addChild:v20];
   v25.receiver = self;
   v25.super_class = CMDiagramPointListBaseMapper;
   [(CMMapper *)&v25 addStyleUsingGlobalCacheTo:v20 style:v8];
-  [(CMDiagramPointListBaseMapper *)self mapTextAt:v20 withBounds:v19 isCentered:1 includeChildren:0 withState:v7];
+  [(CMDiagramPointListBaseMapper *)self mapTextAt:v20 withBounds:v19 isCentered:1 includeChildren:0 withState:stateCopy];
 }
 
-- (void)mapTextAt:(id)a3 withBounds:(id)a4 isCentered:(BOOL)a5 includeChildren:(BOOL)a6 withState:(id)a7
+- (void)mapTextAt:(id)at withBounds:(id)bounds isCentered:(BOOL)centered includeChildren:(BOOL)children withState:(id)state
 {
-  v10 = a3;
-  v11 = a7;
-  v12 = [(CMDiagramPointMapper *)self baseTextListStyleWithBounds:a4 isCentered:0];
+  atCopy = at;
+  stateCopy = state;
+  v12 = [(CMDiagramPointMapper *)self baseTextListStyleWithBounds:bounds isCentered:0];
   v13.receiver = self;
   v13.super_class = CMDiagramPointListBaseMapper;
-  [(CMDiagramPointMapper *)&v13 mapSiblingTextAt:v10 style:v12 level:1 withState:v11];
+  [(CMDiagramPointMapper *)&v13 mapSiblingTextAt:atCopy style:v12 level:1 withState:stateCopy];
 }
 
 @end

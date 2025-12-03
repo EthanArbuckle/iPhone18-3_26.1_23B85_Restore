@@ -1,27 +1,27 @@
 @interface MFMessageLoadingContextToEMSecurityInformationTransformer
-+ (id)securityInformationFromMFMessageLoadingContextEvent:(id)a3;
++ (id)securityInformationFromMFMessageLoadingContextEvent:(id)event;
 @end
 
 @implementation MFMessageLoadingContextToEMSecurityInformationTransformer
 
-+ (id)securityInformationFromMFMessageLoadingContextEvent:(id)a3
++ (id)securityInformationFromMFMessageLoadingContextEvent:(id)event
 {
-  v3 = a3;
-  v4 = [v3 loadedBody];
-  v5 = [v4 topLevelPart];
-  v6 = [v5 copySigners];
-  v7 = [v6 ef_map:&__block_literal_global_49];
+  eventCopy = event;
+  loadedBody = [eventCopy loadedBody];
+  topLevelPart = [loadedBody topLevelPart];
+  copySigners = [topLevelPart copySigners];
+  v7 = [copySigners ef_map:&__block_literal_global_49];
 
-  v8 = [v3 message];
-  v9 = [v8 messageFlags];
+  message = [eventCopy message];
+  messageFlags = [message messageFlags];
 
   v10 = objc_alloc(MEMORY[0x1E699AEB0]);
-  v11 = [v3 loadedBody];
-  v12 = [v11 hasEncryptedDescendantPart];
-  v13 = [v3 loadedBody];
-  v14 = [v13 topLevelPart];
-  v15 = [v14 SMIMEError];
-  v16 = [v10 initWithSigners:v7 isEncrypted:(v9 >> 3) & 1 hasEncryptedDescendantPart:v12 smimeError:v15];
+  loadedBody2 = [eventCopy loadedBody];
+  hasEncryptedDescendantPart = [loadedBody2 hasEncryptedDescendantPart];
+  loadedBody3 = [eventCopy loadedBody];
+  topLevelPart2 = [loadedBody3 topLevelPart];
+  sMIMEError = [topLevelPart2 SMIMEError];
+  v16 = [v10 initWithSigners:v7 isEncrypted:(messageFlags >> 3) & 1 hasEncryptedDescendantPart:hasEncryptedDescendantPart smimeError:sMIMEError];
 
   return v16;
 }

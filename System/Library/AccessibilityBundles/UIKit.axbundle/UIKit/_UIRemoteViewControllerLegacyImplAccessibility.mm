@@ -1,40 +1,40 @@
 @interface _UIRemoteViewControllerLegacyImplAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_axShouldTakeBackFocus;
 - (id)_accessibilityResponderElement;
 - (id)disconnect;
-- (void)__handleFocusMovementAction:(id)a3;
-- (void)__setViewServiceIsDisplayingPopover:(BOOL)a3;
+- (void)__handleFocusMovementAction:(id)action;
+- (void)__setViewServiceIsDisplayingPopover:(BOOL)popover;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)_accessibilityLoadAccessibilityInformation:(double)a3 retryTime:;
-- (void)_accessibilityLoadAccessibilityInformation:(void *)a1;
-- (void)_accessibilityRemoteView:(id)a3 pid:(int)a4 machPort:(unsigned int)a5;
-- (void)_awakeWithConnectionInfo:(id)a3;
-- (void)_axRemoteViewLoadRequest:(id)a3;
-- (void)_axSetMachPortRetrievalTimer:(id)a3;
-- (void)_axTakeBakeFocusWithHeading:(id)a3;
+- (void)_accessibilityLoadAccessibilityInformation:(double)information retryTime:;
+- (void)_accessibilityLoadAccessibilityInformation:(void *)information;
+- (void)_accessibilityRemoteView:(id)view pid:(int)pid machPort:(unsigned int)port;
+- (void)_awakeWithConnectionInfo:(id)info;
+- (void)_axRemoteViewLoadRequest:(id)request;
+- (void)_axSetMachPortRetrievalTimer:(id)timer;
+- (void)_axTakeBakeFocusWithHeading:(id)heading;
 @end
 
 @implementation _UIRemoteViewControllerLegacyImplAccessibility
 
-- (void)_axSetMachPortRetrievalTimer:(id)a3
+- (void)_axSetMachPortRetrievalTimer:(id)timer
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, timer);
   __UIAccessibilitySetAssociatedObject();
   objc_storeStrong(location, 0);
 }
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v12 = location;
   v11 = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v4 = @"_UIRemoteViewControllerLegacyImpl";
   [location[0] validateClass:? hasInstanceVariable:? withType:?];
   v3 = "_UITextEffectsRemoteView";
@@ -71,24 +71,24 @@
 - (id)_accessibilityResponderElement
 {
   v35 = *MEMORY[0x29EDCA608];
-  v32 = self;
+  selfCopy = self;
   v31[1] = a2;
   v31[0] = [MEMORY[0x29EDB8DE8] array];
-  v15 = [(_UIRemoteViewControllerLegacyImplAccessibility *)v32 safeValueForKey:@"_sizeTrackingView"];
-  v14 = [v15 subviews];
+  v15 = [(_UIRemoteViewControllerLegacyImplAccessibility *)selfCopy safeValueForKey:@"_sizeTrackingView"];
+  subviews = [v15 subviews];
   [v31[0] axSafelyAddObjectsFromArray:?];
-  MEMORY[0x29EDC9740](v14);
-  v16 = [(_UIRemoteViewControllerLegacyImplAccessibility *)v32 safeValueForKey:@"_remoteKeyboardRemoteView", MEMORY[0x29EDC9740](v15).n128_f64[0]];
+  MEMORY[0x29EDC9740](subviews);
+  v16 = [(_UIRemoteViewControllerLegacyImplAccessibility *)selfCopy safeValueForKey:@"_remoteKeyboardRemoteView", MEMORY[0x29EDC9740](v15).n128_f64[0]];
   [v31[0] axSafelyAddObject:?];
-  v17 = [(_UIRemoteViewControllerLegacyImplAccessibility *)v32 safeValueForKey:@"_fullScreenTextEffectsRemoteView", MEMORY[0x29EDC9740](v16).n128_f64[0]];
+  v17 = [(_UIRemoteViewControllerLegacyImplAccessibility *)selfCopy safeValueForKey:@"_fullScreenTextEffectsRemoteView", MEMORY[0x29EDC9740](v16).n128_f64[0]];
   [v31[0] axSafelyAddObject:?];
-  v18 = [(_UIRemoteViewControllerLegacyImplAccessibility *)v32 safeValueForKey:@"_textEffectsAboveStatusBarRemoteView", MEMORY[0x29EDC9740](v17).n128_f64[0]];
+  v18 = [(_UIRemoteViewControllerLegacyImplAccessibility *)selfCopy safeValueForKey:@"_textEffectsAboveStatusBarRemoteView", MEMORY[0x29EDC9740](v17).n128_f64[0]];
   [v31[0] axSafelyAddObject:?];
   MEMORY[0x29EDC9740](v18);
   v30 = 0;
   v28 = 0;
   objc_opt_class();
-  v19 = [(_UIRemoteViewControllerLegacyImplAccessibility *)v32 safeValueForKey:@"_owningRemoteViewController"];
+  v19 = [(_UIRemoteViewControllerLegacyImplAccessibility *)selfCopy safeValueForKey:@"_owningRemoteViewController"];
   v27 = __UIAccessibilityCastAsClass();
   MEMORY[0x29EDC9740](v19);
   v26 = MEMORY[0x29EDC9748](v27);
@@ -111,10 +111,10 @@
       }
 
       v25 = *(__b[1] + 8 * v10);
-      v23 = [v25 _accessibilityResponderElement];
-      if (v23)
+      _accessibilityResponderElement = [v25 _accessibilityResponderElement];
+      if (_accessibilityResponderElement)
       {
-        v33 = MEMORY[0x29EDC9748](v23);
+        v33 = MEMORY[0x29EDC9748](_accessibilityResponderElement);
         v22 = 1;
       }
 
@@ -125,19 +125,19 @@
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v7 = [v25 accessibilityElements];
-            v2 = [v7 firstObject];
+            accessibilityElements = [v25 accessibilityElements];
+            firstObject = [accessibilityElements firstObject];
             v3 = v30;
-            v30 = v2;
+            v30 = firstObject;
             MEMORY[0x29EDC9740](v3);
-            MEMORY[0x29EDC9740](v7);
+            MEMORY[0x29EDC9740](accessibilityElements);
           }
         }
 
         v22 = 0;
       }
 
-      objc_storeStrong(&v23, 0);
+      objc_storeStrong(&_accessibilityResponderElement, 0);
       if (v22)
       {
         break;
@@ -165,12 +165,12 @@ LABEL_15:
   *&v4 = MEMORY[0x29EDC9740](obj).n128_u64[0];
   if (!v22)
   {
-    v20.receiver = v32;
+    v20.receiver = selfCopy;
     v20.super_class = _UIRemoteViewControllerLegacyImplAccessibility;
-    v21 = [(_UIRemoteViewControllerLegacyImplAccessibility *)&v20 _accessibilityResponderElement];
-    if (v21)
+    _accessibilityResponderElement2 = [(_UIRemoteViewControllerLegacyImplAccessibility *)&v20 _accessibilityResponderElement];
+    if (_accessibilityResponderElement2)
     {
-      v33 = MEMORY[0x29EDC9748](v21);
+      v33 = MEMORY[0x29EDC9748](_accessibilityResponderElement2);
     }
 
     else
@@ -179,7 +179,7 @@ LABEL_15:
     }
 
     v22 = 1;
-    objc_storeStrong(&v21, 0);
+    objc_storeStrong(&_accessibilityResponderElement2, 0);
   }
 
   objc_storeStrong(&v29, 0);
@@ -192,72 +192,72 @@ LABEL_15:
 
 - (void)_accessibilityLoadAccessibilityInformation
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   v2.receiver = self;
   v2.super_class = _UIRemoteViewControllerLegacyImplAccessibility;
   [(_UIRemoteViewControllerLegacyImplAccessibility *)&v2 _accessibilityLoadAccessibilityInformation];
-  [(_UIRemoteViewControllerLegacyImplAccessibility *)v4 _accessibilityLoadAccessibilityInformation:?];
+  [(_UIRemoteViewControllerLegacyImplAccessibility *)selfCopy _accessibilityLoadAccessibilityInformation:?];
 }
 
-- (void)_accessibilityLoadAccessibilityInformation:(void *)a1
+- (void)_accessibilityLoadAccessibilityInformation:(void *)information
 {
-  if (a1)
+  if (information)
   {
-    [(_UIRemoteViewControllerLegacyImplAccessibility *)a1 _accessibilityLoadAccessibilityInformation:0.1 retryTime:?];
+    [(_UIRemoteViewControllerLegacyImplAccessibility *)information _accessibilityLoadAccessibilityInformation:0.1 retryTime:?];
   }
 }
 
-- (void)_axRemoteViewLoadRequest:(id)a3
+- (void)_axRemoteViewLoadRequest:(id)request
 {
   v7 = *MEMORY[0x29EDCA608];
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, request);
   oslog = AXLogRemoteElement();
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_INFO))
   {
-    __os_log_helper_16_2_1_8_64(v6, v5);
+    __os_log_helper_16_2_1_8_64(v6, selfCopy);
     _os_log_impl(&dword_29C4D6000, oslog, OS_LOG_TYPE_INFO, "%@: will load remote view on request", v6, 0xCu);
   }
 
   objc_storeStrong(&oslog, 0);
-  [(_UIRemoteViewControllerLegacyImplAccessibility *)v5 _accessibilityLoadAccessibilityInformation:?];
+  [(_UIRemoteViewControllerLegacyImplAccessibility *)selfCopy _accessibilityLoadAccessibilityInformation:?];
   objc_storeStrong(location, 0);
 }
 
-- (void)_accessibilityLoadAccessibilityInformation:(double)a3 retryTime:
+- (void)_accessibilityLoadAccessibilityInformation:(double)information retryTime:
 {
   v76 = *MEMORY[0x29EDCA608];
-  v71 = a1;
+  selfCopy = self;
   v70 = a2;
-  v69 = a3;
-  if (a1)
+  informationCopy = information;
+  if (self)
   {
-    if (([v71 _accessibilityBoolValueForKey:@"AXDidListenForRemoteViewLoad"] & 1) == 0)
+    if (([selfCopy _accessibilityBoolValueForKey:@"AXDidListenForRemoteViewLoad"] & 1) == 0)
     {
-      v27 = [MEMORY[0x29EDBA068] defaultCenter];
-      [v27 addObserver:v71 selector:sel__axRemoteViewLoadRequest_ name:@"AXRequestRemoteViewLoad" object:0];
-      [v71 _accessibilitySetBoolValue:1 forKey:{@"AXDidListenForRemoteViewLoad", MEMORY[0x29EDC9740](v27).n128_f64[0]}];
+      defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+      [defaultCenter addObserver:selfCopy selector:sel__axRemoteViewLoadRequest_ name:@"AXRequestRemoteViewLoad" object:0];
+      [selfCopy _accessibilitySetBoolValue:1 forKey:{@"AXDidListenForRemoteViewLoad", MEMORY[0x29EDC9740](defaultCenter).n128_f64[0]}];
     }
 
     if (_AXSApplicationAccessibilityEnabled())
     {
-      v25 = [v71 safeValueForKey:@"_serviceAccessibilityServerPort"];
-      v26 = [v25 intValue];
+      v25 = [selfCopy safeValueForKey:@"_serviceAccessibilityServerPort"];
+      intValue = [v25 intValue];
       *&v3 = MEMORY[0x29EDC9740](v25).n128_u64[0];
-      v66 = v26;
-      if (v26)
+      v66 = intValue;
+      if (intValue)
       {
         v53 = 0;
         v54 = &v53;
         v55 = 0x20000000;
         v56 = 32;
-        v14 = [v71 safeValueForKey:{@"serviceProcessIdentifier", v3}];
-        v15 = [v14 intValue];
+        v14 = [selfCopy safeValueForKey:{@"serviceProcessIdentifier", v3}];
+        intValue2 = [v14 intValue];
         MEMORY[0x29EDC9740](v14);
-        v57 = v15;
+        v57 = intValue2;
         if (!*(v54 + 6))
         {
           v47[0] = 0;
@@ -273,7 +273,7 @@ LABEL_15:
           v44 = __103___UIRemoteViewControllerLegacyImplAccessibility__accessibilityLoadAccessibilityInformation_retryTime___block_invoke_416;
           v45 = &unk_29F30CC70;
           v46[1] = v47;
-          v46[0] = MEMORY[0x29EDC9748](v71);
+          v46[0] = MEMORY[0x29EDC9748](selfCopy);
           AXPerformSafeBlock();
           v34[1] = MEMORY[0x29EDCA5F8];
           v35 = -1073741824;
@@ -292,13 +292,13 @@ LABEL_15:
         v33 = OS_LOG_TYPE_INFO;
         if (os_log_type_enabled(v34[0], OS_LOG_TYPE_INFO))
         {
-          __os_log_helper_16_2_3_8_64_4_0_4_0(v73, v71, v66, *(v54 + 6));
+          __os_log_helper_16_2_3_8_64_4_0_4_0(v73, selfCopy, v66, *(v54 + 6));
           _os_log_impl(&dword_29C4D6000, v34[0], v33, "%@: loading ax info - mach port %d, remote pid %d", v73, 0x18u);
         }
 
         objc_storeStrong(v34, 0);
         memset(__b, 0, sizeof(__b));
-        v13 = [v71 safeValueForKey:@"_sizeTrackingView"];
+        v13 = [selfCopy safeValueForKey:@"_sizeTrackingView"];
         obj = [v13 subviews];
         v11 = [obj countByEnumeratingWithState:__b objects:v72 count:{16, MEMORY[0x29EDC9740](v13).n128_f64[0]}];
         if (v11)
@@ -315,7 +315,7 @@ LABEL_15:
             }
 
             v32 = *(__b[1] + 8 * v9);
-            [v71 _accessibilityRemoteView:v32 pid:*(v54 + 6) machPort:v66];
+            [selfCopy _accessibilityRemoteView:v32 pid:*(v54 + 6) machPort:v66];
             ++v9;
             if (v7 + 1 >= v10)
             {
@@ -330,12 +330,12 @@ LABEL_15:
         }
 
         *&v6 = MEMORY[0x29EDC9740](obj).n128_u64[0];
-        v30 = [v71 safeValueForKey:{@"_remoteKeyboardRemoteView", v6}];
-        [v71 _accessibilityRemoteView:v30 pid:*(v54 + 6) machPort:v66];
-        v29 = [v71 safeValueForKey:@"_fullScreenTextEffectsRemoteView"];
-        [v71 _accessibilityRemoteView:v29 pid:*(v54 + 6) machPort:v66];
-        v28 = [v71 safeValueForKey:@"_textEffectsAboveStatusBarRemoteView"];
-        [v71 _accessibilityRemoteView:v28 pid:*(v54 + 6) machPort:v66];
+        v30 = [selfCopy safeValueForKey:{@"_remoteKeyboardRemoteView", v6}];
+        [selfCopy _accessibilityRemoteView:v30 pid:*(v54 + 6) machPort:v66];
+        v29 = [selfCopy safeValueForKey:@"_fullScreenTextEffectsRemoteView"];
+        [selfCopy _accessibilityRemoteView:v29 pid:*(v54 + 6) machPort:v66];
+        v28 = [selfCopy safeValueForKey:@"_textEffectsAboveStatusBarRemoteView"];
+        [selfCopy _accessibilityRemoteView:v28 pid:*(v54 + 6) machPort:v66];
         objc_storeStrong(&v28, 0);
         objc_storeStrong(&v29, 0);
         objc_storeStrong(&v30, 0);
@@ -344,48 +344,48 @@ LABEL_15:
 
       else
       {
-        v4 = [v71 safeValueForKey:{@"_initializeAccessibilityPortInformation", v3}];
-        v24 = [v71 _axMachPortRetrievalTimer];
-        MEMORY[0x29EDC9740](v24);
-        if (!v24)
+        v4 = [selfCopy safeValueForKey:{@"_initializeAccessibilityPortInformation", v3}];
+        _axMachPortRetrievalTimer = [selfCopy _axMachPortRetrievalTimer];
+        MEMORY[0x29EDC9740](_axMachPortRetrievalTimer);
+        if (!_axMachPortRetrievalTimer)
         {
           v23 = objc_alloc(MEMORY[0x29EDBD6A0]);
           v5 = MEMORY[0x29EDCA578];
           v21 = MEMORY[0x29EDCA578];
           v22 = [v23 initWithTargetSerialQueue:?];
-          [v71 _axSetMachPortRetrievalTimer:v22];
+          [selfCopy _axSetMachPortRetrievalTimer:v22];
           MEMORY[0x29EDC9740](v22);
-          v20 = [v71 _axMachPortRetrievalTimer];
-          [v20 setAutomaticallyCancelPendingBlockUponSchedulingNewBlock:1];
-          MEMORY[0x29EDC9740](v20);
+          _axMachPortRetrievalTimer2 = [selfCopy _axMachPortRetrievalTimer];
+          [_axMachPortRetrievalTimer2 setAutomaticallyCancelPendingBlockUponSchedulingNewBlock:1];
+          MEMORY[0x29EDC9740](_axMachPortRetrievalTimer2);
         }
 
         v65[1] = COERCE_OS_LOG_T(5.0);
-        v18 = [v71 _axMachPortRetrievalTimer];
-        v19 = [v18 isPending];
-        MEMORY[0x29EDC9740](v18);
-        if ((v19 & 1) == 0)
+        _axMachPortRetrievalTimer3 = [selfCopy _axMachPortRetrievalTimer];
+        isPending = [_axMachPortRetrievalTimer3 isPending];
+        MEMORY[0x29EDC9740](_axMachPortRetrievalTimer3);
+        if ((isPending & 1) == 0)
         {
           v65[0] = AXLogRemoteElement();
           v64 = OS_LOG_TYPE_INFO;
           if (os_log_type_enabled(v65[0], OS_LOG_TYPE_INFO))
           {
-            __os_log_helper_16_2_2_8_64_8_0(v74, v71, *&v69);
+            __os_log_helper_16_2_2_8_64_8_0(v74, selfCopy, *&informationCopy);
             _os_log_impl(&dword_29C4D6000, v65[0], v64, "%@: could not get mach_port - will try again in %f", v74, 0x16u);
           }
 
           objc_storeStrong(v65, 0);
-          v17 = [v71 _axMachPortRetrievalTimer];
-          v16 = v69;
+          _axMachPortRetrievalTimer4 = [selfCopy _axMachPortRetrievalTimer];
+          v16 = informationCopy;
           v58 = MEMORY[0x29EDCA5F8];
           v59 = -1073741824;
           v60 = 0;
           v61 = __103___UIRemoteViewControllerLegacyImplAccessibility__accessibilityLoadAccessibilityInformation_retryTime___block_invoke;
           v62 = &unk_29F30C690;
-          v63[0] = MEMORY[0x29EDC9748](v71);
-          v63[1] = *&v69;
-          [v17 afterDelay:&v58 processBlock:v16];
-          MEMORY[0x29EDC9740](v17);
+          v63[0] = MEMORY[0x29EDC9748](selfCopy);
+          v63[1] = *&informationCopy;
+          [_axMachPortRetrievalTimer4 afterDelay:&v58 processBlock:v16];
+          MEMORY[0x29EDC9740](_axMachPortRetrievalTimer4);
           objc_storeStrong(v63, 0);
         }
       }
@@ -397,7 +397,7 @@ LABEL_15:
       type = OS_LOG_TYPE_INFO;
       if (os_log_type_enabled(oslog, OS_LOG_TYPE_INFO))
       {
-        __os_log_helper_16_2_1_8_64(v75, v71);
+        __os_log_helper_16_2_1_8_64(v75, selfCopy);
         _os_log_impl(&dword_29C4D6000, oslog, type, "%@: not processing because AX is off", v75, 0xCu);
       }
 
@@ -406,12 +406,12 @@ LABEL_15:
   }
 }
 
-- (void)_accessibilityRemoteView:(id)a3 pid:(int)a4 machPort:(unsigned int)a5
+- (void)_accessibilityRemoteView:(id)view pid:(int)pid machPort:(unsigned int)port
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, view);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -432,40 +432,40 @@ LABEL_15:
   objc_storeStrong(location, 0);
 }
 
-- (void)_awakeWithConnectionInfo:(id)a3
+- (void)_awakeWithConnectionInfo:(id)info
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3.receiver = v5;
+  objc_storeStrong(location, info);
+  v3.receiver = selfCopy;
   v3.super_class = _UIRemoteViewControllerLegacyImplAccessibility;
   [(_UIRemoteViewControllerLegacyImplAccessibility *)&v3 _awakeWithConnectionInfo:location[0]];
-  [(_UIRemoteViewControllerLegacyImplAccessibility *)v5 _accessibilityLoadAccessibilityInformation:?];
+  [(_UIRemoteViewControllerLegacyImplAccessibility *)selfCopy _accessibilityLoadAccessibilityInformation:?];
   objc_storeStrong(location, 0);
 }
 
-- (void)__setViewServiceIsDisplayingPopover:(BOOL)a3
+- (void)__setViewServiceIsDisplayingPopover:(BOOL)popover
 {
-  v12 = self;
+  selfCopy = self;
   v11 = a2;
-  v10 = a3;
+  popoverCopy = popover;
   v9.receiver = self;
   v9.super_class = _UIRemoteViewControllerLegacyImplAccessibility;
-  [(_UIRemoteViewControllerLegacyImplAccessibility *)&v9 __setViewServiceIsDisplayingPopover:a3];
+  [(_UIRemoteViewControllerLegacyImplAccessibility *)&v9 __setViewServiceIsDisplayingPopover:popover];
   v3 = MEMORY[0x29EDCA5F8];
   v4 = -1073741824;
   v5 = 0;
   v6 = __86___UIRemoteViewControllerLegacyImplAccessibility___setViewServiceIsDisplayingPopover___block_invoke;
   v7 = &unk_29F30C7C8;
-  v8 = MEMORY[0x29EDC9748](v12);
+  v8 = MEMORY[0x29EDC9748](selfCopy);
   AXPerformBlockOnMainThreadAfterDelay();
   objc_storeStrong(&v8, 0);
 }
 
 - (id)disconnect
 {
-  v11 = self;
+  selfCopy = self;
   v10[1] = a2;
   v5 = MEMORY[0x29EDCA5F8];
   v6 = -1073741824;
@@ -474,47 +474,47 @@ LABEL_15:
   v9 = &unk_29F30C7C8;
   v10[0] = MEMORY[0x29EDC9748](self);
   AXPerformSafeBlock();
-  v4.receiver = v11;
+  v4.receiver = selfCopy;
   v4.super_class = _UIRemoteViewControllerLegacyImplAccessibility;
-  v3 = [(_UIRemoteViewControllerLegacyImplAccessibility *)&v4 disconnect];
+  disconnect = [(_UIRemoteViewControllerLegacyImplAccessibility *)&v4 disconnect];
   objc_storeStrong(v10, 0);
 
-  return v3;
+  return disconnect;
 }
 
-- (void)__handleFocusMovementAction:(id)a3
+- (void)__handleFocusMovementAction:(id)action
 {
-  v19 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v17.receiver = v19;
+  objc_storeStrong(location, action);
+  v17.receiver = selfCopy;
   v17.super_class = _UIRemoteViewControllerLegacyImplAccessibility;
   [(_UIRemoteViewControllerLegacyImplAccessibility *)&v17 __handleFocusMovementAction:location[0]];
   v15 = 0;
   objc_opt_class();
-  v10 = [(_UIRemoteViewControllerLegacyImplAccessibility *)v19 safeValueForKey:@"_owningRemoteViewController"];
+  v10 = [(_UIRemoteViewControllerLegacyImplAccessibility *)selfCopy safeValueForKey:@"_owningRemoteViewController"];
   v14 = __UIAccessibilityCastAsClass();
   MEMORY[0x29EDC9740](v10);
   v13 = MEMORY[0x29EDC9748](v14);
   objc_storeStrong(&v14, 0);
   v16 = v13;
-  v8 = [v13 view];
-  v9 = [v8 _accessibilityIsFKARunningForFocusItem];
-  MEMORY[0x29EDC9740](v8);
-  if ((v9 & 1) != 0 && location[0] && [(_UIRemoteViewControllerLegacyImplAccessibility *)v19 _axShouldTakeBackFocus])
+  view = [v13 view];
+  _accessibilityIsFKARunningForFocusItem = [view _accessibilityIsFKARunningForFocusItem];
+  MEMORY[0x29EDC9740](view);
+  if ((_accessibilityIsFKARunningForFocusItem & 1) != 0 && location[0] && [(_UIRemoteViewControllerLegacyImplAccessibility *)selfCopy _axShouldTakeBackFocus])
   {
     v4 = MEMORY[0x29EDC7AA0];
-    v5 = [v16 view];
+    view2 = [v16 view];
     v12 = [v4 focusSystemForEnvironment:?];
-    *&v3 = MEMORY[0x29EDC9740](v5).n128_u64[0];
-    -[_UIRemoteViewControllerLegacyImplAccessibility _axSetWasFocusEnabled:](v19, "_axSetWasFocusEnabled:", [v12 safeBoolForKey:{@"_isEnabled", v3}]);
+    *&v3 = MEMORY[0x29EDC9740](view2).n128_u64[0];
+    -[_UIRemoteViewControllerLegacyImplAccessibility _axSetWasFocusEnabled:](selfCopy, "_axSetWasFocusEnabled:", [v12 safeBoolForKey:{@"_isEnabled", v3}]);
     v11 = MEMORY[0x29EDC9748](v12);
     AXPerformSafeBlock();
-    v6 = v19;
-    v7 = [location[0] focusMovementInfo];
+    v6 = selfCopy;
+    focusMovementInfo = [location[0] focusMovementInfo];
     [(_UIRemoteViewControllerLegacyImplAccessibility *)v6 _axTakeBakeFocusWithHeading:?];
-    MEMORY[0x29EDC9740](v7);
+    MEMORY[0x29EDC9740](focusMovementInfo);
     objc_storeStrong(&v11, 0);
     objc_storeStrong(&v12, 0);
   }
@@ -525,37 +525,37 @@ LABEL_15:
 
 - (BOOL)_axShouldTakeBackFocus
 {
-  v13 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
     v11 = 0;
     objc_opt_class();
-    v5 = [v13 safeValueForKey:@"_owningRemoteViewController"];
+    v5 = [selfCopy safeValueForKey:@"_owningRemoteViewController"];
     v10 = __UIAccessibilityCastAsClass();
     MEMORY[0x29EDC9740](v5);
     v9 = MEMORY[0x29EDC9748](v10);
     objc_storeStrong(&v10, 0);
     v12 = v9;
-    v8 = [v9 view];
+    view = [v9 view];
     v2 = MEMORY[0x29EDC7DA8];
-    v3 = [v8 window];
+    window = [view window];
     v6 = 0;
     v4 = 1;
-    if ([v2 _isViewSizeFullScreen:v8 inWindow:?])
+    if ([v2 _isViewSizeFullScreen:view inWindow:?])
     {
-      v7 = [v12 navigationController];
+      navigationController = [v12 navigationController];
       v6 = 1;
-      v4 = v7 != 0;
+      v4 = navigationController != 0;
     }
 
     v14 = v4;
     if (v6)
     {
-      MEMORY[0x29EDC9740](v7);
+      MEMORY[0x29EDC9740](navigationController);
     }
 
-    MEMORY[0x29EDC9740](v3);
-    objc_storeStrong(&v8, 0);
+    MEMORY[0x29EDC9740](window);
+    objc_storeStrong(&view, 0);
     objc_storeStrong(&v12, 0);
   }
 
@@ -567,43 +567,43 @@ LABEL_15:
   return v14;
 }
 
-- (void)_axTakeBakeFocusWithHeading:(id)a3
+- (void)_axTakeBakeFocusWithHeading:(id)heading
 {
-  v31 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v10 = [(_UIRemoteViewControllerLegacyImplAccessibility *)v31 safeValueForKey:@"_sizeTrackingView"];
+  objc_storeStrong(location, heading);
+  v10 = [(_UIRemoteViewControllerLegacyImplAccessibility *)selfCopy safeValueForKey:@"_sizeTrackingView"];
   _UIAXAssignFocusToItem();
   MEMORY[0x29EDC9740](v10);
   v27[1] = MEMORY[0x29EDCA5F8];
   v27[2] = 3221225472;
   v27[3] = __78___UIRemoteViewControllerLegacyImplAccessibility__axTakeBakeFocusWithHeading___block_invoke;
   v27[4] = &unk_29F30C888;
-  v28 = MEMORY[0x29EDC9748](v31);
+  v28 = MEMORY[0x29EDC9748](selfCopy);
   v29 = MEMORY[0x29EDC9748](location[0]);
   AXPerformSafeBlock();
   v26 = 0;
   objc_opt_class();
-  v11 = [(_UIRemoteViewControllerLegacyImplAccessibility *)v31 safeValueForKey:@"_owningRemoteViewController"];
+  v11 = [(_UIRemoteViewControllerLegacyImplAccessibility *)selfCopy safeValueForKey:@"_owningRemoteViewController"];
   v25 = __UIAccessibilityCastAsClass();
   MEMORY[0x29EDC9740](v11);
   v24 = MEMORY[0x29EDC9748](v25);
   objc_storeStrong(&v25, 0);
   v27[0] = v24;
-  v7 = [v24 view];
-  v6 = [v7 window];
-  v5 = [v6 windowScene];
-  v4 = [v5 focusSystem];
-  v9 = [v4 focusedItem];
-  v8 = [(_UIRemoteViewControllerLegacyImplAccessibility *)v31 safeValueForKey:@"_sizeTrackingView"];
+  view = [v24 view];
+  window = [view window];
+  windowScene = [window windowScene];
+  focusSystem = [windowScene focusSystem];
+  focusedItem = [focusSystem focusedItem];
+  v8 = [(_UIRemoteViewControllerLegacyImplAccessibility *)selfCopy safeValueForKey:@"_sizeTrackingView"];
   MEMORY[0x29EDC9740](v8);
-  MEMORY[0x29EDC9740](v9);
-  MEMORY[0x29EDC9740](v4);
-  MEMORY[0x29EDC9740](v5);
-  MEMORY[0x29EDC9740](v6);
-  *&v3 = MEMORY[0x29EDC9740](v7).n128_u64[0];
-  if (v9 == v8)
+  MEMORY[0x29EDC9740](focusedItem);
+  MEMORY[0x29EDC9740](focusSystem);
+  MEMORY[0x29EDC9740](windowScene);
+  MEMORY[0x29EDC9740](window);
+  *&v3 = MEMORY[0x29EDC9740](view).n128_u64[0];
+  if (focusedItem == v8)
   {
     v23 = 0;
     if ([location[0] heading] == 16)
@@ -626,11 +626,11 @@ LABEL_15:
       v22[0] = MEMORY[0x29EDC9748](location[0]);
       v22[1] = v23;
       AXPerformSafeBlock();
-      [(_UIRemoteViewControllerLegacyImplAccessibility *)v31 _axTakeBakeFocusWithHeading:location[0]];
+      [(_UIRemoteViewControllerLegacyImplAccessibility *)selfCopy _axTakeBakeFocusWithHeading:location[0]];
       objc_storeStrong(v22, 0);
     }
 
-    else if (![(_UIRemoteViewControllerLegacyImplAccessibility *)v31 _axGetWasFocusEnabled])
+    else if (![(_UIRemoteViewControllerLegacyImplAccessibility *)selfCopy _axGetWasFocusEnabled])
     {
       v12[1] = MEMORY[0x29EDCA5F8];
       v13 = -1073741824;
@@ -645,7 +645,7 @@ LABEL_15:
 
   else
   {
-    v12[0] = MEMORY[0x29EDC9748](v31);
+    v12[0] = MEMORY[0x29EDC9748](selfCopy);
     AXPerformSafeBlock();
     objc_storeStrong(v12, 0);
   }

@@ -1,23 +1,23 @@
 @interface KMMapper_SAPerson
-- (BOOL)_addLabeledFieldsForEmails:(id)a3 error:(id *)a4;
-- (BOOL)_addLabeledFieldsForPhones:(id)a3 error:(id *)a4;
-- (BOOL)_addLabeledFieldsForPostalAddresses:(id)a3 error:(id *)a4;
-- (BOOL)_addLabeledFieldsForRelatedNames:(id)a3 error:(id *)a4;
+- (BOOL)_addLabeledFieldsForEmails:(id)emails error:(id *)error;
+- (BOOL)_addLabeledFieldsForPhones:(id)phones error:(id *)error;
+- (BOOL)_addLabeledFieldsForPostalAddresses:(id)addresses error:(id *)error;
+- (BOOL)_addLabeledFieldsForRelatedNames:(id)names error:(id *)error;
 - (KMMapper_SAPerson)init;
-- (id)itemsFromExternalObject:(id)a3 additionalFields:(id)a4 error:(id *)a5;
+- (id)itemsFromExternalObject:(id)object additionalFields:(id)fields error:(id *)error;
 @end
 
 @implementation KMMapper_SAPerson
 
-- (BOOL)_addLabeledFieldsForRelatedNames:(id)a3 error:(id *)a4
+- (BOOL)_addLabeledFieldsForRelatedNames:(id)names error:(id *)error
 {
   v24 = *MEMORY[0x277D85DE8];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v6 = a3;
-  v7 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  namesCopy = names;
+  v7 = [namesCopy countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v7)
   {
     v8 = v7;
@@ -28,16 +28,16 @@
       {
         if (*v20 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(namesCopy);
         }
 
         v11 = *(*(&v19 + 1) + 8 * i);
-        v12 = [v11 label];
-        if ((_isDefaultLabel(v12) & 1) == 0)
+        label = [v11 label];
+        if ((_isDefaultLabel(label) & 1) == 0)
         {
           builder = self->_builder;
-          v14 = [v11 name];
-          v15 = [(KVItemBuilder *)builder addFieldWithType:63 label:v12 value:v14 error:a4];
+          name = [v11 name];
+          v15 = [(KVItemBuilder *)builder addFieldWithType:63 label:label value:name error:error];
 
           if (!v15)
           {
@@ -48,7 +48,7 @@
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v8 = [namesCopy countByEnumeratingWithState:&v19 objects:v23 count:16];
       if (v8)
       {
         continue;
@@ -65,15 +65,15 @@ LABEL_12:
   return v16;
 }
 
-- (BOOL)_addLabeledFieldsForPostalAddresses:(id)a3 error:(id *)a4
+- (BOOL)_addLabeledFieldsForPostalAddresses:(id)addresses error:(id *)error
 {
   v21 = *MEMORY[0x277D85DE8];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = a3;
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  addressesCopy = addresses;
+  v7 = [addressesCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = v7;
@@ -84,13 +84,13 @@ LABEL_12:
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(addressesCopy);
         }
 
-        v11 = [*(*(&v16 + 1) + 8 * i) label];
-        if ((_isDefaultLabel(v11) & 1) == 0)
+        label = [*(*(&v16 + 1) + 8 * i) label];
+        if ((_isDefaultLabel(label) & 1) == 0)
         {
-          v12 = [(KVItemBuilder *)self->_builder addFieldWithType:59 label:v11 value:0 error:a4];
+          v12 = [(KVItemBuilder *)self->_builder addFieldWithType:59 label:label value:0 error:error];
 
           if (!v12)
           {
@@ -101,7 +101,7 @@ LABEL_12:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v8 = [addressesCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v8)
       {
         continue;
@@ -118,15 +118,15 @@ LABEL_12:
   return v13;
 }
 
-- (BOOL)_addLabeledFieldsForEmails:(id)a3 error:(id *)a4
+- (BOOL)_addLabeledFieldsForEmails:(id)emails error:(id *)error
 {
   v21 = *MEMORY[0x277D85DE8];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = a3;
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  emailsCopy = emails;
+  v7 = [emailsCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = v7;
@@ -137,13 +137,13 @@ LABEL_12:
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(emailsCopy);
         }
 
-        v11 = [*(*(&v16 + 1) + 8 * i) label];
-        if ((_isDefaultLabel(v11) & 1) == 0)
+        label = [*(*(&v16 + 1) + 8 * i) label];
+        if ((_isDefaultLabel(label) & 1) == 0)
         {
-          v12 = [(KVItemBuilder *)self->_builder addFieldWithType:58 label:v11 value:0 error:a4];
+          v12 = [(KVItemBuilder *)self->_builder addFieldWithType:58 label:label value:0 error:error];
 
           if (!v12)
           {
@@ -154,7 +154,7 @@ LABEL_12:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v8 = [emailsCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v8)
       {
         continue;
@@ -171,15 +171,15 @@ LABEL_12:
   return v13;
 }
 
-- (BOOL)_addLabeledFieldsForPhones:(id)a3 error:(id *)a4
+- (BOOL)_addLabeledFieldsForPhones:(id)phones error:(id *)error
 {
   v21 = *MEMORY[0x277D85DE8];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = a3;
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  phonesCopy = phones;
+  v7 = [phonesCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = v7;
@@ -190,13 +190,13 @@ LABEL_12:
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(phonesCopy);
         }
 
-        v11 = [*(*(&v16 + 1) + 8 * i) label];
-        if ((_isDefaultLabel(v11) & 1) == 0)
+        label = [*(*(&v16 + 1) + 8 * i) label];
+        if ((_isDefaultLabel(label) & 1) == 0)
         {
-          v12 = [(KVItemBuilder *)self->_builder addFieldWithType:57 label:v11 value:0 error:a4];
+          v12 = [(KVItemBuilder *)self->_builder addFieldWithType:57 label:label value:0 error:error];
 
           if (!v12)
           {
@@ -207,7 +207,7 @@ LABEL_12:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v8 = [phonesCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v8)
       {
         continue;
@@ -224,20 +224,20 @@ LABEL_12:
   return v13;
 }
 
-- (id)itemsFromExternalObject:(id)a3 additionalFields:(id)a4 error:(id *)a5
+- (id)itemsFromExternalObject:(id)object additionalFields:(id)fields error:(id *)error
 {
   v86[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = [a4 objectForKey:self->_sharedUserIdKey];
+  objectCopy = object;
+  v9 = [fields objectForKey:self->_sharedUserIdKey];
   builder = self->_builder;
-  v11 = [v8 internalGUID];
+  internalGUID = [objectCopy internalGUID];
   v85 = 0;
-  v12 = [(KVItemBuilder *)builder setItemType:2 itemId:v11 error:&v85];
+  v12 = [(KVItemBuilder *)builder setItemType:2 itemId:internalGUID error:&v85];
   v13 = v85;
   if (v12)
   {
     v14 = self->_builder;
-    [v8 prefix];
+    [objectCopy prefix];
     v82 = v84[14] = v13;
     v15 = [KVItemBuilder addFieldWithType:v14 value:"addFieldWithType:value:error:" error:55];
     v16 = v13;
@@ -245,7 +245,7 @@ LABEL_12:
     if (v15)
     {
       v17 = self->_builder;
-      [v8 firstName];
+      [objectCopy firstName];
       v81 = v84[13] = v16;
       v18 = [KVItemBuilder addFieldWithType:v17 value:"addFieldWithType:value:error:" error:50];
       v19 = v16;
@@ -254,7 +254,7 @@ LABEL_12:
       if (v18)
       {
         v20 = self->_builder;
-        [v8 middleName];
+        [objectCopy middleName];
         v79 = v84[12] = v19;
         v21 = [KVItemBuilder addFieldWithType:v20 value:"addFieldWithType:value:error:" error:51];
         v22 = v19;
@@ -263,7 +263,7 @@ LABEL_12:
         if (v21)
         {
           v23 = self->_builder;
-          [v8 lastName];
+          [objectCopy lastName];
           v77 = v84[11] = v22;
           v24 = [KVItemBuilder addFieldWithType:v23 value:"addFieldWithType:value:error:" error:52];
           v25 = v22;
@@ -272,7 +272,7 @@ LABEL_12:
           if (v24)
           {
             v26 = self->_builder;
-            [v8 suffix];
+            [objectCopy suffix];
             v75 = v84[10] = v25;
             v27 = [KVItemBuilder addFieldWithType:v26 value:"addFieldWithType:value:error:" error:56];
             v28 = v25;
@@ -281,7 +281,7 @@ LABEL_12:
             if (v27)
             {
               v29 = self->_builder;
-              [v8 nickName];
+              [objectCopy nickName];
               v73 = v84[9] = v28;
               v30 = [KVItemBuilder addFieldWithType:v29 value:"addFieldWithType:value:error:" error:54];
               v31 = v28;
@@ -290,7 +290,7 @@ LABEL_12:
               if (v30)
               {
                 v32 = self->_builder;
-                [v8 company];
+                [objectCopy company];
                 v71 = v84[8] = v31;
                 v33 = [KVItemBuilder addFieldWithType:v32 value:"addFieldWithType:value:error:" error:64];
                 v34 = v31;
@@ -299,7 +299,7 @@ LABEL_12:
                 if (v33)
                 {
                   v35 = self->_builder;
-                  [v8 firstNamePhonetic];
+                  [objectCopy firstNamePhonetic];
                   v69 = v84[7] = v34;
                   v36 = [KVItemBuilder addFieldWithType:v35 value:"addFieldWithType:value:error:" error:67];
                   v37 = v34;
@@ -308,7 +308,7 @@ LABEL_12:
                   if (v36)
                   {
                     v38 = self->_builder;
-                    [v8 lastNamePhonetic];
+                    [objectCopy lastNamePhonetic];
                     v67 = v84[6] = v37;
                     v39 = [KVItemBuilder addFieldWithType:v38 value:"addFieldWithType:value:error:" error:69];
                     v40 = v37;
@@ -317,7 +317,7 @@ LABEL_12:
                     if (v39)
                     {
                       v41 = self->_builder;
-                      [v8 companyPhonetic];
+                      [objectCopy companyPhonetic];
                       v65 = v84[5] = v40;
                       v42 = [KVItemBuilder addFieldWithType:v41 value:"addFieldWithType:value:error:" error:70];
                       v43 = v40;
@@ -325,29 +325,29 @@ LABEL_12:
                       v64 = v42;
                       if (v42)
                       {
-                        [v8 phones];
+                        [objectCopy phones];
                         v63 = v84[4] = v43;
                         v44 = [KMMapper_SAPerson _addLabeledFieldsForPhones:"_addLabeledFieldsForPhones:error:" error:?];
                         v45 = v43;
 
                         if (v44)
                         {
-                          [v8 emails];
+                          [objectCopy emails];
                           v62 = v84[3] = v45;
                           v46 = [KMMapper_SAPerson _addLabeledFieldsForEmails:"_addLabeledFieldsForEmails:error:" error:?];
                           v43 = v45;
 
                           if (v46)
                           {
-                            [v8 addresses];
+                            [objectCopy addresses];
                             v61 = v84[2] = v43;
                             v47 = [KMMapper_SAPerson _addLabeledFieldsForPostalAddresses:"_addLabeledFieldsForPostalAddresses:error:" error:?];
                             v59 = v43;
 
-                            v48 = a5;
+                            errorCopy13 = error;
                             if (v47)
                             {
-                              [v8 relatedNames];
+                              [objectCopy relatedNames];
                               v58 = v84[1] = v59;
                               v49 = [KMMapper_SAPerson _addLabeledFieldsForRelatedNames:"_addLabeledFieldsForRelatedNames:error:" error:?];
                               v43 = v59;
@@ -378,7 +378,7 @@ LABEL_12:
 
                           else
                           {
-                            v48 = a5;
+                            errorCopy13 = error;
                             v52 = 1;
                           }
                         }
@@ -386,14 +386,14 @@ LABEL_12:
                         else
                         {
                           v43 = v45;
-                          v48 = a5;
+                          errorCopy13 = error;
                           v52 = 1;
                         }
                       }
 
                       else
                       {
-                        v48 = a5;
+                        errorCopy13 = error;
                         v52 = 1;
                       }
 
@@ -402,7 +402,7 @@ LABEL_12:
 
                     else
                     {
-                      v48 = a5;
+                      errorCopy13 = error;
                       v52 = 1;
                     }
 
@@ -411,7 +411,7 @@ LABEL_12:
 
                   else
                   {
-                    v48 = a5;
+                    errorCopy13 = error;
                     v52 = 1;
                   }
 
@@ -420,7 +420,7 @@ LABEL_12:
 
                 else
                 {
-                  v48 = a5;
+                  errorCopy13 = error;
                   v52 = 1;
                 }
 
@@ -429,7 +429,7 @@ LABEL_12:
 
               else
               {
-                v48 = a5;
+                errorCopy13 = error;
                 v52 = 1;
               }
 
@@ -438,7 +438,7 @@ LABEL_12:
 
             else
             {
-              v48 = a5;
+              errorCopy13 = error;
               v52 = 1;
             }
 
@@ -447,7 +447,7 @@ LABEL_12:
 
           else
           {
-            v48 = a5;
+            errorCopy13 = error;
             v52 = 1;
           }
 
@@ -456,7 +456,7 @@ LABEL_12:
 
         else
         {
-          v48 = a5;
+          errorCopy13 = error;
           v52 = 1;
         }
 
@@ -465,7 +465,7 @@ LABEL_12:
 
       else
       {
-        v48 = a5;
+        errorCopy13 = error;
         v52 = 1;
       }
 
@@ -474,7 +474,7 @@ LABEL_12:
 
     else
     {
-      v48 = a5;
+      errorCopy13 = error;
       v52 = 1;
     }
 
@@ -493,7 +493,7 @@ LABEL_12:
 
       else
       {
-        KMMapperSetBuilderError(v48, v13);
+        KMMapperSetBuilderError(errorCopy13, v13);
         v53 = 0;
       }
 
@@ -501,14 +501,14 @@ LABEL_12:
     }
 
     v13 = v16;
-    a5 = v48;
+    error = errorCopy13;
   }
 
   else
   {
   }
 
-  KMMapperSetBuilderError(a5, v13);
+  KMMapperSetBuilderError(error, v13);
   v53 = 0;
 LABEL_52:
 

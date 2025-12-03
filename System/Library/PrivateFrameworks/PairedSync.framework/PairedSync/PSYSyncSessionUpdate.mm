@@ -1,52 +1,52 @@
 @interface PSYSyncSessionUpdate
-- (PSYSyncSessionUpdate)initWithOriginalSession:(id)a3 updatedSession:(id)a4;
-- (void)enumerateChangedActivitiesWithBlock:(id)a3;
-- (void)enumerateNewlyCompletedActivitiesWithBlock:(id)a3;
-- (void)enumerateNewlyRunningActivitiesWithBlock:(id)a3;
+- (PSYSyncSessionUpdate)initWithOriginalSession:(id)session updatedSession:(id)updatedSession;
+- (void)enumerateChangedActivitiesWithBlock:(id)block;
+- (void)enumerateNewlyCompletedActivitiesWithBlock:(id)block;
+- (void)enumerateNewlyRunningActivitiesWithBlock:(id)block;
 @end
 
 @implementation PSYSyncSessionUpdate
 
-- (PSYSyncSessionUpdate)initWithOriginalSession:(id)a3 updatedSession:(id)a4
+- (PSYSyncSessionUpdate)initWithOriginalSession:(id)session updatedSession:(id)updatedSession
 {
-  v7 = a3;
-  v8 = a4;
+  sessionCopy = session;
+  updatedSessionCopy = updatedSession;
   v12.receiver = self;
   v12.super_class = PSYSyncSessionUpdate;
   v9 = [(PSYSyncSessionUpdate *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_originalSession, a3);
-    objc_storeStrong(&v10->_updatedSession, a4);
+    objc_storeStrong(&v9->_originalSession, session);
+    objc_storeStrong(&v10->_updatedSession, updatedSession);
   }
 
   return v10;
 }
 
-- (void)enumerateChangedActivitiesWithBlock:(id)a3
+- (void)enumerateChangedActivitiesWithBlock:(id)block
 {
-  v14 = a3;
-  v4 = [(PSYSyncSession *)self->_originalSession activities];
-  v5 = [v4 count];
+  blockCopy = block;
+  activities = [(PSYSyncSession *)self->_originalSession activities];
+  v5 = [activities count];
 
-  v6 = [(PSYSyncSession *)self->_updatedSession activities];
-  v7 = [v6 count];
+  activities2 = [(PSYSyncSession *)self->_updatedSession activities];
+  v7 = [activities2 count];
 
   if (v5 == v7 && v5 != 0)
   {
     v9 = 0;
     do
     {
-      v10 = [(PSYSyncSession *)self->_originalSession activities];
-      v11 = [v10 objectAtIndexedSubscript:v9];
+      activities3 = [(PSYSyncSession *)self->_originalSession activities];
+      v11 = [activities3 objectAtIndexedSubscript:v9];
 
-      v12 = [(PSYSyncSession *)self->_updatedSession activities];
-      v13 = [v12 objectAtIndexedSubscript:v9];
+      activities4 = [(PSYSyncSession *)self->_updatedSession activities];
+      v13 = [activities4 objectAtIndexedSubscript:v9];
 
       if (([v11 isEqual:v13] & 1) == 0)
       {
-        v14[2](v14, v11, v13);
+        blockCopy[2](blockCopy, v11, v13);
       }
 
       ++v9;
@@ -56,15 +56,15 @@
   }
 }
 
-- (void)enumerateNewlyRunningActivitiesWithBlock:(id)a3
+- (void)enumerateNewlyRunningActivitiesWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __65__PSYSyncSessionUpdate_enumerateNewlyRunningActivitiesWithBlock___block_invoke;
   v6[3] = &unk_2799FB8B8;
-  v7 = v4;
-  v5 = v4;
+  v7 = blockCopy;
+  v5 = blockCopy;
   [(PSYSyncSessionUpdate *)self enumerateChangedActivitiesWithBlock:v6];
 }
 
@@ -78,15 +78,15 @@ void __65__PSYSyncSessionUpdate_enumerateNewlyRunningActivitiesWithBlock___block
   }
 }
 
-- (void)enumerateNewlyCompletedActivitiesWithBlock:(id)a3
+- (void)enumerateNewlyCompletedActivitiesWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __67__PSYSyncSessionUpdate_enumerateNewlyCompletedActivitiesWithBlock___block_invoke;
   v6[3] = &unk_2799FB8B8;
-  v7 = v4;
-  v5 = v4;
+  v7 = blockCopy;
+  v5 = blockCopy;
   [(PSYSyncSessionUpdate *)self enumerateChangedActivitiesWithBlock:v6];
 }
 

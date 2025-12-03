@@ -1,17 +1,17 @@
 @interface SPXPCMessage
 - (SPXPCMessage)init;
-- (SPXPCMessage)initWithName:(id)a3;
-- (SPXPCMessage)initWithName:(id)a3 batchSize:(unint64_t)a4;
-- (SPXPCMessage)initWithName:(id)a3 connection:(id)a4;
+- (SPXPCMessage)initWithName:(id)name;
+- (SPXPCMessage)initWithName:(id)name batchSize:(unint64_t)size;
+- (SPXPCMessage)initWithName:(id)name connection:(id)connection;
 - (id)_createXPCMessage;
-- (id)_initWithXPCMessage:(id)a3 onConnection:(id)a4;
-- (id)objectsOfClasses:(id)a3 atIndex:(unint64_t)a4;
-- (id)rootObjectOfClasses:(id)a3;
-- (id)rootObjectOfClassesForFeedback:(id)a3;
-- (void)sendReply:(id)a3;
-- (void)setObject:(id)a3 atIndex:(unint64_t)a4;
-- (void)setRootObject:(id)a3;
-- (void)setRootObjectForFeedback:(id)a3;
+- (id)_initWithXPCMessage:(id)message onConnection:(id)connection;
+- (id)objectsOfClasses:(id)classes atIndex:(unint64_t)index;
+- (id)rootObjectOfClasses:(id)classes;
+- (id)rootObjectOfClassesForFeedback:(id)feedback;
+- (void)sendReply:(id)reply;
+- (void)setObject:(id)object atIndex:(unint64_t)index;
+- (void)setRootObject:(id)object;
+- (void)setRootObjectForFeedback:(id)feedback;
 @end
 
 @implementation SPXPCMessage
@@ -74,13 +74,13 @@
   return v10;
 }
 
-- (SPXPCMessage)initWithName:(id)a3
+- (SPXPCMessage)initWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = [(SPXPCMessage *)self init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [nameCopy copy];
     name = v5->_name;
     v5->_name = v6;
   }
@@ -88,16 +88,16 @@
   return v5;
 }
 
-- (SPXPCMessage)initWithName:(id)a3 batchSize:(unint64_t)a4
+- (SPXPCMessage)initWithName:(id)name batchSize:(unint64_t)size
 {
-  v5 = [(SPXPCMessage *)self initWithName:a3];
+  v5 = [(SPXPCMessage *)self initWithName:name];
   if (v5)
   {
     v6 = xpc_array_create(0, 0);
     x_Objects = v5->_x_Objects;
     v5->_x_Objects = v6;
 
-    for (; a4; --a4)
+    for (; size; --size)
     {
       v8 = v5->_x_Objects;
       v9 = xpc_null_create();
@@ -108,17 +108,17 @@
   return v5;
 }
 
-- (SPXPCMessage)initWithName:(id)a3 connection:(id)a4
+- (SPXPCMessage)initWithName:(id)name connection:(id)connection
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v4 = [(SPXPCMessage *)self initWithName:a3, a4];
-  v5 = v4;
-  if (v4)
+  connection = [(SPXPCMessage *)self initWithName:name, connection];
+  v5 = connection;
+  if (connection)
   {
-    name = v4->_name;
+    name = connection->_name;
     if (name)
     {
-      v12[0] = v4->_name;
+      v12[0] = connection->_name;
       v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
     }
 
@@ -140,17 +140,17 @@
   return v5;
 }
 
-- (id)_initWithXPCMessage:(id)a3 onConnection:(id)a4
+- (id)_initWithXPCMessage:(id)message onConnection:(id)connection
 {
   v35[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  messageCopy = message;
+  connectionCopy = connection;
   v9 = [(SPXPCMessage *)self init];
   v10 = v9;
   if (v9)
   {
-    objc_storeWeak(&v9->_receivingConnection, v8);
-    string = xpc_dictionary_get_string(v7, "kDKMessageNameKey");
+    objc_storeWeak(&v9->_receivingConnection, connectionCopy);
+    string = xpc_dictionary_get_string(messageCopy, "kDKMessageNameKey");
     if (string)
     {
       string = [objc_alloc(MEMORY[0x1E696AEC0]) initWithUTF8String:string];
@@ -160,7 +160,7 @@
     v10->_name = string;
 
     v33 = 0;
-    data = xpc_dictionary_get_data(v7, "kDKMessageInfoKey", &v33);
+    data = xpc_dictionary_get_data(messageCopy, "kDKMessageInfoKey", &v33);
     v14 = 0;
     if (data && v33)
     {
@@ -189,26 +189,26 @@
       objc_storeStrong(&v10->_info, v14);
     }
 
-    v17 = xpc_dictionary_get_value(v7, "kDKMessageObjectGraphKey");
+    v17 = xpc_dictionary_get_value(messageCopy, "kDKMessageObjectGraphKey");
     x_Objects = v10->_x_Objects;
     v10->_x_Objects = v17;
 
-    v19 = xpc_dictionary_get_value(v7, "kDKMessageObjectRootGraphKey");
+    v19 = xpc_dictionary_get_value(messageCopy, "kDKMessageObjectRootGraphKey");
     x_rootObject = v10->_x_rootObject;
     v10->_x_rootObject = v19;
 
-    v21 = xpc_dictionary_get_value(v7, "kDKMessageFeedbackDataKey");
+    v21 = xpc_dictionary_get_value(messageCopy, "kDKMessageFeedbackDataKey");
     x_feedbackData = v10->_x_feedbackData;
     v10->_x_feedbackData = v21;
 
-    objc_storeStrong(&v10->_x_message, a3);
-    reply = xpc_dictionary_create_reply(v7);
+    objc_storeStrong(&v10->_x_message, message);
+    reply = xpc_dictionary_create_reply(messageCopy);
     x_reply = v10->_x_reply;
     v10->_x_reply = reply;
 
     if (v10->_x_reply)
     {
-      v25 = xpc_dictionary_get_remote_connection(v7);
+      v25 = xpc_dictionary_get_remote_connection(messageCopy);
       x_reply_connection = v10->_x_reply_connection;
       v10->_x_reply_connection = v25;
 
@@ -238,9 +238,9 @@
   return v10;
 }
 
-- (id)rootObjectOfClasses:(id)a3
+- (id)rootObjectOfClasses:(id)classes
 {
-  v4 = a3;
+  classesCopy = classes;
   x_rootObject = self->_x_rootObject;
   if (!x_rootObject)
   {
@@ -258,7 +258,7 @@
   {
     v8 = v7;
     v9 = [objc_alloc(MEMORY[0x1E696ACD0]) initForReadingFromData:v7 error:0];
-    bytes_ptr = [v9 decodeObjectOfClasses:v4 forKey:*MEMORY[0x1E696A508]];
+    bytes_ptr = [v9 decodeObjectOfClasses:classesCopy forKey:*MEMORY[0x1E696A508]];
   }
 
   else
@@ -272,17 +272,17 @@ LABEL_6:
   return bytes_ptr;
 }
 
-- (id)objectsOfClasses:(id)a3 atIndex:(unint64_t)a4
+- (id)objectsOfClasses:(id)classes atIndex:(unint64_t)index
 {
-  v6 = a3;
+  classesCopy = classes;
   length = 0;
   x_Objects = self->_x_Objects;
-  if (x_Objects && xpc_array_get_count(x_Objects) > a4 && (data = xpc_array_get_data(self->_x_Objects, a4, &length)) != 0 && (v9 = data, v10 = objc_alloc(MEMORY[0x1E695DEF0]), (v11 = [v10 initWithBytesNoCopy:v9 length:length freeWhenDone:0]) != 0))
+  if (x_Objects && xpc_array_get_count(x_Objects) > index && (data = xpc_array_get_data(self->_x_Objects, index, &length)) != 0 && (v9 = data, v10 = objc_alloc(MEMORY[0x1E695DEF0]), (v11 = [v10 initWithBytesNoCopy:v9 length:length freeWhenDone:0]) != 0))
   {
     v12 = v11;
     v13 = [objc_alloc(MEMORY[0x1E696ACD0]) initForReadingFromData:v11 error:0];
-    v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_%lu", @"kMessageResultSetDataKey", a4];
-    v15 = [v13 decodeObjectOfClasses:v6 forKey:v14];
+    index = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_%lu", @"kMessageResultSetDataKey", index];
+    v15 = [v13 decodeObjectOfClasses:classesCopy forKey:index];
   }
 
   else
@@ -293,41 +293,41 @@ LABEL_6:
   return v15;
 }
 
-- (void)setObject:(id)a3 atIndex:(unint64_t)a4
+- (void)setObject:(id)object atIndex:(unint64_t)index
 {
   v6 = MEMORY[0x1E696ACC8];
-  v7 = a3;
+  objectCopy = object;
   v12 = [[v6 alloc] initRequiringSecureCoding:1];
-  v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_%lu", @"kMessageResultSetDataKey", a4];
-  [v12 encodeObject:v7 forKey:v8];
+  index = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_%lu", @"kMessageResultSetDataKey", index];
+  [v12 encodeObject:objectCopy forKey:index];
 
   [v12 finishEncoding];
-  v9 = [v12 encodedData];
+  encodedData = [v12 encodedData];
   os_unfair_lock_lock(&self->_lock);
   x_Objects = self->_x_Objects;
-  v11 = xpc_data_create([v9 bytes], objc_msgSend(v9, "length"));
-  xpc_array_set_value(x_Objects, a4, v11);
+  v11 = xpc_data_create([encodedData bytes], objc_msgSend(encodedData, "length"));
+  xpc_array_set_value(x_Objects, index, v11);
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setRootObject:(id)a3
+- (void)setRootObject:(id)object
 {
   v4 = MEMORY[0x1E696ACC8];
-  v5 = a3;
+  objectCopy = object;
   v9 = [[v4 alloc] initRequiringSecureCoding:1];
-  [v9 encodeObject:v5 forKey:*MEMORY[0x1E696A508]];
+  [v9 encodeObject:objectCopy forKey:*MEMORY[0x1E696A508]];
 
   [v9 finishEncoding];
-  v6 = [v9 encodedData];
-  v7 = xpc_data_create([v6 bytes], objc_msgSend(v6, "length"));
+  encodedData = [v9 encodedData];
+  v7 = xpc_data_create([encodedData bytes], objc_msgSend(encodedData, "length"));
   x_rootObject = self->_x_rootObject;
   self->_x_rootObject = v7;
 }
 
-- (id)rootObjectOfClassesForFeedback:(id)a3
+- (id)rootObjectOfClassesForFeedback:(id)feedback
 {
-  v4 = a3;
+  feedbackCopy = feedback;
   x_feedbackData = self->_x_feedbackData;
   if (!x_feedbackData)
   {
@@ -345,7 +345,7 @@ LABEL_6:
   {
     v8 = v7;
     v9 = [objc_alloc(MEMORY[0x1E696ACD0]) initForReadingFromData:v7 error:0];
-    bytes_ptr = [v9 decodeObjectOfClasses:v4 forKey:*MEMORY[0x1E696A508]];
+    bytes_ptr = [v9 decodeObjectOfClasses:feedbackCopy forKey:*MEMORY[0x1E696A508]];
   }
 
   else
@@ -359,39 +359,39 @@ LABEL_6:
   return bytes_ptr;
 }
 
-- (void)setRootObjectForFeedback:(id)a3
+- (void)setRootObjectForFeedback:(id)feedback
 {
   v4 = MEMORY[0x1E696ACC8];
-  v5 = a3;
+  feedbackCopy = feedback;
   v9 = [[v4 alloc] initRequiringSecureCoding:1];
-  [v9 encodeObject:v5 forKey:*MEMORY[0x1E696A508]];
+  [v9 encodeObject:feedbackCopy forKey:*MEMORY[0x1E696A508]];
 
   [v9 finishEncoding];
-  v6 = [v9 encodedData];
-  v7 = xpc_data_create([v6 bytes], objc_msgSend(v6, "length"));
+  encodedData = [v9 encodedData];
+  v7 = xpc_data_create([encodedData bytes], objc_msgSend(encodedData, "length"));
   x_feedbackData = self->_x_feedbackData;
   self->_x_feedbackData = v7;
 }
 
-- (void)sendReply:(id)a3
+- (void)sendReply:(id)reply
 {
-  v5 = a3;
-  v9 = v5;
+  replyCopy = reply;
+  v9 = replyCopy;
   if (self->_x_reply && self->_x_reply_connection)
   {
-    if (v5)
+    if (replyCopy)
     {
-      v6 = [MEMORY[0x1E696AE40] dataWithPropertyList:v5 format:200 options:0 error:0];
+      currentHandler = [MEMORY[0x1E696AE40] dataWithPropertyList:replyCopy format:200 options:0 error:0];
     }
 
     else
     {
-      v6 = 0;
+      currentHandler = 0;
     }
 
-    if ([v6 length])
+    if ([currentHandler length])
     {
-      xpc_dictionary_set_data(self->_x_reply, "kDKMessageInfoKey", [v6 bytes], objc_msgSend(v6, "length"));
+      xpc_dictionary_set_data(self->_x_reply, "kDKMessageInfoKey", [currentHandler bytes], objc_msgSend(currentHandler, "length"));
     }
 
     xpc_connection_send_message(self->_x_reply_connection, self->_x_reply);
@@ -406,14 +406,14 @@ LABEL_6:
     if (v7)
     {
       SPTransactionDone(v7);
-      v6 = self->_replyTransaction;
+      currentHandler = self->_replyTransaction;
       self->_replyTransaction = 0;
     }
 
     else
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v6 handleFailureInMethod:a2 object:self file:@"SPXPCConnection.m" lineNumber:650 description:@"Trying to send reply where one isn't expected"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"SPXPCConnection.m" lineNumber:650 description:@"Trying to send reply where one isn't expected"];
     }
   }
 }

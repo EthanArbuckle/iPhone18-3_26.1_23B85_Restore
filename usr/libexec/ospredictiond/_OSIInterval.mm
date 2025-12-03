@@ -1,8 +1,8 @@
 @interface _OSIInterval
 - (BOOL)isValidInterval;
-- (BOOL)localizeDatesWithSecondsFromGMT:(int64_t)a3;
+- (BOOL)localizeDatesWithSecondsFromGMT:(int64_t)t;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation _OSIInterval
@@ -45,15 +45,15 @@
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(_OSIInterval *)self startDate];
-  v6 = [v5 copy];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  startDate = [(_OSIInterval *)self startDate];
+  v6 = [startDate copy];
   [v4 setStartDate:v6];
 
-  v7 = [(_OSIInterval *)self endDate];
-  v8 = [v7 copy];
+  endDate = [(_OSIInterval *)self endDate];
+  v8 = [endDate copy];
   [v4 setEndDate:v8];
 
   [(_OSIInterval *)self duration];
@@ -61,25 +61,25 @@
   return v4;
 }
 
-- (BOOL)localizeDatesWithSecondsFromGMT:(int64_t)a3
+- (BOOL)localizeDatesWithSecondsFromGMT:(int64_t)t
 {
   v5 = +[NSTimeZone localTimeZone];
-  v6 = [v5 secondsFromGMT];
+  secondsFromGMT = [v5 secondsFromGMT];
 
-  v7 = a3 - v6;
-  if (a3 != v6)
+  v7 = t - secondsFromGMT;
+  if (t != secondsFromGMT)
   {
-    v8 = [(_OSIInterval *)self startDate];
+    startDate = [(_OSIInterval *)self startDate];
     v9 = v7;
-    v10 = [v8 dateByAddingTimeInterval:v7];
+    v10 = [startDate dateByAddingTimeInterval:v7];
     [(_OSIInterval *)self setStartDate:v10];
 
-    v11 = [(_OSIInterval *)self endDate];
-    v12 = [v11 dateByAddingTimeInterval:v9];
+    endDate = [(_OSIInterval *)self endDate];
+    v12 = [endDate dateByAddingTimeInterval:v9];
     [(_OSIInterval *)self setEndDate:v12];
   }
 
-  return a3 != v6;
+  return t != secondsFromGMT;
 }
 
 @end

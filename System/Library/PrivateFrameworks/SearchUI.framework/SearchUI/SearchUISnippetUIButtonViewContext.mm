@@ -7,8 +7,8 @@
 
 - (BOOL)deviceIsAuthenticated
 {
-  v2 = [(SearchUISnippetUIButtonViewContext *)self sourceView];
-  v3 = [SearchUIUtilities deviceIsAuthenticatedForView:v2];
+  sourceView = [(SearchUISnippetUIButtonViewContext *)self sourceView];
+  v3 = [SearchUIUtilities deviceIsAuthenticatedForView:sourceView];
 
   return v3;
 }

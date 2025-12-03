@@ -1,30 +1,30 @@
 @interface HUMediaSelectionViewController
-- (BOOL)_allowRowInteractionForIndexPath:(id)a3;
-- (Class)cellClassForItem:(id)a3 indexPath:(id)a4;
-- (HUMediaSelectionViewController)initWithActionSetBuilder:(id)a3;
+- (BOOL)_allowRowInteractionForIndexPath:(id)path;
+- (Class)cellClassForItem:(id)item indexPath:(id)path;
+- (HUMediaSelectionViewController)initWithActionSetBuilder:(id)builder;
 - (HUMediaSelectionViewControllerDelegate)delegate;
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4;
-- (void)_presentMediaPickerUnavailablePromptWithReason:(int64_t)a3 storeKitErrorObject:(id)a4;
-- (void)_presentMediaPickerWithOptionsShowsLibraryContent:(BOOL)a3 pickingForExternalPlayer:(BOOL)a4;
-- (void)applyAccessory:(int64_t)a3 toItem:(id)a4 onTableView:(id)a5;
-- (void)itemManager:(id)a3 didUpdateResultsForItem:(id)a4 atIndexPath:(id)a5;
-- (void)mediaPicker:(id)a3 didPickPlaybackArchive:(id)a4;
-- (void)mediaPickerDidPickPlaybackArchive:(id)a3;
-- (void)setupCell:(id)a3 forItem:(id)a4 indexPath:(id)a5;
-- (void)sliderValueTableViewCell:(id)a3 didChangeValue:(double)a4;
-- (void)switchCell:(id)a3 didTurnOn:(BOOL)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)updateCell:(id)a3 forItem:(id)a4 indexPath:(id)a5 animated:(BOOL)a6;
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path;
+- (void)_presentMediaPickerUnavailablePromptWithReason:(int64_t)reason storeKitErrorObject:(id)object;
+- (void)_presentMediaPickerWithOptionsShowsLibraryContent:(BOOL)content pickingForExternalPlayer:(BOOL)player;
+- (void)applyAccessory:(int64_t)accessory toItem:(id)item onTableView:(id)view;
+- (void)itemManager:(id)manager didUpdateResultsForItem:(id)item atIndexPath:(id)path;
+- (void)mediaPicker:(id)picker didPickPlaybackArchive:(id)archive;
+- (void)mediaPickerDidPickPlaybackArchive:(id)archive;
+- (void)setupCell:(id)cell forItem:(id)item indexPath:(id)path;
+- (void)sliderValueTableViewCell:(id)cell didChangeValue:(double)value;
+- (void)switchCell:(id)cell didTurnOn:(BOOL)on;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)updateCell:(id)cell forItem:(id)item indexPath:(id)path animated:(BOOL)animated;
 - (void)viewDidLoad;
 @end
 
 @implementation HUMediaSelectionViewController
 
-- (HUMediaSelectionViewController)initWithActionSetBuilder:(id)a3
+- (HUMediaSelectionViewController)initWithActionSetBuilder:(id)builder
 {
-  v4 = a3;
-  v5 = [[HUMediaSelectionItemManager alloc] initWithDelegate:self mediaPlaybackActionBuilder:v4];
+  builderCopy = builder;
+  v5 = [[HUMediaSelectionItemManager alloc] initWithDelegate:self mediaPlaybackActionBuilder:builderCopy];
 
   v10.receiver = self;
   v10.super_class = HUMediaSelectionViewController;
@@ -48,11 +48,11 @@
   [(HUMediaSelectionViewController *)self setModalInPresentation:1];
 }
 
-- (Class)cellClassForItem:(id)a3 indexPath:(id)a4
+- (Class)cellClassForItem:(id)item indexPath:(id)path
 {
-  v5 = a3;
+  itemCopy = item;
   objc_opt_class();
-  v6 = v5;
+  v6 = itemCopy;
   if (objc_opt_isKindOfClass())
   {
     v7 = v6;
@@ -65,20 +65,20 @@
 
   v8 = v7;
 
-  v9 = [(HUMediaSelectionViewController *)self mediaSelectionItemManager];
-  v10 = [v9 mediaPickerItem];
+  mediaSelectionItemManager = [(HUMediaSelectionViewController *)self mediaSelectionItemManager];
+  mediaPickerItem = [mediaSelectionItemManager mediaPickerItem];
 
-  if (v10 != v6)
+  if (mediaPickerItem != v6)
   {
     if (!v8 || (-[HUMediaSelectionViewController mediaSelectionItemManager](self, "mediaSelectionItemManager"), v11 = objc_claimAutoreleasedReturnValue(), [v11 playbackOptionsItems], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "containsObject:", v8), v12, v11, (v13 & 1) == 0))
     {
-      v14 = [(HUMediaSelectionViewController *)self mediaSelectionItemManager];
-      v15 = [v14 chosenMediaItem];
+      mediaSelectionItemManager2 = [(HUMediaSelectionViewController *)self mediaSelectionItemManager];
+      chosenMediaItem = [mediaSelectionItemManager2 chosenMediaItem];
 
-      if (v15 != v6)
+      if (chosenMediaItem != v6)
       {
-        v16 = [(HUMediaSelectionViewController *)self mediaSelectionItemManager];
-        [v16 volumeSliderItem];
+        mediaSelectionItemManager3 = [(HUMediaSelectionViewController *)self mediaSelectionItemManager];
+        [mediaSelectionItemManager3 volumeSliderItem];
       }
     }
   }
@@ -88,36 +88,36 @@
   return v17;
 }
 
-- (void)setupCell:(id)a3 forItem:(id)a4 indexPath:(id)a5
+- (void)setupCell:(id)cell forItem:(id)item indexPath:(id)path
 {
-  v32 = a3;
-  v7 = a4;
-  v8 = [(HUMediaSelectionViewController *)self mediaSelectionItemManager];
-  v9 = [v8 playbackStateItems];
-  v10 = [v9 containsObject:v7];
+  cellCopy = cell;
+  itemCopy = item;
+  mediaSelectionItemManager = [(HUMediaSelectionViewController *)self mediaSelectionItemManager];
+  playbackStateItems = [mediaSelectionItemManager playbackStateItems];
+  v10 = [playbackStateItems containsObject:itemCopy];
 
   if (v10)
   {
     goto LABEL_10;
   }
 
-  v11 = [(HUMediaSelectionViewController *)self mediaSelectionItemManager];
-  v12 = [v11 useCustomVolumeItem];
-  v13 = v12;
-  if (v12 == v7)
+  mediaSelectionItemManager2 = [(HUMediaSelectionViewController *)self mediaSelectionItemManager];
+  useCustomVolumeItem = [mediaSelectionItemManager2 useCustomVolumeItem];
+  v13 = useCustomVolumeItem;
+  if (useCustomVolumeItem == itemCopy)
   {
 
     goto LABEL_10;
   }
 
-  v14 = [(HUMediaSelectionViewController *)self mediaSelectionItemManager];
-  v15 = [v14 useCurrentVolumeItem];
+  mediaSelectionItemManager3 = [(HUMediaSelectionViewController *)self mediaSelectionItemManager];
+  useCurrentVolumeItem = [mediaSelectionItemManager3 useCurrentVolumeItem];
 
-  if (v15 == v7)
+  if (useCurrentVolumeItem == itemCopy)
   {
 LABEL_10:
     objc_opt_class();
-    v27 = v32;
+    v27 = cellCopy;
     if (objc_opt_isKindOfClass())
     {
       v28 = v27;
@@ -136,26 +136,26 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v16 = [(HUMediaSelectionViewController *)self mediaSelectionItemManager];
-  v17 = [v16 selectedPlaybackStateItem];
-  v18 = v17;
-  if (v17 == v7)
+  mediaSelectionItemManager4 = [(HUMediaSelectionViewController *)self mediaSelectionItemManager];
+  selectedPlaybackStateItem = [mediaSelectionItemManager4 selectedPlaybackStateItem];
+  v18 = selectedPlaybackStateItem;
+  if (selectedPlaybackStateItem == itemCopy)
   {
   }
 
   else
   {
-    v19 = [(HUMediaSelectionViewController *)self mediaSelectionItemManager];
-    v20 = [v19 selectedVolumeItem];
+    mediaSelectionItemManager5 = [(HUMediaSelectionViewController *)self mediaSelectionItemManager];
+    selectedVolumeItem = [mediaSelectionItemManager5 selectedVolumeItem];
 
-    if (v20 != v7)
+    if (selectedVolumeItem != itemCopy)
     {
-      v21 = [(HUMediaSelectionViewController *)self mediaSelectionItemManager];
-      v22 = [v21 volumeSliderItem];
+      mediaSelectionItemManager6 = [(HUMediaSelectionViewController *)self mediaSelectionItemManager];
+      volumeSliderItem = [mediaSelectionItemManager6 volumeSliderItem];
 
-      if (v22 == v7)
+      if (volumeSliderItem == itemCopy)
       {
-        v25 = v32;
+        v25 = cellCopy;
         [v25 setDelegate:self];
         [v25 setMinimumValue:0.0];
         [v25 setMaximumValue:100.0];
@@ -165,26 +165,26 @@ LABEL_14:
         v30 = [MEMORY[0x277D755B8] _systemImageNamed:@"speaker.wave.3.fill"];
         [v25 setMaximumValueImage:v30];
 
-        v31 = [MEMORY[0x277D75348] systemGrayColor];
-        [v25 setTintColor:v31];
+        systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
+        [v25 setTintColor:systemGrayColor];
 
         [v25 setShowValue:0];
       }
 
       else
       {
-        v23 = [(HUMediaSelectionViewController *)self mediaSelectionItemManager];
-        v24 = [v23 chosenMediaItem];
+        mediaSelectionItemManager7 = [(HUMediaSelectionViewController *)self mediaSelectionItemManager];
+        chosenMediaItem = [mediaSelectionItemManager7 chosenMediaItem];
 
-        if (v24 != v7)
+        if (chosenMediaItem != itemCopy)
         {
           goto LABEL_15;
         }
 
-        v25 = v32;
+        v25 = cellCopy;
         [v25 setIconDisplayStyle:1];
-        v26 = [v25 contentMetrics];
-        [v26 setIconSize:{64.0, 64.0}];
+        contentMetrics = [v25 contentMetrics];
+        [contentMetrics setIconSize:{64.0, 64.0}];
 
         [v25 setHideDescriptionIcon:1];
         [v25 setSeparatorInsetLinesUpWithText:0];
@@ -194,45 +194,45 @@ LABEL_14:
     }
   }
 
-  [v32 setAccessoryType:3];
+  [cellCopy setAccessoryType:3];
 LABEL_15:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v32 setDelegate:self];
+    [cellCopy setDelegate:self];
   }
 }
 
-- (void)updateCell:(id)a3 forItem:(id)a4 indexPath:(id)a5 animated:(BOOL)a6
+- (void)updateCell:(id)cell forItem:(id)item indexPath:(id)path animated:(BOOL)animated
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = a4;
+  animatedCopy = animated;
+  cellCopy = cell;
+  itemCopy = item;
   v32.receiver = self;
   v32.super_class = HUMediaSelectionViewController;
-  [(HUItemTableViewController *)&v32 updateCell:v10 forItem:v11 indexPath:a5 animated:v6];
-  v12 = [(HUMediaSelectionViewController *)self mediaSelectionItemManager];
-  v13 = [v12 chosenMediaItem];
+  [(HUItemTableViewController *)&v32 updateCell:cellCopy forItem:itemCopy indexPath:path animated:animatedCopy];
+  mediaSelectionItemManager = [(HUMediaSelectionViewController *)self mediaSelectionItemManager];
+  chosenMediaItem = [mediaSelectionItemManager chosenMediaItem];
 
-  if (v13 == v11)
+  if (chosenMediaItem == itemCopy)
   {
-    [v10 updateUIWithAnimation:v6];
+    [cellCopy updateUIWithAnimation:animatedCopy];
     goto LABEL_16;
   }
 
-  v14 = [(HUMediaSelectionViewController *)self mediaSelectionItemManager];
-  v15 = [v14 playbackStateItems];
-  v16 = [v15 containsObject:v11];
+  mediaSelectionItemManager2 = [(HUMediaSelectionViewController *)self mediaSelectionItemManager];
+  playbackStateItems = [mediaSelectionItemManager2 playbackStateItems];
+  v16 = [playbackStateItems containsObject:itemCopy];
 
   if (v16)
   {
-    v17 = v10;
-    v18 = [(HUMediaSelectionViewController *)self mediaSelectionItemManager];
-    v19 = [v18 selectedPlaybackStateItem];
+    latestResults = cellCopy;
+    mediaSelectionItemManager3 = [(HUMediaSelectionViewController *)self mediaSelectionItemManager];
+    selectedPlaybackStateItem = [mediaSelectionItemManager3 selectedPlaybackStateItem];
 LABEL_11:
-    v27 = v19;
+    v27 = selectedPlaybackStateItem;
 
-    if (v27 == v11)
+    if (v27 == itemCopy)
     {
       v28 = 3;
     }
@@ -242,39 +242,39 @@ LABEL_11:
       v28 = 0;
     }
 
-    [v17 setAccessoryType:v28];
+    [latestResults setAccessoryType:v28];
     goto LABEL_15;
   }
 
-  v20 = [(HUMediaSelectionViewController *)self mediaSelectionItemManager];
-  v21 = [v20 useCustomVolumeItem];
-  v22 = v21;
-  if (v21 == v11)
+  mediaSelectionItemManager4 = [(HUMediaSelectionViewController *)self mediaSelectionItemManager];
+  useCustomVolumeItem = [mediaSelectionItemManager4 useCustomVolumeItem];
+  v22 = useCustomVolumeItem;
+  if (useCustomVolumeItem == itemCopy)
   {
 
     goto LABEL_10;
   }
 
-  v23 = [(HUMediaSelectionViewController *)self mediaSelectionItemManager];
-  v24 = [v23 useCurrentVolumeItem];
+  mediaSelectionItemManager5 = [(HUMediaSelectionViewController *)self mediaSelectionItemManager];
+  useCurrentVolumeItem = [mediaSelectionItemManager5 useCurrentVolumeItem];
 
-  if (v24 == v11)
+  if (useCurrentVolumeItem == itemCopy)
   {
 LABEL_10:
-    v17 = v10;
-    v18 = [(HUMediaSelectionViewController *)self mediaSelectionItemManager];
-    v19 = [v18 selectedVolumeItem];
+    latestResults = cellCopy;
+    mediaSelectionItemManager3 = [(HUMediaSelectionViewController *)self mediaSelectionItemManager];
+    selectedPlaybackStateItem = [mediaSelectionItemManager3 selectedVolumeItem];
     goto LABEL_11;
   }
 
-  v25 = [(HUMediaSelectionViewController *)self mediaSelectionItemManager];
-  v26 = [v25 volumeSliderItem];
+  mediaSelectionItemManager6 = [(HUMediaSelectionViewController *)self mediaSelectionItemManager];
+  volumeSliderItem = [mediaSelectionItemManager6 volumeSliderItem];
 
-  if (v26 == v11)
+  if (volumeSliderItem == itemCopy)
   {
-    v29 = v10;
-    v17 = [v11 latestResults];
-    v30 = [v17 objectForKeyedSubscript:@"HOMediaVolumeResultKey"];
+    v29 = cellCopy;
+    latestResults = [itemCopy latestResults];
+    v30 = [latestResults objectForKeyedSubscript:@"HOMediaVolumeResultKey"];
     [v30 floatValue];
     [v29 setValue:v31];
 
@@ -282,29 +282,29 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  [v10 setAccessoryType:0];
+  [cellCopy setAccessoryType:0];
 LABEL_16:
 }
 
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section
 {
-  v6 = a3;
+  viewCopy = view;
   if (([MEMORY[0x277D14CE8] supportsMediaPicker] & 1) == 0)
   {
-    v7 = [(HUMediaSelectionViewController *)self mediaSelectionItemManager];
-    v8 = [v7 playbackStatePlayItem];
-    v9 = [v8 latestResults];
-    v10 = [v9 objectForKeyedSubscript:*MEMORY[0x277D13EA8]];
-    v11 = [v10 BOOLValue];
+    mediaSelectionItemManager = [(HUMediaSelectionViewController *)self mediaSelectionItemManager];
+    playbackStatePlayItem = [mediaSelectionItemManager playbackStatePlayItem];
+    latestResults = [playbackStatePlayItem latestResults];
+    v10 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13EA8]];
+    bOOLValue = [v10 BOOLValue];
 
-    v12 = [(HUMediaSelectionViewController *)self delegate];
-    v13 = [v12 mediaSelectionViewControllerMessageForMediaActionPlayUnavailable:self];
+    delegate = [(HUMediaSelectionViewController *)self delegate];
+    v13 = [delegate mediaSelectionViewControllerMessageForMediaActionPlayUnavailable:self];
     v14 = _HULocalizedStringWithDefaultValue(v13, v13, 1);
 
-    v15 = [(HUMediaSelectionViewController *)self mediaSelectionItemManager];
-    v16 = [v15 displayedSectionIdentifierForSectionIndex:a4];
+    mediaSelectionItemManager2 = [(HUMediaSelectionViewController *)self mediaSelectionItemManager];
+    v16 = [mediaSelectionItemManager2 displayedSectionIdentifierForSectionIndex:section];
     v17 = v16;
-    if (v11)
+    if (bOOLValue)
     {
       v18 = HOMediaSelectionActionSectionIdentifier;
     }
@@ -324,18 +324,18 @@ LABEL_16:
 
   v21.receiver = self;
   v21.super_class = HUMediaSelectionViewController;
-  v14 = [(HUItemTableViewController *)&v21 tableView:v6 titleForFooterInSection:a4];
+  v14 = [(HUItemTableViewController *)&v21 tableView:viewCopy titleForFooterInSection:section];
 LABEL_8:
 
   return v14;
 }
 
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  if ([(HUMediaSelectionViewController *)self _allowRowInteractionForIndexPath:v5])
+  pathCopy = path;
+  if ([(HUMediaSelectionViewController *)self _allowRowInteractionForIndexPath:pathCopy])
   {
-    v6 = v5;
+    v6 = pathCopy;
   }
 
   else
@@ -346,15 +346,15 @@ LABEL_8:
   return v6;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v56.receiver = self;
   v56.super_class = HUMediaSelectionViewController;
-  [(HUItemTableViewController *)&v56 tableView:v6 didSelectRowAtIndexPath:v7];
-  v8 = [(HUItemTableViewController *)self itemManager];
-  v9 = [v8 displayedItemAtIndexPath:v7];
+  [(HUItemTableViewController *)&v56 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  v9 = [itemManager displayedItemAtIndexPath:pathCopy];
 
   objc_opt_class();
   v10 = v9;
@@ -370,18 +370,18 @@ LABEL_8:
 
   v12 = v11;
 
-  v13 = [v6 cellForRowAtIndexPath:v7];
-  v14 = [(HUMediaSelectionViewController *)self mediaSelectionItemManager];
-  v15 = [v14 mediaPickerItem];
+  v13 = [viewCopy cellForRowAtIndexPath:pathCopy];
+  mediaSelectionItemManager = [(HUMediaSelectionViewController *)self mediaSelectionItemManager];
+  mediaPickerItem = [mediaSelectionItemManager mediaPickerItem];
 
-  if (v10 == v15)
+  if (v10 == mediaPickerItem)
   {
     if (_os_feature_enabled_impl())
     {
       v27 = [HUMediaSourceListViewController alloc];
-      v28 = [(HUMediaSelectionItemManager *)self->_mediaSelectionItemManager actionSetBuilder];
-      v29 = [v28 mediaAction];
-      [v29 mediaProfiles];
+      actionSetBuilder = [(HUMediaSelectionItemManager *)self->_mediaSelectionItemManager actionSetBuilder];
+      mediaAction = [actionSetBuilder mediaAction];
+      [mediaAction mediaProfiles];
       v31 = v30 = v13;
       v32 = [(HUMediaSourceListViewController *)v27 initForMediaProfileContainers:v31 forTarget:0];
 
@@ -389,33 +389,33 @@ LABEL_8:
       [v32 setDelegate:self];
       v33 = [objc_alloc(MEMORY[0x277D757A0]) initWithRootViewController:v32];
       [(HUMediaSelectionViewController *)self presentViewController:v33 animated:1 completion:0];
-      [v6 deselectRowAtIndexPath:v7 animated:1];
+      [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
 
       goto LABEL_25;
     }
 
     v55 = v13;
-    v34 = [v10 latestResults];
-    v35 = [v34 objectForKeyedSubscript:@"HOMediaPickerUnavailableReasonKey"];
+    latestResults = [v10 latestResults];
+    v35 = [latestResults objectForKeyedSubscript:@"HOMediaPickerUnavailableReasonKey"];
 
-    v36 = [v10 latestResults];
-    v20 = v36;
+    latestResults2 = [v10 latestResults];
+    selectedPlaybackStateItem = latestResults2;
     if (v35)
     {
-      v37 = [v36 objectForKeyedSubscript:@"HOMediaPickerUnavailableReasonKey"];
-      v38 = [v37 integerValue];
-      v39 = [v10 latestResults];
-      v40 = [v39 objectForKeyedSubscript:@"HUMediaPickerUnavailableReasonStoreKitErrorObjectKey"];
-      [(HUMediaSelectionViewController *)self _presentMediaPickerUnavailablePromptWithReason:v38 storeKitErrorObject:v40];
+      v37 = [latestResults2 objectForKeyedSubscript:@"HOMediaPickerUnavailableReasonKey"];
+      integerValue = [v37 integerValue];
+      latestResults3 = [v10 latestResults];
+      v40 = [latestResults3 objectForKeyedSubscript:@"HUMediaPickerUnavailableReasonStoreKitErrorObjectKey"];
+      [(HUMediaSelectionViewController *)self _presentMediaPickerUnavailablePromptWithReason:integerValue storeKitErrorObject:v40];
     }
 
     else
     {
-      v42 = [v36 objectForKeyedSubscript:@"HOMediaSelectionShowLibraryContentKey"];
-      v43 = [v42 BOOLValue];
-      v44 = [v10 latestResults];
-      v45 = [v44 objectForKeyedSubscript:@"HOMediaSelectionPickingForExternalPlayerKey"];
-      -[HUMediaSelectionViewController _presentMediaPickerWithOptionsShowsLibraryContent:pickingForExternalPlayer:](self, "_presentMediaPickerWithOptionsShowsLibraryContent:pickingForExternalPlayer:", v43, [v45 BOOLValue]);
+      v42 = [latestResults2 objectForKeyedSubscript:@"HOMediaSelectionShowLibraryContentKey"];
+      bOOLValue = [v42 BOOLValue];
+      latestResults4 = [v10 latestResults];
+      v45 = [latestResults4 objectForKeyedSubscript:@"HOMediaSelectionPickingForExternalPlayerKey"];
+      -[HUMediaSelectionViewController _presentMediaPickerWithOptionsShowsLibraryContent:pickingForExternalPlayer:](self, "_presentMediaPickerWithOptionsShowsLibraryContent:pickingForExternalPlayer:", bOOLValue, [v45 BOOLValue]);
     }
 
     v13 = v55;
@@ -424,41 +424,41 @@ LABEL_8:
 
   if (v12)
   {
-    v16 = [(HUMediaSelectionViewController *)self mediaSelectionItemManager];
-    v17 = [v16 playbackStateItems];
-    v18 = [v17 containsObject:v12];
+    mediaSelectionItemManager2 = [(HUMediaSelectionViewController *)self mediaSelectionItemManager];
+    playbackStateItems = [mediaSelectionItemManager2 playbackStateItems];
+    v18 = [playbackStateItems containsObject:v12];
 
     if (v18)
     {
-      v19 = [(HUMediaSelectionViewController *)self mediaSelectionItemManager];
-      v20 = [v19 selectedPlaybackStateItem];
+      mediaSelectionItemManager3 = [(HUMediaSelectionViewController *)self mediaSelectionItemManager];
+      selectedPlaybackStateItem = [mediaSelectionItemManager3 selectedPlaybackStateItem];
 
       [v13 setAccessoryType:3];
-      v21 = [(HUMediaSelectionViewController *)self mediaSelectionItemManager];
-      [v21 setSelectedPlaybackStateItem:v12];
+      mediaSelectionItemManager4 = [(HUMediaSelectionViewController *)self mediaSelectionItemManager];
+      [mediaSelectionItemManager4 setSelectedPlaybackStateItem:v12];
       goto LABEL_17;
     }
   }
 
-  v22 = [(HUMediaSelectionViewController *)self mediaSelectionItemManager];
-  v23 = [v22 useCustomVolumeItem];
-  v24 = v23;
-  if (v23 == v10)
+  mediaSelectionItemManager5 = [(HUMediaSelectionViewController *)self mediaSelectionItemManager];
+  useCustomVolumeItem = [mediaSelectionItemManager5 useCustomVolumeItem];
+  v24 = useCustomVolumeItem;
+  if (useCustomVolumeItem == v10)
   {
 
 LABEL_16:
-    v41 = [(HUMediaSelectionViewController *)self mediaSelectionItemManager];
-    v20 = [v41 selectedVolumeItem];
+    mediaSelectionItemManager6 = [(HUMediaSelectionViewController *)self mediaSelectionItemManager];
+    selectedPlaybackStateItem = [mediaSelectionItemManager6 selectedVolumeItem];
 
     [v13 setAccessoryType:3];
-    v21 = [(HUMediaSelectionViewController *)self mediaSelectionItemManager];
-    [v21 setSelectedVolumeItem:v12];
+    mediaSelectionItemManager4 = [(HUMediaSelectionViewController *)self mediaSelectionItemManager];
+    [mediaSelectionItemManager4 setSelectedVolumeItem:v12];
 LABEL_17:
 
-    [(HUMediaSelectionViewController *)self updateCell:v13 forItem:v10 indexPath:v7 animated:1];
-    if (v20)
+    [(HUMediaSelectionViewController *)self updateCell:v13 forItem:v10 indexPath:pathCopy animated:1];
+    if (selectedPlaybackStateItem)
     {
-      [(HUMediaSelectionViewController *)self applyAccessory:0 toItem:v20 onTableView:v6];
+      [(HUMediaSelectionViewController *)self applyAccessory:0 toItem:selectedPlaybackStateItem onTableView:viewCopy];
     }
 
 LABEL_21:
@@ -466,74 +466,74 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  v25 = [(HUMediaSelectionViewController *)self mediaSelectionItemManager];
-  v26 = [v25 useCurrentVolumeItem];
+  mediaSelectionItemManager7 = [(HUMediaSelectionViewController *)self mediaSelectionItemManager];
+  useCurrentVolumeItem = [mediaSelectionItemManager7 useCurrentVolumeItem];
 
-  if (v26 == v10)
+  if (useCurrentVolumeItem == v10)
   {
     goto LABEL_16;
   }
 
 LABEL_22:
-  v46 = [(HUMediaSelectionViewController *)self mediaSelectionItemManager];
-  v47 = [v46 playbackStateAdjustVolumeOnlyItem];
+  mediaSelectionItemManager8 = [(HUMediaSelectionViewController *)self mediaSelectionItemManager];
+  playbackStateAdjustVolumeOnlyItem = [mediaSelectionItemManager8 playbackStateAdjustVolumeOnlyItem];
 
-  if (v10 == v47)
+  if (v10 == playbackStateAdjustVolumeOnlyItem)
   {
-    v48 = [(HUMediaSelectionViewController *)self mediaSelectionItemManager];
-    v49 = [v48 useCustomVolumeItem];
-    v50 = [(HUMediaSelectionViewController *)self mediaSelectionItemManager];
-    [v50 setSelectedVolumeItem:v49];
+    mediaSelectionItemManager9 = [(HUMediaSelectionViewController *)self mediaSelectionItemManager];
+    useCustomVolumeItem2 = [mediaSelectionItemManager9 useCustomVolumeItem];
+    mediaSelectionItemManager10 = [(HUMediaSelectionViewController *)self mediaSelectionItemManager];
+    [mediaSelectionItemManager10 setSelectedVolumeItem:useCustomVolumeItem2];
 
-    v51 = [(HUMediaSelectionViewController *)self mediaSelectionItemManager];
-    v52 = [v51 useCurrentVolumeItem];
-    [(HUMediaSelectionViewController *)self applyAccessory:0 toItem:v52 onTableView:v6];
+    mediaSelectionItemManager11 = [(HUMediaSelectionViewController *)self mediaSelectionItemManager];
+    useCurrentVolumeItem2 = [mediaSelectionItemManager11 useCurrentVolumeItem];
+    [(HUMediaSelectionViewController *)self applyAccessory:0 toItem:useCurrentVolumeItem2 onTableView:viewCopy];
 
-    v53 = [(HUMediaSelectionViewController *)self mediaSelectionItemManager];
-    v54 = [v53 useCustomVolumeItem];
-    [(HUMediaSelectionViewController *)self applyAccessory:3 toItem:v54 onTableView:v6];
+    mediaSelectionItemManager12 = [(HUMediaSelectionViewController *)self mediaSelectionItemManager];
+    useCustomVolumeItem3 = [mediaSelectionItemManager12 useCustomVolumeItem];
+    [(HUMediaSelectionViewController *)self applyAccessory:3 toItem:useCustomVolumeItem3 onTableView:viewCopy];
   }
 
-  [v6 deselectRowAtIndexPath:v7 animated:1];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
 LABEL_25:
 }
 
-- (void)applyAccessory:(int64_t)a3 toItem:(id)a4 onTableView:(id)a5
+- (void)applyAccessory:(int64_t)accessory toItem:(id)item onTableView:(id)view
 {
-  v12 = a4;
-  v8 = a5;
-  v9 = [(HUMediaSelectionViewController *)self mediaSelectionItemManager];
-  v10 = [v9 indexPathForItem:v12];
+  itemCopy = item;
+  viewCopy = view;
+  mediaSelectionItemManager = [(HUMediaSelectionViewController *)self mediaSelectionItemManager];
+  v10 = [mediaSelectionItemManager indexPathForItem:itemCopy];
 
-  v11 = [v8 cellForRowAtIndexPath:v10];
+  v11 = [viewCopy cellForRowAtIndexPath:v10];
 
-  [v11 setAccessoryType:a3];
+  [v11 setAccessoryType:accessory];
   if (v11)
   {
-    [(HUMediaSelectionViewController *)self updateCell:v11 forItem:v12 indexPath:v10 animated:1];
+    [(HUMediaSelectionViewController *)self updateCell:v11 forItem:itemCopy indexPath:v10 animated:1];
   }
 }
 
-- (BOOL)_allowRowInteractionForIndexPath:(id)a3
+- (BOOL)_allowRowInteractionForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(HUMediaSelectionViewController *)self mediaSelectionItemManager];
-  v6 = [v5 actionSetBuilder];
-  v7 = [v6 home];
-  v8 = [v7 hf_currentUserIsAdministrator];
+  pathCopy = path;
+  mediaSelectionItemManager = [(HUMediaSelectionViewController *)self mediaSelectionItemManager];
+  actionSetBuilder = [mediaSelectionItemManager actionSetBuilder];
+  home = [actionSetBuilder home];
+  hf_currentUserIsAdministrator = [home hf_currentUserIsAdministrator];
 
-  if (v8)
+  if (hf_currentUserIsAdministrator)
   {
-    v9 = [(HUMediaSelectionViewController *)self mediaSelectionItemManager];
-    v10 = [v9 displayedSectionIdentifierForSectionIndex:{objc_msgSend(v4, "section")}];
+    mediaSelectionItemManager2 = [(HUMediaSelectionViewController *)self mediaSelectionItemManager];
+    v10 = [mediaSelectionItemManager2 displayedSectionIdentifierForSectionIndex:{objc_msgSend(pathCopy, "section")}];
 
-    v11 = [(HUItemTableViewController *)self itemManager];
-    v12 = [v11 displayedItemAtIndexPath:v4];
+    itemManager = [(HUItemTableViewController *)self itemManager];
+    v12 = [itemManager displayedItemAtIndexPath:pathCopy];
 
     if (v10 == @"HOMediaSelectionActionSectionIdentifier" || v10 == @"HOMediaSelectionVolumeSelectionSectionIdentifier" || (-[HUMediaSelectionViewController mediaSelectionItemManager](self, "mediaSelectionItemManager"), v13 = objc_claimAutoreleasedReturnValue(), [v13 mediaPickerItem], v14 = objc_claimAutoreleasedReturnValue(), v14, v13, v12 == v14))
     {
-      v16 = [v12 latestResults];
-      v17 = [v16 objectForKeyedSubscript:*MEMORY[0x277D13EA8]];
+      latestResults = [v12 latestResults];
+      v17 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13EA8]];
       v15 = [v17 BOOLValue] ^ 1;
     }
 
@@ -551,13 +551,13 @@ LABEL_25:
   return v15;
 }
 
-- (void)_presentMediaPickerWithOptionsShowsLibraryContent:(BOOL)a3 pickingForExternalPlayer:(BOOL)a4
+- (void)_presentMediaPickerWithOptionsShowsLibraryContent:(BOOL)content pickingForExternalPlayer:(BOOL)player
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [(HUMediaSelectionViewController *)self mediaSelectionItemManager];
-  v8 = [v7 pickedPlaybackArchive];
-  -[HUMediaSelectionViewController setLastTargetOptions:](self, "setLastTargetOptions:", [v8 targetOptions]);
+  playerCopy = player;
+  contentCopy = content;
+  mediaSelectionItemManager = [(HUMediaSelectionViewController *)self mediaSelectionItemManager];
+  pickedPlaybackArchive = [mediaSelectionItemManager pickedPlaybackArchive];
+  -[HUMediaSelectionViewController setLastTargetOptions:](self, "setLastTargetOptions:", [pickedPlaybackArchive targetOptions]);
 
   v27 = 0;
   v28 = &v27;
@@ -581,10 +581,10 @@ LABEL_25:
   [v11 setShowsCloudItems:1];
   [v11 setShowsItemsWithProtectedAssets:1];
   [v11 setShowsCatalogContent:1];
-  [v11 setShowsLibraryContent:v5];
-  [v11 setPickingForExternalPlayer:v4];
-  v12 = [MEMORY[0x277D759A0] mainScreen];
-  [v12 scale];
+  [v11 setShowsLibraryContent:contentCopy];
+  [v11 setPickingForExternalPlayer:playerCopy];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v14 = v13;
 
   v27 = 0;
@@ -611,17 +611,17 @@ LABEL_25:
 
   [v11 setDelegate:self];
   [v11 setModalPresentationStyle:2];
-  v19 = [(HUMediaSelectionViewController *)self view];
-  [v19 frame];
+  view = [(HUMediaSelectionViewController *)self view];
+  [view frame];
   [v11 setPreferredContentSize:{v20, v21}];
 
   [(HUMediaSelectionViewController *)self presentViewController:v11 animated:1 completion:0];
 }
 
-- (void)_presentMediaPickerUnavailablePromptWithReason:(int64_t)a3 storeKitErrorObject:(id)a4
+- (void)_presentMediaPickerUnavailablePromptWithReason:(int64_t)reason storeKitErrorObject:(id)object
 {
-  v6 = a4;
-  if (a3 == 2)
+  objectCopy = object;
+  if (reason == 2)
   {
     v7 = 0;
     v9 = 0;
@@ -629,7 +629,7 @@ LABEL_25:
     v8 = @"HUAlertError";
   }
 
-  else if (a3 == 1)
+  else if (reason == 1)
   {
     v7 = [MEMORY[0x277CBEBC0] URLWithString:@"music://subscribe"];
     v8 = @"HUMediaPickerUnavailableMusicCatalogPlaybackDisabledPromptTitle";
@@ -637,7 +637,7 @@ LABEL_25:
     v10 = @"HUMediaPickerUnavailableMusicCatalogPlaybackDisabledPromptGetAppleMusicButton";
   }
 
-  else if (a3)
+  else if (reason)
   {
     v7 = 0;
     v9 = 0;
@@ -653,10 +653,10 @@ LABEL_25:
     v10 = @"HUMediaPickerUnavailableMusicAppUninstalledPromptOpenAppStoreButton";
   }
 
-  v11 = [(HUMediaSelectionViewController *)self delegate];
-  v12 = [v11 mediaSelectionViewController:self messageForMediaPickerUnavailableReason:a3];
+  delegate = [(HUMediaSelectionViewController *)self delegate];
+  v12 = [delegate mediaSelectionViewController:self messageForMediaPickerUnavailableReason:reason];
 
-  v24 = v6;
+  v24 = objectCopy;
   if (v12)
   {
     _HULocalizedStringWithDefaultValue(v12, v12, 1);
@@ -664,7 +664,7 @@ LABEL_25:
 
   else
   {
-    [v6 localizedDescription];
+    [objectCopy localizedDescription];
   }
   v13 = ;
   v14 = MEMORY[0x277D75110];
@@ -708,107 +708,107 @@ void __101__HUMediaSelectionViewController__presentMediaPickerUnavailablePromptW
   v2 = [v3 openURL:*(a1 + 32)];
 }
 
-- (void)mediaPicker:(id)a3 didPickPlaybackArchive:(id)a4
+- (void)mediaPicker:(id)picker didPickPlaybackArchive:(id)archive
 {
   v6 = MEMORY[0x277D14948];
-  v7 = a4;
-  v8 = [[v6 alloc] initWithMediaPlayerPlaybackArchive:v7];
+  archiveCopy = archive;
+  v8 = [[v6 alloc] initWithMediaPlayerPlaybackArchive:archiveCopy];
 
-  v9 = [(HUMediaSelectionViewController *)self mediaSelectionItemManager];
-  [v9 setPickedPlaybackArchive:v8];
+  mediaSelectionItemManager = [(HUMediaSelectionViewController *)self mediaSelectionItemManager];
+  [mediaSelectionItemManager setPickedPlaybackArchive:v8];
 
-  v10 = [(HUMediaSelectionViewController *)self lastTargetOptions];
-  v11 = [(HUMediaSelectionViewController *)self mediaSelectionItemManager];
-  v12 = [v11 pickedPlaybackArchive];
-  [v12 setTargetOptions:v10];
+  lastTargetOptions = [(HUMediaSelectionViewController *)self lastTargetOptions];
+  mediaSelectionItemManager2 = [(HUMediaSelectionViewController *)self mediaSelectionItemManager];
+  pickedPlaybackArchive = [mediaSelectionItemManager2 pickedPlaybackArchive];
+  [pickedPlaybackArchive setTargetOptions:lastTargetOptions];
 
-  v13 = [(HUMediaSelectionViewController *)self mediaSelectionItemManager];
-  v14 = [v13 pickedPlaybackArchive];
-  [v14 setAutoPlayEnabled:0];
+  mediaSelectionItemManager3 = [(HUMediaSelectionViewController *)self mediaSelectionItemManager];
+  pickedPlaybackArchive2 = [mediaSelectionItemManager3 pickedPlaybackArchive];
+  [pickedPlaybackArchive2 setAutoPlayEnabled:0];
 
   v15 = MEMORY[0x277CBEB58];
-  v16 = [(HUMediaSelectionViewController *)self mediaSelectionItemManager];
-  v17 = [v16 playbackOptionsItems];
-  v22 = [v15 setWithArray:v17];
+  mediaSelectionItemManager4 = [(HUMediaSelectionViewController *)self mediaSelectionItemManager];
+  playbackOptionsItems = [mediaSelectionItemManager4 playbackOptionsItems];
+  v22 = [v15 setWithArray:playbackOptionsItems];
 
-  v18 = [(HUMediaSelectionViewController *)self mediaSelectionItemManager];
-  v19 = [v18 chosenMediaItem];
-  [v22 addObject:v19];
+  mediaSelectionItemManager5 = [(HUMediaSelectionViewController *)self mediaSelectionItemManager];
+  chosenMediaItem = [mediaSelectionItemManager5 chosenMediaItem];
+  [v22 addObject:chosenMediaItem];
 
-  v20 = [(HUMediaSelectionViewController *)self mediaSelectionItemManager];
-  v21 = [v20 updateResultsForItems:v22 senderSelector:a2];
+  mediaSelectionItemManager6 = [(HUMediaSelectionViewController *)self mediaSelectionItemManager];
+  v21 = [mediaSelectionItemManager6 updateResultsForItems:v22 senderSelector:a2];
 
   [(HUMediaSelectionViewController *)self dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)mediaPickerDidPickPlaybackArchive:(id)a3
+- (void)mediaPickerDidPickPlaybackArchive:(id)archive
 {
   v5 = MEMORY[0x277D14948];
-  v6 = a3;
-  v7 = [[v5 alloc] initWithMediaPlayerPlaybackArchive:v6];
+  archiveCopy = archive;
+  v7 = [[v5 alloc] initWithMediaPlayerPlaybackArchive:archiveCopy];
 
-  v8 = [(HUMediaSelectionViewController *)self mediaSelectionItemManager];
-  [v8 setPickedPlaybackArchive:v7];
+  mediaSelectionItemManager = [(HUMediaSelectionViewController *)self mediaSelectionItemManager];
+  [mediaSelectionItemManager setPickedPlaybackArchive:v7];
 
-  v9 = [(HUMediaSelectionViewController *)self lastTargetOptions];
-  v10 = [(HUMediaSelectionViewController *)self mediaSelectionItemManager];
-  v11 = [v10 pickedPlaybackArchive];
-  [v11 setTargetOptions:v9];
+  lastTargetOptions = [(HUMediaSelectionViewController *)self lastTargetOptions];
+  mediaSelectionItemManager2 = [(HUMediaSelectionViewController *)self mediaSelectionItemManager];
+  pickedPlaybackArchive = [mediaSelectionItemManager2 pickedPlaybackArchive];
+  [pickedPlaybackArchive setTargetOptions:lastTargetOptions];
 
-  v12 = [(HUMediaSelectionViewController *)self mediaSelectionItemManager];
-  v13 = [v12 pickedPlaybackArchive];
-  [v13 setAutoPlayEnabled:0];
+  mediaSelectionItemManager3 = [(HUMediaSelectionViewController *)self mediaSelectionItemManager];
+  pickedPlaybackArchive2 = [mediaSelectionItemManager3 pickedPlaybackArchive];
+  [pickedPlaybackArchive2 setAutoPlayEnabled:0];
 
   v14 = MEMORY[0x277CBEB58];
-  v15 = [(HUMediaSelectionViewController *)self mediaSelectionItemManager];
-  v16 = [v15 playbackOptionsItems];
-  v21 = [v14 setWithArray:v16];
+  mediaSelectionItemManager4 = [(HUMediaSelectionViewController *)self mediaSelectionItemManager];
+  playbackOptionsItems = [mediaSelectionItemManager4 playbackOptionsItems];
+  v21 = [v14 setWithArray:playbackOptionsItems];
 
-  v17 = [(HUMediaSelectionViewController *)self mediaSelectionItemManager];
-  v18 = [v17 chosenMediaItem];
-  [v21 addObject:v18];
+  mediaSelectionItemManager5 = [(HUMediaSelectionViewController *)self mediaSelectionItemManager];
+  chosenMediaItem = [mediaSelectionItemManager5 chosenMediaItem];
+  [v21 addObject:chosenMediaItem];
 
-  v19 = [(HUMediaSelectionViewController *)self mediaSelectionItemManager];
-  v20 = [v19 updateResultsForItems:v21 senderSelector:a2];
+  mediaSelectionItemManager6 = [(HUMediaSelectionViewController *)self mediaSelectionItemManager];
+  v20 = [mediaSelectionItemManager6 updateResultsForItems:v21 senderSelector:a2];
 
   [(HUMediaSelectionViewController *)self dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)switchCell:(id)a3 didTurnOn:(BOOL)a4
+- (void)switchCell:(id)cell didTurnOn:(BOOL)on
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(HUItemTableViewController *)self itemManager];
-  v8 = [(HUMediaSelectionViewController *)self tableView];
-  v9 = [v8 indexPathForCell:v6];
+  onCopy = on;
+  cellCopy = cell;
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  tableView = [(HUMediaSelectionViewController *)self tableView];
+  v9 = [tableView indexPathForCell:cellCopy];
 
-  v11 = [v7 displayedItemAtIndexPath:v9];
+  v11 = [itemManager displayedItemAtIndexPath:v9];
 
-  v10 = [(HUMediaSelectionViewController *)self mediaSelectionItemManager];
-  [v10 mediaPlaybackOptionsItem:v11 switchedOn:v4];
+  mediaSelectionItemManager = [(HUMediaSelectionViewController *)self mediaSelectionItemManager];
+  [mediaSelectionItemManager mediaPlaybackOptionsItem:v11 switchedOn:onCopy];
 }
 
-- (void)sliderValueTableViewCell:(id)a3 didChangeValue:(double)a4
+- (void)sliderValueTableViewCell:(id)cell didChangeValue:(double)value
 {
-  v5 = [(HUMediaSelectionViewController *)self mediaSelectionItemManager];
-  [v5 mediaVolumeValueChanged:a4];
+  mediaSelectionItemManager = [(HUMediaSelectionViewController *)self mediaSelectionItemManager];
+  [mediaSelectionItemManager mediaVolumeValueChanged:value];
 }
 
-- (void)itemManager:(id)a3 didUpdateResultsForItem:(id)a4 atIndexPath:(id)a5
+- (void)itemManager:(id)manager didUpdateResultsForItem:(id)item atIndexPath:(id)path
 {
-  v8 = a4;
+  itemCopy = item;
   v15.receiver = self;
   v15.super_class = HUMediaSelectionViewController;
-  [(HUItemTableViewController *)&v15 itemManager:a3 didUpdateResultsForItem:v8 atIndexPath:a5];
-  v9 = [(HUMediaSelectionViewController *)self mediaSelectionItemManager];
-  v10 = [v9 mediaPickerItem];
-  if (v10 != v8)
+  [(HUItemTableViewController *)&v15 itemManager:manager didUpdateResultsForItem:itemCopy atIndexPath:path];
+  mediaSelectionItemManager = [(HUMediaSelectionViewController *)self mediaSelectionItemManager];
+  mediaPickerItem = [mediaSelectionItemManager mediaPickerItem];
+  if (mediaPickerItem != itemCopy)
   {
     goto LABEL_2;
   }
 
-  v11 = [v8 latestResults];
-  v12 = [v11 objectForKeyedSubscript:@"HOMediaPickerUnavailableReasonKey"];
+  latestResults = [itemCopy latestResults];
+  v12 = [latestResults objectForKeyedSubscript:@"HOMediaPickerUnavailableReasonKey"];
   if (!v12)
   {
 
@@ -817,9 +817,9 @@ LABEL_2:
   }
 
   v13 = v12;
-  v14 = [(HUMediaSelectionViewController *)self presentedViewController];
+  presentedViewController = [(HUMediaSelectionViewController *)self presentedViewController];
 
-  if (v14)
+  if (presentedViewController)
   {
     [(HUMediaSelectionViewController *)self dismissViewControllerAnimated:1 completion:0];
   }

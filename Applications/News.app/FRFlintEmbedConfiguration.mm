@@ -1,19 +1,19 @@
 @interface FRFlintEmbedConfiguration
-- (FRFlintEmbedConfiguration)initWithData:(id)a3;
-- (id)embedForType:(id)a3;
+- (FRFlintEmbedConfiguration)initWithData:(id)data;
+- (id)embedForType:(id)type;
 @end
 
 @implementation FRFlintEmbedConfiguration
 
-- (FRFlintEmbedConfiguration)initWithData:(id)a3
+- (FRFlintEmbedConfiguration)initWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v10.receiver = self;
   v10.super_class = FRFlintEmbedConfiguration;
   v5 = [(FRFlintEmbedConfiguration *)&v10 init];
   if (v5)
   {
-    v6 = [NSJSONSerialization JSONObjectWithData:v4 options:4 error:0];
+    v6 = [NSJSONSerialization JSONObjectWithData:dataCopy options:4 error:0];
     if (v6)
     {
       objc_opt_class();
@@ -29,11 +29,11 @@
   return v5;
 }
 
-- (id)embedForType:(id)a3
+- (id)embedForType:(id)type
 {
-  v4 = a3;
-  v5 = [(FRFlintEmbedConfiguration *)self embedConfiguration];
-  v6 = [v5 objectForKey:v4];
+  typeCopy = type;
+  embedConfiguration = [(FRFlintEmbedConfiguration *)self embedConfiguration];
+  v6 = [embedConfiguration objectForKey:typeCopy];
 
   return v6;
 }

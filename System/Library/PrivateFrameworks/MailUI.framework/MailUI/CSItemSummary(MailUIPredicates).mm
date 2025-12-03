@@ -16,42 +16,42 @@
 
 - (id)mui_messageListSearchPredicate
 {
-  v2 = [a1 type];
-  v3 = [v2 isEqual:*MEMORY[0x277CC22F8]];
+  type = [self type];
+  v3 = [type isEqual:*MEMORY[0x277CC22F8]];
 
   if (v3)
   {
-    v4 = [a1 _personPredicate];
+    _personPredicate = [self _personPredicate];
   }
 
   else
   {
-    v5 = [a1 type];
-    v6 = [v5 isEqual:*MEMORY[0x277CC2300]];
+    type2 = [self type];
+    v6 = [type2 isEqual:*MEMORY[0x277CC2300]];
 
     if (v6)
     {
-      v4 = [a1 _datePredicate];
+      _personPredicate = [self _datePredicate];
     }
 
     else
     {
-      v7 = [a1 type];
-      v8 = [v7 isEqual:*MEMORY[0x277CC2308]];
+      type3 = [self type];
+      v8 = [type3 isEqual:*MEMORY[0x277CC2308]];
 
       if (v8)
       {
-        v4 = [a1 _messagePredicate];
+        _personPredicate = [self _messagePredicate];
       }
 
       else
       {
-        v9 = [a1 type];
-        v10 = [v9 isEqual:*MEMORY[0x277CC22F0]];
+        type4 = [self type];
+        v10 = [type4 isEqual:*MEMORY[0x277CC22F0]];
 
         if (v10)
         {
-          v4 = [a1 _attachmentPredicate];
+          _personPredicate = [self _attachmentPredicate];
         }
 
         else
@@ -59,43 +59,43 @@
           v11 = [MEMORY[0x277CC3528] log];
           if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
           {
-            [(CSItemSummary(MailUIPredicates) *)a1 mui_messageListSearchPredicate];
+            [(CSItemSummary(MailUIPredicates) *)self mui_messageListSearchPredicate];
           }
 
-          v4 = 0;
+          _personPredicate = 0;
         }
       }
     }
   }
 
-  return v4;
+  return _personPredicate;
 }
 
 - (id)_messagePredicate
 {
   v12[2] = *MEMORY[0x277D85DE8];
-  v2 = [a1 textQuery];
-  if ([v2 length])
+  textQuery = [self textQuery];
+  if ([textQuery length])
   {
-    v3 = [a1 textScope];
-    if (v3 == 2)
+    textScope = [self textScope];
+    if (textScope == 2)
     {
-      v4 = [MEMORY[0x277D06E10] spotlightBodySearchPredicateForValue:v2];
+      v4 = [MEMORY[0x277D06E10] spotlightBodySearchPredicateForValue:textQuery];
       goto LABEL_9;
     }
 
-    if (v3 == 1)
+    if (textScope == 1)
     {
-      v4 = [MEMORY[0x277D06E10] spotlightSubjectSearchPredicateForValue:v2 operator:99];
+      v4 = [MEMORY[0x277D06E10] spotlightSubjectSearchPredicateForValue:textQuery operator:99];
 LABEL_9:
       v6 = v4;
       goto LABEL_11;
     }
 
     v7 = MEMORY[0x277CCA920];
-    v8 = [MEMORY[0x277D06E10] spotlightSubjectSearchPredicateForValue:v2 operator:99];
+    v8 = [MEMORY[0x277D06E10] spotlightSubjectSearchPredicateForValue:textQuery operator:99];
     v12[0] = v8;
-    v9 = [MEMORY[0x277D06E10] spotlightBodySearchPredicateForValue:v2];
+    v9 = [MEMORY[0x277D06E10] spotlightBodySearchPredicateForValue:textQuery];
     v12[1] = v9;
     v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:2];
     v6 = [v7 orPredicateWithSubpredicates:v10];
@@ -120,23 +120,23 @@ LABEL_11:
 - (id)_personPredicate
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  v2 = [a1 emailAddresses];
-  if ([v2 count] || (objc_msgSend(a1, "name"), v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "length"), v4, !v5))
+  emailAddresses = [self emailAddresses];
+  if ([emailAddresses count] || (objc_msgSend(self, "name"), v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "length"), v4, !v5))
   {
     v3 = 4;
   }
 
   else
   {
-    v6 = [a1 name];
-    v17[0] = v6;
+    name = [self name];
+    v17[0] = name;
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:1];
 
     v3 = 99;
-    v2 = v7;
+    emailAddresses = v7;
   }
 
-  if (![v2 count])
+  if (![emailAddresses count])
   {
     v9 = [MEMORY[0x277CC3528] log];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -147,11 +147,11 @@ LABEL_11:
     goto LABEL_22;
   }
 
-  v8 = [a1 contactScope];
+  contactScope = [self contactScope];
   v9 = 0;
-  if (v8 > 1)
+  if (contactScope > 1)
   {
-    if (v8 == 2)
+    if (contactScope == 2)
     {
       v15[0] = MEMORY[0x277D85DD0];
       v15[1] = 3221225472;
@@ -163,7 +163,7 @@ LABEL_11:
 
     else
     {
-      if (v8 != 3)
+      if (contactScope != 3)
       {
         goto LABEL_20;
       }
@@ -179,9 +179,9 @@ LABEL_11:
     goto LABEL_19;
   }
 
-  if (v8)
+  if (contactScope)
   {
-    if (v8 != 1)
+    if (contactScope != 1)
     {
       goto LABEL_20;
     }
@@ -193,14 +193,14 @@ LABEL_11:
     v16[4] = v3;
     v10 = v16;
 LABEL_19:
-    v9 = [v2 ef_map:v10];
+    v9 = [emailAddresses ef_map:v10];
     goto LABEL_20;
   }
 
   v11 = [MEMORY[0x277CC3528] log];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
   {
-    [(CSItemSummary(MailUIPredicates) *)a1 _personPredicate];
+    [(CSItemSummary(MailUIPredicates) *)self _personPredicate];
   }
 
   v9 = 0;
@@ -223,12 +223,12 @@ LABEL_23:
   v11[2] = *MEMORY[0x277D85DE8];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
-    a1 = 0;
+    self = 0;
     goto LABEL_15;
   }
 
-  v2 = [a1 senderContainsSearchString];
-  if (![v2 length])
+  senderContainsSearchString = [self senderContainsSearchString];
+  if (![senderContainsSearchString length])
   {
     v5 = [MEMORY[0x277CC3528] log];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -236,30 +236,30 @@ LABEL_23:
       [CSItemSummary(MailUIPredicates) _senderContainsPredicate];
     }
 
-    a1 = 0;
+    self = 0;
     goto LABEL_14;
   }
 
-  v3 = [a1 senderContainsScope];
-  switch(v3)
+  senderContainsScope = [self senderContainsScope];
+  switch(senderContainsScope)
   {
     case 2:
       v6 = MEMORY[0x277CCA920];
-      v7 = [MEMORY[0x277D06E10] spotlightSenderSearchPredicateForValue:v2 operator:99];
+      v7 = [MEMORY[0x277D06E10] spotlightSenderSearchPredicateForValue:senderContainsSearchString operator:99];
       v11[0] = v7;
-      v8 = [MEMORY[0x277D06E10] spotlightRecipientSearchPredicateForValue:v2 operator:99];
+      v8 = [MEMORY[0x277D06E10] spotlightRecipientSearchPredicateForValue:senderContainsSearchString operator:99];
       v11[1] = v8;
       v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:2];
-      a1 = [v6 orPredicateWithSubpredicates:v9];
+      self = [v6 orPredicateWithSubpredicates:v9];
 
       break;
     case 1:
-      v4 = [MEMORY[0x277D06E10] spotlightRecipientSearchPredicateForValue:v2 operator:99];
+      v4 = [MEMORY[0x277D06E10] spotlightRecipientSearchPredicateForValue:senderContainsSearchString operator:99];
       goto LABEL_12;
     case 0:
-      v4 = [MEMORY[0x277D06E10] spotlightSenderSearchPredicateForValue:v2 operator:99];
+      v4 = [MEMORY[0x277D06E10] spotlightSenderSearchPredicateForValue:senderContainsSearchString operator:99];
 LABEL_12:
-      a1 = v4;
+      self = v4;
       break;
   }
 
@@ -267,40 +267,40 @@ LABEL_14:
 
 LABEL_15:
 
-  return a1;
+  return self;
 }
 
 - (id)_datePredicate
 {
   v20[2] = *MEMORY[0x277D85DE8];
-  v2 = [a1 dateFrom];
+  dateFrom = [self dateFrom];
 
   v3 = MEMORY[0x277D06BE8];
-  if (v2)
+  if (dateFrom)
   {
     v4 = MEMORY[0x277CCA918];
     v5 = [MEMORY[0x277CCA9C0] expressionForKeyPath:*MEMORY[0x277D06BE8]];
     v6 = MEMORY[0x277CCA9C0];
-    v7 = [a1 dateFrom];
-    v8 = [v6 expressionForConstantValue:v7];
-    v2 = [v4 predicateWithLeftExpression:v5 rightExpression:v8 modifier:0 type:2 options:0];
+    dateFrom2 = [self dateFrom];
+    v8 = [v6 expressionForConstantValue:dateFrom2];
+    dateFrom = [v4 predicateWithLeftExpression:v5 rightExpression:v8 modifier:0 type:2 options:0];
   }
 
-  v9 = [a1 dateTo];
+  dateTo = [self dateTo];
 
-  if (v9)
+  if (dateTo)
   {
     v10 = MEMORY[0x277CCA918];
     v11 = [MEMORY[0x277CCA9C0] expressionForKeyPath:*v3];
     v12 = MEMORY[0x277CCA9C0];
-    v13 = [a1 dateTo];
-    v14 = [v12 expressionForConstantValue:v13];
+    dateTo2 = [self dateTo];
+    v14 = [v12 expressionForConstantValue:dateTo2];
     v15 = [v10 predicateWithLeftExpression:v11 rightExpression:v14 modifier:0 type:0 options:0];
 
-    if (v2 && v15)
+    if (dateFrom && v15)
     {
       v16 = MEMORY[0x277CCA920];
-      v20[0] = v2;
+      v20[0] = dateFrom;
       v20[1] = v15;
       v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:2];
       v18 = [v16 andPredicateWithSubpredicates:v17];
@@ -314,12 +314,12 @@ LABEL_15:
     v15 = 0;
   }
 
-  if (!v2)
+  if (!dateFrom)
   {
     goto LABEL_11;
   }
 
-  v18 = v2;
+  v18 = dateFrom;
 LABEL_10:
 
   v15 = v18;
@@ -330,49 +330,49 @@ LABEL_11:
 
 - (id)_readStatusPredicate
 {
-  v1 = [a1 statusValue];
-  if (v1 == 2)
+  statusValue = [self statusValue];
+  if (statusValue == 2)
   {
-    v2 = [MEMORY[0x277D06E08] predicateForUnreadMessages];
+    predicateForUnreadMessages = [MEMORY[0x277D06E08] predicateForUnreadMessages];
   }
 
-  else if (v1 == 1)
+  else if (statusValue == 1)
   {
-    v2 = [MEMORY[0x277D06E08] predicateForReadMessages];
+    predicateForUnreadMessages = [MEMORY[0x277D06E08] predicateForReadMessages];
   }
 
   else
   {
-    v2 = 0;
+    predicateForUnreadMessages = 0;
   }
 
-  return v2;
+  return predicateForUnreadMessages;
 }
 
 - (id)_flagStatusPredicate
 {
-  v1 = [a1 statusValue];
-  if (v1 == 2)
+  statusValue = [self statusValue];
+  if (statusValue == 2)
   {
-    v2 = [MEMORY[0x277D06E08] predicateForUnflaggedMessages];
+    predicateForUnflaggedMessages = [MEMORY[0x277D06E08] predicateForUnflaggedMessages];
   }
 
-  else if (v1 == 1)
+  else if (statusValue == 1)
   {
-    v2 = [MEMORY[0x277D06E08] predicateForFlaggedMessages];
+    predicateForUnflaggedMessages = [MEMORY[0x277D06E08] predicateForFlaggedMessages];
   }
 
   else
   {
-    v2 = 0;
+    predicateForUnflaggedMessages = 0;
   }
 
-  return v2;
+  return predicateForUnflaggedMessages;
 }
 
 - (void)mui_messageListSearchPredicate
 {
-  v1 = [a1 type];
+  type = [self type];
   OUTLINED_FUNCTION_2();
   OUTLINED_FUNCTION_0_0();
   _os_log_error_impl(v2, v3, v4, v5, v6, 0xCu);

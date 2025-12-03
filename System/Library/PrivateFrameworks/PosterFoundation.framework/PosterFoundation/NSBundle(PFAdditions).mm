@@ -7,18 +7,18 @@
 
 - (id)pf_supportedRoles
 {
-  v1 = [a1 pf_roleManifest];
-  v2 = [v1 pf_supportedRoles];
+  pf_roleManifest = [self pf_roleManifest];
+  pf_supportedRoles = [pf_roleManifest pf_supportedRoles];
 
-  return v2;
+  return pf_supportedRoles;
 }
 
 - (id)pf_defaultRole
 {
-  v1 = [a1 pf_roleManifest];
-  v2 = [v1 pf_defaultRole];
+  pf_roleManifest = [self pf_roleManifest];
+  pf_defaultRole = [pf_roleManifest pf_defaultRole];
 
-  return v2;
+  return pf_defaultRole;
 }
 
 @end

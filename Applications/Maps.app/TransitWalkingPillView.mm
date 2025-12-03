@@ -5,7 +5,7 @@
 - (id)_walkingArtwork;
 - (void)_configureViews;
 - (void)_updateListView;
-- (void)setText:(id)a3;
+- (void)setText:(id)text;
 @end
 
 @implementation TransitWalkingPillView
@@ -20,10 +20,10 @@
 
 - (id)_textArtwork
 {
-  v2 = [(TransitWalkingPillView *)self text];
-  v3 = [v2 _geo_serverFormattedString];
+  text = [(TransitWalkingPillView *)self text];
+  _geo_serverFormattedString = [text _geo_serverFormattedString];
 
-  v4 = [[MKTransitText alloc] initWithFormattedString:v3];
+  v4 = [[MKTransitText alloc] initWithFormattedString:_geo_serverFormattedString];
   v5 = [MKTransitArtwork artworkWithText:v4];
 
   return v5;
@@ -39,15 +39,15 @@
 
 - (void)_updateListView
 {
-  v3 = [(TransitWalkingPillView *)self _walkingArtwork];
-  v4 = [(TransitWalkingPillView *)self _textArtwork];
-  v5 = v4;
-  if (v3 && v4)
+  _walkingArtwork = [(TransitWalkingPillView *)self _walkingArtwork];
+  _textArtwork = [(TransitWalkingPillView *)self _textArtwork];
+  v5 = _textArtwork;
+  if (_walkingArtwork && _textArtwork)
   {
-    v6 = [(TransitWalkingPillView *)self _walkingArtwork];
-    v13[0] = v6;
-    v7 = [(TransitWalkingPillView *)self _textArtwork];
-    v13[1] = v7;
+    _walkingArtwork2 = [(TransitWalkingPillView *)self _walkingArtwork];
+    v13[0] = _walkingArtwork2;
+    _textArtwork2 = [(TransitWalkingPillView *)self _textArtwork];
+    v13[1] = _textArtwork2;
     v8 = [NSArray arrayWithObjects:v13 count:2];
 
     v12 = v8;
@@ -60,12 +60,12 @@
   }
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  v6 = a3;
+  textCopy = text;
   if (![(NSString *)self->_text isEqualToString:?])
   {
-    v4 = [v6 copy];
+    v4 = [textCopy copy];
     text = self->_text;
     self->_text = v4;
 
@@ -81,25 +81,25 @@
 
   [(TransitArtworkListView *)self->_artwortListView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(TransitWalkingPillView *)self addSubview:self->_artwortListView];
-  v20 = [(TransitArtworkListView *)self->_artwortListView topAnchor];
-  v19 = [(TransitWalkingPillView *)self topAnchor];
-  v18 = [v20 constraintGreaterThanOrEqualToAnchor:v19];
+  topAnchor = [(TransitArtworkListView *)self->_artwortListView topAnchor];
+  topAnchor2 = [(TransitWalkingPillView *)self topAnchor];
+  v18 = [topAnchor constraintGreaterThanOrEqualToAnchor:topAnchor2];
   v21[0] = v18;
-  v17 = [(TransitArtworkListView *)self->_artwortListView bottomAnchor];
-  v16 = [(TransitWalkingPillView *)self bottomAnchor];
-  v15 = [v17 constraintLessThanOrEqualToAnchor:v16];
+  bottomAnchor = [(TransitArtworkListView *)self->_artwortListView bottomAnchor];
+  bottomAnchor2 = [(TransitWalkingPillView *)self bottomAnchor];
+  v15 = [bottomAnchor constraintLessThanOrEqualToAnchor:bottomAnchor2];
   v21[1] = v15;
-  v5 = [(TransitArtworkListView *)self->_artwortListView centerYAnchor];
-  v6 = [(TransitWalkingPillView *)self centerYAnchor];
-  v7 = [v5 constraintEqualToAnchor:v6];
+  centerYAnchor = [(TransitArtworkListView *)self->_artwortListView centerYAnchor];
+  centerYAnchor2 = [(TransitWalkingPillView *)self centerYAnchor];
+  v7 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v21[2] = v7;
-  v8 = [(TransitArtworkListView *)self->_artwortListView leadingAnchor];
-  v9 = [(TransitWalkingPillView *)self leadingAnchor];
-  v10 = [v8 constraintEqualToAnchor:v9];
+  leadingAnchor = [(TransitArtworkListView *)self->_artwortListView leadingAnchor];
+  leadingAnchor2 = [(TransitWalkingPillView *)self leadingAnchor];
+  v10 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v21[3] = v10;
-  v11 = [(TransitArtworkListView *)self->_artwortListView trailingAnchor];
-  v12 = [(TransitWalkingPillView *)self trailingAnchor];
-  v13 = [v11 constraintEqualToAnchor:v12];
+  trailingAnchor = [(TransitArtworkListView *)self->_artwortListView trailingAnchor];
+  trailingAnchor2 = [(TransitWalkingPillView *)self trailingAnchor];
+  v13 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v21[4] = v13;
   v14 = [NSArray arrayWithObjects:v21 count:5];
   [NSLayoutConstraint activateConstraints:v14];

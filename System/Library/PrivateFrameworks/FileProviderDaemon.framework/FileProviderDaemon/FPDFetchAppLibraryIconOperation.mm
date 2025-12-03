@@ -1,33 +1,33 @@
 @interface FPDFetchAppLibraryIconOperation
 + (NSOperationQueue)sharedOperationQueue;
-- (BOOL)_checkIsNotPrefixedByTeamID:(id)a3;
-- (BOOL)_checkTypeIsValid:(id)a3;
-- (FPDFetchAppLibraryIconOperation)initWithAppBundleIDs:(id)a3 desiredSize:(CGSize)a4 screenScale:(double)a5;
-- (void)_perAppBundleCompletion:(id)a3 iconData:(id)a4 contentType:(id)a5 error:(id)a6;
+- (BOOL)_checkIsNotPrefixedByTeamID:(id)d;
+- (BOOL)_checkTypeIsValid:(id)valid;
+- (FPDFetchAppLibraryIconOperation)initWithAppBundleIDs:(id)ds desiredSize:(CGSize)size screenScale:(double)scale;
+- (void)_perAppBundleCompletion:(id)completion iconData:(id)data contentType:(id)type error:(id)error;
 - (void)_retrieveIconsFromAppStore;
 - (void)_retrieveIconsFromLocalDevice;
 - (void)_verifyAppBundleIDsFormat;
 - (void)main;
-- (void)operationDidProgressWithInfo:(id)a3 error:(id)a4 completionHandler:(id)a5;
+- (void)operationDidProgressWithInfo:(id)info error:(id)error completionHandler:(id)handler;
 @end
 
 @implementation FPDFetchAppLibraryIconOperation
 
-- (FPDFetchAppLibraryIconOperation)initWithAppBundleIDs:(id)a3 desiredSize:(CGSize)a4 screenScale:(double)a5
+- (FPDFetchAppLibraryIconOperation)initWithAppBundleIDs:(id)ds desiredSize:(CGSize)size screenScale:(double)scale
 {
-  height = a4.height;
-  width = a4.width;
-  v11 = a3;
-  if (![v11 count] || (width >= 1.0 ? (v12 = width == height) : (v12 = 0), v12 ? (v13 = a5 < 1.0) : (v13 = 1), v13))
+  height = size.height;
+  width = size.width;
+  dsCopy = ds;
+  if (![dsCopy count] || (width >= 1.0 ? (v12 = width == height) : (v12 = 0), v12 ? (v13 = scale < 1.0) : (v13 = 1), v13))
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v15 = objc_opt_class();
     v30.width = width;
     v30.height = height;
     v16 = NSStringFromSize(v30);
-    [v14 handleFailureInMethod:a2 object:self file:@"FPDFetchAppLibraryIconOperation.m" lineNumber:68 description:{@"invalid parameter to initialize %@ (appBundleIDs:%@, desiredSize:%@, screenScale:%f)", v15, v11, v16, *&a5}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"FPDFetchAppLibraryIconOperation.m" lineNumber:68 description:{@"invalid parameter to initialize %@ (appBundleIDs:%@, desiredSize:%@, screenScale:%f)", v15, dsCopy, v16, *&scale}];
 
-    v17 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -38,8 +38,8 @@
     v19 = v18;
     if (v18)
     {
-      objc_storeStrong(&v18->_appBundleIDs, a3);
-      v20 = [v11 mutableCopy];
+      objc_storeStrong(&v18->_appBundleIDs, ds);
+      v20 = [dsCopy mutableCopy];
       appBundleIDsNotFound = v19->_appBundleIDsNotFound;
       v19->_appBundleIDsNotFound = v20;
 
@@ -59,7 +59,7 @@
       v24 = fmin(width, 144.0);
       v19->_desiredSize.width = v24;
       v19->_desiredSize.height = v24;
-      v19->_screenScale = a5;
+      v19->_screenScale = scale;
       v19->_allowLocalLookup = 1;
       v19->_allowAppStoreLookup = 1;
       objc_destroyWeak(&v27);
@@ -67,10 +67,10 @@
     }
 
     self = v19;
-    v17 = self;
+    selfCopy = self;
   }
 
-  return v17;
+  return selfCopy;
 }
 
 void __80__FPDFetchAppLibraryIconOperation_initWithAppBundleIDs_desiredSize_screenScale___block_invoke(uint64_t a1)
@@ -79,18 +79,18 @@ void __80__FPDFetchAppLibraryIconOperation_initWithAppBundleIDs_desiredSize_scre
   [WeakRetained cancel];
 }
 
-- (void)operationDidProgressWithInfo:(id)a3 error:(id)a4 completionHandler:(id)a5
+- (void)operationDidProgressWithInfo:(id)info error:(id)error completionHandler:(id)handler
 {
-  v7 = a5;
-  v8 = a3;
-  v9 = [v8 objectForKeyedSubscript:@"appBundleID"];
-  v10 = [v8 objectForKeyedSubscript:@"mappedData"];
-  v11 = [v8 objectForKeyedSubscript:@"undecorated"];
+  handlerCopy = handler;
+  infoCopy = info;
+  v9 = [infoCopy objectForKeyedSubscript:@"appBundleID"];
+  v10 = [infoCopy objectForKeyedSubscript:@"mappedData"];
+  v11 = [infoCopy objectForKeyedSubscript:@"undecorated"];
 
-  v12 = [v11 BOOLValue];
+  bOOLValue = [v11 BOOLValue];
   if (v9 && v10)
   {
-    v13 = [(FPOperation *)self callbackQueue];
+    callbackQueue = [(FPOperation *)self callbackQueue];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __88__FPDFetchAppLibraryIconOperation_operationDidProgressWithInfo_error_completionHandler___block_invoke;
@@ -98,11 +98,11 @@ void __80__FPDFetchAppLibraryIconOperation_initWithAppBundleIDs_desiredSize_scre
     v14[4] = self;
     v15 = v9;
     v16 = v10;
-    v17 = v12;
-    dispatch_async(v13, v14);
+    v17 = bOOLValue;
+    dispatch_async(callbackQueue, v14);
   }
 
-  v7[2](v7);
+  handlerCopy[2](handlerCopy);
 }
 
 uint64_t __88__FPDFetchAppLibraryIconOperation_operationDidProgressWithInfo_error_completionHandler___block_invoke(uint64_t a1)
@@ -124,10 +124,10 @@ uint64_t __88__FPDFetchAppLibraryIconOperation_operationDidProgressWithInfo_erro
 - (void)main
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = *(a1 + 304);
-  v4 = *(a1 + 312);
-  v5 = *(a1 + 320);
-  v6 = [*(a1 + 344) componentsJoinedByString:{@", "}];
+  v3 = *(self + 304);
+  v4 = *(self + 312);
+  v5 = *(self + 320);
+  v6 = [*(self + 344) componentsJoinedByString:{@", "}];
   v8[0] = 67109890;
   v8[1] = v3;
   v9 = 1024;
@@ -260,19 +260,19 @@ uint64_t __55__FPDFetchAppLibraryIconOperation_sharedOperationQueue__block_invok
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_checkTypeIsValid:(id)a3
+- (BOOL)_checkTypeIsValid:(id)valid
 {
-  v3 = a3;
+  validCopy = valid;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return isKindOfClass & 1;
 }
 
-- (BOOL)_checkIsNotPrefixedByTeamID:(id)a3
+- (BOOL)_checkIsNotPrefixedByTeamID:(id)d
 {
-  v3 = a3;
-  if (([v3 hasPrefix:@"com.apple."] & 1) != 0 || objc_msgSend(v3, "length") < 0xB || objc_msgSend(v3, "characterAtIndex:", 10) != 46)
+  dCopy = d;
+  if (([dCopy hasPrefix:@"com.apple."] & 1) != 0 || objc_msgSend(dCopy, "length") < 0xB || objc_msgSend(dCopy, "characterAtIndex:", 10) != 46)
   {
     v5 = 1;
   }
@@ -284,7 +284,7 @@ uint64_t __55__FPDFetchAppLibraryIconOperation_sharedOperationQueue__block_invok
       [FPDFetchAppLibraryIconOperation _checkIsNotPrefixedByTeamID:];
     }
 
-    v4 = [v3 substringToIndex:10];
+    v4 = [dCopy substringToIndex:10];
     v5 = [v4 rangeOfCharacterFromSet:_checkIsNotPrefixedByTeamID__teamIDCharacterSet] == 0x7FFFFFFFFFFFFFFFLL;
   }
 
@@ -305,7 +305,7 @@ void __63__FPDFetchAppLibraryIconOperation__checkIsNotPrefixedByTeamID___block_i
 - (void)_retrieveIconsFromLocalDevice
 {
   v8 = *MEMORY[0x1E69E9840];
-  v7 = *a1;
+  v7 = *self;
   OUTLINED_FUNCTION_2_0();
   _os_log_debug_impl(v1, v2, v3, v4, v5, 0xCu);
   v6 = *MEMORY[0x1E69E9840];
@@ -332,34 +332,34 @@ void __64__FPDFetchAppLibraryIconOperation__retrieveIconsFromLocalDevice__block_
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_perAppBundleCompletion:(id)a3 iconData:(id)a4 contentType:(id)a5 error:(id)a6
+- (void)_perAppBundleCompletion:(id)completion iconData:(id)data contentType:(id)type error:(id)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(FPOperation *)self callbackQueue];
-  dispatch_assert_queue_V2(v14);
+  completionCopy = completion;
+  dataCopy = data;
+  typeCopy = type;
+  errorCopy = error;
+  callbackQueue = [(FPOperation *)self callbackQueue];
+  dispatch_assert_queue_V2(callbackQueue);
 
   if (([(FPDFetchAppLibraryIconOperation *)self isCancelled]& 1) == 0)
   {
-    v15 = [(FPDFetchAppLibraryIconOperation *)self perAppBundleCompletion];
+    perAppBundleCompletion = [(FPDFetchAppLibraryIconOperation *)self perAppBundleCompletion];
 
-    if (v10)
+    if (completionCopy)
     {
-      if (v15)
+      if (perAppBundleCompletion)
       {
-        if (([(NSMutableArray *)self->_appBundleIDsNotFound containsObject:v10]& 1) != 0)
+        if (([(NSMutableArray *)self->_appBundleIDsNotFound containsObject:completionCopy]& 1) != 0)
         {
-          [(NSMutableArray *)self->_appBundleIDsNotFound removeObject:v10];
-          if ([v11 length])
+          [(NSMutableArray *)self->_appBundleIDsNotFound removeObject:completionCopy];
+          if ([dataCopy length])
           {
-            [MEMORY[0x1E696AEC0] stringWithFormat:@"found (%lu bytes, ct:%@)", objc_msgSend(v11, "length"), v12];
+            [MEMORY[0x1E696AEC0] stringWithFormat:@"found (%lu bytes, ct:%@)", objc_msgSend(dataCopy, "length"), typeCopy];
           }
 
           else
           {
-            [MEMORY[0x1E696AEC0] stringWithFormat:@"not found; %@", v13, v23];
+            [MEMORY[0x1E696AEC0] stringWithFormat:@"not found; %@", errorCopy, v23];
           }
           v16 = ;
           v17 = fp_current_or_default_log();
@@ -368,8 +368,8 @@ void __64__FPDFetchAppLibraryIconOperation__retrieveIconsFromLocalDevice__block_
             [FPDFetchAppLibraryIconOperation _perAppBundleCompletion:iconData:contentType:error:];
           }
 
-          v18 = [(NSProgress *)self->_progress completedUnitCount];
-          if (v18 >= [(NSProgress *)self->_progress totalUnitCount])
+          completedUnitCount = [(NSProgress *)self->_progress completedUnitCount];
+          if (completedUnitCount >= [(NSProgress *)self->_progress totalUnitCount])
           {
             v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"[ASSERT] ‼️ perAppBundleCompletion was invoked more than once per item"];
             v22 = fp_current_or_default_log();
@@ -381,14 +381,14 @@ void __64__FPDFetchAppLibraryIconOperation__retrieveIconsFromLocalDevice__block_
             __assert_rtn("-[FPDFetchAppLibraryIconOperation _perAppBundleCompletion:iconData:contentType:error:]", "/Library/Caches/com.apple.xbs/Sources/FileProviderTools/app-library/FPDFetchAppLibraryIconOperation.m", 304, [v21 UTF8String]);
           }
 
-          v19 = [(NSProgress *)self->_progress completedUnitCount];
-          if (v19 < [(NSProgress *)self->_progress totalUnitCount])
+          completedUnitCount2 = [(NSProgress *)self->_progress completedUnitCount];
+          if (completedUnitCount2 < [(NSProgress *)self->_progress totalUnitCount])
           {
             [(NSProgress *)self->_progress setCompletedUnitCount:[(NSProgress *)self->_progress completedUnitCount]+ 1];
           }
 
-          v20 = [(FPDFetchAppLibraryIconOperation *)self perAppBundleCompletion];
-          (v20)[2](v20, v10, v11, v12, v13);
+          perAppBundleCompletion2 = [(FPDFetchAppLibraryIconOperation *)self perAppBundleCompletion];
+          (perAppBundleCompletion2)[2](perAppBundleCompletion2, completionCopy, dataCopy, typeCopy, errorCopy);
         }
 
         else

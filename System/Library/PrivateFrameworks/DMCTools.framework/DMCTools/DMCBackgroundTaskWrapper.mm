@@ -1,52 +1,52 @@
 @interface DMCBackgroundTaskWrapper
-- (BOOL)extendForInterval:(double)a3 error:(id *)a4;
+- (BOOL)extendForInterval:(double)interval error:(id *)error;
 - (DMCBackgroundTaskWrapper)init;
-- (DMCBackgroundTaskWrapper)initWithTask:(id)a3;
+- (DMCBackgroundTaskWrapper)initWithTask:(id)task;
 - (void)setCompleted;
-- (void)setTask:(id)a3;
+- (void)setTask:(id)task;
 @end
 
 @implementation DMCBackgroundTaskWrapper
 
-- (void)setTask:(id)a3
+- (void)setTask:(id)task
 {
   v4 = *(&self->super.isa + OBJC_IVAR___DMCBackgroundTaskWrapper_task);
-  *(&self->super.isa + OBJC_IVAR___DMCBackgroundTaskWrapper_task) = a3;
-  v3 = a3;
+  *(&self->super.isa + OBJC_IVAR___DMCBackgroundTaskWrapper_task) = task;
+  taskCopy = task;
 }
 
-- (DMCBackgroundTaskWrapper)initWithTask:(id)a3
+- (DMCBackgroundTaskWrapper)initWithTask:(id)task
 {
   *(&self->super.isa + OBJC_IVAR___DMCBackgroundTaskWrapper_completed) = 0;
-  *(&self->super.isa + OBJC_IVAR___DMCBackgroundTaskWrapper_task) = a3;
+  *(&self->super.isa + OBJC_IVAR___DMCBackgroundTaskWrapper_task) = task;
   v5.receiver = self;
   v5.super_class = DMCBackgroundTaskWrapper;
-  v3 = a3;
+  taskCopy = task;
   return [(DMCBackgroundTaskWrapper *)&v5 init];
 }
 
 - (void)setCompleted
 {
-  v3 = self;
-  v2 = [(DMCBackgroundTaskWrapper *)v3 task];
-  [(BGSystemTask *)v2 setTaskCompleted];
+  selfCopy = self;
+  task = [(DMCBackgroundTaskWrapper *)selfCopy task];
+  [(BGSystemTask *)task setTaskCompleted];
 
-  [(DMCBackgroundTaskWrapper *)v3 setCompleted:1];
+  [(DMCBackgroundTaskWrapper *)selfCopy setCompleted:1];
 }
 
-- (BOOL)extendForInterval:(double)a3 error:(id *)a4
+- (BOOL)extendForInterval:(double)interval error:(id *)error
 {
-  v6 = self;
-  DMCBackgroundTaskWrapper.extend(forInterval:)(a3);
+  selfCopy = self;
+  DMCBackgroundTaskWrapper.extend(forInterval:)(interval);
 
   if (v7)
   {
-    if (a4)
+    if (error)
     {
       v8 = sub_247F23C8C();
 
       v9 = v8;
-      *a4 = v8;
+      *error = v8;
     }
 
     else

@@ -1,44 +1,44 @@
 @interface AMSDatabaseHelper
-+ (BOOL)_addSkipBackupAttribute:(BOOL)a3 forURL:(id)a4;
-+ (BOOL)removeDatabaseAtURL:(id)a3 error:(id *)a4;
-+ (BOOL)removeDatabaseForCachePath:(id)a3 error:(id *)a4;
-+ (BOOL)removeDatabaseForDataVaultPath:(id)a3 error:(id *)a4;
-+ (id)_cachesURLForCachePath:(id)a3;
-+ (id)_databaseNameForType:(int64_t)a3;
-+ (id)dataVaultURLForDataVaultPath:(id)a3;
-+ (id)databaseFolderNameForType:(int64_t)a3;
-+ (id)databasePathForCachePath:(id)a3 type:(int64_t)a4;
-+ (id)databasePathForDataVaultPath:(id)a3 type:(int64_t)a4;
-+ (id)databaseURLForCachePath:(id)a3 type:(int64_t)a4;
-+ (id)databaseURLForDataVaultPath:(id)a3 type:(int64_t)a4;
-+ (void)_applyProtectionClassForDirectoryAtURL:(id)a3;
++ (BOOL)_addSkipBackupAttribute:(BOOL)attribute forURL:(id)l;
++ (BOOL)removeDatabaseAtURL:(id)l error:(id *)error;
++ (BOOL)removeDatabaseForCachePath:(id)path error:(id *)error;
++ (BOOL)removeDatabaseForDataVaultPath:(id)path error:(id *)error;
++ (id)_cachesURLForCachePath:(id)path;
++ (id)_databaseNameForType:(int64_t)type;
++ (id)dataVaultURLForDataVaultPath:(id)path;
++ (id)databaseFolderNameForType:(int64_t)type;
++ (id)databasePathForCachePath:(id)path type:(int64_t)type;
++ (id)databasePathForDataVaultPath:(id)path type:(int64_t)type;
++ (id)databaseURLForCachePath:(id)path type:(int64_t)type;
++ (id)databaseURLForDataVaultPath:(id)path type:(int64_t)type;
++ (void)_applyProtectionClassForDirectoryAtURL:(id)l;
 @end
 
 @implementation AMSDatabaseHelper
 
-+ (id)databasePathForCachePath:(id)a3 type:(int64_t)a4
++ (id)databasePathForCachePath:(id)path type:(int64_t)type
 {
-  v4 = [a1 databaseURLForCachePath:a3 type:a4];
-  v5 = [v4 path];
+  v4 = [self databaseURLForCachePath:path type:type];
+  path = [v4 path];
 
-  return v5;
+  return path;
 }
 
-+ (id)databasePathForDataVaultPath:(id)a3 type:(int64_t)a4
++ (id)databasePathForDataVaultPath:(id)path type:(int64_t)type
 {
-  v4 = [a1 databaseURLForDataVaultPath:a3 type:a4];
-  v5 = [v4 path];
+  v4 = [self databaseURLForDataVaultPath:path type:type];
+  path = [v4 path];
 
-  return v5;
+  return path;
 }
 
-+ (id)databaseURLForCachePath:(id)a3 type:(int64_t)a4
++ (id)databaseURLForCachePath:(id)path type:(int64_t)type
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = [a1 _cachesURLForCachePath:a3];
+  v6 = [self _cachesURLForCachePath:path];
   if (v6)
   {
-    v7 = [a1 _databaseNameForType:a4];
+    v7 = [self _databaseNameForType:type];
     v8 = [v6 URLByAppendingPathComponent:v7];
 
     v9 = +[AMSLogConfig sharedConfig];
@@ -47,8 +47,8 @@
       v9 = +[AMSLogConfig sharedConfig];
     }
 
-    v10 = [v9 OSLogObject];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
+    oSLogObject = [v9 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
     {
       v11 = objc_opt_class();
       v12 = AMSHashIfNeeded(v8);
@@ -56,7 +56,7 @@
       v15 = v11;
       v16 = 2114;
       v17 = v12;
-      _os_log_impl(&dword_192869000, v10, OS_LOG_TYPE_DEBUG, "%{public}@: Database location = %{public}@", &v14, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEBUG, "%{public}@: Database location = %{public}@", &v14, 0x16u);
     }
   }
 
@@ -68,13 +68,13 @@
   return v8;
 }
 
-+ (id)databaseURLForDataVaultPath:(id)a3 type:(int64_t)a4
++ (id)databaseURLForDataVaultPath:(id)path type:(int64_t)type
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = [a1 dataVaultURLForDataVaultPath:a3];
+  v6 = [self dataVaultURLForDataVaultPath:path];
   if (v6)
   {
-    v7 = [a1 _databaseNameForType:a4];
+    v7 = [self _databaseNameForType:type];
     v8 = [v6 URLByAppendingPathComponent:v7];
 
     v9 = +[AMSLogConfig sharedConfig];
@@ -83,8 +83,8 @@
       v9 = +[AMSLogConfig sharedConfig];
     }
 
-    v10 = [v9 OSLogObject];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
+    oSLogObject = [v9 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
     {
       v11 = objc_opt_class();
       v12 = AMSHashIfNeeded(v8);
@@ -92,7 +92,7 @@
       v15 = v11;
       v16 = 2114;
       v17 = v12;
-      _os_log_impl(&dword_192869000, v10, OS_LOG_TYPE_DEBUG, "%{public}@: Database location = %{public}@", &v14, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEBUG, "%{public}@: Database location = %{public}@", &v14, 0x16u);
     }
   }
 
@@ -104,38 +104,38 @@
   return v8;
 }
 
-+ (id)dataVaultURLForDataVaultPath:(id)a3
++ (id)dataVaultURLForDataVaultPath:(id)path
 {
   v34 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  pathCopy = path;
   v6 = +[AMSLogConfig sharedConfig];
   if (!v6)
   {
     v6 = +[AMSLogConfig sharedConfig];
   }
 
-  v7 = [v6 OSLogObject];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
+  oSLogObject = [v6 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
   {
     v8 = objc_opt_class();
     v9 = NSStringFromSelector(a2);
     v10 = AMSHashIfNeeded(v9);
-    v11 = AMSHashIfNeeded(v5);
+    v11 = AMSHashIfNeeded(pathCopy);
     *buf = 138543874;
     v29 = v8;
     v30 = 2114;
     v31 = v10;
     v32 = 2114;
     v33 = v11;
-    _os_log_impl(&dword_192869000, v7, OS_LOG_TYPE_INFO, "%{public}@: %{public}@ | dataVaultPath = %{public}@", buf, 0x20u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_INFO, "%{public}@: %{public}@ | dataVaultPath = %{public}@", buf, 0x20u);
   }
 
   v12 = +[AMSUnitTests isRunningUnitTests];
   v13 = MEMORY[0x1E695DFF8];
   if (!v12)
   {
-    v15 = [MEMORY[0x1E695DFF8] ams_dataVaultDirectory];
-    if (v15)
+    ams_dataVaultDirectory = [MEMORY[0x1E695DFF8] ams_dataVaultDirectory];
+    if (ams_dataVaultDirectory)
     {
       goto LABEL_7;
     }
@@ -146,19 +146,19 @@ LABEL_15:
   }
 
   v14 = NSTemporaryDirectory();
-  v15 = [v13 fileURLWithPath:v14];
+  ams_dataVaultDirectory = [v13 fileURLWithPath:v14];
 
-  if (!v15)
+  if (!ams_dataVaultDirectory)
   {
     goto LABEL_15;
   }
 
 LABEL_7:
-  v16 = [v15 URLByAppendingPathComponent:v5];
+  v16 = [ams_dataVaultDirectory URLByAppendingPathComponent:pathCopy];
 
-  v17 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v27 = 0;
-  v18 = [v17 createDirectoryAtURL:v16 withIntermediateDirectories:1 attributes:0 error:&v27];
+  v18 = [defaultManager createDirectoryAtURL:v16 withIntermediateDirectories:1 attributes:0 error:&v27];
   v19 = v27;
 
   if ((v18 & 1) == 0)
@@ -169,11 +169,11 @@ LABEL_7:
       v20 = +[AMSLogConfig sharedConfig];
     }
 
-    v21 = [v20 OSLogObject];
-    if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
+    oSLogObject2 = [v20 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
     {
       v22 = objc_opt_class();
-      v23 = AMSHashIfNeeded(v5);
+      v23 = AMSHashIfNeeded(pathCopy);
       v24 = AMSLogableError(v19);
       *buf = 138543874;
       v29 = v22;
@@ -181,11 +181,11 @@ LABEL_7:
       v31 = v23;
       v32 = 2114;
       v33 = v24;
-      _os_log_impl(&dword_192869000, v21, OS_LOG_TYPE_ERROR, "%{public}@: Failed to create %{public}@ directory in data vault. error = %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: Failed to create %{public}@ directory in data vault. error = %{public}@", buf, 0x20u);
     }
   }
 
-  [a1 _addSkipBackupAttribute:1 forURL:v16];
+  [self _addSkipBackupAttribute:1 forURL:v16];
   v25 = v16;
 
 LABEL_16:
@@ -193,11 +193,11 @@ LABEL_16:
   return v25;
 }
 
-+ (BOOL)removeDatabaseForCachePath:(id)a3 error:(id *)a4
++ (BOOL)removeDatabaseForCachePath:(id)path error:(id *)error
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [a1 _cachesURLForCachePath:v6];
+  pathCopy = path;
+  v7 = [self _cachesURLForCachePath:pathCopy];
   if (v7)
   {
     v8 = +[AMSLogConfig sharedConfig];
@@ -206,8 +206,8 @@ LABEL_16:
       v8 = +[AMSLogConfig sharedConfig];
     }
 
-    v9 = [v8 OSLogObject];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
+    oSLogObject = [v8 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
     {
       v10 = objc_opt_class();
       v11 = AMSHashIfNeeded(v7);
@@ -215,17 +215,17 @@ LABEL_16:
       v17 = v10;
       v18 = 2114;
       v19 = v11;
-      _os_log_impl(&dword_192869000, v9, OS_LOG_TYPE_INFO, "%{public}@: Removing database at cache URL: %{public}@.", &v16, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_INFO, "%{public}@: Removing database at cache URL: %{public}@.", &v16, 0x16u);
     }
 
-    v12 = [AMSDatabaseHelper removeDatabaseAtURL:v7 error:a4];
+    v12 = [AMSDatabaseHelper removeDatabaseAtURL:v7 error:error];
   }
 
   else
   {
-    if (a4)
+    if (error)
     {
-      *a4 = AMSError(0, @"Unable to determine cachesURL.", @"Unable to determine cachesURL while removing database.", 0);
+      *error = AMSError(0, @"Unable to determine cachesURL.", @"Unable to determine cachesURL while removing database.", 0);
     }
 
     v13 = +[AMSLogConfig sharedConfig];
@@ -234,14 +234,14 @@ LABEL_16:
       v13 = +[AMSLogConfig sharedConfig];
     }
 
-    v14 = [v13 OSLogObject];
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+    oSLogObject2 = [v13 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
     {
       v16 = 138543618;
       v17 = objc_opt_class();
       v18 = 2114;
-      v19 = v6;
-      _os_log_impl(&dword_192869000, v14, OS_LOG_TYPE_ERROR, "%{public}@: Failed to remove database at path: %{public}@. Unable to determine the URL.", &v16, 0x16u);
+      v19 = pathCopy;
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: Failed to remove database at path: %{public}@. Unable to determine the URL.", &v16, 0x16u);
     }
 
     v12 = 0;
@@ -250,11 +250,11 @@ LABEL_16:
   return v12;
 }
 
-+ (BOOL)removeDatabaseForDataVaultPath:(id)a3 error:(id *)a4
++ (BOOL)removeDatabaseForDataVaultPath:(id)path error:(id *)error
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [a1 dataVaultURLForDataVaultPath:v6];
+  pathCopy = path;
+  v7 = [self dataVaultURLForDataVaultPath:pathCopy];
   if (v7)
   {
     v8 = +[AMSLogConfig sharedConfig];
@@ -263,8 +263,8 @@ LABEL_16:
       v8 = +[AMSLogConfig sharedConfig];
     }
 
-    v9 = [v8 OSLogObject];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
+    oSLogObject = [v8 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
     {
       v10 = objc_opt_class();
       v11 = AMSHashIfNeeded(v7);
@@ -272,17 +272,17 @@ LABEL_16:
       v19 = v10;
       v20 = 2114;
       v21 = v11;
-      _os_log_impl(&dword_192869000, v9, OS_LOG_TYPE_INFO, "%{public}@: Removing database at data vault URL: %{public}@.", &v18, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_INFO, "%{public}@: Removing database at data vault URL: %{public}@.", &v18, 0x16u);
     }
 
-    v12 = [AMSDatabaseHelper removeDatabaseAtURL:v7 error:a4];
+    v12 = [AMSDatabaseHelper removeDatabaseAtURL:v7 error:error];
   }
 
   else
   {
-    if (a4)
+    if (error)
     {
-      *a4 = AMSError(0, @"Unable to determine dataVaultURL.", @"Unable to determine dataVaultURL while removing database.", 0);
+      *error = AMSError(0, @"Unable to determine dataVaultURL.", @"Unable to determine dataVaultURL while removing database.", 0);
     }
 
     v13 = +[AMSLogConfig sharedConfig];
@@ -291,16 +291,16 @@ LABEL_16:
       v13 = +[AMSLogConfig sharedConfig];
     }
 
-    v14 = [v13 OSLogObject];
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+    oSLogObject2 = [v13 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
     {
       v15 = objc_opt_class();
-      v16 = AMSHashIfNeeded(v6);
+      v16 = AMSHashIfNeeded(pathCopy);
       v18 = 138543618;
       v19 = v15;
       v20 = 2114;
       v21 = v16;
-      _os_log_impl(&dword_192869000, v14, OS_LOG_TYPE_ERROR, "%{public}@: Failed to remove database at data vault path: %{public}@. Unable to determine the URL.", &v18, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: Failed to remove database at data vault path: %{public}@. Unable to determine the URL.", &v18, 0x16u);
     }
 
     v12 = 0;
@@ -309,13 +309,13 @@ LABEL_16:
   return v12;
 }
 
-+ (BOOL)removeDatabaseAtURL:(id)a3 error:(id *)a4
++ (BOOL)removeDatabaseAtURL:(id)l error:(id *)error
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AC08] defaultManager];
+  lCopy = l;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v17 = 0;
-  v7 = [v6 removeItemAtURL:v5 error:&v17];
+  v7 = [defaultManager removeItemAtURL:lCopy error:&v17];
   v8 = v17;
 
   if (v7)
@@ -326,26 +326,26 @@ LABEL_16:
       v9 = +[AMSLogConfig sharedConfig];
     }
 
-    v10 = [v9 OSLogObject];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
+    oSLogObject = [v9 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
     {
       v11 = objc_opt_class();
-      v12 = AMSHashIfNeeded(v5);
+      v12 = AMSHashIfNeeded(lCopy);
       *buf = 138543618;
       v19 = v11;
       v20 = 2114;
       v21 = v12;
-      _os_log_impl(&dword_192869000, v10, OS_LOG_TYPE_INFO, "%{public}@: Successfully removed database at URL: %{public}@.", buf, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_INFO, "%{public}@: Successfully removed database at URL: %{public}@.", buf, 0x16u);
 LABEL_12:
     }
   }
 
   else
   {
-    if (a4)
+    if (error)
     {
       v13 = v8;
-      *a4 = v8;
+      *error = v8;
     }
 
     v9 = +[AMSLogConfig sharedConfig];
@@ -354,11 +354,11 @@ LABEL_12:
       v9 = +[AMSLogConfig sharedConfig];
     }
 
-    v10 = [v9 OSLogObject];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v9 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v14 = objc_opt_class();
-      v12 = AMSHashIfNeeded(v5);
+      v12 = AMSHashIfNeeded(lCopy);
       v15 = AMSLogableError(v8);
       *buf = 138543874;
       v19 = v14;
@@ -366,7 +366,7 @@ LABEL_12:
       v21 = v12;
       v22 = 2114;
       v23 = v15;
-      _os_log_impl(&dword_192869000, v10, OS_LOG_TYPE_ERROR, "%{public}@: Failed to remove database at URL: %{public}@. Error = %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: Failed to remove database at URL: %{public}@. Error = %{public}@", buf, 0x20u);
 
       goto LABEL_12;
     }
@@ -375,7 +375,7 @@ LABEL_12:
   return v7;
 }
 
-+ (id)databaseFolderNameForType:(int64_t)a3
++ (id)databaseFolderNameForType:(int64_t)type
 {
   if (_MergedGlobals_98 != -1)
   {
@@ -384,7 +384,7 @@ LABEL_12:
 
   v4 = MEMORY[0x1E696AD98];
   v5 = qword_1ED6E2868;
-  v6 = [v4 numberWithInteger:a3];
+  v6 = [v4 numberWithInteger:type];
   v7 = [v5 objectForKey:v6];
 
   return v7;
@@ -406,12 +406,12 @@ void __47__AMSDatabaseHelper_databaseFolderNameForType___block_invoke()
   qword_1ED6E2868 = v0;
 }
 
-+ (BOOL)_addSkipBackupAttribute:(BOOL)a3 forURL:(id)a4
++ (BOOL)_addSkipBackupAttribute:(BOOL)attribute forURL:(id)l
 {
-  v4 = a3;
+  attributeCopy = attribute;
   v23 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  if (!v5)
+  lCopy = l;
+  if (!lCopy)
   {
     v9 = +[AMSLogConfig sharedConfig];
     if (!v9)
@@ -419,43 +419,43 @@ void __47__AMSDatabaseHelper_databaseFolderNameForType___block_invoke()
       v9 = +[AMSLogConfig sharedConfig];
     }
 
-    v11 = [v9 OSLogObject];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v9 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
       v18 = objc_opt_class();
-      _os_log_impl(&dword_192869000, v11, OS_LOG_TYPE_ERROR, "%{public}@: Error excluding nil URL from backup", buf, 0xCu);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: Error excluding nil URL from backup", buf, 0xCu);
     }
 
     goto LABEL_13;
   }
 
-  v6 = [MEMORY[0x1E696AD98] numberWithBool:v4];
+  v6 = [MEMORY[0x1E696AD98] numberWithBool:attributeCopy];
   v7 = *MEMORY[0x1E695DB80];
   v16 = 0;
-  v8 = [v5 setResourceValue:v6 forKey:v7 error:&v16];
+  v8 = [lCopy setResourceValue:v6 forKey:v7 error:&v16];
   v9 = v16;
 
   if ((v8 & 1) == 0)
   {
-    v11 = +[AMSLogConfig sharedConfig];
-    if (!v11)
+    oSLogObject = +[AMSLogConfig sharedConfig];
+    if (!oSLogObject)
     {
-      v11 = +[AMSLogConfig sharedConfig];
+      oSLogObject = +[AMSLogConfig sharedConfig];
     }
 
-    v12 = [v11 OSLogObject];
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    v11OSLogObject = [oSLogObject OSLogObject];
+    if (os_log_type_enabled(v11OSLogObject, OS_LOG_TYPE_ERROR))
     {
       v13 = objc_opt_class();
       v14 = AMSLogableError(v9);
       *buf = 138543874;
       v18 = v13;
       v19 = 2114;
-      v20 = v5;
+      v20 = lCopy;
       v21 = 2114;
       v22 = v14;
-      _os_log_impl(&dword_192869000, v12, OS_LOG_TYPE_ERROR, "%{public}@: Error excluding %{public}@ from backup %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_192869000, v11OSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: Error excluding %{public}@ from backup %{public}@", buf, 0x20u);
     }
 
 LABEL_13:
@@ -469,43 +469,43 @@ LABEL_14:
   return v10;
 }
 
-+ (void)_applyProtectionClassForDirectoryAtURL:(id)a3
++ (void)_applyProtectionClassForDirectoryAtURL:(id)l
 {
-  v3 = [a3 path];
-  if (v3)
+  path = [l path];
+  if (path)
   {
-    v6 = v3;
-    v4 = v3;
+    v6 = path;
+    v4 = path;
     v5 = open([v6 UTF8String], 0x1000000);
-    v3 = v6;
+    path = v6;
     if (v5)
     {
       fcntl(v5, 64, 4);
       close(v5);
-      v3 = v6;
+      path = v6;
     }
   }
 }
 
-+ (id)_cachesURLForCachePath:(id)a3
++ (id)_cachesURLForCachePath:(id)path
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DFF8] ams_cachesDirectory];
-  if (v5)
+  pathCopy = path;
+  ams_cachesDirectory = [MEMORY[0x1E695DFF8] ams_cachesDirectory];
+  if (ams_cachesDirectory)
   {
-    v6 = v5;
-    v7 = [v5 URLByAppendingPathComponent:v4];
+    v6 = ams_cachesDirectory;
+    v7 = [ams_cachesDirectory URLByAppendingPathComponent:pathCopy];
 
-    v8 = [MEMORY[0x1E696AC08] defaultManager];
-    v9 = [v7 absoluteString];
-    v10 = [v8 fileExistsAtPath:v9];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    absoluteString = [v7 absoluteString];
+    v10 = [defaultManager fileExistsAtPath:absoluteString];
 
     if ((v10 & 1) == 0)
     {
-      v11 = [MEMORY[0x1E696AC08] defaultManager];
+      defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
       v19 = 0;
-      v12 = [v11 createDirectoryAtURL:v7 withIntermediateDirectories:1 attributes:0 error:&v19];
+      v12 = [defaultManager2 createDirectoryAtURL:v7 withIntermediateDirectories:1 attributes:0 error:&v19];
       v13 = v19;
 
       if (!v12 || v13)
@@ -516,24 +516,24 @@ LABEL_14:
           v14 = +[AMSLogConfig sharedConfig];
         }
 
-        v15 = [v14 OSLogObject];
-        if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+        oSLogObject = [v14 OSLogObject];
+        if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
         {
           v16 = objc_opt_class();
           v17 = AMSLogableError(v13);
           *buf = 138543874;
           v21 = v16;
           v22 = 2114;
-          v23 = v4;
+          v23 = pathCopy;
           v24 = 2114;
           v25 = v17;
-          _os_log_impl(&dword_192869000, v15, OS_LOG_TYPE_ERROR, "%{public}@: Failed to create %{public}@ directory. Error = %{public}@", buf, 0x20u);
+          _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: Failed to create %{public}@ directory. Error = %{public}@", buf, 0x20u);
         }
       }
     }
 
-    [a1 _applyProtectionClassForDirectoryAtURL:v7];
-    [a1 _addSkipBackupAttribute:1 forURL:v7];
+    [self _applyProtectionClassForDirectoryAtURL:v7];
+    [self _addSkipBackupAttribute:1 forURL:v7];
   }
 
   else
@@ -544,7 +544,7 @@ LABEL_14:
   return v7;
 }
 
-+ (id)_databaseNameForType:(int64_t)a3
++ (id)_databaseNameForType:(int64_t)type
 {
   if (qword_1ED6E2870 != -1)
   {
@@ -553,7 +553,7 @@ LABEL_14:
 
   v4 = MEMORY[0x1E696AD98];
   v5 = qword_1ED6E2878;
-  v6 = [v4 numberWithInteger:a3];
+  v6 = [v4 numberWithInteger:type];
   v7 = [v5 objectForKey:v6];
 
   v8 = [v7 stringByAppendingPathExtension:@"sqlitedb"];

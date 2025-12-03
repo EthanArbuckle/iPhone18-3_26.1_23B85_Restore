@@ -1,10 +1,10 @@
 @interface SFStartPageCustomizationViewController
 - (BOOL)showsBackgroundImagesCell;
 - (SFStartPageCustomizationDataSource)dataSource;
-- (SFStartPageCustomizationViewController)initWithDataSource:(id)a3;
+- (SFStartPageCustomizationViewController)initWithDataSource:(id)source;
 - (id)_backgroundImageIdentifier;
-- (id)collectionView:(id)a3 targetIndexPathForMoveOfItemFromOriginalIndexPath:(id)a4 atCurrentIndexPath:(id)a5 toProposedIndexPath:(id)a6;
-- (id)identifierToCustomizationItemMapForItemVariant:(int64_t)a3;
+- (id)collectionView:(id)view targetIndexPathForMoveOfItemFromOriginalIndexPath:(id)path atCurrentIndexPath:(id)indexPath toProposedIndexPath:(id)proposedIndexPath;
+- (id)identifierToCustomizationItemMapForItemVariant:(int64_t)variant;
 - (id)makeBackgroundImageRegistration;
 - (id)makeBackgroundImageToggleRegistration;
 - (id)makeBackgroundImagesCollectionViewLayout;
@@ -18,34 +18,34 @@
 - (id)makeSuggestionsDataSourcesHeaderRegistration;
 - (void)_createGeneratedBackgroundImageItemProvider;
 - (void)_createMobileAssetBackgroundImageItemProviders;
-- (void)_didSelectMobileAssetBackgroundImageCell:(id)a3;
-- (void)_setCustomizationSyncWithValue:(id)a3;
-- (void)_updateGeneratedBackgroundImageItemProviderWithImage:(id)a3;
-- (void)_updateHasGeneratedBackgroundImage:(id)a3;
-- (void)_updateImageWithURL:(id)a3;
-- (void)_updateMobileAssetBackgroundImageItemProviderWithImage:(id)a3 fileName:(id)a4;
-- (void)backgroundImageCellDidSelectClearButton:(id)a3;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
+- (void)_didSelectMobileAssetBackgroundImageCell:(id)cell;
+- (void)_setCustomizationSyncWithValue:(id)value;
+- (void)_updateGeneratedBackgroundImageItemProviderWithImage:(id)image;
+- (void)_updateHasGeneratedBackgroundImage:(id)image;
+- (void)_updateImageWithURL:(id)l;
+- (void)_updateMobileAssetBackgroundImageItemProviderWithImage:(id)image fileName:(id)name;
+- (void)backgroundImageCellDidSelectClearButton:(id)button;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
 - (void)dealloc;
-- (void)didChangeCustomizationItemOrder:(id)a3 forVariant:(int64_t)a4;
-- (void)mobileAssetBackgroundImageInstalled:(id)a3;
-- (void)picker:(id)a3 didFinishPicking:(id)a4;
-- (void)reloadDataAnimatingDifferences:(BOOL)a3;
-- (void)setCustomizationItemIdentifier:(id)a3 inSection:(id)a4 enabled:(BOOL)a5;
-- (void)setShowsCloseButton:(BOOL)a3;
+- (void)didChangeCustomizationItemOrder:(id)order forVariant:(int64_t)variant;
+- (void)mobileAssetBackgroundImageInstalled:(id)installed;
+- (void)picker:(id)picker didFinishPicking:(id)picking;
+- (void)reloadDataAnimatingDifferences:(BOOL)differences;
+- (void)setCustomizationItemIdentifier:(id)identifier inSection:(id)section enabled:(BOOL)enabled;
+- (void)setShowsCloseButton:(BOOL)button;
 - (void)setUpBackgroundImagesCollectionViewDataSource;
 - (void)setUpRootCollectionViewDataSource;
 - (void)showPhotoPicker;
-- (void)startPageCustomizationCellDidChangeValue:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)startPageCustomizationCellDidChangeValue:(id)value;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
 @end
 
 @implementation SFStartPageCustomizationViewController
 
-- (SFStartPageCustomizationViewController)initWithDataSource:(id)a3
+- (SFStartPageCustomizationViewController)initWithDataSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v31.receiver = self;
   v31.super_class = SFStartPageCustomizationViewController;
   v5 = [(SFStartPageCustomizationViewController *)&v31 initWithNibName:0 bundle:0];
@@ -65,36 +65,36 @@
     backgroundImagesDataSource = v5->_backgroundImagesDataSource;
     v5->_backgroundImagesDataSource = v13;
 
-    objc_storeWeak(&v5->_dataSource, v4);
-    v15 = [MEMORY[0x1E695DF90] dictionary];
+    objc_storeWeak(&v5->_dataSource, sourceCopy);
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     identifierToFixedCustomizationItemMap = v5->_identifierToFixedCustomizationItemMap;
-    v5->_identifierToFixedCustomizationItemMap = v15;
+    v5->_identifierToFixedCustomizationItemMap = dictionary;
 
-    v17 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     identifierToCustomizationItemMap = v5->_identifierToCustomizationItemMap;
-    v5->_identifierToCustomizationItemMap = v17;
+    v5->_identifierToCustomizationItemMap = dictionary2;
 
-    v19 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary3 = [MEMORY[0x1E695DF90] dictionary];
     mobileAssetFileNameToItemProvider = v5->_mobileAssetFileNameToItemProvider;
-    v5->_mobileAssetFileNameToItemProvider = v19;
+    v5->_mobileAssetFileNameToItemProvider = dictionary3;
 
-    v21 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary4 = [MEMORY[0x1E695DF90] dictionary];
     identifierToSuggestionsDataSourceCustomizationItemMap = v5->_identifierToSuggestionsDataSourceCustomizationItemMap;
-    v5->_identifierToSuggestionsDataSourceCustomizationItemMap = v21;
+    v5->_identifierToSuggestionsDataSourceCustomizationItemMap = dictionary4;
 
-    [(SFStartPageCustomizationViewController *)v5 _updateHasGeneratedBackgroundImage:v4];
-    v23 = [v4 backgroundImageAssetControllerForCustomizationViewController:v5];
-    v24 = [v23 fileNames];
-    v25 = [v24 copy];
+    [(SFStartPageCustomizationViewController *)v5 _updateHasGeneratedBackgroundImage:sourceCopy];
+    v23 = [sourceCopy backgroundImageAssetControllerForCustomizationViewController:v5];
+    fileNames = [v23 fileNames];
+    v25 = [fileNames copy];
     mobileAssetFileNames = v5->_mobileAssetFileNames;
     v5->_mobileAssetFileNames = v25;
 
     [(SFStartPageCustomizationViewController *)v5 _createMobileAssetBackgroundImageItemProviders];
-    v27 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v27 addObserver:v5 selector:sel_mobileAssetBackgroundImageInstalled_ name:*MEMORY[0x1E69C9920] object:v5->_backgroundImagesDataSource];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v5 selector:sel_mobileAssetBackgroundImageInstalled_ name:*MEMORY[0x1E69C9920] object:v5->_backgroundImagesDataSource];
 
-    v28 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v28 addObserver:v5 selector:sel_backgroundImagesDidChange_ name:*MEMORY[0x1E69C9A00] object:v5->_backgroundImagesDataSource];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v5 selector:sel_backgroundImagesDidChange_ name:*MEMORY[0x1E69C9A00] object:v5->_backgroundImagesDataSource];
 
     v29 = v5;
   }
@@ -104,8 +104,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = SFStartPageCustomizationViewController;
@@ -117,28 +117,28 @@
   v14.receiver = self;
   v14.super_class = SFStartPageCustomizationViewController;
   [(SFStartPageCustomizationViewController *)&v14 viewDidLoad];
-  v3 = [(SFStartPageCustomizationViewController *)self view];
-  v4 = [(SFStartPageCustomizationViewController *)self makeRootCollectionViewLayout];
+  view = [(SFStartPageCustomizationViewController *)self view];
+  makeRootCollectionViewLayout = [(SFStartPageCustomizationViewController *)self makeRootCollectionViewLayout];
   v5 = objc_alloc(MEMORY[0x1E69DC7F0]);
-  [v3 bounds];
-  v6 = [v5 initWithFrame:v4 collectionViewLayout:?];
+  [view bounds];
+  v6 = [v5 initWithFrame:makeRootCollectionViewLayout collectionViewLayout:?];
   rootCollectionView = self->_rootCollectionView;
   self->_rootCollectionView = v6;
 
   [(UICollectionView *)self->_rootCollectionView setAutoresizingMask:18];
-  v8 = [MEMORY[0x1E69DC888] systemGroupedBackgroundColor];
-  [(UICollectionView *)self->_rootCollectionView setBackgroundColor:v8];
+  systemGroupedBackgroundColor = [MEMORY[0x1E69DC888] systemGroupedBackgroundColor];
+  [(UICollectionView *)self->_rootCollectionView setBackgroundColor:systemGroupedBackgroundColor];
 
   [(UICollectionView *)self->_rootCollectionView setDelegate:self];
   [(UICollectionView *)self->_rootCollectionView setAccessibilityIdentifier:@"StartPageCustomizationMenu"];
   [(UICollectionView *)self->_rootCollectionView registerClass:objc_opt_class() forCellWithReuseIdentifier:@"background-images-grid"];
-  [v3 addSubview:self->_rootCollectionView];
+  [view addSubview:self->_rootCollectionView];
   [(SFStartPageCustomizationViewController *)self setUpRootCollectionViewDataSource];
-  v9 = [(SFStartPageCustomizationViewController *)self makeBackgroundImagesCollectionViewLayout];
+  makeBackgroundImagesCollectionViewLayout = [(SFStartPageCustomizationViewController *)self makeBackgroundImagesCollectionViewLayout];
   v10 = objc_alloc(MEMORY[0x1E69DC7F0]);
-  v11 = [(SFStartPageCustomizationViewController *)self view];
-  [v11 bounds];
-  v12 = [v10 initWithFrame:v9 collectionViewLayout:?];
+  view2 = [(SFStartPageCustomizationViewController *)self view];
+  [view2 bounds];
+  v12 = [v10 initWithFrame:makeBackgroundImagesCollectionViewLayout collectionViewLayout:?];
   backgroundImagesCollectionView = self->_backgroundImagesCollectionView;
   self->_backgroundImagesCollectionView = v12;
 
@@ -148,11 +148,11 @@
   [(SFStartPageCustomizationViewController *)self reloadDataAnimatingDifferences:0];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = SFStartPageCustomizationViewController;
-  [(SFStartPageCustomizationViewController *)&v5 viewDidDisappear:a3];
+  [(SFStartPageCustomizationViewController *)&v5 viewDidDisappear:disappear];
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
   if (objc_opt_respondsToSelector())
   {
@@ -160,10 +160,10 @@
   }
 }
 
-- (void)_updateGeneratedBackgroundImageItemProviderWithImage:(id)a3
+- (void)_updateGeneratedBackgroundImageItemProviderWithImage:(id)image
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E69DCAB8] imageWithCGImage:{objc_msgSend(v4, "CGImage")}];
+  imageCopy = image;
+  v5 = [MEMORY[0x1E69DCAB8] imageWithCGImage:{objc_msgSend(imageCopy, "CGImage")}];
   v6 = [objc_alloc(MEMORY[0x1E696ACA0]) initWithObject:v5];
   generatedBackgroundImageItemProvider = self->_generatedBackgroundImageItemProvider;
   self->_generatedBackgroundImageItemProvider = v6;
@@ -185,13 +185,13 @@
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
   v4 = [WeakRetained profileProviderForCustomizationViewController:self];
 
-  v5 = [MEMORY[0x1E69C9850] defaultManager];
+  defaultManager = [MEMORY[0x1E69C9850] defaultManager];
   if (self->_hasGeneratedBackgroundImage)
   {
-    v6 = [(SFStartPageCustomizationViewController *)self _backgroundImageIdentifier];
-    v7 = [MEMORY[0x1E69C9850] defaultManager];
-    v8 = [v4 activeProfile];
-    v9 = [v7 imageForIdentifier:v6 forProfile:v8];
+    _backgroundImageIdentifier = [(SFStartPageCustomizationViewController *)self _backgroundImageIdentifier];
+    defaultManager2 = [MEMORY[0x1E69C9850] defaultManager];
+    activeProfile = [v4 activeProfile];
+    v9 = [defaultManager2 imageForIdentifier:_backgroundImageIdentifier forProfile:activeProfile];
 
     [(SFStartPageCustomizationViewController *)self _updateGeneratedBackgroundImageItemProviderWithImage:v9];
   }
@@ -199,18 +199,18 @@
   else
   {
     objc_initWeak(&location, self);
-    v10 = [v4 activeProfile];
-    v11 = [v10 symbolImageName];
-    v12 = [v4 activeProfileIdentifier];
-    v13 = [v4 activeProfile];
-    v14 = [v13 color];
+    activeProfile2 = [v4 activeProfile];
+    symbolImageName = [activeProfile2 symbolImageName];
+    activeProfileIdentifier = [v4 activeProfileIdentifier];
+    activeProfile3 = [v4 activeProfile];
+    color = [activeProfile3 color];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __85__SFStartPageCustomizationViewController__createGeneratedBackgroundImageItemProvider__block_invoke;
     v15[3] = &unk_1E721F728;
     objc_copyWeak(&v17, &location);
-    v16 = v5;
-    [v16 generateProfileSpecificBackgroundImageWithSymbol:v11 forProfile:v12 withColor:v14 completionHandler:v15];
+    v16 = defaultManager;
+    [v16 generateProfileSpecificBackgroundImageWithSymbol:symbolImageName forProfile:activeProfileIdentifier withColor:color completionHandler:v15];
 
     objc_destroyWeak(&v17);
     objc_destroyWeak(&location);
@@ -228,21 +228,21 @@ void __85__SFStartPageCustomizationViewController__createGeneratedBackgroundImag
   }
 }
 
-- (void)_updateHasGeneratedBackgroundImage:(id)a3
+- (void)_updateHasGeneratedBackgroundImage:(id)image
 {
-  v4 = [a3 profileProviderForCustomizationViewController:self];
+  v4 = [image profileProviderForCustomizationViewController:self];
   if ([v4 hasMultipleProfiles])
   {
-    v5 = [(SFStartPageCustomizationViewController *)self _backgroundImageIdentifier];
-    v6 = [MEMORY[0x1E69C9850] defaultManager];
-    v7 = [v4 activeProfile];
-    v8 = [v7 identifier];
+    _backgroundImageIdentifier = [(SFStartPageCustomizationViewController *)self _backgroundImageIdentifier];
+    defaultManager = [MEMORY[0x1E69C9850] defaultManager];
+    activeProfile = [v4 activeProfile];
+    identifier = [activeProfile identifier];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __77__SFStartPageCustomizationViewController__updateHasGeneratedBackgroundImage___block_invoke;
     v9[3] = &unk_1E721F750;
     v9[4] = self;
-    [v6 getHasGeneratedBackgroundImage:v5 forProfileWithIdentifier:v8 completionHandler:v9];
+    [defaultManager getHasGeneratedBackgroundImage:_backgroundImageIdentifier forProfileWithIdentifier:identifier completionHandler:v9];
   }
 
   else if (self->_hasGeneratedBackgroundImage)
@@ -269,17 +269,17 @@ uint64_t __77__SFStartPageCustomizationViewController__updateHasGeneratedBackgro
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
   v4 = [WeakRetained profileProviderForCustomizationViewController:self];
 
-  v5 = [v4 activeTabGroup];
-  if ([v5 isNamed])
+  activeTabGroup = [v4 activeTabGroup];
+  if ([activeTabGroup isNamed])
   {
-    v6 = [v4 activeTabGroup];
-    [v6 uuid];
+    activeTabGroup2 = [v4 activeTabGroup];
+    [activeTabGroup2 uuid];
   }
 
   else
   {
-    v6 = [v4 activeProfile];
-    [v6 identifier];
+    activeTabGroup2 = [v4 activeProfile];
+    [activeTabGroup2 identifier];
   }
   v7 = ;
 
@@ -298,15 +298,15 @@ uint64_t __77__SFStartPageCustomizationViewController__updateHasGeneratedBackgro
   return v8;
 }
 
-- (void)_updateMobileAssetBackgroundImageItemProviderWithImage:(id)a3 fileName:(id)a4
+- (void)_updateMobileAssetBackgroundImageItemProviderWithImage:(id)image fileName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  imageCopy = image;
+  nameCopy = name;
+  if (imageCopy)
   {
-    v8 = [MEMORY[0x1E69DCAB8] imageWithCGImage:{objc_msgSend(v6, "CGImage")}];
+    v8 = [MEMORY[0x1E69DCAB8] imageWithCGImage:{objc_msgSend(imageCopy, "CGImage")}];
     v9 = [objc_alloc(MEMORY[0x1E696ACA0]) initWithObject:v8];
-    [v9 setSuggestedName:v7];
+    [v9 setSuggestedName:nameCopy];
     if (v8)
     {
       v10[0] = MEMORY[0x1E69E9820];
@@ -317,7 +317,7 @@ uint64_t __77__SFStartPageCustomizationViewController__updateHasGeneratedBackgro
       [v9 setPreviewImageHandler:v10];
     }
 
-    [(NSMutableDictionary *)self->_mobileAssetFileNameToItemProvider setObject:v9 forKeyedSubscript:v7];
+    [(NSMutableDictionary *)self->_mobileAssetFileNameToItemProvider setObject:v9 forKeyedSubscript:nameCopy];
   }
 }
 
@@ -344,9 +344,9 @@ uint64_t __77__SFStartPageCustomizationViewController__updateHasGeneratedBackgro
         }
 
         v6 = *(*(&v13 + 1) + 8 * v5);
-        v7 = [MEMORY[0x1E696AC08] defaultManager];
-        v8 = [v7 safari_startPageBackgroundImageThumbnailMobileAssetFolderURL];
-        v9 = [v8 URLByAppendingPathComponent:v6];
+        defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+        safari_startPageBackgroundImageThumbnailMobileAssetFolderURL = [defaultManager safari_startPageBackgroundImageThumbnailMobileAssetFolderURL];
+        v9 = [safari_startPageBackgroundImageThumbnailMobileAssetFolderURL URLByAppendingPathComponent:v6];
 
         v10 = CGImageSourceCreateWithURL(v9, 0);
         v11 = [MEMORY[0x1E69C8ED8] imageByAdoptingCGImage:{CGImageSourceCreateImageAtIndex(v10, 0, 0)}];
@@ -364,22 +364,22 @@ uint64_t __77__SFStartPageCustomizationViewController__updateHasGeneratedBackgro
   }
 }
 
-- (void)setCustomizationItemIdentifier:(id)a3 inSection:(id)a4 enabled:(BOOL)a5
+- (void)setCustomizationItemIdentifier:(id)identifier inSection:(id)section enabled:(BOOL)enabled
 {
-  v5 = a5;
-  v20 = a3;
-  v8 = a4;
-  if ([v8 isEqual:@"fixed-customization-items"])
+  enabledCopy = enabled;
+  identifierCopy = identifier;
+  sectionCopy = section;
+  if ([sectionCopy isEqual:@"fixed-customization-items"])
   {
     v9 = 1;
   }
 
-  else if ([v8 isEqual:@"customization-items"])
+  else if ([sectionCopy isEqual:@"customization-items"])
   {
     v9 = 0;
   }
 
-  else if ([v8 isEqual:@"suggestions-data"])
+  else if ([sectionCopy isEqual:@"suggestions-data"])
   {
     v9 = 2;
   }
@@ -390,59 +390,59 @@ uint64_t __77__SFStartPageCustomizationViewController__updateHasGeneratedBackgro
   }
 
   v10 = [(SFStartPageCustomizationViewController *)self identifierToCustomizationItemMapForItemVariant:v9];
-  v11 = [v10 objectForKeyedSubscript:v20];
+  v11 = [v10 objectForKeyedSubscript:identifierCopy];
   v12 = v11;
-  if (v11 && [v11 isEnabled] != v5)
+  if (v11 && [v11 isEnabled] != enabledCopy)
   {
     WeakRetained = objc_loadWeakRetained(&self->_dataSource);
     if (objc_opt_respondsToSelector())
     {
-      v14 = [v12 identifier];
-      [WeakRetained startPageCustomizationViewController:self willModifySectionWithIdentifier:v14 enabled:v5];
+      identifier = [v12 identifier];
+      [WeakRetained startPageCustomizationViewController:self willModifySectionWithIdentifier:identifier enabled:enabledCopy];
     }
 
-    v15 = [v12 itemWithEnabled:v5];
-    v16 = [v12 identifier];
-    [v10 setObject:v15 forKeyedSubscript:v16];
+    v15 = [v12 itemWithEnabled:enabledCopy];
+    identifier2 = [v12 identifier];
+    [v10 setObject:v15 forKeyedSubscript:identifier2];
 
-    v17 = [(UICollectionViewDiffableDataSource *)self->_rootCollectionViewDataSource snapshot];
-    v18 = [v17 itemIdentifiersInSectionWithIdentifier:v8];
+    snapshot = [(UICollectionViewDiffableDataSource *)self->_rootCollectionViewDataSource snapshot];
+    v18 = [snapshot itemIdentifiersInSectionWithIdentifier:sectionCopy];
 
     ++self->_reloadDataSuppressionCount;
     [(SFStartPageCustomizationViewController *)self didChangeCustomizationItemOrder:v18 forVariant:v9];
     --self->_reloadDataSuppressionCount;
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && [v20 isEqualToString:*MEMORY[0x1E69C9668]] && !v5)
+    if ((objc_opt_isKindOfClass() & 1) != 0 && [identifierCopy isEqualToString:*MEMORY[0x1E69C9668]] && !enabledCopy)
     {
-      v19 = [MEMORY[0x1E695E000] standardUserDefaults];
-      [v19 safari_setBool:0 andNotifyForKey:*MEMORY[0x1E69C9130]];
+      standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+      [standardUserDefaults safari_setBool:0 andNotifyForKey:*MEMORY[0x1E69C9130]];
     }
   }
 }
 
-- (void)didChangeCustomizationItemOrder:(id)a3 forVariant:(int64_t)a4
+- (void)didChangeCustomizationItemOrder:(id)order forVariant:(int64_t)variant
 {
-  v6 = a3;
-  v7 = [(SFStartPageCustomizationViewController *)self identifierToCustomizationItemMapForItemVariant:a4];
+  orderCopy = order;
+  v7 = [(SFStartPageCustomizationViewController *)self identifierToCustomizationItemMapForItemVariant:variant];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __85__SFStartPageCustomizationViewController_didChangeCustomizationItemOrder_forVariant___block_invoke;
   v15[3] = &unk_1E721F778;
   v8 = v7;
   v16 = v8;
-  v9 = [v6 safari_mapObjectsUsingBlock:v15];
+  v9 = [orderCopy safari_mapObjectsUsingBlock:v15];
   v10 = [v9 mutableCopy];
 
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
   v12 = WeakRetained;
-  if (a4 == 2)
+  if (variant == 2)
   {
     v13 = [WeakRetained startPageCustomizationViewController:self customizationItemsForCustomizationVariant:0];
     [v10 addObjectsFromArray:v13];
     goto LABEL_5;
   }
 
-  if (!a4)
+  if (!variant)
   {
     v13 = [WeakRetained startPageCustomizationViewController:self customizationItemsForCustomizationVariant:2];
     [v10 addObjectsFromArray:v13];
@@ -451,7 +451,7 @@ LABEL_5:
 
   ++self->_reloadDataSuppressionCount;
   v14 = [v10 copy];
-  [v12 startPageCustomizationViewController:self didCustomizeItems:v14 withVariant:a4];
+  [v12 startPageCustomizationViewController:self didCustomizeItems:v14 withVariant:variant];
 
   --self->_reloadDataSuppressionCount;
 }
@@ -463,11 +463,11 @@ id __85__SFStartPageCustomizationViewController_didChangeCustomizationItemOrder_
   return v2;
 }
 
-- (id)identifierToCustomizationItemMapForItemVariant:(int64_t)a3
+- (id)identifierToCustomizationItemMapForItemVariant:(int64_t)variant
 {
-  if (a3 <= 2)
+  if (variant <= 2)
   {
-    a2 = *(&self->super.super.super.isa + *off_1E721FAE0[a3]);
+    a2 = *(&self->super.super.super.isa + *off_1E721FAE0[variant]);
   }
 
   return a2;
@@ -486,10 +486,10 @@ id __85__SFStartPageCustomizationViewController_didChangeCustomizationItemOrder_
   return v2;
 }
 
-- (void)mobileAssetBackgroundImageInstalled:(id)a3
+- (void)mobileAssetBackgroundImageInstalled:(id)installed
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69C9928]];
+  userInfo = [installed userInfo];
+  v5 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E69C9928]];
 
   if ([v5 length])
   {
@@ -497,36 +497,36 @@ id __85__SFStartPageCustomizationViewController_didChangeCustomizationItemOrder_
   }
 }
 
-- (void)setShowsCloseButton:(BOOL)a3
+- (void)setShowsCloseButton:(BOOL)button
 {
-  if (self->_showsCloseButton != a3)
+  if (self->_showsCloseButton != button)
   {
-    self->_showsCloseButton = a3;
-    if (a3)
+    self->_showsCloseButton = button;
+    if (button)
     {
       v6 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:24 target:self action:sel__dismiss_];
-      v4 = [(SFStartPageCustomizationViewController *)self navigationItem];
-      [v4 sf_setPreferredDismissOrDoneButtonItem:v6];
+      navigationItem = [(SFStartPageCustomizationViewController *)self navigationItem];
+      [navigationItem sf_setPreferredDismissOrDoneButtonItem:v6];
 
-      v7 = [(SFStartPageCustomizationViewController *)self navigationItem];
-      v5 = [v7 sf_preferredDismissOrDoneButtonItem];
-      [v5 setAccessibilityIdentifier:@"StartPageCustomizationMenuCloseButton"];
+      navigationItem2 = [(SFStartPageCustomizationViewController *)self navigationItem];
+      sf_preferredDismissOrDoneButtonItem = [navigationItem2 sf_preferredDismissOrDoneButtonItem];
+      [sf_preferredDismissOrDoneButtonItem setAccessibilityIdentifier:@"StartPageCustomizationMenuCloseButton"];
     }
 
     else
     {
-      v7 = [(SFStartPageCustomizationViewController *)self navigationItem];
-      [v7 sf_setPreferredDismissOrDoneButtonItem:0];
+      navigationItem2 = [(SFStartPageCustomizationViewController *)self navigationItem];
+      [navigationItem2 sf_setPreferredDismissOrDoneButtonItem:0];
     }
   }
 }
 
-- (void)reloadDataAnimatingDifferences:(BOOL)a3
+- (void)reloadDataAnimatingDifferences:(BOOL)differences
 {
   v74[1] = *MEMORY[0x1E69E9840];
   if (!self->_reloadDataSuppressionCount)
   {
-    v43 = a3;
+    differencesCopy = differences;
     WeakRetained = objc_loadWeakRetained(&self->_dataSource);
     if (self->_rootCollectionViewDataSource)
     {
@@ -567,7 +567,7 @@ id __85__SFStartPageCustomizationViewController_didChangeCustomizationItemOrder_
         [v44 appendItemsWithIdentifiers:v9 intoSectionWithIdentifier:@"background-image"];
       }
 
-      [(UICollectionViewDiffableDataSource *)self->_rootCollectionViewDataSource applySnapshot:v44 animatingDifferences:v43];
+      [(UICollectionViewDiffableDataSource *)self->_rootCollectionViewDataSource applySnapshot:v44 animatingDifferences:differencesCopy];
       v66 = 0u;
       v67 = 0u;
       v64 = 0u;
@@ -648,10 +648,10 @@ LABEL_22:
       v20 = [WeakRetained backgroundImageForStartPageCustomizationViewController:self];
       backgroundImagesDataSource = self->_backgroundImagesDataSource;
       v40 = v20;
-      v22 = [v20 suggestedName];
-      v23 = [(WBSStartPageBackgroundImagesDataSource *)backgroundImagesDataSource indexOfBackgroundImageWithName:v22];
+      suggestedName = [v20 suggestedName];
+      v23 = [(WBSStartPageBackgroundImagesDataSource *)backgroundImagesDataSource indexOfBackgroundImageWithName:suggestedName];
 
-      v24 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       v45 = objc_loadWeakRetained(&self->_dataSource);
       v42 = [v45 profileProviderForCustomizationViewController:self];
       if ([v42 hasMultipleProfiles])
@@ -664,11 +664,11 @@ LABEL_22:
 
         v26 = [SFStartPageBackgroundImageModel alloc];
         generatedBackgroundImageItemProvider = self->_generatedBackgroundImageItemProvider;
-        v47 = [v42 activeProfile];
-        v28 = [v47 symbolImageName];
-        v29 = [v42 activeProfile];
-        v30 = [v29 identifier];
-        v50 = [(SFStartPageBackgroundImageModel *)v26 initWithItemProvider:generatedBackgroundImageItemProvider symbolName:v28 profileIdentifier:v30 selected:hasGeneratedBackgroundImage];
+        activeProfile = [v42 activeProfile];
+        symbolImageName = [activeProfile symbolImageName];
+        activeProfile2 = [v42 activeProfile];
+        identifier = [activeProfile2 identifier];
+        v50 = [(SFStartPageBackgroundImageModel *)v26 initWithItemProvider:generatedBackgroundImageItemProvider symbolName:symbolImageName profileIdentifier:identifier selected:hasGeneratedBackgroundImage];
       }
 
       else
@@ -681,7 +681,7 @@ LABEL_22:
       v61 = &v60;
       v62 = 0x2020000000;
       v63 = 0;
-      v38 = [MEMORY[0x1E695DF70] array];
+      array2 = [MEMORY[0x1E695DF70] array];
       v31 = [(NSMutableDictionary *)self->_mobileAssetFileNameToItemProvider keysSortedByValueUsingComparator:&__block_literal_global_67];
       v54[0] = MEMORY[0x1E69E9820];
       v54[1] = 3221225472;
@@ -691,8 +691,8 @@ LABEL_22:
       v58 = &v60;
       v41 = v40;
       v55 = v41;
-      v56 = self;
-      v48 = v38;
+      selfCopy = self;
+      v48 = array2;
       v57 = v48;
       v39 = v31;
       [v31 enumerateObjectsUsingBlock:v54];
@@ -707,21 +707,21 @@ LABEL_22:
       }
 
       v33 = v32;
-      [v24 addObject:v32];
+      [array addObject:v32];
       if ([v48 count])
       {
-        [v24 addObjectsFromArray:v48];
+        [array addObjectsFromArray:v48];
       }
 
       if (v50)
       {
-        [v24 addObject:v50];
+        [array addObject:v50];
       }
 
-      v34 = [(WBSStartPageBackgroundImagesDataSource *)self->_backgroundImagesDataSource itemCount];
-      if (v34 >= 1)
+      itemCount = [(WBSStartPageBackgroundImagesDataSource *)self->_backgroundImagesDataSource itemCount];
+      if (itemCount >= 1)
       {
-        for (i = 0; i != v34; ++i)
+        for (i = 0; i != itemCount; ++i)
         {
           if (v23 != i || hasGeneratedBackgroundImage)
           {
@@ -734,12 +734,12 @@ LABEL_22:
           }
 
           v37 = [[SFStartPageBackgroundImageModel alloc] initWithIndex:i inDataSource:self->_backgroundImagesDataSource selected:v36 & 1];
-          [v24 addObject:v37];
+          [array addObject:v37];
         }
       }
 
-      [obja appendItemsWithIdentifiers:v24 intoSectionWithIdentifier:@"background-image"];
-      [(UICollectionViewDiffableDataSource *)self->_backgroundImagesCollectionViewDataSource applySnapshot:obja animatingDifferences:v43];
+      [obja appendItemsWithIdentifiers:array intoSectionWithIdentifier:@"background-image"];
+      [(UICollectionViewDiffableDataSource *)self->_backgroundImagesCollectionViewDataSource applySnapshot:obja animatingDifferences:differencesCopy];
 
       _Block_object_dispose(&v60, 8);
     }
@@ -786,45 +786,45 @@ void __73__SFStartPageCustomizationViewController_reloadDataAnimatingDifferences
 
 - (void)setUpRootCollectionViewDataSource
 {
-  v19 = [(SFStartPageCustomizationViewController *)self makeCustomizationSyncToggleRegistration];
-  v3 = [(SFStartPageCustomizationViewController *)self makeCustomizationSyncFooterRegistration];
-  v18 = [(SFStartPageCustomizationViewController *)self makeFixedCustomizationItemRegistration];
-  v17 = [(SFStartPageCustomizationViewController *)self makeCustomizationItemRegistration];
-  v16 = [(SFStartPageCustomizationViewController *)self makeBackgroundImageToggleRegistration];
-  v15 = [(SFStartPageCustomizationViewController *)self makeSuggestionDataSourcesToggleRegistration];
-  v4 = [(SFStartPageCustomizationViewController *)self makeSuggestionsDataSourcesHeaderRegistration];
+  makeCustomizationSyncToggleRegistration = [(SFStartPageCustomizationViewController *)self makeCustomizationSyncToggleRegistration];
+  makeCustomizationSyncFooterRegistration = [(SFStartPageCustomizationViewController *)self makeCustomizationSyncFooterRegistration];
+  makeFixedCustomizationItemRegistration = [(SFStartPageCustomizationViewController *)self makeFixedCustomizationItemRegistration];
+  makeCustomizationItemRegistration = [(SFStartPageCustomizationViewController *)self makeCustomizationItemRegistration];
+  makeBackgroundImageToggleRegistration = [(SFStartPageCustomizationViewController *)self makeBackgroundImageToggleRegistration];
+  makeSuggestionDataSourcesToggleRegistration = [(SFStartPageCustomizationViewController *)self makeSuggestionDataSourcesToggleRegistration];
+  makeSuggestionsDataSourcesHeaderRegistration = [(SFStartPageCustomizationViewController *)self makeSuggestionsDataSourcesHeaderRegistration];
   objc_initWeak(location, self);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __75__SFStartPageCustomizationViewController_setUpRootCollectionViewDataSource__block_invoke;
   aBlock[3] = &unk_1E721F7E8;
   objc_copyWeak(&v31, location);
-  v5 = v19;
+  v5 = makeCustomizationSyncToggleRegistration;
   v26 = v5;
-  v20 = v17;
+  v20 = makeCustomizationItemRegistration;
   v27 = v20;
-  v6 = v18;
+  v6 = makeFixedCustomizationItemRegistration;
   v28 = v6;
-  v7 = v16;
+  v7 = makeBackgroundImageToggleRegistration;
   v29 = v7;
-  v8 = v15;
+  v8 = makeSuggestionDataSourcesToggleRegistration;
   v30 = v8;
   v9 = _Block_copy(aBlock);
   v10 = [objc_alloc(MEMORY[0x1E69DC820]) initWithCollectionView:self->_rootCollectionView cellProvider:v9];
   rootCollectionViewDataSource = self->_rootCollectionViewDataSource;
   self->_rootCollectionViewDataSource = v10;
 
-  v12 = [(SFStartPageCustomizationViewController *)self makeReorderingHandlers];
-  [(UICollectionViewDiffableDataSource *)self->_rootCollectionViewDataSource setReorderingHandlers:v12];
+  makeReorderingHandlers = [(SFStartPageCustomizationViewController *)self makeReorderingHandlers];
+  [(UICollectionViewDiffableDataSource *)self->_rootCollectionViewDataSource setReorderingHandlers:makeReorderingHandlers];
 
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __75__SFStartPageCustomizationViewController_setUpRootCollectionViewDataSource__block_invoke_2;
   v21[3] = &unk_1E721F810;
   objc_copyWeak(&v24, location);
-  v13 = v3;
+  v13 = makeCustomizationSyncFooterRegistration;
   v22 = v13;
-  v14 = v4;
+  v14 = makeSuggestionsDataSourcesHeaderRegistration;
   v23 = v14;
   [(UICollectionViewDiffableDataSource *)self->_rootCollectionViewDataSource setSupplementaryViewProvider:v21];
 
@@ -951,12 +951,12 @@ LABEL_8:
 
 - (void)setUpBackgroundImagesCollectionViewDataSource
 {
-  v3 = [(SFStartPageCustomizationViewController *)self makeBackgroundImageRegistration];
+  makeBackgroundImageRegistration = [(SFStartPageCustomizationViewController *)self makeBackgroundImageRegistration];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __87__SFStartPageCustomizationViewController_setUpBackgroundImagesCollectionViewDataSource__block_invoke;
   aBlock[3] = &unk_1E721F838;
-  v4 = v3;
+  v4 = makeBackgroundImageRegistration;
   v9 = v4;
   v5 = _Block_copy(aBlock);
   v6 = [objc_alloc(MEMORY[0x1E69DC820]) initWithCollectionView:self->_backgroundImagesCollectionView cellProvider:v5];
@@ -1509,7 +1509,7 @@ void __80__SFStartPageCustomizationViewController_makeFixedCustomizationItemRegi
   }
 }
 
-- (void)backgroundImageCellDidSelectClearButton:(id)a3
+- (void)backgroundImageCellDidSelectClearButton:(id)button
 {
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
   [WeakRetained startPageCustomizationViewController:self didSelectCustomBackgroundImage:0];
@@ -1517,14 +1517,14 @@ void __80__SFStartPageCustomizationViewController_makeFixedCustomizationItemRegi
   [(SFStartPageCustomizationViewController *)self reloadDataAnimatingDifferences:1];
 }
 
-- (void)startPageCustomizationCellDidChangeValue:(id)a3
+- (void)startPageCustomizationCellDidChangeValue:(id)value
 {
-  v9 = a3;
+  valueCopy = value;
   v4 = [(UICollectionView *)self->_rootCollectionView indexPathForCell:?];
   v5 = -[UICollectionViewDiffableDataSource sectionIdentifierForIndex:](self->_rootCollectionViewDataSource, "sectionIdentifierForIndex:", [v4 section]);
   if ([v5 isEqual:@"customization-sync"])
   {
-    [(SFStartPageCustomizationViewController *)self _setCustomizationSyncWithValue:v9];
+    [(SFStartPageCustomizationViewController *)self _setCustomizationSyncWithValue:valueCopy];
   }
 
   else if (([v5 isEqual:@"fixed-customization-items"] & 1) != 0 || (objc_msgSend(v5, "isEqual:", @"customization-items") & 1) != 0 || objc_msgSend(v5, "isEqual:", @"suggestions-data"))
@@ -1532,7 +1532,7 @@ void __80__SFStartPageCustomizationViewController_makeFixedCustomizationItemRegi
     v6 = [(UICollectionViewDiffableDataSource *)self->_rootCollectionViewDataSource itemIdentifierForIndexPath:v4];
     if (v6)
     {
-      -[SFStartPageCustomizationViewController setCustomizationItemIdentifier:inSection:enabled:](self, "setCustomizationItemIdentifier:inSection:enabled:", v6, v5, [v9 isOn]);
+      -[SFStartPageCustomizationViewController setCustomizationItemIdentifier:inSection:enabled:](self, "setCustomizationItemIdentifier:inSection:enabled:", v6, v5, [valueCopy isOn]);
       if ([v6 isEqualToString:*MEMORY[0x1E69C96C0]])
       {
         [(SFStartPageCustomizationViewController *)self reloadDataAnimatingDifferences:1];
@@ -1542,19 +1542,19 @@ void __80__SFStartPageCustomizationViewController_makeFixedCustomizationItemRegi
 
   else if ([v5 isEqual:@"background-image"])
   {
-    v7 = [v9 isOn];
+    isOn = [valueCopy isOn];
     WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-    [WeakRetained startPageCustomizationViewController:self didModifyBackgroundImageEnabled:v7];
+    [WeakRetained startPageCustomizationViewController:self didModifyBackgroundImageEnabled:isOn];
 
-    self->_backgroundSectionUnconditionallyVisible = v7;
+    self->_backgroundSectionUnconditionallyVisible = isOn;
     [(SFStartPageCustomizationViewController *)self reloadDataAnimatingDifferences:1];
   }
 }
 
-- (void)_setCustomizationSyncWithValue:(id)a3
+- (void)_setCustomizationSyncWithValue:(id)value
 {
-  v4 = a3;
-  if ([v4 isOn])
+  valueCopy = value;
+  if ([valueCopy isOn])
   {
     WeakRetained = _WBSLocalizedString();
     v6 = _WBSLocalizedString();
@@ -1569,8 +1569,8 @@ void __80__SFStartPageCustomizationViewController_makeFixedCustomizationItemRegi
     v10 = [v8 actionWithTitle:v9 style:0 handler:v20];
     [v7 addAction:v10];
 
-    v11 = [MEMORY[0x1E69C8860] currentDevice];
-    [v11 deviceClass];
+    currentDevice = [MEMORY[0x1E69C8860] currentDevice];
+    [currentDevice deviceClass];
 
     v12 = _WBSLocalizedString();
     v19[0] = MEMORY[0x1E69E9820];
@@ -1587,7 +1587,7 @@ void __80__SFStartPageCustomizationViewController_makeFixedCustomizationItemRegi
     v17[1] = 3221225472;
     v17[2] = __73__SFStartPageCustomizationViewController__setCustomizationSyncWithValue___block_invoke_3;
     v17[3] = &unk_1E721F340;
-    v18 = v4;
+    v18 = valueCopy;
     v16 = [v14 actionWithTitle:v15 style:1 handler:v17];
     [v7 addAction:v16];
 
@@ -1613,21 +1613,21 @@ void __73__SFStartPageCustomizationViewController__setCustomizationSyncWithValue
   [WeakRetained startPageCustomizationViewControllerDidEnableCloudSync:*(a1 + 32) withPreference:1];
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  if (self->_rootCollectionView != v6)
+  viewCopy = view;
+  pathCopy = path;
+  if (self->_rootCollectionView != viewCopy)
   {
-    [(UICollectionView *)v6 deselectItemAtIndexPath:v7 animated:1];
-    v8 = [(UICollectionViewDiffableDataSource *)self->_backgroundImagesCollectionViewDataSource itemIdentifierForIndexPath:v7];
+    [(UICollectionView *)viewCopy deselectItemAtIndexPath:pathCopy animated:1];
+    v8 = [(UICollectionViewDiffableDataSource *)self->_backgroundImagesCollectionViewDataSource itemIdentifierForIndexPath:pathCopy];
     self->_hasGeneratedBackgroundImage = 0;
     WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-    v10 = [v8 imageDescription];
-    v11 = v10;
-    if (v10)
+    imageDescription = [v8 imageDescription];
+    v11 = imageDescription;
+    if (imageDescription)
     {
-      v12 = [v10 url];
+      v12 = [imageDescription url];
       [v11 luminance];
       [WeakRetained startPageCustomizationViewController:self didSelectBuiltInBackgroundImageAtURL:v12 precomputedLuminance:?];
 
@@ -1636,43 +1636,43 @@ void __73__SFStartPageCustomizationViewController__setCustomizationSyncWithValue
 
     else
     {
-      v13 = [v8 profileIdentifier];
+      profileIdentifier = [v8 profileIdentifier];
 
-      if (v13)
+      if (profileIdentifier)
       {
         self->_hasGeneratedBackgroundImage = 1;
-        v14 = [MEMORY[0x1E69C9850] defaultManager];
+        defaultManager = [MEMORY[0x1E69C9850] defaultManager];
         v27 = [WeakRetained profileProviderForCustomizationViewController:self];
-        v15 = [v27 activeProfile];
-        v26 = [v15 identifier];
-        v25 = [v15 symbolImageName];
-        v16 = [v15 color];
+        activeProfile = [v27 activeProfile];
+        identifier = [activeProfile identifier];
+        symbolImageName = [activeProfile symbolImageName];
+        color = [activeProfile color];
         v28[0] = MEMORY[0x1E69E9820];
         v28[1] = 3221225472;
         v28[2] = __82__SFStartPageCustomizationViewController_collectionView_didSelectItemAtIndexPath___block_invoke;
         v28[3] = &unk_1E721FA30;
-        v17 = v14;
+        v17 = defaultManager;
         v29 = v17;
-        v30 = self;
-        v18 = v26;
+        selfCopy = self;
+        v18 = identifier;
         v31 = v18;
         v19 = v27;
         v32 = v19;
-        [v17 generateProfileSpecificBackgroundImageWithSymbol:v25 forProfile:v18 withColor:v16 completionHandler:v28];
+        [v17 generateProfileSpecificBackgroundImageWithSymbol:symbolImageName forProfile:v18 withColor:color completionHandler:v28];
       }
 
       else
       {
-        v20 = [v8 mobileAssetFileName];
+        mobileAssetFileName = [v8 mobileAssetFileName];
 
-        if (v20)
+        if (mobileAssetFileName)
         {
           mobileAssetFileNameToItemProvider = self->_mobileAssetFileNameToItemProvider;
-          v22 = [v8 mobileAssetFileName];
-          v23 = [(NSMutableDictionary *)mobileAssetFileNameToItemProvider objectForKeyedSubscript:v22];
+          mobileAssetFileName2 = [v8 mobileAssetFileName];
+          v23 = [(NSMutableDictionary *)mobileAssetFileNameToItemProvider objectForKeyedSubscript:mobileAssetFileName2];
           [WeakRetained startPageCustomizationViewController:self didSelectMobileAssetBackgroundImageWithProvider:v23];
 
-          v24 = [(UICollectionView *)v6 cellForItemAtIndexPath:v7];
+          v24 = [(UICollectionView *)viewCopy cellForItemAtIndexPath:pathCopy];
           [(SFStartPageCustomizationViewController *)self _didSelectMobileAssetBackgroundImageCell:v24];
         }
 
@@ -1768,43 +1768,43 @@ void __82__SFStartPageCustomizationViewController_collectionView_didSelectItemAt
   }
 }
 
-- (id)collectionView:(id)a3 targetIndexPathForMoveOfItemFromOriginalIndexPath:(id)a4 atCurrentIndexPath:(id)a5 toProposedIndexPath:(id)a6
+- (id)collectionView:(id)view targetIndexPathForMoveOfItemFromOriginalIndexPath:(id)path atCurrentIndexPath:(id)indexPath toProposedIndexPath:(id)proposedIndexPath
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
+  viewCopy = view;
+  indexPathCopy = indexPath;
+  proposedIndexPathCopy = proposedIndexPath;
   v12 = [(UICollectionViewDiffableDataSource *)self->_rootCollectionViewDataSource indexForSectionIdentifier:@"customization-items"];
-  if ([v11 section] != v12)
+  if ([proposedIndexPathCopy section] != v12)
   {
-    if ([v11 section] <= v12)
+    if ([proposedIndexPathCopy section] <= v12)
     {
       v13 = 0;
     }
 
     else
     {
-      v13 = [v9 numberOfItemsInSection:{objc_msgSend(v10, "section")}] - 1;
+      v13 = [viewCopy numberOfItemsInSection:{objc_msgSend(indexPathCopy, "section")}] - 1;
     }
 
     v14 = [MEMORY[0x1E696AC88] indexPathForItem:v13 inSection:v12];
 
-    v11 = v14;
+    proposedIndexPathCopy = v14;
   }
 
-  return v11;
+  return proposedIndexPathCopy;
 }
 
-- (void)picker:(id)a3 didFinishPicking:(id)a4
+- (void)picker:(id)picker didFinishPicking:(id)picking
 {
-  v10 = a3;
-  v6 = a4;
-  [v10 dismissViewControllerAnimated:1 completion:0];
-  if ([v6 count])
+  pickerCopy = picker;
+  pickingCopy = picking;
+  [pickerCopy dismissViewControllerAnimated:1 completion:0];
+  if ([pickingCopy count])
   {
     WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-    v8 = [v6 objectAtIndexedSubscript:0];
-    v9 = [v8 itemProvider];
-    [WeakRetained startPageCustomizationViewController:self didSelectCustomBackgroundImage:v9];
+    v8 = [pickingCopy objectAtIndexedSubscript:0];
+    itemProvider = [v8 itemProvider];
+    [WeakRetained startPageCustomizationViewController:self didSelectCustomBackgroundImage:itemProvider];
 
     [(SFStartPageCustomizationViewController *)self reloadDataAnimatingDifferences:1];
   }
@@ -1849,8 +1849,8 @@ void __82__SFStartPageCustomizationViewController_collectionView_didSelectItemAt
 
   v7 = v6;
   _Block_object_dispose(&v17, 8);
-  v8 = [v6 imagesFilter];
-  [v5 setFilter:v8];
+  imagesFilter = [v6 imagesFilter];
+  [v5 setFilter:imagesFilter];
 
   v17 = 0;
   v18 = &v17;
@@ -1875,42 +1875,42 @@ void __82__SFStartPageCustomizationViewController_collectionView_didSelectItemAt
   [(SFStartPageCustomizationViewController *)self presentViewController:v11 animated:1 completion:0];
 }
 
-- (void)_didSelectMobileAssetBackgroundImageCell:(id)a3
+- (void)_didSelectMobileAssetBackgroundImageCell:(id)cell
 {
-  v4 = a3;
+  cellCopy = cell;
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-  v6 = [v4 mobileAssetFileName];
+  mobileAssetFileName = [cellCopy mobileAssetFileName];
   lastSelectedMobileAssetFileName = self->_lastSelectedMobileAssetFileName;
-  self->_lastSelectedMobileAssetFileName = v6;
+  self->_lastSelectedMobileAssetFileName = mobileAssetFileName;
 
   v8 = [WeakRetained backgroundImageAssetControllerForCustomizationViewController:self];
-  v9 = [v4 mobileAssetFileName];
-  v10 = [v8 downloadStateForFileName:v9];
+  mobileAssetFileName2 = [cellCopy mobileAssetFileName];
+  v10 = [v8 downloadStateForFileName:mobileAssetFileName2];
 
   if (v10 != 1)
   {
     if (v10 == 2)
     {
-      v11 = [MEMORY[0x1E696AC08] defaultManager];
-      v12 = [v11 safari_startPageBackgroundImageMobileAssetFolderURL];
-      v13 = [v4 mobileAssetFileName];
-      v14 = [v12 URLByAppendingPathComponent:v13];
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+      safari_startPageBackgroundImageMobileAssetFolderURL = [defaultManager safari_startPageBackgroundImageMobileAssetFolderURL];
+      mobileAssetFileName3 = [cellCopy mobileAssetFileName];
+      v14 = [safari_startPageBackgroundImageMobileAssetFolderURL URLByAppendingPathComponent:mobileAssetFileName3];
 
       [(SFStartPageCustomizationViewController *)self _updateImageWithURL:v14];
     }
 
     else
     {
-      [v4 setDownloadState:1];
+      [cellCopy setDownloadState:1];
       v15 = [WeakRetained backgroundImageAssetControllerForCustomizationViewController:self];
-      v16 = [v4 mobileAssetFileName];
+      mobileAssetFileName4 = [cellCopy mobileAssetFileName];
       v17[0] = MEMORY[0x1E69E9820];
       v17[1] = 3221225472;
       v17[2] = __83__SFStartPageCustomizationViewController__didSelectMobileAssetBackgroundImageCell___block_invoke;
       v17[3] = &unk_1E721FA80;
-      v18 = v4;
-      v19 = self;
-      [v15 downloadMobileAssetBackgroundImage:v16 completionHandler:v17];
+      v18 = cellCopy;
+      selfCopy = self;
+      [v15 downloadMobileAssetBackgroundImage:mobileAssetFileName4 completionHandler:v17];
     }
   }
 }
@@ -1960,25 +1960,25 @@ void __83__SFStartPageCustomizationViewController__didSelectMobileAssetBackgroun
   }
 }
 
-- (void)_updateImageWithURL:(id)a3
+- (void)_updateImageWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
   v6 = [WeakRetained profileProviderForCustomizationViewController:self];
 
-  v7 = [v6 activeProfile];
-  v8 = [v7 identifier];
-  v9 = [MEMORY[0x1E69C9850] defaultManager];
+  activeProfile = [v6 activeProfile];
+  identifier = [activeProfile identifier];
+  defaultManager = [MEMORY[0x1E69C9850] defaultManager];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __62__SFStartPageCustomizationViewController__updateImageWithURL___block_invoke;
   v12[3] = &unk_1E721FAA8;
   v12[4] = self;
-  v10 = v8;
+  v10 = identifier;
   v13 = v10;
   v11 = v6;
   v14 = v11;
-  [v9 cacheImageFromURL:v4 completion:v12];
+  [defaultManager cacheImageFromURL:lCopy completion:v12];
 }
 
 void __62__SFStartPageCustomizationViewController__updateImageWithURL___block_invoke(uint64_t a1, uint64_t a2)

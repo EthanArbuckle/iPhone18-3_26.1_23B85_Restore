@@ -1,16 +1,16 @@
 @interface SADSchemaSADClientEvent
-+ (id)getInnerTypeStringByTag:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)getInnerTypeStringByTag:(unint64_t)tag;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (SADSchemaSADAvailableAssetDailyStatus)availableAssetDailyStatus;
-- (SADSchemaSADClientEvent)initWithDictionary:(id)a3;
-- (SADSchemaSADClientEvent)initWithJSON:(id)a3;
+- (SADSchemaSADClientEvent)initWithDictionary:(id)dictionary;
+- (SADSchemaSADClientEvent)initWithJSON:(id)n;
 - (SADSchemaSADImmediateDownloadTriggered)immediateDownloadTriggered;
 - (SADSchemaSADIntelligenceFeatureAvailabilityChangeStatus)intelligenceFeatureAvailabilityChangeStatus;
 - (SADSchemaSADIntelligenceFeatureAvailabilityDetailedStatus)intelligenceFeatureAvailabilityDetailedStatus;
 - (SADSchemaSADUODAssetsPrepared)uodAssetsPrepared;
 - (SISchemaInstrumentationMessage)innerEvent;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)qualifiedMessageName;
 - (id)suppressMessageUnderConditions;
@@ -20,25 +20,25 @@
 - (void)deleteIntelligenceFeatureAvailabilityChangeStatus;
 - (void)deleteIntelligenceFeatureAvailabilityDetailedStatus;
 - (void)deleteUodAssetsPrepared;
-- (void)setAvailableAssetDailyStatus:(id)a3;
-- (void)setImmediateDownloadTriggered:(id)a3;
-- (void)setIntelligenceFeatureAvailabilityChangeStatus:(id)a3;
-- (void)setIntelligenceFeatureAvailabilityDetailedStatus:(id)a3;
-- (void)setUodAssetsPrepared:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setAvailableAssetDailyStatus:(id)status;
+- (void)setImmediateDownloadTriggered:(id)triggered;
+- (void)setIntelligenceFeatureAvailabilityChangeStatus:(id)status;
+- (void)setIntelligenceFeatureAvailabilityDetailedStatus:(id)status;
+- (void)setUodAssetsPrepared:(id)prepared;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SADSchemaSADClientEvent
 
-- (SADSchemaSADClientEvent)initWithDictionary:(id)a3
+- (SADSchemaSADClientEvent)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v18.receiver = self;
   v18.super_class = SADSchemaSADClientEvent;
   v5 = [(SADSchemaSADClientEvent *)&v18 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"uodAssetsPrepared"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"uodAssetsPrepared"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -46,7 +46,7 @@
       [(SADSchemaSADClientEvent *)v5 setUodAssetsPrepared:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"availableAssetDailyStatus"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"availableAssetDailyStatus"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -54,7 +54,7 @@
       [(SADSchemaSADClientEvent *)v5 setAvailableAssetDailyStatus:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"immediateDownloadTriggered"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"immediateDownloadTriggered"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -62,7 +62,7 @@
       [(SADSchemaSADClientEvent *)v5 setImmediateDownloadTriggered:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"intelligenceFeatureAvailabilityDetailedStatus"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"intelligenceFeatureAvailabilityDetailedStatus"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -70,7 +70,7 @@
       [(SADSchemaSADClientEvent *)v5 setIntelligenceFeatureAvailabilityDetailedStatus:v13];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"intelligenceFeatureAvailabilityChangeStatus"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"intelligenceFeatureAvailabilityChangeStatus"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -84,30 +84,30 @@
   return v5;
 }
 
-- (SADSchemaSADClientEvent)initWithJSON:(id)a3
+- (SADSchemaSADClientEvent)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SADSchemaSADClientEvent *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SADSchemaSADClientEvent *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SADSchemaSADClientEvent *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -120,90 +120,90 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_availableAssetDailyStatus)
   {
-    v4 = [(SADSchemaSADClientEvent *)self availableAssetDailyStatus];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    availableAssetDailyStatus = [(SADSchemaSADClientEvent *)self availableAssetDailyStatus];
+    dictionaryRepresentation = [availableAssetDailyStatus dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"availableAssetDailyStatus"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"availableAssetDailyStatus"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"availableAssetDailyStatus"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"availableAssetDailyStatus"];
     }
   }
 
   if (self->_immediateDownloadTriggered)
   {
-    v7 = [(SADSchemaSADClientEvent *)self immediateDownloadTriggered];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    immediateDownloadTriggered = [(SADSchemaSADClientEvent *)self immediateDownloadTriggered];
+    dictionaryRepresentation2 = [immediateDownloadTriggered dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"immediateDownloadTriggered"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"immediateDownloadTriggered"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"immediateDownloadTriggered"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"immediateDownloadTriggered"];
     }
   }
 
   if (self->_intelligenceFeatureAvailabilityChangeStatus)
   {
-    v10 = [(SADSchemaSADClientEvent *)self intelligenceFeatureAvailabilityChangeStatus];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    intelligenceFeatureAvailabilityChangeStatus = [(SADSchemaSADClientEvent *)self intelligenceFeatureAvailabilityChangeStatus];
+    dictionaryRepresentation3 = [intelligenceFeatureAvailabilityChangeStatus dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"intelligenceFeatureAvailabilityChangeStatus"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"intelligenceFeatureAvailabilityChangeStatus"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"intelligenceFeatureAvailabilityChangeStatus"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"intelligenceFeatureAvailabilityChangeStatus"];
     }
   }
 
   if (self->_intelligenceFeatureAvailabilityDetailedStatus)
   {
-    v13 = [(SADSchemaSADClientEvent *)self intelligenceFeatureAvailabilityDetailedStatus];
-    v14 = [v13 dictionaryRepresentation];
-    if (v14)
+    intelligenceFeatureAvailabilityDetailedStatus = [(SADSchemaSADClientEvent *)self intelligenceFeatureAvailabilityDetailedStatus];
+    dictionaryRepresentation4 = [intelligenceFeatureAvailabilityDetailedStatus dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v14 forKeyedSubscript:@"intelligenceFeatureAvailabilityDetailedStatus"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"intelligenceFeatureAvailabilityDetailedStatus"];
     }
 
     else
     {
-      v15 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v15 forKeyedSubscript:@"intelligenceFeatureAvailabilityDetailedStatus"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"intelligenceFeatureAvailabilityDetailedStatus"];
     }
   }
 
   if (self->_uodAssetsPrepared)
   {
-    v16 = [(SADSchemaSADClientEvent *)self uodAssetsPrepared];
-    v17 = [v16 dictionaryRepresentation];
-    if (v17)
+    uodAssetsPrepared = [(SADSchemaSADClientEvent *)self uodAssetsPrepared];
+    dictionaryRepresentation5 = [uodAssetsPrepared dictionaryRepresentation];
+    if (dictionaryRepresentation5)
     {
-      [v3 setObject:v17 forKeyedSubscript:@"uodAssetsPrepared"];
+      [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"uodAssetsPrepared"];
     }
 
     else
     {
-      v18 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v18 forKeyedSubscript:@"uodAssetsPrepared"];
+      null5 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null5 forKeyedSubscript:@"uodAssetsPrepared"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -215,34 +215,34 @@
   return v6 ^ [(SADSchemaSADIntelligenceFeatureAvailabilityChangeStatus *)self->_intelligenceFeatureAvailabilityChangeStatus hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_28;
   }
 
   whichEvent_Type = self->_whichEvent_Type;
-  if (whichEvent_Type != [v4 whichEvent_Type])
+  if (whichEvent_Type != [equalCopy whichEvent_Type])
   {
     goto LABEL_28;
   }
 
-  v6 = [(SADSchemaSADClientEvent *)self uodAssetsPrepared];
-  v7 = [v4 uodAssetsPrepared];
-  if ((v6 != 0) == (v7 == 0))
+  uodAssetsPrepared = [(SADSchemaSADClientEvent *)self uodAssetsPrepared];
+  uodAssetsPrepared2 = [equalCopy uodAssetsPrepared];
+  if ((uodAssetsPrepared != 0) == (uodAssetsPrepared2 == 0))
   {
     goto LABEL_27;
   }
 
-  v8 = [(SADSchemaSADClientEvent *)self uodAssetsPrepared];
-  if (v8)
+  uodAssetsPrepared3 = [(SADSchemaSADClientEvent *)self uodAssetsPrepared];
+  if (uodAssetsPrepared3)
   {
-    v9 = v8;
-    v10 = [(SADSchemaSADClientEvent *)self uodAssetsPrepared];
-    v11 = [v4 uodAssetsPrepared];
-    v12 = [v10 isEqual:v11];
+    v9 = uodAssetsPrepared3;
+    uodAssetsPrepared4 = [(SADSchemaSADClientEvent *)self uodAssetsPrepared];
+    uodAssetsPrepared5 = [equalCopy uodAssetsPrepared];
+    v12 = [uodAssetsPrepared4 isEqual:uodAssetsPrepared5];
 
     if (!v12)
     {
@@ -254,20 +254,20 @@
   {
   }
 
-  v6 = [(SADSchemaSADClientEvent *)self availableAssetDailyStatus];
-  v7 = [v4 availableAssetDailyStatus];
-  if ((v6 != 0) == (v7 == 0))
+  uodAssetsPrepared = [(SADSchemaSADClientEvent *)self availableAssetDailyStatus];
+  uodAssetsPrepared2 = [equalCopy availableAssetDailyStatus];
+  if ((uodAssetsPrepared != 0) == (uodAssetsPrepared2 == 0))
   {
     goto LABEL_27;
   }
 
-  v13 = [(SADSchemaSADClientEvent *)self availableAssetDailyStatus];
-  if (v13)
+  availableAssetDailyStatus = [(SADSchemaSADClientEvent *)self availableAssetDailyStatus];
+  if (availableAssetDailyStatus)
   {
-    v14 = v13;
-    v15 = [(SADSchemaSADClientEvent *)self availableAssetDailyStatus];
-    v16 = [v4 availableAssetDailyStatus];
-    v17 = [v15 isEqual:v16];
+    v14 = availableAssetDailyStatus;
+    availableAssetDailyStatus2 = [(SADSchemaSADClientEvent *)self availableAssetDailyStatus];
+    availableAssetDailyStatus3 = [equalCopy availableAssetDailyStatus];
+    v17 = [availableAssetDailyStatus2 isEqual:availableAssetDailyStatus3];
 
     if (!v17)
     {
@@ -279,20 +279,20 @@
   {
   }
 
-  v6 = [(SADSchemaSADClientEvent *)self immediateDownloadTriggered];
-  v7 = [v4 immediateDownloadTriggered];
-  if ((v6 != 0) == (v7 == 0))
+  uodAssetsPrepared = [(SADSchemaSADClientEvent *)self immediateDownloadTriggered];
+  uodAssetsPrepared2 = [equalCopy immediateDownloadTriggered];
+  if ((uodAssetsPrepared != 0) == (uodAssetsPrepared2 == 0))
   {
     goto LABEL_27;
   }
 
-  v18 = [(SADSchemaSADClientEvent *)self immediateDownloadTriggered];
-  if (v18)
+  immediateDownloadTriggered = [(SADSchemaSADClientEvent *)self immediateDownloadTriggered];
+  if (immediateDownloadTriggered)
   {
-    v19 = v18;
-    v20 = [(SADSchemaSADClientEvent *)self immediateDownloadTriggered];
-    v21 = [v4 immediateDownloadTriggered];
-    v22 = [v20 isEqual:v21];
+    v19 = immediateDownloadTriggered;
+    immediateDownloadTriggered2 = [(SADSchemaSADClientEvent *)self immediateDownloadTriggered];
+    immediateDownloadTriggered3 = [equalCopy immediateDownloadTriggered];
+    v22 = [immediateDownloadTriggered2 isEqual:immediateDownloadTriggered3];
 
     if (!v22)
     {
@@ -304,20 +304,20 @@
   {
   }
 
-  v6 = [(SADSchemaSADClientEvent *)self intelligenceFeatureAvailabilityDetailedStatus];
-  v7 = [v4 intelligenceFeatureAvailabilityDetailedStatus];
-  if ((v6 != 0) == (v7 == 0))
+  uodAssetsPrepared = [(SADSchemaSADClientEvent *)self intelligenceFeatureAvailabilityDetailedStatus];
+  uodAssetsPrepared2 = [equalCopy intelligenceFeatureAvailabilityDetailedStatus];
+  if ((uodAssetsPrepared != 0) == (uodAssetsPrepared2 == 0))
   {
     goto LABEL_27;
   }
 
-  v23 = [(SADSchemaSADClientEvent *)self intelligenceFeatureAvailabilityDetailedStatus];
-  if (v23)
+  intelligenceFeatureAvailabilityDetailedStatus = [(SADSchemaSADClientEvent *)self intelligenceFeatureAvailabilityDetailedStatus];
+  if (intelligenceFeatureAvailabilityDetailedStatus)
   {
-    v24 = v23;
-    v25 = [(SADSchemaSADClientEvent *)self intelligenceFeatureAvailabilityDetailedStatus];
-    v26 = [v4 intelligenceFeatureAvailabilityDetailedStatus];
-    v27 = [v25 isEqual:v26];
+    v24 = intelligenceFeatureAvailabilityDetailedStatus;
+    intelligenceFeatureAvailabilityDetailedStatus2 = [(SADSchemaSADClientEvent *)self intelligenceFeatureAvailabilityDetailedStatus];
+    intelligenceFeatureAvailabilityDetailedStatus3 = [equalCopy intelligenceFeatureAvailabilityDetailedStatus];
+    v27 = [intelligenceFeatureAvailabilityDetailedStatus2 isEqual:intelligenceFeatureAvailabilityDetailedStatus3];
 
     if (!v27)
     {
@@ -329,12 +329,12 @@
   {
   }
 
-  v6 = [(SADSchemaSADClientEvent *)self intelligenceFeatureAvailabilityChangeStatus];
-  v7 = [v4 intelligenceFeatureAvailabilityChangeStatus];
-  if ((v6 != 0) != (v7 == 0))
+  uodAssetsPrepared = [(SADSchemaSADClientEvent *)self intelligenceFeatureAvailabilityChangeStatus];
+  uodAssetsPrepared2 = [equalCopy intelligenceFeatureAvailabilityChangeStatus];
+  if ((uodAssetsPrepared != 0) != (uodAssetsPrepared2 == 0))
   {
-    v28 = [(SADSchemaSADClientEvent *)self intelligenceFeatureAvailabilityChangeStatus];
-    if (!v28)
+    intelligenceFeatureAvailabilityChangeStatus = [(SADSchemaSADClientEvent *)self intelligenceFeatureAvailabilityChangeStatus];
+    if (!intelligenceFeatureAvailabilityChangeStatus)
     {
 
 LABEL_31:
@@ -342,10 +342,10 @@ LABEL_31:
       goto LABEL_29;
     }
 
-    v29 = v28;
-    v30 = [(SADSchemaSADClientEvent *)self intelligenceFeatureAvailabilityChangeStatus];
-    v31 = [v4 intelligenceFeatureAvailabilityChangeStatus];
-    v32 = [v30 isEqual:v31];
+    v29 = intelligenceFeatureAvailabilityChangeStatus;
+    intelligenceFeatureAvailabilityChangeStatus2 = [(SADSchemaSADClientEvent *)self intelligenceFeatureAvailabilityChangeStatus];
+    intelligenceFeatureAvailabilityChangeStatus3 = [equalCopy intelligenceFeatureAvailabilityChangeStatus];
+    v32 = [intelligenceFeatureAvailabilityChangeStatus2 isEqual:intelligenceFeatureAvailabilityChangeStatus3];
 
     if (v32)
     {
@@ -365,50 +365,50 @@ LABEL_29:
   return v33;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v15 = a3;
-  v4 = [(SADSchemaSADClientEvent *)self uodAssetsPrepared];
+  toCopy = to;
+  uodAssetsPrepared = [(SADSchemaSADClientEvent *)self uodAssetsPrepared];
 
-  if (v4)
+  if (uodAssetsPrepared)
   {
-    v5 = [(SADSchemaSADClientEvent *)self uodAssetsPrepared];
+    uodAssetsPrepared2 = [(SADSchemaSADClientEvent *)self uodAssetsPrepared];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(SADSchemaSADClientEvent *)self availableAssetDailyStatus];
+  availableAssetDailyStatus = [(SADSchemaSADClientEvent *)self availableAssetDailyStatus];
 
-  if (v6)
+  if (availableAssetDailyStatus)
   {
-    v7 = [(SADSchemaSADClientEvent *)self availableAssetDailyStatus];
+    availableAssetDailyStatus2 = [(SADSchemaSADClientEvent *)self availableAssetDailyStatus];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(SADSchemaSADClientEvent *)self immediateDownloadTriggered];
+  immediateDownloadTriggered = [(SADSchemaSADClientEvent *)self immediateDownloadTriggered];
 
-  if (v8)
+  if (immediateDownloadTriggered)
   {
-    v9 = [(SADSchemaSADClientEvent *)self immediateDownloadTriggered];
+    immediateDownloadTriggered2 = [(SADSchemaSADClientEvent *)self immediateDownloadTriggered];
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(SADSchemaSADClientEvent *)self intelligenceFeatureAvailabilityDetailedStatus];
+  intelligenceFeatureAvailabilityDetailedStatus = [(SADSchemaSADClientEvent *)self intelligenceFeatureAvailabilityDetailedStatus];
 
-  if (v10)
+  if (intelligenceFeatureAvailabilityDetailedStatus)
   {
-    v11 = [(SADSchemaSADClientEvent *)self intelligenceFeatureAvailabilityDetailedStatus];
+    intelligenceFeatureAvailabilityDetailedStatus2 = [(SADSchemaSADClientEvent *)self intelligenceFeatureAvailabilityDetailedStatus];
     PBDataWriterWriteSubmessage();
   }
 
-  v12 = [(SADSchemaSADClientEvent *)self intelligenceFeatureAvailabilityChangeStatus];
+  intelligenceFeatureAvailabilityChangeStatus = [(SADSchemaSADClientEvent *)self intelligenceFeatureAvailabilityChangeStatus];
 
-  v13 = v15;
-  if (v12)
+  v13 = toCopy;
+  if (intelligenceFeatureAvailabilityChangeStatus)
   {
-    v14 = [(SADSchemaSADClientEvent *)self intelligenceFeatureAvailabilityChangeStatus];
+    intelligenceFeatureAvailabilityChangeStatus2 = [(SADSchemaSADClientEvent *)self intelligenceFeatureAvailabilityChangeStatus];
     PBDataWriterWriteSubmessage();
 
-    v13 = v15;
+    v13 = toCopy;
   }
 }
 
@@ -437,9 +437,9 @@ LABEL_29:
   return v3;
 }
 
-- (void)setIntelligenceFeatureAvailabilityChangeStatus:(id)a3
+- (void)setIntelligenceFeatureAvailabilityChangeStatus:(id)status
 {
-  v4 = a3;
+  statusCopy = status;
   uodAssetsPrepared = self->_uodAssetsPrepared;
   self->_uodAssetsPrepared = 0;
 
@@ -453,14 +453,14 @@ LABEL_29:
   self->_intelligenceFeatureAvailabilityDetailedStatus = 0;
 
   v9 = 105;
-  if (!v4)
+  if (!statusCopy)
   {
     v9 = 0;
   }
 
   self->_whichEvent_Type = v9;
   intelligenceFeatureAvailabilityChangeStatus = self->_intelligenceFeatureAvailabilityChangeStatus;
-  self->_intelligenceFeatureAvailabilityChangeStatus = v4;
+  self->_intelligenceFeatureAvailabilityChangeStatus = statusCopy;
 }
 
 - (void)deleteIntelligenceFeatureAvailabilityDetailedStatus
@@ -488,9 +488,9 @@ LABEL_29:
   return v3;
 }
 
-- (void)setIntelligenceFeatureAvailabilityDetailedStatus:(id)a3
+- (void)setIntelligenceFeatureAvailabilityDetailedStatus:(id)status
 {
-  v4 = a3;
+  statusCopy = status;
   uodAssetsPrepared = self->_uodAssetsPrepared;
   self->_uodAssetsPrepared = 0;
 
@@ -504,14 +504,14 @@ LABEL_29:
   self->_intelligenceFeatureAvailabilityChangeStatus = 0;
 
   v9 = 104;
-  if (!v4)
+  if (!statusCopy)
   {
     v9 = 0;
   }
 
   self->_whichEvent_Type = v9;
   intelligenceFeatureAvailabilityDetailedStatus = self->_intelligenceFeatureAvailabilityDetailedStatus;
-  self->_intelligenceFeatureAvailabilityDetailedStatus = v4;
+  self->_intelligenceFeatureAvailabilityDetailedStatus = statusCopy;
 }
 
 - (void)deleteImmediateDownloadTriggered
@@ -539,9 +539,9 @@ LABEL_29:
   return v3;
 }
 
-- (void)setImmediateDownloadTriggered:(id)a3
+- (void)setImmediateDownloadTriggered:(id)triggered
 {
-  v4 = a3;
+  triggeredCopy = triggered;
   uodAssetsPrepared = self->_uodAssetsPrepared;
   self->_uodAssetsPrepared = 0;
 
@@ -555,14 +555,14 @@ LABEL_29:
   self->_intelligenceFeatureAvailabilityChangeStatus = 0;
 
   v9 = 103;
-  if (!v4)
+  if (!triggeredCopy)
   {
     v9 = 0;
   }
 
   self->_whichEvent_Type = v9;
   immediateDownloadTriggered = self->_immediateDownloadTriggered;
-  self->_immediateDownloadTriggered = v4;
+  self->_immediateDownloadTriggered = triggeredCopy;
 }
 
 - (void)deleteAvailableAssetDailyStatus
@@ -590,9 +590,9 @@ LABEL_29:
   return v3;
 }
 
-- (void)setAvailableAssetDailyStatus:(id)a3
+- (void)setAvailableAssetDailyStatus:(id)status
 {
-  v4 = a3;
+  statusCopy = status;
   uodAssetsPrepared = self->_uodAssetsPrepared;
   self->_uodAssetsPrepared = 0;
 
@@ -606,14 +606,14 @@ LABEL_29:
   self->_intelligenceFeatureAvailabilityChangeStatus = 0;
 
   v9 = 102;
-  if (!v4)
+  if (!statusCopy)
   {
     v9 = 0;
   }
 
   self->_whichEvent_Type = v9;
   availableAssetDailyStatus = self->_availableAssetDailyStatus;
-  self->_availableAssetDailyStatus = v4;
+  self->_availableAssetDailyStatus = statusCopy;
 }
 
 - (void)deleteUodAssetsPrepared
@@ -641,9 +641,9 @@ LABEL_29:
   return v3;
 }
 
-- (void)setUodAssetsPrepared:(id)a3
+- (void)setUodAssetsPrepared:(id)prepared
 {
-  v4 = a3;
+  preparedCopy = prepared;
   availableAssetDailyStatus = self->_availableAssetDailyStatus;
   self->_availableAssetDailyStatus = 0;
 
@@ -657,77 +657,77 @@ LABEL_29:
   self->_intelligenceFeatureAvailabilityChangeStatus = 0;
 
   v9 = 101;
-  if (!v4)
+  if (!preparedCopy)
   {
     v9 = 0;
   }
 
   self->_whichEvent_Type = v9;
   uodAssetsPrepared = self->_uodAssetsPrepared;
-  self->_uodAssetsPrepared = v4;
+  self->_uodAssetsPrepared = preparedCopy;
 }
 
 - (id)qualifiedMessageName
 {
-  v2 = [(SADSchemaSADClientEvent *)self whichEvent_Type];
-  if (v2 - 101 > 4)
+  whichEvent_Type = [(SADSchemaSADClientEvent *)self whichEvent_Type];
+  if (whichEvent_Type - 101 > 4)
   {
     return @"com.apple.aiml.siri.sad.SADClientEvent";
   }
 
   else
   {
-    return off_1E78E23E0[v2 - 101];
+    return off_1E78E23E0[whichEvent_Type - 101];
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v22.receiver = self;
   v22.super_class = SADSchemaSADClientEvent;
-  v5 = [(SISchemaInstrumentationMessage *)&v22 applySensitiveConditionsPolicy:v4];
-  v6 = [(SADSchemaSADClientEvent *)self uodAssetsPrepared];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v22 applySensitiveConditionsPolicy:policyCopy];
+  uodAssetsPrepared = [(SADSchemaSADClientEvent *)self uodAssetsPrepared];
+  v7 = [uodAssetsPrepared applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(SADSchemaSADClientEvent *)self deleteUodAssetsPrepared];
   }
 
-  v9 = [(SADSchemaSADClientEvent *)self availableAssetDailyStatus];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  availableAssetDailyStatus = [(SADSchemaSADClientEvent *)self availableAssetDailyStatus];
+  v10 = [availableAssetDailyStatus applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(SADSchemaSADClientEvent *)self deleteAvailableAssetDailyStatus];
   }
 
-  v12 = [(SADSchemaSADClientEvent *)self immediateDownloadTriggered];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  immediateDownloadTriggered = [(SADSchemaSADClientEvent *)self immediateDownloadTriggered];
+  v13 = [immediateDownloadTriggered applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(SADSchemaSADClientEvent *)self deleteImmediateDownloadTriggered];
   }
 
-  v15 = [(SADSchemaSADClientEvent *)self intelligenceFeatureAvailabilityDetailedStatus];
-  v16 = [v15 applySensitiveConditionsPolicy:v4];
-  v17 = [v16 suppressMessage];
+  intelligenceFeatureAvailabilityDetailedStatus = [(SADSchemaSADClientEvent *)self intelligenceFeatureAvailabilityDetailedStatus];
+  v16 = [intelligenceFeatureAvailabilityDetailedStatus applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v16 suppressMessage];
 
-  if (v17)
+  if (suppressMessage4)
   {
     [(SADSchemaSADClientEvent *)self deleteIntelligenceFeatureAvailabilityDetailedStatus];
   }
 
-  v18 = [(SADSchemaSADClientEvent *)self intelligenceFeatureAvailabilityChangeStatus];
-  v19 = [v18 applySensitiveConditionsPolicy:v4];
-  v20 = [v19 suppressMessage];
+  intelligenceFeatureAvailabilityChangeStatus = [(SADSchemaSADClientEvent *)self intelligenceFeatureAvailabilityChangeStatus];
+  v19 = [intelligenceFeatureAvailabilityChangeStatus applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage5 = [v19 suppressMessage];
 
-  if (v20)
+  if (suppressMessage5)
   {
     [(SADSchemaSADClientEvent *)self deleteIntelligenceFeatureAvailabilityChangeStatus];
   }
@@ -745,30 +745,30 @@ LABEL_29:
 
 - (SISchemaInstrumentationMessage)innerEvent
 {
-  v3 = [(SADSchemaSADClientEvent *)self whichEvent_Type];
-  if (v3 - 101 > 4)
+  whichEvent_Type = [(SADSchemaSADClientEvent *)self whichEvent_Type];
+  if (whichEvent_Type - 101 > 4)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = *(&self->super.super.super.super.isa + *off_1E78EB058[v3 - 101]);
+    v4 = *(&self->super.super.super.super.isa + *off_1E78EB058[whichEvent_Type - 101]);
   }
 
   return v4;
 }
 
-+ (id)getInnerTypeStringByTag:(unint64_t)a3
++ (id)getInnerTypeStringByTag:(unint64_t)tag
 {
-  if (a3 - 101 > 4)
+  if (tag - 101 > 4)
   {
     return 0;
   }
 
   else
   {
-    return off_1E78EB080[a3 - 101];
+    return off_1E78EB080[tag - 101];
   }
 }
 

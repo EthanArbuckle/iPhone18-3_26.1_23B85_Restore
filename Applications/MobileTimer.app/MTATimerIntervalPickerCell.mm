@@ -18,23 +18,23 @@
     LODWORD(v6) = 1148846080;
     [(UILabel *)self->_textLabel setContentCompressionResistancePriority:0 forAxis:v6];
     [(MTATimerIntervalPickerCell *)self addSubview:self->_textLabel];
-    v7 = [(MTATimerIntervalPickerCell *)self mtui_isRTL];
-    v18 = [(UILabel *)self->_textLabel centerYAnchor];
-    v8 = [(MTATimerIntervalPickerCell *)self centerYAnchor];
-    v9 = [v18 constraintEqualToAnchor:v8];
+    mtui_isRTL = [(MTATimerIntervalPickerCell *)self mtui_isRTL];
+    centerYAnchor = [(UILabel *)self->_textLabel centerYAnchor];
+    centerYAnchor2 = [(MTATimerIntervalPickerCell *)self centerYAnchor];
+    v9 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v19[0] = v9;
-    v10 = [(UILabel *)self->_textLabel heightAnchor];
-    v11 = [v10 constraintEqualToConstant:32.0];
+    heightAnchor = [(UILabel *)self->_textLabel heightAnchor];
+    v11 = [heightAnchor constraintEqualToConstant:32.0];
     v19[1] = v11;
-    v12 = [(UILabel *)self->_textLabel trailingAnchor];
-    v13 = [(MTATimerIntervalPickerCell *)self leadingAnchor];
+    trailingAnchor = [(UILabel *)self->_textLabel trailingAnchor];
+    leadingAnchor = [(MTATimerIntervalPickerCell *)self leadingAnchor];
     v14 = 47.0;
-    if (v7)
+    if (mtui_isRTL)
     {
       v14 = 51.0;
     }
 
-    v15 = [v12 constraintEqualToAnchor:v13 constant:v14];
+    v15 = [trailingAnchor constraintEqualToAnchor:leadingAnchor constant:v14];
     v19[2] = v15;
     v16 = [NSArray arrayWithObjects:v19 count:3];
     [NSLayoutConstraint activateConstraints:v16];

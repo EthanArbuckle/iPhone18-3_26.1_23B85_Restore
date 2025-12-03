@@ -1,21 +1,21 @@
 @interface RTAccountManagerNotificationAccountChanged
-- (RTAccountManagerNotificationAccountChanged)initWithLatestAccount:(id)a3 oldAccount:(id)a4;
+- (RTAccountManagerNotificationAccountChanged)initWithLatestAccount:(id)account oldAccount:(id)oldAccount;
 @end
 
 @implementation RTAccountManagerNotificationAccountChanged
 
-- (RTAccountManagerNotificationAccountChanged)initWithLatestAccount:(id)a3 oldAccount:(id)a4
+- (RTAccountManagerNotificationAccountChanged)initWithLatestAccount:(id)account oldAccount:(id)oldAccount
 {
-  v7 = a3;
-  v8 = a4;
+  accountCopy = account;
+  oldAccountCopy = oldAccount;
   v12.receiver = self;
   v12.super_class = RTAccountManagerNotificationAccountChanged;
   v9 = [(RTNotification *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_latestAccount, a3);
-    objc_storeStrong(&v10->_oldAccount, a4);
+    objc_storeStrong(&v9->_latestAccount, account);
+    objc_storeStrong(&v10->_oldAccount, oldAccount);
   }
 
   return v10;

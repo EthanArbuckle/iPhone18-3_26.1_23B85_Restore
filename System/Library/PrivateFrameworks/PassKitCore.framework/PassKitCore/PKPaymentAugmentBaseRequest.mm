@@ -1,56 +1,56 @@
 @interface PKPaymentAugmentBaseRequest
-- (PKPaymentAugmentBaseRequest)initWithPaymentPass:(id)a3;
-- (id)_urlRequestWithServiceURL:(id)a3 deviceIdentifier:(id)a4 appleAccountInformation:(id)a5;
+- (PKPaymentAugmentBaseRequest)initWithPaymentPass:(id)pass;
+- (id)_urlRequestWithServiceURL:(id)l deviceIdentifier:(id)identifier appleAccountInformation:(id)information;
 - (id)bodyDictionary;
 @end
 
 @implementation PKPaymentAugmentBaseRequest
 
-- (PKPaymentAugmentBaseRequest)initWithPaymentPass:(id)a3
+- (PKPaymentAugmentBaseRequest)initWithPaymentPass:(id)pass
 {
-  v5 = a3;
+  passCopy = pass;
   v9.receiver = self;
   v9.super_class = PKPaymentAugmentBaseRequest;
   v6 = [(PKOverlayableWebServiceRequest *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_pass, a3);
+    objc_storeStrong(&v6->_pass, pass);
   }
 
   return v7;
 }
 
-- (id)_urlRequestWithServiceURL:(id)a3 deviceIdentifier:(id)a4 appleAccountInformation:(id)a5
+- (id)_urlRequestWithServiceURL:(id)l deviceIdentifier:(id)identifier appleAccountInformation:(id)information
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(PKPaymentAugmentBaseRequest *)self pass];
-  v12 = [v11 passTypeIdentifier];
-  v13 = [v11 serialNumber];
-  v14 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{@"devices", v9, 0}];
+  informationCopy = information;
+  identifierCopy = identifier;
+  lCopy = l;
+  pass = [(PKPaymentAugmentBaseRequest *)self pass];
+  passTypeIdentifier = [pass passTypeIdentifier];
+  serialNumber = [pass serialNumber];
+  v14 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{@"devices", identifierCopy, 0}];
 
   if (!self->_type)
   {
     [v14 addObject:@"passes"];
-    [v14 addObject:v12];
-    [v14 addObject:v13];
+    [v14 addObject:passTypeIdentifier];
+    [v14 addObject:serialNumber];
   }
 
-  v15 = [(PKPaymentAugmentBaseRequest *)self endpointComponents];
-  if ([v15 count])
+  endpointComponents = [(PKPaymentAugmentBaseRequest *)self endpointComponents];
+  if ([endpointComponents count])
   {
-    [v14 addObjectsFromArray:v15];
+    [v14 addObjectsFromArray:endpointComponents];
   }
 
   v16 = [v14 copy];
-  v17 = [(PKPaymentWebServiceRequest *)self _murlRequestWithServiceURL:v10 endpointComponents:v16 queryParameters:0 appleAccountInformation:v8];
+  v17 = [(PKPaymentWebServiceRequest *)self _murlRequestWithServiceURL:lCopy endpointComponents:v16 queryParameters:0 appleAccountInformation:informationCopy];
 
   [v17 setHTTPMethod:@"POST"];
   v18 = objc_opt_class();
-  v19 = [(PKPaymentAugmentBaseRequest *)self bodyDictionary];
-  v20 = [v18 _HTTPBodyWithDictionary:v19];
+  bodyDictionary = [(PKPaymentAugmentBaseRequest *)self bodyDictionary];
+  v20 = [v18 _HTTPBodyWithDictionary:bodyDictionary];
   [v17 setHTTPBody:v20];
 
   v21 = [v17 copy];
@@ -71,8 +71,8 @@
   pass = self->_pass;
   if (pass)
   {
-    v7 = [(PKSecureElementPass *)pass issuerCountryCode];
-    [v4 setObject:v7 forKey:@"issuerCountryCode"];
+    issuerCountryCode = [(PKSecureElementPass *)pass issuerCountryCode];
+    [v4 setObject:issuerCountryCode forKey:@"issuerCountryCode"];
   }
 
   currencyCode = self->_currencyCode;
@@ -84,8 +84,8 @@
   applet = self->_applet;
   if (applet)
   {
-    v10 = [(PKSecureElementApplet *)applet jsonDictionaryRepresentation];
-    [v4 setObject:v10 forKey:@"appletInfo"];
+    jsonDictionaryRepresentation = [(PKSecureElementApplet *)applet jsonDictionaryRepresentation];
+    [v4 setObject:jsonDictionaryRepresentation forKey:@"appletInfo"];
   }
 
   paymentApplication = self->_paymentApplication;

@@ -3,15 +3,15 @@
 - (BOOL)isSheetPresented;
 - (CGRect)contentsRect;
 - (CGRect)normalizedVisibleRect;
-- (VIUVisualIntelligenceView)initWithCoder:(id)a3;
-- (VIUVisualIntelligenceView)initWithFrame:(CGRect)a3;
+- (VIUVisualIntelligenceView)initWithCoder:(id)coder;
+- (VIUVisualIntelligenceView)initWithFrame:(CGRect)frame;
 - (_TtP20VisualIntelligenceUI33VIUVisualIntelligenceViewDelegate_)delegate;
 - (double)currentSheetProgress;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)setAnalysisResult:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setIsSheetPresented:(BOOL)a3;
+- (void)setAnalysisResult:(id)result;
+- (void)setDelegate:(id)delegate;
+- (void)setIsSheetPresented:(BOOL)presented;
 @end
 
 @implementation VIUVisualIntelligenceView
@@ -23,48 +23,48 @@
   return Strong;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   swift_unknownObjectWeakAssign();
   swift_allocObject();
   swift_unknownObjectWeakInit();
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
 
   sub_21E13E474();
   swift_unknownObjectRelease();
 }
 
-- (void)setAnalysisResult:(id)a3
+- (void)setAnalysisResult:(id)result
 {
   v5 = *(self + OBJC_IVAR___VIUVisualIntelligenceView_analysisResult);
-  *(self + OBJC_IVAR___VIUVisualIntelligenceView_analysisResult) = a3;
-  v6 = a3;
-  v7 = self;
+  *(self + OBJC_IVAR___VIUVisualIntelligenceView_analysisResult) = result;
+  resultCopy = result;
+  selfCopy = self;
 
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27CEAC470);
 
-  sub_21E11EFC8(a3);
+  sub_21E11EFC8(result);
 }
 
 - (BOOL)isSheetPresented
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_21E08A1EC();
 
   return v3 & 1;
 }
 
-- (void)setIsSheetPresented:(BOOL)a3
+- (void)setIsSheetPresented:(BOOL)presented
 {
-  v3 = self;
+  selfCopy = self;
   sub_21E141D64();
   sub_21E13F864();
 }
 
 - (double)currentSheetProgress
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_21E08A7C0();
 
   return v3;
@@ -76,7 +76,7 @@
   v4 = *(*&v3[*(__swift_instantiateConcreteTypeFromMangledNameV2(&qword_27CEAC470) + 52)] + OBJC_IVAR____TtC20VisualIntelligenceUI22SheetTrackingAssistant_sheetModel);
   swift_getKeyPath();
   sub_21E08CE80(&qword_280F6C000, type metadata accessor for SheetModel);
-  v5 = self;
+  selfCopy = self;
 
   sub_21E13D3C4();
 
@@ -111,7 +111,7 @@
   return result;
 }
 
-- (VIUVisualIntelligenceView)initWithCoder:(id)a3
+- (VIUVisualIntelligenceView)initWithCoder:(id)coder
 {
   swift_unknownObjectWeakInit();
   *(self + OBJC_IVAR___VIUVisualIntelligenceView_analysisResult) = 0;
@@ -143,11 +143,11 @@
 
 - (void)didMoveToWindow
 {
-  v2 = self;
+  selfCopy = self;
   sub_21E08B3F4();
 }
 
-- (VIUVisualIntelligenceView)initWithFrame:(CGRect)a3
+- (VIUVisualIntelligenceView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

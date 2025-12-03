@@ -1,15 +1,15 @@
 @interface PDSCDKV
-+ (id)insertIntoManagedObjectContext:(id)a3;
++ (id)insertIntoManagedObjectContext:(id)context;
 @end
 
 @implementation PDSCDKV
 
-+ (id)insertIntoManagedObjectContext:(id)a3
++ (id)insertIntoManagedObjectContext:(id)context
 {
   v4 = MEMORY[0x277CBE408];
-  v5 = a3;
-  v6 = [v4 entityForName:@"PDSCDKV" inManagedObjectContext:v5];
-  v7 = [[a1 alloc] initWithEntity:v6 insertIntoManagedObjectContext:v5];
+  contextCopy = context;
+  v6 = [v4 entityForName:@"PDSCDKV" inManagedObjectContext:contextCopy];
+  v7 = [[self alloc] initWithEntity:v6 insertIntoManagedObjectContext:contextCopy];
 
   return v7;
 }

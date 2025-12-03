@@ -1,33 +1,33 @@
 @interface LAUISecureFaceIDDescriptionGlyph
 + (id)_stateMap;
 + (id)_transitions;
-- (BOOL)isSequenceFrom:(id)a3 to:(id)a4 supportedConcurrentlyWithContainerSequence:(id)a5 toContainerState:(id)a6;
-- (BOOL)isSequenceSecure:(id)a3 toState:(id)a4;
+- (BOOL)isSequenceFrom:(id)from to:(id)to supportedConcurrentlyWithContainerSequence:(id)sequence toContainerState:(id)state;
+- (BOOL)isSequenceSecure:(id)secure toState:(id)state;
 - (CGRect)captureBounds;
-- (LAUISecureFaceIDDescriptionGlyph)initWithContainerView:(id)a3 type:(int64_t)a4;
+- (LAUISecureFaceIDDescriptionGlyph)initWithContainerView:(id)view type:(int64_t)type;
 - (NSArray)states;
 - (NSString)flipBookName;
-- (double)maximumLatencyToExitLoopingState:(id)a3;
-- (id)_createGlyphWithType:(int64_t)a3;
-- (id)allowedNextStatesForState:(id)a3;
-- (unint64_t)_resetSettleFramesForState:(int64_t)a3;
+- (double)maximumLatencyToExitLoopingState:(id)state;
+- (id)_createGlyphWithType:(int64_t)type;
+- (id)allowedNextStatesForState:(id)state;
+- (unint64_t)_resetSettleFramesForState:(int64_t)state;
 - (void)flipBookName;
-- (void)resetToState:(id)a3 completion:(id)a4;
-- (void)transitionToState:(id)a3 completion:(id)a4;
+- (void)resetToState:(id)state completion:(id)completion;
+- (void)transitionToState:(id)state completion:(id)completion;
 @end
 
 @implementation LAUISecureFaceIDDescriptionGlyph
 
-- (LAUISecureFaceIDDescriptionGlyph)initWithContainerView:(id)a3 type:(int64_t)a4
+- (LAUISecureFaceIDDescriptionGlyph)initWithContainerView:(id)view type:(int64_t)type
 {
   v10.receiver = self;
   v10.super_class = LAUISecureFaceIDDescriptionGlyph;
-  v5 = [(LAUISecureFaceIDDescription *)&v10 initWithContainerView:a3];
+  v5 = [(LAUISecureFaceIDDescription *)&v10 initWithContainerView:view];
   v6 = v5;
   if (v5)
   {
-    v5->_type = a4;
-    v7 = [(LAUISecureFaceIDDescriptionGlyph *)v5 _createGlyphWithType:a4];
+    v5->_type = type;
+    v7 = [(LAUISecureFaceIDDescriptionGlyph *)v5 _createGlyphWithType:type];
     glyphView = v6->_glyphView;
     v6->_glyphView = v7;
   }
@@ -35,14 +35,14 @@
   return v6;
 }
 
-- (id)_createGlyphWithType:(int64_t)a3
+- (id)_createGlyphWithType:(int64_t)type
 {
   v14 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (type)
   {
     v5 = +[LAUIPearlGlyphStaticConfiguration createDefaultConfiguration];
     [v5 setRecording:1];
-    if (a3 == 2)
+    if (type == 2)
     {
       [v5 setInitialStyle:0];
       v6 = 40.0;
@@ -51,7 +51,7 @@
     else
     {
       v6 = 0.0;
-      if (a3 == 1)
+      if (type == 1)
       {
         [v5 setInitialStyle:1];
         v6 = 70.0;
@@ -73,7 +73,7 @@
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138543618;
-    v11 = self;
+    selfCopy = self;
     v12 = 2114;
     v13 = v7;
     _os_log_impl(&dword_2560E6000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ created %{public}@", &v10, 0x16u);
@@ -170,10 +170,10 @@
 
 - (NSString)flipBookName
 {
-  v3 = [(LAUISecureFaceIDDescriptionGlyph *)self type];
-  if (v3 < 3)
+  type = [(LAUISecureFaceIDDescriptionGlyph *)self type];
+  if (type < 3)
   {
-    return &off_2798218B0[v3]->isa;
+    return &off_2798218B0[type]->isa;
   }
 
   v5 = LACLogFaceIDUI();
@@ -187,28 +187,28 @@
 
 - (NSArray)states
 {
-  v2 = [objc_opt_class() _stateMap];
-  v3 = [v2 allValues];
+  _stateMap = [objc_opt_class() _stateMap];
+  allValues = [_stateMap allValues];
 
-  return v3;
+  return allValues;
 }
 
-- (id)allowedNextStatesForState:(id)a3
+- (id)allowedNextStatesForState:(id)state
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  stateCopy = state;
   v4 = objc_opt_new();
-  v5 = CaptureStateFromNSString_0(v3);
-  v6 = [objc_opt_class() _transitions];
+  v5 = CaptureStateFromNSString_0(stateCopy);
+  _transitions = [objc_opt_class() _transitions];
   v7 = [MEMORY[0x277CCABB0] numberWithInteger:v5];
-  v8 = [v6 objectForKeyedSubscript:v7];
+  v8 = [_transitions objectForKeyedSubscript:v7];
 
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v9 = [v8 allKeys];
-  v10 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  allKeys = [v8 allKeys];
+  v10 = [allKeys countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v10)
   {
     v11 = v10;
@@ -219,14 +219,14 @@
       {
         if (*v18 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(allKeys);
         }
 
         v14 = NSStringFromCaptureState_0([*(*(&v17 + 1) + 8 * i) integerValue]);
         [v4 addObject:v14];
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v11 = [allKeys countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v11);
@@ -237,11 +237,11 @@
   return v15;
 }
 
-- (BOOL)isSequenceSecure:(id)a3 toState:(id)a4
+- (BOOL)isSequenceSecure:(id)secure toState:(id)state
 {
-  v5 = a4;
-  v6 = CaptureStateFromNSString_0(a3);
-  v7 = CaptureStateFromNSString_0(v5);
+  stateCopy = state;
+  v6 = CaptureStateFromNSString_0(secure);
+  v7 = CaptureStateFromNSString_0(stateCopy);
 
   v9 = v7 == 4 || (v7 & 0xFFFFFFFFFFFFFFFELL) == 2;
   if (v6 != 2)
@@ -270,9 +270,9 @@
   }
 }
 
-- (double)maximumLatencyToExitLoopingState:(id)a3
+- (double)maximumLatencyToExitLoopingState:(id)state
 {
-  v3 = CaptureStateFromNSString_0(a3);
+  v3 = CaptureStateFromNSString_0(state);
   result = 1.79769313e308;
   if ((v3 - 2) < 3)
   {
@@ -284,15 +284,15 @@
 
 - (CGRect)captureBounds
 {
-  v3 = [(LAUISecureFaceIDDescription *)self containerView];
-  [v3 layoutIfNeeded];
+  containerView = [(LAUISecureFaceIDDescription *)self containerView];
+  [containerView layoutIfNeeded];
 
   [(LAUIPearlGlyphView *)self->_glyphView bounds];
   v5 = v4;
   v7 = v6;
-  v8 = [(LAUISecureFaceIDDescription *)self containerView];
+  containerView2 = [(LAUISecureFaceIDDescription *)self containerView];
   [(LAUIPearlGlyphView *)self->_glyphView frame];
-  [v8 convertPoint:self->_glyphView fromView:?];
+  [containerView2 convertPoint:self->_glyphView fromView:?];
   v10 = v9;
   v12 = v11;
 
@@ -307,30 +307,30 @@
   return result;
 }
 
-- (void)resetToState:(id)a3 completion:(id)a4
+- (void)resetToState:(id)state completion:(id)completion
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  stateCopy = state;
+  completionCopy = completion;
   v8 = LACLogFaceIDUI();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v21 = self;
+    selfCopy = self;
     v22 = 2114;
-    v23 = v6;
+    v23 = stateCopy;
     _os_log_impl(&dword_2560E6000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ resetToState: %{public}@", buf, 0x16u);
   }
 
-  v9 = GlyphStateFromNSString(v6);
-  v10 = [(LAUISecureFaceIDDescription *)self observer];
-  v11 = [(LAUISecureFaceIDDescriptionGlyph *)self flipBookName];
-  [v10 recordingResettingToDescriptionOfFlipbook:v11];
+  v9 = GlyphStateFromNSString(stateCopy);
+  observer = [(LAUISecureFaceIDDescription *)self observer];
+  flipBookName = [(LAUISecureFaceIDDescriptionGlyph *)self flipBookName];
+  [observer recordingResettingToDescriptionOfFlipbook:flipBookName];
 
-  v12 = [(LAUISecureFaceIDDescription *)self observer];
-  [v12 recordingUpdatedGlyphState:v9];
+  observer2 = [(LAUISecureFaceIDDescription *)self observer];
+  [observer2 recordingUpdatedGlyphState:v9];
 
-  v13 = CaptureStateFromNSString_0(v6);
+  v13 = CaptureStateFromNSString_0(stateCopy);
   self->_resetState = v13;
   v14 = 1.0;
   if (!v13)
@@ -345,7 +345,7 @@
   {
     v17 = v15;
     [(LAUIPearlGlyphView *)self->_glyphView setState:v9 animated:1 withCompletion:&__block_literal_global_6];
-    [(LAUISecureFaceIDDescription *)self dispatchAfterFrames:v17 block:v7];
+    [(LAUISecureFaceIDDescription *)self dispatchAfterFrames:v17 block:completionCopy];
   }
 
   else
@@ -354,20 +354,20 @@
     v18[1] = 3221225472;
     v18[2] = __60__LAUISecureFaceIDDescriptionGlyph_resetToState_completion___block_invoke;
     v18[3] = &unk_279821610;
-    v19 = v7;
+    v19 = completionCopy;
     [(LAUIPearlGlyphView *)glyphView setState:v9 animated:0 withCompletion:v18];
   }
 }
 
-- (unint64_t)_resetSettleFramesForState:(int64_t)a3
+- (unint64_t)_resetSettleFramesForState:(int64_t)state
 {
   v3 = 100;
-  if (a3 != 5)
+  if (state != 5)
   {
     v3 = 0;
   }
 
-  if (a3 == 3)
+  if (state == 3)
   {
     return 24;
   }
@@ -378,33 +378,33 @@
   }
 }
 
-- (void)transitionToState:(id)a3 completion:(id)a4
+- (void)transitionToState:(id)state completion:(id)completion
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  stateCopy = state;
+  completionCopy = completion;
   v8 = LACLogFaceIDUI();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v22 = 138543618;
-    v23 = self;
+    selfCopy2 = self;
     v24 = 2114;
-    v25 = v6;
+    v25 = stateCopy;
     _os_log_impl(&dword_2560E6000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ transitionToState: %{public}@", &v22, 0x16u);
   }
 
-  v9 = GlyphStateFromNSString(v6);
+  v9 = GlyphStateFromNSString(stateCopy);
   if (!v9)
   {
     v9 = 4 * (self->_resetState != 1);
   }
 
   [(LAUIPearlGlyphView *)self->_glyphView setState:v9 animated:1 withCompletion:&__block_literal_global_75];
-  v10 = [objc_opt_class() _transitions];
+  _transitions = [objc_opt_class() _transitions];
   v11 = [MEMORY[0x277CCABB0] numberWithInteger:self->_resetState];
-  v12 = [v10 objectForKeyedSubscript:v11];
+  v12 = [_transitions objectForKeyedSubscript:v11];
 
-  v13 = CaptureStateFromNSString_0(v6);
+  v13 = CaptureStateFromNSString_0(stateCopy);
   v14 = [MEMORY[0x277CCABB0] numberWithInteger:v13];
   v15 = [v12 objectForKeyedSubscript:v14];
 
@@ -415,11 +415,11 @@
     {
       v21 = NSStringFromCaptureState_0(self->_resetState);
       v22 = 138543874;
-      v23 = self;
+      selfCopy2 = self;
       v24 = 2114;
       v25 = v21;
       v26 = 2114;
-      v27 = v6;
+      v27 = stateCopy;
       _os_log_fault_impl(&dword_2560E6000, v16, OS_LOG_TYPE_FAULT, "%{public}@ requested to perform invalid transition from '%{public}@' to '%{public}@", &v22, 0x20u);
     }
   }
@@ -447,23 +447,23 @@
   }
 
   -[LAUISecureFaceIDDescription fadeIn:orOut:view:frames:](self, "fadeIn:orOut:view:frames:", v19, v20, self->_glyphView, [v15 unsignedIntegerValue]);
-  -[LAUISecureFaceIDDescription dispatchAfterFrames:block:](self, "dispatchAfterFrames:block:", [v15 unsignedIntegerValue], v7);
+  -[LAUISecureFaceIDDescription dispatchAfterFrames:block:](self, "dispatchAfterFrames:block:", [v15 unsignedIntegerValue], completionCopy);
 }
 
-- (BOOL)isSequenceFrom:(id)a3 to:(id)a4 supportedConcurrentlyWithContainerSequence:(id)a5 toContainerState:(id)a6
+- (BOOL)isSequenceFrom:(id)from to:(id)to supportedConcurrentlyWithContainerSequence:(id)sequence toContainerState:(id)state
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(LAUISecureFaceIDDescriptionGlyph *)self allowedNextStatesForState:v10];
-  v15 = [v14 containsObject:v11];
+  fromCopy = from;
+  toCopy = to;
+  sequenceCopy = sequence;
+  stateCopy = state;
+  v14 = [(LAUISecureFaceIDDescriptionGlyph *)self allowedNextStatesForState:fromCopy];
+  v15 = [v14 containsObject:toCopy];
 
   if (v15)
   {
-    v16 = CaptureStateFromNSString_0(v10);
-    v17 = CaptureStateFromNSString_0(v11);
-    v18 = ContainerStateFromTwoStates(v12, v13);
+    v16 = CaptureStateFromNSString_0(fromCopy);
+    v17 = CaptureStateFromNSString_0(toCopy);
+    v18 = ContainerStateFromTwoStates(sequenceCopy, stateCopy);
     if (v18)
     {
       v19 = 1;
@@ -502,9 +502,9 @@
 {
   v7 = *MEMORY[0x277D85DE8];
   v3 = 138543618;
-  v4 = a1;
+  selfCopy = self;
   v5 = 1024;
-  v6 = [a1 type];
+  type = [self type];
   _os_log_fault_impl(&dword_2560E6000, a2, OS_LOG_TYPE_FAULT, "%{public}@ has invalid type: %d", &v3, 0x12u);
 }
 

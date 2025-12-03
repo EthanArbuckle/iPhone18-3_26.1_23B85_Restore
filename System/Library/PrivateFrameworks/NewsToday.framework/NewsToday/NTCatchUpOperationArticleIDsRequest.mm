@@ -1,6 +1,6 @@
 @interface NTCatchUpOperationArticleIDsRequest
 - (NTCatchUpOperationArticleIDsRequest)init;
-- (NTCatchUpOperationArticleIDsRequest)initWithArticleIDs:(id)a3 overrideHeadlineMetadataByArticleID:(id)a4;
+- (NTCatchUpOperationArticleIDsRequest)initWithArticleIDs:(id)ds overrideHeadlineMetadataByArticleID:(id)d;
 @end
 
 @implementation NTCatchUpOperationArticleIDsRequest
@@ -31,20 +31,20 @@
   objc_exception_throw(v6);
 }
 
-- (NTCatchUpOperationArticleIDsRequest)initWithArticleIDs:(id)a3 overrideHeadlineMetadataByArticleID:(id)a4
+- (NTCatchUpOperationArticleIDsRequest)initWithArticleIDs:(id)ds overrideHeadlineMetadataByArticleID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  dsCopy = ds;
+  dCopy = d;
+  if (!dsCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTCatchUpOperationArticleIDsRequest initWithArticleIDs:overrideHeadlineMetadataByArticleID:];
-    if (v7)
+    if (dCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v7)
+  else if (dCopy)
   {
     goto LABEL_6;
   }
@@ -60,15 +60,15 @@ LABEL_6:
   v8 = [(NTCatchUpOperationArticleIDsRequest *)&v16 init];
   if (v8)
   {
-    v9 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
     identifier = v8->_identifier;
-    v8->_identifier = v9;
+    v8->_identifier = uUID;
 
-    v11 = [v6 copy];
+    v11 = [dsCopy copy];
     articleIDs = v8->_articleIDs;
     v8->_articleIDs = v11;
 
-    v13 = [v7 copy];
+    v13 = [dCopy copy];
     overrideHeadlineMetadataByArticleID = v8->_overrideHeadlineMetadataByArticleID;
     v8->_overrideHeadlineMetadataByArticleID = v13;
   }

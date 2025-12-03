@@ -1,21 +1,21 @@
 @interface PKPaymentAuthorizationInvalidDataStateParam
-+ (id)paramWithDataType:(int64_t)a3 status:(int64_t)a4 error:(id)a5 clientErrors:(id)a6;
++ (id)paramWithDataType:(int64_t)type status:(int64_t)status error:(id)error clientErrors:(id)errors;
 @end
 
 @implementation PKPaymentAuthorizationInvalidDataStateParam
 
-+ (id)paramWithDataType:(int64_t)a3 status:(int64_t)a4 error:(id)a5 clientErrors:(id)a6
++ (id)paramWithDataType:(int64_t)type status:(int64_t)status error:(id)error clientErrors:(id)errors
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = [a1 param];
-  [v12 setDataType:a3];
-  [v12 setStatus:a4];
-  [v12 setError:v11];
+  errorsCopy = errors;
+  errorCopy = error;
+  param = [self param];
+  [param setDataType:type];
+  [param setStatus:status];
+  [param setError:errorCopy];
 
-  [v12 setClientErrors:v10];
+  [param setClientErrors:errorsCopy];
 
-  return v12;
+  return param;
 }
 
 @end

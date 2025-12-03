@@ -1,44 +1,44 @@
 @interface HMDCurrentAccessorySetupMetricDispatcher
-+ (id)homepodSetupLogEventFromProtoSetupInfo:(id)a3;
++ (id)homepodSetupLogEventFromProtoSetupInfo:(id)info;
 + (id)logCategory;
-+ (id)readLastAccessorySetupInfo:(id)a3;
-+ (id)readSetupLogEventFromUserDefaults:(id)a3;
-+ (void)removeLastAccessorySetupInfoFromUserDefaults:(id)a3;
-+ (void)saveSetupLogEventIntoUserDefaults:(id)a3 setupLogEvent:(id)a4;
-- (HMDCurrentAccessorySetupMetricDispatcher)initWithDataSource:(id)a3 setupLogEvent:(id)a4 logEventSubmitter:(id)a5;
-- (HMDCurrentAccessorySetupMetricDispatcher)initWithDataSource:(id)a3 setupLogEvent:(id)a4 logEventSubmitter:(id)a5 currentUpTicksFactory:(id)a6 submissionTimerFactory:(id)a7 userDefaults:(id)a8;
++ (id)readLastAccessorySetupInfo:(id)info;
++ (id)readSetupLogEventFromUserDefaults:(id)defaults;
++ (void)removeLastAccessorySetupInfoFromUserDefaults:(id)defaults;
++ (void)saveSetupLogEventIntoUserDefaults:(id)defaults setupLogEvent:(id)event;
+- (HMDCurrentAccessorySetupMetricDispatcher)initWithDataSource:(id)source setupLogEvent:(id)event logEventSubmitter:(id)submitter;
+- (HMDCurrentAccessorySetupMetricDispatcher)initWithDataSource:(id)source setupLogEvent:(id)event logEventSubmitter:(id)submitter currentUpTicksFactory:(id)factory submissionTimerFactory:(id)timerFactory userDefaults:(id)defaults;
 - (NSString)setupSessionIdentifier;
-- (id)_findFirstNonCommunicationErrorIn:(uint64_t)a1 depth:(void *)a2 maxDepth:(uint64_t)a3;
-- (id)_underlyingErrorByIgnoringCommunicationFailureErrors:(id)a3;
+- (id)_findFirstNonCommunicationErrorIn:(uint64_t)in depth:(void *)depth maxDepth:(uint64_t)maxDepth;
+- (id)_underlyingErrorByIgnoringCommunicationFailureErrors:(id)errors;
 - (id)dataSource;
-- (void)_handleErrorAndSaveStage:(uint64_t)a3 stageTime:(void *)a4 stageString:(void *)a5 error:;
-- (void)_logWithoutStatesWithPrefix:(void *)a3 stage:(uint64_t)a4 time:(void *)a5 error:;
+- (void)_handleErrorAndSaveStage:(uint64_t)stage stageTime:(void *)time stageString:(void *)string error:;
+- (void)_logWithoutStatesWithPrefix:(void *)prefix stage:(uint64_t)stage time:(void *)time error:;
 - (void)_markMetricDispatcherSubmission;
 - (void)_recordTotalDuration;
-- (void)_shouldEndStage:(void *)a3 error:;
-- (void)_startSubmissionTimerWithInterval:(double)a3;
-- (void)markEventRouterPrimaryClientConnectMessageFailedWithError:(id)a3;
-- (void)markEventRouterPrimaryClientConnectStatusChanged:(BOOL)a3;
-- (void)markFirstCoreDataContainerSetupDuration:(double)a3 error:(id)a4;
+- (void)_shouldEndStage:(void *)stage error:;
+- (void)_startSubmissionTimerWithInterval:(double)interval;
+- (void)markEventRouterPrimaryClientConnectMessageFailedWithError:(id)error;
+- (void)markEventRouterPrimaryClientConnectStatusChanged:(BOOL)changed;
+- (void)markFirstCoreDataContainerSetupDuration:(double)duration error:(id)error;
 - (void)markPrimaryResidentElectionFirstCloudKitImportFutureResolved;
 - (void)markPrimaryResidentElectionJoinMesh;
 - (void)markPrimaryResidentElectionModernTransportStartedFutureResolved;
 - (void)markPrimaryResidentElectionPeerDeviceFutureResolved;
 - (void)markPrimaryResidentSelectionConnectedToStatusKitFutureResolved;
-- (void)markSetupBeginStage:(unint64_t)a3 error:(id)a4;
-- (void)markSetupEndStage:(unint64_t)a3 error:(id)a4;
-- (void)setControllerSetupSessionIdentifier:(id)a3;
-- (void)timerDidFire:(id)a3;
+- (void)markSetupBeginStage:(unint64_t)stage error:(id)error;
+- (void)markSetupEndStage:(unint64_t)stage error:(id)error;
+- (void)setControllerSetupSessionIdentifier:(id)identifier;
+- (void)timerDidFire:(id)fire;
 @end
 
 @implementation HMDCurrentAccessorySetupMetricDispatcher
 
-- (void)setControllerSetupSessionIdentifier:(id)a3
+- (void)setControllerSetupSessionIdentifier:(id)identifier
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -46,75 +46,75 @@
     v11 = 138543618;
     v12 = v8;
     v13 = 2112;
-    v14 = v4;
+    v14 = identifierCopy;
     _os_log_impl(&dword_229538000, v7, OS_LOG_TYPE_INFO, "%{public}@Setting controller setup session identifier %@ on the log event.", &v11, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
   os_unfair_lock_lock_with_options();
-  v9 = [v4 copy];
-  [(HMDHomePodSetupLatencyLogEvent *)v6->_setupLogEvent setSetupSessionIdentifier:v9];
+  v9 = [identifierCopy copy];
+  [(HMDHomePodSetupLatencyLogEvent *)selfCopy->_setupLogEvent setSetupSessionIdentifier:v9];
 
-  os_unfair_lock_unlock(&v6->_lock);
+  os_unfair_lock_unlock(&selfCopy->_lock);
   v10 = *MEMORY[0x277D85DE8];
 }
 
 - (NSString)setupSessionIdentifier
 {
   os_unfair_lock_lock_with_options();
-  v3 = [(HMDHomePodSetupLatencyLogEvent *)self->_setupLogEvent setupSessionIdentifier];
+  setupSessionIdentifier = [(HMDHomePodSetupLatencyLogEvent *)self->_setupLogEvent setupSessionIdentifier];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v3;
+  return setupSessionIdentifier;
 }
 
-- (void)markFirstCoreDataContainerSetupDuration:(double)a3 error:(id)a4
+- (void)markFirstCoreDataContainerSetupDuration:(double)duration error:(id)error
 {
-  v12 = a4;
+  errorCopy = error;
   os_unfair_lock_lock_with_options();
   if (![(HMDHomePodSetupLatencyLogEvent *)self->_setupLogEvent firstCoreDataContainerSetupDurationMS_HH2])
   {
-    [(HMDHomePodSetupLatencyLogEvent *)self->_setupLogEvent setFirstCoreDataContainerSetupDurationMS_HH2:(a3 * 1000.0)];
-    if (v12)
+    [(HMDHomePodSetupLatencyLogEvent *)self->_setupLogEvent setFirstCoreDataContainerSetupDurationMS_HH2:(duration * 1000.0)];
+    if (errorCopy)
     {
-      -[HMDHomePodSetupLatencyLogEvent setFirstCoreDataContainerSetupErrorCode_HH2:](self->_setupLogEvent, "setFirstCoreDataContainerSetupErrorCode_HH2:", [v12 code]);
-      v6 = [v12 domain];
-      [(HMDHomePodSetupLatencyLogEvent *)self->_setupLogEvent setFirstCoreDataContainerSetupErrorDomain_HH2:v6];
+      -[HMDHomePodSetupLatencyLogEvent setFirstCoreDataContainerSetupErrorCode_HH2:](self->_setupLogEvent, "setFirstCoreDataContainerSetupErrorCode_HH2:", [errorCopy code]);
+      domain = [errorCopy domain];
+      [(HMDHomePodSetupLatencyLogEvent *)self->_setupLogEvent setFirstCoreDataContainerSetupErrorDomain_HH2:domain];
 
-      v7 = [v12 underlyingErrors];
-      v8 = [v7 firstObject];
-      if (v8)
+      underlyingErrors = [errorCopy underlyingErrors];
+      firstObject = [underlyingErrors firstObject];
+      if (firstObject)
       {
-        v9 = v8;
+        v9 = firstObject;
       }
 
       else
       {
-        v9 = v12;
+        v9 = errorCopy;
       }
 
       v10 = v9;
 
       -[HMDHomePodSetupLatencyLogEvent setFirstCoreDataContainerSetupUnderlyingErrorCode_HH2:](self->_setupLogEvent, "setFirstCoreDataContainerSetupUnderlyingErrorCode_HH2:", [v10 code]);
-      v11 = [v10 domain];
-      [(HMDHomePodSetupLatencyLogEvent *)self->_setupLogEvent setFirstCoreDataContainerSetupUnderlyingErrorDomain_HH2:v11];
+      domain2 = [v10 domain];
+      [(HMDHomePodSetupLatencyLogEvent *)self->_setupLogEvent setFirstCoreDataContainerSetupUnderlyingErrorDomain_HH2:domain2];
     }
   }
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)timerDidFire:(id)a3
+- (void)timerDidFire:(id)fire
 {
   v114 = *MEMORY[0x277D85DE8];
-  v107 = a3;
+  fireCopy = fire;
   os_unfair_lock_lock_with_options();
-  v4 = [(HMDCurrentAccessorySetupMetricDispatcher *)&self->super.super.isa dataSource];
+  dataSource = [(HMDCurrentAccessorySetupMetricDispatcher *)&self->super.super.isa dataSource];
   [(HMDCurrentAccessorySetupMetricDispatcher *)self setSubmissionTimer:0];
   if ([(HMDCurrentAccessorySetupMetricDispatcher *)self allStagesSubmitted])
   {
     v5 = objc_autoreleasePoolPush();
-    v6 = self;
+    selfCopy = self;
     v7 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
@@ -127,7 +127,7 @@
 LABEL_4:
 
     objc_autoreleasePoolPop(v5);
-    [v4 removeCurrentAccessorySetupMetricDispatcherIfNeeded];
+    [dataSource removeCurrentAccessorySetupMetricDispatcherIfNeeded];
     goto LABEL_115;
   }
 
@@ -135,7 +135,7 @@ LABEL_4:
   {
 LABEL_13:
     v5 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy2 = self;
     v7 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
@@ -152,7 +152,7 @@ LABEL_13:
   if ([(HMDHomePodSetupLatencyLogEvent *)self->_setupLogEvent sessionSetupOpenMS_HH1]>= 1 && [(HMDHomePodSetupLatencyLogEvent *)self->_setupLogEvent sessionSetupCloseMS_HH1]>= 1 && (![(HMDHomePodSetupLatencyLogEvent *)self->_setupLogEvent controllerKeyExchangeMS_HH1]|| ![(HMDHomePodSetupLatencyLogEvent *)self->_setupLogEvent newAccessoryTransferMS_HH1]))
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy3 = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
@@ -166,12 +166,12 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  -[HMDHomePodSetupLatencyLogEvent setNetworkAvailable_INT:](self->_setupLogEvent, "setNetworkAvailable_INT:", [v4 hasValidNetwork]);
-  -[HMDHomePodSetupLatencyLogEvent setManateeAvailable_INT:](self->_setupLogEvent, "setManateeAvailable_INT:", [v4 hasManatee]);
-  -[HMDHomePodSetupLatencyLogEvent setICloudAvailable_INT:](self->_setupLogEvent, "setICloudAvailable_INT:", [v4 isSignedIntoiCloud]);
-  -[HMDHomePodSetupLatencyLogEvent setIDSAvailable_INT:](self->_setupLogEvent, "setIDSAvailable_INT:", [v4 isIdsServiceActive]);
-  -[HMDHomePodSetupLatencyLogEvent setIDSRegistrationStatus_INT:](self->_setupLogEvent, "setIDSRegistrationStatus_INT:", [v4 IDSAccountRegistrationStatus]);
-  -[HMDHomePodSetupLatencyLogEvent setIDSRegistrationError_INT:](self->_setupLogEvent, "setIDSRegistrationError_INT:", [v4 IDSAccountRegistrationError]);
+  -[HMDHomePodSetupLatencyLogEvent setNetworkAvailable_INT:](self->_setupLogEvent, "setNetworkAvailable_INT:", [dataSource hasValidNetwork]);
+  -[HMDHomePodSetupLatencyLogEvent setManateeAvailable_INT:](self->_setupLogEvent, "setManateeAvailable_INT:", [dataSource hasManatee]);
+  -[HMDHomePodSetupLatencyLogEvent setICloudAvailable_INT:](self->_setupLogEvent, "setICloudAvailable_INT:", [dataSource isSignedIntoiCloud]);
+  -[HMDHomePodSetupLatencyLogEvent setIDSAvailable_INT:](self->_setupLogEvent, "setIDSAvailable_INT:", [dataSource isIdsServiceActive]);
+  -[HMDHomePodSetupLatencyLogEvent setIDSRegistrationStatus_INT:](self->_setupLogEvent, "setIDSRegistrationStatus_INT:", [dataSource IDSAccountRegistrationStatus]);
+  -[HMDHomePodSetupLatencyLogEvent setIDSRegistrationError_INT:](self->_setupLogEvent, "setIDSRegistrationError_INT:", [dataSource IDSAccountRegistrationError]);
   os_unfair_lock_assert_owner(&self->_lock);
   v15 = [(NSMutableDictionary *)self->_stageErrorDict objectForKeyedSubscript:@"Setup Session Open"];
   if (![(HMDHomePodSetupLatencyLogEvent *)self->_setupLogEvent sessionSetupOpenMS_HH1]|| [(HMDHomePodSetupLatencyLogEvent *)self->_setupLogEvent sessionSetupOpenMS_HH1]== -1)
@@ -504,16 +504,16 @@ LABEL_13:
   [WeakRetained submitLogEvent:self->_setupLogEvent error:v16];
 
   v88 = objc_autoreleasePoolPush();
-  v89 = self;
+  selfCopy4 = self;
   v90 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v90, OS_LOG_TYPE_INFO))
   {
     v91 = HMFGetLogIdentifier();
-    v92 = [(HMDHomePodSetupLatencyLogEvent *)self->_setupLogEvent coreAnalyticsEventDictionary];
+    coreAnalyticsEventDictionary = [(HMDHomePodSetupLatencyLogEvent *)self->_setupLogEvent coreAnalyticsEventDictionary];
     *buf = 138543874;
     v109 = v91;
     v110 = 2112;
-    v111 = v92;
+    v111 = coreAnalyticsEventDictionary;
     v112 = 2112;
     v113 = v16;
     _os_log_impl(&dword_229538000, v90, OS_LOG_TYPE_INFO, "%{public}@Submission timer fired and submitting the final metric log event: %@ with error %@", buf, 0x20u);
@@ -521,14 +521,14 @@ LABEL_13:
 
   objc_autoreleasePoolPop(v88);
   v93 = objc_opt_class();
-  v95 = objc_getProperty(v89, v94, 56, 1);
-  v97 = objc_getProperty(v89, v96, 48, 1);
+  v95 = objc_getProperty(selfCopy4, v94, 56, 1);
+  v97 = objc_getProperty(selfCopy4, v96, 48, 1);
   [v93 saveSetupLogEventIntoUserDefaults:v95 setupLogEvent:v97];
 
-  [(HMDCurrentAccessorySetupMetricDispatcher *)v89 _markMetricDispatcherSubmission];
-  LOBYTE(v97) = v89->_firstTimeOutSubmissionDone;
+  [(HMDCurrentAccessorySetupMetricDispatcher *)selfCopy4 _markMetricDispatcherSubmission];
+  LOBYTE(v97) = selfCopy4->_firstTimeOutSubmissionDone;
   v99 = objc_autoreleasePoolPush();
-  v100 = v89;
+  v100 = selfCopy4;
   if (v97)
   {
     v101 = HMFGetOSLogHandle();
@@ -542,7 +542,7 @@ LABEL_13:
 
     objc_autoreleasePoolPop(v99);
     v100->_allStagesSubmitted = 1;
-    [v4 removeCurrentAccessorySetupMetricDispatcherIfNeeded];
+    [dataSource removeCurrentAccessorySetupMetricDispatcherIfNeeded];
   }
 
   else
@@ -557,7 +557,7 @@ LABEL_13:
     }
 
     objc_autoreleasePoolPop(v99);
-    v89->_firstTimeOutSubmissionDone = 1;
+    selfCopy4->_firstTimeOutSubmissionDone = 1;
     [(HMDHomePodSetupLatencyLogEvent *)self->_setupLogEvent setSetupSessionIdentifier:@"Extended Timeout Session"];
     [(HMDCurrentAccessorySetupMetricDispatcher *)v100 _startSubmissionTimerWithInterval:v105, 14400.0];
   }
@@ -582,12 +582,12 @@ LABEL_115:
 - (void)_recordTotalDuration
 {
   v18 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_assert_owner((a1 + 8));
-    Property = objc_getProperty(a1, v2, 24, 1);
+    os_unfair_lock_assert_owner((self + 8));
+    Property = objc_getProperty(self, v2, 24, 1);
     v4 = Property[2]();
-    v5 = *(a1 + 208);
+    v5 = *(self + 208);
     if (v4 <= v5 || v5 == 0)
     {
       v7 = -1;
@@ -598,18 +598,18 @@ LABEL_115:
       v7 = v4 - v5;
     }
 
-    [*(a1 + 48) setTotalDurationMS_HH2:v7];
+    [*(self + 48) setTotalDurationMS_HH2:v7];
     v8 = objc_autoreleasePoolPush();
-    v9 = a1;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       v11 = HMFGetLogIdentifier();
-      v12 = [v9[6] totalDurationMS_HH2];
+      totalDurationMS_HH2 = [selfCopy[6] totalDurationMS_HH2];
       v14 = 138543618;
       v15 = v11;
       v16 = 2048;
-      v17 = v12;
+      v17 = totalDurationMS_HH2;
       _os_log_impl(&dword_229538000, v10, OS_LOG_TYPE_INFO, "%{public}@Total duration for HH2: %llu", &v14, 0x16u);
     }
 
@@ -621,39 +621,39 @@ LABEL_115:
 
 - (void)_markMetricDispatcherSubmission
 {
-  if (a1)
+  if (self)
   {
-    Property = objc_getProperty(a1, a2, 24, 1);
+    Property = objc_getProperty(self, a2, 24, 1);
     v4 = Property[2]();
 
-    [(HMDCurrentAccessorySetupMetricDispatcher *)a1 _logWithoutStatesWithPrefix:@"Setup In HH2" stage:v4 time:0 error:?];
+    [(HMDCurrentAccessorySetupMetricDispatcher *)self _logWithoutStatesWithPrefix:@"Setup In HH2" stage:v4 time:0 error:?];
   }
 }
 
-- (void)_startSubmissionTimerWithInterval:(double)a3
+- (void)_startSubmissionTimerWithInterval:(double)interval
 {
-  if (a1)
+  if (self)
   {
-    Property = objc_getProperty(a1, a2, 40, 1);
-    v6 = Property[2](a3);
-    [a1 setSubmissionTimer:v6];
+    Property = objc_getProperty(self, a2, 40, 1);
+    v6 = Property[2](interval);
+    [self setSubmissionTimer:v6];
 
-    v7 = [a1 submissionTimer];
-    [v7 setDelegate:a1];
+    submissionTimer = [self submissionTimer];
+    [submissionTimer setDelegate:self];
 
-    v8 = [a1 submissionTimer];
-    [v8 resume];
+    submissionTimer2 = [self submissionTimer];
+    [submissionTimer2 resume];
   }
 }
 
-- (void)_logWithoutStatesWithPrefix:(void *)a3 stage:(uint64_t)a4 time:(void *)a5 error:
+- (void)_logWithoutStatesWithPrefix:(void *)prefix stage:(uint64_t)stage time:(void *)time error:
 {
   v30 = *MEMORY[0x277D85DE8];
   v9 = a2;
-  v10 = a3;
-  v11 = a5;
+  prefixCopy = prefix;
+  timeCopy = time;
   v12 = objc_autoreleasePoolPush();
-  v13 = a1;
+  selfCopy = self;
   v14 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
@@ -664,13 +664,13 @@ LABEL_115:
     v20 = 2112;
     v21 = v9;
     v22 = 2112;
-    v23 = v10;
+    v23 = prefixCopy;
     v24 = 2048;
-    v25 = a4;
+    stageCopy = stage;
     v26 = 2112;
     v27 = v16;
     v28 = 2112;
-    v29 = v11;
+    v29 = timeCopy;
     _os_log_impl(&dword_229538000, v14, OS_LOG_TYPE_INFO, "%{public}@%@: %@, time: %llu, HH2 mode: %@, error: %@", &v18, 0x3Eu);
   }
 
@@ -772,10 +772,10 @@ LABEL_115:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (id)_underlyingErrorByIgnoringCommunicationFailureErrors:(id)a3
+- (id)_underlyingErrorByIgnoringCommunicationFailureErrors:(id)errors
 {
-  v4 = a3;
-  v5 = [HMDCurrentAccessorySetupMetricDispatcher _findFirstNonCommunicationErrorIn:v4 depth:0 maxDepth:?];
+  errorsCopy = errors;
+  v5 = [HMDCurrentAccessorySetupMetricDispatcher _findFirstNonCommunicationErrorIn:errorsCopy depth:0 maxDepth:?];
   v6 = v5;
   if (v5)
   {
@@ -784,7 +784,7 @@ LABEL_115:
 
   else
   {
-    v7 = v4;
+    v7 = errorsCopy;
   }
 
   v8 = v7;
@@ -792,14 +792,14 @@ LABEL_115:
   return v7;
 }
 
-- (id)_findFirstNonCommunicationErrorIn:(uint64_t)a1 depth:(void *)a2 maxDepth:(uint64_t)a3
+- (id)_findFirstNonCommunicationErrorIn:(uint64_t)in depth:(void *)depth maxDepth:(uint64_t)maxDepth
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a2;
-  v6 = v5;
-  if (a1)
+  depthCopy = depth;
+  v6 = depthCopy;
+  if (in)
   {
-    if (v5 && a3 < 6 && ([v5 code] == 54 || objc_msgSend(v6, "code") == 3203))
+    if (depthCopy && maxDepth < 6 && ([depthCopy code] == 54 || objc_msgSend(v6, "code") == 3203))
     {
       [v6 underlyingErrors];
       v16 = 0u;
@@ -820,7 +820,7 @@ LABEL_115:
               objc_enumerationMutation(v7);
             }
 
-            v12 = [HMDCurrentAccessorySetupMetricDispatcher _findFirstNonCommunicationErrorIn:a1 depth:*(*(&v16 + 1) + 8 * i) maxDepth:a3 + 1];
+            v12 = [HMDCurrentAccessorySetupMetricDispatcher _findFirstNonCommunicationErrorIn:in depth:*(*(&v16 + 1) + 8 * i) maxDepth:maxDepth + 1];
             if (v12)
             {
               v13 = v12;
@@ -858,11 +858,11 @@ LABEL_17:
   return v13;
 }
 
-- (void)markEventRouterPrimaryClientConnectMessageFailedWithError:(id)a3
+- (void)markEventRouterPrimaryClientConnectMessageFailedWithError:(id)error
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDCurrentAccessorySetupMetricDispatcher *)self _underlyingErrorByIgnoringCommunicationFailureErrors:v4];
+  errorCopy = error;
+  v5 = [(HMDCurrentAccessorySetupMetricDispatcher *)self _underlyingErrorByIgnoringCommunicationFailureErrors:errorCopy];
   os_unfair_lock_lock_with_options();
   if ([(HMDHomePodSetupLatencyLogEvent *)self->_setupLogEvent primaryResidentElectionMS_HH2])
   {
@@ -870,15 +870,15 @@ LABEL_17:
     if (v5)
     {
       -[HMDHomePodSetupLatencyLogEvent setLastPrimaryClientConnectMessageFailErrorCode_HH2:](self->_setupLogEvent, "setLastPrimaryClientConnectMessageFailErrorCode_HH2:", [v5 code]);
-      v6 = [v5 domain];
-      [(HMDHomePodSetupLatencyLogEvent *)self->_setupLogEvent setLastPrimaryClientConnectMessageFailErrorDomain_HH2:v6];
+      domain = [v5 domain];
+      [(HMDHomePodSetupLatencyLogEvent *)self->_setupLogEvent setLastPrimaryClientConnectMessageFailErrorDomain_HH2:domain];
 
-      v7 = [v4 underlyingErrors];
-      v8 = [v7 firstObject];
-      v9 = v8;
-      if (v8)
+      underlyingErrors = [errorCopy underlyingErrors];
+      firstObject = [underlyingErrors firstObject];
+      v9 = firstObject;
+      if (firstObject)
       {
-        v10 = v8;
+        v10 = firstObject;
       }
 
       else
@@ -889,13 +889,13 @@ LABEL_17:
       v11 = v10;
 
       -[HMDHomePodSetupLatencyLogEvent setLastPrimaryClientConnectMessageFailUnderlyingErrorCode_HH2:](self->_setupLogEvent, "setLastPrimaryClientConnectMessageFailUnderlyingErrorCode_HH2:", [v11 code]);
-      v12 = [v11 domain];
-      [(HMDHomePodSetupLatencyLogEvent *)self->_setupLogEvent setLastPrimaryClientConnectMessageFailUnderlyingErrorDomain_HH2:v12];
+      domain2 = [v11 domain];
+      [(HMDHomePodSetupLatencyLogEvent *)self->_setupLogEvent setLastPrimaryClientConnectMessageFailUnderlyingErrorDomain_HH2:domain2];
     }
 
     os_unfair_lock_unlock(&self->_lock);
     v13 = objc_autoreleasePoolPush();
-    v14 = self;
+    selfCopy = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
@@ -903,7 +903,7 @@ LABEL_17:
       v22 = 138543618;
       v23 = v16;
       v24 = 2112;
-      v25 = v4;
+      v25 = errorCopy;
       _os_log_impl(&dword_229538000, v15, OS_LOG_TYPE_INFO, "%{public}@Marking event router primary client connection message fail with error: %@", &v22, 0x16u);
     }
 
@@ -913,7 +913,7 @@ LABEL_17:
   else
   {
     v17 = objc_autoreleasePoolPush();
-    v18 = self;
+    selfCopy2 = self;
     v19 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
     {
@@ -930,14 +930,14 @@ LABEL_17:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)markEventRouterPrimaryClientConnectStatusChanged:(BOOL)a3
+- (void)markEventRouterPrimaryClientConnectStatusChanged:(BOOL)changed
 {
-  v3 = a3;
+  changedCopy = changed;
   v21 = *MEMORY[0x277D85DE8];
   os_unfair_lock_lock_with_options();
   if ([(HMDHomePodSetupLatencyLogEvent *)self->_setupLogEvent primaryResidentElectionMS_HH2])
   {
-    if (v3)
+    if (changedCopy)
     {
       v6 = objc_getProperty(self, v5, 24, 1);
       [(HMDHomePodSetupLatencyLogEvent *)self->_setupLogEvent setLastPrimaryClientConnectedTime_HH2:v6[2]() - self->_firstPrimaryResidentElectionEndTime];
@@ -952,7 +952,7 @@ LABEL_17:
 
     os_unfair_lock_unlock(&self->_lock);
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
@@ -971,7 +971,7 @@ LABEL_17:
   else
   {
     v7 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy2 = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
@@ -988,24 +988,24 @@ LABEL_17:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)markSetupEndStage:(unint64_t)a3 error:(id)a4
+- (void)markSetupEndStage:(unint64_t)stage error:(id)error
 {
   v60 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  errorCopy = error;
   v7 = objc_autoreleasePoolPush();
-  v8 = self;
+  selfCopy = self;
   v9 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
     v10 = HMFGetLogIdentifier();
-    if (a3 - 1 > 0xF)
+    if (stage - 1 > 0xF)
     {
       v11 = @"Unknown Setup Stage";
     }
 
     else
     {
-      v11 = off_27867FD48[a3 - 1];
+      v11 = off_27867FD48[stage - 1];
     }
 
     v12 = v11;
@@ -1014,16 +1014,16 @@ LABEL_17:
     v56 = 2112;
     v57 = v12;
     v58 = 2112;
-    v59 = v6;
+    v59 = errorCopy;
     _os_log_impl(&dword_229538000, v9, OS_LOG_TYPE_DEBUG, "%{public}@Mark end stage: %@ error: %@", &v54, 0x20u);
   }
 
   objc_autoreleasePoolPop(v7);
-  switch(a3)
+  switch(stage)
   {
     case 0uLL:
       v13 = objc_autoreleasePoolPush();
-      v14 = v8;
+      v14 = selfCopy;
       v15 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
@@ -1031,411 +1031,411 @@ LABEL_17:
         v54 = 138543618;
         v55 = v16;
         v56 = 2112;
-        v57 = v6;
+        v57 = errorCopy;
         _os_log_impl(&dword_229538000, v15, OS_LOG_TYPE_ERROR, "%{public}@Unknown setup stage with error: %@", &v54, 0x16u);
       }
 
       objc_autoreleasePoolPop(v13);
       break;
     case 1uLL:
-      v17 = v6;
-      if (v8)
+      v17 = errorCopy;
+      if (selfCopy)
       {
         os_unfair_lock_lock_with_options();
-        if (v8->_setupSessionOpenBeginTime && !v8->_setupSessionOpenEndTime)
+        if (selfCopy->_setupSessionOpenBeginTime && !selfCopy->_setupSessionOpenEndTime)
         {
-          [(HMDCurrentAccessorySetupMetricDispatcher *)v8 _shouldEndStage:v17 error:?];
-          v42 = objc_getProperty(v8, v41, 24, 1);
-          v8->_setupSessionOpenEndTime = v42[2]();
+          [(HMDCurrentAccessorySetupMetricDispatcher *)selfCopy _shouldEndStage:v17 error:?];
+          v42 = objc_getProperty(selfCopy, v41, 24, 1);
+          selfCopy->_setupSessionOpenEndTime = v42[2]();
 
-          [(HMDHomePodSetupLatencyLogEvent *)v8->_setupLogEvent setSessionSetupOpenMS_HH1:v8->_setupSessionOpenEndTime - v8->_setupSessionOpenBeginTime];
-          if (![(HMDHomePodSetupLatencyLogEvent *)v8->_setupLogEvent sessionSetupOpenMS_HH1])
+          [(HMDHomePodSetupLatencyLogEvent *)selfCopy->_setupLogEvent setSessionSetupOpenMS_HH1:selfCopy->_setupSessionOpenEndTime - selfCopy->_setupSessionOpenBeginTime];
+          if (![(HMDHomePodSetupLatencyLogEvent *)selfCopy->_setupLogEvent sessionSetupOpenMS_HH1])
           {
-            [(HMDHomePodSetupLatencyLogEvent *)v8->_setupLogEvent setSessionSetupOpenMS_HH1:1];
+            [(HMDHomePodSetupLatencyLogEvent *)selfCopy->_setupLogEvent setSessionSetupOpenMS_HH1:1];
           }
 
-          [(HMDCurrentAccessorySetupMetricDispatcher *)v8 _handleErrorAndSaveStage:v8->_setupSessionOpenEndTime stageTime:@"Setup Session Open" stageString:v17 error:?];
+          [(HMDCurrentAccessorySetupMetricDispatcher *)selfCopy _handleErrorAndSaveStage:selfCopy->_setupSessionOpenEndTime stageTime:@"Setup Session Open" stageString:v17 error:?];
         }
 
-        os_unfair_lock_unlock(&v8->_lock);
+        os_unfair_lock_unlock(&selfCopy->_lock);
       }
 
       goto LABEL_141;
     case 2uLL:
-      v17 = v6;
-      if (v8)
+      v17 = errorCopy;
+      if (selfCopy)
       {
         os_unfair_lock_lock_with_options();
-        if (v8->_setupSessionCloseBeginTime && !v8->_setupSessionCloseEndTime)
+        if (selfCopy->_setupSessionCloseBeginTime && !selfCopy->_setupSessionCloseEndTime)
         {
-          [(HMDCurrentAccessorySetupMetricDispatcher *)v8 _shouldEndStage:v17 error:?];
-          v34 = objc_getProperty(v8, v33, 24, 1);
-          v8->_setupSessionCloseEndTime = v34[2]();
+          [(HMDCurrentAccessorySetupMetricDispatcher *)selfCopy _shouldEndStage:v17 error:?];
+          v34 = objc_getProperty(selfCopy, v33, 24, 1);
+          selfCopy->_setupSessionCloseEndTime = v34[2]();
 
-          [(HMDHomePodSetupLatencyLogEvent *)v8->_setupLogEvent setSessionSetupCloseMS_HH1:v8->_setupSessionCloseEndTime - v8->_setupSessionCloseBeginTime];
-          if (![(HMDHomePodSetupLatencyLogEvent *)v8->_setupLogEvent sessionSetupCloseMS_HH1])
+          [(HMDHomePodSetupLatencyLogEvent *)selfCopy->_setupLogEvent setSessionSetupCloseMS_HH1:selfCopy->_setupSessionCloseEndTime - selfCopy->_setupSessionCloseBeginTime];
+          if (![(HMDHomePodSetupLatencyLogEvent *)selfCopy->_setupLogEvent sessionSetupCloseMS_HH1])
           {
-            [(HMDHomePodSetupLatencyLogEvent *)v8->_setupLogEvent setSessionSetupCloseMS_HH1:1];
+            [(HMDHomePodSetupLatencyLogEvent *)selfCopy->_setupLogEvent setSessionSetupCloseMS_HH1:1];
           }
 
-          [(HMDCurrentAccessorySetupMetricDispatcher *)v8 _handleErrorAndSaveStage:v8->_setupSessionCloseEndTime stageTime:@"Setup Session Close" stageString:v17 error:?];
+          [(HMDCurrentAccessorySetupMetricDispatcher *)selfCopy _handleErrorAndSaveStage:selfCopy->_setupSessionCloseEndTime stageTime:@"Setup Session Close" stageString:v17 error:?];
         }
 
-        os_unfair_lock_unlock(&v8->_lock);
+        os_unfair_lock_unlock(&selfCopy->_lock);
       }
 
       goto LABEL_141;
     case 3uLL:
-      v17 = v6;
-      if (v8)
+      v17 = errorCopy;
+      if (selfCopy)
       {
         os_unfair_lock_lock_with_options();
-        if (v8->_receiveControllerKeyBeginTime && !v8->_receiveControllerKeyEndTime)
+        if (selfCopy->_receiveControllerKeyBeginTime && !selfCopy->_receiveControllerKeyEndTime)
         {
-          [(HMDCurrentAccessorySetupMetricDispatcher *)v8 _shouldEndStage:v17 error:?];
-          v38 = objc_getProperty(v8, v37, 24, 1);
-          v8->_receiveControllerKeyEndTime = v38[2]();
+          [(HMDCurrentAccessorySetupMetricDispatcher *)selfCopy _shouldEndStage:v17 error:?];
+          v38 = objc_getProperty(selfCopy, v37, 24, 1);
+          selfCopy->_receiveControllerKeyEndTime = v38[2]();
 
-          [(HMDHomePodSetupLatencyLogEvent *)v8->_setupLogEvent setControllerKeyExchangeMS_HH1:v8->_receiveControllerKeyEndTime - v8->_receiveControllerKeyBeginTime];
-          if (![(HMDHomePodSetupLatencyLogEvent *)v8->_setupLogEvent sessionSetupCloseMS_HH1])
+          [(HMDHomePodSetupLatencyLogEvent *)selfCopy->_setupLogEvent setControllerKeyExchangeMS_HH1:selfCopy->_receiveControllerKeyEndTime - selfCopy->_receiveControllerKeyBeginTime];
+          if (![(HMDHomePodSetupLatencyLogEvent *)selfCopy->_setupLogEvent sessionSetupCloseMS_HH1])
           {
-            [(HMDHomePodSetupLatencyLogEvent *)v8->_setupLogEvent setSessionSetupCloseMS_HH1:1];
+            [(HMDHomePodSetupLatencyLogEvent *)selfCopy->_setupLogEvent setSessionSetupCloseMS_HH1:1];
           }
 
-          [(HMDCurrentAccessorySetupMetricDispatcher *)v8 _handleErrorAndSaveStage:v8->_receiveControllerKeyEndTime stageTime:@"Controller Key Exchange" stageString:v17 error:?];
+          [(HMDCurrentAccessorySetupMetricDispatcher *)selfCopy _handleErrorAndSaveStage:selfCopy->_receiveControllerKeyEndTime stageTime:@"Controller Key Exchange" stageString:v17 error:?];
         }
 
-        os_unfair_lock_unlock(&v8->_lock);
+        os_unfair_lock_unlock(&selfCopy->_lock);
       }
 
       goto LABEL_141;
     case 4uLL:
-      v17 = v6;
-      if (v8)
+      v17 = errorCopy;
+      if (selfCopy)
       {
         os_unfair_lock_lock_with_options();
-        if (v8->_sentUnassociatedMediaAccessoryBeginTime && !v8->_sentUnassociatedMediaAccessoryEndTime)
+        if (selfCopy->_sentUnassociatedMediaAccessoryBeginTime && !selfCopy->_sentUnassociatedMediaAccessoryEndTime)
         {
-          [(HMDCurrentAccessorySetupMetricDispatcher *)v8 _shouldEndStage:v17 error:?];
-          v25 = objc_getProperty(v8, v24, 24, 1);
-          v8->_sentUnassociatedMediaAccessoryEndTime = v25[2]();
+          [(HMDCurrentAccessorySetupMetricDispatcher *)selfCopy _shouldEndStage:v17 error:?];
+          v25 = objc_getProperty(selfCopy, v24, 24, 1);
+          selfCopy->_sentUnassociatedMediaAccessoryEndTime = v25[2]();
 
-          [(HMDHomePodSetupLatencyLogEvent *)v8->_setupLogEvent setNewAccessoryTransferMS_HH1:v8->_sentUnassociatedMediaAccessoryEndTime - v8->_sentUnassociatedMediaAccessoryBeginTime];
-          if (![(HMDHomePodSetupLatencyLogEvent *)v8->_setupLogEvent newAccessoryTransferMS_HH1])
+          [(HMDHomePodSetupLatencyLogEvent *)selfCopy->_setupLogEvent setNewAccessoryTransferMS_HH1:selfCopy->_sentUnassociatedMediaAccessoryEndTime - selfCopy->_sentUnassociatedMediaAccessoryBeginTime];
+          if (![(HMDHomePodSetupLatencyLogEvent *)selfCopy->_setupLogEvent newAccessoryTransferMS_HH1])
           {
-            [(HMDHomePodSetupLatencyLogEvent *)v8->_setupLogEvent setNewAccessoryTransferMS_HH1:1];
+            [(HMDHomePodSetupLatencyLogEvent *)selfCopy->_setupLogEvent setNewAccessoryTransferMS_HH1:1];
           }
 
-          [(HMDCurrentAccessorySetupMetricDispatcher *)v8 _handleErrorAndSaveStage:v8->_sentUnassociatedMediaAccessoryEndTime stageTime:@"New Accessory Transfer" stageString:v17 error:?];
+          [(HMDCurrentAccessorySetupMetricDispatcher *)selfCopy _handleErrorAndSaveStage:selfCopy->_sentUnassociatedMediaAccessoryEndTime stageTime:@"New Accessory Transfer" stageString:v17 error:?];
         }
 
-        os_unfair_lock_unlock(&v8->_lock);
+        os_unfair_lock_unlock(&selfCopy->_lock);
       }
 
       goto LABEL_141;
     case 5uLL:
-      v17 = v6;
-      if (v8)
+      v17 = errorCopy;
+      if (selfCopy)
       {
         os_unfair_lock_lock_with_options();
-        if (v8->_settingsCreationBeginTime && !v8->_settingsCreationEndTime)
+        if (selfCopy->_settingsCreationBeginTime && !selfCopy->_settingsCreationEndTime)
         {
-          [(HMDCurrentAccessorySetupMetricDispatcher *)v8 _shouldEndStage:v17 error:?];
-          v44 = objc_getProperty(v8, v43, 24, 1);
-          v8->_settingsCreationEndTime = v44[2]();
+          [(HMDCurrentAccessorySetupMetricDispatcher *)selfCopy _shouldEndStage:v17 error:?];
+          v44 = objc_getProperty(selfCopy, v43, 24, 1);
+          selfCopy->_settingsCreationEndTime = v44[2]();
 
-          [(HMDHomePodSetupLatencyLogEvent *)v8->_setupLogEvent setSettingsCreationMS_HH2:v8->_settingsCreationEndTime - v8->_settingsCreationBeginTime];
-          if (![(HMDHomePodSetupLatencyLogEvent *)v8->_setupLogEvent settingsCreationMS_HH2])
+          [(HMDHomePodSetupLatencyLogEvent *)selfCopy->_setupLogEvent setSettingsCreationMS_HH2:selfCopy->_settingsCreationEndTime - selfCopy->_settingsCreationBeginTime];
+          if (![(HMDHomePodSetupLatencyLogEvent *)selfCopy->_setupLogEvent settingsCreationMS_HH2])
           {
-            [(HMDHomePodSetupLatencyLogEvent *)v8->_setupLogEvent setSettingsCreationMS_HH2:1];
+            [(HMDHomePodSetupLatencyLogEvent *)selfCopy->_setupLogEvent setSettingsCreationMS_HH2:1];
           }
 
-          [(HMDCurrentAccessorySetupMetricDispatcher *)v8 _handleErrorAndSaveStage:v8->_settingsCreationEndTime stageTime:@"Settings Creation" stageString:v17 error:?];
+          [(HMDCurrentAccessorySetupMetricDispatcher *)selfCopy _handleErrorAndSaveStage:selfCopy->_settingsCreationEndTime stageTime:@"Settings Creation" stageString:v17 error:?];
         }
 
-        os_unfair_lock_unlock(&v8->_lock);
+        os_unfair_lock_unlock(&selfCopy->_lock);
       }
 
       goto LABEL_141;
     case 6uLL:
-      v17 = v6;
-      if (v8)
+      v17 = errorCopy;
+      if (selfCopy)
       {
         os_unfair_lock_lock_with_options();
-        if (v8->_pairingIdentityCreationBeginTime && !v8->_pairingIdentityCreationEndTime)
+        if (selfCopy->_pairingIdentityCreationBeginTime && !selfCopy->_pairingIdentityCreationEndTime)
         {
-          [(HMDCurrentAccessorySetupMetricDispatcher *)v8 _shouldEndStage:v17 error:?];
-          v48 = objc_getProperty(v8, v47, 24, 1);
-          v8->_pairingIdentityCreationEndTime = v48[2]();
+          [(HMDCurrentAccessorySetupMetricDispatcher *)selfCopy _shouldEndStage:v17 error:?];
+          v48 = objc_getProperty(selfCopy, v47, 24, 1);
+          selfCopy->_pairingIdentityCreationEndTime = v48[2]();
 
-          [(HMDHomePodSetupLatencyLogEvent *)v8->_setupLogEvent setPairingIdentityCreationMS_HH2:v8->_pairingIdentityCreationEndTime - v8->_pairingIdentityCreationBeginTime];
-          if (![(HMDHomePodSetupLatencyLogEvent *)v8->_setupLogEvent pairingIdentityCreationMS_HH2])
+          [(HMDHomePodSetupLatencyLogEvent *)selfCopy->_setupLogEvent setPairingIdentityCreationMS_HH2:selfCopy->_pairingIdentityCreationEndTime - selfCopy->_pairingIdentityCreationBeginTime];
+          if (![(HMDHomePodSetupLatencyLogEvent *)selfCopy->_setupLogEvent pairingIdentityCreationMS_HH2])
           {
-            [(HMDHomePodSetupLatencyLogEvent *)v8->_setupLogEvent setPairingIdentityCreationMS_HH2:1];
+            [(HMDHomePodSetupLatencyLogEvent *)selfCopy->_setupLogEvent setPairingIdentityCreationMS_HH2:1];
           }
 
-          [(HMDCurrentAccessorySetupMetricDispatcher *)v8 _handleErrorAndSaveStage:v8->_pairingIdentityCreationEndTime stageTime:@"Pairing Identity Creation" stageString:v17 error:?];
+          [(HMDCurrentAccessorySetupMetricDispatcher *)selfCopy _handleErrorAndSaveStage:selfCopy->_pairingIdentityCreationEndTime stageTime:@"Pairing Identity Creation" stageString:v17 error:?];
         }
 
-        os_unfair_lock_unlock(&v8->_lock);
+        os_unfair_lock_unlock(&selfCopy->_lock);
       }
 
       goto LABEL_141;
     case 7uLL:
-      v17 = v6;
-      if (v8)
+      v17 = errorCopy;
+      if (selfCopy)
       {
         os_unfair_lock_lock_with_options();
-        if (v8->_addAccessoryBeginTime && !v8->_addAccessoryEndTime)
+        if (selfCopy->_addAccessoryBeginTime && !selfCopy->_addAccessoryEndTime)
         {
-          [(HMDCurrentAccessorySetupMetricDispatcher *)v8 _shouldEndStage:v17 error:?];
-          v40 = objc_getProperty(v8, v39, 24, 1);
-          v8->_addAccessoryEndTime = v40[2]();
+          [(HMDCurrentAccessorySetupMetricDispatcher *)selfCopy _shouldEndStage:v17 error:?];
+          v40 = objc_getProperty(selfCopy, v39, 24, 1);
+          selfCopy->_addAccessoryEndTime = v40[2]();
 
-          [(HMDHomePodSetupLatencyLogEvent *)v8->_setupLogEvent setAccessoryAddMS_HH2:v8->_addAccessoryEndTime - v8->_addAccessoryBeginTime];
-          if (![(HMDHomePodSetupLatencyLogEvent *)v8->_setupLogEvent accessoryAddMS_HH2])
+          [(HMDHomePodSetupLatencyLogEvent *)selfCopy->_setupLogEvent setAccessoryAddMS_HH2:selfCopy->_addAccessoryEndTime - selfCopy->_addAccessoryBeginTime];
+          if (![(HMDHomePodSetupLatencyLogEvent *)selfCopy->_setupLogEvent accessoryAddMS_HH2])
           {
-            [(HMDHomePodSetupLatencyLogEvent *)v8->_setupLogEvent setAccessoryAddMS_HH2:1];
+            [(HMDHomePodSetupLatencyLogEvent *)selfCopy->_setupLogEvent setAccessoryAddMS_HH2:1];
           }
 
-          [(HMDCurrentAccessorySetupMetricDispatcher *)v8 _handleErrorAndSaveStage:v8->_addAccessoryEndTime stageTime:@"Accessory Add" stageString:v17 error:?];
+          [(HMDCurrentAccessorySetupMetricDispatcher *)selfCopy _handleErrorAndSaveStage:selfCopy->_addAccessoryEndTime stageTime:@"Accessory Add" stageString:v17 error:?];
         }
 
-        os_unfair_lock_unlock(&v8->_lock);
+        os_unfair_lock_unlock(&selfCopy->_lock);
       }
 
       goto LABEL_141;
     case 8uLL:
-      v17 = v6;
-      if (v8)
+      v17 = errorCopy;
+      if (selfCopy)
       {
         os_unfair_lock_lock_with_options();
-        if (v8->_siriReadyBeginTime && !v8->_siriReadyEndTime)
+        if (selfCopy->_siriReadyBeginTime && !selfCopy->_siriReadyEndTime)
         {
-          [(HMDCurrentAccessorySetupMetricDispatcher *)v8 _shouldEndStage:v17 error:?];
-          v52 = objc_getProperty(v8, v51, 24, 1);
-          v8->_siriReadyEndTime = v52[2]();
+          [(HMDCurrentAccessorySetupMetricDispatcher *)selfCopy _shouldEndStage:v17 error:?];
+          v52 = objc_getProperty(selfCopy, v51, 24, 1);
+          selfCopy->_siriReadyEndTime = v52[2]();
 
-          [(HMDHomePodSetupLatencyLogEvent *)v8->_setupLogEvent setSiriReadyMS_HH2:v8->_siriReadyEndTime - v8->_siriReadyBeginTime];
-          if (![(HMDHomePodSetupLatencyLogEvent *)v8->_setupLogEvent siriReadyMS_HH2])
+          [(HMDHomePodSetupLatencyLogEvent *)selfCopy->_setupLogEvent setSiriReadyMS_HH2:selfCopy->_siriReadyEndTime - selfCopy->_siriReadyBeginTime];
+          if (![(HMDHomePodSetupLatencyLogEvent *)selfCopy->_setupLogEvent siriReadyMS_HH2])
           {
-            [(HMDHomePodSetupLatencyLogEvent *)v8->_setupLogEvent setSiriReadyMS_HH2:1];
+            [(HMDHomePodSetupLatencyLogEvent *)selfCopy->_setupLogEvent setSiriReadyMS_HH2:1];
           }
 
-          [(HMDCurrentAccessorySetupMetricDispatcher *)v8 _handleErrorAndSaveStage:v8->_siriReadyEndTime stageTime:@"Siri Home Automation Ready" stageString:v17 error:?];
+          [(HMDCurrentAccessorySetupMetricDispatcher *)selfCopy _handleErrorAndSaveStage:selfCopy->_siriReadyEndTime stageTime:@"Siri Home Automation Ready" stageString:v17 error:?];
         }
 
-        os_unfair_lock_unlock(&v8->_lock);
+        os_unfair_lock_unlock(&selfCopy->_lock);
       }
 
       goto LABEL_141;
     case 9uLL:
-      v17 = v6;
-      if (v8)
+      v17 = errorCopy;
+      if (selfCopy)
       {
         os_unfair_lock_lock_with_options();
-        if (v8->_hh2SentinelZoneFetchBeginTime && !v8->_hh2SentinelZoneFetchEndTime)
+        if (selfCopy->_hh2SentinelZoneFetchBeginTime && !selfCopy->_hh2SentinelZoneFetchEndTime)
         {
-          [(HMDCurrentAccessorySetupMetricDispatcher *)v8 _shouldEndStage:v17 error:?];
-          v29 = objc_getProperty(v8, v28, 24, 1);
-          v8->_hh2SentinelZoneFetchEndTime = v29[2]();
+          [(HMDCurrentAccessorySetupMetricDispatcher *)selfCopy _shouldEndStage:v17 error:?];
+          v29 = objc_getProperty(selfCopy, v28, 24, 1);
+          selfCopy->_hh2SentinelZoneFetchEndTime = v29[2]();
 
-          [(HMDHomePodSetupLatencyLogEvent *)v8->_setupLogEvent setSentinelZoneFetchMS_HH1:v8->_hh2SentinelZoneFetchEndTime - v8->_hh2SentinelZoneFetchBeginTime];
-          if (![(HMDHomePodSetupLatencyLogEvent *)v8->_setupLogEvent sentinelZoneFetchMS_HH1])
+          [(HMDHomePodSetupLatencyLogEvent *)selfCopy->_setupLogEvent setSentinelZoneFetchMS_HH1:selfCopy->_hh2SentinelZoneFetchEndTime - selfCopy->_hh2SentinelZoneFetchBeginTime];
+          if (![(HMDHomePodSetupLatencyLogEvent *)selfCopy->_setupLogEvent sentinelZoneFetchMS_HH1])
           {
-            [(HMDHomePodSetupLatencyLogEvent *)v8->_setupLogEvent setSentinelZoneFetchMS_HH1:1];
+            [(HMDHomePodSetupLatencyLogEvent *)selfCopy->_setupLogEvent setSentinelZoneFetchMS_HH1:1];
           }
 
-          [(HMDHomePodSetupLatencyLogEvent *)v8->_setupLogEvent setSavedEventState:1];
-          [(HMDCurrentAccessorySetupMetricDispatcher *)v8 _recordTotalDuration];
-          [(HMDCurrentAccessorySetupMetricDispatcher *)v8 _handleErrorAndSaveStage:v8->_hh2SentinelZoneFetchEndTime stageTime:@"HH2 sentinel zone fetched" stageString:v17 error:?];
-          v31 = objc_getProperty(v8, v30, 24, 1);
+          [(HMDHomePodSetupLatencyLogEvent *)selfCopy->_setupLogEvent setSavedEventState:1];
+          [(HMDCurrentAccessorySetupMetricDispatcher *)selfCopy _recordTotalDuration];
+          [(HMDCurrentAccessorySetupMetricDispatcher *)selfCopy _handleErrorAndSaveStage:selfCopy->_hh2SentinelZoneFetchEndTime stageTime:@"HH2 sentinel zone fetched" stageString:v17 error:?];
+          v31 = objc_getProperty(selfCopy, v30, 24, 1);
           v32 = v31[2]();
-          [(HMDCurrentAccessorySetupMetricDispatcher *)v8 _logWithoutStatesWithPrefix:@"Setup In HH1" stage:v32 time:v17 error:?];
+          [(HMDCurrentAccessorySetupMetricDispatcher *)selfCopy _logWithoutStatesWithPrefix:@"Setup In HH1" stage:v32 time:v17 error:?];
         }
 
-        os_unfair_lock_unlock(&v8->_lock);
+        os_unfair_lock_unlock(&selfCopy->_lock);
       }
 
       goto LABEL_141;
     case 0xAuLL:
-      v17 = v6;
-      if (v8)
+      v17 = errorCopy;
+      if (selfCopy)
       {
         os_unfair_lock_lock_with_options();
-        if (v8->_appleAccountSettledBeginTime && !v8->_appleAccountSettledEndTime)
+        if (selfCopy->_appleAccountSettledBeginTime && !selfCopy->_appleAccountSettledEndTime)
         {
-          [(HMDCurrentAccessorySetupMetricDispatcher *)v8 _shouldEndStage:v17 error:?];
-          v50 = objc_getProperty(v8, v49, 24, 1);
-          v8->_appleAccountSettledEndTime = v50[2]();
+          [(HMDCurrentAccessorySetupMetricDispatcher *)selfCopy _shouldEndStage:v17 error:?];
+          v50 = objc_getProperty(selfCopy, v49, 24, 1);
+          selfCopy->_appleAccountSettledEndTime = v50[2]();
 
-          [(HMDHomePodSetupLatencyLogEvent *)v8->_setupLogEvent setAccountSettleWaitMS_HH2:v8->_appleAccountSettledEndTime - v8->_appleAccountSettledBeginTime];
-          if (![(HMDHomePodSetupLatencyLogEvent *)v8->_setupLogEvent accountSettleWaitMS_HH2])
+          [(HMDHomePodSetupLatencyLogEvent *)selfCopy->_setupLogEvent setAccountSettleWaitMS_HH2:selfCopy->_appleAccountSettledEndTime - selfCopy->_appleAccountSettledBeginTime];
+          if (![(HMDHomePodSetupLatencyLogEvent *)selfCopy->_setupLogEvent accountSettleWaitMS_HH2])
           {
-            [(HMDHomePodSetupLatencyLogEvent *)v8->_setupLogEvent setAccountSettleWaitMS_HH2:1];
+            [(HMDHomePodSetupLatencyLogEvent *)selfCopy->_setupLogEvent setAccountSettleWaitMS_HH2:1];
           }
 
-          [(HMDCurrentAccessorySetupMetricDispatcher *)v8 _handleErrorAndSaveStage:v8->_appleAccountSettledEndTime stageTime:@"Apple account settled" stageString:v17 error:?];
+          [(HMDCurrentAccessorySetupMetricDispatcher *)selfCopy _handleErrorAndSaveStage:selfCopy->_appleAccountSettledEndTime stageTime:@"Apple account settled" stageString:v17 error:?];
         }
 
-        os_unfair_lock_unlock(&v8->_lock);
+        os_unfair_lock_unlock(&selfCopy->_lock);
       }
 
       goto LABEL_141;
     case 0xBuLL:
-      v17 = v6;
-      if (v8)
+      v17 = errorCopy;
+      if (selfCopy)
       {
         os_unfair_lock_lock_with_options();
-        if (v8->_currentIDSDeviceSettledBeginTime && !v8->_currentIDSDeviceSettledEndTime)
+        if (selfCopy->_currentIDSDeviceSettledBeginTime && !selfCopy->_currentIDSDeviceSettledEndTime)
         {
-          [(HMDCurrentAccessorySetupMetricDispatcher *)v8 _shouldEndStage:v17 error:?];
-          v23 = objc_getProperty(v8, v22, 24, 1);
-          v8->_currentIDSDeviceSettledEndTime = v23[2]();
+          [(HMDCurrentAccessorySetupMetricDispatcher *)selfCopy _shouldEndStage:v17 error:?];
+          v23 = objc_getProperty(selfCopy, v22, 24, 1);
+          selfCopy->_currentIDSDeviceSettledEndTime = v23[2]();
 
-          [(HMDHomePodSetupLatencyLogEvent *)v8->_setupLogEvent setCurrentDeviceIDSWaitMS_HH2:v8->_currentIDSDeviceSettledEndTime - v8->_currentIDSDeviceSettledBeginTime];
-          if (![(HMDHomePodSetupLatencyLogEvent *)v8->_setupLogEvent currentDeviceIDSWaitMS_HH2])
+          [(HMDHomePodSetupLatencyLogEvent *)selfCopy->_setupLogEvent setCurrentDeviceIDSWaitMS_HH2:selfCopy->_currentIDSDeviceSettledEndTime - selfCopy->_currentIDSDeviceSettledBeginTime];
+          if (![(HMDHomePodSetupLatencyLogEvent *)selfCopy->_setupLogEvent currentDeviceIDSWaitMS_HH2])
           {
-            [(HMDHomePodSetupLatencyLogEvent *)v8->_setupLogEvent setCurrentDeviceIDSWaitMS_HH2:1];
+            [(HMDHomePodSetupLatencyLogEvent *)selfCopy->_setupLogEvent setCurrentDeviceIDSWaitMS_HH2:1];
           }
 
-          [(HMDCurrentAccessorySetupMetricDispatcher *)v8 _handleErrorAndSaveStage:v8->_currentIDSDeviceSettledEndTime stageTime:@"Current device settled" stageString:v17 error:?];
+          [(HMDCurrentAccessorySetupMetricDispatcher *)selfCopy _handleErrorAndSaveStage:selfCopy->_currentIDSDeviceSettledEndTime stageTime:@"Current device settled" stageString:v17 error:?];
         }
 
-        os_unfair_lock_unlock(&v8->_lock);
+        os_unfair_lock_unlock(&selfCopy->_lock);
       }
 
       goto LABEL_141;
     case 0xCuLL:
-      v17 = v6;
-      if (v8)
+      v17 = errorCopy;
+      if (selfCopy)
       {
         os_unfair_lock_lock_with_options();
-        if (v8->_homeManagerInitBeginTime && !v8->_homeManagerInitEndTime)
+        if (selfCopy->_homeManagerInitBeginTime && !selfCopy->_homeManagerInitEndTime)
         {
-          [(HMDCurrentAccessorySetupMetricDispatcher *)v8 _shouldEndStage:v17 error:?];
-          v27 = objc_getProperty(v8, v26, 24, 1);
-          v8->_homeManagerInitEndTime = v27[2]();
+          [(HMDCurrentAccessorySetupMetricDispatcher *)selfCopy _shouldEndStage:v17 error:?];
+          v27 = objc_getProperty(selfCopy, v26, 24, 1);
+          selfCopy->_homeManagerInitEndTime = v27[2]();
 
-          [(HMDHomePodSetupLatencyLogEvent *)v8->_setupLogEvent setHomeManagerReadyMS_HH2:v8->_homeManagerInitEndTime - v8->_homeManagerInitBeginTime];
-          if (![(HMDHomePodSetupLatencyLogEvent *)v8->_setupLogEvent homeManagerReadyMS_HH2])
+          [(HMDHomePodSetupLatencyLogEvent *)selfCopy->_setupLogEvent setHomeManagerReadyMS_HH2:selfCopy->_homeManagerInitEndTime - selfCopy->_homeManagerInitBeginTime];
+          if (![(HMDHomePodSetupLatencyLogEvent *)selfCopy->_setupLogEvent homeManagerReadyMS_HH2])
           {
-            [(HMDHomePodSetupLatencyLogEvent *)v8->_setupLogEvent setHomeManagerReadyMS_HH2:1];
+            [(HMDHomePodSetupLatencyLogEvent *)selfCopy->_setupLogEvent setHomeManagerReadyMS_HH2:1];
           }
 
-          [(HMDCurrentAccessorySetupMetricDispatcher *)v8 _handleErrorAndSaveStage:v8->_homeManagerInitEndTime stageTime:@"Home Manager Initialized" stageString:v17 error:?];
+          [(HMDCurrentAccessorySetupMetricDispatcher *)selfCopy _handleErrorAndSaveStage:selfCopy->_homeManagerInitEndTime stageTime:@"Home Manager Initialized" stageString:v17 error:?];
         }
 
-        os_unfair_lock_unlock(&v8->_lock);
+        os_unfair_lock_unlock(&selfCopy->_lock);
       }
 
       goto LABEL_141;
     case 0xDuLL:
-      v17 = v6;
-      if (v8)
+      v17 = errorCopy;
+      if (selfCopy)
       {
         os_unfair_lock_lock_with_options();
-        if (v8->_coreDataFirstCloudImportBeginTime && !v8->_coreDataFirstCloudImportEndTime)
+        if (selfCopy->_coreDataFirstCloudImportBeginTime && !selfCopy->_coreDataFirstCloudImportEndTime)
         {
-          [(HMDCurrentAccessorySetupMetricDispatcher *)v8 _shouldEndStage:v17 error:?];
-          v46 = objc_getProperty(v8, v45, 24, 1);
-          v8->_coreDataFirstCloudImportEndTime = v46[2]();
+          [(HMDCurrentAccessorySetupMetricDispatcher *)selfCopy _shouldEndStage:v17 error:?];
+          v46 = objc_getProperty(selfCopy, v45, 24, 1);
+          selfCopy->_coreDataFirstCloudImportEndTime = v46[2]();
 
-          [(HMDHomePodSetupLatencyLogEvent *)v8->_setupLogEvent setFirstCoreDataImportMS_HH2:v8->_coreDataFirstCloudImportEndTime - v8->_coreDataFirstCloudImportBeginTime];
-          if (![(HMDHomePodSetupLatencyLogEvent *)v8->_setupLogEvent firstCoreDataImportMS_HH2])
+          [(HMDHomePodSetupLatencyLogEvent *)selfCopy->_setupLogEvent setFirstCoreDataImportMS_HH2:selfCopy->_coreDataFirstCloudImportEndTime - selfCopy->_coreDataFirstCloudImportBeginTime];
+          if (![(HMDHomePodSetupLatencyLogEvent *)selfCopy->_setupLogEvent firstCoreDataImportMS_HH2])
           {
-            [(HMDHomePodSetupLatencyLogEvent *)v8->_setupLogEvent setFirstCoreDataImportMS_HH2:1];
+            [(HMDHomePodSetupLatencyLogEvent *)selfCopy->_setupLogEvent setFirstCoreDataImportMS_HH2:1];
           }
 
-          [(HMDCurrentAccessorySetupMetricDispatcher *)v8 _handleErrorAndSaveStage:v8->_coreDataFirstCloudImportEndTime stageTime:@"First CoreData Import" stageString:v17 error:?];
+          [(HMDCurrentAccessorySetupMetricDispatcher *)selfCopy _handleErrorAndSaveStage:selfCopy->_coreDataFirstCloudImportEndTime stageTime:@"First CoreData Import" stageString:v17 error:?];
         }
 
-        os_unfair_lock_unlock(&v8->_lock);
+        os_unfair_lock_unlock(&selfCopy->_lock);
       }
 
       goto LABEL_141;
     case 0xEuLL:
-      v17 = v6;
-      if (v8)
+      v17 = errorCopy;
+      if (selfCopy)
       {
         os_unfair_lock_lock_with_options();
-        [(HMDHomePodSetupLatencyLogEvent *)v8->_setupLogEvent setNumberOfTimesPrimaryResidentChanged_HH2:[(HMDHomePodSetupLatencyLogEvent *)v8->_setupLogEvent numberOfTimesPrimaryResidentChanged_HH2]+ 1];
-        if (v8->_firstPrimaryResidentElectionBeginTime && !v8->_firstPrimaryResidentElectionEndTime)
+        [(HMDHomePodSetupLatencyLogEvent *)selfCopy->_setupLogEvent setNumberOfTimesPrimaryResidentChanged_HH2:[(HMDHomePodSetupLatencyLogEvent *)selfCopy->_setupLogEvent numberOfTimesPrimaryResidentChanged_HH2]+ 1];
+        if (selfCopy->_firstPrimaryResidentElectionBeginTime && !selfCopy->_firstPrimaryResidentElectionEndTime)
         {
-          [(HMDCurrentAccessorySetupMetricDispatcher *)v8 _shouldEndStage:v17 error:?];
-          v21 = objc_getProperty(v8, v20, 24, 1);
-          v8->_firstPrimaryResidentElectionEndTime = v21[2]();
+          [(HMDCurrentAccessorySetupMetricDispatcher *)selfCopy _shouldEndStage:v17 error:?];
+          v21 = objc_getProperty(selfCopy, v20, 24, 1);
+          selfCopy->_firstPrimaryResidentElectionEndTime = v21[2]();
 
-          [(HMDHomePodSetupLatencyLogEvent *)v8->_setupLogEvent setPrimaryResidentElectionMS_HH2:v8->_firstPrimaryResidentElectionEndTime - v8->_firstPrimaryResidentElectionBeginTime];
-          if (![(HMDHomePodSetupLatencyLogEvent *)v8->_setupLogEvent primaryResidentElectionMS_HH2])
+          [(HMDHomePodSetupLatencyLogEvent *)selfCopy->_setupLogEvent setPrimaryResidentElectionMS_HH2:selfCopy->_firstPrimaryResidentElectionEndTime - selfCopy->_firstPrimaryResidentElectionBeginTime];
+          if (![(HMDHomePodSetupLatencyLogEvent *)selfCopy->_setupLogEvent primaryResidentElectionMS_HH2])
           {
-            [(HMDHomePodSetupLatencyLogEvent *)v8->_setupLogEvent setPrimaryResidentElectionMS_HH2:1];
+            [(HMDHomePodSetupLatencyLogEvent *)selfCopy->_setupLogEvent setPrimaryResidentElectionMS_HH2:1];
           }
 
-          if (v8->_firstCurrentDeviceJoinMeshBeginTime)
+          if (selfCopy->_firstCurrentDeviceJoinMeshBeginTime)
           {
-            if ([(HMDHomePodSetupLatencyLogEvent *)v8->_setupLogEvent primaryResidentElectionJoinMeshMS_HH2]== -1)
+            if ([(HMDHomePodSetupLatencyLogEvent *)selfCopy->_setupLogEvent primaryResidentElectionJoinMeshMS_HH2]== -1)
             {
-              [(HMDHomePodSetupLatencyLogEvent *)v8->_setupLogEvent setPrimaryResidentElectionJoinMeshMS_HH2:v8->_firstPrimaryResidentElectionEndTime - v8->_firstCurrentDeviceJoinMeshBeginTime];
-              if (![(HMDHomePodSetupLatencyLogEvent *)v8->_setupLogEvent primaryResidentElectionJoinMeshMS_HH2])
+              [(HMDHomePodSetupLatencyLogEvent *)selfCopy->_setupLogEvent setPrimaryResidentElectionJoinMeshMS_HH2:selfCopy->_firstPrimaryResidentElectionEndTime - selfCopy->_firstCurrentDeviceJoinMeshBeginTime];
+              if (![(HMDHomePodSetupLatencyLogEvent *)selfCopy->_setupLogEvent primaryResidentElectionJoinMeshMS_HH2])
               {
-                [(HMDHomePodSetupLatencyLogEvent *)v8->_setupLogEvent setPrimaryResidentElectionJoinMeshMS_HH2:1];
+                [(HMDHomePodSetupLatencyLogEvent *)selfCopy->_setupLogEvent setPrimaryResidentElectionJoinMeshMS_HH2:1];
               }
             }
           }
 
-          [(HMDCurrentAccessorySetupMetricDispatcher *)v8 _handleErrorAndSaveStage:v8->_firstPrimaryResidentElectionEndTime stageTime:@"First Primary Resident Election" stageString:v17 error:?];
+          [(HMDCurrentAccessorySetupMetricDispatcher *)selfCopy _handleErrorAndSaveStage:selfCopy->_firstPrimaryResidentElectionEndTime stageTime:@"First Primary Resident Election" stageString:v17 error:?];
         }
 
-        os_unfair_lock_unlock(&v8->_lock);
+        os_unfair_lock_unlock(&selfCopy->_lock);
       }
 
       goto LABEL_141;
     case 0xFuLL:
-      v17 = v6;
-      if (v8)
+      v17 = errorCopy;
+      if (selfCopy)
       {
         os_unfair_lock_lock_with_options();
-        if (v8->_eventRouterServerConnectBeginTime && !v8->_eventRouterServerConnectEndTime)
+        if (selfCopy->_eventRouterServerConnectBeginTime && !selfCopy->_eventRouterServerConnectEndTime)
         {
-          [(HMDCurrentAccessorySetupMetricDispatcher *)v8 _shouldEndStage:v17 error:?];
-          v36 = objc_getProperty(v8, v35, 24, 1);
-          v8->_eventRouterServerConnectEndTime = v36[2]();
+          [(HMDCurrentAccessorySetupMetricDispatcher *)selfCopy _shouldEndStage:v17 error:?];
+          v36 = objc_getProperty(selfCopy, v35, 24, 1);
+          selfCopy->_eventRouterServerConnectEndTime = v36[2]();
 
-          [(HMDHomePodSetupLatencyLogEvent *)v8->_setupLogEvent setEventRouterServerConnectionMS_HH2:v8->_eventRouterServerConnectEndTime - v8->_eventRouterServerConnectBeginTime];
-          if (![(HMDHomePodSetupLatencyLogEvent *)v8->_setupLogEvent eventRouterServerConnectionMS_HH2])
+          [(HMDHomePodSetupLatencyLogEvent *)selfCopy->_setupLogEvent setEventRouterServerConnectionMS_HH2:selfCopy->_eventRouterServerConnectEndTime - selfCopy->_eventRouterServerConnectBeginTime];
+          if (![(HMDHomePodSetupLatencyLogEvent *)selfCopy->_setupLogEvent eventRouterServerConnectionMS_HH2])
           {
-            [(HMDHomePodSetupLatencyLogEvent *)v8->_setupLogEvent setEventRouterServerConnectionMS_HH2:1];
+            [(HMDHomePodSetupLatencyLogEvent *)selfCopy->_setupLogEvent setEventRouterServerConnectionMS_HH2:1];
           }
 
-          [(HMDCurrentAccessorySetupMetricDispatcher *)v8 _handleErrorAndSaveStage:v8->_eventRouterServerConnectEndTime stageTime:@"First Event Router Server Connection" stageString:v17 error:?];
+          [(HMDCurrentAccessorySetupMetricDispatcher *)selfCopy _handleErrorAndSaveStage:selfCopy->_eventRouterServerConnectEndTime stageTime:@"First Event Router Server Connection" stageString:v17 error:?];
         }
 
-        os_unfair_lock_unlock(&v8->_lock);
+        os_unfair_lock_unlock(&selfCopy->_lock);
       }
 
       goto LABEL_141;
     case 0x10uLL:
-      v17 = v6;
-      if (v8)
+      v17 = errorCopy;
+      if (selfCopy)
       {
         os_unfair_lock_lock_with_options();
-        if (v8->_firstServerEventSentBeginTime && !v8->_firstServerEventSentEndTime)
+        if (selfCopy->_firstServerEventSentBeginTime && !selfCopy->_firstServerEventSentEndTime)
         {
-          [(HMDCurrentAccessorySetupMetricDispatcher *)v8 _shouldEndStage:v17 error:?];
-          v19 = objc_getProperty(v8, v18, 24, 1);
-          v8->_firstServerEventSentEndTime = v19[2]();
+          [(HMDCurrentAccessorySetupMetricDispatcher *)selfCopy _shouldEndStage:v17 error:?];
+          v19 = objc_getProperty(selfCopy, v18, 24, 1);
+          selfCopy->_firstServerEventSentEndTime = v19[2]();
 
-          [(HMDHomePodSetupLatencyLogEvent *)v8->_setupLogEvent setEventRouterFirstEventPushMS_HH2:v8->_firstServerEventSentEndTime - v8->_firstServerEventSentBeginTime];
-          if (![(HMDHomePodSetupLatencyLogEvent *)v8->_setupLogEvent eventRouterFirstEventPushMS_HH2])
+          [(HMDHomePodSetupLatencyLogEvent *)selfCopy->_setupLogEvent setEventRouterFirstEventPushMS_HH2:selfCopy->_firstServerEventSentEndTime - selfCopy->_firstServerEventSentBeginTime];
+          if (![(HMDHomePodSetupLatencyLogEvent *)selfCopy->_setupLogEvent eventRouterFirstEventPushMS_HH2])
           {
-            [(HMDHomePodSetupLatencyLogEvent *)v8->_setupLogEvent setEventRouterFirstEventPushMS_HH2:1];
+            [(HMDHomePodSetupLatencyLogEvent *)selfCopy->_setupLogEvent setEventRouterFirstEventPushMS_HH2:1];
           }
 
-          [(HMDCurrentAccessorySetupMetricDispatcher *)v8 _handleErrorAndSaveStage:v8->_firstServerEventSentEndTime stageTime:@"First Event Push" stageString:v17 error:?];
+          [(HMDCurrentAccessorySetupMetricDispatcher *)selfCopy _handleErrorAndSaveStage:selfCopy->_firstServerEventSentEndTime stageTime:@"First Event Push" stageString:v17 error:?];
         }
 
-        os_unfair_lock_unlock(&v8->_lock);
+        os_unfair_lock_unlock(&selfCopy->_lock);
       }
 
 LABEL_141:
@@ -1448,16 +1448,16 @@ LABEL_141:
   v53 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_shouldEndStage:(void *)a3 error:
+- (void)_shouldEndStage:(void *)stage error:
 {
   v25 = *MEMORY[0x277D85DE8];
   v5 = a2;
-  v6 = a3;
-  os_unfair_lock_assert_owner((a1 + 8));
-  if (v6)
+  stageCopy = stage;
+  os_unfair_lock_assert_owner((self + 8));
+  if (stageCopy)
   {
     v7 = objc_autoreleasePoolPush();
-    v8 = a1;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
@@ -1465,30 +1465,30 @@ LABEL_141:
       v19 = 138543874;
       v20 = v10;
       v21 = 2112;
-      v22 = v6;
+      v22 = stageCopy;
       v23 = 2112;
       v24 = v5;
       _os_log_impl(&dword_229538000, v9, OS_LOG_TYPE_INFO, "%{public}@Save error %@ for stage %@", &v19, 0x20u);
     }
 
     objc_autoreleasePoolPop(v7);
-    v11 = [v6 copy];
-    [v8[8] setObject:v11 forKeyedSubscript:v5];
+    v11 = [stageCopy copy];
+    [selfCopy[8] setObject:v11 forKeyedSubscript:v5];
   }
 
   else
   {
-    v12 = [*(a1 + 64) objectForKeyedSubscript:v5];
+    v12 = [*(self + 64) objectForKeyedSubscript:v5];
 
     if (v12)
     {
       v13 = objc_autoreleasePoolPush();
-      v14 = a1;
+      selfCopy2 = self;
       v15 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
       {
         v16 = HMFGetLogIdentifier();
-        v17 = [v14[8] objectForKeyedSubscript:v5];
+        v17 = [selfCopy2[8] objectForKeyedSubscript:v5];
         v19 = 138543874;
         v20 = v16;
         v21 = 2112;
@@ -1499,23 +1499,23 @@ LABEL_141:
       }
 
       objc_autoreleasePoolPop(v13);
-      [v14[8] removeObjectForKey:v5];
+      [selfCopy2[8] removeObjectForKey:v5];
     }
   }
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleErrorAndSaveStage:(uint64_t)a3 stageTime:(void *)a4 stageString:(void *)a5 error:
+- (void)_handleErrorAndSaveStage:(uint64_t)stage stageTime:(void *)time stageString:(void *)string error:
 {
   v46 = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  v10 = a5;
-  os_unfair_lock_assert_owner((a1 + 8));
-  if (v10)
+  timeCopy = time;
+  stringCopy = string;
+  os_unfair_lock_assert_owner((self + 8));
+  if (stringCopy)
   {
-    [*(a1 + 48) setError:v10];
-    [*(a1 + 48) setErrorStage_String:v9];
+    [*(self + 48) setError:stringCopy];
+    [*(self + 48) setErrorStage_String:timeCopy];
     if (a2)
     {
       v11 = @"End stage";
@@ -1526,10 +1526,10 @@ LABEL_141:
       v11 = @"Begin stage";
     }
 
-    v12 = a1;
-    v13 = v9;
-    v14 = a3;
-    v15 = v10;
+    selfCopy2 = self;
+    v13 = timeCopy;
+    stageCopy2 = stage;
+    v15 = stringCopy;
   }
 
   else
@@ -1544,53 +1544,53 @@ LABEL_141:
       v11 = @"Begin stage";
     }
 
-    v12 = a1;
-    v13 = v9;
-    v14 = a3;
+    selfCopy2 = self;
+    v13 = timeCopy;
+    stageCopy2 = stage;
     v15 = 0;
   }
 
-  [(HMDCurrentAccessorySetupMetricDispatcher *)v12 _logWithoutStatesWithPrefix:v11 stage:v13 time:v14 error:v15];
+  [(HMDCurrentAccessorySetupMetricDispatcher *)selfCopy2 _logWithoutStatesWithPrefix:v11 stage:v13 time:stageCopy2 error:v15];
   if (a2)
   {
-    if (([a1 allStagesSubmitted] & 1) != 0 || (os_unfair_lock_assert_owner((a1 + 8)), objc_msgSend(*(a1 + 48), "sessionSetupOpenMS_HH1") < 1) || objc_msgSend(*(a1 + 48), "controllerKeyExchangeMS_HH1") < 1 || objc_msgSend(*(a1 + 48), "newAccessoryTransferMS_HH1") < 1 || objc_msgSend(*(a1 + 48), "sessionSetupCloseMS_HH1") < 1 || objc_msgSend(*(a1 + 48), "accessoryAddMS_HH2") < 1 || objc_msgSend(*(a1 + 48), "settingsCreationMS_HH2") < 1 || objc_msgSend(*(a1 + 48), "pairingIdentityCreationMS_HH2") < 1 || objc_msgSend(*(a1 + 48), "siriReadyMS_HH2") < 1 || objc_msgSend(*(a1 + 48), "accountSettleWaitMS_HH2") < 1 || objc_msgSend(*(a1 + 48), "currentDeviceIDSWaitMS_HH2") < 1 || objc_msgSend(*(a1 + 48), "homeManagerReadyMS_HH2") < 1 || objc_msgSend(*(a1 + 48), "firstCoreDataImportMS_HH2") < 1 || objc_msgSend(*(a1 + 48), "eventRouterServerConnectionMS_HH2") < 1 || objc_msgSend(*(a1 + 48), "primaryResidentElectionMS_HH2") < 1 || objc_msgSend(*(a1 + 48), "eventRouterFirstEventPushMS_HH2") < 1)
+    if (([self allStagesSubmitted] & 1) != 0 || (os_unfair_lock_assert_owner((self + 8)), objc_msgSend(*(self + 48), "sessionSetupOpenMS_HH1") < 1) || objc_msgSend(*(self + 48), "controllerKeyExchangeMS_HH1") < 1 || objc_msgSend(*(self + 48), "newAccessoryTransferMS_HH1") < 1 || objc_msgSend(*(self + 48), "sessionSetupCloseMS_HH1") < 1 || objc_msgSend(*(self + 48), "accessoryAddMS_HH2") < 1 || objc_msgSend(*(self + 48), "settingsCreationMS_HH2") < 1 || objc_msgSend(*(self + 48), "pairingIdentityCreationMS_HH2") < 1 || objc_msgSend(*(self + 48), "siriReadyMS_HH2") < 1 || objc_msgSend(*(self + 48), "accountSettleWaitMS_HH2") < 1 || objc_msgSend(*(self + 48), "currentDeviceIDSWaitMS_HH2") < 1 || objc_msgSend(*(self + 48), "homeManagerReadyMS_HH2") < 1 || objc_msgSend(*(self + 48), "firstCoreDataImportMS_HH2") < 1 || objc_msgSend(*(self + 48), "eventRouterServerConnectionMS_HH2") < 1 || objc_msgSend(*(self + 48), "primaryResidentElectionMS_HH2") < 1 || objc_msgSend(*(self + 48), "eventRouterFirstEventPushMS_HH2") < 1)
     {
 LABEL_42:
       v34 = objc_opt_class();
-      v36 = objc_getProperty(a1, v35, 56, 1);
-      [v34 saveSetupLogEventIntoUserDefaults:v36 setupLogEvent:{objc_getProperty(a1, v37, 48, 1)}];
+      v36 = objc_getProperty(self, v35, 56, 1);
+      [v34 saveSetupLogEventIntoUserDefaults:v36 setupLogEvent:{objc_getProperty(self, v37, 48, 1)}];
 
       goto LABEL_43;
     }
 
-    WeakRetained = objc_loadWeakRetained((a1 + 16));
-    [*(a1 + 48) setNetworkAvailable_INT:{objc_msgSend(WeakRetained, "hasValidNetwork")}];
-    [*(a1 + 48) setManateeAvailable_INT:{objc_msgSend(WeakRetained, "hasManatee")}];
-    [*(a1 + 48) setICloudAvailable_INT:{objc_msgSend(WeakRetained, "isSignedIntoiCloud")}];
-    [*(a1 + 48) setIDSAvailable_INT:{objc_msgSend(WeakRetained, "isIdsServiceActive")}];
-    [*(a1 + 48) setIDSRegistrationStatus_INT:{objc_msgSend(WeakRetained, "IDSAccountRegistrationStatus")}];
-    [*(a1 + 48) setIDSRegistrationError_INT:{objc_msgSend(WeakRetained, "IDSAccountRegistrationError")}];
-    [(HMDCurrentAccessorySetupMetricDispatcher *)a1 _recordTotalDuration];
-    v17 = objc_loadWeakRetained((a1 + 32));
-    [v17 submitLogEvent:*(a1 + 48) error:v10];
+    WeakRetained = objc_loadWeakRetained((self + 16));
+    [*(self + 48) setNetworkAvailable_INT:{objc_msgSend(WeakRetained, "hasValidNetwork")}];
+    [*(self + 48) setManateeAvailable_INT:{objc_msgSend(WeakRetained, "hasManatee")}];
+    [*(self + 48) setICloudAvailable_INT:{objc_msgSend(WeakRetained, "isSignedIntoiCloud")}];
+    [*(self + 48) setIDSAvailable_INT:{objc_msgSend(WeakRetained, "isIdsServiceActive")}];
+    [*(self + 48) setIDSRegistrationStatus_INT:{objc_msgSend(WeakRetained, "IDSAccountRegistrationStatus")}];
+    [*(self + 48) setIDSRegistrationError_INT:{objc_msgSend(WeakRetained, "IDSAccountRegistrationError")}];
+    [(HMDCurrentAccessorySetupMetricDispatcher *)self _recordTotalDuration];
+    v17 = objc_loadWeakRetained((self + 32));
+    [v17 submitLogEvent:*(self + 48) error:stringCopy];
 
-    [*(a1 + 48) setSavedEventState:3];
-    *(a1 + 12) = 1;
+    [*(self + 48) setSavedEventState:3];
+    *(self + 12) = 1;
     v18 = objc_autoreleasePoolPush();
-    v19 = a1;
+    selfCopy3 = self;
     v20 = HMFGetOSLogHandle();
     if (!os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
     {
 LABEL_39:
 
       objc_autoreleasePoolPop(v18);
-      [(HMDCurrentAccessorySetupMetricDispatcher *)v19 _markMetricDispatcherSubmission];
-      v29 = [v19 submissionTimer];
-      [v29 cancel];
+      [(HMDCurrentAccessorySetupMetricDispatcher *)selfCopy3 _markMetricDispatcherSubmission];
+      submissionTimer = [selfCopy3 submissionTimer];
+      [submissionTimer cancel];
 
-      [v19 setSubmissionTimer:0];
+      [selfCopy3 setSubmissionTimer:0];
       v30 = objc_autoreleasePoolPush();
-      v31 = v19;
+      v31 = selfCopy3;
       v32 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v32, OS_LOG_TYPE_INFO))
       {
@@ -1608,14 +1608,14 @@ LABEL_39:
 
     v39 = v18;
     v21 = HMFGetLogIdentifier();
-    v22 = [v19[6] coreAnalyticsEventDictionary];
-    v23 = [v19[6] savedEventState];
+    coreAnalyticsEventDictionary = [selfCopy3[6] coreAnalyticsEventDictionary];
+    savedEventState = [selfCopy3[6] savedEventState];
     v24 = @"HH1Initial";
-    if (v23 > 2)
+    if (savedEventState > 2)
     {
-      if (v23 != 3)
+      if (savedEventState != 3)
       {
-        v25 = v23 == 0x10000;
+        v25 = savedEventState == 0x10000;
         v26 = @"Unknown";
 LABEL_33:
         if (v25)
@@ -1631,9 +1631,9 @@ LABEL_33:
 
     else
     {
-      if (v23 != 1)
+      if (savedEventState != 1)
       {
-        v25 = v23 == 2;
+        v25 = savedEventState == 2;
         v26 = @"HH2Initial";
         goto LABEL_33;
       }
@@ -1646,7 +1646,7 @@ LABEL_38:
     *buf = 138543874;
     v41 = v21;
     v42 = 2112;
-    v43 = v22;
+    v43 = coreAnalyticsEventDictionary;
     v44 = 2112;
     v45 = v27;
     _os_log_impl(&dword_229538000, v20, OS_LOG_TYPE_INFO, "%{public}@All stages completed and submitted the event: %@ final state: %@", buf, 0x20u);
@@ -1660,24 +1660,24 @@ LABEL_43:
   v38 = *MEMORY[0x277D85DE8];
 }
 
-- (void)markSetupBeginStage:(unint64_t)a3 error:(id)a4
+- (void)markSetupBeginStage:(unint64_t)stage error:(id)error
 {
   v58 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  errorCopy = error;
   v7 = objc_autoreleasePoolPush();
-  v8 = self;
+  selfCopy = self;
   v9 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
     v10 = HMFGetLogIdentifier();
-    if (a3 - 1 > 0xF)
+    if (stage - 1 > 0xF)
     {
       v11 = @"Unknown Setup Stage";
     }
 
     else
     {
-      v11 = off_27867FD48[a3 - 1];
+      v11 = off_27867FD48[stage - 1];
     }
 
     v12 = v11;
@@ -1686,16 +1686,16 @@ LABEL_43:
     v54 = 2112;
     v55 = v12;
     v56 = 2112;
-    v57 = v6;
+    v57 = errorCopy;
     _os_log_impl(&dword_229538000, v9, OS_LOG_TYPE_DEBUG, "%{public}@Mark begin stage: %@ error: %@", &v52, 0x20u);
   }
 
   objc_autoreleasePoolPop(v7);
-  switch(a3)
+  switch(stage)
   {
     case 0uLL:
       v13 = objc_autoreleasePoolPush();
-      v14 = v8;
+      v14 = selfCopy;
       v15 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
@@ -1703,303 +1703,303 @@ LABEL_43:
         v52 = 138543618;
         v53 = v16;
         v54 = 2112;
-        v55 = v6;
+        v55 = errorCopy;
         _os_log_impl(&dword_229538000, v15, OS_LOG_TYPE_ERROR, "%{public}@Unknown setup stage with error: %@", &v52, 0x16u);
       }
 
       objc_autoreleasePoolPop(v13);
       break;
     case 1uLL:
-      v17 = v6;
-      if (v8)
+      v17 = errorCopy;
+      if (selfCopy)
       {
         os_unfair_lock_lock_with_options();
-        if (!v8->_setupSessionOpenBeginTime)
+        if (!selfCopy->_setupSessionOpenBeginTime)
         {
-          v37 = objc_getProperty(v8, v36, 24, 1);
-          v8->_setupSessionOpenBeginTime = v37[2]();
+          v37 = objc_getProperty(selfCopy, v36, 24, 1);
+          selfCopy->_setupSessionOpenBeginTime = v37[2]();
 
-          [(HMDHomePodSetupLatencyLogEvent *)v8->_setupLogEvent setSessionSetupOpenMS_HH1:-1];
-          [(HMDCurrentAccessorySetupMetricDispatcher *)v8 _handleErrorAndSaveStage:v8->_setupSessionOpenBeginTime stageTime:@"Setup Session Open" stageString:v17 error:?];
+          [(HMDHomePodSetupLatencyLogEvent *)selfCopy->_setupLogEvent setSessionSetupOpenMS_HH1:-1];
+          [(HMDCurrentAccessorySetupMetricDispatcher *)selfCopy _handleErrorAndSaveStage:selfCopy->_setupSessionOpenBeginTime stageTime:@"Setup Session Open" stageString:v17 error:?];
         }
 
-        os_unfair_lock_unlock(&v8->_lock);
+        os_unfair_lock_unlock(&selfCopy->_lock);
       }
 
       goto LABEL_89;
     case 2uLL:
-      v17 = v6;
-      if (v8)
+      v17 = errorCopy;
+      if (selfCopy)
       {
         os_unfair_lock_lock_with_options();
-        if (!v8->_setupSessionCloseBeginTime)
+        if (!selfCopy->_setupSessionCloseBeginTime)
         {
-          v29 = objc_getProperty(v8, v28, 24, 1);
-          v8->_setupSessionCloseBeginTime = v29[2]();
+          v29 = objc_getProperty(selfCopy, v28, 24, 1);
+          selfCopy->_setupSessionCloseBeginTime = v29[2]();
 
-          [(HMDHomePodSetupLatencyLogEvent *)v8->_setupLogEvent setSessionSetupCloseMS_HH1:-1];
-          [(HMDCurrentAccessorySetupMetricDispatcher *)v8 _handleErrorAndSaveStage:v8->_setupSessionCloseBeginTime stageTime:@"Setup Session Close" stageString:v17 error:?];
+          [(HMDHomePodSetupLatencyLogEvent *)selfCopy->_setupLogEvent setSessionSetupCloseMS_HH1:-1];
+          [(HMDCurrentAccessorySetupMetricDispatcher *)selfCopy _handleErrorAndSaveStage:selfCopy->_setupSessionCloseBeginTime stageTime:@"Setup Session Close" stageString:v17 error:?];
         }
 
-        os_unfair_lock_unlock(&v8->_lock);
+        os_unfair_lock_unlock(&selfCopy->_lock);
       }
 
       goto LABEL_89;
     case 3uLL:
-      v17 = v6;
-      if (v8)
+      v17 = errorCopy;
+      if (selfCopy)
       {
         os_unfair_lock_lock_with_options();
-        if (!v8->_receiveControllerKeyBeginTime)
+        if (!selfCopy->_receiveControllerKeyBeginTime)
         {
-          v33 = objc_getProperty(v8, v32, 24, 1);
-          v8->_receiveControllerKeyBeginTime = v33[2]();
+          v33 = objc_getProperty(selfCopy, v32, 24, 1);
+          selfCopy->_receiveControllerKeyBeginTime = v33[2]();
 
-          [(HMDHomePodSetupLatencyLogEvent *)v8->_setupLogEvent setControllerKeyExchangeMS_HH1:-1];
-          [(HMDCurrentAccessorySetupMetricDispatcher *)v8 _handleErrorAndSaveStage:v8->_receiveControllerKeyBeginTime stageTime:@"Controller Key Exchange" stageString:v17 error:?];
+          [(HMDHomePodSetupLatencyLogEvent *)selfCopy->_setupLogEvent setControllerKeyExchangeMS_HH1:-1];
+          [(HMDCurrentAccessorySetupMetricDispatcher *)selfCopy _handleErrorAndSaveStage:selfCopy->_receiveControllerKeyBeginTime stageTime:@"Controller Key Exchange" stageString:v17 error:?];
         }
 
-        os_unfair_lock_unlock(&v8->_lock);
+        os_unfair_lock_unlock(&selfCopy->_lock);
       }
 
       goto LABEL_89;
     case 4uLL:
-      v17 = v6;
-      if (v8)
+      v17 = errorCopy;
+      if (selfCopy)
       {
         os_unfair_lock_lock_with_options();
-        if (!v8->_sentUnassociatedMediaAccessoryBeginTime)
+        if (!selfCopy->_sentUnassociatedMediaAccessoryBeginTime)
         {
-          v25 = objc_getProperty(v8, v24, 24, 1);
-          v8->_sentUnassociatedMediaAccessoryBeginTime = v25[2]();
+          v25 = objc_getProperty(selfCopy, v24, 24, 1);
+          selfCopy->_sentUnassociatedMediaAccessoryBeginTime = v25[2]();
 
-          [(HMDHomePodSetupLatencyLogEvent *)v8->_setupLogEvent setNewAccessoryTransferMS_HH1:-1];
-          [(HMDCurrentAccessorySetupMetricDispatcher *)v8 _handleErrorAndSaveStage:v8->_sentUnassociatedMediaAccessoryBeginTime stageTime:@"New Accessory Transfer" stageString:v17 error:?];
+          [(HMDHomePodSetupLatencyLogEvent *)selfCopy->_setupLogEvent setNewAccessoryTransferMS_HH1:-1];
+          [(HMDCurrentAccessorySetupMetricDispatcher *)selfCopy _handleErrorAndSaveStage:selfCopy->_sentUnassociatedMediaAccessoryBeginTime stageTime:@"New Accessory Transfer" stageString:v17 error:?];
         }
 
-        os_unfair_lock_unlock(&v8->_lock);
+        os_unfair_lock_unlock(&selfCopy->_lock);
       }
 
       goto LABEL_89;
     case 5uLL:
-      v17 = v6;
-      if (v8)
+      v17 = errorCopy;
+      if (selfCopy)
       {
         os_unfair_lock_lock_with_options();
-        if (!v8->_settingsCreationBeginTime)
+        if (!selfCopy->_settingsCreationBeginTime)
         {
-          v39 = objc_getProperty(v8, v38, 24, 1);
-          v8->_settingsCreationBeginTime = v39[2]();
+          v39 = objc_getProperty(selfCopy, v38, 24, 1);
+          selfCopy->_settingsCreationBeginTime = v39[2]();
 
-          [(HMDHomePodSetupLatencyLogEvent *)v8->_setupLogEvent setSettingsCreationMS_HH2:-1];
-          [(HMDCurrentAccessorySetupMetricDispatcher *)v8 _handleErrorAndSaveStage:v8->_settingsCreationBeginTime stageTime:@"Settings Creation" stageString:v17 error:?];
+          [(HMDHomePodSetupLatencyLogEvent *)selfCopy->_setupLogEvent setSettingsCreationMS_HH2:-1];
+          [(HMDCurrentAccessorySetupMetricDispatcher *)selfCopy _handleErrorAndSaveStage:selfCopy->_settingsCreationBeginTime stageTime:@"Settings Creation" stageString:v17 error:?];
         }
 
-        os_unfair_lock_unlock(&v8->_lock);
+        os_unfair_lock_unlock(&selfCopy->_lock);
       }
 
       goto LABEL_89;
     case 6uLL:
-      v17 = v6;
-      if (v8)
+      v17 = errorCopy;
+      if (selfCopy)
       {
         os_unfair_lock_lock_with_options();
-        if (!v8->_pairingIdentityCreationBeginTime)
+        if (!selfCopy->_pairingIdentityCreationBeginTime)
         {
-          v46 = objc_getProperty(v8, v45, 24, 1);
-          v8->_pairingIdentityCreationBeginTime = v46[2]();
+          v46 = objc_getProperty(selfCopy, v45, 24, 1);
+          selfCopy->_pairingIdentityCreationBeginTime = v46[2]();
 
-          [(HMDHomePodSetupLatencyLogEvent *)v8->_setupLogEvent setPairingIdentityCreationMS_HH2:-1];
-          [(HMDCurrentAccessorySetupMetricDispatcher *)v8 _handleErrorAndSaveStage:v8->_pairingIdentityCreationBeginTime stageTime:@"Pairing Identity Creation" stageString:v17 error:?];
+          [(HMDHomePodSetupLatencyLogEvent *)selfCopy->_setupLogEvent setPairingIdentityCreationMS_HH2:-1];
+          [(HMDCurrentAccessorySetupMetricDispatcher *)selfCopy _handleErrorAndSaveStage:selfCopy->_pairingIdentityCreationBeginTime stageTime:@"Pairing Identity Creation" stageString:v17 error:?];
         }
 
-        os_unfair_lock_unlock(&v8->_lock);
+        os_unfair_lock_unlock(&selfCopy->_lock);
       }
 
       goto LABEL_89;
     case 7uLL:
-      v17 = v6;
-      if (v8)
+      v17 = errorCopy;
+      if (selfCopy)
       {
         os_unfair_lock_lock_with_options();
-        if (!v8->_addAccessoryBeginTime)
+        if (!selfCopy->_addAccessoryBeginTime)
         {
-          v35 = objc_getProperty(v8, v34, 24, 1);
-          v8->_addAccessoryBeginTime = v35[2]();
+          v35 = objc_getProperty(selfCopy, v34, 24, 1);
+          selfCopy->_addAccessoryBeginTime = v35[2]();
 
-          [(HMDHomePodSetupLatencyLogEvent *)v8->_setupLogEvent setAccessoryAddMS_HH2:-1];
-          [(HMDCurrentAccessorySetupMetricDispatcher *)v8 _handleErrorAndSaveStage:v8->_addAccessoryBeginTime stageTime:@"Accessory Add" stageString:v17 error:?];
+          [(HMDHomePodSetupLatencyLogEvent *)selfCopy->_setupLogEvent setAccessoryAddMS_HH2:-1];
+          [(HMDCurrentAccessorySetupMetricDispatcher *)selfCopy _handleErrorAndSaveStage:selfCopy->_addAccessoryBeginTime stageTime:@"Accessory Add" stageString:v17 error:?];
         }
 
-        os_unfair_lock_unlock(&v8->_lock);
+        os_unfair_lock_unlock(&selfCopy->_lock);
       }
 
       goto LABEL_89;
     case 8uLL:
-      v17 = v6;
-      if (v8)
+      v17 = errorCopy;
+      if (selfCopy)
       {
         os_unfair_lock_lock_with_options();
-        if (!v8->_siriReadyBeginTime)
+        if (!selfCopy->_siriReadyBeginTime)
         {
-          v50 = objc_getProperty(v8, v49, 24, 1);
-          v8->_siriReadyBeginTime = v50[2]();
+          v50 = objc_getProperty(selfCopy, v49, 24, 1);
+          selfCopy->_siriReadyBeginTime = v50[2]();
 
-          [(HMDHomePodSetupLatencyLogEvent *)v8->_setupLogEvent setSiriReadyMS_HH2:-1];
-          [(HMDCurrentAccessorySetupMetricDispatcher *)v8 _handleErrorAndSaveStage:v8->_siriReadyBeginTime stageTime:@"Siri Home Automation Ready" stageString:v17 error:?];
+          [(HMDHomePodSetupLatencyLogEvent *)selfCopy->_setupLogEvent setSiriReadyMS_HH2:-1];
+          [(HMDCurrentAccessorySetupMetricDispatcher *)selfCopy _handleErrorAndSaveStage:selfCopy->_siriReadyBeginTime stageTime:@"Siri Home Automation Ready" stageString:v17 error:?];
         }
 
-        os_unfair_lock_unlock(&v8->_lock);
+        os_unfair_lock_unlock(&selfCopy->_lock);
       }
 
       goto LABEL_89;
     case 9uLL:
-      v17 = v6;
-      if (v8)
+      v17 = errorCopy;
+      if (selfCopy)
       {
         os_unfair_lock_lock_with_options();
-        if (!v8->_hh2SentinelZoneFetchBeginTime)
+        if (!selfCopy->_hh2SentinelZoneFetchBeginTime)
         {
-          v27 = objc_getProperty(v8, v26, 24, 1);
-          v8->_hh2SentinelZoneFetchBeginTime = v27[2]();
+          v27 = objc_getProperty(selfCopy, v26, 24, 1);
+          selfCopy->_hh2SentinelZoneFetchBeginTime = v27[2]();
 
-          [(HMDHomePodSetupLatencyLogEvent *)v8->_setupLogEvent setSentinelZoneFetchMS_HH1:-1];
-          [(HMDCurrentAccessorySetupMetricDispatcher *)v8 _handleErrorAndSaveStage:v8->_hh2SentinelZoneFetchBeginTime stageTime:@"HH2 sentinel zone fetched" stageString:v17 error:?];
+          [(HMDHomePodSetupLatencyLogEvent *)selfCopy->_setupLogEvent setSentinelZoneFetchMS_HH1:-1];
+          [(HMDCurrentAccessorySetupMetricDispatcher *)selfCopy _handleErrorAndSaveStage:selfCopy->_hh2SentinelZoneFetchBeginTime stageTime:@"HH2 sentinel zone fetched" stageString:v17 error:?];
         }
 
-        os_unfair_lock_unlock(&v8->_lock);
+        os_unfair_lock_unlock(&selfCopy->_lock);
       }
 
       goto LABEL_89;
     case 0xAuLL:
-      v17 = v6;
-      if (v8)
+      v17 = errorCopy;
+      if (selfCopy)
       {
         os_unfair_lock_lock_with_options();
-        if (!v8->_appleAccountSettledBeginTime)
+        if (!selfCopy->_appleAccountSettledBeginTime)
         {
-          v48 = objc_getProperty(v8, v47, 24, 1);
-          v8->_appleAccountSettledBeginTime = v48[2]();
+          v48 = objc_getProperty(selfCopy, v47, 24, 1);
+          selfCopy->_appleAccountSettledBeginTime = v48[2]();
 
-          [(HMDHomePodSetupLatencyLogEvent *)v8->_setupLogEvent setAccountSettleWaitMS_HH2:-1];
-          [(HMDCurrentAccessorySetupMetricDispatcher *)v8 _handleErrorAndSaveStage:v8->_appleAccountSettledBeginTime stageTime:@"Apple account settled" stageString:v17 error:?];
+          [(HMDHomePodSetupLatencyLogEvent *)selfCopy->_setupLogEvent setAccountSettleWaitMS_HH2:-1];
+          [(HMDCurrentAccessorySetupMetricDispatcher *)selfCopy _handleErrorAndSaveStage:selfCopy->_appleAccountSettledBeginTime stageTime:@"Apple account settled" stageString:v17 error:?];
         }
 
-        os_unfair_lock_unlock(&v8->_lock);
+        os_unfair_lock_unlock(&selfCopy->_lock);
       }
 
       goto LABEL_89;
     case 0xBuLL:
-      v17 = v6;
-      if (v8)
+      v17 = errorCopy;
+      if (selfCopy)
       {
         os_unfair_lock_lock_with_options();
-        if (!v8->_currentIDSDeviceSettledBeginTime)
+        if (!selfCopy->_currentIDSDeviceSettledBeginTime)
         {
-          v23 = objc_getProperty(v8, v22, 24, 1);
-          v8->_currentIDSDeviceSettledBeginTime = v23[2]();
+          v23 = objc_getProperty(selfCopy, v22, 24, 1);
+          selfCopy->_currentIDSDeviceSettledBeginTime = v23[2]();
 
-          [(HMDHomePodSetupLatencyLogEvent *)v8->_setupLogEvent setCurrentDeviceIDSWaitMS_HH2:-1];
-          [(HMDCurrentAccessorySetupMetricDispatcher *)v8 _handleErrorAndSaveStage:v8->_currentIDSDeviceSettledBeginTime stageTime:@"Current device settled" stageString:v17 error:?];
+          [(HMDHomePodSetupLatencyLogEvent *)selfCopy->_setupLogEvent setCurrentDeviceIDSWaitMS_HH2:-1];
+          [(HMDCurrentAccessorySetupMetricDispatcher *)selfCopy _handleErrorAndSaveStage:selfCopy->_currentIDSDeviceSettledBeginTime stageTime:@"Current device settled" stageString:v17 error:?];
         }
 
-        os_unfair_lock_unlock(&v8->_lock);
+        os_unfair_lock_unlock(&selfCopy->_lock);
       }
 
       goto LABEL_89;
     case 0xCuLL:
-      v40 = v6;
-      if (v8)
+      v40 = errorCopy;
+      if (selfCopy)
       {
         os_unfair_lock_lock_with_options();
-        if (!v8->_homeManagerInitBeginTime)
+        if (!selfCopy->_homeManagerInitBeginTime)
         {
-          v42 = objc_getProperty(v8, v41, 24, 1);
-          v8->_homeManagerInitBeginTime = v42[2]();
+          v42 = objc_getProperty(selfCopy, v41, 24, 1);
+          selfCopy->_homeManagerInitBeginTime = v42[2]();
 
-          [(HMDHomePodSetupLatencyLogEvent *)v8->_setupLogEvent setHomeManagerReadyMS_HH2:-1];
-          [(HMDCurrentAccessorySetupMetricDispatcher *)v8 _handleErrorAndSaveStage:v8->_homeManagerInitBeginTime stageTime:@"Home Manager Initialized" stageString:v40 error:?];
+          [(HMDHomePodSetupLatencyLogEvent *)selfCopy->_setupLogEvent setHomeManagerReadyMS_HH2:-1];
+          [(HMDCurrentAccessorySetupMetricDispatcher *)selfCopy _handleErrorAndSaveStage:selfCopy->_homeManagerInitBeginTime stageTime:@"Home Manager Initialized" stageString:v40 error:?];
         }
 
-        os_unfair_lock_unlock(&v8->_lock);
+        os_unfair_lock_unlock(&selfCopy->_lock);
       }
 
       goto LABEL_70;
     case 0xDuLL:
 LABEL_70:
-      v17 = v6;
-      if (v8)
+      v17 = errorCopy;
+      if (selfCopy)
       {
         os_unfair_lock_lock_with_options();
-        if (!v8->_coreDataFirstCloudImportBeginTime)
+        if (!selfCopy->_coreDataFirstCloudImportBeginTime)
         {
-          v44 = objc_getProperty(v8, v43, 24, 1);
-          v8->_coreDataFirstCloudImportBeginTime = v44[2]();
+          v44 = objc_getProperty(selfCopy, v43, 24, 1);
+          selfCopy->_coreDataFirstCloudImportBeginTime = v44[2]();
 
-          [(HMDHomePodSetupLatencyLogEvent *)v8->_setupLogEvent setFirstCoreDataImportMS_HH2:-1];
-          [(HMDHomePodSetupLatencyLogEvent *)v8->_setupLogEvent setSavedEventState:2];
-          [(HMDCurrentAccessorySetupMetricDispatcher *)v8 _handleErrorAndSaveStage:v8->_coreDataFirstCloudImportBeginTime stageTime:@"First CoreData Import" stageString:v17 error:?];
+          [(HMDHomePodSetupLatencyLogEvent *)selfCopy->_setupLogEvent setFirstCoreDataImportMS_HH2:-1];
+          [(HMDHomePodSetupLatencyLogEvent *)selfCopy->_setupLogEvent setSavedEventState:2];
+          [(HMDCurrentAccessorySetupMetricDispatcher *)selfCopy _handleErrorAndSaveStage:selfCopy->_coreDataFirstCloudImportBeginTime stageTime:@"First CoreData Import" stageString:v17 error:?];
         }
 
-        os_unfair_lock_unlock(&v8->_lock);
+        os_unfair_lock_unlock(&selfCopy->_lock);
       }
 
       goto LABEL_89;
     case 0xEuLL:
-      v17 = v6;
-      if (v8)
+      v17 = errorCopy;
+      if (selfCopy)
       {
         os_unfair_lock_lock_with_options();
-        if (!v8->_firstPrimaryResidentElectionBeginTime)
+        if (!selfCopy->_firstPrimaryResidentElectionBeginTime)
         {
-          v21 = objc_getProperty(v8, v20, 24, 1);
-          v8->_firstPrimaryResidentElectionBeginTime = v21[2]();
+          v21 = objc_getProperty(selfCopy, v20, 24, 1);
+          selfCopy->_firstPrimaryResidentElectionBeginTime = v21[2]();
 
-          [(HMDHomePodSetupLatencyLogEvent *)v8->_setupLogEvent setPrimaryResidentElectionMS_HH2:-1];
-          [(HMDHomePodSetupLatencyLogEvent *)v8->_setupLogEvent setPrimaryResidentElectionPeerDeviceFutureResolvedMS_HH2:-1];
-          [(HMDHomePodSetupLatencyLogEvent *)v8->_setupLogEvent setPrimaryResidentElectionFirstCloudKitImportFutureResolvedMS_HH2:-1];
-          [(HMDHomePodSetupLatencyLogEvent *)v8->_setupLogEvent setPrimaryResidentElectionModernTransportStartedFutureResolvedMS_HH2:-1];
-          [(HMDHomePodSetupLatencyLogEvent *)v8->_setupLogEvent setPrimaryResidentSelectionConnectedToStatusKitFutureResolvedMS_HH2:-1];
-          [(HMDCurrentAccessorySetupMetricDispatcher *)v8 _handleErrorAndSaveStage:v8->_firstPrimaryResidentElectionBeginTime stageTime:@"First Primary Resident Election" stageString:v17 error:?];
+          [(HMDHomePodSetupLatencyLogEvent *)selfCopy->_setupLogEvent setPrimaryResidentElectionMS_HH2:-1];
+          [(HMDHomePodSetupLatencyLogEvent *)selfCopy->_setupLogEvent setPrimaryResidentElectionPeerDeviceFutureResolvedMS_HH2:-1];
+          [(HMDHomePodSetupLatencyLogEvent *)selfCopy->_setupLogEvent setPrimaryResidentElectionFirstCloudKitImportFutureResolvedMS_HH2:-1];
+          [(HMDHomePodSetupLatencyLogEvent *)selfCopy->_setupLogEvent setPrimaryResidentElectionModernTransportStartedFutureResolvedMS_HH2:-1];
+          [(HMDHomePodSetupLatencyLogEvent *)selfCopy->_setupLogEvent setPrimaryResidentSelectionConnectedToStatusKitFutureResolvedMS_HH2:-1];
+          [(HMDCurrentAccessorySetupMetricDispatcher *)selfCopy _handleErrorAndSaveStage:selfCopy->_firstPrimaryResidentElectionBeginTime stageTime:@"First Primary Resident Election" stageString:v17 error:?];
         }
 
-        os_unfair_lock_unlock(&v8->_lock);
+        os_unfair_lock_unlock(&selfCopy->_lock);
       }
 
       goto LABEL_89;
     case 0xFuLL:
-      v17 = v6;
-      if (v8)
+      v17 = errorCopy;
+      if (selfCopy)
       {
         os_unfair_lock_lock_with_options();
-        if (!v8->_eventRouterServerConnectBeginTime)
+        if (!selfCopy->_eventRouterServerConnectBeginTime)
         {
-          v31 = objc_getProperty(v8, v30, 24, 1);
-          v8->_eventRouterServerConnectBeginTime = v31[2]();
+          v31 = objc_getProperty(selfCopy, v30, 24, 1);
+          selfCopy->_eventRouterServerConnectBeginTime = v31[2]();
 
-          [(HMDHomePodSetupLatencyLogEvent *)v8->_setupLogEvent setEventRouterServerConnectionMS_HH2:-1];
-          [(HMDCurrentAccessorySetupMetricDispatcher *)v8 _handleErrorAndSaveStage:v8->_eventRouterServerConnectBeginTime stageTime:@"First Event Router Server Connection" stageString:v17 error:?];
+          [(HMDHomePodSetupLatencyLogEvent *)selfCopy->_setupLogEvent setEventRouterServerConnectionMS_HH2:-1];
+          [(HMDCurrentAccessorySetupMetricDispatcher *)selfCopy _handleErrorAndSaveStage:selfCopy->_eventRouterServerConnectBeginTime stageTime:@"First Event Router Server Connection" stageString:v17 error:?];
         }
 
-        os_unfair_lock_unlock(&v8->_lock);
+        os_unfair_lock_unlock(&selfCopy->_lock);
       }
 
       goto LABEL_89;
     case 0x10uLL:
-      v17 = v6;
-      if (v8)
+      v17 = errorCopy;
+      if (selfCopy)
       {
         os_unfair_lock_lock_with_options();
-        if (!v8->_firstServerEventSentBeginTime)
+        if (!selfCopy->_firstServerEventSentBeginTime)
         {
-          v19 = objc_getProperty(v8, v18, 24, 1);
-          v8->_firstServerEventSentBeginTime = v19[2]();
+          v19 = objc_getProperty(selfCopy, v18, 24, 1);
+          selfCopy->_firstServerEventSentBeginTime = v19[2]();
 
-          [(HMDHomePodSetupLatencyLogEvent *)v8->_setupLogEvent setEventRouterFirstEventPushMS_HH2:-1];
-          [(HMDCurrentAccessorySetupMetricDispatcher *)v8 _handleErrorAndSaveStage:v8->_firstServerEventSentBeginTime stageTime:@"First Event Push" stageString:v17 error:?];
+          [(HMDHomePodSetupLatencyLogEvent *)selfCopy->_setupLogEvent setEventRouterFirstEventPushMS_HH2:-1];
+          [(HMDCurrentAccessorySetupMetricDispatcher *)selfCopy _handleErrorAndSaveStage:selfCopy->_firstServerEventSentBeginTime stageTime:@"First Event Push" stageString:v17 error:?];
         }
 
-        os_unfair_lock_unlock(&v8->_lock);
+        os_unfair_lock_unlock(&selfCopy->_lock);
       }
 
 LABEL_89:
@@ -2012,14 +2012,14 @@ LABEL_89:
   v51 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDCurrentAccessorySetupMetricDispatcher)initWithDataSource:(id)a3 setupLogEvent:(id)a4 logEventSubmitter:(id)a5
+- (HMDCurrentAccessorySetupMetricDispatcher)initWithDataSource:(id)source setupLogEvent:(id)event logEventSubmitter:(id)submitter
 {
   v8 = MEMORY[0x277CBEBD0];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [v8 standardUserDefaults];
-  v13 = [(HMDCurrentAccessorySetupMetricDispatcher *)self initWithDataSource:v11 setupLogEvent:v10 logEventSubmitter:v9 currentUpTicksFactory:&__block_literal_global_204961 submissionTimerFactory:&__block_literal_global_67_204962 userDefaults:v12];
+  submitterCopy = submitter;
+  eventCopy = event;
+  sourceCopy = source;
+  standardUserDefaults = [v8 standardUserDefaults];
+  v13 = [(HMDCurrentAccessorySetupMetricDispatcher *)self initWithDataSource:sourceCopy setupLogEvent:eventCopy logEventSubmitter:submitterCopy currentUpTicksFactory:&__block_literal_global_204961 submissionTimerFactory:&__block_literal_global_67_204962 userDefaults:standardUserDefaults];
 
   return v13;
 }
@@ -2031,37 +2031,37 @@ id __95__HMDCurrentAccessorySetupMetricDispatcher_initWithDataSource_setupLogEve
   return v1;
 }
 
-- (HMDCurrentAccessorySetupMetricDispatcher)initWithDataSource:(id)a3 setupLogEvent:(id)a4 logEventSubmitter:(id)a5 currentUpTicksFactory:(id)a6 submissionTimerFactory:(id)a7 userDefaults:(id)a8
+- (HMDCurrentAccessorySetupMetricDispatcher)initWithDataSource:(id)source setupLogEvent:(id)event logEventSubmitter:(id)submitter currentUpTicksFactory:(id)factory submissionTimerFactory:(id)timerFactory userDefaults:(id)defaults
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  sourceCopy = source;
+  eventCopy = event;
+  submitterCopy = submitter;
+  factoryCopy = factory;
+  timerFactoryCopy = timerFactory;
+  defaultsCopy = defaults;
   v32.receiver = self;
   v32.super_class = HMDCurrentAccessorySetupMetricDispatcher;
   v20 = [(HMDCurrentAccessorySetupMetricDispatcher *)&v32 init];
   v21 = v20;
   if (v20)
   {
-    objc_storeWeak(&v20->_dataSource, v14);
-    objc_storeStrong(&v21->_setupLogEvent, a4);
-    v22 = _Block_copy(v17);
+    objc_storeWeak(&v20->_dataSource, sourceCopy);
+    objc_storeStrong(&v21->_setupLogEvent, event);
+    v22 = _Block_copy(factoryCopy);
     currentUpTicksFactory = v21->_currentUpTicksFactory;
     v21->_currentUpTicksFactory = v22;
 
-    objc_storeWeak(&v21->_logEventSubmitter, v16);
-    v24 = _Block_copy(v18);
+    objc_storeWeak(&v21->_logEventSubmitter, submitterCopy);
+    v24 = _Block_copy(timerFactoryCopy);
     submissionTimerFactory = v21->_submissionTimerFactory;
     v21->_submissionTimerFactory = v24;
 
-    objc_storeStrong(&v21->_userDefaults, a8);
+    objc_storeStrong(&v21->_userDefaults, defaults);
     v21->_lock._os_unfair_lock_opaque = 0;
     v21->_allStagesSubmitted = 0;
-    v26 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     stageErrorDict = v21->_stageErrorDict;
-    v21->_stageErrorDict = v26;
+    v21->_stageErrorDict = dictionary;
 
     v21->_firstTimeOutSubmissionDone = 0;
     Property = objc_getProperty(v21, v28, 24, 1);
@@ -2092,38 +2092,38 @@ void __55__HMDCurrentAccessorySetupMetricDispatcher_logCategory__block_invoke()
   logCategory__hmf_once_v72_204981 = v1;
 }
 
-+ (void)saveSetupLogEventIntoUserDefaults:(id)a3 setupLogEvent:(id)a4
++ (void)saveSetupLogEventIntoUserDefaults:(id)defaults setupLogEvent:(id)event
 {
   v35 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  defaultsCopy = defaults;
+  eventCopy = event;
   v8 = objc_alloc_init(MEMORY[0x277CD16D0]);
-  v9 = [v7 error];
-  v10 = [v9 copy];
+  error = [eventCopy error];
+  v10 = [error copy];
 
-  [v8 setSessionSetupOpenMSHH1:{objc_msgSend(v7, "sessionSetupOpenMS_HH1")}];
-  [v8 setControllerKeyExchangeMSHH1:{objc_msgSend(v7, "controllerKeyExchangeMS_HH1")}];
-  [v8 setNewAccessoryTransferMSHH1:{objc_msgSend(v7, "newAccessoryTransferMS_HH1")}];
-  [v8 setSessionSetupCloseMSHH1:{objc_msgSend(v7, "sessionSetupCloseMS_HH1")}];
-  [v8 setTotalDurationMSHH1:{objc_msgSend(v7, "totalDurationMS_HH1")}];
-  [v8 setSentinelZoneFetchMSHH1:{objc_msgSend(v7, "sentinelZoneFetchMS_HH1")}];
-  [v8 setAccountSettleWaitMSHH2:{objc_msgSend(v7, "accountSettleWaitMS_HH2")}];
-  [v8 setCurrentDeviceIDSWaitMSHH2:{objc_msgSend(v7, "currentDeviceIDSWaitMS_HH2")}];
-  [v8 setHomeManagerReadyMSHH2:{objc_msgSend(v7, "homeManagerReadyMS_HH2")}];
-  [v8 setFirstCoreDataImportMSHH2:{objc_msgSend(v7, "firstCoreDataImportMS_HH2")}];
-  [v8 setAccessoryAddMSHH2:{objc_msgSend(v7, "accessoryAddMS_HH2")}];
-  [v8 setSettingsCreationMSHH2:{objc_msgSend(v7, "settingsCreationMS_HH2")}];
-  [v8 setPairingIdentityCreationMSHH2:{objc_msgSend(v7, "pairingIdentityCreationMS_HH2")}];
-  [v8 setSiriReadyMSHH2:{objc_msgSend(v7, "siriReadyMS_HH2")}];
-  [v8 setEventRouterServerConnectionMSHH2:{objc_msgSend(v7, "eventRouterServerConnectionMS_HH2")}];
-  [v8 setPrimaryResidentElectionMSHH2:{objc_msgSend(v7, "primaryResidentElectionMS_HH2")}];
-  [v8 setEventRouterFirstEventPushMSHH2:{objc_msgSend(v7, "eventRouterFirstEventPushMS_HH2")}];
-  [v8 setTotalDurationMSHH2:{objc_msgSend(v7, "totalDurationMS_HH2")}];
-  [v8 setICloudAvailableINT:{objc_msgSend(v7, "iCloudAvailable_INT")}];
-  [v8 setIDSAvailableINT:{objc_msgSend(v7, "IDSAvailable_INT")}];
-  [v8 setManateeAvailableINT:{objc_msgSend(v7, "manateeAvailable_INT")}];
-  [v8 setNetworkAvailableINT:{objc_msgSend(v7, "networkAvailable_INT")}];
-  if ([v7 controllerInHH2_INT])
+  [v8 setSessionSetupOpenMSHH1:{objc_msgSend(eventCopy, "sessionSetupOpenMS_HH1")}];
+  [v8 setControllerKeyExchangeMSHH1:{objc_msgSend(eventCopy, "controllerKeyExchangeMS_HH1")}];
+  [v8 setNewAccessoryTransferMSHH1:{objc_msgSend(eventCopy, "newAccessoryTransferMS_HH1")}];
+  [v8 setSessionSetupCloseMSHH1:{objc_msgSend(eventCopy, "sessionSetupCloseMS_HH1")}];
+  [v8 setTotalDurationMSHH1:{objc_msgSend(eventCopy, "totalDurationMS_HH1")}];
+  [v8 setSentinelZoneFetchMSHH1:{objc_msgSend(eventCopy, "sentinelZoneFetchMS_HH1")}];
+  [v8 setAccountSettleWaitMSHH2:{objc_msgSend(eventCopy, "accountSettleWaitMS_HH2")}];
+  [v8 setCurrentDeviceIDSWaitMSHH2:{objc_msgSend(eventCopy, "currentDeviceIDSWaitMS_HH2")}];
+  [v8 setHomeManagerReadyMSHH2:{objc_msgSend(eventCopy, "homeManagerReadyMS_HH2")}];
+  [v8 setFirstCoreDataImportMSHH2:{objc_msgSend(eventCopy, "firstCoreDataImportMS_HH2")}];
+  [v8 setAccessoryAddMSHH2:{objc_msgSend(eventCopy, "accessoryAddMS_HH2")}];
+  [v8 setSettingsCreationMSHH2:{objc_msgSend(eventCopy, "settingsCreationMS_HH2")}];
+  [v8 setPairingIdentityCreationMSHH2:{objc_msgSend(eventCopy, "pairingIdentityCreationMS_HH2")}];
+  [v8 setSiriReadyMSHH2:{objc_msgSend(eventCopy, "siriReadyMS_HH2")}];
+  [v8 setEventRouterServerConnectionMSHH2:{objc_msgSend(eventCopy, "eventRouterServerConnectionMS_HH2")}];
+  [v8 setPrimaryResidentElectionMSHH2:{objc_msgSend(eventCopy, "primaryResidentElectionMS_HH2")}];
+  [v8 setEventRouterFirstEventPushMSHH2:{objc_msgSend(eventCopy, "eventRouterFirstEventPushMS_HH2")}];
+  [v8 setTotalDurationMSHH2:{objc_msgSend(eventCopy, "totalDurationMS_HH2")}];
+  [v8 setICloudAvailableINT:{objc_msgSend(eventCopy, "iCloudAvailable_INT")}];
+  [v8 setIDSAvailableINT:{objc_msgSend(eventCopy, "IDSAvailable_INT")}];
+  [v8 setManateeAvailableINT:{objc_msgSend(eventCopy, "manateeAvailable_INT")}];
+  [v8 setNetworkAvailableINT:{objc_msgSend(eventCopy, "networkAvailable_INT")}];
+  if ([eventCopy controllerInHH2_INT])
   {
     v11 = 2;
   }
@@ -2134,19 +2134,19 @@ void __55__HMDCurrentAccessorySetupMetricDispatcher_logCategory__block_invoke()
   }
 
   [v8 setLastKnownControllerHH2Mode:v11];
-  [v8 setLastKnownControllerSentinelZoneExistence:{objc_msgSend(v7, "controllerHasSentinelZone_INT")}];
+  [v8 setLastKnownControllerSentinelZoneExistence:{objc_msgSend(eventCopy, "controllerHasSentinelZone_INT")}];
   if (v10)
   {
     [v8 setLastKnownStageErrorCode:{objc_msgSend(v10, "code")}];
-    v12 = [v10 domain];
-    [v8 setLastKnownStageErrorDomain:v12];
+    domain = [v10 domain];
+    [v8 setLastKnownStageErrorDomain:domain];
 
-    v13 = [v10 underlyingErrors];
-    v14 = [v13 firstObject];
-    v15 = v14;
-    if (v14)
+    underlyingErrors = [v10 underlyingErrors];
+    firstObject = [underlyingErrors firstObject];
+    v15 = firstObject;
+    if (firstObject)
     {
-      v16 = v14;
+      v16 = firstObject;
     }
 
     else
@@ -2157,52 +2157,52 @@ void __55__HMDCurrentAccessorySetupMetricDispatcher_logCategory__block_invoke()
     v17 = v16;
 
     [v8 setLastKnownStageUnderlyingErrorCode:{objc_msgSend(v17, "code")}];
-    v18 = [v17 domain];
+    domain2 = [v17 domain];
 
-    [v8 setLastKnownStageUnderlyingErrorDomain:v18];
+    [v8 setLastKnownStageUnderlyingErrorDomain:domain2];
   }
 
-  v19 = [v7 errorStage_String];
-  [v8 setLastKnownStageErrorString:v19];
+  errorStage_String = [eventCopy errorStage_String];
+  [v8 setLastKnownStageErrorString:errorStage_String];
 
-  v20 = [v7 setupSessionIdentifier];
-  [v8 setControllerSetupSessionIdentifier:v20];
+  setupSessionIdentifier = [eventCopy setupSessionIdentifier];
+  [v8 setControllerSetupSessionIdentifier:setupSessionIdentifier];
 
-  [v8 setNumberOfTimesPrimaryResidentChangedHH2:{objc_msgSend(v7, "numberOfTimesPrimaryResidentChanged_HH2")}];
-  [v8 setLastPrimaryClientConnectedTimeHH2:{objc_msgSend(v7, "lastPrimaryClientConnectedTime_HH2")}];
-  [v8 setNumberOfTimesPrimaryClientConnectedHH2:{objc_msgSend(v7, "numberOfTimesPrimaryClientConnected_HH2")}];
-  [v8 setNumberOfTimesPrimaryClientDisconnectedHH2:{objc_msgSend(v7, "numberOfTimesPrimaryClientDisconnected_HH2")}];
-  [v8 setNumberOfTimesPrimaryClientConnectMessageFailedHH2:{objc_msgSend(v7, "numberOfTimesPrimaryClientConnectMessageFailed_HH2")}];
-  [v8 setCurrentDeviceConfirmedPrimaryResidentINT:{objc_msgSend(v7, "currentDeviceConfirmedPrimaryResident_INT")}];
-  [v8 setLastPrimaryClientConnectMessageFailErrorCodeHH2:{objc_msgSend(v7, "lastPrimaryClientConnectMessageFailErrorCode_HH2")}];
-  v21 = [v7 lastPrimaryClientConnectMessageFailErrorDomain_HH2];
-  [v8 setLastPrimaryClientConnectMessageFailErrorDomainHH2:v21];
+  [v8 setNumberOfTimesPrimaryResidentChangedHH2:{objc_msgSend(eventCopy, "numberOfTimesPrimaryResidentChanged_HH2")}];
+  [v8 setLastPrimaryClientConnectedTimeHH2:{objc_msgSend(eventCopy, "lastPrimaryClientConnectedTime_HH2")}];
+  [v8 setNumberOfTimesPrimaryClientConnectedHH2:{objc_msgSend(eventCopy, "numberOfTimesPrimaryClientConnected_HH2")}];
+  [v8 setNumberOfTimesPrimaryClientDisconnectedHH2:{objc_msgSend(eventCopy, "numberOfTimesPrimaryClientDisconnected_HH2")}];
+  [v8 setNumberOfTimesPrimaryClientConnectMessageFailedHH2:{objc_msgSend(eventCopy, "numberOfTimesPrimaryClientConnectMessageFailed_HH2")}];
+  [v8 setCurrentDeviceConfirmedPrimaryResidentINT:{objc_msgSend(eventCopy, "currentDeviceConfirmedPrimaryResident_INT")}];
+  [v8 setLastPrimaryClientConnectMessageFailErrorCodeHH2:{objc_msgSend(eventCopy, "lastPrimaryClientConnectMessageFailErrorCode_HH2")}];
+  lastPrimaryClientConnectMessageFailErrorDomain_HH2 = [eventCopy lastPrimaryClientConnectMessageFailErrorDomain_HH2];
+  [v8 setLastPrimaryClientConnectMessageFailErrorDomainHH2:lastPrimaryClientConnectMessageFailErrorDomain_HH2];
 
-  [v8 setLastPrimaryClientConnectMessageFailUnderlyingErrorCodeHH2:{objc_msgSend(v7, "lastPrimaryClientConnectMessageFailUnderlyingErrorCode_HH2")}];
-  v22 = [v7 lastPrimaryClientConnectMessageFailUnderlyingErrorDomain_HH2];
-  [v8 setLastPrimaryClientConnectMessageFailUnderlyingErrorDomainHH2:v22];
+  [v8 setLastPrimaryClientConnectMessageFailUnderlyingErrorCodeHH2:{objc_msgSend(eventCopy, "lastPrimaryClientConnectMessageFailUnderlyingErrorCode_HH2")}];
+  lastPrimaryClientConnectMessageFailUnderlyingErrorDomain_HH2 = [eventCopy lastPrimaryClientConnectMessageFailUnderlyingErrorDomain_HH2];
+  [v8 setLastPrimaryClientConnectMessageFailUnderlyingErrorDomainHH2:lastPrimaryClientConnectMessageFailUnderlyingErrorDomain_HH2];
 
-  [v8 setPrimaryResidentElectionPeerDeviceFutureResolvedMSHH2:{objc_msgSend(v7, "primaryResidentElectionPeerDeviceFutureResolvedMS_HH2")}];
-  [v8 setPrimaryResidentElectionFirstCloudKitImportFutureResolvedMSHH2:{objc_msgSend(v7, "primaryResidentElectionFirstCloudKitImportFutureResolvedMS_HH2")}];
-  [v8 setPrimaryResidentElectionModernTransportStartedFutureResolvedMSHH2:{objc_msgSend(v7, "primaryResidentElectionModernTransportStartedFutureResolvedMS_HH2")}];
-  [v8 setPrimaryResidentSelectionConnectedToStatusKitFutureResolvedMSHH2:{objc_msgSend(v7, "primaryResidentSelectionConnectedToStatusKitFutureResolvedMS_HH2")}];
-  [v8 setPrimaryResidentElectionJoinMeshMSHH2:{objc_msgSend(v7, "primaryResidentElectionJoinMeshMS_HH2")}];
-  [v8 setFirstCoreDataContainerSetupDurationMSHH2:{objc_msgSend(v7, "firstCoreDataContainerSetupDurationMS_HH2")}];
-  [v8 setFirstCoreDataContainerSetupErrorCodeHH2:{objc_msgSend(v7, "firstCoreDataContainerSetupErrorCode_HH2")}];
-  v23 = [v7 firstCoreDataContainerSetupErrorDomain_HH2];
-  [v8 setFirstCoreDataContainerSetupErrorDomainHH2:v23];
+  [v8 setPrimaryResidentElectionPeerDeviceFutureResolvedMSHH2:{objc_msgSend(eventCopy, "primaryResidentElectionPeerDeviceFutureResolvedMS_HH2")}];
+  [v8 setPrimaryResidentElectionFirstCloudKitImportFutureResolvedMSHH2:{objc_msgSend(eventCopy, "primaryResidentElectionFirstCloudKitImportFutureResolvedMS_HH2")}];
+  [v8 setPrimaryResidentElectionModernTransportStartedFutureResolvedMSHH2:{objc_msgSend(eventCopy, "primaryResidentElectionModernTransportStartedFutureResolvedMS_HH2")}];
+  [v8 setPrimaryResidentSelectionConnectedToStatusKitFutureResolvedMSHH2:{objc_msgSend(eventCopy, "primaryResidentSelectionConnectedToStatusKitFutureResolvedMS_HH2")}];
+  [v8 setPrimaryResidentElectionJoinMeshMSHH2:{objc_msgSend(eventCopy, "primaryResidentElectionJoinMeshMS_HH2")}];
+  [v8 setFirstCoreDataContainerSetupDurationMSHH2:{objc_msgSend(eventCopy, "firstCoreDataContainerSetupDurationMS_HH2")}];
+  [v8 setFirstCoreDataContainerSetupErrorCodeHH2:{objc_msgSend(eventCopy, "firstCoreDataContainerSetupErrorCode_HH2")}];
+  firstCoreDataContainerSetupErrorDomain_HH2 = [eventCopy firstCoreDataContainerSetupErrorDomain_HH2];
+  [v8 setFirstCoreDataContainerSetupErrorDomainHH2:firstCoreDataContainerSetupErrorDomain_HH2];
 
-  [v8 setFirstCoreDataContainerSetupUnderlyingErrorCodeHH2:{objc_msgSend(v7, "firstCoreDataContainerSetupUnderlyingErrorCode_HH2")}];
-  v24 = [v7 firstCoreDataContainerSetupUnderlyingErrorDomain_HH2];
-  [v8 setFirstCoreDataContainerSetupUnderlyingErrorDomainHH2:v24];
+  [v8 setFirstCoreDataContainerSetupUnderlyingErrorCodeHH2:{objc_msgSend(eventCopy, "firstCoreDataContainerSetupUnderlyingErrorCode_HH2")}];
+  firstCoreDataContainerSetupUnderlyingErrorDomain_HH2 = [eventCopy firstCoreDataContainerSetupUnderlyingErrorDomain_HH2];
+  [v8 setFirstCoreDataContainerSetupUnderlyingErrorDomainHH2:firstCoreDataContainerSetupUnderlyingErrorDomain_HH2];
 
-  [v8 setSavedEventState:{objc_msgSend(v7, "savedEventState")}];
-  v25 = [v8 data];
+  [v8 setSavedEventState:{objc_msgSend(eventCopy, "savedEventState")}];
+  data = [v8 data];
   v26 = objc_autoreleasePoolPush();
-  v27 = a1;
+  selfCopy = self;
   v28 = HMFGetOSLogHandle();
   v29 = v28;
-  if (v25)
+  if (data)
   {
     if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
     {
@@ -2213,7 +2213,7 @@ void __55__HMDCurrentAccessorySetupMetricDispatcher_logCategory__block_invoke()
     }
 
     objc_autoreleasePoolPop(v26);
-    [v6 setObject:v25 forKey:@"accessorysetup.latencylogevent"];
+    [defaultsCopy setObject:data forKey:@"accessorysetup.latencylogevent"];
   }
 
   else
@@ -2232,16 +2232,16 @@ void __55__HMDCurrentAccessorySetupMetricDispatcher_logCategory__block_invoke()
   v32 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)readSetupLogEventFromUserDefaults:(id)a3
++ (id)readSetupLogEventFromUserDefaults:(id)defaults
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [a1 readLastAccessorySetupInfo:v4];
+  defaultsCopy = defaults;
+  v5 = [self readLastAccessorySetupInfo:defaultsCopy];
   if (v5)
   {
-    v6 = [a1 homepodSetupLogEventFromProtoSetupInfo:v5];
+    v6 = [self homepodSetupLogEventFromProtoSetupInfo:v5];
     v7 = objc_autoreleasePoolPush();
-    v8 = a1;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
@@ -2264,82 +2264,82 @@ void __55__HMDCurrentAccessorySetupMetricDispatcher_logCategory__block_invoke()
   return v6;
 }
 
-+ (id)homepodSetupLogEventFromProtoSetupInfo:(id)a3
++ (id)homepodSetupLogEventFromProtoSetupInfo:(id)info
 {
-  v3 = a3;
+  infoCopy = info;
   v60 = [HMDHomePodSetupLatencyLogEvent alloc];
-  v59 = [v3 sessionSetupOpenMSHH1];
-  v58 = [v3 controllerKeyExchangeMSHH1];
-  v57 = [v3 newAccessoryTransferMSHH1];
-  v56 = [v3 sessionSetupCloseMSHH1];
-  v55 = [v3 sentinelZoneFetchMSHH1];
-  v54 = [v3 totalDurationMSHH1];
-  v53 = [v3 accountSettleWaitMSHH2];
-  v52 = [v3 currentDeviceIDSWaitMSHH2];
-  v51 = [v3 homeManagerReadyMSHH2];
-  v50 = [v3 firstCoreDataImportMSHH2];
-  v49 = [v3 accessoryAddMSHH2];
-  v48 = [v3 settingsCreationMSHH2];
-  v47 = [v3 pairingIdentityCreationMSHH2];
-  v46 = [v3 siriReadyMSHH2];
-  v45 = [v3 eventRouterServerConnectionMSHH2];
-  v44 = [v3 primaryResidentElectionMSHH2];
-  v43 = [v3 eventRouterFirstEventPushMSHH2];
-  v42 = [v3 totalDurationMSHH2];
-  v41 = [v3 iCloudAvailableINT] == 1;
-  v40 = [v3 iDSAvailableINT] == 1;
-  v39 = [v3 manateeAvailableINT] == 1;
-  v38 = [v3 networkAvailableINT] == 1;
-  v37 = [v3 lastKnownControllerHH2Mode] == 2;
-  v36 = [v3 lastKnownControllerSentinelZoneExistence] == 1;
-  v35 = [v3 lastKnownStageErrorCode];
-  v34 = [v3 lastKnownStageErrorDomain];
-  v33 = [v3 lastKnownStageUnderlyingErrorCode];
-  v32 = [v3 lastKnownStageUnderlyingErrorDomain];
-  v31 = [v3 lastKnownStageErrorString];
-  v30 = [v3 controllerSetupSessionIdentifier];
-  v29 = [v3 numberOfTimesPrimaryResidentChangedHH2];
-  v28 = [v3 lastPrimaryClientConnectedTimeHH2];
-  v27 = [v3 numberOfTimesPrimaryClientConnectedHH2];
-  v26 = [v3 numberOfTimesPrimaryClientDisconnectedHH2];
-  v24 = [v3 numberOfTimesPrimaryClientConnectMessageFailedHH2];
-  v21 = [v3 currentDeviceConfirmedPrimaryResidentINT] == 1;
-  v25 = [v3 lastPrimaryClientConnectMessageFailErrorCodeHH2];
-  v23 = [v3 lastPrimaryClientConnectMessageFailErrorDomainHH2];
-  v22 = [v3 lastPrimaryClientConnectMessageFailUnderlyingErrorCodeHH2];
-  v20 = [v3 lastPrimaryClientConnectMessageFailUnderlyingErrorDomainHH2];
-  v19 = [v3 primaryResidentElectionPeerDeviceFutureResolvedMSHH2];
-  v18 = [v3 primaryResidentElectionFirstCloudKitImportFutureResolvedMSHH2];
-  v4 = [v3 primaryResidentElectionModernTransportStartedFutureResolvedMSHH2];
-  v5 = [v3 primaryResidentSelectionConnectedToStatusKitFutureResolvedMSHH2];
-  v6 = [v3 primaryResidentElectionJoinMeshMSHH2];
-  v7 = [v3 firstCoreDataContainerSetupDurationMSHH2];
-  v8 = [v3 firstCoreDataContainerSetupErrorCodeHH2];
-  v9 = [v3 firstCoreDataContainerSetupErrorDomainHH2];
-  v10 = [v3 firstCoreDataContainerSetupUnderlyingErrorCodeHH2];
-  v11 = [v3 firstCoreDataContainerSetupUnderlyingErrorDomainHH2];
-  v12 = [v3 savedEventState];
+  sessionSetupOpenMSHH1 = [infoCopy sessionSetupOpenMSHH1];
+  controllerKeyExchangeMSHH1 = [infoCopy controllerKeyExchangeMSHH1];
+  newAccessoryTransferMSHH1 = [infoCopy newAccessoryTransferMSHH1];
+  sessionSetupCloseMSHH1 = [infoCopy sessionSetupCloseMSHH1];
+  sentinelZoneFetchMSHH1 = [infoCopy sentinelZoneFetchMSHH1];
+  totalDurationMSHH1 = [infoCopy totalDurationMSHH1];
+  accountSettleWaitMSHH2 = [infoCopy accountSettleWaitMSHH2];
+  currentDeviceIDSWaitMSHH2 = [infoCopy currentDeviceIDSWaitMSHH2];
+  homeManagerReadyMSHH2 = [infoCopy homeManagerReadyMSHH2];
+  firstCoreDataImportMSHH2 = [infoCopy firstCoreDataImportMSHH2];
+  accessoryAddMSHH2 = [infoCopy accessoryAddMSHH2];
+  settingsCreationMSHH2 = [infoCopy settingsCreationMSHH2];
+  pairingIdentityCreationMSHH2 = [infoCopy pairingIdentityCreationMSHH2];
+  siriReadyMSHH2 = [infoCopy siriReadyMSHH2];
+  eventRouterServerConnectionMSHH2 = [infoCopy eventRouterServerConnectionMSHH2];
+  primaryResidentElectionMSHH2 = [infoCopy primaryResidentElectionMSHH2];
+  eventRouterFirstEventPushMSHH2 = [infoCopy eventRouterFirstEventPushMSHH2];
+  totalDurationMSHH2 = [infoCopy totalDurationMSHH2];
+  v41 = [infoCopy iCloudAvailableINT] == 1;
+  v40 = [infoCopy iDSAvailableINT] == 1;
+  v39 = [infoCopy manateeAvailableINT] == 1;
+  v38 = [infoCopy networkAvailableINT] == 1;
+  v37 = [infoCopy lastKnownControllerHH2Mode] == 2;
+  v36 = [infoCopy lastKnownControllerSentinelZoneExistence] == 1;
+  lastKnownStageErrorCode = [infoCopy lastKnownStageErrorCode];
+  lastKnownStageErrorDomain = [infoCopy lastKnownStageErrorDomain];
+  lastKnownStageUnderlyingErrorCode = [infoCopy lastKnownStageUnderlyingErrorCode];
+  lastKnownStageUnderlyingErrorDomain = [infoCopy lastKnownStageUnderlyingErrorDomain];
+  lastKnownStageErrorString = [infoCopy lastKnownStageErrorString];
+  controllerSetupSessionIdentifier = [infoCopy controllerSetupSessionIdentifier];
+  numberOfTimesPrimaryResidentChangedHH2 = [infoCopy numberOfTimesPrimaryResidentChangedHH2];
+  lastPrimaryClientConnectedTimeHH2 = [infoCopy lastPrimaryClientConnectedTimeHH2];
+  numberOfTimesPrimaryClientConnectedHH2 = [infoCopy numberOfTimesPrimaryClientConnectedHH2];
+  numberOfTimesPrimaryClientDisconnectedHH2 = [infoCopy numberOfTimesPrimaryClientDisconnectedHH2];
+  numberOfTimesPrimaryClientConnectMessageFailedHH2 = [infoCopy numberOfTimesPrimaryClientConnectMessageFailedHH2];
+  v21 = [infoCopy currentDeviceConfirmedPrimaryResidentINT] == 1;
+  lastPrimaryClientConnectMessageFailErrorCodeHH2 = [infoCopy lastPrimaryClientConnectMessageFailErrorCodeHH2];
+  lastPrimaryClientConnectMessageFailErrorDomainHH2 = [infoCopy lastPrimaryClientConnectMessageFailErrorDomainHH2];
+  lastPrimaryClientConnectMessageFailUnderlyingErrorCodeHH2 = [infoCopy lastPrimaryClientConnectMessageFailUnderlyingErrorCodeHH2];
+  lastPrimaryClientConnectMessageFailUnderlyingErrorDomainHH2 = [infoCopy lastPrimaryClientConnectMessageFailUnderlyingErrorDomainHH2];
+  primaryResidentElectionPeerDeviceFutureResolvedMSHH2 = [infoCopy primaryResidentElectionPeerDeviceFutureResolvedMSHH2];
+  primaryResidentElectionFirstCloudKitImportFutureResolvedMSHH2 = [infoCopy primaryResidentElectionFirstCloudKitImportFutureResolvedMSHH2];
+  primaryResidentElectionModernTransportStartedFutureResolvedMSHH2 = [infoCopy primaryResidentElectionModernTransportStartedFutureResolvedMSHH2];
+  primaryResidentSelectionConnectedToStatusKitFutureResolvedMSHH2 = [infoCopy primaryResidentSelectionConnectedToStatusKitFutureResolvedMSHH2];
+  primaryResidentElectionJoinMeshMSHH2 = [infoCopy primaryResidentElectionJoinMeshMSHH2];
+  firstCoreDataContainerSetupDurationMSHH2 = [infoCopy firstCoreDataContainerSetupDurationMSHH2];
+  firstCoreDataContainerSetupErrorCodeHH2 = [infoCopy firstCoreDataContainerSetupErrorCodeHH2];
+  firstCoreDataContainerSetupErrorDomainHH2 = [infoCopy firstCoreDataContainerSetupErrorDomainHH2];
+  firstCoreDataContainerSetupUnderlyingErrorCodeHH2 = [infoCopy firstCoreDataContainerSetupUnderlyingErrorCodeHH2];
+  firstCoreDataContainerSetupUnderlyingErrorDomainHH2 = [infoCopy firstCoreDataContainerSetupUnderlyingErrorDomainHH2];
+  savedEventState = [infoCopy savedEventState];
 
   BYTE4(v17) = v21;
-  LODWORD(v17) = v24;
-  LODWORD(v16) = v29;
+  LODWORD(v17) = numberOfTimesPrimaryClientConnectMessageFailedHH2;
+  LODWORD(v16) = numberOfTimesPrimaryResidentChangedHH2;
   BYTE5(v15) = v36;
   BYTE4(v15) = v37;
   BYTE3(v15) = v38;
   BYTE2(v15) = v39;
   BYTE1(v15) = v40;
   LOBYTE(v15) = v41;
-  v13 = [HMDHomePodSetupLatencyLogEvent initWithSessionSetupOpenMS_HH1:v60 controllerKeyExchangeMS_HH1:"initWithSessionSetupOpenMS_HH1:controllerKeyExchangeMS_HH1:newAccessoryTransferMS_HH1:sessionSetupCloseMS_HH1:sentinelZoneFetchMS_HH1:totalDurationMS_HH1:accountSettleWaitMS_HH2:currentDeviceIDSWaitMS_HH2:homeManagerReadyMS_HH2:firstCoreDataImportMS_HH2:accessoryAddMS_HH2:settingsCreationMS_HH2:pairingIdentityCreationMS_HH2:siriReadyMS_HH2:eventRouterServerConnectionMS_HH2:primaryResidentElectionMS_HH2:eventRouterFirstEventPushMS_HH2:totalDurationMS_HH2:iCloudAvailable_INT:IDSAvailable_INT:manateeAvailable_INT:networkAvailable_INT:controllerInHH2_INT:controllerHasSentinelZone_INT:errorCode:errorDomain:underlyingErrorCode:underlyingErrorDomain:errorStage_String:setupSessionIdentifier:numberOfTimesPrimaryResidentChanged_HH2:lastPrimaryClientConnectedTime_HH2:numberOfTimesPrimaryClientConnected_HH2:numberOfTimesPrimaryClientDisconnected_HH2:numberOfTimesPrimaryClientConnectMessageFailed_HH2:currentDeviceConfirmedPrimaryResident_INT:lastPrimaryClientConnectMessageFailErrorCode_HH2:lastPrimaryClientConnectMessageFailErrorDomain_HH2:lastPrimaryClientConnectMessageFailUnderlyingErrorCode_HH2:lastPrimaryClientConnectMessageFailUnderlyingErrorDomain_HH2:primaryResidentElectionPeerDeviceFutureResolvedMS_HH2:primaryResidentElectionFirstCloudKitImportFutureResolvedMS_HH2:primaryResidentElectionModernTransportStartedFutureResolvedMS_HH2:primaryResidentSelectionConnectedToStatusKitFutureResolvedMS_HH2:primaryResidentElectionJoinMeshMS_HH2:firstCoreDataContainerSetupDurationMS_HH2:firstCoreDataContainerSetupErrorCode_HH2:firstCoreDataContainerSetupErrorDomain_HH2:firstCoreDataContainerSetupUnderlyingErrorCode_HH2:firstCoreDataContainerSetupUnderlyingErrorDomain_HH2:savedEventState:" newAccessoryTransferMS_HH1:v59 sessionSetupCloseMS_HH1:v58 sentinelZoneFetchMS_HH1:v57 totalDurationMS_HH1:v56 accountSettleWaitMS_HH2:v55 currentDeviceIDSWaitMS_HH2:v54 homeManagerReadyMS_HH2:v53 firstCoreDataImportMS_HH2:v52 accessoryAddMS_HH2:v51 settingsCreationMS_HH2:v50 pairingIdentityCreationMS_HH2:v49 siriReadyMS_HH2:v48 eventRouterServerConnectionMS_HH2:v47 primaryResidentElectionMS_HH2:v46 eventRouterFirstEventPushMS_HH2:v45 totalDurationMS_HH2:v44 iCloudAvailable_INT:v43 IDSAvailable_INT:v42 manateeAvailable_INT:v15 networkAvailable_INT:v35 controllerInHH2_INT:v34 controllerHasSentinelZone_INT:v33 errorCode:v32 errorDomain:v31 underlyingErrorCode:v30 underlyingErrorDomain:v16 errorStage_String:v28 setupSessionIdentifier:__PAIR64__(v26 numberOfTimesPrimaryResidentChanged_HH2:v27) lastPrimaryClientConnectedTime_HH2:v17 numberOfTimesPrimaryClientConnected_HH2:v25 numberOfTimesPrimaryClientDisconnected_HH2:v23 numberOfTimesPrimaryClientConnectMessageFailed_HH2:v22 currentDeviceConfirmedPrimaryResident_INT:v20 lastPrimaryClientConnectMessageFailErrorCode_HH2:v19 lastPrimaryClientConnectMessageFailErrorDomain_HH2:v18 lastPrimaryClientConnectMessageFailUnderlyingErrorCode_HH2:v4 lastPrimaryClientConnectMessageFailUnderlyingErrorDomain_HH2:v5 primaryResidentElectionPeerDeviceFutureResolvedMS_HH2:v6 primaryResidentElectionFirstCloudKitImportFutureResolvedMS_HH2:v7 primaryResidentElectionModernTransportStartedFutureResolvedMS_HH2:v8 primaryResidentSelectionConnectedToStatusKitFutureResolvedMS_HH2:v9 primaryResidentElectionJoinMeshMS_HH2:v10 firstCoreDataContainerSetupDurationMS_HH2:v11 firstCoreDataContainerSetupErrorCode_HH2:v12 firstCoreDataContainerSetupErrorDomain_HH2:? firstCoreDataContainerSetupUnderlyingErrorCode_HH2:? firstCoreDataContainerSetupUnderlyingErrorDomain_HH2:? savedEventState:?];
+  v13 = [HMDHomePodSetupLatencyLogEvent initWithSessionSetupOpenMS_HH1:v60 controllerKeyExchangeMS_HH1:"initWithSessionSetupOpenMS_HH1:controllerKeyExchangeMS_HH1:newAccessoryTransferMS_HH1:sessionSetupCloseMS_HH1:sentinelZoneFetchMS_HH1:totalDurationMS_HH1:accountSettleWaitMS_HH2:currentDeviceIDSWaitMS_HH2:homeManagerReadyMS_HH2:firstCoreDataImportMS_HH2:accessoryAddMS_HH2:settingsCreationMS_HH2:pairingIdentityCreationMS_HH2:siriReadyMS_HH2:eventRouterServerConnectionMS_HH2:primaryResidentElectionMS_HH2:eventRouterFirstEventPushMS_HH2:totalDurationMS_HH2:iCloudAvailable_INT:IDSAvailable_INT:manateeAvailable_INT:networkAvailable_INT:controllerInHH2_INT:controllerHasSentinelZone_INT:errorCode:errorDomain:underlyingErrorCode:underlyingErrorDomain:errorStage_String:setupSessionIdentifier:numberOfTimesPrimaryResidentChanged_HH2:lastPrimaryClientConnectedTime_HH2:numberOfTimesPrimaryClientConnected_HH2:numberOfTimesPrimaryClientDisconnected_HH2:numberOfTimesPrimaryClientConnectMessageFailed_HH2:currentDeviceConfirmedPrimaryResident_INT:lastPrimaryClientConnectMessageFailErrorCode_HH2:lastPrimaryClientConnectMessageFailErrorDomain_HH2:lastPrimaryClientConnectMessageFailUnderlyingErrorCode_HH2:lastPrimaryClientConnectMessageFailUnderlyingErrorDomain_HH2:primaryResidentElectionPeerDeviceFutureResolvedMS_HH2:primaryResidentElectionFirstCloudKitImportFutureResolvedMS_HH2:primaryResidentElectionModernTransportStartedFutureResolvedMS_HH2:primaryResidentSelectionConnectedToStatusKitFutureResolvedMS_HH2:primaryResidentElectionJoinMeshMS_HH2:firstCoreDataContainerSetupDurationMS_HH2:firstCoreDataContainerSetupErrorCode_HH2:firstCoreDataContainerSetupErrorDomain_HH2:firstCoreDataContainerSetupUnderlyingErrorCode_HH2:firstCoreDataContainerSetupUnderlyingErrorDomain_HH2:savedEventState:" newAccessoryTransferMS_HH1:sessionSetupOpenMSHH1 sessionSetupCloseMS_HH1:controllerKeyExchangeMSHH1 sentinelZoneFetchMS_HH1:newAccessoryTransferMSHH1 totalDurationMS_HH1:sessionSetupCloseMSHH1 accountSettleWaitMS_HH2:sentinelZoneFetchMSHH1 currentDeviceIDSWaitMS_HH2:totalDurationMSHH1 homeManagerReadyMS_HH2:accountSettleWaitMSHH2 firstCoreDataImportMS_HH2:currentDeviceIDSWaitMSHH2 accessoryAddMS_HH2:homeManagerReadyMSHH2 settingsCreationMS_HH2:firstCoreDataImportMSHH2 pairingIdentityCreationMS_HH2:accessoryAddMSHH2 siriReadyMS_HH2:settingsCreationMSHH2 eventRouterServerConnectionMS_HH2:pairingIdentityCreationMSHH2 primaryResidentElectionMS_HH2:siriReadyMSHH2 eventRouterFirstEventPushMS_HH2:eventRouterServerConnectionMSHH2 totalDurationMS_HH2:primaryResidentElectionMSHH2 iCloudAvailable_INT:eventRouterFirstEventPushMSHH2 IDSAvailable_INT:totalDurationMSHH2 manateeAvailable_INT:v15 networkAvailable_INT:lastKnownStageErrorCode controllerInHH2_INT:lastKnownStageErrorDomain controllerHasSentinelZone_INT:lastKnownStageUnderlyingErrorCode errorCode:lastKnownStageUnderlyingErrorDomain errorDomain:lastKnownStageErrorString underlyingErrorCode:controllerSetupSessionIdentifier underlyingErrorDomain:v16 errorStage_String:lastPrimaryClientConnectedTimeHH2 setupSessionIdentifier:__PAIR64__(numberOfTimesPrimaryClientDisconnectedHH2 numberOfTimesPrimaryResidentChanged_HH2:numberOfTimesPrimaryClientConnectedHH2) lastPrimaryClientConnectedTime_HH2:v17 numberOfTimesPrimaryClientConnected_HH2:lastPrimaryClientConnectMessageFailErrorCodeHH2 numberOfTimesPrimaryClientDisconnected_HH2:lastPrimaryClientConnectMessageFailErrorDomainHH2 numberOfTimesPrimaryClientConnectMessageFailed_HH2:lastPrimaryClientConnectMessageFailUnderlyingErrorCodeHH2 currentDeviceConfirmedPrimaryResident_INT:lastPrimaryClientConnectMessageFailUnderlyingErrorDomainHH2 lastPrimaryClientConnectMessageFailErrorCode_HH2:primaryResidentElectionPeerDeviceFutureResolvedMSHH2 lastPrimaryClientConnectMessageFailErrorDomain_HH2:primaryResidentElectionFirstCloudKitImportFutureResolvedMSHH2 lastPrimaryClientConnectMessageFailUnderlyingErrorCode_HH2:primaryResidentElectionModernTransportStartedFutureResolvedMSHH2 lastPrimaryClientConnectMessageFailUnderlyingErrorDomain_HH2:primaryResidentSelectionConnectedToStatusKitFutureResolvedMSHH2 primaryResidentElectionPeerDeviceFutureResolvedMS_HH2:primaryResidentElectionJoinMeshMSHH2 primaryResidentElectionFirstCloudKitImportFutureResolvedMS_HH2:firstCoreDataContainerSetupDurationMSHH2 primaryResidentElectionModernTransportStartedFutureResolvedMS_HH2:firstCoreDataContainerSetupErrorCodeHH2 primaryResidentSelectionConnectedToStatusKitFutureResolvedMS_HH2:firstCoreDataContainerSetupErrorDomainHH2 primaryResidentElectionJoinMeshMS_HH2:firstCoreDataContainerSetupUnderlyingErrorCodeHH2 firstCoreDataContainerSetupDurationMS_HH2:firstCoreDataContainerSetupUnderlyingErrorDomainHH2 firstCoreDataContainerSetupErrorCode_HH2:savedEventState firstCoreDataContainerSetupErrorDomain_HH2:? firstCoreDataContainerSetupUnderlyingErrorCode_HH2:? firstCoreDataContainerSetupUnderlyingErrorDomain_HH2:? savedEventState:?];
 
   return v13;
 }
 
-+ (void)removeLastAccessorySetupInfoFromUserDefaults:(id)a3
++ (void)removeLastAccessorySetupInfoFromUserDefaults:(id)defaults
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  defaultsCopy = defaults;
   v5 = objc_autoreleasePoolPush();
-  v6 = a1;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -2350,14 +2350,14 @@ void __55__HMDCurrentAccessorySetupMetricDispatcher_logCategory__block_invoke()
   }
 
   objc_autoreleasePoolPop(v5);
-  [v4 removeObjectForKey:@"accessorysetup.latencylogevent"];
+  [defaultsCopy removeObjectForKey:@"accessorysetup.latencylogevent"];
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)readLastAccessorySetupInfo:(id)a3
++ (id)readLastAccessorySetupInfo:(id)info
 {
-  v3 = [a3 dataForKey:@"accessorysetup.latencylogevent"];
+  v3 = [info dataForKey:@"accessorysetup.latencylogevent"];
   if (v3)
   {
     v4 = [objc_alloc(MEMORY[0x277CD16D0]) initWithData:v3];

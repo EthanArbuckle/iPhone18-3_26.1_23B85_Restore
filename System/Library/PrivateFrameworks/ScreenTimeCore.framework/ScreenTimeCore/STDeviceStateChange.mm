@@ -1,46 +1,46 @@
 @interface STDeviceStateChange
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToDeviceStateChange:(id)a3;
-- (STDeviceStateChange)initWithCoder:(id)a3;
-- (STDeviceStateChange)initWithDeviceID:(id)a3 deviceName:(id)a4 devicePlatform:(int64_t)a5 installedApps:(id)a6 removedApps:(id)a7 associatedUser:(id)a8;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToDeviceStateChange:(id)change;
+- (STDeviceStateChange)initWithCoder:(id)coder;
+- (STDeviceStateChange)initWithDeviceID:(id)d deviceName:(id)name devicePlatform:(int64_t)platform installedApps:(id)apps removedApps:(id)removedApps associatedUser:(id)user;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation STDeviceStateChange
 
-- (STDeviceStateChange)initWithDeviceID:(id)a3 deviceName:(id)a4 devicePlatform:(int64_t)a5 installedApps:(id)a6 removedApps:(id)a7 associatedUser:(id)a8
+- (STDeviceStateChange)initWithDeviceID:(id)d deviceName:(id)name devicePlatform:(int64_t)platform installedApps:(id)apps removedApps:(id)removedApps associatedUser:(id)user
 {
   v30.receiver = self;
   v30.super_class = STDeviceStateChange;
-  v13 = a8;
-  v14 = a7;
-  v15 = a6;
-  v16 = a4;
-  v17 = a3;
+  userCopy = user;
+  removedAppsCopy = removedApps;
+  appsCopy = apps;
+  nameCopy = name;
+  dCopy = d;
   v18 = [(STDeviceStateChange *)&v30 init];
-  v19 = [v17 copy];
+  v19 = [dCopy copy];
 
   deviceID = v18->_deviceID;
   v18->_deviceID = v19;
 
-  v21 = [v16 copy];
+  v21 = [nameCopy copy];
   deviceName = v18->_deviceName;
   v18->_deviceName = v21;
 
-  v18->_platform = a5;
-  v23 = [v15 copy];
+  v18->_platform = platform;
+  v23 = [appsCopy copy];
 
   installedApps = v18->_installedApps;
   v18->_installedApps = v23;
 
-  v25 = [v14 copy];
+  v25 = [removedAppsCopy copy];
   removedApps = v18->_removedApps;
   v18->_removedApps = v25;
 
-  v27 = [v13 copy];
+  v27 = [userCopy copy];
   associatedUser = v18->_associatedUser;
   v18->_associatedUser = v27;
 
@@ -50,8 +50,8 @@
 - (id)description
 {
   v3 = objc_opt_class();
-  v4 = [(STDeviceStateChange *)self deviceID];
-  v5 = [(STDeviceStateChange *)self deviceName];
+  deviceID = [(STDeviceStateChange *)self deviceID];
+  deviceName = [(STDeviceStateChange *)self deviceName];
   v6 = [(STDeviceStateChange *)self platform]- 1;
   if (v6 > 4)
   {
@@ -63,67 +63,67 @@
     v7 = off_1001A3AB8[v6];
   }
 
-  v8 = [(STDeviceStateChange *)self installedApps];
-  v9 = [v8 count];
-  v10 = [(STDeviceStateChange *)self removedApps];
-  v11 = [v10 count];
-  v12 = [(STDeviceStateChange *)self associatedUser];
-  v13 = [NSString stringWithFormat:@"<%@ { DeviceID: %@, DeviceName: %@, Platform: %@, InstalledApp(Count): %lu, RemovedApp(Count): %lu, Associated User: %@ }>", v3, v4, v5, v7, v9, v11, v12];
+  installedApps = [(STDeviceStateChange *)self installedApps];
+  v9 = [installedApps count];
+  removedApps = [(STDeviceStateChange *)self removedApps];
+  v11 = [removedApps count];
+  associatedUser = [(STDeviceStateChange *)self associatedUser];
+  v13 = [NSString stringWithFormat:@"<%@ { DeviceID: %@, DeviceName: %@, Platform: %@, InstalledApp(Count): %lu, RemovedApp(Count): %lu, Associated User: %@ }>", v3, deviceID, deviceName, v7, v9, v11, associatedUser];
 
   return v13;
 }
 
-- (STDeviceStateChange)initWithCoder:(id)a3
+- (STDeviceStateChange)initWithCoder:(id)coder
 {
-  v4 = a3;
-  if ([v4 decodeIntegerForKey:@"encodingVersion"] < 1)
+  coderCopy = coder;
+  if ([coderCopy decodeIntegerForKey:@"encodingVersion"] < 1)
   {
-    v14 = 0;
+    selfCopy = 0;
   }
 
   else
   {
-    v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"deviceID"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"deviceName"];
-    v7 = [v4 decodeIntegerForKey:@"platform"];
+    v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"deviceID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"deviceName"];
+    v7 = [coderCopy decodeIntegerForKey:@"platform"];
     v8 = objc_opt_class();
     v9 = objc_opt_class();
     v10 = [NSSet setWithObjects:v8, v9, objc_opt_class(), 0];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"installedApps"];
-    v12 = [v4 decodeObjectOfClasses:v10 forKey:@"removedApps"];
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"associatedUser"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"installedApps"];
+    v12 = [coderCopy decodeObjectOfClasses:v10 forKey:@"removedApps"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"associatedUser"];
     self = [(STDeviceStateChange *)self initWithDeviceID:v5 deviceName:v6 devicePlatform:v7 installedApps:v11 removedApps:v12 associatedUser:v13];
 
-    v14 = self;
+    selfCopy = self;
   }
 
-  return v14;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:+[STDeviceStateChange encodingVersion](STDeviceStateChange forKey:{"encodingVersion"), @"encodingVersion"}];
-  v5 = [(STDeviceStateChange *)self deviceID];
-  [v4 encodeObject:v5 forKey:@"deviceID"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:+[STDeviceStateChange encodingVersion](STDeviceStateChange forKey:{"encodingVersion"), @"encodingVersion"}];
+  deviceID = [(STDeviceStateChange *)self deviceID];
+  [coderCopy encodeObject:deviceID forKey:@"deviceID"];
 
-  v6 = [(STDeviceStateChange *)self deviceName];
-  [v4 encodeObject:v6 forKey:@"deviceName"];
+  deviceName = [(STDeviceStateChange *)self deviceName];
+  [coderCopy encodeObject:deviceName forKey:@"deviceName"];
 
-  [v4 encodeInteger:-[STDeviceStateChange platform](self forKey:{"platform"), @"platform"}];
-  v7 = [(STDeviceStateChange *)self installedApps];
-  [v4 encodeObject:v7 forKey:@"installedApps"];
+  [coderCopy encodeInteger:-[STDeviceStateChange platform](self forKey:{"platform"), @"platform"}];
+  installedApps = [(STDeviceStateChange *)self installedApps];
+  [coderCopy encodeObject:installedApps forKey:@"installedApps"];
 
-  v8 = [(STDeviceStateChange *)self removedApps];
-  [v4 encodeObject:v8 forKey:@"removedApps"];
+  removedApps = [(STDeviceStateChange *)self removedApps];
+  [coderCopy encodeObject:removedApps forKey:@"removedApps"];
 
-  v9 = [(STDeviceStateChange *)self associatedUser];
-  [v4 encodeObject:v9 forKey:@"associatedUser"];
+  associatedUser = [(STDeviceStateChange *)self associatedUser];
+  [coderCopy encodeObject:associatedUser forKey:@"associatedUser"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   deviceID = self->_deviceID;
   deviceName = self->_deviceName;
   platform = self->_platform;
@@ -134,10 +134,10 @@
   return [v4 initWithDeviceID:deviceID deviceName:deviceName devicePlatform:platform installedApps:installedApps removedApps:removedApps associatedUser:associatedUser];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -147,7 +147,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(STDeviceStateChange *)self isEqualToDeviceStateChange:v4];
+      v5 = [(STDeviceStateChange *)self isEqualToDeviceStateChange:equalCopy];
     }
 
     else
@@ -159,38 +159,38 @@
   return v5;
 }
 
-- (BOOL)isEqualToDeviceStateChange:(id)a3
+- (BOOL)isEqualToDeviceStateChange:(id)change
 {
-  v4 = a3;
-  if (v4 == self)
+  changeCopy = change;
+  if (changeCopy == self)
   {
     v15 = 1;
   }
 
   else
   {
-    v5 = [(STDeviceStateChange *)self deviceID];
-    v6 = [(STDeviceStateChange *)v4 deviceID];
-    if ([v5 isEqualToDeviceID:v6])
+    deviceID = [(STDeviceStateChange *)self deviceID];
+    deviceID2 = [(STDeviceStateChange *)changeCopy deviceID];
+    if ([deviceID isEqualToDeviceID:deviceID2])
     {
-      v7 = [(STDeviceStateChange *)self deviceName];
-      v8 = [(STDeviceStateChange *)v4 deviceName];
-      if ([v7 isEqualToString:v8] && (v9 = -[STDeviceStateChange platform](self, "platform"), v9 == -[STDeviceStateChange platform](v4, "platform")))
+      deviceName = [(STDeviceStateChange *)self deviceName];
+      deviceName2 = [(STDeviceStateChange *)changeCopy deviceName];
+      if ([deviceName isEqualToString:deviceName2] && (v9 = -[STDeviceStateChange platform](self, "platform"), v9 == -[STDeviceStateChange platform](changeCopy, "platform")))
       {
-        v10 = [(STDeviceStateChange *)self installedApps];
-        v11 = [(STDeviceStateChange *)v4 installedApps];
-        if ([v10 isEqualToSet:v11])
+        installedApps = [(STDeviceStateChange *)self installedApps];
+        installedApps2 = [(STDeviceStateChange *)changeCopy installedApps];
+        if ([installedApps isEqualToSet:installedApps2])
         {
-          v12 = [(STDeviceStateChange *)self removedApps];
-          v13 = [(STDeviceStateChange *)v4 removedApps];
-          if ([v12 isEqualToSet:v13])
+          removedApps = [(STDeviceStateChange *)self removedApps];
+          removedApps2 = [(STDeviceStateChange *)changeCopy removedApps];
+          if ([removedApps isEqualToSet:removedApps2])
           {
-            v17 = [(STDeviceStateChange *)self associatedUser];
-            [(STDeviceStateChange *)v4 associatedUser];
-            v14 = v18 = v12;
-            v15 = [v17 isEqualToUserID:v14];
+            associatedUser = [(STDeviceStateChange *)self associatedUser];
+            [(STDeviceStateChange *)changeCopy associatedUser];
+            v14 = v18 = removedApps;
+            v15 = [associatedUser isEqualToUserID:v14];
 
-            v12 = v18;
+            removedApps = v18;
           }
 
           else
@@ -222,17 +222,17 @@
 
 - (unint64_t)hash
 {
-  v3 = [(STDeviceStateChange *)self deviceID];
-  v4 = [v3 hash];
-  v5 = [(STDeviceStateChange *)self deviceName];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(STDeviceStateChange *)self platform];
-  v8 = [(STDeviceStateChange *)self installedApps];
-  v9 = v6 ^ v7 ^ [v8 hash];
-  v10 = [(STDeviceStateChange *)self removedApps];
-  v11 = [v10 hash];
-  v12 = [(STDeviceStateChange *)self associatedUser];
-  v13 = v11 ^ [v12 hash];
+  deviceID = [(STDeviceStateChange *)self deviceID];
+  v4 = [deviceID hash];
+  deviceName = [(STDeviceStateChange *)self deviceName];
+  v6 = [deviceName hash] ^ v4;
+  platform = [(STDeviceStateChange *)self platform];
+  installedApps = [(STDeviceStateChange *)self installedApps];
+  v9 = v6 ^ platform ^ [installedApps hash];
+  removedApps = [(STDeviceStateChange *)self removedApps];
+  v11 = [removedApps hash];
+  associatedUser = [(STDeviceStateChange *)self associatedUser];
+  v13 = v11 ^ [associatedUser hash];
 
   return v9 ^ v13;
 }

@@ -1,20 +1,20 @@
 @interface MFMailPurgeableStorage
-- (MFMailPurgeableStorage)initWithAccountsProvider:(id)a3;
+- (MFMailPurgeableStorage)initWithAccountsProvider:(id)provider;
 - (int64_t)nonPurgeableSpace;
 @end
 
 @implementation MFMailPurgeableStorage
 
-- (MFMailPurgeableStorage)initWithAccountsProvider:(id)a3
+- (MFMailPurgeableStorage)initWithAccountsProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v9.receiver = self;
   v9.super_class = MFMailPurgeableStorage;
   v6 = [(MFMailPurgeableStorage *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_accountsProvider, a3);
+    objc_storeStrong(&v6->_accountsProvider, provider);
     v7->_previousUrgency = -1;
   }
 
@@ -33,8 +33,8 @@
   v44[3] = &unk_100158DF8;
   v44[4] = &v45;
   v31 = objc_retainBlock(v44);
-  v3 = [(MFMailPurgeableStorage *)self library];
-  v4 = [v3 messageBasePathForAccount:0];
+  library = [(MFMailPurgeableStorage *)self library];
+  v4 = [library messageBasePathForAccount:0];
 
   v5 = [EDMessageDataLayoutManager rootMessageDataDirectoryForBasePath:v4 purgeable:0];
   (v31[2])(v31, v5);
@@ -58,15 +58,15 @@
         }
 
         v9 = *(*(&v40 + 1) + 8 * i);
-        v10 = [v9 personaIdentifier];
-        if (v10)
+        personaIdentifier = [v9 personaIdentifier];
+        if (personaIdentifier)
         {
-          v11 = [v9 supportsPurge];
+          supportsPurge = [v9 supportsPurge];
 
-          if ((v11 & 1) == 0)
+          if ((supportsPurge & 1) == 0)
           {
-            v12 = [(MFMailPurgeableStorage *)self library];
-            v13 = [v12 messageBasePathForAccount:v9];
+            library2 = [(MFMailPurgeableStorage *)self library];
+            v13 = [library2 messageBasePathForAccount:v9];
 
             v14 = [EDMessageDataLayoutManager rootMessageDataDirectoryForBasePath:v13 purgeable:0];
             (v31[2])(v31, v14);
@@ -110,9 +110,9 @@
 
         v22 = *(*(&v35 + 1) + 8 * v20);
         v23 = +[NSFileManager defaultManager];
-        v24 = [v22 path];
+        path = [v22 path];
         v34 = v21;
-        v25 = [v23 attributesOfItemAtPath:v24 error:&v34];
+        v25 = [v23 attributesOfItemAtPath:path error:&v34];
         v17 = v34;
 
         v26 = [v25 objectForKeyedSubscript:NSFileTypeDirectory];
@@ -120,10 +120,10 @@
 
         if ((v23 & 1) == 0)
         {
-          v27 = [v25 fileSize];
-          if ((v27 & 0x8000000000000000) == 0)
+          fileSize = [v25 fileSize];
+          if ((fileSize & 0x8000000000000000) == 0)
           {
-            v46[3] += v27;
+            v46[3] += fileSize;
           }
         }
 

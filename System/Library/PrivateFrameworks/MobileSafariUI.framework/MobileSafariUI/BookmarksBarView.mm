@@ -1,5 +1,5 @@
 @interface BookmarksBarView
-- (BookmarksBarView)initWithFrame:(CGRect)a3;
+- (BookmarksBarView)initWithFrame:(CGRect)frame;
 - (BookmarksBarViewDelegate)delegate;
 - (BrowserController)browserController;
 - (CGSize)preferredSize;
@@ -9,44 +9,44 @@
 - (double)preferredBottomSpacing;
 - (id)_rootBookmark;
 - (id)_rootList;
-- (void)_buttonTapped:(id)a3;
+- (void)_buttonTapped:(id)tapped;
 - (void)_clearBookmarksNavigationController;
 - (void)_createAllLabelButtonsIfNeeded;
 - (void)_didChangeHorizontalSizeClass;
 - (void)_dismissCurrentBookmarksPopover;
-- (void)_presentCurrentBookmarksPopoverFromButton:(uint64_t)a3 animated:;
-- (void)_receivedBookmarksChangedNotification:(id)a3;
+- (void)_presentCurrentBookmarksPopoverFromButton:(uint64_t)button animated:;
+- (void)_receivedBookmarksChangedNotification:(id)notification;
 - (void)_repositionBookmarksNavigationController;
-- (void)_setButtonUsedToShowNavigationController:(uint64_t)a1;
-- (void)bookmarksBarLabelButtonDidSelectEdit:(id)a3;
-- (void)bookmarksBarLabelButtonDidSelectOpenInNewTab:(id)a3;
-- (void)bookmarksNavigationControllerDidReload:(id)a3;
-- (void)bookmarksNavigationControllerReloadDidFail:(id)a3;
-- (void)bookmarksNavigationControllerViewDidAppear:(id)a3;
-- (void)bookmarksNavigationControllerViewDidDisappear:(id)a3;
+- (void)_setButtonUsedToShowNavigationController:(uint64_t)controller;
+- (void)bookmarksBarLabelButtonDidSelectEdit:(id)edit;
+- (void)bookmarksBarLabelButtonDidSelectOpenInNewTab:(id)tab;
+- (void)bookmarksNavigationControllerDidReload:(id)reload;
+- (void)bookmarksNavigationControllerReloadDidFail:(id)fail;
+- (void)bookmarksNavigationControllerViewDidAppear:(id)appear;
+- (void)bookmarksNavigationControllerViewDidDisappear:(id)disappear;
 - (void)dealloc;
-- (void)dispatchNavigationIntent:(id)a3;
-- (void)handleNavigationIntent:(id)a3 completion:(id)a4;
+- (void)dispatchNavigationIntent:(id)intent;
+- (void)handleNavigationIntent:(id)intent completion:(id)completion;
 - (void)layoutSubviews;
-- (void)popoverPresentationController:(id)a3 willRepositionPopoverToRect:(CGRect *)a4 inView:(id *)a5;
-- (void)presentationControllerDidDismiss:(id)a3;
-- (void)setButtonStyle:(int64_t)a3;
-- (void)setDelegate:(id)a3;
-- (void)setShowsIcons:(BOOL)a3;
-- (void)setShowsSeparator:(BOOL)a3;
-- (void)setThemeColor:(id)a3;
+- (void)popoverPresentationController:(id)controller willRepositionPopoverToRect:(CGRect *)rect inView:(id *)view;
+- (void)presentationControllerDidDismiss:(id)dismiss;
+- (void)setButtonStyle:(int64_t)style;
+- (void)setDelegate:(id)delegate;
+- (void)setShowsIcons:(BOOL)icons;
+- (void)setShowsSeparator:(BOOL)separator;
+- (void)setThemeColor:(id)color;
 - (void)updateAccessibilityIdentifier;
 @end
 
 @implementation BookmarksBarView
 
-- (void)_buttonTapped:(id)a3
+- (void)_buttonTapped:(id)tapped
 {
-  v12 = a3;
-  if (!self->_isShowingNavigationController || (v10 = [(BookmarksBarView *)self _buttonTapped:v12], v9 = v12, (v10 & 1) != 0))
+  tappedCopy = tapped;
+  if (!self->_isShowingNavigationController || (v10 = [(BookmarksBarView *)self _buttonTapped:tappedCopy], v9 = tappedCopy, (v10 & 1) != 0))
   {
     WeakRetained = objc_loadWeakRetained(&self->_linkPreviewProvider);
-    if (self->_moreBookmarksButton == v12)
+    if (self->_moreBookmarksButton == tappedCopy)
     {
       [(BookmarksBarView *)self _buttonTapped:&v14];
     }
@@ -58,17 +58,17 @@
       {
         v11 = 480;
 LABEL_17:
-        [*(&self->super.super.super.isa + v11) setNavigationIntentHandler:{self, v12}];
+        [*(&self->super.super.super.isa + v11) setNavigationIntentHandler:{self, tappedCopy}];
         [(BookmarksBarView *)self _presentCurrentBookmarksPopoverFromButton:v13 animated:1];
         [(BookmarksBarView *)self _setButtonUsedToShowNavigationController:v13];
         goto LABEL_7;
       }
 
-      v5 = [(UIButton *)v12 bookmark];
-      if (![v5 isFolder] || objc_msgSend(MEMORY[0x277D28F40], "shouldOpenBookmarkFolderAsTabs"))
+      bookmark = [(UIButton *)tappedCopy bookmark];
+      if (![bookmark isFolder] || objc_msgSend(MEMORY[0x277D28F40], "shouldOpenBookmarkFolderAsTabs"))
       {
-        v6 = [MEMORY[0x277D28F40] builder];
-        v7 = [v6 navigationIntentWithBookmark:v5];
+        builder = [MEMORY[0x277D28F40] builder];
+        v7 = [builder navigationIntentWithBookmark:bookmark];
 
         v8 = objc_loadWeakRetained(&self->_navigationIntentHandler);
         [v8 dispatchNavigationIntent:v7];
@@ -78,7 +78,7 @@ LABEL_7:
         goto LABEL_8;
       }
 
-      [(BookmarksBarView *)self _buttonTapped:v5, &v14];
+      [(BookmarksBarView *)self _buttonTapped:bookmark, &v14];
     }
 
     v11 = v14;
@@ -88,10 +88,10 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)popoverPresentationController:(id)a3 willRepositionPopoverToRect:(CGRect *)a4 inView:(id *)a5
+- (void)popoverPresentationController:(id)controller willRepositionPopoverToRect:(CGRect *)rect inView:(id *)view
 {
   v29 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  controllerCopy = controller;
   if (!self->_isShowingNavigationController)
   {
     goto LABEL_12;
@@ -104,8 +104,8 @@ LABEL_8:
 LABEL_6:
     if (buttonUsedToShowNavigationController == moreBookmarksButton)
     {
-      v22 = a4;
-      v23 = v7;
+      rectCopy = rect;
+      v23 = controllerCopy;
       v26 = 0u;
       v27 = 0u;
       v24 = 0u;
@@ -129,17 +129,17 @@ LABEL_6:
             [v17 alpha];
             if (v18 != 0.0)
             {
-              v19 = [v17 bookmark];
-              if ([v19 isFolder])
+              bookmark = [v17 bookmark];
+              if ([bookmark isFolder])
               {
                 bookmarksNavigationController = self->_bookmarksNavigationController;
-                v21 = [v17 bookmark];
-                LODWORD(bookmarksNavigationController) = [(BookmarksNavigationController *)bookmarksNavigationController rebaseOnDescendentBookmark:v21];
+                bookmark2 = [v17 bookmark];
+                LODWORD(bookmarksNavigationController) = [(BookmarksNavigationController *)bookmarksNavigationController rebaseOnDescendentBookmark:bookmark2];
 
                 if (bookmarksNavigationController)
                 {
-                  [(BookmarksBarView *)self popoverPresentationController:v17 willRepositionPopoverToRect:v22 inView:v11];
-                  v7 = v23;
+                  [(BookmarksBarView *)self popoverPresentationController:v17 willRepositionPopoverToRect:rectCopy inView:v11];
+                  controllerCopy = v23;
                   goto LABEL_4;
                 }
               }
@@ -156,15 +156,15 @@ LABEL_6:
         while (v14);
       }
 
-      a4 = v22;
+      rect = rectCopy;
       moreBookmarksButton = self->_moreBookmarksButton;
-      v7 = v23;
+      controllerCopy = v23;
     }
 
     [(UIButton *)moreBookmarksButton alpha];
     if (v13 != 0.0 && [(BookmarksNavigationController *)self->_bookmarksNavigationController rebaseOnAncestorBookmark:self->_moreBookmarksParent skipOffset:self->_moreBookmarksOffset])
     {
-      [BookmarksBarView popoverPresentationController:a4 willRepositionPopoverToRect:self inView:?];
+      [BookmarksBarView popoverPresentationController:rect willRepositionPopoverToRect:self inView:?];
       goto LABEL_4;
     }
 
@@ -193,19 +193,19 @@ void __60__BookmarksBarView__repositionBookmarksNavigationController__block_invo
   }
 }
 
-- (void)_receivedBookmarksChangedNotification:(id)a3
+- (void)_receivedBookmarksChangedNotification:(id)notification
 {
-  v7 = a3;
-  v4 = [v7 name];
-  if (([v4 isEqualToString:*MEMORY[0x277D7B608]] & 1) != 0 || objc_msgSend(v4, "isEqualToString:", *MEMORY[0x277D7B640]))
+  notificationCopy = notification;
+  name = [notificationCopy name];
+  if (([name isEqualToString:*MEMORY[0x277D7B608]] & 1) != 0 || objc_msgSend(name, "isEqualToString:", *MEMORY[0x277D7B640]))
   {
     [(BookmarksBarView *)self setNeedsReloadData];
   }
 
-  else if ([v4 isEqualToString:*MEMORY[0x277D7B618]])
+  else if ([name isEqualToString:*MEMORY[0x277D7B618]])
   {
-    v5 = [v7 userInfo];
-    v6 = [v5 valueForKey:*MEMORY[0x277D7B5E8]];
+    userInfo = [notificationCopy userInfo];
+    v6 = [userInfo valueForKey:*MEMORY[0x277D7B5E8]];
 
     if (v6 && [v6 intValue] == self->_bookmarkBarID)
     {
@@ -214,12 +214,12 @@ void __60__BookmarksBarView__repositionBookmarksNavigationController__block_invo
   }
 }
 
-- (BookmarksBarView)initWithFrame:(CGRect)a3
+- (BookmarksBarView)initWithFrame:(CGRect)frame
 {
   v18[1] = *MEMORY[0x277D85DE8];
   v17.receiver = self;
   v17.super_class = BookmarksBarView;
-  v3 = [(BookmarksBarView *)&v17 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(BookmarksBarView *)&v17 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [MEMORY[0x277D75220] buttonWithType:1];
@@ -242,10 +242,10 @@ void __60__BookmarksBarView__repositionBookmarksNavigationController__block_invo
     [(UIButton *)v3->_moreBookmarksButton addTarget:v3 action:sel__buttonTapped_ forControlEvents:64];
     [(UIButton *)v3->_moreBookmarksButton setPointerStyleProvider:&__block_literal_global_3];
     [(BookmarksBarView *)v3 addSubview:v3->_moreBookmarksButton];
-    v13 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v13 addObserver:v3 selector:sel__receivedBookmarksChangedNotification_ name:*MEMORY[0x277D7B618] object:0];
-    [v13 addObserver:v3 selector:sel__receivedBookmarksChangedNotification_ name:*MEMORY[0x277D7B608] object:0];
-    [v13 addObserver:v3 selector:sel__receivedBookmarksChangedNotification_ name:*MEMORY[0x277D7B640] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel__receivedBookmarksChangedNotification_ name:*MEMORY[0x277D7B618] object:0];
+    [defaultCenter addObserver:v3 selector:sel__receivedBookmarksChangedNotification_ name:*MEMORY[0x277D7B608] object:0];
+    [defaultCenter addObserver:v3 selector:sel__receivedBookmarksChangedNotification_ name:*MEMORY[0x277D7B640] object:0];
     v18[0] = objc_opt_class();
     v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:1];
     v15 = [(BookmarksBarView *)v3 registerForTraitChanges:v14 withTarget:v3 action:sel__didChangeHorizontalSizeClass];
@@ -306,37 +306,37 @@ id __34__BookmarksBarView_initWithFrame___block_invoke(uint64_t a1, void *a2, vo
   return v22;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  objc_storeWeak(&self->_delegate, a3);
+  objc_storeWeak(&self->_delegate, delegate);
 
   [(BookmarksBarView *)self setNeedsReloadData];
 }
 
-- (void)setShowsIcons:(BOOL)a3
+- (void)setShowsIcons:(BOOL)icons
 {
-  if (self->_showsIcons != a3)
+  if (self->_showsIcons != icons)
   {
-    self->_showsIcons = a3;
+    self->_showsIcons = icons;
     [(BookmarksBarView *)self setNeedsReloadData];
   }
 }
 
-- (void)setButtonStyle:(int64_t)a3
+- (void)setButtonStyle:(int64_t)style
 {
-  if (self->_buttonStyle != a3)
+  if (self->_buttonStyle != style)
   {
-    self->_buttonStyle = a3;
+    self->_buttonStyle = style;
     [(BookmarksBarView *)self setNeedsReloadData];
   }
 }
 
 - (void)_didChangeHorizontalSizeClass
 {
-  v3 = [(BookmarksBarView *)self traitCollection];
-  v4 = [v3 horizontalSizeClass];
+  traitCollection = [(BookmarksBarView *)self traitCollection];
+  horizontalSizeClass = [traitCollection horizontalSizeClass];
 
-  if (v4 == 1)
+  if (horizontalSizeClass == 1)
   {
 
     [(BookmarksBarView *)self _dismissCurrentBookmarksPopover];
@@ -346,19 +346,19 @@ id __34__BookmarksBarView_initWithFrame___block_invoke(uint64_t a1, void *a2, vo
 - (void)dealloc
 {
   [(BookmarksNavigationController *)self->_bookmarksNavigationController setBookmarksNavigationControllerDelegate:0];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = BookmarksBarView;
   [(BookmarksBarView *)&v4 dealloc];
 }
 
-- (void)setShowsSeparator:(BOOL)a3
+- (void)setShowsSeparator:(BOOL)separator
 {
   v24[4] = *MEMORY[0x277D85DE8];
   separator = self->_separator;
-  if (a3)
+  if (separator)
   {
     if (!separator)
     {
@@ -366,30 +366,30 @@ id __34__BookmarksBarView_initWithFrame___block_invoke(uint64_t a1, void *a2, vo
       v6 = self->_separator;
       self->_separator = v5;
 
-      v7 = [MEMORY[0x277D75348] sf_tabSeparatorColor];
-      [(UIView *)self->_separator setBackgroundColor:v7];
+      sf_tabSeparatorColor = [MEMORY[0x277D75348] sf_tabSeparatorColor];
+      [(UIView *)self->_separator setBackgroundColor:sf_tabSeparatorColor];
 
-      v8 = [(UIView *)self->_separator layer];
-      [v8 setCornerRadius:0.5];
+      layer = [(UIView *)self->_separator layer];
+      [layer setCornerRadius:0.5];
 
       [(UIView *)self->_separator setTranslatesAutoresizingMaskIntoConstraints:0];
       [(BookmarksBarView *)self addSubview:self->_separator];
-      v9 = [(BookmarksBarView *)self layoutMarginsGuide];
+      layoutMarginsGuide = [(BookmarksBarView *)self layoutMarginsGuide];
       v20 = MEMORY[0x277CCAAD0];
-      v23 = [(UIView *)self->_separator leadingAnchor];
-      v22 = [v9 leadingAnchor];
-      v21 = [v23 constraintEqualToAnchor:v22];
+      leadingAnchor = [(UIView *)self->_separator leadingAnchor];
+      leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+      v21 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
       v24[0] = v21;
-      v10 = [(UIView *)self->_separator bottomAnchor];
-      v11 = [(BookmarksBarView *)self bottomAnchor];
-      v12 = [v10 constraintEqualToAnchor:v11 constant:4.0];
+      bottomAnchor = [(UIView *)self->_separator bottomAnchor];
+      bottomAnchor2 = [(BookmarksBarView *)self bottomAnchor];
+      v12 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:4.0];
       v24[1] = v12;
-      v13 = [v9 trailingAnchor];
-      v14 = [(UIView *)self->_separator trailingAnchor];
-      v15 = [v13 constraintEqualToAnchor:v14];
+      trailingAnchor = [layoutMarginsGuide trailingAnchor];
+      trailingAnchor2 = [(UIView *)self->_separator trailingAnchor];
+      v15 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
       v24[2] = v15;
-      v16 = [(UIView *)self->_separator heightAnchor];
-      v17 = [v16 constraintEqualToConstant:1.0];
+      heightAnchor = [(UIView *)self->_separator heightAnchor];
+      v17 = [heightAnchor constraintEqualToConstant:1.0];
       v24[3] = v17;
       v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v24 count:4];
       [v20 activateConstraints:v18];
@@ -404,21 +404,21 @@ id __34__BookmarksBarView_initWithFrame___block_invoke(uint64_t a1, void *a2, vo
   }
 }
 
-- (void)handleNavigationIntent:(id)a3 completion:(id)a4
+- (void)handleNavigationIntent:(id)intent completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  intentCopy = intent;
   WeakRetained = objc_loadWeakRetained(&self->_navigationIntentHandler);
-  [WeakRetained handleNavigationIntent:v7 completion:v6];
+  [WeakRetained handleNavigationIntent:intentCopy completion:completionCopy];
 }
 
-- (void)setThemeColor:(id)a3
+- (void)setThemeColor:(id)color
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  colorCopy = color;
   if ((WBSIsEqual() & 1) == 0)
   {
-    objc_storeStrong(&self->_themeColor, a3);
+    objc_storeStrong(&self->_themeColor, color);
     if (!self->_needsReloadBookmarkLabels)
     {
       v13 = 0u;
@@ -441,7 +441,7 @@ id __34__BookmarksBarView_initWithFrame___block_invoke(uint64_t a1, void *a2, vo
               objc_enumerationMutation(v6);
             }
 
-            [*(*(&v11 + 1) + 8 * v10++) setThemeColor:{v5, v11}];
+            [*(*(&v11 + 1) + 8 * v10++) setThemeColor:{colorCopy, v11}];
           }
 
           while (v8 != v10);
@@ -454,7 +454,7 @@ id __34__BookmarksBarView_initWithFrame___block_invoke(uint64_t a1, void *a2, vo
   }
 }
 
-- (void)bookmarksNavigationControllerReloadDidFail:(id)a3
+- (void)bookmarksNavigationControllerReloadDidFail:(id)fail
 {
   if (self->_isShowingNavigationController)
   {
@@ -462,13 +462,13 @@ id __34__BookmarksBarView_initWithFrame___block_invoke(uint64_t a1, void *a2, vo
   }
 }
 
-- (void)bookmarksNavigationControllerViewDidAppear:(id)a3
+- (void)bookmarksNavigationControllerViewDidAppear:(id)appear
 {
-  v5 = a3;
+  appearCopy = appear;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained bookmarksBarView:self bookmarksNavigationControllerViewDidAppear:v5];
+    [WeakRetained bookmarksBarView:self bookmarksNavigationControllerViewDidAppear:appearCopy];
   }
 }
 
@@ -477,34 +477,34 @@ id __34__BookmarksBarView_initWithFrame___block_invoke(uint64_t a1, void *a2, vo
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    v3 = [WeakRetained tabGroupProvider];
+    tabGroupProvider = [WeakRetained tabGroupProvider];
   }
 
   else
   {
-    v3 = 0;
+    tabGroupProvider = 0;
   }
 
-  return v3;
+  return tabGroupProvider;
 }
 
-- (void)bookmarksBarLabelButtonDidSelectOpenInNewTab:(id)a3
+- (void)bookmarksBarLabelButtonDidSelectOpenInNewTab:(id)tab
 {
-  v7 = [a3 bookmark];
-  v4 = [MEMORY[0x277D28F40] builder];
-  [v4 setPrefersOpenInNewTab:1];
-  v5 = [v4 navigationIntentWithBookmark:v7];
+  bookmark = [tab bookmark];
+  builder = [MEMORY[0x277D28F40] builder];
+  [builder setPrefersOpenInNewTab:1];
+  v5 = [builder navigationIntentWithBookmark:bookmark];
   WeakRetained = objc_loadWeakRetained(&self->_navigationIntentHandler);
   [WeakRetained dispatchNavigationIntent:v5];
 }
 
-- (void)bookmarksBarLabelButtonDidSelectEdit:(id)a3
+- (void)bookmarksBarLabelButtonDidSelectEdit:(id)edit
 {
-  v4 = a3;
-  v6 = [(BookmarksBarView *)self browserController];
-  v5 = [v4 bookmark];
+  editCopy = edit;
+  browserController = [(BookmarksBarView *)self browserController];
+  bookmark = [editCopy bookmark];
 
-  [v6 editBookmark:v5];
+  [browserController editBookmark:bookmark];
 }
 
 - (CGSize)preferredSize
@@ -518,9 +518,9 @@ id __34__BookmarksBarView_initWithFrame___block_invoke(uint64_t a1, void *a2, vo
 
 - (double)preferredBottomSpacing
 {
-  v3 = [MEMORY[0x277D49A08] isSolariumEnabled];
+  isSolariumEnabled = [MEMORY[0x277D49A08] isSolariumEnabled];
   result = 10.0;
-  if ((v3 & 1) == 0)
+  if ((isSolariumEnabled & 1) == 0)
   {
     v5 = 8.0;
     if (!self->_separator)
@@ -562,89 +562,89 @@ id __34__BookmarksBarView_initWithFrame___block_invoke(uint64_t a1, void *a2, vo
   return WeakRetained;
 }
 
-- (void)_setButtonUsedToShowNavigationController:(uint64_t)a1
+- (void)_setButtonUsedToShowNavigationController:(uint64_t)controller
 {
   v4 = a2;
-  if (a1 && *(a1 + 464) != v4)
+  if (controller && *(controller + 464) != v4)
   {
     v5 = v4;
-    objc_storeStrong((a1 + 464), a2);
+    objc_storeStrong((controller + 464), a2);
     v4 = v5;
   }
 }
 
 - (void)_clearBookmarksNavigationController
 {
-  if (a1)
+  if (self)
   {
-    [*(a1 + 480) setBookmarksNavigationControllerDelegate:0];
-    v2 = *(a1 + 480);
-    *(a1 + 480) = 0;
+    [*(self + 480) setBookmarksNavigationControllerDelegate:0];
+    v2 = *(self + 480);
+    *(self + 480) = 0;
 
-    *(a1 + 472) = 0;
+    *(self + 472) = 0;
   }
 }
 
-- (void)_presentCurrentBookmarksPopoverFromButton:(uint64_t)a3 animated:
+- (void)_presentCurrentBookmarksPopoverFromButton:(uint64_t)button animated:
 {
   v27 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    v5 = *(a1 + 480);
+    v5 = *(self + 480);
     v6 = a2;
-    v7 = [v5 presentingViewController];
+    presentingViewController = [v5 presentingViewController];
 
-    if (v7)
+    if (presentingViewController)
     {
       v8 = WBS_LOG_CHANNEL_PREFIXUserInteraction();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
       {
-        v21 = *(a1 + 480);
+        v21 = *(self + 480);
         v22 = v8;
-        v23 = [v21 presentingViewController];
+        presentingViewController2 = [v21 presentingViewController];
         *buf = 138543362;
-        v26 = v23;
+        v26 = presentingViewController2;
         _os_log_error_impl(&dword_215819000, v22, OS_LOG_TYPE_ERROR, "Trying to present bookmarks from popover button when it is already presented by: %{public}@", buf, 0xCu);
       }
     }
 
-    [*(a1 + 480) setAllowsEditing:0];
-    [*(a1 + 480) setModalPresentationStyle:7];
-    v9 = [*(a1 + 480) popoverPresentationController];
+    [*(self + 480) setAllowsEditing:0];
+    [*(self + 480) setModalPresentationStyle:7];
+    popoverPresentationController = [*(self + 480) popoverPresentationController];
     [v6 frame];
     v11 = v10;
     v13 = v12;
     v15 = v14;
     v17 = v16;
 
-    [v9 setSourceRect:{v11, v13, v15, v17}];
-    [v9 setSourceView:a1];
-    [v9 setDelegate:a1];
-    [v9 setPermittedArrowDirections:1];
-    v24 = a1;
-    v18 = [MEMORY[0x277CBEA60] arrayWithObjects:&v24 count:1];
-    [v9 setPassthroughViews:v18];
+    [popoverPresentationController setSourceRect:{v11, v13, v15, v17}];
+    [popoverPresentationController setSourceView:self];
+    [popoverPresentationController setDelegate:self];
+    [popoverPresentationController setPermittedArrowDirections:1];
+    selfCopy = self;
+    v18 = [MEMORY[0x277CBEA60] arrayWithObjects:&selfCopy count:1];
+    [popoverPresentationController setPassthroughViews:v18];
 
-    v19 = [a1 window];
-    v20 = [v19 rootViewController];
-    [v20 presentViewController:*(a1 + 480) animated:a3 completion:0];
+    window = [self window];
+    rootViewController = [window rootViewController];
+    [rootViewController presentViewController:*(self + 480) animated:button completion:0];
 
-    *(a1 + 472) = 1;
+    *(self + 472) = 1;
   }
 }
 
 - (void)_dismissCurrentBookmarksPopover
 {
-  if (a1)
+  if (self)
   {
-    [*(a1 + 480) dismissViewControllerAnimated:0 completion:0];
+    [*(self + 480) dismissViewControllerAnimated:0 completion:0];
     v1 = OUTLINED_FUNCTION_0_1();
 
     [(BookmarksBarView *)v1 _setButtonUsedToShowNavigationController:v2];
   }
 }
 
-- (void)presentationControllerDidDismiss:(id)a3
+- (void)presentationControllerDidDismiss:(id)dismiss
 {
   [(BookmarksBarView *)self _clearBookmarksNavigationController];
   v3 = OUTLINED_FUNCTION_0_1();
@@ -654,11 +654,11 @@ id __34__BookmarksBarView_initWithFrame___block_invoke(uint64_t a1, void *a2, vo
 
 - (id)_rootList
 {
-  if (a1)
+  if (self)
   {
-    v1 = [(BookmarksBarView *)a1 _rootBookmark];
-    v2 = [MEMORY[0x277D7B5A8] mainBookmarkCollection];
-    v3 = [v2 listWithID:{objc_msgSend(v1, "identifier")}];
+    _rootBookmark = [(BookmarksBarView *)self _rootBookmark];
+    mainBookmarkCollection = [MEMORY[0x277D7B5A8] mainBookmarkCollection];
+    v3 = [mainBookmarkCollection listWithID:{objc_msgSend(_rootBookmark, "identifier")}];
   }
 
   else
@@ -671,24 +671,24 @@ id __34__BookmarksBarView_initWithFrame___block_invoke(uint64_t a1, void *a2, vo
 
 - (id)_rootBookmark
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v2 = [MEMORY[0x277D7B5A8] mainBookmarkCollection];
-    WeakRetained = objc_loadWeakRetained(v1 + 62);
+    mainBookmarkCollection = [MEMORY[0x277D7B5A8] mainBookmarkCollection];
+    WeakRetained = objc_loadWeakRetained(selfCopy + 62);
     if ([WeakRetained isPrivateBrowsingEnabled])
     {
     }
 
     else
     {
-      v4 = [v1 tabGroupProvider];
-      v5 = [v4 activeProfile];
-      v6 = [v5 customFavoritesFolderServerID];
+      tabGroupProvider = [selfCopy tabGroupProvider];
+      activeProfile = [tabGroupProvider activeProfile];
+      customFavoritesFolderServerID = [activeProfile customFavoritesFolderServerID];
 
-      if (v6)
+      if (customFavoritesFolderServerID)
       {
-        v7 = [v1[68] serverID];
+        serverID = [selfCopy[68] serverID];
         v8 = WBSIsEqual();
 
         if (v8)
@@ -696,58 +696,58 @@ id __34__BookmarksBarView_initWithFrame___block_invoke(uint64_t a1, void *a2, vo
           goto LABEL_11;
         }
 
-        v9 = [v2 bookmarkWithServerID:v6 excludeDeletedBookmarks:1];
+        v9 = [mainBookmarkCollection bookmarkWithServerID:customFavoritesFolderServerID excludeDeletedBookmarks:1];
         goto LABEL_8;
       }
     }
 
-    v10 = [v1[68] identifier];
+    identifier = [selfCopy[68] identifier];
     v9 = 0;
-    v6 = 0;
-    if (v10 == *(v1 + 115))
+    customFavoritesFolderServerID = 0;
+    if (identifier == *(selfCopy + 115))
     {
 LABEL_9:
-      v12 = v1[68];
+      v12 = selfCopy[68];
       if (v12)
       {
 LABEL_12:
-        v1 = v12;
+        selfCopy = v12;
 
         goto LABEL_13;
       }
 
-      v13 = [v2 bookmarksBarBookmark];
-      v14 = v1[68];
-      v1[68] = v13;
+      bookmarksBarBookmark = [mainBookmarkCollection bookmarksBarBookmark];
+      v14 = selfCopy[68];
+      selfCopy[68] = bookmarksBarBookmark;
 
-      *(v1 + 115) = [v1[68] identifier];
+      *(selfCopy + 115) = [selfCopy[68] identifier];
 LABEL_11:
-      v12 = v1[68];
+      v12 = selfCopy[68];
       goto LABEL_12;
     }
 
 LABEL_8:
-    v11 = v1[68];
-    v1[68] = v9;
+    v11 = selfCopy[68];
+    selfCopy[68] = v9;
 
     goto LABEL_9;
   }
 
 LABEL_13:
 
-  return v1;
+  return selfCopy;
 }
 
 - (void)_createAllLabelButtonsIfNeeded
 {
   v28 = *MEMORY[0x277D85DE8];
-  if (a1 && *(a1 + 416) == 1)
+  if (self && *(self + 416) == 1)
   {
-    *(a1 + 416) = 0;
-    if (*(a1 + 472) == 1 && *(a1 + 464) == *(a1 + 440))
+    *(self + 416) = 0;
+    if (*(self + 472) == 1 && *(self + 464) == *(self + 440))
     {
-      v2 = [*(a1 + 480) viewControllers];
-      v22 = [v2 count] == 1;
+      viewControllers = [*(self + 480) viewControllers];
+      v22 = [viewControllers count] == 1;
     }
 
     else
@@ -757,9 +757,9 @@ LABEL_13:
 
     v3 = OUTLINED_FUNCTION_0_1();
     [(BookmarksBarView *)v3 _setButtonUsedToShowNavigationController:v4];
-    v5 = [(BookmarksBarView *)a1 _rootList];
-    *(a1 + 432) = [v5 folderID];
-    v6 = *(a1 + 408);
+    _rootList = [(BookmarksBarView *)self _rootList];
+    *(self + 432) = [_rootList folderID];
+    v6 = *(self + 408);
     if (v6)
     {
       v25 = 0u;
@@ -782,11 +782,11 @@ LABEL_13:
               objc_enumerationMutation(v7);
             }
 
-            v12 = [*(*(&v23 + 1) + 8 * v11++) removeFromSuperview];
+            removeFromSuperview = [*(*(&v23 + 1) + 8 * v11++) removeFromSuperview];
           }
 
           while (v9 != v11);
-          v9 = OUTLINED_FUNCTION_3_0(v12, v13, &v23, v27);
+          v9 = OUTLINED_FUNCTION_3_0(removeFromSuperview, v13, &v23, v27);
         }
 
         while (v9);
@@ -794,24 +794,24 @@ LABEL_13:
     }
 
     v14 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v15 = *(a1 + 408);
-    *(a1 + 408) = v14;
+    v15 = *(self + 408);
+    *(self + 408) = v14;
 
-    v16 = [v5 bookmarkCount];
-    if (v16)
+    bookmarkCount = [_rootList bookmarkCount];
+    if (bookmarkCount)
     {
-      v17 = v16;
+      v17 = bookmarkCount;
       v18 = 0;
       do
       {
-        v19 = [v5 bookmarkAtIndex:v18];
-        v20 = [BookmarksBarLabelButton labelButtonWithButtonStyle:*(a1 + 536)];
+        v19 = [_rootList bookmarkAtIndex:v18];
+        v20 = [BookmarksBarLabelButton labelButtonWithButtonStyle:*(self + 536)];
         [v20 setBookmark:v19];
-        [v20 addTarget:a1 action:sel__buttonTapped_ forControlEvents:64];
-        [v20 setDelegate:a1];
-        [v20 setThemeColor:*(a1 + 528)];
-        [*(a1 + 408) addObject:v20];
-        [a1 addSubview:v20];
+        [v20 addTarget:self action:sel__buttonTapped_ forControlEvents:64];
+        [v20 setDelegate:self];
+        [v20 setThemeColor:*(self + 528)];
+        [*(self + 408) addObject:v20];
+        [self addSubview:v20];
 
         v18 = (v18 + 1);
       }
@@ -819,22 +819,22 @@ LABEL_13:
       while (v17 != v18);
     }
 
-    if ((*(a1 + 473) & 1) == 0)
+    if ((*(self + 473) & 1) == 0)
     {
-      [a1 layoutIfNeeded];
+      [self layoutIfNeeded];
     }
 
-    if (*(a1 + 472) == 1)
+    if (*(self + 472) == 1)
     {
-      if (v22 && ([*(a1 + 440) alpha], v21 == 1.0))
+      if (v22 && ([*(self + 440) alpha], v21 == 1.0))
       {
-        [*(a1 + 480) setRootBookmark:*(a1 + 448) skipOffset:*(a1 + 456)];
-        [(BookmarksBarView *)a1 _setButtonUsedToShowNavigationController:?];
+        [*(self + 480) setRootBookmark:*(self + 448) skipOffset:*(self + 456)];
+        [(BookmarksBarView *)self _setButtonUsedToShowNavigationController:?];
       }
 
       else
       {
-        [*(a1 + 480) reloadViewControllers];
+        [*(self + 480) reloadViewControllers];
       }
     }
   }
@@ -843,31 +843,31 @@ LABEL_13:
 - (void)_repositionBookmarksNavigationController
 {
   v28 = *MEMORY[0x277D85DE8];
-  if (!a1)
+  if (!self)
   {
     return;
   }
 
-  v2 = *(a1 + 474);
-  *(a1 + 474) = 0;
+  v2 = *(self + 474);
+  *(self + 474) = 0;
   if (v2 != 1)
   {
     return;
   }
 
   v3 = 0x27CA74000uLL;
-  v4 = *(a1 + 480);
+  v4 = *(self + 480);
   if (!v4)
   {
     return;
   }
 
-  v20 = [v4 rootBookmark];
+  rootBookmark = [v4 rootBookmark];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v5 = *(a1 + 408);
+  v5 = *(self + 408);
   v6 = [v5 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (!v6)
   {
@@ -888,14 +888,14 @@ LABEL_13:
       [v9 alpha];
       if (v10 != 0.0)
       {
-        v11 = [v9 bookmark];
-        if ([v11 isFolder])
+        bookmark = [v9 bookmark];
+        if ([bookmark isFolder])
         {
-          v12 = [v20 identifier];
-          v13 = [v9 bookmark];
-          v14 = [v13 identifier];
+          identifier = [rootBookmark identifier];
+          bookmark2 = [v9 bookmark];
+          identifier2 = [bookmark2 identifier];
 
-          if (v12 == v14)
+          if (identifier == identifier2)
           {
             v3 = 0x27CA74000uLL;
 LABEL_19:
@@ -909,17 +909,17 @@ LABEL_19:
         }
       }
 
-      v15 = [v9 alpha];
+      alpha = [v9 alpha];
       if (v17 == 0.0)
       {
         v3 = 0x27CA74000uLL;
-        [*(a1 + 480) rebaseOnAncestorBookmark:*(a1 + 448) skipOffset:*(a1 + 456)];
-        v9 = *(a1 + 440);
+        [*(self + 480) rebaseOnAncestorBookmark:*(self + 448) skipOffset:*(self + 456)];
+        v9 = *(self + 440);
         goto LABEL_19;
       }
     }
 
-    v6 = OUTLINED_FUNCTION_3_0(v15, v16, &v23, v27);
+    v6 = OUTLINED_FUNCTION_3_0(alpha, v16, &v23, v27);
     if (v6)
     {
       continue;
@@ -931,12 +931,12 @@ LABEL_19:
   v3 = 0x27CA74000;
 LABEL_20:
 
-  v18 = *(a1 + *(v3 + 3764));
+  v18 = *(self + *(v3 + 3764));
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __60__BookmarksBarView__repositionBookmarksNavigationController__block_invoke;
   v21[3] = &unk_2781D4C88;
-  v21[4] = a1;
+  v21[4] = self;
   v22 = v6;
   v19 = v6;
   [v18 dismissViewControllerAnimated:0 completion:v21];
@@ -958,9 +958,9 @@ LABEL_20:
   v8 = v7;
   v10 = v9;
   v11 = 440;
-  v12 = [(UIButton *)self->_moreBookmarksButton imageView];
-  v13 = [v12 image];
-  [v13 size];
+  imageView = [(UIButton *)self->_moreBookmarksButton imageView];
+  image = [imageView image];
+  [image size];
   v15 = v14 + 30.0;
 
   v16 = fmax(v10 + -15.0, 0.0) + v15;
@@ -1149,9 +1149,9 @@ LABEL_37:
   [*(&self->super.super.super.isa + v11) setAlpha:v26];
   if (v21 < v18)
   {
-    v58 = [(BookmarksBarView *)&self->super.super.super.isa _rootBookmark];
+    _rootBookmark = [(BookmarksBarView *)&self->super.super.super.isa _rootBookmark];
     moreBookmarksParent = self->_moreBookmarksParent;
-    self->_moreBookmarksParent = v58;
+    self->_moreBookmarksParent = _rootBookmark;
 
     v60 = _WBSLocalizedString();
     [(WebBookmark *)self->_moreBookmarksParent setTitle:v60];
@@ -1167,19 +1167,19 @@ LABEL_37:
 - (void)updateAccessibilityIdentifier
 {
   v6[1] = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    v2 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", a1[67], @"DisplayMode"];
+    v2 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", self[67], @"DisplayMode"];
     v6[0] = v2;
     v3 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v6 forKeys:&v5 count:1];
     v4 = WBSMakeAccessibilityIdentifier();
-    [a1 setAccessibilityIdentifier:v4];
+    [self setAccessibilityIdentifier:v4];
   }
 }
 
-- (void)dispatchNavigationIntent:(id)a3
+- (void)dispatchNavigationIntent:(id)intent
 {
-  v7 = a3;
+  intentCopy = intent;
   if (self->_isShowingNavigationController)
   {
     [(BookmarksNavigationController *)self->_bookmarksNavigationController dismissViewControllerAnimated:1 completion:0];
@@ -1189,10 +1189,10 @@ LABEL_37:
   v4 = OUTLINED_FUNCTION_0_1();
   [(BookmarksBarView *)v4 _setButtonUsedToShowNavigationController:v5];
   WeakRetained = objc_loadWeakRetained(&self->_navigationIntentHandler);
-  [WeakRetained dispatchNavigationIntent:v7];
+  [WeakRetained dispatchNavigationIntent:intentCopy];
 }
 
-- (void)bookmarksNavigationControllerDidReload:(id)a3
+- (void)bookmarksNavigationControllerDidReload:(id)reload
 {
   [(BookmarksBarView *)self _createAllLabelButtonsIfNeeded];
   self->_needsRepositionNavigationController = 1;
@@ -1203,16 +1203,16 @@ LABEL_37:
   }
 }
 
-- (void)bookmarksNavigationControllerViewDidDisappear:(id)a3
+- (void)bookmarksNavigationControllerViewDidDisappear:(id)disappear
 {
-  v7 = a3;
+  disappearCopy = disappear;
   self->_isShowingNavigationController = 0;
   v4 = OUTLINED_FUNCTION_0_1();
   [(BookmarksBarView *)v4 _setButtonUsedToShowNavigationController:v5];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained bookmarksBarView:self bookmarksNavigationControllerViewDidDisappear:v7];
+    [WeakRetained bookmarksBarView:self bookmarksNavigationControllerViewDidDisappear:disappearCopy];
   }
 }
 

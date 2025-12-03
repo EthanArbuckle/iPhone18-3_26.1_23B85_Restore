@@ -1,21 +1,21 @@
 @interface AXLTAudioOutManager
 + (AXLTAudioOutManager)sharedInstance;
 + (BOOL)isCurrentProcessAXUIServer;
-+ (BOOL)isExcludedAppID:(id)a3;
++ (BOOL)isExcludedAppID:(id)d;
 - (AXLTAudioOutManager)init;
 - (AXLTTranscriberDelegateProtocol)delegate;
-- (BOOL)isTranscribingForPID:(int)a3;
-- (BOOL)startTranscriptionWithLocale:(id)a3 error:(id *)a4;
-- (BOOL)stopTranscription:(id *)a3;
-- (void)_avSessionMediaServicesResetNotification:(id)a3;
+- (BOOL)isTranscribingForPID:(int)d;
+- (BOOL)startTranscriptionWithLocale:(id)locale error:(id *)error;
+- (BOOL)stopTranscription:(id *)transcription;
+- (void)_avSessionMediaServicesResetNotification:(id)notification;
 - (void)_cleanupAllPids;
 - (void)_setupAVSystemNotificationSystem;
-- (void)_someSessionIsPlayingDidChangeNotification:(id)a3;
+- (void)_someSessionIsPlayingDidChangeNotification:(id)notification;
 - (void)dealloc;
-- (void)handleInputBufferWithContext:(void *)a3 audioQueue:(OpaqueAudioQueue *)a4 audioBuffer:(AudioQueueBuffer *)a5 timestamp:(const AudioTimeStamp *)a6 packetCount:(unsigned int)a7 packetDesc:(const AudioStreamPacketDescription *)a8;
+- (void)handleInputBufferWithContext:(void *)context audioQueue:(OpaqueAudioQueue *)queue audioBuffer:(AudioQueueBuffer *)buffer timestamp:(const AudioTimeStamp *)timestamp packetCount:(unsigned int)count packetDesc:(const AudioStreamPacketDescription *)desc;
 - (void)registerForAVSystemControllerNotifications;
 - (void)unregisterForAVSystemControllerNotifications;
-- (void)updateAudioSessionsInfoFromSessionsArray:(id)a3;
+- (void)updateAudioSessionsInfoFromSessionsArray:(id)array;
 @end
 
 @implementation AXLTAudioOutManager
@@ -39,21 +39,21 @@ uint64_t __37__AXLTAudioOutManager_sharedInstance__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-+ (BOOL)isExcludedAppID:(id)a3
++ (BOOL)isExcludedAppID:(id)d
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __39__AXLTAudioOutManager_isExcludedAppID___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   v3 = isExcludedAppID__onceToken;
-  v4 = a3;
+  dCopy = d;
   if (v3 != -1)
   {
     dispatch_once(&isExcludedAppID__onceToken, block);
   }
 
-  v5 = [isExcludedAppID___excludedAppIDs containsObject:v4];
+  v5 = [isExcludedAppID___excludedAppIDs containsObject:dCopy];
 
   return v5;
 }
@@ -122,9 +122,9 @@ void __49__AXLTAudioOutManager_isCurrentProcessAXUIServer__block_invoke()
     bufferQueue = v3->_bufferQueue;
     v3->_bufferQueue = v5;
 
-    v7 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     processToTranscriberMap = v3->_processToTranscriberMap;
-    v3->_processToTranscriberMap = v7;
+    v3->_processToTranscriberMap = strongToStrongObjectsMapTable;
 
     [(AXLTAudioOutManager *)v3 _setupAVSystemNotificationSystem];
     v9 = AXLogLiveTranscription();
@@ -151,13 +151,13 @@ void __49__AXLTAudioOutManager_isCurrentProcessAXUIServer__block_invoke()
   [(AXLTAudioOutManager *)&v3 dealloc];
 }
 
-- (BOOL)startTranscriptionWithLocale:(id)a3 error:(id *)a4
+- (BOOL)startTranscriptionWithLocale:(id)locale error:(id *)error
 {
-  v6 = a3;
-  v7 = [(AXLTAudioOutManager *)self isTranscribing];
+  localeCopy = locale;
+  isTranscribing = [(AXLTAudioOutManager *)self isTranscribing];
   v8 = AXLogLiveTranscription();
   v9 = v8;
-  if (v7)
+  if (isTranscribing)
   {
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
@@ -175,11 +175,11 @@ void __49__AXLTAudioOutManager_isCurrentProcessAXUIServer__block_invoke()
     }
 
     self->_isTranscribing = 1;
-    objc_storeStrong(&self->_locale, a3);
+    objc_storeStrong(&self->_locale, locale);
     v10 = +[AXLTTranscriber sharedInstance];
-    v11 = [v10 downloadState];
+    downloadState = [v10 downloadState];
 
-    if (v11 == -1)
+    if (downloadState == -1)
     {
       v12 = +[AXLTTranscriber sharedInstance];
       [v12 setDownloadState:-2];
@@ -194,12 +194,12 @@ void __49__AXLTAudioOutManager_isCurrentProcessAXUIServer__block_invoke()
   return 1;
 }
 
-- (BOOL)stopTranscription:(id *)a3
+- (BOOL)stopTranscription:(id *)transcription
 {
-  v4 = [(AXLTAudioOutManager *)self isTranscribing];
+  isTranscribing = [(AXLTAudioOutManager *)self isTranscribing];
   v5 = AXLogLiveTranscription();
   v6 = v5;
-  if (v4)
+  if (isTranscribing)
   {
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
@@ -226,26 +226,26 @@ void __49__AXLTAudioOutManager_isCurrentProcessAXUIServer__block_invoke()
   return 1;
 }
 
-- (BOOL)isTranscribingForPID:(int)a3
+- (BOOL)isTranscribingForPID:(int)d
 {
-  v4 = self;
+  selfCopy = self;
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
   v12 = 0;
-  v5 = [(AXLTAudioOutManager *)self bufferQueue];
+  bufferQueue = [(AXLTAudioOutManager *)self bufferQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __44__AXLTAudioOutManager_isTranscribingForPID___block_invoke;
   block[3] = &unk_27981CCA0;
-  v8 = a3;
-  block[4] = v4;
+  dCopy = d;
+  block[4] = selfCopy;
   block[5] = &v9;
-  dispatch_sync(v5, block);
+  dispatch_sync(bufferQueue, block);
 
-  LOBYTE(v4) = *(v10 + 24);
+  LOBYTE(selfCopy) = *(v10 + 24);
   _Block_object_dispose(&v9, 8);
-  return v4;
+  return selfCopy;
 }
 
 void __44__AXLTAudioOutManager_isTranscribingForPID___block_invoke(uint64_t a1)
@@ -300,25 +300,25 @@ void __90__AXLTAudioOutManager__startTranscriptionForPID_appID_appName_excluding
   [v4 setObject:v2 forKey:v3];
 }
 
-- (void)handleInputBufferWithContext:(void *)a3 audioQueue:(OpaqueAudioQueue *)a4 audioBuffer:(AudioQueueBuffer *)a5 timestamp:(const AudioTimeStamp *)a6 packetCount:(unsigned int)a7 packetDesc:(const AudioStreamPacketDescription *)a8
+- (void)handleInputBufferWithContext:(void *)context audioQueue:(OpaqueAudioQueue *)queue audioBuffer:(AudioQueueBuffer *)buffer timestamp:(const AudioTimeStamp *)timestamp packetCount:(unsigned int)count packetDesc:(const AudioStreamPacketDescription *)desc
 {
-  v14 = a3;
-  v15 = [v14 pid];
-  v16 = [(AXLTAudioOutManager *)self bufferQueue];
+  contextCopy = context;
+  v15 = [contextCopy pid];
+  bufferQueue = [(AXLTAudioOutManager *)self bufferQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __108__AXLTAudioOutManager_handleInputBufferWithContext_audioQueue_audioBuffer_timestamp_packetCount_packetDesc___block_invoke;
   block[3] = &unk_27981CCF0;
   block[4] = self;
-  v19 = v14;
-  v20 = a5;
-  v21 = a4;
+  v19 = contextCopy;
+  bufferCopy = buffer;
+  queueCopy = queue;
   v24 = v15;
-  v25 = a7;
-  v22 = a6;
-  v23 = a8;
-  v17 = v14;
-  dispatch_async(v16, block);
+  countCopy = count;
+  timestampCopy = timestamp;
+  descCopy = desc;
+  v17 = contextCopy;
+  dispatch_async(bufferQueue, block);
 }
 
 void __108__AXLTAudioOutManager_handleInputBufferWithContext_audioQueue_audioBuffer_timestamp_packetCount_packetDesc___block_invoke(uint64_t a1)
@@ -352,7 +352,7 @@ void __38__AXLTAudioOutManager__cleanupForPID___block_invoke(uint64_t a1)
 {
   v19 = *MEMORY[0x277D85DE8];
   v3 = objc_opt_new();
-  v4 = [(AXLTAudioOutManager *)self bufferQueue];
+  bufferQueue = [(AXLTAudioOutManager *)self bufferQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __38__AXLTAudioOutManager__cleanupAllPids__block_invoke;
@@ -360,7 +360,7 @@ void __38__AXLTAudioOutManager__cleanupForPID___block_invoke(uint64_t a1)
   block[4] = self;
   v5 = v3;
   v17 = v5;
-  dispatch_sync(v4, block);
+  dispatch_sync(bufferQueue, block);
 
   v14 = 0u;
   v15 = 0u;
@@ -452,19 +452,19 @@ void __38__AXLTAudioOutManager__cleanupAllPids__block_invoke(uint64_t a1)
     _os_log_impl(&dword_256022000, v4, OS_LOG_TYPE_INFO, "AudioManager: Unsubscribing on Audio Server events", v7, 2u);
   }
 
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 removeObserver:self name:*MEMORY[0x277D26D40] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D26D40] object:0];
 
-  v6 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v6 removeObserver:self name:*MEMORY[0x277D26DA8] object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 removeObserver:self name:*MEMORY[0x277D26DA8] object:0];
 
   [(AXLTAudioOutManager *)self _cleanupAllPids];
   [(AXLTAudioOutManager *)self setSubscribed:0];
 }
 
-- (void)_someSessionIsPlayingDidChangeNotification:(id)a3
+- (void)_someSessionIsPlayingDidChangeNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = AXLogLiveTranscription();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -472,9 +472,9 @@ void __38__AXLTAudioOutManager__cleanupAllPids__block_invoke(uint64_t a1)
     _os_log_impl(&dword_256022000, v5, OS_LOG_TYPE_INFO, "AudioManager: Audio Sessions were updated", buf, 2u);
   }
 
-  v6 = [v4 userInfo];
+  userInfo = [notificationCopy userInfo];
 
-  v7 = [v6 objectForKeyedSubscript:*MEMORY[0x277D26DB8]];
+  v7 = [userInfo objectForKeyedSubscript:*MEMORY[0x277D26DB8]];
 
   if (v7)
   {
@@ -491,17 +491,17 @@ void __38__AXLTAudioOutManager__cleanupAllPids__block_invoke(uint64_t a1)
 - (void)_setupAVSystemNotificationSystem
 {
   v14[2] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D26E58] sharedAVSystemController];
-  [(AXLTAudioOutManager *)self setAvSystemController:v3];
+  mEMORY[0x277D26E58] = [MEMORY[0x277D26E58] sharedAVSystemController];
+  [(AXLTAudioOutManager *)self setAvSystemController:mEMORY[0x277D26E58]];
 
   v4 = *MEMORY[0x277D26DA8];
   v14[0] = *MEMORY[0x277D26D40];
   v14[1] = v4;
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:2];
-  v6 = [(AXLTAudioOutManager *)self avSystemController];
+  avSystemController = [(AXLTAudioOutManager *)self avSystemController];
   v7 = *MEMORY[0x277D26DD0];
   v13 = 0;
-  v8 = [v6 setAttribute:v5 forKey:v7 error:&v13];
+  v8 = [avSystemController setAttribute:v5 forKey:v7 error:&v13];
 
   v9 = AXLogLiveTranscription();
   v10 = v9;
@@ -522,7 +522,7 @@ void __38__AXLTAudioOutManager__cleanupAllPids__block_invoke(uint64_t a1)
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_avSessionMediaServicesResetNotification:(id)a3
+- (void)_avSessionMediaServicesResetNotification:(id)notification
 {
   v4 = AXLogLiveTranscription();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -534,14 +534,14 @@ void __38__AXLTAudioOutManager__cleanupAllPids__block_invoke(uint64_t a1)
   [(AXLTAudioOutManager *)self _setupAVSystemNotificationSystem];
 }
 
-- (void)updateAudioSessionsInfoFromSessionsArray:(id)a3
+- (void)updateAudioSessionsInfoFromSessionsArray:(id)array
 {
   v70 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  arrayCopy = array;
   v5 = AXLogLiveTranscription();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v4, "count")}];
+    v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(arrayCopy, "count")}];
     *buf = 138412290;
     *v68 = v6;
     _os_log_impl(&dword_256022000, v5, OS_LOG_TYPE_DEFAULT, "AudioManager: Processing Audio Sessions, active sessions number %@", buf, 0xCu);
@@ -549,21 +549,21 @@ void __38__AXLTAudioOutManager__cleanupAllPids__block_invoke(uint64_t a1)
 
   if ([(AXLTAudioOutManager *)self subscribed])
   {
-    v7 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v8 = AXLogLiveTranscription();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
-      [(AXLTAudioOutManager *)v4 updateAudioSessionsInfoFromSessionsArray:v8];
+      [(AXLTAudioOutManager *)arrayCopy updateAudioSessionsInfoFromSessionsArray:v8];
     }
 
     v63 = 0u;
     v64 = 0u;
     v61 = 0u;
     v62 = 0u;
-    v50 = v4;
-    obj = v4;
+    v50 = arrayCopy;
+    obj = arrayCopy;
     v9 = [obj countByEnumeratingWithState:&v61 objects:v69 count:16];
-    v51 = self;
+    selfCopy = self;
     if (!v9)
     {
       v54 = 0;
@@ -574,7 +574,7 @@ void __38__AXLTAudioOutManager__cleanupAllPids__block_invoke(uint64_t a1)
     v54 = 0;
     v11 = MEMORY[0x277D26C88];
     v12 = *v62;
-    v55 = v7;
+    v55 = dictionary;
     v52 = *v62;
     while (1)
     {
@@ -588,11 +588,11 @@ void __38__AXLTAudioOutManager__cleanupAllPids__block_invoke(uint64_t a1)
         }
 
         v14 = [*(*(&v61 + 1) + 8 * v13) objectForKeyedSubscript:*v11];
-        v15 = [v14 intValue];
-        if (v15)
+        intValue = [v14 intValue];
+        if (intValue)
         {
-          v16 = v15;
-          if (![(AXLTAudioOutManager *)self isTranscribingForPID:v15])
+          v16 = intValue;
+          if (![(AXLTAudioOutManager *)self isTranscribingForPID:intValue])
           {
             v17 = [(AXLTAudioOutManager *)self appInfoFromPid:v16];
             v18 = [v17 objectForKeyedSubscript:@"AppIDKey"];
@@ -636,14 +636,14 @@ void __38__AXLTAudioOutManager__cleanupAllPids__block_invoke(uint64_t a1)
               *&v68[10] = v26;
               _os_log_impl(&dword_256022000, v22, OS_LOG_TYPE_DEFAULT, "AudioManager Sessions: Starting transcription for app: %@, pid: %@", buf, 0x16u);
 
-              self = v51;
+              self = selfCopy;
             }
 
-            v27 = [(AXLTAudioOutManager *)self locale];
-            v28 = self;
-            v29 = v27;
+            locale = [(AXLTAudioOutManager *)self locale];
+            selfCopy2 = self;
+            v29 = locale;
             v58 = v54;
-            v30 = [(AXLTAudioOutManager *)v28 _startTranscriptionForPID:v16 appID:v18 appName:v19 locale:v27 error:&v58];
+            v30 = [(AXLTAudioOutManager *)selfCopy2 _startTranscriptionForPID:v16 appID:v18 appName:v19 locale:locale error:&v58];
             v31 = v58;
 
             if (v30)
@@ -682,16 +682,16 @@ LABEL_27:
             }
 
             v54 = v31;
-            self = v51;
+            self = selfCopy;
 LABEL_30:
             v10 = v53;
 
-            v7 = v55;
+            dictionary = v55;
             v12 = v52;
             goto LABEL_31;
           }
 
-          [v7 setObject:@"playing" forKeyedSubscript:v14];
+          [dictionary setObject:@"playing" forKeyedSubscript:v14];
           v17 = AXLogLiveTranscription();
           if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
           {
@@ -722,17 +722,17 @@ LABEL_31:
       {
 LABEL_39:
 
-        v37 = [(AXLTAudioOutManager *)self processToTranscriberMap];
-        v38 = [v37 copy];
+        processToTranscriberMap = [(AXLTAudioOutManager *)self processToTranscriberMap];
+        v38 = [processToTranscriberMap copy];
 
-        v39 = [v38 keyEnumerator];
-        v40 = [v39 nextObject];
-        if (v40)
+        keyEnumerator = [v38 keyEnumerator];
+        nextObject = [keyEnumerator nextObject];
+        if (nextObject)
         {
-          v41 = v40;
+          v41 = nextObject;
           do
           {
-            v42 = [v7 objectForKeyedSubscript:v41];
+            v42 = [dictionary objectForKeyedSubscript:v41];
 
             if (v42)
             {
@@ -749,9 +749,9 @@ LABEL_39:
                 _os_log_impl(&dword_256022000, v44, OS_LOG_TYPE_DEFAULT, "AudioManager Sessions: Stopping transcription for pid: %@", buf, 0xCu);
               }
 
-              v45 = [v41 intValue];
+              intValue2 = [v41 intValue];
               v57 = v54;
-              v46 = [(AXLTAudioOutManager *)v51 _stopTranscriptionForPID:v45 error:&v57];
+              v46 = [(AXLTAudioOutManager *)selfCopy _stopTranscriptionForPID:intValue2 error:&v57];
               v43 = v57;
 
               if (!v46)
@@ -764,13 +764,13 @@ LABEL_39:
               }
             }
 
-            v48 = [v39 nextObject];
+            nextObject2 = [keyEnumerator nextObject];
 
-            v41 = v48;
+            v41 = nextObject2;
             v54 = v43;
           }
 
-          while (v48);
+          while (nextObject2);
         }
 
         else
@@ -778,17 +778,17 @@ LABEL_39:
           v43 = v54;
         }
 
-        v4 = v50;
+        arrayCopy = v50;
         goto LABEL_53;
       }
     }
   }
 
-  v7 = AXLogLiveTranscription();
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+  dictionary = AXLogLiveTranscription();
+  if (os_log_type_enabled(dictionary, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
-    _os_log_impl(&dword_256022000, v7, OS_LOG_TYPE_DEFAULT, "AudioManager: Not subscribed to audio session updates, skip", buf, 2u);
+    _os_log_impl(&dword_256022000, dictionary, OS_LOG_TYPE_DEFAULT, "AudioManager: Not subscribed to audio session updates, skip", buf, 2u);
   }
 
 LABEL_53:

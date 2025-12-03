@@ -1,12 +1,12 @@
 @interface SCNActionPlaySound
-+ (id)playAudioSource:(id)a3 waitForCompletion:(BOOL)a4;
++ (id)playAudioSource:(id)source waitForCompletion:(BOOL)completion;
 - (SCNActionPlaySound)init;
-- (SCNActionPlaySound)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SCNActionPlaySound)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)parameters;
 - (id)reversedAction;
 - (void)_setupDuration;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SCNActionPlaySound
@@ -35,7 +35,7 @@
   [(SCNAction *)self setDuration:v4];
 }
 
-- (SCNActionPlaySound)initWithCoder:(id)a3
+- (SCNActionPlaySound)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = SCNActionPlaySound;
@@ -47,32 +47,32 @@
   return 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = SCNActionPlaySound;
   [(SCNAction *)&v5 encodeWithCoder:?];
-  [a3 encodeObject:self->_mycaction->var21 forKey:@"_audioSource"];
-  [a3 encodeBool:self->_mycaction->var20 forKey:@"_wait"];
+  [coder encodeObject:self->_mycaction->var21 forKey:@"_audioSource"];
+  [coder encodeBool:self->_mycaction->var20 forKey:@"_wait"];
 }
 
-+ (id)playAudioSource:(id)a3 waitForCompletion:(BOOL)a4
++ (id)playAudioSource:(id)source waitForCompletion:(BOOL)completion
 {
   v6 = objc_alloc_init(SCNActionPlaySound);
-  v7 = [a3 copy];
+  v7 = [source copy];
   mycaction = v6->_mycaction;
   mycaction->var21 = v7;
-  mycaction->var20 = a4;
+  mycaction->var20 = completion;
   [(SCNActionPlaySound *)v6 _setupDuration];
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = SCNActionPlaySound;
-  v4 = [(SCNAction *)&v8 copyWithZone:a3];
+  v4 = [(SCNAction *)&v8 copyWithZone:zone];
   v5 = self->_mycaction->var21;
   v6 = v4[2];
   *(v6 + 152) = v5;
@@ -91,9 +91,9 @@
 - (id)parameters
 {
   v10[2] = *MEMORY[0x277D85DE8];
-  v3 = [self->_mycaction->var21 fileName];
+  fileName = [self->_mycaction->var21 fileName];
   v4 = [MEMORY[0x277CCABB0] numberWithBool:self->_mycaction->var20];
-  if (v3)
+  if (fileName)
   {
     v10[0] = v4;
     v10[1] = [self->_mycaction->var21 fileName];

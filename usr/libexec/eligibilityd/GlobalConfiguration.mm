@@ -3,7 +3,7 @@
 - (BOOL)allowsInternalSecurityPolicy;
 - (BOOL)hasInternalContent;
 - (BOOL)isMemoryConstrainedDevice;
-- (BOOL)setTestMode:(BOOL)a3 withError:(id *)a4;
+- (BOOL)setTestMode:(BOOL)mode withError:(id *)error;
 - (BOOL)testMode;
 - (GlobalConfiguration)init;
 - (id)debugDescription;
@@ -13,46 +13,46 @@
 
 - (id)debugDescription
 {
-  v3 = [(GlobalConfiguration *)self currentUsername];
-  v4 = [NSString stringWithFormat:@"<GlobalConfiguration currUser: %@, testMode: %d>", v3, [(GlobalConfiguration *)self testMode]];
+  currentUsername = [(GlobalConfiguration *)self currentUsername];
+  v4 = [NSString stringWithFormat:@"<GlobalConfiguration currUser: %@, testMode: %d>", currentUsername, [(GlobalConfiguration *)self testMode]];
 
   return v4;
 }
 
 - (BOOL)testMode
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(GlobalConfiguration *)self testModeQueue];
+  testModeQueue = [(GlobalConfiguration *)self testModeQueue];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100021F1C;
   v5[3] = &unk_100046A18;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(testModeQueue, v5);
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
-- (BOOL)setTestMode:(BOOL)a3 withError:(id *)a4
+- (BOOL)setTestMode:(BOOL)mode withError:(id *)error
 {
-  v7 = [(GlobalConfiguration *)self hasInternalContent];
-  if (v7)
+  hasInternalContent = [(GlobalConfiguration *)self hasInternalContent];
+  if (hasInternalContent)
   {
-    v8 = [(GlobalConfiguration *)self testModeQueue];
+    testModeQueue = [(GlobalConfiguration *)self testModeQueue];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_1000220C4;
     v12[3] = &unk_100046750;
     v12[4] = self;
-    v13 = a3;
-    dispatch_sync(v8, v12);
+    modeCopy = mode;
+    dispatch_sync(testModeQueue, v12);
 
     v9 = 0;
   }
@@ -68,14 +68,14 @@
     }
 
     v9 = [NSError errorWithDomain:NSPOSIXErrorDomain code:1 userInfo:0];
-    if (a4)
+    if (error)
     {
       v9 = v9;
-      *a4 = v9;
+      *error = v9;
     }
   }
 
-  return v7;
+  return hasInternalContent;
 }
 
 - (BOOL)allowsInternalSecurityPolicy

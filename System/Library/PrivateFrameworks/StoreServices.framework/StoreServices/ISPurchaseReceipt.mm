@@ -1,40 +1,40 @@
 @interface ISPurchaseReceipt
-+ (ISPurchaseReceipt)receiptWithContentsOfFile:(id)a3;
-- (BOOL)_anchorTrust:(__SecTrust *)a3 toRootCertificateIn:(__CFArray *)a4;
-- (BOOL)_checkArray:(__CFArray *)a3 containsCertificateWithOID:(__CFString *)a4;
-- (BOOL)_checkIfCertificate:(__SecCertificate *)a3 containsOID:(__CFString *)a4;
-- (BOOL)_decodeReceiptData:(id)a3 toDecodedMessage:(SecCmsMessageStr *)a4;
-- (BOOL)_parseReceiptFromMessage:(SecCmsMessageStr *)a3;
-- (BOOL)_setPoliciesForTrust:(__SecTrust *)a3;
-- (ISPurchaseReceipt)initWithContentsOfFile:(id)a3;
-- (SecCmsSignedDataStr)_extractSignedDataFromMessage:(SecCmsMessageStr *)a3;
-- (__CFArray)_copyCertificatesFromSignedData:(SecCmsSignedDataStr *)a3;
-- (int64_t)_verifySignatureForSignedData:(SecCmsSignedDataStr *)a3 onDate:(id)a4;
-- (void)_parseTokens:(id)a3;
++ (ISPurchaseReceipt)receiptWithContentsOfFile:(id)file;
+- (BOOL)_anchorTrust:(__SecTrust *)trust toRootCertificateIn:(__CFArray *)in;
+- (BOOL)_checkArray:(__CFArray *)array containsCertificateWithOID:(__CFString *)d;
+- (BOOL)_checkIfCertificate:(__SecCertificate *)certificate containsOID:(__CFString *)d;
+- (BOOL)_decodeReceiptData:(id)data toDecodedMessage:(SecCmsMessageStr *)message;
+- (BOOL)_parseReceiptFromMessage:(SecCmsMessageStr *)message;
+- (BOOL)_setPoliciesForTrust:(__SecTrust *)trust;
+- (ISPurchaseReceipt)initWithContentsOfFile:(id)file;
+- (SecCmsSignedDataStr)_extractSignedDataFromMessage:(SecCmsMessageStr *)message;
+- (__CFArray)_copyCertificatesFromSignedData:(SecCmsSignedDataStr *)data;
+- (int64_t)_verifySignatureForSignedData:(SecCmsSignedDataStr *)data onDate:(id)date;
+- (void)_parseTokens:(id)tokens;
 @end
 
 @implementation ISPurchaseReceipt
 
-+ (ISPurchaseReceipt)receiptWithContentsOfFile:(id)a3
++ (ISPurchaseReceipt)receiptWithContentsOfFile:(id)file
 {
-  v3 = a3;
-  v4 = [[ISPurchaseReceipt alloc] initWithContentsOfFile:v3];
+  fileCopy = file;
+  v4 = [[ISPurchaseReceipt alloc] initWithContentsOfFile:fileCopy];
 
   return v4;
 }
 
-- (ISPurchaseReceipt)initWithContentsOfFile:(id)a3
+- (ISPurchaseReceipt)initWithContentsOfFile:(id)file
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  fileCopy = file;
   v25.receiver = self;
   v25.super_class = ISPurchaseReceipt;
   v5 = [(ISPurchaseReceipt *)&v25 init];
   if (v5)
   {
-    if (v4 && [v4 length])
+    if (fileCopy && [fileCopy length])
     {
-      v6 = [MEMORY[0x1E695DEF0] dataWithContentsOfFile:v4];
+      v6 = [MEMORY[0x1E695DEF0] dataWithContentsOfFile:fileCopy];
       v7 = v6;
       if (v6 && [v6 length])
       {
@@ -63,19 +63,19 @@
       v9 = +[SSLogConfig sharedConfig];
     }
 
-    v10 = [v9 shouldLog];
+    shouldLog = [v9 shouldLog];
     if ([v9 shouldLogToDisk])
     {
-      v11 = v10 | 2;
+      v11 = shouldLog | 2;
     }
 
     else
     {
-      v11 = v10;
+      v11 = shouldLog;
     }
 
-    v12 = [v9 OSLogObject];
-    if (!os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v9 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v11 &= 2u;
     }
@@ -90,7 +90,7 @@
       v27 = 2048;
       v28 = v15;
       v29 = 2112;
-      v30 = v4;
+      v30 = fileCopy;
       LODWORD(v24) = 32;
       v16 = _os_log_send_and_compose_impl();
 
@@ -104,9 +104,9 @@ LABEL_22:
         goto LABEL_23;
       }
 
-      v12 = [MEMORY[0x1E696AEC0] stringWithCString:v16 encoding:{4, v26, v24}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v16 encoding:{4, v26, v24}];
       free(v16);
-      SSFileLog(v9, @"%@", v17, v18, v19, v20, v21, v22, v12);
+      SSFileLog(v9, @"%@", v17, v18, v19, v20, v21, v22, oSLogObject);
     }
 
     goto LABEL_21;
@@ -117,7 +117,7 @@ LABEL_23:
   return v5;
 }
 
-- (BOOL)_anchorTrust:(__SecTrust *)a3 toRootCertificateIn:(__CFArray *)a4
+- (BOOL)_anchorTrust:(__SecTrust *)trust toRootCertificateIn:(__CFArray *)in
 {
   v18 = *MEMORY[0x1E69E9840];
   v17[0] = xmmword_1D4B39000;
@@ -130,7 +130,7 @@ LABEL_23:
 
   v7 = v6;
   Mutable = CFArrayCreateMutable(*MEMORY[0x1E695E480], 1, MEMORY[0x1E695E9C0]);
-  Count = CFArrayGetCount(a4);
+  Count = CFArrayGetCount(in);
   if (Count < 1)
   {
     goto LABEL_11;
@@ -140,7 +140,7 @@ LABEL_23:
   v11 = 0;
   while (1)
   {
-    ValueAtIndex = CFArrayGetValueAtIndex(a4, v11);
+    ValueAtIndex = CFArrayGetValueAtIndex(in, v11);
     v13 = SecCertificateCopySubjectPublicKeyInfoSHA256Digest();
     if (v13)
     {
@@ -163,7 +163,7 @@ LABEL_7:
 
   CFArrayAppendValue(Mutable, ValueAtIndex);
   CFRelease(v14);
-  if (SecTrustSetAnchorCertificates(a3, Mutable))
+  if (SecTrustSetAnchorCertificates(trust, Mutable))
   {
 LABEL_11:
     v15 = 0;
@@ -171,7 +171,7 @@ LABEL_11:
 
   else
   {
-    v15 = SecTrustSetAnchorCertificatesOnly(a3, 1u) == 0;
+    v15 = SecTrustSetAnchorCertificatesOnly(trust, 1u) == 0;
   }
 
   CFRelease(Mutable);
@@ -179,16 +179,16 @@ LABEL_11:
   return v15;
 }
 
-- (BOOL)_checkArray:(__CFArray *)a3 containsCertificateWithOID:(__CFString *)a4
+- (BOOL)_checkArray:(__CFArray *)array containsCertificateWithOID:(__CFString *)d
 {
-  Count = CFArrayGetCount(a3);
+  Count = CFArrayGetCount(array);
   if (Count < 1)
   {
     return 0;
   }
 
   v8 = Count;
-  if ([(ISPurchaseReceipt *)self _checkIfCertificate:CFArrayGetValueAtIndex(a3 containsOID:0), a4])
+  if ([(ISPurchaseReceipt *)self _checkIfCertificate:CFArrayGetValueAtIndex(array containsOID:0), d])
   {
     return 1;
   }
@@ -202,7 +202,7 @@ LABEL_11:
       break;
     }
 
-    v12 = [(ISPurchaseReceipt *)self _checkIfCertificate:CFArrayGetValueAtIndex(a3 containsOID:v10), a4];
+    v12 = [(ISPurchaseReceipt *)self _checkIfCertificate:CFArrayGetValueAtIndex(array containsOID:v10), d];
     v10 = v11 + 1;
   }
 
@@ -210,7 +210,7 @@ LABEL_11:
   return v11 < v8;
 }
 
-- (BOOL)_checkIfCertificate:(__SecCertificate *)a3 containsOID:(__CFString *)a4
+- (BOOL)_checkIfCertificate:(__SecCertificate *)certificate containsOID:(__CFString *)d
 {
   v4 = CFDataCreate(0, byte_1D4B39020, 2);
   v5 = SecCertificateCopyProperties();
@@ -232,7 +232,7 @@ LABEL_11:
       {
         ValueAtIndex = CFArrayGetValueAtIndex(v6, v7);
         Value = CFDictionaryGetValue(ValueAtIndex, v8);
-        if (Value && CFEqual(Value, a4) && (v12 = CFDictionaryGetValue(ValueAtIndex, v9)) != 0 && (v13 = v12, v14 = CFArrayGetCount(v12), v14 >= 1))
+        if (Value && CFEqual(Value, d) && (v12 = CFDictionaryGetValue(ValueAtIndex, v9)) != 0 && (v13 = v12, v14 = CFArrayGetCount(v12), v14 >= 1))
         {
           v15 = v14;
           v16 = 1;
@@ -275,7 +275,7 @@ LABEL_11:
   return v20;
 }
 
-- (__CFArray)_copyCertificatesFromSignedData:(SecCmsSignedDataStr *)a3
+- (__CFArray)_copyCertificatesFromSignedData:(SecCmsSignedDataStr *)data
 {
   CertificateList = SecCmsSignedDataGetCertificateList();
   if (!CertificateList)
@@ -316,10 +316,10 @@ LABEL_11:
   return Mutable;
 }
 
-- (BOOL)_decodeReceiptData:(id)a3 toDecodedMessage:(SecCmsMessageStr *)a4
+- (BOOL)_decodeReceiptData:(id)data toDecodedMessage:(SecCmsMessageStr *)message
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dataCopy = data;
   if (SecCmsDecoderCreate())
   {
     v5 = +[SSLogConfig sharedStoreServicesConfig];
@@ -328,19 +328,19 @@ LABEL_11:
       v5 = +[SSLogConfig sharedConfig];
     }
 
-    v6 = [v5 shouldLog];
+    shouldLog = [v5 shouldLog];
     if ([v5 shouldLogToDisk])
     {
-      v7 = v6 | 2;
+      v7 = shouldLog | 2;
     }
 
     else
     {
-      v7 = v6;
+      v7 = shouldLog;
     }
 
-    v8 = [v5 OSLogObject];
-    if (!os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
+    oSLogObject = [v5 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
     {
       v7 &= 2u;
     }
@@ -353,8 +353,8 @@ LABEL_11:
 
   else
   {
-    [v4 bytes];
-    [v4 length];
+    [dataCopy bytes];
+    [dataCopy length];
     if (SecCmsDecoderUpdate())
     {
       v5 = +[SSLogConfig sharedStoreServicesConfig];
@@ -363,19 +363,19 @@ LABEL_11:
         v5 = +[SSLogConfig sharedConfig];
       }
 
-      v9 = [v5 shouldLog];
+      shouldLog2 = [v5 shouldLog];
       if ([v5 shouldLogToDisk])
       {
-        v10 = v9 | 2;
+        v10 = shouldLog2 | 2;
       }
 
       else
       {
-        v10 = v9;
+        v10 = shouldLog2;
       }
 
-      v8 = [v5 OSLogObject];
-      if (!os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
+      oSLogObject = [v5 OSLogObject];
+      if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
       {
         v10 &= 2u;
       }
@@ -400,19 +400,19 @@ LABEL_11:
         v5 = +[SSLogConfig sharedConfig];
       }
 
-      v11 = [v5 shouldLog];
+      shouldLog3 = [v5 shouldLog];
       if ([v5 shouldLogToDisk])
       {
-        v12 = v11 | 2;
+        v12 = shouldLog3 | 2;
       }
 
       else
       {
-        v12 = v11;
+        v12 = shouldLog3;
       }
 
-      v8 = [v5 OSLogObject];
-      if (!os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
+      oSLogObject = [v5 OSLogObject];
+      if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
       {
         v12 &= 2u;
       }
@@ -432,9 +432,9 @@ LABEL_11:
 
   if (v14)
   {
-    v8 = [MEMORY[0x1E696AEC0] stringWithCString:v14 encoding:{4, &v24, v23}];
+    oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v14 encoding:{4, &v24, v23}];
     free(v14);
-    SSFileLog(v5, @"%@", v15, v16, v17, v18, v19, v20, v8);
+    SSFileLog(v5, @"%@", v15, v16, v17, v18, v19, v20, oSLogObject);
 LABEL_32:
   }
 
@@ -445,7 +445,7 @@ LABEL_34:
   return v21;
 }
 
-- (SecCmsSignedDataStr)_extractSignedDataFromMessage:(SecCmsMessageStr *)a3
+- (SecCmsSignedDataStr)_extractSignedDataFromMessage:(SecCmsMessageStr *)message
 {
   v3 = SecCmsMessageContentLevelCount();
   if (v3 < 1)
@@ -476,10 +476,10 @@ LABEL_34:
   return result;
 }
 
-- (BOOL)_parseReceiptFromMessage:(SecCmsMessageStr *)a3
+- (BOOL)_parseReceiptFromMessage:(SecCmsMessageStr *)message
 {
   v39 = *MEMORY[0x1E69E9840];
-  v4 = MEMORY[0x1DA6DF250](a3, a2);
+  v4 = MEMORY[0x1DA6DF250](message, a2);
   if (v4 && *v4)
   {
     v5 = CFDataCreate(0, *(v4 + 8), *v4);
@@ -487,9 +487,9 @@ LABEL_34:
     {
       v6 = v5;
       v7 = [asn1Token readTokenFromBuffer:CFDataGetBytePtr(v5)];
-      v8 = [v7 identifier];
-      v9 = v8 == 17;
-      if (v8 == 17)
+      identifier = [v7 identifier];
+      v9 = identifier == 17;
+      if (identifier == 17)
       {
         [(ISPurchaseReceipt *)self _parseTokens:v7];
 LABEL_40:
@@ -504,19 +504,19 @@ LABEL_40:
         v24 = +[SSLogConfig sharedConfig];
       }
 
-      v25 = [v24 shouldLog];
+      shouldLog = [v24 shouldLog];
       if ([v24 shouldLogToDisk])
       {
-        v26 = v25 | 2;
+        v26 = shouldLog | 2;
       }
 
       else
       {
-        v26 = v25;
+        v26 = shouldLog;
       }
 
-      v27 = [v24 OSLogObject];
-      if (!os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
+      oSLogObject = [v24 OSLogObject];
+      if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
       {
         v26 &= 2u;
       }
@@ -536,9 +536,9 @@ LABEL_39:
           goto LABEL_40;
         }
 
-        v27 = [MEMORY[0x1E696AEC0] stringWithCString:v29 encoding:{4, &v38, v37, v38}];
+        oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v29 encoding:{4, &v38, v37, v38}];
         free(v29);
-        SSFileLog(v24, @"%@", v30, v31, v32, v33, v34, v35, v27);
+        SSFileLog(v24, @"%@", v30, v31, v32, v33, v34, v35, oSLogObject);
       }
 
       goto LABEL_39;
@@ -550,19 +550,19 @@ LABEL_39:
       v7 = +[SSLogConfig sharedConfig];
     }
 
-    v21 = [v7 shouldLog];
+    shouldLog2 = [v7 shouldLog];
     if ([v7 shouldLogToDisk])
     {
-      v22 = v21 | 2;
+      v22 = shouldLog2 | 2;
     }
 
     else
     {
-      v22 = v21;
+      v22 = shouldLog2;
     }
 
-    v12 = [v7 OSLogObject];
-    if (!os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
+    oSLogObject2 = [v7 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEBUG))
     {
       v22 &= 2u;
     }
@@ -581,19 +581,19 @@ LABEL_39:
       v7 = +[SSLogConfig sharedConfig];
     }
 
-    v10 = [v7 shouldLog];
+    shouldLog3 = [v7 shouldLog];
     if ([v7 shouldLogToDisk])
     {
-      v11 = v10 | 2;
+      v11 = shouldLog3 | 2;
     }
 
     else
     {
-      v11 = v10;
+      v11 = shouldLog3;
     }
 
-    v12 = [v7 OSLogObject];
-    if (!os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+    oSLogObject2 = [v7 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
     {
       v11 &= 2u;
     }
@@ -612,9 +612,9 @@ LABEL_39:
 
   if (v14)
   {
-    v12 = [MEMORY[0x1E696AEC0] stringWithCString:v14 encoding:{4, &v38, v37, v38}];
+    oSLogObject2 = [MEMORY[0x1E696AEC0] stringWithCString:v14 encoding:{4, &v38, v37, v38}];
     free(v14);
-    SSFileLog(v7, @"%@", v15, v16, v17, v18, v19, v20, v12);
+    SSFileLog(v7, @"%@", v15, v16, v17, v18, v19, v20, oSLogObject2);
 LABEL_17:
   }
 
@@ -624,10 +624,10 @@ LABEL_41:
   return v9;
 }
 
-- (void)_parseTokens:(id)a3
+- (void)_parseTokens:(id)tokens
 {
   v123 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  tokensCopy = tokens;
   v4 = off_1E84AB000;
   v5 = +[SSLogConfig sharedStoreServicesConfig];
   if (!v5)
@@ -635,19 +635,19 @@ LABEL_41:
     v5 = +[SSLogConfig sharedConfig];
   }
 
-  v6 = [v5 shouldLog];
+  shouldLog = [v5 shouldLog];
   if ([v5 shouldLogToDisk])
   {
-    v7 = v6 | 2;
+    v7 = shouldLog | 2;
   }
 
   else
   {
-    v7 = v6;
+    v7 = shouldLog;
   }
 
-  v8 = [v5 OSLogObject];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
+  oSLogObject = [v5 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
   {
     v9 = v7;
   }
@@ -671,17 +671,17 @@ LABEL_41:
       goto LABEL_13;
     }
 
-    v8 = [MEMORY[0x1E696AEC0] stringWithCString:v11 encoding:{4, &v119, v113}];
+    oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v11 encoding:{4, &v119, v113}];
     free(v11);
-    SSFileLog(v5, @"%@", v12, v13, v14, v15, v16, v17, v8);
+    SSFileLog(v5, @"%@", v12, v13, v14, v15, v16, v17, oSLogObject);
   }
 
 LABEL_13:
-  v18 = [v3 nextToken];
-  if (v18)
+  nextToken = [tokensCopy nextToken];
+  if (nextToken)
   {
-    v19 = v18;
-    v117 = v3;
+    v19 = nextToken;
+    v117 = tokensCopy;
     while (2)
     {
       v20 = objc_autoreleasePoolPush();
@@ -689,25 +689,25 @@ LABEL_13:
       switch([v21 type])
       {
         case 0:
-          v22 = [(__objc2_class *)v4[75] sharedStoreServicesConfig];
-          if (!v22)
+          sharedStoreServicesConfig = [(__objc2_class *)v4[75] sharedStoreServicesConfig];
+          if (!sharedStoreServicesConfig)
           {
-            v22 = [(__objc2_class *)v4[75] sharedConfig];
+            sharedStoreServicesConfig = [(__objc2_class *)v4[75] sharedConfig];
           }
 
-          v23 = [v22 shouldLog];
-          if ([v22 shouldLogToDisk])
+          shouldLog2 = [sharedStoreServicesConfig shouldLog];
+          if ([sharedStoreServicesConfig shouldLogToDisk])
           {
-            v24 = v23 | 2;
+            v24 = shouldLog2 | 2;
           }
 
           else
           {
-            v24 = v23;
+            v24 = shouldLog2;
           }
 
-          v25 = [v22 OSLogObject];
-          if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
+          oSLogObject2 = [sharedStoreServicesConfig OSLogObject];
+          if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEBUG))
           {
             v26 = v24;
           }
@@ -724,38 +724,38 @@ LABEL_13:
 
           v27 = objc_opt_class();
           v28 = v27;
-          v29 = [v21 stringValue];
+          stringValue = [v21 stringValue];
           v119 = 138412546;
           v120 = v27;
           v121 = 2112;
-          v122 = v29;
+          v122 = stringValue;
           LODWORD(v113) = 22;
           v112 = &v119;
           v30 = _os_log_send_and_compose_impl();
 
           goto LABEL_206;
         case 1:
-          v22 = [(__objc2_class *)v4[75] sharedStoreServicesConfig];
-          if (!v22)
+          sharedStoreServicesConfig = [(__objc2_class *)v4[75] sharedStoreServicesConfig];
+          if (!sharedStoreServicesConfig)
           {
-            v22 = [(__objc2_class *)v4[75] sharedConfig];
+            sharedStoreServicesConfig = [(__objc2_class *)v4[75] sharedConfig];
           }
 
-          v47 = [v22 shouldLog];
-          if ([v22 shouldLogToDisk])
+          shouldLog3 = [sharedStoreServicesConfig shouldLog];
+          if ([sharedStoreServicesConfig shouldLogToDisk])
           {
-            v47 |= 2u;
+            shouldLog3 |= 2u;
           }
 
-          v25 = [v22 OSLogObject];
-          if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
+          oSLogObject2 = [sharedStoreServicesConfig OSLogObject];
+          if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEBUG))
           {
-            v48 = v47;
+            v48 = shouldLog3;
           }
 
           else
           {
-            v48 = v47 & 2;
+            v48 = shouldLog3 & 2;
           }
 
           if (v48)
@@ -765,27 +765,27 @@ LABEL_13:
 
           goto LABEL_211;
         case 2:
-          v22 = [(__objc2_class *)v4[75] sharedStoreServicesConfig];
-          if (!v22)
+          sharedStoreServicesConfig = [(__objc2_class *)v4[75] sharedStoreServicesConfig];
+          if (!sharedStoreServicesConfig)
           {
-            v22 = [(__objc2_class *)v4[75] sharedConfig];
+            sharedStoreServicesConfig = [(__objc2_class *)v4[75] sharedConfig];
           }
 
-          v62 = [v22 shouldLog];
-          if ([v22 shouldLogToDisk])
+          shouldLog4 = [sharedStoreServicesConfig shouldLog];
+          if ([sharedStoreServicesConfig shouldLogToDisk])
           {
-            v62 |= 2u;
+            shouldLog4 |= 2u;
           }
 
-          v25 = [v22 OSLogObject];
-          if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
+          oSLogObject2 = [sharedStoreServicesConfig OSLogObject];
+          if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEBUG))
           {
-            v63 = v62;
+            v63 = shouldLog4;
           }
 
           else
           {
-            v63 = v62 & 2;
+            v63 = shouldLog4 & 2;
           }
 
           if (v63)
@@ -795,27 +795,27 @@ LABEL_13:
 
           goto LABEL_211;
         case 3:
-          v22 = [(__objc2_class *)v4[75] sharedStoreServicesConfig];
-          if (!v22)
+          sharedStoreServicesConfig = [(__objc2_class *)v4[75] sharedStoreServicesConfig];
+          if (!sharedStoreServicesConfig)
           {
-            v22 = [(__objc2_class *)v4[75] sharedConfig];
+            sharedStoreServicesConfig = [(__objc2_class *)v4[75] sharedConfig];
           }
 
-          v60 = [v22 shouldLog];
-          if ([v22 shouldLogToDisk])
+          shouldLog5 = [sharedStoreServicesConfig shouldLog];
+          if ([sharedStoreServicesConfig shouldLogToDisk])
           {
-            v60 |= 2u;
+            shouldLog5 |= 2u;
           }
 
-          v25 = [v22 OSLogObject];
-          if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
+          oSLogObject2 = [sharedStoreServicesConfig OSLogObject];
+          if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEBUG))
           {
-            v61 = v60;
+            v61 = shouldLog5;
           }
 
           else
           {
-            v61 = v60 & 2;
+            v61 = shouldLog5 & 2;
           }
 
           if (v61)
@@ -825,27 +825,27 @@ LABEL_13:
 
           goto LABEL_211;
         case 4:
-          v22 = [(__objc2_class *)v4[75] sharedStoreServicesConfig];
-          if (!v22)
+          sharedStoreServicesConfig = [(__objc2_class *)v4[75] sharedStoreServicesConfig];
+          if (!sharedStoreServicesConfig)
           {
-            v22 = [(__objc2_class *)v4[75] sharedConfig];
+            sharedStoreServicesConfig = [(__objc2_class *)v4[75] sharedConfig];
           }
 
-          v43 = [v22 shouldLog];
-          if ([v22 shouldLogToDisk])
+          shouldLog6 = [sharedStoreServicesConfig shouldLog];
+          if ([sharedStoreServicesConfig shouldLogToDisk])
           {
-            v43 |= 2u;
+            shouldLog6 |= 2u;
           }
 
-          v25 = [v22 OSLogObject];
-          if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
+          oSLogObject2 = [sharedStoreServicesConfig OSLogObject];
+          if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEBUG))
           {
-            v44 = v43;
+            v44 = shouldLog6;
           }
 
           else
           {
-            v44 = v43 & 2;
+            v44 = shouldLog6 & 2;
           }
 
           if (v44)
@@ -855,32 +855,32 @@ LABEL_13:
 
           goto LABEL_211;
         case 5:
-          v22 = [(__objc2_class *)v4[75] sharedStoreServicesConfig];
-          if (!v22)
+          sharedStoreServicesConfig = [(__objc2_class *)v4[75] sharedStoreServicesConfig];
+          if (!sharedStoreServicesConfig)
           {
-            v22 = [(__objc2_class *)v4[75] sharedConfig];
+            sharedStoreServicesConfig = [(__objc2_class *)v4[75] sharedConfig];
           }
 
-          v49 = [v22 shouldLog];
-          if ([v22 shouldLogToDisk])
+          shouldLog7 = [sharedStoreServicesConfig shouldLog];
+          if ([sharedStoreServicesConfig shouldLogToDisk])
           {
-            v49 |= 2u;
+            shouldLog7 |= 2u;
           }
 
-          v25 = [v22 OSLogObject];
-          if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
+          oSLogObject2 = [sharedStoreServicesConfig OSLogObject];
+          if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEBUG))
           {
-            v50 = v49;
+            v50 = shouldLog7;
           }
 
           else
           {
-            v50 = v49 & 2;
+            v50 = shouldLog7 & 2;
           }
 
           if (!v50)
           {
-            v3 = v117;
+            tokensCopy = v117;
             goto LABEL_211;
           }
 
@@ -889,11 +889,11 @@ LABEL_13:
           v114 = MEMORY[0x1E695DEF0];
           v52 = v21;
           v115 = v51;
-          v53 = [v52 contentToken];
-          v54 = [v53 content];
-          v55 = [v52 contentToken];
+          contentToken = [v52 contentToken];
+          content = [contentToken content];
+          contentToken2 = [v52 contentToken];
 
-          v56 = [v114 dataWithBytes:v54 length:{objc_msgSend(v55, "length")}];
+          v56 = [v114 dataWithBytes:content length:{objc_msgSend(contentToken2, "length")}];
 
           v57 = [v56 length];
           v119 = 138412546;
@@ -907,35 +907,35 @@ LABEL_13:
           if (v30)
           {
             v20 = v116;
-            v3 = v117;
+            tokensCopy = v117;
             goto LABEL_209;
           }
 
           v20 = v116;
-          v3 = v117;
+          tokensCopy = v117;
           goto LABEL_213;
         case 8:
-          v22 = [(__objc2_class *)v4[75] sharedStoreServicesConfig];
-          if (!v22)
+          sharedStoreServicesConfig = [(__objc2_class *)v4[75] sharedStoreServicesConfig];
+          if (!sharedStoreServicesConfig)
           {
-            v22 = [(__objc2_class *)v4[75] sharedConfig];
+            sharedStoreServicesConfig = [(__objc2_class *)v4[75] sharedConfig];
           }
 
-          v64 = [v22 shouldLog];
-          if ([v22 shouldLogToDisk])
+          shouldLog8 = [sharedStoreServicesConfig shouldLog];
+          if ([sharedStoreServicesConfig shouldLogToDisk])
           {
-            v64 |= 2u;
+            shouldLog8 |= 2u;
           }
 
-          v25 = [v22 OSLogObject];
-          if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
+          oSLogObject2 = [sharedStoreServicesConfig OSLogObject];
+          if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEBUG))
           {
-            v65 = v64;
+            v65 = shouldLog8;
           }
 
           else
           {
-            v65 = v64 & 2;
+            v65 = shouldLog8 & 2;
           }
 
           if (!v65)
@@ -944,11 +944,11 @@ LABEL_13:
           }
 
           v28 = objc_opt_class();
-          v66 = [v21 stringValue];
-          v67 = v66;
-          if (v66)
+          stringValue2 = [v21 stringValue];
+          v67 = stringValue2;
+          if (stringValue2)
           {
-            v68 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:{parseISO8601(objc_msgSend(v66, "UTF8String"), objc_msgSend(v66, "length"))}];
+            v68 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:{parseISO8601(objc_msgSend(stringValue2, "UTF8String"), objc_msgSend(stringValue2, "length"))}];
           }
 
           else
@@ -964,27 +964,27 @@ LABEL_13:
           v112 = &v119;
           goto LABEL_205;
         case 9:
-          v22 = [(__objc2_class *)v4[75] sharedStoreServicesConfig];
-          if (!v22)
+          sharedStoreServicesConfig = [(__objc2_class *)v4[75] sharedStoreServicesConfig];
+          if (!sharedStoreServicesConfig)
           {
-            v22 = [(__objc2_class *)v4[75] sharedConfig];
+            sharedStoreServicesConfig = [(__objc2_class *)v4[75] sharedConfig];
           }
 
-          v69 = [v22 shouldLog];
-          if ([v22 shouldLogToDisk])
+          shouldLog9 = [sharedStoreServicesConfig shouldLog];
+          if ([sharedStoreServicesConfig shouldLogToDisk])
           {
-            v69 |= 2u;
+            shouldLog9 |= 2u;
           }
 
-          v25 = [v22 OSLogObject];
-          if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
+          oSLogObject2 = [sharedStoreServicesConfig OSLogObject];
+          if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEBUG))
           {
-            v70 = v69;
+            v70 = shouldLog9;
           }
 
           else
           {
-            v70 = v69 & 2;
+            v70 = shouldLog9 & 2;
           }
 
           if (v70)
@@ -994,27 +994,27 @@ LABEL_13:
 
           goto LABEL_211;
         case 10:
-          v22 = [(__objc2_class *)v4[75] sharedStoreServicesConfig];
-          if (!v22)
+          sharedStoreServicesConfig = [(__objc2_class *)v4[75] sharedStoreServicesConfig];
+          if (!sharedStoreServicesConfig)
           {
-            v22 = [(__objc2_class *)v4[75] sharedConfig];
+            sharedStoreServicesConfig = [(__objc2_class *)v4[75] sharedConfig];
           }
 
-          v80 = [v22 shouldLog];
-          if ([v22 shouldLogToDisk])
+          shouldLog10 = [sharedStoreServicesConfig shouldLog];
+          if ([sharedStoreServicesConfig shouldLogToDisk])
           {
-            v80 |= 2u;
+            shouldLog10 |= 2u;
           }
 
-          v25 = [v22 OSLogObject];
-          if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
+          oSLogObject2 = [sharedStoreServicesConfig OSLogObject];
+          if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEBUG))
           {
-            v81 = v80;
+            v81 = shouldLog10;
           }
 
           else
           {
-            v81 = v80 & 2;
+            v81 = shouldLog10 & 2;
           }
 
           if (v81)
@@ -1024,27 +1024,27 @@ LABEL_13:
 
           goto LABEL_211;
         case 11:
-          v22 = [(__objc2_class *)v4[75] sharedStoreServicesConfig];
-          if (!v22)
+          sharedStoreServicesConfig = [(__objc2_class *)v4[75] sharedStoreServicesConfig];
+          if (!sharedStoreServicesConfig)
           {
-            v22 = [(__objc2_class *)v4[75] sharedConfig];
+            sharedStoreServicesConfig = [(__objc2_class *)v4[75] sharedConfig];
           }
 
-          v76 = [v22 shouldLog];
-          if ([v22 shouldLogToDisk])
+          shouldLog11 = [sharedStoreServicesConfig shouldLog];
+          if ([sharedStoreServicesConfig shouldLogToDisk])
           {
-            v76 |= 2u;
+            shouldLog11 |= 2u;
           }
 
-          v25 = [v22 OSLogObject];
-          if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
+          oSLogObject2 = [sharedStoreServicesConfig OSLogObject];
+          if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEBUG))
           {
-            v77 = v76;
+            v77 = shouldLog11;
           }
 
           else
           {
-            v77 = v76 & 2;
+            v77 = shouldLog11 & 2;
           }
 
           if (v77)
@@ -1054,11 +1054,11 @@ LABEL_13:
 
           goto LABEL_211;
         case 12:
-          v40 = [v21 stringValue];
-          v41 = v40;
-          if (v40)
+          stringValue3 = [v21 stringValue];
+          v41 = stringValue3;
+          if (stringValue3)
           {
-            v42 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:{parseISO8601(objc_msgSend(v40, "UTF8String"), objc_msgSend(v40, "length"))}];
+            v42 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:{parseISO8601(objc_msgSend(stringValue3, "UTF8String"), objc_msgSend(stringValue3, "length"))}];
           }
 
           else
@@ -1069,27 +1069,27 @@ LABEL_13:
           receiptCreationDate = self->_receiptCreationDate;
           self->_receiptCreationDate = v42;
 
-          v22 = [(__objc2_class *)v4[75] sharedStoreServicesConfig];
-          if (!v22)
+          sharedStoreServicesConfig = [(__objc2_class *)v4[75] sharedStoreServicesConfig];
+          if (!sharedStoreServicesConfig)
           {
-            v22 = [(__objc2_class *)v4[75] sharedConfig];
+            sharedStoreServicesConfig = [(__objc2_class *)v4[75] sharedConfig];
           }
 
-          v91 = [v22 shouldLog];
-          if ([v22 shouldLogToDisk])
+          shouldLog12 = [sharedStoreServicesConfig shouldLog];
+          if ([sharedStoreServicesConfig shouldLogToDisk])
           {
-            v91 |= 2u;
+            shouldLog12 |= 2u;
           }
 
-          v25 = [v22 OSLogObject];
-          if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
+          oSLogObject2 = [sharedStoreServicesConfig OSLogObject];
+          if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEBUG))
           {
-            v92 = v91;
+            v92 = shouldLog12;
           }
 
           else
           {
-            v92 = v91 & 2;
+            v92 = shouldLog12 & 2;
           }
 
           if (!v92)
@@ -1108,27 +1108,27 @@ LABEL_13:
           v112 = &v119;
           goto LABEL_200;
         case 13:
-          v22 = [(__objc2_class *)v4[75] sharedStoreServicesConfig];
-          if (!v22)
+          sharedStoreServicesConfig = [(__objc2_class *)v4[75] sharedStoreServicesConfig];
+          if (!sharedStoreServicesConfig)
           {
-            v22 = [(__objc2_class *)v4[75] sharedConfig];
+            sharedStoreServicesConfig = [(__objc2_class *)v4[75] sharedConfig];
           }
 
-          v58 = [v22 shouldLog];
-          if ([v22 shouldLogToDisk])
+          shouldLog13 = [sharedStoreServicesConfig shouldLog];
+          if ([sharedStoreServicesConfig shouldLogToDisk])
           {
-            v58 |= 2u;
+            shouldLog13 |= 2u;
           }
 
-          v25 = [v22 OSLogObject];
-          if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
+          oSLogObject2 = [sharedStoreServicesConfig OSLogObject];
+          if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEBUG))
           {
-            v59 = v58;
+            v59 = shouldLog13;
           }
 
           else
           {
-            v59 = v58 & 2;
+            v59 = shouldLog13 & 2;
           }
 
           if (v59)
@@ -1138,27 +1138,27 @@ LABEL_13:
 
           goto LABEL_211;
         case 14:
-          v22 = [(__objc2_class *)v4[75] sharedStoreServicesConfig];
-          if (!v22)
+          sharedStoreServicesConfig = [(__objc2_class *)v4[75] sharedStoreServicesConfig];
+          if (!sharedStoreServicesConfig)
           {
-            v22 = [(__objc2_class *)v4[75] sharedConfig];
+            sharedStoreServicesConfig = [(__objc2_class *)v4[75] sharedConfig];
           }
 
-          v45 = [v22 shouldLog];
-          if ([v22 shouldLogToDisk])
+          shouldLog14 = [sharedStoreServicesConfig shouldLog];
+          if ([sharedStoreServicesConfig shouldLogToDisk])
           {
-            v45 |= 2u;
+            shouldLog14 |= 2u;
           }
 
-          v25 = [v22 OSLogObject];
-          if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
+          oSLogObject2 = [sharedStoreServicesConfig OSLogObject];
+          if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEBUG))
           {
-            v46 = v45;
+            v46 = shouldLog14;
           }
 
           else
           {
-            v46 = v45 & 2;
+            v46 = shouldLog14 & 2;
           }
 
           if (v46)
@@ -1168,27 +1168,27 @@ LABEL_13:
 
           goto LABEL_211;
         case 15:
-          v22 = [(__objc2_class *)v4[75] sharedStoreServicesConfig];
-          if (!v22)
+          sharedStoreServicesConfig = [(__objc2_class *)v4[75] sharedStoreServicesConfig];
+          if (!sharedStoreServicesConfig)
           {
-            v22 = [(__objc2_class *)v4[75] sharedConfig];
+            sharedStoreServicesConfig = [(__objc2_class *)v4[75] sharedConfig];
           }
 
-          v38 = [v22 shouldLog];
-          if ([v22 shouldLogToDisk])
+          shouldLog15 = [sharedStoreServicesConfig shouldLog];
+          if ([sharedStoreServicesConfig shouldLogToDisk])
           {
-            v38 |= 2u;
+            shouldLog15 |= 2u;
           }
 
-          v25 = [v22 OSLogObject];
-          if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
+          oSLogObject2 = [sharedStoreServicesConfig OSLogObject];
+          if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEBUG))
           {
-            v39 = v38;
+            v39 = shouldLog15;
           }
 
           else
           {
-            v39 = v38 & 2;
+            v39 = shouldLog15 & 2;
           }
 
           if (v39)
@@ -1198,27 +1198,27 @@ LABEL_13:
 
           goto LABEL_211;
         case 16:
-          v22 = [(__objc2_class *)v4[75] sharedStoreServicesConfig];
-          if (!v22)
+          sharedStoreServicesConfig = [(__objc2_class *)v4[75] sharedStoreServicesConfig];
+          if (!sharedStoreServicesConfig)
           {
-            v22 = [(__objc2_class *)v4[75] sharedConfig];
+            sharedStoreServicesConfig = [(__objc2_class *)v4[75] sharedConfig];
           }
 
-          v71 = [v22 shouldLog];
-          if ([v22 shouldLogToDisk])
+          shouldLog16 = [sharedStoreServicesConfig shouldLog];
+          if ([sharedStoreServicesConfig shouldLogToDisk])
           {
-            v71 |= 2u;
+            shouldLog16 |= 2u;
           }
 
-          v25 = [v22 OSLogObject];
-          if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
+          oSLogObject2 = [sharedStoreServicesConfig OSLogObject];
+          if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEBUG))
           {
-            v72 = v71;
+            v72 = shouldLog16;
           }
 
           else
           {
-            v72 = v71 & 2;
+            v72 = shouldLog16 & 2;
           }
 
           if (!v72)
@@ -1243,11 +1243,11 @@ LABEL_205:
 LABEL_206:
           goto LABEL_207;
         case 21:
-          v73 = [v21 stringValue];
-          v74 = v73;
-          if (v73)
+          stringValue4 = [v21 stringValue];
+          v74 = stringValue4;
+          if (stringValue4)
           {
-            v75 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:{parseISO8601(objc_msgSend(v73, "UTF8String"), objc_msgSend(v73, "length"))}];
+            v75 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:{parseISO8601(objc_msgSend(stringValue4, "UTF8String"), objc_msgSend(stringValue4, "length"))}];
           }
 
           else
@@ -1258,27 +1258,27 @@ LABEL_206:
           expirationDate = self->_expirationDate;
           self->_expirationDate = v75;
 
-          v22 = [(__objc2_class *)v4[75] sharedStoreServicesConfig];
-          if (!v22)
+          sharedStoreServicesConfig = [(__objc2_class *)v4[75] sharedStoreServicesConfig];
+          if (!sharedStoreServicesConfig)
           {
-            v22 = [(__objc2_class *)v4[75] sharedConfig];
+            sharedStoreServicesConfig = [(__objc2_class *)v4[75] sharedConfig];
           }
 
-          v96 = [v22 shouldLog];
-          if ([v22 shouldLogToDisk])
+          shouldLog17 = [sharedStoreServicesConfig shouldLog];
+          if ([sharedStoreServicesConfig shouldLogToDisk])
           {
-            v96 |= 2u;
+            shouldLog17 |= 2u;
           }
 
-          v25 = [v22 OSLogObject];
-          if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
+          oSLogObject2 = [sharedStoreServicesConfig OSLogObject];
+          if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEBUG))
           {
-            v97 = v96;
+            v97 = shouldLog17;
           }
 
           else
           {
-            v97 = v96 & 2;
+            v97 = shouldLog17 & 2;
           }
 
           if (!v97)
@@ -1297,11 +1297,11 @@ LABEL_206:
           v112 = &v119;
           goto LABEL_200;
         case 22:
-          v87 = [v21 stringValue];
-          v88 = v87;
-          if (v87)
+          stringValue5 = [v21 stringValue];
+          v88 = stringValue5;
+          if (stringValue5)
           {
-            v89 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:{parseISO8601(objc_msgSend(v87, "UTF8String"), objc_msgSend(v87, "length"))}];
+            v89 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:{parseISO8601(objc_msgSend(stringValue5, "UTF8String"), objc_msgSend(stringValue5, "length"))}];
           }
 
           else
@@ -1312,27 +1312,27 @@ LABEL_206:
           renewalDate = self->_renewalDate;
           self->_renewalDate = v89;
 
-          v22 = [(__objc2_class *)v4[75] sharedStoreServicesConfig];
-          if (!v22)
+          sharedStoreServicesConfig = [(__objc2_class *)v4[75] sharedStoreServicesConfig];
+          if (!sharedStoreServicesConfig)
           {
-            v22 = [(__objc2_class *)v4[75] sharedConfig];
+            sharedStoreServicesConfig = [(__objc2_class *)v4[75] sharedConfig];
           }
 
-          v101 = [v22 shouldLog];
-          if ([v22 shouldLogToDisk])
+          shouldLog18 = [sharedStoreServicesConfig shouldLog];
+          if ([sharedStoreServicesConfig shouldLogToDisk])
           {
-            v101 |= 2u;
+            shouldLog18 |= 2u;
           }
 
-          v25 = [v22 OSLogObject];
-          if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
+          oSLogObject2 = [sharedStoreServicesConfig OSLogObject];
+          if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEBUG))
           {
-            v102 = v101;
+            v102 = shouldLog18;
           }
 
           else
           {
-            v102 = v101 & 2;
+            v102 = shouldLog18 & 2;
           }
 
           if (!v102)
@@ -1351,27 +1351,27 @@ LABEL_206:
           v112 = &v119;
           goto LABEL_200;
         case 23:
-          v22 = [(__objc2_class *)v4[75] sharedStoreServicesConfig];
-          if (!v22)
+          sharedStoreServicesConfig = [(__objc2_class *)v4[75] sharedStoreServicesConfig];
+          if (!sharedStoreServicesConfig)
           {
-            v22 = [(__objc2_class *)v4[75] sharedConfig];
+            sharedStoreServicesConfig = [(__objc2_class *)v4[75] sharedConfig];
           }
 
-          v82 = [v22 shouldLog];
-          if ([v22 shouldLogToDisk])
+          shouldLog19 = [sharedStoreServicesConfig shouldLog];
+          if ([sharedStoreServicesConfig shouldLogToDisk])
           {
-            v82 |= 2u;
+            shouldLog19 |= 2u;
           }
 
-          v25 = [v22 OSLogObject];
-          if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
+          oSLogObject2 = [sharedStoreServicesConfig OSLogObject];
+          if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEBUG))
           {
-            v83 = v82;
+            v83 = shouldLog19;
           }
 
           else
           {
-            v83 = v82 & 2;
+            v83 = shouldLog19 & 2;
           }
 
           if (!v83)
@@ -1382,11 +1382,11 @@ LABEL_206:
 LABEL_166:
           v84 = objc_opt_class();
           v85 = v84;
-          v86 = [v21 stringValue];
+          stringValue6 = [v21 stringValue];
           v119 = 138412546;
           v120 = v84;
           v121 = 2112;
-          v122 = v86;
+          v122 = stringValue6;
           LODWORD(v113) = 22;
           v112 = &v119;
           v30 = _os_log_send_and_compose_impl();
@@ -1394,11 +1394,11 @@ LABEL_166:
 LABEL_207:
           if (v30)
           {
-            v3 = v117;
+            tokensCopy = v117;
 LABEL_209:
-            v25 = [MEMORY[0x1E696AEC0] stringWithCString:v30 encoding:{4, &v119, v113}];
+            oSLogObject2 = [MEMORY[0x1E696AEC0] stringWithCString:v30 encoding:{4, &v119, v113}];
             free(v30);
-            SSFileLog(v22, @"%@", v105, v106, v107, v108, v109, v110, v25);
+            SSFileLog(sharedStoreServicesConfig, @"%@", v105, v106, v107, v108, v109, v110, oSLogObject2);
 LABEL_210:
             v4 = off_1E84AB000;
 LABEL_211:
@@ -1406,48 +1406,48 @@ LABEL_211:
 
           else
           {
-            v3 = v117;
+            tokensCopy = v117;
 LABEL_213:
             v4 = off_1E84AB000;
           }
 
 LABEL_215:
           objc_autoreleasePoolPop(v20);
-          v111 = [v3 nextToken];
+          nextToken2 = [tokensCopy nextToken];
 
-          v19 = v111;
-          if (!v111)
+          v19 = nextToken2;
+          if (!nextToken2)
           {
             break;
           }
 
           continue;
         case 24:
-          v31 = [v21 stringValue];
+          stringValue7 = [v21 stringValue];
           cancellationReason = self->_cancellationReason;
-          self->_cancellationReason = v31;
+          self->_cancellationReason = stringValue7;
 
-          v22 = [(__objc2_class *)v4[75] sharedStoreServicesConfig];
-          if (!v22)
+          sharedStoreServicesConfig = [(__objc2_class *)v4[75] sharedStoreServicesConfig];
+          if (!sharedStoreServicesConfig)
           {
-            v22 = [(__objc2_class *)v4[75] sharedConfig];
+            sharedStoreServicesConfig = [(__objc2_class *)v4[75] sharedConfig];
           }
 
-          v33 = [v22 shouldLog];
-          if ([v22 shouldLogToDisk])
+          shouldLog20 = [sharedStoreServicesConfig shouldLog];
+          if ([sharedStoreServicesConfig shouldLogToDisk])
           {
-            v33 |= 2u;
+            shouldLog20 |= 2u;
           }
 
-          v25 = [v22 OSLogObject];
-          if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
+          oSLogObject2 = [sharedStoreServicesConfig OSLogObject];
+          if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEBUG))
           {
-            v34 = v33;
+            v34 = shouldLog20;
           }
 
           else
           {
-            v34 = v33 & 2;
+            v34 = shouldLog20 & 2;
           }
 
           if (!v34)
@@ -1482,7 +1482,7 @@ LABEL_200:
   }
 }
 
-- (BOOL)_setPoliciesForTrust:(__SecTrust *)a3
+- (BOOL)_setPoliciesForTrust:(__SecTrust *)trust
 {
   Mutable = CFArrayCreateMutable(*MEMORY[0x1E695E480], 3, MEMORY[0x1E695E9C0]);
   v5 = *MEMORY[0x1E697B298];
@@ -1534,7 +1534,7 @@ LABEL_7:
     if (v9)
     {
 LABEL_9:
-      v15 = SecTrustSetPolicies(a3, Mutable) == 0;
+      v15 = SecTrustSetPolicies(trust, Mutable) == 0;
       goto LABEL_12;
     }
   }
@@ -1551,12 +1551,12 @@ LABEL_12:
   return v15;
 }
 
-- (int64_t)_verifySignatureForSignedData:(SecCmsSignedDataStr *)a3 onDate:(id)a4
+- (int64_t)_verifySignatureForSignedData:(SecCmsSignedDataStr *)data onDate:(id)date
 {
   v52 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  dateCopy = date;
   trust = 0;
-  v7 = [(ISPurchaseReceipt *)self _copyCertificatesFromSignedData:a3];
+  v7 = [(ISPurchaseReceipt *)self _copyCertificatesFromSignedData:data];
   if (!v7)
   {
     v13 = +[SSLogConfig sharedStoreServicesConfig];
@@ -1565,19 +1565,19 @@ LABEL_12:
       v13 = +[SSLogConfig sharedConfig];
     }
 
-    v14 = [v13 shouldLog];
+    shouldLog = [v13 shouldLog];
     if ([v13 shouldLogToDisk])
     {
-      v15 = v14 | 2;
+      v15 = shouldLog | 2;
     }
 
     else
     {
-      v15 = v14;
+      v15 = shouldLog;
     }
 
-    v16 = [v13 OSLogObject];
-    if (!os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
+    oSLogObject = [v13 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
     {
       v15 &= 2u;
     }
@@ -1598,9 +1598,9 @@ LABEL_25:
         goto LABEL_49;
       }
 
-      v16 = [MEMORY[0x1E696AEC0] stringWithCString:v18 encoding:{4, &v50, v47}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v18 encoding:{4, &v50, v47}];
       free(v18);
-      SSFileLog(v13, @"%@", v19, v20, v21, v22, v23, v24, v16);
+      SSFileLog(v13, @"%@", v19, v20, v21, v22, v23, v24, oSLogObject);
     }
 
     goto LABEL_25;
@@ -1619,19 +1619,19 @@ LABEL_25:
           v9 = +[SSLogConfig sharedConfig];
         }
 
-        v10 = [v9 shouldLog];
+        shouldLog2 = [v9 shouldLog];
         if ([v9 shouldLogToDisk])
         {
-          v11 = v10 | 2;
+          v11 = shouldLog2 | 2;
         }
 
         else
         {
-          v11 = v10;
+          v11 = shouldLog2;
         }
 
-        v12 = [v9 OSLogObject];
-        if (!os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
+        oSLogObject2 = [v9 OSLogObject];
+        if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEBUG))
         {
           v11 &= 2u;
         }
@@ -1646,7 +1646,7 @@ LABEL_25:
       {
         if ([(ISPurchaseReceipt *)self _anchorTrust:trust toRootCertificateIn:v8])
         {
-          if (!v6 || !SecTrustSetVerifyDate(trust, v6))
+          if (!dateCopy || !SecTrustSetVerifyDate(trust, dateCopy))
           {
             v48 = 0;
             MEMORY[0x1DA6DF300](trust, &v48);
@@ -1669,19 +1669,19 @@ LABEL_25:
             v9 = +[SSLogConfig sharedConfig];
           }
 
-          v39 = [v9 shouldLog];
+          shouldLog3 = [v9 shouldLog];
           if ([v9 shouldLogToDisk])
           {
-            v40 = v39 | 2;
+            v40 = shouldLog3 | 2;
           }
 
           else
           {
-            v40 = v39;
+            v40 = shouldLog3;
           }
 
-          v12 = [v9 OSLogObject];
-          if (!os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
+          oSLogObject2 = [v9 OSLogObject];
+          if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEBUG))
           {
             v40 &= 2u;
           }
@@ -1700,19 +1700,19 @@ LABEL_25:
             v9 = +[SSLogConfig sharedConfig];
           }
 
-          v43 = [v9 shouldLog];
+          shouldLog4 = [v9 shouldLog];
           if ([v9 shouldLogToDisk])
           {
-            v44 = v43 | 2;
+            v44 = shouldLog4 | 2;
           }
 
           else
           {
-            v44 = v43;
+            v44 = shouldLog4;
           }
 
-          v12 = [v9 OSLogObject];
-          if (!os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
+          oSLogObject2 = [v9 OSLogObject];
+          if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEBUG))
           {
             v44 &= 2u;
           }
@@ -1732,19 +1732,19 @@ LABEL_25:
           v9 = +[SSLogConfig sharedConfig];
         }
 
-        v41 = [v9 shouldLog];
+        shouldLog5 = [v9 shouldLog];
         if ([v9 shouldLogToDisk])
         {
-          v42 = v41 | 2;
+          v42 = shouldLog5 | 2;
         }
 
         else
         {
-          v42 = v41;
+          v42 = shouldLog5;
         }
 
-        v12 = [v9 OSLogObject];
-        if (!os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
+        oSLogObject2 = [v9 OSLogObject];
+        if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEBUG))
         {
           v42 &= 2u;
         }
@@ -1769,19 +1769,19 @@ LABEL_25:
       v9 = +[SSLogConfig sharedConfig];
     }
 
-    v28 = [v9 shouldLog];
+    shouldLog6 = [v9 shouldLog];
     if ([v9 shouldLogToDisk])
     {
-      v29 = v28 | 2;
+      v29 = shouldLog6 | 2;
     }
 
     else
     {
-      v29 = v28;
+      v29 = shouldLog6;
     }
 
-    v12 = [v9 OSLogObject];
-    if (!os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
+    oSLogObject2 = [v9 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEBUG))
     {
       v29 &= 2u;
     }
@@ -1800,19 +1800,19 @@ LABEL_25:
       v9 = +[SSLogConfig sharedConfig];
     }
 
-    v26 = [v9 shouldLog];
+    shouldLog7 = [v9 shouldLog];
     if ([v9 shouldLogToDisk])
     {
-      v27 = v26 | 2;
+      v27 = shouldLog7 | 2;
     }
 
     else
     {
-      v27 = v26;
+      v27 = shouldLog7;
     }
 
-    v12 = [v9 OSLogObject];
-    if (!os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
+    oSLogObject2 = [v9 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEBUG))
     {
       v27 &= 2u;
     }
@@ -1832,9 +1832,9 @@ LABEL_44:
 
   if (v31)
   {
-    v12 = [MEMORY[0x1E696AEC0] stringWithCString:v31 encoding:{4, &v50, v47}];
+    oSLogObject2 = [MEMORY[0x1E696AEC0] stringWithCString:v31 encoding:{4, &v50, v47}];
     free(v31);
-    SSFileLog(v9, @"%@", v32, v33, v34, v35, v36, v37, v12);
+    SSFileLog(v9, @"%@", v32, v33, v34, v35, v36, v37, oSLogObject2);
 LABEL_46:
   }
 

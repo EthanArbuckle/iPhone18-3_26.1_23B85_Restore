@@ -1,6 +1,6 @@
 @interface ServiceInterface
 - (AcceptorInterface)manager;
-- (ServiceInterface)initWithPeripheral:(id)a3 service:(id)a4;
+- (ServiceInterface)initWithPeripheral:(id)peripheral service:(id)service;
 - (void)notifyDidStart;
 - (void)start;
 - (void)startDidTimeout;
@@ -22,22 +22,22 @@
 
 - (void)stop
 {
-  v2 = [(ServiceInterface *)self startTimer];
-  [v2 invalidate];
+  startTimer = [(ServiceInterface *)self startTimer];
+  [startTimer invalidate];
 }
 
-- (ServiceInterface)initWithPeripheral:(id)a3 service:(id)a4
+- (ServiceInterface)initWithPeripheral:(id)peripheral service:(id)service
 {
-  v7 = a3;
-  v8 = a4;
+  peripheralCopy = peripheral;
+  serviceCopy = service;
   v14.receiver = self;
   v14.super_class = ServiceInterface;
   v9 = [(ServiceInterface *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_peripheral, a3);
-    objc_storeStrong(&v10->_service, a4);
+    objc_storeStrong(&v9->_peripheral, peripheral);
+    objc_storeStrong(&v10->_service, service);
     *&v10->_isPrimary = 0;
     v10->_parentServiceInterface = 0;
     v10->_startTimeout = 10.0;
@@ -60,25 +60,25 @@
     {
       service = self->_service;
       v5 = v3;
-      v6 = [(CBService *)service UUID];
-      v7 = [(CBPeripheral *)self->_peripheral name];
+      uUID = [(CBService *)service UUID];
+      name = [(CBPeripheral *)self->_peripheral name];
       v11 = 138412546;
-      v12 = v6;
+      v12 = uUID;
       v13 = 2112;
-      v14 = v7;
+      v14 = name;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Service %@ has started on peripheral %@", &v11, 0x16u);
     }
 
     [(ServiceInterface *)self setIsStarted:1];
-    v8 = [(ServiceInterface *)self startTimer];
-    [v8 invalidate];
+    startTimer = [(ServiceInterface *)self startTimer];
+    [startTimer invalidate];
 
-    v9 = [(ServiceInterface *)self serviceEventHandler];
+    serviceEventHandler = [(ServiceInterface *)self serviceEventHandler];
 
-    if (v9)
+    if (serviceEventHandler)
     {
-      v10 = [(ServiceInterface *)self serviceEventHandler];
-      (v10)[2](v10, 0, self);
+      serviceEventHandler2 = [(ServiceInterface *)self serviceEventHandler];
+      (serviceEventHandler2)[2](serviceEventHandler2, 0, self);
     }
   }
 }
@@ -91,8 +91,8 @@
     sub_10005B308(self, v3);
   }
 
-  v4 = [(ServiceInterface *)self manager];
-  [v4 clientServiceDidStart:self];
+  manager = [(ServiceInterface *)self manager];
+  [manager clientServiceDidStart:self];
 }
 
 - (AcceptorInterface)manager

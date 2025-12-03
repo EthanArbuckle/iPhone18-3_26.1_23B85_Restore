@@ -1,7 +1,7 @@
 @interface MapsSuggestionsDonationsServer
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (MapsSuggestionsDaemonMemory)memory;
-- (MapsSuggestionsDonationsServer)initWithMemory:(id)a3;
+- (MapsSuggestionsDonationsServer)initWithMemory:(id)memory;
 @end
 
 @implementation MapsSuggestionsDonationsServer
@@ -13,9 +13,9 @@
   return WeakRetained;
 }
 
-- (MapsSuggestionsDonationsServer)initWithMemory:(id)a3
+- (MapsSuggestionsDonationsServer)initWithMemory:(id)memory
 {
-  v4 = a3;
+  memoryCopy = memory;
   v18.receiver = self;
   v18.super_class = MapsSuggestionsDonationsServer;
   v5 = [(MapsSuggestionsDonationsServer *)&v18 init];
@@ -26,7 +26,7 @@
     queue = v5->_queue;
     v5->_queue = v7;
 
-    objc_storeWeak(&v5->_memory, v4);
+    objc_storeWeak(&v5->_memory, memoryCopy);
     v9 = objc_alloc_init(NSMutableArray);
     peers = v5->_peers;
     v5->_peers = v9;
@@ -57,24 +57,24 @@
   return v5;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   v8 = GEOFindOrCreateLog();
   v9 = v8;
-  if (v7)
+  if (connectionCopy)
   {
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v32 = v7;
+      v32 = connectionCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEBUG, "Incoming XPC connection %@.", buf, 0xCu);
     }
 
     v10 = [MapsSuggestionsDonationsXPCPeer alloc];
-    v11 = [(MapsSuggestionsDonationsServer *)self memory];
-    v12 = [(MapsSuggestionsDonationsXPCPeer *)v10 initWithXPCConnection:v7 memory:v11];
+    memory = [(MapsSuggestionsDonationsServer *)self memory];
+    v12 = [(MapsSuggestionsDonationsXPCPeer *)v10 initWithXPCConnection:connectionCopy memory:memory];
 
     queue = self->_queue;
     block[0] = _NSConcreteStackBlock;
@@ -86,9 +86,9 @@
     v30 = v9;
     dispatch_sync(queue, block);
     v14 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___MapsSuggestionsDonateeProxy];
-    [v7 setExportedInterface:v14];
+    [connectionCopy setExportedInterface:v14];
 
-    [v7 setExportedObject:v9];
+    [connectionCopy setExportedObject:v9];
     objc_initWeak(buf, self);
     objc_initWeak(&location, v9);
     v24[0] = _NSConcreteStackBlock;
@@ -97,7 +97,7 @@
     v24[3] = &unk_100075A08;
     objc_copyWeak(&v26, buf);
     objc_copyWeak(&v27, &location);
-    v15 = v7;
+    v15 = connectionCopy;
     v25 = v15;
     [v15 setInvalidationHandler:v24];
     v20[0] = _NSConcreteStackBlock;
@@ -140,7 +140,7 @@
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_FAULT, "At %{public}s:%d, %{public}s forbids: %{public}s. Requires a newConnection", buf, 0x26u);
   }
 
-  return v7 != 0;
+  return connectionCopy != 0;
 }
 
 @end

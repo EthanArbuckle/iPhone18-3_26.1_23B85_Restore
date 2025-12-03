@@ -1,6 +1,6 @@
 @interface ICSINDEntry
 + (id)_requestQueue;
-- (void)syncFPItem:(id)a3 observeItemIDs:(id)a4 notifyURL:(id)a5 completion:(id)a6;
+- (void)syncFPItem:(id)item observeItemIDs:(id)ds notifyURL:(id)l completion:(id)completion;
 @end
 
 @implementation ICSINDEntry
@@ -26,26 +26,26 @@ void __28__ICSINDEntry__requestQueue__block_invoke()
   _requestQueue_requestQueue = v1;
 }
 
-- (void)syncFPItem:(id)a3 observeItemIDs:(id)a4 notifyURL:(id)a5 completion:(id)a6
+- (void)syncFPItem:(id)item observeItemIDs:(id)ds notifyURL:(id)l completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [objc_opt_class() _requestQueue];
+  itemCopy = item;
+  dsCopy = ds;
+  lCopy = l;
+  completionCopy = completion;
+  _requestQueue = [objc_opt_class() _requestQueue];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __62__ICSINDEntry_syncFPItem_observeItemIDs_notifyURL_completion___block_invoke;
   v18[3] = &unk_27A6669F8;
-  v19 = v9;
-  v20 = v10;
-  v21 = v11;
-  v22 = v12;
-  v14 = v11;
-  v15 = v10;
-  v16 = v9;
-  v17 = v12;
-  dispatch_async(v13, v18);
+  v19 = itemCopy;
+  v20 = dsCopy;
+  v21 = lCopy;
+  v22 = completionCopy;
+  v14 = lCopy;
+  v15 = dsCopy;
+  v16 = itemCopy;
+  v17 = completionCopy;
+  dispatch_async(_requestQueue, v18);
 }
 
 void __62__ICSINDEntry_syncFPItem_observeItemIDs_notifyURL_completion___block_invoke(uint64_t a1)

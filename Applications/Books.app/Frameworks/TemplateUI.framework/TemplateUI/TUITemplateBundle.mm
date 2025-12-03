@@ -1,27 +1,27 @@
 @interface TUITemplateBundle
-+ (id)bundleWithURL:(id)a3 requireInfoPlist:(BOOL)a4;
-- (id)_initWithURL:(id)a3 info:(id)a4;
++ (id)bundleWithURL:(id)l requireInfoPlist:(BOOL)plist;
+- (id)_initWithURL:(id)l info:(id)info;
 - (void)registerFonts;
-- (void)registerPackagesWithFactory:(id)a3;
+- (void)registerPackagesWithFactory:(id)factory;
 - (void)unregisterFonts;
 - (void)unregisterPackages;
 @end
 
 @implementation TUITemplateBundle
 
-+ (id)bundleWithURL:(id)a3 requireInfoPlist:(BOOL)a4
++ (id)bundleWithURL:(id)l requireInfoPlist:(BOOL)plist
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [v6 URLByAppendingPathComponent:@"Info.plist"];
+  plistCopy = plist;
+  lCopy = l;
+  v7 = [lCopy URLByAppendingPathComponent:@"Info.plist"];
   v8 = [NSDictionary dictionaryWithContentsOfURL:v7];
   v9 = objc_opt_class();
   v10 = [v8 objectForKeyedSubscript:@"version"];
   v11 = TUIDynamicCast(v9, v10);
 
-  if (!v4 || v11)
+  if (!plistCopy || v11)
   {
-    v12 = [[a1 alloc] _initWithURL:v6 info:v8];
+    v12 = [[self alloc] _initWithURL:lCopy info:v8];
   }
 
   else
@@ -32,10 +32,10 @@
   return v12;
 }
 
-- (id)_initWithURL:(id)a3 info:(id)a4
+- (id)_initWithURL:(id)l info:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  infoCopy = info;
   v22.receiver = self;
   v22.super_class = TUITemplateBundle;
   v8 = [(TUITemplateBundle *)&v22 init];
@@ -45,12 +45,12 @@
     accessQueue = v8->_accessQueue;
     v8->_accessQueue = v9;
 
-    v11 = [v6 copy];
+    v11 = [lCopy copy];
     url = v8->_url;
     v8->_url = v11;
 
     v13 = objc_opt_class();
-    v14 = [v7 objectForKeyedSubscript:@"version"];
+    v14 = [infoCopy objectForKeyedSubscript:@"version"];
     v15 = TUIDynamicCast(v13, v14);
     version = v8->_version;
     v8->_version = v15;
@@ -89,10 +89,10 @@
   dispatch_sync(accessQueue, block);
 }
 
-- (void)registerPackagesWithFactory:(id)a3
+- (void)registerPackagesWithFactory:(id)factory
 {
-  v4 = a3;
-  if (v4)
+  factoryCopy = factory;
+  if (factoryCopy)
   {
     os_unfair_lock_lock(&unk_2E64D0);
     packages = self->_packages;
@@ -106,7 +106,7 @@
       v31 = 0u;
       v32 = 0u;
       v6 = +[NSFileManager defaultManager];
-      v23 = self;
+      selfCopy = self;
       v7 = [v6 contentsOfDirectoryAtURL:self->_url includingPropertiesForKeys:0 options:0 error:0];
 
       v8 = [v7 countByEnumeratingWithState:&v29 objects:v34 count:16];
@@ -124,13 +124,13 @@
             }
 
             v12 = *(*(&v29 + 1) + 8 * i);
-            v13 = [v12 pathExtension];
-            v14 = [v13 isEqualToString:@"tpkg"];
+            pathExtension = [v12 pathExtension];
+            v14 = [pathExtension isEqualToString:@"tpkg"];
 
             if (v14)
             {
-              v15 = [v12 URLByStandardizingPath];
-              v16 = [TUIBinaryPackage packageWithURL:v15];
+              uRLByStandardizingPath = [v12 URLByStandardizingPath];
+              v16 = [TUIBinaryPackage packageWithURL:uRLByStandardizingPath];
 
               if (v16)
               {
@@ -152,7 +152,7 @@
       }
 
       packages = *location;
-      self = v23;
+      self = selfCopy;
     }
 
     v27 = 0u;
@@ -174,7 +174,7 @@
             objc_enumerationMutation(v17);
           }
 
-          [v4 registerPackage:*(*(&v25 + 1) + 8 * j)];
+          [factoryCopy registerPackage:*(*(&v25 + 1) + 8 * j)];
         }
 
         v19 = [(NSHashTable *)v17 countByEnumeratingWithState:&v25 objects:v33 count:16];
@@ -183,7 +183,7 @@
       while (v19);
     }
 
-    [(NSHashTable *)self->_factories addObject:v4];
+    [(NSHashTable *)self->_factories addObject:factoryCopy];
     os_unfair_lock_unlock(&unk_2E64D0);
   }
 }

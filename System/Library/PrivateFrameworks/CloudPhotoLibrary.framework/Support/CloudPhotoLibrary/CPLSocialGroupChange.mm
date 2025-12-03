@@ -1,69 +1,69 @@
 @interface CPLSocialGroupChange
-+ (id)ckValueForRelatedRecord:(id)a3;
-+ (void)setRelatedValueOnRecord:(id)a3 fromRelatedRecord:(id)a4;
-- (void)fillCKRecordBuilder:(id)a3 scopeProvider:(id)a4;
-- (void)fillWithCKRecord:(id)a3;
++ (id)ckValueForRelatedRecord:(id)record;
++ (void)setRelatedValueOnRecord:(id)record fromRelatedRecord:(id)relatedRecord;
+- (void)fillCKRecordBuilder:(id)builder scopeProvider:(id)provider;
+- (void)fillWithCKRecord:(id)record;
 @end
 
 @implementation CPLSocialGroupChange
 
-+ (id)ckValueForRelatedRecord:(id)a3
++ (id)ckValueForRelatedRecord:(id)record
 {
-  v3 = [a3 recordID];
-  v4 = [v3 recordName];
+  recordID = [record recordID];
+  recordName = [recordID recordName];
 
-  return v4;
+  return recordName;
 }
 
-+ (void)setRelatedValueOnRecord:(id)a3 fromRelatedRecord:(id)a4
++ (void)setRelatedValueOnRecord:(id)record fromRelatedRecord:(id)relatedRecord
 {
-  if (a4)
+  if (relatedRecord)
   {
-    v5 = a3;
-    v7 = [a4 recordID];
-    v6 = [v7 recordName];
-    [v5 cpl_setEncryptedObject:v6 forKey:@"keyAssetIdEnc" validateClass:objc_opt_class()];
+    recordCopy = record;
+    recordID = [relatedRecord recordID];
+    recordName = [recordID recordName];
+    [recordCopy cpl_setEncryptedObject:recordName forKey:@"keyAssetIdEnc" validateClass:objc_opt_class()];
   }
 }
 
-- (void)fillCKRecordBuilder:(id)a3 scopeProvider:(id)a4
+- (void)fillCKRecordBuilder:(id)builder scopeProvider:(id)provider
 {
-  v6 = a3;
-  v7 = self;
-  v8 = [a4 fingerprintContext];
-  if (![(CPLSocialGroupChange *)v7 hasChangeType:2])
+  builderCopy = builder;
+  selfCopy = self;
+  fingerprintContext = [provider fingerprintContext];
+  if (![(CPLSocialGroupChange *)selfCopy hasChangeType:2])
   {
     goto LABEL_26;
   }
 
-  if ([(CPLSocialGroupChange *)v7 shouldApplyPropertiesWithSelector:NSSelectorFromString(@"verifiedType")])
+  if ([(CPLSocialGroupChange *)selfCopy shouldApplyPropertiesWithSelector:NSSelectorFromString(@"verifiedType")])
   {
-    v9 = [NSNumber numberWithShort:[(CPLSocialGroupChange *)v7 verifiedType]];
-    [v6 setEncryptedObject:v9 forKey:@"verifiedTypeEnc" validateClass:objc_opt_class()];
+    v9 = [NSNumber numberWithShort:[(CPLSocialGroupChange *)selfCopy verifiedType]];
+    [builderCopy setEncryptedObject:v9 forKey:@"verifiedTypeEnc" validateClass:objc_opt_class()];
   }
 
-  if ([(CPLSocialGroupChange *)v7 shouldApplyPropertiesWithSelector:NSSelectorFromString(@"customTitle")])
+  if ([(CPLSocialGroupChange *)selfCopy shouldApplyPropertiesWithSelector:NSSelectorFromString(@"customTitle")])
   {
-    v10 = [(CPLSocialGroupChange *)v7 customTitle];
-    [v6 setEncryptedObject:v10 forKey:@"customTitleEnc" validateClass:objc_opt_class()];
+    customTitle = [(CPLSocialGroupChange *)selfCopy customTitle];
+    [builderCopy setEncryptedObject:customTitle forKey:@"customTitleEnc" validateClass:objc_opt_class()];
   }
 
-  if ([(CPLSocialGroupChange *)v7 shouldApplyPropertiesWithSelector:NSSelectorFromString(@"position")])
+  if ([(CPLSocialGroupChange *)selfCopy shouldApplyPropertiesWithSelector:NSSelectorFromString(@"position")])
   {
-    v11 = [NSNumber numberWithUnsignedInteger:[(CPLSocialGroupChange *)v7 position]];
-    [v6 setEncryptedObject:v11 forKey:@"positionEnc" validateClass:objc_opt_class()];
+    v11 = [NSNumber numberWithUnsignedInteger:[(CPLSocialGroupChange *)selfCopy position]];
+    [builderCopy setEncryptedObject:v11 forKey:@"positionEnc" validateClass:objc_opt_class()];
   }
 
-  if ([(CPLSocialGroupChange *)v7 shouldApplyPropertiesWithSelector:NSSelectorFromString(@"keyAssetIdentifier")])
+  if ([(CPLSocialGroupChange *)selfCopy shouldApplyPropertiesWithSelector:NSSelectorFromString(@"keyAssetIdentifier")])
   {
-    v12 = [(CPLSocialGroupChange *)v7 keyAssetIdentifier];
-    if (v12)
+    keyAssetIdentifier = [(CPLSocialGroupChange *)selfCopy keyAssetIdentifier];
+    if (keyAssetIdentifier)
     {
-      [v6 setEncryptedObject:v12 forKey:@"keyAssetIdEnc" validateClass:objc_opt_class()];
+      [builderCopy setEncryptedObject:keyAssetIdentifier forKey:@"keyAssetIdEnc" validateClass:objc_opt_class()];
     }
   }
 
-  v13 = v7;
+  v13 = selfCopy;
   if (![&__NSArray0__struct count])
   {
     goto LABEL_22;
@@ -106,7 +106,7 @@ LABEL_15:
 
 LABEL_22:
 
-    [v6 setObject:CPLSocialGroupClientVersion forKey:@"version"];
+    [builderCopy setObject:CPLSocialGroupClientVersion forKey:@"version"];
     goto LABEL_23;
   }
 
@@ -115,19 +115,19 @@ LABEL_21:
 LABEL_23:
   if ([(CPLSocialGroupChange *)v13 shouldApplyPropertiesWithSelector:NSSelectorFromString(@"personsData")])
   {
-    v18 = [(CPLSocialGroupChange *)v13 personsData];
+    personsData = [(CPLSocialGroupChange *)v13 personsData];
 
-    if (v18)
+    if (personsData)
     {
-      v19 = [(CPLSocialGroupChange *)v13 personsData];
-      [v6 setEncryptedObject:v19 forKey:@"personListEnc" validateClass:objc_opt_class()];
+      personsData2 = [(CPLSocialGroupChange *)v13 personsData];
+      [builderCopy setEncryptedObject:personsData2 forKey:@"personListEnc" validateClass:objc_opt_class()];
     }
   }
 
 LABEL_26:
 }
 
-- (void)fillWithCKRecord:(id)a3
+- (void)fillWithCKRecord:(id)record
 {
   sub_10002B0F4();
   v4 = v3;

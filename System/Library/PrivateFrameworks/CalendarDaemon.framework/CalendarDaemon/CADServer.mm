@@ -1,19 +1,19 @@
 @interface CADServer
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (CADServer)initWithModules:(id)a3;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (CADServer)initWithModules:(id)modules;
 - (unint64_t)_contactsAuthorization;
 - (unint64_t)_lastKnownContactsAuthorization;
-- (void)_cleanupChangeTablesInDatabase:(CalDatabase *)a3;
-- (void)_clientConnectionDied:(id)a3;
+- (void)_cleanupChangeTablesInDatabase:(CalDatabase *)database;
+- (void)_clientConnectionDied:(id)died;
 - (void)_deactivateAndExit;
 - (void)_dumpState;
 - (void)_exit;
 - (void)_finishInitializationWithDataAvailable;
 - (void)_handleDatabaseChanged;
-- (void)_handleXPCConnection:(id)a3;
+- (void)_handleXPCConnection:(id)connection;
 - (void)_migrateIfNeeded;
 - (void)_protectedDataDidBecomeAvailable;
-- (void)_registerActivityWithIdentifier:(const char *)a3 block:(id)a4;
+- (void)_registerActivityWithIdentifier:(const char *)identifier block:(id)block;
 - (void)_registerContactsAccess;
 - (void)_registerForAlarmEvents;
 - (void)_registerForChangeTableCleanup;
@@ -25,15 +25,15 @@
 - (void)_setupBirthdayListener;
 - (void)_startBirthdayListener;
 - (void)_tearDownSignalHandlers;
-- (void)_trimExtendAndUpdateOccurrenceCache:(BOOL)a3;
+- (void)_trimExtendAndUpdateOccurrenceCache:(BOOL)cache;
 - (void)activate;
-- (void)cleanupDatabase:(CalDatabase *)a3;
+- (void)cleanupDatabase:(CalDatabase *)database;
 - (void)deactivate;
 - (void)dealloc;
-- (void)handleDistributeChangeReport:(id)a3;
-- (void)handlePostChangeNote:(id)a3 connection:(id)a4 processName:(id)a5;
-- (void)initiateAuthenticationForAppProtectionForClientConnection:(id)a3 completion:(id)a4;
-- (void)initiateReminderAuthenticationForAppProtectionForClientConnection:(id)a3 completion:(id)a4;
+- (void)handleDistributeChangeReport:(id)report;
+- (void)handlePostChangeNote:(id)note connection:(id)connection processName:(id)name;
+- (void)initiateAuthenticationForAppProtectionForClientConnection:(id)connection completion:(id)completion;
+- (void)initiateReminderAuthenticationForAppProtectionForClientConnection:(id)connection completion:(id)completion;
 @end
 
 @implementation CADServer
@@ -263,10 +263,10 @@ LABEL_30:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (CADServer)initWithModules:(id)a3
+- (CADServer)initWithModules:(id)modules
 {
   v50 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  modulesCopy = modules;
   v47.receiver = self;
   v47.super_class = CADServer;
   v5 = [(CADServer *)&v47 init];
@@ -295,10 +295,10 @@ LABEL_30:
 
     objc_opt_class();
     v9 = CalGenerateQualifiedIdentifierWithClassAndSubdomain();
-    v10 = [v9 UTF8String];
+    uTF8String = [v9 UTF8String];
 
     v11 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v12 = dispatch_queue_create(v10, v11);
+    v12 = dispatch_queue_create(uTF8String, v11);
     [(CADServer *)v7 setWorkQueue:v12];
 
     [(CADServer *)v7 _setUpSignalHandlers];
@@ -354,7 +354,7 @@ LABEL_30:
 
     else
     {
-      [v26 setModules:v4];
+      [v26 setModules:modulesCopy];
     }
 
     v29 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_UTILITY, 0);
@@ -438,13 +438,13 @@ void __29__CADServer_initWithModules___block_invoke_6(uint64_t a1, void *a2)
     _os_log_impl(&dword_22430B000, v3, OS_LOG_TYPE_DEFAULT, "Server activation requested.", buf, 2u);
   }
 
-  v4 = [(CADServer *)self workQueue];
+  workQueue = [(CADServer *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __21__CADServer_activate__block_invoke;
   block[3] = &unk_27851AAD8;
   block[4] = self;
-  dispatch_sync(v4, block);
+  dispatch_sync(workQueue, block);
 
   if ([MEMORY[0x277CF77B8] hasBeenUnlockedSinceBoot])
   {
@@ -579,13 +579,13 @@ void __21__CADServer_activate__block_invoke(uint64_t a1)
     _os_log_impl(&dword_22430B000, v3, OS_LOG_TYPE_DEFAULT, "Deactivating server.", buf, 2u);
   }
 
-  v4 = [(CADServer *)self workQueue];
+  workQueue = [(CADServer *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __23__CADServer_deactivate__block_invoke;
   block[3] = &unk_27851AAD8;
   block[4] = self;
-  dispatch_sync(v4, block);
+  dispatch_sync(workQueue, block);
 }
 
 void __23__CADServer_deactivate__block_invoke(uint64_t a1)
@@ -700,12 +700,12 @@ void __23__CADServer_deactivate__block_invoke(uint64_t a1)
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CF7850] isRunningAsSetupUser];
-  if (v8)
+  listenerCopy = listener;
+  connectionCopy = connection;
+  isRunningAsSetupUser = [MEMORY[0x277CF7850] isRunningAsSetupUser];
+  if (isRunningAsSetupUser)
   {
     v9 = CADLogHandle;
     if (os_log_type_enabled(CADLogHandle, OS_LOG_TYPE_ERROR))
@@ -719,9 +719,9 @@ void __23__CADServer_deactivate__block_invoke(uint64_t a1)
   {
     [(NSLock *)self->_connectionLock lock];
     v10 = [CADAuditTokenTCCPermissionChecker alloc];
-    if (v7)
+    if (connectionCopy)
     {
-      [v7 auditToken];
+      [connectionCopy auditToken];
     }
 
     else
@@ -731,7 +731,7 @@ void __23__CADServer_deactivate__block_invoke(uint64_t a1)
     }
 
     v11 = [(CADAuditTokenTCCPermissionChecker *)v10 initWithAuditToken:buf];
-    v12 = [[ClientConnection alloc] initWithXPCConnection:v7 tccPermissionChecker:v11];
+    v12 = [[ClientConnection alloc] initWithXPCConnection:connectionCopy tccPermissionChecker:v11];
     objc_initWeak(buf, self);
     objc_initWeak(&location, v12);
     v24[0] = MEMORY[0x277D85DD0];
@@ -740,22 +740,22 @@ void __23__CADServer_deactivate__block_invoke(uint64_t a1)
     v24[3] = &unk_27851B378;
     objc_copyWeak(&v25, buf);
     objc_copyWeak(&v26, &location);
-    [v7 setInterruptionHandler:v24];
+    [connectionCopy setInterruptionHandler:v24];
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __48__CADServer_listener_shouldAcceptNewConnection___block_invoke_24;
     v21[3] = &unk_27851B378;
     objc_copyWeak(&v22, buf);
     objc_copyWeak(&v23, &location);
-    [v7 setInvalidationHandler:v21];
+    [connectionCopy setInvalidationHandler:v21];
     [(NSMutableSet *)self->_clientConnections addObject:v12];
     [(NSLock *)self->_connectionLock unlock];
-    v13 = [(ClientConnection *)v12 cadOperationProxy];
+    cadOperationProxy = [(ClientConnection *)v12 cadOperationProxy];
     v14 = GetSharedXPCInterfaceForCADInterface();
-    [v7 setExportedObject:v13];
-    [v7 setExportedInterface:v14];
+    [connectionCopy setExportedObject:cadOperationProxy];
+    [connectionCopy setExportedInterface:v14];
     v15 = GetSharedXPCInterfaceForCADClientInterface();
-    [v7 setRemoteObjectInterface:v15];
+    [connectionCopy setRemoteObjectInterface:v15];
 
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
@@ -764,7 +764,7 @@ void __23__CADServer_deactivate__block_invoke(uint64_t a1)
     v18[4] = self;
     v16 = v12;
     v19 = v16;
-    v20 = v7;
+    v20 = connectionCopy;
     [(CADServer *)self initiateAuthenticationForAppProtectionForClientConnection:v16 completion:v18];
 
     objc_destroyWeak(&v23);
@@ -775,7 +775,7 @@ void __23__CADServer_deactivate__block_invoke(uint64_t a1)
     objc_destroyWeak(buf);
   }
 
-  return v8 ^ 1;
+  return isRunningAsSetupUser ^ 1;
 }
 
 void __48__CADServer_listener_shouldAcceptNewConnection___block_invoke(uint64_t a1)
@@ -893,23 +893,23 @@ void __48__CADServer_listener_shouldAcceptNewConnection___block_invoke_25(uint64
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_clientConnectionDied:(id)a3
+- (void)_clientConnectionDied:(id)died
 {
   connectionLock = self->_connectionLock;
-  v5 = a3;
+  diedCopy = died;
   [(NSLock *)connectionLock lock];
-  [(NSMutableSet *)self->_clientConnections removeObject:v5];
+  [(NSMutableSet *)self->_clientConnections removeObject:diedCopy];
 
   v6 = self->_connectionLock;
 
   [(NSLock *)v6 unlock];
 }
 
-- (void)_handleXPCConnection:(id)a3
+- (void)_handleXPCConnection:(id)connection
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  pid = xpc_connection_get_pid(v4);
+  connectionCopy = connection;
+  pid = xpc_connection_get_pid(connectionCopy);
   memset(buffer, 0, sizeof(buffer));
   if (proc_name(pid, buffer, 0x100u))
   {
@@ -926,10 +926,10 @@ void __48__CADServer_listener_shouldAcceptNewConnection___block_invoke_25(uint64
   handler[2] = __34__CADServer__handleXPCConnection___block_invoke;
   handler[3] = &unk_27851B3A0;
   handler[4] = self;
-  v11 = v4;
+  v11 = connectionCopy;
   v12 = v6;
   v7 = v6;
-  v8 = v4;
+  v8 = connectionCopy;
   xpc_connection_set_event_handler(v8, handler);
   xpc_connection_resume(v8);
 
@@ -973,11 +973,11 @@ void __34__CADServer__handleXPCConnection___block_invoke(uint64_t a1, void *a2)
 LABEL_11:
 }
 
-- (void)handlePostChangeNote:(id)a3 connection:(id)a4 processName:(id)a5
+- (void)handlePostChangeNote:(id)note connection:(id)connection processName:(id)name
 {
-  xdict = a3;
-  v7 = a5;
-  v8 = a4;
+  xdict = note;
+  nameCopy = name;
+  connectionCopy = connection;
   int64 = xpc_dictionary_get_int64(xdict, "changeType");
   xpc_dictionary_get_int64(xdict, "changeReason");
   string = xpc_dictionary_get_string(xdict, "clientName");
@@ -1033,15 +1033,15 @@ LABEL_14:
 
   reply = xpc_dictionary_create_reply(xdict);
   xpc_dictionary_set_BOOL(reply, "notificationwasposted", 1);
-  xpc_connection_send_message(v8, reply);
+  xpc_connection_send_message(connectionCopy, reply);
 }
 
-- (void)handleDistributeChangeReport:(id)a3
+- (void)handleDistributeChangeReport:(id)report
 {
   v28 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  reportCopy = report;
   length = 0;
-  data = xpc_dictionary_get_data(v3, "report", &length);
+  data = xpc_dictionary_get_data(reportCopy, "report", &length);
   if (data)
   {
     v5 = [MEMORY[0x277CBEA90] dataWithBytesNoCopy:data length:length freeWhenDone:0];
@@ -1050,13 +1050,13 @@ LABEL_14:
     v7 = v22;
     if (v6)
     {
-      string = xpc_dictionary_get_string(v3, "databasePath");
+      string = xpc_dictionary_get_string(reportCopy, "databasePath");
       if (string)
       {
         v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:string];
         if (v9)
         {
-          int64 = xpc_dictionary_get_int64(v3, "auxDBID");
+          int64 = xpc_dictionary_get_int64(reportCopy, "auxDBID");
           v25[0] = v9;
           v24[0] = @"path";
           v24[1] = @"auxDBID";
@@ -1200,8 +1200,8 @@ LABEL_17:
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v9 = [(CADServer *)self modules];
-  v10 = [v9 countByEnumeratingWithState:&v15 objects:v24 count:16];
+  modules = [(CADServer *)self modules];
+  v10 = [modules countByEnumeratingWithState:&v15 objects:v24 count:16];
   if (v10)
   {
     v11 = v10;
@@ -1213,14 +1213,14 @@ LABEL_17:
       {
         if (*v16 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(modules);
         }
 
         [*(*(&v15 + 1) + 8 * v13++) protectedDataDidBecomeAvailable];
       }
 
       while (v11 != v13);
-      v11 = [v9 countByEnumeratingWithState:&v15 objects:v24 count:16];
+      v11 = [modules countByEnumeratingWithState:&v15 objects:v24 count:16];
     }
 
     while (v11);
@@ -1238,34 +1238,34 @@ LABEL_17:
   dispatch_async(v3, &__block_literal_global_24);
 }
 
-- (void)initiateAuthenticationForAppProtectionForClientConnection:(id)a3 completion:(id)a4
+- (void)initiateAuthenticationForAppProtectionForClientConnection:(id)connection completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 permissionValidator];
-  if (([v7 hasCalendarTCCBypassEntitlement] & 1) == 0)
+  connectionCopy = connection;
+  completionCopy = completion;
+  permissionValidator = [connectionCopy permissionValidator];
+  if (([permissionValidator hasCalendarTCCBypassEntitlement] & 1) == 0)
   {
 
     goto LABEL_6;
   }
 
-  v8 = [v5 permissionValidator];
-  v9 = [v8 testingAccessLevelGranted];
+  permissionValidator2 = [connectionCopy permissionValidator];
+  testingAccessLevelGranted = [permissionValidator2 testingAccessLevelGranted];
 
-  if (v9)
+  if (testingAccessLevelGranted)
   {
 LABEL_6:
-    v6[2](v6);
+    completionCopy[2](completionCopy);
     goto LABEL_9;
   }
 
   v10 = +[CADDefaultAppProtectionGuard shared];
   v11 = *MEMORY[0x277CF78A0];
-  v12 = [v5 identity];
-  v13 = v12;
-  if (v12)
+  identity = [connectionCopy identity];
+  v13 = identity;
+  if (identity)
   {
-    [v12 auditToken];
+    [identity auditToken];
   }
 
   else
@@ -1277,43 +1277,43 @@ LABEL_6:
   v14[1] = 3221225472;
   v14[2] = __82__CADServer_initiateAuthenticationForAppProtectionForClientConnection_completion___block_invoke;
   v14[3] = &unk_278519DC8;
-  v15 = v6;
+  v15 = completionCopy;
   [v10 initiateAuthenticationForApplicationWithBundleIdentifier:v11 onBehalfOfProcessWithAuditToken:v16 accessGrantedByEntitlement:0 completion:v14];
 
 LABEL_9:
 }
 
-- (void)initiateReminderAuthenticationForAppProtectionForClientConnection:(id)a3 completion:(id)a4
+- (void)initiateReminderAuthenticationForAppProtectionForClientConnection:(id)connection completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 permissionValidator];
-  v8 = [v7 allowsIntegrations];
+  connectionCopy = connection;
+  completionCopy = completion;
+  permissionValidator = [connectionCopy permissionValidator];
+  allowsIntegrations = [permissionValidator allowsIntegrations];
 
-  v9 = [v5 permissionValidator];
-  if ([v9 isFirstPartyCalendarApp])
+  permissionValidator2 = [connectionCopy permissionValidator];
+  if ([permissionValidator2 isFirstPartyCalendarApp])
   {
 
 LABEL_3:
-    v6[2](v6);
+    completionCopy[2](completionCopy);
     goto LABEL_10;
   }
 
-  v10 = [v5 permissionValidator];
-  v11 = [v10 isCalendarWidgetExtension];
+  permissionValidator3 = [connectionCopy permissionValidator];
+  isCalendarWidgetExtension = [permissionValidator3 isCalendarWidgetExtension];
 
-  if (!v8 || v11)
+  if (!allowsIntegrations || isCalendarWidgetExtension)
   {
     goto LABEL_3;
   }
 
   v12 = +[CADDefaultAppProtectionGuard shared];
   v13 = *MEMORY[0x277CF7A98];
-  v14 = [v5 identity];
-  v15 = v14;
-  if (v14)
+  identity = [connectionCopy identity];
+  v15 = identity;
+  if (identity)
   {
-    [v14 auditToken];
+    [identity auditToken];
   }
 
   else
@@ -1325,7 +1325,7 @@ LABEL_3:
   v16[1] = 3221225472;
   v16[2] = __90__CADServer_initiateReminderAuthenticationForAppProtectionForClientConnection_completion___block_invoke;
   v16[3] = &unk_278519DC8;
-  v17 = v6;
+  v17 = completionCopy;
   [v12 initiateAuthenticationForApplicationWithBundleIdentifier:v13 onBehalfOfProcessWithAuditToken:v18 accessGrantedByEntitlement:1 completion:v16];
 
 LABEL_10:
@@ -1458,7 +1458,7 @@ void __36__CADServer__tearDownSignalHandlers__block_invoke(uint64_t a1, void *a2
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_trimExtendAndUpdateOccurrenceCache:(BOOL)a3
+- (void)_trimExtendAndUpdateOccurrenceCache:(BOOL)cache
 {
   v3 = CADLogHandle;
   if (os_log_type_enabled(CADLogHandle, OS_LOG_TYPE_INFO))
@@ -1512,20 +1512,20 @@ void __49__CADServer__trimExtendAndUpdateOccurrenceCache___block_invoke(uint64_t
   }
 
   v4 = *MEMORY[0x277CF7880];
-  v5 = [(CADServer *)self alarmQueue];
+  alarmQueue = [(CADServer *)self alarmQueue];
   handler[0] = MEMORY[0x277D85DD0];
   handler[1] = 3221225472;
   handler[2] = __36__CADServer__registerForAlarmEvents__block_invoke;
   handler[3] = &unk_27851B350;
   handler[4] = self;
-  xpc_set_event_stream_handler(v4, v5, handler);
+  xpc_set_event_stream_handler(v4, alarmQueue, handler);
 
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = [(CADServer *)self modules];
-  v7 = [v6 countByEnumeratingWithState:&v12 objects:v18 count:16];
+  modules = [(CADServer *)self modules];
+  v7 = [modules countByEnumeratingWithState:&v12 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1537,14 +1537,14 @@ void __49__CADServer__trimExtendAndUpdateOccurrenceCache___block_invoke(uint64_t
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(modules);
         }
 
         [*(*(&v12 + 1) + 8 * v10++) didRegisterForAlarms];
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v12 objects:v18 count:16];
+      v8 = [modules countByEnumeratingWithState:&v12 objects:v18 count:16];
     }
 
     while (v8);
@@ -1645,18 +1645,18 @@ uint64_t __36__CADServer__registerForAlarmEvents__block_invoke_2()
   [(CADServer *)self _registerForOccurrenceCacheUpdate];
 }
 
-- (void)_registerActivityWithIdentifier:(const char *)a3 block:(id)a4
+- (void)_registerActivityWithIdentifier:(const char *)identifier block:(id)block
 {
-  v5 = a4;
+  blockCopy = block;
   v6 = *MEMORY[0x277D86238];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __51__CADServer__registerActivityWithIdentifier_block___block_invoke;
   v8[3] = &unk_27851B430;
-  v9 = v5;
-  v10 = a3;
-  v7 = v5;
-  xpc_activity_register(a3, v6, v8);
+  v9 = blockCopy;
+  identifierCopy = identifier;
+  v7 = blockCopy;
+  xpc_activity_register(identifier, v6, v8);
 }
 
 void __51__CADServer__registerActivityWithIdentifier_block___block_invoke(uint64_t a1, void *a2)
@@ -1910,14 +1910,14 @@ void __43__CADServer__registerForChangeTableCleanup__block_invoke(uint64_t a1)
   [(CADServer *)self _registerActivityWithIdentifier:"com.apple.calendar.daemon.occurrencecacheupdate" block:v2];
 }
 
-- (void)cleanupDatabase:(CalDatabase *)a3
+- (void)cleanupDatabase:(CalDatabase *)database
 {
   v8 = *MEMORY[0x277D85DE8];
   v4 = CADLogHandle;
   if (os_log_type_enabled(CADLogHandle, OS_LOG_TYPE_INFO))
   {
     v6 = 138412290;
-    v7 = a3;
+    databaseCopy = database;
     _os_log_impl(&dword_22430B000, v4, OS_LOG_TYPE_INFO, "Performing database cleanup. Database: %@", &v6, 0xCu);
   }
 
@@ -1927,7 +1927,7 @@ void __43__CADServer__registerForChangeTableCleanup__block_invoke(uint64_t a1)
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_cleanupChangeTablesInDatabase:(CalDatabase *)a3
+- (void)_cleanupChangeTablesInDatabase:(CalDatabase *)database
 {
   v11 = *MEMORY[0x277D85DE8];
   v4 = +[CADIdleChangeTrackingCleanupInfo serverIdleChangeTrackingCleanupInfo];
@@ -1937,7 +1937,7 @@ void __43__CADServer__registerForChangeTableCleanup__block_invoke(uint64_t a1)
     v7 = 138412546;
     v8 = v4;
     v9 = 2112;
-    v10 = a3;
+    databaseCopy = database;
     _os_log_impl(&dword_22430B000, v5, OS_LOG_TYPE_INFO, "Performing idle change-tracking client cleanup. Idle change tracking cleanup info: %@. Database: %@.", &v7, 0x16u);
   }
 
@@ -1951,8 +1951,8 @@ void __43__CADServer__registerForChangeTableCleanup__block_invoke(uint64_t a1)
 
 - (unint64_t)_lastKnownContactsAuthorization
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 integerForKey:@"CADLastKnownContactsAuthorization"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults integerForKey:@"CADLastKnownContactsAuthorization"];
 
   return v3;
 }
@@ -2033,9 +2033,9 @@ LABEL_7:
   v21[1] = *MEMORY[0x277D85DE8];
   if (MGGetBoolAnswer())
   {
-    v3 = [(CADServer *)self _contactsAuthorization];
-    v4 = v3;
-    if (v3 == 2)
+    _contactsAuthorization = [(CADServer *)self _contactsAuthorization];
+    v4 = _contactsAuthorization;
+    if (_contactsAuthorization == 2)
     {
       [(CADServer *)self _startBirthdayListener];
       if ([(CADServer *)self _lastKnownContactsAuthorization]!= 2)
@@ -2046,7 +2046,7 @@ LABEL_7:
 
     else
     {
-      if (v3 == 1)
+      if (_contactsAuthorization == 1)
       {
         v5 = *MEMORY[0x277D6C100];
         v19 = *MEMORY[0x277CF78A0];
@@ -2073,8 +2073,8 @@ LABEL_7:
       [(CADServer *)self _registerContactsAccess];
     }
 
-    v18 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    [v18 setInteger:v4 forKey:@"CADLastKnownContactsAuthorization"];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    [standardUserDefaults setInteger:v4 forKey:@"CADLastKnownContactsAuthorization"];
     v17 = *MEMORY[0x277D85DE8];
   }
 
@@ -2123,8 +2123,8 @@ uint64_t __35__CADServer__setupBirthdayListener__block_invoke(uint64_t a1)
 
 - (void)_exit
 {
-  v2 = [(CADServer *)self workQueue];
-  dispatch_sync(v2, &__block_literal_global_131);
+  workQueue = [(CADServer *)self workQueue];
+  dispatch_sync(workQueue, &__block_literal_global_131);
 }
 
 uint64_t __18__CADServer__exit__block_invoke()

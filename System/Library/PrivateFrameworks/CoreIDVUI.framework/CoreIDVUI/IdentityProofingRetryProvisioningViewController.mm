@@ -1,12 +1,12 @@
 @interface IdentityProofingRetryProvisioningViewController
-- (_TtC9CoreIDVUI47IdentityProofingRetryProvisioningViewController)initWithCoder:(id)a3;
+- (_TtC9CoreIDVUI47IdentityProofingRetryProvisioningViewController)initWithCoder:(id)coder;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
 
 @implementation IdentityProofingRetryProvisioningViewController
 
-- (_TtC9CoreIDVUI47IdentityProofingRetryProvisioningViewController)initWithCoder:(id)a3
+- (_TtC9CoreIDVUI47IdentityProofingRetryProvisioningViewController)initWithCoder:(id)coder
 {
   result = sub_2459115D4();
   __break(1u);
@@ -15,7 +15,7 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_24584F26C();
 }
 

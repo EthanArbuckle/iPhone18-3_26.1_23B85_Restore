@@ -2,20 +2,20 @@
 + (HKSource)defaultSource;
 + (id)_blePeripheralSource;
 + (id)_connectedGymSource;
-+ (id)_currentSourceProductType:(BOOL)a3;
++ (id)_currentSourceProductType:(BOOL)type;
 + (id)_generateIdentifierForAppleDevice;
-+ (id)_generateIdentifierForAppleDeviceWithUUID:(id)a3;
++ (id)_generateIdentifierForAppleDeviceWithUUID:(id)d;
 + (id)_hrCoordinatorSource;
 + (id)_localDeviceSource;
-+ (id)_privateSourceForClinicalAccountIdentifier:(id)a3 name:(id)a4;
-+ (id)_publicSourceForClinicalExternalIdentifier:(id)a3 name:(id)a4;
++ (id)_privateSourceForClinicalAccountIdentifier:(id)identifier name:(id)name;
++ (id)_publicSourceForClinicalExternalIdentifier:(id)identifier name:(id)name;
 + (id)_researchStudiesDirectoryURL;
-+ (id)_sourceBundleIdentifierWithEntitlements:(id)a3 processBundleIdentifier:(id)a4 isExtension:(BOOL)a5;
-+ (id)_sourceWithBundleIdentifier:(id)a3 defaultBundleIdentifier:(id)a4 appEntitlements:(id)a5 name:(id)a6;
-+ (id)_sourceWithBundleIdentifier:(id)a3 name:(id)a4 productType:(id)a5 options:(unint64_t)a6;
++ (id)_sourceBundleIdentifierWithEntitlements:(id)entitlements processBundleIdentifier:(id)identifier isExtension:(BOOL)extension;
++ (id)_sourceWithBundleIdentifier:(id)identifier defaultBundleIdentifier:(id)bundleIdentifier appEntitlements:(id)entitlements name:(id)name;
++ (id)_sourceWithBundleIdentifier:(id)identifier name:(id)name productType:(id)type options:(unint64_t)options;
 + (id)_uncachedDefaultSource;
-+ (id)_uncachedDefaultSourceWithEntitlements:(id)a3;
-+ (unint64_t)_sourceOptionsForAppEntitlements:(id)a3;
++ (id)_uncachedDefaultSourceWithEntitlements:(id)entitlements;
++ (unint64_t)_sourceOptionsForAppEntitlements:(id)entitlements;
 + (void)_uncachedDefaultSource;
 - (BOOL)_isAppleDevice;
 - (BOOL)_isAppleWatch;
@@ -24,17 +24,17 @@
 - (BOOL)_isHeartRateCoordinator;
 - (BOOL)_isHidden;
 - (BOOL)_isSiri;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HKSource)init;
-- (HKSource)initWithCoder:(id)a3;
+- (HKSource)initWithCoder:(id)coder;
 - (id)_deducedClinicalAccountIdentifier;
-- (id)_fetchBundleWithError:(id *)a3;
+- (id)_fetchBundleWithError:(id *)error;
 - (id)_init;
 - (id)asJSONObject;
-- (void)_setBundleIdentifier:(id)a3;
-- (void)_setModificationDate:(id)a3;
-- (void)_setName:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_setBundleIdentifier:(id)identifier;
+- (void)_setModificationDate:(id)date;
+- (void)_setName:(id)name;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKSource
@@ -45,7 +45,7 @@
   block[1] = 3221225472;
   block[2] = __30__HKSource__localDeviceSource__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_localDeviceSource_onceToken != -1)
   {
     dispatch_once(&_localDeviceSource_onceToken, block);
@@ -86,15 +86,15 @@ uint64_t __30__HKSource__localDeviceSource__block_invoke(uint64_t a1)
 
 - (BOOL)_isAppleWatch
 {
-  v2 = [(HKSource *)self _productType];
-  if (+[_HKBehavior isAppleInternalInstall](_HKBehavior, "isAppleInternalInstall") && (([v2 isEqualToString:{@"iPod6, 3"}] & 1) != 0 || (objc_msgSend(v2, "isEqualToString:", @"iPod6,4") & 1) != 0))
+  _productType = [(HKSource *)self _productType];
+  if (+[_HKBehavior isAppleInternalInstall](_HKBehavior, "isAppleInternalInstall") && (([_productType isEqualToString:{@"iPod6, 3"}] & 1) != 0 || (objc_msgSend(_productType, "isEqualToString:", @"iPod6,4") & 1) != 0))
   {
     v3 = 1;
   }
 
   else
   {
-    v3 = [v2 hasPrefix:@"Watch"];
+    v3 = [_productType hasPrefix:@"Watch"];
   }
 
   return v3;
@@ -106,7 +106,7 @@ uint64_t __30__HKSource__localDeviceSource__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __25__HKSource_defaultSource__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (defaultSource_onceToken != -1)
   {
     dispatch_once(&defaultSource_onceToken, block);
@@ -141,17 +141,17 @@ uint64_t __25__HKSource_defaultSource__block_invoke(uint64_t a1)
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D920] format:{@"Unable to create default source, failed to retrieve entitlements: %@", v4}];
   }
 
-  v6 = [a1 _uncachedDefaultSourceWithEntitlements:v3];
+  v6 = [self _uncachedDefaultSourceWithEntitlements:v3];
 
   return v6;
 }
 
-+ (id)_uncachedDefaultSourceWithEntitlements:(id)a3
++ (id)_uncachedDefaultSourceWithEntitlements:(id)entitlements
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AAE8] mainBundle];
-  v6 = [v5 bundleIdentifier];
-  v7 = [a1 _sourceBundleIdentifierWithEntitlements:v4 processBundleIdentifier:v6 isExtension:_HKCurrentTaskIsAppExtension()];
+  entitlementsCopy = entitlements;
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v7 = [self _sourceBundleIdentifierWithEntitlements:entitlementsCopy processBundleIdentifier:bundleIdentifier isExtension:_HKCurrentTaskIsAppExtension()];
 
   if (!v7)
   {
@@ -165,7 +165,7 @@ uint64_t __25__HKSource_defaultSource__block_invoke(uint64_t a1)
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D920] format:@"Unable to create default source. The bundle identifier of the client is nil"];
   }
 
-  v9 = [a1 _representsCurrentDeviceWithBundleIdentifier:v7];
+  v9 = [self _representsCurrentDeviceWithBundleIdentifier:v7];
   if (v9)
   {
     v10 = 2;
@@ -173,19 +173,19 @@ uint64_t __25__HKSource_defaultSource__block_invoke(uint64_t a1)
 
   else
   {
-    v10 = [a1 _sourceOptionsForAppEntitlements:v4];
+    v10 = [self _sourceOptionsForAppEntitlements:entitlementsCopy];
   }
 
-  v11 = [a1 _currentSourceProductType:v9];
-  v12 = [a1 _sourceNameWithRepresentsCurrentDevice:v9 defaultSource:1];
-  v13 = [[HKSource alloc] _init];
-  [v13 _setBundleIdentifier:v7];
-  [v13 _setProductType:v11];
-  [v13 _setName:v12];
-  [v13 _setLocalDevice:v9];
-  [v13 _setOptions:v10];
+  v11 = [self _currentSourceProductType:v9];
+  v12 = [self _sourceNameWithRepresentsCurrentDevice:v9 defaultSource:1];
+  _init = [[HKSource alloc] _init];
+  [_init _setBundleIdentifier:v7];
+  [_init _setProductType:v11];
+  [_init _setName:v12];
+  [_init _setLocalDevice:v9];
+  [_init _setOptions:v10];
 
-  return v13;
+  return _init;
 }
 
 + (id)_connectedGymSource
@@ -272,42 +272,42 @@ uint64_t __32__HKSource__hrCoordinatorSource__block_invoke()
   return [v4 _setOptions:386];
 }
 
-+ (id)_sourceBundleIdentifierWithEntitlements:(id)a3 processBundleIdentifier:(id)a4 isExtension:(BOOL)a5
++ (id)_sourceBundleIdentifierWithEntitlements:(id)entitlements processBundleIdentifier:(id)identifier isExtension:(BOOL)extension
 {
-  v5 = a3;
-  if ([v5 hasEntitlement:@"com.apple.private.healthkit.health-app-source"])
+  entitlementsCopy = entitlements;
+  if ([entitlementsCopy hasEntitlement:@"com.apple.private.healthkit.health-app-source"])
   {
     v6 = &kHKHealthAppBundleIdentifier;
 LABEL_5:
-    v7 = *v6;
+    applicationIdentifier = *v6;
     goto LABEL_6;
   }
 
-  if ([v5 hasEntitlement:@"com.apple.private.healthkit.local-device-source"])
+  if ([entitlementsCopy hasEntitlement:@"com.apple.private.healthkit.local-device-source"])
   {
     v6 = &kHKLocalDeviceBundleIdentifier;
     goto LABEL_5;
   }
 
-  v7 = [v5 stringForEntitlement:@"com.apple.private.healthkit.source.default"];
-  if (!v7)
+  applicationIdentifier = [entitlementsCopy stringForEntitlement:@"com.apple.private.healthkit.source.default"];
+  if (!applicationIdentifier)
   {
-    v7 = [v5 stringForEntitlement:@"com.apple.private.healthkit.source_override"];
-    if (!v7)
+    applicationIdentifier = [entitlementsCopy stringForEntitlement:@"com.apple.private.healthkit.source_override"];
+    if (!applicationIdentifier)
     {
-      v7 = [v5 applicationIdentifier];
+      applicationIdentifier = [entitlementsCopy applicationIdentifier];
     }
   }
 
 LABEL_6:
-  v8 = v7;
+  v8 = applicationIdentifier;
 
   return v8;
 }
 
-+ (id)_currentSourceProductType:(BOOL)a3
++ (id)_currentSourceProductType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v4 = +[_HKBehavior currentDeviceProductType];
   }
@@ -322,17 +322,17 @@ LABEL_6:
 
 + (id)_generateIdentifierForAppleDevice
 {
-  v3 = [MEMORY[0x1E696AFB0] UUID];
-  v4 = [a1 _generateIdentifierForAppleDeviceWithUUID:v3];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  v4 = [self _generateIdentifierForAppleDeviceWithUUID:uUID];
 
   return v4;
 }
 
-+ (id)_generateIdentifierForAppleDeviceWithUUID:(id)a3
++ (id)_generateIdentifierForAppleDeviceWithUUID:(id)d
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [a3 UUIDString];
-  v5 = [v3 stringWithFormat:@"%@%@", @"com.apple.health.", v4];
+  uUIDString = [d UUIDString];
+  v5 = [v3 stringWithFormat:@"%@%@", @"com.apple.health.", uUIDString];
 
   return v5;
 }
@@ -347,60 +347,60 @@ LABEL_6:
   return v4;
 }
 
-+ (id)_sourceWithBundleIdentifier:(id)a3 name:(id)a4 productType:(id)a5 options:(unint64_t)a6
++ (id)_sourceWithBundleIdentifier:(id)identifier name:(id)name productType:(id)type options:(unint64_t)options
 {
-  if (a3)
+  if (identifier)
   {
-    v6 = a6;
-    v10 = a5;
-    v11 = a4;
-    v12 = a3;
-    v13 = [[a1 alloc] _init];
-    v14 = [v12 copy];
+    optionsCopy = options;
+    typeCopy = type;
+    nameCopy = name;
+    identifierCopy = identifier;
+    _init = [[self alloc] _init];
+    v14 = [identifierCopy copy];
 
-    v15 = v13[2];
-    v13[2] = v14;
+    v15 = _init[2];
+    _init[2] = v14;
 
-    v16 = [v11 copy];
-    v17 = v13[1];
-    v13[1] = v16;
+    v16 = [nameCopy copy];
+    v17 = _init[1];
+    _init[1] = v16;
 
-    v18 = [v10 copy];
-    v19 = v13[7];
-    v13[7] = v18;
+    v18 = [typeCopy copy];
+    v19 = _init[7];
+    _init[7] = v18;
 
-    v13[8] = v6 & 0x1FF;
+    _init[8] = optionsCopy & 0x1FF;
   }
 
   else
   {
-    v13 = 0;
+    _init = 0;
   }
 
-  return v13;
+  return _init;
 }
 
-+ (id)_privateSourceForClinicalAccountIdentifier:(id)a3 name:(id)a4
++ (id)_privateSourceForClinicalAccountIdentifier:(id)identifier name:(id)name
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  identifierCopy = identifier;
+  nameCopy = name;
+  if (!identifierCopy)
   {
-    [HKSource _privateSourceForClinicalAccountIdentifier:a2 name:a1];
+    [HKSource _privateSourceForClinicalAccountIdentifier:a2 name:self];
   }
 
   v9 = MEMORY[0x1E696AEC0];
-  v10 = [v7 UUIDString];
-  v11 = [v9 stringWithFormat:@"%@.%@", @"com.apple.private.health.clinical", v10];
+  uUIDString = [identifierCopy UUIDString];
+  v11 = [v9 stringWithFormat:@"%@.%@", @"com.apple.private.health.clinical", uUIDString];
 
-  v12 = [[a1 alloc] _init];
-  v13 = *(v12 + 16);
-  *(v12 + 16) = v11;
+  _init = [[self alloc] _init];
+  v13 = *(_init + 16);
+  *(_init + 16) = v11;
   v14 = v11;
 
-  if (v8)
+  if (nameCopy)
   {
-    v15 = v8;
+    v15 = nameCopy;
   }
 
   else
@@ -408,37 +408,37 @@ LABEL_6:
     v15 = @"com.apple.private.health.clinical";
   }
 
-  objc_storeStrong((v12 + 8), v15);
-  v16 = *(v12 + 56);
-  *(v12 + 56) = 0;
+  objc_storeStrong((_init + 8), v15);
+  v16 = *(_init + 56);
+  *(_init + 56) = 0;
 
-  *(v12 + 64) = 8;
+  *(_init + 64) = 8;
 
-  return v12;
+  return _init;
 }
 
-+ (id)_publicSourceForClinicalExternalIdentifier:(id)a3 name:(id)a4
++ (id)_publicSourceForClinicalExternalIdentifier:(id)identifier name:(id)name
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  identifierCopy = identifier;
+  nameCopy = name;
+  if (!identifierCopy)
   {
-    [HKSource _publicSourceForClinicalExternalIdentifier:a2 name:a1];
+    [HKSource _publicSourceForClinicalExternalIdentifier:a2 name:self];
   }
 
-  v9 = [v7 hk_MD5HashAsUUID];
+  hk_MD5HashAsUUID = [identifierCopy hk_MD5HashAsUUID];
   v10 = MEMORY[0x1E696AEC0];
-  v11 = [v9 UUIDString];
-  v12 = [v10 stringWithFormat:@"%@.%@", @"com.apple.public.health.clinical", v11];
+  uUIDString = [hk_MD5HashAsUUID UUIDString];
+  v12 = [v10 stringWithFormat:@"%@.%@", @"com.apple.public.health.clinical", uUIDString];
 
-  v13 = [[a1 alloc] _init];
-  v14 = *(v13 + 16);
-  *(v13 + 16) = v12;
+  _init = [[self alloc] _init];
+  v14 = *(_init + 16);
+  *(_init + 16) = v12;
   v15 = v12;
 
-  if (v8)
+  if (nameCopy)
   {
-    v16 = v8;
+    v16 = nameCopy;
   }
 
   else
@@ -446,22 +446,22 @@ LABEL_6:
     v16 = @"com.apple.public.health.clinical";
   }
 
-  objc_storeStrong((v13 + 8), v16);
-  v17 = *(v13 + 56);
-  *(v13 + 56) = 0;
+  objc_storeStrong((_init + 8), v16);
+  v17 = *(_init + 56);
+  *(_init + 56) = 0;
 
-  *(v13 + 64) = 8;
+  *(_init + 64) = 8;
 
-  return v13;
+  return _init;
 }
 
-+ (id)_sourceWithBundleIdentifier:(id)a3 defaultBundleIdentifier:(id)a4 appEntitlements:(id)a5 name:(id)a6
++ (id)_sourceWithBundleIdentifier:(id)identifier defaultBundleIdentifier:(id)bundleIdentifier appEntitlements:(id)entitlements name:(id)name
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if ([v10 isEqualToString:@"com.apple.Health"])
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
+  entitlementsCopy = entitlements;
+  nameCopy = name;
+  if ([identifierCopy isEqualToString:@"com.apple.Health"])
   {
     v14 = HKHealthKitFrameworkBundle();
     v15 = [v14 localizedStringForKey:@"HEALTH_APP" value:&stru_1F05FF230 table:@"Localizable"];
@@ -470,17 +470,17 @@ LABEL_6:
     goto LABEL_10;
   }
 
-  if ([a1 _representsCurrentDeviceWithBundleIdentifier:v10])
+  if ([self _representsCurrentDeviceWithBundleIdentifier:identifierCopy])
   {
     v17 = +[_HKBehavior sharedBehavior];
-    v18 = [v17 currentDeviceDisplayName];
-    v19 = [v17 currentDeviceProductType];
-    v16 = [HKSource _sourceWithBundleIdentifier:@"com.apple.private.health.localdevice" name:v18 productType:v19 options:2];
+    currentDeviceDisplayName = [v17 currentDeviceDisplayName];
+    currentDeviceProductType = [v17 currentDeviceProductType];
+    v16 = [HKSource _sourceWithBundleIdentifier:@"com.apple.private.health.localdevice" name:currentDeviceDisplayName productType:currentDeviceProductType options:2];
 
     goto LABEL_10;
   }
 
-  if ([v10 isEqualToString:@"com.apple.BTLEServer"])
+  if ([identifierCopy isEqualToString:@"com.apple.BTLEServer"])
   {
     v20 = +[HKSource _blePeripheralSource];
 LABEL_9:
@@ -488,16 +488,16 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if ([v10 isEqualToString:@"com.apple.heartratecoordinatord"])
+  if ([identifierCopy isEqualToString:@"com.apple.heartratecoordinatord"])
   {
     v20 = +[HKSource _hrCoordinatorSource];
     goto LABEL_9;
   }
 
-  v16 = +[HKSource _sourceWithBundleIdentifier:name:productType:options:](HKSource, "_sourceWithBundleIdentifier:name:productType:options:", v10, v13, 0, [a1 _sourceOptionsForAppEntitlements:v12]);
-  if ([v12 hasEntitlement:@"com.apple.private.healthkit.source.research-study"])
+  v16 = +[HKSource _sourceWithBundleIdentifier:name:productType:options:](HKSource, "_sourceWithBundleIdentifier:name:productType:options:", identifierCopy, nameCopy, 0, [self _sourceOptionsForAppEntitlements:entitlementsCopy]);
+  if ([entitlementsCopy hasEntitlement:@"com.apple.private.healthkit.source.research-study"])
   {
-    v22 = [v11 copy];
+    v22 = [bundleIdentifierCopy copy];
     v23 = v16[5];
     v16[5] = v22;
   }
@@ -507,20 +507,20 @@ LABEL_10:
   return v16;
 }
 
-+ (unint64_t)_sourceOptionsForAppEntitlements:(id)a3
++ (unint64_t)_sourceOptionsForAppEntitlements:(id)entitlements
 {
-  v3 = a3;
-  v4 = [v3 hasEntitlement:@"com.apple.private.healthkit.preferred_source"];
-  v5 = [v3 hasEntitlement:@"com.apple.private.healthkit.authorization_bypass"];
-  v6 = [v3 hasBackgroundDeliveryAPIAccess];
-  if ([v3 hasEntitlement:@"com.apple.private.healthkit.source.research-study"])
+  entitlementsCopy = entitlements;
+  v4 = [entitlementsCopy hasEntitlement:@"com.apple.private.healthkit.preferred_source"];
+  v5 = [entitlementsCopy hasEntitlement:@"com.apple.private.healthkit.authorization_bypass"];
+  hasBackgroundDeliveryAPIAccess = [entitlementsCopy hasBackgroundDeliveryAPIAccess];
+  if ([entitlementsCopy hasEntitlement:@"com.apple.private.healthkit.source.research-study"])
   {
     v7 = 32;
   }
 
   else
   {
-    v7 = [v3 arrayEntitlement:@"com.apple.private.healthkit.source.identities" containsString:@"com.apple.health.[any-device-uuid]"] ^ 1;
+    v7 = [entitlementsCopy arrayEntitlement:@"com.apple.private.healthkit.source.identities" containsString:@"com.apple.health.[any-device-uuid]"] ^ 1;
   }
 
   v8 = 2;
@@ -534,7 +534,7 @@ LABEL_10:
     v8 |= 4uLL;
   }
 
-  if (v6)
+  if (hasBackgroundDeliveryAPIAccess)
   {
     v9 = v8 | 0x40;
   }
@@ -560,11 +560,11 @@ LABEL_10:
     return 0;
   }
 
-  v4 = [(NSString *)bundleIdentifier hk_MD5Hash];
-  v5 = v4;
-  if (v4)
+  hk_MD5Hash = [(NSString *)bundleIdentifier hk_MD5Hash];
+  v5 = hk_MD5Hash;
+  if (hk_MD5Hash)
   {
-    v6 = [v4 isEqualToString:@"9a954967ccb5d9e033a8732bf9396b91"];
+    v6 = [hk_MD5Hash isEqualToString:@"9a954967ccb5d9e033a8732bf9396b91"];
   }
 
   else
@@ -656,41 +656,41 @@ LABEL_10:
   return v5;
 }
 
-- (id)_fetchBundleWithError:(id *)a3
+- (id)_fetchBundleWithError:(id *)error
 {
-  v5 = [(HKSource *)self bundleIdentifier];
-  v6 = [(HKSource *)self _owningAppBundleIdentifier];
-  v7 = v6;
-  if (v6)
+  bundleIdentifier = [(HKSource *)self bundleIdentifier];
+  _owningAppBundleIdentifier = [(HKSource *)self _owningAppBundleIdentifier];
+  v7 = _owningAppBundleIdentifier;
+  if (_owningAppBundleIdentifier)
   {
-    v8 = v6;
+    v8 = _owningAppBundleIdentifier;
   }
 
   else
   {
-    v8 = v5;
+    v8 = bundleIdentifier;
   }
 
   v9 = v8;
 
   v10 = [MEMORY[0x1E69635E0] applicationProxyForIdentifier:v9];
-  v11 = [v10 bundleURL];
+  bundleURL = [v10 bundleURL];
 
-  if (v11 || ([MEMORY[0x1E69635E0] applicationProxyForCompanionIdentifier:v9], v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "bundleURL"), v11 = objc_claimAutoreleasedReturnValue(), v12, v11))
+  if (bundleURL || ([MEMORY[0x1E69635E0] applicationProxyForCompanionIdentifier:v9], v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "bundleURL"), bundleURL = objc_claimAutoreleasedReturnValue(), v12, bundleURL))
   {
-    v13 = [objc_alloc(MEMORY[0x1E696AAE8]) initWithURL:v11];
+    v13 = [objc_alloc(MEMORY[0x1E696AAE8]) initWithURL:bundleURL];
     if (v13)
     {
-      if ([v5 isEqualToString:v9])
+      if ([bundleIdentifier isEqualToString:v9])
       {
         v14 = v13;
       }
 
       else
       {
-        v15 = [objc_opt_class() _researchStudiesDirectoryURL];
-        v16 = [MEMORY[0x1E696AAE8] hk_findContainedBundleWithIdentifier:v5 directoryURL:v15];
-        if (v16 || ([v13 hk_findContainedBundleWithIdentifier:v5], (v16 = objc_claimAutoreleasedReturnValue()) != 0))
+        _researchStudiesDirectoryURL = [objc_opt_class() _researchStudiesDirectoryURL];
+        v16 = [MEMORY[0x1E696AAE8] hk_findContainedBundleWithIdentifier:bundleIdentifier directoryURL:_researchStudiesDirectoryURL];
+        if (v16 || ([v13 hk_findContainedBundleWithIdentifier:bundleIdentifier], (v16 = objc_claimAutoreleasedReturnValue()) != 0))
         {
           v14 = v16;
         }
@@ -698,8 +698,8 @@ LABEL_10:
         else
         {
           v18 = MEMORY[0x1E696ABC0];
-          v19 = [v15 path];
-          [v18 hk_assignError:a3 code:100 format:{@"Failed to find bundle with identifier %@ in directory %@ or in application bundle %@", v5, v19, v13}];
+          path = [_researchStudiesDirectoryURL path];
+          [v18 hk_assignError:error code:100 format:{@"Failed to find bundle with identifier %@ in directory %@ or in application bundle %@", bundleIdentifier, path, v13}];
 
           v14 = 0;
         }
@@ -708,14 +708,14 @@ LABEL_10:
 
     else
     {
-      [MEMORY[0x1E696ABC0] hk_assignError:a3 code:100 format:{@"Unable to instantiate app bundle at URL %@ for source %@", v11, self}];
+      [MEMORY[0x1E696ABC0] hk_assignError:error code:100 format:{@"Unable to instantiate app bundle at URL %@ for source %@", bundleURL, self}];
       v14 = 0;
     }
   }
 
   else
   {
-    [MEMORY[0x1E696ABC0] hk_assignError:a3 code:100 format:{@"Application proxy missing bundle URL for source %@ with identifier %@", self, v9}];
+    [MEMORY[0x1E696ABC0] hk_assignError:error code:100 format:{@"Application proxy missing bundle URL for source %@ with identifier %@", self, v9}];
     v14 = 0;
   }
 
@@ -732,22 +732,22 @@ LABEL_10:
   return 0;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (v4 == self)
+    if (equalCopy == self)
     {
       v7 = 1;
     }
 
     else
     {
-      v5 = [(HKSource *)v4 bundleIdentifier];
-      v6 = [(HKSource *)self bundleIdentifier];
-      v7 = [v5 isEqualToString:v6];
+      bundleIdentifier = [(HKSource *)equalCopy bundleIdentifier];
+      bundleIdentifier2 = [(HKSource *)self bundleIdentifier];
+      v7 = [bundleIdentifier isEqualToString:bundleIdentifier2];
     }
   }
 
@@ -759,33 +759,33 @@ LABEL_10:
   return v7;
 }
 
-- (HKSource)initWithCoder:(id)a3
+- (HKSource)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = HKSource;
   v5 = [(HKSource *)&v17 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
     bundleIdentifier = v5->_bundleIdentifier;
     v5->_bundleIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
     name = v5->_name;
     v5->_name = v8;
 
-    v5->_localDevice = [v4 decodeBoolForKey:@"localDevice"];
-    v5->_options = [v4 decodeInt64ForKey:@"sourceOptions"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"productType"];
+    v5->_localDevice = [coderCopy decodeBoolForKey:@"localDevice"];
+    v5->_options = [coderCopy decodeInt64ForKey:@"sourceOptions"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"productType"];
     productType = v5->_productType;
     v5->_productType = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"owningApp"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"owningApp"];
     owningAppBundleIdentifier = v5->_owningAppBundleIdentifier;
     v5->_owningAppBundleIdentifier = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"modificationDate"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"modificationDate"];
     modificationDate = v5->_modificationDate;
     v5->_modificationDate = v14;
   }
@@ -793,31 +793,31 @@ LABEL_10:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   bundleIdentifier = self->_bundleIdentifier;
-  v5 = a3;
-  [v5 encodeObject:bundleIdentifier forKey:@"bundleIdentifier"];
-  [v5 encodeObject:self->_name forKey:@"name"];
-  [v5 encodeBool:self->_localDevice forKey:@"localDevice"];
-  [v5 encodeInt64:self->_options forKey:@"sourceOptions"];
-  [v5 encodeObject:self->_productType forKey:@"productType"];
-  [v5 encodeObject:self->_owningAppBundleIdentifier forKey:@"owningApp"];
-  [v5 encodeObject:self->_modificationDate forKey:@"modificationDate"];
+  coderCopy = coder;
+  [coderCopy encodeObject:bundleIdentifier forKey:@"bundleIdentifier"];
+  [coderCopy encodeObject:self->_name forKey:@"name"];
+  [coderCopy encodeBool:self->_localDevice forKey:@"localDevice"];
+  [coderCopy encodeInt64:self->_options forKey:@"sourceOptions"];
+  [coderCopy encodeObject:self->_productType forKey:@"productType"];
+  [coderCopy encodeObject:self->_owningAppBundleIdentifier forKey:@"owningApp"];
+  [coderCopy encodeObject:self->_modificationDate forKey:@"modificationDate"];
 }
 
-- (void)_setName:(id)a3
+- (void)_setName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   name = self->_name;
   self->_name = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)_setBundleIdentifier:(id)a3
+- (void)_setBundleIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   bundleIdentifier = self->_bundleIdentifier;
   self->_bundleIdentifier = v4;
 
@@ -836,9 +836,9 @@ LABEL_10:
   return [(NSString *)bundleIdentifier isEqualToString:@"com.apple.private.health.localdevice"];
 }
 
-- (void)_setModificationDate:(id)a3
+- (void)_setModificationDate:(id)date
 {
-  v4 = [a3 copy];
+  v4 = [date copy];
   modificationDate = self->_modificationDate;
   self->_modificationDate = v4;
 
@@ -848,11 +848,11 @@ LABEL_10:
 - (id)asJSONObject
 {
   v3 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:2];
-  v4 = [(HKSource *)self name];
-  [v3 setObject:v4 forKeyedSubscript:@"name"];
+  name = [(HKSource *)self name];
+  [v3 setObject:name forKeyedSubscript:@"name"];
 
-  v5 = [(HKSource *)self bundleIdentifier];
-  [v3 setObject:v5 forKeyedSubscript:@"bundleIdentifier"];
+  bundleIdentifier = [(HKSource *)self bundleIdentifier];
+  [v3 setObject:bundleIdentifier forKeyedSubscript:@"bundleIdentifier"];
 
   return v3;
 }
@@ -861,7 +861,7 @@ LABEL_10:
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = 138543362;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_19197B000, a2, OS_LOG_TYPE_ERROR, "unable to create default source, cannot retrieve entitlements for the current task: %{public}@", &v3, 0xCu);
   v2 = *MEMORY[0x1E69E9840];
 }

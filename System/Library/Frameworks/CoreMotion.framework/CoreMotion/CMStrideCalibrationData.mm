@@ -1,46 +1,46 @@
 @interface CMStrideCalibrationData
-- (CMStrideCalibrationData)initWithBegin:(double)a3 end:(double)a4 state:(int64_t)a5 kValue:(double)a6;
-- (CMStrideCalibrationData)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CMStrideCalibrationData)initWithBegin:(double)begin end:(double)end state:(int64_t)state kValue:(double)value;
+- (CMStrideCalibrationData)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CMStrideCalibrationData
 
-- (CMStrideCalibrationData)initWithCoder:(id)a3
+- (CMStrideCalibrationData)initWithCoder:(id)coder
 {
   v13.receiver = self;
   v13.super_class = CMStrideCalibrationData;
   v5 = [(CMStrideCalibrationData *)&v13 init];
   if (v5)
   {
-    objc_msgSend_decodeDoubleForKey_(a3, v4, @"kCMStrideCalibrationDataCodingKeyBegin");
+    objc_msgSend_decodeDoubleForKey_(coder, v4, @"kCMStrideCalibrationDataCodingKeyBegin");
     v5->_begin = v6;
-    objc_msgSend_decodeDoubleForKey_(a3, v7, @"kCMStrideCalibrationDataCodingKeyEnd");
+    objc_msgSend_decodeDoubleForKey_(coder, v7, @"kCMStrideCalibrationDataCodingKeyEnd");
     v5->_end = v8;
-    v5->_state = objc_msgSend_decodeIntegerForKey_(a3, v9, @"kCMStrideCalibrationDataCodingKeyState");
-    objc_msgSend_decodeDoubleForKey_(a3, v10, @"kCMStrideCalibrationDataCodingKeyKValue");
+    v5->_state = objc_msgSend_decodeIntegerForKey_(coder, v9, @"kCMStrideCalibrationDataCodingKeyState");
+    objc_msgSend_decodeDoubleForKey_(coder, v10, @"kCMStrideCalibrationDataCodingKeyKValue");
     v5->_kValue = v11;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  objc_msgSend_encodeDouble_forKey_(a3, a2, @"kCMStrideCalibrationDataCodingKeyBegin", self->_begin);
-  objc_msgSend_encodeDouble_forKey_(a3, v5, @"kCMStrideCalibrationDataCodingKeyEnd", self->_end);
-  objc_msgSend_encodeInteger_forKey_(a3, v6, self->_state, @"kCMStrideCalibrationDataCodingKeyState");
+  objc_msgSend_encodeDouble_forKey_(coder, a2, @"kCMStrideCalibrationDataCodingKeyBegin", self->_begin);
+  objc_msgSend_encodeDouble_forKey_(coder, v5, @"kCMStrideCalibrationDataCodingKeyEnd", self->_end);
+  objc_msgSend_encodeInteger_forKey_(coder, v6, self->_state, @"kCMStrideCalibrationDataCodingKeyState");
   kValue = self->_kValue;
 
-  objc_msgSend_encodeDouble_forKey_(a3, v7, @"kCMStrideCalibrationDataCodingKeyKValue", kValue);
+  objc_msgSend_encodeDouble_forKey_(coder, v7, @"kCMStrideCalibrationDataCodingKeyKValue", kValue);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   result = objc_msgSend_init(v7, v8, v9);
   *(result + 3) = *&self->_begin;
   *(result + 4) = *&self->_end;
@@ -49,17 +49,17 @@
   return result;
 }
 
-- (CMStrideCalibrationData)initWithBegin:(double)a3 end:(double)a4 state:(int64_t)a5 kValue:(double)a6
+- (CMStrideCalibrationData)initWithBegin:(double)begin end:(double)end state:(int64_t)state kValue:(double)value
 {
   v11.receiver = self;
   v11.super_class = CMStrideCalibrationData;
   result = [(CMStrideCalibrationData *)&v11 init];
   if (result)
   {
-    result->_begin = a3;
-    result->_end = a4;
-    result->_state = a5;
-    result->_kValue = a6;
+    result->_begin = begin;
+    result->_end = end;
+    result->_state = state;
+    result->_kValue = value;
   }
 
   return result;

@@ -1,7 +1,7 @@
 @interface QLPreviewReplyAttachment
-- (QLPreviewReplyAttachment)initWithCoder:(id)a3;
+- (QLPreviewReplyAttachment)initWithCoder:(id)coder;
 - (QLPreviewReplyAttachment)initWithData:(NSData *)data contentType:(UTType *)contentType;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation QLPreviewReplyAttachment
@@ -23,28 +23,28 @@
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(QLPreviewReplyAttachment *)self data];
-  [v4 encodeObject:v5 forKey:@"data"];
+  coderCopy = coder;
+  data = [(QLPreviewReplyAttachment *)self data];
+  [coderCopy encodeObject:data forKey:@"data"];
 
-  v6 = [(QLPreviewReplyAttachment *)self contentType];
-  [v4 encodeObject:v6 forKey:@"contentType"];
+  contentType = [(QLPreviewReplyAttachment *)self contentType];
+  [coderCopy encodeObject:contentType forKey:@"contentType"];
 }
 
-- (QLPreviewReplyAttachment)initWithCoder:(id)a3
+- (QLPreviewReplyAttachment)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = QLPreviewReplyAttachment;
   v5 = [(QLPreviewReplyAttachment *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"data"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"data"];
     [(QLPreviewReplyAttachment *)v5 setData:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"contentType"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"contentType"];
     [(QLPreviewReplyAttachment *)v5 setContentType:v7];
   }
 

@@ -1,11 +1,11 @@
 @interface DelayedInvocationTrampoline
-- (DelayedInvocationTrampoline)initWithTarget:(id)a3 delay:(double)a4;
-- (void)forwardInvocation:(id)a3;
+- (DelayedInvocationTrampoline)initWithTarget:(id)target delay:(double)delay;
+- (void)forwardInvocation:(id)invocation;
 @end
 
 @implementation DelayedInvocationTrampoline
 
-- (DelayedInvocationTrampoline)initWithTarget:(id)a3 delay:(double)a4
+- (DelayedInvocationTrampoline)initWithTarget:(id)target delay:(double)delay
 {
   v9.receiver = self;
   v9.super_class = DelayedInvocationTrampoline;
@@ -13,19 +13,19 @@
   v7 = v6;
   if (v6)
   {
-    [(InvocationTrampoline *)v6 setTarget:a3];
-    v7->_delay = a4;
+    [(InvocationTrampoline *)v6 setTarget:target];
+    v7->_delay = delay;
   }
 
   return v7;
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
-  [a3 retainArguments];
+  [invocation retainArguments];
   delay = self->_delay;
 
-  [(DelayedInvocationTrampoline *)self performSelector:sel_performInvocation_ withObject:a3 afterDelay:delay];
+  [(DelayedInvocationTrampoline *)self performSelector:sel_performInvocation_ withObject:invocation afterDelay:delay];
 }
 
 @end

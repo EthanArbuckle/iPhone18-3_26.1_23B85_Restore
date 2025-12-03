@@ -1,5 +1,5 @@
 @interface GAXStyleProvider
-+ (GAXStyleProvider)allocWithZone:(_NSZone *)a3;
++ (GAXStyleProvider)allocWithZone:(_NSZone *)zone;
 - (BOOL)reduceTransparencyAndGraphics;
 - (BOOL)workspaceInstructionsLabelShouldBeDisplayed;
 - (CGSize)appFeatureViewIconSize;
@@ -8,7 +8,7 @@
 - (NSBundle)bundle;
 - (NSDictionary)workspaceNavigationBarButtonTextAttributes;
 - (UIEdgeInsets)featureViewFrameEdgeInsets;
-- (UIEdgeInsets)hostedApplicationScaledFrameEdgeInsetsForInterfaceOrientation:(int64_t)a3;
+- (UIEdgeInsets)hostedApplicationScaledFrameEdgeInsetsForInterfaceOrientation:(int64_t)orientation;
 - (UIEdgeInsets)workspaceInstructionsLabelEdgeInsets;
 - (UIFont)featureViewOptionsButtonFont;
 - (UIFont)featureViewTextFont;
@@ -22,27 +22,27 @@
 - (UIOffset)featureViewOptionsButtonOffset;
 - (UIOffset)featureViewToggleOffset;
 - (UIOffset)optionsFeatureViewTextOffset;
-- (double)_scaledFontSizeFromValue:(double)a3 maximum:(double)a4;
+- (double)_scaledFontSizeFromValue:(double)value maximum:(double)maximum;
 - (double)featureViewMinimumHeight;
 - (double)optionsButtonBottomPadding;
-- (id)_boldLabelFontWithSize:(double)a3 scale:(BOOL)a4;
-- (id)_cachedIconWithName:(id)a3 forPropertyWithSelector:(SEL)a4;
-- (id)_cachedIconWithName:(id)a3 inBundle:(id)a4 withSize:(CGSize)a5 forPropertyWithSelector:(SEL)a6;
-- (id)_cachedImageWithName:(id)a3 forPropertyWithSelector:(SEL)a4;
-- (id)_cachedStyleObjectForPropertyWithSelector:(SEL)a3;
-- (id)_lightLabelFontWithSize:(double)a3;
-- (id)_mediumLabelFontWithSize:(double)a3;
-- (id)_regularLabelFontWithSize:(double)a3;
-- (void)_didReceiveMemoryWarning:(id)a3;
-- (void)_setCachedStyleObject:(id)a3 forPropertyWithSelector:(SEL)a4;
+- (id)_boldLabelFontWithSize:(double)size scale:(BOOL)scale;
+- (id)_cachedIconWithName:(id)name forPropertyWithSelector:(SEL)selector;
+- (id)_cachedIconWithName:(id)name inBundle:(id)bundle withSize:(CGSize)size forPropertyWithSelector:(SEL)selector;
+- (id)_cachedImageWithName:(id)name forPropertyWithSelector:(SEL)selector;
+- (id)_cachedStyleObjectForPropertyWithSelector:(SEL)selector;
+- (id)_lightLabelFontWithSize:(double)size;
+- (id)_mediumLabelFontWithSize:(double)size;
+- (id)_regularLabelFontWithSize:(double)size;
+- (void)_didReceiveMemoryWarning:(id)warning;
+- (void)_setCachedStyleObject:(id)object forPropertyWithSelector:(SEL)selector;
 - (void)dealloc;
 @end
 
 @implementation GAXStyleProvider
 
-+ (GAXStyleProvider)allocWithZone:(_NSZone *)a3
++ (GAXStyleProvider)allocWithZone:(_NSZone *)zone
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     if (!GAXUserInterfaceIdiomIsPad())
     {
@@ -51,14 +51,14 @@
 
     v6 = objc_opt_class();
 
-    return [v6 allocWithZone:a3];
+    return [v6 allocWithZone:zone];
   }
 
   else
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___GAXStyleProvider;
-    return objc_msgSendSuper2(&v7, "allocWithZone:", a3);
+    return objc_msgSendSuper2(&v7, "allocWithZone:", zone);
   }
 }
 
@@ -101,15 +101,15 @@
   return bundle;
 }
 
-- (id)_cachedStyleObjectForPropertyWithSelector:(SEL)a3
+- (id)_cachedStyleObjectForPropertyWithSelector:(SEL)selector
 {
-  if (a3)
+  if (selector)
   {
-    v4 = NSStringFromSelector(a3);
+    v4 = NSStringFromSelector(selector);
     if (v4)
     {
-      v5 = [(GAXStyleProvider *)self cachedStyleProperties];
-      v6 = [v5 objectForKey:v4];
+      cachedStyleProperties = [(GAXStyleProvider *)self cachedStyleProperties];
+      v6 = [cachedStyleProperties objectForKey:v4];
     }
 
     else
@@ -126,41 +126,41 @@
   return v6;
 }
 
-- (void)_setCachedStyleObject:(id)a3 forPropertyWithSelector:(SEL)a4
+- (void)_setCachedStyleObject:(id)object forPropertyWithSelector:(SEL)selector
 {
-  v6 = a3;
-  if (v6 && a4)
+  objectCopy = object;
+  if (objectCopy && selector)
   {
-    v9 = v6;
-    v7 = NSStringFromSelector(a4);
+    v9 = objectCopy;
+    v7 = NSStringFromSelector(selector);
     if (v7)
     {
-      v8 = [(GAXStyleProvider *)self cachedStyleProperties];
-      if (!v8)
+      cachedStyleProperties = [(GAXStyleProvider *)self cachedStyleProperties];
+      if (!cachedStyleProperties)
       {
-        v8 = objc_opt_new();
-        [(GAXStyleProvider *)self setCachedStyleProperties:v8];
+        cachedStyleProperties = objc_opt_new();
+        [(GAXStyleProvider *)self setCachedStyleProperties:cachedStyleProperties];
       }
 
-      [v8 setObject:v9 forKey:v7];
+      [cachedStyleProperties setObject:v9 forKey:v7];
     }
 
-    v6 = v9;
+    objectCopy = v9;
   }
 }
 
-- (id)_cachedImageWithName:(id)a3 forPropertyWithSelector:(SEL)a4
+- (id)_cachedImageWithName:(id)name forPropertyWithSelector:(SEL)selector
 {
-  v6 = a3;
-  v7 = [(GAXStyleProvider *)self _cachedStyleObjectForPropertyWithSelector:a4];
+  nameCopy = name;
+  v7 = [(GAXStyleProvider *)self _cachedStyleObjectForPropertyWithSelector:selector];
   if (!v7)
   {
-    if ([v6 length])
+    if ([nameCopy length])
     {
-      v8 = [(GAXStyleProvider *)self bundle];
-      v7 = [UIImage imageNamed:v6 inBundle:v8];
+      bundle = [(GAXStyleProvider *)self bundle];
+      v7 = [UIImage imageNamed:nameCopy inBundle:bundle];
 
-      [(GAXStyleProvider *)self _setCachedStyleObject:v7 forPropertyWithSelector:a4];
+      [(GAXStyleProvider *)self _setCachedStyleObject:v7 forPropertyWithSelector:selector];
     }
 
     else
@@ -172,27 +172,27 @@
   return v7;
 }
 
-- (id)_cachedIconWithName:(id)a3 forPropertyWithSelector:(SEL)a4
+- (id)_cachedIconWithName:(id)name forPropertyWithSelector:(SEL)selector
 {
-  v6 = a3;
-  v7 = [(GAXStyleProvider *)self bundle];
-  v8 = [(GAXStyleProvider *)self _cachedIconWithName:v6 inBundle:v7 forPropertyWithSelector:a4];
+  nameCopy = name;
+  bundle = [(GAXStyleProvider *)self bundle];
+  v8 = [(GAXStyleProvider *)self _cachedIconWithName:nameCopy inBundle:bundle forPropertyWithSelector:selector];
 
   return v8;
 }
 
-- (id)_cachedIconWithName:(id)a3 inBundle:(id)a4 withSize:(CGSize)a5 forPropertyWithSelector:(SEL)a6
+- (id)_cachedIconWithName:(id)name inBundle:(id)bundle withSize:(CGSize)size forPropertyWithSelector:(SEL)selector
 {
-  height = a5.height;
-  width = a5.width;
-  v11 = a3;
-  v12 = a4;
-  v13 = [(GAXStyleProvider *)self _cachedStyleObjectForPropertyWithSelector:a6];
+  height = size.height;
+  width = size.width;
+  nameCopy = name;
+  bundleCopy = bundle;
+  v13 = [(GAXStyleProvider *)self _cachedStyleObjectForPropertyWithSelector:selector];
   if (!v13)
   {
-    if ([v11 length])
+    if ([nameCopy length])
     {
-      v14 = [UIImage imageNamed:v11 inBundle:v12];
+      v14 = [UIImage imageNamed:nameCopy inBundle:bundleCopy];
       v15 = v14;
       if (width != CGSizeZero.width || height != CGSizeZero.height)
       {
@@ -201,10 +201,10 @@
         v15 = v17;
       }
 
-      v18 = [(GAXStyleProvider *)self featureViewIconColor];
-      v13 = [v15 flattenedImageWithColor:v18];
+      featureViewIconColor = [(GAXStyleProvider *)self featureViewIconColor];
+      v13 = [v15 flattenedImageWithColor:featureViewIconColor];
 
-      [(GAXStyleProvider *)self _setCachedStyleObject:v13 forPropertyWithSelector:a6];
+      [(GAXStyleProvider *)self _setCachedStyleObject:v13 forPropertyWithSelector:selector];
     }
 
     else
@@ -216,47 +216,47 @@
   return v13;
 }
 
-- (double)_scaledFontSizeFromValue:(double)a3 maximum:(double)a4
+- (double)_scaledFontSizeFromValue:(double)value maximum:(double)maximum
 {
   v6 = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
-  [v6 _scaledValueForValue:a3];
-  v8 = fmin(a4, v7);
+  [v6 _scaledValueForValue:value];
+  v8 = fmin(maximum, v7);
 
   return v8;
 }
 
-- (id)_boldLabelFontWithSize:(double)a3 scale:(BOOL)a4
+- (id)_boldLabelFontWithSize:(double)size scale:(BOOL)scale
 {
-  if (a4)
+  if (scale)
   {
-    [(GAXStyleProvider *)self _scaledFontSizeFromValue:a3 maximum:1.79769313e308];
+    [(GAXStyleProvider *)self _scaledFontSizeFromValue:size maximum:1.79769313e308];
   }
 
-  return [UIFont boldSystemFontOfSize:a3];
+  return [UIFont boldSystemFontOfSize:size];
 }
 
-- (id)_mediumLabelFontWithSize:(double)a3
+- (id)_mediumLabelFontWithSize:(double)size
 {
-  [(GAXStyleProvider *)self _scaledFontSizeFromValue:a3 maximum:1.79769313e308];
+  [(GAXStyleProvider *)self _scaledFontSizeFromValue:size maximum:1.79769313e308];
 
   return [UIFont boldSystemFontOfSize:?];
 }
 
-- (id)_regularLabelFontWithSize:(double)a3
+- (id)_regularLabelFontWithSize:(double)size
 {
-  [(GAXStyleProvider *)self _scaledFontSizeFromValue:a3 maximum:1.79769313e308];
+  [(GAXStyleProvider *)self _scaledFontSizeFromValue:size maximum:1.79769313e308];
 
   return [UIFont systemFontOfSize:?];
 }
 
-- (id)_lightLabelFontWithSize:(double)a3
+- (id)_lightLabelFontWithSize:(double)size
 {
-  [(GAXStyleProvider *)self _scaledFontSizeFromValue:a3 maximum:1.79769313e308];
+  [(GAXStyleProvider *)self _scaledFontSizeFromValue:size maximum:1.79769313e308];
 
   return [UIFont systemFontOfSize:?];
 }
 
-- (void)_didReceiveMemoryWarning:(id)a3
+- (void)_didReceiveMemoryWarning:(id)warning
 {
   [(GAXStyleProvider *)self setCachedStyleProperties:0];
 
@@ -448,7 +448,7 @@
   return 0;
 }
 
-- (UIEdgeInsets)hostedApplicationScaledFrameEdgeInsetsForInterfaceOrientation:(int64_t)a3
+- (UIEdgeInsets)hostedApplicationScaledFrameEdgeInsetsForInterfaceOrientation:(int64_t)orientation
 {
   sub_C4C4();
   objc_opt_class();

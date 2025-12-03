@@ -4,7 +4,7 @@
 - (CGPoint)topPoint;
 - (CGRect)boundingEdgeRect;
 - (CGRect)boundingRect;
-- (id)bezierPathForHostView:(id)a3 targetView:(id)a4;
+- (id)bezierPathForHostView:(id)view targetView:(id)targetView;
 - (id)description;
 - (id)summaryDescription;
 @end
@@ -113,17 +113,17 @@
   return [v3 stringWithFormat:@"top    : %.2f %.2f \nbottom   : %.2f %.2f \nlineWidth %.1f", v5, v7, v9, v11, v12];
 }
 
-- (id)bezierPathForHostView:(id)a3 targetView:(id)a4
+- (id)bezierPathForHostView:(id)view targetView:(id)targetView
 {
-  v6 = a4;
-  v7 = a3;
+  targetViewCopy = targetView;
+  viewCopy = view;
   v8 = objc_alloc_init(UIBezierPath);
   [(UISelectionGrabberCustomPath *)self bottomPoint];
-  [v7 convertPoint:v6 toView:?];
+  [viewCopy convertPoint:targetViewCopy toView:?];
   v10 = v9;
   v12 = v11;
   [(UISelectionGrabberCustomPath *)self topPoint];
-  [v7 convertPoint:v6 toView:?];
+  [viewCopy convertPoint:targetViewCopy toView:?];
   v14 = v13;
   v16 = v15;
 

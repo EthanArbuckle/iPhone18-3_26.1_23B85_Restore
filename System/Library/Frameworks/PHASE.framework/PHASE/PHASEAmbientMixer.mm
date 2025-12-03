@@ -1,8 +1,8 @@
 @interface PHASEAmbientMixer
 - (PHASEAmbientMixer)init;
-- (PHASEAmbientMixer)initWithIdentifier:(uint64_t)a3 listener:(void *)a4 inputChannelLayout:(void *)a5 orientation:(void *)a6 engine:(void *)a7 actionTreeObjectId:(unint64_t)a8;
+- (PHASEAmbientMixer)initWithIdentifier:(uint64_t)identifier listener:(void *)listener inputChannelLayout:(void *)layout orientation:(void *)orientation engine:(void *)engine actionTreeObjectId:(unint64_t)id;
 - (void)setOrientation:;
-- (void)setOrientation:(uint64_t)a1;
+- (void)setOrientation:(uint64_t)orientation;
 @end
 
 @implementation PHASEAmbientMixer
@@ -14,24 +14,24 @@
   return 0;
 }
 
-- (PHASEAmbientMixer)initWithIdentifier:(uint64_t)a3 listener:(void *)a4 inputChannelLayout:(void *)a5 orientation:(void *)a6 engine:(void *)a7 actionTreeObjectId:(unint64_t)a8
+- (PHASEAmbientMixer)initWithIdentifier:(uint64_t)identifier listener:(void *)listener inputChannelLayout:(void *)layout orientation:(void *)orientation engine:(void *)engine actionTreeObjectId:(unint64_t)id
 {
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v25.receiver = a1;
+  listenerCopy = listener;
+  layoutCopy = layout;
+  orientationCopy = orientation;
+  engineCopy = engine;
+  v25.receiver = self;
   v25.super_class = PHASEAmbientMixer;
-  v19 = [(PHASEMixer *)&v25 initWithIdentifier:v15];
+  v19 = [(PHASEMixer *)&v25 initWithIdentifier:listenerCopy];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_listener, a5);
-    objc_storeStrong(&v20->_inputChannelLayout, a6);
+    objc_storeStrong(&v19->_listener, layout);
+    objc_storeStrong(&v20->_inputChannelLayout, orientation);
     *&v20[1].super.super.isa = a2;
-    v20->_actionTreeManager = Phase::Controller::TaskManager::GetService<Phase::ActionTreeManager>(([v18 implementation] + 48), 7);
-    v20->_submixHashName = Phase::GetStringHashId(v15, v21);
-    v20->_actionTreeObjectId.mStorage[0] = a8;
+    v20->_actionTreeManager = Phase::Controller::TaskManager::GetService<Phase::ActionTreeManager>(([engineCopy implementation] + 48), 7);
+    v20->_submixHashName = Phase::GetStringHashId(listenerCopy, v21);
+    v20->_actionTreeObjectId.mStorage[0] = id;
     v20->_actionTreeObjectId.mStorage[1] = a9;
     v22 = v20;
   }
@@ -39,7 +39,7 @@
   return v20;
 }
 
-- (void)setOrientation:(uint64_t)a1
+- (void)setOrientation:(uint64_t)orientation
 {
   v31 = *MEMORY[0x277D85DE8];
   v2 = a2.f32[1];
@@ -53,10 +53,10 @@
 
   if (v5 <= 0.1)
   {
-    *(a1 + 96) = a2;
-    v7 = *(a1 + 48);
-    v8 = *(a1 + 72);
-    v18 = *(a1 + 56);
+    *(orientation + 96) = a2;
+    v7 = *(orientation + 48);
+    v8 = *(orientation + 72);
+    v18 = *(orientation + 56);
     v9 = **(v7 + 8);
     v17 = 0;
     v16 = 1;
@@ -107,7 +107,7 @@
 
   else
   {
-    v6 = **(Phase::Logger::GetInstance(a1) + 448);
+    v6 = **(Phase::Logger::GetInstance(orientation) + 448);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
       *buf = 136316418;
@@ -129,11 +129,11 @@
 
 - (void)setOrientation:
 {
-  v2 = *(a1 + 16);
-  v1 = *(a1 + 24);
-  v3 = *(a1 + 32);
-  v4 = *(a1 + 40);
-  v6 = *(a1 + 48);
+  v2 = *(self + 16);
+  v1 = *(self + 24);
+  v3 = *(self + 32);
+  v4 = *(self + 40);
+  v6 = *(self + 48);
   return Phase::ActionTreeManager::SetAmbientOrientation(v2, v1, v3, v4, &v6);
 }
 

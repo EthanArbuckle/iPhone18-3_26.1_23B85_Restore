@@ -1,35 +1,35 @@
 @interface SXDebugComponentViewFactory
-- (SXDebugComponentViewFactory)initWithDOMObjectProvider:(id)a3 viewport:(id)a4 presentationDelegateProvider:(id)a5 componentStyleRendererFactory:(id)a6 invalidator:(id)a7;
-- (id)componentViewForComponent:(id)a3;
+- (SXDebugComponentViewFactory)initWithDOMObjectProvider:(id)provider viewport:(id)viewport presentationDelegateProvider:(id)delegateProvider componentStyleRendererFactory:(id)factory invalidator:(id)invalidator;
+- (id)componentViewForComponent:(id)component;
 @end
 
 @implementation SXDebugComponentViewFactory
 
-- (SXDebugComponentViewFactory)initWithDOMObjectProvider:(id)a3 viewport:(id)a4 presentationDelegateProvider:(id)a5 componentStyleRendererFactory:(id)a6 invalidator:(id)a7
+- (SXDebugComponentViewFactory)initWithDOMObjectProvider:(id)provider viewport:(id)viewport presentationDelegateProvider:(id)delegateProvider componentStyleRendererFactory:(id)factory invalidator:(id)invalidator
 {
-  v13 = a7;
+  invalidatorCopy = invalidator;
   v17.receiver = self;
   v17.super_class = SXDebugComponentViewFactory;
-  v14 = [(SXComponentViewFactory *)&v17 initWithDOMObjectProvider:a3 viewport:a4 presentationDelegateProvider:a5 componentStyleRendererFactory:a6];
+  v14 = [(SXComponentViewFactory *)&v17 initWithDOMObjectProvider:provider viewport:viewport presentationDelegateProvider:delegateProvider componentStyleRendererFactory:factory];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_invalidator, a7);
+    objc_storeStrong(&v14->_invalidator, invalidator);
   }
 
   return v15;
 }
 
-- (id)componentViewForComponent:(id)a3
+- (id)componentViewForComponent:(id)component
 {
   v4 = [SXDebugComponentView alloc];
-  v5 = [(SXComponentViewFactory *)self DOMObjectProvider];
-  v6 = [(SXComponentViewFactory *)self viewport];
-  v7 = [(SXComponentViewFactory *)self presentationDelegateProvider];
-  v8 = [v7 presentationDelegate];
-  v9 = [(SXComponentViewFactory *)self componentStyleRendererFactory];
-  v10 = [(SXDebugComponentViewFactory *)self invalidator];
-  v11 = [(SXDebugComponentView *)v4 initWithDOMObjectProvider:v5 viewport:v6 presentationDelegate:v8 componentStyleRendererFactory:v9 invalidator:v10];
+  dOMObjectProvider = [(SXComponentViewFactory *)self DOMObjectProvider];
+  viewport = [(SXComponentViewFactory *)self viewport];
+  presentationDelegateProvider = [(SXComponentViewFactory *)self presentationDelegateProvider];
+  presentationDelegate = [presentationDelegateProvider presentationDelegate];
+  componentStyleRendererFactory = [(SXComponentViewFactory *)self componentStyleRendererFactory];
+  invalidator = [(SXDebugComponentViewFactory *)self invalidator];
+  v11 = [(SXDebugComponentView *)v4 initWithDOMObjectProvider:dOMObjectProvider viewport:viewport presentationDelegate:presentationDelegate componentStyleRendererFactory:componentStyleRendererFactory invalidator:invalidator];
 
   return v11;
 }

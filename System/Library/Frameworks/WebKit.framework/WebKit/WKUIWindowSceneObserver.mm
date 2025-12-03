@@ -1,11 +1,11 @@
 @interface WKUIWindowSceneObserver
-- (WKUIWindowSceneObserver)initWithParent:(void *)a3;
+- (WKUIWindowSceneObserver)initWithParent:(void *)parent;
 - (id).cxx_construct;
-- (uint64_t)observeValueForKeyPath:(WTF *)this ofObject:(void *)a2 change:context:;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)observeValueForKeyPath:(uint64_t)a1 ofObject:change:context:;
-- (void)observeValueForKeyPath:(void *)a1 ofObject:change:context:;
-- (void)setObservedWindow:(id)a3;
+- (uint64_t)observeValueForKeyPath:(WTF *)this ofObject:(void *)object change:context:;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)observeValueForKeyPath:(uint64_t)path ofObject:change:context:;
+- (void)observeValueForKeyPath:(void *)path ofObject:change:context:;
+- (void)setObservedWindow:(id)window;
 @end
 
 @implementation WKUIWindowSceneObserver
@@ -17,16 +17,16 @@
   return self;
 }
 
-- (WKUIWindowSceneObserver)initWithParent:(void *)a3
+- (WKUIWindowSceneObserver)initWithParent:(void *)parent
 {
   v9.receiver = self;
   v9.super_class = WKUIWindowSceneObserver;
   v4 = [(WKUIWindowSceneObserver *)&v9 init];
   if (v4)
   {
-    WTF::WeakPtrFactory<WebPushD::PushServiceConnection,WTF::DefaultWeakPtrImpl>::initializeIfNeeded(a3, a3);
-    v6 = *a3;
-    atomic_fetch_add(*a3, 1u);
+    WTF::WeakPtrFactory<WebPushD::PushServiceConnection,WTF::DefaultWeakPtrImpl>::initializeIfNeeded(parent, parent);
+    v6 = *parent;
+    atomic_fetch_add(*parent, 1u);
     m_ptr = v4->_parent.m_impl.m_ptr;
     v4->_parent.m_impl.m_ptr = v6;
     if (m_ptr)
@@ -42,27 +42,27 @@
   return v4;
 }
 
-- (void)setObservedWindow:(id)a3
+- (void)setObservedWindow:(id)window
 {
   if (WTF::linkedOnOrAfterSDKWithBehavior())
   {
-    if (a3)
+    if (window)
     {
-      v4 = a3;
+      windowCopy = window;
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_window.m_weakReference);
-    if (WeakRetained != a3)
+    if (WeakRetained != window)
     {
       if (WeakRetained)
       {
         [WeakRetained removeObserver:self forKeyPath:@"windowScene"];
       }
 
-      objc_storeWeak(&self->_window.m_weakReference, a3);
-      if (a3)
+      objc_storeWeak(&self->_window.m_weakReference, window);
+      if (window)
       {
-        [a3 addObserver:self forKeyPath:@"windowScene" options:1 context:WebKit::WKUIWindowSceneObserverContext];
+        [window addObserver:self forKeyPath:@"windowScene" options:1 context:WebKit::WKUIWindowSceneObserverContext];
       }
     }
 
@@ -70,31 +70,31 @@
     {
     }
 
-    if (a3)
+    if (window)
     {
     }
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (WebKit::WKUIWindowSceneObserverContext == a6)
+  if (WebKit::WKUIWindowSceneObserverContext == context)
   {
     if (self)
     {
-      v8 = self;
+      selfCopy = self;
     }
 
-    if (a5)
+    if (change)
     {
-      v9 = a5;
+      changeCopy = change;
     }
 
     v10 = WTF::fastMalloc(0x20);
     *v10 = &unk_1F10F3258;
     v10[1] = self;
     v10[2] = self;
-    v10[3] = a5;
+    v10[3] = change;
     v11 = v10;
     WTF::ensureOnMainThread();
     if (v11)
@@ -104,25 +104,25 @@
   }
 }
 
-- (void)observeValueForKeyPath:(void *)a1 ofObject:change:context:
+- (void)observeValueForKeyPath:(void *)path ofObject:change:context:
 {
-  *a1 = &unk_1F10F3258;
-  v2 = a1[3];
-  a1[3] = 0;
+  *path = &unk_1F10F3258;
+  v2 = path[3];
+  path[3] = 0;
   if (v2)
   {
   }
 
-  v3 = a1[2];
-  a1[2] = 0;
+  v3 = path[2];
+  path[2] = 0;
   if (v3)
   {
   }
 
-  return a1;
+  return path;
 }
 
-- (uint64_t)observeValueForKeyPath:(WTF *)this ofObject:(void *)a2 change:context:
+- (uint64_t)observeValueForKeyPath:(WTF *)this ofObject:(void *)object change:context:
 {
   *this = &unk_1F10F3258;
   v3 = *(this + 3);
@@ -137,21 +137,21 @@
   {
   }
 
-  return WTF::fastFree(this, a2);
+  return WTF::fastFree(this, object);
 }
 
-- (void)observeValueForKeyPath:(uint64_t)a1 ofObject:change:context:
+- (void)observeValueForKeyPath:(uint64_t)path ofObject:change:context:
 {
-  v1 = *(*(a1 + 8) + 8);
+  v1 = *(*(path + 8) + 8);
   if (!v1 || !*(v1 + 8))
   {
     return;
   }
 
-  v3 = [*(a1 + 24) valueForKey:*MEMORY[0x1E696A4F0]];
+  v3 = [*(path + 24) valueForKey:*MEMORY[0x1E696A4F0]];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v5 = *(*(a1 + 8) + 8);
+  v5 = *(*(path + 8) + 8);
   if ((isKindOfClass & 1) == 0)
   {
     if (v5)

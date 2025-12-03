@@ -5,11 +5,11 @@
 - (MRUserIdentity)identity;
 - (NSString)identifier;
 - (_TtC12mediaremoted32NearbySessionsPendingParticipant)init;
-- (void)setConnected:(BOOL)a3;
-- (void)setGuest:(BOOL)a3;
-- (void)setHidden:(BOOL)a3;
-- (void)setIdentifier:(id)a3;
-- (void)setIdentity:(id)a3;
+- (void)setConnected:(BOOL)connected;
+- (void)setGuest:(BOOL)guest;
+- (void)setHidden:(BOOL)hidden;
+- (void)setIdentifier:(id)identifier;
+- (void)setIdentity:(id)identity;
 @end
 
 @implementation NearbySessionsPendingParticipant
@@ -26,7 +26,7 @@
   return v5;
 }
 
-- (void)setIdentifier:(id)a3
+- (void)setIdentifier:(id)identifier
 {
   v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v6 = v5;
@@ -44,13 +44,13 @@
   return *(self + v3);
 }
 
-- (void)setIdentity:(id)a3
+- (void)setIdentity:(id)identity
 {
   v5 = OBJC_IVAR____TtC12mediaremoted32NearbySessionsPendingParticipant_identity;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
-  v7 = a3;
+  *(self + v5) = identity;
+  identityCopy = identity;
 }
 
 - (BOOL)connected
@@ -60,11 +60,11 @@
   return *(self + v3);
 }
 
-- (void)setConnected:(BOOL)a3
+- (void)setConnected:(BOOL)connected
 {
   v5 = OBJC_IVAR____TtC12mediaremoted32NearbySessionsPendingParticipant_connected;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = connected;
 }
 
 - (BOOL)guest
@@ -74,11 +74,11 @@
   return *(self + v3);
 }
 
-- (void)setGuest:(BOOL)a3
+- (void)setGuest:(BOOL)guest
 {
   v5 = OBJC_IVAR____TtC12mediaremoted32NearbySessionsPendingParticipant_guest;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = guest;
 }
 
 - (BOOL)hidden
@@ -88,11 +88,11 @@
   return *(self + v3);
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
   v5 = OBJC_IVAR____TtC12mediaremoted32NearbySessionsPendingParticipant_hidden;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = hidden;
 }
 
 - (_TtC12mediaremoted32NearbySessionsPendingParticipant)init

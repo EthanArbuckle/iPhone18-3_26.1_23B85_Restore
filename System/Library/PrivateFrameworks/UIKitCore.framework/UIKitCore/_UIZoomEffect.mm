@@ -1,34 +1,34 @@
 @interface _UIZoomEffect
-+ (id)_underlayZoomEffectWithMagnitude:(double)a3;
-+ (id)zoomEffectWithMagnitude:(double)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)_underlayZoomEffectWithMagnitude:(double)magnitude;
++ (id)zoomEffectWithMagnitude:(double)magnitude;
+- (BOOL)isEqual:(id)equal;
 - (id)_viewEntry;
 - (id)description;
-- (void)_updateEffectDescriptor:(id)a3 forEnvironment:(id)a4 usage:(int64_t)a5;
+- (void)_updateEffectDescriptor:(id)descriptor forEnvironment:(id)environment usage:(int64_t)usage;
 @end
 
 @implementation _UIZoomEffect
 
-+ (id)zoomEffectWithMagnitude:(double)a3
++ (id)zoomEffectWithMagnitude:(double)magnitude
 {
   v4 = objc_alloc_init(_UIZoomEffect);
-  v4->_zoomAmount = a3;
+  v4->_zoomAmount = magnitude;
 
   return v4;
 }
 
-+ (id)_underlayZoomEffectWithMagnitude:(double)a3
++ (id)_underlayZoomEffectWithMagnitude:(double)magnitude
 {
-  result = [a1 zoomEffectWithMagnitude:a3];
+  result = [self zoomEffectWithMagnitude:magnitude];
   *(result + 16) = 1;
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  v6 = v4 == self || v4 && [(_UIZoomEffect *)v4 isMemberOfClass:objc_opt_class()]&& self->_zoomAmount == v5->_zoomAmount && self->_isUnderlay == v5->_isUnderlay;
+  equalCopy = equal;
+  v5 = equalCopy;
+  v6 = equalCopy == self || equalCopy && [(_UIZoomEffect *)equalCopy isMemberOfClass:objc_opt_class()]&& self->_zoomAmount == v5->_zoomAmount && self->_isUnderlay == v5->_isUnderlay;
 
   return v6;
 }
@@ -47,18 +47,18 @@
   return v4;
 }
 
-- (void)_updateEffectDescriptor:(id)a3 forEnvironment:(id)a4 usage:(int64_t)a5
+- (void)_updateEffectDescriptor:(id)descriptor forEnvironment:(id)environment usage:(int64_t)usage
 {
-  v6 = a3;
-  v7 = [(_UIZoomEffect *)self _viewEntry];
+  descriptorCopy = descriptor;
+  _viewEntry = [(_UIZoomEffect *)self _viewEntry];
   if (self->_isUnderlay)
   {
-    [v6 addUnderlay:v7];
+    [descriptorCopy addUnderlay:_viewEntry];
   }
 
   else
   {
-    [v6 addViewEffect:v7];
+    [descriptorCopy addViewEffect:_viewEntry];
   }
 }
 

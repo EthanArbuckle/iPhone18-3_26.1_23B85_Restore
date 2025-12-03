@@ -1,18 +1,18 @@
 @interface ENExposureConfiguration
 - (ENExposureConfiguration)init;
-- (ENExposureConfiguration)initWithDictionary:(id)a3 error:(id *)a4;
-- (ENExposureConfiguration)initWithXPCObject:(id)a3 error:(id *)a4;
-- (double)daysSinceLastExposureLevelValueWithDays:(int64_t)a3;
-- (double)durationLevelValueWithDuration:(double)a3;
-- (double)infectiousnessWeightWithDaysSinceOnsetOfSymptoms:(int64_t)a3 skip:(BOOL *)a4;
-- (double)transmissionLevelValueWithTransmissionRiskLevel:(unsigned __int8)a3;
-- (double)weightedDurationWithExposureInfo:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (ENExposureConfiguration)initWithDictionary:(id)dictionary error:(id *)error;
+- (ENExposureConfiguration)initWithXPCObject:(id)object error:(id *)error;
+- (double)daysSinceLastExposureLevelValueWithDays:(int64_t)days;
+- (double)durationLevelValueWithDuration:(double)duration;
+- (double)infectiousnessWeightWithDaysSinceOnsetOfSymptoms:(int64_t)symptoms skip:(BOOL *)skip;
+- (double)transmissionLevelValueWithTransmissionRiskLevel:(unsigned __int8)level;
+- (double)weightedDurationWithExposureInfo:(id)info;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (unsigned)infectiousnessWithDaysSinceOnsetOfSymptoms:(int64_t)a3;
-- (unsigned)mappedDiagnosisReportType:(unsigned int)a3;
-- (void)encodeWithXPCObject:(id)a3;
+- (unsigned)infectiousnessWithDaysSinceOnsetOfSymptoms:(int64_t)symptoms;
+- (unsigned)mappedDiagnosisReportType:(unsigned int)type;
+- (void)encodeWithXPCObject:(id)object;
 @end
 
 @implementation ENExposureConfiguration
@@ -60,14 +60,14 @@
   return v3;
 }
 
-- (ENExposureConfiguration)initWithDictionary:(id)a3 error:(id *)a4
+- (ENExposureConfiguration)initWithDictionary:(id)dictionary error:(id *)error
 {
   v104 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v6 = [(ENExposureConfiguration *)self init];
   if (!v6)
   {
-    if (a4)
+    if (error)
     {
       goto LABEL_148;
     }
@@ -80,7 +80,7 @@
   v6->_immediateDurationWeight = v7;
   if (v7 < 0.0 || v7 > 250.0)
   {
-    if (a4)
+    if (error)
     {
       goto LABEL_148;
     }
@@ -92,7 +92,7 @@
   v6->_nearDurationWeight = v8;
   if (v8 < 0.0 || v8 > 250.0)
   {
-    if (a4)
+    if (error)
     {
       goto LABEL_148;
     }
@@ -104,7 +104,7 @@
   v6->_mediumDurationWeight = v9;
   if (v9 < 0.0 || v9 > 250.0)
   {
-    if (a4)
+    if (error)
     {
       goto LABEL_148;
     }
@@ -116,11 +116,11 @@
   v6->_otherDurationWeight = v10;
   if (v10 < 0.0 || v10 > 250.0)
   {
-    if (a4)
+    if (error)
     {
 LABEL_148:
       ENErrorF(2);
-      *a4 = v12 = 0;
+      *error = v12 = 0;
       goto LABEL_108;
     }
 
@@ -148,10 +148,10 @@ LABEL_149:
     v11 = v94[5];
     if (v11)
     {
-      if (a4)
+      if (error)
       {
         v57 = v11;
-        *a4 = v11;
+        *error = v11;
       }
     }
 
@@ -172,7 +172,7 @@ LABEL_149:
   v6->_infectiousnessStandardWeight = v13;
   if (v13 < 0.0 || v13 > 250.0)
   {
-    if (a4)
+    if (error)
     {
       goto LABEL_165;
     }
@@ -184,7 +184,7 @@ LABEL_149:
   v6->_infectiousnessHighWeight = v14;
   if (v14 < 0.0 || v14 > 250.0)
   {
-    if (a4)
+    if (error)
     {
       goto LABEL_165;
     }
@@ -196,7 +196,7 @@ LABEL_149:
   v6->_reportTypeConfirmedTestWeight = v15;
   if (v15 < 0.0 || v15 > 250.0)
   {
-    if (a4)
+    if (error)
     {
       goto LABEL_165;
     }
@@ -208,7 +208,7 @@ LABEL_149:
   v6->_reportTypeConfirmedClinicalDiagnosisWeight = v16;
   if (v16 < 0.0 || v16 > 250.0)
   {
-    if (a4)
+    if (error)
     {
       goto LABEL_165;
     }
@@ -220,7 +220,7 @@ LABEL_149:
   v6->_reportTypeSelfReportedWeight = v17;
   if (v17 < 0.0 || v17 > 250.0)
   {
-    if (a4)
+    if (error)
     {
       goto LABEL_165;
     }
@@ -232,7 +232,7 @@ LABEL_149:
   v6->_reportTypeRecursiveWeight = v18;
   if (v18 < 0.0 || v18 > 250.0)
   {
-    if (a4)
+    if (error)
     {
       goto LABEL_165;
     }
@@ -244,11 +244,11 @@ LABEL_149:
   v6->_reportTypeNoneMap = Int64Ranged;
   if (Int64Ranged >= 5)
   {
-    if (a4)
+    if (error)
     {
 LABEL_165:
       ENErrorF(2);
-      *a4 = v12 = 0;
+      *error = v12 = 0;
       goto LABEL_107;
     }
 
@@ -288,10 +288,10 @@ LABEL_14:
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
-            if (a4)
+            if (error)
             {
 LABEL_112:
-              *a4 = ENErrorF(2);
+              *error = ENErrorF(2);
             }
 
 LABEL_113:
@@ -303,7 +303,7 @@ LABEL_114:
 
           if ([v24 longLongValue] >= 0x100)
           {
-            if (a4)
+            if (error)
             {
               goto LABEL_112;
             }
@@ -323,7 +323,7 @@ LABEL_39:
       }
     }
 
-    if (!a4)
+    if (!error)
     {
       goto LABEL_114;
     }
@@ -332,7 +332,7 @@ LABEL_39:
     v58 = ENErrorF(2);
 LABEL_172:
     v12 = 0;
-    *a4 = v58;
+    *error = v58;
     goto LABEL_106;
   }
 
@@ -342,7 +342,7 @@ LABEL_40:
   v6->_minimumRiskScoreFullRange = v25;
   if (v25 < 0.0 || v25 > 4096.0)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_114;
     }
@@ -382,10 +382,10 @@ LABEL_40:
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
-            if (a4)
+            if (error)
             {
 LABEL_118:
-              *a4 = ENErrorF(2);
+              *error = ENErrorF(2);
             }
 
 LABEL_119:
@@ -397,7 +397,7 @@ LABEL_120:
 
           if ([v30 longLongValue] >= 9)
           {
-            if (a4)
+            if (error)
             {
               goto LABEL_118;
             }
@@ -417,7 +417,7 @@ LABEL_53:
       }
     }
 
-    if (!a4)
+    if (!error)
     {
       goto LABEL_120;
     }
@@ -426,7 +426,7 @@ LABEL_53:
     v59 = ENErrorF(2);
 LABEL_177:
     v12 = 0;
-    *a4 = v59;
+    *error = v59;
     goto LABEL_105;
   }
 
@@ -434,7 +434,7 @@ LABEL_54:
   attenuationWeight = v6->_attenuationWeight;
   if (attenuationWeight < 0.0 || attenuationWeight > 100.0)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_120;
     }
@@ -475,10 +475,10 @@ LABEL_54:
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
-            if (a4)
+            if (error)
             {
 LABEL_124:
-              *a4 = ENErrorF(2);
+              *error = ENErrorF(2);
             }
 
 LABEL_125:
@@ -490,7 +490,7 @@ LABEL_126:
 
           if ([v36 longLongValue] >= 9)
           {
-            if (a4)
+            if (error)
             {
               goto LABEL_124;
             }
@@ -510,7 +510,7 @@ LABEL_67:
       }
     }
 
-    if (!a4)
+    if (!error)
     {
       goto LABEL_126;
     }
@@ -519,7 +519,7 @@ LABEL_67:
     v60 = ENErrorF(2);
 LABEL_182:
     v12 = 0;
-    *a4 = v60;
+    *error = v60;
     goto LABEL_104;
   }
 
@@ -527,7 +527,7 @@ LABEL_68:
   daysSinceLastExposureWeight = v6->_daysSinceLastExposureWeight;
   if (daysSinceLastExposureWeight < 0.0 || daysSinceLastExposureWeight > 100.0)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_126;
     }
@@ -547,7 +547,7 @@ LABEL_68:
 
   if ([v38 count] != 8)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_132;
     }
@@ -582,7 +582,7 @@ LABEL_68:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (a4)
+        if (error)
         {
           goto LABEL_130;
         }
@@ -592,10 +592,10 @@ LABEL_68:
 
       if ([v44 longLongValue] >= 9)
       {
-        if (a4)
+        if (error)
         {
 LABEL_130:
-          *a4 = ENErrorF(2);
+          *error = ENErrorF(2);
         }
 
 LABEL_131:
@@ -620,7 +620,7 @@ LABEL_82:
   durationWeight = v6->_durationWeight;
   if (durationWeight < 0.0 || durationWeight > 100.0)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_132;
     }
@@ -629,7 +629,7 @@ LABEL_82:
     v61 = ENErrorF(2);
 LABEL_192:
     v12 = 0;
-    *a4 = v61;
+    *error = v61;
     goto LABEL_103;
   }
 
@@ -642,7 +642,7 @@ LABEL_192:
 
   if (Int64 >= 0x100)
   {
-    if (a4)
+    if (error)
     {
       v61 = ENErrorF(2);
       goto LABEL_192;
@@ -695,7 +695,7 @@ LABEL_91:
 
       if ([v53 longLongValue] >= 9)
       {
-        if (a4)
+        if (error)
         {
           goto LABEL_136;
         }
@@ -722,7 +722,7 @@ LABEL_99:
           goto LABEL_102;
         }
 
-        if (a4)
+        if (error)
         {
           v66 = v6->_transmissionRiskWeight;
           v62 = ENErrorF(2);
@@ -735,10 +735,10 @@ LABEL_138:
       }
     }
 
-    if (a4)
+    if (error)
     {
 LABEL_136:
-      *a4 = ENErrorF(2);
+      *error = ENErrorF(2);
     }
 
 LABEL_137:
@@ -746,7 +746,7 @@ LABEL_137:
     goto LABEL_138;
   }
 
-  if (!a4)
+  if (!error)
   {
     goto LABEL_138;
   }
@@ -755,7 +755,7 @@ LABEL_137:
   v62 = ENErrorF(2);
 LABEL_189:
   v12 = 0;
-  *a4 = v62;
+  *error = v62;
 LABEL_102:
 
 LABEL_103:
@@ -789,12 +789,12 @@ void __52__ENExposureConfiguration_initWithDictionary_error___block_invoke(uint6
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [ENExposureConfiguration alloc];
-  v5 = [(ENExposureConfiguration *)self dictionaryRepresentation];
+  dictionaryRepresentation = [(ENExposureConfiguration *)self dictionaryRepresentation];
   v10 = 0;
-  v6 = [(ENExposureConfiguration *)v4 initWithDictionary:v5 error:&v10];
+  v6 = [(ENExposureConfiguration *)v4 initWithDictionary:dictionaryRepresentation error:&v10];
   v7 = v10;
 
   v8 = 0;
@@ -877,13 +877,13 @@ void __52__ENExposureConfiguration_initWithDictionary_error___block_invoke(uint6
   return v23;
 }
 
-- (ENExposureConfiguration)initWithXPCObject:(id)a3 error:(id *)a4
+- (ENExposureConfiguration)initWithXPCObject:(id)object error:(id *)error
 {
-  v6 = a3;
+  objectCopy = object;
   v7 = [(ENExposureConfiguration *)self init];
   if (!v7)
   {
-    if (a4)
+    if (error)
     {
       goto LABEL_108;
     }
@@ -891,9 +891,9 @@ void __52__ENExposureConfiguration_initWithDictionary_error___block_invoke(uint6
     goto LABEL_109;
   }
 
-  if (MEMORY[0x2383EE9C0](v6) != MEMORY[0x277D86468])
+  if (MEMORY[0x2383EE9C0](objectCopy) != MEMORY[0x277D86468])
   {
-    if (a4)
+    if (error)
     {
       goto LABEL_108;
     }
@@ -920,7 +920,7 @@ void __52__ENExposureConfiguration_initWithDictionary_error___block_invoke(uint6
 
   if (([(NSArray *)v7->_attenuationDurationThresholds count]& 0xFFFFFFFFFFFFFFFELL) != 2)
   {
-    if (a4)
+    if (error)
     {
       goto LABEL_108;
     }
@@ -936,7 +936,7 @@ void __52__ENExposureConfiguration_initWithDictionary_error___block_invoke(uint6
   immediateDurationWeight = v7->_immediateDurationWeight;
   if (immediateDurationWeight < 0.0 || immediateDurationWeight > 250.0)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_109;
     }
@@ -944,7 +944,7 @@ void __52__ENExposureConfiguration_initWithDictionary_error___block_invoke(uint6
     v49 = v7->_immediateDurationWeight;
 LABEL_108:
     ENErrorF(2);
-    *a4 = v16 = 0;
+    *error = v16 = 0;
     goto LABEL_93;
   }
 
@@ -956,7 +956,7 @@ LABEL_108:
   nearDurationWeight = v7->_nearDurationWeight;
   if (nearDurationWeight < 0.0 || nearDurationWeight > 250.0)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_109;
     }
@@ -973,7 +973,7 @@ LABEL_108:
   mediumDurationWeight = v7->_mediumDurationWeight;
   if (mediumDurationWeight < 0.0 || mediumDurationWeight > 250.0)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_109;
     }
@@ -990,7 +990,7 @@ LABEL_108:
   otherDurationWeight = v7->_otherDurationWeight;
   if (otherDurationWeight < 0.0 || otherDurationWeight > 250.0)
   {
-    if (a4)
+    if (error)
     {
       v52 = v7->_otherDurationWeight;
       goto LABEL_108;
@@ -1001,7 +1001,7 @@ LABEL_109:
     goto LABEL_93;
   }
 
-  v13 = xpc_dictionary_get_dictionary(v6, "infectLV");
+  v13 = xpc_dictionary_get_dictionary(objectCopy, "infectLV");
   if (v13)
   {
     v14 = objc_alloc_init(MEMORY[0x277CBEB38]);
@@ -1021,10 +1021,10 @@ LABEL_109:
     v15 = v65[5];
     if (v15)
     {
-      if (a4)
+      if (error)
       {
         v48 = v15;
-        *a4 = v15;
+        *error = v15;
       }
     }
 
@@ -1049,7 +1049,7 @@ LABEL_109:
   infectiousnessStandardWeight = v7->_infectiousnessStandardWeight;
   if (infectiousnessStandardWeight < 0.0 || infectiousnessStandardWeight > 250.0)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_24;
     }
@@ -1057,7 +1057,7 @@ LABEL_109:
     v53 = v7->_infectiousnessStandardWeight;
 LABEL_141:
     ENErrorF(2);
-    *a4 = v16 = 0;
+    *error = v16 = 0;
     goto LABEL_92;
   }
 
@@ -1069,7 +1069,7 @@ LABEL_141:
   infectiousnessHighWeight = v7->_infectiousnessHighWeight;
   if (infectiousnessHighWeight < 0.0 || infectiousnessHighWeight > 250.0)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_24;
     }
@@ -1086,7 +1086,7 @@ LABEL_141:
   reportTypeConfirmedTestWeight = v7->_reportTypeConfirmedTestWeight;
   if (reportTypeConfirmedTestWeight < 0.0 || reportTypeConfirmedTestWeight > 250.0)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_24;
     }
@@ -1103,7 +1103,7 @@ LABEL_141:
   reportTypeConfirmedClinicalDiagnosisWeight = v7->_reportTypeConfirmedClinicalDiagnosisWeight;
   if (reportTypeConfirmedClinicalDiagnosisWeight < 0.0 || reportTypeConfirmedClinicalDiagnosisWeight > 250.0)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_24;
     }
@@ -1120,7 +1120,7 @@ LABEL_141:
   reportTypeSelfReportedWeight = v7->_reportTypeSelfReportedWeight;
   if (reportTypeSelfReportedWeight < 0.0 || reportTypeSelfReportedWeight > 250.0)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_24;
     }
@@ -1137,7 +1137,7 @@ LABEL_141:
   reportTypeRecursiveWeight = v7->_reportTypeRecursiveWeight;
   if (reportTypeRecursiveWeight < 0.0 || reportTypeRecursiveWeight > 250.0)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_24;
     }
@@ -1166,7 +1166,7 @@ LABEL_141:
 
   if (reportTypeNoneMap >= 5)
   {
-    if (a4)
+    if (error)
     {
       goto LABEL_141;
     }
@@ -1213,7 +1213,7 @@ LABEL_141:
   {
     if ([(NSArray *)attenuationLevelValues count]!= 8)
     {
-      if (a4)
+      if (error)
       {
         goto LABEL_141;
       }
@@ -1231,7 +1231,7 @@ LABEL_141:
   attenuationWeight = v7->_attenuationWeight;
   if (attenuationWeight < 0.0 || attenuationWeight > 100.0)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_24;
     }
@@ -1250,7 +1250,7 @@ LABEL_141:
   {
     if ([(NSArray *)durationLevelValues count]!= 8)
     {
-      if (a4)
+      if (error)
       {
         goto LABEL_141;
       }
@@ -1275,7 +1275,7 @@ LABEL_141:
   {
     if ([(NSArray *)daysSinceLastExposureLevelValues count]!= 8)
     {
-      if (a4)
+      if (error)
       {
         goto LABEL_141;
       }
@@ -1293,7 +1293,7 @@ LABEL_141:
   daysSinceLastExposureWeight = v7->_daysSinceLastExposureWeight;
   if (daysSinceLastExposureWeight < 0.0 || daysSinceLastExposureWeight > 100.0)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_24;
     }
@@ -1305,7 +1305,7 @@ LABEL_141:
   durationWeight = v7->_durationWeight;
   if (durationWeight < 0.0 || durationWeight > 100.0)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_24;
     }
@@ -1324,7 +1324,7 @@ LABEL_141:
   {
     if ([(NSArray *)transmissionRiskLevelValues count]!= 8)
     {
-      if (a4)
+      if (error)
       {
         goto LABEL_141;
       }
@@ -1346,7 +1346,7 @@ LABEL_141:
     goto LABEL_92;
   }
 
-  if (a4)
+  if (error)
   {
     v62 = v7->_transmissionRiskWeight;
     goto LABEL_141;
@@ -1386,14 +1386,14 @@ uint64_t __51__ENExposureConfiguration_initWithXPCObject_error___block_invoke(ui
   return v11;
 }
 
-- (void)encodeWithXPCObject:(id)a3
+- (void)encodeWithXPCObject:(id)object
 {
-  v4 = a3;
-  v5 = v4;
+  objectCopy = object;
+  v5 = objectCopy;
   flags = self->_flags;
   if (flags)
   {
-    xpc_dictionary_set_uint64(v4, "expF", flags);
+    xpc_dictionary_set_uint64(objectCopy, "expF", flags);
   }
 
   xpc_dictionary_set_double(v5, "immediateDurW", self->_immediateDurationWeight);
@@ -1550,7 +1550,7 @@ void __47__ENExposureConfiguration_encodeWithXPCObject___block_invoke(uint64_t a
   return v15;
 }
 
-- (double)daysSinceLastExposureLevelValueWithDays:(int64_t)a3
+- (double)daysSinceLastExposureLevelValueWithDays:(int64_t)days
 {
   v4 = 16;
   v5 = 17;
@@ -1559,37 +1559,37 @@ void __47__ENExposureConfiguration_encodeWithXPCObject___block_invoke(uint64_t a
   v8 = 20;
   v9 = 21;
   v10 = 22;
-  if (a3 <= 1)
+  if (days <= 1)
   {
     v10 = 23;
   }
 
-  if (a3 <= 3)
+  if (days <= 3)
   {
     v9 = v10;
   }
 
-  if (a3 <= 5)
+  if (days <= 5)
   {
     v8 = v9;
   }
 
-  if (a3 <= 7)
+  if (days <= 7)
   {
     v7 = v8;
   }
 
-  if (a3 <= 9)
+  if (days <= 9)
   {
     v6 = v7;
   }
 
-  if (a3 <= 11)
+  if (days <= 11)
   {
     v5 = v6;
   }
 
-  if (a3 <= 13)
+  if (days <= 13)
   {
     v4 = v5;
   }
@@ -1598,9 +1598,9 @@ void __47__ENExposureConfiguration_encodeWithXPCObject___block_invoke(uint64_t a
   return self->_daysSinceLastExposureWeight * v3;
 }
 
-- (double)durationLevelValueWithDuration:(double)a3
+- (double)durationLevelValueWithDuration:(double)duration
 {
-  v3 = a3 / 60.0;
+  v3 = duration / 60.0;
   if (v3 <= 0.0)
   {
     v4 = 24;
@@ -1644,16 +1644,16 @@ void __47__ENExposureConfiguration_encodeWithXPCObject___block_invoke(uint64_t a
   return self->_durationWeight * *&v3;
 }
 
-- (unsigned)infectiousnessWithDaysSinceOnsetOfSymptoms:(int64_t)a3
+- (unsigned)infectiousnessWithDaysSinceOnsetOfSymptoms:(int64_t)symptoms
 {
   infectiousnessForDaysSinceOnsetOfSymptoms = self->_infectiousnessForDaysSinceOnsetOfSymptoms;
-  [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  [MEMORY[0x277CCABB0] numberWithInteger:symptoms];
   return CFDictionaryGetInt64Ranged();
 }
 
-- (double)infectiousnessWeightWithDaysSinceOnsetOfSymptoms:(int64_t)a3 skip:(BOOL *)a4
+- (double)infectiousnessWeightWithDaysSinceOnsetOfSymptoms:(int64_t)symptoms skip:(BOOL *)skip
 {
-  v6 = [(ENExposureConfiguration *)self infectiousnessWithDaysSinceOnsetOfSymptoms:a3];
+  v6 = [(ENExposureConfiguration *)self infectiousnessWithDaysSinceOnsetOfSymptoms:symptoms];
   if (v6 == 2)
   {
     return self->_infectiousnessHighWeight;
@@ -1664,62 +1664,62 @@ void __47__ENExposureConfiguration_encodeWithXPCObject___block_invoke(uint64_t a
     return self->_infectiousnessStandardWeight;
   }
 
-  *a4 = 1;
+  *skip = 1;
   return 0.0;
 }
 
-- (unsigned)mappedDiagnosisReportType:(unsigned int)a3
+- (unsigned)mappedDiagnosisReportType:(unsigned int)type
 {
-  if (a3 - 5 <= 0xFFFFFFFB)
+  if (type - 5 <= 0xFFFFFFFB)
   {
     return self->_reportTypeNoneMap;
   }
 
-  return a3;
+  return type;
 }
 
-- (double)transmissionLevelValueWithTransmissionRiskLevel:(unsigned __int8)a3
+- (double)transmissionLevelValueWithTransmissionRiskLevel:(unsigned __int8)level
 {
-  if (a3 >= 7u)
+  if (level >= 7u)
   {
-    v4 = 7;
+    levelCopy = 7;
   }
 
   else
   {
-    v4 = a3;
+    levelCopy = level;
   }
 
-  LOBYTE(v3) = self->_transmissionRiskLevelValuesMap[v4];
+  LOBYTE(v3) = self->_transmissionRiskLevelValuesMap[levelCopy];
   return self->_transmissionRiskWeight * v3;
 }
 
-- (double)weightedDurationWithExposureInfo:(id)a3
+- (double)weightedDurationWithExposureInfo:(id)info
 {
-  v4 = [a3 attenuationDurations];
-  v5 = [v4 count];
+  attenuationDurations = [info attenuationDurations];
+  v5 = [attenuationDurations count];
   if (v5)
   {
     v6 = v5;
-    v7 = [v4 objectAtIndexedSubscript:0];
+    v7 = [attenuationDurations objectAtIndexedSubscript:0];
     [v7 doubleValue];
     v9 = v8 * (self->_immediateDurationWeight / 100.0) + 0.0;
 
     if (v6 != 1)
     {
-      v10 = [v4 objectAtIndexedSubscript:1];
+      v10 = [attenuationDurations objectAtIndexedSubscript:1];
       [v10 doubleValue];
       v9 = v9 + v11 * (self->_nearDurationWeight / 100.0);
 
       if (v6 >= 3)
       {
-        v12 = [v4 objectAtIndexedSubscript:2];
+        v12 = [attenuationDurations objectAtIndexedSubscript:2];
         [v12 doubleValue];
         v9 = v9 + v13 * (self->_mediumDurationWeight / 100.0);
 
         if (v6 != 3)
         {
-          v14 = [v4 objectAtIndexedSubscript:3];
+          v14 = [attenuationDurations objectAtIndexedSubscript:3];
           [v14 doubleValue];
           v9 = v9 + v15 * (self->_otherDurationWeight / 100.0);
         }

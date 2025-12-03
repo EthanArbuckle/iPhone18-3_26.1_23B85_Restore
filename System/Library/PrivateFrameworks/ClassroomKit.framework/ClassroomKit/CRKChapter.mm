@@ -1,9 +1,9 @@
 @interface CRKChapter
 - (CRKChapter)init;
-- (CRKChapter)initWithCoder:(id)a3;
+- (CRKChapter)initWithCoder:(id)coder;
 - (NSDictionary)JSONRepresentation;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CRKChapter
@@ -27,11 +27,11 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(CRKChapter *)self title];
-  v6 = [(CRKChapter *)self subchapters];
-  v7 = [(CRKChapter *)self webURL];
-  v8 = [v7 absoluteString];
-  v9 = [v3 stringWithFormat:@"<%@: %p { title = %@, subchapters = %@, webURL = %@ }>", v4, self, v5, v6, v8];
+  title = [(CRKChapter *)self title];
+  subchapters = [(CRKChapter *)self subchapters];
+  webURL = [(CRKChapter *)self webURL];
+  absoluteString = [webURL absoluteString];
+  v9 = [v3 stringWithFormat:@"<%@: %p { title = %@, subchapters = %@, webURL = %@ }>", v4, self, title, subchapters, absoluteString];
 
   return v9;
 }
@@ -39,48 +39,48 @@
 - (NSDictionary)JSONRepresentation
 {
   v3 = objc_opt_new();
-  v4 = [(CRKChapter *)self title];
-  [v3 setObject:v4 forKeyedSubscript:@"Title"];
+  title = [(CRKChapter *)self title];
+  [v3 setObject:title forKeyedSubscript:@"Title"];
 
-  v5 = [(CRKChapter *)self webURL];
-  v6 = [v5 absoluteString];
-  [v3 setObject:v6 forKeyedSubscript:@"Web URL"];
+  webURL = [(CRKChapter *)self webURL];
+  absoluteString = [webURL absoluteString];
+  [v3 setObject:absoluteString forKeyedSubscript:@"Web URL"];
 
-  v7 = [(CRKChapter *)self subchapters];
-  v8 = [v7 count];
+  subchapters = [(CRKChapter *)self subchapters];
+  v8 = [subchapters count];
 
   if (v8)
   {
-    v9 = [(CRKChapter *)self subchapters];
-    v10 = [v9 valueForKey:@"JSONRepresentation"];
+    subchapters2 = [(CRKChapter *)self subchapters];
+    v10 = [subchapters2 valueForKey:@"JSONRepresentation"];
     [v3 setObject:v10 forKeyedSubscript:@"Subchapters"];
   }
 
   return v3;
 }
 
-- (CRKChapter)initWithCoder:(id)a3
+- (CRKChapter)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v18.receiver = self;
   v18.super_class = CRKChapter;
   v5 = [(CRKChapter *)&v18 init];
   if (v5)
   {
     v6 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    v7 = [v4 decodeObjectOfClasses:v6 forKey:@"title"];
+    v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"title"];
     title = v5->_title;
     v5->_title = v7;
 
     v9 = MEMORY[0x277CBEB98];
     v10 = objc_opt_class();
     v11 = [v9 setWithObjects:{v10, objc_opt_class(), 0}];
-    v12 = [v4 decodeObjectOfClasses:v11 forKey:@"subchapters"];
+    v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"subchapters"];
     subchapters = v5->_subchapters;
     v5->_subchapters = v12;
 
     v14 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    v15 = [v4 decodeObjectOfClasses:v14 forKey:@"webURL"];
+    v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"webURL"];
     webURL = v5->_webURL;
     v5->_webURL = v15;
   }
@@ -88,17 +88,17 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(CRKChapter *)self title];
-  [v4 encodeObject:v5 forKey:@"title"];
+  coderCopy = coder;
+  title = [(CRKChapter *)self title];
+  [coderCopy encodeObject:title forKey:@"title"];
 
-  v6 = [(CRKChapter *)self subchapters];
-  [v4 encodeObject:v6 forKey:@"subchapters"];
+  subchapters = [(CRKChapter *)self subchapters];
+  [coderCopy encodeObject:subchapters forKey:@"subchapters"];
 
-  v7 = [(CRKChapter *)self webURL];
-  [v4 encodeObject:v7 forKey:@"webURL"];
+  webURL = [(CRKChapter *)self webURL];
+  [coderCopy encodeObject:webURL forKey:@"webURL"];
 }
 
 @end

@@ -1,14 +1,14 @@
 @interface WFLinkShortcutsSearchShortcutsAction
-- (id)localizedCategoryWithContext:(id)a3;
+- (id)localizedCategoryWithContext:(id)context;
 @end
 
 @implementation WFLinkShortcutsSearchShortcutsAction
 
-- (id)localizedCategoryWithContext:(id)a3
+- (id)localizedCategoryWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"ShortcutsSubcategoryShortcuts", @"Shortcuts");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }

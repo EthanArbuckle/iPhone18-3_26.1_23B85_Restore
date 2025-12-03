@@ -1,13 +1,13 @@
 @interface MedicationFragmentLayer
 - (_TtC27HealthMedicationsExperience23MedicationFragmentLayer)init;
-- (_TtC27HealthMedicationsExperience23MedicationFragmentLayer)initWithCoder:(id)a3;
-- (_TtC27HealthMedicationsExperience23MedicationFragmentLayer)initWithLayer:(id)a3;
-- (void)drawInContext:(CGContext *)a3;
+- (_TtC27HealthMedicationsExperience23MedicationFragmentLayer)initWithCoder:(id)coder;
+- (_TtC27HealthMedicationsExperience23MedicationFragmentLayer)initWithLayer:(id)layer;
+- (void)drawInContext:(CGContext *)context;
 @end
 
 @implementation MedicationFragmentLayer
 
-- (_TtC27HealthMedicationsExperience23MedicationFragmentLayer)initWithLayer:(id)a3
+- (_TtC27HealthMedicationsExperience23MedicationFragmentLayer)initWithLayer:(id)layer
 {
   swift_unknownObjectRetain();
   sub_1D1670164();
@@ -15,7 +15,7 @@
   return MedicationFragmentLayer.init(layer:)(v4);
 }
 
-- (_TtC27HealthMedicationsExperience23MedicationFragmentLayer)initWithCoder:(id)a3
+- (_TtC27HealthMedicationsExperience23MedicationFragmentLayer)initWithCoder:(id)coder
 {
   v3 = (self + OBJC_IVAR____TtC27HealthMedicationsExperience23MedicationFragmentLayer_fragment);
   *v3 = 0u;
@@ -26,11 +26,11 @@
   return result;
 }
 
-- (void)drawInContext:(CGContext *)a3
+- (void)drawInContext:(CGContext *)context
 {
-  v4 = a3;
-  v5 = self;
-  sub_1D16166C4(v4);
+  contextCopy = context;
+  selfCopy = self;
+  sub_1D16166C4(contextCopy);
 }
 
 - (_TtC27HealthMedicationsExperience23MedicationFragmentLayer)init

@@ -1,15 +1,15 @@
 @interface WKImageAnalysisGestureRecognizer
-- (WKImageAnalysisGestureRecognizer)initWithImageAnalysisGestureDelegate:(id)a3;
-- (void)beginAfterExceedingForceThresholdIfNeeded:(id)a3;
+- (WKImageAnalysisGestureRecognizer)initWithImageAnalysisGestureDelegate:(id)delegate;
+- (void)beginAfterExceedingForceThresholdIfNeeded:(id)needed;
 - (void)reset;
-- (void)setState:(int64_t)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)setState:(int64_t)state;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation WKImageAnalysisGestureRecognizer
 
-- (WKImageAnalysisGestureRecognizer)initWithImageAnalysisGestureDelegate:(id)a3
+- (WKImageAnalysisGestureRecognizer)initWithImageAnalysisGestureDelegate:(id)delegate
 {
   v7.receiver = self;
   v7.super_class = WKImageAnalysisGestureRecognizer;
@@ -17,8 +17,8 @@
   v5 = v4;
   if (v4)
   {
-    objc_storeWeak(&v4->_imageAnalysisGestureRecognizerDelegate, a3);
-    [(WKImageAnalysisGestureRecognizer *)v5 setDelegate:a3];
+    objc_storeWeak(&v4->_imageAnalysisGestureRecognizerDelegate, delegate);
+    [(WKImageAnalysisGestureRecognizer *)v5 setDelegate:delegate];
     [(WKImageAnalysisGestureRecognizer *)v5 setMinimumPressDuration:0.1];
     [(WKImageAnalysisGestureRecognizer *)v5 setAllowableMovement:0.0];
     [(WKImageAnalysisGestureRecognizer *)v5 setName:@"Image analysis"];
@@ -35,33 +35,33 @@
   objc_storeWeak(&self->_lastTouchedScrollView, 0);
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   v7.receiver = self;
   v7.super_class = WKImageAnalysisGestureRecognizer;
-  [(WKImageAnalysisGestureRecognizer *)&v7 touchesBegan:a3 withEvent:a4];
-  v6 = WebKit::scrollViewForTouches(a3);
+  [(WKImageAnalysisGestureRecognizer *)&v7 touchesBegan:began withEvent:event];
+  v6 = WebKit::scrollViewForTouches(began);
   if (v6)
   {
     objc_storeWeak(&self->_lastTouchedScrollView, v6);
   }
 
-  [(WKImageAnalysisGestureRecognizer *)self beginAfterExceedingForceThresholdIfNeeded:a3];
+  [(WKImageAnalysisGestureRecognizer *)self beginAfterExceedingForceThresholdIfNeeded:began];
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
   v6.receiver = self;
   v6.super_class = WKImageAnalysisGestureRecognizer;
-  [(WKImageAnalysisGestureRecognizer *)&v6 touchesMoved:a3 withEvent:a4];
-  [(WKImageAnalysisGestureRecognizer *)self beginAfterExceedingForceThresholdIfNeeded:a3];
+  [(WKImageAnalysisGestureRecognizer *)&v6 touchesMoved:moved withEvent:event];
+  [(WKImageAnalysisGestureRecognizer *)self beginAfterExceedingForceThresholdIfNeeded:moved];
 }
 
-- (void)beginAfterExceedingForceThresholdIfNeeded:(id)a3
+- (void)beginAfterExceedingForceThresholdIfNeeded:(id)needed
 {
-  if (!-[WKImageAnalysisGestureRecognizer state](self, "state") && [a3 count] <= 1)
+  if (!-[WKImageAnalysisGestureRecognizer state](self, "state") && [needed count] <= 1)
   {
-    [objc_msgSend(a3 "anyObject")];
+    [objc_msgSend(needed "anyObject")];
     if (v5 >= 1.5)
     {
 
@@ -70,21 +70,21 @@
   }
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
-  v5 = [(WKImageAnalysisGestureRecognizer *)self state];
+  state = [(WKImageAnalysisGestureRecognizer *)self state];
   v7.receiver = self;
   v7.super_class = WKImageAnalysisGestureRecognizer;
-  [(WKImageAnalysisGestureRecognizer *)&v7 setState:a3];
-  v6 = [(WKImageAnalysisGestureRecognizer *)self state];
-  if (v5 != v6)
+  [(WKImageAnalysisGestureRecognizer *)&v7 setState:state];
+  state2 = [(WKImageAnalysisGestureRecognizer *)self state];
+  if (state != state2)
   {
-    if (v6 == 5)
+    if (state2 == 5)
     {
       [objc_loadWeak(&self->_imageAnalysisGestureRecognizerDelegate) imageAnalysisGestureDidFail:self];
     }
 
-    else if (v6 == 1)
+    else if (state2 == 1)
     {
       [objc_loadWeak(&self->_imageAnalysisGestureRecognizerDelegate) imageAnalysisGestureDidBegin:self];
     }

@@ -1,40 +1,40 @@
 @interface CBWHBDiscoveryDaemon
-- (id)descriptionWithLevel:(int)a3;
-- (id)localDeviceForStableId:(id)a3;
-- (id)optimalHostIdForStableId:(id)a3 result:(int *)a4;
-- (void)_receivedWHBUpdateEvent:(id)a3 options:(id)a4;
-- (void)_reportLostDevicesForController:(id)a3;
+- (id)descriptionWithLevel:(int)level;
+- (id)localDeviceForStableId:(id)id;
+- (id)optimalHostIdForStableId:(id)id result:(int *)result;
+- (void)_receivedWHBUpdateEvent:(id)event options:(id)options;
+- (void)_reportLostDevicesForController:(id)controller;
 - (void)activate;
-- (void)deviceFound:(id)a3 remoteController:(id)a4;
-- (void)deviceLost:(id)a3 remoteController:(id)a4;
-- (void)diagnosticControl:(id)a3;
+- (void)deviceFound:(id)found remoteController:(id)controller;
+- (void)deviceLost:(id)lost remoteController:(id)controller;
+- (void)diagnosticControl:(id)control;
 - (void)invalidate;
 - (void)remoteControllersChanged;
 @end
 
 @implementation CBWHBDiscoveryDaemon
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
-  v3 = a3;
+  levelCopy = level;
   v29 = 0;
   v30 = &v29;
   v31 = 0x3032000000;
   v32 = sub_100042204;
   v33 = sub_100042594;
   v34 = 0;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(NSMutableDictionary *)v4->_aggregateDeviceMap count];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = [(NSMutableDictionary *)selfCopy->_aggregateDeviceMap count];
   v6 = v30;
   v28 = v30[5];
   v7 = [objc_opt_class() description];
-  v16 = [(NSMutableDictionary *)v4->_remoteControllerMap count];
+  v16 = [(NSMutableDictionary *)selfCopy->_remoteControllerMap count];
   NSAppendPrintF_safe();
   objc_storeStrong(v6 + 5, v28);
 
   v8 = v30 + 5;
-  if (v3 > 0x14u)
+  if (levelCopy > 0x14u)
   {
     v17 = v30[5];
     NSAppendPrintF_safe();
@@ -46,7 +46,7 @@
     v27 = v30[5];
     NSAppendPrintF_safe();
     objc_storeStrong(v8, v27);
-    remoteControllerMap = v4->_remoteControllerMap;
+    remoteControllerMap = selfCopy->_remoteControllerMap;
     v26[0] = _NSConcreteStackBlock;
     v26[1] = 3221225472;
     v26[2] = sub_100117A98;
@@ -57,14 +57,14 @@
     v23 = &v22;
     v24 = 0x2020000000;
     v25 = 0;
-    aggregateDeviceMap = v4->_aggregateDeviceMap;
+    aggregateDeviceMap = selfCopy->_aggregateDeviceMap;
     v20[0] = _NSConcreteStackBlock;
     v20[1] = 3221225472;
     v20[2] = sub_100117AE8;
     v20[3] = &unk_100AE0CC8;
     v20[4] = &v29;
     v20[5] = &v22;
-    v21 = v3;
+    v21 = levelCopy;
     [(NSMutableDictionary *)aggregateDeviceMap enumerateKeysAndObjectsUsingBlock:v20];
     if (v5 > v23[3])
     {
@@ -83,7 +83,7 @@
     _Block_object_dispose(&v22, 8);
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
   v13 = v30[5];
   _Block_object_dispose(&v29, 8);
@@ -115,8 +115,8 @@
         }
 
         v8 = *(*(&v31 + 1) + 8 * i);
-        v9 = [v8 discoveryFlags];
-        self->_aggregateDiscoveryFlags |= [v8 extraDiscoveryFlags] | v9;
+        discoveryFlags = [v8 discoveryFlags];
+        self->_aggregateDiscoveryFlags |= [v8 extraDiscoveryFlags] | discoveryFlags;
       }
 
       v5 = [(NSArray *)v3 countByEnumeratingWithState:&v31 objects:v35 count:16];
@@ -173,7 +173,7 @@
     v27[3] = &unk_100ADF718;
     v16 = v14;
     v28 = v16;
-    v29 = self;
+    selfCopy = self;
     [(CBDiscovery *)v16 setDeviceFoundHandler:v27];
     v24[0] = _NSConcreteStackBlock;
     v24[1] = 3221225472;
@@ -181,7 +181,7 @@
     v24[3] = &unk_100ADF718;
     v17 = v16;
     v25 = v17;
-    v26 = self;
+    selfCopy2 = self;
     [(CBDiscovery *)v17 setDeviceLostHandler:v24];
     v18 = _NSConcreteStackBlock;
     v19 = 3221225472;
@@ -189,7 +189,7 @@
     v21 = &unk_100ADF740;
     v13 = v17;
     v22 = v13;
-    v23 = self;
+    selfCopy3 = self;
     [(CBDiscovery *)v13 activateWithCompletion:&v18];
   }
 
@@ -225,27 +225,27 @@
   self->_remoteControllerMap = 0;
 }
 
-- (void)diagnosticControl:(id)a3
+- (void)diagnosticControl:(id)control
 {
   dispatchQueue = self->_dispatchQueue;
-  v5 = a3;
+  controlCopy = control;
   dispatch_assert_queue_V2(dispatchQueue);
-  [(RPCompanionLinkClient *)self->_remoteClient sendEventID:@"com.apple.bluetooth.whbU" event:v5 destinationID:RPDestinationIdentifierSameHome options:0 completion:0];
+  [(RPCompanionLinkClient *)self->_remoteClient sendEventID:@"com.apple.bluetooth.whbU" event:controlCopy destinationID:RPDestinationIdentifierSameHome options:0 completion:0];
 }
 
-- (void)_reportLostDevicesForController:(id)a3
+- (void)_reportLostDevicesForController:(id)controller
 {
-  v4 = a3;
-  [v4 controllerID];
+  controllerCopy = controller;
+  [controllerCopy controllerID];
 
-  v5 = [v4 activatedDiscovery];
-  v6 = [v5 discoveredDevices];
+  activatedDiscovery = [controllerCopy activatedDiscovery];
+  discoveredDevices = [activatedDiscovery discoveredDevices];
 
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v7 = v6;
+  v7 = discoveredDevices;
   v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v8)
   {
@@ -261,7 +261,7 @@
           objc_enumerationMutation(v7);
         }
 
-        [(CBWHBDiscoveryDaemon *)self deviceLost:*(*(&v12 + 1) + 8 * v11) remoteController:v4, v12];
+        [(CBWHBDiscoveryDaemon *)self deviceLost:*(*(&v12 + 1) + 8 * v11) remoteController:controllerCopy, v12];
         v11 = v11 + 1;
       }
 
@@ -280,9 +280,9 @@
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v3 = [(RPCompanionLinkClient *)self->_remoteClient activeDevices];
+  activeDevices = [(RPCompanionLinkClient *)self->_remoteClient activeDevices];
   v4 = 0;
-  v5 = [v3 countByEnumeratingWithState:&v29 objects:v34 count:16];
+  v5 = [activeDevices countByEnumeratingWithState:&v29 objects:v34 count:16];
   if (v5)
   {
     v6 = *v30;
@@ -292,29 +292,29 @@
       {
         if (*v30 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(activeDevices);
         }
 
         v8 = *(*(&v29 + 1) + 8 * i);
-        v9 = [v8 serviceTypes];
-        v10 = [v9 containsObject:@"com.apple.bluetooth.remote"];
+        serviceTypes = [v8 serviceTypes];
+        v10 = [serviceTypes containsObject:@"com.apple.bluetooth.remote"];
 
         if (v10)
         {
-          v11 = [v8 idsDeviceIdentifier];
-          if (v11)
+          idsDeviceIdentifier = [v8 idsDeviceIdentifier];
+          if (idsDeviceIdentifier)
           {
             if (!v4)
             {
               v4 = objc_alloc_init(NSMutableDictionary);
             }
 
-            [v4 setObject:v8 forKeyedSubscript:v11];
+            [v4 setObject:v8 forKeyedSubscript:idsDeviceIdentifier];
           }
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v29 objects:v34 count:16];
+      v5 = [activeDevices countByEnumeratingWithState:&v29 objects:v34 count:16];
     }
 
     while (v5);
@@ -324,9 +324,9 @@
   v28 = 0u;
   v26 = 0u;
   v25 = 0u;
-  v12 = [(NSMutableDictionary *)self->_remoteControllerMap allKeys];
+  allKeys = [(NSMutableDictionary *)self->_remoteControllerMap allKeys];
   v13 = 0;
-  v14 = [v12 countByEnumeratingWithState:&v25 objects:v33 count:16];
+  v14 = [allKeys countByEnumeratingWithState:&v25 objects:v33 count:16];
   if (v14)
   {
     v15 = *v26;
@@ -336,7 +336,7 @@
       {
         if (*v26 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(allKeys);
         }
 
         v17 = *(*(&v25 + 1) + 8 * j);
@@ -354,7 +354,7 @@
         }
       }
 
-      v14 = [v12 countByEnumeratingWithState:&v25 objects:v33 count:16];
+      v14 = [allKeys countByEnumeratingWithState:&v25 objects:v33 count:16];
     }
 
     while (v14);
@@ -387,117 +387,117 @@
   _Block_object_dispose(v22, 8);
 }
 
-- (void)deviceFound:(id)a3 remoteController:(id)a4
+- (void)deviceFound:(id)found remoteController:(id)controller
 {
-  v22 = a3;
-  v6 = a4;
-  v7 = [v6 controllerID];
-  v8 = v7;
+  foundCopy = found;
+  controllerCopy = controller;
+  controllerID = [controllerCopy controllerID];
+  v8 = controllerID;
   v9 = @"CBLocalHostID";
-  if (v7)
+  if (controllerID)
   {
-    v9 = v7;
+    v9 = controllerID;
   }
 
   v10 = v9;
 
   if (dword_100B50DC0 <= 30 && (dword_100B50DC0 != -1 || _LogCategory_Initialize()))
   {
-    v20 = v22;
+    v20 = foundCopy;
     v21 = v10;
     LogPrintF_safe();
   }
 
-  v11 = [v22 stableIdentifier];
-  if (v11)
+  stableIdentifier = [foundCopy stableIdentifier];
+  if (stableIdentifier)
   {
-    [v22 setLastSeenTicks:mach_absolute_time()];
-    [v22 setRemoteHostID:v10];
-    v12 = self;
-    objc_sync_enter(v12);
-    v13 = [(NSMutableDictionary *)v12->_aggregateDeviceMap objectForKeyedSubscript:v11];
+    [foundCopy setLastSeenTicks:mach_absolute_time()];
+    [foundCopy setRemoteHostID:v10];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v13 = [(NSMutableDictionary *)selfCopy->_aggregateDeviceMap objectForKeyedSubscript:stableIdentifier];
     if (!v13)
     {
       v13 = objc_alloc_init(CBWHBAggregateDevice);
-      aggregateDeviceMap = v12->_aggregateDeviceMap;
+      aggregateDeviceMap = selfCopy->_aggregateDeviceMap;
       if (!aggregateDeviceMap)
       {
         v15 = objc_alloc_init(NSMutableDictionary);
-        v16 = v12->_aggregateDeviceMap;
-        v12->_aggregateDeviceMap = v15;
+        v16 = selfCopy->_aggregateDeviceMap;
+        selfCopy->_aggregateDeviceMap = v15;
 
-        aggregateDeviceMap = v12->_aggregateDeviceMap;
+        aggregateDeviceMap = selfCopy->_aggregateDeviceMap;
       }
 
-      [(NSMutableDictionary *)aggregateDeviceMap setObject:v13 forKeyedSubscript:v11];
+      [(NSMutableDictionary *)aggregateDeviceMap setObject:v13 forKeyedSubscript:stableIdentifier];
     }
 
-    v17 = [(CBWHBAggregateDevice *)v13 deviceControllerMap];
-    if (!v17)
+    deviceControllerMap = [(CBWHBAggregateDevice *)v13 deviceControllerMap];
+    if (!deviceControllerMap)
     {
-      v17 = objc_alloc_init(NSMutableDictionary);
-      [(CBWHBAggregateDevice *)v13 setDeviceControllerMap:v17];
+      deviceControllerMap = objc_alloc_init(NSMutableDictionary);
+      [(CBWHBAggregateDevice *)v13 setDeviceControllerMap:deviceControllerMap];
     }
 
-    [(CBWHBRouter *)v12->_whbRouter deviceFound:v22];
-    if ((*(&v12->_aggregateDiscoveryFlags + 1) & 0x2001000) != 0 && ([v22 discoveryFlags] & 0x1400000) != 0 && (objc_msgSend(v22, "changeFlags") & 0x1000000000000) != 0 || (objc_msgSend(v17, "objectForKeyedSubscript:", v10), v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v18, "isEquivalentToCBDevice:compareFlags:", v22, 1), v18, (v19 & 1) == 0))
+    [(CBWHBRouter *)selfCopy->_whbRouter deviceFound:foundCopy];
+    if ((*(&selfCopy->_aggregateDiscoveryFlags + 1) & 0x2001000) != 0 && ([foundCopy discoveryFlags] & 0x1400000) != 0 && (objc_msgSend(foundCopy, "changeFlags") & 0x1000000000000) != 0 || (objc_msgSend(deviceControllerMap, "objectForKeyedSubscript:", v10), v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v18, "isEquivalentToCBDevice:compareFlags:", foundCopy, 1), v18, (v19 & 1) == 0))
     {
-      [(CBWHBAggregateDevice *)v13 setLatestDevice:v22];
-      [v17 setObject:v22 forKeyedSubscript:v10];
-      sub_100806CF4(v17, v13, &v12->super.isa, v22);
+      [(CBWHBAggregateDevice *)v13 setLatestDevice:foundCopy];
+      [deviceControllerMap setObject:foundCopy forKeyedSubscript:v10];
+      sub_100806CF4(deviceControllerMap, v13, &selfCopy->super.isa, foundCopy);
     }
 
     else
     {
 
-      objc_sync_exit(v12);
+      objc_sync_exit(selfCopy);
     }
   }
 }
 
-- (void)deviceLost:(id)a3 remoteController:(id)a4
+- (void)deviceLost:(id)lost remoteController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 controllerID];
-  v9 = v8;
+  lostCopy = lost;
+  controllerCopy = controller;
+  controllerID = [controllerCopy controllerID];
+  v9 = controllerID;
   v10 = @"CBLocalHostID";
-  if (v8)
+  if (controllerID)
   {
-    v10 = v8;
+    v10 = controllerID;
   }
 
   v11 = v10;
 
   if (dword_100B50DC0 <= 30 && (dword_100B50DC0 != -1 || _LogCategory_Initialize()))
   {
-    v20 = v6;
+    v20 = lostCopy;
     v22 = v11;
     LogPrintF_safe();
   }
 
-  v12 = [v6 stableIdentifier];
-  if (v12)
+  stableIdentifier = [lostCopy stableIdentifier];
+  if (stableIdentifier)
   {
-    v13 = self;
-    objc_sync_enter(v13);
-    v14 = [(NSMutableDictionary *)v13->_aggregateDeviceMap objectForKeyedSubscript:v12];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v14 = [(NSMutableDictionary *)selfCopy->_aggregateDeviceMap objectForKeyedSubscript:stableIdentifier];
     v15 = v14;
     if (v14)
     {
-      v16 = [v14 deviceControllerMap];
-      v17 = [v16 objectForKeyedSubscript:v11];
-      [v16 setObject:0 forKeyedSubscript:v11];
+      deviceControllerMap = [v14 deviceControllerMap];
+      v17 = [deviceControllerMap objectForKeyedSubscript:v11];
+      [deviceControllerMap setObject:0 forKeyedSubscript:v11];
       [v17 setRemoteHostID:v11];
-      [(CBWHBRouter *)v13->_whbRouter deviceLost:v17];
-      v18 = objc_retainBlock(v13->_deviceLostHandler);
+      [(CBWHBRouter *)selfCopy->_whbRouter deviceLost:v17];
+      v18 = objc_retainBlock(selfCopy->_deviceLostHandler);
       v19 = v18;
       if (v18)
       {
         (*(v18 + 2))(v18, v17);
       }
 
-      if ([v16 count])
+      if ([deviceControllerMap count])
       {
         v26 = 0;
         v27 = &v26;
@@ -515,10 +515,10 @@
         v24[3] = &unk_100AE0DA8;
         v24[4] = &v26;
         v24[5] = v25;
-        [v16 enumerateKeysAndObjectsUsingBlock:v24];
+        [deviceControllerMap enumerateKeysAndObjectsUsingBlock:v24];
         if (!v27[5] && dword_100B50DC0 <= 115 && (dword_100B50DC0 != -1 || _LogCategory_Initialize()))
         {
-          v21 = v6;
+          v21 = lostCopy;
           v23 = v11;
           LogPrintF_safe();
         }
@@ -530,51 +530,51 @@
 
       else
       {
-        [(NSMutableDictionary *)v13->_aggregateDeviceMap setObject:0 forKeyedSubscript:v12];
+        [(NSMutableDictionary *)selfCopy->_aggregateDeviceMap setObject:0 forKeyedSubscript:stableIdentifier];
       }
     }
 
-    objc_sync_exit(v13);
+    objc_sync_exit(selfCopy);
   }
 }
 
-- (id)localDeviceForStableId:(id)a3
+- (id)localDeviceForStableId:(id)id
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(NSMutableDictionary *)v5->_aggregateDeviceMap objectForKeyedSubscript:v4];
-  v7 = [v6 deviceControllerMap];
-  v8 = [v7 objectForKeyedSubscript:@"CBLocalHostID"];
+  idCopy = id;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(NSMutableDictionary *)selfCopy->_aggregateDeviceMap objectForKeyedSubscript:idCopy];
+  deviceControllerMap = [v6 deviceControllerMap];
+  v8 = [deviceControllerMap objectForKeyedSubscript:@"CBLocalHostID"];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v8;
 }
 
-- (id)optimalHostIdForStableId:(id)a3 result:(int *)a4
+- (id)optimalHostIdForStableId:(id)id result:(int *)result
 {
-  v6 = a3;
+  idCopy = id;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   whbRouter = self->_whbRouter;
-  if (!a4 || whbRouter)
+  if (!result || whbRouter)
   {
-    v8 = [(CBWHBRouter *)whbRouter optimalWHBHostForStableIdentifier:v6 result:a4];
+    v8 = [(CBWHBRouter *)whbRouter optimalWHBHostForStableIdentifier:idCopy result:result];
   }
 
   else
   {
     v8 = 0;
-    *a4 = 1702;
+    *result = 1702;
   }
 
   return v8;
 }
 
-- (void)_receivedWHBUpdateEvent:(id)a3 options:(id)a4
+- (void)_receivedWHBUpdateEvent:(id)event options:(id)options
 {
-  v9 = a3;
-  v6 = a4;
+  eventCopy = event;
+  optionsCopy = options;
   CFStringGetTypeID();
   v7 = CFDictionaryGetTypedValue();
 
@@ -588,7 +588,7 @@
         sub_100806D74();
       }
 
-      [(CBWHBRouter *)v8 receivedUpdateEvent:v9 hostID:v7];
+      [(CBWHBRouter *)v8 receivedUpdateEvent:eventCopy hostID:v7];
     }
 
     else

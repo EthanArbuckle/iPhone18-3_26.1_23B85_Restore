@@ -1,22 +1,22 @@
 @interface STKeyValuePair
-- (STKeyValuePair)initWithKey:(id)a3 value:(id)a4;
+- (STKeyValuePair)initWithKey:(id)key value:(id)value;
 @end
 
 @implementation STKeyValuePair
 
-- (STKeyValuePair)initWithKey:(id)a3 value:(id)a4
+- (STKeyValuePair)initWithKey:(id)key value:(id)value
 {
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  valueCopy = value;
   v13.receiver = self;
   v13.super_class = STKeyValuePair;
   v8 = [(STKeyValuePair *)&v13 init];
   key = v8->_key;
-  v8->_key = v6;
-  v10 = v6;
+  v8->_key = keyCopy;
+  v10 = keyCopy;
 
   value = v8->_value;
-  v8->_value = v7;
+  v8->_value = valueCopy;
 
   return v8;
 }

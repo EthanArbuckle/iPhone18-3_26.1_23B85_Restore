@@ -1,13 +1,13 @@
 @interface CNContactHandleStringIndexer
-+ (id)indexByMatchingIndexWithRawHandles:(id)a3 toTargetHandleStrings:(id)a4;
-- (CNContactHandleStringIndexer)initWithTargetHandleStrings:(id)a3;
++ (id)indexByMatchingIndexWithRawHandles:(id)handles toTargetHandleStrings:(id)strings;
+- (CNContactHandleStringIndexer)initWithTargetHandleStrings:(id)strings;
 - (NSDictionary)index;
 - (id)description;
 - (id)indexWithRawHandles;
-- (void)indexContact:(id)a3;
-- (void)indexContacts:(id)a3;
-- (void)indexEmailAddressesOnContact:(id)a3;
-- (void)indexPhoneNumbersOnContact:(id)a3;
+- (void)indexContact:(id)contact;
+- (void)indexContacts:(id)contacts;
+- (void)indexEmailAddressesOnContact:(id)contact;
+- (void)indexPhoneNumbersOnContact:(id)contact;
 @end
 
 @implementation CNContactHandleStringIndexer
@@ -28,9 +28,9 @@
   return v2;
 }
 
-- (CNContactHandleStringIndexer)initWithTargetHandleStrings:(id)a3
+- (CNContactHandleStringIndexer)initWithTargetHandleStrings:(id)strings
 {
-  v4 = a3;
+  stringsCopy = strings;
   v12.receiver = self;
   v12.super_class = CNContactHandleStringIndexer;
   v5 = [(CNContactHandleStringIndexer *)&v12 init];
@@ -42,7 +42,7 @@
 
     if (((*(*MEMORY[0x1E6996530] + 16))() & 1) == 0)
     {
-      v8 = [v4 copy];
+      v8 = [stringsCopy copy];
       targetHandleStrings = v5->_targetHandleStrings;
       v5->_targetHandleStrings = v8;
     }
@@ -56,9 +56,9 @@
 - (id)description
 {
   v2 = [MEMORY[0x1E69966B0] descriptionBuilderWithObject:self];
-  v3 = [v2 build];
+  build = [v2 build];
 
-  return v3;
+  return build;
 }
 
 - (id)indexWithRawHandles
@@ -107,8 +107,8 @@
               }
 
               v12 = *(*(&v24 + 1) + 8 * i);
-              v13 = [v12 first];
-              v14 = [v3 objectForKeyedSubscript:v13];
+              first = [v12 first];
+              v14 = [v3 objectForKeyedSubscript:first];
 
               if (v14)
               {
@@ -120,11 +120,11 @@
                 v15 = v4;
               }
 
-              v16 = [v12 second];
-              v17 = [v15 arrayByAddingObject:v16];
+              second = [v12 second];
+              v17 = [v15 arrayByAddingObject:second];
 
-              v18 = [v12 first];
-              [v3 setObject:v17 forKeyedSubscript:v18];
+              first2 = [v12 first];
+              [v3 setObject:v17 forKeyedSubscript:first2];
             }
 
             v9 = [v7 countByEnumeratingWithState:&v24 objects:v32 count:16];
@@ -146,15 +146,15 @@
   return v3;
 }
 
-- (void)indexContacts:(id)a3
+- (void)indexContacts:(id)contacts
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  contactsCopy = contacts;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [contactsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -166,38 +166,38 @@
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(contactsCopy);
         }
 
         [(CNContactHandleStringIndexer *)self indexContact:*(*(&v9 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [contactsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)indexContact:(id)a3
+- (void)indexContact:(id)contact
 {
-  v4 = a3;
-  [(CNContactHandleStringIndexer *)self indexEmailAddressesOnContact:v4];
-  [(CNContactHandleStringIndexer *)self indexPhoneNumbersOnContact:v4];
+  contactCopy = contact;
+  [(CNContactHandleStringIndexer *)self indexEmailAddressesOnContact:contactCopy];
+  [(CNContactHandleStringIndexer *)self indexPhoneNumbersOnContact:contactCopy];
 }
 
-- (void)indexEmailAddressesOnContact:(id)a3
+- (void)indexEmailAddressesOnContact:(id)contact
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 isKeyAvailable:@"emailAddresses"])
+  contactCopy = contact;
+  if ([contactCopy isKeyAvailable:@"emailAddresses"])
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    obj = [v4 emailAddresses];
+    obj = [contactCopy emailAddresses];
     v5 = [obj countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v5)
     {
@@ -213,10 +213,10 @@
             objc_enumerationMutation(obj);
           }
 
-          v9 = [*(*(&v14 + 1) + 8 * v8) value];
-          v10 = [CNContactHandleIndexableString emailIndexKey:v9];
+          value = [*(*(&v14 + 1) + 8 * v8) value];
+          v10 = [CNContactHandleIndexableString emailIndexKey:value];
           v11 = [(CNCache *)self->_indexImpl objectForKey:v10 onCacheMiss:*MEMORY[0x1E6996468]];
-          v12 = [MEMORY[0x1E69967A8] pairWithFirst:v9 second:v4];
+          v12 = [MEMORY[0x1E69967A8] pairWithFirst:value second:contactCopy];
           [v11 addObject:v12];
 
           ++v8;
@@ -231,17 +231,17 @@
   }
 }
 
-- (void)indexPhoneNumbersOnContact:(id)a3
+- (void)indexPhoneNumbersOnContact:(id)contact
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 isKeyAvailable:@"phoneNumbers"])
+  contactCopy = contact;
+  if ([contactCopy isKeyAvailable:@"phoneNumbers"])
   {
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    obj = [v4 phoneNumbers];
+    obj = [contactCopy phoneNumbers];
     v5 = [obj countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v5)
     {
@@ -257,12 +257,12 @@
             objc_enumerationMutation(obj);
           }
 
-          v9 = [*(*(&v15 + 1) + 8 * v8) value];
-          v10 = [v9 stringValue];
+          value = [*(*(&v15 + 1) + 8 * v8) value];
+          stringValue = [value stringValue];
 
-          v11 = [CNContactHandleIndexableString phoneNumberIndexKey:v10];
+          v11 = [CNContactHandleIndexableString phoneNumberIndexKey:stringValue];
           v12 = [(CNCache *)self->_indexImpl objectForKey:v11 onCacheMiss:*MEMORY[0x1E6996468]];
-          v13 = [MEMORY[0x1E69967A8] pairWithFirst:v10 second:v4];
+          v13 = [MEMORY[0x1E69967A8] pairWithFirst:stringValue second:contactCopy];
           [v12 addObject:v13];
 
           ++v8;
@@ -277,17 +277,17 @@
   }
 }
 
-+ (id)indexByMatchingIndexWithRawHandles:(id)a3 toTargetHandleStrings:(id)a4
++ (id)indexByMatchingIndexWithRawHandles:(id)handles toTargetHandleStrings:(id)strings
 {
   v42 = *MEMORY[0x1E69E9840];
-  v25 = a3;
-  v5 = a4;
-  v23 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v5, "count")}];
+  handlesCopy = handles;
+  stringsCopy = strings;
+  v23 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(stringsCopy, "count")}];
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  obj = v5;
+  obj = stringsCopy;
   v26 = [obj countByEnumeratingWithState:&v36 objects:v41 count:16];
   if (v26)
   {
@@ -305,8 +305,8 @@
         v29 = v6;
         v27 = *(*(&v36 + 1) + 8 * v6);
         v7 = [[CNContactHandleIndexableString alloc] initWithString:v27];
-        v28 = [(CNContactHandleIndexableString *)v7 indexKey];
-        v8 = [v25 objectForKeyedSubscript:?];
+        indexKey = [(CNContactHandleIndexableString *)v7 indexKey];
+        v8 = [handlesCopy objectForKeyedSubscript:?];
         v30 = objc_alloc_init(MEMORY[0x1E695DF70]);
         v32 = 0u;
         v33 = 0u;
@@ -330,12 +330,12 @@
 
               v15 = *(*(&v32 + 1) + 8 * i);
               v31 = 1;
-              v16 = [v15 first];
-              v17 = [(CNContactHandleIndexableString *)v7 isEquivalentToString:v16 strict:&v31];
+              first = [v15 first];
+              v17 = [(CNContactHandleIndexableString *)v7 isEquivalentToString:first strict:&v31];
 
               if (v17)
               {
-                v18 = [v15 second];
+                second = [v15 second];
                 if (v31)
                 {
                   v19 = v30;
@@ -351,7 +351,7 @@
                   }
                 }
 
-                [v19 addObject:v18];
+                [v19 addObject:second];
               }
             }
 

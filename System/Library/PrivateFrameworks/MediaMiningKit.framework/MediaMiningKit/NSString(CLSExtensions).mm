@@ -10,7 +10,7 @@
 - (id)clsBetterComponentsSeparatedByCharactersInSet:()CLSExtensions
 {
   v4 = a3;
-  v5 = [a1 stringByTrimmingCharactersInSet:v4];
+  v5 = [self stringByTrimmingCharactersInSet:v4];
   v6 = MEMORY[0x277CBEB18];
   v7 = [v5 componentsSeparatedByCharactersInSet:v4];
   v8 = [v6 arrayWithArray:v7];
@@ -37,7 +37,7 @@
 - (id)cls_indentBy:()CLSExtensions
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = [a1 componentsSeparatedByString:@"\n"];
+  v4 = [self componentsSeparatedByString:@"\n"];
   v5 = objc_alloc_init(MEMORY[0x277CCAB68]);
   v14 = 0u;
   v15 = 0u;
@@ -80,7 +80,7 @@
 
 - (__CFString)cls_normalizedString
 {
-  v1 = [MEMORY[0x277CCAB68] stringWithString:a1];
+  v1 = [MEMORY[0x277CCAB68] stringWithString:self];
   CFStringNormalize(v1, kCFStringNormalizationFormD);
   CFStringFold(v1, 0x181uLL, 0);
 

@@ -1,19 +1,19 @@
 @interface WPStorageAccessPromptQuirksData
-- (WPStorageAccessPromptQuirksData)initWithQuirks:(id)a3;
+- (WPStorageAccessPromptQuirksData)initWithQuirks:(id)quirks;
 @end
 
 @implementation WPStorageAccessPromptQuirksData
 
-- (WPStorageAccessPromptQuirksData)initWithQuirks:(id)a3
+- (WPStorageAccessPromptQuirksData)initWithQuirks:(id)quirks
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  quirksCopy = quirks;
   v30.receiver = self;
   v30.super_class = WPStorageAccessPromptQuirksData;
   v15 = [(WPStorageAccessPromptQuirksData *)&v30 init];
   if (v15)
   {
-    v13 = v4;
+    v13 = quirksCopy;
     v27 = 0;
     v28[0] = &v27;
     v28[1] = 0x2020000000;
@@ -22,7 +22,7 @@
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       *(v28[0] + 24) = 0x7FFFFFFF;
-      v4 = [MEMORY[0x277CBEA60] array];
+      quirksCopy = [MEMORY[0x277CBEA60] array];
     }
 
     v21 = 0;
@@ -30,13 +30,13 @@
     v23 = 0x3032000000;
     v24 = __Block_byref_object_copy__0;
     v25 = __Block_byref_object_dispose__0;
-    v26 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v4, "count", v4)}];
+    v26 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(quirksCopy, "count", quirksCopy)}];
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v4 = v14;
-    v5 = [v4 countByEnumeratingWithState:&v17 objects:v31 count:16];
+    quirksCopy = v14;
+    v5 = [quirksCopy countByEnumeratingWithState:&v17 objects:v31 count:16];
     if (v5)
     {
       v6 = *v18;
@@ -46,7 +46,7 @@
         {
           if (*v18 != v6)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(quirksCopy);
           }
 
           v8 = *(*(&v17 + 1) + 8 * i);
@@ -68,7 +68,7 @@
           }
         }
 
-        v5 = [v4 countByEnumeratingWithState:&v17 objects:v31 count:16];
+        v5 = [quirksCopy countByEnumeratingWithState:&v17 objects:v31 count:16];
       }
 
       while (v5);

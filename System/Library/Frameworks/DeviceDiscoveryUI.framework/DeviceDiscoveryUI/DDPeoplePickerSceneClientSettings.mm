@@ -1,11 +1,11 @@
 @interface DDPeoplePickerSceneClientSettings
 - (NSUUID)connectedDeviceUUID;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 @end
 
 @implementation DDPeoplePickerSceneClientSettings
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [DDPeoplePickerMutableSceneClientSettings alloc];
 
@@ -14,8 +14,8 @@
 
 - (NSUUID)connectedDeviceUUID
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:18492847];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:18492847];
 
   return v3;
 }

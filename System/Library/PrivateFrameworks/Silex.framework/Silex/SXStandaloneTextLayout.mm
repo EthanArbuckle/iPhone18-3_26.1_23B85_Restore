@@ -1,13 +1,13 @@
 @interface SXStandaloneTextLayout
-- (CGRect)autosizedFrameForTextLayout:(id)a3 textSize:(CGSize)a4;
-- (CGRect)nonAutosizedFrameForTextLayout:(id)a3;
+- (CGRect)autosizedFrameForTextLayout:(id)layout textSize:(CGSize)size;
+- (CGRect)nonAutosizedFrameForTextLayout:(id)layout;
 - (CGSize)adjustedInsets;
 - (SXStandaloneTextLayoutDelegate)delegate;
-- (double)positionForColumnIndex:(unint64_t)a3 bodyWidth:(double)a4 outWidth:(double *)a5 outGap:(double *)a6;
+- (double)positionForColumnIndex:(unint64_t)index bodyWidth:(double)width outWidth:(double *)outWidth outGap:(double *)gap;
 - (id)childInfosForLayout;
 - (id)computeLayoutGeometry;
 - (id)p_wpLayoutParent;
-- (id)styleProviderForLayout:(id)a3;
+- (id)styleProviderForLayout:(id)layout;
 @end
 
 @implementation SXStandaloneTextLayout
@@ -26,12 +26,12 @@
   [v9 widthForTextLayout:self];
   v11 = v10;
 
-  v12 = [(TSDAbstractLayout *)self children];
-  v13 = [v12 lastObject];
+  children = [(TSDAbstractLayout *)self children];
+  lastObject = [children lastObject];
 
-  if (v13)
+  if (lastObject)
   {
-    [v13 frame];
+    [lastObject frame];
     v15 = v14;
   }
 
@@ -48,15 +48,15 @@
 - (id)childInfosForLayout
 {
   v6[1] = *MEMORY[0x1E69E9840];
-  v2 = [(TSDLayout *)self info];
-  v3 = [v2 storage];
-  v6[0] = v3;
+  info = [(TSDLayout *)self info];
+  storage = [info storage];
+  v6[0] = storage;
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:1];
 
   return v4;
 }
 
-- (CGRect)nonAutosizedFrameForTextLayout:(id)a3
+- (CGRect)nonAutosizedFrameForTextLayout:(id)layout
 {
   v3 = *MEMORY[0x1E695F058];
   v4 = *(MEMORY[0x1E695F058] + 8);
@@ -69,9 +69,9 @@
   return result;
 }
 
-- (CGRect)autosizedFrameForTextLayout:(id)a3 textSize:(CGSize)a4
+- (CGRect)autosizedFrameForTextLayout:(id)layout textSize:(CGSize)size
 {
-  height = a4.height;
+  height = size.height;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained marginForTextLayout:self];
   v8 = v7;
@@ -91,11 +91,11 @@
   return result;
 }
 
-- (id)styleProviderForLayout:(id)a3
+- (id)styleProviderForLayout:(id)layout
 {
-  v4 = a3;
-  v5 = [(SXStandaloneTextLayout *)self p_wpLayoutParent];
-  v6 = [v5 styleProviderForLayout:v4];
+  layoutCopy = layout;
+  p_wpLayoutParent = [(SXStandaloneTextLayout *)self p_wpLayoutParent];
+  v6 = [p_wpLayoutParent styleProviderForLayout:layoutCopy];
 
   return v6;
 }
@@ -109,24 +109,24 @@
   return result;
 }
 
-- (double)positionForColumnIndex:(unint64_t)a3 bodyWidth:(double)a4 outWidth:(double *)a5 outGap:(double *)a6
+- (double)positionForColumnIndex:(unint64_t)index bodyWidth:(double)width outWidth:(double *)outWidth outGap:(double *)gap
 {
-  if (a3)
+  if (index)
   {
-    v9 = [MEMORY[0x1E69D5768] currentHandler];
+    currentHandler = [MEMORY[0x1E69D5768] currentHandler];
     v10 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[SXStandaloneTextLayout positionForColumnIndex:bodyWidth:outWidth:outGap:]"];
     v11 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/FeldsparServicesUI/Modules/silex/Silex/Text/Tangier/SXStandaloneTextLayout.m"];
-    [v9 handleFailureInFunction:v10 file:v11 lineNumber:121 description:@"unexpected column index"];
+    [currentHandler handleFailureInFunction:v10 file:v11 lineNumber:121 description:@"unexpected column index"];
   }
 
-  if (a5)
+  if (outWidth)
   {
-    *a5 = a4;
+    *outWidth = width;
   }
 
-  if (a6)
+  if (gap)
   {
-    *a6 = 0.0;
+    *gap = 0.0;
   }
 
   return 0.0;
@@ -134,7 +134,7 @@
 
 - (id)p_wpLayoutParent
 {
-  v2 = [(TSDAbstractLayout *)self parent];
+  parent = [(TSDAbstractLayout *)self parent];
   v3 = TSUProtocolCast();
 
   return v3;

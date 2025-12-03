@@ -2,9 +2,9 @@
 - (PXGHitTestEnvironment)view;
 - (PXGLayout)layout;
 - (PXScrollViewController)scrollViewController;
-- (void)setLayout:(id)a3;
-- (void)setScrollViewController:(id)a3;
-- (void)setView:(id)a3;
+- (void)setLayout:(id)layout;
+- (void)setScrollViewController:(id)controller;
+- (void)setView:(id)view;
 @end
 
 @implementation PXGInteraction
@@ -30,9 +30,9 @@
   return WeakRetained;
 }
 
-- (void)setScrollViewController:(id)a3
+- (void)setScrollViewController:(id)controller
 {
-  obj = a3;
+  obj = controller;
   WeakRetained = objc_loadWeakRetained(&self->_scrollViewController);
 
   v5 = obj;
@@ -44,9 +44,9 @@
   }
 }
 
-- (void)setView:(id)a3
+- (void)setView:(id)view
 {
-  obj = a3;
+  obj = view;
   WeakRetained = objc_loadWeakRetained(&self->_view);
 
   if (WeakRetained != obj)
@@ -57,9 +57,9 @@
   }
 }
 
-- (void)setLayout:(id)a3
+- (void)setLayout:(id)layout
 {
-  obj = a3;
+  obj = layout;
   WeakRetained = objc_loadWeakRetained(&self->_layout);
 
   v5 = obj;

@@ -2,44 +2,44 @@
 + (id)sharedOutputContextController;
 - (BOOL)isOutputContextEmpty;
 - (BOOL)isVolumeMuted;
-- (MROutputContextController)initWithOutputContext:(id)a3;
+- (MROutputContextController)initWithOutputContext:(id)context;
 - (float)_onSerialQueue_calculateMasterVolume;
 - (float)volume;
 - (id)_onSerialQueue_localOutputDevice;
-- (id)_onSerialQueue_performOperationForOutputDeviceUID:(int)a3 withCapabilities:(void *)a4 systemOperation:(void *)a5 deviceOperation:(void *)a6 groupOperation:;
-- (id)_performOperationForOutputDeviceUID:(uint64_t)a3 withCapabilities:(void *)a4 systemOperation:(void *)a5 deviceOperation:(void *)a6 groupOperation:;
-- (id)adjustVolume:(int64_t)a3 outputDeviceUID:(id)a4 details:(id)a5;
+- (id)_onSerialQueue_performOperationForOutputDeviceUID:(int)d withCapabilities:(void *)capabilities systemOperation:(void *)operation deviceOperation:(void *)deviceOperation groupOperation:;
+- (id)_performOperationForOutputDeviceUID:(uint64_t)d withCapabilities:(void *)capabilities systemOperation:(void *)operation deviceOperation:(void *)deviceOperation groupOperation:;
+- (id)adjustVolume:(int64_t)volume outputDeviceUID:(id)d details:(id)details;
 - (id)debugDescription;
 - (id)description;
 - (id)outputDevices;
-- (id)setVolume:(float)a3 outputDeviceUID:(id)a4 details:(id)a5;
+- (id)setVolume:(float)volume outputDeviceUID:(id)d details:(id)details;
 - (id)uniqueIdentifier;
 - (uint64_t)_onSerialQueue_calculateGroupVolumeMuted;
 - (uint64_t)_onSerialQueue_calculateMasterVolumeCapabilities;
-- (uint64_t)_onSerialQueue_isLocalOutputDevice:(uint64_t)a1;
+- (uint64_t)_onSerialQueue_isLocalOutputDevice:(uint64_t)device;
 - (unsigned)volumeControlCapabilities;
-- (void)_handleLocalDeviceVolumeControlCapabilitiesDidChangeNotification:(id)a3;
-- (void)_handleLocalDeviceVolumeDidChangeNotification:(id)a3;
-- (void)_handleLocalDeviceVolumeMutedDidChangeNotification:(id)a3;
-- (void)_handleOutputDeviceAddedNotification:(id)a3;
-- (void)_handleOutputDeviceDidChangeNotification:(id)a3;
-- (void)_handleOutputDeviceRemovedNotification:(id)a3;
-- (void)_handleOutputDeviceVolumeControlCapabilitiesDidChangeNotification:(id)a3;
-- (void)_handleOutputDeviceVolumeDidChangeNotification:(id)a3;
-- (void)_handleOutputDeviceVolumeMutedDidChangeNotification:(id)a3;
-- (void)_handleOutputDevicesReloadedNotification:(id)a3;
-- (void)_handlePredictedOutputDeviceDidChangeNotification:(id)a3;
+- (void)_handleLocalDeviceVolumeControlCapabilitiesDidChangeNotification:(id)notification;
+- (void)_handleLocalDeviceVolumeDidChangeNotification:(id)notification;
+- (void)_handleLocalDeviceVolumeMutedDidChangeNotification:(id)notification;
+- (void)_handleOutputDeviceAddedNotification:(id)notification;
+- (void)_handleOutputDeviceDidChangeNotification:(id)notification;
+- (void)_handleOutputDeviceRemovedNotification:(id)notification;
+- (void)_handleOutputDeviceVolumeControlCapabilitiesDidChangeNotification:(id)notification;
+- (void)_handleOutputDeviceVolumeDidChangeNotification:(id)notification;
+- (void)_handleOutputDeviceVolumeMutedDidChangeNotification:(id)notification;
+- (void)_handleOutputDevicesReloadedNotification:(id)notification;
+- (void)_handlePredictedOutputDeviceDidChangeNotification:(id)notification;
 - (void)_inititalizeVolume;
 - (void)_onSerialQueue_reevaluateGroupVolume;
 - (void)_onSerialQueue_reevaluateGroupVolumeControlCapabilities;
 - (void)_onSerialQueue_reevaluateGroupVolumeMuted;
 - (void)_registerNotifications;
 - (void)dealloc;
-- (void)modifyTopologyWithRequest:(id)a3 completion:(id)a4;
-- (void)setDesignatedGroupLeaderWhenContextEmpty:(id)a3;
-- (void)setLocalVolume:(float)a3;
-- (void)setLocalVolumeControlCapabilities:(unsigned int)a3;
-- (void)setLocalVolumeMuted:(BOOL)a3;
+- (void)modifyTopologyWithRequest:(id)request completion:(id)completion;
+- (void)setDesignatedGroupLeaderWhenContextEmpty:(id)empty;
+- (void)setLocalVolume:(float)volume;
+- (void)setLocalVolumeControlCapabilities:(unsigned int)capabilities;
+- (void)setLocalVolumeMuted:(BOOL)muted;
 @end
 
 @implementation MROutputContextController
@@ -51,7 +51,7 @@
   v8 = 0x3032000000;
   v9 = __Block_byref_object_copy__9;
   v10 = __Block_byref_object_dispose__9;
-  v11 = [(MRAVOutputContext *)self->_outputContext outputDevices];
+  outputDevices = [(MRAVOutputContext *)self->_outputContext outputDevices];
   serialQueue = self->_serialQueue;
   msv_dispatch_sync_on_queue();
   v4 = v7[5];
@@ -97,27 +97,27 @@ void __42__MROutputContextController_outputDevices__block_invoke(uint64_t a1)
 
 - (id)_onSerialQueue_localOutputDevice
 {
-  if (a1)
+  if (self)
   {
-    dispatch_assert_queue_V2(*(a1 + 64));
+    dispatch_assert_queue_V2(*(self + 64));
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __61__MROutputContextController__onSerialQueue_localOutputDevice__block_invoke;
     v14[3] = &unk_1E769CFE8;
-    v14[4] = a1;
+    v14[4] = self;
     v14[5] = sel__onSerialQueue_localOutputDevice;
     v2 = MEMORY[0x1A58E3570](v14);
-    v3 = [*(a1 + 24) outputDevicesSnapshot];
-    if ([a1 isOutputContextEmpty])
+    outputDevicesSnapshot = [*(self + 24) outputDevicesSnapshot];
+    if ([self isOutputContextEmpty])
     {
-      if (![a1 isLocalDeviceDesignatedGroupLeader])
+      if (![self isLocalDeviceDesignatedGroupLeader])
       {
         goto LABEL_5;
       }
 
       v4 = +[MRAVOutputContext sharedSystemAudioContext];
-      v5 = [v4 outputDevices];
-      v6 = [v5 msv_firstWhere:&__block_literal_global_303];
+      outputDevices = [v4 outputDevices];
+      v6 = [outputDevices msv_firstWhere:&__block_literal_global_303];
 
       if (!v6)
       {
@@ -131,8 +131,8 @@ void __42__MROutputContextController_outputDevices__block_invoke(uint64_t a1)
       v10 = 3221225472;
       v11 = __61__MROutputContextController__onSerialQueue_localOutputDevice__block_invoke_3;
       v12 = &unk_1E769CDC0;
-      v13 = a1;
-      v6 = [v3 msv_firstWhere:v9];
+      selfCopy = self;
+      v6 = [outputDevicesSnapshot msv_firstWhere:v9];
       if (!v6)
       {
 LABEL_5:
@@ -156,8 +156,8 @@ LABEL_9:
 
 - (BOOL)isOutputContextEmpty
 {
-  v2 = [(MRAVOutputContext *)self->_outputContext outputDevices];
-  v3 = [v2 count] == 0;
+  outputDevices = [(MRAVOutputContext *)self->_outputContext outputDevices];
+  v3 = [outputDevices count] == 0;
 
   return v3;
 }
@@ -237,22 +237,22 @@ void __58__MROutputContextController_sharedOutputContextController__block_invoke
 - (void)_inititalizeVolume
 {
   v39 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v2 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    v3 = *(a1 + 48);
-    *(a1 + 48) = v2;
+    v3 = *(self + 48);
+    *(self + 48) = v2;
 
     v4 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    v5 = *(a1 + 56);
-    *(a1 + 56) = v4;
+    v5 = *(self + 56);
+    *(self + 56) = v4;
 
     v36 = 0u;
     v37 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v6 = [*(a1 + 24) outputDevices];
-    v7 = [v6 countByEnumeratingWithState:&v34 objects:v38 count:16];
+    outputDevices = [*(self + 24) outputDevices];
+    v7 = [outputDevices countByEnumeratingWithState:&v34 objects:v38 count:16];
     if (v7)
     {
       v8 = v7;
@@ -263,7 +263,7 @@ void __58__MROutputContextController_sharedOutputContextController__block_invoke
         {
           if (*v35 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(outputDevices);
           }
 
           v11 = *(*(&v34 + 1) + 8 * i);
@@ -272,54 +272,54 @@ void __58__MROutputContextController_sharedOutputContextController__block_invoke
             v12 = [v11 uid];
             if (v12)
             {
-              v13 = *(a1 + 48);
+              v13 = *(self + 48);
               v14 = MEMORY[0x1E696AD98];
               [v11 volume];
               v15 = [v14 numberWithFloat:?];
               [v13 setObject:v15 forKey:v12];
 
-              v16 = *(a1 + 56);
+              v16 = *(self + 56);
               v17 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v11, "isVolumeMuted")}];
               [v16 setObject:v17 forKey:v12];
             }
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v34 objects:v38 count:16];
+        v8 = [outputDevices countByEnumeratingWithState:&v34 objects:v38 count:16];
       }
 
       while (v8);
     }
 
-    v18 = *(a1 + 64);
+    v18 = *(self + 64);
     v33[0] = MEMORY[0x1E69E9820];
     v33[1] = 3221225472;
     v33[2] = __47__MROutputContextController__inititalizeVolume__block_invoke;
     v33[3] = &unk_1E769D010;
-    v33[4] = a1;
+    v33[4] = self;
     MRMediaRemoteGetMediaPlaybackVolume(v18, v33);
     v19 = +[MROrigin localOrigin];
-    v20 = *(a1 + 64);
+    v20 = *(self + 64);
     v32[0] = MEMORY[0x1E69E9820];
     v32[1] = 3221225472;
     v32[2] = __47__MROutputContextController__inititalizeVolume__block_invoke_306;
     v32[3] = &unk_1E769D038;
-    v32[4] = a1;
+    v32[4] = self;
     MRMediaRemoteGetPickedRoutedVolumeControlCapabilities(v19, v20, v32);
 
-    v21 = *(a1 + 64);
+    v21 = *(self + 64);
     OUTLINED_FUNCTION_16();
     v28 = 3221225472;
     v29 = __47__MROutputContextController__inititalizeVolume__block_invoke_308;
     v30 = &unk_1E769D060;
-    v31 = a1;
+    selfCopy = self;
     MRMediaRemoteGetSystemVolumeMuted(v22, v27);
-    v23 = *(a1 + 64);
+    v23 = *(self + 64);
     OUTLINED_FUNCTION_1_0();
     v26[1] = 3221225472;
     v26[2] = __47__MROutputContextController__inititalizeVolume__block_invoke_310;
     v26[3] = &unk_1E769A228;
-    v26[4] = a1;
+    v26[4] = self;
     dispatch_async(v24, v26);
   }
 
@@ -328,14 +328,14 @@ void __58__MROutputContextController_sharedOutputContextController__block_invoke
 
 - (void)_registerNotifications
 {
-  if (a1)
+  if (self)
   {
     MRMediaRemoteSetWantsVolumeControlNotifications(1);
-    v58 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v58 addObserver:a1 selector:sel__handleLocalDeviceVolumeDidChangeNotification_ name:@"kMRMediaRemotePickedRouteVolumeDidChangeNotification" object:0];
-    [v58 addObserver:a1 selector:sel__handleLocalDeviceVolumeControlCapabilitiesDidChangeNotification_ name:@"kMRMediaRemotePickedRouteVolumeControlAvailabilityDidChangeNotification" object:0];
-    v2 = [v58 addObserver:a1 selector:sel__handleLocalDeviceVolumeMutedDidChangeNotification_ name:@"MRMediaRemotePickedRouteVolumeMutedDidChangeNotification" object:0];
-    v8 = OUTLINED_FUNCTION_11_0(v2, v3, v4, sel__handleOutputDeviceVolumeDidChangeNotification_, @"MRAVOutputContextVolumeDidChangeNotification", v5, v6, v7, v50, v58);
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__handleLocalDeviceVolumeDidChangeNotification_ name:@"kMRMediaRemotePickedRouteVolumeDidChangeNotification" object:0];
+    [defaultCenter addObserver:self selector:sel__handleLocalDeviceVolumeControlCapabilitiesDidChangeNotification_ name:@"kMRMediaRemotePickedRouteVolumeControlAvailabilityDidChangeNotification" object:0];
+    v2 = [defaultCenter addObserver:self selector:sel__handleLocalDeviceVolumeMutedDidChangeNotification_ name:@"MRMediaRemotePickedRouteVolumeMutedDidChangeNotification" object:0];
+    v8 = OUTLINED_FUNCTION_11_0(v2, v3, v4, sel__handleOutputDeviceVolumeDidChangeNotification_, @"MRAVOutputContextVolumeDidChangeNotification", v5, v6, v7, v50, defaultCenter);
     v14 = OUTLINED_FUNCTION_11_0(v8, v9, v10, sel__handleOutputDeviceVolumeControlCapabilitiesDidChangeNotification_, @"MRAVOutputContextVolumeControlCapabilitiesDidChangeNotification", v11, v12, v13, v51, v59);
     v20 = OUTLINED_FUNCTION_11_0(v14, v15, v16, sel__handleOutputDeviceVolumeMutedDidChangeNotification_, @"MRAVOutputContextVolumeMutedDidChangeNotification", v17, v18, v19, v52, v60);
     v26 = OUTLINED_FUNCTION_11_0(v20, v21, v22, sel__handleOutputDeviceAddedNotification_, @"MRAVOutputContextDidAddOutputDeviceNotification", v23, v24, v25, v53, v61);
@@ -348,14 +348,14 @@ void __58__MROutputContextController_sharedOutputContextController__block_invoke
 
 - (void)_onSerialQueue_reevaluateGroupVolumeControlCapabilities
 {
-  if (a1)
+  if (self)
   {
-    dispatch_assert_queue_V2(*(a1 + 64));
-    v2 = [(MROutputContextController *)a1 _onSerialQueue_calculateMasterVolumeCapabilities];
-    if (v2 != *(a1 + 36))
+    dispatch_assert_queue_V2(*(self + 64));
+    _onSerialQueue_calculateMasterVolumeCapabilities = [(MROutputContextController *)self _onSerialQueue_calculateMasterVolumeCapabilities];
+    if (_onSerialQueue_calculateMasterVolumeCapabilities != *(self + 36))
     {
-      *(a1 + 36) = v2;
-      v3 = *(a1 + 36);
+      *(self + 36) = _onSerialQueue_calculateMasterVolumeCapabilities;
+      v3 = *(self + 36);
       v4 = OUTLINED_FUNCTION_35();
 
       [(MROutputContextDataSource *)v4 notifyVolumeCapabilitiesDidChange:v5 outputDevice:v6];
@@ -366,11 +366,11 @@ void __58__MROutputContextController_sharedOutputContextController__block_invoke
 - (uint64_t)_onSerialQueue_calculateMasterVolumeCapabilities
 {
   v39 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    dispatch_assert_queue_V2(a1[8]);
-    v2 = [(dispatch_queue_t *)a1 outputDevices];
-    v4 = OUTLINED_FUNCTION_13_0(v2, v3);
+    dispatch_assert_queue_V2(self[8]);
+    outputDevices = [(dispatch_queue_t *)self outputDevices];
+    v4 = OUTLINED_FUNCTION_13_0(outputDevices, v3);
     if (v4)
     {
       v12 = v4;
@@ -381,23 +381,23 @@ void __58__MROutputContextController_sharedOutputContextController__block_invoke
         v22 = 0;
         do
         {
-          OUTLINED_FUNCTION_14_0(v14, v15, v16, v17, v18, v19, v20, v21, v27, v29, v31);
+          OUTLINED_FUNCTION_14_0(volumeCapabilities, v15, v16, v17, v18, v19, v20, v21, v27, v29, v31);
           if (!v23)
           {
-            objc_enumerationMutation(a1);
+            objc_enumerationMutation(self);
           }
 
-          v14 = [*(v29 + 8 * v22) volumeCapabilities];
-          v13 = v14 | v13;
+          volumeCapabilities = [*(v29 + 8 * v22) volumeCapabilities];
+          v13 = volumeCapabilities | v13;
           ++v22;
         }
 
         while (v12 != v22);
-        v14 = OUTLINED_FUNCTION_12_0(v14, v15, v16, v17, v18, v19, v20, v21, v27, v29, v31, v32, v33, v34, v35, v36, v37, v38);
-        v12 = v14;
+        volumeCapabilities = OUTLINED_FUNCTION_12_0(volumeCapabilities, v15, v16, v17, v18, v19, v20, v21, v27, v29, v31, v32, v33, v34, v35, v36, v37, v38);
+        v12 = volumeCapabilities;
       }
 
-      while (v14);
+      while (volumeCapabilities);
     }
 
     else
@@ -417,19 +417,19 @@ void __58__MROutputContextController_sharedOutputContextController__block_invoke
 
 - (void)_onSerialQueue_reevaluateGroupVolume
 {
-  if (a1)
+  if (self)
   {
-    dispatch_assert_queue_V2(*(a1 + 64));
-    if ((*(a1 + 36) & 2) != 0)
+    dispatch_assert_queue_V2(*(self + 64));
+    if ((*(self + 36) & 2) != 0)
     {
-      v2 = [(MROutputContextController *)a1 _onSerialQueue_calculateMasterVolume];
-      v5 = OUTLINED_FUNCTION_36(v2);
+      _onSerialQueue_calculateMasterVolume = [(MROutputContextController *)self _onSerialQueue_calculateMasterVolume];
+      v5 = OUTLINED_FUNCTION_36(_onSerialQueue_calculateMasterVolume);
       if (!(v7 ^ v8 | v6))
       {
-        *(a1 + v4) = v5;
-        v9 = *(a1 + *(v3 + 3416));
+        *(self + v4) = v5;
+        v9 = *(self + *(v3 + 3416));
 
-        [(MROutputContextDataSource *)a1 notifyVolumeDidChange:v9 outputDevice:?];
+        [(MROutputContextDataSource *)self notifyVolumeDidChange:v9 outputDevice:?];
       }
     }
   }
@@ -437,14 +437,14 @@ void __58__MROutputContextController_sharedOutputContextController__block_invoke
 
 - (void)_onSerialQueue_reevaluateGroupVolumeMuted
 {
-  if (a1)
+  if (self)
   {
-    dispatch_assert_queue_V2(*(a1 + 64));
-    v2 = [(MROutputContextController *)a1 _onSerialQueue_calculateGroupVolumeMuted];
-    if (v2 != *(a1 + 40))
+    dispatch_assert_queue_V2(*(self + 64));
+    _onSerialQueue_calculateGroupVolumeMuted = [(MROutputContextController *)self _onSerialQueue_calculateGroupVolumeMuted];
+    if (_onSerialQueue_calculateGroupVolumeMuted != *(self + 40))
     {
-      *(a1 + 40) = v2;
-      v3 = *(a1 + 40);
+      *(self + 40) = _onSerialQueue_calculateGroupVolumeMuted;
+      v3 = *(self + 40);
       v4 = OUTLINED_FUNCTION_35();
 
       [(MROutputContextDataSource *)v4 notifyVolumeMutedDidChange:v5 outputDevice:v6];
@@ -455,11 +455,11 @@ void __58__MROutputContextController_sharedOutputContextController__block_invoke
 - (uint64_t)_onSerialQueue_calculateGroupVolumeMuted
 {
   v39 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    dispatch_assert_queue_V2(a1[8]);
-    v2 = [(dispatch_queue_t *)a1 outputDevices];
-    v4 = OUTLINED_FUNCTION_13_0(v2, v3);
+    dispatch_assert_queue_V2(self[8]);
+    outputDevices = [(dispatch_queue_t *)self outputDevices];
+    v4 = OUTLINED_FUNCTION_13_0(outputDevices, v3);
     v12 = v4;
     if (v4)
     {
@@ -470,23 +470,23 @@ void __58__MROutputContextController_sharedOutputContextController__block_invoke
         v22 = 0;
         do
         {
-          OUTLINED_FUNCTION_14_0(v14, v15, v16, v17, v18, v19, v20, v21, v27, v29, v31);
+          OUTLINED_FUNCTION_14_0(isVolumeMuted, v15, v16, v17, v18, v19, v20, v21, v27, v29, v31);
           if (!v23)
           {
-            objc_enumerationMutation(a1);
+            objc_enumerationMutation(self);
           }
 
-          v14 = [*(v29 + 8 * v22) isVolumeMuted];
-          v13 |= v14;
+          isVolumeMuted = [*(v29 + 8 * v22) isVolumeMuted];
+          v13 |= isVolumeMuted;
           ++v22;
         }
 
         while (v12 != v22);
-        v14 = OUTLINED_FUNCTION_12_0(v14, v15, v16, v17, v18, v19, v20, v21, v27, v29, v31, v32, v33, v34, v35, v36, v37, v38);
-        v12 = v14;
+        isVolumeMuted = OUTLINED_FUNCTION_12_0(isVolumeMuted, v15, v16, v17, v18, v19, v20, v21, v27, v29, v31, v32, v33, v34, v35, v36, v37, v38);
+        v12 = isVolumeMuted;
       }
 
-      while (v14);
+      while (isVolumeMuted);
       v12 = v13 & 1;
     }
   }
@@ -533,11 +533,11 @@ uint64_t __47__MROutputContextController__inititalizeVolume__block_invoke(uint64
 - (float)_onSerialQueue_calculateMasterVolume
 {
   v42 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    dispatch_assert_queue_V2(a1[8]);
-    v2 = [(dispatch_queue_t *)a1 outputDevices];
-    v4 = OUTLINED_FUNCTION_13_0(v2, v3);
+    dispatch_assert_queue_V2(self[8]);
+    outputDevices = [(dispatch_queue_t *)self outputDevices];
+    v4 = OUTLINED_FUNCTION_13_0(outputDevices, v3);
     if (v4)
     {
       v12 = v4;
@@ -548,17 +548,17 @@ uint64_t __47__MROutputContextController__inititalizeVolume__block_invoke(uint64
         v22 = 0;
         do
         {
-          OUTLINED_FUNCTION_14_0(v13, v14, v15, v16, v17, v18, v19, v20, v30, v32, v34);
+          OUTLINED_FUNCTION_14_0(volume, v14, v15, v16, v17, v18, v19, v20, v30, v32, v34);
           if (!v23)
           {
-            objc_enumerationMutation(a1);
+            objc_enumerationMutation(self);
           }
 
           v24 = *(v32 + 8 * v22);
-          v13 = [v24 volume];
+          volume = [v24 volume];
           if (v21 <= v25)
           {
-            v13 = [v24 volume];
+            volume = [v24 volume];
             v21 = v26;
           }
 
@@ -566,11 +566,11 @@ uint64_t __47__MROutputContextController__inititalizeVolume__block_invoke(uint64
         }
 
         while (v12 != v22);
-        v13 = OUTLINED_FUNCTION_12_0(v13, v14, v15, v16, v17, v18, v19, v20, v30, v32, v34, v35, v36, v37, v38, v39, v40, v41);
-        v12 = v13;
+        volume = OUTLINED_FUNCTION_12_0(volume, v14, v15, v16, v17, v18, v19, v20, v30, v32, v34, v35, v36, v37, v38, v39, v40, v41);
+        v12 = volume;
       }
 
-      while (v13);
+      while (volume);
     }
 
     else
@@ -700,16 +700,16 @@ void __45__MROutputContextController_uniqueIdentifier__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (MROutputContextController)initWithOutputContext:(id)a3
+- (MROutputContextController)initWithOutputContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v12.receiver = self;
   v12.super_class = MROutputContextController;
   v6 = [(MROutputContextController *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_outputContext, a3);
+    objc_storeStrong(&v6->_outputContext, context);
     v9 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v10 = dispatch_queue_create("com.apple.MediaRemote.MROutputContextController.serialQueue", v9);
     serialQueue = v7->_serialQueue;
@@ -725,8 +725,8 @@ void __45__MROutputContextController_uniqueIdentifier__block_invoke(uint64_t a1)
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = MROutputContextController;
@@ -790,27 +790,27 @@ void __45__MROutputContextController_debugDescription__block_invoke(uint64_t a1)
   *(v16 + 40) = v15;
 }
 
-- (void)setDesignatedGroupLeaderWhenContextEmpty:(id)a3
+- (void)setDesignatedGroupLeaderWhenContextEmpty:(id)empty
 {
-  v4 = a3;
+  emptyCopy = empty;
   serialQueue = self->_serialQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __70__MROutputContextController_setDesignatedGroupLeaderWhenContextEmpty___block_invoke;
   v7[3] = &unk_1E769A4A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = emptyCopy;
+  v6 = emptyCopy;
   dispatch_sync(serialQueue, v7);
 }
 
-- (id)_performOperationForOutputDeviceUID:(uint64_t)a3 withCapabilities:(void *)a4 systemOperation:(void *)a5 deviceOperation:(void *)a6 groupOperation:
+- (id)_performOperationForOutputDeviceUID:(uint64_t)d withCapabilities:(void *)capabilities systemOperation:(void *)operation deviceOperation:(void *)deviceOperation groupOperation:
 {
   v10 = a2;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (a1)
+  capabilitiesCopy = capabilities;
+  operationCopy = operation;
+  deviceOperationCopy = deviceOperation;
+  if (self)
   {
     v21 = 0;
     v22 = &v21;
@@ -818,11 +818,11 @@ void __45__MROutputContextController_debugDescription__block_invoke(uint64_t a1)
     v24 = __Block_byref_object_copy__9;
     v25 = __Block_byref_object_dispose__9;
     v26 = 0;
-    v14 = *(a1 + 64);
+    v14 = *(self + 64);
     v17 = v10;
-    v18 = v11;
-    v19 = v12;
-    v20 = v13;
+    v18 = capabilitiesCopy;
+    v19 = operationCopy;
+    v20 = deviceOperationCopy;
     msv_dispatch_sync_on_queue();
     v15 = v22[5];
 
@@ -837,14 +837,14 @@ void __45__MROutputContextController_debugDescription__block_invoke(uint64_t a1)
   return v15;
 }
 
-- (id)setVolume:(float)a3 outputDeviceUID:(id)a4 details:(id)a5
+- (id)setVolume:(float)volume outputDeviceUID:(id)d details:(id)details
 {
   v68 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
+  dCopy = d;
+  detailsCopy = details;
   v10 = [MEMORY[0x1E695DF00] now];
   v11 = @"outputContextController.setOutputDeviceVolume";
-  if (!v8)
+  if (!dCopy)
   {
     v11 = @"outputContextController.setVolume";
   }
@@ -852,24 +852,24 @@ void __45__MROutputContextController_debugDescription__block_invoke(uint64_t a1)
   v12 = v11;
   v13 = objc_alloc(MEMORY[0x1E696AEC0]);
   v14 = objc_opt_class();
-  v15 = [(MROutputContextController *)self uniqueIdentifier];
-  v16 = v15;
-  v17 = a3;
-  if (v8)
+  uniqueIdentifier = [(MROutputContextController *)self uniqueIdentifier];
+  v16 = uniqueIdentifier;
+  volumeCopy = volume;
+  if (dCopy)
   {
-    v18 = [v13 initWithFormat:@"<%@:%p> endpont=%@, outputDevice=%@ -> volume=%lf", v17, v14, self, v15, v8, a3];
+    volume = [v13 initWithFormat:@"<%@:%p> endpont=%@, outputDevice=%@ -> volume=%lf", volumeCopy, v14, self, uniqueIdentifier, dCopy, volume];
   }
 
   else
   {
-    v18 = [v13 initWithFormat:@"<%@:%p> endpoint=%@ -> volume=%lf", v17, v14, self, v15, a3, v46];
+    volume = [v13 initWithFormat:@"<%@:%p> endpoint=%@ -> volume=%lf", volumeCopy, v14, self, uniqueIdentifier, volume, v46];
   }
 
-  v19 = v18;
+  v19 = volume;
 
   v20 = objc_alloc(MEMORY[0x1E696AD60]);
-  v21 = [v9 requestID];
-  v22 = [v20 initWithFormat:@"%@<%@>", v12, v21];
+  requestID = [detailsCopy requestID];
+  v22 = [v20 initWithFormat:@"%@<%@>", v12, requestID];
 
   if (v19)
   {
@@ -888,21 +888,21 @@ void __45__MROutputContextController_debugDescription__block_invoke(uint64_t a1)
   v56[1] = 3221225472;
   v56[2] = __63__MROutputContextController_setVolume_outputDeviceUID_details___block_invoke;
   v56[3] = &__block_descriptor_36_e5_v8__0l;
-  v57 = a3;
+  volumeCopy2 = volume;
   v53[0] = MEMORY[0x1E69E9820];
   v53[1] = 3221225472;
   v53[2] = __63__MROutputContextController_setVolume_outputDeviceUID_details___block_invoke_2;
   v53[3] = &unk_1E769CE28;
-  v55 = a3;
-  v54 = v9;
+  volumeCopy3 = volume;
+  v54 = detailsCopy;
   v50[0] = MEMORY[0x1E69E9820];
   v50[1] = 3221225472;
   v50[2] = __63__MROutputContextController_setVolume_outputDeviceUID_details___block_invoke_3;
   v50[3] = &unk_1E769CF28;
-  v52 = a3;
+  volumeCopy4 = volume;
   v24 = v54;
   v51 = v24;
-  v25 = [(MROutputContextController *)self _performOperationForOutputDeviceUID:v8 withCapabilities:2 systemOperation:v56 deviceOperation:v53 groupOperation:v50];
+  v25 = [(MROutputContextController *)self _performOperationForOutputDeviceUID:dCopy withCapabilities:2 systemOperation:v56 deviceOperation:v53 groupOperation:v50];
   v26 = _MRLogForCategory(0xAuLL);
   v27 = v26;
   if (v25)
@@ -912,16 +912,16 @@ void __45__MROutputContextController_debugDescription__block_invoke(uint64_t a1)
     {
       if (v28)
       {
-        v47 = [v24 requestID];
-        v49 = [MEMORY[0x1E695DF00] date];
-        [v49 timeIntervalSinceDate:v10];
+        requestID2 = [v24 requestID];
+        date = [MEMORY[0x1E695DF00] date];
+        [date timeIntervalSinceDate:v10];
         *buf = 138544386;
         v59 = v12;
         v60 = 2114;
-        v29 = v47;
-        v61 = v47;
+        v29 = requestID2;
+        selfCopy = requestID2;
         v62 = 2114;
-        v63 = v25;
+        selfCopy2 = v25;
         v64 = 2114;
         v65 = v19;
         v66 = 2048;
@@ -936,16 +936,16 @@ LABEL_28:
 
     else if (v28)
     {
-      v48 = [v24 requestID];
-      v49 = [MEMORY[0x1E695DF00] date];
-      [v49 timeIntervalSinceDate:v10];
+      requestID3 = [v24 requestID];
+      date = [MEMORY[0x1E695DF00] date];
+      [date timeIntervalSinceDate:v10];
       *buf = 138544130;
       v59 = v12;
       v60 = 2114;
-      v29 = v48;
-      v61 = v48;
+      v29 = requestID3;
+      selfCopy = requestID3;
       v62 = 2114;
-      v63 = v25;
+      selfCopy2 = v25;
       v64 = 2048;
       v65 = v45;
       v31 = "Response: %{public}@<%{public}@> returned with error <%{public}@> in %.4lf seconds";
@@ -964,10 +964,10 @@ LABEL_28:
     *buf = 138543874;
     v59 = v41;
     v60 = 2048;
-    v61 = self;
+    selfCopy = self;
     v62 = 2114;
-    v63 = self;
-    v35 = v41;
+    selfCopy2 = self;
+    requestID4 = v41;
     _os_log_impl(&dword_1A2860000, v27, OS_LOG_TYPE_DEFAULT, "<%{public}@: %p> Existing State: %{public}@", buf, 0x20u);
     goto LABEL_23;
   }
@@ -980,15 +980,15 @@ LABEL_28:
       goto LABEL_24;
     }
 
-    v35 = [v24 requestID];
-    v36 = [MEMORY[0x1E695DF00] date];
-    [v36 timeIntervalSinceDate:v10];
+    requestID4 = [v24 requestID];
+    date2 = [MEMORY[0x1E695DF00] date];
+    [date2 timeIntervalSinceDate:v10];
     *buf = 138544130;
     v59 = v12;
     v60 = 2114;
-    v61 = v35;
+    selfCopy = requestID4;
     v62 = 2114;
-    v63 = v19;
+    selfCopy2 = v19;
     v64 = 2048;
     v65 = v37;
     v38 = "Response: %{public}@<%{public}@> returned for %{public}@ in %.4lf seconds";
@@ -1003,15 +1003,15 @@ LABEL_28:
       goto LABEL_24;
     }
 
-    v35 = [v24 requestID];
-    v36 = [MEMORY[0x1E695DF00] date];
-    [v36 timeIntervalSinceDate:v10];
+    requestID4 = [v24 requestID];
+    date2 = [MEMORY[0x1E695DF00] date];
+    [date2 timeIntervalSinceDate:v10];
     *buf = 138543874;
     v59 = v12;
     v60 = 2114;
-    v61 = v35;
+    selfCopy = requestID4;
     v62 = 2048;
-    v63 = v42;
+    selfCopy2 = v42;
     v38 = "Response: %{public}@<%{public}@> returned in %.4lf seconds";
     v39 = v27;
     v40 = 32;
@@ -1027,14 +1027,14 @@ LABEL_24:
   return v25;
 }
 
-- (id)adjustVolume:(int64_t)a3 outputDeviceUID:(id)a4 details:(id)a5
+- (id)adjustVolume:(int64_t)volume outputDeviceUID:(id)d details:(id)details
 {
   v65 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
+  dCopy = d;
+  detailsCopy = details;
   v10 = [MEMORY[0x1E695DF00] now];
   v11 = @"outputContextController.adjustOutputDeviceVolume";
-  if (!v8)
+  if (!dCopy)
   {
     v11 = @"outputContextController.adjustVolume";
   }
@@ -1042,24 +1042,24 @@ LABEL_24:
   v12 = v11;
   v13 = objc_alloc(MEMORY[0x1E696AEC0]);
   v14 = objc_opt_class();
-  v15 = [(MROutputContextController *)self uniqueIdentifier];
-  v16 = MRMediaRemoteVolumeControlAdjustmentDescription(a3);
+  uniqueIdentifier = [(MROutputContextController *)self uniqueIdentifier];
+  v16 = MRMediaRemoteVolumeControlAdjustmentDescription(volume);
   v17 = v16;
-  if (v8)
+  if (dCopy)
   {
-    v18 = [v13 initWithFormat:@"<%@:%p> endpont=%@, outputDevice=%@ -> adjustment=%@", v14, self, v15, v8, v16];
+    v18 = [v13 initWithFormat:@"<%@:%p> endpont=%@, outputDevice=%@ -> adjustment=%@", v14, self, uniqueIdentifier, dCopy, v16];
   }
 
   else
   {
-    v18 = [v13 initWithFormat:@"<%@:%p> endpoint=%@ -> adjustment=%@", v14, self, v15, v16, v46];
+    v18 = [v13 initWithFormat:@"<%@:%p> endpoint=%@ -> adjustment=%@", v14, self, uniqueIdentifier, v16, v46];
   }
 
   v19 = v18;
 
   v20 = objc_alloc(MEMORY[0x1E696AD60]);
-  v21 = [v9 requestID];
-  v22 = [v20 initWithFormat:@"%@<%@>", v12, v21];
+  requestID = [detailsCopy requestID];
+  v22 = [v20 initWithFormat:@"%@<%@>", v12, requestID];
 
   if (v19)
   {
@@ -1078,21 +1078,21 @@ LABEL_24:
   v54[1] = 3221225472;
   v54[2] = __66__MROutputContextController_adjustVolume_outputDeviceUID_details___block_invoke;
   v54[3] = &__block_descriptor_40_e5_v8__0l;
-  v54[4] = a3;
+  v54[4] = volume;
   v51[0] = MEMORY[0x1E69E9820];
   v51[1] = 3221225472;
   v51[2] = __66__MROutputContextController_adjustVolume_outputDeviceUID_details___block_invoke_2;
   v51[3] = &unk_1E769CF50;
-  v53 = a3;
-  v52 = v9;
+  volumeCopy = volume;
+  v52 = detailsCopy;
   v48[0] = MEMORY[0x1E69E9820];
   v48[1] = 3221225472;
   v48[2] = __66__MROutputContextController_adjustVolume_outputDeviceUID_details___block_invoke_3;
   v48[3] = &unk_1E769CF78;
-  v50 = a3;
+  volumeCopy2 = volume;
   v24 = v52;
   v49 = v24;
-  v25 = [(MROutputContextController *)self _performOperationForOutputDeviceUID:v8 withCapabilities:4 systemOperation:v54 deviceOperation:v51 groupOperation:v48];
+  v25 = [(MROutputContextController *)self _performOperationForOutputDeviceUID:dCopy withCapabilities:4 systemOperation:v54 deviceOperation:v51 groupOperation:v48];
   v26 = _MRLogForCategory(0xAuLL);
   v27 = v26;
   if (v25)
@@ -1102,15 +1102,15 @@ LABEL_24:
     {
       if (v28)
       {
-        v29 = [v24 requestID];
-        v47 = [MEMORY[0x1E695DF00] date];
-        [v47 timeIntervalSinceDate:v10];
+        requestID2 = [v24 requestID];
+        date = [MEMORY[0x1E695DF00] date];
+        [date timeIntervalSinceDate:v10];
         *buf = 138544386;
         v56 = v12;
         v57 = 2114;
-        v58 = v29;
+        selfCopy = requestID2;
         v59 = 2114;
-        v60 = v25;
+        selfCopy2 = v25;
         v61 = 2114;
         v62 = v19;
         v63 = 2048;
@@ -1125,15 +1125,15 @@ LABEL_28:
 
     else if (v28)
     {
-      v29 = [v24 requestID];
-      v47 = [MEMORY[0x1E695DF00] date];
-      [v47 timeIntervalSinceDate:v10];
+      requestID2 = [v24 requestID];
+      date = [MEMORY[0x1E695DF00] date];
+      [date timeIntervalSinceDate:v10];
       *buf = 138544130;
       v56 = v12;
       v57 = 2114;
-      v58 = v29;
+      selfCopy = requestID2;
       v59 = 2114;
-      v60 = v25;
+      selfCopy2 = v25;
       v61 = 2048;
       v62 = v45;
       v31 = "Response: %{public}@<%{public}@> returned with error <%{public}@> in %.4lf seconds";
@@ -1152,10 +1152,10 @@ LABEL_28:
     *buf = 138543874;
     v56 = v41;
     v57 = 2048;
-    v58 = self;
+    selfCopy = self;
     v59 = 2114;
-    v60 = self;
-    v35 = v41;
+    selfCopy2 = self;
+    requestID3 = v41;
     _os_log_impl(&dword_1A2860000, v27, OS_LOG_TYPE_DEFAULT, "<%{public}@: %p> Existing State: %{public}@", buf, 0x20u);
     goto LABEL_23;
   }
@@ -1168,15 +1168,15 @@ LABEL_28:
       goto LABEL_24;
     }
 
-    v35 = [v24 requestID];
-    v36 = [MEMORY[0x1E695DF00] date];
-    [v36 timeIntervalSinceDate:v10];
+    requestID3 = [v24 requestID];
+    date2 = [MEMORY[0x1E695DF00] date];
+    [date2 timeIntervalSinceDate:v10];
     *buf = 138544130;
     v56 = v12;
     v57 = 2114;
-    v58 = v35;
+    selfCopy = requestID3;
     v59 = 2114;
-    v60 = v19;
+    selfCopy2 = v19;
     v61 = 2048;
     v62 = v37;
     v38 = "Response: %{public}@<%{public}@> returned for %{public}@ in %.4lf seconds";
@@ -1191,15 +1191,15 @@ LABEL_28:
       goto LABEL_24;
     }
 
-    v35 = [v24 requestID];
-    v36 = [MEMORY[0x1E695DF00] date];
-    [v36 timeIntervalSinceDate:v10];
+    requestID3 = [v24 requestID];
+    date2 = [MEMORY[0x1E695DF00] date];
+    [date2 timeIntervalSinceDate:v10];
     *buf = 138543874;
     v56 = v12;
     v57 = 2114;
-    v58 = v35;
+    selfCopy = requestID3;
     v59 = 2048;
-    v60 = v42;
+    selfCopy2 = v42;
     v38 = "Response: %{public}@<%{public}@> returned in %.4lf seconds";
     v39 = v27;
     v40 = 32;
@@ -1215,9 +1215,9 @@ LABEL_24:
   return v25;
 }
 
-- (void)modifyTopologyWithRequest:(id)a3 completion:(id)a4
+- (void)modifyTopologyWithRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   outputContext = self->_outputContext;
   serialQueue = self->_serialQueue;
   v10[0] = MEMORY[0x1E69E9820];
@@ -1225,9 +1225,9 @@ LABEL_24:
   v10[2] = __66__MROutputContextController_modifyTopologyWithRequest_completion___block_invoke;
   v10[3] = &unk_1E769AB50;
   v10[4] = self;
-  v11 = v6;
-  v9 = v6;
-  [(MRAVOutputContext *)outputContext modifyTopologyWithRequest:a3 withReplyQueue:serialQueue completion:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [(MRAVOutputContext *)outputContext modifyTopologyWithRequest:request withReplyQueue:serialQueue completion:v10];
 }
 
 void __66__MROutputContextController_modifyTopologyWithRequest_completion___block_invoke(uint64_t a1, void *a2)
@@ -1246,11 +1246,11 @@ void __66__MROutputContextController_modifyTopologyWithRequest_completion___bloc
   }
 }
 
-- (void)_handleLocalDeviceVolumeDidChangeNotification:(id)a3
+- (void)_handleLocalDeviceVolumeDidChangeNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:@"kMRMediaRemoteOriginUserInfoKey"];
+  notificationCopy = notification;
+  userInfo = [notificationCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:@"kMRMediaRemoteOriginUserInfoKey"];
 
   if ([v6 isLocal])
   {
@@ -1260,7 +1260,7 @@ void __66__MROutputContextController_modifyTopologyWithRequest_completion___bloc
     v8[2] = __75__MROutputContextController__handleLocalDeviceVolumeDidChangeNotification___block_invoke;
     v8[3] = &unk_1E769A4A0;
     v8[4] = self;
-    v9 = v4;
+    v9 = notificationCopy;
     dispatch_async(serialQueue, v8);
   }
 }
@@ -1273,11 +1273,11 @@ void __75__MROutputContextController__handleLocalDeviceVolumeDidChangeNotificati
   [*(a1 + 32) setLocalVolume:?];
 }
 
-- (void)_handleLocalDeviceVolumeControlCapabilitiesDidChangeNotification:(id)a3
+- (void)_handleLocalDeviceVolumeControlCapabilitiesDidChangeNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:@"kMRMediaRemoteOriginUserInfoKey"];
+  notificationCopy = notification;
+  userInfo = [notificationCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:@"kMRMediaRemoteOriginUserInfoKey"];
 
   if ([v6 isLocal])
   {
@@ -1287,7 +1287,7 @@ void __75__MROutputContextController__handleLocalDeviceVolumeDidChangeNotificati
     v8[2] = __94__MROutputContextController__handleLocalDeviceVolumeControlCapabilitiesDidChangeNotification___block_invoke;
     v8[3] = &unk_1E769A4A0;
     v8[4] = self;
-    v9 = v4;
+    v9 = notificationCopy;
     dispatch_async(serialQueue, v8);
   }
 }
@@ -1299,11 +1299,11 @@ void __94__MROutputContextController__handleLocalDeviceVolumeControlCapabilities
   [*(a1 + 32) setLocalVolumeControlCapabilities:{objc_msgSend(v2, "intValue")}];
 }
 
-- (void)_handleLocalDeviceVolumeMutedDidChangeNotification:(id)a3
+- (void)_handleLocalDeviceVolumeMutedDidChangeNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:@"kMRMediaRemoteOriginUserInfoKey"];
+  notificationCopy = notification;
+  userInfo = [notificationCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:@"kMRMediaRemoteOriginUserInfoKey"];
 
   if ([v6 isLocal])
   {
@@ -1313,7 +1313,7 @@ void __94__MROutputContextController__handleLocalDeviceVolumeControlCapabilities
     v8[2] = __80__MROutputContextController__handleLocalDeviceVolumeMutedDidChangeNotification___block_invoke;
     v8[3] = &unk_1E769A4A0;
     v8[4] = self;
-    v9 = v4;
+    v9 = notificationCopy;
     dispatch_async(serialQueue, v8);
   }
 }
@@ -1325,91 +1325,91 @@ void __80__MROutputContextController__handleLocalDeviceVolumeMutedDidChangeNotif
   [*(a1 + 32) setLocalVolumeMuted:{objc_msgSend(v2, "BOOLValue")}];
 }
 
-- (void)_handleOutputDeviceVolumeControlCapabilitiesDidChangeNotification:(id)a3
+- (void)_handleOutputDeviceVolumeControlCapabilitiesDidChangeNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   serialQueue = self->_serialQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __95__MROutputContextController__handleOutputDeviceVolumeControlCapabilitiesDidChangeNotification___block_invoke;
   v7[3] = &unk_1E769A4A0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = notificationCopy;
+  selfCopy = self;
+  v6 = notificationCopy;
   dispatch_async(serialQueue, v7);
 }
 
-- (void)_handleOutputDeviceVolumeDidChangeNotification:(id)a3
+- (void)_handleOutputDeviceVolumeDidChangeNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   serialQueue = self->_serialQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __76__MROutputContextController__handleOutputDeviceVolumeDidChangeNotification___block_invoke;
   v7[3] = &unk_1E769A4A0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = notificationCopy;
+  selfCopy = self;
+  v6 = notificationCopy;
   dispatch_async(serialQueue, v7);
 }
 
-- (void)_handleOutputDeviceVolumeMutedDidChangeNotification:(id)a3
+- (void)_handleOutputDeviceVolumeMutedDidChangeNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   serialQueue = self->_serialQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __81__MROutputContextController__handleOutputDeviceVolumeMutedDidChangeNotification___block_invoke;
   v7[3] = &unk_1E769A4A0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = notificationCopy;
+  selfCopy = self;
+  v6 = notificationCopy;
   dispatch_async(serialQueue, v7);
 }
 
-- (void)_handleOutputDeviceAddedNotification:(id)a3
+- (void)_handleOutputDeviceAddedNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   serialQueue = self->_serialQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __66__MROutputContextController__handleOutputDeviceAddedNotification___block_invoke;
   v7[3] = &unk_1E769A4A0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = notificationCopy;
+  selfCopy = self;
+  v6 = notificationCopy;
   dispatch_async(serialQueue, v7);
 }
 
-- (void)_handleOutputDeviceDidChangeNotification:(id)a3
+- (void)_handleOutputDeviceDidChangeNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   serialQueue = self->_serialQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __70__MROutputContextController__handleOutputDeviceDidChangeNotification___block_invoke;
   v7[3] = &unk_1E769A4A0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = notificationCopy;
+  selfCopy = self;
+  v6 = notificationCopy;
   dispatch_async(serialQueue, v7);
 }
 
-- (void)_handleOutputDeviceRemovedNotification:(id)a3
+- (void)_handleOutputDeviceRemovedNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   serialQueue = self->_serialQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __68__MROutputContextController__handleOutputDeviceRemovedNotification___block_invoke;
   v7[3] = &unk_1E769A4A0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = notificationCopy;
+  selfCopy = self;
+  v6 = notificationCopy;
   dispatch_async(serialQueue, v7);
 }
 
-- (void)_handleOutputDevicesReloadedNotification:(id)a3
+- (void)_handleOutputDevicesReloadedNotification:(id)notification
 {
   serialQueue = self->_serialQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -1420,14 +1420,14 @@ void __80__MROutputContextController__handleLocalDeviceVolumeMutedDidChangeNotif
   dispatch_async(serialQueue, block);
 }
 
-- (void)_handlePredictedOutputDeviceDidChangeNotification:(id)a3
+- (void)_handlePredictedOutputDeviceDidChangeNotification:(id)notification
 {
   v4 = MEMORY[0x1E695DF90];
-  v5 = a3;
+  notificationCopy = notification;
   v6 = objc_alloc_init(v4);
-  v7 = [v5 userInfo];
+  userInfo = [notificationCopy userInfo];
 
-  v8 = [v7 objectForKeyedSubscript:@"MRAVOutputContextOutputDeviceUserInfoKey"];
+  v8 = [userInfo objectForKeyedSubscript:@"MRAVOutputContextOutputDeviceUserInfoKey"];
 
   [v6 setObject:v8 forKeyedSubscript:@"MROutputContextDataSourceOutputDeviceUserInfoKey"];
   v10[0] = MEMORY[0x1E69E9820];
@@ -1446,7 +1446,7 @@ void __79__MROutputContextController__handlePredictedOutputDeviceDidChangeNotifi
   [v2 postNotificationName:@"MROutputContextDataSourceDidChangePredictedOutputDeviceNotification" object:*(a1 + 32) userInfo:*(a1 + 40)];
 }
 
-- (void)setLocalVolumeControlCapabilities:(unsigned int)a3
+- (void)setLocalVolumeControlCapabilities:(unsigned int)capabilities
 {
   v29 = *MEMORY[0x1E69E9840];
   if (-[MROutputContextDataSource shouldLog](self, "shouldLog") || (+[MRUserSettings currentSettings](MRUserSettings, "currentSettings"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 verboseOutputContextDataSourceLogging], v5, v6))
@@ -1456,11 +1456,11 @@ void __79__MROutputContextController__handlePredictedOutputDeviceDidChangeNotifi
     {
       v8 = objc_opt_class();
       v9 = v8;
-      v10 = MRMediaRemotePickedRouteVolumeControlCapabilitiesCopyDescription(a3);
+      v10 = MRMediaRemotePickedRouteVolumeControlCapabilitiesCopyDescription(capabilities);
       *&v23 = 5.8383e-34;
       v24 = v8;
       v25 = 2048;
-      v26 = self;
+      selfCopy = self;
       v27 = 2112;
       v28 = v10;
       _os_log_impl(&dword_1A2860000, v7, OS_LOG_TYPE_DEFAULT, "<%{public}@: %p> Observed localVolumeCapabilities changed to <%@>", &v23, 0x20u);
@@ -1472,28 +1472,28 @@ void __79__MROutputContextController__handlePredictedOutputDeviceDidChangeNotifi
     v7 = _MRLogForCategory(0);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
-      [(MROutputContextController *)self setLocalVolumeControlCapabilities:a3];
+      [(MROutputContextController *)self setLocalVolumeControlCapabilities:capabilities];
     }
   }
 
   dispatch_assert_queue_V2(self->_serialQueue);
   localVolumeControlCapabilities = self->_localVolumeControlCapabilities;
-  if (!self->_localVolumeControlCapabilitiesInitialized || localVolumeControlCapabilities != a3)
+  if (!self->_localVolumeControlCapabilitiesInitialized || localVolumeControlCapabilities != capabilities)
   {
     self->_localVolumeControlCapabilitiesInitialized = 1;
-    self->_localVolumeControlCapabilities = a3;
-    v14 = [(MROutputContextController *)self _onSerialQueue_localOutputDevice];
-    v15 = v14;
-    if (v14)
+    self->_localVolumeControlCapabilities = capabilities;
+    _onSerialQueue_localOutputDevice = [(MROutputContextController *)self _onSerialQueue_localOutputDevice];
+    v15 = _onSerialQueue_localOutputDevice;
+    if (_onSerialQueue_localOutputDevice)
     {
-      v16 = [v14 volumeCapabilities];
-      if (v16 != self->_localVolumeControlCapabilities)
+      volumeCapabilities = [_onSerialQueue_localOutputDevice volumeCapabilities];
+      if (volumeCapabilities != self->_localVolumeControlCapabilities)
       {
         [MROutputContextController setLocalVolumeControlCapabilities:];
-        v16 = v23;
+        volumeCapabilities = v23;
       }
 
-      [(MROutputContextDataSource *)self notifyVolumeCapabilitiesDidChange:v16 outputDevice:v15];
+      [(MROutputContextDataSource *)self notifyVolumeCapabilitiesDidChange:volumeCapabilities outputDevice:v15];
       [(MROutputContextController *)self _onSerialQueue_reevaluateGroupVolumeControlCapabilities];
       v17 = self->_localVolumeControlCapabilities;
       if ((v17 & 2) != 0 && (localVolumeControlCapabilities & 2) == 0 && self->_localVolumeInitialized)
@@ -1513,9 +1513,9 @@ void __79__MROutputContextController__handlePredictedOutputDeviceDidChangeNotifi
 
       if ((v17 & 8) != 0 && (localVolumeControlCapabilities & 8) == 0 && self->_localVolumeMutedInitialized)
       {
-        v21 = [v15 isVolumeMuted];
+        isVolumeMuted = [v15 isVolumeMuted];
         localVolumeMuted = self->_localVolumeMuted;
-        if (localVolumeMuted != v21)
+        if (localVolumeMuted != isVolumeMuted)
         {
           [MROutputContextController setLocalVolumeControlCapabilities:];
           localVolumeMuted = v23;
@@ -1532,7 +1532,7 @@ void __79__MROutputContextController__handlePredictedOutputDeviceDidChangeNotifi
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setLocalVolume:(float)a3
+- (void)setLocalVolume:(float)volume
 {
   v19 = *MEMORY[0x1E69E9840];
   if (-[MROutputContextDataSource shouldLog](self, "shouldLog") || (+[MRUserSettings currentSettings](MRUserSettings, "currentSettings"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 verboseOutputContextDataSourceLogging], v6, v7))
@@ -1545,7 +1545,7 @@ void __79__MROutputContextController__handlePredictedOutputDeviceDidChangeNotifi
       *&v17[12] = 2048;
       *&v17[14] = self;
       *&v17[22] = 2048;
-      v18 = a3;
+      volumeCopy = volume;
       v9 = *&v17[4];
       _os_log_impl(&dword_1A2860000, v8, OS_LOG_TYPE_DEFAULT, "<%{public}@: %p> Observed localVolume changed to <%f>", v17, 0x20u);
     }
@@ -1561,16 +1561,16 @@ void __79__MROutputContextController__handlePredictedOutputDeviceDidChangeNotifi
   }
 
   dispatch_assert_queue_V2(self->_serialQueue);
-  if (!self->_localVolumeInitialized || vabds_f32(a3, self->_localVolume) > 0.00000011921)
+  if (!self->_localVolumeInitialized || vabds_f32(volume, self->_localVolume) > 0.00000011921)
   {
     self->_localVolumeInitialized = 1;
     p_localVolume = &self->_localVolume;
-    self->_localVolume = a3;
-    v12 = [(MROutputContextController *)self _onSerialQueue_localOutputDevice];
-    v13 = v12;
-    if (v12)
+    self->_localVolume = volume;
+    _onSerialQueue_localOutputDevice = [(MROutputContextController *)self _onSerialQueue_localOutputDevice];
+    v13 = _onSerialQueue_localOutputDevice;
+    if (_onSerialQueue_localOutputDevice)
     {
-      if ([v12 volumeCapabilities] != self->_localVolumeControlCapabilities)
+      if ([_onSerialQueue_localOutputDevice volumeCapabilities] != self->_localVolumeControlCapabilities)
       {
         [(MROutputContextController *)a2 setLocalVolume:?];
       }
@@ -1596,9 +1596,9 @@ void __79__MROutputContextController__handlePredictedOutputDeviceDidChangeNotifi
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setLocalVolumeMuted:(BOOL)a3
+- (void)setLocalVolumeMuted:(BOOL)muted
 {
-  v3 = a3;
+  mutedCopy = muted;
   v19 = *MEMORY[0x1E69E9840];
   if (-[MROutputContextDataSource shouldLog](self, "shouldLog") || (+[MRUserSettings currentSettings](MRUserSettings, "currentSettings"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 verboseOutputContextDataSourceLogging], v5, v6))
   {
@@ -1609,7 +1609,7 @@ void __79__MROutputContextController__handlePredictedOutputDeviceDidChangeNotifi
       v9 = @"NO";
       *v17 = 138543874;
       *&v17[4] = v8;
-      if (v3)
+      if (mutedCopy)
       {
         v9 = @"YES";
       }
@@ -1633,28 +1633,28 @@ void __79__MROutputContextController__handlePredictedOutputDeviceDidChangeNotifi
   }
 
   dispatch_assert_queue_V2(self->_serialQueue);
-  if (!self->_localVolumeMutedInitialized || self->_localVolumeMuted != v3)
+  if (!self->_localVolumeMutedInitialized || self->_localVolumeMuted != mutedCopy)
   {
     self->_localVolumeMutedInitialized = 1;
-    self->_localVolumeMuted = v3;
-    v12 = [(MROutputContextController *)self _onSerialQueue_localOutputDevice];
-    v13 = v12;
-    if (!v12)
+    self->_localVolumeMuted = mutedCopy;
+    _onSerialQueue_localOutputDevice = [(MROutputContextController *)self _onSerialQueue_localOutputDevice];
+    v13 = _onSerialQueue_localOutputDevice;
+    if (!_onSerialQueue_localOutputDevice)
     {
 LABEL_13:
 
       goto LABEL_11;
     }
 
-    v14 = [v12 volumeCapabilities];
-    if (v14 == self->_localVolumeControlCapabilities)
+    volumeCapabilities = [_onSerialQueue_localOutputDevice volumeCapabilities];
+    if (volumeCapabilities == self->_localVolumeControlCapabilities)
     {
-      if ((v14 & 8) != 0)
+      if ((volumeCapabilities & 8) != 0)
       {
 LABEL_16:
-        v15 = [v13 isVolumeMuted];
+        isVolumeMuted = [v13 isVolumeMuted];
         localVolumeMuted = self->_localVolumeMuted;
-        if (localVolumeMuted != v15)
+        if (localVolumeMuted != isVolumeMuted)
         {
           [MROutputContextController setLocalVolumeMuted:];
           localVolumeMuted = v17[0];
@@ -1756,19 +1756,19 @@ uint64_t __47__MROutputContextController__inititalizeVolume__block_invoke_308(ui
   return result;
 }
 
-- (id)_onSerialQueue_performOperationForOutputDeviceUID:(int)a3 withCapabilities:(void *)a4 systemOperation:(void *)a5 deviceOperation:(void *)a6 groupOperation:
+- (id)_onSerialQueue_performOperationForOutputDeviceUID:(int)d withCapabilities:(void *)capabilities systemOperation:(void *)operation deviceOperation:(void *)deviceOperation groupOperation:
 {
   v42 = *MEMORY[0x1E69E9840];
   v11 = a2;
-  v31 = a4;
-  v30 = a5;
-  v12 = a6;
-  if (!a1)
+  capabilitiesCopy = capabilities;
+  operationCopy = operation;
+  deviceOperationCopy = deviceOperation;
+  if (!self)
   {
     goto LABEL_37;
   }
 
-  dispatch_assert_queue_V2(*(a1 + 64));
+  dispatch_assert_queue_V2(*(self + 64));
   if (!v11)
   {
     OUTLINED_FUNCTION_37(36);
@@ -1779,17 +1779,17 @@ uint64_t __47__MROutputContextController__inititalizeVolume__block_invoke_308(ui
 
     else
     {
-      if ([*(a1 + 24) supportsVolumeControl])
+      if ([*(self + 24) supportsVolumeControl])
       {
-        v23 = [*(a1 + 24) outputDevices];
-        if ([v23 count] <= 1)
+        outputDevices = [*(self + 24) outputDevices];
+        if ([outputDevices count] <= 1)
         {
           OUTLINED_FUNCTION_16();
           v33 = 3221225472;
           v34 = __143__MROutputContextController__onSerialQueue_performOperationForOutputDeviceUID_withCapabilities_systemOperation_deviceOperation_groupOperation___block_invoke;
           v35 = &unk_1E769CDC0;
-          v36 = a1;
-          v24 = [v23 msv_firstWhere:v32];
+          selfCopy = self;
+          v24 = [outputDevices msv_firstWhere:v32];
 
           if (v24)
           {
@@ -1800,7 +1800,7 @@ uint64_t __47__MROutputContextController__inititalizeVolume__block_invoke_308(ui
           }
         }
 
-        v12[2](v12, *(a1 + 24));
+        deviceOperationCopy[2](deviceOperationCopy, *(self + 24));
 
         goto LABEL_37;
       }
@@ -1808,7 +1808,7 @@ uint64_t __47__MROutputContextController__inititalizeVolume__block_invoke_308(ui
       OUTLINED_FUNCTION_37(80);
       if (!v21)
       {
-        v31[2]();
+        capabilitiesCopy[2]();
 LABEL_37:
         Error = 0;
         goto LABEL_40;
@@ -1821,7 +1821,7 @@ LABEL_37:
     goto LABEL_40;
   }
 
-  v13 = [a1 outputDevicesForUID:v11];
+  v13 = [self outputDevicesForUID:v11];
   if ([v13 count])
   {
     v39 = 0u;
@@ -1850,19 +1850,19 @@ LABEL_37:
         }
 
         v20 = *(*(&v37 + 1) + 8 * i);
-        if ([(MROutputContextController *)a1 _onSerialQueue_isLocalOutputDevice:v20])
+        if ([(MROutputContextController *)self _onSerialQueue_isLocalOutputDevice:v20])
         {
           OUTLINED_FUNCTION_37(80);
           if (!v21)
           {
-            v31[2]();
+            capabilitiesCopy[2]();
             continue;
           }
         }
 
-        else if (([v20 volumeCapabilities] & a3) != 0)
+        else if (([v20 volumeCapabilities] & d) != 0)
         {
-          v30[2](v30, v20);
+          operationCopy[2](operationCopy, v20);
           continue;
         }
 
@@ -1882,12 +1882,12 @@ LABEL_32:
     }
   }
 
-  if ([a1 isOutputContextEmpty] && objc_msgSend(a1, "isLocalDeviceDesignatedGroupLeader"))
+  if ([self isOutputContextEmpty] && objc_msgSend(self, "isLocalDeviceDesignatedGroupLeader"))
   {
     OUTLINED_FUNCTION_37(80);
     if (!v21)
     {
-      v31[2]();
+      capabilitiesCopy[2]();
       Error = 0;
       goto LABEL_33;
     }
@@ -1909,24 +1909,24 @@ LABEL_40:
   return Error;
 }
 
-- (uint64_t)_onSerialQueue_isLocalOutputDevice:(uint64_t)a1
+- (uint64_t)_onSerialQueue_isLocalOutputDevice:(uint64_t)device
 {
   v3 = a2;
-  if (a1)
+  if (device)
   {
-    if (([*(a1 + 24) supportsVolumeControl] & 1) == 0)
+    if (([*(device + 24) supportsVolumeControl] & 1) == 0)
     {
-      v4 = [*(a1 + 24) outputDevices];
+      outputDevices = [*(device + 24) outputDevices];
       OUTLINED_FUNCTION_0_3();
       OUTLINED_FUNCTION_3_2();
       v9 = __64__MROutputContextController__onSerialQueue_isLocalOutputDevice___block_invoke;
       v10 = &unk_1E769CDC0;
       v11 = v3;
-      v5 = [v4 msv_firstWhere:v8];
+      v5 = [outputDevices msv_firstWhere:v8];
       if (v5)
       {
 
-        a1 = 1;
+        device = 1;
         v6 = v11;
 LABEL_10:
 
@@ -1938,22 +1938,22 @@ LABEL_10:
     {
       if (![v3 supportsBluetoothSharing])
       {
-        a1 = 1;
+        device = 1;
         goto LABEL_12;
       }
 
-      v4 = [*(a1 + 24) outputDevices];
-      v6 = [v4 msv_filter:&__block_literal_global_299];
-      a1 = [v6 count] < 2;
+      outputDevices = [*(device + 24) outputDevices];
+      v6 = [outputDevices msv_filter:&__block_literal_global_299];
+      device = [v6 count] < 2;
       goto LABEL_10;
     }
 
-    a1 = 0;
+    device = 0;
   }
 
 LABEL_12:
 
-  return a1;
+  return device;
 }
 
 void __129__MROutputContextController__performOperationForOutputDeviceUID_withCapabilities_systemOperation_deviceOperation_groupOperation___block_invoke(uint64_t a1)

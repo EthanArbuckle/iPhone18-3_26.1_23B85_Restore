@@ -1,74 +1,74 @@
 @interface TVRCUTSMediaInfoRequest
-- (void)requestForCanonicalID:(id)a3 includeRoles:(BOOL)a4 completion:(id)a5;
+- (void)requestForCanonicalID:(id)d includeRoles:(BOOL)roles completion:(id)completion;
 @end
 
 @implementation TVRCUTSMediaInfoRequest
 
-- (void)requestForCanonicalID:(id)a3 includeRoles:(BOOL)a4 completion:(id)a5
+- (void)requestForCanonicalID:(id)d includeRoles:(BOOL)roles completion:(id)completion
 {
-  v6 = a4;
+  rolesCopy = roles;
   v46[8] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  if ([v8 length])
+  dCopy = d;
+  completionCopy = completion;
+  if ([dCopy length])
   {
-    v37 = self;
-    v10 = [MEMORY[0x277CB8F48] ams_sharedAccountStore];
-    v11 = [v10 ams_activeiTunesAccount];
-    v12 = [v11 ams_storefront];
-    v13 = [v12 componentsSeparatedByString:@"-"];
-    v14 = [v13 firstObject];
-    v15 = v14;
+    selfCopy = self;
+    ams_sharedAccountStore = [MEMORY[0x277CB8F48] ams_sharedAccountStore];
+    ams_activeiTunesAccount = [ams_sharedAccountStore ams_activeiTunesAccount];
+    ams_storefront = [ams_activeiTunesAccount ams_storefront];
+    v13 = [ams_storefront componentsSeparatedByString:@"-"];
+    firstObject = [v13 firstObject];
+    v15 = firstObject;
     v16 = @"143441";
-    if (v14)
+    if (firstObject)
     {
-      v16 = v14;
+      v16 = firstObject;
     }
 
     v38 = v16;
 
     v17 = &unk_287E669E8;
-    if (v6)
+    if (rolesCopy)
     {
       v17 = &unk_287E669D0;
     }
 
     v18 = v17;
-    if (v6)
+    if (rolesCopy)
     {
-      v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"view/product/%@", v8];
+      dCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"view/product/%@", dCopy];
       v20 = &unk_287E66C28;
     }
 
     else
     {
       v20 = MEMORY[0x277CBEC10];
-      v19 = @"contents";
+      dCopy = @"contents";
     }
 
-    v22 = [MEMORY[0x277CBEAF8] preferredLanguages];
-    v23 = [v22 firstObject];
-    v24 = v23;
+    preferredLanguages = [MEMORY[0x277CBEAF8] preferredLanguages];
+    firstObject2 = [preferredLanguages firstObject];
+    v24 = firstObject2;
     v25 = @"en-US";
-    if (v23)
+    if (firstObject2)
     {
-      v25 = v23;
+      v25 = firstObject2;
     }
 
     v26 = v25;
 
-    v27 = [MEMORY[0x277CBEAF8] currentLocale];
-    v28 = [v27 countryCode];
-    v29 = v28;
+    currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+    countryCode = [currentLocale countryCode];
+    v29 = countryCode;
     v30 = @"US";
-    if (v28)
+    if (countryCode)
     {
-      v30 = v28;
+      v30 = countryCode;
     }
 
     v31 = v30;
 
-    if (v6)
+    if (rolesCopy)
     {
       v32 = &unk_287E66C50;
     }
@@ -77,7 +77,7 @@
     {
       v45[0] = @"ids";
       v45[1] = @"profile";
-      v46[0] = v8;
+      v46[0] = dCopy;
       v46[1] = @"Full";
       v45[2] = @"caller";
       v45[3] = @"locale";
@@ -94,7 +94,7 @@
       v32 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v46 forKeys:v45 count:8];
     }
 
-    v33 = [(TVRCUTSMediaInfoRequest *)v37 _requestPropertiesForEndPoint:v19 apiVersion:v18 headersDict:v20 queryParamsDict:v32];
+    v33 = [(TVRCUTSMediaInfoRequest *)selfCopy _requestPropertiesForEndPoint:dCopy apiVersion:v18 headersDict:v20 queryParamsDict:v32];
 
     v34 = [objc_alloc(MEMORY[0x277D7A980]) initWithRequestProperties:v33];
     objc_initWeak(&location, v34);
@@ -103,12 +103,12 @@
     v39[2] = __73__TVRCUTSMediaInfoRequest_requestForCanonicalID_includeRoles_completion___block_invoke;
     v39[3] = &unk_279D82370;
     objc_copyWeak(&v42, &location);
-    v43 = v6;
-    v40 = v8;
-    v41 = v9;
+    v43 = rolesCopy;
+    v40 = dCopy;
+    v41 = completionCopy;
     [v34 setCompletionBlock:v39];
-    v35 = [MEMORY[0x277CCABD8] wlkDefaultConcurrentQueue];
-    [v35 addOperation:v34];
+    wlkDefaultConcurrentQueue = [MEMORY[0x277CCABD8] wlkDefaultConcurrentQueue];
+    [wlkDefaultConcurrentQueue addOperation:v34];
 
     objc_destroyWeak(&v42);
     objc_destroyWeak(&location);
@@ -117,7 +117,7 @@
   else
   {
     v21 = [TVRCMediaInfo mediaInfoWithDictionary:MEMORY[0x277CBEC10]];
-    (*(v9 + 2))(v9, v21, 0);
+    (*(completionCopy + 2))(completionCopy, v21, 0);
   }
 
   v36 = *MEMORY[0x277D85DE8];

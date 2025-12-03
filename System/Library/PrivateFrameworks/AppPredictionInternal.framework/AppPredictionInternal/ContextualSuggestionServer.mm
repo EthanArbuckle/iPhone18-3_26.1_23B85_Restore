@@ -1,26 +1,26 @@
 @interface ContextualSuggestionServer
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (_TtC21AppPredictionInternal26ContextualSuggestionServer)init;
-- (void)requestSnapshotsForEndpoints:(id)a3 completion:(id)a4;
+- (void)requestSnapshotsForEndpoints:(id)endpoints completion:(id)completion;
 @end
 
 @implementation ContextualSuggestionServer
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_2267D28B8(v7);
+  listenerCopy = listener;
+  connectionCopy = connection;
+  selfCopy = self;
+  v9 = sub_2267D28B8(connectionCopy);
 
   return v9 & 1;
 }
 
-- (void)requestSnapshotsForEndpoints:(id)a3 completion:(id)a4
+- (void)requestSnapshotsForEndpoints:(id)endpoints completion:(id)completion
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(completion);
   *(swift_allocObject() + 16) = v5;
-  v6 = self;
+  selfCopy = self;
   sub_2267D2C70(sub_2267D2EB4);
 }
 

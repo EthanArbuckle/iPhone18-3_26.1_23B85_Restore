@@ -1,10 +1,10 @@
 @interface FCAVAsset
 - (AVURLAsset)asset;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (FCAVAsset)init;
 - (FCContentArchive)contentArchive;
 - (FCContentManifest)contentManifest;
-- (id)initWithIdentifier:(void *)a3 remoteURL:(void *)a4 assetCache:(void *)a5 assetKeyCache:(void *)a6 assetKeyManager:(void *)a7 assetResourceLoader:(void *)a8 overrideMIMEType:;
+- (id)initWithIdentifier:(void *)identifier remoteURL:(void *)l assetCache:(void *)cache assetKeyCache:(void *)keyCache assetKeyManager:(void *)manager assetResourceLoader:(void *)loader overrideMIMEType:;
 - (uint64_t)isHLS;
 - (unint64_t)hash;
 - (void)_resetUnderlyingAsset;
@@ -38,54 +38,54 @@
   objc_exception_throw(v6);
 }
 
-- (id)initWithIdentifier:(void *)a3 remoteURL:(void *)a4 assetCache:(void *)a5 assetKeyCache:(void *)a6 assetKeyManager:(void *)a7 assetResourceLoader:(void *)a8 overrideMIMEType:
+- (id)initWithIdentifier:(void *)identifier remoteURL:(void *)l assetCache:(void *)cache assetKeyCache:(void *)keyCache assetKeyManager:(void *)manager assetResourceLoader:(void *)loader overrideMIMEType:
 {
   v15 = a2;
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  if (a1)
+  identifierCopy = identifier;
+  lCopy = l;
+  cacheCopy = cache;
+  keyCacheCopy = keyCache;
+  managerCopy = manager;
+  loaderCopy = loader;
+  if (self)
   {
-    v35.receiver = a1;
+    v35.receiver = self;
     v35.super_class = FCAVAsset;
-    a1 = objc_msgSendSuper2(&v35, sel_init);
-    if (a1)
+    self = objc_msgSendSuper2(&v35, sel_init);
+    if (self)
     {
       v22 = [v15 copy];
-      v23 = a1[2];
-      a1[2] = v22;
+      v23 = self[2];
+      self[2] = v22;
 
-      objc_storeWeak(a1 + 5, v17);
-      objc_storeWeak(a1 + 6, v18);
-      objc_storeWeak(a1 + 8, v19);
-      objc_storeWeak(a1 + 7, v20);
+      objc_storeWeak(self + 5, lCopy);
+      objc_storeWeak(self + 6, cacheCopy);
+      objc_storeWeak(self + 8, keyCacheCopy);
+      objc_storeWeak(self + 7, managerCopy);
       v24 = MEMORY[0x1E695DF20];
       v33[0] = MEMORY[0x1E69E9820];
       v33[1] = 3221225472;
       v33[2] = __120__FCAVAsset_initWithIdentifier_remoteURL_assetCache_assetKeyCache_assetKeyManager_assetResourceLoader_overrideMIMEType___block_invoke;
       v33[3] = &unk_1E7C36EC8;
-      v34 = v21;
+      v34 = loaderCopy;
       v25 = [v24 fc_dictionary:v33];
-      v26 = a1[3];
-      a1[3] = v25;
+      v26 = self[3];
+      self[3] = v25;
 
       v27 = objc_alloc_init(MEMORY[0x1E69B6920]);
-      v28 = a1[4];
-      a1[4] = v27;
+      v28 = self[4];
+      self[4] = v27;
 
-      v29 = [v16 copy];
-      v30 = a1[9];
-      a1[9] = v29;
+      v29 = [identifierCopy copy];
+      v30 = self[9];
+      self[9] = v29;
 
-      v31 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v31 addObserver:a1 selector:sel__resetUnderlyingAsset name:*MEMORY[0x1E6958128] object:0];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter addObserver:self selector:sel__resetUnderlyingAsset name:*MEMORY[0x1E6958128] object:0];
     }
   }
 
-  return a1;
+  return self;
 }
 
 void __120__FCAVAsset_initWithIdentifier_remoteURL_assetCache_assetKeyCache_assetKeyManager_assetResourceLoader_overrideMIMEType___block_invoke(uint64_t a1, void *a2)
@@ -97,15 +97,15 @@ void __120__FCAVAsset_initWithIdentifier_remoteURL_assetCache_assetKeyCache_asse
   [v4 fc_safelySetObjectAllowingNil:MEMORY[0x1E695E118] forKey:*MEMORY[0x1E6987BE0]];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if (v4)
+  if (equalCopy)
   {
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -123,9 +123,9 @@ void __120__FCAVAsset_initWithIdentifier_remoteURL_assetCache_assetKeyCache_asse
 
   if (v6)
   {
-    v7 = [(FCAVAsset *)self identifier];
-    v8 = [v6 identifier];
-    v9 = [v7 isEqualToString:v8];
+    identifier = [(FCAVAsset *)self identifier];
+    identifier2 = [v6 identifier];
+    v9 = [identifier isEqualToString:identifier2];
   }
 
   else
@@ -138,8 +138,8 @@ void __120__FCAVAsset_initWithIdentifier_remoteURL_assetCache_assetKeyCache_asse
 
 - (unint64_t)hash
 {
-  v2 = [(FCAVAsset *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(FCAVAsset *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
@@ -388,8 +388,8 @@ void __27__FCAVAsset_contentArchive__block_invoke(uint64_t a1, void *a2)
 {
   v12[1] = *MEMORY[0x1E69E9840];
   v3 = [FCContentManifest alloc];
-  v4 = [(FCAVAsset *)self identifier];
-  v12[0] = v4;
+  identifier = [(FCAVAsset *)self identifier];
+  v12[0] = identifier;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
   if (self)
   {
@@ -401,8 +401,8 @@ void __27__FCAVAsset_contentArchive__block_invoke(uint64_t a1, void *a2)
     WeakRetained = 0;
   }
 
-  v7 = [(FCAVAsset *)self identifier];
-  v8 = [WeakRetained contentKeyIdentifiersForAssetIdentifier:v7];
+  identifier2 = [(FCAVAsset *)self identifier];
+  v8 = [WeakRetained contentKeyIdentifiersForAssetIdentifier:identifier2];
   v9 = [(FCContentManifest *)v3 initWithAVAssetIDs:v5 avAssetKeyIDs:v8];
 
   v10 = *MEMORY[0x1E69E9840];
@@ -412,24 +412,24 @@ void __27__FCAVAsset_contentArchive__block_invoke(uint64_t a1, void *a2)
 
 - (uint64_t)isHLS
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v2 = *(a1 + 72);
-    v3 = [v2 pathExtension];
-    if ([v3 isEqualToString:@"m3u"])
+    v2 = *(self + 72);
+    pathExtension = [v2 pathExtension];
+    if ([pathExtension isEqualToString:@"m3u"])
     {
-      v1 = 1;
+      selfCopy = 1;
     }
 
     else
     {
-      v4 = [*(v1 + 72) pathExtension];
-      v1 = [v4 isEqualToString:@"m3u8"];
+      pathExtension2 = [*(selfCopy + 72) pathExtension];
+      selfCopy = [pathExtension2 isEqualToString:@"m3u8"];
     }
   }
 
-  return v1;
+  return selfCopy;
 }
 
 - (void)_resetUnderlyingAsset

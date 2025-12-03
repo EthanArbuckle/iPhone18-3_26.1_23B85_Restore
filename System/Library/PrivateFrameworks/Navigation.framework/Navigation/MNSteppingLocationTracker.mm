@@ -1,69 +1,69 @@
 @interface MNSteppingLocationTracker
-- (MNSteppingLocationTracker)initWithNavigationSession:(id)a3;
-- (id)_matchedLocationForLocation:(id)a3;
-- (id)matchedLocationForLocation:(id)a3;
+- (MNSteppingLocationTracker)initWithNavigationSession:(id)session;
+- (id)_matchedLocationForLocation:(id)location;
+- (id)matchedLocationForLocation:(id)location;
 - (int)transportType;
-- (void)arrivalUpdater:(id)a3 didUpdateArrivalInfo:(id)a4 previousState:(int64_t)a5;
-- (void)arrivalUpdaterDidArrive:(id)a3 atEndOfLegAtIndex:(unint64_t)a4;
-- (void)startTrackingWithInitialLocation:(id)a3 targetLegIndex:(unint64_t)a4;
+- (void)arrivalUpdater:(id)updater didUpdateArrivalInfo:(id)info previousState:(int64_t)state;
+- (void)arrivalUpdaterDidArrive:(id)arrive atEndOfLegAtIndex:(unint64_t)index;
+- (void)startTrackingWithInitialLocation:(id)location targetLegIndex:(unint64_t)index;
 - (void)stopTracking;
-- (void)updateLocation:(id)a3;
+- (void)updateLocation:(id)location;
 @end
 
 @implementation MNSteppingLocationTracker
 
-- (void)arrivalUpdaterDidArrive:(id)a3 atEndOfLegAtIndex:(unint64_t)a4
+- (void)arrivalUpdaterDidArrive:(id)arrive atEndOfLegAtIndex:(unint64_t)index
 {
-  v5 = [(MNLocationTracker *)self delegate:a3];
+  v5 = [(MNLocationTracker *)self delegate:arrive];
   [v5 locationTrackerDidArrive:self];
 }
 
-- (void)arrivalUpdater:(id)a3 didUpdateArrivalInfo:(id)a4 previousState:(int64_t)a5
+- (void)arrivalUpdater:(id)updater didUpdateArrivalInfo:(id)info previousState:(int64_t)state
 {
-  v7 = a4;
-  if ([v7 arrivalState] == 4)
+  infoCopy = info;
+  if ([infoCopy arrivalState] == 4)
   {
-    [(MNLocationTracker *)self _updateArrivalInfo:v7 previousState:a5];
+    [(MNLocationTracker *)self _updateArrivalInfo:infoCopy previousState:state];
   }
 }
 
-- (void)updateLocation:(id)a3
+- (void)updateLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   v5.receiver = self;
   v5.super_class = MNSteppingLocationTracker;
-  [(MNLocationTracker *)&v5 updateLocation:v4];
-  if (-[MNLocationTracker state](self, "state") == 1 && [v4 stepIndex] != 0x7FFFFFFFFFFFFFFFLL)
+  [(MNLocationTracker *)&v5 updateLocation:locationCopy];
+  if (-[MNLocationTracker state](self, "state") == 1 && [locationCopy stepIndex] != 0x7FFFFFFFFFFFFFFFLL)
   {
     [(MNLocationTracker *)self _setState:2];
   }
 }
 
-- (id)_matchedLocationForLocation:(id)a3
+- (id)_matchedLocationForLocation:(id)location
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  locationCopy = location;
   v5 = MNGetPuckTrackingLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [v4 uuid];
+    uuid = [locationCopy uuid];
     v17 = 138412290;
-    v18 = v6;
+    v18 = uuid;
     _os_log_impl(&dword_1D311E000, v5, OS_LOG_TYPE_INFO, "[MN] [%@] - Processing - in MNSteppingLocationTracker::_matchedLocationForLocation:", &v17, 0xCu);
   }
 
-  v7 = [objc_alloc(MEMORY[0x1E69A1E70]) initWithCLLocation:v4];
+  v7 = [objc_alloc(MEMORY[0x1E69A1E70]) initWithCLLocation:locationCopy];
   v8 = [(GEORouteMatcher *)self->_routeMatcher matchToRouteWithLocation:v7];
-  v9 = [v8 isGoodMatch];
+  isGoodMatch = [v8 isGoodMatch];
   v10 = [MNLocation alloc];
-  if (v9)
+  if (isGoodMatch)
   {
-    v11 = [(MNLocation *)v10 initWithRouteMatch:v8 rawLocation:v4 locationFixType:0];
+    v11 = [(MNLocation *)v10 initWithRouteMatch:v8 rawLocation:locationCopy locationFixType:0];
   }
 
   else
   {
-    v11 = [(MNLocation *)v10 initWithRawLocation:v4];
+    v11 = [(MNLocation *)v10 initWithRawLocation:locationCopy];
     [(MNLocation *)v11 setRouteMatch:v8];
   }
 
@@ -71,8 +71,8 @@
   v13 = *(MEMORY[0x1E69A19F8] + 8);
   if (GEOConfigGetBOOL())
   {
-    v14 = [v4 uuid];
-    [(MNLocation *)v11 setUuid:v14];
+    uuid2 = [locationCopy uuid];
+    [(MNLocation *)v11 setUuid:uuid2];
   }
 
   v15 = *MEMORY[0x1E69E9840];
@@ -92,34 +92,34 @@
   [(MNLocationTracker *)&v4 stopTracking];
 }
 
-- (void)startTrackingWithInitialLocation:(id)a3 targetLegIndex:(unint64_t)a4
+- (void)startTrackingWithInitialLocation:(id)location targetLegIndex:(unint64_t)index
 {
-  v6 = a3;
+  locationCopy = location;
   [(MNLocationTracker *)self _setState:1];
   v7 = objc_alloc_init(MNArrivalUpdater);
   arrivalUpdater = self->_arrivalUpdater;
   self->_arrivalUpdater = v7;
 
   [(MNArrivalUpdater *)self->_arrivalUpdater setDelegate:self];
-  v9 = [(MNLocationTracker *)self navigationSessionState];
-  [(MNArrivalUpdater *)self->_arrivalUpdater setNavigationSessionState:v9];
+  navigationSessionState = [(MNLocationTracker *)self navigationSessionState];
+  [(MNArrivalUpdater *)self->_arrivalUpdater setNavigationSessionState:navigationSessionState];
 
   [(MNArrivalUpdater *)self->_arrivalUpdater start];
   v10.receiver = self;
   v10.super_class = MNSteppingLocationTracker;
-  [(MNLocationTracker *)&v10 startTrackingWithInitialLocation:v6 targetLegIndex:a4];
+  [(MNLocationTracker *)&v10 startTrackingWithInitialLocation:locationCopy targetLegIndex:index];
 }
 
-- (id)matchedLocationForLocation:(id)a3
+- (id)matchedLocationForLocation:(id)location
 {
   v9.receiver = self;
   v9.super_class = MNSteppingLocationTracker;
-  v4 = [(MNLocationTracker *)&v9 matchedLocationForLocation:a3];
-  v5 = [v4 routeMatch];
-  v6 = [v5 step];
-  v7 = [v6 isArrivalStep];
+  v4 = [(MNLocationTracker *)&v9 matchedLocationForLocation:location];
+  routeMatch = [v4 routeMatch];
+  step = [routeMatch step];
+  isArrivalStep = [step isArrivalStep];
 
-  if (v7)
+  if (isArrivalStep)
   {
     [(MNArrivalUpdater *)self->_arrivalUpdater updateForLocation:v4];
   }
@@ -129,28 +129,28 @@
 
 - (int)transportType
 {
-  v2 = [(MNLocationTracker *)self navigationSession];
-  v3 = [v2 routeManager];
-  v4 = [v3 currentRoute];
-  v5 = [v4 transportType];
+  navigationSession = [(MNLocationTracker *)self navigationSession];
+  routeManager = [navigationSession routeManager];
+  currentRoute = [routeManager currentRoute];
+  transportType = [currentRoute transportType];
 
-  return v5;
+  return transportType;
 }
 
-- (MNSteppingLocationTracker)initWithNavigationSession:(id)a3
+- (MNSteppingLocationTracker)initWithNavigationSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v14.receiver = self;
   v14.super_class = MNSteppingLocationTracker;
-  v5 = [(MNLocationTracker *)&v14 initWithNavigationSession:v4];
+  v5 = [(MNLocationTracker *)&v14 initWithNavigationSession:sessionCopy];
   if (v5)
   {
-    v6 = [v4 routeManager];
-    v7 = [v6 currentRoute];
+    routeManager = [sessionCopy routeManager];
+    currentRoute = [routeManager currentRoute];
 
     v8 = objc_alloc(MEMORY[0x1E69A2548]);
-    v9 = [v4 auditToken];
-    v10 = [v8 initWithRoute:v7 auditToken:v9];
+    auditToken = [sessionCopy auditToken];
+    v10 = [v8 initWithRoute:currentRoute auditToken:auditToken];
     routeMatcher = v5->_routeMatcher;
     v5->_routeMatcher = v10;
 

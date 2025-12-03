@@ -1,8 +1,8 @@
 @interface PKUserLegalAgreementConsent
-- (PKUserLegalAgreementConsent)initWithCoder:(id)a3;
-- (PKUserLegalAgreementConsent)initWithIdentifier:(id)a3 passUniqueID:(id)a4 type:(unint64_t)a5 name:(id)a6 version:(id)a7 agreementUrl:(id)a8;
+- (PKUserLegalAgreementConsent)initWithCoder:(id)coder;
+- (PKUserLegalAgreementConsent)initWithIdentifier:(id)identifier passUniqueID:(id)d type:(unint64_t)type name:(id)name version:(id)version agreementUrl:(id)url;
 - (id)_initForDatabase;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKUserLegalAgreementConsent
@@ -14,73 +14,73 @@
   return [(PKUserLegalAgreementConsent *)&v3 init];
 }
 
-- (PKUserLegalAgreementConsent)initWithIdentifier:(id)a3 passUniqueID:(id)a4 type:(unint64_t)a5 name:(id)a6 version:(id)a7 agreementUrl:(id)a8
+- (PKUserLegalAgreementConsent)initWithIdentifier:(id)identifier passUniqueID:(id)d type:(unint64_t)type name:(id)name version:(id)version agreementUrl:(id)url
 {
-  v22 = a3;
-  v14 = a4;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  identifierCopy = identifier;
+  dCopy = d;
+  nameCopy = name;
+  versionCopy = version;
+  urlCopy = url;
   v23.receiver = self;
   v23.super_class = PKUserLegalAgreementConsent;
   v18 = [(PKUserLegalAgreementConsent *)&v23 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_identifier, a3);
-    objc_storeStrong(&v19->_passUniqueID, a4);
-    v19->_type = a5;
-    objc_storeStrong(&v19->_name, a6);
-    objc_storeStrong(&v19->_version, a7);
-    objc_storeStrong(&v19->_agreementUrl, a8);
+    objc_storeStrong(&v18->_identifier, identifier);
+    objc_storeStrong(&v19->_passUniqueID, d);
+    v19->_type = type;
+    objc_storeStrong(&v19->_name, name);
+    objc_storeStrong(&v19->_version, version);
+    objc_storeStrong(&v19->_agreementUrl, url);
   }
 
   return v19;
 }
 
-- (PKUserLegalAgreementConsent)initWithCoder:(id)a3
+- (PKUserLegalAgreementConsent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v18.receiver = self;
   v18.super_class = PKUserLegalAgreementConsent;
   v5 = [(PKUserLegalAgreementConsent *)&v18 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"passUniqueID"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"passUniqueID"];
     passUniqueID = v5->_passUniqueID;
     v5->_passUniqueID = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"type"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"type"];
     v5->_type = PKUserLegalAgreementTypeFromString(v10);
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
     name = v5->_name;
     v5->_name = v11;
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"version"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"version"];
     version = v5->_version;
     v5->_version = v13;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"agreementUrl"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"agreementUrl"];
     agreementUrl = v5->_agreementUrl;
     v5->_agreementUrl = v15;
 
-    v5->_userConsented = [v4 decodeBoolForKey:@"userConsented"];
+    v5->_userConsented = [coderCopy decodeBoolForKey:@"userConsented"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v6 = a3;
-  [v6 encodeObject:identifier forKey:@"identifier"];
-  [v6 encodeObject:self->_passUniqueID forKey:@"passUniqueID"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_passUniqueID forKey:@"passUniqueID"];
   if (self->_type == 1)
   {
     v5 = @"provisioningTermsCondition";
@@ -91,11 +91,11 @@
     v5 = @"unknown";
   }
 
-  [v6 encodeObject:v5 forKey:@"type"];
-  [v6 encodeObject:self->_name forKey:@"name"];
-  [v6 encodeObject:self->_version forKey:@"version"];
-  [v6 encodeObject:self->_agreementUrl forKey:@"agreementUrl"];
-  [v6 encodeBool:self->_userConsented forKey:@"userConsented"];
+  [coderCopy encodeObject:v5 forKey:@"type"];
+  [coderCopy encodeObject:self->_name forKey:@"name"];
+  [coderCopy encodeObject:self->_version forKey:@"version"];
+  [coderCopy encodeObject:self->_agreementUrl forKey:@"agreementUrl"];
+  [coderCopy encodeBool:self->_userConsented forKey:@"userConsented"];
 }
 
 @end

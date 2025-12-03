@@ -1,13 +1,13 @@
 @interface WCRAppleAllowList
-- (BOOL)contains:(id)a3;
-- (id)initFromFile:(id)a3;
+- (BOOL)contains:(id)contains;
+- (id)initFromFile:(id)file;
 @end
 
 @implementation WCRAppleAllowList
 
-- (id)initFromFile:(id)a3
+- (id)initFromFile:(id)file
 {
-  v5 = a3;
+  fileCopy = file;
   v16.receiver = self;
   v16.super_class = WCRAppleAllowList;
   v6 = [(WCRAppleAllowList *)&v16 init];
@@ -17,7 +17,7 @@
     goto LABEL_5;
   }
 
-  objc_storeStrong(&v6->_localPath, a3);
+  objc_storeStrong(&v6->_localPath, file);
   v8 = [objc_alloc(MEMORY[0x277CBEAC0]) initWithContentsOfFile:v7->_localPath];
   v9 = [v8 objectForKey:@"Allow-List"];
 
@@ -50,14 +50,14 @@ LABEL_9:
   return v12;
 }
 
-- (BOOL)contains:(id)a3
+- (BOOL)contains:(id)contains
 {
-  v4 = a3;
-  v5 = [(WCRAppleAllowList *)self allowList];
-  v6 = [v4 host];
+  containsCopy = contains;
+  allowList = [(WCRAppleAllowList *)self allowList];
+  host = [containsCopy host];
 
-  LOBYTE(v4) = [v5 containsObject:v6];
-  return v4;
+  LOBYTE(containsCopy) = [allowList containsObject:host];
+  return containsCopy;
 }
 
 @end

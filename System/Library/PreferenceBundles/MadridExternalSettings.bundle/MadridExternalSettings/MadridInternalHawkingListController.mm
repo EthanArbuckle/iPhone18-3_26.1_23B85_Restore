@@ -1,18 +1,18 @@
 @interface MadridInternalHawkingListController
-- (BOOL)_handleIsPersonal:(id)a3;
-- (BOOL)_handleIsSetAsChina:(id)a3;
+- (BOOL)_handleIsPersonal:(id)personal;
+- (BOOL)_handleIsSetAsChina:(id)china;
 - (id)_getExternalChinaHandles;
-- (id)getChinaToChinaEnabled:(id)a3;
-- (id)getHandleIsChina:(id)a3;
-- (id)hawkingEnabled:(id)a3;
+- (id)getChinaToChinaEnabled:(id)enabled;
+- (id)getHandleIsChina:(id)china;
+- (id)hawkingEnabled:(id)enabled;
 - (id)specifiers;
-- (void)_removeHandleAsChina:(id)a3;
-- (void)_setHandleAsChina:(id)a3;
-- (void)addNewHandle:(id)a3;
-- (void)removedSpecifier:(id)a3;
-- (void)setChinaToChinaEnabled:(id)a3 specifier:(id)a4;
-- (void)setHandleAsChina:(id)a3 specifier:(id)a4;
-- (void)setHawkingEnabled:(id)a3 specifier:(id)a4;
+- (void)_removeHandleAsChina:(id)china;
+- (void)_setHandleAsChina:(id)china;
+- (void)addNewHandle:(id)handle;
+- (void)removedSpecifier:(id)specifier;
+- (void)setChinaToChinaEnabled:(id)enabled specifier:(id)specifier;
+- (void)setHandleAsChina:(id)china specifier:(id)specifier;
+- (void)setHawkingEnabled:(id)enabled specifier:(id)specifier;
 @end
 
 @implementation MadridInternalHawkingListController
@@ -63,8 +63,8 @@
             objc_enumerationMutation(obj);
           }
 
-          v17 = [*(*(&v45 + 1) + 8 * i) loginIMHandle];
-          v18 = [v17 ID];
+          loginIMHandle = [*(*(&v45 + 1) + 8 * i) loginIMHandle];
+          v18 = [loginIMHandle ID];
 
           v19 = [PSSpecifier preferenceSpecifierNamed:v18 target:self set:"setHandleAsChina:specifier:" get:"getHandleIsChina:" detail:0 cell:6 edit:0];
           [v19 setIdentifier:v18];
@@ -128,16 +128,16 @@
   return v3;
 }
 
-- (void)setHawkingEnabled:(id)a3 specifier:(id)a4
+- (void)setHawkingEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = a3;
+  enabledCopy = enabled;
   v6 = +[IMDefaults sharedInstance];
-  v5 = [v4 BOOLValue];
+  bOOLValue = [enabledCopy BOOLValue];
 
-  [v6 setBool:v5 forDomain:@"com.apple.messages" forKey:@"applyInternationalSpamFilter"];
+  [v6 setBool:bOOLValue forDomain:@"com.apple.messages" forKey:@"applyInternationalSpamFilter"];
 }
 
-- (id)hawkingEnabled:(id)a3
+- (id)hawkingEnabled:(id)enabled
 {
   v3 = +[IMDefaults sharedInstance];
   v4 = [v3 getBoolFromDomain:@"com.apple.messages" forKey:@"applyInternationalSpamFilter"];
@@ -145,16 +145,16 @@
   return [NSNumber numberWithBool:v4];
 }
 
-- (void)setChinaToChinaEnabled:(id)a3 specifier:(id)a4
+- (void)setChinaToChinaEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = a3;
+  enabledCopy = enabled;
   v6 = +[IMDefaults sharedInstance];
-  v5 = [v4 BOOLValue];
+  bOOLValue = [enabledCopy BOOLValue];
 
-  [v6 setBool:v5 forDomain:@"com.apple.messages" forKey:@"applyChineseSpamFilter"];
+  [v6 setBool:bOOLValue forDomain:@"com.apple.messages" forKey:@"applyChineseSpamFilter"];
 }
 
-- (id)getChinaToChinaEnabled:(id)a3
+- (id)getChinaToChinaEnabled:(id)enabled
 {
   v3 = +[IMDefaults sharedInstance];
   v4 = [v3 getBoolFromDomain:@"com.apple.messages" forKey:@"applyChineseSpamFilter"];
@@ -162,40 +162,40 @@
   return [NSNumber numberWithBool:v4];
 }
 
-- (void)setHandleAsChina:(id)a3 specifier:(id)a4
+- (void)setHandleAsChina:(id)china specifier:(id)specifier
 {
-  v6 = a4;
-  LODWORD(a3) = [a3 BOOLValue];
-  v7 = [v6 identifier];
+  specifierCopy = specifier;
+  LODWORD(china) = [china BOOLValue];
+  identifier = [specifierCopy identifier];
 
-  if (a3)
+  if (china)
   {
-    [(MadridInternalHawkingListController *)self _setHandleAsChina:v7];
+    [(MadridInternalHawkingListController *)self _setHandleAsChina:identifier];
   }
 
   else
   {
-    [(MadridInternalHawkingListController *)self _removeHandleAsChina:v7];
+    [(MadridInternalHawkingListController *)self _removeHandleAsChina:identifier];
   }
 }
 
-- (id)getHandleIsChina:(id)a3
+- (id)getHandleIsChina:(id)china
 {
-  v4 = [a3 identifier];
-  v5 = [(MadridInternalHawkingListController *)self _handleIsSetAsChina:v4];
+  identifier = [china identifier];
+  v5 = [(MadridInternalHawkingListController *)self _handleIsSetAsChina:identifier];
 
   v6 = [NSNumber numberWithBool:v5];
 
   return v6;
 }
 
-- (void)removedSpecifier:(id)a3
+- (void)removedSpecifier:(id)specifier
 {
-  v4 = [a3 identifier];
-  [(MadridInternalHawkingListController *)self _removeHandleAsChina:v4];
+  identifier = [specifier identifier];
+  [(MadridInternalHawkingListController *)self _removeHandleAsChina:identifier];
 }
 
-- (void)addNewHandle:(id)a3
+- (void)addNewHandle:(id)handle
 {
   v4 = [UIAlertController alertControllerWithTitle:@"Enter Handle" message:@"Added handles will be treated as China phone numbers when sending and receiving messages" preferredStyle:1];
   v5 = [UIAlertAction actionWithTitle:@"Cancel" style:1 handler:0];
@@ -206,16 +206,16 @@
   v10 = sub_51FC;
   v11 = &unk_C4E0;
   v12 = v4;
-  v13 = self;
+  selfCopy = self;
   v6 = v4;
   v7 = [UIAlertAction actionWithTitle:@"Done" style:0 handler:&v8];
   [v6 addAction:{v7, v8, v9, v10, v11}];
   [(MadridInternalHawkingListController *)self presentViewController:v6 animated:1 completion:0];
 }
 
-- (void)_setHandleAsChina:(id)a3
+- (void)_setHandleAsChina:(id)china
 {
-  v3 = a3;
+  chinaCopy = china;
   v4 = +[IMDefaults sharedInstance];
   v11 = [v4 getValueFromDomain:@"com.apple.messages" forKey:@"mapReceivingIDForSpamFilter"];
 
@@ -224,8 +224,8 @@
 
   v7 = [[NSMutableDictionary alloc] initWithDictionary:v11];
   v8 = [[NSMutableDictionary alloc] initWithDictionary:v6];
-  [v8 setValue:@"+861234567890" forKey:v3];
-  [v7 setValue:@"+861234567890" forKey:v3];
+  [v8 setValue:@"+861234567890" forKey:chinaCopy];
+  [v7 setValue:@"+861234567890" forKey:chinaCopy];
 
   v9 = +[IMDefaults sharedInstance];
   [v9 setValue:v8 forDomain:@"com.apple.messages" forKey:@"mapSendingIDForSpamFilter"];
@@ -234,9 +234,9 @@
   [v10 setValue:v7 forDomain:@"com.apple.messages" forKey:@"mapReceivingIDForSpamFilter"];
 }
 
-- (void)_removeHandleAsChina:(id)a3
+- (void)_removeHandleAsChina:(id)china
 {
-  v3 = a3;
+  chinaCopy = china;
   v4 = +[IMDefaults sharedInstance];
   v11 = [v4 getValueFromDomain:@"com.apple.messages" forKey:@"mapReceivingIDForSpamFilter"];
 
@@ -245,8 +245,8 @@
 
   v7 = [[NSMutableDictionary alloc] initWithDictionary:v11];
   v8 = [[NSMutableDictionary alloc] initWithDictionary:v6];
-  [v8 removeObjectForKey:v3];
-  [v7 removeObjectForKey:v3];
+  [v8 removeObjectForKey:chinaCopy];
+  [v7 removeObjectForKey:chinaCopy];
 
   v9 = +[IMDefaults sharedInstance];
   [v9 setValue:v8 forDomain:@"com.apple.messages" forKey:@"mapSendingIDForSpamFilter"];
@@ -255,20 +255,20 @@
   [v10 setValue:v7 forDomain:@"com.apple.messages" forKey:@"mapReceivingIDForSpamFilter"];
 }
 
-- (BOOL)_handleIsSetAsChina:(id)a3
+- (BOOL)_handleIsSetAsChina:(id)china
 {
-  v3 = a3;
+  chinaCopy = china;
   v4 = +[IMDefaults sharedInstance];
   v5 = [v4 getValueFromDomain:@"com.apple.messages" forKey:@"mapReceivingIDForSpamFilter"];
 
   v6 = +[IMDefaults sharedInstance];
   v7 = [v6 getValueFromDomain:@"com.apple.messages" forKey:@"mapSendingIDForSpamFilter"];
 
-  v8 = [v7 allKeys];
-  if ([v8 containsObject:v3])
+  allKeys = [v7 allKeys];
+  if ([allKeys containsObject:chinaCopy])
   {
-    v9 = [v5 allKeys];
-    v10 = [v9 containsObject:v3];
+    allKeys2 = [v5 allKeys];
+    v10 = [allKeys2 containsObject:chinaCopy];
   }
 
   else
@@ -293,8 +293,8 @@
   v19 = 0u;
   v20 = 0u;
   v18 = v5;
-  v8 = [v5 allKeys];
-  v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  allKeys = [v5 allKeys];
+  v9 = [allKeys countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v9)
   {
     v10 = v9;
@@ -305,12 +305,12 @@
       {
         if (*v20 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(allKeys);
         }
 
         v13 = *(*(&v19 + 1) + 8 * i);
-        v14 = [v7 allKeys];
-        if ([v14 containsObject:v13])
+        allKeys2 = [v7 allKeys];
+        if ([allKeys2 containsObject:v13])
         {
           v15 = [(MadridInternalHawkingListController *)self _handleIsPersonal:v13];
 
@@ -325,7 +325,7 @@
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v10 = [allKeys countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v10);
@@ -336,9 +336,9 @@
   return v16;
 }
 
-- (BOOL)_handleIsPersonal:(id)a3
+- (BOOL)_handleIsPersonal:(id)personal
 {
-  v3 = a3;
+  personalCopy = personal;
   v4 = +[IMAccountController sharedInstance];
   v5 = +[IMServiceImpl iMessageService];
   v6 = [v4 activeAccountsForService:v5];
@@ -363,9 +363,9 @@
           objc_enumerationMutation(v7);
         }
 
-        v13 = [*(*(&v16 + 1) + 8 * i) loginIMHandle];
-        v14 = [v13 ID];
-        v10 |= [v14 isEqualToString:v3];
+        loginIMHandle = [*(*(&v16 + 1) + 8 * i) loginIMHandle];
+        v14 = [loginIMHandle ID];
+        v10 |= [v14 isEqualToString:personalCopy];
       }
 
       v9 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];

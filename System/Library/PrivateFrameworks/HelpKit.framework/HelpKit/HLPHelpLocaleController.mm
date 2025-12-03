@@ -1,29 +1,29 @@
 @interface HLPHelpLocaleController
-- (HLPHelpLocaleController)initWithURL:(id)a3;
+- (HLPHelpLocaleController)initWithURL:(id)l;
 - (id)currentLocale;
 - (id)englishLocale;
-- (id)localeWithPreferredLanguages:(id)a3;
-- (void)processData:(id)a3 formattedData:(id)a4;
-- (void)processFileURLWithCompletionHandler:(id)a3;
+- (id)localeWithPreferredLanguages:(id)languages;
+- (void)processData:(id)data formattedData:(id)formattedData;
+- (void)processFileURLWithCompletionHandler:(id)handler;
 @end
 
 @implementation HLPHelpLocaleController
 
-- (HLPHelpLocaleController)initWithURL:(id)a3
+- (HLPHelpLocaleController)initWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v11.receiver = self;
   v11.super_class = HLPHelpLocaleController;
-  v5 = [(HLPRemoteDataController *)&v11 initWithURL:v4];
+  v5 = [(HLPRemoteDataController *)&v11 initWithURL:lCopy];
   v6 = v5;
   if (v5)
   {
     v7 = [(HLPRemoteDataController *)v5 URL];
-    v8 = [v7 isFileURL];
+    isFileURL = [v7 isFileURL];
 
-    if ((v8 & 1) == 0)
+    if ((isFileURL & 1) == 0)
     {
-      v9 = [v4 URLByAppendingPathComponent:@"locale-list.json"];
+      v9 = [lCopy URLByAppendingPathComponent:@"locale-list.json"];
       [(HLPRemoteDataController *)v6 setURL:v9];
     }
   }
@@ -31,14 +31,14 @@
   return v6;
 }
 
-- (void)processFileURLWithCompletionHandler:(id)a3
+- (void)processFileURLWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CCAA00] defaultManager];
+  handlerCopy = handler;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v6 = [(HLPRemoteDataController *)self URL];
-  v7 = [v6 path];
+  path = [v6 path];
   v19 = 0;
-  v8 = [v5 contentsOfDirectoryAtPath:v7 error:&v19];
+  v8 = [defaultManager contentsOfDirectoryAtPath:path error:&v19];
   v9 = v19;
 
   if (v9)
@@ -47,7 +47,7 @@
     block[1] = 3221225472;
     block[2] = __63__HLPHelpLocaleController_processFileURLWithCompletionHandler___block_invoke;
     block[3] = &unk_2797076E0;
-    v18 = v4;
+    v18 = handlerCopy;
     v17 = v9;
     dispatch_async(MEMORY[0x277D85CD0], block);
 
@@ -71,7 +71,7 @@
     v12[2] = __63__HLPHelpLocaleController_processFileURLWithCompletionHandler___block_invoke_3;
     v12[3] = &unk_279706BE8;
     v12[4] = self;
-    v13 = v4;
+    v13 = handlerCopy;
     dispatch_async(MEMORY[0x277D85CD0], v12);
   }
 }
@@ -119,9 +119,9 @@ uint64_t __63__HLPHelpLocaleController_processFileURLWithCompletionHandler___blo
   return v2();
 }
 
-- (void)processData:(id)a3 formattedData:(id)a4
+- (void)processData:(id)data formattedData:(id)formattedData
 {
-  v5 = a4;
+  formattedDataCopy = formattedData;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -136,7 +136,7 @@ uint64_t __63__HLPHelpLocaleController_processFileURLWithCompletionHandler___blo
     v19 = v8;
     v9 = v8;
     v10 = v7;
-    [v5 enumerateObjectsUsingBlock:&v14];
+    [formattedDataCopy enumerateObjectsUsingBlock:&v14];
     v11 = [MEMORY[0x277CBEA60] arrayWithArray:{v10, v14, v15, v16, v17}];
     supportedLanguageCodes = self->_supportedLanguageCodes;
     self->_supportedLanguageCodes = v11;
@@ -167,7 +167,7 @@ void __53__HLPHelpLocaleController_processData_formattedData___block_invoke(uint
   return v2;
 }
 
-- (id)localeWithPreferredLanguages:(id)a3
+- (id)localeWithPreferredLanguages:(id)languages
 {
   v15 = 0;
   v16 = &v15;
@@ -175,8 +175,8 @@ void __53__HLPHelpLocaleController_processData_formattedData___block_invoke(uint
   v18 = __Block_byref_object_copy__3;
   v19 = __Block_byref_object_dispose__3;
   v20 = 0;
-  v13 = a3;
-  v4 = [v13 mutableCopy];
+  languagesCopy = languages;
+  v4 = [languagesCopy mutableCopy];
   do
   {
     if (![v4 count])
@@ -199,8 +199,8 @@ void __53__HLPHelpLocaleController_processData_formattedData___block_invoke(uint
   while (!v6);
   if (!v16[5])
   {
-    v7 = [0 path];
-    v8 = [v7 length];
+    path = [0 path];
+    v8 = [path length];
 
     if (!v8)
     {
@@ -256,25 +256,25 @@ void __56__HLPHelpLocaleController_localeWithPreferredLanguages___block_invoke_2
 - (id)currentLocale
 {
   v3 = [MEMORY[0x277CBEBF8] mutableCopy];
-  v4 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v5 = [v4 objectForKey:@"HLPHelpBookPreferredLanguageOverride"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v5 = [standardUserDefaults objectForKey:@"HLPHelpBookPreferredLanguageOverride"];
 
   if (v5)
   {
     [v3 addObject:v5];
   }
 
-  v6 = [(HLPHelpLocaleController *)self preferredLanguagesOverride];
-  v7 = [v6 count];
+  preferredLanguagesOverride = [(HLPHelpLocaleController *)self preferredLanguagesOverride];
+  v7 = [preferredLanguagesOverride count];
 
   if (v7)
   {
-    v8 = [(HLPHelpLocaleController *)self preferredLanguagesOverride];
-    [v3 addObjectsFromArray:v8];
+    preferredLanguagesOverride2 = [(HLPHelpLocaleController *)self preferredLanguagesOverride];
+    [v3 addObjectsFromArray:preferredLanguagesOverride2];
   }
 
-  v9 = [MEMORY[0x277CBEAF8] preferredLanguages];
-  [v3 addObjectsFromArray:v9];
+  preferredLanguages = [MEMORY[0x277CBEAF8] preferredLanguages];
+  [v3 addObjectsFromArray:preferredLanguages];
 
   v10 = [(HLPHelpLocaleController *)self localeWithPreferredLanguages:v3];
 

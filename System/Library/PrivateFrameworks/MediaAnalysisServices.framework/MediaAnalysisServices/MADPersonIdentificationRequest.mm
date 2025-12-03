@@ -1,8 +1,8 @@
 @interface MADPersonIdentificationRequest
 - (MADPersonIdentificationRequest)init;
-- (MADPersonIdentificationRequest)initWithCoder:(id)a3;
+- (MADPersonIdentificationRequest)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MADPersonIdentificationRequest
@@ -26,49 +26,49 @@
   return result;
 }
 
-- (MADPersonIdentificationRequest)initWithCoder:(id)a3
+- (MADPersonIdentificationRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = MADPersonIdentificationRequest;
-  v5 = [(MADRequest *)&v7 initWithCoder:v4];
+  v5 = [(MADRequest *)&v7 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_faceDetectorVisionRevision = [v4 decodeIntegerForKey:@"FaceDetectorVisionRevision"];
-    v5->_allowOnDemand = [v4 decodeIntegerForKey:@"AllowOnDemand"] != 0;
-    v5->_allowUnverifiedIdentity = [v4 decodeIntegerForKey:@"AllowUnverifiedIdentity"] != 0;
-    v5->_useLowResolutionPicture = [v4 decodeIntegerForKey:@"UseLowResolutionPicture"] != 0;
-    v5->_useVIPModel = [v4 decodeIntegerForKey:@"UseVIPModel"] != 0;
-    v5->_includePets = [v4 decodeIntegerForKey:@"IncludePets"] != 0;
-    v5->_maximumFaceCount = [v4 decodeIntegerForKey:@"MaximumFaceCount"];
+    v5->_faceDetectorVisionRevision = [coderCopy decodeIntegerForKey:@"FaceDetectorVisionRevision"];
+    v5->_allowOnDemand = [coderCopy decodeIntegerForKey:@"AllowOnDemand"] != 0;
+    v5->_allowUnverifiedIdentity = [coderCopy decodeIntegerForKey:@"AllowUnverifiedIdentity"] != 0;
+    v5->_useLowResolutionPicture = [coderCopy decodeIntegerForKey:@"UseLowResolutionPicture"] != 0;
+    v5->_useVIPModel = [coderCopy decodeIntegerForKey:@"UseVIPModel"] != 0;
+    v5->_includePets = [coderCopy decodeIntegerForKey:@"IncludePets"] != 0;
+    v5->_maximumFaceCount = [coderCopy decodeIntegerForKey:@"MaximumFaceCount"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = MADPersonIdentificationRequest;
-  v4 = a3;
-  [(MADRequest *)&v5 encodeWithCoder:v4];
-  [v4 encodeInteger:self->_faceDetectorVisionRevision forKey:{@"FaceDetectorVisionRevision", v5.receiver, v5.super_class}];
-  [v4 encodeInteger:self->_allowOnDemand forKey:@"AllowOnDemand"];
-  [v4 encodeInteger:self->_allowUnverifiedIdentity forKey:@"AllowUnverifiedIdentity"];
-  [v4 encodeInteger:self->_useLowResolutionPicture forKey:@"UseLowResolutionPicture"];
-  [v4 encodeInteger:self->_useVIPModel forKey:@"UseVIPModel"];
-  [v4 encodeInteger:self->_includePets forKey:@"IncludePets"];
-  [v4 encodeInteger:self->_maximumFaceCount forKey:@"MaximumFaceCount"];
+  coderCopy = coder;
+  [(MADRequest *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:self->_faceDetectorVisionRevision forKey:{@"FaceDetectorVisionRevision", v5.receiver, v5.super_class}];
+  [coderCopy encodeInteger:self->_allowOnDemand forKey:@"AllowOnDemand"];
+  [coderCopy encodeInteger:self->_allowUnverifiedIdentity forKey:@"AllowUnverifiedIdentity"];
+  [coderCopy encodeInteger:self->_useLowResolutionPicture forKey:@"UseLowResolutionPicture"];
+  [coderCopy encodeInteger:self->_useVIPModel forKey:@"UseVIPModel"];
+  [coderCopy encodeInteger:self->_includePets forKey:@"IncludePets"];
+  [coderCopy encodeInteger:self->_maximumFaceCount forKey:@"MaximumFaceCount"];
 }
 
 - (id)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  [v3 appendFormat:@"<%@ %p, ", v5, self];
+  [string appendFormat:@"<%@ %p, ", v5, self];
 
-  [v3 appendFormat:@"faceDetectorVisionRevision: %lu, ", self->_faceDetectorVisionRevision];
+  [string appendFormat:@"faceDetectorVisionRevision: %lu, ", self->_faceDetectorVisionRevision];
   if (self->_allowOnDemand)
   {
     v6 = @"Yes";
@@ -79,7 +79,7 @@
     v6 = @"No";
   }
 
-  [v3 appendFormat:@"allowOnDemand: %@, ", v6];
+  [string appendFormat:@"allowOnDemand: %@, ", v6];
   if (self->_allowUnverifiedIdentity)
   {
     v7 = @"Yes";
@@ -90,7 +90,7 @@
     v7 = @"No";
   }
 
-  [v3 appendFormat:@"allowUnverifiedIdentity: %@, ", v7];
+  [string appendFormat:@"allowUnverifiedIdentity: %@, ", v7];
   if (self->_useLowResolutionPicture)
   {
     v8 = @"Yes";
@@ -101,7 +101,7 @@
     v8 = @"No";
   }
 
-  [v3 appendFormat:@"useLowResolutionPicture: %@, ", v8];
+  [string appendFormat:@"useLowResolutionPicture: %@, ", v8];
   if (self->_useVIPModel)
   {
     v9 = @"Yes";
@@ -112,7 +112,7 @@
     v9 = @"No";
   }
 
-  [v3 appendFormat:@"useVIPModel: %@, ", v9];
+  [string appendFormat:@"useVIPModel: %@, ", v9];
   if (self->_includePets)
   {
     v10 = @"Yes";
@@ -123,15 +123,15 @@
     v10 = @"No";
   }
 
-  [v3 appendFormat:@"includePets: %@, ", v10];
-  [v3 appendFormat:@"maximumFaceCount: %lu, ", self->_maximumFaceCount];
-  v11 = [(MADRequest *)self results];
-  [v3 appendFormat:@"results: %@, ", v11];
+  [string appendFormat:@"includePets: %@, ", v10];
+  [string appendFormat:@"maximumFaceCount: %lu, ", self->_maximumFaceCount];
+  results = [(MADRequest *)self results];
+  [string appendFormat:@"results: %@, ", results];
 
-  v12 = [(MADRequest *)self error];
-  [v3 appendFormat:@"error: %@>", v12];
+  error = [(MADRequest *)self error];
+  [string appendFormat:@"error: %@>", error];
 
-  return v3;
+  return string;
 }
 
 @end

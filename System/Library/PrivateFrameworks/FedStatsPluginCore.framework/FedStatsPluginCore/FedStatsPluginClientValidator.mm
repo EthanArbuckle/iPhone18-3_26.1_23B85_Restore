@@ -1,36 +1,36 @@
 @interface FedStatsPluginClientValidator
-+ (id)checkClientIdentifier:(id)a3 againstNamespaceIdentifier:(id)a4 error:(id *)a5;
-+ (id)sharedInstanceWithError:(id *)a3;
-- (FedStatsPluginClientValidator)initWithAssociation:(id)a3;
++ (id)checkClientIdentifier:(id)identifier againstNamespaceIdentifier:(id)namespaceIdentifier error:(id *)error;
++ (id)sharedInstanceWithError:(id *)error;
+- (FedStatsPluginClientValidator)initWithAssociation:(id)association;
 @end
 
 @implementation FedStatsPluginClientValidator
 
-- (FedStatsPluginClientValidator)initWithAssociation:(id)a3
+- (FedStatsPluginClientValidator)initWithAssociation:(id)association
 {
-  v5 = a3;
+  associationCopy = association;
   v9.receiver = self;
   v9.super_class = FedStatsPluginClientValidator;
   v6 = [(FedStatsPluginClientValidator *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_association, a3);
+    objc_storeStrong(&v6->_association, association);
   }
 
   return v7;
 }
 
-+ (id)sharedInstanceWithError:(id *)a3
++ (id)sharedInstanceWithError:(id *)error
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __57__FedStatsPluginClientValidator_sharedInstanceWithError___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstanceWithError__dispatchToken == -1)
   {
-    if (!a3)
+    if (!error)
     {
       goto LABEL_4;
     }
@@ -39,10 +39,10 @@
   }
 
   dispatch_once(&sharedInstanceWithError__dispatchToken, block);
-  if (a3)
+  if (error)
   {
 LABEL_3:
-    *a3 = sharedInstanceWithError__intError;
+    *error = sharedInstanceWithError__intError;
   }
 
 LABEL_4:
@@ -210,18 +210,18 @@ LABEL_31:
   v28 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)checkClientIdentifier:(id)a3 againstNamespaceIdentifier:(id)a4 error:(id *)a5
++ (id)checkClientIdentifier:(id)identifier againstNamespaceIdentifier:(id)namespaceIdentifier error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  namespaceIdentifierCopy = namespaceIdentifier;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    if (a5)
+    if (error)
     {
 LABEL_10:
       [FedStatsPluginError errorWithCode:300 description:v14];
-      *a5 = v15 = 0;
+      *error = v15 = 0;
       goto LABEL_16;
     }
 
@@ -233,7 +233,7 @@ LABEL_11:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    if (a5)
+    if (error)
     {
       goto LABEL_10;
     }
@@ -241,21 +241,21 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  v9 = [FedStatsPluginClientValidator sharedInstanceWithError:a5];
+  v9 = [FedStatsPluginClientValidator sharedInstanceWithError:error];
   v10 = v9;
   if (v9)
   {
-    v11 = [v9 association];
-    v12 = [v11 objectForKey:v8];
+    association = [v9 association];
+    v12 = [association objectForKey:namespaceIdentifierCopy];
 
-    if ([v12 containsObject:v7])
+    if ([v12 containsObject:identifierCopy])
     {
       v13 = 1;
     }
 
     else
     {
-      v16 = [v7 stringByReplacingOccurrencesOfString:@"fedstats:" withString:&stru_285E133E0];
+      v16 = [identifierCopy stringByReplacingOccurrencesOfString:@"fedstats:" withString:&stru_285E133E0];
       v13 = [v12 containsObject:v16];
     }
 

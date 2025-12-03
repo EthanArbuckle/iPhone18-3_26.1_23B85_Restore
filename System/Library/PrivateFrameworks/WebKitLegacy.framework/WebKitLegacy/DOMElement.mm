@@ -1,9 +1,9 @@
 @interface DOMElement
-+ (id)_DOMElementFromJSContext:(OpaqueJSContext *)a3 value:(OpaqueJSValue *)a4;
++ (id)_DOMElementFromJSContext:(OpaqueJSContext *)context value:(OpaqueJSValue *)value;
 - (BOOL)hasAttribute:(NSString *)name;
 - (BOOL)hasAttributeNS:(NSString *)namespaceURI localName:(NSString *)localName;
-- (BOOL)matches:(id)a3;
-- (BOOL)webkitMatchesSelector:(id)a3;
+- (BOOL)matches:(id)matches;
+- (BOOL)webkitMatchesSelector:(id)selector;
 - (CGRect)boundsInRootViewSpace;
 - (DOMAttr)getAttributeNode:(NSString *)name;
 - (DOMAttr)getAttributeNodeNS:(NSString *)namespaceURI localName:(NSString *)localName;
@@ -29,10 +29,10 @@
 - (NSString)outerHTML;
 - (NSString)tagName;
 - (__CTFont)_font;
-- (id)_getURLAttribute:(id)a3;
+- (id)_getURLAttribute:(id)attribute;
 - (id)children;
 - (id)classList;
-- (id)closest:(id)a3;
+- (id)closest:(id)closest;
 - (id)uiactions;
 - (int)clientHeight;
 - (int)clientLeft;
@@ -61,7 +61,7 @@
 - (void)setOuterHTML:(NSString *)outerHTML;
 - (void)setScrollLeft:(int)scrollLeft;
 - (void)setScrollTop:(int)scrollTop;
-- (void)setUiactions:(id)a3;
+- (void)setUiactions:(id)uiactions;
 - (void)webkitRequestFullScreen:(unsigned __int16)flags;
 - (void)webkitRequestFullscreen;
 @end
@@ -319,10 +319,10 @@ LABEL_59:
   return result;
 }
 
-- (id)_getURLAttribute:(id)a3
+- (id)_getURLAttribute:(id)attribute
 {
   core(self);
-  WTF::AtomStringImpl::add(&v12, a3, v4);
+  WTF::AtomStringImpl::add(&v12, attribute, v4);
   WebCore::Element::getAttribute();
   WebCore::Document::completeURL();
   WTF::URL::createCFURL(&v14, &v13);
@@ -1126,12 +1126,12 @@ LABEL_59:
   return result;
 }
 
-- (void)setUiactions:(id)a3
+- (void)setUiactions:(id)uiactions
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v8);
   if ((*(self->super.super._internal + 16) & 8) != 0)
   {
-    WTF::AtomStringImpl::add(&v9, a3, v5);
+    WTF::AtomStringImpl::add(&v9, uiactions, v5);
     v7 = v9;
     WebCore::Element::setAttributeWithoutSynchronization();
     if (v7)
@@ -2224,13 +2224,13 @@ LABEL_10:
   return result;
 }
 
-- (BOOL)matches:(id)a3
+- (BOOL)matches:(id)matches
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v16);
   internal = self->super.super._internal;
   if ((*(internal + 16) & 8) != 0)
   {
-    MEMORY[0x1CCA63A40](&v12, a3);
+    MEMORY[0x1CCA63A40](&v12, matches);
     v6 = WebCore::Element::matches(&v13, internal, &v12);
     if (v15)
     {
@@ -2271,13 +2271,13 @@ LABEL_10:
   return result;
 }
 
-- (id)closest:(id)a3
+- (id)closest:(id)closest
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v17);
   internal = self->super.super._internal;
   if ((*(internal + 16) & 8) != 0)
   {
-    MEMORY[0x1CCA63A40](&v13, a3);
+    MEMORY[0x1CCA63A40](&v13, closest);
     v6 = WebCore::Element::closest(&v14, internal, &v13);
     if (v16)
     {
@@ -2334,13 +2334,13 @@ LABEL_10:
   return result;
 }
 
-- (BOOL)webkitMatchesSelector:(id)a3
+- (BOOL)webkitMatchesSelector:(id)selector
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v16);
   internal = self->super.super._internal;
   if ((*(internal + 16) & 8) != 0)
   {
-    MEMORY[0x1CCA63A40](&v12, a3);
+    MEMORY[0x1CCA63A40](&v12, selector);
     v6 = WebCore::Element::matches(&v13, internal, &v12);
     if (v15)
     {
@@ -2599,12 +2599,12 @@ LABEL_17:
   return v9;
 }
 
-+ (id)_DOMElementFromJSContext:(OpaqueJSContext *)a3 value:(OpaqueJSValue *)a4
++ (id)_DOMElementFromJSContext:(OpaqueJSContext *)context value:(OpaqueJSValue *)value
 {
   result = 0;
-  if (a3)
+  if (context)
   {
-    if (a4)
+    if (value)
     {
       JSC::JSLockHolder::JSLockHolder();
       v5 = WebCore::JSElement::toWrapped();

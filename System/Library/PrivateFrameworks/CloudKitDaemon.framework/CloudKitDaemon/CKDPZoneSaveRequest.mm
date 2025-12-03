@@ -1,13 +1,13 @@
 @interface CKDPZoneSaveRequest
 + (id)options;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CKDPZoneSaveRequest
@@ -69,100 +69,100 @@
   return v6;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_recordZone)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_zoneProtectionInfoTag)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_ancestryEtag)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_reParentingDestinationAncestryEtag)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   recordZone = self->_recordZone;
-  v10 = v4;
+  v10 = toCopy;
   if (recordZone)
   {
-    objc_msgSend_setRecordZone_(v4, v5, recordZone);
-    v4 = v10;
+    objc_msgSend_setRecordZone_(toCopy, v5, recordZone);
+    toCopy = v10;
   }
 
   zoneProtectionInfoTag = self->_zoneProtectionInfoTag;
   if (zoneProtectionInfoTag)
   {
     objc_msgSend_setZoneProtectionInfoTag_(v10, v5, zoneProtectionInfoTag);
-    v4 = v10;
+    toCopy = v10;
   }
 
   ancestryEtag = self->_ancestryEtag;
   if (ancestryEtag)
   {
     objc_msgSend_setAncestryEtag_(v10, v5, ancestryEtag);
-    v4 = v10;
+    toCopy = v10;
   }
 
   reParentingDestinationAncestryEtag = self->_reParentingDestinationAncestryEtag;
   if (reParentingDestinationAncestryEtag)
   {
     objc_msgSend_setReParentingDestinationAncestryEtag_(v10, v5, reParentingDestinationAncestryEtag);
-    v4 = v10;
+    toCopy = v10;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
-  v12 = objc_msgSend_copyWithZone_(self->_recordZone, v11, a3);
+  v12 = objc_msgSend_copyWithZone_(self->_recordZone, v11, zone);
   v13 = v10[3];
   v10[3] = v12;
 
-  v15 = objc_msgSend_copyWithZone_(self->_zoneProtectionInfoTag, v14, a3);
+  v15 = objc_msgSend_copyWithZone_(self->_zoneProtectionInfoTag, v14, zone);
   v16 = v10[4];
   v10[4] = v15;
 
-  v18 = objc_msgSend_copyWithZone_(self->_ancestryEtag, v17, a3);
+  v18 = objc_msgSend_copyWithZone_(self->_ancestryEtag, v17, zone);
   v19 = v10[1];
   v10[1] = v18;
 
-  v21 = objc_msgSend_copyWithZone_(self->_reParentingDestinationAncestryEtag, v20, a3);
+  v21 = objc_msgSend_copyWithZone_(self->_reParentingDestinationAncestryEtag, v20, zone);
   v22 = v10[2];
   v10[2] = v21;
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (objc_msgSend_isMemberOfClass_(v4, v6, v5) && ((recordZone = self->_recordZone, v9 = v4[3], !(recordZone | v9)) || objc_msgSend_isEqual_(recordZone, v7, v9)) && ((zoneProtectionInfoTag = self->_zoneProtectionInfoTag, v11 = v4[4], !(zoneProtectionInfoTag | v11)) || objc_msgSend_isEqual_(zoneProtectionInfoTag, v7, v11)) && ((ancestryEtag = self->_ancestryEtag, v13 = v4[1], !(ancestryEtag | v13)) || objc_msgSend_isEqual_(ancestryEtag, v7, v13)))
+  if (objc_msgSend_isMemberOfClass_(equalCopy, v6, v5) && ((recordZone = self->_recordZone, v9 = equalCopy[3], !(recordZone | v9)) || objc_msgSend_isEqual_(recordZone, v7, v9)) && ((zoneProtectionInfoTag = self->_zoneProtectionInfoTag, v11 = equalCopy[4], !(zoneProtectionInfoTag | v11)) || objc_msgSend_isEqual_(zoneProtectionInfoTag, v7, v11)) && ((ancestryEtag = self->_ancestryEtag, v13 = equalCopy[1], !(ancestryEtag | v13)) || objc_msgSend_isEqual_(ancestryEtag, v7, v13)))
   {
     reParentingDestinationAncestryEtag = self->_reParentingDestinationAncestryEtag;
-    v15 = v4[2];
+    v15 = equalCopy[2];
     if (reParentingDestinationAncestryEtag | v15)
     {
       isEqual = objc_msgSend_isEqual_(reParentingDestinationAncestryEtag, v7, v15);
@@ -190,29 +190,29 @@
   return v7 ^ v10 ^ objc_msgSend_hash(self->_reParentingDestinationAncestryEtag, v11, v12);
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   recordZone = self->_recordZone;
-  v12 = v4;
-  v6 = v4[3];
+  v12 = fromCopy;
+  v6 = fromCopy[3];
   if (recordZone)
   {
     if (v6)
     {
-      objc_msgSend_mergeFrom_(recordZone, v4, v6);
+      objc_msgSend_mergeFrom_(recordZone, fromCopy, v6);
     }
   }
 
   else if (v6)
   {
-    objc_msgSend_setRecordZone_(self, v4, v6);
+    objc_msgSend_setRecordZone_(self, fromCopy, v6);
   }
 
   v7 = v12[4];
   if (v7)
   {
-    objc_msgSend_setZoneProtectionInfoTag_(self, v4, v7);
+    objc_msgSend_setZoneProtectionInfoTag_(self, fromCopy, v7);
   }
 
   ancestryEtag = self->_ancestryEtag;

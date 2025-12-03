@@ -1,58 +1,58 @@
 @interface INFERENCESchemaINFERENCEContactResolverConfig
-- (BOOL)isEqual:(id)a3;
-- (INFERENCESchemaINFERENCEContactResolverConfig)initWithDictionary:(id)a3;
-- (INFERENCESchemaINFERENCEContactResolverConfig)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (INFERENCESchemaINFERENCEContactResolverConfig)initWithDictionary:(id)dictionary;
+- (INFERENCESchemaINFERENCEContactResolverConfig)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addAppBundleIds:(id)a3;
-- (void)setHasActionType:(BOOL)a3;
-- (void)setHasContactSearchSuggestedType:(BOOL)a3;
-- (void)setHasDomainsToSearchForHistory:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addAppBundleIds:(id)ids;
+- (void)setHasActionType:(BOOL)type;
+- (void)setHasContactSearchSuggestedType:(BOOL)type;
+- (void)setHasDomainsToSearchForHistory:(BOOL)history;
+- (void)writeTo:(id)to;
 @end
 
 @implementation INFERENCESchemaINFERENCEContactResolverConfig
 
-- (INFERENCESchemaINFERENCEContactResolverConfig)initWithDictionary:(id)a3
+- (INFERENCESchemaINFERENCEContactResolverConfig)initWithDictionary:(id)dictionary
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v26.receiver = self;
   v26.super_class = INFERENCESchemaINFERENCEContactResolverConfig;
   v5 = [(INFERENCESchemaINFERENCEContactResolverConfig *)&v26 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"isSearchingFirstPartyContacts"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"isSearchingFirstPartyContacts"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCEContactResolverConfig setIsSearchingFirstPartyContacts:](v5, "setIsSearchingFirstPartyContacts:", [v6 BOOLValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"contactSearchSuggestedType"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"contactSearchSuggestedType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCEContactResolverConfig setContactSearchSuggestedType:](v5, "setContactSearchSuggestedType:", [v7 intValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"domainsToSearchForHistory"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"domainsToSearchForHistory"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCEContactResolverConfig setDomainsToSearchForHistory:](v5, "setDomainsToSearchForHistory:", [v8 intValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"actionType"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"actionType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[INFERENCESchemaINFERENCEContactResolverConfig setActionType:](v5, "setActionType:", [v9 intValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"appBundleIds"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"appBundleIds"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -102,30 +102,30 @@
   return v5;
 }
 
-- (INFERENCESchemaINFERENCEContactResolverConfig)initWithJSON:(id)a3
+- (INFERENCESchemaINFERENCEContactResolverConfig)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(INFERENCESchemaINFERENCEContactResolverConfig *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(INFERENCESchemaINFERENCEContactResolverConfig *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(INFERENCESchemaINFERENCEContactResolverConfig *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -138,7 +138,7 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ((*&self->_has & 8) != 0)
   {
     v4 = [(INFERENCESchemaINFERENCEContactResolverConfig *)self actionType]- 1;
@@ -152,14 +152,14 @@
       v5 = off_1E78D8978[v4];
     }
 
-    [v3 setObject:v5 forKeyedSubscript:@"actionType"];
+    [dictionary setObject:v5 forKeyedSubscript:@"actionType"];
   }
 
   if (self->_appBundleIds)
   {
-    v6 = [(INFERENCESchemaINFERENCEContactResolverConfig *)self appBundleIds];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"appBundleIds"];
+    appBundleIds = [(INFERENCESchemaINFERENCEContactResolverConfig *)self appBundleIds];
+    v7 = [appBundleIds copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"appBundleIds"];
   }
 
   has = self->_has;
@@ -176,7 +176,7 @@
       v12 = off_1E78D89A0[v11];
     }
 
-    [v3 setObject:v12 forKeyedSubscript:@"contactSearchSuggestedType"];
+    [dictionary setObject:v12 forKeyedSubscript:@"contactSearchSuggestedType"];
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -206,7 +206,7 @@ LABEL_10:
     v14 = off_1E78D89B8[v13];
   }
 
-  [v3 setObject:v14 forKeyedSubscript:@"domainsToSearchForHistory"];
+  [dictionary setObject:v14 forKeyedSubscript:@"domainsToSearchForHistory"];
   if ((*&self->_has & 1) == 0)
   {
     goto LABEL_12;
@@ -214,12 +214,12 @@ LABEL_10:
 
 LABEL_11:
   v9 = [MEMORY[0x1E696AD98] numberWithBool:{-[INFERENCESchemaINFERENCEContactResolverConfig isSearchingFirstPartyContacts](self, "isSearchingFirstPartyContacts")}];
-  [v3 setObject:v9 forKeyedSubscript:@"isSearchingFirstPartyContacts"];
+  [dictionary setObject:v9 forKeyedSubscript:@"isSearchingFirstPartyContacts"];
 
 LABEL_12:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -276,16 +276,16 @@ LABEL_5:
   return v7 ^ v6 ^ v8 ^ v9 ^ [(NSArray *)self->_appBundleIds hash:v3];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_22;
   }
 
   has = self->_has;
-  v6 = v4[32];
+  v6 = equalCopy[32];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_22;
@@ -294,13 +294,13 @@ LABEL_5:
   if (*&has)
   {
     isSearchingFirstPartyContacts = self->_isSearchingFirstPartyContacts;
-    if (isSearchingFirstPartyContacts != [v4 isSearchingFirstPartyContacts])
+    if (isSearchingFirstPartyContacts != [equalCopy isSearchingFirstPartyContacts])
     {
       goto LABEL_22;
     }
 
     has = self->_has;
-    v6 = v4[32];
+    v6 = equalCopy[32];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -309,13 +309,13 @@ LABEL_5:
     if (v8)
     {
       contactSearchSuggestedType = self->_contactSearchSuggestedType;
-      if (contactSearchSuggestedType != [v4 contactSearchSuggestedType])
+      if (contactSearchSuggestedType != [equalCopy contactSearchSuggestedType])
       {
         goto LABEL_22;
       }
 
       has = self->_has;
-      v6 = v4[32];
+      v6 = equalCopy[32];
     }
 
     v10 = (*&has >> 2) & 1;
@@ -324,27 +324,27 @@ LABEL_5:
       if (v10)
       {
         domainsToSearchForHistory = self->_domainsToSearchForHistory;
-        if (domainsToSearchForHistory != [v4 domainsToSearchForHistory])
+        if (domainsToSearchForHistory != [equalCopy domainsToSearchForHistory])
         {
           goto LABEL_22;
         }
 
         has = self->_has;
-        v6 = v4[32];
+        v6 = equalCopy[32];
       }
 
       v12 = (*&has >> 3) & 1;
       if (v12 == ((v6 >> 3) & 1))
       {
-        if (!v12 || (actionType = self->_actionType, actionType == [v4 actionType]))
+        if (!v12 || (actionType = self->_actionType, actionType == [equalCopy actionType]))
         {
-          v14 = [(INFERENCESchemaINFERENCEContactResolverConfig *)self appBundleIds];
-          v15 = [v4 appBundleIds];
-          v16 = v15;
-          if ((v14 != 0) != (v15 == 0))
+          appBundleIds = [(INFERENCESchemaINFERENCEContactResolverConfig *)self appBundleIds];
+          appBundleIds2 = [equalCopy appBundleIds];
+          v16 = appBundleIds2;
+          if ((appBundleIds != 0) != (appBundleIds2 == 0))
           {
-            v17 = [(INFERENCESchemaINFERENCEContactResolverConfig *)self appBundleIds];
-            if (!v17)
+            appBundleIds3 = [(INFERENCESchemaINFERENCEContactResolverConfig *)self appBundleIds];
+            if (!appBundleIds3)
             {
 
 LABEL_25:
@@ -352,10 +352,10 @@ LABEL_25:
               goto LABEL_23;
             }
 
-            v18 = v17;
-            v19 = [(INFERENCESchemaINFERENCEContactResolverConfig *)self appBundleIds];
-            v20 = [v4 appBundleIds];
-            v21 = [v19 isEqual:v20];
+            v18 = appBundleIds3;
+            appBundleIds4 = [(INFERENCESchemaINFERENCEContactResolverConfig *)self appBundleIds];
+            appBundleIds5 = [equalCopy appBundleIds];
+            v21 = [appBundleIds4 isEqual:appBundleIds5];
 
             if (v21)
             {
@@ -378,10 +378,10 @@ LABEL_23:
   return v22;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -455,27 +455,27 @@ LABEL_6:
   }
 }
 
-- (void)addAppBundleIds:(id)a3
+- (void)addAppBundleIds:(id)ids
 {
-  v4 = a3;
+  idsCopy = ids;
   appBundleIds = self->_appBundleIds;
-  v8 = v4;
+  v8 = idsCopy;
   if (!appBundleIds)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_appBundleIds;
-    self->_appBundleIds = v6;
+    self->_appBundleIds = array;
 
-    v4 = v8;
+    idsCopy = v8;
     appBundleIds = self->_appBundleIds;
   }
 
-  [(NSArray *)appBundleIds addObject:v4];
+  [(NSArray *)appBundleIds addObject:idsCopy];
 }
 
-- (void)setHasActionType:(BOOL)a3
+- (void)setHasActionType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 8;
   }
@@ -488,9 +488,9 @@ LABEL_6:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasDomainsToSearchForHistory:(BOOL)a3
+- (void)setHasDomainsToSearchForHistory:(BOOL)history
 {
-  if (a3)
+  if (history)
   {
     v3 = 4;
   }
@@ -503,9 +503,9 @@ LABEL_6:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasContactSearchSuggestedType:(BOOL)a3
+- (void)setHasContactSearchSuggestedType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }

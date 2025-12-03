@@ -1,71 +1,71 @@
 @interface PLQueryHandler
-+ (BOOL)_containsKey:(int)a3 inQuery:(id)a4;
-+ (BOOL)_findAndReplaceLatitudeLongitudeKeyInQuery:(id)a3;
-+ (BOOL)hasMatchingFetchingAlbumForSingleQuery:(id)a3 outKind:(int *)a4;
-+ (BOOL)includesHiddenAssetsInQuery:(id)a3;
-+ (id)_assetsPredicateForPersonPredicate:(id)a3 assetObjectIDs:(id *)a4 additionalAssetPredicate:(id)a5 invert:(BOOL)a6 inLibrary:(id)a7;
-+ (id)_convertQueryKeyTypeToString:(int)a3;
-+ (id)_convertQueryValueForAssetType:(int)a3;
-+ (id)_equalityPredicateForDoubleQuery:(id)a3 withValue:(double)a4 comparator:(int)a5 inLibrary:(id)a6;
-+ (id)_expressionForStringValue:(id)a3 inLibrary:(id)a4;
-+ (id)_getConvertedKeys:(id)a3;
-+ (id)_getConvertedQueryKey:(id)a3;
-+ (id)_getTargetDateForTheLastDays:(int64_t)a3 weeks:(int64_t)a4 months:(int64_t)a5 years:(int64_t)a6 seconds:(int64_t)a7 targetDate:(id)a8;
-+ (id)_getTargetDateWithUnit:(int)a3 dateValue:(id)a4;
-+ (id)_infoFromSingleQuery:(id)a3;
-+ (id)_personMatchesPredicateForCriteria:(id)a3;
++ (BOOL)_containsKey:(int)key inQuery:(id)query;
++ (BOOL)_findAndReplaceLatitudeLongitudeKeyInQuery:(id)query;
++ (BOOL)hasMatchingFetchingAlbumForSingleQuery:(id)query outKind:(int *)kind;
++ (BOOL)includesHiddenAssetsInQuery:(id)query;
++ (id)_assetsPredicateForPersonPredicate:(id)predicate assetObjectIDs:(id *)ds additionalAssetPredicate:(id)assetPredicate invert:(BOOL)invert inLibrary:(id)library;
++ (id)_convertQueryKeyTypeToString:(int)string;
++ (id)_convertQueryValueForAssetType:(int)type;
++ (id)_equalityPredicateForDoubleQuery:(id)query withValue:(double)value comparator:(int)comparator inLibrary:(id)library;
++ (id)_expressionForStringValue:(id)value inLibrary:(id)library;
++ (id)_getConvertedKeys:(id)keys;
++ (id)_getConvertedQueryKey:(id)key;
++ (id)_getTargetDateForTheLastDays:(int64_t)days weeks:(int64_t)weeks months:(int64_t)months years:(int64_t)years seconds:(int64_t)seconds targetDate:(id)date;
++ (id)_getTargetDateWithUnit:(int)unit dateValue:(id)value;
++ (id)_infoFromSingleQuery:(id)query;
++ (id)_personMatchesPredicateForCriteria:(id)criteria;
 + (id)_personNameQueryKeyPaths;
-+ (id)_predicateForDoubleQuery:(id)a3 inLibrary:(id)a4;
-+ (id)_predicateForEmptyQuery:(id)a3 inLibrary:(id)a4;
-+ (id)_predicateForIsReferencedQuery:(id)a3 inLibrary:(id)a4;
-+ (id)_predicateForLoopingQuery:(id)a3 inLibrary:(id)a4;
-+ (id)_predicateForPersonQuery:(id)a3 inLibrary:(id)a4 changeDetectionCriteria:(id)a5;
-+ (id)_predicateForPersonUUIDQuery:(id)a3 inLibrary:(id)a4 changeDetectionCriteria:(id)a5;
-+ (id)_predicateForPersonUUIDinMomentForSharedLibraryQuery:(id)a3 inLibrary:(id)a4 changeDetectionCriteria:(id)a5;
-+ (id)_predicateForProResQuery:(id)a3 inLibrary:(id)a4;
-+ (id)_predicateForQuery:(id)a3 inLibrary:(id)a4 changeDetectionCriteria:(id)a5;
-+ (id)_predicateForRangeQuery:(id)a3 inLibrary:(id)a4 changeDetectionCriteria:(id)a5;
-+ (id)_predicateForSingleQuery:(id)a3 inLibrary:(id)a4 changeDetectionCriteria:(id)a5;
-+ (id)_predicateForTaggedWithGPSQuery:(id)a3 inLibrary:(id)a4;
-+ (id)_predicateForTextQuery:(id)a3 inLibrary:(id)a4;
-+ (id)_predicateFromAlbumKind:(int)a3 negate:(BOOL)a4;
-+ (id)_predicateFromSearchIndexForText:(id)a3 comparator:(int)a4 inLibrary:(id)a5;
-+ (id)_singleQueryInQuery:(id)a3 passingTest:(id)a4;
-+ (id)constructQueryFromData:(id)a3;
-+ (id)infoFromQuery:(id)a3;
-+ (id)predicateForQuery:(id)a3 inLibrary:(id)a4 changeDetectionCriteria:(id)a5;
-+ (id)queryFromInfo:(id)a3;
-+ (int)_convertComparatorToNumericComparator:(int)a3;
-+ (unint64_t)_comparatorToOperatorType:(int)a3;
++ (id)_predicateForDoubleQuery:(id)query inLibrary:(id)library;
++ (id)_predicateForEmptyQuery:(id)query inLibrary:(id)library;
++ (id)_predicateForIsReferencedQuery:(id)query inLibrary:(id)library;
++ (id)_predicateForLoopingQuery:(id)query inLibrary:(id)library;
++ (id)_predicateForPersonQuery:(id)query inLibrary:(id)library changeDetectionCriteria:(id)criteria;
++ (id)_predicateForPersonUUIDQuery:(id)query inLibrary:(id)library changeDetectionCriteria:(id)criteria;
++ (id)_predicateForPersonUUIDinMomentForSharedLibraryQuery:(id)query inLibrary:(id)library changeDetectionCriteria:(id)criteria;
++ (id)_predicateForProResQuery:(id)query inLibrary:(id)library;
++ (id)_predicateForQuery:(id)query inLibrary:(id)library changeDetectionCriteria:(id)criteria;
++ (id)_predicateForRangeQuery:(id)query inLibrary:(id)library changeDetectionCriteria:(id)criteria;
++ (id)_predicateForSingleQuery:(id)query inLibrary:(id)library changeDetectionCriteria:(id)criteria;
++ (id)_predicateForTaggedWithGPSQuery:(id)query inLibrary:(id)library;
++ (id)_predicateForTextQuery:(id)query inLibrary:(id)library;
++ (id)_predicateFromAlbumKind:(int)kind negate:(BOOL)negate;
++ (id)_predicateFromSearchIndexForText:(id)text comparator:(int)comparator inLibrary:(id)library;
++ (id)_singleQueryInQuery:(id)query passingTest:(id)test;
++ (id)constructQueryFromData:(id)data;
++ (id)infoFromQuery:(id)query;
++ (id)predicateForQuery:(id)query inLibrary:(id)library changeDetectionCriteria:(id)criteria;
++ (id)queryFromInfo:(id)info;
++ (int)_convertComparatorToNumericComparator:(int)comparator;
++ (unint64_t)_comparatorToOperatorType:(int)type;
 @end
 
 @implementation PLQueryHandler
 
-+ (BOOL)_findAndReplaceLatitudeLongitudeKeyInQuery:(id)a3
++ (BOOL)_findAndReplaceLatitudeLongitudeKeyInQuery:(id)query
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (![v3 hasFirst])
+  queryCopy = query;
+  if (![queryCopy hasFirst])
   {
-    if (![v3 hasSecond])
+    if (![queryCopy hasSecond])
     {
       v7 = 0;
       goto LABEL_8;
     }
 
 LABEL_6:
-    v8 = [v3 second];
-    v7 = [PLQueryHandler _findAndReplaceLatitudeLongitudeKeyInQuery:v8];
+    second = [queryCopy second];
+    v7 = [PLQueryHandler _findAndReplaceLatitudeLongitudeKeyInQuery:second];
 
     goto LABEL_8;
   }
 
-  v4 = [v3 first];
-  v5 = [PLQueryHandler _findAndReplaceLatitudeLongitudeKeyInQuery:v4];
+  first = [queryCopy first];
+  v5 = [PLQueryHandler _findAndReplaceLatitudeLongitudeKeyInQuery:first];
 
-  v6 = [v3 hasSecond];
-  v7 = v6 | v5;
-  if (v6 && !v5)
+  hasSecond = [queryCopy hasSecond];
+  v7 = hasSecond | v5;
+  if (hasSecond && !v5)
   {
     goto LABEL_6;
   }
@@ -75,8 +75,8 @@ LABEL_8:
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v9 = [v3 singleQueries];
-  v10 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  singleQueries = [queryCopy singleQueries];
+  v10 = [singleQueries countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v10)
   {
     v11 = v10;
@@ -87,7 +87,7 @@ LABEL_8:
       {
         if (*v18 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(singleQueries);
         }
 
         v14 = *(*(&v17 + 1) + 8 * i);
@@ -112,7 +112,7 @@ LABEL_19:
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v11 = [singleQueries countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v11);
@@ -121,9 +121,9 @@ LABEL_19:
   return v7 & 1;
 }
 
-+ (BOOL)includesHiddenAssetsInQuery:(id)a3
++ (BOOL)includesHiddenAssetsInQuery:(id)query
 {
-  v3 = [a1 _singleQueryInQuery:a3 passingTest:&__block_literal_global_297];
+  v3 = [self _singleQueryInQuery:query passingTest:&__block_literal_global_297];
   v4 = v3 != 0;
 
   return v4;
@@ -145,21 +145,21 @@ uint64_t __46__PLQueryHandler_includesHiddenAssetsInQuery___block_invoke(uint64_
   return v3;
 }
 
-+ (id)_singleQueryInQuery:(id)a3 passingTest:(id)a4
++ (id)_singleQueryInQuery:(id)query passingTest:(id)test
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  queryCopy = query;
+  testCopy = test;
+  if (queryCopy)
   {
-    if ([v6 singleQueriesCount])
+    if ([queryCopy singleQueriesCount])
     {
       v20 = 0u;
       v21 = 0u;
       v18 = 0u;
       v19 = 0u;
-      v8 = [v6 singleQueries];
-      v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      singleQueries = [queryCopy singleQueries];
+      v9 = [singleQueries countByEnumeratingWithState:&v18 objects:v22 count:16];
       if (v9)
       {
         v10 = v9;
@@ -170,18 +170,18 @@ LABEL_5:
         {
           if (*v19 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(singleQueries);
           }
 
           v13 = *(*(&v18 + 1) + 8 * v12);
-          if (v7[2](v7, v13))
+          if (testCopy[2](testCopy, v13))
           {
             break;
           }
 
           if (v10 == ++v12)
           {
-            v10 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+            v10 = [singleQueries countByEnumeratingWithState:&v18 objects:v22 count:16];
             if (v10)
             {
               goto LABEL_5;
@@ -205,13 +205,13 @@ LABEL_11:
       }
     }
 
-    v15 = [v6 first];
-    v14 = [a1 _singleQueryInQuery:v15 passingTest:v7];
+    first = [queryCopy first];
+    v14 = [self _singleQueryInQuery:first passingTest:testCopy];
 
     if (!v14)
     {
-      v16 = [v6 second];
-      v14 = [a1 _singleQueryInQuery:v16 passingTest:v7];
+      second = [queryCopy second];
+      v14 = [self _singleQueryInQuery:second passingTest:testCopy];
     }
   }
 
@@ -225,22 +225,22 @@ LABEL_16:
   return v14;
 }
 
-+ (BOOL)_containsKey:(int)a3 inQuery:(id)a4
++ (BOOL)_containsKey:(int)key inQuery:(id)query
 {
-  v4 = *&a3;
+  v4 = *&key;
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = v5;
-  if (v5)
+  queryCopy = query;
+  v6 = queryCopy;
+  if (queryCopy)
   {
-    if ([v5 singleQueriesCount])
+    if ([queryCopy singleQueriesCount])
     {
       v17 = 0u;
       v18 = 0u;
       v15 = 0u;
       v16 = 0u;
-      v7 = [v6 singleQueries];
-      v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      singleQueries = [v6 singleQueries];
+      v8 = [singleQueries countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (!v8)
       {
 LABEL_11:
@@ -258,7 +258,7 @@ LABEL_5:
       {
         if (*v16 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(singleQueries);
         }
 
         if ([*(*(&v15 + 1) + 8 * v11) key] == v4)
@@ -268,7 +268,7 @@ LABEL_5:
 
         if (v9 == ++v11)
         {
-          v9 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+          v9 = [singleQueries countByEnumeratingWithState:&v15 objects:v19 count:16];
           if (v9)
           {
             goto LABEL_5;
@@ -281,11 +281,11 @@ LABEL_5:
 
     else
     {
-      v7 = [v6 first];
-      if (![PLQueryHandler _containsKey:v4 inQuery:v7])
+      singleQueries = [v6 first];
+      if (![PLQueryHandler _containsKey:v4 inQuery:singleQueries])
       {
-        v13 = [v6 second];
-        v12 = [PLQueryHandler _containsKey:v4 inQuery:v13];
+        second = [v6 second];
+        v12 = [PLQueryHandler _containsKey:v4 inQuery:second];
 
         goto LABEL_16;
       }
@@ -301,25 +301,25 @@ LABEL_17:
   return v12;
 }
 
-+ (id)_predicateForQuery:(id)a3 inLibrary:(id)a4 changeDetectionCriteria:(id)a5
++ (id)_predicateForQuery:(id)query inLibrary:(id)library changeDetectionCriteria:(id)criteria
 {
   v47 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (!v7)
+  queryCopy = query;
+  libraryCopy = library;
+  criteriaCopy = criteria;
+  if (!queryCopy)
   {
     v18 = 0;
     goto LABEL_48;
   }
 
-  if (![v7 singleQueriesCount])
+  if (![queryCopy singleQueriesCount])
   {
-    v19 = [v7 conjunction];
-    v20 = [v7 first];
-    v10 = [PLQueryHandler _predicateForQuery:v20 inLibrary:v8 changeDetectionCriteria:v9];
+    conjunction = [queryCopy conjunction];
+    first = [queryCopy first];
+    v10 = [PLQueryHandler _predicateForQuery:first inLibrary:libraryCopy changeDetectionCriteria:criteriaCopy];
 
-    if (v19 == 2)
+    if (conjunction == 2)
     {
       if (v10)
       {
@@ -334,8 +334,8 @@ LABEL_17:
       goto LABEL_47;
     }
 
-    v22 = [v7 second];
-    v23 = [PLQueryHandler _predicateForQuery:v22 inLibrary:v8 changeDetectionCriteria:v9];
+    second = [queryCopy second];
+    v23 = [PLQueryHandler _predicateForQuery:second inLibrary:libraryCopy changeDetectionCriteria:criteriaCopy];
 
     if (!v10 || !v23)
     {
@@ -352,36 +352,36 @@ LABEL_17:
       goto LABEL_46;
     }
 
-    v24 = [v7 conjunction];
+    conjunction2 = [queryCopy conjunction];
     v25 = MEMORY[0x1E696AB28];
-    if (v24)
+    if (conjunction2)
     {
       v40[0] = v10;
       v40[1] = v23;
-      v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:v40 count:2];
-      v27 = [v25 andPredicateWithSubpredicates:v26];
+      logDescription2 = [MEMORY[0x1E695DEC8] arrayWithObjects:v40 count:2];
+      v27 = [v25 andPredicateWithSubpredicates:logDescription2];
     }
 
     else
     {
       v41[0] = v10;
       v41[1] = v23;
-      v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:v41 count:2];
-      v27 = [v25 orPredicateWithSubpredicates:v26];
+      logDescription2 = [MEMORY[0x1E695DEC8] arrayWithObjects:v41 count:2];
+      v27 = [v25 orPredicateWithSubpredicates:logDescription2];
     }
 
     v18 = v27;
     goto LABEL_45;
   }
 
-  v10 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v7, "singleQueriesCount")}];
+  v10 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(queryCopy, "singleQueriesCount")}];
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v35 = v7;
-  v11 = [v7 singleQueries];
-  v12 = [v11 countByEnumeratingWithState:&v36 objects:v46 count:16];
+  v35 = queryCopy;
+  singleQueries = [queryCopy singleQueries];
+  v12 = [singleQueries countByEnumeratingWithState:&v36 objects:v46 count:16];
   if (v12)
   {
     v13 = v12;
@@ -393,10 +393,10 @@ LABEL_17:
       {
         if (*v37 != v15)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(singleQueries);
         }
 
-        v17 = [PLQueryHandler _predicateForSingleQuery:*(*(&v36 + 1) + 8 * i) inLibrary:v8 changeDetectionCriteria:v9];
+        v17 = [PLQueryHandler _predicateForSingleQuery:*(*(&v36 + 1) + 8 * i) inLibrary:libraryCopy changeDetectionCriteria:criteriaCopy];
         if (v17)
         {
           [v10 addObject:v17];
@@ -408,7 +408,7 @@ LABEL_17:
         }
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v36 objects:v46 count:16];
+      v13 = [singleQueries countByEnumeratingWithState:&v36 objects:v46 count:16];
     }
 
     while (v13);
@@ -422,11 +422,11 @@ LABEL_17:
   if (![v10 count])
   {
     v18 = 0;
-    v7 = v35;
+    queryCopy = v35;
     goto LABEL_30;
   }
 
-  v7 = v35;
+  queryCopy = v35;
   if (![v35 conjunction])
   {
     v21 = [MEMORY[0x1E696AB28] orPredicateWithSubpredicates:v10];
@@ -444,17 +444,17 @@ LABEL_29:
   if ([v35 conjunction] == 2)
   {
     v28 = MEMORY[0x1E696AB28];
-    v29 = [v10 firstObject];
-    v18 = [v28 notPredicateWithSubpredicate:v29];
+    firstObject = [v10 firstObject];
+    v18 = [v28 notPredicateWithSubpredicate:firstObject];
 
     if ([v10 count] >= 2)
     {
       v30 = PLUserSmartAlbumGetLog();
       if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
       {
-        v31 = [v35 logDescription];
+        logDescription = [v35 logDescription];
         *buf = 138412546;
-        v43 = v31;
+        v43 = logDescription;
         v44 = 2112;
         v45 = v18;
         _os_log_impl(&dword_19BF1F000, v30, OS_LOG_TYPE_DEFAULT, "Only processing the first single query for NOT conjection, query: %@, predicate: %@", buf, 0x16u);
@@ -478,9 +478,9 @@ LABEL_46:
       goto LABEL_47;
     }
 
-    v26 = [v7 logDescription];
+    logDescription2 = [queryCopy logDescription];
     *buf = 138412546;
-    v43 = v26;
+    v43 = logDescription2;
     v44 = 2112;
     v45 = v18;
     _os_log_impl(&dword_19BF1F000, v23, OS_LOG_TYPE_DEFAULT, "Dropping some unsupported predicate, query: %@, predicate: %@", buf, 0x16u);
@@ -495,9 +495,9 @@ LABEL_48:
   v32 = PLUserSmartAlbumGetLog();
   if (os_log_type_enabled(v32, OS_LOG_TYPE_DEBUG))
   {
-    v33 = [v7 logDescription];
+    logDescription3 = [queryCopy logDescription];
     *buf = 138412546;
-    v43 = v33;
+    v43 = logDescription3;
     v44 = 2112;
     v45 = v18;
     _os_log_impl(&dword_19BF1F000, v32, OS_LOG_TYPE_DEBUG, "Query: %@, predicate: %@", buf, 0x16u);
@@ -506,10 +506,10 @@ LABEL_48:
   return v18;
 }
 
-+ (id)predicateForQuery:(id)a3 inLibrary:(id)a4 changeDetectionCriteria:(id)a5
++ (id)predicateForQuery:(id)query inLibrary:(id)library changeDetectionCriteria:(id)criteria
 {
   v12[2] = *MEMORY[0x1E69E9840];
-  v5 = [PLQueryHandler _predicateForQuery:a3 inLibrary:a4 changeDetectionCriteria:a5];
+  v5 = [PLQueryHandler _predicateForQuery:query inLibrary:library changeDetectionCriteria:criteria];
   if (v5)
   {
     v6 = v5;
@@ -529,96 +529,96 @@ LABEL_48:
   return v10;
 }
 
-+ (id)_predicateForSingleQuery:(id)a3 inLibrary:(id)a4 changeDetectionCriteria:(id)a5
++ (id)_predicateForSingleQuery:(id)query inLibrary:(id)library changeDetectionCriteria:(id)criteria
 {
   v55[2] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  queryCopy = query;
+  libraryCopy = library;
+  criteriaCopy = criteria;
   v52 = 0;
-  if ([v8 comparator] == 50 || objc_msgSend(v8, "comparator") == 51)
+  if ([queryCopy comparator] == 50 || objc_msgSend(queryCopy, "comparator") == 51)
   {
-    v11 = [PLQueryHandler _predicateForEmptyQuery:v8 inLibrary:v9];
+    v11 = [PLQueryHandler _predicateForEmptyQuery:queryCopy inLibrary:libraryCopy];
 LABEL_4:
     v12 = v11;
     goto LABEL_5;
   }
 
-  if ([v8 comparator] == 30)
+  if ([queryCopy comparator] == 30)
   {
-    v11 = [PLQueryHandler _predicateForRangeQuery:v8 inLibrary:v9 changeDetectionCriteria:v10];
+    v11 = [PLQueryHandler _predicateForRangeQuery:queryCopy inLibrary:libraryCopy changeDetectionCriteria:criteriaCopy];
     goto LABEL_4;
   }
 
-  if ([v8 key] == 402)
+  if ([queryCopy key] == 402)
   {
-    v11 = [PLQueryHandler _predicateForTextQuery:v8 inLibrary:v9];
+    v11 = [PLQueryHandler _predicateForTextQuery:queryCopy inLibrary:libraryCopy];
     goto LABEL_4;
   }
 
-  if ([v8 key] == 550)
+  if ([queryCopy key] == 550)
   {
-    v11 = [PLQueryHandler _predicateForPersonQuery:v8 inLibrary:v9 changeDetectionCriteria:v10];
+    v11 = [PLQueryHandler _predicateForPersonQuery:queryCopy inLibrary:libraryCopy changeDetectionCriteria:criteriaCopy];
     goto LABEL_4;
   }
 
-  if ([v8 key] == 551)
+  if ([queryCopy key] == 551)
   {
-    v11 = [PLQueryHandler _predicateForPersonUUIDQuery:v8 inLibrary:v9 changeDetectionCriteria:v10];
+    v11 = [PLQueryHandler _predicateForPersonUUIDQuery:queryCopy inLibrary:libraryCopy changeDetectionCriteria:criteriaCopy];
     goto LABEL_4;
   }
 
-  if ([v8 key] == 553)
+  if ([queryCopy key] == 553)
   {
-    v11 = [PLQueryHandler _predicateForPersonUUIDinMomentForSharedLibraryQuery:v8 inLibrary:v9 changeDetectionCriteria:v10];
+    v11 = [PLQueryHandler _predicateForPersonUUIDinMomentForSharedLibraryQuery:queryCopy inLibrary:libraryCopy changeDetectionCriteria:criteriaCopy];
     goto LABEL_4;
   }
 
-  if ([v8 key] == 6)
+  if ([queryCopy key] == 6)
   {
-    v11 = [PLQueryHandler _predicateForIsReferencedQuery:v8 inLibrary:v9];
+    v11 = [PLQueryHandler _predicateForIsReferencedQuery:queryCopy inLibrary:libraryCopy];
     goto LABEL_4;
   }
 
-  if ([v8 valueType] == 2)
+  if ([queryCopy valueType] == 2)
   {
-    v11 = [PLQueryHandler _predicateForDoubleQuery:v8 inLibrary:v9];
+    v11 = [PLQueryHandler _predicateForDoubleQuery:queryCopy inLibrary:libraryCopy];
     goto LABEL_4;
   }
 
-  if ([v8 key] == 5)
+  if ([queryCopy key] == 5)
   {
-    v14 = [v8 firstValue];
+    firstValue = [queryCopy firstValue];
     v15 = integerFromData();
 
     if (v15 == 13)
     {
-      v11 = [PLQueryHandler _predicateForLoopingQuery:v8 inLibrary:v9];
+      v11 = [PLQueryHandler _predicateForLoopingQuery:queryCopy inLibrary:libraryCopy];
       goto LABEL_4;
     }
   }
 
-  if ([v8 key] == 5 && +[PLQueryHandler hasMatchingFetchingAlbumForSingleQuery:outKind:](PLQueryHandler, "hasMatchingFetchingAlbumForSingleQuery:outKind:", v8, &v52))
+  if ([queryCopy key] == 5 && +[PLQueryHandler hasMatchingFetchingAlbumForSingleQuery:outKind:](PLQueryHandler, "hasMatchingFetchingAlbumForSingleQuery:outKind:", queryCopy, &v52))
   {
-    v11 = +[PLQueryHandler _predicateFromAlbumKind:negate:](PLQueryHandler, "_predicateFromAlbumKind:negate:", v52, [v8 comparator] == 2);
+    v11 = +[PLQueryHandler _predicateFromAlbumKind:negate:](PLQueryHandler, "_predicateFromAlbumKind:negate:", v52, [queryCopy comparator] == 2);
     goto LABEL_4;
   }
 
-  if ([v8 key] == 319)
+  if ([queryCopy key] == 319)
   {
-    v11 = [PLQueryHandler _predicateForTaggedWithGPSQuery:v8 inLibrary:v9];
+    v11 = [PLQueryHandler _predicateForTaggedWithGPSQuery:queryCopy inLibrary:libraryCopy];
     goto LABEL_4;
   }
 
-  if ([v8 key] == 600)
+  if ([queryCopy key] == 600)
   {
     v12 = 0;
     goto LABEL_5;
   }
 
-  if ([v8 key] == 1000)
+  if ([queryCopy key] == 1000)
   {
-    if ([v8 comparator] == 2)
+    if ([queryCopy comparator] == 2)
     {
       +[PLQueryHandler _predicateForAbleToUploadQuery];
     }
@@ -631,13 +631,13 @@ LABEL_4:
     goto LABEL_4;
   }
 
-  if ([v8 key] == 9)
+  if ([queryCopy key] == 9)
   {
-    v11 = [PLQueryHandler _predicateForProResQuery:v8 inLibrary:v9];
+    v11 = [PLQueryHandler _predicateForProResQuery:queryCopy inLibrary:libraryCopy];
     goto LABEL_4;
   }
 
-  v16 = [a1 _getConvertedKeys:v8];
+  v16 = [self _getConvertedKeys:queryCopy];
   v17 = v16;
   if (v16)
   {
@@ -652,37 +652,37 @@ LABEL_59:
 
     v50 = [v17 objectForKey:@"firstValue"];
     v18 = [v17 objectForKey:@"comparator"];
-    v19 = [v18 integerValue];
+    integerValue = [v18 integerValue];
 
-    if (([v8 key] == 200 || objc_msgSend(v8, "key") == 201) && (objc_msgSend(v8, "comparator") == 1 || objc_msgSend(v8, "comparator") == 2))
+    if (([queryCopy key] == 200 || objc_msgSend(queryCopy, "key") == 201) && (objc_msgSend(queryCopy, "comparator") == 1 || objc_msgSend(queryCopy, "comparator") == 2))
     {
       v20 = [MEMORY[0x1E695DEE8] calendarWithIdentifier:*MEMORY[0x1E695D850]];
       v21 = [v20 startOfDayForDate:v50];
       v22 = [PLQueryHandler _getTargetDateForTheLastDays:-1 weeks:0 months:0 years:0 seconds:0 targetDate:v21];
-      v23 = [v8 comparator];
+      comparator = [queryCopy comparator];
       v24 = objc_alloc(MEMORY[0x1E69BF2C0]);
-      if (v23 == 1)
+      if (comparator == 1)
       {
         v25 = [v24 initWithConjunction:1];
-        [v25 addIsAfterDateQueryKey:objc_msgSend(v8 withDate:{"key"), v21}];
-        [v25 addIsBeforeDateQueryKey:objc_msgSend(v8 withDate:{"key"), v22}];
+        [v25 addIsAfterDateQueryKey:objc_msgSend(queryCopy withDate:{"key"), v21}];
+        [v25 addIsBeforeDateQueryKey:objc_msgSend(queryCopy withDate:{"key"), v22}];
       }
 
       else
       {
         v25 = [v24 initWithConjunction:0];
-        [v25 addIsBeforeDateQueryKey:objc_msgSend(v8 withDate:{"key"), v21}];
-        [v25 addIsAfterDateQueryKey:objc_msgSend(v8 withDate:{"key"), v22}];
+        [v25 addIsBeforeDateQueryKey:objc_msgSend(queryCopy withDate:{"key"), v21}];
+        [v25 addIsAfterDateQueryKey:objc_msgSend(queryCopy withDate:{"key"), v22}];
       }
 
-      v33 = [v25 query];
+      query = [v25 query];
 
-      v34 = [PLQueryHandler predicateForQuery:v33 inLibrary:v9 changeDetectionCriteria:v10];
+      v34 = [PLQueryHandler predicateForQuery:query inLibrary:libraryCopy changeDetectionCriteria:criteriaCopy];
       goto LABEL_57;
     }
 
-    v26 = [PLQueryHandler _comparatorToOperatorType:v19];
-    if ([PLQueryHandler _isTextComparator:v19])
+    v26 = [PLQueryHandler _comparatorToOperatorType:integerValue];
+    if ([PLQueryHandler _isTextComparator:integerValue])
     {
       v27 = 3;
     }
@@ -692,7 +692,7 @@ LABEL_59:
       v27 = 0;
     }
 
-    if ([v8 key] == 4)
+    if ([queryCopy key] == 4)
     {
       v28 = MEMORY[0x1E696ABC8];
       v29 = [MEMORY[0x1E696ABC8] expressionForKeyPath:@"modernResources"];
@@ -710,15 +710,15 @@ LABEL_72:
       v21 = [MEMORY[0x1E696ABC8] expressionForConstantValue:v50];
       v44 = [MEMORY[0x1E696AB18] predicateWithLeftExpression:v20 rightExpression:v21 modifier:0 type:v26 options:v27];
       v12 = v44;
-      if ((v43 & 1) != 0 || !v44 || ![PLQueryHandler _needToNegateQueryForComparator:v19])
+      if ((v43 & 1) != 0 || !v44 || ![PLQueryHandler _needToNegateQueryForComparator:integerValue])
       {
         goto LABEL_58;
       }
 
       v22 = [MEMORY[0x1E696AB28] notPredicateWithSubpredicate:v12];
-      v33 = [v8 copy];
-      [v33 setComparator:50];
-      v49 = [PLQueryHandler _predicateForSingleQuery:v33 inLibrary:v9 changeDetectionCriteria:v10];
+      query = [queryCopy copy];
+      [query setComparator:50];
+      v49 = [PLQueryHandler _predicateForSingleQuery:query inLibrary:libraryCopy changeDetectionCriteria:criteriaCopy];
       if (v49)
       {
         v45 = MEMORY[0x1E696AB28];
@@ -735,9 +735,9 @@ LABEL_72:
         v46 = PLUserSmartAlbumGetLog();
         if (os_log_type_enabled(v46, OS_LOG_TYPE_DEFAULT))
         {
-          v48 = [v8 logDescription];
+          logDescription = [queryCopy logDescription];
           *buf = 138412290;
-          v54 = v48;
+          v54 = logDescription;
           _os_log_impl(&dword_19BF1F000, v46, OS_LOG_TYPE_DEFAULT, "Only negate the predicate, not checking null value for query: %@", buf, 0xCu);
         }
 
@@ -751,9 +751,9 @@ LABEL_58:
       goto LABEL_59;
     }
 
-    if ([v8 key] == 100)
+    if ([queryCopy key] == 100)
     {
-      if (([v8 hasFirstValue] & 1) == 0)
+      if (([queryCopy hasFirstValue] & 1) == 0)
       {
         v28 = MEMORY[0x1E696ABC8];
         v29 = [MEMORY[0x1E696ABC8] expressionForKeyPath:@"albums"];
@@ -762,7 +762,7 @@ LABEL_58:
         goto LABEL_54;
       }
 
-      v35 = [v8 firstValue];
+      firstValue2 = [queryCopy firstValue];
       v36 = stringFromData();
 
       v37 = MEMORY[0x1E696ABC8];
@@ -773,20 +773,20 @@ LABEL_58:
 
     else
     {
-      if ([v8 key] != 500)
+      if ([queryCopy key] != 500)
       {
-        v20 = [PLQueryHandler _expressionForStringValue:v51 inLibrary:v9];
+        v20 = [PLQueryHandler _expressionForStringValue:v51 inLibrary:libraryCopy];
         v43 = 0;
         goto LABEL_72;
       }
 
-      if (([v8 hasFirstValue] & 1) == 0)
+      if (([queryCopy hasFirstValue] & 1) == 0)
       {
         v20 = [MEMORY[0x1E696ABC8] expressionForKeyPath:@"additionalAttributes.keywords.@count"];
         goto LABEL_71;
       }
 
-      v41 = [v8 firstValue];
+      firstValue3 = [queryCopy firstValue];
       v36 = stringFromData();
 
       v37 = MEMORY[0x1E696ABC8];
@@ -810,9 +810,9 @@ LABEL_5:
   return v12;
 }
 
-+ (BOOL)hasMatchingFetchingAlbumForSingleQuery:(id)a3 outKind:(int *)a4
++ (BOOL)hasMatchingFetchingAlbumForSingleQuery:(id)query outKind:(int *)kind
 {
-  v5 = [a3 firstValue];
+  firstValue = [query firstValue];
   v6 = integerFromData();
 
   v7 = v6 - 2;
@@ -821,25 +821,25 @@ LABEL_5:
     return 0;
   }
 
-  *a4 = dword_19C60B99C[v7];
+  *kind = dword_19C60B99C[v7];
   return 1;
 }
 
-+ (id)_predicateForTaggedWithGPSQuery:(id)a3 inLibrary:(id)a4
++ (id)_predicateForTaggedWithGPSQuery:(id)query inLibrary:(id)library
 {
-  v6 = a4;
-  v7 = [a1 _getConvertedKeys:a3];
+  libraryCopy = library;
+  v7 = [self _getConvertedKeys:query];
   v8 = [v7 objectForKey:@"key"];
   if ([v8 length])
   {
     v9 = [v7 objectForKey:@"comparator"];
-    v10 = [v9 integerValue];
+    integerValue = [v9 integerValue];
 
-    v11 = [PLQueryHandler _comparatorToOperatorType:v10];
-    v12 = [PLQueryHandler _expressionForStringValue:v8 inLibrary:v6];
+    v11 = [PLQueryHandler _comparatorToOperatorType:integerValue];
+    v12 = [PLQueryHandler _expressionForStringValue:v8 inLibrary:libraryCopy];
     v13 = MEMORY[0x1E696ABC8];
-    v14 = [MEMORY[0x1E695DFB0] null];
-    v15 = [v13 expressionForConstantValue:v14];
+    null = [MEMORY[0x1E695DFB0] null];
+    v15 = [v13 expressionForConstantValue:null];
 
     v16 = MEMORY[0x1E696AB28];
     v17 = [MEMORY[0x1E696AB18] predicateWithLeftExpression:v12 rightExpression:v15 modifier:0 type:v11 options:0];
@@ -854,13 +854,13 @@ LABEL_5:
   return v18;
 }
 
-+ (id)_predicateForProResQuery:(id)a3 inLibrary:(id)a4
++ (id)_predicateForProResQuery:(id)query inLibrary:(id)library
 {
-  v4 = a3;
+  queryCopy = query;
   v5 = +[PLManagedAsset predicateForProResAssets];
-  v6 = [v4 comparator];
+  comparator = [queryCopy comparator];
 
-  if (v6 == 2)
+  if (comparator == 2)
   {
     v7 = [MEMORY[0x1E696AB28] notPredicateWithSubpredicate:v5];
 
@@ -870,11 +870,11 @@ LABEL_5:
   return v5;
 }
 
-+ (id)_predicateFromAlbumKind:(int)a3 negate:(BOOL)a4
++ (id)_predicateFromAlbumKind:(int)kind negate:(BOOL)negate
 {
-  v4 = a4;
-  v5 = [PLFetchingAlbum predicateForAlbumKind:*&a3];
-  if (v4)
+  negateCopy = negate;
+  v5 = [PLFetchingAlbum predicateForAlbumKind:*&kind];
+  if (negateCopy)
   {
     v6 = [MEMORY[0x1E696AB28] notPredicateWithSubpredicate:v5];
 
@@ -884,14 +884,14 @@ LABEL_5:
   return v5;
 }
 
-+ (id)_predicateForLoopingQuery:(id)a3 inLibrary:(id)a4
++ (id)_predicateForLoopingQuery:(id)query inLibrary:(id)library
 {
   v4 = MEMORY[0x1E696AE18];
-  v5 = a3;
+  queryCopy = query;
   v6 = [v4 predicateWithFormat:@"noindex:(kind) == %d AND noindex:(playbackStyle) == %d", 1, 5];
-  v7 = [v5 comparator];
+  comparator = [queryCopy comparator];
 
-  if (v7 == 2)
+  if (comparator == 2)
   {
     v8 = [MEMORY[0x1E696AB28] notPredicateWithSubpredicate:v6];
 
@@ -901,31 +901,31 @@ LABEL_5:
   return v6;
 }
 
-+ (id)_predicateForIsReferencedQuery:(id)a3 inLibrary:(id)a4
++ (id)_predicateForIsReferencedQuery:(id)query inLibrary:(id)library
 {
-  v4 = [a3 comparator];
+  comparator = [query comparator];
   v5 = MEMORY[0x1E69BF328];
-  v6 = [MEMORY[0x1E69BF328] maskForReferencedAsset];
-  if (v4 == 2)
+  maskForReferencedAsset = [MEMORY[0x1E69BF328] maskForReferencedAsset];
+  if (comparator == 2)
   {
-    [v5 predicateForExcludeMask:v6 useIndex:1];
+    [v5 predicateForExcludeMask:maskForReferencedAsset useIndex:1];
   }
 
   else
   {
-    [v5 predicateForIncludeMask:v6 useIndex:1];
+    [v5 predicateForIncludeMask:maskForReferencedAsset useIndex:1];
   }
   v7 = ;
 
   return v7;
 }
 
-+ (id)_assetsPredicateForPersonPredicate:(id)a3 assetObjectIDs:(id *)a4 additionalAssetPredicate:(id)a5 invert:(BOOL)a6 inLibrary:(id)a7
++ (id)_assetsPredicateForPersonPredicate:(id)predicate assetObjectIDs:(id *)ds additionalAssetPredicate:(id)assetPredicate invert:(BOOL)invert inLibrary:(id)library
 {
-  v8 = a6;
-  v11 = a3;
-  v12 = a5;
-  v13 = a7;
+  invertCopy = invert;
+  predicateCopy = predicate;
+  assetPredicateCopy = assetPredicate;
+  libraryCopy = library;
   v37[0] = 0;
   v37[1] = v37;
   v37[2] = 0x3032000000;
@@ -944,23 +944,23 @@ LABEL_5:
   v32 = __Block_byref_object_copy__37882;
   v33 = __Block_byref_object_dispose__37883;
   v34 = 0;
-  v14 = [v13 managedObjectContext];
+  managedObjectContext = [libraryCopy managedObjectContext];
   v20 = MEMORY[0x1E69E9820];
   v21 = 3221225472;
   v22 = __110__PLQueryHandler__assetsPredicateForPersonPredicate_assetObjectIDs_additionalAssetPredicate_invert_inLibrary___block_invoke;
   v23 = &unk_1E756F910;
-  v15 = v11;
+  v15 = predicateCopy;
   v24 = v15;
   v26 = v37;
   v27 = v35;
-  v16 = v12;
+  v16 = assetPredicateCopy;
   v25 = v16;
   v28 = &v29;
-  [v14 performBlockAndWait:&v20];
+  [managedObjectContext performBlockAndWait:&v20];
 
   if (v30[5])
   {
-    if (v8)
+    if (invertCopy)
     {
       v17 = @"NONE self IN %@";
     }
@@ -971,7 +971,7 @@ LABEL_5:
     }
 
     v18 = [MEMORY[0x1E696AE18] predicateWithFormat:v17, v30[5], v20, v21, v22, v23, v24];
-    if (!a4)
+    if (!ds)
     {
       goto LABEL_7;
     }
@@ -980,10 +980,10 @@ LABEL_5:
   }
 
   v18 = 0;
-  if (a4)
+  if (ds)
   {
 LABEL_6:
-    *a4 = v30[5];
+    *ds = v30[5];
   }
 
 LABEL_7:
@@ -1095,33 +1095,33 @@ void __110__PLQueryHandler__assetsPredicateForPersonPredicate_assetObjectIDs_add
   }
 }
 
-+ (id)_predicateForPersonUUIDinMomentForSharedLibraryQuery:(id)a3 inLibrary:(id)a4 changeDetectionCriteria:(id)a5
++ (id)_predicateForPersonUUIDinMomentForSharedLibraryQuery:(id)query inLibrary:(id)library changeDetectionCriteria:(id)criteria
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 firstValue];
+  queryCopy = query;
+  libraryCopy = library;
+  criteriaCopy = criteria;
+  firstValue = [queryCopy firstValue];
   v12 = stringFromData();
 
   v13 = 0x1E696A000uLL;
-  if (([v8 comparator] & 0xFFFFFFFE) == 0x16)
+  if (([queryCopy comparator] & 0xFFFFFFFE) == 0x16)
   {
     v14 = [MEMORY[0x1E696AE18] predicateWithFormat:@"personUUID == %@", v12];
-    v15 = [v8 comparator];
-    v16 = v15 == 23;
+    comparator = [queryCopy comparator];
+    v16 = comparator == 23;
     if (v14)
     {
-      v17 = v15 == 23;
+      v17 = comparator == 23;
       v18 = +[PLPerson entityName];
-      [v10 addAttributeKeyPath:@"personUUID" forEntityName:v18];
+      [criteriaCopy addAttributeKeyPath:@"personUUID" forEntityName:v18];
 
       v19 = +[PLPerson entityName];
-      [v10 addRelationshipKeyPath:@"detectedFaces" forEntityName:v19];
+      [criteriaCopy addRelationshipKeyPath:@"detectedFaces" forEntityName:v19];
 
       v20 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == nil", @"additionalAttributes.syndicationIdentifier"];
       v21 = [PLLibraryScope compoundPredicateForMarkingOnboardingPreviewAssetsWithRulePredicate:v20];
       v42 = 0;
-      v22 = [a1 _assetsPredicateForPersonPredicate:v14 assetObjectIDs:&v42 additionalAssetPredicate:v21 invert:v17 inLibrary:v9];
+      v22 = [self _assetsPredicateForPersonPredicate:v14 assetObjectIDs:&v42 additionalAssetPredicate:v21 invert:v17 inLibrary:libraryCopy];
       v23 = v42;
 
       v13 = 0x1E696A000;
@@ -1143,17 +1143,17 @@ LABEL_6:
   v39 = __Block_byref_object_copy__37882;
   v40 = __Block_byref_object_dispose__37883;
   v41 = 0;
-  v24 = [v9 managedObjectContext];
+  managedObjectContext = [libraryCopy managedObjectContext];
   v32[0] = MEMORY[0x1E69E9820];
   v32[1] = 3221225472;
   v32[2] = __105__PLQueryHandler__predicateForPersonUUIDinMomentForSharedLibraryQuery_inLibrary_changeDetectionCriteria___block_invoke;
   v32[3] = &unk_1E7578820;
   v25 = v23;
   v33 = v25;
-  v26 = v9;
+  v26 = libraryCopy;
   v34 = v26;
   v35 = &v36;
-  [v24 performBlockAndWait:v32];
+  [managedObjectContext performBlockAndWait:v32];
 
   v27 = [MEMORY[0x1E695DFD8] setWithArray:v25];
   v28 = [v27 setByAddingObjectsFromArray:v37[5]];
@@ -1276,28 +1276,28 @@ void __105__PLQueryHandler__predicateForPersonUUIDinMomentForSharedLibraryQuery_
   }
 }
 
-+ (id)_predicateForPersonUUIDQuery:(id)a3 inLibrary:(id)a4 changeDetectionCriteria:(id)a5
++ (id)_predicateForPersonUUIDQuery:(id)query inLibrary:(id)library changeDetectionCriteria:(id)criteria
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 firstValue];
+  queryCopy = query;
+  libraryCopy = library;
+  criteriaCopy = criteria;
+  firstValue = [queryCopy firstValue];
   v12 = stringFromData();
 
-  if (([v8 comparator] & 0xFFFFFFFE) == 0x16)
+  if (([queryCopy comparator] & 0xFFFFFFFE) == 0x16)
   {
     v13 = [MEMORY[0x1E696AE18] predicateWithFormat:@"personUUID == %@", v12];
-    v14 = [v8 comparator];
+    comparator = [queryCopy comparator];
     if (v13)
     {
-      v15 = v14 == 23;
+      v15 = comparator == 23;
       v16 = +[PLPerson entityName];
-      [v10 addAttributeKeyPath:@"personUUID" forEntityName:v16];
+      [criteriaCopy addAttributeKeyPath:@"personUUID" forEntityName:v16];
 
       v17 = +[PLPerson entityName];
-      [v10 addRelationshipKeyPath:@"detectedFaces" forEntityName:v17];
+      [criteriaCopy addRelationshipKeyPath:@"detectedFaces" forEntityName:v17];
 
-      v18 = [a1 _assetsPredicateForPersonPredicate:v13 assetObjectIDs:0 additionalAssetPredicate:0 invert:v15 inLibrary:v9];
+      v18 = [self _assetsPredicateForPersonPredicate:v13 assetObjectIDs:0 additionalAssetPredicate:0 invert:v15 inLibrary:libraryCopy];
       goto LABEL_6;
     }
   }
@@ -1313,52 +1313,52 @@ LABEL_6:
   return v18;
 }
 
-+ (id)_predicateForPersonQuery:(id)a3 inLibrary:(id)a4 changeDetectionCriteria:(id)a5
++ (id)_predicateForPersonQuery:(id)query inLibrary:(id)library changeDetectionCriteria:(id)criteria
 {
-  v29 = a4;
-  v8 = a5;
-  v9 = a3;
-  v10 = [v9 firstValue];
+  libraryCopy = library;
+  criteriaCopy = criteria;
+  queryCopy = query;
+  firstValue = [queryCopy firstValue];
   v11 = stringFromData();
 
   v12 = [MEMORY[0x1E696AE70] escapedPatternForString:v11];
   v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(^|.*\\s+)%@(\\s+.*|$)", v12];
   v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@".*%@.*", v12];
-  v15 = [v9 comparator];
+  comparator = [queryCopy comparator];
 
   v16 = 0;
-  if (v15 <= 23)
+  if (comparator <= 23)
   {
-    if (v15 > 21)
+    if (comparator > 21)
     {
-      if (v15 != 22)
+      if (comparator != 22)
       {
-        v17 = a1;
-        v19 = a1;
+        selfCopy8 = self;
+        selfCopy2 = self;
         v20 = v13;
         goto LABEL_13;
       }
 
-      v17 = a1;
-      v22 = a1;
+      selfCopy8 = self;
+      selfCopy7 = self;
       v23 = v13;
     }
 
     else
     {
-      if (v15 != 20)
+      if (comparator != 20)
       {
-        v17 = a1;
+        selfCopy8 = self;
         v18 = 0;
-        if (v15 != 21)
+        if (comparator != 21)
         {
           goto LABEL_27;
         }
 
-        v19 = v17;
+        selfCopy2 = selfCopy8;
         v20 = v14;
 LABEL_13:
-        v16 = [v19 _personMatchesPredicateForCriteria:v20];
+        v16 = [selfCopy2 _personMatchesPredicateForCriteria:v20];
         v21 = 1;
         if (!v16)
         {
@@ -1370,12 +1370,12 @@ LABEL_14:
         goto LABEL_24;
       }
 
-      v17 = a1;
-      v22 = a1;
+      selfCopy8 = self;
+      selfCopy7 = self;
       v23 = v14;
     }
 
-    v16 = [v22 _personMatchesPredicateForCriteria:v23];
+    v16 = [selfCopy7 _personMatchesPredicateForCriteria:v23];
 LABEL_23:
     v21 = 0;
     if (!v16)
@@ -1385,22 +1385,22 @@ LABEL_23:
 
 LABEL_24:
     v25 = +[PLPerson entityName];
-    [v8 addAttributeKeyPath:@"fullName" forEntityName:v25];
+    [criteriaCopy addAttributeKeyPath:@"fullName" forEntityName:v25];
 
     v26 = +[PLPerson entityName];
-    [v8 addAttributeKeyPath:@"displayName" forEntityName:v26];
+    [criteriaCopy addAttributeKeyPath:@"displayName" forEntityName:v26];
 
     v27 = +[PLPerson entityName];
-    [v8 addRelationshipKeyPath:@"detectedFaces" forEntityName:v27];
+    [criteriaCopy addRelationshipKeyPath:@"detectedFaces" forEntityName:v27];
 
-    v18 = [v17 _assetsPredicateForPersonPredicate:v16 assetObjectIDs:0 additionalAssetPredicate:0 invert:v21 inLibrary:v29];
+    v18 = [selfCopy8 _assetsPredicateForPersonPredicate:v16 assetObjectIDs:0 additionalAssetPredicate:0 invert:v21 inLibrary:libraryCopy];
     goto LABEL_27;
   }
 
-  if (v15 <= 49)
+  if (comparator <= 49)
   {
-    v17 = a1;
-    if (v15 == 24)
+    selfCopy8 = self;
+    if (comparator == 24)
     {
       [MEMORY[0x1E696AEC0] stringWithFormat:@"(^|\\s+)%@.*", v12];
     }
@@ -1408,7 +1408,7 @@ LABEL_24:
     else
     {
       v18 = 0;
-      if (v15 != 25)
+      if (comparator != 25)
       {
         goto LABEL_27;
       }
@@ -1421,7 +1421,7 @@ LABEL_24:
     goto LABEL_23;
   }
 
-  if (v15 == 50)
+  if (comparator == 50)
   {
     [MEMORY[0x1E696AE18] predicateWithFormat:@"%K.@count == 0", @"detectedFaces"];
   }
@@ -1429,7 +1429,7 @@ LABEL_24:
   else
   {
     v18 = 0;
-    if (v15 != 51)
+    if (comparator != 51)
     {
       goto LABEL_27;
     }
@@ -1443,17 +1443,17 @@ LABEL_27:
   return v18;
 }
 
-+ (id)_personMatchesPredicateForCriteria:(id)a3
++ (id)_personMatchesPredicateForCriteria:(id)criteria
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [a1 _personNameQueryKeyPaths];
-  v6 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v5, "count")}];
+  criteriaCopy = criteria;
+  _personNameQueryKeyPaths = [self _personNameQueryKeyPaths];
+  v6 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(_personNameQueryKeyPaths, "count")}];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = v5;
+  v7 = _personNameQueryKeyPaths;
   v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
@@ -1468,7 +1468,7 @@ LABEL_27:
           objc_enumerationMutation(v7);
         }
 
-        v12 = [MEMORY[0x1E696AE18] predicateWithFormat:@"ANY %K MATCHES[cd] %@", *(*(&v15 + 1) + 8 * i), v4, v15];
+        v12 = [MEMORY[0x1E696AE18] predicateWithFormat:@"ANY %K MATCHES[cd] %@", *(*(&v15 + 1) + 8 * i), criteriaCopy, v15];
         [v6 addObject:v12];
       }
 
@@ -1493,25 +1493,25 @@ LABEL_27:
   return v2;
 }
 
-+ (id)_predicateForDoubleQuery:(id)a3 inLibrary:(id)a4
++ (id)_predicateForDoubleQuery:(id)query inLibrary:(id)library
 {
   v30[2] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 firstValue];
+  queryCopy = query;
+  libraryCopy = library;
+  firstValue = [queryCopy firstValue];
   doubleFromData();
   v9 = v8;
 
-  v10 = [PLQueryHandler _getConvertedQueryKey:v5];
+  v10 = [PLQueryHandler _getConvertedQueryKey:queryCopy];
   if (![v10 length])
   {
     v17 = 0;
     goto LABEL_23;
   }
 
-  if (+[PLQueryHandler _needEqualityForDoubleQuery:](PLQueryHandler, "_needEqualityForDoubleQuery:", [v5 comparator]))
+  if (+[PLQueryHandler _needEqualityForDoubleQuery:](PLQueryHandler, "_needEqualityForDoubleQuery:", [queryCopy comparator]))
   {
-    if ([v5 comparator] == 2)
+    if ([queryCopy comparator] == 2)
     {
       v11 = 2;
     }
@@ -1521,12 +1521,12 @@ LABEL_27:
       v11 = 1;
     }
 
-    v12 = [PLQueryHandler _equalityPredicateForDoubleQuery:v10 withValue:v11 comparator:v6 inLibrary:v9];
-    if ([v5 hasSecondValue])
+    v12 = [PLQueryHandler _equalityPredicateForDoubleQuery:v10 withValue:v11 comparator:libraryCopy inLibrary:v9];
+    if ([queryCopy hasSecondValue])
     {
       v13 = MEMORY[0x1E696AB28];
       v30[0] = v12;
-      v14 = [PLQueryHandler _equalityPredicateForDoubleQuery:v10 withValue:1 comparator:v6 inLibrary:v9];
+      v14 = [PLQueryHandler _equalityPredicateForDoubleQuery:v10 withValue:1 comparator:libraryCopy inLibrary:v9];
       v30[1] = v14;
       v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:2];
       v16 = [v13 orPredicateWithSubpredicates:v15];
@@ -1540,37 +1540,37 @@ LABEL_27:
     v12 = 0;
   }
 
-  v18 = [PLQueryHandler _expressionForStringValue:v10 inLibrary:v6];
+  v18 = [PLQueryHandler _expressionForStringValue:v10 inLibrary:libraryCopy];
   v19 = MEMORY[0x1E696ABC8];
   v20 = [MEMORY[0x1E696AD98] numberWithDouble:v9];
   v21 = [v19 expressionForConstantValue:v20];
 
-  v22 = [v5 comparator];
-  if ([v5 key] == 300)
+  comparator = [queryCopy comparator];
+  if ([queryCopy key] == 300)
   {
-    if ((v22 - 3) >= 3)
+    if ((comparator - 3) >= 3)
     {
-      if (v22 == 6)
+      if (comparator == 6)
       {
-        v22 = 5;
+        comparator = 5;
       }
 
       else
       {
-        v22 = v22;
+        comparator = comparator;
       }
     }
 
     else
     {
-      v22 = dword_19C60B990[(v22 - 3)];
+      comparator = dword_19C60B990[(comparator - 3)];
     }
   }
 
-  v23 = [PLQueryHandler _comparatorToOperatorType:v22];
+  v23 = [PLQueryHandler _comparatorToOperatorType:comparator];
   if (v12)
   {
-    if ((v22 - 1) > 1)
+    if ((comparator - 1) > 1)
     {
       v25 = MEMORY[0x1E696AB28];
       v26 = [MEMORY[0x1E696AB18] predicateWithLeftExpression:v18 rightExpression:v21 modifier:0 type:v23 options:0];
@@ -1598,15 +1598,15 @@ LABEL_23:
   return v17;
 }
 
-+ (id)_equalityPredicateForDoubleQuery:(id)a3 withValue:(double)a4 comparator:(int)a5 inLibrary:(id)a6
++ (id)_equalityPredicateForDoubleQuery:(id)query withValue:(double)value comparator:(int)comparator inLibrary:(id)library
 {
   v40[1] = *MEMORY[0x1E69E9840];
   v8 = MEMORY[0x1E695DEC8];
-  v9 = a6;
-  v10 = a3;
-  v11 = [PLQueryHandler _expressionForStringValue:v10 inLibrary:v9];
+  libraryCopy = library;
+  queryCopy = query;
+  v11 = [PLQueryHandler _expressionForStringValue:queryCopy inLibrary:libraryCopy];
   v12 = MEMORY[0x1E696ABC8];
-  v13 = [MEMORY[0x1E696AD98] numberWithDouble:a4];
+  v13 = [MEMORY[0x1E696AD98] numberWithDouble:value];
   v14 = [v12 expressionForConstantValue:v13];
   v15 = [v8 arrayWithObjects:{v11, v14, 0}];
 
@@ -1620,14 +1620,14 @@ LABEL_23:
   v21 = [MEMORY[0x1E696AD98] numberWithDouble:2.22044605e-16];
   v22 = [v20 expressionForConstantValue:v21];
 
-  if (a5 == 1)
+  if (comparator == 1)
   {
     v23 = [MEMORY[0x1E696AB18] predicateWithLeftExpression:v19 rightExpression:v22 modifier:0 type:0 options:0];
-    v24 = [PLQueryHandler _expressionForStringValue:v10 inLibrary:v9];
+    v24 = [PLQueryHandler _expressionForStringValue:queryCopy inLibrary:libraryCopy];
 
     v25 = MEMORY[0x1E696ABC8];
-    v26 = [MEMORY[0x1E695DFB0] null];
-    v27 = [v25 expressionForConstantValue:v26];
+    null = [MEMORY[0x1E695DFB0] null];
+    v27 = [v25 expressionForConstantValue:null];
 
     v28 = [MEMORY[0x1E696AB18] predicateWithLeftExpression:v24 rightExpression:v27 modifier:0 type:5 options:0];
     v29 = MEMORY[0x1E696AB28];
@@ -1640,11 +1640,11 @@ LABEL_23:
   else
   {
     v23 = [MEMORY[0x1E696AB18] predicateWithLeftExpression:v19 rightExpression:v22 modifier:0 type:3 options:0];
-    v24 = [PLQueryHandler _expressionForStringValue:v10 inLibrary:v9];
+    v24 = [PLQueryHandler _expressionForStringValue:queryCopy inLibrary:libraryCopy];
 
     v32 = MEMORY[0x1E696ABC8];
-    v33 = [MEMORY[0x1E695DFB0] null];
-    v27 = [v32 expressionForConstantValue:v33];
+    null2 = [MEMORY[0x1E695DFB0] null];
+    v27 = [v32 expressionForConstantValue:null2];
 
     v28 = [MEMORY[0x1E696AB18] predicateWithLeftExpression:v24 rightExpression:v27 modifier:0 type:4 options:0];
     v34 = MEMORY[0x1E696AB28];
@@ -1659,22 +1659,22 @@ LABEL_23:
   return v35;
 }
 
-+ (id)_predicateForRangeQuery:(id)a3 inLibrary:(id)a4 changeDetectionCriteria:(id)a5
++ (id)_predicateForRangeQuery:(id)query inLibrary:(id)library changeDetectionCriteria:(id)criteria
 {
-  v7 = a3;
+  queryCopy = query;
   v8 = MEMORY[0x1E69BF2C0];
-  v9 = a5;
-  v10 = a4;
+  criteriaCopy = criteria;
+  libraryCopy = library;
   v11 = [[v8 alloc] initWithConjunction:1];
-  if ([v7 valueType] == 4)
+  if ([queryCopy valueType] == 4)
   {
-    v12 = [v7 firstValue];
+    firstValue = [queryCopy firstValue];
     v13 = dateFromData();
 
-    v14 = [v7 secondValue];
+    secondValue = [queryCopy secondValue];
     v15 = dateFromData();
 
-    v16 = [v7 key];
+    v16 = [queryCopy key];
     v17 = [PLQueryHandler _getTargetDateForTheLastDays:-1 weeks:0 months:0 years:0 seconds:0 targetDate:v15];
     [v11 addIsAfterDateQueryKey:v16 withDate:v13];
     [v11 addIsBeforeDateQueryKey:v16 withDate:v17];
@@ -1682,23 +1682,23 @@ LABEL_23:
 
   else
   {
-    v18 = [v7 valueType];
-    v19 = [v7 firstValue];
-    if (v18 == 2)
+    valueType = [queryCopy valueType];
+    firstValue2 = [queryCopy firstValue];
+    if (valueType == 2)
     {
       doubleFromData();
       v21 = v20;
 
-      v22 = [v7 secondValue];
+      secondValue2 = [queryCopy secondValue];
       doubleFromData();
       v24 = v23;
 
-      LODWORD(v22) = [v7 key];
-      v25 = [v7 key];
-      if (v22 == 300)
+      LODWORD(secondValue2) = [queryCopy key];
+      v25 = [queryCopy key];
+      if (secondValue2 == 300)
       {
         [v11 addDoubleQueryKey:v25 withValue:6 comparator:v21];
-        v26 = [v7 key];
+        v26 = [queryCopy key];
         v27 = v11;
         v28 = v24;
         v29 = 5;
@@ -1707,7 +1707,7 @@ LABEL_23:
       else
       {
         [v11 addDoubleQueryKey:v25 withValue:5 comparator:v21];
-        v26 = [v7 key];
+        v26 = [queryCopy key];
         v27 = v11;
         v28 = v24;
         v29 = 6;
@@ -1720,31 +1720,31 @@ LABEL_23:
     {
       v30 = integerFromData();
 
-      v31 = [v7 secondValue];
+      secondValue3 = [queryCopy secondValue];
       v32 = integerFromData();
 
-      [v11 addIntegerQueryKey:objc_msgSend(v7 withValue:"key") comparator:{v30, 5}];
-      [v11 addIntegerQueryKey:objc_msgSend(v7 withValue:"key") comparator:{v32, 6}];
+      [v11 addIntegerQueryKey:objc_msgSend(queryCopy withValue:"key") comparator:{v30, 5}];
+      [v11 addIntegerQueryKey:objc_msgSend(queryCopy withValue:"key") comparator:{v32, 6}];
     }
   }
 
-  v33 = [v11 query];
-  v34 = [PLQueryHandler predicateForQuery:v33 inLibrary:v10 changeDetectionCriteria:v9];
+  query = [v11 query];
+  v34 = [PLQueryHandler predicateForQuery:query inLibrary:libraryCopy changeDetectionCriteria:criteriaCopy];
 
   return v34;
 }
 
-+ (id)_predicateForTextQuery:(id)a3 inLibrary:(id)a4
++ (id)_predicateForTextQuery:(id)query inLibrary:(id)library
 {
-  v5 = a3;
-  v6 = a4;
-  if (PLPlatformSearchSupported() && [v5 hasFirstValue])
+  queryCopy = query;
+  libraryCopy = library;
+  if (PLPlatformSearchSupported() && [queryCopy hasFirstValue])
   {
-    v7 = [v5 firstValue];
+    firstValue = [queryCopy firstValue];
     v8 = stringFromData();
 
-    v9 = +[PLQueryHandler _needToNegateQueryForComparator:](PLQueryHandler, "_needToNegateQueryForComparator:", [v5 comparator]);
-    v10 = +[PLQueryHandler _predicateFromSearchIndexForText:comparator:inLibrary:](PLQueryHandler, "_predicateFromSearchIndexForText:comparator:inLibrary:", v8, [v5 comparator], v6);
+    v9 = +[PLQueryHandler _needToNegateQueryForComparator:](PLQueryHandler, "_needToNegateQueryForComparator:", [queryCopy comparator]);
+    v10 = +[PLQueryHandler _predicateFromSearchIndexForText:comparator:inLibrary:](PLQueryHandler, "_predicateFromSearchIndexForText:comparator:inLibrary:", v8, [queryCopy comparator], libraryCopy);
     if (v10 && v9)
     {
       v11 = [MEMORY[0x1E696AB28] notPredicateWithSubpredicate:v10];
@@ -1761,26 +1761,26 @@ LABEL_23:
   return v10;
 }
 
-+ (id)_predicateFromSearchIndexForText:(id)a3 comparator:(int)a4 inLibrary:(id)a5
++ (id)_predicateFromSearchIndexForText:(id)text comparator:(int)comparator inLibrary:(id)library
 {
   v41 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
+  textCopy = text;
+  libraryCopy = library;
   v33 = 0;
   v34 = &v33;
   v35 = 0x3032000000;
   v36 = __Block_byref_object_copy__37882;
   v37 = __Block_byref_object_dispose__37883;
   v38 = 0;
-  v9 = [v8 pathManager];
-  v10 = [[PSIDatabase alloc] initWithPathManager:v9 options:1];
+  pathManager = [libraryCopy pathManager];
+  v10 = [[PSIDatabase alloc] initWithPathManager:pathManager options:1];
   v11 = dispatch_block_create(DISPATCH_BLOCK_ASSIGN_CURRENT, &__block_literal_global_37978);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __72__PLQueryHandler__predicateFromSearchIndexForText_comparator_inLibrary___block_invoke_2;
   block[3] = &unk_1E756BBA8;
-  v32 = a4;
-  v12 = v7;
+  comparatorCopy = comparator;
+  v12 = textCopy;
   v28 = v12;
   v13 = v10;
   v29 = v13;
@@ -1807,7 +1807,7 @@ LABEL_23:
       v25[1] = 3221225472;
       v25[2] = __72__PLQueryHandler__predicateFromSearchIndexForText_comparator_inLibrary___block_invoke_192;
       v25[3] = &unk_1E75781E8;
-      v26 = v8;
+      v26 = libraryCopy;
       dispatch_async(v21, v25);
       v14[2](v14);
 
@@ -1821,8 +1821,8 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v16 = [v8 libraryServicesManager];
-  v17 = [v16 state] > 5;
+  libraryServicesManager = [libraryCopy libraryServicesManager];
+  v17 = [libraryServicesManager state] > 5;
 
   if (!v17)
   {
@@ -1838,7 +1838,7 @@ LABEL_9:
   if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412290;
-    v40 = v8;
+    v40 = libraryCopy;
     _os_log_impl(&dword_19BF1F000, v24, OS_LOG_TYPE_ERROR, "Unable to querySearchIndex. nil search index for library: %@", buf, 0xCu);
   }
 
@@ -1903,14 +1903,14 @@ void __72__PLQueryHandler__predicateFromSearchIndexForText_comparator_inLibrary_
   [v1 waitForSearchIndexExistenceWithError:0];
 }
 
-+ (id)_predicateForEmptyQuery:(id)a3 inLibrary:(id)a4
++ (id)_predicateForEmptyQuery:(id)query inLibrary:(id)library
 {
   v40[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 key] == 100)
+  queryCopy = query;
+  libraryCopy = library;
+  if ([queryCopy key] == 100)
   {
-    if ([v6 comparator] == 51)
+    if ([queryCopy comparator] == 51)
     {
       v8 = 2;
     }
@@ -1932,9 +1932,9 @@ void __72__PLQueryHandler__predicateFromSearchIndexForText_comparator_inLibrary_
 
   else
   {
-    if ([v6 key] == 500)
+    if ([queryCopy key] == 500)
     {
-      if ([v6 comparator] == 51)
+      if ([queryCopy comparator] == 51)
       {
         v16 = 2;
       }
@@ -1944,7 +1944,7 @@ void __72__PLQueryHandler__predicateFromSearchIndexForText_comparator_inLibrary_
         v16 = 4;
       }
 
-      v17 = [v6 firstValue];
+      firstValue = [queryCopy firstValue];
       v18 = stringFromData();
 
       v19 = MEMORY[0x1E696ABC8];
@@ -1959,11 +1959,11 @@ void __72__PLQueryHandler__predicateFromSearchIndexForText_comparator_inLibrary_
 
     else
     {
-      v18 = [PLQueryHandler _getConvertedQueryKey:v6];
+      v18 = [PLQueryHandler _getConvertedQueryKey:queryCopy];
       if ([v18 length])
       {
-        v25 = [v6 comparator];
-        if (v25 == 51)
+        comparator = [queryCopy comparator];
+        if (comparator == 51)
         {
           v26 = 5;
         }
@@ -1973,19 +1973,19 @@ void __72__PLQueryHandler__predicateFromSearchIndexForText_comparator_inLibrary_
           v26 = 4;
         }
 
-        v27 = [PLQueryHandler _expressionForStringValue:v18 inLibrary:v7];
+        v27 = [PLQueryHandler _expressionForStringValue:v18 inLibrary:libraryCopy];
         v28 = MEMORY[0x1E696ABC8];
-        v29 = [MEMORY[0x1E695DFB0] null];
-        v30 = [v28 expressionForConstantValue:v29];
+        null = [MEMORY[0x1E695DFB0] null];
+        v30 = [v28 expressionForConstantValue:null];
 
         v31 = [MEMORY[0x1E696AB18] predicateWithLeftExpression:v27 rightExpression:v30 modifier:0 type:v26 options:0];
-        if ([a1 _isTextFieldQuery:{objc_msgSend(v6, "key")}])
+        if ([self _isTextFieldQuery:{objc_msgSend(queryCopy, "key")}])
         {
           v32 = [MEMORY[0x1E696ABC8] expressionForConstantValue:&stru_1F0F06D80];
           v33 = [MEMORY[0x1E696AB18] predicateWithLeftExpression:v27 rightExpression:v32 modifier:0 type:v26 options:0];
           v34 = v33;
           v35 = MEMORY[0x1E696AB28];
-          if (v25 == 51)
+          if (comparator == 51)
           {
             v40[0] = v31;
             v40[1] = v33;
@@ -2020,32 +2020,32 @@ void __72__PLQueryHandler__predicateFromSearchIndexForText_comparator_inLibrary_
   return v15;
 }
 
-+ (id)_expressionForStringValue:(id)a3 inLibrary:(id)a4
++ (id)_expressionForStringValue:(id)value inLibrary:(id)library
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 componentsSeparatedByString:@"."];
-  v8 = [v6 managedObjectContext];
+  valueCopy = value;
+  libraryCopy = library;
+  v7 = [valueCopy componentsSeparatedByString:@"."];
+  managedObjectContext = [libraryCopy managedObjectContext];
 
-  v9 = [v8 persistentStoreCoordinator];
-  v10 = [v9 managedObjectModel];
-  v11 = [v10 entitiesByName];
+  persistentStoreCoordinator = [managedObjectContext persistentStoreCoordinator];
+  managedObjectModel = [persistentStoreCoordinator managedObjectModel];
+  entitiesByName = [managedObjectModel entitiesByName];
 
   v12 = +[PLManagedAsset entityName];
-  v13 = [v11 objectForKeyedSubscript:v12];
+  v13 = [entitiesByName objectForKeyedSubscript:v12];
 
-  v14 = [v11 objectForKeyedSubscript:@"ExtendedAttributes"];
-  v15 = [v11 objectForKeyedSubscript:@"AdditionalAssetAttributes"];
-  v16 = [v11 objectForKeyedSubscript:@"AssetDescription"];
+  v14 = [entitiesByName objectForKeyedSubscript:@"ExtendedAttributes"];
+  v15 = [entitiesByName objectForKeyedSubscript:@"AdditionalAssetAttributes"];
+  v16 = [entitiesByName objectForKeyedSubscript:@"AssetDescription"];
   if ([v7 count] == 1)
   {
-    v17 = [v13 propertiesByName];
+    propertiesByName = [v13 propertiesByName];
     v18 = [v7 objectAtIndexedSubscript:0];
-    v19 = [v17 objectForKey:v18];
+    v19 = [propertiesByName objectForKey:v18];
 
     if (v19)
     {
-      v20 = [MEMORY[0x1E696ABC8] expressionForKeyPath:v5];
+      v20 = [MEMORY[0x1E696ABC8] expressionForKeyPath:valueCopy];
 LABEL_4:
 
       goto LABEL_27;
@@ -2056,9 +2056,9 @@ LABEL_4:
 
   if ([v7 count] == 2)
   {
-    v17 = [v13 propertiesByName];
+    propertiesByName = [v13 propertiesByName];
     v21 = [v7 objectAtIndexedSubscript:0];
-    v22 = [v17 objectForKey:v21];
+    v22 = [propertiesByName objectForKey:v21];
 
     if (v22)
     {
@@ -2067,10 +2067,10 @@ LABEL_4:
 
       if (v24)
       {
-        v25 = [v14 propertiesByName];
+        propertiesByName2 = [v14 propertiesByName];
         v26 = [v7 objectAtIndexedSubscript:1];
-        v50 = v25;
-        v27 = [v25 objectForKey:v26];
+        v50 = propertiesByName2;
+        v27 = [propertiesByName2 objectForKey:v26];
 
         if (!v27)
         {
@@ -2085,10 +2085,10 @@ LABEL_4:
 
       if (v44)
       {
-        v45 = [v15 propertiesByName];
+        propertiesByName3 = [v15 propertiesByName];
         v46 = [v7 objectAtIndexedSubscript:1];
-        v50 = v45;
-        v47 = [v45 objectForKey:v46];
+        v50 = propertiesByName3;
+        v47 = [propertiesByName3 objectForKey:v46];
 
         if (!v47)
         {
@@ -2098,7 +2098,7 @@ LABEL_23:
         }
 
 LABEL_19:
-        v20 = [MEMORY[0x1E696ABC8] expressionForKeyPath:v5];
+        v20 = [MEMORY[0x1E696ABC8] expressionForKeyPath:valueCopy];
 
         goto LABEL_4;
       }
@@ -2111,9 +2111,9 @@ LABEL_25:
 
   if ([v7 count] == 3)
   {
-    v17 = [v13 propertiesByName];
+    propertiesByName = [v13 propertiesByName];
     v28 = [v7 objectAtIndexedSubscript:0];
-    v29 = [v17 objectForKey:v28];
+    v29 = [propertiesByName objectForKey:v28];
     if (!v29)
     {
 LABEL_24:
@@ -2129,10 +2129,10 @@ LABEL_24:
 
     if (v32)
     {
-      v33 = [v15 propertiesByName];
+      propertiesByName4 = [v15 propertiesByName];
       v34 = [v7 objectAtIndexedSubscript:1];
-      v50 = v33;
-      v35 = [v33 objectForKey:v34];
+      v50 = propertiesByName4;
+      v35 = [propertiesByName4 objectForKey:v34];
 
       if (v35)
       {
@@ -2141,14 +2141,14 @@ LABEL_24:
 
         if (v37)
         {
-          v38 = [v16 propertiesByName];
+          propertiesByName5 = [v16 propertiesByName];
           v39 = [v7 objectAtIndexedSubscript:2];
-          v40 = [v38 objectForKey:v39];
+          v40 = [propertiesByName5 objectForKey:v39];
 
           if (v40)
           {
-            v41 = [MEMORY[0x1E696ABC8] expressionForKeyPath:v5];
-            v42 = v38;
+            v41 = [MEMORY[0x1E696ABC8] expressionForKeyPath:valueCopy];
+            v42 = propertiesByName5;
             v20 = v41;
 
             v14 = v49;
@@ -2166,32 +2166,32 @@ LABEL_24:
   }
 
 LABEL_26:
-  v20 = [MEMORY[0x1E696ABC8] expressionForConstantValue:v5];
+  v20 = [MEMORY[0x1E696ABC8] expressionForConstantValue:valueCopy];
 LABEL_27:
 
   return v20;
 }
 
-+ (unint64_t)_comparatorToOperatorType:(int)a3
++ (unint64_t)_comparatorToOperatorType:(int)type
 {
   result = 4;
-  if (a3 > 21)
+  if (type > 21)
   {
-    if (a3 <= 30)
+    if (type <= 30)
     {
       v4 = 8;
       v5 = 9;
-      if (a3 != 25)
+      if (type != 25)
       {
         v5 = 4;
       }
 
-      if (a3 != 24)
+      if (type != 24)
       {
         v4 = v5;
       }
 
-      if ((a3 - 22) >= 2)
+      if ((type - 22) >= 2)
       {
         return v4;
       }
@@ -2202,14 +2202,14 @@ LABEL_27:
       }
     }
 
-    if ((a3 - 31) < 2)
+    if ((type - 31) < 2)
     {
       return 10;
     }
 
-    if (a3 != 40)
+    if (type != 40)
     {
-      if (a3 != 41)
+      if (type != 41)
       {
         return result;
       }
@@ -2220,19 +2220,19 @@ LABEL_27:
     return 3;
   }
 
-  if (a3 > 4)
+  if (type > 4)
   {
-    if ((a3 - 20) < 2)
+    if ((type - 20) < 2)
     {
       return 99;
     }
 
-    if (a3 == 5)
+    if (type == 5)
     {
       return 3;
     }
 
-    if (a3 == 6)
+    if (type == 6)
     {
       return 1;
     }
@@ -2240,7 +2240,7 @@ LABEL_27:
 
   else
   {
-    switch(a3)
+    switch(type)
     {
       case 2:
         return 5;
@@ -2254,39 +2254,39 @@ LABEL_27:
   return result;
 }
 
-+ (id)_getConvertedKeys:(id)a3
++ (id)_getConvertedKeys:(id)keys
 {
-  v3 = a3;
-  if (+[PLQueryHandler _isTextComparator:](PLQueryHandler, "_isTextComparator:", [v3 comparator]))
+  keysCopy = keys;
+  if (+[PLQueryHandler _isTextComparator:](PLQueryHandler, "_isTextComparator:", [keysCopy comparator]))
   {
-    v4 = &stru_1F0F06D80;
-    v5 = &stru_1F0F06D80;
+    null2 = &stru_1F0F06D80;
+    null = &stru_1F0F06D80;
   }
 
   else
   {
-    v5 = [MEMORY[0x1E695DFB0] null];
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v6 = [PLQueryHandler _getConvertedQueryKey:v3];
-  v7 = [v3 key];
-  v8 = [v3 valueType];
-  v9 = [v3 comparator];
+  v6 = [PLQueryHandler _getConvertedQueryKey:keysCopy];
+  v7 = [keysCopy key];
+  valueType = [keysCopy valueType];
+  comparator = [keysCopy comparator];
   if (v7 > 199)
   {
     if ((v7 - 200) < 2)
     {
-      if ([v3 valueType] == 1)
+      if ([keysCopy valueType] == 1)
       {
-        v14 = [v3 unit];
-        v15 = [v3 firstValue];
-        v11 = [PLQueryHandler _getTargetDateWithUnit:v14 dateValue:v15];
+        unit = [keysCopy unit];
+        firstValue = [keysCopy firstValue];
+        v11 = [PLQueryHandler _getTargetDateWithUnit:unit dateValue:firstValue];
       }
 
       else
       {
-        v19 = [v3 firstValue];
+        firstValue2 = [keysCopy firstValue];
         v11 = dateFromData();
       }
 
@@ -2300,8 +2300,8 @@ LABEL_27:
 
 LABEL_18:
 
-    v16 = [v3 hasFirstValue];
-    if (v9 == 22)
+    hasFirstValue = [keysCopy hasFirstValue];
+    if (comparator == 22)
     {
       v17 = 1;
     }
@@ -2311,7 +2311,7 @@ LABEL_18:
       v17 = 2;
     }
 
-    if (v9 == 22)
+    if (comparator == 22)
     {
       v18 = 5;
     }
@@ -2322,14 +2322,14 @@ LABEL_18:
     }
 
     v11 = &unk_1F0FBC6E8;
-    if (v16)
+    if (hasFirstValue)
     {
-      v9 = v17;
+      comparator = v17;
     }
 
     else
     {
-      v9 = v18;
+      comparator = v18;
     }
 
     goto LABEL_56;
@@ -2339,42 +2339,42 @@ LABEL_18:
   {
     case 3:
 
-      if (v9 == 1)
+      if (comparator == 1)
       {
-        v9 = 2;
+        comparator = 2;
       }
 
       else
       {
-        v9 = 1;
+        comparator = 1;
       }
 
       v11 = &unk_1F0FBC700;
       goto LABEL_56;
     case 5:
-      v20 = [v3 firstValue];
+      firstValue3 = [keysCopy firstValue];
       v21 = integerFromData();
 
-      v22 = [v3 firstValue];
+      firstValue4 = [keysCopy firstValue];
       v11 = [PLQueryHandler _convertQueryValueForAssetType:integerFromData()];
 
-      v23 = +[PLQueryHandler _convertComparatorToNumericComparator:](PLQueryHandler, "_convertComparatorToNumericComparator:", [v3 comparator]);
+      v23 = +[PLQueryHandler _convertComparatorToNumericComparator:](PLQueryHandler, "_convertComparatorToNumericComparator:", [keysCopy comparator]);
       if (v21 == 9)
       {
-        if ([v3 comparator] == 1)
+        if ([keysCopy comparator] == 1)
         {
-          v9 = 31;
+          comparator = 31;
         }
 
         else
         {
-          v9 = 32;
+          comparator = 32;
         }
       }
 
       else
       {
-        v9 = v23;
+        comparator = v23;
       }
 
       goto LABEL_56;
@@ -2383,62 +2383,62 @@ LABEL_18:
   }
 
 LABEL_8:
-  if (v8 <= 2)
+  if (valueType <= 2)
   {
-    if (v8 == 1)
+    if (valueType == 1)
     {
       v31 = MEMORY[0x1E696AD98];
-      v32 = [v3 firstValue];
+      firstValue5 = [keysCopy firstValue];
       v11 = [v31 numberWithInteger:integerFromData()];
 
-      if (![v3 hasSecondValue])
+      if (![keysCopy hasSecondValue])
       {
         goto LABEL_56;
       }
 
       v33 = MEMORY[0x1E696AD98];
-      v27 = [v3 secondValue];
+      secondValue = [keysCopy secondValue];
       v28 = [v33 numberWithInteger:integerFromData()];
     }
 
     else
     {
-      if (v8 != 2)
+      if (valueType != 2)
       {
         goto LABEL_48;
       }
 
       v24 = MEMORY[0x1E696AD98];
-      v25 = [v3 firstValue];
+      firstValue6 = [keysCopy firstValue];
       doubleFromData();
       v11 = [v24 numberWithDouble:?];
 
-      if (![v3 hasSecondValue])
+      if (![keysCopy hasSecondValue])
       {
         goto LABEL_56;
       }
 
       v26 = MEMORY[0x1E696AD98];
-      v27 = [v3 secondValue];
+      secondValue = [keysCopy secondValue];
       doubleFromData();
       v28 = [v26 numberWithDouble:?];
     }
 
     v34 = v28;
 
-    v4 = v34;
+    null2 = v34;
     goto LABEL_56;
   }
 
-  switch(v8)
+  switch(valueType)
   {
     case 3:
-      if ([v3 hasFirstValue])
+      if ([keysCopy hasFirstValue])
       {
-        v29 = [v3 firstValue];
+        firstValue7 = [keysCopy firstValue];
         v11 = stringFromData();
 
-        v5 = v29;
+        null = firstValue7;
       }
 
       else
@@ -2446,52 +2446,52 @@ LABEL_8:
         v11 = &stru_1F0F06D80;
       }
 
-      if ([v3 hasSecondValue])
+      if ([keysCopy hasSecondValue])
       {
-        v12 = [v3 secondValue];
+        secondValue2 = [keysCopy secondValue];
         v13 = stringFromData();
 LABEL_55:
         v35 = v13;
 
-        v4 = v35;
+        null2 = v35;
       }
 
       break;
     case 5:
-      if ([v3 hasFirstValue])
+      if ([keysCopy hasFirstValue])
       {
-        v30 = [v3 firstValue];
+        firstValue8 = [keysCopy firstValue];
         v11 = circularRegionFromData();
       }
 
       else
       {
-        v11 = v5;
+        v11 = null;
       }
 
-      if ([v3 hasSecondValue])
+      if ([keysCopy hasSecondValue])
       {
-        v12 = [v3 secondValue];
+        secondValue2 = [keysCopy secondValue];
         v13 = circularRegionFromData();
         goto LABEL_55;
       }
 
       break;
     case 4:
-      v10 = [v3 firstValue];
+      firstValue9 = [keysCopy firstValue];
       v11 = dateFromData();
 
-      if (![v3 hasSecondValue])
+      if (![keysCopy hasSecondValue])
       {
         break;
       }
 
-      v12 = [v3 secondValue];
+      secondValue2 = [keysCopy secondValue];
       v13 = dateFromData();
       goto LABEL_55;
     default:
 LABEL_48:
-      v11 = v5;
+      v11 = null;
       break;
   }
 
@@ -2499,8 +2499,8 @@ LABEL_56:
   if (v6)
   {
     v36 = MEMORY[0x1E695DF20];
-    v37 = [MEMORY[0x1E696AD98] numberWithInt:v9];
-    v38 = [v36 dictionaryWithObjectsAndKeys:{v6, @"key", v11, @"firstValue", v4, @"secondValue", v37, @"comparator", 0}];
+    v37 = [MEMORY[0x1E696AD98] numberWithInt:comparator];
+    v38 = [v36 dictionaryWithObjectsAndKeys:{v6, @"key", v11, @"firstValue", null2, @"secondValue", v37, @"comparator", 0}];
   }
 
   else
@@ -2511,24 +2511,24 @@ LABEL_56:
   return v38;
 }
 
-+ (int)_convertComparatorToNumericComparator:(int)a3
++ (int)_convertComparatorToNumericComparator:(int)comparator
 {
-  result = a3;
-  if ((a3 - 20) <= 5)
+  result = comparator;
+  if ((comparator - 20) <= 5)
   {
-    return dword_19C60B978[a3 - 20];
+    return dword_19C60B978[comparator - 20];
   }
 
   return result;
 }
 
-+ (id)_getConvertedQueryKey:(id)a3
++ (id)_getConvertedQueryKey:(id)key
 {
-  v3 = a3;
-  v4 = [v3 key];
+  keyCopy = key;
+  v4 = [keyCopy key];
   if (v4 == 5)
   {
-    v5 = [v3 firstValue];
+    firstValue = [keyCopy firstValue];
     v6 = integerFromData();
 
     if (v6 == 9)
@@ -2550,9 +2550,9 @@ LABEL_56:
   return v7;
 }
 
-+ (id)_convertQueryValueForAssetType:(int)a3
++ (id)_convertQueryValueForAssetType:(int)type
 {
-  if (a3 == 9)
+  if (type == 9)
   {
     v5 = +[PLManagedAsset allHDRValues];
   }
@@ -2565,14 +2565,14 @@ LABEL_56:
   return v5;
 }
 
-+ (id)_convertQueryKeyTypeToString:(int)a3
++ (id)_convertQueryKeyTypeToString:(int)string
 {
   result = &stru_1F0F06D80;
-  if (a3 > 399)
+  if (string > 399)
   {
-    if (a3 > 499)
+    if (string > 499)
     {
-      if (((a3 - 550) > 0x32 || ((1 << (a3 - 38)) & 0x400000000000BLL) == 0) && a3 != 500 && a3 != 1000)
+      if (((string - 550) > 0x32 || ((1 << (string - 38)) & 0x400000000000BLL) == 0) && string != 500 && string != 1000)
       {
         return result;
       }
@@ -2583,17 +2583,17 @@ LABEL_56:
     v4 = @"additionalAttributes.originalFilename";
     v5 = @"additionalAttributes.title";
     v6 = @"additionalAttributes.assetDescription.longDescription";
-    if (a3 != 403)
+    if (string != 403)
     {
       v6 = &stru_1F0F06D80;
     }
 
-    if (a3 != 401)
+    if (string != 401)
     {
       v5 = v6;
     }
 
-    v7 = a3 == 400;
+    v7 = string == 400;
 LABEL_33:
     if (v7)
     {
@@ -2606,19 +2606,19 @@ LABEL_33:
     }
   }
 
-  if (a3 <= 199)
+  if (string <= 199)
   {
-    if (a3 > 3)
+    if (string > 3)
     {
-      if (a3 > 8)
+      if (string > 8)
       {
-        if (a3 != 9 && a3 != 100)
+        if (string != 9 && string != 100)
         {
           return result;
         }
       }
 
-      else if (a3 != 4 && a3 != 6)
+      else if (string != 4 && string != 6)
       {
         return result;
       }
@@ -2629,21 +2629,21 @@ LABEL_33:
     v4 = @"favorite";
     v5 = @"hidden";
     v8 = @"adjustmentsState";
-    if (a3 != 3)
+    if (string != 3)
     {
       v8 = &stru_1F0F06D80;
     }
 
-    if (a3 != 2)
+    if (string != 2)
     {
       v5 = v8;
     }
 
-    v7 = a3 == 1;
+    v7 = string == 1;
     goto LABEL_33;
   }
 
-  switch(a3)
+  switch(string)
   {
     case 300:
       result = @"extendedAttributes.aperture";
@@ -2705,46 +2705,46 @@ LABEL_33:
     default:
       v4 = @"dateCreated";
       v5 = @"addedDate";
-      if (a3 != 201)
+      if (string != 201)
       {
         v5 = &stru_1F0F06D80;
       }
 
-      v7 = a3 == 200;
+      v7 = string == 200;
       goto LABEL_33;
   }
 
   return result;
 }
 
-+ (id)_getTargetDateForTheLastDays:(int64_t)a3 weeks:(int64_t)a4 months:(int64_t)a5 years:(int64_t)a6 seconds:(int64_t)a7 targetDate:(id)a8
++ (id)_getTargetDateForTheLastDays:(int64_t)days weeks:(int64_t)weeks months:(int64_t)months years:(int64_t)years seconds:(int64_t)seconds targetDate:(id)date
 {
-  v13 = a8;
-  if (!v13)
+  dateCopy = date;
+  if (!dateCopy)
   {
-    v13 = [MEMORY[0x1E695DF00] date];
+    dateCopy = [MEMORY[0x1E695DF00] date];
   }
 
   v14 = [MEMORY[0x1E695DEE8] calendarWithIdentifier:*MEMORY[0x1E695D850]];
   v15 = objc_alloc_init(MEMORY[0x1E695DF10]);
-  [v15 setDay:-a3];
-  [v15 setWeekOfYear:-a4];
-  [v15 setMonth:-a5];
-  [v15 setYear:-a6];
-  [v15 setSecond:-a7];
-  v16 = [v14 dateByAddingComponents:v15 toDate:v13 options:0];
+  [v15 setDay:-days];
+  [v15 setWeekOfYear:-weeks];
+  [v15 setMonth:-months];
+  [v15 setYear:-years];
+  [v15 setSecond:-seconds];
+  v16 = [v14 dateByAddingComponents:v15 toDate:dateCopy options:0];
   v17 = [v14 startOfDayForDate:v16];
 
   return v17;
 }
 
-+ (id)_getTargetDateWithUnit:(int)a3 dateValue:(id)a4
++ (id)_getTargetDateWithUnit:(int)unit dateValue:(id)value
 {
   v5 = integerFromData();
   v6 = 0;
-  if (a3 <= 2)
+  if (unit <= 2)
   {
-    if (a3 == 1)
+    if (unit == 1)
     {
       v7 = v5;
       v8 = 0;
@@ -2752,7 +2752,7 @@ LABEL_33:
 
     else
     {
-      if (a3 != 2)
+      if (unit != 2)
       {
         goto LABEL_16;
       }
@@ -2765,7 +2765,7 @@ LABEL_33:
     goto LABEL_13;
   }
 
-  if (a3 == 3)
+  if (unit == 3)
   {
     v7 = 0;
     v8 = 0;
@@ -2775,9 +2775,9 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if (a3 != 4)
+  if (unit != 4)
   {
-    if (a3 != 5)
+    if (unit != 5)
     {
       goto LABEL_16;
     }
@@ -2802,56 +2802,56 @@ LABEL_16:
   return v6;
 }
 
-+ (id)_infoFromSingleQuery:(id)a3
++ (id)_infoFromSingleQuery:(id)query
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF90] dictionary];
-  v5 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v3, "key")}];
-  [v4 setValue:v5 forKey:*MEMORY[0x1E69C05D8]];
+  queryCopy = query;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v5 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(queryCopy, "key")}];
+  [dictionary setValue:v5 forKey:*MEMORY[0x1E69C05D8]];
 
-  v6 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v3, "valueType")}];
-  [v4 setValue:v6 forKey:*MEMORY[0x1E69C0600]];
+  v6 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(queryCopy, "valueType")}];
+  [dictionary setValue:v6 forKey:*MEMORY[0x1E69C0600]];
 
-  v7 = [v3 firstValue];
-  [v4 setValue:v7 forKey:*MEMORY[0x1E69C05D0]];
+  firstValue = [queryCopy firstValue];
+  [dictionary setValue:firstValue forKey:*MEMORY[0x1E69C05D0]];
 
-  if ([v3 hasSecondValue])
+  if ([queryCopy hasSecondValue])
   {
-    v8 = [v3 secondValue];
-    [v4 setValue:v8 forKey:*MEMORY[0x1E69C05F0]];
+    secondValue = [queryCopy secondValue];
+    [dictionary setValue:secondValue forKey:*MEMORY[0x1E69C05F0]];
   }
 
-  v9 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v3, "comparator")}];
-  [v4 setValue:v9 forKey:*MEMORY[0x1E69C05B8]];
+  v9 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(queryCopy, "comparator")}];
+  [dictionary setValue:v9 forKey:*MEMORY[0x1E69C05B8]];
 
-  if ([v3 hasUnit])
+  if ([queryCopy hasUnit])
   {
-    v10 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v3, "unit")}];
-    [v4 setValue:v10 forKey:*MEMORY[0x1E69C05F8]];
+    v10 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(queryCopy, "unit")}];
+    [dictionary setValue:v10 forKey:*MEMORY[0x1E69C05F8]];
   }
 
-  return v4;
+  return dictionary;
 }
 
-+ (id)queryFromInfo:(id)a3
++ (id)queryFromInfo:(id)info
 {
   v46 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  infoCopy = info;
   v4 = objc_alloc_init(MEMORY[0x1E69BF2B8]);
   v5 = MEMORY[0x1E69C05C0];
-  v6 = [v3 objectForKey:*MEMORY[0x1E69C05C0]];
+  v6 = [infoCopy objectForKey:*MEMORY[0x1E69C05C0]];
 
   if (v6)
   {
-    v7 = [v3 objectForKey:*v5];
+    v7 = [infoCopy objectForKey:*v5];
     [v4 setConjunction:{objc_msgSend(v7, "integerValue")}];
   }
 
-  v8 = [v3 objectForKey:*MEMORY[0x1E69C05E0]];
+  v8 = [infoCopy objectForKey:*MEMORY[0x1E69C05E0]];
   v9 = v8;
   if (v8)
   {
-    v38 = v3;
+    v38 = infoCopy;
     v39 = v4;
     v10 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v8, "count")}];
     v41 = 0u;
@@ -2920,25 +2920,25 @@ LABEL_16:
     [v39 setSingleQueries:v10];
 
     v9 = v37;
-    v3 = v38;
+    infoCopy = v38;
   }
 
   v28 = MEMORY[0x1E69C05C8];
-  v29 = [v3 objectForKey:{*MEMORY[0x1E69C05C8], v37}];
+  v29 = [infoCopy objectForKey:{*MEMORY[0x1E69C05C8], v37}];
 
   if (v29)
   {
-    v30 = [v3 objectForKey:*v28];
+    v30 = [infoCopy objectForKey:*v28];
     v31 = [PLQueryHandler queryFromInfo:v30];
     [v4 setFirst:v31];
   }
 
   v32 = MEMORY[0x1E69C05E8];
-  v33 = [v3 objectForKey:*MEMORY[0x1E69C05E8]];
+  v33 = [infoCopy objectForKey:*MEMORY[0x1E69C05E8]];
 
   if (v33)
   {
-    v34 = [v3 objectForKey:*v32];
+    v34 = [infoCopy objectForKey:*v32];
     v35 = [PLQueryHandler queryFromInfo:v34];
     [v4 setSecond:v35];
   }
@@ -2946,26 +2946,26 @@ LABEL_16:
   return v4;
 }
 
-+ (id)infoFromQuery:(id)a3
++ (id)infoFromQuery:(id)query
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF90] dictionary];
-  if ([v3 hasConjunction])
+  queryCopy = query;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  if ([queryCopy hasConjunction])
   {
-    v5 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v3, "conjunction")}];
-    [v4 setValue:v5 forKey:*MEMORY[0x1E69C05C0]];
+    v5 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(queryCopy, "conjunction")}];
+    [dictionary setValue:v5 forKey:*MEMORY[0x1E69C05C0]];
   }
 
-  if ([v3 singleQueriesCount])
+  if ([queryCopy singleQueriesCount])
   {
-    v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v3, "singleQueriesCount")}];
+    v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(queryCopy, "singleQueriesCount")}];
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v7 = [v3 singleQueries];
-    v8 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    singleQueries = [queryCopy singleQueries];
+    v8 = [singleQueries countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v8)
     {
       v9 = v8;
@@ -2976,7 +2976,7 @@ LABEL_16:
         {
           if (*v19 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(singleQueries);
           }
 
           v12 = [PLQueryHandler _infoFromSingleQuery:*(*(&v18 + 1) + 8 * i)];
@@ -2986,40 +2986,40 @@ LABEL_16:
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v9 = [singleQueries countByEnumeratingWithState:&v18 objects:v22 count:16];
       }
 
       while (v9);
     }
 
-    [v4 setValue:v6 forKey:*MEMORY[0x1E69C05E0]];
+    [dictionary setValue:v6 forKey:*MEMORY[0x1E69C05E0]];
   }
 
   else
   {
-    if ([v3 hasFirst])
+    if ([queryCopy hasFirst])
     {
-      v13 = [v3 first];
-      v14 = [PLQueryHandler infoFromQuery:v13];
-      [v4 setValue:v14 forKey:*MEMORY[0x1E69C05C8]];
+      first = [queryCopy first];
+      v14 = [PLQueryHandler infoFromQuery:first];
+      [dictionary setValue:v14 forKey:*MEMORY[0x1E69C05C8]];
     }
 
-    if ([v3 hasSecond])
+    if ([queryCopy hasSecond])
     {
-      v15 = [v3 second];
-      v16 = [PLQueryHandler infoFromQuery:v15];
-      [v4 setValue:v16 forKey:*MEMORY[0x1E69C05E8]];
+      second = [queryCopy second];
+      v16 = [PLQueryHandler infoFromQuery:second];
+      [dictionary setValue:v16 forKey:*MEMORY[0x1E69C05E8]];
     }
   }
 
-  return v4;
+  return dictionary;
 }
 
-+ (id)constructQueryFromData:(id)a3
++ (id)constructQueryFromData:(id)data
 {
   v3 = MEMORY[0x1E69BF2B8];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithData:v4];
+  dataCopy = data;
+  v5 = [[v3 alloc] initWithData:dataCopy];
 
   return v5;
 }

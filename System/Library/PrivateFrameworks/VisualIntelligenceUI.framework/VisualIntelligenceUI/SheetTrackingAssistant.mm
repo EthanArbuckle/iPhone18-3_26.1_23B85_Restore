@@ -1,46 +1,46 @@
 @interface SheetTrackingAssistant
-- (BOOL)respondsToSelector:(SEL)a3;
-- (id)forwardingTargetForSelector:(SEL)a3;
-- (void)_sheetPresentationControllerDidInvalidateCurrentPresentedViewFrame:(id)a3;
-- (void)_sheetPresentationControllerDidInvalidateDetentValues:(id)a3;
-- (void)_sheetPresentationControllerPerformLayout:(id)a3;
+- (BOOL)respondsToSelector:(SEL)selector;
+- (id)forwardingTargetForSelector:(SEL)selector;
+- (void)_sheetPresentationControllerDidInvalidateCurrentPresentedViewFrame:(id)frame;
+- (void)_sheetPresentationControllerDidInvalidateDetentValues:(id)values;
+- (void)_sheetPresentationControllerPerformLayout:(id)layout;
 @end
 
 @implementation SheetTrackingAssistant
 
-- (void)_sheetPresentationControllerDidInvalidateDetentValues:(id)a3
+- (void)_sheetPresentationControllerDidInvalidateDetentValues:(id)values
 {
-  v4 = a3;
-  v5 = self;
-  SheetTrackingAssistant._sheetPresentationControllerDidInvalidateDetentValues(_:)(v4);
+  valuesCopy = values;
+  selfCopy = self;
+  SheetTrackingAssistant._sheetPresentationControllerDidInvalidateDetentValues(_:)(valuesCopy);
 }
 
-- (void)_sheetPresentationControllerDidInvalidateCurrentPresentedViewFrame:(id)a3
+- (void)_sheetPresentationControllerDidInvalidateCurrentPresentedViewFrame:(id)frame
 {
-  v4 = a3;
-  v5 = self;
-  SheetTrackingAssistant._sheetPresentationControllerDidInvalidateCurrentPresentedViewFrame(_:)(v4);
+  frameCopy = frame;
+  selfCopy = self;
+  SheetTrackingAssistant._sheetPresentationControllerDidInvalidateCurrentPresentedViewFrame(_:)(frameCopy);
 }
 
-- (void)_sheetPresentationControllerPerformLayout:(id)a3
+- (void)_sheetPresentationControllerPerformLayout:(id)layout
 {
-  v4 = a3;
-  v5 = self;
-  SheetTrackingAssistant._sheetPresentationControllerPerformLayout(_:)(v4);
+  layoutCopy = layout;
+  selfCopy = self;
+  SheetTrackingAssistant._sheetPresentationControllerPerformLayout(_:)(layoutCopy);
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
-  v4 = self;
-  LOBYTE(a3) = SheetTrackingAssistant.responds(to:)(a3);
+  selfCopy = self;
+  LOBYTE(selector) = SheetTrackingAssistant.responds(to:)(selector);
 
-  return a3 & 1;
+  return selector & 1;
 }
 
-- (id)forwardingTargetForSelector:(SEL)a3
+- (id)forwardingTargetForSelector:(SEL)selector
 {
-  v4 = self;
-  SheetTrackingAssistant.forwardingTarget(for:)(a3, v13);
+  selfCopy = self;
+  SheetTrackingAssistant.forwardingTarget(for:)(selector, v13);
 
   v5 = v14;
   if (v14)

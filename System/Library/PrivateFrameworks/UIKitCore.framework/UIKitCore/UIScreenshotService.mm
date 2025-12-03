@@ -1,6 +1,6 @@
 @interface UIScreenshotService
 - (UIScene)_scene;
-- (UIScreenshotService)initWithScene:(id)a3;
+- (UIScreenshotService)initWithScene:(id)scene;
 - (UIScreenshotServiceDelegate)privateDelegate;
 - (UIWindowScene)windowScene;
 - (id)delegate;
@@ -8,16 +8,16 @@
 
 @implementation UIScreenshotService
 
-- (UIScreenshotService)initWithScene:(id)a3
+- (UIScreenshotService)initWithScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   v8.receiver = self;
   v8.super_class = UIScreenshotService;
   v5 = [(UIScreenshotService *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_scene, v4);
+    objc_storeWeak(&v5->_scene, sceneCopy);
   }
 
   return v6;

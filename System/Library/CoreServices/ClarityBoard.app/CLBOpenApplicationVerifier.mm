@@ -1,10 +1,10 @@
 @interface CLBOpenApplicationVerifier
 + (CLBOpenApplicationVerifier)sharedInstance;
-- (BOOL)shouldOpenAppWithBundleIdentifier:(id)a3;
-- (BOOL)shouldOpenWebsiteInlineForRequest:(id)a3;
+- (BOOL)shouldOpenAppWithBundleIdentifier:(id)identifier;
+- (BOOL)shouldOpenWebsiteInlineForRequest:(id)request;
 - (CLBOpenApplicationVerifier)init;
-- (CLBOpenApplicationVerifier)initWithUserSelectedApplicationBundleIdentifiers:(id)a3;
-- (void)verifyRequest:(FBSystemServiceOpenApplicationRequest *)a3 completionHandler:(id)a4;
+- (CLBOpenApplicationVerifier)initWithUserSelectedApplicationBundleIdentifiers:(id)identifiers;
+- (void)verifyRequest:(FBSystemServiceOpenApplicationRequest *)request completionHandler:(id)handler;
 @end
 
 @implementation CLBOpenApplicationVerifier
@@ -21,7 +21,7 @@
   return v3;
 }
 
-- (CLBOpenApplicationVerifier)initWithUserSelectedApplicationBundleIdentifiers:(id)a3
+- (CLBOpenApplicationVerifier)initWithUserSelectedApplicationBundleIdentifiers:(id)identifiers
 {
   static Array._unconditionallyBridgeFromObjectiveC(_:)();
   type metadata accessor for OpenApplicationVerifier();
@@ -32,26 +32,26 @@
   return [(CLBOpenApplicationVerifier *)&v5 init];
 }
 
-- (BOOL)shouldOpenAppWithBundleIdentifier:(id)a3
+- (BOOL)shouldOpenAppWithBundleIdentifier:(id)identifier
 {
   v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v6 = v5;
   v7 = *(**(&self->super.isa + OBJC_IVAR___CLBOpenApplicationVerifier_implementation) + 104);
-  v8 = self;
+  selfCopy = self;
 
   LOBYTE(v4) = v7(v4, v6);
 
   return v4 & 1;
 }
 
-- (void)verifyRequest:(FBSystemServiceOpenApplicationRequest *)a3 completionHandler:(id)a4
+- (void)verifyRequest:(FBSystemServiceOpenApplicationRequest *)request completionHandler:(id)handler
 {
   v7 = sub_10002B6CC(&qword_10032D050);
   __chkstk_darwin(v7 - 8);
   v9 = &v17 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = request;
   v11[3] = v10;
   v11[4] = self;
   v12 = type metadata accessor for TaskPriority();
@@ -66,26 +66,26 @@
   v14[3] = 0;
   v14[4] = &unk_10029A1A8;
   v14[5] = v13;
-  v15 = a3;
-  v16 = self;
+  requestCopy = request;
+  selfCopy = self;
   sub_10008C9F0(0, 0, v9, &unk_10029A1B0, v14);
 }
 
-- (BOOL)shouldOpenWebsiteInlineForRequest:(id)a3
+- (BOOL)shouldOpenWebsiteInlineForRequest:(id)request
 {
-  v4 = self;
+  selfCopy = self;
   v5 = *(&self->super.isa + OBJC_IVAR___CLBOpenApplicationVerifier_implementation);
   v10[3] = sub_10002C9FC(0, &qword_10032EF80);
   v10[4] = &protocol witness table for FBSystemServiceOpenApplicationRequest;
-  v10[0] = a3;
+  v10[0] = request;
   v6 = *(*v5 + 120);
-  v7 = a3;
-  v8 = v4;
+  requestCopy = request;
+  v8 = selfCopy;
 
-  LOBYTE(v4) = v6(v10);
+  LOBYTE(selfCopy) = v6(v10);
 
   sub_10002C9B0(v10);
-  return v4 & 1;
+  return selfCopy & 1;
 }
 
 - (CLBOpenApplicationVerifier)init

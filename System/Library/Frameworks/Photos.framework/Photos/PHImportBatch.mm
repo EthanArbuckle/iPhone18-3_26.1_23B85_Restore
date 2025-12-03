@@ -11,9 +11,9 @@
   v2 = [(PHImportBatch *)&v12 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     start = v2->_start;
-    v2->_start = v3;
+    v2->_start = date;
 
     v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:100];
     records = v2->_records;

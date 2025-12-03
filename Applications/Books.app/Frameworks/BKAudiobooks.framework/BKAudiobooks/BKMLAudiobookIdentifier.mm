@@ -1,13 +1,13 @@
 @interface BKMLAudiobookIdentifier
-+ (id)identifierFromAlbumPersistentID:(id)a3;
-+ (id)identifierFromAssetID:(id)a3 albumTitle:(id)a4;
-+ (id)identifierFromMediaQuery:(id)a3 supplementalAssetIdentifiers:(id)a4;
-+ (id)identifierFromPersistentID:(id)a3;
-- (BKMLAudiobookIdentifier)initWithAlbumPersistentID:(id)a3;
-- (BKMLAudiobookIdentifier)initWithAssetID:(id)a3 albumTitle:(id)a4;
-- (BKMLAudiobookIdentifier)initWithMediaQuery:(id)a3 supplementalAssetIDs:(id)a4;
-- (BKMLAudiobookIdentifier)initWithPersistentID:(id)a3;
-- (BOOL)isEqualToIdentifier:(id)a3;
++ (id)identifierFromAlbumPersistentID:(id)d;
++ (id)identifierFromAssetID:(id)d albumTitle:(id)title;
++ (id)identifierFromMediaQuery:(id)query supplementalAssetIdentifiers:(id)identifiers;
++ (id)identifierFromPersistentID:(id)d;
+- (BKMLAudiobookIdentifier)initWithAlbumPersistentID:(id)d;
+- (BKMLAudiobookIdentifier)initWithAssetID:(id)d albumTitle:(id)title;
+- (BKMLAudiobookIdentifier)initWithMediaQuery:(id)query supplementalAssetIDs:(id)ds;
+- (BKMLAudiobookIdentifier)initWithPersistentID:(id)d;
+- (BOOL)isEqualToIdentifier:(id)identifier;
 - (BOOL)isValid;
 - (NSString)description;
 - (id)audiobookQuery;
@@ -15,74 +15,74 @@
 
 @implementation BKMLAudiobookIdentifier
 
-+ (id)identifierFromPersistentID:(id)a3
++ (id)identifierFromPersistentID:(id)d
 {
-  v3 = a3;
-  v4 = [[BKMLAudiobookIdentifier alloc] initWithPersistentID:v3];
+  dCopy = d;
+  v4 = [[BKMLAudiobookIdentifier alloc] initWithPersistentID:dCopy];
 
   return v4;
 }
 
-+ (id)identifierFromAlbumPersistentID:(id)a3
++ (id)identifierFromAlbumPersistentID:(id)d
 {
-  v3 = a3;
-  v4 = [[BKMLAudiobookIdentifier alloc] initWithAlbumPersistentID:v3];
+  dCopy = d;
+  v4 = [[BKMLAudiobookIdentifier alloc] initWithAlbumPersistentID:dCopy];
 
   return v4;
 }
 
-+ (id)identifierFromAssetID:(id)a3 albumTitle:(id)a4
++ (id)identifierFromAssetID:(id)d albumTitle:(id)title
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[BKMLAudiobookIdentifier alloc] initWithAssetID:v6 albumTitle:v5];
+  titleCopy = title;
+  dCopy = d;
+  v7 = [[BKMLAudiobookIdentifier alloc] initWithAssetID:dCopy albumTitle:titleCopy];
 
   return v7;
 }
 
-+ (id)identifierFromMediaQuery:(id)a3 supplementalAssetIdentifiers:(id)a4
++ (id)identifierFromMediaQuery:(id)query supplementalAssetIdentifiers:(id)identifiers
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[BKMLAudiobookIdentifier alloc] initWithMediaQuery:v6 supplementalAssetIDs:v5];
+  identifiersCopy = identifiers;
+  queryCopy = query;
+  v7 = [[BKMLAudiobookIdentifier alloc] initWithMediaQuery:queryCopy supplementalAssetIDs:identifiersCopy];
 
   return v7;
 }
 
-- (BKMLAudiobookIdentifier)initWithPersistentID:(id)a3
+- (BKMLAudiobookIdentifier)initWithPersistentID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v9.receiver = self;
   v9.super_class = BKMLAudiobookIdentifier;
   v6 = [(BKMLAudiobookIdentifier *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_persistentID, a3);
+    objc_storeStrong(&v6->_persistentID, d);
   }
 
   return v7;
 }
 
-- (BKMLAudiobookIdentifier)initWithAlbumPersistentID:(id)a3
+- (BKMLAudiobookIdentifier)initWithAlbumPersistentID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v9.receiver = self;
   v9.super_class = BKMLAudiobookIdentifier;
   v6 = [(BKMLAudiobookIdentifier *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_albumPersistentID, a3);
+    objc_storeStrong(&v6->_albumPersistentID, d);
   }
 
   return v7;
 }
 
-- (BKMLAudiobookIdentifier)initWithAssetID:(id)a3 albumTitle:(id)a4
+- (BKMLAudiobookIdentifier)initWithAssetID:(id)d albumTitle:(id)title
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  titleCopy = title;
   v14.receiver = self;
   v14.super_class = BKMLAudiobookIdentifier;
   v8 = [(BKMLAudiobookIdentifier *)&v14 init];
@@ -97,7 +97,7 @@
 
     else
     {
-      v10 = [v7 copy];
+      v10 = [titleCopy copy];
       v11 = 32;
     }
 
@@ -108,18 +108,18 @@
   return v8;
 }
 
-- (BKMLAudiobookIdentifier)initWithMediaQuery:(id)a3 supplementalAssetIDs:(id)a4
+- (BKMLAudiobookIdentifier)initWithMediaQuery:(id)query supplementalAssetIDs:(id)ds
 {
-  v7 = a3;
-  v8 = a4;
+  queryCopy = query;
+  dsCopy = ds;
   v14.receiver = self;
   v14.super_class = BKMLAudiobookIdentifier;
   v9 = [(BKMLAudiobookIdentifier *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_query, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_query, query);
+    v11 = [dsCopy copy];
     supplementalAssetIdentifiers = v10->_supplementalAssetIdentifiers;
     v10->_supplementalAssetIdentifiers = v11;
   }
@@ -129,40 +129,40 @@
 
 - (BOOL)isValid
 {
-  v3 = [(BKMLAudiobookIdentifier *)self persistentID];
-  if (v3)
+  persistentID = [(BKMLAudiobookIdentifier *)self persistentID];
+  if (persistentID)
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(BKMLAudiobookIdentifier *)self storeID];
-    if (v5)
+    storeID = [(BKMLAudiobookIdentifier *)self storeID];
+    if (storeID)
     {
       v4 = 1;
     }
 
     else
     {
-      v6 = [(BKMLAudiobookIdentifier *)self albumPersistentID];
-      if (v6)
+      albumPersistentID = [(BKMLAudiobookIdentifier *)self albumPersistentID];
+      if (albumPersistentID)
       {
         v4 = 1;
       }
 
       else
       {
-        v7 = [(BKMLAudiobookIdentifier *)self query];
-        if (v7)
+        query = [(BKMLAudiobookIdentifier *)self query];
+        if (query)
         {
           v4 = 1;
         }
 
         else
         {
-          v8 = [(BKMLAudiobookIdentifier *)self albumTitle];
-          v4 = [v8 length] != 0;
+          albumTitle = [(BKMLAudiobookIdentifier *)self albumTitle];
+          v4 = [albumTitle length] != 0;
         }
       }
     }
@@ -171,10 +171,10 @@
   return v4;
 }
 
-- (BOOL)isEqualToIdentifier:(id)a3
+- (BOOL)isEqualToIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (self == v4)
+  identifierCopy = identifier;
+  if (self == identifierCopy)
   {
     v12 = 1;
   }
@@ -184,19 +184,19 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(BKMLAudiobookIdentifier *)self persistentID];
-      v7 = [(BKMLAudiobookIdentifier *)v5 persistentID];
-      v8 = v7;
-      if (v6 == v7)
+      v5 = identifierCopy;
+      persistentID = [(BKMLAudiobookIdentifier *)self persistentID];
+      persistentID2 = [(BKMLAudiobookIdentifier *)v5 persistentID];
+      v8 = persistentID2;
+      if (persistentID == persistentID2)
       {
       }
 
       else
       {
-        v9 = [(BKMLAudiobookIdentifier *)self persistentID];
-        v10 = [(BKMLAudiobookIdentifier *)v5 persistentID];
-        v11 = [v9 isEqualToNumber:v10];
+        persistentID3 = [(BKMLAudiobookIdentifier *)self persistentID];
+        persistentID4 = [(BKMLAudiobookIdentifier *)v5 persistentID];
+        v11 = [persistentID3 isEqualToNumber:persistentID4];
 
         if (!v11)
         {
@@ -204,18 +204,18 @@
         }
       }
 
-      v13 = [(BKMLAudiobookIdentifier *)self storeID];
-      v14 = [(BKMLAudiobookIdentifier *)v5 storeID];
-      v15 = v14;
-      if (v13 == v14)
+      storeID = [(BKMLAudiobookIdentifier *)self storeID];
+      storeID2 = [(BKMLAudiobookIdentifier *)v5 storeID];
+      v15 = storeID2;
+      if (storeID == storeID2)
       {
       }
 
       else
       {
-        v16 = [(BKMLAudiobookIdentifier *)self storeID];
-        v17 = [(BKMLAudiobookIdentifier *)v5 storeID];
-        v18 = [v16 isEqualToNumber:v17];
+        storeID3 = [(BKMLAudiobookIdentifier *)self storeID];
+        storeID4 = [(BKMLAudiobookIdentifier *)v5 storeID];
+        v18 = [storeID3 isEqualToNumber:storeID4];
 
         if (!v18)
         {
@@ -223,18 +223,18 @@
         }
       }
 
-      v19 = [(BKMLAudiobookIdentifier *)self albumPersistentID];
-      v20 = [(BKMLAudiobookIdentifier *)v5 albumPersistentID];
-      v21 = v20;
-      if (v19 == v20)
+      albumPersistentID = [(BKMLAudiobookIdentifier *)self albumPersistentID];
+      albumPersistentID2 = [(BKMLAudiobookIdentifier *)v5 albumPersistentID];
+      v21 = albumPersistentID2;
+      if (albumPersistentID == albumPersistentID2)
       {
       }
 
       else
       {
-        v22 = [(BKMLAudiobookIdentifier *)self albumPersistentID];
-        v23 = [(BKMLAudiobookIdentifier *)v5 albumPersistentID];
-        v24 = [v22 isEqualToNumber:v23];
+        albumPersistentID3 = [(BKMLAudiobookIdentifier *)self albumPersistentID];
+        albumPersistentID4 = [(BKMLAudiobookIdentifier *)v5 albumPersistentID];
+        v24 = [albumPersistentID3 isEqualToNumber:albumPersistentID4];
 
         if (!v24)
         {
@@ -242,18 +242,18 @@
         }
       }
 
-      v25 = [(BKMLAudiobookIdentifier *)self query];
-      v26 = [(BKMLAudiobookIdentifier *)v5 query];
-      v27 = v26;
-      if (v25 == v26)
+      query = [(BKMLAudiobookIdentifier *)self query];
+      query2 = [(BKMLAudiobookIdentifier *)v5 query];
+      v27 = query2;
+      if (query == query2)
       {
       }
 
       else
       {
-        v28 = [(BKMLAudiobookIdentifier *)self query];
-        v29 = [(BKMLAudiobookIdentifier *)v5 query];
-        v30 = [v28 isEqual:v29];
+        query3 = [(BKMLAudiobookIdentifier *)self query];
+        query4 = [(BKMLAudiobookIdentifier *)v5 query];
+        v30 = [query3 isEqual:query4];
 
         if (!v30)
         {
@@ -261,18 +261,18 @@
         }
       }
 
-      v31 = [(BKMLAudiobookIdentifier *)self albumTitle];
-      v32 = [(BKMLAudiobookIdentifier *)v5 albumTitle];
-      v33 = v32;
-      if (v31 == v32)
+      albumTitle = [(BKMLAudiobookIdentifier *)self albumTitle];
+      albumTitle2 = [(BKMLAudiobookIdentifier *)v5 albumTitle];
+      v33 = albumTitle2;
+      if (albumTitle == albumTitle2)
       {
       }
 
       else
       {
-        v34 = [(BKMLAudiobookIdentifier *)self albumTitle];
-        v35 = [(BKMLAudiobookIdentifier *)v5 albumTitle];
-        v36 = [v34 isEqualToString:v35];
+        albumTitle3 = [(BKMLAudiobookIdentifier *)self albumTitle];
+        albumTitle4 = [(BKMLAudiobookIdentifier *)v5 albumTitle];
+        v36 = [albumTitle3 isEqualToString:albumTitle4];
 
         if (!v36)
         {
@@ -284,18 +284,18 @@ LABEL_24:
         }
       }
 
-      v38 = [(BKMLAudiobookIdentifier *)self supplementalAssetIdentifiers];
-      v39 = [(BKMLAudiobookIdentifier *)v5 supplementalAssetIdentifiers];
-      if (v38 == v39)
+      supplementalAssetIdentifiers = [(BKMLAudiobookIdentifier *)self supplementalAssetIdentifiers];
+      supplementalAssetIdentifiers2 = [(BKMLAudiobookIdentifier *)v5 supplementalAssetIdentifiers];
+      if (supplementalAssetIdentifiers == supplementalAssetIdentifiers2)
       {
         v12 = 1;
       }
 
       else
       {
-        v40 = [(BKMLAudiobookIdentifier *)self supplementalAssetIdentifiers];
-        v41 = [(BKMLAudiobookIdentifier *)v5 supplementalAssetIdentifiers];
-        v12 = [v40 isEqual:v41];
+        supplementalAssetIdentifiers3 = [(BKMLAudiobookIdentifier *)self supplementalAssetIdentifiers];
+        supplementalAssetIdentifiers4 = [(BKMLAudiobookIdentifier *)v5 supplementalAssetIdentifiers];
+        v12 = [supplementalAssetIdentifiers3 isEqual:supplementalAssetIdentifiers4];
       }
 
       goto LABEL_24;
@@ -311,67 +311,67 @@ LABEL_25:
 
 - (id)audiobookQuery
 {
-  v3 = [(BKMLAudiobookIdentifier *)self query];
+  query = [(BKMLAudiobookIdentifier *)self query];
 
-  if (v3)
+  if (query)
   {
-    v4 = [(BKMLAudiobookIdentifier *)self query];
+    query2 = [(BKMLAudiobookIdentifier *)self query];
     goto LABEL_14;
   }
 
   if ([(BKMLAudiobookIdentifier *)self isValid])
   {
-    v4 = +[MPMediaQuery bk_audiobooksQuery];
-    [v4 setIgnoreSystemFilterPredicates:1];
-    [v4 setGroupingType:1];
-    v5 = [(BKMLAudiobookIdentifier *)self persistentID];
+    query2 = +[MPMediaQuery bk_audiobooksQuery];
+    [query2 setIgnoreSystemFilterPredicates:1];
+    [query2 setGroupingType:1];
+    persistentID = [(BKMLAudiobookIdentifier *)self persistentID];
 
-    if (v5)
+    if (persistentID)
     {
-      v6 = [(BKMLAudiobookIdentifier *)self persistentID];
+      persistentID2 = [(BKMLAudiobookIdentifier *)self persistentID];
       v7 = &MPMediaItemPropertyPersistentID;
 LABEL_13:
-      v12 = [MPMediaPropertyPredicate predicateWithValue:v6 forProperty:*v7];
-      [v4 addFilterPredicate:v12];
+      v12 = [MPMediaPropertyPredicate predicateWithValue:persistentID2 forProperty:*v7];
+      [query2 addFilterPredicate:v12];
 
       goto LABEL_14;
     }
 
-    v9 = [(BKMLAudiobookIdentifier *)self albumPersistentID];
+    albumPersistentID = [(BKMLAudiobookIdentifier *)self albumPersistentID];
 
-    if (v9)
+    if (albumPersistentID)
     {
-      v6 = [(BKMLAudiobookIdentifier *)self albumPersistentID];
+      persistentID2 = [(BKMLAudiobookIdentifier *)self albumPersistentID];
       v7 = &MPMediaItemPropertyAlbumPersistentID;
       goto LABEL_13;
     }
 
-    v10 = [(BKMLAudiobookIdentifier *)self albumTitle];
-    v11 = [v10 length];
+    albumTitle = [(BKMLAudiobookIdentifier *)self albumTitle];
+    v11 = [albumTitle length];
 
     if (v11)
     {
-      v6 = [(BKMLAudiobookIdentifier *)self albumTitle];
+      persistentID2 = [(BKMLAudiobookIdentifier *)self albumTitle];
       v7 = &MPMediaItemPropertyAlbumTitle;
       goto LABEL_13;
     }
 
-    v14 = [(BKMLAudiobookIdentifier *)self storeID];
+    storeID = [(BKMLAudiobookIdentifier *)self storeID];
 
-    if (v14)
+    if (storeID)
     {
-      v15 = [(BKMLAudiobookIdentifier *)self storeID];
+      storeID2 = [(BKMLAudiobookIdentifier *)self storeID];
       v16 = MPMediaItemPropertyStorePlaylistID;
-      v17 = [MPMediaPropertyPredicate predicateWithValue:v15 forProperty:MPMediaItemPropertyStorePlaylistID];
-      [v4 addFilterPredicate:v17];
+      v17 = [MPMediaPropertyPredicate predicateWithValue:storeID2 forProperty:MPMediaItemPropertyStorePlaylistID];
+      [query2 addFilterPredicate:v17];
 
-      v18 = [v4 collections];
-      v19 = [v18 count];
+      collections = [query2 collections];
+      v19 = [collections count];
 
       if (!v19)
       {
-        [v4 removePredicatesForProperty:v16];
-        v6 = [(BKMLAudiobookIdentifier *)self storeID];
+        [query2 removePredicatesForProperty:v16];
+        persistentID2 = [(BKMLAudiobookIdentifier *)self storeID];
         v7 = &MPMediaItemPropertyStoreID;
         goto LABEL_13;
       }
@@ -386,52 +386,52 @@ LABEL_13:
       sub_218B4(v8);
     }
 
-    v4 = 0;
+    query2 = 0;
   }
 
 LABEL_14:
 
-  return v4;
+  return query2;
 }
 
 - (NSString)description
 {
-  v3 = [(BKMLAudiobookIdentifier *)self persistentID];
+  persistentID = [(BKMLAudiobookIdentifier *)self persistentID];
 
-  if (v3)
+  if (persistentID)
   {
-    v4 = [(BKMLAudiobookIdentifier *)self persistentID];
-    [NSString stringWithFormat:@"persistentID: %@", v4];
+    persistentID2 = [(BKMLAudiobookIdentifier *)self persistentID];
+    [NSString stringWithFormat:@"persistentID: %@", persistentID2];
     v9 = LABEL_9:;
 
     goto LABEL_10;
   }
 
-  v5 = [(BKMLAudiobookIdentifier *)self storeID];
+  storeID = [(BKMLAudiobookIdentifier *)self storeID];
 
-  if (v5)
+  if (storeID)
   {
-    v4 = [(BKMLAudiobookIdentifier *)self storeID];
-    [NSString stringWithFormat:@"storeID: %@", v4];
+    persistentID2 = [(BKMLAudiobookIdentifier *)self storeID];
+    [NSString stringWithFormat:@"storeID: %@", persistentID2];
     goto LABEL_9;
   }
 
-  v6 = [(BKMLAudiobookIdentifier *)self query];
+  query = [(BKMLAudiobookIdentifier *)self query];
 
-  if (v6)
+  if (query)
   {
-    v4 = [(BKMLAudiobookIdentifier *)self query];
-    [NSString stringWithFormat:@"query: %@", v4];
+    persistentID2 = [(BKMLAudiobookIdentifier *)self query];
+    [NSString stringWithFormat:@"query: %@", persistentID2];
     goto LABEL_9;
   }
 
-  v7 = [(BKMLAudiobookIdentifier *)self albumTitle];
-  v8 = [v7 length];
+  albumTitle = [(BKMLAudiobookIdentifier *)self albumTitle];
+  v8 = [albumTitle length];
 
   if (v8)
   {
-    v4 = [(BKMLAudiobookIdentifier *)self albumTitle];
-    [NSString stringWithFormat:@"albumTitle: '%@'", v4];
+    persistentID2 = [(BKMLAudiobookIdentifier *)self albumTitle];
+    [NSString stringWithFormat:@"albumTitle: '%@'", persistentID2];
     goto LABEL_9;
   }
 

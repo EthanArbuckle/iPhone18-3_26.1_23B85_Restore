@@ -1,6 +1,6 @@
 @interface WFIntelligencePlatformViewAvailableResource
 + (_TtC11WorkflowKit43WFIntelligencePlatformViewAvailableResource)sportsTeams;
-- (_TtC11WorkflowKit43WFIntelligencePlatformViewAvailableResource)initWithDefinition:(id)a3;
+- (_TtC11WorkflowKit43WFIntelligencePlatformViewAvailableResource)initWithDefinition:(id)definition;
 - (void)refreshAvailability;
 @end
 
@@ -15,13 +15,13 @@
 
 - (void)refreshAvailability
 {
-  v2 = self;
+  selfCopy = self;
   sub_1CA2DD89C();
 }
 
-- (_TtC11WorkflowKit43WFIntelligencePlatformViewAvailableResource)initWithDefinition:(id)a3
+- (_TtC11WorkflowKit43WFIntelligencePlatformViewAvailableResource)initWithDefinition:(id)definition
 {
-  if (a3)
+  if (definition)
   {
     sub_1CA94C1C8();
   }

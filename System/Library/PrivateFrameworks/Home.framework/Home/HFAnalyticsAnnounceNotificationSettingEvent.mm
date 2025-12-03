@@ -1,50 +1,50 @@
 @interface HFAnalyticsAnnounceNotificationSettingEvent
-- (HFAnalyticsAnnounceNotificationSettingEvent)initWithData:(id)a3;
+- (HFAnalyticsAnnounceNotificationSettingEvent)initWithData:(id)data;
 - (id)payload;
 @end
 
 @implementation HFAnalyticsAnnounceNotificationSettingEvent
 
-- (HFAnalyticsAnnounceNotificationSettingEvent)initWithData:(id)a3
+- (HFAnalyticsAnnounceNotificationSettingEvent)initWithData:(id)data
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"announceNotificationSettingOption"];
+  dataCopy = data;
+  v5 = [dataCopy objectForKeyedSubscript:@"announceNotificationSettingOption"];
   if (!v5)
   {
     NSLog(&cfstr_Hfanalyticsann.isa);
   }
 
-  v6 = [v4 objectForKeyedSubscript:@"announceSettingChangedByOwner"];
+  v6 = [dataCopy objectForKeyedSubscript:@"announceSettingChangedByOwner"];
   if (!v6)
   {
     NSLog(&cfstr_Hfanalyticsann_0.isa);
   }
 
-  v7 = [v4 objectForKeyedSubscript:@"announceSettingChangedByAdmin"];
+  v7 = [dataCopy objectForKeyedSubscript:@"announceSettingChangedByAdmin"];
   if (!v7)
   {
     NSLog(&cfstr_Hfanalyticsann_1.isa);
   }
 
-  v8 = [v4 objectForKeyedSubscript:@"announceSettingChangedDuringOnboarding"];
+  v8 = [dataCopy objectForKeyedSubscript:@"announceSettingChangedDuringOnboarding"];
   if (!v8)
   {
     NSLog(&cfstr_Hfanalyticsann_2.isa);
   }
 
-  v9 = [v4 objectForKeyedSubscript:@"announceSettingChangedFromUserSettings"];
+  v9 = [dataCopy objectForKeyedSubscript:@"announceSettingChangedFromUserSettings"];
   if (!v9)
   {
     NSLog(&cfstr_Hfanalyticsann_3.isa);
   }
 
-  v10 = [v4 objectForKeyedSubscript:@"announceSettingChangedFromHomePodSettings"];
+  v10 = [dataCopy objectForKeyedSubscript:@"announceSettingChangedFromHomePodSettings"];
   if (!v10)
   {
     NSLog(&cfstr_Hfanalyticsann_4.isa);
   }
 
-  v11 = [v4 objectForKeyedSubscript:@"announceSettingChangeFailed"];
+  v11 = [dataCopy objectForKeyedSubscript:@"announceSettingChangeFailed"];
   if (!v11)
   {
     NSLog(&cfstr_Hfanalyticsann_5.isa);
@@ -71,9 +71,9 @@
     v17 = v7;
     v18 = v6;
     v20 = v19 = v5;
-    v21 = [v20 processName];
+    processName = [v20 processName];
     processName = v13->_processName;
-    v13->_processName = v21;
+    v13->_processName = processName;
 
     v5 = v19;
     v6 = v18;
@@ -91,32 +91,32 @@
 {
   v14.receiver = self;
   v14.super_class = HFAnalyticsAnnounceNotificationSettingEvent;
-  v3 = [(HFAnalyticsEvent *)&v14 payload];
-  v4 = [v3 mutableCopy];
+  payload = [(HFAnalyticsEvent *)&v14 payload];
+  v4 = [payload mutableCopy];
 
-  v5 = [(HFAnalyticsAnnounceNotificationSettingEvent *)self announceNotificationSettingOption];
-  [v4 setObject:v5 forKeyedSubscript:@"intercomNotificationSettingOption"];
+  announceNotificationSettingOption = [(HFAnalyticsAnnounceNotificationSettingEvent *)self announceNotificationSettingOption];
+  [v4 setObject:announceNotificationSettingOption forKeyedSubscript:@"intercomNotificationSettingOption"];
 
-  v6 = [(HFAnalyticsAnnounceNotificationSettingEvent *)self settingChangedByOwner];
-  [v4 setObject:v6 forKeyedSubscript:@"intercomSettingChangedByOwner"];
+  settingChangedByOwner = [(HFAnalyticsAnnounceNotificationSettingEvent *)self settingChangedByOwner];
+  [v4 setObject:settingChangedByOwner forKeyedSubscript:@"intercomSettingChangedByOwner"];
 
-  v7 = [(HFAnalyticsAnnounceNotificationSettingEvent *)self settingChangedByAdmin];
-  [v4 setObject:v7 forKeyedSubscript:@"intercomSettingChangedByAdmin"];
+  settingChangedByAdmin = [(HFAnalyticsAnnounceNotificationSettingEvent *)self settingChangedByAdmin];
+  [v4 setObject:settingChangedByAdmin forKeyedSubscript:@"intercomSettingChangedByAdmin"];
 
-  v8 = [(HFAnalyticsAnnounceNotificationSettingEvent *)self settingChangedDuringOnboarding];
-  [v4 setObject:v8 forKeyedSubscript:@"intercomSettingChangedDuringOnboarding"];
+  settingChangedDuringOnboarding = [(HFAnalyticsAnnounceNotificationSettingEvent *)self settingChangedDuringOnboarding];
+  [v4 setObject:settingChangedDuringOnboarding forKeyedSubscript:@"intercomSettingChangedDuringOnboarding"];
 
-  v9 = [(HFAnalyticsAnnounceNotificationSettingEvent *)self settingChangedFromUserSettings];
-  [v4 setObject:v9 forKeyedSubscript:@"intercomSettingChangedFromUserSettings"];
+  settingChangedFromUserSettings = [(HFAnalyticsAnnounceNotificationSettingEvent *)self settingChangedFromUserSettings];
+  [v4 setObject:settingChangedFromUserSettings forKeyedSubscript:@"intercomSettingChangedFromUserSettings"];
 
-  v10 = [(HFAnalyticsAnnounceNotificationSettingEvent *)self settingChangedFromHomePodSettings];
-  [v4 setObject:v10 forKeyedSubscript:@"intercomSettingChangedFromHomePodSettings"];
+  settingChangedFromHomePodSettings = [(HFAnalyticsAnnounceNotificationSettingEvent *)self settingChangedFromHomePodSettings];
+  [v4 setObject:settingChangedFromHomePodSettings forKeyedSubscript:@"intercomSettingChangedFromHomePodSettings"];
 
-  v11 = [(HFAnalyticsAnnounceNotificationSettingEvent *)self announceSettingChangeFailed];
-  [v4 setObject:v11 forKeyedSubscript:@"intercomSettingChangeFailed"];
+  announceSettingChangeFailed = [(HFAnalyticsAnnounceNotificationSettingEvent *)self announceSettingChangeFailed];
+  [v4 setObject:announceSettingChangeFailed forKeyedSubscript:@"intercomSettingChangeFailed"];
 
-  v12 = [(HFAnalyticsAnnounceNotificationSettingEvent *)self processName];
-  [v4 setObject:v12 forKeyedSubscript:@"processName"];
+  processName = [(HFAnalyticsAnnounceNotificationSettingEvent *)self processName];
+  [v4 setObject:processName forKeyedSubscript:@"processName"];
 
   return v4;
 }

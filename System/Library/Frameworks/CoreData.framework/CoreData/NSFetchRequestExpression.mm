@@ -1,30 +1,30 @@
 @interface NSFetchRequestExpression
-- (BOOL)isEqual:(id)a3;
-- (NSFetchRequestExpression)initWithCoder:(id)a3;
-- (id)_expressionWithSubstitutionVariables:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (NSFetchRequestExpression)initWithCoder:(id)coder;
+- (id)_expressionWithSubstitutionVariables:(id)variables;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)expressionValueWithObject:(id)a3 context:(id)a4;
-- (id)initForFetch:(id)a3 context:(id)a4 countOnly:(BOOL)a5;
-- (void)acceptVisitor:(id)a3 flags:(unint64_t)a4;
+- (id)expressionValueWithObject:(id)object context:(id)context;
+- (id)initForFetch:(id)fetch context:(id)context countOnly:(BOOL)only;
+- (void)acceptVisitor:(id)visitor flags:(unint64_t)flags;
 - (void)allowEvaluation;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NSFetchRequestExpression
 
-- (id)initForFetch:(id)a3 context:(id)a4 countOnly:(BOOL)a5
+- (id)initForFetch:(id)fetch context:(id)context countOnly:(BOOL)only
 {
-  v5 = a5;
+  onlyCopy = only;
   v10.receiver = self;
   v10.super_class = NSFetchRequestExpression;
   v8 = [(NSFetchRequestExpression *)&v10 initWithExpressionType:50];
   if (v8)
   {
-    v8->_fetchRequest = a3;
-    v8->_managedObjectContext = a4;
-    v8->_flags = (*&v8->_flags & 0xFFFFFFFE | v5);
+    v8->_fetchRequest = fetch;
+    v8->_managedObjectContext = context;
+    v8->_flags = (*&v8->_flags & 0xFFFFFFFE | onlyCopy);
   }
 
   return v8;
@@ -46,34 +46,34 @@
   [(NSFetchRequestExpression *)&v3 allowEvaluation];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = NSFetchRequestExpression;
   [(NSFetchRequestExpression *)&v5 encodeWithCoder:?];
-  [a3 encodeObject:self->_fetchRequest forKey:@"NSFRExpression"];
-  [a3 encodeObject:self->_managedObjectContext forKey:@"NSMOCExpression"];
-  [a3 encodeBool:*&self->_flags & 1 forKey:@"NSCountOnlyFlag"];
+  [coder encodeObject:self->_fetchRequest forKey:@"NSFRExpression"];
+  [coder encodeObject:self->_managedObjectContext forKey:@"NSMOCExpression"];
+  [coder encodeBool:*&self->_flags & 1 forKey:@"NSCountOnlyFlag"];
 }
 
-- (NSFetchRequestExpression)initWithCoder:(id)a3
+- (NSFetchRequestExpression)initWithCoder:(id)coder
 {
   v8.receiver = self;
   v8.super_class = NSFetchRequestExpression;
   v4 = [(NSFetchRequestExpression *)&v8 initWithCoder:?];
   if (v4)
   {
-    v4->_fetchRequest = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"NSFRExpression"];
+    v4->_fetchRequest = [coder decodeObjectOfClass:objc_opt_class() forKey:@"NSFRExpression"];
     v5 = MEMORY[0x1E695DFD8];
     v6 = objc_opt_class();
-    v4->_managedObjectContext = [a3 decodeObjectOfClasses:objc_msgSend(v5 forKey:{"setWithObjects:", v6, objc_opt_class(), 0), @"NSMOCExpression"}];
-    v4->_flags = (*&v4->_flags & 0xFFFFFFFE | [a3 decodeBoolForKey:@"NSCountOnlyFlag"]);
+    v4->_managedObjectContext = [coder decodeObjectOfClasses:objc_msgSend(v5 forKey:{"setWithObjects:", v6, objc_opt_class(), 0), @"NSMOCExpression"}];
+    v4->_flags = (*&v4->_flags & 0xFFFFFFFE | [coder decodeBoolForKey:@"NSCountOnlyFlag"]);
   }
 
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [NSFetchRequestExpression alloc];
   fetchRequest = self->_fetchRequest;
@@ -83,16 +83,16 @@
   return [(NSFetchRequestExpression *)v4 initForFetch:fetchRequest context:managedObjectContext countOnly:v7];
 }
 
-- (id)expressionValueWithObject:(id)a3 context:(id)a4
+- (id)expressionValueWithObject:(id)object context:(id)context
 {
-  v6 = self;
+  selfCopy = self;
   if (([(NSFetchRequestExpression *)self _allowsEvaluation]& 1) == 0)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:@"This expression has evaluation disabled" userInfo:0]);
   }
 
-  v7 = [(NSExpression *)v6->_fetchRequest expressionValueWithObject:a3 context:a4];
-  v8 = [(NSExpression *)v6->_managedObjectContext expressionValueWithObject:a3 context:a4];
+  v7 = [(NSExpression *)selfCopy->_fetchRequest expressionValueWithObject:object context:context];
+  v8 = [(NSExpression *)selfCopy->_managedObjectContext expressionValueWithObject:object context:context];
   if (v7)
   {
     v9 = v8 == 0;
@@ -111,7 +111,7 @@
   else
   {
     v15 = 0;
-    if (*&v6->_flags)
+    if (*&selfCopy->_flags)
     {
       v12 = [v8 countForFetchRequest:v7 error:&v15];
       if (v12 == 0x7FFFFFFFFFFFFFFFLL)
@@ -124,7 +124,7 @@
         v13 = v12;
       }
 
-      v6 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:v13];
+      selfCopy = [MEMORY[0x1E696AD98] numberWithUnsignedLong:v13];
     }
 
     else
@@ -132,12 +132,12 @@
       v11 = [v8 executeFetchRequest:v7 error:&v15];
       if (v11)
       {
-        v6 = v11;
+        selfCopy = v11;
       }
 
       else
       {
-        v6 = NSArray_EmptyArray;
+        selfCopy = NSArray_EmptyArray;
       }
     }
 
@@ -150,17 +150,17 @@
     return 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)description
 {
   if (self)
   {
-    v2 = self;
+    selfCopy = self;
     v3 = objc_autoreleasePoolPush();
-    v4 = v2[8];
-    if (v2[9])
+    v4 = selfCopy[8];
+    if (selfCopy[9])
     {
       v5 = @"YES";
     }
@@ -170,7 +170,7 @@
       v5 = @"NO";
     }
 
-    v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"FETCH(%@, %@, %@)", v2[7], v2[8], v5];
+    v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"FETCH(%@, %@, %@)", selfCopy[7], selfCopy[8], v5];
     objc_autoreleasePoolPop(v3);
 
     return v6;
@@ -179,7 +179,7 @@
   return self;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -187,49 +187,49 @@
     return 0;
   }
 
-  v5 = [(NSFetchRequestExpression *)self isCountOnlyRequest];
-  if (v5 != [a3 isCountOnlyRequest] || !-[NSExpression isEqual:](-[NSFetchRequestExpression requestExpression](self, "requestExpression"), "isEqual:", objc_msgSend(a3, "requestExpression")))
+  isCountOnlyRequest = [(NSFetchRequestExpression *)self isCountOnlyRequest];
+  if (isCountOnlyRequest != [equal isCountOnlyRequest] || !-[NSExpression isEqual:](-[NSFetchRequestExpression requestExpression](self, "requestExpression"), "isEqual:", objc_msgSend(equal, "requestExpression")))
   {
     return 0;
   }
 
-  v6 = [(NSFetchRequestExpression *)self contextExpression];
-  v7 = [a3 contextExpression];
+  contextExpression = [(NSFetchRequestExpression *)self contextExpression];
+  contextExpression2 = [equal contextExpression];
 
-  return [(NSExpression *)v6 isEqual:v7];
+  return [(NSExpression *)contextExpression isEqual:contextExpression2];
 }
 
-- (void)acceptVisitor:(id)a3 flags:(unint64_t)a4
+- (void)acceptVisitor:(id)visitor flags:(unint64_t)flags
 {
-  if (a4)
+  if (flags)
   {
-    if ((a4 & 4) != 0)
+    if ((flags & 4) != 0)
     {
-      [a3 visitPredicateExpression:self];
-      [(NSExpression *)[(NSFetchRequestExpression *)self requestExpression] acceptVisitor:a3 flags:a4];
-      v7 = [(NSFetchRequestExpression *)self contextExpression];
+      [visitor visitPredicateExpression:self];
+      [(NSExpression *)[(NSFetchRequestExpression *)self requestExpression] acceptVisitor:visitor flags:flags];
+      contextExpression = [(NSFetchRequestExpression *)self contextExpression];
 
-      [(NSExpression *)v7 acceptVisitor:a3 flags:a4];
+      [(NSExpression *)contextExpression acceptVisitor:visitor flags:flags];
     }
 
     else
     {
-      [(NSExpression *)[(NSFetchRequestExpression *)self requestExpression] acceptVisitor:a3 flags:a4];
-      [(NSExpression *)[(NSFetchRequestExpression *)self contextExpression] acceptVisitor:a3 flags:a4];
+      [(NSExpression *)[(NSFetchRequestExpression *)self requestExpression] acceptVisitor:visitor flags:flags];
+      [(NSExpression *)[(NSFetchRequestExpression *)self contextExpression] acceptVisitor:visitor flags:flags];
 
-      [a3 visitPredicateExpression:self];
+      [visitor visitPredicateExpression:self];
     }
   }
 }
 
-- (id)_expressionWithSubstitutionVariables:(id)a3
+- (id)_expressionWithSubstitutionVariables:(id)variables
 {
-  if (!a3)
+  if (!variables)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"Cannot substitute a nil substitution dictionary." userInfo:0]);
   }
 
-  v3 = [[NSFetchRequestExpression alloc] initForFetch:[(NSExpression *)[(NSFetchRequestExpression *)self requestExpression] _expressionWithSubstitutionVariables:a3] context:[(NSExpression *)[(NSFetchRequestExpression *)self contextExpression] _expressionWithSubstitutionVariables:a3] countOnly:*&self->_flags & 1];
+  v3 = [[NSFetchRequestExpression alloc] initForFetch:[(NSExpression *)[(NSFetchRequestExpression *)self requestExpression] _expressionWithSubstitutionVariables:variables] context:[(NSExpression *)[(NSFetchRequestExpression *)self contextExpression] _expressionWithSubstitutionVariables:variables] countOnly:*&self->_flags & 1];
 
   return v3;
 }

@@ -1,9 +1,9 @@
 @interface ProfileCategoriesViewController
-- (_TtC18HealthExperienceUI31ProfileCategoriesViewController)initWithCoder:(id)a3;
-- (_TtC18HealthExperienceUI31ProfileCategoriesViewController)initWithCollectionViewLayout:(id)a3;
-- (void)restoreUserActivityState:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (_TtC18HealthExperienceUI31ProfileCategoriesViewController)initWithCoder:(id)coder;
+- (_TtC18HealthExperienceUI31ProfileCategoriesViewController)initWithCollectionViewLayout:(id)layout;
+- (void)restoreUserActivityState:(id)state;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)traitCollectionDidChange:(id)change;
 - (void)viewDidLoad;
 @end
 
@@ -15,11 +15,11 @@
   v6.super_class = type metadata accessor for ProfileCategoriesViewController();
   v2 = v6.receiver;
   [(CompoundDataSourceCollectionViewController *)&v6 viewDidLoad];
-  v3 = [v2 collectionView];
-  if (v3)
+  collectionView = [v2 collectionView];
+  if (collectionView)
   {
-    v4 = v3;
-    v5 = [objc_opt_self() systemGroupedBackgroundColor];
+    v4 = collectionView;
+    systemGroupedBackgroundColor = [objc_opt_self() systemGroupedBackgroundColor];
     [v4 setBackgroundColor_];
 
     sub_1BA17BA4C();
@@ -31,7 +31,7 @@
   }
 }
 
-- (_TtC18HealthExperienceUI31ProfileCategoriesViewController)initWithCoder:(id)a3
+- (_TtC18HealthExperienceUI31ProfileCategoriesViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC18HealthExperienceUI31ProfileCategoriesViewController_navigationBarTitleView) = 0;
   result = sub_1BA4A8018();
@@ -39,28 +39,28 @@
   return result;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_1BA3F87D4(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_1BA3F87D4(change);
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
-  v5 = self;
-  sub_1BA3F8A74(v4);
+  scrollCopy = scroll;
+  selfCopy = self;
+  sub_1BA3F8A74(scrollCopy);
 }
 
-- (void)restoreUserActivityState:(id)a3
+- (void)restoreUserActivityState:(id)state
 {
-  v4 = a3;
-  v5 = self;
-  sub_1BA3F9138(v4);
+  stateCopy = state;
+  selfCopy = self;
+  sub_1BA3F9138(stateCopy);
 }
 
-- (_TtC18HealthExperienceUI31ProfileCategoriesViewController)initWithCollectionViewLayout:(id)a3
+- (_TtC18HealthExperienceUI31ProfileCategoriesViewController)initWithCollectionViewLayout:(id)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

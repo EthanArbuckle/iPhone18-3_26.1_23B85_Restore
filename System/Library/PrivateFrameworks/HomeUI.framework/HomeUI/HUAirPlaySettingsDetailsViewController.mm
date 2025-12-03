@@ -1,31 +1,31 @@
 @interface HUAirPlaySettingsDetailsViewController
-- (Class)cellClassForItem:(id)a3 indexPath:(id)a4;
-- (HUAirPlaySettingsDetailsViewController)initWithAccessorySettingItem:(id)a3 module:(id)a4;
+- (Class)cellClassForItem:(id)item indexPath:(id)path;
+- (HUAirPlaySettingsDetailsViewController)initWithAccessorySettingItem:(id)item module:(id)module;
 - (id)itemModuleControllers;
-- (void)setupCell:(id)a3 forItem:(id)a4 indexPath:(id)a5;
-- (void)switchCell:(id)a3 didTurnOn:(BOOL)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)updateCell:(id)a3 forItem:(id)a4 indexPath:(id)a5 animated:(BOOL)a6;
+- (void)setupCell:(id)cell forItem:(id)item indexPath:(id)path;
+- (void)switchCell:(id)cell didTurnOn:(BOOL)on;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)updateCell:(id)cell forItem:(id)item indexPath:(id)path animated:(BOOL)animated;
 @end
 
 @implementation HUAirPlaySettingsDetailsViewController
 
-- (HUAirPlaySettingsDetailsViewController)initWithAccessorySettingItem:(id)a3 module:(id)a4
+- (HUAirPlaySettingsDetailsViewController)initWithAccessorySettingItem:(id)item module:(id)module
 {
-  v5 = a4;
-  v6 = [[HUAirPlaySettingsDetailsItemManager alloc] initWithDelegate:self module:v5];
+  moduleCopy = module;
+  v6 = [[HUAirPlaySettingsDetailsItemManager alloc] initWithDelegate:self module:moduleCopy];
 
   [(HUAirPlaySettingsDetailsViewController *)self setAirPlaySettingsDetailsItemManager:v6];
-  v7 = [(HUAirPlaySettingsDetailsViewController *)self airPlaySettingsDetailsItemManager];
+  airPlaySettingsDetailsItemManager = [(HUAirPlaySettingsDetailsViewController *)self airPlaySettingsDetailsItemManager];
   v13.receiver = self;
   v13.super_class = HUAirPlaySettingsDetailsViewController;
-  v8 = [(HUItemTableViewController *)&v13 initWithItemManager:v7 tableViewStyle:1];
+  v8 = [(HUItemTableViewController *)&v13 initWithItemManager:airPlaySettingsDetailsItemManager tableViewStyle:1];
 
   if (v8)
   {
-    v9 = [MEMORY[0x277CCAB00] weakToWeakObjectsMapTable];
+    weakToWeakObjectsMapTable = [MEMORY[0x277CCAB00] weakToWeakObjectsMapTable];
     cellToItemMap = v8->_cellToItemMap;
-    v8->_cellToItemMap = v9;
+    v8->_cellToItemMap = weakToWeakObjectsMapTable;
 
     v11 = _HULocalizedStringWithDefaultValue(@"HUSiriEndpointSetting_AirPlay_Title", @"HUSiriEndpointSetting_AirPlay_Title", 1);
     [(HUAirPlaySettingsDetailsViewController *)v8 setTitle:v11];
@@ -42,22 +42,22 @@
   v3 = objc_opt_new();
   v38.receiver = self;
   v38.super_class = HUAirPlaySettingsDetailsViewController;
-  v4 = [(HUItemTableViewController *)&v38 itemModuleControllers];
-  [v3 unionSet:v4];
+  itemModuleControllers = [(HUItemTableViewController *)&v38 itemModuleControllers];
+  [v3 unionSet:itemModuleControllers];
 
-  v5 = [(HUAirPlaySettingsDetailsViewController *)self airPlaySettingsDetailsItemManager];
-  v6 = [v5 homeKitAccessorySettingsModules];
+  airPlaySettingsDetailsItemManager = [(HUAirPlaySettingsDetailsViewController *)self airPlaySettingsDetailsItemManager];
+  homeKitAccessorySettingsModules = [airPlaySettingsDetailsItemManager homeKitAccessorySettingsModules];
 
-  if (v6)
+  if (homeKitAccessorySettingsModules)
   {
     v33 = v3;
     v7 = HFLogForCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
-      v31 = [(HUAirPlaySettingsDetailsViewController *)self airPlaySettingsDetailsItemManager];
-      v32 = [v31 homeKitAccessorySettingsModules];
+      airPlaySettingsDetailsItemManager2 = [(HUAirPlaySettingsDetailsViewController *)self airPlaySettingsDetailsItemManager];
+      homeKitAccessorySettingsModules2 = [airPlaySettingsDetailsItemManager2 homeKitAccessorySettingsModules];
       *buf = 138412290;
-      v40 = v32;
+      v40 = homeKitAccessorySettingsModules2;
       _os_log_debug_impl(&dword_20CEB6000, v7, OS_LOG_TYPE_DEBUG, "Creating Item Module Controllers from  homeKitAccessorySettingsModules = [%@]", buf, 0xCu);
     }
 
@@ -65,10 +65,10 @@
     v37 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v8 = [(HUAirPlaySettingsDetailsViewController *)self airPlaySettingsDetailsItemManager];
-    v9 = [v8 homeKitAccessorySettingsModules];
+    airPlaySettingsDetailsItemManager3 = [(HUAirPlaySettingsDetailsViewController *)self airPlaySettingsDetailsItemManager];
+    homeKitAccessorySettingsModules3 = [airPlaySettingsDetailsItemManager3 homeKitAccessorySettingsModules];
 
-    v10 = [v9 countByEnumeratingWithState:&v34 objects:v43 count:16];
+    v10 = [homeKitAccessorySettingsModules3 countByEnumeratingWithState:&v34 objects:v43 count:16];
     if (v10)
     {
       v11 = v10;
@@ -80,7 +80,7 @@
         {
           if (*v35 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(homeKitAccessorySettingsModules3);
           }
 
           v14 = *(*(&v34 + 1) + 8 * v13);
@@ -100,18 +100,18 @@
 
           if (v17)
           {
-            v18 = [(HUAirPlaySettingsDetailsViewController *)self moduleToModuleControllerMap];
-            v19 = [v18 objectForKey:v17];
+            moduleToModuleControllerMap = [(HUAirPlaySettingsDetailsViewController *)self moduleToModuleControllerMap];
+            v19 = [moduleToModuleControllerMap objectForKey:v17];
 
             if (!v19)
             {
               v20 = [[HUHomeKitAccessorySettingsItemModuleController alloc] initWithModule:v17 delegate:self];
-              v21 = [(HUAirPlaySettingsDetailsViewController *)self moduleToModuleControllerMap];
+              moduleToModuleControllerMap2 = [(HUAirPlaySettingsDetailsViewController *)self moduleToModuleControllerMap];
 
-              if (!v21)
+              if (!moduleToModuleControllerMap2)
               {
-                v22 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
-                [(HUAirPlaySettingsDetailsViewController *)self setModuleToModuleControllerMap:v22];
+                strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+                [(HUAirPlaySettingsDetailsViewController *)self setModuleToModuleControllerMap:strongToStrongObjectsMapTable];
               }
 
               v23 = HFLogForCategory();
@@ -124,8 +124,8 @@
                 _os_log_debug_impl(&dword_20CEB6000, v23, OS_LOG_TYPE_DEBUG, "Setting moduleController = [%@] for Module = [%@] in moduleToModuleControllerMap", buf, 0x16u);
               }
 
-              v24 = [(HUAirPlaySettingsDetailsViewController *)self moduleToModuleControllerMap];
-              [v24 setObject:v20 forKey:v17];
+              moduleToModuleControllerMap3 = [(HUAirPlaySettingsDetailsViewController *)self moduleToModuleControllerMap];
+              [moduleToModuleControllerMap3 setObject:v20 forKey:v17];
             }
           }
 
@@ -133,40 +133,40 @@
         }
 
         while (v11 != v13);
-        v11 = [v9 countByEnumeratingWithState:&v34 objects:v43 count:16];
+        v11 = [homeKitAccessorySettingsModules3 countByEnumeratingWithState:&v34 objects:v43 count:16];
       }
 
       while (v11);
     }
 
-    v25 = [(HUAirPlaySettingsDetailsViewController *)self moduleToModuleControllerMap];
-    v26 = [v25 objectEnumerator];
+    moduleToModuleControllerMap4 = [(HUAirPlaySettingsDetailsViewController *)self moduleToModuleControllerMap];
+    objectEnumerator = [moduleToModuleControllerMap4 objectEnumerator];
 
-    v27 = [v26 nextObject];
+    nextObject = [objectEnumerator nextObject];
     v3 = v33;
-    if (v27)
+    if (nextObject)
     {
-      v28 = v27;
+      v28 = nextObject;
       do
       {
         [v33 na_safeAddObject:v28];
-        v29 = [v26 nextObject];
+        nextObject2 = [objectEnumerator nextObject];
 
-        v28 = v29;
+        v28 = nextObject2;
       }
 
-      while (v29);
+      while (nextObject2);
     }
   }
 
   return v3;
 }
 
-- (Class)cellClassForItem:(id)a3 indexPath:(id)a4
+- (Class)cellClassForItem:(id)item indexPath:(id)path
 {
-  v4 = a3;
+  itemCopy = item;
   objc_opt_class();
-  v5 = v4;
+  v5 = itemCopy;
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
@@ -189,12 +189,12 @@
   return v8;
 }
 
-- (void)setupCell:(id)a3 forItem:(id)a4 indexPath:(id)a5
+- (void)setupCell:(id)cell forItem:(id)item indexPath:(id)path
 {
-  v7 = a3;
-  v8 = a4;
+  cellCopy = cell;
+  itemCopy = item;
   objc_opt_class();
-  v9 = v7;
+  v9 = cellCopy;
   if (objc_opt_isKindOfClass())
   {
     v10 = v9;
@@ -222,7 +222,7 @@
   v13 = v12;
 
   objc_opt_class();
-  v14 = v8;
+  v14 = itemCopy;
   if (objc_opt_isKindOfClass())
   {
     v15 = v14;
@@ -235,9 +235,9 @@
 
   v16 = v15;
 
-  v17 = [v16 settingDict];
-  v18 = [v16 settingKeyPath];
-  v19 = [v17 objectForKeyedSubscript:v18];
+  settingDict = [v16 settingDict];
+  settingKeyPath = [v16 settingKeyPath];
+  v19 = [settingDict objectForKeyedSubscript:settingKeyPath];
 
   if (v11)
   {
@@ -253,16 +253,16 @@
   [v21 setAccessoryType:v20 != 0];
 }
 
-- (void)updateCell:(id)a3 forItem:(id)a4 indexPath:(id)a5 animated:(BOOL)a6
+- (void)updateCell:(id)cell forItem:(id)item indexPath:(id)path animated:(BOOL)animated
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = a4;
+  animatedCopy = animated;
+  cellCopy = cell;
+  itemCopy = item;
   v29.receiver = self;
   v29.super_class = HUAirPlaySettingsDetailsViewController;
-  [(HUItemTableViewController *)&v29 updateCell:v10 forItem:v11 indexPath:a5 animated:v6];
+  [(HUItemTableViewController *)&v29 updateCell:cellCopy forItem:itemCopy indexPath:path animated:animatedCopy];
   objc_opt_class();
-  v12 = v11;
+  v12 = itemCopy;
   if (objc_opt_isKindOfClass())
   {
     v13 = v12;
@@ -276,7 +276,7 @@
   v14 = v13;
 
   objc_opt_class();
-  v15 = v10;
+  v15 = cellCopy;
   if (objc_opt_isKindOfClass())
   {
     v16 = v15;
@@ -305,10 +305,10 @@
 
   if (v17)
   {
-    v21 = [v14 settingValue];
-    [v17 setOn:{objc_msgSend(v21, "BOOLValue")}];
-    v22 = [v14 settingKeyPath];
-    v23 = [v22 isEqualToString:*MEMORY[0x277D133A0]];
+    settingValue = [v14 settingValue];
+    [v17 setOn:{objc_msgSend(settingValue, "BOOLValue")}];
+    settingKeyPath = [v14 settingKeyPath];
+    v23 = [settingKeyPath isEqualToString:*MEMORY[0x277D133A0]];
 
     if (!v23)
     {
@@ -317,8 +317,8 @@ LABEL_18:
       goto LABEL_19;
     }
 
-    v24 = [v17 detailTextLabel];
-    [v24 setText:0];
+    detailTextLabel = [v17 detailTextLabel];
+    [detailTextLabel setText:0];
 LABEL_16:
 
     goto LABEL_18;
@@ -326,21 +326,21 @@ LABEL_16:
 
   if (v20)
   {
-    v25 = [v14 settingDict];
-    v26 = [v14 settingKeyPath];
-    v21 = [v25 objectForKeyedSubscript:v26];
+    settingDict = [v14 settingDict];
+    settingKeyPath2 = [v14 settingKeyPath];
+    settingValue = [settingDict objectForKeyedSubscript:settingKeyPath2];
 
-    v27 = [v21 objectForKeyedSubscript:*MEMORY[0x277D13838]];
-    LOBYTE(v26) = [v27 BOOLValue];
+    v27 = [settingValue objectForKeyedSubscript:*MEMORY[0x277D13838]];
+    LOBYTE(settingKeyPath2) = [v27 BOOLValue];
 
-    if ((v26 & 1) == 0)
+    if ((settingKeyPath2 & 1) == 0)
     {
       [v20 setValueText:0];
       goto LABEL_18;
     }
 
-    v24 = [v12 latestResults];
-    v28 = [v24 objectForKeyedSubscript:*MEMORY[0x277D13E20]];
+    detailTextLabel = [v12 latestResults];
+    v28 = [detailTextLabel objectForKeyedSubscript:*MEMORY[0x277D13E20]];
     [v20 setValueText:v28];
 
     goto LABEL_16;
@@ -349,15 +349,15 @@ LABEL_16:
 LABEL_19:
 }
 
-- (void)switchCell:(id)a3 didTurnOn:(BOOL)a4
+- (void)switchCell:(id)cell didTurnOn:(BOOL)on
 {
-  v4 = a4;
-  v7 = a3;
-  v8 = [(HUAirPlaySettingsDetailsViewController *)self tableView];
-  v9 = [v8 indexPathForCell:v7];
+  onCopy = on;
+  cellCopy = cell;
+  tableView = [(HUAirPlaySettingsDetailsViewController *)self tableView];
+  v9 = [tableView indexPathForCell:cellCopy];
 
-  v10 = [(HUItemTableViewController *)self itemManager];
-  v11 = [v10 displayedItemAtIndexPath:v9];
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  v11 = [itemManager displayedItemAtIndexPath:v9];
 
   objc_opt_class();
   v12 = v11;
@@ -373,27 +373,27 @@ LABEL_19:
 
   v14 = v13;
 
-  v15 = [(HUAirPlaySettingsDetailsViewController *)self airPlaySettingsDetailsItemManager];
-  v16 = [MEMORY[0x277CCABB0] numberWithBool:v4];
-  v17 = [v15 updateSettingItem:v14 withValue:v16];
+  airPlaySettingsDetailsItemManager = [(HUAirPlaySettingsDetailsViewController *)self airPlaySettingsDetailsItemManager];
+  v16 = [MEMORY[0x277CCABB0] numberWithBool:onCopy];
+  v17 = [airPlaySettingsDetailsItemManager updateSettingItem:v14 withValue:v16];
 
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
   v28[2] = __63__HUAirPlaySettingsDetailsViewController_switchCell_didTurnOn___block_invoke;
   v28[3] = &unk_277DBC4D8;
-  v29 = v7;
-  v31 = v4;
+  v29 = cellCopy;
+  v31 = onCopy;
   v18 = v12;
   v30 = v18;
-  v19 = v7;
+  v19 = cellCopy;
   v20 = [v17 addFailureBlock:v28];
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __63__HUAirPlaySettingsDetailsViewController_switchCell_didTurnOn___block_invoke_17;
   v23[3] = &unk_277DBBDB8;
-  v27 = v4;
+  v27 = onCopy;
   v24 = v18;
-  v25 = self;
+  selfCopy = self;
   v26 = a2;
   v21 = v18;
   v22 = [v17 addSuccessBlock:v23];
@@ -440,19 +440,19 @@ void __63__HUAirPlaySettingsDetailsViewController_switchCell_didTurnOn___block_i
   v6 = [v5 reloadAndUpdateAllItemsFromSenderSelector:*(a1 + 48)];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v33 = *MEMORY[0x277D85DE8];
   v30.receiver = self;
   v30.super_class = HUAirPlaySettingsDetailsViewController;
-  v6 = a4;
-  v7 = a3;
-  [(HUItemTableViewController *)&v30 tableView:v7 didSelectRowAtIndexPath:v6];
+  pathCopy = path;
+  viewCopy = view;
+  [(HUItemTableViewController *)&v30 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
   v8 = [(HUItemTableViewController *)self itemManager:v30.receiver];
-  v9 = [v8 displayedItemAtIndexPath:v6];
+  v9 = [v8 displayedItemAtIndexPath:pathCopy];
 
   objc_opt_class();
-  v10 = [v7 cellForRowAtIndexPath:v6];
+  v10 = [viewCopy cellForRowAtIndexPath:pathCopy];
   if (objc_opt_isKindOfClass())
   {
     v11 = v10;
@@ -465,7 +465,7 @@ void __63__HUAirPlaySettingsDetailsViewController_switchCell_didTurnOn___block_i
 
   v12 = v11;
 
-  [v7 deselectRowAtIndexPath:v6 animated:1];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
   v13 = HFLogForCategory();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
@@ -488,9 +488,9 @@ void __63__HUAirPlaySettingsDetailsViewController_switchCell_didTurnOn___block_i
 
   v16 = v15;
 
-  v17 = [v16 settingKeyPath];
-  v18 = [v16 settingDict];
-  v19 = [v18 objectForKeyedSubscript:v17];
+  settingKeyPath = [v16 settingKeyPath];
+  settingDict = [v16 settingDict];
+  v19 = [settingDict objectForKeyedSubscript:settingKeyPath];
 
   if (!v12)
   {
@@ -503,12 +503,12 @@ void __63__HUAirPlaySettingsDetailsViewController_switchCell_didTurnOn___block_i
       v23 = NSClassFromString(v22);
 
       v24 = [v23 alloc];
-      v25 = [(HUAirPlaySettingsDetailsViewController *)self airPlaySettingsDetailsItemManager];
-      v26 = [v25 module];
-      v27 = [v24 initWithAccessorySettingItem:v14 module:v26];
+      airPlaySettingsDetailsItemManager = [(HUAirPlaySettingsDetailsViewController *)self airPlaySettingsDetailsItemManager];
+      module = [airPlaySettingsDetailsItemManager module];
+      v27 = [v24 initWithAccessorySettingItem:v14 module:module];
 
-      v28 = [(HUAirPlaySettingsDetailsViewController *)self navigationController];
-      v29 = [v28 hu_pushPreloadableViewController:v27 animated:1];
+      navigationController = [(HUAirPlaySettingsDetailsViewController *)self navigationController];
+      v29 = [navigationController hu_pushPreloadableViewController:v27 animated:1];
     }
   }
 }

@@ -1,7 +1,7 @@
 @interface ClimateTargetTemperatureTracker
 - (_TtC7Climate31ClimateTargetTemperatureTracker)init;
-- (void)temperatureService:(id)a3 didUpdateCurrentTemperature:(id)a4;
-- (void)temperatureService:(id)a3 didUpdateTargetTemperature:(id)a4;
+- (void)temperatureService:(id)service didUpdateCurrentTemperature:(id)temperature;
+- (void)temperatureService:(id)service didUpdateTargetTemperature:(id)temperature;
 @end
 
 @implementation ClimateTargetTemperatureTracker
@@ -15,7 +15,7 @@
   return [(ClimateTargetTemperatureTracker *)&v5 init];
 }
 
-- (void)temperatureService:(id)a3 didUpdateTargetTemperature:(id)a4
+- (void)temperatureService:(id)service didUpdateTargetTemperature:(id)temperature
 {
   v6 = sub_1000040E8(&unk_100114790);
   v7 = *(v6 - 8);
@@ -23,19 +23,19 @@
   v9 = &v12 - v8;
   sub_10007F6E4();
   static Measurement._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a3;
-  v11 = self;
-  sub_10007F0FC(v10);
+  serviceCopy = service;
+  selfCopy = self;
+  sub_10007F0FC(serviceCopy);
 
   (*(v7 + 8))(v9, v6);
 }
 
-- (void)temperatureService:(id)a3 didUpdateCurrentTemperature:(id)a4
+- (void)temperatureService:(id)service didUpdateCurrentTemperature:(id)temperature
 {
   v5 = sub_1000040E8(&unk_1001153F0);
   __chkstk_darwin(v5 - 8);
   v7 = &v10 - v6;
-  if (a4)
+  if (temperature)
   {
     sub_10007F6E4();
     static Measurement._unconditionallyBridgeFromObjectiveC(_:)();

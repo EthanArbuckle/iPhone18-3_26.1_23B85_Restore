@@ -1,10 +1,10 @@
 @interface MADProcessingNode
-- (BOOL)addChild:(id)a3 error:(id *)a4;
-- (BOOL)processInput:(id)a3 error:(id *)a4;
+- (BOOL)addChild:(id)child error:(id *)error;
+- (BOOL)processInput:(id)input error:(id *)error;
 - (MADProcessingNode)init;
-- (MADProcessingNode)initWithQueue:(id)a3;
-- (id)combineResults:(id)a3 withOtherResults:(id)a4;
-- (id)waitForResultsWithError:(id *)a3;
+- (MADProcessingNode)initWithQueue:(id)queue;
+- (id)combineResults:(id)results withOtherResults:(id)otherResults;
+- (id)waitForResultsWithError:(id *)error;
 - (void)cancelProcessing;
 @end
 
@@ -21,10 +21,10 @@
   return 0;
 }
 
-- (MADProcessingNode)initWithQueue:(id)a3
+- (MADProcessingNode)initWithQueue:(id)queue
 {
   v38 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  queueCopy = queue;
   if ([objc_opt_class() conformsToProtocol:&unk_1F49EC7E8])
   {
     v35.receiver = self;
@@ -38,32 +38,32 @@
 
       v9 = [@"com.apple.mediaanalysisd.node." stringByAppendingString:@"inputQueue"];
       v10 = v9;
-      v11 = [v9 UTF8String];
+      uTF8String = [v9 UTF8String];
       v12 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-      v13 = dispatch_queue_create(v11, v12);
+      v13 = dispatch_queue_create(uTF8String, v12);
       v14 = *(v6 + 1);
       *(v6 + 1) = v13;
 
       v15 = [@"com.apple.mediaanalysisd.node." stringByAppendingString:@"processQueue"];
       v16 = v15;
-      v17 = [v15 UTF8String];
+      uTF8String2 = [v15 UTF8String];
       v18 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-      v19 = dispatch_queue_create(v17, v18);
+      v19 = dispatch_queue_create(uTF8String2, v18);
       v20 = *(v6 + 3);
       *(v6 + 3) = v19;
 
-      objc_storeStrong(v6 + 4, a3);
+      objc_storeStrong(v6 + 4, queue);
       v21 = [@"com.apple.mediaanalysisd.node." stringByAppendingString:@"childrenQueue"];
       v22 = v21;
-      v23 = [v21 UTF8String];
+      uTF8String3 = [v21 UTF8String];
       v24 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-      v25 = dispatch_queue_create(v23, v24);
+      v25 = dispatch_queue_create(uTF8String3, v24);
       v26 = *(v6 + 5);
       *(v6 + 5) = v25;
 
-      v27 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       v28 = *(v6 + 8);
-      *(v6 + 8) = v27;
+      *(v6 + 8) = array;
 
       v29 = dispatch_group_create();
       v30 = *(v6 + 6);
@@ -74,7 +74,7 @@
     }
 
     self = v6;
-    v31 = self;
+    selfCopy = self;
   }
 
   else
@@ -88,20 +88,20 @@
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "%@ does not implement MADProcessingNodeProtocol", buf, 0xCu);
     }
 
-    v31 = 0;
+    selfCopy = 0;
   }
 
-  return v31;
+  return selfCopy;
 }
 
-- (BOOL)addChild:(id)a3 error:(id *)a4
+- (BOOL)addChild:(id)child error:(id *)error
 {
   v31[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = v6;
+  childCopy = child;
+  v7 = childCopy;
   if (self->_isRunning)
   {
-    if (a4)
+    if (error)
     {
       v8 = MEMORY[0x1E696ABC0];
       v30 = *MEMORY[0x1E696A578];
@@ -109,15 +109,15 @@
       v31[0] = v9;
       v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v31 forKeys:&v30 count:1];
       v11 = [v8 errorWithDomain:*MEMORY[0x1E696A768] code:-50 userInfo:v10];
-      v12 = *a4;
-      *a4 = v11;
+      v12 = *error;
+      *error = v11;
 
 LABEL_8:
-      LOBYTE(a4) = 0;
+      LOBYTE(error) = 0;
     }
   }
 
-  else if (v6)
+  else if (childCopy)
   {
     v24 = 0;
     v25 = &v24;
@@ -130,15 +130,15 @@ LABEL_8:
     block[3] = &unk_1E834D5D8;
     block[4] = self;
     v22 = &v24;
-    v23 = a4;
-    v21 = v6;
+    errorCopy = error;
+    v21 = childCopy;
     dispatch_sync(childrenQueue, block);
-    LOBYTE(a4) = *(v25 + 24);
+    LOBYTE(error) = *(v25 + 24);
 
     _Block_object_dispose(&v24, 8);
   }
 
-  else if (a4)
+  else if (error)
   {
     v14 = MEMORY[0x1E696ABC0];
     v28 = *MEMORY[0x1E696A578];
@@ -146,13 +146,13 @@ LABEL_8:
     v29 = v15;
     v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v29 forKeys:&v28 count:1];
     v17 = [v14 errorWithDomain:*MEMORY[0x1E696A768] code:-50 userInfo:v16];
-    v18 = *a4;
-    *a4 = v17;
+    v18 = *error;
+    *error = v17;
 
     goto LABEL_8;
   }
 
-  return a4 & 1;
+  return error & 1;
 }
 
 void __36__MADProcessingNode_addChild_error___block_invoke(void *a1)
@@ -185,9 +185,9 @@ void __36__MADProcessingNode_addChild_error___block_invoke(void *a1)
   }
 }
 
-- (BOOL)processInput:(id)a3 error:(id *)a4
+- (BOOL)processInput:(id)input error:(id *)error
 {
-  v6 = a3;
+  inputCopy = input;
   if (!self->_isRunning)
   {
     self->_isRunning = 1;
@@ -211,13 +211,13 @@ void __36__MADProcessingNode_addChild_error___block_invoke(void *a1)
   v12[4] = self;
   v14 = &v22;
   v15 = &v16;
-  v8 = v6;
+  v8 = inputCopy;
   v13 = v8;
   dispatch_sync(inputQueue, v12);
   v9 = v17[5];
   if (v9)
   {
-    objc_storeStrong(a4, v9);
+    objc_storeStrong(error, v9);
   }
 
   v10 = *(v23 + 24);
@@ -466,45 +466,45 @@ void __40__MADProcessingNode_processInput_error___block_invoke_3(void *a1)
   }
 }
 
-- (id)waitForResultsWithError:(id *)a3
+- (id)waitForResultsWithError:(id *)error
 {
   v34[1] = *MEMORY[0x1E69E9840];
   if (!self->_isRunning)
   {
     v8 = MEMORY[0x1E696ABC0];
     v33 = *MEMORY[0x1E696A578];
-    v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"[MADProcessingNode] waiting for results before any inputs"];
-    v34[0] = v22;
+    selfCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"[MADProcessingNode] waiting for results before any inputs"];
+    v34[0] = selfCopy;
     v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v34 forKeys:&v33 count:1];
     v7 = [v8 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v6];
     goto LABEL_6;
   }
 
   dispatch_group_wait(self->_group, 0xFFFFFFFFFFFFFFFFLL);
-  if (a3 && self->_inputCount)
+  if (error && self->_inputCount)
   {
     v5 = MEMORY[0x1E696ABC0];
     v31 = *MEMORY[0x1E696A578];
-    v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"[MADProcessingNode] Input still waiting to be processed after group is finished"];
-    v32 = v22;
+    selfCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"[MADProcessingNode] Input still waiting to be processed after group is finished"];
+    v32 = selfCopy;
     v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v32 forKeys:&v31 count:1];
     v7 = [v5 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v6];
 LABEL_6:
     v21 = v6;
-    v9 = 0;
-    v10 = *a3;
-    *a3 = v7;
+    dictionary = 0;
+    v10 = *error;
+    *error = v7;
     goto LABEL_7;
   }
 
-  v22 = self;
-  v9 = [MEMORY[0x1E695DF90] dictionary];
-  v21 = [(MADProcessingNode *)v22 collectResultsWithError:a3];
-  if (a3 && *a3)
+  selfCopy = self;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v21 = [(MADProcessingNode *)selfCopy collectResultsWithError:error];
+  if (error && *error)
   {
     if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [*a3 description];
+      v12 = [*error description];
       *buf = 138412290;
       v30 = v12;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "[MADProcessingNode] Errored while collecting results: %@", buf, 0xCu);
@@ -513,14 +513,14 @@ LABEL_6:
 
   else if (v21)
   {
-    [v9 addEntriesFromDictionary:v21];
+    [dictionary addEntriesFromDictionary:v21];
   }
 
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v10 = v22->_children;
+  v10 = selfCopy->_children;
   v13 = [(NSMutableArray *)v10 countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v13)
   {
@@ -548,17 +548,17 @@ LABEL_6:
             _os_log_impl(&dword_1C9B70000, v15, OS_LOG_TYPE_DEFAULT, "[MADProcessingNode] Child errored while finishing: %@", buf, 0xCu);
           }
 
-          if (a3)
+          if (error)
           {
-            objc_storeStrong(a3, obj);
+            objc_storeStrong(error, obj);
           }
         }
 
         if (v18)
         {
-          v20 = [(MADProcessingNode *)v22 combineResults:v9 withOtherResults:v18];
+          v20 = [(MADProcessingNode *)selfCopy combineResults:dictionary withOtherResults:v18];
 
-          v9 = v20;
+          dictionary = v20;
         }
       }
 
@@ -570,14 +570,14 @@ LABEL_6:
 
 LABEL_7:
 
-  return v9;
+  return dictionary;
 }
 
-- (id)combineResults:(id)a3 withOtherResults:(id)a4
+- (id)combineResults:(id)results withOtherResults:(id)otherResults
 {
-  v5 = a4;
-  v6 = [a3 mutableCopy];
-  [v6 addEntriesFromDictionary:v5];
+  otherResultsCopy = otherResults;
+  v6 = [results mutableCopy];
+  [v6 addEntriesFromDictionary:otherResultsCopy];
 
   return v6;
 }

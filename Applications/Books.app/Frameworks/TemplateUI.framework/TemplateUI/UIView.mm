@@ -7,18 +7,18 @@
 
 - (id)tui_querySectionUUID
 {
-  v2 = [(UIView *)self tui_renderViewHost];
-  v3 = [v2 tui_querySectionUUID];
+  tui_renderViewHost = [(UIView *)self tui_renderViewHost];
+  tui_querySectionUUID = [tui_renderViewHost tui_querySectionUUID];
 
-  return v3;
+  return tui_querySectionUUID;
 }
 
 - (id)tui_querySectionUID
 {
-  v2 = [(UIView *)self tui_renderViewHost];
-  v3 = [v2 tui_querySectionUID];
+  tui_renderViewHost = [(UIView *)self tui_renderViewHost];
+  tui_querySectionUID = [tui_renderViewHost tui_querySectionUID];
 
-  return v3;
+  return tui_querySectionUID;
 }
 
 @end

@@ -1,19 +1,19 @@
 @interface ISGrayscaleConversion
-- (BOOL)computeGrayscaleConversionColorWithCGImage:(CGImage *)a3 grayscaleConversion:;
+- (BOOL)computeGrayscaleConversionColorWithCGImage:(CGImage *)image grayscaleConversion:;
 @end
 
 @implementation ISGrayscaleConversion
 
-- (BOOL)computeGrayscaleConversionColorWithCGImage:(CGImage *)a3 grayscaleConversion:
+- (BOOL)computeGrayscaleConversionColorWithCGImage:(CGImage *)image grayscaleConversion:
 {
-  if (!a3)
+  if (!image)
   {
     LOBYTE(DataProvider) = 0;
     return DataProvider;
   }
 
   v4 = v3;
-  ColorSpace = CGImageGetColorSpace(a3);
+  ColorSpace = CGImageGetColorSpace(image);
   if (CGColorSpaceGetModel(ColorSpace) != kCGColorSpaceModelRGB)
   {
 LABEL_18:
@@ -21,19 +21,19 @@ LABEL_18:
     return DataProvider;
   }
 
-  BitsPerPixel = CGImageGetBitsPerPixel(a3);
-  BitsPerComponent = CGImageGetBitsPerComponent(a3);
+  BitsPerPixel = CGImageGetBitsPerPixel(image);
+  BitsPerComponent = CGImageGetBitsPerComponent(image);
   LOBYTE(DataProvider) = 0;
   if (BitsPerComponent != 8 || BitsPerPixel != 32)
   {
     return DataProvider;
   }
 
-  Width = CGImageGetWidth(a3);
-  Height = CGImageGetHeight(a3);
-  BytesPerRow = CGImageGetBytesPerRow(a3);
+  Width = CGImageGetWidth(image);
+  Height = CGImageGetHeight(image);
+  BytesPerRow = CGImageGetBytesPerRow(image);
   v14 = BytesPerRow >= 0 ? BytesPerRow : BytesPerRow + 3;
-  AlphaInfo = CGImageGetAlphaInfo(a3);
+  AlphaInfo = CGImageGetAlphaInfo(image);
   LOBYTE(DataProvider) = 0;
   if (AlphaInfo > kCGImageAlphaNoneSkipLast)
   {
@@ -45,7 +45,7 @@ LABEL_18:
     return DataProvider;
   }
 
-  DataProvider = CGImageGetDataProvider(a3);
+  DataProvider = CGImageGetDataProvider(image);
   if (!DataProvider)
   {
     return DataProvider;

@@ -1,13 +1,13 @@
 @interface PLModelMigrationAction_MergeDetectedFacesAndDetectedTorsos
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_MergeDetectedFacesAndDetectedTorsos
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
   v88[4] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  contextCopy = context;
   v49 = 0;
   v50 = &v49;
   v51 = 0x2020000000;
@@ -45,7 +45,7 @@
   v39[1] = 3221225472;
   v39[2] = __106__PLModelMigrationAction_MergeDetectedFacesAndDetectedTorsos_performActionWithManagedObjectContext_error___block_invoke;
   v39[3] = &unk_1E7575B30;
-  v15 = v6;
+  v15 = contextCopy;
   v40 = v15;
   v38[0] = MEMORY[0x1E69E9820];
   v38[1] = 3221225472;
@@ -75,8 +75,8 @@
 
     if (v20)
     {
-      v21 = [(PLModelMigrationActionCore *)self logger];
-      v22 = v21 == 0;
+      logger = [(PLModelMigrationActionCore *)self logger];
+      v22 = logger == 0;
 
       if (v22)
       {
@@ -151,9 +151,9 @@
   }
 
   [(PLModelMigrationActionCore *)self finalizeProgress];
-  if (a4)
+  if (error)
   {
-    *a4 = v44[5];
+    *error = v44[5];
   }
 
   v33 = v50[3];

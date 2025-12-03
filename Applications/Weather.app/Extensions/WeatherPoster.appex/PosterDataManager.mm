@@ -1,48 +1,48 @@
 @interface PosterDataManager
-- (void)locationManager:(id)a3 didFailWithError:(id)a4;
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4;
-- (void)locationManagerDidChangeAuthorization:(id)a3;
-- (void)locationManagerDidPauseLocationUpdates:(id)a3;
-- (void)locationManagerDidResumeLocationUpdates:(id)a3;
+- (void)locationManager:(id)manager didFailWithError:(id)error;
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations;
+- (void)locationManagerDidChangeAuthorization:(id)authorization;
+- (void)locationManagerDidPauseLocationUpdates:(id)updates;
+- (void)locationManagerDidResumeLocationUpdates:(id)updates;
 @end
 
 @implementation PosterDataManager
 
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations
 {
   sub_100013820(0, &qword_100065248, CLLocation_ptr);
   v6 = sub_10004AA5C();
-  v7 = a3;
-  v8 = self;
-  sub_100044AE4(v7, v6);
+  managerCopy = manager;
+  selfCopy = self;
+  sub_100044AE4(managerCopy, v6);
 }
 
-- (void)locationManager:(id)a3 didFailWithError:(id)a4
+- (void)locationManager:(id)manager didFailWithError:(id)error
 {
-  v6 = a3;
-  v8 = a4;
-  v7 = self;
+  managerCopy = manager;
+  errorCopy = error;
+  selfCopy = self;
   sub_100045280();
 }
 
-- (void)locationManagerDidChangeAuthorization:(id)a3
+- (void)locationManagerDidChangeAuthorization:(id)authorization
 {
-  v4 = a3;
-  v5 = self;
-  sub_100045494(v4);
+  authorizationCopy = authorization;
+  selfCopy = self;
+  sub_100045494(authorizationCopy);
 }
 
-- (void)locationManagerDidPauseLocationUpdates:(id)a3
+- (void)locationManagerDidPauseLocationUpdates:(id)updates
 {
-  v4 = a3;
-  v5 = self;
+  updatesCopy = updates;
+  selfCopy = self;
   sub_10004581C();
 }
 
-- (void)locationManagerDidResumeLocationUpdates:(id)a3
+- (void)locationManagerDidResumeLocationUpdates:(id)updates
 {
-  v4 = a3;
-  v5 = self;
+  updatesCopy = updates;
+  selfCopy = self;
   sub_100045934();
 }
 

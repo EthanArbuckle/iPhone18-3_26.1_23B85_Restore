@@ -1,27 +1,27 @@
 @interface W5PeerDebugConfigurationRequest
-- (W5PeerDebugConfigurationRequest)initWithPeer:(id)a3 type:(unint64_t)a4 debugConfiguration:(id)a5 reply:(id)a6;
+- (W5PeerDebugConfigurationRequest)initWithPeer:(id)peer type:(unint64_t)type debugConfiguration:(id)configuration reply:(id)reply;
 - (int64_t)controlFlags;
-- (void)handleResponse:(id)a3;
+- (void)handleResponse:(id)response;
 @end
 
 @implementation W5PeerDebugConfigurationRequest
 
-- (W5PeerDebugConfigurationRequest)initWithPeer:(id)a3 type:(unint64_t)a4 debugConfiguration:(id)a5 reply:(id)a6
+- (W5PeerDebugConfigurationRequest)initWithPeer:(id)peer type:(unint64_t)type debugConfiguration:(id)configuration reply:(id)reply
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
+  peerCopy = peer;
+  configurationCopy = configuration;
+  replyCopy = reply;
   v24.receiver = self;
   v24.super_class = W5PeerDebugConfigurationRequest;
   v14 = [(W5PeerDebugConfigurationRequest *)&v24 init];
   v15 = v14;
-  if (v11 && v14 && (objc_storeStrong(&v14->_peer, a3), v13))
+  if (peerCopy && v14 && (objc_storeStrong(&v14->_peer, peer), replyCopy))
   {
-    v16 = objc_retainBlock(v13);
+    v16 = objc_retainBlock(replyCopy);
     reply = v15->_reply;
     v15->_reply = v16;
 
-    v15->_type = a4;
+    v15->_type = type;
     v15->_discoveryFlags = 1;
     identifier = v15->_identifier;
     v15->_identifier = @"com.apple.wifi.peer.debugConfiguration";
@@ -30,13 +30,13 @@
     requestPayload = v15->_requestPayload;
     v15->_requestPayload = v19;
 
-    v21 = [(W5PeerDebugConfigurationRequest *)v15 _currentVersion];
-    [(W5PeerDebugRequestPayload *)v15->_requestPayload setVersion:v21];
+    _currentVersion = [(W5PeerDebugConfigurationRequest *)v15 _currentVersion];
+    [(W5PeerDebugRequestPayload *)v15->_requestPayload setVersion:_currentVersion];
 
     [(W5PeerDebugRequestPayload *)v15->_requestPayload setRequestType:v15->_type];
-    if (v12)
+    if (configurationCopy)
     {
-      [(W5PeerDebugRequestPayload *)v15->_requestPayload setConfiguration:v12];
+      [(W5PeerDebugRequestPayload *)v15->_requestPayload setConfiguration:configurationCopy];
     }
   }
 
@@ -61,37 +61,37 @@
   return v15;
 }
 
-- (void)handleResponse:(id)a3
+- (void)handleResponse:(id)response
 {
-  v4 = a3;
-  v9 = [v4 error];
-  v5 = [v4 payload];
+  responseCopy = response;
+  error = [responseCopy error];
+  payload = [responseCopy payload];
 
-  if (v9 || [(W5PeerDebugConfigurationRequest *)self type]!= 1)
+  if (error || [(W5PeerDebugConfigurationRequest *)self type]!= 1)
   {
-    v6 = 0;
+    configuration = 0;
   }
 
   else
   {
-    v6 = [v5 configuration];
+    configuration = [payload configuration];
   }
 
-  v7 = [(W5PeerDebugConfigurationRequest *)self reply];
+  reply = [(W5PeerDebugConfigurationRequest *)self reply];
 
-  if (v7)
+  if (reply)
   {
-    v8 = [(W5PeerDebugConfigurationRequest *)self reply];
-    (v8)[2](v8, v9, v6);
+    reply2 = [(W5PeerDebugConfigurationRequest *)self reply];
+    (reply2)[2](reply2, error, configuration);
   }
 }
 
 - (int64_t)controlFlags
 {
-  v2 = [(W5PeerDebugConfigurationRequest *)self peer];
-  v3 = [v2 controlFlags];
+  peer = [(W5PeerDebugConfigurationRequest *)self peer];
+  controlFlags = [peer controlFlags];
 
-  return v3;
+  return controlFlags;
 }
 
 @end

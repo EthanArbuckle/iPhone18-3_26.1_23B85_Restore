@@ -1,14 +1,14 @@
 @interface _MRGroupSessionFastSyncMessageProtobuf
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsMessageType:(id)a3;
+- (int)StringAsMessageType:(id)type;
 - (int)messageType;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _MRGroupSessionFastSyncMessageProtobuf
@@ -26,60 +26,60 @@
   }
 }
 
-- (int)StringAsMessageType:(id)a3
+- (int)StringAsMessageType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"LeaderDiscovery"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"LeaderDiscovery"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"IdentityShare"])
+  else if ([typeCopy isEqualToString:@"IdentityShare"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"IdentityShareReply"])
+  else if ([typeCopy isEqualToString:@"IdentityShareReply"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"MemberSync"])
+  else if ([typeCopy isEqualToString:@"MemberSync"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"SessionEnd"])
+  else if ([typeCopy isEqualToString:@"SessionEnd"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"RemoteControl"])
+  else if ([typeCopy isEqualToString:@"RemoteControl"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"TransportMigration"])
+  else if ([typeCopy isEqualToString:@"TransportMigration"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"TransportMigrationReply"])
+  else if ([typeCopy isEqualToString:@"TransportMigrationReply"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"RemoteJoinResponse"])
+  else if ([typeCopy isEqualToString:@"RemoteJoinResponse"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"RemoteRemoveRequest"])
+  else if ([typeCopy isEqualToString:@"RemoteRemoveRequest"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"RemoteRemoveAllRequest"])
+  else if ([typeCopy isEqualToString:@"RemoteRemoveAllRequest"])
   {
     v4 = 10;
   }
@@ -98,15 +98,15 @@
   v8.receiver = self;
   v8.super_class = _MRGroupSessionFastSyncMessageProtobuf;
   v4 = [(_MRGroupSessionFastSyncMessageProtobuf *)&v8 description];
-  v5 = [(_MRGroupSessionFastSyncMessageProtobuf *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(_MRGroupSessionFastSyncMessageProtobuf *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     messageType = self->_messageType;
@@ -120,56 +120,56 @@
       v5 = off_1E769E048[messageType];
     }
 
-    [v3 setObject:v5 forKey:@"messageType"];
+    [dictionary setObject:v5 forKey:@"messageType"];
   }
 
   payload = self->_payload;
   if (payload)
   {
-    [v3 setObject:payload forKey:@"payload"];
+    [dictionary setObject:payload forKey:@"payload"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (*&self->_has)
   {
     messageType = self->_messageType;
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_payload)
   {
     PBDataWriterWriteDataField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[2] = self->_messageType;
-    *(v4 + 24) |= 1u;
+    toCopy[2] = self->_messageType;
+    *(toCopy + 24) |= 1u;
   }
 
   if (self->_payload)
   {
-    v5 = v4;
-    [v4 setPayload:?];
-    v4 = v5;
+    v5 = toCopy;
+    [toCopy setPayload:?];
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -177,31 +177,31 @@
     *(v5 + 24) |= 1u;
   }
 
-  v7 = [(NSData *)self->_payload copyWithZone:a3];
+  v7 = [(NSData *)self->_payload copyWithZone:zone];
   v8 = v6[2];
   v6[2] = v7;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_9;
   }
 
-  v5 = *(v4 + 24);
+  v5 = *(equalCopy + 24);
   if (*&self->_has)
   {
-    if ((*(v4 + 24) & 1) == 0 || self->_messageType != *(v4 + 2))
+    if ((*(equalCopy + 24) & 1) == 0 || self->_messageType != *(equalCopy + 2))
     {
       goto LABEL_9;
     }
   }
 
-  else if (*(v4 + 24))
+  else if (*(equalCopy + 24))
   {
 LABEL_9:
     v7 = 0;
@@ -209,7 +209,7 @@ LABEL_9:
   }
 
   payload = self->_payload;
-  if (payload | *(v4 + 2))
+  if (payload | *(equalCopy + 2))
   {
     v7 = [(NSData *)payload isEqual:?];
   }
@@ -239,20 +239,20 @@ LABEL_10:
   return [(NSData *)self->_payload hash]^ v2;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (v4[6])
+  fromCopy = from;
+  if (fromCopy[6])
   {
-    self->_messageType = v4[2];
+    self->_messageType = fromCopy[2];
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
-    v5 = v4;
+    v5 = fromCopy;
     [(_MRGroupSessionFastSyncMessageProtobuf *)self setPayload:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 

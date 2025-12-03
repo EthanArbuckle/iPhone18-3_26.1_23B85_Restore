@@ -1,14 +1,14 @@
 @interface MSPFileContainerPersister
-- (BOOL)getSnapshot:(id *)a3 data:(id *)a4 forNewContents:(id)a5 edits:(id)a6 appliedToOldContents:(id)a7 error:(id *)a8;
-- (BOOL)getSnapshot:(id *)a3 data:(id *)a4 mergingCurrentState:(id)a5 withState:(id)a6 mergeOptions:(id)a7 error:(id *)a8;
+- (BOOL)getSnapshot:(id *)snapshot data:(id *)data forNewContents:(id)contents edits:(id)edits appliedToOldContents:(id)oldContents error:(id *)error;
+- (BOOL)getSnapshot:(id *)snapshot data:(id *)data mergingCurrentState:(id)state withState:(id)withState mergeOptions:(id)options error:(id *)error;
 - (MSPFileContainerPersister)init;
-- (MSPFileContainerPersister)initWithPersistenceFileAtURL:(id)a3;
-- (id)commitByCreatingStateSnapshotAndDataWithCreationHandler:(id)a3 error:(id *)a4;
+- (MSPFileContainerPersister)initWithPersistenceFileAtURL:(id)l;
+- (id)commitByCreatingStateSnapshotAndDataWithCreationHandler:(id)handler error:(id *)error;
 - (id)newStateSnapshot;
-- (void)commitByMergingWithStateSnapshot:(id)a3 mergeOptions:(id)a4 completion:(id)a5;
-- (void)commitEditWithNewContents:(id)a3 edits:(id)a4 appliedToOldContents:(id)a5 completion:(id)a6;
-- (void)eraseWithCompletion:(id)a3;
-- (void)fetchStateSnapshotWithCompletion:(id)a3;
+- (void)commitByMergingWithStateSnapshot:(id)snapshot mergeOptions:(id)options completion:(id)completion;
+- (void)commitEditWithNewContents:(id)contents edits:(id)edits appliedToOldContents:(id)oldContents completion:(id)completion;
+- (void)eraseWithCompletion:(id)completion;
+- (void)fetchStateSnapshotWithCompletion:(id)completion;
 @end
 
 @implementation MSPFileContainerPersister
@@ -20,15 +20,15 @@
   return result;
 }
 
-- (MSPFileContainerPersister)initWithPersistenceFileAtURL:(id)a3
+- (MSPFileContainerPersister)initWithPersistenceFileAtURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v12.receiver = self;
   v12.super_class = MSPFileContainerPersister;
   v5 = [(MSPFileContainerPersister *)&v12 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [lCopy copy];
     persistenceFileURL = v5->_persistenceFileURL;
     v5->_persistenceFileURL = v6;
 
@@ -70,19 +70,19 @@
   return v9;
 }
 
-- (void)fetchStateSnapshotWithCompletion:(id)a3
+- (void)fetchStateSnapshotWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v5 = [(MSPFileContainerPersister *)self ioQueue];
+  ioQueue = [(MSPFileContainerPersister *)self ioQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __62__MSPFileContainerPersister_fetchStateSnapshotWithCompletion___block_invoke;
   block[3] = &unk_279868960;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = completionCopy;
+  v6 = completionCopy;
+  dispatch_async(ioQueue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -125,28 +125,28 @@ void __62__MSPFileContainerPersister_fetchStateSnapshotWithCompletion___block_in
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)commitEditWithNewContents:(id)a3 edits:(id)a4 appliedToOldContents:(id)a5 completion:(id)a6
+- (void)commitEditWithNewContents:(id)contents edits:(id)edits appliedToOldContents:(id)oldContents completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  contentsCopy = contents;
+  editsCopy = edits;
+  oldContentsCopy = oldContents;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v14 = [(MSPFileContainerPersister *)self ioQueue];
+  ioQueue = [(MSPFileContainerPersister *)self ioQueue];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __93__MSPFileContainerPersister_commitEditWithNewContents_edits_appliedToOldContents_completion___block_invoke;
   v19[3] = &unk_279868CF8;
   objc_copyWeak(&v24, &location);
-  v20 = v10;
-  v21 = v11;
-  v22 = v12;
-  v23 = v13;
-  v15 = v13;
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
-  dispatch_async(v14, v19);
+  v20 = contentsCopy;
+  v21 = editsCopy;
+  v22 = oldContentsCopy;
+  v23 = completionCopy;
+  v15 = completionCopy;
+  v16 = oldContentsCopy;
+  v17 = editsCopy;
+  v18 = contentsCopy;
+  dispatch_async(ioQueue, v19);
 
   objc_destroyWeak(&v24);
   objc_destroyWeak(&location);
@@ -243,25 +243,25 @@ uint64_t __93__MSPFileContainerPersister_commitEditWithNewContents_edits_applied
   return (*(v2 + 16))();
 }
 
-- (void)commitByMergingWithStateSnapshot:(id)a3 mergeOptions:(id)a4 completion:(id)a5
+- (void)commitByMergingWithStateSnapshot:(id)snapshot mergeOptions:(id)options completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  snapshotCopy = snapshot;
+  optionsCopy = options;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v11 = [(MSPFileContainerPersister *)self ioQueue];
+  ioQueue = [(MSPFileContainerPersister *)self ioQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __86__MSPFileContainerPersister_commitByMergingWithStateSnapshot_mergeOptions_completion___block_invoke;
   block[3] = &unk_2798676A8;
   objc_copyWeak(&v19, &location);
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_async(v11, block);
+  v16 = snapshotCopy;
+  v17 = optionsCopy;
+  v18 = completionCopy;
+  v12 = completionCopy;
+  v13 = optionsCopy;
+  v14 = snapshotCopy;
+  dispatch_async(ioQueue, block);
 
   objc_destroyWeak(&v19);
   objc_destroyWeak(&location);
@@ -358,10 +358,10 @@ uint64_t __86__MSPFileContainerPersister_commitByMergingWithStateSnapshot_mergeO
   return (*(v2 + 16))();
 }
 
-- (id)commitByCreatingStateSnapshotAndDataWithCreationHandler:(id)a3 error:(id *)a4
+- (id)commitByCreatingStateSnapshotAndDataWithCreationHandler:(id)handler error:(id *)error
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  handlerCopy = handler;
   v7 = *MEMORY[0x277D0E798];
   v8 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -372,22 +372,22 @@ uint64_t __86__MSPFileContainerPersister_commitByMergingWithStateSnapshot_mergeO
     _os_log_impl(&dword_25813A000, v8, OS_LOG_TYPE_DEBUG, "Writing persisted data to %@", buf, 0xCu);
   }
 
-  v10 = [MEMORY[0x277CCAA00] defaultManager];
-  v11 = [(NSURL *)self->_persistenceFileURL URLByDeletingLastPathComponent];
-  v12 = [v10 createDirectoryAtURL:v11 withIntermediateDirectories:1 attributes:0 error:a4];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  uRLByDeletingLastPathComponent = [(NSURL *)self->_persistenceFileURL URLByDeletingLastPathComponent];
+  v12 = [defaultManager createDirectoryAtURL:uRLByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:error];
 
   v13 = 0;
   if (v12)
   {
     v24 = 0;
     v25 = 0;
-    v14 = v6[2](v6, &v25, &v24, a4);
+    v14 = handlerCopy[2](handlerCopy, &v25, &v24, error);
     v15 = v25;
     v16 = v24;
     v17 = v16;
     if (v14)
     {
-      v18 = [v16 writeToURL:self->_persistenceFileURL options:536870913 error:a4];
+      v18 = [v16 writeToURL:self->_persistenceFileURL options:536870913 error:error];
     }
 
     else
@@ -422,19 +422,19 @@ uint64_t __86__MSPFileContainerPersister_commitByMergingWithStateSnapshot_mergeO
   return v13;
 }
 
-- (void)eraseWithCompletion:(id)a3
+- (void)eraseWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v5 = [(MSPFileContainerPersister *)self ioQueue];
+  ioQueue = [(MSPFileContainerPersister *)self ioQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __49__MSPFileContainerPersister_eraseWithCompletion___block_invoke;
   block[3] = &unk_279868960;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = completionCopy;
+  v6 = completionCopy;
+  dispatch_async(ioQueue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -530,22 +530,22 @@ LABEL_16:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)getSnapshot:(id *)a3 data:(id *)a4 forNewContents:(id)a5 edits:(id)a6 appliedToOldContents:(id)a7 error:(id *)a8
+- (BOOL)getSnapshot:(id *)snapshot data:(id *)data forNewContents:(id)contents edits:(id)edits appliedToOldContents:(id)oldContents error:(id *)error
 {
-  [(MSPFileContainerPersister *)self doesNotRecognizeSelector:a2, a4, a5, a6, a7];
-  if (a8)
+  [(MSPFileContainerPersister *)self doesNotRecognizeSelector:a2, data, contents, edits, oldContents];
+  if (error)
   {
-    *a8 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA050] code:3072 userInfo:0];
+    *error = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA050] code:3072 userInfo:0];
   }
 
   return 0;
 }
 
-- (BOOL)getSnapshot:(id *)a3 data:(id *)a4 mergingCurrentState:(id)a5 withState:(id)a6 mergeOptions:(id)a7 error:(id *)a8
+- (BOOL)getSnapshot:(id *)snapshot data:(id *)data mergingCurrentState:(id)state withState:(id)withState mergeOptions:(id)options error:(id *)error
 {
-  if (a8)
+  if (error)
   {
-    *a8 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.MapsSupport.MSPContainer" code:6 userInfo:{0, a6, a7}];
+    *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.MapsSupport.MSPContainer" code:6 userInfo:{0, withState, options}];
   }
 
   return 0;

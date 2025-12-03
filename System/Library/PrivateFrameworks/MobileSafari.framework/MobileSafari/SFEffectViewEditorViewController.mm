@@ -1,82 +1,82 @@
 @interface SFEffectViewEditorViewController
-- (SFEffectViewEditorViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)collectionView:(id)a3 targetIndexPathForMoveOfItemFromOriginalIndexPath:(id)a4 atCurrentIndexPath:(id)a5 toProposedIndexPath:(id)a6;
-- (void)addEditableEffect:(id)a3 title:(id)a4 editHandler:(id)a5;
-- (void)addEditablePropertiesWithTitle:(id)a3 builder:(id)a4;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)documentPicker:(id)a3 didPickDocumentsAtURLs:(id)a4;
+- (SFEffectViewEditorViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)collectionView:(id)view targetIndexPathForMoveOfItemFromOriginalIndexPath:(id)path atCurrentIndexPath:(id)indexPath toProposedIndexPath:(id)proposedIndexPath;
+- (void)addEditableEffect:(id)effect title:(id)title editHandler:(id)handler;
+- (void)addEditablePropertiesWithTitle:(id)title builder:(id)builder;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)documentPicker:(id)picker didPickDocumentsAtURLs:(id)ls;
 - (void)loadView;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation SFEffectViewEditorViewController
 
-- (void)addEditableEffect:(id)a3 title:(id)a4 editHandler:(id)a5
+- (void)addEditableEffect:(id)effect title:(id)title editHandler:(id)handler
 {
-  v7 = _Block_copy(a5);
+  v7 = _Block_copy(handler);
   v8 = sub_18BC20BD8();
   v10 = v9;
   v11 = swift_allocObject();
   *(v11 + 16) = v7;
-  v12 = a3;
-  v13 = self;
-  sub_18B978100(v12, v8, v10, sub_18B9878C4, v11);
+  effectCopy = effect;
+  selfCopy = self;
+  sub_18B978100(effectCopy, v8, v10, sub_18B9878C4, v11);
 }
 
-- (void)addEditablePropertiesWithTitle:(id)a3 builder:(id)a4
+- (void)addEditablePropertiesWithTitle:(id)title builder:(id)builder
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(builder);
   v6 = sub_18BC20BD8();
   v8 = v7;
   _Block_copy(v5);
-  v9 = self;
-  sub_18B984EE8(v6, v8, v9, v5);
+  selfCopy = self;
+  sub_18B984EE8(v6, v8, selfCopy, v5);
   _Block_release(v5);
   _Block_release(v5);
 }
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   SFEffectViewEditorViewController.loadView()();
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   SFEffectViewEditorViewController.viewDidLoad()();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  SFEffectViewEditorViewController.viewWillAppear(_:)(a3);
+  selfCopy = self;
+  SFEffectViewEditorViewController.viewWillAppear(_:)(appear);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v3.receiver = self;
   v3.super_class = SFEffectViewEditorViewController;
-  [(SFEffectViewEditorViewController *)&v3 viewWillDisappear:a3];
+  [(SFEffectViewEditorViewController *)&v3 viewWillDisappear:disappear];
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
   v6 = sub_18BC1EDD8();
   v7 = *(v6 - 8);
   MEMORY[0x1EEE9AC00](v6);
   v9 = &v12 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_18BC1ED88();
-  v10 = a3;
-  v11 = self;
+  viewCopy = view;
+  selfCopy = self;
   sub_18B986078();
 
   (*(v7 + 8))(v9, v6);
 }
 
-- (id)collectionView:(id)a3 targetIndexPathForMoveOfItemFromOriginalIndexPath:(id)a4 atCurrentIndexPath:(id)a5 toProposedIndexPath:(id)a6
+- (id)collectionView:(id)view targetIndexPathForMoveOfItemFromOriginalIndexPath:(id)path atCurrentIndexPath:(id)indexPath toProposedIndexPath:(id)proposedIndexPath
 {
   v6 = sub_18BC1EDD8();
   v7 = *(v6 - 8);
@@ -123,9 +123,9 @@
   return v24;
 }
 
-- (SFEffectViewEditorViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (SFEffectViewEditorViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_18BC20BD8();
     v7 = v6;
@@ -137,16 +137,16 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return SFEffectViewEditorViewController.init(nibName:bundle:)(v5, v7, a4);
+  bundleCopy = bundle;
+  return SFEffectViewEditorViewController.init(nibName:bundle:)(v5, v7, bundle);
 }
 
-- (void)documentPicker:(id)a3 didPickDocumentsAtURLs:(id)a4
+- (void)documentPicker:(id)picker didPickDocumentsAtURLs:(id)ls
 {
   sub_18BC1EA98();
   v6 = sub_18BC20D98();
-  v7 = a3;
-  v8 = self;
+  pickerCopy = picker;
+  selfCopy = self;
   sub_18B986330(v6);
 }
 

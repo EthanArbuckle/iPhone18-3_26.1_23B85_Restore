@@ -1,12 +1,12 @@
 @interface PULivePhotoKeyFrameSelectionViewController
 - (CGSize)preferredContentSize;
-- (PULivePhotoKeyFrameSelectionViewController)initWithCoder:(id)a3;
-- (PULivePhotoKeyFrameSelectionViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (PULivePhotoKeyFrameSelectionViewController)initWithCoder:(id)coder;
+- (PULivePhotoKeyFrameSelectionViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (PULivePhotoKeyFrameSelectionViewControllerDelegate)delegate;
 - (int64_t)preferredUserInterfaceStyle;
 - (void)_updateButtonTitle;
-- (void)setSelectionTitle:(id)a3;
-- (void)tapMakeKeyPhoto:(id)a3;
+- (void)setSelectionTitle:(id)title;
+- (void)tapMakeKeyPhoto:(id)photo;
 - (void)viewDidLoad;
 @end
 
@@ -21,26 +21,26 @@
 
 - (void)_updateButtonTitle
 {
-  v4 = [(PULivePhotoKeyFrameSelectionViewController *)self makeKeyPhotoBtn];
-  v3 = [(PULivePhotoKeyFrameSelectionViewController *)self selectionTitle];
-  [v4 setTitle:v3 forState:0];
+  makeKeyPhotoBtn = [(PULivePhotoKeyFrameSelectionViewController *)self makeKeyPhotoBtn];
+  selectionTitle = [(PULivePhotoKeyFrameSelectionViewController *)self selectionTitle];
+  [makeKeyPhotoBtn setTitle:selectionTitle forState:0];
 }
 
-- (void)tapMakeKeyPhoto:(id)a3
+- (void)tapMakeKeyPhoto:(id)photo
 {
-  v4 = [(PULivePhotoKeyFrameSelectionViewController *)self delegate];
-  [v4 userDidRequestToMakeKeyPhoto:self];
+  delegate = [(PULivePhotoKeyFrameSelectionViewController *)self delegate];
+  [delegate userDidRequestToMakeKeyPhoto:self];
 }
 
-- (void)setSelectionTitle:(id)a3
+- (void)setSelectionTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   selectionTitle = self->_selectionTitle;
-  if (selectionTitle != v4)
+  if (selectionTitle != titleCopy)
   {
-    v8 = v4;
-    selectionTitle = [selectionTitle isEqual:v4];
-    v4 = v8;
+    v8 = titleCopy;
+    selectionTitle = [selectionTitle isEqual:titleCopy];
+    titleCopy = v8;
     if ((selectionTitle & 1) == 0)
     {
       v6 = [v8 copy];
@@ -48,11 +48,11 @@
       self->_selectionTitle = v6;
 
       selectionTitle = [(PULivePhotoKeyFrameSelectionViewController *)self _updateButtonTitle];
-      v4 = v8;
+      titleCopy = v8;
     }
   }
 
-  MEMORY[0x1EEE66BB8](selectionTitle, v4);
+  MEMORY[0x1EEE66BB8](selectionTitle, titleCopy);
 }
 
 - (int64_t)preferredUserInterfaceStyle
@@ -73,8 +73,8 @@
 
 - (CGSize)preferredContentSize
 {
-  v2 = [(PULivePhotoKeyFrameSelectionViewController *)self makeKeyPhotoBtn];
-  [v2 intrinsicContentSize];
+  makeKeyPhotoBtn = [(PULivePhotoKeyFrameSelectionViewController *)self makeKeyPhotoBtn];
+  [makeKeyPhotoBtn intrinsicContentSize];
   v4 = v3;
   v6 = v5;
 
@@ -94,52 +94,52 @@
   v4 = [MEMORY[0x1E69DC738] buttonWithType:1];
   [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v4 addTarget:self action:sel_tapMakeKeyPhoto_ forControlEvents:64];
-  v5 = [v3 photoEditingKeyPhotoSelectionNormalColor];
-  [v4 setTitleColor:v5 forState:0];
+  photoEditingKeyPhotoSelectionNormalColor = [v3 photoEditingKeyPhotoSelectionNormalColor];
+  [v4 setTitleColor:photoEditingKeyPhotoSelectionNormalColor forState:0];
 
-  v6 = [v3 photoEditingToolbarButtonNormalFont];
-  v7 = [v4 titleLabel];
-  [v7 setFont:v6];
+  photoEditingToolbarButtonNormalFont = [v3 photoEditingToolbarButtonNormalFont];
+  titleLabel = [v4 titleLabel];
+  [titleLabel setFont:photoEditingToolbarButtonNormalFont];
 
   [v4 setContentEdgeInsets:{12.0, 12.0, 12.0, 12.0}];
   [(PULivePhotoKeyFrameSelectionViewController *)self setMakeKeyPhotoBtn:v4];
-  v8 = [(PULivePhotoKeyFrameSelectionViewController *)self view];
-  v9 = [v3 photoEditingPopoverBackgroundColor];
-  [v8 setBackgroundColor:v9];
+  view = [(PULivePhotoKeyFrameSelectionViewController *)self view];
+  photoEditingPopoverBackgroundColor = [v3 photoEditingPopoverBackgroundColor];
+  [view setBackgroundColor:photoEditingPopoverBackgroundColor];
 
-  [v8 addSubview:v4];
-  v10 = [v4 leadingAnchor];
-  v11 = [v8 safeAreaLayoutGuide];
-  v12 = [v11 leadingAnchor];
-  v13 = [v10 constraintEqualToAnchor:v12];
+  [view addSubview:v4];
+  leadingAnchor = [v4 leadingAnchor];
+  safeAreaLayoutGuide = [view safeAreaLayoutGuide];
+  leadingAnchor2 = [safeAreaLayoutGuide leadingAnchor];
+  v13 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v13 setActive:1];
 
-  v14 = [v4 trailingAnchor];
-  v15 = [v8 safeAreaLayoutGuide];
-  v16 = [v15 trailingAnchor];
-  v17 = [v14 constraintEqualToAnchor:v16];
+  trailingAnchor = [v4 trailingAnchor];
+  safeAreaLayoutGuide2 = [view safeAreaLayoutGuide];
+  trailingAnchor2 = [safeAreaLayoutGuide2 trailingAnchor];
+  v17 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [v17 setActive:1];
 
-  v18 = [v4 topAnchor];
-  v19 = [v8 safeAreaLayoutGuide];
-  v20 = [v19 topAnchor];
-  v21 = [v18 constraintEqualToAnchor:v20];
+  topAnchor = [v4 topAnchor];
+  safeAreaLayoutGuide3 = [view safeAreaLayoutGuide];
+  topAnchor2 = [safeAreaLayoutGuide3 topAnchor];
+  v21 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v21 setActive:1];
 
-  v22 = [v4 bottomAnchor];
-  v23 = [v8 safeAreaLayoutGuide];
-  v24 = [v23 bottomAnchor];
-  v25 = [v22 constraintEqualToAnchor:v24];
+  bottomAnchor = [v4 bottomAnchor];
+  safeAreaLayoutGuide4 = [view safeAreaLayoutGuide];
+  bottomAnchor2 = [safeAreaLayoutGuide4 bottomAnchor];
+  v25 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [v25 setActive:1];
 
   [(PULivePhotoKeyFrameSelectionViewController *)self _updateButtonTitle];
 }
 
-- (PULivePhotoKeyFrameSelectionViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (PULivePhotoKeyFrameSelectionViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v7.receiver = self;
   v7.super_class = PULivePhotoKeyFrameSelectionViewController;
-  v4 = [(PULivePhotoKeyFrameSelectionViewController *)&v7 initWithNibName:a3 bundle:a4];
+  v4 = [(PULivePhotoKeyFrameSelectionViewController *)&v7 initWithNibName:name bundle:bundle];
   v5 = v4;
   if (v4)
   {
@@ -149,11 +149,11 @@
   return v5;
 }
 
-- (PULivePhotoKeyFrameSelectionViewController)initWithCoder:(id)a3
+- (PULivePhotoKeyFrameSelectionViewController)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = PULivePhotoKeyFrameSelectionViewController;
-  v3 = [(PULivePhotoKeyFrameSelectionViewController *)&v6 initWithCoder:a3];
+  v3 = [(PULivePhotoKeyFrameSelectionViewController *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {

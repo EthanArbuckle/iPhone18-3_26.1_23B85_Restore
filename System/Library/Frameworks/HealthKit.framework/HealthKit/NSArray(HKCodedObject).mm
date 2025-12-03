@@ -8,8 +8,8 @@
 
 + (uint64_t)indexableKeyPathsWithPrefix:()HKCodedObject
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"NSArray+HKCodedObject.m" lineNumber:20 description:@"Indexing by key-path is not supported for NSArray"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"NSArray+HKCodedObject.m" lineNumber:20 description:@"Indexing by key-path is not supported for NSArray"];
 
   return MEMORY[0x1E695E0F0];
 }
@@ -19,10 +19,10 @@
   v7 = a3;
   if (!v7)
   {
-    [NSArray(HKCodedObject) codingsForKeyPath:a2 error:a1];
+    [NSArray(HKCodedObject) codingsForKeyPath:a2 error:self];
   }
 
-  if ([a1 count] <= 0x7F)
+  if ([self count] <= 0x7F)
   {
     v9 = &unk_1F068B830;
     v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -42,7 +42,7 @@
     v20 = v7;
     v12 = v10;
     v21 = v12;
-    [a1 enumerateObjectsUsingBlock:v18];
+    [self enumerateObjectsUsingBlock:v18];
     v13 = v24[5];
     if (v13)
     {
@@ -72,7 +72,7 @@
 
   else
   {
-    [MEMORY[0x1E696ABC0] hk_assignError:a4 code:3 format:{@"Unable to generate concept index for array of length %lu for key-path %@", objc_msgSend(a1, "count"), v7}];
+    [MEMORY[0x1E696ABC0] hk_assignError:a4 code:3 format:{@"Unable to generate concept index for array of length %lu for key-path %@", objc_msgSend(self, "count"), v7}];
     v8 = 0;
   }
 
@@ -83,7 +83,7 @@
 {
   v8 = a3;
   v9 = a4;
-  v10 = +[HKIndexableObject indexableObjectsByApplyingOutermostIndex:expectedCount:error:](HKIndexableObject, "indexableObjectsByApplyingOutermostIndex:expectedCount:error:", v8, [a1 count], a5);
+  v10 = +[HKIndexableObject indexableObjectsByApplyingOutermostIndex:expectedCount:error:](HKIndexableObject, "indexableObjectsByApplyingOutermostIndex:expectedCount:error:", v8, [self count], a5);
   v11 = v10;
   if (v10)
   {
@@ -100,7 +100,7 @@
     v21 = &v22;
     v19 = v10;
     v20 = v9;
-    [a1 enumerateObjectsUsingBlock:v18];
+    [self enumerateObjectsUsingBlock:v18];
     v12 = v23[5];
     v13 = v12 == 0;
     if (v12)

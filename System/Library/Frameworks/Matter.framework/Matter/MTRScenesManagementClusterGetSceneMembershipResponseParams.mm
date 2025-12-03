@@ -1,9 +1,9 @@
 @interface MTRScenesManagementClusterGetSceneMembershipResponseParams
-- (ChipError)_setFieldsFromDecodableStruct:(const void *)a3;
+- (ChipError)_setFieldsFromDecodableStruct:(const void *)struct;
 - (MTRScenesManagementClusterGetSceneMembershipResponseParams)init;
-- (MTRScenesManagementClusterGetSceneMembershipResponseParams)initWithDecodableStruct:(const void *)a3;
-- (MTRScenesManagementClusterGetSceneMembershipResponseParams)initWithResponseValue:(id)a3 error:(id *)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (MTRScenesManagementClusterGetSceneMembershipResponseParams)initWithDecodableStruct:(const void *)struct;
+- (MTRScenesManagementClusterGetSceneMembershipResponseParams)initWithResponseValue:(id)value error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -33,20 +33,20 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRScenesManagementClusterGetSceneMembershipResponseParams);
-  v5 = [(MTRScenesManagementClusterGetSceneMembershipResponseParams *)self status];
-  [(MTRScenesManagementClusterGetSceneMembershipResponseParams *)v4 setStatus:v5];
+  status = [(MTRScenesManagementClusterGetSceneMembershipResponseParams *)self status];
+  [(MTRScenesManagementClusterGetSceneMembershipResponseParams *)v4 setStatus:status];
 
-  v6 = [(MTRScenesManagementClusterGetSceneMembershipResponseParams *)self capacity];
-  [(MTRScenesManagementClusterGetSceneMembershipResponseParams *)v4 setCapacity:v6];
+  capacity = [(MTRScenesManagementClusterGetSceneMembershipResponseParams *)self capacity];
+  [(MTRScenesManagementClusterGetSceneMembershipResponseParams *)v4 setCapacity:capacity];
 
-  v7 = [(MTRScenesManagementClusterGetSceneMembershipResponseParams *)self groupID];
-  [(MTRScenesManagementClusterGetSceneMembershipResponseParams *)v4 setGroupID:v7];
+  groupID = [(MTRScenesManagementClusterGetSceneMembershipResponseParams *)self groupID];
+  [(MTRScenesManagementClusterGetSceneMembershipResponseParams *)v4 setGroupID:groupID];
 
-  v8 = [(MTRScenesManagementClusterGetSceneMembershipResponseParams *)self sceneList];
-  [(MTRScenesManagementClusterGetSceneMembershipResponseParams *)v4 setSceneList:v8];
+  sceneList = [(MTRScenesManagementClusterGetSceneMembershipResponseParams *)self sceneList];
+  [(MTRScenesManagementClusterGetSceneMembershipResponseParams *)v4 setSceneList:sceneList];
 
   return v4;
 }
@@ -61,9 +61,9 @@
   return v6;
 }
 
-- (MTRScenesManagementClusterGetSceneMembershipResponseParams)initWithResponseValue:(id)a3 error:(id *)a4
+- (MTRScenesManagementClusterGetSceneMembershipResponseParams)initWithResponseValue:(id)value error:(id *)error
 {
-  v6 = a3;
+  valueCopy = value;
   v18.receiver = self;
   v18.super_class = MTRScenesManagementClusterGetSceneMembershipResponseParams;
   v7 = [(MTRScenesManagementClusterGetSceneMembershipResponseParams *)&v18 init];
@@ -73,7 +73,7 @@
     goto LABEL_10;
   }
 
-  [MTRBaseDevice _responseDataForCommand:v6 clusterID:98 commandID:6 error:a4];
+  [MTRBaseDevice _responseDataForCommand:valueCopy clusterID:98 commandID:6 error:error];
   if (v17)
   {
     sub_2393C5AAC(v16);
@@ -97,7 +97,7 @@
       }
     }
 
-    sub_238DD3F98(v8, v9, a4);
+    sub_238DD3F98(v8, v9, error);
   }
 
   v10 = 0;
@@ -108,7 +108,7 @@ LABEL_10:
   return v10;
 }
 
-- (MTRScenesManagementClusterGetSceneMembershipResponseParams)initWithDecodableStruct:(const void *)a3
+- (MTRScenesManagementClusterGetSceneMembershipResponseParams)initWithDecodableStruct:(const void *)struct
 {
   v10.receiver = self;
   v10.super_class = MTRScenesManagementClusterGetSceneMembershipResponseParams;
@@ -116,7 +116,7 @@ LABEL_10:
   v5 = v4;
   if (v4)
   {
-    v6 = [(MTRScenesManagementClusterGetSceneMembershipResponseParams *)v4 _setFieldsFromDecodableStruct:a3];
+    v6 = [(MTRScenesManagementClusterGetSceneMembershipResponseParams *)v4 _setFieldsFromDecodableStruct:struct];
     if (!v6)
     {
       v8 = v5;
@@ -132,14 +132,14 @@ LABEL_6:
   return v8;
 }
 
-- (ChipError)_setFieldsFromDecodableStruct:(const void *)a3
+- (ChipError)_setFieldsFromDecodableStruct:(const void *)struct
 {
-  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*a3];
+  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*struct];
   [(MTRScenesManagementClusterGetSceneMembershipResponseParams *)self setStatus:v5];
 
-  if (*(a3 + 2))
+  if (*(struct + 2))
   {
-    v6 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*(a3 + 1)];
+    v6 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*(struct + 1)];
     [(MTRScenesManagementClusterGetSceneMembershipResponseParams *)self setCapacity:v6];
   }
 
@@ -148,11 +148,11 @@ LABEL_6:
     [(MTRScenesManagementClusterGetSceneMembershipResponseParams *)self setCapacity:0];
   }
 
-  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:*(a3 + 2)];
+  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:*(struct + 2)];
   [(MTRScenesManagementClusterGetSceneMembershipResponseParams *)self setGroupID:v7];
 
-  v9 = *(a3 + 8);
-  v8 = a3 + 8;
+  v9 = *(struct + 8);
+  v8 = struct + 8;
   if (v9 != 1)
   {
     [(MTRScenesManagementClusterGetSceneMembershipResponseParams *)self setSceneList:0];

@@ -1,10 +1,10 @@
 @interface NEIPSecSA
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)createDictionary;
 - (id)initInboundSA;
-- (id)initInboundSAWithSPI:(unsigned int)a3;
-- (id)initOutboundSAWithSPI:(unsigned int)a3;
+- (id)initInboundSAWithSPI:(unsigned int)i;
+- (id)initOutboundSAWithSPI:(unsigned int)i;
 - (void)dealloc;
 - (void)invalidate;
 @end
@@ -26,7 +26,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     v5 = 138412290;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1BA83C000, v3, OS_LOG_TYPE_INFO, "Invalidate %@", &v5, 0xCu);
   }
 
@@ -35,12 +35,12 @@
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [(NEIPSecSA *)self direction];
-  v6 = [NEIPSecSA allocWithZone:a3];
+  direction = [(NEIPSecSA *)self direction];
+  v6 = [NEIPSecSA allocWithZone:zone];
   v7 = [(NEIPSecSA *)self spi];
-  if (v5 == 1)
+  if (direction == 1)
   {
     v8 = [(NEIPSecSA *)v6 initOutboundSAWithSPI:v7];
   }
@@ -76,18 +76,18 @@ LABEL_6:
 LABEL_7:
   [v9 setMode:{-[NEIPSecSA mode](self, "mode")}];
   [v9 setProtocol:{-[NEIPSecSA protocol](self, "protocol")}];
-  v11 = [(NEIPSecSA *)self localAddress];
-  [v9 setLocalAddress:v11];
+  localAddress = [(NEIPSecSA *)self localAddress];
+  [v9 setLocalAddress:localAddress];
 
-  v12 = [(NEIPSecSA *)self remoteAddress];
-  [v9 setRemoteAddress:v12];
+  remoteAddress = [(NEIPSecSA *)self remoteAddress];
+  [v9 setRemoteAddress:remoteAddress];
 
-  v13 = [(NEIPSecSA *)self boundInterfaceName];
-  v14 = [v13 copyWithZone:a3];
+  boundInterfaceName = [(NEIPSecSA *)self boundInterfaceName];
+  v14 = [boundInterfaceName copyWithZone:zone];
   [v9 setBoundInterfaceName:v14];
 
-  v15 = [(NEIPSecSA *)self tunnelInterfaceName];
-  v16 = [v15 copyWithZone:a3];
+  tunnelInterfaceName = [(NEIPSecSA *)self tunnelInterfaceName];
+  v16 = [tunnelInterfaceName copyWithZone:zone];
   [v9 setTunnelInterfaceName:v16];
 
   [v9 setReplayWindowSize:{-[NEIPSecSA replayWindowSize](self, "replayWindowSize")}];
@@ -106,13 +106,13 @@ LABEL_7:
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && (v5 = objc_msgSend(v4, "spi"), v5 == -[NEIPSecSA spi](self, "spi")) && (v6 = objc_msgSend(v4, "direction"), v6 == -[NEIPSecSA direction](self, "direction")) && (v7 = objc_msgSend(v4, "mode"), v7 == -[NEIPSecSA mode](self, "mode")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && (v5 = objc_msgSend(equalCopy, "spi"), v5 == -[NEIPSecSA spi](self, "spi")) && (v6 = objc_msgSend(equalCopy, "direction"), v6 == -[NEIPSecSA direction](self, "direction")) && (v7 = objc_msgSend(equalCopy, "mode"), v7 == -[NEIPSecSA mode](self, "mode")))
   {
-    v8 = [v4 protocol];
-    v9 = v8 == [(NEIPSecSA *)self protocol];
+    protocol = [equalCopy protocol];
+    v9 = protocol == [(NEIPSecSA *)self protocol];
   }
 
   else
@@ -148,7 +148,7 @@ LABEL_7:
   return v3;
 }
 
-- (id)initInboundSAWithSPI:(unsigned int)a3
+- (id)initInboundSAWithSPI:(unsigned int)i
 {
   v10.receiver = self;
   v10.super_class = NEIPSecSA;
@@ -156,7 +156,7 @@ LABEL_7:
   v5 = v4;
   if (v4)
   {
-    v4->_spi = a3;
+    v4->_spi = i;
     v4->_direction = 2;
     v6 = v4;
   }
@@ -174,7 +174,7 @@ LABEL_7:
   return v5;
 }
 
-- (id)initOutboundSAWithSPI:(unsigned int)a3
+- (id)initOutboundSAWithSPI:(unsigned int)i
 {
   v10.receiver = self;
   v10.super_class = NEIPSecSA;
@@ -182,7 +182,7 @@ LABEL_7:
   v5 = v4;
   if (v4)
   {
-    v4->_spi = a3;
+    v4->_spi = i;
     v4->_direction = 1;
     v6 = v4;
   }
@@ -202,72 +202,72 @@ LABEL_7:
 
 - (id)createDictionary
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
   v2 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  if ([a1 spi])
+  if ([self spi])
   {
-    v3 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{bswap32(objc_msgSend(a1, "spi"))}];
+    v3 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{bswap32(objc_msgSend(self, "spi"))}];
     [v2 setObject:v3 forKeyedSubscript:@"SPIValue"];
   }
 
-  v4 = [a1 localAddress];
+  localAddress = [self localAddress];
 
-  if (v4)
+  if (localAddress)
   {
-    v5 = [a1 localAddress];
-    v6 = [v5 hostname];
-    [v2 setObject:v6 forKeyedSubscript:@"LocalAddress"];
+    localAddress2 = [self localAddress];
+    hostname = [localAddress2 hostname];
+    [v2 setObject:hostname forKeyedSubscript:@"LocalAddress"];
 
     v7 = MEMORY[0x1E696AD98];
-    v8 = [a1 localAddress];
-    v9 = [v8 port];
-    v10 = [v7 numberWithInteger:{objc_msgSend(v9, "integerValue")}];
+    localAddress3 = [self localAddress];
+    port = [localAddress3 port];
+    v10 = [v7 numberWithInteger:{objc_msgSend(port, "integerValue")}];
     [v2 setObject:v10 forKeyedSubscript:@"LocalPort"];
   }
 
-  v11 = [a1 remoteAddress];
+  remoteAddress = [self remoteAddress];
 
-  if (v11)
+  if (remoteAddress)
   {
-    v12 = [a1 remoteAddress];
-    v13 = [v12 hostname];
-    [v2 setObject:v13 forKeyedSubscript:@"RemoteAddress"];
+    remoteAddress2 = [self remoteAddress];
+    hostname2 = [remoteAddress2 hostname];
+    [v2 setObject:hostname2 forKeyedSubscript:@"RemoteAddress"];
 
     v14 = MEMORY[0x1E696AD98];
-    v15 = [a1 remoteAddress];
-    v16 = [v15 port];
-    v17 = [v14 numberWithInteger:{objc_msgSend(v16, "integerValue")}];
+    remoteAddress3 = [self remoteAddress];
+    port2 = [remoteAddress3 port];
+    v17 = [v14 numberWithInteger:{objc_msgSend(port2, "integerValue")}];
     [v2 setObject:v17 forKeyedSubscript:@"RemotePort"];
   }
 
-  v18 = [a1 boundInterfaceName];
+  boundInterfaceName = [self boundInterfaceName];
 
-  if (v18)
+  if (boundInterfaceName)
   {
-    v19 = [a1 boundInterfaceName];
-    [v2 setObject:v19 forKeyedSubscript:@"OutgoingInterface"];
+    boundInterfaceName2 = [self boundInterfaceName];
+    [v2 setObject:boundInterfaceName2 forKeyedSubscript:@"OutgoingInterface"];
   }
 
-  v20 = [a1 tunnelInterfaceName];
+  tunnelInterfaceName = [self tunnelInterfaceName];
 
-  if (v20)
+  if (tunnelInterfaceName)
   {
-    v21 = [a1 tunnelInterfaceName];
-    [v2 setObject:v21 forKeyedSubscript:@"IPSecInterface"];
+    tunnelInterfaceName2 = [self tunnelInterfaceName];
+    [v2 setObject:tunnelInterfaceName2 forKeyedSubscript:@"IPSecInterface"];
   }
 
-  if ([a1 mode] == 1)
+  if ([self mode] == 1)
   {
     v22 = @"Transport";
   }
 
   else
   {
-    if ([a1 mode] != 2)
+    if ([self mode] != 2)
     {
       goto LABEL_17;
     }
@@ -277,14 +277,14 @@ LABEL_7:
 
   [v2 setObject:v22 forKeyedSubscript:@"Mode"];
 LABEL_17:
-  if ([a1 protocol] == 2)
+  if ([self protocol] == 2)
   {
     v23 = @"AH";
   }
 
   else
   {
-    if ([a1 protocol] != 1)
+    if ([self protocol] != 1)
     {
       goto LABEL_22;
     }
@@ -294,69 +294,69 @@ LABEL_17:
 
   [v2 setObject:v23 forKeyedSubscript:@"IPSecProtocol"];
 LABEL_22:
-  if ([a1 encryptionAlgorithm] == 1)
+  if ([self encryptionAlgorithm] == 1)
   {
     v24 = @"NULL";
   }
 
-  else if ([a1 encryptionAlgorithm] == 2)
+  else if ([self encryptionAlgorithm] == 2)
   {
     v24 = @"DES";
   }
 
-  else if ([a1 encryptionAlgorithm] == 3)
+  else if ([self encryptionAlgorithm] == 3)
   {
     v24 = @"3DES";
   }
 
-  else if ([a1 encryptionAlgorithm] == 4)
+  else if ([self encryptionAlgorithm] == 4)
   {
     v24 = @"AES-128";
   }
 
-  else if ([a1 encryptionAlgorithm] == 5)
+  else if ([self encryptionAlgorithm] == 5)
   {
     v24 = @"AES-256";
   }
 
-  else if ([a1 encryptionAlgorithm] == 6)
+  else if ([self encryptionAlgorithm] == 6)
   {
     v24 = @"AES-128-GCM";
   }
 
-  else if ([a1 encryptionAlgorithm] == 7)
+  else if ([self encryptionAlgorithm] == 7)
   {
     v24 = @"AES-256-GCM";
   }
 
-  else if ([a1 encryptionAlgorithm] == 8)
+  else if ([self encryptionAlgorithm] == 8)
   {
     v24 = @"ChaCha20-Poly1305";
   }
 
-  else if ([a1 encryptionAlgorithm] == 9)
+  else if ([self encryptionAlgorithm] == 9)
   {
     v24 = @"ChaCha20-Poly1305-IIV";
   }
 
-  else if ([a1 encryptionAlgorithm] == 10)
+  else if ([self encryptionAlgorithm] == 10)
   {
     v24 = @"AES-128-GCM-IIV";
   }
 
-  else if ([a1 encryptionAlgorithm] == 11)
+  else if ([self encryptionAlgorithm] == 11)
   {
     v24 = @"AES-256-GCM-IIV";
   }
 
-  else if ([a1 encryptionAlgorithm] == 12)
+  else if ([self encryptionAlgorithm] == 12)
   {
     v24 = @"NULL-With-AES-128-GMAC";
   }
 
   else
   {
-    if ([a1 encryptionAlgorithm] != 13)
+    if ([self encryptionAlgorithm] != 13)
     {
       goto LABEL_49;
     }
@@ -366,10 +366,10 @@ LABEL_22:
 
   [v2 setObject:v24 forKeyedSubscript:@"EncryptionAlgorithm"];
 LABEL_49:
-  v25 = [a1 encryptionKey];
-  [v2 setObject:v25 forKeyedSubscript:@"EncryptionKey"];
+  encryptionKey = [self encryptionKey];
+  [v2 setObject:encryptionKey forKeyedSubscript:@"EncryptionKey"];
 
-  if ([a1 authenticationAlgorithm] == 1)
+  if ([self authenticationAlgorithm] == 1)
   {
     v26 = @"MD5-96";
 LABEL_59:
@@ -377,50 +377,50 @@ LABEL_59:
     goto LABEL_60;
   }
 
-  if ([a1 authenticationAlgorithm] == 2)
+  if ([self authenticationAlgorithm] == 2)
   {
     v26 = @"SHA1-96";
     goto LABEL_59;
   }
 
-  if ([a1 authenticationAlgorithm] == 3)
+  if ([self authenticationAlgorithm] == 3)
   {
     v26 = @"SHA2-256";
     goto LABEL_59;
   }
 
-  if ([a1 authenticationAlgorithm] == 4)
+  if ([self authenticationAlgorithm] == 4)
   {
     v26 = @"SHA2-384";
     goto LABEL_59;
   }
 
-  if ([a1 authenticationAlgorithm] == 5)
+  if ([self authenticationAlgorithm] == 5)
   {
     v26 = @"SHA2-512";
     goto LABEL_59;
   }
 
 LABEL_60:
-  v27 = [a1 authenticationKey];
-  [v2 setObject:v27 forKeyedSubscript:@"AuthKey"];
+  authenticationKey = [self authenticationKey];
+  [v2 setObject:authenticationKey forKeyedSubscript:@"AuthKey"];
 
-  if ([a1 replayWindowSize])
+  if ([self replayWindowSize])
   {
-    v28 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(a1, "replayWindowSize")}];
+    v28 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(self, "replayWindowSize")}];
     [v2 setObject:v28 forKeyedSubscript:@"ReplayWindowSize"];
   }
 
-  if ([a1 lifetimeSeconds])
+  if ([self lifetimeSeconds])
   {
-    v29 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(a1, "lifetimeSeconds")}];
+    v29 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(self, "lifetimeSeconds")}];
     [v2 setObject:v29 forKeyedSubscript:@"LifeTimeinSeconds"];
   }
 
-  v30 = [a1 natTraversalEnabled];
+  natTraversalEnabled = [self natTraversalEnabled];
   v31 = MEMORY[0x1E695E110];
   v32 = MEMORY[0x1E695E118];
-  if (v30)
+  if (natTraversalEnabled)
   {
     v33 = MEMORY[0x1E695E118];
   }
@@ -431,7 +431,7 @@ LABEL_60:
   }
 
   [v2 setObject:v33 forKeyedSubscript:@"NATTraversal"];
-  if ([a1 natDetectedOnPeer])
+  if ([self natDetectedOnPeer])
   {
     v34 = v32;
   }
@@ -442,7 +442,7 @@ LABEL_60:
   }
 
   [v2 setObject:v34 forKeyedSubscript:@"NATTDetectedPeer"];
-  if ([a1 natKeepaliveEnabled])
+  if ([self natKeepaliveEnabled])
   {
     v35 = v32;
   }
@@ -453,7 +453,7 @@ LABEL_60:
   }
 
   [v2 setObject:v35 forKeyedSubscript:@"NATTKeepAlive"];
-  if ([a1 natKeepaliveOffloadEnabled])
+  if ([self natKeepaliveOffloadEnabled])
   {
     v36 = v32;
   }
@@ -464,33 +464,33 @@ LABEL_60:
   }
 
   [v2 setObject:v36 forKeyedSubscript:@"NATTKeepAliveOffload"];
-  if ([a1 natTraversalPort])
+  if ([self natTraversalPort])
   {
-    v37 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:{objc_msgSend(a1, "natTraversalPort")}];
+    v37 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:{objc_msgSend(self, "natTraversalPort")}];
     [v2 setObject:v37 forKeyedSubscript:@"NATTPort"];
   }
 
-  if ([a1 natTraversalSrcPort])
+  if ([self natTraversalSrcPort])
   {
-    v38 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:{objc_msgSend(a1, "natTraversalSrcPort")}];
+    v38 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:{objc_msgSend(self, "natTraversalSrcPort")}];
     [v2 setObject:v38 forKeyedSubscript:@"NATTSourcePort"];
   }
 
-  if ([a1 natKeepaliveIntervalSeconds])
+  if ([self natKeepaliveIntervalSeconds])
   {
-    v39 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(a1, "natKeepaliveIntervalSeconds")}];
+    v39 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(self, "natKeepaliveIntervalSeconds")}];
     [v2 setObject:v39 forKeyedSubscript:@"NATTKeepAliveInterval"];
   }
 
-  if ([a1 natKeepaliveOffloadIntervalSeconds])
+  if ([self natKeepaliveOffloadIntervalSeconds])
   {
-    v40 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(a1, "natKeepaliveOffloadIntervalSeconds")}];
+    v40 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(self, "natKeepaliveOffloadIntervalSeconds")}];
     [v2 setObject:v40 forKeyedSubscript:@"NATTKeepAliveOffloadInterval"];
   }
 
-  if ([a1 sequencePerTrafficClass])
+  if ([self sequencePerTrafficClass])
   {
-    if ([a1 sequencePerTrafficClass])
+    if ([self sequencePerTrafficClass])
     {
       v41 = v32;
     }

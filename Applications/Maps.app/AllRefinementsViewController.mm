@@ -1,19 +1,19 @@
 @interface AllRefinementsViewController
-- (AllRefinementsViewController)initWithViewModel:(id)a3 selectionSequenceNumber:(id)a4 resultRefinementsAnalyticsDelegate:(id)a5;
+- (AllRefinementsViewController)initWithViewModel:(id)model selectionSequenceNumber:(id)number resultRefinementsAnalyticsDelegate:(id)delegate;
 - (AllRefinementsViewControllerDelegate)allRefinementsDelegate;
 - (BOOL)_checkIfFiltersAreChanged;
 - (BOOL)_checkIfFiltersAreSelected;
 - (ResultRefinementsAnalytics)analyticsDelegate;
-- (double)heightForLayout:(unint64_t)a3;
+- (double)heightForLayout:(unint64_t)layout;
 - (void)_clearCurrentSelection;
-- (void)_sendAnalyticsForEvent:(unint64_t)a3;
+- (void)_sendAnalyticsForEvent:(unint64_t)event;
 - (void)addCollectionView;
 - (void)addHeaderView;
-- (void)didTapOnApply:(id)a3;
-- (void)didTapOnCancel:(id)a3;
-- (void)didTapOnClear:(id)a3;
+- (void)didTapOnApply:(id)apply;
+- (void)didTapOnCancel:(id)cancel;
+- (void)didTapOnClear:(id)clear;
 - (void)refinementViewModelDidChange;
-- (void)updateButtonsForHeader:(id)a3 filtersSelected:(BOOL)a4 filtersChanged:(BOOL)a5;
+- (void)updateButtonsForHeader:(id)header filtersSelected:(BOOL)selected filtersChanged:(BOOL)changed;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
@@ -38,17 +38,17 @@
 {
   if (MapsFeature_IsEnabled_SearchAndDiscovery())
   {
-    v3 = [(AllRefinementsViewController *)self _checkIfFiltersAreSelected];
-    v4 = [(AllRefinementsViewController *)self _checkIfFiltersAreChanged];
-    v5 = [(AllRefinementsViewController *)self modalHeaderView];
-    [(AllRefinementsViewController *)self updateButtonsForHeader:v5 filtersSelected:v3 filtersChanged:v4];
+    _checkIfFiltersAreSelected = [(AllRefinementsViewController *)self _checkIfFiltersAreSelected];
+    _checkIfFiltersAreChanged = [(AllRefinementsViewController *)self _checkIfFiltersAreChanged];
+    modalHeaderView = [(AllRefinementsViewController *)self modalHeaderView];
+    [(AllRefinementsViewController *)self updateButtonsForHeader:modalHeaderView filtersSelected:_checkIfFiltersAreSelected filtersChanged:_checkIfFiltersAreChanged];
   }
 }
 
-- (void)updateButtonsForHeader:(id)a3 filtersSelected:(BOOL)a4 filtersChanged:(BOOL)a5
+- (void)updateButtonsForHeader:(id)header filtersSelected:(BOOL)selected filtersChanged:(BOOL)changed
 {
-  v5 = a5;
-  v8 = a3;
+  changedCopy = changed;
+  headerCopy = header;
   v23[0] = 0;
   v23[1] = v23;
   v23[2] = 0x4010000000;
@@ -56,8 +56,8 @@
   v24 = 0u;
   v25 = 0u;
   v9 = objc_initWeak(&location, self);
-  v10 = [(AllRefinementsViewController *)self collectionView];
-  [v10 contentInset];
+  collectionView = [(AllRefinementsViewController *)self collectionView];
+  [collectionView contentInset];
   *&v24 = v11;
   *(&v24 + 1) = v12;
   *&v25 = v13;
@@ -68,11 +68,11 @@
   v18 = sub_10078DC00;
   v19 = &unk_101629010;
   objc_copyWeak(&v21, &location);
-  v22 = a4;
+  selectedCopy = selected;
   v20 = v23;
   [UIView animateWithDuration:&v16 animations:0.2];
-  v15 = [v8 trailingButton];
-  [v15 setEnabled:v5];
+  trailingButton = [headerCopy trailingButton];
+  [trailingButton setEnabled:changedCopy];
 
   objc_destroyWeak(&v21);
   _Block_object_dispose(v23, 8);
@@ -83,31 +83,31 @@
 {
   if (MapsFeature_IsEnabled_SearchAndDiscovery())
   {
-    v4 = [(AllRefinementsViewController *)self copiedViewModel];
-    v3 = [v4 sections];
-    [v3 enumerateObjectsUsingBlock:&stru_101628FE8];
+    copiedViewModel = [(AllRefinementsViewController *)self copiedViewModel];
+    sections = [copiedViewModel sections];
+    [sections enumerateObjectsUsingBlock:&stru_101628FE8];
   }
 }
 
 - (BOOL)_checkIfFiltersAreChanged
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(AllRefinementsViewModel *)self->_viewModel sections];
+  sections = [(AllRefinementsViewModel *)self->_viewModel sections];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10078DED4;
   v5[3] = &unk_101628FA8;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  [v3 enumerateObjectsUsingBlock:v5];
+  [sections enumerateObjectsUsingBlock:v5];
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)_checkIfFiltersAreSelected
@@ -116,25 +116,25 @@
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v2 = [(AllRefinementsViewController *)self viewModel];
-  v3 = [v2 sections];
+  viewModel = [(AllRefinementsViewController *)self viewModel];
+  sections = [viewModel sections];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10078E070;
   v5[3] = &unk_101628F80;
   v5[4] = &v6;
-  [v3 enumerateObjectsUsingBlock:v5];
+  [sections enumerateObjectsUsingBlock:v5];
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(viewModel) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return viewModel;
 }
 
-- (void)_sendAnalyticsForEvent:(unint64_t)a3
+- (void)_sendAnalyticsForEvent:(unint64_t)event
 {
-  v5 = [(AllRefinementsViewController *)self viewModel];
-  v6 = [v5 sections];
-  if ([v6 count] == 1)
+  viewModel = [(AllRefinementsViewController *)self viewModel];
+  sections = [viewModel sections];
+  if ([sections count] == 1)
   {
     v7 = 2;
   }
@@ -144,43 +144,43 @@
     v7 = 1;
   }
 
-  v8 = [(AllRefinementsViewController *)self analyticsDelegate];
-  [v8 logRefinementsEvent:a3 fromSource:v7];
+  analyticsDelegate = [(AllRefinementsViewController *)self analyticsDelegate];
+  [analyticsDelegate logRefinementsEvent:event fromSource:v7];
 }
 
-- (void)didTapOnApply:(id)a3
+- (void)didTapOnApply:(id)apply
 {
-  [(ContaineeViewController *)self handleDismissAction:a3];
-  v4 = [(AllRefinementsViewController *)self allRefinementsDelegate];
-  v5 = [(AllRefinementsViewController *)self viewModel];
-  v6 = [(AllRefinementsViewController *)self dataSource];
-  v7 = [v6 selectionSequenceNumber];
-  [v4 allRefinementsApplyViewModel:v5 selectionSequenceNumber:v7];
+  [(ContaineeViewController *)self handleDismissAction:apply];
+  allRefinementsDelegate = [(AllRefinementsViewController *)self allRefinementsDelegate];
+  viewModel = [(AllRefinementsViewController *)self viewModel];
+  dataSource = [(AllRefinementsViewController *)self dataSource];
+  selectionSequenceNumber = [dataSource selectionSequenceNumber];
+  [allRefinementsDelegate allRefinementsApplyViewModel:viewModel selectionSequenceNumber:selectionSequenceNumber];
 
   [(AllRefinementsViewController *)self _sendAnalyticsForEvent:1];
 }
 
-- (void)didTapOnCancel:(id)a3
+- (void)didTapOnCancel:(id)cancel
 {
-  [(ContaineeViewController *)self handleDismissAction:a3];
+  [(ContaineeViewController *)self handleDismissAction:cancel];
 
   [(AllRefinementsViewController *)self _sendAnalyticsForEvent:0];
 }
 
-- (void)didTapOnClear:(id)a3
+- (void)didTapOnClear:(id)clear
 {
   [(AllRefinementsViewController *)self _clearCurrentSelection];
-  v4 = [(AllRefinementsViewController *)self copiedViewModel];
-  v5 = [v4 copy];
+  copiedViewModel = [(AllRefinementsViewController *)self copiedViewModel];
+  v5 = [copiedViewModel copy];
   [(AllRefinementsViewController *)self setViewModel:v5];
 
   dataSource = self->_dataSource;
-  v7 = [(AllRefinementsViewController *)self viewModel];
-  [(AllRefinementsDataSource *)dataSource reloadCollectionView:v7];
+  viewModel = [(AllRefinementsViewController *)self viewModel];
+  [(AllRefinementsDataSource *)dataSource reloadCollectionView:viewModel];
 
-  v8 = [(AllRefinementsViewController *)self _checkIfFiltersAreSelected];
-  v9 = [(AllRefinementsViewController *)self modalHeaderView];
-  [(AllRefinementsViewController *)self updateButtonsForHeader:v9 filtersSelected:v8 filtersChanged:1];
+  _checkIfFiltersAreSelected = [(AllRefinementsViewController *)self _checkIfFiltersAreSelected];
+  modalHeaderView = [(AllRefinementsViewController *)self modalHeaderView];
+  [(AllRefinementsViewController *)self updateButtonsForHeader:modalHeaderView filtersSelected:_checkIfFiltersAreSelected filtersChanged:1];
 }
 
 - (void)addCollectionView
@@ -195,66 +195,66 @@
   v4 = [v3 initWithSectionProvider:v70];
   [(AllRefinementsViewController *)self setCollectionViewLayout:v4];
 
-  v5 = [(AllRefinementsViewController *)self collectionViewLayout];
+  collectionViewLayout = [(AllRefinementsViewController *)self collectionViewLayout];
   v6 = objc_opt_class();
   v7 = +[AllRefinementsSectionBackground decorationViewKind];
-  [v5 registerClass:v6 forDecorationViewOfKind:v7];
+  [collectionViewLayout registerClass:v6 forDecorationViewOfKind:v7];
 
   v8 = [UICollectionView alloc];
-  v9 = [(AllRefinementsViewController *)self collectionViewLayout];
-  v10 = [v8 initWithFrame:v9 collectionViewLayout:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
+  collectionViewLayout2 = [(AllRefinementsViewController *)self collectionViewLayout];
+  v10 = [v8 initWithFrame:collectionViewLayout2 collectionViewLayout:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
   [(AllRefinementsViewController *)self setCollectionView:v10];
 
-  v11 = [(AllRefinementsViewController *)self collectionView];
-  [v11 setAccessibilityIdentifier:@"AllRefinementsCollectionView"];
+  collectionView = [(AllRefinementsViewController *)self collectionView];
+  [collectionView setAccessibilityIdentifier:@"AllRefinementsCollectionView"];
 
-  v12 = [(AllRefinementsViewController *)self collectionView];
-  [v12 setTranslatesAutoresizingMaskIntoConstraints:0];
+  collectionView2 = [(AllRefinementsViewController *)self collectionView];
+  [collectionView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v13 = +[UIColor clearColor];
-  v14 = [(AllRefinementsViewController *)self collectionView];
-  [v14 setBackgroundColor:v13];
+  collectionView3 = [(AllRefinementsViewController *)self collectionView];
+  [collectionView3 setBackgroundColor:v13];
 
-  v15 = [(AllRefinementsViewController *)self collectionView];
-  [v15 setAlwaysBounceVertical:1];
+  collectionView4 = [(AllRefinementsViewController *)self collectionView];
+  [collectionView4 setAlwaysBounceVertical:1];
 
-  v16 = [(ContaineeViewController *)self contentView];
-  v17 = [(AllRefinementsViewController *)self collectionView];
-  [v16 addSubview:v17];
+  contentView = [(ContaineeViewController *)self contentView];
+  collectionView5 = [(AllRefinementsViewController *)self collectionView];
+  [contentView addSubview:collectionView5];
 
-  v68 = [(AllRefinementsViewController *)self collectionView];
-  v64 = [v68 leadingAnchor];
-  v66 = [(ContaineeViewController *)self contentView];
-  v62 = [v66 leadingAnchor];
-  v61 = [v64 constraintEqualToAnchor:v62];
+  collectionView6 = [(AllRefinementsViewController *)self collectionView];
+  leadingAnchor = [collectionView6 leadingAnchor];
+  contentView2 = [(ContaineeViewController *)self contentView];
+  leadingAnchor2 = [contentView2 leadingAnchor];
+  v61 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v74[0] = v61;
-  v60 = [(AllRefinementsViewController *)self collectionView];
-  v58 = [v60 trailingAnchor];
-  v59 = [(ContaineeViewController *)self contentView];
-  v57 = [v59 trailingAnchor];
-  v56 = [v58 constraintEqualToAnchor:v57];
+  collectionView7 = [(AllRefinementsViewController *)self collectionView];
+  trailingAnchor = [collectionView7 trailingAnchor];
+  contentView3 = [(ContaineeViewController *)self contentView];
+  trailingAnchor2 = [contentView3 trailingAnchor];
+  v56 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v74[1] = v56;
-  v55 = [(AllRefinementsViewController *)self collectionView];
-  v54 = [v55 topAnchor];
-  v18 = [(ContaineeViewController *)self contentView];
-  v19 = [v18 topAnchor];
-  v20 = [v54 constraintEqualToAnchor:v19];
+  collectionView8 = [(AllRefinementsViewController *)self collectionView];
+  topAnchor = [collectionView8 topAnchor];
+  contentView4 = [(ContaineeViewController *)self contentView];
+  topAnchor2 = [contentView4 topAnchor];
+  v20 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v74[2] = v20;
-  v21 = [(AllRefinementsViewController *)self collectionView];
-  v22 = [v21 bottomAnchor];
-  v23 = [(ContaineeViewController *)self contentView];
-  v24 = [v23 bottomAnchor];
-  v25 = [v22 constraintEqualToAnchor:v24];
+  collectionView9 = [(AllRefinementsViewController *)self collectionView];
+  bottomAnchor = [collectionView9 bottomAnchor];
+  contentView5 = [(ContaineeViewController *)self contentView];
+  bottomAnchor2 = [contentView5 bottomAnchor];
+  v25 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v74[3] = v25;
   v26 = [NSArray arrayWithObjects:v74 count:4];
   [NSLayoutConstraint activateConstraints:v26];
 
   v27 = [AllRefinementsDataSource alloc];
-  v28 = [(AllRefinementsViewController *)self collectionView];
-  v29 = [(AllRefinementsViewController *)self viewModel];
-  v30 = [(AllRefinementsViewController *)self selectionSequenceNumber];
-  v31 = [(AllRefinementsViewController *)self analyticsDelegate];
-  v32 = [(AllRefinementsDataSource *)v27 initWithCollectionView:v28 viewModel:v29 scrollViewDelegate:self selectionSequenceNumber:v30 analyticsDelegate:v31 viewModelDelegate:self];
+  collectionView10 = [(AllRefinementsViewController *)self collectionView];
+  viewModel = [(AllRefinementsViewController *)self viewModel];
+  selectionSequenceNumber = [(AllRefinementsViewController *)self selectionSequenceNumber];
+  analyticsDelegate = [(AllRefinementsViewController *)self analyticsDelegate];
+  v32 = [(AllRefinementsDataSource *)v27 initWithCollectionView:collectionView10 viewModel:viewModel scrollViewDelegate:self selectionSequenceNumber:selectionSequenceNumber analyticsDelegate:analyticsDelegate viewModelDelegate:self];
   dataSource = self->_dataSource;
   self->_dataSource = v32;
 
@@ -269,39 +269,39 @@
   v36 = [UIButton buttonWithConfiguration:v69 primaryAction:0];
   [(AllRefinementsViewController *)self setClearButton:v36];
 
-  v37 = [(AllRefinementsViewController *)self clearButton];
-  [v37 setTranslatesAutoresizingMaskIntoConstraints:0];
+  clearButton = [(AllRefinementsViewController *)self clearButton];
+  [clearButton setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v38 = [(AllRefinementsViewController *)self clearButton];
-  [v38 addTarget:self action:"didTapOnClear:" forControlEvents:64];
+  clearButton2 = [(AllRefinementsViewController *)self clearButton];
+  [clearButton2 addTarget:self action:"didTapOnClear:" forControlEvents:64];
 
-  v39 = [(AllRefinementsViewController *)self clearButton];
-  [v39 setAlpha:0.0];
+  clearButton3 = [(AllRefinementsViewController *)self clearButton];
+  [clearButton3 setAlpha:0.0];
 
-  v40 = [(AllRefinementsViewController *)self view];
-  v41 = [(AllRefinementsViewController *)self clearButton];
-  [v40 addSubview:v41];
+  view = [(AllRefinementsViewController *)self view];
+  clearButton4 = [(AllRefinementsViewController *)self clearButton];
+  [view addSubview:clearButton4];
 
-  v67 = [(AllRefinementsViewController *)self clearButton];
-  v63 = [v67 bottomAnchor];
-  v65 = [(AllRefinementsViewController *)self view];
-  v42 = [v65 safeAreaLayoutGuide];
-  v43 = [v42 bottomAnchor];
-  v44 = [v63 constraintEqualToAnchor:v43 constant:-32.0];
+  clearButton5 = [(AllRefinementsViewController *)self clearButton];
+  bottomAnchor3 = [clearButton5 bottomAnchor];
+  view2 = [(AllRefinementsViewController *)self view];
+  safeAreaLayoutGuide = [view2 safeAreaLayoutGuide];
+  bottomAnchor4 = [safeAreaLayoutGuide bottomAnchor];
+  v44 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4 constant:-32.0];
   v73[0] = v44;
-  v45 = [(AllRefinementsViewController *)self clearButton];
-  v46 = [v45 centerXAnchor];
-  v47 = [(AllRefinementsViewController *)self view];
-  v48 = [v47 centerXAnchor];
-  v49 = [v46 constraintEqualToAnchor:v48];
+  clearButton6 = [(AllRefinementsViewController *)self clearButton];
+  centerXAnchor = [clearButton6 centerXAnchor];
+  view3 = [(AllRefinementsViewController *)self view];
+  centerXAnchor2 = [view3 centerXAnchor];
+  v49 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v73[1] = v49;
   v50 = [NSArray arrayWithObjects:v73 count:2];
   [NSLayoutConstraint activateConstraints:v50];
 
-  v51 = [(AllRefinementsViewController *)self _checkIfFiltersAreSelected];
-  v52 = [(AllRefinementsViewController *)self _checkIfFiltersAreChanged];
-  v53 = [(AllRefinementsViewController *)self modalHeaderView];
-  [(AllRefinementsViewController *)self updateButtonsForHeader:v53 filtersSelected:v51 filtersChanged:v52];
+  _checkIfFiltersAreSelected = [(AllRefinementsViewController *)self _checkIfFiltersAreSelected];
+  _checkIfFiltersAreChanged = [(AllRefinementsViewController *)self _checkIfFiltersAreChanged];
+  modalHeaderView = [(AllRefinementsViewController *)self modalHeaderView];
+  [(AllRefinementsViewController *)self updateButtonsForHeader:modalHeaderView filtersSelected:_checkIfFiltersAreSelected filtersChanged:_checkIfFiltersAreChanged];
 
   objc_destroyWeak(&v71);
   objc_destroyWeak(&location);
@@ -312,9 +312,9 @@
   v3 = [[_TtC4Maps19ModalCardHeaderView alloc] initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
   [(ModalCardHeaderView *)v3 setAccessibilityIdentifier:@"AllRefinementsHeader"];
   [(ModalCardHeaderView *)v3 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v4 = [(AllRefinementsViewController *)self viewModel];
-  v5 = [v4 displayName];
-  [(ModalCardHeaderView *)v3 setTitle:v5];
+  viewModel = [(AllRefinementsViewController *)self viewModel];
+  displayName = [viewModel displayName];
+  [(ModalCardHeaderView *)v3 setTitle:displayName];
 
   v28 = [MapsThemeButton buttonWithType:1];
   [v28 addTarget:self action:"didTapOnCancel:" forControlEvents:64];
@@ -322,33 +322,33 @@
   v27 = [MapsThemeButton buttonWithType:1];
   [v27 addTarget:self action:"didTapOnApply:" forControlEvents:64];
   [(ModalCardHeaderView *)v3 setTrailingButton:v27];
-  v6 = [(AllRefinementsViewController *)self _checkIfFiltersAreSelected];
-  v7 = [(AllRefinementsViewController *)self _checkIfFiltersAreChanged];
-  v8 = [(AllRefinementsViewController *)self modalHeaderView];
-  [(AllRefinementsViewController *)self updateButtonsForHeader:v8 filtersSelected:v6 filtersChanged:v7];
+  _checkIfFiltersAreSelected = [(AllRefinementsViewController *)self _checkIfFiltersAreSelected];
+  _checkIfFiltersAreChanged = [(AllRefinementsViewController *)self _checkIfFiltersAreChanged];
+  modalHeaderView = [(AllRefinementsViewController *)self modalHeaderView];
+  [(AllRefinementsViewController *)self updateButtonsForHeader:modalHeaderView filtersSelected:_checkIfFiltersAreSelected filtersChanged:_checkIfFiltersAreChanged];
 
-  v9 = [(ContaineeViewController *)self headerView];
-  [v9 addSubview:v3];
+  headerView = [(ContaineeViewController *)self headerView];
+  [headerView addSubview:v3];
 
-  v25 = [(ModalCardHeaderView *)v3 leadingAnchor];
-  v26 = [(ContaineeViewController *)self headerView];
-  v24 = [v26 leadingAnchor];
-  v23 = [v25 constraintEqualToAnchor:v24];
+  leadingAnchor = [(ModalCardHeaderView *)v3 leadingAnchor];
+  headerView2 = [(ContaineeViewController *)self headerView];
+  leadingAnchor2 = [headerView2 leadingAnchor];
+  v23 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v29[0] = v23;
-  v21 = [(ModalCardHeaderView *)v3 trailingAnchor];
-  v22 = [(ContaineeViewController *)self headerView];
-  v20 = [v22 trailingAnchor];
-  v19 = [v21 constraintEqualToAnchor:v20];
+  trailingAnchor = [(ModalCardHeaderView *)v3 trailingAnchor];
+  headerView3 = [(ContaineeViewController *)self headerView];
+  trailingAnchor2 = [headerView3 trailingAnchor];
+  v19 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v29[1] = v19;
-  v18 = [(ModalCardHeaderView *)v3 topAnchor];
-  v10 = [(ContaineeViewController *)self headerView];
-  v11 = [v10 topAnchor];
-  v12 = [v18 constraintEqualToAnchor:v11];
+  topAnchor = [(ModalCardHeaderView *)v3 topAnchor];
+  headerView4 = [(ContaineeViewController *)self headerView];
+  topAnchor2 = [headerView4 topAnchor];
+  v12 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v29[2] = v12;
-  v13 = [(ModalCardHeaderView *)v3 bottomAnchor];
-  v14 = [(ContaineeViewController *)self headerView];
-  v15 = [v14 bottomAnchor];
-  v16 = [v13 constraintEqualToAnchor:v15];
+  bottomAnchor = [(ModalCardHeaderView *)v3 bottomAnchor];
+  headerView5 = [(ContaineeViewController *)self headerView];
+  bottomAnchor2 = [headerView5 bottomAnchor];
+  v16 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v29[3] = v16;
   v17 = [NSArray arrayWithObjects:v29 count:4];
   [NSLayoutConstraint activateConstraints:v17];
@@ -361,35 +361,35 @@
   v19.receiver = self;
   v19.super_class = AllRefinementsViewController;
   [(ContaineeViewController *)&v19 viewDidLayoutSubviews];
-  v3 = [(AllRefinementsViewController *)self collectionViewLayout];
-  [v3 collectionViewContentSize];
+  collectionViewLayout = [(AllRefinementsViewController *)self collectionViewLayout];
+  [collectionViewLayout collectionViewContentSize];
   v5 = v4;
   [(ContaineeViewController *)self headerHeight];
   v7 = v5 + v6;
 
   if (v7 > 2.22044605e-16)
   {
-    v8 = [(ContaineeViewController *)self cardPresentationController];
-    -[AllRefinementsViewController heightForLayout:](self, "heightForLayout:", [v8 containeeLayout]);
+    cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+    -[AllRefinementsViewController heightForLayout:](self, "heightForLayout:", [cardPresentationController containeeLayout]);
     v10 = v9;
 
-    v11 = [(AllRefinementsViewController *)self collectionView];
-    [v11 setScrollEnabled:v7 > v10];
+    collectionView = [(AllRefinementsViewController *)self collectionView];
+    [collectionView setScrollEnabled:v7 > v10];
   }
 
   collectionViewWidth = self->_collectionViewWidth;
-  v13 = [(AllRefinementsViewController *)self collectionView];
-  [v13 frame];
+  collectionView2 = [(AllRefinementsViewController *)self collectionView];
+  [collectionView2 frame];
   v15 = v14;
 
   if (collectionViewWidth != v15)
   {
-    v16 = [(AllRefinementsViewController *)self collectionView];
-    [v16 frame];
+    collectionView3 = [(AllRefinementsViewController *)self collectionView];
+    [collectionView3 frame];
     self->_collectionViewWidth = v17;
 
-    v18 = [(AllRefinementsViewController *)self collectionView];
-    [v18 reloadData];
+    collectionView4 = [(AllRefinementsViewController *)self collectionView];
+    [collectionView4 reloadData];
   }
 }
 
@@ -398,25 +398,25 @@
   v6.receiver = self;
   v6.super_class = AllRefinementsViewController;
   [(ContaineeViewController *)&v6 viewDidLoad];
-  v3 = [(AllRefinementsViewController *)self view];
-  [v3 setAccessibilityIdentifier:@"AllRefinementsView"];
+  view = [(AllRefinementsViewController *)self view];
+  [view setAccessibilityIdentifier:@"AllRefinementsView"];
 
   [(AllRefinementsViewController *)self addHeaderView];
   [(AllRefinementsViewController *)self addCollectionView];
-  v4 = [(AllRefinementsViewController *)self collectionView];
-  [v4 frame];
+  collectionView = [(AllRefinementsViewController *)self collectionView];
+  [collectionView frame];
   self->_collectionViewWidth = v5;
 }
 
-- (double)heightForLayout:(unint64_t)a3
+- (double)heightForLayout:(unint64_t)layout
 {
-  v5 = [(ContaineeViewController *)self cardPresentationController];
-  v6 = [v5 containerStyle];
-  if (v6 > 7 || ((1 << v6) & 0xE3) == 0)
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  containerStyle = [cardPresentationController containerStyle];
+  if (containerStyle > 7 || ((1 << containerStyle) & 0xE3) == 0)
   {
 
-    v22 = [(ContaineeViewController *)self cardPresentationController];
-    [v22 availableHeight];
+    cardPresentationController2 = [(ContaineeViewController *)self cardPresentationController];
+    [cardPresentationController2 availableHeight];
     v24 = v23;
 
     return v24;
@@ -425,17 +425,17 @@
   else
   {
 
-    v8 = [(AllRefinementsViewController *)self viewModel];
-    v9 = [v8 viewTakesFullHeight];
+    viewModel = [(AllRefinementsViewController *)self viewModel];
+    viewTakesFullHeight = [viewModel viewTakesFullHeight];
 
-    if (v9)
+    if (viewTakesFullHeight)
     {
-      [(ContaineeViewController *)&v29 heightForLayout:a3, v28.receiver, v28.super_class, self, AllRefinementsViewController];
+      [(ContaineeViewController *)&v29 heightForLayout:layout, v28.receiver, v28.super_class, self, AllRefinementsViewController];
       return v10 + 32.0;
     }
 
-    v11 = [(AllRefinementsViewController *)self collectionViewLayout];
-    [v11 collectionViewContentSize];
+    collectionViewLayout = [(AllRefinementsViewController *)self collectionViewLayout];
+    [collectionViewLayout collectionViewContentSize];
     v13 = v12;
 
     if (v13 <= 2.22044605e-16)
@@ -446,8 +446,8 @@
 
     [(ContaineeViewController *)self headerHeight];
     v15 = v14 + v13;
-    v16 = [(ContaineeViewController *)self cardPresentationController];
-    [v16 availableHeight];
+    cardPresentationController3 = [(ContaineeViewController *)self cardPresentationController];
+    [cardPresentationController3 availableHeight];
     if (v15 < v17)
     {
       [(ContaineeViewController *)self headerHeight];
@@ -456,8 +456,8 @@
 
     else
     {
-      v18 = [(ContaineeViewController *)self cardPresentationController];
-      [v18 availableHeight];
+      cardPresentationController4 = [(ContaineeViewController *)self cardPresentationController];
+      [cardPresentationController4 availableHeight];
       v20 = v19;
     }
 
@@ -474,38 +474,38 @@
   return result;
 }
 
-- (AllRefinementsViewController)initWithViewModel:(id)a3 selectionSequenceNumber:(id)a4 resultRefinementsAnalyticsDelegate:(id)a5
+- (AllRefinementsViewController)initWithViewModel:(id)model selectionSequenceNumber:(id)number resultRefinementsAnalyticsDelegate:(id)delegate
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  modelCopy = model;
+  numberCopy = number;
+  delegateCopy = delegate;
   v22.receiver = self;
   v22.super_class = AllRefinementsViewController;
   v12 = [(AllRefinementsViewController *)&v22 initWithNibName:0 bundle:0];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_viewModel, a3);
-    v14 = [v9 copy];
+    objc_storeStrong(&v12->_viewModel, model);
+    v14 = [modelCopy copy];
     copiedViewModel = v13->_copiedViewModel;
     v13->_copiedViewModel = v14;
 
-    objc_storeStrong(&v13->_selectionSequenceNumber, a4);
-    objc_storeWeak(&v13->_analyticsDelegate, v11);
-    v16 = [(ContaineeViewController *)v13 cardPresentationController];
-    [v16 setPresentedModally:1];
+    objc_storeStrong(&v13->_selectionSequenceNumber, number);
+    objc_storeWeak(&v13->_analyticsDelegate, delegateCopy);
+    cardPresentationController = [(ContaineeViewController *)v13 cardPresentationController];
+    [cardPresentationController setPresentedModally:1];
 
-    v17 = [(ContaineeViewController *)v13 cardPresentationController];
-    [v17 setAllowsSwipeToDismiss:0];
+    cardPresentationController2 = [(ContaineeViewController *)v13 cardPresentationController];
+    [cardPresentationController2 setAllowsSwipeToDismiss:0];
 
-    v18 = [(ContaineeViewController *)v13 cardPresentationController];
-    [v18 setDefaultContaineeLayout:5];
+    cardPresentationController3 = [(ContaineeViewController *)v13 cardPresentationController];
+    [cardPresentationController3 setDefaultContaineeLayout:5];
 
-    v19 = [(ContaineeViewController *)v13 cardPresentationController];
-    [v19 setTakesAvailableHeight:1];
+    cardPresentationController4 = [(ContaineeViewController *)v13 cardPresentationController];
+    [cardPresentationController4 setTakesAvailableHeight:1];
 
-    v20 = [(ContaineeViewController *)v13 cardPresentationController];
-    [v20 setHideGrabber:1];
+    cardPresentationController5 = [(ContaineeViewController *)v13 cardPresentationController];
+    [cardPresentationController5 setHideGrabber:1];
 
     [(AllRefinementsViewController *)v13 setAccessibilityIdentifier:@"AllRefinementsView"];
   }

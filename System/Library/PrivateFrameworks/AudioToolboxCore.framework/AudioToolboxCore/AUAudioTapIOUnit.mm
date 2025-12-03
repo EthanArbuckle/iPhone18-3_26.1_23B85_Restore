@@ -1,6 +1,6 @@
 @interface AUAudioTapIOUnit
 - (ATAudioTap)audioTap;
-- (void)setAudioTap:(id)a3;
+- (void)setAudioTap:(id)tap;
 @end
 
 @implementation AUAudioTapIOUnit
@@ -33,9 +33,9 @@
   return v4;
 }
 
-- (void)setAudioTap:(id)a3
+- (void)setAudioTap:(id)tap
 {
-  inData = a3;
+  inData = tap;
   AudioUnitSetProperty([(AUAudioUnitV2Bridge *)self audioUnit], 0x8AEu, 0, 0, inData, 8 * (inData != 0));
 }
 

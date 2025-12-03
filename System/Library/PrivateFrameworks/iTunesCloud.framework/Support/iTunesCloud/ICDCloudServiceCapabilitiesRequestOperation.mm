@@ -1,24 +1,24 @@
 @interface ICDCloudServiceCapabilitiesRequestOperation
-- (ICDCloudServiceCapabilitiesRequestOperation)initWithIdentity:(id)a3;
+- (ICDCloudServiceCapabilitiesRequestOperation)initWithIdentity:(id)identity;
 - (NSXPCConnection)originatingClientConnection;
 - (id)completionHandler;
 - (int64_t)privacyAcknowledgementPolicy;
 - (void)_didCompleteAllCapabilitiesAsynchronousRequests;
-- (void)_didCompletePrivacyPromptOperation:(id)a3 withStatus:(int64_t)a4 error:(id)a5;
-- (void)_handlePrivacyAcknowledgementErrorWithMessage:(id)a3 underlyingError:(id)a4;
+- (void)_didCompletePrivacyPromptOperation:(id)operation withStatus:(int64_t)status error:(id)error;
+- (void)_handlePrivacyAcknowledgementErrorWithMessage:(id)message underlyingError:(id)error;
 - (void)_performPrivacyPromptOperation;
-- (void)_requestBagWithAsynchronousRequestsGroup:(id)a3;
+- (void)_requestBagWithAsynchronousRequestsGroup:(id)group;
 - (void)_requestCapabilities;
-- (void)_requestIdentityPropertiesWithAsynchronousRequestsGroup:(id)a3;
-- (void)_requestSubscriptionStatusWithAsynchronousRequestsGroup:(id)a3;
-- (void)_updateWithBag:(id)a3 error:(id)a4;
-- (void)_updateWithIdentityProperties:(id)a3 error:(id)a4;
-- (void)_updateWithSubscriptionStatusResponse:(id)a3 error:(id)a4;
+- (void)_requestIdentityPropertiesWithAsynchronousRequestsGroup:(id)group;
+- (void)_requestSubscriptionStatusWithAsynchronousRequestsGroup:(id)group;
+- (void)_updateWithBag:(id)bag error:(id)error;
+- (void)_updateWithIdentityProperties:(id)properties error:(id)error;
+- (void)_updateWithSubscriptionStatusResponse:(id)response error:(id)error;
 - (void)cancel;
 - (void)execute;
-- (void)setCompletionHandler:(id)a3;
-- (void)setOriginatingClientConnection:(id)a3;
-- (void)setPrivacyAcknowledgementPolicy:(int64_t)a3;
+- (void)setCompletionHandler:(id)handler;
+- (void)setOriginatingClientConnection:(id)connection;
+- (void)setPrivacyAcknowledgementPolicy:(int64_t)policy;
 @end
 
 @implementation ICDCloudServiceCapabilitiesRequestOperation
@@ -39,7 +39,7 @@
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v14 = 138543362;
-      v15 = self;
+      selfCopy3 = self;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%{public}@: Request is already finished. Skipping running completion logic a second time.", &v14, 0xCu);
     }
   }
@@ -50,14 +50,14 @@
     os_unfair_lock_unlock(&self->_lock);
     if (v6)
     {
-      v9 = os_log_create("com.apple.amp.itunescloudd", "Default");
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+      subscriptionStatus = os_log_create("com.apple.amp.itunescloudd", "Default");
+      if (os_log_type_enabled(subscriptionStatus, OS_LOG_TYPE_ERROR))
       {
         v14 = 138543618;
-        v15 = self;
+        selfCopy3 = self;
         v16 = 2114;
         v17 = v6;
-        _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "%{public}@: Did complete request with error: %{public}@.", &v14, 0x16u);
+        _os_log_impl(&_mh_execute_header, subscriptionStatus, OS_LOG_TYPE_ERROR, "%{public}@: Did complete request with error: %{public}@.", &v14, 0x16u);
       }
 
       v10 = 0;
@@ -65,14 +65,14 @@
 
     else
     {
-      v9 = [(ICMusicSubscriptionStatusResponse *)v5 subscriptionStatus];
-      v10 = [v9 hasCapability:1];
-      if ((([v9 hasCapability:512]& 1) != 0 || [v9 hasCapability:256]) && [(ICUserIdentityProperties *)v4 isActiveLocker])
+      subscriptionStatus = [(ICMusicSubscriptionStatusResponse *)v5 subscriptionStatus];
+      v10 = [subscriptionStatus hasCapability:1];
+      if ((([subscriptionStatus hasCapability:512]& 1) != 0 || [subscriptionStatus hasCapability:256]) && [(ICUserIdentityProperties *)v4 isActiveLocker])
       {
         v10 |= 0x100uLL;
       }
 
-      if (([v9 hasCapability:1]& 1) == 0 && ([(ICUserIdentityProperties *)v4 isManagedAppleID]& 1) == 0)
+      if (([subscriptionStatus hasCapability:1]& 1) == 0 && ([(ICUserIdentityProperties *)v4 isManagedAppleID]& 1) == 0)
       {
         v11 = [(ICURLBag *)v3 dictionaryForBagKey:ICURLBagKeyMusicSubscription];
 
@@ -87,7 +87,7 @@
       {
         v13 = ICCloudServiceCapabilitiesGetDescription();
         v14 = 138543618;
-        v15 = self;
+        selfCopy3 = self;
         v16 = 2114;
         v17 = v13;
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "%{public}@: Did complete request; capabilities: %{public}@.", &v14, 0x16u);
@@ -120,13 +120,13 @@
   dispatch_group_notify(v3, v5, block);
 }
 
-- (void)_updateWithSubscriptionStatusResponse:(id)a3 error:(id)a4
+- (void)_updateWithSubscriptionStatusResponse:(id)response error:(id)error
 {
-  v9 = a3;
-  v7 = a4;
+  responseCopy = response;
+  errorCopy = error;
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
-  if (v7)
+  if (errorCopy)
   {
     if (self->_error)
     {
@@ -135,7 +135,7 @@
 
     else
     {
-      error = v7;
+      error = errorCopy;
     }
 
     objc_storeStrong(&self->_error, error);
@@ -146,21 +146,21 @@
 
   else
   {
-    objc_storeStrong(&self->_subscriptionStatusResponse, a3);
+    objc_storeStrong(&self->_subscriptionStatusResponse, response);
     os_unfair_lock_unlock(&self->_lock);
   }
 }
 
-- (void)_requestSubscriptionStatusWithAsynchronousRequestsGroup:(id)a3
+- (void)_requestSubscriptionStatusWithAsynchronousRequestsGroup:(id)group
 {
-  v4 = a3;
+  groupCopy = group;
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
   v5 = self->_identity;
   v6 = self->_identityStore;
   privacyAcknowledgementPolicy = self->_privacyAcknowledgementPolicy;
   os_unfair_lock_unlock(&self->_lock);
-  dispatch_group_enter(v4);
+  dispatch_group_enter(groupCopy);
   v8 = [ICStoreRequestContext alloc];
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
@@ -180,7 +180,7 @@
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v24 = self;
+    selfCopy = self;
     v25 = 2114;
     v26 = v12;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "%{public}@: Requesting subscription status using %{public}@.", buf, 0x16u);
@@ -193,19 +193,19 @@
   v17[3] = &unk_1001DF4E0;
   v17[4] = self;
   v18 = v12;
-  v19 = v4;
-  v15 = v4;
+  v19 = groupCopy;
+  v15 = groupCopy;
   v16 = v12;
   [v14 performSubscriptionStatusRequest:v16 withCompletionHandler:v17];
 }
 
-- (void)_updateWithIdentityProperties:(id)a3 error:(id)a4
+- (void)_updateWithIdentityProperties:(id)properties error:(id)error
 {
-  v9 = a3;
-  v7 = a4;
+  propertiesCopy = properties;
+  errorCopy = error;
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
-  if (v7)
+  if (errorCopy)
   {
     if (self->_error)
     {
@@ -214,7 +214,7 @@
 
     else
     {
-      error = v7;
+      error = errorCopy;
     }
 
     objc_storeStrong(&self->_error, error);
@@ -225,26 +225,26 @@
 
   else
   {
-    objc_storeStrong(&self->_identityProperties, a3);
+    objc_storeStrong(&self->_identityProperties, properties);
     os_unfair_lock_unlock(&self->_lock);
   }
 }
 
-- (void)_requestIdentityPropertiesWithAsynchronousRequestsGroup:(id)a3
+- (void)_requestIdentityPropertiesWithAsynchronousRequestsGroup:(id)group
 {
-  v4 = a3;
+  groupCopy = group;
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
   v5 = self->_identity;
   v6 = self->_identityStore;
   os_unfair_lock_unlock(&self->_lock);
-  dispatch_group_enter(v4);
+  dispatch_group_enter(groupCopy);
   v7 = os_log_create("com.apple.amp.itunescloudd", "Default");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     identity = self->_identity;
     *buf = 138543618;
-    v13 = self;
+    selfCopy = self;
     v14 = 2114;
     v15 = identity;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: Requesting properties for %{public}@.", buf, 0x16u);
@@ -255,18 +255,18 @@
   v10[2] = sub_1001356C4;
   v10[3] = &unk_1001DF4B8;
   v10[4] = self;
-  v11 = v4;
-  v9 = v4;
+  v11 = groupCopy;
+  v9 = groupCopy;
   [(ICUserIdentityStore *)v6 getPropertiesForUserIdentity:v5 completionHandler:v10];
 }
 
-- (void)_updateWithBag:(id)a3 error:(id)a4
+- (void)_updateWithBag:(id)bag error:(id)error
 {
-  v9 = a3;
-  v7 = a4;
+  bagCopy = bag;
+  errorCopy = error;
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
-  if (v7)
+  if (errorCopy)
   {
     if (self->_error)
     {
@@ -275,7 +275,7 @@
 
     else
     {
-      error = v7;
+      error = errorCopy;
     }
 
     objc_storeStrong(&self->_error, error);
@@ -286,20 +286,20 @@
 
   else
   {
-    objc_storeStrong(&self->_bag, a3);
+    objc_storeStrong(&self->_bag, bag);
     os_unfair_lock_unlock(&self->_lock);
   }
 }
 
-- (void)_requestBagWithAsynchronousRequestsGroup:(id)a3
+- (void)_requestBagWithAsynchronousRequestsGroup:(id)group
 {
-  v4 = a3;
+  groupCopy = group;
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
   v5 = self->_identity;
   v6 = self->_identityStore;
   os_unfair_lock_unlock(&self->_lock);
-  dispatch_group_enter(v4);
+  dispatch_group_enter(groupCopy);
   v7 = [ICStoreRequestContext alloc];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
@@ -314,7 +314,7 @@
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v20 = self;
+    selfCopy = self;
     v21 = 2114;
     v22 = v10;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%{public}@: Requesting bag using %{public}@.", buf, 0x16u);
@@ -326,82 +326,82 @@
   v14[2] = sub_100135BA0;
   v14[3] = &unk_1001DFB88;
   v14[4] = self;
-  v15 = v4;
-  v13 = v4;
+  v15 = groupCopy;
+  v13 = groupCopy;
   [v12 getBagForRequestContext:v10 withCompletionHandler:v14];
 }
 
-- (void)_handlePrivacyAcknowledgementErrorWithMessage:(id)a3 underlyingError:(id)a4
+- (void)_handlePrivacyAcknowledgementErrorWithMessage:(id)message underlyingError:(id)error
 {
-  v6 = a4;
-  v7 = a3;
+  errorCopy = error;
+  messageCopy = message;
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
   v8 = objc_retainBlock(self->_completionHandler);
   os_unfair_lock_unlock(&self->_lock);
-  v9 = [NSError msv_errorWithDomain:ICErrorDomain code:-7007 underlyingError:v6 debugDescription:@"%@", v7];
+  messageCopy = [NSError msv_errorWithDomain:ICErrorDomain code:-7007 underlyingError:errorCopy debugDescription:@"%@", messageCopy];
 
   v10 = os_log_create("com.apple.amp.itunescloudd", "Default");
   if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
   {
-    v11 = [v9 msv_description];
+    msv_description = [messageCopy msv_description];
     *buf = 138543618;
-    v13 = self;
+    selfCopy = self;
     v14 = 2114;
-    v15 = v11;
+    v15 = msv_description;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "%{public}@: %{public}@", buf, 0x16u);
   }
 
   if (v8)
   {
-    v8[2](v8, 0, v9);
+    v8[2](v8, 0, messageCopy);
   }
 
-  [(ICDCloudServiceCapabilitiesRequestOperation *)self finishWithError:v9];
+  [(ICDCloudServiceCapabilitiesRequestOperation *)self finishWithError:messageCopy];
 }
 
-- (void)_didCompletePrivacyPromptOperation:(id)a3 withStatus:(int64_t)a4 error:(id)a5
+- (void)_didCompletePrivacyPromptOperation:(id)operation withStatus:(int64_t)status error:(id)error
 {
-  v13 = a5;
-  v8 = a3;
+  errorCopy = error;
+  operationCopy = operation;
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
   privacyPromptOperation = self->_privacyPromptOperation;
 
-  if (privacyPromptOperation == v8)
+  if (privacyPromptOperation == operationCopy)
   {
     self->_privacyPromptOperation = 0;
   }
 
   os_unfair_lock_unlock(&self->_lock);
-  if (a4 > 1)
+  if (status > 1)
   {
-    if (a4 != 2)
+    if (status != 2)
     {
-      if (a4 != 3)
+      if (status != 3)
       {
         goto LABEL_12;
       }
 
       v10 = @"Encountered error while performing privacy prompt operation.";
-      v11 = self;
-      v12 = v13;
+      selfCopy2 = self;
+      v12 = errorCopy;
       goto LABEL_10;
     }
   }
 
-  else if (a4)
+  else if (status)
   {
-    if (a4 != 1)
+    if (status != 1)
     {
       goto LABEL_12;
     }
 
     v10 = @"Privacy acknowledgement required, but user did not accept latest privacy policy.";
-    v11 = self;
+    selfCopy2 = self;
     v12 = 0;
 LABEL_10:
-    [(ICDCloudServiceCapabilitiesRequestOperation *)v11 _handlePrivacyAcknowledgementErrorWithMessage:v10 underlyingError:v12];
+    [(ICDCloudServiceCapabilitiesRequestOperation *)selfCopy2 _handlePrivacyAcknowledgementErrorWithMessage:v10 underlyingError:v12];
     goto LABEL_12;
   }
 
@@ -430,7 +430,7 @@ LABEL_12:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v12 = self;
+      selfCopy2 = self;
       v13 = 2114;
       v14 = v4;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: Operation was cancelled right before enqueuing privacy prompt operation: %{public}@. Aborting.", buf, 0x16u);
@@ -448,7 +448,7 @@ LABEL_12:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v12 = self;
+      selfCopy2 = self;
       v13 = 2114;
       v14 = v4;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: Performing %{public}@.", buf, 0x16u);
@@ -461,12 +461,12 @@ LABEL_12:
   objc_destroyWeak(&location);
 }
 
-- (void)setCompletionHandler:(id)a3
+- (void)setCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
-  v5 = [v4 copy];
+  v5 = [handlerCopy copy];
 
   completionHandler = self->_completionHandler;
   self->_completionHandler = v5;
@@ -485,13 +485,13 @@ LABEL_12:
   return v4;
 }
 
-- (void)setOriginatingClientConnection:(id)a3
+- (void)setOriginatingClientConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
   originatingClientConnection = self->_originatingClientConnection;
-  self->_originatingClientConnection = v4;
+  self->_originatingClientConnection = connectionCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -506,10 +506,10 @@ LABEL_12:
   return v3;
 }
 
-- (void)setPrivacyAcknowledgementPolicy:(int64_t)a3
+- (void)setPrivacyAcknowledgementPolicy:(int64_t)policy
 {
   os_unfair_lock_lock(&self->_lock);
-  self->_privacyAcknowledgementPolicy = a3;
+  self->_privacyAcknowledgementPolicy = policy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -536,7 +536,7 @@ LABEL_12:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138543362;
-      v11 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: Operation was cancelled upon beginning execution. Aborting.", &v10, 0xCu);
     }
 
@@ -558,7 +558,7 @@ LABEL_12:
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
         v10 = 138543362;
-        v11 = self;
+        selfCopy2 = self;
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: Bypassing enforcement of privacy acknowledgement.", &v10, 0xCu);
       }
 
@@ -601,7 +601,7 @@ LABEL_12:
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v7 = self;
+      selfCopy = self;
       v8 = 2114;
       v9 = v3;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%{public}@: Cancelling %{public}@.", buf, 0x16u);
@@ -611,16 +611,16 @@ LABEL_12:
   }
 }
 
-- (ICDCloudServiceCapabilitiesRequestOperation)initWithIdentity:(id)a3
+- (ICDCloudServiceCapabilitiesRequestOperation)initWithIdentity:(id)identity
 {
-  v5 = a3;
+  identityCopy = identity;
   v11.receiver = self;
   v11.super_class = ICDCloudServiceCapabilitiesRequestOperation;
   v6 = [(ICDCloudServiceCapabilitiesRequestOperation *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_identity, a3);
+    objc_storeStrong(&v6->_identity, identity);
     v8 = +[ICUserIdentityStore defaultIdentityStore];
     identityStore = v7->_identityStore;
     v7->_identityStore = v8;

@@ -1,26 +1,26 @@
 @interface NTKFaceColorScheme
-+ (id)colorSchemeForDevice:(id)a3 withFaceColorPalette:(id)a4 foregroundColor:(id)a5 units:(unint64_t)a6 alternateHighlight:(BOOL)a7;
-+ (id)interpolationForDevice:(id)a3 fromFaceColorPalette:(id)a4 toFaceColorPalette:(id)a5 fraction:(double)a6 units:(unint64_t)a7 brightenUnits:(unint64_t)a8 overrideColor:(id)a9 alternateHighlight:(BOOL)a10;
-+ (id)interpolationFrom:(id)a3 to:(id)a4 fraction:(double)a5 brightenUnits:(unint64_t)a6;
-- (BOOL)isEqual:(id)a3;
-- (id)_colorForUnit:(unint64_t)a3;
-- (id)initForDevice:(id)a3;
++ (id)colorSchemeForDevice:(id)device withFaceColorPalette:(id)palette foregroundColor:(id)color units:(unint64_t)units alternateHighlight:(BOOL)highlight;
++ (id)interpolationForDevice:(id)device fromFaceColorPalette:(id)palette toFaceColorPalette:(id)colorPalette fraction:(double)fraction units:(unint64_t)units brightenUnits:(unint64_t)brightenUnits overrideColor:(id)color alternateHighlight:(BOOL)self0;
++ (id)interpolationFrom:(id)from to:(id)to fraction:(double)fraction brightenUnits:(unint64_t)units;
+- (BOOL)isEqual:(id)equal;
+- (id)_colorForUnit:(unint64_t)unit;
+- (id)initForDevice:(id)device;
 - (unint64_t)units;
-- (void)_setColor:(id)a3 forUnit:(unint64_t)a4;
+- (void)_setColor:(id)color forUnit:(unint64_t)unit;
 @end
 
 @implementation NTKFaceColorScheme
 
-- (id)initForDevice:(id)a3
+- (id)initForDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v11.receiver = self;
   v11.super_class = NTKFaceColorScheme;
   v6 = [(NTKFaceColorScheme *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_device, a3);
+    objc_storeStrong(&v6->_device, device);
     v8 = objc_alloc_init(MEMORY[0x277CBEB38]);
     colorsByUnit = v7->_colorsByUnit;
     v7->_colorsByUnit = v8;
@@ -29,68 +29,68 @@
   return v7;
 }
 
-+ (id)colorSchemeForDevice:(id)a3 withFaceColorPalette:(id)a4 foregroundColor:(id)a5 units:(unint64_t)a6 alternateHighlight:(BOOL)a7
++ (id)colorSchemeForDevice:(id)device withFaceColorPalette:(id)palette foregroundColor:(id)color units:(unint64_t)units alternateHighlight:(BOOL)highlight
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  if (!v13)
+  deviceCopy = device;
+  paletteCopy = palette;
+  colorCopy = color;
+  if (!colorCopy)
   {
-    if ([v12 isMulticolor])
+    if ([paletteCopy isMulticolor])
     {
       [MEMORY[0x277D75348] whiteColor];
     }
 
     else
     {
-      [v12 primaryColor];
+      [paletteCopy primaryColor];
     }
-    v13 = ;
+    colorCopy = ;
   }
 
-  if ([v12 isWhite])
+  if ([paletteCopy isWhite])
   {
-    v14 = [v12 isMulticolor];
+    isMulticolor = [paletteCopy isMulticolor];
   }
 
   else
   {
-    v15 = [MEMORY[0x277D75348] whiteColor];
-    v16 = [v13 isEqual:v15];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    v16 = [colorCopy isEqual:whiteColor];
 
-    v14 = [v12 isMulticolor];
+    isMulticolor = [paletteCopy isMulticolor];
     if ((v16 & 1) == 0)
     {
-      v18 = [MEMORY[0x277D75348] whiteColor];
+      whiteColor2 = [MEMORY[0x277D75348] whiteColor];
       v17 = 0;
       goto LABEL_11;
     }
   }
 
   v17 = 1;
-  v18 = NTKSecondaryForegroundGrayColor();
+  whiteColor2 = NTKSecondaryForegroundGrayColor();
 LABEL_11:
   aBlock = MEMORY[0x277D85DD0];
   v30 = 3221225472;
   v31 = __105__NTKFaceColorScheme_colorSchemeForDevice_withFaceColorPalette_foregroundColor_units_alternateHighlight___block_invoke;
   v32 = &unk_278781980;
-  v37 = a7;
-  v28 = v18;
+  highlightCopy = highlight;
+  v28 = whiteColor2;
   v33 = v28;
-  v19 = v13;
+  v19 = colorCopy;
   v34 = v19;
-  v20 = v12;
+  v20 = paletteCopy;
   v35 = v20;
   v38 = v17;
-  v21 = v11;
+  v21 = deviceCopy;
   v36 = v21;
-  v39 = v14;
+  v39 = isMulticolor;
   v22 = _Block_copy(&aBlock);
   v23 = [[NTKFaceColorScheme alloc] initForDevice:v21];
   v24 = 1;
   do
   {
-    if ((v24 & a6) != 0)
+    if ((v24 & units) != 0)
     {
       v25 = v22[2](v22, v24);
       [v23 _setColor:v25 forUnit:{v24, v28, aBlock, v30, v31, v32, v33, v34, v35}];
@@ -101,7 +101,7 @@ LABEL_11:
   }
 
   while (!v26);
-  [v23 setMulticolorAlpha:v14];
+  [v23 setMulticolorAlpha:isMulticolor];
   [v23 setContainsOverrideFaceColor:{objc_msgSend(v20, "isMulticolor")}];
   [v23 setFaceColorPalette:v20];
 
@@ -229,53 +229,53 @@ LABEL_36:
   return v3;
 }
 
-+ (id)interpolationFrom:(id)a3 to:(id)a4 fraction:(double)a5 brightenUnits:(unint64_t)a6
++ (id)interpolationFrom:(id)from to:(id)to fraction:(double)fraction brightenUnits:(unint64_t)units
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = [a1 alloc];
-  v13 = [v10 device];
-  v14 = [v12 initForDevice:v13];
+  fromCopy = from;
+  toCopy = to;
+  v12 = [self alloc];
+  device = [fromCopy device];
+  v14 = [v12 initForDevice:device];
 
   v15 = MEMORY[0x277CBEB98];
-  v16 = [v10 faceColors];
-  v17 = [v15 setWithArray:v16];
+  faceColors = [fromCopy faceColors];
+  v17 = [v15 setWithArray:faceColors];
 
-  v18 = [v11 faceColors];
+  faceColors2 = [toCopy faceColors];
   v35 = v17;
-  v19 = [v17 setByAddingObjectsFromArray:v18];
+  v19 = [v17 setByAddingObjectsFromArray:faceColors2];
 
   v34 = v19;
-  v20 = [v19 allObjects];
-  [v14 setFaceColors:v20];
+  allObjects = [v19 allObjects];
+  [v14 setFaceColors:allObjects];
 
-  if ([v10 containsOverrideFaceColor])
+  if ([fromCopy containsOverrideFaceColor])
   {
-    v21 = 1;
+    containsOverrideFaceColor = 1;
   }
 
   else
   {
-    v21 = [v11 containsOverrideFaceColor];
+    containsOverrideFaceColor = [toCopy containsOverrideFaceColor];
   }
 
-  [v14 setContainsOverrideFaceColor:v21];
-  [v10 multicolorAlpha];
-  [v11 multicolorAlpha];
+  [v14 setContainsOverrideFaceColor:containsOverrideFaceColor];
+  [fromCopy multicolorAlpha];
+  [toCopy multicolorAlpha];
   CLKInterpolateBetweenFloatsClipped();
   [v14 setMulticolorAlpha:?];
-  v22 = a5 + -0.5;
-  if (a5 + -0.5 < 0.0)
+  v22 = fraction + -0.5;
+  if (fraction + -0.5 < 0.0)
   {
-    v22 = -(a5 + -0.5);
+    v22 = -(fraction + -0.5);
   }
 
   v23 = (0.5 - v22) * 0.8;
   v24 = 1;
   do
   {
-    v25 = [v10 _colorForUnit:v24];
-    v26 = [v11 _colorForUnit:v24];
+    v25 = [fromCopy _colorForUnit:v24];
+    v26 = [toCopy _colorForUnit:v24];
     v27 = v26;
     if (v25 && v26)
     {
@@ -307,7 +307,7 @@ LABEL_36:
       v28 = v29;
     }
 
-    if ((v24 & a6) != 0)
+    if ((v24 & units) != 0)
     {
       v38 = 0.0;
       v39 = 0.0;
@@ -342,17 +342,17 @@ LABEL_22:
   return v14;
 }
 
-+ (id)interpolationForDevice:(id)a3 fromFaceColorPalette:(id)a4 toFaceColorPalette:(id)a5 fraction:(double)a6 units:(unint64_t)a7 brightenUnits:(unint64_t)a8 overrideColor:(id)a9 alternateHighlight:(BOOL)a10
++ (id)interpolationForDevice:(id)device fromFaceColorPalette:(id)palette toFaceColorPalette:(id)colorPalette fraction:(double)fraction units:(unint64_t)units brightenUnits:(unint64_t)brightenUnits overrideColor:(id)color alternateHighlight:(BOOL)self0
 {
-  v15 = a5;
-  v16 = a9;
-  v17 = a4;
-  v18 = a3;
-  LODWORD(a4) = [v17 isMulticolor];
-  v19 = [v15 isMulticolor];
-  if (a4)
+  colorPaletteCopy = colorPalette;
+  colorCopy = color;
+  paletteCopy = palette;
+  deviceCopy = device;
+  LODWORD(palette) = [paletteCopy isMulticolor];
+  isMulticolor = [colorPaletteCopy isMulticolor];
+  if (palette)
   {
-    v20 = v16;
+    v20 = colorCopy;
   }
 
   else
@@ -360,11 +360,11 @@ LABEL_22:
     v20 = 0;
   }
 
-  v21 = [NTKFaceColorScheme colorSchemeForDevice:v18 withFaceColorPalette:v17 foregroundColor:v20 units:a7 alternateHighlight:a10];
+  v21 = [NTKFaceColorScheme colorSchemeForDevice:deviceCopy withFaceColorPalette:paletteCopy foregroundColor:v20 units:units alternateHighlight:highlight];
 
-  if (v19)
+  if (isMulticolor)
   {
-    v22 = v16;
+    v22 = colorCopy;
   }
 
   else
@@ -372,9 +372,9 @@ LABEL_22:
     v22 = 0;
   }
 
-  v23 = [NTKFaceColorScheme colorSchemeForDevice:v18 withFaceColorPalette:v15 foregroundColor:v22 units:a7 alternateHighlight:a10];
+  v23 = [NTKFaceColorScheme colorSchemeForDevice:deviceCopy withFaceColorPalette:colorPaletteCopy foregroundColor:v22 units:units alternateHighlight:highlight];
 
-  v24 = [NTKFaceColorScheme interpolationFrom:v21 to:v23 fraction:a8 brightenUnits:a6];
+  v24 = [NTKFaceColorScheme interpolationFrom:v21 to:v23 fraction:brightenUnits brightenUnits:fraction];
 
   return v24;
 }
@@ -386,8 +386,8 @@ LABEL_22:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(NSMutableDictionary *)self->_colorsByUnit allKeys];
-  v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  allKeys = [(NSMutableDictionary *)self->_colorsByUnit allKeys];
+  v3 = [allKeys countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v3)
   {
     v4 = v3;
@@ -399,13 +399,13 @@ LABEL_22:
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(allKeys);
         }
 
         v5 |= [*(*(&v9 + 1) + 8 * i) unsignedIntegerValue];
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [allKeys countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v4);
@@ -419,10 +419,10 @@ LABEL_22:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
 LABEL_9:
     v11 = 1;
@@ -433,8 +433,8 @@ LABEL_9:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(NTKFaceColorScheme *)v4 units];
-      if (v5 == [(NTKFaceColorScheme *)self units])
+      units = [(NTKFaceColorScheme *)equalCopy units];
+      if (units == [(NTKFaceColorScheme *)self units])
       {
         v6 = 1;
         while (1)
@@ -442,7 +442,7 @@ LABEL_9:
           if (([(NTKFaceColorScheme *)self units]& v6) != 0)
           {
             v7 = [(NTKFaceColorScheme *)self _colorForUnit:v6];
-            v8 = [(NTKFaceColorScheme *)v4 _colorForUnit:v6];
+            v8 = [(NTKFaceColorScheme *)equalCopy _colorForUnit:v6];
             v9 = [v7 isEqual:v8];
 
             if (!v9)
@@ -467,14 +467,14 @@ LABEL_9:
   return v11;
 }
 
-- (void)_setColor:(id)a3 forUnit:(unint64_t)a4
+- (void)_setColor:(id)color forUnit:(unint64_t)unit
 {
-  v8 = a3;
+  colorCopy = color;
   colorsByUnit = self->_colorsByUnit;
-  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
-  if (v8)
+  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:unit];
+  if (colorCopy)
   {
-    [(NSMutableDictionary *)colorsByUnit setObject:v8 forKey:v7];
+    [(NSMutableDictionary *)colorsByUnit setObject:colorCopy forKey:v7];
   }
 
   else
@@ -483,10 +483,10 @@ LABEL_9:
   }
 }
 
-- (id)_colorForUnit:(unint64_t)a3
+- (id)_colorForUnit:(unint64_t)unit
 {
   colorsByUnit = self->_colorsByUnit;
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:unit];
   v5 = [(NSMutableDictionary *)colorsByUnit objectForKey:v4];
 
   return v5;

@@ -3,11 +3,11 @@
 - (WFLocationQueryGeocodeCacheManager)init;
 - (id)_persistedInfoFromDisk;
 - (id)_persistedInfoURL;
-- (id)cachedLocationForKey:(id)a3;
+- (id)cachedLocationForKey:(id)key;
 - (void)_discardExpiredLocations;
 - (void)_persistInfoToDisk;
 - (void)_persistedInfoFromDisk;
-- (void)updateCacheForKey:(id)a3 withLocation:(id)a4;
+- (void)updateCacheForKey:(id)key withLocation:(id)location;
 @end
 
 @implementation WFLocationQueryGeocodeCacheManager
@@ -40,14 +40,14 @@ uint64_t __51__WFLocationQueryGeocodeCacheManager_sharedManager__block_invoke()
   if (v2)
   {
     v2->_dataSynchronizationLock._os_unfair_lock_opaque = 0;
-    v4 = [(WFLocationQueryGeocodeCacheManager *)v2 _persistedInfoFromDisk];
-    v5 = [v4 mutableCopy];
+    _persistedInfoFromDisk = [(WFLocationQueryGeocodeCacheManager *)v2 _persistedInfoFromDisk];
+    v5 = [_persistedInfoFromDisk mutableCopy];
     geocodeCache = v3->_geocodeCache;
     v3->_geocodeCache = v5;
 
     v7 = +[WFSettingsManager sharedInstance];
-    v8 = [v7 settings];
-    [v8 cachedGeocodeLocationExpirationTimeInterval];
+    settings = [v7 settings];
+    [settings cachedGeocodeLocationExpirationTimeInterval];
     v3->_expirationTime = v9;
 
     if (v3->_geocodeCache)
@@ -63,25 +63,25 @@ uint64_t __51__WFLocationQueryGeocodeCacheManager_sharedManager__block_invoke()
         [(WFLocationQueryGeocodeCacheManager *)v10 init];
       }
 
-      v11 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
       v12 = v3->_geocodeCache;
-      v3->_geocodeCache = v11;
+      v3->_geocodeCache = dictionary;
     }
   }
 
   return v3;
 }
 
-- (void)updateCacheForKey:(id)a3 withLocation:(id)a4
+- (void)updateCacheForKey:(id)key withLocation:(id)location
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  keyCopy = key;
+  locationCopy = location;
+  if (locationCopy)
   {
     os_unfair_lock_lock_with_options();
-    v8 = [v7 copy];
-    v9 = [(WFLocationQueryGeocodeCacheManager *)self geocodeCache];
-    [v9 setObject:v8 forKeyedSubscript:v6];
+    v8 = [locationCopy copy];
+    geocodeCache = [(WFLocationQueryGeocodeCacheManager *)self geocodeCache];
+    [geocodeCache setObject:v8 forKeyedSubscript:keyCopy];
 
     os_unfair_lock_unlock(&self->_dataSynchronizationLock);
     [(WFLocationQueryGeocodeCacheManager *)self _persistInfoToDisk];
@@ -97,17 +97,17 @@ uint64_t __51__WFLocationQueryGeocodeCacheManager_sharedManager__block_invoke()
   }
 }
 
-- (id)cachedLocationForKey:(id)a3
+- (id)cachedLocationForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   os_unfair_lock_lock_with_options();
-  v5 = [(WFLocationQueryGeocodeCacheManager *)self geocodeCache];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  geocodeCache = [(WFLocationQueryGeocodeCacheManager *)self geocodeCache];
+  v6 = [geocodeCache objectForKeyedSubscript:keyCopy];
   v7 = [v6 copy];
 
-  v8 = [MEMORY[0x277CBEAA8] date];
-  v9 = [v7 creationDate];
-  [v8 timeIntervalSinceDate:v9];
+  date = [MEMORY[0x277CBEAA8] date];
+  creationDate = [v7 creationDate];
+  [date timeIntervalSinceDate:creationDate];
   v11 = v10;
   [(WFLocationQueryGeocodeCacheManager *)self expirationTime];
   v13 = v12;
@@ -115,8 +115,8 @@ uint64_t __51__WFLocationQueryGeocodeCacheManager_sharedManager__block_invoke()
   if (v11 >= v13)
   {
 
-    v14 = [(WFLocationQueryGeocodeCacheManager *)self geocodeCache];
-    [v14 removeObjectForKey:v4];
+    geocodeCache2 = [(WFLocationQueryGeocodeCacheManager *)self geocodeCache];
+    [geocodeCache2 removeObjectForKey:keyCopy];
 
     os_unfair_lock_unlock(&self->_dataSynchronizationLock);
     [(WFLocationQueryGeocodeCacheManager *)self _persistInfoToDisk];
@@ -136,15 +136,15 @@ uint64_t __51__WFLocationQueryGeocodeCacheManager_sharedManager__block_invoke()
   v20 = *MEMORY[0x277D85DE8];
   os_unfair_lock_lock_with_options();
   v3 = [(NSMutableDictionary *)self->_geocodeCache count];
-  v4 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   geocodeCache = self->_geocodeCache;
   v12 = MEMORY[0x277D85DD0];
   v13 = 3221225472;
   v14 = __62__WFLocationQueryGeocodeCacheManager__discardExpiredLocations__block_invoke;
   v15 = &unk_279E6EC80;
-  v6 = v4;
+  v6 = date;
   v16 = v6;
-  v17 = self;
+  selfCopy = self;
   v7 = [(NSMutableDictionary *)geocodeCache wf_filter:&v12];
   v8 = [v7 mutableCopy];
   v9 = self->_geocodeCache;
@@ -177,22 +177,22 @@ BOOL __62__WFLocationQueryGeocodeCacheManager__discardExpiredLocations__block_in
 {
   os_unfair_lock_lock_with_options();
   v3 = objc_alloc(MEMORY[0x277CBEAC0]);
-  v4 = [(WFLocationQueryGeocodeCacheManager *)self geocodeCache];
-  v8 = [v3 initWithDictionary:v4 copyItems:1];
+  geocodeCache = [(WFLocationQueryGeocodeCacheManager *)self geocodeCache];
+  v8 = [v3 initWithDictionary:geocodeCache copyItems:1];
 
   os_unfair_lock_unlock(&self->_dataSynchronizationLock);
   v5 = [objc_alloc(MEMORY[0x277CCAAB0]) initRequiringSecureCoding:1];
   [v5 encodeObject:v8 forKey:@"geocodeCache"];
   [v5 finishEncoding];
-  v6 = [v5 encodedData];
-  v7 = [(WFLocationQueryGeocodeCacheManager *)self _persistedInfoURL];
-  [v6 writeToURL:v7 atomically:1];
+  encodedData = [v5 encodedData];
+  _persistedInfoURL = [(WFLocationQueryGeocodeCacheManager *)self _persistedInfoURL];
+  [encodedData writeToURL:_persistedInfoURL atomically:1];
 }
 
 - (id)_persistedInfoURL
 {
-  v2 = [MEMORY[0x277CCAA00] defaultManager];
-  v3 = [v2 URLForDirectory:9 inDomain:1 appropriateForURL:0 create:1 error:0];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v3 = [defaultManager URLForDirectory:9 inDomain:1 appropriateForURL:0 create:1 error:0];
 
   v4 = [v3 URLByAppendingPathComponent:@"locationQueryGeocodeCacheFolder" isDirectory:0];
 
@@ -202,8 +202,8 @@ BOOL __62__WFLocationQueryGeocodeCacheManager__discardExpiredLocations__block_in
 - (id)_persistedInfoFromDisk
 {
   v3 = MEMORY[0x277CBEA90];
-  v4 = [(WFLocationQueryGeocodeCacheManager *)self _persistedInfoURL];
-  v5 = [v3 dataWithContentsOfURL:v4];
+  _persistedInfoURL = [(WFLocationQueryGeocodeCacheManager *)self _persistedInfoURL];
+  v5 = [v3 dataWithContentsOfURL:_persistedInfoURL];
 
   if (v5)
   {
@@ -254,7 +254,7 @@ BOOL __62__WFLocationQueryGeocodeCacheManager__discardExpiredLocations__block_in
 - (void)_persistedInfoFromDisk
 {
   v6 = *MEMORY[0x277D85DE8];
-  v4 = [a1 _persistedInfoURL];
+  _persistedInfoURL = [self _persistedInfoURL];
   OUTLINED_FUNCTION_0_3();
   _os_log_fault_impl(&dword_272B94000, a3, OS_LOG_TYPE_FAULT, "Failed to read: %{public}@ -- %{public}@", v5, 0x16u);
 }

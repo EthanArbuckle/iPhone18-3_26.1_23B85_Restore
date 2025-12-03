@@ -1,122 +1,122 @@
 @interface TransparencyGPBEnumArray
 + (id)array;
-+ (id)arrayWithValidationFunction:(void *)a3;
-+ (id)arrayWithValidationFunction:(void *)a3 capacity:(unint64_t)a4;
-+ (id)arrayWithValueArray:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (TransparencyGPBEnumArray)initWithValidationFunction:(void *)a3;
-- (TransparencyGPBEnumArray)initWithValidationFunction:(void *)a3 capacity:(unint64_t)a4;
-- (TransparencyGPBEnumArray)initWithValidationFunction:(void *)a3 rawValues:(const int *)a4 count:(unint64_t)a5;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)arrayWithValidationFunction:(void *)function;
++ (id)arrayWithValidationFunction:(void *)function capacity:(unint64_t)capacity;
++ (id)arrayWithValueArray:(id)array;
+- (BOOL)isEqual:(id)equal;
+- (TransparencyGPBEnumArray)initWithValidationFunction:(void *)function;
+- (TransparencyGPBEnumArray)initWithValidationFunction:(void *)function capacity:(unint64_t)capacity;
+- (TransparencyGPBEnumArray)initWithValidationFunction:(void *)function rawValues:(const int *)values count:(unint64_t)count;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (int)rawValueAtIndex:(unint64_t)a3;
-- (int)valueAtIndex:(unint64_t)a3;
-- (void)addRawValues:(const int *)a3 count:(unint64_t)a4;
-- (void)addValues:(const int *)a3 count:(unint64_t)a4;
+- (int)rawValueAtIndex:(unint64_t)index;
+- (int)valueAtIndex:(unint64_t)index;
+- (void)addRawValues:(const int *)values count:(unint64_t)count;
+- (void)addValues:(const int *)values count:(unint64_t)count;
 - (void)dealloc;
-- (void)enumerateRawValuesWithOptions:(unint64_t)a3 usingBlock:(id)a4;
-- (void)enumerateValuesWithOptions:(unint64_t)a3 usingBlock:(id)a4;
-- (void)exchangeValueAtIndex:(unint64_t)a3 withValueAtIndex:(unint64_t)a4;
-- (void)insertRawValue:(int)a3 atIndex:(unint64_t)a4;
-- (void)internalResizeToCapacity:(unint64_t)a3;
+- (void)enumerateRawValuesWithOptions:(unint64_t)options usingBlock:(id)block;
+- (void)enumerateValuesWithOptions:(unint64_t)options usingBlock:(id)block;
+- (void)exchangeValueAtIndex:(unint64_t)index withValueAtIndex:(unint64_t)atIndex;
+- (void)insertRawValue:(int)value atIndex:(unint64_t)index;
+- (void)internalResizeToCapacity:(unint64_t)capacity;
 - (void)removeAll;
-- (void)removeValueAtIndex:(unint64_t)a3;
-- (void)replaceValueAtIndex:(unint64_t)a3 withRawValue:(int)a4;
+- (void)removeValueAtIndex:(unint64_t)index;
+- (void)replaceValueAtIndex:(unint64_t)index withRawValue:(int)value;
 @end
 
 @implementation TransparencyGPBEnumArray
 
 + (id)array
 {
-  v2 = [[a1 alloc] initWithValidationFunction:0];
+  v2 = [[self alloc] initWithValidationFunction:0];
 
   return v2;
 }
 
-+ (id)arrayWithValidationFunction:(void *)a3
++ (id)arrayWithValidationFunction:(void *)function
 {
-  v3 = [[a1 alloc] initWithValidationFunction:a3];
+  v3 = [[self alloc] initWithValidationFunction:function];
 
   return v3;
 }
 
-+ (id)arrayWithValueArray:(id)a3
++ (id)arrayWithValueArray:(id)array
 {
-  v3 = [[a1 alloc] initWithValueArray:a3];
+  v3 = [[self alloc] initWithValueArray:array];
 
   return v3;
 }
 
-+ (id)arrayWithValidationFunction:(void *)a3 capacity:(unint64_t)a4
++ (id)arrayWithValidationFunction:(void *)function capacity:(unint64_t)capacity
 {
-  v4 = [[a1 alloc] initWithValidationFunction:a3 capacity:a4];
+  v4 = [[self alloc] initWithValidationFunction:function capacity:capacity];
 
   return v4;
 }
 
-- (TransparencyGPBEnumArray)initWithValidationFunction:(void *)a3
+- (TransparencyGPBEnumArray)initWithValidationFunction:(void *)function
 {
   v6.receiver = self;
   v6.super_class = TransparencyGPBEnumArray;
   result = [(TransparencyGPBEnumArray *)&v6 init];
   if (result)
   {
-    if (a3)
+    if (function)
     {
-      v5 = a3;
+      functionCopy = function;
     }
 
     else
     {
-      v5 = sub_1000BBE2C;
+      functionCopy = sub_1000BBE2C;
     }
 
-    result->_validationFunc = v5;
+    result->_validationFunc = functionCopy;
   }
 
   return result;
 }
 
-- (TransparencyGPBEnumArray)initWithValidationFunction:(void *)a3 rawValues:(const int *)a4 count:(unint64_t)a5
+- (TransparencyGPBEnumArray)initWithValidationFunction:(void *)function rawValues:(const int *)values count:(unint64_t)count
 {
-  v7 = [(TransparencyGPBEnumArray *)self initWithValidationFunction:a3];
+  v7 = [(TransparencyGPBEnumArray *)self initWithValidationFunction:function];
   v8 = v7;
-  if (v7 && a4 && a5)
+  if (v7 && values && count)
   {
-    v9 = reallocf(v7->_values, 4 * a5);
+    v9 = reallocf(v7->_values, 4 * count);
     v8->_values = v9;
     if (v9)
     {
-      v8->_capacity = a5;
-      memcpy(v9, a4, 4 * a5);
-      v8->_count = a5;
+      v8->_capacity = count;
+      memcpy(v9, values, 4 * count);
+      v8->_count = count;
     }
 
     else
     {
 
-      [NSException raise:NSMallocException format:@"Failed to allocate %lu bytes", 4 * a5];
+      [NSException raise:NSMallocException format:@"Failed to allocate %lu bytes", 4 * count];
     }
   }
 
   return v8;
 }
 
-- (TransparencyGPBEnumArray)initWithValidationFunction:(void *)a3 capacity:(unint64_t)a4
+- (TransparencyGPBEnumArray)initWithValidationFunction:(void *)function capacity:(unint64_t)capacity
 {
-  v5 = [(TransparencyGPBEnumArray *)self initWithValidationFunction:a3];
+  v5 = [(TransparencyGPBEnumArray *)self initWithValidationFunction:function];
   v6 = v5;
-  if (a4 && v5)
+  if (capacity && v5)
   {
-    [(TransparencyGPBEnumArray *)v5 internalResizeToCapacity:a4];
+    [(TransparencyGPBEnumArray *)v5 internalResizeToCapacity:capacity];
   }
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [TransparencyGPBEnumArray allocWithZone:a3];
+  v4 = [TransparencyGPBEnumArray allocWithZone:zone];
   validationFunc = self->_validationFunc;
   values = self->_values;
   count = self->_count;
@@ -132,15 +132,15 @@
   [(TransparencyGPBEnumArray *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
 
   objc_opt_class();
-  result = (objc_opt_isKindOfClass() & 1) != 0 && (count = self->_count, count == *(a3 + 4)) && memcmp(self->_values, *(a3 + 3), 4 * count) == 0;
+  result = (objc_opt_isKindOfClass() & 1) != 0 && (count = self->_count, count == *(equal + 4)) && memcmp(self->_values, *(equal + 3), 4 * count) == 0;
   return result;
 }
 
@@ -170,11 +170,11 @@
   return v3;
 }
 
-- (void)enumerateRawValuesWithOptions:(unint64_t)a3 usingBlock:(id)a4
+- (void)enumerateRawValuesWithOptions:(unint64_t)options usingBlock:(id)block
 {
   v11 = 0;
   count = self->_count;
-  if ((a3 & 2) != 0)
+  if ((options & 2) != 0)
   {
     if (count)
     {
@@ -186,7 +186,7 @@
           break;
         }
 
-        (*(a4 + 2))(a4, self->_values[v10], v10, &v11);
+        (*(block + 2))(block, self->_values[v10], v10, &v11);
         --v10;
       }
 
@@ -200,7 +200,7 @@
     v8 = count - 1;
     do
     {
-      (*(a4 + 2))(a4, self->_values[v7], v7, &v11);
+      (*(block + 2))(block, self->_values[v7], v7, &v11);
       if (v11)
       {
         break;
@@ -211,15 +211,15 @@
   }
 }
 
-- (int)valueAtIndex:(unint64_t)a3
+- (int)valueAtIndex:(unint64_t)index
 {
   count = self->_count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [NSException raise:NSRangeException format:@"Index (%lu) beyond bounds (%lu)", a3, count];
+    [NSException raise:NSRangeException format:@"Index (%lu) beyond bounds (%lu)", index, count];
   }
 
-  v6 = self->_values[a3];
+  v6 = self->_values[index];
   if ((self->_validationFunc)(v6))
   {
     return v6;
@@ -231,22 +231,22 @@
   }
 }
 
-- (int)rawValueAtIndex:(unint64_t)a3
+- (int)rawValueAtIndex:(unint64_t)index
 {
   count = self->_count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [NSException raise:NSRangeException format:@"Index (%lu) beyond bounds (%lu)", a3, count];
+    [NSException raise:NSRangeException format:@"Index (%lu) beyond bounds (%lu)", index, count];
   }
 
-  return self->_values[a3];
+  return self->_values[index];
 }
 
-- (void)enumerateValuesWithOptions:(unint64_t)a3 usingBlock:(id)a4
+- (void)enumerateValuesWithOptions:(unint64_t)options usingBlock:(id)block
 {
   v20 = 0;
   validationFunc = self->_validationFunc;
-  if ((a3 & 2) != 0)
+  if ((options & 2) != 0)
   {
     count = self->_count;
     if (count)
@@ -269,7 +269,7 @@
             v19 = 4222467823;
           }
 
-          (*(a4 + 2))(a4, v19, v15, &v20);
+          (*(block + 2))(block, v19, v15, &v20);
           if (v20)
           {
             break;
@@ -307,7 +307,7 @@
           v12 = 4222467823;
         }
 
-        (*(a4 + 2))(a4, v12, v7, &v20);
+        (*(block + 2))(block, v12, v7, &v20);
         if (v20)
         {
           break;
@@ -322,10 +322,10 @@
   }
 }
 
-- (void)internalResizeToCapacity:(unint64_t)a3
+- (void)internalResizeToCapacity:(unint64_t)capacity
 {
-  v5 = 4 * a3;
-  v6 = reallocf(self->_values, 4 * a3);
+  v5 = 4 * capacity;
+  v6 = reallocf(self->_values, 4 * capacity);
   self->_values = v6;
   if (!v6)
   {
@@ -334,22 +334,22 @@
     [NSException raise:NSMallocException format:@"Failed to allocate %lu bytes", v5];
   }
 
-  self->_capacity = a3;
+  self->_capacity = capacity;
 }
 
-- (void)addRawValues:(const int *)a3 count:(unint64_t)a4
+- (void)addRawValues:(const int *)values count:(unint64_t)count
 {
-  if (a3 && a4)
+  if (values && count)
   {
     count = self->_count;
-    v8 = count + a4;
-    if (count + a4 > self->_capacity)
+    v8 = count + count;
+    if (count + count > self->_capacity)
     {
       [(TransparencyGPBEnumArray *)self internalResizeToCapacity:(v8 & 0xFFFFFFFFFFFFFFF0) + 16];
     }
 
     self->_count = v8;
-    memcpy(&self->_values[count], a3, 4 * a4);
+    memcpy(&self->_values[count], values, 4 * count);
     autocreator = self->_autocreator;
     if (autocreator)
     {
@@ -359,13 +359,13 @@
   }
 }
 
-- (void)insertRawValue:(int)a3 atIndex:(unint64_t)a4
+- (void)insertRawValue:(int)value atIndex:(unint64_t)index
 {
   count = self->_count;
   v8 = count + 1;
-  if (count + 1 <= a4)
+  if (count + 1 <= index)
   {
-    [NSException raise:NSRangeException format:@"Index (%lu) beyond bounds (%lu)", a4, count + 1];
+    [NSException raise:NSRangeException format:@"Index (%lu) beyond bounds (%lu)", index, count + 1];
     count = self->_count;
     v8 = count + 1;
   }
@@ -376,12 +376,12 @@
   }
 
   self->_count = v8;
-  if (count != a4)
+  if (count != index)
   {
-    memmove(&self->_values[a4 + 1], &self->_values[a4], 4 * (count - a4));
+    memmove(&self->_values[index + 1], &self->_values[index], 4 * (count - index));
   }
 
-  self->_values[a4] = a3;
+  self->_values[index] = value;
   autocreator = self->_autocreator;
   if (autocreator)
   {
@@ -390,30 +390,30 @@
   }
 }
 
-- (void)replaceValueAtIndex:(unint64_t)a3 withRawValue:(int)a4
+- (void)replaceValueAtIndex:(unint64_t)index withRawValue:(int)value
 {
   count = self->_count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [NSException raise:NSRangeException format:@"Index (%lu) beyond bounds (%lu)", a3, count];
+    [NSException raise:NSRangeException format:@"Index (%lu) beyond bounds (%lu)", index, count];
   }
 
-  self->_values[a3] = a4;
+  self->_values[index] = value;
 }
 
-- (void)removeValueAtIndex:(unint64_t)a3
+- (void)removeValueAtIndex:(unint64_t)index
 {
   count = self->_count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [NSException raise:NSRangeException format:@"Index (%lu) beyond bounds (%lu)", a3, count];
+    [NSException raise:NSRangeException format:@"Index (%lu) beyond bounds (%lu)", index, count];
     count = self->_count;
   }
 
   v6 = count - 1;
-  if (count - 1 != a3)
+  if (count - 1 != index)
   {
-    memmove(&self->_values[a3], &self->_values[a3 + 1], 4 * (count - 1 - a3));
+    memmove(&self->_values[index], &self->_values[index + 1], 4 * (count - 1 - index));
   }
 
   self->_count = v6;
@@ -433,52 +433,52 @@
   }
 }
 
-- (void)exchangeValueAtIndex:(unint64_t)a3 withValueAtIndex:(unint64_t)a4
+- (void)exchangeValueAtIndex:(unint64_t)index withValueAtIndex:(unint64_t)atIndex
 {
   count = self->_count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [NSException raise:NSRangeException format:@"Index (%lu) beyond bounds (%lu)", a3, count];
+    [NSException raise:NSRangeException format:@"Index (%lu) beyond bounds (%lu)", index, count];
     count = self->_count;
   }
 
-  if (count <= a4)
+  if (count <= atIndex)
   {
-    [NSException raise:NSRangeException format:@"Index (%lu) beyond bounds (%lu)", a4, count];
+    [NSException raise:NSRangeException format:@"Index (%lu) beyond bounds (%lu)", atIndex, count];
   }
 
   values = self->_values;
-  v9 = values[a3];
-  values[a3] = values[a4];
-  values[a4] = v9;
+  v9 = values[index];
+  values[index] = values[atIndex];
+  values[atIndex] = v9;
 }
 
-- (void)addValues:(const int *)a3 count:(unint64_t)a4
+- (void)addValues:(const int *)values count:(unint64_t)count
 {
-  if (a3 && a4)
+  if (values && count)
   {
     v7 = 0;
     validationFunc = self->_validationFunc;
     do
     {
-      if ((validationFunc(a3[v7], a2) & 1) == 0)
+      if ((validationFunc(values[v7], a2) & 1) == 0)
       {
-        [NSException raise:NSInvalidArgumentException format:@"%@: Attempt to set an unknown enum value (%d)", objc_opt_class(), a3[v7]];
+        [NSException raise:NSInvalidArgumentException format:@"%@: Attempt to set an unknown enum value (%d)", objc_opt_class(), values[v7]];
       }
 
       ++v7;
     }
 
-    while (a4 != v7);
+    while (count != v7);
     count = self->_count;
-    v10 = count + a4;
-    if (count + a4 > self->_capacity)
+    v10 = count + count;
+    if (count + count > self->_capacity)
     {
       [(TransparencyGPBEnumArray *)self internalResizeToCapacity:(v10 & 0xFFFFFFFFFFFFFFF0) + 16];
     }
 
     self->_count = v10;
-    memcpy(&self->_values[count], a3, 4 * a4);
+    memcpy(&self->_values[count], values, 4 * count);
     autocreator = self->_autocreator;
     if (autocreator)
     {

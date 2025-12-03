@@ -6,9 +6,9 @@
 
 - (uint64_t)attachmentStorageLocation
 {
-  v1 = [a1 messageStore];
+  messageStore = [self messageStore];
 
-  return [v1 storagePath];
+  return [messageStore storagePath];
 }
 
 @end

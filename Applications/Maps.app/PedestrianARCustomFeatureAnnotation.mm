@@ -1,7 +1,7 @@
 @interface PedestrianARCustomFeatureAnnotation
 - ($F24F406B2B787EFB06265DBA3D28CBD5)coordinate;
 - (NSString)debugDescription;
-- (PedestrianARCustomFeatureAnnotation)initWithCustomFeature:(id)a3 labelMarker:(id)a4 isActive:(BOOL)a5;
+- (PedestrianARCustomFeatureAnnotation)initWithCustomFeature:(id)feature labelMarker:(id)marker isActive:(BOOL)active;
 @end
 
 @implementation PedestrianARCustomFeatureAnnotation
@@ -10,16 +10,16 @@
 {
   v3 = [NSString alloc];
   v4 = objc_opt_class();
-  v5 = [(PedestrianARCustomFeatureAnnotation *)self feature];
-  v6 = [(PedestrianARCustomFeatureAnnotation *)self labelMarker];
-  v7 = [(PedestrianARCustomFeatureAnnotation *)self labelMarker];
-  v8 = [v7 arWalkingFeature];
-  v9 = [(PedestrianARCustomFeatureAnnotation *)self isActive];
-  v10 = [(PedestrianARCustomFeatureAnnotation *)self isOccluded];
+  feature = [(PedestrianARCustomFeatureAnnotation *)self feature];
+  labelMarker = [(PedestrianARCustomFeatureAnnotation *)self labelMarker];
+  labelMarker2 = [(PedestrianARCustomFeatureAnnotation *)self labelMarker];
+  arWalkingFeature = [labelMarker2 arWalkingFeature];
+  isActive = [(PedestrianARCustomFeatureAnnotation *)self isActive];
+  isOccluded = [(PedestrianARCustomFeatureAnnotation *)self isOccluded];
   [(PedestrianARCustomFeatureAnnotation *)self coordinate];
   v12 = v11;
   [(PedestrianARCustomFeatureAnnotation *)self coordinate];
-  v14 = [v3 initWithFormat:@"<\n%@: %p \n customFeature: %@ \n labelMarker: %@ \n arWalkingFeature: %@ \n isActive: %d \n isOccluded: %d \n coordinate: {%+.6f, %+.6f}\n>", v4, self, v5, v6, v8, v9, v10, v12, v13];
+  v14 = [v3 initWithFormat:@"<\n%@: %p \n customFeature: %@ \n labelMarker: %@ \n arWalkingFeature: %@ \n isActive: %d \n isOccluded: %d \n coordinate: {%+.6f, %+.6f}\n>", v4, self, feature, labelMarker, arWalkingFeature, isActive, isOccluded, v12, v13];
 
   return v14;
 }
@@ -32,11 +32,11 @@
   return result;
 }
 
-- (PedestrianARCustomFeatureAnnotation)initWithCustomFeature:(id)a3 labelMarker:(id)a4 isActive:(BOOL)a5
+- (PedestrianARCustomFeatureAnnotation)initWithCustomFeature:(id)feature labelMarker:(id)marker isActive:(BOOL)active
 {
-  v9 = a3;
-  v10 = a4;
-  if (!v9)
+  featureCopy = feature;
+  markerCopy = marker;
+  if (!featureCopy)
   {
     v14 = sub_10006D178();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -65,7 +65,7 @@
     }
   }
 
-  if (!v10)
+  if (!markerCopy)
   {
     v17 = sub_10006D178();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -100,9 +100,9 @@
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_feature, a3);
-    objc_storeStrong(&v12->_labelMarker, a4);
-    v12->_isActive = a5;
+    objc_storeStrong(&v11->_feature, feature);
+    objc_storeStrong(&v12->_labelMarker, marker);
+    v12->_isActive = active;
     v12->_isOccluded = [(VKLabelMarker *)v12->_labelMarker isOccluded];
   }
 

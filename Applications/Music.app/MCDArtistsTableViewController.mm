@@ -1,20 +1,20 @@
 @interface MCDArtistsTableViewController
-- (MCDArtistsTableViewController)initWithIdentifier:(id)a3 showLocalContent:(BOOL)a4;
-- (id)sectionIndexTitlesForContentManager:(id)a3;
-- (id)textForHeaderViewInContentManager:(id)a3;
+- (MCDArtistsTableViewController)initWithIdentifier:(id)identifier showLocalContent:(BOOL)content;
+- (id)sectionIndexTitlesForContentManager:(id)manager;
+- (id)textForHeaderViewInContentManager:(id)manager;
 - (void)viewDidLoad;
 @end
 
 @implementation MCDArtistsTableViewController
 
-- (MCDArtistsTableViewController)initWithIdentifier:(id)a3 showLocalContent:(BOOL)a4
+- (MCDArtistsTableViewController)initWithIdentifier:(id)identifier showLocalContent:(BOOL)content
 {
-  v4 = a4;
-  v6 = a3;
+  contentCopy = content;
+  identifierCopy = identifier;
   v7 = objc_opt_new();
   v10.receiver = self;
   v10.super_class = MCDArtistsTableViewController;
-  v8 = [(MCDLibraryTableViewController *)&v10 initWithIdentifier:v6 showLocalContent:v4 dataSource:v7];
+  v8 = [(MCDLibraryTableViewController *)&v10 initWithIdentifier:identifierCopy showLocalContent:contentCopy dataSource:v7];
 
   if (v8)
   {
@@ -38,12 +38,12 @@
   objc_destroyWeak(&location);
 }
 
-- (id)textForHeaderViewInContentManager:(id)a3
+- (id)textForHeaderViewInContentManager:(id)manager
 {
-  v4 = [(MCDArtistsTableViewController *)self traitCollection];
-  v5 = [v4 shouldLimitMusicLists];
+  traitCollection = [(MCDArtistsTableViewController *)self traitCollection];
+  shouldLimitMusicLists = [traitCollection shouldLimitMusicLists];
 
-  if (v5)
+  if (shouldLimitMusicLists)
   {
     v6 = MCDCarDisplayBundle();
     v7 = [v6 localizedStringForKey:@"RECENTLY_ADDED_ARTISTS" value:&stru_101107168 table:@"MusicCarDisplayUI"];
@@ -62,13 +62,13 @@
   return v7;
 }
 
-- (id)sectionIndexTitlesForContentManager:(id)a3
+- (id)sectionIndexTitlesForContentManager:(id)manager
 {
-  v4 = a3;
-  v5 = [(MCDArtistsTableViewController *)self traitCollection];
-  v6 = [v5 shouldLimitMusicLists];
+  managerCopy = manager;
+  traitCollection = [(MCDArtistsTableViewController *)self traitCollection];
+  shouldLimitMusicLists = [traitCollection shouldLimitMusicLists];
 
-  if (v6)
+  if (shouldLimitMusicLists)
   {
     v7 = 0;
   }
@@ -76,15 +76,15 @@
   else
   {
     v8 = +[NSMutableArray array];
-    v9 = [v4 lastReceivedResponse];
-    v10 = [v9 results];
+    lastReceivedResponse = [managerCopy lastReceivedResponse];
+    results = [lastReceivedResponse results];
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_1000DABAC;
     v13[3] = &unk_101097CA8;
     v14 = v8;
     v11 = v8;
-    [v10 enumerateSectionsUsingBlock:v13];
+    [results enumerateSectionsUsingBlock:v13];
 
     v7 = [NSArray arrayWithArray:v11];
   }

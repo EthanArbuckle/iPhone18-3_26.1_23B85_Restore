@@ -1,24 +1,24 @@
 @interface AMSDelegateTokenTask
-- (AMSDelegateTokenTask)initWithDelegateAuthenticateRequest:(id)a3 bag:(id)a4 processInfo:(id)a5 account:(id)a6;
-- (id)_parseBiometricsSignatureRequestFromTask:(id)a3;
+- (AMSDelegateTokenTask)initWithDelegateAuthenticateRequest:(id)request bag:(id)bag processInfo:(id)info account:(id)account;
+- (id)_parseBiometricsSignatureRequestFromTask:(id)task;
 - (id)_performFallbackAuthentication;
-- (id)authenticateTaskWithRequest:(id)a3;
+- (id)authenticateTaskWithRequest:(id)request;
 - (id)performRetrieveDelegateToken;
-- (void)AMSURLSession:(id)a3 task:(id)a4 handleAuthenticateRequest:(id)a5 completion:(id)a6;
+- (void)AMSURLSession:(id)session task:(id)task handleAuthenticateRequest:(id)request completion:(id)completion;
 @end
 
 @implementation AMSDelegateTokenTask
 
-- (AMSDelegateTokenTask)initWithDelegateAuthenticateRequest:(id)a3 bag:(id)a4 processInfo:(id)a5 account:(id)a6
+- (AMSDelegateTokenTask)initWithDelegateAuthenticateRequest:(id)request bag:(id)bag processInfo:(id)info account:(id)account
 {
-  v11 = a5;
+  infoCopy = info;
   v15.receiver = self;
   v15.super_class = AMSDelegateTokenTask;
-  v12 = [(AMSDelegateAuthenticateTask *)&v15 initWithDelegateAuthenticateRequest:a3 bag:a4 account:a6];
+  v12 = [(AMSDelegateAuthenticateTask *)&v15 initWithDelegateAuthenticateRequest:request bag:bag account:account];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_processInfo, a5);
+    objc_storeStrong(&v12->_processInfo, info);
   }
 
   return v13;
@@ -294,10 +294,10 @@ void __52__AMSDelegateTokenTask_performRetrieveDelegateToken__block_invoke_2(uin
   }
 }
 
-- (id)_parseBiometricsSignatureRequestFromTask:(id)a3
+- (id)_parseBiometricsSignatureRequestFromTask:(id)task
 {
   v34 = *MEMORY[0x1E69E9840];
-  v25 = a3;
+  taskCopy = task;
   v4 = AMSSetLogKeyIfNeeded();
   v5 = objc_alloc_init(AMSKeychainOptions);
   [(AMSKeychainOptions *)v5 setStyle:+[AMSKeychainOptions preferredAttestationStyle]];
@@ -308,32 +308,32 @@ void __52__AMSDelegateTokenTask_performRetrieveDelegateToken__block_invoke_2(uin
     v6 = +[AMSLogConfig sharedConfig];
   }
 
-  v7 = [v6 OSLogObject];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v6 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
     v29 = objc_opt_class();
     v30 = 2114;
     v31 = v4;
-    _os_log_impl(&dword_192869000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Proceeding with local authorization for delegate buy", buf, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Proceeding with local authorization for delegate buy", buf, 0x16u);
   }
 
   v8 = v4;
 
-  v9 = [v25 response];
-  v10 = [(AMSDelegateAuthenticateTask *)self account];
-  v11 = [(AMSDelegateAuthenticateTask *)self session];
-  v12 = [(AMSDelegateTokenTask *)self processInfo];
-  v13 = v12;
-  if (!v12)
+  response = [taskCopy response];
+  account = [(AMSDelegateAuthenticateTask *)self account];
+  session = [(AMSDelegateAuthenticateTask *)self session];
+  processInfo = [(AMSDelegateTokenTask *)self processInfo];
+  v13 = processInfo;
+  if (!processInfo)
   {
     v13 = +[AMSProcessInfo currentProcess];
   }
 
   v27 = 0;
-  v14 = [AMSBiometricsSignatureRequest biometricsSignatureRequestForURLResponse:v9 account:v10 session:v11 task:v25 clientInfo:v13 options:v5 error:&v27];
+  v14 = [AMSBiometricsSignatureRequest biometricsSignatureRequestForURLResponse:response account:account session:session task:taskCopy clientInfo:v13 options:v5 error:&v27];
   v15 = v27;
-  if (!v12)
+  if (!processInfo)
   {
   }
 
@@ -342,9 +342,9 @@ void __52__AMSDelegateTokenTask_performRetrieveDelegateToken__block_invoke_2(uin
     v16 = objc_alloc_init(AMSMutablePromise);
     v17 = [[AMSBiometricsSignatureTask alloc] initWithRequest:v14];
 
-    v18 = [(AMSBiometricsSignatureTask *)v17 performSignature];
+    performSignature = [(AMSBiometricsSignatureTask *)v17 performSignature];
     v26 = 0;
-    v19 = [v18 resultWithError:&v26];
+    v19 = [performSignature resultWithError:&v26];
     v15 = v26;
 
     if (v19)
@@ -372,8 +372,8 @@ void __52__AMSDelegateTokenTask_performRetrieveDelegateToken__block_invoke_2(uin
       v20 = +[AMSLogConfig sharedConfig];
     }
 
-    v21 = [v20 OSLogObject];
-    if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
+    oSLogObject2 = [v20 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
     {
       v22 = objc_opt_class();
       *buf = 138543874;
@@ -382,7 +382,7 @@ void __52__AMSDelegateTokenTask_performRetrieveDelegateToken__block_invoke_2(uin
       v31 = v8;
       v32 = 2114;
       v33 = v15;
-      _os_log_impl(&dword_192869000, v21, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Could not create biometrics signature request. error: %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Could not create biometrics signature request. error: %{public}@", buf, 0x20u);
     }
 
     v16 = [AMSPromise promiseWithError:v15];
@@ -393,17 +393,17 @@ void __52__AMSDelegateTokenTask_performRetrieveDelegateToken__block_invoke_2(uin
 
 - (id)_performFallbackAuthentication
 {
-  v3 = [(AMSDelegateTokenTask *)self urlResult];
-  v4 = [v3 response];
-  v5 = [(AMSDelegateTokenTask *)self taskInfo];
-  v6 = [AMSFinanceAuthenticateResponse performAuthFromResponse:v4 taskInfo:v5];
+  urlResult = [(AMSDelegateTokenTask *)self urlResult];
+  response = [urlResult response];
+  taskInfo = [(AMSDelegateTokenTask *)self taskInfo];
+  v6 = [AMSFinanceAuthenticateResponse performAuthFromResponse:response taskInfo:taskInfo];
   v21 = 0;
   v7 = [v6 resultWithError:&v21];
   v8 = v21;
 
-  v9 = [v7 value];
-  v10 = v9;
-  if (!v9)
+  value = [v7 value];
+  v10 = value;
+  if (!value)
   {
     v11 = @"Authentication failed";
 LABEL_5:
@@ -411,24 +411,24 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if ([v9 actionType] == 3)
+  if ([value actionType] == 3)
   {
     v11 = @"The Authentication Attempt was cancelled";
     v12 = 0;
 LABEL_6:
-    v13 = AMSError(100, v11, 0, v12);
-    v14 = [AMSPromise promiseWithError:v13];
+    error2 = AMSError(100, v11, 0, v12);
+    v14 = [AMSPromise promiseWithError:error2];
 LABEL_7:
     v15 = v14;
     goto LABEL_8;
   }
 
-  v17 = [v10 error];
+  error = [v10 error];
 
-  if (v17)
+  if (error)
   {
-    v13 = [v10 error];
-    v18 = AMSError(100, @"The Authentication Attempt encountered an error", 0, v13);
+    error2 = [v10 error];
+    v18 = AMSError(100, @"The Authentication Attempt encountered an error", 0, error2);
     v15 = [AMSPromise promiseWithError:v18];
 
     goto LABEL_8;
@@ -440,44 +440,44 @@ LABEL_7:
     goto LABEL_5;
   }
 
-  v19 = [v10 authenticateResult];
-  if (v19)
+  authenticateResult = [v10 authenticateResult];
+  if (authenticateResult)
   {
-    v13 = v19;
-    v14 = [AMSPromise promiseWithResult:v19];
+    error2 = authenticateResult;
+    v14 = [AMSPromise promiseWithResult:authenticateResult];
     goto LABEL_7;
   }
 
   v20 = AMSError(100, @"The Authentication Attempt encountered an error", 0, 0);
   v15 = [AMSPromise promiseWithError:v20];
 
-  v13 = 0;
+  error2 = 0;
 LABEL_8:
 
   return v15;
 }
 
-- (id)authenticateTaskWithRequest:(id)a3
+- (id)authenticateTaskWithRequest:(id)request
 {
-  v3 = a3;
-  v4 = [[AMSAuthenticateTask alloc] initWithRequest:v3];
+  requestCopy = request;
+  v4 = [[AMSAuthenticateTask alloc] initWithRequest:requestCopy];
 
   return v4;
 }
 
-- (void)AMSURLSession:(id)a3 task:(id)a4 handleAuthenticateRequest:(id)a5 completion:(id)a6
+- (void)AMSURLSession:(id)session task:(id)task handleAuthenticateRequest:(id)request completion:(id)completion
 {
-  v8 = a6;
-  v9 = [(AMSDelegateTokenTask *)self authenticateTaskWithRequest:a5];
-  v10 = [v9 performAuthentication];
+  completionCopy = completion;
+  v9 = [(AMSDelegateTokenTask *)self authenticateTaskWithRequest:request];
+  performAuthentication = [v9 performAuthentication];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __80__AMSDelegateTokenTask_AMSURLSession_task_handleAuthenticateRequest_completion___block_invoke;
   v12[3] = &unk_1E73B6A58;
   v12[4] = self;
-  v13 = v8;
-  v11 = v8;
-  [v10 resultWithCompletion:v12];
+  v13 = completionCopy;
+  v11 = completionCopy;
+  [performAuthentication resultWithCompletion:v12];
 }
 
 void __80__AMSDelegateTokenTask_AMSURLSession_task_handleAuthenticateRequest_completion___block_invoke(uint64_t a1, void *a2, void *a3)

@@ -1,31 +1,31 @@
 @interface PGRelationshipWorkAnalyzer
-- (PGRelationshipWorkAnalyzer)initWithRelationshipProcessor:(id)a3;
-- (void)runAnalysisWithProgressBlock:(id)a3;
+- (PGRelationshipWorkAnalyzer)initWithRelationshipProcessor:(id)processor;
+- (void)runAnalysisWithProgressBlock:(id)block;
 @end
 
 @implementation PGRelationshipWorkAnalyzer
 
-- (void)runAnalysisWithProgressBlock:(id)a3
+- (void)runAnalysisWithProgressBlock:(id)block
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(block);
   v5 = 0.0;
   if (!v4 || (v6 = CFAbsoluteTimeGetCurrent(), v6 < 0.01))
   {
 LABEL_7:
     WeakRetained = objc_loadWeakRetained(&self->_processor);
-    v7 = [WeakRetained momentNodes];
-    v8 = [PGPeopleInferencesConveniences momentNodesAtWorkInMomentNodes:v7];
+    momentNodes = [WeakRetained momentNodes];
+    v8 = [PGPeopleInferencesConveniences momentNodesAtWorkInMomentNodes:momentNodes];
 
     v9 = [v8 count];
     v10 = +[PGLogging sharedLogging];
-    v11 = [v10 loggingConnection];
+    loggingConnection = [v10 loggingConnection];
 
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
+    if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_INFO))
     {
       *buf = 134217984;
       *v40 = v9;
-      _os_log_impl(&dword_22F0FC000, v11, OS_LOG_TYPE_INFO, "[PGRelationshipWorkAnalyzer] Number of moments at work: %lu", buf, 0xCu);
+      _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_INFO, "[PGRelationshipWorkAnalyzer] Number of moments at work: %lu", buf, 0xCu);
     }
 
     if (!v9)
@@ -53,19 +53,19 @@ LABEL_7:
       goto LABEL_48;
     }
 
-    v12 = [WeakRetained personNodes];
+    personNodes = [WeakRetained personNodes];
     v31 = v8;
-    v13 = [PGPeopleInferencesConveniences countedPersonNodesFromMomentNodes:v8 amongPersonNodes:v12];
+    v13 = [PGPeopleInferencesConveniences countedPersonNodesFromMomentNodes:v8 amongPersonNodes:personNodes];
 
     v14 = [v13 count];
     v15 = +[PGLogging sharedLogging];
-    v16 = [v15 loggingConnection];
+    loggingConnection2 = [v15 loggingConnection];
 
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
+    if (os_log_type_enabled(loggingConnection2, OS_LOG_TYPE_INFO))
     {
       *buf = 134217984;
       *v40 = v14;
-      _os_log_impl(&dword_22F0FC000, v16, OS_LOG_TYPE_INFO, "[PGRelationshipWorkAnalyzer] Number of people at work: %lu", buf, 0xCu);
+      _os_log_impl(&dword_22F0FC000, loggingConnection2, OS_LOG_TYPE_INFO, "[PGRelationshipWorkAnalyzer] Number of people at work: %lu", buf, 0xCu);
     }
 
     if (v14)
@@ -95,8 +95,8 @@ LABEL_7:
             v24 = *(*(&v33 + 1) + 8 * i);
             if (([v24 ageCategory] - 1) >= 2)
             {
-              v25 = [v24 localIdentifier];
-              v26 = [WeakRetained relationshipAnalyzerPropertiesForPersonLocalIdentifier:v25];
+              localIdentifier = [v24 localIdentifier];
+              v26 = [WeakRetained relationshipAnalyzerPropertiesForPersonLocalIdentifier:localIdentifier];
               if (v26)
               {
                 [v26 registerNumberOfMomentsAtWork:objc_msgSend(v17 amongMomentsAtWork:{"countForObject:", v24), v9}];
@@ -225,16 +225,16 @@ LABEL_49:
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (PGRelationshipWorkAnalyzer)initWithRelationshipProcessor:(id)a3
+- (PGRelationshipWorkAnalyzer)initWithRelationshipProcessor:(id)processor
 {
-  v4 = a3;
+  processorCopy = processor;
   v8.receiver = self;
   v8.super_class = PGRelationshipWorkAnalyzer;
   v5 = [(PGRelationshipWorkAnalyzer *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_processor, v4);
+    objc_storeWeak(&v5->_processor, processorCopy);
   }
 
   return v6;

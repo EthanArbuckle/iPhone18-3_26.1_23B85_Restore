@@ -1,7 +1,7 @@
 @interface MTChapterResultsController
-- (id)indexPathForObject:(id)a3;
-- (id)objectAtIndexPath:(id)a3;
-- (unint64_t)numberOfObjectsInSection:(unint64_t)a3;
+- (id)indexPathForObject:(id)object;
+- (id)objectAtIndexPath:(id)path;
+- (unint64_t)numberOfObjectsInSection:(unint64_t)section;
 - (void)dealloc;
 - (void)didLoadChapters;
 - (void)reloadData;
@@ -22,22 +22,22 @@
 - (void)reloadData
 {
   v3 = +[MTPlayerController defaultInstance];
-  v13 = [v3 player];
+  player = [v3 player];
 
-  v4 = [v13 currentItem];
-  v5 = [(MTChapterResultsController *)self currentItem];
-  v6 = [v5 isEqual:v4];
+  currentItem = [player currentItem];
+  currentItem2 = [(MTChapterResultsController *)self currentItem];
+  v6 = [currentItem2 isEqual:currentItem];
 
   if ((v6 & 1) == 0)
   {
-    v7 = [(MTChapterResultsController *)self currentItem];
+    currentItem3 = [(MTChapterResultsController *)self currentItem];
 
-    if (v7)
+    if (currentItem3)
     {
       v8 = +[NSNotificationCenter defaultCenter];
       v9 = IMMediaItemDidLoadChaptersNotification;
-      v10 = [(MTChapterResultsController *)self currentItem];
-      [v8 removeObserver:self name:v9 object:v10];
+      currentItem4 = [(MTChapterResultsController *)self currentItem];
+      [v8 removeObserver:self name:v9 object:currentItem4];
     }
 
     else
@@ -45,100 +45,100 @@
       v9 = IMMediaItemDidLoadChaptersNotification;
     }
 
-    [(MTChapterResultsController *)self setCurrentItem:v4];
+    [(MTChapterResultsController *)self setCurrentItem:currentItem];
     v11 = +[NSNotificationCenter defaultCenter];
-    v12 = [(MTChapterResultsController *)self currentItem];
-    [v11 addObserver:self selector:"didLoadChapters" name:v9 object:v12];
+    currentItem5 = [(MTChapterResultsController *)self currentItem];
+    [v11 addObserver:self selector:"didLoadChapters" name:v9 object:currentItem5];
 
     [(MTChapterResultsController *)self didLoadChapters];
   }
 }
 
-- (id)objectAtIndexPath:(id)a3
+- (id)objectAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(MTChapterResultsController *)self chapters];
-  v6 = [v4 row];
+  pathCopy = path;
+  chapters = [(MTChapterResultsController *)self chapters];
+  v6 = [pathCopy row];
 
-  v7 = [v5 objectAtIndex:v6];
+  v7 = [chapters objectAtIndex:v6];
 
   return v7;
 }
 
-- (id)indexPathForObject:(id)a3
+- (id)indexPathForObject:(id)object
 {
-  v4 = a3;
-  v5 = [(MTChapterResultsController *)self chapters];
-  v6 = [v5 indexOfObject:v4];
+  objectCopy = object;
+  chapters = [(MTChapterResultsController *)self chapters];
+  v6 = [chapters indexOfObject:objectCopy];
 
   return [NSIndexPath indexPathForRow:v6 inSection:0];
 }
 
-- (unint64_t)numberOfObjectsInSection:(unint64_t)a3
+- (unint64_t)numberOfObjectsInSection:(unint64_t)section
 {
-  v3 = [(MTChapterResultsController *)self chapters];
-  v4 = [v3 count];
+  chapters = [(MTChapterResultsController *)self chapters];
+  v4 = [chapters count];
 
   return v4;
 }
 
 - (void)didLoadChapters
 {
-  v3 = [(MTChapterResultsController *)self currentItem];
-  v24 = [v3 timeChapters];
+  currentItem = [(MTChapterResultsController *)self currentItem];
+  timeChapters = [currentItem timeChapters];
 
-  v4 = [(MTResultsController *)self delegate];
-  [v4 controllerWillChangeContent:self];
+  delegate = [(MTResultsController *)self delegate];
+  [delegate controllerWillChangeContent:self];
 
-  v5 = [(MTChapterResultsController *)self chapters];
-  v6 = [v5 count];
+  chapters = [(MTChapterResultsController *)self chapters];
+  v6 = [chapters count];
 
   if (v6)
   {
     v7 = 0;
     do
     {
-      v8 = [(MTChapterResultsController *)self chapters];
-      v9 = [v8 objectAtIndexedSubscript:v7];
+      chapters2 = [(MTChapterResultsController *)self chapters];
+      v9 = [chapters2 objectAtIndexedSubscript:v7];
 
-      v10 = [(MTResultsController *)self delegate];
+      delegate2 = [(MTResultsController *)self delegate];
       v11 = [NSIndexPath indexPathForRow:v7 inSection:0];
-      [v10 controller:self didChangeObject:v9 atIndexPath:v11 forChangeType:2 newIndexPath:0];
+      [delegate2 controller:self didChangeObject:v9 atIndexPath:v11 forChangeType:2 newIndexPath:0];
 
       ++v7;
-      v12 = [(MTChapterResultsController *)self chapters];
-      v13 = [v12 count];
+      chapters3 = [(MTChapterResultsController *)self chapters];
+      v13 = [chapters3 count];
     }
 
     while (v7 < v13);
   }
 
-  [(MTChapterResultsController *)self setChapters:v24];
-  v14 = [(MTChapterResultsController *)self chapters];
-  v15 = [v14 count];
+  [(MTChapterResultsController *)self setChapters:timeChapters];
+  chapters4 = [(MTChapterResultsController *)self chapters];
+  v15 = [chapters4 count];
 
   if (v15)
   {
     v16 = 0;
     do
     {
-      v17 = [(MTChapterResultsController *)self chapters];
-      v18 = [v17 objectAtIndexedSubscript:v16];
+      chapters5 = [(MTChapterResultsController *)self chapters];
+      v18 = [chapters5 objectAtIndexedSubscript:v16];
 
-      v19 = [(MTResultsController *)self delegate];
+      delegate3 = [(MTResultsController *)self delegate];
       v20 = [NSIndexPath indexPathForRow:v16 inSection:0];
-      [v19 controller:self didChangeObject:v18 atIndexPath:0 forChangeType:1 newIndexPath:v20];
+      [delegate3 controller:self didChangeObject:v18 atIndexPath:0 forChangeType:1 newIndexPath:v20];
 
       ++v16;
-      v21 = [(MTChapterResultsController *)self chapters];
-      v22 = [v21 count];
+      chapters6 = [(MTChapterResultsController *)self chapters];
+      v22 = [chapters6 count];
     }
 
     while (v16 < v22);
   }
 
-  v23 = [(MTResultsController *)self delegate];
-  [v23 controllerDidChangeContent:self];
+  delegate4 = [(MTResultsController *)self delegate];
+  [delegate4 controllerDidChangeContent:self];
 }
 
 @end

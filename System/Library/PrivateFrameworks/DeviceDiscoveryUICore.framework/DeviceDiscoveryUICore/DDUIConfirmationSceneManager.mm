@@ -1,7 +1,7 @@
 @interface DDUIConfirmationSceneManager
 - (_TtC21DeviceDiscoveryUICore28DDUIConfirmationSceneManager)init;
-- (id)scene:(id)a3 handleActions:(id)a4;
-- (void)sceneDidDeactivate:(id)a3 withContext:(id)a4;
+- (id)scene:(id)scene handleActions:(id)actions;
+- (void)sceneDidDeactivate:(id)deactivate withContext:(id)context;
 @end
 
 @implementation DDUIConfirmationSceneManager
@@ -16,14 +16,14 @@
   return [(DDUIConfirmationSceneManager *)&v6 init];
 }
 
-- (id)scene:(id)a3 handleActions:(id)a4
+- (id)scene:(id)scene handleActions:(id)actions
 {
   sub_230F38538();
   sub_230F38584();
   v6 = sub_230F39778();
-  v7 = a3;
-  v8 = self;
-  sub_230F36054(v7, v6);
+  sceneCopy = scene;
+  selfCopy = self;
+  sub_230F36054(sceneCopy, v6);
   v10 = v9;
 
   if (v10)
@@ -39,19 +39,19 @@
   return v11;
 }
 
-- (void)sceneDidDeactivate:(id)a3 withContext:(id)a4
+- (void)sceneDidDeactivate:(id)deactivate withContext:(id)context
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = self;
-  v8 = [v9 identifier];
+  deactivateCopy = deactivate;
+  contextCopy = context;
+  selfCopy = self;
+  identifier = [deactivateCopy identifier];
   sub_230F39608();
 
-  LOBYTE(v8) = sub_230F368AC();
+  LOBYTE(identifier) = sub_230F368AC();
 
-  if (v8)
+  if (identifier)
   {
-    sub_230F36AE4(v9, 1);
+    sub_230F36AE4(deactivateCopy, 1);
   }
 }
 

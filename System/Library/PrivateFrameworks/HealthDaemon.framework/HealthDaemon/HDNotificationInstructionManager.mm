@@ -1,62 +1,62 @@
 @interface HDNotificationInstructionManager
-- (BOOL)enumerateValidNotificationInstructionsForClientIdentifier:(id)a3 action:(int64_t)a4 error:(id *)a5 enumerationBlock:(id)a6;
-- (BOOL)invalidateNotificationInstructionsWithMessageIdentifiers:(id)a3 error:(id *)a4;
-- (BOOL)obliterateNotificationInstructionsWithError:(id *)a3;
-- (HDNotificationInstructionManager)initWithProfile:(id)a3 unitTest_nowDate:(id)a4 unitTest_didEvaluateIfMaintenanceWorkIsNeeded:(id)a5;
+- (BOOL)enumerateValidNotificationInstructionsForClientIdentifier:(id)identifier action:(int64_t)action error:(id *)error enumerationBlock:(id)block;
+- (BOOL)invalidateNotificationInstructionsWithMessageIdentifiers:(id)identifiers error:(id *)error;
+- (BOOL)obliterateNotificationInstructionsWithError:(id *)error;
+- (HDNotificationInstructionManager)initWithProfile:(id)profile unitTest_nowDate:(id)date unitTest_didEvaluateIfMaintenanceWorkIsNeeded:(id)needed;
 - (id)diagnosticDescription;
-- (void)_lock_unregisterObserver:(void *)a3 clientIdentifier:;
+- (void)_lock_unregisterObserver:(void *)observer clientIdentifier:;
 - (void)_queue_enqueueMaintenanceInvalidationIfNeeded;
-- (void)_unitTest_notifyDidEvaluateIfMaintenanceWorkIsNeeded:(void *)a1;
+- (void)_unitTest_notifyDidEvaluateIfMaintenanceWorkIsNeeded:(void *)needed;
 - (void)currentDate;
-- (void)database:(id)a3 protectedDataDidBecomeAvailable:(BOOL)a4;
-- (void)insertNotificationInstruction:(id)a3 completion:(id)a4;
-- (void)profileDidBecomeReady:(id)a3;
-- (void)registerObserver:(id)a3 forClientIdentifier:(id)a4 queue:(id)a5;
-- (void)unregisterObserver:(id)a3;
-- (void)unregisterObserver:(id)a3 forClientIdentifier:(id)a4;
+- (void)database:(id)database protectedDataDidBecomeAvailable:(BOOL)available;
+- (void)insertNotificationInstruction:(id)instruction completion:(id)completion;
+- (void)profileDidBecomeReady:(id)ready;
+- (void)registerObserver:(id)observer forClientIdentifier:(id)identifier queue:(id)queue;
+- (void)unregisterObserver:(id)observer;
+- (void)unregisterObserver:(id)observer forClientIdentifier:(id)identifier;
 @end
 
 @implementation HDNotificationInstructionManager
 
-- (HDNotificationInstructionManager)initWithProfile:(id)a3 unitTest_nowDate:(id)a4 unitTest_didEvaluateIfMaintenanceWorkIsNeeded:(id)a5
+- (HDNotificationInstructionManager)initWithProfile:(id)profile unitTest_nowDate:(id)date unitTest_didEvaluateIfMaintenanceWorkIsNeeded:(id)needed
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  profileCopy = profile;
+  dateCopy = date;
+  neededCopy = needed;
   v21.receiver = self;
   v21.super_class = HDNotificationInstructionManager;
   v11 = [(HDNotificationInstructionManager *)&v21 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_profile, v8);
+    objc_storeWeak(&v11->_profile, profileCopy);
     v13 = HKCreateSerialDispatchQueue();
     queue = v12->_queue;
     v12->_queue = v13;
 
     v12->_lock._os_unfair_lock_opaque = 0;
-    if (v9)
+    if (dateCopy)
     {
-      objc_storeStrong(&v12->_unitTest_nowDate, a4);
+      objc_storeStrong(&v12->_unitTest_nowDate, date);
     }
 
-    if (v10)
+    if (neededCopy)
     {
-      [(HDNotificationInstructionManager *)v12 setUnitTest_didEvaluateIfMaintenanceWorkIsNeeded:v10];
+      [(HDNotificationInstructionManager *)v12 setUnitTest_didEvaluateIfMaintenanceWorkIsNeeded:neededCopy];
     }
 
     v12->_queue_hasEnqueuedMaintenanceWork = 0;
-    v15 = [v8 daemon];
-    v16 = [v15 behavior];
-    v12->_queue_hasInstructionsToInvalidate = [v16 invalidatesNotificationInstructionsOnLaunch];
+    daemon = [profileCopy daemon];
+    behavior = [daemon behavior];
+    v12->_queue_hasInstructionsToInvalidate = [behavior invalidatesNotificationInstructionsOnLaunch];
 
     v17 = objc_alloc_init(MEMORY[0x277CBEB38]);
     lock_observersByClientIdentifier = v12->_lock_observersByClientIdentifier;
     v12->_lock_observersByClientIdentifier = v17;
 
-    [v8 registerProfileReadyObserver:v12 queue:v12->_queue];
-    v19 = [MEMORY[0x277D10AF8] sharedDiagnosticManager];
-    [v19 addObject:v12];
+    [profileCopy registerProfileReadyObserver:v12 queue:v12->_queue];
+    mEMORY[0x277D10AF8] = [MEMORY[0x277D10AF8] sharedDiagnosticManager];
+    [mEMORY[0x277D10AF8] addObject:v12];
   }
 
   return v12;
@@ -71,7 +71,7 @@
   v10 = __57__HDNotificationInstructionManager_diagnosticDescription__block_invoke;
   v11 = &unk_278613920;
   v12 = v3;
-  v13 = self;
+  selfCopy = self;
   v5 = v3;
   dispatch_async_and_wait(queue, &v8);
   v6 = [v5 componentsJoinedByString:{@"\n", v8, v9, v10, v11}];
@@ -90,14 +90,14 @@ void __57__HDNotificationInstructionManager_diagnosticDescription__block_invoke(
   [v4 addObject:v5];
 }
 
-- (void)_unitTest_notifyDidEvaluateIfMaintenanceWorkIsNeeded:(void *)a1
+- (void)_unitTest_notifyDidEvaluateIfMaintenanceWorkIsNeeded:(void *)needed
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = [a1 unitTest_didEvaluateIfMaintenanceWorkIsNeeded];
-  v5 = v4;
-  if (v4)
+  unitTest_didEvaluateIfMaintenanceWorkIsNeeded = [needed unitTest_didEvaluateIfMaintenanceWorkIsNeeded];
+  v5 = unitTest_didEvaluateIfMaintenanceWorkIsNeeded;
+  if (unitTest_didEvaluateIfMaintenanceWorkIsNeeded)
   {
-    (*(v4 + 16))(v4, a2);
+    (*(unitTest_didEvaluateIfMaintenanceWorkIsNeeded + 16))(unitTest_didEvaluateIfMaintenanceWorkIsNeeded, a2);
   }
 
   else
@@ -110,7 +110,7 @@ void __57__HDNotificationInstructionManager_diagnosticDescription__block_invoke(
       v10 = 138543874;
       v11 = objc_opt_class();
       v12 = 2048;
-      v13 = a1;
+      neededCopy = needed;
       v14 = 1024;
       v15 = a2;
       v8 = v11;
@@ -123,37 +123,37 @@ void __57__HDNotificationInstructionManager_diagnosticDescription__block_invoke(
 
 - (void)currentDate
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1[6];
+    v2 = self[6];
     if (v2)
     {
-      a1 = v2;
+      self = v2;
     }
 
     else
     {
-      a1 = [MEMORY[0x277CBEAA8] date];
+      self = [MEMORY[0x277CBEAA8] date];
     }
 
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (void)profileDidBecomeReady:(id)a3
+- (void)profileDidBecomeReady:(id)ready
 {
   queue = self->_queue;
-  v5 = a3;
+  readyCopy = ready;
   dispatch_assert_queue_V2(queue);
-  v6 = [v5 database];
-  [v6 addProtectedDataObserver:self queue:self->_queue];
+  database = [readyCopy database];
+  [database addProtectedDataObserver:self queue:self->_queue];
 
-  v7 = [v5 database];
+  database2 = [readyCopy database];
 
-  LODWORD(v5) = [v7 isProtectedDataAvailable];
-  if (v5)
+  LODWORD(readyCopy) = [database2 isProtectedDataAvailable];
+  if (readyCopy)
   {
 
     [(HDNotificationInstructionManager *)self _queue_enqueueMaintenanceInvalidationIfNeeded];
@@ -162,43 +162,43 @@ void __57__HDNotificationInstructionManager_diagnosticDescription__block_invoke(
 
 - (void)_queue_enqueueMaintenanceInvalidationIfNeeded
 {
-  if (a1)
+  if (self)
   {
-    dispatch_assert_queue_V2(*(a1 + 16));
-    if (*(a1 + 24) == 1 && (*(a1 + 25) & 1) == 0)
+    dispatch_assert_queue_V2(*(self + 16));
+    if (*(self + 24) == 1 && (*(self + 25) & 1) == 0)
     {
-      v2 = [a1 maintenanceOperationName];
-      WeakRetained = objc_loadWeakRetained((a1 + 8));
-      v4 = [WeakRetained database];
+      maintenanceOperationName = [self maintenanceOperationName];
+      WeakRetained = objc_loadWeakRetained((self + 8));
+      database = [WeakRetained database];
       v9[0] = MEMORY[0x277D85DD0];
       v9[1] = 3221225472;
       v9[2] = __81__HDNotificationInstructionManager__queue_enqueueMaintenanceInvalidationIfNeeded__block_invoke;
       v9[3] = &unk_278625D40;
-      v9[4] = a1;
-      v5 = [HDMaintenanceOperation maintenanceOperationWithName:v2 database:v4 asynchronousBlock:v9];
+      v9[4] = self;
+      v5 = [HDMaintenanceOperation maintenanceOperationWithName:maintenanceOperationName database:database asynchronousBlock:v9];
 
-      v6 = objc_loadWeakRetained((a1 + 8));
-      v7 = [v6 daemon];
-      v8 = [v7 maintenanceWorkCoordinator];
-      [v8 enqueueMaintenanceOperation:v5];
+      v6 = objc_loadWeakRetained((self + 8));
+      daemon = [v6 daemon];
+      maintenanceWorkCoordinator = [daemon maintenanceWorkCoordinator];
+      [maintenanceWorkCoordinator enqueueMaintenanceOperation:v5];
 
-      *(a1 + 25) = 1;
-      [(HDNotificationInstructionManager *)a1 _unitTest_notifyDidEvaluateIfMaintenanceWorkIsNeeded:?];
+      *(self + 25) = 1;
+      [(HDNotificationInstructionManager *)self _unitTest_notifyDidEvaluateIfMaintenanceWorkIsNeeded:?];
     }
 
     else
     {
 
-      [(HDNotificationInstructionManager *)a1 _unitTest_notifyDidEvaluateIfMaintenanceWorkIsNeeded:?];
+      [(HDNotificationInstructionManager *)self _unitTest_notifyDidEvaluateIfMaintenanceWorkIsNeeded:?];
     }
   }
 }
 
-- (void)database:(id)a3 protectedDataDidBecomeAvailable:(BOOL)a4
+- (void)database:(id)database protectedDataDidBecomeAvailable:(BOOL)available
 {
-  v4 = a4;
+  availableCopy = available;
   dispatch_assert_queue_V2(self->_queue);
-  if (v4)
+  if (availableCopy)
   {
 
     [(HDNotificationInstructionManager *)self _queue_enqueueMaintenanceInvalidationIfNeeded];
@@ -472,27 +472,27 @@ LABEL_11:
   return v13;
 }
 
-- (BOOL)enumerateValidNotificationInstructionsForClientIdentifier:(id)a3 action:(int64_t)a4 error:(id *)a5 enumerationBlock:(id)a6
+- (BOOL)enumerateValidNotificationInstructionsForClientIdentifier:(id)identifier action:(int64_t)action error:(id *)error enumerationBlock:(id)block
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = [(HDNotificationInstructionManager *)self currentDate];
+  identifierCopy = identifier;
+  blockCopy = block;
+  currentDate = [(HDNotificationInstructionManager *)self currentDate];
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v14 = [WeakRetained database];
+  database = [WeakRetained database];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __124__HDNotificationInstructionManager_enumerateValidNotificationInstructionsForClientIdentifier_action_error_enumerationBlock___block_invoke;
   v19[3] = &unk_27861F2A0;
-  v20 = v10;
-  v21 = v12;
-  v22 = v11;
-  v23 = a4;
-  v15 = v11;
-  v16 = v12;
-  v17 = v10;
-  LOBYTE(a5) = [HDNotificationInstructionEntity attemptProtectedReadTransactionWithUnprotectedFallbackWithHealthDatabase:v14 error:a5 block:v19];
+  v20 = identifierCopy;
+  v21 = currentDate;
+  v22 = blockCopy;
+  actionCopy = action;
+  v15 = blockCopy;
+  v16 = currentDate;
+  v17 = identifierCopy;
+  LOBYTE(error) = [HDNotificationInstructionEntity attemptProtectedReadTransactionWithUnprotectedFallbackWithHealthDatabase:database error:error block:v19];
 
-  return a5;
+  return error;
 }
 
 BOOL __124__HDNotificationInstructionManager_enumerateValidNotificationInstructionsForClientIdentifier_action_error_enumerationBlock___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -562,20 +562,20 @@ LABEL_11:
   return v11;
 }
 
-- (void)insertNotificationInstruction:(id)a3 completion:(id)a4
+- (void)insertNotificationInstruction:(id)instruction completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  instructionCopy = instruction;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __77__HDNotificationInstructionManager_insertNotificationInstruction_completion___block_invoke;
   block[3] = &unk_278614160;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = instructionCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = instructionCopy;
   dispatch_async(queue, block);
 }
 
@@ -655,21 +655,21 @@ void __87__HDNotificationInstructionManager__queue_insertOrIgnoreNotificationIns
   }
 }
 
-- (BOOL)invalidateNotificationInstructionsWithMessageIdentifiers:(id)a3 error:(id *)a4
+- (BOOL)invalidateNotificationInstructionsWithMessageIdentifiers:(id)identifiers error:(id *)error
 {
-  v6 = a3;
+  identifiersCopy = identifiers;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v8 = [WeakRetained database];
+  database = [WeakRetained database];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __99__HDNotificationInstructionManager_invalidateNotificationInstructionsWithMessageIdentifiers_error___block_invoke;
   v11[3] = &unk_278613218;
-  v12 = v6;
-  v13 = self;
-  v9 = v6;
-  LOBYTE(a4) = [(HDHealthEntity *)HDNotificationInstructionEntity performWriteTransactionWithHealthDatabase:v8 error:a4 block:v11];
+  v12 = identifiersCopy;
+  selfCopy = self;
+  v9 = identifiersCopy;
+  LOBYTE(error) = [(HDHealthEntity *)HDNotificationInstructionEntity performWriteTransactionWithHealthDatabase:database error:error block:v11];
 
-  return a4;
+  return error;
 }
 
 uint64_t __99__HDNotificationInstructionManager_invalidateNotificationInstructionsWithMessageIdentifiers_error___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -727,74 +727,74 @@ LABEL_11:
   return v12;
 }
 
-- (BOOL)obliterateNotificationInstructionsWithError:(id *)a3
+- (BOOL)obliterateNotificationInstructionsWithError:(id *)error
 {
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v5 = [WeakRetained database];
-  LOBYTE(a3) = [(HDHealthEntity *)HDNotificationInstructionEntity performWriteTransactionWithHealthDatabase:v5 error:a3 block:&__block_literal_global_169];
+  database = [WeakRetained database];
+  LOBYTE(error) = [(HDHealthEntity *)HDNotificationInstructionEntity performWriteTransactionWithHealthDatabase:database error:error block:&__block_literal_global_169];
 
-  return a3;
+  return error;
 }
 
-- (void)registerObserver:(id)a3 forClientIdentifier:(id)a4 queue:(id)a5
+- (void)registerObserver:(id)observer forClientIdentifier:(id)identifier queue:(id)queue
 {
-  v13 = a3;
-  v8 = a4;
-  v9 = a5;
+  observerCopy = observer;
+  identifierCopy = identifier;
+  queueCopy = queue;
   os_unfair_lock_lock(&self->_lock);
-  v10 = [(NSMutableDictionary *)self->_lock_observersByClientIdentifier objectForKeyedSubscript:v8];
+  v10 = [(NSMutableDictionary *)self->_lock_observersByClientIdentifier objectForKeyedSubscript:identifierCopy];
   if (!v10)
   {
     v11 = objc_alloc(MEMORY[0x277CCD738]);
     v12 = HKLogInfrastructure();
-    v10 = [v11 initWithName:v8 loggingCategory:v12];
+    v10 = [v11 initWithName:identifierCopy loggingCategory:v12];
 
-    [(NSMutableDictionary *)self->_lock_observersByClientIdentifier setObject:v10 forKeyedSubscript:v8];
+    [(NSMutableDictionary *)self->_lock_observersByClientIdentifier setObject:v10 forKeyedSubscript:identifierCopy];
   }
 
-  [v10 registerObserver:v13 queue:v9];
+  [v10 registerObserver:observerCopy queue:queueCopy];
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)unregisterObserver:(id)a3 forClientIdentifier:(id)a4
+- (void)unregisterObserver:(id)observer forClientIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = a3;
+  identifierCopy = identifier;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_lock);
-  [(HDNotificationInstructionManager *)self _lock_unregisterObserver:v7 clientIdentifier:v6];
+  [(HDNotificationInstructionManager *)self _lock_unregisterObserver:observerCopy clientIdentifier:identifierCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)_lock_unregisterObserver:(void *)a3 clientIdentifier:
+- (void)_lock_unregisterObserver:(void *)observer clientIdentifier:
 {
-  v5 = a3;
-  if (a1)
+  observerCopy = observer;
+  if (self)
   {
     v6 = a2;
-    os_unfair_lock_assert_owner((a1 + 28));
-    v7 = [*(a1 + 32) objectForKeyedSubscript:v5];
+    os_unfair_lock_assert_owner((self + 28));
+    v7 = [*(self + 32) objectForKeyedSubscript:observerCopy];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __78__HDNotificationInstructionManager__lock_unregisterObserver_clientIdentifier___block_invoke;
     v8[3] = &unk_278613920;
-    v8[4] = a1;
-    v9 = v5;
+    v8[4] = self;
+    v9 = observerCopy;
     [v7 unregisterObserver:v6 runIfLastObserver:v8];
   }
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_lock);
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [(NSMutableDictionary *)self->_lock_observersByClientIdentifier allKeys];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  allKeys = [(NSMutableDictionary *)self->_lock_observersByClientIdentifier allKeys];
+  v6 = [allKeys countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -806,14 +806,14 @@ LABEL_11:
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
-        [(HDNotificationInstructionManager *)self _lock_unregisterObserver:v4 clientIdentifier:*(*(&v11 + 1) + 8 * v9++)];
+        [(HDNotificationInstructionManager *)self _lock_unregisterObserver:observerCopy clientIdentifier:*(*(&v11 + 1) + 8 * v9++)];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [allKeys countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);

@@ -1,12 +1,12 @@
 @interface SafariProfileDelegate
-- (id)sfWebExtensionsControllerTabGroupManager:(id)a3;
-- (id)sfWebExtensionsControllersContentBlockerManagersForAllProfiles:(id)a3;
-- (id)sfWebExtensionsControllersForAllProfiles:(id)a3;
+- (id)sfWebExtensionsControllerTabGroupManager:(id)manager;
+- (id)sfWebExtensionsControllersContentBlockerManagersForAllProfiles:(id)profiles;
+- (id)sfWebExtensionsControllersForAllProfiles:(id)profiles;
 @end
 
 @implementation SafariProfileDelegate
 
-- (id)sfWebExtensionsControllersForAllProfiles:(id)a3
+- (id)sfWebExtensionsControllersForAllProfiles:(id)profiles
 {
   v3 = +[ContentBlockerLoader defaultWebExtensionsController];
   v6 = v3;
@@ -15,7 +15,7 @@
   return v4;
 }
 
-- (id)sfWebExtensionsControllersContentBlockerManagersForAllProfiles:(id)a3
+- (id)sfWebExtensionsControllersContentBlockerManagersForAllProfiles:(id)profiles
 {
   v3 = +[ContentBlockerLoader defaultContentBlockerManager];
   v6 = v3;
@@ -24,7 +24,7 @@
   return v4;
 }
 
-- (id)sfWebExtensionsControllerTabGroupManager:(id)a3
+- (id)sfWebExtensionsControllerTabGroupManager:(id)manager
 {
   v3 = +[ContentBlockerLoader _tabGroupManager];
 

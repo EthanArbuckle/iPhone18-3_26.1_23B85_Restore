@@ -1,50 +1,50 @@
 @interface SBApplicationLibraryObserver
 + (SBApplicationLibraryObserver)new;
 - (SBApplicationLibraryObserver)init;
-- (SBApplicationLibraryObserver)initWithAppLibrary:(id)a3 splashBoardController:(id)a4;
-- (id)suspendCalloutsAssertionWithReason:(id)a3;
-- (void)_addObserver:(id)a3 table:(id)a4;
-- (void)_didAddApplications:(id)a3;
-- (void)_didAddPlaceholders:(id)a3;
-- (void)_didCancelPlaceholders:(id)a3;
-- (void)_didChangeNetworkUsage:(BOOL)a3;
-- (void)_didDemoteApplications:(id)a3;
-- (void)_didRemoveApplications:(id)a3;
-- (void)_didReplaceApplications:(id)a3;
-- (void)_didUpdateApplications:(id)a3;
-- (void)_removeObserver:(id)a3 table:(id)a4;
-- (void)_waitForLaunchImageGenerationForApplications:(id)a3;
-- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)a3 userInfo:(id)a4;
-- (void)profileConnectionDidReceiveProfileListChangedNotification:(id)a3 userInfo:(id)a4;
+- (SBApplicationLibraryObserver)initWithAppLibrary:(id)library splashBoardController:(id)controller;
+- (id)suspendCalloutsAssertionWithReason:(id)reason;
+- (void)_addObserver:(id)observer table:(id)table;
+- (void)_didAddApplications:(id)applications;
+- (void)_didAddPlaceholders:(id)placeholders;
+- (void)_didCancelPlaceholders:(id)placeholders;
+- (void)_didChangeNetworkUsage:(BOOL)usage;
+- (void)_didDemoteApplications:(id)applications;
+- (void)_didRemoveApplications:(id)applications;
+- (void)_didReplaceApplications:(id)applications;
+- (void)_didUpdateApplications:(id)applications;
+- (void)_removeObserver:(id)observer table:(id)table;
+- (void)_waitForLaunchImageGenerationForApplications:(id)applications;
+- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)notification userInfo:(id)info;
+- (void)profileConnectionDidReceiveProfileListChangedNotification:(id)notification userInfo:(id)info;
 @end
 
 @implementation SBApplicationLibraryObserver
 
 + (SBApplicationLibraryObserver)new
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"SBApplicationLibraryObserver.m" lineNumber:49 description:@"-[SBApplicationLibraryObserver new] is unavailable."];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SBApplicationLibraryObserver.m" lineNumber:49 description:@"-[SBApplicationLibraryObserver new] is unavailable."];
 
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___SBApplicationLibraryObserver;
   return objc_msgSendSuper2(&v6, "new");
 }
 
 - (SBApplicationLibraryObserver)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"SBApplicationLibraryObserver.m" lineNumber:54 description:@"-[SBApplicationLibraryObserver init] is unavailable."];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SBApplicationLibraryObserver.m" lineNumber:54 description:@"-[SBApplicationLibraryObserver init] is unavailable."];
 
   v6.receiver = self;
   v6.super_class = SBApplicationLibraryObserver;
   return [(SBApplicationLibraryObserver *)&v6 init];
 }
 
-- (SBApplicationLibraryObserver)initWithAppLibrary:(id)a3 splashBoardController:(id)a4
+- (SBApplicationLibraryObserver)initWithAppLibrary:(id)library splashBoardController:(id)controller
 {
   v66 = *MEMORY[0x277D85DE8];
-  v41 = a3;
-  v42 = a4;
+  libraryCopy = library;
+  controllerCopy = controller;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [SBApplicationLibraryObserver initWithAppLibrary:splashBoardController:];
@@ -64,7 +64,7 @@
     placeholdersByBundleID = v7->_placeholdersByBundleID;
     v7->_placeholdersByBundleID = v10;
 
-    v12 = [MEMORY[0x277CCAA50] hashTableWithOptions:{512, v41}];
+    v12 = [MEMORY[0x277CCAA50] hashTableWithOptions:{512, libraryCopy}];
     applicationObservers = v7->_applicationObservers;
     v7->_applicationObservers = v12;
 
@@ -72,8 +72,8 @@
     placeholderObservers = v7->_placeholderObservers;
     v7->_placeholderObservers = v14;
 
-    objc_storeStrong(&v7->_appLibrary, a3);
-    objc_storeStrong(&v7->_splashBoardController, a4);
+    objc_storeStrong(&v7->_appLibrary, library);
+    objc_storeStrong(&v7->_splashBoardController, controller);
     objc_initWeak(&location, v7);
     appLibrary = v7->_appLibrary;
     v61[0] = MEMORY[0x277D85DD0];
@@ -135,8 +135,8 @@
     v46 = 0u;
     v43 = 0u;
     v44 = 0u;
-    v32 = [(FBSApplicationLibrary *)v7->_appLibrary allPlaceholders];
-    v33 = [v32 countByEnumeratingWithState:&v43 objects:v65 count:16];
+    allPlaceholders = [(FBSApplicationLibrary *)v7->_appLibrary allPlaceholders];
+    v33 = [allPlaceholders countByEnumeratingWithState:&v43 objects:v65 count:16];
     if (v33)
     {
       v34 = *v44;
@@ -146,23 +146,23 @@
         {
           if (*v44 != v34)
           {
-            objc_enumerationMutation(v32);
+            objc_enumerationMutation(allPlaceholders);
           }
 
           v36 = *(*(&v43 + 1) + 8 * i);
           v37 = v7->_placeholdersByBundleID;
-          v38 = [v36 bundleIdentifier];
-          [(NSMutableDictionary *)v37 setObject:v36 forKey:v38];
+          bundleIdentifier = [v36 bundleIdentifier];
+          [(NSMutableDictionary *)v37 setObject:v36 forKey:bundleIdentifier];
         }
 
-        v33 = [v32 countByEnumeratingWithState:&v43 objects:v65 count:16];
+        v33 = [allPlaceholders countByEnumeratingWithState:&v43 objects:v65 count:16];
       }
 
       while (v33);
     }
 
-    v39 = [MEMORY[0x277D262A0] sharedConnection];
-    [v39 registerObserver:v7];
+    mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+    [mEMORY[0x277D262A0] registerObserver:v7];
 
     objc_destroyWeak(&v48);
     objc_destroyWeak(&v50);
@@ -235,11 +235,11 @@ void __73__SBApplicationLibraryObserver_initWithAppLibrary_splashBoardController
   [WeakRetained _didChangeNetworkUsage:a2];
 }
 
-- (id)suspendCalloutsAssertionWithReason:(id)a3
+- (id)suspendCalloutsAssertionWithReason:(id)reason
 {
   v44 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  reasonCopy = reason;
+  if (!reasonCopy)
   {
     [(SBApplicationLibraryObserver *)a2 suspendCalloutsAssertionWithReason:?];
   }
@@ -262,7 +262,7 @@ void __73__SBApplicationLibraryObserver_initWithAppLibrary_splashBoardController
   v32[3] = &unk_2783AEA70;
   v7 = v6;
   v33 = v7;
-  v34 = self;
+  selfCopy = self;
   v35 = &v36;
   v8 = MEMORY[0x223D6F7F0](v32);
   v9 = objc_alloc(MEMORY[0x277CF0B58]);
@@ -284,7 +284,7 @@ void __73__SBApplicationLibraryObserver_initWithAppLibrary_splashBoardController
   v14 = v12;
   v28 = v14;
   [v13 setInvalidationHandler:&v24];
-  v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"%p: %@", v13, v5, v24, v25, v26, v27];
+  v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"%p: %@", v13, reasonCopy, v24, v25, v26, v27];
   v16 = v37[5];
   v37[5] = v15;
 
@@ -374,28 +374,28 @@ void __67__SBApplicationLibraryObserver_suspendCalloutsAssertionWithReason___blo
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)_addObserver:(id)a3 table:(id)a4
+- (void)_addObserver:(id)observer table:(id)table
 {
-  v6 = a3;
-  v5 = a4;
-  if (v6 && ([v5 containsObject:v6] & 1) == 0)
+  observerCopy = observer;
+  tableCopy = table;
+  if (observerCopy && ([tableCopy containsObject:observerCopy] & 1) == 0)
   {
-    [v5 addObject:v6];
+    [tableCopy addObject:observerCopy];
   }
 }
 
-- (void)_removeObserver:(id)a3 table:(id)a4
+- (void)_removeObserver:(id)observer table:(id)table
 {
-  if (a3)
+  if (observer)
   {
-    [a4 removeObject:?];
+    [table removeObject:?];
   }
 }
 
-- (void)_waitForLaunchImageGenerationForApplications:(id)a3
+- (void)_waitForLaunchImageGenerationForApplications:(id)applications
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  applicationsCopy = applications;
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   v5 = _os_activity_create(&dword_21ED4E000, "XBCapture", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
@@ -407,7 +407,7 @@ void __67__SBApplicationLibraryObserver_suspendCalloutsAssertionWithReason___blo
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v7 = v4;
+  v7 = applicationsCopy;
   v8 = [v7 countByEnumeratingWithState:&v18 objects:v23 count:16];
   if (v8)
   {
@@ -450,18 +450,18 @@ void __67__SBApplicationLibraryObserver_suspendCalloutsAssertionWithReason___blo
   os_activity_scope_leave(&state);
 }
 
-- (void)_didAddPlaceholders:(id)a3
+- (void)_didAddPlaceholders:(id)placeholders
 {
-  v4 = a3;
-  if ([v4 count])
+  placeholdersCopy = placeholders;
+  if ([placeholdersCopy count])
   {
     mainQueueProxy = self->_mainQueueProxy;
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __52__SBApplicationLibraryObserver__didAddPlaceholders___block_invoke;
     v6[3] = &unk_2783A92D8;
-    v7 = v4;
-    v8 = self;
+    v7 = placeholdersCopy;
+    selfCopy = self;
     dispatch_sync(mainQueueProxy, v6);
   }
 }
@@ -529,18 +529,18 @@ void __52__SBApplicationLibraryObserver__didAddPlaceholders___block_invoke(uint6
   }
 }
 
-- (void)_didCancelPlaceholders:(id)a3
+- (void)_didCancelPlaceholders:(id)placeholders
 {
-  v4 = a3;
-  if ([v4 count])
+  placeholdersCopy = placeholders;
+  if ([placeholdersCopy count])
   {
     mainQueueProxy = self->_mainQueueProxy;
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __55__SBApplicationLibraryObserver__didCancelPlaceholders___block_invoke;
     v6[3] = &unk_2783A92D8;
-    v7 = v4;
-    v8 = self;
+    v7 = placeholdersCopy;
+    selfCopy = self;
     dispatch_sync(mainQueueProxy, v6);
   }
 }
@@ -613,18 +613,18 @@ void __55__SBApplicationLibraryObserver__didCancelPlaceholders___block_invoke(ui
   }
 }
 
-- (void)_didAddApplications:(id)a3
+- (void)_didAddApplications:(id)applications
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  applicationsCopy = applications;
   mainQueueProxy = self->_mainQueueProxy;
   v9 = MEMORY[0x277D85DD0];
   v10 = 3221225472;
   v11 = __52__SBApplicationLibraryObserver__didAddApplications___block_invoke;
   v12 = &unk_2783A92D8;
-  v6 = v4;
+  v6 = applicationsCopy;
   v13 = v6;
-  v14 = self;
+  selfCopy = self;
   dispatch_sync(mainQueueProxy, &v9);
   v7 = XBLogFileManifest();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -777,20 +777,20 @@ void __52__SBApplicationLibraryObserver__didAddApplications___block_invoke_2(uin
   }
 }
 
-- (void)_didReplaceApplications:(id)a3
+- (void)_didReplaceApplications:(id)applications
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = [a3 objectEnumerator];
-  v5 = [v4 allObjects];
+  objectEnumerator = [applications objectEnumerator];
+  allObjects = [objectEnumerator allObjects];
 
   mainQueueProxy = self->_mainQueueProxy;
   v10 = MEMORY[0x277D85DD0];
   v11 = 3221225472;
   v12 = __56__SBApplicationLibraryObserver__didReplaceApplications___block_invoke;
   v13 = &unk_2783A92D8;
-  v7 = v5;
+  v7 = allObjects;
   v14 = v7;
-  v15 = self;
+  selfCopy = self;
   dispatch_sync(mainQueueProxy, &v10);
   if ([v7 count])
   {
@@ -946,16 +946,16 @@ void __56__SBApplicationLibraryObserver__didReplaceApplications___block_invoke_2
   }
 }
 
-- (void)_didUpdateApplications:(id)a3
+- (void)_didUpdateApplications:(id)applications
 {
-  v4 = a3;
+  applicationsCopy = applications;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __55__SBApplicationLibraryObserver__didUpdateApplications___block_invoke;
   v6[3] = &unk_2783A92D8;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = applicationsCopy;
+  selfCopy = self;
+  v5 = applicationsCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -996,17 +996,17 @@ void __55__SBApplicationLibraryObserver__didUpdateApplications___block_invoke(ui
   }
 }
 
-- (void)_didRemoveApplications:(id)a3
+- (void)_didRemoveApplications:(id)applications
 {
-  v4 = a3;
+  applicationsCopy = applications;
   mainQueueProxy = self->_mainQueueProxy;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __55__SBApplicationLibraryObserver__didRemoveApplications___block_invoke;
   v7[3] = &unk_2783A92D8;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = applicationsCopy;
+  selfCopy = self;
+  v6 = applicationsCopy;
   dispatch_sync(mainQueueProxy, v7);
 }
 
@@ -1081,17 +1081,17 @@ void __55__SBApplicationLibraryObserver__didRemoveApplications___block_invoke_2(
   }
 }
 
-- (void)_didDemoteApplications:(id)a3
+- (void)_didDemoteApplications:(id)applications
 {
-  v4 = a3;
+  applicationsCopy = applications;
   mainQueueProxy = self->_mainQueueProxy;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __55__SBApplicationLibraryObserver__didDemoteApplications___block_invoke;
   v7[3] = &unk_2783A92D8;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = applicationsCopy;
+  selfCopy = self;
+  v6 = applicationsCopy;
   dispatch_sync(mainQueueProxy, v7);
 }
 
@@ -1166,14 +1166,14 @@ void __55__SBApplicationLibraryObserver__didDemoteApplications___block_invoke_2(
   }
 }
 
-- (void)_didChangeNetworkUsage:(BOOL)a3
+- (void)_didChangeNetworkUsage:(BOOL)usage
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __55__SBApplicationLibraryObserver__didChangeNetworkUsage___block_invoke;
   v3[3] = &unk_2783A9F58;
   v3[4] = self;
-  v4 = a3;
+  usageCopy = usage;
   dispatch_async(MEMORY[0x277D85CD0], v3);
 }
 
@@ -1211,7 +1211,7 @@ void __55__SBApplicationLibraryObserver__didChangeNetworkUsage___block_invoke(ui
   }
 }
 
-- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)a3 userInfo:(id)a4
+- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)notification userInfo:(id)info
 {
   mainQueueProxy = self->_mainQueueProxy;
   block[0] = MEMORY[0x277D85DD0];
@@ -1263,7 +1263,7 @@ void __105__SBApplicationLibraryObserver_profileConnectionDidReceiveEffectiveSet
   }
 }
 
-- (void)profileConnectionDidReceiveProfileListChangedNotification:(id)a3 userInfo:(id)a4
+- (void)profileConnectionDidReceiveProfileListChangedNotification:(id)notification userInfo:(id)info
 {
   mainQueueProxy = self->_mainQueueProxy;
   block[0] = MEMORY[0x277D85DD0];

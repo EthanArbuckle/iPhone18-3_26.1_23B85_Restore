@@ -1,17 +1,17 @@
 @interface BSUIVibrancyShadowValues
-+ (CAColorMatrix)_colorizedShadowColorMatrixForType:(SEL)a3 heroColor:(int64_t)a4 backgroundType:(id)a5;
++ (CAColorMatrix)_colorizedShadowColorMatrixForType:(SEL)type heroColor:(int64_t)color backgroundType:(id)backgroundType;
 + (CAColorMatrix)_darkeningShadowMatrix;
-+ (CAColorMatrix)_shadowColorMatrixForType:(SEL)a3 heroColor:(int64_t)a4 backgroundType:(id)a5;
++ (CAColorMatrix)_shadowColorMatrixForType:(SEL)type heroColor:(int64_t)color backgroundType:(id)backgroundType;
 - (CAColorMatrix)vibrantColorMatrix;
-- (id)transformShadowColor:(id)a3;
-- (void)calculateValuesForConfiguration:(id)a3;
+- (id)transformShadowColor:(id)color;
+- (void)calculateValuesForConfiguration:(id)configuration;
 @end
 
 @implementation BSUIVibrancyShadowValues
 
-- (void)calculateValuesForConfiguration:(id)a3
+- (void)calculateValuesForConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = *(MEMORY[0x1E6979280] + 48);
   v25 = *(MEMORY[0x1E6979280] + 32);
   v26 = v5;
@@ -19,9 +19,9 @@
   v6 = *(MEMORY[0x1E6979280] + 16);
   v23 = *MEMORY[0x1E6979280];
   v24 = v6;
-  if (v4)
+  if (configurationCopy)
   {
-    v7 = v4;
+    v7 = configurationCopy;
     v8 = 1.0;
     do
     {
@@ -30,9 +30,9 @@
       v19 = 0u;
       v20 = 0u;
       v18 = 0u;
-      v9 = [v7 effectType];
-      v10 = [v7 color];
-      +[BSUIVibrancyShadowValues _shadowColorMatrixForType:heroColor:backgroundType:](BSUIVibrancyShadowValues, "_shadowColorMatrixForType:heroColor:backgroundType:", v9, v10, [v7 backgroundType]);
+      effectType = [v7 effectType];
+      color = [v7 color];
+      +[BSUIVibrancyShadowValues _shadowColorMatrixForType:heroColor:backgroundType:](BSUIVibrancyShadowValues, "_shadowColorMatrixForType:heroColor:backgroundType:", effectType, color, [v7 backgroundType]);
 
       v17[2] = v25;
       v17[3] = v26;
@@ -46,15 +46,15 @@
       v16[1] = v19;
       [v7 blendAmount];
       v12 = v11;
-      v13 = [v7 blendConfiguration];
+      blendConfiguration = [v7 blendConfiguration];
 
-      if (!v13)
+      if (!blendConfiguration)
       {
         break;
       }
 
       v8 = v8 * v12;
-      v7 = v13;
+      v7 = blendConfiguration;
     }
 
     while (v8 > 0.00000011920929);
@@ -69,11 +69,11 @@
   *&self->_vibrantColorMatrix.m15 = v15;
 }
 
-- (id)transformShadowColor:(id)a3
+- (id)transformShadowColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   [(BSUIVibrancyShadowValues *)self vibrantColorMatrix];
-  v5 = _transformUIColor(v4, &v7);
+  v5 = _transformUIColor(colorCopy, &v7);
 
   return v5;
 }
@@ -88,12 +88,12 @@
   return result;
 }
 
-+ (CAColorMatrix)_shadowColorMatrixForType:(SEL)a3 heroColor:(int64_t)a4 backgroundType:(id)a5
++ (CAColorMatrix)_shadowColorMatrixForType:(SEL)type heroColor:(int64_t)color backgroundType:(id)backgroundType
 {
-  v14 = a5;
-  if (a4 > 1)
+  backgroundTypeCopy = backgroundType;
+  if (color > 1)
   {
-    if (a4 == 3)
+    if (color == 3)
     {
       v10 = MEMORY[0x1E6979280];
       v11 = *(MEMORY[0x1E6979280] + 48);
@@ -106,7 +106,7 @@
       goto LABEL_14;
     }
 
-    if (a4 != 2)
+    if (color != 2)
     {
       goto LABEL_14;
     }
@@ -114,7 +114,7 @@
     goto LABEL_7;
   }
 
-  if (!a4)
+  if (!color)
   {
 LABEL_7:
     if (!a6 || a6 == 2)
@@ -130,11 +130,11 @@ LABEL_7:
     }
 
 LABEL_11:
-    [a2 _colorizedShadowColorMatrixForType:a4 heroColor:v14 backgroundType:a6];
+    [a2 _colorizedShadowColorMatrixForType:color heroColor:backgroundTypeCopy backgroundType:a6];
     goto LABEL_14;
   }
 
-  if (a4 == 1)
+  if (color == 1)
   {
     goto LABEL_11;
   }
@@ -144,13 +144,13 @@ LABEL_14:
   return result;
 }
 
-+ (CAColorMatrix)_colorizedShadowColorMatrixForType:(SEL)a3 heroColor:(int64_t)a4 backgroundType:(id)a5
++ (CAColorMatrix)_colorizedShadowColorMatrixForType:(SEL)type heroColor:(int64_t)color backgroundType:(id)backgroundType
 {
   v35 = 0.0;
   v36 = 0.0;
   v33 = 0.0;
   v34 = 0.0;
-  [a5 getRed:&v36 green:&v35 blue:&v34 alpha:&v33];
+  [backgroundType getRed:&v36 green:&v35 blue:&v34 alpha:&v33];
   HIDWORD(v13) = HIDWORD(v36);
   *&v13 = v36;
   v9 = v35;

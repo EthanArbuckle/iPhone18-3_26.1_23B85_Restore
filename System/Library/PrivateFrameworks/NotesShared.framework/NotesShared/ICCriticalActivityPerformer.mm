@@ -1,16 +1,16 @@
 @interface ICCriticalActivityPerformer
-+ (void)sharedPerformCriticalBackgroundActivityWithReason:(id)a3 block:(id)a4;
++ (void)sharedPerformCriticalBackgroundActivityWithReason:(id)reason block:(id)block;
 @end
 
 @implementation ICCriticalActivityPerformer
 
-+ (void)sharedPerformCriticalBackgroundActivityWithReason:(id)a3 block:(id)a4
++ (void)sharedPerformCriticalBackgroundActivityWithReason:(id)reason block:(id)block
 {
   v5 = MEMORY[0x277CCAC38];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 processInfo];
-  [v8 performExpiringActivityWithReason:v7 usingBlock:v6];
+  blockCopy = block;
+  reasonCopy = reason;
+  processInfo = [v5 processInfo];
+  [processInfo performExpiringActivityWithReason:reasonCopy usingBlock:blockCopy];
 }
 
 @end

@@ -1,24 +1,24 @@
 @interface IdentityProofingNFCConfig
 - (_TtC13CoreIDVShared25IdentityProofingNFCConfig)init;
-- (_TtC13CoreIDVShared25IdentityProofingNFCConfig)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_TtC13CoreIDVShared25IdentityProofingNFCConfig)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IdentityProofingNFCConfig
 
-- (_TtC13CoreIDVShared25IdentityProofingNFCConfig)initWithCoder:(id)a3
+- (_TtC13CoreIDVShared25IdentityProofingNFCConfig)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = sub_225B68F9C(v3);
+  coderCopy = coder;
+  v4 = sub_225B68F9C(coderCopy);
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  IdentityProofingNFCConfig.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  IdentityProofingNFCConfig.encode(with:)(coderCopy);
 }
 
 - (_TtC13CoreIDVShared25IdentityProofingNFCConfig)init

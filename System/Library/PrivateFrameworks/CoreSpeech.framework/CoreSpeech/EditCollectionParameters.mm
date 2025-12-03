@@ -1,5 +1,5 @@
 @interface EditCollectionParameters
-- (EditCollectionParameters)initWithDistanceThreshold:(unint64_t)a3 uttLengthThreshold:(unint64_t)a4 punctuationInsensitive:(BOOL)a5 caseInsensitive:(BOOL)a6 skipClassification:(BOOL)a7 nbestAlignmentSourceBound:(unint64_t)a8 nbestAlignmentTargetBound:(unint64_t)a9;
+- (EditCollectionParameters)initWithDistanceThreshold:(unint64_t)threshold uttLengthThreshold:(unint64_t)lengthThreshold punctuationInsensitive:(BOOL)insensitive caseInsensitive:(BOOL)caseInsensitive skipClassification:(BOOL)classification nbestAlignmentSourceBound:(unint64_t)bound nbestAlignmentTargetBound:(unint64_t)targetBound;
 - (id)description;
 @end
 
@@ -42,20 +42,20 @@
   return v8;
 }
 
-- (EditCollectionParameters)initWithDistanceThreshold:(unint64_t)a3 uttLengthThreshold:(unint64_t)a4 punctuationInsensitive:(BOOL)a5 caseInsensitive:(BOOL)a6 skipClassification:(BOOL)a7 nbestAlignmentSourceBound:(unint64_t)a8 nbestAlignmentTargetBound:(unint64_t)a9
+- (EditCollectionParameters)initWithDistanceThreshold:(unint64_t)threshold uttLengthThreshold:(unint64_t)lengthThreshold punctuationInsensitive:(BOOL)insensitive caseInsensitive:(BOOL)caseInsensitive skipClassification:(BOOL)classification nbestAlignmentSourceBound:(unint64_t)bound nbestAlignmentTargetBound:(unint64_t)targetBound
 {
   v16.receiver = self;
   v16.super_class = EditCollectionParameters;
   result = [(EditCollectionParameters *)&v16 init];
   if (result)
   {
-    result->_distanceThreshold = a3;
-    result->_uttLengthThreshold = a4;
-    result->_punctuationInsensitive = a5;
-    result->_caseInsensitive = a6;
-    result->_skipClassification = a7;
-    result->_nbestAlignmentSourceBound = a8;
-    result->_nbestAlignmentTargetBound = a9;
+    result->_distanceThreshold = threshold;
+    result->_uttLengthThreshold = lengthThreshold;
+    result->_punctuationInsensitive = insensitive;
+    result->_caseInsensitive = caseInsensitive;
+    result->_skipClassification = classification;
+    result->_nbestAlignmentSourceBound = bound;
+    result->_nbestAlignmentTargetBound = targetBound;
   }
 
   return result;

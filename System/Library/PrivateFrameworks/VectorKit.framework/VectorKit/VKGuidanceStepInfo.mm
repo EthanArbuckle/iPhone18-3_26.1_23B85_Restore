@@ -1,20 +1,20 @@
 @interface VKGuidanceStepInfo
-- (VKGuidanceStepInfo)initWithRoadName:(id)a3 point:(int)a4;
+- (VKGuidanceStepInfo)initWithRoadName:(id)name point:(int)point;
 @end
 
 @implementation VKGuidanceStepInfo
 
-- (VKGuidanceStepInfo)initWithRoadName:(id)a3 point:(int)a4
+- (VKGuidanceStepInfo)initWithRoadName:(id)name point:(int)point
 {
-  v7 = a3;
+  nameCopy = name;
   v11.receiver = self;
   v11.super_class = VKGuidanceStepInfo;
   v8 = [(VKGuidanceStepInfo *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_roadName, a3);
-    v9->_routePoint = a4;
+    objc_storeStrong(&v8->_roadName, name);
+    v9->_routePoint = point;
   }
 
   return v9;

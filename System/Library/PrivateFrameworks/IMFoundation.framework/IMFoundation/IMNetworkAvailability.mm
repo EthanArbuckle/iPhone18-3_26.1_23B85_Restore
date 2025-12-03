@@ -1,9 +1,9 @@
 @interface IMNetworkAvailability
-- (BOOL)_isNetworkAvailablibityCheckingDone:(BOOL)a3 wantsWiFi:(BOOL)a4 wantsCellular:(BOOL)a5 cellular:(BOOL)a6 hasCellularDataConnection:(BOOL)a7 done:(BOOL)a8 withinTimeWindow:(BOOL)a9;
-- (IMNetworkAvailability)initWithFlags:(unint64_t)a3 options:(unint64_t)a4 timeout:(double)a5 wifiTimeout:(double)a6 completionBlock:(id)a7;
+- (BOOL)_isNetworkAvailablibityCheckingDone:(BOOL)done wantsWiFi:(BOOL)fi wantsCellular:(BOOL)cellular cellular:(BOOL)a6 hasCellularDataConnection:(BOOL)connection done:(BOOL)a8 withinTimeWindow:(BOOL)window;
+- (IMNetworkAvailability)initWithFlags:(unint64_t)flags options:(unint64_t)options timeout:(double)timeout wifiTimeout:(double)wifiTimeout completionBlock:(id)block;
 - (void)_cancel;
 - (void)_setTimer;
-- (void)_timerHit:(id)a3;
+- (void)_timerHit:(id)hit;
 - (void)cancel;
 - (void)dealloc;
 - (void)start;
@@ -11,10 +11,10 @@
 
 @implementation IMNetworkAvailability
 
-- (IMNetworkAvailability)initWithFlags:(unint64_t)a3 options:(unint64_t)a4 timeout:(double)a5 wifiTimeout:(double)a6 completionBlock:(id)a7
+- (IMNetworkAvailability)initWithFlags:(unint64_t)flags options:(unint64_t)options timeout:(double)timeout wifiTimeout:(double)wifiTimeout completionBlock:(id)block
 {
   v40 = *MEMORY[0x1E69E9840];
-  v12 = a7;
+  blockCopy = block;
   v35.receiver = self;
   v35.super_class = IMNetworkAvailability;
   v13 = [(IMNetworkAvailability *)&v35 init];
@@ -24,9 +24,9 @@
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109634;
-      *v37 = a3;
+      *v37 = flags;
       *&v37[4] = 2048;
-      *&v37[6] = a5;
+      *&v37[6] = timeout;
       v38 = 2112;
       v39 = v13;
       _os_log_impl(&dword_195988000, v14, OS_LOG_TYPE_DEFAULT, "Creating availabilty with: 0x%X    Timeout: %f  (%@)", buf, 0x1Cu);
@@ -36,14 +36,14 @@
     guid = v13->_guid;
     v13->_guid = v17;
 
-    v21 = objc_msgSend_copy(v12, v19, v20);
+    v21 = objc_msgSend_copy(blockCopy, v19, v20);
     completionBlock = v13->_completionBlock;
     v13->_completionBlock = v21;
 
-    v13->_flags = a3;
-    v13->_options = a4;
-    v13->_timeout = a5;
-    v13->_wifiTimeout = a6;
+    v13->_flags = flags;
+    v13->_options = options;
+    v13->_timeout = timeout;
+    v13->_wifiTimeout = wifiTimeout;
     v23 = OSLogHandleForIDSCategory("NetworkAvailability");
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
     {
@@ -149,7 +149,7 @@
     *buf = 67109378;
     v10 = flags;
     v11 = 2112;
-    v12 = self;
+    selfCopy = self;
     _os_log_impl(&dword_195988000, v3, OS_LOG_TYPE_DEFAULT, "Dealloc availabilty with: 0x%X  (%@)", buf, 0x12u);
   }
 
@@ -201,17 +201,17 @@
   }
 }
 
-- (BOOL)_isNetworkAvailablibityCheckingDone:(BOOL)a3 wantsWiFi:(BOOL)a4 wantsCellular:(BOOL)a5 cellular:(BOOL)a6 hasCellularDataConnection:(BOOL)a7 done:(BOOL)a8 withinTimeWindow:(BOOL)a9
+- (BOOL)_isNetworkAvailablibityCheckingDone:(BOOL)done wantsWiFi:(BOOL)fi wantsCellular:(BOOL)cellular cellular:(BOOL)a6 hasCellularDataConnection:(BOOL)connection done:(BOOL)a8 withinTimeWindow:(BOOL)window
 {
   v9 = a8;
   v22 = *MEMORY[0x1E69E9840];
-  if (a5)
+  if (cellular)
   {
-    if (a7 && a8 && !a6)
+    if (connection && a8 && !a6)
     {
-      if (a4)
+      if (fi)
       {
-        if (a3)
+        if (done)
         {
           goto LABEL_23;
         }
@@ -237,13 +237,13 @@
       v9 = 0;
     }
 
-    if (!a3 && !a6)
+    if (!done && !a6)
     {
       v13 = OSLogHandleForIDSCategory("NetworkAvailability");
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
         v14 = @"NO";
-        if (a9)
+        if (window)
         {
           v15 = @"YES";
         }
@@ -265,7 +265,7 @@
         _os_log_impl(&dword_195988000, v13, OS_LOG_TYPE_DEFAULT, "No available interfaces, withinTimeWindow: %@, done: %@", &v18, 0x16u);
       }
 
-      LOBYTE(v9) = v9 && !a9;
+      LOBYTE(v9) = v9 && !window;
     }
   }
 
@@ -274,15 +274,15 @@ LABEL_23:
   return v9;
 }
 
-- (void)_timerHit:(id)a3
+- (void)_timerHit:(id)hit
 {
   v197 = *MEMORY[0x1E69E9840];
-  v184 = a3;
+  hitCopy = hit;
   v4 = OSLogHandleForIDSCategory("NetworkAvailability");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v196 = self;
+    selfCopy = self;
     _os_log_impl(&dword_195988000, v4, OS_LOG_TYPE_DEFAULT, "Timer hit: %@", buf, 0xCu);
   }
 
@@ -360,7 +360,7 @@ LABEL_23:
   if (os_log_type_enabled(v87, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v196 = *&v86;
+    selfCopy = *&v86;
     _os_log_impl(&dword_195988000, v87, OS_LOG_TYPE_DEFAULT, "               Time Passed: %f", buf, 0xCu);
   }
 
@@ -369,7 +369,7 @@ LABEL_23:
   {
     timeout = self->_timeout;
     *buf = 134217984;
-    v196 = *&timeout;
+    selfCopy = *&timeout;
     _os_log_impl(&dword_195988000, v88, OS_LOG_TYPE_DEFAULT, "                   Timeout: %f", buf, 0xCu);
   }
 
@@ -377,7 +377,7 @@ LABEL_23:
   if (os_log_type_enabled(v90, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v196 = *&wifiTimeout;
+    selfCopy = *&wifiTimeout;
     _os_log_impl(&dword_195988000, v90, OS_LOG_TYPE_DEFAULT, "              WiFi Timeout: %f", buf, 0xCu);
   }
 
@@ -391,7 +391,7 @@ LABEL_23:
     }
 
     *buf = 138412290;
-    v196 = v92;
+    selfCopy = v92;
     _os_log_impl(&dword_195988000, v91, OS_LOG_TYPE_DEFAULT, "       Allow Early Timeout: %@", buf, 0xCu);
   }
 
@@ -405,7 +405,7 @@ LABEL_23:
     }
 
     *buf = 138412290;
-    v196 = v94;
+    selfCopy = v94;
     _os_log_impl(&dword_195988000, v93, OS_LOG_TYPE_DEFAULT, "        Allow WiFi HotSpot: %@", buf, 0xCu);
   }
 
@@ -419,7 +419,7 @@ LABEL_23:
     }
 
     *buf = 138412290;
-    v196 = v96;
+    selfCopy = v96;
     _os_log_impl(&dword_195988000, v95, OS_LOG_TYPE_DEFAULT, "      Show Network Options: %@", buf, 0xCu);
   }
 
@@ -433,7 +433,7 @@ LABEL_23:
     }
 
     *buf = 138412290;
-    v196 = v98;
+    selfCopy = v98;
     _os_log_impl(&dword_195988000, v97, OS_LOG_TYPE_DEFAULT, "             Wait For WiFi: %@", buf, 0xCu);
   }
 
@@ -447,7 +447,7 @@ LABEL_23:
     }
 
     *buf = 138412290;
-    v196 = v100;
+    selfCopy = v100;
     _os_log_impl(&dword_195988000, v99, OS_LOG_TYPE_DEFAULT, "      Wait For WiFi or LTE: %@", buf, 0xCu);
   }
 
@@ -468,7 +468,7 @@ LABEL_23:
     }
 
     *buf = 138412290;
-    v196 = v103;
+    selfCopy = v103;
     _os_log_impl(&dword_195988000, v102, OS_LOG_TYPE_DEFAULT, "       WiFi Switch Enabled: %@", buf, 0xCu);
   }
 
@@ -482,7 +482,7 @@ LABEL_23:
     }
 
     *buf = 138412290;
-    v196 = v105;
+    selfCopy = v105;
     _os_log_impl(&dword_195988000, v104, OS_LOG_TYPE_DEFAULT, "       Data Switch Enabled: %@", buf, 0xCu);
   }
 
@@ -496,7 +496,7 @@ LABEL_23:
     }
 
     *buf = 138412290;
-    v196 = v107;
+    selfCopy = v107;
     _os_log_impl(&dword_195988000, v106, OS_LOG_TYPE_DEFAULT, "     Airplane Mode Enabled: %@", buf, 0xCu);
   }
 
@@ -510,7 +510,7 @@ LABEL_23:
     }
 
     *buf = 138412290;
-    v196 = v109;
+    selfCopy = v109;
     _os_log_impl(&dword_195988000, v108, OS_LOG_TYPE_DEFAULT, "      WiFi HotSpot Enabled: %@", buf, 0xCu);
   }
 
@@ -524,7 +524,7 @@ LABEL_23:
     }
 
     *buf = 138412290;
-    v196 = v111;
+    selfCopy = v111;
     _os_log_impl(&dword_195988000, v110, OS_LOG_TYPE_DEFAULT, "        In Valid SIM State: %@", buf, 0xCu);
   }
 
@@ -545,7 +545,7 @@ LABEL_23:
     }
 
     *buf = 138412290;
-    v196 = v114;
+    selfCopy = v114;
     _os_log_impl(&dword_195988000, v113, OS_LOG_TYPE_DEFAULT, "  Will Auto-Associate WiFi: %@", buf, 0xCu);
   }
 
@@ -560,7 +560,7 @@ LABEL_23:
     }
 
     *buf = 138412290;
-    v196 = v117;
+    selfCopy = v117;
     _os_log_impl(&dword_195988000, v116, OS_LOG_TYPE_DEFAULT, "      Will Search For WiFi: %@", buf, 0xCu);
   }
 
@@ -574,7 +574,7 @@ LABEL_23:
     }
 
     *buf = 138412290;
-    v196 = v119;
+    selfCopy = v119;
     _os_log_impl(&dword_195988000, v118, OS_LOG_TYPE_DEFAULT, "           WiFi Associated: %@", buf, 0xCu);
   }
 
@@ -588,7 +588,7 @@ LABEL_23:
     }
 
     *buf = 138412290;
-    v196 = v121;
+    selfCopy = v121;
     _os_log_impl(&dword_195988000, v120, OS_LOG_TYPE_DEFAULT, "              WiFi Captive: %@", buf, 0xCu);
   }
 
@@ -610,7 +610,7 @@ LABEL_23:
     }
 
     *buf = 138412290;
-    v196 = v125;
+    selfCopy = v125;
     _os_log_impl(&dword_195988000, v124, OS_LOG_TYPE_DEFAULT, "              Data Enabled: %@", buf, 0xCu);
   }
 
@@ -624,7 +624,7 @@ LABEL_23:
     }
 
     *buf = 138412290;
-    v196 = v127;
+    selfCopy = v127;
     _os_log_impl(&dword_195988000, v126, OS_LOG_TYPE_DEFAULT, "    Data Connection Exists: %@", buf, 0xCu);
   }
 
@@ -638,7 +638,7 @@ LABEL_23:
     }
 
     *buf = 138412290;
-    v196 = v129;
+    selfCopy = v129;
     _os_log_impl(&dword_195988000, v128, OS_LOG_TYPE_DEFAULT, " Data Connection Is Active: %@", buf, 0xCu);
   }
 
@@ -653,7 +653,7 @@ LABEL_23:
     }
 
     *buf = 138412290;
-    v196 = v132;
+    selfCopy = v132;
     _os_log_impl(&dword_195988000, v131, OS_LOG_TYPE_DEFAULT, "             Has Cell Data: %@", buf, 0xCu);
   }
 
@@ -667,7 +667,7 @@ LABEL_23:
     }
 
     *buf = 138412290;
-    v196 = v134;
+    selfCopy = v134;
     _os_log_impl(&dword_195988000, v133, OS_LOG_TYPE_DEFAULT, "              Has LTE Data: %@", buf, 0xCu);
   }
 
@@ -681,7 +681,7 @@ LABEL_23:
     }
 
     *buf = 138412290;
-    v196 = v136;
+    selfCopy = v136;
     _os_log_impl(&dword_195988000, v135, OS_LOG_TYPE_DEFAULT, "       Data Switch Enabled: %@", buf, 0xCu);
   }
 
@@ -706,7 +706,7 @@ LABEL_23:
     }
 
     *buf = 138412290;
-    v196 = v139;
+    selfCopy = v139;
     _os_log_impl(&dword_195988000, v138, OS_LOG_TYPE_DEFAULT, "       WiFi Network Active: %@", buf, 0xCu);
   }
 
@@ -720,7 +720,7 @@ LABEL_23:
     }
 
     *buf = 138412290;
-    v196 = v141;
+    selfCopy = v141;
     _os_log_impl(&dword_195988000, v140, OS_LOG_TYPE_DEFAULT, "    WiFi Network Reachable: %@", buf, 0xCu);
   }
 
@@ -734,7 +734,7 @@ LABEL_23:
     }
 
     *buf = 138412290;
-    v196 = v143;
+    selfCopy = v143;
     _os_log_impl(&dword_195988000, v142, OS_LOG_TYPE_DEFAULT, "               Data Active: %@", buf, 0xCu);
   }
 
@@ -748,7 +748,7 @@ LABEL_23:
     }
 
     *buf = 138412290;
-    v196 = v145;
+    selfCopy = v145;
     _os_log_impl(&dword_195988000, v144, OS_LOG_TYPE_DEFAULT, "            Data Reachable: %@", buf, 0xCu);
   }
 
@@ -769,7 +769,7 @@ LABEL_23:
     }
 
     *buf = 138412290;
-    v196 = v148;
+    selfCopy = v148;
     _os_log_impl(&dword_195988000, v147, OS_LOG_TYPE_DEFAULT, "                Wants WiFi: %@", buf, 0xCu);
   }
 
@@ -783,7 +783,7 @@ LABEL_23:
     }
 
     *buf = 138412290;
-    v196 = v150;
+    selfCopy = v150;
     _os_log_impl(&dword_195988000, v149, OS_LOG_TYPE_DEFAULT, "            Wants Cellular: %@", buf, 0xCu);
   }
 
@@ -797,7 +797,7 @@ LABEL_23:
     }
 
     *buf = 138412290;
-    v196 = v152;
+    selfCopy = v152;
     _os_log_impl(&dword_195988000, v151, OS_LOG_TYPE_DEFAULT, "           Has Usable WiFi: %@", buf, 0xCu);
   }
 
@@ -812,7 +812,7 @@ LABEL_23:
     }
 
     *buf = 138412290;
-    v196 = v155;
+    selfCopy = v155;
     _os_log_impl(&dword_195988000, v154, OS_LOG_TYPE_DEFAULT, "       Has Usable Cellular: %@", buf, 0xCu);
   }
 
@@ -827,7 +827,7 @@ LABEL_23:
     }
 
     *buf = 138412290;
-    v196 = v158;
+    selfCopy = v158;
     _os_log_impl(&dword_195988000, v157, OS_LOG_TYPE_DEFAULT, "            Has Usable LTE: %@", buf, 0xCu);
   }
 
@@ -1059,7 +1059,7 @@ LABEL_188:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v42 = 138412290;
-    v43 = self;
+    selfCopy = self;
     _os_log_impl(&dword_195988000, v3, OS_LOG_TYPE_DEFAULT, "Client requested start availability check: %@", &v42, 0xCu);
   }
 
@@ -1138,7 +1138,7 @@ LABEL_188:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_195988000, v3, OS_LOG_TYPE_DEFAULT, "Client requested cancel availability check: %@", &v7, 0xCu);
   }
 

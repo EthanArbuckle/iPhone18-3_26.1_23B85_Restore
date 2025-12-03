@@ -1,15 +1,15 @@
 @interface SharedAlbumsActivityItemListManager
-- (void)feedSectionInfosManager:(id)a3 sectionInfosDidChange:(id)a4;
+- (void)feedSectionInfosManager:(id)manager sectionInfosDidChange:(id)change;
 @end
 
 @implementation SharedAlbumsActivityItemListManager
 
-- (void)feedSectionInfosManager:(id)a3 sectionInfosDidChange:(id)a4
+- (void)feedSectionInfosManager:(id)manager sectionInfosDidChange:(id)change
 {
-  v5 = a3;
-  v6 = a4;
+  managerCopy = manager;
+  changeCopy = change;
 
-  sub_1A40CAF14(v6);
+  sub_1A40CAF14(changeCopy);
 }
 
 @end

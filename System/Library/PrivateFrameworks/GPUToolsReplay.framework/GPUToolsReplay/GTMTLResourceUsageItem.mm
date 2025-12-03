@@ -1,33 +1,33 @@
 @interface GTMTLResourceUsageItem
 + (void)initialize;
-- (GTMTLResourceUsageItem)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (GTMTLResourceUsageItem)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation GTMTLResourceUsageItem
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   kind = self->_kind;
-  v5 = a3;
-  [v5 encodeInt64:kind forKey:@"kind"];
-  [v5 encodeInt64:self->_stage forKey:@"stage"];
-  [v5 encodeInt64:self->_resourceID forKey:@"resourceID"];
-  [v5 encodeInt64:self->_usage forKey:@"usage"];
+  coderCopy = coder;
+  [coderCopy encodeInt64:kind forKey:@"kind"];
+  [coderCopy encodeInt64:self->_stage forKey:@"stage"];
+  [coderCopy encodeInt64:self->_resourceID forKey:@"resourceID"];
+  [coderCopy encodeInt64:self->_usage forKey:@"usage"];
 }
 
-- (GTMTLResourceUsageItem)initWithCoder:(id)a3
+- (GTMTLResourceUsageItem)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = GTMTLResourceUsageItem;
   v5 = [(GTMTLResourceUsageItem *)&v7 init];
   if (v5)
   {
-    v5->_kind = [v4 decodeInt64ForKey:@"kind"];
-    v5->_stage = [v4 decodeInt64ForKey:@"stage"];
-    v5->_resourceID = [v4 decodeInt64ForKey:@"resourceID"];
-    v5->_usage = [v4 decodeInt64ForKey:@"usage"];
+    v5->_kind = [coderCopy decodeInt64ForKey:@"kind"];
+    v5->_stage = [coderCopy decodeInt64ForKey:@"stage"];
+    v5->_resourceID = [coderCopy decodeInt64ForKey:@"resourceID"];
+    v5->_usage = [coderCopy decodeInt64ForKey:@"usage"];
   }
 
   return v5;

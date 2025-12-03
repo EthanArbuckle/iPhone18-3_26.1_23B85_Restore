@@ -1,10 +1,10 @@
 @interface CARRootPanel
 - (BOOL)_announceNotificationsEnabled;
-- (CARRootPanel)initWithPanelController:(id)a3;
+- (CARRootPanel)initWithPanelController:(id)controller;
 - (NSArray)panels;
-- (id)panelPassingTest:(id)a3;
+- (id)panelPassingTest:(id)test;
 - (id)specifierSections;
-- (void)_limitedUIDidChange:(id)a3;
+- (void)_limitedUIDidChange:(id)change;
 - (void)_updateAIEnabled;
 - (void)_updateVehicleWithDarkModeOnlyIfNeeded;
 - (void)assetsManagerReady;
@@ -12,17 +12,17 @@
 - (void)invalidate;
 - (void)resetAllSpecifiers;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation CARRootPanel
 
-- (CARRootPanel)initWithPanelController:(id)a3
+- (CARRootPanel)initWithPanelController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v11.receiver = self;
   v11.super_class = CARRootPanel;
-  v5 = [(CARSettingsPanel *)&v11 initWithPanelController:v4];
+  v5 = [(CARSettingsPanel *)&v11 initWithPanelController:controllerCopy];
   if (v5)
   {
     v6 = sub_10001C784();
@@ -31,7 +31,7 @@
       sub_10009073C(v5, v6);
     }
 
-    [v4 addNotificationSettingsObserver:v5];
+    [controllerCopy addNotificationSettingsObserver:v5];
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
     CFNotificationCenterAddObserver(DarwinNotifyCenter, v5, sub_1000029C0, @"com.apple.gms.availability.notification", 0, 0);
     [(CARRootPanel *)v5 _updateAIEnabled];
@@ -55,9 +55,9 @@
   v3 = +[NSUserDefaults standardUserDefaults];
   v4 = [v3 objectForKey:@"CARLastPanelKey"];
 
-  v5 = [(CARSettingsPanel *)self panelController];
-  v6 = [v5 vehicle];
-  v7 = [_TtC15CarPlaySettings20CARSettingsUtilities lastPanelID:@"kCARSettingsDisplayPanelID" vehicle:v6];
+  panelController = [(CARSettingsPanel *)self panelController];
+  vehicle = [panelController vehicle];
+  v7 = [_TtC15CarPlaySettings20CARSettingsUtilities lastPanelID:@"kCARSettingsDisplayPanelID" vehicle:vehicle];
   v8 = [v4 isEqualToString:v7];
 
   if (v8)
@@ -77,25 +77,25 @@
     v10 = 0;
   }
 
-  v11 = [(CARSettingsPanel *)self panelController];
-  v12 = [v11 carSession];
-  v13 = [v12 configuration];
-  v14 = [v13 screens];
-  v15 = [v14 bs_containsObjectPassingTest:&stru_1000DAD20];
+  panelController2 = [(CARSettingsPanel *)self panelController];
+  carSession = [panelController2 carSession];
+  configuration = [carSession configuration];
+  screens = [configuration screens];
+  v15 = [screens bs_containsObjectPassingTest:&stru_1000DAD20];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && v15)
   {
-    v16 = [(CARSettingsPanel *)self panelController];
-    [v16 pushPanel:v10];
+    panelController3 = [(CARSettingsPanel *)self panelController];
+    [panelController3 pushPanel:v10];
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = CARRootPanel;
-  [(CARSettingsTablePanel *)&v6 viewWillAppear:a3];
+  [(CARSettingsTablePanel *)&v6 viewWillAppear:appear];
   v3 = sub_10001C784();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
@@ -122,9 +122,9 @@
   [(CARRootPanel *)&v5 dealloc];
 }
 
-- (id)panelPassingTest:(id)a3
+- (id)panelPassingTest:(id)test
 {
-  v4 = a3;
+  testCopy = test;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -143,7 +143,7 @@
           objc_enumerationMutation(v5);
         }
 
-        v9 = [*(*(&v11 + 1) + 8 * i) bs_firstObjectPassingTest:{v4, v11}];
+        v9 = [*(*(&v11 + 1) + 8 * i) bs_firstObjectPassingTest:{testCopy, v11}];
         if (v9)
         {
           v6 = v9;
@@ -182,35 +182,35 @@ LABEL_11:
   if (!self->_notificationPanel)
   {
     v7 = [CARAnnounceNotificationsPanel alloc];
-    v8 = [(CARSettingsPanel *)self panelController];
-    v9 = [(CARAnnounceNotificationsPanel *)v7 initWithPanelController:v8];
+    panelController = [(CARSettingsPanel *)self panelController];
+    v9 = [(CARAnnounceNotificationsPanel *)v7 initWithPanelController:panelController];
     notificationPanel = self->_notificationPanel;
     self->_notificationPanel = v9;
   }
 
   v11 = [CARDNDPanel alloc];
-  v12 = [(CARSettingsPanel *)self panelController];
-  v13 = [(CARDNDPanel *)v11 initWithPanelController:v12];
+  panelController2 = [(CARSettingsPanel *)self panelController];
+  v13 = [(CARDNDPanel *)v11 initWithPanelController:panelController2];
   v14 = self->_notificationPanel;
   v100[0] = v13;
   v100[1] = v14;
   v15 = [NSArray arrayWithObjects:v100 count:2];
   [v6 addObjectsFromArray:v15];
 
-  v16 = [(CARSettingsPanel *)self panelController];
-  v17 = [v16 carSession];
-  v18 = [v17 configuration];
-  v19 = [v18 supportsVehicleData];
+  panelController3 = [(CARSettingsPanel *)self panelController];
+  carSession = [panelController3 carSession];
+  configuration = [carSession configuration];
+  supportsVehicleData = [configuration supportsVehicleData];
 
-  if (v19)
+  if (supportsVehicleData)
   {
     v20 = [CARDevicePickerPanel alloc];
-    v21 = [(CARSettingsPanel *)self panelController];
-    v22 = [(CARSettingsPanel *)v20 initWithPanelController:v21];
+    panelController4 = [(CARSettingsPanel *)self panelController];
+    v22 = [(CARSettingsPanel *)v20 initWithPanelController:panelController4];
 
-    v23 = [(CARDevicePickerPanel *)v22 cellSpecifier];
+    cellSpecifier = [(CARDevicePickerPanel *)v22 cellSpecifier];
     devicePickerSpecifier = self->_devicePickerSpecifier;
-    self->_devicePickerSpecifier = v23;
+    self->_devicePickerSpecifier = cellSpecifier;
 
     [v6 addObject:v22];
     v25 = +[NSNotificationCenter defaultCenter];
@@ -221,30 +221,30 @@ LABEL_11:
   [v5 addObject:{v6, v5}];
   v26 = +[NSMutableArray array];
   v27 = [CARAppearancePanel alloc];
-  v28 = [(CARSettingsPanel *)self panelController];
-  v29 = [(CARAppearancePanel *)v27 initWithPanelController:v28];
+  panelController5 = [(CARSettingsPanel *)self panelController];
+  v29 = [(CARAppearancePanel *)v27 initWithPanelController:panelController5];
   appearancePanel = self->_appearancePanel;
   self->_appearancePanel = v29;
 
   [(CARAppearancePanel *)self->_appearancePanel setDarkModeOnly:[(CARRootPanel *)self isDarkModeOnly]];
   [v26 addObject:self->_appearancePanel];
   v31 = [CARIconCustomizationPanel alloc];
-  v32 = [(CARSettingsPanel *)self panelController];
-  v33 = [(CARIconCustomizationPanel *)v31 initWithPanelController:v32];
+  panelController6 = [(CARSettingsPanel *)self panelController];
+  v33 = [(CARIconCustomizationPanel *)v31 initWithPanelController:panelController6];
   [v26 addObject:v33];
 
-  v34 = [(CARSettingsPanel *)self panelController];
-  v35 = [v34 vehicle];
-  v36 = [v35 clusterAssetIdentifier];
-  if (v36)
+  panelController7 = [(CARSettingsPanel *)self panelController];
+  vehicle = [panelController7 vehicle];
+  clusterAssetIdentifier = [vehicle clusterAssetIdentifier];
+  if (clusterAssetIdentifier)
   {
-    v37 = v36;
-    v38 = [(CARSettingsPanel *)self panelController];
-    v39 = [v38 carSession];
-    v40 = [v39 configuration];
-    v41 = [v40 supportsVehicleData];
+    v37 = clusterAssetIdentifier;
+    panelController8 = [(CARSettingsPanel *)self panelController];
+    carSession2 = [panelController8 carSession];
+    configuration2 = [carSession2 configuration];
+    supportsVehicleData2 = [configuration2 supportsVehicleData];
 
-    if (v41)
+    if (supportsVehicleData2)
     {
       v42 = off_1000D9580;
       goto LABEL_12;
@@ -258,35 +258,35 @@ LABEL_11:
   v42 = &off_1000D9588;
 LABEL_12:
   v43 = objc_alloc(*v42);
-  v44 = [(CARSettingsPanel *)self panelController];
-  v45 = [v43 initWithPanelController:v44];
+  panelController9 = [(CARSettingsPanel *)self panelController];
+  v45 = [v43 initWithPanelController:panelController9];
   [v26 addObject:v45];
 
   v46 = [CARDisplayPanel alloc];
-  v47 = [(CARSettingsPanel *)self panelController];
-  v48 = [(CARDisplayPanel *)v46 initWithPanelController:v47];
+  panelController10 = [(CARSettingsPanel *)self panelController];
+  v48 = [(CARDisplayPanel *)v46 initWithPanelController:panelController10];
   displayPanel = self->_displayPanel;
   self->_displayPanel = v48;
 
   v50 = [CARDisplayPanel alloc];
-  v51 = [(CARSettingsPanel *)self panelController];
-  v52 = [(CARDisplayPanel *)v50 initWithPanelController:v51];
+  panelController11 = [(CARSettingsPanel *)self panelController];
+  v52 = [(CARDisplayPanel *)v50 initWithPanelController:panelController11];
   [v26 addObject:v52];
 
   if (_os_feature_enabled_impl())
   {
     v53 = [CARAccessibilityPanel alloc];
-    v54 = [(CARSettingsPanel *)self panelController];
-    v55 = [(CARAccessibilityPanel *)v53 initWithPanelController:v54];
+    panelController12 = [(CARSettingsPanel *)self panelController];
+    v55 = [(CARAccessibilityPanel *)v53 initWithPanelController:panelController12];
     [v26 addObject:v55];
   }
 
   [(NSArray *)v97 addObject:v26];
   v56 = +[NSMutableArray array];
-  v57 = [(CARSettingsPanel *)self panelController];
-  v58 = [v57 carSession];
-  v59 = [v58 configuration];
-  if ([v59 supportsSiriZLL])
+  panelController13 = [(CARSettingsPanel *)self panelController];
+  carSession3 = [panelController13 carSession];
+  configuration3 = [carSession3 configuration];
+  if ([configuration3 supportsSiriZLL])
   {
     v60 = +[NSUserDefaults standardUserDefaults];
     if ([v60 BOOLForKey:@"HeySiriEnabled"])
@@ -294,11 +294,11 @@ LABEL_12:
 
 LABEL_20:
       v62 = [CARSiriPanel alloc];
-      v63 = [(CARSettingsPanel *)self panelController];
-      v64 = [(CARSiriPanel *)v62 initWithPanelController:v63];
+      panelController14 = [(CARSettingsPanel *)self panelController];
+      traitCollection = [(CARSiriPanel *)v62 initWithPanelController:panelController14];
 
-      [(CARSiriPanel *)v64 setAppleIntelligenceEnabled:[(CARRootPanel *)self AIEnabled]];
-      [v56 addObject:v64];
+      [(CARSiriPanel *)traitCollection setAppleIntelligenceEnabled:[(CARRootPanel *)self AIEnabled]];
+      [v56 addObject:traitCollection];
       goto LABEL_22;
     }
 
@@ -316,23 +316,23 @@ LABEL_20:
   }
 
   v65 = [CARDashboardSuggestionsSpecifier alloc];
-  v64 = [(CARRootPanel *)self traitCollection];
-  v66 = [(CARDashboardSuggestionsSpecifier *)v65 initWithTraitCollection:v64];
+  traitCollection = [(CARRootPanel *)self traitCollection];
+  v66 = [(CARDashboardSuggestionsSpecifier *)v65 initWithTraitCollection:traitCollection];
   v67 = [CARSettingsCellSpecifierWrapperPanel panelWrappingCellSpecifier:v66];
   [v56 addObject:v67];
 
 LABEL_22:
-  v68 = [(CARSettingsPanel *)self panelController];
-  v69 = [v68 carSession];
-  v70 = [v69 configuration];
-  v71 = [v70 liveActivitiesMode];
+  panelController15 = [(CARSettingsPanel *)self panelController];
+  carSession4 = [panelController15 carSession];
+  configuration4 = [carSession4 configuration];
+  liveActivitiesMode = [configuration4 liveActivitiesMode];
 
-  if (_os_feature_enabled_impl() && v71 != 1)
+  if (_os_feature_enabled_impl() && liveActivitiesMode != 1)
   {
     v72 = [CARLiveActivitiesSpecifier alloc];
     v73 = +[CARPrototypePref liveActivitiesDisabled];
-    v74 = [(CARRootPanel *)self traitCollection];
-    v75 = [(CARLiveActivitiesSpecifier *)v72 initWithPrototype:v73 traitCollection:v74];
+    traitCollection2 = [(CARRootPanel *)self traitCollection];
+    v75 = [(CARLiveActivitiesSpecifier *)v72 initWithPrototype:v73 traitCollection:traitCollection2];
     liveActivitiesSpecifier = self->_liveActivitiesSpecifier;
     self->_liveActivitiesSpecifier = v75;
 
@@ -342,36 +342,36 @@ LABEL_22:
 
   if (_os_feature_enabled_impl())
   {
-    v78 = [(CARSettingsPanel *)self panelController];
-    v79 = [v78 carSession];
-    v80 = [v79 configuration];
-    v81 = [v80 videoPlaybackSupported];
+    panelController16 = [(CARSettingsPanel *)self panelController];
+    carSession5 = [panelController16 carSession];
+    configuration5 = [carSession5 configuration];
+    videoPlaybackSupported = [configuration5 videoPlaybackSupported];
 
-    if (v81)
+    if (videoPlaybackSupported)
     {
       v82 = [CARAirPlaySettingsPanel alloc];
-      v83 = [(CARSettingsPanel *)self panelController];
-      v84 = [(CARSettingsPanel *)v82 initWithPanelController:v83];
+      panelController17 = [(CARSettingsPanel *)self panelController];
+      v84 = [(CARSettingsPanel *)v82 initWithPanelController:panelController17];
       [v56 addObject:v84];
     }
   }
 
   v85 = [CARSilentModePanel alloc];
-  v86 = [(CARSettingsPanel *)self panelController];
-  v87 = [(CARSilentModePanel *)v85 initWithPanelController:v86];
+  panelController18 = [(CARSettingsPanel *)self panelController];
+  v87 = [(CARSilentModePanel *)v85 initWithPanelController:panelController18];
   [v56 addObject:v87];
 
   [(NSArray *)v97 addObject:v56];
   if (CRIsInternalInstall())
   {
     v88 = +[CARPrototypePref showInternalSettings];
-    v89 = [v88 state];
+    state = [v88 state];
 
-    if (v89)
+    if (state)
     {
       v90 = [CARInternalSettingsPanel alloc];
-      v91 = [(CARSettingsPanel *)self panelController];
-      v92 = [(CARInternalSettingsPanel *)v90 initWithPanelController:v91];
+      panelController19 = [(CARSettingsPanel *)self panelController];
+      v92 = [(CARInternalSettingsPanel *)v90 initWithPanelController:panelController19];
       v99 = v92;
       v93 = [NSArray arrayWithObjects:&v99 count:1];
       [(NSArray *)v97 addObject:v93];
@@ -403,9 +403,9 @@ LABEL_32:
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v18 = self;
-    v6 = [(CARRootPanel *)self panels];
-    v7 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    selfCopy = self;
+    panels = [(CARRootPanel *)self panels];
+    v7 = [panels countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v7)
     {
       v8 = v7;
@@ -416,7 +416,7 @@ LABEL_32:
         {
           if (*v20 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(panels);
           }
 
           v11 = *(*(&v19 + 1) + 8 * i);
@@ -427,17 +427,17 @@ LABEL_32:
           [(NSArray *)v5 addObject:v14];
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v8 = [panels countByEnumeratingWithState:&v19 objects:v23 count:16];
       }
 
       while (v8);
     }
 
-    v15 = v18->_specifierSections;
-    v18->_specifierSections = v5;
+    v15 = selfCopy->_specifierSections;
+    selfCopy->_specifierSections = v5;
     v16 = v5;
 
-    v3 = v18->_specifierSections;
+    v3 = selfCopy->_specifierSections;
   }
 
   return v3;
@@ -460,16 +460,16 @@ LABEL_32:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v14 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "[Settings] #DEBUG [LIFECYCLE] CARAnnounceNotificationsPanel Invalidate - Object %p being invalidated", buf, 0xCu);
   }
 
   [(CARAnnounceNotificationsPanel *)self->_notificationPanel invalidate];
-  v4 = [(CARSettingsPanel *)self panelController];
-  [v4 removeObserver:self];
+  panelController = [(CARSettingsPanel *)self panelController];
+  [panelController removeObserver:self];
 
-  v5 = [(CARSettingsPanel *)self panelController];
-  [v5 removeNotificationSettingsObserver:self];
+  panelController2 = [(CARSettingsPanel *)self panelController];
+  [panelController2 removeNotificationSettingsObserver:self];
 
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterRemoveEveryObserver(DarwinNotifyCenter, self);
@@ -522,12 +522,12 @@ LABEL_32:
 - (void)assetsManagerReady
 {
   v3 = +[_TtC15CarPlaySettings16CARAssetsManager sharedInstance];
-  v4 = [v3 isDarkModeAppearanceOnly];
+  isDarkModeAppearanceOnly = [v3 isDarkModeAppearanceOnly];
 
-  if (v4 != [(CARRootPanel *)self isDarkModeOnly])
+  if (isDarkModeAppearanceOnly != [(CARRootPanel *)self isDarkModeOnly])
   {
-    self->_isDarkModeOnly = v4;
-    [(CARAppearancePanel *)self->_appearancePanel setDarkModeOnly:v4];
+    self->_isDarkModeOnly = isDarkModeAppearanceOnly;
+    [(CARAppearancePanel *)self->_appearancePanel setDarkModeOnly:isDarkModeAppearanceOnly];
     [(CARRootPanel *)self _updateVehicleWithDarkModeOnlyIfNeeded];
 
     [(CARRootPanel *)self resetAllSpecifiers];
@@ -536,14 +536,14 @@ LABEL_32:
 
 - (BOOL)_announceNotificationsEnabled
 {
-  v2 = [(CARSettingsPanel *)self panelController];
-  v3 = [v2 notificationSystemSettings];
-  v4 = [v3 announcementSetting];
+  panelController = [(CARSettingsPanel *)self panelController];
+  notificationSystemSettings = [panelController notificationSystemSettings];
+  announcementSetting = [notificationSystemSettings announcementSetting];
 
-  return v4 == 2;
+  return announcementSetting == 2;
 }
 
-- (void)_limitedUIDidChange:(id)a3
+- (void)_limitedUIDidChange:(id)change
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -557,20 +557,20 @@ LABEL_32:
 {
   if ([(CARRootPanel *)self isDarkModeOnly])
   {
-    v3 = [(CARSettingsPanel *)self panelController];
-    v4 = [v3 vehicle];
-    v5 = [v4 appearanceModePreference];
+    panelController = [(CARSettingsPanel *)self panelController];
+    vehicle = [panelController vehicle];
+    appearanceModePreference = [vehicle appearanceModePreference];
 
-    if (v5 != 2)
+    if (appearanceModePreference != 2)
     {
-      v6 = [(CARSettingsPanel *)self panelController];
-      v7 = [v6 vehicle];
-      [v7 setAppearanceModePreference:2];
+      panelController2 = [(CARSettingsPanel *)self panelController];
+      vehicle2 = [panelController2 vehicle];
+      [vehicle2 setAppearanceModePreference:2];
 
-      v10 = [(CARSettingsPanel *)self panelController];
-      v8 = [(CARSettingsPanel *)self panelController];
-      v9 = [v8 vehicle];
-      [v10 saveVehicle:v9];
+      panelController3 = [(CARSettingsPanel *)self panelController];
+      panelController4 = [(CARSettingsPanel *)self panelController];
+      vehicle3 = [panelController4 vehicle];
+      [panelController3 saveVehicle:vehicle3];
     }
   }
 }

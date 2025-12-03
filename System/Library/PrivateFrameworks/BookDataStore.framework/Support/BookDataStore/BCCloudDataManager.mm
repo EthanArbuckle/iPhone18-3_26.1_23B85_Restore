@@ -1,40 +1,40 @@
 @interface BCCloudDataManager
-- (BCCloudDataManager)initWithCloudDataSource:(id)a3 entityName:(id)a4 notificationName:(id)a5 immutableClass:(Class)a6 mutableClass:(Class)a7 syncManager:(id)a8 cloudKitController:(id)a9 dataMapper:(id)a10 privacyDelegate:(id)a11;
+- (BCCloudDataManager)initWithCloudDataSource:(id)source entityName:(id)name notificationName:(id)notificationName immutableClass:(Class)class mutableClass:(Class)mutableClass syncManager:(id)manager cloudKitController:(id)controller dataMapper:(id)self0 privacyDelegate:(id)self1;
 - (BCCloudDataPrivacyDelegate)privacyDelegate;
 - (BCCloudDataSyncProvider)syncManager;
 - (BCCloudKitController)cloudKitController;
 - (BDSCloudDataManagerMonitor)monitor;
-- (BOOL)_isTokenInvalidError:(id)a3;
+- (BOOL)_isTokenInvalidError:(id)error;
 - (NSManagedObjectContext)moc;
-- (id)_fetchHistoryAfterToken:(id)a3 inMoc:(id)a4 error:(id *)a5;
+- (id)_fetchHistoryAfterToken:(id)token inMoc:(id)moc error:(id *)error;
 - (id)diagnosticDirtyCloudDataInfos;
 - (id)mq_cloudSyncVersions;
-- (id)mq_sanitizeError:(id)a3;
-- (id)mutableCloudDataWithPredicate:(id)a3 sortDescriptors:(id)a4;
-- (void)_dirtyMutableCloudDataWithFetchLimit:(unint64_t)a3 synchronous:(BOOL)a4 completion:(id)a5;
-- (void)_logError:(id)a3 at:(id)a4;
-- (void)cloudDatasWithPredicate:(id)a3 completion:(id)a4;
-- (void)cloudDatasWithPredicate:(id)a3 sortDescriptors:(id)a4 maximumResultCount:(unint64_t)a5 filter:(id)a6 completion:(id)a7;
-- (void)countWithPredicate:(id)a3 completion:(id)a4;
-- (void)currentCloudSyncVersions:(id)a3;
-- (void)deleteCloudDataForPredicate:(id)a3 completion:(id)a4;
-- (void)dirtyMutableCloudDataWithFetchLimit:(unint64_t)a3 completion:(id)a4;
-- (void)dissociateCloudDataFromSyncWithCompletion:(id)a3;
-- (void)failedRecordIDs:(id)a3 completion:(id)a4;
-- (void)fetchCloudDataIncludingDeleted:(BOOL)a3 completion:(id)a4;
-- (void)getChangesSince:(id)a3 forEntityClass:(Class)a4 completion:(id)a5;
-- (void)hasSaltChangedWithCompletion:(id)a3;
+- (id)mq_sanitizeError:(id)error;
+- (id)mutableCloudDataWithPredicate:(id)predicate sortDescriptors:(id)descriptors;
+- (void)_dirtyMutableCloudDataWithFetchLimit:(unint64_t)limit synchronous:(BOOL)synchronous completion:(id)completion;
+- (void)_logError:(id)error at:(id)at;
+- (void)cloudDatasWithPredicate:(id)predicate completion:(id)completion;
+- (void)cloudDatasWithPredicate:(id)predicate sortDescriptors:(id)descriptors maximumResultCount:(unint64_t)count filter:(id)filter completion:(id)completion;
+- (void)countWithPredicate:(id)predicate completion:(id)completion;
+- (void)currentCloudSyncVersions:(id)versions;
+- (void)deleteCloudDataForPredicate:(id)predicate completion:(id)completion;
+- (void)dirtyMutableCloudDataWithFetchLimit:(unint64_t)limit completion:(id)completion;
+- (void)dissociateCloudDataFromSyncWithCompletion:(id)completion;
+- (void)failedRecordIDs:(id)ds completion:(id)completion;
+- (void)fetchCloudDataIncludingDeleted:(BOOL)deleted completion:(id)completion;
+- (void)getChangesSince:(id)since forEntityClass:(Class)class completion:(id)completion;
+- (void)hasSaltChangedWithCompletion:(id)completion;
 - (void)mq_incrementCloudVersion;
 - (void)mq_signalTransactions;
-- (void)mutableCloudDataWithPredicate:(id)a3 sortDescriptors:(id)a4 synchronous:(BOOL)a5 completion:(id)a6;
-- (void)removeCloudDataForPredicate:(id)a3 completion:(id)a4;
-- (void)resolveConflictsForRecords:(id)a3 withResolvers:(id)a4 mergers:(id)a5 completion:(id)a6;
-- (void)resolvedCloudDataForCloudData:(id)a3 withResolvers:(id)a4 mergers:(id)a5 predicate:(id)a6 completion:(id)a7;
-- (void)setCloudData:(id)a3 predicate:(id)a4 mergers:(id)a5 isEqualCheckIgnoringEmptySalt:(BOOL)a6 completion:(id)a7;
-- (void)setCloudData:(id)a3 predicate:(id)a4 propertyIDKey:(id)a5 mergers:(id)a6 isEqualCheckIgnoringEmptySalt:(BOOL)a7 completion:(id)a8;
-- (void)startSyncToCKWithSyncManager:(id)a3 completion:(id)a4;
-- (void)transformedCloudDatasWithPredicate:(id)a3 transformer:(id)a4 limit:(int64_t)a5 completion:(id)a6;
-- (void)updateSyncGenerationFromCloudData:(id)a3 predicate:(id)a4 propertyIDKey:(id)a5 completion:(id)a6;
+- (void)mutableCloudDataWithPredicate:(id)predicate sortDescriptors:(id)descriptors synchronous:(BOOL)synchronous completion:(id)completion;
+- (void)removeCloudDataForPredicate:(id)predicate completion:(id)completion;
+- (void)resolveConflictsForRecords:(id)records withResolvers:(id)resolvers mergers:(id)mergers completion:(id)completion;
+- (void)resolvedCloudDataForCloudData:(id)data withResolvers:(id)resolvers mergers:(id)mergers predicate:(id)predicate completion:(id)completion;
+- (void)setCloudData:(id)data predicate:(id)predicate mergers:(id)mergers isEqualCheckIgnoringEmptySalt:(BOOL)salt completion:(id)completion;
+- (void)setCloudData:(id)data predicate:(id)predicate propertyIDKey:(id)key mergers:(id)mergers isEqualCheckIgnoringEmptySalt:(BOOL)salt completion:(id)completion;
+- (void)startSyncToCKWithSyncManager:(id)manager completion:(id)completion;
+- (void)transformedCloudDatasWithPredicate:(id)predicate transformer:(id)transformer limit:(int64_t)limit completion:(id)completion;
+- (void)updateSyncGenerationFromCloudData:(id)data predicate:(id)predicate propertyIDKey:(id)key completion:(id)completion;
 @end
 
 @implementation BCCloudDataManager
@@ -53,15 +53,15 @@
   return WeakRetained;
 }
 
-- (BCCloudDataManager)initWithCloudDataSource:(id)a3 entityName:(id)a4 notificationName:(id)a5 immutableClass:(Class)a6 mutableClass:(Class)a7 syncManager:(id)a8 cloudKitController:(id)a9 dataMapper:(id)a10 privacyDelegate:(id)a11
+- (BCCloudDataManager)initWithCloudDataSource:(id)source entityName:(id)name notificationName:(id)notificationName immutableClass:(Class)class mutableClass:(Class)mutableClass syncManager:(id)manager cloudKitController:(id)controller dataMapper:(id)self0 privacyDelegate:(id)self1
 {
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a8;
-  v21 = a9;
-  v40 = a10;
-  v22 = a11;
+  sourceCopy = source;
+  nameCopy = name;
+  notificationNameCopy = notificationName;
+  managerCopy = manager;
+  controllerCopy = controller;
+  mapperCopy = mapper;
+  delegateCopy = delegate;
   v43.receiver = self;
   v43.super_class = BCCloudDataManager;
   v23 = [(BCCloudDataManager *)&v43 init];
@@ -71,23 +71,23 @@
     goto LABEL_12;
   }
 
-  objc_storeStrong(&v23->_dataSource, a3);
-  v25 = [v17 managedObjectContext];
-  objc_storeWeak(&v24->_moc, v25);
+  objc_storeStrong(&v23->_dataSource, source);
+  managedObjectContext = [sourceCopy managedObjectContext];
+  objc_storeWeak(&v24->_moc, managedObjectContext);
 
-  v26 = [v18 copy];
+  v26 = [nameCopy copy];
   entityName = v24->_entityName;
   v24->_entityName = v26;
 
-  v28 = [v19 copy];
+  v28 = [notificationNameCopy copy];
   notificationName = v24->_notificationName;
   v24->_notificationName = v28;
 
-  v24->_immutableClass = a6;
-  v24->_mutableClass = a7;
-  objc_storeWeak(&v24->_syncManager, v20);
-  objc_storeWeak(&v24->_cloudKitController, v21);
-  objc_storeStrong(&v24->_dataMapper, a10);
+  v24->_immutableClass = class;
+  v24->_mutableClass = mutableClass;
+  objc_storeWeak(&v24->_syncManager, managerCopy);
+  objc_storeWeak(&v24->_cloudKitController, controllerCopy);
+  objc_storeStrong(&v24->_dataMapper, mapper);
   WeakRetained = objc_loadWeakRetained(&v24->_moc);
 
   if (!WeakRetained)
@@ -106,23 +106,23 @@
 
   else
   {
-    if (v22)
+    if (delegateCopy)
     {
-      objc_storeWeak(&v24->_privacyDelegate, v22);
+      objc_storeWeak(&v24->_privacyDelegate, delegateCopy);
       goto LABEL_10;
     }
 
     v34 = objc_loadWeakRetained(&v24->_cloudKitController);
-    v35 = [v34 privateCloudDatabaseController];
-    objc_storeWeak(&v24->_privacyDelegate, v35);
+    privateCloudDatabaseController = [v34 privateCloudDatabaseController];
+    objc_storeWeak(&v24->_privacyDelegate, privateCloudDatabaseController);
   }
 
 LABEL_10:
   v24->_signalDataChangedTransaction = v24->_notificationName != 0;
   v36 = objc_loadWeakRetained(&v24->_cloudKitController);
-  v37 = [v36 didChangeContainer];
+  didChangeContainer = [v36 didChangeContainer];
 
-  if (v37)
+  if (didChangeContainer)
   {
     v41[0] = _NSConcreteStackBlock;
     v41[1] = 3221225472;
@@ -137,11 +137,11 @@ LABEL_12:
   return v24;
 }
 
-- (void)_logError:(id)a3 at:(id)a4
+- (void)_logError:(id)error at:(id)at
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  errorCopy = error;
+  atCopy = at;
+  if (errorCopy)
   {
     v7 = sub_100002660();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -153,34 +153,34 @@ LABEL_12:
 
 - (void)mq_incrementCloudVersion
 {
-  v2 = [(BCCloudDataManager *)self mq_cloudSyncVersions];
-  [v2 setCloudVersion:{objc_msgSend(v2, "cloudVersion") + 1}];
+  mq_cloudSyncVersions = [(BCCloudDataManager *)self mq_cloudSyncVersions];
+  [mq_cloudSyncVersions setCloudVersion:{objc_msgSend(mq_cloudSyncVersions, "cloudVersion") + 1}];
   v3 = sub_100002660();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v4 = 134217984;
-    v5 = [v2 cloudVersion];
+    cloudVersion = [mq_cloudSyncVersions cloudVersion];
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "BCCloudDataManager Incremented cloudSyncVersion to %lld", &v4, 0xCu);
   }
 }
 
-- (void)startSyncToCKWithSyncManager:(id)a3 completion:(id)a4
+- (void)startSyncToCKWithSyncManager:(id)manager completion:(id)completion
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100048888;
   v8[3] = &unk_100241018;
-  v9 = a3;
-  v10 = a4;
-  v6 = v10;
-  v7 = v9;
+  managerCopy = manager;
+  completionCopy = completion;
+  v6 = completionCopy;
+  v7 = managerCopy;
   [(BCCloudDataManager *)self _dirtyMutableCloudDataWithFetchLimit:64 synchronous:0 completion:v8];
 }
 
-- (void)_dirtyMutableCloudDataWithFetchLimit:(unint64_t)a3 synchronous:(BOOL)a4 completion:(id)a5
+- (void)_dirtyMutableCloudDataWithFetchLimit:(unint64_t)limit synchronous:(BOOL)synchronous completion:(id)completion
 {
-  v5 = a4;
-  v8 = a5;
+  synchronousCopy = synchronous;
+  completionCopy = completion;
   v9 = [(BCCloudDataManager *)self moc];
 
   if (v9)
@@ -191,11 +191,11 @@ LABEL_12:
     v13[2] = sub_100048C20;
     v13[3] = &unk_100241040;
     objc_copyWeak(v15, &location);
-    v15[1] = a3;
-    v14 = v8;
+    v15[1] = limit;
+    v14 = completionCopy;
     v10 = objc_retainBlock(v13);
     v11 = [(BCCloudDataManager *)self moc];
-    if (v5)
+    if (synchronousCopy)
     {
       [v11 performBlockAndWait:v10];
     }
@@ -211,25 +211,25 @@ LABEL_12:
 
   else
   {
-    v12 = [(BCCloudDataManager *)self responseQueue];
+    responseQueue = [(BCCloudDataManager *)self responseQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100048BAC;
     block[3] = &unk_1002402E0;
-    v18 = v8;
-    dispatch_async(v12, block);
+    v18 = completionCopy;
+    dispatch_async(responseQueue, block);
   }
 }
 
-- (void)dirtyMutableCloudDataWithFetchLimit:(unint64_t)a3 completion:(id)a4
+- (void)dirtyMutableCloudDataWithFetchLimit:(unint64_t)limit completion:(id)completion
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10004912C;
   v7[3] = &unk_100241068;
-  v8 = a4;
-  v6 = v8;
-  [(BCCloudDataManager *)self _dirtyMutableCloudDataWithFetchLimit:a3 synchronous:0 completion:v7];
+  completionCopy = completion;
+  v6 = completionCopy;
+  [(BCCloudDataManager *)self _dirtyMutableCloudDataWithFetchLimit:limit synchronous:0 completion:v7];
 }
 
 - (id)mq_cloudSyncVersions
@@ -238,54 +238,54 @@ LABEL_12:
   v4 = [[NSFetchRequest alloc] initWithEntityName:@"BCCloudSyncVersions"];
   [v4 setReturnsObjectsAsFaults:0];
   [v4 setFetchLimit:1];
-  v5 = [(BCCloudDataManager *)self entityName];
-  v6 = [NSPredicate predicateWithFormat:@"dataType == %@", v5];
+  entityName = [(BCCloudDataManager *)self entityName];
+  v6 = [NSPredicate predicateWithFormat:@"dataType == %@", entityName];
   [v4 setPredicate:v6];
 
   v12 = 0;
   v7 = [v3 executeFetchRequest:v4 error:&v12];
   v8 = v12;
   [(BCCloudDataManager *)self _logError:v8 at:@"mq_cloudSyncVersions"];
-  v9 = [v7 firstObject];
-  if (!v9)
+  firstObject = [v7 firstObject];
+  if (!firstObject)
   {
-    v9 = [NSEntityDescription insertNewObjectForEntityForName:@"BCCloudSyncVersions" inManagedObjectContext:v3];
-    v10 = [(BCCloudDataManager *)self entityName];
-    [v9 setDataType:v10];
+    firstObject = [NSEntityDescription insertNewObjectForEntityForName:@"BCCloudSyncVersions" inManagedObjectContext:v3];
+    entityName2 = [(BCCloudDataManager *)self entityName];
+    [firstObject setDataType:entityName2];
   }
 
-  return v9;
+  return firstObject;
 }
 
 - (void)mq_signalTransactions
 {
-  v3 = [(BCCloudDataManager *)self syncManager];
-  [v3 signalSyncToCK];
+  syncManager = [(BCCloudDataManager *)self syncManager];
+  [syncManager signalSyncToCK];
 
   if ([(BCCloudDataManager *)self signalDataChangedTransaction])
   {
-    v7 = [(BCCloudDataManager *)self cloudKitController];
-    v4 = [v7 transactionManager];
-    v5 = [(BCCloudDataManager *)self entityName];
-    v6 = [(BCCloudDataManager *)self notificationName];
-    [v4 signalDataChangeTransactionForEntityName:v5 notificationName:v6];
+    cloudKitController = [(BCCloudDataManager *)self cloudKitController];
+    transactionManager = [cloudKitController transactionManager];
+    entityName = [(BCCloudDataManager *)self entityName];
+    notificationName = [(BCCloudDataManager *)self notificationName];
+    [transactionManager signalDataChangeTransactionForEntityName:entityName notificationName:notificationName];
   }
 }
 
-- (id)mq_sanitizeError:(id)a3
+- (id)mq_sanitizeError:(id)error
 {
-  if (a3)
+  if (error)
   {
     v11[0] = @"CoreDataError";
     v10[0] = NSDebugDescriptionErrorKey;
     v10[1] = @"domain";
-    v3 = a3;
-    v4 = [v3 domain];
-    v11[1] = v4;
+    errorCopy = error;
+    domain = [errorCopy domain];
+    v11[1] = domain;
     v10[2] = @"code";
-    v5 = [v3 code];
+    code = [errorCopy code];
 
-    v6 = [NSNumber numberWithInteger:v5];
+    v6 = [NSNumber numberWithInteger:code];
     v11[2] = v6;
     v7 = [NSDictionary dictionaryWithObjects:v11 forKeys:v10 count:3];
 
@@ -300,9 +300,9 @@ LABEL_12:
   return v8;
 }
 
-- (void)currentCloudSyncVersions:(id)a3
+- (void)currentCloudSyncVersions:(id)versions
 {
-  v4 = a3;
+  versionsCopy = versions;
   v5 = [(BCCloudDataManager *)self moc];
 
   if (v5)
@@ -314,7 +314,7 @@ LABEL_12:
     v8[2] = sub_100049718;
     v8[3] = &unk_10023FE48;
     objc_copyWeak(&v10, &location);
-    v9 = v4;
+    v9 = versionsCopy;
     [v6 performBlock:v8];
 
     objc_destroyWeak(&v10);
@@ -323,22 +323,22 @@ LABEL_12:
 
   else
   {
-    v7 = [(BCCloudDataManager *)self responseQueue];
+    responseQueue = [(BCCloudDataManager *)self responseQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1000496A8;
     block[3] = &unk_1002402E0;
-    v13 = v4;
-    dispatch_async(v7, block);
+    v13 = versionsCopy;
+    dispatch_async(responseQueue, block);
   }
 }
 
-- (void)setCloudData:(id)a3 predicate:(id)a4 mergers:(id)a5 isEqualCheckIgnoringEmptySalt:(BOOL)a6 completion:(id)a7
+- (void)setCloudData:(id)data predicate:(id)predicate mergers:(id)mergers isEqualCheckIgnoringEmptySalt:(BOOL)salt completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  dataCopy = data;
+  predicateCopy = predicate;
+  mergersCopy = mergers;
+  completionCopy = completion;
   v16 = [(BCCloudDataManager *)self moc];
 
   if (v16)
@@ -350,12 +350,12 @@ LABEL_12:
     v19[2] = sub_100049B40;
     v19[3] = &unk_100241090;
     objc_copyWeak(&v25, &location);
-    v20 = v12;
-    v21 = v13;
-    v26 = a6;
-    v22 = v14;
-    v23 = self;
-    v24 = v15;
+    v20 = dataCopy;
+    v21 = predicateCopy;
+    saltCopy = salt;
+    v22 = mergersCopy;
+    selfCopy = self;
+    v24 = completionCopy;
     [v17 performBlock:v19];
 
     objc_destroyWeak(&v25);
@@ -364,23 +364,23 @@ LABEL_12:
 
   else
   {
-    v18 = [(BCCloudDataManager *)self responseQueue];
+    responseQueue = [(BCCloudDataManager *)self responseQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100049AC8;
     block[3] = &unk_1002402E0;
-    v29 = v15;
-    dispatch_async(v18, block);
+    v29 = completionCopy;
+    dispatch_async(responseQueue, block);
   }
 }
 
-- (void)setCloudData:(id)a3 predicate:(id)a4 propertyIDKey:(id)a5 mergers:(id)a6 isEqualCheckIgnoringEmptySalt:(BOOL)a7 completion:(id)a8
+- (void)setCloudData:(id)data predicate:(id)predicate propertyIDKey:(id)key mergers:(id)mergers isEqualCheckIgnoringEmptySalt:(BOOL)salt completion:(id)completion
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a8;
+  dataCopy = data;
+  predicateCopy = predicate;
+  keyCopy = key;
+  mergersCopy = mergers;
+  completionCopy = completion;
   v19 = [(BCCloudDataManager *)self moc];
 
   if (v19)
@@ -392,13 +392,13 @@ LABEL_12:
     v22[2] = sub_10004A2D0;
     v22[3] = &unk_1002410E0;
     objc_copyWeak(&v29, &location);
-    v23 = v15;
-    v24 = v16;
-    v25 = v14;
-    v30 = a7;
-    v26 = v17;
-    v27 = self;
-    v28 = v18;
+    v23 = predicateCopy;
+    v24 = keyCopy;
+    v25 = dataCopy;
+    saltCopy = salt;
+    v26 = mergersCopy;
+    selfCopy = self;
+    v28 = completionCopy;
     [v20 performBlock:v22];
 
     objc_destroyWeak(&v29);
@@ -407,20 +407,20 @@ LABEL_12:
 
   else
   {
-    v21 = [(BCCloudDataManager *)self responseQueue];
+    responseQueue = [(BCCloudDataManager *)self responseQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10004A258;
     block[3] = &unk_1002402E0;
-    v33 = v18;
-    dispatch_async(v21, block);
+    v33 = completionCopy;
+    dispatch_async(responseQueue, block);
   }
 }
 
-- (void)removeCloudDataForPredicate:(id)a3 completion:(id)a4
+- (void)removeCloudDataForPredicate:(id)predicate completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  predicateCopy = predicate;
+  completionCopy = completion;
   v8 = [(BCCloudDataManager *)self moc];
 
   if (v8)
@@ -432,8 +432,8 @@ LABEL_12:
     v11[2] = sub_10004AF1C;
     v11[3] = &unk_100240228;
     objc_copyWeak(&v14, &location);
-    v12 = v6;
-    v13 = v7;
+    v12 = predicateCopy;
+    v13 = completionCopy;
     [v9 performBlock:v11];
 
     objc_destroyWeak(&v14);
@@ -442,22 +442,22 @@ LABEL_12:
 
   else
   {
-    v10 = [(BCCloudDataManager *)self responseQueue];
+    responseQueue = [(BCCloudDataManager *)self responseQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10004AEA8;
     block[3] = &unk_1002402E0;
-    v17 = v7;
-    dispatch_async(v10, block);
+    v17 = completionCopy;
+    dispatch_async(responseQueue, block);
   }
 }
 
-- (void)updateSyncGenerationFromCloudData:(id)a3 predicate:(id)a4 propertyIDKey:(id)a5 completion:(id)a6
+- (void)updateSyncGenerationFromCloudData:(id)data predicate:(id)predicate propertyIDKey:(id)key completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dataCopy = data;
+  predicateCopy = predicate;
+  keyCopy = key;
+  completionCopy = completion;
   v14 = [(BCCloudDataManager *)self moc];
 
   if (v14)
@@ -469,10 +469,10 @@ LABEL_12:
     v17[2] = sub_10004B504;
     v17[3] = &unk_100241130;
     objc_copyWeak(&v22, &location);
-    v18 = v11;
-    v19 = v10;
-    v20 = v12;
-    v21 = v13;
+    v18 = predicateCopy;
+    v19 = dataCopy;
+    v20 = keyCopy;
+    v21 = completionCopy;
     [v15 performBlock:v17];
 
     objc_destroyWeak(&v22);
@@ -481,20 +481,20 @@ LABEL_12:
 
   else
   {
-    v16 = [(BCCloudDataManager *)self responseQueue];
+    responseQueue = [(BCCloudDataManager *)self responseQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10004B490;
     block[3] = &unk_1002402E0;
-    v25 = v13;
-    dispatch_async(v16, block);
+    v25 = completionCopy;
+    dispatch_async(responseQueue, block);
   }
 }
 
-- (void)deleteCloudDataForPredicate:(id)a3 completion:(id)a4
+- (void)deleteCloudDataForPredicate:(id)predicate completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  predicateCopy = predicate;
+  completionCopy = completion;
   v8 = [(BCCloudDataManager *)self moc];
 
   if (v8)
@@ -506,8 +506,8 @@ LABEL_12:
     v11[2] = sub_10004BCC8;
     v11[3] = &unk_100240228;
     objc_copyWeak(&v14, &location);
-    v12 = v6;
-    v13 = v7;
+    v12 = predicateCopy;
+    v13 = completionCopy;
     [v9 performBlock:v11];
 
     objc_destroyWeak(&v14);
@@ -516,25 +516,25 @@ LABEL_12:
 
   else
   {
-    v10 = [(BCCloudDataManager *)self responseQueue];
+    responseQueue = [(BCCloudDataManager *)self responseQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10004BC54;
     block[3] = &unk_1002402E0;
-    v17 = v7;
-    dispatch_async(v10, block);
+    v17 = completionCopy;
+    dispatch_async(responseQueue, block);
   }
 }
 
-- (void)countWithPredicate:(id)a3 completion:(id)a4
+- (void)countWithPredicate:(id)predicate completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  predicateCopy = predicate;
+  completionCopy = completion;
   v8 = [(BCCloudDataManager *)self moc];
 
   if (v8)
   {
-    if (v7)
+    if (completionCopy)
     {
       objc_initWeak(&location, self);
       v9 = [(BCCloudDataManager *)self moc];
@@ -543,8 +543,8 @@ LABEL_12:
       v11[2] = sub_10004C3D8;
       v11[3] = &unk_100240228;
       objc_copyWeak(&v14, &location);
-      v12 = v6;
-      v13 = v7;
+      v12 = predicateCopy;
+      v13 = completionCopy;
       [v9 performBlock:v11];
 
       objc_destroyWeak(&v14);
@@ -554,20 +554,20 @@ LABEL_12:
 
   else
   {
-    v10 = [(BCCloudDataManager *)self responseQueue];
+    responseQueue = [(BCCloudDataManager *)self responseQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10004C364;
     block[3] = &unk_1002402E0;
-    v17 = v7;
-    dispatch_async(v10, block);
+    v17 = completionCopy;
+    dispatch_async(responseQueue, block);
   }
 }
 
-- (id)mutableCloudDataWithPredicate:(id)a3 sortDescriptors:(id)a4
+- (id)mutableCloudDataWithPredicate:(id)predicate sortDescriptors:(id)descriptors
 {
-  v6 = a3;
-  v7 = a4;
+  predicateCopy = predicate;
+  descriptorsCopy = descriptors;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -579,24 +579,24 @@ LABEL_12:
   v10[2] = sub_10004C700;
   v10[3] = &unk_100241158;
   v10[4] = &v11;
-  [(BCCloudDataManager *)self mutableCloudDataWithPredicate:v6 sortDescriptors:0 synchronous:1 completion:v10];
+  [(BCCloudDataManager *)self mutableCloudDataWithPredicate:predicateCopy sortDescriptors:0 synchronous:1 completion:v10];
   v8 = v12[5];
   _Block_object_dispose(&v11, 8);
 
   return v8;
 }
 
-- (void)mutableCloudDataWithPredicate:(id)a3 sortDescriptors:(id)a4 synchronous:(BOOL)a5 completion:(id)a6
+- (void)mutableCloudDataWithPredicate:(id)predicate sortDescriptors:(id)descriptors synchronous:(BOOL)synchronous completion:(id)completion
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  synchronousCopy = synchronous;
+  predicateCopy = predicate;
+  descriptorsCopy = descriptors;
+  completionCopy = completion;
   v13 = [(BCCloudDataManager *)self moc];
 
   if (v13)
   {
-    if (v12)
+    if (completionCopy)
     {
       objc_initWeak(&location, self);
       v17 = _NSConcreteStackBlock;
@@ -604,12 +604,12 @@ LABEL_12:
       v19 = sub_10004C98C;
       v20 = &unk_100241180;
       objc_copyWeak(&v24, &location);
-      v21 = v10;
-      v22 = v11;
-      v23 = v12;
+      v21 = predicateCopy;
+      v22 = descriptorsCopy;
+      v23 = completionCopy;
       v14 = objc_retainBlock(&v17);
       v15 = [(BCCloudDataManager *)self moc:v17];
-      if (v7)
+      if (synchronousCopy)
       {
         [v15 performBlockAndWait:v14];
       }
@@ -626,37 +626,37 @@ LABEL_12:
 
   else
   {
-    v16 = [(BCCloudDataManager *)self responseQueue];
+    responseQueue = [(BCCloudDataManager *)self responseQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10004C918;
     block[3] = &unk_1002402E0;
-    v27 = v12;
-    dispatch_async(v16, block);
+    v27 = completionCopy;
+    dispatch_async(responseQueue, block);
   }
 }
 
-- (void)cloudDatasWithPredicate:(id)a3 sortDescriptors:(id)a4 maximumResultCount:(unint64_t)a5 filter:(id)a6 completion:(id)a7
+- (void)cloudDatasWithPredicate:(id)predicate sortDescriptors:(id)descriptors maximumResultCount:(unint64_t)count filter:(id)filter completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
+  predicateCopy = predicate;
+  descriptorsCopy = descriptors;
+  filterCopy = filter;
+  completionCopy = completion;
   v16 = [(BCCloudDataManager *)self moc];
 
   if (v16)
   {
-    if (v15)
+    if (completionCopy)
     {
       objc_initWeak(&location, self);
-      if (a5)
+      if (count)
       {
-        v17 = a5;
+        countCopy = count;
       }
 
       else
       {
-        v17 = -1;
+        countCopy = -1;
       }
 
       v18 = [(BCCloudDataManager *)self moc];
@@ -669,11 +669,11 @@ LABEL_12:
         v21[2] = sub_10004CEE0;
         v21[3] = &unk_1002411A8;
         objc_copyWeak(v26, &location);
-        v22 = v12;
-        v23 = v13;
-        v24 = v14;
-        v26[1] = v17;
-        v25 = v15;
+        v22 = predicateCopy;
+        v23 = descriptorsCopy;
+        v24 = filterCopy;
+        v26[1] = countCopy;
+        v25 = completionCopy;
         [v19 performBlock:v21];
 
         objc_destroyWeak(v26);
@@ -685,25 +685,25 @@ LABEL_12:
 
   else
   {
-    v20 = [(BCCloudDataManager *)self responseQueue];
+    responseQueue = [(BCCloudDataManager *)self responseQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10004CE68;
     block[3] = &unk_1002402E0;
-    v29 = v15;
-    dispatch_async(v20, block);
+    v29 = completionCopy;
+    dispatch_async(responseQueue, block);
   }
 }
 
-- (void)cloudDatasWithPredicate:(id)a3 completion:(id)a4
+- (void)cloudDatasWithPredicate:(id)predicate completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  predicateCopy = predicate;
+  completionCopy = completion;
   v8 = [(BCCloudDataManager *)self moc];
 
   if (v8)
   {
-    if (v7)
+    if (completionCopy)
     {
       objc_initWeak(&location, self);
       v9 = [(BCCloudDataManager *)self moc];
@@ -712,8 +712,8 @@ LABEL_12:
       v11[2] = sub_10004D560;
       v11[3] = &unk_100240228;
       objc_copyWeak(&v14, &location);
-      v12 = v6;
-      v13 = v7;
+      v12 = predicateCopy;
+      v13 = completionCopy;
       [v9 performBlock:v11];
 
       objc_destroyWeak(&v14);
@@ -723,26 +723,26 @@ LABEL_12:
 
   else
   {
-    v10 = [(BCCloudDataManager *)self responseQueue];
+    responseQueue = [(BCCloudDataManager *)self responseQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10004D4E8;
     block[3] = &unk_1002402E0;
-    v17 = v7;
-    dispatch_async(v10, block);
+    v17 = completionCopy;
+    dispatch_async(responseQueue, block);
   }
 }
 
-- (void)transformedCloudDatasWithPredicate:(id)a3 transformer:(id)a4 limit:(int64_t)a5 completion:(id)a6
+- (void)transformedCloudDatasWithPredicate:(id)predicate transformer:(id)transformer limit:(int64_t)limit completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
+  predicateCopy = predicate;
+  transformerCopy = transformer;
+  completionCopy = completion;
   v12 = [(BCCloudDataManager *)self moc];
 
   if (v12)
   {
-    if (v11)
+    if (completionCopy)
     {
       objc_initWeak(&location, self);
       v13 = [(BCCloudDataManager *)self moc];
@@ -751,9 +751,9 @@ LABEL_12:
       v15[2] = sub_10004DB28;
       v15[3] = &unk_1002411D0;
       objc_copyWeak(&v19, &location);
-      v16 = v9;
-      v17 = v10;
-      v18 = v11;
+      v16 = predicateCopy;
+      v17 = transformerCopy;
+      v18 = completionCopy;
       [v13 performBlock:v15];
 
       objc_destroyWeak(&v19);
@@ -763,48 +763,48 @@ LABEL_12:
 
   else
   {
-    v14 = [(BCCloudDataManager *)self responseQueue];
+    responseQueue = [(BCCloudDataManager *)self responseQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10004DAB4;
     block[3] = &unk_1002402E0;
-    v22 = v11;
-    dispatch_async(v14, block);
+    v22 = completionCopy;
+    dispatch_async(responseQueue, block);
   }
 }
 
-- (void)resolvedCloudDataForCloudData:(id)a3 withResolvers:(id)a4 mergers:(id)a5 predicate:(id)a6 completion:(id)a7
+- (void)resolvedCloudDataForCloudData:(id)data withResolvers:(id)resolvers mergers:(id)mergers predicate:(id)predicate completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  dataCopy = data;
+  resolversCopy = resolvers;
+  mergersCopy = mergers;
+  predicateCopy = predicate;
+  completionCopy = completion;
   v17 = [(BCCloudDataManager *)self moc];
 
   if (v17)
   {
-    v18 = [(BCCloudDataManager *)self privacyDelegate];
-    [v12 setPrivacyDelegate:v18];
+    privacyDelegate = [(BCCloudDataManager *)self privacyDelegate];
+    [dataCopy setPrivacyDelegate:privacyDelegate];
 
-    v19 = [v12 systemFields];
-    v20 = [v19 recordID];
+    systemFields = [dataCopy systemFields];
+    recordID = [systemFields recordID];
 
-    if (v20)
+    if (recordID)
     {
       objc_initWeak(&location, self);
-      v21 = [(BCCloudDataManager *)self syncManager];
+      syncManager = [(BCCloudDataManager *)self syncManager];
       v25[0] = _NSConcreteStackBlock;
       v25[1] = 3221225472;
       v25[2] = sub_10004E150;
       v25[3] = &unk_100241220;
       objc_copyWeak(&v31, &location);
-      v26 = v15;
-      v27 = v13;
-      v28 = self;
-      v29 = v14;
-      v30 = v16;
-      [v21 fetchRecordForRecordID:v20 completion:v25];
+      v26 = predicateCopy;
+      v27 = resolversCopy;
+      selfCopy = self;
+      v29 = mergersCopy;
+      v30 = completionCopy;
+      [syncManager fetchRecordForRecordID:recordID completion:v25];
 
       objc_destroyWeak(&v31);
       objc_destroyWeak(&location);
@@ -812,7 +812,7 @@ LABEL_12:
 
     else
     {
-      v23 = objc_retainBlock(v16);
+      v23 = objc_retainBlock(completionCopy);
       v24 = v23;
       if (v23)
       {
@@ -823,24 +823,24 @@ LABEL_12:
 
   else
   {
-    v22 = [(BCCloudDataManager *)self responseQueue];
+    responseQueue = [(BCCloudDataManager *)self responseQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10004E0DC;
     block[3] = &unk_1002402E0;
-    v34 = v16;
-    dispatch_async(v22, block);
+    v34 = completionCopy;
+    dispatch_async(responseQueue, block);
 
-    v20 = v34;
+    recordID = v34;
   }
 }
 
-- (void)resolveConflictsForRecords:(id)a3 withResolvers:(id)a4 mergers:(id)a5 completion:(id)a6
+- (void)resolveConflictsForRecords:(id)records withResolvers:(id)resolvers mergers:(id)mergers completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  recordsCopy = records;
+  resolversCopy = resolvers;
+  mergersCopy = mergers;
+  completionCopy = completion;
   v14 = [(BCCloudDataManager *)self moc];
 
   if (v14)
@@ -852,11 +852,11 @@ LABEL_12:
     v17[2] = sub_10004EB68;
     v17[3] = &unk_100241270;
     objc_copyWeak(&v23, &location);
-    v18 = v10;
-    v19 = v11;
-    v20 = self;
-    v21 = v12;
-    v22 = v13;
+    v18 = recordsCopy;
+    v19 = resolversCopy;
+    selfCopy = self;
+    v21 = mergersCopy;
+    v22 = completionCopy;
     [v15 performBlock:v17];
 
     objc_destroyWeak(&v23);
@@ -865,20 +865,20 @@ LABEL_12:
 
   else
   {
-    v16 = [(BCCloudDataManager *)self responseQueue];
+    responseQueue = [(BCCloudDataManager *)self responseQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10004EAF0;
     block[3] = &unk_1002402E0;
-    v26 = v13;
-    dispatch_async(v16, block);
+    v26 = completionCopy;
+    dispatch_async(responseQueue, block);
   }
 }
 
-- (void)failedRecordIDs:(id)a3 completion:(id)a4
+- (void)failedRecordIDs:(id)ds completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  completionCopy = completion;
   v8 = [(BCCloudDataManager *)self moc];
 
   if (v8)
@@ -890,8 +890,8 @@ LABEL_12:
     v11[2] = sub_10004FB48;
     v11[3] = &unk_100240228;
     objc_copyWeak(&v14, &location);
-    v12 = v6;
-    v13 = v7;
+    v12 = dsCopy;
+    v13 = completionCopy;
     [v9 performBlock:v11];
 
     objc_destroyWeak(&v14);
@@ -900,20 +900,20 @@ LABEL_12:
 
   else
   {
-    v10 = [(BCCloudDataManager *)self responseQueue];
+    responseQueue = [(BCCloudDataManager *)self responseQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10004FAD4;
     block[3] = &unk_1002402E0;
-    v17 = v7;
-    dispatch_async(v10, block);
+    v17 = completionCopy;
+    dispatch_async(responseQueue, block);
   }
 }
 
-- (void)fetchCloudDataIncludingDeleted:(BOOL)a3 completion:(id)a4
+- (void)fetchCloudDataIncludingDeleted:(BOOL)deleted completion:(id)completion
 {
-  v6 = a4;
-  if (a3)
+  completionCopy = completion;
+  if (deleted)
   {
     [NSPredicate predicateWithValue:1];
   }
@@ -923,50 +923,50 @@ LABEL_12:
     [NSPredicate predicateWithFormat:@"deletedFlag == NO"];
   }
   v7 = ;
-  [(BCCloudDataManager *)self cloudDatasWithPredicate:v7 completion:v6];
+  [(BCCloudDataManager *)self cloudDatasWithPredicate:v7 completion:completionCopy];
 }
 
-- (id)_fetchHistoryAfterToken:(id)a3 inMoc:(id)a4 error:(id *)a5
+- (id)_fetchHistoryAfterToken:(id)token inMoc:(id)moc error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  tokenCopy = token;
+  mocCopy = moc;
   v10 = sub_100002660();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
-    v11 = [(BCCloudDataManager *)self entityName];
+    entityName = [(BCCloudDataManager *)self entityName];
     *buf = 138543618;
-    v18 = v11;
+    v18 = entityName;
     v19 = 2114;
-    v20 = v8;
+    v20 = tokenCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "BCCloudDataManager %{public}@ getChangesSince _fetchHistoryAfterToken: %{public}@", buf, 0x16u);
   }
 
-  v12 = [NSPersistentHistoryChangeRequest fetchHistoryAfterToken:v8];
+  v12 = [NSPersistentHistoryChangeRequest fetchHistoryAfterToken:tokenCopy];
   [v12 setResultType:5];
   [v12 setFetchBatchSize:1024];
   v16 = 0;
-  v13 = [v9 executeRequest:v12 error:&v16];
+  v13 = [mocCopy executeRequest:v12 error:&v16];
 
   v14 = v16;
-  if (a5)
+  if (error)
   {
     v14 = v14;
-    *a5 = v14;
+    *error = v14;
   }
 
   return v13;
 }
 
-- (BOOL)_isTokenInvalidError:(id)a3
+- (BOOL)_isTokenInvalidError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 code];
-  v5 = v4 == 134501 || v4 == 134301;
+  errorCopy = error;
+  code = [errorCopy code];
+  v5 = code == 134501 || code == 134301;
   v8 = 0;
   if (v5)
   {
-    v6 = [v3 domain];
-    v7 = [v6 isEqualToString:NSCocoaErrorDomain];
+    domain = [errorCopy domain];
+    v7 = [domain isEqualToString:NSCocoaErrorDomain];
 
     if (v7)
     {
@@ -977,23 +977,23 @@ LABEL_12:
   return v8;
 }
 
-- (void)getChangesSince:(id)a3 forEntityClass:(Class)a4 completion:(id)a5
+- (void)getChangesSince:(id)since forEntityClass:(Class)class completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  sinceCopy = since;
+  completionCopy = completion;
   v10 = +[BULogUtilities shared];
-  v11 = [v10 verboseLoggingEnabled];
+  verboseLoggingEnabled = [v10 verboseLoggingEnabled];
 
-  if (v11)
+  if (verboseLoggingEnabled)
   {
     v12 = sub_10000DB80();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [(BCCloudDataManager *)self entityName];
+      entityName = [(BCCloudDataManager *)self entityName];
       *buf = 138412546;
-      v26 = v13;
+      v26 = entityName;
       v27 = 2112;
-      v28 = v8;
+      v28 = sinceCopy;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "\\BCCloudDataManager %@ getChangesSince cloudSyncVersions:%@\\"", buf, 0x16u);
     }
   }
@@ -1003,14 +1003,14 @@ LABEL_12:
 
   if (v15)
   {
-    v17 = [(BCCloudDataManager *)self responseQueue];
+    responseQueue = [(BCCloudDataManager *)self responseQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100050354;
     block[3] = &unk_10023FED8;
     block[4] = self;
-    v24 = v9;
-    dispatch_async(v17, block);
+    v24 = completionCopy;
+    dispatch_async(responseQueue, block);
   }
 
   else
@@ -1022,10 +1022,10 @@ LABEL_12:
     v18[2] = sub_1000503D8;
     v18[3] = &unk_100241298;
     objc_copyWeak(v22, buf);
-    v19 = v8;
-    v20 = self;
-    v22[1] = a4;
-    v21 = v9;
+    v19 = sinceCopy;
+    selfCopy = self;
+    v22[1] = class;
+    v21 = completionCopy;
     [v16 performBlock:v18];
 
     objc_destroyWeak(v22);
@@ -1033,9 +1033,9 @@ LABEL_12:
   }
 }
 
-- (void)dissociateCloudDataFromSyncWithCompletion:(id)a3
+- (void)dissociateCloudDataFromSyncWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = [(BCCloudDataManager *)self moc];
 
   if (v5)
@@ -1047,7 +1047,7 @@ LABEL_12:
     v8[2] = sub_100050EA8;
     v8[3] = &unk_10023FE48;
     objc_copyWeak(&v10, &location);
-    v9 = v4;
+    v9 = completionCopy;
     [v6 performBlock:v8];
 
     objc_destroyWeak(&v10);
@@ -1056,25 +1056,25 @@ LABEL_12:
 
   else
   {
-    v7 = [(BCCloudDataManager *)self responseQueue];
+    responseQueue = [(BCCloudDataManager *)self responseQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100050E34;
     block[3] = &unk_1002402E0;
-    v13 = v4;
-    dispatch_async(v7, block);
+    v13 = completionCopy;
+    dispatch_async(responseQueue, block);
   }
 }
 
-- (void)hasSaltChangedWithCompletion:(id)a3
+- (void)hasSaltChangedWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = sub_100002660();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(BCCloudDataManager *)self entityName];
+    entityName = [(BCCloudDataManager *)self entityName];
     *buf = 138412290;
-    v17 = v6;
+    v17 = entityName;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "BCCloudDataManager %@ #hasSaltChangedWithCompletion", buf, 0xCu);
   }
 
@@ -1083,16 +1083,16 @@ LABEL_12:
 
   if (v8)
   {
-    v10 = [(BCCloudDataManager *)self responseQueue];
+    responseQueue = [(BCCloudDataManager *)self responseQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100051600;
     block[3] = &unk_1002402E0;
-    v15 = v4;
-    dispatch_async(v10, block);
+    v15 = completionCopy;
+    dispatch_async(responseQueue, block);
   }
 
-  else if (v4)
+  else if (completionCopy)
   {
     objc_initWeak(buf, self);
     v9 = [(BCCloudDataManager *)self moc];
@@ -1101,7 +1101,7 @@ LABEL_12:
     v11[2] = sub_1000516C4;
     v11[3] = &unk_10023FE48;
     objc_copyWeak(&v13, buf);
-    v12 = v4;
+    v12 = completionCopy;
     [v9 performBlock:v11];
 
     objc_destroyWeak(&v13);

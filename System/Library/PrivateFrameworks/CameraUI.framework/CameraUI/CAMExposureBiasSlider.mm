@@ -1,30 +1,30 @@
 @interface CAMExposureBiasSlider
-- (CAMExposureBiasSlider)initWithFrame:(CGRect)a3;
-- (CGPoint)_sunCenterForNormalizedValue:(float)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CAMExposureBiasSlider)initWithFrame:(CGRect)frame;
+- (CGPoint)_sunCenterForNormalizedValue:(float)value;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (float)_normalizedExposureValue;
-- (void)_animateTrackAlpha:(double)a3 withDuration:(double)a4;
+- (void)_animateTrackAlpha:(double)alpha withDuration:(double)duration;
 - (void)_cancelDelayedDim;
 - (void)_dimTrackForInactivity;
 - (void)_scheduleDelayedDim;
 - (void)_updateForChangedNormalizedExposureValue;
 - (void)forceTrackDimmed;
 - (void)layoutSubviews;
-- (void)setExposureBiasMax:(float)a3;
-- (void)setExposureBiasMin:(float)a3;
-- (void)setExposureBiasValue:(float)a3;
-- (void)setSuspendTrackFadeOut:(BOOL)a3;
+- (void)setExposureBiasMax:(float)max;
+- (void)setExposureBiasMin:(float)min;
+- (void)setExposureBiasValue:(float)value;
+- (void)setSuspendTrackFadeOut:(BOOL)out;
 - (void)tintColorDidChange;
 - (void)updateLastInteractionTime;
 @end
 
 @implementation CAMExposureBiasSlider
 
-- (CAMExposureBiasSlider)initWithFrame:(CGRect)a3
+- (CAMExposureBiasSlider)initWithFrame:(CGRect)frame
 {
   v31.receiver = self;
   v31.super_class = CAMExposureBiasSlider;
-  v3 = [(CAMExposureBiasSlider *)&v31 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CAMExposureBiasSlider *)&v31 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -32,7 +32,7 @@
     LODWORD(v5) = 1.0;
     [(CAMExposureBiasSlider *)v4 setExposureBiasMax:v5];
     [(CAMExposureBiasSlider *)v4 setExposureBiasValue:0.0];
-    v6 = [(CAMExposureBiasSlider *)v4 tintColor];
+    tintColor = [(CAMExposureBiasSlider *)v4 tintColor];
     v7 = objc_alloc(MEMORY[0x1E69DCAE0]);
     v8 = *MEMORY[0x1E695F058];
     v9 = *(MEMORY[0x1E695F058] + 8);
@@ -46,8 +46,8 @@
     maxTrackView = v4->__maxTrackView;
     v4->__maxTrackView = v14;
 
-    [(UIView *)v4->__minTrackView setBackgroundColor:v6];
-    [(UIView *)v4->__maxTrackView setBackgroundColor:v6];
+    [(UIView *)v4->__minTrackView setBackgroundColor:tintColor];
+    [(UIView *)v4->__maxTrackView setBackgroundColor:tintColor];
     [(CAMExposureBiasSlider *)v4 addSubview:v4->__minTrackView];
     [(CAMExposureBiasSlider *)v4 addSubview:v4->__maxTrackView];
     v16 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{v8, v9, v10, v11}];
@@ -59,20 +59,20 @@
     v4->__maxTrackMaskView = v18;
 
     v20 = v4->__minTrackMaskView;
-    v21 = [MEMORY[0x1E69DC888] whiteColor];
-    [(UIView *)v20 setBackgroundColor:v21];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [(UIView *)v20 setBackgroundColor:whiteColor];
 
     v22 = v4->__maxTrackMaskView;
-    v23 = [MEMORY[0x1E69DC888] whiteColor];
-    [(UIView *)v22 setBackgroundColor:v23];
+    whiteColor2 = [MEMORY[0x1E69DC888] whiteColor];
+    [(UIView *)v22 setBackgroundColor:whiteColor2];
 
-    v24 = [(UIView *)v4->__minTrackView layer];
-    v25 = [(UIView *)v4->__minTrackMaskView layer];
-    [v24 setMask:v25];
+    layer = [(UIView *)v4->__minTrackView layer];
+    layer2 = [(UIView *)v4->__minTrackMaskView layer];
+    [layer setMask:layer2];
 
-    v26 = [(UIView *)v4->__maxTrackView layer];
-    v27 = [(UIView *)v4->__maxTrackMaskView layer];
-    [v26 setMask:v27];
+    layer3 = [(UIView *)v4->__maxTrackView layer];
+    layer4 = [(UIView *)v4->__maxTrackMaskView layer];
+    [layer3 setMask:layer4];
 
     v28 = [[CAMExposureBiasSliderThumb alloc] initWithFrame:v8, v9, v10, v11];
     thumbView = v4->__thumbView;
@@ -86,34 +86,34 @@
 
 - (void)tintColorDidChange
 {
-  v3 = [(CAMExposureBiasSlider *)self tintColor];
-  [(UIView *)self->__minTrackView setBackgroundColor:v3];
-  [(UIView *)self->__maxTrackView setBackgroundColor:v3];
+  tintColor = [(CAMExposureBiasSlider *)self tintColor];
+  [(UIView *)self->__minTrackView setBackgroundColor:tintColor];
+  [(UIView *)self->__maxTrackView setBackgroundColor:tintColor];
 }
 
-- (void)setExposureBiasMin:(float)a3
+- (void)setExposureBiasMin:(float)min
 {
-  if (self->_exposureBiasMin != a3)
+  if (self->_exposureBiasMin != min)
   {
-    self->_exposureBiasMin = a3;
+    self->_exposureBiasMin = min;
     [(CAMExposureBiasSlider *)self _updateForChangedNormalizedExposureValue];
   }
 }
 
-- (void)setExposureBiasMax:(float)a3
+- (void)setExposureBiasMax:(float)max
 {
-  if (self->_exposureBiasMax != a3)
+  if (self->_exposureBiasMax != max)
   {
-    self->_exposureBiasMax = a3;
+    self->_exposureBiasMax = max;
     [(CAMExposureBiasSlider *)self _updateForChangedNormalizedExposureValue];
   }
 }
 
-- (void)setExposureBiasValue:(float)a3
+- (void)setExposureBiasValue:(float)value
 {
-  if (self->_exposureBiasValue != a3)
+  if (self->_exposureBiasValue != value)
   {
-    self->_exposureBiasValue = a3;
+    self->_exposureBiasValue = value;
     [(CAMExposureBiasSlider *)self _updateForChangedNormalizedExposureValue];
   }
 
@@ -128,7 +128,7 @@
   [(CAMExposureBiasSlider *)self setNeedsLayout];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v3 = 143.0;
   v4 = 1.0;
@@ -180,7 +180,7 @@
   [(UIView *)self->__maxTrackMaskView setFrame:0.0, MaxY, 1.0, CGRectGetMaxY(v28) - MaxY];
 }
 
-- (CGPoint)_sunCenterForNormalizedValue:(float)a3
+- (CGPoint)_sunCenterForNormalizedValue:(float)value
 {
   [(CAMExposureBiasSlider *)self bounds];
   v6 = v5;
@@ -198,7 +198,7 @@
   v21.size.width = v10;
   v21.size.height = v12;
   MaxY = CGRectGetMaxY(v21);
-  v16 = MaxY - v13 + a3 * (v14 - (MaxY - v13));
+  v16 = MaxY - v13 + value * (v14 - (MaxY - v13));
   v22.origin.x = v6;
   v22.origin.y = v8;
   v22.size.width = v10;
@@ -236,12 +236,12 @@
   return result;
 }
 
-- (void)setSuspendTrackFadeOut:(BOOL)a3
+- (void)setSuspendTrackFadeOut:(BOOL)out
 {
-  if (self->_suspendTrackFadeOut != a3)
+  if (self->_suspendTrackFadeOut != out)
   {
-    self->_suspendTrackFadeOut = a3;
-    if (a3)
+    self->_suspendTrackFadeOut = out;
+    if (out)
     {
       [(CAMExposureBiasSlider *)self _cancelDelayedDim];
 
@@ -305,14 +305,14 @@
   }
 }
 
-- (void)_animateTrackAlpha:(double)a3 withDuration:(double)a4
+- (void)_animateTrackAlpha:(double)alpha withDuration:(double)duration
 {
-  if (a4 <= 0.0)
+  if (duration <= 0.0)
   {
-    [(UIView *)self->__minTrackView setAlpha:a3];
+    [(UIView *)self->__minTrackView setAlpha:alpha];
     maxTrackView = self->__maxTrackView;
 
-    [(UIView *)maxTrackView setAlpha:a3];
+    [(UIView *)maxTrackView setAlpha:alpha];
   }
 
   else
@@ -322,8 +322,8 @@
     v7[2] = __57__CAMExposureBiasSlider__animateTrackAlpha_withDuration___block_invoke;
     v7[3] = &unk_1E76F7A38;
     v7[4] = self;
-    *&v7[5] = a3;
-    [MEMORY[0x1E69DD250] animateWithDuration:2 delay:v7 options:0 animations:a4 completion:0.0];
+    *&v7[5] = alpha;
+    [MEMORY[0x1E69DD250] animateWithDuration:2 delay:v7 options:0 animations:duration completion:0.0];
   }
 }
 

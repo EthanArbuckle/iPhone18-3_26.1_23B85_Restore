@@ -13,9 +13,9 @@
 
 - (uint64_t)_ui_resolvedTextAlignment
 {
-  v2 = [UIApp userInterfaceLayoutDirection];
+  userInterfaceLayoutDirection = [UIApp userInterfaceLayoutDirection];
 
-  return [a1 _ui_resolvedTextAlignmentForUserInterfaceLayoutDirection:v2];
+  return [self _ui_resolvedTextAlignmentForUserInterfaceLayoutDirection:userInterfaceLayoutDirection];
 }
 
 - (uint64_t)_ui_resolvedTextAlignmentForParagraphStyle:()UIKitAdditions userInterfaceLayoutDirection:
@@ -24,9 +24,9 @@
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 alignment];
-    v8 = [v6 baseWritingDirection];
-    if (v8 != -1)
+    alignment = [v5 alignment];
+    baseWritingDirection = [v6 baseWritingDirection];
+    if (baseWritingDirection != -1)
     {
       goto LABEL_6;
     }
@@ -34,19 +34,19 @@
 
   else
   {
-    v7 = 4;
+    alignment = 4;
   }
 
-  v8 = a4 != 0;
+  baseWritingDirection = a4 != 0;
 LABEL_6:
-  if ((v7 - 3) >= 2)
+  if ((alignment - 3) >= 2)
   {
-    v9 = v7;
+    v9 = alignment;
   }
 
   else
   {
-    v9 = 2 * (v8 == 1);
+    v9 = 2 * (baseWritingDirection == 1);
   }
 
   return v9;
@@ -54,12 +54,12 @@ LABEL_6:
 
 - (uint64_t)_ui_resolvedTextAlignmentForUserInterfaceLayoutDirection:()UIKitAdditions
 {
-  if (![a1 length])
+  if (![self length])
   {
     goto LABEL_4;
   }
 
-  v5 = [a1 attribute:*off_1E70EC988 atIndex:0 effectiveRange:0];
+  v5 = [self attribute:*off_1E70EC988 atIndex:0 effectiveRange:0];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -68,7 +68,7 @@ LABEL_4:
     v5 = 0;
   }
 
-  v6 = [a1 _ui_resolvedTextAlignmentForParagraphStyle:v5 userInterfaceLayoutDirection:a3];
+  v6 = [self _ui_resolvedTextAlignmentForParagraphStyle:v5 userInterfaceLayoutDirection:a3];
 
   return v6;
 }
@@ -77,32 +77,32 @@ LABEL_4:
 {
   v4 = UIApp;
   v5 = a3;
-  v6 = [a1 _ui_resolvedTextAlignmentForParagraphStyle:v5 userInterfaceLayoutDirection:{objc_msgSend(v4, "userInterfaceLayoutDirection")}];
+  v6 = [self _ui_resolvedTextAlignmentForParagraphStyle:v5 userInterfaceLayoutDirection:{objc_msgSend(v4, "userInterfaceLayoutDirection")}];
 
   return v6;
 }
 
 - (uint64_t)_ui_resolvedWritingDirection
 {
-  v2 = [UIApp userInterfaceLayoutDirection];
+  userInterfaceLayoutDirection = [UIApp userInterfaceLayoutDirection];
 
-  return [a1 _ui_resolvedTextAlignmentForUserInterfaceLayoutDirection:v2];
+  return [self _ui_resolvedTextAlignmentForUserInterfaceLayoutDirection:userInterfaceLayoutDirection];
 }
 
 - (uint64_t)_ui_resolvedWritingDirectionForUserInterfaceLayoutDirection:()UIKitAdditions
 {
-  if ([a1 length])
+  if ([self length])
   {
-    v5 = [a1 attribute:*off_1E70EC988 atIndex:0 effectiveRange:0];
+    v5 = [self attribute:*off_1E70EC988 atIndex:0 effectiveRange:0];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       if (v5)
       {
 LABEL_8:
-        v6 = a3 != 0;
+        baseWritingDirection = a3 != 0;
 
-        return v6;
+        return baseWritingDirection;
       }
     }
 
@@ -111,40 +111,40 @@ LABEL_8:
     }
   }
 
-  v6 = [0 baseWritingDirection];
-  if (v6 == -1)
+  baseWritingDirection = [0 baseWritingDirection];
+  if (baseWritingDirection == -1)
   {
     v5 = 0;
     goto LABEL_8;
   }
 
-  return v6;
+  return baseWritingDirection;
 }
 
 - (id)_ui_attributedStringWithOriginalFontAttributes
 {
-  v2 = [a1 length];
-  if (!v2 || ((v3 = v2, v9 = 0, v10 = 0, [a1 attribute:*off_1E70EC978 atIndex:0 effectiveRange:&v9], v4 = objc_claimAutoreleasedReturnValue(), v5 = v10, v4, !v4) ? (v6 = v5 == v3) : (v6 = 0), v6))
+  v2 = [self length];
+  if (!v2 || ((v3 = v2, v9 = 0, v10 = 0, [self attribute:*off_1E70EC978 atIndex:0 effectiveRange:&v9], v4 = objc_claimAutoreleasedReturnValue(), v5 = v10, v4, !v4) ? (v6 = v5 == v3) : (v6 = 0), v6))
   {
-    v7 = a1;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = [a1 mutableCopy];
-    [v7 _ui_restoreOriginalFontAttributes];
+    selfCopy = [self mutableCopy];
+    [selfCopy _ui_restoreOriginalFontAttributes];
   }
 
-  return v7;
+  return selfCopy;
 }
 
 - (id)_ui_glyphImageViewsScale:()UIKitAdditions outImageRect:outLineRect:outBaselineOffset:
 {
   v69 = *MEMORY[0x1E69E9840];
-  v11 = [MEMORY[0x1E695DF70] array];
-  if ([(__CFAttributedString *)a1 length])
+  array = [MEMORY[0x1E695DF70] array];
+  if ([(__CFAttributedString *)self length])
   {
-    v12 = CTLineCreateWithAttributedString(a1);
+    v12 = CTLineCreateWithAttributedString(self);
     if (v12)
     {
       v13 = v12;
@@ -254,7 +254,7 @@ LABEL_8:
                         v38 = v37;
                         [v35 size];
                         [(UIImageView *)v36 setFrame:v31 / a2, v32 / a2, v38, v39];
-                        [v11 addObject:v36];
+                        [array addObject:v36];
                         CGImageRelease(v34);
                       }
 
@@ -349,7 +349,7 @@ LABEL_8:
     }
   }
 
-  return v11;
+  return array;
 }
 
 @end

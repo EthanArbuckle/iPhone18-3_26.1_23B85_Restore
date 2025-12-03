@@ -1,14 +1,14 @@
 @interface VMAccountProvisioningViewController
-- (id)accountAtIndex:(unint64_t)a3;
-- (id)accountsView:(id)a3 buttonForRowAtIndex:(unint64_t)a4;
-- (id)titleForAccountsView:(id)a3;
-- (unint64_t)numberOfRowsForAccountsView:(id)a3;
-- (void)accountsView:(id)a3 buttonTappedForRowWithIndex:(unint64_t)a4;
-- (void)presentPinControllerForAccount:(id)a3 animated:(BOOL)a4;
-- (void)setPINViewControllerFinished:(id)a3 success:(BOOL)a4 oldPIN:(id)a5 newPIN:(id)a6;
+- (id)accountAtIndex:(unint64_t)index;
+- (id)accountsView:(id)view buttonForRowAtIndex:(unint64_t)index;
+- (id)titleForAccountsView:(id)view;
+- (unint64_t)numberOfRowsForAccountsView:(id)view;
+- (void)accountsView:(id)view buttonTappedForRowWithIndex:(unint64_t)index;
+- (void)presentPinControllerForAccount:(id)account animated:(BOOL)animated;
+- (void)setPINViewControllerFinished:(id)finished success:(BOOL)success oldPIN:(id)n newPIN:(id)iN;
 - (void)updateAccounts;
 - (void)viewDidLoad;
-- (void)voicemailGreetingViewControllerFinished:(id)a3;
+- (void)voicemailGreetingViewControllerFinished:(id)finished;
 @end
 
 @implementation VMAccountProvisioningViewController
@@ -19,46 +19,46 @@
   v16.super_class = VMAccountProvisioningViewController;
   [(VMAccountsViewController *)&v16 viewDidLoad];
   [(VMAccountProvisioningViewController *)self updateAccounts];
-  v3 = [(VMAccountsViewController *)self accountsView];
+  accountsView = [(VMAccountsViewController *)self accountsView];
   v4 = +[UIColor systemBackgroundColor];
-  [v3 setBackgroundColor:v4];
+  [accountsView setBackgroundColor:v4];
 
-  [v3 setDataSource:self];
-  [v3 setDelegate:self];
+  [accountsView setDataSource:self];
+  [accountsView setDelegate:self];
   v5 = +[NSBundle mainBundle];
   v6 = [v5 localizedStringForKey:@"ACCOUNTS_VIEW_CONTROLLER_NAVIGATION_ITEM_TITLE_VOICEMAIL" value:&stru_10028F310 table:@"VoicemailUI"];
-  v7 = [(VMAccountProvisioningViewController *)self navigationItem];
-  [v7 setTitle:v6];
+  navigationItem = [(VMAccountProvisioningViewController *)self navigationItem];
+  [navigationItem setTitle:v6];
 
-  v8 = [(VMAccountProvisioningViewController *)self navigationController];
-  if (v8)
+  navigationController = [(VMAccountProvisioningViewController *)self navigationController];
+  if (navigationController)
   {
-    v9 = v8;
-    v10 = [(VMViewController *)self manager];
-    v11 = [v10 accounts];
-    v12 = [v11 count];
+    v9 = navigationController;
+    manager = [(VMViewController *)self manager];
+    accounts = [manager accounts];
+    v12 = [accounts count];
 
     if (v12 == 1)
     {
-      v13 = [(VMViewController *)self manager];
-      v14 = [v13 accounts];
-      v15 = [v14 firstObject];
-      [(VMAccountProvisioningViewController *)self presentPinControllerForAccount:v15 animated:0];
+      manager2 = [(VMViewController *)self manager];
+      accounts2 = [manager2 accounts];
+      firstObject = [accounts2 firstObject];
+      [(VMAccountProvisioningViewController *)self presentPinControllerForAccount:firstObject animated:0];
     }
   }
 }
 
-- (id)accountAtIndex:(unint64_t)a3
+- (id)accountAtIndex:(unint64_t)index
 {
-  v4 = [(VMAccountProvisioningViewController *)self accounts];
-  if ([v4 count] <= a3)
+  accounts = [(VMAccountProvisioningViewController *)self accounts];
+  if ([accounts count] <= index)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [v4 objectAtIndexedSubscript:a3];
+    v5 = [accounts objectAtIndexedSubscript:index];
   }
 
   return v5;
@@ -67,14 +67,14 @@
 - (void)updateAccounts
 {
   v3 = +[NSMutableArray array];
-  v4 = [(VMViewController *)self manager];
-  v5 = [v4 accounts];
+  manager = [(VMViewController *)self manager];
+  accounts = [manager accounts];
 
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = v5;
+  v6 = accounts;
   v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
@@ -105,41 +105,41 @@
   [(VMAccountProvisioningViewController *)self setAccounts:v3];
 }
 
-- (id)accountsView:(id)a3 buttonForRowAtIndex:(unint64_t)a4
+- (id)accountsView:(id)view buttonForRowAtIndex:(unint64_t)index
 {
   v6 = +[VMAccountButton accountButton];
-  v7 = [(VMAccountProvisioningViewController *)self accountAtIndex:a4];
+  v7 = [(VMAccountProvisioningViewController *)self accountAtIndex:index];
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 accountDescription];
-    v10 = [(VMViewController *)self manager];
-    v11 = [v10 accounts];
-    v12 = [v11 count];
+    accountDescription = [v7 accountDescription];
+    manager = [(VMViewController *)self manager];
+    accounts = [manager accounts];
+    v12 = [accounts count];
 
     if (v12 == 1)
     {
       v13 = +[NSBundle mainBundle];
       v14 = [v13 localizedStringForKey:@"ACCOUNTS_VIEW_BUTTON_TITLE_SET_UP" value:&stru_10028F310 table:@"VoicemailUI"];
 
-      v9 = v14;
+      accountDescription = v14;
     }
 
-    [v6 setTitle:v9 forState:0];
+    [v6 setTitle:accountDescription forState:0];
   }
 
   return v6;
 }
 
-- (unint64_t)numberOfRowsForAccountsView:(id)a3
+- (unint64_t)numberOfRowsForAccountsView:(id)view
 {
-  v3 = [(VMAccountProvisioningViewController *)self accounts];
-  v4 = [v3 count];
+  accounts = [(VMAccountProvisioningViewController *)self accounts];
+  v4 = [accounts count];
 
   return v4;
 }
 
-- (id)titleForAccountsView:(id)a3
+- (id)titleForAccountsView:(id)view
 {
   v3 = +[NSBundle mainBundle];
   v4 = [v3 localizedStringForKey:@"ACCOUNTS_VIEW_MESSAGE_TITLE_SET_UP" value:&stru_10028F310 table:@"VoicemailUI"];
@@ -147,9 +147,9 @@
   return v4;
 }
 
-- (void)accountsView:(id)a3 buttonTappedForRowWithIndex:(unint64_t)a4
+- (void)accountsView:(id)view buttonTappedForRowWithIndex:(unint64_t)index
 {
-  v5 = [(VMAccountProvisioningViewController *)self accountAtIndex:a4];
+  v5 = [(VMAccountProvisioningViewController *)self accountAtIndex:index];
   if (v5)
   {
     [(VMAccountProvisioningViewController *)self presentPinControllerForAccount:v5 animated:1];
@@ -158,18 +158,18 @@
   _objc_release_x1();
 }
 
-- (void)presentPinControllerForAccount:(id)a3 animated:(BOOL)a4
+- (void)presentPinControllerForAccount:(id)account animated:(BOOL)animated
 {
-  v5 = a3;
-  [(VMAccountProvisioningViewController *)self setSelectedAccount:v5];
-  v6 = [(VMViewController *)self manager];
-  v7 = [v5 UUID];
-  v8 = [v6 minimumPasscodeLengthForAccountUUID:v7];
+  accountCopy = account;
+  [(VMAccountProvisioningViewController *)self setSelectedAccount:accountCopy];
+  manager = [(VMViewController *)self manager];
+  uUID = [accountCopy UUID];
+  v8 = [manager minimumPasscodeLengthForAccountUUID:uUID];
 
-  v9 = [(VMViewController *)self manager];
-  v10 = [v5 UUID];
+  manager2 = [(VMViewController *)self manager];
+  uUID2 = [accountCopy UUID];
 
-  v11 = [v9 maximumPasscodeLengthForAccountUUID:v10];
+  v11 = [manager2 maximumPasscodeLengthForAccountUUID:uUID2];
   v23 = [[TPSetPINViewController alloc] initForNewPINWithMinLength:v8 maxLength:v11 confirmPIN:1];
   [v23 setDelegate:self];
   v12 = +[NSBundle mainBundle];
@@ -184,36 +184,36 @@
   v17 = [v16 localizedStringForKey:@"SAVING_PASSWORD" value:&stru_10028F310 table:@"Voicemail"];
   [v23 setPromptTextForSavingPIN:v17];
 
-  v18 = [(VMAccountProvisioningViewController *)self navigationController];
+  navigationController = [(VMAccountProvisioningViewController *)self navigationController];
 
-  if (v18)
+  if (navigationController)
   {
-    v19 = [(VMAccountProvisioningViewController *)self navigationController];
-    [v19 pushViewController:v23 animated:1];
+    navigationController2 = [(VMAccountProvisioningViewController *)self navigationController];
+    [navigationController2 pushViewController:v23 animated:1];
   }
 
   else
   {
-    v19 = [[UINavigationController alloc] initWithRootViewController:v23];
-    v20 = [(VMAccountsViewController *)self accountsView];
-    v21 = [v20 window];
-    v22 = [v21 rootViewController];
-    [v22 presentViewController:v19 animated:1 completion:0];
+    navigationController2 = [[UINavigationController alloc] initWithRootViewController:v23];
+    accountsView = [(VMAccountsViewController *)self accountsView];
+    window = [accountsView window];
+    rootViewController = [window rootViewController];
+    [rootViewController presentViewController:navigationController2 animated:1 completion:0];
   }
 }
 
-- (void)voicemailGreetingViewControllerFinished:(id)a3
+- (void)voicemailGreetingViewControllerFinished:(id)finished
 {
-  v4 = a3;
+  finishedCopy = finished;
   [(VMAccountProvisioningViewController *)self setSelectedAccount:0];
-  v5 = [v4 navigationController];
+  navigationController = [finishedCopy navigationController];
 
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = __79__VMAccountProvisioningViewController_voicemailGreetingViewControllerFinished___block_invoke;
   v6[3] = &unk_100284FD0;
   v6[4] = self;
-  [v5 dismissViewControllerAnimated:1 completion:v6];
+  [navigationController dismissViewControllerAnimated:1 completion:v6];
 }
 
 void __79__VMAccountProvisioningViewController_voicemailGreetingViewControllerFinished___block_invoke(uint64_t a1)
@@ -228,20 +228,20 @@ void __79__VMAccountProvisioningViewController_voicemailGreetingViewControllerFi
   }
 }
 
-- (void)setPINViewControllerFinished:(id)a3 success:(BOOL)a4 oldPIN:(id)a5 newPIN:(id)a6
+- (void)setPINViewControllerFinished:(id)finished success:(BOOL)success oldPIN:(id)n newPIN:(id)iN
 {
-  v8 = a4;
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(VMAccountProvisioningViewController *)self selectedAccount];
-  if (v8)
+  successCopy = success;
+  finishedCopy = finished;
+  nCopy = n;
+  iNCopy = iN;
+  selectedAccount = [(VMAccountProvisioningViewController *)self selectedAccount];
+  if (successCopy)
   {
     v31[0] = _NSConcreteStackBlock;
     v31[1] = 3221225472;
     v31[2] = __90__VMAccountProvisioningViewController_setPINViewControllerFinished_success_oldPIN_newPIN___block_invoke;
     v31[3] = &unk_100285568;
-    v14 = v10;
+    v14 = finishedCopy;
     v32 = v14;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -253,8 +253,8 @@ void __79__VMAccountProvisioningViewController_voicemailGreetingViewControllerFi
     v17 = dispatch_time(0, 30000000000);
     dispatch_after(v17, &_dispatch_main_q, v16);
     objc_initWeak(&location, self);
-    v18 = [(VMViewController *)self manager];
-    v19 = [v13 UUID];
+    manager = [(VMViewController *)self manager];
+    uUID = [selectedAccount UUID];
     v22[0] = _NSConcreteStackBlock;
     v22[1] = 3221225472;
     v22[2] = __90__VMAccountProvisioningViewController_setPINViewControllerFinished_success_oldPIN_newPIN___block_invoke_3;
@@ -262,11 +262,11 @@ void __79__VMAccountProvisioningViewController_voicemailGreetingViewControllerFi
     v20 = v16;
     v25 = v20;
     objc_copyWeak(&v27, &location);
-    v23 = v13;
+    v23 = selectedAccount;
     v24 = v14;
     v21 = v15;
     v26 = v21;
-    [v18 setPasscode:v12 forAccountUUID:v19 completion:v22];
+    [manager setPasscode:iNCopy forAccountUUID:uUID completion:v22];
 
     objc_destroyWeak(&v27);
     objc_destroyWeak(&location);
@@ -275,7 +275,7 @@ void __79__VMAccountProvisioningViewController_voicemailGreetingViewControllerFi
   else
   {
     [(VMAccountProvisioningViewController *)self setSelectedAccount:0];
-    [v10 dismissViewControllerAnimated:1 completion:0];
+    [finishedCopy dismissViewControllerAnimated:1 completion:0];
   }
 }
 

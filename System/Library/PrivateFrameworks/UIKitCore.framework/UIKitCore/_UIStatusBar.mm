@@ -1,135 +1,135 @@
 @interface _UIStatusBar
-+ (CGSize)intrinsicContentSizeForTargetScreen:(id)a3 orientation:(int64_t)a4 onLockScreen:(BOOL)a5;
-+ (CGSize)intrinsicContentSizeForTargetScreen:(id)a3 orientation:(int64_t)a4 onLockScreen:(BOOL)a5 isAzulBLinked:(BOOL)a6;
-+ (double)_effectiveScaleForVisualProviderClass:(Class)a3 targetScreen:(id)a4;
-+ (id)sensorActivityIndicatorForScreen:(id)a3;
-+ (id)stringForStatusBarStyle:(int64_t)a3;
-+ (void)registerSensorActivityIndicator:(id)a3 forScreen:(id)a4;
-- (BOOL)_accessibilityHUDGestureManager:(id)a3 shouldBeginAtPoint:(CGPoint)a4;
-- (BOOL)_cursorLocation:(CGPoint)a3 isInsideActionable:(id)a4;
-- (BOOL)_cursorLocation:(CGPoint)a3 isInsideHoverableActionable:(id)a4;
-- (BOOL)_gestureRecognizer:(id)a3 isInsideActionable:(id)a4;
-- (BOOL)_gestureRecognizer:(id)a3 pressInsideActionable:(id)a4;
-- (BOOL)_gestureRecognizer:(id)a3 touchInsideActionable:(id)a4;
++ (CGSize)intrinsicContentSizeForTargetScreen:(id)screen orientation:(int64_t)orientation onLockScreen:(BOOL)lockScreen;
++ (CGSize)intrinsicContentSizeForTargetScreen:(id)screen orientation:(int64_t)orientation onLockScreen:(BOOL)lockScreen isAzulBLinked:(BOOL)linked;
++ (double)_effectiveScaleForVisualProviderClass:(Class)class targetScreen:(id)screen;
++ (id)sensorActivityIndicatorForScreen:(id)screen;
++ (id)stringForStatusBarStyle:(int64_t)style;
++ (void)registerSensorActivityIndicator:(id)indicator forScreen:(id)screen;
+- (BOOL)_accessibilityHUDGestureManager:(id)manager shouldBeginAtPoint:(CGPoint)point;
+- (BOOL)_cursorLocation:(CGPoint)location isInsideActionable:(id)actionable;
+- (BOOL)_cursorLocation:(CGPoint)location isInsideHoverableActionable:(id)actionable;
+- (BOOL)_gestureRecognizer:(id)recognizer isInsideActionable:(id)actionable;
+- (BOOL)_gestureRecognizer:(id)recognizer pressInsideActionable:(id)actionable;
+- (BOOL)_gestureRecognizer:(id)recognizer touchInsideActionable:(id)actionable;
 - (BOOL)areAnimationsEnabled;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (CGAffineTransform)_effectiveScaleTransform;
-- (CGRect)_extendedHoverFrameForActionable:(id)a3;
-- (CGRect)_frameForActionable:(id)a3;
-- (CGRect)_frameForActionable:(id)a3 actionInsets:(UIEdgeInsets)a4;
-- (CGRect)_pressFrameForActionable:(id)a3;
+- (CGRect)_extendedHoverFrameForActionable:(id)actionable;
+- (CGRect)_frameForActionable:(id)actionable;
+- (CGRect)_frameForActionable:(id)actionable actionInsets:(UIEdgeInsets)insets;
+- (CGRect)_pressFrameForActionable:(id)actionable;
 - (CGRect)avoidanceFrame;
-- (CGRect)frameForDisplayItemWithIdentifier:(id)a3;
-- (CGRect)frameForPartWithIdentifier:(id)a3;
-- (CGRect)frameForPartWithIdentifier:(id)a3 includeInternalItems:(BOOL)a4;
+- (CGRect)frameForDisplayItemWithIdentifier:(id)identifier;
+- (CGRect)frameForPartWithIdentifier:(id)identifier;
+- (CGRect)frameForPartWithIdentifier:(id)identifier includeInternalItems:(BOOL)items;
 - (CGSize)intrinsicContentSize;
 - (NSSet)dependentDataEntryKeys;
 - (NSString)_visualProviderClassName;
 - (NSString)description;
-- (UIOffset)offsetForPartWithIdentifier:(id)a3;
+- (UIOffset)offsetForPartWithIdentifier:(id)identifier;
 - (UIScreen)_effectiveTargetScreen;
-- (_UIStatusBar)initWithStyle:(int64_t)a3;
+- (_UIStatusBar)initWithStyle:(int64_t)style;
 - (_UIStatusBarActionable)hoveredActionable;
 - (_UIStatusBarActionable)targetActionable;
 - (_UIStatusBarVisualProvider)visualProvider;
-- (double)alphaForPartWithIdentifier:(id)a3;
-- (id)_accessibilityHUDGestureManager:(id)a3 HUDItemForPoint:(CGPoint)a4;
-- (id)_actionablesForPartWithIdentifier:(id)a3 includeInternalItems:(BOOL)a4 onlyVisible:(BOOL)a5;
-- (id)_itemWithIdentifier:(id)a3 createIfNeeded:(BOOL)a4;
+- (double)alphaForPartWithIdentifier:(id)identifier;
+- (id)_accessibilityHUDGestureManager:(id)manager HUDItemForPoint:(CGPoint)point;
+- (id)_actionablesForPartWithIdentifier:(id)identifier includeInternalItems:(BOOL)items onlyVisible:(BOOL)visible;
+- (id)_itemWithIdentifier:(id)identifier createIfNeeded:(BOOL)needed;
 - (id)_rearrangeOverflowedItems;
-- (id)_regionsForPartWithIdentifier:(id)a3 includeInternalItems:(BOOL)a4;
-- (id)_traitCollectionForChildEnvironment:(id)a3;
-- (id)actionForPartWithIdentifier:(id)a3;
-- (id)dataEntryKeysForItemsWithIdentifiers:(id)a3;
-- (id)displayItemIdentifiersInRegionsWithIdentifiers:(id)a3;
-- (id)displayItemWithIdentifier:(id)a3;
-- (id)itemIdentifiersInRegionsWithIdentifiers:(id)a3;
-- (id)itemsDependingOnKeys:(id)a3;
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
-- (id)regionWithIdentifier:(id)a3;
-- (id)styleAttributesForStyle:(int64_t)a3;
-- (int64_t)_effectiveStyleFromStyle:(int64_t)a3;
-- (int64_t)styleForPartWithIdentifier:(id)a3;
+- (id)_regionsForPartWithIdentifier:(id)identifier includeInternalItems:(BOOL)items;
+- (id)_traitCollectionForChildEnvironment:(id)environment;
+- (id)actionForPartWithIdentifier:(id)identifier;
+- (id)dataEntryKeysForItemsWithIdentifiers:(id)identifiers;
+- (id)displayItemIdentifiersInRegionsWithIdentifiers:(id)identifiers;
+- (id)displayItemWithIdentifier:(id)identifier;
+- (id)itemIdentifiersInRegionsWithIdentifiers:(id)identifiers;
+- (id)itemsDependingOnKeys:(id)keys;
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
+- (id)regionWithIdentifier:(id)identifier;
+- (id)styleAttributesForStyle:(int64_t)style;
+- (int64_t)_effectiveStyleFromStyle:(int64_t)style;
+- (int64_t)styleForPartWithIdentifier:(id)identifier;
 - (unsigned)animationContextId;
-- (void)_accessibilityHUDGestureManager:(id)a3 showHUDItem:(id)a4;
-- (void)_delayUpdatesWithKeys:(id)a3 fromAnimation:(id)a4;
-- (void)_dismissAccessibilityHUDForGestureManager:(id)a3;
+- (void)_accessibilityHUDGestureManager:(id)manager showHUDItem:(id)item;
+- (void)_delayUpdatesWithKeys:(id)keys fromAnimation:(id)animation;
+- (void)_dismissAccessibilityHUDForGestureManager:(id)manager;
 - (void)_fixupDisplayItemAttributes;
-- (void)_performAnimations:(id)a3;
-- (void)_performWithInheritedAnimation:(id)a3;
-- (void)_prepareAnimations:(id)a3;
+- (void)_performAnimations:(id)animations;
+- (void)_performWithInheritedAnimation:(id)animation;
+- (void)_prepareAnimations:(id)animations;
 - (void)_prepareVisualProviderIfNeeded;
-- (void)_setVisualProviderClassName:(id)a3;
+- (void)_setVisualProviderClassName:(id)name;
 - (void)_updateActionGestureRecognizerAllowableTouchTypesIfNeeded;
-- (void)_updateDisplayedItemsWithData:(id)a3 styleAttributes:(id)a4 extraAnimations:(id)a5;
+- (void)_updateDisplayedItemsWithData:(id)data styleAttributes:(id)attributes extraAnimations:(id)animations;
 - (void)_updateRegionItems;
 - (void)_updateStyleAttributes;
-- (void)_updateWithAggregatedData:(id)a3;
-- (void)_updateWithData:(id)a3 completionHandler:(id)a4;
+- (void)_updateWithAggregatedData:(id)data;
+- (void)_updateWithData:(id)data completionHandler:(id)handler;
 - (void)layoutSubviews;
-- (void)pointerInteraction:(id)a3 willEnterRegion:(id)a4 animator:(id)a5;
+- (void)pointerInteraction:(id)interaction willEnterRegion:(id)region animator:(id)animator;
 - (void)resetVisualProvider;
-- (void)resizeSubviewsWithOldSize:(CGSize)a3;
-- (void)setAction:(id)a3 forPartWithIdentifier:(id)a4;
-- (void)setAlpha:(double)a3 forPartWithIdentifier:(id)a4;
-- (void)setAvoidanceFrame:(CGRect)a3 animationSettings:(id)a4 options:(unint64_t)a5;
-- (void)setDisabledPartIdentifiers:(id)a3;
-- (void)setEnabledPartIdentifiers:(id)a3;
-- (void)setForegroundColor:(id)a3;
-- (void)setMode:(int64_t)a3;
-- (void)setOffset:(UIOffset)a3 forPartWithIdentifier:(id)a4;
-- (void)setOrientation:(int64_t)a3;
-- (void)setOverlayData:(id)a3;
-- (void)setSemanticContentAttribute:(int64_t)a3;
-- (void)setStyle:(int64_t)a3;
-- (void)setStyle:(int64_t)a3 forPartWithIdentifier:(id)a4;
-- (void)setStyleAttributes:(id)a3;
-- (void)statusBarGesture:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)resizeSubviewsWithOldSize:(CGSize)size;
+- (void)setAction:(id)action forPartWithIdentifier:(id)identifier;
+- (void)setAlpha:(double)alpha forPartWithIdentifier:(id)identifier;
+- (void)setAvoidanceFrame:(CGRect)frame animationSettings:(id)settings options:(unint64_t)options;
+- (void)setDisabledPartIdentifiers:(id)identifiers;
+- (void)setEnabledPartIdentifiers:(id)identifiers;
+- (void)setForegroundColor:(id)color;
+- (void)setMode:(int64_t)mode;
+- (void)setOffset:(UIOffset)offset forPartWithIdentifier:(id)identifier;
+- (void)setOrientation:(int64_t)orientation;
+- (void)setOverlayData:(id)data;
+- (void)setSemanticContentAttribute:(int64_t)attribute;
+- (void)setStyle:(int64_t)style;
+- (void)setStyle:(int64_t)style forPartWithIdentifier:(id)identifier;
+- (void)setStyleAttributes:(id)attributes;
+- (void)statusBarGesture:(id)gesture;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateConstraints;
 - (void)updateForcingIterativeOverflow;
 @end
 
 @implementation _UIStatusBar
 
-+ (id)stringForStatusBarStyle:(int64_t)a3
++ (id)stringForStatusBarStyle:(int64_t)style
 {
   v3 = @"_UIStatusBarResolvedStyleInherited";
   v4 = @"_UIStatusBarResolvedStyleAutomaticWithLightBias";
   v5 = @"_UIStatusBarResolvedStyleAutomaticWithDarkBias";
-  if (a3 != 128)
+  if (style != 128)
   {
     v5 = 0;
   }
 
-  if (a3 != 64)
+  if (style != 64)
   {
     v4 = v5;
   }
 
-  if (a3 != 4)
+  if (style != 4)
   {
     v3 = v4;
   }
 
   v6 = @"_UIStatusBarResolvedStyleDarkContent";
-  if (a3 != 2)
+  if (style != 2)
   {
     v6 = 0;
   }
 
-  if (a3 == 1)
+  if (style == 1)
   {
     v6 = @"_UIStatusBarResolvedStyleLightContent";
   }
 
-  if (!a3)
+  if (!style)
   {
     v6 = @"_UIStatusBarResolvedStyleDefault";
   }
 
-  if (a3 <= 3)
+  if (style <= 3)
   {
     return v6;
   }
@@ -140,42 +140,42 @@
   }
 }
 
-+ (void)registerSensorActivityIndicator:(id)a3 forScreen:(id)a4
++ (void)registerSensorActivityIndicator:(id)indicator forScreen:(id)screen
 {
   v5 = _MergedGlobals_23_5;
-  v6 = a4;
-  v7 = a3;
+  screenCopy = screen;
+  indicatorCopy = indicator;
   if (v5 != -1)
   {
     dispatch_once(&_MergedGlobals_23_5, &__block_literal_global_529);
   }
 
   v8 = qword_1ED49B038;
-  v9 = sensorActivityScreenIdentifier(v6);
+  v9 = sensorActivityScreenIdentifier(screenCopy);
 
-  [v8 setObject:v7 forKey:v9];
+  [v8 setObject:indicatorCopy forKey:v9];
 }
 
-+ (id)sensorActivityIndicatorForScreen:(id)a3
++ (id)sensorActivityIndicatorForScreen:(id)screen
 {
   v3 = qword_1ED49B038;
-  v4 = sensorActivityScreenIdentifier(a3);
+  v4 = sensorActivityScreenIdentifier(screen);
   v5 = [v3 objectForKey:v4];
 
   return v5;
 }
 
-- (_UIStatusBar)initWithStyle:(int64_t)a3
+- (_UIStatusBar)initWithStyle:(int64_t)style
 {
   v23.receiver = self;
   v23.super_class = _UIStatusBar;
   v4 = [(UIView *)&v23 initWithFrame:0.0, 0.0, 600.0, 50.0];
-  v4->_style = a3;
-  v5 = [MEMORY[0x1E695DF90] dictionary];
-  [(_UIStatusBar *)v4 setItems:v5];
+  v4->_style = style;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [(_UIStatusBar *)v4 setItems:dictionary];
 
-  v6 = [MEMORY[0x1E695DF90] dictionary];
-  [(_UIStatusBar *)v4 setDisplayItemStates:v6];
+  dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+  [(_UIStatusBar *)v4 setDisplayItemStates:dictionary2];
 
   [(UIView *)v4 _setHostsLayoutEngine:1];
   v7 = _UIGetUIStatusBarForcedMode();
@@ -233,20 +233,20 @@
   return v5;
 }
 
-- (void)_setVisualProviderClassName:(id)a3
+- (void)_setVisualProviderClassName:(id)name
 {
-  v5 = a3;
-  v8 = v5;
-  if (v5)
+  nameCopy = name;
+  v8 = nameCopy;
+  if (nameCopy)
   {
-    v6 = NSClassFromString(v5);
+    v6 = NSClassFromString(nameCopy);
     if (v6)
     {
       goto LABEL_5;
     }
 
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"_UIStatusBar.m" lineNumber:226 description:{@"No visual provider class with name %@", v8}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIStatusBar.m" lineNumber:226 description:{@"No visual provider class with name %@", v8}];
   }
 
   v6 = 0;
@@ -256,13 +256,13 @@ LABEL_5:
 
 - (NSString)_visualProviderClassName
 {
-  v2 = [(_UIStatusBar *)self _visualProviderClass];
-  if (v2)
+  _visualProviderClass = [(_UIStatusBar *)self _visualProviderClass];
+  if (_visualProviderClass)
   {
-    v2 = NSStringFromClass(v2);
+    _visualProviderClass = NSStringFromClass(_visualProviderClass);
   }
 
-  return v2;
+  return _visualProviderClass;
 }
 
 - (_UIStatusBarVisualProvider)visualProvider
@@ -279,19 +279,19 @@ LABEL_5:
   if (v3)
   {
 LABEL_2:
-    v4 = v3;
+    screen = v3;
     goto LABEL_4;
   }
 
-  v5 = [(UIView *)self window];
-  v4 = [v5 screen];
+  window = [(UIView *)self window];
+  screen = [window screen];
 
-  if (!v4)
+  if (!screen)
   {
-    v7 = [(UIView *)self traitCollection];
-    v8 = [v7 userInterfaceIdiom];
+    traitCollection = [(UIView *)self traitCollection];
+    userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-    if (v8 == 3)
+    if (userInterfaceIdiom == 3)
     {
       +[UIScreen _carScreen];
     }
@@ -306,7 +306,7 @@ LABEL_2:
 
 LABEL_4:
 
-  return v4;
+  return screen;
 }
 
 - (void)_prepareVisualProviderIfNeeded
@@ -316,9 +316,9 @@ LABEL_4:
     visualProviderClass = self->_visualProviderClass;
     if (!visualProviderClass)
     {
-      v4 = [(_UIStatusBar *)self _effectiveTargetScreen];
-      v5 = [(_UIStatusBar *)self visualProviderInfo];
-      v6 = _UIStatusBarGetVisualProviderClassForScreen(v4, v5);
+      _effectiveTargetScreen = [(_UIStatusBar *)self _effectiveTargetScreen];
+      visualProviderInfo = [(_UIStatusBar *)self visualProviderInfo];
+      v6 = _UIStatusBarGetVisualProviderClassForScreen(_effectiveTargetScreen, visualProviderInfo);
       v7 = self->_visualProviderClass;
       self->_visualProviderClass = v6;
 
@@ -543,28 +543,28 @@ LABEL_4:
     pointerInteraction = self->_pointerInteraction;
     self->_pointerInteraction = v30;
 
-    v32 = [(_UIStatusBar *)self foregroundView];
-    [v32 addInteraction:self->_pointerInteraction];
+    foregroundView = [(_UIStatusBar *)self foregroundView];
+    [foregroundView addInteraction:self->_pointerInteraction];
 
     [(UIView *)self addSubview:self->_foregroundView];
   }
 
   if (![(NSDictionary *)self->_regions count])
   {
-    v33 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v34 = self->_visualProvider;
-    v35 = [(_UIStatusBar *)self containerView];
-    v36 = [(_UIStatusBarVisualProvider *)v34 setupInContainerView:v35];
+    containerView = [(_UIStatusBar *)self containerView];
+    v36 = [(_UIStatusBarVisualProvider *)v34 setupInContainerView:containerView];
 
     v40[0] = MEMORY[0x1E69E9820];
     v40[1] = 3221225472;
     v40[2] = __46___UIStatusBar__prepareVisualProviderIfNeeded__block_invoke;
     v40[3] = &unk_1E71219E0;
     v40[4] = self;
-    v37 = v33;
+    v37 = dictionary;
     v41 = v37;
     [v36 enumerateObjectsUsingBlock:v40];
-    objc_storeStrong(&self->_regions, v33);
+    objc_storeStrong(&self->_regions, dictionary);
     regions = self->_regions;
     v39[0] = MEMORY[0x1E69E9820];
     v39[1] = 3221225472;
@@ -591,19 +591,19 @@ LABEL_4:
   regions = self->_regions;
   self->_regions = MEMORY[0x1E695E0F8];
 
-  v4 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   displayItemStates = self->_displayItemStates;
-  self->_displayItemStates = v4;
+  self->_displayItemStates = dictionary;
 }
 
-- (void)setMode:(int64_t)a3
+- (void)setMode:(int64_t)mode
 {
   if (_UIGetUIStatusBarForcedMode() == -1)
   {
     mode = self->_mode;
-    if (mode != a3)
+    if (mode != mode)
     {
-      self->_mode = a3;
+      self->_mode = mode;
       if (self->_visualProvider)
       {
         v6[0] = MEMORY[0x1E69E9820];
@@ -623,11 +623,11 @@ LABEL_4:
   }
 }
 
-- (void)setOrientation:(int64_t)a3
+- (void)setOrientation:(int64_t)orientation
 {
-  if (self->_orientation != a3)
+  if (self->_orientation != orientation)
   {
-    self->_orientation = a3;
+    self->_orientation = orientation;
     visualProvider = self->_visualProvider;
     if (visualProvider)
     {
@@ -641,13 +641,13 @@ LABEL_4:
   *&self->_statusBarFlags |= 1u;
 }
 
-- (void)setAvoidanceFrame:(CGRect)a3 animationSettings:(id)a4 options:(unint64_t)a5
+- (void)setAvoidanceFrame:(CGRect)frame animationSettings:(id)settings options:(unint64_t)options
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v11 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  settingsCopy = settings;
   [(_UIStatusBar *)self _effectiveScaleTransform];
   v22.origin.x = x;
   v22.origin.y = y;
@@ -671,22 +671,22 @@ LABEL_4:
     self->_avoidanceFrame.size.height = v15;
     if ((*&self->_statusBarFlags & 0x40) != 0)
     {
-      [(_UIStatusBarVisualProvider *)self->_visualProvider avoidanceFrameUpdatedFromFrame:v11 withAnimationSettings:a5 options:v17, v18, v19, v20];
+      [(_UIStatusBarVisualProvider *)self->_visualProvider avoidanceFrameUpdatedFromFrame:settingsCopy withAnimationSettings:options options:v17, v18, v19, v20];
     }
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v13.receiver = self;
   v13.super_class = _UIStatusBar;
-  [(UIView *)&v13 traitCollectionDidChange:v4];
+  [(UIView *)&v13 traitCollectionDidChange:changeCopy];
   if (self->_visualProvider)
   {
-    v5 = [(UIView *)self traitCollection];
-    v6 = [v5 userInterfaceStyle];
-    if (v6 != [v4 userInterfaceStyle] || (v7 = objc_msgSend(v5, "userInterfaceIdiom"), v7 != objc_msgSend(v4, "userInterfaceIdiom")) || (v8 = objc_msgSend(v5, "layoutDirection"), v8 != objc_msgSend(v4, "layoutDirection")) || (objc_msgSend(v5, "displayScale"), v10 = v9, objc_msgSend(v4, "displayScale"), v10 != v11))
+    traitCollection = [(UIView *)self traitCollection];
+    userInterfaceStyle = [traitCollection userInterfaceStyle];
+    if (userInterfaceStyle != [changeCopy userInterfaceStyle] || (v7 = objc_msgSend(traitCollection, "userInterfaceIdiom"), v7 != objc_msgSend(changeCopy, "userInterfaceIdiom")) || (v8 = objc_msgSend(traitCollection, "layoutDirection"), v8 != objc_msgSend(changeCopy, "layoutDirection")) || (objc_msgSend(traitCollection, "displayScale"), v10 = v9, objc_msgSend(changeCopy, "displayScale"), v10 != v11))
     {
       v12[0] = MEMORY[0x1E69E9820];
       v12[1] = 3221225472;
@@ -698,13 +698,13 @@ LABEL_4:
   }
 }
 
-- (void)setSemanticContentAttribute:(int64_t)a3
+- (void)setSemanticContentAttribute:(int64_t)attribute
 {
-  if ([(UIView *)self semanticContentAttribute]!= a3)
+  if ([(UIView *)self semanticContentAttribute]!= attribute)
   {
     v7.receiver = self;
     v7.super_class = _UIStatusBar;
-    [(UIView *)&v7 setSemanticContentAttribute:a3];
+    [(UIView *)&v7 setSemanticContentAttribute:attribute];
     if (self)
     {
       _UIViewInvalidateTraitCollectionAndSchedulePropagation(self, 1, v5, v6);
@@ -712,20 +712,20 @@ LABEL_4:
   }
 }
 
-- (id)_traitCollectionForChildEnvironment:(id)a3
+- (id)_traitCollectionForChildEnvironment:(id)environment
 {
   v7.receiver = self;
   v7.super_class = _UIStatusBar;
-  v4 = [(UIView *)&v7 _traitCollectionForChildEnvironment:a3];
+  v4 = [(UIView *)&v7 _traitCollectionForChildEnvironment:environment];
   v5 = [v4 _traitCollectionByReplacingNSIntegerValue:-[UIView effectiveUserInterfaceLayoutDirection](self forTraitToken:{"effectiveUserInterfaceLayoutDirection"), 0x1EFE323C8}];
 
   return v5;
 }
 
-- (void)_performWithInheritedAnimation:(id)a3
+- (void)_performWithInheritedAnimation:(id)animation
 {
   v3 = MEMORY[0x1E6979518];
-  v4 = a3;
+  animationCopy = animation;
   [v3 begin];
   v5 = +[UIView areAnimationsEnabled];
   v6 = +[UIView _isInAnimationBlock];
@@ -746,19 +746,19 @@ LABEL_4:
     [UIView setAnimationsEnabled:0];
   }
 
-  v4[2](v4);
+  animationCopy[2](animationCopy);
 
   [MEMORY[0x1E6979518] commit];
 
   [UIView setAnimationsEnabled:v5];
 }
 
-- (void)setStyle:(int64_t)a3
+- (void)setStyle:(int64_t)style
 {
   style = self->_style;
-  if (style != a3)
+  if (style != style)
   {
-    self->_style = a3;
+    self->_style = style;
     if (self->_visualProvider)
     {
       v5[0] = MEMORY[0x1E69E9820];
@@ -775,11 +775,11 @@ LABEL_4:
   }
 }
 
-- (void)setForegroundColor:(id)a3
+- (void)setForegroundColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   foregroundColor = self->_foregroundColor;
-  v7 = v5;
+  v7 = colorCopy;
   v8 = foregroundColor;
   v9 = v8;
   if (v8 == v7)
@@ -802,7 +802,7 @@ LABEL_4:
     {
     }
 
-    objc_storeStrong(&self->_foregroundColor, a3);
+    objc_storeStrong(&self->_foregroundColor, color);
     if (self->_visualProvider)
     {
       v11[0] = MEMORY[0x1E69E9820];
@@ -817,48 +817,48 @@ LABEL_4:
 LABEL_10:
 }
 
-- (void)setStyleAttributes:(id)a3
+- (void)setStyleAttributes:(id)attributes
 {
-  v9 = a3;
-  if (([v9 isEqual:self->_styleAttributes] & 1) == 0)
+  attributesCopy = attributes;
+  if (([attributesCopy isEqual:self->_styleAttributes] & 1) == 0)
   {
-    v5 = [v9 copy];
+    v5 = [attributesCopy copy];
     styleAttributes = self->_styleAttributes;
     self->_styleAttributes = v5;
 
-    v7 = [(_UIStatusBarStyleAttributes *)self->_styleAttributes traitCollection];
+    traitCollection = [(_UIStatusBarStyleAttributes *)self->_styleAttributes traitCollection];
 
-    if (!v7)
+    if (!traitCollection)
     {
-      v8 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v8 handleFailureInMethod:a2 object:self file:@"_UIStatusBar.m" lineNumber:555 description:@"Style attributes should have a traitCollection"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_UIStatusBar.m" lineNumber:555 description:@"Style attributes should have a traitCollection"];
     }
 
-    [(_UIStatusBar *)self _updateDisplayedItemsWithData:0 styleAttributes:v9 extraAnimations:MEMORY[0x1E695E0F0]];
+    [(_UIStatusBar *)self _updateDisplayedItemsWithData:0 styleAttributes:attributesCopy extraAnimations:MEMORY[0x1E695E0F0]];
   }
 }
 
-- (int64_t)_effectiveStyleFromStyle:(int64_t)a3
+- (int64_t)_effectiveStyleFromStyle:(int64_t)style
 {
-  v3 = a3;
-  if (!a3)
+  styleCopy = style;
+  if (!style)
   {
-    v4 = [(UIView *)self traitCollection];
-    if ([v4 userInterfaceStyle] == 2)
+    traitCollection = [(UIView *)self traitCollection];
+    if ([traitCollection userInterfaceStyle] == 2)
     {
-      v3 = 1;
+      styleCopy = 1;
     }
 
     else
     {
-      v3 = 2;
+      styleCopy = 2;
     }
   }
 
-  return v3;
+  return styleCopy;
 }
 
-- (id)styleAttributesForStyle:(int64_t)a3
+- (id)styleAttributesForStyle:(int64_t)style
 {
   if (os_variant_has_internal_diagnostics())
   {
@@ -884,11 +884,11 @@ LABEL_10:
   }
 
   v5 = +[UITraitCollection _currentTraitCollectionIfExists];
-  v6 = [(UIView *)self traitCollection];
-  [UITraitCollection setCurrentTraitCollection:v6];
+  traitCollection = [(UIView *)self traitCollection];
+  [UITraitCollection setCurrentTraitCollection:traitCollection];
 
   v7 = _UISetCurrentFallbackEnvironment(self);
-  v8 = [(_UIStatusBarVisualProvider *)self->_visualProvider styleAttributesForStyle:[(_UIStatusBar *)self _effectiveStyleFromStyle:a3]];
+  v8 = [(_UIStatusBarVisualProvider *)self->_visualProvider styleAttributesForStyle:[(_UIStatusBar *)self _effectiveStyleFromStyle:style]];
   _UIRestorePreviousFallbackEnvironment(v7);
   [UITraitCollection setCurrentTraitCollection:v5];
 
@@ -913,44 +913,44 @@ LABEL_10:
   [(_UIStatusBar *)self setStyleAttributes:v5];
 }
 
-- (void)setOverlayData:(id)a3
+- (void)setOverlayData:(id)data
 {
-  v10 = a3;
-  if ([v10 isEmpty])
+  dataCopy = data;
+  if ([dataCopy isEmpty])
   {
 
-    v10 = 0;
+    dataCopy = 0;
   }
 
-  v4 = [(_UIStatusBar *)self overlayData];
+  overlayData = [(_UIStatusBar *)self overlayData];
 
-  v5 = v10;
-  if (v10 != v4)
+  v5 = dataCopy;
+  if (dataCopy != overlayData)
   {
-    v6 = [(_UIStatusBarDataAggregator *)self->_dataAggregator overlayData];
+    overlayData2 = [(_UIStatusBarDataAggregator *)self->_dataAggregator overlayData];
 
-    if (v6)
+    if (overlayData2)
     {
-      v7 = [(_UIStatusBarDataAggregator *)self->_dataAggregator overlayData];
-      v8 = [v7 dataByApplyingOverlay:self->_currentData];
+      overlayData3 = [(_UIStatusBarDataAggregator *)self->_dataAggregator overlayData];
+      v8 = [overlayData3 dataByApplyingOverlay:self->_currentData];
 
-      v9 = v10;
-      if (v10)
+      v9 = dataCopy;
+      if (dataCopy)
       {
         if (v8)
         {
-          [v8 applyUpdate:v10];
+          [v8 applyUpdate:dataCopy];
 LABEL_12:
           [(_UIStatusBarDataAggregator *)self->_dataAggregator setOverlayData:0];
           [(_UIStatusBarDataAggregator *)self->_dataAggregator updateWithData:v8];
-          [(_UIStatusBarDataAggregator *)self->_dataAggregator setOverlayData:v10];
+          [(_UIStatusBarDataAggregator *)self->_dataAggregator setOverlayData:dataCopy];
 
-          v5 = v10;
+          v5 = dataCopy;
           goto LABEL_13;
         }
 
 LABEL_9:
-        v10 = v9;
+        dataCopy = v9;
         v8 = v9;
         goto LABEL_12;
       }
@@ -958,8 +958,8 @@ LABEL_9:
 
     else
     {
-      v9 = v10;
-      if (v10)
+      v9 = dataCopy;
+      if (dataCopy)
       {
         goto LABEL_9;
       }
@@ -967,18 +967,18 @@ LABEL_9:
       v8 = 0;
     }
 
-    v10 = v9;
+    dataCopy = v9;
     goto LABEL_12;
   }
 
 LABEL_13:
 }
 
-- (void)_updateWithData:(id)a3 completionHandler:(id)a4
+- (void)_updateWithData:(id)data completionHandler:(id)handler
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  handlerCopy = handler;
   [(_UIStatusBar *)self _prepareVisualProviderIfNeeded];
   CategoryCachedImpl = __UILogGetCategoryCachedImpl("StatusBar", &_updateWithData_completionHandler____s_category);
   if (*CategoryCachedImpl)
@@ -997,30 +997,30 @@ LABEL_13:
         v14 = @"NO";
       }
 
-      v15 = [(_UIStatusBarDataAggregator *)self->_dataAggregator delayedEntryKeys];
+      delayedEntryKeys = [(_UIStatusBarDataAggregator *)self->_dataAggregator delayedEntryKeys];
       *buf = 134218754;
-      v19 = self;
+      selfCopy = self;
       v20 = 2112;
-      v21 = v6;
+      v21 = dataCopy;
       v22 = 2112;
       v23 = v14;
       v24 = 2112;
-      v25 = v15;
+      v25 = delayedEntryKeys;
       _os_log_impl(&dword_188A29000, v13, OS_LOG_TYPE_ERROR, "Status bar %p update with data: %@, animated: %@, delayedKeys: %@", buf, 0x2Au);
     }
   }
 
-  [(_UIStatusBar *)self setUpdateCompletionHandler:v7];
+  [(_UIStatusBar *)self setUpdateCompletionHandler:handlerCopy];
   currentData = self->_currentData;
   if (currentData)
   {
-    [(_UIStatusBarData *)currentData applyUpdate:v6];
-    [(_UIStatusBarDataAggregator *)self->_dataAggregator updateWithData:v6];
+    [(_UIStatusBarData *)currentData applyUpdate:dataCopy];
+    [(_UIStatusBarDataAggregator *)self->_dataAggregator updateWithData:dataCopy];
   }
 
   else
   {
-    v10 = [v6 copy];
+    v10 = [dataCopy copy];
     v11 = self->_currentData;
     self->_currentData = v10;
 
@@ -1029,15 +1029,15 @@ LABEL_13:
     v16[2] = __50___UIStatusBar__updateWithData_completionHandler___block_invoke;
     v16[3] = &unk_1E70F35B8;
     v16[4] = self;
-    v17 = v6;
+    v17 = dataCopy;
     [UIView performWithoutAnimation:v16];
   }
 }
 
-- (void)_updateWithAggregatedData:(id)a3
+- (void)_updateWithAggregatedData:(id)data
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = [a3 copy];
+  v4 = [data copy];
   if (*(&self->_statusBarFlags + 1))
   {
     v5 = [(_UIStatusBarVisualProvider *)self->_visualProvider willUpdateWithData:v4];
@@ -1093,9 +1093,9 @@ LABEL_13:
 
   self->_statusBarFlags = (*&statusBarFlags | 1);
   [(UIPointerInteraction *)self->_pointerInteraction invalidate];
-  v9 = [(_UIStatusBar *)self updateCompletionHandler];
+  updateCompletionHandler = [(_UIStatusBar *)self updateCompletionHandler];
 
-  if (v9)
+  if (updateCompletionHandler)
   {
     v10 = _Block_copy(self->_updateCompletionHandler);
     updateCompletionHandler = self->_updateCompletionHandler;
@@ -1105,11 +1105,11 @@ LABEL_13:
   }
 }
 
-- (void)_updateDisplayedItemsWithData:(id)a3 styleAttributes:(id)a4 extraAnimations:(id)a5
+- (void)_updateDisplayedItemsWithData:(id)data styleAttributes:(id)attributes extraAnimations:(id)animations
 {
-  v8 = a3;
-  v9 = a4;
-  v29 = a5;
+  dataCopy = data;
+  attributesCopy = attributes;
+  animationsCopy = animations;
   if (os_variant_has_internal_diagnostics())
   {
     if (!self)
@@ -1134,23 +1134,23 @@ LABEL_13:
   }
 
   v28 = +[UITraitCollection _currentTraitCollectionIfExists];
-  v10 = [(UIView *)self traitCollection];
-  [UITraitCollection setCurrentTraitCollection:v10];
+  traitCollection = [(UIView *)self traitCollection];
+  [UITraitCollection setCurrentTraitCollection:traitCollection];
 
   v11 = _UISetCurrentFallbackEnvironment(self);
   [(NSMutableDictionary *)self->_displayItemStates enumerateKeysAndObjectsUsingBlock:&__block_literal_global_104_0];
-  v12 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   *&self->_statusBarFlags |= 0x80000u;
   displayItemStates = self->_displayItemStates;
   v34[0] = MEMORY[0x1E69E9820];
   v34[1] = 3221225472;
   v34[2] = __78___UIStatusBar__updateDisplayedItemsWithData_styleAttributes_extraAnimations___block_invoke_2;
   v34[3] = &unk_1E7121A70;
-  v14 = v8;
+  v14 = dataCopy;
   v35 = v14;
-  v15 = v9;
+  v15 = attributesCopy;
   v36 = v15;
-  v16 = v12;
+  v16 = array;
   v37 = v16;
   [(NSMutableDictionary *)displayItemStates enumerateKeysAndObjectsUsingBlock:v34];
   items = self->_items;
@@ -1162,7 +1162,7 @@ LABEL_13:
   v33 = v18;
   [(NSMutableDictionary *)items enumerateKeysAndObjectsUsingBlock:v32];
   *&self->_statusBarFlags &= ~0x80000u;
-  [v16 addObjectsFromArray:v29];
+  [v16 addObjectsFromArray:animationsCopy];
   v19 = _UIStatusBarGetPriorityComparator();
   v20 = [v16 sortedArrayUsingComparator:v19];
 
@@ -1177,10 +1177,10 @@ LABEL_13:
     [UIView performWithoutAnimation:v31];
     if ((*&self->_statusBarFlags & 0x100008) != 0)
     {
-      v21 = [(_UIStatusBar *)self _rearrangeOverflowedItems];
-      if (v21)
+      _rearrangeOverflowedItems = [(_UIStatusBar *)self _rearrangeOverflowedItems];
+      if (_rearrangeOverflowedItems)
       {
-        v22 = v21;
+        v22 = _rearrangeOverflowedItems;
         do
         {
           [v22 prepareForOverflowDataUpdate];
@@ -1194,12 +1194,12 @@ LABEL_13:
           v30[4] = self;
           [UIView performWithoutAnimation:v30];
 
-          v24 = [(_UIStatusBar *)self _rearrangeOverflowedItems];
+          _rearrangeOverflowedItems2 = [(_UIStatusBar *)self _rearrangeOverflowedItems];
 
-          v22 = v24;
+          v22 = _rearrangeOverflowedItems2;
         }
 
-        while (v24);
+        while (_rearrangeOverflowedItems2);
       }
     }
 
@@ -1215,10 +1215,10 @@ LABEL_13:
       do
       {
         [(UIView *)self layoutIfNeeded];
-        v25 = [(_UIStatusBar *)self _rearrangeOverflowedItems];
+        _rearrangeOverflowedItems3 = [(_UIStatusBar *)self _rearrangeOverflowedItems];
       }
 
-      while (v25);
+      while (_rearrangeOverflowedItems3);
     }
 
     *&self->_statusBarFlags |= 1u;
@@ -1229,16 +1229,16 @@ LABEL_13:
   [UITraitCollection setCurrentTraitCollection:v28];
 }
 
-- (void)_prepareAnimations:(id)a3
+- (void)_prepareAnimations:(id)animations
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [_UIStatusBarAnimation prepareAnimations:v4 forStatusBar:self];
+  animationsCopy = animations;
+  [_UIStatusBarAnimation prepareAnimations:animationsCopy forStatusBar:self];
   v30 = 0u;
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v5 = v4;
+  v5 = animationsCopy;
   v23 = [v5 countByEnumeratingWithState:&v28 objects:v33 count:16];
   if (v23)
   {
@@ -1254,8 +1254,8 @@ LABEL_13:
         }
 
         v7 = *(*(&v28 + 1) + 8 * i);
-        v8 = [v7 effectiveDelayedItemIdentifiers];
-        if ([v8 count])
+        effectiveDelayedItemIdentifiers = [v7 effectiveDelayedItemIdentifiers];
+        if ([effectiveDelayedItemIdentifiers count])
         {
           v22 = v7;
           v9 = [MEMORY[0x1E695DFA8] set];
@@ -1263,7 +1263,7 @@ LABEL_13:
           v25 = 0u;
           v26 = 0u;
           v27 = 0u;
-          v10 = v8;
+          v10 = effectiveDelayedItemIdentifiers;
           v11 = [v10 countByEnumeratingWithState:&v24 objects:v32 count:16];
           if (v11)
           {
@@ -1279,8 +1279,8 @@ LABEL_13:
                 }
 
                 v15 = [(_UIStatusBar *)self itemWithIdentifier:*(*(&v24 + 1) + 8 * j)];
-                v16 = [v15 dependentEntryKeys];
-                [v9 unionSet:v16];
+                dependentEntryKeys = [v15 dependentEntryKeys];
+                [v9 unionSet:dependentEntryKeys];
               }
 
               v12 = [v10 countByEnumeratingWithState:&v24 objects:v32 count:16];
@@ -1315,20 +1315,20 @@ LABEL_13:
   }
 }
 
-- (void)_delayUpdatesWithKeys:(id)a3 fromAnimation:(id)a4
+- (void)_delayUpdatesWithKeys:(id)keys fromAnimation:(id)animation
 {
-  v6 = a3;
+  keysCopy = keys;
   dataAggregator = self->_dataAggregator;
-  v8 = a4;
-  [(_UIStatusBarDataAggregator *)dataAggregator beginDelayingUpdatesForEntryKeys:v6];
+  animationCopy = animation;
+  [(_UIStatusBarDataAggregator *)dataAggregator beginDelayingUpdatesForEntryKeys:keysCopy];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __52___UIStatusBar__delayUpdatesWithKeys_fromAnimation___block_invoke;
   v10[3] = &unk_1E70F35B8;
   v10[4] = self;
-  v11 = v6;
-  v9 = v6;
-  [v8 addTotalCompletionHandler:v10];
+  v11 = keysCopy;
+  v9 = keysCopy;
+  [animationCopy addTotalCompletionHandler:v10];
 }
 
 - (void)updateForcingIterativeOverflow
@@ -1338,15 +1338,15 @@ LABEL_13:
   *&self->_statusBarFlags &= ~0x100000u;
 }
 
-- (void)_performAnimations:(id)a3
+- (void)_performAnimations:(id)animations
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  animationsCopy = animations;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v5 = [animationsCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1357,7 +1357,7 @@ LABEL_13:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(animationsCopy);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
@@ -1372,7 +1372,7 @@ LABEL_13:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [animationsCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
@@ -1392,22 +1392,22 @@ LABEL_13:
   }
 }
 
-+ (double)_effectiveScaleForVisualProviderClass:(Class)a3 targetScreen:(id)a4
++ (double)_effectiveScaleForVisualProviderClass:(Class)class targetScreen:(id)screen
 {
-  v5 = a4;
+  screenCopy = screen;
   v6 = 1.0;
-  if ([(objc_class *)a3 scalesWithScreenNativeScale])
+  if ([(objc_class *)class scalesWithScreenNativeScale])
   {
-    [v5 _nativeScale];
+    [screenCopy _nativeScale];
     v8 = v7;
     if (objc_opt_respondsToSelector())
     {
-      [(objc_class *)a3 referenceScreenScale];
+      [(objc_class *)class referenceScreenScale];
     }
 
     else
     {
-      [v5 _scale];
+      [screenCopy _scale];
     }
 
     if (v8 != 0.0 && vabdd_f64(v9, v8) > 0.00000011920929)
@@ -1426,25 +1426,25 @@ LABEL_13:
     goto LABEL_2;
   }
 
-  v6 = self;
-  v7 = [(CGAffineTransform *)self _screen];
-  [v7 _nativeScale];
+  selfCopy = self;
+  _screen = [(CGAffineTransform *)self _screen];
+  [_screen _nativeScale];
   v9 = v8;
 
-  if ((LOBYTE(v6[8].tx) & 4) != 0)
+  if ((LOBYTE(selfCopy[8].tx) & 4) != 0)
   {
-    [*&v6[11].ty referenceScreenScale];
+    [*&selfCopy[11].ty referenceScreenScale];
     v12 = v13;
   }
 
   else
   {
-    v10 = [(CGAffineTransform *)v6 _screen];
-    [v10 _scale];
+    _screen2 = [(CGAffineTransform *)selfCopy _screen];
+    [_screen2 _scale];
     v12 = v11;
   }
 
-  self = [(CGAffineTransform *)v6 mode];
+  self = [(CGAffineTransform *)selfCopy mode];
   if (self == 1 || v9 == 0.0 || vabdd_f64(v12, v9) <= 0.00000011920929)
   {
 LABEL_2:
@@ -1464,10 +1464,10 @@ LABEL_2:
   return self;
 }
 
-- (void)resizeSubviewsWithOldSize:(CGSize)a3
+- (void)resizeSubviewsWithOldSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v12.receiver = self;
   v12.super_class = _UIStatusBar;
   [(UIView *)&v12 resizeSubviewsWithOldSize:?];
@@ -1509,8 +1509,8 @@ LABEL_2:
 {
   v7.receiver = self;
   v7.super_class = _UIStatusBar;
-  v3 = [(UIView *)&v7 layoutSubviews];
-  __30___UIStatusBar_layoutSubviews__block_invoke(v3, self->_foregroundView);
+  layoutSubviews = [(UIView *)&v7 layoutSubviews];
+  __30___UIStatusBar_layoutSubviews__block_invoke(layoutSubviews, self->_foregroundView);
   regions = self->_regions;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
@@ -1521,7 +1521,7 @@ LABEL_2:
   [(UIView *)self->_foregroundView layoutIfNeeded];
   if ((*&self->_statusBarFlags & 0x100008) == 0)
   {
-    v5 = [(_UIStatusBar *)self _rearrangeOverflowedItems];
+    _rearrangeOverflowedItems = [(_UIStatusBar *)self _rearrangeOverflowedItems];
   }
 
   [(UIView *)self layoutIfNeeded];
@@ -1535,10 +1535,10 @@ LABEL_2:
     return;
   }
 
-  v2 = self;
+  selfCopy = self;
   v3 = 512;
   [(NSMutableDictionary *)self->_displayItemStates enumerateKeysAndObjectsUsingBlock:&__block_literal_global_127_0];
-  [(NSDictionary *)v2->_regions keysSortedByValueUsingComparator:&__block_literal_global_130_2];
+  [(NSDictionary *)selfCopy->_regions keysSortedByValueUsingComparator:&__block_literal_global_130_2];
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
@@ -1551,7 +1551,7 @@ LABEL_2:
 
   v38 = 0;
   v39 = *v55;
-  v45 = v2;
+  v45 = selfCopy;
   do
   {
     for (i = 0; i != v40; i = v23 + 1)
@@ -1563,9 +1563,9 @@ LABEL_2:
 
       v42 = i;
       v5 = *(*(&v54 + 1) + 8 * i);
-      v41 = [(NSDictionary *)v2->_regions objectForKeyedSubscript:v5];
+      v41 = [(NSDictionary *)selfCopy->_regions objectForKeyedSubscript:v5];
       v6 = objc_alloc_init(MEMORY[0x1E695DFA0]);
-      v7 = [(_UIStatusBarVisualProvider *)v2->_visualProvider orderedDisplayItemPlacementsInRegionWithIdentifier:v5];
+      v7 = [(_UIStatusBarVisualProvider *)selfCopy->_visualProvider orderedDisplayItemPlacementsInRegionWithIdentifier:v5];
       v50 = 0u;
       v51 = 0u;
       v52 = 0u;
@@ -1587,23 +1587,23 @@ LABEL_2:
             }
 
             v12 = *(*(&v50 + 1) + 8 * j);
-            v13 = [v12 identifier];
+            identifier = [v12 identifier];
             v14 = v3;
-            v15 = [*(&v2->super.super.super.isa + v3) objectForKeyedSubscript:v13];
+            v15 = [*(&selfCopy->super.super.super.isa + v3) objectForKeyedSubscript:identifier];
             v16 = [v15 isCurrentPlacement:v12];
 
             if (v16)
             {
-              v17 = [_UIStatusBarItem itemIdentifierForDisplayItemIdentifier:v13];
-              v18 = [(_UIStatusBar *)v2 itemWithIdentifier:v17];
-              v19 = [v12 identifier];
-              v20 = [v18 displayItemForIdentifier:v19];
+              v17 = [_UIStatusBarItem itemIdentifierForDisplayItemIdentifier:identifier];
+              v18 = [(_UIStatusBar *)selfCopy itemWithIdentifier:v17];
+              identifier2 = [v12 identifier];
+              v20 = [v18 displayItemForIdentifier:identifier2];
 
               v6 = v43;
               [v20 setPlacement:v12];
               [v43 addObject:v20];
 
-              v2 = v45;
+              selfCopy = v45;
             }
 
             v3 = v14;
@@ -1615,8 +1615,8 @@ LABEL_2:
         while (v9);
       }
 
-      v21 = [v41 displayItems];
-      v22 = [v6 isEqual:v21];
+      displayItems = [v41 displayItems];
+      v22 = [v6 isEqual:displayItems];
 
       if (v22)
       {
@@ -1627,13 +1627,13 @@ LABEL_19:
       }
 
       v23 = v42;
-      if ((*(&v2->_statusBarFlags + 1) & 0x10) == 0)
+      if ((*(&selfCopy->_statusBarFlags + 1) & 0x10) == 0)
       {
         goto LABEL_19;
       }
 
       v24 = v43;
-      v25 = [(_UIStatusBarVisualProvider *)v2->_visualProvider region:v41 willSetDisplayItems:v43];
+      v25 = [(_UIStatusBarVisualProvider *)selfCopy->_visualProvider region:v41 willSetDisplayItems:v43];
       v26 = v25;
       if (v25 != v43)
       {
@@ -1644,8 +1644,8 @@ LABEL_19:
 
 LABEL_23:
       [v41 setDisplayItems:v24];
-      v28 = [v41 displayItems];
-      [v24 minusOrderedSet:v28];
+      displayItems2 = [v41 displayItems];
+      [v24 minusOrderedSet:displayItems2];
 
       v48 = 0u;
       v49 = 0u;
@@ -1667,8 +1667,8 @@ LABEL_23:
             }
 
             v34 = *(&v45->super.super.super.isa + v3);
-            v35 = [*(*(&v46 + 1) + 8 * k) identifier];
-            v36 = [v34 objectForKeyedSubscript:v35];
+            identifier3 = [*(*(&v46 + 1) + 8 * k) identifier];
+            v36 = [v34 objectForKeyedSubscript:identifier3];
             [v36 updateToNextEnabledPlacement];
           }
 
@@ -1677,7 +1677,7 @@ LABEL_23:
 
         while (v31);
         v38 = 1;
-        v2 = v45;
+        selfCopy = v45;
       }
     }
 
@@ -1687,13 +1687,13 @@ LABEL_23:
   while (v40);
   if (v38)
   {
-    [(_UIStatusBar *)v2 _updateRegionItems];
+    [(_UIStatusBar *)selfCopy _updateRegionItems];
   }
 
 LABEL_35:
-  if ((*(&v2->_statusBarFlags + 1) & 0x20) != 0)
+  if ((*(&selfCopy->_statusBarFlags + 1) & 0x20) != 0)
   {
-    [(_UIStatusBarVisualProvider *)v2->_visualProvider statusBarRegionsUpdated];
+    [(_UIStatusBarVisualProvider *)selfCopy->_visualProvider statusBarRegionsUpdated];
   }
 }
 
@@ -1742,17 +1742,17 @@ LABEL_35:
   return v3;
 }
 
-- (CGRect)_extendedHoverFrameForActionable:(id)a3
+- (CGRect)_extendedHoverFrameForActionable:(id)actionable
 {
-  v4 = a3;
-  [v4 absoluteHoverFrame];
+  actionableCopy = actionable;
+  [actionableCopy absoluteHoverFrame];
   x = v22.origin.x;
   y = v22.origin.y;
   width = v22.size.width;
   height = v22.size.height;
   if (!CGRectIsNull(v22))
   {
-    [v4 extendedHoverInsets];
+    [actionableCopy extendedHoverInsets];
     v10 = v9;
     v12 = v11;
     v14 = v13;
@@ -1784,31 +1784,31 @@ LABEL_35:
   return result;
 }
 
-- (BOOL)_cursorLocation:(CGPoint)a3 isInsideActionable:(id)a4
+- (BOOL)_cursorLocation:(CGPoint)location isInsideActionable:(id)actionable
 {
-  y = a3.y;
-  x = a3.x;
-  [(_UIStatusBar *)self _frameForActionable:a4];
+  y = location.y;
+  x = location.x;
+  [(_UIStatusBar *)self _frameForActionable:actionable];
   v10 = x;
   v11 = y;
 
   return CGRectContainsPoint(*&v6, *&v10);
 }
 
-- (BOOL)_cursorLocation:(CGPoint)a3 isInsideHoverableActionable:(id)a4
+- (BOOL)_cursorLocation:(CGPoint)location isInsideHoverableActionable:(id)actionable
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [v7 hoverView];
-  [(_UIStatusBar *)self _extendedHoverFrameForActionable:v7];
+  y = location.y;
+  x = location.x;
+  actionableCopy = actionable;
+  hoverView = [actionableCopy hoverView];
+  [(_UIStatusBar *)self _extendedHoverFrameForActionable:actionableCopy];
   v9 = v17.origin.x;
   v10 = v17.origin.y;
   width = v17.size.width;
   height = v17.size.height;
   if (CGRectIsNull(v17))
   {
-    v13 = [(_UIStatusBar *)self _cursorLocation:v7 isInsideActionable:x, y];
+    v13 = [(_UIStatusBar *)self _cursorLocation:actionableCopy isInsideActionable:x, y];
   }
 
   else
@@ -1827,15 +1827,15 @@ LABEL_35:
   return v14;
 }
 
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  interactionCopy = interaction;
+  requestCopy = request;
+  regionCopy = region;
   regionActionValidationBlock = self->_regionActionValidationBlock;
   if (regionActionValidationBlock && !regionActionValidationBlock[2]())
   {
-    v21 = 0;
+    height = 0;
   }
 
   else
@@ -1857,14 +1857,14 @@ LABEL_35:
     v24 = 3221225472;
     v25 = __66___UIStatusBar_pointerInteraction_regionForRequest_defaultRegion___block_invoke;
     v26 = &unk_1E7121B90;
-    v27 = self;
-    v28 = v9;
+    selfCopy = self;
+    v28 = requestCopy;
     v29 = &v37;
     v30 = &v31;
     [(NSDictionary *)regions enumerateKeysAndObjectsUsingBlock:&v23];
     if (v38[5])
     {
-      [(_UIStatusBar *)self _extendedHoverFrameForActionable:v23, v24, v25, v26, v27];
+      [(_UIStatusBar *)self _extendedHoverFrameForActionable:v23, v24, v25, v26, selfCopy];
       x = v44.origin.x;
       y = v44.origin.y;
       width = v44.size.width;
@@ -1878,28 +1878,28 @@ LABEL_35:
         height = v20;
       }
 
-      v21 = [UIPointerRegion regionWithRect:v32[5] identifier:x, y, width, height];
+      height = [UIPointerRegion regionWithRect:v32[5] identifier:x, y, width, height];
     }
 
     else
     {
-      v21 = 0;
+      height = 0;
     }
 
     _Block_object_dispose(&v31, 8);
     _Block_object_dispose(&v37, 8);
   }
 
-  return v21;
+  return height;
 }
 
-- (void)pointerInteraction:(id)a3 willEnterRegion:(id)a4 animator:(id)a5
+- (void)pointerInteraction:(id)interaction willEnterRegion:(id)region animator:(id)animator
 {
-  v6 = [a4 identifier];
-  v8 = v6;
-  if (v6)
+  identifier = [region identifier];
+  v8 = identifier;
+  if (identifier)
   {
-    v7 = [(_UIStatusBar *)self regionWithIdentifier:v6];
+    v7 = [(_UIStatusBar *)self regionWithIdentifier:identifier];
     if (!v7)
     {
       v7 = [(_UIStatusBar *)self displayItemWithIdentifier:v8];
@@ -1914,12 +1914,12 @@ LABEL_35:
   }
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
   WeakRetained = objc_loadWeakRetained(&self->_hoveredActionable);
-  v6 = [WeakRetained hoverView];
+  hoverView = [WeakRetained hoverView];
 
-  if (!v6)
+  if (!hoverView)
   {
     v25 = 0;
     goto LABEL_13;
@@ -1933,7 +1933,7 @@ LABEL_35:
   v15 = v14;
 
   v16 = objc_loadWeakRetained(&self->_hoveredActionable);
-  v17 = [v16 hoverHighlightsAsRegion];
+  hoverHighlightsAsRegion = [v16 hoverHighlightsAsRegion];
 
   v42.origin.x = v9;
   v42.origin.y = v11;
@@ -1942,36 +1942,36 @@ LABEL_35:
   if (!CGRectIsNull(v42))
   {
     v26 = objc_opt_new();
-    [(UIView *)self convertRect:v6 toView:v9, v11, v13, v15];
+    [(UIView *)self convertRect:hoverView toView:v9, v11, v13, v15];
     v27 = [UIBezierPath bezierPathWithRect:?];
     [v26 setVisiblePath:v27];
 
-    v22 = [[UITargetedPreview alloc] initWithView:v6 parameters:v26];
-    if ((v17 & 1) == 0)
+    v22 = [[UITargetedPreview alloc] initWithView:hoverView parameters:v26];
+    if ((hoverHighlightsAsRegion & 1) == 0)
     {
       goto LABEL_4;
     }
 
 LABEL_7:
     v23 = [(UIPointerEffect *)UIPointerHighlightEffect effectWithPreview:v22];
-    v28 = [(_UIStatusBar *)self visualProvider];
-    v29 = [v28 conformsToProtocol:&unk_1F00A20A0];
+    visualProvider = [(_UIStatusBar *)self visualProvider];
+    v29 = [visualProvider conformsToProtocol:&unk_1F00A20A0];
 
     if (v29)
     {
-      v30 = [(_UIStatusBar *)self visualProvider];
+      visualProvider2 = [(_UIStatusBar *)self visualProvider];
       [objc_opt_class() regionCursorInsets];
       v9 = v9 + v31;
       v11 = v11 + v32;
       v13 = v13 - (v31 + v33);
       v15 = v15 - (v32 + v34);
 
-      v35 = [(_UIStatusBar *)self visualProvider];
-      v36 = [objc_opt_class() regionCursorIsPill];
+      visualProvider3 = [(_UIStatusBar *)self visualProvider];
+      regionCursorIsPill = [objc_opt_class() regionCursorIsPill];
 
-      if ((v36 & 1) == 0)
+      if ((regionCursorIsPill & 1) == 0)
       {
-        v37 = [(_UIStatusBar *)self visualProvider];
+        visualProvider4 = [(_UIStatusBar *)self visualProvider];
         [objc_opt_class() regionCursorCornerRadius];
         v24 = v38;
 
@@ -1995,13 +1995,13 @@ LABEL_7:
     goto LABEL_12;
   }
 
-  [v6 frame];
+  [hoverView frame];
   v9 = v18;
   v11 = v19;
   v13 = v20;
   v15 = v21;
-  v22 = [[UITargetedPreview alloc] initWithView:v6];
-  if (v17)
+  v22 = [[UITargetedPreview alloc] initWithView:hoverView];
+  if (hoverHighlightsAsRegion)
   {
     goto LABEL_7;
   }
@@ -2018,11 +2018,11 @@ LABEL_13:
   return v25;
 }
 
-- (CGRect)_frameForActionable:(id)a3
+- (CGRect)_frameForActionable:(id)actionable
 {
-  v4 = a3;
-  [v4 actionInsets];
-  [(_UIStatusBar *)self _frameForActionable:v4 actionInsets:?];
+  actionableCopy = actionable;
+  [actionableCopy actionInsets];
+  [(_UIStatusBar *)self _frameForActionable:actionableCopy actionInsets:?];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -2039,9 +2039,9 @@ LABEL_13:
   return result;
 }
 
-- (CGRect)_pressFrameForActionable:(id)a3
+- (CGRect)_pressFrameForActionable:(id)actionable
 {
-  [(_UIStatusBar *)self _frameForActionable:a3 actionInsets:0.0, 0.0, 0.0, 0.0];
+  [(_UIStatusBar *)self _frameForActionable:actionable actionInsets:0.0, 0.0, 0.0, 0.0];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -2049,24 +2049,24 @@ LABEL_13:
   return result;
 }
 
-- (CGRect)_frameForActionable:(id)a3 actionInsets:(UIEdgeInsets)a4
+- (CGRect)_frameForActionable:(id)actionable actionInsets:(UIEdgeInsets)insets
 {
-  right = a4.right;
-  bottom = a4.bottom;
-  left = a4.left;
-  top = a4.top;
-  v9 = a3;
-  v10 = [v9 layoutItem];
-  [v10 _ui_bounds];
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  actionableCopy = actionable;
+  layoutItem = [actionableCopy layoutItem];
+  [layoutItem _ui_bounds];
   v12 = v11;
   v14 = v13;
   v16 = v15;
   v18 = v17;
 
-  v19 = [v9 layoutItem];
+  layoutItem2 = [actionableCopy layoutItem];
 
-  v20 = [v19 _ui_view];
-  [v20 convertRect:self toView:{v12, v14, v16, v18}];
+  _ui_view = [layoutItem2 _ui_view];
+  [_ui_view convertRect:self toView:{v12, v14, v16, v18}];
   v22 = v21;
   v24 = v23;
   v26 = v25;
@@ -2103,22 +2103,22 @@ LABEL_13:
   }
 }
 
-- (BOOL)_gestureRecognizer:(id)a3 isInsideActionable:(id)a4
+- (BOOL)_gestureRecognizer:(id)recognizer isInsideActionable:(id)actionable
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(_UIStatusBar *)self _gestureRecognizer:v6 touchInsideActionable:v7]|| [(_UIStatusBar *)self _gestureRecognizer:v6 pressInsideActionable:v7];
+  recognizerCopy = recognizer;
+  actionableCopy = actionable;
+  v8 = [(_UIStatusBar *)self _gestureRecognizer:recognizerCopy touchInsideActionable:actionableCopy]|| [(_UIStatusBar *)self _gestureRecognizer:recognizerCopy pressInsideActionable:actionableCopy];
 
   return v8;
 }
 
-- (BOOL)_gestureRecognizer:(id)a3 touchInsideActionable:(id)a4
+- (BOOL)_gestureRecognizer:(id)recognizer touchInsideActionable:(id)actionable
 {
-  v6 = a4;
-  [a3 locationInView:self];
+  actionableCopy = actionable;
+  [recognizer locationInView:self];
   v8 = v7;
   v10 = v9;
-  [(_UIStatusBar *)self _frameForActionable:v6];
+  [(_UIStatusBar *)self _frameForActionable:actionableCopy];
   v12 = v11;
   v14 = v13;
   v16 = v15;
@@ -2134,20 +2134,20 @@ LABEL_13:
   return CGRectContainsPoint(*&v19, *&v23);
 }
 
-- (BOOL)_gestureRecognizer:(id)a3 pressInsideActionable:(id)a4
+- (BOOL)_gestureRecognizer:(id)recognizer pressInsideActionable:(id)actionable
 {
-  v5 = a4;
-  v6 = [(UIView *)self _focusSystem];
-  v7 = [v6 focusedItem];
+  actionableCopy = actionable;
+  _focusSystem = [(UIView *)self _focusSystem];
+  focusedItem = [_focusSystem focusedItem];
 
-  v8 = [v7 focusItemContainer];
-  [(_UIStatusBar *)self _pressFrameForActionable:v5];
+  focusItemContainer = [focusedItem focusItemContainer];
+  [(_UIStatusBar *)self _pressFrameForActionable:actionableCopy];
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v16 = v15;
 
-  [v7 frame];
+  [focusedItem frame];
   v23.origin.x = v17;
   v23.origin.y = v18;
   v23.size.width = v19;
@@ -2161,15 +2161,15 @@ LABEL_13:
   return self;
 }
 
-- (void)statusBarGesture:(id)a3
+- (void)statusBarGesture:(id)gesture
 {
-  v18 = a3;
-  v4 = [v18 state];
-  v5 = v4;
-  v6 = v4 - 1;
-  if ((v4 - 1) > 2)
+  gestureCopy = gesture;
+  state = [gestureCopy state];
+  v5 = state;
+  v6 = state - 1;
+  if ((state - 1) > 2)
   {
-    if ((v4 - 3) > 2)
+    if ((state - 3) > 2)
     {
       v9 = 0;
       goto LABEL_19;
@@ -2181,7 +2181,7 @@ LABEL_13:
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_targetActionable);
-    v8 = [(_UIStatusBar *)self _gestureRecognizer:v18 isInsideActionable:WeakRetained];
+    v8 = [(_UIStatusBar *)self _gestureRecognizer:gestureCopy isInsideActionable:WeakRetained];
 
     if (v8)
     {
@@ -2211,11 +2211,11 @@ LABEL_13:
       goto LABEL_19;
     }
 
-    v14 = [v9 hoverAction];
-    if (v14 || ([v9 action], (v14 = objc_claimAutoreleasedReturnValue()) != 0) || (-[_UIStatusBar action](self, "action"), (v14 = objc_claimAutoreleasedReturnValue()) != 0))
+    hoverAction = [v9 hoverAction];
+    if (hoverAction || ([v9 action], (hoverAction = objc_claimAutoreleasedReturnValue()) != 0) || (-[_UIStatusBar action](self, "action"), (hoverAction = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v15 = v14;
-      [v14 performWithStatusBar:self completionHandler:0];
+      v15 = hoverAction;
+      [hoverAction performWithStatusBar:self completionHandler:0];
     }
   }
 
@@ -2230,9 +2230,9 @@ LABEL_13:
 LABEL_19:
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
+  beginCopy = begin;
   WeakRetained = objc_loadWeakRetained(&self->_hoveredActionable);
 
   if (WeakRetained)
@@ -2249,7 +2249,7 @@ LABEL_19:
     v11[2] = __45___UIStatusBar_gestureRecognizerShouldBegin___block_invoke;
     v11[3] = &unk_1E7121BE0;
     v11[4] = self;
-    v12 = v4;
+    v12 = beginCopy;
     [(NSDictionary *)regions enumerateKeysAndObjectsUsingBlock:v11];
   }
 
@@ -2259,18 +2259,18 @@ LABEL_19:
   return v9;
 }
 
-- (id)_actionablesForPartWithIdentifier:(id)a3 includeInternalItems:(BOOL)a4 onlyVisible:(BOOL)a5
+- (id)_actionablesForPartWithIdentifier:(id)identifier includeInternalItems:(BOOL)items onlyVisible:(BOOL)visible
 {
-  v5 = a5;
-  v6 = a4;
+  visibleCopy = visible;
+  itemsCopy = items;
   v29 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  identifierCopy = identifier;
   v9 = [MEMORY[0x1E695DFA8] set];
   [(_UIStatusBar *)self _prepareVisualProviderIfNeeded];
   v10 = [MEMORY[0x1E695DFD8] set];
-  if (v6)
+  if (itemsCopy)
   {
-    v11 = [_UIStatusBarIdentifier displayIdentifierFromStringRepresentation:v8];
+    v11 = [_UIStatusBarIdentifier displayIdentifierFromStringRepresentation:identifierCopy];
     if (v11)
     {
       v12 = [MEMORY[0x1E695DFD8] setWithObject:v11];
@@ -2281,7 +2281,7 @@ LABEL_19:
 
   if ((*(&self->_statusBarFlags + 1) & 0x80) != 0)
   {
-    v13 = [(_UIStatusBarVisualProvider *)self->_visualProvider displayItemIdentifiersForPartWithIdentifier:v8];
+    v13 = [(_UIStatusBarVisualProvider *)self->_visualProvider displayItemIdentifiersForPartWithIdentifier:identifierCopy];
     v14 = [v10 setByAddingObjectsFromSet:v13];
 
     v10 = v14;
@@ -2308,7 +2308,7 @@ LABEL_19:
 
         v20 = [(_UIStatusBar *)self displayItemWithIdentifier:*(*(&v24 + 1) + 8 * i), v24];
         v21 = v20;
-        if (v20 && (!v5 || [v20 visible]))
+        if (v20 && (!visibleCopy || [v20 visible]))
         {
           [v9 addObject:v21];
         }
@@ -2322,22 +2322,22 @@ LABEL_19:
 
   if (![v9 count])
   {
-    v22 = [(_UIStatusBar *)self _regionsForPartWithIdentifier:v8 includeInternalItems:v6];
+    v22 = [(_UIStatusBar *)self _regionsForPartWithIdentifier:identifierCopy includeInternalItems:itemsCopy];
     [v9 unionSet:v22];
   }
 
   return v9;
 }
 
-- (id)_regionsForPartWithIdentifier:(id)a3 includeInternalItems:(BOOL)a4
+- (id)_regionsForPartWithIdentifier:(id)identifier includeInternalItems:(BOOL)items
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  identifierCopy = identifier;
   v7 = [MEMORY[0x1E695DFA8] set];
   [(_UIStatusBar *)self _prepareVisualProviderIfNeeded];
-  if (a4)
+  if (items)
   {
-    [MEMORY[0x1E695DFD8] setWithObject:v6];
+    [MEMORY[0x1E695DFD8] setWithObject:identifierCopy];
   }
 
   else
@@ -2347,7 +2347,7 @@ LABEL_19:
   v8 = ;
   if (*(&self->_statusBarFlags + 2))
   {
-    v9 = [(_UIStatusBarVisualProvider *)self->_visualProvider regionIdentifiersForPartWithIdentifier:v6];
+    v9 = [(_UIStatusBarVisualProvider *)self->_visualProvider regionIdentifiersForPartWithIdentifier:identifierCopy];
     v10 = [v8 setByAddingObjectsFromSet:v9];
 
     v8 = v10;
@@ -2388,15 +2388,15 @@ LABEL_19:
   return v7;
 }
 
-- (void)setAction:(id)a3 forPartWithIdentifier:(id)a4
+- (void)setAction:(id)action forPartWithIdentifier:(id)identifier
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  actionCopy = action;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v7 = [(_UIStatusBar *)self _actionablesForPartWithIdentifier:a4 includeInternalItems:0 onlyVisible:0, 0];
+  v7 = [(_UIStatusBar *)self _actionablesForPartWithIdentifier:identifier includeInternalItems:0 onlyVisible:0, 0];
   v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v8)
   {
@@ -2412,7 +2412,7 @@ LABEL_19:
           objc_enumerationMutation(v7);
         }
 
-        [*(*(&v12 + 1) + 8 * v11++) setAction:v6];
+        [*(*(&v12 + 1) + 8 * v11++) setAction:actionCopy];
       }
 
       while (v9 != v11);
@@ -2423,25 +2423,25 @@ LABEL_19:
   }
 }
 
-- (id)actionForPartWithIdentifier:(id)a3
+- (id)actionForPartWithIdentifier:(id)identifier
 {
-  v3 = [(_UIStatusBar *)self _actionablesForPartWithIdentifier:a3 includeInternalItems:0 onlyVisible:0];
-  v4 = [v3 anyObject];
-  v5 = [v4 action];
+  v3 = [(_UIStatusBar *)self _actionablesForPartWithIdentifier:identifier includeInternalItems:0 onlyVisible:0];
+  anyObject = [v3 anyObject];
+  action = [anyObject action];
 
-  return v5;
+  return action;
 }
 
-- (void)setOffset:(UIOffset)a3 forPartWithIdentifier:(id)a4
+- (void)setOffset:(UIOffset)offset forPartWithIdentifier:(id)identifier
 {
-  vertical = a3.vertical;
-  horizontal = a3.horizontal;
+  vertical = offset.vertical;
+  horizontal = offset.horizontal;
   v16 = *MEMORY[0x1E69E9840];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = [(_UIStatusBar *)self _regionsForPartWithIdentifier:a4 includeInternalItems:0, 0];
+  v6 = [(_UIStatusBar *)self _regionsForPartWithIdentifier:identifier includeInternalItems:0, 0];
   v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
@@ -2468,14 +2468,14 @@ LABEL_19:
   }
 }
 
-- (UIOffset)offsetForPartWithIdentifier:(id)a3
+- (UIOffset)offsetForPartWithIdentifier:(id)identifier
 {
   v20 = *MEMORY[0x1E69E9840];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v3 = [(_UIStatusBar *)self _regionsForPartWithIdentifier:a3 includeInternalItems:0, 0];
+  v3 = [(_UIStatusBar *)self _regionsForPartWithIdentifier:identifier includeInternalItems:0, 0];
   v4 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
   v5 = 0.0;
   if (v4)
@@ -2521,14 +2521,14 @@ LABEL_11:
   return result;
 }
 
-- (void)setAlpha:(double)a3 forPartWithIdentifier:(id)a4
+- (void)setAlpha:(double)alpha forPartWithIdentifier:(id)identifier
 {
   v16 = *MEMORY[0x1E69E9840];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(_UIStatusBar *)self _regionsForPartWithIdentifier:a4 includeInternalItems:0, 0];
+  v5 = [(_UIStatusBar *)self _regionsForPartWithIdentifier:identifier includeInternalItems:0, 0];
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
@@ -2544,8 +2544,8 @@ LABEL_11:
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v11 + 1) + 8 * v9) contentView];
-        [v10 setAlpha:a3];
+        contentView = [*(*(&v11 + 1) + 8 * v9) contentView];
+        [contentView setAlpha:alpha];
 
         ++v9;
       }
@@ -2558,14 +2558,14 @@ LABEL_11:
   }
 }
 
-- (double)alphaForPartWithIdentifier:(id)a3
+- (double)alphaForPartWithIdentifier:(id)identifier
 {
   v19 = *MEMORY[0x1E69E9840];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v3 = [(_UIStatusBar *)self _regionsForPartWithIdentifier:a3 includeInternalItems:0, 0];
+  v3 = [(_UIStatusBar *)self _regionsForPartWithIdentifier:identifier includeInternalItems:0, 0];
   v4 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
   v5 = 1.0;
   if (v4)
@@ -2582,12 +2582,12 @@ LABEL_11:
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 contentView];
+        contentView = [v9 contentView];
 
-        if (v10)
+        if (contentView)
         {
-          v11 = [v9 contentView];
-          [v11 alpha];
+          contentView2 = [v9 contentView];
+          [contentView2 alpha];
           v5 = v12;
 
           goto LABEL_11;
@@ -2609,14 +2609,14 @@ LABEL_11:
   return v5;
 }
 
-- (void)setStyle:(int64_t)a3 forPartWithIdentifier:(id)a4
+- (void)setStyle:(int64_t)style forPartWithIdentifier:(id)identifier
 {
   v19 = *MEMORY[0x1E69E9840];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [(_UIStatusBar *)self _regionsForPartWithIdentifier:a4 includeInternalItems:0];
+  v6 = [(_UIStatusBar *)self _regionsForPartWithIdentifier:identifier includeInternalItems:0];
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -2633,9 +2633,9 @@ LABEL_11:
         }
 
         v12 = *(*(&v14 + 1) + 8 * i);
-        if ([v12 style] != a3)
+        if ([v12 style] != style)
         {
-          [v12 setStyle:a3];
+          [v12 setStyle:style];
           v9 = 1;
         }
       }
@@ -2661,40 +2661,40 @@ LABEL_11:
   }
 }
 
-- (int64_t)styleForPartWithIdentifier:(id)a3
+- (int64_t)styleForPartWithIdentifier:(id)identifier
 {
-  v3 = [(_UIStatusBar *)self _regionsForPartWithIdentifier:a3 includeInternalItems:0];
-  v4 = [v3 anyObject];
-  v5 = [v4 style];
+  v3 = [(_UIStatusBar *)self _regionsForPartWithIdentifier:identifier includeInternalItems:0];
+  anyObject = [v3 anyObject];
+  style = [anyObject style];
 
-  return v5;
+  return style;
 }
 
-- (void)setEnabledPartIdentifiers:(id)a3
+- (void)setEnabledPartIdentifiers:(id)identifiers
 {
   v41 = *MEMORY[0x1E69E9840];
-  v21 = a3;
-  if (self->_enabledPartIdentifiers != v21)
+  identifiersCopy = identifiers;
+  if (self->_enabledPartIdentifiers != identifiersCopy)
   {
-    objc_storeStrong(&self->_enabledPartIdentifiers, a3);
+    objc_storeStrong(&self->_enabledPartIdentifiers, identifiers);
     [(_UIStatusBar *)self _prepareVisualProviderIfNeeded];
     v35 = 0;
     v36 = &v35;
     v37 = 0x2020000000;
     v38 = 0;
     v5 = [MEMORY[0x1E695DFD8] set];
-    if (v21)
+    if (identifiersCopy)
     {
       v20 = v5;
       v6 = MEMORY[0x1E695DFA8];
-      v7 = [(NSDictionary *)self->_regions allKeys];
-      v8 = [v6 setWithArray:v7];
+      allKeys = [(NSDictionary *)self->_regions allKeys];
+      v8 = [v6 setWithArray:allKeys];
 
       v33 = 0u;
       v34 = 0u;
       v31 = 0u;
       v32 = 0u;
-      obj = v21;
+      obj = identifiersCopy;
       v9 = [(NSArray *)obj countByEnumeratingWithState:&v31 objects:v40 count:16];
       if (v9)
       {
@@ -2727,8 +2727,8 @@ LABEL_11:
                     objc_enumerationMutation(v13);
                   }
 
-                  v17 = [*(*(&v27 + 1) + 8 * j) identifier];
-                  [v8 removeObject:v17];
+                  identifier = [*(*(&v27 + 1) + 8 * j) identifier];
+                  [v8 removeObject:identifier];
                 }
 
                 v14 = [v13 countByEnumeratingWithState:&v27 objects:v39 count:16];
@@ -2778,16 +2778,16 @@ LABEL_11:
   }
 }
 
-- (void)setDisabledPartIdentifiers:(id)a3
+- (void)setDisabledPartIdentifiers:(id)identifiers
 {
   v53 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (self->_disabledPartIdentifiers != v5)
+  identifiersCopy = identifiers;
+  if (self->_disabledPartIdentifiers != identifiersCopy)
   {
-    obj = a3;
+    obj = identifiers;
     [(_UIStatusBar *)self _prepareVisualProviderIfNeeded];
-    v31 = v5;
-    v6 = [(NSArray *)self->_disabledPartIdentifiers arrayByExcludingObjectsInArray:v5];
+    v31 = identifiersCopy;
+    v6 = [(NSArray *)self->_disabledPartIdentifiers arrayByExcludingObjectsInArray:identifiersCopy];
     v45 = 0u;
     v46 = 0u;
     v47 = 0u;
@@ -2907,7 +2907,7 @@ LABEL_11:
       while (v21);
     }
 
-    v5 = v31;
+    identifiersCopy = v31;
     if (v9)
     {
       if ((*(&self->_statusBarFlags + 2) & 2) != 0)
@@ -2925,11 +2925,11 @@ LABEL_11:
   }
 }
 
-- (CGRect)frameForPartWithIdentifier:(id)a3 includeInternalItems:(BOOL)a4
+- (CGRect)frameForPartWithIdentifier:(id)identifier includeInternalItems:(BOOL)items
 {
-  v4 = a4;
+  itemsCopy = items;
   v72 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  identifierCopy = identifier;
   v7 = MEMORY[0x1E695F050];
   if (*&self->_statusBarFlags)
   {
@@ -2941,13 +2941,13 @@ LABEL_11:
   y = v7[1];
   width = v7[2];
   height = v7[3];
-  if ([v6 isEqualToString:@"clockPartIdentifier"] && (objc_opt_respondsToSelector() & 1) != 0)
+  if ([identifierCopy isEqualToString:@"clockPartIdentifier"] && (objc_opt_respondsToSelector() & 1) != 0)
   {
     v68 = 0u;
     v69 = 0u;
     v66 = 0u;
     v67 = 0u;
-    v12 = [(_UIStatusBar *)self _actionablesForPartWithIdentifier:v6 includeInternalItems:v4 onlyVisible:1];
+    v12 = [(_UIStatusBar *)self _actionablesForPartWithIdentifier:identifierCopy includeInternalItems:itemsCopy onlyVisible:1];
     v13 = [v12 countByEnumeratingWithState:&v66 objects:v71 count:16];
     if (v13)
     {
@@ -2963,7 +2963,7 @@ LABEL_11:
           }
 
           v17 = *(*(&v66 + 1) + 8 * i);
-          v18 = [v17 layoutItem];
+          layoutItem = [v17 layoutItem];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
@@ -2972,15 +2972,15 @@ LABEL_11:
 
           else
           {
-            [v18 _ui_bounds];
+            [layoutItem _ui_bounds];
           }
 
           v23 = v19;
           v24 = v20;
           v25 = v21;
           v26 = v22;
-          v27 = [v18 _ui_view];
-          [(UIView *)self convertRect:v27 fromView:v23, v24, v25, v26];
+          _ui_view = [layoutItem _ui_view];
+          [(UIView *)self convertRect:_ui_view fromView:v23, v24, v25, v26];
           v29 = v28;
           v31 = v30;
           v33 = v32;
@@ -3014,7 +3014,7 @@ LABEL_11:
     v65 = 0u;
     v62 = 0u;
     v63 = 0u;
-    v12 = [(_UIStatusBar *)self _actionablesForPartWithIdentifier:v6 includeInternalItems:v4 onlyVisible:1, 0];
+    v12 = [(_UIStatusBar *)self _actionablesForPartWithIdentifier:identifierCopy includeInternalItems:itemsCopy onlyVisible:1, 0];
     v36 = [v12 countByEnumeratingWithState:&v62 objects:v70 count:16];
     if (v36)
     {
@@ -3029,14 +3029,14 @@ LABEL_11:
             objc_enumerationMutation(v12);
           }
 
-          v40 = [*(*(&v62 + 1) + 8 * j) layoutItem];
-          [v40 _ui_bounds];
+          layoutItem2 = [*(*(&v62 + 1) + 8 * j) layoutItem];
+          [layoutItem2 _ui_bounds];
           v42 = v41;
           v44 = v43;
           v46 = v45;
           v48 = v47;
-          v49 = [v40 _ui_view];
-          [(UIView *)self convertRect:v49 fromView:v42, v44, v46, v48];
+          _ui_view2 = [layoutItem2 _ui_view];
+          [(UIView *)self convertRect:_ui_view2 fromView:v42, v44, v46, v48];
           v51 = v50;
           v53 = v52;
           v55 = v54;
@@ -3075,9 +3075,9 @@ LABEL_11:
   return result;
 }
 
-- (CGRect)frameForPartWithIdentifier:(id)a3
+- (CGRect)frameForPartWithIdentifier:(id)identifier
 {
-  [(_UIStatusBar *)self frameForPartWithIdentifier:a3 includeInternalItems:0];
+  [(_UIStatusBar *)self frameForPartWithIdentifier:identifier includeInternalItems:0];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -3085,35 +3085,35 @@ LABEL_11:
   return result;
 }
 
-+ (CGSize)intrinsicContentSizeForTargetScreen:(id)a3 orientation:(int64_t)a4 onLockScreen:(BOOL)a5
++ (CGSize)intrinsicContentSizeForTargetScreen:(id)screen orientation:(int64_t)orientation onLockScreen:(BOOL)lockScreen
 {
-  [a1 intrinsicContentSizeForTargetScreen:a3 orientation:a4 onLockScreen:a5 isAzulBLinked:1];
+  [self intrinsicContentSizeForTargetScreen:screen orientation:orientation onLockScreen:lockScreen isAzulBLinked:1];
   result.height = v6;
   result.width = v5;
   return result;
 }
 
-+ (CGSize)intrinsicContentSizeForTargetScreen:(id)a3 orientation:(int64_t)a4 onLockScreen:(BOOL)a5 isAzulBLinked:(BOOL)a6
++ (CGSize)intrinsicContentSizeForTargetScreen:(id)screen orientation:(int64_t)orientation onLockScreen:(BOOL)lockScreen isAzulBLinked:(BOOL)linked
 {
-  v6 = a6;
-  v7 = a5;
-  v10 = a3;
-  VisualProviderClassForScreen = _UIStatusBarGetVisualProviderClassForScreen(v10, 0);
-  if (v7 && (objc_opt_respondsToSelector() & 1) != 0)
+  linkedCopy = linked;
+  lockScreenCopy = lockScreen;
+  screenCopy = screen;
+  VisualProviderClassForScreen = _UIStatusBarGetVisualProviderClassForScreen(screenCopy, 0);
+  if (lockScreenCopy && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [VisualProviderClassForScreen intrinsicLockScreenContentSizeForOrientation:a4];
+    [VisualProviderClassForScreen intrinsicLockScreenContentSizeForOrientation:orientation];
   }
 
   else
   {
-    [VisualProviderClassForScreen intrinsicContentSizeForOrientation:a4];
+    [VisualProviderClassForScreen intrinsicContentSizeForOrientation:orientation];
   }
 
   v14 = v12;
   v15 = v13;
-  if (v6)
+  if (linkedCopy)
   {
-    [a1 _effectiveScaleForVisualProviderClass:VisualProviderClassForScreen targetScreen:v10];
+    [self _effectiveScaleForVisualProviderClass:VisualProviderClassForScreen targetScreen:screenCopy];
     v15 = round(v15 * v16);
   }
 
@@ -3145,10 +3145,10 @@ LABEL_11:
 
 - (unsigned)animationContextId
 {
-  v2 = [(UIView *)self window];
-  v3 = [v2 _contextId];
+  window = [(UIView *)self window];
+  _contextId = [window _contextId];
 
-  return v3;
+  return _contextId;
 }
 
 - (BOOL)areAnimationsEnabled
@@ -3158,29 +3158,29 @@ LABEL_11:
     return 0;
   }
 
-  v3 = [(UIView *)self window];
-  if (v3)
+  window = [(UIView *)self window];
+  if (window)
   {
-    v4 = [(UIView *)self window];
-    v5 = [v4 _hasContext];
+    window2 = [(UIView *)self window];
+    _hasContext = [window2 _hasContext];
   }
 
   else
   {
-    v5 = 0;
+    _hasContext = 0;
   }
 
-  return v5;
+  return _hasContext;
 }
 
 - (CGSize)intrinsicContentSize
 {
   [(_UIStatusBar *)self _prepareVisualProviderIfNeeded];
-  v3 = [(UIView *)self window];
+  window = [(UIView *)self window];
   v4 = objc_opt_class();
-  if (v3)
+  if (window)
   {
-    v5 = [UIApp _sceneInterfaceOrientationFromWindow:v3];
+    v5 = [UIApp _sceneInterfaceOrientationFromWindow:window];
   }
 
   else
@@ -3199,11 +3199,11 @@ LABEL_11:
   return result;
 }
 
-- (id)_itemWithIdentifier:(id)a3 createIfNeeded:(BOOL)a4
+- (id)_itemWithIdentifier:(id)identifier createIfNeeded:(BOOL)needed
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(NSMutableDictionary *)self->_items objectForKeyedSubscript:v6];
+  neededCopy = needed;
+  identifierCopy = identifier;
+  v7 = [(NSMutableDictionary *)self->_items objectForKeyedSubscript:identifierCopy];
   if (v7)
   {
     v8 = 1;
@@ -3211,32 +3211,32 @@ LABEL_11:
 
   else
   {
-    v8 = !v4;
+    v8 = !neededCopy;
   }
 
   if (!v8)
   {
-    v7 = [_UIStatusBarItem createItemForIdentifier:v6 statusBar:self];
+    v7 = [_UIStatusBarItem createItemForIdentifier:identifierCopy statusBar:self];
     if ((*(&self->_statusBarFlags + 2) & 4) != 0)
     {
       [(_UIStatusBarVisualProvider *)self->_visualProvider itemCreated:v7];
     }
 
-    [(NSMutableDictionary *)self->_items setObject:v7 forKeyedSubscript:v6];
+    [(NSMutableDictionary *)self->_items setObject:v7 forKeyedSubscript:identifierCopy];
   }
 
   return v7;
 }
 
-- (id)displayItemWithIdentifier:(id)a3
+- (id)displayItemWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [_UIStatusBarItem itemIdentifierForDisplayItemIdentifier:v4];
+  identifierCopy = identifier;
+  v5 = [_UIStatusBarItem itemIdentifierForDisplayItemIdentifier:identifierCopy];
   v6 = [(_UIStatusBar *)self _itemWithIdentifier:v5 createIfNeeded:0];
 
   if (v6)
   {
-    v7 = [v6 displayItemForIdentifier:v4];
+    v7 = [v6 displayItemForIdentifier:identifierCopy];
   }
 
   else
@@ -3247,28 +3247,28 @@ LABEL_11:
   return v7;
 }
 
-- (id)regionWithIdentifier:(id)a3
+- (id)regionWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   [(_UIStatusBar *)self _prepareVisualProviderIfNeeded];
-  v5 = [(NSDictionary *)self->_regions objectForKeyedSubscript:v4];
+  v5 = [(NSDictionary *)self->_regions objectForKeyedSubscript:identifierCopy];
 
   return v5;
 }
 
-- (id)itemsDependingOnKeys:(id)a3
+- (id)itemsDependingOnKeys:(id)keys
 {
-  v4 = a3;
+  keysCopy = keys;
   v5 = [MEMORY[0x1E695DFA8] set];
   items = self->_items;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __37___UIStatusBar_itemsDependingOnKeys___block_invoke;
   v12[3] = &unk_1E7121C30;
-  v13 = v4;
+  v13 = keysCopy;
   v7 = v5;
   v14 = v7;
-  v8 = v4;
+  v8 = keysCopy;
   [(NSMutableDictionary *)items enumerateKeysAndObjectsUsingBlock:v12];
   v9 = v14;
   v10 = v7;
@@ -3276,34 +3276,34 @@ LABEL_11:
   return v7;
 }
 
-- (CGRect)frameForDisplayItemWithIdentifier:(id)a3
+- (CGRect)frameForDisplayItemWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   [(UIView *)self layoutIfNeeded];
   v5 = *MEMORY[0x1E695F058];
   v6 = *(MEMORY[0x1E695F058] + 8);
   v7 = *(MEMORY[0x1E695F058] + 16);
   v8 = *(MEMORY[0x1E695F058] + 24);
   items = self->_items;
-  v10 = [_UIStatusBarItem itemIdentifierForDisplayItemIdentifier:v4];
+  v10 = [_UIStatusBarItem itemIdentifierForDisplayItemIdentifier:identifierCopy];
   v11 = [(NSMutableDictionary *)items objectForKeyedSubscript:v10];
 
   if (v11)
   {
-    v12 = [v11 displayItemForIdentifier:v4];
+    v12 = [v11 displayItemForIdentifier:identifierCopy];
     v13 = v12;
     if (v12)
     {
-      v14 = [v12 view];
-      [v14 alpha];
+      view = [v12 view];
+      [view alpha];
       if (v15 > 0.0)
       {
-        v16 = [v14 window];
+        window = [view window];
 
-        if (v16)
+        if (window)
         {
-          [v14 bounds];
-          [(UIView *)self convertRect:v14 fromView:?];
+          [view bounds];
+          [(UIView *)self convertRect:view fromView:?];
           v5 = v17;
           v6 = v18;
           v7 = v19;
@@ -3324,16 +3324,16 @@ LABEL_11:
   return result;
 }
 
-- (id)displayItemIdentifiersInRegionsWithIdentifiers:(id)a3
+- (id)displayItemIdentifiersInRegionsWithIdentifiers:(id)identifiers
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifiersCopy = identifiers;
   v5 = [MEMORY[0x1E695DFA8] set];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  obj = v4;
+  obj = identifiersCopy;
   v6 = [obj countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v6)
   {
@@ -3367,8 +3367,8 @@ LABEL_11:
                 objc_enumerationMutation(v10);
               }
 
-              v15 = [*(*(&v18 + 1) + 8 * j) identifier];
-              [v5 addObject:v15];
+              identifier = [*(*(&v18 + 1) + 8 * j) identifier];
+              [v5 addObject:identifier];
             }
 
             v12 = [v10 countByEnumeratingWithState:&v18 objects:v26 count:16];
@@ -3387,12 +3387,12 @@ LABEL_11:
   return v5;
 }
 
-- (id)itemIdentifiersInRegionsWithIdentifiers:(id)a3
+- (id)itemIdentifiersInRegionsWithIdentifiers:(id)identifiers
 {
   v4 = MEMORY[0x1E695DFA8];
-  v5 = a3;
+  identifiersCopy = identifiers;
   v6 = [v4 set];
-  v7 = [(_UIStatusBar *)self displayItemIdentifiersInRegionsWithIdentifiers:v5];
+  v7 = [(_UIStatusBar *)self displayItemIdentifiersInRegionsWithIdentifiers:identifiersCopy];
 
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
@@ -3405,16 +3405,16 @@ LABEL_11:
   return v8;
 }
 
-- (id)dataEntryKeysForItemsWithIdentifiers:(id)a3
+- (id)dataEntryKeysForItemsWithIdentifiers:(id)identifiers
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifiersCopy = identifiers;
   v5 = [MEMORY[0x1E695DFA8] set];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = identifiersCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -3430,8 +3430,8 @@ LABEL_11:
         }
 
         v11 = [(_UIStatusBar *)self itemWithIdentifier:*(*(&v14 + 1) + 8 * i), v14];
-        v12 = [v11 dependentEntryKeys];
-        [v5 unionSet:v12];
+        dependentEntryKeys = [v11 dependentEntryKeys];
+        [v5 unionSet:dependentEntryKeys];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -3443,27 +3443,27 @@ LABEL_11:
   return v5;
 }
 
-- (BOOL)_accessibilityHUDGestureManager:(id)a3 shouldBeginAtPoint:(CGPoint)a4
+- (BOOL)_accessibilityHUDGestureManager:(id)manager shouldBeginAtPoint:(CGPoint)point
 {
-  v4 = [(UIView *)self traitCollection:a3];
+  v4 = [(UIView *)self traitCollection:manager];
   v5 = [v4 userInterfaceIdiom] != 3;
 
   return v5;
 }
 
-- (id)_accessibilityHUDGestureManager:(id)a3 HUDItemForPoint:(CGPoint)a4
+- (id)_accessibilityHUDGestureManager:(id)manager HUDItemForPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
+  y = point.y;
+  x = point.x;
   v25 = *MEMORY[0x1E69E9840];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v6 = [(_UIStatusBar *)self regions:a3];
-  v7 = [v6 allValues];
+  v6 = [(_UIStatusBar *)self regions:manager];
+  allValues = [v6 allValues];
 
-  v8 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  v8 = [allValues countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v8)
   {
     v9 = v8;
@@ -3474,7 +3474,7 @@ LABEL_11:
       {
         if (*v21 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allValues);
         }
 
         v12 = *(*(&v20 + 1) + 8 * i);
@@ -3484,7 +3484,7 @@ LABEL_11:
           v14 = v13;
           if (v13)
           {
-            v15 = [v13 view];
+            view = [v13 view];
             v16 = objc_opt_respondsToSelector();
 
             if (v16)
@@ -3495,7 +3495,7 @@ LABEL_11:
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v9 = [allValues countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v9);
@@ -3504,26 +3504,26 @@ LABEL_11:
   v14 = 0;
 LABEL_13:
 
-  v17 = [v14 view];
-  v18 = [v17 accessibilityHUDRepresentation];
+  view2 = [v14 view];
+  accessibilityHUDRepresentation = [view2 accessibilityHUDRepresentation];
 
-  return v18;
+  return accessibilityHUDRepresentation;
 }
 
-- (void)_accessibilityHUDGestureManager:(id)a3 showHUDItem:(id)a4
+- (void)_accessibilityHUDGestureManager:(id)manager showHUDItem:(id)item
 {
-  v5 = a4;
-  v6 = [(UIView *)self traitCollection];
-  [v5 setCustomUserInterfaceStyle:{objc_msgSend(v6, "userInterfaceStyle")}];
+  itemCopy = item;
+  traitCollection = [(UIView *)self traitCollection];
+  [itemCopy setCustomUserInterfaceStyle:{objc_msgSend(traitCollection, "userInterfaceStyle")}];
 
-  v7 = [(_UIStatusBar *)self _statusBarWindowForAccessibilityHUD];
-  [v7 _showAccessibilityHUDItem:v5 forView:self];
+  _statusBarWindowForAccessibilityHUD = [(_UIStatusBar *)self _statusBarWindowForAccessibilityHUD];
+  [_statusBarWindowForAccessibilityHUD _showAccessibilityHUDItem:itemCopy forView:self];
 }
 
-- (void)_dismissAccessibilityHUDForGestureManager:(id)a3
+- (void)_dismissAccessibilityHUDForGestureManager:(id)manager
 {
-  v3 = [(_UIStatusBar *)self _statusBarWindowForAccessibilityHUD];
-  [v3 _dismissAccessibilityHUD];
+  _statusBarWindowForAccessibilityHUD = [(_UIStatusBar *)self _statusBarWindowForAccessibilityHUD];
+  [_statusBarWindowForAccessibilityHUD _dismissAccessibilityHUD];
 }
 
 - (CGRect)avoidanceFrame

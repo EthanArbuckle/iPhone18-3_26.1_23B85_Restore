@@ -1,60 +1,60 @@
 @interface _DASActivity
-+ (_DASActivity)activityWithCTSActivity:(id)a3;
-- (void)linkToCTSActivity:(id)a3;
++ (_DASActivity)activityWithCTSActivity:(id)activity;
+- (void)linkToCTSActivity:(id)activity;
 @end
 
 @implementation _DASActivity
 
-+ (_DASActivity)activityWithCTSActivity:(id)a3
++ (_DASActivity)activityWithCTSActivity:(id)activity
 {
-  v3 = a3;
-  v4 = [v3 priority];
+  activityCopy = activity;
+  priority = [activityCopy priority];
   v5 = &_DASSchedulingPriorityUtility;
-  if (v4 != 1)
+  if (priority != 1)
   {
     v5 = &_DASSchedulingPriorityMaintenance;
   }
 
   v6 = *v5;
-  sub_2BAC([v3 eligibleTime]);
+  sub_2BAC([activityCopy eligibleTime]);
   v7 = [NSDate dateWithTimeIntervalSinceReferenceDate:?];
-  sub_2BAC([v3 deadlineTime]);
+  sub_2BAC([activityCopy deadlineTime]);
   v8 = [NSDate dateWithTimeIntervalSinceReferenceDate:?];
-  v9 = [v3 name];
-  v10 = +[_DASActivity activityWithName:priority:duration:startingAfter:startingBefore:](_DASActivity, "activityWithName:priority:duration:startingAfter:startingBefore:", v9, v6, [v3 expected_duration], v7, v8);
-  v11 = [v3 serviceName];
-  [v10 setServiceName:v11];
+  name = [activityCopy name];
+  v10 = +[_DASActivity activityWithName:priority:duration:startingAfter:startingBefore:](_DASActivity, "activityWithName:priority:duration:startingAfter:startingBefore:", name, v6, [activityCopy expected_duration], v7, v8);
+  serviceName = [activityCopy serviceName];
+  [v10 setServiceName:serviceName];
 
-  v12 = [v3 bundle_id];
-  [v10 setBundleId:v12];
+  bundle_id = [activityCopy bundle_id];
+  [v10 setBundleId:bundle_id];
 
-  v13 = [v3 related_applications];
-  [v10 setRelatedApplications:v13];
+  related_applications = [activityCopy related_applications];
+  [v10 setRelatedApplications:related_applications];
 
-  v14 = [v3 involved_processes];
-  [v10 setInvolvedProcesses:v14];
+  involved_processes = [activityCopy involved_processes];
+  [v10 setInvolvedProcesses:involved_processes];
 
-  [v10 setRunOnAppForeground:{objc_msgSend(v3, "runOnAppForeground")}];
-  [v10 setBudgeted:{objc_msgSend(v3, "duet_power_budgeted")}];
-  [v10 setDataBudgeted:{objc_msgSend(v3, "data_budgeted")}];
-  if ([v3 repeating])
+  [v10 setRunOnAppForeground:{objc_msgSend(activityCopy, "runOnAppForeground")}];
+  [v10 setBudgeted:{objc_msgSend(activityCopy, "duet_power_budgeted")}];
+  [v10 setDataBudgeted:{objc_msgSend(activityCopy, "data_budgeted")}];
+  if ([activityCopy repeating])
   {
-    [v10 setInterval:{objc_msgSend(v3, "interval")}];
+    [v10 setInterval:{objc_msgSend(activityCopy, "interval")}];
   }
 
-  if ([v3 requires_protection_class] == 1)
+  if ([activityCopy requires_protection_class] == 1)
   {
     v15 = +[_DASFileProtection complete];
   }
 
-  else if ([v3 requires_protection_class] == 2)
+  else if ([activityCopy requires_protection_class] == 2)
   {
     v15 = +[_DASFileProtection completeUnlessOpen];
   }
 
   else
   {
-    if ([v3 requires_protection_class] != 3)
+    if ([activityCopy requires_protection_class] != 3)
     {
       goto LABEL_12;
     }
@@ -66,111 +66,111 @@
   [v10 setFileProtection:v15];
 
 LABEL_12:
-  [v10 setRequiresBuddyComplete:{objc_msgSend(v3, "requires_buddy_complete")}];
-  if ([v3 schedule_rtc_wake])
+  [v10 setRequiresBuddyComplete:{objc_msgSend(activityCopy, "requires_buddy_complete")}];
+  if ([activityCopy schedule_rtc_wake])
   {
     [v10 setSchedulingPriority:_DASSchedulingPriorityDefault];
   }
 
-  [v10 setDarkWakeEligible:{objc_msgSend(v3, "power_nap")}];
-  [v10 setBeforeDaysFirstActivity:{objc_msgSend(v3, "app_refresh")}];
-  [v10 setRequiresDeviceInactivity:{objc_msgSend(v3, "requires_screen_sleep")}];
-  [v10 setRequiresSignificantUserInactivity:{objc_msgSend(v3, "requires_significant_user_inactivity")}];
-  [v10 setPreventDeviceSleep:{objc_msgSend(v3, "prevents_device_sleep")}];
-  [v10 setRequiresPlugin:{objc_msgSend(v3, "allow_battery") ^ 1}];
-  [v10 setTriggersRestart:{objc_msgSend(v3, "may_reboot_device")}];
-  [v10 setMemoryIntensive:{objc_msgSend(v3, "memory_intensive")}];
-  [v10 setCpuIntensive:{objc_msgSend(v3, "cpu_intensive")}];
-  [v10 setDiskIntensive:{objc_msgSend(v3, "disk_intensive")}];
-  [v10 setRequiresNetwork:{objc_msgSend(v3, "requires_network_connectivity")}];
-  [v10 setRequiresInexpensiveNetworking:{objc_msgSend(v3, "requires_inexpensive_network")}];
-  if ([v3 expected_network_download_size_bytes])
+  [v10 setDarkWakeEligible:{objc_msgSend(activityCopy, "power_nap")}];
+  [v10 setBeforeDaysFirstActivity:{objc_msgSend(activityCopy, "app_refresh")}];
+  [v10 setRequiresDeviceInactivity:{objc_msgSend(activityCopy, "requires_screen_sleep")}];
+  [v10 setRequiresSignificantUserInactivity:{objc_msgSend(activityCopy, "requires_significant_user_inactivity")}];
+  [v10 setPreventDeviceSleep:{objc_msgSend(activityCopy, "prevents_device_sleep")}];
+  [v10 setRequiresPlugin:{objc_msgSend(activityCopy, "allow_battery") ^ 1}];
+  [v10 setTriggersRestart:{objc_msgSend(activityCopy, "may_reboot_device")}];
+  [v10 setMemoryIntensive:{objc_msgSend(activityCopy, "memory_intensive")}];
+  [v10 setCpuIntensive:{objc_msgSend(activityCopy, "cpu_intensive")}];
+  [v10 setDiskIntensive:{objc_msgSend(activityCopy, "disk_intensive")}];
+  [v10 setRequiresNetwork:{objc_msgSend(activityCopy, "requires_network_connectivity")}];
+  [v10 setRequiresInexpensiveNetworking:{objc_msgSend(activityCopy, "requires_inexpensive_network")}];
+  if ([activityCopy expected_network_download_size_bytes])
   {
-    [v10 setDownloadSize:{objc_msgSend(v3, "expected_network_download_size_bytes") / 1024}];
+    [v10 setDownloadSize:{objc_msgSend(activityCopy, "expected_network_download_size_bytes") / 1024}];
   }
 
-  if ([v3 expected_network_upload_size_bytes])
+  if ([activityCopy expected_network_upload_size_bytes])
   {
-    [v10 setUploadSize:{objc_msgSend(v3, "expected_network_upload_size_bytes") / 1024}];
+    [v10 setUploadSize:{objc_msgSend(activityCopy, "expected_network_upload_size_bytes") / 1024}];
   }
 
-  v17 = [v3 network_endpoint];
+  network_endpoint = [activityCopy network_endpoint];
 
-  if (v17)
+  if (network_endpoint)
   {
     v18 = objc_alloc_init(NSMutableDictionary);
-    v19 = [v3 network_endpoint];
-    v20 = [NWEndpoint endpointWithCEndpoint:v19];
+    network_endpoint2 = [activityCopy network_endpoint];
+    v20 = [NWEndpoint endpointWithCEndpoint:network_endpoint2];
     [v18 setObject:v20 forKeyedSubscript:kNWEndpointKey];
 
-    v21 = [v3 network_parameters];
+    network_parameters = [activityCopy network_parameters];
 
-    if (v21)
+    if (network_parameters)
     {
-      v22 = [v3 network_parameters];
-      v23 = [NWParameters parametersWithCParameters:v22];
+      network_parameters2 = [activityCopy network_parameters];
+      v23 = [NWParameters parametersWithCParameters:network_parameters2];
       [v18 setObject:v23 forKeyedSubscript:kNWParametersKey];
     }
 
     [v10 setUserInfo:v18];
   }
 
-  [v10 setUserRequestedBackupTask:{objc_msgSend(v3, "user_requested_backup_task")}];
-  if ([v3 communicates_with_paired_device])
+  [v10 setUserRequestedBackupTask:{objc_msgSend(activityCopy, "user_requested_backup_task")}];
+  if ([activityCopy communicates_with_paired_device])
   {
     [v10 setTargetDevice:1];
   }
 
-  v24 = [v3 desired_motion_state];
-  if (v24 == XPC_ACTIVITY_MOTION_STATE_STATIONARY)
+  desired_motion_state = [activityCopy desired_motion_state];
+  if (desired_motion_state == XPC_ACTIVITY_MOTION_STATE_STATIONARY)
   {
     v31 = &_DASMotionStateStationary;
   }
 
   else
   {
-    v25 = [v3 desired_motion_state];
-    if (v25 == XPC_ACTIVITY_MOTION_STATE_WALKING)
+    desired_motion_state2 = [activityCopy desired_motion_state];
+    if (desired_motion_state2 == XPC_ACTIVITY_MOTION_STATE_WALKING)
     {
       v31 = &_DASMotionStateWalking;
     }
 
     else
     {
-      v26 = [v3 desired_motion_state];
-      if (v26 == XPC_ACTIVITY_MOTION_STATE_RUNNING)
+      desired_motion_state3 = [activityCopy desired_motion_state];
+      if (desired_motion_state3 == XPC_ACTIVITY_MOTION_STATE_RUNNING)
       {
         v31 = &_DASMotionStateRunning;
       }
 
       else
       {
-        v27 = [v3 desired_motion_state];
-        if (v27 == XPC_ACTIVITY_MOTION_STATE_CYCLING)
+        desired_motion_state4 = [activityCopy desired_motion_state];
+        if (desired_motion_state4 == XPC_ACTIVITY_MOTION_STATE_CYCLING)
         {
           v31 = &_DASMotionStateCycling;
         }
 
         else
         {
-          v28 = [v3 desired_motion_state];
-          if (v28 == XPC_ACTIVITY_MOTION_STATE_AUTOMOTIVE)
+          desired_motion_state5 = [activityCopy desired_motion_state];
+          if (desired_motion_state5 == XPC_ACTIVITY_MOTION_STATE_AUTOMOTIVE)
           {
             v31 = &_DASMotionStateAutomotive;
           }
 
           else
           {
-            v29 = [v3 desired_motion_state];
-            if (v29 == XPC_ACTIVITY_MOTION_STATE_AUTOMOTIVE_MOVING)
+            desired_motion_state6 = [activityCopy desired_motion_state];
+            if (desired_motion_state6 == XPC_ACTIVITY_MOTION_STATE_AUTOMOTIVE_MOVING)
             {
               v31 = &_DASMotionStateAutomotiveMoving;
             }
 
             else
             {
-              v30 = [v3 desired_motion_state];
-              if (v30 != XPC_ACTIVITY_MOTION_STATE_AUTOMOTIVE_STATIONARY)
+              desired_motion_state7 = [activityCopy desired_motion_state];
+              if (desired_motion_state7 != XPC_ACTIVITY_MOTION_STATE_AUTOMOTIVE_STATIONARY)
               {
                 goto LABEL_39;
               }
@@ -185,27 +185,27 @@ LABEL_12:
 
   [v10 setMotionState:*v31];
 LABEL_39:
-  v32 = [v3 das_data];
+  das_data = [activityCopy das_data];
 
-  if (v32)
+  if (das_data)
   {
-    v33 = [v3 das_data];
-    [v10 setConstraintsWithXPCDictionary:v33];
+    das_data2 = [activityCopy das_data];
+    [v10 setConstraintsWithXPCDictionary:das_data2];
   }
 
   [v10 setHandlerQueue:qword_15498];
   [v10 setDelayedStart:1];
-  [v10 linkToCTSActivity:v3];
-  [v3 setDas_eligible:0];
-  [v3 setDas_started:0];
+  [v10 linkToCTSActivity:activityCopy];
+  [activityCopy setDas_eligible:0];
+  [activityCopy setDas_started:0];
 
   return v10;
 }
 
-- (void)linkToCTSActivity:(id)a3
+- (void)linkToCTSActivity:(id)activity
 {
-  v4 = a3;
-  objc_initWeak(&location, v4);
+  activityCopy = activity;
+  objc_initWeak(&location, activityCopy);
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_5EE4;

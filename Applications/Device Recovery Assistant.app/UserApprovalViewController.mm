@@ -1,23 +1,23 @@
 @interface UserApprovalViewController
-- (UserApprovalViewController)initWithUserApprovalOptions:(id)a3;
+- (UserApprovalViewController)initWithUserApprovalOptions:(id)options;
 - (UserApprovalViewControllerDelegate)delegate;
-- (void)_didTapCancelButton:(id)a3;
-- (void)_didTapContinueButton:(id)a3;
+- (void)_didTapCancelButton:(id)button;
+- (void)_didTapContinueButton:(id)button;
 - (void)viewDidLoad;
 @end
 
 @implementation UserApprovalViewController
 
-- (UserApprovalViewController)initWithUserApprovalOptions:(id)a3
+- (UserApprovalViewController)initWithUserApprovalOptions:(id)options
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:DeviceRecoveryResultsRequiredUserApprovalContinue];
-  v6 = [v4 objectForKeyedSubscript:DeviceRecoveryResultsRequiredUserApprovalIconSymbolName];
+  optionsCopy = options;
+  v5 = [optionsCopy objectForKeyedSubscript:DeviceRecoveryResultsRequiredUserApprovalContinue];
+  v6 = [optionsCopy objectForKeyedSubscript:DeviceRecoveryResultsRequiredUserApprovalIconSymbolName];
   v7 = DeviceRecoveryResultsRequiredUserApprovalTitle;
-  v8 = [v4 objectForKeyedSubscript:DeviceRecoveryResultsRequiredUserApprovalTitle];
+  v8 = [optionsCopy objectForKeyedSubscript:DeviceRecoveryResultsRequiredUserApprovalTitle];
   if (v8)
   {
-    v9 = [v4 objectForKeyedSubscript:v7];
+    v9 = [optionsCopy objectForKeyedSubscript:v7];
   }
 
   else
@@ -25,8 +25,8 @@
     v9 = @"<Missing title>";
   }
 
-  v10 = [v4 objectForKeyedSubscript:DeviceRecoveryResultsRequiredUserApprovalDescription];
-  v11 = [v4 objectForKeyedSubscript:DeviceRecoveryResultsRequiredUserApprovalBack];
+  v10 = [optionsCopy objectForKeyedSubscript:DeviceRecoveryResultsRequiredUserApprovalDescription];
+  v11 = [optionsCopy objectForKeyedSubscript:DeviceRecoveryResultsRequiredUserApprovalBack];
   v18.receiver = self;
   v18.super_class = UserApprovalViewController;
   v12 = [(UserApprovalViewController *)&v18 initWithTitle:v9 detailText:v10 symbolName:v6];
@@ -37,8 +37,8 @@
       v13 = +[OBBoldTrayButton boldButton];
       [v13 setTitle:v5 forState:0];
       [v13 addTarget:v12 action:"_didTapContinueButton:" forControlEvents:0x2000];
-      v14 = [(UserApprovalViewController *)v12 buttonTray];
-      [v14 addButton:v13];
+      buttonTray = [(UserApprovalViewController *)v12 buttonTray];
+      [buttonTray addButton:v13];
     }
 
     if (v11)
@@ -46,8 +46,8 @@
       v15 = +[OBLinkTrayButton linkButton];
       [v15 setTitle:v11 forState:0];
       [v15 addTarget:v12 action:"_didTapCancelButton:" forControlEvents:0x2000];
-      v16 = [(UserApprovalViewController *)v12 buttonTray];
-      [v16 addButton:v15];
+      buttonTray2 = [(UserApprovalViewController *)v12 buttonTray];
+      [buttonTray2 addButton:v15];
     }
   }
 
@@ -61,7 +61,7 @@
   [(UserApprovalViewController *)&v2 viewDidLoad];
 }
 
-- (void)_didTapContinueButton:(id)a3
+- (void)_didTapContinueButton:(id)button
 {
   v4 = sub_100012608();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -71,16 +71,16 @@
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%{public}s: User approved.", &v7, 0xCu);
   }
 
-  v5 = [(UserApprovalViewController *)self delegate];
+  delegate = [(UserApprovalViewController *)self delegate];
 
-  if (v5)
+  if (delegate)
   {
-    v6 = [(UserApprovalViewController *)self delegate];
-    [v6 userApprovalViewControllerDidContinue:self];
+    delegate2 = [(UserApprovalViewController *)self delegate];
+    [delegate2 userApprovalViewControllerDidContinue:self];
   }
 }
 
-- (void)_didTapCancelButton:(id)a3
+- (void)_didTapCancelButton:(id)button
 {
   v4 = sub_100012608();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -90,12 +90,12 @@
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%{public}s: User declined approval.", &v7, 0xCu);
   }
 
-  v5 = [(UserApprovalViewController *)self delegate];
+  delegate = [(UserApprovalViewController *)self delegate];
 
-  if (v5)
+  if (delegate)
   {
-    v6 = [(UserApprovalViewController *)self delegate];
-    [v6 userApprovalViewControllerDidCancel:self];
+    delegate2 = [(UserApprovalViewController *)self delegate];
+    [delegate2 userApprovalViewControllerDidCancel:self];
   }
 }
 

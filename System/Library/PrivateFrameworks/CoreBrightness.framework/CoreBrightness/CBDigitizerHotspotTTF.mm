@@ -1,6 +1,6 @@
 @interface CBDigitizerHotspotTTF
 - (CBDigitizerHotspotTTF)init;
-- (float)computeBackoff:(float)a3;
+- (float)computeBackoff:(float)backoff;
 - (id)description;
 - (void)dealloc;
 @end
@@ -9,52 +9,52 @@
 
 - (CBDigitizerHotspotTTF)init
 {
-  v6 = self;
+  selfCopy = self;
   v5 = a2;
   v4.receiver = self;
   v4.super_class = CBDigitizerHotspotTTF;
-  v6 = [(CBDigitizerHotspot *)&v4 init];
-  if (v6)
+  selfCopy = [(CBDigitizerHotspot *)&v4 init];
+  if (selfCopy)
   {
     v2 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v6->_buffer = v2;
-    v6->_touchTriggerBaseDelay = 5.0;
-    v6->_touchBufferPivot = 3;
-    v6->_touchBufferMaxCount = 7;
-    v6->_touchBufferWindowS = 10.0;
+    selfCopy->_buffer = v2;
+    selfCopy->_touchTriggerBaseDelay = 5.0;
+    selfCopy->_touchBufferPivot = 3;
+    selfCopy->_touchBufferMaxCount = 7;
+    selfCopy->_touchBufferWindowS = 10.0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)description
 {
-  v13 = self;
+  selfCopy = self;
   v12 = a2;
   v10 = MEMORY[0x1E696AEC0];
   v11.receiver = self;
   v11.super_class = CBDigitizerHotspotTTF;
   v5 = [(CBDigitizerHotspot *)&v11 description];
-  [(CBDigitizerHotspotTTF *)v13 touchBufferWindowS];
+  [(CBDigitizerHotspotTTF *)selfCopy touchBufferWindowS];
   v6 = v2;
-  v7 = [(NSMutableArray *)v13->_buffer count];
-  v8 = [(CBDigitizerHotspotTTF *)v13 touchBufferMaxCount];
-  v9 = [(CBDigitizerHotspotTTF *)v13 touchBufferPivot];
-  [(CBDigitizerHotspot *)v13 touchTriggerDelay];
-  return [v10 stringWithFormat:@"%@ window=%f count=%lu maxCount=%lu pivot=%lu  backoff=%.1f", v5, *&v6, v7, v8, v9, v3];
+  v7 = [(NSMutableArray *)selfCopy->_buffer count];
+  touchBufferMaxCount = [(CBDigitizerHotspotTTF *)selfCopy touchBufferMaxCount];
+  touchBufferPivot = [(CBDigitizerHotspotTTF *)selfCopy touchBufferPivot];
+  [(CBDigitizerHotspot *)selfCopy touchTriggerDelay];
+  return [v10 stringWithFormat:@"%@ window=%f count=%lu maxCount=%lu pivot=%lu  backoff=%.1f", v5, *&v6, v7, touchBufferMaxCount, touchBufferPivot, v3];
 }
 
 - (void)dealloc
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   *&v2 = MEMORY[0x1E69E5920](self->_buffer).n128_u64[0];
-  v3.receiver = v5;
+  v3.receiver = selfCopy;
   v3.super_class = CBDigitizerHotspotTTF;
   [(CBDigitizerHotspotTTF *)&v3 dealloc];
 }
 
-- (float)computeBackoff:(float)a3
+- (float)computeBackoff:(float)backoff
 {
   [(NSMutableArray *)self->_buffer removeObjectsAtIndexes:[(NSMutableArray *)self->_buffer indexesOfObjectsWithOptions:2 passingTest:?]];
   v6 = [(NSMutableArray *)self->_buffer count];

@@ -1,31 +1,31 @@
 @interface TSURLRequestFactory
-+ (id)_jsonBodyWithPostdata:(id)a3;
-+ (id)_urlEncodedBodyWithCarrierPostRawData:(id)a3;
-+ (id)_urlEncodedBodyWithPostdata:(id)a3;
-+ (id)requestWithType:(unint64_t)a3 URL:(id)a4 postdata:(id)a5;
++ (id)_jsonBodyWithPostdata:(id)postdata;
++ (id)_urlEncodedBodyWithCarrierPostRawData:(id)data;
++ (id)_urlEncodedBodyWithPostdata:(id)postdata;
++ (id)requestWithType:(unint64_t)type URL:(id)l postdata:(id)postdata;
 @end
 
 @implementation TSURLRequestFactory
 
-+ (id)requestWithType:(unint64_t)a3 URL:(id)a4 postdata:(id)a5
++ (id)requestWithType:(unint64_t)type URL:(id)l postdata:(id)postdata
 {
   v51 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
-  if (v7 && ([v7 absoluteString], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "length"), v9, v10))
+  lCopy = l;
+  postdataCopy = postdata;
+  if (lCopy && ([lCopy absoluteString], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "length"), v9, v10))
   {
-    if (v8)
+    if (postdataCopy)
     {
-      v11 = [v8 allKeys];
-      v12 = [v11 count];
+      allKeys = [postdataCopy allKeys];
+      v12 = [allKeys count];
 
       if (v12)
       {
-        if (a3 > 2)
+        if (type > 2)
         {
-          if (a3 == 3)
+          if (type == 3)
           {
-            v23 = [TSURLRequestFactory _urlEncodedBodyWithCarrierPostRawData:v8];
+            v23 = [TSURLRequestFactory _urlEncodedBodyWithCarrierPostRawData:postdataCopy];
 LABEL_26:
             v24 = v23;
             v25 = @"application/x-www-form-urlencoded";
@@ -37,10 +37,10 @@ LABEL_26:
             goto LABEL_34;
           }
 
-          if (a3 == 5)
+          if (type == 5)
           {
 LABEL_20:
-            v24 = [TSURLRequestFactory _jsonBodyWithPostdata:v8];
+            v24 = [TSURLRequestFactory _jsonBodyWithPostdata:postdataCopy];
             v25 = @"application/json";
             if (!v24)
             {
@@ -48,7 +48,7 @@ LABEL_20:
             }
 
 LABEL_27:
-            v21 = [MEMORY[0x277CCAB70] requestWithURL:v7];
+            v21 = [MEMORY[0x277CCAB70] requestWithURL:lCopy];
             [v21 _setNonAppInitiated:1];
             [v21 setValue:v25 forHTTPHeaderField:@"content-type"];
             [v21 setHTTPMethod:@"POST"];
@@ -59,7 +59,7 @@ LABEL_27:
             v35 = _TSLogDomain();
             if (os_log_type_enabled(v35, OS_LOG_TYPE_DEBUG))
             {
-              [TSURLRequestFactory requestWithType:v7 URL:v21 postdata:?];
+              [TSURLRequestFactory requestWithType:lCopy URL:v21 postdata:?];
             }
 
             v36 = _TSLogDomain();
@@ -77,7 +77,7 @@ LABEL_27:
             goto LABEL_37;
           }
 
-          if (a3 != 6)
+          if (type != 6)
           {
 LABEL_34:
             v24 = _TSLogDomain();
@@ -95,7 +95,7 @@ LABEL_37:
 
         else
         {
-          if (!a3)
+          if (!type)
           {
             v26 = _TSLogDomain();
             if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
@@ -106,9 +106,9 @@ LABEL_37:
             goto LABEL_34;
           }
 
-          if (a3 != 1)
+          if (type != 1)
           {
-            if (a3 != 2)
+            if (type != 2)
             {
               goto LABEL_34;
             }
@@ -117,7 +117,7 @@ LABEL_37:
           }
         }
 
-        v23 = [TSURLRequestFactory _urlEncodedBodyWithPostdata:v8];
+        v23 = [TSURLRequestFactory _urlEncodedBodyWithPostdata:postdataCopy];
         goto LABEL_26;
       }
     }
@@ -126,13 +126,13 @@ LABEL_37:
     if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v48 = v7;
+      v48 = lCopy;
       v49 = 2080;
       v50 = "+[TSURLRequestFactory requestWithType:URL:postdata:]";
       _os_log_impl(&dword_262AA8000, v22, OS_LOG_TYPE_INFO, "[I] No postdata for: %@ @%s", buf, 0x16u);
     }
 
-    v21 = [MEMORY[0x277CCAB70] requestWithURL:v7];
+    v21 = [MEMORY[0x277CCAB70] requestWithURL:lCopy];
     [v21 _setNonAppInitiated:1];
   }
 
@@ -154,23 +154,23 @@ LABEL_38:
   return v21;
 }
 
-+ (id)_urlEncodedBodyWithPostdata:(id)a3
++ (id)_urlEncodedBodyWithPostdata:(id)postdata
 {
   v3 = MEMORY[0x277CBEB18];
-  v4 = a3;
-  v5 = [v3 array];
+  postdataCopy = postdata;
+  array = [v3 array];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __51__TSURLRequestFactory__urlEncodedBodyWithPostdata___block_invoke;
   v11[3] = &unk_279B451A8;
-  v12 = v5;
-  v6 = v5;
-  [v4 enumerateKeysAndObjectsUsingBlock:v11];
+  v12 = array;
+  v6 = array;
+  [postdataCopy enumerateKeysAndObjectsUsingBlock:v11];
 
   v7 = objc_alloc_init(MEMORY[0x277CCACE0]);
   [v7 setQueryItems:v6];
-  v8 = [v7 query];
-  v9 = [v8 dataUsingEncoding:1];
+  query = [v7 query];
+  v9 = [query dataUsingEncoding:1];
 
   return v9;
 }
@@ -185,10 +185,10 @@ void __51__TSURLRequestFactory__urlEncodedBodyWithPostdata___block_invoke(uint64
   [*(a1 + 32) addObject:v8];
 }
 
-+ (id)_urlEncodedBodyWithCarrierPostRawData:(id)a3
++ (id)_urlEncodedBodyWithCarrierPostRawData:(id)data
 {
   v4 = *MEMORY[0x277CF96A0];
-  v5 = [a3 objectForKeyedSubscript:v4];
+  v5 = [data objectForKeyedSubscript:v4];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -204,10 +204,10 @@ void __51__TSURLRequestFactory__urlEncodedBodyWithPostdata___block_invoke(uint64
   return v7;
 }
 
-+ (id)_jsonBodyWithPostdata:(id)a3
++ (id)_jsonBodyWithPostdata:(id)postdata
 {
   v7 = 0;
-  v3 = [MEMORY[0x277CCAAA0] dataWithJSONObject:a3 options:0 error:&v7];
+  v3 = [MEMORY[0x277CCAAA0] dataWithJSONObject:postdata options:0 error:&v7];
   v4 = v7;
   if (v4)
   {

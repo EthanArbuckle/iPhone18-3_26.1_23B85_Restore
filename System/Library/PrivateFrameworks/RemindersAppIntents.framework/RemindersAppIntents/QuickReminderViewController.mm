@@ -1,12 +1,12 @@
 @interface QuickReminderViewController
-- (_TtC19RemindersAppIntents27QuickReminderViewController)initWithCoder:(id)a3;
-- (_TtC19RemindersAppIntents27QuickReminderViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC19RemindersAppIntents27QuickReminderViewController)initWithCoder:(id)coder;
+- (_TtC19RemindersAppIntents27QuickReminderViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
 @end
 
 @implementation QuickReminderViewController
 
-- (_TtC19RemindersAppIntents27QuickReminderViewController)initWithCoder:(id)a3
+- (_TtC19RemindersAppIntents27QuickReminderViewController)initWithCoder:(id)coder
 {
   v3 = (&self->super.super.super.isa + OBJC_IVAR____TtC19RemindersAppIntents27QuickReminderViewController_cancelHandler);
   *v3 = 0;
@@ -26,11 +26,11 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   QuickReminderViewController.viewDidLoad()();
 }
 
-- (_TtC19RemindersAppIntents27QuickReminderViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC19RemindersAppIntents27QuickReminderViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -4,13 +4,13 @@
 - (double)_calculateAverageSample;
 - (int64_t)_computedLightLevel;
 - (int64_t)ambientLightLevel;
-- (void)_addSample:(double)a3;
-- (void)_handleIOHIDEvent:(__IOHIDEvent *)a3;
+- (void)_addSample:(double)sample;
+- (void)_handleIOHIDEvent:(__IOHIDEvent *)event;
 - (void)_scheduleLightLevelUpdate;
-- (void)_setMonitoring:(BOOL)a3;
-- (void)initializeWithLightLevel:(int64_t)a3;
-- (void)setAmbientLightLevel:(int64_t)a3;
-- (void)setClient:(__IOHIDEventSystemClient *)a3;
+- (void)_setMonitoring:(BOOL)monitoring;
+- (void)initializeWithLightLevel:(int64_t)level;
+- (void)setAmbientLightLevel:(int64_t)level;
+- (void)setClient:(__IOHIDEventSystemClient *)client;
 @end
 
 @implementation MapsAmbientLightMonitor
@@ -42,21 +42,21 @@
 
 - (void)_scheduleLightLevelUpdate
 {
-  v3 = [(MapsAmbientLightMonitor *)self ambientLightLevel];
-  v4 = [(MapsAmbientLightMonitor *)self _computedLightLevel];
-  if (v3 == v4)
+  ambientLightLevel = [(MapsAmbientLightMonitor *)self ambientLightLevel];
+  _computedLightLevel = [(MapsAmbientLightMonitor *)self _computedLightLevel];
+  if (ambientLightLevel == _computedLightLevel)
   {
     [(MapsAmbientLightMonitor *)self setLightUpdateTimer:0];
 
     [(MapsAmbientLightMonitor *)self setDarkUpdateTimer:0];
   }
 
-  else if (v4 == 1)
+  else if (_computedLightLevel == 1)
   {
     [(MapsAmbientLightMonitor *)self setDarkUpdateTimer:0];
-    v11 = [(MapsAmbientLightMonitor *)self lightUpdateTimer];
+    lightUpdateTimer = [(MapsAmbientLightMonitor *)self lightUpdateTimer];
 
-    if (!v11)
+    if (!lightUpdateTimer)
     {
       [(MapsAmbientLightMonitor *)self isBeforeSolarTransit];
       GEOConfigGetDouble();
@@ -84,12 +84,12 @@
     }
   }
 
-  else if (v4 == 2)
+  else if (_computedLightLevel == 2)
   {
     [(MapsAmbientLightMonitor *)self setLightUpdateTimer:0];
-    v5 = [(MapsAmbientLightMonitor *)self darkUpdateTimer];
+    darkUpdateTimer = [(MapsAmbientLightMonitor *)self darkUpdateTimer];
 
-    if (!v5)
+    if (!darkUpdateTimer)
     {
       [(MapsAmbientLightMonitor *)self isBeforeSolarTransit];
       GEOConfigGetDouble();
@@ -118,7 +118,7 @@
   }
 }
 
-- (void)_handleIOHIDEvent:(__IOHIDEvent *)a3
+- (void)_handleIOHIDEvent:(__IOHIDEvent *)event
 {
   IOHIDEventGetFloatValue();
   [(MapsAmbientLightMonitor *)self _addSample:?];
@@ -146,8 +146,8 @@
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v3 = [(MapsAmbientLightMonitor *)self lightLevels];
-  v4 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  lightLevels = [(MapsAmbientLightMonitor *)self lightLevels];
+  v4 = [lightLevels countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v4)
   {
     v5 = v4;
@@ -159,14 +159,14 @@
       {
         if (*v15 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(lightLevels);
         }
 
         [*(*(&v14 + 1) + 8 * i) doubleValue];
         v7 = v9 + v7;
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v5 = [lightLevels countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v5);
@@ -177,40 +177,40 @@
     v7 = 0.0;
   }
 
-  v10 = [(MapsAmbientLightMonitor *)self lightLevels];
+  lightLevels2 = [(MapsAmbientLightMonitor *)self lightLevels];
   v11 = 1.0;
-  if ([v10 count] >= 2)
+  if ([lightLevels2 count] >= 2)
   {
-    v12 = [(MapsAmbientLightMonitor *)self lightLevels];
-    v11 = [v12 count];
+    lightLevels3 = [(MapsAmbientLightMonitor *)self lightLevels];
+    v11 = [lightLevels3 count];
   }
 
   return v7 / v11;
 }
 
-- (void)_addSample:(double)a3
+- (void)_addSample:(double)sample
 {
-  v5 = [(MapsAmbientLightMonitor *)self lightLevels];
-  v4 = [NSNumber numberWithDouble:a3];
-  [v5 push:v4];
+  lightLevels = [(MapsAmbientLightMonitor *)self lightLevels];
+  v4 = [NSNumber numberWithDouble:sample];
+  [lightLevels push:v4];
 }
 
-- (void)initializeWithLightLevel:(int64_t)a3
+- (void)initializeWithLightLevel:(int64_t)level
 {
   v5 = sub_100014EFC();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    if (a3 >= 3)
+    if (level >= 3)
     {
-      v6 = [NSString stringWithFormat:@"<Unknown: %ld>", a3];
+      level = [NSString stringWithFormat:@"<Unknown: %ld>", level];
     }
 
     else
     {
-      v6 = *(&off_101622E48 + a3);
+      level = *(&off_101622E48 + level);
     }
 
-    v7 = v6;
+    v7 = level;
     v8 = *(&self->_isBeforeSolarTransit + 1);
     if (v8 >= 3)
     {
@@ -229,20 +229,20 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Pre-populating light level to %@ from %@", buf, 0x16u);
   }
 
-  *(&self->_isBeforeSolarTransit + 1) = a3;
+  *(&self->_isBeforeSolarTransit + 1) = level;
 }
 
-- (void)setClient:(__IOHIDEventSystemClient *)a3
+- (void)setClient:(__IOHIDEventSystemClient *)client
 {
   v4 = *(&self->_ambientLightLevel + 1);
-  if (v4 != a3)
+  if (v4 != client)
   {
     if (v4)
     {
       CFRelease(v4);
     }
 
-    *(&self->_ambientLightLevel + 1) = a3;
+    *(&self->_ambientLightLevel + 1) = client;
   }
 }
 
@@ -280,9 +280,9 @@
   return result;
 }
 
-- (void)setAmbientLightLevel:(int64_t)a3
+- (void)setAmbientLightLevel:(int64_t)level
 {
-  if (*(&self->_isBeforeSolarTransit + 1) != a3)
+  if (*(&self->_isBeforeSolarTransit + 1) != level)
   {
     v5 = sub_100014EFC();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -299,27 +299,27 @@
       }
 
       v8 = v7;
-      if (a3 >= 3)
+      if (level >= 3)
       {
-        v9 = [NSString stringWithFormat:@"<Unknown: %ld>", a3];
+        level = [NSString stringWithFormat:@"<Unknown: %ld>", level];
       }
 
       else
       {
-        v9 = *(&off_101622E48 + a3);
+        level = *(&off_101622E48 + level);
       }
 
       [(MapsAmbientLightMonitor *)self _calculateAverageSample];
       *buf = 138412802;
       v12 = v8;
       v13 = 2112;
-      v14 = v9;
+      v14 = level;
       v15 = 2048;
       v16 = v10;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Changing ambient light level from %@ to %@ (average: %f)", buf, 0x20u);
     }
 
-    *(&self->_isBeforeSolarTransit + 1) = a3;
+    *(&self->_isBeforeSolarTransit + 1) = level;
     [(MapsBaseLightMonitor *)self _notifyDidChange];
   }
 }
@@ -331,18 +331,18 @@
 
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v4 integerValue];
+    integerValue = [v4 integerValue];
     v6 = sub_100014EFC();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
-      if (v5 >= 3)
+      if (integerValue >= 3)
       {
-        v7 = [NSString stringWithFormat:@"<Unknown: %ld>", v5];
+        v7 = [NSString stringWithFormat:@"<Unknown: %ld>", integerValue];
       }
 
       else
       {
-        v7 = *(&off_101622E48 + v5);
+        v7 = *(&off_101622E48 + integerValue);
       }
 
       *buf = 138412290;
@@ -353,24 +353,24 @@
 
   else
   {
-    v5 = *(&self->_isBeforeSolarTransit + 1);
+    integerValue = *(&self->_isBeforeSolarTransit + 1);
   }
 
-  return v5;
+  return integerValue;
 }
 
-- (void)_setMonitoring:(BOOL)a3
+- (void)_setMonitoring:(BOOL)monitoring
 {
-  v3 = a3;
-  v5 = [(MapsBaseLightMonitor *)self _isMonitoring];
+  monitoringCopy = monitoring;
+  _isMonitoring = [(MapsBaseLightMonitor *)self _isMonitoring];
   v6.receiver = self;
   v6.super_class = MapsAmbientLightMonitor;
-  [(MapsBaseLightMonitor *)&v6 _setMonitoring:v3];
-  if (v5 != v3)
+  [(MapsBaseLightMonitor *)&v6 _setMonitoring:monitoringCopy];
+  if (_isMonitoring != monitoringCopy)
   {
     [(MapsAmbientLightMonitor *)self client];
     CFRunLoopGetMain();
-    if (v3)
+    if (monitoringCopy)
     {
       IOHIDEventSystemClientScheduleWithRunLoop();
       [(MapsAmbientLightMonitor *)self client];

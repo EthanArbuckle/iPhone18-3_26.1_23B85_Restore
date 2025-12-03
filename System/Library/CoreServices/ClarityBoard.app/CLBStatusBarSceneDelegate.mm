@@ -1,33 +1,33 @@
 @interface CLBStatusBarSceneDelegate
-- (BOOL)handleEvent:(id)a3;
+- (BOOL)handleEvent:(id)event;
 - (CLBStatusBarSceneDelegate)init;
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
-- (void)setWindow:(id)a3;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
+- (void)setWindow:(id)window;
 @end
 
 @implementation CLBStatusBarSceneDelegate
 
-- (void)setWindow:(id)a3
+- (void)setWindow:(id)window
 {
   v4 = *(&self->super.isa + OBJC_IVAR___CLBStatusBarSceneDelegate_window);
-  *(&self->super.isa + OBJC_IVAR___CLBStatusBarSceneDelegate_window) = a3;
-  v3 = a3;
+  *(&self->super.isa + OBJC_IVAR___CLBStatusBarSceneDelegate_window) = window;
+  windowCopy = window;
 }
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
+  sceneCopy = scene;
+  sessionCopy = session;
+  optionsCopy = options;
+  selfCopy = self;
   sub_1000AEEE0();
 }
 
-- (BOOL)handleEvent:(id)a3
+- (BOOL)handleEvent:(id)event
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = sub_1000AB99C(v4);
+  eventCopy = event;
+  selfCopy = self;
+  LOBYTE(self) = sub_1000AB99C(eventCopy);
 
   return self & 1;
 }

@@ -1,18 +1,18 @@
 @interface PGMoodSourceScore
-- (id)negativeVectorWithGraph:(id)a3;
-- (id)positiveVectorWithGraph:(id)a3;
+- (id)negativeVectorWithGraph:(id)graph;
+- (id)positiveVectorWithGraph:(id)graph;
 @end
 
 @implementation PGMoodSourceScore
 
-- (id)negativeVectorWithGraph:(id)a3
+- (id)negativeVectorWithGraph:(id)graph
 {
   v3 = objc_opt_new();
 
   return v3;
 }
 
-- (id)positiveVectorWithGraph:(id)a3
+- (id)positiveVectorWithGraph:(id)graph
 {
   v3 = [[PGMoodVector alloc] initWithArray:&unk_284485FE8];
 

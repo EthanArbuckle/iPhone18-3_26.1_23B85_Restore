@@ -1,27 +1,27 @@
 @interface PGCurator_PHAsset
-- (id)bestAssetsForFeeder:(id)a3 options:(id)a4 debugInfo:(id)a5 progressBlock:(id)a6;
-- (id)newSemanticalDeduperWithOptions:(id)a3;
-- (void)addMoviesToAssets:(id)a3 fromFeeder:(id)a4 maximumNumberOfAssets:(unint64_t)a5 debugInfo:(id)a6;
-- (void)lastPassToCompleteItems:(id)a3 fromFeeder:(id)a4 options:(id)a5 maximumNumberOfItems:(unint64_t)a6 debugInfo:(id)a7;
+- (id)bestAssetsForFeeder:(id)feeder options:(id)options debugInfo:(id)info progressBlock:(id)block;
+- (id)newSemanticalDeduperWithOptions:(id)options;
+- (void)addMoviesToAssets:(id)assets fromFeeder:(id)feeder maximumNumberOfAssets:(unint64_t)ofAssets debugInfo:(id)info;
+- (void)lastPassToCompleteItems:(id)items fromFeeder:(id)feeder options:(id)options maximumNumberOfItems:(unint64_t)ofItems debugInfo:(id)info;
 @end
 
 @implementation PGCurator_PHAsset
 
-- (void)addMoviesToAssets:(id)a3 fromFeeder:(id)a4 maximumNumberOfAssets:(unint64_t)a5 debugInfo:(id)a6
+- (void)addMoviesToAssets:(id)assets fromFeeder:(id)feeder maximumNumberOfAssets:(unint64_t)ofAssets debugInfo:(id)info
 {
   v69 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  assetsCopy = assets;
+  feederCopy = feeder;
+  infoCopy = info;
   v57 = 0u;
   v58 = 0u;
   v59 = 0u;
   v60 = 0u;
-  v13 = [v10 countByEnumeratingWithState:&v57 objects:v68 count:16];
+  v13 = [assetsCopy countByEnumeratingWithState:&v57 objects:v68 count:16];
   if (v13)
   {
     v14 = v13;
-    v15 = v11;
+    v15 = feederCopy;
     v16 = 0;
     v17 = *v58;
     do
@@ -30,7 +30,7 @@
       {
         if (*v58 != v17)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(assetsCopy);
         }
 
         if ([*(*(&v57 + 1) + 8 * i) mediaType] == 2)
@@ -39,12 +39,12 @@
         }
       }
 
-      v14 = [v10 countByEnumeratingWithState:&v57 objects:v68 count:16];
+      v14 = [assetsCopy countByEnumeratingWithState:&v57 objects:v68 count:16];
     }
 
     while (v14);
     v19 = v16;
-    v11 = v15;
+    feederCopy = v15;
   }
 
   else
@@ -52,9 +52,9 @@
     v19 = 0.0;
   }
 
-  v20 = [v10 count];
-  v21 = (a5 - v20) & ~((a5 - v20) >> 63);
-  v22 = -(v19 - a5 * 0.1);
+  v20 = [assetsCopy count];
+  v21 = (ofAssets - v20) & ~((ofAssets - v20) >> 63);
+  v22 = -(v19 - ofAssets * 0.1);
   v23 = v22 & ~(v22 >> 63);
   if (v23 <= v21)
   {
@@ -68,10 +68,10 @@
 
   if (v24)
   {
-    v52 = self;
-    v25 = [MEMORY[0x277D267F0] sharedMediaAnalyzer];
-    v26 = [v11 assetCollection];
-    v27 = [v25 curateMovieAssetsForCollection:v26 withAlreadyCuratedAssets:v10 andDesiredCount:v24 allowOnDemand:0];
+    selfCopy = self;
+    mEMORY[0x277D267F0] = [MEMORY[0x277D267F0] sharedMediaAnalyzer];
+    assetCollection = [feederCopy assetCollection];
+    v27 = [mEMORY[0x277D267F0] curateMovieAssetsForCollection:assetCollection withAlreadyCuratedAssets:assetsCopy andDesiredCount:v24 allowOnDemand:0];
 
     v28 = *MEMORY[0x277D3C778];
     v29 = [MEMORY[0x277CCAC30] predicateWithFormat:@"curationScore > %f", *MEMORY[0x277D3C778]];
@@ -79,9 +79,9 @@
 
     if (v30 && [v30 count])
     {
-      [v12 setAgent:@"PGManager"];
-      [v12 setStage:@"Last Pass to Add Movies"];
-      v50 = v25;
+      [infoCopy setAgent:@"PGManager"];
+      [infoCopy setStage:@"Last Pass to Add Movies"];
+      v50 = mEMORY[0x277D267F0];
       if ([v30 count] > v24)
       {
         v31 = [v30 subarrayWithRange:{0, v24}];
@@ -90,9 +90,9 @@
       }
 
       v32 = MEMORY[0x277CBEB98];
-      v51 = v11;
-      v33 = [v11 allItems];
-      v34 = [v32 setWithArray:v33];
+      v51 = feederCopy;
+      allItems = [feederCopy allItems];
+      v34 = [v32 setWithArray:allItems];
 
       v55 = 0u;
       v56 = 0u;
@@ -120,7 +120,7 @@
               [v39 clsContentScore];
               if (v41 > v28)
               {
-                [v10 addObject:v40];
+                [assetsCopy addObject:v40];
               }
             }
           }
@@ -131,8 +131,8 @@
         while (v36);
       }
 
-      v42 = [(PGCurator *)v52 loggingConnection];
-      if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
+      loggingConnection = [(PGCurator *)selfCopy loggingConnection];
+      if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_DEFAULT))
       {
         v43 = [v30 count];
         *buf = 134218496;
@@ -141,54 +141,54 @@
         v64 = v23;
         v65 = 2048;
         v66 = v43;
-        _os_log_impl(&dword_22F0FC000, v42, OS_LOG_TYPE_DEFAULT, "Curated Assets: %lu slots left, minimum number of videos to add %lu, got %lu extra movie assets from MediaAnalysis", buf, 0x20u);
+        _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_DEFAULT, "Curated Assets: %lu slots left, minimum number of videos to add %lu, got %lu extra movie assets from MediaAnalysis", buf, 0x20u);
       }
 
-      if (v12)
+      if (infoCopy)
       {
         v44 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v30, "count")}];
-        v45 = [v44 stringValue];
-        v46 = [@"Adding " stringByAppendingString:v45];
+        stringValue = [v44 stringValue];
+        v46 = [@"Adding " stringByAppendingString:stringValue];
         v47 = [v46 stringByAppendingString:@" movies curated by MediaAnalyzer"];
 
         v48 = [MEMORY[0x277CBEB98] setWithArray:v30];
-        [v12 setState:3 ofItems:v48 withReason:v47];
+        [infoCopy setState:3 ofItems:v48 withReason:v47];
       }
 
-      v25 = v50;
-      v11 = v51;
+      mEMORY[0x277D267F0] = v50;
+      feederCopy = v51;
     }
   }
 
   v49 = *MEMORY[0x277D85DE8];
 }
 
-- (void)lastPassToCompleteItems:(id)a3 fromFeeder:(id)a4 options:(id)a5 maximumNumberOfItems:(unint64_t)a6 debugInfo:(id)a7
+- (void)lastPassToCompleteItems:(id)items fromFeeder:(id)feeder options:(id)options maximumNumberOfItems:(unint64_t)ofItems debugInfo:(id)info
 {
-  v14 = a3;
-  v12 = a4;
-  v13 = a7;
-  if ([a5 lastPassMovieAdditionIsEnabled])
+  itemsCopy = items;
+  feederCopy = feeder;
+  infoCopy = info;
+  if ([options lastPassMovieAdditionIsEnabled])
   {
-    [(PGCurator_PHAsset *)self addMoviesToAssets:v14 fromFeeder:v12 maximumNumberOfAssets:a6 debugInfo:v13];
+    [(PGCurator_PHAsset *)self addMoviesToAssets:itemsCopy fromFeeder:feederCopy maximumNumberOfAssets:ofItems debugInfo:infoCopy];
   }
 }
 
-- (id)newSemanticalDeduperWithOptions:(id)a3
+- (id)newSemanticalDeduperWithOptions:(id)options
 {
-  v3 = a3;
+  optionsCopy = options;
   v4 = objc_alloc_init(PGSemanticalDeduper_PHAsset);
-  v5 = [v3 semanticalDedupingUsesAdaptiveSimilarStacking];
+  semanticalDedupingUsesAdaptiveSimilarStacking = [optionsCopy semanticalDedupingUsesAdaptiveSimilarStacking];
 
-  [(PGSemanticalDeduper *)v4 setUsesAdaptiveSimilarStacking:v5];
+  [(PGSemanticalDeduper *)v4 setUsesAdaptiveSimilarStacking:semanticalDedupingUsesAdaptiveSimilarStacking];
   return v4;
 }
 
-- (id)bestAssetsForFeeder:(id)a3 options:(id)a4 debugInfo:(id)a5 progressBlock:(id)a6
+- (id)bestAssetsForFeeder:(id)feeder options:(id)options debugInfo:(id)info progressBlock:(id)block
 {
   v8.receiver = self;
   v8.super_class = PGCurator_PHAsset;
-  v6 = [(PGCurator *)&v8 bestItemsForFeeder:a3 options:a4 debugInfo:a5 progressBlock:a6];
+  v6 = [(PGCurator *)&v8 bestItemsForFeeder:feeder options:options debugInfo:info progressBlock:block];
 
   return v6;
 }

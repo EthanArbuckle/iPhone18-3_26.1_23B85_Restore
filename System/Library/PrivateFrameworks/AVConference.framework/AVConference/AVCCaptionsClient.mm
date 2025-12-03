@@ -1,34 +1,34 @@
 @interface AVCCaptionsClient
-- (AVCCaptionsClient)initWithDelegate:(id)a3 streamToken:(int64_t)a4;
-- (AVCCaptionsClient)initWithDelegate:(id)a3 translatorIdentifier:(id)a4;
-- (AVCCaptionsClient)initWithDelegate:(id)a3 translatorIdentifier:(id)a4 direction:(int)a5 reportingSamplingUUID:(id)a6;
+- (AVCCaptionsClient)initWithDelegate:(id)delegate streamToken:(int64_t)token;
+- (AVCCaptionsClient)initWithDelegate:(id)delegate translatorIdentifier:(id)identifier;
+- (AVCCaptionsClient)initWithDelegate:(id)delegate translatorIdentifier:(id)identifier direction:(int)direction reportingSamplingUUID:(id)d;
 - (BOOL)captionsEnabled;
 - (BOOL)captionsSupported;
-- (BOOL)connect:(unsigned int)a3;
-- (id)captionsLanguageDetectorResultsWithInternalResults:(id)a3;
-- (id)captionsResultsWithInternalResults:(id)a3;
-- (void)configureCaptions:(id)a3;
+- (BOOL)connect:(unsigned int)connect;
+- (id)captionsLanguageDetectorResultsWithInternalResults:(id)results;
+- (id)captionsResultsWithInternalResults:(id)results;
+- (void)configureCaptions:(id)captions;
 - (void)dealloc;
 - (void)deregisterBlocksForNotifications;
-- (void)didChangeSourceLocale:(id)a3;
-- (void)didConfigureCaptionsWithError:(id)a3;
-- (void)didDetectGibberish:(BOOL)a3;
-- (void)didDisableCaptions:(BOOL)a3 error:(id)a4;
-- (void)didEnableCaptions:(BOOL)a3 error:(id)a4;
-- (void)didProduceLanguageHypothesis:(id)a3;
-- (void)didStartCaptioningWithReason:(unsigned __int8)a3;
-- (void)didStopCaptioningWithReason:(unsigned __int8)a3;
-- (void)didStopLanguageDetectorWithError:(id)a3;
-- (void)didUpdateCaptions:(id)a3 isRemote:(BOOL)a4;
+- (void)didChangeSourceLocale:(id)locale;
+- (void)didConfigureCaptionsWithError:(id)error;
+- (void)didDetectGibberish:(BOOL)gibberish;
+- (void)didDisableCaptions:(BOOL)captions error:(id)error;
+- (void)didEnableCaptions:(BOOL)captions error:(id)error;
+- (void)didProduceLanguageHypothesis:(id)hypothesis;
+- (void)didStartCaptioningWithReason:(unsigned __int8)reason;
+- (void)didStopCaptioningWithReason:(unsigned __int8)reason;
+- (void)didStopLanguageDetectorWithError:(id)error;
+- (void)didUpdateCaptions:(id)captions isRemote:(BOOL)remote;
 - (void)disconnect;
-- (void)enableCaptions:(BOOL)a3;
+- (void)enableCaptions:(BOOL)captions;
 - (void)registerBlocksForNotifications;
-- (void)setSourceLocale:(id)a3;
+- (void)setSourceLocale:(id)locale;
 @end
 
 @implementation AVCCaptionsClient
 
-- (AVCCaptionsClient)initWithDelegate:(id)a3 streamToken:(int64_t)a4
+- (AVCCaptionsClient)initWithDelegate:(id)delegate streamToken:(int64_t)token
 {
   v38 = *MEMORY[0x1E69E9840];
   VRTraceReset();
@@ -46,7 +46,7 @@
       v30 = 1024;
       v31 = 59;
       v32 = 2048;
-      v33 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1DB56E000, v8, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d @:@ AVCCaptionsClient-init (%p)", buf, 0x26u);
     }
   }
@@ -57,7 +57,7 @@
   v10 = v9;
   if (v9)
   {
-    v9->_streamToken = a4;
+    v9->_streamToken = token;
     if (objc_opt_class() == v9)
     {
       if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -73,7 +73,7 @@
           v30 = 1024;
           v31 = 65;
           v32 = 1024;
-          LODWORD(v33) = a4;
+          LODWORD(selfCopy) = token;
           v14 = " [%s] %s:%d Setup for streamToken=%u";
           v15 = v13;
           v16 = 34;
@@ -108,11 +108,11 @@ LABEL_15:
           v30 = 1024;
           v31 = 65;
           v32 = 2112;
-          v33 = v11;
+          selfCopy = v11;
           v34 = 2048;
           v35 = v10;
           v36 = 1024;
-          v37 = a4;
+          tokenCopy2 = token;
           v14 = " [%s] %s:%d %@(%p) Setup for streamToken=%u";
           v15 = v18;
           v16 = 54;
@@ -121,7 +121,7 @@ LABEL_15:
       }
     }
 
-    if ([(AVCCaptionsClient *)v10 setUpInternalStateWithDelegate:a3 clientType:1])
+    if ([(AVCCaptionsClient *)v10 setUpInternalStateWithDelegate:delegate clientType:1])
     {
       MEMORY[0x1E128B580](&dword_1DB56E000, "@:@ AVCCaptionsClient-init");
       if (VRTraceGetErrorLogLevelForModule() >= 6)
@@ -137,9 +137,9 @@ LABEL_15:
           v30 = 1024;
           v31 = 78;
           v32 = 2048;
-          v33 = v10;
+          selfCopy = v10;
           v34 = 1024;
-          LODWORD(v35) = a4;
+          LODWORD(v35) = token;
           _os_log_impl(&dword_1DB56E000, v20, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d @:@ AVCCaptionsClient-init (%p) Succeeded with streamToken=%u", buf, 0x2Cu);
         }
       }
@@ -184,11 +184,11 @@ LABEL_15:
             v30 = 1024;
             v31 = 72;
             v32 = 2112;
-            v33 = v21;
+            selfCopy = v21;
             v34 = 2048;
             v35 = v10;
             v36 = 1024;
-            v37 = a4;
+            tokenCopy2 = token;
             _os_log_error_impl(&dword_1DB56E000, v23, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) AVCCaptionsClient-init FAILED for streamToken=%u", buf, 0x36u);
           }
         }
@@ -201,14 +201,14 @@ LABEL_15:
   return v10;
 }
 
-- (AVCCaptionsClient)initWithDelegate:(id)a3 translatorIdentifier:(id)a4
+- (AVCCaptionsClient)initWithDelegate:(id)delegate translatorIdentifier:(id)identifier
 {
-  v7 = [MEMORY[0x1E696AFB0] UUID];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
 
-  return [(AVCCaptionsClient *)self initWithDelegate:a3 translatorIdentifier:a4 direction:0 reportingSamplingUUID:v7];
+  return [(AVCCaptionsClient *)self initWithDelegate:delegate translatorIdentifier:identifier direction:0 reportingSamplingUUID:uUID];
 }
 
-- (AVCCaptionsClient)initWithDelegate:(id)a3 translatorIdentifier:(id)a4 direction:(int)a5 reportingSamplingUUID:(id)a6
+- (AVCCaptionsClient)initWithDelegate:(id)delegate translatorIdentifier:(id)identifier direction:(int)direction reportingSamplingUUID:(id)d
 {
   v44 = *MEMORY[0x1E69E9840];
   VRTraceReset();
@@ -226,7 +226,7 @@ LABEL_15:
       v34 = 1024;
       v35 = 92;
       v36 = 2048;
-      v37 = self;
+      identifierCopy = self;
       _os_log_impl(&dword_1DB56E000, v12, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d @:@ AVCCaptionsClient-init (%p)", buf, 0x26u);
     }
   }
@@ -241,21 +241,21 @@ LABEL_15:
     goto LABEL_25;
   }
 
-  if (!a3)
+  if (!delegate)
   {
     [AVCCaptionsClient initWithDelegate:v13 translatorIdentifier:? direction:? reportingSamplingUUID:?];
     goto LABEL_25;
   }
 
-  if (!a4)
+  if (!identifier)
   {
     [AVCCaptionsClient initWithDelegate:v13 translatorIdentifier:? direction:? reportingSamplingUUID:?];
     goto LABEL_25;
   }
 
-  v13->_translatorIdentifier = [a4 copy];
-  v14->_reportingSamplingUUID = [a6 copy];
-  v14->_direction = a5;
+  v13->_translatorIdentifier = [identifier copy];
+  v14->_reportingSamplingUUID = [d copy];
+  v14->_direction = direction;
   if (objc_opt_class() == v14)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -271,11 +271,11 @@ LABEL_15:
         v34 = 1024;
         v35 = 103;
         v36 = 2112;
-        v37 = a4;
+        identifierCopy = identifier;
         v38 = 1024;
-        *v39 = a5;
+        *v39 = direction;
         *&v39[4] = 2112;
-        *&v39[6] = a6;
+        *&v39[6] = d;
         v18 = " [%s] %s:%d Setup for translatorIdentifier=%@, direction=%d, reportingSamplingUUID=%@";
         v19 = v17;
         v20 = 54;
@@ -310,15 +310,15 @@ LABEL_17:
         v34 = 1024;
         v35 = 103;
         v36 = 2112;
-        v37 = v15;
+        identifierCopy = v15;
         v38 = 2048;
         *v39 = v14;
         *&v39[8] = 2112;
-        *&v39[10] = a4;
+        *&v39[10] = identifier;
         v40 = 1024;
-        v41 = a5;
+        directionCopy = direction;
         v42 = 2112;
-        v43 = a6;
+        dCopy = d;
         v18 = " [%s] %s:%d %@(%p) Setup for translatorIdentifier=%@, direction=%d, reportingSamplingUUID=%@";
         v19 = v22;
         v20 = 74;
@@ -327,7 +327,7 @@ LABEL_17:
     }
   }
 
-  if ([(AVCCaptionsClient *)v14 setUpInternalStateWithDelegate:a3 clientType:2])
+  if ([(AVCCaptionsClient *)v14 setUpInternalStateWithDelegate:delegate clientType:2])
   {
     MEMORY[0x1E128B580](&dword_1DB56E000, "@:@ AVCCaptionsClient-init");
     if (VRTraceGetErrorLogLevelForModule() >= 6)
@@ -343,9 +343,9 @@ LABEL_17:
         v34 = 1024;
         v35 = 117;
         v36 = 2048;
-        v37 = v14;
+        identifierCopy = v14;
         v38 = 2112;
-        *v39 = a4;
+        *v39 = identifier;
         _os_log_impl(&dword_1DB56E000, v24, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d @:@ AVCCaptionsClient-init (%p) Succeeded with translatorIdentifier=%@", buf, 0x30u);
       }
     }
@@ -391,11 +391,11 @@ LABEL_25:
         v34 = 1024;
         v35 = 112;
         v36 = 2112;
-        v37 = v25;
+        identifierCopy = v25;
         v38 = 2048;
         *v39 = v14;
         *&v39[8] = 2112;
-        *&v39[10] = a4;
+        *&v39[10] = identifier;
         _os_log_error_impl(&dword_1DB56E000, v27, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) AVCCaptionsClient-init FAILED for translatorIdentifier=%@", buf, 0x3Au);
       }
     }
@@ -422,7 +422,7 @@ LABEL_25:
   [(AVCCaptionsClient *)&v4 dealloc];
 }
 
-- (BOOL)connect:(unsigned int)a3
+- (BOOL)connect:(unsigned int)connect
 {
   v51 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
@@ -432,7 +432,7 @@ LABEL_25:
     if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
     {
       streamToken = self->_streamToken;
-      v8 = [(NSUUID *)self->_translatorIdentifier UUIDString];
+      uUIDString = [(NSUUID *)self->_translatorIdentifier UUIDString];
       *buf = 136316162;
       v42 = v5;
       v43 = 2080;
@@ -442,20 +442,20 @@ LABEL_25:
       v47 = 1024;
       *v48 = streamToken;
       *&v48[4] = 2112;
-      *&v48[6] = v8;
+      *&v48[6] = uUIDString;
       _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d AVCCaptionsClient: connect for streamToken=%u, translatorIdentifier=%@", buf, 0x2Cu);
     }
   }
 
-  switch(a3)
+  switch(connect)
   {
     case 0u:
       goto LABEL_35;
     case 2u:
       v12 = objc_alloc(MEMORY[0x1E695DF20]);
-      v13 = [(NSUUID *)self->_translatorIdentifier UUIDString];
-      v14 = [(NSUUID *)self->_reportingSamplingUUID UUIDString];
-      v10 = [v12 initWithObjectsAndKeys:{v13, @"vcCaptionsTranslatorIdentifier", v14, @"vcCaptionsReportingSamplingUUID", objc_msgSend(MEMORY[0x1E696AD98], "numberWithInt:", self->_direction), @"vcCaptionsDirection", 0}];
+      uUIDString2 = [(NSUUID *)self->_translatorIdentifier UUIDString];
+      uUIDString3 = [(NSUUID *)self->_reportingSamplingUUID UUIDString];
+      v10 = [v12 initWithObjectsAndKeys:{uUIDString2, @"vcCaptionsTranslatorIdentifier", uUIDString3, @"vcCaptionsReportingSamplingUUID", objc_msgSend(MEMORY[0x1E696AD98], "numberWithInt:", self->_direction), @"vcCaptionsDirection", 0}];
       v11 = [(AVConferenceXPCClient *)self->_connection sendMessageSync:"vcCaptionsClientInitializeTranslator" arguments:v10];
       break;
     case 1u:
@@ -481,7 +481,7 @@ LABEL_11:
 
   v16 = v15;
   v17 = objc_opt_class();
-  if (a3 != 1)
+  if (connect != 1)
   {
     if (v17 != self)
     {
@@ -1136,24 +1136,24 @@ void __51__AVCCaptionsClient_registerBlocksForNotifications__block_invoke_3_145(
   [(AVConferenceXPCClient *)connection deregisterFromService:"vcCaptionsDidChangeSourceLocale"];
 }
 
-- (id)captionsResultsWithInternalResults:(id)a3
+- (id)captionsResultsWithInternalResults:(id)results
 {
   v29 = *MEMORY[0x1E69E9840];
   v4 = [AVCCaptionsResult alloc];
-  v5 = [objc_msgSend(a3 "segments")];
-  v6 = [a3 isFinal];
-  v7 = [a3 utteranceNumber];
-  v8 = [a3 updateNumber];
-  [a3 utteranceStartTimestamp];
+  v5 = [objc_msgSend(results "segments")];
+  isFinal = [results isFinal];
+  utteranceNumber = [results utteranceNumber];
+  updateNumber = [results updateNumber];
+  [results utteranceStartTimestamp];
   v10 = v9;
-  [a3 utteranceDuration];
-  v12 = [(AVCCaptionsResult *)v4 initWithCapacity:v5 utteranceComplete:v6 utteranceNumber:v7 updateNumber:v8 utteranceStartTimestamp:v10 utteranceDuration:v11];
+  [results utteranceDuration];
+  v12 = [(AVCCaptionsResult *)v4 initWithCapacity:v5 utteranceComplete:isFinal utteranceNumber:utteranceNumber updateNumber:updateNumber utteranceStartTimestamp:v10 utteranceDuration:v11];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v13 = [a3 segments];
-  v14 = [v13 countByEnumeratingWithState:&v25 objects:v24 count:16];
+  segments = [results segments];
+  v14 = [segments countByEnumeratingWithState:&v25 objects:v24 count:16];
   if (v14)
   {
     v15 = v14;
@@ -1164,26 +1164,26 @@ void __51__AVCCaptionsClient_registerBlocksForNotifications__block_invoke_3_145(
       {
         if (*v26 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(segments);
         }
 
         v18 = *(*(&v25 + 1) + 8 * i);
         if ([v18 text])
         {
-          v19 = [v18 text];
+          text = [v18 text];
         }
 
         else
         {
-          v19 = &stru_1F570E008;
+          text = &stru_1F570E008;
         }
 
-        v20 = [v18 confidence];
-        v21 = [v18 range];
-        [(AVCCaptionsResult *)v12 addTokenWithString:v19 confidence:v21 range:v22, v20];
+        confidence = [v18 confidence];
+        range = [v18 range];
+        [(AVCCaptionsResult *)v12 addTokenWithString:text confidence:range range:v22, confidence];
       }
 
-      v15 = [v13 countByEnumeratingWithState:&v25 objects:v24 count:16];
+      v15 = [segments countByEnumeratingWithState:&v25 objects:v24 count:16];
     }
 
     while (v15);
@@ -1192,17 +1192,17 @@ void __51__AVCCaptionsClient_registerBlocksForNotifications__block_invoke_3_145(
   return v12;
 }
 
-- (id)captionsLanguageDetectorResultsWithInternalResults:(id)a3
+- (id)captionsLanguageDetectorResultsWithInternalResults:(id)results
 {
-  v3 = [[AVCCaptionsLanguageDetectorResults alloc] initWithLanguageDetectorResults:a3];
+  v3 = [[AVCCaptionsLanguageDetectorResults alloc] initWithLanguageDetectorResults:results];
 
   return v3;
 }
 
-- (void)didConfigureCaptionsWithError:(id)a3
+- (void)didConfigureCaptionsWithError:(id)error
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = [(AVCCaptionsClient *)self delegate];
+  delegate = [(AVCCaptionsClient *)self delegate];
   MEMORY[0x1E128B580](&dword_1DB56E000, "@:@ AVCCaptionsClient-didConfigureCaptionsWithError");
   if (VRTraceGetErrorLogLevelForModule() >= 6)
   {
@@ -1217,22 +1217,22 @@ void __51__AVCCaptionsClient_registerBlocksForNotifications__block_invoke_3_145(
       v12 = 1024;
       v13 = 407;
       v14 = 2048;
-      v15 = self;
+      selfCopy = self;
       v16 = 2112;
-      v17 = a3;
+      errorCopy = error;
       _os_log_impl(&dword_1DB56E000, v7, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d @:@ AVCCaptionsClient-didConfigureCaptionsWithError (%p) error=%@", &v8, 0x30u);
     }
   }
 
   if (objc_opt_respondsToSelector())
   {
-    [(AVCCaptionsClientDelegate *)v5 captionsClient:self didConfigureCaptionsWithError:a3];
+    [(AVCCaptionsClientDelegate *)delegate captionsClient:self didConfigureCaptionsWithError:error];
   }
 }
 
-- (void)didEnableCaptions:(BOOL)a3 error:(id)a4
+- (void)didEnableCaptions:(BOOL)captions error:(id)error
 {
-  v5 = a3;
+  captionsCopy = captions;
   v21 = *MEMORY[0x1E69E9840];
   MEMORY[0x1E128B580](&dword_1DB56E000, "@:@ AVCCaptionsClient-didEnableCaptions");
   if (VRTraceGetErrorLogLevelForModule() >= 6)
@@ -1248,21 +1248,21 @@ void __51__AVCCaptionsClient_registerBlocksForNotifications__block_invoke_3_145(
       v13 = 1024;
       v14 = 414;
       v15 = 2048;
-      v16 = self;
+      selfCopy = self;
       v17 = 1024;
-      v18 = v5;
+      v18 = captionsCopy;
       v19 = 2112;
-      v20 = a4;
+      errorCopy = error;
       _os_log_impl(&dword_1DB56E000, v8, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d @:@ AVCCaptionsClient-didEnableCaptions (%p) enabled=%d error=%@", &v9, 0x36u);
     }
   }
 
-  [(AVCCaptionsClientDelegate *)[(AVCCaptionsClient *)self delegate] captionsClient:self didEnableCaptions:v5 error:a4];
+  [(AVCCaptionsClientDelegate *)[(AVCCaptionsClient *)self delegate] captionsClient:self didEnableCaptions:captionsCopy error:error];
 }
 
-- (void)didDisableCaptions:(BOOL)a3 error:(id)a4
+- (void)didDisableCaptions:(BOOL)captions error:(id)error
 {
-  v5 = a3;
+  captionsCopy = captions;
   v21 = *MEMORY[0x1E69E9840];
   MEMORY[0x1E128B580](&dword_1DB56E000, "@:@ AVCCaptionsClient-didDisableCaptions");
   if (VRTraceGetErrorLogLevelForModule() >= 6)
@@ -1278,37 +1278,37 @@ void __51__AVCCaptionsClient_registerBlocksForNotifications__block_invoke_3_145(
       v13 = 1024;
       v14 = 419;
       v15 = 2048;
-      v16 = self;
+      selfCopy = self;
       v17 = 1024;
-      v18 = v5;
+      v18 = captionsCopy;
       v19 = 2112;
-      v20 = a4;
+      errorCopy = error;
       _os_log_impl(&dword_1DB56E000, v8, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d @:@ AVCCaptionsClient-didDisableCaptions (%p) disabled=%d error=%@", &v9, 0x36u);
     }
   }
 
-  [(AVCCaptionsClientDelegate *)[(AVCCaptionsClient *)self delegate] captionsClient:self didDisableCaptions:v5 error:a4];
+  [(AVCCaptionsClientDelegate *)[(AVCCaptionsClient *)self delegate] captionsClient:self didDisableCaptions:captionsCopy error:error];
 }
 
-- (void)didStartCaptioningWithReason:(unsigned __int8)a3
+- (void)didStartCaptioningWithReason:(unsigned __int8)reason
 {
-  v3 = a3;
-  v5 = [(AVCCaptionsClient *)self delegate];
+  reasonCopy = reason;
+  delegate = [(AVCCaptionsClient *)self delegate];
 
-  [(AVCCaptionsClientDelegate *)v5 captionsClient:self didStartCaptioningWithReason:v3];
+  [(AVCCaptionsClientDelegate *)delegate captionsClient:self didStartCaptioningWithReason:reasonCopy];
 }
 
-- (void)didStopCaptioningWithReason:(unsigned __int8)a3
+- (void)didStopCaptioningWithReason:(unsigned __int8)reason
 {
-  v3 = a3;
-  v5 = [(AVCCaptionsClient *)self delegate];
+  reasonCopy = reason;
+  delegate = [(AVCCaptionsClient *)self delegate];
 
-  [(AVCCaptionsClientDelegate *)v5 captionsClient:self didStopCaptioningWithReason:v3];
+  [(AVCCaptionsClientDelegate *)delegate captionsClient:self didStopCaptioningWithReason:reasonCopy];
 }
 
-- (void)didUpdateCaptions:(id)a3 isRemote:(BOOL)a4
+- (void)didUpdateCaptions:(id)captions isRemote:(BOOL)remote
 {
-  v4 = a4;
+  remoteCopy = remote;
   v22 = *MEMORY[0x1E69E9840];
   v7 = [(AVCCaptionsClient *)self captionsResultsWithInternalResults:?];
   MEMORY[0x1E128B580](&dword_1DB56E000, "@:@ AVCCaptionsClient-didUpdateCaptions");
@@ -1325,21 +1325,21 @@ void __51__AVCCaptionsClient_registerBlocksForNotifications__block_invoke_3_145(
       v14 = 1024;
       v15 = 433;
       v16 = 2048;
-      v17 = self;
+      selfCopy = self;
       v18 = 2112;
-      v19 = a3;
+      captionsCopy = captions;
       v20 = 1024;
-      v21 = v4;
+      v21 = remoteCopy;
       _os_log_impl(&dword_1DB56E000, v9, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d @:@ AVCCaptionsClient-didUpdateCaptions (%p) transcription=%@, isRemote=%d", &v10, 0x36u);
     }
   }
 
-  [(AVCCaptionsClientDelegate *)[(AVCCaptionsClient *)self delegate] captionsClient:self didUpdateCaptions:v7 source:v4];
+  [(AVCCaptionsClientDelegate *)[(AVCCaptionsClient *)self delegate] captionsClient:self didUpdateCaptions:v7 source:remoteCopy];
 }
 
-- (void)didDetectGibberish:(BOOL)a3
+- (void)didDetectGibberish:(BOOL)gibberish
 {
-  v3 = a3;
+  gibberishCopy = gibberish;
   v17 = *MEMORY[0x1E69E9840];
   MEMORY[0x1E128B580](&dword_1DB56E000, "@:@ AVCCaptionsClient-didDetectGibberish");
   if (VRTraceGetErrorLogLevelForModule() >= 6)
@@ -1355,9 +1355,9 @@ void __51__AVCCaptionsClient_registerBlocksForNotifications__block_invoke_3_145(
       v11 = 1024;
       v12 = 438;
       v13 = 2048;
-      v14 = self;
+      selfCopy = self;
       v15 = 1024;
-      v16 = v3;
+      v16 = gibberishCopy;
       _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d @:@ AVCCaptionsClient-didDetectGibberish (%p) gibberish=%d", &v7, 0x2Cu);
     }
   }
@@ -1365,14 +1365,14 @@ void __51__AVCCaptionsClient_registerBlocksForNotifications__block_invoke_3_145(
   [(AVCCaptionsClient *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [(AVCCaptionsClientDelegate *)[(AVCCaptionsClient *)self delegate] captionsClient:self didDetectGibberish:v3];
+    [(AVCCaptionsClientDelegate *)[(AVCCaptionsClient *)self delegate] captionsClient:self didDetectGibberish:gibberishCopy];
   }
 }
 
-- (void)didProduceLanguageHypothesis:(id)a3
+- (void)didProduceLanguageHypothesis:(id)hypothesis
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = [(AVCCaptionsClient *)self captionsLanguageDetectorResultsWithInternalResults:a3];
+  v4 = [(AVCCaptionsClient *)self captionsLanguageDetectorResultsWithInternalResults:hypothesis];
   MEMORY[0x1E128B580](&dword_1DB56E000, "@:@ AVCCaptionsClient-didProduceLanguageHypothesis");
   if (VRTraceGetErrorLogLevelForModule() >= 6)
   {
@@ -1412,7 +1412,7 @@ void __51__AVCCaptionsClient_registerBlocksForNotifications__block_invoke_3_145(
       v18 = 1024;
       v19 = 446;
       v20 = 2048;
-      v21 = self;
+      selfCopy = self;
       v22 = 2080;
       v23 = v7;
       v24 = 2080;
@@ -1434,7 +1434,7 @@ void __51__AVCCaptionsClient_registerBlocksForNotifications__block_invoke_3_145(
   }
 }
 
-- (void)didStopLanguageDetectorWithError:(id)a3
+- (void)didStopLanguageDetectorWithError:(id)error
 {
   v17 = *MEMORY[0x1E69E9840];
   MEMORY[0x1E128B580](&dword_1DB56E000, "@:@ AVCCaptionsClient-didStopLanguageDetectorWithError");
@@ -1451,9 +1451,9 @@ void __51__AVCCaptionsClient_registerBlocksForNotifications__block_invoke_3_145(
       v11 = 1024;
       v12 = 453;
       v13 = 2048;
-      v14 = self;
+      selfCopy = self;
       v15 = 2112;
-      v16 = a3;
+      errorCopy = error;
       _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d @:@ AVCCaptionsClient-didStopLanguageDetectorWithError (%p) error=%@", &v7, 0x30u);
     }
   }
@@ -1461,11 +1461,11 @@ void __51__AVCCaptionsClient_registerBlocksForNotifications__block_invoke_3_145(
   [(AVCCaptionsClient *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [(AVCCaptionsClientDelegate *)[(AVCCaptionsClient *)self delegate] captionsClient:self didStopLanguageDetectorWithError:a3];
+    [(AVCCaptionsClientDelegate *)[(AVCCaptionsClient *)self delegate] captionsClient:self didStopLanguageDetectorWithError:error];
   }
 }
 
-- (void)didChangeSourceLocale:(id)a3
+- (void)didChangeSourceLocale:(id)locale
 {
   v17 = *MEMORY[0x1E69E9840];
   MEMORY[0x1E128B580](&dword_1DB56E000, "@:@ AVCCaptionsClient-didChangeSourceLocale");
@@ -1482,14 +1482,14 @@ void __51__AVCCaptionsClient_registerBlocksForNotifications__block_invoke_3_145(
       v11 = 1024;
       v12 = 460;
       v13 = 2048;
-      v14 = self;
+      selfCopy = self;
       v15 = 2112;
-      v16 = [a3 localeIdentifier];
+      localeIdentifier = [locale localeIdentifier];
       _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d @:@ AVCCaptionsClient-didChangeSourceLocale (%p) sourceLocale=%@", &v7, 0x30u);
     }
   }
 
-  self->_sourceLocale = [a3 copy];
+  self->_sourceLocale = [locale copy];
   [(AVCCaptionsClient *)self delegate];
   if (objc_opt_respondsToSelector())
   {
@@ -1523,9 +1523,9 @@ void __51__AVCCaptionsClient_registerBlocksForNotifications__block_invoke_3_145(
   return v2;
 }
 
-- (void)enableCaptions:(BOOL)a3
+- (void)enableCaptions:(BOOL)captions
 {
-  v3 = a3;
+  captionsCopy = captions;
   v19 = *MEMORY[0x1E69E9840];
   MEMORY[0x1E128B580](&dword_1DB56E000, "@:@ AVCCaptionsClient-enableCaptions");
   if (VRTraceGetErrorLogLevelForModule() >= 6)
@@ -1541,24 +1541,24 @@ void __51__AVCCaptionsClient_registerBlocksForNotifications__block_invoke_3_145(
       v13 = 1024;
       v14 = 497;
       v15 = 2112;
-      v16 = self;
+      selfCopy = self;
       v17 = 1024;
-      v18 = v3;
+      v18 = captionsCopy;
       _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d @:@ AVCCaptionsClient-enableCaptions self=%@, isEnabled=%{BOOL}d", buf, 0x2Cu);
     }
   }
 
-  v7 = [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:v3];
+  v7 = [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:captionsCopy];
   v8 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{v7, @"vcCaptionsEnable", 0}];
   [(AVConferenceXPCClient *)self->_connection sendMessageAsync:"vcCaptionsSetCaptionsEnabled" arguments:v8];
 }
 
-- (void)configureCaptions:(id)a3
+- (void)configureCaptions:(id)captions
 {
   v20 = *MEMORY[0x1E69E9840];
 
-  self->_locale = [objc_msgSend(a3 "locale")];
-  v5 = [AVCCaptionsConfig serializeConfiguration:a3];
+  self->_locale = [objc_msgSend(captions "locale")];
+  v5 = [AVCCaptionsConfig serializeConfiguration:captions];
   MEMORY[0x1E128B580](&dword_1DB56E000, "@:@ AVCCaptionsClient-configureCaptions");
   if (VRTraceGetErrorLogLevelForModule() >= 6)
   {
@@ -1573,9 +1573,9 @@ void __51__AVCCaptionsClient_registerBlocksForNotifications__block_invoke_3_145(
       v12 = 1024;
       v13 = 509;
       v14 = 2112;
-      v15 = self;
+      selfCopy = self;
       v16 = 2112;
-      v17 = a3;
+      captionsCopy = captions;
       v18 = 1024;
       v19 = v5 != 0;
       _os_log_impl(&dword_1DB56E000, v7, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d @:@ AVCCaptionsClient-configureCaptions self=%@ configuration=%@ argumentsSerialized=%{BOOL}d", &v8, 0x36u);
@@ -1588,13 +1588,13 @@ void __51__AVCCaptionsClient_registerBlocksForNotifications__block_invoke_3_145(
   }
 }
 
-- (void)setSourceLocale:(id)a3
+- (void)setSourceLocale:(id)locale
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E695DF90] dictionary];
-  if (v5)
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  if (dictionary)
   {
-    v6 = v5;
+    v6 = dictionary;
     MEMORY[0x1E128B580](&dword_1DB56E000, "@:@ AVCCaptionsClient-setSourceLocale");
     if (VRTraceGetErrorLogLevelForModule() >= 6)
     {
@@ -1609,16 +1609,16 @@ void __51__AVCCaptionsClient_registerBlocksForNotifications__block_invoke_3_145(
         v13 = 1024;
         v14 = 526;
         v15 = 2112;
-        v16 = self;
+        selfCopy = self;
         v17 = 2112;
-        v18 = [a3 localeIdentifier];
+        localeIdentifier = [locale localeIdentifier];
         _os_log_impl(&dword_1DB56E000, v8, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d @:@ AVCCaptionsClient-setSourceLocale self=%@ sourceLocale=%@", &v9, 0x30u);
       }
     }
 
-    if (a3)
+    if (locale)
     {
-      [v6 setObject:+[AVCCaptionsConfig serializeLocale:](AVCCaptionsConfig forKeyedSubscript:{"serializeLocale:", a3), @"vcCaptionsSourceLocale"}];
+      [v6 setObject:+[AVCCaptionsConfig serializeLocale:](AVCCaptionsConfig forKeyedSubscript:{"serializeLocale:", locale), @"vcCaptionsSourceLocale"}];
     }
 
     [(AVConferenceXPCClient *)self->_connection sendMessageAsync:"vcCaptionsSetCaptionsSourceLocale" arguments:v6];

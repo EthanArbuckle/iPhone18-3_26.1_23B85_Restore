@@ -10,7 +10,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_8CFA8();
 
   v3 = sub_D7BD8();
@@ -21,7 +21,7 @@
 - (int64_t)controllersCount
 {
   v2 = *(&stru_20.nsects + (swift_isaMask & *self));
-  v3 = self;
+  selfCopy = self;
   v4 = v2();
 
   v5 = *(v4 + 16);
@@ -32,7 +32,7 @@
 - (int64_t)gamesCount
 {
   v2 = *&stru_68.segname[swift_isaMask & *self];
-  v3 = self;
+  selfCopy = self;
   v4 = v2();
 
   v5 = *(v4 + 16);
@@ -43,10 +43,10 @@
 - (BOOL)isActive
 {
   v2 = *(&stru_68.size + (swift_isaMask & *self));
-  v3 = self;
+  selfCopy = self;
   if (v2() < 1)
   {
-    v5 = (*(&stru_68.offset + (swift_isaMask & *v3)))();
+    v5 = (*(&stru_68.offset + (swift_isaMask & *selfCopy)))();
 
     return v5 > 0;
   }

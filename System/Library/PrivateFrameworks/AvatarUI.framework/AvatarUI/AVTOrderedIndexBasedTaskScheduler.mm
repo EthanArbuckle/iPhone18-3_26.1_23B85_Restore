@@ -1,56 +1,56 @@
 @interface AVTOrderedIndexBasedTaskScheduler
-+ (id)indexesForReadyTasksToRunGivenScheduledTasks:(id)a3 order:(id)a4 readyTasks:(id)a5 readyRowIndex:(id)a6;
-+ (id)rowBaseIndexForIndex:(id)a3;
-- (AVTOrderedIndexBasedTaskScheduler)initWithEnvironment:(id)a3;
-- (void)cancelTask:(id)a3;
-- (void)performStateWork:(id)a3;
-- (void)scheduleTask:(id)a3 forIndex:(unint64_t)a4;
-- (void)taskReady:(id)a3 forIndex:(unint64_t)a4;
++ (id)indexesForReadyTasksToRunGivenScheduledTasks:(id)tasks order:(id)order readyTasks:(id)readyTasks readyRowIndex:(id)index;
++ (id)rowBaseIndexForIndex:(id)index;
+- (AVTOrderedIndexBasedTaskScheduler)initWithEnvironment:(id)environment;
+- (void)cancelTask:(id)task;
+- (void)performStateWork:(id)work;
+- (void)scheduleTask:(id)task forIndex:(unint64_t)index;
+- (void)taskReady:(id)ready forIndex:(unint64_t)index;
 @end
 
 @implementation AVTOrderedIndexBasedTaskScheduler
 
-- (AVTOrderedIndexBasedTaskScheduler)initWithEnvironment:(id)a3
+- (AVTOrderedIndexBasedTaskScheduler)initWithEnvironment:(id)environment
 {
-  v4 = a3;
+  environmentCopy = environment;
   v16.receiver = self;
   v16.super_class = AVTOrderedIndexBasedTaskScheduler;
   v5 = [(AVTOrderedIndexBasedTaskScheduler *)&v16 init];
   if (v5)
   {
-    v6 = [v4 lockProvider];
-    v7 = (v6)[2](v6, "com.apple.AvatarUI.AVTOrderedIndexBasedScheduler.stateLock");
+    lockProvider = [environmentCopy lockProvider];
+    v7 = (lockProvider)[2](lockProvider, "com.apple.AvatarUI.AVTOrderedIndexBasedScheduler.stateLock");
     stateLock = v5->_stateLock;
     v5->_stateLock = v7;
 
-    v9 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     scheduledTasks = v5->_scheduledTasks;
-    v5->_scheduledTasks = v9;
+    v5->_scheduledTasks = dictionary;
 
-    v11 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     readyTasks = v5->_readyTasks;
-    v5->_readyTasks = v11;
+    v5->_readyTasks = dictionary2;
 
-    v13 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     scheduledTasksOrder = v5->_scheduledTasksOrder;
-    v5->_scheduledTasksOrder = v13;
+    v5->_scheduledTasksOrder = array;
   }
 
   return v5;
 }
 
-- (void)performStateWork:(id)a3
+- (void)performStateWork:(id)work
 {
-  v4 = a3;
-  v5 = [(AVTOrderedIndexBasedTaskScheduler *)self stateLock];
+  workCopy = work;
+  stateLock = [(AVTOrderedIndexBasedTaskScheduler *)self stateLock];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __54__AVTOrderedIndexBasedTaskScheduler_performStateWork___block_invoke;
   v7[3] = &unk_1E7F3A8A8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = workCopy;
+  v6 = workCopy;
+  dispatch_sync(stateLock, v7);
 }
 
 void __54__AVTOrderedIndexBasedTaskScheduler_performStateWork___block_invoke(uint64_t a1)
@@ -62,16 +62,16 @@ void __54__AVTOrderedIndexBasedTaskScheduler_performStateWork___block_invoke(uin
   (*(v2 + 16))(v2, v5, v3, v4);
 }
 
-- (void)scheduleTask:(id)a3 forIndex:(unint64_t)a4
+- (void)scheduleTask:(id)task forIndex:(unint64_t)index
 {
-  v6 = a3;
+  taskCopy = task;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __59__AVTOrderedIndexBasedTaskScheduler_scheduleTask_forIndex___block_invoke;
   v8[3] = &unk_1E7F3D018;
-  v9 = v6;
-  v10 = a4;
-  v7 = v6;
+  v9 = taskCopy;
+  indexCopy = index;
+  v7 = taskCopy;
   [(AVTOrderedIndexBasedTaskScheduler *)self performStateWork:v8];
 }
 
@@ -100,21 +100,21 @@ void __59__AVTOrderedIndexBasedTaskScheduler_scheduleTask_forIndex___block_invok
   [v10 addObject:v18];
 }
 
-- (void)taskReady:(id)a3 forIndex:(unint64_t)a4
+- (void)taskReady:(id)ready forIndex:(unint64_t)index
 {
-  v6 = a3;
-  v7 = [MEMORY[0x1E695DF70] array];
-  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
+  readyCopy = ready;
+  array = [MEMORY[0x1E695DF70] array];
+  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:index];
   v12 = MEMORY[0x1E69E9820];
   v13 = 3221225472;
   v14 = __56__AVTOrderedIndexBasedTaskScheduler_taskReady_forIndex___block_invoke;
   v15 = &unk_1E7F3D068;
   v16 = v8;
-  v17 = self;
-  v18 = v7;
-  v19 = v6;
-  v9 = v7;
-  v10 = v6;
+  selfCopy = self;
+  v18 = array;
+  v19 = readyCopy;
+  v9 = array;
+  v10 = readyCopy;
   v11 = v8;
   [(AVTOrderedIndexBasedTaskScheduler *)self performStateWork:&v12];
   [v9 enumerateObjectsUsingBlock:{&__block_literal_global_30, v12, v13, v14, v15}];
@@ -160,53 +160,53 @@ void __56__AVTOrderedIndexBasedTaskScheduler_taskReady_forIndex___block_invoke_2
   [*(a1 + 56) removeObject:v7];
 }
 
-+ (id)indexesForReadyTasksToRunGivenScheduledTasks:(id)a3 order:(id)a4 readyTasks:(id)a5 readyRowIndex:(id)a6
++ (id)indexesForReadyTasksToRunGivenScheduledTasks:(id)tasks order:(id)order readyTasks:(id)readyTasks readyRowIndex:(id)index
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (![v12 count])
+  tasksCopy = tasks;
+  orderCopy = order;
+  readyTasksCopy = readyTasks;
+  indexCopy = index;
+  if (![readyTasksCopy count])
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"This should only be called when we have ready tasks"];
   }
 
-  v14 = [v12 allKeys];
-  v15 = [v14 sortedArrayUsingSelector:sel_compare_];
+  allKeys = [readyTasksCopy allKeys];
+  v15 = [allKeys sortedArrayUsingSelector:sel_compare_];
 
-  if ([v10 count])
+  if ([tasksCopy count])
   {
     v33[0] = MEMORY[0x1E69E9820];
     v33[1] = 3221225472;
     v33[2] = __113__AVTOrderedIndexBasedTaskScheduler_indexesForReadyTasksToRunGivenScheduledTasks_order_readyTasks_readyRowIndex___block_invoke;
     v33[3] = &unk_1E7F3D0B0;
-    v35 = a1;
-    v16 = v13;
+    selfCopy = self;
+    v16 = indexCopy;
     v34 = v16;
-    if ([v11 indexOfObjectPassingTest:v33] == 0x7FFFFFFFFFFFFFFFLL)
+    if ([orderCopy indexOfObjectPassingTest:v33] == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v29 = v13;
+      v29 = indexCopy;
       v30[0] = MEMORY[0x1E69E9820];
       v30[1] = 3221225472;
       v30[2] = __113__AVTOrderedIndexBasedTaskScheduler_indexesForReadyTasksToRunGivenScheduledTasks_order_readyTasks_readyRowIndex___block_invoke_2;
       v30[3] = &unk_1E7F3D0B0;
-      v32 = a1;
+      selfCopy2 = self;
       v31 = v16;
-      v17 = [v11 indexesOfObjectsPassingTest:v30];
-      v18 = [v11 objectsAtIndexes:v17];
+      v17 = [orderCopy indexesOfObjectsPassingTest:v30];
+      v18 = [orderCopy objectsAtIndexes:v17];
       v19 = [v18 sortedArrayUsingSelector:sel_compare_];
-      v20 = [v19 firstObject];
+      firstObject = [v19 firstObject];
 
-      v21 = [v12 objectForKey:v20];
+      v21 = [readyTasksCopy objectForKey:firstObject];
 
       if (v21)
       {
-        v22 = [v11 sortedArrayUsingSelector:sel_compare_];
-        v23 = [MEMORY[0x1E695DF70] arrayWithObject:v20];
-        for (i = [v22 indexOfObject:v20] + 1; i < objc_msgSend(v22, "count"); ++i)
+        v22 = [orderCopy sortedArrayUsingSelector:sel_compare_];
+        v23 = [MEMORY[0x1E695DF70] arrayWithObject:firstObject];
+        for (i = [v22 indexOfObject:firstObject] + 1; i < objc_msgSend(v22, "count"); ++i)
         {
           v25 = [v22 objectAtIndexedSubscript:i];
-          v26 = [v12 objectForKey:v25];
+          v26 = [readyTasksCopy objectForKey:v25];
 
           if (!v26)
           {
@@ -225,7 +225,7 @@ void __56__AVTOrderedIndexBasedTaskScheduler_taskReady_forIndex___block_invoke_2
         v27 = MEMORY[0x1E695E0F0];
       }
 
-      v13 = v29;
+      indexCopy = v29;
     }
 
     else
@@ -265,10 +265,10 @@ uint64_t __113__AVTOrderedIndexBasedTaskScheduler_indexesForReadyTasksToRunGiven
   return v5;
 }
 
-+ (id)rowBaseIndexForIndex:(id)a3
++ (id)rowBaseIndexForIndex:(id)index
 {
   v3 = MEMORY[0x1E696AD98];
-  v4 = 3 * ([a3 unsignedIntegerValue] / 3uLL);
+  v4 = 3 * ([index unsignedIntegerValue] / 3uLL);
 
   return [v3 numberWithUnsignedInteger:v4];
 }
@@ -283,15 +283,15 @@ void __51__AVTOrderedIndexBasedTaskScheduler_cancelAllTasks__block_invoke(uint64
   [v7 removeAllObjects];
 }
 
-- (void)cancelTask:(id)a3
+- (void)cancelTask:(id)task
 {
-  v4 = a3;
+  taskCopy = task;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __48__AVTOrderedIndexBasedTaskScheduler_cancelTask___block_invoke;
   v6[3] = &unk_1E7F3D148;
-  v7 = v4;
-  v5 = v4;
+  v7 = taskCopy;
+  v5 = taskCopy;
   [(AVTOrderedIndexBasedTaskScheduler *)self performStateWork:v6];
 }
 

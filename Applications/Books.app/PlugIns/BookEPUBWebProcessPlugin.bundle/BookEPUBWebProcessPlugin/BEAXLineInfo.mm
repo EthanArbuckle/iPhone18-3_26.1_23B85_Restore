@@ -1,11 +1,11 @@
 @interface BEAXLineInfo
-+ (CGPoint)addOffsetForPoint:(CGPoint)a3;
-+ (CGPoint)subtractOffsetForPoint:(CGPoint)a3;
-+ (id)chapterLineInfosForElement:(id)a3;
-+ (id)lineRectsForElement:(id)a3;
-+ (id)linkElementsForElement:(id)a3;
-+ (id)textForElement:(id)a3;
-- (BEAXLineInfo)initWithRange:(_NSRange)a3 frame:(CGRect)a4 attributedText:(id)a5 element:(id)a6;
++ (CGPoint)addOffsetForPoint:(CGPoint)point;
++ (CGPoint)subtractOffsetForPoint:(CGPoint)point;
++ (id)chapterLineInfosForElement:(id)element;
++ (id)lineRectsForElement:(id)element;
++ (id)linkElementsForElement:(id)element;
++ (id)textForElement:(id)element;
+- (BEAXLineInfo)initWithRange:(_NSRange)range frame:(CGRect)frame attributedText:(id)text element:(id)element;
 - (CGPoint)frameCenterPoint;
 - (CGRect)frameInScreenCoordinates;
 - (_NSRange)rangeInChapter;
@@ -14,16 +14,16 @@
 
 @implementation BEAXLineInfo
 
-- (BEAXLineInfo)initWithRange:(_NSRange)a3 frame:(CGRect)a4 attributedText:(id)a5 element:(id)a6
+- (BEAXLineInfo)initWithRange:(_NSRange)range frame:(CGRect)frame attributedText:(id)text element:(id)element
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  length = a3.length;
-  location = a3.location;
-  v15 = a5;
-  v16 = a6;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  length = range.length;
+  location = range.location;
+  textCopy = text;
+  elementCopy = element;
   v22.receiver = self;
   v22.super_class = BEAXLineInfo;
   v17 = [(BEAXLineInfo *)&v22 init];
@@ -44,17 +44,17 @@
     MidY = CGRectGetMidY(v18->_frameInScreenCoordinates);
     v18->_frameCenterPoint.x = MidX;
     v18->_frameCenterPoint.y = MidY;
-    objc_storeStrong(&v18->_attributedText, a5);
-    objc_storeStrong(&v18->_objectWrapperElement, a6);
+    objc_storeStrong(&v18->_attributedText, text);
+    objc_storeStrong(&v18->_objectWrapperElement, element);
   }
 
   return v18;
 }
 
-+ (CGPoint)addOffsetForPoint:(CGPoint)a3
++ (CGPoint)addOffsetForPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   +[BEAXWebContentUtilities offset];
   v6 = x + v5;
   v8 = y + v7;
@@ -63,10 +63,10 @@
   return result;
 }
 
-+ (CGPoint)subtractOffsetForPoint:(CGPoint)a3
++ (CGPoint)subtractOffsetForPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   +[BEAXWebContentUtilities offset];
   v6 = x - v5;
   v8 = y - v7;
@@ -75,26 +75,26 @@
   return result;
 }
 
-+ (id)chapterLineInfosForElement:(id)a3
++ (id)chapterLineInfosForElement:(id)element
 {
-  v3 = [a3 baxBookContentElement];
-  v4 = v3;
-  if (v3)
+  baxBookContentElement = [element baxBookContentElement];
+  v4 = baxBookContentElement;
+  if (baxBookContentElement)
   {
-    v5 = [v3 baxStoredLineInfos];
+    baxStoredLineInfos = [baxBookContentElement baxStoredLineInfos];
 
-    if (!v5)
+    if (!baxStoredLineInfos)
     {
-      v9 = [v4 elementTextRange];
+      elementTextRange = [v4 elementTextRange];
       v6 = +[NSMutableArray array];
-      sub_DE90(v4, &v9, v6);
+      sub_DE90(v4, &elementTextRange, v6);
       [v4 baxSetStoredLineInfos:v6];
     }
   }
 
-  v7 = [v4 baxStoredLineInfos];
+  baxStoredLineInfos2 = [v4 baxStoredLineInfos];
 
-  return v7;
+  return baxStoredLineInfos2;
 }
 
 - (id)description
@@ -104,30 +104,30 @@
   v4 = NSStringFromRange(v11);
   [(BEAXLineInfo *)self frameInScreenCoordinates];
   v5 = NSStringFromRect(v12);
-  v6 = [(BEAXLineInfo *)self attributedText];
-  v7 = [v6 string];
-  v8 = [NSString stringWithFormat:@"<%@ %p range=%@ frame=%@ text='%@'>", v3, self, v4, v5, v7];
+  attributedText = [(BEAXLineInfo *)self attributedText];
+  string = [attributedText string];
+  v8 = [NSString stringWithFormat:@"<%@ %p range=%@ frame=%@ text='%@'>", v3, self, v4, v5, string];
 
   return v8;
 }
 
-+ (id)linkElementsForElement:(id)a3
++ (id)linkElementsForElement:(id)element
 {
-  v3 = a3;
+  elementCopy = element;
   v4 = +[NSMutableArray array];
   v5 = +[NSMutableArray array];
-  if ([v3 accessibilityElementCount] >= 1)
+  if ([elementCopy accessibilityElementCount] >= 1)
   {
     v6 = 0;
     do
     {
-      v7 = [v3 accessibilityElementAtIndex:v6];
+      v7 = [elementCopy accessibilityElementAtIndex:v6];
       [v5 addObject:v7];
 
       ++v6;
     }
 
-    while (v6 < [v3 accessibilityElementCount]);
+    while (v6 < [elementCopy accessibilityElementCount]);
   }
 
   if ([v5 count])
@@ -178,17 +178,17 @@
   return v16;
 }
 
-+ (id)lineRectsForElement:(id)a3
++ (id)lineRectsForElement:(id)element
 {
-  v3 = [a3 lineRectsAndText];
-  if ([v3 count])
+  lineRectsAndText = [element lineRectsAndText];
+  if ([lineRectsAndText count])
   {
     v4 = +[NSMutableArray array];
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v5 = v3;
+    v5 = lineRectsAndText;
     v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v6)
     {
@@ -232,11 +232,11 @@
   return v11;
 }
 
-+ (id)textForElement:(id)a3
++ (id)textForElement:(id)element
 {
-  v3 = a3;
-  v4 = [v3 textMarkerRange];
-  v5 = [v3 stringForTextMarkers:v4];
+  elementCopy = element;
+  textMarkerRange = [elementCopy textMarkerRange];
+  v5 = [elementCopy stringForTextMarkers:textMarkerRange];
 
   return v5;
 }

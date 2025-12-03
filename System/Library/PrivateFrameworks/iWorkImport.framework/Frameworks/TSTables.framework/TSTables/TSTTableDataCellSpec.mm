@@ -1,50 +1,50 @@
 @interface TSTTableDataCellSpec
-+ (id)objectWithCellSpec:(id)a3 refCount:(unsigned int)a4;
++ (id)objectWithCellSpec:(id)spec refCount:(unsigned int)count;
 - (id)description;
-- (id)initObjectWithCellSpec:(id)a3 refCount:(unsigned int)a4;
+- (id)initObjectWithCellSpec:(id)spec refCount:(unsigned int)count;
 - (unint64_t)estimateByteSize;
-- (void)encodeToArchive:(void *)a3 archiver:(id)a4;
-- (void)loadFromArchive:(const void *)a3 unarchiver:(id)a4 completion:(id)a5;
+- (void)encodeToArchive:(void *)archive archiver:(id)archiver;
+- (void)loadFromArchive:(const void *)archive unarchiver:(id)unarchiver completion:(id)completion;
 @end
 
 @implementation TSTTableDataCellSpec
 
-+ (id)objectWithCellSpec:(id)a3 refCount:(unsigned int)a4
++ (id)objectWithCellSpec:(id)spec refCount:(unsigned int)count
 {
-  v4 = *&a4;
-  v6 = a3;
-  v7 = [a1 alloc];
-  inited = objc_msgSend_initObjectWithCellSpec_refCount_(v7, v8, v6, v4, v9);
+  v4 = *&count;
+  specCopy = spec;
+  v7 = [self alloc];
+  inited = objc_msgSend_initObjectWithCellSpec_refCount_(v7, v8, specCopy, v4, v9);
 
   return inited;
 }
 
-- (id)initObjectWithCellSpec:(id)a3 refCount:(unsigned int)a4
+- (id)initObjectWithCellSpec:(id)spec refCount:(unsigned int)count
 {
-  v4 = *&a4;
-  v7 = a3;
+  v4 = *&count;
+  specCopy = spec;
   v11.receiver = self;
   v11.super_class = TSTTableDataCellSpec;
   v8 = [(TSTTableDataObject *)&v11 initWithRefCount:v4];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->super._payload, a3);
+    objc_storeStrong(&v8->super._payload, spec);
   }
 
   return v9;
 }
 
-- (void)loadFromArchive:(const void *)a3 unarchiver:(id)a4 completion:(id)a5
+- (void)loadFromArchive:(const void *)archive unarchiver:(id)unarchiver completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  objc_msgSend_sharedLoadFromArchive_(self, v10, a3, v11, v12);
-  if ((*(a3 + 16) & 4) != 0)
+  unarchiverCopy = unarchiver;
+  completionCopy = completion;
+  objc_msgSend_sharedLoadFromArchive_(self, v10, archive, v11, v12);
+  if ((*(archive + 16) & 4) != 0)
   {
     v17 = [TSCEFormulaObject alloc];
-    v18 = *(a3 + 5);
-    hasPreUFFVersion = objc_msgSend_hasPreUFFVersion(v8, v19, v20, v21, v22);
+    v18 = *(archive + 5);
+    hasPreUFFVersion = objc_msgSend_hasPreUFFVersion(unarchiverCopy, v19, v20, v21, v22);
     if (v18)
     {
       isPreUFF = objc_msgSend_initWithArchive_isPreUFF_(v17, v23, v18, hasPreUFFVersion, v25);
@@ -72,7 +72,7 @@
     v51[2] = 0x3032000000;
     v51[3] = sub_2215BF70C;
     v51[4] = sub_2215BF71C;
-    v52 = objc_msgSend_context(v8, v27, v28, v29, v30);
+    v52 = objc_msgSend_context(unarchiverCopy, v27, v28, v29, v30);
     v47[0] = MEMORY[0x277D85DD0];
     v47[1] = 3221225472;
     v47[2] = sub_2215BF724;
@@ -81,87 +81,87 @@
     v47[4] = self;
     v43 = v31;
     v48 = v43;
-    v49 = v9;
-    objc_msgSend_addFinalizeHandler_(v8, v44, v47, v45, v46);
+    v49 = completionCopy;
+    objc_msgSend_addFinalizeHandler_(unarchiverCopy, v44, v47, v45, v46);
 
     _Block_object_dispose(v51, 8);
   }
 
   else
   {
-    if (*(a3 + 11))
+    if (*(archive + 11))
     {
-      objc_msgSend_instanceWithArchive_unarchiver_(TSTCellSpec, v13, *(a3 + 11), v8, v14);
+      objc_msgSend_instanceWithArchive_unarchiver_(TSTCellSpec, v13, *(archive + 11), unarchiverCopy, v14);
     }
 
     else
     {
-      objc_msgSend_instanceWithArchive_unarchiver_(TSTCellSpec, v13, &TST::_CellSpecArchive_default_instance_, v8, v14);
+      objc_msgSend_instanceWithArchive_unarchiver_(TSTCellSpec, v13, &TST::_CellSpecArchive_default_instance_, unarchiverCopy, v14);
     }
     v15 = ;
     payload = self->super._payload;
     self->super._payload = v15;
 
-    (*(v9 + 2))(v9, self);
+    (*(completionCopy + 2))(completionCopy, self);
   }
 }
 
-- (void)encodeToArchive:(void *)a3 archiver:(id)a4
+- (void)encodeToArchive:(void *)archive archiver:(id)archiver
 {
-  v6 = a4;
+  archiverCopy = archiver;
   v33.receiver = self;
   v33.super_class = TSTTableDataCellSpec;
-  [(TSTTableDataObject *)&v33 encodeToArchive:a3 archiver:v6];
+  [(TSTTableDataObject *)&v33 encodeToArchive:archive archiver:archiverCopy];
   v11 = objc_msgSend_cellSpec(self, v7, v8, v9, v10);
   v16 = objc_msgSend_asFormulaSpec(v11, v12, v13, v14, v15);
   v21 = v16;
   if (v16)
   {
     v24 = objc_msgSend_formulaObject(v16, v17, v18, v19, v20);
-    *(a3 + 4) |= 4u;
-    v25 = *(a3 + 5);
+    *(archive + 4) |= 4u;
+    v25 = *(archive + 5);
     if (!v25)
     {
-      v26 = *(a3 + 1);
+      v26 = *(archive + 1);
       if (v26)
       {
         v26 = *(v26 & 0xFFFFFFFFFFFFFFFELL);
       }
 
       v25 = google::protobuf::Arena::CreateMaybeMessage<TSCE::FormulaArchive>(v26);
-      *(a3 + 5) = v25;
+      *(archive + 5) = v25;
     }
 
-    v27 = objc_msgSend_encodeToArchive_archiver_(v24, v22, v25, v6, v23);
+    v27 = objc_msgSend_encodeToArchive_archiver_(v24, v22, v25, archiverCopy, v23);
 
     if ((v27 & 6) != 0)
     {
-      objc_msgSend_requiresDocumentVersion_featureIdentifier_(v6, v28, 0x300020000000ALL, @"TSTCategorizedTables", v30);
+      objc_msgSend_requiresDocumentVersion_featureIdentifier_(archiverCopy, v28, 0x300020000000ALL, @"TSTCategorizedTables", v30);
     }
 
     if ((v27 & 0x21) != 0)
     {
-      objc_msgSend_requiresDocumentVersion_(v6, v28, 0xE000400000001, v29, v30);
+      objc_msgSend_requiresDocumentVersion_(archiverCopy, v28, 0xE000400000001, v29, v30);
     }
   }
 
   else
   {
-    *(a3 + 4) |= 0x100u;
-    v31 = *(a3 + 11);
+    *(archive + 4) |= 0x100u;
+    v31 = *(archive + 11);
     if (!v31)
     {
-      v32 = *(a3 + 1);
+      v32 = *(archive + 1);
       if (v32)
       {
         v32 = *(v32 & 0xFFFFFFFFFFFFFFFELL);
       }
 
       v31 = google::protobuf::Arena::CreateMaybeMessage<TST::CellSpecArchive>(v32);
-      *(a3 + 11) = v31;
+      *(archive + 11) = v31;
     }
 
-    objc_msgSend_saveToArchive_archiver_(v11, v17, v31, v6, v20);
+    objc_msgSend_saveToArchive_archiver_(v11, v17, v31, archiverCopy, v20);
   }
 }
 

@@ -8,13 +8,13 @@
 {
   v6 = a3;
   v7 = a4;
-  v12.receiver = a1;
+  v12.receiver = self;
   v12.super_class = &off_1F2CB2FE8;
   v8 = objc_msgSendSuper2(&v12, sel_init);
   if (v8)
   {
-    v9 = [v6 asset];
-    [v8 setAsset:v9];
+    asset = [v6 asset];
+    [v8 setAsset:asset];
 
     [v6 enterEditDuration];
     [v8 setEnterEditDuration:?];
@@ -32,8 +32,8 @@
     [v7 exitEditDuration];
     [v8 setExitEditDuration:?];
     [v8 setFirstSinceLaunch:{objc_msgSend(v7, "isFirstSinceLaunch")}];
-    v10 = [v7 compositionController];
-    [v8 setCompositionController:v10];
+    compositionController = [v7 compositionController];
+    [v8 setCompositionController:compositionController];
 
     [v8 setSaveActionType:{objc_msgSend(v7, "saveActionType")}];
   }

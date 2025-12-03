@@ -1,8 +1,8 @@
 @interface MTRTLSClientManagementClusterProvisionEndpointParams
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3;
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader;
 - (MTRTLSClientManagementClusterProvisionEndpointParams)init;
-- (id)_encodeAsDataValue:(id *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_encodeAsDataValue:(id *)value;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -15,9 +15,9 @@
   v2 = [(MTRTLSClientManagementClusterProvisionEndpointParams *)&v12 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEA90] data];
+    data = [MEMORY[0x277CBEA90] data];
     hostname = v2->_hostname;
-    v2->_hostname = v3;
+    v2->_hostname = data;
 
     port = v2->_port;
     v2->_port = &unk_284C3E4C8;
@@ -41,29 +41,29 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRTLSClientManagementClusterProvisionEndpointParams);
-  v5 = [(MTRTLSClientManagementClusterProvisionEndpointParams *)self hostname];
-  [(MTRTLSClientManagementClusterProvisionEndpointParams *)v4 setHostname:v5];
+  hostname = [(MTRTLSClientManagementClusterProvisionEndpointParams *)self hostname];
+  [(MTRTLSClientManagementClusterProvisionEndpointParams *)v4 setHostname:hostname];
 
-  v6 = [(MTRTLSClientManagementClusterProvisionEndpointParams *)self port];
-  [(MTRTLSClientManagementClusterProvisionEndpointParams *)v4 setPort:v6];
+  port = [(MTRTLSClientManagementClusterProvisionEndpointParams *)self port];
+  [(MTRTLSClientManagementClusterProvisionEndpointParams *)v4 setPort:port];
 
-  v7 = [(MTRTLSClientManagementClusterProvisionEndpointParams *)self caid];
-  [(MTRTLSClientManagementClusterProvisionEndpointParams *)v4 setCaid:v7];
+  caid = [(MTRTLSClientManagementClusterProvisionEndpointParams *)self caid];
+  [(MTRTLSClientManagementClusterProvisionEndpointParams *)v4 setCaid:caid];
 
-  v8 = [(MTRTLSClientManagementClusterProvisionEndpointParams *)self ccdid];
-  [(MTRTLSClientManagementClusterProvisionEndpointParams *)v4 setCcdid:v8];
+  ccdid = [(MTRTLSClientManagementClusterProvisionEndpointParams *)self ccdid];
+  [(MTRTLSClientManagementClusterProvisionEndpointParams *)v4 setCcdid:ccdid];
 
-  v9 = [(MTRTLSClientManagementClusterProvisionEndpointParams *)self endpointID];
-  [(MTRTLSClientManagementClusterProvisionEndpointParams *)v4 setEndpointID:v9];
+  endpointID = [(MTRTLSClientManagementClusterProvisionEndpointParams *)self endpointID];
+  [(MTRTLSClientManagementClusterProvisionEndpointParams *)v4 setEndpointID:endpointID];
 
-  v10 = [(MTRTLSClientManagementClusterProvisionEndpointParams *)self timedInvokeTimeoutMs];
-  [(MTRTLSClientManagementClusterProvisionEndpointParams *)v4 setTimedInvokeTimeoutMs:v10];
+  timedInvokeTimeoutMs = [(MTRTLSClientManagementClusterProvisionEndpointParams *)self timedInvokeTimeoutMs];
+  [(MTRTLSClientManagementClusterProvisionEndpointParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
-  v11 = [(MTRTLSClientManagementClusterProvisionEndpointParams *)self serverSideProcessingTimeout];
-  [(MTRTLSClientManagementClusterProvisionEndpointParams *)v4 setServerSideProcessingTimeout:v11];
+  serverSideProcessingTimeout = [(MTRTLSClientManagementClusterProvisionEndpointParams *)self serverSideProcessingTimeout];
+  [(MTRTLSClientManagementClusterProvisionEndpointParams *)v4 setServerSideProcessingTimeout:serverSideProcessingTimeout];
 
   return v4;
 }
@@ -79,43 +79,43 @@
   return v7;
 }
 
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader
 {
   v29 = 0;
-  LOBYTE(v30) = 0;
+  LOBYTE(unsignedShortValue) = 0;
   v31 = 0;
   memset(v28, 0, 21);
   v27[0] = 0;
   v27[1] = 0;
   v26 = v27;
-  v5 = [(MTRTLSClientManagementClusterProvisionEndpointParams *)self hostname];
-  sub_238DB6950(v20, [v5 bytes], objc_msgSend(v5, "length"));
+  hostname = [(MTRTLSClientManagementClusterProvisionEndpointParams *)self hostname];
+  sub_238DB6950(v20, [hostname bytes], objc_msgSend(hostname, "length"));
 
   *v28 = v20[0];
-  v6 = [(MTRTLSClientManagementClusterProvisionEndpointParams *)self port];
-  *&v28[16] = [v6 unsignedShortValue];
+  port = [(MTRTLSClientManagementClusterProvisionEndpointParams *)self port];
+  *&v28[16] = [port unsignedShortValue];
 
-  v7 = [(MTRTLSClientManagementClusterProvisionEndpointParams *)self caid];
-  *&v28[18] = [v7 unsignedShortValue];
+  caid = [(MTRTLSClientManagementClusterProvisionEndpointParams *)self caid];
+  *&v28[18] = [caid unsignedShortValue];
 
-  v8 = [(MTRTLSClientManagementClusterProvisionEndpointParams *)self ccdid];
+  ccdid = [(MTRTLSClientManagementClusterProvisionEndpointParams *)self ccdid];
 
-  if (v8)
+  if (ccdid)
   {
     *&v28[20] = 0;
     v29 = 1;
-    v9 = [(MTRTLSClientManagementClusterProvisionEndpointParams *)self ccdid];
-    *&v28[20] = [v9 unsignedShortValue];
+    ccdid2 = [(MTRTLSClientManagementClusterProvisionEndpointParams *)self ccdid];
+    *&v28[20] = [ccdid2 unsignedShortValue];
   }
 
-  v10 = [(MTRTLSClientManagementClusterProvisionEndpointParams *)self endpointID];
+  endpointID = [(MTRTLSClientManagementClusterProvisionEndpointParams *)self endpointID];
 
-  if (v10)
+  if (endpointID)
   {
-    v30 = 0;
+    unsignedShortValue = 0;
     v31 = 1;
-    v11 = [(MTRTLSClientManagementClusterProvisionEndpointParams *)self endpointID];
-    v30 = [v11 unsignedShortValue];
+    endpointID2 = [(MTRTLSClientManagementClusterProvisionEndpointParams *)self endpointID];
+    unsignedShortValue = [endpointID2 unsignedShortValue];
   }
 
   sub_2393D9C18(0x62FuLL, 0, &v25);
@@ -137,8 +137,8 @@
 
     else
     {
-      sub_238DD2F90(a3, &v25);
-      v12 = sub_2393C7114(a3, 21, 256);
+      sub_238DD2F90(reader, &v25);
+      v12 = sub_2393C7114(reader, 21, 256);
       v15 = v19;
       v14 = v12;
     }
@@ -166,19 +166,19 @@
   return result;
 }
 
-- (id)_encodeAsDataValue:(id *)a3
+- (id)_encodeAsDataValue:(id *)value
 {
   v5 = sub_2393C5AAC(v12);
   v13 = 0;
   v7 = [(MTRTLSClientManagementClusterProvisionEndpointParams *)self _encodeToTLVReader:v12, v5];
   if (v7)
   {
-    if (a3)
+    if (value)
     {
       v8 = sub_23921C1E4(MTRError, v7, v6);
       v9 = 0;
 LABEL_7:
-      *a3 = v8;
+      *value = v8;
       goto LABEL_9;
     }
 
@@ -189,7 +189,7 @@ LABEL_7:
   {
     v10 = sub_238EE60DC(v12, 0);
     v9 = v10;
-    if (a3 && !v10)
+    if (value && !v10)
     {
       v8 = sub_23921C1E4(MTRError, 0xAA0C00000003, "/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/zap-generated/MTRCommandPayloadsObjc.mm");
       goto LABEL_7;

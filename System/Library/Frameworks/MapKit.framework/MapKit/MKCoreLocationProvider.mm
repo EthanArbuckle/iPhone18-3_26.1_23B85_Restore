@@ -1,10 +1,10 @@
 @interface MKCoreLocationProvider
 - (BOOL)fusionInfoEnabled;
-- (BOOL)locationManagerShouldDisplayHeadingCalibration:(id)a3;
+- (BOOL)locationManagerShouldDisplayHeadingCalibration:(id)calibration;
 - (BOOL)matchInfoEnabled;
 - (CLLocation)lastLocation;
 - (CLLocationManager)_clLocationManager;
-- (MKCoreLocationProvider)initWithCLLocationManager:(id)a3;
+- (MKCoreLocationProvider)initWithCLLocationManager:(id)manager;
 - (MKLocationProviderDelegate)delegate;
 - (NSBundle)effectiveBundle;
 - (NSString)effectiveBundleIdentifier;
@@ -19,32 +19,32 @@
 - (void)_createCLLocationManager;
 - (void)_resetForNewEffectiveBundle;
 - (void)_stopWaitingForAuthCallback;
-- (void)_updateAccuracyAuthorizationOnQueue:(id)a3;
+- (void)_updateAccuracyAuthorizationOnQueue:(id)queue;
 - (void)_updateAuthorizationStatus;
-- (void)accuracyAuthorizationOnQueue:(id)a3 result:(id)a4;
-- (void)authorizationStatusOnQueue:(id)a3 result:(id)a4;
+- (void)accuracyAuthorizationOnQueue:(id)queue result:(id)result;
+- (void)authorizationStatusOnQueue:(id)queue result:(id)result;
 - (void)dealloc;
 - (void)dismissHeadingCalibrationDisplay;
-- (void)fetchPlaceInferencesWithFidelityPolicy:(unint64_t)a3 handler:(id)a4;
-- (void)locationManager:(id)a3 didFailWithError:(id)a4;
-- (void)locationManager:(id)a3 didUpdateHeading:(id)a4;
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4;
-- (void)locationManager:(id)a3 didUpdateVehicleHeading:(id)a4;
-- (void)locationManager:(id)a3 didUpdateVehicleSpeed:(id)a4;
-- (void)locationManager:(id)a3 didVisit:(id)a4;
-- (void)locationManagerDidChangeAuthorization:(id)a3;
-- (void)locationManagerDidPauseLocationUpdates:(id)a3;
-- (void)locationManagerDidResumeLocationUpdates:(id)a3;
-- (void)requestTemporaryPreciseLocationAuthorizationWithPurposeKey:(id)a3 completion:(id)a4;
+- (void)fetchPlaceInferencesWithFidelityPolicy:(unint64_t)policy handler:(id)handler;
+- (void)locationManager:(id)manager didFailWithError:(id)error;
+- (void)locationManager:(id)manager didUpdateHeading:(id)heading;
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations;
+- (void)locationManager:(id)manager didUpdateVehicleHeading:(id)heading;
+- (void)locationManager:(id)manager didUpdateVehicleSpeed:(id)speed;
+- (void)locationManager:(id)manager didVisit:(id)visit;
+- (void)locationManagerDidChangeAuthorization:(id)authorization;
+- (void)locationManagerDidPauseLocationUpdates:(id)updates;
+- (void)locationManagerDidResumeLocationUpdates:(id)updates;
+- (void)requestTemporaryPreciseLocationAuthorizationWithPurposeKey:(id)key completion:(id)completion;
 - (void)requestWhenInUseAuthorization;
-- (void)setActivityType:(int64_t)a3;
-- (void)setDesiredAccuracy:(double)a3;
-- (void)setDistanceFilter:(double)a3;
-- (void)setEffectiveBundle:(id)a3;
-- (void)setEffectiveBundleIdentifier:(id)a3;
-- (void)setFusionInfoEnabled:(BOOL)a3;
-- (void)setHeadingOrientation:(int)a3;
-- (void)setMatchInfoEnabled:(BOOL)a3;
+- (void)setActivityType:(int64_t)type;
+- (void)setDesiredAccuracy:(double)accuracy;
+- (void)setDistanceFilter:(double)filter;
+- (void)setEffectiveBundle:(id)bundle;
+- (void)setEffectiveBundleIdentifier:(id)identifier;
+- (void)setFusionInfoEnabled:(BOOL)enabled;
+- (void)setHeadingOrientation:(int)orientation;
+- (void)setMatchInfoEnabled:(BOOL)enabled;
 - (void)startMonitoringVisits;
 - (void)startUpdatingHeading;
 - (void)startUpdatingLocation;
@@ -145,11 +145,11 @@ uint64_t __45__MKCoreLocationProvider_authorizationStatus__block_invoke(uint64_t
     v4 = MKGetMKCoreLocationProviderLog();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
-      v5 = [(MKCoreLocationProvider *)self _clLocationManager];
+      _clLocationManager = [(MKCoreLocationProvider *)self _clLocationManager];
       v10 = 138412546;
-      v11 = v5;
+      selfCopy2 = _clLocationManager;
       v12 = 2112;
-      v13 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1A2EA0000, v4, OS_LOG_TYPE_INFO, "CLLocationManager(%@) for %@ is avoiding location permission calls.", &v10, 0x16u);
     }
   }
@@ -157,18 +157,18 @@ uint64_t __45__MKCoreLocationProvider_authorizationStatus__block_invoke(uint64_t
   else
   {
     authorizationStatus = self->_authorizationStatus;
-    v7 = [(CLLocationManager *)self->_clLocationManager authorizationStatus];
-    self->_authorizationStatus = v7;
-    if (authorizationStatus != v7)
+    authorizationStatus = [(CLLocationManager *)self->_clLocationManager authorizationStatus];
+    self->_authorizationStatus = authorizationStatus;
+    if (authorizationStatus != authorizationStatus)
     {
       v8 = MKGetMKCoreLocationProviderLog();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
       {
         v9 = self->_authorizationStatus;
         v10 = 134218496;
-        v11 = self;
+        selfCopy2 = self;
         v12 = 2048;
-        v13 = authorizationStatus;
+        selfCopy = authorizationStatus;
         v14 = 2048;
         v15 = v9;
         _os_log_impl(&dword_1A2EA0000, v8, OS_LOG_TYPE_INFO, "Updated authorization status for %p from: %li to: %li", &v10, 0x20u);
@@ -204,26 +204,26 @@ uint64_t __45__MKCoreLocationProvider_authorizationStatus__block_invoke(uint64_t
   v37 = 3221225472;
   v38 = __50__MKCoreLocationProvider__createCLLocationManager__block_invoke;
   v39 = &unk_1E76C6B88;
-  v40 = self;
+  selfCopy = self;
   v41 = &v49;
   v42 = &v43;
   geo_isolate_sync();
   if (v50[5])
   {
     v3 = objc_alloc(MEMORY[0x1E695FBE8]);
-    v4 = [v50[5] bundlePath];
-    v5 = [v3 initWithEffectiveBundlePath:v4 delegate:self onQueue:self->_coreLocationQueue];
+    bundlePath = [v50[5] bundlePath];
+    v5 = [v3 initWithEffectiveBundlePath:bundlePath delegate:self onQueue:self->_coreLocationQueue];
 
     v6 = MKGetMKCoreLocationProviderLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
-      v7 = [v50[5] bundleIdentifier];
+      bundleIdentifier = [v50[5] bundleIdentifier];
       *buf = 138412802;
       *&buf[4] = v5;
       *&buf[12] = 2048;
       *&buf[14] = self;
       *&buf[22] = 2112;
-      v56 = v7;
+      v56 = bundleIdentifier;
       _os_log_impl(&dword_1A2EA0000, v6, OS_LOG_TYPE_INFO, "Created CLLocationManager(%@) for %p with bundle %@", buf, 0x20u);
     }
 
@@ -506,52 +506,52 @@ uint64_t __46__MKCoreLocationProvider_stopUpdatingLocation__block_invoke(uint64_
   return WeakRetained;
 }
 
-- (void)locationManager:(id)a3 didVisit:(id)a4
+- (void)locationManager:(id)manager didVisit:(id)visit
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  visitCopy = visit;
   v6 = MKGetVisitMonitorLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    v7 = [v5 hasArrivalDate];
-    if (v7)
+    hasArrivalDate = [visitCopy hasArrivalDate];
+    if (hasArrivalDate)
     {
-      v8 = [v5 arrivalDate];
+      arrivalDate = [visitCopy arrivalDate];
     }
 
     else
     {
-      v8 = @"No Arrival Date";
+      arrivalDate = @"No Arrival Date";
     }
 
-    v9 = [v5 hasDepartureDate];
-    if (v9)
+    hasDepartureDate = [visitCopy hasDepartureDate];
+    if (hasDepartureDate)
     {
-      v10 = [v5 departureDate];
+      departureDate = [visitCopy departureDate];
     }
 
     else
     {
-      v10 = @"No Departure Date";
+      departureDate = @"No Departure Date";
     }
 
-    [v5 coordinate];
+    [visitCopy coordinate];
     v12 = v11;
-    [v5 coordinate];
+    [visitCopy coordinate];
     *buf = 138478595;
-    v18 = v8;
+    v18 = arrivalDate;
     v19 = 2113;
-    v20 = v10;
+    v20 = departureDate;
     v21 = 2049;
     v22 = v12;
     v23 = 2049;
     v24 = v13;
     _os_log_impl(&dword_1A2EA0000, v6, OS_LOG_TYPE_DEBUG, "Got a visit: %{private}@ | %{private}@ | Lat: %{private}f Long: %{private}f", buf, 0x2Au);
-    if (v9)
+    if (hasDepartureDate)
     {
     }
 
-    if (v7)
+    if (hasArrivalDate)
     {
     }
   }
@@ -561,8 +561,8 @@ uint64_t __46__MKCoreLocationProvider_stopUpdatingLocation__block_invoke(uint64_
   v15[2] = __51__MKCoreLocationProvider_locationManager_didVisit___block_invoke;
   v15[3] = &unk_1E76CD810;
   v15[4] = self;
-  v16 = v5;
-  v14 = v5;
+  v16 = visitCopy;
+  v14 = visitCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v15);
 }
 
@@ -572,20 +572,20 @@ void __51__MKCoreLocationProvider_locationManager_didVisit___block_invoke(uint64
   [WeakRetained locationProvider:*(a1 + 32) didVisit:*(a1 + 40)];
 }
 
-- (void)locationManager:(id)a3 didUpdateVehicleHeading:(id)a4
+- (void)locationManager:(id)manager didUpdateVehicleHeading:(id)heading
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  headingCopy = heading;
   v6 = MKGetVehicleSensorLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    [v5 trueHeading];
+    [headingCopy trueHeading];
     v8 = v7;
-    v9 = [v5 timestamp];
+    timestamp = [headingCopy timestamp];
     *buf = 134218243;
     v14 = v8;
     v15 = 2113;
-    v16 = v9;
+    v16 = timestamp;
     _os_log_impl(&dword_1A2EA0000, v6, OS_LOG_TYPE_DEBUG, "Got vehicle heading: %g | %{private}@", buf, 0x16u);
   }
 
@@ -594,8 +594,8 @@ void __51__MKCoreLocationProvider_locationManager_didVisit___block_invoke(uint64
   v11[2] = __66__MKCoreLocationProvider_locationManager_didUpdateVehicleHeading___block_invoke;
   v11[3] = &unk_1E76CD810;
   v11[4] = self;
-  v12 = v5;
-  v10 = v5;
+  v12 = headingCopy;
+  v10 = headingCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v11);
 }
 
@@ -609,20 +609,20 @@ void __66__MKCoreLocationProvider_locationManager_didUpdateVehicleHeading___bloc
   [WeakRetained locationProvider:v2 didUpdateVehicleHeading:v5 timestamp:v4];
 }
 
-- (void)locationManager:(id)a3 didUpdateVehicleSpeed:(id)a4
+- (void)locationManager:(id)manager didUpdateVehicleSpeed:(id)speed
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  speedCopy = speed;
   v6 = MKGetVehicleSensorLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    [v5 speed];
+    [speedCopy speed];
     v8 = v7;
-    v9 = [v5 timestamp];
+    timestamp = [speedCopy timestamp];
     *buf = 134218243;
     v14 = v8;
     v15 = 2113;
-    v16 = v9;
+    v16 = timestamp;
     _os_log_impl(&dword_1A2EA0000, v6, OS_LOG_TYPE_DEBUG, "Got vehicle speed: %g | %{private}@", buf, 0x16u);
   }
 
@@ -631,8 +631,8 @@ void __66__MKCoreLocationProvider_locationManager_didUpdateVehicleHeading___bloc
   v11[2] = __64__MKCoreLocationProvider_locationManager_didUpdateVehicleSpeed___block_invoke;
   v11[3] = &unk_1E76CD810;
   v11[4] = self;
-  v12 = v5;
-  v10 = v5;
+  v12 = speedCopy;
+  v10 = speedCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v11);
 }
 
@@ -646,7 +646,7 @@ void __64__MKCoreLocationProvider_locationManager_didUpdateVehicleSpeed___block_
   [WeakRetained locationProvider:v2 didUpdateVehicleSpeed:v5 timestamp:v4];
 }
 
-- (void)locationManagerDidResumeLocationUpdates:(id)a3
+- (void)locationManagerDidResumeLocationUpdates:(id)updates
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -662,16 +662,16 @@ void __66__MKCoreLocationProvider_locationManagerDidResumeLocationUpdates___bloc
   [WeakRetained locationProviderDidResumeLocationUpdates:*(a1 + 32)];
 }
 
-- (void)locationManagerDidPauseLocationUpdates:(id)a3
+- (void)locationManagerDidPauseLocationUpdates:(id)updates
 {
-  v4 = a3;
+  updatesCopy = updates;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __65__MKCoreLocationProvider_locationManagerDidPauseLocationUpdates___block_invoke;
   v6[3] = &unk_1E76CD810;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = updatesCopy;
+  v5 = updatesCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
@@ -699,23 +699,23 @@ void __65__MKCoreLocationProvider_locationManagerDidPauseLocationUpdates___block
   }
 }
 
-- (void)locationManagerDidChangeAuthorization:(id)a3
+- (void)locationManagerDidChangeAuthorization:(id)authorization
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  self->_authorizationStatus = [v4 authorizationStatus];
+  authorizationCopy = authorization;
+  self->_authorizationStatus = [authorizationCopy authorizationStatus];
   [(MKCoreLocationProvider *)self _authStatusReceived];
-  [(MKCoreLocationProvider *)self _updateAccuracyAuthorizationOnQueue:v4];
+  [(MKCoreLocationProvider *)self _updateAccuracyAuthorizationOnQueue:authorizationCopy];
   v5 = MKGetMKCoreLocationProviderLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     authorizationStatus = self->_authorizationStatus;
     *buf = 134218498;
-    v11 = self;
+    selfCopy2 = self;
     v12 = 1024;
     *v13 = authorizationStatus;
     *&v13[4] = 2112;
-    *&v13[6] = v4;
+    *&v13[6] = authorizationCopy;
     _os_log_impl(&dword_1A2EA0000, v5, OS_LOG_TYPE_INFO, "Updated authorization status for %p to: %i from CLLocationManager(%@)", buf, 0x1Cu);
   }
 
@@ -724,11 +724,11 @@ void __65__MKCoreLocationProvider_locationManagerDidPauseLocationUpdates___block
   {
     accuracyAuthorization = self->_accuracyAuthorization;
     *buf = 134218498;
-    v11 = self;
+    selfCopy2 = self;
     v12 = 2048;
     *v13 = accuracyAuthorization;
     *&v13[8] = 2112;
-    *&v13[10] = v4;
+    *&v13[10] = authorizationCopy;
     _os_log_impl(&dword_1A2EA0000, v7, OS_LOG_TYPE_INFO, "Updated accuracy authorization for %p to: %li from CLLocationManager(%@)", buf, 0x20u);
   }
 
@@ -746,20 +746,20 @@ void __64__MKCoreLocationProvider_locationManagerDidChangeAuthorization___block_
   [WeakRetained locationProviderDidChangeAuthorizationStatus:*(a1 + 32)];
 }
 
-- (void)requestTemporaryPreciseLocationAuthorizationWithPurposeKey:(id)a3 completion:(id)a4
+- (void)requestTemporaryPreciseLocationAuthorizationWithPurposeKey:(id)key completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  completionCopy = completion;
   coreLocationQueue = self->_coreLocationQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __96__MKCoreLocationProvider_requestTemporaryPreciseLocationAuthorizationWithPurposeKey_completion___block_invoke;
   block[3] = &unk_1E76CAA70;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = keyCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = keyCopy;
   dispatch_async(coreLocationQueue, block);
 }
 
@@ -786,13 +786,13 @@ void __55__MKCoreLocationProvider_requestWhenInUseAuthorization__block_invoke(ui
   [v1 requestWhenInUseAuthorization];
 }
 
-- (BOOL)locationManagerShouldDisplayHeadingCalibration:(id)a3
+- (BOOL)locationManagerShouldDisplayHeadingCalibration:(id)calibration
 {
-  v3 = [MEMORY[0x1E69DC668] sharedApplication];
-  v4 = [v3 delegate];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  delegate = [mEMORY[0x1E69DC668] delegate];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v4 applicationCanPromptToCalibrateHeading:v3];
+    v5 = [delegate applicationCanPromptToCalibrateHeading:mEMORY[0x1E69DC668]];
   }
 
   else
@@ -803,20 +803,20 @@ void __55__MKCoreLocationProvider_requestWhenInUseAuthorization__block_invoke(ui
   return v5;
 }
 
-- (void)locationManager:(id)a3 didFailWithError:(id)a4
+- (void)locationManager:(id)manager didFailWithError:(id)error
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  errorCopy = error;
   v8 = MKGetMKCoreLocationProviderLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412802;
-    v13 = v6;
+    v13 = managerCopy;
     v14 = 2112;
-    v15 = self;
+    selfCopy = self;
     v16 = 2112;
-    v17 = v7;
+    v17 = errorCopy;
     _os_log_impl(&dword_1A2EA0000, v8, OS_LOG_TYPE_ERROR, "CLLocationManager(%@) for %@ did fail with error: %@", buf, 0x20u);
   }
 
@@ -825,8 +825,8 @@ void __55__MKCoreLocationProvider_requestWhenInUseAuthorization__block_invoke(ui
   v10[2] = __59__MKCoreLocationProvider_locationManager_didFailWithError___block_invoke;
   v10[3] = &unk_1E76CD810;
   v10[4] = self;
-  v11 = v7;
-  v9 = v7;
+  v11 = errorCopy;
+  v9 = errorCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v10);
 }
 
@@ -836,16 +836,16 @@ void __59__MKCoreLocationProvider_locationManager_didFailWithError___block_invok
   [WeakRetained locationProvider:*(a1 + 32) didReceiveError:*(a1 + 40)];
 }
 
-- (void)locationManager:(id)a3 didUpdateHeading:(id)a4
+- (void)locationManager:(id)manager didUpdateHeading:(id)heading
 {
-  v5 = a4;
+  headingCopy = heading;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __59__MKCoreLocationProvider_locationManager_didUpdateHeading___block_invoke;
   v7[3] = &unk_1E76CD810;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = headingCopy;
+  v6 = headingCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v7);
 }
 
@@ -855,11 +855,11 @@ void __59__MKCoreLocationProvider_locationManager_didUpdateHeading___block_invok
   [WeakRetained locationProvider:*(a1 + 32) didUpdateHeading:*(a1 + 40)];
 }
 
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations
 {
   v61 = *MEMORY[0x1E69E9840];
-  v34 = a3;
-  v36 = a4;
+  managerCopy = manager;
+  locationsCopy = locations;
   v6 = MKGetMKCoreLocationProviderLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -872,7 +872,7 @@ void __59__MKCoreLocationProvider_locationManager_didUpdateHeading___block_invok
     *&buf[22] = 2048;
     *&buf[24] = clLocationManager;
     LOWORD(v56) = 2113;
-    *(&v56 + 2) = v36;
+    *(&v56 + 2) = locationsCopy;
     v9 = v7;
     _os_log_impl(&dword_1A2EA0000, v6, OS_LOG_TYPE_INFO, "%@ %p - clLocationManager: %p didUpdateLocations: %{private}@", buf, 0x2Au);
   }
@@ -883,24 +883,24 @@ void __59__MKCoreLocationProvider_locationManager_didUpdateHeading___block_invok
   v54 = 0;
   if (self->_hasExternallyProvidedLocationManager)
   {
-    [v34 desiredAccuracy];
+    [managerCopy desiredAccuracy];
     v45 = MEMORY[0x1E69E9820];
     v46 = 3221225472;
     v47 = __61__MKCoreLocationProvider_locationManager_didUpdateLocations___block_invoke;
     v48 = &unk_1E76C6CA0;
     v52 = v10;
-    v49 = self;
-    v50 = v34;
+    selfCopy = self;
+    v50 = managerCopy;
     v51 = v53;
     geo_isolate_sync();
   }
 
-  v11 = [v36 lastObject];
-  [v11 _navigation_setGtLog:1];
-  v12 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v13 = [v12 objectForKey:@"LocationLatitude"];
-  v14 = [v12 objectForKey:@"LocationLongitude"];
-  v15 = [v12 objectForKey:@"LocationAccuracy"];
+  lastObject = [locationsCopy lastObject];
+  [lastObject _navigation_setGtLog:1];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v13 = [standardUserDefaults objectForKey:@"LocationLatitude"];
+  v14 = [standardUserDefaults objectForKey:@"LocationLongitude"];
+  v15 = [standardUserDefaults objectForKey:@"LocationAccuracy"];
   v16 = v15;
   if (v13)
   {
@@ -932,10 +932,10 @@ void __59__MKCoreLocationProvider_locationManager_didUpdateHeading___block_invok
       locationManager_didUpdateLocations__logged = 1;
     }
 
-    [v11 coordinate];
+    [lastObject coordinate];
     v21 = v20;
     v23 = v22;
-    [v11 horizontalAccuracy];
+    [lastObject horizontalAccuracy];
     v25 = v24;
     if (v18)
     {
@@ -964,9 +964,9 @@ void __59__MKCoreLocationProvider_locationManager_didUpdateHeading___block_invok
     v58 = 0u;
     v56 = 0u;
     memset(buf, 0, sizeof(buf));
-    if (v11)
+    if (lastObject)
     {
-      [v11 clientLocation];
+      [lastObject clientLocation];
     }
 
     *&buf[4] = v21;
@@ -1006,7 +1006,7 @@ void __59__MKCoreLocationProvider_locationManager_didUpdateHeading___block_invok
     block[3] = &unk_1E76C6CD0;
     v39 = v53;
     block[4] = self;
-    v38 = v11;
+    v38 = lastObject;
     dispatch_async(MEMORY[0x1E69E96A0], block);
   }
 
@@ -1054,22 +1054,22 @@ void __61__MKCoreLocationProvider_locationManager_didUpdateLocations___block_inv
   [v3 locationProvider:a1[4] didUpdateLocation:a1[5]];
 }
 
-- (void)fetchPlaceInferencesWithFidelityPolicy:(unint64_t)a3 handler:(id)a4
+- (void)fetchPlaceInferencesWithFidelityPolicy:(unint64_t)policy handler:(id)handler
 {
   v13 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  handlerCopy = handler;
   v7 = MKGetMKCoreLocationProviderLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     clLocationManager = self->_clLocationManager;
     v9 = 138412546;
-    v10 = self;
+    selfCopy = self;
     v11 = 2112;
     v12 = clLocationManager;
     _os_log_impl(&dword_1A2EA0000, v7, OS_LOG_TYPE_INFO, "Retrieving current place inference for %@ _clLocationManager: %@", &v9, 0x16u);
   }
 
-  [(CLLocationManager *)self->_clLocationManager _fetchPlaceInferencesWithFidelityPolicy:a3 handler:v6];
+  [(CLLocationManager *)self->_clLocationManager _fetchPlaceInferencesWithFidelityPolicy:policy handler:handlerCopy];
 }
 
 - (CLLocation)lastLocation
@@ -1114,11 +1114,11 @@ void __38__MKCoreLocationProvider_lastLocation__block_invoke(uint64_t a1)
   dispatch_async(coreLocationQueue, block);
 }
 
-- (void)accuracyAuthorizationOnQueue:(id)a3 result:(id)a4
+- (void)accuracyAuthorizationOnQueue:(id)queue result:(id)result
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  queueCopy = queue;
+  resultCopy = result;
+  if (resultCopy)
   {
     coreLocationQueue = self->_coreLocationQueue;
     block[0] = MEMORY[0x1E69E9820];
@@ -1126,8 +1126,8 @@ void __38__MKCoreLocationProvider_lastLocation__block_invoke(uint64_t a1)
     block[2] = __62__MKCoreLocationProvider_accuracyAuthorizationOnQueue_result___block_invoke;
     block[3] = &unk_1E76CAA70;
     block[4] = self;
-    v10 = v6;
-    v11 = v7;
+    v10 = queueCopy;
+    v11 = resultCopy;
     dispatch_async(coreLocationQueue, block);
   }
 }
@@ -1155,11 +1155,11 @@ void __62__MKCoreLocationProvider_accuracyAuthorizationOnQueue_result___block_in
   }
 }
 
-- (void)authorizationStatusOnQueue:(id)a3 result:(id)a4
+- (void)authorizationStatusOnQueue:(id)queue result:(id)result
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  queueCopy = queue;
+  resultCopy = result;
+  if (resultCopy)
   {
     coreLocationQueue = self->_coreLocationQueue;
     block[0] = MEMORY[0x1E69E9820];
@@ -1167,8 +1167,8 @@ void __62__MKCoreLocationProvider_accuracyAuthorizationOnQueue_result___block_in
     block[2] = __60__MKCoreLocationProvider_authorizationStatusOnQueue_result___block_invoke;
     block[3] = &unk_1E76CAA70;
     block[4] = self;
-    v10 = v6;
-    v11 = v7;
+    v10 = queueCopy;
+    v11 = resultCopy;
     dispatch_async(coreLocationQueue, block);
   }
 }
@@ -1196,7 +1196,7 @@ void __60__MKCoreLocationProvider_authorizationStatusOnQueue_result___block_invo
   }
 }
 
-- (void)setHeadingOrientation:(int)a3
+- (void)setHeadingOrientation:(int)orientation
 {
   v7 = 0;
   v8 = &v7;
@@ -1208,7 +1208,7 @@ void __60__MKCoreLocationProvider_authorizationStatusOnQueue_result___block_invo
   v5[8] = &unk_1E76C6C50;
   v5[9] = self;
   v5[10] = &v7;
-  v6 = a3;
+  orientationCopy = orientation;
   geo_isolate_sync();
   if (v8[3])
   {
@@ -1244,7 +1244,7 @@ uint64_t __48__MKCoreLocationProvider_setHeadingOrientation___block_invoke(uint6
   return v2;
 }
 
-- (void)setFusionInfoEnabled:(BOOL)a3
+- (void)setFusionInfoEnabled:(BOOL)enabled
 {
   v7 = 0;
   v8 = &v7;
@@ -1256,7 +1256,7 @@ uint64_t __48__MKCoreLocationProvider_setHeadingOrientation___block_invoke(uint6
   v5[8] = &unk_1E76C6C28;
   v5[9] = self;
   v5[10] = &v7;
-  v6 = a3;
+  enabledCopy = enabled;
   geo_isolate_sync();
   if (v8[3])
   {
@@ -1291,7 +1291,7 @@ uint64_t __47__MKCoreLocationProvider_setFusionInfoEnabled___block_invoke(uint64
   return v2;
 }
 
-- (void)setMatchInfoEnabled:(BOOL)a3
+- (void)setMatchInfoEnabled:(BOOL)enabled
 {
   v7 = 0;
   v8 = &v7;
@@ -1303,7 +1303,7 @@ uint64_t __47__MKCoreLocationProvider_setFusionInfoEnabled___block_invoke(uint64
   v5[8] = &unk_1E76C6C28;
   v5[9] = self;
   v5[10] = &v7;
-  v6 = a3;
+  enabledCopy = enabled;
   geo_isolate_sync();
   if (v8[3])
   {
@@ -1338,7 +1338,7 @@ uint64_t __46__MKCoreLocationProvider_setMatchInfoEnabled___block_invoke(uint64_
   return v2;
 }
 
-- (void)setDistanceFilter:(double)a3
+- (void)setDistanceFilter:(double)filter
 {
   v6 = 0;
   v7 = &v6;
@@ -1350,7 +1350,7 @@ uint64_t __46__MKCoreLocationProvider_setMatchInfoEnabled___block_invoke(uint64_
   v5[8] = &unk_1E76C6C00;
   v5[9] = self;
   v5[10] = &v6;
-  *&v5[11] = a3;
+  *&v5[11] = filter;
   geo_isolate_sync();
   if (v7[3])
   {
@@ -1393,7 +1393,7 @@ double __40__MKCoreLocationProvider_distanceFilter__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setActivityType:(int64_t)a3
+- (void)setActivityType:(int64_t)type
 {
   v6 = 0;
   v7 = &v6;
@@ -1405,7 +1405,7 @@ double __40__MKCoreLocationProvider_distanceFilter__block_invoke(uint64_t a1)
   v5[8] = &unk_1E76C6C00;
   v5[9] = self;
   v5[10] = &v6;
-  v5[11] = a3;
+  v5[11] = type;
   geo_isolate_sync();
   if (v7[3])
   {
@@ -1441,7 +1441,7 @@ void *__42__MKCoreLocationProvider_setActivityType___block_invoke(void *result)
   return v2;
 }
 
-- (void)setDesiredAccuracy:(double)a3
+- (void)setDesiredAccuracy:(double)accuracy
 {
   v6 = 0;
   v7 = &v6;
@@ -1453,7 +1453,7 @@ void *__42__MKCoreLocationProvider_setActivityType___block_invoke(void *result)
   v5[8] = &unk_1E76C6C00;
   v5[9] = self;
   v5[10] = &v6;
-  *&v5[11] = a3;
+  *&v5[11] = accuracy;
   geo_isolate_sync();
   if (v7[3])
   {
@@ -1528,9 +1528,9 @@ void __45__MKCoreLocationProvider_setDesiredAccuracy___block_invoke_4(uint64_t a
   [WeakRetained locationProviderDidChangeAuthorizationStatus:*(a1 + 32)];
 }
 
-- (void)setEffectiveBundleIdentifier:(id)a3
+- (void)setEffectiveBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -1541,7 +1541,7 @@ void __45__MKCoreLocationProvider_setDesiredAccuracy___block_invoke_4(uint64_t a
   v7[8] = &unk_1E76C6CD0;
   v9 = &v10;
   v7[9] = self;
-  v5 = v4;
+  v5 = identifierCopy;
   v8 = v5;
   geo_isolate_sync();
   if (v11[3])
@@ -1596,9 +1596,9 @@ void *__55__MKCoreLocationProvider_setEffectiveBundleIdentifier___block_invoke_2
   return v2;
 }
 
-- (void)setEffectiveBundle:(id)a3
+- (void)setEffectiveBundle:(id)bundle
 {
-  v4 = a3;
+  bundleCopy = bundle;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -1609,7 +1609,7 @@ void *__55__MKCoreLocationProvider_setEffectiveBundleIdentifier___block_invoke_2
   v7[8] = &unk_1E76C6CD0;
   v9 = &v10;
   v7[9] = self;
-  v5 = v4;
+  v5 = bundleCopy;
   v8 = v5;
   geo_isolate_sync();
   if (v11[3])
@@ -1672,7 +1672,7 @@ void *__45__MKCoreLocationProvider_setEffectiveBundle___block_invoke_2(uint64_t 
   {
     clLocationManager = self->_clLocationManager;
     v7 = 134218242;
-    v8 = self;
+    selfCopy = self;
     v9 = 2112;
     v10 = clLocationManager;
     _os_log_impl(&dword_1A2EA0000, v3, OS_LOG_TYPE_INFO, "Reset for effective bundle %p _clLocationManager %@", &v7, 0x16u);
@@ -1841,31 +1841,31 @@ uint64_t __45__MKCoreLocationProvider_stopUpdatingHeading__block_invoke(uint64_t
   return [*(*(a1 + 32) + 8) stopUpdatingHeading];
 }
 
-- (void)_updateAccuracyAuthorizationOnQueue:(id)a3
+- (void)_updateAccuracyAuthorizationOnQueue:(id)queue
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  queueCopy = queue;
   accuracyAuthorization = self->_accuracyAuthorization;
-  [v4 desiredAccuracy];
-  if (v6 == *MEMORY[0x1E6985CA8] || ([v4 desiredAccuracy], v7 == 6380000.0))
+  [queueCopy desiredAccuracy];
+  if (v6 == *MEMORY[0x1E6985CA8] || ([queueCopy desiredAccuracy], v7 == 6380000.0))
   {
-    v8 = 1;
+    accuracyAuthorization = 1;
   }
 
   else
   {
-    v8 = [v4 accuracyAuthorization];
+    accuracyAuthorization = [queueCopy accuracyAuthorization];
   }
 
-  self->_accuracyAuthorization = v8;
-  if (accuracyAuthorization != v8)
+  self->_accuracyAuthorization = accuracyAuthorization;
+  if (accuracyAuthorization != accuracyAuthorization)
   {
     v9 = MKGetMKCoreLocationProviderLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       v10 = self->_accuracyAuthorization;
       v11 = 134218496;
-      v12 = self;
+      selfCopy = self;
       v13 = 2048;
       v14 = accuracyAuthorization;
       v15 = 2048;
@@ -1969,8 +1969,8 @@ double __50__MKCoreLocationProvider__createCLLocationManager__block_invoke_15(vo
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(NSTimer *)self->_waitingForAuthCheckinTimer invalidate];
   v4 = self->_clLocationManager;
@@ -2001,9 +2001,9 @@ uint64_t __33__MKCoreLocationProvider_dealloc__block_invoke(uint64_t a1)
   return [v2 setDelegate:0];
 }
 
-- (MKCoreLocationProvider)initWithCLLocationManager:(id)a3
+- (MKCoreLocationProvider)initWithCLLocationManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v21.receiver = self;
   v21.super_class = MKCoreLocationProvider;
   v6 = [(MKCoreLocationProvider *)&v21 init];
@@ -2021,16 +2021,16 @@ uint64_t __33__MKCoreLocationProvider_dealloc__block_invoke(uint64_t a1)
     coreLocationQueue = v6->_coreLocationQueue;
     v6->_coreLocationQueue = v11;
 
-    v6->_hasExternallyProvidedLocationManager = v5 != 0;
-    objc_storeStrong(&v6->_clLocationManager, a3);
+    v6->_hasExternallyProvidedLocationManager = managerCopy != 0;
+    objc_storeStrong(&v6->_clLocationManager, manager);
     [(CLLocationManager *)v6->_clLocationManager setDelegate:v6];
     v6->_expectedGpsUpdateInterval = 1.0;
     v6->_authFetchStatus = 0;
     if (v6->_hasExternallyProvidedLocationManager)
     {
-      [v5 distanceFilter];
+      [managerCopy distanceFilter];
       v6->_distanceFilter = v13;
-      [v5 desiredAccuracy];
+      [managerCopy desiredAccuracy];
     }
 
     else

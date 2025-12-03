@@ -1,31 +1,31 @@
 @interface PGLongTailAdditionalOptions
 - (PGLongTailAdditionalOptions)init;
-- (PGLongTailAdditionalOptions)initWithDictionary:(id)a3;
+- (PGLongTailAdditionalOptions)initWithDictionary:(id)dictionary;
 @end
 
 @implementation PGLongTailAdditionalOptions
 
-- (PGLongTailAdditionalOptions)initWithDictionary:(id)a3
+- (PGLongTailAdditionalOptions)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = [(PGLongTailAdditionalOptions *)self init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"qualityPercentile"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"qualityPercentile"];
     v7 = v6;
     if (v6 && ([v6 integerValue] & 0x8000000000000000) == 0)
     {
       v5->_qualityPercentile = [v7 unsignedIntegerValue];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"verifiedPersonScore"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"verifiedPersonScore"];
     v9 = v8;
     if (v8 && ([v8 integerValue] & 0x8000000000000000) == 0)
     {
       v5->_verifiedPersonScoreValue = [v9 unsignedIntegerValue];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"topTierAestheticScore"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"topTierAestheticScore"];
     v11 = v10;
     if (v10 && ([v10 integerValue] & 0x8000000000000000) == 0)
     {

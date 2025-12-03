@@ -1,101 +1,101 @@
 @interface ToolbarButton
 - (CGSize)intrinsicContentSize;
-- (_TtC5Books13ToolbarButton)initWithFrame:(CGRect)a3;
-- (void)_traitCollectionDidChangeWithSender:(id)a3 previousTraitCollection:(id)a4;
+- (_TtC5Books13ToolbarButton)initWithFrame:(CGRect)frame;
+- (void)_traitCollectionDidChangeWithSender:(id)sender previousTraitCollection:(id)collection;
 - (void)accessibilityContrastChanged;
-- (void)didHover:(id)a3;
-- (void)sendActionsForControlEvents:(unint64_t)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setImage:(id)a3 forState:(unint64_t)a4;
-- (void)setSelected:(BOOL)a3;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
+- (void)didHover:(id)hover;
+- (void)sendActionsForControlEvents:(unint64_t)events;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setImage:(id)image forState:(unint64_t)state;
+- (void)setSelected:(BOOL)selected;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
 @end
 
 @implementation ToolbarButton
 
-- (void)sendActionsForControlEvents:(unint64_t)a3
+- (void)sendActionsForControlEvents:(unint64_t)events
 {
-  v4 = self;
-  ToolbarButton.sendActions(for:)(a3);
+  selfCopy = self;
+  ToolbarButton.sendActions(for:)(events);
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   sub_10000A7C4(0, &qword_100AE2248);
   sub_10053B0B4();
   v6 = sub_1007A2834();
-  v7 = a4;
-  v8 = self;
-  ToolbarButton.touchesEnded(_:with:)(v6, a4);
+  eventCopy = event;
+  selfCopy = self;
+  ToolbarButton.touchesEnded(_:with:)(v6, event);
 }
 
 - (void)accessibilityContrastChanged
 {
-  v2 = self;
+  selfCopy = self;
   sub_100539810();
 }
 
-- (void)_traitCollectionDidChangeWithSender:(id)a3 previousTraitCollection:(id)a4
+- (void)_traitCollectionDidChangeWithSender:(id)sender previousTraitCollection:(id)collection
 {
   swift_unknownObjectRetain();
-  v6 = a4;
-  v7 = self;
+  collectionCopy = collection;
+  selfCopy = self;
   sub_1007A3504();
   swift_unknownObjectRelease();
-  sub_100539A34(a4);
+  sub_100539A34(collection);
 
   sub_1000074E0(&v8);
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v7.receiver = self;
   v7.super_class = type metadata accessor for ToolbarButton();
   v4 = v7.receiver;
-  [(ToolbarButton *)&v7 setEnabled:v3];
+  [(ToolbarButton *)&v7 setEnabled:enabledCopy];
   if ([v4 isEnabled])
   {
-    v5 = sub_10053A4D8();
+    tertiaryLabelColor = sub_10053A4D8();
   }
 
   else
   {
-    v5 = [objc_opt_self() tertiaryLabelColor];
+    tertiaryLabelColor = [objc_opt_self() tertiaryLabelColor];
   }
 
-  v6 = v5;
-  [v4 setTitleColor:v5 forStates:0];
+  v6 = tertiaryLabelColor;
+  [v4 setTitleColor:tertiaryLabelColor forStates:0];
 }
 
-- (void)setImage:(id)a3 forState:(unint64_t)a4
+- (void)setImage:(id)image forState:(unint64_t)state
 {
-  v4 = a4;
-  v7 = a3;
-  v8 = self;
-  v10.value.super.isa = a3;
-  v10.is_nil = v4;
-  ToolbarButton.setImage(_:for:)(v10, v8);
+  stateCopy = state;
+  imageCopy = image;
+  selfCopy = self;
+  v10.value.super.isa = image;
+  v10.is_nil = stateCopy;
+  ToolbarButton.setImage(_:for:)(v10, selfCopy);
 }
 
-- (void)didHover:(id)a3
+- (void)didHover:(id)hover
 {
-  v4 = a3;
-  v5 = self;
-  sub_10053A1C8(v4);
+  hoverCopy = hover;
+  selfCopy = self;
+  sub_10053A1C8(hoverCopy);
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v4 = self;
-  ToolbarButton.isSelected.setter(a3);
+  selfCopy = self;
+  ToolbarButton.isSelected.setter(selected);
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v4 = self;
-  ToolbarButton.isHighlighted.setter(a3);
+  selfCopy = self;
+  ToolbarButton.isHighlighted.setter(highlighted);
 }
 
 - (CGSize)intrinsicContentSize
@@ -136,7 +136,7 @@
   return result;
 }
 
-- (_TtC5Books13ToolbarButton)initWithFrame:(CGRect)a3
+- (_TtC5Books13ToolbarButton)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

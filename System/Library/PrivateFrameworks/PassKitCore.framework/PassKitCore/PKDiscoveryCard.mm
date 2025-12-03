@@ -1,35 +1,35 @@
 @interface PKDiscoveryCard
-- (BOOL)isEqual:(id)a3;
-- (PKDiscoveryCard)initWithCoder:(id)a3;
-- (PKDiscoveryCard)initWithDictionary:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (PKDiscoveryCard)initWithCoder:(id)coder;
+- (PKDiscoveryCard)initWithDictionary:(id)dictionary;
 - (PKDiscoveryItem)item;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)localizeWithBundle:(id)a3 table:(id)a4;
-- (void)setItem:(id)a3;
-- (void)setMediaBundle:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)localizeWithBundle:(id)bundle table:(id)table;
+- (void)setItem:(id)item;
+- (void)setMediaBundle:(id)bundle;
 @end
 
 @implementation PKDiscoveryCard
 
-- (PKDiscoveryCard)initWithDictionary:(id)a3
+- (PKDiscoveryCard)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v32.receiver = self;
   v32.super_class = PKDiscoveryCard;
   v5 = [(PKDiscoveryCard *)&v32 init];
   if (v5)
   {
-    v6 = [v4 PKStringForKey:@"headingKey"];
+    v6 = [dictionaryCopy PKStringForKey:@"headingKey"];
     headingKey = v5->_headingKey;
     v5->_headingKey = v6;
 
-    v8 = [v4 PKStringForKey:@"titleKey"];
+    v8 = [dictionaryCopy PKStringForKey:@"titleKey"];
     titleKey = v5->_titleKey;
     v5->_titleKey = v8;
 
-    v10 = [v4 PKStringForKey:@"inlineDescriptionKey"];
+    v10 = [dictionaryCopy PKStringForKey:@"inlineDescriptionKey"];
     inlineDescriptionKey = v5->_inlineDescriptionKey;
     v5->_inlineDescriptionKey = v10;
 
@@ -38,7 +38,7 @@
     v27 = 3221225472;
     v28 = __38__PKDiscoveryCard_initWithDictionary___block_invoke;
     v29 = &unk_1E79C5040;
-    v13 = v4;
+    v13 = dictionaryCopy;
     v30 = v13;
     v14 = v12;
     v31 = v14;
@@ -85,36 +85,36 @@ void __38__PKDiscoveryCard_initWithDictionary___block_invoke(uint64_t a1, void *
   }
 }
 
-- (void)localizeWithBundle:(id)a3 table:(id)a4
+- (void)localizeWithBundle:(id)bundle table:(id)table
 {
   headingKey = self->_headingKey;
-  v7 = a4;
-  v14 = a3;
-  v8 = [v14 localizedStringForKey:headingKey value:&stru_1F227FD28 table:v7];
+  tableCopy = table;
+  bundleCopy = bundle;
+  v8 = [bundleCopy localizedStringForKey:headingKey value:&stru_1F227FD28 table:tableCopy];
   heading = self->_heading;
   self->_heading = v8;
 
-  v10 = [v14 localizedStringForKey:self->_titleKey value:&stru_1F227FD28 table:v7];
+  v10 = [bundleCopy localizedStringForKey:self->_titleKey value:&stru_1F227FD28 table:tableCopy];
   title = self->_title;
   self->_title = v10;
 
-  v12 = [v14 localizedStringForKey:self->_inlineDescriptionKey value:&stru_1F227FD28 table:v7];
+  v12 = [bundleCopy localizedStringForKey:self->_inlineDescriptionKey value:&stru_1F227FD28 table:tableCopy];
   inlineDescription = self->_inlineDescription;
   self->_inlineDescription = v12;
 
-  [(PKDiscoveryCallToAction *)self->_callToAction localizeWithBundle:v14 table:v7];
+  [(PKDiscoveryCallToAction *)self->_callToAction localizeWithBundle:bundleCopy table:tableCopy];
 }
 
-- (void)setMediaBundle:(id)a3
+- (void)setMediaBundle:(id)bundle
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  bundleCopy = bundle;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(NSDictionary *)self->_backgroundMediaByKey allValues];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  allValues = [(NSDictionary *)self->_backgroundMediaByKey allValues];
+  v6 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -126,34 +126,34 @@ void __38__PKDiscoveryCard_initWithDictionary___block_invoke(uint64_t a1, void *
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allValues);
         }
 
-        [*(*(&v10 + 1) + 8 * v9++) setBundle:v4];
+        [*(*(&v10 + 1) + 8 * v9++) setBundle:bundleCopy];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)setItem:(id)a3
+- (void)setItem:(id)item
 {
-  v6 = a3;
-  objc_storeWeak(&self->_item, v6);
-  v4 = [v6 identifier];
+  itemCopy = item;
+  objc_storeWeak(&self->_item, itemCopy);
+  identifier = [itemCopy identifier];
   itemIdentifier = self->_itemIdentifier;
-  self->_itemIdentifier = v4;
+  self->_itemIdentifier = identifier;
 
-  [(PKDiscoveryCallToAction *)self->_callToAction setItem:v6];
+  [(PKDiscoveryCallToAction *)self->_callToAction setItem:itemCopy];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -161,7 +161,7 @@ void __38__PKDiscoveryCard_initWithDictionary___block_invoke(uint64_t a1, void *
   }
 
   headingKey = self->_headingKey;
-  v6 = *(v4 + 3);
+  v6 = *(equalCopy + 3);
   if (headingKey && v6)
   {
     if (([(NSString *)headingKey isEqual:?]& 1) == 0)
@@ -176,7 +176,7 @@ void __38__PKDiscoveryCard_initWithDictionary___block_invoke(uint64_t a1, void *
   }
 
   titleKey = self->_titleKey;
-  v8 = *(v4 + 4);
+  v8 = *(equalCopy + 4);
   if (titleKey && v8)
   {
     if (([(NSString *)titleKey isEqual:?]& 1) == 0)
@@ -191,7 +191,7 @@ void __38__PKDiscoveryCard_initWithDictionary___block_invoke(uint64_t a1, void *
   }
 
   inlineDescriptionKey = self->_inlineDescriptionKey;
-  v10 = *(v4 + 5);
+  v10 = *(equalCopy + 5);
   if (inlineDescriptionKey && v10)
   {
     if (([(NSString *)inlineDescriptionKey isEqual:?]& 1) == 0)
@@ -206,7 +206,7 @@ void __38__PKDiscoveryCard_initWithDictionary___block_invoke(uint64_t a1, void *
   }
 
   backgroundMediaByKey = self->_backgroundMediaByKey;
-  v12 = *(v4 + 2);
+  v12 = *(equalCopy + 2);
   if (backgroundMediaByKey && v12)
   {
     if (([(NSDictionary *)backgroundMediaByKey isEqual:?]& 1) == 0)
@@ -220,13 +220,13 @@ void __38__PKDiscoveryCard_initWithDictionary___block_invoke(uint64_t a1, void *
     goto LABEL_42;
   }
 
-  if (!CGColorEqualToColor(-[PKColor CGColor](self->_backgroundColor, "CGColor"), [*(v4 + 6) CGColor]))
+  if (!CGColorEqualToColor(-[PKColor CGColor](self->_backgroundColor, "CGColor"), [*(equalCopy + 6) CGColor]))
   {
     goto LABEL_42;
   }
 
   callToAction = self->_callToAction;
-  v14 = *(v4 + 7);
+  v14 = *(equalCopy + 7);
   if (callToAction && v14)
   {
     if (![(PKDiscoveryCallToAction *)callToAction isEqual:?])
@@ -240,13 +240,13 @@ void __38__PKDiscoveryCard_initWithDictionary___block_invoke(uint64_t a1, void *
     goto LABEL_42;
   }
 
-  if (self->_foregroundContentMode != *(v4 + 8) || self->_largeCardTemplateType != *(v4 + 9))
+  if (self->_foregroundContentMode != *(equalCopy + 8) || self->_largeCardTemplateType != *(equalCopy + 9))
   {
     goto LABEL_42;
   }
 
   heading = self->_heading;
-  v16 = *(v4 + 10);
+  v16 = *(equalCopy + 10);
   if (heading && v16)
   {
     if (([(NSString *)heading isEqual:?]& 1) == 0)
@@ -261,7 +261,7 @@ void __38__PKDiscoveryCard_initWithDictionary___block_invoke(uint64_t a1, void *
   }
 
   title = self->_title;
-  v18 = *(v4 + 11);
+  v18 = *(equalCopy + 11);
   if (!title || !v18)
   {
     if (title == v18)
@@ -281,7 +281,7 @@ LABEL_42:
 
 LABEL_38:
   inlineDescription = self->_inlineDescription;
-  v20 = *(v4 + 12);
+  v20 = *(equalCopy + 12);
   if (inlineDescription && v20)
   {
     v21 = [(NSString *)inlineDescription isEqual:?];
@@ -337,41 +337,41 @@ LABEL_43:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   headingKey = self->_headingKey;
-  v5 = a3;
-  [v5 encodeObject:headingKey forKey:@"headingKey"];
-  [v5 encodeObject:self->_titleKey forKey:@"titleKey"];
-  [v5 encodeObject:self->_inlineDescriptionKey forKey:@"inlineDescriptionKey"];
-  [v5 encodeObject:self->_backgroundMediaByKey forKey:@"backgroundMedia"];
-  [v5 encodeObject:self->_backgroundColor forKey:@"backgroundColor"];
-  [v5 encodeObject:self->_callToAction forKey:@"callToAction"];
-  [v5 encodeInteger:self->_foregroundContentMode forKey:@"foregroundContentMode"];
-  [v5 encodeInteger:self->_largeCardTemplateType forKey:@"largeCardTemplateType"];
-  [v5 encodeObject:self->_heading forKey:@"heading"];
-  [v5 encodeObject:self->_title forKey:@"title"];
-  [v5 encodeObject:self->_inlineDescription forKey:@"inlineDescription"];
-  [v5 encodeObject:self->_itemIdentifier forKey:@"itemIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:headingKey forKey:@"headingKey"];
+  [coderCopy encodeObject:self->_titleKey forKey:@"titleKey"];
+  [coderCopy encodeObject:self->_inlineDescriptionKey forKey:@"inlineDescriptionKey"];
+  [coderCopy encodeObject:self->_backgroundMediaByKey forKey:@"backgroundMedia"];
+  [coderCopy encodeObject:self->_backgroundColor forKey:@"backgroundColor"];
+  [coderCopy encodeObject:self->_callToAction forKey:@"callToAction"];
+  [coderCopy encodeInteger:self->_foregroundContentMode forKey:@"foregroundContentMode"];
+  [coderCopy encodeInteger:self->_largeCardTemplateType forKey:@"largeCardTemplateType"];
+  [coderCopy encodeObject:self->_heading forKey:@"heading"];
+  [coderCopy encodeObject:self->_title forKey:@"title"];
+  [coderCopy encodeObject:self->_inlineDescription forKey:@"inlineDescription"];
+  [coderCopy encodeObject:self->_itemIdentifier forKey:@"itemIdentifier"];
 }
 
-- (PKDiscoveryCard)initWithCoder:(id)a3
+- (PKDiscoveryCard)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v31.receiver = self;
   v31.super_class = PKDiscoveryCard;
   v5 = [(PKDiscoveryCard *)&v31 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"headingKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"headingKey"];
     headingKey = v5->_headingKey;
     v5->_headingKey = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"titleKey"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"titleKey"];
     titleKey = v5->_titleKey;
     v5->_titleKey = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"inlineDescriptionKey"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"inlineDescriptionKey"];
     inlineDescriptionKey = v5->_inlineDescriptionKey;
     v5->_inlineDescriptionKey = v10;
 
@@ -379,33 +379,33 @@ LABEL_43:
     v13 = objc_opt_class();
     v14 = objc_opt_class();
     v15 = [v12 initWithObjects:{v13, v14, objc_opt_class(), 0}];
-    v16 = [v4 decodeObjectOfClasses:v15 forKey:@"backgroundMedia"];
+    v16 = [coderCopy decodeObjectOfClasses:v15 forKey:@"backgroundMedia"];
     backgroundMediaByKey = v5->_backgroundMediaByKey;
     v5->_backgroundMediaByKey = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"backgroundColor"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"backgroundColor"];
     backgroundColor = v5->_backgroundColor;
     v5->_backgroundColor = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"callToAction"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"callToAction"];
     callToAction = v5->_callToAction;
     v5->_callToAction = v20;
 
-    v5->_foregroundContentMode = [v4 decodeIntegerForKey:@"foregroundContentMode"];
-    v5->_largeCardTemplateType = [v4 decodeIntegerForKey:@"largeCardTemplateType"];
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"heading"];
+    v5->_foregroundContentMode = [coderCopy decodeIntegerForKey:@"foregroundContentMode"];
+    v5->_largeCardTemplateType = [coderCopy decodeIntegerForKey:@"largeCardTemplateType"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"heading"];
     heading = v5->_heading;
     v5->_heading = v22;
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
     title = v5->_title;
     v5->_title = v24;
 
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"inlineDescription"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"inlineDescription"];
     inlineDescription = v5->_inlineDescription;
     v5->_inlineDescription = v26;
 
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"itemIdentifier"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"itemIdentifier"];
     itemIdentifier = v5->_itemIdentifier;
     v5->_itemIdentifier = v28;
   }

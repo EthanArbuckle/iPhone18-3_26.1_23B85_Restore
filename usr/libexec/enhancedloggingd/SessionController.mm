@@ -1,10 +1,10 @@
 @interface SessionController
-- (void)elsDidUpdateStatusWithNotification:(id)a3;
+- (void)elsDidUpdateStatusWithNotification:(id)notification;
 @end
 
 @implementation SessionController
 
-- (void)elsDidUpdateStatusWithNotification:(id)a3
+- (void)elsDidUpdateStatusWithNotification:(id)notification
 {
   v3 = type metadata accessor for Notification();
   v4 = *(v3 - 8);

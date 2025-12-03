@@ -1,54 +1,54 @@
 @interface MIInstaller
-+ (id)installerForURL:(id)a3 identity:(id)a4 domain:(unint64_t)a5 options:(id)a6 operationType:(unint64_t)a7 forClient:(id)a8;
-- (BOOL)_extractPackageContainedSymlink:(BOOL *)a3 withError:(id *)a4;
-- (BOOL)_installInstallable:(id)a3 containingSymlink:(BOOL)a4 error:(id *)a5;
-- (BOOL)_installProvisioningProfilesAtStagingRootWithError:(id *)a3;
-- (BOOL)_installProvisioningProfilesFromUserOptionsWithError:(id *)a3;
-- (BOOL)_setupPackageStateWithError:(id *)a3;
-- (BOOL)_takeOwnershipOfInstallableContainingSymlink:(BOOL *)a3 error:(id *)a4;
-- (BOOL)_writeLockBundle:(id)a3 error:(id *)a4;
-- (BOOL)applyStagedUpdateWithJournalEntry:(id)a3 error:(id *)a4;
-- (BOOL)performInstallationWithError:(id *)a3;
-- (BOOL)removeAndReportAbandonedContainersWithIncorrectPersonaForBundleContainer:(id)a3 withError:(id *)a4;
-- (MIInstaller)initWithURL:(id)a3 identity:(id)a4 domain:(unint64_t)a5 options:(id)a6 operationType:(unint64_t)a7 forClient:(id)a8;
-- (id)_bundleInDirectory:(id)a3 withBundleID:(id)a4 platformHint:(unsigned int)a5 error:(id *)a6;
-- (id)_discoverInstallableWithError:(id *)a3;
-- (id)_existingBundleContainerForBundle:(id)a3 error:(id *)a4;
-- (id)_identifiersToLockBundleIdentifier:(id)a3 error:(id *)a4;
-- (id)_manifestPathForBase:(id)a3 withIdentifier:(id)a4 patchType:(unsigned __int8 *)a5 error:(id *)a6;
-- (id)_patchUpdateInstallableForBundle:(id)a3 manifestPath:(id)a4 existingBundleContainer:(id)a5 patchType:(unsigned __int8)a6 error:(id *)a7;
-- (void)_fireCallbackWithStatus:(id)a3;
-- (void)_logOperationCompletionWithStartTime:(unint64_t)a3 distributorID:(id)a4;
-- (void)_writeLockIdentifiers:(id)a3;
++ (id)installerForURL:(id)l identity:(id)identity domain:(unint64_t)domain options:(id)options operationType:(unint64_t)type forClient:(id)client;
+- (BOOL)_extractPackageContainedSymlink:(BOOL *)symlink withError:(id *)error;
+- (BOOL)_installInstallable:(id)installable containingSymlink:(BOOL)symlink error:(id *)error;
+- (BOOL)_installProvisioningProfilesAtStagingRootWithError:(id *)error;
+- (BOOL)_installProvisioningProfilesFromUserOptionsWithError:(id *)error;
+- (BOOL)_setupPackageStateWithError:(id *)error;
+- (BOOL)_takeOwnershipOfInstallableContainingSymlink:(BOOL *)symlink error:(id *)error;
+- (BOOL)_writeLockBundle:(id)bundle error:(id *)error;
+- (BOOL)applyStagedUpdateWithJournalEntry:(id)entry error:(id *)error;
+- (BOOL)performInstallationWithError:(id *)error;
+- (BOOL)removeAndReportAbandonedContainersWithIncorrectPersonaForBundleContainer:(id)container withError:(id *)error;
+- (MIInstaller)initWithURL:(id)l identity:(id)identity domain:(unint64_t)domain options:(id)options operationType:(unint64_t)type forClient:(id)client;
+- (id)_bundleInDirectory:(id)directory withBundleID:(id)d platformHint:(unsigned int)hint error:(id *)error;
+- (id)_discoverInstallableWithError:(id *)error;
+- (id)_existingBundleContainerForBundle:(id)bundle error:(id *)error;
+- (id)_identifiersToLockBundleIdentifier:(id)identifier error:(id *)error;
+- (id)_manifestPathForBase:(id)base withIdentifier:(id)identifier patchType:(unsigned __int8 *)type error:(id *)error;
+- (id)_patchUpdateInstallableForBundle:(id)bundle manifestPath:(id)path existingBundleContainer:(id)container patchType:(unsigned __int8)type error:(id *)error;
+- (void)_fireCallbackWithStatus:(id)status;
+- (void)_logOperationCompletionWithStartTime:(unint64_t)time distributorID:(id)d;
+- (void)_writeLockIdentifiers:(id)identifiers;
 - (void)dealloc;
 @end
 
 @implementation MIInstaller
 
-- (MIInstaller)initWithURL:(id)a3 identity:(id)a4 domain:(unint64_t)a5 options:(id)a6 operationType:(unint64_t)a7 forClient:(id)a8
+- (MIInstaller)initWithURL:(id)l identity:(id)identity domain:(unint64_t)domain options:(id)options operationType:(unint64_t)type forClient:(id)client
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
-  v17 = a8;
+  lCopy = l;
+  identityCopy = identity;
+  optionsCopy = options;
+  clientCopy = client;
   v23.receiver = self;
   v23.super_class = MIInstaller;
   v18 = [(MIInstaller *)&v23 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_installURL, a3);
-    objc_storeStrong(&v19->_identity, a4);
-    v20 = 2;
-    if (a5 != 1)
+    objc_storeStrong(&v18->_installURL, l);
+    objc_storeStrong(&v19->_identity, identity);
+    domainCopy = 2;
+    if (domain != 1)
     {
-      v20 = a5;
+      domainCopy = domain;
     }
 
-    v19->_installationDomain = v20;
-    objc_storeStrong(&v19->_options, a6);
-    objc_storeStrong(&v19->_client, a8);
-    v19->_installOperationType = a7;
+    v19->_installationDomain = domainCopy;
+    objc_storeStrong(&v19->_options, options);
+    objc_storeStrong(&v19->_client, client);
+    v19->_installOperationType = type;
   }
 
   return v19;
@@ -56,26 +56,26 @@
 
 - (void)dealloc
 {
-  v3 = [(MIInstaller *)self lockedIdentifiers];
+  lockedIdentifiers = [(MIInstaller *)self lockedIdentifiers];
 
-  if (v3)
+  if (lockedIdentifiers)
   {
-    v4 = [(MIInstaller *)self lockedIdentifiers];
-    sub_100054780(v4);
+    lockedIdentifiers2 = [(MIInstaller *)self lockedIdentifiers];
+    sub_100054780(lockedIdentifiers2);
 
     [(MIInstaller *)self setLockedIdentifiers:0];
   }
 
-  v5 = [(MIInstaller *)self client];
-  if (v5)
+  client = [(MIInstaller *)self client];
+  if (client)
   {
-    v6 = v5;
-    v7 = [(MIInstaller *)self terminationAssertionReleased];
+    v6 = client;
+    terminationAssertionReleased = [(MIInstaller *)self terminationAssertionReleased];
 
-    if ((v7 & 1) == 0)
+    if ((terminationAssertionReleased & 1) == 0)
     {
-      v8 = [(MIInstaller *)self client];
-      [v8 releaseTerminationAssertion];
+      client2 = [(MIInstaller *)self client];
+      [client2 releaseTerminationAssertion];
 
       [(MIInstaller *)self setTerminationAssertionReleased:1];
     }
@@ -86,38 +86,38 @@
   [(MIInstaller *)&v9 dealloc];
 }
 
-+ (id)installerForURL:(id)a3 identity:(id)a4 domain:(unint64_t)a5 options:(id)a6 operationType:(unint64_t)a7 forClient:(id)a8
++ (id)installerForURL:(id)l identity:(id)identity domain:(unint64_t)domain options:(id)options operationType:(unint64_t)type forClient:(id)client
 {
-  v13 = a8;
-  v14 = a6;
-  v15 = a4;
-  v16 = a3;
-  v17 = [objc_alloc(objc_opt_class()) initWithURL:v16 identity:v15 domain:a5 options:v14 operationType:a7 forClient:v13];
+  clientCopy = client;
+  optionsCopy = options;
+  identityCopy = identity;
+  lCopy = l;
+  v17 = [objc_alloc(objc_opt_class()) initWithURL:lCopy identity:identityCopy domain:domain options:optionsCopy operationType:type forClient:clientCopy];
 
   return v17;
 }
 
-- (void)_fireCallbackWithStatus:(id)a3
+- (void)_fireCallbackWithStatus:(id)status
 {
-  v4 = a3;
-  v5 = [(MIInstaller *)self client];
-  [v5 sendProgressWithStatus:v4];
+  statusCopy = status;
+  client = [(MIInstaller *)self client];
+  [client sendProgressWithStatus:statusCopy];
 }
 
-- (BOOL)_takeOwnershipOfInstallableContainingSymlink:(BOOL *)a3 error:(id *)a4
+- (BOOL)_takeOwnershipOfInstallableContainingSymlink:(BOOL *)symlink error:(id *)error
 {
   v29 = 0;
   v7 = +[MIHelperServiceFrameworkClient sharedInstance];
-  v8 = [(MIInstaller *)self identity];
-  v9 = [v8 location];
+  identity = [(MIInstaller *)self identity];
+  location = [identity location];
   v28 = 0;
-  v10 = [v7 stagingLocationForInstallLocation:v9 withinStagingSubsytem:1 usingUniqueName:0 error:&v28];
+  v10 = [v7 stagingLocationForInstallLocation:location withinStagingSubsytem:1 usingUniqueName:0 error:&v28];
   v11 = v28;
 
   if (!v10)
   {
     v16 = v11;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_15;
     }
@@ -126,17 +126,17 @@
   }
 
   v12 = +[MIHelperServiceClient sharedInstance];
-  v13 = [(MIInstaller *)self installURL];
-  v14 = [(MIInstaller *)self options];
+  installURL = [(MIInstaller *)self installURL];
+  options = [(MIInstaller *)self options];
   v27 = v11;
-  v15 = [v12 stageItemAtURL:v13 toStagingLocation:v10 options:v14 containedSymlink:&v29 error:&v27];
+  v15 = [v12 stageItemAtURL:installURL toStagingLocation:v10 options:options containedSymlink:&v29 error:&v27];
   v16 = v27;
 
   if (!v15)
   {
-    v18 = [v16 domain];
+    domain = [v16 domain];
     v19 = MIInstallerErrorDomain;
-    v20 = [v18 isEqualToString:MIInstallerErrorDomain];
+    v20 = [domain isEqualToString:MIInstallerErrorDomain];
 
     if (v20)
     {
@@ -145,7 +145,7 @@
         MOLogWrite();
       }
 
-      if (a4)
+      if (error)
       {
         goto LABEL_13;
       }
@@ -155,12 +155,12 @@ LABEL_15:
       goto LABEL_16;
     }
 
-    v22 = [(MIInstaller *)self installURL];
-    v23 = [v22 path];
-    v25 = sub_100010734("[MIInstaller _takeOwnershipOfInstallableContainingSymlink:error:]", 205, v19, 103, v16, 0, @"Failed to transfer ownership of path %@ to installd", v24, v23);
+    installURL2 = [(MIInstaller *)self installURL];
+    path = [installURL2 path];
+    v25 = sub_100010734("[MIInstaller _takeOwnershipOfInstallableContainingSymlink:error:]", 205, v19, 103, v16, 0, @"Failed to transfer ownership of path %@ to installd", v24, path);
 
     v16 = v25;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_15;
     }
@@ -168,13 +168,13 @@ LABEL_15:
 LABEL_13:
     v21 = v16;
     v17 = 0;
-    *a4 = v16;
+    *error = v16;
     goto LABEL_16;
   }
 
-  if (a3)
+  if (symlink)
   {
-    *a3 = v29;
+    *symlink = v29;
   }
 
   [(MIInstaller *)self setInstallURL:v15];
@@ -186,29 +186,29 @@ LABEL_16:
   return v17;
 }
 
-- (BOOL)_setupPackageStateWithError:(id *)a3
+- (BOOL)_setupPackageStateWithError:(id *)error
 {
   memset(&v60, 0, sizeof(v60));
-  v5 = [(MIInstaller *)self installURL];
-  if (lstat([v5 fileSystemRepresentation], &v60))
+  installURL = [(MIInstaller *)self installURL];
+  if (lstat([installURL fileSystemRepresentation], &v60))
   {
     v6 = MIInstallerErrorDomain;
-    v7 = [NSError errorWithDomain:NSPOSIXErrorDomain code:*__error() userInfo:0];
+    path2 = [NSError errorWithDomain:NSPOSIXErrorDomain code:*__error() userInfo:0];
     v68 = MIPathArgumentErrorKey;
-    v8 = [(MIInstaller *)self installURL];
-    v9 = [v8 path];
-    v69 = v9;
+    installURL2 = [(MIInstaller *)self installURL];
+    path = [installURL2 path];
+    v69 = path;
     v10 = [NSDictionary dictionaryWithObjects:&v69 forKeys:&v68 count:1];
-    v11 = [v5 fileSystemRepresentation];
+    fileSystemRepresentation = [installURL fileSystemRepresentation];
     v12 = __error();
     strerror(*v12);
-    v14 = sub_100010734("[MIInstaller _setupPackageStateWithError:]", 239, v6, 3, v7, v10, @"Can't stat %s: %s", v13, v11);
+    stagingRoot = sub_100010734("[MIInstaller _setupPackageStateWithError:]", 239, v6, 3, path2, v10, @"Can't stat %s: %s", v13, fileSystemRepresentation);
 
 LABEL_28:
     goto LABEL_29;
   }
 
-  v15 = v5;
+  v15 = installURL;
   LOBYTE(value) = 110;
   v16 = getxattr([v15 fileSystemRepresentation], "com.apple.streamingzip.incomplete_extraction", &value, 1uLL, 0, 1);
   if (v16 == -1)
@@ -230,24 +230,24 @@ LABEL_5:
 
     v17 = MIInstallerErrorDomain;
     v66[0] = MIPathArgumentErrorKey;
-    v7 = [v15 path];
+    path2 = [v15 path];
     v66[1] = @"LegacyErrorString";
-    v67[0] = v7;
+    v67[0] = path2;
     v67[1] = @"PackageInspectionFailed";
-    v8 = [NSDictionary dictionaryWithObjects:v67 forKeys:v66 count:2];
-    v51 = [v15 fileSystemRepresentation];
-    sub_100010734("[MIInstaller _setupPackageStateWithError:]", 246, v17, 3, 0, v8, @"Archive we've been requested to install at %s is an incomplete download.", v18, v51);
-    v14 = LABEL_27:;
+    installURL2 = [NSDictionary dictionaryWithObjects:v67 forKeys:v66 count:2];
+    fileSystemRepresentation2 = [v15 fileSystemRepresentation];
+    sub_100010734("[MIInstaller _setupPackageStateWithError:]", 246, v17, 3, 0, installURL2, @"Archive we've been requested to install at %s is an incomplete download.", v18, fileSystemRepresentation2);
+    stagingRoot = LABEL_27:;
     goto LABEL_28;
   }
 
   if (!qword_1000A9720 || *(qword_1000A9720 + 44) >= 3)
   {
-    v19 = [v15 fileSystemRepresentation];
+    fileSystemRepresentation3 = [v15 fileSystemRepresentation];
     v20 = __error();
-    v53 = v19;
+    v53 = fileSystemRepresentation3;
     v54 = strerror(*v20);
-    v50 = "com.apple.streamingzip.incomplete_extraction";
+    fileSystemRepresentation7 = "com.apple.streamingzip.incomplete_extraction";
     MOLogWrite();
   }
 
@@ -260,10 +260,10 @@ LABEL_11:
     {
       v33 = MIInstallerErrorDomain;
       v62 = MIPathArgumentErrorKey;
-      v7 = [v15 path];
-      v63 = v7;
-      v8 = [NSDictionary dictionaryWithObjects:&v63 forKeys:&v62 count:1];
-      sub_100010734("[MIInstaller _setupPackageStateWithError:]", 293, v33, 3, 0, v8, @"Unrecognized package file type 0%o", v34, v60.st_mode);
+      path2 = [v15 path];
+      v63 = path2;
+      installURL2 = [NSDictionary dictionaryWithObjects:&v63 forKeys:&v62 count:1];
+      sub_100010734("[MIInstaller _setupPackageStateWithError:]", 293, v33, 3, 0, installURL2, @"Unrecognized package file type 0%o", v34, v60.st_mode);
       goto LABEL_27;
     }
 
@@ -271,13 +271,13 @@ LABEL_11:
     {
       v37 = MIInstallerErrorDomain;
       v64[0] = MIPathArgumentErrorKey;
-      v7 = [v15 path];
+      path2 = [v15 path];
       v64[1] = @"LegacyErrorString";
-      v65[0] = v7;
+      v65[0] = path2;
       v65[1] = @"PackageExtractionFailed";
-      v8 = [NSDictionary dictionaryWithObjects:v65 forKeys:v64 count:2];
-      v52 = [v15 fileSystemRepresentation];
-      sub_100010734("[MIInstaller _setupPackageStateWithError:]", 259, v37, 3, 0, v8, @"Archive we've been requested to install at %s is 0 bytes. That can't be a valid ipa.", v38, v52);
+      installURL2 = [NSDictionary dictionaryWithObjects:v65 forKeys:v64 count:2];
+      fileSystemRepresentation4 = [v15 fileSystemRepresentation];
+      sub_100010734("[MIInstaller _setupPackageStateWithError:]", 259, v37, 3, 0, installURL2, @"Archive we've been requested to install at %s is 0 bytes. That can't be a valid ipa.", v38, fileSystemRepresentation4);
       goto LABEL_27;
     }
 
@@ -288,9 +288,9 @@ LABEL_11:
     {
       if (!qword_1000A9720 || *(qword_1000A9720 + 44) >= 3)
       {
-        v42 = [v22 fileSystemRepresentation];
+        fileSystemRepresentation5 = [v22 fileSystemRepresentation];
         v43 = __error();
-        v50 = v42;
+        fileSystemRepresentation7 = fileSystemRepresentation5;
         v53 = strerror(*v43);
         MOLogWrite();
       }
@@ -307,7 +307,7 @@ LABEL_11:
         close(v24);
 
 LABEL_47:
-        [(MIInstaller *)self setPackageFormat:1, v50, v53, v54, v55, v56, v57, v58, v59];
+        [(MIInstaller *)self setPackageFormat:1, fileSystemRepresentation7, v53, v54, v55, v56, v57, v58, v59];
         goto LABEL_48;
       }
 
@@ -322,7 +322,7 @@ LABEL_47:
       v57 = 75;
       v54 = SBYTE2(value);
       v55 = SHIBYTE(value);
-      v50 = value;
+      fileSystemRepresentation7 = value;
       v53 = SBYTE1(value);
     }
 
@@ -334,11 +334,11 @@ LABEL_47:
         goto LABEL_43;
       }
 
-      v45 = [v22 fileSystemRepresentation];
+      fileSystemRepresentation6 = [v22 fileSystemRepresentation];
       v46 = __error();
-      v54 = v45;
+      v54 = fileSystemRepresentation6;
       v55 = strerror(*v46);
-      v50 = 4;
+      fileSystemRepresentation7 = 4;
       v53 = v44;
     }
 
@@ -349,7 +349,7 @@ LABEL_44:
 
     if (!qword_1000A9720 || *(qword_1000A9720 + 44) >= 3)
     {
-      v50 = [v22 fileSystemRepresentation];
+      fileSystemRepresentation7 = [v22 fileSystemRepresentation];
       MOLogWrite();
     }
 
@@ -358,17 +358,17 @@ LABEL_44:
 
   v26 = [v15 URLByAppendingPathComponent:@"Payload" isDirectory:1];
   v27 = [v15 URLByAppendingPathComponent:@"AssetData" isDirectory:1];
-  v28 = [(MIInstaller *)self options];
-  v29 = [v28 isSystemAppInstall];
+  options = [(MIInstaller *)self options];
+  isSystemAppInstall = [options isSystemAppInstall];
 
-  if (v29 && (+[MIFileManager defaultManager](MIFileManager, "defaultManager"), v30 = objc_claimAutoreleasedReturnValue(), v31 = [v30 itemExistsAtURL:v27], v30, (v31 & 1) != 0))
+  if (isSystemAppInstall && (+[MIFileManager defaultManager](MIFileManager, "defaultManager"), v30 = objc_claimAutoreleasedReturnValue(), v31 = [v30 itemExistsAtURL:v27], v30, (v31 & 1) != 0))
   {
     v32 = 4;
   }
 
   else
   {
-    v35 = [MIFileManager defaultManager:v50];
+    v35 = [MIFileManager defaultManager:fileSystemRepresentation7];
     v36 = [v35 itemExistsAtURL:v26];
 
     if (v36)
@@ -382,31 +382,31 @@ LABEL_44:
     }
   }
 
-  [(MIInstaller *)self setPackageFormat:v32, v50];
+  [(MIInstaller *)self setPackageFormat:v32, fileSystemRepresentation7];
 
 LABEL_48:
-  v47 = [v15 URLByDeletingLastPathComponent];
-  [(MIInstaller *)self setStagingRoot:v47];
+  uRLByDeletingLastPathComponent = [v15 URLByDeletingLastPathComponent];
+  [(MIInstaller *)self setStagingRoot:uRLByDeletingLastPathComponent];
 
-  v14 = [(MIInstaller *)self stagingRoot];
+  stagingRoot = [(MIInstaller *)self stagingRoot];
 
-  if (v14)
+  if (stagingRoot)
   {
-    v48 = [(MIInstaller *)self stagingRoot];
+    stagingRoot2 = [(MIInstaller *)self stagingRoot];
     v40 = 1;
-    v49 = [v48 URLByAppendingPathComponent:@"extracted" isDirectory:1];
+    v49 = [stagingRoot2 URLByAppendingPathComponent:@"extracted" isDirectory:1];
     [(MIInstaller *)self setStagingURL:v49];
 
-    v14 = 0;
+    stagingRoot = 0;
     goto LABEL_32;
   }
 
 LABEL_29:
-  if (a3)
+  if (error)
   {
-    v39 = v14;
+    v39 = stagingRoot;
     v40 = 0;
-    *a3 = v14;
+    *error = stagingRoot;
   }
 
   else
@@ -419,43 +419,43 @@ LABEL_32:
   return v40;
 }
 
-- (BOOL)_extractPackageContainedSymlink:(BOOL *)a3 withError:(id *)a4
+- (BOOL)_extractPackageContainedSymlink:(BOOL *)symlink withError:(id *)error
 {
   v7 = +[MIFileManager defaultManager];
   if ([(MIInstaller *)self packageFormat]!= 1)
   {
-    v14 = [(MIInstaller *)self stagingURL];
+    stagingURL = [(MIInstaller *)self stagingURL];
     if ([(MIInstaller *)self packageFormat]== 2)
     {
-      v22 = [(MIInstaller *)self installURL];
-      v23 = [v22 pathExtension];
+      installURL = [(MIInstaller *)self installURL];
+      pathExtension = [installURL pathExtension];
 
-      v24 = [v23 isEqualToString:@"app"];
-      v25 = [(MIInstaller *)self installURL];
-      v26 = [v25 lastPathComponent];
-      v27 = v26;
+      v24 = [pathExtension isEqualToString:@"app"];
+      installURL2 = [(MIInstaller *)self installURL];
+      lastPathComponent = [installURL2 lastPathComponent];
+      v27 = lastPathComponent;
       if ((v24 & 1) == 0)
       {
-        v28 = [v26 stringByAppendingString:@".app"];
+        v28 = [lastPathComponent stringByAppendingString:@".app"];
 
         v27 = v28;
       }
 
-      v29 = [v14 URLByAppendingPathComponent:v27 isDirectory:1];
+      v29 = [stagingURL URLByAppendingPathComponent:v27 isDirectory:1];
 
-      v30 = [(MIInstaller *)self stagingURL];
+      stagingURL2 = [(MIInstaller *)self stagingURL];
       v50 = 0;
-      v31 = [v7 createDirectoryAtURL:v30 withIntermediateDirectories:0 mode:493 error:&v50];
+      v31 = [v7 createDirectoryAtURL:stagingURL2 withIntermediateDirectories:0 mode:493 error:&v50];
       v32 = v50;
 
       if ((v31 & 1) == 0 && (!qword_1000A9720 || *(qword_1000A9720 + 44) >= 3))
       {
-        v45 = [(MIInstaller *)self stagingURL];
+        stagingURL3 = [(MIInstaller *)self stagingURL];
         v46 = v32;
         MOLogWrite();
       }
 
-      v14 = v29;
+      stagingURL = v29;
     }
 
     else
@@ -465,16 +465,16 @@ LABEL_32:
 
     if (qword_1000A9720 && *(qword_1000A9720 + 44) >= 7)
     {
-      v35 = [(MIInstaller *)self installURL];
-      v36 = [v35 path];
-      [v14 path];
-      v46 = v45 = v36;
+      installURL3 = [(MIInstaller *)self installURL];
+      path = [installURL3 path];
+      [stagingURL path];
+      v46 = stagingURL3 = path;
       MOLogWrite();
     }
 
-    v37 = [(MIInstaller *)self installURL:v45];
+    v37 = [(MIInstaller *)self installURL:stagingURL3];
     v49 = v32;
-    v38 = [v7 moveItemAtURL:v37 toURL:v14 error:&v49];
+    v38 = [v7 moveItemAtURL:v37 toURL:stagingURL error:&v49];
     v11 = v49;
 
     if (v38)
@@ -484,42 +484,42 @@ LABEL_32:
     }
 
     v39 = MIInstallerErrorDomain;
-    v40 = [(MIInstaller *)self installURL];
-    v41 = [v40 path];
-    v48 = [v14 path];
-    v21 = sub_100010734("[MIInstaller _extractPackageContainedSymlink:withError:]", 357, v39, 5, v11, &off_10009C1C8, @"Failed to move %@ to %@", v42, v41);
+    installURL4 = [(MIInstaller *)self installURL];
+    path2 = [installURL4 path];
+    path3 = [stagingURL path];
+    v21 = sub_100010734("[MIInstaller _extractPackageContainedSymlink:withError:]", 357, v39, 5, v11, &off_10009C1C8, @"Failed to move %@ to %@", v42, path2);
 
     goto LABEL_29;
   }
 
-  v8 = [(MIInstaller *)self installURL];
-  v9 = [(MIInstaller *)self stagingURL];
+  installURL5 = [(MIInstaller *)self installURL];
+  stagingURL4 = [(MIInstaller *)self stagingURL];
   v53 = 0;
-  v10 = [MIBOMWrapper extractZipArchiveAtURL:v8 toURL:v9 withError:&v53];
+  v10 = [MIBOMWrapper extractZipArchiveAtURL:installURL5 toURL:stagingURL4 withError:&v53];
   v11 = v53;
 
   if (v10)
   {
-    v12 = [(MIInstaller *)self installURL];
+    installURL6 = [(MIInstaller *)self installURL];
     v52 = 0;
-    v13 = [v7 removeItemAtURL:v12 error:&v52];
-    v14 = v52;
+    v13 = [v7 removeItemAtURL:installURL6 error:&v52];
+    stagingURL = v52;
 
     if ((v13 & 1) == 0 && (!qword_1000A9720 || *(qword_1000A9720 + 44) >= 3))
     {
-      v15 = [(MIInstaller *)self installURL];
-      v45 = [v15 path];
-      v46 = v14;
+      installURL7 = [(MIInstaller *)self installURL];
+      stagingURL3 = [installURL7 path];
+      v46 = stagingURL;
       MOLogWrite();
     }
 
-    v16 = [(MIInstaller *)self stagingURL:v45];
+    v16 = [(MIInstaller *)self stagingURL:stagingURL3];
     v17 = +[MIDaemonConfiguration sharedInstance];
     v18 = [v17 uid];
     v19 = +[MIDaemonConfiguration sharedInstance];
     v51 = v11;
     v20 = 1;
-    LOBYTE(v18) = [v7 standardizeOwnershipAtURL:v16 toUID:v18 GID:objc_msgSend(v19 removeACLs:"gid") setProtectionClass:1 foundSymlink:1 error:{a3, &v51}];
+    LOBYTE(v18) = [v7 standardizeOwnershipAtURL:v16 toUID:v18 GID:objc_msgSend(v19 removeACLs:"gid") setProtectionClass:1 foundSymlink:1 error:{symlink, &v51}];
     v21 = v51;
 
     if (v18)
@@ -542,7 +542,7 @@ LABEL_30:
   if (qword_1000A9720 && *(qword_1000A9720 + 44) < 3)
   {
     v20 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_33;
     }
@@ -550,20 +550,20 @@ LABEL_30:
     goto LABEL_32;
   }
 
-  v14 = [(MIInstaller *)self installURL];
-  v33 = [v14 path];
-  v34 = [(MIInstaller *)self stagingURL];
-  v47 = [v34 path];
+  stagingURL = [(MIInstaller *)self installURL];
+  path4 = [stagingURL path];
+  stagingURL5 = [(MIInstaller *)self stagingURL];
+  path5 = [stagingURL5 path];
   MOLogWrite();
 
   v20 = 0;
 LABEL_31:
 
-  if (a4)
+  if (error)
   {
 LABEL_32:
     v43 = v11;
-    *a4 = v11;
+    *error = v11;
   }
 
 LABEL_33:
@@ -571,18 +571,18 @@ LABEL_33:
   return v20;
 }
 
-- (id)_manifestPathForBase:(id)a3 withIdentifier:(id)a4 patchType:(unsigned __int8 *)a5 error:(id *)a6
+- (id)_manifestPathForBase:(id)base withIdentifier:(id)identifier patchType:(unsigned __int8 *)type error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [@"com.apple.deltainstallcommands." stringByAppendingString:v9];
-  v11 = [v8 URLByAppendingPathComponent:v10 isDirectory:0];
+  baseCopy = base;
+  identifierCopy = identifier;
+  v10 = [@"com.apple.deltainstallcommands." stringByAppendingString:identifierCopy];
+  v11 = [baseCopy URLByAppendingPathComponent:v10 isDirectory:0];
 
-  v12 = [@"com.apple.parallelpatchinfo." stringByAppendingString:v9];
-  v13 = [v8 URLByAppendingPathComponent:v12 isDirectory:0];
+  v12 = [@"com.apple.parallelpatchinfo." stringByAppendingString:identifierCopy];
+  v13 = [baseCopy URLByAppendingPathComponent:v12 isDirectory:0];
 
-  v14 = [@"com.apple.parallelpatcharchive." stringByAppendingString:v9];
-  v15 = [v8 URLByAppendingPathComponent:v14 isDirectory:0];
+  v14 = [@"com.apple.parallelpatcharchive." stringByAppendingString:identifierCopy];
+  v15 = [baseCopy URLByAppendingPathComponent:v14 isDirectory:0];
 
   v16 = +[MIFileManager defaultManager];
   v43 = 0;
@@ -591,7 +591,7 @@ LABEL_33:
   v40 = v11;
   if (v14)
   {
-    *a5 = 4;
+    *type = 4;
     v18 = v15;
     if (qword_1000A9720)
     {
@@ -612,7 +612,7 @@ LABEL_16:
     v25 = 0;
     v23 = v17;
 LABEL_17:
-    v24 = a6;
+    errorCopy2 = error;
     goto LABEL_18;
   }
 
@@ -621,7 +621,7 @@ LABEL_17:
   v21 = v42;
   if (v20)
   {
-    *a5 = 2;
+    *type = 2;
     v18 = v11;
     if (qword_1000A9720)
     {
@@ -647,30 +647,30 @@ LABEL_17:
 
   if (!v22)
   {
-    *a5 = 0;
-    v28 = [v21 domain];
-    if ([v28 isEqualToString:NSPOSIXErrorDomain] && objc_msgSend(v21, "code") == 2)
+    *type = 0;
+    domain = [v21 domain];
+    if ([domain isEqualToString:NSPOSIXErrorDomain] && objc_msgSend(v21, "code") == 2)
     {
-      v29 = [v23 domain];
-      if ([v29 isEqualToString:NSPOSIXErrorDomain])
+      domain2 = [v23 domain];
+      if ([domain2 isEqualToString:NSPOSIXErrorDomain])
       {
-        v38 = [v23 code];
+        code = [v23 code];
 
-        if (v38 == 2)
+        if (code == 2)
         {
-          v25 = sub_1000106F4("[MIInstaller _manifestPathForBase:withIdentifier:patchType:error:]", 397, NSPOSIXErrorDomain, 2, 0, 0, @"No manifest file for application %@ found in %@", v30, v9);
+          v25 = sub_1000106F4("[MIInstaller _manifestPathForBase:withIdentifier:patchType:error:]", 397, NSPOSIXErrorDomain, 2, 0, 0, @"No manifest file for application %@ found in %@", v30, identifierCopy);
 LABEL_42:
           v18 = 0;
           goto LABEL_17;
         }
 
 LABEL_33:
-        v31 = [v21 domain];
-        if ([v31 isEqualToString:NSPOSIXErrorDomain])
+        domain3 = [v21 domain];
+        if ([domain3 isEqualToString:NSPOSIXErrorDomain])
         {
-          v32 = [v21 code];
+          code2 = [v21 code];
 
-          if (v32 == 2)
+          if (code2 == 2)
           {
             v33 = v23;
           }
@@ -680,7 +680,7 @@ LABEL_33:
             v33 = v21;
           }
 
-          if (v32 == 2)
+          if (code2 == 2)
           {
             v34 = v19;
           }
@@ -709,7 +709,7 @@ LABEL_33:
     goto LABEL_33;
   }
 
-  *a5 = 3;
+  *type = 3;
   v18 = v19;
   if (!qword_1000A9720)
   {
@@ -717,7 +717,7 @@ LABEL_33:
     goto LABEL_17;
   }
 
-  v24 = a6;
+  errorCopy2 = error;
   if (*(qword_1000A9720 + 44) >= 7)
   {
     MOLogWrite();
@@ -725,19 +725,19 @@ LABEL_33:
 
   v25 = 0;
 LABEL_18:
-  if (v24 && !v18)
+  if (errorCopy2 && !v18)
   {
     v26 = v25;
-    *v24 = v25;
+    *errorCopy2 = v25;
   }
 
   return v18;
 }
 
-- (id)_bundleInDirectory:(id)a3 withBundleID:(id)a4 platformHint:(unsigned int)a5 error:(id *)a6
+- (id)_bundleInDirectory:(id)directory withBundleID:(id)d platformHint:(unsigned int)hint error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
+  directoryCopy = directory;
+  dCopy = d;
   v37 = 0;
   v38 = &v37;
   v39 = 0x3032000000;
@@ -756,12 +756,12 @@ LABEL_18:
   v24[1] = 3221225472;
   v24[2] = sub_100023B98;
   v24[3] = &unk_1000913F0;
-  v30 = a5;
+  hintCopy = hint;
   v28 = &v31;
-  v13 = v10;
+  v13 = dCopy;
   v25 = v13;
   v29 = &v37;
-  v14 = v9;
+  v14 = directoryCopy;
   v26 = v14;
   v15 = v11;
   v27 = v15;
@@ -771,7 +771,7 @@ LABEL_18:
   {
 LABEL_4:
     v17 = 0;
-    if (!a6)
+    if (!error)
     {
       goto LABEL_7;
     }
@@ -802,12 +802,12 @@ LABEL_4:
   }
 
   v17 = v38[5];
-  if (a6)
+  if (error)
   {
 LABEL_5:
     if (!v17)
     {
-      *a6 = v32[5];
+      *error = v32[5];
     }
   }
 
@@ -820,27 +820,27 @@ LABEL_7:
   return v18;
 }
 
-- (id)_identifiersToLockBundleIdentifier:(id)a3 error:(id *)a4
+- (id)_identifiersToLockBundleIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v7 = objc_opt_new();
-  [v7 addObject:v6];
-  v8 = [(MIInstaller *)self options];
-  v9 = [v8 linkedParentBundleID];
+  [v7 addObject:identifierCopy];
+  options = [(MIInstaller *)self options];
+  linkedParentBundleID = [options linkedParentBundleID];
 
-  if (v9)
+  if (linkedParentBundleID)
   {
-    [v7 addObject:v9];
+    [v7 addObject:linkedParentBundleID];
   }
 
-  sub_100054628(v6);
+  sub_100054628(identifierCopy);
   v10 = [MIContainerLinkManager sharedInstanceForDomain:[(MIInstaller *)self installationDomain]];
   v20 = 0;
   v21 = 0;
-  v11 = [v10 getLinkedParent:&v21 forChild:v6 error:&v20];
+  v11 = [v10 getLinkedParent:&v21 forChild:identifierCopy error:&v20];
   v12 = v21;
   v13 = v20;
-  sub_100054780(v6);
+  sub_100054780(identifierCopy);
   if (v11)
   {
     if (v12)
@@ -853,7 +853,7 @@ LABEL_7:
   {
     if (!qword_1000A9720 || *(qword_1000A9720 + 44) >= 3)
     {
-      v18 = v6;
+      v18 = identifierCopy;
       v19 = v13;
       MOLogWrite();
     }
@@ -863,33 +863,33 @@ LABEL_7:
 
   v14 = [v7 copy];
   v15 = v14;
-  if (a4 && !v14)
+  if (error && !v14)
   {
     v16 = v13;
-    *a4 = v13;
+    *error = v13;
   }
 
   return v15;
 }
 
-- (void)_writeLockIdentifiers:(id)a3
+- (void)_writeLockIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   [(MIInstaller *)self _fireCallbackWithStatus:@"TakingInstallLock"];
-  [(MIInstaller *)self setLockedIdentifiers:v4];
+  [(MIInstaller *)self setLockedIdentifiers:identifiersCopy];
   v5 = mach_absolute_time();
-  sub_100054630(v4);
+  sub_100054630(identifiersCopy);
 
   v6 = (mach_absolute_time() - v5) * qword_1000A9728 / HIDWORD(qword_1000A9728);
 
   [(MIInstaller *)self setWaitingTime:v6];
 }
 
-- (BOOL)_writeLockBundle:(id)a3 error:(id *)a4
+- (BOOL)_writeLockBundle:(id)bundle error:(id *)error
 {
-  v6 = [a3 identifier];
+  identifier = [bundle identifier];
   v11 = 0;
-  v7 = [(MIInstaller *)self _identifiersToLockBundleIdentifier:v6 error:&v11];
+  v7 = [(MIInstaller *)self _identifiersToLockBundleIdentifier:identifier error:&v11];
   v8 = v11;
 
   if (v7)
@@ -897,30 +897,30 @@ LABEL_7:
     [(MIInstaller *)self _writeLockIdentifiers:v7];
   }
 
-  else if (a4)
+  else if (error)
   {
     v9 = v8;
-    *a4 = v8;
+    *error = v8;
   }
 
   return v7 != 0;
 }
 
-- (BOOL)removeAndReportAbandonedContainersWithIncorrectPersonaForBundleContainer:(id)a3 withError:(id *)a4
+- (BOOL)removeAndReportAbandonedContainersWithIncorrectPersonaForBundleContainer:(id)container withError:(id *)error
 {
-  v6 = a3;
+  containerCopy = container;
   v7 = +[MIDaemonConfiguration sharedInstance];
-  v8 = [v7 deviceHasPersonas];
+  deviceHasPersonas = [v7 deviceHasPersonas];
 
-  if (!v8)
+  if (!deviceHasPersonas)
   {
     v17 = 1;
     goto LABEL_55;
   }
 
-  v9 = [(MIInstaller *)self identity];
-  v10 = [v9 bundleID];
-  v62 = [v9 personaUniqueString];
+  identity = [(MIInstaller *)self identity];
+  bundleID = [identity bundleID];
+  personaUniqueString = [identity personaUniqueString];
   v11 = +[MIUserManagement sharedInstance];
   v12 = objc_opt_new();
   v13 = +[MIUserManagement sharedInstance];
@@ -931,8 +931,8 @@ LABEL_7:
   if (!v14)
   {
     obj = 0;
-    v16 = 0;
-    if (!a4)
+    personaUniqueString3 = 0;
+    if (!error)
     {
       goto LABEL_53;
     }
@@ -940,10 +940,10 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  if ([v14 containsObject:v10])
+  if ([v14 containsObject:bundleID])
   {
     obj = 0;
-    v16 = 0;
+    personaUniqueString3 = 0;
     v17 = 1;
     goto LABEL_54;
   }
@@ -951,22 +951,22 @@ LABEL_7:
   v57 = v14;
   v58 = v12;
   v70 = v15;
-  v19 = [MIContainer allContainersForAllPersonasForIdentifier:v10 options:2 error:&v70];
+  v19 = [MIContainer allContainersForAllPersonasForIdentifier:bundleID options:2 error:&v70];
   v20 = v70;
 
   if (!v19)
   {
-    v15 = sub_100010734("[MIInstaller removeAndReportAbandonedContainersWithIncorrectPersonaForBundleContainer:withError:]", 609, MIInstallerErrorDomain, 4, v20, 0, @"Failed to query containers for %@", v21, v10);
+    v15 = sub_100010734("[MIInstaller removeAndReportAbandonedContainersWithIncorrectPersonaForBundleContainer:withError:]", 609, MIInstallerErrorDomain, 4, v20, 0, @"Failed to query containers for %@", v21, bundleID);
     obj = 0;
-    v16 = 0;
+    personaUniqueString3 = 0;
     goto LABEL_52;
   }
 
-  v53 = a4;
+  errorCopy = error;
   v54 = v11;
-  v59 = v10;
-  v55 = v9;
-  v56 = v6;
+  v59 = bundleID;
+  v55 = identity;
+  v56 = containerCopy;
   v68 = 0u;
   v69 = 0u;
   v66 = 0u;
@@ -994,8 +994,8 @@ LABEL_7:
       }
 
       v27 = *(*(&v66 + 1) + 8 * v25);
-      v28 = [v27 personaUniqueString];
-      if (v28 && ([v62 isEqualToString:v28] & 1) != 0)
+      personaUniqueString2 = [v27 personaUniqueString];
+      if (personaUniqueString2 && ([personaUniqueString isEqualToString:personaUniqueString2] & 1) != 0)
       {
         v20 = v26;
         goto LABEL_37;
@@ -1003,10 +1003,10 @@ LABEL_7:
 
       v65 = 0;
       v29 = +[MIHelperServiceClient sharedInstance];
-      v30 = [v27 containerURL];
-      v31 = [v27 containerClass];
+      containerURL = [v27 containerURL];
+      containerClass = [v27 containerClass];
       v64 = v26;
-      v32 = [v29 dataContainer:v30 ofContainerType:v31 isEmpty:&v65 error:&v64];
+      v32 = [v29 dataContainer:containerURL ofContainerType:containerClass isEmpty:&v65 error:&v64];
       v20 = v64;
 
       if ((v32 & 1) == 0)
@@ -1023,7 +1023,7 @@ LABEL_7:
       }
 
       v61 |= v65 ^ 1;
-      if (v28 || (+[MIGlobalConfiguration sharedInstance](MIGlobalConfiguration, "sharedInstance"), v33 = objc_claimAutoreleasedReturnValue(), [v33 primaryPersonaString], v34 = objc_claimAutoreleasedReturnValue(), v35 = objc_msgSend(v62, "isEqualToString:", v34), v34, v33, !v35))
+      if (personaUniqueString2 || (+[MIGlobalConfiguration sharedInstance](MIGlobalConfiguration, "sharedInstance"), v33 = objc_claimAutoreleasedReturnValue(), [v33 primaryPersonaString], v34 = objc_claimAutoreleasedReturnValue(), v35 = objc_msgSend(personaUniqueString, "isEqualToString:", v34), v34, v33, !v35))
       {
         if (!qword_1000A9720 || *(qword_1000A9720 + 44) >= 5)
         {
@@ -1078,28 +1078,28 @@ LABEL_42:
   v12 = v58;
   if (![v58 count])
   {
-    v16 = 0;
+    personaUniqueString3 = 0;
     v17 = 1;
     v15 = v20;
-    v9 = v55;
-    v6 = v56;
-    v10 = v59;
+    identity = v55;
+    containerCopy = v56;
+    bundleID = v59;
     v11 = v54;
     v14 = v57;
     goto LABEL_54;
   }
 
   v38 = [v58 objectAtIndexedSubscript:0];
-  v16 = [v38 personaUniqueString];
+  personaUniqueString3 = [v38 personaUniqueString];
 
-  v6 = v56;
+  containerCopy = v56;
   v11 = v54;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_FAULT))
   {
-    sub_100057D7C(v59, v16, v62);
+    sub_100057D7C(v59, personaUniqueString3, personaUniqueString);
   }
 
-  a4 = v53;
+  error = errorCopy;
   if (!qword_1000A9720 || *(qword_1000A9720 + 44) >= 3)
   {
     MOLogWrite();
@@ -1110,10 +1110,10 @@ LABEL_42:
   v40 = [NSNumber numberWithBool:v56 == 0];
   [(__CFString *)v39 setObject:v40 forKeyedSubscript:@"isFreshInstall"];
 
-  v41 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v54 personaTypeForPersonaUniqueString:v62]);
+  v41 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v54 personaTypeForPersonaUniqueString:personaUniqueString]);
   [(__CFString *)v39 setObject:v41 forKeyedSubscript:@"requestedPersonaType"];
 
-  v42 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v54 personaTypeForPersonaUniqueString:v16]);
+  v42 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v54 personaTypeForPersonaUniqueString:personaUniqueString3]);
   [(__CFString *)v39 setObject:v42 forKeyedSubscript:@"erroneousPersonaType"];
 
   v43 = [NSNumber numberWithBool:v61 & 1];
@@ -1131,29 +1131,29 @@ LABEL_42:
   {
 
     v17 = 1;
-    v9 = v55;
-    v10 = v59;
+    identity = v55;
+    bundleID = v59;
     v14 = v57;
     v12 = v58;
     goto LABEL_54;
   }
 
-  v48 = sub_100010734("[MIInstaller removeAndReportAbandonedContainersWithIncorrectPersonaForBundleContainer:withError:]", 658, v44, 4, v15, 0, @"Failed to delete erroneous containers associated with persona %@ for %@", v47, v16);
+  v48 = sub_100010734("[MIInstaller removeAndReportAbandonedContainersWithIncorrectPersonaForBundleContainer:withError:]", 658, v44, 4, v15, 0, @"Failed to delete erroneous containers associated with persona %@ for %@", v47, personaUniqueString3);
 
   v20 = v39;
   v15 = v48;
-  v9 = v55;
-  v10 = v59;
+  identity = v55;
+  bundleID = v59;
 LABEL_52:
 
   v14 = v57;
   v12 = v58;
-  if (a4)
+  if (error)
   {
 LABEL_7:
     v18 = v15;
     v17 = 0;
-    *a4 = v15;
+    *error = v15;
     goto LABEL_54;
   }
 
@@ -1165,23 +1165,23 @@ LABEL_55:
   return v17;
 }
 
-- (id)_existingBundleContainerForBundle:(id)a3 error:(id *)a4
+- (id)_existingBundleContainerForBundle:(id)bundle error:(id *)error
 {
-  v6 = a3;
-  v7 = [(MIInstaller *)self installationDomain];
-  v8 = [v6 identifier];
-  if (v7 == 3)
+  bundleCopy = bundle;
+  installationDomain = [(MIInstaller *)self installationDomain];
+  identifier = [bundleCopy identifier];
+  if (installationDomain == 3)
   {
     v25 = 0;
     v9 = &v25;
-    v10 = [MIBundleContainer privateAppBundleContainerWithIdentifier:v8 createIfNeeded:0 created:0 error:&v25];
+    v10 = [MIBundleContainer privateAppBundleContainerWithIdentifier:identifier createIfNeeded:0 created:0 error:&v25];
   }
 
   else
   {
     v24 = 0;
     v9 = &v24;
-    v10 = [MIBundleContainer appBundleContainerWithIdentifier:v8 createIfNeeded:0 created:0 error:&v24];
+    v10 = [MIBundleContainer appBundleContainerWithIdentifier:identifier createIfNeeded:0 created:0 error:&v24];
   }
 
   v11 = v10;
@@ -1189,14 +1189,14 @@ LABEL_55:
 
   if (v11)
   {
-    v13 = [v11 bundle];
+    bundle = [v11 bundle];
 
-    if (!v13)
+    if (!bundle)
     {
-      v14 = [v6 identifier];
+      identifier2 = [bundleCopy identifier];
       if (!qword_1000A9720 || *(qword_1000A9720 + 44) >= 3)
       {
-        v21 = v14;
+        v21 = identifier2;
         MOLogWrite();
       }
 
@@ -1214,7 +1214,7 @@ LABEL_55:
         v16 = 0;
       }
 
-      v12 = sub_1000106F4("[MIInstaller _existingBundleContainerForBundle:error:]", 697, MIContainerManagerErrorDomain, 21, 0, 0, @"Deleted exisiting bundle container for %@ because it didn't contain a bundle", v17, v14);
+      v12 = sub_1000106F4("[MIInstaller _existingBundleContainerForBundle:error:]", 697, MIContainerManagerErrorDomain, 21, 0, 0, @"Deleted exisiting bundle container for %@ because it didn't contain a bundle", v17, identifier2);
 
       v11 = 0;
     }
@@ -1229,81 +1229,81 @@ LABEL_55:
     v12 = v18;
   }
 
-  if (a4 && !v11)
+  if (error && !v11)
   {
     v19 = v12;
-    *a4 = v12;
+    *error = v12;
   }
 
   return v11;
 }
 
-- (id)_patchUpdateInstallableForBundle:(id)a3 manifestPath:(id)a4 existingBundleContainer:(id)a5 patchType:(unsigned __int8)a6 error:(id *)a7
+- (id)_patchUpdateInstallableForBundle:(id)bundle manifestPath:(id)path existingBundleContainer:(id)container patchType:(unsigned __int8)type error:(id *)error
 {
-  v8 = a6;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = [(MIInstaller *)self options];
-  v16 = [v15 installTargetType];
+  typeCopy = type;
+  bundleCopy = bundle;
+  pathCopy = path;
+  containerCopy = container;
+  options = [(MIInstaller *)self options];
+  installTargetType = [options installTargetType];
 
-  if (!v14)
+  if (!containerCopy)
   {
     v22 = MIInstallerErrorDomain;
-    if (v8 > 4)
+    if (typeCopy > 4)
     {
       v23 = @"Unknown";
     }
 
     else
     {
-      v23 = *(&off_1000914A8 + v8);
+      v23 = *(&off_1000914A8 + typeCopy);
     }
 
-    v25 = [v12 identifier];
+    identifier = [bundleCopy identifier];
     sub_100010734("[MIInstaller _patchUpdateInstallableForBundle:manifestPath:existingBundleContainer:patchType:error:]", 766, v22, 8, 0, &off_10009C268, @"%@ patch submitted for application %@ that's not installed. Failing.", v26, v23);
     goto LABEL_14;
   }
 
-  v17 = [v14 bundle];
-  v18 = [v17 isPlaceholder];
+  bundle = [containerCopy bundle];
+  isPlaceholder = [bundle isPlaceholder];
 
-  if (v18)
+  if (isPlaceholder)
   {
     v20 = MIInstallerErrorDomain;
-    if (v8 > 4)
+    if (typeCopy > 4)
     {
       v21 = @"Unknown";
     }
 
     else
     {
-      v21 = *(&off_1000914A8 + v8);
+      v21 = *(&off_1000914A8 + typeCopy);
     }
 
-    v25 = [v12 identifier];
+    identifier = [bundleCopy identifier];
     sub_100010734("[MIInstaller _patchUpdateInstallableForBundle:manifestPath:existingBundleContainer:patchType:error:]", 771, v20, 8, 0, &off_10009C290, @"%@ patch submitted for application %@ that's just a placeholder. Failing.", v27, v21);
     v28 = LABEL_14:;
 
     goto LABEL_15;
   }
 
-  if ((v16 & 0xFFFFFFFFFFFFFFFELL) != 2)
+  if ((installTargetType & 0xFFFFFFFFFFFFFFFELL) != 2)
   {
     v40 = [MIInstallableBundle alloc];
-    v32 = [(MIInstaller *)self stagingURL];
-    v33 = [(MIInstaller *)self stagingLocation];
-    v39 = [(MIInstaller *)self packageFormat];
-    v34 = [(MIInstaller *)self identity];
-    v38 = [(MIInstaller *)self installationDomain];
-    v35 = [(MIInstaller *)self options];
+    stagingURL = [(MIInstaller *)self stagingURL];
+    stagingLocation = [(MIInstaller *)self stagingLocation];
+    packageFormat = [(MIInstaller *)self packageFormat];
+    identity = [(MIInstaller *)self identity];
+    installationDomain = [(MIInstaller *)self installationDomain];
+    options2 = [(MIInstaller *)self options];
     v41 = 0;
-    LOBYTE(v37) = v8;
-    v36 = [(MIInstallableBundle *)v40 initWithBundle:v12 inStagingRoot:v32 stagingLocation:v33 packageFormat:v39 identity:v34 domain:v38 installOptions:v35 manifestURL:v13 existingBundleContainer:v14 patchType:v37 operationType:[(MIInstaller *)self installOperationType] error:&v41];
+    LOBYTE(v37) = typeCopy;
+    v36 = [(MIInstallableBundle *)v40 initWithBundle:bundleCopy inStagingRoot:stagingURL stagingLocation:stagingLocation packageFormat:packageFormat identity:identity domain:installationDomain installOptions:options2 manifestURL:pathCopy existingBundleContainer:containerCopy patchType:v37 operationType:[(MIInstaller *)self installOperationType] error:&v41];
     v28 = v41;
 
     v29 = v36;
-    if (!a7)
+    if (!error)
     {
       goto LABEL_18;
     }
@@ -1311,20 +1311,20 @@ LABEL_55:
     goto LABEL_16;
   }
 
-  if (v8 > 4)
+  if (typeCopy > 4)
   {
     v24 = @"Unknown";
   }
 
   else
   {
-    v24 = *(&off_1000914A8 + v8);
+    v24 = *(&off_1000914A8 + typeCopy);
   }
 
   v28 = sub_100010734("[MIInstaller _patchUpdateInstallableForBundle:manifestPath:existingBundleContainer:patchType:error:]", 777, MIInstallerErrorDomain, 25, 0, 0, @"%@ patch supplied but install target type was placeholder or downgrade. This doesn't make sense.", v19, v24);
 LABEL_15:
   v29 = 0;
-  if (!a7)
+  if (!error)
   {
     goto LABEL_18;
   }
@@ -1333,7 +1333,7 @@ LABEL_16:
   if (!v29)
   {
     v30 = v28;
-    *a7 = v28;
+    *error = v28;
   }
 
 LABEL_18:
@@ -1341,49 +1341,49 @@ LABEL_18:
   return v29;
 }
 
-- (id)_discoverInstallableWithError:(id *)a3
+- (id)_discoverInstallableWithError:(id *)error
 {
-  v5 = [(MIInstaller *)self stagingURL];
-  v6 = [(MIInstaller *)self packageFormat];
-  v7 = [(MIInstaller *)self options];
-  v8 = [v7 bundleIdentifier];
+  stagingURL = [(MIInstaller *)self stagingURL];
+  packageFormat = [(MIInstaller *)self packageFormat];
+  options = [(MIInstaller *)self options];
+  bundleIdentifier = [options bundleIdentifier];
 
-  if (!v8)
+  if (!bundleIdentifier)
   {
     v11 = MIInstallerErrorDomain;
     v12 = @"Caller did not supply bundle identifer in install options";
     v13 = 833;
 LABEL_11:
-    v15 = sub_100010734("[MIInstaller _discoverInstallableWithError:]", v13, v11, 4, 0, 0, v12, v9, v55);
+    v15 = sub_100010734("[MIInstaller _discoverInstallableWithError:]", v13, v11, 4, 0, 0, v12, v9, identifier);
     v16 = 0;
     v17 = 0;
     goto LABEL_24;
   }
 
-  if (v6 > 2)
+  if (packageFormat > 2)
   {
-    if (v6 == 4)
+    if (packageFormat == 4)
     {
       v14 = @"AssetData";
       goto LABEL_13;
     }
 
-    if (v6 != 3)
+    if (packageFormat != 3)
     {
 LABEL_10:
       v11 = MIInstallerErrorDomain;
-      v55 = v6;
+      identifier = packageFormat;
       v12 = @"Unknown package format: %hhu";
       v13 = 856;
       goto LABEL_11;
     }
   }
 
-  else if (v6 != 1)
+  else if (packageFormat != 1)
   {
-    if (v6 == 2)
+    if (packageFormat == 2)
     {
-      v10 = v5;
+      v10 = stagingURL;
       goto LABEL_14;
     }
 
@@ -1392,14 +1392,14 @@ LABEL_10:
 
   v14 = @"Payload";
 LABEL_13:
-  v10 = [v5 URLByAppendingPathComponent:v14 isDirectory:1];
+  v10 = [stagingURL URLByAppendingPathComponent:v14 isDirectory:1];
 LABEL_14:
   v16 = v10;
-  v18 = [(MIInstaller *)self options];
-  v19 = [v18 installTargetType];
+  options2 = [(MIInstaller *)self options];
+  installTargetType = [options2 installTargetType];
 
   v79[0] = 0;
-  v17 = [(MIInstaller *)self _bundleInDirectory:v16 withBundleID:v8 platformHint:0 error:v79];
+  v17 = [(MIInstaller *)self _bundleInDirectory:v16 withBundleID:bundleIdentifier platformHint:0 error:v79];
   v20 = v79[0];
   v15 = v20;
   if (!v17)
@@ -1417,10 +1417,10 @@ LABEL_14:
     goto LABEL_24;
   }
 
-  v67 = v19;
-  v23 = [(MIInstaller *)self identity];
+  v67 = installTargetType;
+  identity = [(MIInstaller *)self identity];
   v77 = v22;
-  v24 = [v23 resolvePersonaWithError:&v77];
+  v24 = [identity resolvePersonaWithError:&v77];
   v15 = v77;
 
   if (!v24)
@@ -1428,13 +1428,13 @@ LABEL_14:
     goto LABEL_24;
   }
 
-  v25 = [v17 bundleType];
-  v26 = v25;
-  if (v25 > 4 || ((1 << v25) & 0x16) == 0)
+  bundleType = [v17 bundleType];
+  v26 = bundleType;
+  if (bundleType > 4 || ((1 << bundleType) & 0x16) == 0)
   {
     v41 = MIInstallerErrorDomain;
-    v42 = [v17 bundleURL];
-    v56 = [v42 path];
+    bundleURL = [v17 bundleURL];
+    path = [bundleURL path];
     v44 = sub_100010734("[MIInstaller _discoverInstallableWithError:]", 988, v41, 4, 0, 0, @"Got unexpected bundle type %d at %@", v43, v26);
 
 LABEL_48:
@@ -1448,12 +1448,12 @@ LABEL_48:
 
   if (!v27)
   {
-    v36 = [v28 domain];
-    if ([v36 isEqualToString:MIContainerManagerErrorDomain])
+    domain = [v28 domain];
+    if ([domain isEqualToString:MIContainerManagerErrorDomain])
     {
-      v37 = [v28 code];
+      code = [v28 code];
 
-      if (v37 != 21)
+      if (code != 21)
       {
 LABEL_35:
         v15 = v28;
@@ -1467,8 +1467,8 @@ LABEL_35:
       }
 
       v38 = MIInstallerErrorDomain;
-      v36 = [v17 identifier];
-      v40 = sub_100010734("[MIInstaller _discoverInstallableWithError:]", 940, v38, 26, 0, 0, @"Application %@ not found to downgrade to placeholder.", v39, v36);
+      domain = [v17 identifier];
+      v40 = sub_100010734("[MIInstaller _discoverInstallableWithError:]", 940, v38, 26, 0, 0, @"Application %@ not found to downgrade to placeholder.", v39, domain);
 
       v28 = v40;
     }
@@ -1477,19 +1477,19 @@ LABEL_35:
   }
 
   v66 = v27;
-  v29 = [v27 bundle];
-  v30 = [v29 isPlaceholder];
+  bundle = [v27 bundle];
+  isPlaceholder = [bundle isPlaceholder];
 
-  if ((v30 & 1) == 0 && v67 == 2)
+  if ((isPlaceholder & 1) == 0 && v67 == 2)
   {
     v68 = [MIInstallableParallelPlaceholder alloc];
-    v64 = [(MIInstaller *)self stagingLocation];
-    v62 = [(MIInstaller *)self packageFormat];
-    v58 = [(MIInstaller *)self identity];
-    v60 = [(MIInstaller *)self installationDomain];
-    v31 = [(MIInstaller *)self options];
+    stagingLocation = [(MIInstaller *)self stagingLocation];
+    packageFormat2 = [(MIInstaller *)self packageFormat];
+    identity2 = [(MIInstaller *)self identity];
+    installationDomain = [(MIInstaller *)self installationDomain];
+    options3 = [(MIInstaller *)self options];
     v75 = v28;
-    v69 = [(MIInstallableBundle *)v68 initWithBundle:v17 inStagingRoot:v5 stagingLocation:v64 packageFormat:v62 identity:v58 domain:v60 installOptions:v31 existingBundleContainer:v27 operationType:[(MIInstaller *)self installOperationType] error:&v75];
+    v69 = [(MIInstallableBundle *)v68 initWithBundle:v17 inStagingRoot:stagingURL stagingLocation:stagingLocation packageFormat:packageFormat2 identity:identity2 domain:installationDomain installOptions:options3 existingBundleContainer:v27 operationType:[(MIInstaller *)self installOperationType] error:&v75];
     v15 = v75;
 
     p_super = &v69->super;
@@ -1502,29 +1502,29 @@ LABEL_45:
     }
 
     v50 = MIInstallerErrorDomain;
-    v51 = [v16 path];
-    v44 = sub_100010734("[MIInstaller _discoverInstallableWithError:]", 994, v50, 6, v15, &off_10009C2B8, @"No installable items found at %@", v52, v51);
+    path2 = [v16 path];
+    v44 = sub_100010734("[MIInstaller _discoverInstallableWithError:]", 994, v50, 6, v15, &off_10009C2B8, @"No installable items found at %@", v52, path2);
 
     goto LABEL_48;
   }
 
   if (v67 == 3)
   {
-    v45 = [v27 bundle];
-    v46 = [v45 isPlaceholder];
+    bundle2 = [v27 bundle];
+    isPlaceholder2 = [bundle2 isPlaceholder];
 
-    if ((v46 & 1) == 0 && (!qword_1000A9720 || *(qword_1000A9720 + 44) >= 5))
+    if ((isPlaceholder2 & 1) == 0 && (!qword_1000A9720 || *(qword_1000A9720 + 44) >= 5))
     {
-      v55 = [v17 identifier];
+      identifier = [v17 identifier];
       MOLogWrite();
     }
   }
 
 LABEL_42:
   v74 = 0;
-  v47 = [v17 identifier];
+  identifier2 = [v17 identifier];
   v73 = v28;
-  v48 = [(MIInstaller *)self _manifestPathForBase:v5 withIdentifier:v47 patchType:&v74 error:&v73];
+  v48 = [(MIInstaller *)self _manifestPathForBase:stagingURL withIdentifier:identifier2 patchType:&v74 error:&v73];
   v15 = v73;
 
   if (v48)
@@ -1539,25 +1539,25 @@ LABEL_44:
     goto LABEL_45;
   }
 
-  v53 = [v15 domain];
-  if ([v53 isEqualToString:NSPOSIXErrorDomain])
+  domain2 = [v15 domain];
+  if ([domain2 isEqualToString:NSPOSIXErrorDomain])
   {
-    v54 = [v15 code];
+    code2 = [v15 code];
 
-    if (v54 == 2)
+    if (code2 == 2)
     {
       v63 = [MIInstallableBundle alloc];
-      v70 = [(MIInstaller *)self stagingLocation];
-      v61 = [(MIInstaller *)self packageFormat];
-      v65 = [(MIInstaller *)self identity];
-      v59 = [(MIInstaller *)self installationDomain];
-      v57 = [(MIInstaller *)self options];
+      stagingLocation2 = [(MIInstaller *)self stagingLocation];
+      packageFormat3 = [(MIInstaller *)self packageFormat];
+      identity3 = [(MIInstaller *)self identity];
+      installationDomain2 = [(MIInstaller *)self installationDomain];
+      options4 = [(MIInstaller *)self options];
       v71 = v15;
       v27 = v66;
-      p_super = [(MIInstallableBundle *)v63 initWithBundle:v17 inStagingRoot:v5 stagingLocation:v70 packageFormat:v61 identity:v65 domain:v59 installOptions:v57 existingBundleContainer:v66 operationType:[(MIInstaller *)self installOperationType] error:&v71];
+      p_super = [(MIInstallableBundle *)v63 initWithBundle:v17 inStagingRoot:stagingURL stagingLocation:stagingLocation2 packageFormat:packageFormat3 identity:identity3 domain:installationDomain2 installOptions:options4 existingBundleContainer:v66 operationType:[(MIInstaller *)self installOperationType] error:&v71];
       v49 = v71;
 
-      v15 = v70;
+      v15 = stagingLocation2;
       goto LABEL_44;
     }
   }
@@ -1567,11 +1567,11 @@ LABEL_44:
   }
 
 LABEL_24:
-  if (a3)
+  if (error)
   {
     v33 = v15;
     v34 = 0;
-    *a3 = v15;
+    *error = v15;
   }
 
   else
@@ -1584,21 +1584,21 @@ LABEL_27:
   return v34;
 }
 
-- (BOOL)_installProvisioningProfilesFromUserOptionsWithError:(id *)a3
+- (BOOL)_installProvisioningProfilesFromUserOptionsWithError:(id *)error
 {
-  v5 = [(MIInstaller *)self options];
-  v6 = [v5 provisioningProfiles];
-  if (v6)
+  options = [(MIInstaller *)self options];
+  provisioningProfiles = [options provisioningProfiles];
+  if (provisioningProfiles)
   {
-    v24 = self;
-    v25 = a3;
-    [v5 provisioningProfileInstallFailureIsFatal];
+    selfCopy = self;
+    errorCopy = error;
+    [options provisioningProfileInstallFailureIsFatal];
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v26 = v6;
-    v7 = v6;
+    v26 = provisioningProfiles;
+    v7 = provisioningProfiles;
     v8 = [v7 countByEnumeratingWithState:&v27 objects:v33 count:16];
     if (v8)
     {
@@ -1627,15 +1627,15 @@ LABEL_27:
               v16 = [NSNumber numberWithInt:v13];
               v32[1] = v16;
               v17 = [NSDictionary dictionaryWithObjects:v32 forKeys:v31 count:2];
-              v18 = [(MIInstaller *)v24 installURL];
+              installURL = [(MIInstaller *)selfCopy installURL];
               v23 = MIErrorStringForMISError();
-              v20 = sub_100010734("[MIInstaller _installProvisioningProfilesFromUserOptionsWithError:]", 1028, v15, 13, 0, v17, @"Failed to install local provisioning profile from user options for %@ : 0x%08x (%@)", v19, v18);
+              v20 = sub_100010734("[MIInstaller _installProvisioningProfilesFromUserOptionsWithError:]", 1028, v15, 13, 0, v17, @"Failed to install local provisioning profile from user options for %@ : 0x%08x (%@)", v19, installURL);
 
-              if (v25)
+              if (errorCopy)
               {
                 v21 = v20;
                 v14 = 0;
-                *v25 = v20;
+                *errorCopy = v20;
               }
 
               else
@@ -1666,7 +1666,7 @@ LABEL_27:
     v20 = 0;
     v14 = 1;
 LABEL_20:
-    v6 = v26;
+    provisioningProfiles = v26;
   }
 
   else
@@ -1678,7 +1678,7 @@ LABEL_20:
   return v14;
 }
 
-- (BOOL)_installProvisioningProfilesAtStagingRootWithError:(id *)a3
+- (BOOL)_installProvisioningProfilesAtStagingRootWithError:(id *)error
 {
   v18 = 0;
   v19 = &v18;
@@ -1686,30 +1686,30 @@ LABEL_20:
   v21 = sub_100023B80;
   v22 = sub_100023B90;
   v23 = 0;
-  v5 = [(MIInstaller *)self stagingRoot];
-  v6 = [v5 URLByAppendingPathComponent:@"ProvisioningProfiles" isDirectory:1];
+  stagingRoot = [(MIInstaller *)self stagingRoot];
+  v6 = [stagingRoot URLByAppendingPathComponent:@"ProvisioningProfiles" isDirectory:1];
 
-  v7 = [(MIInstaller *)self options];
-  v8 = [v7 provisioningProfileInstallFailureIsFatal];
+  options = [(MIInstaller *)self options];
+  provisioningProfileInstallFailureIsFatal = [options provisioningProfileInstallFailureIsFatal];
 
   v9 = +[MIFileManager defaultManager];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_100025ACC;
   v16[3] = &unk_100091418;
-  v17 = v8;
+  v17 = provisioningProfileInstallFailureIsFatal;
   v16[4] = self;
   v16[5] = &v18;
   v10 = [v9 enumerateURLsForItemsInDirectoryAtURL:v6 ignoreSymlinks:1 withBlock:v16];
 
   if (v10)
   {
-    v11 = [v10 domain];
-    if ([v11 isEqualToString:NSPOSIXErrorDomain])
+    domain = [v10 domain];
+    if ([domain isEqualToString:NSPOSIXErrorDomain])
     {
-      v12 = [v10 code];
+      code = [v10 code];
 
-      if (v12 == 2)
+      if (code == 2)
       {
         goto LABEL_9;
       }
@@ -1727,10 +1727,10 @@ LABEL_20:
 
 LABEL_9:
   v13 = v19[5];
-  if (a3 && v13)
+  if (error && v13)
   {
     v13 = v13;
-    *a3 = v13;
+    *error = v13;
   }
 
   v14 = v13 == 0;
@@ -1739,29 +1739,29 @@ LABEL_9:
   return v14;
 }
 
-- (BOOL)_installInstallable:(id)a3 containingSymlink:(BOOL)a4 error:(id *)a5
+- (BOOL)_installInstallable:(id)installable containingSymlink:(BOOL)symlink error:(id *)error
 {
-  v5 = a4;
-  v7 = a3;
+  symlinkCopy = symlink;
+  installableCopy = installable;
   v113 = 0;
   v114 = &v113;
   v115 = 0x3032000000;
   v116 = sub_100023B80;
   v117 = sub_100023B90;
   v118 = 0;
-  v94 = [(MIInstaller *)self installOperationType];
+  installOperationType = [(MIInstaller *)self installOperationType];
   v112[0] = _NSConcreteStackBlock;
   v112[1] = 3221225472;
   v112[2] = sub_100026A44;
   v112[3] = &unk_100091440;
   v112[4] = self;
-  [v7 setProgressBlock:v112];
-  if (v94 == 1)
+  [installableCopy setProgressBlock:v112];
+  if (installOperationType == 1)
   {
     if (!qword_1000A9720 || *(qword_1000A9720 + 44) > 4)
     {
 LABEL_7:
-      v90 = v7;
+      v90 = installableCopy;
       MOLogWrite();
     }
   }
@@ -1771,19 +1771,19 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v8 = [v7 bundle];
-  v9 = [v8 identifier];
+  bundle = [installableCopy bundle];
+  identifier = [bundle identifier];
 
-  v10 = [(MIInstaller *)self identity];
-  v95 = [v10 personaUniqueString];
+  identity = [(MIInstaller *)self identity];
+  personaUniqueString = [identity personaUniqueString];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v13 = v7;
-    v14 = [v13 existingBundleContainer];
+    v13 = installableCopy;
+    existingBundleContainer = [v13 existingBundleContainer];
 
-    if (v14 && v94 == 1)
+    if (existingBundleContainer && installOperationType == 1)
     {
       v15 = 13;
 LABEL_38:
@@ -1806,14 +1806,14 @@ LABEL_38:
 
     if ([v13 isPlaceholderInstall])
     {
-      v16 = [v13 existingBundleContainer];
-      if (v16)
+      existingBundleContainer2 = [v13 existingBundleContainer];
+      if (existingBundleContainer2)
       {
-        v17 = [v13 existingBundleContainer];
-        v18 = [v17 bundle];
-        v19 = [v18 isPlaceholder];
+        existingBundleContainer3 = [v13 existingBundleContainer];
+        bundle2 = [existingBundleContainer3 bundle];
+        isPlaceholder = [bundle2 isPlaceholder];
 
-        if (v19)
+        if (isPlaceholder)
         {
           v15 = 3;
           goto LABEL_38;
@@ -1827,17 +1827,17 @@ LABEL_38:
       goto LABEL_38;
     }
 
-    v20 = [v13 existingBundleContainer];
-    if (v20)
+    existingBundleContainer4 = [v13 existingBundleContainer];
+    if (existingBundleContainer4)
     {
-      v21 = [v13 existingBundleContainer];
-      if (v21)
+      existingBundleContainer5 = [v13 existingBundleContainer];
+      if (existingBundleContainer5)
       {
-        v22 = [v13 existingBundleContainer];
-        v23 = [v22 bundle];
-        v24 = [v23 isPlaceholder];
+        existingBundleContainer6 = [v13 existingBundleContainer];
+        bundle3 = [existingBundleContainer6 bundle];
+        isPlaceholder2 = [bundle3 isPlaceholder];
 
-        if (v24)
+        if (isPlaceholder2)
         {
           goto LABEL_26;
         }
@@ -1847,21 +1847,21 @@ LABEL_38:
       {
       }
 
-      v25 = [v13 existingBundleContainer];
-      if (v25)
+      existingBundleContainer7 = [v13 existingBundleContainer];
+      if (existingBundleContainer7)
       {
-        v26 = [v13 existingBundleContainer];
-        v27 = [v26 bundle];
-        if ([v27 isPlaceholder])
+        existingBundleContainer8 = [v13 existingBundleContainer];
+        bundle4 = [existingBundleContainer8 bundle];
+        if ([bundle4 isPlaceholder])
         {
         }
 
         else
         {
-          v28 = [(MIInstaller *)self options];
-          v29 = [v28 installTargetType];
+          options = [(MIInstaller *)self options];
+          installTargetType = [options installTargetType];
 
-          if (v29 == 3)
+          if (installTargetType == 3)
           {
             v15 = 6;
             goto LABEL_38;
@@ -1869,14 +1869,14 @@ LABEL_38:
         }
       }
 
-      v30 = [v13 existingBundleContainer];
-      if (v30)
+      existingBundleContainer9 = [v13 existingBundleContainer];
+      if (existingBundleContainer9)
       {
-        v31 = [v13 existingBundleContainer];
-        v32 = [v31 bundle];
-        v33 = [v32 isPlaceholder];
+        existingBundleContainer10 = [v13 existingBundleContainer];
+        bundle5 = [existingBundleContainer10 bundle];
+        isPlaceholder3 = [bundle5 isPlaceholder];
 
-        if (v33)
+        if (isPlaceholder3)
         {
           v15 = 8;
         }
@@ -1902,25 +1902,25 @@ LABEL_26:
 
   v15 = 0;
 LABEL_39:
-  _MILogTransactionStep(v15, 1, 1, v9, v95, 0, v11, v12, v91);
+  _MILogTransactionStep(v15, 1, 1, identifier, personaUniqueString, 0, v11, v12, v91);
   v34 = mach_absolute_time();
-  if (v5)
+  if (symlinkCopy)
   {
     v35 = +[MIFileManager defaultManager];
-    v36 = [v7 bundle];
-    v37 = [v36 bundleURL];
+    bundle6 = [installableCopy bundle];
+    bundleURL = [bundle6 bundleURL];
     v38 = v114;
     obj = v114[5];
-    v39 = [v35 validateSymlinksInURLDoNotEscapeURL:v37 error:&obj];
+    v39 = [v35 validateSymlinksInURLDoNotEscapeURL:bundleURL error:&obj];
     objc_storeStrong(v38 + 5, obj);
 
     if ((v39 & 1) == 0)
     {
       if (!qword_1000A9720 || *(qword_1000A9720 + 44) >= 3)
       {
-        v56 = [v7 bundle];
-        v57 = [v56 bundleURL];
-        v92 = [v57 path];
+        bundle7 = [installableCopy bundle];
+        bundleURL2 = [bundle7 bundleURL];
+        path = [bundleURL2 path];
         MOLogWrite();
       }
 
@@ -1944,7 +1944,7 @@ LABEL_39:
 
   v44 = v114 + 5;
   v110 = v114[5];
-  v45 = [v7 performPreflightWithError:&v110];
+  v45 = [installableCopy performPreflightWithError:&v110];
   objc_storeStrong(v44, v110);
   if (v45)
   {
@@ -2006,7 +2006,7 @@ LABEL_39:
 
     v52 = v114 + 5;
     v109 = v114[5];
-    v53 = [v7 performVerificationWithError:&v109];
+    v53 = [installableCopy performVerificationWithError:&v109];
     objc_storeStrong(v52, v109);
     if (v53)
     {
@@ -2055,7 +2055,7 @@ LABEL_39:
       v58 = objc_autoreleasePoolPush();
       v59 = v114 + 5;
       v108 = v114[5];
-      v60 = [v7 performInstallationWithError:&v108];
+      v60 = [installableCopy performInstallationWithError:&v108];
       objc_storeStrong(v59, v108);
       if (v60)
       {
@@ -2079,7 +2079,7 @@ LABEL_39:
         v62 = objc_autoreleasePoolPush();
         v63 = v114 + 5;
         v107 = v114[5];
-        v64 = [v7 postFlightInstallationWithError:&v107];
+        v64 = [installableCopy postFlightInstallationWithError:&v107];
         objc_storeStrong(v63, v107);
         if (v64)
         {
@@ -2102,22 +2102,22 @@ LABEL_39:
         {
           v66 = objc_autoreleasePoolPush();
           v67 = v114 + 5;
-          if (v94 == 1)
+          if (installOperationType == 1)
           {
             v106 = v114[5];
-            v68 = [v7 stageBackgroundUpdateWithError:&v106];
+            v68 = [installableCopy stageBackgroundUpdateWithError:&v106];
             objc_storeStrong(v67, v106);
             stagedUpdateMetadata = self->_stagedUpdateMetadata;
             self->_stagedUpdateMetadata = v68;
 
             if (self->_stagedUpdateMetadata)
             {
-              v70 = [(MIInstaller *)self lockedIdentifiers];
+              lockedIdentifiers = [(MIInstaller *)self lockedIdentifiers];
 
-              if (v70)
+              if (lockedIdentifiers)
               {
-                v71 = [(MIInstaller *)self lockedIdentifiers];
-                sub_100054780(v71);
+                lockedIdentifiers2 = [(MIInstaller *)self lockedIdentifiers];
+                sub_100054780(lockedIdentifiers2);
 
                 [(MIInstaller *)self setLockedIdentifiers:0];
               }
@@ -2136,7 +2136,7 @@ LABEL_108:
                 v74 = objc_autoreleasePoolPush();
                 v75 = v114;
                 v104 = v114[5];
-                v48 = [v7 launchServicesBundleRecordsWithError:&v104];
+                v48 = [installableCopy launchServicesBundleRecordsWithError:&v104];
                 objc_storeStrong(v75 + 5, v104);
                 if (v48)
                 {
@@ -2147,7 +2147,7 @@ LABEL_108:
                 {
                   if (!qword_1000A9720 || *(qword_1000A9720 + 44) >= 3)
                   {
-                    v92 = v114[5];
+                    path = v114[5];
                     MOLogWrite();
                   }
 
@@ -2160,18 +2160,18 @@ LABEL_108:
                   goto LABEL_121;
                 }
 
-                v77 = [(MIInstaller *)self lockedIdentifiers];
+                lockedIdentifiers3 = [(MIInstaller *)self lockedIdentifiers];
 
-                if (v77)
+                if (lockedIdentifiers3)
                 {
-                  v78 = [(MIInstaller *)self lockedIdentifiers];
-                  sub_100054780(v78);
+                  lockedIdentifiers4 = [(MIInstaller *)self lockedIdentifiers];
+                  sub_100054780(lockedIdentifiers4);
 
                   [(MIInstaller *)self setLockedIdentifiers:0];
                 }
 
-                v79 = [(MIInstaller *)self client];
-                [v79 releaseTerminationAssertion];
+                client = [(MIInstaller *)self client];
+                [client releaseTerminationAssertion];
 
                 [(MIInstaller *)self setTerminationAssertionReleased:1];
                 *buf = 0;
@@ -2183,7 +2183,7 @@ LABEL_108:
                 block[1] = 3221225472;
                 block[2] = sub_100026A54;
                 block[3] = &unk_100091468;
-                v81 = v7;
+                v81 = installableCopy;
                 v97 = v81;
                 v98 = &v113;
                 v99 = buf;
@@ -2196,9 +2196,9 @@ LABEL_108:
                   goto LABEL_121;
                 }
 
-                v84 = [v81 recordPromise];
+                recordPromise = [v81 recordPromise];
                 recordPromise = self->_recordPromise;
-                self->_recordPromise = v84;
+                self->_recordPromise = recordPromise;
 
                 _Block_object_dispose(buf, 8);
               }
@@ -2217,7 +2217,7 @@ LABEL_108:
               self->_receipt = v86;
 
               v82 = 1;
-              _MILogTransactionStep(v15, 2, 1, v9, v95, 0, v88, v89, v92);
+              _MILogTransactionStep(v15, 2, 1, identifier, personaUniqueString, 0, v88, v89, path);
               goto LABEL_126;
             }
           }
@@ -2225,7 +2225,7 @@ LABEL_108:
           else
           {
             v105 = v114[5];
-            v73 = [v7 finalizeInstallationWithError:&v105];
+            v73 = [installableCopy finalizeInstallationWithError:&v105];
             objc_storeStrong(v67, v105);
             if (v73)
             {
@@ -2247,15 +2247,15 @@ LABEL_108:
   }
 
 LABEL_121:
-  if (v9 && v15)
+  if (identifier && v15)
   {
-    _MILogTransactionStep(v15, 2, 0, v9, v95, 0, v40, v41, v92);
+    _MILogTransactionStep(v15, 2, 0, identifier, personaUniqueString, 0, v40, v41, path);
   }
 
   v82 = 0;
-  if (a5)
+  if (error)
   {
-    *a5 = v114[5];
+    *error = v114[5];
   }
 
 LABEL_126:
@@ -2264,12 +2264,12 @@ LABEL_126:
   return v82 & 1;
 }
 
-- (void)_logOperationCompletionWithStartTime:(unint64_t)a3 distributorID:(id)a4
+- (void)_logOperationCompletionWithStartTime:(unint64_t)time distributorID:(id)d
 {
-  v11 = a4;
-  v5 = [(MIInstaller *)self options];
-  v6 = [(MIInstaller *)self identity];
-  v7 = [v6 bundleID];
+  dCopy = d;
+  options = [(MIInstaller *)self options];
+  identity = [(MIInstaller *)self identity];
+  bundleID = [identity bundleID];
 
   mach_absolute_time();
   if ([(MIInstaller *)self installOperationType]!= 1)
@@ -2281,7 +2281,7 @@ LABEL_126:
         goto LABEL_14;
       }
 
-      v8 = [v5 installTypeSummaryString];
+      installTypeSummaryString = [options installTypeSummaryString];
     }
 
     else
@@ -2291,7 +2291,7 @@ LABEL_126:
         goto LABEL_14;
       }
 
-      v8 = [v5 installTypeSummaryString];
+      installTypeSummaryString = [options installTypeSummaryString];
       [(MIInstaller *)self stagingTime];
       [(MIInstaller *)self waitingTime];
       [(MIInstaller *)self preflightAndPatchTime];
@@ -2304,13 +2304,13 @@ LABEL_126:
 
   if (!qword_1000A9720 || *(qword_1000A9720 + 44) >= 5)
   {
-    v8 = [v5 installTypeSummaryString];
+    installTypeSummaryString = [options installTypeSummaryString];
     [(MIInstaller *)self stagingTime];
     [(MIInstaller *)self waitingTime];
     [(MIInstaller *)self preflightAndPatchTime];
     [(MIInstaller *)self verificationTime];
-    v9 = [(MIInstaller *)self stagedUpdateMetadata];
-    v10 = [v9 stagedIdentifier];
+    stagedUpdateMetadata = [(MIInstaller *)self stagedUpdateMetadata];
+    stagedIdentifier = [stagedUpdateMetadata stagedIdentifier];
     MOLogWrite();
 
 LABEL_13:
@@ -2319,15 +2319,15 @@ LABEL_13:
 LABEL_14:
 }
 
-- (BOOL)performInstallationWithError:(id *)a3
+- (BOOL)performInstallationWithError:(id *)error
 {
   v60 = 0;
   v5 = mach_absolute_time();
   v6 = +[MIDaemonConfiguration sharedInstance];
-  v52 = [v6 installationBlacklist];
+  installationBlacklist = [v6 installationBlacklist];
 
-  v7 = [(MIInstaller *)self installOperationType];
-  if (v7 == 1)
+  installOperationType = [(MIInstaller *)self installOperationType];
+  if (installOperationType == 1)
   {
     if (qword_1000A9650 != -1)
     {
@@ -2394,16 +2394,16 @@ LABEL_10:
     goto LABEL_32;
   }
 
-  v51 = a3;
+  errorCopy = error;
   if (qword_1000A9720 && *(qword_1000A9720 + 44) >= 7)
   {
-    v14 = [(MIInstaller *)self installURL];
-    v50 = [v14 path];
+    installURL = [(MIInstaller *)self installURL];
+    path = [installURL path];
     MOLogWrite();
   }
 
   v58 = v13;
-  v15 = [(MIInstaller *)self _setupPackageStateWithError:&v58, v50];
+  v15 = [(MIInstaller *)self _setupPackageStateWithError:&v58, path];
   v16 = v58;
 
   if ((v15 & 1) == 0)
@@ -2432,7 +2432,7 @@ LABEL_10:
 
   if ((v17 & 1) == 0)
   {
-    a3 = v51;
+    error = errorCopy;
     if (qword_1000A9650 != -1)
     {
       sub_100057E20();
@@ -2478,14 +2478,14 @@ LABEL_39:
     v21 = 0;
     v24 = 0;
     v13 = v16;
-    a3 = v51;
+    error = errorCopy;
     goto LABEL_50;
   }
 
-  v20 = [(MIInstaller *)self lockedIdentifiers];
-  v21 = [NSSet setWithArray:v20];
+  lockedIdentifiers = [(MIInstaller *)self lockedIdentifiers];
+  v21 = [NSSet setWithArray:lockedIdentifiers];
 
-  if ([v52 intersectsSet:v21])
+  if ([installationBlacklist intersectsSet:v21])
   {
     v13 = sub_100010734("[MIInstaller performInstallationWithError:]", 1368, MIInstallerErrorDomain, 7, 0, &off_10009C2E0, @"Found blacklisted app in identifiers to be installed: %@", v22, v21);
 
@@ -2523,14 +2523,14 @@ LABEL_48:
     goto LABEL_48;
   }
 
-  v30 = [v19 installedDistributorID];
-  [(MIInstaller *)self _logOperationCompletionWithStartTime:v5 distributorID:v30];
+  installedDistributorID = [v19 installedDistributorID];
+  [(MIInstaller *)self _logOperationCompletionWithStartTime:v5 distributorID:installedDistributorID];
 
   v24 = 1;
 LABEL_49:
-  a3 = v51;
+  error = errorCopy;
 LABEL_50:
-  if (v7 == 1)
+  if (installOperationType == 1)
   {
     if (qword_1000A9650 != -1)
     {
@@ -2579,38 +2579,38 @@ LABEL_63:
     }
   }
 
-  v36 = [(MIInstaller *)self lockedIdentifiers];
+  lockedIdentifiers2 = [(MIInstaller *)self lockedIdentifiers];
 
-  if (v36)
+  if (lockedIdentifiers2)
   {
-    v37 = [(MIInstaller *)self lockedIdentifiers];
-    sub_100054780(v37);
+    lockedIdentifiers3 = [(MIInstaller *)self lockedIdentifiers];
+    sub_100054780(lockedIdentifiers3);
 
     [(MIInstaller *)self setLockedIdentifiers:0];
   }
 
-  v38 = [(MIInstaller *)self client];
-  if (v38)
+  client = [(MIInstaller *)self client];
+  if (client)
   {
-    v39 = v38;
-    v40 = [(MIInstaller *)self terminationAssertionReleased];
+    v39 = client;
+    terminationAssertionReleased = [(MIInstaller *)self terminationAssertionReleased];
 
-    if ((v40 & 1) == 0)
+    if ((terminationAssertionReleased & 1) == 0)
     {
-      v41 = [(MIInstaller *)self client];
-      [v41 releaseTerminationAssertion];
+      client2 = [(MIInstaller *)self client];
+      [client2 releaseTerminationAssertion];
 
       [(MIInstaller *)self setTerminationAssertionReleased:1];
     }
   }
 
-  v42 = [(MIInstaller *)self stagingRoot];
+  stagingRoot = [(MIInstaller *)self stagingRoot];
 
-  if (v42)
+  if (stagingRoot)
   {
     v44 = +[MIFileManager defaultManager];
-    v45 = [(MIInstaller *)self stagingRoot];
-    [v44 removeItemAtURL:v45 error:0];
+    stagingRoot2 = [(MIInstaller *)self stagingRoot];
+    [v44 removeItemAtURL:stagingRoot2 error:0];
   }
 
   if (v13)
@@ -2625,10 +2625,10 @@ LABEL_63:
 
   if ((v46 & 1) == 0)
   {
-    v13 = sub_100010734("[MIInstaller performInstallationWithError:]", 1415, MIInstallerErrorDomain, 1, 0, 0, @"No error was specified but the operation failed.", v43, v50);
+    v13 = sub_100010734("[MIInstaller performInstallationWithError:]", 1415, MIInstallerErrorDomain, 1, 0, 0, @"No error was specified but the operation failed.", v43, path);
   }
 
-  if (a3)
+  if (error)
   {
     v47 = v24;
   }
@@ -2641,23 +2641,23 @@ LABEL_63:
   if ((v47 & 1) == 0)
   {
     v48 = v13;
-    *a3 = v13;
+    *error = v13;
   }
 
   return v24;
 }
 
-- (BOOL)applyStagedUpdateWithJournalEntry:(id)a3 error:(id *)a4
+- (BOOL)applyStagedUpdateWithJournalEntry:(id)entry error:(id *)error
 {
-  v6 = a3;
+  entryCopy = entry;
   v62 = 0;
   v63 = &v62;
   v64 = 0x3032000000;
   v65 = sub_100023B80;
   v66 = sub_100023B90;
   v67 = 0;
-  v7 = [(MIInstaller *)self identity];
-  v8 = [v7 bundleID];
+  identity = [(MIInstaller *)self identity];
+  bundleID = [identity bundleID];
   v61[0] = _NSConcreteStackBlock;
   v61[1] = 3221225472;
   v61[2] = sub_100027C64;
@@ -2677,53 +2677,53 @@ LABEL_63:
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v10, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "InstallStagedUpdate", "Start Applying Staged Update", buf, 2u);
   }
 
-  v49 = [v7 personaUniqueString];
+  personaUniqueString = [identity personaUniqueString];
   if (qword_1000A9720 && *(qword_1000A9720 + 44) >= 7)
   {
-    v43 = v6;
+    v43 = entryCopy;
     MOLogWrite();
   }
 
-  _MILogTransactionStep(14, 1, 1, v8, v49, 0, v11, v12, v43);
-  [v6 setProgressBlock:v9];
+  _MILogTransactionStep(14, 1, 1, bundleID, personaUniqueString, 0, v11, v12, v43);
+  [entryCopy setProgressBlock:v9];
   v13 = v63;
   obj = v63[5];
-  v48 = [(MIInstaller *)self _identifiersToLockBundleIdentifier:v8 error:&obj];
+  v48 = [(MIInstaller *)self _identifiersToLockBundleIdentifier:bundleID error:&obj];
   objc_storeStrong(v13 + 5, obj);
   if (!v48)
   {
-    v47 = 0;
+    bundleRecordsToRegister = 0;
     goto LABEL_16;
   }
 
   [(MIInstaller *)self _writeLockIdentifiers:?];
   v14 = v63;
   v59 = v63[5];
-  v15 = [v6 makeStagedBackgroundUpdateLive:&v59];
+  v15 = [entryCopy makeStagedBackgroundUpdateLive:&v59];
   objc_storeStrong(v14 + 5, v59);
   if (v15)
   {
-    v47 = [v6 bundleRecordsToRegister];
-    v17 = [(MIInstaller *)self lockedIdentifiers];
+    bundleRecordsToRegister = [entryCopy bundleRecordsToRegister];
+    lockedIdentifiers = [(MIInstaller *)self lockedIdentifiers];
 
-    if (v17)
+    if (lockedIdentifiers)
     {
-      v18 = [(MIInstaller *)self lockedIdentifiers];
-      sub_100054780(v18);
+      lockedIdentifiers2 = [(MIInstaller *)self lockedIdentifiers];
+      sub_100054780(lockedIdentifiers2);
 
       [(MIInstaller *)self setLockedIdentifiers:0];
     }
 
-    v19 = [(MIInstaller *)self client];
-    [v19 releaseTerminationAssertion];
+    client = [(MIInstaller *)self client];
+    [client releaseTerminationAssertion];
 
     [(MIInstaller *)self setTerminationAssertionReleased:1];
     context = objc_autoreleasePoolPush();
     v20 = v9;
-    v21 = v6;
-    v22 = v8;
-    v23 = a4;
-    v24 = v7;
+    v21 = entryCopy;
+    v22 = bundleID;
+    errorCopy = error;
+    v24 = identity;
     v55 = 0;
     v56 = &v55;
     v57 = 0x2020000000;
@@ -2739,10 +2739,10 @@ LABEL_63:
     v54 = &v55;
     dispatch_sync(v25, block);
 
-    v7 = v24;
-    a4 = v23;
-    v8 = v22;
-    v6 = v21;
+    identity = v24;
+    error = errorCopy;
+    bundleID = v22;
+    entryCopy = v21;
     v9 = v20;
     LOBYTE(v20) = *(v56 + 24);
 
@@ -2751,15 +2751,15 @@ LABEL_63:
     if ((v20 & 1) == 0)
     {
       [(MIInstaller *)self _logOperationCompletionWithStartTime:v46 distributorID:@"Unknown"];
-      v27 = [v26 recordPromise];
+      recordPromise = [v26 recordPromise];
       recordPromise = self->_recordPromise;
-      self->_recordPromise = v27;
+      self->_recordPromise = recordPromise;
 
-      if ([v47 count])
+      if ([bundleRecordsToRegister count])
       {
-        v29 = v47;
+        v29 = bundleRecordsToRegister;
         receipt = self->_receipt;
-        v47 = v29;
+        bundleRecordsToRegister = v29;
         self->_receipt = v29;
       }
 
@@ -2777,8 +2777,8 @@ LABEL_16:
     goto LABEL_19;
   }
 
-  v31 = sub_100010734("[MIInstaller applyStagedUpdateWithJournalEntry:error:]", 1458, MIInstallerErrorDomain, 4, 0, 0, @"Failed to make staged background update live for app identity: %@", v16, v7);
-  v47 = 0;
+  v31 = sub_100010734("[MIInstaller applyStagedUpdateWithJournalEntry:error:]", 1458, MIInstallerErrorDomain, 4, 0, 0, @"Failed to make staged background update live for app identity: %@", v16, identity);
+  bundleRecordsToRegister = 0;
   receipt = v63[5];
   v63[5] = v31;
 LABEL_18:
@@ -2803,30 +2803,30 @@ LABEL_19:
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v32, OS_SIGNPOST_INTERVAL_END, 0xEEEEB0B5B2B2EEEELL, "InstallStagedUpdate", "End staging update installation [%s]", buf, 0xCu);
   }
 
-  _MILogTransactionStep(14, 2, v15, v8, v49, 0, v33, v34, v44);
+  _MILogTransactionStep(14, 2, v15, bundleID, personaUniqueString, 0, v33, v34, v44);
   if ((v15 & 1) == 0)
   {
-    v36 = [(MIInstaller *)self lockedIdentifiers];
+    lockedIdentifiers3 = [(MIInstaller *)self lockedIdentifiers];
 
-    if (v36)
+    if (lockedIdentifiers3)
     {
-      v37 = [(MIInstaller *)self lockedIdentifiers];
-      sub_100054780(v37);
+      lockedIdentifiers4 = [(MIInstaller *)self lockedIdentifiers];
+      sub_100054780(lockedIdentifiers4);
 
       [(MIInstaller *)self setLockedIdentifiers:0];
     }
 
     if (![(MIInstaller *)self terminationAssertionReleased])
     {
-      v38 = [(MIInstaller *)self client];
-      [v38 releaseTerminationAssertion];
+      client2 = [(MIInstaller *)self client];
+      [client2 releaseTerminationAssertion];
     }
 
     v39 = v9;
-    if (v6)
+    if (entryCopy)
     {
       v50 = 0;
-      v40 = [0 purgeJournalEntry:v6 withError:&v50];
+      v40 = [0 purgeJournalEntry:entryCopy withError:&v50];
       v41 = v50;
       if ((v40 & 1) == 0 && (!qword_1000A9720 || *(qword_1000A9720 + 44) >= 3))
       {
@@ -2840,9 +2840,9 @@ LABEL_19:
     }
 
     v9 = v39;
-    if (a4)
+    if (error)
     {
-      *a4 = v63[5];
+      *error = v63[5];
     }
   }
 

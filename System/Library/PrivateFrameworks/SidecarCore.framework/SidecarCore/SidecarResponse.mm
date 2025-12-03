@@ -11,10 +11,10 @@
   {
     v3 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:5];
     SidecarMessageSetType(v3, 2);
-    v4 = [(SidecarRequest *)self uuid];
+    uuid = [(SidecarRequest *)self uuid];
     v6[0] = 0;
     v6[1] = 0;
-    [v4 getUUIDBytes:v6];
+    [uuid getUUIDBytes:v6];
     SidecarMessageSetRequestID(v3, bswap32(v6[0]));
 
     [(SidecarRequest *)self _sendMessage:v3];

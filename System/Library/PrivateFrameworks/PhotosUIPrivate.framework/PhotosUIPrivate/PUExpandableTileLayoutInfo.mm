@@ -1,9 +1,9 @@
 @interface PUExpandableTileLayoutInfo
-- (BOOL)isGeometryEqualToLayoutInfo:(id)a3;
+- (BOOL)isGeometryEqualToLayoutInfo:(id)info;
 - (CGSize)expandedSize;
 - (CGSize)unexpandedSize;
-- (PUExpandableTileLayoutInfo)initWithTileIdentifier:(id)a3 center:(CGPoint)a4 size:(CGSize)a5 cornerRadius:(double)a6 alpha:(double)a7 transform:(CGAffineTransform *)a8 zPosition:(double)a9 coordinateSystem:(id)a10;
-- (PUExpandableTileLayoutInfo)initWithTileIdentifier:(id)a3 center:(CGPoint)a4 size:(CGSize)a5 cornerRadius:(double)a6 alpha:(double)a7 transform:(CGAffineTransform *)a8 zPosition:(double)a9 coordinateSystem:(id)a10 isExpanded:(BOOL)a11 expandedSize:(CGSize)a12 unexpandedSize:(CGSize)a13;
+- (PUExpandableTileLayoutInfo)initWithTileIdentifier:(id)identifier center:(CGPoint)center size:(CGSize)size cornerRadius:(double)radius alpha:(double)alpha transform:(CGAffineTransform *)transform zPosition:(double)position coordinateSystem:(id)self0;
+- (PUExpandableTileLayoutInfo)initWithTileIdentifier:(id)identifier center:(CGPoint)center size:(CGSize)size cornerRadius:(double)radius alpha:(double)alpha transform:(CGAffineTransform *)transform zPosition:(double)position coordinateSystem:(id)self0 isExpanded:(BOOL)self1 expandedSize:(CGSize)self2 unexpandedSize:(CGSize)self3;
 - (id)clone;
 @end
 
@@ -27,15 +27,15 @@
   return result;
 }
 
-- (BOOL)isGeometryEqualToLayoutInfo:(id)a3
+- (BOOL)isGeometryEqualToLayoutInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v14.receiver = self;
   v14.super_class = PUExpandableTileLayoutInfo;
-  if (-[PUTileLayoutInfo isGeometryEqualToLayoutInfo:](&v14, sel_isGeometryEqualToLayoutInfo_, v4) && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (([v4 expandedSize], self->_expandedSize.width == v6) ? (v7 = self->_expandedSize.height == v5) : (v7 = 0), v7 && ((objc_msgSend(v4, "unexpandedSize"), self->_unexpandedSize.width == v9) ? (v10 = self->_unexpandedSize.height == v8) : (v10 = 0), v10)))
+  if (-[PUTileLayoutInfo isGeometryEqualToLayoutInfo:](&v14, sel_isGeometryEqualToLayoutInfo_, infoCopy) && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (([infoCopy expandedSize], self->_expandedSize.width == v6) ? (v7 = self->_expandedSize.height == v5) : (v7 = 0), v7 && ((objc_msgSend(infoCopy, "unexpandedSize"), self->_unexpandedSize.width == v9) ? (v10 = self->_unexpandedSize.height == v8) : (v10 = 0), v10)))
   {
     isExpanded = self->_isExpanded;
-    v11 = isExpanded == [v4 isExpanded];
+    v11 = isExpanded == [infoCopy isExpanded];
   }
 
   else
@@ -49,7 +49,7 @@
 - (id)clone
 {
   v3 = objc_alloc(objc_opt_class());
-  v4 = [(PUTileLayoutInfo *)self tileIdentifier];
+  tileIdentifier = [(PUTileLayoutInfo *)self tileIdentifier];
   [(PUTileLayoutInfo *)self center];
   v28 = v5;
   v7 = v6;
@@ -63,45 +63,45 @@
   [(PUTileLayoutInfo *)self transform];
   [(PUTileLayoutInfo *)self zPosition];
   v17 = v16;
-  v18 = [(PUTileLayoutInfo *)self coordinateSystem];
-  v19 = [(PUExpandableTileLayoutInfo *)self isExpanded];
+  coordinateSystem = [(PUTileLayoutInfo *)self coordinateSystem];
+  isExpanded = [(PUExpandableTileLayoutInfo *)self isExpanded];
   [(PUExpandableTileLayoutInfo *)self expandedSize];
   v21 = v20;
   v23 = v22;
   [(PUExpandableTileLayoutInfo *)self unexpandedSize];
-  v26 = [v3 initWithTileIdentifier:v4 center:v29 size:v18 cornerRadius:v19 alpha:v28 transform:v7 zPosition:v9 coordinateSystem:v11 isExpanded:v13 expandedSize:v15 unexpandedSize:{v17, v21, v23, v24, v25}];
+  v26 = [v3 initWithTileIdentifier:tileIdentifier center:v29 size:coordinateSystem cornerRadius:isExpanded alpha:v28 transform:v7 zPosition:v9 coordinateSystem:v11 isExpanded:v13 expandedSize:v15 unexpandedSize:{v17, v21, v23, v24, v25}];
 
   return v26;
 }
 
-- (PUExpandableTileLayoutInfo)initWithTileIdentifier:(id)a3 center:(CGPoint)a4 size:(CGSize)a5 cornerRadius:(double)a6 alpha:(double)a7 transform:(CGAffineTransform *)a8 zPosition:(double)a9 coordinateSystem:(id)a10 isExpanded:(BOOL)a11 expandedSize:(CGSize)a12 unexpandedSize:(CGSize)a13
+- (PUExpandableTileLayoutInfo)initWithTileIdentifier:(id)identifier center:(CGPoint)center size:(CGSize)size cornerRadius:(double)radius alpha:(double)alpha transform:(CGAffineTransform *)transform zPosition:(double)position coordinateSystem:(id)self0 isExpanded:(BOOL)self1 expandedSize:(CGSize)self2 unexpandedSize:(CGSize)self3
 {
   v14 = *MEMORY[0x1E69796E0];
   v18.receiver = self;
   v18.super_class = PUExpandableTileLayoutInfo;
-  v15 = *&a8->c;
-  v17[0] = *&a8->a;
+  v15 = *&transform->c;
+  v17[0] = *&transform->a;
   v17[1] = v15;
-  v17[2] = *&a8->tx;
-  result = [(PUTileLayoutInfo *)&v18 initWithTileIdentifier:a3 center:v14 size:15 alpha:v17 cornerRadius:a10 cornerCurve:*&a13.height cornerMask:a4.x transform:a4.y zPosition:a5.width contentsRect:a5.height coordinateSystem:a7, a6, a9, *MEMORY[0x1E69C48E0], *(MEMORY[0x1E69C48E0] + 8), *(MEMORY[0x1E69C48E0] + 16), *(MEMORY[0x1E69C48E0] + 24)];
+  v17[2] = *&transform->tx;
+  result = [(PUTileLayoutInfo *)&v18 initWithTileIdentifier:identifier center:v14 size:15 alpha:v17 cornerRadius:system cornerCurve:*&unexpandedSize.height cornerMask:center.x transform:center.y zPosition:size.width contentsRect:size.height coordinateSystem:alpha, radius, position, *MEMORY[0x1E69C48E0], *(MEMORY[0x1E69C48E0] + 8), *(MEMORY[0x1E69C48E0] + 16), *(MEMORY[0x1E69C48E0] + 24)];
   if (result)
   {
-    result->_isExpanded = a11;
+    result->_isExpanded = expanded;
     result->_unexpandedSize.width = v19;
     result->_unexpandedSize.height = v20;
-    result->_expandedSize = a12;
+    result->_expandedSize = expandedSize;
   }
 
   return result;
 }
 
-- (PUExpandableTileLayoutInfo)initWithTileIdentifier:(id)a3 center:(CGPoint)a4 size:(CGSize)a5 cornerRadius:(double)a6 alpha:(double)a7 transform:(CGAffineTransform *)a8 zPosition:(double)a9 coordinateSystem:(id)a10
+- (PUExpandableTileLayoutInfo)initWithTileIdentifier:(id)identifier center:(CGPoint)center size:(CGSize)size cornerRadius:(double)radius alpha:(double)alpha transform:(CGAffineTransform *)transform zPosition:(double)position coordinateSystem:(id)self0
 {
-  v10 = *&a8->c;
-  v12[0] = *&a8->a;
+  v10 = *&transform->c;
+  v12[0] = *&transform->a;
   v12[1] = v10;
-  v12[2] = *&a8->tx;
-  return [(PUExpandableTileLayoutInfo *)self initWithTileIdentifier:a3 center:v12 size:a10 cornerRadius:0 alpha:a4.x transform:a4.y zPosition:a5.width coordinateSystem:a5.height isExpanded:a6 expandedSize:a7 unexpandedSize:a9, *MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8), *MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)];
+  v12[2] = *&transform->tx;
+  return [(PUExpandableTileLayoutInfo *)self initWithTileIdentifier:identifier center:v12 size:system cornerRadius:0 alpha:center.x transform:center.y zPosition:size.width coordinateSystem:size.height isExpanded:radius expandedSize:alpha unexpandedSize:position, *MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8), *MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)];
 }
 
 @end

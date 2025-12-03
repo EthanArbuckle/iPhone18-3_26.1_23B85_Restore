@@ -1,9 +1,9 @@
 @interface SFHMACOperation
 - (SFDigestOperation)digestOperation;
 - (SFHMACOperation)init;
-- (SFHMACOperation)initWithCoder:(id)a3;
-- (SFHMACOperation)initWithDigestOperation:(id)a3;
-- (void)setDigestOperation:(id)a3;
+- (SFHMACOperation)initWithCoder:(id)coder;
+- (SFHMACOperation)initWithDigestOperation:(id)operation;
+- (void)setDigestOperation:(id)operation;
 @end
 
 @implementation SFHMACOperation
@@ -16,26 +16,26 @@
   return v4;
 }
 
-- (SFHMACOperation)initWithDigestOperation:(id)a3
+- (SFHMACOperation)initWithDigestOperation:(id)operation
 {
-  v5 = a3;
+  operationCopy = operation;
   v9.receiver = self;
   v9.super_class = SFHMACOperation;
   v6 = [(SFMessageAuthenticationCodeOperation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(v6->_hmacOperationInternal + 1, a3);
+    objc_storeStrong(v6->_hmacOperationInternal + 1, operation);
   }
 
   return v7;
 }
 
-- (SFHMACOperation)initWithCoder:(id)a3
+- (SFHMACOperation)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = SFHMACOperation;
-  return [(SFMessageAuthenticationCodeOperation *)&v4 initWithCoder:a3];
+  return [(SFMessageAuthenticationCodeOperation *)&v4 initWithCoder:coder];
 }
 
 - (SFDigestOperation)digestOperation
@@ -45,9 +45,9 @@
   return v2;
 }
 
-- (void)setDigestOperation:(id)a3
+- (void)setDigestOperation:(id)operation
 {
-  v4 = [a3 copyWithZone:0];
+  v4 = [operation copyWithZone:0];
   hmacOperationInternal = self->_hmacOperationInternal;
   v6 = hmacOperationInternal[1];
   hmacOperationInternal[1] = v4;

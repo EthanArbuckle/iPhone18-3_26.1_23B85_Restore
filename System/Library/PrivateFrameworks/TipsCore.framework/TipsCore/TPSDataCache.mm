@@ -1,16 +1,16 @@
 @interface TPSDataCache
 - (BOOL)expired;
-- (TPSDataCache)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (TPSDataCache)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TPSDataCache
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [TPSDataCache allocWithZone:a3];
+  v4 = [TPSDataCache allocWithZone:zone];
   [(TPSDataCache *)v4 setCacheType:self->_cacheType];
   [(TPSDataCache *)v4 setMaxAge:self->_maxAge];
   [(TPSDataCache *)v4 setFileSize:self->_fileSize];
@@ -21,62 +21,62 @@
   return v4;
 }
 
-- (TPSDataCache)initWithCoder:(id)a3
+- (TPSDataCache)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = TPSDataCache;
   v5 = [(TPSDataCache *)&v11 init];
   if (v5)
   {
-    -[TPSDataCache setMaxAge:](v5, "setMaxAge:", [v4 decodeIntegerForKey:@"TPSDataCacheMaxAge"]);
-    -[TPSDataCache setCacheType:](v5, "setCacheType:", [v4 decodeIntegerForKey:@"TPSDataCacheType"]);
-    -[TPSDataCache setFileSize:](v5, "setFileSize:", [v4 decodeIntegerForKey:@"TPSDataCacheFileSize"]);
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"TPSDataCacheIdentifier"];
+    -[TPSDataCache setMaxAge:](v5, "setMaxAge:", [coderCopy decodeIntegerForKey:@"TPSDataCacheMaxAge"]);
+    -[TPSDataCache setCacheType:](v5, "setCacheType:", [coderCopy decodeIntegerForKey:@"TPSDataCacheType"]);
+    -[TPSDataCache setFileSize:](v5, "setFileSize:", [coderCopy decodeIntegerForKey:@"TPSDataCacheFileSize"]);
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"TPSDataCacheIdentifier"];
     [(TPSDataCache *)v5 setIdentifier:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"TPSDataCacheLastModified"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"TPSDataCacheLastModified"];
     [(TPSDataCache *)v5 setLastModified:v7];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"TPSDataCacheLangaugeCode"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"TPSDataCacheLangaugeCode"];
     [(TPSDataCache *)v5 setLanguageCode:v8];
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"TPSDataCacheUpdatedDate"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"TPSDataCacheUpdatedDate"];
     [(TPSDataCache *)v5 setUpdatedDate:v9];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[TPSDataCache maxAge](self forKey:{"maxAge"), @"TPSDataCacheMaxAge"}];
-  [v4 encodeInteger:-[TPSDataCache cacheType](self forKey:{"cacheType"), @"TPSDataCacheType"}];
-  [v4 encodeInteger:-[TPSDataCache fileSize](self forKey:{"fileSize"), @"TPSDataCacheFileSize"}];
-  v5 = [(TPSDataCache *)self identifier];
-  [v4 encodeObject:v5 forKey:@"TPSDataCacheIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[TPSDataCache maxAge](self forKey:{"maxAge"), @"TPSDataCacheMaxAge"}];
+  [coderCopy encodeInteger:-[TPSDataCache cacheType](self forKey:{"cacheType"), @"TPSDataCacheType"}];
+  [coderCopy encodeInteger:-[TPSDataCache fileSize](self forKey:{"fileSize"), @"TPSDataCacheFileSize"}];
+  identifier = [(TPSDataCache *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"TPSDataCacheIdentifier"];
 
-  v6 = [(TPSDataCache *)self updatedDate];
-  [v4 encodeObject:v6 forKey:@"TPSDataCacheUpdatedDate"];
+  updatedDate = [(TPSDataCache *)self updatedDate];
+  [coderCopy encodeObject:updatedDate forKey:@"TPSDataCacheUpdatedDate"];
 
-  v7 = [(TPSDataCache *)self lastModified];
-  [v4 encodeObject:v7 forKey:@"TPSDataCacheLastModified"];
+  lastModified = [(TPSDataCache *)self lastModified];
+  [coderCopy encodeObject:lastModified forKey:@"TPSDataCacheLastModified"];
 
-  v8 = [(TPSDataCache *)self languageCode];
-  [v4 encodeObject:v8 forKey:@"TPSDataCacheLangaugeCode"];
+  languageCode = [(TPSDataCache *)self languageCode];
+  [coderCopy encodeObject:languageCode forKey:@"TPSDataCacheLangaugeCode"];
 }
 
 - (BOOL)expired
 {
-  v3 = [(TPSDataCache *)self updatedDate];
-  v4 = [v3 dateByAddingTimeInterval:self->_maxAge];
+  updatedDate = [(TPSDataCache *)self updatedDate];
+  v4 = [updatedDate dateByAddingTimeInterval:self->_maxAge];
 
-  v5 = [MEMORY[0x1E695DF00] date];
-  v6 = [(TPSDataCache *)self updatedDate];
-  if (v6)
+  date = [MEMORY[0x1E695DF00] date];
+  updatedDate2 = [(TPSDataCache *)self updatedDate];
+  if (updatedDate2)
   {
-    v7 = [v4 compare:v5] == -1;
+    v7 = [v4 compare:date] == -1;
   }
 
   else

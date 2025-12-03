@@ -1,7 +1,7 @@
 @interface HVBudget
 - (HVBudget)init;
-- (_DWORD)sourcesFilteredByBudgetAndRegistrationsFromAvailableSources:(int)a3 levelOfService:;
-- (void)registerLevelOfService:(int)a3 oneDataSource:;
+- (_DWORD)sourcesFilteredByBudgetAndRegistrationsFromAvailableSources:(int)sources levelOfService:;
+- (void)registerLevelOfService:(int)service oneDataSource:;
 @end
 
 @implementation HVBudget
@@ -24,7 +24,7 @@
   return result;
 }
 
-- (_DWORD)sourcesFilteredByBudgetAndRegistrationsFromAvailableSources:(int)a3 levelOfService:
+- (_DWORD)sourcesFilteredByBudgetAndRegistrationsFromAvailableSources:(int)sources levelOfService:
 {
   if (result)
   {
@@ -32,16 +32,16 @@
     v5 = result[2] | result[8];
     v6 = v5 & a2;
     v7 = v5 & a2 ^ a2;
-    if (a3 > 1)
+    if (sources > 1)
     {
-      if (a3 == 2)
+      if (sources == 2)
       {
         v8 = result[6] | result[7];
       }
 
       else
       {
-        if (a3 != 3)
+        if (sources != 3)
         {
 LABEL_14:
           if (v7)
@@ -52,15 +52,15 @@ LABEL_14:
             }
 
             v11 = +[HVPowerBudget defaultBudget];
-            v12 = [v11 canDoDiscretionaryWork];
+            canDoDiscretionaryWork = [v11 canDoDiscretionaryWork];
 
-            if (v12 == 1)
+            if (canDoDiscretionaryWork == 1)
             {
               v6 |= v4[9] & a2 & v7;
               return (v6 & ~(v4[3] | v4[4]));
             }
 
-            if (v12 == 2)
+            if (canDoDiscretionaryWork == 2)
             {
 LABEL_18:
               v6 = (v7 | v5) & a2;
@@ -76,9 +76,9 @@ LABEL_18:
 
     else
     {
-      if (a3)
+      if (sources)
       {
-        if (a3 != 1)
+        if (sources != 1)
         {
           goto LABEL_14;
         }
@@ -86,8 +86,8 @@ LABEL_18:
 
       else
       {
-        v9 = [MEMORY[0x277CCA890] currentHandler];
-        [v9 handleFailureInMethod:sel_sourcesFilteredByBudgetAndRegistrationsFromAvailableSources_levelOfService_ object:v4 file:@"HVBudget.m" lineNumber:137 description:@"It does not make sense to request sources that are not registered"];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
+        [currentHandler handleFailureInMethod:sel_sourcesFilteredByBudgetAndRegistrationsFromAvailableSources_levelOfService_ object:v4 file:@"HVBudget.m" lineNumber:137 description:@"It does not make sense to request sources that are not registered"];
       }
 
       v10 = HVIsConnectedToPower();
@@ -105,44 +105,44 @@ LABEL_18:
   return result;
 }
 
-- (void)registerLevelOfService:(int)a3 oneDataSource:
+- (void)registerLevelOfService:(int)service oneDataSource:
 {
   v16 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    v4 = a1[1].i32[1];
-    v5 = (a1 + 24);
-    v6 = a1[1].i64[1];
-    v7 = HIDWORD(a1[1].i64[1]);
-    if ((v6 & a3) != 0)
+    v4 = self[1].i32[1];
+    v5 = (self + 24);
+    v6 = self[1].i64[1];
+    v7 = HIDWORD(self[1].i64[1]);
+    if ((v6 & service) != 0)
     {
       v8 = 2;
     }
 
     else
     {
-      v8 = (v4 & a3) != 0;
+      v8 = (v4 & service) != 0;
     }
 
-    v9 = a1[2].i32[0];
-    if ((v7 & a3) != 0)
+    v9 = self[2].i32[0];
+    if ((v7 & service) != 0)
     {
       v8 = 3;
     }
 
-    if ((v9 & a3) != 0)
+    if ((v9 & service) != 0)
     {
       v8 = 4;
     }
 
     if (v8 < a2)
     {
-      a1[1] = vandq_s8(a1[1], vdupq_n_s32(~a3));
+      self[1] = vandq_s8(self[1], vdupq_n_s32(~service));
       if (a2 > 2)
       {
         if (a2 == 3)
         {
-          v5 = (a1 + 28);
+          v5 = (self + 28);
           v6 = v7;
         }
 
@@ -154,7 +154,7 @@ LABEL_20:
             v10 = hv_default_log_handle();
             if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
             {
-              v11 = [(HVBudget *)a1 sourcesFilteredByBudgetAndRegistrationsFromAvailableSources:1 levelOfService:?];
+              v11 = [(HVBudget *)self sourcesFilteredByBudgetAndRegistrationsFromAvailableSources:1 levelOfService:?];
               v12 = HVDataSourceDescription(v11);
               v14 = 138412290;
               v15 = v12;
@@ -165,14 +165,14 @@ LABEL_20:
           }
 
           v6 = v9;
-          v5 = a1 + 2;
+          v5 = self + 2;
         }
       }
 
       else if (a2 == 1)
       {
         v6 = v4;
-        v5 = (a1 + 20);
+        v5 = (self + 20);
       }
 
       else if (a2 != 2)
@@ -180,7 +180,7 @@ LABEL_20:
         goto LABEL_20;
       }
 
-      v5->i32[0] = v6 | a3;
+      v5->i32[0] = v6 | service;
       goto LABEL_20;
     }
   }

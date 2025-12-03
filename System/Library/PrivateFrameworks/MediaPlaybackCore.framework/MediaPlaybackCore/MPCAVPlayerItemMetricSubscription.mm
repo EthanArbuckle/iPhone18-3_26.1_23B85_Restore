@@ -1,14 +1,14 @@
 @interface MPCAVPlayerItemMetricSubscription
-- (void)publisher:(id)a3 didReceiveEvent:(id)a4;
+- (void)publisher:(id)publisher didReceiveEvent:(id)event;
 @end
 
 @implementation MPCAVPlayerItemMetricSubscription
 
-- (void)publisher:(id)a3 didReceiveEvent:(id)a4
+- (void)publisher:(id)publisher didReceiveEvent:(id)event
 {
   swift_unknownObjectRetain();
-  v6 = a4;
-  v7 = self;
+  eventCopy = event;
+  selfCopy = self;
   sub_1C5E438CC();
   swift_unknownObjectRelease();
 }

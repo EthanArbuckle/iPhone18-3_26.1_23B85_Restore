@@ -7,71 +7,71 @@
 - (_GCGamepadEventSourceDescription)gamepadEventSource;
 - (_GCNintendoFusedJoyConDevice)fusionDevice;
 - (_GCNintendoJoyConDevice)init;
-- (_GCNintendoJoyConDevice)initWithHIDDevice:(id)a3 manager:(id)a4 type:(unsigned __int8)a5;
+- (_GCNintendoJoyConDevice)initWithHIDDevice:(id)device manager:(id)manager type:(unsigned __int8)type;
 - (id)deviceBatteryComponentBatteryUpdatedHandler;
-- (id)makeControllerForClient:(id)a3;
-- (id)propertyForKey:(id)a3;
+- (id)makeControllerForClient:(id)client;
+- (id)propertyForKey:(id)key;
 - (id)readBattery;
 - (unsigned)inputMode;
-- (void)_addClient:(id)a3;
-- (void)_removeClient:(id)a3;
-- (void)homeButtonLongPressGesture:(BOOL)a3;
-- (void)playerIndicatorXPCProxyServerEndpoint:(id)a3 didReceivePlayerIndexChange:(int64_t)a4;
-- (void)propagateBattery:(id)a3;
-- (void)requestIdleDisconnect:(id)a3;
-- (void)setDeviceBatteryComponentBatteryUpdatedHandler:(id)a3;
-- (void)setDriverConnection:(id)a3;
-- (void)setIndicatedPlayerIndex:(int64_t)a3;
+- (void)_addClient:(id)client;
+- (void)_removeClient:(id)client;
+- (void)homeButtonLongPressGesture:(BOOL)gesture;
+- (void)playerIndicatorXPCProxyServerEndpoint:(id)endpoint didReceivePlayerIndexChange:(int64_t)change;
+- (void)propagateBattery:(id)battery;
+- (void)requestIdleDisconnect:(id)disconnect;
+- (void)setDeviceBatteryComponentBatteryUpdatedHandler:(id)handler;
+- (void)setDriverConnection:(id)connection;
+- (void)setIndicatedPlayerIndex:(int64_t)index;
 @end
 
 @implementation _GCNintendoJoyConDevice
 
-- (_GCNintendoJoyConDevice)initWithHIDDevice:(id)a3 manager:(id)a4 type:(unsigned __int8)a5
+- (_GCNintendoJoyConDevice)initWithHIDDevice:(id)device manager:(id)manager type:(unsigned __int8)type
 {
-  v9 = a3;
-  v10 = a4;
+  deviceCopy = device;
+  managerCopy = manager;
   v27.receiver = self;
   v27.super_class = _GCNintendoJoyConDevice;
   v11 = [(_GCNintendoJoyConDevice *)&v27 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_serviceInfo, a3);
-    objc_storeWeak(&v12->_manager, v10);
-    v12->_type = a5;
-    v13 = [v9 stringPropertyForKey:@"SerialNumber"];
+    objc_storeStrong(&v11->_serviceInfo, device);
+    objc_storeWeak(&v12->_manager, managerCopy);
+    v12->_type = type;
+    v13 = [deviceCopy stringPropertyForKey:@"SerialNumber"];
     p_identifier = &v12->_identifier;
     identifier = v12->_identifier;
     v12->_identifier = v13;
 
     if (!v12->_identifier)
     {
-      v16 = [MEMORY[0x1E696AFB0] UUID];
+      uUID = [MEMORY[0x1E696AFB0] UUID];
       v17 = *p_identifier;
-      *p_identifier = v16;
+      *p_identifier = uUID;
 
       if (gc_isInternalBuild())
       {
-        [_GCNintendoJoyConDevice initWithHIDDevice:v9 manager:&v12->_identifier type:?];
+        [_GCNintendoJoyConDevice initWithHIDDevice:deviceCopy manager:&v12->_identifier type:?];
       }
     }
 
-    v18 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     clients = v12->_clients;
-    v12->_clients = v18;
+    v12->_clients = strongToStrongObjectsMapTable;
 
     v12->_indicatedPlayerIndex = -1;
-    v20 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable2 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     clientPlayerIndicatorEndpoints = v12->_clientPlayerIndicatorEndpoints;
-    v12->_clientPlayerIndicatorEndpoints = v20;
+    v12->_clientPlayerIndicatorEndpoints = strongToStrongObjectsMapTable2;
 
     v22 = [[GCDeviceBattery alloc] initWithLevel:-1 batteryState:0.0];
     battery = v12->_battery;
     v12->_battery = v22;
 
-    v24 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable3 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     clientBatteryEndpoints = v12->_clientBatteryEndpoints;
-    v12->_clientBatteryEndpoints = v24;
+    v12->_clientBatteryEndpoints = strongToStrongObjectsMapTable3;
   }
 
   return v12;
@@ -84,22 +84,22 @@
   return 0;
 }
 
-- (void)setDriverConnection:(id)a3
+- (void)setDriverConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   driverConnectionInvalidationRegistration = self->_driverConnectionInvalidationRegistration;
   self->_driverConnectionInvalidationRegistration = 0;
 
   driverConnection = self->_driverConnection;
   self->_driverConnection = 0;
 
-  objc_storeStrong(&self->_driverConnection, a3);
+  objc_storeStrong(&self->_driverConnection, connection);
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __47___GCNintendoJoyConDevice_setDriverConnection___block_invoke;
   v25[3] = &unk_1E8418C28;
   v25[4] = self;
-  v8 = [v5 addInvalidationHandler:v25];
+  v8 = [connectionCopy addInvalidationHandler:v25];
   v9 = self->_driverConnectionInvalidationRegistration;
   self->_driverConnectionInvalidationRegistration = v8;
 
@@ -108,9 +108,9 @@
   activity_block[1] = 3221225472;
   activity_block[2] = __47___GCNintendoJoyConDevice_setDriverConnection___block_invoke_2;
   activity_block[3] = &unk_1E8418C50;
-  v10 = v5;
+  v10 = connectionCopy;
   v22 = v10;
-  v23 = self;
+  selfCopy = self;
   _os_activity_initiate(&dword_1D2CD5000, "Connect JoyCon Fusion Gesture Service", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 
   v17[0] = MEMORY[0x1E69E9820];
@@ -119,7 +119,7 @@
   v17[3] = &unk_1E8419CD8;
   v11 = v10;
   v18 = v11;
-  v19 = self;
+  selfCopy2 = self;
   objc_copyWeak(&v20, &location);
   _os_activity_initiate(&dword_1D2CD5000, "Connect Battery Service", OS_ACTIVITY_FLAG_DEFAULT, v17);
   objc_destroyWeak(&v20);
@@ -129,7 +129,7 @@
   v13[2] = __47___GCNintendoJoyConDevice_setDriverConnection___block_invoke_107;
   v13[3] = &unk_1E8419CD8;
   v14 = v11;
-  v15 = self;
+  selfCopy3 = self;
   v12 = v11;
   objc_copyWeak(&v16, &location);
   _os_activity_initiate(&dword_1D2CD5000, "Connect Idle Service", OS_ACTIVITY_FLAG_DEFAULT, v13);
@@ -186,25 +186,25 @@ LABEL_7:
   return (v4 | (v5 << 16));
 }
 
-- (id)propertyForKey:(id)a3
+- (id)propertyForKey:(id)key
 {
   serviceInfo = self->_serviceInfo;
-  v4 = a3;
-  v5 = IOHIDServiceClientCopyProperty([(GCHIDServiceInfo *)serviceInfo service], v4);
+  keyCopy = key;
+  v5 = IOHIDServiceClientCopyProperty([(GCHIDServiceInfo *)serviceInfo service], keyCopy);
 
   return v5;
 }
 
-- (void)playerIndicatorXPCProxyServerEndpoint:(id)a3 didReceivePlayerIndexChange:(int64_t)a4
+- (void)playerIndicatorXPCProxyServerEndpoint:(id)endpoint didReceivePlayerIndexChange:(int64_t)change
 {
   v17 = *MEMORY[0x1E69E9840];
-  [(_GCNintendoJoyConDevice *)self setIndicatedPlayerIndex:a4];
+  [(_GCNintendoJoyConDevice *)self setIndicatedPlayerIndex:change];
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = [(NSMapTable *)self->_clientPlayerIndicatorEndpoints objectEnumerator];
-  v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  objectEnumerator = [(NSMapTable *)self->_clientPlayerIndicatorEndpoints objectEnumerator];
+  v7 = [objectEnumerator countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
     v8 = v7;
@@ -216,14 +216,14 @@ LABEL_7:
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(objectEnumerator);
         }
 
-        [*(*(&v12 + 1) + 8 * v10++) setPlayerIndex:a4];
+        [*(*(&v12 + 1) + 8 * v10++) setPlayerIndex:change];
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v8 = [objectEnumerator countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v8);
@@ -246,29 +246,29 @@ LABEL_7:
   return WeakRetained;
 }
 
-- (void)_addClient:(id)a3
+- (void)_addClient:(id)client
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (v4)
+  clientCopy = client;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (clientCopy)
   {
-    v6 = [(NSMapTable *)v5->_clients objectForKey:v4];
+    v6 = [(NSMapTable *)selfCopy->_clients objectForKey:clientCopy];
 
     if (!v6)
     {
-      objc_initWeak(&location, v5);
-      objc_initWeak(&from, v4);
+      objc_initWeak(&location, selfCopy);
+      objc_initWeak(&from, clientCopy);
       v9 = MEMORY[0x1E69E9820];
       v10 = 3221225472;
       v11 = __46___GCNintendoJoyConDevice_Client___addClient___block_invoke;
       v12 = &unk_1E8419D00;
       objc_copyWeak(&v13, &location);
       objc_copyWeak(&v14, &from);
-      v7 = [v4 addInvalidationHandler:&v9];
+      v7 = [clientCopy addInvalidationHandler:&v9];
       if (v7)
       {
-        [(NSMapTable *)v5->_clients setObject:v7 forKey:v4, v9, v10, v11, v12];
+        [(NSMapTable *)selfCopy->_clients setObject:v7 forKey:clientCopy, v9, v10, v11, v12];
         if (gc_isInternalBuild())
         {
           v8 = getGCLogger();
@@ -283,23 +283,23 @@ LABEL_7:
     }
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)_removeClient:(id)a3
+- (void)_removeClient:(id)client
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (v4)
+  clientCopy = client;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (clientCopy)
   {
-    v6 = [(NSMapTable *)v5->_clients objectForKey:v4];
+    v6 = [(NSMapTable *)selfCopy->_clients objectForKey:clientCopy];
 
     if (v6)
     {
-      [(NSMapTable *)v5->_clientPlayerIndicatorEndpoints removeObjectForKey:v4];
-      [(NSMapTable *)v5->_clientBatteryEndpoints removeObjectForKey:v4];
-      [(NSMapTable *)v5->_clients removeObjectForKey:v4];
+      [(NSMapTable *)selfCopy->_clientPlayerIndicatorEndpoints removeObjectForKey:clientCopy];
+      [(NSMapTable *)selfCopy->_clientBatteryEndpoints removeObjectForKey:clientCopy];
+      [(NSMapTable *)selfCopy->_clients removeObjectForKey:clientCopy];
       if (gc_isInternalBuild())
       {
         v7 = getGCLogger();
@@ -308,47 +308,47 @@ LABEL_7:
     }
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (id)makeControllerForClient:(id)a3
+- (id)makeControllerForClient:(id)client
 {
   v89[9] = *MEMORY[0x1E69E9840];
-  v80 = a3;
-  v81 = self;
+  clientCopy = client;
+  selfCopy = self;
   [(_GCNintendoJoyConDevice *)self _addClient:?];
-  v85 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v5 = [[GCProductInformation alloc] initWithIdentifier:@"ProductInfo"];
-  v6 = [(GCHIDServiceInfo *)v81->_serviceInfo stringPropertyForKey:@"Product"];
+  v6 = [(GCHIDServiceInfo *)selfCopy->_serviceInfo stringPropertyForKey:@"Product"];
   [(GCProductInformation *)v5 setVendorName:v6];
 
-  v7 = [(_GCNintendoJoyConDevice *)v81 type];
-  if (v7 == 1)
+  type = [(_GCNintendoJoyConDevice *)selfCopy type];
+  if (type == 1)
   {
     v8 = @"Nintendo Switch Joy-Con (L)";
   }
 
-  else if (v7 == 2)
+  else if (type == 2)
   {
     v8 = @"Nintendo Switch Joy-Con (R)";
   }
 
   else
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:v81 file:@"_GCNintendoJoyConDevice.m" lineNumber:254 description:@"Unexpected type!"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:selfCopy file:@"_GCNintendoJoyConDevice.m" lineNumber:254 description:@"Unexpected type!"];
 
     v8 = @"Nintendo Switch Joy-Con";
   }
 
   [(GCProductInformation *)v5 setProductCategory:v8];
-  v10 = [(GCProductInformation *)v5 productCategory];
-  [(GCProductInformation *)v5 setDetailedProductCategory:v10];
+  productCategory = [(GCProductInformation *)v5 productCategory];
+  [(GCProductInformation *)v5 setDetailedProductCategory:productCategory];
 
   v11 = [[_GCControllerComponentDescription alloc] initWithComponent:v5 bindings:0];
-  [v85 addObject:v11];
+  [array addObject:v11];
 
-  v83 = [(_GCNintendoJoyConDevice *)v81 gamepadEventSource];
+  gamepadEventSource = [(_GCNintendoJoyConDevice *)selfCopy gamepadEventSource];
   v12 = [GCDeviceButtonInputDescription initWithName:"initWithName:additionalAliases:attributes:nameLocalizationKey:symbolName:sourceAttributes:sourceExtendedEventField:" additionalAliases:4 attributes:? nameLocalizationKey:? symbolName:? sourceAttributes:? sourceExtendedEventField:?];
   v13 = [GCDeviceButtonInputDescription initWithName:"initWithName:additionalAliases:attributes:nameLocalizationKey:symbolName:sourceAttributes:sourceExtendedEventField:" additionalAliases:5 attributes:? nameLocalizationKey:? symbolName:? sourceAttributes:? sourceExtendedEventField:?];
   v14 = [GCDeviceButtonInputDescription initWithName:"initWithName:additionalAliases:attributes:nameLocalizationKey:symbolName:sourceAttributes:sourceExtendedEventField:" additionalAliases:6 attributes:? nameLocalizationKey:? symbolName:? sourceAttributes:? sourceExtendedEventField:?];
@@ -371,12 +371,12 @@ LABEL_7:
   v89[7] = v19;
   v89[8] = v20;
   v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:v89 count:9];
-  v88 = v83;
+  v88 = gamepadEventSource;
   v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v88 count:1];
   v24 = [(_GCDevicePhysicalInputComponentDescription *)v21 initWithIdentifier:@"PhysicalInput" elements:v22 bindings:v23];
 
-  [v85 addObject:v24];
-  v79 = [(_GCNintendoJoyConDevice *)v81 gamepadEventSource];
+  [array addObject:v24];
+  gamepadEventSource2 = [(_GCNintendoJoyConDevice *)selfCopy gamepadEventSource];
   v84 = [MEMORY[0x1E69A0690] descriptionWithIdentifier:@"button.a"];
   v25 = [MEMORY[0x1E695DFD8] setWithObject:@"Button A"];
   [v84 setAliases:v25];
@@ -476,60 +476,60 @@ LABEL_7:
   [v50 setElements:v51];
 
   v52 = [_GCControllerInputComponentDescription alloc];
-  v86 = v79;
+  v86 = gamepadEventSource2;
   v53 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v86 count:1];
   v54 = [(_GCControllerInputComponentDescription *)v52 initWithIdentifier:@"Input" controllerInputs:v50 bindings:v53];
 
-  [v85 addObject:v54];
-  v55 = v81;
+  [array addObject:v54];
+  v55 = selfCopy;
   objc_sync_enter(v55);
-  v56 = [(NSMapTable *)v55->_clientPlayerIndicatorEndpoints objectForKey:v80];
+  v56 = [(NSMapTable *)v55->_clientPlayerIndicatorEndpoints objectForKey:clientCopy];
   if (!v56)
   {
     v57 = [GCPlayerIndicatorXPCProxyServerEndpoint alloc];
-    v58 = [MEMORY[0x1E696AFB0] UUID];
-    v56 = [(GCPlayerIndicatorXPCProxyServerEndpoint *)v57 initWithIdentifier:v58 initialValue:v55->_indicatedPlayerIndex];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    v56 = [(GCPlayerIndicatorXPCProxyServerEndpoint *)v57 initWithIdentifier:uUID initialValue:v55->_indicatedPlayerIndex];
 
     [(GCPlayerIndicatorXPCProxyServerEndpoint *)v56 setDelegate:v55];
-    [(NSMapTable *)v55->_clientPlayerIndicatorEndpoints setObject:v56 forKey:v80];
-    v59 = [v80 IPCObjectRegistry];
-    [v59 registerIPCObject:v56];
+    [(NSMapTable *)v55->_clientPlayerIndicatorEndpoints setObject:v56 forKey:clientCopy];
+    iPCObjectRegistry = [clientCopy IPCObjectRegistry];
+    [iPCObjectRegistry registerIPCObject:v56];
   }
 
-  v60 = [(GCPlayerIndicatorXPCProxyServerEndpoint *)v56 receiverDescription];
-  [v85 addObject:v60];
+  receiverDescription = [(GCPlayerIndicatorXPCProxyServerEndpoint *)v56 receiverDescription];
+  [array addObject:receiverDescription];
 
   objc_sync_exit(v55);
   v61 = v55;
   objc_sync_enter(v61);
-  v62 = [v61[12] objectForKey:v80];
+  v62 = [v61[12] objectForKey:clientCopy];
   if (!v62)
   {
     v63 = [GCBatteryXPCProxyServerEndpoint alloc];
-    v64 = [MEMORY[0x1E696AFB0] UUID];
-    v62 = [(GCBatteryXPCProxyServerEndpoint *)v63 initWithIdentifier:v64 initialValue:v61[11]];
+    uUID2 = [MEMORY[0x1E696AFB0] UUID];
+    v62 = [(GCBatteryXPCProxyServerEndpoint *)v63 initWithIdentifier:uUID2 initialValue:v61[11]];
 
     [(GCBatteryXPCProxyServerEndpoint *)v62 setDelegate:v61];
-    [v61[12] setObject:v62 forKey:v80];
-    v65 = [v80 IPCObjectRegistry];
-    [v65 registerIPCObject:v62];
+    [v61[12] setObject:v62 forKey:clientCopy];
+    iPCObjectRegistry2 = [clientCopy IPCObjectRegistry];
+    [iPCObjectRegistry2 registerIPCObject:v62];
   }
 
-  v66 = [(GCBatteryXPCProxyServerEndpoint *)v62 receiverDescription];
-  [v85 addObject:v66];
+  receiverDescription2 = [(GCBatteryXPCProxyServerEndpoint *)v62 receiverDescription];
+  [array addObject:receiverDescription2];
 
   objc_sync_exit(v61);
   v67 = [GCHapticCapabilities alloc];
-  v68 = [v61 hapticEngines];
-  v69 = [v61 hapticCapabilityGraph];
-  v70 = [(GCHapticCapabilities *)v67 initWithIdentifier:@"HapticCapabilities" hapticEnginesInfo:v68 hapticCapabilityGraph:v69];
+  hapticEngines = [v61 hapticEngines];
+  hapticCapabilityGraph = [v61 hapticCapabilityGraph];
+  v70 = [(GCHapticCapabilities *)v67 initWithIdentifier:@"HapticCapabilities" hapticEnginesInfo:hapticEngines hapticCapabilityGraph:hapticCapabilityGraph];
 
   v71 = [[_GCControllerComponentDescription alloc] initWithComponent:v70 bindings:0];
-  [v85 addObject:v71];
+  [array addObject:v71];
 
   v72 = [_GCControllerDescription alloc];
-  v73 = [v61 identifier];
-  v74 = [(_GCControllerDescription *)v72 initWithIdentifier:v73 components:v85];
+  identifier = [v61 identifier];
+  v74 = [(_GCControllerDescription *)v72 initWithIdentifier:identifier components:array];
 
   v75 = *MEMORY[0x1E69E9840];
 
@@ -567,14 +567,14 @@ LABEL_7:
   return v15;
 }
 
-- (void)setIndicatedPlayerIndex:(int64_t)a3
+- (void)setIndicatedPlayerIndex:(int64_t)index
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  self->_indicatedPlayerIndex = a3;
-  v3 = a3 + 1;
-  if ((a3 + 1) <= 8)
+  self->_indicatedPlayerIndex = index;
+  v3 = index + 1;
+  if ((index + 1) <= 8)
   {
-    v4 = [(GCHIDServiceInfo *)self->_serviceInfo service];
+    service = [(GCHIDServiceInfo *)self->_serviceInfo service];
     v5 = dword_1D2DEE2D0[v3];
     v6 = dword_1D2DEE2D0[v3];
     v21 = @"LED";
@@ -632,7 +632,7 @@ LABEL_7:
     v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v22 forKeys:&v21 count:1];
 
     v18 = v17;
-    IOHIDServiceClientSetProperty(v4, @"JoyConPlayerLights", v17);
+    IOHIDServiceClientSetProperty(service, @"JoyConPlayerLights", v17);
   }
 
   v19 = *MEMORY[0x1E69E9840];
@@ -645,9 +645,9 @@ LABEL_7:
   return v2;
 }
 
-- (void)setDeviceBatteryComponentBatteryUpdatedHandler:(id)a3
+- (void)setDeviceBatteryComponentBatteryUpdatedHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   batteryComponentBatteryUpdatedHandler = self->_batteryComponentBatteryUpdatedHandler;
   self->_batteryComponentBatteryUpdatedHandler = v4;
 }
@@ -679,24 +679,24 @@ LABEL_7:
   return v7;
 }
 
-- (void)propagateBattery:(id)a3
+- (void)propagateBattery:(id)battery
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (![(GCDeviceBattery *)self->_battery isEqual:v5])
+  batteryCopy = battery;
+  if (![(GCDeviceBattery *)self->_battery isEqual:batteryCopy])
   {
     if (gc_isInternalBuild())
     {
       [_GCNintendoJoyConDevice(Components) propagateBattery:];
     }
 
-    objc_storeStrong(&self->_battery, a3);
+    objc_storeStrong(&self->_battery, battery);
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v6 = [(NSMapTable *)self->_clientBatteryEndpoints objectEnumerator];
-    v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    objectEnumerator = [(NSMapTable *)self->_clientBatteryEndpoints objectEnumerator];
+    v7 = [objectEnumerator countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v7)
     {
       v8 = v7;
@@ -707,13 +707,13 @@ LABEL_7:
         {
           if (*v16 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(objectEnumerator);
           }
 
           [*(*(&v15 + 1) + 8 * i) setBattery:self->_battery];
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v8 = [objectEnumerator countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v8);
@@ -786,26 +786,26 @@ LABEL_7:
   return v6;
 }
 
-- (void)homeButtonLongPressGesture:(BOOL)a3
+- (void)homeButtonLongPressGesture:(BOOL)gesture
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __62___GCNintendoJoyConDevice_Fusion__homeButtonLongPressGesture___block_invoke;
   v3[3] = &unk_1E8419650;
   v3[4] = self;
-  v4 = a3;
+  gestureCopy = gesture;
   _os_activity_initiate(&dword_1D2CD5000, "(JoyCon Fusion Gesture Service) Home Button Long Press Gesture", OS_ACTIVITY_FLAG_DEFAULT, v3);
 }
 
-- (void)requestIdleDisconnect:(id)a3
+- (void)requestIdleDisconnect:(id)disconnect
 {
-  v3 = a3;
+  disconnectCopy = disconnect;
   if (gc_isInternalBuild())
   {
     [_GCNintendoJoyConDevice(Idle) requestIdleDisconnect:];
   }
 
-  v4 = [_GCBluetoothDeviceIdentifier identifierWithHardwareAddressString:v3];
+  v4 = [_GCBluetoothDeviceIdentifier identifierWithHardwareAddressString:disconnectCopy];
   v5 = [[_GCBluetoothDeviceDisconnectionRequest alloc] initWithDeviceIdentifier:v4];
   [(_GCBluetoothDeviceDisconnectionRequest *)v5 performRequest:0];
 }

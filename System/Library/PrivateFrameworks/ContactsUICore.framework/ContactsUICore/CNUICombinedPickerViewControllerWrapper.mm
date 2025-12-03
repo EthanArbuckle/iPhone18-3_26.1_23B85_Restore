@@ -1,17 +1,17 @@
 @interface CNUICombinedPickerViewControllerWrapper
-- (CNUICombinedPickerViewControllerWrapper)initWithDelegate:(id)a3 clearBackground:(BOOL)a4;
-- (CNUICombinedPickerViewControllerWrapper)initWithMemojiMetadata:(id)a3 delegate:(id)a4 clearBackground:(BOOL)a5;
+- (CNUICombinedPickerViewControllerWrapper)initWithDelegate:(id)delegate clearBackground:(BOOL)background;
+- (CNUICombinedPickerViewControllerWrapper)initWithMemojiMetadata:(id)metadata delegate:(id)delegate clearBackground:(BOOL)background;
 - (CNUICombinedPickerViewControllerWrapperDelegate)delegate;
-- (void)combinedPickerViewController:(id)a3 didSelectRecord:(id)a4 withStickerConfiguration:(id)a5;
-- (void)combinedPickerViewControllerDidCancel:(id)a3;
+- (void)combinedPickerViewController:(id)controller didSelectRecord:(id)record withStickerConfiguration:(id)configuration;
+- (void)combinedPickerViewControllerDidCancel:(id)cancel;
 @end
 
 @implementation CNUICombinedPickerViewControllerWrapper
 
-- (CNUICombinedPickerViewControllerWrapper)initWithDelegate:(id)a3 clearBackground:(BOOL)a4
+- (CNUICombinedPickerViewControllerWrapper)initWithDelegate:(id)delegate clearBackground:(BOOL)background
 {
-  v4 = a4;
-  v6 = a3;
+  backgroundCopy = background;
+  delegateCopy = delegate;
   v25.receiver = self;
   v25.super_class = CNUICombinedPickerViewControllerWrapper;
   v7 = [(CNUICombinedPickerViewControllerWrapper *)&v25 init];
@@ -40,52 +40,52 @@
   v9 = v8;
   _Block_object_dispose(&v27, 8);
   v10 = objc_alloc_init(v8);
-  v11 = [getAVTAvatarFetchRequestClass_0() requestForStorePrimaryAvatar];
+  requestForStorePrimaryAvatar = [getAVTAvatarFetchRequestClass_0() requestForStorePrimaryAvatar];
   v24 = 0;
-  v12 = [v10 avatarsForFetchRequest:v11 error:&v24];
+  v12 = [v10 avatarsForFetchRequest:requestForStorePrimaryAvatar error:&v24];
   v13 = v24;
-  v14 = [v12 firstObject];
+  firstObject = [v12 firstObject];
 
-  if (!v14)
+  if (!firstObject)
   {
-    v15 = [getAVTAvatarFetchRequestClass_0() requestForAllAvatars];
+    requestForAllAvatars = [getAVTAvatarFetchRequestClass_0() requestForAllAvatars];
 
     v23 = v13;
-    v16 = [v10 avatarsForFetchRequest:v15 error:&v23];
+    v16 = [v10 avatarsForFetchRequest:requestForAllAvatars error:&v23];
     v17 = v23;
 
-    v14 = [v16 firstObject];
+    firstObject = [v16 firstObject];
 
-    if (!v14)
+    if (!firstObject)
     {
-      v14 = +[CNUICoreLogProvider posters_os_log];
-      if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+      firstObject = +[CNUICoreLogProvider posters_os_log];
+      if (os_log_type_enabled(firstObject, OS_LOG_TYPE_ERROR))
       {
-        [CNUICombinedPickerViewControllerWrapper initWithDelegate:v17 clearBackground:v14];
+        [CNUICombinedPickerViewControllerWrapper initWithDelegate:v17 clearBackground:firstObject];
       }
 
       v21 = 0;
       v13 = v17;
-      v11 = v15;
+      requestForStorePrimaryAvatar = requestForAllAvatars;
       goto LABEL_11;
     }
 
     v13 = v17;
-    v11 = v15;
+    requestForStorePrimaryAvatar = requestForAllAvatars;
   }
 
-  v18 = [objc_alloc(getAVTCombinedPickerViewControllerClass()) initWithSelectedRecord:v14];
+  v18 = [objc_alloc(getAVTCombinedPickerViewControllerClass()) initWithSelectedRecord:firstObject];
   [(UIViewController *)v18 setDelegate:v7];
-  if (v4 && (objc_opt_respondsToSelector() & 1) != 0)
+  if (backgroundCopy && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v19 = [MEMORY[0x1E69DC888] clearColor];
-    [(UIViewController *)v18 setBackgroundColorOverride:v19];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(UIViewController *)v18 setBackgroundColorOverride:clearColor];
   }
 
   wrappedViewController = v7->_wrappedViewController;
   v7->_wrappedViewController = v18;
 
-  objc_storeWeak(&v7->_delegate, v6);
+  objc_storeWeak(&v7->_delegate, delegateCopy);
   v21 = v7;
 LABEL_11:
 
@@ -93,51 +93,51 @@ LABEL_13:
   return v21;
 }
 
-- (CNUICombinedPickerViewControllerWrapper)initWithMemojiMetadata:(id)a3 delegate:(id)a4 clearBackground:(BOOL)a5
+- (CNUICombinedPickerViewControllerWrapper)initWithMemojiMetadata:(id)metadata delegate:(id)delegate clearBackground:(BOOL)background
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  backgroundCopy = background;
+  metadataCopy = metadata;
+  delegateCopy = delegate;
   v18.receiver = self;
   v18.super_class = CNUICombinedPickerViewControllerWrapper;
   v10 = [(CNUICombinedPickerViewControllerWrapper *)&v18 init];
   if (v10)
   {
     v11 = objc_alloc(getAVTCombinedPickerViewControllerClass());
-    v12 = [v8 avatarRecord];
-    v13 = [v11 initWithSelectedRecord:v12];
+    avatarRecord = [metadataCopy avatarRecord];
+    v13 = [v11 initWithSelectedRecord:avatarRecord];
 
     [(UIViewController *)v13 setDelegate:v10];
-    if (v5 && (objc_opt_respondsToSelector() & 1) != 0)
+    if (backgroundCopy && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      v14 = [MEMORY[0x1E69DC888] clearColor];
-      [(UIViewController *)v13 setBackgroundColorOverride:v14];
+      clearColor = [MEMORY[0x1E69DC888] clearColor];
+      [(UIViewController *)v13 setBackgroundColorOverride:clearColor];
     }
 
     wrappedViewController = v10->_wrappedViewController;
     v10->_wrappedViewController = v13;
 
-    objc_storeWeak(&v10->_delegate, v9);
+    objc_storeWeak(&v10->_delegate, delegateCopy);
     v16 = v10;
   }
 
   return v10;
 }
 
-- (void)combinedPickerViewControllerDidCancel:(id)a3
+- (void)combinedPickerViewControllerDidCancel:(id)cancel
 {
-  v4 = [(CNUICombinedPickerViewControllerWrapper *)self delegate];
-  [v4 wrapperDidCancel:self];
+  delegate = [(CNUICombinedPickerViewControllerWrapper *)self delegate];
+  [delegate wrapperDidCancel:self];
 }
 
-- (void)combinedPickerViewController:(id)a3 didSelectRecord:(id)a4 withStickerConfiguration:(id)a5
+- (void)combinedPickerViewController:(id)controller didSelectRecord:(id)record withStickerConfiguration:(id)configuration
 {
-  v7 = a5;
-  v8 = a4;
-  v10 = [[CNUIMemojiMetadata alloc] initWithAvatarRecord:v8 poseConfiguration:v7];
+  configurationCopy = configuration;
+  recordCopy = record;
+  v10 = [[CNUIMemojiMetadata alloc] initWithAvatarRecord:recordCopy poseConfiguration:configurationCopy];
 
-  v9 = [(CNUICombinedPickerViewControllerWrapper *)self delegate];
-  [v9 wrapper:self memojiMetadataForSelectedRecord:v10];
+  delegate = [(CNUICombinedPickerViewControllerWrapper *)self delegate];
+  [delegate wrapper:self memojiMetadataForSelectedRecord:v10];
 }
 
 - (CNUICombinedPickerViewControllerWrapperDelegate)delegate

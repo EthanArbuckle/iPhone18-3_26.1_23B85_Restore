@@ -1,35 +1,35 @@
 @interface PFVideoAdjustments
-+ ($3CC8671D27C23BF42ADDB32F2B5E48AE)minFrameDurationForNominalFrameRate:(SEL)a3;
-+ ($E33AF59C8D263E738CA17719EFF006B3)defaultSlowMotionTimeRangeForDuration:(SEL)a3;
-+ (BOOL)isRecognizedSlowMotionFormatWithIdentifier:(id)a3 version:(id)a4;
-+ (float)defaultSlowMotionRateForNominalFrameRate:(float)a3;
-+ (id)defaultSlowMotionAdjustmentsForAsset:(id)a3;
-+ (id)defaultVideoAdjustmentsURLForVideoURL:(id)a3;
++ ($3CC8671D27C23BF42ADDB32F2B5E48AE)minFrameDurationForNominalFrameRate:(SEL)rate;
++ ($E33AF59C8D263E738CA17719EFF006B3)defaultSlowMotionTimeRangeForDuration:(SEL)duration;
++ (BOOL)isRecognizedSlowMotionFormatWithIdentifier:(id)identifier version:(id)version;
++ (float)defaultSlowMotionRateForNominalFrameRate:(float)rate;
++ (id)defaultSlowMotionAdjustmentsForAsset:(id)asset;
++ (id)defaultVideoAdjustmentsURLForVideoURL:(id)l;
 - ($E33AF59C8D263E738CA17719EFF006B3)slowMotionRampIn;
 - ($E33AF59C8D263E738CA17719EFF006B3)slowMotionRampOut;
 - ($E33AF59C8D263E738CA17719EFF006B3)slowMotionTimeRange;
-- (BOOL)_isValidSlowMotionTimeRange:(id *)a3 rate:(float)a4;
-- (BOOL)_parseAppleVideoDataBlobDictionary:(id)a3 forSlowMotionTimeRange:(id *)a4 rate:(float *)a5;
-- (BOOL)_parseLegacySLMDictionary:(id)a3 forSlowMotionTimeRange:(id *)a4 rate:(float *)a5;
-- (BOOL)_parseVersionedDataForSlowMotionTimeRange:(id *)a3 rate:(float *)a4;
+- (BOOL)_isValidSlowMotionTimeRange:(id *)range rate:(float)rate;
+- (BOOL)_parseAppleVideoDataBlobDictionary:(id)dictionary forSlowMotionTimeRange:(id *)range rate:(float *)rate;
+- (BOOL)_parseLegacySLMDictionary:(id)dictionary forSlowMotionTimeRange:(id *)range rate:(float *)rate;
+- (BOOL)_parseVersionedDataForSlowMotionTimeRange:(id *)range rate:(float *)rate;
 - (BOOL)hasSlowMotionAdjustments;
 - (BOOL)isRecognizedFormat;
-- (PFVideoAdjustments)initWithPropertyListDictionary:(id)a3;
-- (PFVideoAdjustments)initWithSlowMotionTimeRange:(id *)a3 rate:(float)a4;
-- (id)_adjustmentsObjectFromNSKeyedArchiverData:(id)a3;
-- (id)_dictionaryFromSlowMotionTimeRange:(id *)a3 rate:(float)a4;
+- (PFVideoAdjustments)initWithPropertyListDictionary:(id)dictionary;
+- (PFVideoAdjustments)initWithSlowMotionTimeRange:(id *)range rate:(float)rate;
+- (id)_adjustmentsObjectFromNSKeyedArchiverData:(id)data;
+- (id)_dictionaryFromSlowMotionTimeRange:(id *)range rate:(float)rate;
 - (id)description;
 - (void)_updateDerivedPropertiesFromVersionedData;
-- (void)setSlowMotionTimeRange:(id *)a3;
+- (void)setSlowMotionTimeRange:(id *)range;
 @end
 
 @implementation PFVideoAdjustments
 
-- (void)setSlowMotionTimeRange:(id *)a3
+- (void)setSlowMotionTimeRange:(id *)range
 {
-  v4 = *&a3->var0.var3;
-  v3 = *&a3->var1.var1;
-  *(&self->_slowMotionRate + 1) = *&a3->var0.var0;
+  v4 = *&range->var0.var3;
+  v3 = *&range->var1.var1;
+  *(&self->_slowMotionRate + 1) = *&range->var0.var0;
   *&self->_slowMotionTimeRange.start.flags = v4;
   *(&self->_slowMotionTimeRange.duration.value + 4) = v3;
 }
@@ -43,10 +43,10 @@
   return self;
 }
 
-- (id)_adjustmentsObjectFromNSKeyedArchiverData:(id)a3
+- (id)_adjustmentsObjectFromNSKeyedArchiverData:(id)data
 {
   v14[4] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  dataCopy = data;
   v4 = objc_autoreleasePoolPush();
   v14[0] = objc_opt_class();
   v14[1] = objc_opt_class();
@@ -55,7 +55,7 @@
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:4];
   v6 = [MEMORY[0x1E695DFD8] setWithArray:v5];
   v11 = 0;
-  v7 = [objc_alloc(MEMORY[0x1E696ACD0]) initForReadingFromData:v3 error:&v11];
+  v7 = [objc_alloc(MEMORY[0x1E696ACD0]) initForReadingFromData:dataCopy error:&v11];
   v8 = v11;
   if (v7)
   {
@@ -79,14 +79,14 @@
   return v9;
 }
 
-- (id)_dictionaryFromSlowMotionTimeRange:(id *)a3 rate:(float)a4
+- (id)_dictionaryFromSlowMotionTimeRange:(id *)range rate:(float)rate
 {
   v23[1] = *MEMORY[0x1E69E9840];
   v5 = *MEMORY[0x1E695E480];
-  v6 = *&a3->var0.var3;
-  *&v16.start.value = *&a3->var0.var0;
+  v6 = *&range->var0.var3;
+  *&v16.start.value = *&range->var0.var0;
   *&v16.start.epoch = v6;
-  *&v16.duration.timescale = *&a3->var1.var1;
+  *&v16.duration.timescale = *&range->var1.var1;
   v7 = CMTimeRangeCopyAsDictionary(&v16, v5);
   v8 = v7;
   if (v7)
@@ -96,7 +96,7 @@
     v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:&v22 count:1];
     v21 = v9;
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v21 count:1];
-    *&v11 = a4;
+    *&v11 = rate;
     v12 = [MEMORY[0x1E696AD98] numberWithFloat:v11];
     v19[0] = @"rate";
     v19[1] = @"regions";
@@ -116,13 +116,13 @@
   return v14;
 }
 
-- (BOOL)_parseAppleVideoDataBlobDictionary:(id)a3 forSlowMotionTimeRange:(id *)a4 rate:(float *)a5
+- (BOOL)_parseAppleVideoDataBlobDictionary:(id)dictionary forSlowMotionTimeRange:(id *)range rate:(float *)rate
 {
   v26 = *MEMORY[0x1E69E9840];
   v7 = MEMORY[0x1E6960C98];
   value = *MEMORY[0x1E6960C98];
   timescale = *(MEMORY[0x1E6960C98] + 8);
-  v8 = [a3 objectForKeyedSubscript:@"slowMotion"];
+  v8 = [dictionary objectForKeyedSubscript:@"slowMotion"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -141,12 +141,12 @@
         v14 = *(v7 + 24);
         v21 = *(v7 + 32);
         v15 = *(v7 + 40);
-        v16 = [v12 firstObject];
+        firstObject = [v12 firstObject];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
           epoch = v13;
-          v17 = [v16 objectForKeyedSubscript:@"timeRange"];
+          v17 = [firstObject objectForKeyedSubscript:@"timeRange"];
           objc_opt_class();
           v18 = 0;
           if ((objc_opt_isKindOfClass() & 1) != 0 && v17)
@@ -187,14 +187,14 @@
           v18 = 0;
         }
 
-        a4->var0.var0 = value;
-        a4->var0.var1 = timescale;
-        a4->var0.var2 = flags;
-        a4->var0.var3 = v13;
-        a4->var1.var0 = v14;
-        *&a4->var1.var1 = v21;
-        a4->var1.var3 = v15;
-        *a5 = v11;
+        range->var0.var0 = value;
+        range->var0.var1 = timescale;
+        range->var0.var2 = flags;
+        range->var0.var3 = v13;
+        range->var1.var0 = v14;
+        *&range->var1.var1 = v21;
+        range->var1.var3 = v15;
+        *rate = v11;
       }
 
       else
@@ -217,21 +217,21 @@
   return v18;
 }
 
-- (BOOL)_parseVersionedDataForSlowMotionTimeRange:(id *)a3 rate:(float *)a4
+- (BOOL)_parseVersionedDataForSlowMotionTimeRange:(id *)range rate:(float *)rate
 {
   v7 = *(MEMORY[0x1E6960C98] + 16);
   v21 = *MEMORY[0x1E6960C98];
   v22 = v7;
   v23 = *(MEMORY[0x1E6960C98] + 32);
   v20 = 1065353216;
-  v8 = [(PFAssetAdjustments *)self adjustmentFormatVersion];
-  v9 = [v8 isEqualToString:@"1.1"];
+  adjustmentFormatVersion = [(PFAssetAdjustments *)self adjustmentFormatVersion];
+  v9 = [adjustmentFormatVersion isEqualToString:@"1.1"];
 
-  v10 = [(PFAssetAdjustments *)self adjustmentFormatVersion];
-  v11 = [v10 isEqualToString:@"1.0"];
+  adjustmentFormatVersion2 = [(PFAssetAdjustments *)self adjustmentFormatVersion];
+  v11 = [adjustmentFormatVersion2 isEqualToString:@"1.0"];
 
-  v12 = [(PFAssetAdjustments *)self adjustmentFormatIdentifier];
-  if (![v12 isEqualToString:@"com.apple.video.slomo"])
+  adjustmentFormatIdentifier = [(PFAssetAdjustments *)self adjustmentFormatIdentifier];
+  if (![adjustmentFormatIdentifier isEqualToString:@"com.apple.video.slomo"])
   {
 
     goto LABEL_7;
@@ -245,8 +245,8 @@ LABEL_7:
     goto LABEL_16;
   }
 
-  v13 = [(PFAssetAdjustments *)self adjustmentData];
-  if (!v13)
+  adjustmentData = [(PFAssetAdjustments *)self adjustmentData];
+  if (!adjustmentData)
   {
     goto LABEL_11;
   }
@@ -255,7 +255,7 @@ LABEL_7:
   {
     if (v11)
     {
-      v14 = [(PFVideoAdjustments *)self _adjustmentsObjectFromNSKeyedArchiverData:v13];
+      v14 = [(PFVideoAdjustments *)self _adjustmentsObjectFromNSKeyedArchiverData:adjustmentData];
       goto LABEL_10;
     }
 
@@ -264,7 +264,7 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v14 = [MEMORY[0x1E696AE40] propertyListWithData:v13 options:0 format:0 error:0];
+  v14 = [MEMORY[0x1E696AE40] propertyListWithData:adjustmentData options:0 format:0 error:0];
 LABEL_10:
   v17 = v14;
 LABEL_12:
@@ -274,24 +274,24 @@ LABEL_12:
   v16 = *&v20;
 LABEL_16:
   v18 = v22;
-  *&a3->var0.var0 = v21;
-  *&a3->var0.var3 = v18;
-  *&a3->var1.var1 = v23;
-  *a4 = v16;
+  *&range->var0.var0 = v21;
+  *&range->var0.var3 = v18;
+  *&range->var1.var1 = v23;
+  *rate = v16;
   return v15;
 }
 
-- (BOOL)_parseLegacySLMDictionary:(id)a3 forSlowMotionTimeRange:(id *)a4 rate:(float *)a5
+- (BOOL)_parseLegacySLMDictionary:(id)dictionary forSlowMotionTimeRange:(id *)range rate:(float *)rate
 {
   v24 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  dictionaryCopy = dictionary;
   v8 = MEMORY[0x1E6960C98];
   value = *MEMORY[0x1E6960C98];
   timescale = *(MEMORY[0x1E6960C98] + 8);
-  v9 = [v7 objectForKeyedSubscript:@"version"];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"version"];
   if (!v9 || (objc_opt_class(), (objc_opt_isKindOfClass())) && [v9 intValue] <= 1)
   {
-    v11 = [v7 objectForKeyedSubscript:@"regions"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"regions"];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) != 0 && [v11 count])
     {
@@ -300,12 +300,12 @@ LABEL_16:
       v13 = *(v8 + 24);
       v19 = *(v8 + 32);
       v14 = *(v8 + 40);
-      v15 = [v11 firstObject];
+      firstObject = [v11 firstObject];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         epoch = v12;
-        v16 = [v15 objectForKeyedSubscript:@"timeRange"];
+        v16 = [firstObject objectForKeyedSubscript:@"timeRange"];
         objc_opt_class();
         v10 = 0;
         if ((objc_opt_isKindOfClass() & 1) != 0 && v16)
@@ -346,14 +346,14 @@ LABEL_16:
         v10 = 0;
       }
 
-      a4->var0.var0 = value;
-      a4->var0.var1 = timescale;
-      a4->var0.var2 = flags;
-      a4->var0.var3 = v12;
-      a4->var1.var0 = v13;
-      *&a4->var1.var1 = v19;
-      a4->var1.var3 = v14;
-      *a5 = 0.25;
+      range->var0.var0 = value;
+      range->var0.var1 = timescale;
+      range->var0.var2 = flags;
+      range->var0.var3 = v12;
+      range->var1.var0 = v13;
+      *&range->var1.var1 = v19;
+      range->var1.var3 = v14;
+      *rate = 0.25;
     }
 
     else
@@ -398,9 +398,9 @@ LABEL_16:
 - (BOOL)isRecognizedFormat
 {
   v3 = objc_opt_class();
-  v4 = [(PFAssetAdjustments *)self adjustmentFormatIdentifier];
-  v5 = [(PFAssetAdjustments *)self adjustmentFormatVersion];
-  LOBYTE(v3) = [v3 isRecognizedSlowMotionFormatWithIdentifier:v4 version:v5];
+  adjustmentFormatIdentifier = [(PFAssetAdjustments *)self adjustmentFormatIdentifier];
+  adjustmentFormatVersion = [(PFAssetAdjustments *)self adjustmentFormatVersion];
+  LOBYTE(v3) = [v3 isRecognizedSlowMotionFormatWithIdentifier:adjustmentFormatIdentifier version:adjustmentFormatVersion];
 
   return v3;
 }
@@ -432,15 +432,15 @@ LABEL_16:
   return v7;
 }
 
-- (PFVideoAdjustments)initWithPropertyListDictionary:(id)a3
+- (PFVideoAdjustments)initWithPropertyListDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = *(MEMORY[0x1E6960C98] + 16);
   v14 = *MEMORY[0x1E6960C98];
   v15 = v5;
   v16 = *(MEMORY[0x1E6960C98] + 32);
   v13 = 1065353216;
-  if ([(PFVideoAdjustments *)self _parseLegacySLMDictionary:v4 forSlowMotionTimeRange:&v14 rate:&v13])
+  if ([(PFVideoAdjustments *)self _parseLegacySLMDictionary:dictionaryCopy forSlowMotionTimeRange:&v14 rate:&v13])
   {
     LODWORD(v6) = v13;
     v12[0] = v14;
@@ -453,7 +453,7 @@ LABEL_16:
   {
     v11.receiver = self;
     v11.super_class = PFVideoAdjustments;
-    v8 = [(PFAssetAdjustments *)&v11 initWithPropertyListDictionary:v4];
+    v8 = [(PFAssetAdjustments *)&v11 initWithPropertyListDictionary:dictionaryCopy];
     v7 = v8;
     if (v8)
     {
@@ -466,20 +466,20 @@ LABEL_16:
   return v9;
 }
 
-+ (id)defaultVideoAdjustmentsURLForVideoURL:(id)a3
++ (id)defaultVideoAdjustmentsURLForVideoURL:(id)l
 {
-  v3 = a3;
-  v4 = [v3 URLByDeletingPathExtension];
-  v5 = [v4 URLByAppendingPathExtension:@"SLM"];
+  lCopy = l;
+  uRLByDeletingPathExtension = [lCopy URLByDeletingPathExtension];
+  v5 = [uRLByDeletingPathExtension URLByAppendingPathExtension:@"SLM"];
 
-  v6 = [MEMORY[0x1E696AC08] defaultManager];
-  v7 = [v5 path];
-  v8 = [v6 fileExistsAtPath:v7];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  path = [v5 path];
+  v8 = [defaultManager fileExistsAtPath:path];
 
   if ((v8 & 1) == 0)
   {
-    v9 = [v3 URLByDeletingPathExtension];
-    v10 = [v9 URLByAppendingPathExtension:@"plist"];
+    uRLByDeletingPathExtension2 = [lCopy URLByDeletingPathExtension];
+    v10 = [uRLByDeletingPathExtension2 URLByAppendingPathExtension:@"plist"];
 
     v5 = v10;
   }
@@ -494,36 +494,36 @@ LABEL_16:
   return [(PFVideoAdjustments *)self _isValidSlowMotionTimeRange:&v4 rate:?];
 }
 
-- (BOOL)_isValidSlowMotionTimeRange:(id *)a3 rate:(float)a4
+- (BOOL)_isValidSlowMotionTimeRange:(id *)range rate:(float)rate
 {
-  v4 = (a3->var0.var2 & 1) != 0 && (a3->var1.var2 & 1) != 0 && !a3->var1.var3 && a3->var1.var0 >= 0;
-  if (a4 > 1.0)
+  v4 = (range->var0.var2 & 1) != 0 && (range->var1.var2 & 1) != 0 && !range->var1.var3 && range->var1.var0 >= 0;
+  if (rate > 1.0)
   {
     v4 = 0;
   }
 
-  return a4 > 0.0 && v4;
+  return rate > 0.0 && v4;
 }
 
-- (PFVideoAdjustments)initWithSlowMotionTimeRange:(id *)a3 rate:(float)a4
+- (PFVideoAdjustments)initWithSlowMotionTimeRange:(id *)range rate:(float)rate
 {
-  v6 = self;
-  v7 = *&a3->var0.var3;
-  v14 = *&a3->var0.var0;
+  selfCopy = self;
+  v7 = *&range->var0.var3;
+  v14 = *&range->var0.var0;
   v15 = v7;
-  v16 = *&a3->var1.var1;
+  v16 = *&range->var1.var1;
   v8 = DWORD1(v16);
-  if ([(PFVideoAdjustments *)self _isValidSlowMotionTimeRange:&v14 rate:*&a4])
+  if ([(PFVideoAdjustments *)self _isValidSlowMotionTimeRange:&v14 rate:*&rate])
   {
-    v9 = *&a3->var0.var3;
-    v14 = *&a3->var0.var0;
+    v9 = *&range->var0.var3;
+    v14 = *&range->var0.var0;
     v15 = v9;
-    v16 = *&a3->var1.var1;
-    v10 = [(PFVideoAdjustments *)v6 _dictionaryFromSlowMotionTimeRange:&v14 rate:COERCE_DOUBLE(__PAIR64__(DWORD1(v16), LODWORD(a4)))];
+    v16 = *&range->var1.var1;
+    v10 = [(PFVideoAdjustments *)selfCopy _dictionaryFromSlowMotionTimeRange:&v14 rate:COERCE_DOUBLE(__PAIR64__(DWORD1(v16), LODWORD(rate)))];
     v11 = [MEMORY[0x1E696AE40] dataWithPropertyList:v10 format:200 options:0 error:0];
-    v6 = [(PFAssetAdjustments *)v6 initWithFormatIdentifier:@"com.apple.video.slomo" formatVersion:@"1.1" data:v11 baseVersion:0 editorBundleID:0 renderTypes:0];
+    selfCopy = [(PFAssetAdjustments *)selfCopy initWithFormatIdentifier:@"com.apple.video.slomo" formatVersion:@"1.1" data:v11 baseVersion:0 editorBundleID:0 renderTypes:0];
 
-    v12 = v6;
+    v12 = selfCopy;
   }
 
   else
@@ -554,19 +554,19 @@ LABEL_16:
   return self;
 }
 
-+ (BOOL)isRecognizedSlowMotionFormatWithIdentifier:(id)a3 version:(id)a4
++ (BOOL)isRecognizedSlowMotionFormatWithIdentifier:(id)identifier version:(id)version
 {
-  v5 = a4;
-  if ([a3 isEqualToString:@"com.apple.video.slomo"])
+  versionCopy = version;
+  if ([identifier isEqualToString:@"com.apple.video.slomo"])
   {
-    if ([v5 isEqualToString:@"1.0"])
+    if ([versionCopy isEqualToString:@"1.0"])
     {
       v6 = 1;
     }
 
     else
     {
-      v6 = [v5 isEqualToString:@"1.1"];
+      v6 = [versionCopy isEqualToString:@"1.1"];
     }
   }
 
@@ -578,7 +578,7 @@ LABEL_16:
   return v6;
 }
 
-+ ($3CC8671D27C23BF42ADDB32F2B5E48AE)minFrameDurationForNominalFrameRate:(SEL)a3
++ ($3CC8671D27C23BF42ADDB32F2B5E48AE)minFrameDurationForNominalFrameRate:(SEL)rate
 {
   retstr->var0 = 0;
   *&retstr->var1 = 0;
@@ -593,19 +593,19 @@ LABEL_16:
   return result;
 }
 
-+ (float)defaultSlowMotionRateForNominalFrameRate:(float)a3
++ (float)defaultSlowMotionRateForNominalFrameRate:(float)rate
 {
   v3 = 0.125;
-  if (a3 < 210.0)
+  if (rate < 210.0)
   {
     v3 = 0.25;
     v4 = 1.0;
-    if (a3 >= 85.0)
+    if (rate >= 85.0)
     {
       v4 = 0.25;
     }
 
-    if (a3 < 105.0)
+    if (rate < 105.0)
     {
       return v4;
     }
@@ -614,7 +614,7 @@ LABEL_16:
   return v3;
 }
 
-+ ($E33AF59C8D263E738CA17719EFF006B3)defaultSlowMotionTimeRangeForDuration:(SEL)a3
++ ($E33AF59C8D263E738CA17719EFF006B3)defaultSlowMotionTimeRangeForDuration:(SEL)duration
 {
   v5 = MEMORY[0x1E6960CA8];
   v6 = *(MEMORY[0x1E6960CA8] + 16);
@@ -636,15 +636,15 @@ LABEL_16:
   return result;
 }
 
-+ (id)defaultSlowMotionAdjustmentsForAsset:(id)a3
++ (id)defaultSlowMotionAdjustmentsForAsset:(id)asset
 {
-  v3 = a3;
-  v4 = v3;
+  assetCopy = asset;
+  v4 = assetCopy;
   v18 = 0uLL;
   v19 = 0;
-  if (v3)
+  if (assetCopy)
   {
-    [v3 duration];
+    [assetCopy duration];
   }
 
   v16 = 0u;
@@ -654,8 +654,8 @@ LABEL_16:
   *&v13 = v19;
   [PFVideoAdjustments defaultSlowMotionTimeRangeForDuration:&v12];
   v5 = [PFMediaUtilities tracksWithMediaType:*MEMORY[0x1E6987608] forAsset:v4];
-  v6 = [v5 firstObject];
-  [v6 nominalFrameRate];
+  firstObject = [v5 firstObject];
+  [firstObject nominalFrameRate];
   [PFVideoAdjustments defaultSlowMotionRateForNominalFrameRate:?];
   v8 = v7;
   v9 = [PFVideoAdjustments alloc];

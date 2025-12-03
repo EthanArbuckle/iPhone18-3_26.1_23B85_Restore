@@ -1,47 +1,47 @@
 @interface SMSuggestionsMetricsManager
-+ (id)stringFromSuggestionsMetricsEvent:(unint64_t)a3;
-- (BOOL)_collectAndSubmitMetricsUponNotification:(id)a3;
-- (BOOL)_submitMetrics:(id)a3 event:(unint64_t)a4 error:(id *)a5;
-- (SMSuggestionsMetricsManager)initWithDefaultsManager:(id)a3 deviceLocationPredictor:(id)a4 sessionStore:(id)a5 suggestionsStore:(id)a6;
-- (id)_computeDetailsMetricsWithError:(id *)a3;
-- (id)_computeMetricsForEvent:(unint64_t)a3 error:(id *)a4;
-- (id)_computeUsageMetricsWithError:(id *)a3;
-- (id)_computeWorkoutAlwaysPromptMetricsWithError:(id *)a3;
-- (id)_getNPLOIsWithOnlyHighConfidence:(BOOL)a3 location:(id)a4 date:(id)a5 error:(id *)a6;
-- (id)_getSelectedSessionForSuggestion:(id)a3 error:(id *)a4;
-- (id)_getSessionConfigurationsForSuggestion:(id)a3 timeWindow:(double)a4 error:(id *)a5;
-- (id)_getSuggestionsConsideredMetricsWithError:(id *)a3;
-- (id)_getSuggestionsPresentedMetricsWithError:(id *)a3;
-- (id)_getSuggestionsSelectedMetricsWithError:(id *)a3;
-- (int64_t)_getSuggestionsCountConsideredForPastDate:(id)a3 endDate:(id)a4 error:(id *)a5;
-- (int64_t)_getSuggestionsCountPresentedForPastDate:(id)a3 endDate:(id)a4 error:(id *)a5;
-- (int64_t)_getSuggestionsCountSelectedForPastDate:(id)a3 endDate:(id)a4 error:(id *)a5;
++ (id)stringFromSuggestionsMetricsEvent:(unint64_t)event;
+- (BOOL)_collectAndSubmitMetricsUponNotification:(id)notification;
+- (BOOL)_submitMetrics:(id)metrics event:(unint64_t)event error:(id *)error;
+- (SMSuggestionsMetricsManager)initWithDefaultsManager:(id)manager deviceLocationPredictor:(id)predictor sessionStore:(id)store suggestionsStore:(id)suggestionsStore;
+- (id)_computeDetailsMetricsWithError:(id *)error;
+- (id)_computeMetricsForEvent:(unint64_t)event error:(id *)error;
+- (id)_computeUsageMetricsWithError:(id *)error;
+- (id)_computeWorkoutAlwaysPromptMetricsWithError:(id *)error;
+- (id)_getNPLOIsWithOnlyHighConfidence:(BOOL)confidence location:(id)location date:(id)date error:(id *)error;
+- (id)_getSelectedSessionForSuggestion:(id)suggestion error:(id *)error;
+- (id)_getSessionConfigurationsForSuggestion:(id)suggestion timeWindow:(double)window error:(id *)error;
+- (id)_getSuggestionsConsideredMetricsWithError:(id *)error;
+- (id)_getSuggestionsPresentedMetricsWithError:(id *)error;
+- (id)_getSuggestionsSelectedMetricsWithError:(id *)error;
+- (int64_t)_getSuggestionsCountConsideredForPastDate:(id)date endDate:(id)endDate error:(id *)error;
+- (int64_t)_getSuggestionsCountPresentedForPastDate:(id)date endDate:(id)endDate error:(id *)error;
+- (int64_t)_getSuggestionsCountSelectedForPastDate:(id)date endDate:(id)endDate error:(id *)error;
 - (void)_setup;
-- (void)_submitWorkoutAlwaysPromptResponseMetricUponNotification:(id)a3;
-- (void)collectAndSubmitMetricsUponNotification:(id)a3;
-- (void)sendSuggestionsConversionEventForSuggestion:(id)a3 selected:(BOOL)a4 sessionStarted:(BOOL)a5;
+- (void)_submitWorkoutAlwaysPromptResponseMetricUponNotification:(id)notification;
+- (void)collectAndSubmitMetricsUponNotification:(id)notification;
+- (void)sendSuggestionsConversionEventForSuggestion:(id)suggestion selected:(BOOL)selected sessionStarted:(BOOL)started;
 - (void)setup;
-- (void)submitWorkoutAlwaysPromptResponseMetricUponNotification:(id)a3;
+- (void)submitWorkoutAlwaysPromptResponseMetricUponNotification:(id)notification;
 @end
 
 @implementation SMSuggestionsMetricsManager
 
-- (SMSuggestionsMetricsManager)initWithDefaultsManager:(id)a3 deviceLocationPredictor:(id)a4 sessionStore:(id)a5 suggestionsStore:(id)a6
+- (SMSuggestionsMetricsManager)initWithDefaultsManager:(id)manager deviceLocationPredictor:(id)predictor sessionStore:(id)store suggestionsStore:(id)suggestionsStore
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  managerCopy = manager;
+  predictorCopy = predictor;
+  storeCopy = store;
+  suggestionsStoreCopy = suggestionsStore;
   v18.receiver = self;
   v18.super_class = SMSuggestionsMetricsManager;
   v15 = [(RTNotifier *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_defaultsManager, a3);
-    objc_storeStrong(&v16->_deviceLocationPredictor, a4);
-    objc_storeStrong(&v16->_sessionStore, a5);
-    objc_storeStrong(&v16->_suggestionsStore, a6);
+    objc_storeStrong(&v15->_defaultsManager, manager);
+    objc_storeStrong(&v16->_deviceLocationPredictor, predictor);
+    objc_storeStrong(&v16->_sessionStore, store);
+    objc_storeStrong(&v16->_suggestionsStore, suggestionsStore);
     [(SMSuggestionsMetricsManager *)v16 setup];
   }
 
@@ -50,39 +50,39 @@
 
 - (void)setup
 {
-  v3 = [(RTNotifier *)self queue];
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __36__SMSuggestionsMetricsManager_setup__block_invoke;
   block[3] = &unk_2788C4EA0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 - (void)_setup
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel_collectAndSubmitMetricsUponNotification_ name:@"RTMetricManagerDailyMetricNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_collectAndSubmitMetricsUponNotification_ name:@"RTMetricManagerDailyMetricNotification" object:0];
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 addObserver:self selector:sel_submitWorkoutAlwaysPromptResponseMetricUponNotification_ name:@"SMSubmitSuggesionsWorkoutAlwaysPromptResponseNotification" object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel_submitWorkoutAlwaysPromptResponseMetricUponNotification_ name:@"SMSubmitSuggesionsWorkoutAlwaysPromptResponseNotification" object:0];
 }
 
-- (void)submitWorkoutAlwaysPromptResponseMetricUponNotification:(id)a3
+- (void)submitWorkoutAlwaysPromptResponseMetricUponNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  notificationCopy = notification;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __87__SMSuggestionsMetricsManager_submitWorkoutAlwaysPromptResponseMetricUponNotification___block_invoke;
   v7[3] = &unk_2788C4A70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationCopy;
+  v6 = notificationCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)_submitWorkoutAlwaysPromptResponseMetricUponNotification:(id)a3
+- (void)_submitWorkoutAlwaysPromptResponseMetricUponNotification:(id)notification
 {
   v8 = *MEMORY[0x277D85DE8];
   v3 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -96,35 +96,35 @@
   }
 }
 
-- (void)collectAndSubmitMetricsUponNotification:(id)a3
+- (void)collectAndSubmitMetricsUponNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  notificationCopy = notification;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __71__SMSuggestionsMetricsManager_collectAndSubmitMetricsUponNotification___block_invoke;
   v7[3] = &unk_2788C4A70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationCopy;
+  v6 = notificationCopy;
+  dispatch_async(queue, v7);
 }
 
-- (BOOL)_collectAndSubmitMetricsUponNotification:(id)a3
+- (BOOL)_collectAndSubmitMetricsUponNotification:(id)notification
 {
   v44 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 name];
-  v6 = [v5 isEqualToString:@"RTMetricManagerDailyMetricNotification"];
+  notificationCopy = notification;
+  name = [notificationCopy name];
+  v6 = [name isEqualToString:@"RTMetricManagerDailyMetricNotification"];
 
   if ((v6 & 1) == 0)
   {
     v7 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      v27 = [v4 name];
+      name2 = [notificationCopy name];
       *buf = 138412802;
-      v39 = v27;
+      v39 = name2;
       v40 = 2080;
       v41 = "[SMSuggestionsMetricsManager _collectAndSubmitMetricsUponNotification:]";
       v42 = 1024;
@@ -133,8 +133,8 @@
     }
   }
 
-  v8 = [v4 name];
-  v9 = [v8 isEqualToString:@"RTMetricManagerDailyMetricNotification"];
+  name3 = [notificationCopy name];
+  v9 = [name3 isEqualToString:@"RTMetricManagerDailyMetricNotification"];
 
   if (v9)
   {
@@ -146,7 +146,7 @@
     if (v10)
     {
       v11 = v10;
-      v29 = v4;
+      v29 = notificationCopy;
       v30 = 0;
       v12 = 0;
       v13 = *v34;
@@ -162,9 +162,9 @@
 
           v15 = *(*(&v33 + 1) + 8 * v14);
           v16 = objc_autoreleasePoolPush();
-          v17 = [v15 unsignedIntValue];
+          unsignedIntValue = [v15 unsignedIntValue];
           v32 = v12;
-          v18 = [(SMSuggestionsMetricsManager *)self _computeMetricsForEvent:v17 error:&v32];
+          v18 = [(SMSuggestionsMetricsManager *)self _computeMetricsForEvent:unsignedIntValue error:&v32];
           v19 = v32;
 
           if (v19)
@@ -173,9 +173,9 @@
             if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
             {
 LABEL_20:
-              v23 = [v19 localizedDescription];
+              localizedDescription = [v19 localizedDescription];
               *buf = 138412290;
-              v39 = v23;
+              v39 = localizedDescription;
               _os_log_error_impl(&dword_2304B3000, v20, OS_LOG_TYPE_ERROR, "error, %@", buf, 0xCu);
             }
 
@@ -185,9 +185,9 @@ LABEL_16:
             goto LABEL_17;
           }
 
-          v21 = [v15 unsignedIntValue];
+          unsignedIntValue2 = [v15 unsignedIntValue];
           v31 = 0;
-          v30 = [(SMSuggestionsMetricsManager *)self _submitMetrics:v18 event:v21 error:&v31];
+          v30 = [(SMSuggestionsMetricsManager *)self _submitMetrics:v18 event:unsignedIntValue2 error:&v31];
           v22 = v31;
           if (v22)
           {
@@ -224,29 +224,29 @@ LABEL_17:
   else
   {
     v12 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
-    v29 = v4;
+    v29 = notificationCopy;
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      v28 = [v4 name];
+      name4 = [notificationCopy name];
       *buf = 138412290;
-      v39 = v28;
+      v39 = name4;
       _os_log_error_impl(&dword_2304B3000, v12, OS_LOG_TYPE_ERROR, "unknown notification name, %@", buf, 0xCu);
     }
 
     v30 = 0;
 LABEL_26:
 
-    v4 = v29;
+    notificationCopy = v29;
     v25 = v30;
   }
 
   return v25;
 }
 
-- (id)_computeMetricsForEvent:(unint64_t)a3 error:(id *)a4
+- (id)_computeMetricsForEvent:(unint64_t)event error:(id *)error
 {
   v20[1] = *MEMORY[0x277D85DE8];
-  switch(a3)
+  switch(event)
   {
     case 3uLL:
       v16 = 0;
@@ -254,7 +254,7 @@ LABEL_26:
       v6 = v16;
 LABEL_7:
       v7 = v6;
-      if (!a4)
+      if (!error)
       {
         goto LABEL_9;
       }
@@ -276,18 +276,18 @@ LABEL_7:
   v11 = *MEMORY[0x277D4ACD0];
   v19 = *MEMORY[0x277CCA450];
   v12 = MEMORY[0x277CCACA8];
-  v13 = [objc_opt_class() stringFromSuggestionsMetricsEvent:a3];
+  v13 = [objc_opt_class() stringFromSuggestionsMetricsEvent:event];
   v14 = [v12 stringWithFormat:@"requires a valid suggestions metric event. Passed, %@", v13];
   v20[0] = v14;
   v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:&v19 count:1];
   v7 = [v10 errorWithDomain:v11 code:7 userInfo:v15];
 
   v5 = 0;
-  if (a4)
+  if (error)
   {
 LABEL_8:
     v8 = v7;
-    *a4 = v7;
+    *error = v7;
   }
 
 LABEL_9:
@@ -295,7 +295,7 @@ LABEL_9:
   return v5;
 }
 
-- (id)_computeDetailsMetricsWithError:(id *)a3
+- (id)_computeDetailsMetricsWithError:(id *)error
 {
   v246[1] = *MEMORY[0x277D85DE8];
   v231 = 0;
@@ -304,9 +304,9 @@ LABEL_9:
   v234 = __Block_byref_object_copy__189;
   v235 = __Block_byref_object_dispose__189;
   v236 = 0;
-  v3 = [MEMORY[0x277CBEAA8] date];
-  v164 = [v3 dateByAddingTimeInterval:-86400.0];
-  v163 = v3;
+  date = [MEMORY[0x277CBEAA8] date];
+  v164 = [date dateByAddingTimeInterval:-86400.0];
+  v163 = date;
   v178 = objc_opt_new();
   v4 = objc_alloc(MEMORY[0x277D4AC18]);
   v5 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v164 endDate:v163];
@@ -319,7 +319,7 @@ LABEL_9:
   v228 = __Block_byref_object_copy__189;
   v229 = __Block_byref_object_dispose__189;
   v230 = 0;
-  v7 = [(SMSuggestionsMetricsManager *)self suggestionsStore];
+  suggestionsStore = [(SMSuggestionsMetricsManager *)self suggestionsStore];
   v221[0] = MEMORY[0x277D85DD0];
   v221[1] = 3221225472;
   v221[2] = __63__SMSuggestionsMetricsManager__computeDetailsMetricsWithError___block_invoke;
@@ -328,7 +328,7 @@ LABEL_9:
   v224 = &v231;
   v8 = v6;
   v222 = v8;
-  [v7 fetchSuggestionsWithOptions:v162 handler:v221];
+  [suggestionsStore fetchSuggestionsWithOptions:v162 handler:v221];
 
   dsema = v8;
   v9 = [MEMORY[0x277CBEAA8] now];
@@ -340,11 +340,11 @@ LABEL_9:
     v13 = v12;
     v14 = objc_opt_new();
     v15 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_241_0];
-    v16 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v17 = [v16 filteredArrayUsingPredicate:v15];
-    v18 = [v17 firstObject];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v17 = [callStackSymbols filteredArrayUsingPredicate:v15];
+    firstObject = [v17 firstObject];
 
-    [v14 submitToCoreAnalytics:v18 type:1 duration:v13];
+    [v14 submitToCoreAnalytics:firstObject type:1 duration:v13];
     v19 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v19, OS_LOG_TYPE_FAULT))
     {
@@ -371,7 +371,7 @@ LABEL_9:
 
   v24 = v22;
   v161 = v24;
-  if (a3 && v24)
+  if (error && v24)
   {
     v25 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -392,7 +392,7 @@ LABEL_9:
     goto LABEL_148;
   }
 
-  if (!a3 || !v232[5])
+  if (!error || !v232[5])
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -423,7 +423,7 @@ LABEL_9:
     {
 LABEL_146:
 
-      if (!a3)
+      if (!error)
       {
         goto LABEL_149;
       }
@@ -446,11 +446,11 @@ LABEL_24:
     v33 = v232[5];
     v232[5] = 0;
 
-    v34 = [v192 sourceLocation];
-    v35 = [v192 creationDate];
+    sourceLocation = [v192 sourceLocation];
+    creationDate = [v192 creationDate];
     v36 = (v232 + 5);
     v216 = v232[5];
-    v37 = [(SMSuggestionsMetricsManager *)self _getNPLOIsWithOnlyHighConfidence:1 location:v34 date:v35 error:&v216];
+    v37 = [(SMSuggestionsMetricsManager *)self _getNPLOIsWithOnlyHighConfidence:1 location:sourceLocation date:creationDate error:&v216];
     objc_storeStrong(v36, v216);
 
     v214 = 0u;
@@ -482,23 +482,23 @@ LABEL_24:
         v246[0] = 0;
         v210 = 0.0;
         v211 = 0.0;
-        v43 = [v41 locationOfInterest];
-        v44 = [v43 location];
-        [v44 latitude];
-        v45 = [v41 locationOfInterest];
-        v46 = [v45 location];
-        [v46 longitude];
+        locationOfInterest = [v41 locationOfInterest];
+        location = [locationOfInterest location];
+        [location latitude];
+        locationOfInterest2 = [v41 locationOfInterest];
+        location2 = [locationOfInterest2 location];
+        [location2 longitude];
         RTCommonCalculateBoundingBox();
 
-        v47 = [v192 destinationLocation];
-        if (!v47)
+        destinationLocation = [v192 destinationLocation];
+        if (!destinationLocation)
         {
           goto LABEL_34;
         }
 
         v48 = *buf;
-        v49 = [v192 destinationLocation];
-        [v49 latitude];
+        destinationLocation2 = [v192 destinationLocation];
+        [destinationLocation2 latitude];
         if (v48 > v50)
         {
 
@@ -507,17 +507,17 @@ LABEL_34:
           goto LABEL_42;
         }
 
-        v52 = [v192 destinationLocation];
-        [v52 latitude];
+        destinationLocation3 = [v192 destinationLocation];
+        [destinationLocation3 latitude];
         if (v53 <= v211)
         {
           v54 = *v246;
-          v55 = [v192 destinationLocation];
-          [v55 longitude];
+          destinationLocation4 = [v192 destinationLocation];
+          [destinationLocation4 longitude];
           if (v54 <= v56)
           {
-            v57 = [v192 destinationLocation];
-            [v57 longitude];
+            destinationLocation5 = [v192 destinationLocation];
+            [destinationLocation5 longitude];
             v51 = v58 <= v210;
           }
 
@@ -628,9 +628,9 @@ LABEL_47:
 
               v73 = *(*(&v205 + 1) + 8 * j);
               v74 = objc_autoreleasePoolPush();
-              v75 = [v73 conversation];
-              v76 = [v75 receiverHandles];
-              v77 = [v76 count] > 1;
+              conversation = [v73 conversation];
+              receiverHandles = [conversation receiverHandles];
+              v77 = [receiverHandles count] > 1;
 
               if (v77)
               {
@@ -639,8 +639,8 @@ LABEL_47:
                   goto LABEL_74;
                 }
 
-                v78 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
-                if (os_log_type_enabled(v78, OS_LOG_TYPE_INFO))
+                conversation3 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
+                if (os_log_type_enabled(conversation3, OS_LOG_TYPE_INFO))
                 {
                   v79 = objc_opt_class();
                   v80 = NSStringFromClass(v79);
@@ -651,27 +651,27 @@ LABEL_47:
                   v243 = v81;
                   v244 = 2112;
                   v245 = v73;
-                  _os_log_impl(&dword_2304B3000, v78, OS_LOG_TYPE_INFO, "%@, %@, not considering group sessions for metric, %@", buf, 0x20u);
+                  _os_log_impl(&dword_2304B3000, conversation3, OS_LOG_TYPE_INFO, "%@, %@, not considering group sessions for metric, %@", buf, 0x20u);
                 }
               }
 
               else
               {
-                v82 = [v73 conversation];
-                v83 = [v82 receiverHandles];
-                v84 = [v83 firstObject];
-                v85 = [v84 primaryHandle];
+                conversation2 = [v73 conversation];
+                receiverHandles2 = [conversation2 receiverHandles];
+                firstObject2 = [receiverHandles2 firstObject];
+                primaryHandle = [firstObject2 primaryHandle];
 
-                if (!v85)
+                if (!primaryHandle)
                 {
                   goto LABEL_74;
                 }
 
-                v78 = [v73 conversation];
-                v86 = [v78 receiverHandles];
-                v87 = [v86 firstObject];
-                v88 = [v87 primaryHandle];
-                [v197 addObject:v88];
+                conversation3 = [v73 conversation];
+                receiverHandles3 = [conversation3 receiverHandles];
+                firstObject3 = [receiverHandles3 firstObject];
+                primaryHandle2 = [firstObject3 primaryHandle];
+                [v197 addObject:primaryHandle2];
               }
 
 LABEL_74:
@@ -748,9 +748,9 @@ LABEL_74:
 
               v100 = *(*(&v200 + 1) + 8 * k);
               v101 = objc_autoreleasePoolPush();
-              v102 = [v100 conversation];
-              v103 = [v102 receiverHandles];
-              v104 = [v103 count] > 1;
+              conversation4 = [v100 conversation];
+              receiverHandles4 = [conversation4 receiverHandles];
+              v104 = [receiverHandles4 count] > 1;
 
               if (v104)
               {
@@ -759,8 +759,8 @@ LABEL_74:
                   goto LABEL_98;
                 }
 
-                v105 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
-                if (os_log_type_enabled(v105, OS_LOG_TYPE_INFO))
+                conversation6 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
+                if (os_log_type_enabled(conversation6, OS_LOG_TYPE_INFO))
                 {
                   v106 = objc_opt_class();
                   v107 = NSStringFromClass(v106);
@@ -771,27 +771,27 @@ LABEL_74:
                   v243 = v108;
                   v244 = 2112;
                   v245 = v100;
-                  _os_log_impl(&dword_2304B3000, v105, OS_LOG_TYPE_INFO, "%@, %@, not considering group sessions for metric, %@", buf, 0x20u);
+                  _os_log_impl(&dword_2304B3000, conversation6, OS_LOG_TYPE_INFO, "%@, %@, not considering group sessions for metric, %@", buf, 0x20u);
                 }
               }
 
               else
               {
-                v109 = [v100 conversation];
-                v110 = [v109 receiverHandles];
-                v111 = [v110 firstObject];
-                v112 = [v111 primaryHandle];
+                conversation5 = [v100 conversation];
+                receiverHandles5 = [conversation5 receiverHandles];
+                firstObject4 = [receiverHandles5 firstObject];
+                primaryHandle3 = [firstObject4 primaryHandle];
 
-                if (!v112)
+                if (!primaryHandle3)
                 {
                   goto LABEL_98;
                 }
 
-                v105 = [v100 conversation];
-                v113 = [v105 receiverHandles];
-                v114 = [v113 firstObject];
-                v115 = [v114 primaryHandle];
-                [v195 addObject:v115];
+                conversation6 = [v100 conversation];
+                receiverHandles6 = [conversation6 receiverHandles];
+                firstObject5 = [receiverHandles6 firstObject];
+                primaryHandle4 = [firstObject5 primaryHandle];
+                [v195 addObject:primaryHandle4];
               }
 
 LABEL_98:
@@ -861,33 +861,33 @@ LABEL_98:
         v246[0] = 0;
         v210 = 0.0;
         v211 = 0.0;
-        v123 = [v198 destination];
-        v124 = [v123 location];
-        [v124 latitude];
-        v125 = [v198 destination];
-        v126 = [v125 location];
-        [v126 longitude];
+        destination = [v198 destination];
+        location3 = [destination location];
+        [location3 latitude];
+        destination2 = [v198 destination];
+        location4 = [destination2 location];
+        [location4 longitude];
         RTCommonCalculateBoundingBox();
 
-        v127 = [v192 destinationLocation];
-        if (v127)
+        destinationLocation6 = [v192 destinationLocation];
+        if (destinationLocation6)
         {
           v128 = *buf;
-          v129 = [v192 destinationLocation];
-          [v129 latitude];
+          destinationLocation7 = [v192 destinationLocation];
+          [destinationLocation7 latitude];
           if (v128 <= v130)
           {
-            v131 = [v192 destinationLocation];
-            [v131 latitude];
+            destinationLocation8 = [v192 destinationLocation];
+            [destinationLocation8 latitude];
             if (v132 <= v211)
             {
               v133 = *v246;
-              v134 = [v192 destinationLocation];
-              [v134 longitude];
+              destinationLocation9 = [v192 destinationLocation];
+              [destinationLocation9 longitude];
               if (v133 <= v135)
               {
-                v136 = [v192 destinationLocation];
-                [v136 longitude];
+                destinationLocation10 = [v192 destinationLocation];
+                [destinationLocation10 longitude];
                 v180 = v137 > v210;
               }
 
@@ -914,36 +914,36 @@ LABEL_98:
           v180 = 1;
         }
 
-        v188 = [v192 buddy];
-        v138 = [v188 phoneNumber];
-        if (v138)
+        buddy = [v192 buddy];
+        phoneNumber = [buddy phoneNumber];
+        if (phoneNumber)
         {
-          v186 = [v192 buddy];
-          v181 = [v186 phoneNumber];
-          v185 = [v198 conversation];
-          v184 = [v185 receiverHandles];
-          v183 = [v184 firstObject];
-          v182 = [v183 primaryHandle];
-          if ([v181 isEqualToString:v182])
+          buddy2 = [v192 buddy];
+          phoneNumber2 = [buddy2 phoneNumber];
+          conversation7 = [v198 conversation];
+          receiverHandles7 = [conversation7 receiverHandles];
+          firstObject6 = [receiverHandles7 firstObject];
+          primaryHandle5 = [firstObject6 primaryHandle];
+          if ([phoneNumber2 isEqualToString:primaryHandle5])
           {
             v139 = 1;
             goto LABEL_133;
           }
         }
 
-        v140 = [v192 buddy];
-        v141 = [v140 email];
-        if (v141)
+        buddy3 = [v192 buddy];
+        email = [buddy3 email];
+        if (email)
         {
-          v179 = [v192 buddy];
-          v142 = [v179 email];
-          v143 = [v198 conversation];
-          v144 = [v143 receiverHandles];
-          v145 = [v144 firstObject];
-          v146 = [v145 primaryHandle];
-          v139 = [v142 isEqualToString:v146];
+          buddy4 = [v192 buddy];
+          email2 = [buddy4 email];
+          conversation8 = [v198 conversation];
+          receiverHandles8 = [conversation8 receiverHandles];
+          firstObject7 = [receiverHandles8 firstObject];
+          primaryHandle6 = [firstObject7 primaryHandle];
+          v139 = [email2 isEqualToString:primaryHandle6];
 
-          if (!v138)
+          if (!phoneNumber)
           {
 
             goto LABEL_134;
@@ -1000,7 +1000,7 @@ LABEL_138:
         else
         {
 
-          if (v138)
+          if (phoneNumber)
           {
             v139 = 0;
             goto LABEL_133;
@@ -1032,7 +1032,7 @@ LABEL_138:
 LABEL_147:
   v26 = v232[5];
 LABEL_148:
-  *a3 = v26;
+  *error = v26;
 LABEL_149:
   v152 = v178;
 
@@ -1059,7 +1059,7 @@ void __63__SMSuggestionsMetricsManager__computeDetailsMetricsWithError___block_i
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (id)_computeUsageMetricsWithError:(id *)a3
+- (id)_computeUsageMetricsWithError:(id *)error
 {
   v45 = *MEMORY[0x277D85DE8];
   v6 = objc_opt_new();
@@ -1067,7 +1067,7 @@ void __63__SMSuggestionsMetricsManager__computeDetailsMetricsWithError___block_i
   v7 = [(SMSuggestionsMetricsManager *)self _getSuggestionsConsideredMetricsWithError:&v34];
   v8 = v34;
   v9 = v8;
-  if (a3 && v8)
+  if (error && v8)
   {
     v10 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -1085,7 +1085,7 @@ void __63__SMSuggestionsMetricsManager__computeDetailsMetricsWithError___block_i
     }
 
     v11 = v9;
-    *a3 = v9;
+    *error = v9;
     v38 = v6;
     v12 = [MEMORY[0x277CBEA60] arrayWithObjects:&v38 count:1];
   }
@@ -1097,7 +1097,7 @@ void __63__SMSuggestionsMetricsManager__computeDetailsMetricsWithError___block_i
     v13 = [(SMSuggestionsMetricsManager *)self _getSuggestionsPresentedMetricsWithError:&v33];
     v14 = v33;
 
-    if (a3 && v14)
+    if (error && v14)
     {
       v15 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -1115,7 +1115,7 @@ void __63__SMSuggestionsMetricsManager__computeDetailsMetricsWithError___block_i
       }
 
       v16 = v14;
-      *a3 = v14;
+      *error = v14;
       v37 = v6;
       v12 = [MEMORY[0x277CBEA60] arrayWithObjects:&v37 count:1];
       v9 = v14;
@@ -1128,7 +1128,7 @@ void __63__SMSuggestionsMetricsManager__computeDetailsMetricsWithError___block_i
       v17 = [(SMSuggestionsMetricsManager *)self _getSuggestionsSelectedMetricsWithError:&v32];
       v9 = v32;
 
-      if (a3 && v9)
+      if (error && v9)
       {
         v18 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
         if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -1146,7 +1146,7 @@ void __63__SMSuggestionsMetricsManager__computeDetailsMetricsWithError___block_i
         }
 
         v19 = v9;
-        *a3 = v9;
+        *error = v9;
         v36 = v6;
         v20 = &v36;
       }
@@ -1154,10 +1154,10 @@ void __63__SMSuggestionsMetricsManager__computeDetailsMetricsWithError___block_i
       else
       {
         [v6 addEntriesFromDictionary:v17];
-        if (a3)
+        if (error)
         {
           v21 = v9;
-          *a3 = v9;
+          *error = v9;
         }
 
         v35 = v6;
@@ -1171,19 +1171,19 @@ void __63__SMSuggestionsMetricsManager__computeDetailsMetricsWithError___block_i
   return v12;
 }
 
-- (id)_getSuggestionsConsideredMetricsWithError:(id *)a3
+- (id)_getSuggestionsConsideredMetricsWithError:(id *)error
 {
   v43 = *MEMORY[0x277D85DE8];
   v5 = objc_opt_new();
-  v6 = [MEMORY[0x277CBEAA8] date];
-  v7 = [v6 dateByAddingTimeInterval:-86400.0];
-  v8 = [v6 dateByAddingTimeInterval:-604800.0];
-  v9 = [v6 dateByAddingTimeInterval:-2419200.0];
+  date = [MEMORY[0x277CBEAA8] date];
+  v7 = [date dateByAddingTimeInterval:-86400.0];
+  v8 = [date dateByAddingTimeInterval:-604800.0];
+  v9 = [date dateByAddingTimeInterval:-2419200.0];
   v36 = 0;
-  v10 = [(SMSuggestionsMetricsManager *)self _getSuggestionsCountConsideredForPastDate:v7 endDate:v6 error:&v36];
+  v10 = [(SMSuggestionsMetricsManager *)self _getSuggestionsCountConsideredForPastDate:v7 endDate:date error:&v36];
   v11 = v36;
   v12 = v11;
-  if (a3 && v11)
+  if (error && v11)
   {
     v13 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -1208,10 +1208,10 @@ void __63__SMSuggestionsMetricsManager__computeDetailsMetricsWithError___block_i
 
   v33 = v5;
   v35 = v11;
-  v18 = [(SMSuggestionsMetricsManager *)self _getSuggestionsCountConsideredForPastDate:v8 endDate:v6 error:&v35];
+  v18 = [(SMSuggestionsMetricsManager *)self _getSuggestionsCountConsideredForPastDate:v8 endDate:date error:&v35];
   v19 = v35;
 
-  if (a3 && v19)
+  if (error && v19)
   {
     v13 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -1235,15 +1235,15 @@ LABEL_15:
 
 LABEL_16:
     v20 = v12;
-    *a3 = v12;
+    *error = v12;
     goto LABEL_17;
   }
 
   v34 = v19;
-  v31 = [(SMSuggestionsMetricsManager *)self _getSuggestionsCountConsideredForPastDate:v9 endDate:v6 error:&v34];
+  v31 = [(SMSuggestionsMetricsManager *)self _getSuggestionsCountConsideredForPastDate:v9 endDate:date error:&v34];
   v12 = v34;
 
-  if (a3 && v12)
+  if (error && v12)
   {
     v13 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -1289,7 +1289,7 @@ LABEL_16:
   {
     v5 = v33;
     [v33 setObject:0 forKeyedSubscript:@"suggestionsConsidered_monthly"];
-    if (a3)
+    if (error)
     {
       goto LABEL_16;
     }
@@ -1301,7 +1301,7 @@ LABEL_16:
     v5 = v33;
     [v33 setObject:v24 forKeyedSubscript:@"suggestionsConsidered_monthly"];
 
-    if (a3)
+    if (error)
     {
       goto LABEL_16;
     }
@@ -1312,13 +1312,13 @@ LABEL_17:
   return v5;
 }
 
-- (int64_t)_getSuggestionsCountConsideredForPastDate:(id)a3 endDate:(id)a4 error:(id *)a5
+- (int64_t)_getSuggestionsCountConsideredForPastDate:(id)date endDate:(id)endDate error:(id *)error
 {
   v70[1] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = v10;
-  if (!v9)
+  dateCopy = date;
+  endDateCopy = endDate;
+  v11 = endDateCopy;
+  if (!dateCopy)
   {
     v30 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
@@ -1327,18 +1327,18 @@ LABEL_17:
       _os_log_error_impl(&dword_2304B3000, v30, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: startDate", buf, 2u);
     }
 
-    if (!a5)
+    if (!error)
     {
       goto LABEL_18;
     }
 
     v31 = _RTErrorInvalidParameterCreate(@"startDate");
 LABEL_17:
-    *a5 = v31;
+    *error = v31;
     goto LABEL_18;
   }
 
-  if (!v10)
+  if (!endDateCopy)
   {
     v32 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
@@ -1347,7 +1347,7 @@ LABEL_17:
       _os_log_error_impl(&dword_2304B3000, v32, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: endDate", buf, 2u);
     }
 
-    if (!a5)
+    if (!error)
     {
       goto LABEL_18;
     }
@@ -1356,7 +1356,7 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  if ([v9 compare:v10] == -1)
+  if ([dateCopy compare:endDateCopy] == -1)
   {
     *buf = 0;
     v60 = buf;
@@ -1365,7 +1365,7 @@ LABEL_17:
     v63 = __Block_byref_object_dispose__189;
     v64 = 0;
     v12 = objc_alloc(MEMORY[0x277D4AC18]);
-    v13 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v9 endDate:v11];
+    v13 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:dateCopy endDate:v11];
     v50 = [v12 initWithIncludeSuppressed:1 sortByCreationDate:0 ascending:0 dateInterval:v13 filteredToSuggestionTriggers:0 filteredToSuggestionUserTypes:0 filteredToSessionTypes:0];
 
     v14 = dispatch_semaphore_create(0);
@@ -1373,7 +1373,7 @@ LABEL_17:
     v56 = &v55;
     v57 = 0x2020000000;
     v58 = 0;
-    v15 = [(SMSuggestionsMetricsManager *)self suggestionsStore];
+    suggestionsStore = [(SMSuggestionsMetricsManager *)self suggestionsStore];
     v51[0] = MEMORY[0x277D85DD0];
     v51[1] = 3221225472;
     v51[2] = __87__SMSuggestionsMetricsManager__getSuggestionsCountConsideredForPastDate_endDate_error___block_invoke;
@@ -1382,7 +1382,7 @@ LABEL_17:
     v54 = buf;
     v16 = v14;
     v52 = v16;
-    [v15 fetchSuggestionsCountWithOptions:v50 handler:v51];
+    [suggestionsStore fetchSuggestionsCountWithOptions:v50 handler:v51];
 
     v17 = v16;
     v49 = [MEMORY[0x277CBEAA8] now];
@@ -1394,11 +1394,11 @@ LABEL_17:
       v20 = v19;
       v47 = objc_opt_new();
       v21 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_241_0];
-      v22 = [MEMORY[0x277CCACC8] callStackSymbols];
-      v23 = [v22 filteredArrayUsingPredicate:v21];
-      v24 = [v23 firstObject];
+      callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+      v23 = [callStackSymbols filteredArrayUsingPredicate:v21];
+      firstObject = [v23 firstObject];
 
-      [v47 submitToCoreAnalytics:v24 type:1 duration:v20];
+      [v47 submitToCoreAnalytics:firstObject type:1 duration:v20];
       v25 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v25, OS_LOG_TYPE_FAULT))
       {
@@ -1425,7 +1425,7 @@ LABEL_17:
 
     v35 = v28;
     v36 = v35;
-    if (a5 && v35)
+    if (error && v35)
     {
       v37 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
       if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
@@ -1443,12 +1443,12 @@ LABEL_17:
       }
 
       v38 = v36;
-      *a5 = v36;
+      *error = v36;
     }
 
     else
     {
-      if (!a5 || !*(v60 + 5))
+      if (!error || !*(v60 + 5))
       {
         v33 = v56[3];
         goto LABEL_33;
@@ -1470,7 +1470,7 @@ LABEL_17:
         _os_log_error_impl(&dword_2304B3000, v39, OS_LOG_TYPE_ERROR, "%@, %@, RTOutErrorAssignConditionalReturn, error, %@", v65, 0x20u);
       }
 
-      *a5 = *(v60 + 5);
+      *error = *(v60 + 5);
     }
 
     v33 = -1;
@@ -1497,19 +1497,19 @@ void __87__SMSuggestionsMetricsManager__getSuggestionsCountConsideredForPastDate
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (id)_getSuggestionsPresentedMetricsWithError:(id *)a3
+- (id)_getSuggestionsPresentedMetricsWithError:(id *)error
 {
   v43 = *MEMORY[0x277D85DE8];
   v5 = objc_opt_new();
-  v6 = [MEMORY[0x277CBEAA8] date];
-  v7 = [v6 dateByAddingTimeInterval:-86400.0];
-  v8 = [v6 dateByAddingTimeInterval:-604800.0];
-  v9 = [v6 dateByAddingTimeInterval:-2419200.0];
+  date = [MEMORY[0x277CBEAA8] date];
+  v7 = [date dateByAddingTimeInterval:-86400.0];
+  v8 = [date dateByAddingTimeInterval:-604800.0];
+  v9 = [date dateByAddingTimeInterval:-2419200.0];
   v36 = 0;
-  v10 = [(SMSuggestionsMetricsManager *)self _getSuggestionsCountPresentedForPastDate:v7 endDate:v6 error:&v36];
+  v10 = [(SMSuggestionsMetricsManager *)self _getSuggestionsCountPresentedForPastDate:v7 endDate:date error:&v36];
   v11 = v36;
   v12 = v11;
-  if (a3 && v11)
+  if (error && v11)
   {
     v13 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -1534,10 +1534,10 @@ void __87__SMSuggestionsMetricsManager__getSuggestionsCountConsideredForPastDate
 
   v33 = v5;
   v35 = v11;
-  v18 = [(SMSuggestionsMetricsManager *)self _getSuggestionsCountPresentedForPastDate:v8 endDate:v6 error:&v35];
+  v18 = [(SMSuggestionsMetricsManager *)self _getSuggestionsCountPresentedForPastDate:v8 endDate:date error:&v35];
   v19 = v35;
 
-  if (a3 && v19)
+  if (error && v19)
   {
     v13 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -1561,15 +1561,15 @@ LABEL_15:
 
 LABEL_16:
     v20 = v12;
-    *a3 = v12;
+    *error = v12;
     goto LABEL_17;
   }
 
   v34 = v19;
-  v31 = [(SMSuggestionsMetricsManager *)self _getSuggestionsCountPresentedForPastDate:v9 endDate:v6 error:&v34];
+  v31 = [(SMSuggestionsMetricsManager *)self _getSuggestionsCountPresentedForPastDate:v9 endDate:date error:&v34];
   v12 = v34;
 
-  if (a3 && v12)
+  if (error && v12)
   {
     v13 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -1615,7 +1615,7 @@ LABEL_16:
   {
     v5 = v33;
     [v33 setObject:0 forKeyedSubscript:@"suggestionsPresented_monthly"];
-    if (a3)
+    if (error)
     {
       goto LABEL_16;
     }
@@ -1627,7 +1627,7 @@ LABEL_16:
     v5 = v33;
     [v33 setObject:v24 forKeyedSubscript:@"suggestionsPresented_monthly"];
 
-    if (a3)
+    if (error)
     {
       goto LABEL_16;
     }
@@ -1638,13 +1638,13 @@ LABEL_17:
   return v5;
 }
 
-- (int64_t)_getSuggestionsCountPresentedForPastDate:(id)a3 endDate:(id)a4 error:(id *)a5
+- (int64_t)_getSuggestionsCountPresentedForPastDate:(id)date endDate:(id)endDate error:(id *)error
 {
   v70[1] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = v10;
-  if (!v9)
+  dateCopy = date;
+  endDateCopy = endDate;
+  v11 = endDateCopy;
+  if (!dateCopy)
   {
     v30 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
@@ -1653,18 +1653,18 @@ LABEL_17:
       _os_log_error_impl(&dword_2304B3000, v30, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: startDate", buf, 2u);
     }
 
-    if (!a5)
+    if (!error)
     {
       goto LABEL_18;
     }
 
     v31 = _RTErrorInvalidParameterCreate(@"startDate");
 LABEL_17:
-    *a5 = v31;
+    *error = v31;
     goto LABEL_18;
   }
 
-  if (!v10)
+  if (!endDateCopy)
   {
     v32 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
@@ -1673,7 +1673,7 @@ LABEL_17:
       _os_log_error_impl(&dword_2304B3000, v32, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: endDate", buf, 2u);
     }
 
-    if (!a5)
+    if (!error)
     {
       goto LABEL_18;
     }
@@ -1682,7 +1682,7 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  if ([v9 compare:v10] == -1)
+  if ([dateCopy compare:endDateCopy] == -1)
   {
     *buf = 0;
     v60 = buf;
@@ -1691,7 +1691,7 @@ LABEL_17:
     v63 = __Block_byref_object_dispose__189;
     v64 = 0;
     v12 = objc_alloc(MEMORY[0x277D4AC18]);
-    v13 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v9 endDate:v11];
+    v13 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:dateCopy endDate:v11];
     v50 = [v12 initWithIncludeSuppressed:0 sortByCreationDate:0 ascending:0 dateInterval:v13 filteredToSuggestionTriggers:0 filteredToSuggestionUserTypes:0 filteredToSessionTypes:0];
 
     v14 = dispatch_semaphore_create(0);
@@ -1699,7 +1699,7 @@ LABEL_17:
     v56 = &v55;
     v57 = 0x2020000000;
     v58 = 0;
-    v15 = [(SMSuggestionsMetricsManager *)self suggestionsStore];
+    suggestionsStore = [(SMSuggestionsMetricsManager *)self suggestionsStore];
     v51[0] = MEMORY[0x277D85DD0];
     v51[1] = 3221225472;
     v51[2] = __86__SMSuggestionsMetricsManager__getSuggestionsCountPresentedForPastDate_endDate_error___block_invoke;
@@ -1708,7 +1708,7 @@ LABEL_17:
     v54 = buf;
     v16 = v14;
     v52 = v16;
-    [v15 fetchSuggestionsCountWithOptions:v50 handler:v51];
+    [suggestionsStore fetchSuggestionsCountWithOptions:v50 handler:v51];
 
     v17 = v16;
     v49 = [MEMORY[0x277CBEAA8] now];
@@ -1720,11 +1720,11 @@ LABEL_17:
       v20 = v19;
       v47 = objc_opt_new();
       v21 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_241_0];
-      v22 = [MEMORY[0x277CCACC8] callStackSymbols];
-      v23 = [v22 filteredArrayUsingPredicate:v21];
-      v24 = [v23 firstObject];
+      callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+      v23 = [callStackSymbols filteredArrayUsingPredicate:v21];
+      firstObject = [v23 firstObject];
 
-      [v47 submitToCoreAnalytics:v24 type:1 duration:v20];
+      [v47 submitToCoreAnalytics:firstObject type:1 duration:v20];
       v25 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v25, OS_LOG_TYPE_FAULT))
       {
@@ -1751,7 +1751,7 @@ LABEL_17:
 
     v35 = v28;
     v36 = v35;
-    if (a5 && v35)
+    if (error && v35)
     {
       v37 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
       if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
@@ -1769,12 +1769,12 @@ LABEL_17:
       }
 
       v38 = v36;
-      *a5 = v36;
+      *error = v36;
     }
 
     else
     {
-      if (!a5 || !*(v60 + 5))
+      if (!error || !*(v60 + 5))
       {
         v33 = v56[3];
         goto LABEL_33;
@@ -1796,7 +1796,7 @@ LABEL_17:
         _os_log_error_impl(&dword_2304B3000, v39, OS_LOG_TYPE_ERROR, "%@, %@, RTOutErrorAssignConditionalReturn, error, %@", v65, 0x20u);
       }
 
-      *a5 = *(v60 + 5);
+      *error = *(v60 + 5);
     }
 
     v33 = -1;
@@ -1823,19 +1823,19 @@ void __86__SMSuggestionsMetricsManager__getSuggestionsCountPresentedForPastDate_
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (id)_getSuggestionsSelectedMetricsWithError:(id *)a3
+- (id)_getSuggestionsSelectedMetricsWithError:(id *)error
 {
   v43 = *MEMORY[0x277D85DE8];
   v5 = objc_opt_new();
-  v6 = [MEMORY[0x277CBEAA8] date];
-  v7 = [v6 dateByAddingTimeInterval:-86400.0];
-  v8 = [v6 dateByAddingTimeInterval:-604800.0];
-  v9 = [v6 dateByAddingTimeInterval:-2419200.0];
+  date = [MEMORY[0x277CBEAA8] date];
+  v7 = [date dateByAddingTimeInterval:-86400.0];
+  v8 = [date dateByAddingTimeInterval:-604800.0];
+  v9 = [date dateByAddingTimeInterval:-2419200.0];
   v36 = 0;
-  v10 = [(SMSuggestionsMetricsManager *)self _getSuggestionsCountSelectedForPastDate:v7 endDate:v6 error:&v36];
+  v10 = [(SMSuggestionsMetricsManager *)self _getSuggestionsCountSelectedForPastDate:v7 endDate:date error:&v36];
   v11 = v36;
   v12 = v11;
-  if (a3 && v11)
+  if (error && v11)
   {
     v13 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -1860,10 +1860,10 @@ void __86__SMSuggestionsMetricsManager__getSuggestionsCountPresentedForPastDate_
 
   v33 = v5;
   v35 = v11;
-  v18 = [(SMSuggestionsMetricsManager *)self _getSuggestionsCountSelectedForPastDate:v8 endDate:v6 error:&v35];
+  v18 = [(SMSuggestionsMetricsManager *)self _getSuggestionsCountSelectedForPastDate:v8 endDate:date error:&v35];
   v19 = v35;
 
-  if (a3 && v19)
+  if (error && v19)
   {
     v13 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -1887,15 +1887,15 @@ LABEL_15:
 
 LABEL_16:
     v20 = v12;
-    *a3 = v12;
+    *error = v12;
     goto LABEL_17;
   }
 
   v34 = v19;
-  v31 = [(SMSuggestionsMetricsManager *)self _getSuggestionsCountSelectedForPastDate:v9 endDate:v6 error:&v34];
+  v31 = [(SMSuggestionsMetricsManager *)self _getSuggestionsCountSelectedForPastDate:v9 endDate:date error:&v34];
   v12 = v34;
 
-  if (a3 && v12)
+  if (error && v12)
   {
     v13 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -1941,7 +1941,7 @@ LABEL_16:
   {
     v5 = v33;
     [v33 setObject:0 forKeyedSubscript:@"suggestionsSelected_monthly"];
-    if (a3)
+    if (error)
     {
       goto LABEL_16;
     }
@@ -1953,7 +1953,7 @@ LABEL_16:
     v5 = v33;
     [v33 setObject:v24 forKeyedSubscript:@"suggestionsSelected_monthly"];
 
-    if (a3)
+    if (error)
     {
       goto LABEL_16;
     }
@@ -1964,14 +1964,14 @@ LABEL_17:
   return v5;
 }
 
-- (int64_t)_getSuggestionsCountSelectedForPastDate:(id)a3 endDate:(id)a4 error:(id *)a5
+- (int64_t)_getSuggestionsCountSelectedForPastDate:(id)date endDate:(id)endDate error:(id *)error
 {
   v171[1] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v124 = v10;
-  v125 = v9;
-  if (!v9)
+  dateCopy = date;
+  endDateCopy = endDate;
+  v124 = endDateCopy;
+  v125 = dateCopy;
+  if (!dateCopy)
   {
     v31 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
@@ -1980,18 +1980,18 @@ LABEL_17:
       _os_log_error_impl(&dword_2304B3000, v31, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: startDate", buf, 2u);
     }
 
-    if (!a5)
+    if (!error)
     {
       goto LABEL_18;
     }
 
     v32 = _RTErrorInvalidParameterCreate(@"startDate");
 LABEL_17:
-    *a5 = v32;
+    *error = v32;
     goto LABEL_18;
   }
 
-  if (!v10)
+  if (!endDateCopy)
   {
     v33 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
@@ -2000,7 +2000,7 @@ LABEL_17:
       _os_log_error_impl(&dword_2304B3000, v33, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: endDate", buf, 2u);
     }
 
-    if (!a5)
+    if (!error)
     {
       goto LABEL_18;
     }
@@ -2009,7 +2009,7 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  if ([v9 compare:v10] != -1)
+  if ([dateCopy compare:endDateCopy] != -1)
   {
 LABEL_18:
     v34 = -1;
@@ -2025,7 +2025,7 @@ LABEL_18:
   v154 = __Block_byref_object_dispose__189;
   v155 = 0;
   v11 = objc_alloc(MEMORY[0x277D4AC18]);
-  v12 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v9 endDate:v124];
+  v12 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:dateCopy endDate:v124];
   v119 = *MEMORY[0x277D4AF10];
   v116 = [v11 initWithBatchSize:*MEMORY[0x277D4AF10] fetchLimit:10000 offset:*MEMORY[0x277D4AF10] includeSuppressed:0 sortByCreationDate:1 ascending:1 dateInterval:v12 filteredToSuggestionTriggers:0 filteredToSuggestionUserTypes:0 filteredToSessionTypes:0];
 
@@ -2036,7 +2036,7 @@ LABEL_18:
   v147 = __Block_byref_object_copy__189;
   v148 = __Block_byref_object_dispose__189;
   v149 = 0;
-  v14 = [(SMSuggestionsMetricsManager *)context suggestionsStore];
+  suggestionsStore = [(SMSuggestionsMetricsManager *)context suggestionsStore];
   v140[0] = MEMORY[0x277D85DD0];
   v140[1] = 3221225472;
   v140[2] = __85__SMSuggestionsMetricsManager__getSuggestionsCountSelectedForPastDate_endDate_error___block_invoke;
@@ -2045,7 +2045,7 @@ LABEL_18:
   v143 = buf;
   v15 = v13;
   v141 = v15;
-  [v14 fetchSuggestionsWithOptions:v116 handler:v140];
+  [suggestionsStore fetchSuggestionsWithOptions:v116 handler:v140];
 
   dsema = v15;
   v16 = [MEMORY[0x277CBEAA8] now];
@@ -2057,11 +2057,11 @@ LABEL_18:
     v20 = v19;
     v21 = objc_opt_new();
     v22 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_241_0];
-    v23 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v24 = [v23 filteredArrayUsingPredicate:v22];
-    v25 = [v24 firstObject];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v24 = [callStackSymbols filteredArrayUsingPredicate:v22];
+    firstObject = [v24 firstObject];
 
-    [v21 submitToCoreAnalytics:v25 type:1 duration:v20];
+    [v21 submitToCoreAnalytics:firstObject type:1 duration:v20];
     v26 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v26, OS_LOG_TYPE_FAULT))
     {
@@ -2088,7 +2088,7 @@ LABEL_18:
 
   v36 = v29;
   v37 = v36;
-  if (a5 && v36)
+  if (error && v36)
   {
     v38 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
     if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
@@ -2106,11 +2106,11 @@ LABEL_18:
     }
 
     v39 = v37;
-    *a5 = v37;
+    *error = v37;
     goto LABEL_35;
   }
 
-  if (a5 && *(v151 + 5))
+  if (error && *(v151 + 5))
   {
     v40 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
     if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
@@ -2147,7 +2147,7 @@ LABEL_18:
     v50 = *(v151 + 5);
     *(v151 + 5) = v49;
 
-    if (!a5)
+    if (!error)
     {
 LABEL_35:
       v34 = -1;
@@ -2156,7 +2156,7 @@ LABEL_35:
 
     v41 = *(v151 + 5);
 LABEL_34:
-    *a5 = v41;
+    *error = v41;
     goto LABEL_35;
   }
 
@@ -2172,7 +2172,7 @@ LABEL_34:
   v166 = __Block_byref_object_copy__189;
   v167 = __Block_byref_object_dispose__189;
   v168 = 0;
-  v54 = [(SMSuggestionsMetricsManager *)context sessionStore];
+  sessionStore = [(SMSuggestionsMetricsManager *)context sessionStore];
   v136[0] = MEMORY[0x277D85DD0];
   v136[1] = 3221225472;
   v136[2] = __85__SMSuggestionsMetricsManager__getSuggestionsCountSelectedForPastDate_endDate_error___block_invoke_136;
@@ -2181,7 +2181,7 @@ LABEL_34:
   v139 = buf;
   v55 = v53;
   v137 = v55;
-  [v54 fetchSessionConfigurationsWithOptions:v114 handler:v136];
+  [sessionStore fetchSessionConfigurationsWithOptions:v114 handler:v136];
 
   dsema = v55;
   v56 = [MEMORY[0x277CBEAA8] now];
@@ -2194,11 +2194,11 @@ LABEL_34:
     v60 = v59;
     v61 = objc_opt_new();
     v62 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_241_0];
-    v63 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v64 = [v63 filteredArrayUsingPredicate:v62];
-    v65 = [v64 firstObject];
+    callStackSymbols2 = [MEMORY[0x277CCACC8] callStackSymbols];
+    v64 = [callStackSymbols2 filteredArrayUsingPredicate:v62];
+    firstObject2 = [v64 firstObject];
 
-    [v61 submitToCoreAnalytics:v65 type:1 duration:v60];
+    [v61 submitToCoreAnalytics:firstObject2 type:1 duration:v60];
     v66 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v66, OS_LOG_TYPE_FAULT))
     {
@@ -2224,7 +2224,7 @@ LABEL_34:
   v115 = v58;
   if (v115)
   {
-    v71 = a5 != 0;
+    v71 = error != 0;
   }
 
   else
@@ -2250,11 +2250,11 @@ LABEL_34:
     }
 
     v73 = v115;
-    *a5 = v115;
+    *error = v115;
     goto LABEL_58;
   }
 
-  if (a5 && *(v151 + 5))
+  if (error && *(v151 + 5))
   {
     v74 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
     if (os_log_type_enabled(v74, OS_LOG_TYPE_ERROR))
@@ -2291,7 +2291,7 @@ LABEL_34:
     v84 = *(v151 + 5);
     *(v151 + 5) = v83;
 
-    if (!a5)
+    if (!error)
     {
 LABEL_58:
       v34 = -1;
@@ -2300,7 +2300,7 @@ LABEL_58:
 
     v75 = *(v151 + 5);
 LABEL_57:
-    *a5 = v75;
+    *error = v75;
     goto LABEL_58;
   }
 
@@ -2350,9 +2350,9 @@ LABEL_57:
 
             v95 = *(*(&v128 + 1) + 8 * i);
             v96 = objc_autoreleasePoolPush();
-            v97 = [v90 sessionStartDate];
-            v98 = [v95 creationDate];
-            [v97 timeIntervalSinceDate:v98];
+            sessionStartDate = [v90 sessionStartDate];
+            creationDate = [v95 creationDate];
+            [sessionStartDate timeIntervalSinceDate:creationDate];
             v100 = v99;
 
             if (v100 < 0.0 || v100 > 7200.0)
@@ -2444,12 +2444,12 @@ void __85__SMSuggestionsMetricsManager__getSuggestionsCountSelectedForPastDate_e
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (id)_getSelectedSessionForSuggestion:(id)a3 error:(id *)a4
+- (id)_getSelectedSessionForSuggestion:(id)suggestion error:(id *)error
 {
   v74[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = v7;
-  if (!v7)
+  suggestionCopy = suggestion;
+  v8 = suggestionCopy;
+  if (!suggestionCopy)
   {
     v37 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
@@ -2458,21 +2458,21 @@ void __85__SMSuggestionsMetricsManager__getSuggestionsCountSelectedForPastDate_e
       _os_log_error_impl(&dword_2304B3000, v37, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: suggestion", buf, 2u);
     }
 
-    if (a4)
+    if (error)
     {
       v38 = _RTErrorInvalidParameterCreate(@"suggestion");
 LABEL_16:
-      v40 = 0;
-      *a4 = v38;
+      firstObject2 = 0;
+      *error = v38;
       goto LABEL_28;
     }
 
 LABEL_17:
-    v40 = 0;
+    firstObject2 = 0;
     goto LABEL_28;
   }
 
-  if ([v7 suppressionReason] != 1)
+  if ([suggestionCopy suppressionReason] != 1)
   {
     v39 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
@@ -2481,7 +2481,7 @@ LABEL_17:
       _os_log_error_impl(&dword_2304B3000, v39, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: suggestion.suppressionReason == SMSuggestionSuppressionReasonNotSuppressed", buf, 2u);
     }
 
-    if (a4)
+    if (error)
     {
       v38 = _RTErrorInvalidParameterCreate(@"suggestion.suppressionReason == SMSuggestionSuppressionReasonNotSuppressed");
       goto LABEL_16;
@@ -2490,16 +2490,16 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  v52 = self;
+  selfCopy = self;
   aSelector = a2;
   v9 = objc_alloc(MEMORY[0x277D4AB80]);
   v10 = objc_alloc(MEMORY[0x277CCA970]);
-  v11 = [v8 creationDate];
-  v12 = [v10 initWithStartDate:v11 duration:7200.0];
+  creationDate = [v8 creationDate];
+  v12 = [v10 initWithStartDate:creationDate duration:7200.0];
   v13 = objc_alloc(MEMORY[0x277CCA970]);
-  v14 = [v8 creationDate];
+  creationDate2 = [v8 creationDate];
   v15 = *MEMORY[0x277D4AF10];
-  v16 = [v13 initWithStartDate:v14 duration:86400.0];
+  v16 = [v13 initWithStartDate:creationDate2 duration:86400.0];
   LOBYTE(v49) = 1;
   v17 = [v9 initWithBatchSize:v15 fetchLimit:1 sortBySessionStartDate:1 ascending:1 sessionTypes:&unk_2845A1748 timeInADayInterval:v12 pickOneConfigInTimeInADayInterval:v49 dateInterval:v16 startBoundingBoxLocation:0 destinationBoundingBoxLocation:0 boundingBoxRadius:0 sessionIdentifier:0];
 
@@ -2516,7 +2516,7 @@ LABEL_17:
   v60 = __Block_byref_object_copy__189;
   v61 = __Block_byref_object_dispose__189;
   v62 = 0;
-  v19 = [(SMSuggestionsMetricsManager *)v52 sessionStore];
+  sessionStore = [(SMSuggestionsMetricsManager *)selfCopy sessionStore];
   v53[0] = MEMORY[0x277D85DD0];
   v53[1] = 3221225472;
   v53[2] = __70__SMSuggestionsMetricsManager__getSelectedSessionForSuggestion_error___block_invoke;
@@ -2525,7 +2525,7 @@ LABEL_17:
   v56 = &v57;
   v20 = v18;
   v54 = v20;
-  [v19 fetchSessionConfigurationsWithOptions:v17 handler:v53];
+  [sessionStore fetchSessionConfigurationsWithOptions:v17 handler:v53];
   v51 = v17;
 
   v21 = v20;
@@ -2538,11 +2538,11 @@ LABEL_17:
     v26 = v25;
     v27 = objc_opt_new();
     v28 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_241_0];
-    v29 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v30 = [v29 filteredArrayUsingPredicate:v28];
-    v31 = [v30 firstObject];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v30 = [callStackSymbols filteredArrayUsingPredicate:v28];
+    firstObject = [v30 firstObject];
 
-    [v27 submitToCoreAnalytics:v31 type:1 duration:v26];
+    [v27 submitToCoreAnalytics:firstObject type:1 duration:v26];
     v32 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v32, OS_LOG_TYPE_FAULT))
     {
@@ -2569,7 +2569,7 @@ LABEL_17:
 
   v41 = v35;
   v42 = v41;
-  if (a4 && v41)
+  if (error && v41)
   {
     v43 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
     if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
@@ -2590,21 +2590,21 @@ LABEL_17:
     goto LABEL_26;
   }
 
-  if (a4)
+  if (error)
   {
     v44 = v58[5];
 LABEL_26:
-    *a4 = v44;
+    *error = v44;
   }
 
-  v40 = [*(v64 + 5) firstObject];
+  firstObject2 = [*(v64 + 5) firstObject];
 
   _Block_object_dispose(&v57, 8);
   _Block_object_dispose(buf, 8);
 
 LABEL_28:
 
-  return v40;
+  return firstObject2;
 }
 
 void __70__SMSuggestionsMetricsManager__getSelectedSessionForSuggestion_error___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -2624,24 +2624,24 @@ void __70__SMSuggestionsMetricsManager__getSelectedSessionForSuggestion_error___
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (id)_getSessionConfigurationsForSuggestion:(id)a3 timeWindow:(double)a4 error:(id *)a5
+- (id)_getSessionConfigurationsForSuggestion:(id)suggestion timeWindow:(double)window error:(id *)error
 {
   v73[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  if (v7)
+  suggestionCopy = suggestion;
+  if (suggestionCopy)
   {
     v8 = objc_alloc(MEMORY[0x277D4AB80]);
     v9 = objc_alloc(MEMORY[0x277CCA970]);
-    v10 = [v7 creationDate];
-    v11 = [v10 dateByAddingTimeInterval:-a4];
-    v12 = [v9 initWithStartDate:v11 duration:a4 + a4];
+    creationDate = [suggestionCopy creationDate];
+    v11 = [creationDate dateByAddingTimeInterval:-window];
+    window = [v9 initWithStartDate:v11 duration:window + window];
     v13 = objc_alloc(MEMORY[0x277CCA970]);
-    v14 = [MEMORY[0x277CBEAA8] date];
-    v15 = [v14 dateByAddingTimeInterval:-2419200.0];
+    date = [MEMORY[0x277CBEAA8] date];
+    v15 = [date dateByAddingTimeInterval:-2419200.0];
     v16 = *MEMORY[0x277D4AF00];
     v17 = [v13 initWithStartDate:v15 duration:2419200.0];
     LOBYTE(v48) = 1;
-    v18 = [v8 initWithBatchSize:v16 fetchLimit:v16 sortBySessionStartDate:1 ascending:0 sessionTypes:&unk_2845A1760 timeInADayInterval:v12 pickOneConfigInTimeInADayInterval:v48 dateInterval:v17 startBoundingBoxLocation:0 destinationBoundingBoxLocation:0 boundingBoxRadius:0 sessionIdentifier:0];
+    v18 = [v8 initWithBatchSize:v16 fetchLimit:v16 sortBySessionStartDate:1 ascending:0 sessionTypes:&unk_2845A1760 timeInADayInterval:window pickOneConfigInTimeInADayInterval:v48 dateInterval:v17 startBoundingBoxLocation:0 destinationBoundingBoxLocation:0 boundingBoxRadius:0 sessionIdentifier:0];
 
     v19 = dispatch_semaphore_create(0);
     *v62 = 0;
@@ -2656,7 +2656,7 @@ void __70__SMSuggestionsMetricsManager__getSelectedSessionForSuggestion_error___
     v59 = __Block_byref_object_copy__189;
     v60 = __Block_byref_object_dispose__189;
     v61 = 0;
-    v20 = [(SMSuggestionsMetricsManager *)self sessionStore];
+    sessionStore = [(SMSuggestionsMetricsManager *)self sessionStore];
     v52[0] = MEMORY[0x277D85DD0];
     v52[1] = 3221225472;
     v52[2] = __87__SMSuggestionsMetricsManager__getSessionConfigurationsForSuggestion_timeWindow_error___block_invoke;
@@ -2665,7 +2665,7 @@ void __70__SMSuggestionsMetricsManager__getSelectedSessionForSuggestion_error___
     v55 = v62;
     v21 = v19;
     v53 = v21;
-    [v20 fetchSessionConfigurationsWithOptions:v18 handler:v52];
+    [sessionStore fetchSessionConfigurationsWithOptions:v18 handler:v52];
     v49 = v18;
 
     v22 = v21;
@@ -2678,11 +2678,11 @@ void __70__SMSuggestionsMetricsManager__getSelectedSessionForSuggestion_error___
       v27 = v26;
       v28 = objc_opt_new();
       v29 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_241_0];
-      v30 = [MEMORY[0x277CCACC8] callStackSymbols];
-      v31 = [v30 filteredArrayUsingPredicate:v29];
-      v32 = [v31 firstObject];
+      callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+      v31 = [callStackSymbols filteredArrayUsingPredicate:v29];
+      firstObject = [v31 firstObject];
 
-      [v28 submitToCoreAnalytics:v32 type:1 duration:v27];
+      [v28 submitToCoreAnalytics:firstObject type:1 duration:v27];
       v33 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v33, OS_LOG_TYPE_FAULT))
       {
@@ -2709,7 +2709,7 @@ void __70__SMSuggestionsMetricsManager__getSelectedSessionForSuggestion_error___
 
     v40 = v36;
     v41 = v40;
-    if (a5 && v40)
+    if (error && v40)
     {
       v42 = _rt_log_facility_get_os_log(RTLogFacilityWorkout);
       if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
@@ -2731,7 +2731,7 @@ void __70__SMSuggestionsMetricsManager__getSelectedSessionForSuggestion_error___
 
     else
     {
-      if (!a5)
+      if (!error)
       {
 LABEL_21:
         v39 = v57[5];
@@ -2745,7 +2745,7 @@ LABEL_21:
       v43 = *(v63 + 5);
     }
 
-    *a5 = v43;
+    *error = v43;
     goto LABEL_21;
   }
 
@@ -2756,9 +2756,9 @@ LABEL_21:
     _os_log_error_impl(&dword_2304B3000, v38, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: suggestion", v62, 2u);
   }
 
-  if (a5)
+  if (error)
   {
-    *a5 = _RTErrorInvalidParameterCreate(@"suggestion");
+    *error = _RTErrorInvalidParameterCreate(@"suggestion");
   }
 
   v39 = MEMORY[0x277CBEBF8];
@@ -2784,12 +2784,12 @@ void __87__SMSuggestionsMetricsManager__getSessionConfigurationsForSuggestion_ti
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (id)_getNPLOIsWithOnlyHighConfidence:(BOOL)a3 location:(id)a4 date:(id)a5 error:(id *)a6
+- (id)_getNPLOIsWithOnlyHighConfidence:(BOOL)confidence location:(id)location date:(id)date error:(id *)error
 {
-  v55 = a3;
+  confidenceCopy = confidence;
   v85[1] = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  v57 = a5;
+  locationCopy = location;
+  dateCopy = date;
   v68 = 0;
   v69 = &v68;
   v70 = 0x3032000000;
@@ -2802,8 +2802,8 @@ void __87__SMSuggestionsMetricsManager__getSessionConfigurationsForSuggestion_ti
   v64 = 0x3032000000;
   v65 = __Block_byref_object_copy__189;
   v66 = __Block_byref_object_dispose__189;
-  v67 = [MEMORY[0x277CBEA60] array];
-  v11 = [(SMSuggestionsMetricsManager *)self deviceLocationPredictor];
+  array = [MEMORY[0x277CBEA60] array];
+  deviceLocationPredictor = [(SMSuggestionsMetricsManager *)self deviceLocationPredictor];
   v58[0] = MEMORY[0x277D85DD0];
   v58[1] = 3221225472;
   v58[2] = __84__SMSuggestionsMetricsManager__getNPLOIsWithOnlyHighConfidence_location_date_error___block_invoke;
@@ -2812,8 +2812,8 @@ void __87__SMSuggestionsMetricsManager__getSessionConfigurationsForSuggestion_ti
   v61 = &v68;
   v12 = v10;
   v59 = v12;
-  [v11 fetchNextPredictedLocationsOfInterestFromLocation:v9 startDate:v57 timeInterval:v58 handler:3600.0];
-  v56 = v9;
+  [deviceLocationPredictor fetchNextPredictedLocationsOfInterestFromLocation:locationCopy startDate:dateCopy timeInterval:v58 handler:3600.0];
+  v56 = locationCopy;
 
   v13 = v12;
   v14 = [MEMORY[0x277CBEAA8] now];
@@ -2825,11 +2825,11 @@ void __87__SMSuggestionsMetricsManager__getSessionConfigurationsForSuggestion_ti
     v18 = v17;
     v19 = objc_opt_new();
     v20 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_241_0];
-    v21 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v22 = [v21 filteredArrayUsingPredicate:v20];
-    v23 = [v22 firstObject];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v22 = [callStackSymbols filteredArrayUsingPredicate:v20];
+    firstObject = [v22 firstObject];
 
-    [v19 submitToCoreAnalytics:v23 type:1 duration:v18];
+    [v19 submitToCoreAnalytics:firstObject type:1 duration:v18];
     v24 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v24, OS_LOG_TYPE_FAULT))
     {
@@ -2856,7 +2856,7 @@ void __87__SMSuggestionsMetricsManager__getSessionConfigurationsForSuggestion_ti
 
   v29 = v27;
   v30 = v29;
-  if (a6)
+  if (error)
   {
     if (v69[5])
     {
@@ -2878,8 +2878,8 @@ void __87__SMSuggestionsMetricsManager__getSessionConfigurationsForSuggestion_ti
 
       v32 = v69[5];
 LABEL_16:
-      *a6 = v32;
-      v34 = [MEMORY[0x277CBEA60] array];
+      *error = v32;
+      array2 = [MEMORY[0x277CBEA60] array];
       goto LABEL_30;
     }
 
@@ -2923,7 +2923,7 @@ LABEL_16:
       *buf = 138413571;
       *&buf[4] = v40;
       v75 = 2112;
-      if (v55)
+      if (confidenceCopy)
       {
         v44 = @"YES";
       }
@@ -2941,34 +2941,34 @@ LABEL_16:
     }
   }
 
-  if (v55)
+  if (confidenceCopy)
   {
     v45 = v37;
-    if (a6)
+    if (error)
     {
-      *a6 = v69[5];
+      *error = v69[5];
       v45 = v37;
     }
   }
 
   else
   {
-    if (a6)
+    if (error)
     {
-      *a6 = v69[5];
+      *error = v69[5];
     }
 
     v45 = v63[5];
   }
 
-  v34 = v45;
+  array2 = v45;
 
 LABEL_30:
   _Block_object_dispose(&v62, 8);
 
   _Block_object_dispose(&v68, 8);
 
-  return v34;
+  return array2;
 }
 
 void __84__SMSuggestionsMetricsManager__getNPLOIsWithOnlyHighConfidence_location_date_error___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -2988,21 +2988,21 @@ void __84__SMSuggestionsMetricsManager__getNPLOIsWithOnlyHighConfidence_location
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (id)_computeWorkoutAlwaysPromptMetricsWithError:(id *)a3
+- (id)_computeWorkoutAlwaysPromptMetricsWithError:(id *)error
 {
-  if (a3)
+  if (error)
   {
-    *a3 = 0;
+    *error = 0;
   }
 
   return MEMORY[0x277CBEBF8];
 }
 
-- (BOOL)_submitMetrics:(id)a3 event:(unint64_t)a4 error:(id *)a5
+- (BOOL)_submitMetrics:(id)metrics event:(unint64_t)event error:(id *)error
 {
   v70 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  if (v8)
+  metricsCopy = metrics;
+  if (metricsCopy)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -3017,24 +3017,24 @@ void __84__SMSuggestionsMetricsManager__getNPLOIsWithOnlyHighConfidence_location
         v66 = 2112;
         v67 = v12;
         v68 = 2048;
-        v69 = [v8 count];
+        v69 = [metricsCopy count];
         _os_log_impl(&dword_2304B3000, v9, OS_LOG_TYPE_INFO, "%@, %@, submitting metrics with count, %lu", buf, 0x20u);
       }
     }
 
-    switch(a4)
+    switch(event)
     {
       case 3uLL:
         v49 = 0u;
         v50 = 0u;
         v47 = 0u;
         v48 = 0u;
-        obj = v8;
+        obj = metricsCopy;
         v13 = [obj countByEnumeratingWithState:&v47 objects:v61 count:16];
         if (v13)
         {
-          v44 = a5;
-          v45 = v8;
+          errorCopy3 = error;
+          v45 = metricsCopy;
           v30 = *v48;
           do
           {
@@ -3069,12 +3069,12 @@ void __84__SMSuggestionsMetricsManager__getNPLOIsWithOnlyHighConfidence_location
         v54 = 0u;
         v51 = 0u;
         v52 = 0u;
-        obj = v8;
+        obj = metricsCopy;
         v13 = [obj countByEnumeratingWithState:&v51 objects:v62 count:16];
         if (v13)
         {
-          v44 = a5;
-          v45 = v8;
+          errorCopy3 = error;
+          v45 = metricsCopy;
           v23 = *v52;
           do
           {
@@ -3109,12 +3109,12 @@ void __84__SMSuggestionsMetricsManager__getNPLOIsWithOnlyHighConfidence_location
         v58 = 0u;
         v55 = 0u;
         v56 = 0u;
-        obj = v8;
+        obj = metricsCopy;
         v13 = [obj countByEnumeratingWithState:&v55 objects:v63 count:16];
         if (v13)
         {
-          v44 = a5;
-          v45 = v8;
+          errorCopy3 = error;
+          v45 = metricsCopy;
           v14 = *v56;
           do
           {
@@ -3141,8 +3141,8 @@ void __84__SMSuggestionsMetricsManager__getNPLOIsWithOnlyHighConfidence_location
 
           while (v13);
 LABEL_36:
-          a5 = v44;
-          v8 = v45;
+          error = errorCopy3;
+          metricsCopy = v45;
         }
 
         break;
@@ -3151,7 +3151,7 @@ LABEL_36:
         v38 = *MEMORY[0x277D4ACD0];
         v59 = *MEMORY[0x277CCA450];
         v39 = MEMORY[0x277CCACA8];
-        obj = [objc_opt_class() stringFromSuggestionsMetricsEvent:a4];
+        obj = [objc_opt_class() stringFromSuggestionsMetricsEvent:event];
         v40 = [v39 stringWithFormat:@"requires a valid suggestions metric event. Passed, %@", obj];
         v60 = v40;
         v41 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v60 forKeys:&v59 count:1];
@@ -3160,10 +3160,10 @@ LABEL_36:
         break;
     }
 
-    if (a5)
+    if (error)
     {
       v42 = v13;
-      *a5 = v13;
+      *error = v13;
     }
 
     v22 = v13 == 0;
@@ -3178,10 +3178,10 @@ LABEL_36:
     _os_log_error_impl(&dword_2304B3000, v21, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: metrics", buf, 2u);
   }
 
-  if (a5)
+  if (error)
   {
     _RTErrorInvalidParameterCreate(@"metrics");
-    *a5 = v22 = 0;
+    *error = v22 = 0;
   }
 
   else
@@ -3194,48 +3194,48 @@ LABEL_41:
   return v22;
 }
 
-+ (id)stringFromSuggestionsMetricsEvent:(unint64_t)a3
++ (id)stringFromSuggestionsMetricsEvent:(unint64_t)event
 {
-  if (a3 > 3)
+  if (event > 3)
   {
     return @"SuggestionsMetricsEventDetails";
   }
 
   else
   {
-    return off_2788D2A10[a3];
+    return off_2788D2A10[event];
   }
 }
 
-- (void)sendSuggestionsConversionEventForSuggestion:(id)a3 selected:(BOOL)a4 sessionStarted:(BOOL)a5
+- (void)sendSuggestionsConversionEventForSuggestion:(id)suggestion selected:(BOOL)selected sessionStarted:(BOOL)started
 {
   v19[6] = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (suggestion)
   {
-    v5 = a5;
-    v6 = a4;
+    startedCopy = started;
+    selectedCopy = selected;
     v18[0] = *MEMORY[0x277D4AE68];
     v7 = MEMORY[0x277CCABB0];
-    v8 = a3;
-    v9 = [v7 numberWithUnsignedInteger:{objc_msgSend(v8, "suggestionTrigger")}];
+    suggestionCopy = suggestion;
+    v9 = [v7 numberWithUnsignedInteger:{objc_msgSend(suggestionCopy, "suggestionTrigger")}];
     v19[0] = v9;
     v18[1] = *MEMORY[0x277D4AE70];
-    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v8, "suggestionUserType")}];
+    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(suggestionCopy, "suggestionUserType")}];
     v19[1] = v10;
     v18[2] = *MEMORY[0x277D4AE60];
-    v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v8, "suppressionReason")}];
+    v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(suggestionCopy, "suppressionReason")}];
     v19[2] = v11;
     v18[3] = *MEMORY[0x277D4AE48];
     v12 = MEMORY[0x277CCABB0];
-    v13 = [v8 isSuppressed];
+    isSuppressed = [suggestionCopy isSuppressed];
 
-    v14 = [v12 numberWithInt:v13 ^ 1u];
+    v14 = [v12 numberWithInt:isSuppressed ^ 1u];
     v19[3] = v14;
     v18[4] = *MEMORY[0x277D4AE50];
-    v15 = [MEMORY[0x277CCABB0] numberWithBool:v6];
+    v15 = [MEMORY[0x277CCABB0] numberWithBool:selectedCopy];
     v19[4] = v15;
     v18[5] = *MEMORY[0x277D4AE58];
-    v16 = [MEMORY[0x277CCABB0] numberWithBool:v5];
+    v16 = [MEMORY[0x277CCABB0] numberWithBool:startedCopy];
     v19[5] = v16;
     v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:v18 count:6];
 

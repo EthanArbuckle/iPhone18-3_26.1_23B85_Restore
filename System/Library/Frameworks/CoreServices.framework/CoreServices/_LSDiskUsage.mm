@@ -1,21 +1,21 @@
 @interface _LSDiskUsage
 + (id)ODRConnection;
-+ (id)ODRUsageForBundleIdentifier:(id)a3 error:(id *)a4;
++ (id)ODRUsageForBundleIdentifier:(id)identifier error:(id *)error;
 + (id)_serverQueue;
 + (id)mobileInstallationQueue;
 + (id)propertyQueue;
-+ (id)usageFromMobileInstallationForBundleIdentifier:(id)a3 error:(id *)a4;
-- (BOOL)_fetchWithXPCConnection:(id)a3 error:(id *)a4;
-- (BOOL)fetchClientSideWithError:(id *)a3;
-- (BOOL)fetchServerSideWithConnection:(id)a3 error:(id *)a4;
++ (id)usageFromMobileInstallationForBundleIdentifier:(id)identifier error:(id *)error;
+- (BOOL)_fetchWithXPCConnection:(id)connection error:(id *)error;
+- (BOOL)fetchClientSideWithError:(id *)error;
+- (BOOL)fetchServerSideWithConnection:(id)connection error:(id *)error;
 - (NSNumber)dynamicUsage;
 - (NSNumber)onDemandResourcesUsage;
 - (NSNumber)sharedUsage;
 - (NSNumber)staticUsage;
-- (_LSDiskUsage)initWithCoder:(id)a3;
-- (id)_initWithBundleIdentifier:(id)a3 alreadyKnownUsage:(id)a4 validationToken:(id)a5;
+- (_LSDiskUsage)initWithCoder:(id)coder;
+- (id)_initWithBundleIdentifier:(id)identifier alreadyKnownUsage:(id)usage validationToken:(id)token;
 - (id)debugDescription;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)removeAllCachedUsageValues;
 @end
 
@@ -41,14 +41,14 @@
   v10 = __Block_byref_object_copy__19;
   v11 = __Block_byref_object_dispose__19;
   v12 = 0;
-  v3 = [objc_opt_class() propertyQueue];
+  propertyQueue = [objc_opt_class() propertyQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __27___LSDiskUsage_staticUsage__block_invoke;
   v6[3] = &unk_1E6A1AE60;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(propertyQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -66,14 +66,14 @@
   v12 = 0;
   if ([(_LSDiskUsage *)self _fetchWithXPCConnection:0 error:0])
   {
-    v3 = [objc_opt_class() propertyQueue];
+    propertyQueue = [objc_opt_class() propertyQueue];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __28___LSDiskUsage_dynamicUsage__block_invoke;
     v6[3] = &unk_1E6A1AE60;
     v6[4] = self;
     v6[5] = &v7;
-    dispatch_sync(v3, v6);
+    dispatch_sync(propertyQueue, v6);
   }
 
   v4 = v8[5];
@@ -92,14 +92,14 @@
   v12 = 0;
   if ([(_LSDiskUsage *)self _fetchWithXPCConnection:0 error:0])
   {
-    v3 = [objc_opt_class() propertyQueue];
+    propertyQueue = [objc_opt_class() propertyQueue];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __38___LSDiskUsage_onDemandResourcesUsage__block_invoke;
     v6[3] = &unk_1E6A1AE60;
     v6[4] = self;
     v6[5] = &v7;
-    dispatch_sync(v3, v6);
+    dispatch_sync(propertyQueue, v6);
   }
 
   v4 = v8[5];
@@ -118,14 +118,14 @@
   v12 = 0;
   if ([(_LSDiskUsage *)self _fetchWithXPCConnection:0 error:0])
   {
-    v3 = [objc_opt_class() propertyQueue];
+    propertyQueue = [objc_opt_class() propertyQueue];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __27___LSDiskUsage_sharedUsage__block_invoke;
     v6[3] = &unk_1E6A1AE60;
     v6[4] = self;
     v6[5] = &v7;
-    dispatch_sync(v3, v6);
+    dispatch_sync(propertyQueue, v6);
   }
 
   v4 = v8[5];
@@ -136,13 +136,13 @@
 
 - (void)removeAllCachedUsageValues
 {
-  v3 = [objc_opt_class() propertyQueue];
+  propertyQueue = [objc_opt_class() propertyQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __42___LSDiskUsage_removeAllCachedUsageValues__block_invoke;
   block[3] = &unk_1E6A1A830;
   block[4] = self;
-  dispatch_barrier_async(v3, block);
+  dispatch_barrier_async(propertyQueue, block);
 }
 
 - (id)debugDescription
@@ -153,14 +153,14 @@
   v10 = __Block_byref_object_copy__19;
   v11 = __Block_byref_object_dispose__19;
   v12 = 0;
-  v3 = [objc_opt_class() propertyQueue];
+  propertyQueue = [objc_opt_class() propertyQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __32___LSDiskUsage_debugDescription__block_invoke;
   v6[3] = &unk_1E6A1AE60;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(propertyQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -168,30 +168,30 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeObject:self->_bundleIdentifier forKey:@"bundleIdentifier"];
-  v5 = [objc_opt_class() propertyQueue];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_bundleIdentifier forKey:@"bundleIdentifier"];
+  propertyQueue = [objc_opt_class() propertyQueue];
   v7 = MEMORY[0x1E69E9820];
   v8 = 3221225472;
   v9 = __32___LSDiskUsage_encodeWithCoder___block_invoke;
   v10 = &unk_1E6A1ABE8;
-  v6 = v4;
+  v6 = coderCopy;
   v11 = v6;
-  v12 = self;
-  dispatch_sync(v5, &v7);
+  selfCopy = self;
+  dispatch_sync(propertyQueue, &v7);
 
   [v6 encodeObject:self->_validationToken forKey:{@"validationToken", v7, v8, v9, v10}];
 }
 
-- (_LSDiskUsage)initWithCoder:(id)a3
+- (_LSDiskUsage)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 ls_decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
+  coderCopy = coder;
+  v5 = [coderCopy ls_decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
   v6 = objc_opt_class();
-  v7 = [v4 ls_decodeDictionaryWithKeysOfClass:v6 valuesOfClass:objc_opt_class() forKey:@"knownUsage"];
-  v8 = [v4 ls_decodeObjectOfClass:objc_opt_class() forKey:@"validationToken"];
+  v7 = [coderCopy ls_decodeDictionaryWithKeysOfClass:v6 valuesOfClass:objc_opt_class() forKey:@"knownUsage"];
+  v8 = [coderCopy ls_decodeObjectOfClass:objc_opt_class() forKey:@"validationToken"];
   v9 = [(_LSDiskUsage *)self _initWithBundleIdentifier:v5 alreadyKnownUsage:v7 validationToken:v8];
 
   return v9;
@@ -210,23 +210,23 @@
   return v2;
 }
 
-- (id)_initWithBundleIdentifier:(id)a3 alreadyKnownUsage:(id)a4 validationToken:(id)a5
+- (id)_initWithBundleIdentifier:(id)identifier alreadyKnownUsage:(id)usage validationToken:(id)token
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  usageCopy = usage;
+  tokenCopy = token;
   v17.receiver = self;
   v17.super_class = _LSDiskUsage;
   v11 = [(_LSDiskUsage *)&v17 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [identifierCopy copy];
     bundleIdentifier = v11->_bundleIdentifier;
     v11->_bundleIdentifier = v12;
 
-    if (v9 && [v9 count])
+    if (usageCopy && [usageCopy count])
     {
-      v14 = [v9 mutableCopy];
+      v14 = [usageCopy mutableCopy];
     }
 
     else
@@ -237,16 +237,16 @@
     usage = v11->_usage;
     v11->_usage = v14;
 
-    objc_storeStrong(&v11->_validationToken, a5);
+    objc_storeStrong(&v11->_validationToken, token);
   }
 
   return v11;
 }
 
-- (BOOL)_fetchWithXPCConnection:(id)a3 error:(id *)a4
+- (BOOL)_fetchWithXPCConnection:(id)connection error:(id *)error
 {
   v25[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  connectionCopy = connection;
   v7 = self->_bundleIdentifier;
   if (!v7)
   {
@@ -256,7 +256,7 @@
     v12 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -50, v11, "[_LSDiskUsage(Internal) _fetchWithXPCConnection:error:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Workspace/LSDiskUsage.mm", 249);
 
     v13 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_13;
     }
@@ -268,14 +268,14 @@
   v21 = &v20;
   v22 = 0x2020000000;
   v23 = 0;
-  v8 = [objc_opt_class() propertyQueue];
+  propertyQueue = [objc_opt_class() propertyQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __56___LSDiskUsage_Internal___fetchWithXPCConnection_error___block_invoke;
   block[3] = &unk_1E6A1AE60;
   block[4] = self;
   block[5] = &v20;
-  dispatch_sync(v8, block);
+  dispatch_sync(propertyQueue, block);
 
   if (*(v21 + 24) == 1)
   {
@@ -283,7 +283,7 @@
     {
       v18 = 0;
       v9 = &v18;
-      v10 = [(_LSDiskUsage *)self fetchServerSideWithConnection:v6 error:&v18];
+      v10 = [(_LSDiskUsage *)self fetchServerSideWithConnection:connectionCopy error:&v18];
     }
 
     else
@@ -304,13 +304,13 @@
   }
 
   _Block_object_dispose(&v20, 8);
-  if (a4)
+  if (error)
   {
 LABEL_11:
     if (!v13)
     {
       v14 = v12;
-      *a4 = v12;
+      *error = v12;
     }
   }
 
@@ -333,32 +333,32 @@ LABEL_13:
   return v2;
 }
 
-+ (id)usageFromMobileInstallationForBundleIdentifier:(id)a3 error:(id *)a4
++ (id)usageFromMobileInstallationForBundleIdentifier:(id)identifier error:(id *)error
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (v6)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v7 = [a1 mobileInstallationQueue];
+    mobileInstallationQueue = [self mobileInstallationQueue];
     v16 = MEMORY[0x1E69E9820];
     v17 = 3221225472;
     v18 = __78___LSDiskUsage_Private__usageFromMobileInstallationForBundleIdentifier_error___block_invoke;
     v19 = &unk_1E6A1BD68;
-    v20 = v6;
-    v8 = _LSDispatchWithTimeout(v7, &v16, 5.0);
-    v9 = [v8 result];
-    v10 = v9 == 0;
+    v20 = identifierCopy;
+    v8 = _LSDispatchWithTimeout(mobileInstallationQueue, &v16, 5.0);
+    result = [v8 result];
+    v10 = result == 0;
 
     if (v10)
     {
-      v12 = [v8 error];
-      v11 = 0;
+      error = [v8 error];
+      result2 = 0;
     }
 
     else
     {
-      v11 = [v8 result];
-      v12 = 0;
+      result2 = [v8 result];
+      error = 0;
     }
   }
 
@@ -366,20 +366,20 @@ LABEL_13:
   {
     v21 = *MEMORY[0x1E696A278];
     v22[0] = @"invalid bundleIdentifier";
-    v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v22 forKeys:&v21 count:1];
-    v12 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -50, v7, "+[_LSDiskUsage(Private) usageFromMobileInstallationForBundleIdentifier:error:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Workspace/LSDiskUsage.mm", 331);
-    v11 = 0;
+    mobileInstallationQueue = [MEMORY[0x1E695DF20] dictionaryWithObjects:v22 forKeys:&v21 count:1];
+    error = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -50, mobileInstallationQueue, "+[_LSDiskUsage(Private) usageFromMobileInstallationForBundleIdentifier:error:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Workspace/LSDiskUsage.mm", 331);
+    result2 = 0;
   }
 
-  if (a4 && !v11)
+  if (error && !result2)
   {
-    v13 = v12;
-    *a4 = v12;
+    v13 = error;
+    *error = error;
   }
 
   v14 = *MEMORY[0x1E69E9840];
 
-  return v11;
+  return result2;
 }
 
 + (id)ODRConnection
@@ -394,17 +394,17 @@ LABEL_13:
   return v3;
 }
 
-+ (id)ODRUsageForBundleIdentifier:(id)a3 error:(id *)a4
++ (id)ODRUsageForBundleIdentifier:(id)identifier error:(id *)error
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = v6;
-  if (!v6)
+  identifierCopy = identifier;
+  v7 = identifierCopy;
+  if (!identifierCopy)
   {
     v23 = *MEMORY[0x1E696A278];
     v24[0] = @"invalid bundleIdentifier";
     v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v24 forKeys:&v23 count:1];
-    v12 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -50, v13, "+[_LSDiskUsage(Private) ODRUsageForBundleIdentifier:error:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Workspace/LSDiskUsage.mm", 400);
+    error = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -50, v13, "+[_LSDiskUsage(Private) ODRUsageForBundleIdentifier:error:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Workspace/LSDiskUsage.mm", 400);
 LABEL_7:
 
     goto LABEL_8;
@@ -414,70 +414,70 @@ LABEL_7:
   v20[1] = 3221225472;
   v20[2] = __59___LSDiskUsage_Private__ODRUsageForBundleIdentifier_error___block_invoke;
   v20[3] = &unk_1E6A1BDB8;
-  v22 = a1;
-  v21 = v6;
+  selfCopy = self;
+  v21 = identifierCopy;
   v8 = _LSDispatchWithTimeout(0, v20, 5.0);
-  v9 = [v8 result];
-  v10 = v9 == 0;
+  result = [v8 result];
+  v10 = result == 0;
 
   if (v10)
   {
-    v12 = [v8 error];
+    error = [v8 error];
 
     v13 = v21;
     goto LABEL_7;
   }
 
-  v11 = [v8 result];
+  result2 = [v8 result];
 
-  v12 = 0;
-  if (v11)
+  error = 0;
+  if (result2)
   {
     goto LABEL_16;
   }
 
 LABEL_8:
-  v14 = [v12 domain];
-  if ([v14 isEqual:*MEMORY[0x1E696A798]])
+  domain = [error domain];
+  if ([domain isEqual:*MEMORY[0x1E696A798]])
   {
-    v15 = [v12 code] == 60;
+    v15 = [error code] == 60;
 
     if (!v15)
     {
       goto LABEL_13;
     }
 
-    v14 = _LSDefaultLog();
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+    domain = _LSDefaultLog();
+    if (os_log_type_enabled(domain, OS_LOG_TYPE_DEFAULT))
     {
       *v19 = 0;
-      _os_log_impl(&dword_18162D000, v14, OS_LOG_TYPE_DEFAULT, "timeout waiting for ODR daemon bytesUsedForApplicationWithBundleID to return", v19, 2u);
+      _os_log_impl(&dword_18162D000, domain, OS_LOG_TYPE_DEFAULT, "timeout waiting for ODR daemon bytesUsedForApplicationWithBundleID to return", v19, 2u);
     }
   }
 
 LABEL_13:
-  if (a4)
+  if (error)
   {
-    v16 = v12;
-    v11 = 0;
-    *a4 = v12;
+    v16 = error;
+    result2 = 0;
+    *error = error;
   }
 
   else
   {
-    v11 = 0;
+    result2 = 0;
   }
 
 LABEL_16:
 
   v17 = *MEMORY[0x1E69E9840];
 
-  return v11;
+  return result2;
 }
 
-- (BOOL)fetchServerSideWithConnection:(id)a3 error:(id *)a4
+- (BOOL)fetchServerSideWithConnection:(id)connection error:(id *)error
 {
-  v6 = a3;
+  connectionCopy = connection;
   _LSAssertRunningInServer("[_LSDiskUsage(Private) fetchServerSideWithConnection:error:]");
   if ([__LSDefaultsGetSharedInstance() isInSyncBubble])
   {
@@ -494,7 +494,7 @@ LABEL_16:
     goto LABEL_11;
   }
 
-  if (![_LSBundleIDValidationToken isToken:self->_bundleIdentifier correctForBundleIdentifier:v6 connection:?])
+  if (![_LSBundleIDValidationToken isToken:self->_bundleIdentifier correctForBundleIdentifier:connectionCopy connection:?])
   {
     v8 = 428;
     v10 = -54;
@@ -510,7 +510,7 @@ LABEL_11:
     v15 = 0;
 LABEL_12:
     v21 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_15;
     }
@@ -537,7 +537,7 @@ LABEL_12:
     {
       [v11 setObject:v18 forKeyedSubscript:@"ODR"];
 
-      v20 = [objc_opt_class() propertyQueue];
+      propertyQueue = [objc_opt_class() propertyQueue];
       v24[0] = MEMORY[0x1E69E9820];
       v24[1] = 3221225472;
       v24[2] = __61___LSDiskUsage_Private__fetchServerSideWithConnection_error___block_invoke;
@@ -545,7 +545,7 @@ LABEL_12:
       v24[4] = self;
       v25 = v11;
       v11 = v11;
-      dispatch_barrier_async(v20, v24);
+      dispatch_barrier_async(propertyQueue, v24);
 
       v21 = 1;
     }
@@ -563,13 +563,13 @@ LABEL_12:
     v21 = 0;
   }
 
-  if (a4)
+  if (error)
   {
 LABEL_13:
     if (!v21)
     {
       v22 = v15;
-      *a4 = v15;
+      *error = v15;
     }
   }
 
@@ -578,7 +578,7 @@ LABEL_15:
   return v21;
 }
 
-- (BOOL)fetchClientSideWithError:(id *)a3
+- (BOOL)fetchClientSideWithError:(id *)error
 {
   v16 = 0;
   v17 = &v16;
@@ -606,9 +606,9 @@ LABEL_15:
   v8[6] = &v10;
   [v5 getDiskUsage:self completionHandler:v8];
   v6 = *(v17 + 24);
-  if (a3 && (v17[3] & 1) == 0)
+  if (error && (v17[3] & 1) == 0)
   {
-    *a3 = v11[5];
+    *error = v11[5];
     v6 = *(v17 + 24);
   }
 

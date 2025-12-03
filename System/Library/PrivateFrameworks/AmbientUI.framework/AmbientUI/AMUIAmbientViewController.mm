@@ -1,19 +1,19 @@
 @interface AMUIAmbientViewController
-- (AMUIAmbientViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (AMUIAmbientViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (AMUIAmbientViewControllerDelegate)delegate;
 - (AMUIPosterSelectionCoordinating)_posterSelectionCoordinator;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (BOOL)handleDismiss;
-- (BOOL)posterSwitcherViewControllerIsAuthenticated:(id)a3;
-- (BOOL)viewController:(id)a3 isApplicationVisibleWithBundleIdentifier:(id)a4;
+- (BOOL)posterSwitcherViewControllerIsAuthenticated:(id)authenticated;
+- (BOOL)viewController:(id)controller isApplicationVisibleWithBundleIdentifier:(id)identifier;
 - (PRSPosterConfiguration)activeConfiguration;
 - (id)_defaultPosterSelectionCoordinator;
-- (id)createUnlockRequestForViewController:(id)a3;
-- (id)defaultWidgetDescriptorStacksForViewController:(id)a3;
-- (id)posterSelectionCoordinatorRequestsConnectedChargerId:(id)a3;
-- (id)posterSwitcherViewController:(id)a3 requestsLastSelectedConfigurationUUIDForProviderBundleIdentifier:(id)a4;
-- (id)posterSwitcherViewControllerAuthenticationHandler:(id)a3;
-- (id)widgetHostManagerForViewController:(id)a3;
+- (id)createUnlockRequestForViewController:(id)controller;
+- (id)defaultWidgetDescriptorStacksForViewController:(id)controller;
+- (id)posterSelectionCoordinatorRequestsConnectedChargerId:(id)id;
+- (id)posterSwitcherViewController:(id)controller requestsLastSelectedConfigurationUUIDForProviderBundleIdentifier:(id)identifier;
+- (id)posterSwitcherViewControllerAuthenticationHandler:(id)handler;
+- (id)widgetHostManagerForViewController:(id)controller;
 - (void)_animateAllOverlayUIAppearance;
 - (void)_animateAllOverlayUIDismissal;
 - (void)_animateBatteryViewAppearanceIfNecessary;
@@ -22,28 +22,28 @@
 - (void)_animateNotificationIndicatorViewRemoval;
 - (void)_configureNotificationIndicatorViewIfNecessary;
 - (void)_dismissPosterEditingSwitcher;
-- (void)_handleAuthenticationChanged:(BOOL)a3;
-- (void)_handlePosterEditingSwitcherGesture:(id)a3;
-- (void)_refreshPosterConfigurationsAnimated:(BOOL)a3;
-- (void)_setNotificationIndicatorHidden:(BOOL)a3;
-- (void)_setPosterSelectionCoordinator:(id)a3;
+- (void)_handleAuthenticationChanged:(BOOL)changed;
+- (void)_handlePosterEditingSwitcherGesture:(id)gesture;
+- (void)_refreshPosterConfigurationsAnimated:(BOOL)animated;
+- (void)_setNotificationIndicatorHidden:(BOOL)hidden;
+- (void)_setPosterSelectionCoordinator:(id)coordinator;
 - (void)_setupPosterEditingSwitcherGestureRecognizer;
 - (void)_updateBatteryViewLayout;
 - (void)_updateNotificationIndicatorViewLayout;
 - (void)_willBeginConfiguration;
 - (void)_willEndConfiguration;
 - (void)dealloc;
-- (void)posterSelectionCoordinator:(id)a3 didUpdateLastSelectedPosterConfiguration:(id)a4;
-- (void)requestUnlockForViewController:(id)a3 withRequest:(id)a4 completion:(id)a5;
-- (void)setAuthenticated:(BOOL)a3;
-- (void)setDateProvider:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setNotificationCount:(unint64_t)a3;
-- (void)viewController:(id)a3 didUpdateActiveConfigurationMetadata:(id)a4;
-- (void)viewControllerWillBeginConfiguration:(id)a3;
-- (void)viewControllerWillBeginShowingTemporaryOverlay:(id)a3;
-- (void)viewControllerWillEndConfiguration:(id)a3;
-- (void)viewControllerWillEndShowingTemporaryOverlay:(id)a3;
+- (void)posterSelectionCoordinator:(id)coordinator didUpdateLastSelectedPosterConfiguration:(id)configuration;
+- (void)requestUnlockForViewController:(id)controller withRequest:(id)request completion:(id)completion;
+- (void)setAuthenticated:(BOOL)authenticated;
+- (void)setDateProvider:(id)provider;
+- (void)setDelegate:(id)delegate;
+- (void)setNotificationCount:(unint64_t)count;
+- (void)viewController:(id)controller didUpdateActiveConfigurationMetadata:(id)metadata;
+- (void)viewControllerWillBeginConfiguration:(id)configuration;
+- (void)viewControllerWillBeginShowingTemporaryOverlay:(id)overlay;
+- (void)viewControllerWillEndConfiguration:(id)configuration;
+- (void)viewControllerWillEndShowingTemporaryOverlay:(id)overlay;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
@@ -51,17 +51,17 @@
 
 @implementation AMUIAmbientViewController
 
-- (AMUIAmbientViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (AMUIAmbientViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v14.receiver = self;
   v14.super_class = AMUIAmbientViewController;
-  v4 = [(AMUIAmbientViewController *)&v14 initWithNibName:a3 bundle:a4];
+  v4 = [(AMUIAmbientViewController *)&v14 initWithNibName:name bundle:bundle];
   v5 = v4;
   if (v4)
   {
-    v6 = [(AMUIAmbientViewController *)v4 _defaultPosterSelectionCoordinator];
-    [v6 setDelegate:v5];
-    objc_storeWeak(&v5->_posterSelectionCoordinator, v6);
+    _defaultPosterSelectionCoordinator = [(AMUIAmbientViewController *)v4 _defaultPosterSelectionCoordinator];
+    [_defaultPosterSelectionCoordinator setDelegate:v5];
+    objc_storeWeak(&v5->_posterSelectionCoordinator, _defaultPosterSelectionCoordinator);
     v7 = objc_alloc_init(AMUIPosterSwitcherViewController);
     posterSwitcherViewController = v5->_posterSwitcherViewController;
     v5->_posterSwitcherViewController = v7;
@@ -109,9 +109,9 @@
   }
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   v6 = obj;
@@ -127,19 +127,19 @@
       [(AMUIDefaultSelectedPosterCoordinator *)self->_defaultPosterSelectionCoordinator setAmbientDefaults:self->_ambientDefaults];
     }
 
-    v5 = [(AMUIPosterSwitcherViewController *)self->_posterSwitcherViewController noteAmbientViewControllingDelegateDidUpdate];
+    noteAmbientViewControllingDelegateDidUpdate = [(AMUIPosterSwitcherViewController *)self->_posterSwitcherViewController noteAmbientViewControllingDelegateDidUpdate];
     v6 = obj;
   }
 
-  MEMORY[0x2821F96F8](v5, v6);
+  MEMORY[0x2821F96F8](noteAmbientViewControllingDelegateDidUpdate, v6);
 }
 
-- (void)setNotificationCount:(unint64_t)a3
+- (void)setNotificationCount:(unint64_t)count
 {
-  if (self->_notificationCount != a3)
+  if (self->_notificationCount != count)
   {
-    self->_notificationCount = a3;
-    if (a3)
+    self->_notificationCount = count;
+    if (count)
     {
       notificationIndicatorView = self->_notificationIndicatorView;
       if (notificationIndicatorView)
@@ -153,20 +153,20 @@
       [(AMUIAmbientViewController *)self _animateNotificationIndicatorViewRemoval];
     }
 
-    v6 = [(AMUIAmbientViewController *)self viewIfLoaded];
-    [v6 setNeedsLayout];
+    viewIfLoaded = [(AMUIAmbientViewController *)self viewIfLoaded];
+    [viewIfLoaded setNeedsLayout];
   }
 }
 
-- (void)_setPosterSelectionCoordinator:(id)a3
+- (void)_setPosterSelectionCoordinator:(id)coordinator
 {
-  v4 = a3;
-  if (!v4)
+  coordinatorCopy = coordinator;
+  if (!coordinatorCopy)
   {
-    v4 = [(AMUIAmbientViewController *)self _defaultPosterSelectionCoordinator];
+    coordinatorCopy = [(AMUIAmbientViewController *)self _defaultPosterSelectionCoordinator];
   }
 
-  obj = v4;
+  obj = coordinatorCopy;
   WeakRetained = objc_loadWeakRetained(&self->_posterSelectionCoordinator);
 
   v6 = obj;
@@ -177,31 +177,31 @@
   }
 }
 
-- (void)setDateProvider:(id)a3
+- (void)setDateProvider:(id)provider
 {
-  objc_storeStrong(&self->_dateProvider, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_dateProvider, provider);
+  providerCopy = provider;
   [(AMUIPosterSwitcherViewController *)self->_posterSwitcherViewController setDateProvider:self->_dateProvider];
 }
 
 - (PRSPosterConfiguration)activeConfiguration
 {
   WeakRetained = objc_loadWeakRetained(&self->_posterSelectionCoordinator);
-  v4 = [WeakRetained lastSelectedPosterConfiguration];
+  lastSelectedPosterConfiguration = [WeakRetained lastSelectedPosterConfiguration];
 
-  if (!v4)
+  if (!lastSelectedPosterConfiguration)
   {
-    v4 = [(AMUIPosterSwitcherViewController *)self->_posterSwitcherViewController mostVisibleConfiguration];
+    lastSelectedPosterConfiguration = [(AMUIPosterSwitcherViewController *)self->_posterSwitcherViewController mostVisibleConfiguration];
   }
 
-  return v4;
+  return lastSelectedPosterConfiguration;
 }
 
-- (void)setAuthenticated:(BOOL)a3
+- (void)setAuthenticated:(BOOL)authenticated
 {
-  if (self->_authenticated != a3)
+  if (self->_authenticated != authenticated)
   {
-    self->_authenticated = a3;
+    self->_authenticated = authenticated;
     [(AMUIAmbientViewController *)self _handleAuthenticationChanged:?];
   }
 }
@@ -211,12 +211,12 @@
   v5.receiver = self;
   v5.super_class = AMUIAmbientViewController;
   [(AMUIAmbientViewController *)&v5 viewDidLoad];
-  v3 = [(AMUIAmbientViewController *)self view];
-  [v3 setAccessibilityIdentifier:@"amui-ambient-view"];
-  v4 = [(AMUIPosterSwitcherViewController *)self->_posterSwitcherViewController view];
-  [v3 bounds];
-  [v4 setFrame:?];
-  [v4 setAutoresizingMask:18];
+  view = [(AMUIAmbientViewController *)self view];
+  [view setAccessibilityIdentifier:@"amui-ambient-view"];
+  view2 = [(AMUIPosterSwitcherViewController *)self->_posterSwitcherViewController view];
+  [view bounds];
+  [view2 setFrame:?];
+  [view2 setAutoresizingMask:18];
   [(AMUIAmbientViewController *)self bs_addChildViewController:self->_posterSwitcherViewController];
   [(AMUIAmbientViewController *)self _setupPosterEditingSwitcherGestureRecognizer];
   [(AMUIAmbientViewController *)self bs_addChildViewController:self->_batteryChargingViewController];
@@ -239,8 +239,8 @@
   v17.receiver = self;
   v17.super_class = AMUIAmbientViewController;
   [(AMUIAmbientViewController *)&v17 viewDidLayoutSubviews];
-  v3 = [(AMUIAmbientViewController *)self view];
-  [v3 frame];
+  view = [(AMUIAmbientViewController *)self view];
+  [view frame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -256,18 +256,18 @@
     self->_lastViewFrame.origin.y = v7;
     self->_lastViewFrame.size.width = v9;
     self->_lastViewFrame.size.height = v11;
-    v12 = [(AMUIPosterSwitcherModel *)self->_posterSwitcherModel activeConfiguration];
+    activeConfiguration = [(AMUIPosterSwitcherModel *)self->_posterSwitcherModel activeConfiguration];
     v13 = AMUILogSwitcher();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [v12 serverUUID];
+      serverUUID = [activeConfiguration serverUUID];
       *buf = 138543362;
-      v19 = v14;
+      v19 = serverUUID;
       _os_log_impl(&dword_23F38B000, v13, OS_LOG_TYPE_DEFAULT, "switcher resetting scroll position after layout (scrolling to %{public}@)", buf, 0xCu);
     }
 
-    v15 = [MEMORY[0x277D75D18] _currentAnimationSettings];
-    [(AMUIAmbientViewController *)self setConfiguration:v12 withAnimationSettings:v15];
+    _currentAnimationSettings = [MEMORY[0x277D75D18] _currentAnimationSettings];
+    [(AMUIAmbientViewController *)self setConfiguration:activeConfiguration withAnimationSettings:_currentAnimationSettings];
   }
 
   v16 = *MEMORY[0x277D85DE8];
@@ -283,8 +283,8 @@
 
     [(UILongPressGestureRecognizer *)self->_posterEditingSwitcherGestureRecognizer setMinimumPressDuration:0.3];
     [(UILongPressGestureRecognizer *)self->_posterEditingSwitcherGestureRecognizer setDelegate:self];
-    v5 = [(AMUIAmbientViewController *)self view];
-    [v5 addGestureRecognizer:self->_posterEditingSwitcherGestureRecognizer];
+    view = [(AMUIAmbientViewController *)self view];
+    [view addGestureRecognizer:self->_posterEditingSwitcherGestureRecognizer];
   }
 
   if (!self->_posterEditingSwitcherFeedbackGenerator)
@@ -297,10 +297,10 @@
   }
 }
 
-- (void)_handlePosterEditingSwitcherGesture:(id)a3
+- (void)_handlePosterEditingSwitcherGesture:(id)gesture
 {
-  v4 = a3;
-  if ([v4 state] == 1)
+  gestureCopy = gesture;
+  if ([gestureCopy state] == 1)
   {
     v5 = AMUILogEditingSwitcher();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -309,26 +309,26 @@
       _os_log_impl(&dword_23F38B000, v5, OS_LOG_TYPE_DEFAULT, "Poster Editing Switcher - gesture recognized", buf, 2u);
     }
 
-    v6 = [(AMUIPosterSwitcherViewController *)self->_posterSwitcherViewController view];
+    view = [(AMUIPosterSwitcherViewController *)self->_posterSwitcherViewController view];
     objc_initWeak(buf, self);
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __65__AMUIAmbientViewController__handlePosterEditingSwitcherGesture___block_invoke;
     v12[3] = &unk_278C760E0;
     objc_copyWeak(&v14, buf);
-    v7 = v6;
+    v7 = view;
     v13 = v7;
     v8 = MEMORY[0x245CAD730](v12);
-    v9 = [(AMUIAmbientViewController *)self delegate];
+    delegate = [(AMUIAmbientViewController *)self delegate];
     if (objc_opt_respondsToSelector())
     {
       v10 = objc_alloc_init(AMUIConcreteUnlockRequest);
-      [v9 ambientViewController:self requestsUnlock:v10 withCompletion:v8];
+      [delegate ambientViewController:self requestsUnlock:v10 withCompletion:v8];
     }
 
     else
     {
-      if ([v9 ambientViewControllerIsAuthenticated:self])
+      if ([delegate ambientViewControllerIsAuthenticated:self])
       {
         v8[2](v8, 1);
         goto LABEL_9;
@@ -410,25 +410,25 @@ void __65__AMUIAmbientViewController__handlePosterEditingSwitcherGesture___block
   }
 }
 
-- (id)createUnlockRequestForViewController:(id)a3
+- (id)createUnlockRequestForViewController:(id)controller
 {
   v3 = objc_alloc_init(AMUIConcreteUnlockRequest);
 
   return v3;
 }
 
-- (void)requestUnlockForViewController:(id)a3 withRequest:(id)a4 completion:(id)a5
+- (void)requestUnlockForViewController:(id)controller withRequest:(id)request completion:(id)completion
 {
-  v9 = a4;
-  v7 = a5;
-  v8 = [(AMUIAmbientViewController *)self delegate];
+  requestCopy = request;
+  completionCopy = completion;
+  delegate = [(AMUIAmbientViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v8 ambientViewController:self requestsUnlock:v9 withCompletion:v7];
+    [delegate ambientViewController:self requestsUnlock:requestCopy withCompletion:completionCopy];
   }
 }
 
-- (void)viewControllerWillBeginConfiguration:(id)a3
+- (void)viewControllerWillBeginConfiguration:(id)configuration
 {
   [(AMUIAmbientViewController *)self _willBeginConfiguration];
   posterSwitcherViewController = self->_posterSwitcherViewController;
@@ -436,7 +436,7 @@ void __65__AMUIAmbientViewController__handlePosterEditingSwitcherGesture___block
   [(AMUIPosterSwitcherViewController *)posterSwitcherViewController setSwitchingEnabled:0];
 }
 
-- (void)viewControllerWillEndConfiguration:(id)a3
+- (void)viewControllerWillEndConfiguration:(id)configuration
 {
   [(AMUIAmbientViewController *)self _willEndConfiguration];
   posterSwitcherViewController = self->_posterSwitcherViewController;
@@ -444,37 +444,37 @@ void __65__AMUIAmbientViewController__handlePosterEditingSwitcherGesture___block
   [(AMUIPosterSwitcherViewController *)posterSwitcherViewController setSwitchingEnabled:1];
 }
 
-- (void)viewController:(id)a3 didUpdateActiveConfigurationMetadata:(id)a4
+- (void)viewController:(id)controller didUpdateActiveConfigurationMetadata:(id)metadata
 {
-  v7 = a4;
-  v5 = [(AMUIAmbientViewController *)self delegate];
-  if (v5 && (objc_opt_respondsToSelector() & 1) != 0)
+  metadataCopy = metadata;
+  delegate = [(AMUIAmbientViewController *)self delegate];
+  if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v6 = [(AMUIAmbientViewController *)self activeConfiguration];
-    [v5 ambientViewController:self didUpdateActiveConfiguration:v6 withMetadata:v7];
+    activeConfiguration = [(AMUIAmbientViewController *)self activeConfiguration];
+    [delegate ambientViewController:self didUpdateActiveConfiguration:activeConfiguration withMetadata:metadataCopy];
   }
 }
 
-- (void)viewControllerWillBeginShowingTemporaryOverlay:(id)a3
+- (void)viewControllerWillBeginShowingTemporaryOverlay:(id)overlay
 {
   [(AMUIAmbientViewController *)self setTemporaryOverlayVisible:1];
 
   [(AMUIAmbientViewController *)self _animateAllOverlayUIDismissal];
 }
 
-- (void)viewControllerWillEndShowingTemporaryOverlay:(id)a3
+- (void)viewControllerWillEndShowingTemporaryOverlay:(id)overlay
 {
   [(AMUIAmbientViewController *)self setTemporaryOverlayVisible:0];
 
   [(AMUIAmbientViewController *)self _animateAllOverlayUIAppearance];
 }
 
-- (id)widgetHostManagerForViewController:(id)a3
+- (id)widgetHostManagerForViewController:(id)controller
 {
-  v4 = [(AMUIAmbientViewController *)self delegate];
+  delegate = [(AMUIAmbientViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v4 widgetHostManagerForAmbientViewController:self];
+    v5 = [delegate widgetHostManagerForAmbientViewController:self];
   }
 
   else
@@ -485,12 +485,12 @@ void __65__AMUIAmbientViewController__handlePosterEditingSwitcherGesture___block
   return v5;
 }
 
-- (id)defaultWidgetDescriptorStacksForViewController:(id)a3
+- (id)defaultWidgetDescriptorStacksForViewController:(id)controller
 {
-  v4 = [(AMUIAmbientViewController *)self delegate];
+  delegate = [(AMUIAmbientViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v4 defaultWidgetDescriptorStacksForAmbientViewController:self];
+    v5 = [delegate defaultWidgetDescriptorStacksForAmbientViewController:self];
   }
 
   else
@@ -501,13 +501,13 @@ void __65__AMUIAmbientViewController__handlePosterEditingSwitcherGesture___block
   return v5;
 }
 
-- (BOOL)viewController:(id)a3 isApplicationVisibleWithBundleIdentifier:(id)a4
+- (BOOL)viewController:(id)controller isApplicationVisibleWithBundleIdentifier:(id)identifier
 {
-  v5 = a4;
-  v6 = [(AMUIAmbientViewController *)self delegate];
+  identifierCopy = identifier;
+  delegate = [(AMUIAmbientViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v7 = [v6 ambientViewController:self isApplicationVisibleWithBundleIdentifier:v5];
+    v7 = [delegate ambientViewController:self isApplicationVisibleWithBundleIdentifier:identifierCopy];
   }
 
   else
@@ -518,21 +518,21 @@ void __65__AMUIAmbientViewController__handlePosterEditingSwitcherGesture___block
   return v7;
 }
 
-- (BOOL)posterSwitcherViewControllerIsAuthenticated:(id)a3
+- (BOOL)posterSwitcherViewControllerIsAuthenticated:(id)authenticated
 {
-  v3 = self;
-  v4 = [(AMUIAmbientViewController *)self delegate];
-  LOBYTE(v3) = [v4 ambientViewControllerIsAuthenticated:v3];
+  selfCopy = self;
+  delegate = [(AMUIAmbientViewController *)self delegate];
+  LOBYTE(selfCopy) = [delegate ambientViewControllerIsAuthenticated:selfCopy];
 
-  return v3;
+  return selfCopy;
 }
 
-- (id)posterSwitcherViewControllerAuthenticationHandler:(id)a3
+- (id)posterSwitcherViewControllerAuthenticationHandler:(id)handler
 {
-  v4 = [(AMUIAmbientViewController *)self delegate];
+  delegate = [(AMUIAmbientViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v4 ambientViewControllerAuthenticationHandler:self];
+    v5 = [delegate ambientViewControllerAuthenticationHandler:self];
   }
 
   else
@@ -543,26 +543,26 @@ void __65__AMUIAmbientViewController__handlePosterEditingSwitcherGesture___block
   return v5;
 }
 
-- (id)posterSwitcherViewController:(id)a3 requestsLastSelectedConfigurationUUIDForProviderBundleIdentifier:(id)a4
+- (id)posterSwitcherViewController:(id)controller requestsLastSelectedConfigurationUUIDForProviderBundleIdentifier:(id)identifier
 {
-  v5 = a4;
+  identifierCopy = identifier;
   WeakRetained = objc_loadWeakRetained(&self->_posterSelectionCoordinator);
-  v7 = [WeakRetained lastSelectedPosterConfigurationUUIDForProviderBundleIdentifier:v5];
+  v7 = [WeakRetained lastSelectedPosterConfigurationUUIDForProviderBundleIdentifier:identifierCopy];
 
   return v7;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
   v24 = *MEMORY[0x277D85DE8];
-  if ([a3 isEqual:self->_posterEditingSwitcherGestureRecognizer])
+  if ([begin isEqual:self->_posterEditingSwitcherGestureRecognizer])
   {
     posterConfigurationForEditingSwitcher = self->_posterConfigurationForEditingSwitcher;
     self->_posterConfigurationForEditingSwitcher = 0;
 
-    v5 = [(AMUIAmbientViewController *)self activeConfiguration];
+    activeConfiguration = [(AMUIAmbientViewController *)self activeConfiguration];
     v19 = 0;
-    v6 = [v5 pr_loadAmbientConfigurationWithError:&v19];
+    v6 = [activeConfiguration pr_loadAmbientConfigurationWithError:&v19];
     v7 = v19;
     v8 = AMUILogEditingSwitcher();
     v9 = v8;
@@ -570,30 +570,30 @@ void __65__AMUIAmbientViewController__handlePosterEditingSwitcherGesture___block
     {
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
-        v10 = [(AMUIAmbientViewController *)self activeConfiguration];
+        activeConfiguration2 = [(AMUIAmbientViewController *)self activeConfiguration];
         *buf = 138543618;
-        v21 = v10;
+        v21 = activeConfiguration2;
         v22 = 2114;
         v23 = v6;
         _os_log_impl(&dword_23F38B000, v9, OS_LOG_TYPE_DEFAULT, "Checking if editing gesture recognizer should begin for activeConfig: %{public}@ with ambientConfig: %{public}@", buf, 0x16u);
       }
 
-      v11 = [v6 editingBehavior];
-      v12 = [v6 deletionBehavior];
-      if (v11 == 1 && v12 == 2)
+      editingBehavior = [v6 editingBehavior];
+      deletionBehavior = [v6 deletionBehavior];
+      if (editingBehavior == 1 && deletionBehavior == 2)
       {
         goto LABEL_14;
       }
 
-      v13 = [v5 providerBundleIdentifier];
-      v14 = [v13 isEqualToString:@"com.apple.ambient.AmbientUI.InfographPoster"];
+      providerBundleIdentifier = [activeConfiguration providerBundleIdentifier];
+      v14 = [providerBundleIdentifier isEqualToString:@"com.apple.ambient.AmbientUI.InfographPoster"];
 
       if (!v14)
       {
         v16 = self->_posterConfigurationForEditingSwitcher;
-        self->_posterConfigurationForEditingSwitcher = v5;
+        self->_posterConfigurationForEditingSwitcher = activeConfiguration;
         v15 = 1;
-        v5 = v6;
+        activeConfiguration = v6;
         goto LABEL_15;
       }
 
@@ -623,23 +623,23 @@ LABEL_16:
   return v15;
 }
 
-- (void)posterSelectionCoordinator:(id)a3 didUpdateLastSelectedPosterConfiguration:(id)a4
+- (void)posterSelectionCoordinator:(id)coordinator didUpdateLastSelectedPosterConfiguration:(id)configuration
 {
-  v7 = a4;
-  v5 = [(AMUIAmbientViewController *)self delegate];
+  configurationCopy = configuration;
+  delegate = [(AMUIAmbientViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [(AMUIAmbientViewController *)self activeConfigurationMetadata];
-    [v5 ambientViewController:self didUpdateActiveConfiguration:v7 withMetadata:v6];
+    activeConfigurationMetadata = [(AMUIAmbientViewController *)self activeConfigurationMetadata];
+    [delegate ambientViewController:self didUpdateActiveConfiguration:configurationCopy withMetadata:activeConfigurationMetadata];
   }
 }
 
-- (id)posterSelectionCoordinatorRequestsConnectedChargerId:(id)a3
+- (id)posterSelectionCoordinatorRequestsConnectedChargerId:(id)id
 {
-  v4 = [(AMUIAmbientViewController *)self delegate];
+  delegate = [(AMUIAmbientViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v4 ambientViewControllerRequestsConnectedChargerId:self];
+    v5 = [delegate ambientViewControllerRequestsConnectedChargerId:self];
   }
 
   else
@@ -650,23 +650,23 @@ LABEL_16:
   return v5;
 }
 
-- (void)_refreshPosterConfigurationsAnimated:(BOOL)a3
+- (void)_refreshPosterConfigurationsAnimated:(BOOL)animated
 {
   posterSwitcherViewController = self->_posterSwitcherViewController;
-  v6 = [(AMUIPosterSwitcherModel *)self->_posterSwitcherModel posterConfigurations];
-  [(AMUIPosterSwitcherViewController *)posterSwitcherViewController setConfigurations:v6];
+  posterConfigurations = [(AMUIPosterSwitcherModel *)self->_posterSwitcherModel posterConfigurations];
+  [(AMUIPosterSwitcherViewController *)posterSwitcherViewController setConfigurations:posterConfigurations];
 
   v7 = self->_posterSwitcherViewController;
-  v9 = [(AMUIPosterSwitcherModel *)self->_posterSwitcherModel activeConfiguration];
-  if (a3)
+  activeConfiguration = [(AMUIPosterSwitcherModel *)self->_posterSwitcherModel activeConfiguration];
+  if (animated)
   {
     v8 = [MEMORY[0x277CF0B70] settingsWithDuration:0.3];
-    [(AMUIPosterSwitcherViewController *)v7 updatePosterConfiguration:v9 withAnimationSettings:v8];
+    [(AMUIPosterSwitcherViewController *)v7 updatePosterConfiguration:activeConfiguration withAnimationSettings:v8];
   }
 
   else
   {
-    [(AMUIPosterSwitcherViewController *)v7 updatePosterConfiguration:v9 withAnimationSettings:0];
+    [(AMUIPosterSwitcherViewController *)v7 updatePosterConfiguration:activeConfiguration withAnimationSettings:0];
   }
 }
 
@@ -706,10 +706,10 @@ LABEL_16:
   {
     [(AMUIAmbientViewController *)self setConfiguringUIVisible:1];
     [(AMUIAmbientViewController *)self _animateAllOverlayUIDismissal];
-    v3 = [(AMUIAmbientViewController *)self delegate];
+    delegate = [(AMUIAmbientViewController *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v3 ambientViewControllerWillBeginConfiguration:self];
+      [delegate ambientViewControllerWillBeginConfiguration:self];
     }
   }
 }
@@ -720,17 +720,17 @@ LABEL_16:
   {
     [(AMUIAmbientViewController *)self setConfiguringUIVisible:0];
     [(AMUIAmbientViewController *)self _animateAllOverlayUIAppearance];
-    v3 = [(AMUIAmbientViewController *)self delegate];
+    delegate = [(AMUIAmbientViewController *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v3 ambientViewControllerWillEndConfiguration:self];
+      [delegate ambientViewControllerWillEndConfiguration:self];
     }
   }
 }
 
-- (void)_handleAuthenticationChanged:(BOOL)a3
+- (void)_handleAuthenticationChanged:(BOOL)changed
 {
-  if (!a3)
+  if (!changed)
   {
     [(AMUIPosterEditingSwitcherViewController *)self->_posterEditingSwitcherVC handleDismiss];
   }
@@ -744,8 +744,8 @@ LABEL_16:
     notificationIndicatorView = self->_notificationIndicatorView;
     self->_notificationIndicatorView = v3;
 
-    v5 = [(AMUIAmbientViewController *)self view];
-    [v5 addSubview:self->_notificationIndicatorView];
+    view = [(AMUIAmbientViewController *)self view];
+    [view addSubview:self->_notificationIndicatorView];
 
     v6 = self->_notificationIndicatorView;
 
@@ -799,11 +799,11 @@ LABEL_16:
 {
   if (self->_notificationIndicatorView)
   {
-    v3 = [(AMUIAmbientViewController *)self view];
-    [v3 bringSubviewToFront:self->_notificationIndicatorView];
+    view = [(AMUIAmbientViewController *)self view];
+    [view bringSubviewToFront:self->_notificationIndicatorView];
 
-    v4 = [(AMUIAmbientViewController *)self view];
-    [v4 bounds];
+    view2 = [(AMUIAmbientViewController *)self view];
+    [view2 bounds];
     v6 = v5;
     v8 = v7;
     v10 = v9;
@@ -825,7 +825,7 @@ LABEL_16:
   }
 }
 
-- (void)_setNotificationIndicatorHidden:(BOOL)a3
+- (void)_setNotificationIndicatorHidden:(BOOL)hidden
 {
   objc_initWeak(&location, self->_notificationIndicatorView);
   v4 = MEMORY[0x277D75D18];
@@ -834,7 +834,7 @@ LABEL_16:
   v5[2] = __61__AMUIAmbientViewController__setNotificationIndicatorHidden___block_invoke;
   v5[3] = &unk_278C75ED0;
   objc_copyWeak(&v6, &location);
-  v7 = a3;
+  hiddenCopy = hidden;
   [v4 animateWithDuration:0 delay:v5 options:0 animations:0.2 completion:0.0];
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
@@ -858,14 +858,14 @@ void __61__AMUIAmbientViewController__setNotificationIndicatorHidden___block_inv
   if (self->_batteryChargingViewController && ![(AMUIAmbientViewController *)self isConfiguringUIVisible]&& ![(AMUIAmbientViewController *)self isTemporaryOverlayVisible]&& ([(AMAmbientDefaults *)self->_ambientDefaults isFirstPresentation]& 1) == 0)
   {
     v3 = self->_batteryChargingViewController;
-    v4 = [(AMUIBatteryChargingViewController *)v3 view];
+    view = [(AMUIBatteryChargingViewController *)v3 view];
     objc_initWeak(&location, self);
     v5 = MEMORY[0x277D75D18];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __69__AMUIAmbientViewController__animateBatteryViewAppearanceIfNecessary__block_invoke;
     v11[3] = &unk_278C75D60;
-    v6 = v4;
+    v6 = view;
     v12 = v6;
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
@@ -905,14 +905,14 @@ void __69__AMUIAmbientViewController__animateBatteryViewAppearanceIfNecessary__b
   if (batteryChargingViewController)
   {
     v4 = batteryChargingViewController;
-    v5 = [(AMUIBatteryChargingViewController *)v4 view];
+    view = [(AMUIBatteryChargingViewController *)v4 view];
     objc_initWeak(&location, self);
     v6 = MEMORY[0x277D75D18];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __68__AMUIAmbientViewController__animateBatteryViewDismissalIfNecessary__block_invoke;
     v12[3] = &unk_278C75D60;
-    v7 = v5;
+    v7 = view;
     v13 = v7;
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
@@ -947,19 +947,19 @@ void __68__AMUIAmbientViewController__animateBatteryViewDismissalIfNecessary__bl
   batteryChargingViewController = self->_batteryChargingViewController;
   if (batteryChargingViewController)
   {
-    v8 = [(AMUIBatteryChargingViewController *)batteryChargingViewController view];
-    v4 = [(AMUIAmbientViewController *)self view];
-    [v4 bounds];
-    [v8 setBounds:?];
+    view = [(AMUIBatteryChargingViewController *)batteryChargingViewController view];
+    view2 = [(AMUIAmbientViewController *)self view];
+    [view2 bounds];
+    [view setBounds:?];
 
-    v5 = [(AMUIAmbientViewController *)self view];
-    [v5 frame];
-    [v8 setFrame:?];
+    view3 = [(AMUIAmbientViewController *)self view];
+    [view3 frame];
+    [view setFrame:?];
 
-    [v8 setAutoresizingMask:18];
-    v6 = [(AMUIAmbientViewController *)self view];
-    v7 = [(AMUIBatteryChargingViewController *)self->_batteryChargingViewController view];
-    [v6 bringSubviewToFront:v7];
+    [view setAutoresizingMask:18];
+    view4 = [(AMUIAmbientViewController *)self view];
+    view5 = [(AMUIBatteryChargingViewController *)self->_batteryChargingViewController view];
+    [view4 bringSubviewToFront:view5];
   }
 }
 

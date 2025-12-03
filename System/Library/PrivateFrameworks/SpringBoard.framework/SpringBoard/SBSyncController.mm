@@ -5,22 +5,22 @@
 - (SBIdleTimerCoordinating)_idleTimerCoordinator;
 - (id)_idleTimerBehavior;
 - (void)_delayedQuitApplications;
-- (void)_didEndRestoring:(int)a3;
+- (void)_didEndRestoring:(int)restoring;
 - (void)_invalidateRestoreTimer;
 - (void)_killApplicationsIfNecessary;
 - (void)_notifyRestoreCanProceed;
 - (void)_rebootNow;
-- (void)_restoreTimerFired:(id)a3;
-- (void)_setRestoreState:(int)a3;
+- (void)_restoreTimerFired:(id)fired;
+- (void)_setRestoreState:(int)state;
 - (void)_setupRestoreTimer;
 - (void)_syncSessionDidEnd;
 - (void)beginRestoring;
 - (void)cancelRestoring;
 - (void)dealloc;
 - (void)finishedTerminatingApplications;
-- (void)resetService:(id)a3 didBeginDataResetWithMode:(int64_t)a4;
-- (void)resetService:(id)a3 didCompleteDataResetMode:(int64_t)a4 withError:(id)a5 completion:(id)a6;
-- (void)resetService:(id)a3 willBeginDataResetWithMode:(int64_t)a4;
+- (void)resetService:(id)service didBeginDataResetWithMode:(int64_t)mode;
+- (void)resetService:(id)service didCompleteDataResetMode:(int64_t)mode withError:(id)error completion:(id)completion;
+- (void)resetService:(id)service willBeginDataResetWithMode:(int64_t)mode;
 - (void)startObserving;
 - (void)stopObserving;
 @end
@@ -70,8 +70,8 @@ uint64_t __34__SBSyncController_sharedInstance__block_invoke()
 
 - (void)startObserving
 {
-  v3 = [*MEMORY[0x277D28A28] UTF8String];
-  notify_register_dispatch(v3, &self->_restoreStartedNotifyToken, MEMORY[0x277D85CD0], &__block_literal_global_7);
+  uTF8String = [*MEMORY[0x277D28A28] UTF8String];
+  notify_register_dispatch(uTF8String, &self->_restoreStartedNotifyToken, MEMORY[0x277D85CD0], &__block_literal_global_7);
   state64 = 0;
   notify_get_state(self->_restoreStartedNotifyToken, &state64);
   if (state64)
@@ -87,17 +87,17 @@ uint64_t __34__SBSyncController_sharedInstance__block_invoke()
     [v5 beginRestoring];
   }
 
-  v6 = [*MEMORY[0x277D28A20] UTF8String];
+  uTF8String2 = [*MEMORY[0x277D28A20] UTF8String];
   v7 = MEMORY[0x277D85CD0];
-  notify_register_dispatch(v6, &self->_restoreEndedNotifyToken, MEMORY[0x277D85CD0], &__block_literal_global_10);
+  notify_register_dispatch(uTF8String2, &self->_restoreEndedNotifyToken, MEMORY[0x277D85CD0], &__block_literal_global_10);
 
-  v8 = [MEMORY[0x277D072C0] sharedInstance];
-  [v8 addOberver:self];
+  mEMORY[0x277D072C0] = [MEMORY[0x277D072C0] sharedInstance];
+  [mEMORY[0x277D072C0] addOberver:self];
 
-  v9 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v9 addObserver:self selector:sel__wirelessSyncEnded_ name:@"kSBWirelessAppSyncEnded" object:0];
-  [v9 addObserver:self selector:sel__wirelessSyncBegan_ name:@"kSBWirelessAppSyncBegan" object:0];
-  [v9 addObserver:self selector:sel__appInstallationNotification name:@"SBInstalledApplicationsDidChangeNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__wirelessSyncEnded_ name:@"kSBWirelessAppSyncEnded" object:0];
+  [defaultCenter addObserver:self selector:sel__wirelessSyncBegan_ name:@"kSBWirelessAppSyncBegan" object:0];
+  [defaultCenter addObserver:self selector:sel__appInstallationNotification name:@"SBInstalledApplicationsDidChangeNotification" object:0];
 }
 
 void __34__SBSyncController_startObserving__block_invoke()
@@ -128,19 +128,19 @@ void __34__SBSyncController_startObserving__block_invoke_8()
 
 - (void)stopObserving
 {
-  v3 = [MEMORY[0x277D072C0] sharedInstance];
-  [v3 removeObserver:self];
+  mEMORY[0x277D072C0] = [MEMORY[0x277D072C0] sharedInstance];
+  [mEMORY[0x277D072C0] removeObserver:self];
 
   notify_cancel(self->_restoreStartedNotifyToken);
   notify_cancel(self->_restoreEndedNotifyToken);
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 }
 
 - (void)finishedTerminatingApplications
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 postNotificationName:@"SBResetOrRestoreStateDidChangeNotification" object:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"SBResetOrRestoreStateDidChangeNotification" object:self];
 
   [SBSyncController cancelPreviousPerformRequestsWithTarget:self selector:sel_finishedTerminatingApplications object:0];
 
@@ -164,8 +164,8 @@ void __34__SBSyncController_startObserving__block_invoke_8()
     v5 = +[SBTelephonyManager sharedTelephonyManager];
     [(SBSyncController *)self _setRestoreState:1];
     [(SBSyncController *)self _setupRestoreTimer];
-    v6 = [MEMORY[0x277D0AB08] sharedInstance];
-    [v6 prepareDisplaysForExit];
+    mEMORY[0x277D0AB08] = [MEMORY[0x277D0AB08] sharedInstance];
+    [mEMORY[0x277D0AB08] prepareDisplaysForExit];
 
     v7 = +[SBMainStatusBarStateProvider sharedInstance];
     [v7 setTelephonyAndBluetoothItemsCloaked:1];
@@ -176,8 +176,8 @@ void __34__SBSyncController_startObserving__block_invoke_8()
 
     if ([MEMORY[0x277D75128] isRunningInStoreDemoMode])
     {
-      v9 = [MEMORY[0x277D75D70] webClips];
-      v10 = [v9 copy];
+      webClips = [MEMORY[0x277D75D70] webClips];
+      v10 = [webClips copy];
 
       [v10 makeObjectsPerformSelector:sel_removeFromDisk];
     }
@@ -202,14 +202,14 @@ void __34__SBSyncController_startObserving__block_invoke_8()
   [(SBSyncController *)self _setRestoreState:3];
 }
 
-- (void)resetService:(id)a3 willBeginDataResetWithMode:(int64_t)a4
+- (void)resetService:(id)service willBeginDataResetWithMode:(int64_t)mode
 {
   v8 = *MEMORY[0x277D85DE8];
   v5 = SBLogDataReset();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v7 = a4;
+    modeCopy = mode;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "Received willBeginDataResetWithMode:%ld in springboard", buf, 0xCu);
   }
 
@@ -268,31 +268,31 @@ void __60__SBSyncController_resetService_willBeginDataResetWithMode___block_invo
   }
 }
 
-- (void)resetService:(id)a3 didBeginDataResetWithMode:(int64_t)a4
+- (void)resetService:(id)service didBeginDataResetWithMode:(int64_t)mode
 {
   v8 = *MEMORY[0x277D85DE8];
   v5 = SBLogDataReset();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 134217984;
-    v7 = a4;
+    modeCopy = mode;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "Received didBeginDataResetWithMode:%ld in springboard", &v6, 0xCu);
   }
 }
 
-- (void)resetService:(id)a3 didCompleteDataResetMode:(int64_t)a4 withError:(id)a5 completion:(id)a6
+- (void)resetService:(id)service didCompleteDataResetMode:(int64_t)mode withError:(id)error completion:(id)completion
 {
   v12 = *MEMORY[0x277D85DE8];
-  v7 = a6;
+  completionCopy = completion;
   v8 = SBLogDataReset();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v11 = a4;
+    modeCopy = mode;
     _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEFAULT, "Received didCompleteDataResetMode:%ld in springboard", buf, 0xCu);
   }
 
-  v9 = v7;
+  v9 = completionCopy;
   BSDispatchMain();
 }
 
@@ -318,17 +318,17 @@ uint64_t __79__SBSyncController_resetService_didCompleteDataResetMode_withError_
   return result;
 }
 
-- (void)_setRestoreState:(int)a3
+- (void)_setRestoreState:(int)state
 {
-  if (self->_restoreState != a3)
+  if (self->_restoreState != state)
   {
-    self->_restoreState = a3;
-    if (a3 == 1 || self->_resetState == 1)
+    self->_restoreState = state;
+    if (state == 1 || self->_resetState == 1)
     {
       if (!self->_disableDeviceLockAssertion)
       {
-        v5 = [SBApp authenticationController];
-        v6 = [v5 createKeybagUnlockAssertionWithReason:@"Sync restore or reset"];
+        authenticationController = [SBApp authenticationController];
+        v6 = [authenticationController createKeybagUnlockAssertionWithReason:@"Sync restore or reset"];
         disableDeviceLockAssertion = self->_disableDeviceLockAssertion;
         self->_disableDeviceLockAssertion = v6;
 
@@ -347,8 +347,8 @@ uint64_t __79__SBSyncController_resetService_didCompleteDataResetMode_withError_
       self->_hideStatusBarAssertion = 0;
     }
 
-    v10 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v10 postNotificationName:@"SBITunesRestoreStateDidChangeNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"SBITunesRestoreStateDidChangeNotification" object:0];
   }
 }
 
@@ -471,13 +471,13 @@ uint64_t __48__SBSyncController__killApplicationsIfNecessary__block_invoke_45(ui
   v2 = +[SBTelephonyManager sharedTelephonyManager];
   [v2 setNetworkRegistrationEnabled:1];
 
-  v3 = [SBApp restartManager];
-  [v3 rebootForReason:@"ResetOrRestoreComplete"];
+  restartManager = [SBApp restartManager];
+  [restartManager rebootForReason:@"ResetOrRestoreComplete"];
 }
 
-- (void)_didEndRestoring:(int)a3
+- (void)_didEndRestoring:(int)restoring
 {
-  v3 = *&a3;
+  v3 = *&restoring;
   v13 = *MEMORY[0x277D85DE8];
   v5 = SBLogCommon();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -489,8 +489,8 @@ uint64_t __48__SBSyncController__killApplicationsIfNecessary__block_invoke_45(ui
 
   [(SBSyncController *)self _setRestoreState:v3];
   [(SBSyncController *)self _invalidateRestoreTimer];
-  v6 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v6 postNotificationName:@"SBResetOrRestoreStateDidChangeNotification" object:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"SBResetOrRestoreStateDidChangeNotification" object:self];
 
   if (v3 == 4)
   {
@@ -514,8 +514,8 @@ uint64_t __48__SBSyncController__killApplicationsIfNecessary__block_invoke_45(ui
 - (void)_delayedQuitApplications
 {
   [(SBSyncController *)self _killApplicationsIfNecessary];
-  v2 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v2 postNotificationName:@"com.apple.springboard.reset-ready" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"com.apple.springboard.reset-ready" object:0];
 }
 
 - (void)_invalidateRestoreTimer
@@ -580,16 +580,16 @@ LABEL_10:
   return v4;
 }
 
-- (void)_restoreTimerFired:(id)a3
+- (void)_restoreTimerFired:(id)fired
 {
-  v4 = a3;
+  firedCopy = fired;
   restoreTimerState = self->_restoreTimerState;
   if (restoreTimerState == 1)
   {
-    v7 = [(SBSyncController *)self _isBackupAgentRunning];
+    _isBackupAgentRunning = [(SBSyncController *)self _isBackupAgentRunning];
     v8 = SBLogCommon();
     v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
-    if (v7)
+    if (_isBackupAgentRunning)
     {
       if (v9)
       {

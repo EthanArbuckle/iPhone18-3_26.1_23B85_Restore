@@ -1,24 +1,24 @@
 @interface VOTOutputAction
-- (BOOL)hasSameOutputAs:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (VOTOutputAction)initWithAXAction:(id)a3;
-- (VOTOutputAction)initWithSoundPath:(id)a3;
-- (VOTOutputAction)initWithString:(id)a3 brailleString:(id)a4;
-- (VOTOutputAction)initWithTextDisplay:(id)a3;
+- (BOOL)hasSameOutputAs:(id)as;
+- (BOOL)isEqual:(id)equal;
+- (VOTOutputAction)initWithAXAction:(id)action;
+- (VOTOutputAction)initWithSoundPath:(id)path;
+- (VOTOutputAction)initWithString:(id)string brailleString:(id)brailleString;
+- (VOTOutputAction)initWithTextDisplay:(id)display;
 - (VOTOutputRequest)outputRequest;
-- (id)_initWithComponent:(int)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_initWithComponent:(int)component;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)addOutputEvent:(id)a3;
+- (void)addOutputEvent:(id)event;
 @end
 
 @implementation VOTOutputAction
 
-- (VOTOutputAction)initWithAXAction:(id)a3
+- (VOTOutputAction)initWithAXAction:(id)action
 {
   v4.receiver = self;
   v4.super_class = VOTOutputAction;
-  result = [(VOTOutputAction *)&v4 initWithAXAction:a3];
+  result = [(VOTOutputAction *)&v4 initWithAXAction:action];
   if (result)
   {
     result->_component = 0;
@@ -27,11 +27,11 @@
   return result;
 }
 
-- (VOTOutputAction)initWithString:(id)a3 brailleString:(id)a4
+- (VOTOutputAction)initWithString:(id)string brailleString:(id)brailleString
 {
   v7.receiver = self;
   v7.super_class = VOTOutputAction;
-  v4 = [(VOTOutputAction *)&v7 initWithString:a3 brailleString:a4];
+  v4 = [(VOTOutputAction *)&v7 initWithString:string brailleString:brailleString];
   v5 = v4;
   if (v4)
   {
@@ -42,13 +42,13 @@
   return v5;
 }
 
-- (VOTOutputAction)initWithSoundPath:(id)a3
+- (VOTOutputAction)initWithSoundPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v5 = [(VOTOutputAction *)self _initWithComponent:1];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [pathCopy copy];
     soundPath = v5->_soundPath;
     v5->_soundPath = v6;
   }
@@ -56,11 +56,11 @@
   return v5;
 }
 
-- (VOTOutputAction)initWithTextDisplay:(id)a3
+- (VOTOutputAction)initWithTextDisplay:(id)display
 {
   v4.receiver = self;
   v4.super_class = VOTOutputAction;
-  result = [(VOTOutputAction *)&v4 initWithString:a3];
+  result = [(VOTOutputAction *)&v4 initWithString:display];
   if (result)
   {
     result->_component = 2;
@@ -69,24 +69,24 @@
   return result;
 }
 
-- (id)_initWithComponent:(int)a3
+- (id)_initWithComponent:(int)component
 {
   v5.receiver = self;
   v5.super_class = VOTOutputAction;
   result = [(VOTOutputAction *)&v5 init];
   if (result)
   {
-    *(result + 6) = a3;
+    *(result + 6) = component;
   }
 
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v10.receiver = self;
   v10.super_class = VOTOutputAction;
-  v4 = [(VOTOutputAction *)&v10 copyWithZone:a3];
+  v4 = [(VOTOutputAction *)&v10 copyWithZone:zone];
   v5 = [(NSString *)self->_soundPath copy];
   v6 = v4[4];
   v4[4] = v5;
@@ -100,14 +100,14 @@
   return v4;
 }
 
-- (BOOL)hasSameOutputAs:(id)a3
+- (BOOL)hasSameOutputAs:(id)as
 {
-  v4 = a3;
-  v5 = [(VOTOutputAction *)self string];
-  v6 = [v4 string];
+  asCopy = as;
+  string = [(VOTOutputAction *)self string];
+  string2 = [asCopy string];
 
-  LOBYTE(v4) = [v5 isEqualToString:v6];
-  return v4;
+  LOBYTE(asCopy) = [string isEqualToString:string2];
+  return asCopy;
 }
 
 - (id)description
@@ -120,14 +120,14 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 outputActionID];
-    v6 = v5 == [(VOTOutputAction *)self outputActionID];
+    outputActionID = [equalCopy outputActionID];
+    v6 = outputActionID == [(VOTOutputAction *)self outputActionID];
   }
 
   else
@@ -138,22 +138,22 @@
   return v6;
 }
 
-- (void)addOutputEvent:(id)a3
+- (void)addOutputEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   outputEvents = self->_outputEvents;
-  v8 = v4;
+  v8 = eventCopy;
   if (!outputEvents)
   {
     v6 = +[NSMutableArray array];
     v7 = self->_outputEvents;
     self->_outputEvents = v6;
 
-    v4 = v8;
+    eventCopy = v8;
     outputEvents = self->_outputEvents;
   }
 
-  [(NSMutableArray *)outputEvents addObject:v4];
+  [(NSMutableArray *)outputEvents addObject:eventCopy];
 }
 
 - (VOTOutputRequest)outputRequest

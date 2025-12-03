@@ -1,52 +1,52 @@
 @interface PDURootViewController
 + (BOOL)deviceIsPad;
 + (unint64_t)preferredOrientation;
-- (PDURootViewController)initWithApplicationIdentity:(id)a3 consentStore:(id)a4;
+- (PDURootViewController)initWithApplicationIdentity:(id)identity consentStore:(id)store;
 - (PDURootViewControllerDelegate)delegate;
 - (void)_presentWelcomeViewIfNeeded;
 - (void)_showWelcomeViewIfNeeded;
-- (void)welcomeViewController:(id)a3 didDismissWithUserResponse:(unint64_t)a4;
+- (void)welcomeViewController:(id)controller didDismissWithUserResponse:(unint64_t)response;
 @end
 
 @implementation PDURootViewController
 
-- (PDURootViewController)initWithApplicationIdentity:(id)a3 consentStore:(id)a4
+- (PDURootViewController)initWithApplicationIdentity:(id)identity consentStore:(id)store
 {
-  v7 = a3;
-  v8 = a4;
+  identityCopy = identity;
+  storeCopy = store;
   v13.receiver = self;
   v13.super_class = PDURootViewController;
   v9 = [(PDURootViewController *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_applicationIdentity, a3);
-    objc_storeStrong(&v10->_consentStore, a4);
+    objc_storeStrong(&v9->_applicationIdentity, identity);
+    objc_storeStrong(&v10->_consentStore, store);
     v11 = v10;
   }
 
   return v10;
 }
 
-- (void)welcomeViewController:(id)a3 didDismissWithUserResponse:(unint64_t)a4
+- (void)welcomeViewController:(id)controller didDismissWithUserResponse:(unint64_t)response
 {
-  v6 = [(PDURootViewController *)self delegate];
+  delegate = [(PDURootViewController *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    if (a4 > 2)
+    if (response > 2)
     {
       v8 = 0;
     }
 
     else
     {
-      v8 = qword_25F710B18[a4];
+      v8 = qword_25F710B18[response];
     }
 
-    v9 = [(PDURootViewController *)self delegate];
-    [v9 rootViewController:self didDismissWithUserResponse:v8];
+    delegate2 = [(PDURootViewController *)self delegate];
+    [delegate2 rootViewController:self didDismissWithUserResponse:v8];
 
     [(PDURootViewController *)self dismissViewControllerAnimated:1 completion:0];
   }
@@ -61,33 +61,33 @@
     welcomeViewController = self->_welcomeViewController;
     self->_welcomeViewController = v3;
 
-    v5 = [(UIViewController *)self->_welcomeViewController view];
+    view = [(UIViewController *)self->_welcomeViewController view];
     [(PDURootViewController *)self addChildViewController:self->_welcomeViewController];
-    v6 = [(PDURootViewController *)self view];
-    [v6 addSubview:v5];
+    view2 = [(PDURootViewController *)self view];
+    [view2 addSubview:view];
 
     [(UIViewController *)self->_welcomeViewController didMoveToParentViewController:self];
-    [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
+    [view setTranslatesAutoresizingMaskIntoConstraints:0];
     v18 = MEMORY[0x277CCAAD0];
-    v24 = [v5 topAnchor];
-    v25 = [(PDURootViewController *)self view];
-    v23 = [v25 topAnchor];
-    v22 = [v24 constraintEqualToAnchor:v23];
+    topAnchor = [view topAnchor];
+    view3 = [(PDURootViewController *)self view];
+    topAnchor2 = [view3 topAnchor];
+    v22 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v26[0] = v22;
-    v20 = [v5 bottomAnchor];
-    v21 = [(PDURootViewController *)self view];
-    v19 = [v21 bottomAnchor];
-    v17 = [v20 constraintEqualToAnchor:v19];
+    bottomAnchor = [view bottomAnchor];
+    view4 = [(PDURootViewController *)self view];
+    bottomAnchor2 = [view4 bottomAnchor];
+    v17 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v26[1] = v17;
-    v7 = [v5 leadingAnchor];
-    v8 = [(PDURootViewController *)self view];
-    v9 = [v8 leadingAnchor];
-    v10 = [v7 constraintEqualToAnchor:v9];
+    leadingAnchor = [view leadingAnchor];
+    view5 = [(PDURootViewController *)self view];
+    leadingAnchor2 = [view5 leadingAnchor];
+    v10 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v26[2] = v10;
-    v11 = [v5 trailingAnchor];
-    v12 = [(PDURootViewController *)self view];
-    v13 = [v12 trailingAnchor];
-    v14 = [v11 constraintEqualToAnchor:v13];
+    trailingAnchor = [view trailingAnchor];
+    view6 = [(PDURootViewController *)self view];
+    trailingAnchor2 = [view6 trailingAnchor];
+    v14 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v26[3] = v14;
     v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v26 count:4];
     [v18 activateConstraints:v15];
@@ -115,7 +115,7 @@ uint64_t __36__PDURootViewController_deviceIsPad__block_invoke()
 
 + (unint64_t)preferredOrientation
 {
-  if ([a1 deviceIsPad])
+  if ([self deviceIsPad])
   {
     return 30;
   }

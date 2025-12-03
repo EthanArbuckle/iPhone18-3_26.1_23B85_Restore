@@ -1,63 +1,63 @@
 @interface KNDocumentRoot
-+ (void)localizeModelObject:(id)a3 withTemplateBundle:(id)a4 andLocale:(id)a5;
++ (void)localizeModelObject:(id)object withTemplateBundle:(id)bundle andLocale:(id)locale;
 - (BOOL)isMultiPageForQuickLook;
-- (BOOL)validateSlideNode:(id)a3;
-- (BOOL)validateUIState:(id)a3;
-- (KNDocumentRoot)initWithContext:(id)a3;
+- (BOOL)validateSlideNode:(id)node;
+- (BOOL)validateUIState:(id)state;
+- (KNDocumentRoot)initWithContext:(id)context;
 - (double)stickyCommentScaleMultiplier;
-- (id)UIStateForChart:(id)a3;
+- (id)UIStateForChart:(id)chart;
 - (id)childEnumerator;
-- (id)createViewStateRootForContinuation:(BOOL)a3;
+- (id)createViewStateRootForContinuation:(BOOL)continuation;
 - (id)freehandDrawingToolkitUIState;
 - (id)knDelegate;
-- (id)nameForResolverContainer:(id)a3;
+- (id)nameForResolverContainer:(id)container;
 - (id)protected_defaultTextPresetOrdering;
-- (id)resolverContainerForName:(id)a3 caseSensitive:(BOOL)a4;
-- (id)resolverContainerNameForResolver:(id)a3;
-- (id)resolverContainerNamesMatchingPrefix:(id)a3;
-- (id)resolverMatchingName:(id)a3 contextContainerName:(id)a4;
-- (id)resolverMatchingName:(id)a3 contextResolver:(id)a4;
-- (id)resolversMatchingPrefix:(id)a3;
+- (id)resolverContainerForName:(id)name caseSensitive:(BOOL)sensitive;
+- (id)resolverContainerNameForResolver:(id)resolver;
+- (id)resolverContainerNamesMatchingPrefix:(id)prefix;
+- (id)resolverMatchingName:(id)name contextContainerName:(id)containerName;
+- (id)resolverMatchingName:(id)name contextResolver:(id)resolver;
+- (id)resolversMatchingPrefix:(id)prefix;
 - (id)slideNodeForClearedShow;
-- (id)stylesToNotResizeInStylesheet:(id)a3;
+- (id)stylesToNotResizeInStylesheet:(id)stylesheet;
 - (id)stylesheet;
 - (id)theme;
-- (id)warningLocationDescriptionForAffectedObjects:(id)a3 sortingInfo:(id *)a4;
-- (int64_t)compareLocationSortingInfo:(id)a3 toSortingInfo:(id)a4;
+- (id)warningLocationDescriptionForAffectedObjects:(id)objects sortingInfo:(id *)info;
+- (int64_t)compareLocationSortingInfo:(id)info toSortingInfo:(id)sortingInfo;
 - (unint64_t)writingDirectionForStorage;
 - (void)dealloc;
 - (void)documentDidLoad;
-- (void)loadFromArchive:(const void *)a3 unarchiver:(id)a4;
-- (void)loadFromUnarchiver:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)p_hyperlinkAndBreadcrumbUpgradeForUnity20SlideNodes:(id)a3;
+- (void)loadFromArchive:(const void *)archive unarchiver:(id)unarchiver;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)p_hyperlinkAndBreadcrumbUpgradeForUnity20SlideNodes:(id)nodes;
 - (void)prepareForSavingAsTemplate;
 - (void)preprocessForSaveAsTheme;
-- (void)saveToArchive:(void *)a3 archiver:(id)a4;
-- (void)saveToArchiver:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setDocumentLocale:(id)a3;
-- (void)setShow:(id)a3;
-- (void)setStylesheetForUpgradeToSingleStylesheet:(id)a3;
-- (void)setTheme:(id)a3;
-- (void)setUIState:(id)a3 forChart:(id)a4;
-- (void)setUiState:(id)a3;
+- (void)saveToArchive:(void *)archive archiver:(id)archiver;
+- (void)saveToArchiver:(id)archiver;
+- (void)setDelegate:(id)delegate;
+- (void)setDocumentLocale:(id)locale;
+- (void)setShow:(id)show;
+- (void)setStylesheetForUpgradeToSingleStylesheet:(id)stylesheet;
+- (void)setTheme:(id)theme;
+- (void)setUIState:(id)state forChart:(id)chart;
+- (void)setUiState:(id)state;
 - (void)upgradeTextStylesForUnityAfterSingleStylesheetUpgrade;
 - (void)willClose;
 @end
 
 @implementation KNDocumentRoot
 
-- (KNDocumentRoot)initWithContext:(id)a3
+- (KNDocumentRoot)initWithContext:(id)context
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contextCopy = context;
   v31.receiver = self;
   v31.super_class = KNDocumentRoot;
-  v6 = [(TSADocumentRoot *)&v31 initWithContext:v4];
+  v6 = [(TSADocumentRoot *)&v31 initWithContext:contextCopy];
   if (v6)
   {
-    v7 = objc_msgSend_showWithSize_context_(KNShow, v5, v4, 1024.0, 768.0);
+    v7 = objc_msgSend_showWithSize_context_(KNShow, v5, contextCopy, 1024.0, 768.0);
     show = v6->_show;
     v6->_show = v7;
 
@@ -83,7 +83,7 @@
             objc_enumerationMutation(v14);
           }
 
-          objc_msgSend_wasAddedToDocumentWithContext_(*(*(&v27 + 1) + 8 * v20++), v17, v4);
+          objc_msgSend_wasAddedToDocumentWithContext_(*(*(&v27 + 1) + 8 * v20++), v17, contextCopy);
         }
 
         while (v18 != v20);
@@ -93,20 +93,20 @@
       while (v18);
     }
 
-    objc_msgSend_wasAddedToDocumentWithContext_(v6->_show, v21, v4);
+    objc_msgSend_wasAddedToDocumentWithContext_(v6->_show, v21, contextCopy);
     v24 = objc_msgSend_theme(v6->_show, v22, v23);
-    objc_msgSend_wasAddedToDocumentWithContext_(v24, v25, v4);
+    objc_msgSend_wasAddedToDocumentWithContext_(v24, v25, contextCopy);
   }
 
   return v6;
 }
 
-- (void)setShow:(id)a3
+- (void)setShow:(id)show
 {
-  v4 = a3;
+  showCopy = show;
   objc_msgSend_willModify(self, v5, v6);
   show = self->_show;
-  self->_show = v4;
+  self->_show = showCopy;
 }
 
 - (double)stickyCommentScaleMultiplier
@@ -204,11 +204,11 @@
   return v4;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v3.receiver = self;
   v3.super_class = KNDocumentRoot;
-  [(KNDocumentRoot *)&v3 setDelegate:a3];
+  [(KNDocumentRoot *)&v3 setDelegate:delegate];
 }
 
 - (id)childEnumerator
@@ -232,9 +232,9 @@
   return v6;
 }
 
-- (void)setTheme:(id)a3
+- (void)setTheme:(id)theme
 {
-  v4 = a3;
+  themeCopy = theme;
   objc_opt_class();
   v9 = TSUDynamicCast();
 
@@ -250,11 +250,11 @@
   return v6;
 }
 
-- (void)setStylesheetForUpgradeToSingleStylesheet:(id)a3
+- (void)setStylesheetForUpgradeToSingleStylesheet:(id)stylesheet
 {
-  v4 = a3;
+  stylesheetCopy = stylesheet;
   v8 = objc_msgSend_show(self, v5, v6);
-  objc_msgSend_setStylesheetForUpgradeToSingleStylesheet_(v8, v7, v4);
+  objc_msgSend_setStylesheetForUpgradeToSingleStylesheet_(v8, v7, stylesheetCopy);
 }
 
 - (id)protected_defaultTextPresetOrdering
@@ -285,7 +285,7 @@
   v47[3] = &unk_27A697B48;
   v11 = v7;
   v48 = v11;
-  v49 = self;
+  selfCopy = self;
   v12 = v4;
   v50 = v12;
   objc_msgSend_enumerateObjectsUsingBlock_(v10, v13, v47);
@@ -347,9 +347,9 @@
   return v9;
 }
 
-- (id)createViewStateRootForContinuation:(BOOL)a3
+- (id)createViewStateRootForContinuation:(BOOL)continuation
 {
-  v6 = objc_msgSend_delegate(self, a2, a3);
+  v6 = objc_msgSend_delegate(self, a2, continuation);
   if (v6 && (objc_opt_respondsToSelector() & 1) != 0)
   {
     v7 = objc_msgSend_createViewStateRoot(v6, v4, v5);
@@ -366,14 +366,14 @@
   return v7;
 }
 
-- (void)setUiState:(id)a3
+- (void)setUiState:(id)state
 {
   v9.receiver = self;
   v9.super_class = KNDocumentRoot;
-  v4 = a3;
-  [(TSADocumentRoot *)&v9 setUiState:v4];
+  stateCopy = state;
+  [(TSADocumentRoot *)&v9 setUiState:stateCopy];
   v7 = objc_msgSend_show(self, v5, v6, v9.receiver, v9.super_class);
-  objc_msgSend_setUiState_(v7, v8, v4);
+  objc_msgSend_setUiState_(v7, v8, stateCopy);
 }
 
 - (BOOL)isMultiPageForQuickLook
@@ -386,23 +386,23 @@
   return v12;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (qword_280A3A550 != a6)
+  if (qword_280A3A550 != context)
   {
     v9 = v6;
     v10 = v7;
     v8.receiver = self;
     v8.super_class = KNDocumentRoot;
-    [(KNDocumentRoot *)&v8 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(KNDocumentRoot *)&v8 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 
-- (id)stylesToNotResizeInStylesheet:(id)a3
+- (id)stylesToNotResizeInStylesheet:(id)stylesheet
 {
-  v3 = a3;
-  v6 = objc_msgSend_allPresenterNotesStyles(v3, v4, v5);
-  v9 = objc_msgSend_stickyCommentStyles(v3, v7, v8);
+  stylesheetCopy = stylesheet;
+  v6 = objc_msgSend_allPresenterNotesStyles(stylesheetCopy, v4, v5);
+  v9 = objc_msgSend_stickyCommentStyles(stylesheetCopy, v7, v8);
 
   v11 = objc_msgSend_setByAddingObjectsFromSet_(v6, v10, v9);
 
@@ -437,11 +437,11 @@
   return v30;
 }
 
-- (id)resolverContainerNameForResolver:(id)a3
+- (id)resolverContainerNameForResolver:(id)resolver
 {
-  v4 = a3;
+  resolverCopy = resolver;
   objc_opt_class();
-  v7 = objc_msgSend_drawableInfo(v4, v5, v6);
+  v7 = objc_msgSend_drawableInfo(resolverCopy, v5, v6);
 
   v8 = TSUDynamicCast();
 
@@ -452,9 +452,9 @@
   return v15;
 }
 
-- (id)nameForResolverContainer:(id)a3
+- (id)nameForResolverContainer:(id)container
 {
-  v4 = a3;
+  containerCopy = container;
   objc_opt_class();
   v5 = TSUDynamicCast();
 
@@ -477,57 +477,57 @@
   return v19;
 }
 
-- (id)resolverContainerForName:(id)a3 caseSensitive:(BOOL)a4
+- (id)resolverContainerForName:(id)name caseSensitive:(BOOL)sensitive
 {
-  v4 = a4;
-  v6 = a3;
+  sensitiveCopy = sensitive;
+  nameCopy = name;
   v9 = objc_msgSend_show(self, v7, v8);
   v12 = objc_msgSend_theme(v9, v10, v11);
-  v14 = objc_msgSend_slideNodeForFormulaReferenceName_caseSensitive_(v12, v13, v6, v4);
+  v14 = objc_msgSend_slideNodeForFormulaReferenceName_caseSensitive_(v12, v13, nameCopy, sensitiveCopy);
 
   if (!v14)
   {
     v17 = objc_msgSend_slideTree(v9, v15, v16);
-    v14 = objc_msgSend_slideNodeForFormulaReferenceName_caseSensitive_(v17, v18, v6, v4);
+    v14 = objc_msgSend_slideNodeForFormulaReferenceName_caseSensitive_(v17, v18, nameCopy, sensitiveCopy);
   }
 
   return v14;
 }
 
-- (id)resolverContainerNamesMatchingPrefix:(id)a3
+- (id)resolverContainerNamesMatchingPrefix:(id)prefix
 {
-  v4 = a3;
+  prefixCopy = prefix;
   v7 = objc_msgSend_show(self, v5, v6);
   v10 = objc_msgSend_theme(v7, v8, v9);
-  v12 = objc_msgSend_slideNamesMatchingPrefix_(v10, v11, v4);
+  v12 = objc_msgSend_slideNamesMatchingPrefix_(v10, v11, prefixCopy);
 
   v15 = objc_msgSend_slideTree(v7, v13, v14);
-  v17 = objc_msgSend_slideNamesMatchingPrefix_(v15, v16, v4);
+  v17 = objc_msgSend_slideNamesMatchingPrefix_(v15, v16, prefixCopy);
 
   v19 = objc_msgSend_arrayByAddingObjectsFromArray_(v12, v18, v17);
 
   return v19;
 }
 
-- (id)resolverMatchingName:(id)a3 contextResolver:(id)a4
+- (id)resolverMatchingName:(id)name contextResolver:(id)resolver
 {
-  v7 = a3;
-  if (a4)
+  nameCopy = name;
+  if (resolver)
   {
-    a4 = objc_msgSend_resolverContainerNameForResolver_(self, v6, a4);
+    resolver = objc_msgSend_resolverContainerNameForResolver_(self, v6, resolver);
   }
 
-  v8 = objc_msgSend_resolverMatchingName_contextContainerName_(self, v6, v7, a4);
+  v8 = objc_msgSend_resolverMatchingName_contextContainerName_(self, v6, nameCopy, resolver);
 
   return v8;
 }
 
-- (id)resolverMatchingName:(id)a3 contextContainerName:(id)a4
+- (id)resolverMatchingName:(id)name contextContainerName:(id)containerName
 {
   v43 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v9 = a4;
-  if (!v9 || (objc_msgSend_resolverContainerForName_caseSensitive_(self, v7, v9, 1), (v10 = objc_claimAutoreleasedReturnValue()) == 0) || (v11 = v10, objc_msgSend_resolverMatchingName_(v10, v7, v6), v12 = objc_claimAutoreleasedReturnValue(), v11, !v12))
+  nameCopy = name;
+  containerNameCopy = containerName;
+  if (!containerNameCopy || (objc_msgSend_resolverContainerForName_caseSensitive_(self, v7, containerNameCopy, 1), (v10 = objc_claimAutoreleasedReturnValue()) == 0) || (v11 = v10, objc_msgSend_resolverMatchingName_(v10, v7, nameCopy), v12 = objc_claimAutoreleasedReturnValue(), v11, !v12))
   {
     v13 = objc_msgSend_show(self, v7, v8);
     v16 = objc_msgSend_theme(v13, v14, v15);
@@ -559,7 +559,7 @@
             objc_enumerationMutation(v28);
           }
 
-          v36 = objc_msgSend_resolverMatchingName_(*(*(&v38 + 1) + 8 * v34), v31, v6, v38);
+          v36 = objc_msgSend_resolverMatchingName_(*(*(&v38 + 1) + 8 * v34), v31, nameCopy, v38);
           v12 = v36;
           if (v35)
           {
@@ -592,10 +592,10 @@ LABEL_14:
   return v12;
 }
 
-- (id)resolversMatchingPrefix:(id)a3
+- (id)resolversMatchingPrefix:(id)prefix
 {
   v40 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  prefixCopy = prefix;
   v7 = objc_msgSend_array(MEMORY[0x277CBEB18], v5, v6);
   v10 = objc_msgSend_show(self, v8, v9);
   v13 = objc_msgSend_theme(v10, v11, v12);
@@ -624,7 +624,7 @@ LABEL_14:
           objc_enumerationMutation(v25);
         }
 
-        v33 = objc_msgSend_resolversMatchingPrefix_(*(*(&v35 + 1) + 8 * i), v28, v4, v35);
+        v33 = objc_msgSend_resolversMatchingPrefix_(*(*(&v35 + 1) + 8 * i), v28, prefixCopy, v35);
         if (v33)
         {
           objc_msgSend_addObjectsFromArray_(v7, v32, v33);
@@ -640,21 +640,21 @@ LABEL_14:
   return v7;
 }
 
-+ (void)localizeModelObject:(id)a3 withTemplateBundle:(id)a4 andLocale:(id)a5
++ (void)localizeModelObject:(id)object withTemplateBundle:(id)bundle andLocale:(id)locale
 {
   v159 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v135 = a1;
-  v136 = a4;
-  v155.receiver = a1;
+  objectCopy = object;
+  selfCopy = self;
+  bundleCopy = bundle;
+  v155.receiver = self;
   v155.super_class = &OBJC_METACLASS___KNDocumentRoot;
-  v137 = a5;
-  objc_msgSendSuper2(&v155, sel_localizeModelObject_withTemplateBundle_andLocale_, v8, v136);
+  localeCopy = locale;
+  objc_msgSendSuper2(&v155, sel_localizeModelObject_withTemplateBundle_andLocale_, objectCopy, bundleCopy);
   objc_opt_class();
   v9 = TSUDynamicCast();
   v12 = v9;
   v125 = v9;
-  v126 = v8;
+  v126 = objectCopy;
   if (v9)
   {
     v13 = objc_msgSend_show(v9, v10, v11);
@@ -694,7 +694,7 @@ LABEL_14:
 
             v37 = objc_msgSend_name(v34, v35, v36);
             v40 = objc_msgSend_name(v34, v38, v39);
-            v42 = objc_msgSend_localizedTemplateStringForKey_value_table_templateBundle_locale_(v135, v41, v37, v40, v28, v136, v137);
+            v42 = objc_msgSend_localizedTemplateStringForKey_value_table_templateBundle_locale_(selfCopy, v41, v37, v40, v28, bundleCopy, localeCopy);
             objc_msgSend_setName_(v34, v43, v42);
 
             objc_msgSend_updatePlaceholderText(v34, v44, v45);
@@ -707,7 +707,7 @@ LABEL_14:
       }
 
       v47 = objc_msgSend_liveVideoSourceCollection(v133, v24, v25);
-      v49 = objc_msgSend_localizedDefaultSourceNameForLocale_(KNLiveVideoSourceCollection, v48, v137);
+      v49 = objc_msgSend_localizedDefaultSourceNameForLocale_(KNLiveVideoSourceCollection, v48, localeCopy);
       v129 = v47;
       v52 = objc_msgSend_defaultSource(v47, v50, v51);
       objc_msgSend_setName_(v52, v53, v49);
@@ -739,7 +739,7 @@ LABEL_14:
             {
               v66 = objc_msgSend_name(v64, v58, v59);
               v69 = objc_msgSend_name(v64, v67, v68);
-              v71 = objc_msgSend_localizedTemplateStringForKey_value_table_templateBundle_locale_(v135, v70, v66, v69, v62, v136, v137);
+              v71 = objc_msgSend_localizedTemplateStringForKey_value_table_templateBundle_locale_(selfCopy, v70, v66, v69, v62, bundleCopy, localeCopy);
               objc_msgSend_setName_(v64, v72, v71);
             }
           }
@@ -751,7 +751,7 @@ LABEL_14:
       }
 
       v12 = v125;
-      v8 = v126;
+      objectCopy = v126;
       v13 = v131;
       v18 = v133;
     }
@@ -791,7 +791,7 @@ LABEL_14:
           v90 = objc_msgSend_tagForInfo_(v134, v83, v88);
           if (v90)
           {
-            v92 = objc_msgSend_localizedTemplateStringForKey_value_table_templateBundle_locale_(v135, v89, v90, v90, v86, v136, v137);
+            v92 = objc_msgSend_localizedTemplateStringForKey_value_table_templateBundle_locale_(selfCopy, v89, v90, v90, v86, bundleCopy, localeCopy);
             if (v92)
             {
               v93 = objc_msgSend_objectForKeyedSubscript_(v132, v91, v92);
@@ -850,24 +850,24 @@ LABEL_14:
     v138[1] = 3221225472;
     v138[2] = sub_275D5A540;
     v138[3] = &unk_27A697BC0;
-    v142 = v135;
-    v139 = v136;
-    v140 = v137;
+    v142 = selfCopy;
+    v139 = bundleCopy;
+    v140 = localeCopy;
     v141 = v134;
     objc_msgSend_tsu_enumerateKeysAndObjectsUsingBlock_(v119, v120, v138);
     v123 = objc_msgSend_copy(v127, v121, v122);
     objc_msgSend_setPlaceholdersForTags_(v134, v124, v123);
 
     v12 = v125;
-    v8 = v126;
+    objectCopy = v126;
   }
 }
 
-- (void)setDocumentLocale:(id)a3
+- (void)setDocumentLocale:(id)locale
 {
   v18.receiver = self;
   v18.super_class = KNDocumentRoot;
-  [(KNDocumentRoot *)&v18 setDocumentLocale:a3];
+  [(KNDocumentRoot *)&v18 setDocumentLocale:locale];
   v6 = objc_msgSend_show(self, v4, v5);
   v9 = objc_msgSend_slideTree(v6, v7, v8);
   objc_msgSend_invalidateSlideNameCache(v9, v10, v11);
@@ -878,31 +878,31 @@ LABEL_14:
   objc_msgSend_invalidateSlideNameCache(v15, v16, v17);
 }
 
-- (id)UIStateForChart:(id)a3
+- (id)UIStateForChart:(id)chart
 {
-  v4 = a3;
+  chartCopy = chart;
   v7 = objc_msgSend_show(self, v5, v6);
   v10 = objc_msgSend_uiState(v7, v8, v9);
-  v12 = objc_msgSend_UIStateForChart_(v10, v11, v4);
+  v12 = objc_msgSend_UIStateForChart_(v10, v11, chartCopy);
 
   return v12;
 }
 
-- (void)setUIState:(id)a3 forChart:(id)a4
+- (void)setUIState:(id)state forChart:(id)chart
 {
-  v6 = a4;
-  v7 = a3;
+  chartCopy = chart;
+  stateCopy = state;
   v10 = objc_msgSend_show(self, v8, v9);
   v13 = objc_msgSend_uiState(v10, v11, v12);
-  objc_msgSend_setUIState_forChart_(v13, v14, v7, v6);
+  objc_msgSend_setUIState_forChart_(v13, v14, stateCopy, chartCopy);
 
   MEMORY[0x2821F9670](self, sel_invalidateViewState, v15);
 }
 
-- (id)warningLocationDescriptionForAffectedObjects:(id)a3 sortingInfo:(id *)a4
+- (id)warningLocationDescriptionForAffectedObjects:(id)objects sortingInfo:(id *)info
 {
   v179 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  objectsCopy = objects;
   v158 = objc_msgSend_array(MEMORY[0x277CBEB18], v6, v7);
   v159 = objc_msgSend_array(MEMORY[0x277CBEB18], v8, v9);
   v162 = objc_msgSend_array(MEMORY[0x277CBEB18], v10, v11);
@@ -915,7 +915,7 @@ LABEL_14:
   v173 = 0u;
   v174 = 0u;
   v175 = 0u;
-  obj = v5;
+  obj = objectsCopy;
   v21 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v20, &v172, v178, 16);
   if (!v21)
   {
@@ -1135,10 +1135,10 @@ LABEL_21:
     }
   }
 
-  if (a4 && objc_msgSend_count(v39, v86, v87))
+  if (info && objc_msgSend_count(v39, v86, v87))
   {
     v145 = v39;
-    *a4 = v39;
+    *info = v39;
   }
 
   v146 = *(v42 + 560);
@@ -1157,11 +1157,11 @@ LABEL_21:
   return v151;
 }
 
-- (int64_t)compareLocationSortingInfo:(id)a3 toSortingInfo:(id)a4
+- (int64_t)compareLocationSortingInfo:(id)info toSortingInfo:(id)sortingInfo
 {
-  v5 = a3;
-  v7 = a4;
-  if (!v5)
+  infoCopy = info;
+  sortingInfoCopy = sortingInfo;
+  if (!infoCopy)
   {
     v8 = MEMORY[0x277D81150];
     v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, "[KNDocumentRoot compareLocationSortingInfo:toSortingInfo:]");
@@ -1175,7 +1175,7 @@ LABEL_21:
   v16 = TSUDynamicCast();
   if (v16)
   {
-    if (v7)
+    if (sortingInfoCopy)
     {
       goto LABEL_5;
     }
@@ -1186,10 +1186,10 @@ LABEL_21:
     v32 = MEMORY[0x277D81150];
     v33 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v15, "[KNDocumentRoot compareLocationSortingInfo:toSortingInfo:]");
     v35 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v34, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/keynote/Classes/KNDocumentRoot.m");
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v32, v36, v33, v35, 1696, 0, "Unexpected class of info1:%@", v5);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v32, v36, v33, v35, 1696, 0, "Unexpected class of info1:%@", infoCopy);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v37, v38);
-    if (v7)
+    if (sortingInfoCopy)
     {
       goto LABEL_5;
     }
@@ -1209,7 +1209,7 @@ LABEL_5:
     v19 = MEMORY[0x277D81150];
     v20 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v17, "[KNDocumentRoot compareLocationSortingInfo:toSortingInfo:]");
     v22 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v21, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/keynote/Classes/KNDocumentRoot.m");
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v19, v23, v20, v22, 1700, 0, "Unexpected class of info1:%@", v5);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v19, v23, v20, v22, 1700, 0, "Unexpected class of info1:%@", infoCopy);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v24, v25);
   }
@@ -1294,10 +1294,10 @@ LABEL_5:
   objc_msgSend_setTemplateIdentifier_(self, v45, 0);
 }
 
-- (BOOL)validateUIState:(id)a3
+- (BOOL)validateUIState:(id)state
 {
-  v4 = a3;
-  v7 = objc_msgSend_slideTreeSelection(v4, v5, v6);
+  stateCopy = state;
+  v7 = objc_msgSend_slideTreeSelection(stateCopy, v5, v6);
   v10 = objc_msgSend_slideNodes(v7, v8, v9);
   v13 = objc_msgSend_slideNodeToEdit(v7, v11, v12);
   v14 = MEMORY[0x277CBEB98];
@@ -1316,7 +1316,7 @@ LABEL_5:
     v29 = 0;
   }
 
-  v30 = objc_msgSend_collapsedSlideNodes(v4, v27, v28);
+  v30 = objc_msgSend_collapsedSlideNodes(stateCopy, v27, v28);
   v33 = objc_msgSend_count(v30, v31, v32);
   isSubsetOfSet = (v33 == 0) & v29;
   if (v33 && v29)
@@ -1324,7 +1324,7 @@ LABEL_5:
     isSubsetOfSet = objc_msgSend_isSubsetOfSet_(v30, v34, v25);
   }
 
-  v37 = objc_msgSend_outlineCollapsedSlideNodes(v4, v34, v35);
+  v37 = objc_msgSend_outlineCollapsedSlideNodes(stateCopy, v34, v35);
   v40 = objc_msgSend_count(v37, v38, v39);
   v43 = (v40 == 0) & isSubsetOfSet;
   if (v40 && isSubsetOfSet)
@@ -1332,7 +1332,7 @@ LABEL_5:
     v43 = objc_msgSend_isSubsetOfSet_(v37, v41, v25);
   }
 
-  v44 = objc_msgSend_outlineHasBodySlideNodes(v4, v41, v42);
+  v44 = objc_msgSend_outlineHasBodySlideNodes(stateCopy, v41, v42);
   v47 = objc_msgSend_count(v44, v45, v46);
   v49 = (v47 == 0) & v43;
   if (v47 && v43)
@@ -1356,10 +1356,10 @@ LABEL_5:
   }
 }
 
-- (BOOL)validateSlideNode:(id)a3
+- (BOOL)validateSlideNode:(id)node
 {
-  v4 = a3;
-  v7 = objc_msgSend_slide(v4, v5, v6);
+  nodeCopy = node;
+  v7 = objc_msgSend_slide(nodeCopy, v5, v6);
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -1369,14 +1369,14 @@ LABEL_5:
 
   v10 = objc_msgSend_show(self, v8, v9);
   v13 = objc_msgSend_slideTree(v10, v11, v12);
-  v15 = objc_msgSend_containsSlideNode_(v13, v14, v4);
+  v15 = objc_msgSend_containsSlideNode_(v13, v14, nodeCopy);
 
   if ((v15 & 1) == 0)
   {
 LABEL_5:
     v19 = objc_msgSend_theme(self, v16, v17);
     v22 = objc_msgSend_templateSlides(v19, v20, v21);
-    v18 = objc_msgSend_containsObject_(v22, v23, v4);
+    v18 = objc_msgSend_containsObject_(v22, v23, nodeCopy);
 
     goto LABEL_6;
   }
@@ -1387,12 +1387,12 @@ LABEL_6:
   return v18;
 }
 
-- (void)loadFromArchive:(const void *)a3 unarchiver:(id)a4
+- (void)loadFromArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v6 = a4;
-  if (*(a3 + 4))
+  unarchiverCopy = unarchiver;
+  if (*(archive + 4))
   {
-    v7 = *(a3 + 4);
+    v7 = *(archive + 4);
   }
 
   else
@@ -1402,14 +1402,14 @@ LABEL_6:
 
   v18.receiver = self;
   v18.super_class = KNDocumentRoot;
-  [(TSADocumentRoot *)&v18 loadFromArchive:v7 unarchiver:v6];
-  v8 = *(a3 + 3);
+  [(TSADocumentRoot *)&v18 loadFromArchive:v7 unarchiver:unarchiverCopy];
+  v8 = *(archive + 3);
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = sub_275D5BE3C;
   v17[3] = &unk_27A697C38;
   v17[4] = self;
-  v9 = v6;
+  v9 = unarchiverCopy;
   v11 = objc_opt_class();
   if (v8)
   {
@@ -1421,9 +1421,9 @@ LABEL_6:
     objc_msgSend_readReferenceMessage_class_protocol_completion_(v9, v10, MEMORY[0x277D80A18], v11, 0, v17);
   }
 
-  if ((*(a3 + 16) & 4) != 0)
+  if ((*(archive + 16) & 4) != 0)
   {
-    v12 = *(a3 + 5);
+    v12 = *(archive + 5);
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = sub_275D5BE48;
@@ -1435,45 +1435,45 @@ LABEL_6:
   }
 }
 
-- (void)saveToArchive:(void *)a3 archiver:(id)a4
+- (void)saveToArchive:(void *)archive archiver:(id)archiver
 {
-  v6 = a4;
+  archiverCopy = archiver;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_275D5BFD8;
   v15[3] = &unk_27A697C88;
-  v18 = a3;
-  v7 = v6;
+  archiveCopy = archive;
+  v7 = archiverCopy;
   v16 = v7;
-  v17 = self;
-  objc_msgSend_pushScopeForField_message_usingBlock_(v7, v8, 3, a3, v15);
+  selfCopy = self;
+  objc_msgSend_pushScopeForField_message_usingBlock_(v7, v8, 3, archive, v15);
   v12 = objc_msgSend_show(self, v9, v10);
-  *(a3 + 4) |= 1u;
-  v13 = *(a3 + 3);
+  *(archive + 4) |= 1u;
+  v13 = *(archive + 3);
   if (!v13)
   {
-    v14 = *(a3 + 1);
+    v14 = *(archive + 1);
     if (v14)
     {
       v14 = *(v14 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v13 = MEMORY[0x277C8F050](v14);
-    *(a3 + 3) = v13;
+    *(archive + 3) = v13;
   }
 
   objc_msgSend_setStrongReference_message_(v7, v11, v12, v13);
 }
 
-- (void)p_hyperlinkAndBreadcrumbUpgradeForUnity20SlideNodes:(id)a3
+- (void)p_hyperlinkAndBreadcrumbUpgradeForUnity20SlideNodes:(id)nodes
 {
   v15 = *MEMORY[0x277D85DE8];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = a3;
-  v7 = objc_msgSend_countByEnumeratingWithState_objects_count_(v3, v4, &v10, v14, 16);
+  nodesCopy = nodes;
+  v7 = objc_msgSend_countByEnumeratingWithState_objects_count_(nodesCopy, v4, &v10, v14, 16);
   if (v7)
   {
     v8 = *v11;
@@ -1484,29 +1484,29 @@ LABEL_6:
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(nodesCopy);
         }
 
         objc_msgSend_willModifyForUpgrade(*(*(&v10 + 1) + 8 * v9++), v5, v6, v10);
       }
 
       while (v7 != v9);
-      v7 = objc_msgSend_countByEnumeratingWithState_objects_count_(v3, v5, &v10, v14, 16);
+      v7 = objc_msgSend_countByEnumeratingWithState_objects_count_(nodesCopy, v5, &v10, v14, 16);
     }
 
     while (v7);
   }
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v4 = a3;
+  unarchiverCopy = unarchiver;
   google::protobuf::internal::AssignDescriptors();
-  v6 = objc_msgSend_messageWithDescriptor_(v4, v5, off_2812EA908[58]);
+  v6 = objc_msgSend_messageWithDescriptor_(unarchiverCopy, v5, off_2812EA908[58]);
 
-  objc_msgSend_loadFromArchive_unarchiver_(self, v7, v6, v4);
-  v10 = objc_msgSend_preUFFVersion(v4, v8, v9);
-  v13 = objc_msgSend_fileFormatVersion(v4, v11, v12);
+  objc_msgSend_loadFromArchive_unarchiver_(self, v7, v6, unarchiverCopy);
+  v10 = objc_msgSend_preUFFVersion(unarchiverCopy, v8, v9);
+  v13 = objc_msgSend_fileFormatVersion(unarchiverCopy, v11, v12);
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_275D5C284;
@@ -1514,16 +1514,16 @@ LABEL_6:
   v15[4] = self;
   v15[5] = v10;
   v15[6] = v13;
-  objc_msgSend_addFinalizeHandler_(v4, v14, v15);
+  objc_msgSend_addFinalizeHandler_(unarchiverCopy, v14, v15);
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v7 = a3;
+  archiverCopy = archiver;
   google::protobuf::internal::AssignDescriptors();
-  v5 = objc_msgSend_messageWithNewFunction_descriptor_(v7, v4, sub_275D5DE54, off_2812EA908[58]);
+  v5 = objc_msgSend_messageWithNewFunction_descriptor_(archiverCopy, v4, sub_275D5DE54, off_2812EA908[58]);
 
-  objc_msgSend_saveToArchive_archiver_(self, v6, v5, v7);
+  objc_msgSend_saveToArchive_archiver_(self, v6, v5, archiverCopy);
 }
 
 @end

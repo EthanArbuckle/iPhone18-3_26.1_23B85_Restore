@@ -1,10 +1,10 @@
 @interface MutableVideoViewModel
-- (_TtC9MomentsUI21MutableVideoViewModel)initWithCoder:(id)a3;
+- (_TtC9MomentsUI21MutableVideoViewModel)initWithCoder:(id)coder;
 @end
 
 @implementation MutableVideoViewModel
 
-- (_TtC9MomentsUI21MutableVideoViewModel)initWithCoder:(id)a3
+- (_TtC9MomentsUI21MutableVideoViewModel)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC9MomentsUI21MutableVideoViewModel_video) = 0;
   v3 = self + OBJC_IVAR____TtC9MomentsUI21MutableVideoViewModel_videoDurationSeconds;

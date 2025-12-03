@@ -1,23 +1,23 @@
 @interface WFContentLibraryANDFiltering
-+ (void)getItemsMatchingComparisonPredicates:(id)a3 resultHandler:(id)a4;
-+ (void)getItemsMatchingPredicate:(id)a3 resultHandler:(id)a4;
-+ (void)performCustomFilteringUsingORComparisonPredicates:(id)a3 resultHandler:(id)a4;
++ (void)getItemsMatchingComparisonPredicates:(id)predicates resultHandler:(id)handler;
++ (void)getItemsMatchingPredicate:(id)predicate resultHandler:(id)handler;
++ (void)performCustomFilteringUsingORComparisonPredicates:(id)predicates resultHandler:(id)handler;
 @end
 
 @implementation WFContentLibraryANDFiltering
 
-+ (void)getItemsMatchingComparisonPredicates:(id)a3 resultHandler:(id)a4
++ (void)getItemsMatchingComparisonPredicates:(id)predicates resultHandler:(id)handler
 {
-  v7 = a4;
+  handlerCopy = handler;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __83__WFContentLibraryANDFiltering_getItemsMatchingComparisonPredicates_resultHandler___block_invoke;
   v9[3] = &unk_2783483B8;
-  v10 = v7;
-  v11 = a1;
+  v10 = handlerCopy;
+  selfCopy = self;
   v12 = a2;
-  v8 = v7;
-  [a1 performCustomFilteringUsingComparisonPredicates:a3 resultHandler:v9];
+  v8 = handlerCopy;
+  [self performCustomFilteringUsingComparisonPredicates:predicates resultHandler:v9];
 }
 
 void __83__WFContentLibraryANDFiltering_getItemsMatchingComparisonPredicates_resultHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -83,10 +83,10 @@ id __83__WFContentLibraryANDFiltering_getItemsMatchingComparisonPredicates_resul
   return v5;
 }
 
-+ (void)performCustomFilteringUsingORComparisonPredicates:(id)a3 resultHandler:(id)a4
++ (void)performCustomFilteringUsingORComparisonPredicates:(id)predicates resultHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  predicatesCopy = predicates;
+  handlerCopy = handler;
   v13[0] = 0;
   v13[1] = v13;
   v13[2] = 0x3032000000;
@@ -98,15 +98,15 @@ id __83__WFContentLibraryANDFiltering_getItemsMatchingComparisonPredicates_resul
   v12[2] = __96__WFContentLibraryANDFiltering_performCustomFilteringUsingORComparisonPredicates_resultHandler___block_invoke;
   v12[3] = &unk_278348320;
   v12[4] = v13;
-  v12[5] = a1;
+  v12[5] = self;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __96__WFContentLibraryANDFiltering_performCustomFilteringUsingORComparisonPredicates_resultHandler___block_invoke_3;
   v9[3] = &unk_278348348;
-  v8 = v7;
+  v8 = handlerCopy;
   v10 = v8;
   v11 = v13;
-  [v6 if_enumerateAsynchronouslyInSequence:v12 completionHandler:v9];
+  [predicatesCopy if_enumerateAsynchronouslyInSequence:v12 completionHandler:v9];
 
   _Block_object_dispose(v13, 8);
 }
@@ -153,11 +153,11 @@ uint64_t __96__WFContentLibraryANDFiltering_performCustomFilteringUsingORCompari
   return v5();
 }
 
-+ (void)getItemsMatchingPredicate:(id)a3 resultHandler:(id)a4
++ (void)getItemsMatchingPredicate:(id)predicate resultHandler:(id)handler
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  predicateCopy = predicate;
+  handlerCopy = handler;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -165,29 +165,29 @@ uint64_t __96__WFContentLibraryANDFiltering_performCustomFilteringUsingORCompari
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
 LABEL_17:
-      v7[2](v7, 0);
+      handlerCopy[2](handlerCopy, 0);
       goto LABEL_18;
     }
 
-    v8 = v6;
-    v9 = [v8 subpredicates];
-    if ([v9 count])
+    v8 = predicateCopy;
+    subpredicates = [v8 subpredicates];
+    if ([subpredicates count])
     {
       if ([v8 compoundPredicateType] == 1)
       {
-        if ([v9 count] == 1)
+        if ([subpredicates count] == 1)
         {
-          v10 = [v9 firstObject];
-          [a1 getItemsMatchingPredicate:v10 resultHandler:v7];
+          firstObject = [subpredicates firstObject];
+          [self getItemsMatchingPredicate:firstObject resultHandler:handlerCopy];
 LABEL_13:
 
           goto LABEL_14;
         }
 
-        if ([v9 count] >= 2)
+        if ([subpredicates count] >= 2)
         {
-          v10 = WFCollapseANDCompoundPredicates(v9);
-          [a1 getItemsMatchingComparisonPredicates:v10 resultHandler:v7];
+          firstObject = WFCollapseANDCompoundPredicates(subpredicates);
+          [self getItemsMatchingComparisonPredicates:firstObject resultHandler:handlerCopy];
           goto LABEL_13;
         }
 
@@ -201,12 +201,12 @@ LABEL_16:
         goto LABEL_17;
       }
 
-      [a1 performCustomFilteringUsingORComparisonPredicates:v9 resultHandler:v7];
+      [self performCustomFilteringUsingORComparisonPredicates:subpredicates resultHandler:handlerCopy];
     }
 
     else
     {
-      [a1 getItemsMatchingComparisonPredicates:MEMORY[0x277CBEBF8] resultHandler:v7];
+      [self getItemsMatchingComparisonPredicates:MEMORY[0x277CBEBF8] resultHandler:handlerCopy];
     }
 
 LABEL_14:
@@ -214,9 +214,9 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v11[0] = v6;
+  v11[0] = predicateCopy;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:1];
-  [a1 getItemsMatchingComparisonPredicates:v8 resultHandler:v7];
+  [self getItemsMatchingComparisonPredicates:v8 resultHandler:handlerCopy];
 LABEL_15:
 
 LABEL_18:

@@ -1,14 +1,14 @@
 @interface NPKProtoSignDataRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsEntanglementMode:(id)a3;
+- (int)StringAsEntanglementMode:(id)mode;
 - (int)entanglementMode;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NPKProtoSignDataRequest
@@ -26,17 +26,17 @@
   }
 }
 
-- (int)StringAsEntanglementMode:(id)a3
+- (int)StringAsEntanglementMode:(id)mode
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"PlatformIdentifier"])
+  modeCopy = mode;
+  if ([modeCopy isEqualToString:@"PlatformIdentifier"])
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"JCOPInfo"];
+    v4 = [modeCopy isEqualToString:@"JCOPInfo"];
   }
 
   return v4;
@@ -48,20 +48,20 @@
   v8.receiver = self;
   v8.super_class = NPKProtoSignDataRequest;
   v4 = [(NPKProtoSignDataRequest *)&v8 description];
-  v5 = [(NPKProtoSignDataRequest *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NPKProtoSignDataRequest *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   dataToSign = self->_dataToSign;
   if (dataToSign)
   {
-    [v3 setObject:dataToSign forKey:@"dataToSign"];
+    [dictionary setObject:dataToSign forKey:@"dataToSign"];
   }
 
   digestToSign = self->_digestToSign;
@@ -103,73 +103,73 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_dataToSign)
   {
     PBDataWriterWriteDataField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_digestToSign)
   {
     PBDataWriterWriteDataField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
     entanglementMode = self->_entanglementMode;
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_aid)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_dataToSign)
   {
-    [v4 setDataToSign:?];
-    v4 = v5;
+    [toCopy setDataToSign:?];
+    toCopy = v5;
   }
 
   if (self->_digestToSign)
   {
     [v5 setDigestToSign:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 8) = self->_entanglementMode;
-    *(v4 + 36) |= 1u;
+    *(toCopy + 8) = self->_entanglementMode;
+    *(toCopy + 36) |= 1u;
   }
 
   if (self->_aid)
   {
     [v5 setAid:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSData *)self->_dataToSign copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSData *)self->_dataToSign copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
-  v8 = [(NSData *)self->_digestToSign copyWithZone:a3];
+  v8 = [(NSData *)self->_digestToSign copyWithZone:zone];
   v9 = *(v5 + 24);
   *(v5 + 24) = v8;
 
@@ -179,23 +179,23 @@
     *(v5 + 36) |= 1u;
   }
 
-  v10 = [(NSString *)self->_aid copyWithZone:a3];
+  v10 = [(NSString *)self->_aid copyWithZone:zone];
   v11 = *(v5 + 8);
   *(v5 + 8) = v10;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_13;
   }
 
   dataToSign = self->_dataToSign;
-  if (dataToSign | *(v4 + 2))
+  if (dataToSign | *(equalCopy + 2))
   {
     if (![(NSData *)dataToSign isEqual:?])
     {
@@ -204,7 +204,7 @@
   }
 
   digestToSign = self->_digestToSign;
-  if (digestToSign | *(v4 + 3))
+  if (digestToSign | *(equalCopy + 3))
   {
     if (![(NSData *)digestToSign isEqual:?])
     {
@@ -212,16 +212,16 @@
     }
   }
 
-  v7 = *(v4 + 36);
+  v7 = *(equalCopy + 36);
   if (*&self->_has)
   {
-    if ((*(v4 + 36) & 1) == 0 || self->_entanglementMode != *(v4 + 8))
+    if ((*(equalCopy + 36) & 1) == 0 || self->_entanglementMode != *(equalCopy + 8))
     {
       goto LABEL_13;
     }
   }
 
-  else if (*(v4 + 36))
+  else if (*(equalCopy + 36))
   {
 LABEL_13:
     v9 = 0;
@@ -229,7 +229,7 @@ LABEL_13:
   }
 
   aid = self->_aid;
-  if (aid | *(v4 + 1))
+  if (aid | *(equalCopy + 1))
   {
     v9 = [(NSString *)aid isEqual:?];
   }
@@ -261,32 +261,32 @@ LABEL_14:
   return v4 ^ v3 ^ v5 ^ [(NSString *)self->_aid hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 2))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 2))
   {
     [(NPKProtoSignDataRequest *)self setDataToSign:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(NPKProtoSignDataRequest *)self setDigestToSign:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[9])
+  if (fromCopy[9])
   {
-    self->_entanglementMode = v4[8];
+    self->_entanglementMode = fromCopy[8];
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(NPKProtoSignDataRequest *)self setAid:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 

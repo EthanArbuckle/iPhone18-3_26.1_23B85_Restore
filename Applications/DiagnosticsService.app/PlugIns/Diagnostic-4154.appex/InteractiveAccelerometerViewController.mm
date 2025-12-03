@@ -1,36 +1,36 @@
 @interface InteractiveAccelerometerViewController
-- (BOOL)_updateForRotation:(double)a3 shiftAngle:(double)a4;
+- (BOOL)_updateForRotation:(double)rotation shiftAngle:(double)angle;
 - (BOOL)determineTestingOrientation;
 - (BOOL)isDebuggingEnabled;
-- (double)average:(id)a3 key:(id)a4 size:(unint64_t)a5;
-- (void)_updateOffsetLabel:(double)a3;
+- (double)average:(id)average key:(id)key size:(unint64_t)size;
+- (void)_updateOffsetLabel:(double)label;
 - (void)addNotStationaryData;
 - (void)addStationaryData;
 - (void)checkForNextOrientation;
 - (void)checkWithinOffset;
 - (void)cleanUp;
 - (void)didReceiveMemoryWarning;
-- (void)endTestWithStatusCode:(id)a3;
-- (void)handleHIDEvent:(__IOHIDEvent *)a3;
+- (void)endTestWithStatusCode:(id)code;
+- (void)handleHIDEvent:(__IOHIDEvent *)event;
 - (void)heldOrientationStationary;
 - (void)notStationaryTimedOut;
 - (void)setZeroRangeAndDegreesShiftRange;
 - (void)setupView;
-- (void)setupWithInputs:(id)a3 responder:(id)a4;
+- (void)setupWithInputs:(id)inputs responder:(id)responder;
 - (void)start;
 - (void)startAnimations;
 - (void)stopAnimations;
 - (void)updateColors;
-- (void)updateDisplay:(id)a3;
-- (void)updateTicsForOrientation:(int64_t)a3;
+- (void)updateDisplay:(id)display;
+- (void)updateTicsForOrientation:(int64_t)orientation;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation InteractiveAccelerometerViewController
 
-- (void)setupWithInputs:(id)a3 responder:(id)a4
+- (void)setupWithInputs:(id)inputs responder:(id)responder
 {
-  [(InteractiveAccelerometerViewController *)self setInputs:a3, a4];
+  [(InteractiveAccelerometerViewController *)self setInputs:inputs, responder];
   [(InteractiveAccelerometerViewController *)self setTestingOrientation:0];
   [(InteractiveAccelerometerViewController *)self setOrientationsIndex:0];
   [(InteractiveAccelerometerViewController *)self setOrientationMissed:0];
@@ -63,14 +63,14 @@
   v13 = objc_alloc_init(CMMotionManager);
   [(InteractiveAccelerometerViewController *)self setManager:v13];
 
-  v14 = [(InteractiveAccelerometerViewController *)self manager];
-  [v14 setShowsDeviceMovementDisplay:1];
+  manager = [(InteractiveAccelerometerViewController *)self manager];
+  [manager setShowsDeviceMovementDisplay:1];
 
-  v15 = [(InteractiveAccelerometerViewController *)self manager];
-  [v15 setDeviceMotionUpdateInterval:0.00999999978];
+  manager2 = [(InteractiveAccelerometerViewController *)self manager];
+  [manager2 setDeviceMotionUpdateInterval:0.00999999978];
 
-  v16 = [(InteractiveAccelerometerViewController *)self manager];
-  [v16 startDeviceMotionUpdatesUsingReferenceFrame:1];
+  manager3 = [(InteractiveAccelerometerViewController *)self manager];
+  [manager3 startDeviceMotionUpdatesUsingReferenceFrame:1];
 
   [(InteractiveAccelerometerViewController *)self setOrientation:1];
   [(InteractiveAccelerometerViewController *)self setPreviousOrientation:1];
@@ -78,11 +78,11 @@
   [(InteractiveAccelerometerViewController *)self setLastDisplayDegrees:0x7FFFFFFFFFFFFFFFLL];
   [(InteractiveAccelerometerViewController *)self setPreviousRotation:1.79769313e308];
   [(InteractiveAccelerometerViewController *)self setPreviousShift:1.79769313e308];
-  v17 = [(InteractiveAccelerometerViewController *)self view];
-  v18 = [v17 window];
-  v19 = [v18 windowScene];
-  v20 = [v19 screen];
-  [v20 bounds];
+  view = [(InteractiveAccelerometerViewController *)self view];
+  window = [view window];
+  windowScene = [window windowScene];
+  screen = [windowScene screen];
+  [screen bounds];
   v22 = v21;
   v49 = xmmword_10000BA28;
   v50 = -798153473;
@@ -95,7 +95,7 @@
 
   UIFontForLanguage = CTFontCreateUIFontForLanguage(0x68u, v24 * round(v22 * 81.0 / 320.0), 0);
 
-  v26 = [(__CTFont *)UIFontForLanguage fontDescriptor];
+  fontDescriptor = [(__CTFont *)UIFontForLanguage fontDescriptor];
   CFRelease(UIFontForLanguage);
   v47 = UIFontDescriptorFeatureSettingsAttribute;
   v44[0] = UIFontFeatureTypeIdentifierKey;
@@ -113,7 +113,7 @@
   v29 = [NSArray arrayWithObjects:v46 count:2];
   v48 = v29;
   v30 = [NSDictionary dictionaryWithObjects:&v48 forKeys:&v47 count:1];
-  v31 = [v26 fontDescriptorByAddingAttributes:v30];
+  v31 = [fontDescriptor fontDescriptorByAddingAttributes:v30];
 
   [(InteractiveAccelerometerViewController *)self setFontDescriptor:v31];
   v32 = +[DSTestAutomation sharedInstance];
@@ -121,17 +121,17 @@
 
   if (v28)
   {
-    v33 = [(InteractiveAccelerometerViewController *)self inputs];
-    v34 = [v33 parameters];
-    v41[0] = v34;
+    inputs = [(InteractiveAccelerometerViewController *)self inputs];
+    parameters = [inputs parameters];
+    v41[0] = parameters;
     v40[1] = @"predicates";
-    v35 = [(InteractiveAccelerometerViewController *)self inputs];
-    v36 = [v35 predicates];
-    v41[1] = v36;
+    inputs2 = [(InteractiveAccelerometerViewController *)self inputs];
+    predicates = [inputs2 predicates];
+    v41[1] = predicates;
     v40[2] = @"specifications";
-    v37 = [(InteractiveAccelerometerViewController *)self inputs];
-    v38 = [v37 specifications];
-    v41[2] = v38;
+    inputs3 = [(InteractiveAccelerometerViewController *)self inputs];
+    specifications = [inputs3 specifications];
+    v41[2] = specifications;
     v39 = [NSDictionary dictionaryWithObjects:v41 forKeys:v40 count:3];
     [DSTestAutomation postConfiguration:v39];
   }
@@ -143,8 +143,8 @@
   v3 = +[DAHIDEventMonitor sharedInstance];
   [v3 setDelegate:self];
 
-  v4 = [(InteractiveAccelerometerViewController *)self inputs];
-  v5 = [v4 componentSensor] != 0;
+  inputs = [(InteractiveAccelerometerViewController *)self inputs];
+  v5 = [inputs componentSensor] != 0;
 
   v6 = +[DAHIDEventMonitor sharedInstance];
   v7 = [NSNumber numberWithUnsignedInteger:v5];
@@ -154,8 +154,8 @@
   if (v9)
   {
     v10 = +[DAHIDEventMonitor sharedInstance];
-    v11 = [(InteractiveAccelerometerViewController *)self inputs];
-    v12 = [v10 serviceClientSetPropertyValue:+[NSNumber numberWithInt:](NSNumber forKey:"numberWithInt:" forHIDEvent:{objc_msgSend(v11, "outputDataRate")), @"ReportInterval", v5}];
+    inputs2 = [(InteractiveAccelerometerViewController *)self inputs];
+    v12 = [v10 serviceClientSetPropertyValue:+[NSNumber numberWithInt:](NSNumber forKey:"numberWithInt:" forHIDEvent:{objc_msgSend(inputs2, "outputDataRate")), @"ReportInterval", v5}];
 
     if (v12)
     {
@@ -167,12 +167,12 @@
         [(InteractiveAccelerometerViewController *)self setStartDate:v13];
 
         v14 = +[DSTestAutomation sharedInstance];
-        v15 = [v14 testAutomationEnabled];
+        testAutomationEnabled = [v14 testAutomationEnabled];
 
-        if (v15)
+        if (testAutomationEnabled)
         {
-          v16 = [(InteractiveAccelerometerViewController *)self inputs];
-          if ([v16 componentSensor])
+          inputs3 = [(InteractiveAccelerometerViewController *)self inputs];
+          if ([inputs3 componentSensor])
           {
             v17 = @"ListenForGyroPosition";
           }
@@ -189,8 +189,8 @@
           [DSTestAutomation postInteractiveTestEvent:v17 info:v19];
         }
 
-        v20 = [(InteractiveAccelerometerViewController *)self inputs];
-        [v20 notStationaryTimeout];
+        inputs4 = [(InteractiveAccelerometerViewController *)self inputs];
+        [inputs4 notStationaryTimeout];
         v21 = [NSTimer scheduledTimerWithTimeInterval:self target:"notStationaryTimedOut" selector:0 userInfo:0 repeats:?];
         [(InteractiveAccelerometerViewController *)self setTimeoutTimer:v21];
 
@@ -223,22 +223,22 @@
 
 - (void)setZeroRangeAndDegreesShiftRange
 {
-  v3 = [(InteractiveAccelerometerViewController *)self inputs];
-  v4 = [v3 componentOrientationSpecifications];
-  v5 = [(InteractiveAccelerometerViewController *)self inputs];
-  v6 = [v5 orientationsParameter];
-  v7 = [v6 objectAtIndexedSubscript:{-[InteractiveAccelerometerViewController orientationsIndex](self, "orientationsIndex")}];
-  v14 = [v4 objectForKeyedSubscript:v7];
+  inputs = [(InteractiveAccelerometerViewController *)self inputs];
+  componentOrientationSpecifications = [inputs componentOrientationSpecifications];
+  inputs2 = [(InteractiveAccelerometerViewController *)self inputs];
+  orientationsParameter = [inputs2 orientationsParameter];
+  v7 = [orientationsParameter objectAtIndexedSubscript:{-[InteractiveAccelerometerViewController orientationsIndex](self, "orientationsIndex")}];
+  v14 = [componentOrientationSpecifications objectForKeyedSubscript:v7];
 
   [v14 zeroRangeThreshold];
   v9 = v8;
-  v10 = [(InteractiveAccelerometerViewController *)self inputs];
-  [v10 setZeroRange:v9];
+  inputs3 = [(InteractiveAccelerometerViewController *)self inputs];
+  [inputs3 setZeroRange:v9];
 
   [v14 degreesShiftRangeThreshold];
   v12 = v11;
-  v13 = [(InteractiveAccelerometerViewController *)self inputs];
-  [v13 setDegreesShiftRange:v12];
+  inputs4 = [(InteractiveAccelerometerViewController *)self inputs];
+  [inputs4 setDegreesShiftRange:v12];
 }
 
 - (void)viewWillLayoutSubviews
@@ -246,43 +246,43 @@
   v58.receiver = self;
   v58.super_class = InteractiveAccelerometerViewController;
   [(InteractiveAccelerometerViewController *)&v58 viewWillLayoutSubviews];
-  v3 = [(InteractiveAccelerometerViewController *)self view];
-  [v3 center];
+  view = [(InteractiveAccelerometerViewController *)self view];
+  [view center];
   v5 = v4;
   v7 = v6;
-  v8 = [(InteractiveAccelerometerViewController *)self degreesLabel];
-  [v8 setCenter:{v5, v7}];
+  degreesLabel = [(InteractiveAccelerometerViewController *)self degreesLabel];
+  [degreesLabel setCenter:{v5, v7}];
 
-  v9 = [(InteractiveAccelerometerViewController *)self view];
-  [v9 center];
+  view2 = [(InteractiveAccelerometerViewController *)self view];
+  [view2 center];
   v11 = v10;
   v13 = v12;
-  v14 = [(InteractiveAccelerometerViewController *)self bottomOuterCircle];
-  [v14 setPosition:{v11, v13}];
+  bottomOuterCircle = [(InteractiveAccelerometerViewController *)self bottomOuterCircle];
+  [bottomOuterCircle setPosition:{v11, v13}];
 
-  v15 = [(InteractiveAccelerometerViewController *)self view];
-  [v15 center];
+  view3 = [(InteractiveAccelerometerViewController *)self view];
+  [view3 center];
   v17 = v16;
   v19 = v18;
-  v20 = [(InteractiveAccelerometerViewController *)self bottomInnerCircle];
-  [v20 setPosition:{v17, v19}];
+  bottomInnerCircle = [(InteractiveAccelerometerViewController *)self bottomInnerCircle];
+  [bottomInnerCircle setPosition:{v17, v19}];
 
-  v21 = [(InteractiveAccelerometerViewController *)self view];
-  [v21 center];
+  view4 = [(InteractiveAccelerometerViewController *)self view];
+  [view4 center];
   v23 = v22;
   v25 = v24;
-  v26 = [(InteractiveAccelerometerViewController *)self topOuterCircle];
-  [v26 setPosition:{v23, v25}];
+  topOuterCircle = [(InteractiveAccelerometerViewController *)self topOuterCircle];
+  [topOuterCircle setPosition:{v23, v25}];
 
-  v27 = [(InteractiveAccelerometerViewController *)self view];
-  [v27 center];
+  view5 = [(InteractiveAccelerometerViewController *)self view];
+  [view5 center];
   v29 = v28;
   v31 = v30;
-  v32 = [(InteractiveAccelerometerViewController *)self topInnerCircle];
-  [v32 setPosition:{v29, v31}];
+  topInnerCircle = [(InteractiveAccelerometerViewController *)self topInnerCircle];
+  [topInnerCircle setPosition:{v29, v31}];
 
-  v33 = [(InteractiveAccelerometerViewController *)self view];
-  [v33 bounds];
+  view6 = [(InteractiveAccelerometerViewController *)self view];
+  [view6 bounds];
   v35 = v34;
   v37 = v36;
   v39 = v38;
@@ -298,16 +298,16 @@
   v60.size.width = v39;
   v60.size.height = v41;
   v43 = MidX - CGRectGetWidth(v60) * 0.5;
-  v44 = [(InteractiveAccelerometerViewController *)self leftLevelTic];
-  [v44 bounds];
+  leftLevelTic = [(InteractiveAccelerometerViewController *)self leftLevelTic];
+  [leftLevelTic bounds];
   v45 = v43 + CGRectGetWidth(v61) * 0.5;
   v62.origin.x = v35;
   v62.origin.y = v37;
   v62.size.width = v39;
   v62.size.height = v41;
   MidY = CGRectGetMidY(v62);
-  v47 = [(InteractiveAccelerometerViewController *)self leftLevelTic];
-  [v47 setPosition:{v45, MidY}];
+  leftLevelTic2 = [(InteractiveAccelerometerViewController *)self leftLevelTic];
+  [leftLevelTic2 setPosition:{v45, MidY}];
 
   v63.origin.x = v35;
   v63.origin.y = v37;
@@ -319,16 +319,16 @@
   v64.size.width = v39;
   v64.size.height = v41;
   v49 = v48 + CGRectGetWidth(v64) * 0.5;
-  v50 = [(InteractiveAccelerometerViewController *)self rightLevelTic];
-  [v50 bounds];
+  rightLevelTic = [(InteractiveAccelerometerViewController *)self rightLevelTic];
+  [rightLevelTic bounds];
   v51 = v49 - CGRectGetWidth(v65) * 0.5;
   v66.origin.x = v35;
   v66.origin.y = v37;
   v66.size.width = v39;
   v66.size.height = v41;
   v52 = CGRectGetMidY(v66);
-  v53 = [(InteractiveAccelerometerViewController *)self rightLevelTic];
-  [v53 setPosition:{v51, v52}];
+  rightLevelTic2 = [(InteractiveAccelerometerViewController *)self rightLevelTic];
+  [rightLevelTic2 setPosition:{v51, v52}];
 
   v67.origin.x = v35;
   v67.origin.y = v37;
@@ -345,21 +345,21 @@
   v69.size.width = v39;
   v69.size.height = v41;
   MinY = CGRectGetMinY(v69);
-  v57 = [(InteractiveAccelerometerViewController *)self levelBottom];
-  [v57 setPosition:{v55, MinY}];
+  levelBottom = [(InteractiveAccelerometerViewController *)self levelBottom];
+  [levelBottom setPosition:{v55, MinY}];
 }
 
 - (void)setupView
 {
-  v3 = [(InteractiveAccelerometerViewController *)self view];
-  [v3 setClipsToBounds:1];
+  view = [(InteractiveAccelerometerViewController *)self view];
+  [view setClipsToBounds:1];
 
   v4 = +[UIColor whiteColor];
-  v5 = [(InteractiveAccelerometerViewController *)self view];
-  [v5 setBackgroundColor:v4];
+  view2 = [(InteractiveAccelerometerViewController *)self view];
+  [view2 setBackgroundColor:v4];
 
-  v6 = [(InteractiveAccelerometerViewController *)self view];
-  [v6 bounds];
+  view3 = [(InteractiveAccelerometerViewController *)self view];
+  [view3 bounds];
   v8 = v7;
   v10 = v9;
   v12 = v11;
@@ -369,60 +369,60 @@
   [(InteractiveAccelerometerViewController *)self setFilterContainer:v15];
 
   v16 = +[UIColor clearColor];
-  v17 = [(InteractiveAccelerometerViewController *)self filterContainer];
-  [v17 setBackgroundColor:v16];
+  filterContainer = [(InteractiveAccelerometerViewController *)self filterContainer];
+  [filterContainer setBackgroundColor:v16];
 
-  v18 = [(InteractiveAccelerometerViewController *)self filterContainer];
-  [v18 setClipsToBounds:1];
+  filterContainer2 = [(InteractiveAccelerometerViewController *)self filterContainer];
+  [filterContainer2 setClipsToBounds:1];
 
-  v19 = [(InteractiveAccelerometerViewController *)self filterContainer];
-  [v19 setAutoresizingMask:18];
+  filterContainer3 = [(InteractiveAccelerometerViewController *)self filterContainer];
+  [filterContainer3 setAutoresizingMask:18];
 
   v20 = [[UIView alloc] initWithFrame:{v8, v10, v12, v14}];
   [(InteractiveAccelerometerViewController *)self setLevelContainer:v20];
 
   v21 = +[UIColor clearColor];
-  v22 = [(InteractiveAccelerometerViewController *)self levelContainer];
-  [v22 setBackgroundColor:v21];
+  levelContainer = [(InteractiveAccelerometerViewController *)self levelContainer];
+  [levelContainer setBackgroundColor:v21];
 
-  v23 = [(InteractiveAccelerometerViewController *)self levelContainer];
-  [v23 setAutoresizingMask:18];
+  levelContainer2 = [(InteractiveAccelerometerViewController *)self levelContainer];
+  [levelContainer2 setAutoresizingMask:18];
 
   v24 = [[UIView alloc] initWithFrame:{v8, v10, v12, v14}];
   [(InteractiveAccelerometerViewController *)self setLevelHoldContainer:v24];
 
   v25 = +[UIColor clearColor];
-  v26 = [(InteractiveAccelerometerViewController *)self levelHoldContainer];
-  [v26 setBackgroundColor:v25];
+  levelHoldContainer = [(InteractiveAccelerometerViewController *)self levelHoldContainer];
+  [levelHoldContainer setBackgroundColor:v25];
 
-  v27 = [(InteractiveAccelerometerViewController *)self levelHoldContainer];
-  [v27 setAutoresizingMask:18];
+  levelHoldContainer2 = [(InteractiveAccelerometerViewController *)self levelHoldContainer];
+  [levelHoldContainer2 setAutoresizingMask:18];
 
   v28 = [[UIView alloc] initWithFrame:{v8, v10, v12, v14}];
   [(InteractiveAccelerometerViewController *)self setBubbleContainer:v28];
 
   v29 = +[UIColor clearColor];
-  v30 = [(InteractiveAccelerometerViewController *)self bubbleContainer];
-  [v30 setBackgroundColor:v29];
+  bubbleContainer = [(InteractiveAccelerometerViewController *)self bubbleContainer];
+  [bubbleContainer setBackgroundColor:v29];
 
-  v31 = [(InteractiveAccelerometerViewController *)self bubbleContainer];
-  [v31 setAutoresizingMask:18];
+  bubbleContainer2 = [(InteractiveAccelerometerViewController *)self bubbleContainer];
+  [bubbleContainer2 setAutoresizingMask:18];
 
   v32 = [[UIView alloc] initWithFrame:{v8, v10, v12, v14}];
   [(InteractiveAccelerometerViewController *)self setTicContainer:v32];
 
   v33 = +[UIColor clearColor];
-  v34 = [(InteractiveAccelerometerViewController *)self ticContainer];
-  [v34 setBackgroundColor:v33];
+  ticContainer = [(InteractiveAccelerometerViewController *)self ticContainer];
+  [ticContainer setBackgroundColor:v33];
 
-  v35 = [(InteractiveAccelerometerViewController *)self ticContainer];
-  [v35 setAutoresizingMask:18];
+  ticContainer2 = [(InteractiveAccelerometerViewController *)self ticContainer];
+  [ticContainer2 setAutoresizingMask:18];
 
   v208 = kCAFilterXor;
   v36 = [CAFilter filterWithType:?];
-  v37 = [(InteractiveAccelerometerViewController *)self ticContainer];
-  v38 = [v37 layer];
-  [v38 setCompositingFilter:v36];
+  ticContainer3 = [(InteractiveAccelerometerViewController *)self ticContainer];
+  layer = [ticContainer3 layer];
+  [layer setCompositingFilter:v36];
 
   v209.origin.x = v8;
   v209.origin.y = v10;
@@ -448,38 +448,38 @@
   v44 = +[CALayer layer];
   [(InteractiveAccelerometerViewController *)self setLevelBottom:v44];
 
-  v45 = [(InteractiveAccelerometerViewController *)self levelBottom];
-  [v45 setAnchorPoint:{0.5, 0.0}];
+  levelBottom = [(InteractiveAccelerometerViewController *)self levelBottom];
+  [levelBottom setAnchorPoint:{0.5, 0.0}];
 
-  v46 = [(InteractiveAccelerometerViewController *)self levelBottom];
-  [v46 setFrame:{v8 - Width, v39 + 0.0, v43, v14 - (0.0 - v42)}];
+  levelBottom2 = [(InteractiveAccelerometerViewController *)self levelBottom];
+  [levelBottom2 setFrame:{v8 - Width, v39 + 0.0, v43, v14 - (0.0 - v42)}];
 
   v47 = +[UIColor blackColor];
-  v48 = [v47 CGColor];
-  v49 = [(InteractiveAccelerometerViewController *)self levelBottom];
-  [v49 setBackgroundColor:v48];
+  cGColor = [v47 CGColor];
+  levelBottom3 = [(InteractiveAccelerometerViewController *)self levelBottom];
+  [levelBottom3 setBackgroundColor:cGColor];
 
-  v50 = [(InteractiveAccelerometerViewController *)self levelBottom];
-  [v50 setAllowsEdgeAntialiasing:1];
+  levelBottom4 = [(InteractiveAccelerometerViewController *)self levelBottom];
+  [levelBottom4 setAllowsEdgeAntialiasing:1];
 
-  v51 = [(InteractiveAccelerometerViewController *)self levelContainer];
-  v52 = [v51 layer];
-  v53 = [(InteractiveAccelerometerViewController *)self levelBottom];
-  [v52 addSublayer:v53];
+  levelContainer3 = [(InteractiveAccelerometerViewController *)self levelContainer];
+  layer2 = [levelContainer3 layer];
+  levelBottom5 = [(InteractiveAccelerometerViewController *)self levelBottom];
+  [layer2 addSublayer:levelBottom5];
 
-  v54 = [(InteractiveAccelerometerViewController *)self filterContainer];
-  v55 = [(InteractiveAccelerometerViewController *)self levelContainer];
-  [v54 addSubview:v55];
+  filterContainer4 = [(InteractiveAccelerometerViewController *)self filterContainer];
+  levelContainer4 = [(InteractiveAccelerometerViewController *)self levelContainer];
+  [filterContainer4 addSubview:levelContainer4];
 
-  v56 = [(InteractiveAccelerometerViewController *)self levelContainer];
-  v57 = [(InteractiveAccelerometerViewController *)self levelHoldContainer];
-  [v56 addSubview:v57];
+  levelContainer5 = [(InteractiveAccelerometerViewController *)self levelContainer];
+  levelHoldContainer3 = [(InteractiveAccelerometerViewController *)self levelHoldContainer];
+  [levelContainer5 addSubview:levelHoldContainer3];
 
   v58 = +[CAShapeLayer layer];
   [(InteractiveAccelerometerViewController *)self setTopOuterCircle:v58];
 
-  v59 = [(InteractiveAccelerometerViewController *)self view];
-  [v59 frame];
+  view4 = [(InteractiveAccelerometerViewController *)self view];
+  [view4 frame];
   v61 = v60;
   if (MGIsDeviceOfType())
   {
@@ -492,11 +492,11 @@
   }
 
   v63 = v62 * round(v61 * 200.0 / 320.0);
-  v64 = [(InteractiveAccelerometerViewController *)self topOuterCircle];
-  [v64 setFrame:{0.0, 0.0, v63, v63}];
+  topOuterCircle = [(InteractiveAccelerometerViewController *)self topOuterCircle];
+  [topOuterCircle setFrame:{0.0, 0.0, v63, v63}];
 
-  v65 = [(InteractiveAccelerometerViewController *)self view];
-  [v65 frame];
+  view5 = [(InteractiveAccelerometerViewController *)self view];
+  [view5 frame];
   v67 = v66;
   if (MGIsDeviceOfType())
   {
@@ -510,24 +510,24 @@
 
   v69 = v68 * round(v67 * 200.0 / 320.0);
   v70 = [UIBezierPath bezierPathWithOvalInRect:0.0, 0.0, v69, v69];
-  v71 = [v70 CGPath];
-  v72 = [(InteractiveAccelerometerViewController *)self topOuterCircle];
-  [v72 setPath:v71];
+  cGPath = [v70 CGPath];
+  topOuterCircle2 = [(InteractiveAccelerometerViewController *)self topOuterCircle];
+  [topOuterCircle2 setPath:cGPath];
 
   v73 = +[UIColor blackColor];
-  v74 = [v73 CGColor];
-  v75 = [(InteractiveAccelerometerViewController *)self topOuterCircle];
-  [v75 setFillColor:v74];
+  cGColor2 = [v73 CGColor];
+  topOuterCircle3 = [(InteractiveAccelerometerViewController *)self topOuterCircle];
+  [topOuterCircle3 setFillColor:cGColor2];
 
   v76 = [CAFilter filterWithType:v208];
-  v77 = [(InteractiveAccelerometerViewController *)self topOuterCircle];
-  [v77 setCompositingFilter:v76];
+  topOuterCircle4 = [(InteractiveAccelerometerViewController *)self topOuterCircle];
+  [topOuterCircle4 setCompositingFilter:v76];
 
   v78 = +[CAShapeLayer layer];
   [(InteractiveAccelerometerViewController *)self setTopInnerCircle:v78];
 
-  v79 = [(InteractiveAccelerometerViewController *)self view];
-  [v79 frame];
+  view6 = [(InteractiveAccelerometerViewController *)self view];
+  [view6 frame];
   v81 = v80;
   if (MGIsDeviceOfType())
   {
@@ -540,11 +540,11 @@
   }
 
   v83 = v82 * round(v81 * 195.0 / 320.0);
-  v84 = [(InteractiveAccelerometerViewController *)self topInnerCircle];
-  [v84 setFrame:{0.0, 0.0, v83, v83}];
+  topInnerCircle = [(InteractiveAccelerometerViewController *)self topInnerCircle];
+  [topInnerCircle setFrame:{0.0, 0.0, v83, v83}];
 
-  v85 = [(InteractiveAccelerometerViewController *)self view];
-  [v85 frame];
+  view7 = [(InteractiveAccelerometerViewController *)self view];
+  [view7 frame];
   v87 = v86;
   if (MGIsDeviceOfType())
   {
@@ -558,24 +558,24 @@
 
   v89 = v88 * round(v87 * 195.0 / 320.0);
   v90 = [UIBezierPath bezierPathWithOvalInRect:0.0, 0.0, v89, v89];
-  v91 = [v90 CGPath];
-  v92 = [(InteractiveAccelerometerViewController *)self topInnerCircle];
-  [v92 setPath:v91];
+  cGPath2 = [v90 CGPath];
+  topInnerCircle2 = [(InteractiveAccelerometerViewController *)self topInnerCircle];
+  [topInnerCircle2 setPath:cGPath2];
 
   v93 = +[UIColor blackColor];
-  v94 = [v93 CGColor];
-  v95 = [(InteractiveAccelerometerViewController *)self topInnerCircle];
-  [v95 setFillColor:v94];
+  cGColor3 = [v93 CGColor];
+  topInnerCircle3 = [(InteractiveAccelerometerViewController *)self topInnerCircle];
+  [topInnerCircle3 setFillColor:cGColor3];
 
   v96 = [CAFilter filterWithType:v208];
-  v97 = [(InteractiveAccelerometerViewController *)self topInnerCircle];
-  [v97 setCompositingFilter:v96];
+  topInnerCircle4 = [(InteractiveAccelerometerViewController *)self topInnerCircle];
+  [topInnerCircle4 setCompositingFilter:v96];
 
   v98 = +[CAShapeLayer layer];
   [(InteractiveAccelerometerViewController *)self setBottomOuterCircle:v98];
 
-  v99 = [(InteractiveAccelerometerViewController *)self view];
-  [v99 frame];
+  view8 = [(InteractiveAccelerometerViewController *)self view];
+  [view8 frame];
   v101 = v100;
   if (MGIsDeviceOfType())
   {
@@ -588,11 +588,11 @@
   }
 
   v103 = v102 * round(v101 * 200.0 / 320.0);
-  v104 = [(InteractiveAccelerometerViewController *)self bottomOuterCircle];
-  [v104 setFrame:{0.0, 0.0, v103, v103}];
+  bottomOuterCircle = [(InteractiveAccelerometerViewController *)self bottomOuterCircle];
+  [bottomOuterCircle setFrame:{0.0, 0.0, v103, v103}];
 
-  v105 = [(InteractiveAccelerometerViewController *)self view];
-  [v105 frame];
+  view9 = [(InteractiveAccelerometerViewController *)self view];
+  [view9 frame];
   v107 = v106;
   if (MGIsDeviceOfType())
   {
@@ -605,25 +605,25 @@
   }
 
   v109 = v108 * round(v107 * 200.0 / 320.0);
-  v110 = [UIBezierPath bezierPathWithOvalInRect:0.0, 0.0, v109, v109];
-  v111 = [v110 CGPath];
-  v112 = [(InteractiveAccelerometerViewController *)self bottomOuterCircle];
-  [v112 setPath:v111];
+  v109 = [UIBezierPath bezierPathWithOvalInRect:0.0, 0.0, v109, v109];
+  cGPath3 = [v109 CGPath];
+  bottomOuterCircle2 = [(InteractiveAccelerometerViewController *)self bottomOuterCircle];
+  [bottomOuterCircle2 setPath:cGPath3];
 
   v113 = +[UIColor blackColor];
-  v114 = [v113 CGColor];
-  v115 = [(InteractiveAccelerometerViewController *)self bottomOuterCircle];
-  [v115 setFillColor:v114];
+  cGColor4 = [v113 CGColor];
+  bottomOuterCircle3 = [(InteractiveAccelerometerViewController *)self bottomOuterCircle];
+  [bottomOuterCircle3 setFillColor:cGColor4];
 
   v116 = [CAFilter filterWithType:v208];
-  v117 = [(InteractiveAccelerometerViewController *)self bottomOuterCircle];
-  [v117 setCompositingFilter:v116];
+  bottomOuterCircle4 = [(InteractiveAccelerometerViewController *)self bottomOuterCircle];
+  [bottomOuterCircle4 setCompositingFilter:v116];
 
   v118 = +[CAShapeLayer layer];
   [(InteractiveAccelerometerViewController *)self setBottomInnerCircle:v118];
 
-  v119 = [(InteractiveAccelerometerViewController *)self view];
-  [v119 frame];
+  view10 = [(InteractiveAccelerometerViewController *)self view];
+  [view10 frame];
   v121 = v120;
   if (MGIsDeviceOfType())
   {
@@ -636,11 +636,11 @@
   }
 
   v123 = v122 * round(v121 * 195.0 / 320.0);
-  v124 = [(InteractiveAccelerometerViewController *)self bottomInnerCircle];
-  [v124 setFrame:{0.0, 0.0, v123, v123}];
+  bottomInnerCircle = [(InteractiveAccelerometerViewController *)self bottomInnerCircle];
+  [bottomInnerCircle setFrame:{0.0, 0.0, v123, v123}];
 
-  v125 = [(InteractiveAccelerometerViewController *)self view];
-  [v125 frame];
+  view11 = [(InteractiveAccelerometerViewController *)self view];
+  [view11 frame];
   v127 = v126;
   if (MGIsDeviceOfType())
   {
@@ -653,46 +653,46 @@
   }
 
   v129 = v128 * round(v127 * 195.0 / 320.0);
-  v130 = [UIBezierPath bezierPathWithOvalInRect:0.0, 0.0, v129, v129];
-  v131 = [v130 CGPath];
-  v132 = [(InteractiveAccelerometerViewController *)self bottomInnerCircle];
-  [v132 setPath:v131];
+  v129 = [UIBezierPath bezierPathWithOvalInRect:0.0, 0.0, v129, v129];
+  cGPath4 = [v129 CGPath];
+  bottomInnerCircle2 = [(InteractiveAccelerometerViewController *)self bottomInnerCircle];
+  [bottomInnerCircle2 setPath:cGPath4];
 
   v133 = +[UIColor blackColor];
-  v134 = [v133 CGColor];
-  v135 = [(InteractiveAccelerometerViewController *)self bottomInnerCircle];
-  [v135 setFillColor:v134];
+  cGColor5 = [v133 CGColor];
+  bottomInnerCircle3 = [(InteractiveAccelerometerViewController *)self bottomInnerCircle];
+  [bottomInnerCircle3 setFillColor:cGColor5];
 
   v136 = [CAFilter filterWithType:v208];
-  v137 = [(InteractiveAccelerometerViewController *)self bottomInnerCircle];
-  [v137 setCompositingFilter:v136];
+  bottomInnerCircle4 = [(InteractiveAccelerometerViewController *)self bottomInnerCircle];
+  [bottomInnerCircle4 setCompositingFilter:v136];
 
-  v138 = [(InteractiveAccelerometerViewController *)self filterContainer];
-  v139 = [v138 layer];
-  v140 = [(InteractiveAccelerometerViewController *)self topOuterCircle];
-  [v139 addSublayer:v140];
+  filterContainer5 = [(InteractiveAccelerometerViewController *)self filterContainer];
+  layer3 = [filterContainer5 layer];
+  topOuterCircle5 = [(InteractiveAccelerometerViewController *)self topOuterCircle];
+  [layer3 addSublayer:topOuterCircle5];
 
-  v141 = [(InteractiveAccelerometerViewController *)self filterContainer];
-  v142 = [v141 layer];
-  v143 = [(InteractiveAccelerometerViewController *)self topInnerCircle];
-  [v142 addSublayer:v143];
+  filterContainer6 = [(InteractiveAccelerometerViewController *)self filterContainer];
+  layer4 = [filterContainer6 layer];
+  topInnerCircle5 = [(InteractiveAccelerometerViewController *)self topInnerCircle];
+  [layer4 addSublayer:topInnerCircle5];
 
-  v144 = [(InteractiveAccelerometerViewController *)self filterContainer];
-  v145 = [v144 layer];
-  v146 = [(InteractiveAccelerometerViewController *)self bottomOuterCircle];
-  [v145 addSublayer:v146];
+  filterContainer7 = [(InteractiveAccelerometerViewController *)self filterContainer];
+  layer5 = [filterContainer7 layer];
+  bottomOuterCircle5 = [(InteractiveAccelerometerViewController *)self bottomOuterCircle];
+  [layer5 addSublayer:bottomOuterCircle5];
 
-  v147 = [(InteractiveAccelerometerViewController *)self filterContainer];
-  v148 = [v147 layer];
-  v149 = [(InteractiveAccelerometerViewController *)self bottomInnerCircle];
-  [v148 addSublayer:v149];
+  filterContainer8 = [(InteractiveAccelerometerViewController *)self filterContainer];
+  layer6 = [filterContainer8 layer];
+  bottomInnerCircle5 = [(InteractiveAccelerometerViewController *)self bottomInnerCircle];
+  [layer6 addSublayer:bottomInnerCircle5];
 
   v150 = [[UILabel alloc] initWithFrame:{0.0, 0.0, 100.0, 100.0}];
   [(InteractiveAccelerometerViewController *)self setDegreesLabel:v150];
 
-  v151 = [(InteractiveAccelerometerViewController *)self fontDescriptor];
-  v152 = [(InteractiveAccelerometerViewController *)self view];
-  [v152 frame];
+  fontDescriptor = [(InteractiveAccelerometerViewController *)self fontDescriptor];
+  view12 = [(InteractiveAccelerometerViewController *)self view];
+  [view12 frame];
   v154 = v153;
   if (MGIsDeviceOfType())
   {
@@ -704,31 +704,31 @@
     v155 = 1.0;
   }
 
-  v156 = [UIFont fontWithDescriptor:v151 size:v155 * round(v154 * 81.0 / 320.0)];
-  v157 = [(InteractiveAccelerometerViewController *)self degreesLabel];
-  [v157 setFont:v156];
+  v156 = [UIFont fontWithDescriptor:fontDescriptor size:v155 * round(v154 * 81.0 / 320.0)];
+  degreesLabel = [(InteractiveAccelerometerViewController *)self degreesLabel];
+  [degreesLabel setFont:v156];
 
-  v158 = [(InteractiveAccelerometerViewController *)self degreesLabel];
-  [v158 sizeToFit];
+  degreesLabel2 = [(InteractiveAccelerometerViewController *)self degreesLabel];
+  [degreesLabel2 sizeToFit];
 
   v159 = +[UIColor blackColor];
-  v160 = [(InteractiveAccelerometerViewController *)self degreesLabel];
-  [v160 setTextColor:v159];
+  degreesLabel3 = [(InteractiveAccelerometerViewController *)self degreesLabel];
+  [degreesLabel3 setTextColor:v159];
 
   v161 = [CAFilter filterWithType:v208];
-  v162 = [(InteractiveAccelerometerViewController *)self degreesLabel];
-  v163 = [v162 layer];
-  [v163 setCompositingFilter:v161];
+  degreesLabel4 = [(InteractiveAccelerometerViewController *)self degreesLabel];
+  layer7 = [degreesLabel4 layer];
+  [layer7 setCompositingFilter:v161];
 
-  v164 = [(InteractiveAccelerometerViewController *)self filterContainer];
-  v165 = [(InteractiveAccelerometerViewController *)self degreesLabel];
-  [v164 addSubview:v165];
+  filterContainer9 = [(InteractiveAccelerometerViewController *)self filterContainer];
+  degreesLabel5 = [(InteractiveAccelerometerViewController *)self degreesLabel];
+  [filterContainer9 addSubview:degreesLabel5];
 
   v166 = +[CALayer layer];
   [(InteractiveAccelerometerViewController *)self setRightLevelTic:v166];
 
-  v167 = [(InteractiveAccelerometerViewController *)self view];
-  [v167 frame];
+  view13 = [(InteractiveAccelerometerViewController *)self view];
+  [view13 frame];
   v169 = v168;
   if (MGIsDeviceOfType())
   {
@@ -741,8 +741,8 @@
   }
 
   v171 = v170 * round(v169 * 40.5 / 320.0);
-  v172 = [(InteractiveAccelerometerViewController *)self view];
-  [v172 frame];
+  view14 = [(InteractiveAccelerometerViewController *)self view];
+  [view14 frame];
   v174 = v173;
   if (MGIsDeviceOfType())
   {
@@ -755,27 +755,27 @@
   }
 
   v176 = v175 * round(v174 * 1.5 / 320.0);
-  v177 = [(InteractiveAccelerometerViewController *)self rightLevelTic];
-  [v177 setFrame:{0.0, 0.0, v171, v176}];
+  rightLevelTic = [(InteractiveAccelerometerViewController *)self rightLevelTic];
+  [rightLevelTic setFrame:{0.0, 0.0, v171, v176}];
 
   v178 = +[UIColor blackColor];
-  v179 = [v178 CGColor];
-  v180 = [(InteractiveAccelerometerViewController *)self rightLevelTic];
-  [v180 setBackgroundColor:v179];
+  cGColor6 = [v178 CGColor];
+  rightLevelTic2 = [(InteractiveAccelerometerViewController *)self rightLevelTic];
+  [rightLevelTic2 setBackgroundColor:cGColor6];
 
-  v181 = [(InteractiveAccelerometerViewController *)self rightLevelTic];
-  [v181 setAllowsEdgeAntialiasing:1];
+  rightLevelTic3 = [(InteractiveAccelerometerViewController *)self rightLevelTic];
+  [rightLevelTic3 setAllowsEdgeAntialiasing:1];
 
-  v182 = [(InteractiveAccelerometerViewController *)self ticContainer];
-  v183 = [v182 layer];
-  v184 = [(InteractiveAccelerometerViewController *)self rightLevelTic];
-  [v183 addSublayer:v184];
+  ticContainer4 = [(InteractiveAccelerometerViewController *)self ticContainer];
+  layer8 = [ticContainer4 layer];
+  rightLevelTic4 = [(InteractiveAccelerometerViewController *)self rightLevelTic];
+  [layer8 addSublayer:rightLevelTic4];
 
   v185 = +[CALayer layer];
   [(InteractiveAccelerometerViewController *)self setLeftLevelTic:v185];
 
-  v186 = [(InteractiveAccelerometerViewController *)self view];
-  [v186 frame];
+  view15 = [(InteractiveAccelerometerViewController *)self view];
+  [view15 frame];
   v188 = v187;
   if (MGIsDeviceOfType())
   {
@@ -788,8 +788,8 @@
   }
 
   v190 = v189 * round(v188 * 40.5 / 320.0);
-  v191 = [(InteractiveAccelerometerViewController *)self view];
-  [v191 frame];
+  view16 = [(InteractiveAccelerometerViewController *)self view];
+  [view16 frame];
   v193 = v192;
   if (MGIsDeviceOfType())
   {
@@ -802,29 +802,29 @@
   }
 
   v195 = v194 * round(v193 * 1.5 / 320.0);
-  v196 = [(InteractiveAccelerometerViewController *)self leftLevelTic];
-  [v196 setFrame:{0.0, 0.0, v190, v195}];
+  leftLevelTic = [(InteractiveAccelerometerViewController *)self leftLevelTic];
+  [leftLevelTic setFrame:{0.0, 0.0, v190, v195}];
 
   v197 = +[UIColor blackColor];
-  v198 = [v197 CGColor];
-  v199 = [(InteractiveAccelerometerViewController *)self leftLevelTic];
-  [v199 setBackgroundColor:v198];
+  cGColor7 = [v197 CGColor];
+  leftLevelTic2 = [(InteractiveAccelerometerViewController *)self leftLevelTic];
+  [leftLevelTic2 setBackgroundColor:cGColor7];
 
-  v200 = [(InteractiveAccelerometerViewController *)self leftLevelTic];
-  [v200 setAllowsEdgeAntialiasing:1];
+  leftLevelTic3 = [(InteractiveAccelerometerViewController *)self leftLevelTic];
+  [leftLevelTic3 setAllowsEdgeAntialiasing:1];
 
-  v201 = [(InteractiveAccelerometerViewController *)self ticContainer];
-  v202 = [v201 layer];
-  v203 = [(InteractiveAccelerometerViewController *)self leftLevelTic];
-  [v202 addSublayer:v203];
+  ticContainer5 = [(InteractiveAccelerometerViewController *)self ticContainer];
+  layer9 = [ticContainer5 layer];
+  leftLevelTic4 = [(InteractiveAccelerometerViewController *)self leftLevelTic];
+  [layer9 addSublayer:leftLevelTic4];
 
-  v204 = [(InteractiveAccelerometerViewController *)self filterContainer];
-  v205 = [(InteractiveAccelerometerViewController *)self ticContainer];
-  [v204 addSubview:v205];
+  filterContainer10 = [(InteractiveAccelerometerViewController *)self filterContainer];
+  ticContainer6 = [(InteractiveAccelerometerViewController *)self ticContainer];
+  [filterContainer10 addSubview:ticContainer6];
 
-  v206 = [(InteractiveAccelerometerViewController *)self view];
-  v207 = [(InteractiveAccelerometerViewController *)self filterContainer];
-  [v206 addSubview:v207];
+  view17 = [(InteractiveAccelerometerViewController *)self view];
+  filterContainer11 = [(InteractiveAccelerometerViewController *)self filterContainer];
+  [view17 addSubview:filterContainer11];
 }
 
 - (BOOL)isDebuggingEnabled
@@ -846,24 +846,24 @@
 
 - (void)startAnimations
 {
-  v3 = [(InteractiveAccelerometerViewController *)self displayLink];
+  displayLink = [(InteractiveAccelerometerViewController *)self displayLink];
 
-  if (!v3)
+  if (!displayLink)
   {
     v4 = [CADisplayLink displayLinkWithTarget:self selector:"updateDisplay:"];
     [(InteractiveAccelerometerViewController *)self setDisplayLink:v4];
 
-    v6 = [(InteractiveAccelerometerViewController *)self displayLink];
+    displayLink2 = [(InteractiveAccelerometerViewController *)self displayLink];
     v5 = +[NSRunLoop currentRunLoop];
-    [v6 addToRunLoop:v5 forMode:NSRunLoopCommonModes];
+    [displayLink2 addToRunLoop:v5 forMode:NSRunLoopCommonModes];
   }
 }
 
 - (void)stopAnimations
 {
-  v3 = [(InteractiveAccelerometerViewController *)self displayLink];
+  displayLink = [(InteractiveAccelerometerViewController *)self displayLink];
 
-  if (v3)
+  if (displayLink)
   {
     [(CADisplayLink *)self->_displayLink invalidate];
     displayLink = self->_displayLink;
@@ -873,9 +873,9 @@
 
 - (BOOL)determineTestingOrientation
 {
-  v3 = [(InteractiveAccelerometerViewController *)self inputs];
-  v4 = [v3 orientationsParameter];
-  v5 = [v4 objectAtIndexedSubscript:{-[InteractiveAccelerometerViewController orientationsIndex](self, "orientationsIndex")}];
+  inputs = [(InteractiveAccelerometerViewController *)self inputs];
+  orientationsParameter = [inputs orientationsParameter];
+  v5 = [orientationsParameter objectAtIndexedSubscript:{-[InteractiveAccelerometerViewController orientationsIndex](self, "orientationsIndex")}];
   v6 = [v5 isEqualToString:@"portrait"];
 
   if (v6)
@@ -886,9 +886,9 @@ LABEL_13:
     return 1;
   }
 
-  v8 = [(InteractiveAccelerometerViewController *)self inputs];
-  v9 = [v8 orientationsParameter];
-  v10 = [v9 objectAtIndexedSubscript:{-[InteractiveAccelerometerViewController orientationsIndex](self, "orientationsIndex")}];
+  inputs2 = [(InteractiveAccelerometerViewController *)self inputs];
+  orientationsParameter2 = [inputs2 orientationsParameter];
+  v10 = [orientationsParameter2 objectAtIndexedSubscript:{-[InteractiveAccelerometerViewController orientationsIndex](self, "orientationsIndex")}];
   v11 = [v10 isEqualToString:@"portraitUpsideDown"];
 
   if (v11)
@@ -897,9 +897,9 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  v12 = [(InteractiveAccelerometerViewController *)self inputs];
-  v13 = [v12 orientationsParameter];
-  v14 = [v13 objectAtIndexedSubscript:{-[InteractiveAccelerometerViewController orientationsIndex](self, "orientationsIndex")}];
+  inputs3 = [(InteractiveAccelerometerViewController *)self inputs];
+  orientationsParameter3 = [inputs3 orientationsParameter];
+  v14 = [orientationsParameter3 objectAtIndexedSubscript:{-[InteractiveAccelerometerViewController orientationsIndex](self, "orientationsIndex")}];
   v15 = [v14 isEqualToString:@"landscapeLeft"];
 
   if (v15)
@@ -908,9 +908,9 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  v16 = [(InteractiveAccelerometerViewController *)self inputs];
-  v17 = [v16 orientationsParameter];
-  v18 = [v17 objectAtIndexedSubscript:{-[InteractiveAccelerometerViewController orientationsIndex](self, "orientationsIndex")}];
+  inputs4 = [(InteractiveAccelerometerViewController *)self inputs];
+  orientationsParameter4 = [inputs4 orientationsParameter];
+  v18 = [orientationsParameter4 objectAtIndexedSubscript:{-[InteractiveAccelerometerViewController orientationsIndex](self, "orientationsIndex")}];
   v19 = [v18 isEqualToString:@"landscapeRight"];
 
   if (v19)
@@ -919,9 +919,9 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  v20 = [(InteractiveAccelerometerViewController *)self inputs];
-  v21 = [v20 orientationsParameter];
-  v22 = [v21 objectAtIndexedSubscript:{-[InteractiveAccelerometerViewController orientationsIndex](self, "orientationsIndex")}];
+  inputs5 = [(InteractiveAccelerometerViewController *)self inputs];
+  orientationsParameter5 = [inputs5 orientationsParameter];
+  v22 = [orientationsParameter5 objectAtIndexedSubscript:{-[InteractiveAccelerometerViewController orientationsIndex](self, "orientationsIndex")}];
   v23 = [v22 isEqualToString:@"faceUp"];
 
   if (v23)
@@ -930,9 +930,9 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  v24 = [(InteractiveAccelerometerViewController *)self inputs];
-  v25 = [v24 orientationsParameter];
-  v26 = [v25 objectAtIndexedSubscript:{-[InteractiveAccelerometerViewController orientationsIndex](self, "orientationsIndex")}];
+  inputs6 = [(InteractiveAccelerometerViewController *)self inputs];
+  orientationsParameter6 = [inputs6 orientationsParameter];
+  v26 = [orientationsParameter6 objectAtIndexedSubscript:{-[InteractiveAccelerometerViewController orientationsIndex](self, "orientationsIndex")}];
   v27 = [v26 isEqualToString:@"faceDown"];
 
   if (v27)
@@ -946,131 +946,131 @@ LABEL_13:
 
 - (void)addNotStationaryData
 {
-  v3 = [(InteractiveAccelerometerViewController *)self rawComponentData];
-  objc_sync_enter(v3);
-  v4 = [(InteractiveAccelerometerViewController *)self rawComponentData];
-  v5 = [v4 copy];
+  rawComponentData = [(InteractiveAccelerometerViewController *)self rawComponentData];
+  objc_sync_enter(rawComponentData);
+  rawComponentData2 = [(InteractiveAccelerometerViewController *)self rawComponentData];
+  v5 = [rawComponentData2 copy];
 
-  v6 = [(InteractiveAccelerometerViewController *)self rawComponentData];
-  [v6 removeAllObjects];
+  rawComponentData3 = [(InteractiveAccelerometerViewController *)self rawComponentData];
+  [rawComponentData3 removeAllObjects];
 
-  objc_sync_exit(v3);
+  objc_sync_exit(rawComponentData);
   if ([(InteractiveAccelerometerViewController *)self debuggingEnabled])
   {
     v11[0] = @"rawData";
     v11[1] = @"calibratedData";
     v12[0] = v5;
-    v7 = [(InteractiveAccelerometerViewController *)self motionManagerData];
-    v8 = [v7 copy];
+    motionManagerData = [(InteractiveAccelerometerViewController *)self motionManagerData];
+    v8 = [motionManagerData copy];
     v12[1] = v8;
     v9 = [NSDictionary dictionaryWithObjects:v12 forKeys:v11 count:2];
     [(InteractiveAccelerometerViewController *)self setNotStationaryData:v9];
   }
 
-  v10 = [(InteractiveAccelerometerViewController *)self motionManagerData];
-  [v10 removeAllObjects];
+  motionManagerData2 = [(InteractiveAccelerometerViewController *)self motionManagerData];
+  [motionManagerData2 removeAllObjects];
 }
 
 - (void)addStationaryData
 {
-  v3 = [(InteractiveAccelerometerViewController *)self rawComponentData];
-  objc_sync_enter(v3);
-  v4 = [(InteractiveAccelerometerViewController *)self rawComponentData];
-  v5 = [v4 copy];
+  rawComponentData = [(InteractiveAccelerometerViewController *)self rawComponentData];
+  objc_sync_enter(rawComponentData);
+  rawComponentData2 = [(InteractiveAccelerometerViewController *)self rawComponentData];
+  v5 = [rawComponentData2 copy];
   [(InteractiveAccelerometerViewController *)self setCopiedRawComponentData:v5];
 
-  v6 = [(InteractiveAccelerometerViewController *)self rawComponentData];
-  [v6 removeAllObjects];
+  rawComponentData3 = [(InteractiveAccelerometerViewController *)self rawComponentData];
+  [rawComponentData3 removeAllObjects];
 
-  objc_sync_exit(v3);
-  v7 = [(InteractiveAccelerometerViewController *)self motionManagerData];
-  v8 = [v7 copy];
+  objc_sync_exit(rawComponentData);
+  motionManagerData = [(InteractiveAccelerometerViewController *)self motionManagerData];
+  v8 = [motionManagerData copy];
   [(InteractiveAccelerometerViewController *)self setCopiedMotionManagerData:v8];
 
   if ([(InteractiveAccelerometerViewController *)self debuggingEnabled])
   {
     v13[0] = @"rawData";
-    v9 = [(InteractiveAccelerometerViewController *)self copiedRawComponentData];
+    copiedRawComponentData = [(InteractiveAccelerometerViewController *)self copiedRawComponentData];
     v13[1] = @"calibratedData";
-    v14[0] = v9;
-    v10 = [(InteractiveAccelerometerViewController *)self copiedMotionManagerData];
-    v14[1] = v10;
+    v14[0] = copiedRawComponentData;
+    copiedMotionManagerData = [(InteractiveAccelerometerViewController *)self copiedMotionManagerData];
+    v14[1] = copiedMotionManagerData;
     v11 = [NSDictionary dictionaryWithObjects:v14 forKeys:v13 count:2];
     [(InteractiveAccelerometerViewController *)self setStationaryData:v11];
   }
 
-  v12 = [(InteractiveAccelerometerViewController *)self motionManagerData];
-  [v12 removeAllObjects];
+  motionManagerData2 = [(InteractiveAccelerometerViewController *)self motionManagerData];
+  [motionManagerData2 removeAllObjects];
 }
 
 - (void)checkWithinOffset
 {
-  v3 = [(InteractiveAccelerometerViewController *)self orientationsIndex];
-  v4 = [(InteractiveAccelerometerViewController *)self inputs];
-  v5 = [v4 orientationsParameter];
-  v6 = [v5 count];
+  orientationsIndex = [(InteractiveAccelerometerViewController *)self orientationsIndex];
+  inputs = [(InteractiveAccelerometerViewController *)self inputs];
+  orientationsParameter = [inputs orientationsParameter];
+  v6 = [orientationsParameter count];
 
-  if (v6 <= v3)
+  if (v6 <= orientationsIndex)
   {
     v9 = 0;
   }
 
   else
   {
-    v7 = [(InteractiveAccelerometerViewController *)self inputs];
-    v8 = [v7 orientationsParameter];
-    v9 = [v8 objectAtIndexedSubscript:{-[InteractiveAccelerometerViewController orientationsIndex](self, "orientationsIndex")}];
+    inputs2 = [(InteractiveAccelerometerViewController *)self inputs];
+    orientationsParameter2 = [inputs2 orientationsParameter];
+    v9 = [orientationsParameter2 objectAtIndexedSubscript:{-[InteractiveAccelerometerViewController orientationsIndex](self, "orientationsIndex")}];
 
     if (v9)
     {
-      v10 = [(InteractiveAccelerometerViewController *)self inputs];
-      v11 = [v10 componentOrientationSpecifications];
-      v12 = [v11 objectForKeyedSubscript:v9];
+      inputs3 = [(InteractiveAccelerometerViewController *)self inputs];
+      componentOrientationSpecifications = [inputs3 componentOrientationSpecifications];
+      v12 = [componentOrientationSpecifications objectForKeyedSubscript:v9];
 
       if (v12)
       {
-        v13 = [(InteractiveAccelerometerViewController *)self inputs];
-        v14 = [v13 componentSensor];
+        inputs4 = [(InteractiveAccelerometerViewController *)self inputs];
+        componentSensor = [inputs4 componentSensor];
 
-        if (v14)
+        if (componentSensor)
         {
-          v15 = [(InteractiveAccelerometerViewController *)self copiedMotionManagerData];
-          v16 = [(InteractiveAccelerometerViewController *)self copiedMotionManagerData];
-          -[InteractiveAccelerometerViewController average:key:size:](self, "average:key:size:", v15, @"x", [v16 count]);
+          copiedMotionManagerData = [(InteractiveAccelerometerViewController *)self copiedMotionManagerData];
+          copiedMotionManagerData2 = [(InteractiveAccelerometerViewController *)self copiedMotionManagerData];
+          -[InteractiveAccelerometerViewController average:key:size:](self, "average:key:size:", copiedMotionManagerData, @"x", [copiedMotionManagerData2 count]);
           v17 = numberOrNullForDouble();
 
-          v18 = [(InteractiveAccelerometerViewController *)self copiedMotionManagerData];
-          v19 = [(InteractiveAccelerometerViewController *)self copiedMotionManagerData];
-          -[InteractiveAccelerometerViewController average:key:size:](self, "average:key:size:", v18, @"y", [v19 count]);
+          copiedMotionManagerData3 = [(InteractiveAccelerometerViewController *)self copiedMotionManagerData];
+          copiedMotionManagerData4 = [(InteractiveAccelerometerViewController *)self copiedMotionManagerData];
+          -[InteractiveAccelerometerViewController average:key:size:](self, "average:key:size:", copiedMotionManagerData3, @"y", [copiedMotionManagerData4 count]);
           v20 = numberOrNullForDouble();
 
-          v21 = [(InteractiveAccelerometerViewController *)self copiedMotionManagerData];
+          copiedMotionManagerData5 = [(InteractiveAccelerometerViewController *)self copiedMotionManagerData];
           [(InteractiveAccelerometerViewController *)self copiedMotionManagerData];
         }
 
         else
         {
-          v22 = [(InteractiveAccelerometerViewController *)self copiedRawComponentData];
-          v23 = [(InteractiveAccelerometerViewController *)self copiedRawComponentData];
-          -[InteractiveAccelerometerViewController average:key:size:](self, "average:key:size:", v22, @"x", [v23 count]);
+          copiedRawComponentData = [(InteractiveAccelerometerViewController *)self copiedRawComponentData];
+          copiedRawComponentData2 = [(InteractiveAccelerometerViewController *)self copiedRawComponentData];
+          -[InteractiveAccelerometerViewController average:key:size:](self, "average:key:size:", copiedRawComponentData, @"x", [copiedRawComponentData2 count]);
           v17 = numberOrNullForDouble();
 
-          v24 = [(InteractiveAccelerometerViewController *)self copiedRawComponentData];
-          v25 = [(InteractiveAccelerometerViewController *)self copiedRawComponentData];
-          -[InteractiveAccelerometerViewController average:key:size:](self, "average:key:size:", v24, @"y", [v25 count]);
+          copiedRawComponentData3 = [(InteractiveAccelerometerViewController *)self copiedRawComponentData];
+          copiedRawComponentData4 = [(InteractiveAccelerometerViewController *)self copiedRawComponentData];
+          -[InteractiveAccelerometerViewController average:key:size:](self, "average:key:size:", copiedRawComponentData3, @"y", [copiedRawComponentData4 count]);
           v20 = numberOrNullForDouble();
 
-          v21 = [(InteractiveAccelerometerViewController *)self copiedRawComponentData];
+          copiedMotionManagerData5 = [(InteractiveAccelerometerViewController *)self copiedRawComponentData];
           [(InteractiveAccelerometerViewController *)self copiedRawComponentData];
         }
         v26 = ;
-        -[InteractiveAccelerometerViewController average:key:size:](self, "average:key:size:", v21, @"z", [v26 count]);
+        -[InteractiveAccelerometerViewController average:key:size:](self, "average:key:size:", copiedMotionManagerData5, @"z", [v26 count]);
         v27 = numberOrNullForDouble();
 
         objc_opt_class();
         if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()))
         {
-          v28 = self;
+          selfCopy2 = self;
           v29 = 4294967286;
         }
 
@@ -1115,11 +1115,11 @@ LABEL_13:
             }
           }
 
-          v28 = self;
+          selfCopy2 = self;
           v29 = 4294967288;
         }
 
-        [(InteractiveAccelerometerViewController *)v28 setDidCompleteSuccessfully:v29];
+        [(InteractiveAccelerometerViewController *)selfCopy2 setDidCompleteSuccessfully:v29];
         [(InteractiveAccelerometerViewController *)self setOrientationMissed:1];
 LABEL_15:
         v49[0] = @"x";
@@ -1142,12 +1142,12 @@ LABEL_8:
 
 - (void)cleanUp
 {
-  v3 = [(InteractiveAccelerometerViewController *)self timeoutTimer];
+  timeoutTimer = [(InteractiveAccelerometerViewController *)self timeoutTimer];
 
-  if (v3)
+  if (timeoutTimer)
   {
-    v4 = [(InteractiveAccelerometerViewController *)self timeoutTimer];
-    [v4 invalidate];
+    timeoutTimer2 = [(InteractiveAccelerometerViewController *)self timeoutTimer];
+    [timeoutTimer2 invalidate];
 
     [(InteractiveAccelerometerViewController *)self setTimeoutTimer:0];
   }
@@ -1158,23 +1158,23 @@ LABEL_8:
   [(InteractiveAccelerometerViewController *)self stopAnimations];
 }
 
-- (void)endTestWithStatusCode:(id)a3
+- (void)endTestWithStatusCode:(id)code
 {
-  v4 = a3;
+  codeCopy = code;
   [(InteractiveAccelerometerViewController *)self cleanUp];
-  v5 = [(InteractiveAccelerometerViewController *)self result];
-  [v5 setStatusCode:v4];
+  result = [(InteractiveAccelerometerViewController *)self result];
+  [result setStatusCode:codeCopy];
 
-  v6 = [(InteractiveAccelerometerViewController *)self result];
-  v7 = [v6 statusCode];
-  if ([v7 isEqualToNumber:&off_100010CA8])
+  result2 = [(InteractiveAccelerometerViewController *)self result];
+  statusCode = [result2 statusCode];
+  if ([statusCode isEqualToNumber:&off_100010CA8])
   {
     goto LABEL_8;
   }
 
-  v8 = [(InteractiveAccelerometerViewController *)self result];
-  v9 = [v8 statusCode];
-  if ([v9 isEqualToNumber:&off_100010CC0])
+  result3 = [(InteractiveAccelerometerViewController *)self result];
+  statusCode2 = [result3 statusCode];
+  if ([statusCode2 isEqualToNumber:&off_100010CC0])
   {
 LABEL_7:
 
@@ -1182,35 +1182,35 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v10 = [(InteractiveAccelerometerViewController *)self result];
-  v11 = [v10 statusCode];
-  if ([v11 isEqualToNumber:&off_100010CD8])
+  result4 = [(InteractiveAccelerometerViewController *)self result];
+  statusCode3 = [result4 statusCode];
+  if ([statusCode3 isEqualToNumber:&off_100010CD8])
   {
 LABEL_6:
 
     goto LABEL_7;
   }
 
-  v12 = [(InteractiveAccelerometerViewController *)self result];
-  v13 = [v12 statusCode];
-  if ([v13 isEqualToNumber:&off_100010CF0])
+  result5 = [(InteractiveAccelerometerViewController *)self result];
+  statusCode4 = [result5 statusCode];
+  if ([statusCode4 isEqualToNumber:&off_100010CF0])
   {
 
     goto LABEL_6;
   }
 
-  v19 = [(InteractiveAccelerometerViewController *)self result];
-  v16 = [v19 statusCode];
-  v20 = [v16 isEqualToNumber:&off_100010C90];
+  result6 = [(InteractiveAccelerometerViewController *)self result];
+  statusCode5 = [result6 statusCode];
+  v20 = [statusCode5 isEqualToNumber:&off_100010C90];
 
   if ((v20 & 1) == 0)
   {
     v21 = @"orientations";
-    v15 = [(InteractiveAccelerometerViewController *)self allResults];
-    v22 = v15;
+    allResults = [(InteractiveAccelerometerViewController *)self allResults];
+    v22 = allResults;
     v17 = [NSDictionary dictionaryWithObjects:&v22 forKeys:&v21 count:1];
-    v18 = [(InteractiveAccelerometerViewController *)self result];
-    [v18 setData:v17];
+    result7 = [(InteractiveAccelerometerViewController *)self result];
+    [result7 setData:v17];
 
     goto LABEL_12;
   }
@@ -1222,8 +1222,8 @@ LABEL_9:
     sub_1000085A0(v14);
   }
 
-  v15 = [(InteractiveAccelerometerViewController *)self result];
-  [v15 setData:&__NSDictionary0__struct];
+  allResults = [(InteractiveAccelerometerViewController *)self result];
+  [allResults setData:&__NSDictionary0__struct];
 LABEL_12:
 
   [(InteractiveAccelerometerViewController *)self setFinished:1];
@@ -1241,16 +1241,16 @@ LABEL_12:
 - (void)heldOrientationStationary
 {
   [(InteractiveAccelerometerViewController *)self addNotStationaryData];
-  v3 = [(InteractiveAccelerometerViewController *)self timeoutTimer];
+  timeoutTimer = [(InteractiveAccelerometerViewController *)self timeoutTimer];
 
-  if (v3)
+  if (timeoutTimer)
   {
-    v4 = [(InteractiveAccelerometerViewController *)self timeoutTimer];
-    [v4 invalidate];
+    timeoutTimer2 = [(InteractiveAccelerometerViewController *)self timeoutTimer];
+    [timeoutTimer2 invalidate];
 
     [(InteractiveAccelerometerViewController *)self setSamplingRawData:1];
-    v6 = [(InteractiveAccelerometerViewController *)self inputs];
-    [v6 secondsToRunOrientation];
+    inputs = [(InteractiveAccelerometerViewController *)self inputs];
+    [inputs secondsToRunOrientation];
     v5 = [NSTimer scheduledTimerWithTimeInterval:self target:"checkForNextOrientation" selector:0 userInfo:0 repeats:?];
     [(InteractiveAccelerometerViewController *)self setTimeoutTimer:v5];
   }
@@ -1265,55 +1265,55 @@ LABEL_12:
     [(InteractiveAccelerometerViewController *)self checkWithinOffset];
   }
 
-  v3 = [(InteractiveAccelerometerViewController *)self debuggingEnabled];
-  v4 = [(InteractiveAccelerometerViewController *)self allResults];
-  if (v3)
+  debuggingEnabled = [(InteractiveAccelerometerViewController *)self debuggingEnabled];
+  allResults = [(InteractiveAccelerometerViewController *)self allResults];
+  if (debuggingEnabled)
   {
     v32[0] = @"orientation";
-    v5 = [(InteractiveAccelerometerViewController *)self inputs];
-    v6 = [v5 orientationsParameter];
-    v7 = [v6 objectAtIndexedSubscript:{-[InteractiveAccelerometerViewController orientationsIndex](self, "orientationsIndex")}];
+    inputs = [(InteractiveAccelerometerViewController *)self inputs];
+    orientationsParameter = [inputs orientationsParameter];
+    v7 = [orientationsParameter objectAtIndexedSubscript:{-[InteractiveAccelerometerViewController orientationsIndex](self, "orientationsIndex")}];
     v33[0] = v7;
     v32[1] = @"didCompleteSuccessfully";
     v8 = [NSNumber numberWithInt:[(InteractiveAccelerometerViewController *)self didCompleteSuccessfully]];
     v33[1] = v8;
     v32[2] = @"averagedRawData";
-    v9 = [(InteractiveAccelerometerViewController *)self averagedRawData];
-    v33[2] = v9;
+    averagedRawData = [(InteractiveAccelerometerViewController *)self averagedRawData];
+    v33[2] = averagedRawData;
     v32[3] = @"notStationaryData";
-    v10 = [(InteractiveAccelerometerViewController *)self notStationaryData];
-    v33[3] = v10;
+    notStationaryData = [(InteractiveAccelerometerViewController *)self notStationaryData];
+    v33[3] = notStationaryData;
     v32[4] = @"stationaryData";
-    v11 = [(InteractiveAccelerometerViewController *)self stationaryData];
-    v33[4] = v11;
+    stationaryData = [(InteractiveAccelerometerViewController *)self stationaryData];
+    v33[4] = stationaryData;
     v12 = [NSDictionary dictionaryWithObjects:v33 forKeys:v32 count:5];
-    [v4 addObject:v12];
+    [allResults addObject:v12];
   }
 
   else
   {
     v30[0] = @"orientation";
-    v5 = [(InteractiveAccelerometerViewController *)self inputs];
-    v6 = [v5 orientationsParameter];
-    v7 = [v6 objectAtIndexedSubscript:{-[InteractiveAccelerometerViewController orientationsIndex](self, "orientationsIndex")}];
+    inputs = [(InteractiveAccelerometerViewController *)self inputs];
+    orientationsParameter = [inputs orientationsParameter];
+    v7 = [orientationsParameter objectAtIndexedSubscript:{-[InteractiveAccelerometerViewController orientationsIndex](self, "orientationsIndex")}];
     v31[0] = v7;
     v30[1] = @"didCompleteSuccessfully";
     v8 = [NSNumber numberWithInt:[(InteractiveAccelerometerViewController *)self didCompleteSuccessfully]];
     v31[1] = v8;
     v30[2] = @"averagedRawData";
-    v9 = [(InteractiveAccelerometerViewController *)self averagedRawData];
-    v31[2] = v9;
-    v10 = [NSDictionary dictionaryWithObjects:v31 forKeys:v30 count:3];
-    [v4 addObject:v10];
+    averagedRawData = [(InteractiveAccelerometerViewController *)self averagedRawData];
+    v31[2] = averagedRawData;
+    notStationaryData = [NSDictionary dictionaryWithObjects:v31 forKeys:v30 count:3];
+    [allResults addObject:notStationaryData];
   }
 
   [(InteractiveAccelerometerViewController *)self setOrientationsIndex:[(InteractiveAccelerometerViewController *)self orientationsIndex]+ 1];
-  v13 = [(InteractiveAccelerometerViewController *)self orientationsIndex];
-  v14 = [(InteractiveAccelerometerViewController *)self inputs];
-  v15 = [v14 orientationsParameter];
-  v16 = [v15 count];
+  orientationsIndex = [(InteractiveAccelerometerViewController *)self orientationsIndex];
+  inputs2 = [(InteractiveAccelerometerViewController *)self inputs];
+  orientationsParameter2 = [inputs2 orientationsParameter];
+  v16 = [orientationsParameter2 count];
 
-  if (v16 <= v13)
+  if (v16 <= orientationsIndex)
   {
     if ([(InteractiveAccelerometerViewController *)self orientationMissed])
     {
@@ -1353,12 +1353,12 @@ LABEL_20:
   [(InteractiveAccelerometerViewController *)self setStartDate:v20];
 
   v21 = +[DSTestAutomation sharedInstance];
-  v22 = [v21 testAutomationEnabled];
+  testAutomationEnabled = [v21 testAutomationEnabled];
 
-  if (v22)
+  if (testAutomationEnabled)
   {
-    v23 = [(InteractiveAccelerometerViewController *)self inputs];
-    if ([v23 componentSensor])
+    inputs3 = [(InteractiveAccelerometerViewController *)self inputs];
+    if ([inputs3 componentSensor])
     {
       v24 = @"ListenForGyroPosition";
     }
@@ -1377,7 +1377,7 @@ LABEL_20:
   [(InteractiveAccelerometerViewController *)self updateColors];
 }
 
-- (void)handleHIDEvent:(__IOHIDEvent *)a3
+- (void)handleHIDEvent:(__IOHIDEvent *)event
 {
   if (IOHIDEventGetType() == 13)
   {
@@ -1387,9 +1387,9 @@ LABEL_20:
     v7 = v6;
     IOHIDEventGetFloatValue();
     v9 = v8;
-    v10 = [(InteractiveAccelerometerViewController *)self rawComponentData];
-    objc_sync_enter(v10);
-    v11 = [(InteractiveAccelerometerViewController *)self rawComponentData];
+    rawComponentData = [(InteractiveAccelerometerViewController *)self rawComponentData];
+    objc_sync_enter(rawComponentData);
+    rawComponentData2 = [(InteractiveAccelerometerViewController *)self rawComponentData];
     v36[0] = @"x";
     *&v12 = v5;
     v13 = [NSNumber numberWithFloat:v12];
@@ -1403,9 +1403,9 @@ LABEL_20:
     v17 = [NSNumber numberWithFloat:v16];
     v37[2] = v17;
     v18 = [NSDictionary dictionaryWithObjects:v37 forKeys:v36 count:3];
-    [v11 addObject:v18];
+    [rawComponentData2 addObject:v18];
 
-    objc_sync_exit(v10);
+    objc_sync_exit(rawComponentData);
   }
 
   if (IOHIDEventGetType() == 20)
@@ -1417,9 +1417,9 @@ LABEL_20:
     IOHIDEventGetFloatValue();
     v23 = v20;
     *&v20 = v24;
-    v25 = [(InteractiveAccelerometerViewController *)self rawComponentData];
-    objc_sync_enter(v25);
-    v26 = [(InteractiveAccelerometerViewController *)self rawComponentData];
+    rawComponentData3 = [(InteractiveAccelerometerViewController *)self rawComponentData];
+    objc_sync_enter(rawComponentData3);
+    rawComponentData4 = [(InteractiveAccelerometerViewController *)self rawComponentData];
     v34[0] = @"x";
     *&v27 = v23;
     v28 = [NSNumber numberWithFloat:v27];
@@ -1434,25 +1434,25 @@ LABEL_20:
     v32 = [NSNumber numberWithFloat:v31];
     v35[2] = v32;
     v33 = [NSDictionary dictionaryWithObjects:v35 forKeys:v34 count:3];
-    [v26 addObject:v33];
+    [rawComponentData4 addObject:v33];
 
-    objc_sync_exit(v25);
+    objc_sync_exit(rawComponentData3);
   }
 }
 
-- (void)updateDisplay:(id)a3
+- (void)updateDisplay:(id)display
 {
-  v4 = [(CMMotionManager *)self->_manager deviceMotion];
-  v5 = [v4 attitude];
+  deviceMotion = [(CMMotionManager *)self->_manager deviceMotion];
+  attitude = [deviceMotion attitude];
 
   v69 = 0.0;
   v67 = 0u;
   v68 = 0u;
   v65 = 0u;
   v66 = 0u;
-  if (v5)
+  if (attitude)
   {
-    [v5 rotationMatrix];
+    [attitude rotationMatrix];
     v6 = *&v66;
     v7 = *(&v67 + 1);
     v8 = v69;
@@ -1466,19 +1466,19 @@ LABEL_20:
   }
 
   v9 = -v8;
-  v10 = [(InteractiveAccelerometerViewController *)self inputs];
-  v11 = [v10 componentSensor];
+  inputs = [(InteractiveAccelerometerViewController *)self inputs];
+  componentSensor = [inputs componentSensor];
 
-  if (v11 == 1)
+  if (componentSensor == 1)
   {
-    v12 = [(InteractiveAccelerometerViewController *)self manager];
-    v13 = [v12 deviceMotion];
-    [v13 rotationRate];
+    manager = [(InteractiveAccelerometerViewController *)self manager];
+    deviceMotion2 = [manager deviceMotion];
+    [deviceMotion2 rotationRate];
     v15 = v14;
     v17 = v16;
     v19 = v18;
 
-    v20 = [(InteractiveAccelerometerViewController *)self motionManagerData];
+    motionManagerData = [(InteractiveAccelerometerViewController *)self motionManagerData];
     v70[0] = @"x";
     v21 = [NSNumber numberWithDouble:v15];
     v71[0] = v21;
@@ -1489,7 +1489,7 @@ LABEL_20:
     v23 = [NSNumber numberWithDouble:v19];
     v71[2] = v23;
     v24 = [NSDictionary dictionaryWithObjects:v71 forKeys:v70 count:3];
-    [v20 addObject:v24];
+    [motionManagerData addObject:v24];
   }
 
   v25 = v7 * v7 + v6 * v6;
@@ -1512,10 +1512,10 @@ LABEL_20:
   v33 = [(InteractiveAccelerometerViewController *)self _updateForRotation:v30 shiftAngle:v32];
   if (v28 <= 0.100000001)
   {
-    v36 = [(InteractiveAccelerometerViewController *)self rotationOrientation];
-    if ((v36 - 2) <= 2)
+    rotationOrientation = [(InteractiveAccelerometerViewController *)self rotationOrientation];
+    if ((rotationOrientation - 2) <= 2)
     {
-      v27 = dbl_10000BA40[v36 - 2];
+      v27 = dbl_10000BA40[rotationOrientation - 2];
     }
 
     v37 = v27 - v30;
@@ -1599,8 +1599,8 @@ LABEL_20:
 
   if (v33)
   {
-    v43 = [(InteractiveAccelerometerViewController *)self view];
-    [v43 bounds];
+    view = [(InteractiveAccelerometerViewController *)self view];
+    [view bounds];
     v44 = CGRectGetHeight(v72) * 1.29999995;
 
     *&v45 = v28;
@@ -1626,35 +1626,35 @@ LABEL_20:
     CATransform3DTranslate(&v59, &v58, 0.0, v48 * v47, 0.0);
     +[CATransaction begin];
     [CATransaction setDisableActions:1];
-    v49 = [(InteractiveAccelerometerViewController *)self levelBottom];
+    levelBottom = [(InteractiveAccelerometerViewController *)self levelBottom];
     v58 = v63;
-    [v49 setTransform:&v58];
+    [levelBottom setTransform:&v58];
 
-    v50 = [(InteractiveAccelerometerViewController *)self degreesLabel];
-    v51 = [v50 layer];
+    degreesLabel = [(InteractiveAccelerometerViewController *)self degreesLabel];
+    layer = [degreesLabel layer];
     v58 = v64;
-    [v51 setTransform:&v58];
+    [layer setTransform:&v58];
 
-    v52 = [(InteractiveAccelerometerViewController *)self bottomOuterCircle];
+    bottomOuterCircle = [(InteractiveAccelerometerViewController *)self bottomOuterCircle];
     v58 = v62;
-    [v52 setTransform:&v58];
+    [bottomOuterCircle setTransform:&v58];
 
-    v53 = [(InteractiveAccelerometerViewController *)self bottomInnerCircle];
+    bottomInnerCircle = [(InteractiveAccelerometerViewController *)self bottomInnerCircle];
     v58 = v61;
-    [v53 setTransform:&v58];
+    [bottomInnerCircle setTransform:&v58];
 
-    v54 = [(InteractiveAccelerometerViewController *)self topOuterCircle];
+    topOuterCircle = [(InteractiveAccelerometerViewController *)self topOuterCircle];
     v58 = v60;
-    [v54 setTransform:&v58];
+    [topOuterCircle setTransform:&v58];
 
-    v55 = [(InteractiveAccelerometerViewController *)self topInnerCircle];
+    topInnerCircle = [(InteractiveAccelerometerViewController *)self topInnerCircle];
     v58 = v59;
-    [v55 setTransform:&v58];
+    [topInnerCircle setTransform:&v58];
 
-    v56 = [(InteractiveAccelerometerViewController *)self ticContainer];
-    v57 = [v56 layer];
+    ticContainer = [(InteractiveAccelerometerViewController *)self ticContainer];
+    layer2 = [ticContainer layer];
     CATransform3DMakeRotation(&v58, v31, 0.0, 0.0, 1.0);
-    [v57 setTransform:&v58];
+    [layer2 setTransform:&v58];
 
     +[CATransaction commit];
   }
@@ -1663,12 +1663,12 @@ LABEL_20:
   [(InteractiveAccelerometerViewController *)self setPreviousRotation:v30];
 }
 
-- (BOOL)_updateForRotation:(double)a3 shiftAngle:(double)a4
+- (BOOL)_updateForRotation:(double)rotation shiftAngle:(double)angle
 {
-  [(InteractiveAccelerometerViewController *)self setCurrentShift:a4];
-  [(InteractiveAccelerometerViewController *)self setCurrentRotation:a3];
-  v7 = a3 * 180.0 / 3.14159265;
-  [(InteractiveAccelerometerViewController *)self setDegreesShift:a4 * 180.0 / 3.14159265];
+  [(InteractiveAccelerometerViewController *)self setCurrentShift:angle];
+  [(InteractiveAccelerometerViewController *)self setCurrentRotation:rotation];
+  v7 = rotation * 180.0 / 3.14159265;
+  [(InteractiveAccelerometerViewController *)self setDegreesShift:angle * 180.0 / 3.14159265];
   [(InteractiveAccelerometerViewController *)self degreesShift];
   if (fabs(v8) <= 40.0)
   {
@@ -1681,108 +1681,108 @@ LABEL_20:
         {
           if (v7 >= -70.0 || v7 <= -110.0)
           {
-            v9 = [(InteractiveAccelerometerViewController *)self orientation];
+            orientation = [(InteractiveAccelerometerViewController *)self orientation];
           }
 
           else
           {
-            v9 = 4;
+            orientation = 4;
           }
         }
 
         else
         {
-          v9 = 3;
+          orientation = 3;
         }
       }
 
       else
       {
-        v9 = 2;
+        orientation = 2;
       }
     }
 
     else
     {
-      v9 = 1;
+      orientation = 1;
     }
   }
 
-  else if (a4 <= 0.0)
+  else if (angle <= 0.0)
   {
-    v9 = 6;
+    orientation = 6;
   }
 
   else
   {
-    v9 = 5;
+    orientation = 5;
   }
 
   +[CATransaction begin];
   [CATransaction setDisableActions:1];
-  v11 = [(InteractiveAccelerometerViewController *)self orientation];
-  v12 = v9 != v11;
-  if (v9 != v11)
+  orientation2 = [(InteractiveAccelerometerViewController *)self orientation];
+  v12 = orientation != orientation2;
+  if (orientation != orientation2)
   {
-    v13 = [(InteractiveAccelerometerViewController *)self traitCollection];
-    v14 = [v13 verticalSizeClass];
+    traitCollection = [(InteractiveAccelerometerViewController *)self traitCollection];
+    verticalSizeClass = [traitCollection verticalSizeClass];
 
-    if (v14 == 2)
+    if (verticalSizeClass == 2)
     {
-      [(InteractiveAccelerometerViewController *)self setPreviousOrientation:v9];
-      [(InteractiveAccelerometerViewController *)self updateTicsForOrientation:v9];
+      [(InteractiveAccelerometerViewController *)self setPreviousOrientation:orientation];
+      [(InteractiveAccelerometerViewController *)self updateTicsForOrientation:orientation];
     }
 
     else
     {
-      v15 = [(InteractiveAccelerometerViewController *)self traitCollection];
-      v16 = [v15 verticalSizeClass];
+      traitCollection2 = [(InteractiveAccelerometerViewController *)self traitCollection];
+      verticalSizeClass2 = [traitCollection2 verticalSizeClass];
 
-      if (v16 == 1)
+      if (verticalSizeClass2 == 1)
       {
-        [(InteractiveAccelerometerViewController *)self setPreviousOrientation:v9];
+        [(InteractiveAccelerometerViewController *)self setPreviousOrientation:orientation];
       }
     }
 
-    [(InteractiveAccelerometerViewController *)self updateTicsForOrientation:v9];
+    [(InteractiveAccelerometerViewController *)self updateTicsForOrientation:orientation];
   }
 
-  [(InteractiveAccelerometerViewController *)self setOrientation:v9];
-  if (v9 <= 3)
+  [(InteractiveAccelerometerViewController *)self setOrientation:orientation];
+  if (orientation <= 3)
   {
-    if (v9 == 1)
+    if (orientation == 1)
     {
       goto LABEL_63;
     }
 
-    if (v9 != 2)
+    if (orientation != 2)
     {
       v7 = 0.0;
-      if (v9 != 3)
+      if (orientation != 3)
       {
         goto LABEL_63;
       }
 
-      if (a3 <= 3.14159265)
+      if (rotation <= 3.14159265)
       {
-        if (a3 < -3.14159265)
+        if (rotation < -3.14159265)
         {
-          a3 = a3 + 6.28318531;
+          rotation = rotation + 6.28318531;
         }
       }
 
       else
       {
-        a3 = -(6.28318531 - a3);
+        rotation = -(6.28318531 - rotation);
       }
 
-      v22 = a3 + -1.57079633;
-      if (a3 + -1.57079633 <= 3.14159265)
+      v22 = rotation + -1.57079633;
+      if (rotation + -1.57079633 <= 3.14159265)
       {
         if (v22 >= -3.14159265)
         {
 LABEL_53:
-          v20 = a3 * 180.0 / 3.14159265;
+          v20 = rotation * 180.0 / 3.14159265;
           v21 = -90.0;
           goto LABEL_62;
         }
@@ -1795,30 +1795,30 @@ LABEL_53:
         v23 = -6.28318531;
       }
 
-      a3 = v22 + v23 + 1.57079633;
+      rotation = v22 + v23 + 1.57079633;
       goto LABEL_53;
     }
 
-    if (a3 <= 3.14159265)
+    if (rotation <= 3.14159265)
     {
-      if (a3 < -3.14159265)
+      if (rotation < -3.14159265)
       {
-        a3 = a3 + 6.28318531;
+        rotation = rotation + 6.28318531;
       }
     }
 
     else
     {
-      a3 = -(6.28318531 - a3);
+      rotation = -(6.28318531 - rotation);
     }
 
-    v24 = a3 + -3.14159265;
-    if (a3 + -3.14159265 <= 3.14159265)
+    v24 = rotation + -3.14159265;
+    if (rotation + -3.14159265 <= 3.14159265)
     {
       if (v24 >= -3.14159265)
       {
 LABEL_61:
-        v20 = a3 * 180.0 / 3.14159265;
+        v20 = rotation * 180.0 / 3.14159265;
         v21 = -180.0;
         goto LABEL_62;
       }
@@ -1831,32 +1831,32 @@ LABEL_61:
       v25 = -6.28318531;
     }
 
-    a3 = v24 + v25 + 3.14159265;
+    rotation = v24 + v25 + 3.14159265;
     goto LABEL_61;
   }
 
-  if (v9 == 4)
+  if (orientation == 4)
   {
-    if (a3 <= 3.14159265)
+    if (rotation <= 3.14159265)
     {
-      if (a3 < -3.14159265)
+      if (rotation < -3.14159265)
       {
-        a3 = a3 + 6.28318531;
+        rotation = rotation + 6.28318531;
       }
     }
 
     else
     {
-      a3 = -(6.28318531 - a3);
+      rotation = -(6.28318531 - rotation);
     }
 
-    v18 = a3 + 2.35619449;
-    if (a3 + 2.35619449 <= 3.14159265)
+    v18 = rotation + 2.35619449;
+    if (rotation + 2.35619449 <= 3.14159265)
     {
       if (v18 >= -3.14159265)
       {
 LABEL_45:
-        v20 = a3 * 180.0 / 3.14159265;
+        v20 = rotation * 180.0 / 3.14159265;
         v21 = 90.0;
 LABEL_62:
         v7 = v20 + v21;
@@ -1871,11 +1871,11 @@ LABEL_62:
       v19 = -6.28318531;
     }
 
-    a3 = v18 + v19 + -2.35619449;
+    rotation = v18 + v19 + -2.35619449;
     goto LABEL_45;
   }
 
-  if (v9 == 5)
+  if (orientation == 5)
   {
     v17 = -1.57079633;
   }
@@ -1883,7 +1883,7 @@ LABEL_62:
   else
   {
     v7 = 0.0;
-    if (v9 != 6)
+    if (orientation != 6)
     {
       goto LABEL_63;
     }
@@ -1891,19 +1891,19 @@ LABEL_62:
     v17 = 1.57079633;
   }
 
-  v7 = (a4 + v17) * 180.0 / 3.14159265;
+  v7 = (angle + v17) * 180.0 / 3.14159265;
 LABEL_63:
   +[CATransaction commit];
   [(InteractiveAccelerometerViewController *)self degreesShift];
   v27 = fabs(v26);
-  v28 = [(InteractiveAccelerometerViewController *)self inputs];
-  [v28 degreesShiftRange];
+  inputs = [(InteractiveAccelerometerViewController *)self inputs];
+  [inputs degreesShiftRange];
   v30 = v29;
 
   v31 = [(InteractiveAccelerometerViewController *)self orientation]- 5;
   v33 = v27 < v30 || v31 < 0xFFFFFFFFFFFFFFFCLL;
-  v34 = [(InteractiveAccelerometerViewController *)self inputs];
-  [v34 zeroRange];
+  inputs2 = [(InteractiveAccelerometerViewController *)self inputs];
+  [inputs2 zeroRange];
   v36 = v35;
 
   if (fabs(v7) >= v36 || !v33)
@@ -1924,8 +1924,8 @@ LABEL_63:
 
   [(InteractiveAccelerometerViewController *)self setFramesLevel:v38];
 LABEL_78:
-  v39 = [(InteractiveAccelerometerViewController *)self framesLevel];
-  if (v39 > 29 != [(InteractiveAccelerometerViewController *)self isLeveled])
+  framesLevel = [(InteractiveAccelerometerViewController *)self framesLevel];
+  if (framesLevel > 29 != [(InteractiveAccelerometerViewController *)self isLeveled])
   {
     if ([(InteractiveAccelerometerViewController *)self isLeveled])
     {
@@ -1937,15 +1937,15 @@ LABEL_78:
       }
     }
 
-    if (v39 < 30)
+    if (framesLevel < 30)
     {
       v42 = 0;
     }
 
     else
     {
-      v41 = [(InteractiveAccelerometerViewController *)self orientation];
-      v42 = v41 == [(InteractiveAccelerometerViewController *)self testingOrientation];
+      orientation3 = [(InteractiveAccelerometerViewController *)self orientation];
+      v42 = orientation3 == [(InteractiveAccelerometerViewController *)self testingOrientation];
     }
 
     [(InteractiveAccelerometerViewController *)self setIsLeveled:v42];
@@ -1955,7 +1955,7 @@ LABEL_78:
   }
 
   v43 = 0.0;
-  if (v39 <= 29)
+  if (framesLevel <= 29)
   {
     v43 = v7;
   }
@@ -1971,54 +1971,54 @@ LABEL_78:
   if ([(InteractiveAccelerometerViewController *)self isLeveled]&& (v4 = [(InteractiveAccelerometerViewController *)self orientation], v4 == [(InteractiveAccelerometerViewController *)self testingOrientation]))
   {
     v5 = v54;
-    v6 = [v54 CGColor];
-    v7 = [(InteractiveAccelerometerViewController *)self levelBottom];
-    [v7 setBackgroundColor:v6];
+    cGColor = [v54 CGColor];
+    levelBottom = [(InteractiveAccelerometerViewController *)self levelBottom];
+    [levelBottom setBackgroundColor:cGColor];
 
     v8 = v54;
-    v9 = [v54 CGColor];
-    v10 = [(InteractiveAccelerometerViewController *)self topInnerCircle];
-    [v10 setFillColor:v9];
+    cGColor2 = [v54 CGColor];
+    topInnerCircle = [(InteractiveAccelerometerViewController *)self topInnerCircle];
+    [topInnerCircle setFillColor:cGColor2];
 
     v11 = v54;
-    v12 = [v54 CGColor];
-    v13 = [(InteractiveAccelerometerViewController *)self topOuterCircle];
-    [v13 setFillColor:v12];
+    cGColor3 = [v54 CGColor];
+    topOuterCircle = [(InteractiveAccelerometerViewController *)self topOuterCircle];
+    [topOuterCircle setFillColor:cGColor3];
 
     v14 = v54;
-    v15 = [v54 CGColor];
-    v16 = [(InteractiveAccelerometerViewController *)self bottomInnerCircle];
-    [v16 setFillColor:v15];
+    cGColor4 = [v54 CGColor];
+    bottomInnerCircle = [(InteractiveAccelerometerViewController *)self bottomInnerCircle];
+    [bottomInnerCircle setFillColor:cGColor4];
 
     v17 = v54;
-    v18 = [v54 CGColor];
-    v19 = [(InteractiveAccelerometerViewController *)self bottomOuterCircle];
-    [v19 setFillColor:v18];
+    cGColor5 = [v54 CGColor];
+    bottomOuterCircle = [(InteractiveAccelerometerViewController *)self bottomOuterCircle];
+    [bottomOuterCircle setFillColor:cGColor5];
 
-    v20 = [(InteractiveAccelerometerViewController *)self degreesLabel];
-    [v20 setTextColor:v54];
+    degreesLabel = [(InteractiveAccelerometerViewController *)self degreesLabel];
+    [degreesLabel setTextColor:v54];
 
     v21 = v54;
-    v22 = [v54 CGColor];
-    v23 = [(InteractiveAccelerometerViewController *)self leftLevelTic];
-    [v23 setBackgroundColor:v22];
+    cGColor6 = [v54 CGColor];
+    leftLevelTic = [(InteractiveAccelerometerViewController *)self leftLevelTic];
+    [leftLevelTic setBackgroundColor:cGColor6];
 
     v24 = v54;
-    v25 = [v54 CGColor];
-    v26 = [(InteractiveAccelerometerViewController *)self rightLevelTic];
-    [v26 setBackgroundColor:v25];
+    cGColor7 = [v54 CGColor];
+    rightLevelTic = [(InteractiveAccelerometerViewController *)self rightLevelTic];
+    [rightLevelTic setBackgroundColor:cGColor7];
 
     if (![(InteractiveAccelerometerViewController *)self samplingRawData])
     {
-      v27 = [(InteractiveAccelerometerViewController *)self timeoutTimer];
+      timeoutTimer = [(InteractiveAccelerometerViewController *)self timeoutTimer];
 
-      if (v27)
+      if (timeoutTimer)
       {
-        v28 = [(InteractiveAccelerometerViewController *)self timeoutTimer];
-        [v28 invalidate];
+        timeoutTimer2 = [(InteractiveAccelerometerViewController *)self timeoutTimer];
+        [timeoutTimer2 invalidate];
 
-        v29 = [(InteractiveAccelerometerViewController *)self inputs];
-        [v29 holdStationaryTimeout];
+        inputs = [(InteractiveAccelerometerViewController *)self inputs];
+        [inputs holdStationaryTimeout];
         v31 = "heldOrientationStationary";
 LABEL_9:
         v53 = [NSTimer scheduledTimerWithTimeInterval:self target:v31 selector:0 userInfo:0 repeats:v30];
@@ -2029,52 +2029,52 @@ LABEL_9:
 
   else
   {
-    v32 = [v3 CGColor];
-    v33 = [(InteractiveAccelerometerViewController *)self levelBottom];
-    [v33 setBackgroundColor:v32];
+    cGColor8 = [v3 CGColor];
+    levelBottom2 = [(InteractiveAccelerometerViewController *)self levelBottom];
+    [levelBottom2 setBackgroundColor:cGColor8];
 
-    v34 = [v3 CGColor];
-    v35 = [(InteractiveAccelerometerViewController *)self topInnerCircle];
-    [v35 setFillColor:v34];
+    cGColor9 = [v3 CGColor];
+    topInnerCircle2 = [(InteractiveAccelerometerViewController *)self topInnerCircle];
+    [topInnerCircle2 setFillColor:cGColor9];
 
-    v36 = [v3 CGColor];
-    v37 = [(InteractiveAccelerometerViewController *)self topOuterCircle];
-    [v37 setFillColor:v36];
+    cGColor10 = [v3 CGColor];
+    topOuterCircle2 = [(InteractiveAccelerometerViewController *)self topOuterCircle];
+    [topOuterCircle2 setFillColor:cGColor10];
 
-    v38 = [v3 CGColor];
-    v39 = [(InteractiveAccelerometerViewController *)self bottomOuterCircle];
-    [v39 setFillColor:v38];
+    cGColor11 = [v3 CGColor];
+    bottomOuterCircle2 = [(InteractiveAccelerometerViewController *)self bottomOuterCircle];
+    [bottomOuterCircle2 setFillColor:cGColor11];
 
-    v40 = [v3 CGColor];
-    v41 = [(InteractiveAccelerometerViewController *)self bottomInnerCircle];
-    [v41 setFillColor:v40];
+    cGColor12 = [v3 CGColor];
+    bottomInnerCircle2 = [(InteractiveAccelerometerViewController *)self bottomInnerCircle];
+    [bottomInnerCircle2 setFillColor:cGColor12];
 
-    v42 = [(InteractiveAccelerometerViewController *)self degreesLabel];
-    [v42 setTextColor:v3];
+    degreesLabel2 = [(InteractiveAccelerometerViewController *)self degreesLabel];
+    [degreesLabel2 setTextColor:v3];
 
-    v43 = [v3 CGColor];
-    v44 = [(InteractiveAccelerometerViewController *)self leftLevelTic];
-    [v44 setBackgroundColor:v43];
+    cGColor13 = [v3 CGColor];
+    leftLevelTic2 = [(InteractiveAccelerometerViewController *)self leftLevelTic];
+    [leftLevelTic2 setBackgroundColor:cGColor13];
 
-    v45 = [v3 CGColor];
-    v46 = [(InteractiveAccelerometerViewController *)self rightLevelTic];
-    [v46 setBackgroundColor:v45];
+    cGColor14 = [v3 CGColor];
+    rightLevelTic2 = [(InteractiveAccelerometerViewController *)self rightLevelTic];
+    [rightLevelTic2 setBackgroundColor:cGColor14];
 
     if (![(InteractiveAccelerometerViewController *)self samplingRawData])
     {
-      v47 = [(InteractiveAccelerometerViewController *)self timeoutTimer];
+      timeoutTimer3 = [(InteractiveAccelerometerViewController *)self timeoutTimer];
 
-      if (v47)
+      if (timeoutTimer3)
       {
-        v48 = [(InteractiveAccelerometerViewController *)self timeoutTimer];
-        [v48 invalidate];
+        timeoutTimer4 = [(InteractiveAccelerometerViewController *)self timeoutTimer];
+        [timeoutTimer4 invalidate];
 
-        v49 = [(InteractiveAccelerometerViewController *)self startDate];
-        [v49 timeIntervalSinceNow];
+        startDate = [(InteractiveAccelerometerViewController *)self startDate];
+        [startDate timeIntervalSinceNow];
         v51 = v50;
 
-        v29 = [(InteractiveAccelerometerViewController *)self inputs];
-        [v29 notStationaryTimeout];
+        inputs = [(InteractiveAccelerometerViewController *)self inputs];
+        [inputs notStationaryTimeout];
         v30 = v51 + v52;
         v31 = "notStationaryTimedOut";
         goto LABEL_9;
@@ -2083,73 +2083,73 @@ LABEL_9:
   }
 }
 
-- (void)_updateOffsetLabel:(double)a3
+- (void)_updateOffsetLabel:(double)label
 {
-  v5 = a3;
-  v6 = fabs(a3);
+  labelCopy = label;
+  v6 = fabs(label);
   if (v6 < 1.0)
   {
-    v7 = [(InteractiveAccelerometerViewController *)self inputs];
-    [v7 zeroRange];
+    inputs = [(InteractiveAccelerometerViewController *)self inputs];
+    [inputs zeroRange];
     v9 = v8;
 
     if (v6 > v9)
     {
-      v5 = ((*&a3 >> 63) | 1);
+      labelCopy = ((*&label >> 63) | 1);
     }
   }
 
-  if ([(InteractiveAccelerometerViewController *)self lastDisplayDegrees]!= v5)
+  if ([(InteractiveAccelerometerViewController *)self lastDisplayDegrees]!= labelCopy)
   {
-    [(InteractiveAccelerometerViewController *)self setLastDisplayDegrees:v5];
+    [(InteractiveAccelerometerViewController *)self setLastDisplayDegrees:labelCopy];
     v10 = +[NSBundle mainBundle];
     v11 = [v10 localizedStringForKey:@"COMPASS_DEGREES" value:&stru_1000109D8 table:0];
-    v20 = [NSString stringWithFormat:v11, v5];
+    labelCopy = [NSString stringWithFormat:v11, labelCopy];
 
-    v12 = [(InteractiveAccelerometerViewController *)self degreesLabel];
-    [v12 setText:v20];
+    degreesLabel = [(InteractiveAccelerometerViewController *)self degreesLabel];
+    [degreesLabel setText:labelCopy];
 
-    v13 = [(InteractiveAccelerometerViewController *)self degreesLabel];
-    [v13 sizeToFit];
+    degreesLabel2 = [(InteractiveAccelerometerViewController *)self degreesLabel];
+    [degreesLabel2 sizeToFit];
 
-    v14 = [(InteractiveAccelerometerViewController *)self view];
-    [v14 center];
+    view = [(InteractiveAccelerometerViewController *)self view];
+    [view center];
     v16 = v15;
     v18 = v17;
-    v19 = [(InteractiveAccelerometerViewController *)self degreesLabel];
-    [v19 setCenter:{v16, v18}];
+    degreesLabel3 = [(InteractiveAccelerometerViewController *)self degreesLabel];
+    [degreesLabel3 setCenter:{v16, v18}];
   }
 }
 
-- (void)updateTicsForOrientation:(int64_t)a3
+- (void)updateTicsForOrientation:(int64_t)orientation
 {
-  v4 = (a3 - 5) < 0xFFFFFFFFFFFFFFFCLL;
-  v5 = [(InteractiveAccelerometerViewController *)self leftLevelTic];
-  [v5 setHidden:v4];
+  v4 = (orientation - 5) < 0xFFFFFFFFFFFFFFFCLL;
+  leftLevelTic = [(InteractiveAccelerometerViewController *)self leftLevelTic];
+  [leftLevelTic setHidden:v4];
 
-  v6 = [(InteractiveAccelerometerViewController *)self rightLevelTic];
-  [v6 setHidden:v4];
+  rightLevelTic = [(InteractiveAccelerometerViewController *)self rightLevelTic];
+  [rightLevelTic setHidden:v4];
 }
 
-- (double)average:(id)a3 key:(id)a4 size:(unint64_t)a5
+- (double)average:(id)average key:(id)key size:(unint64_t)size
 {
-  v7 = a4;
-  if (a5)
+  keyCopy = key;
+  if (size)
   {
     v8 = 0;
     v9 = 0.0;
     v10 = 1;
     do
     {
-      v11 = [a3 objectAtIndexedSubscript:v8];
-      v12 = [v11 objectForKeyedSubscript:v7];
+      v11 = [average objectAtIndexedSubscript:v8];
+      v12 = [v11 objectForKeyedSubscript:keyCopy];
       [v12 floatValue];
       v9 = v9 + v13;
 
       v8 = v10++;
     }
 
-    while (v8 < a5);
+    while (v8 < size);
   }
 
   else
@@ -2157,7 +2157,7 @@ LABEL_9:
     v9 = 0.0;
   }
 
-  return v9 / a5;
+  return v9 / size;
 }
 
 @end

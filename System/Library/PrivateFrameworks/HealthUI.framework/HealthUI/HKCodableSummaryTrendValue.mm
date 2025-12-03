@@ -1,33 +1,33 @@
 @interface HKCodableSummaryTrendValue
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addDataPresencePoints:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addDataPresencePoints:(id)points;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HKCodableSummaryTrendValue
 
-- (void)addDataPresencePoints:(id)a3
+- (void)addDataPresencePoints:(id)points
 {
-  v4 = a3;
+  pointsCopy = points;
   dataPresencePoints = self->_dataPresencePoints;
-  v8 = v4;
+  v8 = pointsCopy;
   if (!dataPresencePoints)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_dataPresencePoints;
     self->_dataPresencePoints = v6;
 
-    v4 = v8;
+    pointsCopy = v8;
     dataPresencePoints = self->_dataPresencePoints;
   }
 
-  [(NSMutableArray *)dataPresencePoints addObject:v4];
+  [(NSMutableArray *)dataPresencePoints addObject:pointsCopy];
 }
 
 - (id)description
@@ -36,8 +36,8 @@
   v8.receiver = self;
   v8.super_class = HKCodableSummaryTrendValue;
   v4 = [(HKCodableSummaryTrendValue *)&v8 description];
-  v5 = [(HKCodableSummaryTrendValue *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HKCodableSummaryTrendValue *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -45,12 +45,12 @@
 - (id)dictionaryRepresentation
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   analysisData = self->_analysisData;
   if (analysisData)
   {
-    [v3 setObject:analysisData forKey:@"analysisData"];
+    [dictionary setObject:analysisData forKey:@"analysisData"];
   }
 
   coveredDateRangeRawValue = self->_coveredDateRangeRawValue;
@@ -81,8 +81,8 @@
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
-          [v7 addObject:v13];
+          dictionaryRepresentation = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
+          [v7 addObject:dictionaryRepresentation];
         }
 
         v10 = [(NSMutableArray *)v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -97,10 +97,10 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_analysisData)
   {
     PBDataWriterWriteDataField();
@@ -143,44 +143,44 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if (self->_analysisData)
   {
-    [v8 setAnalysisData:?];
+    [toCopy setAnalysisData:?];
   }
 
   if (self->_coveredDateRangeRawValue)
   {
-    [v8 setCoveredDateRangeRawValue:?];
+    [toCopy setCoveredDateRangeRawValue:?];
   }
 
   if ([(HKCodableSummaryTrendValue *)self dataPresencePointsCount])
   {
-    [v8 clearDataPresencePoints];
-    v4 = [(HKCodableSummaryTrendValue *)self dataPresencePointsCount];
-    if (v4)
+    [toCopy clearDataPresencePoints];
+    dataPresencePointsCount = [(HKCodableSummaryTrendValue *)self dataPresencePointsCount];
+    if (dataPresencePointsCount)
     {
-      v5 = v4;
+      v5 = dataPresencePointsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(HKCodableSummaryTrendValue *)self dataPresencePointsAtIndex:i];
-        [v8 addDataPresencePoints:v7];
+        [toCopy addDataPresencePoints:v7];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSData *)self->_analysisData copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSData *)self->_analysisData copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(NSString *)self->_coveredDateRangeRawValue copyWithZone:a3];
+  v8 = [(NSString *)self->_coveredDateRangeRawValue copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 
@@ -204,7 +204,7 @@
           objc_enumerationMutation(v10);
         }
 
-        v15 = [*(*(&v17 + 1) + 8 * v14) copyWithZone:{a3, v17}];
+        v15 = [*(*(&v17 + 1) + 8 * v14) copyWithZone:{zone, v17}];
         [v5 addDataPresencePoints:v15];
 
         ++v14;
@@ -220,13 +220,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((analysisData = self->_analysisData, !(analysisData | v4[1])) || -[NSData isEqual:](analysisData, "isEqual:")) && ((coveredDateRangeRawValue = self->_coveredDateRangeRawValue, !(coveredDateRangeRawValue | v4[2])) || -[NSString isEqual:](coveredDateRangeRawValue, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((analysisData = self->_analysisData, !(analysisData | equalCopy[1])) || -[NSData isEqual:](analysisData, "isEqual:")) && ((coveredDateRangeRawValue = self->_coveredDateRangeRawValue, !(coveredDateRangeRawValue | equalCopy[2])) || -[NSString isEqual:](coveredDateRangeRawValue, "isEqual:")))
   {
     dataPresencePoints = self->_dataPresencePoints;
-    if (dataPresencePoints | v4[3])
+    if (dataPresencePoints | equalCopy[3])
     {
       v8 = [(NSMutableArray *)dataPresencePoints isEqual:?];
     }
@@ -252,16 +252,16 @@
   return v4 ^ [(NSMutableArray *)self->_dataPresencePoints hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (*(v4 + 1))
+  fromCopy = from;
+  if (*(fromCopy + 1))
   {
     [(HKCodableSummaryTrendValue *)self setAnalysisData:?];
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(HKCodableSummaryTrendValue *)self setCoveredDateRangeRawValue:?];
   }
@@ -270,7 +270,7 @@
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v5 = *(v4 + 3);
+  v5 = *(fromCopy + 3);
   v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {

@@ -1,27 +1,27 @@
 @interface PKPaymentMethodPassesSectionController
-- (PKPaymentMethodPassesSectionController)initWithDelegate:(id)a3 request:(id)a4 selectedPass:(id)a5;
-- (id)cellRegistrationForItem:(id)a3;
+- (PKPaymentMethodPassesSectionController)initWithDelegate:(id)delegate request:(id)request selectedPass:(id)pass;
+- (id)cellRegistrationForItem:(id)item;
 - (id)identifiers;
-- (id)snapshotWithPreviousSnapshot:(id)a3 forSectionIdentifier:(id)a4;
-- (void)didSelectItem:(id)a3;
+- (id)snapshotWithPreviousSnapshot:(id)snapshot forSectionIdentifier:(id)identifier;
+- (void)didSelectItem:(id)item;
 @end
 
 @implementation PKPaymentMethodPassesSectionController
 
-- (PKPaymentMethodPassesSectionController)initWithDelegate:(id)a3 request:(id)a4 selectedPass:(id)a5
+- (PKPaymentMethodPassesSectionController)initWithDelegate:(id)delegate request:(id)request selectedPass:(id)pass
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  delegateCopy = delegate;
+  requestCopy = request;
+  passCopy = pass;
   v15.receiver = self;
   v15.super_class = PKPaymentMethodPassesSectionController;
   v11 = [(PKPaymentMethodPassesSectionController *)&v15 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_delegate, v8);
-    objc_storeStrong(&v12->_request, a4);
-    objc_storeStrong(&v12->_selectedPass, a5);
+    objc_storeWeak(&v11->_delegate, delegateCopy);
+    objc_storeStrong(&v12->_request, request);
+    objc_storeStrong(&v12->_selectedPass, pass);
     v13 = PKLocalizedPaymentString(&cfstr_PaymentMethodP.isa);
     [(PKDynamicListSectionController *)v12 setHeaderText:v13];
   }
@@ -38,12 +38,12 @@
   return v2;
 }
 
-- (void)didSelectItem:(id)a3
+- (void)didSelectItem:(id)item
 {
-  v4 = [a3 paymentPass];
+  paymentPass = [item paymentPass];
   selectedPass = self->_selectedPass;
-  self->_selectedPass = v4;
-  v6 = v4;
+  self->_selectedPass = paymentPass;
+  v6 = paymentPass;
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained reloadDataAnimated:1];
@@ -52,12 +52,12 @@
   [v8 selectedPass:v6];
 }
 
-- (id)snapshotWithPreviousSnapshot:(id)a3 forSectionIdentifier:(id)a4
+- (id)snapshotWithPreviousSnapshot:(id)snapshot forSectionIdentifier:(id)identifier
 {
   v33 = *MEMORY[0x1E69E9840];
   v26 = objc_alloc_init(MEMORY[0x1E69DC5D0]);
-  v5 = [MEMORY[0x1E69B8A58] sharedInstance];
-  v6 = [v5 _sortedPaymentPassesForPaymentRequest:self->_request];
+  mEMORY[0x1E69B8A58] = [MEMORY[0x1E69B8A58] sharedInstance];
+  v6 = [mEMORY[0x1E69B8A58] _sortedPaymentPassesForPaymentRequest:self->_request];
   passes = self->_passes;
   self->_passes = v6;
 
@@ -83,14 +83,14 @@
 
         v13 = *(*(&v28 + 1) + 8 * i);
         v14 = [PKPaymentMethodSelectionItem alloc];
-        v15 = [v13 uniqueID];
-        v16 = [(PKPaymentMethodSelectionItem *)v14 initWithIdentifier:v15];
+        uniqueID = [v13 uniqueID];
+        v16 = [(PKPaymentMethodSelectionItem *)v14 initWithIdentifier:uniqueID];
 
         [(PKPaymentMethodSelectionItem *)v16 setPaymentPass:v13];
-        v17 = [(PKPaymentPass *)self->_selectedPass uniqueID];
-        v18 = [v13 uniqueID];
-        v19 = v17;
-        v20 = v18;
+        uniqueID2 = [(PKPaymentPass *)self->_selectedPass uniqueID];
+        uniqueID3 = [v13 uniqueID];
+        v19 = uniqueID2;
+        v20 = uniqueID3;
         v21 = v20;
         if (v19 == v20)
         {
@@ -136,7 +136,7 @@
   return v26;
 }
 
-- (id)cellRegistrationForItem:(id)a3
+- (id)cellRegistrationForItem:(id)item
 {
   v3 = MEMORY[0x1E69DC800];
   v4 = objc_opt_class();

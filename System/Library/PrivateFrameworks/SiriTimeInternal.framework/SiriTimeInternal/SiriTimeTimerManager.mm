@@ -1,31 +1,31 @@
 @interface SiriTimeTimerManager
-+ (id)timerManagerWithEndpointUUIDString:(id)a3;
-- (SiriTimeTimerManager)initWithEndpointUUID:(id)a3;
-- (id)addTimer:(id)a3;
-- (id)dismissTimerWithIdentifier:(id)a3;
-- (id)removeTimer:(id)a3;
++ (id)timerManagerWithEndpointUUIDString:(id)string;
+- (SiriTimeTimerManager)initWithEndpointUUID:(id)d;
+- (id)addTimer:(id)timer;
+- (id)dismissTimerWithIdentifier:(id)identifier;
+- (id)removeTimer:(id)timer;
 - (id)timers;
-- (id)updateTimer:(id)a3;
+- (id)updateTimer:(id)timer;
 @end
 
 @implementation SiriTimeTimerManager
 
-- (SiriTimeTimerManager)initWithEndpointUUID:(id)a3
+- (SiriTimeTimerManager)initWithEndpointUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v8.receiver = self;
   v8.super_class = SiriTimeTimerManager;
   v5 = [(SiriTimeTimerManager *)&v8 init];
   if (v5)
   {
-    v6 = [SiriTimeTimerManager timerManagerWithEndpointUUIDString:v4];
+    v6 = [SiriTimeTimerManager timerManagerWithEndpointUUIDString:dCopy];
     [(SiriTimeTimerManager *)v5 setTimerManager:v6];
   }
 
   return v5;
 }
 
-+ (id)timerManagerWithEndpointUUIDString:(id)a3
++ (id)timerManagerWithEndpointUUIDString:(id)string
 {
   v9 = *MEMORY[0x277D85DE8];
   v3 = *MEMORY[0x277CEF098];
@@ -44,55 +44,55 @@
 
 - (id)timers
 {
-  v2 = [(SiriTimeTimerManager *)self timerManager];
-  v3 = [v2 timers];
+  timerManager = [(SiriTimeTimerManager *)self timerManager];
+  timers = [timerManager timers];
 
-  return v3;
+  return timers;
 }
 
-- (id)addTimer:(id)a3
+- (id)addTimer:(id)timer
 {
-  v4 = a3;
-  v5 = [(SiriTimeTimerManager *)self timerManager];
-  v6 = [v5 addTimer:v4];
+  timerCopy = timer;
+  timerManager = [(SiriTimeTimerManager *)self timerManager];
+  v6 = [timerManager addTimer:timerCopy];
 
   return v6;
 }
 
-- (id)updateTimer:(id)a3
+- (id)updateTimer:(id)timer
 {
-  v4 = a3;
-  v5 = [(SiriTimeTimerManager *)self timerManager];
-  v6 = [v5 updateTimer:v4];
+  timerCopy = timer;
+  timerManager = [(SiriTimeTimerManager *)self timerManager];
+  v6 = [timerManager updateTimer:timerCopy];
 
   return v6;
 }
 
-- (id)removeTimer:(id)a3
+- (id)removeTimer:(id)timer
 {
-  v4 = a3;
-  v5 = [(SiriTimeTimerManager *)self timerManager];
-  v6 = [v5 removeTimer:v4];
+  timerCopy = timer;
+  timerManager = [(SiriTimeTimerManager *)self timerManager];
+  v6 = [timerManager removeTimer:timerCopy];
 
   return v6;
 }
 
-- (id)dismissTimerWithIdentifier:(id)a3
+- (id)dismissTimerWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(SiriTimeTimerManager *)self timerManager];
+  identifierCopy = identifier;
+  timerManager = [(SiriTimeTimerManager *)self timerManager];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v7 = [(SiriTimeTimerManager *)self timerManager];
-    v8 = [v7 dismissTimerWithIdentifier:v4];
+    timerManager2 = [(SiriTimeTimerManager *)self timerManager];
+    v8 = [timerManager2 dismissTimerWithIdentifier:identifierCopy];
   }
 
-  v9 = [MEMORY[0x277D2C900] futureWithNoResult];
+  futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
 
-  return v9;
+  return futureWithNoResult;
 }
 
 @end

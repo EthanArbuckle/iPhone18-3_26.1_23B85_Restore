@@ -18,8 +18,8 @@
     v7[2] = __64__NSMutableOrderedSet_PLAdditions__pl_removeObjectsPassingTest___block_invoke;
     v7[3] = &unk_1E75725C8;
     v8 = v4;
-    v6 = [a1 indexesOfObjectsPassingTest:v7];
-    [a1 removeObjectsAtIndexes:v6];
+    v6 = [self indexesOfObjectsPassingTest:v7];
+    [self removeObjectsAtIndexes:v6];
   }
 }
 
@@ -46,16 +46,16 @@
         }
 
         v11 = *(*(&v14 + 1) + 8 * i);
-        v12 = [a1 indexOfObject:v11];
+        v12 = [self indexOfObject:v11];
         if (v12 == 0x7FFFFFFFFFFFFFFFLL)
         {
-          [a1 insertObject:v11 atIndex:a4];
+          [self insertObject:v11 atIndex:a4];
         }
 
         else if (a4 != v12)
         {
           v13 = [MEMORY[0x1E696AC90] indexSetWithIndex:v12];
-          [a1 moveObjectsAtIndexes:v13 toIndex:a4];
+          [self moveObjectsAtIndexes:v13 toIndex:a4];
         }
 
         ++a4;
@@ -74,7 +74,7 @@
   v4 = a3;
   if (v4)
   {
-    v5 = [MEMORY[0x1E696AD50] indexSet];
+    indexSet = [MEMORY[0x1E696AD50] indexSet];
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
@@ -95,10 +95,10 @@
             objc_enumerationMutation(v6);
           }
 
-          v11 = [a1 indexOfObject:{*(*(&v12 + 1) + 8 * v10), v12}];
+          v11 = [self indexOfObject:{*(*(&v12 + 1) + 8 * v10), v12}];
           if (v11 != 0x7FFFFFFFFFFFFFFFLL)
           {
-            [v5 addIndex:v11];
+            [indexSet addIndex:v11];
           }
 
           ++v10;
@@ -111,7 +111,7 @@
       while (v8);
     }
 
-    [a1 removeObjectsAtIndexes:v5];
+    [self removeObjectsAtIndexes:indexSet];
   }
 }
 
@@ -120,10 +120,10 @@
   if (a3)
   {
     v4 = a3;
-    v5 = [a1 count];
+    v5 = [self count];
     v6 = [v4 count];
     v7 = [MEMORY[0x1E696AC90] indexSetWithIndexesInRange:{v5, v6}];
-    [a1 insertObjects:v4 atIndexes:v7];
+    [self insertObjects:v4 atIndexes:v7];
   }
 }
 

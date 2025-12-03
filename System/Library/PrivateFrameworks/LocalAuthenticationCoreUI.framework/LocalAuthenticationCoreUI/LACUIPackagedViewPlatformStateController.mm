@@ -1,25 +1,25 @@
 @interface LACUIPackagedViewPlatformStateController
-- (BOOL)hasState:(id)a3;
-- (LACUIPackagedViewPlatformStateController)initWithLayer:(id)a3;
+- (BOOL)hasState:(id)state;
+- (LACUIPackagedViewPlatformStateController)initWithLayer:(id)layer;
 - (LACUIPackagedViewPlatformStateControllerDelegate)delegate;
 - (id)state;
 - (void)setInitialState;
-- (void)setState:(id)a3 speed:(double)a4;
-- (void)stateController:(id)a3 didSetStateOfLayer:(id)a4;
-- (void)stateController:(id)a3 transitionDidStart:(id)a4 speed:(float)a5;
+- (void)setState:(id)state speed:(double)speed;
+- (void)stateController:(id)controller didSetStateOfLayer:(id)layer;
+- (void)stateController:(id)controller transitionDidStart:(id)start speed:(float)speed;
 @end
 
 @implementation LACUIPackagedViewPlatformStateController
 
-- (LACUIPackagedViewPlatformStateController)initWithLayer:(id)a3
+- (LACUIPackagedViewPlatformStateController)initWithLayer:(id)layer
 {
-  v4 = a3;
+  layerCopy = layer;
   v9.receiver = self;
   v9.super_class = LACUIPackagedViewPlatformStateController;
   v5 = [(LACUIPackagedViewPlatformStateController *)&v9 init];
   if (v5)
   {
-    v6 = [objc_alloc(MEMORY[0x277CD9FB8]) initWithLayer:v4];
+    v6 = [objc_alloc(MEMORY[0x277CD9FB8]) initWithLayer:layerCopy];
     stateController = v5->_stateController;
     v5->_stateController = v6;
 
@@ -32,82 +32,82 @@
 - (id)state
 {
   stateController = self->_stateController;
-  v3 = [(CAStateController *)stateController layer];
-  v4 = [(CAStateController *)stateController stateOfLayer:v3];
-  v5 = [v4 name];
+  layer = [(CAStateController *)stateController layer];
+  v4 = [(CAStateController *)stateController stateOfLayer:layer];
+  name = [v4 name];
 
-  return v5;
+  return name;
 }
 
-- (BOOL)hasState:(id)a3
+- (BOOL)hasState:(id)state
 {
   stateController = self->_stateController;
-  v4 = a3;
-  v5 = [(CAStateController *)stateController layer];
-  v6 = [v5 stateWithName:v4];
+  stateCopy = state;
+  layer = [(CAStateController *)stateController layer];
+  v6 = [layer stateWithName:stateCopy];
 
   return v6 != 0;
 }
 
-- (void)setState:(id)a3 speed:(double)a4
+- (void)setState:(id)state speed:(double)speed
 {
-  v11 = a3;
+  stateCopy = state;
   if (![(LACUIPackagedViewPlatformStateController *)self hasState:?])
   {
     [LACUIPackagedViewPlatformStateController setState:speed:];
   }
 
   stateController = self->_stateController;
-  v7 = [(CAStateController *)stateController layer];
-  v8 = [v7 stateWithName:v11];
-  v9 = [(CAStateController *)self->_stateController layer];
-  *&v10 = a4;
-  [(CAStateController *)stateController setState:v8 ofLayer:v9 transitionSpeed:v10];
+  layer = [(CAStateController *)stateController layer];
+  v8 = [layer stateWithName:stateCopy];
+  layer2 = [(CAStateController *)self->_stateController layer];
+  *&v10 = speed;
+  [(CAStateController *)stateController setState:v8 ofLayer:layer2 transitionSpeed:v10];
 }
 
 - (void)setInitialState
 {
   stateController = self->_stateController;
-  v3 = [(CAStateController *)stateController layer];
-  [(CAStateController *)stateController setInitialStatesOfLayer:v3];
+  layer = [(CAStateController *)stateController layer];
+  [(CAStateController *)stateController setInitialStatesOfLayer:layer];
 }
 
-- (void)stateController:(id)a3 didSetStateOfLayer:(id)a4
+- (void)stateController:(id)controller didSetStateOfLayer:(id)layer
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (self->_stateController != v6)
+  controllerCopy = controller;
+  layerCopy = layer;
+  if (self->_stateController != controllerCopy)
   {
     [LACUIPackagedViewPlatformStateController stateController:didSetStateOfLayer:];
   }
 
-  v8 = v7;
+  v8 = layerCopy;
   v9 = LA_LOG_LACUIPackagedViewPlatformStateController();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
     v11 = [(CAStateController *)self->_stateController stateOfLayer:v8];
-    v12 = [v11 name];
+    name = [v11 name];
     v13 = 138543618;
-    v14 = self;
+    selfCopy = self;
     v15 = 2114;
-    v16 = v12;
+    v16 = name;
     _os_log_debug_impl(&dword_256063000, v9, OS_LOG_TYPE_DEBUG, "%{public}@ did set layer state to '%{public}@'", &v13, 0x16u);
   }
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)stateController:(id)a3 transitionDidStart:(id)a4 speed:(float)a5
+- (void)stateController:(id)controller transitionDidStart:(id)start speed:(float)speed
 {
-  v7 = a3;
-  v8 = a4;
-  if (self->_stateController != v7)
+  controllerCopy = controller;
+  startCopy = start;
+  if (self->_stateController != controllerCopy)
   {
     [LACUIPackagedViewPlatformStateController stateController:transitionDidStart:speed:];
   }
 
-  v9 = v8;
+  v9 = startCopy;
   v10 = LA_LOG_LACUIPackagedViewPlatformStateController();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {

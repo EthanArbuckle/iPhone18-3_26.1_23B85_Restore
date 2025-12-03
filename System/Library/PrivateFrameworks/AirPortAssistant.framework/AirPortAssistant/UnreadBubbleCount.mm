@@ -1,13 +1,13 @@
 @interface UnreadBubbleCount
 + (int)initImageCache;
 + (void)deallocImageCache;
-- (UnreadBubbleCount)initWithFrame:(CGRect)a3;
+- (UnreadBubbleCount)initWithFrame:(CGRect)frame;
 - (void)calculateTextMetrics;
 - (void)dealloc;
-- (void)drawRect:(CGRect)a3;
+- (void)drawRect:(CGRect)rect;
 - (void)layoutSubviews;
-- (void)setCount:(int64_t)a3;
-- (void)setIsSelected:(BOOL)a3;
+- (void)setCount:(int64_t)count;
+- (void)setIsSelected:(BOOL)selected;
 @end
 
 @implementation UnreadBubbleCount
@@ -41,11 +41,11 @@
   qword_27E3834B8 = 0;
 }
 
-- (UnreadBubbleCount)initWithFrame:(CGRect)a3
+- (UnreadBubbleCount)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = UnreadBubbleCount;
-  v5 = [(UnreadBubbleCount *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(UnreadBubbleCount *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v5)
   {
     objc_msgSend_initImageCache(UnreadBubbleCount, v3, v4);
@@ -62,23 +62,23 @@
   [(UnreadBubbleCount *)&v2 dealloc];
 }
 
-- (void)setCount:(int64_t)a3
+- (void)setCount:(int64_t)count
 {
-  if (self->_count != a3)
+  if (self->_count != count)
   {
-    self->_count = a3;
-    objc_msgSend_calculateTextMetrics(self, a2, a3);
+    self->_count = count;
+    objc_msgSend_calculateTextMetrics(self, a2, count);
 
     objc_msgSend_setNeedsDisplay(self, v5, v6);
   }
 }
 
-- (void)setIsSelected:(BOOL)a3
+- (void)setIsSelected:(BOOL)selected
 {
-  if (self->_isSelected != a3)
+  if (self->_isSelected != selected)
   {
-    self->_isSelected = a3;
-    objc_msgSend_setNeedsDisplay(self, a2, a3);
+    self->_isSelected = selected;
+    objc_msgSend_setNeedsDisplay(self, a2, selected);
   }
 }
 
@@ -101,7 +101,7 @@
   objc_msgSend_setFrame_(self, v24, v25, MinX, v15 + roundf(v23), v6, v8);
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   v58[2] = *MEMORY[0x277D85DE8];
   if (self->_count >= 1)

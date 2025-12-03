@@ -1,21 +1,21 @@
 @interface DDMLTaggerModel
-+ (id)_buildTokenToLabelMap:(id)a3 supportedTypes:(id *)a4;
-- (DDMLTaggerModel)initWithEmbeddingLocale:(id)a3 modelDictionary:(id)a4 baseURL:(id)a5;
-- (id)tokenTypeForValue:(int64_t)a3;
++ (id)_buildTokenToLabelMap:(id)map supportedTypes:(id *)types;
+- (DDMLTaggerModel)initWithEmbeddingLocale:(id)locale modelDictionary:(id)dictionary baseURL:(id)l;
+- (id)tokenTypeForValue:(int64_t)value;
 - (void)dealloc;
 @end
 
 @implementation DDMLTaggerModel
 
-- (id)tokenTypeForValue:(int64_t)a3
+- (id)tokenTypeForValue:(int64_t)value
 {
-  v5 = [(DDMLTaggerModel *)self tokenLabelMap];
+  tokenLabelMap = [(DDMLTaggerModel *)self tokenLabelMap];
 
-  if (v5)
+  if (tokenLabelMap)
   {
-    v6 = [(DDMLTaggerModel *)self tokenLabelMap];
-    v7 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-    v8 = [v6 objectForKeyedSubscript:v7];
+    tokenLabelMap2 = [(DDMLTaggerModel *)self tokenLabelMap];
+    v7 = [MEMORY[0x1E696AD98] numberWithInteger:value];
+    v8 = [tokenLabelMap2 objectForKeyedSubscript:v7];
   }
 
   else
@@ -39,29 +39,29 @@
   [(DDMLTaggerModel *)&v4 dealloc];
 }
 
-- (DDMLTaggerModel)initWithEmbeddingLocale:(id)a3 modelDictionary:(id)a4 baseURL:(id)a5
+- (DDMLTaggerModel)initWithEmbeddingLocale:(id)locale modelDictionary:(id)dictionary baseURL:(id)l
 {
   v30[1] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  localeCopy = locale;
+  dictionaryCopy = dictionary;
+  lCopy = l;
   v28.receiver = self;
   v28.super_class = DDMLTaggerModel;
   v12 = [(DDMLTaggerModel *)&v28 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_embeddingLocale, a3);
+    objc_storeStrong(&v12->_embeddingLocale, locale);
     v27 = 0;
-    v14 = [objc_opt_class() _buildTokenToLabelMap:v10 supportedTypes:&v27];
+    v14 = [objc_opt_class() _buildTokenToLabelMap:dictionaryCopy supportedTypes:&v27];
     v15 = v27;
     v16 = v27;
     tokenLabelMap = v13->_tokenLabelMap;
     v13->_tokenLabelMap = v14;
 
     objc_storeStrong(&v13->_supportedTypes, v15);
-    v18 = [v10 objectForKeyedSubscript:@"modelFile"];
-    v19 = [v11 URLByAppendingPathComponent:v18];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"modelFile"];
+    v19 = [lCopy URLByAppendingPathComponent:v18];
     if (v19)
     {
       Helper_x8__kMRLNeuralNetworkOptionModelURLKey = gotLoadHelper_x8__kMRLNeuralNetworkOptionModelURLKey(v20);
@@ -76,11 +76,11 @@
   return v13;
 }
 
-+ (id)_buildTokenToLabelMap:(id)a3 supportedTypes:(id *)a4
++ (id)_buildTokenToLabelMap:(id)map supportedTypes:(id *)types
 {
-  v5 = a3;
+  mapCopy = map;
   v6 = objc_opt_new();
-  if (a4)
+  if (types)
   {
     v7 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   }
@@ -90,7 +90,7 @@
     v7 = 0;
   }
 
-  v8 = [v5 objectForKeyedSubscript:@"outputMap"];
+  v8 = [mapCopy objectForKeyedSubscript:@"outputMap"];
   v14 = MEMORY[0x1E69E9820];
   v15 = 3221225472;
   v16 = __56__DDMLTaggerModel__buildTokenToLabelMap_supportedTypes___block_invoke;
@@ -100,9 +100,9 @@
   v10 = v7;
   v19 = v10;
   [v8 enumerateKeysAndObjectsUsingBlock:&v14];
-  if (a4)
+  if (types)
   {
-    *a4 = [v10 allObjects];
+    *types = [v10 allObjects];
   }
 
   v11 = v19;

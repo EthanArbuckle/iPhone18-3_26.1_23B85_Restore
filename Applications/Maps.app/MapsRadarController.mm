@@ -1,14 +1,14 @@
 @interface MapsRadarController
 + (id)sharedInstance;
-+ (void)_processAttachments:(id)a3 logFolderPath:(id)a4;
++ (void)_processAttachments:(id)attachments logFolderPath:(id)path;
 - (MapsRadarController)init;
-- (void)_collectAndPersistAttachmentsWithRadarDraft:(id)a3 logFolderPath:(id)a4 completion:(id)a5;
-- (void)_collectAttachmentsWithRadarDraft:(id)a3 completion:(id)a4;
-- (void)addAttachmentProvider:(id)a3;
-- (void)collectAttachmentsWithCompletion:(id)a3;
+- (void)_collectAndPersistAttachmentsWithRadarDraft:(id)draft logFolderPath:(id)path completion:(id)completion;
+- (void)_collectAttachmentsWithRadarDraft:(id)draft completion:(id)completion;
+- (void)addAttachmentProvider:(id)provider;
+- (void)collectAttachmentsWithCompletion:(id)completion;
 - (void)dealloc;
-- (void)launchTTRWithRadar:(id)a3 promptTitle:(id)a4 fromViewController:(id)a5;
-- (void)removeAttachmentProvider:(id)a3;
+- (void)launchTTRWithRadar:(id)radar promptTitle:(id)title fromViewController:(id)controller;
+- (void)removeAttachmentProvider:(id)provider;
 @end
 
 @implementation MapsRadarController
@@ -19,7 +19,7 @@
   block[1] = 3221225472;
   block[2] = sub_100008970;
   block[3] = &unk_1016611D0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10195CB80 != -1)
   {
     dispatch_once(&qword_10195CB80, block);
@@ -33,9 +33,9 @@
 - (MapsRadarController)init
 {
   v3 = +[GEOPlatform sharedPlatform];
-  v4 = [v3 isInternalInstall];
+  isInternalInstall = [v3 isInternalInstall];
 
-  if (v4)
+  if (isInternalInstall)
   {
     v39.receiver = self;
     v39.super_class = MapsRadarController;
@@ -54,9 +54,9 @@
       v8 = [NSString stringWithFormat:@"%@.%@.isolationQueue.%p", v7, objc_opt_class(), v5];
 
       v9 = v8;
-      v10 = [v8 UTF8String];
+      uTF8String = [v8 UTF8String];
       v11 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-      v12 = dispatch_queue_create(v10, v11);
+      v12 = dispatch_queue_create(uTF8String, v11);
       isolationQueue = v5->_isolationQueue;
       v5->_isolationQueue = v12;
 
@@ -69,9 +69,9 @@
       v17 = [NSString stringWithFormat:@"%@.%@.DiagnosticExtensionDarwinQueue.%p", v16, objc_opt_class(), v5];
 
       v18 = v17;
-      v19 = [v17 UTF8String];
+      uTF8String2 = [v17 UTF8String];
       v20 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-      v21 = dispatch_queue_create(v19, v20);
+      v21 = dispatch_queue_create(uTF8String2, v20);
       diagnosticExtensionDarwinQueue = v5->_diagnosticExtensionDarwinQueue;
       v5->_diagnosticExtensionDarwinQueue = v21;
 
@@ -87,21 +87,21 @@
       v25 = [NSString stringWithFormat:@"%@.%@.CarPlayDarwinQueue.%p", v24, objc_opt_class(), v5];
 
       v26 = v25;
-      v27 = [v25 UTF8String];
+      uTF8String3 = [v25 UTF8String];
       v28 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-      v29 = dispatch_queue_create(v27, v28);
+      v29 = dispatch_queue_create(uTF8String3, v28);
       carplayDarwinQueue = v5->_carplayDarwinQueue;
       v5->_carplayDarwinQueue = v29;
 
       v5->_carplayDarwinToken = -1;
-      v31 = [@"com.apple.carkit.maps-diagnostics-starting" UTF8String];
+      uTF8String4 = [@"com.apple.carkit.maps-diagnostics-starting" UTF8String];
       v32 = v5->_carplayDarwinQueue;
       v35[0] = _NSConcreteStackBlock;
       v35[1] = 3221225472;
       v35[2] = sub_1005CCD6C;
       v35[3] = &unk_101658C08;
       objc_copyWeak(&v36, buf);
-      notify_register_dispatch(v31, &v5->_carplayDarwinToken, v32, v35);
+      notify_register_dispatch(uTF8String4, &v5->_carplayDarwinToken, v32, v35);
       objc_destroyWeak(&v36);
 
       objc_destroyWeak(&v38);
@@ -109,15 +109,15 @@
     }
 
     self = v5;
-    v33 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v33 = 0;
+    selfCopy = 0;
   }
 
-  return v33;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -126,7 +126,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     *buf = 134349056;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}p] Deallocating", buf, 0xCu);
   }
 
@@ -147,26 +147,26 @@
   [(MapsRadarController *)&v6 dealloc];
 }
 
-- (void)_collectAndPersistAttachmentsWithRadarDraft:(id)a3 logFolderPath:(id)a4 completion:(id)a5
+- (void)_collectAndPersistAttachmentsWithRadarDraft:(id)draft logFolderPath:(id)path completion:(id)completion
 {
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1005CADD4;
   v11[3] = &unk_1016605F8;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v8 = v14;
-  v9 = v13;
-  v10 = v12;
+  draftCopy = draft;
+  pathCopy = path;
+  completionCopy = completion;
+  v8 = completionCopy;
+  v9 = pathCopy;
+  v10 = draftCopy;
   [(MapsRadarController *)self _collectAttachmentsWithRadarDraft:v10 completion:v11];
 }
 
-- (void)_collectAttachmentsWithRadarDraft:(id)a3 completion:(id)a4
+- (void)_collectAttachmentsWithRadarDraft:(id)draft completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  draftCopy = draft;
+  completionCopy = completion;
+  if (!completionCopy)
   {
     v20 = sub_10006D178();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -212,15 +212,15 @@
   *&v34 = sub_1005CB28C;
   *(&v34 + 1) = sub_1005CB29C;
   v10 = +[NSBundle mainBundle];
-  v11 = [v10 bundleIdentifier];
-  v12 = [NSString stringWithFormat:@"%@.%@.%p.attachments", v11, objc_opt_class(), self];
+  bundleIdentifier = [v10 bundleIdentifier];
+  v12 = [NSString stringWithFormat:@"%@.%@.%p.attachments", bundleIdentifier, objc_opt_class(), self];
   v13 = v12;
   [v12 UTF8String];
   v35 = os_transaction_create();
 
   v14 = dispatch_group_create();
   objc_initWeak(&location, self);
-  v15 = [(MapsRadarController *)self observers];
+  observers = [(MapsRadarController *)self observers];
   v28[0] = _NSConcreteStackBlock;
   v28[1] = 3221225472;
   v28[2] = sub_1005CB2A4;
@@ -228,9 +228,9 @@
   objc_copyWeak(&v31, &location);
   v16 = v14;
   v29 = v16;
-  v17 = v6;
+  v17 = draftCopy;
   v30 = v17;
-  [v15 enumerateObserversWithGroup:v16 visitor:v28];
+  [observers enumerateObserversWithGroup:v16 visitor:v28];
 
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -238,9 +238,9 @@
   block[3] = &unk_101626730;
   objc_copyWeak(&v27, &location);
   v24 = v17;
-  v25 = v7;
+  v25 = completionCopy;
   v26 = buf;
-  v18 = v7;
+  v18 = completionCopy;
   v19 = v17;
   dispatch_group_notify(v16, &_dispatch_main_q, block);
 
@@ -251,45 +251,45 @@
   _Block_object_dispose(buf, 8);
 }
 
-- (void)collectAttachmentsWithCompletion:(id)a3
+- (void)collectAttachmentsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_opt_new();
   v6 = NSTemporaryDirectory();
   v7 = +[NSUUID UUID];
-  v8 = [v7 UUIDString];
-  v9 = [v6 stringByAppendingPathComponent:v8];
+  uUIDString = [v7 UUIDString];
+  v9 = [v6 stringByAppendingPathComponent:uUIDString];
   v10 = [v9 stringByAppendingPathComponent:@"MapsDiagnostics/"];
   v11 = [NSURL fileURLWithPath:v10];
 
-  v12 = [v11 path];
+  path = [v11 path];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_1005CBF1C;
   v15[3] = &unk_101661090;
   v16 = v11;
-  v17 = v4;
+  v17 = completionCopy;
   v13 = v11;
-  v14 = v4;
-  [(MapsRadarController *)self _collectAndPersistAttachmentsWithRadarDraft:v5 logFolderPath:v12 completion:v15];
+  v14 = completionCopy;
+  [(MapsRadarController *)self _collectAndPersistAttachmentsWithRadarDraft:v5 logFolderPath:path completion:v15];
 }
 
-- (void)launchTTRWithRadar:(id)a3 promptTitle:(id)a4 fromViewController:(id)a5
+- (void)launchTTRWithRadar:(id)radar promptTitle:(id)title fromViewController:(id)controller
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  radarCopy = radar;
+  titleCopy = title;
+  controllerCopy = controller;
   v11 = sub_100008F18();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     *buf = 134349826;
-    v57 = self;
+    selfCopy = self;
     v58 = 2112;
-    v59 = v8;
+    v59 = radarCopy;
     v60 = 2112;
-    *v61 = v9;
+    *v61 = titleCopy;
     *&v61[8] = 2112;
-    *&v61[10] = v10;
+    *&v61[10] = controllerCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "[%{public}p] Launching TTR with radar: %@ promptTitle: %@ viewController: %@", buf, 0x2Au);
   }
 
@@ -298,9 +298,9 @@
   v52 = 0x3032000000;
   v53 = sub_1005CB28C;
   v54 = sub_1005CB29C;
-  if (v8)
+  if (radarCopy)
   {
-    v12 = v8;
+    v12 = radarCopy;
     v13 = &v50;
   }
 
@@ -318,7 +318,7 @@
   v46[2] = sub_1005CC760;
   v46[3] = &unk_101661600;
   v48 = &v50;
-  v14 = v9;
+  v14 = titleCopy;
   v47 = v14;
   v41 = objc_retainBlock(v46);
   if (v14)
@@ -333,7 +333,7 @@
         v31 = dispatch_queue_get_label(&_dispatch_main_q);
         v32 = dispatch_queue_get_label(0);
         *buf = 136316418;
-        v57 = "[MapsRadarController launchTTRWithRadar:promptTitle:fromViewController:]";
+        selfCopy = "[MapsRadarController launchTTRWithRadar:promptTitle:fromViewController:]";
         v58 = 2080;
         v59 = "MapsRadarController.m";
         v60 = 1024;
@@ -354,13 +354,13 @@
         {
           v34 = +[NSThread callStackSymbols];
           *buf = 138412290;
-          v57 = v34;
+          selfCopy = v34;
           _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
         }
       }
     }
 
-    if (!v10)
+    if (!controllerCopy)
     {
       v17 = +[UIApplication _maps_keyMapsSceneDelegate];
       if (!v17)
@@ -369,7 +369,7 @@
         if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
         {
           *buf = 136315906;
-          v57 = "[MapsRadarController launchTTRWithRadar:promptTitle:fromViewController:]";
+          selfCopy = "[MapsRadarController launchTTRWithRadar:promptTitle:fromViewController:]";
           v58 = 2080;
           v59 = "MapsRadarController.m";
           v60 = 1024;
@@ -386,20 +386,20 @@
           {
             v37 = +[NSThread callStackSymbols];
             *buf = 138412290;
-            v57 = v37;
+            selfCopy = v37;
             _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
           }
         }
       }
 
-      v10 = [v17 topMostPresentedViewController];
-      if (!v10)
+      controllerCopy = [v17 topMostPresentedViewController];
+      if (!controllerCopy)
       {
         v38 = sub_10006D178();
         if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
         {
           *buf = 136315906;
-          v57 = "[MapsRadarController launchTTRWithRadar:promptTitle:fromViewController:]";
+          selfCopy = "[MapsRadarController launchTTRWithRadar:promptTitle:fromViewController:]";
           v58 = 2080;
           v59 = "MapsRadarController.m";
           v60 = 1024;
@@ -416,7 +416,7 @@
           {
             v40 = +[NSThread callStackSymbols];
             *buf = 138412290;
-            v57 = v40;
+            selfCopy = v40;
             _os_log_impl(&_mh_execute_header, v39, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
           }
         }
@@ -427,8 +427,8 @@
   if ([v14 length])
   {
     v18 = [v14 substringToIndex:1];
-    v19 = [v18 uppercaseString];
-    v20 = [v14 stringByReplacingCharactersInRange:0 withString:{1, v19}];
+    uppercaseString = [v18 uppercaseString];
+    v20 = [v14 stringByReplacingCharactersInRange:0 withString:{1, uppercaseString}];
     v21 = [v20 stringByAppendingString:@". Would you like to file a Radar?"];
 
     v22 = [UIAlertController alertControllerWithTitle:@"[Internal only]\nTap-to-Radar" message:v21 preferredStyle:1];
@@ -447,10 +447,10 @@
     [v22 addAction:v25];
 
     v26 = +[MapsInternalAlertPresentationController sharedInstance];
-    v27 = [v10 view];
-    v28 = [v27 window];
-    v29 = [v28 windowScene];
-    [v26 presentAlertController:v22 fromWindowScene:v29];
+    view = [controllerCopy view];
+    window = [view window];
+    windowScene = [window windowScene];
+    [v26 presentAlertController:v22 fromWindowScene:windowScene];
 
     objc_destroyWeak(&v45);
   }
@@ -464,59 +464,59 @@
   _Block_object_dispose(&v50, 8);
 }
 
-- (void)removeAttachmentProvider:(id)a3
+- (void)removeAttachmentProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v5 = sub_100008F18();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = 134349314;
-    v7 = self;
+    selfCopy = self;
     v8 = 2112;
-    v9 = v4;
+    v9 = providerCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}p] Removing attachment provider: %@", &v6, 0x16u);
   }
 
-  [(GEOObserverHashTable *)self->_observers unregisterObserver:v4];
+  [(GEOObserverHashTable *)self->_observers unregisterObserver:providerCopy];
 }
 
-- (void)addAttachmentProvider:(id)a3
+- (void)addAttachmentProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v5 = sub_100008F18();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = 134349314;
-    v7 = self;
+    selfCopy = self;
     v8 = 2112;
-    v9 = v4;
+    v9 = providerCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}p] Adding attachment provider: %@", &v6, 0x16u);
   }
 
-  [(GEOObserverHashTable *)self->_observers registerObserver:v4 queue:&_dispatch_main_q];
+  [(GEOObserverHashTable *)self->_observers registerObserver:providerCopy queue:&_dispatch_main_q];
 }
 
-+ (void)_processAttachments:(id)a3 logFolderPath:(id)a4
++ (void)_processAttachments:(id)attachments logFolderPath:(id)path
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 attachments];
-  v33 = v5;
-  v8 = [v5 screenshots];
-  v9 = [v7 arrayByAddingObjectsFromArray:v8];
+  attachmentsCopy = attachments;
+  pathCopy = path;
+  attachments = [attachmentsCopy attachments];
+  v33 = attachmentsCopy;
+  screenshots = [attachmentsCopy screenshots];
+  v9 = [attachments arrayByAddingObjectsFromArray:screenshots];
 
   v10 = +[NSFileManager defaultManager];
   v40 = 0;
-  LOBYTE(v8) = [v10 removeItemAtPath:v6 error:&v40];
+  LOBYTE(screenshots) = [v10 removeItemAtPath:pathCopy error:&v40];
   v11 = v40;
 
-  if ((v8 & 1) == 0)
+  if ((screenshots & 1) == 0)
   {
     v12 = sub_100008F18();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v42 = v6;
+      v42 = pathCopy;
       v43 = 2112;
       v44 = v11;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "Error removing folder at path: %@ (%@)", buf, 0x16u);
@@ -526,7 +526,7 @@
   v32 = v11;
   v13 = +[NSFileManager defaultManager];
   v39 = 0;
-  v14 = [v13 createDirectoryAtPath:v6 withIntermediateDirectories:1 attributes:0 error:&v39];
+  v14 = [v13 createDirectoryAtPath:pathCopy withIntermediateDirectories:1 attributes:0 error:&v39];
   v15 = v39;
 
   if ((v14 & 1) == 0)
@@ -535,7 +535,7 @@
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v42 = v6;
+      v42 = pathCopy;
       v43 = 2112;
       v44 = v15;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "Error creating folder at path: %@ (%@)", buf, 0x16u);
@@ -563,18 +563,18 @@
         }
 
         v22 = *(*(&v35 + 1) + 8 * i);
-        v23 = [v22 temporaryFileURL];
+        temporaryFileURL = [v22 temporaryFileURL];
 
-        if (v23)
+        if (temporaryFileURL)
         {
-          v24 = [v22 temporaryFileURL];
-          v25 = [v22 fileName];
-          v26 = [NSString stringWithFormat:@"%@/%@", v6, v25];
+          temporaryFileURL2 = [v22 temporaryFileURL];
+          fileName = [v22 fileName];
+          v26 = [NSString stringWithFormat:@"%@/%@", pathCopy, fileName];
           v27 = [NSURL fileURLWithPath:v26];
 
           v28 = +[NSFileManager defaultManager];
           v34 = 0;
-          LOBYTE(v26) = [v28 moveItemAtURL:v24 toURL:v27 error:&v34];
+          LOBYTE(v26) = [v28 moveItemAtURL:temporaryFileURL2 toURL:v27 error:&v34];
           v29 = v34;
 
           if ((v26 & 1) == 0)
@@ -583,7 +583,7 @@
             if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
             {
               *buf = 138412802;
-              v42 = v24;
+              v42 = temporaryFileURL2;
               v43 = 2112;
               v44 = v27;
               v45 = 2112;

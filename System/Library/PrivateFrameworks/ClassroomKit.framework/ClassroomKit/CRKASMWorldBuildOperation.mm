@@ -1,8 +1,8 @@
 @interface CRKASMWorldBuildOperation
-+ (id)makeErrorWithErrorsByObjectID:(id)a3;
-- (CRKASMWorldBuildOperation)initWithEnvironment:(id)a3;
++ (id)makeErrorWithErrorsByObjectID:(id)d;
+- (CRKASMWorldBuildOperation)initWithEnvironment:(id)environment;
 - (id)compileResult;
-- (id)makeHousekeeperWithRoster:(id)a3;
+- (id)makeHousekeeperWithRoster:(id)roster;
 - (id)rosterRequirements;
 - (void)buildAllClassKitPersonsByClassID;
 - (void)buildClassKitClasses;
@@ -12,22 +12,22 @@
 - (void)checkAccountEligibility;
 - (void)finish;
 - (void)finishWithEmptyResultObject;
-- (void)housekeepKeychainWithRoster:(id)a3;
+- (void)housekeepKeychainWithRoster:(id)roster;
 - (void)main;
 @end
 
 @implementation CRKASMWorldBuildOperation
 
-- (CRKASMWorldBuildOperation)initWithEnvironment:(id)a3
+- (CRKASMWorldBuildOperation)initWithEnvironment:(id)environment
 {
-  v5 = a3;
+  environmentCopy = environment;
   v9.receiver = self;
   v9.super_class = CRKASMWorldBuildOperation;
   v6 = [(CRKASMWorldBuildOperation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_environment, a3);
+    objc_storeStrong(&v6->_environment, environment);
   }
 
   return v7;
@@ -62,12 +62,12 @@ void __33__CRKASMWorldBuildOperation_main__block_invoke(uint64_t a1)
 
 - (void)checkAccountEligibility
 {
-  v3 = [(CRKASMWorldBuildOperation *)self rosterRequirements];
-  v4 = [v3 accountState];
+  rosterRequirements = [(CRKASMWorldBuildOperation *)self rosterRequirements];
+  accountState = [rosterRequirements accountState];
 
-  if (v4 != 2)
+  if (accountState != 2)
   {
-    if (v4 == 1)
+    if (accountState == 1)
     {
       v6 = _CRKLogASM_12();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -82,7 +82,7 @@ LABEL_14:
 
     else
     {
-      if (!v4)
+      if (!accountState)
       {
         v5 = _CRKLogASM_12();
         if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -115,13 +115,13 @@ LABEL_16:
 
 - (void)buildCurrentClassKitUser
 {
-  v3 = [(CRKASMWorldBuildOperation *)self rosterRequirements];
+  rosterRequirements = [(CRKASMWorldBuildOperation *)self rosterRequirements];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __53__CRKASMWorldBuildOperation_buildCurrentClassKitUser__block_invoke;
   v4[3] = &unk_278DC2128;
   v4[4] = self;
-  [v3 currentUserWithCompletion:v4];
+  [rosterRequirements currentUserWithCompletion:v4];
 }
 
 void __53__CRKASMWorldBuildOperation_buildCurrentClassKitUser__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -178,13 +178,13 @@ void __53__CRKASMWorldBuildOperation_buildCurrentClassKitUser__block_invoke_2(ui
 
 - (void)buildClassKitClasses
 {
-  v3 = [(CRKASMWorldBuildOperation *)self rosterRequirements];
+  rosterRequirements = [(CRKASMWorldBuildOperation *)self rosterRequirements];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __49__CRKASMWorldBuildOperation_buildClassKitClasses__block_invoke;
   v4[3] = &unk_278DC1E18;
   v4[4] = self;
-  [v3 classesWithCompletion:v4];
+  [rosterRequirements classesWithCompletion:v4];
 }
 
 void __49__CRKASMWorldBuildOperation_buildClassKitClasses__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -249,17 +249,17 @@ BOOL __49__CRKASMWorldBuildOperation_buildClassKitClasses__block_invoke_3(uint64
 - (void)buildClassKitLocationsByLocationID
 {
   v3 = MEMORY[0x277CBEB98];
-  v4 = [(CRKASMWorldBuildOperation *)self classKitClasses];
-  v5 = [v4 crk_mapUsingBlock:&__block_literal_global_6_2];
+  classKitClasses = [(CRKASMWorldBuildOperation *)self classKitClasses];
+  v5 = [classKitClasses crk_mapUsingBlock:&__block_literal_global_6_2];
   v6 = [v3 setWithArray:v5];
 
-  v7 = [(CRKASMWorldBuildOperation *)self rosterRequirements];
+  rosterRequirements = [(CRKASMWorldBuildOperation *)self rosterRequirements];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __63__CRKASMWorldBuildOperation_buildClassKitLocationsByLocationID__block_invoke_2;
   v8[3] = &unk_278DC1E18;
   v8[4] = self;
-  [v7 locationsWithObjectIDs:v6 completion:v8];
+  [rosterRequirements locationsWithObjectIDs:v6 completion:v8];
 }
 
 void __63__CRKASMWorldBuildOperation_buildClassKitLocationsByLocationID__block_invoke_2(uint64_t a1, void *a2, void *a3)
@@ -306,16 +306,16 @@ uint64_t __63__CRKASMWorldBuildOperation_buildClassKitLocationsByLocationID__blo
 
 - (void)buildManageableLocationIDs
 {
-  v3 = [(CRKASMWorldBuildOperation *)self rosterRequirements];
-  v4 = [(CRKASMWorldBuildOperation *)self classKitCurrentUser];
-  v5 = [v4 person];
-  v6 = [v5 objectID];
+  rosterRequirements = [(CRKASMWorldBuildOperation *)self rosterRequirements];
+  classKitCurrentUser = [(CRKASMWorldBuildOperation *)self classKitCurrentUser];
+  person = [classKitCurrentUser person];
+  objectID = [person objectID];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __55__CRKASMWorldBuildOperation_buildManageableLocationIDs__block_invoke;
   v7[3] = &unk_278DC1E18;
   v7[4] = self;
-  [v3 locationsWithManagePermissionsForUserWithObjectID:v6 completion:v7];
+  [rosterRequirements locationsWithManagePermissionsForUserWithObjectID:objectID completion:v7];
 }
 
 void __55__CRKASMWorldBuildOperation_buildManageableLocationIDs__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -391,8 +391,8 @@ void __55__CRKASMWorldBuildOperation_buildManageableLocationIDs__block_invoke_2(
 
         v7 = *(*(&v36 + 1) + 8 * v6);
         dispatch_group_enter(v3);
-        v8 = [(CRKASMWorldBuildOperation *)self rosterRequirements];
-        v9 = [v7 objectID];
+        rosterRequirements = [(CRKASMWorldBuildOperation *)self rosterRequirements];
+        objectID = [v7 objectID];
         v31[0] = MEMORY[0x277D85DD0];
         v31[1] = 3221225472;
         v31[2] = __61__CRKASMWorldBuildOperation_buildAllClassKitPersonsByClassID__block_invoke;
@@ -403,11 +403,11 @@ void __55__CRKASMWorldBuildOperation_buildManageableLocationIDs__block_invoke_2(
         v34 = v19;
         v11 = v3;
         v35 = v11;
-        [v8 trustedPersonsInClassWithObjectID:v9 completion:v31];
+        [rosterRequirements trustedPersonsInClassWithObjectID:objectID completion:v31];
 
         dispatch_group_enter(v11);
-        v12 = [(CRKASMWorldBuildOperation *)self rosterRequirements];
-        v13 = [v7 objectID];
+        rosterRequirements2 = [(CRKASMWorldBuildOperation *)self rosterRequirements];
+        objectID2 = [v7 objectID];
         v26[0] = MEMORY[0x277D85DD0];
         v26[1] = 3221225472;
         v26[2] = __61__CRKASMWorldBuildOperation_buildAllClassKitPersonsByClassID__block_invoke_3;
@@ -416,7 +416,7 @@ void __55__CRKASMWorldBuildOperation_buildManageableLocationIDs__block_invoke_2(
         v28 = v7;
         v29 = v20;
         v30 = v11;
-        [v12 personsInClassWithObjectID:v13 completion:v26];
+        [rosterRequirements2 personsInClassWithObjectID:objectID2 completion:v26];
 
         ++v6;
       }
@@ -576,8 +576,8 @@ void __61__CRKASMWorldBuildOperation_buildAllClassKitPersonsByClassID__block_inv
 
 - (void)finish
 {
-  v3 = [(CRKASMWorldBuildOperation *)self compileResult];
-  [(CRKASMWorldBuildOperation *)self endOperationWithResultObject:v3];
+  compileResult = [(CRKASMWorldBuildOperation *)self compileResult];
+  [(CRKASMWorldBuildOperation *)self endOperationWithResultObject:compileResult];
 }
 
 - (void)finishWithEmptyResultObject
@@ -586,36 +586,36 @@ void __61__CRKASMWorldBuildOperation_buildAllClassKitPersonsByClassID__block_inv
   [(CRKASMWorldBuildOperation *)self endOperationWithResultObject:v3];
 }
 
-- (void)housekeepKeychainWithRoster:(id)a3
+- (void)housekeepKeychainWithRoster:(id)roster
 {
-  v3 = [(CRKASMWorldBuildOperation *)self makeHousekeeperWithRoster:a3];
+  v3 = [(CRKASMWorldBuildOperation *)self makeHousekeeperWithRoster:roster];
   [v3 housekeep];
 }
 
-- (id)makeHousekeeperWithRoster:(id)a3
+- (id)makeHousekeeperWithRoster:(id)roster
 {
-  v4 = a3;
+  rosterCopy = roster;
   v5 = [CRKASMCredentialHousekeeper alloc];
-  v6 = [(CRKASMWorldBuildOperation *)self environment];
-  v7 = [v6 configuration];
-  v8 = [v7 credentialStore];
-  v9 = [(CRKASMCredentialHousekeeper *)v5 initWithRoster:v4 credentialStore:v8];
+  environment = [(CRKASMWorldBuildOperation *)self environment];
+  configuration = [environment configuration];
+  credentialStore = [configuration credentialStore];
+  v9 = [(CRKASMCredentialHousekeeper *)v5 initWithRoster:rosterCopy credentialStore:credentialStore];
 
   return v9;
 }
 
 - (id)compileResult
 {
-  v3 = [(CRKASMWorldBuildOperation *)self environment];
-  v30 = [v3 certificateVendor];
+  environment = [(CRKASMWorldBuildOperation *)self environment];
+  certificateVendor = [environment certificateVendor];
 
-  v4 = [(CRKASMWorldBuildOperation *)self environment];
-  v5 = [(CRKASMWorldBuildOperation *)self classKitCurrentUser];
-  v6 = [v5 person];
-  v7 = [v6 objectID];
-  v8 = [v4 identityVendorForUserIdentifier:v7];
+  environment2 = [(CRKASMWorldBuildOperation *)self environment];
+  classKitCurrentUser = [(CRKASMWorldBuildOperation *)self classKitCurrentUser];
+  person = [classKitCurrentUser person];
+  objectID = [person objectID];
+  v8 = [environment2 identityVendorForUserIdentifier:objectID];
 
-  v9 = [(CRKASMWorldBuildOperation *)self classKitClasses];
+  classKitClasses = [(CRKASMWorldBuildOperation *)self classKitClasses];
   v33[0] = MEMORY[0x277D85DD0];
   v33[1] = 3221225472;
   v33[2] = __42__CRKASMWorldBuildOperation_compileResult__block_invoke;
@@ -623,32 +623,32 @@ void __61__CRKASMWorldBuildOperation_buildAllClassKitPersonsByClassID__block_inv
   v33[4] = self;
   v34 = v8;
   v31 = v8;
-  v10 = [v9 crk_mapUsingBlock:v33];
+  v10 = [classKitClasses crk_mapUsingBlock:v33];
 
   v11 = [CRKASMCollidingCourseFilter coursesByFilteringCollidingCoursesFromArray:v10];
-  v12 = [(CRKASMWorldBuildOperation *)self environment];
-  v13 = [v12 userFactory];
-  v14 = [(CRKASMWorldBuildOperation *)self classKitCurrentUser];
-  v15 = [v14 person];
-  v16 = [v13 userForPerson:v15];
+  environment3 = [(CRKASMWorldBuildOperation *)self environment];
+  userFactory = [environment3 userFactory];
+  classKitCurrentUser2 = [(CRKASMWorldBuildOperation *)self classKitCurrentUser];
+  person2 = [classKitCurrentUser2 person];
+  v16 = [userFactory userForPerson:person2];
 
   v17 = [CRKASMConcreteOrganization alloc];
-  v18 = [(CRKASMWorldBuildOperation *)self classKitCurrentUser];
-  v19 = [v18 person];
-  v20 = [v19 orgID];
-  v21 = [(CRKASMWorldBuildOperation *)self classKitCurrentUser];
-  v22 = [v21 organizationName];
-  v23 = [(CRKASMConcreteOrganization *)v17 initWithIdentifier:v20 name:v22];
+  classKitCurrentUser3 = [(CRKASMWorldBuildOperation *)self classKitCurrentUser];
+  person3 = [classKitCurrentUser3 person];
+  orgID = [person3 orgID];
+  classKitCurrentUser4 = [(CRKASMWorldBuildOperation *)self classKitCurrentUser];
+  organizationName = [classKitCurrentUser4 organizationName];
+  v23 = [(CRKASMConcreteOrganization *)v17 initWithIdentifier:orgID name:organizationName];
 
-  v24 = [[CRKASMConcreteRoster alloc] initWithOrganization:v23 user:v16 courses:v11 certificateVendor:v30];
-  v25 = [(CRKASMWorldBuildOperation *)self manageableLocationIDs];
-  v26 = [v25 allObjects];
+  v24 = [[CRKASMConcreteRoster alloc] initWithOrganization:v23 user:v16 courses:v11 certificateVendor:certificateVendor];
+  manageableLocationIDs = [(CRKASMWorldBuildOperation *)self manageableLocationIDs];
+  allObjects = [manageableLocationIDs allObjects];
   v32[0] = MEMORY[0x277D85DD0];
   v32[1] = 3221225472;
   v32[2] = __42__CRKASMWorldBuildOperation_compileResult__block_invoke_27;
   v32[3] = &unk_278DC2248;
   v32[4] = self;
-  v27 = [v26 crk_mapUsingBlock:v32];
+  v27 = [allObjects crk_mapUsingBlock:v32];
 
   [(CRKASMWorldBuildOperation *)self housekeepKeychainWithRoster:v24];
   v28 = [[CRKASMWorldBuildResultObject alloc] initWithRoster:v24 manageableLocations:v27];
@@ -714,27 +714,27 @@ CRKASMConcreteLocation *__42__CRKASMWorldBuildOperation_compileResult__block_inv
   return v6;
 }
 
-+ (id)makeErrorWithErrorsByObjectID:(id)a3
++ (id)makeErrorWithErrorsByObjectID:(id)d
 {
   v9[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 count])
+  dCopy = d;
+  if ([dCopy count])
   {
-    if ([v3 count] == 1)
+    if ([dCopy count] == 1)
     {
-      v4 = [v3 allValues];
-      v5 = [v4 firstObject];
+      allValues = [dCopy allValues];
+      firstObject = [allValues firstObject];
     }
 
     else
     {
       v8 = @"CRKPartialErrorsByItemIdentifier";
-      v9[0] = v3;
-      v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v9 forKeys:&v8 count:1];
-      v5 = CRKErrorWithCodeAndUserInfo(29, v4);
+      v9[0] = dCopy;
+      allValues = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v9 forKeys:&v8 count:1];
+      firstObject = CRKErrorWithCodeAndUserInfo(29, allValues);
     }
 
-    v6 = v5;
+    v6 = firstObject;
   }
 
   else
@@ -747,11 +747,11 @@ CRKASMConcreteLocation *__42__CRKASMWorldBuildOperation_compileResult__block_inv
 
 - (id)rosterRequirements
 {
-  v2 = [(CRKASMWorldBuildOperation *)self environment];
-  v3 = [v2 configuration];
-  v4 = [v3 rosterRequirements];
+  environment = [(CRKASMWorldBuildOperation *)self environment];
+  configuration = [environment configuration];
+  rosterRequirements = [configuration rosterRequirements];
 
-  return v4;
+  return rosterRequirements;
 }
 
 void __49__CRKASMWorldBuildOperation_buildClassKitClasses__block_invoke_3_cold_1(void *a1)

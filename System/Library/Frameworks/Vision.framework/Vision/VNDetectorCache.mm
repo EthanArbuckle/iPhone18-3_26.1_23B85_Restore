@@ -1,44 +1,44 @@
 @interface VNDetectorCache
 - (VNDetectorCache)init;
 - (VNDetectorCacheDelegate)delegate;
-- (id)detectorOfClass:(Class)a3 configuredWithOptions:(id)a4 error:(id *)a5;
-- (id)detectorOfType:(id)a3 configuredWithOptions:(id)a4 error:(id *)a5;
+- (id)detectorOfClass:(Class)class configuredWithOptions:(id)options error:(id *)error;
+- (id)detectorOfType:(id)type configuredWithOptions:(id)options error:(id *)error;
 - (id)loadedDetectors;
-- (void)_reportEvictedDetectors:(_BYTE *)a1;
-- (void)cacheDetector:(id)a3;
+- (void)_reportEvictedDetectors:(_BYTE *)detectors;
+- (void)cacheDetector:(id)detector;
 - (void)evictAllDetectors;
-- (void)evictDetectorsPassingTest:(id)a3;
-- (void)releaseDetectorsThatCanBeReplacedByDetectorOfClass:(Class)a3 withConfiguration:(id)a4;
-- (void)setDelegate:(id)a3;
+- (void)evictDetectorsPassingTest:(id)test;
+- (void)releaseDetectorsThatCanBeReplacedByDetectorOfClass:(Class)class withConfiguration:(id)configuration;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation VNDetectorCache
 
-- (void)releaseDetectorsThatCanBeReplacedByDetectorOfClass:(Class)a3 withConfiguration:(id)a4
+- (void)releaseDetectorsThatCanBeReplacedByDetectorOfClass:(Class)class withConfiguration:(id)configuration
 {
-  v6 = a4;
+  configurationCopy = configuration;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __88__VNDetectorCache_releaseDetectorsThatCanBeReplacedByDetectorOfClass_withConfiguration___block_invoke;
   v8[3] = &unk_1E77B4120;
-  v9 = v6;
-  v10 = a3;
-  v7 = v6;
+  v9 = configurationCopy;
+  classCopy = class;
+  v7 = configurationCopy;
   [(VNDetectorCache *)self evictDetectorsPassingTest:v8];
 }
 
 - (id)loadedDetectors
 {
-  v2 = [(NSMutableSet *)self->_detectors allObjects];
-  v3 = [v2 copy];
+  allObjects = [(NSMutableSet *)self->_detectors allObjects];
+  v3 = [allObjects copy];
 
   return v3;
 }
 
-- (id)detectorOfClass:(Class)a3 configuredWithOptions:(id)a4 error:(id *)a5
+- (id)detectorOfClass:(Class)class configuredWithOptions:(id)options error:(id *)error
 {
   v25 = *MEMORY[0x1E69E9840];
-  v8 = a4;
+  optionsCopy = options;
   v9 = objc_autoreleasePoolPush();
   v20 = 0u;
   v21 = 0u;
@@ -59,7 +59,7 @@
         }
 
         v14 = *(*(&v20 + 1) + 8 * i);
-        if ([v14 canBehaveAsDetectorOfClass:a3 withConfiguration:v8])
+        if ([v14 canBehaveAsDetectorOfClass:class withConfiguration:optionsCopy])
         {
           v11 = v14;
           v15 = 0;
@@ -83,12 +83,12 @@ LABEL_11:
   objc_autoreleasePoolPop(v9);
   if (v15)
   {
-    if (a5)
+    if (error)
     {
       v16 = MEMORY[0x1E696AEC0];
-      v17 = NSStringFromClass(a3);
+      v17 = NSStringFromClass(class);
       v18 = [v16 stringWithFormat:@"%@ not available", v17];
-      *a5 = [VNError errorForOperationFailedErrorWithLocalizedDescription:v18];
+      *error = [VNError errorForOperationFailedErrorWithLocalizedDescription:v18];
     }
 
     v11 = 0;
@@ -97,14 +97,14 @@ LABEL_11:
   return v11;
 }
 
-- (id)detectorOfType:(id)a3 configuredWithOptions:(id)a4 error:(id *)a5
+- (id)detectorOfType:(id)type configuredWithOptions:(id)options error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [VNDetector detectorClassAndConfigurationOptions:0 forDetectorType:v8 options:v9 error:a5];
+  typeCopy = type;
+  optionsCopy = options;
+  v10 = [VNDetector detectorClassAndConfigurationOptions:0 forDetectorType:typeCopy options:optionsCopy error:error];
   if (v10)
   {
-    v11 = [(VNDetectorCache *)self detectorOfClass:v10 configuredWithOptions:v9 error:a5];
+    v11 = [(VNDetectorCache *)self detectorOfClass:v10 configuredWithOptions:optionsCopy error:error];
   }
 
   else
@@ -128,13 +128,13 @@ LABEL_11:
   }
 }
 
-- (void)_reportEvictedDetectors:(_BYTE *)a1
+- (void)_reportEvictedDetectors:(_BYTE *)detectors
 {
   v14 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1 && (a1[16] & 2) != 0)
+  if (detectors && (detectors[16] & 2) != 0)
   {
-    v4 = [a1 delegate];
+    delegate = [detectors delegate];
     v11 = 0u;
     v12 = 0u;
     v9 = 0u;
@@ -154,7 +154,7 @@ LABEL_11:
             objc_enumerationMutation(v5);
           }
 
-          [v4 detectorCache:a1 didEvictDetector:{*(*(&v9 + 1) + 8 * v8++), v9}];
+          [delegate detectorCache:detectors didEvictDetector:{*(*(&v9 + 1) + 8 * v8++), v9}];
         }
 
         while (v6 != v8);
@@ -166,10 +166,10 @@ LABEL_11:
   }
 }
 
-- (void)evictDetectorsPassingTest:(id)a3
+- (void)evictDetectorsPassingTest:(id)test
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  testCopy = test;
   if ([(NSMutableSet *)self->_detectors count])
   {
     v5 = objc_autoreleasePoolPush();
@@ -194,7 +194,7 @@ LABEL_4:
         }
 
         v11 = *(*(&v12 + 1) + 8 * v10);
-        if (v4[2](v4, v11, &v16))
+        if (testCopy[2](testCopy, v11, &v16))
         {
           [v6 addObject:{v11, v12}];
         }
@@ -227,27 +227,27 @@ LABEL_4:
   }
 }
 
-- (void)cacheDetector:(id)a3
+- (void)cacheDetector:(id)detector
 {
-  v6 = a3;
+  detectorCopy = detector;
   if (([(NSMutableSet *)self->_detectors containsObject:?]& 1) == 0)
   {
-    [(NSMutableSet *)self->_detectors addObject:v6];
+    [(NSMutableSet *)self->_detectors addObject:detectorCopy];
     if (*&self->_delegateFlags)
     {
       v4 = objc_autoreleasePoolPush();
-      v5 = [(VNDetectorCache *)self delegate];
-      [v5 detectorCache:self didCacheDetector:v6];
+      delegate = [(VNDetectorCache *)self delegate];
+      [delegate detectorCache:self didCacheDetector:detectorCopy];
 
       objc_autoreleasePoolPop(v4);
     }
   }
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v5 = a3;
-  objc_storeWeak(&self->_delegate, v5);
+  delegateCopy = delegate;
+  objc_storeWeak(&self->_delegate, delegateCopy);
   *&self->_delegateFlags = *&self->_delegateFlags & 0xFE | objc_opt_respondsToSelector() & 1;
   if (objc_opt_respondsToSelector())
   {

@@ -1,14 +1,14 @@
 @interface INTipNetworkResponse
-- (INTipNetworkResponse)initWithHTTPResponse:(id)a3 data:(id)a4;
+- (INTipNetworkResponse)initWithHTTPResponse:(id)response data:(id)data;
 @end
 
 @implementation INTipNetworkResponse
 
-- (INTipNetworkResponse)initWithHTTPResponse:(id)a3 data:(id)a4
+- (INTipNetworkResponse)initWithHTTPResponse:(id)response data:(id)data
 {
   v9.receiver = self;
   v9.super_class = INTipNetworkResponse;
-  v4 = [(INTipNetworkResponse *)&v9 initWithHTTPResponse:a3 data:a4 bodyIsPlist:0];
+  v4 = [(INTipNetworkResponse *)&v9 initWithHTTPResponse:response data:data bodyIsPlist:0];
   v5 = v4;
   if (v4)
   {

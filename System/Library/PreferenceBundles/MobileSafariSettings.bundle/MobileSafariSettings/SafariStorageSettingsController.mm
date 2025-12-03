@@ -1,24 +1,24 @@
 @interface SafariStorageSettingsController
 - (BOOL)_shouldAllowFilteringByProfile;
-- (BOOL)_shouldDeleteSpecifierAfterRemovingProfileIdentifier:(id)a3 subtractingUsage:(unint64_t)a4 fromSpecifier:(id)a5;
+- (BOOL)_shouldDeleteSpecifierAfterRemovingProfileIdentifier:(id)identifier subtractingUsage:(unint64_t)usage fromSpecifier:(id)specifier;
 - (id)_elementSpecifiersFilteredByProfile;
-- (id)_getSpecifierDiskUsage:(id)a3;
-- (id)_getSpecifierProfileIdentifiers:(id)a3;
-- (id)_specifierRepresentingAllProfilesDataForDomain:(id)a3;
+- (id)_getSpecifierDiskUsage:(id)usage;
+- (id)_getSpecifierProfileIdentifiers:(id)identifiers;
+- (id)_specifierRepresentingAllProfilesDataForDomain:(id)domain;
 - (id)_specifiersForElementList;
 - (id)_specifiersForLoadingSpinner;
 - (id)_specifiersForSearchResults;
 - (id)_totalUsageString;
 - (id)specifiers;
 - (void)_addSpecifiers;
-- (void)_cancelDeleteWebsiteData:(id)a3;
-- (void)_confirmDeleteWebsiteData:(id)a3;
+- (void)_cancelDeleteWebsiteData:(id)data;
+- (void)_confirmDeleteWebsiteData:(id)data;
 - (void)_createSpecifiers;
 - (void)_deleteAllElements;
-- (void)_deleteElementData:(id)a3;
+- (void)_deleteElementData:(id)data;
 - (void)_presentDeleteConfirmationAlert;
-- (void)_setContentInset:(double)a3;
-- (void)_setFilterByProfileButtonAttributedTextForProfileTitle:(id)a3;
+- (void)_setContentInset:(double)inset;
+- (void)_setFilterByProfileButtonAttributedTextForProfileTitle:(id)title;
 - (void)_setupProfileFilterItems;
 - (void)_showDeleteAllElementsAlert;
 - (void)_showProfileFilterSelectionSheet;
@@ -26,14 +26,14 @@
 - (void)_toggleFilteringByProfile;
 - (void)_updateToolbarItems;
 - (void)_updateTotalUsageSpecifier;
-- (void)setEditable:(BOOL)a3;
-- (void)setFilterDataByProfile:(id)a3;
-- (void)setSpecifier:(id)a3;
+- (void)setEditable:(BOOL)editable;
+- (void)setFilterDataByProfile:(id)profile;
+- (void)setSpecifier:(id)specifier;
 - (void)showAllElementsSpecifiers;
-- (void)updateSearchResultsForSearchController:(id)a3;
+- (void)updateSearchResultsForSearchController:(id)controller;
 - (void)viewDidLoad;
-- (void)willDismissSearchController:(id)a3;
-- (void)willPresentSearchController:(id)a3;
+- (void)willDismissSearchController:(id)controller;
+- (void)willPresentSearchController:(id)controller;
 @end
 
 @implementation SafariStorageSettingsController
@@ -50,33 +50,33 @@
   [(UISearchController *)self->_searchController setDelegate:self];
   [(UISearchController *)self->_searchController setSearchResultsUpdater:self];
   [(UISearchController *)self->_searchController setObscuresBackgroundDuringPresentation:0];
-  v5 = [(UISearchController *)self->_searchController searchBar];
-  [v5 setAutocapitalizationType:0];
+  searchBar = [(UISearchController *)self->_searchController searchBar];
+  [searchBar setAutocapitalizationType:0];
 
-  v6 = [(UISearchController *)self->_searchController searchBar];
-  [v6 setAutocorrectionType:1];
+  searchBar2 = [(UISearchController *)self->_searchController searchBar];
+  [searchBar2 setAutocorrectionType:1];
 
-  v7 = [(UISearchController *)self->_searchController searchBar];
-  [v7 setKeyboardType:3];
+  searchBar3 = [(UISearchController *)self->_searchController searchBar];
+  [searchBar3 setKeyboardType:3];
 
   v8 = self->_searchController;
-  v9 = [(SafariStorageSettingsController *)self navigationItem];
-  [v9 setSearchController:v8];
+  navigationItem = [(SafariStorageSettingsController *)self navigationItem];
+  [navigationItem setSearchController:v8];
 
-  v10 = [(SafariStorageSettingsController *)self navigationItem];
-  [v10 setHidesSearchBarWhenScrolling:0];
+  navigationItem2 = [(SafariStorageSettingsController *)self navigationItem];
+  [navigationItem2 setHidesSearchBarWhenScrolling:0];
 
   [(SafariStorageSettingsController *)self setDefinesPresentationContext:1];
-  v11 = [(SafariStorageSettingsControllerDataSource *)self->_dataSource title];
-  [(SafariStorageSettingsController *)self setTitle:v11];
+  title = [(SafariStorageSettingsControllerDataSource *)self->_dataSource title];
+  [(SafariStorageSettingsController *)self setTitle:title];
 
-  v12 = [(SafariStorageSettingsController *)self table];
-  [v12 setKeyboardDismissMode:1];
+  table = [(SafariStorageSettingsController *)self table];
+  [table setKeyboardDismissMode:1];
 
   if (self->_shouldShowDeleteAllButton)
   {
-    v13 = [(SafariStorageSettingsControllerDataSource *)self->_dataSource deleteButtonString];
-    v14 = [PSSpecifier deleteButtonSpecifierWithName:v13 target:self action:"_showDeleteAllElementsAlert"];
+    deleteButtonString = [(SafariStorageSettingsControllerDataSource *)self->_dataSource deleteButtonString];
+    v14 = [PSSpecifier deleteButtonSpecifierWithName:deleteButtonString target:self action:"_showDeleteAllElementsAlert"];
 
     [v14 setProperty:@"DELETE_BUTTON" forKey:PSIDKey];
     v15 = [PSSpecifier groupSpecifierWithName:0];
@@ -87,8 +87,8 @@
     self->_deleteButtonSpecifiers = v16;
   }
 
-  v18 = [(SafariStorageSettingsControllerDataSource *)self->_dataSource totalUsageString];
-  v19 = [PSSpecifier groupSpecifierWithName:v18];
+  totalUsageString = [(SafariStorageSettingsControllerDataSource *)self->_dataSource totalUsageString];
+  v19 = [PSSpecifier groupSpecifierWithName:totalUsageString];
   totalUsageSpecifier = self->_totalUsageSpecifier;
   self->_totalUsageSpecifier = v19;
 
@@ -110,13 +110,13 @@
   [(SafariStorageSettingsController *)self _createSpecifiers];
 }
 
-- (void)setSpecifier:(id)a3
+- (void)setSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v8.receiver = self;
   v8.super_class = SafariStorageSettingsController;
-  [(SafariStorageSettingsController *)&v8 setSpecifier:v4];
-  v5 = [v4 propertyForKey:@"SafariStorageSettingsControllerDataSourceClassName"];
+  [(SafariStorageSettingsController *)&v8 setSpecifier:specifierCopy];
+  v5 = [specifierCopy propertyForKey:@"SafariStorageSettingsControllerDataSourceClassName"];
   v6 = objc_alloc_init(NSClassFromString(v5));
   dataSource = self->_dataSource;
   self->_dataSource = v6;
@@ -132,15 +132,15 @@
 
 - (id)_totalUsageString
 {
-  v2 = [(SafariStorageSettingsController *)self _elementSpecifiersFilteredByProfile];
-  v3 = v2;
-  if (v2)
+  _elementSpecifiersFilteredByProfile = [(SafariStorageSettingsController *)self _elementSpecifiersFilteredByProfile];
+  v3 = _elementSpecifiersFilteredByProfile;
+  if (_elementSpecifiersFilteredByProfile)
   {
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v4 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    v4 = [_elementSpecifiersFilteredByProfile countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v4)
     {
       v5 = v4;
@@ -181,9 +181,9 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v4 = [(SafariStorageSettingsController *)self _totalUsageString];
-        [(PSSpecifier *)self->_totalUsageSpecifier setProperty:v4 forKey:@"DISK_USAGE"];
-        [v5 setSize:v4];
+        _totalUsageString = [(SafariStorageSettingsController *)self _totalUsageString];
+        [(PSSpecifier *)self->_totalUsageSpecifier setProperty:_totalUsageString forKey:@"DISK_USAGE"];
+        [v5 setSize:_totalUsageString];
       }
     }
   }
@@ -204,14 +204,14 @@
   }
 
   [(SafariStorageSettingsController *)self beginUpdates];
-  v9 = [(SafariStorageSettingsController *)self _elementSpecifiersFilteredByProfile];
-  v3 = [v9 sortedArrayUsingComparator:&__block_literal_global_14];
+  _elementSpecifiersFilteredByProfile = [(SafariStorageSettingsController *)self _elementSpecifiersFilteredByProfile];
+  v3 = [_elementSpecifiersFilteredByProfile sortedArrayUsingComparator:&__block_literal_global_14];
   v4 = [v3 mutableCopy];
   sortedElements = self->_sortedElements;
   self->_sortedElements = v4;
 
-  v6 = [(SafariStorageSettingsController *)self _specifiersForElementList];
-  v7 = [v6 mutableCopy];
+  _specifiersForElementList = [(SafariStorageSettingsController *)self _specifiersForElementList];
+  v7 = [_specifiersForElementList mutableCopy];
   lastSpecifiersForElementList = self->_lastSpecifiersForElementList;
   self->_lastSpecifiersForElementList = v7;
 
@@ -315,25 +315,25 @@ void __52__SafariStorageSettingsController__createSpecifiers__block_invoke(uint6
   [*(a1 + 32) _addSpecifiers];
 }
 
-- (id)_getSpecifierProfileIdentifiers:(id)a3
+- (id)_getSpecifierProfileIdentifiers:(id)identifiers
 {
-  v3 = [a3 userInfo];
-  v4 = [v3 objectForKeyedSubscript:@"profileIdentifiersKey"];
+  userInfo = [identifiers userInfo];
+  v4 = [userInfo objectForKeyedSubscript:@"profileIdentifiersKey"];
 
   return v4;
 }
 
-- (BOOL)_shouldDeleteSpecifierAfterRemovingProfileIdentifier:(id)a3 subtractingUsage:(unint64_t)a4 fromSpecifier:(id)a5
+- (BOOL)_shouldDeleteSpecifierAfterRemovingProfileIdentifier:(id)identifier subtractingUsage:(unint64_t)usage fromSpecifier:(id)specifier
 {
-  v8 = a5;
-  if (v8)
+  specifierCopy = specifier;
+  if (specifierCopy)
   {
-    v9 = a3;
-    v10 = [v8 userInfo];
-    v11 = [v10 mutableCopy];
+    identifierCopy = identifier;
+    userInfo = [specifierCopy userInfo];
+    v11 = [userInfo mutableCopy];
 
-    v12 = [(SafariStorageSettingsController *)self _getSpecifierProfileIdentifiers:v8];
-    v13 = [v12 safari_setByRemovingObject:v9];
+    v12 = [(SafariStorageSettingsController *)self _getSpecifierProfileIdentifiers:specifierCopy];
+    v13 = [v12 safari_setByRemovingObject:identifierCopy];
 
     if ([v13 count] == &dword_0 + 1 && (objc_msgSend(v13, "anyObject"), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "isEqualToString:", WBAllWebsiteDataProfileIdentifier), v14, (v15 & 1) != 0))
     {
@@ -343,9 +343,9 @@ void __52__SafariStorageSettingsController__createSpecifiers__block_invoke(uint6
     else
     {
       [v11 setObject:v13 forKeyedSubscript:@"profileIdentifiersKey"];
-      [v8 setUserInfo:v11];
-      [v8 setUsage:{objc_msgSend(v8, "diskUsage") - a4}];
-      [(SafariStorageSettingsController *)self reloadSpecifier:v8];
+      [specifierCopy setUserInfo:v11];
+      [specifierCopy setUsage:{objc_msgSend(specifierCopy, "diskUsage") - usage}];
+      [(SafariStorageSettingsController *)self reloadSpecifier:specifierCopy];
       v16 = 0;
     }
   }
@@ -358,22 +358,22 @@ void __52__SafariStorageSettingsController__createSpecifiers__block_invoke(uint6
   return v16;
 }
 
-- (id)_getSpecifierDiskUsage:(id)a3
+- (id)_getSpecifierDiskUsage:(id)usage
 {
-  v3 = [a3 values];
-  v4 = [v3 objectAtIndexedSubscript:0];
+  values = [usage values];
+  v4 = [values objectAtIndexedSubscript:0];
 
   return v4;
 }
 
 - (void)_deleteAllElements
 {
-  v3 = [(WBProfile *)self->_filterDataByProfile identifier];
-  v4 = v3;
+  identifier = [(WBProfile *)self->_filterDataByProfile identifier];
+  v4 = identifier;
   v5 = WBAllWebsiteDataProfileIdentifier;
-  if (v3)
+  if (identifier)
   {
-    v6 = v3;
+    v6 = identifier;
   }
 
   else
@@ -390,8 +390,8 @@ void __52__SafariStorageSettingsController__createSpecifiers__block_invoke(uint6
   if (v9)
   {
     [(NSMutableArray *)elementSpecifiers removeAllObjects];
-    v11 = [(SafariStorageSettingsController *)self navigationController];
-    v12 = [v11 popViewControllerAnimated:1];
+    navigationController = [(SafariStorageSettingsController *)self navigationController];
+    v12 = [navigationController popViewControllerAnimated:1];
   }
 
   else
@@ -418,8 +418,8 @@ void __52__SafariStorageSettingsController__createSpecifiers__block_invoke(uint6
           }
 
           v19 = *(*(&v31 + 1) + 8 * i);
-          v20 = [v19 name];
-          v21 = [(SafariStorageSettingsController *)self _specifierRepresentingAllProfilesDataForDomain:v20];
+          name = [v19 name];
+          v21 = [(SafariStorageSettingsController *)self _specifierRepresentingAllProfilesDataForDomain:name];
 
           if (-[SafariStorageSettingsController _shouldDeleteSpecifierAfterRemovingProfileIdentifier:subtractingUsage:fromSpecifier:](self, "_shouldDeleteSpecifierAfterRemovingProfileIdentifier:subtractingUsage:fromSpecifier:", v7, [v19 diskUsage], v21))
           {
@@ -466,19 +466,19 @@ void __52__SafariStorageSettingsController__createSpecifiers__block_invoke(uint6
   [(SafariStorageSettingsController *)self _addSpecifiers];
 }
 
-- (void)_deleteElementData:(id)a3
+- (void)_deleteElementData:(id)data
 {
-  v4 = a3;
-  [(SafariStorageSettingsControllerDataSource *)self->_dataSource deleteDataForSpecifier:v4];
-  [(NSMutableArray *)self->_sortedElements removeObject:v4];
-  [(NSMutableArray *)self->_elementSpecifiers removeObject:v4];
+  dataCopy = data;
+  [(SafariStorageSettingsControllerDataSource *)self->_dataSource deleteDataForSpecifier:dataCopy];
+  [(NSMutableArray *)self->_sortedElements removeObject:dataCopy];
+  [(NSMutableArray *)self->_elementSpecifiers removeObject:dataCopy];
   if ([(SafariStorageSettingsControllerDataSource *)self->_dataSource offerFilteringByProfile])
   {
-    [(NSMutableArray *)self->_lastSpecifiersForElementList removeObject:v4];
-    v5 = [(SafariStorageSettingsController *)self _getSpecifierProfileIdentifiers:v4];
+    [(NSMutableArray *)self->_lastSpecifiersForElementList removeObject:dataCopy];
+    v5 = [(SafariStorageSettingsController *)self _getSpecifierProfileIdentifiers:dataCopy];
     v6 = [v5 containsObject:WBAllWebsiteDataProfileIdentifier];
-    v7 = [v4 name];
-    v8 = v7;
+    name = [dataCopy name];
+    v8 = name;
     if (v6)
     {
       elementSpecifiers = self->_elementSpecifiers;
@@ -486,17 +486,17 @@ void __52__SafariStorageSettingsController__createSpecifiers__block_invoke(uint6
       v16[1] = 3221225472;
       v16[2] = __54__SafariStorageSettingsController__deleteElementData___block_invoke;
       v16[3] = &unk_8A4F8;
-      v17 = v7;
-      v10 = v7;
+      v17 = name;
+      v10 = name;
       [(NSMutableArray *)elementSpecifiers safari_removeObjectsPassingTest:v16];
     }
 
     else
     {
-      v11 = [(SafariStorageSettingsController *)self _specifierRepresentingAllProfilesDataForDomain:v7];
+      v11 = [(SafariStorageSettingsController *)self _specifierRepresentingAllProfilesDataForDomain:name];
 
-      v12 = [v5 anyObject];
-      v13 = -[SafariStorageSettingsController _shouldDeleteSpecifierAfterRemovingProfileIdentifier:subtractingUsage:fromSpecifier:](self, "_shouldDeleteSpecifierAfterRemovingProfileIdentifier:subtractingUsage:fromSpecifier:", v12, [v4 diskUsage], v11);
+      anyObject = [v5 anyObject];
+      v13 = -[SafariStorageSettingsController _shouldDeleteSpecifierAfterRemovingProfileIdentifier:subtractingUsage:fromSpecifier:](self, "_shouldDeleteSpecifierAfterRemovingProfileIdentifier:subtractingUsage:fromSpecifier:", anyObject, [dataCopy diskUsage], v11);
 
       if (v13)
       {
@@ -505,7 +505,7 @@ void __52__SafariStorageSettingsController__createSpecifiers__block_invoke(uint6
     }
   }
 
-  [(SafariStorageSettingsController *)self removeSpecifier:v4 animated:1];
+  [(SafariStorageSettingsController *)self removeSpecifier:dataCopy animated:1];
   if ([(NSMutableArray *)self->_elementSpecifiers count])
   {
     [(SafariStorageSettingsController *)self _updateTotalUsageSpecifier];
@@ -513,8 +513,8 @@ void __52__SafariStorageSettingsController__createSpecifiers__block_invoke(uint6
 
   else
   {
-    v14 = [(SafariStorageSettingsController *)self navigationController];
-    v15 = [v14 popViewControllerAnimated:1];
+    navigationController = [(SafariStorageSettingsController *)self navigationController];
+    v15 = [navigationController popViewControllerAnimated:1];
   }
 }
 
@@ -550,7 +550,7 @@ id __54__SafariStorageSettingsController__deleteElementData___block_invoke(uint6
   [(SafariStorageSettingsController *)self showConfirmationViewForSpecifier:v3 useAlert:1];
 }
 
-- (void)_confirmDeleteWebsiteData:(id)a3
+- (void)_confirmDeleteWebsiteData:(id)data
 {
   v4 = *&self->PSEditableListController_opaque[OBJC_IVAR___PSListController__table];
   indexPathToDelete = self->_indexPathToDelete;
@@ -561,7 +561,7 @@ id __54__SafariStorageSettingsController__deleteElementData___block_invoke(uint6
   self->_indexPathToDelete = 0;
 }
 
-- (void)_cancelDeleteWebsiteData:(id)a3
+- (void)_cancelDeleteWebsiteData:(id)data
 {
   indexPathToDelete = self->_indexPathToDelete;
   self->_indexPathToDelete = 0;
@@ -630,8 +630,8 @@ int64_t __62__SafariStorageSettingsController__specifiersForSearchResults__block
   {
     if ([(UISearchController *)self->_searchController isActive])
     {
-      v4 = [(SafariStorageSettingsController *)self _specifiersForSearchResults];
-      [v3 addObjectsFromArray:v4];
+      _specifiersForSearchResults = [(SafariStorageSettingsController *)self _specifiersForSearchResults];
+      [v3 addObjectsFromArray:_specifiersForSearchResults];
     }
 
     else
@@ -663,14 +663,14 @@ int64_t __62__SafariStorageSettingsController__specifiersForSearchResults__block
   return v3;
 }
 
-- (id)_specifierRepresentingAllProfilesDataForDomain:(id)a3
+- (id)_specifierRepresentingAllProfilesDataForDomain:(id)domain
 {
-  v4 = a3;
+  domainCopy = domain;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v17 = self;
+  selfCopy = self;
   v5 = self->_elementSpecifiers;
   v6 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v6)
@@ -688,10 +688,10 @@ int64_t __62__SafariStorageSettingsController__specifiersForSearchResults__block
         }
 
         v11 = *(*(&v18 + 1) + 8 * i);
-        v12 = [v11 name];
-        if ([v12 isEqualToString:v4])
+        name = [v11 name];
+        if ([name isEqualToString:domainCopy])
         {
-          v13 = [(SafariStorageSettingsController *)v17 _getSpecifierProfileIdentifiers:v11];
+          v13 = [(SafariStorageSettingsController *)selfCopy _getSpecifierProfileIdentifiers:v11];
           v14 = [v13 containsObject:v9];
 
           if (v14)
@@ -722,12 +722,12 @@ LABEL_13:
 {
   if (([(SafariStorageSettingsControllerDataSource *)self->_dataSource offerFilteringByProfile]& 1) != 0)
   {
-    v3 = [(WBProfile *)self->_filterDataByProfile identifier];
-    v4 = v3;
+    identifier = [(WBProfile *)self->_filterDataByProfile identifier];
+    v4 = identifier;
     v5 = WBAllWebsiteDataProfileIdentifier;
-    if (v3)
+    if (identifier)
     {
-      v6 = v3;
+      v6 = identifier;
     }
 
     else
@@ -794,17 +794,17 @@ uint64_t __70__SafariStorageSettingsController__elementSpecifiersFilteredByProfi
       lastSpecifiersForElementList = self->_lastSpecifiersForElementList;
       self->_lastSpecifiersForElementList = v7;
 
-      v5 = [(NSMutableArray *)self->_lastSpecifiersForElementList mutableCopy];
+      _specifiersForLoadingSpinner = [(NSMutableArray *)self->_lastSpecifiersForElementList mutableCopy];
     }
 
     else
     {
-      v5 = [(SafariStorageSettingsController *)self _specifiersForLoadingSpinner];
+      _specifiersForLoadingSpinner = [(SafariStorageSettingsController *)self _specifiersForLoadingSpinner];
     }
 
-    v3 = v5;
+    v3 = _specifiersForLoadingSpinner;
     v9 = *&self->PSEditableListController_opaque[v2];
-    *&self->PSEditableListController_opaque[v2] = v5;
+    *&self->PSEditableListController_opaque[v2] = _specifiersForLoadingSpinner;
   }
 
   v10 = v3;
@@ -817,25 +817,25 @@ uint64_t __70__SafariStorageSettingsController__elementSpecifiersFilteredByProfi
   v3 = +[SafariSettingsController tabGroupManager];
   if ([v3 hasMultipleProfiles])
   {
-    v4 = [(SafariStorageSettingsControllerDataSource *)self->_dataSource offerFilteringByProfile];
+    offerFilteringByProfile = [(SafariStorageSettingsControllerDataSource *)self->_dataSource offerFilteringByProfile];
   }
 
   else
   {
-    v4 = 0;
+    offerFilteringByProfile = 0;
   }
 
-  return v4;
+  return offerFilteringByProfile;
 }
 
-- (void)setFilterDataByProfile:(id)a3
+- (void)setFilterDataByProfile:(id)profile
 {
-  v5 = a3;
+  profileCopy = profile;
   filterDataByProfile = self->_filterDataByProfile;
-  v7 = v5;
+  v7 = profileCopy;
   if ((WBSIsEqual() & 1) == 0)
   {
-    objc_storeStrong(&self->_filterDataByProfile, a3);
+    objc_storeStrong(&self->_filterDataByProfile, profile);
     [(SafariStorageSettingsController *)self _updateToolbarItems];
     [(SafariStorageSettingsController *)self _addSpecifiers];
   }
@@ -843,9 +843,9 @@ uint64_t __70__SafariStorageSettingsController__elementSpecifiersFilteredByProfi
 
 - (void)_showDeleteAllElementsAlert
 {
-  v3 = [(SafariStorageSettingsControllerDataSource *)self->_dataSource removeDataPromptTitle];
-  v4 = [(SafariStorageSettingsControllerDataSource *)self->_dataSource removeDataMessage];
-  v5 = [UIAlertController alertControllerWithTitle:v3 message:v4 preferredStyle:_SFDeviceAlertStyle()];
+  removeDataPromptTitle = [(SafariStorageSettingsControllerDataSource *)self->_dataSource removeDataPromptTitle];
+  removeDataMessage = [(SafariStorageSettingsControllerDataSource *)self->_dataSource removeDataMessage];
+  v5 = [UIAlertController alertControllerWithTitle:removeDataPromptTitle message:removeDataMessage preferredStyle:_SFDeviceAlertStyle()];
 
   if (_SFDeviceIsPad())
   {
@@ -873,55 +873,55 @@ uint64_t __70__SafariStorageSettingsController__elementSpecifiersFilteredByProfi
   [(SafariStorageSettingsController *)self presentViewController:v5 animated:1 completion:0];
 }
 
-- (void)_setContentInset:(double)a3
+- (void)_setContentInset:(double)inset
 {
-  v5 = [(SafariStorageSettingsController *)self navigationController];
-  v6 = [v5 isToolbarHidden];
+  navigationController = [(SafariStorageSettingsController *)self navigationController];
+  isToolbarHidden = [navigationController isToolbarHidden];
 
-  if ((v6 & 1) == 0)
+  if ((isToolbarHidden & 1) == 0)
   {
-    v7 = [(SafariStorageSettingsController *)self navigationController];
-    v8 = [v7 toolbar];
-    [v8 frame];
-    a3 = fmax(CGRectGetHeight(v10), a3);
+    navigationController2 = [(SafariStorageSettingsController *)self navigationController];
+    toolbar = [navigationController2 toolbar];
+    [toolbar frame];
+    inset = fmax(CGRectGetHeight(v10), inset);
   }
 
   v9.receiver = self;
   v9.super_class = SafariStorageSettingsController;
-  [(SafariStorageSettingsController *)&v9 _setContentInset:a3];
+  [(SafariStorageSettingsController *)&v9 _setContentInset:inset];
 }
 
-- (void)setEditable:(BOOL)a3
+- (void)setEditable:(BOOL)editable
 {
-  v3 = a3;
+  editableCopy = editable;
   v14.receiver = self;
   v14.super_class = SafariStorageSettingsController;
   [(SafariStorageSettingsController *)&v14 setEditable:?];
   v5 = [(SafariStorageSettingsController *)self specifierForID:@"DELETE_BUTTON"];
-  v6 = [NSNumber numberWithInt:!v3];
+  v6 = [NSNumber numberWithInt:!editableCopy];
   v7 = PSEnabledKey;
   [v5 setProperty:v6 forKey:PSEnabledKey];
 
   v8 = PSTableCellKey;
   v9 = [v5 propertyForKey:PSTableCellKey];
-  [v9 setCellEnabled:!v3];
+  [v9 setCellEnabled:!editableCopy];
 
   v10 = [(SafariStorageSettingsController *)self specifierForID:@"SHOW_ALL_BUTTON"];
-  v11 = [NSNumber numberWithBool:!v3];
+  v11 = [NSNumber numberWithBool:!editableCopy];
   [v10 setProperty:v11 forKey:v7];
 
   v12 = [v10 propertyForKey:v8];
-  [v12 setCellEnabled:!v3];
+  [v12 setCellEnabled:!editableCopy];
 
-  v13 = [(UISearchController *)self->_searchController searchBar];
-  [v13 _setEnabled:!v3 animated:1];
+  searchBar = [(UISearchController *)self->_searchController searchBar];
+  [searchBar _setEnabled:!editableCopy animated:1];
 
   [(SafariStorageSettingsController *)self _updateToolbarItems];
 }
 
 - (void)_updateToolbarItems
 {
-  v3 = [(UIButton *)self->_toggleFilterButton configuration];
+  configuration = [(UIButton *)self->_toggleFilterButton configuration];
   if (self->_isFilteringDataByProfile)
   {
     v4 = @"line.3.horizontal.decrease.circle.fill";
@@ -933,22 +933,22 @@ uint64_t __70__SafariStorageSettingsController__elementSpecifiersFilteredByProfi
   }
 
   v5 = [UIImage systemImageNamed:v4];
-  [v3 setImage:v5];
+  [configuration setImage:v5];
 
-  [(UIButton *)self->_toggleFilterButton setConfiguration:v3];
+  [(UIButton *)self->_toggleFilterButton setConfiguration:configuration];
   filterDataByProfile = self->_filterDataByProfile;
   if (filterDataByProfile)
   {
-    v7 = [(WBProfile *)filterDataByProfile title];
-    [(SafariStorageSettingsController *)self _setFilterByProfileButtonAttributedTextForProfileTitle:v7];
+    title = [(WBProfile *)filterDataByProfile title];
+    [(SafariStorageSettingsController *)self _setFilterByProfileButtonAttributedTextForProfileTitle:title];
   }
 
   v8 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:5 target:0 action:0];
   v9 = +[UIBarButtonItem flexibleSpaceItem];
   v10 = [UIBarButtonItem fixedSpaceItemOfWidth:25.0];
-  v11 = [(SafariStorageSettingsController *)self editable];
+  editable = [(SafariStorageSettingsController *)self editable];
   v12 = &OBJC_IVAR___SafariStorageSettingsController__editToolbarItem;
-  if (v11)
+  if (editable)
   {
     v12 = &OBJC_IVAR___SafariStorageSettingsController__doneToolbarItem;
   }
@@ -1028,11 +1028,11 @@ LABEL_18:
   filterByProfileButton = self->_filterByProfileButton;
   self->_filterByProfileButton = v7;
 
-  v9 = [(UIButton *)self->_filterByProfileButton titleLabel];
-  [v9 setLineBreakMode:0];
+  titleLabel = [(UIButton *)self->_filterByProfileButton titleLabel];
+  [titleLabel setLineBreakMode:0];
 
-  v10 = [(UIButton *)self->_filterByProfileButton titleLabel];
-  [v10 setTextAlignment:1];
+  titleLabel2 = [(UIButton *)self->_filterByProfileButton titleLabel];
+  [titleLabel2 setTextAlignment:1];
 
   [(UIButton *)self->_filterByProfileButton addTarget:self action:"_showProfileFilterSelectionSheet" forEvents:64];
   v11 = [[UIBarButtonItem alloc] initWithCustomView:self->_filterByProfileButton];
@@ -1040,9 +1040,9 @@ LABEL_18:
   self->_filterByProfileItem = v11;
 }
 
-- (void)_setFilterByProfileButtonAttributedTextForProfileTitle:(id)a3
+- (void)_setFilterByProfileButtonAttributedTextForProfileTitle:(id)title
 {
-  v3 = a3;
+  titleCopy = title;
   v4 = [NSMutableAttributedString alloc];
   v5 = [NSAttributedString alloc];
   v6 = SafariSettingsLocalizedString(@"Filtered by title", @"Storage");
@@ -1062,7 +1062,7 @@ LABEL_18:
   v14 = +[UIColor tintColor];
   v19[1] = v14;
   v15 = [NSDictionary dictionaryWithObjects:v19 forKeys:v18 count:2];
-  v16 = [v12 initWithString:v3 attributes:v15];
+  v16 = [v12 initWithString:titleCopy attributes:v15];
 
   [v11 appendAttributedString:v16];
   [(UIButton *)self->_filterByProfileButton setAttributedTitle:v11 forState:0];
@@ -1078,13 +1078,13 @@ LABEL_18:
   v11 = 3221225472;
   v12 = __67__SafariStorageSettingsController__showProfileFilterSelectionSheet__block_invoke;
   v13 = &unk_8A9C8;
-  v14 = self;
+  selfCopy = self;
   v15 = v3;
   v6 = v3;
   v7 = [UIAction actionWithHandler:&v10];
-  v8 = [v5 initWithBarButtonSystemItem:0 primaryAction:{v7, v10, v11, v12, v13, v14}];
-  v9 = [(SafariStorageSettingsProfileFilterViewController *)v6 navigationItem];
-  [v9 setRightBarButtonItem:v8];
+  v8 = [v5 initWithBarButtonSystemItem:0 primaryAction:{v7, v10, v11, v12, v13, selfCopy}];
+  navigationItem = [(SafariStorageSettingsProfileFilterViewController *)v6 navigationItem];
+  [navigationItem setRightBarButtonItem:v8];
 
   [(SafariStorageSettingsController *)self presentViewController:v4 animated:1 completion:0];
 }
@@ -1108,21 +1108,21 @@ id __67__SafariStorageSettingsController__showProfileFilterSelectionSheet__block
     goto LABEL_4;
   }
 
-  v4 = [(SafariStorageSettingsController *)self filterDataByProfile];
+  filterDataByProfile = [(SafariStorageSettingsController *)self filterDataByProfile];
 
-  if (!v4)
+  if (!filterDataByProfile)
   {
-    v6 = [(SafariStorageSettingsController *)self previousFilterDataByProfile];
-    if (v6)
+    previousFilterDataByProfile = [(SafariStorageSettingsController *)self previousFilterDataByProfile];
+    if (previousFilterDataByProfile)
     {
-      [(SafariStorageSettingsController *)self setFilterDataByProfile:v6];
+      [(SafariStorageSettingsController *)self setFilterDataByProfile:previousFilterDataByProfile];
     }
 
     else
     {
       v7 = +[SafariSettingsController tabGroupManager];
-      v8 = [v7 defaultProfile];
-      [(SafariStorageSettingsController *)self setFilterDataByProfile:v8];
+      defaultProfile = [v7 defaultProfile];
+      [(SafariStorageSettingsController *)self setFilterDataByProfile:defaultProfile];
     }
 
     goto LABEL_9;
@@ -1131,8 +1131,8 @@ id __67__SafariStorageSettingsController__showProfileFilterSelectionSheet__block
   if (!self->_isFilteringDataByProfile)
   {
 LABEL_4:
-    v5 = [(SafariStorageSettingsController *)self filterDataByProfile];
-    [(SafariStorageSettingsController *)self setPreviousFilterDataByProfile:v5];
+    filterDataByProfile2 = [(SafariStorageSettingsController *)self filterDataByProfile];
+    [(SafariStorageSettingsController *)self setPreviousFilterDataByProfile:filterDataByProfile2];
 
     [(SafariStorageSettingsController *)self setFilterDataByProfile:0];
   }
@@ -1149,7 +1149,7 @@ LABEL_9:
   [(SafariStorageSettingsController *)self setEditable:v3];
 }
 
-- (void)willPresentSearchController:(id)a3
+- (void)willPresentSearchController:(id)controller
 {
   if ([(SafariStorageSettingsController *)self _shouldAllowFilteringByProfile])
   {
@@ -1160,12 +1160,12 @@ LABEL_9:
 
   else
   {
-    v4 = [(SafariStorageSettingsController *)self navigationController];
-    [v4 setToolbarHidden:isiPad() animated:1];
+    navigationController = [(SafariStorageSettingsController *)self navigationController];
+    [navigationController setToolbarHidden:isiPad() animated:1];
   }
 }
 
-- (void)willDismissSearchController:(id)a3
+- (void)willDismissSearchController:(id)controller
 {
   if ([(SafariStorageSettingsController *)self _shouldAllowFilteringByProfile])
   {
@@ -1176,17 +1176,17 @@ LABEL_9:
 
   else
   {
-    v4 = [(SafariStorageSettingsController *)self navigationController];
-    [v4 setToolbarHidden:1 animated:1];
+    navigationController = [(SafariStorageSettingsController *)self navigationController];
+    [navigationController setToolbarHidden:1 animated:1];
   }
 }
 
-- (void)updateSearchResultsForSearchController:(id)a3
+- (void)updateSearchResultsForSearchController:(id)controller
 {
-  v4 = [a3 searchBar];
-  v5 = [v4 text];
+  searchBar = [controller searchBar];
+  text = [searchBar text];
   searchPattern = self->_searchPattern;
-  self->_searchPattern = v5;
+  self->_searchPattern = text;
 
   [(SafariStorageSettingsController *)self reloadSpecifiers];
 }

@@ -1,9 +1,9 @@
 @interface _DASBackgroundAppKillDemo
 + (id)sharedInstance;
 - (_DASBackgroundAppKillDemo)init;
-- (id)createTerminationRequestForProcessHandle:(id)a3;
+- (id)createTerminationRequestForProcessHandle:(id)handle;
 - (void)handleNotification;
-- (void)processUpdateHandlerWithMonitor:(id)a3 withHandle:(id)a4 withUpdate:(id)a5;
+- (void)processUpdateHandlerWithMonitor:(id)monitor withHandle:(id)handle withUpdate:(id)update;
 - (void)startKilling;
 - (void)stopKilling;
 @end
@@ -63,24 +63,24 @@
   return v2;
 }
 
-- (id)createTerminationRequestForProcessHandle:(id)a3
+- (id)createTerminationRequestForProcessHandle:(id)handle
 {
-  v4 = a3;
+  handleCopy = handle;
   v5 = [objc_alloc_init(RBSTerminateContext) initWithExplanation:@"BG Kill Demo"];
   [v5 setMaximumTerminationResistance:40];
-  v6 = [RBSProcessPredicate predicateMatchingHandle:v4];
+  v6 = [RBSProcessPredicate predicateMatchingHandle:handleCopy];
   v7 = [[RBSTerminateRequest alloc] initWithPredicate:v6 context:v5];
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
     v9 = log;
     v10 = [v7 debugDescription];
-    v11 = [v4 bundle];
-    v12 = [v11 identifier];
+    bundle = [handleCopy bundle];
+    identifier = [bundle identifier];
     v14 = 138412546;
     v15 = v10;
     v16 = 2112;
-    v17 = v12;
+    v17 = identifier;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Termination request %@ created for %@", &v14, 0x16u);
   }
 
@@ -151,16 +151,16 @@
   }
 }
 
-- (void)processUpdateHandlerWithMonitor:(id)a3 withHandle:(id)a4 withUpdate:(id)a5
+- (void)processUpdateHandlerWithMonitor:(id)monitor withHandle:(id)handle withUpdate:(id)update
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [v8 state];
-  if ([v9 taskState] == 4)
+  handleCopy = handle;
+  updateCopy = update;
+  state = [updateCopy state];
+  if ([state taskState] == 4)
   {
-    v10 = [v8 state];
-    v11 = [v10 endowmentNamespaces];
-    v12 = [v11 containsObject:@"com.apple.frontboard.visibility"];
+    state2 = [updateCopy state];
+    endowmentNamespaces = [state2 endowmentNamespaces];
+    v12 = [endowmentNamespaces containsObject:@"com.apple.frontboard.visibility"];
 
     if (v12)
     {
@@ -168,18 +168,18 @@
       if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
       {
         v14 = log;
-        v15 = [v7 bundle];
-        v16 = [v15 identifier];
+        bundle = [handleCopy bundle];
+        identifier = [bundle identifier];
         *buf = 138412290;
-        v49 = v16;
+        v49 = identifier;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "App %@ foregrounded, creating a termination request", buf, 0xCu);
       }
 
-      v17 = [(_DASBackgroundAppKillDemo *)self createTerminationRequestForProcessHandle:v7];
+      bundle7 = [(_DASBackgroundAppKillDemo *)self createTerminationRequestForProcessHandle:handleCopy];
       appNameToTerminationRequestDict = self->_appNameToTerminationRequestDict;
-      v19 = [v7 bundle];
-      v20 = [v19 identifier];
-      [(NSMutableDictionary *)appNameToTerminationRequestDict setObject:v17 forKeyedSubscript:v20];
+      bundle2 = [handleCopy bundle];
+      identifier2 = [bundle2 identifier];
+      [(NSMutableDictionary *)appNameToTerminationRequestDict setObject:bundle7 forKeyedSubscript:identifier2];
       goto LABEL_22;
     }
   }
@@ -188,45 +188,45 @@
   {
   }
 
-  v21 = [v8 state];
-  v22 = [v21 taskState];
+  state3 = [updateCopy state];
+  taskState = [state3 taskState];
 
-  if (v22 == 3)
+  if (taskState == 3)
   {
     v23 = self->_log;
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
     {
       v24 = v23;
-      v25 = [v7 bundle];
-      v26 = [v25 identifier];
+      bundle3 = [handleCopy bundle];
+      identifier3 = [bundle3 identifier];
       *buf = 138412290;
-      v49 = v26;
+      v49 = identifier3;
       _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "App %@ suspended", buf, 0xCu);
     }
 
     v27 = self->_appNameToTerminationRequestDict;
-    v28 = [v7 bundle];
-    v29 = [v28 identifier];
-    v30 = [(NSMutableDictionary *)v27 objectForKeyedSubscript:v29];
+    bundle4 = [handleCopy bundle];
+    identifier4 = [bundle4 identifier];
+    v30 = [(NSMutableDictionary *)v27 objectForKeyedSubscript:identifier4];
 
     if (v30)
     {
       v31 = self->_appNameToTerminationRequestDict;
-      v32 = [v7 bundle];
-      v33 = [v32 identifier];
-      v17 = [(NSMutableDictionary *)v31 objectForKeyedSubscript:v33];
+      bundle5 = [handleCopy bundle];
+      identifier5 = [bundle5 identifier];
+      bundle7 = [(NSMutableDictionary *)v31 objectForKeyedSubscript:identifier5];
 
       v34 = self->_log;
       if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v49 = v17;
+        v49 = bundle7;
         _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_DEFAULT, "Executing termination request %@", buf, 0xCu);
       }
 
       v47 = 0;
-      v35 = [v17 execute:&v47];
-      v19 = v47;
+      v35 = [bundle7 execute:&v47];
+      bundle2 = v47;
       v36 = self->_log;
       v37 = os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT);
       if (v35)
@@ -234,10 +234,10 @@
         if (v37)
         {
           v38 = v36;
-          v39 = [v7 bundle];
-          v40 = [v39 identifier];
+          bundle6 = [handleCopy bundle];
+          identifier6 = [bundle6 identifier];
           *buf = 138412290;
-          v49 = v40;
+          v49 = identifier6;
           v41 = "App %@ should be killed";
 LABEL_20:
           _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_DEFAULT, v41, buf, 0xCu);
@@ -247,18 +247,18 @@ LABEL_20:
       else if (v37)
       {
         v38 = v36;
-        v39 = [v7 bundle];
-        v40 = [v39 identifier];
+        bundle6 = [handleCopy bundle];
+        identifier6 = [bundle6 identifier];
         *buf = 138412290;
-        v49 = v40;
+        v49 = identifier6;
         v41 = "App %@ couldn't be killed";
         goto LABEL_20;
       }
 
       v45 = self->_appNameToTerminationRequestDict;
-      v20 = [v7 bundle];
-      v46 = [v20 identifier];
-      [(NSMutableDictionary *)v45 removeObjectForKey:v46];
+      identifier2 = [handleCopy bundle];
+      v20Identifier = [identifier2 identifier];
+      [(NSMutableDictionary *)v45 removeObjectForKey:v20Identifier];
 
 LABEL_22:
       goto LABEL_23;
@@ -268,10 +268,10 @@ LABEL_22:
     if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
     {
       v43 = v42;
-      v17 = [v7 bundle];
-      v44 = [v17 identifier];
+      bundle7 = [handleCopy bundle];
+      identifier7 = [bundle7 identifier];
       *buf = 138412290;
-      v49 = v44;
+      v49 = identifier7;
       _os_log_impl(&_mh_execute_header, v43, OS_LOG_TYPE_DEFAULT, "Termination request wasn't created for %@", buf, 0xCu);
 
 LABEL_23:

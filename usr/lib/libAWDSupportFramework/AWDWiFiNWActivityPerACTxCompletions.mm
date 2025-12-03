@@ -1,30 +1,30 @@
 @interface AWDWiFiNWActivityPerACTxCompletions
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsAc:(id)a3;
+- (int)StringAsAc:(id)ac;
 - (int)ac;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDpsNotifications:(BOOL)a3;
-- (void)setHasDurSinceLastEnqueue:(BOOL)a3;
-- (void)setHasDurSinceLastEnqueueAtLastCheck:(BOOL)a3;
-- (void)setHasDurSinceLastFailedComp:(BOOL)a3;
-- (void)setHasDurSinceLastSuccessfulComp:(BOOL)a3;
-- (void)setHasExpiredComp:(BOOL)a3;
-- (void)setHasFailedComp:(BOOL)a3;
-- (void)setHasFailedCompletionsAtLastCheck:(BOOL)a3;
-- (void)setHasNoAckComp:(BOOL)a3;
-- (void)setHasOtherErrComp:(BOOL)a3;
-- (void)setHasQeuedPackets:(BOOL)a3;
-- (void)setHasSinceLastEnqueueHowManyFailed:(BOOL)a3;
-- (void)setHasSinceLastEnqueueHowManySuccess:(BOOL)a3;
-- (void)setHasSinceLastSuccessHowManyFailed:(BOOL)a3;
-- (void)setHasSuccess:(BOOL)a3;
-- (void)setHasSuccessfulCompletionsAtLastCheck:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasDpsNotifications:(BOOL)notifications;
+- (void)setHasDurSinceLastEnqueue:(BOOL)enqueue;
+- (void)setHasDurSinceLastEnqueueAtLastCheck:(BOOL)check;
+- (void)setHasDurSinceLastFailedComp:(BOOL)comp;
+- (void)setHasDurSinceLastSuccessfulComp:(BOOL)comp;
+- (void)setHasExpiredComp:(BOOL)comp;
+- (void)setHasFailedComp:(BOOL)comp;
+- (void)setHasFailedCompletionsAtLastCheck:(BOOL)check;
+- (void)setHasNoAckComp:(BOOL)comp;
+- (void)setHasOtherErrComp:(BOOL)comp;
+- (void)setHasQeuedPackets:(BOOL)packets;
+- (void)setHasSinceLastEnqueueHowManyFailed:(BOOL)failed;
+- (void)setHasSinceLastEnqueueHowManySuccess:(BOOL)success;
+- (void)setHasSinceLastSuccessHowManyFailed:(BOOL)failed;
+- (void)setHasSuccess:(BOOL)success;
+- (void)setHasSuccessfulCompletionsAtLastCheck:(BOOL)check;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDWiFiNWActivityPerACTxCompletions
@@ -42,34 +42,34 @@
   }
 }
 
-- (int)StringAsAc:(id)a3
+- (int)StringAsAc:(id)ac
 {
-  if ([a3 isEqualToString:@"Rx"])
+  if ([ac isEqualToString:@"Rx"])
   {
     return 0;
   }
 
-  if ([a3 isEqualToString:@"Tx"])
+  if ([ac isEqualToString:@"Tx"])
   {
     return 1;
   }
 
-  if ([a3 isEqualToString:@"TxBK"])
+  if ([ac isEqualToString:@"TxBK"])
   {
     return 2;
   }
 
-  if ([a3 isEqualToString:@"TxBE"])
+  if ([ac isEqualToString:@"TxBE"])
   {
     return 3;
   }
 
-  if ([a3 isEqualToString:@"TxVO"])
+  if ([ac isEqualToString:@"TxVO"])
   {
     return 4;
   }
 
-  if ([a3 isEqualToString:@"TxVI"])
+  if ([ac isEqualToString:@"TxVI"])
   {
     return 5;
   }
@@ -77,9 +77,9 @@
   return 0;
 }
 
-- (void)setHasSuccess:(BOOL)a3
+- (void)setHasSuccess:(BOOL)success
 {
-  if (a3)
+  if (success)
   {
     v3 = 0x8000;
   }
@@ -92,9 +92,9 @@
   self->_has = (*&self->_has & 0xFFFF7FFF | v3);
 }
 
-- (void)setHasDurSinceLastSuccessfulComp:(BOOL)a3
+- (void)setHasDurSinceLastSuccessfulComp:(BOOL)comp
 {
-  if (a3)
+  if (comp)
   {
     v3 = 32;
   }
@@ -107,9 +107,9 @@
   self->_has = (*&self->_has & 0xFFFFFFDF | v3);
 }
 
-- (void)setHasFailedComp:(BOOL)a3
+- (void)setHasFailedComp:(BOOL)comp
 {
-  if (a3)
+  if (comp)
   {
     v3 = 128;
   }
@@ -122,9 +122,9 @@
   self->_has = (*&self->_has & 0xFFFFFF7F | v3);
 }
 
-- (void)setHasDurSinceLastFailedComp:(BOOL)a3
+- (void)setHasDurSinceLastFailedComp:(BOOL)comp
 {
-  if (a3)
+  if (comp)
   {
     v3 = 16;
   }
@@ -137,9 +137,9 @@
   self->_has = (*&self->_has & 0xFFFFFFEF | v3);
 }
 
-- (void)setHasExpiredComp:(BOOL)a3
+- (void)setHasExpiredComp:(BOOL)comp
 {
-  if (a3)
+  if (comp)
   {
     v3 = 64;
   }
@@ -152,9 +152,9 @@
   self->_has = (*&self->_has & 0xFFFFFFBF | v3);
 }
 
-- (void)setHasNoAckComp:(BOOL)a3
+- (void)setHasNoAckComp:(BOOL)comp
 {
-  if (a3)
+  if (comp)
   {
     v3 = 512;
   }
@@ -167,9 +167,9 @@
   self->_has = (*&self->_has & 0xFFFFFDFF | v3);
 }
 
-- (void)setHasOtherErrComp:(BOOL)a3
+- (void)setHasOtherErrComp:(BOOL)comp
 {
-  if (a3)
+  if (comp)
   {
     v3 = 1024;
   }
@@ -182,9 +182,9 @@
   self->_has = (*&self->_has & 0xFFFFFBFF | v3);
 }
 
-- (void)setHasDurSinceLastEnqueue:(BOOL)a3
+- (void)setHasDurSinceLastEnqueue:(BOOL)enqueue
 {
-  if (a3)
+  if (enqueue)
   {
     v3 = 4;
   }
@@ -197,9 +197,9 @@
   self->_has = (*&self->_has & 0xFFFFFFFB | v3);
 }
 
-- (void)setHasQeuedPackets:(BOOL)a3
+- (void)setHasQeuedPackets:(BOOL)packets
 {
-  if (a3)
+  if (packets)
   {
     v3 = 2048;
   }
@@ -212,9 +212,9 @@
   self->_has = (*&self->_has & 0xFFFFF7FF | v3);
 }
 
-- (void)setHasSinceLastEnqueueHowManyFailed:(BOOL)a3
+- (void)setHasSinceLastEnqueueHowManyFailed:(BOOL)failed
 {
-  if (a3)
+  if (failed)
   {
     v3 = 4096;
   }
@@ -227,9 +227,9 @@
   self->_has = (*&self->_has & 0xFFFFEFFF | v3);
 }
 
-- (void)setHasSinceLastEnqueueHowManySuccess:(BOOL)a3
+- (void)setHasSinceLastEnqueueHowManySuccess:(BOOL)success
 {
-  if (a3)
+  if (success)
   {
     v3 = 0x2000;
   }
@@ -242,9 +242,9 @@
   self->_has = (*&self->_has & 0xFFFFDFFF | v3);
 }
 
-- (void)setHasSinceLastSuccessHowManyFailed:(BOOL)a3
+- (void)setHasSinceLastSuccessHowManyFailed:(BOOL)failed
 {
-  if (a3)
+  if (failed)
   {
     v3 = 0x4000;
   }
@@ -257,9 +257,9 @@
   self->_has = (*&self->_has & 0xFFFFBFFF | v3);
 }
 
-- (void)setHasDurSinceLastEnqueueAtLastCheck:(BOOL)a3
+- (void)setHasDurSinceLastEnqueueAtLastCheck:(BOOL)check
 {
-  if (a3)
+  if (check)
   {
     v3 = 8;
   }
@@ -272,9 +272,9 @@
   self->_has = (*&self->_has & 0xFFFFFFF7 | v3);
 }
 
-- (void)setHasSuccessfulCompletionsAtLastCheck:(BOOL)a3
+- (void)setHasSuccessfulCompletionsAtLastCheck:(BOOL)check
 {
-  if (a3)
+  if (check)
   {
     v3 = 0x10000;
   }
@@ -287,9 +287,9 @@
   self->_has = (*&self->_has & 0xFFFEFFFF | v3);
 }
 
-- (void)setHasFailedCompletionsAtLastCheck:(BOOL)a3
+- (void)setHasFailedCompletionsAtLastCheck:(BOOL)check
 {
-  if (a3)
+  if (check)
   {
     v3 = 256;
   }
@@ -302,9 +302,9 @@
   self->_has = (*&self->_has & 0xFFFFFEFF | v3);
 }
 
-- (void)setHasDpsNotifications:(BOOL)a3
+- (void)setHasDpsNotifications:(BOOL)notifications
 {
-  if (a3)
+  if (notifications)
   {
     v3 = 2;
   }
@@ -326,7 +326,7 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if (*&has)
   {
@@ -341,13 +341,13 @@
       v6 = off_29EE332E0[ac];
     }
 
-    [v3 setObject:v6 forKey:@"ac"];
+    [dictionary setObject:v6 forKey:@"ac"];
     has = self->_has;
   }
 
   if ((*&has & 0x8000) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_success), @"success"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_success), @"success"}];
     has = self->_has;
     if ((*&has & 0x20) == 0)
     {
@@ -366,7 +366,7 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_durSinceLastSuccessfulComp), @"durSinceLastSuccessfulComp"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_durSinceLastSuccessfulComp), @"durSinceLastSuccessfulComp"}];
   has = self->_has;
   if ((*&has & 0x80) == 0)
   {
@@ -380,7 +380,7 @@ LABEL_9:
   }
 
 LABEL_26:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_failedComp), @"failedComp"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_failedComp), @"failedComp"}];
   has = self->_has;
   if ((*&has & 0x10) == 0)
   {
@@ -394,7 +394,7 @@ LABEL_10:
   }
 
 LABEL_27:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_durSinceLastFailedComp), @"durSinceLastFailedComp"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_durSinceLastFailedComp), @"durSinceLastFailedComp"}];
   has = self->_has;
   if ((*&has & 0x40) == 0)
   {
@@ -408,7 +408,7 @@ LABEL_11:
   }
 
 LABEL_28:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_expiredComp), @"expiredComp"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_expiredComp), @"expiredComp"}];
   has = self->_has;
   if ((*&has & 0x200) == 0)
   {
@@ -422,7 +422,7 @@ LABEL_12:
   }
 
 LABEL_29:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_noAckComp), @"noAckComp"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_noAckComp), @"noAckComp"}];
   has = self->_has;
   if ((*&has & 0x400) == 0)
   {
@@ -436,7 +436,7 @@ LABEL_13:
   }
 
 LABEL_30:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_otherErrComp), @"otherErrComp"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_otherErrComp), @"otherErrComp"}];
   has = self->_has;
   if ((*&has & 4) == 0)
   {
@@ -450,7 +450,7 @@ LABEL_14:
   }
 
 LABEL_31:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_durSinceLastEnqueue), @"durSinceLastEnqueue"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_durSinceLastEnqueue), @"durSinceLastEnqueue"}];
   has = self->_has;
   if ((*&has & 0x800) == 0)
   {
@@ -464,7 +464,7 @@ LABEL_15:
   }
 
 LABEL_32:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_qeuedPackets), @"qeuedPackets"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_qeuedPackets), @"qeuedPackets"}];
   has = self->_has;
   if ((*&has & 0x1000) == 0)
   {
@@ -478,7 +478,7 @@ LABEL_16:
   }
 
 LABEL_33:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_sinceLastEnqueueHowManyFailed), @"sinceLastEnqueueHowManyFailed"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_sinceLastEnqueueHowManyFailed), @"sinceLastEnqueueHowManyFailed"}];
   has = self->_has;
   if ((*&has & 0x2000) == 0)
   {
@@ -492,7 +492,7 @@ LABEL_17:
   }
 
 LABEL_34:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_sinceLastEnqueueHowManySuccess), @"sinceLastEnqueueHowManySuccess"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_sinceLastEnqueueHowManySuccess), @"sinceLastEnqueueHowManySuccess"}];
   has = self->_has;
   if ((*&has & 0x4000) == 0)
   {
@@ -506,7 +506,7 @@ LABEL_18:
   }
 
 LABEL_35:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_sinceLastSuccessHowManyFailed), @"sinceLastSuccessHowManyFailed"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_sinceLastSuccessHowManyFailed), @"sinceLastSuccessHowManyFailed"}];
   has = self->_has;
   if ((*&has & 8) == 0)
   {
@@ -520,7 +520,7 @@ LABEL_19:
   }
 
 LABEL_36:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_durSinceLastEnqueueAtLastCheck), @"durSinceLastEnqueueAtLastCheck"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_durSinceLastEnqueueAtLastCheck), @"durSinceLastEnqueueAtLastCheck"}];
   has = self->_has;
   if ((*&has & 0x10000) == 0)
   {
@@ -531,17 +531,17 @@ LABEL_20:
     }
 
 LABEL_38:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_failedCompletionsAtLastCheck), @"failedCompletionsAtLastCheck"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_failedCompletionsAtLastCheck), @"failedCompletionsAtLastCheck"}];
     if ((*&self->_has & 2) == 0)
     {
-      return v3;
+      return dictionary;
     }
 
     goto LABEL_22;
   }
 
 LABEL_37:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_successfulCompletionsAtLastCheck), @"successfulCompletionsAtLastCheck"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_successfulCompletionsAtLastCheck), @"successfulCompletionsAtLastCheck"}];
   has = self->_has;
   if ((*&has & 0x100) != 0)
   {
@@ -552,13 +552,13 @@ LABEL_21:
   if ((*&has & 2) != 0)
   {
 LABEL_22:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_dpsNotifications), @"dpsNotifications"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_dpsNotifications), @"dpsNotifications"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if (*&has)
@@ -806,13 +806,13 @@ LABEL_35:
   PBDataWriterWriteUint32Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if (*&has)
   {
-    *(a3 + 2) = self->_ac;
-    *(a3 + 19) |= 1u;
+    *(to + 2) = self->_ac;
+    *(to + 19) |= 1u;
     has = self->_has;
     if ((*&has & 0x8000) == 0)
     {
@@ -831,8 +831,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(a3 + 17) = self->_success;
-  *(a3 + 19) |= 0x8000u;
+  *(to + 17) = self->_success;
+  *(to + 19) |= 0x8000u;
   has = self->_has;
   if ((*&has & 0x20) == 0)
   {
@@ -846,8 +846,8 @@ LABEL_4:
   }
 
 LABEL_21:
-  *(a3 + 7) = self->_durSinceLastSuccessfulComp;
-  *(a3 + 19) |= 0x20u;
+  *(to + 7) = self->_durSinceLastSuccessfulComp;
+  *(to + 19) |= 0x20u;
   has = self->_has;
   if ((*&has & 0x80) == 0)
   {
@@ -861,8 +861,8 @@ LABEL_5:
   }
 
 LABEL_22:
-  *(a3 + 9) = self->_failedComp;
-  *(a3 + 19) |= 0x80u;
+  *(to + 9) = self->_failedComp;
+  *(to + 19) |= 0x80u;
   has = self->_has;
   if ((*&has & 0x10) == 0)
   {
@@ -876,8 +876,8 @@ LABEL_6:
   }
 
 LABEL_23:
-  *(a3 + 6) = self->_durSinceLastFailedComp;
-  *(a3 + 19) |= 0x10u;
+  *(to + 6) = self->_durSinceLastFailedComp;
+  *(to + 19) |= 0x10u;
   has = self->_has;
   if ((*&has & 0x40) == 0)
   {
@@ -891,8 +891,8 @@ LABEL_7:
   }
 
 LABEL_24:
-  *(a3 + 8) = self->_expiredComp;
-  *(a3 + 19) |= 0x40u;
+  *(to + 8) = self->_expiredComp;
+  *(to + 19) |= 0x40u;
   has = self->_has;
   if ((*&has & 0x200) == 0)
   {
@@ -906,8 +906,8 @@ LABEL_8:
   }
 
 LABEL_25:
-  *(a3 + 11) = self->_noAckComp;
-  *(a3 + 19) |= 0x200u;
+  *(to + 11) = self->_noAckComp;
+  *(to + 19) |= 0x200u;
   has = self->_has;
   if ((*&has & 0x400) == 0)
   {
@@ -921,8 +921,8 @@ LABEL_9:
   }
 
 LABEL_26:
-  *(a3 + 12) = self->_otherErrComp;
-  *(a3 + 19) |= 0x400u;
+  *(to + 12) = self->_otherErrComp;
+  *(to + 19) |= 0x400u;
   has = self->_has;
   if ((*&has & 4) == 0)
   {
@@ -936,8 +936,8 @@ LABEL_10:
   }
 
 LABEL_27:
-  *(a3 + 4) = self->_durSinceLastEnqueue;
-  *(a3 + 19) |= 4u;
+  *(to + 4) = self->_durSinceLastEnqueue;
+  *(to + 19) |= 4u;
   has = self->_has;
   if ((*&has & 0x800) == 0)
   {
@@ -951,8 +951,8 @@ LABEL_11:
   }
 
 LABEL_28:
-  *(a3 + 13) = self->_qeuedPackets;
-  *(a3 + 19) |= 0x800u;
+  *(to + 13) = self->_qeuedPackets;
+  *(to + 19) |= 0x800u;
   has = self->_has;
   if ((*&has & 0x1000) == 0)
   {
@@ -966,8 +966,8 @@ LABEL_12:
   }
 
 LABEL_29:
-  *(a3 + 14) = self->_sinceLastEnqueueHowManyFailed;
-  *(a3 + 19) |= 0x1000u;
+  *(to + 14) = self->_sinceLastEnqueueHowManyFailed;
+  *(to + 19) |= 0x1000u;
   has = self->_has;
   if ((*&has & 0x2000) == 0)
   {
@@ -981,8 +981,8 @@ LABEL_13:
   }
 
 LABEL_30:
-  *(a3 + 15) = self->_sinceLastEnqueueHowManySuccess;
-  *(a3 + 19) |= 0x2000u;
+  *(to + 15) = self->_sinceLastEnqueueHowManySuccess;
+  *(to + 19) |= 0x2000u;
   has = self->_has;
   if ((*&has & 0x4000) == 0)
   {
@@ -996,8 +996,8 @@ LABEL_14:
   }
 
 LABEL_31:
-  *(a3 + 16) = self->_sinceLastSuccessHowManyFailed;
-  *(a3 + 19) |= 0x4000u;
+  *(to + 16) = self->_sinceLastSuccessHowManyFailed;
+  *(to + 19) |= 0x4000u;
   has = self->_has;
   if ((*&has & 8) == 0)
   {
@@ -1011,8 +1011,8 @@ LABEL_15:
   }
 
 LABEL_32:
-  *(a3 + 5) = self->_durSinceLastEnqueueAtLastCheck;
-  *(a3 + 19) |= 8u;
+  *(to + 5) = self->_durSinceLastEnqueueAtLastCheck;
+  *(to + 19) |= 8u;
   has = self->_has;
   if ((*&has & 0x10000) == 0)
   {
@@ -1026,8 +1026,8 @@ LABEL_16:
   }
 
 LABEL_33:
-  *(a3 + 18) = self->_successfulCompletionsAtLastCheck;
-  *(a3 + 19) |= 0x10000u;
+  *(to + 18) = self->_successfulCompletionsAtLastCheck;
+  *(to + 19) |= 0x10000u;
   has = self->_has;
   if ((*&has & 0x100) == 0)
   {
@@ -1038,23 +1038,23 @@ LABEL_17:
     }
 
 LABEL_35:
-    *(a3 + 3) = self->_dpsNotifications;
-    *(a3 + 19) |= 2u;
+    *(to + 3) = self->_dpsNotifications;
+    *(to + 19) |= 2u;
     return;
   }
 
 LABEL_34:
-  *(a3 + 10) = self->_failedCompletionsAtLastCheck;
-  *(a3 + 19) |= 0x100u;
+  *(to + 10) = self->_failedCompletionsAtLastCheck;
+  *(to + 19) |= 0x100u;
   if ((*&self->_has & 2) != 0)
   {
     goto LABEL_35;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if (*&has)
   {
@@ -1301,16 +1301,16 @@ LABEL_18:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     has = self->_has;
-    v7 = *(a3 + 19);
+    v7 = *(equal + 19);
     if (*&has)
     {
-      if ((v7 & 1) == 0 || self->_ac != *(a3 + 2))
+      if ((v7 & 1) == 0 || self->_ac != *(equal + 2))
       {
         goto LABEL_86;
       }
@@ -1325,7 +1325,7 @@ LABEL_86:
 
     if ((*&has & 0x8000) != 0)
     {
-      if ((v7 & 0x8000) == 0 || self->_success != *(a3 + 17))
+      if ((v7 & 0x8000) == 0 || self->_success != *(equal + 17))
       {
         goto LABEL_86;
       }
@@ -1338,7 +1338,7 @@ LABEL_86:
 
     if ((*&has & 0x20) != 0)
     {
-      if ((v7 & 0x20) == 0 || self->_durSinceLastSuccessfulComp != *(a3 + 7))
+      if ((v7 & 0x20) == 0 || self->_durSinceLastSuccessfulComp != *(equal + 7))
       {
         goto LABEL_86;
       }
@@ -1351,7 +1351,7 @@ LABEL_86:
 
     if ((*&has & 0x80) != 0)
     {
-      if ((v7 & 0x80) == 0 || self->_failedComp != *(a3 + 9))
+      if ((v7 & 0x80) == 0 || self->_failedComp != *(equal + 9))
       {
         goto LABEL_86;
       }
@@ -1364,7 +1364,7 @@ LABEL_86:
 
     if ((*&has & 0x10) != 0)
     {
-      if ((v7 & 0x10) == 0 || self->_durSinceLastFailedComp != *(a3 + 6))
+      if ((v7 & 0x10) == 0 || self->_durSinceLastFailedComp != *(equal + 6))
       {
         goto LABEL_86;
       }
@@ -1377,7 +1377,7 @@ LABEL_86:
 
     if ((*&has & 0x40) != 0)
     {
-      if ((v7 & 0x40) == 0 || self->_expiredComp != *(a3 + 8))
+      if ((v7 & 0x40) == 0 || self->_expiredComp != *(equal + 8))
       {
         goto LABEL_86;
       }
@@ -1390,7 +1390,7 @@ LABEL_86:
 
     if ((*&has & 0x200) != 0)
     {
-      if ((v7 & 0x200) == 0 || self->_noAckComp != *(a3 + 11))
+      if ((v7 & 0x200) == 0 || self->_noAckComp != *(equal + 11))
       {
         goto LABEL_86;
       }
@@ -1403,7 +1403,7 @@ LABEL_86:
 
     if ((*&has & 0x400) != 0)
     {
-      if ((v7 & 0x400) == 0 || self->_otherErrComp != *(a3 + 12))
+      if ((v7 & 0x400) == 0 || self->_otherErrComp != *(equal + 12))
       {
         goto LABEL_86;
       }
@@ -1416,7 +1416,7 @@ LABEL_86:
 
     if ((*&has & 4) != 0)
     {
-      if ((v7 & 4) == 0 || self->_durSinceLastEnqueue != *(a3 + 4))
+      if ((v7 & 4) == 0 || self->_durSinceLastEnqueue != *(equal + 4))
       {
         goto LABEL_86;
       }
@@ -1429,7 +1429,7 @@ LABEL_86:
 
     if ((*&has & 0x800) != 0)
     {
-      if ((v7 & 0x800) == 0 || self->_qeuedPackets != *(a3 + 13))
+      if ((v7 & 0x800) == 0 || self->_qeuedPackets != *(equal + 13))
       {
         goto LABEL_86;
       }
@@ -1442,7 +1442,7 @@ LABEL_86:
 
     if ((*&has & 0x1000) != 0)
     {
-      if ((v7 & 0x1000) == 0 || self->_sinceLastEnqueueHowManyFailed != *(a3 + 14))
+      if ((v7 & 0x1000) == 0 || self->_sinceLastEnqueueHowManyFailed != *(equal + 14))
       {
         goto LABEL_86;
       }
@@ -1455,7 +1455,7 @@ LABEL_86:
 
     if ((*&has & 0x2000) != 0)
     {
-      if ((v7 & 0x2000) == 0 || self->_sinceLastEnqueueHowManySuccess != *(a3 + 15))
+      if ((v7 & 0x2000) == 0 || self->_sinceLastEnqueueHowManySuccess != *(equal + 15))
       {
         goto LABEL_86;
       }
@@ -1468,7 +1468,7 @@ LABEL_86:
 
     if ((*&has & 0x4000) != 0)
     {
-      if ((v7 & 0x4000) == 0 || self->_sinceLastSuccessHowManyFailed != *(a3 + 16))
+      if ((v7 & 0x4000) == 0 || self->_sinceLastSuccessHowManyFailed != *(equal + 16))
       {
         goto LABEL_86;
       }
@@ -1481,7 +1481,7 @@ LABEL_86:
 
     if ((*&has & 8) != 0)
     {
-      if ((v7 & 8) == 0 || self->_durSinceLastEnqueueAtLastCheck != *(a3 + 5))
+      if ((v7 & 8) == 0 || self->_durSinceLastEnqueueAtLastCheck != *(equal + 5))
       {
         goto LABEL_86;
       }
@@ -1494,7 +1494,7 @@ LABEL_86:
 
     if ((*&has & 0x10000) != 0)
     {
-      if ((v7 & 0x10000) == 0 || self->_successfulCompletionsAtLastCheck != *(a3 + 18))
+      if ((v7 & 0x10000) == 0 || self->_successfulCompletionsAtLastCheck != *(equal + 18))
       {
         goto LABEL_86;
       }
@@ -1507,7 +1507,7 @@ LABEL_86:
 
     if ((*&has & 0x100) != 0)
     {
-      if ((v7 & 0x100) == 0 || self->_failedCompletionsAtLastCheck != *(a3 + 10))
+      if ((v7 & 0x100) == 0 || self->_failedCompletionsAtLastCheck != *(equal + 10))
       {
         goto LABEL_86;
       }
@@ -1518,10 +1518,10 @@ LABEL_86:
       goto LABEL_86;
     }
 
-    LOBYTE(v5) = (*(a3 + 19) & 2) == 0;
+    LOBYTE(v5) = (*(equal + 19) & 2) == 0;
     if ((*&has & 2) != 0)
     {
-      if ((v7 & 2) == 0 || self->_dpsNotifications != *(a3 + 3))
+      if ((v7 & 2) == 0 || self->_dpsNotifications != *(equal + 3))
       {
         goto LABEL_86;
       }
@@ -1764,14 +1764,14 @@ LABEL_34:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14 ^ v15 ^ v16 ^ v17 ^ v18 ^ v19;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v3 = *(a3 + 19);
+  v3 = *(from + 19);
   if (v3)
   {
-    self->_ac = *(a3 + 2);
+    self->_ac = *(from + 2);
     *&self->_has |= 1u;
-    v3 = *(a3 + 19);
+    v3 = *(from + 19);
     if ((v3 & 0x8000) == 0)
     {
 LABEL_3:
@@ -1789,9 +1789,9 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  self->_success = *(a3 + 17);
+  self->_success = *(from + 17);
   *&self->_has |= 0x8000u;
-  v3 = *(a3 + 19);
+  v3 = *(from + 19);
   if ((v3 & 0x20) == 0)
   {
 LABEL_4:
@@ -1804,9 +1804,9 @@ LABEL_4:
   }
 
 LABEL_21:
-  self->_durSinceLastSuccessfulComp = *(a3 + 7);
+  self->_durSinceLastSuccessfulComp = *(from + 7);
   *&self->_has |= 0x20u;
-  v3 = *(a3 + 19);
+  v3 = *(from + 19);
   if ((v3 & 0x80) == 0)
   {
 LABEL_5:
@@ -1819,9 +1819,9 @@ LABEL_5:
   }
 
 LABEL_22:
-  self->_failedComp = *(a3 + 9);
+  self->_failedComp = *(from + 9);
   *&self->_has |= 0x80u;
-  v3 = *(a3 + 19);
+  v3 = *(from + 19);
   if ((v3 & 0x10) == 0)
   {
 LABEL_6:
@@ -1834,9 +1834,9 @@ LABEL_6:
   }
 
 LABEL_23:
-  self->_durSinceLastFailedComp = *(a3 + 6);
+  self->_durSinceLastFailedComp = *(from + 6);
   *&self->_has |= 0x10u;
-  v3 = *(a3 + 19);
+  v3 = *(from + 19);
   if ((v3 & 0x40) == 0)
   {
 LABEL_7:
@@ -1849,9 +1849,9 @@ LABEL_7:
   }
 
 LABEL_24:
-  self->_expiredComp = *(a3 + 8);
+  self->_expiredComp = *(from + 8);
   *&self->_has |= 0x40u;
-  v3 = *(a3 + 19);
+  v3 = *(from + 19);
   if ((v3 & 0x200) == 0)
   {
 LABEL_8:
@@ -1864,9 +1864,9 @@ LABEL_8:
   }
 
 LABEL_25:
-  self->_noAckComp = *(a3 + 11);
+  self->_noAckComp = *(from + 11);
   *&self->_has |= 0x200u;
-  v3 = *(a3 + 19);
+  v3 = *(from + 19);
   if ((v3 & 0x400) == 0)
   {
 LABEL_9:
@@ -1879,9 +1879,9 @@ LABEL_9:
   }
 
 LABEL_26:
-  self->_otherErrComp = *(a3 + 12);
+  self->_otherErrComp = *(from + 12);
   *&self->_has |= 0x400u;
-  v3 = *(a3 + 19);
+  v3 = *(from + 19);
   if ((v3 & 4) == 0)
   {
 LABEL_10:
@@ -1894,9 +1894,9 @@ LABEL_10:
   }
 
 LABEL_27:
-  self->_durSinceLastEnqueue = *(a3 + 4);
+  self->_durSinceLastEnqueue = *(from + 4);
   *&self->_has |= 4u;
-  v3 = *(a3 + 19);
+  v3 = *(from + 19);
   if ((v3 & 0x800) == 0)
   {
 LABEL_11:
@@ -1909,9 +1909,9 @@ LABEL_11:
   }
 
 LABEL_28:
-  self->_qeuedPackets = *(a3 + 13);
+  self->_qeuedPackets = *(from + 13);
   *&self->_has |= 0x800u;
-  v3 = *(a3 + 19);
+  v3 = *(from + 19);
   if ((v3 & 0x1000) == 0)
   {
 LABEL_12:
@@ -1924,9 +1924,9 @@ LABEL_12:
   }
 
 LABEL_29:
-  self->_sinceLastEnqueueHowManyFailed = *(a3 + 14);
+  self->_sinceLastEnqueueHowManyFailed = *(from + 14);
   *&self->_has |= 0x1000u;
-  v3 = *(a3 + 19);
+  v3 = *(from + 19);
   if ((v3 & 0x2000) == 0)
   {
 LABEL_13:
@@ -1939,9 +1939,9 @@ LABEL_13:
   }
 
 LABEL_30:
-  self->_sinceLastEnqueueHowManySuccess = *(a3 + 15);
+  self->_sinceLastEnqueueHowManySuccess = *(from + 15);
   *&self->_has |= 0x2000u;
-  v3 = *(a3 + 19);
+  v3 = *(from + 19);
   if ((v3 & 0x4000) == 0)
   {
 LABEL_14:
@@ -1954,9 +1954,9 @@ LABEL_14:
   }
 
 LABEL_31:
-  self->_sinceLastSuccessHowManyFailed = *(a3 + 16);
+  self->_sinceLastSuccessHowManyFailed = *(from + 16);
   *&self->_has |= 0x4000u;
-  v3 = *(a3 + 19);
+  v3 = *(from + 19);
   if ((v3 & 8) == 0)
   {
 LABEL_15:
@@ -1969,9 +1969,9 @@ LABEL_15:
   }
 
 LABEL_32:
-  self->_durSinceLastEnqueueAtLastCheck = *(a3 + 5);
+  self->_durSinceLastEnqueueAtLastCheck = *(from + 5);
   *&self->_has |= 8u;
-  v3 = *(a3 + 19);
+  v3 = *(from + 19);
   if ((v3 & 0x10000) == 0)
   {
 LABEL_16:
@@ -1984,9 +1984,9 @@ LABEL_16:
   }
 
 LABEL_33:
-  self->_successfulCompletionsAtLastCheck = *(a3 + 18);
+  self->_successfulCompletionsAtLastCheck = *(from + 18);
   *&self->_has |= 0x10000u;
-  v3 = *(a3 + 19);
+  v3 = *(from + 19);
   if ((v3 & 0x100) == 0)
   {
 LABEL_17:
@@ -1996,15 +1996,15 @@ LABEL_17:
     }
 
 LABEL_35:
-    self->_dpsNotifications = *(a3 + 3);
+    self->_dpsNotifications = *(from + 3);
     *&self->_has |= 2u;
     return;
   }
 
 LABEL_34:
-  self->_failedCompletionsAtLastCheck = *(a3 + 10);
+  self->_failedCompletionsAtLastCheck = *(from + 10);
   *&self->_has |= 0x100u;
-  if ((*(a3 + 19) & 2) != 0)
+  if ((*(from + 19) & 2) != 0)
   {
     goto LABEL_35;
   }

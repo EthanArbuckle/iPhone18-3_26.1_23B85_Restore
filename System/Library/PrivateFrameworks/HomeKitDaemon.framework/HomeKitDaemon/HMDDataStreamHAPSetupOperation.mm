@@ -1,46 +1,46 @@
 @interface HMDDataStreamHAPSetupOperation
-- (HMDDataStreamHAPSetupOperation)initWithAccessory:(id)a3 queue:(id)a4 logIdentifier:(id)a5 transferManagementService:(id)a6 maxControllerTransportMTU:(unint64_t)a7 setupOperationReadRequired:(BOOL)a8;
+- (HMDDataStreamHAPSetupOperation)initWithAccessory:(id)accessory queue:(id)queue logIdentifier:(id)identifier transferManagementService:(id)service maxControllerTransportMTU:(unint64_t)u setupOperationReadRequired:(BOOL)required;
 - (void)_readRequiredTransportCharacteristics;
-- (void)processTransportSetupResponse:(id)a3;
-- (void)setMaxControllerTransportMTU:(unint64_t)a3;
+- (void)processTransportSetupResponse:(id)response;
+- (void)setMaxControllerTransportMTU:(unint64_t)u;
 - (void)startSetup;
 @end
 
 @implementation HMDDataStreamHAPSetupOperation
 
-- (void)processTransportSetupResponse:(id)a3
+- (void)processTransportSetupResponse:(id)response
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 parameters];
-  v6 = [v5 sessionIdentifier];
+  responseCopy = response;
+  parameters = [responseCopy parameters];
+  sessionIdentifier = [parameters sessionIdentifier];
 
   v7 = objc_autoreleasePoolPush();
-  v8 = self;
+  selfCopy = self;
   v9 = HMFGetOSLogHandle();
   v10 = v9;
-  if (v6)
+  if (sessionIdentifier)
   {
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
       v11 = HMFGetLogIdentifier();
-      v12 = [v4 parameters];
-      v13 = [v12 sessionIdentifier];
+      parameters2 = [responseCopy parameters];
+      sessionIdentifier2 = [parameters2 sessionIdentifier];
       v30 = 138543618;
       v31 = v11;
       v32 = 2112;
-      v33 = v13;
+      v33 = sessionIdentifier2;
       _os_log_impl(&dword_229538000, v10, OS_LOG_TYPE_DEBUG, "%{public}@[Start Stream] The setup transfer succeeded; will use session identifier %@", &v30, 0x16u);
     }
 
     objc_autoreleasePoolPop(v7);
-    v14 = [v4 parameters];
-    v15 = [v14 sessionIdentifier];
-    v16 = [v15 value];
-    -[HMDDataStreamHAPSetupOperation setSessionIdentifier:](v8, "setSessionIdentifier:", [v16 integerValue]);
+    parameters3 = [responseCopy parameters];
+    sessionIdentifier3 = [parameters3 sessionIdentifier];
+    value = [sessionIdentifier3 value];
+    -[HMDDataStreamHAPSetupOperation setSessionIdentifier:](selfCopy, "setSessionIdentifier:", [value integerValue]);
 
     v17 = objc_autoreleasePoolPush();
-    v18 = v8;
+    v18 = selfCopy;
     v19 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
     {
@@ -52,12 +52,12 @@
 
     objc_autoreleasePoolPop(v17);
     v21 = [HMDDataStreamHAPTransport alloc];
-    v22 = [(HMDDataStreamSetupOperation *)v18 accessory];
-    v23 = [(HMDDataStreamHAPSetupOperation *)v18 sessionIdentifier];
-    v24 = [(HMDDataStreamHAPSetupOperation *)v18 maxControllerTransportMTU];
-    v25 = [(HMDDataStreamSetupOperation *)v18 queue];
-    v26 = [(HMDDataStreamSetupOperation *)v18 logIdentifier];
-    v27 = [(HMDDataStreamHAPTransport *)v21 initWithAccessory:v22 sessionIdentifier:v23 maxControllerTransportMTU:v24 workQueue:v25 logIdentifier:v26];
+    accessory = [(HMDDataStreamSetupOperation *)v18 accessory];
+    sessionIdentifier4 = [(HMDDataStreamHAPSetupOperation *)v18 sessionIdentifier];
+    maxControllerTransportMTU = [(HMDDataStreamHAPSetupOperation *)v18 maxControllerTransportMTU];
+    queue = [(HMDDataStreamSetupOperation *)v18 queue];
+    logIdentifier = [(HMDDataStreamSetupOperation *)v18 logIdentifier];
+    v27 = [(HMDDataStreamHAPTransport *)v21 initWithAccessory:accessory sessionIdentifier:sessionIdentifier4 maxControllerTransportMTU:maxControllerTransportMTU workQueue:queue logIdentifier:logIdentifier];
 
     [(HMDDataStreamSetupOperation *)v18 postDidSucceedWithTransport:v27 sessionEncryption:0];
   }
@@ -74,7 +74,7 @@
 
     objc_autoreleasePoolPop(v7);
     v27 = [MEMORY[0x277CCA9B8] hmErrorWithCode:50];
-    [(HMDDataStreamSetupOperation *)v8 postDidFailWithError:v27];
+    [(HMDDataStreamSetupOperation *)selfCopy postDidFailWithError:v27];
   }
 
   v29 = *MEMORY[0x277D85DE8];
@@ -84,7 +84,7 @@
 {
   v31 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -104,21 +104,21 @@
   v11 = v25;
   if (v10)
   {
-    v12 = [(HMDDataStreamSetupOperation *)v4 transferManagementService];
-    v13 = [v12 findCharacteristicWithType:@"00000131-0000-1000-8000-0026BB765291"];
+    transferManagementService = [(HMDDataStreamSetupOperation *)selfCopy transferManagementService];
+    v13 = [transferManagementService findCharacteristicWithType:@"00000131-0000-1000-8000-0026BB765291"];
 
     v14 = [HMDCharacteristicWriteRequest writeRequestWithCharacteristic:v13 value:v10 authorizationData:0 identifier:0 type:0 includeResponseValue:1];
-    objc_initWeak(buf, v4);
-    v15 = [(HMDDataStreamSetupOperation *)v4 accessory];
+    objc_initWeak(buf, selfCopy);
+    accessory = [(HMDDataStreamSetupOperation *)selfCopy accessory];
     v26 = v14;
     v16 = [MEMORY[0x277CBEA60] arrayWithObjects:&v26 count:1];
-    v17 = [(HMDDataStreamSetupOperation *)v4 queue];
+    queue = [(HMDDataStreamSetupOperation *)selfCopy queue];
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __44__HMDDataStreamHAPSetupOperation_startSetup__block_invoke;
     v23[3] = &unk_2786895F0;
     objc_copyWeak(&v24, buf);
-    [v15 writeCharacteristicValues:v16 source:1090 queue:v17 completionHandler:v23];
+    [accessory writeCharacteristicValues:v16 source:1090 queue:queue completionHandler:v23];
 
     objc_destroyWeak(&v24);
     objc_destroyWeak(buf);
@@ -127,7 +127,7 @@
   else
   {
     v18 = objc_autoreleasePoolPush();
-    v19 = v4;
+    v19 = selfCopy;
     v20 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
@@ -160,11 +160,11 @@ void __44__HMDDataStreamHAPSetupOperation_startSetup__block_invoke(uint64_t a1, 
 - (void)_readRequiredTransportCharacteristics
 {
   v40 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDDataStreamSetupOperation *)self transferManagementService];
-  v4 = [v3 findCharacteristicWithType:*MEMORY[0x277CCFB98]];
+  transferManagementService = [(HMDDataStreamSetupOperation *)self transferManagementService];
+  v4 = [transferManagementService findCharacteristicWithType:*MEMORY[0x277CCFB98]];
 
-  v5 = [(HMDDataStreamSetupOperation *)self transferManagementService];
-  v6 = [v5 findCharacteristicWithType:@"00000130-0000-1000-8000-0026BB765291"];
+  transferManagementService2 = [(HMDDataStreamSetupOperation *)self transferManagementService];
+  v6 = [transferManagementService2 findCharacteristicWithType:@"00000130-0000-1000-8000-0026BB765291"];
 
   if (v4)
   {
@@ -179,33 +179,33 @@ void __44__HMDDataStreamHAPSetupOperation_startSetup__block_invoke(uint64_t a1, 
   if (v7)
   {
     context = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       v10 = HMFGetLogIdentifier();
-      v11 = [(HMDDataStreamSetupOperation *)v8 accessory];
-      v12 = [v11 name];
-      v13 = [(HMDDataStreamSetupOperation *)v8 accessory];
-      v14 = [v13 uuid];
-      v15 = [v14 UUIDString];
+      accessory = [(HMDDataStreamSetupOperation *)selfCopy accessory];
+      name = [accessory name];
+      accessory2 = [(HMDDataStreamSetupOperation *)selfCopy accessory];
+      uuid = [accessory2 uuid];
+      uUIDString = [uuid UUIDString];
       *buf = 138543874;
       v35 = v10;
       v36 = 2112;
-      v37 = v12;
+      v37 = name;
       v38 = 2112;
-      v39 = v15;
+      v39 = uUIDString;
       _os_log_impl(&dword_229538000, v9, OS_LOG_TYPE_INFO, "%{public}@HDS characteristic(s) not found configuration/version (%@/%@)", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(context);
-    v16 = [(HMDDataStreamSetupOperation *)v8 queue];
+    queue = [(HMDDataStreamSetupOperation *)selfCopy queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __71__HMDDataStreamHAPSetupOperation__readRequiredTransportCharacteristics__block_invoke;
     block[3] = &unk_27868A728;
-    block[4] = v8;
-    dispatch_async(v16, block);
+    block[4] = selfCopy;
+    dispatch_async(queue, block);
   }
 
   else
@@ -217,7 +217,7 @@ void __44__HMDDataStreamHAPSetupOperation_startSetup__block_invoke(uint64_t a1, 
     v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v33 count:2];
 
     v20 = objc_autoreleasePoolPush();
-    v21 = self;
+    selfCopy2 = self;
     v22 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
     {
@@ -231,15 +231,15 @@ void __44__HMDDataStreamHAPSetupOperation_startSetup__block_invoke(uint64_t a1, 
     }
 
     objc_autoreleasePoolPop(v20);
-    objc_initWeak(buf, v21);
-    v26 = [(HMDDataStreamSetupOperation *)v21 accessory];
-    v27 = [(HMDDataStreamSetupOperation *)v21 queue];
+    objc_initWeak(buf, selfCopy2);
+    accessory3 = [(HMDDataStreamSetupOperation *)selfCopy2 accessory];
+    queue2 = [(HMDDataStreamSetupOperation *)selfCopy2 queue];
     v30[0] = MEMORY[0x277D85DD0];
     v30[1] = 3221225472;
     v30[2] = __71__HMDDataStreamHAPSetupOperation__readRequiredTransportCharacteristics__block_invoke_184;
     v30[3] = &unk_2786895F0;
     objc_copyWeak(&v31, buf);
-    [v26 readCharacteristicValues:v19 source:1090 queue:v27 completionHandler:v30];
+    [accessory3 readCharacteristicValues:v19 source:1090 queue:queue2 completionHandler:v30];
 
     objc_destroyWeak(&v31);
     objc_destroyWeak(buf);
@@ -298,25 +298,25 @@ void __71__HMDDataStreamHAPSetupOperation__readRequiredTransportCharacteristics_
 LABEL_6:
 }
 
-- (void)setMaxControllerTransportMTU:(unint64_t)a3
+- (void)setMaxControllerTransportMTU:(unint64_t)u
 {
   if (!self->_maxControllerTransportMTU)
   {
-    self->_maxControllerTransportMTU = a3;
+    self->_maxControllerTransportMTU = u;
   }
 }
 
-- (HMDDataStreamHAPSetupOperation)initWithAccessory:(id)a3 queue:(id)a4 logIdentifier:(id)a5 transferManagementService:(id)a6 maxControllerTransportMTU:(unint64_t)a7 setupOperationReadRequired:(BOOL)a8
+- (HMDDataStreamHAPSetupOperation)initWithAccessory:(id)accessory queue:(id)queue logIdentifier:(id)identifier transferManagementService:(id)service maxControllerTransportMTU:(unint64_t)u setupOperationReadRequired:(BOOL)required
 {
-  v8 = a8;
+  requiredCopy = required;
   v13.receiver = self;
   v13.super_class = HMDDataStreamHAPSetupOperation;
-  v10 = [(HMDDataStreamSetupOperation *)&v13 initWithAccessory:a3 queue:a4 logIdentifier:a5 transferManagementService:a6];
+  v10 = [(HMDDataStreamSetupOperation *)&v13 initWithAccessory:accessory queue:queue logIdentifier:identifier transferManagementService:service];
   v11 = v10;
   if (v10)
   {
-    v10->_maxControllerTransportMTU = a7;
-    if (v8)
+    v10->_maxControllerTransportMTU = u;
+    if (requiredCopy)
     {
       [(HMDDataStreamHAPSetupOperation *)v10 _readRequiredTransportCharacteristics];
     }

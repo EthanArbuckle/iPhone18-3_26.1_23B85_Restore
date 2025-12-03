@@ -1,27 +1,27 @@
 @interface JRSchemaJRAction
-- (BOOL)isEqual:(id)a3;
-- (JRSchemaJRAction)initWithDictionary:(id)a3;
-- (JRSchemaJRAction)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (JRSchemaJRAction)initWithDictionary:(id)dictionary;
+- (JRSchemaJRAction)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (unsigned)actionsAtIndex:(unint64_t)a3;
-- (void)addActions:(unsigned int)a3;
-- (void)writeTo:(id)a3;
+- (unsigned)actionsAtIndex:(unint64_t)index;
+- (void)addActions:(unsigned int)actions;
+- (void)writeTo:(id)to;
 @end
 
 @implementation JRSchemaJRAction
 
-- (JRSchemaJRAction)initWithDictionary:(id)a3
+- (JRSchemaJRAction)initWithDictionary:(id)dictionary
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v19.receiver = self;
   v19.super_class = JRSchemaJRAction;
   v5 = [(JRSchemaJRAction *)&v19 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"actions"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"actions"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -69,30 +69,30 @@
   return v5;
 }
 
-- (JRSchemaJRAction)initWithJSON:(id)a3
+- (JRSchemaJRAction)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(JRSchemaJRAction *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(JRSchemaJRAction *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(JRSchemaJRAction *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -105,31 +105,31 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_actions count])
   {
-    v4 = [(JRSchemaJRAction *)self actions];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"actions"];
+    actions = [(JRSchemaJRAction *)self actions];
+    v5 = [actions copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"actions"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(JRSchemaJRAction *)self actions];
-    v6 = [v4 actions];
-    v7 = v6;
-    if ((v5 != 0) != (v6 == 0))
+    actions = [(JRSchemaJRAction *)self actions];
+    actions2 = [equalCopy actions];
+    v7 = actions2;
+    if ((actions != 0) != (actions2 == 0))
     {
-      v8 = [(JRSchemaJRAction *)self actions];
-      if (!v8)
+      actions3 = [(JRSchemaJRAction *)self actions];
+      if (!actions3)
       {
 
 LABEL_10:
@@ -137,10 +137,10 @@ LABEL_10:
         goto LABEL_8;
       }
 
-      v9 = v8;
-      v10 = [(JRSchemaJRAction *)self actions];
-      v11 = [v4 actions];
-      v12 = [v10 isEqual:v11];
+      v9 = actions3;
+      actions4 = [(JRSchemaJRAction *)self actions];
+      actions5 = [equalCopy actions];
+      v12 = [actions4 isEqual:actions5];
 
       if (v12)
       {
@@ -159,10 +159,10 @@ LABEL_8:
   return v13;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -196,23 +196,23 @@ LABEL_8:
   }
 }
 
-- (unsigned)actionsAtIndex:(unint64_t)a3
+- (unsigned)actionsAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_actions objectAtIndexedSubscript:a3];
-  v4 = [v3 unsignedIntValue];
+  v3 = [(NSArray *)self->_actions objectAtIndexedSubscript:index];
+  unsignedIntValue = [v3 unsignedIntValue];
 
-  return v4;
+  return unsignedIntValue;
 }
 
-- (void)addActions:(unsigned int)a3
+- (void)addActions:(unsigned int)actions
 {
-  v3 = *&a3;
+  v3 = *&actions;
   actions = self->_actions;
   if (!actions)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_actions;
-    self->_actions = v6;
+    self->_actions = array;
 
     actions = self->_actions;
   }

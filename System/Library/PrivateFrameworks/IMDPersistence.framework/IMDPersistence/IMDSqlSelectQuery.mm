@@ -1,17 +1,17 @@
 @interface IMDSqlSelectQuery
-+ (id)selectQueryForTable:(id)a3 withColumns:(id)a4;
-+ (id)selectQueryForTable:(id)a3 withColumns:(id)a4 where:(id)a5;
-- (IMDSqlSelectQuery)initWithTableName:(id)a3;
++ (id)selectQueryForTable:(id)table withColumns:(id)columns;
++ (id)selectQueryForTable:(id)table withColumns:(id)columns where:(id)where;
+- (IMDSqlSelectQuery)initWithTableName:(id)name;
 - (id)createQueryString;
 @end
 
 @implementation IMDSqlSelectQuery
 
-- (IMDSqlSelectQuery)initWithTableName:(id)a3
+- (IMDSqlSelectQuery)initWithTableName:(id)name
 {
   v7.receiver = self;
   v7.super_class = IMDSqlSelectQuery;
-  v3 = [(IMDSqlQuery *)&v7 initWithTableName:a3];
+  v3 = [(IMDSqlQuery *)&v7 initWithTableName:name];
   v5 = v3;
   if (v3)
   {
@@ -43,18 +43,18 @@
   return v10;
 }
 
-+ (id)selectQueryForTable:(id)a3 withColumns:(id)a4
++ (id)selectQueryForTable:(id)table withColumns:(id)columns
 {
-  v5 = objc_msgSend_selectQueryForTable_(a1, a2, a3);
-  objc_msgSend_setColumns_(v5, v6, a4);
+  v5 = objc_msgSend_selectQueryForTable_(self, a2, table);
+  objc_msgSend_setColumns_(v5, v6, columns);
   return v5;
 }
 
-+ (id)selectQueryForTable:(id)a3 withColumns:(id)a4 where:(id)a5
++ (id)selectQueryForTable:(id)table withColumns:(id)columns where:(id)where
 {
-  v7 = objc_msgSend_selectQueryForTable_(a1, a2, a3);
-  objc_msgSend_setColumns_(v7, v8, a4);
-  objc_msgSend_setWhere_(v7, v9, a5);
+  v7 = objc_msgSend_selectQueryForTable_(self, a2, table);
+  objc_msgSend_setColumns_(v7, v8, columns);
+  objc_msgSend_setWhere_(v7, v9, where);
   return v7;
 }
 

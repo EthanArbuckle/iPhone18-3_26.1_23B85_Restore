@@ -1,26 +1,26 @@
 @interface UCAppClipCodeURLDecoder
-+ (id)decoderWithVersion:(int64_t)a3;
-- (UCAppClipCodeURLDecoder)initWithCodingVersion:(int64_t)a3;
++ (id)decoderWithVersion:(int64_t)version;
+- (UCAppClipCodeURLDecoder)initWithCodingVersion:(int64_t)version;
 - (id).cxx_construct;
-- (id)_decodeURLWithDataV0:(id)a3 error:(id *)a4;
-- (id)_decodeURLWithDataV1:(id)a3 error:(id *)a4;
-- (id)_errorWithCoderErrorCode:(int64_t)a3 message:(id)a4;
-- (id)decodeURLWithData:(id)a3 error:(id *)a4;
-- (unique_ptr<UC::UCBitVector,)_bitVectorFromData:(id)a3;
+- (id)_decodeURLWithDataV0:(id)v0 error:(id *)error;
+- (id)_decodeURLWithDataV1:(id)v1 error:(id *)error;
+- (id)_errorWithCoderErrorCode:(int64_t)code message:(id)message;
+- (id)decodeURLWithData:(id)data error:(id *)error;
+- (unique_ptr<UC::UCBitVector,)_bitVectorFromData:(id)data;
 - (void)clearCaches;
 - (void)dealloc;
 @end
 
 @implementation UCAppClipCodeURLDecoder
 
-+ (id)decoderWithVersion:(int64_t)a3
++ (id)decoderWithVersion:(int64_t)version
 {
-  v3 = [[a1 alloc] initWithCodingVersion:a3];
+  v3 = [[self alloc] initWithCodingVersion:version];
 
   return v3;
 }
 
-- (UCAppClipCodeURLDecoder)initWithCodingVersion:(int64_t)a3
+- (UCAppClipCodeURLDecoder)initWithCodingVersion:(int64_t)version
 {
   v8.receiver = self;
   v8.super_class = UCAppClipCodeURLDecoder;
@@ -28,8 +28,8 @@
   v5 = v4;
   if (v4)
   {
-    v4->_codingVersion = a3;
-    v4->_compressionVersion = [UCAppClipCodeEnDecUtility compressionVersionFromPayloadVersion:a3];
+    v4->_codingVersion = version;
+    v4->_compressionVersion = [UCAppClipCodeEnDecUtility compressionVersionFromPayloadVersion:version];
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
     {
       [(UCAppClipCodeURLDecoder *)&v5->_codingVersion initWithCodingVersion:?];
@@ -50,48 +50,48 @@
   [(UCAppClipCodeURLDecoder *)&v3 dealloc];
 }
 
-- (unique_ptr<UC::UCBitVector,)_bitVectorFromData:(id)a3
+- (unique_ptr<UC::UCBitVector,)_bitVectorFromData:(id)data
 {
   v4 = v3;
-  v5 = a3;
-  UC::bitVectorFromAppClipCodeEncodingData([v5 bytes], objc_msgSend(v5, "length"), v4);
+  dataCopy = data;
+  UC::bitVectorFromAppClipCodeEncodingData([dataCopy bytes], objc_msgSend(dataCopy, "length"), v4);
 
   return v6;
 }
 
-- (id)_errorWithCoderErrorCode:(int64_t)a3 message:(id)a4
+- (id)_errorWithCoderErrorCode:(int64_t)code message:(id)message
 {
-  v5 = a4;
-  v6 = [MEMORY[0x277CBEB38] dictionary];
-  v7 = v6;
-  if (v5)
+  messageCopy = message;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v7 = dictionary;
+  if (messageCopy)
   {
-    [v6 setObject:v5 forKeyedSubscript:*MEMORY[0x277CCA450]];
+    [dictionary setObject:messageCopy forKeyedSubscript:*MEMORY[0x277CCA450]];
   }
 
-  v8 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.URLCompression.URLCoderErrorDomain" code:a3 userInfo:v7];
+  v8 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.URLCompression.URLCoderErrorDomain" code:code userInfo:v7];
 
   return v8;
 }
 
-- (id)decodeURLWithData:(id)a3 error:(id *)a4
+- (id)decodeURLWithData:(id)data error:(id *)error
 {
-  v6 = a3;
+  dataCopy = data;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
-    [UCAppClipCodeURLDecoder decodeURLWithData:v6 error:self];
+    [UCAppClipCodeURLDecoder decodeURLWithData:dataCopy error:self];
   }
 
   compressionVersion = self->_compressionVersion;
   if (compressionVersion == 1)
   {
-    v8 = [(UCAppClipCodeURLDecoder *)self _decodeURLWithDataV1:v6 error:a4];
+    v8 = [(UCAppClipCodeURLDecoder *)self _decodeURLWithDataV1:dataCopy error:error];
     goto LABEL_7;
   }
 
   if (!compressionVersion)
   {
-    v8 = [(UCAppClipCodeURLDecoder *)self _decodeURLWithDataV0:v6 error:a4];
+    v8 = [(UCAppClipCodeURLDecoder *)self _decodeURLWithDataV0:dataCopy error:error];
 LABEL_7:
     v9 = v8;
     goto LABEL_9;
@@ -99,15 +99,15 @@ LABEL_7:
 
   v10 = [(UCAppClipCodeURLDecoder *)self _errorWithCoderErrorCode:1002 message:@"Decoding of the data failed. Unsupported code version."];
   v9 = 0;
-  *a4 = v10;
+  *error = v10;
 LABEL_9:
 
   return v9;
 }
 
-- (id)_decodeURLWithDataV0:(id)a3 error:(id *)a4
+- (id)_decodeURLWithDataV0:(id)v0 error:(id *)error
 {
-  v6 = a3;
+  v0Copy = v0;
   if (!self->_segmentedDecoder.__ptr_)
   {
     v7 = +[UCResourceFilePath combinedPathAndQueryFilePathForSegmentedURLCoderVersion0];
@@ -155,7 +155,7 @@ LABEL_9:
     }
   }
 
-  [(UCAppClipCodeURLDecoder *)self _bitVectorFromData:v6];
+  [(UCAppClipCodeURLDecoder *)self _bitVectorFromData:v0Copy];
   v12 = v25[0];
   v13 = operator new(0x30uLL);
   UC::UCBitStream::UCBitStream(v13, v12);
@@ -185,9 +185,9 @@ LABEL_9:
   else
   {
     v17 = 0;
-    if (a4)
+    if (error)
     {
-      *a4 = [(UCAppClipCodeURLDecoder *)self _errorWithCoderErrorCode:1002 message:@"The encoding data is malformed"];
+      *error = [(UCAppClipCodeURLDecoder *)self _errorWithCoderErrorCode:1002 message:@"The encoding data is malformed"];
     }
   }
 
@@ -208,15 +208,15 @@ LABEL_9:
   return v17;
 }
 
-- (id)_decodeURLWithDataV1:(id)a3 error:(id *)a4
+- (id)_decodeURLWithDataV1:(id)v1 error:(id *)error
 {
-  v5 = a3;
+  v1Copy = v1;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
-    [UCAppClipCodeURLDecoder _decodeURLWithDataV1:v5 error:self];
+    [UCAppClipCodeURLDecoder _decodeURLWithDataV1:v1Copy error:self];
   }
 
-  v6 = [UCAppClipCodeEnDecUtility perepareData:v5 withCodingVersion:self->_codingVersion forCompressionVersion:self->_compressionVersion];
+  v6 = [UCAppClipCodeEnDecUtility perepareData:v1Copy withCodingVersion:self->_codingVersion forCompressionVersion:self->_compressionVersion];
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {

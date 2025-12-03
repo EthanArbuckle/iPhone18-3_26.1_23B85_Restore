@@ -1,33 +1,33 @@
 @interface DiagnosticsIconNonAnimatedView
-- (_TtC11Diagnostics30DiagnosticsIconNonAnimatedView)initWithCoder:(id)a3;
-- (_TtC11Diagnostics30DiagnosticsIconNonAnimatedView)initWithFrame:(CGRect)a3;
-- (void)animateWithCompletion:(id)a3;
+- (_TtC11Diagnostics30DiagnosticsIconNonAnimatedView)initWithCoder:(id)coder;
+- (_TtC11Diagnostics30DiagnosticsIconNonAnimatedView)initWithFrame:(CGRect)frame;
+- (void)animateWithCompletion:(id)completion;
 - (void)hide;
 - (void)show;
 @end
 
 @implementation DiagnosticsIconNonAnimatedView
 
-- (_TtC11Diagnostics30DiagnosticsIconNonAnimatedView)initWithFrame:(CGRect)a3
+- (_TtC11Diagnostics30DiagnosticsIconNonAnimatedView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v9.receiver = self;
   v9.super_class = type metadata accessor for DiagnosticsIconNonAnimatedView();
-  v7 = [(DiagnosticsIconNonAnimatedView *)&v9 initWithFrame:x, y, width, height];
+  height = [(DiagnosticsIconNonAnimatedView *)&v9 initWithFrame:x, y, width, height];
   sub_1000B5318();
 
-  return v7;
+  return height;
 }
 
-- (_TtC11Diagnostics30DiagnosticsIconNonAnimatedView)initWithCoder:(id)a3
+- (_TtC11Diagnostics30DiagnosticsIconNonAnimatedView)initWithCoder:(id)coder
 {
   v9.receiver = self;
   v9.super_class = type metadata accessor for DiagnosticsIconNonAnimatedView();
-  v4 = a3;
-  v5 = [(DiagnosticsIconNonAnimatedView *)&v9 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(DiagnosticsIconNonAnimatedView *)&v9 initWithCoder:coderCopy];
   v6 = v5;
   if (v5)
   {
@@ -38,9 +38,9 @@
   return v6;
 }
 
-- (void)animateWithCompletion:(id)a3
+- (void)animateWithCompletion:(id)completion
 {
-  v3 = _Block_copy(a3);
+  v3 = _Block_copy(completion);
   if (v3)
   {
     v4 = v3;
@@ -52,13 +52,13 @@
 
 - (void)hide
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000B56F4();
 }
 
 - (void)show
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000B5764();
 }
 

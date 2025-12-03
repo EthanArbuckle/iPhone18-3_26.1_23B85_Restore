@@ -1,26 +1,26 @@
 @interface ADCloudKitSharedZoneUpdater
-- (ADCloudKitSharedZoneUpdater)initWithQueue:(id)a3 container:(id)a4 sharedZone:(id)a5 zoneOwner:(BOOL)a6 delegate:(id)a7;
-- (void)_notifyFailure:(id)a3;
+- (ADCloudKitSharedZoneUpdater)initWithQueue:(id)queue container:(id)container sharedZone:(id)zone zoneOwner:(BOOL)owner delegate:(id)delegate;
+- (void)_notifyFailure:(id)failure;
 - (void)_retryRecordSave;
 - (void)_startRetryTimer;
-- (void)addDictionaryToSharedStore:(id)a3 recordKeysForDeletion:(id)a4 completion:(id)a5;
-- (void)addKeyToSharedStore:(id)a3 value:(id)a4 completion:(id)a5;
+- (void)addDictionaryToSharedStore:(id)store recordKeysForDeletion:(id)deletion completion:(id)completion;
+- (void)addKeyToSharedStore:(id)store value:(id)value completion:(id)completion;
 - (void)dealloc;
-- (void)fetchValueForKeyFromSharedStore:(id)a3 withQOS:(int64_t)a4 completion:(id)a5;
-- (void)fetchValuesForKeysFromSharedStore:(id)a3 withQOS:(int64_t)a4 completion:(id)a5;
+- (void)fetchValueForKeyFromSharedStore:(id)store withQOS:(int64_t)s completion:(id)completion;
+- (void)fetchValuesForKeysFromSharedStore:(id)store withQOS:(int64_t)s completion:(id)completion;
 @end
 
 @implementation ADCloudKitSharedZoneUpdater
 
-- (void)_notifyFailure:(id)a3
+- (void)_notifyFailure:(id)failure
 {
-  v6 = a3;
+  failureCopy = failure;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained)
   {
     v5 = objc_loadWeakRetained(&self->_delegate);
-    [v5 adCloudKitSharedZoneUpdater:self didEncounterError:v6];
+    [v5 adCloudKitSharedZoneUpdater:self didEncounterError:failureCopy];
   }
 }
 
@@ -30,7 +30,7 @@
   if ([(NSMutableDictionary *)self->_unsavedRecords count])
   {
     objc_initWeak(&location, self);
-    v3 = [(NSMutableDictionary *)self->_unsavedRecords allValues];
+    allValues = [(NSMutableDictionary *)self->_unsavedRecords allValues];
     container = self->_container;
     isOwner = self->_isOwner;
     v6[0] = _NSConcreteStackBlock;
@@ -39,7 +39,7 @@
     v6[3] = &unk_100517428;
     objc_copyWeak(&v7, &location);
     v6[4] = self;
-    sub_100125F7C(v3, 0, 17, container, isOwner, 0, v6);
+    sub_100125F7C(allValues, 0, 17, container, isOwner, 0, v6);
 
     objc_destroyWeak(&v7);
     objc_destroyWeak(&location);
@@ -68,31 +68,31 @@
   }
 }
 
-- (void)fetchValuesForKeysFromSharedStore:(id)a3 withQOS:(int64_t)a4 completion:(id)a5
+- (void)fetchValuesForKeysFromSharedStore:(id)store withQOS:(int64_t)s completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  if (v9)
+  storeCopy = store;
+  completionCopy = completion;
+  if (completionCopy)
   {
     queue = self->_queue;
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_100231B7C;
     v11[3] = &unk_10051C0D8;
-    v12 = v8;
-    v13 = self;
-    v14 = v9;
-    v15 = a4;
+    v12 = storeCopy;
+    selfCopy = self;
+    v14 = completionCopy;
+    sCopy = s;
     dispatch_async(queue, v11);
   }
 }
 
-- (void)fetchValueForKeyFromSharedStore:(id)a3 withQOS:(int64_t)a4 completion:(id)a5
+- (void)fetchValueForKeyFromSharedStore:(id)store withQOS:(int64_t)s completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = v9;
-  if (v9)
+  storeCopy = store;
+  completionCopy = completion;
+  v10 = completionCopy;
+  if (completionCopy)
   {
     queue = self->_queue;
     v12[0] = _NSConcreteStackBlock;
@@ -100,50 +100,50 @@
     v12[2] = sub_1002322B8;
     v12[3] = &unk_10051C0D8;
     v12[4] = self;
-    v14 = v9;
-    v13 = v8;
-    v15 = a4;
+    v14 = completionCopy;
+    v13 = storeCopy;
+    sCopy = s;
     dispatch_async(queue, v12);
   }
 }
 
-- (void)addDictionaryToSharedStore:(id)a3 recordKeysForDeletion:(id)a4 completion:(id)a5
+- (void)addDictionaryToSharedStore:(id)store recordKeysForDeletion:(id)deletion completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  storeCopy = store;
+  deletionCopy = deletion;
+  completionCopy = completion;
   queue = self->_queue;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_1002329DC;
   v15[3] = &unk_10051E0D8;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v9;
-  v13 = v8;
-  v14 = v10;
+  v16 = storeCopy;
+  v17 = deletionCopy;
+  v18 = completionCopy;
+  v12 = deletionCopy;
+  v13 = storeCopy;
+  v14 = completionCopy;
   dispatch_async(queue, v15);
 }
 
-- (void)addKeyToSharedStore:(id)a3 value:(id)a4 completion:(id)a5
+- (void)addKeyToSharedStore:(id)store value:(id)value completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  storeCopy = store;
+  valueCopy = value;
+  completionCopy = completion;
   queue = self->_queue;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100233088;
   v15[3] = &unk_10051E0D8;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = storeCopy;
+  v17 = valueCopy;
+  v18 = completionCopy;
+  v12 = completionCopy;
+  v13 = valueCopy;
+  v14 = storeCopy;
   dispatch_async(queue, v15);
 }
 
@@ -169,23 +169,23 @@
   [(ADCloudKitSharedZoneUpdater *)&v5 dealloc];
 }
 
-- (ADCloudKitSharedZoneUpdater)initWithQueue:(id)a3 container:(id)a4 sharedZone:(id)a5 zoneOwner:(BOOL)a6 delegate:(id)a7
+- (ADCloudKitSharedZoneUpdater)initWithQueue:(id)queue container:(id)container sharedZone:(id)zone zoneOwner:(BOOL)owner delegate:(id)delegate
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a7;
+  queueCopy = queue;
+  containerCopy = container;
+  zoneCopy = zone;
+  delegateCopy = delegate;
   v22.receiver = self;
   v22.super_class = ADCloudKitSharedZoneUpdater;
   v17 = [(ADCloudKitSharedZoneUpdater *)&v22 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_queue, a3);
-    v18->_isOwner = a6;
-    objc_storeStrong(&v18->_container, a4);
-    objc_storeStrong(&v18->_sharedZone, a5);
-    objc_storeWeak(&v18->_delegate, v16);
+    objc_storeStrong(&v17->_queue, queue);
+    v18->_isOwner = owner;
+    objc_storeStrong(&v18->_container, container);
+    objc_storeStrong(&v18->_sharedZone, zone);
+    objc_storeWeak(&v18->_delegate, delegateCopy);
     v19 = objc_alloc_init(NSMutableDictionary);
     unsavedRecords = v18->_unsavedRecords;
     v18->_unsavedRecords = v19;

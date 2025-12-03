@@ -1,16 +1,16 @@
 @interface HPRFSessionTrackerAppCyclingPowerZoneCell
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation HPRFSessionTrackerAppCyclingPowerZoneCell
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
-  v4 = a3;
-  v21 = [v4 propertyForKey:@"HPRFSessionTrackerAppCyclingPowerZoneCellEditableKey"];
-  v5 = [v4 propertyForKey:@"HPRFSessionTrackerAppCyclingPowerZoneCellTitleKey"];
-  v6 = [v4 propertyForKey:@"HPRFSessionTrackerAppCyclingPowerZoneCellDisplayRangeKey"];
-  v7 = [v4 propertyForKey:@"HPRFSessionTrackerAppCyclingPowerZoneCellPercentageRangeKey"];
+  specifierCopy = specifier;
+  v21 = [specifierCopy propertyForKey:@"HPRFSessionTrackerAppCyclingPowerZoneCellEditableKey"];
+  v5 = [specifierCopy propertyForKey:@"HPRFSessionTrackerAppCyclingPowerZoneCellTitleKey"];
+  v6 = [specifierCopy propertyForKey:@"HPRFSessionTrackerAppCyclingPowerZoneCellDisplayRangeKey"];
+  v7 = [specifierCopy propertyForKey:@"HPRFSessionTrackerAppCyclingPowerZoneCellPercentageRangeKey"];
 
   v8 = [NSAttributedString alloc];
   v24 = NSForegroundColorAttributeName;
@@ -30,15 +30,15 @@
   [v15 appendAttributedString:v16];
 
   [v15 appendAttributedString:v11];
-  v17 = [(HPRFSessionTrackerAppCyclingPowerZoneCell *)self titleLabel];
-  [v17 setAttributedText:v15];
+  titleLabel = [(HPRFSessionTrackerAppCyclingPowerZoneCell *)self titleLabel];
+  [titleLabel setAttributedText:v15];
 
-  v18 = [(HPRFSessionTrackerAppCyclingPowerZoneCell *)self valueLabel];
-  [v18 setText:v6];
+  valueLabel = [(HPRFSessionTrackerAppCyclingPowerZoneCell *)self valueLabel];
+  [valueLabel setText:v6];
 
   v19 = +[UIColor whiteColor];
-  v20 = [(HPRFSessionTrackerAppCyclingPowerZoneCell *)self valueLabel];
-  [v20 setTextColor:v19];
+  valueLabel2 = [(HPRFSessionTrackerAppCyclingPowerZoneCell *)self valueLabel];
+  [valueLabel2 setTextColor:v19];
 
   if ([v21 BOOLValue])
   {

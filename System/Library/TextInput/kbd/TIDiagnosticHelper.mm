@@ -2,8 +2,8 @@
 + (id)sharedInstance;
 - (TIDiagnosticHelper)init;
 - (void)dealloc;
-- (void)handleMachMessage:(void *)a3;
-- (void)unregisterSignalHandler:(id)a3;
+- (void)handleMachMessage:(void *)message;
+- (void)unregisterSignalHandler:(id)handler;
 @end
 
 @implementation TIDiagnosticHelper
@@ -54,8 +54,8 @@
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v4 = [(NSMutableDictionary *)self->_handlers allKeys];
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  allKeys = [(NSMutableDictionary *)self->_handlers allKeys];
+  v5 = [allKeys countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -67,7 +67,7 @@
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allKeys);
         }
 
         signal([*(*(&v10 + 1) + 8 * v8) intValue], 0);
@@ -75,7 +75,7 @@
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [allKeys countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
@@ -86,14 +86,14 @@
   [(TIDiagnosticHelper *)&v9 dealloc];
 }
 
-- (void)handleMachMessage:(void *)a3
+- (void)handleMachMessage:(void *)message
 {
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   handlers = self->_handlers;
-  v5 = [NSNumber numberWithInt:*(a3 + 5), 0];
+  v5 = [NSNumber numberWithInt:*(message + 5), 0];
   v6 = [(NSMutableDictionary *)handlers objectForKey:v5];
 
   v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -111,7 +111,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = *(a3 + 5);
+        v11 = *(message + 5);
         (*(*(*(&v12 + 1) + 8 * v10) + 16))();
         v10 = v10 + 1;
       }
@@ -124,12 +124,12 @@
   }
 }
 
-- (void)unregisterSignalHandler:(id)a3
+- (void)unregisterSignalHandler:(id)handler
 {
-  v4 = a3;
-  v7 = [v4 objectAtIndex:0];
+  handlerCopy = handler;
+  v7 = [handlerCopy objectAtIndex:0];
   v5 = [(NSMutableDictionary *)self->_handlers objectForKey:?];
-  v6 = [v4 objectAtIndex:1];
+  v6 = [handlerCopy objectAtIndex:1];
 
   [v5 removeObject:v6];
   if (![v5 count])

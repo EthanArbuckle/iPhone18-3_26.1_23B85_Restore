@@ -1,168 +1,168 @@
 @interface CHFriendManager
-- (CHFriendManager)initWithActivitySharingClient:(id)a3;
-- (void)acceptCompetitionRequestFromFriend:(id)a3 completion:(id)a4;
-- (void)acceptInvitationFromFriend:(id)a3 completion:(id)a4;
-- (void)cloudKitAccountStatusWithCompletion:(id)a3;
-- (void)ignoreCompetitionRequestFromFriend:(id)a3 completion:(id)a4;
-- (void)ignoreInvitationFromFriend:(id)a3 completion:(id)a4;
-- (void)removeFriend:(id)a3 completion:(id)a4;
-- (void)sendCompetitionRequestToFriend:(id)a3 completion:(id)a4;
-- (void)sendInviteToRecipient:(id)a3 callerID:(id)a4 serviceIdentifier:(id)a5 withCompletion:(id)a6;
-- (void)setActivityDataVisible:(BOOL)a3 toFriend:(id)a4 completion:(id)a5;
-- (void)setMuteEnabled:(BOOL)a3 forFriend:(id)a4 completion:(id)a5;
-- (void)withdrawInvitationToFriend:(id)a3 completion:(id)a4;
+- (CHFriendManager)initWithActivitySharingClient:(id)client;
+- (void)acceptCompetitionRequestFromFriend:(id)friend completion:(id)completion;
+- (void)acceptInvitationFromFriend:(id)friend completion:(id)completion;
+- (void)cloudKitAccountStatusWithCompletion:(id)completion;
+- (void)ignoreCompetitionRequestFromFriend:(id)friend completion:(id)completion;
+- (void)ignoreInvitationFromFriend:(id)friend completion:(id)completion;
+- (void)removeFriend:(id)friend completion:(id)completion;
+- (void)sendCompetitionRequestToFriend:(id)friend completion:(id)completion;
+- (void)sendInviteToRecipient:(id)recipient callerID:(id)d serviceIdentifier:(id)identifier withCompletion:(id)completion;
+- (void)setActivityDataVisible:(BOOL)visible toFriend:(id)friend completion:(id)completion;
+- (void)setMuteEnabled:(BOOL)enabled forFriend:(id)friend completion:(id)completion;
+- (void)withdrawInvitationToFriend:(id)friend completion:(id)completion;
 @end
 
 @implementation CHFriendManager
 
-- (CHFriendManager)initWithActivitySharingClient:(id)a3
+- (CHFriendManager)initWithActivitySharingClient:(id)client
 {
-  v5 = a3;
+  clientCopy = client;
   v9.receiver = self;
   v9.super_class = CHFriendManager;
   v6 = [(CHFriendManager *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_activitySharingClient, a3);
+    objc_storeStrong(&v6->_activitySharingClient, client);
   }
 
   return v7;
 }
 
-- (void)sendInviteToRecipient:(id)a3 callerID:(id)a4 serviceIdentifier:(id)a5 withCompletion:(id)a6
+- (void)sendInviteToRecipient:(id)recipient callerID:(id)d serviceIdentifier:(id)identifier withCompletion:(id)completion
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [a3 address];
-  if (!v13)
+  dCopy = d;
+  identifierCopy = identifier;
+  completionCopy = completion;
+  address = [recipient address];
+  if (!address)
   {
     ASLoggingInitialize();
     v14 = ASLogDefault;
     if (os_log_type_enabled(ASLogDefault, OS_LOG_TYPE_ERROR))
     {
       sub_10069D058(v14);
-      if (!v12)
+      if (!completionCopy)
       {
         goto LABEL_6;
       }
     }
 
-    else if (!v12)
+    else if (!completionCopy)
     {
       goto LABEL_6;
     }
 
     v15 = [NSError alloc];
     v16 = [v15 initWithDomain:kASDomain code:0 userInfo:0];
-    v12[2](v12, 0, v16);
+    completionCopy[2](completionCopy, 0, v16);
 
     goto LABEL_6;
   }
 
-  [(ASActivitySharingClient *)self->_activitySharingClient sendFriendInviteToDestination:v13 callerID:v10 serviceIdentifier:v11 completion:v12];
+  [(ASActivitySharingClient *)self->_activitySharingClient sendFriendInviteToDestination:address callerID:dCopy serviceIdentifier:identifierCopy completion:completionCopy];
 LABEL_6:
 }
 
-- (void)setActivityDataVisible:(BOOL)a3 toFriend:(id)a4 completion:(id)a5
+- (void)setActivityDataVisible:(BOOL)visible toFriend:(id)friend completion:(id)completion
 {
-  v6 = a3;
+  visibleCopy = visible;
   activitySharingClient = self->_activitySharingClient;
-  v8 = a5;
-  v10 = [a4 UUID];
-  v9 = [v10 UUIDString];
-  [(ASActivitySharingClient *)activitySharingClient setActivityDataVisible:v6 friendUUID:v9 completion:v8];
+  completionCopy = completion;
+  uUID = [friend UUID];
+  uUIDString = [uUID UUIDString];
+  [(ASActivitySharingClient *)activitySharingClient setActivityDataVisible:visibleCopy friendUUID:uUIDString completion:completionCopy];
 }
 
-- (void)setMuteEnabled:(BOOL)a3 forFriend:(id)a4 completion:(id)a5
+- (void)setMuteEnabled:(BOOL)enabled forFriend:(id)friend completion:(id)completion
 {
-  v6 = a3;
+  enabledCopy = enabled;
   activitySharingClient = self->_activitySharingClient;
-  v8 = a5;
-  v10 = [a4 UUID];
-  v9 = [v10 UUIDString];
-  [(ASActivitySharingClient *)activitySharingClient setMuteEnabled:v6 friendUUID:v9 completion:v8];
+  completionCopy = completion;
+  uUID = [friend UUID];
+  uUIDString = [uUID UUIDString];
+  [(ASActivitySharingClient *)activitySharingClient setMuteEnabled:enabledCopy friendUUID:uUIDString completion:completionCopy];
 }
 
-- (void)removeFriend:(id)a3 completion:(id)a4
+- (void)removeFriend:(id)friend completion:(id)completion
 {
   activitySharingClient = self->_activitySharingClient;
-  v6 = a4;
-  v8 = [a3 UUID];
-  v7 = [v8 UUIDString];
-  [(ASActivitySharingClient *)activitySharingClient removeFriendWithUUID:v7 completion:v6];
+  completionCopy = completion;
+  uUID = [friend UUID];
+  uUIDString = [uUID UUIDString];
+  [(ASActivitySharingClient *)activitySharingClient removeFriendWithUUID:uUIDString completion:completionCopy];
 }
 
-- (void)acceptInvitationFromFriend:(id)a3 completion:(id)a4
+- (void)acceptInvitationFromFriend:(id)friend completion:(id)completion
 {
   activitySharingClient = self->_activitySharingClient;
-  v6 = a4;
-  v8 = [a3 UUID];
-  v7 = [v8 UUIDString];
-  [(ASActivitySharingClient *)activitySharingClient acceptFriendInviteFromFriendUUID:v7 completion:v6];
+  completionCopy = completion;
+  uUID = [friend UUID];
+  uUIDString = [uUID UUIDString];
+  [(ASActivitySharingClient *)activitySharingClient acceptFriendInviteFromFriendUUID:uUIDString completion:completionCopy];
 }
 
-- (void)ignoreInvitationFromFriend:(id)a3 completion:(id)a4
+- (void)ignoreInvitationFromFriend:(id)friend completion:(id)completion
 {
   activitySharingClient = self->_activitySharingClient;
-  v6 = a4;
-  v8 = [a3 UUID];
-  v7 = [v8 UUIDString];
-  [(ASActivitySharingClient *)activitySharingClient ignoreFriendInviteFromFriendUUID:v7 completion:v6];
+  completionCopy = completion;
+  uUID = [friend UUID];
+  uUIDString = [uUID UUIDString];
+  [(ASActivitySharingClient *)activitySharingClient ignoreFriendInviteFromFriendUUID:uUIDString completion:completionCopy];
 }
 
-- (void)withdrawInvitationToFriend:(id)a3 completion:(id)a4
+- (void)withdrawInvitationToFriend:(id)friend completion:(id)completion
 {
   activitySharingClient = self->_activitySharingClient;
-  v6 = a4;
-  v8 = [a3 UUID];
-  v7 = [v8 UUIDString];
-  [(ASActivitySharingClient *)activitySharingClient withdrawFriendInviteToFriendUUID:v7 completion:v6];
+  completionCopy = completion;
+  uUID = [friend UUID];
+  uUIDString = [uUID UUIDString];
+  [(ASActivitySharingClient *)activitySharingClient withdrawFriendInviteToFriendUUID:uUIDString completion:completionCopy];
 }
 
-- (void)cloudKitAccountStatusWithCompletion:(id)a3
+- (void)cloudKitAccountStatusWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   activitySharingClient = self->_activitySharingClient;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10013BD00;
   v7[3] = &unk_10083CA98;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   [(ASActivitySharingClient *)activitySharingClient isCloudKitAccountActiveWithCompletion:v7];
 }
 
-- (void)sendCompetitionRequestToFriend:(id)a3 completion:(id)a4
+- (void)sendCompetitionRequestToFriend:(id)friend completion:(id)completion
 {
   activitySharingClient = self->_activitySharingClient;
-  v6 = a4;
-  v7 = [a3 UUID];
-  v8 = [v7 UUIDString];
-  [(ASActivitySharingClient *)activitySharingClient sendCompetitionInviteToFriendUUID:v8 completion:v6];
+  completionCopy = completion;
+  uUID = [friend UUID];
+  uUIDString = [uUID UUIDString];
+  [(ASActivitySharingClient *)activitySharingClient sendCompetitionInviteToFriendUUID:uUIDString completion:completionCopy];
 
   _ASAnalyticsReportCompetitionRequestSendApp();
 }
 
-- (void)acceptCompetitionRequestFromFriend:(id)a3 completion:(id)a4
+- (void)acceptCompetitionRequestFromFriend:(id)friend completion:(id)completion
 {
   activitySharingClient = self->_activitySharingClient;
-  v6 = a4;
-  v7 = [a3 UUID];
-  v8 = [v7 UUIDString];
-  [(ASActivitySharingClient *)activitySharingClient acceptCompetitionInviteFromFriendUUID:v8 completion:v6];
+  completionCopy = completion;
+  uUID = [friend UUID];
+  uUIDString = [uUID UUIDString];
+  [(ASActivitySharingClient *)activitySharingClient acceptCompetitionInviteFromFriendUUID:uUIDString completion:completionCopy];
 
   _ASAnalyticsReportCompetitionRequestAccept(2);
 }
 
-- (void)ignoreCompetitionRequestFromFriend:(id)a3 completion:(id)a4
+- (void)ignoreCompetitionRequestFromFriend:(id)friend completion:(id)completion
 {
   activitySharingClient = self->_activitySharingClient;
-  v6 = a4;
-  v7 = [a3 UUID];
-  v8 = [v7 UUIDString];
-  [(ASActivitySharingClient *)activitySharingClient ignoreCompetitionInviteFromFriendUUID:v8 completion:v6];
+  completionCopy = completion;
+  uUID = [friend UUID];
+  uUIDString = [uUID UUIDString];
+  [(ASActivitySharingClient *)activitySharingClient ignoreCompetitionInviteFromFriendUUID:uUIDString completion:completionCopy];
 
   _ASAnalyticsReportCompetitionRequestIgnore(2);
 }

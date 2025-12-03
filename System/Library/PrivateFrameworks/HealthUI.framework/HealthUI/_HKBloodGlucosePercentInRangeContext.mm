@@ -1,39 +1,39 @@
 @interface _HKBloodGlucosePercentInRangeContext
-- (_HKBloodGlucosePercentInRangeContext)initWithBaseDisplayType:(id)a3 classification:(int64_t)a4 overlayChartController:(id)a5 unitController:(id)a6 displayTypeController:(id)a7;
-- (double)_fractionForClassificationFromUserInfo:(id)a3;
+- (_HKBloodGlucosePercentInRangeContext)initWithBaseDisplayType:(id)type classification:(int64_t)classification overlayChartController:(id)controller unitController:(id)unitController displayTypeController:(id)typeController;
+- (double)_fractionForClassificationFromUserInfo:(id)info;
 - (id)_buildAccessibilityIdentifier;
 - (id)_buildTitleString;
-- (id)_fractionRangeFromChartPoints:(id)a3;
-- (id)_stringFromFractionRange:(id)a3;
-- (id)_stringFromFractionRangeBound:(id)a3;
-- (void)_updateContextItemFromChartPoints:(id)a3;
-- (void)updateContextItemForDateInterval:(id)a3 overlayController:(id)a4 timeScope:(int64_t)a5 resolution:(int64_t)a6 completion:(id)a7;
+- (id)_fractionRangeFromChartPoints:(id)points;
+- (id)_stringFromFractionRange:(id)range;
+- (id)_stringFromFractionRangeBound:(id)bound;
+- (void)_updateContextItemFromChartPoints:(id)points;
+- (void)updateContextItemForDateInterval:(id)interval overlayController:(id)controller timeScope:(int64_t)scope resolution:(int64_t)resolution completion:(id)completion;
 @end
 
 @implementation _HKBloodGlucosePercentInRangeContext
 
-- (_HKBloodGlucosePercentInRangeContext)initWithBaseDisplayType:(id)a3 classification:(int64_t)a4 overlayChartController:(id)a5 unitController:(id)a6 displayTypeController:(id)a7
+- (_HKBloodGlucosePercentInRangeContext)initWithBaseDisplayType:(id)type classification:(int64_t)classification overlayChartController:(id)controller unitController:(id)unitController displayTypeController:(id)typeController
 {
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  typeCopy = type;
+  controllerCopy = controller;
+  unitControllerCopy = unitController;
+  typeControllerCopy = typeController;
   v24.receiver = self;
   v24.super_class = _HKBloodGlucosePercentInRangeContext;
   v17 = [(_HKBloodGlucosePercentInRangeContext *)&v24 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_baseDisplayType, a3);
-    v18->_classification = a4;
-    objc_storeStrong(&v18->_overlayChartController, a5);
-    objc_storeStrong(&v18->_unitController, a6);
-    objc_storeStrong(&v18->_displayTypeController, a7);
+    objc_storeStrong(&v17->_baseDisplayType, type);
+    v18->_classification = classification;
+    objc_storeStrong(&v18->_overlayChartController, controller);
+    objc_storeStrong(&v18->_unitController, unitController);
+    objc_storeStrong(&v18->_displayTypeController, typeController);
     lastUpdatedItem = v18->_lastUpdatedItem;
     v18->_lastUpdatedItem = 0;
 
-    v20 = [MEMORY[0x1E696ADA0] hk_percentDecimalNumberFormatter];
-    v21 = [v20 copy];
+    hk_percentDecimalNumberFormatter = [MEMORY[0x1E696ADA0] hk_percentDecimalNumberFormatter];
+    v21 = [hk_percentDecimalNumberFormatter copy];
     percentageFormatter = v18->_percentageFormatter;
     v18->_percentageFormatter = v21;
 
@@ -43,37 +43,37 @@
   return v18;
 }
 
-- (void)updateContextItemForDateInterval:(id)a3 overlayController:(id)a4 timeScope:(int64_t)a5 resolution:(int64_t)a6 completion:(id)a7
+- (void)updateContextItemForDateInterval:(id)interval overlayController:(id)controller timeScope:(int64_t)scope resolution:(int64_t)resolution completion:(id)completion
 {
-  v11 = a7;
+  completionCopy = completion;
   overlayChartController = self->_overlayChartController;
   baseDisplayType = self->_baseDisplayType;
-  v14 = a3;
-  v15 = [(HKInteractiveChartDisplayType *)baseDisplayType graphSeriesForTimeScope:a5];
-  v16 = [v14 startDate];
-  v17 = [v14 endDate];
+  intervalCopy = interval;
+  v15 = [(HKInteractiveChartDisplayType *)baseDisplayType graphSeriesForTimeScope:scope];
+  startDate = [intervalCopy startDate];
+  endDate = [intervalCopy endDate];
 
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __123___HKBloodGlucosePercentInRangeContext_updateContextItemForDateInterval_overlayController_timeScope_resolution_completion___block_invoke;
   v19[3] = &unk_1E81B62D8;
   v19[4] = self;
-  v20 = v11;
-  v18 = v11;
-  [(HKInteractiveChartOverlayViewController *)overlayChartController cachedDataForCustomGraphSeries:v15 timeScope:a5 resolution:a6 startDate:v16 endDate:v17 completion:v19];
+  v20 = completionCopy;
+  v18 = completionCopy;
+  [(HKInteractiveChartOverlayViewController *)overlayChartController cachedDataForCustomGraphSeries:v15 timeScope:scope resolution:resolution startDate:startDate endDate:endDate completion:v19];
 }
 
-- (void)_updateContextItemFromChartPoints:(id)a3
+- (void)_updateContextItemFromChartPoints:(id)points
 {
-  v4 = a3;
+  pointsCopy = points;
   v5 = objc_alloc_init(HKDisplayTypeContextItem);
-  v6 = [(_HKBloodGlucosePercentInRangeContext *)self _buildTitleString];
-  [(HKDisplayTypeContextItem *)v5 setTitle:v6];
+  _buildTitleString = [(_HKBloodGlucosePercentInRangeContext *)self _buildTitleString];
+  [(HKDisplayTypeContextItem *)v5 setTitle:_buildTitleString];
 
-  v7 = [(_HKBloodGlucosePercentInRangeContext *)self _buildAccessibilityIdentifier];
-  [(HKDisplayTypeContextItem *)v5 setAccessibilityIdentifier:v7];
+  _buildAccessibilityIdentifier = [(_HKBloodGlucosePercentInRangeContext *)self _buildAccessibilityIdentifier];
+  [(HKDisplayTypeContextItem *)v5 setAccessibilityIdentifier:_buildAccessibilityIdentifier];
 
-  v21 = [(_HKBloodGlucosePercentInRangeContext *)self _fractionRangeFromChartPoints:v4];
+  v21 = [(_HKBloodGlucosePercentInRangeContext *)self _fractionRangeFromChartPoints:pointsCopy];
 
   if (v21)
   {
@@ -87,8 +87,8 @@
   }
 
   unitController = self->_unitController;
-  v11 = [MEMORY[0x1E696C510] percentUnit];
-  v12 = [(HKUnitPreferenceController *)unitController localizedDisplayNameForUnit:v11 value:0];
+  percentUnit = [MEMORY[0x1E696C510] percentUnit];
+  v12 = [(HKUnitPreferenceController *)unitController localizedDisplayNameForUnit:percentUnit value:0];
 
   v13 = MEMORY[0x1E696AEC0];
   v14 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
@@ -99,8 +99,8 @@
   [(HKDisplayTypeContextItem *)v5 setUnit:v12];
   [(HKDisplayTypeContextItem *)v5 setIsUnitIncludedInValue:1];
   [(HKDisplayTypeContextItem *)v5 setUseTightSpacingBetweenValueAndUnit:1];
-  v17 = [MEMORY[0x1E69DC888] tertiarySystemBackgroundColor];
-  v18 = [HKUIMetricColors defaultContextViewColorsUsingColor:v17];
+  tertiarySystemBackgroundColor = [MEMORY[0x1E69DC888] tertiarySystemBackgroundColor];
+  v18 = [HKUIMetricColors defaultContextViewColorsUsingColor:tertiarySystemBackgroundColor];
   [(HKDisplayTypeContextItem *)v5 setMetricColors:v18];
 
   v19 = +[HKUIMetricColors vitalsColors];
@@ -134,8 +134,8 @@
     }
 
     v8 = [MEMORY[0x1E696C350] ATTDEuglycemicRangeWithUnit:v4];
-    v10 = [v8 maximum];
-    [v10 doubleValueForUnit:v4];
+    maximum = [v8 maximum];
+    [maximum doubleValueForUnit:v4];
     v12 = v11;
 
     v13 = [MEMORY[0x1E696AD98] numberWithDouble:v12];
@@ -157,17 +157,17 @@
       }
 
       v8 = [MEMORY[0x1E696C350] ATTDEuglycemicRangeWithUnit:v4];
-      v9 = [v8 minimum];
+      minimum = [v8 minimum];
     }
 
     else
     {
       v8 = [MEMORY[0x1E696C350] ATTDLevel2HypoglycemicRangeWithUnit:v4];
-      v9 = [v8 maximum];
+      minimum = [v8 maximum];
     }
 
-    v19 = v9;
-    [v9 doubleValueForUnit:v4];
+    v19 = minimum;
+    [minimum doubleValueForUnit:v4];
     v21 = v20;
 
     v22 = [MEMORY[0x1E696AD98] numberWithDouble:v21];
@@ -205,15 +205,15 @@ LABEL_13:
   return [MEMORY[0x1E696AEC0] hk_chartOverlayAccessibilityIdentifier:v3];
 }
 
-- (id)_stringFromFractionRange:(id)a3
+- (id)_stringFromFractionRange:(id)range
 {
-  v4 = a3;
-  v5 = [v4 minValue];
-  v6 = [(_HKBloodGlucosePercentInRangeContext *)self _stringFromFractionRangeBound:v5];
+  rangeCopy = range;
+  minValue = [rangeCopy minValue];
+  v6 = [(_HKBloodGlucosePercentInRangeContext *)self _stringFromFractionRangeBound:minValue];
 
-  v7 = [v4 maxValue];
+  maxValue = [rangeCopy maxValue];
 
-  v8 = [(_HKBloodGlucosePercentInRangeContext *)self _stringFromFractionRangeBound:v7];
+  v8 = [(_HKBloodGlucosePercentInRangeContext *)self _stringFromFractionRangeBound:maxValue];
 
   if ([v6 isEqualToString:v8])
   {
@@ -231,14 +231,14 @@ LABEL_13:
   return v9;
 }
 
-- (id)_stringFromFractionRangeBound:(id)a3
+- (id)_stringFromFractionRangeBound:(id)bound
 {
-  v4 = a3;
-  [v4 doubleValue];
+  boundCopy = bound;
+  [boundCopy doubleValue];
   v7 = 0;
   if (v5 > 0.0)
   {
-    [v4 doubleValue];
+    [boundCopy doubleValue];
     if (v6 < 0.01)
     {
       v7 = 1;
@@ -246,16 +246,16 @@ LABEL_13:
   }
 
   [(NSNumberFormatter *)self->_percentageFormatter setMaximumFractionDigits:v7];
-  v8 = [(NSNumberFormatter *)self->_percentageFormatter stringFromNumber:v4];
+  v8 = [(NSNumberFormatter *)self->_percentageFormatter stringFromNumber:boundCopy];
 
   return v8;
 }
 
-- (id)_fractionRangeFromChartPoints:(id)a3
+- (id)_fractionRangeFromChartPoints:(id)points
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (![v4 count])
+  pointsCopy = points;
+  if (![pointsCopy count])
   {
     v17 = 0;
     goto LABEL_21;
@@ -265,7 +265,7 @@ LABEL_13:
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = v4;
+  v5 = pointsCopy;
   v6 = [v5 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (!v6)
   {
@@ -287,14 +287,14 @@ LABEL_13:
       }
 
       v12 = *(*(&v20 + 1) + 8 * i);
-      v13 = [v12 userInfo];
+      userInfo = [v12 userInfo];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
       if (isKindOfClass)
       {
-        v15 = [v12 userInfo];
-        [(_HKBloodGlucosePercentInRangeContext *)self _fractionForClassificationFromUserInfo:v15];
+        userInfo2 = [v12 userInfo];
+        [(_HKBloodGlucosePercentInRangeContext *)self _fractionForClassificationFromUserInfo:userInfo2];
         if (v16 < v9)
         {
           v9 = v16;
@@ -327,20 +327,20 @@ LABEL_21:
   return v17;
 }
 
-- (double)_fractionForClassificationFromUserInfo:(id)a3
+- (double)_fractionForClassificationFromUserInfo:(id)info
 {
-  v5 = a3;
-  v6 = v5;
+  infoCopy = info;
+  v6 = infoCopy;
   classification = self->_classification;
   if ((classification - 2) < 2 || classification == 0)
   {
-    [v5 fractionForClassification:?];
+    [infoCopy fractionForClassification:?];
     v3 = v9;
   }
 
   else if (classification == 1)
   {
-    [v5 fractionForClassification:?];
+    [infoCopy fractionForClassification:?];
     v11 = v10;
     [v6 fractionForClassification:0];
     v3 = v11 + v12;

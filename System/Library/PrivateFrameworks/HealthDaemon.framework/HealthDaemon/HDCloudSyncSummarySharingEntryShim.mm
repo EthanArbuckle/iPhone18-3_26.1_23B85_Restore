@@ -1,25 +1,25 @@
 @interface HDCloudSyncSummarySharingEntryShim
-- (HDCloudSyncSummarySharingEntryShim)initWithProfile:(id)a3;
-- (void)authorizationIdentifiersByContactIdentifierForParticipants:(id)a3 configuration:(id)a4 completion:(id)a5;
-- (void)authorizationIdentifiersForEntriesNotExistingParticipants:(id)a3 configuration:(id)a4 completion:(id)a5;
-- (void)codableEntryWithUUID:(id)a3 configuration:(id)a4 completion:(id)a5;
-- (void)disableAllSharingEntriesWithConfiguration:(id)a3 completion:(id)a4;
-- (void)pauseStatusForEntriesWithUUIDs:(id)a3 configuration:(id)a4 completion:(id)a5;
-- (void)sharingEntryExistsWithPredicate:(id)a3 configuration:(id)a4 completion:(id)a5;
+- (HDCloudSyncSummarySharingEntryShim)initWithProfile:(id)profile;
+- (void)authorizationIdentifiersByContactIdentifierForParticipants:(id)participants configuration:(id)configuration completion:(id)completion;
+- (void)authorizationIdentifiersForEntriesNotExistingParticipants:(id)participants configuration:(id)configuration completion:(id)completion;
+- (void)codableEntryWithUUID:(id)d configuration:(id)configuration completion:(id)completion;
+- (void)disableAllSharingEntriesWithConfiguration:(id)configuration completion:(id)completion;
+- (void)pauseStatusForEntriesWithUUIDs:(id)ds configuration:(id)configuration completion:(id)completion;
+- (void)sharingEntryExistsWithPredicate:(id)predicate configuration:(id)configuration completion:(id)completion;
 @end
 
 @implementation HDCloudSyncSummarySharingEntryShim
 
-- (HDCloudSyncSummarySharingEntryShim)initWithProfile:(id)a3
+- (HDCloudSyncSummarySharingEntryShim)initWithProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v10.receiver = self;
   v10.super_class = HDCloudSyncSummarySharingEntryShim;
   v5 = [(HDCloudSyncSummarySharingEntryShim *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_profile, v4);
+    objc_storeWeak(&v5->_profile, profileCopy);
     v7 = HKCreateSerialDispatchQueue();
     queue = v6->_queue;
     v6->_queue = v7;
@@ -28,25 +28,25 @@
   return v6;
 }
 
-- (void)disableAllSharingEntriesWithConfiguration:(id)a3 completion:(id)a4
+- (void)disableAllSharingEntriesWithConfiguration:(id)configuration completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  configurationCopy = configuration;
   v8 = +[HDMutableDatabaseTransactionContext contextForWritingProtectedData];
-  v9 = [v7 accessibilityAssertion];
+  accessibilityAssertion = [configurationCopy accessibilityAssertion];
 
-  v10 = [v8 contextWithAccessibilityAssertion:v9];
+  v10 = [v8 contextWithAccessibilityAssertion:accessibilityAssertion];
 
   [v10 setCacheScope:1];
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v12 = [WeakRetained database];
+  database = [WeakRetained database];
   v22 = 0;
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __91__HDCloudSyncSummarySharingEntryShim_disableAllSharingEntriesWithConfiguration_completion___block_invoke;
   v21[3] = &unk_278616048;
   v21[4] = self;
-  LOBYTE(v8) = [(HDHealthEntity *)HDSummarySharingEntryEntity performWriteTransactionWithHealthDatabase:v12 context:v10 error:&v22 block:v21];
+  LOBYTE(v8) = [(HDHealthEntity *)HDSummarySharingEntryEntity performWriteTransactionWithHealthDatabase:database context:v10 error:&v22 block:v21];
   v13 = v22;
 
   queue = self->_queue;
@@ -56,9 +56,9 @@
   block[3] = &unk_278616460;
   v20 = v8;
   v18 = v13;
-  v19 = v6;
+  v19 = completionCopy;
   v15 = v13;
-  v16 = v6;
+  v16 = completionCopy;
   dispatch_async(queue, block);
 }
 
@@ -71,31 +71,31 @@ uint64_t __91__HDCloudSyncSummarySharingEntryShim_disableAllSharingEntriesWithCo
   return v6;
 }
 
-- (void)sharingEntryExistsWithPredicate:(id)a3 configuration:(id)a4 completion:(id)a5
+- (void)sharingEntryExistsWithPredicate:(id)predicate configuration:(id)configuration completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  predicateCopy = predicate;
+  configurationCopy = configuration;
+  completionCopy = completion;
   v11 = +[HDMutableDatabaseTransactionContext contextForReadingProtectedData];
-  v12 = [v9 accessibilityAssertion];
-  v13 = [v11 contextWithAccessibilityAssertion:v12];
+  accessibilityAssertion = [configurationCopy accessibilityAssertion];
+  v13 = [v11 contextWithAccessibilityAssertion:accessibilityAssertion];
 
   v31[0] = 0;
   v31[1] = v31;
   v31[2] = 0x2020000000;
   v32 = 0;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v15 = [WeakRetained database];
+  database = [WeakRetained database];
   v30 = 0;
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
   v27[2] = __95__HDCloudSyncSummarySharingEntryShim_sharingEntryExistsWithPredicate_configuration_completion___block_invoke;
   v27[3] = &unk_278615F88;
   v27[4] = self;
-  v16 = v8;
+  v16 = predicateCopy;
   v28 = v16;
   v29 = v31;
-  v17 = [(HDHealthEntity *)HDSummarySharingEntryEntity performReadTransactionWithHealthDatabase:v15 context:v13 error:&v30 block:v27];
+  v17 = [(HDHealthEntity *)HDSummarySharingEntryEntity performReadTransactionWithHealthDatabase:database context:v13 error:&v30 block:v27];
   v18 = v30;
 
   queue = self->_queue;
@@ -104,11 +104,11 @@ uint64_t __91__HDCloudSyncSummarySharingEntryShim_disableAllSharingEntriesWithCo
   v22[2] = __95__HDCloudSyncSummarySharingEntryShim_sharingEntryExistsWithPredicate_configuration_completion___block_invoke_2;
   v22[3] = &unk_2786286E0;
   v26 = v17;
-  v24 = v10;
+  v24 = completionCopy;
   v25 = v31;
   v23 = v18;
   v20 = v18;
-  v21 = v10;
+  v21 = completionCopy;
   dispatch_async(queue, v22);
 
   _Block_object_dispose(v31, 8);
@@ -140,14 +140,14 @@ uint64_t __95__HDCloudSyncSummarySharingEntryShim_sharingEntryExistsWithPredicat
   return (*(v2 + 16))(v2, v3 & 1);
 }
 
-- (void)authorizationIdentifiersForEntriesNotExistingParticipants:(id)a3 configuration:(id)a4 completion:(id)a5
+- (void)authorizationIdentifiersForEntriesNotExistingParticipants:(id)participants configuration:(id)configuration completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  participantsCopy = participants;
+  configurationCopy = configuration;
+  completionCopy = completion;
   v11 = +[HDMutableDatabaseTransactionContext contextForReadingProtectedData];
-  v12 = [v9 accessibilityAssertion];
-  v13 = [v11 contextWithAccessibilityAssertion:v12];
+  accessibilityAssertion = [configurationCopy accessibilityAssertion];
+  v13 = [v11 contextWithAccessibilityAssertion:accessibilityAssertion];
 
   v31[0] = 0;
   v31[1] = v31;
@@ -156,7 +156,7 @@ uint64_t __95__HDCloudSyncSummarySharingEntryShim_sharingEntryExistsWithPredicat
   v31[4] = __Block_byref_object_dispose__159;
   v32 = 0;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v15 = [WeakRetained database];
+  database = [WeakRetained database];
   v29 = v31;
   v30 = 0;
   v27[0] = MEMORY[0x277D85DD0];
@@ -164,9 +164,9 @@ uint64_t __95__HDCloudSyncSummarySharingEntryShim_sharingEntryExistsWithPredicat
   v27[2] = __121__HDCloudSyncSummarySharingEntryShim_authorizationIdentifiersForEntriesNotExistingParticipants_configuration_completion___block_invoke;
   v27[3] = &unk_278614288;
   v27[4] = self;
-  v16 = v8;
+  v16 = participantsCopy;
   v28 = v16;
-  v17 = [(HDHealthEntity *)HDSummarySharingEntryEntity performReadTransactionWithHealthDatabase:v15 context:v13 error:&v30 block:v27];
+  v17 = [(HDHealthEntity *)HDSummarySharingEntryEntity performReadTransactionWithHealthDatabase:database context:v13 error:&v30 block:v27];
   v18 = v30;
 
   queue = self->_queue;
@@ -174,12 +174,12 @@ uint64_t __95__HDCloudSyncSummarySharingEntryShim_sharingEntryExistsWithPredicat
   v22[1] = 3221225472;
   v22[2] = __121__HDCloudSyncSummarySharingEntryShim_authorizationIdentifiersForEntriesNotExistingParticipants_configuration_completion___block_invoke_2;
   v22[3] = &unk_2786286E0;
-  v24 = v10;
+  v24 = completionCopy;
   v25 = v31;
   v26 = v17;
   v23 = v18;
   v20 = v18;
-  v21 = v10;
+  v21 = completionCopy;
   dispatch_async(queue, v22);
 
   _Block_object_dispose(v31, 8);
@@ -197,29 +197,29 @@ BOOL __121__HDCloudSyncSummarySharingEntryShim_authorizationIdentifiersForEntrie
   return *a3 == 0;
 }
 
-- (void)pauseStatusForEntriesWithUUIDs:(id)a3 configuration:(id)a4 completion:(id)a5
+- (void)pauseStatusForEntriesWithUUIDs:(id)ds configuration:(id)configuration completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
+  dsCopy = ds;
+  completionCopy = completion;
+  configurationCopy = configuration;
   v11 = +[HDMutableDatabaseTransactionContext contextForReadingProtectedData];
-  v12 = [v10 accessibilityAssertion];
+  accessibilityAssertion = [configurationCopy accessibilityAssertion];
 
-  v13 = [v11 contextWithAccessibilityAssertion:v12];
+  v13 = [v11 contextWithAccessibilityAssertion:accessibilityAssertion];
 
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v15 = [WeakRetained database];
-  v21 = v9;
+  database = [WeakRetained database];
+  v21 = completionCopy;
   v22 = 0;
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __94__HDCloudSyncSummarySharingEntryShim_pauseStatusForEntriesWithUUIDs_configuration_completion___block_invoke;
   v19[3] = &unk_278628730;
   v19[4] = self;
-  v20 = v8;
-  v16 = v9;
-  v17 = v8;
-  [(HDHealthEntity *)HDSummarySharingEntryEntity performReadTransactionWithHealthDatabase:v15 context:v13 error:&v22 block:v19];
+  v20 = dsCopy;
+  v16 = completionCopy;
+  v17 = dsCopy;
+  [(HDHealthEntity *)HDSummarySharingEntryEntity performReadTransactionWithHealthDatabase:database context:v13 error:&v22 block:v19];
   v18 = v22;
 }
 
@@ -238,14 +238,14 @@ uint64_t __94__HDCloudSyncSummarySharingEntryShim_pauseStatusForEntriesWithUUIDs
   return 1;
 }
 
-- (void)authorizationIdentifiersByContactIdentifierForParticipants:(id)a3 configuration:(id)a4 completion:(id)a5
+- (void)authorizationIdentifiersByContactIdentifierForParticipants:(id)participants configuration:(id)configuration completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  participantsCopy = participants;
+  configurationCopy = configuration;
+  completionCopy = completion;
   v11 = +[HDMutableDatabaseTransactionContext contextForReadingProtectedData];
-  v12 = [v9 accessibilityAssertion];
-  v13 = [v11 contextWithAccessibilityAssertion:v12];
+  accessibilityAssertion = [configurationCopy accessibilityAssertion];
+  v13 = [v11 contextWithAccessibilityAssertion:accessibilityAssertion];
 
   v31[0] = 0;
   v31[1] = v31;
@@ -254,7 +254,7 @@ uint64_t __94__HDCloudSyncSummarySharingEntryShim_pauseStatusForEntriesWithUUIDs
   v31[4] = __Block_byref_object_dispose__159;
   v32 = 0;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v15 = [WeakRetained database];
+  database = [WeakRetained database];
   v29 = v31;
   v30 = 0;
   v27[0] = MEMORY[0x277D85DD0];
@@ -262,9 +262,9 @@ uint64_t __94__HDCloudSyncSummarySharingEntryShim_pauseStatusForEntriesWithUUIDs
   v27[2] = __122__HDCloudSyncSummarySharingEntryShim_authorizationIdentifiersByContactIdentifierForParticipants_configuration_completion___block_invoke;
   v27[3] = &unk_278614288;
   v27[4] = self;
-  v16 = v8;
+  v16 = participantsCopy;
   v28 = v16;
-  v17 = [(HDHealthEntity *)HDSummarySharingEntryEntity performReadTransactionWithHealthDatabase:v15 context:v13 error:&v30 block:v27];
+  v17 = [(HDHealthEntity *)HDSummarySharingEntryEntity performReadTransactionWithHealthDatabase:database context:v13 error:&v30 block:v27];
   v18 = v30;
 
   queue = self->_queue;
@@ -272,12 +272,12 @@ uint64_t __94__HDCloudSyncSummarySharingEntryShim_pauseStatusForEntriesWithUUIDs
   v22[1] = 3221225472;
   v22[2] = __122__HDCloudSyncSummarySharingEntryShim_authorizationIdentifiersByContactIdentifierForParticipants_configuration_completion___block_invoke_2;
   v22[3] = &unk_2786286E0;
-  v24 = v10;
+  v24 = completionCopy;
   v25 = v31;
   v26 = v17;
   v23 = v18;
   v20 = v18;
-  v21 = v10;
+  v21 = completionCopy;
   dispatch_async(queue, v22);
 
   _Block_object_dispose(v31, 8);
@@ -295,14 +295,14 @@ BOOL __122__HDCloudSyncSummarySharingEntryShim_authorizationIdentifiersByContact
   return *(*(a1[6] + 8) + 40) != 0;
 }
 
-- (void)codableEntryWithUUID:(id)a3 configuration:(id)a4 completion:(id)a5
+- (void)codableEntryWithUUID:(id)d configuration:(id)configuration completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  configurationCopy = configuration;
+  completionCopy = completion;
   v11 = +[HDMutableDatabaseTransactionContext contextForReadingProtectedData];
-  v12 = [v9 accessibilityAssertion];
-  v13 = [v11 contextWithAccessibilityAssertion:v12];
+  accessibilityAssertion = [configurationCopy accessibilityAssertion];
+  v13 = [v11 contextWithAccessibilityAssertion:accessibilityAssertion];
 
   v29[0] = 0;
   v29[1] = v29;
@@ -311,7 +311,7 @@ BOOL __122__HDCloudSyncSummarySharingEntryShim_authorizationIdentifiersByContact
   v29[4] = __Block_byref_object_dispose__159;
   v30 = 0;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v15 = [WeakRetained database];
+  database = [WeakRetained database];
   v27 = v29;
   v28 = 0;
   v25[0] = MEMORY[0x277D85DD0];
@@ -319,9 +319,9 @@ BOOL __122__HDCloudSyncSummarySharingEntryShim_authorizationIdentifiersByContact
   v25[2] = __84__HDCloudSyncSummarySharingEntryShim_codableEntryWithUUID_configuration_completion___block_invoke;
   v25[3] = &unk_278614288;
   v25[4] = self;
-  v16 = v8;
+  v16 = dCopy;
   v26 = v16;
-  [(HDHealthEntity *)HDSummarySharingEntryEntity performReadTransactionWithHealthDatabase:v15 context:v13 error:&v28 block:v25];
+  [(HDHealthEntity *)HDSummarySharingEntryEntity performReadTransactionWithHealthDatabase:database context:v13 error:&v28 block:v25];
   v17 = v28;
 
   queue = self->_queue;
@@ -329,11 +329,11 @@ BOOL __122__HDCloudSyncSummarySharingEntryShim_authorizationIdentifiersByContact
   block[1] = 3221225472;
   block[2] = __84__HDCloudSyncSummarySharingEntryShim_codableEntryWithUUID_configuration_completion___block_invoke_2;
   block[3] = &unk_278628758;
-  v23 = v10;
+  v23 = completionCopy;
   v24 = v29;
   v22 = v17;
   v19 = v17;
-  v20 = v10;
+  v20 = completionCopy;
   dispatch_async(queue, block);
 
   _Block_object_dispose(v29, 8);

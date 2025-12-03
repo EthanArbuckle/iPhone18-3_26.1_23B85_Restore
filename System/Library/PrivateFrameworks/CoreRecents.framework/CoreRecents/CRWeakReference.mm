@@ -1,19 +1,19 @@
 @interface CRWeakReference
-+ (id)weakReferenceWithObject:(id)a3;
-- (CRWeakReference)initWithObject:(id)a3;
++ (id)weakReferenceWithObject:(id)object;
+- (CRWeakReference)initWithObject:(id)object;
 - (void)dealloc;
 @end
 
 @implementation CRWeakReference
 
-+ (id)weakReferenceWithObject:(id)a3
++ (id)weakReferenceWithObject:(id)object
 {
-  v3 = [[a1 alloc] initWithObject:a3];
+  v3 = [[self alloc] initWithObject:object];
 
   return v3;
 }
 
-- (CRWeakReference)initWithObject:(id)a3
+- (CRWeakReference)initWithObject:(id)object
 {
   v7.receiver = self;
   v7.super_class = CRWeakReference;
@@ -21,7 +21,7 @@
   v5 = v4;
   if (v4)
   {
-    objc_storeWeak(&v4->_weakRef, a3);
+    objc_storeWeak(&v4->_weakRef, object);
   }
 
   return v5;

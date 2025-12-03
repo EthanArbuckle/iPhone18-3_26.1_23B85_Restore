@@ -1,7 +1,7 @@
 @interface _UIDropAnimationHandlers
 - (_UIDropAnimationHandlers)init;
-- (void)addAnimations:(id)a3;
-- (void)addCompletion:(id)a3;
+- (void)addAnimations:(id)animations;
+- (void)addCompletion:(id)completion;
 - (void)invokeAllCompletionHandlers;
 - (void)resetAllAnimationHandlers;
 @end
@@ -70,23 +70,23 @@
   [(NSMutableArray *)completionHandlers removeAllObjects];
 }
 
-- (void)addAnimations:(id)a3
+- (void)addAnimations:(id)animations
 {
-  if (a3)
+  if (animations)
   {
     alongsideAnimationHandlers = self->_alongsideAnimationHandlers;
-    v5 = [a3 copy];
+    v5 = [animations copy];
     v4 = _Block_copy(v5);
     [(NSMutableArray *)alongsideAnimationHandlers addObject:v4];
   }
 }
 
-- (void)addCompletion:(id)a3
+- (void)addCompletion:(id)completion
 {
-  if (a3)
+  if (completion)
   {
     completionHandlers = self->_completionHandlers;
-    v5 = [a3 copy];
+    v5 = [completion copy];
     v4 = _Block_copy(v5);
     [(NSMutableArray *)completionHandlers addObject:v4];
   }

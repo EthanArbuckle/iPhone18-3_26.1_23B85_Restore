@@ -1,37 +1,37 @@
 @interface NTKFaceViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityCanStartTimeTravel;
 - (BOOL)_accessibilityTimeTravelEnabled;
-- (id)detachedComplicationDisplayWrapperForSlot:(id)a3;
-- (id)normalComplicationDisplayWrapperForSlot:(id)a3;
+- (id)detachedComplicationDisplayWrapperForSlot:(id)slot;
+- (id)normalComplicationDisplayWrapperForSlot:(id)slot;
 - (void)_accessibilityAnnounceScrub;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_accessibilityTimeAnnouncementDidFinish;
 - (void)_loadSnapshotContentViews;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setTimeView:(id)a3;
+- (void)setTimeView:(id)view;
 @end
 
 @implementation NTKFaceViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"NTKFaceView" hasInstanceVariable:@"_timeView" withType:"UIView<NTKTimeView>"];
-  [v3 validateClass:@"NTKFaceView" hasInstanceMethod:@"setTimeView:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"NTKFaceView" hasInstanceMethod:@"_loadSnapshotContentViews" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"NTKFaceView" hasInstanceMethod:@"startScrubbingAnimated:" withFullSignature:{"v", "B", 0}];
-  [v3 validateClass:@"NTKFaceView" hasInstanceMethod:@"endScrubbingAnimated:" withFullSignature:{"v", "B", 0}];
-  [v3 validateClass:@"NTKFaceView" hasInstanceMethod:@"scrubToDate: animated:" withFullSignature:{"v", "@", "B", 0}];
-  [v3 validateClass:@"NTKFaceView" hasInstanceMethod:@"normalComplicationDisplayWrapperForSlot:" withFullSignature:{"@", "@", 0}];
-  [v3 validateClass:@"NTKFaceView" hasInstanceMethod:@"detachedComplicationDisplayWrapperForSlot:" withFullSignature:{"@", "@", 0}];
-  [v3 validateClass:@"NTKFaceView" hasInstanceMethod:@"_supportsTimeScrubbing" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"NTKFaceView" hasInstanceVariable:@"_timeScrubbing" withType:"B"];
-  [v3 validateClass:@"NTKFaceView" hasInstanceVariable:@"_editing" withType:"B"];
-  [v3 validateClass:@"NTKTimeTravelSettings"];
-  [v3 validateClass:@"NTKTimeTravelSettings" hasClassMethod:@"sharedInstance" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NTKTimeTravelSettings" hasInstanceMethod:@"isTimeTravelEnabled" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"NTKFaceView" hasInstanceVariable:@"_timeView" withType:"UIView<NTKTimeView>"];
+  [validationsCopy validateClass:@"NTKFaceView" hasInstanceMethod:@"setTimeView:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"NTKFaceView" hasInstanceMethod:@"_loadSnapshotContentViews" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"NTKFaceView" hasInstanceMethod:@"startScrubbingAnimated:" withFullSignature:{"v", "B", 0}];
+  [validationsCopy validateClass:@"NTKFaceView" hasInstanceMethod:@"endScrubbingAnimated:" withFullSignature:{"v", "B", 0}];
+  [validationsCopy validateClass:@"NTKFaceView" hasInstanceMethod:@"scrubToDate: animated:" withFullSignature:{"v", "@", "B", 0}];
+  [validationsCopy validateClass:@"NTKFaceView" hasInstanceMethod:@"normalComplicationDisplayWrapperForSlot:" withFullSignature:{"@", "@", 0}];
+  [validationsCopy validateClass:@"NTKFaceView" hasInstanceMethod:@"detachedComplicationDisplayWrapperForSlot:" withFullSignature:{"@", "@", 0}];
+  [validationsCopy validateClass:@"NTKFaceView" hasInstanceMethod:@"_supportsTimeScrubbing" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"NTKFaceView" hasInstanceVariable:@"_timeScrubbing" withType:"B"];
+  [validationsCopy validateClass:@"NTKFaceView" hasInstanceVariable:@"_editing" withType:"B"];
+  [validationsCopy validateClass:@"NTKTimeTravelSettings"];
+  [validationsCopy validateClass:@"NTKTimeTravelSettings" hasClassMethod:@"sharedInstance" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NTKTimeTravelSettings" hasInstanceMethod:@"isTimeTravelEnabled" withFullSignature:{"B", 0}];
 }
 
 - (void)layoutSubviews
@@ -51,15 +51,15 @@
   [v3 _setAccessibilityServesAsFirstElement:1];
 }
 
-- (void)setTimeView:(id)a3
+- (void)setTimeView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v5.receiver = self;
   v5.super_class = NTKFaceViewAccessibility;
-  [(NTKFaceViewAccessibility *)&v5 setTimeView:v4];
-  if (v4)
+  [(NTKFaceViewAccessibility *)&v5 setTimeView:viewCopy];
+  if (viewCopy)
   {
-    [v4 _setAccessibilityServesAsFirstElement:1];
+    [viewCopy _setAccessibilityServesAsFirstElement:1];
   }
 }
 
@@ -73,13 +73,13 @@
 
 - (void)dealloc
 {
-  v3 = [(NTKFaceViewAccessibility *)self _accessibilityNotificationObserver];
+  _accessibilityNotificationObserver = [(NTKFaceViewAccessibility *)self _accessibilityNotificationObserver];
 
-  if (v3)
+  if (_accessibilityNotificationObserver)
   {
     v4 = +[NSNotificationCenter defaultCenter];
-    v5 = [(NTKFaceViewAccessibility *)self _accessibilityNotificationObserver];
-    [v4 removeObserver:v5];
+    _accessibilityNotificationObserver2 = [(NTKFaceViewAccessibility *)self _accessibilityNotificationObserver];
+    [v4 removeObserver:_accessibilityNotificationObserver2];
 
     [(NTKFaceViewAccessibility *)self _accessibilitySetNotificationObserver:0];
     [AXTimeTravelDateManager setTimeTravelDate:0];
@@ -90,31 +90,31 @@
   [(NTKFaceViewAccessibility *)&v6 dealloc];
 }
 
-- (id)normalComplicationDisplayWrapperForSlot:(id)a3
+- (id)normalComplicationDisplayWrapperForSlot:(id)slot
 {
-  v4 = a3;
+  slotCopy = slot;
   v8.receiver = self;
   v8.super_class = NTKFaceViewAccessibility;
-  v5 = [(NTKFaceViewAccessibility *)&v8 normalComplicationDisplayWrapperForSlot:v4];
+  v5 = [(NTKFaceViewAccessibility *)&v8 normalComplicationDisplayWrapperForSlot:slotCopy];
   if (_AXSAutomationEnabled())
   {
-    v6 = [NSString stringWithFormat:@"normal-complication-%@", v4];
-    [v5 setAccessibilityIdentifier:v6];
+    slotCopy = [NSString stringWithFormat:@"normal-complication-%@", slotCopy];
+    [v5 setAccessibilityIdentifier:slotCopy];
   }
 
   return v5;
 }
 
-- (id)detachedComplicationDisplayWrapperForSlot:(id)a3
+- (id)detachedComplicationDisplayWrapperForSlot:(id)slot
 {
-  v4 = a3;
+  slotCopy = slot;
   v8.receiver = self;
   v8.super_class = NTKFaceViewAccessibility;
-  v5 = [(NTKFaceViewAccessibility *)&v8 detachedComplicationDisplayWrapperForSlot:v4];
+  v5 = [(NTKFaceViewAccessibility *)&v8 detachedComplicationDisplayWrapperForSlot:slotCopy];
   if (_AXSAutomationEnabled())
   {
-    v6 = [NSString stringWithFormat:@"detached-complication-%@", v4];
-    [v5 setAccessibilityIdentifier:v6];
+    slotCopy = [NSString stringWithFormat:@"detached-complication-%@", slotCopy];
+    [v5 setAccessibilityIdentifier:slotCopy];
   }
 
   return v5;
@@ -122,17 +122,17 @@
 
 - (void)_accessibilityAnnounceScrub
 {
-  v3 = [(NTKFaceViewAccessibility *)self _accessibilityTimeTravelDate];
-  if (v3)
+  _accessibilityTimeTravelDate = [(NTKFaceViewAccessibility *)self _accessibilityTimeTravelDate];
+  if (_accessibilityTimeTravelDate)
   {
-    v8 = v3;
+    v8 = _accessibilityTimeTravelDate;
     v4 = AXDateStringForFormat();
     v5 = [AXAttributedString axAttributedStringWithString:v4];
     [v5 setAttribute:kCFBooleanTrue forKey:UIAccessibilityTokenClockTime];
-    v6 = [(NTKFaceViewAccessibility *)self _accessibilityCharacterVoiceName];
-    if ([v6 length])
+    _accessibilityCharacterVoiceName = [(NTKFaceViewAccessibility *)self _accessibilityCharacterVoiceName];
+    if ([_accessibilityCharacterVoiceName length])
     {
-      [v5 setAttribute:v6 forKey:UIAccessibilityTokenSpeakAsCharacter];
+      [v5 setAttribute:_accessibilityCharacterVoiceName forKey:UIAccessibilityTokenSpeakAsCharacter];
       [v5 setAttribute:v8 forKey:UIAccessibilityTokenCharacterTimeToSpeak];
       [v5 setAttribute:&__kCFBooleanTrue forKey:UIAccessibilityTokenCharacterSuppressFlavorSpeech];
     }
@@ -142,7 +142,7 @@
     [v7 addObserver:self selector:"_accessibilityTimeAnnouncementDidFinish" name:UIAccessibilityAnnouncementDidFinishNotification object:0];
 
     [(NTKFaceViewAccessibility *)self _accessibilitySetTimeTravelDate:0];
-    v3 = v8;
+    _accessibilityTimeTravelDate = v8;
   }
 }
 
@@ -174,13 +174,13 @@
 
 - (BOOL)_accessibilityCanStartTimeTravel
 {
-  v3 = [(NTKFaceViewAccessibility *)self _accessibilityTimeTravelEnabled];
-  if (v3)
+  _accessibilityTimeTravelEnabled = [(NTKFaceViewAccessibility *)self _accessibilityTimeTravelEnabled];
+  if (_accessibilityTimeTravelEnabled)
   {
-    LOBYTE(v3) = [(NTKFaceViewAccessibility *)self safeBoolForKey:@"_timeScrubbing"]^ 1;
+    LOBYTE(_accessibilityTimeTravelEnabled) = [(NTKFaceViewAccessibility *)self safeBoolForKey:@"_timeScrubbing"]^ 1;
   }
 
-  return v3;
+  return _accessibilityTimeTravelEnabled;
 }
 
 @end

@@ -1,28 +1,28 @@
 @interface PRControlIconViewController
 - (CGRect)visibleBounds;
-- (PRControlIconViewController)initWithControlDescriptor:(id)a3 delegate:(id)a4;
+- (PRControlIconViewController)initWithControlDescriptor:(id)descriptor delegate:(id)delegate;
 - (PRControlIconViewControllerDelegate)delegate;
-- (id)_buttonFromControlDescriptor:(id)a3;
-- (void)_tapRecognized:(id)a3;
-- (void)setIconImageInfo:(SBIconImageInfo *)a3;
-- (void)updateIntent:(id)a3;
+- (id)_buttonFromControlDescriptor:(id)descriptor;
+- (void)_tapRecognized:(id)recognized;
+- (void)setIconImageInfo:(SBIconImageInfo *)info;
+- (void)updateIntent:(id)intent;
 - (void)viewDidLoad;
 @end
 
 @implementation PRControlIconViewController
 
-- (PRControlIconViewController)initWithControlDescriptor:(id)a3 delegate:(id)a4
+- (PRControlIconViewController)initWithControlDescriptor:(id)descriptor delegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  descriptorCopy = descriptor;
+  delegateCopy = delegate;
   v12.receiver = self;
   v12.super_class = PRControlIconViewController;
   v9 = [(PRControlIconViewController *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_controlDescriptor, a3);
-    objc_storeWeak(&v10->_delegate, v8);
+    objc_storeStrong(&v9->_controlDescriptor, descriptor);
+    objc_storeWeak(&v10->_delegate, delegateCopy);
   }
 
   return v10;
@@ -37,47 +37,47 @@
   button = self->_button;
   self->_button = v3;
 
-  v5 = [(PRControlIconViewController *)self view];
-  [v5 addSubview:self->_button];
+  view = [(PRControlIconViewController *)self view];
+  [view addSubview:self->_button];
 
   v6 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:self action:sel__tapRecognized_];
-  v7 = [(PRControlIconViewController *)self view];
-  [v7 addGestureRecognizer:v6];
+  view2 = [(PRControlIconViewController *)self view];
+  [view2 addGestureRecognizer:v6];
 }
 
-- (void)_tapRecognized:(id)a3
+- (void)_tapRecognized:(id)recognized
 {
-  v4 = [(PRControlIconViewController *)self delegate];
+  delegate = [(PRControlIconViewController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(PRControlIconViewController *)self delegate];
-    [v6 controlIconViewControllerDidReceiveTap:self];
+    delegate2 = [(PRControlIconViewController *)self delegate];
+    [delegate2 controlIconViewControllerDidReceiveTap:self];
   }
 }
 
-- (id)_buttonFromControlDescriptor:(id)a3
+- (id)_buttonFromControlDescriptor:(id)descriptor
 {
   v4 = objc_alloc_init(MEMORY[0x1E6999620]);
   [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v4 setClickSuppressed:1];
   v5 = [PRQuickActionControlView alloc];
-  v6 = [(PRControlDescriptor *)self->_controlDescriptor controlIdentity];
-  v7 = [(PRQuickActionControlView *)v5 initWithControl:v6 type:[(PRControlDescriptor *)self->_controlDescriptor controlType]];
+  controlIdentity = [(PRControlDescriptor *)self->_controlDescriptor controlIdentity];
+  v7 = [(PRQuickActionControlView *)v5 initWithControl:controlIdentity type:[(PRControlDescriptor *)self->_controlDescriptor controlType]];
 
   [v4 setGlyphView:v7];
 
   return v4;
 }
 
-- (void)updateIntent:(id)a3
+- (void)updateIntent:(id)intent
 {
-  v11 = a3;
-  v4 = [(PRControlDescriptor *)self->_controlDescriptor intent];
+  intentCopy = intent;
+  intent = [(PRControlDescriptor *)self->_controlDescriptor intent];
   if ((BSEqualObjects() & 1) == 0)
   {
-    v5 = [(PRControlDescriptor *)self->_controlDescriptor copyWithIntent:v11];
+    v5 = [(PRControlDescriptor *)self->_controlDescriptor copyWithIntent:intentCopy];
     controlDescriptor = self->_controlDescriptor;
     self->_controlDescriptor = v5;
 
@@ -91,12 +91,12 @@
     v9 = self->_button;
     self->_button = v8;
 
-    v10 = [(PRControlIconViewController *)self view];
-    [v10 addSubview:self->_button];
+    view = [(PRControlIconViewController *)self view];
+    [view addSubview:self->_button];
   }
 }
 
-- (void)setIconImageInfo:(SBIconImageInfo *)a3
+- (void)setIconImageInfo:(SBIconImageInfo *)info
 {
   self->_iconImageInfo.size.width = v3;
   self->_iconImageInfo.size.height = v4;

@@ -1,15 +1,15 @@
 @interface NTKBundleComplicationMigrationProvider
 + (NTKBundleComplicationMigrationProvider)cachedInstance;
-- (BOOL)hasTypeLookupForDevice:(id)a3;
+- (BOOL)hasTypeLookupForDevice:(id)device;
 - (NTKBundleComplicationMigrationProvider)init;
-- (id)_cachedLookupForDevice:(id)a3;
-- (id)_loadMigrationCacheForDevice:(id)a3;
-- (id)migratedComplicationFromType:(unint64_t)a3 family:(int64_t)a4 device:(id)a5;
-- (void)_fetchTypeLookupForDevice:(id)a3 completion:(id)a4;
-- (void)_handleDeviceDidUpdate:(id)a3;
-- (void)_regenerateTypeLookupForDevice:(id)a3 completion:(id)a4;
-- (void)ensureTypeLookupForDevice:(id)a3 completion:(id)a4;
-- (void)serviceRequest:(id)a3 completion:(id)a4;
+- (id)_cachedLookupForDevice:(id)device;
+- (id)_loadMigrationCacheForDevice:(id)device;
+- (id)migratedComplicationFromType:(unint64_t)type family:(int64_t)family device:(id)device;
+- (void)_fetchTypeLookupForDevice:(id)device completion:(id)completion;
+- (void)_handleDeviceDidUpdate:(id)update;
+- (void)_regenerateTypeLookupForDevice:(id)device completion:(id)completion;
+- (void)ensureTypeLookupForDevice:(id)device completion:(id)completion;
+- (void)serviceRequest:(id)request completion:(id)completion;
 @end
 
 @implementation NTKBundleComplicationMigrationProvider
@@ -43,26 +43,26 @@
     typeMigrationCaches = v3->_typeMigrationCaches;
     v3->_typeMigrationCaches = v4;
 
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v6 addObserver:v3 selector:sel__handleDeviceDidUpdate_ name:*MEMORY[0x277CBB640] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel__handleDeviceDidUpdate_ name:*MEMORY[0x277CBB640] object:0];
   }
 
   return v3;
 }
 
-- (void)serviceRequest:(id)a3 completion:(id)a4
+- (void)serviceRequest:(id)request completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  requestCopy = request;
   v7 = +[NTKBundleComplicationMigrationServiceClient sharedInstance];
-  [v7 serviceRequest:v6 completion:v5];
+  [v7 serviceRequest:requestCopy completion:completionCopy];
 }
 
-- (void)ensureTypeLookupForDevice:(id)a3 completion:(id)a4
+- (void)ensureTypeLookupForDevice:(id)device completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NTKBundleComplicationMigrationProvider *)self _loadMigrationCacheForDevice:v6];
+  deviceCopy = device;
+  completionCopy = completion;
+  v8 = [(NTKBundleComplicationMigrationProvider *)self _loadMigrationCacheForDevice:deviceCopy];
   if (v8)
   {
     v9 = _NTKLoggingObjectForDomain(56, "NTKLoggingDomainBundleComplicationMigration");
@@ -72,11 +72,11 @@
     }
   }
 
-  v10 = [(NTKBundleComplicationMigrationProvider *)self _cachedLookupForDevice:v6];
+  v10 = [(NTKBundleComplicationMigrationProvider *)self _cachedLookupForDevice:deviceCopy];
 
   if (v10)
   {
-    v7[2](v7, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
   else
@@ -88,19 +88,19 @@
       _os_log_impl(&dword_22D9C5000, v11, OS_LOG_TYPE_DEFAULT, "Requesting type lookup...", v12, 2u);
     }
 
-    [(NTKBundleComplicationMigrationProvider *)self _fetchTypeLookupForDevice:v6 completion:v7];
+    [(NTKBundleComplicationMigrationProvider *)self _fetchTypeLookupForDevice:deviceCopy completion:completionCopy];
   }
 }
 
-- (id)migratedComplicationFromType:(unint64_t)a3 family:(int64_t)a4 device:(id)a5
+- (id)migratedComplicationFromType:(unint64_t)type family:(int64_t)family device:(id)device
 {
-  v8 = a5;
-  v9 = [(NTKBundleComplicationMigrationProvider *)self _loadMigrationCacheForDevice:v8];
-  v10 = [(NTKBundleComplicationMigrationProvider *)self _cachedLookupForDevice:v8];
+  deviceCopy = device;
+  v9 = [(NTKBundleComplicationMigrationProvider *)self _loadMigrationCacheForDevice:deviceCopy];
+  v10 = [(NTKBundleComplicationMigrationProvider *)self _cachedLookupForDevice:deviceCopy];
 
   if (v10)
   {
-    v11 = [[NTKBundleComplicationMigrationTypeLookupKey alloc] initWithComplicationType:a3 family:a4];
+    v11 = [[NTKBundleComplicationMigrationTypeLookupKey alloc] initWithComplicationType:type family:family];
     v12 = [v10 objectForKeyedSubscript:v11];
   }
 
@@ -118,10 +118,10 @@
   return v12;
 }
 
-- (BOOL)hasTypeLookupForDevice:(id)a3
+- (BOOL)hasTypeLookupForDevice:(id)device
 {
-  v4 = a3;
-  v5 = [(NTKBundleComplicationMigrationProvider *)self _cachedLookupForDevice:v4];
+  deviceCopy = device;
+  v5 = [(NTKBundleComplicationMigrationProvider *)self _cachedLookupForDevice:deviceCopy];
 
   if (v5)
   {
@@ -130,33 +130,33 @@
 
   else
   {
-    v7 = [(NTKBundleComplicationMigrationProvider *)self _loadMigrationCacheForDevice:v4];
-    v8 = [(NTKBundleComplicationMigrationProvider *)self _cachedLookupForDevice:v4];
+    v7 = [(NTKBundleComplicationMigrationProvider *)self _loadMigrationCacheForDevice:deviceCopy];
+    v8 = [(NTKBundleComplicationMigrationProvider *)self _cachedLookupForDevice:deviceCopy];
     v6 = v8 != 0;
   }
 
   return v6;
 }
 
-- (id)_cachedLookupForDevice:(id)a3
+- (id)_cachedLookupForDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   os_unfair_lock_lock(&self->_cachesLock);
   typeMigrationCaches = self->_typeMigrationCaches;
-  v6 = [v4 descriptor];
+  descriptor = [deviceCopy descriptor];
 
-  v7 = [(NSMutableDictionary *)typeMigrationCaches objectForKeyedSubscript:v6];
+  v7 = [(NSMutableDictionary *)typeMigrationCaches objectForKeyedSubscript:descriptor];
 
   os_unfair_lock_unlock(&self->_cachesLock);
 
   return v7;
 }
 
-- (id)_loadMigrationCacheForDevice:(id)a3
+- (id)_loadMigrationCacheForDevice:(id)device
 {
   v42 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(NTKBundleComplicationMigrationProvider *)self _cachedLookupForDevice:v4];
+  deviceCopy = device;
+  v5 = [(NTKBundleComplicationMigrationProvider *)self _cachedLookupForDevice:deviceCopy];
 
   if (v5)
   {
@@ -164,13 +164,13 @@
     goto LABEL_34;
   }
 
-  v7 = NTKBundleComplicationMigrationServiceLookupPathForDevice(v4);
-  v8 = [MEMORY[0x277CCAA00] defaultManager];
-  v9 = [v8 fileExistsAtPath:v7];
+  v7 = NTKBundleComplicationMigrationServiceLookupPathForDevice(deviceCopy);
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v9 = [defaultManager fileExistsAtPath:v7];
 
   if (v9)
   {
-    v10 = NTKBundleComplicationMigrationServiceGetLookupVersion(v4);
+    v10 = NTKBundleComplicationMigrationServiceGetLookupVersion(deviceCopy);
     if (v10)
     {
       v11 = NTKBundleComplicationMigrationCurrentVersion();
@@ -211,25 +211,25 @@
           if (v20)
           {
             v36 = v23;
-            v25 = [v20 buildVersion];
+            buildVersion = [v20 buildVersion];
             v26 = NTKBundleComplicationMigrationCurrentVersion();
-            v27 = [v25 isEqual:v26];
+            v27 = [buildVersion isEqual:v26];
 
             v13 = v37;
             if (v27)
             {
               os_unfair_lock_lock(&self->_cachesLock);
-              v28 = [v24 dictionary];
+              dictionary = [v24 dictionary];
               typeMigrationCaches = self->_typeMigrationCaches;
-              v30 = [v4 descriptor];
-              [(NSMutableDictionary *)typeMigrationCaches setObject:v28 forKeyedSubscript:v30];
+              descriptor = [deviceCopy descriptor];
+              [(NSMutableDictionary *)typeMigrationCaches setObject:dictionary forKeyedSubscript:descriptor];
 
               os_unfair_lock_unlock(&self->_cachesLock);
               v31 = _NTKLoggingObjectForDomain(56, "NTKLoggingDomainBundleComplicationMigration");
               if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
               {
-                v32 = [v24 dictionary];
-                v33 = [v32 count];
+                dictionary2 = [v24 dictionary];
+                v33 = [dictionary2 count];
                 *buf = 134217984;
                 v41 = v33;
                 _os_log_impl(&dword_22D9C5000, v31, OS_LOG_TYPE_DEFAULT, "Loaded type migration cache with %lu entries", buf, 0xCu);
@@ -305,15 +305,15 @@ LABEL_34:
   return v6;
 }
 
-- (void)_fetchTypeLookupForDevice:(id)a3 completion:(id)a4
+- (void)_fetchTypeLookupForDevice:(id)device completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __79__NTKBundleComplicationMigrationProvider__fetchTypeLookupForDevice_completion___block_invoke;
   aBlock[3] = &unk_278782A50;
-  v8 = v7;
+  v8 = completionCopy;
   v19 = v8;
   v9 = _Block_copy(aBlock);
   objc_initWeak(&location, self);
@@ -325,7 +325,7 @@ LABEL_34:
   v11 = v9;
   v15 = v11;
   objc_copyWeak(&v16, &location);
-  v12 = v6;
+  v12 = deviceCopy;
   v14 = v12;
   [v10 generateTypeLookupForDevice:v12 completion:v13];
 
@@ -360,16 +360,16 @@ void __79__NTKBundleComplicationMigrationProvider__fetchTypeLookupForDevice_comp
   }
 }
 
-- (void)_handleDeviceDidUpdate:(id)a3
+- (void)_handleDeviceDidUpdate:(id)update
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = [a3 object];
-  if (v4)
+  object = [update object];
+  if (object)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = object;
       v6 = _NTKLoggingObjectForDomain(56, "NTKLoggingDomainBundleComplicationMigration");
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
@@ -412,26 +412,26 @@ void __65__NTKBundleComplicationMigrationProvider__handleDeviceDidUpdate___block
   }
 }
 
-- (void)_regenerateTypeLookupForDevice:(id)a3 completion:(id)a4
+- (void)_regenerateTypeLookupForDevice:(id)device completion:(id)completion
 {
   v13 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  completionCopy = completion;
   v8 = _NTKLoggingObjectForDomain(56, "NTKLoggingDomainBundleComplicationMigration");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412290;
-    v12 = v6;
+    v12 = deviceCopy;
     _os_log_impl(&dword_22D9C5000, v8, OS_LOG_TYPE_DEFAULT, "Regenerating type lookup for device %@", &v11, 0xCu);
   }
 
   os_unfair_lock_lock(&self->_cachesLock);
   typeMigrationCaches = self->_typeMigrationCaches;
-  v10 = [v6 descriptor];
-  [(NSMutableDictionary *)typeMigrationCaches setObject:0 forKeyedSubscript:v10];
+  descriptor = [deviceCopy descriptor];
+  [(NSMutableDictionary *)typeMigrationCaches setObject:0 forKeyedSubscript:descriptor];
 
   os_unfair_lock_unlock(&self->_cachesLock);
-  [(NTKBundleComplicationMigrationProvider *)self _fetchTypeLookupForDevice:v6 completion:v7];
+  [(NTKBundleComplicationMigrationProvider *)self _fetchTypeLookupForDevice:deviceCopy completion:completionCopy];
 }
 
 - (void)ensureTypeLookupForDevice:(uint64_t)a1 completion:(NSObject *)a2 .cold.1(uint64_t a1, NSObject *a2)

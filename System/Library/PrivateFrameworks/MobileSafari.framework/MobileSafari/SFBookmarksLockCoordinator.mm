@@ -1,6 +1,6 @@
 @interface SFBookmarksLockCoordinator
 + (SFBookmarksLockCoordinator)sharedCoordinator;
-+ (void)showLockedDatabaseAlertForAction:(int64_t)a3 fromViewController:(id)a4;
++ (void)showLockedDatabaseAlertForAction:(int64_t)action fromViewController:(id)controller;
 - (BOOL)lockBookmarks;
 - (SFBookmarksLockCoordinator)init;
 - (void)_clearBookmarkLockTimer;
@@ -40,9 +40,9 @@ void __47__SFBookmarksLockCoordinator_sharedCoordinator__block_invoke()
   v2 = [(SFBookmarksLockCoordinator *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v3 addObserver:v2 selector:sel__willResignActive name:*MEMORY[0x1E69DDBC8] object:0];
-    [v3 addObserver:v2 selector:sel__didBecomeActive name:*MEMORY[0x1E69DDAB0] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__willResignActive name:*MEMORY[0x1E69DDBC8] object:0];
+    [defaultCenter addObserver:v2 selector:sel__didBecomeActive name:*MEMORY[0x1E69DDAB0] object:0];
     v2->_needsBookmarksLockOnAppResume = 0;
     v4 = v2;
   }
@@ -143,10 +143,10 @@ void __47__SFBookmarksLockCoordinator_sharedCoordinator__block_invoke()
   [(SFBookmarksLockCoordinator *)&v2 dealloc];
 }
 
-+ (void)showLockedDatabaseAlertForAction:(int64_t)a3 fromViewController:(id)a4
++ (void)showLockedDatabaseAlertForAction:(int64_t)action fromViewController:(id)controller
 {
-  v15 = a4;
-  if (a3 > 1)
+  controllerCopy = controller;
+  if (action > 1)
   {
     v5 = 0;
   }
@@ -162,15 +162,15 @@ void __47__SFBookmarksLockCoordinator_sharedCoordinator__block_invoke()
   v9 = [v7 actionWithTitle:v8 style:1 handler:0];
   [v6 addAction:v9];
 
-  v10 = [v15 view];
-  v11 = [v10 window];
+  view = [controllerCopy view];
+  window = [view window];
 
   v12 = *MEMORY[0x1E69DDA98];
-  v13 = [v11 _eventRoutingScene];
-  [v12 _cancelAllEventsOfType:3 onEventRoutingScene:v13];
+  _eventRoutingScene = [window _eventRoutingScene];
+  [v12 _cancelAllEventsOfType:3 onEventRoutingScene:_eventRoutingScene];
 
-  v14 = [v11 rootViewController];
-  [v14 presentViewController:v6 animated:1 completion:0];
+  rootViewController = [window rootViewController];
+  [rootViewController presentViewController:v6 animated:1 completion:0];
 }
 
 @end

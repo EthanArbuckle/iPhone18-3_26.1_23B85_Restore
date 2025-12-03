@@ -1,8 +1,8 @@
 @interface _UIContextMenuAsyncConfiguration
-+ (id)configurationWithIdentifier:(id)a3 previewProvider:(id)a4 actionProvider:(id)a5;
-- (BOOL)fulfillWithConfiguration:(id)a3;
++ (id)configurationWithIdentifier:(id)identifier previewProvider:(id)provider actionProvider:(id)actionProvider;
+- (BOOL)fulfillWithConfiguration:(id)configuration;
 - (_UIContextMenuAsyncConfiguration)init;
-- (void)_prepareWithCompletion:(id)a3;
+- (void)_prepareWithCompletion:(id)completion;
 @end
 
 @implementation _UIContextMenuAsyncConfiguration
@@ -14,28 +14,28 @@
   return [(UIContextMenuConfiguration *)&v3 init];
 }
 
-- (void)_prepareWithCompletion:(id)a3
+- (void)_prepareWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [[_UIBurnableBlock alloc] initWithTimeout:v4 block:0 defaultInputProvider:0.5];
+  completionCopy = completion;
+  v5 = [[_UIBurnableBlock alloc] initWithTimeout:completionCopy block:0 defaultInputProvider:0.5];
 
   deferredCompletion = self->_deferredCompletion;
   self->_deferredCompletion = v5;
 }
 
-- (BOOL)fulfillWithConfiguration:(id)a3
+- (BOOL)fulfillWithConfiguration:(id)configuration
 {
-  v4 = [(_UIBurnableBlock *)self->_deferredCompletion performWithInput:a3];
+  v4 = [(_UIBurnableBlock *)self->_deferredCompletion performWithInput:configuration];
   deferredCompletion = self->_deferredCompletion;
   self->_deferredCompletion = 0;
 
   return v4;
 }
 
-+ (id)configurationWithIdentifier:(id)a3 previewProvider:(id)a4 actionProvider:(id)a5
++ (id)configurationWithIdentifier:(id)identifier previewProvider:(id)provider actionProvider:(id)actionProvider
 {
-  v7 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v7 handleFailureInMethod:a2 object:a1 file:@"_UIContextMenuAsyncConfiguration.m" lineNumber:48 description:@"configurationWithIdentifier:previewProvider:actionProvider: is not available; use -init instead."];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"_UIContextMenuAsyncConfiguration.m" lineNumber:48 description:@"configurationWithIdentifier:previewProvider:actionProvider: is not available; use -init instead."];
 
   return 0;
 }

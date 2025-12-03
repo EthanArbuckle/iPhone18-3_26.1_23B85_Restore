@@ -1,8 +1,8 @@
 @interface MSUAnalytics
-- (BOOL)addCacheDeleteInfoToDictionary:(id)a3;
-- (BOOL)addMobileAssetStatsToDictionary:(id)a3;
-- (BOOL)addSoftwareUpdateInfoToDictionary:(id)a3;
-- (MSUAnalytics)initWithPhase:(int)a3;
+- (BOOL)addCacheDeleteInfoToDictionary:(id)dictionary;
+- (BOOL)addMobileAssetStatsToDictionary:(id)dictionary;
+- (BOOL)addSoftwareUpdateInfoToDictionary:(id)dictionary;
+- (MSUAnalytics)initWithPhase:(int)phase;
 - (id)copyAnalyticsData;
 - (id)copyAnalyticsDataForPreflight;
 - (id)copyAppleConnectPersonID;
@@ -13,7 +13,7 @@
 
 @implementation MSUAnalytics
 
-- (MSUAnalytics)initWithPhase:(int)a3
+- (MSUAnalytics)initWithPhase:(int)phase
 {
   v9.receiver = self;
   v9.super_class = MSUAnalytics;
@@ -27,7 +27,7 @@
     v7 = dispatch_queue_create("MSUAnalyticsSSOQueue", v6);
     [(MSUAnalytics *)v4 setSSOQueue:v7];
 
-    v4->_updatePhase = a3;
+    v4->_updatePhase = phase;
   }
 
   return v4;
@@ -35,30 +35,30 @@
 
 - (id)getStringForPhase
 {
-  v3 = [(MSUAnalytics *)self mainQueue];
-  dispatch_assert_queue_V2(v3);
+  mainQueue = [(MSUAnalytics *)self mainQueue];
+  dispatch_assert_queue_V2(mainQueue);
 
-  v4 = [(MSUAnalytics *)self updatePhase];
-  if (v4 > 5)
+  updatePhase = [(MSUAnalytics *)self updatePhase];
+  if (updatePhase > 5)
   {
     return @"Invalid";
   }
 
   else
   {
-    return *(&off_1000491C0 + v4);
+    return *(&off_1000491C0 + updatePhase);
   }
 }
 
-- (BOOL)addSoftwareUpdateInfoToDictionary:(id)a3
+- (BOOL)addSoftwareUpdateInfoToDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [(MSUAnalytics *)self mainQueue];
-  dispatch_assert_queue_V2(v5);
+  dictionaryCopy = dictionary;
+  mainQueue = [(MSUAnalytics *)self mainQueue];
+  dispatch_assert_queue_V2(mainQueue);
 
-  if (v4)
+  if (dictionaryCopy)
   {
-    [v4 setObject:@"UNKNOWN" forKeyedSubscript:@"updateDownloaded"];
+    [dictionaryCopy setObject:@"UNKNOWN" forKeyedSubscript:@"updateDownloaded"];
     v11 = CFPreferencesCopyValue(@"SUAutomaticUpdateV2Enabled", @"com.apple.softwareupdateservicesd", @"mobile", kCFPreferencesAnyHost);
     if (v11)
     {
@@ -91,14 +91,14 @@
         v31 = @"UNKNOWN";
       }
 
-      [v4 setObject:v31 forKeyedSubscript:@"AutoUpdate"];
+      [dictionaryCopy setObject:v31 forKeyedSubscript:@"AutoUpdate"];
       CFRelease(v17);
     }
 
     else
     {
       logfunction(", 1, @"Unable to determine AutoUpdate status\n"", v12, v13, v14, v15, v16, v54);
-      [v4 setObject:@"UNKNOWN" forKeyedSubscript:@"AutoUpdate"];
+      [dictionaryCopy setObject:@"UNKNOWN" forKeyedSubscript:@"AutoUpdate"];
     }
 
     v32 = CFPreferencesCopyValue(@"SUDisableAutoDownload", @"com.apple.softwareupdateservicesd", @"mobile", kCFPreferencesAnyHost);
@@ -133,14 +133,14 @@
         v52 = @"UNKNOWN";
       }
 
-      [v4 setObject:v52 forKeyedSubscript:@"AutoDownload"];
+      [dictionaryCopy setObject:v52 forKeyedSubscript:@"AutoDownload"];
       CFRelease(v38);
     }
 
     else
     {
       logfunction(", 1, @"Default not found. AutoDownload is enabled\n"", v33, v34, v35, v36, v37, v55);
-      [v4 setObject:@"ON" forKeyedSubscript:@"AutoDownload"];
+      [dictionaryCopy setObject:@"ON" forKeyedSubscript:@"AutoDownload"];
     }
   }
 
@@ -149,16 +149,16 @@
     logfunction(", 1, @"Invalid dict passed to %s\n", v6, v7, v8, v9, v10, "[MSUAnalytics addSoftwareUpdateInfoToDictionary:]"");
   }
 
-  return v4 != 0;
+  return dictionaryCopy != 0;
 }
 
-- (BOOL)addCacheDeleteInfoToDictionary:(id)a3
+- (BOOL)addCacheDeleteInfoToDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [(MSUAnalytics *)self mainQueue];
-  dispatch_assert_queue_V2(v5);
+  dictionaryCopy = dictionary;
+  mainQueue = [(MSUAnalytics *)self mainQueue];
+  dispatch_assert_queue_V2(mainQueue);
 
-  if (v4)
+  if (dictionaryCopy)
   {
     logfunction(", 1, @"Attempting to determine purgable space on system\n"", v6, v7, v8, v9, v10, v19);
     v21 = 0;
@@ -166,13 +166,13 @@
     if (v21)
     {
       logfunction(", 1, @"Failed to get available purgable space.\n"", v12, v13, v14, v15, v16, v20);
-      [v4 setObject:@"UNKNOWN" forKeyedSubscript:@"purgeableSpaceMB"];
+      [dictionaryCopy setObject:@"UNKNOWN" forKeyedSubscript:@"purgeableSpaceMB"];
     }
 
     else
     {
-      v17 = [NSNumber numberWithLongLong:v11 / 0x100000];
-      [v4 setObject:v17 forKeyedSubscript:@"purgeableSpaceMB"];
+      0x100000 = [NSNumber numberWithLongLong:v11 / 0x100000];
+      [dictionaryCopy setObject:0x100000 forKeyedSubscript:@"purgeableSpaceMB"];
     }
   }
 
@@ -181,12 +181,12 @@
     logfunction(", 1, @"Invalid dictionary passed to %s\n", v6, v7, v8, v9, v10, "[MSUAnalytics addCacheDeleteInfoToDictionary:]"");
   }
 
-  return v4 != 0;
+  return dictionaryCopy != 0;
 }
 
-- (BOOL)addMobileAssetStatsToDictionary:(id)a3
+- (BOOL)addMobileAssetStatsToDictionary:(id)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v30 = +[NSFileManager defaultManager];
   v46[0] = NSURLFileResourceTypeKey;
   v46[1] = NSURLFileAllocatedSizeKey;
@@ -199,7 +199,7 @@
   if (v31)
   {
     v4 = 0;
-    v27 = v3;
+    v27 = dictionaryCopy;
     v28 = *v41;
     do
     {
@@ -270,7 +270,7 @@
 
     while (v31);
     v18 = v4 >> 20;
-    v3 = v27;
+    dictionaryCopy = v27;
   }
 
   else
@@ -282,7 +282,7 @@
   logfunction(", 1, @"Total Size taken by MobileAssets is %@MB\n"", v20, v21, v22, v23, v24, v19);
 
   v25 = [NSNumber numberWithUnsignedInteger:v18];
-  [v3 setObject:v25 forKeyedSubscript:@"mobileAssetsSpaceMB"];
+  [dictionaryCopy setObject:v25 forKeyedSubscript:@"mobileAssetsSpaceMB"];
 
   return 0;
 }
@@ -330,14 +330,14 @@ LABEL_6:
     {
       if (v6(@"177666"))
       {
-        v12 = [(MSUAnalytics *)self SSOQueue];
+        sSOQueue = [(MSUAnalytics *)self SSOQueue];
         block[0] = _NSConcreteStackBlock;
         block[1] = 3221225472;
         block[2] = __40__MSUAnalytics_copyAppleConnectPersonID__block_invoke;
         block[3] = &unk_100049178;
         block[4] = &v18;
         block[5] = v5;
-        dispatch_sync(v12, block);
+        dispatch_sync(sSOQueue, block);
       }
 
       else
@@ -394,8 +394,8 @@ void __40__MSUAnalytics_copyAppleConnectPersonID__block_invoke(uint64_t a1)
 
 - (id)copyAnalyticsDataForPreflight
 {
-  v3 = [(MSUAnalytics *)self mainQueue];
-  dispatch_assert_queue_V2(v3);
+  mainQueue = [(MSUAnalytics *)self mainQueue];
+  dispatch_assert_queue_V2(mainQueue);
 
   v9 = objc_alloc_init(NSMutableDictionary);
   if (v9)
@@ -406,16 +406,16 @@ void __40__MSUAnalytics_copyAppleConnectPersonID__block_invoke(uint64_t a1)
     [(MSUAnalytics *)self addTargetVolumeDriveInfoToDictionary:v9];
     if (MGGetBoolAnswer())
     {
-      v15 = [(MSUAnalytics *)self copyAppleConnectPersonID];
-      if (v15)
+      copyAppleConnectPersonID = [(MSUAnalytics *)self copyAppleConnectPersonID];
+      if (copyAppleConnectPersonID)
       {
-        [v9 setObject:v15 forKeyedSubscript:@"personId"];
+        [v9 setObject:copyAppleConnectPersonID forKeyedSubscript:@"personId"];
       }
 
-      v16 = [(MSUAnalytics *)self copySerialNumber];
-      if (v16)
+      copySerialNumber = [(MSUAnalytics *)self copySerialNumber];
+      if (copySerialNumber)
       {
-        [v9 setObject:v16 forKeyedSubscript:@"serialNumber"];
+        [v9 setObject:copySerialNumber forKeyedSubscript:@"serialNumber"];
       }
     }
 
@@ -433,8 +433,8 @@ void __40__MSUAnalytics_copyAppleConnectPersonID__block_invoke(uint64_t a1)
 
 - (id)copyGenericAnalyticsData
 {
-  v3 = [(MSUAnalytics *)self mainQueue];
-  dispatch_assert_queue_V2(v3);
+  mainQueue = [(MSUAnalytics *)self mainQueue];
+  dispatch_assert_queue_V2(mainQueue);
 
   v9 = objc_alloc_init(NSMutableDictionary);
   if (v9)
@@ -449,11 +449,11 @@ void __40__MSUAnalytics_copyAppleConnectPersonID__block_invoke(uint64_t a1)
       else
       {
         logfunction(", 1, @"Attempting to read personID\n"", v10, v11, v12, v13, v14, v39);
-        v25 = [(MSUAnalytics *)self copyAppleConnectPersonID];
-        if (v25)
+        copyAppleConnectPersonID = [(MSUAnalytics *)self copyAppleConnectPersonID];
+        if (copyAppleConnectPersonID)
         {
-          logfunction(", 1, @"Successfully read personID: %@\n"", v20, v21, v22, v23, v24, v25);
-          [v9 setObject:v25 forKeyedSubscript:@"personId"];
+          logfunction(", 1, @"Successfully read personID: %@\n"", v20, v21, v22, v23, v24, copyAppleConnectPersonID);
+          [v9 setObject:copyAppleConnectPersonID forKeyedSubscript:@"personId"];
         }
 
         else
@@ -463,11 +463,11 @@ void __40__MSUAnalytics_copyAppleConnectPersonID__block_invoke(uint64_t a1)
       }
 
       logfunction(", 1, @"Attempting to read serial number\n"", v15, v16, v17, v18, v19, v40);
-      v31 = [(MSUAnalytics *)self copySerialNumber];
-      if (v31)
+      copySerialNumber = [(MSUAnalytics *)self copySerialNumber];
+      if (copySerialNumber)
       {
-        logfunction(", 1, @"Successfully read serial number %@\n"", v26, v27, v28, v29, v30, v31);
-        [v9 setObject:v31 forKeyedSubscript:@"serialNumber"];
+        logfunction(", 1, @"Successfully read serial number %@\n"", v26, v27, v28, v29, v30, copySerialNumber);
+        [v9 setObject:copySerialNumber forKeyedSubscript:@"serialNumber"];
       }
 
       else
@@ -497,14 +497,14 @@ void __40__MSUAnalytics_copyAppleConnectPersonID__block_invoke(uint64_t a1)
   v10 = __Block_byref_object_copy__1;
   v11 = __Block_byref_object_dispose__1;
   v12 = 0;
-  v3 = [(MSUAnalytics *)self mainQueue];
+  mainQueue = [(MSUAnalytics *)self mainQueue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = __33__MSUAnalytics_copyAnalyticsData__block_invoke;
   v6[3] = &unk_1000491A0;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(mainQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);

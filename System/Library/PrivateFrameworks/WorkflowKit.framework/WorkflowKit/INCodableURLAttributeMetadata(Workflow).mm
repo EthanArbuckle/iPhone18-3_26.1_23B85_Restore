@@ -16,8 +16,8 @@
     if (objc_opt_isKindOfClass())
     {
       v10 = [WFVariableString alloc];
-      v11 = [v9 absoluteString];
-      v12 = [(WFVariableString *)v10 initWithString:v11];
+      absoluteString = [v9 absoluteString];
+      v12 = [(WFVariableString *)v10 initWithString:absoluteString];
 
       v13 = [(WFVariableStringParameterState *)[WFURLStringParameterState alloc] initWithVariableString:v12];
       goto LABEL_8;
@@ -39,7 +39,7 @@
     }
   }
 
-  v18.receiver = a1;
+  v18.receiver = self;
   v18.super_class = &off_1F4B058F8;
   v13 = objc_msgSendSuper2(&v18, sel_wf_parameterStateForIntentValue_parameterDefinition_, v9, v7);
 LABEL_8:

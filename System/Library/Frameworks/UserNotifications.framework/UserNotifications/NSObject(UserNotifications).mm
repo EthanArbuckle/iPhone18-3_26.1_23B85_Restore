@@ -11,7 +11,7 @@
     return 0;
   }
 
-  return [a1 BOOLValue];
+  return [self BOOLValue];
 }
 
 @end

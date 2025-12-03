@@ -1,34 +1,34 @@
 @interface VCVideoStreamTransmitter
-- (BOOL)isKeyFrame:(opaqueCMSampleBuffer *)a3;
-- (BOOL)prependSPSPPS:(unint64_t *)a3 dataPointer:(char *)a4 sampleBuffer:(opaqueCMSampleBuffer *)a5;
-- (BOOL)setEncodingMode:(int)a3;
-- (VCVideoStreamTransmitter)initWithConfig:(id)a3;
+- (BOOL)isKeyFrame:(opaqueCMSampleBuffer *)frame;
+- (BOOL)prependSPSPPS:(unint64_t *)s dataPointer:(char *)pointer sampleBuffer:(opaqueCMSampleBuffer *)buffer;
+- (BOOL)setEncodingMode:(int)mode;
+- (VCVideoStreamTransmitter)initWithConfig:(id)config;
 - (__CFDictionary)forceKeyFrameProperties;
-- (int)transmitEncodedVideoFrame:(char *)a3 size:(unint64_t)a4 timestamp:(unsigned int)a5 hostTime:(double)a6 cameraStatusBits:(unsigned __int8)a7;
-- (int)transmitFrameInGroups:(char *)a3 numOfPackets:(int)a4 timestamp:(unsigned int)a5 hostTime:(double)a6 cameraStatusBits:(unsigned __int8)a7;
-- (int)transmitVideoPackets:(const char *)a3 packetSizes:(int *)a4 startPacket:(int)a5 packetCount:(int)a6 lastGroup:(int)a7 timestamp:(unsigned int)a8 hostTime:(double)a9 cameraStatusBits:(unsigned __int8)a10 bytesSent:(int *)a11;
-- (unsigned)setTemporaryMaximumBitrate:(unsigned int)a3;
+- (int)transmitEncodedVideoFrame:(char *)frame size:(unint64_t)size timestamp:(unsigned int)timestamp hostTime:(double)time cameraStatusBits:(unsigned __int8)bits;
+- (int)transmitFrameInGroups:(char *)groups numOfPackets:(int)packets timestamp:(unsigned int)timestamp hostTime:(double)time cameraStatusBits:(unsigned __int8)bits;
+- (int)transmitVideoPackets:(const char *)packets packetSizes:(int *)sizes startPacket:(int)packet packetCount:(int)count lastGroup:(int)group timestamp:(unsigned int)timestamp hostTime:(double)time cameraStatusBits:(unsigned __int8)self0 bytesSent:(int *)self1;
+- (unsigned)setTemporaryMaximumBitrate:(unsigned int)bitrate;
 - (void)dealloc;
-- (void)encodeVideoFrame:(opaqueCMSampleBuffer *)a3;
-- (void)gatherRealtimeStats:(__CFDictionary *)a3;
-- (void)generateKeyFrameWithFIRType:(int)a3;
-- (void)handleActiveConnectionChange:(id)a3;
-- (void)handleThermalLevelChange:(int)a3;
-- (void)initVideoCompressionWithWidth:(unsigned int)a3 height:(unsigned int)a4 bitrate:(unsigned int)a5 keyFrameIntervalDuration:(unsigned int)a6;
-- (void)reportingVideoStreamEvent:(unsigned __int16)a3;
-- (void)setFECRedundancyVector:(id *)a3;
-- (void)setMediaSuggestion:(VCRateControlMediaSuggestion *)a3;
-- (void)setTargetBitrate:(unsigned int)a3;
+- (void)encodeVideoFrame:(opaqueCMSampleBuffer *)frame;
+- (void)gatherRealtimeStats:(__CFDictionary *)stats;
+- (void)generateKeyFrameWithFIRType:(int)type;
+- (void)handleActiveConnectionChange:(id)change;
+- (void)handleThermalLevelChange:(int)change;
+- (void)initVideoCompressionWithWidth:(unsigned int)width height:(unsigned int)height bitrate:(unsigned int)bitrate keyFrameIntervalDuration:(unsigned int)duration;
+- (void)reportingVideoStreamEvent:(unsigned __int16)event;
+- (void)setFECRedundancyVector:(id *)vector;
+- (void)setMediaSuggestion:(VCRateControlMediaSuggestion *)suggestion;
+- (void)setTargetBitrate:(unsigned int)bitrate;
 - (void)startVideo;
 - (void)stopVideo;
-- (void)transmitEncodedVideoFrame:(opaqueCMSampleBuffer *)a3 cameraStatusBits:(unsigned __int8)a4;
-- (void)updateSendStatisticsWithTimestamp:(unsigned int)a3 frameSize:(unsigned int)a4 packetsInFrame:(unsigned int)a5;
-- (void)updateWindowState:(int)a3 isLocal:(BOOL)a4 windowRect:(CGRect)a5;
+- (void)transmitEncodedVideoFrame:(opaqueCMSampleBuffer *)frame cameraStatusBits:(unsigned __int8)bits;
+- (void)updateSendStatisticsWithTimestamp:(unsigned int)timestamp frameSize:(unsigned int)size packetsInFrame:(unsigned int)frame;
+- (void)updateWindowState:(int)state isLocal:(BOOL)local windowRect:(CGRect)rect;
 @end
 
 @implementation VCVideoStreamTransmitter
 
-- (VCVideoStreamTransmitter)initWithConfig:(id)a3
+- (VCVideoStreamTransmitter)initWithConfig:(id)config
 {
   v32 = *MEMORY[0x1E69E9840];
   v25.receiver = self;
@@ -39,7 +39,7 @@
     goto LABEL_24;
   }
 
-  if (!a3)
+  if (!config)
   {
     [VCVideoStreamTransmitter initWithConfig:];
 LABEL_24:
@@ -47,30 +47,30 @@ LABEL_24:
     return 0;
   }
 
-  v4->_videoCodecType = [a3 codecType];
-  v4->_videoSource = [a3 videoSource];
-  if ([a3 framerate] <= 0x3C && objc_msgSend(a3, "framerate"))
+  v4->_videoCodecType = [config codecType];
+  v4->_videoSource = [config videoSource];
+  if ([config framerate] <= 0x3C && objc_msgSend(config, "framerate"))
   {
-    v4->super._targetFramerate = [a3 framerate];
+    v4->super._targetFramerate = [config framerate];
   }
 
-  v4->super._txMaxBitrate = [a3 txMaxBitrate];
-  v4->super._txMinBitrate = [a3 txMinBitrate];
-  v4->super._temporaryMaximumBitrate = [a3 txMinBitrate];
-  if ([a3 videoResolution] == 27)
+  v4->super._txMaxBitrate = [config txMaxBitrate];
+  v4->super._txMinBitrate = [config txMinBitrate];
+  v4->super._temporaryMaximumBitrate = [config txMinBitrate];
+  if ([config videoResolution] == 27)
   {
-    v4->super._encodingWidth = [a3 customWidth];
-    v5 = [a3 customHeight];
+    v4->super._encodingWidth = [config customWidth];
+    customHeight = [config customHeight];
   }
 
   else
   {
-    +[VideoUtil sizeForVideoResolution:](VideoUtil, "sizeForVideoResolution:", [a3 videoResolution]);
+    +[VideoUtil sizeForVideoResolution:](VideoUtil, "sizeForVideoResolution:", [config videoResolution]);
     v4->super._encodingWidth = v6;
-    v5 = v7;
+    customHeight = v7;
   }
 
-  v4->super._encodingHeight = v5;
+  v4->super._encodingHeight = customHeight;
   if (VRTraceGetErrorLogLevelForModule() >= 7)
   {
     v8 = VRTraceErrorLogLevelToCSTR();
@@ -95,13 +95,13 @@ LABEL_24:
 
   v4->_stats = objc_alloc_init(VCMediaStreamStats);
   pthread_mutex_init(&v4->_xMBs, 0);
-  v4->_recommendedMTU = [a3 recommendedMTU];
-  v4->_statisticsCollector = [a3 statisticsCollector];
-  v4->_keyFrameIntervalDuration = [a3 keyFrameInterval];
+  v4->_recommendedMTU = [config recommendedMTU];
+  v4->_statisticsCollector = [config statisticsCollector];
+  v4->_keyFrameIntervalDuration = [config keyFrameInterval];
   v12 = [VCVideoRule alloc];
   v13 = v4->super._encodingWidth;
   v14 = v4->super._encodingHeight;
-  *&v15 = [a3 framerate];
+  *&v15 = [config framerate];
   v4->super._videoRule = [(VCVideoRule *)v12 initWithFrameWidth:v13 frameHeight:v14 frameRate:v15];
   v4->_dwRefreshFrameCounter = 0;
   CustomRootQueue = VCDispatchQueue_GetCustomRootQueue(37);
@@ -114,7 +114,7 @@ LABEL_24:
     goto LABEL_24;
   }
 
-  PacketAllocator = VTU_CreatePacketAllocator([a3 recommendedMTU], v17, &v4->_videoPacketAllocator);
+  PacketAllocator = VTU_CreatePacketAllocator([config recommendedMTU], v17, &v4->_videoPacketAllocator);
   if (PacketAllocator)
   {
     [VCVideoStreamTransmitter initWithConfig:?];
@@ -133,11 +133,11 @@ LABEL_24:
   [(VCVideoStreamTransmitter *)v4 generateKeyFrameWithFIRType:0];
   v4->_forceDisableBitrateCap = [+[VCDefaults sharedInstance](VCDefaults forceVideoStreamDisableBitrateCap];
   reportingAgent = v4->_reportingAgent;
-  v22 = [a3 reportingAgent];
-  v4->_reportingAgent = v22;
-  if (v22)
+  reportingAgent = [config reportingAgent];
+  v4->_reportingAgent = reportingAgent;
+  if (reportingAgent)
   {
-    CFRetain(v22);
+    CFRetain(reportingAgent);
   }
 
   if (reportingAgent)
@@ -146,20 +146,20 @@ LABEL_24:
   }
 
   v4->_reportingModuleID = VCReporting_GetDynamicReportingModuleID();
-  [a3 reportingParentID];
+  [config reportingParentID];
   reportingInheritModuleSpecificInfoFromParent();
-  v4->_enableCVO = [a3 enableCVO];
-  v4->_cvoExtensionID = [a3 cvoExtensionID];
+  v4->_enableCVO = [config enableCVO];
+  v4->_cvoExtensionID = [config cvoExtensionID];
   v4->super._controlInfoGenerator = VCMediaControlInfoGeneratorCreateWithType(2);
-  v4->_videoRTP = *[a3 streamConfigs];
+  v4->_videoRTP = *[config streamConfigs];
   v4->super._timestamp = 0;
   CMTimeMake(&buf, 0, 90000);
   v23 = *&buf.value;
   v4->super._latestSampleBufferTimestamp.epoch = buf.epoch;
   *&v4->super._latestSampleBufferTimestamp.value = v23;
   v4->_encodingArgPool = VCMemoryPool_CreateTyped(0x1E0uLL, 0x1070040FE648622);
-  v4->_tilesPerFrame = [a3 tilesPerFrame];
-  v4->super._profileLevel = [a3 profileLevel];
+  v4->_tilesPerFrame = [config tilesPerFrame];
+  v4->super._profileLevel = [config profileLevel];
   v4->super._realtimeSPI.enqueueVideoFrame = VCVideoStreamTransmitter_EnqueueVideoFrame;
   v4->super._realtimeSPI.setFECRatio = VCVideoStreamTransmitter_SetFECRatio;
   v4->super._realtimeSPI.setMediaQueueSize = VCVideoStreamTransmitter_SetMediaQueueSize;
@@ -290,7 +290,7 @@ intptr_t __37__VCVideoStreamTransmitter_stopVideo__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)generateKeyFrameWithFIRType:(int)a3
+- (void)generateKeyFrameWithFIRType:(int)type
 {
   v4 = 0;
   v19 = *MEMORY[0x1E69E9840];
@@ -312,7 +312,7 @@ intptr_t __37__VCVideoStreamTransmitter_stopVideo__block_invoke(uint64_t a1)
         v15 = 1024;
         v16 = 281;
         v17 = 1024;
-        v18 = a3;
+        typeCopy2 = type;
         v9 = " [%s] %s:%d key frame requested for next pixel buffer, FIRType %d.";
 LABEL_8:
         _os_log_impl(&dword_1DB56E000, v8, OS_LOG_TYPE_DEFAULT, v9, &v11, 0x22u);
@@ -333,14 +333,14 @@ LABEL_8:
       v15 = 1024;
       v16 = 283;
       v17 = 1024;
-      v18 = a3;
+      typeCopy2 = type;
       v9 = " [%s] %s:%d key frame was already requested, FIRType: %d";
       goto LABEL_8;
     }
   }
 }
 
-- (unsigned)setTemporaryMaximumBitrate:(unsigned int)a3
+- (unsigned)setTemporaryMaximumBitrate:(unsigned int)bitrate
 {
   v8 = *MEMORY[0x1E69E9840];
   transmitterQueue = self->_transmitterQueue;
@@ -349,7 +349,7 @@ LABEL_8:
   block[2] = __55__VCVideoStreamTransmitter_setTemporaryMaximumBitrate___block_invoke;
   block[3] = &unk_1E85F38B8;
   block[4] = self;
-  v7 = a3;
+  bitrateCopy = bitrate;
   dispatch_sync(transmitterQueue, block);
   return self->super._temporaryMaximumBitrate;
 }
@@ -406,16 +406,16 @@ void __55__VCVideoStreamTransmitter_setTemporaryMaximumBitrate___block_invoke(ui
   }
 }
 
-- (void)setTargetBitrate:(unsigned int)a3
+- (void)setTargetBitrate:(unsigned int)bitrate
 {
-  if (self->super._temporaryMaximumBitrate >= a3 && self->super._txMaxBitrate >= a3 && self->super._txMinBitrate <= a3)
+  if (self->super._temporaryMaximumBitrate >= bitrate && self->super._txMaxBitrate >= bitrate && self->super._txMinBitrate <= bitrate)
   {
-    self->super._targetBitrate = a3;
+    self->super._targetBitrate = bitrate;
     [(VCVideoStreamTransmitter *)self setTemporaryMaximumBitrate:?];
   }
 }
 
-- (void)setFECRedundancyVector:(id *)a3
+- (void)setFECRedundancyVector:(id *)vector
 {
   if (VRTraceGetErrorLogLevelForModule() >= 3)
   {
@@ -427,7 +427,7 @@ void __55__VCVideoStreamTransmitter_setTemporaryMaximumBitrate___block_invoke(ui
   }
 }
 
-- (void)setMediaSuggestion:(VCRateControlMediaSuggestion *)a3
+- (void)setMediaSuggestion:(VCRateControlMediaSuggestion *)suggestion
 {
   if (VRTraceGetErrorLogLevelForModule() >= 3)
   {
@@ -439,7 +439,7 @@ void __55__VCVideoStreamTransmitter_setTemporaryMaximumBitrate___block_invoke(ui
   }
 }
 
-- (BOOL)setEncodingMode:(int)a3
+- (BOOL)setEncodingMode:(int)mode
 {
   if (VRTraceGetErrorLogLevelForModule() >= 3)
   {
@@ -453,7 +453,7 @@ void __55__VCVideoStreamTransmitter_setTemporaryMaximumBitrate___block_invoke(ui
   return 0;
 }
 
-- (void)handleThermalLevelChange:(int)a3
+- (void)handleThermalLevelChange:(int)change
 {
   if (VRTraceGetErrorLogLevelForModule() >= 3)
   {
@@ -465,7 +465,7 @@ void __55__VCVideoStreamTransmitter_setTemporaryMaximumBitrate___block_invoke(ui
   }
 }
 
-- (void)updateWindowState:(int)a3 isLocal:(BOOL)a4 windowRect:(CGRect)a5
+- (void)updateWindowState:(int)state isLocal:(BOOL)local windowRect:(CGRect)rect
 {
   if (VRTraceGetErrorLogLevelForModule() >= 3)
   {
@@ -477,7 +477,7 @@ void __55__VCVideoStreamTransmitter_setTemporaryMaximumBitrate___block_invoke(ui
   }
 }
 
-- (void)initVideoCompressionWithWidth:(unsigned int)a3 height:(unsigned int)a4 bitrate:(unsigned int)a5 keyFrameIntervalDuration:(unsigned int)a6
+- (void)initVideoCompressionWithWidth:(unsigned int)width height:(unsigned int)height bitrate:(unsigned int)bitrate keyFrameIntervalDuration:(unsigned int)duration
 {
   v24 = *MEMORY[0x1E69E9840];
   v10 = 0u;
@@ -494,13 +494,13 @@ void __55__VCVideoStreamTransmitter_setTemporaryMaximumBitrate___block_invoke(ui
   v12 = 0u;
   v11 = 0u;
   v9 = 0u;
-  v7[0] = a3;
-  v7[1] = a4;
-  LODWORD(v10) = a5;
-  LODWORD(v8) = a6;
+  v7[0] = width;
+  v7[1] = height;
+  LODWORD(v10) = bitrate;
+  LODWORD(v8) = duration;
   v15 = encoderFrameCallback;
-  v16 = self;
-  HIDWORD(v16) = self->_tilesPerFrame;
+  selfCopy = self;
+  HIDWORD(selfCopy) = self->_tilesPerFrame;
   *(&v17 + 1) = self->super._profileLevel;
   p_encoder = &self->_encoder;
   VCVideoEncoderVTInitialize(&self->_encoder);
@@ -526,21 +526,21 @@ void __55__VCVideoStreamTransmitter_setTemporaryMaximumBitrate___block_invoke(ui
   return CFDictionaryCreate(0, keys, &values, 1, MEMORY[0x1E695E9D8], MEMORY[0x1E695E9E8]);
 }
 
-- (void)encodeVideoFrame:(opaqueCMSampleBuffer *)a3
+- (void)encodeVideoFrame:(opaqueCMSampleBuffer *)frame
 {
   v15 = *MEMORY[0x1E69E9840];
-  ImageBuffer = CMSampleBufferGetImageBuffer(a3);
+  ImageBuffer = CMSampleBufferGetImageBuffer(frame);
   if (ImageBuffer)
   {
     v6 = ImageBuffer;
-    v7 = [(VCVideoStreamTransmitter *)self forceKeyFrameProperties];
+    forceKeyFrameProperties = [(VCVideoStreamTransmitter *)self forceKeyFrameProperties];
     valuePtr = -1431655766;
-    v8 = CMGetAttachment(a3, @"cameraStatusBits", 0);
+    v8 = CMGetAttachment(frame, @"cameraStatusBits", 0);
     CFNumberGetValue(v8, kCFNumberSInt32Type, &valuePtr);
     v9 = VCMemoryPool_Alloc(self->_encodingArgPool);
     *(v9 + 11) = v6;
-    *(v9 + 41) = v7;
-    CMSampleBufferGetOutputPresentationTimeStamp(&v13, a3);
+    *(v9 + 41) = forceKeyFrameProperties;
+    CMSampleBufferGetOutputPresentationTimeStamp(&v13, frame);
     *(v9 + 300) = v13;
     v9[336] = valuePtr;
     encoderHandle = self->_encoder.encoderHandle;
@@ -549,9 +549,9 @@ void __55__VCVideoStreamTransmitter_setTemporaryMaximumBitrate___block_invoke(ui
       VCMemoryPool_Free(self->_encodingArgPool, v9);
     }
 
-    if (v7)
+    if (forceKeyFrameProperties)
     {
-      CFRelease(v7);
+      CFRelease(forceKeyFrameProperties);
     }
   }
 
@@ -565,10 +565,10 @@ void __55__VCVideoStreamTransmitter_setTemporaryMaximumBitrate___block_invoke(ui
   }
 }
 
-- (BOOL)prependSPSPPS:(unint64_t *)a3 dataPointer:(char *)a4 sampleBuffer:(opaqueCMSampleBuffer *)a5
+- (BOOL)prependSPSPPS:(unint64_t *)s dataPointer:(char *)pointer sampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
   v26 = *MEMORY[0x1E69E9840];
-  bufferSize = *a3 + 400;
+  bufferSize = *s + 400;
   buffer = self->_buffer;
   if (self->_bufferSize >= bufferSize)
   {
@@ -588,9 +588,9 @@ void __55__VCVideoStreamTransmitter_setTemporaryMaximumBitrate___block_invoke(ui
     buffer = v11;
     self->_bufferSize = bufferSize;
 LABEL_7:
-    SPSPPSFromSampleBuffer = VideoUtil_ExtractSPSPPSFromSampleBuffer(a5, buffer, bufferSize);
-    memcpy(&self->_buffer[SPSPPSFromSampleBuffer], a4, *a3);
-    *a3 += SPSPPSFromSampleBuffer;
+    SPSPPSFromSampleBuffer = VideoUtil_ExtractSPSPPSFromSampleBuffer(buffer, buffer, bufferSize);
+    memcpy(&self->_buffer[SPSPPSFromSampleBuffer], pointer, *s);
+    *s += SPSPPSFromSampleBuffer;
     LOBYTE(v13) = 1;
     return v13;
   }
@@ -621,10 +621,10 @@ LABEL_7:
   return v13;
 }
 
-- (BOOL)isKeyFrame:(opaqueCMSampleBuffer *)a3
+- (BOOL)isKeyFrame:(opaqueCMSampleBuffer *)frame
 {
   BOOLean[1] = *MEMORY[0x1E69E9840];
-  SampleAttachmentsArray = CMSampleBufferGetSampleAttachmentsArray(a3, 0);
+  SampleAttachmentsArray = CMSampleBufferGetSampleAttachmentsArray(frame, 0);
   Count = CFArrayGetCount(SampleAttachmentsArray);
   if (Count)
   {
@@ -644,20 +644,20 @@ LABEL_7:
   return Count;
 }
 
-- (void)transmitEncodedVideoFrame:(opaqueCMSampleBuffer *)a3 cameraStatusBits:(unsigned __int8)a4
+- (void)transmitEncodedVideoFrame:(opaqueCMSampleBuffer *)frame cameraStatusBits:(unsigned __int8)bits
 {
   v44 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!frame)
   {
     return;
   }
 
-  v4 = a4;
+  bitsCopy = bits;
   dataPointerOut = 0;
-  SampleSize = CMSampleBufferGetSampleSize(a3, 0);
+  SampleSize = CMSampleBufferGetSampleSize(frame, 0);
   if (SampleSize)
   {
-    DataBuffer = CMSampleBufferGetDataBuffer(a3);
+    DataBuffer = CMSampleBufferGetDataBuffer(frame);
     if (DataBuffer)
     {
       if (CMBlockBufferGetDataPointer(DataBuffer, 0, 0, 0, &dataPointerOut) && VRTraceGetErrorLogLevelForModule() >= 8)
@@ -687,7 +687,7 @@ LABEL_7:
     }
   }
 
-  v11 = [(VCVideoStreamTransmitter *)self isKeyFrame:a3];
+  v11 = [(VCVideoStreamTransmitter *)self isKeyFrame:frame];
   if (!dataPointerOut)
   {
     [VCVideoStreamTransmitter transmitEncodedVideoFrame:cameraStatusBits:];
@@ -702,7 +702,7 @@ LABEL_7:
   }
 
   memset(&v33, 170, sizeof(v33));
-  CMSampleBufferGetPresentationTimeStamp(&v33, a3);
+  CMSampleBufferGetPresentationTimeStamp(&v33, frame);
   p_latestSampleBufferTimestamp = &self->super._latestSampleBufferTimestamp;
   value = self->super._latestSampleBufferTimestamp.value;
   if (value)
@@ -735,9 +735,9 @@ LABEL_7:
   *&buf.value = v17;
   buf.epoch = v18;
   Seconds = CMTimeGetSeconds(&buf);
-  if (self->_enableCVO && ((lastCameraStatusBits = self->_lastCameraStatusBits, (lastCameraStatusBits & 0x80u) == 0) ? (v21 = lastCameraStatusBits == v4) : (v21 = 0), v21 ? (v22 = 0) : (v22 = 1), ((v22 | v12) & 1) != 0))
+  if (self->_enableCVO && ((lastCameraStatusBits = self->_lastCameraStatusBits, (lastCameraStatusBits & 0x80u) == 0) ? (v21 = lastCameraStatusBits == bitsCopy) : (v21 = 0), v21 ? (v22 = 0) : (v22 = 1), ((v22 | v12) & 1) != 0))
   {
-    self->_lastCameraStatusBits = v4;
+    self->_lastCameraStatusBits = bitsCopy;
     if (!v12)
     {
 LABEL_26:
@@ -748,7 +748,7 @@ LABEL_26:
 
   else
   {
-    v4 = 0;
+    bitsCopy = 0;
     if (!v12)
     {
       goto LABEL_26;
@@ -757,7 +757,7 @@ LABEL_26:
 
   p_dataPointerOut = &self->_buffer;
 LABEL_29:
-  v24 = [(VCVideoStreamTransmitter *)self transmitEncodedVideoFrame:*p_dataPointerOut size:SampleSize timestamp:self->super._timestamp hostTime:v4 cameraStatusBits:Seconds];
+  v24 = [(VCVideoStreamTransmitter *)self transmitEncodedVideoFrame:*p_dataPointerOut size:SampleSize timestamp:self->super._timestamp hostTime:bitsCopy cameraStatusBits:Seconds];
   if (v24 < 0)
   {
     v27 = v24;
@@ -807,11 +807,11 @@ LABEL_29:
   }
 }
 
-- (int)transmitEncodedVideoFrame:(char *)a3 size:(unint64_t)a4 timestamp:(unsigned int)a5 hostTime:(double)a6 cameraStatusBits:(unsigned __int8)a7
+- (int)transmitEncodedVideoFrame:(char *)frame size:(unint64_t)size timestamp:(unsigned int)timestamp hostTime:(double)time cameraStatusBits:(unsigned __int8)bits
 {
-  v7 = a7;
-  v8 = *&a5;
-  v9 = a4;
+  bitsCopy = bits;
+  v8 = *&timestamp;
+  sizeCopy = size;
   v24[3] = *MEMORY[0x1E69E9840];
   memset(v24, 170, 20);
   *&v13 = 0xAAAAAAAAAAAAAAAALL;
@@ -874,10 +874,10 @@ LABEL_29:
     }
 
     ptr = 0xAAAAAAAAAAAAAAAALL;
-    v18 = VTU_SplitVideoIntoPackets(v21, 123, a3, v9, &ptr, 0, 0, 1, 0, 0, temporaryMaximumBitrate, 0);
+    v18 = VTU_SplitVideoIntoPackets(v21, 123, frame, sizeCopy, &ptr, 0, 0, 1, 0, 0, temporaryMaximumBitrate, 0);
     if (v18)
     {
-      v17 = [(VCVideoStreamTransmitter *)self transmitFrameInGroups:ptr numOfPackets:v18 timestamp:v8 hostTime:v7 cameraStatusBits:a6];
+      v17 = [(VCVideoStreamTransmitter *)self transmitFrameInGroups:ptr numOfPackets:v18 timestamp:v8 hostTime:bitsCopy cameraStatusBits:time];
     }
 
     else
@@ -894,7 +894,7 @@ LABEL_29:
       v17 = -2147418105;
     }
 
-    if (ptr && ptr != a3)
+    if (ptr && ptr != frame)
     {
       CFAllocatorDeallocate(self->_videoPacketAllocator, ptr);
     }
@@ -903,11 +903,11 @@ LABEL_29:
   return v17;
 }
 
-- (int)transmitFrameInGroups:(char *)a3 numOfPackets:(int)a4 timestamp:(unsigned int)a5 hostTime:(double)a6 cameraStatusBits:(unsigned __int8)a7
+- (int)transmitFrameInGroups:(char *)groups numOfPackets:(int)packets timestamp:(unsigned int)timestamp hostTime:(double)time cameraStatusBits:(unsigned __int8)bits
 {
   v38 = *MEMORY[0x1E69E9840];
   v23 = 0;
-  if (a4 < 1)
+  if (packets < 1)
   {
     v13 = 0;
     v16 = 0;
@@ -916,13 +916,13 @@ LABEL_29:
 
   else
   {
-    v9 = a4;
+    packetsCopy = packets;
     v11 = 0;
     v12 = 0;
     LODWORD(v13) = 0;
     do
     {
-      if (v9 == 9)
+      if (packetsCopy == 9)
       {
         v14 = 5;
       }
@@ -932,19 +932,19 @@ LABEL_29:
         v14 = 8;
       }
 
-      if (v9 >= 8)
+      if (packetsCopy >= 8)
       {
         v15 = v14;
       }
 
       else
       {
-        v15 = v9;
+        v15 = packetsCopy;
       }
 
-      v9 -= v15;
-      LOBYTE(v19) = a7;
-      v16 = [(VCVideoStreamTransmitter *)self transmitVideoPackets:&a3[v13] packetSizes:self->_packetSizes startPacket:v12 packetCount:v15 lastGroup:v9 < 1 timestamp:a5 hostTime:a6 cameraStatusBits:v19 bytesSent:&v23];
+      packetsCopy -= v15;
+      LOBYTE(v19) = bits;
+      v16 = [(VCVideoStreamTransmitter *)self transmitVideoPackets:&groups[v13] packetSizes:self->_packetSizes startPacket:v12 packetCount:v15 lastGroup:packetsCopy < 1 timestamp:timestamp hostTime:time cameraStatusBits:v19 bytesSent:&v23];
       if (v16 < 0 && VRTraceGetErrorLogLevelForModule() >= 3)
       {
         v20 = VRTraceErrorLogLevelToCSTR();
@@ -974,38 +974,38 @@ LABEL_29:
       ++v11;
     }
 
-    while (v9 > 0);
+    while (packetsCopy > 0);
   }
 
   [(VCMediaStreamStats *)self->_stats recordDataWithSize:v13 atTime:micro()];
-  [(VCVideoStreamTransmitter *)self updateSendStatisticsWithTimestamp:a5 frameSize:v13 packetsInFrame:v12];
+  [(VCVideoStreamTransmitter *)self updateSendStatisticsWithTimestamp:timestamp frameSize:v13 packetsInFrame:v12];
   return v16;
 }
 
-- (int)transmitVideoPackets:(const char *)a3 packetSizes:(int *)a4 startPacket:(int)a5 packetCount:(int)a6 lastGroup:(int)a7 timestamp:(unsigned int)a8 hostTime:(double)a9 cameraStatusBits:(unsigned __int8)a10 bytesSent:(int *)a11
+- (int)transmitVideoPackets:(const char *)packets packetSizes:(int *)sizes startPacket:(int)packet packetCount:(int)count lastGroup:(int)group timestamp:(unsigned int)timestamp hostTime:(double)time cameraStatusBits:(unsigned __int8)self0 bytesSent:(int *)self1
 {
   v29[1] = *MEMORY[0x1E69E9840];
-  *a11 = 0;
-  if (a6 < 1)
+  *sent = 0;
+  if (count < 1)
   {
     return 0;
   }
 
   v13 = 0;
   v14 = -2147418092;
-  v24 = 4 * (a6 - 1);
-  v23 = 4 * a6;
-  v15 = &a4[a5];
+  v24 = 4 * (count - 1);
+  v23 = 4 * count;
+  v15 = &sizes[packet];
   while (1)
   {
     ControlInfo = 0;
     v17 = v15[v13 / 4];
-    v18 = a7 && v24 == v13;
+    v18 = group && v24 == v13;
     v19 = v18;
     v29[0] = 0xAAAAAAAAAAAAAAAALL;
-    if ((a10 & 0x80) != 0 && self->_enableCVO && v19)
+    if ((bits & 0x80) != 0 && self->_enableCVO && v19)
     {
-      VCCVOExtensionUtils_FillCVOExtension(a10, self->_cvoExtensionID, v29);
+      VCCVOExtensionUtils_FillCVOExtension(bits, self->_cvoExtensionID, v29);
       controlInfoGenerator = self->super._controlInfoGenerator;
       if (controlInfoGenerator)
       {
@@ -1020,13 +1020,13 @@ LABEL_29:
     }
 
     v28 = 0;
-    v21 = RTPSendH264Packet(self->_videoRTP, 123, 1u, v19, a8, &a3[*a11], v17, &v28, a9, 0, 0, v13 == 0, 0, a10, 0, 0, 0, self->_dwRefreshFrameCounter, ControlInfo, 0, 0, 0, 0);
+    v21 = RTPSendH264Packet(self->_videoRTP, 123, 1u, v19, timestamp, &packets[*sent], v17, &v28, time, 0, 0, v13 == 0, 0, bits, 0, 0, 0, self->_dwRefreshFrameCounter, ControlInfo, 0, 0, 0, 0);
     if (v21 == -2147418092)
     {
       break;
     }
 
-    *a11 += v15[v13 / 4];
+    *sent += v15[v13 / 4];
     v13 += 4;
     if (v23 == v13)
     {
@@ -1038,11 +1038,11 @@ LABEL_29:
   return v14;
 }
 
-- (void)updateSendStatisticsWithTimestamp:(unsigned int)a3 frameSize:(unsigned int)a4 packetsInFrame:(unsigned int)a5
+- (void)updateSendStatisticsWithTimestamp:(unsigned int)timestamp frameSize:(unsigned int)size packetsInFrame:(unsigned int)frame
 {
   v26 = *MEMORY[0x1E69E9840];
-  self->_totalBytesSent += a4;
-  self->_totalPacketsSent += a5;
+  self->_totalBytesSent += size;
+  self->_totalPacketsSent += frame;
   v25 = 0;
   v24 = 0u;
   v23 = 0u;
@@ -1061,13 +1061,13 @@ LABEL_29:
   v11[0] = 6;
   *&v11[1] = v7;
   v11[2] = 0;
-  v12 = a3 >> 8;
+  v12 = timestamp >> 8;
   v13 = totalPacketsSent;
   v14 = totalBytesSent;
   VCRateControlSetStatistics(statisticsCollector, v11);
 }
 
-- (void)gatherRealtimeStats:(__CFDictionary *)a3
+- (void)gatherRealtimeStats:(__CFDictionary *)stats
 {
   v37 = *MEMORY[0x1E69E9840];
   v4 = selectDestinationForRTMetrics();
@@ -1088,7 +1088,7 @@ LABEL_29:
       {
         [(VCMediaStreamStats *)self->_stats framerate];
         v9 = v8;
-        v10 = [(VCMediaStreamStats *)self->_stats bitrateKbps];
+        bitrateKbps = [(VCMediaStreamStats *)self->_stats bitrateKbps];
         *buf = 136316162;
         v28 = v6;
         v29 = 2080;
@@ -1098,7 +1098,7 @@ LABEL_29:
         v33 = 2048;
         v34 = v9;
         v35 = 1024;
-        v36 = v10;
+        v36 = bitrateKbps;
         _os_log_impl(&dword_1DB56E000, v7, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d VideoStreamStats - Tx - framerate:%f, bitrate:%dkbps", buf, 0x2Cu);
       }
     }
@@ -1171,12 +1171,12 @@ LABEL_29:
   }
 }
 
-- (void)reportingVideoStreamEvent:(unsigned __int16)a3
+- (void)reportingVideoStreamEvent:(unsigned __int16)event
 {
-  v3 = a3;
+  eventCopy = event;
   v5 = *MEMORY[0x1E695E480];
   Mutable = CFDictionaryCreateMutable(*MEMORY[0x1E695E480], 0, MEMORY[0x1E695E9D8], MEMORY[0x1E695E9E8]);
-  if (v3 == 228)
+  if (eventCopy == 228)
   {
     v7 = CFStringCreateWithFormat(v5, 0, @"%zu", self->_lastKeyFrameSampleBufferSize);
     CFDictionaryAddValue(Mutable, @"VCVSKeyFrameSize", v7);
@@ -1188,7 +1188,7 @@ LABEL_29:
   CFRelease(Mutable);
 }
 
-- (void)handleActiveConnectionChange:(id)a3
+- (void)handleActiveConnectionChange:(id)change
 {
   v11 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 5)

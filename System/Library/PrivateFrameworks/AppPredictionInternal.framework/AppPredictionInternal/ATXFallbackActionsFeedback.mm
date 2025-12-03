@@ -1,8 +1,8 @@
 @interface ATXFallbackActionsFeedback
 + (id)sharedInstance;
 - (id)clientModelIds;
-- (void)receiveUIFeedbackResult:(id)a3;
-- (void)receiveUIFeedbackResult:(id)a3 histogramManager:(id)a4;
+- (void)receiveUIFeedbackResult:(id)result;
+- (void)receiveUIFeedbackResult:(id)result histogramManager:(id)manager;
 @end
 
 @implementation ATXFallbackActionsFeedback
@@ -38,45 +38,45 @@ void __44__ATXFallbackActionsFeedback_sharedInstance__block_invoke()
   return v4;
 }
 
-- (void)receiveUIFeedbackResult:(id)a3
+- (void)receiveUIFeedbackResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v5 = +[_ATXAppLaunchHistogramManager sharedInstance];
-  [(ATXFallbackActionsFeedback *)self receiveUIFeedbackResult:v4 histogramManager:v5];
+  [(ATXFallbackActionsFeedback *)self receiveUIFeedbackResult:resultCopy histogramManager:v5];
 }
 
-- (void)receiveUIFeedbackResult:(id)a3 histogramManager:(id)a4
+- (void)receiveUIFeedbackResult:(id)result histogramManager:(id)manager
 {
   v74 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 histogramForLaunchType:90];
-  v49 = v7;
-  v9 = [v7 histogramForLaunchType:91];
-  v10 = [v6 context];
-  if (v10 && (v11 = v10, [v6 context], v12 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v12, v11, (isKindOfClass & 1) != 0))
+  resultCopy = result;
+  managerCopy = manager;
+  v8 = [managerCopy histogramForLaunchType:90];
+  v49 = managerCopy;
+  v9 = [managerCopy histogramForLaunchType:91];
+  context = [resultCopy context];
+  if (context && (v11 = context, [resultCopy context], v12 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v12, v11, (isKindOfClass & 1) != 0))
   {
-    v14 = [v6 context];
-    v15 = [v14 timeContext];
-    v16 = [v15 date];
+    context2 = [resultCopy context];
+    timeContext = [context2 timeContext];
+    date = [timeContext date];
   }
 
   else
   {
-    v16 = objc_opt_new();
-    v14 = __atxlog_handle_feedback();
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_FAULT))
+    date = objc_opt_new();
+    context2 = __atxlog_handle_feedback();
+    if (os_log_type_enabled(context2, OS_LOG_TYPE_FAULT))
     {
-      [(ATXFallbackActionsFeedback *)self receiveUIFeedbackResult:v6 histogramManager:v14];
+      [(ATXFallbackActionsFeedback *)self receiveUIFeedbackResult:resultCopy histogramManager:context2];
     }
   }
 
-  v17 = [v6 shownSuggestions];
-  v18 = [_ATXActionUtils atxActionsFromProactiveSuggestions:v17];
+  shownSuggestions = [resultCopy shownSuggestions];
+  v18 = [_ATXActionUtils atxActionsFromProactiveSuggestions:shownSuggestions];
   v19 = [v18 mutableCopy];
 
-  v20 = [v6 engagedSuggestions];
-  v21 = [_ATXActionUtils atxActionsFromProactiveSuggestions:v20];
+  engagedSuggestions = [resultCopy engagedSuggestions];
+  v21 = [_ATXActionUtils atxActionsFromProactiveSuggestions:engagedSuggestions];
 
   v61 = 0u;
   v62 = 0u;
@@ -98,9 +98,9 @@ void __44__ATXFallbackActionsFeedback_sharedInstance__block_invoke()
           objc_enumerationMutation(v22);
         }
 
-        v27 = [*(*(&v59 + 1) + 8 * v26) actionKey];
+        actionKey = [*(*(&v59 + 1) + 8 * v26) actionKey];
         LODWORD(v28) = 1.0;
-        [v8 addLaunchWithBundleId:v27 date:v16 timeZone:0 weight:v28];
+        [v8 addLaunchWithBundleId:actionKey date:date timeZone:0 weight:v28];
 
         ++v26;
       }
@@ -113,9 +113,9 @@ void __44__ATXFallbackActionsFeedback_sharedInstance__block_invoke()
   }
 
   [v19 removeObjectsInArray:v22];
-  v50 = v6;
-  v29 = [v6 rejectedSuggestions];
-  v30 = [_ATXActionUtils atxActionsFromProactiveSuggestions:v29];
+  v50 = resultCopy;
+  rejectedSuggestions = [resultCopy rejectedSuggestions];
+  v30 = [_ATXActionUtils atxActionsFromProactiveSuggestions:rejectedSuggestions];
 
   v57 = 0u;
   v58 = 0u;
@@ -137,9 +137,9 @@ void __44__ATXFallbackActionsFeedback_sharedInstance__block_invoke()
           objc_enumerationMutation(v31);
         }
 
-        v36 = [*(*(&v55 + 1) + 8 * v35) actionKey];
+        actionKey2 = [*(*(&v55 + 1) + 8 * v35) actionKey];
         LODWORD(v37) = 3.0;
-        [v9 addLaunchWithBundleId:v36 date:v16 timeZone:0 weight:v37];
+        [v9 addLaunchWithBundleId:actionKey2 date:date timeZone:0 weight:v37];
 
         ++v35;
       }
@@ -172,9 +172,9 @@ void __44__ATXFallbackActionsFeedback_sharedInstance__block_invoke()
           objc_enumerationMutation(v38);
         }
 
-        v43 = [*(*(&v51 + 1) + 8 * v42) actionKey];
+        actionKey3 = [*(*(&v51 + 1) + 8 * v42) actionKey];
         LODWORD(v44) = 1.0;
-        [v9 addLaunchWithBundleId:v43 date:v16 timeZone:0 weight:v44];
+        [v9 addLaunchWithBundleId:actionKey3 date:date timeZone:0 weight:v44];
 
         ++v42;
       }

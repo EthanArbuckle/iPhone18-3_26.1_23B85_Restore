@@ -1,14 +1,14 @@
 @interface ISURLBagCache
-+ (id)URLWithBagContext:(id)a3;
++ (id)URLWithBagContext:(id)context;
 + (id)sharedCache;
 - (ISURLBagCache)init;
-- (id)URLBagForContext:(id)a3;
-- (id)_newRequestWithURLBagContext:(id)a3;
-- (void)_storeFrontChangedNotification:(id)a3;
-- (void)addURLBag:(id)a3;
+- (id)URLBagForContext:(id)context;
+- (id)_newRequestWithURLBagContext:(id)context;
+- (void)_storeFrontChangedNotification:(id)notification;
+- (void)addURLBag:(id)bag;
 - (void)dealloc;
 - (void)invalidateAllURLBags;
-- (void)invalidateURLBagForContext:(id)a3;
+- (void)invalidateURLBagForContext:(id)context;
 @end
 
 @implementation ISURLBagCache
@@ -29,8 +29,8 @@
     dispatchQueue = v2->_dispatchQueue;
     v2->_dispatchQueue = v6;
 
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v8 addObserver:v2 selector:sel__storeFrontChangedNotification_ name:*MEMORY[0x277D69E18] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__storeFrontChangedNotification_ name:*MEMORY[0x277D69E18] object:0];
     if ((SSIsDaemon() & 1) == 0)
     {
       DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
@@ -43,8 +43,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277D69E18] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D69E18] object:0];
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterRemoveObserver(DarwinNotifyCenter, self, *MEMORY[0x277D6A6F0], 0);
 
@@ -59,7 +59,7 @@
   block[1] = 3221225472;
   block[2] = __28__ISURLBagCache_sharedCache__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedCache_sOnce != -1)
   {
     dispatch_once(&sharedCache_sOnce, block);
@@ -77,12 +77,12 @@ uint64_t __28__ISURLBagCache_sharedCache__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)URLWithBagContext:(id)a3
++ (id)URLWithBagContext:(id)context
 {
   v37 = *MEMORY[0x277D85DE8];
-  v3 = [a3 bagType];
+  bagType = [context bagType];
   v4 = *MEMORY[0x277D6A708];
-  if (v3 == 1)
+  if (bagType == 1)
   {
     v5 = CFPreferencesCopyAppValue(@"SandboxSessionURL", v4);
     objc_opt_class();
@@ -108,9 +108,9 @@ LABEL_5:
 LABEL_7:
   v7 = [(__CFString *)v6 mutableCopy];
 
-  v8 = [MEMORY[0x277D69A80] currentDevice];
-  v9 = [v8 productVersion];
-  v10 = [v9 componentsSeparatedByString:@"."];
+  currentDevice = [MEMORY[0x277D69A80] currentDevice];
+  productVersion = [currentDevice productVersion];
+  v10 = [productVersion componentsSeparatedByString:@"."];
 
   if ([v10 count])
   {
@@ -118,38 +118,38 @@ LABEL_7:
     [v7 appendFormat:@"&%@=%@", @"os", v11];
   }
 
-  v12 = [MEMORY[0x277D69A80] deviceIsAudioAccessory];
+  deviceIsAudioAccessory = [MEMORY[0x277D69A80] deviceIsAudioAccessory];
   v13 = *MEMORY[0x277CBF008];
   v14 = *MEMORY[0x277CBF040];
   v15 = *MEMORY[0x277CBF010];
-  if (!v12)
+  if (!deviceIsAudioAccessory)
   {
     goto LABEL_35;
   }
 
   v16 = CFPreferencesCopyValue(@"AppleLocaleSetup", *MEMORY[0x277CBF008], *MEMORY[0x277CBF040], *MEMORY[0x277CBF010]);
-  v17 = [MEMORY[0x277D69B38] sharedConfig];
-  v18 = v17;
+  mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedConfig];
+  mEMORY[0x277D69B38]2 = mEMORY[0x277D69B38];
   if (v16)
   {
-    if (!v17)
+    if (!mEMORY[0x277D69B38])
     {
-      v18 = [MEMORY[0x277D69B38] sharedConfig];
+      mEMORY[0x277D69B38]2 = [MEMORY[0x277D69B38] sharedConfig];
     }
 
-    v19 = [v18 shouldLog];
-    if ([v18 shouldLogToDisk])
+    shouldLog = [mEMORY[0x277D69B38]2 shouldLog];
+    if ([mEMORY[0x277D69B38]2 shouldLogToDisk])
     {
-      v20 = v19 | 2;
+      v20 = shouldLog | 2;
     }
 
     else
     {
-      v20 = v19;
+      v20 = shouldLog;
     }
 
-    v21 = [v18 OSLogObject];
-    if (!os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [mEMORY[0x277D69B38]2 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v20 &= 2u;
     }
@@ -174,33 +174,33 @@ LABEL_22:
         goto LABEL_36;
       }
 
-      v21 = [MEMORY[0x277CCACA8] stringWithCString:v25 encoding:{4, v36, v35}];
+      oSLogObject = [MEMORY[0x277CCACA8] stringWithCString:v25 encoding:{4, v36, v35}];
       free(v25);
-      v34 = v21;
+      v34 = oSLogObject;
       SSFileLog();
     }
 
     goto LABEL_22;
   }
 
-  if (!v17)
+  if (!mEMORY[0x277D69B38])
   {
-    v18 = [MEMORY[0x277D69B38] sharedConfig];
+    mEMORY[0x277D69B38]2 = [MEMORY[0x277D69B38] sharedConfig];
   }
 
-  v26 = [v18 shouldLog];
-  if ([v18 shouldLogToDisk])
+  shouldLog2 = [mEMORY[0x277D69B38]2 shouldLog];
+  if ([mEMORY[0x277D69B38]2 shouldLogToDisk])
   {
-    v27 = v26 | 2;
+    v27 = shouldLog2 | 2;
   }
 
   else
   {
-    v27 = v26;
+    v27 = shouldLog2;
   }
 
-  v28 = [v18 OSLogObject];
-  if (!os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
+  oSLogObject2 = [mEMORY[0x277D69B38]2 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_INFO))
   {
     v27 &= 2u;
   }
@@ -219,9 +219,9 @@ LABEL_22:
 
   if (v30)
   {
-    v28 = [MEMORY[0x277CCACA8] stringWithCString:v30 encoding:{4, v36, v35, *v36}];
+    oSLogObject2 = [MEMORY[0x277CCACA8] stringWithCString:v30 encoding:{4, v36, v35, *v36}];
     free(v30);
-    v34 = v28;
+    v34 = oSLogObject2;
     SSFileLog();
 LABEL_33:
   }
@@ -242,17 +242,17 @@ LABEL_36:
   return v31;
 }
 
-- (void)addURLBag:(id)a3
+- (void)addURLBag:(id)bag
 {
-  v4 = a3;
+  bagCopy = bag;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __27__ISURLBagCache_addURLBag___block_invoke;
   v7[3] = &unk_27A670868;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = bagCopy;
+  selfCopy = self;
+  v6 = bagCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -356,17 +356,17 @@ void __37__ISURLBagCache_invalidateAllURLBags__block_invoke_2(uint64_t a1, void 
   }
 }
 
-- (void)invalidateURLBagForContext:(id)a3
+- (void)invalidateURLBagForContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __44__ISURLBagCache_invalidateURLBagForContext___block_invoke;
   block[3] = &unk_27A670868;
-  v6 = v4;
+  v6 = contextCopy;
   v12 = v6;
-  v13 = self;
+  selfCopy = self;
   dispatch_async(dispatchQueue, block);
   v7 = dispatch_get_global_queue(0, 0);
   v9[0] = MEMORY[0x277D85DD0];
@@ -395,9 +395,9 @@ void __44__ISURLBagCache_invalidateURLBagForContext___block_invoke_2(uint64_t a1
   }
 }
 
-- (id)URLBagForContext:(id)a3
+- (id)URLBagForContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -409,10 +409,10 @@ void __44__ISURLBagCache_invalidateURLBagForContext___block_invoke_2(uint64_t a1
   block[1] = 3221225472;
   block[2] = __34__ISURLBagCache_URLBagForContext___block_invoke;
   block[3] = &unk_27A6715D0;
-  v11 = self;
+  selfCopy = self;
   v12 = &v13;
-  v10 = v4;
-  v6 = v4;
+  v10 = contextCopy;
+  v6 = contextCopy;
   dispatch_sync(dispatchQueue, block);
   v7 = v14[5];
 
@@ -494,28 +494,28 @@ LABEL_18:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_storeFrontChangedNotification:(id)a3
+- (void)_storeFrontChangedNotification:(id)notification
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
-  if (!v4)
+  mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
+  if (!mEMORY[0x277D69B38])
   {
-    v4 = [MEMORY[0x277D69B38] sharedConfig];
+    mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedConfig];
   }
 
-  v5 = [v4 shouldLog];
-  if ([v4 shouldLogToDisk])
+  shouldLog = [mEMORY[0x277D69B38] shouldLog];
+  if ([mEMORY[0x277D69B38] shouldLogToDisk])
   {
-    v6 = v5 | 2;
+    v6 = shouldLog | 2;
   }
 
   else
   {
-    v6 = v5;
+    v6 = shouldLog;
   }
 
-  v7 = [v4 OSLogObject];
-  if (!os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
+  oSLogObject = [mEMORY[0x277D69B38] OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
   {
     v6 &= 2u;
   }
@@ -533,7 +533,7 @@ LABEL_18:
 
   if (v9)
   {
-    v7 = [MEMORY[0x277CCACA8] stringWithCString:v9 encoding:{4, &v12, v11, v12}];
+    oSLogObject = [MEMORY[0x277CCACA8] stringWithCString:v9 encoding:{4, &v12, v11, v12}];
     free(v9);
     SSFileLog();
 LABEL_11:
@@ -543,41 +543,41 @@ LABEL_11:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_newRequestWithURLBagContext:(id)a3
+- (id)_newRequestWithURLBagContext:(id)context
 {
-  v3 = a3;
-  v4 = [objc_opt_class() URLWithBagContext:v3];
+  contextCopy = context;
+  v4 = [objc_opt_class() URLWithBagContext:contextCopy];
   v5 = [objc_alloc(MEMORY[0x277CCAB70]) initWithURL:v4];
-  v6 = [v3 allHTTPHeaders];
-  if (v6)
+  allHTTPHeaders = [contextCopy allHTTPHeaders];
+  if (allHTTPHeaders)
   {
-    [v5 setAllHTTPHeaderFields:v6];
+    [v5 setAllHTTPHeaderFields:allHTTPHeaders];
   }
 
-  [v3 bagType];
-  v7 = SSAccountScopeForURLBagType();
-  v8 = [v3 userIdentifier];
-  if (v8)
+  [contextCopy bagType];
+  accountScope = SSAccountScopeForURLBagType();
+  userIdentifier = [contextCopy userIdentifier];
+  if (userIdentifier)
   {
-    v9 = v8;
+    uniqueIdentifier = userIdentifier;
   }
 
   else
   {
-    v10 = [MEMORY[0x277D69A20] defaultStore];
-    v11 = [v10 activeAccount];
-    v9 = [v11 uniqueIdentifier];
+    defaultStore = [MEMORY[0x277D69A20] defaultStore];
+    activeAccount = [defaultStore activeAccount];
+    uniqueIdentifier = [activeAccount uniqueIdentifier];
 
-    v12 = [MEMORY[0x277D69A20] defaultStore];
-    v13 = [v12 activeAccount];
-    v7 = [v13 accountScope];
+    defaultStore2 = [MEMORY[0x277D69A20] defaultStore];
+    activeAccount2 = [defaultStore2 activeAccount];
+    accountScope = [activeAccount2 accountScope];
   }
 
-  v14 = [v3 clientBundleIdentifier];
-  [ISStoreURLOperation _addiTunesStoreHeadersToRequest:v5 withURLBag:0 accountIdentifier:v9 appendAuthKitHeaders:1 appendStorefrontToURL:0 clientBundleIdentifier:v14];
+  clientBundleIdentifier = [contextCopy clientBundleIdentifier];
+  [ISStoreURLOperation _addiTunesStoreHeadersToRequest:v5 withURLBag:0 accountIdentifier:uniqueIdentifier appendAuthKitHeaders:1 appendStorefrontToURL:0 clientBundleIdentifier:clientBundleIdentifier];
 
-  v15 = [MEMORY[0x277D69CB8] sharedStorage];
-  v16 = [v15 cookieHeadersForURL:v4 userIdentifier:v9 scope:v7];
+  mEMORY[0x277D69CB8] = [MEMORY[0x277D69CB8] sharedStorage];
+  v16 = [mEMORY[0x277D69CB8] cookieHeadersForURL:v4 userIdentifier:uniqueIdentifier scope:accountScope];
 
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
@@ -592,12 +592,12 @@ LABEL_11:
   if (!v19)
   {
     v20 = +[ISClient currentClient];
-    v21 = [v20 userAgent];
+    userAgent = [v20 userAgent];
 
-    if (v21)
+    if (userAgent)
     {
 LABEL_10:
-      [v17 setValue:v21 forHTTPHeaderField:v18];
+      [v17 setValue:userAgent forHTTPHeaderField:v18];
 
       goto LABEL_11;
     }
@@ -605,7 +605,7 @@ LABEL_10:
     v22 = +[ISURLOperation copyUserAgent];
     if (v22)
     {
-      v21 = v22;
+      userAgent = v22;
       goto LABEL_10;
     }
   }

@@ -1,14 +1,14 @@
 @interface CKEncryptedLocationArray
-- (CKEncryptedLocationArray)initWithLocationArray:(id)a3;
+- (CKEncryptedLocationArray)initWithLocationArray:(id)array;
 - (NSArray)locationArray;
 @end
 
 @implementation CKEncryptedLocationArray
 
-- (CKEncryptedLocationArray)initWithLocationArray:(id)a3
+- (CKEncryptedLocationArray)initWithLocationArray:(id)array
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  arrayCopy = array;
   v5 = objc_alloc_init(CKDPRecordFieldValueEncryptedValue);
   v6 = objc_opt_new();
   objc_msgSend_setLocationListValues_(v5, v7, v6);
@@ -17,7 +17,7 @@
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v8 = v4;
+  v8 = arrayCopy;
   v10 = objc_msgSend_countByEnumeratingWithState_objects_count_(v8, v9, &v24, v28, 16);
   if (v10)
   {

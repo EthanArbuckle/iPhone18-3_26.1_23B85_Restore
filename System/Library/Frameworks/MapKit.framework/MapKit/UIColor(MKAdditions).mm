@@ -17,7 +17,7 @@
   v9 = 0.0;
   v6 = 0.0;
   v7 = 0.0;
-  if ([a1 getWhite:&v9 alpha:0])
+  if ([self getWhite:&v9 alpha:0])
   {
     v2 = v9;
     if (v9 >= 1.0)
@@ -26,7 +26,7 @@
     }
   }
 
-  v4 = [a1 getHue:&v8 saturation:&v7 brightness:&v6 alpha:{0, v2}];
+  v4 = [self getHue:&v8 saturation:&v7 brightness:&v6 alpha:{0, v2}];
   if (v7 <= 0.0)
   {
     v5 = v4;
@@ -50,8 +50,8 @@
 
 - (id)_mapkit_colorResolvedForView:()MKAdditions
 {
-  v4 = [a3 traitCollection];
-  v5 = [a1 resolvedColorWithTraitCollection:v4];
+  traitCollection = [a3 traitCollection];
+  v5 = [self resolvedColorWithTraitCollection:traitCollection];
 
   return v5;
 }
@@ -62,13 +62,13 @@
   v7 = v6;
   if (a2 >= 1.0)
   {
-    v8 = v6;
+    selfCopy = v6;
     goto LABEL_8;
   }
 
   if (a2 <= 0.0)
   {
-    v8 = a1;
+    selfCopy = self;
     goto LABEL_8;
   }
 
@@ -80,11 +80,11 @@
   v12 = 0.0;
   v13 = 0.0;
   v11 = 0.0;
-  if ([v6 _mapkit_getRed:&v18 green:&v17 blue:&v16 alpha:&v15] && objc_msgSend(a1, "_mapkit_getRed:green:blue:alpha:", &v14, &v13, &v12, &v11))
+  if ([v6 _mapkit_getRed:&v18 green:&v17 blue:&v16 alpha:&v15] && objc_msgSend(self, "_mapkit_getRed:green:blue:alpha:", &v14, &v13, &v12, &v11))
   {
-    v8 = [MEMORY[0x1E69DC888] colorWithRed:(1.0 - a2) * v14 + v18 * a2 green:(1.0 - a2) * v13 + v17 * a2 blue:(1.0 - a2) * v12 + v16 * a2 alpha:(1.0 - a2) * v11 + v15 * a2];
+    selfCopy = [MEMORY[0x1E69DC888] colorWithRed:(1.0 - a2) * v14 + v18 * a2 green:(1.0 - a2) * v13 + v17 * a2 blue:(1.0 - a2) * v12 + v16 * a2 alpha:(1.0 - a2) * v11 + v15 * a2];
 LABEL_8:
-    v9 = v8;
+    v9 = selfCopy;
     goto LABEL_9;
   }
 
@@ -96,10 +96,10 @@ LABEL_9:
 
 - (double)_mapkit_getRed:()MKAdditions green:blue:alpha:
 {
-  if (([a1 getRed:? green:? blue:? alpha:?] & 1) == 0)
+  if (([self getRed:? green:? blue:? alpha:?] & 1) == 0)
   {
     v12 = 0.0;
-    if ([a1 getWhite:&v12 alpha:a6])
+    if ([self getWhite:&v12 alpha:a6])
     {
       if (a3)
       {
@@ -129,8 +129,8 @@ LABEL_9:
   v6 = MEMORY[0x1E696AAE8];
   v7 = a4;
   v8 = a3;
-  v9 = [v6 _mapkitBundle];
-  v10 = [a1 colorNamed:v8 inBundle:v9 compatibleWithTraitCollection:v7];
+  _mapkitBundle = [v6 _mapkitBundle];
+  v10 = [self colorNamed:v8 inBundle:_mapkitBundle compatibleWithTraitCollection:v7];
 
   return v10;
 }

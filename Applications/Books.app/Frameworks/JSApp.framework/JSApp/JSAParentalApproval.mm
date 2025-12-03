@@ -1,53 +1,53 @@
 @interface JSAParentalApproval
 + (void)approveCurrentRequest;
-+ (void)approveInPerson:(id)a3 :(id)a4;
++ (void)approveInPerson:(id)person :(id)a4;
 + (void)declineCurrentRequest;
 @end
 
 @implementation JSAParentalApproval
 
-+ (void)approveInPerson:(id)a3 :(id)a4
++ (void)approveInPerson:(id)person :(id)a4
 {
-  v6 = a3;
+  personCopy = person;
   if (a4)
   {
     v7 = a4;
-    a4 = [JSManagedValue managedValueWithValue:v7 andOwner:a1];
-    v8 = [v7 context];
+    a4 = [JSManagedValue managedValueWithValue:v7 andOwner:self];
+    context = [v7 context];
 
-    v9 = [v8 virtualMachine];
+    virtualMachine = [context virtualMachine];
   }
 
   else
   {
-    v9 = 0;
+    virtualMachine = 0;
   }
 
-  v10 = [v6 stringValue];
+  stringValue = [personCopy stringValue];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_52AC;
   v14[3] = &unk_B22F8;
   v15 = a4;
-  v16 = v6;
-  v17 = v9;
-  v18 = a1;
-  v11 = v9;
-  v12 = v6;
+  v16 = personCopy;
+  v17 = virtualMachine;
+  selfCopy = self;
+  v11 = virtualMachine;
+  v12 = personCopy;
   v13 = a4;
-  [APRequestHandler localApproveRequestWithItemIdentifier:v10 completion:v14];
+  [APRequestHandler localApproveRequestWithItemIdentifier:stringValue completion:v14];
 }
 
 + (void)approveCurrentRequest
 {
   v3 = +[NSNotificationCenter defaultCenter];
-  [v3 postNotificationName:@"kJSAParentalApprovalApprovedRequestNotificationName" object:a1];
+  [v3 postNotificationName:@"kJSAParentalApprovalApprovedRequestNotificationName" object:self];
 }
 
 + (void)declineCurrentRequest
 {
   v3 = +[NSNotificationCenter defaultCenter];
-  [v3 postNotificationName:@"kJSAParentalApprovalDeclinedRequestNotificationName" object:a1];
+  [v3 postNotificationName:@"kJSAParentalApprovalDeclinedRequestNotificationName" object:self];
 }
 
 @end

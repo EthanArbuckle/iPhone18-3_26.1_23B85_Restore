@@ -1,38 +1,38 @@
 @interface DDSAssertDescriptor
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToDescriptor:(id)a3;
-- (DDSAssertDescriptor)initWithCoder:(id)a3;
-- (DDSAssertDescriptor)initWithPolicy:(id)a3 assertionID:(id)a4 clientID:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToDescriptor:(id)descriptor;
+- (DDSAssertDescriptor)initWithCoder:(id)coder;
+- (DDSAssertDescriptor)initWithPolicy:(id)policy assertionID:(id)d clientID:(id)iD;
 - (id)description;
 - (id)dumpDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DDSAssertDescriptor
 
-- (DDSAssertDescriptor)initWithPolicy:(id)a3 assertionID:(id)a4 clientID:(id)a5
+- (DDSAssertDescriptor)initWithPolicy:(id)policy assertionID:(id)d clientID:(id)iD
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  policyCopy = policy;
+  dCopy = d;
+  iDCopy = iD;
   v15.receiver = self;
   v15.super_class = DDSAssertDescriptor;
   v12 = [(DDSAssertDescriptor *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_policy, a3);
-    objc_storeStrong(&v13->_assertionIdentifier, a4);
-    objc_storeStrong(&v13->_clientIdentifier, a5);
+    objc_storeStrong(&v12->_policy, policy);
+    objc_storeStrong(&v13->_assertionIdentifier, d);
+    objc_storeStrong(&v13->_clientIdentifier, iD);
   }
 
   return v13;
 }
 
-- (DDSAssertDescriptor)initWithCoder:(id)a3
+- (DDSAssertDescriptor)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = DDSAssertDescriptor;
   v5 = [(DDSAssertDescriptor *)&v19 init];
@@ -40,19 +40,19 @@
   {
     v6 = objc_opt_class();
     v7 = NSStringFromSelector(sel_policy);
-    v8 = [v4 decodeObjectOfClass:v6 forKey:v7];
+    v8 = [coderCopy decodeObjectOfClass:v6 forKey:v7];
     policy = v5->_policy;
     v5->_policy = v8;
 
     v10 = objc_opt_class();
     v11 = NSStringFromSelector(sel_assertionIdentifier);
-    v12 = [v4 decodeObjectOfClass:v10 forKey:v11];
+    v12 = [coderCopy decodeObjectOfClass:v10 forKey:v11];
     assertionIdentifier = v5->_assertionIdentifier;
     v5->_assertionIdentifier = v12;
 
     v14 = objc_opt_class();
     v15 = NSStringFromSelector(sel_clientIdentifier);
-    v16 = [v4 decodeObjectOfClass:v14 forKey:v15];
+    v16 = [coderCopy decodeObjectOfClass:v14 forKey:v15];
     clientIdentifier = v5->_clientIdentifier;
     v5->_clientIdentifier = v16;
   }
@@ -60,45 +60,45 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(DDSAssertDescriptor *)self assertionIdentifier];
+  coderCopy = coder;
+  assertionIdentifier = [(DDSAssertDescriptor *)self assertionIdentifier];
   v6 = NSStringFromSelector(sel_assertionIdentifier);
-  [v4 encodeObject:v5 forKey:v6];
+  [coderCopy encodeObject:assertionIdentifier forKey:v6];
 
-  v7 = [(DDSAssertDescriptor *)self clientIdentifier];
+  clientIdentifier = [(DDSAssertDescriptor *)self clientIdentifier];
   v8 = NSStringFromSelector(sel_clientIdentifier);
-  [v4 encodeObject:v7 forKey:v8];
+  [coderCopy encodeObject:clientIdentifier forKey:v8];
 
-  v10 = [(DDSAssertDescriptor *)self policy];
+  policy = [(DDSAssertDescriptor *)self policy];
   v9 = NSStringFromSelector(sel_policy);
-  [v4 encodeObject:v10 forKey:v9];
+  [coderCopy encodeObject:policy forKey:v9];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(DDSAssertDescriptor *)self isEqualToDescriptor:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(DDSAssertDescriptor *)self isEqualToDescriptor:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToDescriptor:(id)a3
+- (BOOL)isEqualToDescriptor:(id)descriptor
 {
-  v4 = a3;
-  v5 = [(DDSAssertDescriptor *)self policy];
-  v6 = [v4 policy];
-  if (DDSObjectsAreEqualOrNil(v5, v6))
+  descriptorCopy = descriptor;
+  policy = [(DDSAssertDescriptor *)self policy];
+  policy2 = [descriptorCopy policy];
+  if (DDSObjectsAreEqualOrNil(policy, policy2))
   {
-    v7 = [(DDSAssertDescriptor *)self assertionIdentifier];
-    v8 = [v4 assertionIdentifier];
-    if ([v7 isEqualToString:v8])
+    assertionIdentifier = [(DDSAssertDescriptor *)self assertionIdentifier];
+    assertionIdentifier2 = [descriptorCopy assertionIdentifier];
+    if ([assertionIdentifier isEqualToString:assertionIdentifier2])
     {
-      v9 = [(DDSAssertDescriptor *)self clientIdentifier];
-      v10 = [v4 clientIdentifier];
-      v11 = [v9 isEqual:v10];
+      clientIdentifier = [(DDSAssertDescriptor *)self clientIdentifier];
+      clientIdentifier2 = [descriptorCopy clientIdentifier];
+      v11 = [clientIdentifier isEqual:clientIdentifier2];
     }
 
     else
@@ -117,12 +117,12 @@
 
 - (unint64_t)hash
 {
-  v3 = [(DDSAssertDescriptor *)self policy];
-  v4 = [v3 hash];
-  v5 = [(DDSAssertDescriptor *)self assertionIdentifier];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(DDSAssertDescriptor *)self clientIdentifier];
-  v8 = [v7 hash];
+  policy = [(DDSAssertDescriptor *)self policy];
+  v4 = [policy hash];
+  assertionIdentifier = [(DDSAssertDescriptor *)self assertionIdentifier];
+  v6 = [assertionIdentifier hash] ^ v4;
+  clientIdentifier = [(DDSAssertDescriptor *)self clientIdentifier];
+  v8 = [clientIdentifier hash];
 
   return v6 ^ v8;
 }
@@ -132,9 +132,9 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(DDSAssertDescriptor *)self assertionIdentifier];
-  v7 = [(DDSAssertDescriptor *)self clientIdentifier];
-  v8 = [v3 stringWithFormat:@"<%@ %p: aID: %@ cID: %@>", v5, self, v6, v7];
+  assertionIdentifier = [(DDSAssertDescriptor *)self assertionIdentifier];
+  clientIdentifier = [(DDSAssertDescriptor *)self clientIdentifier];
+  v8 = [v3 stringWithFormat:@"<%@ %p: aID: %@ cID: %@>", v5, self, assertionIdentifier, clientIdentifier];
 
   return v8;
 }
@@ -144,11 +144,11 @@
   if (DDS_IS_INTERNAL_INSTALL())
   {
     v3 = MEMORY[0x1E696AEC0];
-    v4 = [(DDSAssertDescriptor *)self assertionIdentifier];
-    v5 = [(DDSAssertDescriptor *)self clientIdentifier];
-    v6 = [(DDSAssertDescriptor *)self policy];
-    v7 = [v6 dumpDescription];
-    v8 = [v3 stringWithFormat:@"%@, %@ (%@)", v4, v5, v7];
+    assertionIdentifier = [(DDSAssertDescriptor *)self assertionIdentifier];
+    clientIdentifier = [(DDSAssertDescriptor *)self clientIdentifier];
+    policy = [(DDSAssertDescriptor *)self policy];
+    dumpDescription = [policy dumpDescription];
+    v8 = [v3 stringWithFormat:@"%@, %@ (%@)", assertionIdentifier, clientIdentifier, dumpDescription];
   }
 
   else

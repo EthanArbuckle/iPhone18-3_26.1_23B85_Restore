@@ -1,60 +1,60 @@
 @interface PKPaymentTransactionArchiveLocation
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToArchiveLocation:(id)a3;
-- (PKPaymentTransactionArchiveLocation)initWithCoder:(id)a3;
-- (PKPaymentTransactionArchiveLocation)initWithType:(unint64_t)a3 archived:(BOOL)a4 cloudStoreZone:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToArchiveLocation:(id)location;
+- (PKPaymentTransactionArchiveLocation)initWithCoder:(id)coder;
+- (PKPaymentTransactionArchiveLocation)initWithType:(unint64_t)type archived:(BOOL)archived cloudStoreZone:(id)zone;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPaymentTransactionArchiveLocation
 
-- (PKPaymentTransactionArchiveLocation)initWithType:(unint64_t)a3 archived:(BOOL)a4 cloudStoreZone:(id)a5
+- (PKPaymentTransactionArchiveLocation)initWithType:(unint64_t)type archived:(BOOL)archived cloudStoreZone:(id)zone
 {
-  v9 = a5;
+  zoneCopy = zone;
   v13.receiver = self;
   v13.super_class = PKPaymentTransactionArchiveLocation;
   v10 = [(PKPaymentTransactionArchiveLocation *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    v10->_archived = a4;
-    v10->_type = a3;
-    objc_storeStrong(&v10->_cloudStoreZone, a5);
+    v10->_archived = archived;
+    v10->_type = type;
+    objc_storeStrong(&v10->_cloudStoreZone, zone);
   }
 
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKPaymentTransactionArchiveLocation *)self isEqualToArchiveLocation:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKPaymentTransactionArchiveLocation *)self isEqualToArchiveLocation:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToArchiveLocation:(id)a3
+- (BOOL)isEqualToArchiveLocation:(id)location
 {
-  v4 = a3;
-  if (!v4)
+  locationCopy = location;
+  if (!locationCopy)
   {
     goto LABEL_12;
   }
 
   cloudStoreZone = self->_cloudStoreZone;
-  v6 = v4[3];
+  v6 = locationCopy[3];
   if (cloudStoreZone)
   {
     v7 = v6 == 0;
@@ -83,12 +83,12 @@ LABEL_12:
   }
 
 LABEL_10:
-  if (self->_archived != *(v4 + 8))
+  if (self->_archived != *(locationCopy + 8))
   {
     goto LABEL_12;
   }
 
-  v8 = self->_type == v4[2];
+  v8 = self->_type == locationCopy[2];
 LABEL_13:
 
   return v8;
@@ -126,38 +126,38 @@ LABEL_13:
   return v3;
 }
 
-- (PKPaymentTransactionArchiveLocation)initWithCoder:(id)a3
+- (PKPaymentTransactionArchiveLocation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = PKPaymentTransactionArchiveLocation;
   v5 = [(PKPaymentTransactionArchiveLocation *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"cloudStoreZone"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"cloudStoreZone"];
     cloudStoreZone = v5->_cloudStoreZone;
     v5->_cloudStoreZone = v6;
 
-    v5->_archived = [v4 decodeBoolForKey:@"archived"];
-    v5->_type = [v4 decodeIntegerForKey:@"type"];
+    v5->_archived = [coderCopy decodeBoolForKey:@"archived"];
+    v5->_type = [coderCopy decodeIntegerForKey:@"type"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   cloudStoreZone = self->_cloudStoreZone;
-  v5 = a3;
-  [v5 encodeObject:cloudStoreZone forKey:@"cloudStoreZone"];
-  [v5 encodeBool:self->_archived forKey:@"archived"];
-  [v5 encodeInteger:self->_type forKey:@"type"];
+  coderCopy = coder;
+  [coderCopy encodeObject:cloudStoreZone forKey:@"cloudStoreZone"];
+  [coderCopy encodeBool:self->_archived forKey:@"archived"];
+  [coderCopy encodeInteger:self->_type forKey:@"type"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[PKPaymentTransactionArchiveLocation allocWithZone:](PKPaymentTransactionArchiveLocation init];
-  v6 = [(PKCloudStoreZone *)self->_cloudStoreZone copyWithZone:a3];
+  v6 = [(PKCloudStoreZone *)self->_cloudStoreZone copyWithZone:zone];
   cloudStoreZone = v5->_cloudStoreZone;
   v5->_cloudStoreZone = v6;
 

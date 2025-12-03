@@ -1,15 +1,15 @@
 @interface WFActionDrawerUtilities
-+ (id)activitySectionsForDonations:(id)a3;
++ (id)activitySectionsForDonations:(id)donations;
 + (id)localizedAppNames;
-+ (id)suggestionSectionsForDonations:(id)a3 excludingConvertedLinkActions:(BOOL)a4;
++ (id)suggestionSectionsForDonations:(id)donations excludingConvertedLinkActions:(BOOL)actions;
 @end
 
 @implementation WFActionDrawerUtilities
 
-+ (id)activitySectionsForDonations:(id)a3
++ (id)activitySectionsForDonations:(id)donations
 {
   v4 = MEMORY[0x1E695DF90];
-  v5 = a3;
+  donationsCopy = donations;
   v6 = objc_alloc_init(v4);
   v7 = objc_alloc_init(MEMORY[0x1E695DFA0]);
   v17[0] = MEMORY[0x1E69E9820];
@@ -20,17 +20,17 @@
   v8 = v6;
   v19 = v8;
   v9 = v7;
-  [v5 enumerateObjectsUsingBlock:v17];
+  [donationsCopy enumerateObjectsUsingBlock:v17];
 
-  v10 = [v9 array];
+  array = [v9 array];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __56__WFActionDrawerUtilities_activitySectionsForDonations___block_invoke_2;
   v14[3] = &unk_1E837B018;
   v15 = v8;
-  v16 = a1;
+  selfCopy = self;
   v11 = v8;
-  v12 = [v10 if_compactMap:v14];
+  v12 = [array if_compactMap:v14];
 
   return v12;
 }
@@ -104,27 +104,27 @@ LABEL_5:
   return v11;
 }
 
-+ (id)suggestionSectionsForDonations:(id)a3 excludingConvertedLinkActions:(BOOL)a4
++ (id)suggestionSectionsForDonations:(id)donations excludingConvertedLinkActions:(BOOL)actions
 {
-  v5 = a3;
+  donationsCopy = donations;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
   v19 = __Block_byref_object_copy__48216;
   v20 = __Block_byref_object_dispose__48217;
   v21 = 0;
-  v6 = [v5 valueForKeyPath:@"sourceAppIdentifier"];
-  v7 = [MEMORY[0x1E696E878] sharedConnection];
+  v6 = [donationsCopy valueForKeyPath:@"sourceAppIdentifier"];
+  mEMORY[0x1E696E878] = [MEMORY[0x1E696E878] sharedConnection];
   v8 = [MEMORY[0x1E695DFD8] setWithArray:v6];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __88__WFActionDrawerUtilities_suggestionSectionsForDonations_excludingConvertedLinkActions___block_invoke;
   v12[3] = &unk_1E837AFC8;
-  v9 = v5;
+  v9 = donationsCopy;
   v13 = v9;
   v14 = &v16;
-  v15 = a4;
-  [v7 wf_accessBundleContentForBundleIdentifiers:v8 withBlock:v12];
+  actionsCopy = actions;
+  [mEMORY[0x1E696E878] wf_accessBundleContentForBundleIdentifiers:v8 withBlock:v12];
 
   v10 = v17[5];
   _Block_object_dispose(&v16, 8);

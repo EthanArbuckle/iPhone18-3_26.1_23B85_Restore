@@ -1,64 +1,64 @@
 @interface HKOverlayRoomAFibBurdenViewController
-+ (id)createInteractiveChartViewControllerForTypeIdentifier:(id)a3 chartFactory:(id)a4 applicationItems:(id)a5 displayDate:(id)a6 preferredOverlay:(int64_t)a7 restorationUserActivity:(id)a8 trendModel:(id)a9 factorDisplayTypes:(id)a10 additionalChartOptions:(unint64_t)a11;
++ (id)createInteractiveChartViewControllerForTypeIdentifier:(id)identifier chartFactory:(id)factory applicationItems:(id)items displayDate:(id)date preferredOverlay:(int64_t)overlay restorationUserActivity:(id)activity trendModel:(id)model factorDisplayTypes:(id)self0 additionalChartOptions:(unint64_t)self1;
 - (BOOL)supportsShowAllFilters;
-- (HKOverlayRoomAFibBurdenViewController)initWithDisplayDate:(id)a3 applicationItems:(id)a4 factorDisplayTypes:(id)a5 mode:(int64_t)a6 sleepDataSourceProvider:(id)a7 sleepChartFormatter:(id)a8 preferredOverlay:(int64_t)a9 addDataViewControllerProvider:(id)a10;
-- (id)_aFibBurdenSeriesForTimeScope:(int64_t)a3 displayType:(id)a4 mode:(int64_t)a5 applicationItems:(id)a6;
-- (id)_displayTypeForOverlayContextItem:(unint64_t)a3;
-- (id)_generateAFibBurdenDisplayTypeWithApplicationItems:(id)a3 mode:(int64_t)a4;
-- (id)_generateOverlayContextsWithPrimaryDisplayType:(id)a3 sleepDataSourceProvider:(id)a4 sleepChartFormatter:(id)a5 overlayChartController:(id)a6 applicationItems:(id)a7;
-- (id)_infographicViewControllerForDisplayType:(id)a3 secondaryDisplayType:(id)a4 addDataViewControllerProvider:(id)a5 healthStore:(id)a6;
-- (id)_lifeFactorViewControllerForKey:(id)a3 logButtonAction:(id)a4;
-- (id)_overlayContextForOverlayContextItem:(unint64_t)a3 sleepDataSourceProvider:(id)a4 sleepChartFormatter:(id)a5 overlayChartController:(id)a6 applicationItems:(id)a7;
-- (id)contextSectionContainersForMode:(int64_t)a3 applicationItems:(id)a4 overlayChartController:(id)a5;
-- (id)controllerTitleWithApplicationItems:(id)a3;
+- (HKOverlayRoomAFibBurdenViewController)initWithDisplayDate:(id)date applicationItems:(id)items factorDisplayTypes:(id)types mode:(int64_t)mode sleepDataSourceProvider:(id)provider sleepChartFormatter:(id)formatter preferredOverlay:(int64_t)overlay addDataViewControllerProvider:(id)self0;
+- (id)_aFibBurdenSeriesForTimeScope:(int64_t)scope displayType:(id)type mode:(int64_t)mode applicationItems:(id)items;
+- (id)_displayTypeForOverlayContextItem:(unint64_t)item;
+- (id)_generateAFibBurdenDisplayTypeWithApplicationItems:(id)items mode:(int64_t)mode;
+- (id)_generateOverlayContextsWithPrimaryDisplayType:(id)type sleepDataSourceProvider:(id)provider sleepChartFormatter:(id)formatter overlayChartController:(id)controller applicationItems:(id)items;
+- (id)_infographicViewControllerForDisplayType:(id)type secondaryDisplayType:(id)displayType addDataViewControllerProvider:(id)provider healthStore:(id)store;
+- (id)_lifeFactorViewControllerForKey:(id)key logButtonAction:(id)action;
+- (id)_overlayContextForOverlayContextItem:(unint64_t)item sleepDataSourceProvider:(id)provider sleepChartFormatter:(id)formatter overlayChartController:(id)controller applicationItems:(id)items;
+- (id)contextSectionContainersForMode:(int64_t)mode applicationItems:(id)items overlayChartController:(id)controller;
+- (id)controllerTitleWithApplicationItems:(id)items;
 - (id)createChartOverlayViewController;
-- (id)createViewControllerForMode:(int64_t)a3 displayDate:(id)a4 applicationItems:(id)a5;
+- (id)createViewControllerForMode:(int64_t)mode displayDate:(id)date applicationItems:(id)items;
 - (id)showAllFiltersButtonTitle;
-- (id)stringForValueRange:(id)a3 timeScope:(int64_t)a4;
-- (void)contextView:(id)a3 didTapOnInfoButtonAtIndex:(int64_t)a4;
-- (void)didChangeFromContextItem:(id)a3 toContextItem:(id)a4;
-- (void)processSelectedRangeData:(id)a3 displayType:(id)a4;
+- (id)stringForValueRange:(id)range timeScope:(int64_t)scope;
+- (void)contextView:(id)view didTapOnInfoButtonAtIndex:(int64_t)index;
+- (void)didChangeFromContextItem:(id)item toContextItem:(id)contextItem;
+- (void)processSelectedRangeData:(id)data displayType:(id)type;
 - (void)viewDidLoad;
 @end
 
 @implementation HKOverlayRoomAFibBurdenViewController
 
-+ (id)createInteractiveChartViewControllerForTypeIdentifier:(id)a3 chartFactory:(id)a4 applicationItems:(id)a5 displayDate:(id)a6 preferredOverlay:(int64_t)a7 restorationUserActivity:(id)a8 trendModel:(id)a9 factorDisplayTypes:(id)a10 additionalChartOptions:(unint64_t)a11
++ (id)createInteractiveChartViewControllerForTypeIdentifier:(id)identifier chartFactory:(id)factory applicationItems:(id)items displayDate:(id)date preferredOverlay:(int64_t)overlay restorationUserActivity:(id)activity trendModel:(id)model factorDisplayTypes:(id)self0 additionalChartOptions:(unint64_t)self1
 {
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v32 = a9;
-  v17 = a10;
-  v18 = a8;
-  v19 = [v14 sleepDataSourceProvider];
+  factoryCopy = factory;
+  itemsCopy = items;
+  dateCopy = date;
+  modelCopy = model;
+  typesCopy = types;
+  activityCopy = activity;
+  sleepDataSourceProvider = [factoryCopy sleepDataSourceProvider];
 
-  if (!v19)
+  if (!sleepDataSourceProvider)
   {
     +[HKOverlayRoomAFibBurdenViewController createInteractiveChartViewControllerForTypeIdentifier:chartFactory:applicationItems:displayDate:preferredOverlay:restorationUserActivity:trendModel:factorDisplayTypes:additionalChartOptions:];
   }
 
-  v20 = [v14 sleepChartFormatter];
+  sleepChartFormatter = [factoryCopy sleepChartFormatter];
 
-  if (!v20)
+  if (!sleepChartFormatter)
   {
     +[HKOverlayRoomAFibBurdenViewController createInteractiveChartViewControllerForTypeIdentifier:chartFactory:applicationItems:displayDate:preferredOverlay:restorationUserActivity:trendModel:factorDisplayTypes:additionalChartOptions:];
   }
 
   v21 = [HKOverlayRoomAFibBurdenViewController alloc];
-  v22 = [v14 sleepDataSourceProvider];
-  v23 = [v14 sleepChartFormatter];
-  v24 = [v14 addDataViewControllerProvider];
+  sleepDataSourceProvider2 = [factoryCopy sleepDataSourceProvider];
+  sleepChartFormatter2 = [factoryCopy sleepChartFormatter];
+  addDataViewControllerProvider = [factoryCopy addDataViewControllerProvider];
   v25 = v21;
-  v26 = v16;
-  v27 = [(HKOverlayRoomAFibBurdenViewController *)v25 initWithDisplayDate:v16 applicationItems:v15 factorDisplayTypes:v17 mode:0 sleepDataSourceProvider:v22 sleepChartFormatter:v23 preferredOverlay:a7 addDataViewControllerProvider:v24];
+  v26 = dateCopy;
+  v27 = [(HKOverlayRoomAFibBurdenViewController *)v25 initWithDisplayDate:dateCopy applicationItems:itemsCopy factorDisplayTypes:typesCopy mode:0 sleepDataSourceProvider:sleepDataSourceProvider2 sleepChartFormatter:sleepChartFormatter2 preferredOverlay:overlay addDataViewControllerProvider:addDataViewControllerProvider];
 
-  [(HKOverlayRoomViewController *)v27 setRestorationUserActivity:v18];
-  [(HKOverlayRoomViewController *)v27 setAdditionalChartOptions:a11];
-  if (v32)
+  [(HKOverlayRoomViewController *)v27 setRestorationUserActivity:activityCopy];
+  [(HKOverlayRoomViewController *)v27 setAdditionalChartOptions:options];
+  if (modelCopy)
   {
-    v28 = [(HKOverlayRoomAFibBurdenViewController *)v27 primaryDisplayTypeWithApplicationItems:v15];
-    v29 = [[HKOverlayRoomFactorAndTrendViewController alloc] initWithBaseChartDisplayType:v28 trendModel:v32 factorDisplayTypes:v17 displayDate:v26 applicationItems:v15 mode:1 timeScopeRanges:0 initialTimeScope:8 wrappedOverlay:v27 overrideFirstWeekday:-1 overrideCalendar:0 additionalChartOptions:a11];
+    v28 = [(HKOverlayRoomAFibBurdenViewController *)v27 primaryDisplayTypeWithApplicationItems:itemsCopy];
+    v29 = [[HKOverlayRoomFactorAndTrendViewController alloc] initWithBaseChartDisplayType:v28 trendModel:modelCopy factorDisplayTypes:typesCopy displayDate:v26 applicationItems:itemsCopy mode:1 timeScopeRanges:0 initialTimeScope:8 wrappedOverlay:v27 overrideFirstWeekday:-1 overrideCalendar:0 additionalChartOptions:options];
   }
 
   else
@@ -69,45 +69,45 @@
   return v29;
 }
 
-- (HKOverlayRoomAFibBurdenViewController)initWithDisplayDate:(id)a3 applicationItems:(id)a4 factorDisplayTypes:(id)a5 mode:(int64_t)a6 sleepDataSourceProvider:(id)a7 sleepChartFormatter:(id)a8 preferredOverlay:(int64_t)a9 addDataViewControllerProvider:(id)a10
+- (HKOverlayRoomAFibBurdenViewController)initWithDisplayDate:(id)date applicationItems:(id)items factorDisplayTypes:(id)types mode:(int64_t)mode sleepDataSourceProvider:(id)provider sleepChartFormatter:(id)formatter preferredOverlay:(int64_t)overlay addDataViewControllerProvider:(id)self0
 {
-  v16 = a4;
-  v36 = a7;
-  v17 = a8;
-  v18 = a10;
+  itemsCopy = items;
+  providerCopy = provider;
+  formatterCopy = formatter;
+  controllerProviderCopy = controllerProvider;
   v37.receiver = self;
   v37.super_class = HKOverlayRoomAFibBurdenViewController;
-  v19 = [(HKOverlayRoomViewController *)&v37 initWithDisplayDate:a3 applicationItems:v16 factorDisplayTypes:a5 mode:a6];
+  v19 = [(HKOverlayRoomViewController *)&v37 initWithDisplayDate:date applicationItems:itemsCopy factorDisplayTypes:types mode:mode];
   v20 = v19;
   if (v19)
   {
     preferredOverlayIndex = v19->_preferredOverlayIndex;
     v19->_preferredOverlayIndex = 0;
 
-    v20->_preferredOverlay = a9;
-    objc_storeStrong(&v20->_sleepDataSourceProvider, a7);
-    objc_storeStrong(&v20->_sleepChartFormatter, a8);
-    v22 = [MEMORY[0x1E695DEE8] hk_gregorianCalendar];
-    [(NSCalendar *)v22 setFirstWeekday:2];
+    v20->_preferredOverlay = overlay;
+    objc_storeStrong(&v20->_sleepDataSourceProvider, provider);
+    objc_storeStrong(&v20->_sleepChartFormatter, formatter);
+    hk_gregorianCalendar = [MEMORY[0x1E695DEE8] hk_gregorianCalendar];
+    [(NSCalendar *)hk_gregorianCalendar setFirstWeekday:2];
     currentCalendar = v20->_currentCalendar;
-    v20->_currentCalendar = v22;
-    v24 = v22;
+    v20->_currentCalendar = hk_gregorianCalendar;
+    v24 = hk_gregorianCalendar;
 
-    [(HKOverlayRoomViewController *)v20 setShouldSelectInitialOverlay:a6 == 3];
-    v25 = [(HKOverlayRoomAFibBurdenViewController *)v20 _generateAFibBurdenDisplayTypeWithApplicationItems:v16 mode:a6];
+    [(HKOverlayRoomViewController *)v20 setShouldSelectInitialOverlay:mode == 3];
+    v25 = [(HKOverlayRoomAFibBurdenViewController *)v20 _generateAFibBurdenDisplayTypeWithApplicationItems:itemsCopy mode:mode];
     afibBurdenDisplayType = v20->_afibBurdenDisplayType;
     v20->_afibBurdenDisplayType = v25;
     v27 = v25;
 
-    objc_storeStrong(&v20->_addDataViewControllerProvider, a10);
+    objc_storeStrong(&v20->_addDataViewControllerProvider, controllerProvider);
     v28 = HKCreateSerialDispatchQueue();
     analyticsSubmissionQueue = v20->_analyticsSubmissionQueue;
     v20->_analyticsSubmissionQueue = v28;
 
     v30 = objc_alloc(MEMORY[0x1E696BF00]);
     v31 = HKLogAFibBurden();
-    v32 = [v16 healthStore];
-    v33 = [v30 initWithLoggingCategory:v31 healthDataSource:v32];
+    healthStore = [itemsCopy healthStore];
+    v33 = [v30 initWithLoggingCategory:v31 healthDataSource:healthStore];
     analyticsEventSubmissionManager = v20->_analyticsEventSubmissionManager;
     v20->_analyticsEventSubmissionManager = v33;
   }
@@ -122,18 +122,18 @@
   [(HKOverlayRoomViewController *)&v2 viewDidLoad];
 }
 
-- (id)_generateAFibBurdenDisplayTypeWithApplicationItems:(id)a3 mode:(int64_t)a4
+- (id)_generateAFibBurdenDisplayTypeWithApplicationItems:(id)items mode:(int64_t)mode
 {
   v18[2] = *MEMORY[0x1E69E9840];
   v6 = MEMORY[0x1E696C370];
-  v7 = a3;
+  itemsCopy = items;
   v8 = [v6 _quantityTypeWithCode:248];
-  v9 = [v7 displayTypeController];
-  v10 = [v9 displayTypeForObjectType:v8];
+  displayTypeController = [itemsCopy displayTypeController];
+  v10 = [displayTypeController displayTypeForObjectType:v8];
 
   v11 = objc_alloc_init(HKInteractiveChartAFibBurdenFormatter);
-  v12 = [(HKOverlayRoomAFibBurdenViewController *)self _aFibBurdenSeriesForTimeScope:4 displayType:v10 mode:a4 applicationItems:v7];
-  v13 = [(HKOverlayRoomAFibBurdenViewController *)self _aFibBurdenSeriesForTimeScope:3 displayType:v10 mode:a4 applicationItems:v7];
+  v12 = [(HKOverlayRoomAFibBurdenViewController *)self _aFibBurdenSeriesForTimeScope:4 displayType:v10 mode:mode applicationItems:itemsCopy];
+  v13 = [(HKOverlayRoomAFibBurdenViewController *)self _aFibBurdenSeriesForTimeScope:3 displayType:v10 mode:mode applicationItems:itemsCopy];
 
   v17[0] = &unk_1F4382050;
   v17[1] = &unk_1F4382068;
@@ -145,11 +145,11 @@
   return v15;
 }
 
-- (id)_aFibBurdenSeriesForTimeScope:(int64_t)a3 displayType:(id)a4 mode:(int64_t)a5 applicationItems:(id)a6
+- (id)_aFibBurdenSeriesForTimeScope:(int64_t)scope displayType:(id)type mode:(int64_t)mode applicationItems:(id)items
 {
   v40[1] = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  if (a5 == 3)
+  typeCopy = type;
+  if (mode == 3)
   {
     v11 = 3;
   }
@@ -159,7 +159,7 @@
     v11 = 5;
   }
 
-  v12 = a6;
+  itemsCopy = items;
   v13 = objc_alloc_init(HKNumericAxisConfiguration);
   [(HKAxisConfiguration *)v13 setMinLabels:v11];
   [(HKAxisConfiguration *)v13 setMaxLabels:v11];
@@ -169,37 +169,37 @@
     [(HKNumericAxisConfiguration *)v13 setBottomVerticalLabelPadding:2.0];
   }
 
-  v14 = [v10 displayCategory];
-  v15 = [v12 unitController];
-  v16 = [v12 chartDataCacheController];
+  displayCategory = [typeCopy displayCategory];
+  unitController = [itemsCopy unitController];
+  chartDataCacheController = [itemsCopy chartDataCacheController];
 
-  v17 = [v10 hk_standardSeriesForTimeScope:a3 displayCategory:v14 unitController:v15 dataCacheController:v16 numericAxisConfigurationOverrides:v13];
+  v17 = [typeCopy hk_standardSeriesForTimeScope:scope displayCategory:displayCategory unitController:unitController dataCacheController:chartDataCacheController numericAxisConfigurationOverrides:v13];
 
-  v18 = [MEMORY[0x1E696C510] percentUnit];
+  percentUnit = [MEMORY[0x1E696C510] percentUnit];
   v19 = 50.0;
-  if (a5 != 3)
+  if (mode != 3)
   {
     v19 = 100.0;
   }
 
-  v20 = [MEMORY[0x1E696C348] quantityWithUnit:v18 doubleValue:v19];
-  v21 = [MEMORY[0x1E696C348] quantityWithUnit:v18 doubleValue:0.0];
-  v22 = [MEMORY[0x1E696C348] quantityWithUnit:v18 doubleValue:100.0];
+  v20 = [MEMORY[0x1E696C348] quantityWithUnit:percentUnit doubleValue:v19];
+  v21 = [MEMORY[0x1E696C348] quantityWithUnit:percentUnit doubleValue:0.0];
+  v22 = [MEMORY[0x1E696C348] quantityWithUnit:percentUnit doubleValue:100.0];
   v23 = [HKValueRange valueRangeWithMinValue:v21 maxValue:v22];
   v24 = [HKQuantityMinimumRangeAxisScalingRule ruleWithDefaultYAxisRange:v20 minimumValue:v21 maximumValue:v22 axisRangeOverrides:0];
   v39 = v23;
   [v24 setNoDataAxisBounds:v23];
-  [v24 setUnit:v18];
+  [v24 setUnit:percentUnit];
   [v17 setAxisScalingRule:v24];
-  v25 = [v17 yAxis];
-  if (!v25)
+  yAxis = [v17 yAxis];
+  if (!yAxis)
   {
     v36 = v20;
     v38 = v17;
-    v31 = [MEMORY[0x1E696C608] sharedBehavior];
-    v32 = [v31 showSensitiveLogItems];
+    mEMORY[0x1E696C608] = [MEMORY[0x1E696C608] sharedBehavior];
+    showSensitiveLogItems = [mEMORY[0x1E696C608] showSensitiveLogItems];
 
-    if (v32)
+    if (showSensitiveLogItems)
     {
       _HKInitializeLogging();
       v29 = HKLogWellnessDashboard();
@@ -229,15 +229,15 @@ LABEL_15:
     goto LABEL_18;
   }
 
-  [v10 localization];
+  [typeCopy localization];
   v26 = v35 = v20;
   [v26 shortenedDisplayName];
-  v27 = v34 = v10;
+  v27 = v34 = typeCopy;
   [MEMORY[0x1E69DC888] hk_defaultSecondaryTextColor];
   v28 = v37 = v17;
   v29 = [HKLegendEntry legendEntryWithTitle:v27 labelColor:v28];
 
-  v10 = v34;
+  typeCopy = v34;
   v20 = v35;
   v40[0] = v29;
   v30 = [MEMORY[0x1E695DEC8] arrayWithObjects:v40 count:1];
@@ -251,19 +251,19 @@ LABEL_18:
   return v17;
 }
 
-- (id)_overlayContextForOverlayContextItem:(unint64_t)a3 sleepDataSourceProvider:(id)a4 sleepChartFormatter:(id)a5 overlayChartController:(id)a6 applicationItems:(id)a7
+- (id)_overlayContextForOverlayContextItem:(unint64_t)item sleepDataSourceProvider:(id)provider sleepChartFormatter:(id)formatter overlayChartController:(id)controller applicationItems:(id)items
 {
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
+  formatterCopy = formatter;
+  controllerCopy = controller;
+  itemsCopy = items;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __162__HKOverlayRoomAFibBurdenViewController__overlayContextForOverlayContextItem_sleepDataSourceProvider_sleepChartFormatter_overlayChartController_applicationItems___block_invoke;
   aBlock[3] = &unk_1E81B5948;
   aBlock[4] = self;
-  v15 = v13;
+  v15 = controllerCopy;
   v33 = v15;
-  v16 = v14;
+  v16 = itemsCopy;
   v34 = v16;
   v17 = _Block_copy(aBlock);
   v27[0] = MEMORY[0x1E69E9820];
@@ -274,14 +274,14 @@ LABEL_18:
   v28 = v18;
   v19 = v15;
   v29 = v19;
-  v20 = v12;
+  v20 = formatterCopy;
   v30 = v20;
-  v31 = self;
+  selfCopy = self;
   v21 = _Block_copy(v27);
   v22 = v21;
-  if (a3 > 1)
+  if (item > 1)
   {
-    switch(a3)
+    switch(item)
     {
       case 2uLL:
         v23 = MEMORY[0x1E696C3D0];
@@ -306,9 +306,9 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if (a3)
+  if (item)
   {
-    if (a3 != 1)
+    if (item != 1)
     {
       goto LABEL_12;
     }
@@ -341,41 +341,41 @@ HKOverlayRoomSleepDurationStackedContext *__162__HKOverlayRoomAFibBurdenViewCont
   return v1;
 }
 
-- (id)_displayTypeForOverlayContextItem:(unint64_t)a3
+- (id)_displayTypeForOverlayContextItem:(unint64_t)item
 {
-  if (a3 <= 4)
+  if (item <= 4)
   {
-    v4 = qword_1E81B5A30[a3];
-    v5 = [(HKOverlayRoomViewController *)self applicationItems];
-    v6 = [v5 healthStore];
-    v7 = [HKDisplayTypeController sharedInstanceForHealthStore:v6];
+    v4 = qword_1E81B5A30[item];
+    applicationItems = [(HKOverlayRoomViewController *)self applicationItems];
+    healthStore = [applicationItems healthStore];
+    v7 = [HKDisplayTypeController sharedInstanceForHealthStore:healthStore];
     v3 = [v7 displayTypeWithIdentifier:v4];
   }
 
   return v3;
 }
 
-- (id)_generateOverlayContextsWithPrimaryDisplayType:(id)a3 sleepDataSourceProvider:(id)a4 sleepChartFormatter:(id)a5 overlayChartController:(id)a6 applicationItems:(id)a7
+- (id)_generateOverlayContextsWithPrimaryDisplayType:(id)type sleepDataSourceProvider:(id)provider sleepChartFormatter:(id)formatter overlayChartController:(id)controller applicationItems:(id)items
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
-  v15 = [(HKOverlayRoomAFibBurdenViewController *)self _contextItemOrder];
+  providerCopy = provider;
+  formatterCopy = formatter;
+  controllerCopy = controller;
+  itemsCopy = items;
+  _contextItemOrder = [(HKOverlayRoomAFibBurdenViewController *)self _contextItemOrder];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __172__HKOverlayRoomAFibBurdenViewController__generateOverlayContextsWithPrimaryDisplayType_sleepDataSourceProvider_sleepChartFormatter_overlayChartController_applicationItems___block_invoke;
   v22[3] = &unk_1E81B5998;
   v22[4] = self;
-  v23 = v11;
-  v24 = v12;
-  v25 = v13;
-  v26 = v14;
-  v16 = v14;
-  v17 = v13;
-  v18 = v12;
-  v19 = v11;
-  v20 = [v15 hk_map:v22];
+  v23 = providerCopy;
+  v24 = formatterCopy;
+  v25 = controllerCopy;
+  v26 = itemsCopy;
+  v16 = itemsCopy;
+  v17 = controllerCopy;
+  v18 = formatterCopy;
+  v19 = providerCopy;
+  v20 = [_contextItemOrder hk_map:v22];
 
   return v20;
 }
@@ -392,26 +392,26 @@ uint64_t __172__HKOverlayRoomAFibBurdenViewController__generateOverlayContextsWi
   return [v3 _overlayContextForOverlayContextItem:v4 sleepDataSourceProvider:v5 sleepChartFormatter:v6 overlayChartController:v7 applicationItems:v8];
 }
 
-- (id)_lifeFactorViewControllerForKey:(id)a3 logButtonAction:(id)a4
+- (id)_lifeFactorViewControllerForKey:(id)key logButtonAction:(id)action
 {
   v24[1] = *MEMORY[0x1E69E9840];
   v5 = MEMORY[0x1E696AEC0];
-  v6 = a4;
-  v7 = a3;
-  v23 = [v5 stringWithFormat:@"%@%@", v7, @"_AND_AFIB_TITLE"];
+  actionCopy = action;
+  keyCopy = key;
+  v23 = [v5 stringWithFormat:@"%@%@", keyCopy, @"_AND_AFIB_TITLE"];
   v8 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
   v21 = [v8 localizedStringForKey:v23 value:&stru_1F42FFBE0 table:?];
 
-  v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@", v7, @"_AND_AFIB_BODY"];
+  v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@", keyCopy, @"_AND_AFIB_BODY"];
   v9 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
   v10 = [v9 localizedStringForKey:v22 value:&stru_1F42FFBE0 table:@"HealthUI-Localizable-AFibBurden"];
 
-  v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@", v7, @"_AND_AFIB_LOGGING"];
+  v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@", keyCopy, @"_AND_AFIB_LOGGING"];
 
   v12 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
   v13 = [v12 localizedStringForKey:v11 value:&stru_1F42FFBE0 table:@"HealthUI-Localizable-AFibBurden"];
 
-  v14 = [[HKInfographicTitleDetailOptionalButtonItem alloc] initWithTitle:v21 detail:v10 buttonTextString:v13 buttonAction:v6];
+  v14 = [[HKInfographicTitleDetailOptionalButtonItem alloc] initWithTitle:v21 detail:v10 buttonTextString:v13 buttonAction:actionCopy];
   v15 = [HKInfographicViewController alloc];
   v24[0] = v14;
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:1];
@@ -424,12 +424,12 @@ uint64_t __172__HKOverlayRoomAFibBurdenViewController__generateOverlayContextsWi
   return v17;
 }
 
-- (id)_infographicViewControllerForDisplayType:(id)a3 secondaryDisplayType:(id)a4 addDataViewControllerProvider:(id)a5 healthStore:(id)a6
+- (id)_infographicViewControllerForDisplayType:(id)type secondaryDisplayType:(id)displayType addDataViewControllerProvider:(id)provider healthStore:(id)store
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  typeCopy = type;
+  displayTypeCopy = displayType;
+  providerCopy = provider;
+  storeCopy = store;
   v35 = 0;
   v36 = &v35;
   v37 = 0x3032000000;
@@ -440,15 +440,15 @@ uint64_t __172__HKOverlayRoomAFibBurdenViewController__generateOverlayContextsWi
   v28 = 3221225472;
   v29 = __145__HKOverlayRoomAFibBurdenViewController__infographicViewControllerForDisplayType_secondaryDisplayType_addDataViewControllerProvider_healthStore___block_invoke;
   v30 = &unk_1E81B59E8;
-  v14 = v13;
+  v14 = storeCopy;
   v31 = v14;
-  v15 = v11;
+  v15 = displayTypeCopy;
   v32 = v15;
-  v16 = v12;
+  v16 = providerCopy;
   v33 = v16;
   v34 = &v35;
   v17 = _Block_copy(&v27);
-  if ([v10 displayTypeIdentifier] == 248)
+  if ([typeCopy displayTypeIdentifier] == 248)
   {
     if ([v15 displayTypeIdentifier] == 63)
     {
@@ -548,7 +548,7 @@ void __145__HKOverlayRoomAFibBurdenViewController__infographicViewControllerForD
   }
 }
 
-- (id)controllerTitleWithApplicationItems:(id)a3
+- (id)controllerTitleWithApplicationItems:(id)items
 {
   v3 = HKHealthKitFrameworkBundle();
   v4 = [v3 localizedStringForKey:@"ATRIAL_FIBRILLATION_BURDEN" value:&stru_1F42FFBE0 table:@"Localizable-AFibBurden"];
@@ -576,15 +576,15 @@ void __145__HKOverlayRoomAFibBurdenViewController__infographicViewControllerForD
   return [(HKOverlayRoomViewController *)&v4 supportsShowAllFilters];
 }
 
-- (void)didChangeFromContextItem:(id)a3 toContextItem:(id)a4
+- (void)didChangeFromContextItem:(id)item toContextItem:(id)contextItem
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6 | v7)
+  itemCopy = item;
+  contextItemCopy = contextItem;
+  if (itemCopy | contextItemCopy)
   {
-    v8 = [v6 analyticsIdentifier];
-    v9 = [v7 analyticsIdentifier];
-    v10 = [v8 isEqualToString:v9];
+    analyticsIdentifier = [itemCopy analyticsIdentifier];
+    analyticsIdentifier2 = [contextItemCopy analyticsIdentifier];
+    v10 = [analyticsIdentifier isEqualToString:analyticsIdentifier2];
 
     if ((v10 & 1) == 0)
     {
@@ -593,9 +593,9 @@ void __145__HKOverlayRoomAFibBurdenViewController__infographicViewControllerForD
       block[1] = 3221225472;
       block[2] = __80__HKOverlayRoomAFibBurdenViewController_didChangeFromContextItem_toContextItem___block_invoke;
       block[3] = &unk_1E81B5A10;
-      v13 = v6;
-      v14 = v7;
-      v15 = self;
+      v13 = itemCopy;
+      v14 = contextItemCopy;
+      selfCopy = self;
       dispatch_async(analyticsSubmissionQueue, block);
     }
   }
@@ -614,52 +614,52 @@ void __80__HKOverlayRoomAFibBurdenViewController_didChangeFromContextItem_toCont
 
 - (id)createChartOverlayViewController
 {
-  v3 = [(HKInteractiveChartDisplayType *)self->_afibBurdenDisplayType baseDisplayType];
-  v4 = [v3 hk_interactiveChartOptions];
+  baseDisplayType = [(HKInteractiveChartDisplayType *)self->_afibBurdenDisplayType baseDisplayType];
+  hk_interactiveChartOptions = [baseDisplayType hk_interactiveChartOptions];
 
   if ([(HKOverlayRoomViewController *)self controllerMode]== 3)
   {
-    v5 = v4 | 0x2020;
+    v5 = hk_interactiveChartOptions | 0x2020;
   }
 
   else
   {
-    v5 = v4;
+    v5 = hk_interactiveChartOptions;
   }
 
   v20 = v5 | [(HKOverlayRoomViewController *)self additionalChartOptions];
   v19 = [HKInteractiveChartOverlayViewController alloc];
-  v23 = [(HKOverlayRoomViewController *)self applicationItems];
-  v24 = [v23 healthStore];
-  v17 = [(HKOverlayRoomViewController *)self primaryDisplayType];
-  v22 = [(HKOverlayRoomViewController *)self applicationItems];
-  v6 = [v22 unitController];
-  v21 = [(HKOverlayRoomViewController *)self applicationItems];
-  v7 = [v21 dateCache];
-  v18 = [(HKOverlayRoomViewController *)self applicationItems];
-  v8 = [v18 chartDataCacheController];
-  v9 = [(HKOverlayRoomViewController *)self applicationItems];
-  v10 = [v9 timeScopeController];
-  v11 = [(HKOverlayRoomViewController *)self applicationItems];
-  v12 = [v11 sampleDateRangeController];
-  v13 = [(HKOverlayRoomViewController *)self displayDate];
-  v14 = v7;
-  v15 = [(HKInteractiveChartOverlayViewController *)v19 initWithHealthStore:v24 primaryDisplayType:v17 unitPreferenceController:v6 dateCache:v7 chartDataCacheController:v8 selectedTimeScopeController:v10 sampleTypeDateRangeController:v12 initialXValue:v13 currentCalendarOverride:self->_currentCalendar options:v20];
+  applicationItems = [(HKOverlayRoomViewController *)self applicationItems];
+  healthStore = [applicationItems healthStore];
+  primaryDisplayType = [(HKOverlayRoomViewController *)self primaryDisplayType];
+  applicationItems2 = [(HKOverlayRoomViewController *)self applicationItems];
+  unitController = [applicationItems2 unitController];
+  applicationItems3 = [(HKOverlayRoomViewController *)self applicationItems];
+  dateCache = [applicationItems3 dateCache];
+  applicationItems4 = [(HKOverlayRoomViewController *)self applicationItems];
+  chartDataCacheController = [applicationItems4 chartDataCacheController];
+  applicationItems5 = [(HKOverlayRoomViewController *)self applicationItems];
+  timeScopeController = [applicationItems5 timeScopeController];
+  applicationItems6 = [(HKOverlayRoomViewController *)self applicationItems];
+  sampleDateRangeController = [applicationItems6 sampleDateRangeController];
+  displayDate = [(HKOverlayRoomViewController *)self displayDate];
+  v14 = dateCache;
+  v15 = [(HKInteractiveChartOverlayViewController *)v19 initWithHealthStore:healthStore primaryDisplayType:primaryDisplayType unitPreferenceController:unitController dateCache:dateCache chartDataCacheController:chartDataCacheController selectedTimeScopeController:timeScopeController sampleTypeDateRangeController:sampleDateRangeController initialXValue:displayDate currentCalendarOverride:self->_currentCalendar options:v20];
 
   [(HKInteractiveChartViewController *)v15 setCurrentValueViewDataSourceDelegate:self];
 
   return v15;
 }
 
-- (id)contextSectionContainersForMode:(int64_t)a3 applicationItems:(id)a4 overlayChartController:(id)a5
+- (id)contextSectionContainersForMode:(int64_t)mode applicationItems:(id)items overlayChartController:(id)controller
 {
   v29[1] = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  v9 = a4;
-  v10 = [(HKOverlayRoomAFibBurdenViewController *)self afibBurdenDisplayType];
-  v11 = [(HKOverlayRoomAFibBurdenViewController *)self sleepDataSourceProvider];
-  v12 = [(HKOverlayRoomAFibBurdenViewController *)self sleepChartFormatter];
-  v13 = [(HKOverlayRoomAFibBurdenViewController *)self _generateOverlayContextsWithPrimaryDisplayType:v10 sleepDataSourceProvider:v11 sleepChartFormatter:v12 overlayChartController:v8 applicationItems:v9];
+  controllerCopy = controller;
+  itemsCopy = items;
+  afibBurdenDisplayType = [(HKOverlayRoomAFibBurdenViewController *)self afibBurdenDisplayType];
+  sleepDataSourceProvider = [(HKOverlayRoomAFibBurdenViewController *)self sleepDataSourceProvider];
+  sleepChartFormatter = [(HKOverlayRoomAFibBurdenViewController *)self sleepChartFormatter];
+  v13 = [(HKOverlayRoomAFibBurdenViewController *)self _generateOverlayContextsWithPrimaryDisplayType:afibBurdenDisplayType sleepDataSourceProvider:sleepDataSourceProvider sleepChartFormatter:sleepChartFormatter overlayChartController:controllerCopy applicationItems:itemsCopy];
 
   v14 = [(HKOverlayRoomViewController *)self buildFactorContextsAllowingDeselection:0];
   if (v14)
@@ -674,7 +674,7 @@ void __80__HKOverlayRoomAFibBurdenViewController_didChangeFromContextItem_toCont
   v18 = [v17 localizedStringForKey:@"LIFE_FACTORS" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable-AFibBurden"];
   v19 = [(HKOverlayContextSection *)v16 initWithSectionTitle:v18 overlayContextItems:v13];
 
-  if (a3 == 3)
+  if (mode == 3)
   {
     v20 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:0];
     preferredOverlayIndex = self->_preferredOverlayIndex;
@@ -699,80 +699,80 @@ void __80__HKOverlayRoomAFibBurdenViewController_didChangeFromContextItem_toCont
   return v25;
 }
 
-- (id)createViewControllerForMode:(int64_t)a3 displayDate:(id)a4 applicationItems:(id)a5
+- (id)createViewControllerForMode:(int64_t)mode displayDate:(id)date applicationItems:(id)items
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (a3 == 3)
+  dateCopy = date;
+  itemsCopy = items;
+  v10 = itemsCopy;
+  if (mode == 3)
   {
-    v11 = [v9 timeScopeController];
-    [v11 setSelectedTimeScope:3];
+    timeScopeController = [itemsCopy timeScopeController];
+    [timeScopeController setSelectedTimeScope:3];
   }
 
   v12 = [HKOverlayRoomAFibBurdenViewController alloc];
-  v13 = [(HKOverlayRoomViewController *)self factorDisplayTypes];
-  v14 = [(HKOverlayRoomAFibBurdenViewController *)v12 initWithDisplayDate:v8 applicationItems:v10 factorDisplayTypes:v13 mode:a3 sleepDataSourceProvider:self->_sleepDataSourceProvider sleepChartFormatter:self->_sleepChartFormatter preferredOverlay:self->_preferredOverlay addDataViewControllerProvider:self->_addDataViewControllerProvider];
+  factorDisplayTypes = [(HKOverlayRoomViewController *)self factorDisplayTypes];
+  v14 = [(HKOverlayRoomAFibBurdenViewController *)v12 initWithDisplayDate:dateCopy applicationItems:v10 factorDisplayTypes:factorDisplayTypes mode:mode sleepDataSourceProvider:self->_sleepDataSourceProvider sleepChartFormatter:self->_sleepChartFormatter preferredOverlay:self->_preferredOverlay addDataViewControllerProvider:self->_addDataViewControllerProvider];
 
-  [(HKOverlayRoomViewController *)v14 setAdditionalChartOptions:[(HKOverlayRoomViewController *)self filteredInteractiveChartOptionsForMode:a3]];
+  [(HKOverlayRoomViewController *)v14 setAdditionalChartOptions:[(HKOverlayRoomViewController *)self filteredInteractiveChartOptionsForMode:mode]];
 
   return v14;
 }
 
-- (void)contextView:(id)a3 didTapOnInfoButtonAtIndex:(int64_t)a4
+- (void)contextView:(id)view didTapOnInfoButtonAtIndex:(int64_t)index
 {
-  v6 = [(HKOverlayRoomViewController *)self applicationItems];
-  v7 = [v6 healthStore];
-  v8 = [HKDisplayTypeController sharedInstanceForHealthStore:v7];
+  applicationItems = [(HKOverlayRoomViewController *)self applicationItems];
+  healthStore = [applicationItems healthStore];
+  v8 = [HKDisplayTypeController sharedInstanceForHealthStore:healthStore];
   v29 = [v8 displayTypeWithIdentifier:&unk_1F4382170];
 
-  v9 = [(HKOverlayRoomAFibBurdenViewController *)self _contextItemOrder];
+  _contextItemOrder = [(HKOverlayRoomAFibBurdenViewController *)self _contextItemOrder];
   v10 = [(HKOverlayRoomViewController *)self buildFactorContextsAllowingDeselection:0];
-  v11 = [v10 activeFactorContexts];
-  v12 = [v11 count];
+  activeFactorContexts = [v10 activeFactorContexts];
+  v12 = [activeFactorContexts count];
 
-  v13 = [v9 count];
-  v14 = [v10 inactiveFactorContexts];
-  v15 = [v14 count];
+  v13 = [_contextItemOrder count];
+  inactiveFactorContexts = [v10 inactiveFactorContexts];
+  v15 = [inactiveFactorContexts count];
 
-  v16 = a4 - v12;
-  if (a4 < v12)
+  v16 = index - v12;
+  if (index < v12)
   {
-    v17 = [v10 activeFactorContexts];
-    v18 = [v17 objectAtIndexedSubscript:a4];
+    activeFactorContexts2 = [v10 activeFactorContexts];
+    v18 = [activeFactorContexts2 objectAtIndexedSubscript:index];
 
 LABEL_3:
-    v19 = [v18 stackedBaseDisplayType];
-    v20 = [(HKOverlayRoomViewController *)self applicationItems];
-    v21 = [v20 healthStore];
-    v22 = [HKInteractiveChartInfographicFactory infographicViewControllerForDisplayType:v29 factorDisplayType:v19 healthStore:v21];
+    stackedBaseDisplayType = [v18 stackedBaseDisplayType];
+    applicationItems2 = [(HKOverlayRoomViewController *)self applicationItems];
+    healthStore2 = [applicationItems2 healthStore];
+    v22 = [HKInteractiveChartInfographicFactory infographicViewControllerForDisplayType:v29 factorDisplayType:stackedBaseDisplayType healthStore:healthStore2];
 
     goto LABEL_7;
   }
 
   v23 = v13 + v12;
-  v24 = __OFSUB__(a4, v13 + v12);
-  v25 = a4 - (v13 + v12);
+  v24 = __OFSUB__(index, v13 + v12);
+  v25 = index - (v13 + v12);
   if (v25 < 0 == v24)
   {
-    if (v15 + v23 <= a4)
+    if (v15 + v23 <= index)
     {
       goto LABEL_9;
     }
 
-    v28 = [v10 inactiveFactorContexts];
-    v18 = [v28 objectAtIndexedSubscript:v25];
+    inactiveFactorContexts2 = [v10 inactiveFactorContexts];
+    v18 = [inactiveFactorContexts2 objectAtIndexedSubscript:v25];
 
     goto LABEL_3;
   }
 
-  v26 = [v9 objectAtIndex:v16];
+  v26 = [_contextItemOrder objectAtIndex:v16];
   v18 = -[HKOverlayRoomAFibBurdenViewController _displayTypeForOverlayContextItem:](self, "_displayTypeForOverlayContextItem:", [v26 intValue]);
 
   addDataViewControllerProvider = self->_addDataViewControllerProvider;
-  v19 = [(HKOverlayRoomViewController *)self applicationItems];
-  v20 = [v19 healthStore];
-  v22 = [(HKOverlayRoomAFibBurdenViewController *)self _infographicViewControllerForDisplayType:v29 secondaryDisplayType:v18 addDataViewControllerProvider:addDataViewControllerProvider healthStore:v20];
+  stackedBaseDisplayType = [(HKOverlayRoomViewController *)self applicationItems];
+  applicationItems2 = [stackedBaseDisplayType healthStore];
+  v22 = [(HKOverlayRoomAFibBurdenViewController *)self _infographicViewControllerForDisplayType:v29 secondaryDisplayType:v18 addDataViewControllerProvider:addDataViewControllerProvider healthStore:applicationItems2];
 LABEL_7:
 
   if (v22)
@@ -783,130 +783,130 @@ LABEL_7:
 LABEL_9:
 }
 
-- (id)stringForValueRange:(id)a3 timeScope:(int64_t)a4
+- (id)stringForValueRange:(id)range timeScope:(int64_t)scope
 {
-  v6 = a3;
-  v7 = [(HKOverlayRoomViewController *)self chartController];
-  v8 = [v7 stringForValueRange:v6 timeScope:a4];
+  rangeCopy = range;
+  chartController = [(HKOverlayRoomViewController *)self chartController];
+  v8 = [chartController stringForValueRange:rangeCopy timeScope:scope];
 
   return v8;
 }
 
-- (void)processSelectedRangeData:(id)a3 displayType:(id)a4
+- (void)processSelectedRangeData:(id)data displayType:(id)type
 {
-  v18 = a3;
-  v7 = a4;
-  v8 = [v18 statisticsType];
-  v9 = [v7 sampleType];
+  dataCopy = data;
+  typeCopy = type;
+  statisticsType = [dataCopy statisticsType];
+  sampleType = [typeCopy sampleType];
 
-  v10 = [v9 code];
-  if (v10 <= 98)
+  code = [sampleType code];
+  if (code <= 98)
   {
-    if (v10 == 3)
+    if (code == 3)
     {
-      if ([v18 statisticsType] != 3 && v8)
+      if ([dataCopy statisticsType] != 3 && statisticsType)
       {
         [HKOverlayRoomAFibBurdenViewController processSelectedRangeData:displayType:];
       }
 
       v12 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
-      v13 = v12;
+      currentHandler = v12;
       v14 = @"BODY_MASS_LOLLIPOP_TITLE";
     }
 
     else
     {
-      v11 = v18;
-      if (v10 == 63)
+      v11 = dataCopy;
+      if (code == 63)
       {
-        if ([v18 dataType] == 9)
+        if ([dataCopy dataType] == 9)
         {
           v12 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
-          v13 = v12;
+          currentHandler = v12;
           v14 = @"SLEEP_INBED_LOLLIPOP_TITLE";
         }
 
         else
         {
-          if ([v18 dataType] != 10)
+          if ([dataCopy dataType] != 10)
           {
-            v13 = [MEMORY[0x1E696AAA8] currentHandler];
-            [v13 handleFailureInMethod:a2 object:self file:@"HKOverlayRoomAFibBurdenViewController.m" lineNumber:612 description:{@"Sleep should only contain InBed or Asleep data types. Unrecognized: %ld", objc_msgSend(v18, "dataType")}];
+            currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+            [currentHandler handleFailureInMethod:a2 object:self file:@"HKOverlayRoomAFibBurdenViewController.m" lineNumber:612 description:{@"Sleep should only contain InBed or Asleep data types. Unrecognized: %ld", objc_msgSend(dataCopy, "dataType")}];
             goto LABEL_32;
           }
 
           v12 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
-          v13 = v12;
+          currentHandler = v12;
           v14 = @"SLEEP_ASLEEP_LOLLIPOP_TITLE";
         }
       }
 
       else
       {
-        if (v10 != 75)
+        if (code != 75)
         {
           goto LABEL_33;
         }
 
-        if ([v18 statisticsType] != 8 && v8)
+        if ([dataCopy statisticsType] != 8 && statisticsType)
         {
           [HKOverlayRoomAFibBurdenViewController processSelectedRangeData:displayType:];
         }
 
         v12 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
-        v13 = v12;
+        currentHandler = v12;
         v14 = @"EXERCISE_MINUTES_LOLLIPOP_TITLE";
       }
     }
 
 LABEL_31:
     v16 = [v12 localizedStringForKey:v14 value:&stru_1F42FFBE0 table:@"HealthUI-Localizable-AFibBurden"];
-    v17 = [v16 localizedUppercaseString];
-    [v18 setTitleOverride:v17];
+    localizedUppercaseString = [v16 localizedUppercaseString];
+    [dataCopy setTitleOverride:localizedUppercaseString];
 
 LABEL_32:
-    v11 = v18;
+    v11 = dataCopy;
     goto LABEL_33;
   }
 
-  if (v10 == 99)
+  if (code == 99)
   {
-    if ([v18 statisticsType] != 8 && v8)
+    if ([dataCopy statisticsType] != 8 && statisticsType)
     {
       [HKOverlayRoomAFibBurdenViewController processSelectedRangeData:displayType:];
     }
 
     v12 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
-    v13 = v12;
+    currentHandler = v12;
     v14 = @"MINDFUL_MINUTES_LOLLIPOP_TITLE";
     goto LABEL_31;
   }
 
-  v11 = v18;
-  if (v10 != 248)
+  v11 = dataCopy;
+  if (code != 248)
   {
-    if (v10 != 251)
+    if (code != 251)
     {
       goto LABEL_33;
     }
 
-    if ([v18 statisticsType] != 8 && v8)
+    if ([dataCopy statisticsType] != 8 && statisticsType)
     {
       [HKOverlayRoomAFibBurdenViewController processSelectedRangeData:displayType:];
     }
 
     v12 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
-    v13 = v12;
+    currentHandler = v12;
     v14 = @"ALCOHOL_LOLLIPOP_TITLE";
     goto LABEL_31;
   }
 
   v15 = [(HKOverlayRoomViewController *)self controllerMode]== 3;
-  v11 = v18;
+  v11 = dataCopy;
   if (v15)
   {
     v12 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
-    v13 = v12;
+    currentHandler = v12;
     v14 = @"AFIB_BURDEN_LOLLIPOP_TITLE";
     goto LABEL_31;
   }

@@ -1,16 +1,16 @@
 @interface CarMapsActionController
-- (CarMapsActionController)initWithPlatformController:(id)a3;
+- (CarMapsActionController)initWithPlatformController:(id)controller;
 - (CarStateManager)carStateManager;
-- (void)_applyActivity:(id)a3 assumedSourceFidelity:(unint64_t)a4 source:(int64_t)a5;
+- (void)_applyActivity:(id)activity assumedSourceFidelity:(unint64_t)fidelity source:(int64_t)source;
 @end
 
 @implementation CarMapsActionController
 
-- (void)_applyActivity:(id)a3 assumedSourceFidelity:(unint64_t)a4 source:(int64_t)a5
+- (void)_applyActivity:(id)activity assumedSourceFidelity:(unint64_t)fidelity source:(int64_t)source
 {
-  v8 = a3;
-  v9 = [(CarMapsActionController *)self carStateManager];
-  [v9 setMapsActivity:v8 assumedSourceFidelity:a4 source:a5];
+  activityCopy = activity;
+  carStateManager = [(CarMapsActionController *)self carStateManager];
+  [carStateManager setMapsActivity:activityCopy assumedSourceFidelity:fidelity source:source];
 }
 
 - (CarStateManager)carStateManager
@@ -28,16 +28,16 @@
   return carStateManager;
 }
 
-- (CarMapsActionController)initWithPlatformController:(id)a3
+- (CarMapsActionController)initWithPlatformController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v9.receiver = self;
   v9.super_class = CarMapsActionController;
   v6 = [(MapsActionController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_platformController, a3);
+    objc_storeStrong(&v6->_platformController, controller);
   }
 
   return v7;

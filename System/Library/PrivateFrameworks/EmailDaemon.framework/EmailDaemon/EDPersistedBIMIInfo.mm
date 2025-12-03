@@ -1,45 +1,45 @@
 @interface EDPersistedBIMIInfo
-- (BOOL)isEqual:(id)a3;
-- (EDPersistedBIMIInfo)initWithBIMIInfo:(id)a3 indicatorDatabaseID:(int64_t)a4 evidenceDatabaseID:(int64_t)a5;
+- (BOOL)isEqual:(id)equal;
+- (EDPersistedBIMIInfo)initWithBIMIInfo:(id)info indicatorDatabaseID:(int64_t)d evidenceDatabaseID:(int64_t)iD;
 - (NSData)indicator;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation EDPersistedBIMIInfo
 
-- (EDPersistedBIMIInfo)initWithBIMIInfo:(id)a3 indicatorDatabaseID:(int64_t)a4 evidenceDatabaseID:(int64_t)a5
+- (EDPersistedBIMIInfo)initWithBIMIInfo:(id)info indicatorDatabaseID:(int64_t)d evidenceDatabaseID:(int64_t)iD
 {
-  v9 = a3;
+  infoCopy = info;
   v13.receiver = self;
   v13.super_class = EDPersistedBIMIInfo;
   v10 = [(EDPersistedBIMIInfo *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_bimiInfo, a3);
-    v11->_indicatorDatabaseID = a4;
-    v11->_evidenceDatabaseID = a5;
+    objc_storeStrong(&v10->_bimiInfo, info);
+    v11->_indicatorDatabaseID = d;
+    v11->_evidenceDatabaseID = iD;
   }
 
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
 
-  else if (([(EDPersistedBIMIInfo *)v4 isMemberOfClass:objc_opt_class()]& 1) != 0)
+  else if (([(EDPersistedBIMIInfo *)equalCopy isMemberOfClass:objc_opt_class()]& 1) != 0)
   {
-    v5 = v4;
-    v6 = [(EDPersistedBIMIInfo *)self indicatorDatabaseID];
-    if (v6 == [(EDPersistedBIMIInfo *)v5 indicatorDatabaseID])
+    v5 = equalCopy;
+    indicatorDatabaseID = [(EDPersistedBIMIInfo *)self indicatorDatabaseID];
+    if (indicatorDatabaseID == [(EDPersistedBIMIInfo *)v5 indicatorDatabaseID])
     {
-      v7 = [(EDPersistedBIMIInfo *)self evidenceDatabaseID];
-      v8 = v7 == [(EDPersistedBIMIInfo *)v5 evidenceDatabaseID];
+      evidenceDatabaseID = [(EDPersistedBIMIInfo *)self evidenceDatabaseID];
+      v8 = evidenceDatabaseID == [(EDPersistedBIMIInfo *)v5 evidenceDatabaseID];
     }
 
     else
@@ -56,45 +56,45 @@
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(EDPersistedBIMIInfo *)self bimiInfo];
-  v6 = [v4 initWithBIMIInfo:v5 indicatorDatabaseID:-[EDPersistedBIMIInfo indicatorDatabaseID](self evidenceDatabaseID:{"indicatorDatabaseID"), -[EDPersistedBIMIInfo evidenceDatabaseID](self, "evidenceDatabaseID")}];
+  bimiInfo = [(EDPersistedBIMIInfo *)self bimiInfo];
+  v6 = [v4 initWithBIMIInfo:bimiInfo indicatorDatabaseID:-[EDPersistedBIMIInfo indicatorDatabaseID](self evidenceDatabaseID:{"indicatorDatabaseID"), -[EDPersistedBIMIInfo evidenceDatabaseID](self, "evidenceDatabaseID")}];
 
-  v7 = [(EDPersistedBIMIInfo *)self internalIndicator];
+  internalIndicator = [(EDPersistedBIMIInfo *)self internalIndicator];
 
-  if (v7)
+  if (internalIndicator)
   {
-    v8 = [(EDPersistedBIMIInfo *)self internalIndicator];
-    [v6 setIndicator:v8];
+    internalIndicator2 = [(EDPersistedBIMIInfo *)self internalIndicator];
+    [v6 setIndicator:internalIndicator2];
   }
 
-  v9 = [(EDPersistedBIMIInfo *)self evidence];
-  [v6 setEvidence:v9];
+  evidence = [(EDPersistedBIMIInfo *)self evidence];
+  [v6 setEvidence:evidence];
 
-  v10 = [(EDPersistedBIMIInfo *)self unverifiedMessageDatabaseIDs];
-  [v6 setUnverifiedMessageDatabaseIDs:v10];
+  unverifiedMessageDatabaseIDs = [(EDPersistedBIMIInfo *)self unverifiedMessageDatabaseIDs];
+  [v6 setUnverifiedMessageDatabaseIDs:unverifiedMessageDatabaseIDs];
 
   return v6;
 }
 
 - (NSData)indicator
 {
-  v3 = [(EDPersistedBIMIInfo *)self internalIndicator];
-  v4 = v3;
-  if (v3)
+  internalIndicator = [(EDPersistedBIMIInfo *)self internalIndicator];
+  v4 = internalIndicator;
+  if (internalIndicator)
   {
-    v5 = v3;
+    indicator = internalIndicator;
   }
 
   else
   {
-    v6 = [(EDPersistedBIMIInfo *)self bimiInfo];
-    v5 = [v6 indicator];
+    bimiInfo = [(EDPersistedBIMIInfo *)self bimiInfo];
+    indicator = [bimiInfo indicator];
   }
 
-  return v5;
+  return indicator;
 }
 
 @end

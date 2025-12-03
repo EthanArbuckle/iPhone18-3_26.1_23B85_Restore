@@ -1,6 +1,6 @@
 @interface CARAirPlayLoggingPanel
 - (CARAirPlayLoggingSettingProvider)settingProvider;
-- (id)_loggingButtonTitleForLoggingEnabled:(BOOL)a3;
+- (id)_loggingButtonTitleForLoggingEnabled:(BOOL)enabled;
 - (void)_toggleLoggingEnabled;
 - (void)viewDidLoad;
 @end
@@ -12,19 +12,19 @@
   v48.receiver = self;
   v48.super_class = CARAirPlayLoggingPanel;
   [(CARSettingsPanel *)&v48 viewDidLoad];
-  v44 = [(CARAirPlayLoggingPanel *)self view];
-  v3 = [(CARSettingsPanel *)self panelController];
-  v21 = [v3 vehicleVideoSettings];
+  view = [(CARAirPlayLoggingPanel *)self view];
+  panelController = [(CARSettingsPanel *)self panelController];
+  vehicleVideoSettings = [panelController vehicleVideoSettings];
 
-  v42 = [(CARAirPlayLoggingPanel *)self settingProvider];
+  settingProvider = [(CARAirPlayLoggingPanel *)self settingProvider];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v42 isAirPlayLoggingEnabled];
+    isAirPlayLoggingEnabled = [settingProvider isAirPlayLoggingEnabled];
   }
 
   else
   {
-    v4 = 0;
+    isAirPlayLoggingEnabled = 0;
   }
 
   objc_initWeak(&location, self);
@@ -42,11 +42,11 @@
 
   [v5 setEditable:0];
   [v5 setSelectable:0];
-  v9 = [v44 backgroundColor];
-  [v5 setBackgroundColor:v9];
+  backgroundColor = [view backgroundColor];
+  [v5 setBackgroundColor:backgroundColor];
 
-  [v44 addSubview:v5];
-  v41 = [(CARAirPlayLoggingPanel *)self _loggingButtonTitleForLoggingEnabled:v4];
+  [view addSubview:v5];
+  v41 = [(CARAirPlayLoggingPanel *)self _loggingButtonTitleForLoggingEnabled:isAirPlayLoggingEnabled];
   v43 = +[UIButtonConfiguration grayButtonConfiguration];
   v10 = +[UIColor labelColor];
   [v43 setBaseForegroundColor:v10];
@@ -61,52 +61,52 @@
 
   [v12 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v12 setTitle:v41 forState:0];
-  [v12 setTag:v4 ^ 1];
+  [v12 setTag:isAirPlayLoggingEnabled ^ 1];
   objc_storeStrong(&self->_enableLoggingButton, v12);
-  [v44 addSubview:v12];
-  v39 = [v5 topAnchor];
-  v40 = [v44 safeAreaLayoutGuide];
-  v38 = [v40 topAnchor];
-  v37 = [v39 constraintEqualToSystemSpacingBelowAnchor:v38 multiplier:1.0];
+  [view addSubview:v12];
+  topAnchor = [v5 topAnchor];
+  safeAreaLayoutGuide = [view safeAreaLayoutGuide];
+  topAnchor2 = [safeAreaLayoutGuide topAnchor];
+  v37 = [topAnchor constraintEqualToSystemSpacingBelowAnchor:topAnchor2 multiplier:1.0];
   v49[0] = v37;
-  v35 = [v5 leadingAnchor];
-  v36 = [v44 safeAreaLayoutGuide];
-  v34 = [v36 leadingAnchor];
-  v33 = [v35 constraintEqualToSystemSpacingAfterAnchor:v34 multiplier:2.0];
+  leadingAnchor = [v5 leadingAnchor];
+  safeAreaLayoutGuide2 = [view safeAreaLayoutGuide];
+  leadingAnchor2 = [safeAreaLayoutGuide2 leadingAnchor];
+  v33 = [leadingAnchor constraintEqualToSystemSpacingAfterAnchor:leadingAnchor2 multiplier:2.0];
   v49[1] = v33;
-  v32 = [v44 safeAreaLayoutGuide];
-  v31 = [v32 trailingAnchor];
-  v30 = [v5 trailingAnchor];
-  v29 = [v31 constraintEqualToSystemSpacingAfterAnchor:v30 multiplier:2.0];
+  safeAreaLayoutGuide3 = [view safeAreaLayoutGuide];
+  trailingAnchor = [safeAreaLayoutGuide3 trailingAnchor];
+  trailingAnchor2 = [v5 trailingAnchor];
+  v29 = [trailingAnchor constraintEqualToSystemSpacingAfterAnchor:trailingAnchor2 multiplier:2.0];
   v49[2] = v29;
-  v28 = [v12 centerXAnchor];
-  v27 = [v44 centerXAnchor];
-  v26 = [v28 constraintEqualToAnchor:v27];
+  centerXAnchor = [v12 centerXAnchor];
+  centerXAnchor2 = [view centerXAnchor];
+  v26 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v49[3] = v26;
-  v24 = [v12 widthAnchor];
-  v25 = [v44 safeAreaLayoutGuide];
-  v23 = [v25 widthAnchor];
-  v22 = [v24 constraintLessThanOrEqualToAnchor:v23];
+  widthAnchor = [v12 widthAnchor];
+  safeAreaLayoutGuide4 = [view safeAreaLayoutGuide];
+  widthAnchor2 = [safeAreaLayoutGuide4 widthAnchor];
+  v22 = [widthAnchor constraintLessThanOrEqualToAnchor:widthAnchor2];
   v49[4] = v22;
-  v13 = [v12 topAnchor];
-  v14 = [v5 bottomAnchor];
-  v15 = [v13 constraintEqualToSystemSpacingBelowAnchor:v14 multiplier:1.0];
+  topAnchor3 = [v12 topAnchor];
+  bottomAnchor = [v5 bottomAnchor];
+  v15 = [topAnchor3 constraintEqualToSystemSpacingBelowAnchor:bottomAnchor multiplier:1.0];
   v49[5] = v15;
-  v16 = [v44 safeAreaLayoutGuide];
-  v17 = [v16 bottomAnchor];
-  v18 = [v12 bottomAnchor];
-  v19 = [v17 constraintEqualToSystemSpacingBelowAnchor:v18 multiplier:2.0];
+  safeAreaLayoutGuide5 = [view safeAreaLayoutGuide];
+  bottomAnchor2 = [safeAreaLayoutGuide5 bottomAnchor];
+  bottomAnchor3 = [v12 bottomAnchor];
+  v19 = [bottomAnchor2 constraintEqualToSystemSpacingBelowAnchor:bottomAnchor3 multiplier:2.0];
   v49[6] = v19;
   v20 = [NSArray arrayWithObjects:v49 count:7];
-  [v44 addConstraints:v20];
+  [view addConstraints:v20];
 
   objc_destroyWeak(&v46);
   objc_destroyWeak(&location);
 }
 
-- (id)_loggingButtonTitleForLoggingEnabled:(BOOL)a3
+- (id)_loggingButtonTitleForLoggingEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = @"VIDEO_LOGGING_TURN_OFF";
   }
@@ -123,20 +123,20 @@
 
 - (void)_toggleLoggingEnabled
 {
-  v9 = [(CARAirPlayLoggingPanel *)self enableLoggingButton];
-  v3 = [v9 tag];
-  v4 = [(CARAirPlayLoggingPanel *)self settingProvider];
+  enableLoggingButton = [(CARAirPlayLoggingPanel *)self enableLoggingButton];
+  v3 = [enableLoggingButton tag];
+  settingProvider = [(CARAirPlayLoggingPanel *)self settingProvider];
   if (objc_opt_respondsToSelector())
   {
-    [v4 setAirPlayLoggingEnabled:v3 == 1];
+    [settingProvider setAirPlayLoggingEnabled:v3 == 1];
   }
 
   v5 = v3 == 1;
   v6 = v3 != 1;
   v7 = v5;
   v8 = [(CARAirPlayLoggingPanel *)self _loggingButtonTitleForLoggingEnabled:v7];
-  [v9 setTitle:v8 forState:0];
-  [v9 setTag:v6];
+  [enableLoggingButton setTitle:v8 forState:0];
+  [enableLoggingButton setTag:v6];
 }
 
 - (CARAirPlayLoggingSettingProvider)settingProvider

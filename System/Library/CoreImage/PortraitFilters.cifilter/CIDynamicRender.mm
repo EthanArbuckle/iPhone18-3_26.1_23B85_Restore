@@ -1,14 +1,14 @@
 @interface CIDynamicRender
 + (id)customAttributes;
-- ($3CC2805F0189FCCE51047C0D2B5A52A9)calcColorStats:(SEL)a3;
+- ($3CC2805F0189FCCE51047C0D2B5A52A9)calcColorStats:(SEL)stats;
 - (id)_rectToHueChroma;
 - (id)_softExposure;
 - (id)_srgbToIPT;
-- (id)captureType:(id)a3;
+- (id)captureType:(id)type;
 - (id)outputImage;
-- (id)overlayText:(id)a3 strength:(float)a4 captureType:(int)a5 bv:(float)a6;
-- (id)sceneLuminance:(id)a3;
-- (id)writeDebugData:(id)a3;
+- (id)overlayText:(id)text strength:(float)strength captureType:(int)type bv:(float)bv;
+- (id)sceneLuminance:(id)luminance;
+- (id)writeDebugData:(id)data;
 @end
 
 @implementation CIDynamicRender
@@ -194,9 +194,9 @@
   return qword_8CEF0;
 }
 
-- ($3CC2805F0189FCCE51047C0D2B5A52A9)calcColorStats:(SEL)a3
+- ($3CC2805F0189FCCE51047C0D2B5A52A9)calcColorStats:(SEL)stats
 {
-  v4 = __chkstk_darwin(retstr, self, a3, a4);
+  v4 = __chkstk_darwin(retstr, self, stats, a4);
   v6 = v5;
   v7 = v4;
   *(v8 + 32) = 0;
@@ -204,14 +204,14 @@
   *(v8 + 16) = 0u;
   v75 = v8;
   context = objc_autoreleasePoolPush();
-  v9 = [v7 _srgbToIPT];
+  _srgbToIPT = [v7 _srgbToIPT];
   [v6 extent];
   v83 = v6;
-  v14 = [v9 applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", &v83, 1), v10, v11, v12, v13}];
-  v15 = [v7 _rectToHueChroma];
+  v14 = [_srgbToIPT applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", &v83, 1), v10, v11, v12, v13}];
+  _rectToHueChroma = [v7 _rectToHueChroma];
   [v14 extent];
   v82 = v14;
-  v72 = [v15 applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", &v82, 1), v16, v17, v18, v19}];
+  v72 = [_rectToHueChroma applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", &v82, 1), v16, v17, v18, v19}];
   v80 = kCIContextWorkingFormat;
   v81 = [NSNumber numberWithInt:kCIFormatRGBAh];
   v73 = [CIContext contextWithOptions:[NSDictionary dictionaryWithObjects:&v81 forKeys:&v80 count:1]];
@@ -229,15 +229,15 @@
   bzero(v78, 0x320uLL);
   bzero(v76, 0x320uLL);
   v27 = [NSMutableData dataWithLength:v26 * v25];
-  v28 = [(NSMutableData *)v27 bytes];
+  bytes = [(NSMutableData *)v27 bytes];
   v29 = CGColorSpaceCreateWithName(kCGColorSpaceLinearSRGB);
-  v30 = [(NSMutableData *)v27 mutableBytes];
-  [(CIContext *)v73 render:v72 toBitmap:v30 rowBytes:v26 bounds:kCIFormatRGBA8 format:v29 colorSpace:x, y, width, height];
+  mutableBytes = [(NSMutableData *)v27 mutableBytes];
+  [(CIContext *)v73 render:v72 toBitmap:mutableBytes rowBytes:v26 bounds:kCIFormatRGBA8 format:v29 colorSpace:x, y, width, height];
   CGColorSpaceRelease(v29);
   if (v25)
   {
     v34 = 0;
-    v35 = v28 + 2;
+    v35 = bytes + 2;
     do
     {
       v36 = v35;
@@ -337,15 +337,15 @@
   return result;
 }
 
-- (id)sceneLuminance:(id)a3
+- (id)sceneLuminance:(id)luminance
 {
-  v3 = [a3 properties];
-  if (!v3)
+  properties = [luminance properties];
+  if (!properties)
   {
     return &off_7A410;
   }
 
-  v4 = [v3 objectForKey:@"{Exif}"];
+  v4 = [properties objectForKey:@"{Exif}"];
   if (!v4)
   {
     return &off_7A410;
@@ -363,15 +363,15 @@
   return [NSNumber numberWithDouble:v7];
 }
 
-- (id)captureType:(id)a3
+- (id)captureType:(id)type
 {
-  v3 = [a3 properties];
-  if (!v3)
+  properties = [type properties];
+  if (!properties)
   {
     return &off_7A8D8;
   }
 
-  v4 = [v3 objectForKey:@"{MakerApple}"];
+  v4 = [properties objectForKey:@"{MakerApple}"];
   v5 = &off_7A8D8;
   if (v4)
   {
@@ -385,7 +385,7 @@
   return v5;
 }
 
-- (id)writeDebugData:(id)a3
+- (id)writeDebugData:(id)data
 {
   if (qword_8CF00 != -1)
   {
@@ -394,17 +394,17 @@
 
   if (dword_8C850 < 0)
   {
-    return a3;
+    return data;
   }
 
   return [NSNumber numberWithInt:?];
 }
 
-- (id)overlayText:(id)a3 strength:(float)a4 captureType:(int)a5 bv:(float)a6
+- (id)overlayText:(id)text strength:(float)strength captureType:(int)type bv:(float)bv
 {
-  [a3 extent];
+  [text extent];
   v11 = v10;
-  [a3 extent];
+  [text extent];
   if (v11 >= v12)
   {
     v13 = v12;
@@ -426,7 +426,7 @@
     v15 = @"proxy";
   }
 
-  if (a5 == 11)
+  if (type == 11)
   {
     v16 = @"night mode";
   }
@@ -439,20 +439,20 @@
   v17 = objc_alloc_init(NSNumberFormatter);
   [v17 setNumberStyle:1];
   [v17 setMaximumFractionDigits:3];
-  *&v18 = a4;
+  *&v18 = strength;
   v19 = [v17 stringFromNumber:{+[NSNumber numberWithFloat:](NSNumber, "numberWithFloat:", v18)}];
-  *&v20 = a6;
+  *&v20 = bv;
   v21 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Strength: %@, CaptureType: %@, BV: %@, size: %@", v19, v16, [v17 stringFromNumber:{+[NSNumber numberWithFloat:](NSNumber, "numberWithFloat:", v20)}], v15);
 
   v22 = [CIFilter filterWithName:@"CITextImageGenerator"];
   [(CIFilter *)v22 setValue:v21 forKey:@"inputText"];
   [(CIFilter *)v22 setValue:&off_7A8F0 forKey:@"inputFontSize"];
-  v23 = [(CIFilter *)v22 outputImage];
+  outputImage = [(CIFilter *)v22 outputImage];
   v24 = [CIImage imageWithColor:[CIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:1.0]];
-  [(CIImage *)v23 extent];
-  v25 = [(CIImage *)v23 imageByCompositingOverImage:[(CIImage *)v24 imageByCroppingToRect:?]];
+  [(CIImage *)outputImage extent];
+  v25 = [(CIImage *)outputImage imageByCompositingOverImage:[(CIImage *)v24 imageByCroppingToRect:?]];
 
-  return [(CIImage *)v25 imageByCompositingOverImage:a3];
+  return [(CIImage *)v25 imageByCompositingOverImage:text];
 }
 
 - (id)_softExposure
@@ -495,13 +495,13 @@
   memset(&v128, 0, 40);
   [(CIDynamicRender *)self calcColorStats:v10];
   v13 = self->inputImage;
-  v14 = [(CIImage *)v10 smartToneStatistics];
-  v15 = [(CIImage *)v10 localLightStatisticsNoProxy];
-  [objc_msgSend(v14 objectForKeyedSubscript:{@"p25", "floatValue"}];
+  smartToneStatistics = [(CIImage *)v10 smartToneStatistics];
+  localLightStatisticsNoProxy = [(CIImage *)v10 localLightStatisticsNoProxy];
+  [objc_msgSend(smartToneStatistics objectForKeyedSubscript:{@"p25", "floatValue"}];
   v17 = v16;
-  [objc_msgSend(v14 objectForKeyedSubscript:{@"p50", "floatValue"}];
+  [objc_msgSend(smartToneStatistics objectForKeyedSubscript:{@"p50", "floatValue"}];
   v19 = v18;
-  [objc_msgSend(v14 objectForKeyedSubscript:{@"p98", "floatValue"}];
+  [objc_msgSend(smartToneStatistics objectForKeyedSubscript:{@"p98", "floatValue"}];
   v21 = v20;
   v22 = 0.8;
   if (v19 < 0.18 && v20 < 0.85)
@@ -523,7 +523,7 @@
     v26 = 1.5;
   }
 
-  [objc_msgSend(v14 objectForKeyedSubscript:{@"highKey", "floatValue"}];
+  [objc_msgSend(smartToneStatistics objectForKeyedSubscript:{@"highKey", "floatValue"}];
   v28 = 1.25;
   if (*&v27 >= 0.5)
   {
@@ -569,7 +569,7 @@
     v121 = v38;
     [v11 floatValue];
     v40 = v39 * -0.04 + 1.0;
-    [objc_msgSend(v14 objectForKeyedSubscript:{@"blackPoint", "floatValue"}];
+    [objc_msgSend(smartToneStatistics objectForKeyedSubscript:{@"blackPoint", "floatValue"}];
     v42 = v40 * v41;
     v122 = v42;
   }
@@ -593,7 +593,7 @@
   [(NSNumber *)self->inputContrast floatValue];
   v54 = v26 * v53;
   v139[0] = @"inputLightMap";
-  v55 = [v15 objectForKeyedSubscript:@"lightMap"];
+  v55 = [localLightStatisticsNoProxy objectForKeyedSubscript:@"lightMap"];
   v139[1] = @"inputGuideImage";
   v140[0] = v55;
   v140[1] = v13;
@@ -637,10 +637,10 @@
 
   else
   {
-    v70 = [(CIDynamicRender *)self _softExposure];
+    _softExposure = [(CIDynamicRender *)self _softExposure];
     [(CIImage *)self->inputImage extent];
     v134 = v68;
-    v68 = [v70 applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", &v134, 1), v71, v72, v73, v74}];
+    v68 = [_softExposure applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", &v134, 1), v71, v72, v73, v74}];
   }
 
   v132[0] = @"inputExposure";
@@ -764,11 +764,11 @@
     v29 = [(CIImage *)v29 imageByApplyingFilter:@"CIMix" withInputParameters:[NSDictionary dictionaryWithObjects:v130 forKeys:v129 count:2]];
     if ([-[CIDynamicRender writeDebugData:](self writeDebugData:{&off_7A908), "intValue"}] >= 1)
     {
-      v115 = [v12 intValue];
+      intValue = [v12 intValue];
       [v11 floatValue];
       LODWORD(v117) = v116;
       *&v118 = v114;
-      return [(CIDynamicRender *)self overlayText:v29 strength:v115 captureType:v118 bv:v117];
+      return [(CIDynamicRender *)self overlayText:v29 strength:intValue captureType:v118 bv:v117];
     }
   }
 

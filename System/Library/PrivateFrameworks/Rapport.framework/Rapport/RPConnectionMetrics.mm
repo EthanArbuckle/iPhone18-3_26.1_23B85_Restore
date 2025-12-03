@@ -1,9 +1,9 @@
 @interface RPConnectionMetrics
 + (id)sharedMetrics;
 - (RPConnectionMetrics)init;
-- (unsigned)lengthToBucketIndex:(unint64_t)a3;
-- (unsigned)linkTypeToBucketIndex:(int)a3;
-- (unsigned)rttToBucketIndex:(unint64_t)a3;
+- (unsigned)lengthToBucketIndex:(unint64_t)index;
+- (unsigned)linkTypeToBucketIndex:(int)index;
+- (unsigned)rttToBucketIndex:(unint64_t)index;
 - (void)reportMetrics;
 @end
 
@@ -70,9 +70,9 @@ void __36__RPConnectionMetrics_sharedMetrics__block_invoke()
   gMetrics = v0;
 }
 
-- (unsigned)lengthToBucketIndex:(unint64_t)a3
+- (unsigned)lengthToBucketIndex:(unint64_t)index
 {
-  if (a3 < 0x7D001)
+  if (index < 0x7D001)
   {
     v3 = 3;
   }
@@ -82,12 +82,12 @@ void __36__RPConnectionMetrics_sharedMetrics__block_invoke()
     v3 = 4;
   }
 
-  if (a3 <= 0x19000)
+  if (index <= 0x19000)
   {
     v3 = 2;
   }
 
-  if (a3 >= 0x2801)
+  if (index >= 0x2801)
   {
     v4 = v3;
   }
@@ -97,7 +97,7 @@ void __36__RPConnectionMetrics_sharedMetrics__block_invoke()
     v4 = 1;
   }
 
-  if (a3 < 0x401)
+  if (index < 0x401)
   {
     return 0;
   }
@@ -105,9 +105,9 @@ void __36__RPConnectionMetrics_sharedMetrics__block_invoke()
   return v4;
 }
 
-- (unsigned)linkTypeToBucketIndex:(int)a3
+- (unsigned)linkTypeToBucketIndex:(int)index
 {
-  if ((a3 & 0xFFFFFFFE) == 8)
+  if ((index & 0xFFFFFFFE) == 8)
   {
     v3 = 3;
   }
@@ -117,12 +117,12 @@ void __36__RPConnectionMetrics_sharedMetrics__block_invoke()
     v3 = 4;
   }
 
-  if (a3 == 6)
+  if (index == 6)
   {
     v3 = 2;
   }
 
-  if (a3 == 4)
+  if (index == 4)
   {
     v4 = 1;
   }
@@ -132,7 +132,7 @@ void __36__RPConnectionMetrics_sharedMetrics__block_invoke()
     v4 = v3;
   }
 
-  if ((a3 - 1) >= 2)
+  if ((index - 1) >= 2)
   {
     return v4;
   }
@@ -143,9 +143,9 @@ void __36__RPConnectionMetrics_sharedMetrics__block_invoke()
   }
 }
 
-- (unsigned)rttToBucketIndex:(unint64_t)a3
+- (unsigned)rttToBucketIndex:(unint64_t)index
 {
-  if (a3 < 0x1F5)
+  if (index < 0x1F5)
   {
     v3 = 4;
   }
@@ -155,7 +155,7 @@ void __36__RPConnectionMetrics_sharedMetrics__block_invoke()
     v3 = 5;
   }
 
-  if (a3 >= 0xC9)
+  if (index >= 0xC9)
   {
     v4 = v3;
   }
@@ -165,7 +165,7 @@ void __36__RPConnectionMetrics_sharedMetrics__block_invoke()
     v4 = 3;
   }
 
-  if (a3 >= 0x65)
+  if (index >= 0x65)
   {
     v5 = v4;
   }
@@ -175,7 +175,7 @@ void __36__RPConnectionMetrics_sharedMetrics__block_invoke()
     v5 = 2;
   }
 
-  if (a3 >= 0x33)
+  if (index >= 0x33)
   {
     v6 = v5;
   }
@@ -185,7 +185,7 @@ void __36__RPConnectionMetrics_sharedMetrics__block_invoke()
     v6 = 1;
   }
 
-  if (a3 < 0xB)
+  if (index < 0xB)
   {
     return 0;
   }
@@ -243,9 +243,9 @@ void __36__RPConnectionMetrics_sharedMetrics__block_invoke()
       while (v4);
     }
 
-    v14 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     rttMetrics = self->_rttMetrics;
-    self->_rttMetrics = v14;
+    self->_rttMetrics = dictionary;
 
     self->_sendReport = 0;
     self->_eventCount = 0;

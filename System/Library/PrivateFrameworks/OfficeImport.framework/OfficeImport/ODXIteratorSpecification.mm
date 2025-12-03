@@ -3,7 +3,7 @@
 + (id)elementTypeMap;
 + (void)axisTypeMap;
 + (void)elementTypeMap;
-+ (void)readFromNode:(_xmlNode *)a3 toSpecification:(id)a4 state:(id)a5;
++ (void)readFromNode:(_xmlNode *)node toSpecification:(id)specification state:(id)state;
 @end
 
 @implementation ODXIteratorSpecification
@@ -48,30 +48,30 @@
   return v2;
 }
 
-+ (void)readFromNode:(_xmlNode *)a3 toSpecification:(id)a4 state:(id)a5
++ (void)readFromNode:(_xmlNode *)node toSpecification:(id)specification state:(id)state
 {
-  v16 = a4;
-  v8 = a5;
-  v9 = [a1 axisTypeMap];
-  v10 = [v9 readFromNode:a3 ns:0 name:"axis" def:12];
+  specificationCopy = specification;
+  stateCopy = state;
+  axisTypeMap = [self axisTypeMap];
+  v10 = [axisTypeMap readFromNode:node ns:0 name:"axis" def:12];
 
   if (v10 != 12)
   {
     v11 = objc_alloc_init(ODDIteratorAttributes);
-    [v16 addAttributes:v11];
+    [specificationCopy addAttributes:v11];
     [(ODDIteratorAttributes *)v11 setAxis:v10];
-    v12 = [a1 elementTypeMap];
-    -[ODDIteratorAttributes setPointType:](v11, "setPointType:", [v12 readFromNode:a3 ns:0 name:"ptType" def:0]);
+    elementTypeMap = [self elementTypeMap];
+    -[ODDIteratorAttributes setPointType:](v11, "setPointType:", [elementTypeMap readFromNode:node ns:0 name:"ptType" def:0]);
 
-    [(ODDIteratorAttributes *)v11 setHideLastTransition:OCXReadBool(a3, 0, "hideLastTrans", 1)];
-    v13 = [v8 ODXDiagramNamespace];
-    [(ODDIteratorAttributes *)v11 setStart:CXDefaultLongAttribute(a3, v13, "st", 1)];
+    [(ODDIteratorAttributes *)v11 setHideLastTransition:OCXReadBool(node, 0, "hideLastTrans", 1)];
+    oDXDiagramNamespace = [stateCopy ODXDiagramNamespace];
+    [(ODDIteratorAttributes *)v11 setStart:CXDefaultLongAttribute(node, oDXDiagramNamespace, "st", 1)];
 
-    v14 = [v8 ODXDiagramNamespace];
-    [(ODDIteratorAttributes *)v11 setCount:CXDefaultUnsignedLongAttribute(a3, v14, "cnt", 0)];
+    oDXDiagramNamespace2 = [stateCopy ODXDiagramNamespace];
+    [(ODDIteratorAttributes *)v11 setCount:CXDefaultUnsignedLongAttribute(node, oDXDiagramNamespace2, "cnt", 0)];
 
-    v15 = [v8 ODXDiagramNamespace];
-    [(ODDIteratorAttributes *)v11 setStep:CXDefaultLongAttribute(a3, v15, "step", 1)];
+    oDXDiagramNamespace3 = [stateCopy ODXDiagramNamespace];
+    [(ODDIteratorAttributes *)v11 setStep:CXDefaultLongAttribute(node, oDXDiagramNamespace3, "step", 1)];
   }
 }
 

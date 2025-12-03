@@ -1,16 +1,16 @@
 @interface PKPaymentSetupProductCategory
 - (BOOL)needsProducts;
-- (PKPaymentSetupProductCategory)initWithDictionary:(id)a3;
+- (PKPaymentSetupProductCategory)initWithDictionary:(id)dictionary;
 - (id)description;
-- (id)localizedSubtitleWithIsBridge:(BOOL)a3;
+- (id)localizedSubtitleWithIsBridge:(BOOL)bridge;
 @end
 
 @implementation PKPaymentSetupProductCategory
 
-- (PKPaymentSetupProductCategory)initWithDictionary:(id)a3
+- (PKPaymentSetupProductCategory)initWithDictionary:(id)dictionary
 {
   v76 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v73.receiver = self;
   v73.super_class = PKPaymentSetupProductCategory;
   v5 = [(PKPaymentSetupProductCategory *)&v73 init];
@@ -22,28 +22,28 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v4 PKStringForKey:@"identifier"];
+    v6 = [dictionaryCopy PKStringForKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 PKStringForKey:@"localizedDisplayName"];
+    v8 = [dictionaryCopy PKStringForKey:@"localizedDisplayName"];
     localizedDisplayName = v5->_localizedDisplayName;
     v5->_localizedDisplayName = v8;
 
-    v10 = [v4 PKStringForKey:@"localizedTitle"];
+    v10 = [dictionaryCopy PKStringForKey:@"localizedTitle"];
     localizedTitle = v5->_localizedTitle;
     v5->_localizedTitle = v10;
 
-    v12 = [v4 PKStringForKey:@"localizedSubtitle"];
+    v12 = [dictionaryCopy PKStringForKey:@"localizedSubtitle"];
     localizedSubtitle = v5->_localizedSubtitle;
     v5->_localizedSubtitle = v12;
 
-    v14 = [v4 PKStringForKey:@"localizedSearchBarDefaultText"];
+    v14 = [dictionaryCopy PKStringForKey:@"localizedSearchBarDefaultText"];
     localizedSearchBarDefaultText = v5->_localizedSearchBarDefaultText;
     v5->_localizedSearchBarDefaultText = v14;
 
     v16 = [PKPaymentSetupProductImageAssetURLs alloc];
-    v17 = [v4 PKDictionaryForKey:@"imageAssets"];
+    v17 = [dictionaryCopy PKDictionaryForKey:@"imageAssets"];
     v18 = [(PKPaymentSetupProductImageAssetURLs *)v16 initWithImageAssetsDictionary:v17];
     imageAssetURLs = v5->_imageAssetURLs;
     v5->_imageAssetURLs = v18;
@@ -52,12 +52,12 @@
     imageAssets = v5->_imageAssets;
     v5->_imageAssets = v20;
 
-    v22 = [v4 PKSetForKey:@"productIdentifiers"];
+    v22 = [dictionaryCopy PKSetForKey:@"productIdentifiers"];
     productIdentifiers = v5->_productIdentifiers;
     v5->_productIdentifiers = v22;
 
-    v5->_allowOnManagedAccount = [v4 PKBoolForKey:@"allowOnManagedAccount"];
-    v24 = [v4 PKStringForKey:@"region"];
+    v5->_allowOnManagedAccount = [dictionaryCopy PKBoolForKey:@"allowOnManagedAccount"];
+    v24 = [dictionaryCopy PKStringForKey:@"region"];
     v25 = [v24 componentsSeparatedByString:{@", "}];
 
     if (v25)
@@ -72,7 +72,7 @@
     v72 = 0u;
     v69 = 0u;
     v70 = 0u;
-    v29 = [v4 PKArrayForKey:{@"capabilities", v25}];
+    v29 = [dictionaryCopy PKArrayForKey:{@"capabilities", v25}];
     v30 = [v29 countByEnumeratingWithState:&v69 objects:v75 count:16];
     if (v30)
     {
@@ -103,7 +103,7 @@
     v68 = 0u;
     v65 = 0u;
     v66 = 0u;
-    v34 = [v4 PKArrayForKey:@"excludedContexts"];
+    v34 = [dictionaryCopy PKArrayForKey:@"excludedContexts"];
     v35 = [v34 countByEnumeratingWithState:&v65 objects:v74 count:16];
     if (v35)
     {
@@ -278,7 +278,7 @@ LABEL_49:
   return v54;
 }
 
-- (id)localizedSubtitleWithIsBridge:(BOOL)a3
+- (id)localizedSubtitleWithIsBridge:(BOOL)bridge
 {
   localizedSubtitle = self->_localizedSubtitle;
   if (localizedSubtitle)
@@ -287,7 +287,7 @@ LABEL_49:
     goto LABEL_6;
   }
 
-  v5 = a3;
+  bridgeCopy = bridge;
   if ([(NSString *)self->_identifier isEqualToString:@"creditDebit"])
   {
     v7 = @"PAYMENT_SETUP_CREDIT_DEBIT_SUBTITLE";
@@ -298,7 +298,7 @@ LABEL_5:
 
   if ([(NSString *)self->_identifier isEqualToString:@"transit"])
   {
-    if (v5)
+    if (bridgeCopy)
     {
       v7 = @"PAYMENT_SETUP_TRANSIT_SUBTITLE_WATCH";
     }

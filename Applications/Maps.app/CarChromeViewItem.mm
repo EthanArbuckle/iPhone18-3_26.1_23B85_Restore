@@ -1,7 +1,7 @@
 @interface CarChromeViewItem
-+ (id)itemWithContext:(id)a3;
++ (id)itemWithContext:(id)context;
 - (CarChromeContext)context;
-- (CarChromeViewItem)initWithContext:(id)a3;
+- (CarChromeViewItem)initWithContext:(id)context;
 @end
 
 @implementation CarChromeViewItem
@@ -13,25 +13,25 @@
   return WeakRetained;
 }
 
-- (CarChromeViewItem)initWithContext:(id)a3
+- (CarChromeViewItem)initWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v8.receiver = self;
   v8.super_class = CarChromeViewItem;
   v5 = [(CarChromeViewItem *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_context, v4);
+    objc_storeWeak(&v5->_context, contextCopy);
   }
 
   return v6;
 }
 
-+ (id)itemWithContext:(id)a3
++ (id)itemWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithContext:v4];
+  contextCopy = context;
+  v5 = [[self alloc] initWithContext:contextCopy];
 
   return v5;
 }

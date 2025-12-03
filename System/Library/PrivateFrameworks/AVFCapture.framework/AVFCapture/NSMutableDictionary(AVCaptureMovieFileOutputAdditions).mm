@@ -6,14 +6,14 @@
 
 - (uint64_t)mfo_addEntriesFromDictionaryWithRecursion:()AVCaptureMovieFileOutputAdditions
 {
-  v5 = [a3 keyEnumerator];
-  result = [v5 nextObject];
+  keyEnumerator = [a3 keyEnumerator];
+  result = [keyEnumerator nextObject];
   if (result)
   {
     v7 = result;
     do
     {
-      v8 = [a1 objectForKey:v7];
+      v8 = [self objectForKey:v7];
       v9 = [a3 objectForKey:v7];
       if (v8 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
@@ -26,19 +26,19 @@
         if (objc_opt_isKindOfClass())
         {
           v10 = [v9 mutableCopy];
-          v11 = a1;
+          selfCopy2 = self;
         }
 
         else
         {
-          v11 = a1;
+          selfCopy2 = self;
           v10 = v9;
         }
 
-        [v11 setObject:v10 forKey:v7];
+        [selfCopy2 setObject:v10 forKey:v7];
       }
 
-      result = [v5 nextObject];
+      result = [keyEnumerator nextObject];
       v7 = result;
     }
 

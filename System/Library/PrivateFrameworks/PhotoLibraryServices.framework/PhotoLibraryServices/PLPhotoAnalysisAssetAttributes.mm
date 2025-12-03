@@ -7,8 +7,8 @@
 + (id)fetchRequest
 {
   v3 = objc_alloc(MEMORY[0x1E695D5E0]);
-  v4 = [a1 entityName];
-  v5 = [v3 initWithEntityName:v4];
+  entityName = [self entityName];
+  v5 = [v3 initWithEntityName:entityName];
 
   return v5;
 }

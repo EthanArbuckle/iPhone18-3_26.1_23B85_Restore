@@ -1,20 +1,20 @@
 @interface SUCoreEvent
 + (BOOL)isSharediPad;
-- (BOOL)isEqualErrorEvent:(id)a3;
+- (BOOL)isEqualErrorEvent:(id)event;
 - (BOOL)isSuccess;
-- (SUCoreEvent)initWithEventDictionary:(id)a3 extendingWith:(id)a4 reportingToServer:(id)a5;
+- (SUCoreEvent)initWithEventDictionary:(id)dictionary extendingWith:(id)with reportingToServer:(id)server;
 - (id)getAugmentedEvent;
 - (void)incrementErrorCount;
 @end
 
 @implementation SUCoreEvent
 
-- (SUCoreEvent)initWithEventDictionary:(id)a3 extendingWith:(id)a4 reportingToServer:(id)a5
+- (SUCoreEvent)initWithEventDictionary:(id)dictionary extendingWith:(id)with reportingToServer:(id)server
 {
   v116 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dictionaryCopy = dictionary;
+  withCopy = with;
+  serverCopy = server;
   v112.receiver = self;
   v112.super_class = SUCoreEvent;
   v11 = [(SUCoreEvent *)&v112 init];
@@ -27,46 +27,46 @@
   allFields = v11->_allFields;
   v11->_allFields = v12;
 
-  v14 = [v8 safeStringForKey:@"event"];
+  v14 = [dictionaryCopy safeStringForKey:@"event"];
 
   if (!v14)
   {
     [(NSMutableDictionary *)v11->_allFields setSafeObject:@"SUCoreEvent" forKey:@"event"];
   }
 
-  v99 = v10;
-  v15 = [v8 safeStringForKey:@"UUID"];
-  if (!v15)
+  v99 = serverCopy;
+  uUIDString = [dictionaryCopy safeStringForKey:@"UUID"];
+  if (!uUIDString)
   {
-    v16 = [MEMORY[0x1E696AFB0] UUID];
-    v15 = [v16 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
 
-    [(NSMutableDictionary *)v11->_allFields setSafeObject:v15 forKey:@"UUID"];
+    [(NSMutableDictionary *)v11->_allFields setSafeObject:uUIDString forKey:@"UUID"];
   }
 
-  v98 = v15;
-  objc_storeStrong(&v11->_reportedUUID, v15);
-  objc_storeStrong(&v11->_serverURL, a5);
+  v98 = uUIDString;
+  objc_storeStrong(&v11->_reportedUUID, uUIDString);
+  objc_storeStrong(&v11->_serverURL, server);
   v17 = +[SUCoreDevice sharedDevice];
-  v18 = [v17 buildVersion];
+  buildVersion = [v17 buildVersion];
 
   v19 = +[SUCoreDevice sharedDevice];
-  v20 = [v19 splatCryptex1BuildVersion];
+  splatCryptex1BuildVersion = [v19 splatCryptex1BuildVersion];
 
-  v96 = v20;
-  if (v20)
+  v96 = splatCryptex1BuildVersion;
+  if (splatCryptex1BuildVersion)
   {
-    v21 = v20;
+    v21 = splatCryptex1BuildVersion;
   }
 
   else
   {
-    v21 = v18;
+    v21 = buildVersion;
   }
 
   v107 = v21;
   v22 = +[SUCoreDevice sharedDevice];
-  v106 = [v22 splatCryptex1ProductVersionExtra];
+  splatCryptex1ProductVersionExtra = [v22 splatCryptex1ProductVersionExtra];
 
   v23 = MEMORY[0x1E696AD98];
   v24 = +[SUCoreDevice sharedDevice];
@@ -77,35 +77,35 @@
   v27 = [v25 numberWithBool:{objc_msgSend(v26, "hasSemiSplatActive")}];
 
   v28 = +[SUCoreDevice sharedDevice];
-  v29 = [v28 releaseType];
+  releaseType = [v28 releaseType];
 
   v30 = +[SUCoreDevice sharedDevice];
-  v104 = [v30 deviceClass];
+  deviceClass = [v30 deviceClass];
 
   v31 = +[SUCoreDevice sharedDevice];
-  v103 = [v31 hwModelString];
+  hwModelString = [v31 hwModelString];
 
   v102 = MGCopyAnswer();
   v101 = MGCopyAnswer();
   v32 = +[SUCoreLog sharedLogger];
-  v33 = [v32 oslog];
+  oslog = [v32 oslog];
 
-  v34 = os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT);
-  if (v29)
+  v34 = os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT);
+  if (releaseType)
   {
     if (v34)
     {
       *buf = 138543362;
-      v115 = v29;
+      v115 = releaseType;
       v35 = "non-nil currentOSType found with value of: %{public}@";
 LABEL_14:
-      _os_log_impl(&dword_1E0F71000, v33, OS_LOG_TYPE_DEFAULT, v35, buf, 0xCu);
+      _os_log_impl(&dword_1E0F71000, oslog, OS_LOG_TYPE_DEFAULT, v35, buf, 0xCu);
     }
   }
 
   else
   {
-    v29 = @"user";
+    releaseType = @"user";
     if (v34)
     {
       *buf = 138543362;
@@ -121,7 +121,7 @@ LABEL_14:
   v36 = v11->_allFields;
   v37 = _currentTimeInMilliseconds();
   _ensureNSString(v37);
-  v39 = v38 = v29;
+  v39 = v38 = releaseType;
   [(NSMutableDictionary *)v36 setSafeObject:v39 forKey:@"eventTime"];
 
   v40 = v11->_allFields;
@@ -134,12 +134,12 @@ LABEL_14:
   [(NSMutableDictionary *)v42 setSafeObject:v43 forKey:@"currentOSVersion"];
 
   v44 = v11->_allFields;
-  v97 = v18;
-  v45 = _ensureNSString(v18);
+  v97 = buildVersion;
+  v45 = _ensureNSString(buildVersion);
   [(NSMutableDictionary *)v44 setSafeObject:v45 forKey:@"currentBaseOSVersion"];
 
   v46 = v11->_allFields;
-  v47 = _ensureNSString(v106);
+  v47 = _ensureNSString(splatCryptex1ProductVersionExtra);
   [(NSMutableDictionary *)v46 setSafeObject:v47 forKey:@"currentProductVersionExtra"];
 
   v48 = v11->_allFields;
@@ -152,11 +152,11 @@ LABEL_14:
   [(NSMutableDictionary *)v50 setSafeObject:v51 forKey:@"rapidSecurityResponseSemiSplat"];
 
   v52 = v11->_allFields;
-  v53 = _ensureNSString(v104);
+  v53 = _ensureNSString(deviceClass);
   [(NSMutableDictionary *)v52 setSafeObject:v53 forKey:@"deviceClass"];
 
   v54 = v11->_allFields;
-  v55 = _ensureNSString(v103);
+  v55 = _ensureNSString(hwModelString);
   [(NSMutableDictionary *)v54 setSafeObject:v55 forKey:@"deviceModel"];
 
   v56 = v11->_allFields;
@@ -183,8 +183,8 @@ LABEL_14:
   v63 = _ensureNSString(v61);
   [(NSMutableDictionary *)v62 setSafeObject:v63 forKey:@"sharediPad"];
 
-  v64 = [MEMORY[0x1E696AE30] processInfo];
-  LODWORD(v63) = [v64 isLowPowerModeEnabled];
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  LODWORD(v63) = [processInfo isLowPowerModeEnabled];
 
   if (v63)
   {
@@ -221,21 +221,21 @@ LABEL_14:
   v78 = _ensureNSNumberFromDictionary(*MEMORY[0x1E69E5118], v68);
   [(NSMutableDictionary *)v77 setSafeObject:v78 forKey:@"dataFsFree"];
 
-  v79 = [v8 safeStringForKey:@"result"];
+  v79 = [dictionaryCopy safeStringForKey:@"result"];
 
   if (!v79)
   {
     [(NSMutableDictionary *)v11->_allFields setSafeObject:@"success" forKey:@"result"];
   }
 
-  v100 = v8;
-  [(NSMutableDictionary *)v11->_allFields addEntriesFromDictionary:v8];
+  v100 = dictionaryCopy;
+  [(NSMutableDictionary *)v11->_allFields addEntriesFromDictionary:dictionaryCopy];
   v110 = 0u;
   v111 = 0u;
   v108 = 0u;
   v109 = 0u;
-  v80 = v9;
-  v81 = v9;
+  v80 = withCopy;
+  v81 = withCopy;
   v82 = [v81 countByEnumeratingWithState:&v108 objects:v113 count:16];
   if (v82)
   {
@@ -268,9 +268,9 @@ LABEL_14:
   }
 
   v11->_changedSinceReported = 0;
-  v10 = v99;
-  v8 = v100;
-  v9 = v80;
+  serverCopy = v99;
+  dictionaryCopy = v100;
+  withCopy = v80;
 LABEL_33:
 
   v90 = *MEMORY[0x1E69E9840];
@@ -279,8 +279,8 @@ LABEL_33:
 
 - (BOOL)isSuccess
 {
-  v2 = [(SUCoreEvent *)self allFields];
-  v3 = [v2 safeStringForKey:@"result"];
+  allFields = [(SUCoreEvent *)self allFields];
+  v3 = [allFields safeStringForKey:@"result"];
 
   if (v3)
   {
@@ -295,42 +295,42 @@ LABEL_33:
   return v4;
 }
 
-- (BOOL)isEqualErrorEvent:(id)a3
+- (BOOL)isEqualErrorEvent:(id)event
 {
-  v4 = a3;
-  if (self == v4)
+  eventCopy = event;
+  if (self == eventCopy)
   {
     v5 = 1;
   }
 
-  else if ([(SUCoreEvent *)self isSuccess]|| [(SUCoreEvent *)v4 isSuccess])
+  else if ([(SUCoreEvent *)self isSuccess]|| [(SUCoreEvent *)eventCopy isSuccess])
   {
     v5 = 0;
   }
 
   else
   {
-    v6 = [(SUCoreEvent *)self serverURL];
-    v7 = [v6 absoluteString];
-    v8 = [(SUCoreEvent *)v4 serverURL];
-    v9 = [v8 absoluteString];
-    if ([SUCore stringIsEqual:v7 to:v9])
+    serverURL = [(SUCoreEvent *)self serverURL];
+    absoluteString = [serverURL absoluteString];
+    serverURL2 = [(SUCoreEvent *)eventCopy serverURL];
+    absoluteString2 = [serverURL2 absoluteString];
+    if ([SUCore stringIsEqual:absoluteString to:absoluteString2])
     {
-      v22 = [(SUCoreEvent *)self allFields];
-      v10 = [v22 safeStringForKey:@"event"];
-      v20 = [(SUCoreEvent *)v4 allFields];
-      v11 = [v20 safeStringForKey:@"event"];
+      allFields = [(SUCoreEvent *)self allFields];
+      v10 = [allFields safeStringForKey:@"event"];
+      allFields2 = [(SUCoreEvent *)eventCopy allFields];
+      v11 = [allFields2 safeStringForKey:@"event"];
       v21 = v10;
       if ([SUCore stringIsEqual:v10 to:v11])
       {
-        v12 = [(SUCoreEvent *)self reportedUUID];
-        v19 = [(SUCoreEvent *)v4 reportedUUID];
-        if ([SUCore stringIsEqual:v12 to:?])
+        reportedUUID = [(SUCoreEvent *)self reportedUUID];
+        reportedUUID2 = [(SUCoreEvent *)eventCopy reportedUUID];
+        if ([SUCore stringIsEqual:reportedUUID to:?])
         {
-          v18 = [(SUCoreEvent *)self allFields];
-          v13 = [v18 safeStringForKey:@"result"];
-          v17 = [(SUCoreEvent *)v4 allFields];
-          v14 = [v17 safeStringForKey:@"result"];
+          allFields3 = [(SUCoreEvent *)self allFields];
+          v13 = [allFields3 safeStringForKey:@"result"];
+          allFields4 = [(SUCoreEvent *)eventCopy allFields];
+          v14 = [allFields4 safeStringForKey:@"result"];
           v15 = v13;
           v5 = [SUCore stringIsEqual:v13 to:v14];
         }
@@ -358,40 +358,40 @@ LABEL_33:
 
 - (void)incrementErrorCount
 {
-  v3 = [(SUCoreEvent *)self allFields];
-  v4 = [v3 safeObjectForKey:@"errorCount" ofClass:objc_opt_class()];
+  allFields = [(SUCoreEvent *)self allFields];
+  v4 = [allFields safeObjectForKey:@"errorCount" ofClass:objc_opt_class()];
 
   if (v4)
   {
-    v5 = [v4 longValue];
-    v6 = [objc_alloc(MEMORY[0x1E696AD98]) initWithLong:v5 + 1];
+    longValue = [v4 longValue];
+    oslog = [objc_alloc(MEMORY[0x1E696AD98]) initWithLong:longValue + 1];
 
 LABEL_5:
-    v10 = [(SUCoreEvent *)self allFields];
-    [v10 setSafeObject:v6 forKey:@"errorCount"];
+    allFields2 = [(SUCoreEvent *)self allFields];
+    [allFields2 setSafeObject:oslog forKey:@"errorCount"];
 
     [(SUCoreEvent *)self setChangedSinceReported:1];
     goto LABEL_6;
   }
 
-  v7 = [(SUCoreEvent *)self allFields];
-  v8 = [v7 safeStringForKey:@"result"];
+  allFields3 = [(SUCoreEvent *)self allFields];
+  v8 = [allFields3 safeStringForKey:@"result"];
 
   if (v8)
   {
-    v9 = [(SUCoreEvent *)self allFields];
-    [v9 setSafeObject:@"true" forKey:@"sameErrorSignature"];
+    allFields4 = [(SUCoreEvent *)self allFields];
+    [allFields4 setSafeObject:@"true" forKey:@"sameErrorSignature"];
 
-    v6 = [objc_alloc(MEMORY[0x1E696AD98]) initWithLong:1];
+    oslog = [objc_alloc(MEMORY[0x1E696AD98]) initWithLong:1];
     goto LABEL_5;
   }
 
   v11 = +[SUCoreLog sharedLogger];
-  v6 = [v11 oslog];
+  oslog = [v11 oslog];
 
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+  if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
   {
-    [(SUCoreEvent *)v6 incrementErrorCount];
+    [(SUCoreEvent *)oslog incrementErrorCount];
   }
 
 LABEL_6:
@@ -400,8 +400,8 @@ LABEL_6:
 - (id)getAugmentedEvent
 {
   v3 = objc_alloc(MEMORY[0x1E695DF90]);
-  v4 = [(SUCoreEvent *)self allFields];
-  v5 = [v3 initWithDictionary:v4];
+  allFields = [(SUCoreEvent *)self allFields];
+  v5 = [v3 initWithDictionary:allFields];
 
   return v5;
 }
@@ -411,15 +411,15 @@ LABEL_6:
   if (!objc_opt_class())
   {
     v7 = +[SUCoreLog sharedLogger];
-    v8 = [v7 oslog];
+    oslog = [v7 oslog];
 
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
       v14 = 0;
       v9 = "[EVENT_REPORTER] UMUserManager class does not exist.";
       v10 = &v14;
 LABEL_12:
-      _os_log_impl(&dword_1E0F71000, v8, OS_LOG_TYPE_DEFAULT, v9, v10, 2u);
+      _os_log_impl(&dword_1E0F71000, oslog, OS_LOG_TYPE_DEFAULT, v9, v10, 2u);
     }
 
 LABEL_13:
@@ -430,9 +430,9 @@ LABEL_13:
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     v11 = +[SUCoreLog sharedLogger];
-    v8 = [v11 oslog];
+    oslog = [v11 oslog];
 
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
       *v15 = 0;
       v9 = "[EVENT_REPORTER] UMUserManager class does not respond to selector 'sharedManager'";
@@ -444,22 +444,22 @@ LABEL_13:
   }
 
   v2 = objc_autoreleasePoolPush();
-  v3 = [MEMORY[0x1E69DF060] sharedManager];
+  mEMORY[0x1E69DF060] = [MEMORY[0x1E69DF060] sharedManager];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     v12 = +[SUCoreLog sharedLogger];
-    v13 = [v12 oslog];
+    oslog2 = [v12 oslog];
 
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog2, OS_LOG_TYPE_DEFAULT))
     {
       *v16 = 0;
-      _os_log_impl(&dword_1E0F71000, v13, OS_LOG_TYPE_DEFAULT, "[EVENT_REPORTER] UMUserManager instance does not respond to selector 'isSharedIPad'", v16, 2u);
+      _os_log_impl(&dword_1E0F71000, oslog2, OS_LOG_TYPE_DEFAULT, "[EVENT_REPORTER] UMUserManager instance does not respond to selector 'isSharedIPad'", v16, 2u);
     }
 
     goto LABEL_17;
   }
 
-  if (![v3 isSharedIPad])
+  if (![mEMORY[0x1E69DF060] isSharedIPad])
   {
 LABEL_17:
 
@@ -468,12 +468,12 @@ LABEL_17:
   }
 
   v4 = +[SUCoreLog sharedLogger];
-  v5 = [v4 oslog];
+  oslog3 = [v4 oslog];
 
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
-    _os_log_impl(&dword_1E0F71000, v5, OS_LOG_TYPE_DEFAULT, "[EVENT_REPORTER] Detected shared iPad", buf, 2u);
+    _os_log_impl(&dword_1E0F71000, oslog3, OS_LOG_TYPE_DEFAULT, "[EVENT_REPORTER] Detected shared iPad", buf, 2u);
   }
 
   objc_autoreleasePoolPop(v2);

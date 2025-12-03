@@ -1,39 +1,39 @@
 @interface PSIGroupCache
-- (PSIGroupCache)initWithDelegate:(id)a3;
-- (unint64_t)idOfGroupWithText:(id)a3 identifier:(id)a4 category:(unint64_t)a5 owningGroupId:(unint64_t)a6;
+- (PSIGroupCache)initWithDelegate:(id)delegate;
+- (unint64_t)idOfGroupWithText:(id)text identifier:(id)identifier category:(unint64_t)category owningGroupId:(unint64_t)id;
 @end
 
 @implementation PSIGroupCache
 
-- (unint64_t)idOfGroupWithText:(id)a3 identifier:(id)a4 category:(unint64_t)a5 owningGroupId:(unint64_t)a6
+- (unint64_t)idOfGroupWithText:(id)text identifier:(id)identifier category:(unint64_t)category owningGroupId:(unint64_t)id
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = [[PSICachedGroup alloc] initWithText:v10 identifier:v11 category:a5 owningGroupId:a6];
+  textCopy = text;
+  identifierCopy = identifier;
+  v12 = [[PSICachedGroup alloc] initWithText:textCopy identifier:identifierCopy category:category owningGroupId:id];
   v13 = [(NSMutableSet *)self->_groups member:v12];
   v14 = v13;
   ++self->_numberOfGroupsChecked;
   if (v13)
   {
-    v15 = [v13 groupId];
+    groupId = [v13 groupId];
   }
 
   else
   {
     [(NSMutableSet *)self->_groups addObject:v12];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v15 = [WeakRetained updateGroupForText:v10 identifier:v11 category:a5 owningGroupId:a6];
+    groupId = [WeakRetained updateGroupForText:textCopy identifier:identifierCopy category:category owningGroupId:id];
 
-    [(PSICachedGroup *)v12 setGroupId:v15];
+    [(PSICachedGroup *)v12 setGroupId:groupId];
     ++self->_numberOfGroupsQueried;
   }
 
-  return v15;
+  return groupId;
 }
 
-- (PSIGroupCache)initWithDelegate:(id)a3
+- (PSIGroupCache)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v9.receiver = self;
   v9.super_class = PSIGroupCache;
   v5 = [(PSIGroupCache *)&v9 init];
@@ -43,7 +43,7 @@
     groups = v5->_groups;
     v5->_groups = v6;
 
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
   }
 
   return v5;

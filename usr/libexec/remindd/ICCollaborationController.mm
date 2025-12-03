@@ -1,62 +1,62 @@
 @interface ICCollaborationController
-- (ICCollaborationController)initWithCloudContext:(id)a3;
-- (id)containerForAccountID:(id)a3;
-- (id)containerForUserRecordID:(id)a3;
-- (id)existingShareForObject:(id)a3;
-- (id)fetchShareForObjectWithManagedObjectID:(id)a3;
-- (id)newShareForObject:(id)a3;
-- (id)objectForShare:(id)a3 accountID:(id)a4 context:(id)a5;
-- (id)rootRecordForObject:(id)a3;
-- (void)acceptShareWithMetadata:(id)a3 callbackQueue:(id)a4 completionHandler:(id)a5;
-- (void)acceptShareWithMetadata:(id)a3 container:(id)a4 accountID:(id)a5 fetchObjectWithCompletionHandler:(id)a6;
-- (void)createShareForObjectWithManagedObjectID:(id)a3 appIconData:(id)a4 queue:(id)a5 completionHandler:(id)a6;
-- (void)didSaveShare:(id)a3 accountID:(id)a4 queue:(id)a5 completionHandler:(id)a6;
-- (void)didStopSharing:(id)a3 recordID:(id)a4 accountID:(id)a5 queue:(id)a6 completionHandler:(id)a7;
-- (void)fetchShareIfNecessaryForObject:(id)a3 completionHandler:(id)a4;
-- (void)populateShare:(id)a3 withObject:(id)a4;
-- (void)prepareShare:(id)a3 forObject:(id)a4 completionHandler:(id)a5;
-- (void)saveServerShare:(id)a3 accountID:(id)a4 completionHandler:(id)a5;
-- (void)saveShare:(id)a3 forObject:(id)a4 completionHandler:(id)a5;
-- (void)saveShare:(id)a3 withRootRecord:(id)a4 object:(id)a5 completionHandler:(id)a6;
+- (ICCollaborationController)initWithCloudContext:(id)context;
+- (id)containerForAccountID:(id)d;
+- (id)containerForUserRecordID:(id)d;
+- (id)existingShareForObject:(id)object;
+- (id)fetchShareForObjectWithManagedObjectID:(id)d;
+- (id)newShareForObject:(id)object;
+- (id)objectForShare:(id)share accountID:(id)d context:(id)context;
+- (id)rootRecordForObject:(id)object;
+- (void)acceptShareWithMetadata:(id)metadata callbackQueue:(id)queue completionHandler:(id)handler;
+- (void)acceptShareWithMetadata:(id)metadata container:(id)container accountID:(id)d fetchObjectWithCompletionHandler:(id)handler;
+- (void)createShareForObjectWithManagedObjectID:(id)d appIconData:(id)data queue:(id)queue completionHandler:(id)handler;
+- (void)didSaveShare:(id)share accountID:(id)d queue:(id)queue completionHandler:(id)handler;
+- (void)didStopSharing:(id)sharing recordID:(id)d accountID:(id)iD queue:(id)queue completionHandler:(id)handler;
+- (void)fetchShareIfNecessaryForObject:(id)object completionHandler:(id)handler;
+- (void)populateShare:(id)share withObject:(id)object;
+- (void)prepareShare:(id)share forObject:(id)object completionHandler:(id)handler;
+- (void)saveServerShare:(id)share accountID:(id)d completionHandler:(id)handler;
+- (void)saveShare:(id)share forObject:(id)object completionHandler:(id)handler;
+- (void)saveShare:(id)share withRootRecord:(id)record object:(id)object completionHandler:(id)handler;
 @end
 
 @implementation ICCollaborationController
 
-- (ICCollaborationController)initWithCloudContext:(id)a3
+- (ICCollaborationController)initWithCloudContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v8.receiver = self;
   v8.super_class = ICCollaborationController;
   v5 = [(ICCollaborationController *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(ICCollaborationController *)v5 setCloudContext:v4];
+    [(ICCollaborationController *)v5 setCloudContext:contextCopy];
   }
 
   return v6;
 }
 
-- (id)fetchShareForObjectWithManagedObjectID:(id)a3
+- (id)fetchShareForObjectWithManagedObjectID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
   v19 = sub_1000C0F08;
   v20 = sub_1000C0F18;
   v21 = 0;
-  v5 = [(ICCollaborationController *)self cloudContext];
-  v6 = [v5 newBackgroundContext];
+  cloudContext = [(ICCollaborationController *)self cloudContext];
+  newBackgroundContext = [cloudContext newBackgroundContext];
 
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1000C0F20;
   v11[3] = &unk_1008DBFF0;
-  v7 = v4;
+  v7 = dCopy;
   v12 = v7;
-  v8 = v6;
-  v14 = self;
+  v8 = newBackgroundContext;
+  selfCopy = self;
   v15 = &v16;
   v13 = v8;
   [v8 performBlockAndWait:v11];
@@ -67,74 +67,74 @@
   return v9;
 }
 
-- (void)createShareForObjectWithManagedObjectID:(id)a3 appIconData:(id)a4 queue:(id)a5 completionHandler:(id)a6
+- (void)createShareForObjectWithManagedObjectID:(id)d appIconData:(id)data queue:(id)queue completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(ICCollaborationController *)self cloudContext];
-  v15 = [v14 newBackgroundContext];
+  dCopy = d;
+  dataCopy = data;
+  queueCopy = queue;
+  handlerCopy = handler;
+  cloudContext = [(ICCollaborationController *)self cloudContext];
+  newBackgroundContext = [cloudContext newBackgroundContext];
 
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
   v21[2] = sub_1000C114C;
   v21[3] = &unk_1008DC0A8;
-  v22 = v10;
-  v23 = v15;
-  v24 = self;
-  v25 = v11;
-  v26 = v12;
-  v27 = v13;
-  v16 = v12;
-  v17 = v11;
-  v18 = v13;
-  v19 = v15;
-  v20 = v10;
+  v22 = dCopy;
+  v23 = newBackgroundContext;
+  selfCopy = self;
+  v25 = dataCopy;
+  v26 = queueCopy;
+  v27 = handlerCopy;
+  v16 = queueCopy;
+  v17 = dataCopy;
+  v18 = handlerCopy;
+  v19 = newBackgroundContext;
+  v20 = dCopy;
   [v19 performBlockAndWait:v21];
 }
 
-- (id)rootRecordForObject:(id)a3
+- (id)rootRecordForObject:(id)object
 {
-  v3 = a3;
-  v4 = [v3 ckServerRecord];
-  v5 = [v4 copy];
+  objectCopy = object;
+  ckServerRecord = [objectCopy ckServerRecord];
+  newlyCreatedRecord = [ckServerRecord copy];
 
-  if (!v5)
+  if (!newlyCreatedRecord)
   {
     v6 = +[REMLog cloudkitCollaboration];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      sub_10076B124(v3);
+      sub_10076B124(objectCopy);
     }
 
-    v5 = [v3 newlyCreatedRecord];
+    newlyCreatedRecord = [objectCopy newlyCreatedRecord];
   }
 
-  return v5;
+  return newlyCreatedRecord;
 }
 
-- (id)newShareForObject:(id)a3
+- (id)newShareForObject:(id)object
 {
-  v4 = a3;
-  v5 = [(ICCollaborationController *)self rootRecordForObject:v4];
-  v6 = [v4 ckServerRecord];
-  v7 = [v6 share];
-  v8 = [v7 recordID];
+  objectCopy = object;
+  v5 = [(ICCollaborationController *)self rootRecordForObject:objectCopy];
+  ckServerRecord = [objectCopy ckServerRecord];
+  share = [ckServerRecord share];
+  recordID = [share recordID];
 
   v9 = [CKShare alloc];
-  if (v8)
+  if (recordID)
   {
-    v10 = [v9 initWithRootRecord:v5 shareID:v8];
+    v10 = [v9 initWithRootRecord:v5 shareID:recordID];
     v11 = +[REMLog cloudkitCollaboration];
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
-      v12 = [v10 ic_loggingDescription];
-      v13 = [v4 shortLoggingDescription];
+      ic_loggingDescription = [v10 ic_loggingDescription];
+      shortLoggingDescription = [objectCopy shortLoggingDescription];
       v18 = 138412546;
-      v19 = v12;
+      v19 = ic_loggingDescription;
       v20 = 2112;
-      v21 = v13;
+      v21 = shortLoggingDescription;
       v14 = "Created share %@ with existing share reference for %@";
       v15 = v11;
       v16 = OS_LOG_TYPE_INFO;
@@ -149,12 +149,12 @@ LABEL_6:
     v11 = +[REMLog cloudkitCollaboration];
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [v10 ic_loggingDescription];
-      v13 = [v4 shortLoggingDescription];
+      ic_loggingDescription = [v10 ic_loggingDescription];
+      shortLoggingDescription = [objectCopy shortLoggingDescription];
       v18 = 138412546;
-      v19 = v12;
+      v19 = ic_loggingDescription;
       v20 = 2112;
-      v21 = v13;
+      v21 = shortLoggingDescription;
       v14 = "Created share %@ for %@";
       v15 = v11;
       v16 = OS_LOG_TYPE_DEFAULT;
@@ -162,147 +162,147 @@ LABEL_6:
     }
   }
 
-  [(ICCollaborationController *)self populateShare:v10 withObject:v4];
+  [(ICCollaborationController *)self populateShare:v10 withObject:objectCopy];
   return v10;
 }
 
-- (void)populateShare:(id)a3 withObject:(id)a4
+- (void)populateShare:(id)share withObject:(id)object
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 shareTitle];
-  [v5 setObject:v7 forKeyedSubscript:CKShareTitleKey];
+  shareCopy = share;
+  objectCopy = object;
+  shareTitle = [objectCopy shareTitle];
+  [shareCopy setObject:shareTitle forKeyedSubscript:CKShareTitleKey];
 
-  v8 = [v6 shareType];
-  [v5 setObject:v8 forKeyedSubscript:CKShareTypeKey];
+  shareType = [objectCopy shareType];
+  [shareCopy setObject:shareType forKeyedSubscript:CKShareTypeKey];
 
-  v9 = [v6 recordID];
-  if (v9)
+  recordID = [objectCopy recordID];
+  if (recordID)
   {
-    v10 = [[CKReference alloc] initWithRecordID:v9 action:0];
-    [v5 setObject:v10 forKeyedSubscript:@"RootRecord"];
+    v10 = [[CKReference alloc] initWithRecordID:recordID action:0];
+    [shareCopy setObject:v10 forKeyedSubscript:@"RootRecord"];
   }
 
   else
   {
-    v11 = [v5 ic_loggingDescription];
-    v12 = [v6 shortLoggingDescription];
-    v10 = [NSString stringWithFormat:@"Trying to populate share %@ with no record ID for %@", v11, v12];
+    ic_loggingDescription = [shareCopy ic_loggingDescription];
+    shortLoggingDescription = [objectCopy shortLoggingDescription];
+    v10 = [NSString stringWithFormat:@"Trying to populate share %@ with no record ID for %@", ic_loggingDescription, shortLoggingDescription];
 
     [objc_opt_class() faultAndPromptToFileRadarWithICTap2RadarType:5 title:@"populateShare with nil recordID" description:&stru_1008FE8A0 logMessage:v10];
   }
 
-  v13 = [v6 recordType];
+  recordType = [objectCopy recordType];
 
-  if (v13)
+  if (recordType)
   {
-    v14 = [v6 recordType];
-    [v5 setObject:v14 forKeyedSubscript:@"RootRecordType"];
+    recordType2 = [objectCopy recordType];
+    [shareCopy setObject:recordType2 forKeyedSubscript:@"RootRecordType"];
   }
 
   else
   {
-    v14 = +[REMLog cloudkitCollaboration];
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_FAULT))
+    recordType2 = +[REMLog cloudkitCollaboration];
+    if (os_log_type_enabled(recordType2, OS_LOG_TYPE_FAULT))
     {
-      sub_10076B1B0(v5, v6);
+      sub_10076B1B0(shareCopy, objectCopy);
     }
   }
 }
 
-- (id)existingShareForObject:(id)a3
+- (id)existingShareForObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v5 = REMCRMergeableOrderedSet_ptr;
   v6 = +[REMLog cloudkitCollaboration];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
-    v7 = [v4 shortLoggingDescription];
+    shortLoggingDescription = [objectCopy shortLoggingDescription];
     *buf = 138412290;
-    v44 = v7;
+    v44 = shortLoggingDescription;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Checking for an existing share for %@", buf, 0xCu);
   }
 
-  v8 = v4;
+  v8 = objectCopy;
   v41 = v8;
   if (v8)
   {
-    v40 = self;
+    selfCopy = self;
     for (i = v8; ; i = v23)
     {
-      v10 = [v5[50] cloudkitCollaboration];
-      if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
+      cloudkitCollaboration = [v5[50] cloudkitCollaboration];
+      if (os_log_type_enabled(cloudkitCollaboration, OS_LOG_TYPE_INFO))
       {
-        v11 = [i shortLoggingDescription];
+        shortLoggingDescription2 = [i shortLoggingDescription];
         [i ckServerShare];
         v13 = v12 = v5;
-        v14 = [v13 ic_loggingDescription];
-        v15 = [i ckServerRecord];
-        v16 = [v15 share];
-        v17 = [v16 recordID];
-        v18 = [v17 ic_loggingDescription];
+        ic_loggingDescription = [v13 ic_loggingDescription];
+        ckServerRecord = [i ckServerRecord];
+        share = [ckServerRecord share];
+        recordID = [share recordID];
+        ic_loggingDescription2 = [recordID ic_loggingDescription];
         *buf = 138412802;
-        v44 = v11;
+        v44 = shortLoggingDescription2;
         v45 = 2112;
-        v46 = v14;
+        v46 = ic_loggingDescription;
         v47 = 2112;
-        v48 = v18;
-        _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "Checking for share on %@ serverShare=%@ serverRecord.share=%@", buf, 0x20u);
+        v48 = ic_loggingDescription2;
+        _os_log_impl(&_mh_execute_header, cloudkitCollaboration, OS_LOG_TYPE_INFO, "Checking for share on %@ serverShare=%@ serverRecord.share=%@", buf, 0x20u);
 
         v5 = v12;
       }
 
-      v19 = [i ckServerShare];
-      if (v19)
+      ckServerShare = [i ckServerShare];
+      if (ckServerShare)
       {
-        v29 = v19;
-        [(ICCollaborationController *)v40 populateShare:v19 withObject:i];
+        v29 = ckServerShare;
+        [(ICCollaborationController *)selfCopy populateShare:ckServerShare withObject:i];
         goto LABEL_21;
       }
 
-      v20 = [i ckServerRecord];
-      v21 = [v20 share];
+      ckServerRecord2 = [i ckServerRecord];
+      share2 = [ckServerRecord2 share];
 
-      if (v21)
+      if (share2)
       {
         break;
       }
 
-      v22 = [i parentCloudObject];
-      v23 = v22;
-      if (!v22)
+      parentCloudObject = [i parentCloudObject];
+      v23 = parentCloudObject;
+      if (!parentCloudObject)
       {
         goto LABEL_19;
       }
 
-      v24 = [v22 recordID];
-      v25 = [v24 zoneID];
-      v26 = [i recordID];
-      v27 = [v26 zoneID];
-      v28 = [v25 isEqual:v27];
+      recordID2 = [parentCloudObject recordID];
+      zoneID = [recordID2 zoneID];
+      recordID3 = [i recordID];
+      zoneID2 = [recordID3 zoneID];
+      v28 = [zoneID isEqual:zoneID2];
 
       if ((v28 & 1) == 0)
       {
-        v31 = [v5[50] cloudkitCollaboration];
-        if (os_log_type_enabled(v31, OS_LOG_TYPE_FAULT))
+        cloudkitCollaboration2 = [v5[50] cloudkitCollaboration];
+        if (os_log_type_enabled(cloudkitCollaboration2, OS_LOG_TYPE_FAULT))
         {
-          v33 = [v23 shortLoggingDescription];
-          v34 = [i shortLoggingDescription];
-          v42 = [v23 recordID];
-          v35 = [v42 zoneID];
-          v36 = [v35 ic_loggingDescription];
-          v37 = [i recordID];
-          v38 = [v37 zoneID];
-          v39 = [v38 ic_loggingDescription];
+          shortLoggingDescription3 = [v23 shortLoggingDescription];
+          shortLoggingDescription4 = [i shortLoggingDescription];
+          recordID4 = [v23 recordID];
+          zoneID3 = [recordID4 zoneID];
+          ic_loggingDescription3 = [zoneID3 ic_loggingDescription];
+          recordID5 = [i recordID];
+          zoneID4 = [recordID5 zoneID];
+          ic_loggingDescription4 = [zoneID4 ic_loggingDescription];
           *buf = 138413058;
-          v44 = v33;
+          v44 = shortLoggingDescription3;
           v45 = 2112;
-          v46 = v34;
+          v46 = shortLoggingDescription4;
           v47 = 2112;
-          v48 = v36;
+          v48 = ic_loggingDescription3;
           v49 = 2112;
-          v50 = v39;
-          _os_log_fault_impl(&_mh_execute_header, v31, OS_LOG_TYPE_FAULT, "Not checking parent object %@ for %@ because it's not in the same zone (object in %@ and parent in %@)", buf, 0x2Au);
+          v50 = ic_loggingDescription4;
+          _os_log_fault_impl(&_mh_execute_header, cloudkitCollaboration2, OS_LOG_TYPE_FAULT, "Not checking parent object %@ for %@ because it's not in the same zone (object in %@ and parent in %@)", buf, 0x2Au);
         }
 
 LABEL_19:
@@ -310,10 +310,10 @@ LABEL_19:
       }
     }
 
-    v30 = [v5[50] cloudkitCollaboration];
-    if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
+    cloudkitCollaboration3 = [v5[50] cloudkitCollaboration];
+    if (os_log_type_enabled(cloudkitCollaboration3, OS_LOG_TYPE_ERROR))
     {
-      sub_10076B260(buf, v41, &v44, v30);
+      sub_10076B260(buf, v41, &v44, cloudkitCollaboration3);
     }
   }
 
@@ -325,48 +325,48 @@ LABEL_21:
   return v29;
 }
 
-- (void)prepareShare:(id)a3 forObject:(id)a4 completionHandler:(id)a5
+- (void)prepareShare:(id)share forObject:(id)object completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  shareCopy = share;
+  objectCopy = object;
+  handlerCopy = handler;
   v11 = +[REMLog cloudkitCollaboration];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
-    v12 = [v8 ic_loggingDescription];
-    v13 = [v9 shortLoggingDescription];
+    ic_loggingDescription = [shareCopy ic_loggingDescription];
+    shortLoggingDescription = [objectCopy shortLoggingDescription];
     *buf = 138412546;
-    v26 = v12;
+    v26 = ic_loggingDescription;
     v27 = 2112;
-    v28 = v13;
+    v28 = shortLoggingDescription;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "Preparing share %@ for %@", buf, 0x16u);
   }
 
-  v14 = [v9 managedObjectContext];
-  [(ICCollaborationController *)self setObjectContext:v14];
+  managedObjectContext = [objectCopy managedObjectContext];
+  [(ICCollaborationController *)self setObjectContext:managedObjectContext];
 
-  v15 = [(ICCollaborationController *)self cloudContext];
-  v16 = [v9 recordID];
+  cloudContext = [(ICCollaborationController *)self cloudContext];
+  recordID = [objectCopy recordID];
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_1000C2100;
   v20[3] = &unk_1008DAB10;
-  v21 = v9;
-  v22 = self;
-  v23 = v8;
-  v24 = v10;
-  v17 = v10;
-  v18 = v8;
-  v19 = v9;
-  [v15 finishOperationsForRecordID:v16 completionHandler:v20];
+  v21 = objectCopy;
+  selfCopy = self;
+  v23 = shareCopy;
+  v24 = handlerCopy;
+  v17 = handlerCopy;
+  v18 = shareCopy;
+  v19 = objectCopy;
+  [cloudContext finishOperationsForRecordID:recordID completionHandler:v20];
 }
 
-- (void)saveShare:(id)a3 forObject:(id)a4 completionHandler:(id)a5
+- (void)saveShare:(id)share forObject:(id)object completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v9)
+  shareCopy = share;
+  objectCopy = object;
+  handlerCopy = handler;
+  if (!objectCopy)
   {
     sub_10076B2D8();
   }
@@ -376,7 +376,7 @@ LABEL_21:
   v23 = 0x3032000000;
   v24 = sub_1000C0F08;
   v25 = sub_1000C0F18;
-  v26 = [(ICCollaborationController *)self rootRecordForObject:v9];
+  v26 = [(ICCollaborationController *)self rootRecordForObject:objectCopy];
   v11 = v22[5];
   if (v11)
   {
@@ -384,11 +384,11 @@ LABEL_21:
     v15[1] = 3221225472;
     v15[2] = sub_1000C2608;
     v15[3] = &unk_1008DC0F8;
-    v16 = v9;
-    v17 = self;
-    v18 = v8;
+    v16 = objectCopy;
+    selfCopy = self;
+    v18 = shareCopy;
     v20 = &v21;
-    v19 = v10;
+    v19 = handlerCopy;
     [(ICCollaborationController *)self saveShare:v18 withRootRecord:v11 object:v16 completionHandler:v15];
 
     v12 = v16;
@@ -399,54 +399,54 @@ LABEL_21:
     v13 = +[REMLog cloudkitCollaboration];
     if (os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
     {
-      v14 = [v9 shortLoggingDescription];
-      sub_10076B388(v14, buf, v13);
+      shortLoggingDescription = [objectCopy shortLoggingDescription];
+      sub_10076B388(shortLoggingDescription, buf, v13);
     }
 
     v12 = [NSError errorWithDomain:@"com.apple.reminders" code:208 userInfo:0];
-    (*(v10 + 2))(v10, 0, v12);
+    (*(handlerCopy + 2))(handlerCopy, 0, v12);
   }
 
   _Block_object_dispose(&v21, 8);
 }
 
-- (void)saveShare:(id)a3 withRootRecord:(id)a4 object:(id)a5 completionHandler:(id)a6
+- (void)saveShare:(id)share withRootRecord:(id)record object:(id)object completionHandler:(id)handler
 {
-  v31 = a3;
-  v32 = a4;
-  v10 = a5;
-  v11 = a6;
-  v12 = [v10 accountCKIdentifier];
-  if ([v12 length])
+  shareCopy = share;
+  recordCopy = record;
+  objectCopy = object;
+  handlerCopy = handler;
+  accountCKIdentifier = [objectCopy accountCKIdentifier];
+  if ([accountCKIdentifier length])
   {
-    v30 = [(ICCollaborationController *)self containerForAccountID:v12];
+    v30 = [(ICCollaborationController *)self containerForAccountID:accountCKIdentifier];
     v13 = [CKModifyRecordsOperation alloc];
-    v49[0] = v31;
-    v49[1] = v32;
+    v49[0] = shareCopy;
+    v49[1] = recordCopy;
     v14 = [NSArray arrayWithObjects:v49 count:2];
     v15 = [v13 initWithRecordsToSave:v14 recordIDsToDelete:0];
 
     [v15 setQualityOfService:17];
-    v16 = [v30 privateCloudDatabase];
-    [v15 setDatabase:v16];
+    privateCloudDatabase = [v30 privateCloudDatabase];
+    [v15 setDatabase:privateCloudDatabase];
 
     objc_initWeak(&location, v15);
     v17 = +[REMLog cloudkitCollaboration];
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
-      v18 = [v31 ic_loggingDescription];
-      v19 = [v32 ic_loggingDescription];
+      ic_loggingDescription = [shareCopy ic_loggingDescription];
+      ic_loggingDescription2 = [recordCopy ic_loggingDescription];
       v20 = objc_loadWeakRetained(&location);
-      v21 = [v20 ic_loggingDescription];
-      v22 = [v10 ckIdentifier];
+      ic_loggingDescription3 = [v20 ic_loggingDescription];
+      ckIdentifier = [objectCopy ckIdentifier];
       *buf = 138413058;
-      v42 = v18;
+      v42 = ic_loggingDescription;
       v43 = 2112;
-      v44 = v19;
+      v44 = ic_loggingDescription2;
       v45 = 2114;
-      v46 = v21;
+      v46 = ic_loggingDescription3;
       v47 = 2114;
-      v48 = v22;
+      v48 = ckIdentifier;
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "Saving Share: %@ with root record: %@ %{public}@ %{public}@", buf, 0x2Au);
     }
 
@@ -455,11 +455,11 @@ LABEL_21:
     v33[2] = sub_1000C2CC0;
     v33[3] = &unk_1008DC1B0;
     objc_copyWeak(&v39, &location);
-    v34 = v10;
-    v35 = v32;
-    v36 = v12;
-    v37 = v31;
-    v38 = v11;
+    v34 = objectCopy;
+    v35 = recordCopy;
+    v36 = accountCKIdentifier;
+    v37 = shareCopy;
+    v38 = handlerCopy;
     [v15 setModifyRecordsCompletionBlock:v33];
     v23 = objc_alloc_init(CKOperationGroup);
     [v23 setName:@"SaveShare"];
@@ -467,8 +467,8 @@ LABEL_21:
     [v23 setExpectedSendSize:1];
     [v23 setExpectedReceiveSize:1];
     [v15 setGroup:v23];
-    v24 = [v15 database];
-    [v24 addOperation:v15];
+    database = [v15 database];
+    [database addOperation:v15];
 
     objc_destroyWeak(&v39);
     objc_destroyWeak(&location);
@@ -479,64 +479,64 @@ LABEL_21:
   v25 = +[REMLog cloudkitCollaboration];
   if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
   {
-    v26 = [v10 ckIdentifier];
-    v27 = [v31 ic_loggingDescription];
-    v28 = [v32 recordID];
-    v29 = [v28 ic_loggingDescription];
+    ckIdentifier2 = [objectCopy ckIdentifier];
+    ic_loggingDescription4 = [shareCopy ic_loggingDescription];
+    recordID = [recordCopy recordID];
+    ic_loggingDescription5 = [recordID ic_loggingDescription];
     *buf = 138543874;
-    v42 = v26;
+    v42 = ckIdentifier2;
     v43 = 2112;
-    v44 = v27;
+    v44 = ic_loggingDescription4;
     v45 = 2112;
-    v46 = v29;
+    v46 = ic_loggingDescription5;
     _os_log_error_impl(&_mh_execute_header, v25, OS_LOG_TYPE_ERROR, "Trying to saveShare with nil or empty accountID: ckIdentifier: %{public}@, share: %@, rootRecordID: %@", buf, 0x20u);
   }
 
-  if (v11)
+  if (handlerCopy)
   {
     v30 = ICGenericError();
-    (*(v11 + 2))(v11, 0, v30);
+    (*(handlerCopy + 2))(handlerCopy, 0, v30);
 LABEL_9:
   }
 }
 
-- (void)fetchShareIfNecessaryForObject:(id)a3 completionHandler:(id)a4
+- (void)fetchShareIfNecessaryForObject:(id)object completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 accountCKIdentifier];
-  if ([v8 length])
+  objectCopy = object;
+  handlerCopy = handler;
+  accountCKIdentifier = [objectCopy accountCKIdentifier];
+  if ([accountCKIdentifier length])
   {
-    v9 = [v6 ckServerRecord];
-    v10 = [v9 share];
-    v11 = [v10 recordID];
+    ckServerRecord = [objectCopy ckServerRecord];
+    share = [ckServerRecord share];
+    recordID = [share recordID];
 
-    if (v11 && ([v6 ckServerShare], v12 = objc_claimAutoreleasedReturnValue(), v12, !v12))
+    if (recordID && ([objectCopy ckServerShare], v12 = objc_claimAutoreleasedReturnValue(), v12, !v12))
     {
       v14 = +[REMLog cloudkitCollaboration];
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
-        v30 = [v6 ckServerRecord];
-        v15 = [v30 share];
-        v16 = [v15 recordID];
-        v17 = [v16 ic_loggingDescription];
-        v18 = [v6 shortLoggingDescription];
+        ckServerRecord2 = [objectCopy ckServerRecord];
+        share2 = [ckServerRecord2 share];
+        recordID2 = [share2 recordID];
+        ic_loggingDescription = [recordID2 ic_loggingDescription];
+        shortLoggingDescription = [objectCopy shortLoggingDescription];
         *buf = 138412546;
-        v41 = v17;
+        v41 = ic_loggingDescription;
         v42 = 2112;
-        v43 = v18;
+        v43 = shortLoggingDescription;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Need to fetch share %@ for %@", buf, 0x16u);
       }
 
-      v19 = [(ICCollaborationController *)self cloudContext];
-      v20 = [v19 containerForAccountID:v8];
+      cloudContext = [(ICCollaborationController *)self cloudContext];
+      v20 = [cloudContext containerForAccountID:accountCKIdentifier];
 
       v21 = [CKFetchRecordsOperation alloc];
-      v39 = v11;
+      v39 = recordID;
       v22 = [NSArray arrayWithObjects:&v39 count:1];
       v23 = [v21 initWithRecordIDs:v22];
 
-      v24 = [v20 databaseWithDatabaseScope:{objc_msgSend(v11, "rd_ckDatabaseScope")}];
+      v24 = [v20 databaseWithDatabaseScope:{objc_msgSend(recordID, "rd_ckDatabaseScope")}];
       [v23 setDatabase:v24];
 
       [v23 setQueuePriority:8];
@@ -545,12 +545,12 @@ LABEL_9:
       v25 = +[REMLog cloudkitCollaboration];
       if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
       {
-        v26 = [v11 ic_loggingDescription];
-        v27 = [v23 ic_loggingDescription];
+        ic_loggingDescription2 = [recordID ic_loggingDescription];
+        ic_loggingDescription3 = [v23 ic_loggingDescription];
         *buf = 138412546;
-        v41 = v26;
+        v41 = ic_loggingDescription2;
         v42 = 2112;
-        v43 = v27;
+        v43 = ic_loggingDescription3;
         _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_INFO, "Fetching share %@ with %@", buf, 0x16u);
       }
 
@@ -558,13 +558,13 @@ LABEL_9:
       v31[1] = 3221225472;
       v31[2] = sub_1000C3A88;
       v31[3] = &unk_1008DC1D8;
-      v11 = v11;
-      v32 = v11;
+      recordID = recordID;
+      v32 = recordID;
       objc_copyWeak(&v37, &location);
-      v33 = v6;
-      v34 = self;
-      v35 = v8;
-      v36 = v7;
+      v33 = objectCopy;
+      selfCopy = self;
+      v35 = accountCKIdentifier;
+      v36 = handlerCopy;
       [v23 setFetchRecordsCompletionBlock:v31];
       v28 = objc_alloc_init(CKOperationGroup);
       [v28 setName:@"FetchShare"];
@@ -572,8 +572,8 @@ LABEL_9:
       [v28 setExpectedSendSize:1];
       [v28 setExpectedReceiveSize:1];
       [v23 setGroup:v28];
-      v29 = [v23 database];
-      [v29 addOperation:v23];
+      database = [v23 database];
+      [database addOperation:v23];
 
       objc_destroyWeak(&v37);
       objc_destroyWeak(&location);
@@ -581,7 +581,7 @@ LABEL_9:
 
     else
     {
-      (*(v7 + 2))(v7, 0);
+      (*(handlerCopy + 2))(handlerCopy, 0);
     }
 
     goto LABEL_14;
@@ -590,75 +590,75 @@ LABEL_9:
   v13 = +[REMLog cloudkitCollaboration];
   if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
   {
-    sub_10076B7C0(v6);
+    sub_10076B7C0(objectCopy);
   }
 
-  if (v7)
+  if (handlerCopy)
   {
-    v11 = [NSError errorWithDomain:@"com.apple.reminders" code:214 userInfo:0];
-    (*(v7 + 2))(v7, v11);
+    recordID = [NSError errorWithDomain:@"com.apple.reminders" code:214 userInfo:0];
+    (*(handlerCopy + 2))(handlerCopy, recordID);
 LABEL_14:
   }
 }
 
-- (void)didSaveShare:(id)a3 accountID:(id)a4 queue:(id)a5 completionHandler:(id)a6
+- (void)didSaveShare:(id)share accountID:(id)d queue:(id)queue completionHandler:(id)handler
 {
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_1000C3DC8;
   v12[3] = &unk_1008DAC68;
-  v13 = a5;
-  v14 = a6;
-  v10 = v14;
-  v11 = v13;
-  [(ICCollaborationController *)self saveServerShare:a3 accountID:a4 completionHandler:v12];
+  queueCopy = queue;
+  handlerCopy = handler;
+  v10 = handlerCopy;
+  v11 = queueCopy;
+  [(ICCollaborationController *)self saveServerShare:share accountID:d completionHandler:v12];
 }
 
-- (void)saveServerShare:(id)a3 accountID:(id)a4 completionHandler:(id)a5
+- (void)saveServerShare:(id)share accountID:(id)d completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(ICCollaborationController *)self cloudContext];
-  v12 = [v11 newBackgroundContext];
+  shareCopy = share;
+  dCopy = d;
+  handlerCopy = handler;
+  cloudContext = [(ICCollaborationController *)self cloudContext];
+  newBackgroundContext = [cloudContext newBackgroundContext];
 
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_1000C3FAC;
   v17[3] = &unk_1008DAD58;
   v17[4] = self;
-  v18 = v8;
-  v19 = v9;
-  v20 = v12;
-  v21 = v10;
-  v13 = v10;
-  v14 = v12;
-  v15 = v9;
-  v16 = v8;
+  v18 = shareCopy;
+  v19 = dCopy;
+  v20 = newBackgroundContext;
+  v21 = handlerCopy;
+  v13 = handlerCopy;
+  v14 = newBackgroundContext;
+  v15 = dCopy;
+  v16 = shareCopy;
   [v14 performBlockAndWait:v17];
 }
 
-- (id)objectForShare:(id)a3 accountID:(id)a4 context:(id)a5
+- (id)objectForShare:(id)share accountID:(id)d context:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 objectForKeyedSubscript:@"RootRecord"];
-  v12 = [v11 recordID];
-  if (v12)
+  shareCopy = share;
+  dCopy = d;
+  contextCopy = context;
+  v11 = [shareCopy objectForKeyedSubscript:@"RootRecord"];
+  recordID = [v11 recordID];
+  if (recordID)
   {
-    v13 = [v8 objectForKeyedSubscript:@"RootRecordType"];
+    v13 = [shareCopy objectForKeyedSubscript:@"RootRecordType"];
     if (!v13)
     {
       v14 = +[REMLog cloudkitCollaboration];
       if (os_log_type_enabled(v14, OS_LOG_TYPE_FAULT))
       {
-        sub_10076B850(v8);
+        sub_10076B850(shareCopy);
       }
     }
 
-    v15 = [(ICCollaborationController *)self cloudContext];
-    v16 = [v15 existingCloudObjectForRecordID:v12 recordType:v13 accountID:v9 context:v10];
+    cloudContext = [(ICCollaborationController *)self cloudContext];
+    v16 = [cloudContext existingCloudObjectForRecordID:recordID recordType:v13 accountID:dCopy context:contextCopy];
   }
 
   else
@@ -666,7 +666,7 @@ LABEL_14:
     v13 = +[REMLog cloudkitCollaboration];
     if (os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
     {
-      sub_10076B8DC(v8);
+      sub_10076B8DC(shareCopy);
     }
 
     v16 = 0;
@@ -675,30 +675,30 @@ LABEL_14:
   return v16;
 }
 
-- (void)didStopSharing:(id)a3 recordID:(id)a4 accountID:(id)a5 queue:(id)a6 completionHandler:(id)a7
+- (void)didStopSharing:(id)sharing recordID:(id)d accountID:(id)iD queue:(id)queue completionHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if (v12 | v13)
+  sharingCopy = sharing;
+  dCopy = d;
+  iDCopy = iD;
+  queueCopy = queue;
+  handlerCopy = handler;
+  if (sharingCopy | dCopy)
   {
-    v17 = [(ICCollaborationController *)self cloudContext];
-    v18 = [v17 newBackgroundContext];
+    cloudContext = [(ICCollaborationController *)self cloudContext];
+    newBackgroundContext = [cloudContext newBackgroundContext];
 
     v20[0] = _NSConcreteStackBlock;
     v20[1] = 3221225472;
     v20[2] = sub_1000C44A8;
     v20[3] = &unk_1008DC200;
-    v21 = v12;
-    v22 = self;
-    v23 = v14;
-    v24 = v18;
-    v25 = v13;
-    v26 = v15;
-    v27 = v16;
-    v19 = v18;
+    v21 = sharingCopy;
+    selfCopy = self;
+    v23 = iDCopy;
+    v24 = newBackgroundContext;
+    v25 = dCopy;
+    v26 = queueCopy;
+    v27 = handlerCopy;
+    v19 = newBackgroundContext;
     [v19 performBlockAndWait:v20];
   }
 
@@ -713,25 +713,25 @@ LABEL_14:
   }
 }
 
-- (void)acceptShareWithMetadata:(id)a3 callbackQueue:(id)a4 completionHandler:(id)a5
+- (void)acceptShareWithMetadata:(id)metadata callbackQueue:(id)queue completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  metadataCopy = metadata;
+  queueCopy = queue;
+  handlerCopy = handler;
   v11 = +[REMLog cloudkitCollaboration];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v8;
+    *(&buf + 4) = metadataCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Accepting share for metadata %@", &buf, 0xCu);
   }
 
-  v12 = [(ICCollaborationController *)self cloudContext];
-  v13 = [v12 newBackgroundContext];
+  cloudContext = [(ICCollaborationController *)self cloudContext];
+  newBackgroundContext = [cloudContext newBackgroundContext];
 
-  v14 = [v8 callingParticipant];
-  v15 = [v14 userIdentity];
-  v16 = [v15 userRecordID];
+  callingParticipant = [metadataCopy callingParticipant];
+  userIdentity = [callingParticipant userIdentity];
+  userRecordID = [userIdentity userRecordID];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -739,9 +739,9 @@ LABEL_14:
   v57 = sub_1000C0F08;
   v58 = sub_1000C0F18;
   v59 = 0;
-  v17 = [(ICCollaborationController *)self cloudContext];
-  v18 = [v17 containersByAccountID];
-  v19 = [v18 count] == 0;
+  cloudContext2 = [(ICCollaborationController *)self cloudContext];
+  containersByAccountID = [cloudContext2 containersByAccountID];
+  v19 = [containersByAccountID count] == 0;
 
   if (v19)
   {
@@ -761,12 +761,12 @@ LABEL_14:
   v22 = +[_TtC7remindd20RDDispatchQueue_ObjC xpcDefaultQueue];
   dispatch_assert_queue_not_V2(v22);
 
-  v23 = [(ICCollaborationController *)self containerForUserRecordID:v16];
-  v24 = [v23 options];
-  v25 = [v24 accountOverrideInfo];
-  v26 = [v25 accountID];
+  v23 = [(ICCollaborationController *)self containerForUserRecordID:userRecordID];
+  options = [v23 options];
+  accountOverrideInfo = [options accountOverrideInfo];
+  accountID = [accountOverrideInfo accountID];
   v27 = *(*(&buf + 1) + 40);
-  *(*(&buf + 1) + 40) = v26;
+  *(*(&buf + 1) + 40) = accountID;
 
   if (!v23)
   {
@@ -778,14 +778,14 @@ LABEL_7:
       _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "Accepting share: Single account or unable to fetch container. Using containerWithIdentifier.", v51, 2u);
     }
 
-    v29 = [v8 containerIdentifier];
-    v23 = [CKContainer containerWithIdentifier:v29];
+    containerIdentifier = [metadataCopy containerIdentifier];
+    v23 = [CKContainer containerWithIdentifier:containerIdentifier];
 
-    v30 = [v23 options];
-    v31 = [v30 accountOverrideInfo];
-    v32 = [v31 accountID];
+    options2 = [v23 options];
+    accountOverrideInfo2 = [options2 accountOverrideInfo];
+    accountID2 = [accountOverrideInfo2 accountID];
     v33 = *(*(&buf + 1) + 40);
-    *(*(&buf + 1) + 40) = v32;
+    *(*(&buf + 1) + 40) = accountID2;
   }
 
   if (![*(*(&buf + 1) + 40) length])
@@ -793,12 +793,12 @@ LABEL_7:
     v34 = +[REMLog cloudkitCollaboration];
     if (os_log_type_enabled(v34, OS_LOG_TYPE_FAULT))
     {
-      v39 = [v16 recordName];
-      v40 = [(ICCollaborationController *)self cloudContext];
-      v37 = [v40 containersByAccountID];
-      v38 = [v37 count];
+      recordName = [userRecordID recordName];
+      cloudContext3 = [(ICCollaborationController *)self cloudContext];
+      containersByAccountID2 = [cloudContext3 containersByAccountID];
+      v38 = [containersByAccountID2 count];
       *v51 = 138543618;
-      v52 = v39;
+      v52 = recordName;
       v53 = 2048;
       v54 = v38;
       _os_log_fault_impl(&_mh_execute_header, v34, OS_LOG_TYPE_FAULT, "Accepting share: Unable to fetch account ID. Using primaryCloudKitAccountInContext. userRecordName=%{public}@, containers.count=%lu", v51, 0x16u);
@@ -810,7 +810,7 @@ LABEL_7:
     v48[3] = &unk_1008D9C38;
     p_buf = &buf;
     v48[4] = self;
-    v49 = v13;
+    v49 = newBackgroundContext;
     [v49 performBlockAndWait:v48];
   }
 
@@ -836,7 +836,7 @@ LABEL_7:
 LABEL_22:
 
     v36 = ICGenericError();
-    (*(v10 + 2))(v10, v36, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, v36, 0, 0);
 
     goto LABEL_23;
   }
@@ -846,11 +846,11 @@ LABEL_22:
   v41[2] = sub_1000C4E64;
   v41[3] = &unk_1008DC2C8;
   v41[4] = self;
-  v42 = v8;
+  v42 = metadataCopy;
   v47 = &buf;
-  v43 = v13;
-  v44 = v9;
-  v46 = v10;
+  v43 = newBackgroundContext;
+  v44 = queueCopy;
+  v46 = handlerCopy;
   v45 = v23;
   [v43 performBlockAndWait:v41];
 
@@ -858,21 +858,21 @@ LABEL_23:
   _Block_object_dispose(&buf, 8);
 }
 
-- (id)containerForUserRecordID:(id)a3
+- (id)containerForUserRecordID:(id)d
 {
-  v4 = [a3 recordName];
-  v5 = [(ICCollaborationController *)self cloudContext];
-  v6 = [v5 containersByAccountID];
-  v7 = [v6 allValues];
+  recordName = [d recordName];
+  cloudContext = [(ICCollaborationController *)self cloudContext];
+  containersByAccountID = [cloudContext containersByAccountID];
+  allValues = [containersByAccountID allValues];
 
   v8 = +[REMLog cloudkitCollaboration];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(ICCollaborationController *)self cloudContext];
-    v10 = [v9 containersByAccountID];
-    v11 = [v10 allKeys];
+    cloudContext2 = [(ICCollaborationController *)self cloudContext];
+    containersByAccountID2 = [cloudContext2 containersByAccountID];
+    allKeys = [containersByAccountID2 allKeys];
     *buf = 138543362;
-    v30 = v11;
+    v30 = allKeys;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "containerForUserRecordID accountIDs=%{public}@", buf, 0xCu);
   }
 
@@ -886,7 +886,7 @@ LABEL_23:
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v14 = v7;
+  v14 = allValues;
   v15 = [v14 countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v15)
   {
@@ -912,7 +912,7 @@ LABEL_23:
           _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "containerForUserRecordID containerUserRecordName=%{public}@", buf, 0xCu);
         }
 
-        if ([v20 isEqualToString:v4])
+        if ([v20 isEqualToString:recordName])
         {
           v15 = v19;
 
@@ -935,14 +935,14 @@ LABEL_15:
   return v15;
 }
 
-- (id)containerForAccountID:(id)a3
+- (id)containerForAccountID:(id)d
 {
-  v4 = a3;
-  if ([v4 length])
+  dCopy = d;
+  if ([dCopy length])
   {
-    v5 = [(ICCollaborationController *)self cloudContext];
-    v6 = [v5 containersByAccountID];
-    v7 = [v6 objectForKeyedSubscript:v4];
+    cloudContext = [(ICCollaborationController *)self cloudContext];
+    containersByAccountID = [cloudContext containersByAccountID];
+    v7 = [containersByAccountID objectForKeyedSubscript:dCopy];
   }
 
   else
@@ -959,14 +959,14 @@ LABEL_15:
   return v7;
 }
 
-- (void)acceptShareWithMetadata:(id)a3 container:(id)a4 accountID:(id)a5 fetchObjectWithCompletionHandler:(id)a6
+- (void)acceptShareWithMetadata:(id)metadata container:(id)container accountID:(id)d fetchObjectWithCompletionHandler:(id)handler
 {
-  v10 = a3;
-  v30 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [v10 share];
-  v32 = [v13 URL];
+  metadataCopy = metadata;
+  containerCopy = container;
+  dCopy = d;
+  handlerCopy = handler;
+  share = [metadataCopy share];
+  v32 = [share URL];
 
   if (!v32)
   {
@@ -979,20 +979,20 @@ LABEL_15:
     *buf = 138412546;
     v46 = v32;
     v47 = 2114;
-    v48 = v11;
+    v48 = dCopy;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Accepting shared object at URL: %@, account ID = %{public}@", buf, 0x16u);
   }
 
-  v33 = [(ICCollaborationController *)self cloudContext];
+  cloudContext = [(ICCollaborationController *)self cloudContext];
   v15 = [CKAcceptSharesOperation alloc];
-  v44 = v10;
+  v44 = metadataCopy;
   v16 = [NSArray arrayWithObjects:&v44 count:1];
   v17 = [v15 initWithShareMetadatas:v16];
 
   [v17 setQualityOfService:17];
   [v17 setQueuePriority:8];
-  v18 = [v17 configuration];
-  [v18 setContainer:v31];
+  configuration = [v17 configuration];
+  [configuration setContainer:v31];
 
   objc_initWeak(&location, v17);
   +[NSMutableDictionary dictionary];
@@ -1006,14 +1006,14 @@ LABEL_15:
   v34[1] = 3221225472;
   v34[2] = sub_1000C5C0C;
   v34[3] = &unk_1008DC368;
-  v20 = v10;
+  v20 = metadataCopy;
   v35 = v20;
   objc_copyWeak(&v40, &location);
-  v21 = v12;
+  v21 = handlerCopy;
   v39 = v21;
-  v22 = v11;
+  v22 = dCopy;
   v36 = v22;
-  v37 = self;
+  selfCopy = self;
   v23 = v19;
   v38 = v23;
   [v17 setAcceptSharesCompletionBlock:v34];
@@ -1026,20 +1026,20 @@ LABEL_15:
   v25 = +[REMLog cloudkitCollaboration];
   if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
   {
-    v26 = [v20 share];
-    v27 = [v26 ic_loggingDescription];
-    v28 = [v17 ic_loggingDescription];
+    share2 = [v20 share];
+    ic_loggingDescription = [share2 ic_loggingDescription];
+    ic_loggingDescription2 = [v17 ic_loggingDescription];
     *buf = 138412546;
-    v46 = v27;
+    v46 = ic_loggingDescription;
     v47 = 2112;
-    v48 = v28;
+    v48 = ic_loggingDescription2;
     _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "Accepting %@ with %@", buf, 0x16u);
   }
 
-  v29 = [v33 operationQueue];
-  [v29 addOperation:v17];
+  operationQueue = [cloudContext operationQueue];
+  [operationQueue addOperation:v17];
 
-  [v33 errorAndPromptToFileRadarWithICTap2RadarTypeTooManyOperationsInOperationQueueIfNecessary];
+  [cloudContext errorAndPromptToFileRadarWithICTap2RadarTypeTooManyOperationsInOperationQueueIfNecessary];
   objc_destroyWeak(&v40);
 
   objc_destroyWeak(&location);

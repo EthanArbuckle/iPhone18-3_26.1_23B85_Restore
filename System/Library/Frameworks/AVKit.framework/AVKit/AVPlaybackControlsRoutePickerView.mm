@@ -1,7 +1,7 @@
 @interface AVPlaybackControlsRoutePickerView
 - (AVButton)customButton;
-- (AVPlaybackControlsRoutePickerView)initWithFrame:(CGRect)a3;
-- (AVPlaybackControlsRoutePickerView)initWithSecondGenerationButton:(BOOL)a3;
+- (AVPlaybackControlsRoutePickerView)initWithFrame:(CGRect)frame;
+- (AVPlaybackControlsRoutePickerView)initWithSecondGenerationButton:(BOOL)button;
 - (BOOL)isCollapsed;
 - (BOOL)isCollapsedOrExcluded;
 - (BOOL)isIncluded;
@@ -10,13 +10,13 @@
 - (void)_updateCustomButtonMicaPackage;
 - (void)_updateLayoutItem;
 - (void)layoutAttributesDidChange;
-- (void)setCollapsed:(BOOL)a3;
-- (void)setCurrentMicaPackageName:(id)a3;
-- (void)setExtrinsicContentSize:(CGSize)a3;
-- (void)setHasFullScreenAppearance:(BOOL)a3;
-- (void)setIncluded:(BOOL)a3;
-- (void)setPrioritizesVideoDevices:(BOOL)a3;
-- (void)setRemoved:(BOOL)a3;
+- (void)setCollapsed:(BOOL)collapsed;
+- (void)setCurrentMicaPackageName:(id)name;
+- (void)setExtrinsicContentSize:(CGSize)size;
+- (void)setHasFullScreenAppearance:(BOOL)appearance;
+- (void)setIncluded:(BOOL)included;
+- (void)setPrioritizesVideoDevices:(BOOL)devices;
+- (void)setRemoved:(BOOL)removed;
 - (void)updateButtonAppearance;
 @end
 
@@ -24,15 +24,15 @@
 
 - (void)_updateLayoutItem
 {
-  v3 = [(AVPlaybackControlsRoutePickerView *)self layoutAttributes];
+  layoutAttributes = [(AVPlaybackControlsRoutePickerView *)self layoutAttributes];
   [(AVPlaybackControlsRoutePickerView *)self intrinsicContentSize];
-  [v3 setMinimumSize:?];
+  [layoutAttributes setMinimumSize:?];
 
-  v4 = [(AVPlaybackControlsRoutePickerView *)self layoutAttributes];
-  [v4 setIncluded:{-[AVPlaybackControlsRoutePickerView isIncluded](self, "isIncluded")}];
+  layoutAttributes2 = [(AVPlaybackControlsRoutePickerView *)self layoutAttributes];
+  [layoutAttributes2 setIncluded:{-[AVPlaybackControlsRoutePickerView isIncluded](self, "isIncluded")}];
 
-  v5 = [(AVPlaybackControlsRoutePickerView *)self layoutAttributes];
-  [v5 setCollapsed:{-[AVPlaybackControlsRoutePickerView isCollapsed](self, "isCollapsed")}];
+  layoutAttributes3 = [(AVPlaybackControlsRoutePickerView *)self layoutAttributes];
+  [layoutAttributes3 setCollapsed:{-[AVPlaybackControlsRoutePickerView isCollapsed](self, "isCollapsed")}];
 }
 
 - (CGSize)intrinsicContentSize
@@ -76,55 +76,55 @@
   else
   {
     v4 = +[AVKitGlobalSettings shared];
-    v5 = [v4 thirdGenerationControlsEnabled];
+    thirdGenerationControlsEnabled = [v4 thirdGenerationControlsEnabled];
 
-    v6 = [MEMORY[0x1E69DC888] whiteColor];
-    v3 = v6;
-    if ((v5 & 1) == 0)
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    v3 = whiteColor;
+    if ((thirdGenerationControlsEnabled & 1) == 0)
     {
-      v7 = [v6 colorWithAlphaComponent:0.55];
+      v7 = [whiteColor colorWithAlphaComponent:0.55];
 
-      v8 = [(AVPlaybackControlsRoutePickerView *)self customButton];
-      v9 = [v8 micaPackage];
-      v10 = [v9 rootLayer];
+      customButton = [(AVPlaybackControlsRoutePickerView *)self customButton];
+      micaPackage = [customButton micaPackage];
+      rootLayer = [micaPackage rootLayer];
 
-      [v10 setCompositingFilter:*MEMORY[0x1E6979CF8]];
+      [rootLayer setCompositingFilter:*MEMORY[0x1E6979CF8]];
       v3 = v7;
     }
   }
 
-  v11 = [(AVRoutePickerView *)self isAirPlayActive];
+  isAirPlayActive = [(AVRoutePickerView *)self isAirPlayActive];
   v12 = @"off";
-  if (v11)
+  if (isAirPlayActive)
   {
     v12 = @"on";
   }
 
   v13 = v12;
-  v14 = [(AVPlaybackControlsRoutePickerView *)self customButton];
-  v15 = [v14 micaPackage];
-  [v15 setState:v13 color:{objc_msgSend(v3, "CGColor")}];
+  customButton2 = [(AVPlaybackControlsRoutePickerView *)self customButton];
+  micaPackage2 = [customButton2 micaPackage];
+  [micaPackage2 setState:v13 color:{objc_msgSend(v3, "CGColor")}];
 
-  v16 = [(AVPlaybackControlsRoutePickerView *)self customButton];
-  v17 = [v16 micaPackage];
-  [v17 setState:v13 color:0];
+  customButton3 = [(AVPlaybackControlsRoutePickerView *)self customButton];
+  micaPackage3 = [customButton3 micaPackage];
+  [micaPackage3 setState:v13 color:0];
 
-  v18 = [(AVPlaybackControlsRoutePickerView *)self customButton];
-  v19 = [v18 micaPackage];
+  customButton4 = [(AVPlaybackControlsRoutePickerView *)self customButton];
+  micaPackage4 = [customButton4 micaPackage];
   [(AVPlaybackControlsRoutePickerView *)self extrinsicContentSize];
-  [v19 setTargetSize:?];
+  [micaPackage4 setTargetSize:?];
 
-  v20 = [(AVPlaybackControlsRoutePickerView *)self customButton];
-  [v20 setHasAlternateAppearance:{-[AVRoutePickerView isAirPlayActive](self, "isAirPlayActive")}];
+  customButton5 = [(AVPlaybackControlsRoutePickerView *)self customButton];
+  [customButton5 setHasAlternateAppearance:{-[AVRoutePickerView isAirPlayActive](self, "isAirPlayActive")}];
 
-  v21 = [(AVPlaybackControlsRoutePickerView *)self isCollapsedOrExcluded];
-  if (v21 != [(AVPlaybackControlsRoutePickerView *)self isHidden]|| (!v21 ? (v22 = 1.0) : (v22 = 0.0), [(AVPlaybackControlsRoutePickerView *)self alpha], v23 != v22))
+  isCollapsedOrExcluded = [(AVPlaybackControlsRoutePickerView *)self isCollapsedOrExcluded];
+  if (isCollapsedOrExcluded != [(AVPlaybackControlsRoutePickerView *)self isHidden]|| (!isCollapsedOrExcluded ? (v22 = 1.0) : (v22 = 0.0), [(AVPlaybackControlsRoutePickerView *)self alpha], v23 != v22))
   {
     [(UIView *)self avkit_reevaluateHiddenStateOfItem:self];
-    if ((v21 & 1) == 0)
+    if ((isCollapsedOrExcluded & 1) == 0)
     {
-      v24 = [(AVPlaybackControlsRoutePickerView *)self customButton];
-      [v24 frame];
+      customButton6 = [(AVPlaybackControlsRoutePickerView *)self customButton];
+      [customButton6 frame];
       v26 = v25;
       v28 = v27;
       v29 = MEMORY[0x1E695F060];
@@ -132,8 +132,8 @@
 
       if (v26 == v30 && v28 == *(v29 + 8))
       {
-        v31 = [(AVPlaybackControlsRoutePickerView *)self customButton];
-        [v31 invalidateIntrinsicContentSize];
+        customButton7 = [(AVPlaybackControlsRoutePickerView *)self customButton];
+        [customButton7 invalidateIntrinsicContentSize];
 
         [(AVPlaybackControlsRoutePickerView *)self invalidateIntrinsicContentSize];
       }
@@ -141,12 +141,12 @@
   }
 }
 
-- (void)setHasFullScreenAppearance:(BOOL)a3
+- (void)setHasFullScreenAppearance:(BOOL)appearance
 {
-  v3 = a3;
-  self->_hasFullScreenAppearance = a3;
-  v4 = [(AVPlaybackControlsRoutePickerView *)self customButton];
-  if (v3)
+  appearanceCopy = appearance;
+  self->_hasFullScreenAppearance = appearance;
+  customButton = [(AVPlaybackControlsRoutePickerView *)self customButton];
+  if (appearanceCopy)
   {
     CGAffineTransformMakeTranslation(&v6, 0.0, 1.0);
   }
@@ -159,20 +159,20 @@
     *&v6.tx = *(MEMORY[0x1E695EFD0] + 32);
   }
 
-  [v4 setTransform:&v6];
+  [customButton setTransform:&v6];
 }
 
 - (void)_updateCustomButtonMicaPackage
 {
-  v3 = [(AVPlaybackControlsRoutePickerView *)self effectiveUserInterfaceLayoutDirection];
+  effectiveUserInterfaceLayoutDirection = [(AVPlaybackControlsRoutePickerView *)self effectiveUserInterfaceLayoutDirection];
   objc_initWeak(&location, self);
-  v4 = [(AVPlaybackControlsRoutePickerView *)self currentMicaPackageName];
+  currentMicaPackageName = [(AVPlaybackControlsRoutePickerView *)self currentMicaPackageName];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __67__AVPlaybackControlsRoutePickerView__updateCustomButtonMicaPackage__block_invoke;
   v5[3] = &unk_1E7209E08;
   objc_copyWeak(&v6, &location);
-  [AVMicaPackage asynchronouslyPrepareMicaPackageWithName:v4 layoutDirection:v3 completion:v5];
+  [AVMicaPackage asynchronouslyPrepareMicaPackageWithName:currentMicaPackageName layoutDirection:effectiveUserInterfaceLayoutDirection completion:v5];
 
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
@@ -189,31 +189,31 @@ void __67__AVPlaybackControlsRoutePickerView__updateCustomButtonMicaPackage__blo
   [v6 updateButtonAppearance];
 }
 
-- (void)setCurrentMicaPackageName:(id)a3
+- (void)setCurrentMicaPackageName:(id)name
 {
-  v8 = a3;
-  v5 = [(AVPlaybackControlsRoutePickerView *)self currentMicaPackageName];
+  nameCopy = name;
+  currentMicaPackageName = [(AVPlaybackControlsRoutePickerView *)self currentMicaPackageName];
 
-  if (v5 != v8)
+  if (currentMicaPackageName != nameCopy)
   {
-    objc_storeStrong(&self->_currentMicaPackageName, a3);
+    objc_storeStrong(&self->_currentMicaPackageName, name);
     [(AVPlaybackControlsRoutePickerView *)self _updateCustomButtonMicaPackage];
     if (self->_currentMicaPackageName == @"AVRoutePickerViewCircularAirPlayGlyph")
     {
-      v6 = [(AVPlaybackControlsRoutePickerView *)self customButton];
-      [v6 setImageName:@"AVMobileImageNameNoImage"];
+      customButton = [(AVPlaybackControlsRoutePickerView *)self customButton];
+      [customButton setImageName:@"AVMobileImageNameNoImage"];
 
-      v7 = [(AVPlaybackControlsRoutePickerView *)self customButton];
-      [v7 setAlternateImageName:@"AVMobileImageNameNoImage"];
+      customButton2 = [(AVPlaybackControlsRoutePickerView *)self customButton];
+      [customButton2 setAlternateImageName:@"AVMobileImageNameNoImage"];
     }
   }
 }
 
-- (void)setPrioritizesVideoDevices:(BOOL)a3
+- (void)setPrioritizesVideoDevices:(BOOL)devices
 {
   v5.receiver = self;
   v5.super_class = AVPlaybackControlsRoutePickerView;
-  [(AVRoutePickerView *)&v5 setPrioritizesVideoDevices:a3];
+  [(AVRoutePickerView *)&v5 setPrioritizesVideoDevices:devices];
   if ([(AVRoutePickerView *)self prioritizesVideoDevices])
   {
     v4 = @"AVRoutePickerViewSquareAirPlayGlyph";
@@ -233,8 +233,8 @@ void __67__AVPlaybackControlsRoutePickerView__updateCustomButtonMicaPackage__blo
   if (!customButton)
   {
     secondGenerationButton = self->_secondGenerationButton;
-    v5 = [(AVPlaybackControlsRoutePickerView *)self layer];
-    [v5 setAllowsGroupBlending:0];
+    layer = [(AVPlaybackControlsRoutePickerView *)self layer];
+    [layer setAllowsGroupBlending:0];
 
     v6 = [AVButton buttonWithAccessibilityIdentifier:@"AirPlay" isFirstGeneration:!secondGenerationButton];
     v7 = self->_customButton;
@@ -250,8 +250,8 @@ void __67__AVPlaybackControlsRoutePickerView__updateCustomButtonMicaPackage__blo
     [(AVPlaybackControlsRoutePickerView *)self bounds];
     [(AVButton *)v10 setFrame:?];
     [(AVPlaybackControlsRoutePickerView *)self updateButtonAppearance];
-    v11 = [(AVPlaybackControlsRoutePickerView *)self currentMicaPackageName];
-    [(AVPlaybackControlsRoutePickerView *)self setCurrentMicaPackageName:v11];
+    currentMicaPackageName = [(AVPlaybackControlsRoutePickerView *)self currentMicaPackageName];
+    [(AVPlaybackControlsRoutePickerView *)self setCurrentMicaPackageName:currentMicaPackageName];
 
     [(AVButton *)v8 setImageName:@"AVMobileImageNameNoImage"];
     [(AVButton *)v8 setAlternateImageName:@"AVMobileImageNameNoImage"];
@@ -265,26 +265,26 @@ void __67__AVPlaybackControlsRoutePickerView__updateCustomButtonMicaPackage__blo
 
 - (void)layoutAttributesDidChange
 {
-  v3 = [(AVPlaybackControlsRoutePickerView *)self layoutAttributes];
-  -[AVPlaybackControlsRoutePickerView setCollapsed:](self, "setCollapsed:", [v3 isCollapsed]);
+  layoutAttributes = [(AVPlaybackControlsRoutePickerView *)self layoutAttributes];
+  -[AVPlaybackControlsRoutePickerView setCollapsed:](self, "setCollapsed:", [layoutAttributes isCollapsed]);
 }
 
-- (void)setExtrinsicContentSize:(CGSize)a3
+- (void)setExtrinsicContentSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(AVPlaybackControlsRoutePickerView *)self customButton];
-  [v6 extrinsicContentSize];
+  height = size.height;
+  width = size.width;
+  customButton = [(AVPlaybackControlsRoutePickerView *)self customButton];
+  [customButton extrinsicContentSize];
   v8 = v7;
   v10 = v9;
 
   if (width != v8 || height != v10)
   {
-    v12 = [(AVPlaybackControlsRoutePickerView *)self customButton];
-    [v12 setExtrinsicContentSize:{width, height}];
+    customButton2 = [(AVPlaybackControlsRoutePickerView *)self customButton];
+    [customButton2 setExtrinsicContentSize:{width, height}];
 
-    v13 = [(AVPlaybackControlsRoutePickerView *)self customButton];
-    [v13 invalidateIntrinsicContentSize];
+    customButton3 = [(AVPlaybackControlsRoutePickerView *)self customButton];
+    [customButton3 invalidateIntrinsicContentSize];
 
     [(AVPlaybackControlsRoutePickerView *)self invalidateIntrinsicContentSize];
 
@@ -294,8 +294,8 @@ void __67__AVPlaybackControlsRoutePickerView__updateCustomButtonMicaPackage__blo
 
 - (CGSize)extrinsicContentSize
 {
-  v2 = [(AVPlaybackControlsRoutePickerView *)self customButton];
-  [v2 extrinsicContentSize];
+  customButton = [(AVPlaybackControlsRoutePickerView *)self customButton];
+  [customButton extrinsicContentSize];
   v4 = v3;
   v6 = v5;
 
@@ -306,29 +306,29 @@ void __67__AVPlaybackControlsRoutePickerView__updateCustomButtonMicaPackage__blo
   return result;
 }
 
-- (void)setRemoved:(BOOL)a3
+- (void)setRemoved:(BOOL)removed
 {
-  if (self->_removed != a3)
+  if (self->_removed != removed)
   {
-    v4 = a3;
-    self->_removed = a3;
-    v6 = [(AVPlaybackControlsRoutePickerView *)self customButton];
-    [v6 setRemoved:v4];
+    removedCopy = removed;
+    self->_removed = removed;
+    customButton = [(AVPlaybackControlsRoutePickerView *)self customButton];
+    [customButton setRemoved:removedCopy];
 
     [(AVPlaybackControlsRoutePickerView *)self updateButtonAppearance];
   }
 }
 
-- (void)setCollapsed:(BOOL)a3
+- (void)setCollapsed:(BOOL)collapsed
 {
-  v3 = a3;
-  v5 = [(AVPlaybackControlsRoutePickerView *)self customButton];
-  v6 = [v5 isCollapsed];
+  collapsedCopy = collapsed;
+  customButton = [(AVPlaybackControlsRoutePickerView *)self customButton];
+  isCollapsed = [customButton isCollapsed];
 
-  if (v6 != v3)
+  if (isCollapsed != collapsedCopy)
   {
-    v7 = [(AVPlaybackControlsRoutePickerView *)self customButton];
-    [v7 setCollapsed:v3];
+    customButton2 = [(AVPlaybackControlsRoutePickerView *)self customButton];
+    [customButton2 setCollapsed:collapsedCopy];
 
     [(AVPlaybackControlsRoutePickerView *)self _updateLayoutItem];
 
@@ -338,22 +338,22 @@ void __67__AVPlaybackControlsRoutePickerView__updateCustomButtonMicaPackage__blo
 
 - (BOOL)isCollapsed
 {
-  v2 = [(AVPlaybackControlsRoutePickerView *)self customButton];
-  v3 = [v2 isCollapsed];
+  customButton = [(AVPlaybackControlsRoutePickerView *)self customButton];
+  isCollapsed = [customButton isCollapsed];
 
-  return v3;
+  return isCollapsed;
 }
 
-- (void)setIncluded:(BOOL)a3
+- (void)setIncluded:(BOOL)included
 {
-  v3 = a3;
-  v5 = [(AVPlaybackControlsRoutePickerView *)self customButton];
-  v6 = [v5 isIncluded];
+  includedCopy = included;
+  customButton = [(AVPlaybackControlsRoutePickerView *)self customButton];
+  isIncluded = [customButton isIncluded];
 
-  if (v6 != v3)
+  if (isIncluded != includedCopy)
   {
-    v7 = [(AVPlaybackControlsRoutePickerView *)self customButton];
-    [v7 setIncluded:v3];
+    customButton2 = [(AVPlaybackControlsRoutePickerView *)self customButton];
+    [customButton2 setIncluded:includedCopy];
 
     [(AVPlaybackControlsRoutePickerView *)self _updateLayoutItem];
 
@@ -363,36 +363,36 @@ void __67__AVPlaybackControlsRoutePickerView__updateCustomButtonMicaPackage__blo
 
 - (BOOL)isIncluded
 {
-  v2 = [(AVPlaybackControlsRoutePickerView *)self customButton];
-  v3 = [v2 isIncluded];
+  customButton = [(AVPlaybackControlsRoutePickerView *)self customButton];
+  isIncluded = [customButton isIncluded];
 
-  return v3;
+  return isIncluded;
 }
 
 - (BOOL)isCollapsedOrExcluded
 {
-  v2 = [(AVPlaybackControlsRoutePickerView *)self customButton];
-  v3 = [v2 isCollapsedOrExcluded];
+  customButton = [(AVPlaybackControlsRoutePickerView *)self customButton];
+  isCollapsedOrExcluded = [customButton isCollapsedOrExcluded];
 
-  return v3;
+  return isCollapsedOrExcluded;
 }
 
-- (AVPlaybackControlsRoutePickerView)initWithSecondGenerationButton:(BOOL)a3
+- (AVPlaybackControlsRoutePickerView)initWithSecondGenerationButton:(BOOL)button
 {
   result = [(AVPlaybackControlsRoutePickerView *)self initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   if (result)
   {
-    result->_secondGenerationButton = a3;
+    result->_secondGenerationButton = button;
   }
 
   return result;
 }
 
-- (AVPlaybackControlsRoutePickerView)initWithFrame:(CGRect)a3
+- (AVPlaybackControlsRoutePickerView)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = AVPlaybackControlsRoutePickerView;
-  v3 = [(AVRoutePickerView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(AVRoutePickerView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

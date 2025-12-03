@@ -10,19 +10,19 @@
 - (id)copyAgentData
 {
   v10[2] = *MEMORY[0x1E69E9840];
-  v3 = [(NERelayNetworkAgent *)self proxyConfig];
+  proxyConfig = [(NERelayNetworkAgent *)self proxyConfig];
 
-  if (v3)
+  if (proxyConfig)
   {
     v10[0] = 0;
     v10[1] = 0;
-    v4 = [(NENetworkAgent *)self configurationUUID];
-    [v4 getUUIDBytes:v10];
+    configurationUUID = [(NENetworkAgent *)self configurationUUID];
+    [configurationUUID getUUIDBytes:v10];
 
-    v5 = [(NERelayNetworkAgent *)self proxyConfig];
+    proxyConfig2 = [(NERelayNetworkAgent *)self proxyConfig];
     nw_proxy_config_set_identifier();
 
-    v6 = [(NERelayNetworkAgent *)self proxyConfig];
+    proxyConfig3 = [(NERelayNetworkAgent *)self proxyConfig];
     v7 = nw_proxy_config_copy_agent_data();
   }
 
@@ -39,9 +39,9 @@
 {
   v4.receiver = self;
   v4.super_class = NERelayNetworkAgent;
-  v2 = [(NENetworkAgent *)&v4 agentDescription];
+  agentDescription = [(NENetworkAgent *)&v4 agentDescription];
 
-  return v2;
+  return agentDescription;
 }
 
 + (id)agentType

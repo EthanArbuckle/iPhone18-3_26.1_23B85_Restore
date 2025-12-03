@@ -1,13 +1,13 @@
 @interface VCAudioCaptionsBufferInfoCollection
 - (NSArray)streamTokens;
-- (VCAudioCaptionsBufferInfoCollection)initWithBufferLength:(double)a3;
+- (VCAudioCaptionsBufferInfoCollection)initWithBufferLength:(double)length;
 - (id)description;
 - (void)dealloc;
 @end
 
 @implementation VCAudioCaptionsBufferInfoCollection
 
-- (VCAudioCaptionsBufferInfoCollection)initWithBufferLength:(double)a3
+- (VCAudioCaptionsBufferInfoCollection)initWithBufferLength:(double)length
 {
   v10 = *MEMORY[0x1E69E9840];
   v9.receiver = self;
@@ -19,7 +19,7 @@
     v4->_bufferInfos = v5;
     if (v5)
     {
-      v4->_bufferLength = a3;
+      v4->_bufferLength = length;
       CustomRootQueue = VCDispatchQueue_GetCustomRootQueue(37);
       v7 = dispatch_queue_create_with_target_V2("com.apple.AVConference.VCAudioCaptionsBufferInfoCollection.stateQueue", 0, CustomRootQueue);
       v4->_stateQueue = v7;

@@ -1,18 +1,18 @@
 @interface ATXAppPanelLaunchRatioLogger
-+ (id)_getOrCreateDataDictionaryFromDefaults:(id)a3;
-+ (int)_homeScreenLocationFromPageIndex:(unint64_t)a3;
-+ (void)_logRatioMetricToTracker:(id)a3 location:(int)a4 ratioType:(int)a5 numAppLaunches:(unint64_t)a6 numAppsShown:(unint64_t)a7;
-+ (void)_writeDataDictionaryToDefaults:(id)a3 dataDictionary:(id)a4;
-+ (void)logAppPanelAppLaunchWithSBPageIndex:(unint64_t)a3;
-+ (void)logAppPanelAppLaunchWithSBPageIndex:(unint64_t)a3 userDefaults:(id)a4;
++ (id)_getOrCreateDataDictionaryFromDefaults:(id)defaults;
++ (int)_homeScreenLocationFromPageIndex:(unint64_t)index;
++ (void)_logRatioMetricToTracker:(id)tracker location:(int)location ratioType:(int)type numAppLaunches:(unint64_t)launches numAppsShown:(unint64_t)shown;
++ (void)_writeDataDictionaryToDefaults:(id)defaults dataDictionary:(id)dictionary;
++ (void)logAppPanelAppLaunchWithSBPageIndex:(unint64_t)index;
++ (void)logAppPanelAppLaunchWithSBPageIndex:(unint64_t)index userDefaults:(id)defaults;
 + (void)logCountedAppLaunchesToEventTracker;
-+ (void)logCountedAppLaunchesToEventTracker:(id)a3 homeScreenConfigCache:(id)a4 userDefaults:(id)a5;
-+ (void)logCountedAppLaunchesToEventTracker:(id)a3 homeScreenPage:(id)a4 dataDictionary:(id)a5;
-+ (void)logCountedDockLaunchesToEventTracker:(id)a3 dockAppList:(id)a4 dataDictionary:(id)a5;
++ (void)logCountedAppLaunchesToEventTracker:(id)tracker homeScreenConfigCache:(id)cache userDefaults:(id)defaults;
++ (void)logCountedAppLaunchesToEventTracker:(id)tracker homeScreenPage:(id)page dataDictionary:(id)dictionary;
++ (void)logCountedDockLaunchesToEventTracker:(id)tracker dockAppList:(id)list dataDictionary:(id)dictionary;
 + (void)logNonAppPanelAppLaunchFromDock;
-+ (void)logNonAppPanelAppLaunchFromDockWithUserDefaults:(id)a3;
-+ (void)logNonAppPanelAppLaunchWithSBPageIndex:(unint64_t)a3;
-+ (void)logNonAppPanelAppLaunchWithSBPageIndex:(unint64_t)a3 userDefaults:(id)a4;
++ (void)logNonAppPanelAppLaunchFromDockWithUserDefaults:(id)defaults;
++ (void)logNonAppPanelAppLaunchWithSBPageIndex:(unint64_t)index;
++ (void)logNonAppPanelAppLaunchWithSBPageIndex:(unint64_t)index userDefaults:(id)defaults;
 @end
 
 @implementation ATXAppPanelLaunchRatioLogger
@@ -21,21 +21,21 @@
 {
   v3 = objc_alloc(MEMORY[0x1E695E000]);
   v4 = [v3 initWithSuiteName:*MEMORY[0x1E698B030]];
-  [a1 logNonAppPanelAppLaunchFromDockWithUserDefaults:v4];
+  [self logNonAppPanelAppLaunchFromDockWithUserDefaults:v4];
 }
 
-+ (void)logNonAppPanelAppLaunchWithSBPageIndex:(unint64_t)a3
++ (void)logNonAppPanelAppLaunchWithSBPageIndex:(unint64_t)index
 {
   v5 = objc_alloc(MEMORY[0x1E695E000]);
   v6 = [v5 initWithSuiteName:*MEMORY[0x1E698B030]];
-  [a1 logNonAppPanelAppLaunchWithSBPageIndex:a3 userDefaults:v6];
+  [self logNonAppPanelAppLaunchWithSBPageIndex:index userDefaults:v6];
 }
 
-+ (void)logAppPanelAppLaunchWithSBPageIndex:(unint64_t)a3
++ (void)logAppPanelAppLaunchWithSBPageIndex:(unint64_t)index
 {
   v5 = objc_alloc(MEMORY[0x1E695E000]);
   v6 = [v5 initWithSuiteName:*MEMORY[0x1E698B030]];
-  [a1 logAppPanelAppLaunchWithSBPageIndex:a3 userDefaults:v6];
+  [self logAppPanelAppLaunchWithSBPageIndex:index userDefaults:v6];
 }
 
 + (void)logCountedAppLaunchesToEventTracker
@@ -44,13 +44,13 @@
   v3 = objc_opt_new();
   v4 = objc_alloc(MEMORY[0x1E695E000]);
   v5 = [v4 initWithSuiteName:*MEMORY[0x1E698B030]];
-  [a1 logCountedAppLaunchesToEventTracker:v6 homeScreenConfigCache:v3 userDefaults:v5];
+  [self logCountedAppLaunchesToEventTracker:v6 homeScreenConfigCache:v3 userDefaults:v5];
 }
 
-+ (void)logNonAppPanelAppLaunchFromDockWithUserDefaults:(id)a3
++ (void)logNonAppPanelAppLaunchFromDockWithUserDefaults:(id)defaults
 {
-  v4 = a3;
-  v5 = [a1 _getOrCreateDataDictionaryFromDefaults:v4];
+  defaultsCopy = defaults;
+  v5 = [self _getOrCreateDataDictionaryFromDefaults:defaultsCopy];
   v6 = [v5 objectForKey:@"dockLaunches"];
   if (v6)
   {
@@ -70,17 +70,17 @@
   }
 
   [v5 setObject:v8 forKey:@"dockLaunches"];
-  [a1 _writeDataDictionaryToDefaults:v4 dataDictionary:v5];
+  [self _writeDataDictionaryToDefaults:defaultsCopy dataDictionary:v5];
 }
 
-+ (void)logNonAppPanelAppLaunchWithSBPageIndex:(unint64_t)a3 userDefaults:(id)a4
++ (void)logNonAppPanelAppLaunchWithSBPageIndex:(unint64_t)index userDefaults:(id)defaults
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  v8 = [a1 _getOrCreateDataDictionaryFromDefaults:v6];
-  v9 = [v7 stringValue];
-  v10 = [v8 objectForKey:v9];
+  defaultsCopy = defaults;
+  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:index];
+  v8 = [self _getOrCreateDataDictionaryFromDefaults:defaultsCopy];
+  stringValue = [v7 stringValue];
+  v10 = [v8 objectForKey:stringValue];
   v11 = [v10 mutableCopy];
 
   if (!v11)
@@ -115,20 +115,20 @@
   }
 
   [v11 setObject:v14 forKey:@"staticAppLaunches"];
-  v16 = [v7 stringValue];
-  [v8 setObject:v11 forKey:v16];
+  stringValue2 = [v7 stringValue];
+  [v8 setObject:v11 forKey:stringValue2];
 
-  [a1 _writeDataDictionaryToDefaults:v6 dataDictionary:v8];
+  [self _writeDataDictionaryToDefaults:defaultsCopy dataDictionary:v8];
 }
 
-+ (void)logAppPanelAppLaunchWithSBPageIndex:(unint64_t)a3 userDefaults:(id)a4
++ (void)logAppPanelAppLaunchWithSBPageIndex:(unint64_t)index userDefaults:(id)defaults
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  v8 = [a1 _getOrCreateDataDictionaryFromDefaults:v6];
-  v9 = [v7 stringValue];
-  v10 = [v8 objectForKey:v9];
+  defaultsCopy = defaults;
+  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:index];
+  v8 = [self _getOrCreateDataDictionaryFromDefaults:defaultsCopy];
+  stringValue = [v7 stringValue];
+  v10 = [v8 objectForKey:stringValue];
   v11 = [v10 mutableCopy];
 
   if (!v11)
@@ -163,33 +163,33 @@
   }
 
   [v11 setObject:v14 forKey:@"appPanelLaunches"];
-  v16 = [v7 stringValue];
-  [v8 setObject:v11 forKey:v16];
+  stringValue2 = [v7 stringValue];
+  [v8 setObject:v11 forKey:stringValue2];
 
-  [a1 _writeDataDictionaryToDefaults:v6 dataDictionary:v8];
+  [self _writeDataDictionaryToDefaults:defaultsCopy dataDictionary:v8];
 }
 
-+ (void)logCountedAppLaunchesToEventTracker:(id)a3 homeScreenConfigCache:(id)a4 userDefaults:(id)a5
++ (void)logCountedAppLaunchesToEventTracker:(id)tracker homeScreenConfigCache:(id)cache userDefaults:(id)defaults
 {
   v32 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [a1 _getOrCreateDataDictionaryFromDefaults:v10];
+  trackerCopy = tracker;
+  cacheCopy = cache;
+  defaultsCopy = defaults;
+  v11 = [self _getOrCreateDataDictionaryFromDefaults:defaultsCopy];
   v30 = 0;
-  v12 = [v9 loadDockAppListWithError:&v30];
+  v12 = [cacheCopy loadDockAppListWithError:&v30];
   v13 = v30;
   v14 = v13;
   if (v12 && !v13)
   {
     v29 = 0;
-    v15 = [v9 loadHomeScreenPageConfigurationsWithError:&v29];
+    v15 = [cacheCopy loadHomeScreenPageConfigurationsWithError:&v29];
     v16 = v29;
     v14 = v16;
     if (v15 && !v16)
     {
       v23 = v15;
-      v24 = v10;
+      v24 = defaultsCopy;
       v27 = 0u;
       v28 = 0u;
       v25 = 0u;
@@ -209,7 +209,7 @@
               objc_enumerationMutation(v17);
             }
 
-            [a1 logCountedAppLaunchesToEventTracker:v8 homeScreenPage:*(*(&v25 + 1) + 8 * i) dataDictionary:{v11, v23}];
+            [self logCountedAppLaunchesToEventTracker:trackerCopy homeScreenPage:*(*(&v25 + 1) + 8 * i) dataDictionary:{v11, v23}];
           }
 
           v19 = [v17 countByEnumeratingWithState:&v25 objects:v31 count:16];
@@ -218,69 +218,69 @@
         while (v19);
       }
 
-      [a1 logCountedDockLaunchesToEventTracker:v8 dockAppList:v12 dataDictionary:v11];
+      [self logCountedDockLaunchesToEventTracker:trackerCopy dockAppList:v12 dataDictionary:v11];
       v22 = objc_opt_new();
-      v10 = v24;
-      [a1 _writeDataDictionaryToDefaults:v24 dataDictionary:v22];
+      defaultsCopy = v24;
+      [self _writeDataDictionaryToDefaults:v24 dataDictionary:v22];
 
       v15 = v23;
     }
   }
 }
 
-+ (void)logCountedDockLaunchesToEventTracker:(id)a3 dockAppList:(id)a4 dataDictionary:(id)a5
++ (void)logCountedDockLaunchesToEventTracker:(id)tracker dockAppList:(id)list dataDictionary:(id)dictionary
 {
-  v13 = a3;
-  v8 = a4;
-  v9 = [a5 objectForKey:@"dockLaunches"];
+  trackerCopy = tracker;
+  listCopy = list;
+  v9 = [dictionary objectForKey:@"dockLaunches"];
   v10 = v9;
   if (v9)
   {
-    v11 = [v9 unsignedIntegerValue];
-    if (v11)
+    unsignedIntegerValue = [v9 unsignedIntegerValue];
+    if (unsignedIntegerValue)
     {
-      v12 = v11;
-      if ([v8 count])
+      v12 = unsignedIntegerValue;
+      if ([listCopy count])
       {
-        [a1 _logRatioMetricToTracker:v13 location:6 ratioType:4 numAppLaunches:v12 numAppsShown:{objc_msgSend(v8, "count")}];
+        [self _logRatioMetricToTracker:trackerCopy location:6 ratioType:4 numAppLaunches:v12 numAppsShown:{objc_msgSend(listCopy, "count")}];
       }
     }
   }
 }
 
-+ (void)logCountedAppLaunchesToEventTracker:(id)a3 homeScreenPage:(id)a4 dataDictionary:(id)a5
++ (void)logCountedAppLaunchesToEventTracker:(id)tracker homeScreenPage:(id)page dataDictionary:(id)dictionary
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 pageIndex];
-  v12 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInteger:v11];
-  v13 = [v12 stringValue];
-  v14 = [v10 objectForKey:v13];
+  trackerCopy = tracker;
+  pageCopy = page;
+  dictionaryCopy = dictionary;
+  pageIndex = [pageCopy pageIndex];
+  v12 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInteger:pageIndex];
+  stringValue = [v12 stringValue];
+  v14 = [dictionaryCopy objectForKey:stringValue];
 
   if (v14)
   {
-    v15 = [v14 objectForKey:@"appPanelLaunches"];
+    unsignedIntegerValue = [v14 objectForKey:@"appPanelLaunches"];
     v16 = [v14 objectForKey:@"staticAppLaunches"];
-    v21 = v15;
-    if (v15)
+    v21 = unsignedIntegerValue;
+    if (unsignedIntegerValue)
     {
-      v15 = [v15 unsignedIntegerValue];
+      unsignedIntegerValue = [unsignedIntegerValue unsignedIntegerValue];
     }
 
     if (v16)
     {
-      v17 = [v16 unsignedIntegerValue];
+      unsignedIntegerValue2 = [v16 unsignedIntegerValue];
     }
 
     else
     {
-      v17 = 0;
+      unsignedIntegerValue2 = 0;
     }
 
-    if (&v15[v17])
+    if (&unsignedIntegerValue[unsignedIntegerValue2])
     {
-      v22 = v8;
+      v22 = trackerCopy;
       v28 = 0;
       v29 = &v28;
       v30 = 0x2020000000;
@@ -289,23 +289,23 @@
       v25 = &v24;
       v26 = 0x2020000000;
       v27 = 0;
-      v18 = [v9 leafIcons];
+      leafIcons = [pageCopy leafIcons];
       v23[0] = MEMORY[0x1E69E9820];
       v23[1] = 3221225472;
       v23[2] = __98__ATXAppPanelLaunchRatioLogger_logCountedAppLaunchesToEventTracker_homeScreenPage_dataDictionary___block_invoke;
       v23[3] = &unk_1E80C6600;
       v23[4] = &v28;
       v23[5] = &v24;
-      [v18 enumerateObjectsUsingBlock:v23];
+      [leafIcons enumerateObjectsUsingBlock:v23];
 
-      [a1 _logRatioMetricToTracker:v22 location:objc_msgSend(a1 ratioType:"_homeScreenLocationFromPageIndex:" numAppLaunches:v11) numAppsShown:{1, v15, 8}];
-      v19 = [a1 _homeScreenLocationFromPageIndex:v11];
-      [a1 _logRatioMetricToTracker:v22 location:v19 ratioType:2 numAppLaunches:v17 numAppsShown:v29[3]];
-      v20 = [a1 _homeScreenLocationFromPageIndex:v11];
-      [a1 _logRatioMetricToTracker:v22 location:v20 ratioType:3 numAppLaunches:v17 numAppsShown:v25[3]];
+      [self _logRatioMetricToTracker:v22 location:objc_msgSend(self ratioType:"_homeScreenLocationFromPageIndex:" numAppLaunches:pageIndex) numAppsShown:{1, unsignedIntegerValue, 8}];
+      v19 = [self _homeScreenLocationFromPageIndex:pageIndex];
+      [self _logRatioMetricToTracker:v22 location:v19 ratioType:2 numAppLaunches:unsignedIntegerValue2 numAppsShown:v29[3]];
+      v20 = [self _homeScreenLocationFromPageIndex:pageIndex];
+      [self _logRatioMetricToTracker:v22 location:v20 ratioType:3 numAppLaunches:unsignedIntegerValue2 numAppsShown:v25[3]];
       _Block_object_dispose(&v24, 8);
       _Block_object_dispose(&v28, 8);
-      v8 = v22;
+      trackerCopy = v22;
     }
   }
 }
@@ -333,46 +333,46 @@ void __98__ATXAppPanelLaunchRatioLogger_logCountedAppLaunchesToEventTracker_home
   }
 }
 
-+ (void)_logRatioMetricToTracker:(id)a3 location:(int)a4 ratioType:(int)a5 numAppLaunches:(unint64_t)a6 numAppsShown:(unint64_t)a7
++ (void)_logRatioMetricToTracker:(id)tracker location:(int)location ratioType:(int)type numAppLaunches:(unint64_t)launches numAppsShown:(unint64_t)shown
 {
   v34 = *MEMORY[0x1E69E9840];
-  if (a7)
+  if (shown)
   {
-    v9 = *&a5;
-    v10 = *&a4;
-    v11 = a6 / a7;
-    v12 = a3;
+    v9 = *&type;
+    v10 = *&location;
+    v11 = launches / shown;
+    trackerCopy = tracker;
     v13 = objc_opt_new();
     [v13 setLocation:v10];
     [v13 setRatioType:v9];
-    [v12 trackDistributionForMessage:v13 value:v11];
+    [trackerCopy trackDistributionForMessage:v13 value:v11];
 
     v14 = __atxlog_handle_metrics();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
     {
       v15 = objc_opt_class();
       v16 = NSStringFromClass(v15);
-      v17 = [v13 location];
-      if ((v17 - 1) >= 6)
+      location = [v13 location];
+      if ((location - 1) >= 6)
       {
-        v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v17];
+        v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", location];
       }
 
       else
       {
-        v18 = off_1E80C6620[(v17 - 1)];
+        v18 = off_1E80C6620[(location - 1)];
       }
 
       v19 = v18;
-      v20 = [v13 ratioType];
-      if ((v20 - 1) >= 4)
+      ratioType = [v13 ratioType];
+      if ((ratioType - 1) >= 4)
       {
-        v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v20];
+        v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", ratioType];
       }
 
       else
       {
-        v21 = off_1E80C6650[(v20 - 1)];
+        v21 = off_1E80C6650[(ratioType - 1)];
       }
 
       *buf = 138413570;
@@ -384,19 +384,19 @@ void __98__ATXAppPanelLaunchRatioLogger_logCountedAppLaunchesToEventTracker_home
       v28 = 2048;
       v29 = v11;
       v30 = 2048;
-      v31 = a6;
+      launchesCopy = launches;
       v32 = 2048;
-      v33 = a7;
+      shownCopy = shown;
       _os_log_debug_impl(&dword_1BF549000, v14, OS_LOG_TYPE_DEBUG, "LOGGED: %@ - ATXMPBHomeScreenAppPanelLaunchRatioTracker with location %@ ratioType %@ launchRatio %f numAppLaunches %lu numAppsShown %lu", buf, 0x3Eu);
     }
   }
 }
 
-+ (int)_homeScreenLocationFromPageIndex:(unint64_t)a3
++ (int)_homeScreenLocationFromPageIndex:(unint64_t)index
 {
-  if (a3 < 4)
+  if (index < 4)
   {
-    return a3 + 1;
+    return index + 1;
   }
 
   else
@@ -405,9 +405,9 @@ void __98__ATXAppPanelLaunchRatioLogger_logCountedAppLaunchesToEventTracker_home
   }
 }
 
-+ (id)_getOrCreateDataDictionaryFromDefaults:(id)a3
++ (id)_getOrCreateDataDictionaryFromDefaults:(id)defaults
 {
-  v3 = [a3 objectForKey:@"ATXAppPanelLaunchRatioLoggerDataDictionary"];
+  v3 = [defaults objectForKey:@"ATXAppPanelLaunchRatioLoggerDataDictionary"];
   if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v4 = [v3 mutableCopy];
@@ -428,17 +428,17 @@ void __98__ATXAppPanelLaunchRatioLogger_logCountedAppLaunchesToEventTracker_home
   return v5;
 }
 
-+ (void)_writeDataDictionaryToDefaults:(id)a3 dataDictionary:(id)a4
++ (void)_writeDataDictionaryToDefaults:(id)defaults dataDictionary:(id)dictionary
 {
-  v5 = a4;
-  v6 = a3;
+  dictionaryCopy = dictionary;
+  defaultsCopy = defaults;
   v7 = __atxlog_handle_metrics();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     +[ATXAppPanelLaunchRatioLogger _writeDataDictionaryToDefaults:dataDictionary:];
   }
 
-  [v6 setObject:v5 forKey:@"ATXAppPanelLaunchRatioLoggerDataDictionary"];
+  [defaultsCopy setObject:dictionaryCopy forKey:@"ATXAppPanelLaunchRatioLoggerDataDictionary"];
 }
 
 + (void)logNonAppPanelAppLaunchFromDockWithUserDefaults:.cold.1()

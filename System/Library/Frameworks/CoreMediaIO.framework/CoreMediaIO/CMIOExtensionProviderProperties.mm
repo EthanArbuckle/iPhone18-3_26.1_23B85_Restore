@@ -1,7 +1,7 @@
 @interface CMIOExtensionProviderProperties
 + (CMIOExtensionProviderProperties)providerPropertiesWithDictionary:(NSDictionary *)propertiesDictionary;
 - (CMIOExtensionProviderProperties)initWithDictionary:(NSDictionary *)propertiesDictionary;
-- (CMIOExtensionProviderProperties)initWithPropertyValues:(id)a3 client:(id)a4;
+- (CMIOExtensionProviderProperties)initWithPropertyValues:(id)values client:(id)client;
 - (NSDictionary)propertiesDictionary;
 - (NSString)manufacturer;
 - (NSString)name;
@@ -39,19 +39,19 @@
   return v5;
 }
 
-- (CMIOExtensionProviderProperties)initWithPropertyValues:(id)a3 client:(id)a4
+- (CMIOExtensionProviderProperties)initWithPropertyValues:(id)values client:(id)client
 {
-  v7 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __65__CMIOExtensionProviderProperties_initWithPropertyValues_client___block_invoke;
   v10[3] = &unk_27885B850;
-  v10[4] = v7;
-  [a3 enumerateKeysAndObjectsUsingBlock:v10];
-  v8 = [(CMIOExtensionProviderProperties *)self initWithDictionary:v7];
+  v10[4] = dictionary;
+  [values enumerateKeysAndObjectsUsingBlock:v10];
+  v8 = [(CMIOExtensionProviderProperties *)self initWithDictionary:dictionary];
   if (v8)
   {
-    v8->_client = [a4 copy];
+    v8->_client = [client copy];
   }
 
   return v8;

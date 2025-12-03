@@ -1,57 +1,57 @@
 @interface PKSqueezePaletteViewExpandedToolsLayout
 - (PKSqueezePaletteView)paletteView;
 - (id)_selectedTool;
-- (id)initWithContext:(void *)a3 drawingTools:(void *)a4 selectedToolIndex:(void *)a5 visibleToolsCount:;
+- (id)initWithContext:(void *)context drawingTools:(void *)tools selectedToolIndex:(void *)index visibleToolsCount:;
 - (uint64_t)_updateToolsUIStyle;
-- (void)_performDrawingToolTapAction:(uint64_t)a1;
-- (void)handlePencilInteractionDidTap:(int64_t)a3;
+- (void)_performDrawingToolTapAction:(uint64_t)action;
+- (void)handlePencilInteractionDidTap:(int64_t)tap;
 - (void)setupUI;
 - (void)updateUI;
-- (void)willTransitionToLayout:(id)a3;
+- (void)willTransitionToLayout:(id)layout;
 @end
 
 @implementation PKSqueezePaletteViewExpandedToolsLayout
 
-- (id)initWithContext:(void *)a3 drawingTools:(void *)a4 selectedToolIndex:(void *)a5 visibleToolsCount:
+- (id)initWithContext:(void *)context drawingTools:(void *)tools selectedToolIndex:(void *)index visibleToolsCount:
 {
   v10 = a2;
-  v11 = a3;
-  if (a1)
+  contextCopy = context;
+  if (self)
   {
-    v19.receiver = a1;
+    v19.receiver = self;
     v19.super_class = PKSqueezePaletteViewExpandedToolsLayout;
     v12 = objc_msgSendSuper2(&v19, sel_init);
-    a1 = v12;
+    self = v12;
     if (v12)
     {
       objc_storeStrong(v12 + 8, a2);
-      v13 = [v11 copy];
-      v14 = a1[9];
-      a1[9] = v13;
+      v13 = [contextCopy copy];
+      v14 = self[9];
+      self[9] = v13;
 
-      a1[10] = a4;
-      a1[11] = a5;
+      self[10] = tools;
+      self[11] = index;
       v15 = PKSqueezePaletteToolContainerWidth;
-      a1[1] = PKSqueezePaletteToolsInterItemSpacing;
-      a1[2] = v15;
-      v16 = -[PKFloatArray initWithCapacity:]([PKFloatArray alloc], [a1[9] count]);
-      v17 = a1[3];
-      a1[3] = v16;
+      self[1] = PKSqueezePaletteToolsInterItemSpacing;
+      self[2] = v15;
+      v16 = -[PKFloatArray initWithCapacity:]([PKFloatArray alloc], [self[9] count]);
+      v17 = self[3];
+      self[3] = v16;
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (void)_performDrawingToolTapAction:(uint64_t)a1
+- (void)_performDrawingToolTapAction:(uint64_t)action
 {
   v3 = a2;
-  if (a1)
+  if (action)
   {
     v25 = v3;
-    v4 = [*(a1 + 72) indexOfObject:v3];
-    WeakRetained = objc_loadWeakRetained((a1 + 56));
-    v6 = [WeakRetained expandedToolsLayout:a1 canSelectTool:v25 atIndex:v4];
+    v4 = [*(action + 72) indexOfObject:v3];
+    WeakRetained = objc_loadWeakRetained((action + 56));
+    v6 = [WeakRetained expandedToolsLayout:action canSelectTool:v25 atIndex:v4];
 
     v3 = v25;
     if (v6)
@@ -67,60 +67,60 @@
       }
 
       v8 = v7;
-      v9 = [v8 _isRulerTool];
+      _isRulerTool = [v8 _isRulerTool];
 
-      if (v9)
+      if (_isRulerTool)
       {
         v10 = [[PKSqueezePaletteViewTapRulerAction alloc] initWithRulerTool:v25];
         [(PKSqueezePaletteViewTapRulerAction *)v10 performAction];
-        v11 = objc_loadWeakRetained((a1 + 48));
+        v11 = objc_loadWeakRetained((action + 48));
         [(PKSqueezePaletteView *)v11 _didTapRuler];
       }
 
       else
       {
-        v12 = [(PKSqueezePaletteViewExpandedToolsLayout *)a1 _selectedTool];
-        v10 = v12;
-        if (v12 && v12 == v25)
+        _selectedTool = [(PKSqueezePaletteViewExpandedToolsLayout *)action _selectedTool];
+        v10 = _selectedTool;
+        if (_selectedTool && _selectedTool == v25)
         {
-          v13 = *(a1 + 64);
+          v13 = *(action + 64);
           if (v13)
           {
             v13 = v13[1];
           }
 
           v11 = v13;
-          v14 = (a1 + 48);
+          v14 = (action + 48);
         }
 
         else
         {
-          [(PKSqueezePaletteDrawingTool *)v12 setSelected:1 animated:0 completion:?];
+          [(PKSqueezePaletteDrawingTool *)_selectedTool setSelected:1 animated:0 completion:?];
           [(PKSqueezePaletteDrawingTool *)v25 setSelected:1 animated:0 completion:?];
-          if (v4 >= *(a1 + 88))
+          if (v4 >= *(action + 88))
           {
-            v15 = [*(a1 + 72) mutableCopy];
+            v15 = [*(action + 72) mutableCopy];
             [v15 removeObjectAtIndex:v4];
             [v15 insertObject:v25 atIndex:1];
             v16 = [v15 copy];
-            v17 = *(a1 + 72);
-            *(a1 + 72) = v16;
+            v17 = *(action + 72);
+            *(action + 72) = v16;
 
-            *(a1 + 80) = 1;
-            v18 = objc_loadWeakRetained((a1 + 56));
-            [v18 expandedToolsLayout:a1 didChangeDrawingTools:*(a1 + 72)];
+            *(action + 80) = 1;
+            v18 = objc_loadWeakRetained((action + 56));
+            [v18 expandedToolsLayout:action didChangeDrawingTools:*(action + 72)];
           }
 
           else
           {
-            *(a1 + 80) = v4;
+            *(action + 80) = v4;
           }
 
-          v19 = objc_loadWeakRetained((a1 + 56));
-          [v19 expandedToolsLayout:a1 didChangeSelectedToolIndex:*(a1 + 80)];
+          v19 = objc_loadWeakRetained((action + 56));
+          [v19 expandedToolsLayout:action didChangeSelectedToolIndex:*(action + 80)];
 
-          v14 = (a1 + 48);
-          v20 = objc_loadWeakRetained((a1 + 48));
+          v14 = (action + 48);
+          v20 = objc_loadWeakRetained((action + 48));
           if (v25)
           {
             v21 = v25[102];
@@ -132,9 +132,9 @@
           }
 
           v22 = v21;
-          [(PKSqueezePaletteView *)v20 _didSelectTool:v22 atIndex:*(a1 + 80)];
+          [(PKSqueezePaletteView *)v20 _didSelectTool:v22 atIndex:*(action + 80)];
 
-          v23 = *(a1 + 64);
+          v23 = *(action + 64);
           if (v23)
           {
             v23 = v23[1];
@@ -154,19 +154,19 @@
 
 - (id)_selectedTool
 {
-  if (a1)
+  if (self)
   {
-    if (*(a1 + 80) == 0x7FFFFFFFFFFFFFFFLL)
+    if (*(self + 80) == 0x7FFFFFFFFFFFFFFFLL)
     {
-      a1 = 0;
+      self = 0;
 
-      return a1;
+      return self;
     }
 
-    a1 = [*(a1 + 72) objectAtIndexedSubscript:v1];
+    self = [*(self + 72) objectAtIndexedSubscript:v1];
   }
 
-  return a1;
+  return self;
 }
 
 - (void)setupUI
@@ -238,7 +238,7 @@
     v32 = 3221225472;
     v33 = __50__PKSqueezePaletteViewExpandedToolsLayout_setupUI__block_invoke_2;
     v34 = &unk_1E82D7A08;
-    v35 = self;
+    selfCopy = self;
     v38 = from;
     v15 = v12;
     v36 = v15;
@@ -254,7 +254,7 @@
     toolCenterYConstraints = self->_toolCenterYConstraints;
     self->_toolCenterYConstraints = v19;
 
-    v21 = [(PKFloatArray *)self->_toolAngles lastFloat];
+    lastFloat = [(PKFloatArray *)self->_toolAngles lastFloat];
     toolWidth = self->_toolWidth;
     v23 = objc_loadWeakRetained(&self->_paletteView);
     if (v23)
@@ -291,7 +291,7 @@
       v30 = 0;
     }
 
-    [(PKSqueezePaletteView *)v26 updateUIStartAngle:1 endAngle:v27 clockwise:v21 + toolWidth / 6.0 / v24 animated:?];
+    [(PKSqueezePaletteView *)v26 updateUIStartAngle:1 endAngle:v27 clockwise:lastFloat + toolWidth / 6.0 / v24 animated:?];
 
     _Block_object_dispose(from, 8);
     objc_destroyWeak(&location);
@@ -404,8 +404,8 @@ void __50__PKSqueezePaletteViewExpandedToolsLayout_setupUI__block_invoke_2(uint6
     v6[3] = &unk_1E82D7998;
     v6[4] = self;
     [(NSArray *)drawingTools enumerateObjectsUsingBlock:v6];
-    v5 = [(PKSqueezePaletteViewExpandedToolsLayout *)self _selectedTool];
-    [v5 setSelected:1];
+    _selectedTool = [(PKSqueezePaletteViewExpandedToolsLayout *)self _selectedTool];
+    [_selectedTool setSelected:1];
   }
 }
 
@@ -419,7 +419,7 @@ void __51__PKSqueezePaletteViewExpandedToolsLayout_updateUI__block_invoke(uint64
   [v5 setTransform:&v7];
 }
 
-- (void)willTransitionToLayout:(id)a3
+- (void)willTransitionToLayout:(id)layout
 {
   v24 = *MEMORY[0x1E69E9840];
   [MEMORY[0x1E696ACD8] deactivateConstraints:self->_toolCenterXConstraints];
@@ -481,10 +481,10 @@ void __51__PKSqueezePaletteViewExpandedToolsLayout_updateUI__block_invoke(uint64
   }
 }
 
-- (void)handlePencilInteractionDidTap:(int64_t)a3
+- (void)handlePencilInteractionDidTap:(int64_t)tap
 {
-  v4 = [(PKSqueezePaletteViewExpandedToolsLayout *)self _selectedTool];
-  [(PKSqueezePaletteViewExpandedToolsLayout *)self _performDrawingToolTapAction:v4];
+  _selectedTool = [(PKSqueezePaletteViewExpandedToolsLayout *)self _selectedTool];
+  [(PKSqueezePaletteViewExpandedToolsLayout *)self _performDrawingToolTapAction:_selectedTool];
 }
 
 void __62__PKSqueezePaletteViewExpandedToolsLayout__updateToolsUIStyle__block_invoke(uint64_t a1, void *a2)

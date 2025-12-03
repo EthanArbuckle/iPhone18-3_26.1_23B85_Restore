@@ -1,14 +1,14 @@
 @interface FCOfflineIssueFetchOperation
-- (BOOL)canRetryWithError:(id)a3 retryAfter:(id *)a4;
+- (BOOL)canRetryWithError:(id)error retryAfter:(id *)after;
 - (BOOL)validateOperation;
 - (FCOfflineIssueFetchOperation)init;
-- (FCOfflineIssueFetchOperation)initWithContext:(id)a3 ANFHelper:(id)a4 issue:(id)a5;
-- (FCOfflineIssueFetchOperation)initWithContext:(id)a3 ANFHelper:(id)a4 issueID:(id)a5;
-- (id)_itemIdentifiersForKey:(void *)a3 fromMetadataJSONData:;
-- (id)_promiseANFArticlesForArticleIDs:(void *)a1 withDownloadProgressMin:(void *)a2 downloadProgressMax:(double)a3;
-- (void)_handleArchive:(void *)a1;
-- (void)_updateProgress:(double *)a1;
-- (void)operationWillFinishWithError:(id)a3;
+- (FCOfflineIssueFetchOperation)initWithContext:(id)context ANFHelper:(id)helper issue:(id)issue;
+- (FCOfflineIssueFetchOperation)initWithContext:(id)context ANFHelper:(id)helper issueID:(id)d;
+- (id)_itemIdentifiersForKey:(void *)key fromMetadataJSONData:;
+- (id)_promiseANFArticlesForArticleIDs:(void *)ds withDownloadProgressMin:(void *)min downloadProgressMax:(double)max;
+- (void)_handleArchive:(void *)archive;
+- (void)_updateProgress:(double *)progress;
+- (void)operationWillFinishWithError:(id)error;
 - (void)performOperation;
 - (void)prepareOperation;
 - (void)resetForRetry;
@@ -42,20 +42,20 @@
   objc_exception_throw(v6);
 }
 
-- (FCOfflineIssueFetchOperation)initWithContext:(id)a3 ANFHelper:(id)a4 issueID:(id)a5
+- (FCOfflineIssueFetchOperation)initWithContext:(id)context ANFHelper:(id)helper issueID:(id)d
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  contextCopy = context;
+  helperCopy = helper;
+  dCopy = d;
   v21.receiver = self;
   v21.super_class = FCOfflineIssueFetchOperation;
   v12 = [(FCOperation *)&v21 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_context, a3);
-    objc_storeStrong(&v13->_ANFHelper, a4);
-    v14 = [v11 copy];
+    objc_storeStrong(&v12->_context, context);
+    objc_storeStrong(&v13->_ANFHelper, helper);
+    v14 = [dCopy copy];
     issueID = v13->_issueID;
     v13->_issueID = v14;
 
@@ -71,12 +71,12 @@
   return v13;
 }
 
-- (FCOfflineIssueFetchOperation)initWithContext:(id)a3 ANFHelper:(id)a4 issue:(id)a5
+- (FCOfflineIssueFetchOperation)initWithContext:(id)context ANFHelper:(id)helper issue:(id)issue
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [a5 identifier];
-  v11 = [(FCOfflineIssueFetchOperation *)self initWithContext:v9 ANFHelper:v8 issueID:v10];
+  helperCopy = helper;
+  contextCopy = context;
+  identifier = [issue identifier];
+  v11 = [(FCOfflineIssueFetchOperation *)self initWithContext:contextCopy ANFHelper:helperCopy issueID:identifier];
 
   return v11;
 }
@@ -115,18 +115,18 @@
 
 - (void)prepareOperation
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     self = self->_context;
   }
 
-  v5 = [(FCOfflineIssueFetchOperation *)self appConfigurationManager];
-  v3 = [v5 possiblyUnfetchedAppConfiguration];
-  v4 = [v3 offlineDownloadsConfig];
-  if (v2)
+  appConfigurationManager = [(FCOfflineIssueFetchOperation *)self appConfigurationManager];
+  possiblyUnfetchedAppConfiguration = [appConfigurationManager possiblyUnfetchedAppConfiguration];
+  offlineDownloadsConfig = [possiblyUnfetchedAppConfiguration offlineDownloadsConfig];
+  if (selfCopy)
   {
-    objc_storeStrong(&v2->_config, v4);
+    objc_storeStrong(&selfCopy->_config, offlineDownloadsConfig);
   }
 }
 
@@ -142,7 +142,7 @@
   v3 = FCOperationLog;
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(FCOperation *)self shortOperationDescription];
+    shortOperationDescription = [(FCOperation *)self shortOperationDescription];
     if ([(FCOfflineIssueFetchOperation *)self cachedOnly])
     {
       v5 = @"lookup cached";
@@ -189,9 +189,9 @@
     }
 
     v11 = v10;
-    v12 = [(FCOfflineDownloadsConfiguration *)v11 useSmallestArticleImages];
+    useSmallestArticleImages = [(FCOfflineDownloadsConfiguration *)v11 useSmallestArticleImages];
     *buf = 138544386;
-    if (v12)
+    if (useSmallestArticleImages)
     {
       v13 = @"small";
     }
@@ -201,7 +201,7 @@
       v13 = @"normal";
     }
 
-    v39 = v4;
+    v39 = shortOperationDescription;
     v40 = 2114;
     v41 = v5;
     v42 = 2114;
@@ -506,36 +506,36 @@ LABEL_7:
   return v6;
 }
 
-- (void)operationWillFinishWithError:(id)a3
+- (void)operationWillFinishWithError:(id)error
 {
-  v4 = a3;
-  if (!v4)
+  errorCopy = error;
+  if (!errorCopy)
   {
     [(FCOfflineIssueFetchOperation *)self _updateProgress:?];
   }
 
-  v5 = [(FCOfflineIssueFetchOperation *)self fetchCompletionQueue];
+  fetchCompletionQueue = [(FCOfflineIssueFetchOperation *)self fetchCompletionQueue];
 
-  v6 = [(FCOfflineIssueFetchOperation *)self fetchCompletionHandler];
+  fetchCompletionHandler = [(FCOfflineIssueFetchOperation *)self fetchCompletionHandler];
 
-  if (v5)
+  if (fetchCompletionQueue)
   {
-    if (v6)
+    if (fetchCompletionHandler)
     {
-      v7 = [(FCOfflineIssueFetchOperation *)self fetchCompletionQueue];
+      fetchCompletionQueue2 = [(FCOfflineIssueFetchOperation *)self fetchCompletionQueue];
       v12[0] = MEMORY[0x1E69E9820];
       v12[1] = 3221225472;
       v12[2] = __61__FCOfflineIssueFetchOperation_operationWillFinishWithError___block_invoke;
       v12[3] = &unk_1E7C36C58;
       v12[4] = self;
-      v13 = v4;
-      dispatch_async(v7, v12);
+      v13 = errorCopy;
+      dispatch_async(fetchCompletionQueue2, v12);
     }
   }
 
-  else if (v6)
+  else if (fetchCompletionHandler)
   {
-    v8 = [(FCOfflineIssueFetchOperation *)self fetchCompletionHandler];
+    fetchCompletionHandler2 = [(FCOfflineIssueFetchOperation *)self fetchCompletionHandler];
     if (self)
     {
       resultInterestTokens = self->_resultInterestTokens;
@@ -547,17 +547,17 @@ LABEL_7:
     }
 
     v10 = resultInterestTokens;
-    v11 = [(FCThreadSafeMutableArray *)v10 readOnlyArray];
-    (v8)[2](v8, v11, v4);
+    readOnlyArray = [(FCThreadSafeMutableArray *)v10 readOnlyArray];
+    (fetchCompletionHandler2)[2](fetchCompletionHandler2, readOnlyArray, errorCopy);
   }
 }
 
-- (void)_updateProgress:(double *)a1
+- (void)_updateProgress:(double *)progress
 {
   v18 = *MEMORY[0x1E69E9840];
-  if (a1 && ([a1 isFinished] & 1) == 0)
+  if (progress && ([progress isFinished] & 1) == 0)
   {
-    if (a1[59] > a2 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+    if (progress[59] > a2 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"fetch progress should never go backward"];
       *buf = 136315906;
@@ -571,30 +571,30 @@ LABEL_7:
       _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
     }
 
-    a1[59] = a2;
-    v4 = [a1 progressQueue];
+    progress[59] = a2;
+    progressQueue = [progress progressQueue];
 
-    v5 = [a1 progressHandler];
+    progressHandler = [progress progressHandler];
 
-    if (v4)
+    if (progressQueue)
     {
-      if (v5)
+      if (progressHandler)
       {
-        v6 = [a1 progressQueue];
+        progressQueue2 = [progress progressQueue];
         block[0] = MEMORY[0x1E69E9820];
         block[1] = 3221225472;
         block[2] = __48__FCOfflineIssueFetchOperation__updateProgress___block_invoke_120;
         block[3] = &unk_1E7C36EA0;
-        block[4] = a1;
-        dispatch_async(v6, block);
+        block[4] = progress;
+        dispatch_async(progressQueue2, block);
 LABEL_11:
       }
     }
 
-    else if (v5)
+    else if (progressHandler)
     {
-      v6 = [a1 progressHandler];
-      (*(v6 + 16))(a1[59]);
+      progressQueue2 = [progress progressHandler];
+      (*(progressQueue2 + 16))(progress[59]);
       goto LABEL_11;
     }
   }
@@ -616,31 +616,31 @@ void __61__FCOfflineIssueFetchOperation_operationWillFinishWithError___block_inv
   v5[2](v5, v4, *(a1 + 40));
 }
 
-- (BOOL)canRetryWithError:(id)a3 retryAfter:(id *)a4
+- (BOOL)canRetryWithError:(id)error retryAfter:(id *)after
 {
-  v6 = a3;
+  errorCopy = error;
   if ([(FCOfflineIssueFetchOperation *)self cachedOnly])
   {
     goto LABEL_6;
   }
 
-  v7 = [v6 domain];
-  if (![v7 isEqualToString:@"FCErrorDomain"])
+  domain = [errorCopy domain];
+  if (![domain isEqualToString:@"FCErrorDomain"])
   {
 
     goto LABEL_6;
   }
 
-  v8 = [v6 code];
+  code = [errorCopy code];
 
-  if (v8 != 21)
+  if (code != 21)
   {
 LABEL_6:
     v9 = 0;
     goto LABEL_7;
   }
 
-  *a4 = objc_opt_new();
+  *after = objc_opt_new();
   v9 = 1;
 LABEL_7:
 
@@ -768,35 +768,35 @@ void __45__FCOfflineIssueFetchOperation__promiseIssue__block_invoke_3(uint64_t a
   }
 }
 
-- (void)_handleArchive:(void *)a1
+- (void)_handleArchive:(void *)archive
 {
   v3 = a2;
   v4 = v3;
-  if (a1 && v3)
+  if (archive && v3)
   {
-    v5 = [a1 archiveQueue];
+    archiveQueue = [archive archiveQueue];
 
-    v6 = [a1 archiveHandler];
+    archiveHandler = [archive archiveHandler];
 
-    if (v5)
+    if (archiveQueue)
     {
-      if (v6)
+      if (archiveHandler)
       {
-        v7 = [a1 archiveQueue];
+        archiveQueue2 = [archive archiveQueue];
         v9[0] = MEMORY[0x1E69E9820];
         v9[1] = 3221225472;
         v9[2] = __47__FCOfflineIssueFetchOperation__handleArchive___block_invoke_2;
         v9[3] = &unk_1E7C36C58;
-        v9[4] = a1;
+        v9[4] = archive;
         v10 = v4;
-        dispatch_async(v7, v9);
+        dispatch_async(archiveQueue2, v9);
       }
     }
 
-    else if (v6)
+    else if (archiveHandler)
     {
-      v8 = [a1 archiveHandler];
-      (v8)[2](v8, v4);
+      archiveHandler2 = [archive archiveHandler];
+      (archiveHandler2)[2](archiveHandler2, v4);
     }
   }
 }
@@ -1085,24 +1085,24 @@ void __56__FCOfflineIssueFetchOperation__promiseRecipesForIssue___block_invoke_5
   }
 }
 
-- (id)_promiseANFArticlesForArticleIDs:(void *)a1 withDownloadProgressMin:(void *)a2 downloadProgressMax:(double)a3
+- (id)_promiseANFArticlesForArticleIDs:(void *)ds withDownloadProgressMin:(void *)min downloadProgressMax:(double)max
 {
-  v5 = a2;
-  if (a1)
+  minCopy = min;
+  if (ds)
   {
     v6 = objc_alloc(MEMORY[0x1E69B68F8]);
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __109__FCOfflineIssueFetchOperation__promiseANFArticlesForArticleIDs_withDownloadProgressMin_downloadProgressMax___block_invoke;
     v8[3] = &unk_1E7C47598;
-    v8[4] = a1;
-    v9 = v5;
+    v8[4] = ds;
+    v9 = minCopy;
     v10 = 0;
-    v11 = a3;
-    a1 = [v6 initWithResolver:v8];
+    maxCopy = max;
+    ds = [v6 initWithResolver:v8];
   }
 
-  return a1;
+  return ds;
 }
 
 id __57__FCOfflineIssueFetchOperation__promiseANFPagesForIssue___block_invoke(uint64_t a1)
@@ -1134,17 +1134,17 @@ id __57__FCOfflineIssueFetchOperation__promiseANFPagesForIssue___block_invoke_2(
   return v7;
 }
 
-- (id)_itemIdentifiersForKey:(void *)a3 fromMetadataJSONData:
+- (id)_itemIdentifiersForKey:(void *)key fromMetadataJSONData:
 {
   v46 = *MEMORY[0x1E69E9840];
   v5 = a2;
-  v6 = a3;
-  v7 = v6;
-  if (a1)
+  keyCopy = key;
+  v7 = keyCopy;
+  if (self)
   {
-    if (v6)
+    if (keyCopy)
     {
-      v8 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       v9 = objc_autoreleasePoolPush();
       objc_opt_class();
       v44 = 0;
@@ -1264,7 +1264,7 @@ id __57__FCOfflineIssueFetchOperation__promiseANFPagesForIssue___block_invoke_2(
 
                 v30 = v29;
 
-                [v8 fc_safelyAddObject:v30];
+                [array fc_safelyAddObject:v30];
               }
 
               v22 = [v20 countByEnumeratingWithState:&v38 objects:v45 count:16];
@@ -1280,7 +1280,7 @@ id __57__FCOfflineIssueFetchOperation__promiseANFPagesForIssue___block_invoke_2(
         }
 
         objc_autoreleasePoolPop(v9);
-        v13 = v8;
+        v13 = array;
       }
 
       else
@@ -1289,7 +1289,7 @@ id __57__FCOfflineIssueFetchOperation__promiseANFPagesForIssue___block_invoke_2(
         v42[1] = 3221225472;
         v42[2] = __76__FCOfflineIssueFetchOperation__itemIdentifiersForKey_fromMetadataJSONData___block_invoke_2;
         v42[3] = &unk_1E7C3C728;
-        v42[4] = a1;
+        v42[4] = self;
         v43 = v11;
         v18 = v11;
         v13 = __76__FCOfflineIssueFetchOperation__itemIdentifiersForKey_fromMetadataJSONData___block_invoke_2(v42);

@@ -4,42 +4,42 @@
 - (unint64_t)accessibilityTraits;
 - (void)accessibilityDecrement;
 - (void)accessibilityIncrement;
-- (void)didTapScrollView:(id)a3;
+- (void)didTapScrollView:(id)view;
 - (void)layoutSubviews;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
 @end
 
 @implementation LensFiltersScrubber
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_257C1A51C();
 }
 
-- (void)didTapScrollView:(id)a3
+- (void)didTapScrollView:(id)view
 {
-  v4 = a3;
-  v5 = self;
-  sub_257C1B058(v4);
+  viewCopy = view;
+  selfCopy = self;
+  sub_257C1B058(viewCopy);
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
-  v5 = self;
-  sub_257C1B65C(v4);
+  scrollCopy = scroll;
+  selfCopy = self;
+  sub_257C1B65C(scrollCopy);
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  x = a5->x;
-  v9 = self;
+  x = offset->x;
+  selfCopy = self;
   v7 = sub_257C1B528(x);
   if ((v8 & 1) == 0)
   {
-    *&a5->x = v7;
+    *&offset->x = v7;
   }
 }
 
@@ -85,7 +85,7 @@ LABEL_5:
 
 - (NSString)accessibilityHint
 {
-  v2 = self;
+  selfCopy = self;
   sub_257C1B980();
   v4 = v3;
 
@@ -104,13 +104,13 @@ LABEL_5:
 
 - (void)accessibilityDecrement
 {
-  v2 = self;
+  selfCopy = self;
   sub_257C1BD00();
 }
 
 - (void)accessibilityIncrement
 {
-  v2 = self;
+  selfCopy = self;
   sub_257C1BF5C();
 }
 

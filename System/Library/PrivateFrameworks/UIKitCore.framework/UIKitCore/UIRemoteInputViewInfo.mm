@@ -41,9 +41,9 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(UIRemoteInputViewInfo *)self processId];
-  v6 = [(UIRemoteInputViewInfo *)self rtiInputViewInfo];
-  v7 = [v3 stringWithFormat:@"<%@: %p processId = %d; info = %@>", v4, self, v5, v6];;
+  processId = [(UIRemoteInputViewInfo *)self processId];
+  rtiInputViewInfo = [(UIRemoteInputViewInfo *)self rtiInputViewInfo];
+  v7 = [v3 stringWithFormat:@"<%@: %p processId = %d; info = %@>", v4, self, processId, rtiInputViewInfo];;
 
   return v7;
 }

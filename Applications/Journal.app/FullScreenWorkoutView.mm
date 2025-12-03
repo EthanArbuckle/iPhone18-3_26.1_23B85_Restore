@@ -1,15 +1,15 @@
 @interface FullScreenWorkoutView
-- (_TtC7Journal21FullScreenWorkoutView)initWithFrame:(CGRect)a3;
+- (_TtC7Journal21FullScreenWorkoutView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation FullScreenWorkoutView
 
-- (_TtC7Journal21FullScreenWorkoutView)initWithFrame:(CGRect)a3
+- (_TtC7Journal21FullScreenWorkoutView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = OBJC_IVAR____TtC7Journal21FullScreenWorkoutView_workoutActivityView;
   type metadata accessor for WorkoutActivityGridView();
   *(&self->super.super.super.isa + v8) = [objc_allocWithZone(swift_getObjCClassFromMetadata()) init];

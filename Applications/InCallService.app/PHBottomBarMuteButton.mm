@@ -1,32 +1,32 @@
 @interface PHBottomBarMuteButton
-- (PHBottomBarMuteButton)initWithConfiguration:(id)a3 appType:(int64_t)a4;
-- (void)updateButtonAnimated:(BOOL)a3;
+- (PHBottomBarMuteButton)initWithConfiguration:(id)configuration appType:(int64_t)type;
+- (void)updateButtonAnimated:(BOOL)animated;
 - (void)updateButtonColor;
 - (void)updateIcon;
 @end
 
 @implementation PHBottomBarMuteButton
 
-- (PHBottomBarMuteButton)initWithConfiguration:(id)a3 appType:(int64_t)a4
+- (PHBottomBarMuteButton)initWithConfiguration:(id)configuration appType:(int64_t)type
 {
-  v7 = a3;
+  configurationCopy = configuration;
   v11.receiver = self;
   v11.super_class = PHBottomBarMuteButton;
-  v8 = [(PHBottomBarMuteButton *)&v11 initWithConfiguration:v7 appType:a4];
+  v8 = [(PHBottomBarMuteButton *)&v11 initWithConfiguration:configurationCopy appType:type];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_muteButtonConfiguration, a3);
+    objc_storeStrong(&v8->_muteButtonConfiguration, configuration);
     [(PHBottomBarMuteButton *)v9 updateButtonAnimated:0];
   }
 
   return v9;
 }
 
-- (void)updateButtonAnimated:(BOOL)a3
+- (void)updateButtonAnimated:(BOOL)animated
 {
   v3 = 0.170000002;
-  if (!a3)
+  if (!animated)
   {
     v3 = 0.0;
   }
@@ -43,44 +43,44 @@
 {
   if ([(PHBottomBarMuteButton *)self isSelected])
   {
-    v7 = [(PHBottomBarMuteButton *)self muteButtonConfiguration];
-    v3 = [v7 selectedColor];
+    muteButtonConfiguration = [(PHBottomBarMuteButton *)self muteButtonConfiguration];
+    selectedColor = [muteButtonConfiguration selectedColor];
   }
 
   else
   {
-    v4 = [(PHBottomBarMuteButton *)self isHighlighted];
-    v5 = [(PHBottomBarMuteButton *)self muteButtonConfiguration];
-    v7 = v5;
-    if (v4)
+    isHighlighted = [(PHBottomBarMuteButton *)self isHighlighted];
+    muteButtonConfiguration2 = [(PHBottomBarMuteButton *)self muteButtonConfiguration];
+    muteButtonConfiguration = muteButtonConfiguration2;
+    if (isHighlighted)
     {
-      [v5 highlightedColor];
+      [muteButtonConfiguration2 highlightedColor];
     }
 
     else
     {
-      [v5 backgroundColor];
+      [muteButtonConfiguration2 backgroundColor];
     }
-    v3 = ;
+    selectedColor = ;
   }
 
-  v6 = v3;
-  [(PHBottomBarMuteButton *)self setBackgroundColor:v3];
+  v6 = selectedColor;
+  [(PHBottomBarMuteButton *)self setBackgroundColor:selectedColor];
 }
 
 - (void)updateIcon
 {
-  v3 = [(PHBottomBarMuteButton *)self isSelected];
-  v4 = [(PHBottomBarMuteButton *)self muteButtonConfiguration];
-  v5 = v4;
-  if (v3)
+  isSelected = [(PHBottomBarMuteButton *)self isSelected];
+  muteButtonConfiguration = [(PHBottomBarMuteButton *)self muteButtonConfiguration];
+  v5 = muteButtonConfiguration;
+  if (isSelected)
   {
-    [v4 selectedIcon];
+    [muteButtonConfiguration selectedIcon];
   }
 
   else
   {
-    [v4 icon];
+    [muteButtonConfiguration icon];
   }
   v6 = ;
 

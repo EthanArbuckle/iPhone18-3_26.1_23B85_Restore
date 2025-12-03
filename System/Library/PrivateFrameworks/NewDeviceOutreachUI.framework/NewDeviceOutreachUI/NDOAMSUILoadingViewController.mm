@@ -1,23 +1,23 @@
 @interface NDOAMSUILoadingViewController
-- (NDOAMSUILoadingViewController)initWithCoder:(id)a3;
-- (NDOAMSUILoadingViewController)initWithCreateAMSViewController:(id)a3;
-- (NDOAMSUILoadingViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (NDOAMSUILoadingViewController)initWithCoder:(id)coder;
+- (NDOAMSUILoadingViewController)initWithCreateAMSViewController:(id)controller;
+- (NDOAMSUILoadingViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (NDOAppleCareAMSUIViewPresenterProtocol)presenter;
 - (id)createAMSViewController;
 - (unint64_t)supportedInterfaceOrientations;
 - (void)loadView;
-- (void)setAmsViewController:(id)a3;
+- (void)setAmsViewController:(id)controller;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation NDOAMSUILoadingViewController
 
-- (void)setAmsViewController:(id)a3
+- (void)setAmsViewController:(id)controller
 {
   v4 = *(self + OBJC_IVAR___NDOAMSUILoadingViewController_amsViewController);
-  *(self + OBJC_IVAR___NDOAMSUILoadingViewController_amsViewController) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___NDOAMSUILoadingViewController_amsViewController) = controller;
+  controllerCopy = controller;
 }
 
 - (id)createAMSViewController
@@ -44,10 +44,10 @@
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v2 = [objc_opt_self() currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  currentDevice = [objc_opt_self() currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v3 == 1)
+  if (userInterfaceIdiom == 1)
   {
     return 30;
   }
@@ -58,9 +58,9 @@
   }
 }
 
-- (NDOAMSUILoadingViewController)initWithCreateAMSViewController:(id)a3
+- (NDOAMSUILoadingViewController)initWithCreateAMSViewController:(id)controller
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(controller);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   *(self + OBJC_IVAR___NDOAMSUILoadingViewController_amsViewController) = 0;
@@ -73,7 +73,7 @@
   return [(NDOAMSUILoadingViewController *)&v8 initWithNibName:0 bundle:0];
 }
 
-- (NDOAMSUILoadingViewController)initWithCoder:(id)a3
+- (NDOAMSUILoadingViewController)initWithCoder:(id)coder
 {
   *(self + OBJC_IVAR___NDOAMSUILoadingViewController_amsViewController) = 0;
   swift_unknownObjectWeakInit();
@@ -84,7 +84,7 @@
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   NDOAMSUILoadingViewController.loadView()();
 }
 
@@ -92,18 +92,18 @@
 {
   v3.receiver = self;
   v3.super_class = NDOAMSUILoadingViewController;
-  v2 = self;
+  selfCopy = self;
   [(NDOAMSUILoadingViewController *)&v3 viewDidLoad];
   sub_25BDB6DD0();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  NDOAMSUILoadingViewController.viewWillAppear(_:)(a3);
+  selfCopy = self;
+  NDOAMSUILoadingViewController.viewWillAppear(_:)(appear);
 }
 
-- (NDOAMSUILoadingViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (NDOAMSUILoadingViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

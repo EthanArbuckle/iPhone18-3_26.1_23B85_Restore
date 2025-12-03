@@ -1,52 +1,52 @@
 @interface BuddyChoice
-- (BuddyChoice)initWithTitle:(id)a3 nextItemClass:(Class)a4;
+- (BuddyChoice)initWithTitle:(id)title nextItemClass:(Class)class;
 - (UIViewController)choiceController;
-- (id)confirmationAcceptActionWithTitle:(id)a3 style:(int64_t)a4 action:(id)a5;
-- (id)confirmationCancelActionWithTitle:(id)a3 style:(int64_t)a4 action:(id)a5;
-- (void)_choiceConfirmed:(BOOL)a3;
-- (void)runConfirmationIfNeededCompletion:(id)a3;
-- (void)setConfirmationAlert:(id)a3 condition:(id)a4;
+- (id)confirmationAcceptActionWithTitle:(id)title style:(int64_t)style action:(id)action;
+- (id)confirmationCancelActionWithTitle:(id)title style:(int64_t)style action:(id)action;
+- (void)_choiceConfirmed:(BOOL)confirmed;
+- (void)runConfirmationIfNeededCompletion:(id)completion;
+- (void)setConfirmationAlert:(id)alert condition:(id)condition;
 @end
 
 @implementation BuddyChoice
 
-- (BuddyChoice)initWithTitle:(id)a3 nextItemClass:(Class)a4
+- (BuddyChoice)initWithTitle:(id)title nextItemClass:(Class)class
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v9 = a4;
-  v5 = v11;
-  v11 = 0;
+  objc_storeStrong(location, title);
+  classCopy = class;
+  v5 = selfCopy;
+  selfCopy = 0;
   v8.receiver = v5;
   v8.super_class = BuddyChoice;
-  v11 = [(BuddyChoice *)&v8 init];
-  objc_storeStrong(&v11, v11);
-  if (v11)
+  selfCopy = [(BuddyChoice *)&v8 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
-    [v11 setTitle:location[0]];
-    [v11 setNextControllerClass:v9];
+    [selfCopy setTitle:location[0]];
+    [selfCopy setNextControllerClass:classCopy];
   }
 
-  v6 = v11;
+  v6 = selfCopy;
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v11, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v6;
 }
 
-- (id)confirmationAcceptActionWithTitle:(id)a3 style:(int64_t)a4 action:(id)a5
+- (id)confirmationAcceptActionWithTitle:(id)title style:(int64_t)style action:(id)action
 {
-  v22 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v20 = a4;
+  objc_storeStrong(location, title);
+  styleCopy = style;
   v19 = 0;
-  objc_storeStrong(&v19, a5);
-  objc_initWeak(&from, v22);
+  objc_storeStrong(&v19, action);
+  objc_initWeak(&from, selfCopy);
   v7 = location[0];
-  v8 = v20;
+  v8 = styleCopy;
   v11 = _NSConcreteStackBlock;
   v12 = -1073741824;
   v13 = 0;
@@ -64,18 +64,18 @@
   return v9;
 }
 
-- (id)confirmationCancelActionWithTitle:(id)a3 style:(int64_t)a4 action:(id)a5
+- (id)confirmationCancelActionWithTitle:(id)title style:(int64_t)style action:(id)action
 {
-  v22 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v20 = a4;
+  objc_storeStrong(location, title);
+  styleCopy = style;
   v19 = 0;
-  objc_storeStrong(&v19, a5);
-  objc_initWeak(&from, v22);
+  objc_storeStrong(&v19, action);
+  objc_initWeak(&from, selfCopy);
   v7 = location[0];
-  v8 = v20;
+  v8 = styleCopy;
   v11 = _NSConcreteStackBlock;
   v12 = -1073741824;
   v13 = 0;
@@ -93,40 +93,40 @@
   return v9;
 }
 
-- (void)setConfirmationAlert:(id)a3 condition:(id)a4
+- (void)setConfirmationAlert:(id)alert condition:(id)condition
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, alert);
   v5 = 0;
-  objc_storeStrong(&v5, a4);
-  [(BuddyChoice *)v7 setCondition:v5];
-  [(BuddyChoice *)v7 setAlertController:location[0]];
+  objc_storeStrong(&v5, condition);
+  [(BuddyChoice *)selfCopy setCondition:v5];
+  [(BuddyChoice *)selfCopy setAlertController:location[0]];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)runConfirmationIfNeededCompletion:(id)a3
+- (void)runConfirmationIfNeededCompletion:(id)completion
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyChoice *)v12 alertController];
+  objc_storeStrong(location, completion);
+  alertController = [(BuddyChoice *)selfCopy alertController];
   v9 = 0;
   v7 = 0;
   v4 = 0;
-  if (v3)
+  if (alertController)
   {
-    v10 = [(BuddyChoice *)v12 condition];
+    condition = [(BuddyChoice *)selfCopy condition];
     v9 = 1;
     v4 = 1;
-    if (v10)
+    if (condition)
     {
-      v8 = [(BuddyChoice *)v12 condition];
+      condition2 = [(BuddyChoice *)selfCopy condition];
       v7 = 1;
-      v4 = v8[2]();
+      v4 = condition2[2]();
     }
   }
 
@@ -140,10 +140,10 @@
 
   if (v4)
   {
-    [(BuddyChoice *)v12 setConfirmationCompletion:location[0]];
-    v5 = [(BuddyChoice *)v12 choiceController];
-    v6 = [(BuddyChoice *)v12 alertController];
-    [(UIViewController *)v5 presentViewController:v6 animated:1 completion:0];
+    [(BuddyChoice *)selfCopy setConfirmationCompletion:location[0]];
+    choiceController = [(BuddyChoice *)selfCopy choiceController];
+    alertController2 = [(BuddyChoice *)selfCopy alertController];
+    [(UIViewController *)choiceController presentViewController:alertController2 animated:1 completion:0];
   }
 
   else if (location[0])
@@ -154,14 +154,14 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_choiceConfirmed:(BOOL)a3
+- (void)_choiceConfirmed:(BOOL)confirmed
 {
-  v3 = [(BuddyChoice *)self confirmationCompletion];
+  confirmationCompletion = [(BuddyChoice *)self confirmationCompletion];
 
-  if (v3)
+  if (confirmationCompletion)
   {
-    v4 = [(BuddyChoice *)self confirmationCompletion];
-    v4[2](v4, a3);
+    confirmationCompletion2 = [(BuddyChoice *)self confirmationCompletion];
+    confirmationCompletion2[2](confirmationCompletion2, confirmed);
 
     [(BuddyChoice *)self setConfirmationCompletion:0];
   }

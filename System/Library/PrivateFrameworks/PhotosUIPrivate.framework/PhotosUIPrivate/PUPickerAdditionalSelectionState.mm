@@ -5,10 +5,10 @@
 - (PXObservable)observable;
 - (PXPhotosFileProviderRegisterConfiguration)registerConfiguration;
 - (int64_t)userEncodingPolicy;
-- (void)setDownscalingTargetDimension:(id)a3;
-- (void)setShouldIncludeCaption:(BOOL)a3;
-- (void)setShouldIncludeLocation:(BOOL)a3;
-- (void)setUserEncodingPolicy:(int64_t)a3;
+- (void)setDownscalingTargetDimension:(id)dimension;
+- (void)setShouldIncludeCaption:(BOOL)caption;
+- (void)setShouldIncludeLocation:(BOOL)location;
+- (void)setUserEncodingPolicy:(int64_t)policy;
 @end
 
 @implementation PUPickerAdditionalSelectionState
@@ -29,59 +29,59 @@
 
 - (int64_t)userEncodingPolicy
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B3821FFC();
 
   return v3;
 }
 
-- (void)setUserEncodingPolicy:(int64_t)a3
+- (void)setUserEncodingPolicy:(int64_t)policy
 {
-  v4 = self;
-  sub_1B382207C(a3);
+  selfCopy = self;
+  sub_1B382207C(policy);
 }
 
 - (BOOL)shouldIncludeLocation
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B3822448();
 
   return v3 & 1;
 }
 
-- (void)setShouldIncludeLocation:(BOOL)a3
+- (void)setShouldIncludeLocation:(BOOL)location
 {
-  v3 = self;
+  selfCopy = self;
   sub_1B38224CC();
 }
 
 - (BOOL)shouldIncludeCaption
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B3822A18();
 
   return v3 & 1;
 }
 
-- (void)setShouldIncludeCaption:(BOOL)a3
+- (void)setShouldIncludeCaption:(BOOL)caption
 {
-  v3 = self;
+  selfCopy = self;
   sub_1B3822A9C();
 }
 
 - (NSNumber)downscalingTargetDimension
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B3822BC0();
 
   return v3;
 }
 
-- (void)setDownscalingTargetDimension:(id)a3
+- (void)setDownscalingTargetDimension:(id)dimension
 {
-  v5 = a3;
-  v6 = self;
-  sub_1B3822C48(a3);
+  dimensionCopy = dimension;
+  selfCopy = self;
+  sub_1B3822C48(dimension);
 }
 
 @end

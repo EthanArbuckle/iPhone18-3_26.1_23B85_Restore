@@ -1,6 +1,6 @@
 @interface WDRubyProperties
 - (BOOL)isAlignmentOverridden;
-- (BOOL)isAnythingOverriddenIn:(id *)a3;
+- (BOOL)isAnythingOverriddenIn:(id *)in;
 - (BOOL)isBaseFontSizeOverridden;
 - (BOOL)isDistanceBetweenOverridden;
 - (BOOL)isPhoneticGuideFontSizeOverridden;
@@ -18,11 +18,11 @@
 - (void)clearPhoneticGuideFontSize;
 - (void)clearPhoneticGuideLanguage;
 - (void)dealloc;
-- (void)setAlignment:(int)a3;
-- (void)setBaseFontSize:(unsigned __int16)a3;
-- (void)setDistanceBetween:(unsigned __int16)a3;
-- (void)setPhoneticGuideFontSize:(unsigned __int16)a3;
-- (void)setPhoneticGuideLanguage:(int)a3;
+- (void)setAlignment:(int)alignment;
+- (void)setBaseFontSize:(unsigned __int16)size;
+- (void)setDistanceBetween:(unsigned __int16)between;
+- (void)setPhoneticGuideFontSize:(unsigned __int16)size;
+- (void)setPhoneticGuideLanguage:(int)language;
 @end
 
 @implementation WDRubyProperties
@@ -72,7 +72,7 @@
   return result;
 }
 
-- (void)setAlignment:(int)a3
+- (void)setAlignment:(int)alignment
 {
   mOriginalProperties = self->mOriginalProperties;
   if (!mOriginalProperties)
@@ -80,7 +80,7 @@
     operator new();
   }
 
-  mOriginalProperties->var0 = a3;
+  mOriginalProperties->var0 = alignment;
   mOriginalProperties->var5 = 1;
 }
 
@@ -119,7 +119,7 @@
   return result;
 }
 
-- (void)setPhoneticGuideFontSize:(unsigned __int16)a3
+- (void)setPhoneticGuideFontSize:(unsigned __int16)size
 {
   mOriginalProperties = self->mOriginalProperties;
   if (!mOriginalProperties)
@@ -127,7 +127,7 @@
     operator new();
   }
 
-  mOriginalProperties->var1 = a3;
+  mOriginalProperties->var1 = size;
   mOriginalProperties->var6 = 1;
 }
 
@@ -166,7 +166,7 @@
   return result;
 }
 
-- (void)setBaseFontSize:(unsigned __int16)a3
+- (void)setBaseFontSize:(unsigned __int16)size
 {
   mOriginalProperties = self->mOriginalProperties;
   if (!mOriginalProperties)
@@ -174,7 +174,7 @@
     operator new();
   }
 
-  mOriginalProperties->var2 = a3;
+  mOriginalProperties->var2 = size;
   mOriginalProperties->var7 = 1;
 }
 
@@ -213,7 +213,7 @@
   return result;
 }
 
-- (void)setDistanceBetween:(unsigned __int16)a3
+- (void)setDistanceBetween:(unsigned __int16)between
 {
   mOriginalProperties = self->mOriginalProperties;
   if (!mOriginalProperties)
@@ -221,7 +221,7 @@
     operator new();
   }
 
-  mOriginalProperties->var3 = a3;
+  mOriginalProperties->var3 = between;
   mOriginalProperties->var8 = 1;
 }
 
@@ -260,7 +260,7 @@
   return result;
 }
 
-- (void)setPhoneticGuideLanguage:(int)a3
+- (void)setPhoneticGuideLanguage:(int)language
 {
   mOriginalProperties = self->mOriginalProperties;
   if (!mOriginalProperties)
@@ -268,7 +268,7 @@
     operator new();
   }
 
-  mOriginalProperties->var4 = a3;
+  mOriginalProperties->var4 = language;
   mOriginalProperties->var9 = 1;
 }
 
@@ -299,11 +299,11 @@
   return v2;
 }
 
-- (BOOL)isAnythingOverriddenIn:(id *)a3
+- (BOOL)isAnythingOverriddenIn:(id *)in
 {
-  if (a3)
+  if (in)
   {
-    return a3->var5 || a3->var6 || a3->var7 || a3->var8 || a3->var9;
+    return in->var5 || in->var6 || in->var7 || in->var8 || in->var9;
   }
 
   else

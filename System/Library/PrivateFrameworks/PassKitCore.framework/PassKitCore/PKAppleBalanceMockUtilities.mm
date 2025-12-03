@@ -1,34 +1,34 @@
 @interface PKAppleBalanceMockUtilities
-+ (BOOL)_verifyAppleBalanceAccountDetails2:(id)a3;
-+ (BOOL)_verifyAppleBalanceAccountDetails:(id)a3;
-+ (BOOL)_verifyAppleBalanceSupportedFeatures:(id)a3;
-+ (BOOL)_verifyLightweightAppleBalanceAccountDetails:(id)a3;
-+ (BOOL)verifyAppleBalanceAccount2:(id)a3;
-+ (BOOL)verifyAppleBalanceAccount:(id)a3;
-+ (BOOL)verifyInStoreTopUpToken:(id)a3;
-+ (BOOL)verifyLightweightAppleBalanceAccount:(id)a3;
-+ (BOOL)verifyPromotion:(id)a3;
++ (BOOL)_verifyAppleBalanceAccountDetails2:(id)details2;
++ (BOOL)_verifyAppleBalanceAccountDetails:(id)details;
++ (BOOL)_verifyAppleBalanceSupportedFeatures:(id)features;
++ (BOOL)_verifyLightweightAppleBalanceAccountDetails:(id)details;
++ (BOOL)verifyAppleBalanceAccount2:(id)account2;
++ (BOOL)verifyAppleBalanceAccount:(id)account;
++ (BOOL)verifyInStoreTopUpToken:(id)token;
++ (BOOL)verifyLightweightAppleBalanceAccount:(id)account;
++ (BOOL)verifyPromotion:(id)promotion;
 + (id)_appleBalanceAccountDetailsDictionary;
 + (id)_appleBalanceAccountDetailsDictionary2;
 + (id)_appleBalanceAccountNoBalanceDetailsDictionary;
 + (id)_appleBalanceDTUConfigurationDictionary;
 + (id)_appleBalanceDTUConfigurationDictionary2;
-+ (id)_inStoreTokenForType:(int64_t)a3 debugType:(int64_t)a4;
++ (id)_inStoreTokenForType:(int64_t)type debugType:(int64_t)debugType;
 + (id)appleBalanceAccountDictionary;
 + (id)appleBalanceAccountDictionary2;
 + (id)appleBalanceAccountDictionaryUpdated;
 + (id)appleBalanceAccountNoBalanceDictionary;
-+ (id)appleBalanceAddMoneyConfigurationWithCurrencyCode:(id)a3;
-+ (id)appleBalanceInStoreTopUpTokenForType:(int64_t)a3 state:(int64_t)a4 debugType:(int64_t)a5;
++ (id)appleBalanceAddMoneyConfigurationWithCurrencyCode:(id)code;
++ (id)appleBalanceInStoreTopUpTokenForType:(int64_t)type state:(int64_t)state debugType:(int64_t)debugType;
 + (id)lightweightAppleBalanceAccountDictionary;
-+ (id)mockAMPPaymentTransactionWithAccountIdentifier:(id)a3;
-+ (id)mockAOSPaymentTransactionWithAccountIdentifier:(id)a3;
++ (id)mockAMPPaymentTransactionWithAccountIdentifier:(id)identifier;
++ (id)mockAOSPaymentTransactionWithAccountIdentifier:(id)identifier;
 + (id)mockAppleBalanceAccount;
 + (id)mockInStoreTopUpToken;
-+ (id)mockPOSPaymentTransactionWithAccountIdentifier:(id)a3 paymentApplication:(id)a4 localTransaction:(id *)a5;
++ (id)mockPOSPaymentTransactionWithAccountIdentifier:(id)identifier paymentApplication:(id)application localTransaction:(id *)transaction;
 + (id)mockPromotion;
-+ (id)mockRedemptionPaymentTransactionWithAccountIdentifier:(id)a3;
-+ (id)mockTopUpPaymentTransactionWithAccountIdentifier:(id)a3;
++ (id)mockRedemptionPaymentTransactionWithAccountIdentifier:(id)identifier;
++ (id)mockTopUpPaymentTransactionWithAccountIdentifier:(id)identifier;
 @end
 
 @implementation PKAppleBalanceMockUtilities
@@ -41,15 +41,15 @@
   [(PKAccount *)v2 setType:3];
   [(PKAccount *)v2 setState:1];
   [(PKAccount *)v2 setAccessLevel:1];
-  v3 = [MEMORY[0x1E695DF00] date];
-  [(PKAccount *)v2 setLastUpdated:v3];
+  date = [MEMORY[0x1E695DF00] date];
+  [(PKAccount *)v2 setLastUpdated:date];
 
   v4 = objc_alloc_init(PKAppleBalanceAccountDetails);
   v5 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:-7257600.0];
   [(PKAppleBalanceAccountDetails *)v4 setCreatedDate:v5];
 
-  v6 = [MEMORY[0x1E695DF00] date];
-  [(PKAppleBalanceAccountDetails *)v4 setLastUpdatedDate:v6];
+  date2 = [MEMORY[0x1E695DF00] date];
+  [(PKAppleBalanceAccountDetails *)v4 setLastUpdatedDate:date2];
 
   [(PKAppleBalanceAccountDetails *)v4 setCountryCode:@"US"];
   [(PKAppleBalanceAccountDetails *)v4 setCurrencyCode:@"USD"];
@@ -109,8 +109,8 @@
   v10[8] = @"conditionText";
   v11[8] = @"1 month free, then $14.99/month. Limit 1 per Apple Account. Must claim your free content bonus immediately. Terms apply.";
   v10[9] = @"lastUpdatedDate";
-  v6 = [a1 _date1];
-  v11[9] = v6;
+  _date1 = [self _date1];
+  v11[9] = _date1;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:v10 count:10];
   v8 = [(PKAppleBalancePromotionConfiguration *)v3 initWithDictionary:v7];
 
@@ -120,13 +120,13 @@
 + (id)mockInStoreTopUpToken
 {
   v3 = objc_alloc_init(PKAppleBalanceInStoreTopUpToken);
-  v4 = [a1 _inStoreTokenForType:0 debugType:0];
+  v4 = [self _inStoreTokenForType:0 debugType:0];
   [(PKAppleBalanceInStoreTopUpToken *)v3 setToken:v4];
 
   [(PKAppleBalanceInStoreTopUpToken *)v3 setTokenIdentifier:@"12345678912345678912345678912345"];
   [(PKAppleBalanceInStoreTopUpToken *)v3 setTokenType:0];
-  v5 = [a1 _date1];
-  v6 = _PKParseW3CDTSCompleteDatePlusHoursMinutesAndOptionalSeconds(v5, 0, 0);
+  _date1 = [self _date1];
+  v6 = _PKParseW3CDTSCompleteDatePlusHoursMinutesAndOptionalSeconds(_date1, 0, 0);
   [(PKAppleBalanceInStoreTopUpToken *)v3 setExpirationDate:v6];
 
   [(PKAppleBalanceInStoreTopUpToken *)v3 setState:0];
@@ -136,9 +136,9 @@
   return v3;
 }
 
-+ (id)mockAMPPaymentTransactionWithAccountIdentifier:(id)a3
++ (id)mockAMPPaymentTransactionWithAccountIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = objc_alloc_init(PKMerchant);
   [(PKMerchant *)v4 setRawName:@"apple.com/bill"];
   [(PKMerchant *)v4 setName:@"Apple Services"];
@@ -147,9 +147,9 @@
   [(PKMerchant *)v4 setCity:@"Cupertino"];
   [(PKMerchant *)v4 setState:@"CA"];
   v5 = objc_alloc_init(PKPaymentTransaction);
-  v6 = [MEMORY[0x1E696AFB0] UUID];
-  v7 = [v6 UUIDString];
-  [(PKPaymentTransaction *)v5 setServiceIdentifier:v7];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
+  [(PKPaymentTransaction *)v5 setServiceIdentifier:uUIDString];
 
   [(PKPaymentTransaction *)v5 setTransactionStatus:1];
   [(PKPaymentTransaction *)v5 setTransactionType:0];
@@ -157,11 +157,11 @@
   [(PKPaymentTransaction *)v5 setAmount:v8];
 
   [(PKPaymentTransaction *)v5 setCurrencyCode:@"USD"];
-  v9 = [MEMORY[0x1E695DF00] date];
-  [(PKPaymentTransaction *)v5 setTransactionDate:v9];
-  [(PKPaymentTransaction *)v5 setTransactionStatusChangedDate:v9];
+  date = [MEMORY[0x1E695DF00] date];
+  [(PKPaymentTransaction *)v5 setTransactionDate:date];
+  [(PKPaymentTransaction *)v5 setTransactionStatusChangedDate:date];
   [(PKPaymentTransaction *)v5 setCardType:7];
-  [(PKPaymentTransaction *)v5 setAccountIdentifier:v3];
+  [(PKPaymentTransaction *)v5 setAccountIdentifier:identifierCopy];
 
   [(PKPaymentTransaction *)v5 setAccountType:4];
   [(PKPaymentTransaction *)v5 setMerchant:v4];
@@ -169,9 +169,9 @@
   return v5;
 }
 
-+ (id)mockAOSPaymentTransactionWithAccountIdentifier:(id)a3
++ (id)mockAOSPaymentTransactionWithAccountIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = objc_alloc_init(PKMerchant);
   [(PKMerchant *)v4 setRawName:@"apple.com/us"];
   [(PKMerchant *)v4 setName:@"Apple Store"];
@@ -180,9 +180,9 @@
   [(PKMerchant *)v4 setCity:@"Cupertino"];
   [(PKMerchant *)v4 setState:@"CA"];
   v5 = objc_alloc_init(PKPaymentTransaction);
-  v6 = [MEMORY[0x1E696AFB0] UUID];
-  v7 = [v6 UUIDString];
-  [(PKPaymentTransaction *)v5 setServiceIdentifier:v7];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
+  [(PKPaymentTransaction *)v5 setServiceIdentifier:uUIDString];
 
   [(PKPaymentTransaction *)v5 setTransactionStatus:1];
   [(PKPaymentTransaction *)v5 setTransactionType:0];
@@ -190,11 +190,11 @@
   [(PKPaymentTransaction *)v5 setAmount:v8];
 
   [(PKPaymentTransaction *)v5 setCurrencyCode:@"USD"];
-  v9 = [MEMORY[0x1E695DF00] date];
-  [(PKPaymentTransaction *)v5 setTransactionDate:v9];
-  [(PKPaymentTransaction *)v5 setTransactionStatusChangedDate:v9];
+  date = [MEMORY[0x1E695DF00] date];
+  [(PKPaymentTransaction *)v5 setTransactionDate:date];
+  [(PKPaymentTransaction *)v5 setTransactionStatusChangedDate:date];
   [(PKPaymentTransaction *)v5 setCardType:7];
-  [(PKPaymentTransaction *)v5 setAccountIdentifier:v3];
+  [(PKPaymentTransaction *)v5 setAccountIdentifier:identifierCopy];
 
   [(PKPaymentTransaction *)v5 setAccountType:4];
   [(PKPaymentTransaction *)v5 setMerchant:v4];
@@ -202,35 +202,35 @@
   return v5;
 }
 
-+ (id)mockPOSPaymentTransactionWithAccountIdentifier:(id)a3 paymentApplication:(id)a4 localTransaction:(id *)a5
++ (id)mockPOSPaymentTransactionWithAccountIdentifier:(id)identifier paymentApplication:(id)application localTransaction:(id *)transaction
 {
   v7 = MEMORY[0x1E696AFB0];
-  v8 = a4;
-  v9 = a3;
-  v10 = [v7 UUID];
-  v11 = [v10 UUIDString];
+  applicationCopy = application;
+  identifierCopy = identifier;
+  uUID = [v7 UUID];
+  uUIDString = [uUID UUIDString];
 
-  v12 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
   v13 = [PKPaymentTransaction paymentTransactionWithSource:1];
   [v13 setOriginatedByDevice:1];
   [v13 setTransactionType:0];
-  [v13 setPaymentHash:v11];
+  [v13 setPaymentHash:uUIDString];
   [v13 addUpdateReasons:1];
-  v14 = [v8 dpanIdentifier];
-  [v13 setDPANIdentifier:v14];
+  dpanIdentifier = [applicationCopy dpanIdentifier];
+  [v13 setDPANIdentifier:dpanIdentifier];
 
-  v15 = [v8 paymentNetworkIdentifier];
-  [v13 setPaymentNetworkIdentifier:v15];
-  [v13 setTransactionDate:v12];
+  paymentNetworkIdentifier = [applicationCopy paymentNetworkIdentifier];
+  [v13 setPaymentNetworkIdentifier:paymentNetworkIdentifier];
+  [v13 setTransactionDate:date];
   [v13 setTechnologyType:2];
-  [v13 setLocationDate:v12];
+  [v13 setLocationDate:date];
   [v13 setLocationLatitude:37.3315124];
   [v13 setLocationLongitude:-122.030662];
   [v13 setProcessedForLocation:1];
-  if (a5)
+  if (transaction)
   {
     v16 = v13;
-    *a5 = v13;
+    *transaction = v13;
   }
 
   v17 = objc_alloc_init(PKMerchant);
@@ -241,21 +241,21 @@
   [(PKMerchant *)v17 setCity:@"Cupertino"];
   [(PKMerchant *)v17 setState:@"CA"];
   v18 = objc_alloc_init(PKPaymentTransaction);
-  v19 = [MEMORY[0x1E696AFB0] UUID];
-  v20 = [v19 UUIDString];
-  [(PKPaymentTransaction *)v18 setServiceIdentifier:v20];
+  uUID2 = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString2 = [uUID2 UUIDString];
+  [(PKPaymentTransaction *)v18 setServiceIdentifier:uUIDString2];
 
-  [(PKPaymentTransaction *)v18 setPaymentHash:v11];
+  [(PKPaymentTransaction *)v18 setPaymentHash:uUIDString];
   [(PKPaymentTransaction *)v18 setTransactionStatus:1];
   [(PKPaymentTransaction *)v18 setTransactionType:0];
   v21 = [MEMORY[0x1E696AB90] decimalNumberWithString:@"258.00"];
   [(PKPaymentTransaction *)v18 setAmount:v21];
 
   [(PKPaymentTransaction *)v18 setCurrencyCode:@"USD"];
-  [(PKPaymentTransaction *)v18 setTransactionDate:v12];
-  [(PKPaymentTransaction *)v18 setTransactionStatusChangedDate:v12];
+  [(PKPaymentTransaction *)v18 setTransactionDate:date];
+  [(PKPaymentTransaction *)v18 setTransactionStatusChangedDate:date];
   [(PKPaymentTransaction *)v18 setCardType:7];
-  [(PKPaymentTransaction *)v18 setAccountIdentifier:v9];
+  [(PKPaymentTransaction *)v18 setAccountIdentifier:identifierCopy];
 
   [(PKPaymentTransaction *)v18 setAccountType:4];
   [(PKPaymentTransaction *)v18 setMerchant:v17];
@@ -263,9 +263,9 @@
   return v18;
 }
 
-+ (id)mockTopUpPaymentTransactionWithAccountIdentifier:(id)a3
++ (id)mockTopUpPaymentTransactionWithAccountIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = objc_alloc_init(PKMerchant);
   [(PKMerchant *)v4 setRawName:@"apple.com/bill"];
   [(PKMerchant *)v4 setName:@"Apple Services"];
@@ -274,9 +274,9 @@
   [(PKMerchant *)v4 setCity:@"Cupertino"];
   [(PKMerchant *)v4 setState:@"CA"];
   v5 = objc_alloc_init(PKPaymentTransaction);
-  v6 = [MEMORY[0x1E696AFB0] UUID];
-  v7 = [v6 UUIDString];
-  [(PKPaymentTransaction *)v5 setServiceIdentifier:v7];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
+  [(PKPaymentTransaction *)v5 setServiceIdentifier:uUIDString];
 
   [(PKPaymentTransaction *)v5 setTransactionStatus:1];
   [(PKPaymentTransaction *)v5 setTransactionType:6];
@@ -284,11 +284,11 @@
   [(PKPaymentTransaction *)v5 setAmount:v8];
 
   [(PKPaymentTransaction *)v5 setCurrencyCode:@"USD"];
-  v9 = [MEMORY[0x1E695DF00] date];
-  [(PKPaymentTransaction *)v5 setTransactionDate:v9];
-  [(PKPaymentTransaction *)v5 setTransactionStatusChangedDate:v9];
+  date = [MEMORY[0x1E695DF00] date];
+  [(PKPaymentTransaction *)v5 setTransactionDate:date];
+  [(PKPaymentTransaction *)v5 setTransactionStatusChangedDate:date];
   [(PKPaymentTransaction *)v5 setCardType:8];
-  [(PKPaymentTransaction *)v5 setAccountIdentifier:v3];
+  [(PKPaymentTransaction *)v5 setAccountIdentifier:identifierCopy];
 
   [(PKPaymentTransaction *)v5 setAccountType:4];
   [(PKPaymentTransaction *)v5 setMerchant:v4];
@@ -296,9 +296,9 @@
   return v5;
 }
 
-+ (id)mockRedemptionPaymentTransactionWithAccountIdentifier:(id)a3
++ (id)mockRedemptionPaymentTransactionWithAccountIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = objc_alloc_init(PKMerchant);
   [(PKMerchant *)v4 setRawName:@"apple.com/bill"];
   [(PKMerchant *)v4 setName:@"Apple Services"];
@@ -307,9 +307,9 @@
   [(PKMerchant *)v4 setCity:@"Cupertino"];
   [(PKMerchant *)v4 setState:@"CA"];
   v5 = objc_alloc_init(PKPaymentTransaction);
-  v6 = [MEMORY[0x1E696AFB0] UUID];
-  v7 = [v6 UUIDString];
-  [(PKPaymentTransaction *)v5 setServiceIdentifier:v7];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
+  [(PKPaymentTransaction *)v5 setServiceIdentifier:uUIDString];
 
   [(PKPaymentTransaction *)v5 setTransactionStatus:1];
   [(PKPaymentTransaction *)v5 setTransactionType:6];
@@ -317,11 +317,11 @@
   [(PKPaymentTransaction *)v5 setAmount:v8];
 
   [(PKPaymentTransaction *)v5 setCurrencyCode:@"USD"];
-  v9 = [MEMORY[0x1E695DF00] date];
-  [(PKPaymentTransaction *)v5 setTransactionDate:v9];
-  [(PKPaymentTransaction *)v5 setTransactionStatusChangedDate:v9];
+  date = [MEMORY[0x1E695DF00] date];
+  [(PKPaymentTransaction *)v5 setTransactionDate:date];
+  [(PKPaymentTransaction *)v5 setTransactionStatusChangedDate:date];
   [(PKPaymentTransaction *)v5 setCardType:7];
-  [(PKPaymentTransaction *)v5 setAccountIdentifier:v3];
+  [(PKPaymentTransaction *)v5 setAccountIdentifier:identifierCopy];
 
   [(PKPaymentTransaction *)v5 setAccountType:4];
   [(PKPaymentTransaction *)v5 setMerchant:v4];
@@ -343,15 +343,15 @@
   v9[4] = @"unknown";
   v8[4] = @"stateReason";
   v8[5] = @"accountDetails";
-  v3 = [a1 _appleBalanceAccountDetailsDictionary];
-  v9[5] = v3;
+  _appleBalanceAccountDetailsDictionary = [self _appleBalanceAccountDetailsDictionary];
+  v9[5] = _appleBalanceAccountDetailsDictionary;
   v8[6] = @"supportedFeatures";
-  v4 = [a1 _appleBalanceSupportedFeaturesArray];
-  v9[6] = v4;
+  _appleBalanceSupportedFeaturesArray = [self _appleBalanceSupportedFeaturesArray];
+  v9[6] = _appleBalanceSupportedFeaturesArray;
   v8[7] = @"cloudStoreZoneNames";
-  v5 = [a1 _appleBalanceCloudStoreZoneNames];
+  _appleBalanceCloudStoreZoneNames = [self _appleBalanceCloudStoreZoneNames];
   v8[8] = @"accountBaseURL";
-  v9[7] = v5;
+  v9[7] = _appleBalanceCloudStoreZoneNames;
   v9[8] = @"https://localhost:3000/appleBalance";
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:v8 count:9];
 
@@ -372,14 +372,14 @@
   v9[4] = @"fraudSuspected";
   v8[4] = @"stateReason";
   v8[5] = @"accountDetails";
-  v3 = [a1 _appleBalanceAccountDetailsDictionary2];
-  v9[5] = v3;
+  _appleBalanceAccountDetailsDictionary2 = [self _appleBalanceAccountDetailsDictionary2];
+  v9[5] = _appleBalanceAccountDetailsDictionary2;
   v8[6] = @"supportedFeatures";
-  v4 = [a1 _appleBalanceSupportedFeaturesArray2];
-  v9[6] = v4;
+  _appleBalanceSupportedFeaturesArray2 = [self _appleBalanceSupportedFeaturesArray2];
+  v9[6] = _appleBalanceSupportedFeaturesArray2;
   v8[7] = @"cloudStoreZoneNames";
-  v5 = [a1 _appleBalanceCloudStoreZoneNames2];
-  v9[7] = v5;
+  _appleBalanceCloudStoreZoneNames2 = [self _appleBalanceCloudStoreZoneNames2];
+  v9[7] = _appleBalanceCloudStoreZoneNames2;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:v8 count:8];
 
   return v6;
@@ -389,11 +389,11 @@
 {
   v12[9] = *MEMORY[0x1E69E9840];
   v11[0] = @"createdDate";
-  v3 = [a1 _date1];
-  v12[0] = v3;
+  _date1 = [self _date1];
+  v12[0] = _date1;
   v11[1] = @"lastUpdatedDate";
-  v4 = [a1 _date2];
-  v12[1] = v4;
+  _date2 = [self _date2];
+  v12[1] = _date2;
   v12[2] = @"US";
   v11[2] = @"countryCode";
   v11[3] = @"currencyCode";
@@ -410,8 +410,8 @@
   v9[0] = @"currentBalance";
   v9[1] = @"dtuConfiguration";
   v10[0] = @"100.00";
-  v5 = [a1 _appleBalanceDTUConfigurationDictionary];
-  v10[1] = v5;
+  _appleBalanceDTUConfigurationDictionary = [self _appleBalanceDTUConfigurationDictionary];
+  v10[1] = _appleBalanceDTUConfigurationDictionary;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:v9 count:2];
   v12[8] = v6;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:v11 count:9];
@@ -423,11 +423,11 @@
 {
   v12[9] = *MEMORY[0x1E69E9840];
   v11[0] = @"createdDate";
-  v3 = [a1 _date3];
-  v12[0] = v3;
+  _date3 = [self _date3];
+  v12[0] = _date3;
   v11[1] = @"lastUpdatedDate";
-  v4 = [a1 _date4];
-  v12[1] = v4;
+  _date4 = [self _date4];
+  v12[1] = _date4;
   v12[2] = @"FR";
   v11[2] = @"countryCode";
   v11[3] = @"currencyCode";
@@ -444,8 +444,8 @@
   v9[0] = @"currentBalance";
   v9[1] = @"dtuConfiguration";
   v10[0] = @"250.00";
-  v5 = [a1 _appleBalanceDTUConfigurationDictionary2];
-  v10[1] = v5;
+  _appleBalanceDTUConfigurationDictionary2 = [self _appleBalanceDTUConfigurationDictionary2];
+  v10[1] = _appleBalanceDTUConfigurationDictionary2;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:v9 count:2];
   v12[8] = v6;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:v11 count:9];
@@ -467,14 +467,14 @@
   v9[4] = @"unknown";
   v8[4] = @"stateReason";
   v8[5] = @"accountDetails";
-  v3 = [a1 _appleBalanceAccountNoBalanceDetailsDictionary];
-  v9[5] = v3;
+  _appleBalanceAccountNoBalanceDetailsDictionary = [self _appleBalanceAccountNoBalanceDetailsDictionary];
+  v9[5] = _appleBalanceAccountNoBalanceDetailsDictionary;
   v8[6] = @"supportedFeatures";
-  v4 = [a1 _appleBalanceSupportedFeaturesArray];
-  v9[6] = v4;
+  _appleBalanceSupportedFeaturesArray = [self _appleBalanceSupportedFeaturesArray];
+  v9[6] = _appleBalanceSupportedFeaturesArray;
   v8[7] = @"cloudStoreZoneNames";
-  v5 = [a1 _appleBalanceCloudStoreZoneNames];
-  v9[7] = v5;
+  _appleBalanceCloudStoreZoneNames = [self _appleBalanceCloudStoreZoneNames];
+  v9[7] = _appleBalanceCloudStoreZoneNames;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:v8 count:8];
 
   return v6;
@@ -484,11 +484,11 @@
 {
   v8[9] = *MEMORY[0x1E69E9840];
   v7[0] = @"createdDate";
-  v3 = [a1 _date1];
-  v8[0] = v3;
+  _date1 = [self _date1];
+  v8[0] = _date1;
   v7[1] = @"lastUpdatedDate";
-  v4 = [a1 _date2];
-  v8[1] = v4;
+  _date2 = [self _date2];
+  v8[1] = _date2;
   v8[2] = @"US";
   v7[2] = @"countryCode";
   v7[3] = @"currencyCode";
@@ -605,8 +605,8 @@
 
 + (id)appleBalanceAccountDictionaryUpdated
 {
-  v2 = [a1 appleBalanceAccountDictionary];
-  v3 = [v2 mutableCopy];
+  appleBalanceAccountDictionary = [self appleBalanceAccountDictionary];
+  v3 = [appleBalanceAccountDictionary mutableCopy];
 
   [v3 setObject:@"closed" forKeyedSubscript:@"state"];
   [v3 setObject:@"fraudSuspected" forKeyedSubscript:@"stateReason"];
@@ -615,9 +615,9 @@
   return v4;
 }
 
-+ (id)_inStoreTokenForType:(int64_t)a3 debugType:(int64_t)a4
++ (id)_inStoreTokenForType:(int64_t)type debugType:(int64_t)debugType
 {
-  if (a3)
+  if (type)
   {
     v5 = &stru_1F227FD28;
   }
@@ -625,7 +625,7 @@
   else
   {
     v7 = @"12345678912345678912345678912345";
-    if (a4 == 3)
+    if (debugType == 3)
     {
       v7 = @"🥹";
     }
@@ -636,16 +636,16 @@
   return v5;
 }
 
-+ (id)appleBalanceInStoreTopUpTokenForType:(int64_t)a3 state:(int64_t)a4 debugType:(int64_t)a5
++ (id)appleBalanceInStoreTopUpTokenForType:(int64_t)type state:(int64_t)state debugType:(int64_t)debugType
 {
-  v9 = [MEMORY[0x1E695DEE8] currentCalendar];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
   v10 = objc_alloc_init(MEMORY[0x1E695DF10]);
   v11 = v10;
-  if (a5 <= 1)
+  if (debugType <= 1)
   {
-    if (a5)
+    if (debugType)
     {
-      if (a5 != 1)
+      if (debugType != 1)
       {
         goto LABEL_10;
       }
@@ -661,9 +661,9 @@ LABEL_8:
     goto LABEL_10;
   }
 
-  if (a5 != 2)
+  if (debugType != 2)
   {
-    if (a5 != 3)
+    if (debugType != 3)
     {
       goto LABEL_10;
     }
@@ -673,29 +673,29 @@ LABEL_8:
 
   [v10 setSecond:10];
 LABEL_10:
-  v13 = [MEMORY[0x1E695DF00] date];
-  v14 = [v9 dateByAddingComponents:v11 toDate:v13 options:0];
+  date = [MEMORY[0x1E695DF00] date];
+  v14 = [currentCalendar dateByAddingComponents:v11 toDate:date options:0];
 
   v15 = objc_alloc_init(PKAppleBalanceInStoreTopUpToken);
-  v16 = [a1 _inStoreTokenForType:a3 debugType:a5];
+  v16 = [self _inStoreTokenForType:type debugType:debugType];
   [(PKAppleBalanceInStoreTopUpToken *)v15 setToken:v16];
 
   [(PKAppleBalanceInStoreTopUpToken *)v15 setTokenIdentifier:@"123456789"];
-  [(PKAppleBalanceInStoreTopUpToken *)v15 setTokenType:a3];
+  [(PKAppleBalanceInStoreTopUpToken *)v15 setTokenType:type];
   [(PKAppleBalanceInStoreTopUpToken *)v15 setExpirationDate:v14];
-  [(PKAppleBalanceInStoreTopUpToken *)v15 setState:a4];
+  [(PKAppleBalanceInStoreTopUpToken *)v15 setState:state];
   v17 = [MEMORY[0x1E695DFF8] URLWithString:@"https://www.apple.com/"];
   [(PKAppleBalanceInStoreTopUpToken *)v15 setTermsURL:v17];
 
   return v15;
 }
 
-+ (id)appleBalanceAddMoneyConfigurationWithCurrencyCode:(id)a3
++ (id)appleBalanceAddMoneyConfigurationWithCurrencyCode:(id)code
 {
   v27[5] = *MEMORY[0x1E69E9840];
   v26[0] = @"minAmount";
   v3 = MEMORY[0x1E696AB90];
-  v4 = a3;
+  codeCopy = code;
   v18 = [v3 decimalNumberWithString:@"5.0"];
   v27[0] = v18;
   v26[1] = @"maxAmount";
@@ -709,21 +709,21 @@ LABEL_10:
   v5 = [MEMORY[0x1E696AB90] decimalNumberWithString:@"10.0"];
   v23[1] = @"currencyCode";
   v24[0] = v5;
-  v24[1] = v4;
+  v24[1] = codeCopy;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v24 forKeys:v23 count:2];
   v25[0] = v6;
   v21[0] = @"amount";
   v7 = [MEMORY[0x1E696AB90] decimalNumberWithString:@"20.0"];
   v21[1] = @"currencyCode";
   v22[0] = v7;
-  v22[1] = v4;
+  v22[1] = codeCopy;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v22 forKeys:v21 count:2];
   v25[1] = v8;
   v19[0] = @"amount";
   v9 = [MEMORY[0x1E696AB90] decimalNumberWithString:@"30.0"];
   v19[1] = @"currencyCode";
   v20[0] = v9;
-  v20[1] = v4;
+  v20[1] = codeCopy;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:v19 count:2];
   v25[2] = v10;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:3];
@@ -738,37 +738,37 @@ LABEL_10:
   return v14;
 }
 
-+ (BOOL)verifyAppleBalanceAccount:(id)a3
++ (BOOL)verifyAppleBalanceAccount:(id)account
 {
-  v4 = a3;
-  v5 = [v4 accountIdentifier];
-  v6 = v5;
-  if (!v5)
+  accountCopy = account;
+  accountIdentifier = [accountCopy accountIdentifier];
+  supportedFeatures = accountIdentifier;
+  if (!accountIdentifier)
   {
     v14 = 0;
     goto LABEL_12;
   }
 
-  v7 = [v5 isEqual:@"apple-balance-account-001"];
+  v7 = [accountIdentifier isEqual:@"apple-balance-account-001"];
 
   if (v7)
   {
-    if ([v4 feature] == 4 && objc_msgSend(v4, "type") == 3 && objc_msgSend(v4, "state") == 1 && !objc_msgSend(v4, "stateReason"))
+    if ([accountCopy feature] == 4 && objc_msgSend(accountCopy, "type") == 3 && objc_msgSend(accountCopy, "state") == 1 && !objc_msgSend(accountCopy, "stateReason"))
     {
-      v8 = [v4 cloudStoreZoneNames];
-      v9 = [v8 firstObject];
-      v10 = [v9 isEqualToString:@"apple-account"];
+      cloudStoreZoneNames = [accountCopy cloudStoreZoneNames];
+      firstObject = [cloudStoreZoneNames firstObject];
+      v10 = [firstObject isEqualToString:@"apple-account"];
 
       if (v10)
       {
-        v11 = [v4 details];
-        v12 = [v11 appleBalanceDetails];
-        v13 = [a1 _verifyAppleBalanceAccountDetails:v12];
+        details = [accountCopy details];
+        appleBalanceDetails = [details appleBalanceDetails];
+        v13 = [self _verifyAppleBalanceAccountDetails:appleBalanceDetails];
 
         if (v13)
         {
-          v6 = [v4 supportedFeatures];
-          v14 = [a1 _verifyAppleBalanceSupportedFeatures:v6];
+          supportedFeatures = [accountCopy supportedFeatures];
+          v14 = [self _verifyAppleBalanceSupportedFeatures:supportedFeatures];
 LABEL_12:
 
           goto LABEL_13;
@@ -783,37 +783,37 @@ LABEL_13:
   return v14;
 }
 
-+ (BOOL)verifyAppleBalanceAccount2:(id)a3
++ (BOOL)verifyAppleBalanceAccount2:(id)account2
 {
-  v4 = a3;
-  v5 = [v4 accountIdentifier];
-  v6 = v5;
-  if (!v5)
+  account2Copy = account2;
+  accountIdentifier = [account2Copy accountIdentifier];
+  supportedFeatures = accountIdentifier;
+  if (!accountIdentifier)
   {
     v14 = 0;
     goto LABEL_12;
   }
 
-  v7 = [v5 isEqual:@"apple-balance-account-002"];
+  v7 = [accountIdentifier isEqual:@"apple-balance-account-002"];
 
   if (v7)
   {
-    if ([v4 feature] == 4 && objc_msgSend(v4, "type") == 3 && objc_msgSend(v4, "state") == 2 && objc_msgSend(v4, "stateReason") == 5)
+    if ([account2Copy feature] == 4 && objc_msgSend(account2Copy, "type") == 3 && objc_msgSend(account2Copy, "state") == 2 && objc_msgSend(account2Copy, "stateReason") == 5)
     {
-      v8 = [v4 cloudStoreZoneNames];
-      v9 = [v8 firstObject];
-      v10 = [v9 isEqualToString:@"transactions"];
+      cloudStoreZoneNames = [account2Copy cloudStoreZoneNames];
+      firstObject = [cloudStoreZoneNames firstObject];
+      v10 = [firstObject isEqualToString:@"transactions"];
 
       if (v10)
       {
-        v11 = [v4 details];
-        v12 = [v11 appleBalanceDetails];
-        v13 = [a1 _verifyAppleBalanceAccountDetails2:v12];
+        details = [account2Copy details];
+        appleBalanceDetails = [details appleBalanceDetails];
+        v13 = [self _verifyAppleBalanceAccountDetails2:appleBalanceDetails];
 
         if (v13)
         {
-          v6 = [v4 supportedFeatures];
-          v14 = [a1 _verifyAppleBalanceSupportedFeatures2:v6];
+          supportedFeatures = [account2Copy supportedFeatures];
+          v14 = [self _verifyAppleBalanceSupportedFeatures2:supportedFeatures];
 LABEL_12:
 
           goto LABEL_13;
@@ -828,16 +828,16 @@ LABEL_13:
   return v14;
 }
 
-+ (BOOL)_verifyAppleBalanceAccountDetails:(id)a3
++ (BOOL)_verifyAppleBalanceAccountDetails:(id)details
 {
-  v4 = a3;
-  v5 = [v4 createdDate];
-  v6 = [a1 _date1];
-  v7 = _PKParseW3CDTSCompleteDatePlusHoursMinutesAndOptionalSeconds(v6, 0, 0);
+  detailsCopy = details;
+  createdDate = [detailsCopy createdDate];
+  _date1 = [self _date1];
+  v7 = _PKParseW3CDTSCompleteDatePlusHoursMinutesAndOptionalSeconds(_date1, 0, 0);
   v8 = v7;
-  if (v5 && v7)
+  if (createdDate && v7)
   {
-    v9 = [v5 isEqual:v7];
+    v9 = [createdDate isEqual:v7];
 
     if ((v9 & 1) == 0)
     {
@@ -848,19 +848,19 @@ LABEL_13:
   else
   {
 
-    if (v5 != v8)
+    if (createdDate != v8)
     {
       goto LABEL_11;
     }
   }
 
-  v10 = [v4 lastUpdatedDate];
-  v11 = [a1 _date2];
-  v12 = _PKParseW3CDTSCompleteDatePlusHoursMinutesAndOptionalSeconds(v11, 0, 0);
+  lastUpdatedDate = [detailsCopy lastUpdatedDate];
+  _date2 = [self _date2];
+  v12 = _PKParseW3CDTSCompleteDatePlusHoursMinutesAndOptionalSeconds(_date2, 0, 0);
   v13 = v12;
-  if (v10 && v12)
+  if (lastUpdatedDate && v12)
   {
-    v14 = [v10 isEqual:v12];
+    v14 = [lastUpdatedDate isEqual:v12];
 
     if ((v14 & 1) == 0)
     {
@@ -871,80 +871,80 @@ LABEL_13:
   else
   {
 
-    if (v10 != v13)
+    if (lastUpdatedDate != v13)
     {
       goto LABEL_11;
     }
   }
 
-  v17 = [v4 countryCode];
-  v18 = v17;
-  if (!v17)
+  countryCode = [detailsCopy countryCode];
+  accountSummary = countryCode;
+  if (!countryCode)
   {
     goto LABEL_28;
   }
 
-  v15 = [v17 isEqual:@"US"];
+  v15 = [countryCode isEqual:@"US"];
 
   if (!v15)
   {
     goto LABEL_12;
   }
 
-  v19 = [v4 currencyCode];
-  if (v19 == @"USD")
+  currencyCode = [detailsCopy currencyCode];
+  if (currencyCode == @"USD")
   {
 LABEL_18:
-    v21 = [v4 associatedPassTypeIdentifier];
-    v18 = v21;
-    if (v21)
+    associatedPassTypeIdentifier = [detailsCopy associatedPassTypeIdentifier];
+    accountSummary = associatedPassTypeIdentifier;
+    if (associatedPassTypeIdentifier)
     {
-      v15 = [v21 isEqual:@"paymentpass.com.apple.wallet.dev"];
+      v15 = [associatedPassTypeIdentifier isEqual:@"paymentpass.com.apple.wallet.dev"];
 
       if (!v15)
       {
         goto LABEL_12;
       }
 
-      v22 = [v4 associatedPassSerialNumber];
-      v18 = v22;
-      if (v22)
+      associatedPassSerialNumber = [detailsCopy associatedPassSerialNumber];
+      accountSummary = associatedPassSerialNumber;
+      if (associatedPassSerialNumber)
       {
-        v15 = [v22 isEqual:@"wallettest.lynx.serialnumber"];
+        v15 = [associatedPassSerialNumber isEqual:@"wallettest.lynx.serialnumber"];
 
         if (!v15)
         {
           goto LABEL_12;
         }
 
-        v23 = [v4 fpanIdentifier];
-        v18 = v23;
-        if (v23)
+        fpanIdentifier = [detailsCopy fpanIdentifier];
+        accountSummary = fpanIdentifier;
+        if (fpanIdentifier)
         {
-          v15 = [v23 isEqual:@"FAPLLY3814311690852077410603"];
+          v15 = [fpanIdentifier isEqual:@"FAPLLY3814311690852077410603"];
 
           if (!v15)
           {
             goto LABEL_12;
           }
 
-          if ([v4 cardType] != 135)
+          if ([detailsCopy cardType] != 135)
           {
             goto LABEL_11;
           }
 
-          v18 = [v4 accountSummary];
-          v24 = [v18 currentBalance];
+          accountSummary = [detailsCopy accountSummary];
+          currentBalance = [accountSummary currentBalance];
           v25 = [MEMORY[0x1E696AB90] decimalNumberWithString:@"100.00"];
           v26 = v25;
-          if (v24 && v25)
+          if (currentBalance && v25)
           {
-            LOBYTE(v15) = [v24 isEqual:v25];
+            LOBYTE(v15) = [currentBalance isEqual:v25];
           }
 
           else
           {
-            LOBYTE(v15) = v24 == v25;
+            LOBYTE(v15) = currentBalance == v25;
           }
 
 LABEL_29:
@@ -958,10 +958,10 @@ LABEL_28:
     goto LABEL_29;
   }
 
-  v20 = v19;
-  if (v19)
+  v20 = currencyCode;
+  if (currencyCode)
   {
-    v15 = [(__CFString *)v19 isEqualToString:@"USD"];
+    v15 = [(__CFString *)currencyCode isEqualToString:@"USD"];
 
     if (!v15)
     {
@@ -978,16 +978,16 @@ LABEL_12:
   return v15;
 }
 
-+ (BOOL)_verifyAppleBalanceAccountDetails2:(id)a3
++ (BOOL)_verifyAppleBalanceAccountDetails2:(id)details2
 {
-  v4 = a3;
-  v5 = [v4 createdDate];
-  v6 = [a1 _date3];
-  v7 = _PKParseW3CDTSCompleteDatePlusHoursMinutesAndOptionalSeconds(v6, 0, 0);
+  details2Copy = details2;
+  createdDate = [details2Copy createdDate];
+  _date3 = [self _date3];
+  v7 = _PKParseW3CDTSCompleteDatePlusHoursMinutesAndOptionalSeconds(_date3, 0, 0);
   v8 = v7;
-  if (v5 && v7)
+  if (createdDate && v7)
   {
-    v9 = [v5 isEqual:v7];
+    v9 = [createdDate isEqual:v7];
 
     if ((v9 & 1) == 0)
     {
@@ -998,19 +998,19 @@ LABEL_12:
   else
   {
 
-    if (v5 != v8)
+    if (createdDate != v8)
     {
       goto LABEL_11;
     }
   }
 
-  v10 = [v4 lastUpdatedDate];
-  v11 = [a1 _date4];
-  v12 = _PKParseW3CDTSCompleteDatePlusHoursMinutesAndOptionalSeconds(v11, 0, 0);
+  lastUpdatedDate = [details2Copy lastUpdatedDate];
+  _date4 = [self _date4];
+  v12 = _PKParseW3CDTSCompleteDatePlusHoursMinutesAndOptionalSeconds(_date4, 0, 0);
   v13 = v12;
-  if (v10 && v12)
+  if (lastUpdatedDate && v12)
   {
-    v14 = [v10 isEqual:v12];
+    v14 = [lastUpdatedDate isEqual:v12];
 
     if ((v14 & 1) == 0)
     {
@@ -1021,80 +1021,80 @@ LABEL_12:
   else
   {
 
-    if (v10 != v13)
+    if (lastUpdatedDate != v13)
     {
       goto LABEL_11;
     }
   }
 
-  v17 = [v4 countryCode];
-  v18 = v17;
-  if (!v17)
+  countryCode = [details2Copy countryCode];
+  accountSummary = countryCode;
+  if (!countryCode)
   {
     goto LABEL_28;
   }
 
-  v15 = [v17 isEqual:@"FR"];
+  v15 = [countryCode isEqual:@"FR"];
 
   if (!v15)
   {
     goto LABEL_12;
   }
 
-  v19 = [v4 currencyCode];
-  if (v19 == @"EUR")
+  currencyCode = [details2Copy currencyCode];
+  if (currencyCode == @"EUR")
   {
 LABEL_18:
-    v21 = [v4 associatedPassTypeIdentifier];
-    v18 = v21;
-    if (v21)
+    associatedPassTypeIdentifier = [details2Copy associatedPassTypeIdentifier];
+    accountSummary = associatedPassTypeIdentifier;
+    if (associatedPassTypeIdentifier)
     {
-      v15 = [v21 isEqual:@"paymentpass.com.apple.wallet.dev"];
+      v15 = [associatedPassTypeIdentifier isEqual:@"paymentpass.com.apple.wallet.dev"];
 
       if (!v15)
       {
         goto LABEL_12;
       }
 
-      v22 = [v4 associatedPassSerialNumber];
-      v18 = v22;
-      if (v22)
+      associatedPassSerialNumber = [details2Copy associatedPassSerialNumber];
+      accountSummary = associatedPassSerialNumber;
+      if (associatedPassSerialNumber)
       {
-        v15 = [v22 isEqual:@"wallettest.lynx.serialnumber"];
+        v15 = [associatedPassSerialNumber isEqual:@"wallettest.lynx.serialnumber"];
 
         if (!v15)
         {
           goto LABEL_12;
         }
 
-        v23 = [v4 fpanIdentifier];
-        v18 = v23;
-        if (v23)
+        fpanIdentifier = [details2Copy fpanIdentifier];
+        accountSummary = fpanIdentifier;
+        if (fpanIdentifier)
         {
-          v15 = [v23 isEqual:@"FAPLLY3814311690852077410604"];
+          v15 = [fpanIdentifier isEqual:@"FAPLLY3814311690852077410604"];
 
           if (!v15)
           {
             goto LABEL_12;
           }
 
-          if ([v4 cardType] != 135)
+          if ([details2Copy cardType] != 135)
           {
             goto LABEL_11;
           }
 
-          v18 = [v4 accountSummary];
-          v24 = [v18 currentBalance];
+          accountSummary = [details2Copy accountSummary];
+          currentBalance = [accountSummary currentBalance];
           v25 = [MEMORY[0x1E696AB90] decimalNumberWithString:@"250.00"];
           v26 = v25;
-          if (v24 && v25)
+          if (currentBalance && v25)
           {
-            LOBYTE(v15) = [v24 isEqual:v25];
+            LOBYTE(v15) = [currentBalance isEqual:v25];
           }
 
           else
           {
-            LOBYTE(v15) = v24 == v25;
+            LOBYTE(v15) = currentBalance == v25;
           }
 
 LABEL_29:
@@ -1108,10 +1108,10 @@ LABEL_28:
     goto LABEL_29;
   }
 
-  v20 = v19;
-  if (v19)
+  v20 = currencyCode;
+  if (currencyCode)
   {
-    v15 = [(__CFString *)v19 isEqualToString:@"EUR"];
+    v15 = [(__CFString *)currencyCode isEqualToString:@"EUR"];
 
     if (!v15)
     {
@@ -1128,35 +1128,35 @@ LABEL_12:
   return v15;
 }
 
-+ (BOOL)_verifyLightweightAppleBalanceAccountDetails:(id)a3
++ (BOOL)_verifyLightweightAppleBalanceAccountDetails:(id)details
 {
-  v3 = [a3 accountSummary];
-  v4 = [v3 currentBalance];
+  accountSummary = [details accountSummary];
+  currentBalance = [accountSummary currentBalance];
   v5 = [MEMORY[0x1E696AB90] decimalNumberWithString:@"100.00"];
   v6 = v5;
-  if (v4 && v5)
+  if (currentBalance && v5)
   {
-    v7 = [v4 isEqual:v5];
+    v7 = [currentBalance isEqual:v5];
   }
 
   else
   {
-    v7 = v4 == v5;
+    v7 = currentBalance == v5;
   }
 
   return v7;
 }
 
-+ (BOOL)_verifyAppleBalanceSupportedFeatures:(id)a3
++ (BOOL)_verifyAppleBalanceSupportedFeatures:(id)features
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  featuresCopy = features;
   v17 = 0u;
   v18 = 0u;
-  v4 = [v3 count] == 2;
+  v4 = [featuresCopy count] == 2;
   v19 = 0u;
   v20 = 0u;
-  v5 = v3;
+  v5 = featuresCopy;
   v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (!v6)
   {
@@ -1174,18 +1174,18 @@ LABEL_12:
         objc_enumerationMutation(v5);
       }
 
-      v10 = [*(*(&v17 + 1) + 8 * i) identifier];
-      v11 = v10;
-      if (@"ampTopUpSupported" == v10)
+      identifier = [*(*(&v17 + 1) + 8 * i) identifier];
+      v11 = identifier;
+      if (@"ampTopUpSupported" == identifier)
       {
 LABEL_17:
 
         goto LABEL_18;
       }
 
-      if (@"ampTopUpSupported" && v10)
+      if (@"ampTopUpSupported" && identifier)
       {
-        v12 = [@"ampTopUpSupported" isEqualToString:v10];
+        v12 = [@"ampTopUpSupported" isEqualToString:identifier];
 
         if (v12)
         {
@@ -1237,32 +1237,32 @@ LABEL_23:
   return v4;
 }
 
-+ (BOOL)verifyLightweightAppleBalanceAccount:(id)a3
++ (BOOL)verifyLightweightAppleBalanceAccount:(id)account
 {
-  v4 = a3;
-  v5 = [v4 accountIdentifier];
-  v6 = v5;
-  if (!v5)
+  accountCopy = account;
+  accountIdentifier = [accountCopy accountIdentifier];
+  details = accountIdentifier;
+  if (!accountIdentifier)
   {
     v12 = 0;
     goto LABEL_9;
   }
 
-  v7 = [v5 isEqual:@"apple-balance-lightweight-account-001"];
+  v7 = [accountIdentifier isEqual:@"apple-balance-lightweight-account-001"];
 
   if (v7)
   {
-    if ([v4 feature] == 4 && objc_msgSend(v4, "type") == 3)
+    if ([accountCopy feature] == 4 && objc_msgSend(accountCopy, "type") == 3)
     {
-      v8 = [v4 cloudStoreZoneNames];
-      v9 = [v8 firstObject];
-      v10 = [v9 isEqualToString:@"apple-account"];
+      cloudStoreZoneNames = [accountCopy cloudStoreZoneNames];
+      firstObject = [cloudStoreZoneNames firstObject];
+      v10 = [firstObject isEqualToString:@"apple-account"];
 
       if (v10)
       {
-        v6 = [v4 details];
-        v11 = [v6 appleBalanceDetails];
-        v12 = [a1 _verifyLightweightAppleBalanceAccountDetails:v11];
+        details = [accountCopy details];
+        appleBalanceDetails = [details appleBalanceDetails];
+        v12 = [self _verifyLightweightAppleBalanceAccountDetails:appleBalanceDetails];
 
 LABEL_9:
         goto LABEL_10;
@@ -1276,24 +1276,24 @@ LABEL_10:
   return v12;
 }
 
-+ (BOOL)verifyPromotion:(id)a3
++ (BOOL)verifyPromotion:(id)promotion
 {
-  v4 = a3;
-  if ([v4 promotionType])
+  promotionCopy = promotion;
+  if ([promotionCopy promotionType])
   {
     goto LABEL_2;
   }
 
-  v7 = [v4 programIdentifier];
-  if (v7 != @"30154")
+  programIdentifier = [promotionCopy programIdentifier];
+  if (programIdentifier != @"30154")
   {
-    v8 = v7;
-    if (!v7)
+    v8 = programIdentifier;
+    if (!programIdentifier)
     {
       goto LABEL_2;
     }
 
-    v9 = [(__CFString *)v7 isEqualToString:@"30154"];
+    v9 = [(__CFString *)programIdentifier isEqualToString:@"30154"];
 
     if (!v9)
     {
@@ -1301,16 +1301,16 @@ LABEL_10:
     }
   }
 
-  v10 = [v4 versionIdentifier];
-  if (v10 != @"v701909")
+  versionIdentifier = [promotionCopy versionIdentifier];
+  if (versionIdentifier != @"v701909")
   {
-    v11 = v10;
-    if (!v10)
+    v11 = versionIdentifier;
+    if (!versionIdentifier)
     {
       goto LABEL_2;
     }
 
-    v12 = [(__CFString *)v10 isEqualToString:@"v701909"];
+    v12 = [(__CFString *)versionIdentifier isEqualToString:@"v701909"];
 
     if (!v12)
     {
@@ -1318,17 +1318,17 @@ LABEL_10:
     }
   }
 
-  if ([v4 generationIdentifier] != 371848754 || objc_msgSend(v4, "stamp") != 0x1863E34D290)
+  if ([promotionCopy generationIdentifier] != 371848754 || objc_msgSend(promotionCopy, "stamp") != 0x1863E34D290)
   {
     goto LABEL_2;
   }
 
-  v13 = [v4 bonusMinAmount];
+  bonusMinAmount = [promotionCopy bonusMinAmount];
   v14 = [MEMORY[0x1E696AB90] decimalNumberWithString:@"50.0"];
   v15 = v14;
-  if (v13 && v14)
+  if (bonusMinAmount && v14)
   {
-    v16 = [v13 isEqual:v14];
+    v16 = [bonusMinAmount isEqual:v14];
 
     if ((v16 & 1) == 0)
     {
@@ -1339,19 +1339,19 @@ LABEL_10:
   else
   {
 
-    if (v13 != v15)
+    if (bonusMinAmount != v15)
     {
       goto LABEL_2;
     }
   }
 
-  v17 = [v4 bonusMaxAmount];
+  bonusMaxAmount = [promotionCopy bonusMaxAmount];
   v18 = [MEMORY[0x1E696AB90] decimalNumberWithString:@"200.0"];
   v19 = v18;
-  if (!v17 || !v18)
+  if (!bonusMaxAmount || !v18)
   {
 
-    if (v17 == v19)
+    if (bonusMaxAmount == v19)
     {
       goto LABEL_22;
     }
@@ -1361,7 +1361,7 @@ LABEL_2:
     goto LABEL_3;
   }
 
-  v20 = [v17 isEqual:v18];
+  v20 = [bonusMaxAmount isEqual:v18];
 
   if ((v20 & 1) == 0)
   {
@@ -1369,16 +1369,16 @@ LABEL_2:
   }
 
 LABEL_22:
-  v21 = [v4 offerText];
-  if (v21 != @"Add $50 or more and get 1 month of Apple Music free.")
+  offerText = [promotionCopy offerText];
+  if (offerText != @"Add $50 or more and get 1 month of Apple Music free.")
   {
-    v22 = v21;
-    if (!v21)
+    v22 = offerText;
+    if (!offerText)
     {
       goto LABEL_2;
     }
 
-    v23 = [(__CFString *)v21 isEqualToString:@"Add $50 or more and get 1 month of Apple Music free."];
+    v23 = [(__CFString *)offerText isEqualToString:@"Add $50 or more and get 1 month of Apple Music free."];
 
     if (!v23)
     {
@@ -1386,16 +1386,16 @@ LABEL_22:
     }
   }
 
-  v24 = [v4 conditionText];
-  if (v24 != @"1 month free, then $14.99/month. Limit 1 per Apple Account. Must claim your free content bonus immediately. Terms apply.")
+  conditionText = [promotionCopy conditionText];
+  if (conditionText != @"1 month free, then $14.99/month. Limit 1 per Apple Account. Must claim your free content bonus immediately. Terms apply.")
   {
-    v25 = v24;
-    if (!v24)
+    v25 = conditionText;
+    if (!conditionText)
     {
       goto LABEL_2;
     }
 
-    v26 = [(__CFString *)v24 isEqualToString:@"1 month free, then $14.99/month. Limit 1 per Apple Account. Must claim your free content bonus immediately. Terms apply."];
+    v26 = [(__CFString *)conditionText isEqualToString:@"1 month free, then $14.99/month. Limit 1 per Apple Account. Must claim your free content bonus immediately. Terms apply."];
 
     if (!v26)
     {
@@ -1403,30 +1403,30 @@ LABEL_22:
     }
   }
 
-  v27 = [v4 lastUpdatedDate];
-  v28 = [a1 _date1];
-  v29 = _PKParseW3CDTSCompleteDatePlusHoursMinutesAndOptionalSeconds(v28, 0, 0);
+  lastUpdatedDate = [promotionCopy lastUpdatedDate];
+  _date1 = [self _date1];
+  v29 = _PKParseW3CDTSCompleteDatePlusHoursMinutesAndOptionalSeconds(_date1, 0, 0);
   v30 = v29;
-  if (v27 && v29)
+  if (lastUpdatedDate && v29)
   {
-    v5 = [v27 isEqual:v29];
+    v5 = [lastUpdatedDate isEqual:v29];
   }
 
   else
   {
-    v5 = v27 == v29;
+    v5 = lastUpdatedDate == v29;
   }
 
 LABEL_3:
   return v5;
 }
 
-+ (BOOL)verifyInStoreTopUpToken:(id)a3
++ (BOOL)verifyInStoreTopUpToken:(id)token
 {
-  v4 = a3;
-  v5 = [v4 token];
-  v6 = [a1 _inStoreTokenForType:0 debugType:0];
-  v7 = v5;
+  tokenCopy = token;
+  token = [tokenCopy token];
+  v6 = [self _inStoreTokenForType:0 debugType:0];
+  v7 = token;
   v8 = v6;
   v9 = v8;
   if (v7 == v8)
@@ -1439,7 +1439,7 @@ LABEL_3:
     {
 
       v11 = 0;
-      v12 = v7;
+      termsURL = v7;
 LABEL_10:
 
       goto LABEL_11;
@@ -1453,21 +1453,21 @@ LABEL_10:
     }
   }
 
-  if ([v4 tokenType])
+  if ([tokenCopy tokenType])
   {
     goto LABEL_8;
   }
 
-  v14 = [v4 tokenIdentifier];
-  if (v14 != @"12345678912345678912345678912345")
+  tokenIdentifier = [tokenCopy tokenIdentifier];
+  if (tokenIdentifier != @"12345678912345678912345678912345")
   {
-    v15 = v14;
-    if (!v14)
+    v15 = tokenIdentifier;
+    if (!tokenIdentifier)
     {
       goto LABEL_8;
     }
 
-    v16 = [(__CFString *)v14 isEqualToString:@"12345678912345678912345678912345"];
+    v16 = [(__CFString *)tokenIdentifier isEqualToString:@"12345678912345678912345678912345"];
 
     if (!v16)
     {
@@ -1475,13 +1475,13 @@ LABEL_10:
     }
   }
 
-  v17 = [v4 expirationDate];
-  v18 = [a1 _date1];
-  v19 = _PKParseW3CDTSCompleteDatePlusHoursMinutesAndOptionalSeconds(v18, 0, 0);
+  expirationDate = [tokenCopy expirationDate];
+  _date1 = [self _date1];
+  v19 = _PKParseW3CDTSCompleteDatePlusHoursMinutesAndOptionalSeconds(_date1, 0, 0);
   v20 = v19;
-  if (v17 && v19)
+  if (expirationDate && v19)
   {
-    v21 = [v17 isEqual:v19];
+    v21 = [expirationDate isEqual:v19];
 
     if ((v21 & 1) == 0)
     {
@@ -1492,18 +1492,18 @@ LABEL_10:
   else
   {
 
-    if (v17 != v20)
+    if (expirationDate != v20)
     {
       goto LABEL_8;
     }
   }
 
-  if (![v4 state])
+  if (![tokenCopy state])
   {
-    v12 = [v4 termsURL];
-    v22 = [v12 absoluteString];
+    termsURL = [tokenCopy termsURL];
+    absoluteString = [termsURL absoluteString];
     v9 = @"https://www.apple.com/";
-    if (v22 == @"https://www.apple.com/")
+    if (absoluteString == @"https://www.apple.com/")
     {
       v11 = 1;
       v7 = @"https://www.apple.com/";
@@ -1511,10 +1511,10 @@ LABEL_10:
 
     else
     {
-      v7 = v22;
-      if (v22)
+      v7 = absoluteString;
+      if (absoluteString)
       {
-        v11 = [(__CFString *)v22 isEqualToString:@"https://www.apple.com/"];
+        v11 = [(__CFString *)absoluteString isEqualToString:@"https://www.apple.com/"];
         v9 = v7;
       }
 

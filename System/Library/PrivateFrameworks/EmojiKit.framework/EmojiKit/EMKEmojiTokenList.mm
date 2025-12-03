@@ -1,21 +1,21 @@
 @interface EMKEmojiTokenList
-- (EMKEmojiTokenList)initWithEmojiTokenArray:(id)a3;
+- (EMKEmojiTokenList)initWithEmojiTokenArray:(id)array;
 - (id)description;
 @end
 
 @implementation EMKEmojiTokenList
 
-- (EMKEmojiTokenList)initWithEmojiTokenArray:(id)a3
+- (EMKEmojiTokenList)initWithEmojiTokenArray:(id)array
 {
-  v4 = a3;
-  if (v4)
+  arrayCopy = array;
+  if (arrayCopy)
   {
     v8.receiver = self;
     v8.super_class = EMKEmojiTokenList;
     self = [(EMKEmojiTokenList *)&v8 init];
     if (self)
     {
-      v5 = [v4 copy];
+      v5 = [arrayCopy copy];
       emojiTokenArray = self->_emojiTokenArray;
       self->_emojiTokenArray = v5;
     }
@@ -39,8 +39,8 @@
     do
     {
       v8 = [(NSArray *)self->_emojiTokenArray objectAtIndex:v7];
-      v9 = [v8 string];
-      [v4 appendString:v9];
+      string = [v8 string];
+      [v4 appendString:string];
 
       if (++v7 < v6)
       {

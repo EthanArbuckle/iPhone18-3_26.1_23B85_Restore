@@ -2,27 +2,27 @@
 - (ADAssistantStateDumpManager)init;
 - (BOOL)_shouldDumpSiriOnDeviceAnalyticsBiomeStreams;
 - (id)_dumpAssistantState;
-- (id)_dumpOnDeviceAnalyticsBiomeStream:(id)a3;
+- (id)_dumpOnDeviceAnalyticsBiomeStream:(id)stream;
 - (id)_dumpSiriOnDeviceAnalyticsBiomeStreams;
-- (id)_getEventsDataForStream:(id)a3 numEvents:(int64_t *)a4;
+- (id)_getEventsDataForStream:(id)stream numEvents:(int64_t *)events;
 - (id)_getStateProviders;
-- (id)_publisherForStream:(id)a3;
+- (id)_publisherForStream:(id)stream;
 - (id)dumpAssistantState;
-- (void)_writeDataToDisk:(id)a3 withFileName:(id)a4;
-- (void)_writeTextToDisk:(id)a3 withFileName:(id)a4;
+- (void)_writeDataToDisk:(id)disk withFileName:(id)name;
+- (void)_writeTextToDisk:(id)disk withFileName:(id)name;
 @end
 
 @implementation ADAssistantStateDumpManager
 
-- (void)_writeDataToDisk:(id)a3 withFileName:(id)a4
+- (void)_writeDataToDisk:(id)disk withFileName:(id)name
 {
-  v5 = a4;
-  v6 = a3;
+  nameCopy = name;
+  diskCopy = disk;
   v7 = AFLogDirectory();
-  v8 = [v7 stringByAppendingPathComponent:v5];
+  v8 = [v7 stringByAppendingPathComponent:nameCopy];
 
   v11 = 0;
-  [v6 writeToFile:v8 options:1 error:&v11];
+  [diskCopy writeToFile:v8 options:1 error:&v11];
 
   v9 = v11;
   v10 = AFSiriLogContextDaemon;
@@ -50,32 +50,32 @@
   }
 }
 
-- (void)_writeTextToDisk:(id)a3 withFileName:(id)a4
+- (void)_writeTextToDisk:(id)disk withFileName:(id)name
 {
-  v6 = a4;
-  v8 = [a3 stringByAppendingString:@"\n"];
+  nameCopy = name;
+  v8 = [disk stringByAppendingString:@"\n"];
   v7 = [v8 dataUsingEncoding:4];
-  [(ADAssistantStateDumpManager *)self _writeDataToDisk:v7 withFileName:v6];
+  [(ADAssistantStateDumpManager *)self _writeDataToDisk:v7 withFileName:nameCopy];
 }
 
-- (id)_publisherForStream:(id)a3
+- (id)_publisherForStream:(id)stream
 {
-  v3 = a3;
+  streamCopy = stream;
   v4 = [[BMPublisherOptions alloc] initWithStartDate:0 endDate:0 maxEvents:1000 lastN:0 reversed:1];
-  v5 = [v3 publisherWithOptions:v4];
+  v5 = [streamCopy publisherWithOptions:v4];
 
   return v5;
 }
 
-- (id)_getEventsDataForStream:(id)a3 numEvents:(int64_t *)a4
+- (id)_getEventsDataForStream:(id)stream numEvents:(int64_t *)events
 {
-  v6 = a3;
+  streamCopy = stream;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
   v24 = 0;
   v7 = objc_alloc_init(NSMutableData);
-  v8 = [(ADAssistantStateDumpManager *)self _publisherForStream:v6];
+  v8 = [(ADAssistantStateDumpManager *)self _publisherForStream:streamCopy];
   v15 = _NSConcreteStackBlock;
   v16 = 3221225472;
   v17 = sub_10009EC8C;
@@ -84,18 +84,18 @@
   v19 = v9;
   v20 = &v21;
   v10 = [v8 sinkWithCompletion:&stru_100510128 receiveInput:&v15];
-  *a4 = v22[3];
+  *events = v22[3];
   v11 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
-    v13 = *a4;
-    v14 = [v6 identifier];
+    v13 = *events;
+    identifier = [streamCopy identifier];
     *buf = 136315650;
     v26 = "[ADAssistantStateDumpManager _getEventsDataForStream:numEvents:]";
     v27 = 2048;
     v28 = v13;
     v29 = 2112;
-    v30 = v14;
+    v30 = identifier;
     _os_log_debug_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEBUG, "%s Gathered %ld events for stream %@", buf, 0x20u);
   }
 
@@ -104,29 +104,29 @@
   return v9;
 }
 
-- (id)_dumpOnDeviceAnalyticsBiomeStream:(id)a3
+- (id)_dumpOnDeviceAnalyticsBiomeStream:(id)stream
 {
-  v4 = a3;
+  streamCopy = stream;
   v5 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
   {
     v13 = v5;
-    v14 = [v4 identifier];
+    identifier = [streamCopy identifier];
     *buf = 136315394;
     *&buf[4] = "[ADAssistantStateDumpManager _dumpOnDeviceAnalyticsBiomeStream:]";
     v18 = 2112;
-    v19 = v14;
+    v19 = identifier;
     _os_log_debug_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEBUG, "%s Dumping data for stream %@", buf, 0x16u);
   }
 
   *buf = 0;
-  v6 = [(ADAssistantStateDumpManager *)self _getEventsDataForStream:v4 numEvents:buf];
-  v7 = [v4 identifier];
-  v8 = [NSString stringWithFormat:@"%@.log", v7];
+  v6 = [(ADAssistantStateDumpManager *)self _getEventsDataForStream:streamCopy numEvents:buf];
+  identifier2 = [streamCopy identifier];
+  v8 = [NSString stringWithFormat:@"%@.log", identifier2];
 
   [(ADAssistantStateDumpManager *)self _writeDataToDisk:v6 withFileName:v8];
-  v9 = [v4 identifier];
-  v15 = v9;
+  identifier3 = [streamCopy identifier];
+  v15 = identifier3;
   v10 = [NSString stringWithFormat:@"%ld events", *buf];
   v16 = v10;
   v11 = [NSDictionary dictionaryWithObjects:&v16 forKeys:&v15 count:1];
@@ -146,30 +146,30 @@
 
   v4 = objc_alloc_init(NSMutableDictionary);
   v5 = BiomeLibrary();
-  v6 = [v5 Siri];
-  v7 = [v6 Metrics];
-  v8 = [v7 OnDeviceDigestUsageMetrics];
-  v9 = [(ADAssistantStateDumpManager *)self _dumpOnDeviceAnalyticsBiomeStream:v8];
+  siri = [v5 Siri];
+  metrics = [siri Metrics];
+  onDeviceDigestUsageMetrics = [metrics OnDeviceDigestUsageMetrics];
+  v9 = [(ADAssistantStateDumpManager *)self _dumpOnDeviceAnalyticsBiomeStream:onDeviceDigestUsageMetrics];
   [v4 addEntriesFromDictionary:v9];
 
   v10 = BiomeLibrary();
-  v11 = [v10 Siri];
-  v12 = [v11 Metrics];
-  v13 = [v12 OnDeviceDigestSegmentsCohorts];
-  v14 = [(ADAssistantStateDumpManager *)self _dumpOnDeviceAnalyticsBiomeStream:v13];
+  siri2 = [v10 Siri];
+  metrics2 = [siri2 Metrics];
+  onDeviceDigestSegmentsCohorts = [metrics2 OnDeviceDigestSegmentsCohorts];
+  v14 = [(ADAssistantStateDumpManager *)self _dumpOnDeviceAnalyticsBiomeStream:onDeviceDigestSegmentsCohorts];
   [v4 addEntriesFromDictionary:v14];
 
   v15 = BiomeLibrary();
-  v16 = [v15 Siri];
-  v17 = [v16 Metrics];
-  v18 = [v17 OnDeviceDigestExperimentMetrics];
-  v19 = [(ADAssistantStateDumpManager *)self _dumpOnDeviceAnalyticsBiomeStream:v18];
+  siri3 = [v15 Siri];
+  metrics3 = [siri3 Metrics];
+  onDeviceDigestExperimentMetrics = [metrics3 OnDeviceDigestExperimentMetrics];
+  v19 = [(ADAssistantStateDumpManager *)self _dumpOnDeviceAnalyticsBiomeStream:onDeviceDigestExperimentMetrics];
   [v4 addEntriesFromDictionary:v19];
 
   v20 = BiomeLibrary();
-  v21 = [v20 Siri];
-  v22 = [v21 SELFProcessedEvent];
-  v23 = [(ADAssistantStateDumpManager *)self _dumpOnDeviceAnalyticsBiomeStream:v22];
+  siri4 = [v20 Siri];
+  sELFProcessedEvent = [siri4 SELFProcessedEvent];
+  v23 = [(ADAssistantStateDumpManager *)self _dumpOnDeviceAnalyticsBiomeStream:sELFProcessedEvent];
   [v4 addEntriesFromDictionary:v23];
 
   return v4;
@@ -237,14 +237,14 @@ LABEL_9:
   }
 
   val = +[NSMutableDictionary dictionary];
-  v3 = [(ADAssistantStateDumpManager *)self _getStateProviders];
+  _getStateProviders = [(ADAssistantStateDumpManager *)self _getStateProviders];
   v4 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     *&buf[4] = "[ADAssistantStateDumpManager _dumpAssistantState]";
     *&buf[12] = 2112;
-    *&buf[14] = v3;
+    *&buf[14] = _getStateProviders;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "%s Taking a state snapshot from providers: %@", buf, 0x16u);
   }
 
@@ -255,7 +255,7 @@ LABEL_9:
   v35 = 0u;
   v33 = 0u;
   v32 = 0u;
-  v6 = v3;
+  v6 = _getStateProviders;
   v7 = [v6 countByEnumeratingWithState:&v32 objects:v42 count:16];
   if (v7)
   {
@@ -330,7 +330,7 @@ LABEL_9:
   block[1] = 3221225472;
   block[2] = sub_10009FC34;
   block[3] = &unk_10051C588;
-  v25 = self;
+  selfCopy = self;
   v26 = buf;
   v24 = val;
   v18 = val;
@@ -347,12 +347,12 @@ LABEL_9:
 - (id)dumpAssistantState
 {
   v3 = objc_alloc_init(NSMutableDictionary);
-  v4 = [(ADAssistantStateDumpManager *)self _dumpAssistantState];
-  [v3 addEntriesFromDictionary:v4];
+  _dumpAssistantState = [(ADAssistantStateDumpManager *)self _dumpAssistantState];
+  [v3 addEntriesFromDictionary:_dumpAssistantState];
   if ([(ADAssistantStateDumpManager *)self _shouldDumpSiriOnDeviceAnalyticsBiomeStreams])
   {
-    v5 = [(ADAssistantStateDumpManager *)self _dumpSiriOnDeviceAnalyticsBiomeStreams];
-    [v3 addEntriesFromDictionary:v5];
+    _dumpSiriOnDeviceAnalyticsBiomeStreams = [(ADAssistantStateDumpManager *)self _dumpSiriOnDeviceAnalyticsBiomeStreams];
+    [v3 addEntriesFromDictionary:_dumpSiriOnDeviceAnalyticsBiomeStreams];
   }
 
   v6 = [v3 description];

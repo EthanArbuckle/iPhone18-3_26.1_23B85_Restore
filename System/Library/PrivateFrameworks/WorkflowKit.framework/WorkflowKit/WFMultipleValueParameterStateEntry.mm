@@ -1,23 +1,23 @@
 @interface WFMultipleValueParameterStateEntry
-- (BOOL)isEqual:(id)a3;
-- (WFMultipleValueParameterStateEntry)initWithIdentity:(id)a3 parameterState:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (WFMultipleValueParameterStateEntry)initWithIdentity:(id)identity parameterState:(id)state;
 - (unint64_t)hash;
 @end
 
 @implementation WFMultipleValueParameterStateEntry
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4)
+  equalCopy = equal;
+  if (equalCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(WFMultipleValueParameterStateEntry *)self identity];
-      v6 = [v4 identity];
-      v7 = v5;
-      v8 = v6;
+      identity = [(WFMultipleValueParameterStateEntry *)self identity];
+      identity2 = [equalCopy identity];
+      v7 = identity;
+      v8 = identity2;
       v9 = v8;
       if (v7 == v8)
       {
@@ -26,8 +26,8 @@
       else
       {
         LOBYTE(v10) = 0;
-        v11 = v8;
-        v12 = v7;
+        parameterState2 = v8;
+        parameterState = v7;
         if (!v7 || !v8)
         {
           goto LABEL_11;
@@ -41,9 +41,9 @@
         }
       }
 
-      v12 = [(WFMultipleValueParameterStateEntry *)self parameterState];
-      v11 = [v4 parameterState];
-      LOBYTE(v10) = [v12 isEqual:v11];
+      parameterState = [(WFMultipleValueParameterStateEntry *)self parameterState];
+      parameterState2 = [equalCopy parameterState];
+      LOBYTE(v10) = [parameterState isEqual:parameterState2];
 LABEL_11:
 
 LABEL_12:
@@ -59,26 +59,26 @@ LABEL_13:
 
 - (unint64_t)hash
 {
-  v3 = [(WFMultipleValueParameterStateEntry *)self identity];
-  v4 = [v3 hash];
-  v5 = [(WFMultipleValueParameterStateEntry *)self parameterState];
-  v6 = [v5 hash];
+  identity = [(WFMultipleValueParameterStateEntry *)self identity];
+  v4 = [identity hash];
+  parameterState = [(WFMultipleValueParameterStateEntry *)self parameterState];
+  v6 = [parameterState hash];
 
   return v6 ^ v4;
 }
 
-- (WFMultipleValueParameterStateEntry)initWithIdentity:(id)a3 parameterState:(id)a4
+- (WFMultipleValueParameterStateEntry)initWithIdentity:(id)identity parameterState:(id)state
 {
-  v7 = a3;
-  v8 = a4;
+  identityCopy = identity;
+  stateCopy = state;
   v13.receiver = self;
   v13.super_class = WFMultipleValueParameterStateEntry;
   v9 = [(WFMultipleValueParameterStateEntry *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_identity, a3);
-    objc_storeStrong(&v10->_parameterState, a4);
+    objc_storeStrong(&v9->_identity, identity);
+    objc_storeStrong(&v10->_parameterState, state);
     v11 = v10;
   }
 

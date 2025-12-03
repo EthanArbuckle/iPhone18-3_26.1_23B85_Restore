@@ -1,34 +1,34 @@
 @interface ATXMotion
-+ (BOOL)canPredictClipsForActivityStream:(id)a3;
-+ (id)_getMotionStringFromCMMotionActivity:(id)a3;
-+ (id)findMostCommonAndRecent:(id)a3 identityFunc:(id)a4;
-+ (id)getMotionStringFromMotionType:(int64_t)a3;
-+ (id)summarizeActivityStream:(id)a3;
-+ (int64_t)_getMotionTypeFromCMMotionActivity:(id)a3;
-- (ATXMotion)initWithMotionType:(int64_t)a3 stationary:(BOOL)a4 canPredictClipsGivenRecentMotion:(BOOL)a5;
++ (BOOL)canPredictClipsForActivityStream:(id)stream;
++ (id)_getMotionStringFromCMMotionActivity:(id)activity;
++ (id)findMostCommonAndRecent:(id)recent identityFunc:(id)func;
++ (id)getMotionStringFromMotionType:(int64_t)type;
++ (id)summarizeActivityStream:(id)stream;
++ (int64_t)_getMotionTypeFromCMMotionActivity:(id)activity;
+- (ATXMotion)initWithMotionType:(int64_t)type stationary:(BOOL)stationary canPredictClipsGivenRecentMotion:(BOOL)motion;
 - (id)print;
 @end
 
 @implementation ATXMotion
 
-- (ATXMotion)initWithMotionType:(int64_t)a3 stationary:(BOOL)a4 canPredictClipsGivenRecentMotion:(BOOL)a5
+- (ATXMotion)initWithMotionType:(int64_t)type stationary:(BOOL)stationary canPredictClipsGivenRecentMotion:(BOOL)motion
 {
   v9.receiver = self;
   v9.super_class = ATXMotion;
   result = [(ATXMotion *)&v9 init];
   if (result)
   {
-    result->_motiontype = a3;
-    result->_stationary = a4;
-    result->_canPredictClipsGivenRecentMotion = a5;
+    result->_motiontype = type;
+    result->_stationary = stationary;
+    result->_canPredictClipsGivenRecentMotion = motion;
   }
 
   return result;
 }
 
-+ (id)_getMotionStringFromCMMotionActivity:(id)a3
++ (id)_getMotionStringFromCMMotionActivity:(id)activity
 {
-  if (a3)
+  if (activity)
   {
     v3 = [ATXMotion _getMotionTypeFromCMMotionActivity:?];
   }
@@ -43,13 +43,13 @@
   return v4;
 }
 
-+ (int64_t)_getMotionTypeFromCMMotionActivity:(id)a3
++ (int64_t)_getMotionTypeFromCMMotionActivity:(id)activity
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  activityCopy = activity;
+  v4 = activityCopy;
+  if (activityCopy)
   {
-    if ([v3 walking])
+    if ([activityCopy walking])
     {
       v5 = 0;
     }
@@ -83,16 +83,16 @@
   return v5;
 }
 
-+ (id)getMotionStringFromMotionType:(int64_t)a3
++ (id)getMotionStringFromMotionType:(int64_t)type
 {
-  if (a3 > 4)
+  if (type > 4)
   {
     return @"unknown";
   }
 
   else
   {
-    return off_279AB8D90[a3];
+    return off_279AB8D90[type];
   }
 }
 
@@ -101,23 +101,23 @@
   if (self->_stationary)
   {
     v3 = objc_alloc(MEMORY[0x277CCACA8]);
-    v4 = [(ATXMotion *)self getMotionString];
-    v5 = [v3 initWithFormat:@"%@|stationary", v4];
+    getMotionString = [(ATXMotion *)self getMotionString];
+    getMotionString2 = [v3 initWithFormat:@"%@|stationary", getMotionString];
   }
 
   else
   {
-    v5 = [(ATXMotion *)self getMotionString];
+    getMotionString2 = [(ATXMotion *)self getMotionString];
   }
 
-  return v5;
+  return getMotionString2;
 }
 
-+ (id)summarizeActivityStream:(id)a3
++ (id)summarizeActivityStream:(id)stream
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 count])
+  streamCopy = stream;
+  v5 = streamCopy;
+  if (streamCopy && [streamCopy count])
   {
     v6 = [ATXMotion findMostCommonAndRecent:v5 identityFunc:&__block_literal_global_83_0];
     v7 = [ATXMotion findMostCommonAndRecent:v6 identityFunc:&__block_literal_global_85];
@@ -125,7 +125,7 @@
     {
       v8 = [ATXMotion alloc];
       v9 = [v7 objectAtIndexedSubscript:0];
-      v10 = -[ATXMotion initFromCMMotionActivity:canPredictClipsGivenRecentMotion:](v8, "initFromCMMotionActivity:canPredictClipsGivenRecentMotion:", v9, [a1 canPredictClipsForActivityStream:v5]);
+      v10 = -[ATXMotion initFromCMMotionActivity:canPredictClipsGivenRecentMotion:](v8, "initFromCMMotionActivity:canPredictClipsGivenRecentMotion:", v9, [self canPredictClipsForActivityStream:v5]);
     }
 
     else
@@ -158,11 +158,11 @@ uint64_t __37__ATXMotion_summarizeActivityStream___block_invoke_2(uint64_t a1, v
   return [v2 numberWithBool:v3];
 }
 
-+ (BOOL)canPredictClipsForActivityStream:(id)a3
++ (BOOL)canPredictClipsForActivityStream:(id)stream
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (![v4 count])
+  streamCopy = stream;
+  if (![streamCopy count])
   {
     goto LABEL_6;
   }
@@ -174,14 +174,14 @@ uint64_t __37__ATXMotion_summarizeActivityStream___block_invoke_2(uint64_t a1, v
     v23[1] = 3221225472;
     v23[2] = __46__ATXMotion_canPredictClipsForActivityStream___block_invoke;
     v23[3] = &__block_descriptor_40_e26__16__0__CMMotionActivity_8l;
-    v23[4] = a1;
-    v6 = [v4 _pas_mappedArrayWithTransform:v23];
+    v23[4] = self;
+    v6 = [streamCopy _pas_mappedArrayWithTransform:v23];
     *buf = 138412290;
     v26 = v6;
     _os_log_impl(&dword_260C9F000, v5, OS_LOG_TYPE_DEFAULT, "Current motion activities: %@", buf, 0xCu);
   }
 
-  v7 = [v4 objectAtIndexedSubscript:{objc_msgSend(v4, "count") - 1}];
+  v7 = [streamCopy objectAtIndexedSubscript:{objc_msgSend(streamCopy, "count") - 1}];
   v8 = [ATXMotion _getMotionTypeFromCMMotionActivity:v7];
 
   if (v8 == 3)
@@ -192,8 +192,8 @@ uint64_t __37__ATXMotion_summarizeActivityStream___block_invoke_2(uint64_t a1, v
   else
   {
 LABEL_6:
-    v10 = [v4 count];
-    v11 = [v4 count];
+    v10 = [streamCopy count];
+    v11 = [streamCopy count];
     if (v10 >= 2)
     {
       v12 = 2;
@@ -214,7 +214,7 @@ LABEL_6:
       v13 = 0;
     }
 
-    [v4 subarrayWithRange:{v13, v12}];
+    [streamCopy subarrayWithRange:{v13, v12}];
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
@@ -267,17 +267,17 @@ uint64_t __46__ATXMotion_canPredictClipsForActivityStream___block_invoke(uint64_
   return [v5 getMotionStringFromMotionType:v7];
 }
 
-+ (id)findMostCommonAndRecent:(id)a3 identityFunc:(id)a4
++ (id)findMostCommonAndRecent:(id)recent identityFunc:(id)func
 {
   v34 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  recentCopy = recent;
+  funcCopy = func;
   v7 = objc_opt_new();
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  obj = v5;
+  obj = recentCopy;
   v8 = [obj countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v8)
   {
@@ -294,7 +294,7 @@ uint64_t __46__ATXMotion_canPredictClipsForActivityStream___block_invoke(uint64_
           objc_enumerationMutation(obj);
         }
 
-        v13 = v6[2](v6, *(*(&v29 + 1) + 8 * i));
+        v13 = funcCopy[2](funcCopy, *(*(&v29 + 1) + 8 * i));
         v14 = [v7 objectForKeyedSubscript:v13];
         v15 = [v14 integerValue] + 1;
 
@@ -326,8 +326,8 @@ uint64_t __46__ATXMotion_canPredictClipsForActivityStream___block_invoke(uint64_
   v26[2] = __50__ATXMotion_findMostCommonAndRecent_identityFunc___block_invoke;
   v26[3] = &unk_279AB8D70;
   v27 = v25;
-  v28 = v6;
-  v18 = v6;
+  v28 = funcCopy;
+  v18 = funcCopy;
   v19 = v25;
   v20 = [obj indexesOfObjectsPassingTest:v26];
   v21 = [obj objectsAtIndexes:v20];

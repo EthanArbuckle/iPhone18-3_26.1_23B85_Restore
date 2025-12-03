@@ -1,11 +1,11 @@
 @interface CDMDAGBaseService
-+ (void)handleXPCActivity:(id)a3 withAssets:(id)a4 withSelfMetadata:(id)a5;
-+ (void)handleXPCEvent:(id)a3 fromStream:(id)a4 withAssets:(id)a5 withSelfMetadata:(id)a6;
-- (CDMDAGBaseService)initWithConfig:(id)a3;
++ (void)handleXPCActivity:(id)activity withAssets:(id)assets withSelfMetadata:(id)metadata;
++ (void)handleXPCEvent:(id)event fromStream:(id)stream withAssets:(id)assets withSelfMetadata:(id)metadata;
+- (CDMDAGBaseService)initWithConfig:(id)config;
 - (id)supportedCommands;
-- (void)_handleSetupRequest:(id)a3 withCallback:(id)a4;
-- (void)_handleWarmupRequest:(id)a3 withCallback:(id)a4;
-- (void)handleCommand:(id)a3 withCallback:(id)a4;
+- (void)_handleSetupRequest:(id)request withCallback:(id)callback;
+- (void)_handleWarmupRequest:(id)request withCallback:(id)callback;
+- (void)handleCommand:(id)command withCallback:(id)callback;
 @end
 
 @implementation CDMDAGBaseService
@@ -13,8 +13,8 @@
 - (id)supportedCommands
 {
   v3 = MEMORY[0x1E695DFA8];
-  v4 = [(CDMDAGBaseService *)self handleRequestCommandTypeNames];
-  v5 = [v3 setWithSet:v4];
+  handleRequestCommandTypeNames = [(CDMDAGBaseService *)self handleRequestCommandTypeNames];
+  v5 = [v3 setWithSet:handleRequestCommandTypeNames];
 
   if (objc_opt_respondsToSelector())
   {
@@ -32,27 +32,27 @@
 
   v13.receiver = self;
   v13.super_class = CDMDAGBaseService;
-  v10 = [(CDMBaseService *)&v13 supportedCommands];
-  v11 = [v10 setByAddingObjectsFromSet:v5];
+  supportedCommands = [(CDMBaseService *)&v13 supportedCommands];
+  v11 = [supportedCommands setByAddingObjectsFromSet:v5];
 
   return v11;
 }
 
-- (void)_handleWarmupRequest:(id)a3 withCallback:(id)a4
+- (void)_handleWarmupRequest:(id)request withCallback:(id)callback
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  callbackCopy = callback;
   if (([objc_opt_class() isEnabled] & 1) == 0)
   {
     v8 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
-      v17 = [(CDMBaseService *)self serviceName];
+      serviceName = [(CDMBaseService *)self serviceName];
       *buf = 136315394;
       v22 = "[CDMDAGBaseService _handleWarmupRequest:withCallback:]";
       v23 = 2112;
-      v24 = v17;
+      v24 = serviceName;
       _os_log_debug_impl(&dword_1DC287000, v8, OS_LOG_TYPE_DEBUG, "%s Skipping handleWarmupRequest as this service is DISABLED: %@", buf, 0x16u);
     }
 
@@ -64,17 +64,17 @@
     v8 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
-      v9 = [(CDMBaseService *)self serviceName];
+      serviceName2 = [(CDMBaseService *)self serviceName];
       *buf = 136315394;
       v22 = "[CDMDAGBaseService _handleWarmupRequest:withCallback:]";
       v23 = 2112;
-      v24 = v9;
+      v24 = serviceName2;
       _os_log_impl(&dword_1DC287000, v8, OS_LOG_TYPE_INFO, "%s [WARN]: Skipping handleWarmupRequest as this service is in failed setup state: %@", buf, 0x16u);
     }
 
 LABEL_7:
 
-    (*(v7 + 2))(v7, 0, 0);
+    (*(callbackCopy + 2))(callbackCopy, 0, 0);
     goto LABEL_15;
   }
 
@@ -83,9 +83,9 @@ LABEL_7:
   v12 = v11;
   if (v10 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v11))
   {
-    v13 = [(CDMBaseService *)self serviceName];
+    serviceName3 = [(CDMBaseService *)self serviceName];
     *buf = 138543362;
-    v22 = v13;
+    v22 = serviceName3;
     _os_signpost_emit_with_name_impl(&dword_1DC287000, v12, OS_SIGNPOST_INTERVAL_BEGIN, v10, "DAGServiceWarmup", "%{public}@ warmup", buf, 0xCu);
   }
 
@@ -94,8 +94,8 @@ LABEL_7:
   v18[2] = __55__CDMDAGBaseService__handleWarmupRequest_withCallback___block_invoke;
   v18[3] = &unk_1E862F390;
   v18[4] = self;
-  v19 = v6;
-  v20 = v7;
+  v19 = requestCopy;
+  v20 = callbackCopy;
   [CDMExceptionUtils runWrappingCppExceptions:v18];
 
   v14 = CDMLogContext;
@@ -116,26 +116,26 @@ void __55__CDMDAGBaseService__handleWarmupRequest_withCallback___block_invoke(ui
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)_handleSetupRequest:(id)a3 withCallback:(id)a4
+- (void)_handleSetupRequest:(id)request withCallback:(id)callback
 {
   v42 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  callbackCopy = callback;
   if (([objc_opt_class() isEnabled] & 1) == 0)
   {
     v12 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
-      v31 = [(CDMBaseService *)self serviceName];
+      serviceName = [(CDMBaseService *)self serviceName];
       *buf = 136315394;
       v39 = "[CDMDAGBaseService _handleSetupRequest:withCallback:]";
       v40 = 2112;
-      v41 = v31;
+      v41 = serviceName;
       _os_log_debug_impl(&dword_1DC287000, v12, OS_LOG_TYPE_DEBUG, "%s Skipping handleSetupRequest as this service is DISABLED: %@", buf, 0x16u);
     }
 
     self->super._serviceState = 4;
-    v13 = [(CDMBaseService *)self createSetupResponseCommand];
+    createSetupResponseCommand = [(CDMBaseService *)self createSetupResponseCommand];
     goto LABEL_8;
   }
 
@@ -145,35 +145,35 @@ void __55__CDMDAGBaseService__handleWarmupRequest_withCallback___block_invoke(ui
   }
 
   setupLanguageCode = self->_setupLanguageCode;
-  v9 = [v6 dynamicConfig];
-  v10 = [v9 languageCode];
-  v11 = v10;
-  if (setupLanguageCode != v10)
+  dynamicConfig = [requestCopy dynamicConfig];
+  languageCode = [dynamicConfig languageCode];
+  v11 = languageCode;
+  if (setupLanguageCode != languageCode)
   {
 
     goto LABEL_10;
   }
 
-  v15 = [v6 dynamicConfig];
-  v16 = [(CDMDAGBaseService *)self isSetupRerunNeededForRequest:v15];
+  dynamicConfig2 = [requestCopy dynamicConfig];
+  v16 = [(CDMDAGBaseService *)self isSetupRerunNeededForRequest:dynamicConfig2];
 
   if (!v16)
   {
     v30 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v30, OS_LOG_TYPE_DEBUG))
     {
-      v32 = [(CDMBaseService *)self serviceName];
+      serviceName2 = [(CDMBaseService *)self serviceName];
       *buf = 136315394;
       v39 = "[CDMDAGBaseService _handleSetupRequest:withCallback:]";
       v40 = 2112;
-      v41 = v32;
+      v41 = serviceName2;
       _os_log_debug_impl(&dword_1DC287000, v30, OS_LOG_TYPE_DEBUG, "%s Skipping handleSetupRequest as this service already in READY state, locale does not change, and the service does not need re-setup: %@", buf, 0x16u);
     }
 
-    v13 = [(CDMBaseService *)self createSetupResponseCommand];
+    createSetupResponseCommand = [(CDMBaseService *)self createSetupResponseCommand];
 LABEL_8:
-    v14 = v13;
-    v7[2](v7, v13, 0);
+    v14 = createSetupResponseCommand;
+    callbackCopy[2](callbackCopy, createSetupResponseCommand, 0);
 
     goto LABEL_17;
   }
@@ -186,29 +186,29 @@ LABEL_10:
   v20 = v19;
   if (v18 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v19))
   {
-    v21 = [(CDMBaseService *)self serviceName];
+    serviceName3 = [(CDMBaseService *)self serviceName];
     *buf = 138543362;
-    v39 = v21;
+    v39 = serviceName3;
     _os_signpost_emit_with_name_impl(&dword_1DC287000, v20, OS_SIGNPOST_INTERVAL_BEGIN, v18, "DAGServiceSetup", "%{public}@ setup", buf, 0xCu);
   }
 
-  v22 = [v6 dynamicConfig];
-  v23 = [v22 languageCode];
+  dynamicConfig3 = [requestCopy dynamicConfig];
+  languageCode2 = [dynamicConfig3 languageCode];
   v24 = self->_setupLanguageCode;
-  self->_setupLanguageCode = v23;
+  self->_setupLanguageCode = languageCode2;
 
-  v25 = [v6 dynamicConfig];
+  dynamicConfig4 = [requestCopy dynamicConfig];
   currentConfig = self->_currentConfig;
-  self->_currentConfig = v25;
+  self->_currentConfig = dynamicConfig4;
 
   objc_initWeak(buf, self);
-  objc_initWeak(location, v7);
+  objc_initWeak(location, callbackCopy);
   v33[0] = MEMORY[0x1E69E9820];
   v33[1] = 3221225472;
   v33[2] = __54__CDMDAGBaseService__handleSetupRequest_withCallback___block_invoke;
   v33[3] = &unk_1E862F368;
   objc_copyWeak(&v35, buf);
-  v34 = v6;
+  v34 = requestCopy;
   objc_copyWeak(&v36, location);
   [CDMExceptionUtils runWrappingCppExceptions:v33];
   objc_destroyWeak(&v36);
@@ -246,26 +246,26 @@ void __54__CDMDAGBaseService__handleSetupRequest_withCallback___block_invoke(uin
   }
 }
 
-- (void)handleCommand:(id)a3 withCallback:(id)a4
+- (void)handleCommand:(id)command withCallback:(id)callback
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  commandCopy = command;
+  callbackCopy = callback;
   v8 = CDMOSLoggerForCategory(0);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
-    v9 = [v6 commandName];
+    commandName = [commandCopy commandName];
     *buf = 136315394;
     v13 = "[CDMDAGBaseService handleCommand:withCallback:]";
     v14 = 2112;
-    v15 = v9;
+    v15 = commandName;
     _os_log_impl(&dword_1DC287000, v8, OS_LOG_TYPE_INFO, "%s %@", buf, 0x16u);
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(CDMDAGBaseService *)self _handleSetupRequest:v6 withCallback:v7];
+    [(CDMDAGBaseService *)self _handleSetupRequest:commandCopy withCallback:callbackCopy];
   }
 
   else
@@ -273,28 +273,28 @@ void __54__CDMDAGBaseService__handleSetupRequest_withCallback___block_invoke(uin
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(CDMDAGBaseService *)self _handleWarmupRequest:v6 withCallback:v7];
+      [(CDMDAGBaseService *)self _handleWarmupRequest:commandCopy withCallback:callbackCopy];
     }
 
     else
     {
       v11.receiver = self;
       v11.super_class = CDMDAGBaseService;
-      [(CDMBaseService *)&v11 handleCommand:v6 withCallback:v7];
+      [(CDMBaseService *)&v11 handleCommand:commandCopy withCallback:callbackCopy];
     }
   }
 
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (CDMDAGBaseService)initWithConfig:(id)a3
+- (CDMDAGBaseService)initWithConfig:(id)config
 {
   v4.receiver = self;
   v4.super_class = CDMDAGBaseService;
-  return [(CDMBaseService *)&v4 initWithConfig:a3];
+  return [(CDMBaseService *)&v4 initWithConfig:config];
 }
 
-+ (void)handleXPCEvent:(id)a3 fromStream:(id)a4 withAssets:(id)a5 withSelfMetadata:(id)a6
++ (void)handleXPCEvent:(id)event fromStream:(id)stream withAssets:(id)assets withSelfMetadata:(id)metadata
 {
   v12 = *MEMORY[0x1E69E9840];
   v8 = CDMOSLoggerForCategory(0);
@@ -305,11 +305,11 @@ void __54__CDMDAGBaseService__handleSetupRequest_withCallback___block_invoke(uin
     _os_log_impl(&dword_1DC287000, v8, OS_LOG_TYPE_INFO, "%s [WARN]: handleXPCEvent called on a service that does not implement this method.", &v10, 0xCu);
   }
 
-  [a1 doesNotRecognizeSelector:a2];
+  [self doesNotRecognizeSelector:a2];
   v9 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)handleXPCActivity:(id)a3 withAssets:(id)a4 withSelfMetadata:(id)a5
++ (void)handleXPCActivity:(id)activity withAssets:(id)assets withSelfMetadata:(id)metadata
 {
   v11 = *MEMORY[0x1E69E9840];
   v7 = CDMOSLoggerForCategory(0);
@@ -320,7 +320,7 @@ void __54__CDMDAGBaseService__handleSetupRequest_withCallback___block_invoke(uin
     _os_log_impl(&dword_1DC287000, v7, OS_LOG_TYPE_INFO, "%s [WARN]: handleXPCActivity called on a service that does not implement this method.", &v9, 0xCu);
   }
 
-  [a1 doesNotRecognizeSelector:a2];
+  [self doesNotRecognizeSelector:a2];
   v8 = *MEMORY[0x1E69E9840];
 }
 

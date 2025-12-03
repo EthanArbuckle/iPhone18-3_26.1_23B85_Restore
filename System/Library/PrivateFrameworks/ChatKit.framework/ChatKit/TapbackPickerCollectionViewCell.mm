@@ -2,12 +2,12 @@
 - (BOOL)isSelected;
 - (CGPoint)center;
 - (CGRect)tapbackContentContainerRect;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
+- (void)_bridgedUpdateConfigurationUsingState:(id)state;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setCenter:(CGPoint)a3;
-- (void)setSelected:(BOOL)a3;
+- (void)setCenter:(CGPoint)center;
+- (void)setSelected:(BOOL)selected;
 @end
 
 @implementation TapbackPickerCollectionViewCell
@@ -19,30 +19,30 @@
   return [(TapbackPickerCollectionViewCell *)&v3 isSelected];
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
+  selectedCopy = selected;
   v5.receiver = self;
   v5.super_class = type metadata accessor for TapbackPickerCollectionViewCell();
   v4 = v5.receiver;
-  [(TapbackPickerCollectionViewCell *)&v5 setSelected:v3];
+  [(TapbackPickerCollectionViewCell *)&v5 setSelected:selectedCopy];
   [v4 setNeedsLayout];
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_190BD26BC();
 }
 
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3
+- (void)_bridgedUpdateConfigurationUsingState:(id)state
 {
   v4 = sub_190D531F0();
   v5 = *(v4 - 8);
   MEMORY[0x1EEE9AC00](v4);
   v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_190D531E0();
-  v8 = self;
+  selfCopy = self;
   sub_190BD2860();
 
   (*(v5 + 8))(v7, v4);
@@ -58,10 +58,10 @@
   return result;
 }
 
-- (void)setCenter:(CGPoint)a3
+- (void)setCenter:(CGPoint)center
 {
-  y = a3.y;
-  x = a3.x;
+  y = center.y;
+  x = center.x;
   v7.receiver = self;
   v7.super_class = type metadata accessor for TapbackPickerCollectionViewCell();
   v5 = v7.receiver;
@@ -77,7 +77,7 @@
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_190BD4300();
 }
 
@@ -91,11 +91,11 @@
   return result;
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  interactionCopy = interaction;
+  regionCopy = region;
+  selfCopy = self;
   v9 = _s7ChatKit31TapbackPickerCollectionViewCellC18pointerInteraction_8styleForSo14UIPointerStyleCSgSo0lI0C_So0L6RegionCtF_0();
 
   return v9;

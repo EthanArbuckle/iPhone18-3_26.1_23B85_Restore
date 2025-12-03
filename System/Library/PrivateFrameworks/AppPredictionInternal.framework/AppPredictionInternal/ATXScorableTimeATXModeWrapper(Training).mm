@@ -6,10 +6,10 @@
 
 - (ATXUnifiedModeStreamModeEventProvider)scorableTimeEventProvider
 {
-  v2 = [a1 atxMode];
-  if ((v2 - 8) >= 4)
+  atxMode = [self atxMode];
+  if ((atxMode - 8) >= 4)
   {
-    if (v2 == 12)
+    if (atxMode == 12)
     {
       v5 = objc_opt_new();
     }
@@ -19,7 +19,7 @@
       v5 = [ATXUnifiedModeStreamModeEventProvider alloc];
     }
 
-    v4 = -[ATXModeTransitionModeEventProvider initWithMode:](v5, "initWithMode:", [a1 atxMode]);
+    v4 = -[ATXModeTransitionModeEventProvider initWithMode:](v5, "initWithMode:", [self atxMode]);
   }
 
   else

@@ -1,19 +1,19 @@
 @interface ARPersonDetectionResult
-- (ARPersonDetectionResult)initWithBoundingBox:(CGRect)a3;
-- (ARPersonDetectionResult)initWithCoder:(id)a3;
+- (ARPersonDetectionResult)initWithBoundingBox:(CGRect)box;
+- (ARPersonDetectionResult)initWithCoder:(id)coder;
 - (CGRect)boundingBox;
-- (CGRect)rectScaledToSizeOfPixelBuffer:(__CVBuffer *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CGRect)rectScaledToSizeOfPixelBuffer:(__CVBuffer *)buffer;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation ARPersonDetectionResult
 
-- (ARPersonDetectionResult)initWithBoundingBox:(CGRect)a3
+- (ARPersonDetectionResult)initWithBoundingBox:(CGRect)box
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = box.size.height;
+  width = box.size.width;
+  y = box.origin.y;
+  x = box.origin.x;
   v8.receiver = self;
   v8.super_class = ARPersonDetectionResult;
   result = [(ARPersonDetectionResult *)&v8 init];
@@ -28,10 +28,10 @@
   return result;
 }
 
-- (CGRect)rectScaledToSizeOfPixelBuffer:(__CVBuffer *)a3
+- (CGRect)rectScaledToSizeOfPixelBuffer:(__CVBuffer *)buffer
 {
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
+  Width = CVPixelBufferGetWidth(buffer);
+  Height = CVPixelBufferGetHeight(buffer);
   [(ARPersonDetectionResult *)self boundingBox];
   v8 = v7 * Width;
   [(ARPersonDetectionResult *)self boundingBox];
@@ -50,9 +50,9 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_opt_class() allocWithZone:a3];
+  result = [objc_opt_class() allocWithZone:zone];
   if (result)
   {
     origin = self->_boundingBox.origin;
@@ -63,15 +63,15 @@
   return result;
 }
 
-- (ARPersonDetectionResult)initWithCoder:(id)a3
+- (ARPersonDetectionResult)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = ARPersonDetectionResult;
   v5 = [(ARPersonDetectionResult *)&v7 init];
   if (v5)
   {
-    [v4 decodeRectForKey:@"boundingBox"];
+    [coderCopy decodeRectForKey:@"boundingBox"];
     [(ARPersonDetectionResult *)v5 setBoundingBox:?];
   }
 

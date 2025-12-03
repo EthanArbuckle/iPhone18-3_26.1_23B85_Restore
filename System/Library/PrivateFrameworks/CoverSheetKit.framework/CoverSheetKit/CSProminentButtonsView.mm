@@ -6,35 +6,35 @@
 + (double)_leadingOutset;
 + (double)minimumFrameHeight;
 - (BOOL)_glassAppearanceEnabled;
-- (CGRect)_frameWithMinX:(double)a3 outset:(BOOL)a4;
-- (CGRect)_leadingFrameWithOutsets:(BOOL)a3;
-- (CGRect)_trailingFrameWithOutsets:(BOOL)a3;
-- (CGSize)_buttonSizeWithOutsets:(BOOL)a3;
-- (CSProminentButtonsView)initWithLeadingButton:(id)a3 trailingButton:(id)a4;
-- (double)_buttonMinYWithOutset:(BOOL)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (CGRect)_frameWithMinX:(double)x outset:(BOOL)outset;
+- (CGRect)_leadingFrameWithOutsets:(BOOL)outsets;
+- (CGRect)_trailingFrameWithOutsets:(BOOL)outsets;
+- (CGSize)_buttonSizeWithOutsets:(BOOL)outsets;
+- (CSProminentButtonsView)initWithLeadingButton:(id)button trailingButton:(id)trailingButton;
+- (double)_buttonMinYWithOutset:(BOOL)outset;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)_addContraintsForRemoveButtonsIfNecessary;
 - (void)_glassAppearanceEnabled;
 - (void)_layoutButtons;
-- (void)_setConstraintsForRemoveButton:(id)a3 withReticle:(id)a4;
+- (void)_setConstraintsForRemoveButton:(id)button withReticle:(id)reticle;
 - (void)_updateAppearance;
 - (void)layoutSubviews;
-- (void)setGlassLuminanceValue:(double)a3;
-- (void)setLeadingButton:(id)a3;
-- (void)setLeadingRemoveButton:(id)a3;
-- (void)setLeadingReticle:(id)a3;
-- (void)setTrailingButton:(id)a3;
-- (void)setTrailingRemoveButton:(id)a3;
-- (void)setTrailingReticle:(id)a3;
-- (void)setUsesSensitiveUIAppearance:(BOOL)a3;
+- (void)setGlassLuminanceValue:(double)value;
+- (void)setLeadingButton:(id)button;
+- (void)setLeadingRemoveButton:(id)button;
+- (void)setLeadingReticle:(id)reticle;
+- (void)setTrailingButton:(id)button;
+- (void)setTrailingRemoveButton:(id)button;
+- (void)setTrailingReticle:(id)reticle;
+- (void)setUsesSensitiveUIAppearance:(BOOL)appearance;
 @end
 
 @implementation CSProminentButtonsView
 
-- (CSProminentButtonsView)initWithLeadingButton:(id)a3 trailingButton:(id)a4
+- (CSProminentButtonsView)initWithLeadingButton:(id)button trailingButton:(id)trailingButton
 {
-  v6 = a3;
-  v7 = a4;
+  buttonCopy = button;
+  trailingButtonCopy = trailingButton;
   v11.receiver = self;
   v11.super_class = CSProminentButtonsView;
   v8 = [(CSProminentButtonsView *)&v11 init];
@@ -42,8 +42,8 @@
   if (v8)
   {
     v8->_glassLuminanceValue = 0.0;
-    [(CSProminentButtonsView *)v8 setLeadingButton:v6];
-    [(CSProminentButtonsView *)v9 setTrailingButton:v7];
+    [(CSProminentButtonsView *)v8 setLeadingButton:buttonCopy];
+    [(CSProminentButtonsView *)v9 setTrailingButton:trailingButtonCopy];
     [(CSProminentButtonsView *)v9 _updateAppearance];
   }
 
@@ -52,35 +52,35 @@
 
 + (double)minimumFrameHeight
 {
-  [a1 _buttonInsetY];
+  [self _buttonInsetY];
   v4 = v3;
-  [a1 _buttonDiameter];
+  [self _buttonDiameter];
   v6 = v4 + v5;
-  [a1 _buttonOutsets];
+  [self _buttonOutsets];
   return v6 + v7;
 }
 
 - (void)_updateAppearance
 {
-  v3 = [(CSProminentButtonsView *)self _glassAppearanceEnabled];
-  v4 = v3;
+  _glassAppearanceEnabled = [(CSProminentButtonsView *)self _glassAppearanceEnabled];
+  v4 = _glassAppearanceEnabled;
   if (v4 != self->_isUsingGlassAppearance)
   {
-    v5 = v3;
-    self->_isUsingGlassAppearance = v3;
-    v6 = [(CSProminentButtonsView *)self leadingButton];
-    [v6 setUsesGlassMaterial:v4];
+    v5 = _glassAppearanceEnabled;
+    self->_isUsingGlassAppearance = _glassAppearanceEnabled;
+    leadingButton = [(CSProminentButtonsView *)self leadingButton];
+    [leadingButton setUsesGlassMaterial:v4];
 
-    v7 = [(CSProminentButtonsView *)self trailingButton];
-    [v7 setUsesGlassMaterial:v4];
+    trailingButton = [(CSProminentButtonsView *)self trailingButton];
+    [trailingButton setUsesGlassMaterial:v4];
 
-    v8 = [(CSProminentButtonsView *)self leadingButton];
+    leadingButton2 = [(CSProminentButtonsView *)self leadingButton];
     [(CSProminentButtonsView *)self glassLuminanceValue];
-    [v8 setGlassLuminanceValue:?];
+    [leadingButton2 setGlassLuminanceValue:?];
 
-    v9 = [(CSProminentButtonsView *)self trailingButton];
+    trailingButton2 = [(CSProminentButtonsView *)self trailingButton];
     [(CSProminentButtonsView *)self glassLuminanceValue];
-    [v9 setGlassLuminanceValue:?];
+    [trailingButton2 setGlassLuminanceValue:?];
 
     if (v5)
     {
@@ -96,32 +96,32 @@
   }
 }
 
-- (void)setUsesSensitiveUIAppearance:(BOOL)a3
+- (void)setUsesSensitiveUIAppearance:(BOOL)appearance
 {
-  if (self->_usesSensitiveUIAppearance != a3)
+  if (self->_usesSensitiveUIAppearance != appearance)
   {
-    self->_usesSensitiveUIAppearance = a3;
+    self->_usesSensitiveUIAppearance = appearance;
     [(CSProminentButtonsView *)self _updateAppearance];
   }
 }
 
-- (void)setGlassLuminanceValue:(double)a3
+- (void)setGlassLuminanceValue:(double)value
 {
-  if (self->_glassLuminanceValue != a3)
+  if (self->_glassLuminanceValue != value)
   {
-    self->_glassLuminanceValue = a3;
-    v4 = [(CSProminentButtonsView *)self leadingButton];
-    [v4 setGlassLuminanceValue:self->_glassLuminanceValue];
+    self->_glassLuminanceValue = value;
+    leadingButton = [(CSProminentButtonsView *)self leadingButton];
+    [leadingButton setGlassLuminanceValue:self->_glassLuminanceValue];
 
-    v5 = [(CSProminentButtonsView *)self trailingButton];
-    [v5 setGlassLuminanceValue:self->_glassLuminanceValue];
+    trailingButton = [(CSProminentButtonsView *)self trailingButton];
+    [trailingButton setGlassLuminanceValue:self->_glassLuminanceValue];
   }
 }
 
 - (BOOL)_glassAppearanceEnabled
 {
-  v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v4 = [v3 BOOLForKey:@"SBDisallowGlassButtons"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v4 = [standardUserDefaults BOOLForKey:@"SBDisallowGlassButtons"];
 
   v5 = CSLogCommon();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -142,11 +142,11 @@
   return v6 & 1;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   v9.receiver = self;
   v9.super_class = CSProminentButtonsView;
-  v5 = [(CSProminentButtonsView *)&v9 hitTest:a4 withEvent:a3.x, a3.y];
+  v5 = [(CSProminentButtonsView *)&v9 hitTest:event withEvent:test.x, test.y];
   v6 = v5;
   if (v5 == self)
   {
@@ -169,16 +169,16 @@
   [(CSProminentButtonsView *)self _layoutButtons];
 }
 
-- (void)setLeadingButton:(id)a3
+- (void)setLeadingButton:(id)button
 {
-  v5 = a3;
+  buttonCopy = button;
   leadingButton = self->_leadingButton;
-  v8 = v5;
-  if (leadingButton != v5)
+  v8 = buttonCopy;
+  if (leadingButton != buttonCopy)
   {
     [(CSProminentButtonControl *)leadingButton removeFromSuperview];
     [(CSProminentButtonControl *)self->_leadingButton setUsesGlassMaterial:0];
-    objc_storeStrong(&self->_leadingButton, a3);
+    objc_storeStrong(&self->_leadingButton, button);
     if (self->_leadingButton)
     {
       if ([(CSProminentButtonsView *)self _glassAppearanceEnabled])
@@ -194,16 +194,16 @@
   }
 }
 
-- (void)setTrailingButton:(id)a3
+- (void)setTrailingButton:(id)button
 {
-  v5 = a3;
+  buttonCopy = button;
   trailingButton = self->_trailingButton;
-  v8 = v5;
-  if (trailingButton != v5)
+  v8 = buttonCopy;
+  if (trailingButton != buttonCopy)
   {
     [(CSProminentButtonControl *)trailingButton removeFromSuperview];
     [(CSProminentButtonControl *)self->_trailingButton setUsesGlassMaterial:0];
-    objc_storeStrong(&self->_trailingButton, a3);
+    objc_storeStrong(&self->_trailingButton, button);
     if (self->_trailingButton)
     {
       if ([(CSProminentButtonsView *)self _glassAppearanceEnabled])
@@ -219,13 +219,13 @@
   }
 }
 
-- (void)setLeadingReticle:(id)a3
+- (void)setLeadingReticle:(id)reticle
 {
-  v5 = a3;
-  if (self->_trailingReticle != v5)
+  reticleCopy = reticle;
+  if (self->_trailingReticle != reticleCopy)
   {
     [(CSProminentButtonReticlePresenter *)self->_leadingReticle removeFromSuperview];
-    objc_storeStrong(&self->_leadingReticle, a3);
+    objc_storeStrong(&self->_leadingReticle, reticle);
     if (self->_leadingReticle)
     {
       [(CSProminentButtonsView *)self addSubview:?];
@@ -236,15 +236,15 @@
   }
 }
 
-- (void)setTrailingReticle:(id)a3
+- (void)setTrailingReticle:(id)reticle
 {
-  v5 = a3;
+  reticleCopy = reticle;
   trailingReticle = self->_trailingReticle;
-  v7 = v5;
-  if (trailingReticle != v5)
+  v7 = reticleCopy;
+  if (trailingReticle != reticleCopy)
   {
     [(CSProminentButtonReticlePresenter *)trailingReticle removeFromSuperview];
-    objc_storeStrong(&self->_trailingReticle, a3);
+    objc_storeStrong(&self->_trailingReticle, reticle);
     if (self->_trailingReticle)
     {
       [(CSProminentButtonsView *)self addSubview:?];
@@ -255,15 +255,15 @@
   }
 }
 
-- (void)setLeadingRemoveButton:(id)a3
+- (void)setLeadingRemoveButton:(id)button
 {
-  v5 = a3;
+  buttonCopy = button;
   leadingRemoveButton = self->_leadingRemoveButton;
-  v7 = v5;
-  if (leadingRemoveButton != v5)
+  v7 = buttonCopy;
+  if (leadingRemoveButton != buttonCopy)
   {
     [(UIButton *)leadingRemoveButton removeFromSuperview];
-    objc_storeStrong(&self->_leadingRemoveButton, a3);
+    objc_storeStrong(&self->_leadingRemoveButton, button);
     [(UIButton *)self->_leadingRemoveButton setTranslatesAutoresizingMaskIntoConstraints:0];
     if (self->_leadingRemoveButton)
     {
@@ -273,15 +273,15 @@
   }
 }
 
-- (void)setTrailingRemoveButton:(id)a3
+- (void)setTrailingRemoveButton:(id)button
 {
-  v5 = a3;
+  buttonCopy = button;
   trailingRemoveButton = self->_trailingRemoveButton;
-  v7 = v5;
-  if (trailingRemoveButton != v5)
+  v7 = buttonCopy;
+  if (trailingRemoveButton != buttonCopy)
   {
     [(UIButton *)trailingRemoveButton removeFromSuperview];
-    objc_storeStrong(&self->_trailingRemoveButton, a3);
+    objc_storeStrong(&self->_trailingRemoveButton, button);
     [(UIButton *)self->_trailingRemoveButton setTranslatesAutoresizingMaskIntoConstraints:0];
     if (self->_trailingRemoveButton)
     {
@@ -312,8 +312,8 @@
   v26 = v25;
   leadingButton = self->_leadingButton;
   v28 = MEMORY[0x1E69DDA98];
-  v29 = [*MEMORY[0x1E69DDA98] userInterfaceLayoutDirection];
-  if (v29 == 1)
+  userInterfaceLayoutDirection = [*MEMORY[0x1E69DDA98] userInterfaceLayoutDirection];
+  if (userInterfaceLayoutDirection == 1)
   {
     v30 = v26;
   }
@@ -323,7 +323,7 @@
     v30 = v18;
   }
 
-  if (v29 == 1)
+  if (userInterfaceLayoutDirection == 1)
   {
     v31 = v24;
   }
@@ -333,7 +333,7 @@
     v31 = v16;
   }
 
-  if (v29 == 1)
+  if (userInterfaceLayoutDirection == 1)
   {
     v32 = v22;
   }
@@ -343,7 +343,7 @@
     v32 = v14;
   }
 
-  if (v29 == 1)
+  if (userInterfaceLayoutDirection == 1)
   {
     v33 = v20;
   }
@@ -355,8 +355,8 @@
 
   [(CSProminentButtonControl *)leadingButton setFrame:v33, v32, v31, v30];
   trailingButton = self->_trailingButton;
-  v35 = [*v28 userInterfaceLayoutDirection];
-  if (v35 == 1)
+  userInterfaceLayoutDirection2 = [*v28 userInterfaceLayoutDirection];
+  if (userInterfaceLayoutDirection2 == 1)
   {
     v36 = v18;
   }
@@ -366,7 +366,7 @@
     v36 = v26;
   }
 
-  if (v35 == 1)
+  if (userInterfaceLayoutDirection2 == 1)
   {
     v37 = v16;
   }
@@ -376,7 +376,7 @@
     v37 = v24;
   }
 
-  if (v35 == 1)
+  if (userInterfaceLayoutDirection2 == 1)
   {
     v38 = v14;
   }
@@ -387,7 +387,7 @@
   }
 
   v54 = v12;
-  if (v35 == 1)
+  if (userInterfaceLayoutDirection2 == 1)
   {
     v39 = v12;
   }
@@ -403,8 +403,8 @@
   leadingReticle = self->_leadingReticle;
   if (leadingReticle)
   {
-    v43 = [*v28 userInterfaceLayoutDirection];
-    if (v43 == 1)
+    userInterfaceLayoutDirection3 = [*v28 userInterfaceLayoutDirection];
+    if (userInterfaceLayoutDirection3 == 1)
     {
       v44 = v26;
     }
@@ -414,7 +414,7 @@
       v44 = v18;
     }
 
-    if (v43 == 1)
+    if (userInterfaceLayoutDirection3 == 1)
     {
       v45 = v24;
     }
@@ -424,7 +424,7 @@
       v45 = v16;
     }
 
-    if (v43 == 1)
+    if (userInterfaceLayoutDirection3 == 1)
     {
       v46 = v22;
     }
@@ -435,7 +435,7 @@
     }
 
     v47 = v54;
-    if (v43 == 1)
+    if (userInterfaceLayoutDirection3 == 1)
     {
       v47 = v20;
     }
@@ -447,8 +447,8 @@
   trailingReticle = self->_trailingReticle;
   if (trailingReticle)
   {
-    v49 = [*v28 userInterfaceLayoutDirection];
-    if (v49 == 1)
+    userInterfaceLayoutDirection4 = [*v28 userInterfaceLayoutDirection];
+    if (userInterfaceLayoutDirection4 == 1)
     {
       v50 = v18;
     }
@@ -458,7 +458,7 @@
       v50 = v26;
     }
 
-    if (v49 == 1)
+    if (userInterfaceLayoutDirection4 == 1)
     {
       v51 = v16;
     }
@@ -468,7 +468,7 @@
       v51 = v24;
     }
 
-    if (v49 == 1)
+    if (userInterfaceLayoutDirection4 == 1)
     {
       v52 = v14;
     }
@@ -479,7 +479,7 @@
     }
 
     v53 = v54;
-    if (v49 != 1)
+    if (userInterfaceLayoutDirection4 != 1)
     {
       v53 = v20;
     }
@@ -490,11 +490,11 @@
   }
 }
 
-- (CGRect)_leadingFrameWithOutsets:(BOOL)a3
+- (CGRect)_leadingFrameWithOutsets:(BOOL)outsets
 {
-  v3 = a3;
+  outsetsCopy = outsets;
   v5 = 0.0;
-  if (a3)
+  if (outsets)
   {
     [objc_opt_class() _leadingOutset];
     v5 = v6;
@@ -503,7 +503,7 @@
   [objc_opt_class() _buttonInsetX];
   v8 = v7 - v5;
 
-  [(CSProminentButtonsView *)self _frameWithMinX:v3 outset:v8];
+  [(CSProminentButtonsView *)self _frameWithMinX:outsetsCopy outset:v8];
   result.size.height = v12;
   result.size.width = v11;
   result.origin.y = v10;
@@ -511,11 +511,11 @@
   return result;
 }
 
-- (CGRect)_trailingFrameWithOutsets:(BOOL)a3
+- (CGRect)_trailingFrameWithOutsets:(BOOL)outsets
 {
-  v3 = a3;
+  outsetsCopy = outsets;
   v5 = 0.0;
-  if (a3)
+  if (outsets)
   {
     [objc_opt_class() _leadingOutset];
     v5 = v6;
@@ -528,7 +528,7 @@
   [objc_opt_class() _buttonDiameter];
   v11 = v9 - (v5 + v10);
 
-  [(CSProminentButtonsView *)self _frameWithMinX:v3 outset:v11];
+  [(CSProminentButtonsView *)self _frameWithMinX:outsetsCopy outset:v11];
   result.size.height = v15;
   result.size.width = v14;
   result.origin.y = v13;
@@ -536,27 +536,27 @@
   return result;
 }
 
-- (CGRect)_frameWithMinX:(double)a3 outset:(BOOL)a4
+- (CGRect)_frameWithMinX:(double)x outset:(BOOL)outset
 {
-  v4 = a4;
+  outsetCopy = outset;
   [(CSProminentButtonsView *)self _buttonMinYWithOutset:?];
   v8 = v7;
-  [(CSProminentButtonsView *)self _buttonSizeWithOutsets:v4];
+  [(CSProminentButtonsView *)self _buttonSizeWithOutsets:outsetCopy];
   v10 = v9;
   v12 = v11;
-  v13 = a3;
+  xCopy = x;
   v14 = v8;
   result.size.height = v12;
   result.size.width = v10;
   result.origin.y = v14;
-  result.origin.x = v13;
+  result.origin.x = xCopy;
   return result;
 }
 
-- (double)_buttonMinYWithOutset:(BOOL)a3
+- (double)_buttonMinYWithOutset:(BOOL)outset
 {
   v4 = 0.0;
-  if (a3)
+  if (outset)
   {
     [objc_opt_class() _buttonOutsets];
     v4 = v5;
@@ -570,21 +570,21 @@
   return v8 - (v4 + v9);
 }
 
-- (CGSize)_buttonSizeWithOutsets:(BOOL)a3
+- (CGSize)_buttonSizeWithOutsets:(BOOL)outsets
 {
-  v3 = a3;
+  outsetsCopy = outsets;
   [objc_opt_class() _buttonDiameter];
   v5 = v4;
   [objc_opt_class() _buttonOutsets];
   v10 = v8 + v9;
-  if (!v3)
+  if (!outsetsCopy)
   {
     v10 = 0.0;
   }
 
   v11 = v5 + v10;
   v12 = v6 + v7;
-  if (!v3)
+  if (!outsetsCopy)
   {
     v12 = 0.0;
   }
@@ -610,21 +610,21 @@
   }
 }
 
-- (void)_setConstraintsForRemoveButton:(id)a3 withReticle:(id)a4
+- (void)_setConstraintsForRemoveButton:(id)button withReticle:(id)reticle
 {
   v15[2] = *MEMORY[0x1E69E9840];
   v5 = MEMORY[0x1E696ACD8];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 topAnchor];
-  v9 = [v6 topAnchor];
-  v10 = [v8 constraintEqualToAnchor:v9 constant:-3.0];
+  reticleCopy = reticle;
+  buttonCopy = button;
+  topAnchor = [buttonCopy topAnchor];
+  topAnchor2 = [reticleCopy topAnchor];
+  v10 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:-3.0];
   v15[0] = v10;
-  v11 = [v7 leadingAnchor];
+  leadingAnchor = [buttonCopy leadingAnchor];
 
-  v12 = [v6 leadingAnchor];
+  leadingAnchor2 = [reticleCopy leadingAnchor];
 
-  v13 = [v11 constraintEqualToAnchor:v12 constant:-3.0];
+  v13 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:-3.0];
   v15[1] = v13;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:2];
   [v5 activateConstraints:v14];
@@ -705,7 +705,7 @@
 {
   v3 = *MEMORY[0x1E69E9840];
   v2[0] = 67109120;
-  v2[1] = a1 & 1;
+  v2[1] = self & 1;
   _os_log_debug_impl(&dword_1A2D63000, a2, OS_LOG_TYPE_DEBUG, "CSProminentButtonView disallowGlassButtons: %{BOOL}u", v2, 8u);
 }
 

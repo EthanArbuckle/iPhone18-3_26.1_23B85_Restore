@@ -1,8 +1,8 @@
 @interface UIView
 + (id)fallback_debugHierarchyAdditionalGroupingIDs;
-+ (id)fallback_debugHierarchyObjectsInGroupWithID:(id)a3 onObject:(id)a4 outOptions:(id *)a5;
++ (id)fallback_debugHierarchyObjectsInGroupWithID:(id)d onObject:(id)object outOptions:(id *)options;
 + (id)fallback_debugHierarchyPropertyDescriptions;
-+ (id)fallback_debugHierarchyValueForPropertyWithName:(id)a3 onObject:(id)a4 outOptions:(id *)a5 outError:(id *)a6;
++ (id)fallback_debugHierarchyValueForPropertyWithName:(id)name onObject:(id)object outOptions:(id *)options outError:(id *)error;
 - (BOOL)__dbg_hasAmbiguousLayout;
 - (BOOL)__dbg_renderingModeIsMultiLayer;
 - (BOOL)__dbg_shouldIgnoreScrollableContentHeightAmbiguity;
@@ -10,7 +10,7 @@
 - (BOOL)__dbg_wantsAutoLayout;
 - (double)__dbg_firstBaselineOffsetFromTop;
 - (double)__dbg_lastBaselineOffsetFromBottom;
-- (id)__dbg_constraintsAffectingLayoutForAxis:(int64_t)a3;
+- (id)__dbg_constraintsAffectingLayoutForAxis:(int64_t)axis;
 - (id)__dbg_formattedDisplayName;
 - (id)__dbg_layer;
 - (id)__dbg_readableContentGuide;
@@ -35,68 +35,68 @@
   return v2;
 }
 
-+ (id)fallback_debugHierarchyObjectsInGroupWithID:(id)a3 onObject:(id)a4 outOptions:(id *)a5
++ (id)fallback_debugHierarchyObjectsInGroupWithID:(id)d onObject:(id)object outOptions:(id *)options
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isEqualToString:@"com.apple.UIKit.UIView"])
+  dCopy = d;
+  objectCopy = object;
+  if ([dCopy isEqualToString:@"com.apple.UIKit.UIView"])
   {
-    v8 = [v7 subviews];
+    subviews = [objectCopy subviews];
 LABEL_5:
-    v9 = v8;
+    __dbg_viewController = subviews;
     goto LABEL_6;
   }
 
-  if ([v6 isEqualToString:@"com.apple.UIKit.NSLayoutConstraint"])
+  if ([dCopy isEqualToString:@"com.apple.UIKit.NSLayoutConstraint"])
   {
-    v8 = [v7 constraints];
+    subviews = [objectCopy constraints];
     goto LABEL_5;
   }
 
-  if ([v6 isEqualToString:@"com.apple.QuartzCore.CALayer"])
+  if ([dCopy isEqualToString:@"com.apple.QuartzCore.CALayer"])
   {
-    v11 = [v7 __dbg_layer];
-    v12 = v11;
-    if (!v11)
+    __dbg_layer = [objectCopy __dbg_layer];
+    __dbg_viewController2 = __dbg_layer;
+    if (!__dbg_layer)
     {
-      v9 = 0;
+      __dbg_viewController = 0;
       goto LABEL_19;
     }
 
-    v15 = v11;
+    v15 = __dbg_layer;
     v13 = &v15;
 LABEL_15:
-    v9 = [NSArray arrayWithObjects:v13 count:1];
+    __dbg_viewController = [NSArray arrayWithObjects:v13 count:1];
 LABEL_19:
 
     goto LABEL_6;
   }
 
-  if ([v6 isEqualToString:@"com.apple.UIKit.UIViewController"])
+  if ([dCopy isEqualToString:@"com.apple.UIKit.UIViewController"])
   {
-    v9 = [v7 __dbg_viewController];
+    __dbg_viewController = [objectCopy __dbg_viewController];
 
-    if (!v9)
+    if (!__dbg_viewController)
     {
       goto LABEL_6;
     }
 
-    v12 = [v7 __dbg_viewController];
-    v14 = v12;
+    __dbg_viewController2 = [objectCopy __dbg_viewController];
+    v14 = __dbg_viewController2;
     v13 = &v14;
     goto LABEL_15;
   }
 
-  if ([v6 isEqualToString:@"com.apple.UIKit.UILayoutGuide"])
+  if ([dCopy isEqualToString:@"com.apple.UIKit.UILayoutGuide"])
   {
-    v8 = [v7 layoutGuides];
+    subviews = [objectCopy layoutGuides];
     goto LABEL_5;
   }
 
-  v9 = 0;
+  __dbg_viewController = 0;
 LABEL_6:
 
-  return v9;
+  return __dbg_viewController;
 }
 
 + (id)fallback_debugHierarchyPropertyDescriptions
@@ -454,228 +454,228 @@ LABEL_6:
   return v15;
 }
 
-+ (id)fallback_debugHierarchyValueForPropertyWithName:(id)a3 onObject:(id)a4 outOptions:(id *)a5 outError:(id *)a6
++ (id)fallback_debugHierarchyValueForPropertyWithName:(id)name onObject:(id)object outOptions:(id *)options outError:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  if ([v9 isEqualToString:@"accessibilityCustomActions"])
+  nameCopy = name;
+  objectCopy = object;
+  if ([nameCopy isEqualToString:@"accessibilityCustomActions"])
   {
-    v11 = [a1 accessibilityCustomActions];
+    accessibilityCustomActions = [self accessibilityCustomActions];
 LABEL_5:
-    v12 = v11;
-    v13 = [v11 description];
+    layer = accessibilityCustomActions;
+    v13 = [accessibilityCustomActions description];
 LABEL_6:
-    a6 = v13;
+    error = v13;
 LABEL_7:
 
     goto LABEL_24;
   }
 
-  if ([v9 isEqualToString:@"accessibilityElements"])
+  if ([nameCopy isEqualToString:@"accessibilityElements"])
   {
-    v11 = [a1 accessibilityElements];
+    accessibilityCustomActions = [self accessibilityElements];
     goto LABEL_5;
   }
 
-  if ([v9 isEqualToString:@"snapshotImage"])
+  if ([nameCopy isEqualToString:@"snapshotImage"])
   {
-    v14 = [v10 __dbg_snapshotImage];
+    __dbg_snapshotImage = [objectCopy __dbg_snapshotImage];
 LABEL_23:
-    a6 = v14;
+    error = __dbg_snapshotImage;
     goto LABEL_24;
   }
 
-  if ([v9 isEqualToString:@"snapshotImageRenderedUsingDrawHierarchyInRect"])
+  if ([nameCopy isEqualToString:@"snapshotImageRenderedUsingDrawHierarchyInRect"])
   {
-    v14 = [v10 __dbg_snapshotImageRenderedUsingDrawHierarchyInRect];
+    __dbg_snapshotImage = [objectCopy __dbg_snapshotImageRenderedUsingDrawHierarchyInRect];
     goto LABEL_23;
   }
 
-  if ([v9 isEqualToString:@"dbgViewForFirstBaselineLayout"])
+  if ([nameCopy isEqualToString:@"dbgViewForFirstBaselineLayout"])
   {
-    v14 = [v10 __dbg_viewForFirstBaselineLayout];
+    __dbg_snapshotImage = [objectCopy __dbg_viewForFirstBaselineLayout];
     goto LABEL_23;
   }
 
-  if ([v9 isEqualToString:@"dbgViewForLastBaselineLayout"])
+  if ([nameCopy isEqualToString:@"dbgViewForLastBaselineLayout"])
   {
-    v14 = [v10 __dbg_viewForLastBaselineLayout];
+    __dbg_snapshotImage = [objectCopy __dbg_viewForLastBaselineLayout];
     goto LABEL_23;
   }
 
-  if ([v9 isEqualToString:@"ambiguityStatusMask"])
+  if ([nameCopy isEqualToString:@"ambiguityStatusMask"])
   {
-    v14 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v10 __dbg_ambiguityStatusMask]);
+    __dbg_snapshotImage = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [objectCopy __dbg_ambiguityStatusMask]);
     goto LABEL_23;
   }
 
-  if ([v9 isEqualToString:@"horizontalAffectingConstraints"])
+  if ([nameCopy isEqualToString:@"horizontalAffectingConstraints"])
   {
-    v15 = v10;
+    v15 = objectCopy;
     v16 = 0;
 LABEL_22:
-    v14 = [v15 __dbg_constraintsAffectingLayoutForAxis:v16];
+    __dbg_snapshotImage = [v15 __dbg_constraintsAffectingLayoutForAxis:v16];
     goto LABEL_23;
   }
 
-  if ([v9 isEqualToString:@"verticalAffectingConstraints"])
+  if ([nameCopy isEqualToString:@"verticalAffectingConstraints"])
   {
-    v15 = v10;
+    v15 = objectCopy;
     v16 = 1;
     goto LABEL_22;
   }
 
-  if ([v9 isEqualToString:@"firstBaselineOffsetFromTop"])
+  if ([nameCopy isEqualToString:@"firstBaselineOffsetFromTop"])
   {
-    [v10 __dbg_firstBaselineOffsetFromTop];
+    [objectCopy __dbg_firstBaselineOffsetFromTop];
 LABEL_31:
-    v14 = [NSNumber numberWithDouble:?];
+    __dbg_snapshotImage = [NSNumber numberWithDouble:?];
     goto LABEL_23;
   }
 
-  if ([v9 isEqualToString:@"lastBaselineOffsetFromBottom"])
+  if ([nameCopy isEqualToString:@"lastBaselineOffsetFromBottom"])
   {
-    [v10 __dbg_lastBaselineOffsetFromBottom];
+    [objectCopy __dbg_lastBaselineOffsetFromBottom];
     goto LABEL_31;
   }
 
-  if ([v9 isEqualToString:@"contentCompressionResistancePriorityHorizontal"])
+  if ([nameCopy isEqualToString:@"contentCompressionResistancePriorityHorizontal"])
   {
-    v18 = v10;
+    v18 = objectCopy;
     v19 = 0;
 LABEL_36:
     [v18 contentCompressionResistancePriorityForAxis:v19];
 LABEL_37:
-    v14 = [NSNumber numberWithFloat:?];
+    __dbg_snapshotImage = [NSNumber numberWithFloat:?];
     goto LABEL_23;
   }
 
-  if ([v9 isEqualToString:@"contentCompressionResistancePriorityVertical"])
+  if ([nameCopy isEqualToString:@"contentCompressionResistancePriorityVertical"])
   {
-    v18 = v10;
+    v18 = objectCopy;
     v19 = 1;
     goto LABEL_36;
   }
 
-  if ([v9 isEqualToString:@"contentHuggingPriorityHorizontal"])
+  if ([nameCopy isEqualToString:@"contentHuggingPriorityHorizontal"])
   {
-    v20 = v10;
+    v20 = objectCopy;
     v21 = 0;
 LABEL_42:
     [v20 contentHuggingPriorityForAxis:v21];
     goto LABEL_37;
   }
 
-  if ([v9 isEqualToString:@"contentHuggingPriorityVertical"])
+  if ([nameCopy isEqualToString:@"contentHuggingPriorityVertical"])
   {
-    v20 = v10;
+    v20 = objectCopy;
     v21 = 1;
     goto LABEL_42;
   }
 
-  if ([v9 isEqualToString:@"dbgFormattedDisplayName"])
+  if ([nameCopy isEqualToString:@"dbgFormattedDisplayName"])
   {
-    v14 = [v10 __dbg_formattedDisplayName];
+    __dbg_snapshotImage = [objectCopy __dbg_formattedDisplayName];
     goto LABEL_23;
   }
 
-  if ([v9 isEqualToString:@"dbgInspectedDebugDescription"])
+  if ([nameCopy isEqualToString:@"dbgInspectedDebugDescription"])
   {
-    v14 = [v10 debugDescription];
+    __dbg_snapshotImage = [objectCopy debugDescription];
     goto LABEL_23;
   }
 
-  if ([v9 isEqualToString:@"hasAmbiguousLayout"])
+  if ([nameCopy isEqualToString:@"hasAmbiguousLayout"])
   {
-    v22 = [v10 __dbg_hasAmbiguousLayout];
+    __dbg_hasAmbiguousLayout = [objectCopy __dbg_hasAmbiguousLayout];
 LABEL_49:
-    v14 = [NSNumber numberWithBool:v22];
+    __dbg_snapshotImage = [NSNumber numberWithBool:__dbg_hasAmbiguousLayout];
     goto LABEL_23;
   }
 
-  if (![v9 isEqualToString:@"layerClass"])
+  if (![nameCopy isEqualToString:@"layerClass"])
   {
-    if ([v9 isEqualToString:@"layer"])
+    if ([nameCopy isEqualToString:@"layer"])
     {
-      v14 = [v10 __dbg_layer];
+      __dbg_snapshotImage = [objectCopy __dbg_layer];
       goto LABEL_23;
     }
 
-    if ([v9 isEqualToString:@"dbgSubviewHierarchy"])
+    if ([nameCopy isEqualToString:@"dbgSubviewHierarchy"])
     {
       if (objc_opt_respondsToSelector())
       {
-        v14 = [v10 makeViewDebugData];
+        __dbg_snapshotImage = [objectCopy makeViewDebugData];
         goto LABEL_23;
       }
 
       goto LABEL_59;
     }
 
-    if ([v9 isEqualToString:@"dbgRenderingModeIsMultiLayer"])
+    if ([nameCopy isEqualToString:@"dbgRenderingModeIsMultiLayer"])
     {
-      v22 = [v10 __dbg_renderingModeIsMultiLayer];
+      __dbg_hasAmbiguousLayout = [objectCopy __dbg_renderingModeIsMultiLayer];
       goto LABEL_49;
     }
 
-    if ([v9 isEqualToString:@"anchorPoint"])
+    if ([nameCopy isEqualToString:@"anchorPoint"])
     {
-      v12 = [v10 layer];
-      [v12 anchorPoint];
+      layer = [objectCopy layer];
+      [layer anchorPoint];
 LABEL_64:
       valuePtr = v24;
       v44[0] = v25;
       v26 = malloc_type_malloc(0x10uLL, 0x6004044C4A2DFuLL);
       *v26 = CFNumberCreate(0, kCFNumberCGFloatType, &valuePtr);
       v26[1] = CFNumberCreate(0, kCFNumberCGFloatType, v44);
-      a6 = CFArrayCreate(0, v26, 2, &kCFTypeArrayCallBacks);
+      error = CFArrayCreate(0, v26, 2, &kCFTypeArrayCallBacks);
       CFRelease(*v26);
       CFRelease(v26[1]);
       free(v26);
       goto LABEL_7;
     }
 
-    if ([v9 isEqualToString:@"anchorPointZ"])
+    if ([nameCopy isEqualToString:@"anchorPointZ"])
     {
-      v12 = [v10 layer];
-      [v12 anchorPointZ];
+      layer = [objectCopy layer];
+      [layer anchorPointZ];
     }
 
     else
     {
-      if ([v9 isEqualToString:@"position"])
+      if ([nameCopy isEqualToString:@"position"])
       {
-        v12 = [v10 layer];
-        [v12 position];
+        layer = [objectCopy layer];
+        [layer position];
         goto LABEL_64;
       }
 
-      if (![v9 isEqualToString:@"zPosition"])
+      if (![nameCopy isEqualToString:@"zPosition"])
       {
-        if ([v9 isEqualToString:@"traitCollectionUserInterfaceStyle"])
+        if ([nameCopy isEqualToString:@"traitCollectionUserInterfaceStyle"])
         {
-          v12 = [v10 traitCollection];
-          v27 = [v12 userInterfaceStyle];
+          layer = [objectCopy traitCollection];
+          userInterfaceStyle = [layer userInterfaceStyle];
         }
 
-        else if ([v9 isEqualToString:@"traitCollectionVerticalSizeClass"])
+        else if ([nameCopy isEqualToString:@"traitCollectionVerticalSizeClass"])
         {
-          v12 = [v10 traitCollection];
-          v27 = [v12 verticalSizeClass];
+          layer = [objectCopy traitCollection];
+          userInterfaceStyle = [layer verticalSizeClass];
         }
 
-        else if ([v9 isEqualToString:@"traitCollectionHorizontalSizeClass"])
+        else if ([nameCopy isEqualToString:@"traitCollectionHorizontalSizeClass"])
         {
-          v12 = [v10 traitCollection];
-          v27 = [v12 horizontalSizeClass];
+          layer = [objectCopy traitCollection];
+          userInterfaceStyle = [layer horizontalSizeClass];
         }
 
         else
         {
-          if (![v9 isEqualToString:@"traitCollectionLayoutDirection"])
+          if (![nameCopy isEqualToString:@"traitCollectionLayoutDirection"])
           {
-            v12 = v10;
-            v28 = v9;
+            layer = objectCopy;
+            v28 = nameCopy;
             if (![v28 length])
             {
               goto LABEL_93;
@@ -691,36 +691,36 @@ LABEL_64:
             {
               if ([v28 length] < 2)
               {
-                v33 = [v28 uppercaseString];
+                uppercaseString = [v28 uppercaseString];
               }
 
               else
               {
                 v30 = [v28 substringToIndex:1];
-                v31 = [v30 uppercaseString];
+                uppercaseString2 = [v30 uppercaseString];
                 v32 = [v28 substringFromIndex:1];
-                v33 = [v31 stringByAppendingString:v32];
+                uppercaseString = [uppercaseString2 stringByAppendingString:v32];
               }
 
-              v34 = [@"is" stringByAppendingString:v33];
+              v34 = [@"is" stringByAppendingString:uppercaseString];
               NSSelectorFromString(v34);
               v29 = (objc_opt_respondsToSelector() & 1) != 0 ? v34 : 0;
             }
 
             if (v29)
             {
-              a6 = [v12 valueForKey:v29];
+              error = [layer valueForKey:v29];
             }
 
             else
             {
 LABEL_93:
-              if (a6)
+              if (error)
               {
                 v35 = v28;
-                if (v12)
+                if (layer)
                 {
-                  v36 = [NSString stringWithFormat:@"%@", v12];
+                  v36 = [NSString stringWithFormat:@"%@", layer];
                 }
 
                 else
@@ -749,10 +749,10 @@ LABEL_93:
                 v40 = [NSError errorWithDomain:@"DebugHierarchyErrorDomain" code:100 userInfo:v39];
 
                 v41 = v40;
-                *a6 = v40;
+                *error = v40;
 
                 v29 = 0;
-                a6 = 0;
+                error = 0;
               }
 
               else
@@ -764,40 +764,40 @@ LABEL_93:
             goto LABEL_7;
           }
 
-          v12 = [v10 traitCollection];
-          v27 = [v12 layoutDirection];
+          layer = [objectCopy traitCollection];
+          userInterfaceStyle = [layer layoutDirection];
         }
 
-        v13 = [NSNumber numberWithInteger:v27];
+        v13 = [NSNumber numberWithInteger:userInterfaceStyle];
         goto LABEL_6;
       }
 
-      v12 = [v10 layer];
-      [v12 zPosition];
+      layer = [objectCopy layer];
+      [layer zPosition];
     }
 
     v13 = [NSNumber numberWithDouble:?];
     goto LABEL_6;
   }
 
-  v23 = [objc_opt_class() layerClass];
-  a6 = v23;
-  if (!v23)
+  layerClass = [objc_opt_class() layerClass];
+  error = layerClass;
+  if (!layerClass)
   {
     goto LABEL_24;
   }
 
-  if (object_isClass(v23))
+  if (object_isClass(layerClass))
   {
-    v14 = NSStringFromClass(a6);
+    __dbg_snapshotImage = NSStringFromClass(error);
     goto LABEL_23;
   }
 
 LABEL_59:
-  a6 = 0;
+  error = 0;
 LABEL_24:
 
-  return a6;
+  return error;
 }
 
 - (BOOL)__dbg_wantsAutoLayout
@@ -817,50 +817,50 @@ LABEL_24:
     return 0;
   }
 
-  v3 = [(UIView *)self _layoutVariablesWithAmbiguousValue];
-  v4 = [v3 count] != 0;
+  _layoutVariablesWithAmbiguousValue = [(UIView *)self _layoutVariablesWithAmbiguousValue];
+  v4 = [_layoutVariablesWithAmbiguousValue count] != 0;
 
   return v4;
 }
 
 - (unint64_t)__dbg_ambiguityStatusMask
 {
-  v3 = [(UIView *)self _layoutVariablesWithAmbiguousValue];
-  v4 = [NSSet setWithArray:v3];
+  _layoutVariablesWithAmbiguousValue = [(UIView *)self _layoutVariablesWithAmbiguousValue];
+  v4 = [NSSet setWithArray:_layoutVariablesWithAmbiguousValue];
 
-  v5 = [(UIView *)self superview];
-  if (!v5)
+  superview = [(UIView *)self superview];
+  if (!superview)
   {
     goto LABEL_7;
   }
 
-  while (([v5 _uiib_hostsLayoutEngine] & 1) == 0)
+  while (([superview _uiib_hostsLayoutEngine] & 1) == 0)
   {
-    v6 = [v5 superview];
+    v5Superview = [superview superview];
 
-    v5 = v6;
-    if (!v6)
+    superview = v5Superview;
+    if (!v5Superview)
     {
       goto LABEL_8;
     }
   }
 
-  if ([v5 _uiib_hostsLayoutEngine])
+  if ([superview _uiib_hostsLayoutEngine])
   {
-    v6 = [v5 _uiib_layoutEngineCreatingIfNecessary];
+    v5Superview = [superview _uiib_layoutEngineCreatingIfNecessary];
   }
 
   else
   {
 LABEL_7:
-    v6 = 0;
+    v5Superview = 0;
   }
 
 LABEL_8:
-  v7 = [(UIView *)self _minXVariable];
-  if (v7)
+  _minXVariable = [(UIView *)self _minXVariable];
+  if (_minXVariable)
   {
-    if ([v4 containsObject:v7])
+    if ([v4 containsObject:_minXVariable])
     {
       v8 = 2;
     }
@@ -870,7 +870,7 @@ LABEL_8:
       v8 = 0;
     }
 
-    if (v6 && ![v6 hasValue:0 forVariable:v7])
+    if (v5Superview && ![v5Superview hasValue:0 forVariable:_minXVariable])
     {
       v8 |= 0x400uLL;
     }
@@ -881,64 +881,64 @@ LABEL_8:
     v8 = 0;
   }
 
-  v9 = [(UIView *)self _minYVariable];
-  if (v9)
+  _minYVariable = [(UIView *)self _minYVariable];
+  if (_minYVariable)
   {
-    if ([v4 containsObject:v9])
+    if ([v4 containsObject:_minYVariable])
     {
       v8 |= 4uLL;
     }
 
-    if (v6 && ![v6 hasValue:0 forVariable:v9])
+    if (v5Superview && ![v5Superview hasValue:0 forVariable:_minYVariable])
     {
       v8 |= 0x800uLL;
     }
   }
 
-  v10 = [(UIView *)self _boundsWidthVariable];
-  if (v10)
+  _boundsWidthVariable = [(UIView *)self _boundsWidthVariable];
+  if (_boundsWidthVariable)
   {
-    if ([v4 containsObject:v10])
+    if ([v4 containsObject:_boundsWidthVariable])
     {
       v8 |= 8uLL;
     }
 
-    if (v6 && ![v6 hasValue:0 forVariable:v10])
+    if (v5Superview && ![v5Superview hasValue:0 forVariable:_boundsWidthVariable])
     {
       v8 |= 0x1000uLL;
     }
   }
 
-  v11 = [(UIView *)self _boundsHeightVariable];
-  if (v11)
+  _boundsHeightVariable = [(UIView *)self _boundsHeightVariable];
+  if (_boundsHeightVariable)
   {
-    if ([v4 containsObject:v11])
+    if ([v4 containsObject:_boundsHeightVariable])
     {
       v8 |= 0x10uLL;
     }
 
-    if (v6 && ![v6 hasValue:0 forVariable:v11])
+    if (v5Superview && ![v5Superview hasValue:0 forVariable:_boundsHeightVariable])
     {
       v8 |= 0x2000uLL;
     }
   }
 
-  v12 = [(UIView *)self _contentWidthVariable];
-  v16 = v9;
-  if (!v12)
+  _contentWidthVariable = [(UIView *)self _contentWidthVariable];
+  v16 = _minYVariable;
+  if (!_contentWidthVariable)
   {
     goto LABEL_41;
   }
 
-  if (!-[UIView __dbg_shouldIgnoreScrollableContentWidthAmbiguity](self, "__dbg_shouldIgnoreScrollableContentWidthAmbiguity") && [v4 containsObject:v12])
+  if (!-[UIView __dbg_shouldIgnoreScrollableContentWidthAmbiguity](self, "__dbg_shouldIgnoreScrollableContentWidthAmbiguity") && [v4 containsObject:_contentWidthVariable])
   {
     v8 |= 0x20uLL;
   }
 
-  if (v6 && ![(UIView *)self __dbg_shouldIgnoreScrollableContentWidthAmbiguity])
+  if (v5Superview && ![(UIView *)self __dbg_shouldIgnoreScrollableContentWidthAmbiguity])
   {
-    v13 = v7;
-    if (![v6 hasValue:0 forVariable:v12])
+    v13 = _minXVariable;
+    if (![v5Superview hasValue:0 forVariable:_contentWidthVariable])
     {
       v8 |= 0x4000uLL;
     }
@@ -947,18 +947,18 @@ LABEL_8:
   else
   {
 LABEL_41:
-    v13 = v7;
+    v13 = _minXVariable;
   }
 
-  v14 = [(UIView *)self _contentHeightVariable];
-  if (v14)
+  _contentHeightVariable = [(UIView *)self _contentHeightVariable];
+  if (_contentHeightVariable)
   {
-    if (!-[UIView __dbg_shouldIgnoreScrollableContentHeightAmbiguity](self, "__dbg_shouldIgnoreScrollableContentHeightAmbiguity") && [v4 containsObject:v14])
+    if (!-[UIView __dbg_shouldIgnoreScrollableContentHeightAmbiguity](self, "__dbg_shouldIgnoreScrollableContentHeightAmbiguity") && [v4 containsObject:_contentHeightVariable])
     {
       v8 |= 0x40uLL;
     }
 
-    if (v6 && !-[UIView __dbg_shouldIgnoreScrollableContentHeightAmbiguity](self, "__dbg_shouldIgnoreScrollableContentHeightAmbiguity") && ![v6 hasValue:0 forVariable:v14])
+    if (v5Superview && !-[UIView __dbg_shouldIgnoreScrollableContentHeightAmbiguity](self, "__dbg_shouldIgnoreScrollableContentHeightAmbiguity") && ![v5Superview hasValue:0 forVariable:_contentHeightVariable])
     {
       v8 |= 0x8000uLL;
     }
@@ -975,8 +975,8 @@ LABEL_41:
     return 0;
   }
 
-  v3 = [(UIView *)self subviews];
-  v4 = [v3 count] == 0;
+  subviews = [(UIView *)self subviews];
+  v4 = [subviews count] == 0;
 
   return v4;
 }
@@ -989,38 +989,38 @@ LABEL_41:
     return 0;
   }
 
-  v3 = [(UIView *)self subviews];
-  v4 = [v3 count] == 0;
+  subviews = [(UIView *)self subviews];
+  v4 = [subviews count] == 0;
 
   return v4;
 }
 
 - (double)__dbg_firstBaselineOffsetFromTop
 {
-  v2 = self;
-  v3 = v2;
-  if ([(UIView *)v2 __dbg_wantsAutoLayout])
+  selfCopy = self;
+  viewForFirstBaselineLayout = selfCopy;
+  if ([(UIView *)selfCopy __dbg_wantsAutoLayout])
   {
-    v3 = v2;
+    viewForFirstBaselineLayout = selfCopy;
     if (objc_opt_respondsToSelector())
     {
-      v3 = [(UIView *)v2 viewForFirstBaselineLayout];
+      viewForFirstBaselineLayout = [(UIView *)selfCopy viewForFirstBaselineLayout];
     }
   }
 
   v4 = 0.0;
-  if ([(UIView *)v2 __dbg_wantsAutoLayout]&& (objc_opt_respondsToSelector() & 1) != 0)
+  if ([(UIView *)selfCopy __dbg_wantsAutoLayout]&& (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v3 _firstBaselineOffsetFromTop];
+    [viewForFirstBaselineLayout _firstBaselineOffsetFromTop];
     v4 = v5;
   }
 
-  [v3 bounds];
-  [v3 alignmentRectForFrame:?];
-  [v3 convertRect:v2 toView:?];
+  [viewForFirstBaselineLayout bounds];
+  [viewForFirstBaselineLayout alignmentRectForFrame:?];
+  [viewForFirstBaselineLayout convertRect:selfCopy toView:?];
   v7 = v6;
-  [(UIView *)v2 bounds];
-  [(UIView *)v2 alignmentRectForFrame:?];
+  [(UIView *)selfCopy bounds];
+  [(UIView *)selfCopy alignmentRectForFrame:?];
   v9 = v4 + v7 + v8;
 
   return v9;
@@ -1028,31 +1028,31 @@ LABEL_41:
 
 - (double)__dbg_lastBaselineOffsetFromBottom
 {
-  v2 = self;
-  v3 = v2;
-  if ([(UIView *)v2 __dbg_wantsAutoLayout])
+  selfCopy = self;
+  viewForLastBaselineLayout = selfCopy;
+  if ([(UIView *)selfCopy __dbg_wantsAutoLayout])
   {
-    v3 = v2;
+    viewForLastBaselineLayout = selfCopy;
     if (objc_opt_respondsToSelector())
     {
-      v3 = [(UIView *)v2 viewForLastBaselineLayout];
+      viewForLastBaselineLayout = [(UIView *)selfCopy viewForLastBaselineLayout];
     }
   }
 
   v4 = 0.0;
-  if ([v3 __dbg_wantsAutoLayout] && (objc_opt_respondsToSelector() & 1) != 0)
+  if ([viewForLastBaselineLayout __dbg_wantsAutoLayout] && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v3 _baselineOffsetFromBottom];
+    [viewForLastBaselineLayout _baselineOffsetFromBottom];
     v4 = v5;
   }
 
-  [v3 bounds];
-  [v3 alignmentRectForFrame:?];
-  [v3 convertRect:v2 toView:?];
+  [viewForLastBaselineLayout bounds];
+  [viewForLastBaselineLayout alignmentRectForFrame:?];
+  [viewForLastBaselineLayout convertRect:selfCopy toView:?];
   v7 = v6;
   v9 = v8;
-  [(UIView *)v2 bounds];
-  [(UIView *)v2 alignmentRectForFrame:?];
+  [(UIView *)selfCopy bounds];
+  [(UIView *)selfCopy alignmentRectForFrame:?];
   v12 = v4 + v10 + v11 - (v7 + v9);
 
   return v12;
@@ -1062,52 +1062,52 @@ LABEL_41:
 {
   if ([(UIView *)self __dbg_wantsAutoLayout]&& (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v3 = [(UIView *)self viewForFirstBaselineLayout];
+    viewForFirstBaselineLayout = [(UIView *)self viewForFirstBaselineLayout];
   }
 
   else
   {
-    v3 = 0;
+    viewForFirstBaselineLayout = 0;
   }
 
-  return v3;
+  return viewForFirstBaselineLayout;
 }
 
 - (id)__dbg_viewForLastBaselineLayout
 {
   if ([(UIView *)self __dbg_wantsAutoLayout]&& (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v3 = [(UIView *)self viewForLastBaselineLayout];
+    viewForLastBaselineLayout = [(UIView *)self viewForLastBaselineLayout];
   }
 
   else
   {
-    v3 = 0;
+    viewForLastBaselineLayout = 0;
   }
 
-  return v3;
+  return viewForLastBaselineLayout;
 }
 
 - (id)__dbg_readableContentGuide
 {
   if ([(UIView *)self __dbg_wantsAutoLayout]&& (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v3 = [(UIView *)self readableContentGuide];
+    readableContentGuide = [(UIView *)self readableContentGuide];
   }
 
   else
   {
-    v3 = 0;
+    readableContentGuide = 0;
   }
 
-  return v3;
+  return readableContentGuide;
 }
 
-- (id)__dbg_constraintsAffectingLayoutForAxis:(int64_t)a3
+- (id)__dbg_constraintsAffectingLayoutForAxis:(int64_t)axis
 {
   if ([(UIView *)self __dbg_wantsAutoLayout])
   {
-    v5 = [(UIView *)self constraintsAffectingLayoutForAxis:a3];
+    v5 = [(UIView *)self constraintsAffectingLayoutForAxis:axis];
     if ([v5 count])
     {
       v6 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v5 count]);
@@ -1170,24 +1170,24 @@ LABEL_41:
 {
   if (objc_opt_respondsToSelector())
   {
-    v3 = [(UIView *)self _viewDelegate];
+    _viewDelegate = [(UIView *)self _viewDelegate];
   }
 
   else
   {
-    v3 = 0;
+    _viewDelegate = 0;
   }
 
-  return v3;
+  return _viewDelegate;
 }
 
 - (id)__dbg_formattedDisplayName
 {
-  v3 = [(UIView *)self accessibilityLabel];
+  accessibilityLabel = [(UIView *)self accessibilityLabel];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  v5 = [(UIView *)self accessibilityLabel];
+  accessibilityLabel2 = [(UIView *)self accessibilityLabel];
   if ((isKindOfClass & 1) == 0)
   {
     objc_opt_class();
@@ -1198,11 +1198,11 @@ LABEL_41:
       goto LABEL_5;
     }
 
-    v7 = [(UIView *)self accessibilityLabel];
-    v5 = [v7 string];
+    accessibilityLabel3 = [(UIView *)self accessibilityLabel];
+    accessibilityLabel2 = [accessibilityLabel3 string];
   }
 
-  if (v5)
+  if (accessibilityLabel2)
   {
     goto LABEL_16;
   }
@@ -1211,19 +1211,19 @@ LABEL_5:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(UIView *)self currentTitle];
+    accessibilityLabel2 = [(UIView *)self currentTitle];
     goto LABEL_16;
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v8 = [(UIView *)self text];
+    text = [(UIView *)self text];
 LABEL_9:
-    v9 = v8;
+    date = text;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v10 = v9;
+      v10 = date;
     }
 
     else
@@ -1238,24 +1238,24 @@ LABEL_9:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [(UIView *)self date];
-    v11 = [v9 description];
+    date = [(UIView *)self date];
+    v11 = [date description];
 LABEL_15:
-    v5 = v11;
+    accessibilityLabel2 = v11;
 
     goto LABEL_16;
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v8 = [(UIView *)self title];
+    text = [(UIView *)self title];
     goto LABEL_9;
   }
 
-  v5 = 0;
+  accessibilityLabel2 = 0;
 LABEL_16:
 
-  return v5;
+  return accessibilityLabel2;
 }
 
 - (id)__dbg_snapshotImage
@@ -1274,20 +1274,20 @@ LABEL_16:
 
     else
     {
-      v8 = [(UIView *)self subviews];
-      v9 = [v8 count];
+      subviews = [(UIView *)self subviews];
+      v9 = [subviews count];
       v10 = &v24 - ((4 * v9 + 15) & 0xFFFFFFFFFFFFFFF0);
       if (v9)
       {
         for (i = 0; i != v9; i = i + 1)
         {
-          v12 = [v8 objectAtIndex:i];
-          v13 = [v12 layer];
-          [v13 opacity];
+          v12 = [subviews objectAtIndex:i];
+          layer = [v12 layer];
+          [layer opacity];
           *&v10[4 * i] = v14;
 
-          v15 = [v12 layer];
-          [v15 setOpacity:3.18618444e-58];
+          layer2 = [v12 layer];
+          [layer2 setOpacity:3.18618444e-58];
         }
       }
 
@@ -1298,8 +1298,8 @@ LABEL_16:
       CurrentContext = UIGraphicsGetCurrentContext();
       if (CurrentContext)
       {
-        v18 = [(UIView *)self layer];
-        [v18 renderInContext:CurrentContext];
+        layer3 = [(UIView *)self layer];
+        [layer3 renderInContext:CurrentContext];
 
         CurrentContext = UIGraphicsGetImageFromCurrentImageContext();
       }
@@ -1309,11 +1309,11 @@ LABEL_16:
       {
         for (j = 0; j != v9; j = j + 1)
         {
-          v20 = [v8 objectAtIndex:j];
+          v20 = [subviews objectAtIndex:j];
           v21 = *&v10[4 * j];
-          v22 = [v20 layer];
+          layer4 = [v20 layer];
           LODWORD(v23) = v21;
-          [v22 setOpacity:v23];
+          [layer4 setOpacity:v23];
         }
       }
     }
@@ -1324,39 +1324,39 @@ LABEL_16:
 
 - (id)__dbg_snapshotImageRenderedUsingDrawHierarchyInRect
 {
-  v3 = [(UIView *)self window];
-  if (!v3)
+  window = [(UIView *)self window];
+  if (!window)
   {
-    v4 = self;
-    v5 = [(UIView *)v4 superview];
+    selfCopy = self;
+    superview = [(UIView *)selfCopy superview];
 
-    if (v5)
+    if (superview)
     {
       do
       {
-        v3 = [(UIView *)v4 superview];
+        window = [(UIView *)selfCopy superview];
 
-        v6 = [(UIView *)v3 superview];
+        superview2 = [(UIView *)window superview];
 
-        v4 = v3;
+        selfCopy = window;
       }
 
-      while (v6);
+      while (superview2);
     }
 
     else
     {
-      v3 = v4;
+      window = selfCopy;
     }
   }
 
   [(UIView *)self bounds];
-  [(UIView *)v3 convertRect:self fromView:?];
+  [(UIView *)window convertRect:self fromView:?];
   x = v7;
   y = v9;
   width = v11;
   height = v13;
-  [(UIView *)v3 bounds];
+  [(UIView *)window bounds];
   v95.origin.x = v15;
   v95.origin.y = v16;
   v95.size.width = v17;
@@ -1368,43 +1368,43 @@ LABEL_16:
   if (CGRectIntersectsRect(v89, v95))
   {
     v19 = +[NSMutableArray array];
-    v20 = self;
-    v21 = v20;
-    if (v3 == v20)
+    selfCopy2 = self;
+    v21 = selfCopy2;
+    if (window == selfCopy2)
     {
-      v23 = v20;
+      superview3 = selfCopy2;
     }
 
     else
     {
-      v22 = v20;
+      v22 = selfCopy2;
       do
       {
-        v23 = [(UIView *)v22 superview];
-        v24 = [(UIView *)v23 subviews];
-        v25 = [v24 indexOfObject:v22];
+        superview3 = [(UIView *)v22 superview];
+        subviews = [(UIView *)superview3 subviews];
+        v25 = [subviews indexOfObject:v22];
 
-        v26 = [(UIView *)v23 subviews];
-        v27 = [v26 count];
+        subviews2 = [(UIView *)superview3 subviews];
+        v27 = [subviews2 count];
         v28 = v25 + 1;
 
         if (v27 > v25 + 1)
         {
           while (1)
           {
-            v29 = [(UIView *)v23 subviews];
-            v30 = [v29 count];
+            subviews3 = [(UIView *)superview3 subviews];
+            v30 = [subviews3 count];
 
             if (v28 >= v30)
             {
               break;
             }
 
-            v31 = [(UIView *)v23 subviews];
-            v32 = [v31 objectAtIndexedSubscript:v28];
+            subviews4 = [(UIView *)superview3 subviews];
+            v32 = [subviews4 objectAtIndexedSubscript:v28];
 
             [v32 bounds];
-            [(UIView *)v3 convertRect:v32 fromView:?];
+            [(UIView *)window convertRect:v32 fromView:?];
             v96.origin.x = x;
             v96.origin.y = y;
             v96.size.width = width;
@@ -1418,10 +1418,10 @@ LABEL_16:
           }
         }
 
-        if ([(UIView *)v23 clipsToBounds])
+        if ([(UIView *)superview3 clipsToBounds])
         {
-          [(UIView *)v23 bounds];
-          [(UIView *)v3 convertRect:v23 fromView:?];
+          [(UIView *)superview3 bounds];
+          [(UIView *)window convertRect:superview3 fromView:?];
           v97.origin.x = v33;
           v97.origin.y = v34;
           v97.size.width = v35;
@@ -1437,10 +1437,10 @@ LABEL_16:
           height = v92.size.height;
         }
 
-        v22 = v23;
+        v22 = superview3;
       }
 
-      while (v23 != v3);
+      while (superview3 != window);
     }
 
     v93.origin.x = x;
@@ -1454,8 +1454,8 @@ LABEL_16:
 
     else
     {
-      v39 = [(UIView *)v21 subviews];
-      [v19 addObjectsFromArray:v39];
+      subviews5 = [(UIView *)v21 subviews];
+      [v19 addObjectsFromArray:subviews5];
 
       v40 = [NSMapTable mapTableWithKeyOptions:0 valueOptions:0];
       v80 = 0u;
@@ -1492,19 +1492,19 @@ LABEL_16:
         while (v43);
       }
 
-      [(UIView *)v3 bounds];
+      [(UIView *)window bounds];
       v49 = v48;
       v51 = v50;
       v87.width = width;
       v87.height = height;
       UIGraphicsBeginImageContextWithOptions(v87, 0, 0.0);
-      [(UIView *)v3 drawViewHierarchyInRect:1 afterScreenUpdates:-x, -y, v49, v51];
+      [(UIView *)window drawViewHierarchyInRect:1 afterScreenUpdates:-x, -y, v49, v51];
       v38 = UIGraphicsGetImageFromCurrentImageContext();
       UIGraphicsEndImageContext();
       [(UIView *)v21 bounds];
       if (v53 != width || v52 != height)
       {
-        [(UIView *)v21 convertRect:v3 fromView:x, y, width, height];
+        [(UIView *)v21 convertRect:window fromView:x, y, width, height];
         v55 = v54;
         v57 = v56;
         v59 = v58;
@@ -1524,8 +1524,8 @@ LABEL_16:
       v79 = 0u;
       v76 = 0u;
       v77 = 0u;
-      v65 = [v40 keyEnumerator];
-      v66 = [v65 countByEnumeratingWithState:&v76 objects:v84 count:16];
+      keyEnumerator = [v40 keyEnumerator];
+      v66 = [keyEnumerator countByEnumeratingWithState:&v76 objects:v84 count:16];
       if (v66)
       {
         v67 = v66;
@@ -1536,7 +1536,7 @@ LABEL_16:
           {
             if (*v77 != v68)
             {
-              objc_enumerationMutation(v65);
+              objc_enumerationMutation(keyEnumerator);
             }
 
             v70 = *(*(&v76 + 1) + 8 * j);
@@ -1547,7 +1547,7 @@ LABEL_16:
             [v70 setAlpha:v73];
           }
 
-          v67 = [v65 countByEnumeratingWithState:&v76 objects:v84 count:16];
+          v67 = [keyEnumerator countByEnumeratingWithState:&v76 objects:v84 count:16];
         }
 
         while (v67);
@@ -1590,9 +1590,9 @@ LABEL_16:
     return 0;
   }
 
-  v3 = [(UIView *)self _outermostLayer];
-  v4 = [(UIView *)self layer];
-  v5 = v3 != v4;
+  _outermostLayer = [(UIView *)self _outermostLayer];
+  layer = [(UIView *)self layer];
+  v5 = _outermostLayer != layer;
 
   return v5;
 }

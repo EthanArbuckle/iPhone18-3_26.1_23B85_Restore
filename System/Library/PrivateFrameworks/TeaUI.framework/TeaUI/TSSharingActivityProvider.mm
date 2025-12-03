@@ -1,10 +1,10 @@
 @interface TSSharingActivityProvider
 - (NSArray)activities;
 - (NSArray)activityItems;
-- (TSSharingActivityProvider)initWithActivityItems:(id)a3 activitySources:(id)a4 excludedActivityTypes:(id)a5 linkPresentationSource:(id)a6;
+- (TSSharingActivityProvider)initWithActivityItems:(id)items activitySources:(id)sources excludedActivityTypes:(id)types linkPresentationSource:(id)source;
 - (id)linkPresentationSource;
-- (void)setActivities:(id)a3;
-- (void)setLinkPresentationSource:(id)a3;
+- (void)setActivities:(id)activities;
+- (void)setLinkPresentationSource:(id)source;
 @end
 
 @implementation TSSharingActivityProvider
@@ -18,11 +18,11 @@
   return v2;
 }
 
-- (void)setActivities:(id)a3
+- (void)setActivities:(id)activities
 {
   sub_1D7E0A1A8(0, &qword_1ECA0F288);
   v4 = sub_1D8191314();
-  v5 = self;
+  selfCopy = self;
   SharingActivityProvider.activities.setter(v4);
 }
 
@@ -50,11 +50,11 @@
   return v8;
 }
 
-- (void)setLinkPresentationSource:(id)a3
+- (void)setLinkPresentationSource:(id)source
 {
-  if (a3)
+  if (source)
   {
-    v3 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_1D8191F34();
     swift_unknownObjectRelease();
@@ -63,7 +63,7 @@
   else
   {
     memset(v6, 0, sizeof(v6));
-    v4 = self;
+    selfCopy2 = self;
   }
 
   SharingActivityProvider.linkPresentationSource.setter(v6);
@@ -71,7 +71,7 @@
 
 - (NSArray)activityItems
 {
-  v2 = self;
+  selfCopy = self;
   SharingActivityProvider.activityItems.getter();
 
   v3 = sub_1D8191304();
@@ -79,7 +79,7 @@
   return v3;
 }
 
-- (TSSharingActivityProvider)initWithActivityItems:(id)a3 activitySources:(id)a4 excludedActivityTypes:(id)a5 linkPresentationSource:(id)a6
+- (TSSharingActivityProvider)initWithActivityItems:(id)items activitySources:(id)sources excludedActivityTypes:(id)types linkPresentationSource:(id)source
 {
   sub_1D7E0A1A8(0, &qword_1ECA0F288);
   sub_1D8191314();
@@ -87,7 +87,7 @@
   sub_1D8191314();
   type metadata accessor for ActivityType();
   sub_1D8191314();
-  if (a6)
+  if (source)
   {
     swift_unknownObjectRetain();
     sub_1D8191F34();

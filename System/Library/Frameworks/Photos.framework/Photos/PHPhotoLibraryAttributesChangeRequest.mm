@@ -1,26 +1,26 @@
 @interface PHPhotoLibraryAttributesChangeRequest
 - (BOOL)enableCloudSync;
-- (BOOL)prepareForPhotoLibraryCheck:(id)a3 error:(id *)a4;
+- (BOOL)prepareForPhotoLibraryCheck:(id)check error:(id *)error;
 - (PHPhotoLibraryAttributesChangeRequest)init;
 - (unsigned)cloudResourcePrefetchMode;
-- (void)setCloudResourcePrefetchMode:(unsigned __int16)a3;
-- (void)setEnableCloudSync:(BOOL)a3;
+- (void)setCloudResourcePrefetchMode:(unsigned __int16)mode;
+- (void)setEnableCloudSync:(BOOL)sync;
 @end
 
 @implementation PHPhotoLibraryAttributesChangeRequest
 
-- (BOOL)prepareForPhotoLibraryCheck:(id)a3 error:(id *)a4
+- (BOOL)prepareForPhotoLibraryCheck:(id)check error:(id *)error
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v5 = [a3 type];
-  v6 = v5;
-  if (a4 && v5)
+  type = [check type];
+  v6 = type;
+  if (error && type)
   {
     v7 = MEMORY[0x1E696ABC0];
     v10 = *MEMORY[0x1E696A578];
     v11[0] = @"Change must be performed within the sharedPhotoLibrary";
     v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
-    *a4 = [v7 ph_errorWithDomain:@"PHPhotosErrorDomain" code:-1 userInfo:v8];
+    *error = [v7 ph_errorWithDomain:@"PHPhotosErrorDomain" code:-1 userInfo:v8];
   }
 
   return v6 == 0;
@@ -28,29 +28,29 @@
 
 - (unsigned)cloudResourcePrefetchMode
 {
-  v2 = [(PLPhotoLibraryAttributesChanges *)self->_changes cloudResourcePrefetchModeValue];
-  v3 = [v2 integerValue];
+  cloudResourcePrefetchModeValue = [(PLPhotoLibraryAttributesChanges *)self->_changes cloudResourcePrefetchModeValue];
+  integerValue = [cloudResourcePrefetchModeValue integerValue];
 
-  if (v3 == 1)
+  if (integerValue == 1)
   {
     return 2;
   }
 
   else
   {
-    return v3 == 0;
+    return integerValue == 0;
   }
 }
 
-- (void)setCloudResourcePrefetchMode:(unsigned __int16)a3
+- (void)setCloudResourcePrefetchMode:(unsigned __int16)mode
 {
   v4 = 1;
-  if (a3 != 2)
+  if (mode != 2)
   {
     v4 = 2;
   }
 
-  if (a3 == 1)
+  if (mode == 1)
   {
     v5 = 0;
   }
@@ -76,15 +76,15 @@
 
 - (BOOL)enableCloudSync
 {
-  v2 = [(PLPhotoLibraryAttributesChanges *)self->_changes enableCloudSyncValue];
-  v3 = [v2 BOOLValue];
+  enableCloudSyncValue = [(PLPhotoLibraryAttributesChanges *)self->_changes enableCloudSyncValue];
+  bOOLValue = [enableCloudSyncValue BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (void)setEnableCloudSync:(BOOL)a3
+- (void)setEnableCloudSync:(BOOL)sync
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:sync];
   [(PLPhotoLibraryAttributesChanges *)self->_changes setEnableCloudSyncValue:v4];
 }
 

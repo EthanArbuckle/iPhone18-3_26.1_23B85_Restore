@@ -1,29 +1,29 @@
 @interface CLSLocationShifter
 + (id)sharedLocationShifter;
-- ($F24F406B2B787EFB06265DBA3D28CBD5)shiftedCoordinateForOriginalCoordinate:(id)a3;
+- ($F24F406B2B787EFB06265DBA3D28CBD5)shiftedCoordinateForOriginalCoordinate:(id)coordinate;
 - (CLSLocationShifter)init;
 @end
 
 @implementation CLSLocationShifter
 
-- ($F24F406B2B787EFB06265DBA3D28CBD5)shiftedCoordinateForOriginalCoordinate:(id)a3
+- ($F24F406B2B787EFB06265DBA3D28CBD5)shiftedCoordinateForOriginalCoordinate:(id)coordinate
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = coordinate.var1;
+  var0 = coordinate.var0;
   if ([MEMORY[0x277D0EB88] isLocationShiftRequiredForCoordinate:?])
   {
-    v6 = self;
-    objc_sync_enter(v6);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     v20 = 0;
     v21 = &v20;
     v22 = 0x3010000000;
     v24[0] = 0;
     v24[1] = 0;
     v23 = &unk_22F9A0EC6;
-    if (([(GEOLocationShifter *)v6->_locationShifter shiftCoordinate:v24 accuracy:0 shiftedCoordinate:var0 shiftedAccuracy:var1, 0.0]& 1) == 0)
+    if (([(GEOLocationShifter *)selfCopy->_locationShifter shiftCoordinate:v24 accuracy:0 shiftedCoordinate:var0 shiftedAccuracy:var1, 0.0]& 1) == 0)
     {
       v7 = dispatch_semaphore_create(0);
-      locationShifter = v6->_locationShifter;
+      locationShifter = selfCopy->_locationShifter;
       v17[0] = MEMORY[0x277D85DD0];
       v17[1] = 3221225472;
       v17[2] = __61__CLSLocationShifter_shiftedCoordinateForOriginalCoordinate___block_invoke;
@@ -39,14 +39,14 @@
       v16 = var1;
       v9 = v18;
       v13 = v9;
-      [(GEOLocationShifter *)locationShifter shiftCoordinate:v17 accuracy:0 withCompletionHandler:v12 mustGoToNetworkCallback:v6->_locationShiftQueue errorHandler:var0 callbackQueue:var1, 0.0];
+      [(GEOLocationShifter *)locationShifter shiftCoordinate:v17 accuracy:0 withCompletionHandler:v12 mustGoToNetworkCallback:selfCopy->_locationShiftQueue errorHandler:var0 callbackQueue:var1, 0.0];
       dispatch_semaphore_wait(v9, 0xFFFFFFFFFFFFFFFFLL);
     }
 
     var0 = v21[4];
     var1 = v21[5];
     _Block_object_dispose(&v20, 8);
-    objc_sync_exit(v6);
+    objc_sync_exit(selfCopy);
   }
 
   v10 = var0;

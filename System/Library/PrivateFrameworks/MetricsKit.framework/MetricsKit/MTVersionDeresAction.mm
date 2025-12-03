@@ -1,41 +1,41 @@
 @interface MTVersionDeresAction
-- (MTVersionDeresAction)initWithField:(id)a3 configDictionary:(id)a4;
-- (id)performAction:(id)a3 context:(id)a4;
+- (MTVersionDeresAction)initWithField:(id)field configDictionary:(id)dictionary;
+- (id)performAction:(id)action context:(id)context;
 @end
 
 @implementation MTVersionDeresAction
 
-- (MTVersionDeresAction)initWithField:(id)a3 configDictionary:(id)a4
+- (MTVersionDeresAction)initWithField:(id)field configDictionary:(id)dictionary
 {
-  v6 = a4;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = MTVersionDeresAction;
-  v7 = [(MTTreatmentAction *)&v11 initWithField:a3 configDictionary:v6];
+  v7 = [(MTTreatmentAction *)&v11 initWithField:field configDictionary:dictionaryCopy];
   if (v7)
   {
-    v8 = [v6 objectForKeyedSubscript:@"precision"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"precision"];
     objc_opt_class();
     if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) && [v8 length])
     {
-      v9 = [v8 integerValue];
+      integerValue = [v8 integerValue];
     }
 
     else
     {
-      v9 = -1;
+      integerValue = -1;
     }
 
-    [(MTVersionDeresAction *)v7 setPrecision:v9];
+    [(MTVersionDeresAction *)v7 setPrecision:integerValue];
   }
 
   return v7;
 }
 
-- (id)performAction:(id)a3 context:(id)a4
+- (id)performAction:(id)action context:(id)context
 {
   v10.receiver = self;
   v10.super_class = MTVersionDeresAction;
-  v5 = [(MTTreatmentAction *)&v10 performAction:a3 context:a4];
+  v5 = [(MTTreatmentAction *)&v10 performAction:action context:context];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {

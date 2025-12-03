@@ -1,53 +1,53 @@
 @interface BCSURLActionPickerItem
-- (BCSURLActionPickerItem)initWithLabel:(id)a3 action:(id)a4 appLink:(id)a5 codePayload:(id)a6 preferApplicationIcon:(BOOL)a7;
-- (BCSURLActionPickerItem)initWithLabel:(id)a3 action:(id)a4 url:(id)a5 applicationRecord:(id)a6 preferApplicationIcon:(BOOL)a7;
+- (BCSURLActionPickerItem)initWithLabel:(id)label action:(id)action appLink:(id)link codePayload:(id)payload preferApplicationIcon:(BOOL)icon;
+- (BCSURLActionPickerItem)initWithLabel:(id)label action:(id)action url:(id)url applicationRecord:(id)record preferApplicationIcon:(BOOL)icon;
 - (BOOL)useInlineMenu;
 - (id)actionURL;
 - (id)icon;
 - (id)targetApplicationBundleIdentifier;
-- (void)performActionWithFBOptions:(id)a3;
+- (void)performActionWithFBOptions:(id)options;
 @end
 
 @implementation BCSURLActionPickerItem
 
-- (BCSURLActionPickerItem)initWithLabel:(id)a3 action:(id)a4 url:(id)a5 applicationRecord:(id)a6 preferApplicationIcon:(BOOL)a7
+- (BCSURLActionPickerItem)initWithLabel:(id)label action:(id)action url:(id)url applicationRecord:(id)record preferApplicationIcon:(BOOL)icon
 {
-  v13 = a5;
-  v14 = a6;
+  urlCopy = url;
+  recordCopy = record;
   v19.receiver = self;
   v19.super_class = BCSURLActionPickerItem;
-  v15 = [(BCSActionPickerItem *)&v19 initWithLabel:a3 action:a4];
+  v15 = [(BCSActionPickerItem *)&v19 initWithLabel:label action:action];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_url, a5);
-    objc_storeStrong(&v16->_applicationRecord, a6);
-    v16->_preferApplicationIcon = a7;
+    objc_storeStrong(&v15->_url, url);
+    objc_storeStrong(&v16->_applicationRecord, record);
+    v16->_preferApplicationIcon = icon;
     v17 = v16;
   }
 
   return v16;
 }
 
-- (BCSURLActionPickerItem)initWithLabel:(id)a3 action:(id)a4 appLink:(id)a5 codePayload:(id)a6 preferApplicationIcon:(BOOL)a7
+- (BCSURLActionPickerItem)initWithLabel:(id)label action:(id)action appLink:(id)link codePayload:(id)payload preferApplicationIcon:(BOOL)icon
 {
-  v7 = a7;
-  v13 = a5;
-  v14 = a6;
+  iconCopy = icon;
+  linkCopy = link;
+  payloadCopy = payload;
   v21.receiver = self;
   v21.super_class = BCSURLActionPickerItem;
-  v15 = [(BCSActionPickerItem *)&v21 initWithLabel:a3 action:a4];
+  v15 = [(BCSActionPickerItem *)&v21 initWithLabel:label action:action];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_appLink, a5);
-    objc_storeStrong(&v16->_codePayload, a6);
-    v16->_preferApplicationIcon = v7;
-    if (v7)
+    objc_storeStrong(&v15->_appLink, link);
+    objc_storeStrong(&v16->_codePayload, payload);
+    v16->_preferApplicationIcon = iconCopy;
+    if (iconCopy)
     {
-      v17 = [(LSAppLink *)v16->_appLink targetApplicationRecord];
+      targetApplicationRecord = [(LSAppLink *)v16->_appLink targetApplicationRecord];
       applicationRecord = v16->_applicationRecord;
-      v16->_applicationRecord = v17;
+      v16->_applicationRecord = targetApplicationRecord;
     }
 
     v19 = v16;
@@ -58,8 +58,8 @@
 
 - (id)icon
 {
-  v3 = [(LSApplicationRecord *)self->_applicationRecord bundleIdentifier];
-  v4 = [v3 isEqualToString:@"com.apple.mobilesafari"];
+  bundleIdentifier = [(LSApplicationRecord *)self->_applicationRecord bundleIdentifier];
+  v4 = [bundleIdentifier isEqualToString:@"com.apple.mobilesafari"];
 
   if (v4)
   {
@@ -83,9 +83,9 @@ LABEL_8:
   return v8;
 }
 
-- (void)performActionWithFBOptions:(id)a3
+- (void)performActionWithFBOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   appLink = self->_appLink;
   v6 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO);
   if (appLink)
@@ -96,12 +96,12 @@ LABEL_8:
       _os_log_impl(&dword_241993000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "BCSURLActionPickerItem: opening app link", buf, 2u);
     }
 
-    _bcs_openAppLinkIgnoringOpenStrategy(self->_appLink, v4, self->_codePayload);
+    _bcs_openAppLinkIgnoringOpenStrategy(self->_appLink, optionsCopy, self->_codePayload);
     v7 = +[BCSQRCodeParser sharedParser];
-    v8 = [(LSAppLink *)self->_appLink targetApplicationProxy];
-    v9 = [v8 bundleIdentifier];
+    targetApplicationProxy = [(LSAppLink *)self->_appLink targetApplicationProxy];
+    bundleIdentifier = [targetApplicationProxy bundleIdentifier];
     v10 = [(LSAppLink *)self->_appLink URL];
-    [v7 setPreferredBundleIdentifier:v9 forURL:v10];
+    [v7 setPreferredBundleIdentifier:bundleIdentifier forURL:v10];
   }
 
   else
@@ -115,19 +115,19 @@ LABEL_8:
     if ([(NSURL *)self->_url _bcs_isUPIURL])
     {
       v11 = +[BCSQRCodeParser sharedParser];
-      v12 = [(LSApplicationRecord *)self->_applicationRecord bundleIdentifier];
-      [v11 setPreferredBundleIdentifier:v12 forURL:self->_url];
+      bundleIdentifier2 = [(LSApplicationRecord *)self->_applicationRecord bundleIdentifier];
+      [v11 setPreferredBundleIdentifier:bundleIdentifier2 forURL:self->_url];
     }
 
-    v13 = [(BCSActionPickerItem *)self action];
-    v14 = [v13 hasSensitiveURL];
+    action = [(BCSActionPickerItem *)self action];
+    hasSensitiveURL = [action hasSensitiveURL];
 
-    if (v14)
+    if (hasSensitiveURL)
     {
-      v15 = [MEMORY[0x277CC1E80] defaultWorkspace];
+      defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
       url = self->_url;
       v26 = 0;
-      v17 = [v15 openSensitiveURL:url withOptions:v4 error:&v26];
+      v17 = [defaultWorkspace openSensitiveURL:url withOptions:optionsCopy error:&v26];
       v18 = v26;
 
       if ((v17 & 1) == 0 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
@@ -139,13 +139,13 @@ LABEL_8:
     else
     {
       applicationRecord = self->_applicationRecord;
-      v20 = [MEMORY[0x277CC1E80] defaultWorkspace];
-      v21 = v20;
+      defaultWorkspace2 = [MEMORY[0x277CC1E80] defaultWorkspace];
+      v21 = defaultWorkspace2;
       v22 = self->_url;
       if (applicationRecord)
       {
-        v23 = [(LSApplicationRecord *)self->_applicationRecord bundleIdentifier];
-        v18 = [v21 operationToOpenResource:v22 usingApplication:v23 uniqueDocumentIdentifier:0 isContentManaged:0 sourceAuditToken:0 userInfo:0 options:v4 delegate:0];
+        bundleIdentifier3 = [(LSApplicationRecord *)self->_applicationRecord bundleIdentifier];
+        v18 = [v21 operationToOpenResource:v22 usingApplication:bundleIdentifier3 uniqueDocumentIdentifier:0 isContentManaged:0 sourceAuditToken:0 userInfo:0 options:optionsCopy delegate:0];
 
         [v18 start];
       }
@@ -153,7 +153,7 @@ LABEL_8:
       else
       {
         v25 = 0;
-        v24 = [v20 openURL:v22 withOptions:v4 error:&v25];
+        v24 = [defaultWorkspace2 openURL:v22 withOptions:optionsCopy error:&v25];
         v18 = v25;
 
         if ((v24 & 1) == 0 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
@@ -171,16 +171,16 @@ LABEL_8:
 {
   if (self->_appLink)
   {
-    v2 = [(LSAppLink *)self->_appLink targetApplicationProxy];
-    v3 = [v2 bundleIdentifier];
+    targetApplicationProxy = [(LSAppLink *)self->_appLink targetApplicationProxy];
+    bundleIdentifier = [targetApplicationProxy bundleIdentifier];
   }
 
   else
   {
-    v3 = [(LSApplicationRecord *)self->_applicationRecord bundleIdentifier];
+    bundleIdentifier = [(LSApplicationRecord *)self->_applicationRecord bundleIdentifier];
   }
 
-  return v3;
+  return bundleIdentifier;
 }
 
 - (id)actionURL
@@ -200,8 +200,8 @@ LABEL_8:
 
 - (BOOL)useInlineMenu
 {
-  v3 = [(LSApplicationRecord *)self->_applicationRecord bundleIdentifier];
-  v4 = [v3 isEqualToString:@"com.apple.mobilesafari"];
+  bundleIdentifier = [(LSApplicationRecord *)self->_applicationRecord bundleIdentifier];
+  v4 = [bundleIdentifier isEqualToString:@"com.apple.mobilesafari"];
 
   return (v4 & 1) == 0 && self->_applicationRecord != 0;
 }

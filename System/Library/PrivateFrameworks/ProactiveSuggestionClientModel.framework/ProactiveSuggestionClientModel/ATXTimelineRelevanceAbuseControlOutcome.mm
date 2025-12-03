@@ -1,61 +1,61 @@
 @interface ATXTimelineRelevanceAbuseControlOutcome
-+ (id)descriptionForOutcome:(int64_t)a3;
-+ (id)outcomeWithSuggestion:(id)a3 timestamp:(double)a4 abuseControlOutcome:(int64_t)a5;
-+ (id)outcomeWithSuggestionId:(id)a3 timestamp:(double)a4 abuseControlOutcome:(int64_t)a5;
-- (ATXTimelineRelevanceAbuseControlOutcome)initWithSuggestion:(id)a3 suggestionId:(id)a4 timestamp:(double)a5 abuseControlOutcome:(int64_t)a6;
-- (ATXTimelineRelevanceAbuseControlOutcome)initWithSuggestion:(id)a3 timestamp:(double)a4 abuseControlOutcome:(int64_t)a5;
++ (id)descriptionForOutcome:(int64_t)outcome;
++ (id)outcomeWithSuggestion:(id)suggestion timestamp:(double)timestamp abuseControlOutcome:(int64_t)outcome;
++ (id)outcomeWithSuggestionId:(id)id timestamp:(double)timestamp abuseControlOutcome:(int64_t)outcome;
+- (ATXTimelineRelevanceAbuseControlOutcome)initWithSuggestion:(id)suggestion suggestionId:(id)id timestamp:(double)timestamp abuseControlOutcome:(int64_t)outcome;
+- (ATXTimelineRelevanceAbuseControlOutcome)initWithSuggestion:(id)suggestion timestamp:(double)timestamp abuseControlOutcome:(int64_t)outcome;
 @end
 
 @implementation ATXTimelineRelevanceAbuseControlOutcome
 
-- (ATXTimelineRelevanceAbuseControlOutcome)initWithSuggestion:(id)a3 timestamp:(double)a4 abuseControlOutcome:(int64_t)a5
+- (ATXTimelineRelevanceAbuseControlOutcome)initWithSuggestion:(id)suggestion timestamp:(double)timestamp abuseControlOutcome:(int64_t)outcome
 {
-  v8 = a3;
-  v9 = [v8 suggestionIdentifier];
-  v10 = [(ATXTimelineRelevanceAbuseControlOutcome *)self initWithSuggestion:v8 suggestionId:v9 timestamp:a5 abuseControlOutcome:a4];
+  suggestionCopy = suggestion;
+  suggestionIdentifier = [suggestionCopy suggestionIdentifier];
+  v10 = [(ATXTimelineRelevanceAbuseControlOutcome *)self initWithSuggestion:suggestionCopy suggestionId:suggestionIdentifier timestamp:outcome abuseControlOutcome:timestamp];
 
   return v10;
 }
 
-- (ATXTimelineRelevanceAbuseControlOutcome)initWithSuggestion:(id)a3 suggestionId:(id)a4 timestamp:(double)a5 abuseControlOutcome:(int64_t)a6
+- (ATXTimelineRelevanceAbuseControlOutcome)initWithSuggestion:(id)suggestion suggestionId:(id)id timestamp:(double)timestamp abuseControlOutcome:(int64_t)outcome
 {
-  v11 = a3;
-  v12 = a4;
+  suggestionCopy = suggestion;
+  idCopy = id;
   v16.receiver = self;
   v16.super_class = ATXTimelineRelevanceAbuseControlOutcome;
   v13 = [(ATXTimelineRelevanceAbuseControlOutcome *)&v16 init];
   v14 = v13;
   if (v13)
   {
-    v13->_timestamp = a5;
-    objc_storeStrong(&v13->_suggestion, a3);
-    objc_storeStrong(&v14->_suggestionId, a4);
-    v14->_abuseControlOutcome = a6;
+    v13->_timestamp = timestamp;
+    objc_storeStrong(&v13->_suggestion, suggestion);
+    objc_storeStrong(&v14->_suggestionId, id);
+    v14->_abuseControlOutcome = outcome;
   }
 
   return v14;
 }
 
-+ (id)outcomeWithSuggestion:(id)a3 timestamp:(double)a4 abuseControlOutcome:(int64_t)a5
++ (id)outcomeWithSuggestion:(id)suggestion timestamp:(double)timestamp abuseControlOutcome:(int64_t)outcome
 {
-  v8 = a3;
-  v9 = [[a1 alloc] initWithSuggestion:v8 timestamp:a5 abuseControlOutcome:a4];
+  suggestionCopy = suggestion;
+  v9 = [[self alloc] initWithSuggestion:suggestionCopy timestamp:outcome abuseControlOutcome:timestamp];
 
   return v9;
 }
 
-+ (id)outcomeWithSuggestionId:(id)a3 timestamp:(double)a4 abuseControlOutcome:(int64_t)a5
++ (id)outcomeWithSuggestionId:(id)id timestamp:(double)timestamp abuseControlOutcome:(int64_t)outcome
 {
-  v8 = a3;
-  v9 = [[a1 alloc] initWithSuggestion:0 suggestionId:v8 timestamp:a5 abuseControlOutcome:a4];
+  idCopy = id;
+  v9 = [[self alloc] initWithSuggestion:0 suggestionId:idCopy timestamp:outcome abuseControlOutcome:timestamp];
 
   return v9;
 }
 
-+ (id)descriptionForOutcome:(int64_t)a3
++ (id)descriptionForOutcome:(int64_t)outcome
 {
   v4 = @"Outcome: Failure, Reason: FailureRecentDismissal: Recently dismissed by user";
-  switch(a3)
+  switch(outcome)
   {
     case 0:
       v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unknown abuse control outcome: %ld", 0];

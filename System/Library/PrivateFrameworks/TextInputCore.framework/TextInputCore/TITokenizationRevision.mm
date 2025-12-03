@@ -1,5 +1,5 @@
 @interface TITokenizationRevision
-- (TITokenizationRevision)initWithTokenIterator:(_TIRevisionHistoryTokenIterator)a3;
+- (TITokenizationRevision)initWithTokenIterator:(_TIRevisionHistoryTokenIterator)iterator;
 - (_NSRange)originalSelectedTokenRange;
 - (_TIRevisionHistoryTokenIterator)originalIterator;
 @end
@@ -24,10 +24,10 @@
   return result;
 }
 
-- (TITokenizationRevision)initWithTokenIterator:(_TIRevisionHistoryTokenIterator)a3
+- (TITokenizationRevision)initWithTokenIterator:(_TIRevisionHistoryTokenIterator)iterator
 {
-  documentLocation = a3.documentLocation;
-  tokenIndex = a3.tokenIndex;
+  documentLocation = iterator.documentLocation;
+  tokenIndex = iterator.tokenIndex;
   v11.receiver = self;
   v11.super_class = TITokenizationRevision;
   v5 = [(TITokenizationRevision *)&v11 init];

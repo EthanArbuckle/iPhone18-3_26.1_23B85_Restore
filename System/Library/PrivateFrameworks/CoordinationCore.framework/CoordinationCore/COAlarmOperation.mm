@@ -1,16 +1,16 @@
 @interface COAlarmOperation
-- (BOOL)performOperationWithMappedAlarms:(id)a3;
-- (id)initForAdding:(id)a3 completion:(id)a4;
-- (id)initForRemoving:(id)a3 completion:(id)a4;
-- (id)initForUpdating:(id)a3 completion:(id)a4;
+- (BOOL)performOperationWithMappedAlarms:(id)alarms;
+- (id)initForAdding:(id)adding completion:(id)completion;
+- (id)initForRemoving:(id)removing completion:(id)completion;
+- (id)initForUpdating:(id)updating completion:(id)completion;
 @end
 
 @implementation COAlarmOperation
 
-- (id)initForAdding:(id)a3 completion:(id)a4
+- (id)initForAdding:(id)adding completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  addingCopy = adding;
+  completionCopy = completion;
   v15.receiver = self;
   v15.super_class = COAlarmOperation;
   v8 = [(COAlarmOperation *)&v15 init];
@@ -18,11 +18,11 @@
   if (v8)
   {
     v8->_type = 0;
-    v10 = [v6 copy];
+    v10 = [addingCopy copy];
     alarm = v9->_alarm;
     v9->_alarm = v10;
 
-    v12 = [v7 copy];
+    v12 = [completionCopy copy];
     completion = v9->_completion;
     v9->_completion = v12;
   }
@@ -30,10 +30,10 @@
   return v9;
 }
 
-- (id)initForUpdating:(id)a3 completion:(id)a4
+- (id)initForUpdating:(id)updating completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  updatingCopy = updating;
+  completionCopy = completion;
   v15.receiver = self;
   v15.super_class = COAlarmOperation;
   v8 = [(COAlarmOperation *)&v15 init];
@@ -41,11 +41,11 @@
   if (v8)
   {
     v8->_type = 1;
-    v10 = [v6 copy];
+    v10 = [updatingCopy copy];
     alarm = v9->_alarm;
     v9->_alarm = v10;
 
-    v12 = [v7 copy];
+    v12 = [completionCopy copy];
     completion = v9->_completion;
     v9->_completion = v12;
   }
@@ -53,10 +53,10 @@
   return v9;
 }
 
-- (id)initForRemoving:(id)a3 completion:(id)a4
+- (id)initForRemoving:(id)removing completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  removingCopy = removing;
+  completionCopy = completion;
   v15.receiver = self;
   v15.super_class = COAlarmOperation;
   v8 = [(COAlarmOperation *)&v15 init];
@@ -64,11 +64,11 @@
   if (v8)
   {
     v8->_type = 2;
-    v10 = [v6 copy];
+    v10 = [removingCopy copy];
     alarm = v9->_alarm;
     v9->_alarm = v10;
 
-    v12 = [v7 copy];
+    v12 = [completionCopy copy];
     completion = v9->_completion;
     v9->_completion = v12;
   }
@@ -76,26 +76,26 @@
   return v9;
 }
 
-- (BOOL)performOperationWithMappedAlarms:(id)a3
+- (BOOL)performOperationWithMappedAlarms:(id)alarms
 {
-  v4 = a3;
-  v5 = [(COAlarmOperation *)self alarm];
-  v6 = [v5 alarmID];
-  v7 = [(COAlarmOperation *)self type];
-  if (!v7)
+  alarmsCopy = alarms;
+  alarm = [(COAlarmOperation *)self alarm];
+  alarmID = [alarm alarmID];
+  type = [(COAlarmOperation *)self type];
+  if (!type)
   {
     goto LABEL_5;
   }
 
-  v8 = v7;
-  v9 = [v4 objectForKey:v6];
+  v8 = type;
+  v9 = [alarmsCopy objectForKey:alarmID];
 
   if (v9)
   {
     if (v8 == 2)
     {
-      v10 = [v5 alarmID];
-      [v4 removeObjectForKey:v10];
+      alarmID2 = [alarm alarmID];
+      [alarmsCopy removeObjectForKey:alarmID2];
 LABEL_6:
 
       v13 = 1;
@@ -103,12 +103,12 @@ LABEL_6:
     }
 
 LABEL_5:
-    v10 = [v5 mutableCopy];
+    alarmID2 = [alarm mutableCopy];
     v11 = [MEMORY[0x277CBEAA8] now];
-    [v10 setLastModifiedDate:v11];
+    [alarmID2 setLastModifiedDate:v11];
 
-    v12 = [v10 alarmID];
-    [v4 setObject:v10 forKey:v12];
+    v10AlarmID = [alarmID2 alarmID];
+    [alarmsCopy setObject:alarmID2 forKey:v10AlarmID];
 
     goto LABEL_6;
   }
@@ -116,12 +116,12 @@ LABEL_5:
   v14 = COCoreLogForCategory(2);
   if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
   {
-    [(COAlarmOperation *)v5 performOperationWithMappedAlarms:v8, v14];
+    [(COAlarmOperation *)alarm performOperationWithMappedAlarms:v8, v14];
   }
 
   v15 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCFD28] code:2 userInfo:0];
-  v16 = [(COAlarmOperation *)self completion];
-  (v16)[2](v16, v15);
+  completion = [(COAlarmOperation *)self completion];
+  (completion)[2](completion, v15);
 
   v13 = 0;
 LABEL_10:

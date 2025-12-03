@@ -1,9 +1,9 @@
 @interface _DASBootTimePolicy
 + (id)getDeviceBootTime;
 + (id)policyInstance;
-- (BOOL)appliesToActivity:(id)a3;
+- (BOOL)appliesToActivity:(id)activity;
 - (_DASBootTimePolicy)init;
-- (id)responseForActivity:(id)a3 withState:(id)a4;
+- (id)responseForActivity:(id)activity withState:(id)state;
 @end
 
 @implementation _DASBootTimePolicy
@@ -42,19 +42,19 @@
   return v3;
 }
 
-- (BOOL)appliesToActivity:(id)a3
+- (BOOL)appliesToActivity:(id)activity
 {
-  v3 = a3;
-  v4 = [v3 fastPass];
-  if (v4 || ([v3 requestsImmediateRuntime] & 1) != 0)
+  activityCopy = activity;
+  fastPass = [activityCopy fastPass];
+  if (fastPass || ([activityCopy requestsImmediateRuntime] & 1) != 0)
   {
     v5 = 0;
   }
 
   else
   {
-    v7 = [v3 schedulingPriority];
-    v5 = v7 < _DASSchedulingPriorityUserInitiated;
+    schedulingPriority = [activityCopy schedulingPriority];
+    v5 = schedulingPriority < _DASSchedulingPriorityUserInitiated;
   }
 
   return v5;
@@ -82,9 +82,9 @@
   return v2;
 }
 
-- (id)responseForActivity:(id)a3 withState:(id)a4
+- (id)responseForActivity:(id)activity withState:(id)state
 {
-  v5 = a3;
+  activityCopy = activity;
   v6 = [[_DASPolicyResponseRationale alloc] initWithPolicyName:self->_policyName];
   if (!self->_bootTime)
   {
@@ -93,10 +93,10 @@
     self->_bootTime = v7;
   }
 
-  v9 = [v5 schedulingPriority];
-  if (v9 >= _DASSchedulingPriorityUtility)
+  schedulingPriority = [activityCopy schedulingPriority];
+  if (schedulingPriority >= _DASSchedulingPriorityUtility)
   {
-    [v5 interval];
+    [activityCopy interval];
     v10 = v11 == 0.0;
   }
 
@@ -105,8 +105,8 @@
     v10 = 0;
   }
 
-  v12 = [v5 requiresNetwork];
-  if (!self->_bootTime || self->_didExceedMinDurationAfterBoot || (v16 = v12) != 0 && self->_didExceedMinDurationAfterBootNetworkActivites || v10 && self->_didExceedMinDurationAfterBootNonRepeatingNonDiscretionary)
+  requiresNetwork = [activityCopy requiresNetwork];
+  if (!self->_bootTime || self->_didExceedMinDurationAfterBoot || (v16 = requiresNetwork) != 0 && self->_didExceedMinDurationAfterBootNetworkActivites || v10 && self->_didExceedMinDurationAfterBootNonRepeatingNonDiscretionary)
   {
     v13 = 0;
     goto LABEL_9;

@@ -1,31 +1,31 @@
 @interface CRLBackgroundUpdatableRenderable
 + (id)renderable;
-+ (id)renderableFromBackgroundUpdatableLayer:(id)a3;
-- (CRLBackgroundUpdatableRenderable)initWithBackgroundUpdatableLayer:(id)a3;
++ (id)renderableFromBackgroundUpdatableLayer:(id)layer;
+- (CRLBackgroundUpdatableRenderable)initWithBackgroundUpdatableLayer:(id)layer;
 - (id)p_backgroundUpdatableLayer;
-- (void)setContentsFromBackground:(void *)a3;
+- (void)setContentsFromBackground:(void *)background;
 @end
 
 @implementation CRLBackgroundUpdatableRenderable
 
-- (CRLBackgroundUpdatableRenderable)initWithBackgroundUpdatableLayer:(id)a3
+- (CRLBackgroundUpdatableRenderable)initWithBackgroundUpdatableLayer:(id)layer
 {
   v4.receiver = self;
   v4.super_class = CRLBackgroundUpdatableRenderable;
-  return [(CRLCanvasRenderable *)&v4 initWithCALayer:a3];
+  return [(CRLCanvasRenderable *)&v4 initWithCALayer:layer];
 }
 
-+ (id)renderableFromBackgroundUpdatableLayer:(id)a3
++ (id)renderableFromBackgroundUpdatableLayer:(id)layer
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithBackgroundUpdatableLayer:v4];
+  layerCopy = layer;
+  v5 = [[self alloc] initWithBackgroundUpdatableLayer:layerCopy];
 
   return v5;
 }
 
 + (id)renderable
 {
-  v2 = [a1 alloc];
+  v2 = [self alloc];
   v3 = +[CRLBackgroundUpdatableLayer layer];
   v4 = [v2 initWithBackgroundUpdatableLayer:v3];
 
@@ -35,16 +35,16 @@
 - (id)p_backgroundUpdatableLayer
 {
   v3 = objc_opt_class();
-  v4 = [(CRLCanvasRenderable *)self layer];
-  v5 = sub_100014370(v3, v4);
+  layer = [(CRLCanvasRenderable *)self layer];
+  v5 = sub_100014370(v3, layer);
 
   return v5;
 }
 
-- (void)setContentsFromBackground:(void *)a3
+- (void)setContentsFromBackground:(void *)background
 {
-  v4 = [(CRLBackgroundUpdatableRenderable *)self p_backgroundUpdatableLayer];
-  [v4 setContentsFromBackground:a3];
+  p_backgroundUpdatableLayer = [(CRLBackgroundUpdatableRenderable *)self p_backgroundUpdatableLayer];
+  [p_backgroundUpdatableLayer setContentsFromBackground:background];
 }
 
 @end

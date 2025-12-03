@@ -1,24 +1,24 @@
 @interface BFFFinishSetupViewController
-+ (id)_keyValueDictionaryForURL:(id)a3;
-+ (id)_orderedFlowIdentifiersFromFlowIdentifiers:(id)a3;
++ (id)_keyValueDictionaryForURL:(id)l;
++ (id)_orderedFlowIdentifiersFromFlowIdentifiers:(id)identifiers;
 - (BFFFinishSetupViewController)init;
-- (BOOL)_presentPreconditionViewControllerIfNecessaryForFlowController:(id)a3;
-- (id)_flowControllerForFlowIdentifier:(id)a3;
+- (BOOL)_presentPreconditionViewControllerIfNecessaryForFlowController:(id)controller;
+- (id)_flowControllerForFlowIdentifier:(id)identifier;
 - (id)_flowControllerForNextFlowIdentifier;
 - (unint64_t)supportedInterfaceOrientations;
 - (void)_complete;
-- (void)_didSatisfyInitializationForFlowController:(id)a3;
-- (void)_didSatisfyPreconditionsForFlowController:(id)a3;
-- (void)_ensureNavigationControllerWithViewController:(id)a3 pushCompletion:(id)a4;
-- (void)_flowDidFinishForIdentifiers:(id)a3 result:(unint64_t)a4;
-- (void)_performExtendedInitializationForFlowController:(id)a3;
-- (void)_pushViewControllerOntoNavigationController:(id)a3 completion:(id)a4;
+- (void)_didSatisfyInitializationForFlowController:(id)controller;
+- (void)_didSatisfyPreconditionsForFlowController:(id)controller;
+- (void)_ensureNavigationControllerWithViewController:(id)controller pushCompletion:(id)completion;
+- (void)_flowDidFinishForIdentifiers:(id)identifiers result:(unint64_t)result;
+- (void)_performExtendedInitializationForFlowController:(id)controller;
+- (void)_pushViewControllerOntoNavigationController:(id)controller completion:(id)completion;
 - (void)_startNextFlowIdentifier;
 - (void)loadView;
-- (void)processURL:(id)a3 completion:(id)a4;
-- (void)setOverrideFlowControllerGenerator:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)processURL:(id)l completion:(id)completion;
+- (void)setOverrideFlowControllerGenerator:(id)generator;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 @end
 
 @implementation BFFFinishSetupViewController
@@ -55,25 +55,25 @@
   return v2;
 }
 
-- (void)processURL:(id)a3 completion:(id)a4
+- (void)processURL:(id)l completion:(id)completion
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  completionCopy = completion;
   v8 = _BYLoggingFacility();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v22 = 138412290;
-    v23 = v6;
+    v23 = lCopy;
     _os_log_impl(&dword_265AC5000, v8, OS_LOG_TYPE_DEFAULT, "Finish setup processURL: %@", &v22, 0xCu);
   }
 
-  v9 = _Block_copy(v7);
+  v9 = _Block_copy(completionCopy);
   completion = self->_completion;
   self->_completion = v9;
 
   [(BFFFinishSetupViewController *)self setModalPresentationStyle:17];
-  v11 = [BFFFinishSetupViewController _keyValueDictionaryForURL:v6];
+  v11 = [BFFFinishSetupViewController _keyValueDictionaryForURL:lCopy];
   v12 = _BYLoggingFacility();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
@@ -105,13 +105,13 @@
   self->_skippedFlowIdentifiers = v20;
 }
 
-+ (id)_keyValueDictionaryForURL:(id)a3
++ (id)_keyValueDictionaryForURL:(id)l
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB38] dictionary];
-  v5 = [v3 resourceSpecifier];
-  v6 = [v5 componentsSeparatedByString:@"&"];
+  lCopy = l;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  resourceSpecifier = [lCopy resourceSpecifier];
+  v6 = [resourceSpecifier componentsSeparatedByString:@"&"];
 
   v19 = 0u;
   v20 = 0u;
@@ -136,10 +136,10 @@
         if ([v12 count] == 2)
         {
           v13 = [v12 objectAtIndex:1];
-          v14 = [v13 stringByRemovingPercentEncoding];
+          stringByRemovingPercentEncoding = [v13 stringByRemovingPercentEncoding];
 
           v15 = [v12 objectAtIndex:0];
-          [v4 setObject:v14 forKey:v15];
+          [dictionary setObject:stringByRemovingPercentEncoding forKey:v15];
         }
       }
 
@@ -149,13 +149,13 @@
     while (v9);
   }
 
-  return v4;
+  return dictionary;
 }
 
-+ (id)_orderedFlowIdentifiersFromFlowIdentifiers:(id)a3
++ (id)_orderedFlowIdentifiersFromFlowIdentifiers:(id)identifiers
 {
   v21[6] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  identifiersCopy = identifiers;
   v4 = *MEMORY[0x277D4D9B0];
   v21[0] = *MEMORY[0x277D4D9C8];
   v21[1] = v4;
@@ -166,7 +166,7 @@
   v21[4] = *MEMORY[0x277D4D9A8];
   v21[5] = v6;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:6];
-  v8 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v3, "count")}];
+  v8 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(identifiersCopy, "count")}];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -187,7 +187,7 @@
         }
 
         v14 = *(*(&v16 + 1) + 8 * i);
-        if ([v3 containsObject:{v14, v16}])
+        if ([identifiersCopy containsObject:{v14, v16}])
         {
           [v8 addObject:v14];
         }
@@ -202,19 +202,19 @@
   return v8;
 }
 
-- (void)setOverrideFlowControllerGenerator:(id)a3
+- (void)setOverrideFlowControllerGenerator:(id)generator
 {
-  self->_overrideFlowControllerGenerator = _Block_copy(a3);
+  self->_overrideFlowControllerGenerator = _Block_copy(generator);
 
   MEMORY[0x2821F96F8]();
 }
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v2 = [MEMORY[0x277D75418] currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v3 == 1)
+  if (userInterfaceIdiom == 1)
   {
     return 30;
   }
@@ -230,75 +230,75 @@
   v8.receiver = self;
   v8.super_class = BFFFinishSetupViewController;
   [(BFFFinishSetupViewController *)&v8 loadView];
-  v3 = [(BFFFinishSetupViewController *)self view];
-  [v3 setOpaque:0];
+  view = [(BFFFinishSetupViewController *)self view];
+  [view setOpaque:0];
 
-  v4 = [MEMORY[0x277D75348] clearColor];
-  v5 = [(BFFFinishSetupViewController *)self view];
-  [v5 setBackgroundColor:v4];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  view2 = [(BFFFinishSetupViewController *)self view];
+  [view2 setBackgroundColor:clearColor];
 
   v6 = +[BFFStyle sharedStyle];
-  v7 = [(BFFFinishSetupViewController *)self navigationItem];
-  [v6 applyAutomaticScrollToEdgeBehaviorOnNavigationItem:v7];
+  navigationItem = [(BFFFinishSetupViewController *)self navigationItem];
+  [v6 applyAutomaticScrollToEdgeBehaviorOnNavigationItem:navigationItem];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = BFFFinishSetupViewController;
-  [(BFFFinishSetupViewController *)&v5 viewDidAppear:a3];
+  [(BFFFinishSetupViewController *)&v5 viewDidAppear:appear];
   if (!self->_setupInProgress)
   {
     self->_setupInProgress = 1;
-    v4 = [MEMORY[0x277D4DA30] sharedInstance];
-    [v4 setBasicFunctionalityEnabled:0];
+    mEMORY[0x277D4DA30] = [MEMORY[0x277D4DA30] sharedInstance];
+    [mEMORY[0x277D4DA30] setBasicFunctionalityEnabled:0];
 
     [(BFFFinishSetupViewController *)self _startNextFlowIdentifier];
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v13 = *MEMORY[0x277D85DE8];
-  v5 = [(BFFFinishSetupViewController *)self isBeingDismissed];
+  isBeingDismissed = [(BFFFinishSetupViewController *)self isBeingDismissed];
   v6 = _BYLoggingFacility();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v12 = v5;
+    v12 = isBeingDismissed;
     _os_log_impl(&dword_265AC5000, v6, OS_LOG_TYPE_DEFAULT, "Finish setup viewDidDisappear: isBeingDismissed %d", buf, 8u);
   }
 
   v10.receiver = self;
   v10.super_class = BFFFinishSetupViewController;
-  [(BFFFinishSetupViewController *)&v10 viewDidDisappear:v3];
-  if (v5)
+  [(BFFFinishSetupViewController *)&v10 viewDidDisappear:disappearCopy];
+  if (isBeingDismissed)
   {
-    v7 = [MEMORY[0x277D4DA30] sharedInstance];
-    [v7 setBasicFunctionalityEnabled:1];
+    mEMORY[0x277D4DA30] = [MEMORY[0x277D4DA30] sharedInstance];
+    [mEMORY[0x277D4DA30] setBasicFunctionalityEnabled:1];
 
-    v8 = [(BFFFinishSetupViewController *)self flowSkipController];
-    [v8 cancelPendingFlows];
+    flowSkipController = [(BFFFinishSetupViewController *)self flowSkipController];
+    [flowSkipController cancelPendingFlows];
 
-    v9 = [(BFFFinishSetupViewController *)self analyticsManager];
-    [v9 commit];
+    analyticsManager = [(BFFFinishSetupViewController *)self analyticsManager];
+    [analyticsManager commit];
   }
 }
 
 - (void)_startNextFlowIdentifier
 {
-  v3 = [(BFFFinishSetupViewController *)self _flowControllerForNextFlowIdentifier];
+  _flowControllerForNextFlowIdentifier = [(BFFFinishSetupViewController *)self _flowControllerForNextFlowIdentifier];
   if (![(BFFFinishSetupViewController *)self _presentPreconditionViewControllerIfNecessaryForFlowController:?])
   {
-    [(BFFFinishSetupViewController *)self _didSatisfyPreconditionsForFlowController:v3];
+    [(BFFFinishSetupViewController *)self _didSatisfyPreconditionsForFlowController:_flowControllerForNextFlowIdentifier];
   }
 }
 
-- (BOOL)_presentPreconditionViewControllerIfNecessaryForFlowController:(id)a3
+- (BOOL)_presentPreconditionViewControllerIfNecessaryForFlowController:(id)controller
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  controllerCopy = controller;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -312,9 +312,9 @@
     v13[2] = __95__BFFFinishSetupViewController__presentPreconditionViewControllerIfNecessaryForFlowController___block_invoke;
     v13[3] = &unk_279BB4CC8;
     v16 = &v17;
-    v5 = v4;
+    v5 = controllerCopy;
     v14 = v5;
-    v15 = self;
+    selfCopy = self;
     v6 = [v5 preconditionViewControllerWithCompletion:v13];
     v7 = v18[5];
     v18[5] = v6;
@@ -397,30 +397,30 @@ void __95__BFFFinishSetupViewController__presentPreconditionViewControllerIfNece
   *(v7 + 40) = 0;
 }
 
-- (void)_didSatisfyPreconditionsForFlowController:(id)a3
+- (void)_didSatisfyPreconditionsForFlowController:(id)controller
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  controllerCopy = controller;
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     goto LABEL_5;
   }
 
-  v5 = [v4 controllerNeedsToRun];
+  controllerNeedsToRun = [controllerCopy controllerNeedsToRun];
   v6 = _BYLoggingFacility();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109378;
-    v11 = v5;
+    v11 = controllerNeedsToRun;
     v12 = 2112;
-    v13 = v4;
+    v13 = controllerCopy;
     _os_log_impl(&dword_265AC5000, v6, OS_LOG_TYPE_DEFAULT, "Finish setup did observe needsToRun %d for %@", buf, 0x12u);
   }
 
-  if (!v5)
+  if (!controllerNeedsToRun)
   {
-    v7 = [(NSMutableArray *)self->_flowIdentifiers firstObject];
-    v9 = v7;
+    firstObject = [(NSMutableArray *)self->_flowIdentifiers firstObject];
+    v9 = firstObject;
     v8 = [MEMORY[0x277CBEA60] arrayWithObjects:&v9 count:1];
     [(BFFFinishSetupViewController *)self _flowDidFinishForIdentifiers:v8 result:1];
   }
@@ -430,25 +430,25 @@ void __95__BFFFinishSetupViewController__presentPreconditionViewControllerIfNece
 LABEL_5:
     if (objc_opt_respondsToSelector())
     {
-      [(BFFFinishSetupViewController *)self _performExtendedInitializationForFlowController:v4];
+      [(BFFFinishSetupViewController *)self _performExtendedInitializationForFlowController:controllerCopy];
     }
 
     else
     {
-      [(BFFFinishSetupViewController *)self _didSatisfyInitializationForFlowController:v4];
+      [(BFFFinishSetupViewController *)self _didSatisfyInitializationForFlowController:controllerCopy];
     }
   }
 }
 
-- (void)_performExtendedInitializationForFlowController:(id)a3
+- (void)_performExtendedInitializationForFlowController:(id)controller
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  controllerCopy = controller;
   v5 = _BYLoggingFacility();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v12 = v4;
+    v12 = controllerCopy;
     _os_log_impl(&dword_265AC5000, v5, OS_LOG_TYPE_DEFAULT, "Finish setup will perform extended initialization for %@", buf, 0xCu);
   }
 
@@ -457,9 +457,9 @@ LABEL_5:
   v8[1] = 3221225472;
   v8[2] = __80__BFFFinishSetupViewController__performExtendedInitializationForFlowController___block_invoke;
   v8[3] = &unk_279BB4A70;
-  v9 = v4;
-  v10 = self;
-  v7 = v4;
+  v9 = controllerCopy;
+  selfCopy = self;
+  v7 = controllerCopy;
   [(BFFFinishSetupViewController *)self _pushViewControllerOntoNavigationController:v6 completion:v8];
 }
 
@@ -543,15 +543,15 @@ uint64_t __80__BFFFinishSetupViewController__performExtendedInitializationForFlo
   }
 }
 
-- (void)_didSatisfyInitializationForFlowController:(id)a3
+- (void)_didSatisfyInitializationForFlowController:(id)controller
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  controllerCopy = controller;
   v5 = _BYLoggingFacility();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v15 = v4;
+    v15 = controllerCopy;
     _os_log_impl(&dword_265AC5000, v5, OS_LOG_TYPE_DEFAULT, "Finish setup will present view controller for  %@", buf, 0xCu);
   }
 
@@ -560,7 +560,7 @@ uint64_t __80__BFFFinishSetupViewController__performExtendedInitializationForFlo
   v9 = 3221225472;
   v10 = __75__BFFFinishSetupViewController__didSatisfyInitializationForFlowController___block_invoke;
   v11 = &unk_279BB4D18;
-  v6 = v4;
+  v6 = controllerCopy;
   v12 = v6;
   objc_copyWeak(&v13, buf);
   v7 = [v6 viewControllerWithCompletion:&v8];
@@ -591,14 +591,14 @@ void __75__BFFFinishSetupViewController__didSatisfyInitializationForFlowControll
   [WeakRetained _flowDidFinishForIdentifiers:v5 result:a2];
 }
 
-- (void)_ensureNavigationControllerWithViewController:(id)a3 pushCompletion:(id)a4
+- (void)_ensureNavigationControllerWithViewController:(id)controller pushCompletion:(id)completion
 {
   v22[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  objc_storeStrong(&self->_newRootViewController, a3);
-  v9 = [v7 navigationItem];
-  [v9 setHidesBackButton:1];
+  controllerCopy = controller;
+  completionCopy = completion;
+  objc_storeStrong(&self->_newRootViewController, controller);
+  navigationItem = [controllerCopy navigationItem];
+  [navigationItem setHidesBackButton:1];
 
   navigationController = self->_navigationController;
   if (navigationController)
@@ -612,7 +612,7 @@ void __75__BFFFinishSetupViewController__didSatisfyInitializationForFlowControll
       }
     }
 
-    [(BFFNavigationController *)self->_navigationController pushViewController:v7 completion:v8];
+    [(BFFNavigationController *)self->_navigationController pushViewController:controllerCopy completion:completionCopy];
   }
 
   else
@@ -621,14 +621,14 @@ void __75__BFFFinishSetupViewController__didSatisfyInitializationForFlowControll
     v13 = self->_navigationController;
     self->_navigationController = v12;
 
-    v22[0] = v7;
+    v22[0] = controllerCopy;
     v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:1];
     [(BFFFinishSetupModalNavigationController *)self->_navigationController setViewControllers:v14];
 
-    v15 = [MEMORY[0x277D75418] currentDevice];
-    v16 = [v15 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    [(BFFFinishSetupModalNavigationController *)self->_navigationController setIsPad:(v16 & 0xFFFFFFFFFFFFFFFBLL) == 1];
+    [(BFFFinishSetupModalNavigationController *)self->_navigationController setIsPad:(userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1];
     v17 = _BYLoggingFacility();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
@@ -639,16 +639,16 @@ void __75__BFFFinishSetupViewController__didSatisfyInitializationForFlowControll
     }
 
     [BFFViewControllerSpinnerManager configureWithNavigationController:self->_navigationController];
-    [(BFFFinishSetupViewController *)self presentViewController:self->_navigationController animated:1 completion:v8];
+    [(BFFFinishSetupViewController *)self presentViewController:self->_navigationController animated:1 completion:completionCopy];
   }
 
   v19 = +[BFFStyle sharedStyle];
   [v19 applyThemeToNavigationController:self->_navigationController];
 }
 
-- (void)_pushViewControllerOntoNavigationController:(id)a3 completion:(id)a4
+- (void)_pushViewControllerOntoNavigationController:(id)controller completion:(id)completion
 {
-  if (a3)
+  if (controller)
   {
 
     [BFFFinishSetupViewController _ensureNavigationControllerWithViewController:"_ensureNavigationControllerWithViewController:pushCompletion:" pushCompletion:?];
@@ -667,45 +667,45 @@ void __75__BFFFinishSetupViewController__didSatisfyInitializationForFlowControll
   }
 }
 
-- (id)_flowControllerForFlowIdentifier:(id)a3
+- (id)_flowControllerForFlowIdentifier:(id)identifier
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = [a3 componentsSeparatedByString:@"."];
-  v5 = [v4 lastObject];
+  v4 = [identifier componentsSeparatedByString:@"."];
+  lastObject = [v4 lastObject];
 
-  if (!v5)
+  if (!lastObject)
   {
     v7 = 0;
     goto LABEL_13;
   }
 
   overrideFlowControllerGenerator = self->_overrideFlowControllerGenerator;
-  if (!overrideFlowControllerGenerator || (overrideFlowControllerGenerator[2](overrideFlowControllerGenerator, v5), (v7 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (!overrideFlowControllerGenerator || (overrideFlowControllerGenerator[2](overrideFlowControllerGenerator, lastObject), (v7 = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    if ([v5 isEqualToString:*MEMORY[0x277D4D9C0]])
+    if ([lastObject isEqualToString:*MEMORY[0x277D4D9C0]])
     {
       v8 = +[BFFFinishSetupAssistantOptInController finishSetupAssistantOptInController];
     }
 
-    else if ([v5 isEqualToString:*MEMORY[0x277D4D9A0]])
+    else if ([lastObject isEqualToString:*MEMORY[0x277D4D9A0]])
     {
       v8 = +[BFFFinishSetupAppleIDController finishSetupAppleIDController];
     }
 
     else
     {
-      if (![v5 isEqualToString:*MEMORY[0x277D4D9A8]])
+      if (![lastObject isEqualToString:*MEMORY[0x277D4D9A8]])
       {
-        if ([v5 isEqualToString:*MEMORY[0x277D4D9C8]])
+        if ([lastObject isEqualToString:*MEMORY[0x277D4D9C8]])
         {
           v13 = +[BFFFinishSetupTouchIDController finishSetupTouchIDController];
         }
 
         else
         {
-          if (![v5 isEqualToString:*MEMORY[0x277D4D9B0]])
+          if (![lastObject isEqualToString:*MEMORY[0x277D4D9B0]])
           {
-            if (![v5 isEqualToString:*MEMORY[0x277D4D9B8]])
+            if (![lastObject isEqualToString:*MEMORY[0x277D4D9B8]])
             {
               v7 = 0;
               goto LABEL_12;
@@ -719,8 +719,8 @@ void __75__BFFFinishSetupViewController__didSatisfyInitializationForFlowControll
         }
 
         v7 = v13;
-        v14 = [(BFFFinishSetupViewController *)self capabilities];
-        [v7 setCapabilities:v14];
+        capabilities = [(BFFFinishSetupViewController *)self capabilities];
+        [v7 setCapabilities:capabilities];
 
         goto LABEL_12;
       }
@@ -733,11 +733,11 @@ LABEL_11:
   }
 
 LABEL_12:
-  v9 = [(BFFFinishSetupViewController *)self flowSkipController];
-  [v7 setFlowSkipController:v9];
+  flowSkipController = [(BFFFinishSetupViewController *)self flowSkipController];
+  [v7 setFlowSkipController:flowSkipController];
 
-  v10 = [(BFFFinishSetupViewController *)self paneFeatureAnalyticsManager];
-  [v7 setPaneFeatureAnalyticsManager:v10];
+  paneFeatureAnalyticsManager = [(BFFFinishSetupViewController *)self paneFeatureAnalyticsManager];
+  [v7 setPaneFeatureAnalyticsManager:paneFeatureAnalyticsManager];
 
 LABEL_13:
   v11 = _BYLoggingFacility();
@@ -754,23 +754,23 @@ LABEL_13:
 - (id)_flowControllerForNextFlowIdentifier
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = [(NSMutableArray *)self->_flowIdentifiers firstObject];
-  v4 = [(BFFFinishSetupViewController *)self _flowControllerForFlowIdentifier:v3];
+  firstObject = [(NSMutableArray *)self->_flowIdentifiers firstObject];
+  v4 = [(BFFFinishSetupViewController *)self _flowControllerForFlowIdentifier:firstObject];
 
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v4 prerequisiteFlowIdentifier];
+    prerequisiteFlowIdentifier = [v4 prerequisiteFlowIdentifier];
     v6 = _BYLoggingFacility();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138412290;
-      v10 = v5;
+      v10 = prerequisiteFlowIdentifier;
       _os_log_impl(&dword_265AC5000, v6, OS_LOG_TYPE_DEFAULT, "Buddy followup prerequisite flow identifier %@", &v9, 0xCu);
     }
 
-    if (v5)
+    if (prerequisiteFlowIdentifier)
     {
-      v7 = [(BFFFinishSetupViewController *)self _flowControllerForFlowIdentifier:v5];
+      v7 = [(BFFFinishSetupViewController *)self _flowControllerForFlowIdentifier:prerequisiteFlowIdentifier];
 
       v4 = v7;
     }
@@ -779,11 +779,11 @@ LABEL_13:
   return v4;
 }
 
-- (void)_flowDidFinishForIdentifiers:(id)a3 result:(unint64_t)a4
+- (void)_flowDidFinishForIdentifiers:(id)identifiers result:(unint64_t)result
 {
-  v7 = a3;
+  identifiersCopy = identifiers;
   [(NSMutableArray *)self->_flowIdentifiers removeObjectsInArray:?];
-  switch(a4)
+  switch(result)
   {
     case 0uLL:
       v6 = &OBJC_IVAR___BFFFinishSetupViewController__completedFlowIdentifiers;
@@ -793,7 +793,7 @@ LABEL_13:
     case 1uLL:
       v6 = &OBJC_IVAR___BFFFinishSetupViewController__skippedFlowIdentifiers;
 LABEL_6:
-      [*(&self->super.super.super.isa + *v6) addObjectsFromArray:v7];
+      [*(&self->super.super.super.isa + *v6) addObjectsFromArray:identifiersCopy];
       break;
   }
 

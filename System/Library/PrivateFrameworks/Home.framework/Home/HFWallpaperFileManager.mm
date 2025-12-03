@@ -1,14 +1,14 @@
 @interface HFWallpaperFileManager
-- (BOOL)originalImageExistsForWallpaper:(id)a3;
+- (BOOL)originalImageExistsForWallpaper:(id)wallpaper;
 - (HFWallpaperFileManager)init;
-- (id)_originalImageForWallpaper:(id)a3 withFileName:(id)a4;
-- (id)fileNameForCustomBlurWallpaper:(id)a3;
-- (id)fileNameForDefaultBlurWallpaper:(id)a3 userInterfaceStyle:(int64_t)a4;
-- (id)filenameForWallpaper:(id)a3;
-- (id)originalImageForWallpaper:(id)a3;
-- (void)_saveOriginalImage:(id)a3 forWallpaper:(id)a4 withFileName:(id)a5;
-- (void)pruneUnusedOriginalWallpaperImages:(id)a3;
-- (void)saveOriginalImage:(id)a3 forWallpaper:(id)a4;
+- (id)_originalImageForWallpaper:(id)wallpaper withFileName:(id)name;
+- (id)fileNameForCustomBlurWallpaper:(id)wallpaper;
+- (id)fileNameForDefaultBlurWallpaper:(id)wallpaper userInterfaceStyle:(int64_t)style;
+- (id)filenameForWallpaper:(id)wallpaper;
+- (id)originalImageForWallpaper:(id)wallpaper;
+- (void)_saveOriginalImage:(id)image forWallpaper:(id)wallpaper withFileName:(id)name;
+- (void)pruneUnusedOriginalWallpaperImages:(id)images;
+- (void)saveOriginalImage:(id)image forWallpaper:(id)wallpaper;
 @end
 
 @implementation HFWallpaperFileManager
@@ -28,54 +28,54 @@
   return v2;
 }
 
-- (BOOL)originalImageExistsForWallpaper:(id)a3
+- (BOOL)originalImageExistsForWallpaper:(id)wallpaper
 {
-  v4 = a3;
-  if ([v4 type] == 4)
+  wallpaperCopy = wallpaper;
+  if ([wallpaperCopy type] == 4)
   {
-    v5 = [(HFWallpaperFileManager *)self fileNameForDefaultBlurWallpaper:v4 userInterfaceStyle:1];
-    v6 = [(HFWallpaperFileManager *)self fileNameForDefaultBlurWallpaper:v4 userInterfaceStyle:2];
-    v7 = v6;
+    defaultManager4 = [(HFWallpaperFileManager *)self fileNameForDefaultBlurWallpaper:wallpaperCopy userInterfaceStyle:1];
+    v6 = [(HFWallpaperFileManager *)self fileNameForDefaultBlurWallpaper:wallpaperCopy userInterfaceStyle:2];
+    defaultManager3 = v6;
     v8 = 0;
-    if (v5 && v6)
+    if (defaultManager4 && v6)
     {
-      v9 = [MEMORY[0x277CCAA00] defaultManager];
-      v10 = [(HFWallpaperFileManager *)self wallpaperFolderURL];
-      v11 = [v10 URLByAppendingPathComponent:v5];
-      v12 = [v11 path];
-      v13 = [v9 fileExistsAtPath:v12];
+      defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+      wallpaperFolderURL = [(HFWallpaperFileManager *)self wallpaperFolderURL];
+      v11 = [wallpaperFolderURL URLByAppendingPathComponent:defaultManager4];
+      path = [v11 path];
+      v13 = [defaultManager fileExistsAtPath:path];
 
-      v14 = [MEMORY[0x277CCAA00] defaultManager];
-      v15 = [(HFWallpaperFileManager *)self wallpaperFolderURL];
-      v16 = [v15 URLByAppendingPathComponent:v7];
-      v17 = [v16 path];
-      LOBYTE(v12) = [v14 fileExistsAtPath:v17];
+      defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+      wallpaperFolderURL2 = [(HFWallpaperFileManager *)self wallpaperFolderURL];
+      v16 = [wallpaperFolderURL2 URLByAppendingPathComponent:defaultManager3];
+      path2 = [v16 path];
+      LOBYTE(path) = [defaultManager2 fileExistsAtPath:path2];
 
-      v8 = v13 & v12;
+      v8 = v13 & path;
     }
   }
 
   else
   {
-    if ([v4 type] == 6)
+    if ([wallpaperCopy type] == 6)
     {
-      v5 = [(HFWallpaperFileManager *)self fileNameForCustomBlurWallpaper:v4];
-      if (!v5)
+      defaultManager4 = [(HFWallpaperFileManager *)self fileNameForCustomBlurWallpaper:wallpaperCopy];
+      if (!defaultManager4)
       {
         v8 = 0;
         goto LABEL_12;
       }
 
-      v7 = [MEMORY[0x277CCAA00] defaultManager];
-      v18 = [(HFWallpaperFileManager *)self wallpaperFolderURL];
-      v19 = [v18 URLByAppendingPathComponent:v5];
-      v20 = [v19 path];
-      v21 = v7;
+      defaultManager3 = [MEMORY[0x277CCAA00] defaultManager];
+      wallpaperFolderURL3 = [(HFWallpaperFileManager *)self wallpaperFolderURL];
+      v19 = [wallpaperFolderURL3 URLByAppendingPathComponent:defaultManager4];
+      path3 = [v19 path];
+      v21 = defaultManager3;
     }
 
     else
     {
-      v22 = [(HFWallpaperFileManager *)self filenameForWallpaper:v4];
+      v22 = [(HFWallpaperFileManager *)self filenameForWallpaper:wallpaperCopy];
 
       if (!v22)
       {
@@ -83,15 +83,15 @@
         goto LABEL_13;
       }
 
-      v5 = [MEMORY[0x277CCAA00] defaultManager];
-      v7 = [(HFWallpaperFileManager *)self wallpaperFolderURL];
-      v18 = [(HFWallpaperFileManager *)self filenameForWallpaper:v4];
-      v19 = [v7 URLByAppendingPathComponent:v18];
-      v20 = [v19 path];
-      v21 = v5;
+      defaultManager4 = [MEMORY[0x277CCAA00] defaultManager];
+      defaultManager3 = [(HFWallpaperFileManager *)self wallpaperFolderURL];
+      wallpaperFolderURL3 = [(HFWallpaperFileManager *)self filenameForWallpaper:wallpaperCopy];
+      v19 = [defaultManager3 URLByAppendingPathComponent:wallpaperFolderURL3];
+      path3 = [v19 path];
+      v21 = defaultManager4;
     }
 
-    v8 = [v21 fileExistsAtPath:v20];
+    v8 = [v21 fileExistsAtPath:path3];
   }
 
 LABEL_12:
@@ -100,51 +100,51 @@ LABEL_13:
   return v8;
 }
 
-- (id)originalImageForWallpaper:(id)a3
+- (id)originalImageForWallpaper:(id)wallpaper
 {
-  v4 = a3;
-  if ([v4 type] == 4)
+  wallpaperCopy = wallpaper;
+  if ([wallpaperCopy type] == 4)
   {
-    v5 = [(HFWallpaperFileManager *)self fileNameForDefaultBlurWallpaper:v4 userInterfaceStyle:1];
-    v6 = [(HFWallpaperFileManager *)self fileNameForDefaultBlurWallpaper:v4 userInterfaceStyle:2];
-    v7 = [(HFWallpaperFileManager *)self _originalImageForWallpaper:v4 withFileName:v5];
-    v8 = [(HFWallpaperFileManager *)self _originalImageForWallpaper:v4 withFileName:v6];
-    v9 = [v7 imageAsset];
+    v5 = [(HFWallpaperFileManager *)self fileNameForDefaultBlurWallpaper:wallpaperCopy userInterfaceStyle:1];
+    v6 = [(HFWallpaperFileManager *)self fileNameForDefaultBlurWallpaper:wallpaperCopy userInterfaceStyle:2];
+    v7 = [(HFWallpaperFileManager *)self _originalImageForWallpaper:wallpaperCopy withFileName:v5];
+    v8 = [(HFWallpaperFileManager *)self _originalImageForWallpaper:wallpaperCopy withFileName:v6];
+    imageAsset = [v7 imageAsset];
     v10 = [MEMORY[0x277D75C80] traitCollectionWithUserInterfaceStyle:2];
-    [v9 registerImage:v8 withTraitCollection:v10];
+    [imageAsset registerImage:v8 withTraitCollection:v10];
   }
 
   else
   {
-    if ([v4 type] == 6)
+    if ([wallpaperCopy type] == 6)
     {
-      [(HFWallpaperFileManager *)self fileNameForCustomBlurWallpaper:v4];
+      [(HFWallpaperFileManager *)self fileNameForCustomBlurWallpaper:wallpaperCopy];
     }
 
     else
     {
-      [(HFWallpaperFileManager *)self filenameForWallpaper:v4];
+      [(HFWallpaperFileManager *)self filenameForWallpaper:wallpaperCopy];
     }
     v5 = ;
-    v7 = [(HFWallpaperFileManager *)self _originalImageForWallpaper:v4 withFileName:v5];
+    v7 = [(HFWallpaperFileManager *)self _originalImageForWallpaper:wallpaperCopy withFileName:v5];
   }
 
   return v7;
 }
 
-- (id)_originalImageForWallpaper:(id)a3 withFileName:(id)a4
+- (id)_originalImageForWallpaper:(id)wallpaper withFileName:(id)name
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HFWallpaperFileManager *)self wallpaperFolderURL];
-  v9 = [v8 URLByAppendingPathComponent:v7];
+  wallpaperCopy = wallpaper;
+  nameCopy = name;
+  wallpaperFolderURL = [(HFWallpaperFileManager *)self wallpaperFolderURL];
+  v9 = [wallpaperFolderURL URLByAppendingPathComponent:nameCopy];
 
   v10 = HFLogForCategory(0x4EuLL);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v22 = v6;
+    v22 = wallpaperCopy;
     _os_log_impl(&dword_20D9BF000, v10, OS_LOG_TYPE_DEFAULT, "Retrieving original image for wallpaper %@", buf, 0xCu);
   }
 
@@ -152,14 +152,14 @@ LABEL_13:
   v11 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:v9 options:1 error:&v19];
   v12 = v19;
   v13 = MEMORY[0x277D755B8];
-  v14 = [MEMORY[0x277D759A0] mainScreen];
-  [v14 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v15 = [v13 imageWithData:v11 scale:?];
 
   if (!v15)
   {
-    NSLog(&cfstr_UnableToLoadOr.isa, v6, v12);
-    v20 = v6;
+    NSLog(&cfstr_UnableToLoadOr.isa, wallpaperCopy, v12);
+    v20 = wallpaperCopy;
     v16 = [MEMORY[0x277CBEA60] arrayWithObjects:&v20 count:1];
     [(HFWallpaperFileManager *)self pruneUnusedOriginalWallpaperImages:v16];
   }
@@ -169,69 +169,69 @@ LABEL_13:
   return v15;
 }
 
-- (void)saveOriginalImage:(id)a3 forWallpaper:(id)a4
+- (void)saveOriginalImage:(id)image forWallpaper:(id)wallpaper
 {
-  v18 = a3;
-  v6 = a4;
-  if ([v6 type] == 4)
+  imageCopy = image;
+  wallpaperCopy = wallpaper;
+  if ([wallpaperCopy type] == 4)
   {
-    v7 = [(HFWallpaperFileManager *)self fileNameForDefaultBlurWallpaper:v6 userInterfaceStyle:1];
-    v8 = [(HFWallpaperFileManager *)self fileNameForDefaultBlurWallpaper:v6 userInterfaceStyle:2];
-    v9 = [v18 imageAsset];
+    v7 = [(HFWallpaperFileManager *)self fileNameForDefaultBlurWallpaper:wallpaperCopy userInterfaceStyle:1];
+    v8 = [(HFWallpaperFileManager *)self fileNameForDefaultBlurWallpaper:wallpaperCopy userInterfaceStyle:2];
+    imageAsset = [imageCopy imageAsset];
     v10 = [MEMORY[0x277D75C80] traitCollectionWithUserInterfaceStyle:1];
-    v11 = [v9 imageWithTraitCollection:v10];
+    v11 = [imageAsset imageWithTraitCollection:v10];
 
-    v12 = [v18 imageAsset];
+    imageAsset2 = [imageCopy imageAsset];
     v13 = [MEMORY[0x277D75C80] traitCollectionWithUserInterfaceStyle:2];
-    v14 = [v12 imageWithTraitCollection:v13];
+    v14 = [imageAsset2 imageWithTraitCollection:v13];
 
-    [(HFWallpaperFileManager *)self _saveOriginalImage:v11 forWallpaper:v6 withFileName:v7];
-    [(HFWallpaperFileManager *)self _saveOriginalImage:v14 forWallpaper:v6 withFileName:v8];
+    [(HFWallpaperFileManager *)self _saveOriginalImage:v11 forWallpaper:wallpaperCopy withFileName:v7];
+    [(HFWallpaperFileManager *)self _saveOriginalImage:v14 forWallpaper:wallpaperCopy withFileName:v8];
   }
 
-  else if ([v6 type] == 6)
+  else if ([wallpaperCopy type] == 6)
   {
-    v7 = [(HFWallpaperFileManager *)self fileNameForCustomBlurWallpaper:v6];
+    v7 = [(HFWallpaperFileManager *)self fileNameForCustomBlurWallpaper:wallpaperCopy];
     v15 = +[HFWallpaperManager sharedInstance];
-    v16 = [v15 processOriginalBlurredImageFromWallpaper:v6 originalImage:v18];
+    v16 = [v15 processOriginalBlurredImageFromWallpaper:wallpaperCopy originalImage:imageCopy];
 
-    [(HFWallpaperFileManager *)self _saveOriginalImage:v16 forWallpaper:v6 withFileName:v7];
-    v17 = [(HFWallpaperFileManager *)self filenameForWallpaper:v6];
-    [(HFWallpaperFileManager *)self _saveOriginalImage:v18 forWallpaper:v6 withFileName:v17];
+    [(HFWallpaperFileManager *)self _saveOriginalImage:v16 forWallpaper:wallpaperCopy withFileName:v7];
+    v17 = [(HFWallpaperFileManager *)self filenameForWallpaper:wallpaperCopy];
+    [(HFWallpaperFileManager *)self _saveOriginalImage:imageCopy forWallpaper:wallpaperCopy withFileName:v17];
   }
 
   else
   {
-    v7 = [(HFWallpaperFileManager *)self filenameForWallpaper:v6];
-    [(HFWallpaperFileManager *)self _saveOriginalImage:v18 forWallpaper:v6 withFileName:v7];
+    v7 = [(HFWallpaperFileManager *)self filenameForWallpaper:wallpaperCopy];
+    [(HFWallpaperFileManager *)self _saveOriginalImage:imageCopy forWallpaper:wallpaperCopy withFileName:v7];
   }
 }
 
-- (void)_saveOriginalImage:(id)a3 forWallpaper:(id)a4 withFileName:(id)a5
+- (void)_saveOriginalImage:(id)image forWallpaper:(id)wallpaper withFileName:(id)name
 {
   v34 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  imageCopy = image;
+  wallpaperCopy = wallpaper;
+  nameCopy = name;
   v11 = HFLogForCategory(0x4EuLL);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v30 = 138412546;
-    v31 = v10;
+    v31 = nameCopy;
     v32 = 2112;
-    v33 = v9;
+    v33 = wallpaperCopy;
     _os_log_impl(&dword_20D9BF000, v11, OS_LOG_TYPE_DEFAULT, "Writing out original image at wallpaper path: %@ for wallpaper %@", &v30, 0x16u);
   }
 
-  v12 = [(HFWallpaperFileManager *)self wallpaperFolderURL];
-  v13 = [v12 URLByAppendingPathComponent:v10];
-  v14 = [v13 path];
+  wallpaperFolderURL = [(HFWallpaperFileManager *)self wallpaperFolderURL];
+  v13 = [wallpaperFolderURL URLByAppendingPathComponent:nameCopy];
+  path = [v13 path];
 
-  v15 = [MEMORY[0x277CCAA00] defaultManager];
-  v16 = [(HFWallpaperFileManager *)self wallpaperFolderURL];
-  v17 = [v16 URLByAppendingPathComponent:v10];
-  v18 = [v17 path];
-  v19 = [v15 fileExistsAtPath:v18];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  wallpaperFolderURL2 = [(HFWallpaperFileManager *)self wallpaperFolderURL];
+  v17 = [wallpaperFolderURL2 URLByAppendingPathComponent:nameCopy];
+  path2 = [v17 path];
+  v19 = [defaultManager fileExistsAtPath:path2];
 
   if (v19)
   {
@@ -239,26 +239,26 @@ LABEL_13:
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
       v30 = 138412546;
-      v31 = v9;
+      v31 = wallpaperCopy;
       v32 = 2112;
-      v33 = v10;
+      v33 = nameCopy;
       _os_log_impl(&dword_20D9BF000, v20, OS_LOG_TYPE_DEFAULT, "Skipping write for wallpaper %@ as fileName %@ already exists", &v30, 0x16u);
     }
   }
 
   else
   {
-    v21 = [v9 type];
-    v22 = [v8 imageWithNormalizedOrientation];
-    v23 = v22;
-    if (v21)
+    type = [wallpaperCopy type];
+    imageWithNormalizedOrientation = [imageCopy imageWithNormalizedOrientation];
+    v23 = imageWithNormalizedOrientation;
+    if (type)
     {
-      UIImageJPEGRepresentation(v22, 1.0);
+      UIImageJPEGRepresentation(imageWithNormalizedOrientation, 1.0);
     }
 
     else
     {
-      UIImagePNGRepresentation(v22);
+      UIImagePNGRepresentation(imageWithNormalizedOrientation);
     }
     v20 = ;
 
@@ -268,13 +268,13 @@ LABEL_13:
       if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
       {
         v30 = 138412290;
-        v31 = v9;
+        v31 = wallpaperCopy;
         _os_log_error_impl(&dword_20D9BF000, v24, OS_LOG_TYPE_ERROR, "Failed to generate image data for wallpaper %@", &v30, 0xCu);
       }
     }
 
-    v25 = [MEMORY[0x277CCAA00] defaultManager];
-    v26 = [v25 createFileAtPath:v14 contents:v20 attributes:0];
+    defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+    v26 = [defaultManager2 createFileAtPath:path contents:v20 attributes:0];
 
     v27 = HFLogForCategory(0x4EuLL);
     v28 = v27;
@@ -283,9 +283,9 @@ LABEL_13:
       if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
       {
         v30 = 138412546;
-        v31 = v9;
+        v31 = wallpaperCopy;
         v32 = 2112;
-        v33 = v14;
+        v33 = path;
         _os_log_impl(&dword_20D9BF000, v28, OS_LOG_TYPE_DEFAULT, "Wrote original wallpaper image %@ to path %@", &v30, 0x16u);
       }
     }
@@ -293,7 +293,7 @@ LABEL_13:
     else if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
     {
       v30 = 138412290;
-      v31 = v14;
+      v31 = path;
       _os_log_error_impl(&dword_20D9BF000, v28, OS_LOG_TYPE_ERROR, "Failed to write original wallpaper image at path %@", &v30, 0xCu);
     }
   }
@@ -301,10 +301,10 @@ LABEL_13:
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (void)pruneUnusedOriginalWallpaperImages:(id)a3
+- (void)pruneUnusedOriginalWallpaperImages:(id)images
 {
   v42 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  imagesCopy = images;
   v5 = [MEMORY[0x277CBEB58] set];
   v35[0] = MEMORY[0x277D85DD0];
   v35[1] = 3221225472;
@@ -313,13 +313,13 @@ LABEL_13:
   v35[4] = self;
   v6 = v5;
   v36 = v6;
-  v28 = v4;
-  [v4 na_each:v35];
-  v7 = [MEMORY[0x277CCAA00] defaultManager];
-  v29 = self;
-  v8 = [(HFWallpaperFileManager *)self wallpaperFolderURL];
-  v9 = [v8 path];
-  v10 = [v7 contentsOfDirectoryAtPath:v9 error:0];
+  v28 = imagesCopy;
+  [imagesCopy na_each:v35];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  selfCopy = self;
+  wallpaperFolderURL = [(HFWallpaperFileManager *)self wallpaperFolderURL];
+  path = [wallpaperFolderURL path];
+  v10 = [defaultManager contentsOfDirectoryAtPath:path error:0];
 
   v33 = 0u;
   v34 = 0u;
@@ -344,13 +344,13 @@ LABEL_13:
         v16 = *(*(&v31 + 1) + 8 * v15);
         if (([v6 containsObject:v16] & 1) == 0)
         {
-          v17 = [(HFWallpaperFileManager *)v29 wallpaperFolderURL];
-          v18 = [v17 URLByAppendingPathComponent:v16];
+          wallpaperFolderURL2 = [(HFWallpaperFileManager *)selfCopy wallpaperFolderURL];
+          v18 = [wallpaperFolderURL2 URLByAppendingPathComponent:v16];
 
-          v19 = [MEMORY[0x277CCAA00] defaultManager];
-          v20 = [v18 path];
+          defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+          path2 = [v18 path];
           v30 = 0;
-          v21 = [v19 removeItemAtPath:v20 error:&v30];
+          v21 = [defaultManager2 removeItemAtPath:path2 error:&v30];
           v22 = v30;
 
           v23 = HFLogForCategory(0x4EuLL);
@@ -359,9 +359,9 @@ LABEL_13:
           {
             if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
             {
-              v25 = [v18 path];
+              path3 = [v18 path];
               *buf = 138412290;
-              v38 = v25;
+              v38 = path3;
               _os_log_impl(&dword_20D9BF000, v24, OS_LOG_TYPE_DEFAULT, "Removed unused wallpaper at path %@", buf, 0xCu);
               goto LABEL_10;
             }
@@ -369,9 +369,9 @@ LABEL_13:
 
           else if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
           {
-            v25 = [v18 path];
+            path3 = [v18 path];
             *buf = 138412546;
-            v38 = v25;
+            v38 = path3;
             v39 = 2112;
             v40 = v22;
             _os_log_error_impl(&dword_20D9BF000, v24, OS_LOG_TYPE_ERROR, "Failed to remove wallpaper at path %@ with error %@", buf, 0x16u);
@@ -422,32 +422,32 @@ LABEL_5:
 LABEL_7:
 }
 
-- (id)filenameForWallpaper:(id)a3
+- (id)filenameForWallpaper:(id)wallpaper
 {
-  v3 = a3;
-  v4 = [v3 type];
-  if (v4 > 6)
+  wallpaperCopy = wallpaper;
+  type = [wallpaperCopy type];
+  if (type > 6)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = off_277DFCBE0[v4];
+    v5 = off_277DFCBE0[type];
   }
 
-  v6 = [v3 assetIdentifier];
+  assetIdentifier = [wallpaperCopy assetIdentifier];
 
-  v7 = [v6 stringByAppendingPathExtension:v5];
+  v7 = [assetIdentifier stringByAppendingPathExtension:v5];
 
   return v7;
 }
 
-- (id)fileNameForDefaultBlurWallpaper:(id)a3 userInterfaceStyle:(int64_t)a4
+- (id)fileNameForDefaultBlurWallpaper:(id)wallpaper userInterfaceStyle:(int64_t)style
 {
-  v5 = [a3 assetIdentifier];
-  v6 = v5;
-  if (a4 == 2)
+  assetIdentifier = [wallpaper assetIdentifier];
+  v6 = assetIdentifier;
+  if (style == 2)
   {
     v7 = @"_dark";
   }
@@ -457,17 +457,17 @@ LABEL_7:
     v7 = @"_light";
   }
 
-  v8 = [v5 stringByAppendingString:v7];
+  v8 = [assetIdentifier stringByAppendingString:v7];
 
   v9 = [v8 stringByAppendingPathExtension:@"jpg"];
 
   return v9;
 }
 
-- (id)fileNameForCustomBlurWallpaper:(id)a3
+- (id)fileNameForCustomBlurWallpaper:(id)wallpaper
 {
-  v3 = [a3 assetIdentifier];
-  v4 = [v3 stringByAppendingString:@"_blur"];
+  assetIdentifier = [wallpaper assetIdentifier];
+  v4 = [assetIdentifier stringByAppendingString:@"_blur"];
 
   v5 = [v4 stringByAppendingPathExtension:@"jpg"];
 

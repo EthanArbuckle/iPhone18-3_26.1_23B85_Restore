@@ -1,10 +1,10 @@
 @interface CKTipCollectionViewCell
 - (UIView)miniTipUIView;
-- (_TtC7ChatKit23CKTipCollectionViewCell)initWithCoder:(id)a3;
-- (_TtC7ChatKit23CKTipCollectionViewCell)initWithFrame:(CGRect)a3;
+- (_TtC7ChatKit23CKTipCollectionViewCell)initWithCoder:(id)coder;
+- (_TtC7ChatKit23CKTipCollectionViewCell)initWithFrame:(CGRect)frame;
 - (id)reuseIdentifier;
-- (void)setMiniTipUIView:(id)a3;
-- (void)setTipHostingView:(id)a3;
+- (void)setMiniTipUIView:(id)view;
+- (void)setTipHostingView:(id)view;
 @end
 
 @implementation CKTipCollectionViewCell
@@ -23,16 +23,16 @@
   return *(&self->super.super.super.super.super.isa + v3);
 }
 
-- (void)setMiniTipUIView:(id)a3
+- (void)setMiniTipUIView:(id)view
 {
   v5 = OBJC_IVAR____TtC7ChatKit23CKTipCollectionViewCell_miniTipUIView;
   swift_beginAccess();
   v6 = *(&self->super.super.super.super.super.isa + v5);
-  *(&self->super.super.super.super.super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.super.super.super.super.isa + v5) = view;
+  viewCopy = view;
 }
 
-- (_TtC7ChatKit23CKTipCollectionViewCell)initWithFrame:(CGRect)a3
+- (_TtC7ChatKit23CKTipCollectionViewCell)initWithFrame:(CGRect)frame
 {
   ObjectType = swift_getObjectType();
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC7ChatKit23CKTipCollectionViewCell_miniTipUIView) = 0;
@@ -41,7 +41,7 @@
   return [(CKTipCollectionViewCell *)&v6 initWithFrame:0.0, 0.0, 0.0, 0.0];
 }
 
-- (_TtC7ChatKit23CKTipCollectionViewCell)initWithCoder:(id)a3
+- (_TtC7ChatKit23CKTipCollectionViewCell)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC7ChatKit23CKTipCollectionViewCell_miniTipUIView) = 0;
   result = sub_190D58510();
@@ -49,11 +49,11 @@
   return result;
 }
 
-- (void)setTipHostingView:(id)a3
+- (void)setTipHostingView:(id)view
 {
-  v5 = a3;
-  v6 = self;
-  CKTipCollectionViewCell.setTipHostingView(_:)(a3);
+  viewCopy = view;
+  selfCopy = self;
+  CKTipCollectionViewCell.setTipHostingView(_:)(view);
 }
 
 @end

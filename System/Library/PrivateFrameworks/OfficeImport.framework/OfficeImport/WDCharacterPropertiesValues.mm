@@ -1,131 +1,131 @@
 @interface WDCharacterPropertiesValues
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setBoldForBiTextOverridden:(BOOL)a3;
-- (void)setBoldOverridden:(BOOL)a3;
-- (void)setBorderOverridden:(BOOL)a3;
-- (void)setBracketTwoLinesInOneOverridden:(BOOL)a3;
-- (void)setCapsOverridden:(BOOL)a3;
-- (void)setCharPositionOfPictureBulletInBookmarkOverridden:(BOOL)a3;
-- (void)setColorAuto:(BOOL)a3;
-- (void)setColorAutoOverridden:(BOOL)a3;
-- (void)setColorOverridden:(BOOL)a3;
-- (void)setCompressHorizontalInVerticalOverridden:(BOOL)a3;
-- (void)setDeletedOverridden:(BOOL)a3;
-- (void)setDeletionDateOverridden:(BOOL)a3;
-- (void)setDoubleStrikeThroughOverridden:(BOOL)a3;
-- (void)setEditDateOverridden:(BOOL)a3;
-- (void)setEditedOverridden:(BOOL)a3;
-- (void)setEmbeddedObject:(BOOL)a3;
-- (void)setEmbeddedObjectOverridden:(BOOL)a3;
-- (void)setEmbossedOverridden:(BOOL)a3;
-- (void)setEmphasisMarkOverridden:(BOOL)a3;
-- (void)setExtendedFontOverridden:(BOOL)a3;
-- (void)setFarEastFontOverridden:(BOOL)a3;
-- (void)setFontOverridden:(BOOL)a3;
-- (void)setFontSizeForBiTextOverridden:(BOOL)a3;
-- (void)setFontSizeOverridden:(BOOL)a3;
-- (void)setHiddenOverridden:(BOOL)a3;
-- (void)setHighlight:(BOOL)a3;
-- (void)setHighlightColorOverridden:(BOOL)a3;
-- (void)setHighlightOverridden:(BOOL)a3;
-- (void)setHorizontalInVertical:(BOOL)a3;
-- (void)setHorizontalInVerticalOverridden:(BOOL)a3;
-- (void)setImprintOverridden:(BOOL)a3;
-- (void)setIndexToAuthorIDOfDeletionOverridden:(BOOL)a3;
-- (void)setIndexToAuthorIDOfEditOverridden:(BOOL)a3;
-- (void)setIndexToAuthorIDOfFormattingChangeOverridden:(BOOL)a3;
-- (void)setItalicForBiTextOverridden:(BOOL)a3;
-- (void)setItalicOverridden:(BOOL)a3;
-- (void)setKerningOverridden:(BOOL)a3;
-- (void)setLanguageForBiTextOverridden:(BOOL)a3;
-- (void)setLanguageForDefaultTextOverridden:(BOOL)a3;
-- (void)setLanguageForFarEastOverridden:(BOOL)a3;
-- (void)setLigatureOverridden:(BOOL)a3;
-- (void)setListCharacterPictureBulletOverridden:(BOOL)a3;
-- (void)setLowerCase:(BOOL)a3;
-- (void)setLowerCaseOverridden:(BOOL)a3;
-- (void)setObjectIDForOle2Overridden:(BOOL)a3;
-- (void)setOffsetToPictureDataOverridden:(BOOL)a3;
-- (void)setOle2Overridden:(BOOL)a3;
-- (void)setOutline2010WidthOverridden:(BOOL)a3;
-- (void)setOutlineColorOverridden:(BOOL)a3;
-- (void)setOutlineOverridden:(BOOL)a3;
-- (void)setPositionOverridden:(BOOL)a3;
-- (void)setReflectionOverridden:(BOOL)a3;
-- (void)setRightToLeftOverridden:(BOOL)a3;
-- (void)setShadingOverridden:(BOOL)a3;
-- (void)setShadow2010OpacityOverridden:(BOOL)a3;
-- (void)setShadow2010Overridden:(BOOL)a3;
-- (void)setSpacingOverridden:(BOOL)a3;
-- (void)setSpecialCharacter:(BOOL)a3;
-- (void)setSpecialCharacterOverridden:(BOOL)a3;
-- (void)setStrikeThroughOverridden:(BOOL)a3;
-- (void)setSymbolCharacterOverridden:(BOOL)a3;
-- (void)setSymbolFontOverridden:(BOOL)a3;
-- (void)setTextScaleOverridden:(BOOL)a3;
-- (void)setTwoLinesInOne:(BOOL)a3;
-- (void)setTwoLinesInOneOverridden:(BOOL)a3;
-- (void)setUnderlineOverridden:(BOOL)a3;
-- (void)setUseCsFontOverridden:(BOOL)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setBoldForBiTextOverridden:(BOOL)overridden;
+- (void)setBoldOverridden:(BOOL)overridden;
+- (void)setBorderOverridden:(BOOL)overridden;
+- (void)setBracketTwoLinesInOneOverridden:(BOOL)overridden;
+- (void)setCapsOverridden:(BOOL)overridden;
+- (void)setCharPositionOfPictureBulletInBookmarkOverridden:(BOOL)overridden;
+- (void)setColorAuto:(BOOL)auto;
+- (void)setColorAutoOverridden:(BOOL)overridden;
+- (void)setColorOverridden:(BOOL)overridden;
+- (void)setCompressHorizontalInVerticalOverridden:(BOOL)overridden;
+- (void)setDeletedOverridden:(BOOL)overridden;
+- (void)setDeletionDateOverridden:(BOOL)overridden;
+- (void)setDoubleStrikeThroughOverridden:(BOOL)overridden;
+- (void)setEditDateOverridden:(BOOL)overridden;
+- (void)setEditedOverridden:(BOOL)overridden;
+- (void)setEmbeddedObject:(BOOL)object;
+- (void)setEmbeddedObjectOverridden:(BOOL)overridden;
+- (void)setEmbossedOverridden:(BOOL)overridden;
+- (void)setEmphasisMarkOverridden:(BOOL)overridden;
+- (void)setExtendedFontOverridden:(BOOL)overridden;
+- (void)setFarEastFontOverridden:(BOOL)overridden;
+- (void)setFontOverridden:(BOOL)overridden;
+- (void)setFontSizeForBiTextOverridden:(BOOL)overridden;
+- (void)setFontSizeOverridden:(BOOL)overridden;
+- (void)setHiddenOverridden:(BOOL)overridden;
+- (void)setHighlight:(BOOL)highlight;
+- (void)setHighlightColorOverridden:(BOOL)overridden;
+- (void)setHighlightOverridden:(BOOL)overridden;
+- (void)setHorizontalInVertical:(BOOL)vertical;
+- (void)setHorizontalInVerticalOverridden:(BOOL)overridden;
+- (void)setImprintOverridden:(BOOL)overridden;
+- (void)setIndexToAuthorIDOfDeletionOverridden:(BOOL)overridden;
+- (void)setIndexToAuthorIDOfEditOverridden:(BOOL)overridden;
+- (void)setIndexToAuthorIDOfFormattingChangeOverridden:(BOOL)overridden;
+- (void)setItalicForBiTextOverridden:(BOOL)overridden;
+- (void)setItalicOverridden:(BOOL)overridden;
+- (void)setKerningOverridden:(BOOL)overridden;
+- (void)setLanguageForBiTextOverridden:(BOOL)overridden;
+- (void)setLanguageForDefaultTextOverridden:(BOOL)overridden;
+- (void)setLanguageForFarEastOverridden:(BOOL)overridden;
+- (void)setLigatureOverridden:(BOOL)overridden;
+- (void)setListCharacterPictureBulletOverridden:(BOOL)overridden;
+- (void)setLowerCase:(BOOL)case;
+- (void)setLowerCaseOverridden:(BOOL)overridden;
+- (void)setObjectIDForOle2Overridden:(BOOL)overridden;
+- (void)setOffsetToPictureDataOverridden:(BOOL)overridden;
+- (void)setOle2Overridden:(BOOL)overridden;
+- (void)setOutline2010WidthOverridden:(BOOL)overridden;
+- (void)setOutlineColorOverridden:(BOOL)overridden;
+- (void)setOutlineOverridden:(BOOL)overridden;
+- (void)setPositionOverridden:(BOOL)overridden;
+- (void)setReflectionOverridden:(BOOL)overridden;
+- (void)setRightToLeftOverridden:(BOOL)overridden;
+- (void)setShadingOverridden:(BOOL)overridden;
+- (void)setShadow2010OpacityOverridden:(BOOL)overridden;
+- (void)setShadow2010Overridden:(BOOL)overridden;
+- (void)setSpacingOverridden:(BOOL)overridden;
+- (void)setSpecialCharacter:(BOOL)character;
+- (void)setSpecialCharacterOverridden:(BOOL)overridden;
+- (void)setStrikeThroughOverridden:(BOOL)overridden;
+- (void)setSymbolCharacterOverridden:(BOOL)overridden;
+- (void)setSymbolFontOverridden:(BOOL)overridden;
+- (void)setTextScaleOverridden:(BOOL)overridden;
+- (void)setTwoLinesInOne:(BOOL)one;
+- (void)setTwoLinesInOneOverridden:(BOOL)overridden;
+- (void)setUnderlineOverridden:(BOOL)overridden;
+- (void)setUseCsFontOverridden:(BOOL)overridden;
 @end
 
 @implementation WDCharacterPropertiesValues
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[WDCharacterPropertiesValues allocWithZone:?]];
   if (v4)
   {
-    v5 = [(WDCharacterPropertiesValues *)self baseStyle];
-    [(WDCharacterPropertiesValues *)v4 setBaseStyle:v5];
+    baseStyle = [(WDCharacterPropertiesValues *)self baseStyle];
+    [(WDCharacterPropertiesValues *)v4 setBaseStyle:baseStyle];
 
-    v6 = [(WDCharacterPropertiesValues *)self border];
-    [(WDCharacterPropertiesValues *)v4 setBorder:v6];
+    border = [(WDCharacterPropertiesValues *)self border];
+    [(WDCharacterPropertiesValues *)v4 setBorder:border];
 
-    v7 = [(WDCharacterPropertiesValues *)self shading];
-    [(WDCharacterPropertiesValues *)v4 setShading:v7];
+    shading = [(WDCharacterPropertiesValues *)self shading];
+    [(WDCharacterPropertiesValues *)v4 setShading:shading];
 
-    v8 = [(WDCharacterPropertiesValues *)self font];
-    [(WDCharacterPropertiesValues *)v4 setFont:v8];
+    font = [(WDCharacterPropertiesValues *)self font];
+    [(WDCharacterPropertiesValues *)v4 setFont:font];
 
-    v9 = [(WDCharacterPropertiesValues *)self extendedFont];
-    [(WDCharacterPropertiesValues *)v4 setExtendedFont:v9];
+    extendedFont = [(WDCharacterPropertiesValues *)self extendedFont];
+    [(WDCharacterPropertiesValues *)v4 setExtendedFont:extendedFont];
 
-    v10 = [(WDCharacterPropertiesValues *)self farEastFont];
-    [(WDCharacterPropertiesValues *)v4 setFarEastFont:v10];
+    farEastFont = [(WDCharacterPropertiesValues *)self farEastFont];
+    [(WDCharacterPropertiesValues *)v4 setFarEastFont:farEastFont];
 
-    v11 = [(WDCharacterPropertiesValues *)self symbolFont];
-    [(WDCharacterPropertiesValues *)v4 setSymbolFont:v11];
+    symbolFont = [(WDCharacterPropertiesValues *)self symbolFont];
+    [(WDCharacterPropertiesValues *)v4 setSymbolFont:symbolFont];
 
     [(WDCharacterPropertiesValues *)v4 setFontHint:[(WDCharacterPropertiesValues *)self fontHint]];
     [(WDCharacterPropertiesValues *)v4 setLanguageForFarEast:[(WDCharacterPropertiesValues *)self languageForFarEast]];
     [(WDCharacterPropertiesValues *)v4 setLanguageForBiText:[(WDCharacterPropertiesValues *)self languageForBiText]];
     [(WDCharacterPropertiesValues *)v4 setLanguageForDefaultText:[(WDCharacterPropertiesValues *)self languageForDefaultText]];
-    v12 = [(WDCharacterPropertiesValues *)self color];
-    [(WDCharacterPropertiesValues *)v4 setColor:v12];
+    color = [(WDCharacterPropertiesValues *)self color];
+    [(WDCharacterPropertiesValues *)v4 setColor:color];
 
-    v13 = [(WDCharacterPropertiesValues *)self underlineColor];
-    [(WDCharacterPropertiesValues *)v4 setUnderlineColor:v13];
+    underlineColor = [(WDCharacterPropertiesValues *)self underlineColor];
+    [(WDCharacterPropertiesValues *)v4 setUnderlineColor:underlineColor];
 
-    v14 = [(WDCharacterPropertiesValues *)self outlineColor];
-    [(WDCharacterPropertiesValues *)v4 setOutlineColor:v14];
+    outlineColor = [(WDCharacterPropertiesValues *)self outlineColor];
+    [(WDCharacterPropertiesValues *)v4 setOutlineColor:outlineColor];
 
-    v15 = [(WDCharacterPropertiesValues *)self deletionDate];
-    [(WDCharacterPropertiesValues *)v4 setDeletionDate:v15];
+    deletionDate = [(WDCharacterPropertiesValues *)self deletionDate];
+    [(WDCharacterPropertiesValues *)v4 setDeletionDate:deletionDate];
 
-    v16 = [(WDCharacterPropertiesValues *)self editDate];
-    [(WDCharacterPropertiesValues *)v4 setEditDate:v16];
+    editDate = [(WDCharacterPropertiesValues *)self editDate];
+    [(WDCharacterPropertiesValues *)v4 setEditDate:editDate];
 
     [(WDCharacterPropertiesValues *)v4 setCharPositionOfPictureBulletInBookmark:[(WDCharacterPropertiesValues *)self charPositionOfPictureBulletInBookmark]];
     [(WDCharacterPropertiesValues *)v4 setObjectIDForOle2:[(WDCharacterPropertiesValues *)self objectIDForOle2]];
     [(WDCharacterPropertiesValues *)v4 setOffsetToPictureData:[(WDCharacterPropertiesValues *)self offsetToPictureData]];
     [(WDCharacterPropertiesValues *)v4 setSpacing:[(WDCharacterPropertiesValues *)self spacing]];
     [(WDCharacterPropertiesValues *)v4 setPosition:[(WDCharacterPropertiesValues *)self position]];
-    v17 = [(WDCharacterPropertiesValues *)self reflection];
-    [(WDCharacterPropertiesValues *)v4 setReflection:v17];
+    reflection = [(WDCharacterPropertiesValues *)self reflection];
+    [(WDCharacterPropertiesValues *)v4 setReflection:reflection];
 
-    v18 = [(WDCharacterPropertiesValues *)self shadow2010];
-    [(WDCharacterPropertiesValues *)v4 setShadow2010:v18];
+    shadow2010 = [(WDCharacterPropertiesValues *)self shadow2010];
+    [(WDCharacterPropertiesValues *)v4 setShadow2010:shadow2010];
 
     [(WDCharacterPropertiesValues *)self shadow2010Opacity];
     [(WDCharacterPropertiesValues *)v4 setShadow2010Opacity:?];
@@ -245,9 +245,9 @@
   return v4;
 }
 
-- (void)setBorderOverridden:(BOOL)a3
+- (void)setBorderOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 2;
   }
@@ -260,9 +260,9 @@
   *(self + 8) = *(self + 8) & 0xFD | v3;
 }
 
-- (void)setShadingOverridden:(BOOL)a3
+- (void)setShadingOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 4;
   }
@@ -275,9 +275,9 @@
   *(self + 8) = *(self + 8) & 0xFB | v3;
 }
 
-- (void)setFontOverridden:(BOOL)a3
+- (void)setFontOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 8;
   }
@@ -290,9 +290,9 @@
   *(self + 8) = *(self + 8) & 0xF7 | v3;
 }
 
-- (void)setExtendedFontOverridden:(BOOL)a3
+- (void)setExtendedFontOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 16;
   }
@@ -305,9 +305,9 @@
   *(self + 8) = *(self + 8) & 0xEF | v3;
 }
 
-- (void)setFarEastFontOverridden:(BOOL)a3
+- (void)setFarEastFontOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 32;
   }
@@ -320,9 +320,9 @@
   *(self + 8) = *(self + 8) & 0xDF | v3;
 }
 
-- (void)setSymbolCharacterOverridden:(BOOL)a3
+- (void)setSymbolCharacterOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 64;
   }
@@ -335,9 +335,9 @@
   *(self + 8) = *(self + 8) & 0xBF | v3;
 }
 
-- (void)setSymbolFontOverridden:(BOOL)a3
+- (void)setSymbolFontOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 0x80;
   }
@@ -350,9 +350,9 @@
   *(self + 8) = v3 & 0x80 | *(self + 8) & 0x7F;
 }
 
-- (void)setBoldOverridden:(BOOL)a3
+- (void)setBoldOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 2;
   }
@@ -365,9 +365,9 @@
   *(self + 9) = *(self + 9) & 0xFD | v3;
 }
 
-- (void)setBoldForBiTextOverridden:(BOOL)a3
+- (void)setBoldForBiTextOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 4;
   }
@@ -380,9 +380,9 @@
   *(self + 9) = *(self + 9) & 0xFB | v3;
 }
 
-- (void)setItalicOverridden:(BOOL)a3
+- (void)setItalicOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 8;
   }
@@ -395,9 +395,9 @@
   *(self + 9) = *(self + 9) & 0xF7 | v3;
 }
 
-- (void)setItalicForBiTextOverridden:(BOOL)a3
+- (void)setItalicForBiTextOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 16;
   }
@@ -410,9 +410,9 @@
   *(self + 9) = *(self + 9) & 0xEF | v3;
 }
 
-- (void)setOutlineOverridden:(BOOL)a3
+- (void)setOutlineOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 32;
   }
@@ -425,9 +425,9 @@
   *(self + 9) = *(self + 9) & 0xDF | v3;
 }
 
-- (void)setOutlineColorOverridden:(BOOL)a3
+- (void)setOutlineColorOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 64;
   }
@@ -440,9 +440,9 @@
   *(self + 9) = *(self + 9) & 0xBF | v3;
 }
 
-- (void)setOutline2010WidthOverridden:(BOOL)a3
+- (void)setOutline2010WidthOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 0x80;
   }
@@ -455,9 +455,9 @@
   *(self + 9) = v3 & 0x80 | *(self + 9) & 0x7F;
 }
 
-- (void)setReflectionOverridden:(BOOL)a3
+- (void)setReflectionOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 2;
   }
@@ -470,9 +470,9 @@
   *(self + 10) = *(self + 10) & 0xFD | v3;
 }
 
-- (void)setShadow2010Overridden:(BOOL)a3
+- (void)setShadow2010Overridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 4;
   }
@@ -485,9 +485,9 @@
   *(self + 10) = *(self + 10) & 0xFB | v3;
 }
 
-- (void)setShadow2010OpacityOverridden:(BOOL)a3
+- (void)setShadow2010OpacityOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 8;
   }
@@ -500,9 +500,9 @@
   *(self + 10) = *(self + 10) & 0xF7 | v3;
 }
 
-- (void)setEmbossedOverridden:(BOOL)a3
+- (void)setEmbossedOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 16;
   }
@@ -515,9 +515,9 @@
   *(self + 10) = *(self + 10) & 0xEF | v3;
 }
 
-- (void)setImprintOverridden:(BOOL)a3
+- (void)setImprintOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 32;
   }
@@ -530,9 +530,9 @@
   *(self + 10) = *(self + 10) & 0xDF | v3;
 }
 
-- (void)setKerningOverridden:(BOOL)a3
+- (void)setKerningOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 64;
   }
@@ -545,9 +545,9 @@
   *(self + 10) = *(self + 10) & 0xBF | v3;
 }
 
-- (void)setTextScaleOverridden:(BOOL)a3
+- (void)setTextScaleOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 0x80;
   }
@@ -560,9 +560,9 @@
   *(self + 10) = v3 & 0x80 | *(self + 10) & 0x7F;
 }
 
-- (void)setUnderlineOverridden:(BOOL)a3
+- (void)setUnderlineOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 2;
   }
@@ -575,9 +575,9 @@
   *(self + 11) = *(self + 11) & 0xFD | v3;
 }
 
-- (void)setStrikeThroughOverridden:(BOOL)a3
+- (void)setStrikeThroughOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 4;
   }
@@ -590,9 +590,9 @@
   *(self + 11) = *(self + 11) & 0xFB | v3;
 }
 
-- (void)setDoubleStrikeThroughOverridden:(BOOL)a3
+- (void)setDoubleStrikeThroughOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 8;
   }
@@ -605,9 +605,9 @@
   *(self + 11) = *(self + 11) & 0xF7 | v3;
 }
 
-- (void)setHighlight:(BOOL)a3
+- (void)setHighlight:(BOOL)highlight
 {
-  if (a3)
+  if (highlight)
   {
     v3 = 16;
   }
@@ -620,9 +620,9 @@
   *(self + 11) = *(self + 11) & 0xEF | v3;
 }
 
-- (void)setHighlightOverridden:(BOOL)a3
+- (void)setHighlightOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 32;
   }
@@ -635,9 +635,9 @@
   *(self + 11) = *(self + 11) & 0xDF | v3;
 }
 
-- (void)setHighlightColorOverridden:(BOOL)a3
+- (void)setHighlightColorOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 64;
   }
@@ -650,9 +650,9 @@
   *(self + 11) = *(self + 11) & 0xBF | v3;
 }
 
-- (void)setLigatureOverridden:(BOOL)a3
+- (void)setLigatureOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 0x80;
   }
@@ -665,9 +665,9 @@
   *(self + 11) = v3 & 0x80 | *(self + 11) & 0x7F;
 }
 
-- (void)setCapsOverridden:(BOOL)a3
+- (void)setCapsOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 2;
   }
@@ -680,9 +680,9 @@
   *(self + 12) = *(self + 12) & 0xFD | v3;
 }
 
-- (void)setLowerCase:(BOOL)a3
+- (void)setLowerCase:(BOOL)case
 {
-  if (a3)
+  if (case)
   {
     v3 = 4;
   }
@@ -695,9 +695,9 @@
   *(self + 12) = *(self + 12) & 0xFB | v3;
 }
 
-- (void)setLowerCaseOverridden:(BOOL)a3
+- (void)setLowerCaseOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 8;
   }
@@ -710,9 +710,9 @@
   *(self + 12) = *(self + 12) & 0xF7 | v3;
 }
 
-- (void)setHiddenOverridden:(BOOL)a3
+- (void)setHiddenOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 16;
   }
@@ -725,9 +725,9 @@
   *(self + 12) = *(self + 12) & 0xEF | v3;
 }
 
-- (void)setSpacingOverridden:(BOOL)a3
+- (void)setSpacingOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 32;
   }
@@ -740,9 +740,9 @@
   *(self + 12) = *(self + 12) & 0xDF | v3;
 }
 
-- (void)setPositionOverridden:(BOOL)a3
+- (void)setPositionOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 64;
   }
@@ -755,9 +755,9 @@
   *(self + 12) = *(self + 12) & 0xBF | v3;
 }
 
-- (void)setFontSizeOverridden:(BOOL)a3
+- (void)setFontSizeOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 0x80;
   }
@@ -770,9 +770,9 @@
   *(self + 12) = v3 & 0x80 | *(self + 12) & 0x7F;
 }
 
-- (void)setEmphasisMarkOverridden:(BOOL)a3
+- (void)setEmphasisMarkOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 2;
   }
@@ -785,9 +785,9 @@
   *(self + 13) = *(self + 13) & 0xFD | v3;
 }
 
-- (void)setColorOverridden:(BOOL)a3
+- (void)setColorOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 4;
   }
@@ -800,9 +800,9 @@
   *(self + 13) = *(self + 13) & 0xFB | v3;
 }
 
-- (void)setColorAuto:(BOOL)a3
+- (void)setColorAuto:(BOOL)auto
 {
-  if (a3)
+  if (auto)
   {
     v3 = 8;
   }
@@ -815,9 +815,9 @@
   *(self + 13) = *(self + 13) & 0xF7 | v3;
 }
 
-- (void)setColorAutoOverridden:(BOOL)a3
+- (void)setColorAutoOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 16;
   }
@@ -830,9 +830,9 @@
   *(self + 13) = *(self + 13) & 0xEF | v3;
 }
 
-- (void)setLanguageForDefaultTextOverridden:(BOOL)a3
+- (void)setLanguageForDefaultTextOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 32;
   }
@@ -845,9 +845,9 @@
   *(self + 13) = *(self + 13) & 0xDF | v3;
 }
 
-- (void)setDeletedOverridden:(BOOL)a3
+- (void)setDeletedOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 64;
   }
@@ -860,9 +860,9 @@
   *(self + 13) = *(self + 13) & 0xBF | v3;
 }
 
-- (void)setEditedOverridden:(BOOL)a3
+- (void)setEditedOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 0x80;
   }
@@ -875,9 +875,9 @@
   *(self + 13) = v3 & 0x80 | *(self + 13) & 0x7F;
 }
 
-- (void)setIndexToAuthorIDOfDeletionOverridden:(BOOL)a3
+- (void)setIndexToAuthorIDOfDeletionOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 2;
   }
@@ -890,9 +890,9 @@
   *(self + 14) = *(self + 14) & 0xFD | v3;
 }
 
-- (void)setIndexToAuthorIDOfEditOverridden:(BOOL)a3
+- (void)setIndexToAuthorIDOfEditOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 4;
   }
@@ -905,9 +905,9 @@
   *(self + 14) = *(self + 14) & 0xFB | v3;
 }
 
-- (void)setIndexToAuthorIDOfFormattingChangeOverridden:(BOOL)a3
+- (void)setIndexToAuthorIDOfFormattingChangeOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 8;
   }
@@ -920,9 +920,9 @@
   *(self + 14) = *(self + 14) & 0xF7 | v3;
 }
 
-- (void)setDeletionDateOverridden:(BOOL)a3
+- (void)setDeletionDateOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 16;
   }
@@ -935,9 +935,9 @@
   *(self + 14) = *(self + 14) & 0xEF | v3;
 }
 
-- (void)setEditDateOverridden:(BOOL)a3
+- (void)setEditDateOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 32;
   }
@@ -950,9 +950,9 @@
   *(self + 14) = *(self + 14) & 0xDF | v3;
 }
 
-- (void)setSpecialCharacter:(BOOL)a3
+- (void)setSpecialCharacter:(BOOL)character
 {
-  if (a3)
+  if (character)
   {
     v3 = 64;
   }
@@ -965,9 +965,9 @@
   *(self + 14) = *(self + 14) & 0xBF | v3;
 }
 
-- (void)setSpecialCharacterOverridden:(BOOL)a3
+- (void)setSpecialCharacterOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 0x80;
   }
@@ -980,9 +980,9 @@
   *(self + 14) = v3 & 0x80 | *(self + 14) & 0x7F;
 }
 
-- (void)setListCharacterPictureBulletOverridden:(BOOL)a3
+- (void)setListCharacterPictureBulletOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 2;
   }
@@ -995,9 +995,9 @@
   *(self + 15) = *(self + 15) & 0xFD | v3;
 }
 
-- (void)setCharPositionOfPictureBulletInBookmarkOverridden:(BOOL)a3
+- (void)setCharPositionOfPictureBulletInBookmarkOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 4;
   }
@@ -1010,9 +1010,9 @@
   *(self + 15) = *(self + 15) & 0xFB | v3;
 }
 
-- (void)setLanguageForFarEastOverridden:(BOOL)a3
+- (void)setLanguageForFarEastOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 8;
   }
@@ -1025,9 +1025,9 @@
   *(self + 15) = *(self + 15) & 0xF7 | v3;
 }
 
-- (void)setLanguageForBiTextOverridden:(BOOL)a3
+- (void)setLanguageForBiTextOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 16;
   }
@@ -1040,9 +1040,9 @@
   *(self + 15) = *(self + 15) & 0xEF | v3;
 }
 
-- (void)setFontSizeForBiTextOverridden:(BOOL)a3
+- (void)setFontSizeForBiTextOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 32;
   }
@@ -1055,9 +1055,9 @@
   *(self + 15) = *(self + 15) & 0xDF | v3;
 }
 
-- (void)setEmbeddedObject:(BOOL)a3
+- (void)setEmbeddedObject:(BOOL)object
 {
-  if (a3)
+  if (object)
   {
     v3 = 64;
   }
@@ -1070,9 +1070,9 @@
   *(self + 15) = *(self + 15) & 0xBF | v3;
 }
 
-- (void)setEmbeddedObjectOverridden:(BOOL)a3
+- (void)setEmbeddedObjectOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 0x80;
   }
@@ -1085,9 +1085,9 @@
   *(self + 15) = v3 & 0x80 | *(self + 15) & 0x7F;
 }
 
-- (void)setOle2Overridden:(BOOL)a3
+- (void)setOle2Overridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 2;
   }
@@ -1100,9 +1100,9 @@
   *(self + 16) = *(self + 16) & 0xFD | v3;
 }
 
-- (void)setObjectIDForOle2Overridden:(BOOL)a3
+- (void)setObjectIDForOle2Overridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 4;
   }
@@ -1115,9 +1115,9 @@
   *(self + 16) = *(self + 16) & 0xFB | v3;
 }
 
-- (void)setOffsetToPictureDataOverridden:(BOOL)a3
+- (void)setOffsetToPictureDataOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 8;
   }
@@ -1130,9 +1130,9 @@
   *(self + 16) = *(self + 16) & 0xF7 | v3;
 }
 
-- (void)setRightToLeftOverridden:(BOOL)a3
+- (void)setRightToLeftOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 16;
   }
@@ -1145,9 +1145,9 @@
   *(self + 16) = *(self + 16) & 0xEF | v3;
 }
 
-- (void)setUseCsFontOverridden:(BOOL)a3
+- (void)setUseCsFontOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 32;
   }
@@ -1160,9 +1160,9 @@
   *(self + 16) = *(self + 16) & 0xDF | v3;
 }
 
-- (void)setHorizontalInVertical:(BOOL)a3
+- (void)setHorizontalInVertical:(BOOL)vertical
 {
-  if (a3)
+  if (vertical)
   {
     v3 = 64;
   }
@@ -1175,9 +1175,9 @@
   *(self + 16) = *(self + 16) & 0xBF | v3;
 }
 
-- (void)setHorizontalInVerticalOverridden:(BOOL)a3
+- (void)setHorizontalInVerticalOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 0x80;
   }
@@ -1190,9 +1190,9 @@
   *(self + 16) = v3 & 0x80 | *(self + 16) & 0x7F;
 }
 
-- (void)setCompressHorizontalInVerticalOverridden:(BOOL)a3
+- (void)setCompressHorizontalInVerticalOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 2;
   }
@@ -1205,9 +1205,9 @@
   *(self + 17) = *(self + 17) & 0xFD | v3;
 }
 
-- (void)setTwoLinesInOne:(BOOL)a3
+- (void)setTwoLinesInOne:(BOOL)one
 {
-  if (a3)
+  if (one)
   {
     v3 = 4;
   }
@@ -1220,9 +1220,9 @@
   *(self + 17) = *(self + 17) & 0xFB | v3;
 }
 
-- (void)setTwoLinesInOneOverridden:(BOOL)a3
+- (void)setTwoLinesInOneOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 8;
   }
@@ -1235,9 +1235,9 @@
   *(self + 17) = *(self + 17) & 0xF7 | v3;
 }
 
-- (void)setBracketTwoLinesInOneOverridden:(BOOL)a3
+- (void)setBracketTwoLinesInOneOverridden:(BOOL)overridden
 {
-  if (a3)
+  if (overridden)
   {
     v3 = 16;
   }

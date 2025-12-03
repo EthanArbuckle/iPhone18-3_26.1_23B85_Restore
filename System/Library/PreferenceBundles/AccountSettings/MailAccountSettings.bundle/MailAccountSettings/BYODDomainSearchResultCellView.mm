@@ -1,17 +1,17 @@
 @interface BYODDomainSearchResultCellView
-- (BYODDomainSearchResultCellView)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (void)setChecked:(BOOL)a3;
-- (void)setDomain:(id)a3 price:(id)a4;
+- (BYODDomainSearchResultCellView)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (void)setChecked:(BOOL)checked;
+- (void)setDomain:(id)domain price:(id)price;
 @end
 
 @implementation BYODDomainSearchResultCellView
 
-- (BYODDomainSearchResultCellView)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (BYODDomainSearchResultCellView)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v75.receiver = self;
   v75.super_class = BYODDomainSearchResultCellView;
-  v74 = a4;
-  v5 = [(BYODDomainSearchResultCellView *)&v75 initWithStyle:a3 reuseIdentifier:?];
+  identifierCopy = identifier;
+  v5 = [(BYODDomainSearchResultCellView *)&v75 initWithStyle:style reuseIdentifier:?];
   if (v5)
   {
     v6 = [UIImageSymbolConfiguration configurationWithPointSize:17.0];
@@ -37,12 +37,12 @@
     [(UIImageView *)v15 setTintColor:v16];
 
     [(UIImageView *)v5->_availableCheck setTranslatesAutoresizingMaskIntoConstraints:0];
-    v17 = [(BYODDomainSearchResultCellView *)v5 contentView];
-    [v17 addSubview:v5->_availableCheck];
+    contentView = [(BYODDomainSearchResultCellView *)v5 contentView];
+    [contentView addSubview:v5->_availableCheck];
 
-    v18 = [(BYODDomainSearchResultCellView *)v5 textLabel];
+    textLabel = [(BYODDomainSearchResultCellView *)v5 textLabel];
     noteLabel = v5->_noteLabel;
-    v5->_noteLabel = v18;
+    v5->_noteLabel = textLabel;
 
     [(UILabel *)v5->_noteLabel setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UILabel *)v5->_noteLabel setLineBreakMode:1];
@@ -61,8 +61,8 @@
     v25 = [UIFont systemFontOfSize:?];
     [(UILabel *)v24 setFont:v25];
 
-    v26 = [(BYODDomainSearchResultCellView *)v5 contentView];
-    [v26 addSubview:v5->_priceLabel];
+    contentView2 = [(BYODDomainSearchResultCellView *)v5 contentView];
+    [contentView2 addSubview:v5->_priceLabel];
 
     v27 = [UIImage systemImageNamed:@"circle" withConfiguration:v5->_radioConfig];
     checkmarkImage = v5->_checkmarkImage;
@@ -78,79 +78,79 @@
     [(UIButton *)v31 setTintColor:v32];
 
     [(UIButton *)v5->_selectButton setTranslatesAutoresizingMaskIntoConstraints:0];
-    v33 = [(BYODDomainSearchResultCellView *)v5 contentView];
-    [v33 addSubview:v5->_selectButton];
+    contentView3 = [(BYODDomainSearchResultCellView *)v5 contentView];
+    [contentView3 addSubview:v5->_selectButton];
 
-    v34 = [(UIImageView *)v5->_availableCheck leadingAnchor];
-    v35 = [(BYODDomainSearchResultCellView *)v5 contentView];
-    v36 = [v35 leadingAnchor];
-    v37 = [v34 constraintEqualToAnchor:v36 constant:15.0];
+    leadingAnchor = [(UIImageView *)v5->_availableCheck leadingAnchor];
+    contentView4 = [(BYODDomainSearchResultCellView *)v5 contentView];
+    leadingAnchor2 = [contentView4 leadingAnchor];
+    v37 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:15.0];
     [v37 setActive:1];
 
-    v38 = [(UILabel *)v5->_noteLabel leadingAnchor];
-    v39 = [(UIImageView *)v5->_availableCheck trailingAnchor];
-    v40 = [v38 constraintEqualToAnchor:v39 constant:5.0];
+    leadingAnchor3 = [(UILabel *)v5->_noteLabel leadingAnchor];
+    trailingAnchor = [(UIImageView *)v5->_availableCheck trailingAnchor];
+    v40 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor constant:5.0];
     [v40 setActive:1];
 
-    v41 = [(UILabel *)v5->_noteLabel widthAnchor];
-    v42 = [(BYODDomainSearchResultCellView *)v5 contentView];
-    v43 = [v42 widthAnchor];
-    v44 = [v41 constraintLessThanOrEqualToAnchor:v43 multiplier:0.75];
+    widthAnchor = [(UILabel *)v5->_noteLabel widthAnchor];
+    contentView5 = [(BYODDomainSearchResultCellView *)v5 contentView];
+    widthAnchor2 = [contentView5 widthAnchor];
+    v44 = [widthAnchor constraintLessThanOrEqualToAnchor:widthAnchor2 multiplier:0.75];
     [v44 setActive:1];
 
-    v45 = [(UILabel *)v5->_priceLabel leadingAnchor];
-    v46 = [(UILabel *)v5->_noteLabel leadingAnchor];
-    v47 = [v45 constraintEqualToAnchor:v46 constant:0.0];
+    leadingAnchor4 = [(UILabel *)v5->_priceLabel leadingAnchor];
+    leadingAnchor5 = [(UILabel *)v5->_noteLabel leadingAnchor];
+    v47 = [leadingAnchor4 constraintEqualToAnchor:leadingAnchor5 constant:0.0];
     [v47 setActive:1];
 
-    v48 = [(UIButton *)v5->_selectButton trailingAnchor];
-    v49 = [(BYODDomainSearchResultCellView *)v5 contentView];
-    v50 = [v49 trailingAnchor];
-    v51 = [v48 constraintEqualToAnchor:v50 constant:-15.0];
+    trailingAnchor2 = [(UIButton *)v5->_selectButton trailingAnchor];
+    contentView6 = [(BYODDomainSearchResultCellView *)v5 contentView];
+    trailingAnchor3 = [contentView6 trailingAnchor];
+    v51 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3 constant:-15.0];
     [v51 setActive:1];
 
-    v52 = [(UIImageView *)v5->_availableCheck centerYAnchor];
-    v53 = [(UILabel *)v5->_noteLabel centerYAnchor];
-    v54 = [v52 constraintEqualToAnchor:v53 constant:0.0];
+    centerYAnchor = [(UIImageView *)v5->_availableCheck centerYAnchor];
+    centerYAnchor2 = [(UILabel *)v5->_noteLabel centerYAnchor];
+    v54 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2 constant:0.0];
     [v54 setActive:1];
 
-    v55 = [(UILabel *)v5->_noteLabel topAnchor];
-    v56 = [(BYODDomainSearchResultCellView *)v5 contentView];
-    v57 = [v56 topAnchor];
-    v58 = [v55 constraintEqualToAnchor:v57 constant:10.0];
+    topAnchor = [(UILabel *)v5->_noteLabel topAnchor];
+    contentView7 = [(BYODDomainSearchResultCellView *)v5 contentView];
+    topAnchor2 = [contentView7 topAnchor];
+    v58 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:10.0];
     [v58 setActive:1];
 
-    v59 = [(UILabel *)v5->_noteLabel bottomAnchor];
-    v60 = [(UILabel *)v5->_priceLabel topAnchor];
-    v61 = [v59 constraintEqualToAnchor:v60 constant:-2.0];
+    bottomAnchor = [(UILabel *)v5->_noteLabel bottomAnchor];
+    topAnchor3 = [(UILabel *)v5->_priceLabel topAnchor];
+    v61 = [bottomAnchor constraintEqualToAnchor:topAnchor3 constant:-2.0];
     [v61 setActive:1];
 
-    v62 = [(UILabel *)v5->_priceLabel topAnchor];
-    v63 = [(UILabel *)v5->_noteLabel bottomAnchor];
-    v64 = [v62 constraintEqualToAnchor:v63 constant:5.0];
+    topAnchor4 = [(UILabel *)v5->_priceLabel topAnchor];
+    bottomAnchor2 = [(UILabel *)v5->_noteLabel bottomAnchor];
+    v64 = [topAnchor4 constraintEqualToAnchor:bottomAnchor2 constant:5.0];
     [v64 setActive:1];
 
-    v65 = [(UILabel *)v5->_priceLabel bottomAnchor];
-    v66 = [(BYODDomainSearchResultCellView *)v5 contentView];
-    v67 = [v66 bottomAnchor];
-    v68 = [v65 constraintEqualToAnchor:v67 constant:-10.0];
+    bottomAnchor3 = [(UILabel *)v5->_priceLabel bottomAnchor];
+    contentView8 = [(BYODDomainSearchResultCellView *)v5 contentView];
+    bottomAnchor4 = [contentView8 bottomAnchor];
+    v68 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4 constant:-10.0];
     [v68 setActive:1];
 
-    v69 = [(UIButton *)v5->_selectButton centerYAnchor];
-    v70 = [(BYODDomainSearchResultCellView *)v5 contentView];
-    v71 = [v70 centerYAnchor];
-    v72 = [v69 constraintEqualToAnchor:v71 constant:0.0];
+    centerYAnchor3 = [(UIButton *)v5->_selectButton centerYAnchor];
+    contentView9 = [(BYODDomainSearchResultCellView *)v5 contentView];
+    centerYAnchor4 = [contentView9 centerYAnchor];
+    v72 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4 constant:0.0];
     [v72 setActive:1];
   }
 
   return v5;
 }
 
-- (void)setDomain:(id)a3 price:(id)a4
+- (void)setDomain:(id)domain price:(id)price
 {
-  v7 = a3;
-  v8 = a4;
-  objc_storeStrong(&self->_domain, a3);
+  domainCopy = domain;
+  priceCopy = price;
+  objc_storeStrong(&self->_domain, domain);
   v23 = NSFontAttributeName;
   v9 = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
   v24 = v9;
@@ -163,11 +163,11 @@
 
   v13 = [NSBundle bundleForClass:objc_opt_class()];
   v14 = [v13 localizedStringForKey:@"BYOD_PURCHASE_SEARCH_NAME_AVAILABLE" value:&stru_B9FC8 table:@"AccountPreferences"];
-  v15 = [NSString stringWithFormat:v14, v7];
+  domainCopy = [NSString stringWithFormat:v14, domainCopy];
 
-  v16 = [[NSMutableAttributedString alloc] initWithString:v15 attributes:v12];
-  v17 = [v16 mutableString];
-  v18 = [v17 rangeOfString:v7];
+  v16 = [[NSMutableAttributedString alloc] initWithString:domainCopy attributes:v12];
+  mutableString = [v16 mutableString];
+  v18 = [mutableString rangeOfString:domainCopy];
   v20 = v19;
 
   if (v18 != 0x7FFFFFFFFFFFFFFFLL)
@@ -176,13 +176,13 @@
   }
 
   [(UILabel *)self->_noteLabel setAttributedText:v16];
-  [(UILabel *)self->_priceLabel setText:v8];
+  [(UILabel *)self->_priceLabel setText:priceCopy];
 }
 
-- (void)setChecked:(BOOL)a3
+- (void)setChecked:(BOOL)checked
 {
   radioConfig = self->_radioConfig;
-  if (a3)
+  if (checked)
   {
     v7 = [UIImage systemImageNamed:@"checkmark.circle.fill" withConfiguration:radioConfig];
     [UIButton setBackgroundImage:"setBackgroundImage:forState:" forState:?];

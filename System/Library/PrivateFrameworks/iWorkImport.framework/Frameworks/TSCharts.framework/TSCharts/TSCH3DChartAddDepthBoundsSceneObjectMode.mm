@@ -1,13 +1,13 @@
 @interface TSCH3DChartAddDepthBoundsSceneObjectMode
-- (float)p_factorToNearPlaneForScene:(id)a3;
-- (void)getBounds:(id)a3;
+- (float)p_factorToNearPlaneForScene:(id)scene;
+- (void)getBounds:(id)bounds;
 @end
 
 @implementation TSCH3DChartAddDepthBoundsSceneObjectMode
 
-- (float)p_factorToNearPlaneForScene:(id)a3
+- (float)p_factorToNearPlaneForScene:(id)scene
 {
-  v8 = objc_msgSend_clone(a3, a2, v3, v4, v5);
+  v8 = objc_msgSend_clone(scene, a2, v3, v4, v5);
   v13 = objc_msgSend_nonNilAccessorWithScene_(TSCH3DChartScenePropertyAccessor, v9, v10, v11, v12, v8);
   if (objc_msgSend_layoutConfigurationEnabled(v13, v14, v15, v16, v17))
   {
@@ -184,10 +184,10 @@
   return v77;
 }
 
-- (void)getBounds:(id)a3
+- (void)getBounds:(id)bounds
 {
-  v5 = a3;
-  v10 = objc_msgSend_scene(v5, v6, v7, v8, v9);
+  boundsCopy = bounds;
+  v10 = objc_msgSend_scene(boundsCopy, v6, v7, v8, v9);
   v15 = objc_msgSend_elementsSceneFromScene_(self, v11, v12, v13, v14, v10);
 
   v88 = xmmword_2764D5F00;
@@ -198,7 +198,7 @@
   v94 = 0;
   v95 = 0;
   __p = 0;
-  if (objc_msgSend_hasObjectBoundsForScene_pipeline_returningObjectBounds_(self, v16, 2.84809454e-306, -1.40444743e306, v17, v15, v5, &v88))
+  if (objc_msgSend_hasObjectBoundsForScene_pipeline_returningObjectBounds_(self, v16, 2.84809454e-306, -1.40444743e306, v17, v15, boundsCopy, &v88))
   {
     objc_msgSend_p_factorToNearPlaneForScene_(self, v18, v19, v20, v21, v15);
     v86 = v88;
@@ -265,7 +265,7 @@
       NSLog(&cfstr_POriginalMaxEx.isa, v27, self, v28, v48, v61, v67);
     }
 
-    v68 = objc_msgSend_processor(v5, v23, v24, v25, v26);
+    v68 = objc_msgSend_processor(boundsCopy, v23, v24, v25, v26);
     v69 = sub_2761BFF34(&v86);
     objc_msgSend_geometry_(v68, v70, v71, v72, v73, v69);
 

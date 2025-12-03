@@ -1,25 +1,25 @@
 @interface CPLCloudKitQueryTask
-- (CPLCloudKitQueryTask)initWithController:(id)a3 cursor:(id)a4 class:(Class)a5 scope:(id)a6 transportScopeMapping:(id)a7 progressHandler:(id)a8 completionHandler:(id)a9;
-- (void)_runOperationsWithCurrentUserID:(id)a3;
-- (void)_runQueryWithCurrentUserID:(id)a3 cursor:(id)a4 additionalInfo:(id)a5 completionHandler:(id)a6;
+- (CPLCloudKitQueryTask)initWithController:(id)controller cursor:(id)cursor class:(Class)class scope:(id)scope transportScopeMapping:(id)mapping progressHandler:(id)handler completionHandler:(id)completionHandler;
+- (void)_runOperationsWithCurrentUserID:(id)d;
+- (void)_runQueryWithCurrentUserID:(id)d cursor:(id)cursor additionalInfo:(id)info completionHandler:(id)handler;
 - (void)runOperations;
-- (void)runWithinSyncSession:(id)a3;
-- (void)sendProgressBatch:(id)a3 updatedCursor:(id)a4;
+- (void)runWithinSyncSession:(id)session;
+- (void)sendProgressBatch:(id)batch updatedCursor:(id)cursor;
 @end
 
 @implementation CPLCloudKitQueryTask
 
-- (CPLCloudKitQueryTask)initWithController:(id)a3 cursor:(id)a4 class:(Class)a5 scope:(id)a6 transportScopeMapping:(id)a7 progressHandler:(id)a8 completionHandler:(id)a9
+- (CPLCloudKitQueryTask)initWithController:(id)controller cursor:(id)cursor class:(Class)class scope:(id)scope transportScopeMapping:(id)mapping progressHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
+  controllerCopy = controller;
+  cursorCopy = cursor;
+  scopeCopy = scope;
+  mappingCopy = mapping;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
   v33.receiver = self;
   v33.super_class = CPLCloudKitQueryTask;
-  v21 = [(CPLCloudKitTransportTask *)&v33 initWithController:v15];
+  v21 = [(CPLCloudKitTransportTask *)&v33 initWithController:controllerCopy];
   if (v21)
   {
     objc_initWeak(&location, v21);
@@ -28,25 +28,25 @@
     v29[2] = sub_1000424A8;
     v29[3] = &unk_1002740B0;
     objc_copyWeak(&v31, &location);
-    v30 = v20;
+    v30 = completionHandlerCopy;
     v22 = [v29 copy];
     completionHandler = v21->_completionHandler;
     v21->_completionHandler = v22;
 
-    v24 = [v19 copy];
+    v24 = [handlerCopy copy];
     progressHandler = v21->_progressHandler;
     v21->_progressHandler = v24;
 
-    if (v16)
+    if (cursorCopy)
     {
-      v26 = [[CPLCKQueryCursor alloc] initWithCursorData:v16];
+      v26 = [[CPLCKQueryCursor alloc] initWithCursorData:cursorCopy];
       cursor = v21->_cursor;
       v21->_cursor = v26;
     }
 
-    objc_storeStrong(&v21->_queriedClass, a5);
-    [(CPLCloudKitTransportTask *)v21 setTransportScopeMapping:v18];
-    objc_storeStrong(&v21->_scope, a6);
+    objc_storeStrong(&v21->_queriedClass, class);
+    [(CPLCloudKitTransportTask *)v21 setTransportScopeMapping:mappingCopy];
+    objc_storeStrong(&v21->_scope, scope);
 
     objc_destroyWeak(&v31);
     objc_destroyWeak(&location);
@@ -55,22 +55,22 @@
   return v21;
 }
 
-- (void)runWithinSyncSession:(id)a3
+- (void)runWithinSyncSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   [(CPLCloudKitQueryTask *)self hash];
   kdebug_trace();
   v5.receiver = self;
   v5.super_class = CPLCloudKitQueryTask;
-  [(CPLCloudKitTransportTask *)&v5 runWithinSyncSession:v4];
+  [(CPLCloudKitTransportTask *)&v5 runWithinSyncSession:sessionCopy];
 }
 
-- (void)sendProgressBatch:(id)a3 updatedCursor:(id)a4
+- (void)sendProgressBatch:(id)batch updatedCursor:(id)cursor
 {
   progressHandler = self->_progressHandler;
-  v6 = a3;
-  v7 = [a4 cursorData];
-  progressHandler[2](progressHandler, v6, v7);
+  batchCopy = batch;
+  cursorData = [cursor cursorData];
+  progressHandler[2](progressHandler, batchCopy, cursorData);
 }
 
 - (void)runOperations
@@ -83,27 +83,27 @@
   [(CPLCloudKitTransportTask *)self getUserRecordIDFetchIfNecessaryWithCompletionHandler:v2];
 }
 
-- (void)_runOperationsWithCurrentUserID:(id)a3
+- (void)_runOperationsWithCurrentUserID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   cursor = self->_cursor;
-  v6 = [(CPLCKQueryCursor *)cursor additionalInfo];
+  additionalInfo = [(CPLCKQueryCursor *)cursor additionalInfo];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100042790;
   v8[3] = &unk_100272268;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  [(CPLCloudKitQueryTask *)self _runQueryWithCurrentUserID:v7 cursor:cursor additionalInfo:v6 completionHandler:v8];
+  v9 = dCopy;
+  v7 = dCopy;
+  [(CPLCloudKitQueryTask *)self _runQueryWithCurrentUserID:v7 cursor:cursor additionalInfo:additionalInfo completionHandler:v8];
 }
 
-- (void)_runQueryWithCurrentUserID:(id)a3 cursor:(id)a4 additionalInfo:(id)a5 completionHandler:(id)a6
+- (void)_runQueryWithCurrentUserID:(id)d cursor:(id)cursor additionalInfo:(id)info completionHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  dCopy = d;
+  cursorCopy = cursor;
+  infoCopy = info;
+  handlerCopy = handler;
   v75[0] = 0;
   v15 = [(CPLCloudKitTransportTask *)self shouldRunOperationsWithError:v75];
   v16 = v75[0];
@@ -112,31 +112,31 @@
     scope = self->_scope;
     if (scope)
     {
-      v18 = [(CPLEngineScope *)scope scopeIdentifier];
-      v19 = [(CPLCloudKitTransportTask *)self cloudKitScopeForScopeIdentifier:v18];
+      scopeIdentifier = [(CPLEngineScope *)scope scopeIdentifier];
+      v19 = [(CPLCloudKitTransportTask *)self cloudKitScopeForScopeIdentifier:scopeIdentifier];
 
       if (v19)
       {
         v44 = v16;
-        v20 = v13;
-        v21 = v11;
-        v47 = [(CPLEngineScope *)self->_scope scopeIdentifier];
-        v22 = [(CPLCloudKitTransportTask *)self controller];
-        v23 = [v22 zoneIdentificationForCloudKitScope:v19 engineScope:self->_scope];
+        v20 = infoCopy;
+        v21 = dCopy;
+        scopeIdentifier2 = [(CPLEngineScope *)self->_scope scopeIdentifier];
+        controller = [(CPLCloudKitTransportTask *)self controller];
+        v23 = [controller zoneIdentificationForCloudKitScope:v19 engineScope:self->_scope];
 
         v48 = v23;
         if ([v23 supportsDownloadOfRecordClass:self->_queriedClass])
         {
-          v43 = v12;
+          v43 = cursorCopy;
           if (qword_1002C50D8 != -1)
           {
             sub_1001997E4();
           }
 
-          v11 = v21;
+          dCopy = v21;
           v46 = v19;
           v24 = qword_1002C50D0;
-          v13 = v20;
+          infoCopy = v20;
           v25 = sub_100043240(self->_queriedClass, v20);
           v26 = [v24 objectForKeyedSubscript:v25];
 
@@ -164,34 +164,34 @@
           v33 = [CKQueryOperation alloc];
           if (cursor)
           {
-            v34 = [(CPLCKQueryCursor *)self->_cursor queryCursor];
-            v35 = [v33 initWithCursor:v34];
+            queryCursor = [(CPLCKQueryCursor *)self->_cursor queryCursor];
+            v35 = [v33 initWithCursor:queryCursor];
           }
 
           else
           {
-            v34 = [(CPLCloudKitQueryOptions *)v27 query];
-            v35 = [v33 initWithQuery:v34];
+            queryCursor = [(CPLCloudKitQueryOptions *)v27 query];
+            v35 = [v33 initWithQuery:queryCursor];
           }
 
           v36 = v35;
 
-          v37 = [v46 zoneID];
-          [v36 setZoneID:v37];
+          zoneID = [v46 zoneID];
+          [v36 setZoneID:zoneID];
 
           [v36 setDesiredKeys:0];
-          v42 = [(objc_class *)self->_queriedClass ckAssetProperties];
-          [v36 setShouldFetchAssetContent:{objc_msgSend(v42, "count") != 0}];
+          ckAssetProperties = [(objc_class *)self->_queriedClass ckAssetProperties];
+          [v36 setShouldFetchAssetContent:{objc_msgSend(ckAssetProperties, "count") != 0}];
           v45 = v27;
-          v38 = [(CPLCloudKitQueryOptions *)v27 resultsLimit];
-          if (v38 >= 1)
+          resultsLimit = [(CPLCloudKitQueryOptions *)v27 resultsLimit];
+          if (resultsLimit >= 1)
           {
-            [v36 setResultsLimit:v38];
+            [v36 setResultsLimit:resultsLimit];
           }
 
-          if (!v38)
+          if (!resultsLimit)
           {
-            v38 = 2000;
+            resultsLimit = 2000;
           }
 
           [v36 setFetchAllResults:1];
@@ -216,9 +216,9 @@
           v66 = v70;
           v67 = v72;
           v62[4] = self;
-          v69 = v38;
-          v63 = v47;
-          v64 = v11;
+          v69 = resultsLimit;
+          v63 = scopeIdentifier2;
+          v64 = dCopy;
           v65 = v48;
           v68 = v73;
           [v36 setRecordMatchedBlock:v62];
@@ -228,7 +228,7 @@
           v58[3] = &unk_100274148;
           v58[4] = self;
           v60 = v73;
-          v39 = v13;
+          v39 = infoCopy;
           v59 = v39;
           v61 = v72;
           v55[0] = _NSConcreteStackBlock;
@@ -251,7 +251,7 @@
           v41 = v40;
           v51 = v41;
           v50 = v39;
-          v52 = v14;
+          v52 = handlerCopy;
           [v36 setQueryCompletionBlock:v49];
           [(CPLCloudKitTransportTask *)self launchOperation:v36 type:CPLCloudKitOperationTypeForScope(v46) withContext:0];
 
@@ -259,16 +259,16 @@
           _Block_object_dispose(v72, 8);
           _Block_object_dispose(v73, 8);
 
-          v12 = v43;
-          v28 = v47;
+          cursorCopy = v43;
+          v28 = scopeIdentifier2;
         }
 
         else
         {
-          sub_1001996E4(&self->_queriedClass, v23, v14);
-          v28 = v47;
-          v11 = v21;
-          v13 = v20;
+          sub_1001996E4(&self->_queriedClass, v23, handlerCopy);
+          v28 = scopeIdentifier2;
+          dCopy = v21;
+          infoCopy = v20;
           v16 = v44;
         }
       }
@@ -276,20 +276,20 @@
       else
       {
         v28 = [CPLErrors cplErrorWithCode:80 description:@"Missing required zone"];
-        (*(v14 + 2))(v14, v28);
+        (*(handlerCopy + 2))(handlerCopy, v28);
       }
     }
 
     else
     {
       v19 = [CPLErrors cplErrorWithCode:80 description:@"Missing required scope"];
-      (*(v14 + 2))(v14, v19);
+      (*(handlerCopy + 2))(handlerCopy, v19);
     }
   }
 
   else
   {
-    (*(v14 + 2))(v14, v16);
+    (*(handlerCopy + 2))(handlerCopy, v16);
   }
 }
 

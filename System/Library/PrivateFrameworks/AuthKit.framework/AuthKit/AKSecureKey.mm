@@ -1,24 +1,24 @@
 @interface AKSecureKey
-+ (__SecKey)createOSVersionAttestationRefKeyWithContext:(id)a3 accessControl:(__SecAccessControl *)a4 error:(id *)a5;
-+ (__SecKey)osVersionAttestationRefKeyForAltDSID:(id)a3 error:(id *)a4;
-+ (id)OSAttestationRefKeyLabelForAltDSID:(id)a3;
-+ (int)deleteOSVersionAttestationRefKeyForAltDSID:(id)a3;
-+ (int)storeOSVersionAttestationRefKey:(__SecKey *)a3 forAltDSID:(id)a4;
++ (__SecKey)createOSVersionAttestationRefKeyWithContext:(id)context accessControl:(__SecAccessControl *)control error:(id *)error;
++ (__SecKey)osVersionAttestationRefKeyForAltDSID:(id)d error:(id *)error;
++ (id)OSAttestationRefKeyLabelForAltDSID:(id)d;
++ (int)deleteOSVersionAttestationRefKeyForAltDSID:(id)d;
++ (int)storeOSVersionAttestationRefKey:(__SecKey *)key forAltDSID:(id)d;
 @end
 
 @implementation AKSecureKey
 
-+ (__SecKey)createOSVersionAttestationRefKeyWithContext:(id)a3 accessControl:(__SecAccessControl *)a4 error:(id *)a5
++ (__SecKey)createOSVersionAttestationRefKeyWithContext:(id)context accessControl:(__SecAccessControl *)control error:(id *)error
 {
-  v37 = a4;
-  v38 = a5;
-  location[2] = a1;
+  controlCopy = control;
+  errorCopy = error;
+  location[2] = self;
   location[1] = a2;
   v39 = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v62 = v37;
-  v61 = v38;
+  objc_storeStrong(location, context);
+  v62 = controlCopy;
+  v61 = errorCopy;
   v60 = _objc_retain(kSecAttrKeyTypeECSECPrimeRandom);
   v59 = _objc_retain(&off_100339178);
   v58 = 0;
@@ -26,7 +26,7 @@
   error = 0;
   v55 = [AAFAnalyticsEvent ak_analyticsEventWithContext:location[0] eventName:@"com.apple.authkit.generateOSBoundRefKey" error:0];
   [v55 setObject:&__kCFBooleanFalse forKeyedSubscript:kAAFDidSucceed];
-  if (v37)
+  if (controlCopy)
   {
     v57 = CFRetain(v62);
   }
@@ -68,18 +68,18 @@
       p_info = &OBJC_METACLASS___AKServerErrorGenerator.info;
       [AKSecureKey deleteOSVersionAttestationRefKeyForAltDSID:0];
       v12[3] = AKSecureKey;
-      v13 = [location[0] altDSID];
+      altDSID = [location[0] altDSID];
       v14 = [AKSecureKey deleteOSVersionAttestationRefKeyForAltDSID:?];
-      _objc_release(v13);
+      _objc_release(altDSID);
       v43 = v14;
       v21 = AKBiometricRatchetController_ptr;
       v22 = &AKAttestationErrorDomain;
       v42 = [NSError ak_generalErrorWithCode:v14 errorDomain:AKAttestationErrorDomain underlyingError:HIDWORD(v14)];
       v18 = AKSecureKey;
       v17 = v50;
-      v19 = [location[0] altDSID];
+      altDSID2 = [location[0] altDSID];
       v20 = [AKSecureKey storeOSVersionAttestationRefKey:v17 forAltDSID:?];
-      _objc_release(v19);
+      _objc_release(altDSID2);
       v41 = v20;
       v40 = [NSError ak_generalErrorWithCode:v20 errorDomain:AKAttestationErrorDomain underlyingError:v42];
       [v55 setObject:&__kCFBooleanTrue forKeyedSubscript:kAAFDidSucceed];
@@ -120,18 +120,18 @@
       }
 
       objc_storeStrong(&v49, 0);
-      v47 = 0;
+      errorCopy2 = 0;
       if (error && v12 != -304)
       {
-        v9 = v47;
-        v47 = error;
+        v9 = errorCopy2;
+        errorCopy2 = error;
         _objc_release(v9);
         error = 0;
       }
 
       if (v61)
       {
-        v28 = [NSError ak_attestationErrorWithCode:-10004 underlyingError:v47];
+        v28 = [NSError ak_attestationErrorWithCode:-10004 underlyingError:errorCopy2];
         v10 = v28;
         *v61 = v28;
       }
@@ -148,7 +148,7 @@
       v57 = 0;
       v64 = 0;
       v51 = 1;
-      objc_storeStrong(&v47, 0);
+      objc_storeStrong(&errorCopy2, 0);
     }
   }
 
@@ -166,18 +166,18 @@
     }
 
     objc_storeStrong(&oslog, 0);
-    v52 = 0;
+    errorCopy3 = 0;
     if (error && v12 != -344)
     {
-      v5 = v52;
-      v52 = error;
+      v5 = errorCopy3;
+      errorCopy3 = error;
       _objc_release(v5);
       error = 0;
     }
 
     if (v61)
     {
-      v33 = [NSError ak_attestationErrorWithCode:-10003 underlyingError:v52];
+      v33 = [NSError ak_attestationErrorWithCode:-10003 underlyingError:errorCopy3];
       v6 = v33;
       *v61 = v33;
     }
@@ -188,7 +188,7 @@
     _objc_release(v32);
     v64 = 0;
     v51 = 1;
-    objc_storeStrong(&v52, 0);
+    objc_storeStrong(&errorCopy3, 0);
   }
 
   v12[0] = 0;
@@ -200,12 +200,12 @@
   return v64;
 }
 
-+ (id)OSAttestationRefKeyLabelForAltDSID:(id)a3
++ (id)OSAttestationRefKeyLabelForAltDSID:(id)d
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   if (location[0])
   {
     v6 = [@"com.apple.authkit.osVersionAttestationRefKey" stringByAppendingString:location[0]];
@@ -222,13 +222,13 @@
   return v3;
 }
 
-+ (int)storeOSVersionAttestationRefKey:(__SecKey *)a3 forAltDSID:(id)a4
++ (int)storeOSVersionAttestationRefKey:(__SecKey *)key forAltDSID:(id)d
 {
-  v19 = a1;
+  selfCopy = self;
   v18 = a2;
-  v17 = a3;
+  keyCopy = key;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, d);
   oslog = _AKLogSystem();
   type = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEBUG))
@@ -246,7 +246,7 @@
     v23[1] = kSecClass;
     v24[1] = kSecClassKey;
     v23[2] = kSecValueRef;
-    v24[2] = v17;
+    v24[2] = keyCopy;
     v23[3] = kSecUseDataProtectionKeychain;
     v24[3] = &__kCFBooleanTrue;
     v23[4] = kSecAttrAccessible;
@@ -299,13 +299,13 @@
   return v20;
 }
 
-+ (__SecKey)osVersionAttestationRefKeyForAltDSID:(id)a3 error:(id *)a4
++ (__SecKey)osVersionAttestationRefKeyForAltDSID:(id)d error:(id *)error
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v19 = a4;
+  objc_storeStrong(location, d);
+  errorCopy = error;
   oslog = _AKLogSystem();
   type = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEBUG))
@@ -341,10 +341,10 @@
 
       objc_storeStrong(&v9, 0);
       v7 = [NSError ak_generalErrorWithCode:v10 errorDomain:AKAttestationErrorDomain underlyingError:0];
-      if (v19)
+      if (errorCopy)
       {
         v4 = v7;
-        *v19 = v7;
+        *errorCopy = v7;
       }
 
       objc_storeStrong(&v7, 0);
@@ -375,12 +375,12 @@
   return v21;
 }
 
-+ (int)deleteOSVersionAttestationRefKeyForAltDSID:(id)a3
++ (int)deleteOSVersionAttestationRefKeyForAltDSID:(id)d
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   oslog = _AKLogSystem();
   type = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEBUG))

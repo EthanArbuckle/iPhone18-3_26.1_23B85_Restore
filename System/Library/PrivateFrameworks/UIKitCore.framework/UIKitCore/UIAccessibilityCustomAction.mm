@@ -183,10 +183,10 @@
 
 - (NSString)name
 {
-  v2 = [(UIAccessibilityCustomAction *)self attributedName];
-  v3 = [v2 string];
+  attributedName = [(UIAccessibilityCustomAction *)self attributedName];
+  string = [attributedName string];
 
-  return v3;
+  return string;
 }
 
 - (void)setName:(NSString *)name

@@ -1,12 +1,12 @@
 @interface PRBeaconRangingSession
 - (PRBeaconRangingSession)init;
-- (PRBeaconRangingSession)initWithQueue:(id)a3;
+- (PRBeaconRangingSession)initWithQueue:(id)queue;
 - (PRBeaconRangingSessionDelegate)delegate;
-- (void)beaconListener:(id)a3 didChangeState:(unint64_t)a4;
-- (void)beaconListener:(id)a3 didOutputRangeResults:(id)a4;
-- (void)didFailWithError:(id)a3;
+- (void)beaconListener:(id)listener didChangeState:(unint64_t)state;
+- (void)beaconListener:(id)listener didOutputRangeResults:(id)results;
+- (void)didFailWithError:(id)error;
 - (void)startRangingInternal;
-- (void)startRangingWithBeaconsMatchingDescriptor:(id)a3;
+- (void)startRangingWithBeaconsMatchingDescriptor:(id)descriptor;
 - (void)stopRangingInternal;
 @end
 
@@ -19,9 +19,9 @@
   return 0;
 }
 
-- (PRBeaconRangingSession)initWithQueue:(id)a3
+- (PRBeaconRangingSession)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v12.receiver = self;
   v12.super_class = PRBeaconRangingSession;
   v6 = [(PRBeaconRangingSession *)&v12 init];
@@ -31,7 +31,7 @@
     logger = v6->_logger;
     v6->_logger = v7;
 
-    objc_storeStrong(&v6->_queue, a3);
+    objc_storeStrong(&v6->_queue, queue);
     v9 = [[PRBeaconListener alloc] initWithDelegate:v6 queue:v6->_queue];
     beaconListener = v6->_beaconListener;
     v6->_beaconListener = v9;
@@ -42,10 +42,10 @@
   return v6;
 }
 
-- (void)startRangingWithBeaconsMatchingDescriptor:(id)a3
+- (void)startRangingWithBeaconsMatchingDescriptor:(id)descriptor
 {
-  v7 = a3;
-  objc_storeStrong(&self->_activeDescriptor, a3);
+  descriptorCopy = descriptor;
+  objc_storeStrong(&self->_activeDescriptor, descriptor);
   if (self->_beaconListenerState)
   {
     [(PRBeaconRangingSession *)self startRangingInternal];
@@ -65,8 +65,8 @@
   if (self->_activeDescriptor)
   {
     v3 = [PRRemoteDevice alloc];
-    v4 = [(PRBeaconDescriptor *)self->_activeDescriptor UUID];
-    v5 = [(PRRemoteDevice *)v3 initWithCompanionUUID:v4];
+    uUID = [(PRBeaconDescriptor *)self->_activeDescriptor UUID];
+    v5 = [(PRRemoteDevice *)v3 initWithCompanionUUID:uUID];
 
     beaconListener = self->_beaconListener;
     v10[0] = v5;
@@ -132,35 +132,35 @@ void __45__PRBeaconRangingSession_stopRangingInternal__block_invoke(uint64_t a1,
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didFailWithError:(id)a3
+- (void)didFailWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   logger = self->_logger;
   if (os_log_type_enabled(logger, OS_LOG_TYPE_ERROR))
   {
-    [(PRBeaconRangingSession *)v4 didFailWithError:?];
+    [(PRBeaconRangingSession *)errorCopy didFailWithError:?];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained beaconRangingSession:self didFailWithError:v4];
+  [WeakRetained beaconRangingSession:self didFailWithError:errorCopy];
 }
 
-- (void)beaconListener:(id)a3 didOutputRangeResults:(id)a4
+- (void)beaconListener:(id)listener didOutputRangeResults:(id)results
 {
   v35 = *MEMORY[0x277D85DE8];
-  v29 = a3;
-  v6 = a4;
+  listenerCopy = listener;
+  resultsCopy = results;
   logger = self->_logger;
   if (os_log_type_enabled(logger, OS_LOG_TYPE_DEBUG))
   {
-    [PRBeaconRangingSession beaconListener:v6 didOutputRangeResults:logger];
+    [PRBeaconRangingSession beaconListener:resultsCopy didOutputRangeResults:logger];
   }
 
   v32 = 0u;
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v8 = v6;
+  v8 = resultsCopy;
   v9 = [v8 countByEnumeratingWithState:&v30 objects:v34 count:16];
   if (v9)
   {
@@ -221,9 +221,9 @@ void __45__PRBeaconRangingSession_stopRangingInternal__block_invoke(uint64_t a1,
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)beaconListener:(id)a3 didChangeState:(unint64_t)a4
+- (void)beaconListener:(id)listener didChangeState:(unint64_t)state
 {
-  if (a4 == 3)
+  if (state == 3)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v6 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.Proximity.ErrorDomain" code:999 userInfo:0];

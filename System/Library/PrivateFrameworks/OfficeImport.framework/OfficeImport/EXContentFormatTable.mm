@@ -1,31 +1,31 @@
 @interface EXContentFormatTable
-+ (void)readFrom:(_xmlNode *)a3 state:(id)a4;
++ (void)readFrom:(_xmlNode *)from state:(id)state;
 @end
 
 @implementation EXContentFormatTable
 
-+ (void)readFrom:(_xmlNode *)a3 state:(id)a4
++ (void)readFrom:(_xmlNode *)from state:(id)state
 {
-  v5 = a4;
-  if (a3)
+  stateCopy = state;
+  if (from)
   {
-    v12 = v5;
-    v6 = [v5 resources];
-    v7 = [v6 contentFormats];
+    v12 = stateCopy;
+    resources = [stateCopy resources];
+    contentFormats = [resources contentFormats];
 
-    v8 = [v12 EXSpreadsheetMLNamespace];
-    Child = OCXFindChild(a3, v8, "numFmt");
+    eXSpreadsheetMLNamespace = [v12 EXSpreadsheetMLNamespace];
+    Child = OCXFindChild(from, eXSpreadsheetMLNamespace, "numFmt");
 
     while (Child)
     {
       v10 = [EXContentFormat edContentFormatFromXmlContentFormatElement:Child];
-      [v7 addOrEquivalentObject:v10];
+      [contentFormats addOrEquivalentObject:v10];
 
-      v11 = [v12 EXSpreadsheetMLNamespace];
-      Child = OCXFindNextChild(Child, v11, "numFmt");
+      eXSpreadsheetMLNamespace2 = [v12 EXSpreadsheetMLNamespace];
+      Child = OCXFindNextChild(Child, eXSpreadsheetMLNamespace2, "numFmt");
     }
 
-    v5 = v12;
+    stateCopy = v12;
   }
 }
 

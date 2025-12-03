@@ -1,9 +1,9 @@
 @interface AVOutputContextFactory
 + (id)sharedInstance;
 - (AVOutputContextFactory)init;
-- (id)outputContextForContextID:(id)a3;
+- (id)outputContextForContextID:(id)d;
 - (void)dealloc;
-- (void)setOutputContext:(id)a3 forContextID:(id)a4;
+- (void)setOutputContext:(id)context forContextID:(id)d;
 @end
 
 @implementation AVOutputContextFactory
@@ -49,24 +49,24 @@ AVOutputContextFactory *__40__AVOutputContextFactory_sharedInstance__block_invok
   [(AVOutputContextFactory *)&v3 dealloc];
 }
 
-- (id)outputContextForContextID:(id)a3
+- (id)outputContextForContextID:(id)d
 {
   [(NSLock *)self->_weakContextLock lock];
-  if (a3)
+  if (d)
   {
-    a3 = [(NSMapTable *)self->_weakContexts objectForKey:a3];
+    d = [(NSMapTable *)self->_weakContexts objectForKey:d];
   }
 
   [(NSLock *)self->_weakContextLock unlock];
-  return a3;
+  return d;
 }
 
-- (void)setOutputContext:(id)a3 forContextID:(id)a4
+- (void)setOutputContext:(id)context forContextID:(id)d
 {
   [(NSLock *)self->_weakContextLock lock];
-  if (a3 && a4)
+  if (context && d)
   {
-    [(NSMapTable *)self->_weakContexts setObject:a3 forKey:a4];
+    [(NSMapTable *)self->_weakContexts setObject:context forKey:d];
   }
 
   weakContextLock = self->_weakContextLock;

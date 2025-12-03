@@ -1,15 +1,15 @@
 @interface TSTHiddenRowsColumnsCache
-- ($2F2D2FE54C0B9D2AA4EBD8788136C7D0)visibleCellOffsetBy:(id)a3 fromCellID:(id)a4;
+- ($2F2D2FE54C0B9D2AA4EBD8788136C7D0)visibleCellOffsetBy:(id)by fromCellID:(id)d;
 - (TSTHiddenRowsColumnsCache)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)dealloc;
 - (void)pop;
 - (void)push;
-- (void)pushAndValidate:(id)a3;
+- (void)pushAndValidate:(id)validate;
 - (void)swap;
-- (void)validate:(id)a3;
-- (void)validateChangeDescriptors:(id)a3;
+- (void)validate:(id)validate;
+- (void)validateChangeDescriptors:(id)descriptors;
 @end
 
 @implementation TSTHiddenRowsColumnsCache
@@ -38,7 +38,7 @@
   [(TSTHiddenRowsColumnsCache *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[TSTHiddenRowsColumnsCache allocWithZone:?]];
   v4->mHiddenColumns = [(TSTHiddenDimensionCache *)self->mHiddenColumns copy];
@@ -46,30 +46,30 @@
   return v4;
 }
 
-- ($2F2D2FE54C0B9D2AA4EBD8788136C7D0)visibleCellOffsetBy:(id)a3 fromCellID:(id)a4
+- ($2F2D2FE54C0B9D2AA4EBD8788136C7D0)visibleCellOffsetBy:(id)by fromCellID:(id)d
 {
-  var0 = a4.var0;
-  v5 = *&a4.var0 >> 16;
-  v6 = a4.var0;
-  if (a4.var0 == 0xFFFFLL || (*&a4 & 0xFF0000) == 0xFF0000)
+  var0 = d.var0;
+  v5 = *&d.var0 >> 16;
+  v6 = d.var0;
+  if (d.var0 == 0xFFFFLL || (*&d & 0xFF0000) == 0xFF0000)
   {
-    v11 = *&a4 & 0xFF000000;
+    v11 = *&d & 0xFF000000;
   }
 
   else
   {
-    var1 = a3.var1;
-    if (a3.var0)
+    var1 = by.var1;
+    if (by.var0)
     {
       mHiddenColumns = self->mHiddenColumns;
-      if (a3.var0 < 1)
+      if (by.var0 < 1)
       {
-        v10 = [(TSTHiddenDimensionCache *)mHiddenColumns findNthPreviousVisibleIndex:-a3.var0 fromIndex:a4.var1];
+        v10 = [(TSTHiddenDimensionCache *)mHiddenColumns findNthPreviousVisibleIndex:-by.var0 fromIndex:d.var1];
       }
 
       else
       {
-        v10 = [(TSTHiddenDimensionCache *)mHiddenColumns findNthNextVisibleIndex:a3.var0 & 0x7FFFFFFF fromIndex:a4.var1];
+        v10 = [(TSTHiddenDimensionCache *)mHiddenColumns findNthNextVisibleIndex:by.var0 & 0x7FFFFFFF fromIndex:d.var1];
       }
 
       LOBYTE(v5) = v10;
@@ -97,11 +97,11 @@
   return (v11 | (v5 << 16) | var0);
 }
 
-- (void)pushAndValidate:(id)a3
+- (void)pushAndValidate:(id)validate
 {
   [(TSTHiddenRowsColumnsCache *)self push];
 
-  [(TSTHiddenRowsColumnsCache *)self validate:a3];
+  [(TSTHiddenRowsColumnsCache *)self validate:validate];
 }
 
 - (void)push
@@ -115,9 +115,9 @@
 
   if ([AssociatedObject count])
   {
-    v4 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSTHiddenRowsColumnsCache push]"];
-    [v4 handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/tables/TSTHiddenRowsColumnsCache.m"), 249, @"really we should only be pushing one"}];
+    [currentHandler handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/tables/TSTHiddenRowsColumnsCache.m"), 249, @"really we should only be pushing one"}];
   }
 
   v6 = [(TSTHiddenRowsColumnsCache *)self copy];
@@ -131,10 +131,10 @@
   if (AssociatedObject)
   {
     v4 = AssociatedObject;
-    v5 = [AssociatedObject lastObject];
-    if (v5)
+    lastObject = [AssociatedObject lastObject];
+    if (lastObject)
     {
-      v6 = v5;
+      v6 = lastObject;
       [v4 removeLastObject];
       [v4 addObject:{-[TSTHiddenRowsColumnsCache copy](self, "copy")}];
 
@@ -150,10 +150,10 @@
   if (AssociatedObject)
   {
     v4 = AssociatedObject;
-    v5 = [AssociatedObject lastObject];
-    if (v5)
+    lastObject = [AssociatedObject lastObject];
+    if (lastObject)
     {
-      v6 = v5;
+      v6 = lastObject;
 
       self->mHiddenColumns = *(v6 + 16);
       self->mHiddenRows = *(v6 + 8);
@@ -168,19 +168,19 @@
   }
 }
 
-- (void)validate:(id)a3
+- (void)validate:(id)validate
 {
-  [(TSTHiddenDimensionCache *)self->mHiddenRows setCount:TSTMasterLayoutGetTableNumberOfRows(a3)];
-  [(TSTHiddenDimensionCache *)self->mHiddenRows setMarkIndex:TSTMasterLayoutGetTableNumberOfHeaderRows(a3)];
-  [(TSTHiddenDimensionCache *)self->mHiddenColumns setCount:TSTMasterLayoutGetTableNumberOfColumns(a3)];
-  if (([a3 isDynamicallyHidingRowsCols] & 1) != 0 || objc_msgSend(objc_msgSend(a3, "tableModel"), "numberOfHiddenColumns"))
+  [(TSTHiddenDimensionCache *)self->mHiddenRows setCount:TSTMasterLayoutGetTableNumberOfRows(validate)];
+  [(TSTHiddenDimensionCache *)self->mHiddenRows setMarkIndex:TSTMasterLayoutGetTableNumberOfHeaderRows(validate)];
+  [(TSTHiddenDimensionCache *)self->mHiddenColumns setCount:TSTMasterLayoutGetTableNumberOfColumns(validate)];
+  if (([validate isDynamicallyHidingRowsCols] & 1) != 0 || objc_msgSend(objc_msgSend(validate, "tableModel"), "numberOfHiddenColumns"))
   {
     mHiddenColumns = self->mHiddenColumns;
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __38__TSTHiddenRowsColumnsCache_validate___block_invoke;
     v8[3] = &unk_279D4A8F8;
-    v8[4] = a3;
+    v8[4] = validate;
     [(TSTHiddenDimensionCache *)mHiddenColumns setAllInvalidValuesUsingBlock:v8];
   }
 
@@ -189,14 +189,14 @@
     [(TSTHiddenDimensionCache *)self->mHiddenColumns setAllValuesToZero];
   }
 
-  if (([a3 isDynamicallyHidingRowsCols] & 1) != 0 || objc_msgSend(objc_msgSend(a3, "tableModel"), "numberOfHiddenRows"))
+  if (([validate isDynamicallyHidingRowsCols] & 1) != 0 || objc_msgSend(objc_msgSend(validate, "tableModel"), "numberOfHiddenRows"))
   {
     mHiddenRows = self->mHiddenRows;
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __38__TSTHiddenRowsColumnsCache_validate___block_invoke_2;
     v7[3] = &unk_279D4A8F8;
-    v7[4] = a3;
+    v7[4] = validate;
     [(TSTHiddenDimensionCache *)mHiddenRows setAllInvalidValuesUsingBlock:v7];
   }
 
@@ -206,14 +206,14 @@
   }
 }
 
-- (void)validateChangeDescriptors:(id)a3
+- (void)validateChangeDescriptors:(id)descriptors
 {
   v19 = *MEMORY[0x277D85DE8];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v5 = [descriptors countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -224,23 +224,23 @@
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(descriptors);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 changeDescriptor];
-        v11 = [v9 cellRegion];
+        changeDescriptor = [v9 changeDescriptor];
+        cellRegion = [v9 cellRegion];
         v12[0] = MEMORY[0x277D85DD0];
         v12[1] = 3221225472;
         v12[2] = __55__TSTHiddenRowsColumnsCache_validateChangeDescriptors___block_invoke;
         v12[3] = &unk_279D4A560;
-        v13 = v10;
+        v13 = changeDescriptor;
         v12[4] = self;
         v12[5] = v9;
-        [v11 enumerateCellRangesUsingBlock:v12];
+        [cellRegion enumerateCellRangesUsingBlock:v12];
       }
 
-      v6 = [a3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [descriptors countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);

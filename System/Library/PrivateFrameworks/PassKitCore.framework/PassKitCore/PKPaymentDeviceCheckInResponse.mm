@@ -1,26 +1,26 @@
 @interface PKPaymentDeviceCheckInResponse
-- (PKPaymentDeviceCheckInResponse)initWithData:(id)a3;
+- (PKPaymentDeviceCheckInResponse)initWithData:(id)data;
 @end
 
 @implementation PKPaymentDeviceCheckInResponse
 
-- (PKPaymentDeviceCheckInResponse)initWithData:(id)a3
+- (PKPaymentDeviceCheckInResponse)initWithData:(id)data
 {
   v21 = *MEMORY[0x1E69E9840];
   v16.receiver = self;
   v16.super_class = PKPaymentDeviceCheckInResponse;
-  v3 = [(PKWebServiceResponse *)&v16 initWithData:a3];
+  v3 = [(PKWebServiceResponse *)&v16 initWithData:data];
   v4 = v3;
   if (!v3)
   {
     goto LABEL_21;
   }
 
-  v5 = [(PKWebServiceResponse *)v3 JSONObject];
+  jSONObject = [(PKWebServiceResponse *)v3 JSONObject];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v5 PKStringForKey:@"deviceAction"];
+    v6 = [jSONObject PKStringForKey:@"deviceAction"];
     if (v6)
     {
       v7 = v6;

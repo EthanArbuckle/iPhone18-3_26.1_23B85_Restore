@@ -1,10 +1,10 @@
 @interface DBMutableDashboardWorkspaceState
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation DBMutableDashboardWorkspaceState
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [DBDashboardWorkspaceState alloc];
 

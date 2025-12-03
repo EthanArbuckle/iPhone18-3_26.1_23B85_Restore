@@ -1,21 +1,21 @@
 @interface CERecommendationSection
-- (CERecommendationSection)initWithCoder:(id)a3;
-- (CERecommendationSection)initWithDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (CERecommendationSection)initWithCoder:(id)coder;
+- (CERecommendationSection)initWithDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CERecommendationSection
 
-- (CERecommendationSection)initWithDictionary:(id)a3
+- (CERecommendationSection)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v16.receiver = self;
   v16.super_class = CERecommendationSection;
   v5 = [(CERecommendationSection *)&v16 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"sectionID"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"sectionID"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -33,7 +33,7 @@
       }
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"sectionHeader"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"sectionHeader"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -51,7 +51,7 @@
       }
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"sectionFooter"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"sectionFooter"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -73,32 +73,32 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   sectionID = self->_sectionID;
-  v5 = a3;
-  [v5 encodeObject:sectionID forKey:@"sectionID"];
-  [v5 encodeObject:self->_sectionHeader forKey:@"sectionHeader"];
-  [v5 encodeObject:self->_sectionFooter forKey:@"sectionFooter"];
+  coderCopy = coder;
+  [coderCopy encodeObject:sectionID forKey:@"sectionID"];
+  [coderCopy encodeObject:self->_sectionHeader forKey:@"sectionHeader"];
+  [coderCopy encodeObject:self->_sectionFooter forKey:@"sectionFooter"];
 }
 
-- (CERecommendationSection)initWithCoder:(id)a3
+- (CERecommendationSection)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = CERecommendationSection;
   v5 = [(CERecommendationSection *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sectionID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sectionID"];
     sectionID = v5->_sectionID;
     v5->_sectionID = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sectionHeader"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sectionHeader"];
     sectionHeader = v5->_sectionHeader;
     v5->_sectionHeader = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sectionFooter"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sectionFooter"];
     sectionFooter = v5->_sectionFooter;
     v5->_sectionFooter = v10;
   }
@@ -106,7 +106,7 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[CERecommendationSection allocWithZone:?]];
   [(CERecommendationSection *)v4 setSectionID:self->_sectionID];

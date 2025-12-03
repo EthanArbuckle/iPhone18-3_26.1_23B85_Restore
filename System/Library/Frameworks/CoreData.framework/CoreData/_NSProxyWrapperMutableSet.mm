@@ -1,14 +1,14 @@
 @interface _NSProxyWrapperMutableSet
-- (void)addObject:(id)a3;
-- (void)addObjectsFromArray:(id)a3;
+- (void)addObject:(id)object;
+- (void)addObjectsFromArray:(id)array;
 - (void)dealloc;
-- (void)initWithContainer:(uint64_t)a3 key:(uint64_t)a4 mutableSet:(void *)a5 mutationMethods:;
-- (void)intersectSet:(id)a3;
-- (void)minusSet:(id)a3;
+- (void)initWithContainer:(uint64_t)container key:(uint64_t)key mutableSet:(void *)set mutationMethods:;
+- (void)intersectSet:(id)set;
+- (void)minusSet:(id)set;
 - (void)removeAllObjects;
-- (void)removeObject:(id)a3;
-- (void)setSet:(id)a3;
-- (void)unionSet:(id)a3;
+- (void)removeObject:(id)object;
+- (void)setSet:(id)set;
+- (void)unionSet:(id)set;
 @end
 
 @implementation _NSProxyWrapperMutableSet
@@ -21,27 +21,27 @@
   [(_NSNotifyingWrapperMutableSet *)&v3 dealloc];
 }
 
-- (void)initWithContainer:(uint64_t)a3 key:(uint64_t)a4 mutableSet:(void *)a5 mutationMethods:
+- (void)initWithContainer:(uint64_t)container key:(uint64_t)key mutableSet:(void *)set mutationMethods:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v8.receiver = a1;
+  v8.receiver = self;
   v8.super_class = _NSProxyWrapperMutableSet;
-  v6 = objc_msgSendSuper2(&v8, sel_initWithContainer_key_mutableSet_, a2, a3, a4);
+  v6 = objc_msgSendSuper2(&v8, sel_initWithContainer_key_mutableSet_, a2, container, key);
   if (v6)
   {
-    v6[4] = a5;
+    v6[4] = set;
   }
 
   return v6;
 }
 
-- (void)addObject:(id)a3
+- (void)addObject:(id)object
 {
-  v8 = a3;
+  objectCopy = object;
   if (self->_mutationMethods->_addObjectMethod)
   {
     container = self->super._container;
@@ -51,16 +51,16 @@
 
   else
   {
-    v5 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:&v8 count:1];
+    v5 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:&objectCopy count:1];
     v6 = self->super._container;
     addMethod = self->_mutationMethods->_addMethod;
     method_invoke();
   }
 }
 
-- (void)addObjectsFromArray:(id)a3
+- (void)addObjectsFromArray:(id)array
 {
-  v4 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithArray:a3];
+  v4 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithArray:array];
   mutationMethods = self->_mutationMethods;
   v6 = v4;
   if (mutationMethods->_addMethod)
@@ -74,7 +74,7 @@
   }
 }
 
-- (void)intersectSet:(id)a3
+- (void)intersectSet:(id)set
 {
   v15[1] = *MEMORY[0x1E69E9840];
   if (self->_mutationMethods->_intersectMethod)
@@ -117,7 +117,7 @@
       for (i = 0; i != v8; ++i)
       {
         v13 = *&v11[8 * i];
-        if (([a3 containsObject:v13] & 1) == 0)
+        if (([set containsObject:v13] & 1) == 0)
         {
           [(_NSProxyWrapperMutableSet *)self removeObject:v13];
         }
@@ -133,7 +133,7 @@
   }
 }
 
-- (void)minusSet:(id)a3
+- (void)minusSet:(id)set
 {
   mutationMethods = self->_mutationMethods;
   container = self->super._container;
@@ -144,7 +144,7 @@
 
   else
   {
-    _PFInvokeMutationMethodForEachMemberOfSet(container, mutationMethods->_removeObjectMethod, a3);
+    _PFInvokeMutationMethodForEachMemberOfSet(container, mutationMethods->_removeObjectMethod, set);
   }
 }
 
@@ -162,9 +162,9 @@
   }
 }
 
-- (void)removeObject:(id)a3
+- (void)removeObject:(id)object
 {
-  v8 = a3;
+  objectCopy = object;
   if (self->_mutationMethods->_removeObjectMethod)
   {
     container = self->super._container;
@@ -174,14 +174,14 @@
 
   else
   {
-    v5 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:&v8 count:1];
+    v5 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:&objectCopy count:1];
     v6 = self->super._container;
     removeMethod = self->_mutationMethods->_removeMethod;
     method_invoke();
   }
 }
 
-- (void)setSet:(id)a3
+- (void)setSet:(id)set
 {
   if (self->_mutationMethods->_setMethod)
   {
@@ -192,13 +192,13 @@
 
   else
   {
-    v5 = a3;
+    setCopy = set;
     [(_NSProxyWrapperMutableSet *)self minusSet:self->super._mutableSet];
-    [(_NSProxyWrapperMutableSet *)self unionSet:a3];
+    [(_NSProxyWrapperMutableSet *)self unionSet:set];
   }
 }
 
-- (void)unionSet:(id)a3
+- (void)unionSet:(id)set
 {
   mutationMethods = self->_mutationMethods;
   container = self->super._container;
@@ -209,7 +209,7 @@
 
   else
   {
-    _PFInvokeMutationMethodForEachMemberOfSet(container, mutationMethods->_addObjectMethod, a3);
+    _PFInvokeMutationMethodForEachMemberOfSet(container, mutationMethods->_addObjectMethod, set);
   }
 }
 

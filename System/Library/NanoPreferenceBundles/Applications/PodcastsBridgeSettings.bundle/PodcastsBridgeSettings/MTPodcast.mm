@@ -1,48 +1,48 @@
 @interface MTPodcast
 + (id)allPossibleEpisodeListSortOrderProperties;
-+ (id)podcastUuidForFeedUrl:(id)a3 ctx:(id)a4;
-+ (id)podcastUuidForFeedUrlString:(id)a3 ctx:(id)a4;
++ (id)podcastUuidForFeedUrl:(id)url ctx:(id)ctx;
++ (id)podcastUuidForFeedUrlString:(id)string ctx:(id)ctx;
 + (id)sortDescriptorsForAllPodcasts;
 + (id)sortDescriptorsForLastDatePlayed;
 + (id)sortDescriptorsForManualOrder;
 + (id)sortDescriptorsForNewestOnTop;
 + (id)sortDescriptorsForOldestOnTop;
-+ (id)sortDescriptorsForSortType:(int64_t)a3;
++ (id)sortDescriptorsForSortType:(int64_t)type;
 - (BOOL)hasAtLeastOneSeason;
 - (BOOL)hasMultipleSeasons;
-- (BOOL)updateCursorPosition:(BOOL)a3;
+- (BOOL)updateCursorPosition:(BOOL)position;
 - (MPArtworkCatalog)artworkCatalog;
 - (id)seasonSortDescriptorsForSortOrder;
 - (id)sortDescriptorsForPlayOrder;
 - (id)sortDescriptorsForPlayOrderByEpisodeNumber;
 - (id)sortDescriptorsForPlayOrderByPubDate;
 - (id)sortDescriptorsForSortOrder;
-- (void)applyShowTypeSetting:(int64_t)a3;
+- (void)applyShowTypeSetting:(int64_t)setting;
 - (void)markPlaylistsForUpdate;
-- (void)setAuthor:(id)a3;
-- (void)setDeletePlayedEpisodes:(int64_t)a3;
-- (void)setFeedChangedDate:(double)a3;
-- (void)setImageURL:(id)a3;
-- (void)setItemDescription:(id)a3;
-- (void)setLastImplicitlyFollowedDate:(double)a3;
-- (void)setModifiedDate:(double)a3;
-- (void)setPlaybackNewestToOldest:(BOOL)a3;
-- (void)setShowTypeInFeed:(id)a3;
-- (void)setShowTypeSetting:(int64_t)a3;
-- (void)setSortAscending:(BOOL)a3;
-- (void)setUpdateAvg:(double)a3;
-- (void)setUpdateStdDev:(double)a3;
-- (void)setWebpageURL:(id)a3;
+- (void)setAuthor:(id)author;
+- (void)setDeletePlayedEpisodes:(int64_t)episodes;
+- (void)setFeedChangedDate:(double)date;
+- (void)setImageURL:(id)l;
+- (void)setItemDescription:(id)description;
+- (void)setLastImplicitlyFollowedDate:(double)date;
+- (void)setModifiedDate:(double)date;
+- (void)setPlaybackNewestToOldest:(BOOL)oldest;
+- (void)setShowTypeInFeed:(id)feed;
+- (void)setShowTypeSetting:(int64_t)setting;
+- (void)setSortAscending:(BOOL)ascending;
+- (void)setUpdateAvg:(double)avg;
+- (void)setUpdateStdDev:(double)dev;
+- (void)setWebpageURL:(id)l;
 @end
 
 @implementation MTPodcast
 
 - (MPArtworkCatalog)artworkCatalog
 {
-  v3 = [(MTPodcast *)self artworkPrimaryColor];
+  artworkPrimaryColor = [(MTPodcast *)self artworkPrimaryColor];
   v4 = [NMTPodcastsArtworkToken alloc];
-  v5 = [(MTPodcast *)self uuid];
-  v6 = [v4 initWithKey:v5 backgroundColorString:v3];
+  uuid = [(MTPodcast *)self uuid];
+  v6 = [v4 initWithKey:uuid backgroundColorString:artworkPrimaryColor];
 
   if (os_feature_enabled_image_provider_on_watch())
   {
@@ -65,8 +65,8 @@
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(MTPodcast *)self playlistSettings];
-  v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  playlistSettings = [(MTPodcast *)self playlistSettings];
+  v3 = [playlistSettings countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v3)
   {
     v4 = v3;
@@ -77,27 +77,27 @@
       {
         if (*v10 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(playlistSettings);
         }
 
         v7 = *(*(&v9 + 1) + 8 * i);
         [v7 setNeedsUpdate:1];
-        v8 = [v7 playlist];
-        [v8 setNeedsUpdate:1];
+        playlist = [v7 playlist];
+        [playlist setNeedsUpdate:1];
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [playlistSettings countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v4);
   }
 }
 
-- (void)setDeletePlayedEpisodes:(int64_t)a3
+- (void)setDeletePlayedEpisodes:(int64_t)episodes
 {
   v5 = kPodcastDeletePlayedEpisodes;
   [(MTPodcast *)self willChangeValueForKey:kPodcastDeletePlayedEpisodes];
-  v6 = [NSNumber numberWithLongLong:a3];
+  v6 = [NSNumber numberWithLongLong:episodes];
   [(MTPodcast *)self setPrimitiveValue:v6 forKey:v5];
 
   [(MTPodcast *)self didChangeValueForKey:v5];
@@ -105,24 +105,24 @@
   [(MTPodcast *)self markPlaylistsForUpdate];
 }
 
-- (void)setLastImplicitlyFollowedDate:(double)a3
+- (void)setLastImplicitlyFollowedDate:(double)date
 {
   [(MTPodcast *)self lastImplicitlyFollowedDate];
-  if (v5 < a3)
+  if (v5 < date)
   {
     v6 = kPodcastLastImplicitlyFollowedDate;
     [(MTPodcast *)self willChangeValueForKey:kPodcastLastImplicitlyFollowedDate];
-    v7 = [NSDate dateWithTimeIntervalSinceReferenceDate:a3];
+    v7 = [NSDate dateWithTimeIntervalSinceReferenceDate:date];
     [(MTPodcast *)self setPrimitiveValue:v7 forKey:v6];
 
     [(MTPodcast *)self didChangeValueForKey:v6];
   }
 }
 
-- (void)setModifiedDate:(double)a3
+- (void)setModifiedDate:(double)date
 {
   v5 = +[_TtC18PodcastsFoundation17FutureDateChecker lenientSharedInstance];
-  [v5 timestampBoundByNow:a3];
+  [v5 timestampBoundByNow:date];
   v7 = v6;
 
   v8 = kPodcastModifiedDate;
@@ -133,188 +133,188 @@
   [(MTPodcast *)self didChangeValueForKey:v8];
 }
 
-- (void)setAuthor:(id)a3
+- (void)setAuthor:(id)author
 {
-  v9 = a3;
-  v4 = [(MTPodcast *)self author];
-  v5 = v9 | v4;
+  authorCopy = author;
+  author = [(MTPodcast *)self author];
+  v5 = authorCopy | author;
 
   if (v5)
   {
-    v6 = [(MTPodcast *)self author];
-    v7 = [v6 isEqualToString:v9];
+    author2 = [(MTPodcast *)self author];
+    v7 = [author2 isEqualToString:authorCopy];
 
     if ((v7 & 1) == 0)
     {
       v8 = kPodcastAuthor;
       [(MTPodcast *)self willChangeValueForKey:kPodcastAuthor];
-      [(MTPodcast *)self setPrimitiveValue:v9 forKey:v8];
+      [(MTPodcast *)self setPrimitiveValue:authorCopy forKey:v8];
       [(MTPodcast *)self didChangeValueForKey:v8];
     }
   }
 }
 
-- (void)setItemDescription:(id)a3
+- (void)setItemDescription:(id)description
 {
-  v9 = a3;
-  v4 = [(MTPodcast *)self itemDescription];
-  v5 = v9 | v4;
+  descriptionCopy = description;
+  itemDescription = [(MTPodcast *)self itemDescription];
+  v5 = descriptionCopy | itemDescription;
 
   if (v5)
   {
-    v6 = [(MTPodcast *)self itemDescription];
-    v7 = [v6 isEqualToString:v9];
+    itemDescription2 = [(MTPodcast *)self itemDescription];
+    v7 = [itemDescription2 isEqualToString:descriptionCopy];
 
     if ((v7 & 1) == 0)
     {
       v8 = kPodcastDescription;
       [(MTPodcast *)self willChangeValueForKey:kPodcastDescription];
-      [(MTPodcast *)self setPrimitiveValue:v9 forKey:v8];
+      [(MTPodcast *)self setPrimitiveValue:descriptionCopy forKey:v8];
       [(MTPodcast *)self didChangeValueForKey:v8];
     }
   }
 }
 
-- (void)setFeedChangedDate:(double)a3
+- (void)setFeedChangedDate:(double)date
 {
   [(MTPodcast *)self feedChangedDate];
-  if (vabdd_f64(v5, a3) > 2.22044605e-16)
+  if (vabdd_f64(v5, date) > 2.22044605e-16)
   {
     v6 = kPodcastFeedChangedDate;
     [(MTPodcast *)self willChangeValueForKey:kPodcastFeedChangedDate];
-    v7 = [NSDate dateWithTimeIntervalSinceReferenceDate:a3];
+    v7 = [NSDate dateWithTimeIntervalSinceReferenceDate:date];
     [(MTPodcast *)self setPrimitiveValue:v7 forKey:v6];
 
     [(MTPodcast *)self didChangeValueForKey:v6];
   }
 }
 
-- (void)setUpdateStdDev:(double)a3
+- (void)setUpdateStdDev:(double)dev
 {
   [(MTPodcast *)self updateStdDev];
-  if (vabdd_f64(v5, a3) > 2.22044605e-16)
+  if (vabdd_f64(v5, dev) > 2.22044605e-16)
   {
     v6 = kPodcastUpdateStdDev;
     [(MTPodcast *)self willChangeValueForKey:kPodcastUpdateStdDev];
-    v7 = [NSNumber numberWithDouble:a3];
+    v7 = [NSNumber numberWithDouble:dev];
     [(MTPodcast *)self setPrimitiveValue:v7 forKey:v6];
 
     [(MTPodcast *)self didChangeValueForKey:v6];
   }
 }
 
-- (void)setUpdateAvg:(double)a3
+- (void)setUpdateAvg:(double)avg
 {
   [(MTPodcast *)self updateAvg];
-  if (vabdd_f64(v5, a3) > 2.22044605e-16)
+  if (vabdd_f64(v5, avg) > 2.22044605e-16)
   {
     v6 = kPodcastUpdateAvg;
     [(MTPodcast *)self willChangeValueForKey:kPodcastUpdateAvg];
-    v7 = [NSNumber numberWithDouble:a3];
+    v7 = [NSNumber numberWithDouble:avg];
     [(MTPodcast *)self setPrimitiveValue:v7 forKey:v6];
 
     [(MTPodcast *)self didChangeValueForKey:v6];
   }
 }
 
-- (void)setImageURL:(id)a3
+- (void)setImageURL:(id)l
 {
-  v9 = a3;
-  v4 = [(MTPodcast *)self imageURL];
-  v5 = v9 | v4;
+  lCopy = l;
+  imageURL = [(MTPodcast *)self imageURL];
+  v5 = lCopy | imageURL;
 
   if (v5)
   {
-    v6 = [(MTPodcast *)self imageURL];
-    v7 = [v6 isEqualToString:v9];
+    imageURL2 = [(MTPodcast *)self imageURL];
+    v7 = [imageURL2 isEqualToString:lCopy];
 
     if ((v7 & 1) == 0)
     {
       v8 = kPodcastImageUrl;
       [(MTPodcast *)self willChangeValueForKey:kPodcastImageUrl];
-      [(MTPodcast *)self setPrimitiveValue:v9 forKey:v8];
+      [(MTPodcast *)self setPrimitiveValue:lCopy forKey:v8];
       [(MTPodcast *)self didChangeValueForKey:v8];
     }
   }
 }
 
-- (void)setShowTypeInFeed:(id)a3
+- (void)setShowTypeInFeed:(id)feed
 {
-  v9 = a3;
-  v4 = [(MTPodcast *)self showTypeInFeed];
-  v5 = v9 | v4;
+  feedCopy = feed;
+  showTypeInFeed = [(MTPodcast *)self showTypeInFeed];
+  v5 = feedCopy | showTypeInFeed;
 
   if (v5)
   {
-    v6 = [(MTPodcast *)self showTypeInFeed];
-    v7 = [v6 isEqualToString:v9];
+    showTypeInFeed2 = [(MTPodcast *)self showTypeInFeed];
+    v7 = [showTypeInFeed2 isEqualToString:feedCopy];
 
     if ((v7 & 1) == 0)
     {
       v8 = kPodcastShowTypeInFeed;
       [(MTPodcast *)self willChangeValueForKey:kPodcastShowTypeInFeed];
-      [(MTPodcast *)self setPrimitiveValue:v9 forKey:v8];
+      [(MTPodcast *)self setPrimitiveValue:feedCopy forKey:v8];
       [(MTPodcast *)self didChangeValueForKey:v8];
     }
   }
 }
 
-- (void)setWebpageURL:(id)a3
+- (void)setWebpageURL:(id)l
 {
-  v9 = a3;
-  v4 = [(MTPodcast *)self webpageURL];
-  v5 = v9 | v4;
+  lCopy = l;
+  webpageURL = [(MTPodcast *)self webpageURL];
+  v5 = lCopy | webpageURL;
 
   if (v5)
   {
-    v6 = [(MTPodcast *)self webpageURL];
-    v7 = [v6 isEqualToString:v9];
+    webpageURL2 = [(MTPodcast *)self webpageURL];
+    v7 = [webpageURL2 isEqualToString:lCopy];
 
     if ((v7 & 1) == 0)
     {
       v8 = kPodcastWebpageURL;
       [(MTPodcast *)self willChangeValueForKey:kPodcastWebpageURL];
-      [(MTPodcast *)self setPrimitiveValue:v9 forKey:v8];
+      [(MTPodcast *)self setPrimitiveValue:lCopy forKey:v8];
       [(MTPodcast *)self didChangeValueForKey:v8];
     }
   }
 }
 
-- (void)setShowTypeSetting:(int64_t)a3
+- (void)setShowTypeSetting:(int64_t)setting
 {
-  if ([(MTPodcast *)self showTypeSetting]!= a3)
+  if ([(MTPodcast *)self showTypeSetting]!= setting)
   {
-    v5 = [(MTPodcast *)self isValidShowTypeSetting:a3];
+    v5 = [(MTPodcast *)self isValidShowTypeSetting:setting];
     v6 = _MTLogCategoryDatabase();
     v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
     if (v5)
     {
       if (v7)
       {
-        v8 = [(MTPodcast *)self title];
-        v9 = [(MTPodcast *)self feedURL];
-        v10 = [(MTPodcast *)self storeCollectionId];
-        v11 = [(MTPodcast *)self uuid];
+        title = [(MTPodcast *)self title];
+        feedURL = [(MTPodcast *)self feedURL];
+        storeCollectionId = [(MTPodcast *)self storeCollectionId];
+        uuid = [(MTPodcast *)self uuid];
         v14 = 134350083;
-        v15 = a3;
+        settingCopy = setting;
         v16 = 2113;
-        v17 = v8;
+        v17 = title;
         v18 = 2113;
-        v19 = v9;
+        v19 = feedURL;
         v20 = 2049;
-        v21 = v10;
+        v21 = storeCollectionId;
         v22 = 2114;
-        v23 = v11;
+        v23 = uuid;
         _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "Switching show type setting to %{public}lld, show %{private}@, %{private}@, %{private}lld, %{public}@", &v14, 0x34u);
       }
 
       v12 = kPodcastShowTypeSetting;
       [(MTPodcast *)self willChangeValueForKey:kPodcastShowTypeSetting];
-      v13 = [NSNumber numberWithLongLong:a3];
+      v13 = [NSNumber numberWithLongLong:setting];
       [(MTPodcast *)self setPrimitiveValue:v13 forKey:v12];
 
       [(MTPodcast *)self didChangeValueForKey:v12];
-      [(MTPodcast *)self applyShowTypeSetting:a3];
+      [(MTPodcast *)self applyShowTypeSetting:setting];
     }
 
     else
@@ -328,22 +328,22 @@
   }
 }
 
-- (void)applyShowTypeSetting:(int64_t)a3
+- (void)applyShowTypeSetting:(int64_t)setting
 {
-  v4 = [MTPodcast sortOrderAscForShowType:a3];
+  v4 = [MTPodcast sortOrderAscForShowType:setting];
   v5 = v4;
   [(MTPodcast *)self setSortAscending:v4];
 
   [(MTPodcast *)self setPlaybackNewestToOldest:v5 ^ 1u];
 }
 
-- (void)setSortAscending:(BOOL)a3
+- (void)setSortAscending:(BOOL)ascending
 {
-  v3 = a3;
+  ascendingCopy = ascending;
   v5 = _MTLogCategoryDatabase();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    if (v3)
+    if (ascendingCopy)
     {
       v6 = @"true";
     }
@@ -353,33 +353,33 @@
       v6 = @"false";
     }
 
-    v7 = [(MTPodcast *)self title];
-    v8 = [(MTPodcast *)self feedURL];
-    v9 = [(MTPodcast *)self storeCollectionId];
-    v10 = [(MTPodcast *)self uuid];
+    title = [(MTPodcast *)self title];
+    feedURL = [(MTPodcast *)self feedURL];
+    storeCollectionId = [(MTPodcast *)self storeCollectionId];
+    uuid = [(MTPodcast *)self uuid];
     v14 = 138544387;
     v15 = v6;
     v16 = 2113;
-    v17 = v7;
+    v17 = title;
     v18 = 2113;
-    v19 = v8;
+    v19 = feedURL;
     v20 = 2049;
-    v21 = v9;
+    v21 = storeCollectionId;
     v22 = 2114;
-    v23 = v10;
+    v23 = uuid;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "Switching SortAscendingFlag to %{public}@, show %{private}@, %{private}@, %{private}lld, %{public}@", &v14, 0x34u);
   }
 
-  v11 = [(MTPodcast *)self flags];
-  if (((((v11 & 2) == 0) ^ v3) & 1) == 0)
+  flags = [(MTPodcast *)self flags];
+  if (((((flags & 2) == 0) ^ ascendingCopy) & 1) == 0)
   {
     v12 = 2;
-    if (!v3)
+    if (!ascendingCopy)
     {
       v12 = 0;
     }
 
-    [(MTPodcast *)self setFlags:v11 & 0xFFFFFFFFFFFFFFFDLL | v12];
+    [(MTPodcast *)self setFlags:flags & 0xFFFFFFFFFFFFFFFDLL | v12];
     [(MTPodcast *)self markPlaylistsForUpdate];
     v13 = +[_TtC18PodcastsFoundation18SyncKeysRepository shared];
     [v13 markSubscriptionSyncDirty:1 for:{-[MTPodcast syncType](self, "syncType")}];
@@ -417,23 +417,23 @@
 
   v15 = [v20 mt_compactMap:&stru_1C8F0];
   v16 = [NSSet setWithArray:v15];
-  v17 = [v16 allObjects];
+  allObjects = [v16 allObjects];
 
-  return v17;
+  return allObjects;
 }
 
 - (id)sortDescriptorsForSortOrder
 {
   if ([(MTPodcast *)self isSerialShowTypeInFeed])
   {
-    v3 = [(MTPodcast *)self seasonSortDescriptorsForSortOrder];
+    seasonSortDescriptorsForSortOrder = [(MTPodcast *)self seasonSortDescriptorsForSortOrder];
   }
 
   else
   {
-    v4 = [(MTPodcast *)self sortAscending];
+    sortAscending = [(MTPodcast *)self sortAscending];
     v5 = [NSMutableArray alloc];
-    if (v4)
+    if (sortAscending)
     {
       v6 = [NSSortDescriptor sortDescriptorWithKey:kEpisodePubDate ascending:1];
       v14[0] = v6;
@@ -460,17 +460,17 @@
     }
 
     v11 = [NSArray arrayWithObjects:v10 count:4];
-    v3 = [v5 initWithArray:v11];
+    seasonSortDescriptorsForSortOrder = [v5 initWithArray:v11];
   }
 
-  return v3;
+  return seasonSortDescriptorsForSortOrder;
 }
 
 - (id)seasonSortDescriptorsForSortOrder
 {
-  v2 = [(MTPodcast *)self showTypeSetting];
+  showTypeSetting = [(MTPodcast *)self showTypeSetting];
 
-  return [MTEpisode seasonSortDescriptors:v2];
+  return [MTEpisode seasonSortDescriptors:showTypeSetting];
 }
 
 + (id)sortDescriptorsForOldestOnTop
@@ -521,38 +521,38 @@
 
 - (id)sortDescriptorsForPlayOrderByPubDate
 {
-  v2 = [(MTPodcast *)self playbackNewestToOldest];
+  playbackNewestToOldest = [(MTPodcast *)self playbackNewestToOldest];
   v3 = objc_opt_class();
 
-  return [v3 sortDescriptorsForNewestToOldest:v2];
+  return [v3 sortDescriptorsForNewestToOldest:playbackNewestToOldest];
 }
 
 - (id)sortDescriptorsForPlayOrderByEpisodeNumber
 {
-  v2 = [(MTPodcast *)self showTypeSetting];
+  showTypeSetting = [(MTPodcast *)self showTypeSetting];
 
-  return [MTEpisode seasonSortDescriptors:v2];
+  return [MTEpisode seasonSortDescriptors:showTypeSetting];
 }
 
-- (void)setPlaybackNewestToOldest:(BOOL)a3
+- (void)setPlaybackNewestToOldest:(BOOL)oldest
 {
-  v3 = a3;
-  v5 = [(MTPodcast *)self playbackNewestToOldest];
-  v6 = [(MTPodcast *)self flags];
-  if (((((v6 & 8) == 0) ^ v3) & 1) == 0)
+  oldestCopy = oldest;
+  playbackNewestToOldest = [(MTPodcast *)self playbackNewestToOldest];
+  flags = [(MTPodcast *)self flags];
+  if (((((flags & 8) == 0) ^ oldestCopy) & 1) == 0)
   {
     v7 = 8;
-    if (!v3)
+    if (!oldestCopy)
     {
       v7 = 0;
     }
 
-    [(MTPodcast *)self setFlags:v6 & 0xFFFFFFFFFFFFFFF7 | v7];
+    [(MTPodcast *)self setFlags:flags & 0xFFFFFFFFFFFFFFF7 | v7];
     [(MTPodcast *)self markPlaylistsForUpdate];
     v8 = +[_TtC18PodcastsFoundation18SyncKeysRepository shared];
     [v8 markSubscriptionSyncDirty:1 for:{-[MTPodcast syncType](self, "syncType")}];
 
-    if (v5 != v3)
+    if (playbackNewestToOldest != oldestCopy)
     {
 
       [(MTPodcast *)self updateCursorPosition:0];
@@ -560,7 +560,7 @@
   }
 }
 
-- (BOOL)updateCursorPosition:(BOOL)a3
+- (BOOL)updateCursorPosition:(BOOL)position
 {
   v12 = 0;
   v13 = &v12;
@@ -574,7 +574,7 @@
   v5 = v8[4] = self;
   v9 = v5;
   v10 = &v12;
-  v11 = a3;
+  positionCopy = position;
   [v5 performBlockAndWait:v8];
   v6 = *(v13 + 24);
 
@@ -582,11 +582,11 @@
   return v6;
 }
 
-+ (id)podcastUuidForFeedUrlString:(id)a3 ctx:(id)a4
++ (id)podcastUuidForFeedUrlString:(id)string ctx:(id)ctx
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 length])
+  stringCopy = string;
+  ctxCopy = ctx;
+  if ([stringCopy length])
   {
     v13 = 0;
     v14 = &v13;
@@ -598,8 +598,8 @@
     v9[1] = 3221225472;
     v9[2] = sub_9364;
     v9[3] = &unk_1C940;
-    v10 = v6;
-    v11 = v5;
+    v10 = ctxCopy;
+    v11 = stringCopy;
     v12 = &v13;
     [v10 performBlockAndWait:v9];
     v7 = v14[5];
@@ -615,11 +615,11 @@
   return v7;
 }
 
-+ (id)podcastUuidForFeedUrl:(id)a3 ctx:(id)a4
++ (id)podcastUuidForFeedUrl:(id)url ctx:(id)ctx
 {
-  v6 = a4;
-  v7 = [a3 absoluteString];
-  v8 = [a1 podcastUuidForFeedUrlString:v7 ctx:v6];
+  ctxCopy = ctx;
+  absoluteString = [url absoluteString];
+  v8 = [self podcastUuidForFeedUrlString:absoluteString ctx:ctxCopy];
 
   return v8;
 }
@@ -647,17 +647,17 @@
 
 - (BOOL)hasMultipleSeasons
 {
-  v2 = [(MTPodcast *)self seasonNumbers];
-  v3 = [v2 count] > 1;
+  seasonNumbers = [(MTPodcast *)self seasonNumbers];
+  v3 = [seasonNumbers count] > 1;
 
   return v3;
 }
 
-+ (id)sortDescriptorsForSortType:(int64_t)a3
++ (id)sortDescriptorsForSortType:(int64_t)type
 {
-  if (a3 <= 3)
+  if (type <= 3)
   {
-    switch(a3)
+    switch(type)
     {
       case 0:
         v5 = +[MTPodcast sortDescriptorsForManualOrder];
@@ -675,7 +675,7 @@ LABEL_15:
     goto LABEL_12;
   }
 
-  switch(a3)
+  switch(type)
   {
     case 4:
       v6 = 0;
@@ -714,9 +714,9 @@ LABEL_18:
 + (id)sortDescriptorsForAllPodcasts
 {
   v2 = +[MTShowsPreferencesDataStore sharedInstance];
-  v3 = [v2 sortDescriptors];
+  sortDescriptors = [v2 sortDescriptors];
 
-  return v3;
+  return sortDescriptors;
 }
 
 + (id)sortDescriptorsForLastDatePlayed

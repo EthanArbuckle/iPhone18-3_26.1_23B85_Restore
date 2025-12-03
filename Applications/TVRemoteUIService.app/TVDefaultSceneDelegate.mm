@@ -1,51 +1,51 @@
 @interface TVDefaultSceneDelegate
 - (void)resetRootViewController;
-- (void)scene:(id)a3 openURLContexts:(id)a4;
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
-- (void)sceneDidBecomeActive:(id)a3;
-- (void)sceneDidDisconnect:(id)a3;
-- (void)sceneDidEnterBackground:(id)a3;
-- (void)sceneWillEnterForeground:(id)a3;
-- (void)sceneWillResignActive:(id)a3;
+- (void)scene:(id)scene openURLContexts:(id)contexts;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
+- (void)sceneDidBecomeActive:(id)active;
+- (void)sceneDidDisconnect:(id)disconnect;
+- (void)sceneDidEnterBackground:(id)background;
+- (void)sceneWillEnterForeground:(id)foreground;
+- (void)sceneWillResignActive:(id)active;
 @end
 
 @implementation TVDefaultSceneDelegate
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sceneCopy = scene;
+  sessionCopy = session;
+  optionsCopy = options;
   v11 = _TVRUIServiceAppLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
-    v23 = [v8 description];
+    v23 = [sceneCopy description];
     v24 = 136315906;
     v25 = "[TVDefaultSceneDelegate scene:willConnectToSession:options:]";
     v26 = 2112;
     v27 = v23;
     v28 = 2112;
-    v29 = v9;
+    v29 = sessionCopy;
     v30 = 2112;
-    v31 = v10;
+    v31 = optionsCopy;
     _os_log_debug_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEBUG, "%s: %@, %@, %@", &v24, 0x2Au);
   }
 
   v12 = +[UIDevice currentDevice];
-  v13 = [v12 userInterfaceIdiom];
+  userInterfaceIdiom = [v12 userInterfaceIdiom];
 
-  if (v13 == 1)
+  if (userInterfaceIdiom == 1)
   {
-    v14 = _TVRUIServiceAppLog();
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+    window2 = _TVRUIServiceAppLog();
+    if (os_log_type_enabled(window2, OS_LOG_TYPE_ERROR))
     {
-      [TVDefaultSceneDelegate scene:v14 willConnectToSession:? options:?];
+      [TVDefaultSceneDelegate scene:window2 willConnectToSession:? options:?];
     }
   }
 
   else
   {
-    v15 = v8;
+    v15 = sceneCopy;
     v16 = [[TVRemoteWindow alloc] initWithWindowScene:v15];
     window = self->_window;
     self->_window = &v16->super;
@@ -54,19 +54,19 @@
     mainViewController = self->_mainViewController;
     self->_mainViewController = v18;
 
-    v20 = [(TVDefaultSceneDelegate *)self mainViewController];
-    v21 = [(TVDefaultSceneDelegate *)self window];
-    [v21 setRootViewController:v20];
+    mainViewController = [(TVDefaultSceneDelegate *)self mainViewController];
+    window = [(TVDefaultSceneDelegate *)self window];
+    [window setRootViewController:mainViewController];
 
-    v22 = [v10 URLContexts];
-    [(TVDefaultSceneDelegate *)self scene:v15 openURLContexts:v22];
+    uRLContexts = [optionsCopy URLContexts];
+    [(TVDefaultSceneDelegate *)self scene:v15 openURLContexts:uRLContexts];
 
-    v14 = [(TVDefaultSceneDelegate *)self window];
-    [v14 makeKeyAndVisible];
+    window2 = [(TVDefaultSceneDelegate *)self window];
+    [window2 makeKeyAndVisible];
   }
 }
 
-- (void)sceneDidBecomeActive:(id)a3
+- (void)sceneDidBecomeActive:(id)active
 {
   v4 = _TVRUIServiceAppLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -74,18 +74,18 @@
     [TVDefaultSceneDelegate sceneDidBecomeActive:v4];
   }
 
-  v5 = [(TVDefaultSceneDelegate *)self mainViewController];
-  v6 = [v5 isConfigured];
+  mainViewController = [(TVDefaultSceneDelegate *)self mainViewController];
+  isConfigured = [mainViewController isConfigured];
 
-  if ((v6 & 1) == 0)
+  if ((isConfigured & 1) == 0)
   {
     v7 = [[TVRViewServiceConfigContext alloc] _initWithLaunchContext:1];
-    v8 = [(TVDefaultSceneDelegate *)self mainViewController];
-    [v8 configureWithContext:v7];
+    mainViewController2 = [(TVDefaultSceneDelegate *)self mainViewController];
+    [mainViewController2 configureWithContext:v7];
   }
 }
 
-- (void)sceneWillEnterForeground:(id)a3
+- (void)sceneWillEnterForeground:(id)foreground
 {
   v4 = _TVRUIServiceAppLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -95,21 +95,21 @@
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%s", &v10, 0xCu);
   }
 
-  v5 = [(TVDefaultSceneDelegate *)self window];
-  v6 = [v5 rootViewController];
+  window = [(TVDefaultSceneDelegate *)self window];
+  rootViewController = [window rootViewController];
 
-  if (!v6)
+  if (!rootViewController)
   {
-    v7 = [(TVDefaultSceneDelegate *)self mainViewController];
-    v8 = [(TVDefaultSceneDelegate *)self window];
-    [v8 setRootViewController:v7];
+    mainViewController = [(TVDefaultSceneDelegate *)self mainViewController];
+    window2 = [(TVDefaultSceneDelegate *)self window];
+    [window2 setRootViewController:mainViewController];
   }
 
-  v9 = [(TVDefaultSceneDelegate *)self mainViewController];
-  [v9 willExitLockScreenScene];
+  mainViewController2 = [(TVDefaultSceneDelegate *)self mainViewController];
+  [mainViewController2 willExitLockScreenScene];
 }
 
-- (void)sceneWillResignActive:(id)a3
+- (void)sceneWillResignActive:(id)active
 {
   v3 = _TVRUIServiceAppLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -130,7 +130,7 @@
   }
 }
 
-- (void)sceneDidEnterBackground:(id)a3
+- (void)sceneDidEnterBackground:(id)background
 {
   v3 = _TVRUIServiceAppLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -141,18 +141,18 @@
   }
 }
 
-- (void)scene:(id)a3 openURLContexts:(id)a4
+- (void)scene:(id)scene openURLContexts:(id)contexts
 {
-  v5 = [a4 allObjects];
-  v15 = [v5 firstObject];
+  allObjects = [contexts allObjects];
+  firstObject = [allObjects firstObject];
 
-  v6 = [v15 URL];
+  v6 = [firstObject URL];
   if (v6)
   {
-    v7 = [v15 options];
-    v8 = [v7 annotation];
+    options = [firstObject options];
+    annotation = [options annotation];
     v9 = objc_opt_class();
-    v10 = v8;
+    v10 = annotation;
     if (v9)
     {
       if (objc_opt_isKindOfClass())
@@ -174,12 +174,12 @@
     v12 = v11;
 
     v13 = [[TVRViewServiceConfigContext alloc] _initWithUserInfo:v12];
-    v14 = [(TVDefaultSceneDelegate *)self mainViewController];
-    [v14 configureWithContext:v13];
+    mainViewController = [(TVDefaultSceneDelegate *)self mainViewController];
+    [mainViewController configureWithContext:v13];
   }
 }
 
-- (void)sceneDidDisconnect:(id)a3
+- (void)sceneDidDisconnect:(id)disconnect
 {
   v4 = _TVRUIServiceAppLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -189,11 +189,11 @@
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%s", &v7, 0xCu);
   }
 
-  v5 = [(TVDefaultSceneDelegate *)self mainViewController];
-  [v5 dismiss];
+  mainViewController = [(TVDefaultSceneDelegate *)self mainViewController];
+  [mainViewController dismiss];
 
-  v6 = [(TVDefaultSceneDelegate *)self window];
-  [v6 setRootViewController:0];
+  window = [(TVDefaultSceneDelegate *)self window];
+  [window setRootViewController:0];
 }
 
 - (void)resetRootViewController
@@ -206,8 +206,8 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%s", &v5, 0xCu);
   }
 
-  v4 = [(TVDefaultSceneDelegate *)self window];
-  [v4 setRootViewController:0];
+  window = [(TVDefaultSceneDelegate *)self window];
+  [window setRootViewController:0];
 }
 
 - (void)sceneDidBecomeActive:(os_log_t)log .cold.1(os_log_t log)

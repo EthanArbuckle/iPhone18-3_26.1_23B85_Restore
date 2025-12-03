@@ -1,7 +1,7 @@
 @interface CERecommendationRule
 - (BOOL)ignoreClientRank;
-- (CERecommendationRule)initWithCoder:(id)a3;
-- (CERecommendationRule)initWithDictionary:(id)a3;
+- (CERecommendationRule)initWithCoder:(id)coder;
+- (CERecommendationRule)initWithDictionary:(id)dictionary;
 - (CERecommendationStringTemplate)templates;
 - (CERuleCriteria)criteria;
 - (NSArray)context;
@@ -11,26 +11,26 @@
 - (NSString)messageHint;
 - (NSString)recommendationID;
 - (NSString)titleHint;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
-- (void)setBundleID:(id)a3;
-- (void)setContext:(id)a3;
-- (void)setCriteria:(id)a3;
-- (void)setIgnoreClientRank:(BOOL)a3;
-- (void)setLastCompletedTimeStamp:(id)a3;
-- (void)setMessageHint:(id)a3;
-- (void)setRankingHint:(id)a3;
-- (void)setRecommendationID:(id)a3;
-- (void)setTemplates:(id)a3;
-- (void)setTitleHint:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setBundleID:(id)d;
+- (void)setContext:(id)context;
+- (void)setCriteria:(id)criteria;
+- (void)setIgnoreClientRank:(BOOL)rank;
+- (void)setLastCompletedTimeStamp:(id)stamp;
+- (void)setMessageHint:(id)hint;
+- (void)setRankingHint:(id)hint;
+- (void)setRecommendationID:(id)d;
+- (void)setTemplates:(id)templates;
+- (void)setTitleHint:(id)hint;
 @end
 
 @implementation CERecommendationRule
 
-- (CERecommendationRule)initWithDictionary:(id)a3
+- (CERecommendationRule)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v53.receiver = self;
   v53.super_class = CERecommendationRule;
   v5 = [(CERecommendationRule *)&v53 init];
@@ -38,7 +38,7 @@
   if (v5)
   {
     v5->_lock._os_unfair_lock_opaque = 0;
-    v7 = [v4 objectForKeyedSubscript:@"recommendationID"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"recommendationID"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -56,7 +56,7 @@
       }
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"bundleID"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"bundleID"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -74,7 +74,7 @@
       }
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"titleHint"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"titleHint"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -92,7 +92,7 @@
       }
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"messageHint"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"messageHint"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -110,7 +110,7 @@
       }
     }
 
-    v19 = [v4 objectForKeyedSubscript:@"rankingHint"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"rankingHint"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -128,7 +128,7 @@
       }
     }
 
-    v22 = [v4 objectForKeyedSubscript:@"lastCompletedTimestamp"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"lastCompletedTimestamp"];
     objc_opt_class();
     v50 = v22;
     if (objc_opt_isKindOfClass())
@@ -147,12 +147,12 @@
       }
     }
 
-    v25 = [v4 objectForKeyedSubscript:@"ignoreClientRank"];
-    v26 = [v25 BOOLValue];
+    v25 = [dictionaryCopy objectForKeyedSubscript:@"ignoreClientRank"];
+    bOOLValue = [v25 BOOLValue];
 
-    v6->_ignoreClientRank = v26;
+    v6->_ignoreClientRank = bOOLValue;
     v27 = [CERuleCriteria alloc];
-    v28 = [v4 objectForKeyedSubscript:@"criteria"];
+    v28 = [dictionaryCopy objectForKeyedSubscript:@"criteria"];
     v29 = [(CERuleCriteria *)v27 initWithDictionary:v28];
 
     objc_opt_class();
@@ -173,7 +173,7 @@
       }
     }
 
-    v48 = [v4 objectForKeyedSubscript:@"templates"];
+    v48 = [dictionaryCopy objectForKeyedSubscript:@"templates"];
     v32 = [[CERecommendationStringTemplate alloc] initWithDictionary:v48];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -192,7 +192,7 @@
       }
     }
 
-    v35 = [v4 objectForKeyedSubscript:@"context"];
+    v35 = [dictionaryCopy objectForKeyedSubscript:@"context"];
     objc_opt_class();
     v47 = v32;
     if (objc_opt_isKindOfClass())
@@ -205,7 +205,7 @@
       v37 = v36;
       v52 = v37;
       [v35 enumerateObjectsUsingBlock:v51];
-      v38 = v4;
+      v38 = dictionaryCopy;
       v39 = v19;
       v40 = v16;
       v41 = v13;
@@ -220,7 +220,7 @@
       v13 = v41;
       v16 = v40;
       v19 = v39;
-      v4 = v38;
+      dictionaryCopy = v38;
     }
 
     else
@@ -246,42 +246,42 @@ void __43__CERecommendationRule_initWithDictionary___block_invoke(uint64_t a1, v
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(CERecommendationRule *)self recommendationID];
-  [v4 encodeObject:v5 forKey:@"recommendationID"];
+  coderCopy = coder;
+  recommendationID = [(CERecommendationRule *)self recommendationID];
+  [coderCopy encodeObject:recommendationID forKey:@"recommendationID"];
 
-  v6 = [(CERecommendationRule *)self bundleID];
-  [v4 encodeObject:v6 forKey:@"bundleID"];
+  bundleID = [(CERecommendationRule *)self bundleID];
+  [coderCopy encodeObject:bundleID forKey:@"bundleID"];
 
-  v7 = [(CERecommendationRule *)self titleHint];
-  [v4 encodeObject:v7 forKey:@"titleHint"];
+  titleHint = [(CERecommendationRule *)self titleHint];
+  [coderCopy encodeObject:titleHint forKey:@"titleHint"];
 
-  v8 = [(CERecommendationRule *)self messageHint];
-  [v4 encodeObject:v8 forKey:@"messageHint"];
+  messageHint = [(CERecommendationRule *)self messageHint];
+  [coderCopy encodeObject:messageHint forKey:@"messageHint"];
 
-  v9 = [(CERecommendationRule *)self rankingHint];
-  [v4 encodeObject:v9 forKey:@"rankingHint"];
+  rankingHint = [(CERecommendationRule *)self rankingHint];
+  [coderCopy encodeObject:rankingHint forKey:@"rankingHint"];
 
-  v10 = [(CERecommendationRule *)self lastCompletedTimeStamp];
-  [v4 encodeObject:v10 forKey:@"lastCompletedTimeStamp"];
+  lastCompletedTimeStamp = [(CERecommendationRule *)self lastCompletedTimeStamp];
+  [coderCopy encodeObject:lastCompletedTimeStamp forKey:@"lastCompletedTimeStamp"];
 
-  [v4 encodeBool:-[CERecommendationRule ignoreClientRank](self forKey:{"ignoreClientRank"), @"ignoreClientRank"}];
-  v11 = [(CERecommendationRule *)self criteria];
-  [v4 encodeObject:v11 forKey:@"criteria"];
+  [coderCopy encodeBool:-[CERecommendationRule ignoreClientRank](self forKey:{"ignoreClientRank"), @"ignoreClientRank"}];
+  criteria = [(CERecommendationRule *)self criteria];
+  [coderCopy encodeObject:criteria forKey:@"criteria"];
 
-  v12 = [(CERecommendationRule *)self templates];
-  [v4 encodeObject:v12 forKey:@"templates"];
+  templates = [(CERecommendationRule *)self templates];
+  [coderCopy encodeObject:templates forKey:@"templates"];
 
-  v13 = [(CERecommendationRule *)self context];
-  [v4 encodeObject:v13 forKey:@"context"];
+  context = [(CERecommendationRule *)self context];
+  [coderCopy encodeObject:context forKey:@"context"];
 }
 
-- (CERecommendationRule)initWithCoder:(id)a3
+- (CERecommendationRule)initWithCoder:(id)coder
 {
   v31[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v30.receiver = self;
   v30.super_class = CERecommendationRule;
   v5 = [(CERecommendationRule *)&v30 init];
@@ -289,36 +289,36 @@ void __43__CERecommendationRule_initWithDictionary___block_invoke(uint64_t a1, v
   if (v5)
   {
     v5->_lock._os_unfair_lock_opaque = 0;
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"recommendationID"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"recommendationID"];
     recommendationID = v6->_recommendationID;
     v6->_recommendationID = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleID"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleID"];
     bundleID = v6->_bundleID;
     v6->_bundleID = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"titleHint"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"titleHint"];
     titleHint = v6->_titleHint;
     v6->_titleHint = v11;
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"messageHint"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"messageHint"];
     messageHint = v6->_messageHint;
     v6->_messageHint = v13;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"rankingHint"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rankingHint"];
     rankingHint = v6->_rankingHint;
     v6->_rankingHint = v15;
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastCompletedTimeStamp"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastCompletedTimeStamp"];
     lastCompletedTimeStamp = v6->_lastCompletedTimeStamp;
     v6->_lastCompletedTimeStamp = v17;
 
-    v6->_ignoreClientRank = [v4 decodeBoolForKey:@"ignoreClientRank"];
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"criteria"];
+    v6->_ignoreClientRank = [coderCopy decodeBoolForKey:@"ignoreClientRank"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"criteria"];
     criteria = v6->_criteria;
     v6->_criteria = v19;
 
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"templates"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"templates"];
     templates = v6->_templates;
     v6->_templates = v21;
 
@@ -328,7 +328,7 @@ void __43__CERecommendationRule_initWithDictionary___block_invoke(uint64_t a1, v
     v24 = [MEMORY[0x277CBEA60] arrayWithObjects:v31 count:2];
     v25 = [v23 setWithArray:v24];
 
-    v26 = [v4 decodeObjectOfClasses:v25 forKey:@"context"];
+    v26 = [coderCopy decodeObjectOfClasses:v25 forKey:@"context"];
     context = v6->_context;
     v6->_context = v26;
   }
@@ -337,39 +337,39 @@ void __43__CERecommendationRule_initWithDictionary___block_invoke(uint64_t a1, v
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[CERecommendationRule allocWithZone:](CERecommendationRule init];
   v5->_lock._os_unfair_lock_opaque = 0;
-  v6 = [(CERecommendationRule *)self recommendationID];
-  [(CERecommendationRule *)v5 setRecommendationID:v6];
+  recommendationID = [(CERecommendationRule *)self recommendationID];
+  [(CERecommendationRule *)v5 setRecommendationID:recommendationID];
 
-  v7 = [(CERecommendationRule *)self bundleID];
-  [(CERecommendationRule *)v5 setBundleID:v7];
+  bundleID = [(CERecommendationRule *)self bundleID];
+  [(CERecommendationRule *)v5 setBundleID:bundleID];
 
-  v8 = [(CERecommendationRule *)self titleHint];
-  [(CERecommendationRule *)v5 setTitleHint:v8];
+  titleHint = [(CERecommendationRule *)self titleHint];
+  [(CERecommendationRule *)v5 setTitleHint:titleHint];
 
-  v9 = [(CERecommendationRule *)self messageHint];
-  [(CERecommendationRule *)v5 setMessageHint:v9];
+  messageHint = [(CERecommendationRule *)self messageHint];
+  [(CERecommendationRule *)v5 setMessageHint:messageHint];
 
-  v10 = [(CERecommendationRule *)self rankingHint];
-  [(CERecommendationRule *)v5 setRankingHint:v10];
+  rankingHint = [(CERecommendationRule *)self rankingHint];
+  [(CERecommendationRule *)v5 setRankingHint:rankingHint];
 
-  v11 = [(CERecommendationRule *)self lastCompletedTimeStamp];
-  [(CERecommendationRule *)v5 setLastCompletedTimeStamp:v11];
+  lastCompletedTimeStamp = [(CERecommendationRule *)self lastCompletedTimeStamp];
+  [(CERecommendationRule *)v5 setLastCompletedTimeStamp:lastCompletedTimeStamp];
 
   [(CERecommendationRule *)v5 setIgnoreClientRank:[(CERecommendationRule *)self ignoreClientRank]];
-  v12 = [(CERecommendationRule *)self criteria];
-  v13 = [v12 copyWithZone:a3];
+  criteria = [(CERecommendationRule *)self criteria];
+  v13 = [criteria copyWithZone:zone];
   [(CERecommendationRule *)v5 setCriteria:v13];
 
-  v14 = [(CERecommendationRule *)self templates];
-  v15 = [v14 copyWithZone:a3];
+  templates = [(CERecommendationRule *)self templates];
+  v15 = [templates copyWithZone:zone];
   [(CERecommendationRule *)v5 setTemplates:v15];
 
-  v16 = [(CERecommendationRule *)self context];
-  v17 = [v16 copyWithZone:a3];
+  context = [(CERecommendationRule *)self context];
+  v17 = [context copyWithZone:zone];
   [(CERecommendationRule *)v5 setContext:v17];
 
   return v5;
@@ -378,17 +378,17 @@ void __43__CERecommendationRule_initWithDictionary___block_invoke(uint64_t a1, v
 - (id)description
 {
   v15 = MEMORY[0x277CCACA8];
-  v3 = [(CERecommendationRule *)self recommendationID];
-  v4 = [(CERecommendationRule *)self bundleID];
-  v5 = [(CERecommendationRule *)self titleHint];
-  v6 = [(CERecommendationRule *)self messageHint];
-  v7 = [(CERecommendationRule *)self rankingHint];
-  v8 = [(CERecommendationRule *)self lastCompletedTimeStamp];
-  v9 = [(CERecommendationRule *)self ignoreClientRank];
-  v10 = [(CERecommendationRule *)self criteria];
-  v11 = [(CERecommendationRule *)self templates];
-  v12 = [(CERecommendationRule *)self context];
-  v13 = [v15 stringWithFormat:@"Recommendation Rule with id: %@, bundleID: %@, titleHint: %@, messageHint: %@, rankingHint: %@, lastCompletedTimestamp: %@, ignoreClientRank: %d, criteria: %@, templates: %@, context: %@", v3, v4, v5, v6, v7, v8, v9, v10, v11, v12];
+  recommendationID = [(CERecommendationRule *)self recommendationID];
+  bundleID = [(CERecommendationRule *)self bundleID];
+  titleHint = [(CERecommendationRule *)self titleHint];
+  messageHint = [(CERecommendationRule *)self messageHint];
+  rankingHint = [(CERecommendationRule *)self rankingHint];
+  lastCompletedTimeStamp = [(CERecommendationRule *)self lastCompletedTimeStamp];
+  ignoreClientRank = [(CERecommendationRule *)self ignoreClientRank];
+  criteria = [(CERecommendationRule *)self criteria];
+  templates = [(CERecommendationRule *)self templates];
+  context = [(CERecommendationRule *)self context];
+  v13 = [v15 stringWithFormat:@"Recommendation Rule with id: %@, bundleID: %@, titleHint: %@, messageHint: %@, rankingHint: %@, lastCompletedTimestamp: %@, ignoreClientRank: %d, criteria: %@, templates: %@, context: %@", recommendationID, bundleID, titleHint, messageHint, rankingHint, lastCompletedTimeStamp, ignoreClientRank, criteria, templates, context];
 
   return v13;
 }
@@ -482,100 +482,100 @@ void __43__CERecommendationRule_initWithDictionary___block_invoke(uint64_t a1, v
   return v3;
 }
 
-- (void)setTitleHint:(id)a3
+- (void)setTitleHint:(id)hint
 {
-  v4 = a3;
+  hintCopy = hint;
   os_unfair_lock_lock(&self->_lock);
   titleHint = self->_titleHint;
-  self->_titleHint = v4;
+  self->_titleHint = hintCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setMessageHint:(id)a3
+- (void)setMessageHint:(id)hint
 {
-  v4 = a3;
+  hintCopy = hint;
   os_unfair_lock_lock(&self->_lock);
   messageHint = self->_messageHint;
-  self->_messageHint = v4;
+  self->_messageHint = hintCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setRankingHint:(id)a3
+- (void)setRankingHint:(id)hint
 {
-  v4 = a3;
+  hintCopy = hint;
   os_unfair_lock_lock(&self->_lock);
   rankingHint = self->_rankingHint;
-  self->_rankingHint = v4;
+  self->_rankingHint = hintCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setRecommendationID:(id)a3
+- (void)setRecommendationID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   os_unfair_lock_lock(&self->_lock);
   recommendationID = self->_recommendationID;
-  self->_recommendationID = v4;
+  self->_recommendationID = dCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setBundleID:(id)a3
+- (void)setBundleID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   os_unfair_lock_lock(&self->_lock);
   bundleID = self->_bundleID;
-  self->_bundleID = v4;
+  self->_bundleID = dCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setIgnoreClientRank:(BOOL)a3
+- (void)setIgnoreClientRank:(BOOL)rank
 {
   os_unfair_lock_lock(&self->_lock);
-  self->_ignoreClientRank = a3;
+  self->_ignoreClientRank = rank;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setLastCompletedTimeStamp:(id)a3
+- (void)setLastCompletedTimeStamp:(id)stamp
 {
-  v4 = a3;
+  stampCopy = stamp;
   os_unfair_lock_lock(&self->_lock);
   lastCompletedTimeStamp = self->_lastCompletedTimeStamp;
-  self->_lastCompletedTimeStamp = v4;
+  self->_lastCompletedTimeStamp = stampCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setCriteria:(id)a3
+- (void)setCriteria:(id)criteria
 {
-  v4 = a3;
+  criteriaCopy = criteria;
   os_unfair_lock_lock(&self->_lock);
   criteria = self->_criteria;
-  self->_criteria = v4;
+  self->_criteria = criteriaCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setTemplates:(id)a3
+- (void)setTemplates:(id)templates
 {
-  v4 = a3;
+  templatesCopy = templates;
   os_unfair_lock_lock(&self->_lock);
   templates = self->_templates;
-  self->_templates = v4;
+  self->_templates = templatesCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setContext:(id)a3
+- (void)setContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   os_unfair_lock_lock(&self->_lock);
   context = self->_context;
-  self->_context = v4;
+  self->_context = contextCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }

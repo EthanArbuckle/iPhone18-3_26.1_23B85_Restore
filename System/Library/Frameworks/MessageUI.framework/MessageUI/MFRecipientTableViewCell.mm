@@ -2,12 +2,12 @@
 + (double)_deviceSpecificLayoutMargin;
 + (double)_realDetailButtonAccessoryMargin;
 + (double)detailLineHeight;
-+ (double)heightWithRecipient:(id)a3 width:(double)a4;
-+ (id)_attributedStringRepresentationOfCompleteMatchesForRecipient:(id)a3 constrainedToWidth:(double)a4 overflowRecipients:(id *)a5 useHighlighting:(BOOL)a6;
-+ (id)_attributedStringRepresentationOfPartialEmailMatchForSingleRecipient:(id)a3 useHighlighting:(BOOL)a4;
-+ (id)_copyAttributedStringRepresentationOfGroupRecipient:(id)a3 withSortedRecipientList:(id)a4;
-+ (id)_tintedAttributedString:(id)a3 toColor:(id)a4 shouldDim:(BOOL)a5;
-+ (id)cellForRecipient:(id)a3;
++ (double)heightWithRecipient:(id)recipient width:(double)width;
++ (id)_attributedStringRepresentationOfCompleteMatchesForRecipient:(id)recipient constrainedToWidth:(double)width overflowRecipients:(id *)recipients useHighlighting:(BOOL)highlighting;
++ (id)_attributedStringRepresentationOfPartialEmailMatchForSingleRecipient:(id)recipient useHighlighting:(BOOL)highlighting;
++ (id)_copyAttributedStringRepresentationOfGroupRecipient:(id)recipient withSortedRecipientList:(id)list;
++ (id)_tintedAttributedString:(id)string toColor:(id)color shouldDim:(BOOL)dim;
++ (id)cellForRecipient:(id)recipient;
 + (id)defaultDetailStringAttributes;
 + (id)defaultTitleStringAttributes;
 + (id)groupDetailStringAttributes;
@@ -15,64 +15,64 @@
 + (id)highlightedTitleStringAttributes;
 + (id)labelDetailStringAttributes;
 + (id)regularTitleStringAttributes;
-- (MFRecipientTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (MFRecipientTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (id)tintColor;
-- (void)animateSnapshotOfLabel:(id)a3 withBlock:(id)a4;
-- (void)setBackgroundColor:(id)a3;
-- (void)setOpaque:(BOOL)a3;
-- (void)setRecipient:(id)a3;
-- (void)setTintColor:(id)a3 animated:(BOOL)a4;
+- (void)animateSnapshotOfLabel:(id)label withBlock:(id)block;
+- (void)setBackgroundColor:(id)color;
+- (void)setOpaque:(BOOL)opaque;
+- (void)setRecipient:(id)recipient;
+- (void)setTintColor:(id)color animated:(BOOL)animated;
 - (void)updateActiveConstraints;
 @end
 
 @implementation MFRecipientTableViewCell
 
-+ (id)cellForRecipient:(id)a3
++ (id)cellForRecipient:(id)recipient
 {
-  v3 = a3;
+  recipientCopy = recipient;
   v4 = [MFRecipientTableViewCell alloc];
   v5 = +[MFRecipientTableViewCell identifier];
   v6 = [(MFRecipientTableViewCell *)v4 initWithStyle:0 reuseIdentifier:v5];
 
   if (v6)
   {
-    [(MFRecipientTableViewCell *)v6 setRecipient:v3];
+    [(MFRecipientTableViewCell *)v6 setRecipient:recipientCopy];
   }
 
   return v6;
 }
 
-- (MFRecipientTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (MFRecipientTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v19.receiver = self;
   v19.super_class = MFRecipientTableViewCell;
-  v4 = [(MFRecipientTableViewCell *)&v19 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(MFRecipientTableViewCell *)&v19 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
-    v5 = [MEMORY[0x1E69DC938] mf_isPadIdiom];
+    mf_isPadIdiom = [MEMORY[0x1E69DC938] mf_isPadIdiom];
     v6 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     detailLabel = v4->_detailLabel;
     v4->_detailLabel = v6;
 
-    [(UILabel *)v4->_detailLabel setOpaque:v5 ^ 1u];
+    [(UILabel *)v4->_detailLabel setOpaque:mf_isPadIdiom ^ 1u];
     LODWORD(v8) = 1148846080;
     [(UILabel *)v4->_detailLabel setContentHuggingPriority:1 forAxis:v8];
     LODWORD(v9) = 1112014848;
     [(UILabel *)v4->_detailLabel setContentHuggingPriority:0 forAxis:v9];
-    v10 = [(MFRecipientTableViewCell *)v4 contentView];
-    [v10 addSubview:v4->_detailLabel];
+    contentView = [(MFRecipientTableViewCell *)v4 contentView];
+    [contentView addSubview:v4->_detailLabel];
 
     v11 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     titleLabel = v4->_titleLabel;
     v4->_titleLabel = v11;
 
-    [(UILabel *)v4->_titleLabel setOpaque:v5 ^ 1u];
+    [(UILabel *)v4->_titleLabel setOpaque:mf_isPadIdiom ^ 1u];
     LODWORD(v13) = 1148846080;
     [(UILabel *)v4->_titleLabel setContentHuggingPriority:1 forAxis:v13];
     LODWORD(v14) = 1112014848;
     [(UILabel *)v4->_titleLabel setContentHuggingPriority:0 forAxis:v14];
-    v15 = [(MFRecipientTableViewCell *)v4 contentView];
-    [v15 addSubview:v4->_titleLabel];
+    contentView2 = [(MFRecipientTableViewCell *)v4 contentView];
+    [contentView2 addSubview:v4->_titleLabel];
 
     if (MFModernUIApplicationPreferredContentSizeIsLargerThanLarge())
     {
@@ -84,7 +84,7 @@
       [(UILabel *)v4->_titleLabel _setHyphenationFactor:v17];
     }
 
-    [(MFRecipientTableViewCell *)v4 setOpaque:v5 ^ 1u];
+    [(MFRecipientTableViewCell *)v4 setOpaque:mf_isPadIdiom ^ 1u];
     [(MFRecipientTableViewCell *)v4 setShouldHighlightCompleteMatches:1];
     [(MFRecipientTableViewCell *)v4 setShouldDimIrrelevantInformation:1];
     v4->_shouldHideDetailLabel = 0;
@@ -97,12 +97,12 @@
 
 - (void)updateActiveConstraints
 {
-  v3 = [(MFRecipientTableViewCell *)self activeConstraints];
+  activeConstraints = [(MFRecipientTableViewCell *)self activeConstraints];
 
-  if (v3)
+  if (activeConstraints)
   {
     v4 = MEMORY[0x1E696ACD8];
-    v69 = [(MFRecipientTableViewCell *)self activeConstraints];
+    activeConstraints2 = [(MFRecipientTableViewCell *)self activeConstraints];
     [v4 deactivateConstraints:?];
   }
 
@@ -126,13 +126,13 @@
   v70 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD80]];
   [v70 _bodyLeading];
   v9 = v8;
-  v10 = [(MFRecipientTableViewCell *)self titleLabel];
-  v11 = [v10 font];
-  [v11 ascender];
+  titleLabel = [(MFRecipientTableViewCell *)self titleLabel];
+  font = [titleLabel font];
+  [font ascender];
   v13 = v12;
-  v14 = [(MFRecipientTableViewCell *)self titleLabel];
-  v15 = [v14 font];
-  [v15 capHeight];
+  titleLabel2 = [(MFRecipientTableViewCell *)self titleLabel];
+  font2 = [titleLabel2 font];
+  [font2 capHeight];
   v17 = v16;
 
   v18 = objc_opt_class();
@@ -140,79 +140,79 @@
   [v18 _constrainedWidthForTitleViewWithAccessoryWidth:v6 containerWidth:v19];
   v21 = v20;
   v71 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v22 = [(MFRecipientTableViewCell *)self titleLabel];
-  v23 = [v22 topAnchor];
-  v24 = [(MFRecipientTableViewCell *)self contentView];
-  v25 = [v24 topAnchor];
-  v26 = [v23 constraintEqualToAnchor:v25 constant:round(-(v13 - v17 - v9 * 0.6))];
+  titleLabel3 = [(MFRecipientTableViewCell *)self titleLabel];
+  topAnchor = [titleLabel3 topAnchor];
+  contentView = [(MFRecipientTableViewCell *)self contentView];
+  topAnchor2 = [contentView topAnchor];
+  v26 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:round(-(v13 - v17 - v9 * 0.6))];
   [v71 addObject:v26];
 
-  v27 = [(MFRecipientTableViewCell *)self titleLabel];
-  v28 = [v27 leadingAnchor];
-  v29 = [(MFRecipientTableViewCell *)self contentView];
-  v30 = [v29 leadingAnchor];
+  titleLabel4 = [(MFRecipientTableViewCell *)self titleLabel];
+  leadingAnchor = [titleLabel4 leadingAnchor];
+  contentView2 = [(MFRecipientTableViewCell *)self contentView];
+  leadingAnchor2 = [contentView2 leadingAnchor];
   [(MFRecipientTableViewCell *)self separatorInset];
-  v32 = [v28 constraintEqualToAnchor:v30 constant:v31];
+  v32 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:v31];
   [v71 addObject:v32];
 
-  v33 = [(MFRecipientTableViewCell *)self titleLabel];
-  v34 = [v33 widthAnchor];
-  v35 = [v34 constraintEqualToConstant:v21];
+  titleLabel5 = [(MFRecipientTableViewCell *)self titleLabel];
+  widthAnchor = [titleLabel5 widthAnchor];
+  v35 = [widthAnchor constraintEqualToConstant:v21];
   [v71 addObject:v35];
 
   v36 = objc_opt_class();
   [(MFRecipientTableViewCell *)self bounds];
   [v36 _constrainedWidthForDetailViewWithAccessoryWidth:v6 containerWidth:v37];
   v39 = v38;
-  v40 = [(MFRecipientTableViewCell *)self detailLabel];
-  v41 = [v40 font];
-  [v41 descender];
+  detailLabel = [(MFRecipientTableViewCell *)self detailLabel];
+  font3 = [detailLabel font];
+  [font3 descender];
   v43 = v42;
   v44 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:v7];
   [v44 _bodyLeading];
   v46 = v45;
 
-  v47 = [(MFRecipientTableViewCell *)self detailLabel];
-  LODWORD(v40) = [v47 isHidden];
+  detailLabel2 = [(MFRecipientTableViewCell *)self detailLabel];
+  LODWORD(detailLabel) = [detailLabel2 isHidden];
   v48 = round(v43 + v46 * 0.6);
 
-  if (v40)
+  if (detailLabel)
   {
-    v49 = [(MFRecipientTableViewCell *)self titleLabel];
-    v50 = [v49 bottomAnchor];
-    v51 = [(MFRecipientTableViewCell *)self contentView];
-    v52 = [v51 bottomAnchor];
-    v53 = [v50 constraintEqualToAnchor:v52 constant:-v48];
+    titleLabel6 = [(MFRecipientTableViewCell *)self titleLabel];
+    bottomAnchor = [titleLabel6 bottomAnchor];
+    contentView3 = [(MFRecipientTableViewCell *)self contentView];
+    bottomAnchor2 = [contentView3 bottomAnchor];
+    v53 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-v48];
     [v71 addObject:v53];
   }
 
   else
   {
-    v54 = [(MFRecipientTableViewCell *)self detailLabel];
-    v55 = [v54 topAnchor];
-    v56 = [(MFRecipientTableViewCell *)self titleLabel];
-    v57 = [v56 bottomAnchor];
-    v58 = [v55 constraintEqualToAnchor:v57 constant:0.0];
+    detailLabel3 = [(MFRecipientTableViewCell *)self detailLabel];
+    topAnchor3 = [detailLabel3 topAnchor];
+    titleLabel7 = [(MFRecipientTableViewCell *)self titleLabel];
+    bottomAnchor3 = [titleLabel7 bottomAnchor];
+    v58 = [topAnchor3 constraintEqualToAnchor:bottomAnchor3 constant:0.0];
     [v71 addObject:v58];
 
-    v59 = [(MFRecipientTableViewCell *)self detailLabel];
-    v60 = [v59 leadingAnchor];
-    v61 = [(MFRecipientTableViewCell *)self titleLabel];
-    v62 = [v61 leadingAnchor];
-    v63 = [v60 constraintEqualToAnchor:v62];
+    detailLabel4 = [(MFRecipientTableViewCell *)self detailLabel];
+    leadingAnchor3 = [detailLabel4 leadingAnchor];
+    titleLabel8 = [(MFRecipientTableViewCell *)self titleLabel];
+    leadingAnchor4 = [titleLabel8 leadingAnchor];
+    v63 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     [v71 addObject:v63];
 
-    v64 = [(MFRecipientTableViewCell *)self detailLabel];
-    v65 = [v64 bottomAnchor];
-    v66 = [(MFRecipientTableViewCell *)self contentView];
-    v67 = [v66 bottomAnchor];
-    v68 = [v65 constraintEqualToAnchor:v67 constant:-v48];
+    detailLabel5 = [(MFRecipientTableViewCell *)self detailLabel];
+    bottomAnchor4 = [detailLabel5 bottomAnchor];
+    contentView4 = [(MFRecipientTableViewCell *)self contentView];
+    bottomAnchor5 = [contentView4 bottomAnchor];
+    v68 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5 constant:-v48];
     [v71 addObject:v68];
 
-    v49 = [(MFRecipientTableViewCell *)self detailLabel];
-    v50 = [v49 widthAnchor];
-    v51 = [v50 constraintEqualToConstant:v39];
-    [v71 addObject:v51];
+    titleLabel6 = [(MFRecipientTableViewCell *)self detailLabel];
+    bottomAnchor = [titleLabel6 widthAnchor];
+    contentView3 = [bottomAnchor constraintEqualToConstant:v39];
+    [v71 addObject:contentView3];
   }
 
   [(MFRecipientTableViewCell *)self setActiveConstraints:v71];
@@ -226,12 +226,12 @@
     +[MFRecipientTableViewCell _deviceSpecificLayoutMargin];
   }
 
-  v2 = [MEMORY[0x1E69DCEB0] mainScreen];
-  v3 = v2;
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  v3 = mainScreen;
   v4 = 15.0;
   if (_deviceSpecificLayoutMargin_wantsWideContentMargins == 1)
   {
-    [v2 bounds];
+    [mainScreen bounds];
     if (CGRectGetWidth(v6) <= 320.0)
     {
       v4 = 16.0;
@@ -312,28 +312,28 @@ void __60__MFRecipientTableViewCell__realDetailButtonAccessoryMargin__block_invo
   _realDetailButtonAccessoryMargin_realAccessoryMargin = *&MaxX;
 }
 
-+ (id)_attributedStringRepresentationOfCompleteMatchesForRecipient:(id)a3 constrainedToWidth:(double)a4 overflowRecipients:(id *)a5 useHighlighting:(BOOL)a6
++ (id)_attributedStringRepresentationOfCompleteMatchesForRecipient:(id)recipient constrainedToWidth:(double)width overflowRecipients:(id *)recipients useHighlighting:(BOOL)highlighting
 {
-  v81 = a6;
+  highlightingCopy = highlighting;
   v99 = *MEMORY[0x1E69E9840];
-  v83 = a3;
-  v82 = [v83 displayString];
-  if (([v83 isGroup] & 1) == 0 && (!v82 || !objc_msgSend(v82, "length")))
+  recipientCopy = recipient;
+  displayString = [recipientCopy displayString];
+  if (([recipientCopy isGroup] & 1) == 0 && (!displayString || !objc_msgSend(displayString, "length")))
   {
-    v7 = [v83 placeholderName];
+    placeholderName = [recipientCopy placeholderName];
 
-    v82 = v7;
+    displayString = placeholderName;
   }
 
-  if ([v83 isGroup] && (objc_msgSend(v83, "wasCompleteMatch") & 1) == 0)
+  if ([recipientCopy isGroup] && (objc_msgSend(recipientCopy, "wasCompleteMatch") & 1) == 0)
   {
     v8 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
     v9 = [v8 localizedStringForKey:@"RECENT_GROUP" value:&stru_1F3CF3758 table:@"Main"];
 
-    v82 = v9;
+    displayString = v9;
   }
 
-  if (v81)
+  if (highlightingCopy)
   {
     [objc_opt_class() defaultTitleStringAttributes];
   }
@@ -343,9 +343,9 @@ void __60__MFRecipientTableViewCell__realDetailButtonAccessoryMargin__block_invo
     [objc_opt_class() highlightedTitleStringAttributes];
   }
   v79 = ;
-  if (v82)
+  if (displayString)
   {
-    v10 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v82 attributes:v79];
+    v10 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:displayString attributes:v79];
   }
 
   else
@@ -354,16 +354,16 @@ void __60__MFRecipientTableViewCell__realDetailButtonAccessoryMargin__block_invo
   }
 
   v11 = v10;
-  if ([v83 isGroup] && objc_msgSend(v83, "wasCompleteMatch"))
+  if ([recipientCopy isGroup] && objc_msgSend(recipientCopy, "wasCompleteMatch"))
   {
-    v12 = [v83 childrenWithCompleteMatches];
-    v80 = v12;
-    v13 = [v83 children];
-    if ([v13 count] == 2)
+    childrenWithCompleteMatches = [recipientCopy childrenWithCompleteMatches];
+    v80 = childrenWithCompleteMatches;
+    children = [recipientCopy children];
+    if ([children count] == 2)
     {
-      v14 = [v83 children];
-      v15 = [v14 count];
-      v77 = v15 - [v12 count] == 1;
+      children2 = [recipientCopy children];
+      v15 = [children2 count];
+      v77 = v15 - [childrenWithCompleteMatches count] == 1;
     }
 
     else
@@ -371,41 +371,41 @@ void __60__MFRecipientTableViewCell__realDetailButtonAccessoryMargin__block_invo
       v77 = 0;
     }
 
-    v16 = [v12 count] > 1;
-    v86 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v12, "count")}];
+    v16 = [childrenWithCompleteMatches count] > 1;
+    v86 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(childrenWithCompleteMatches, "count")}];
     v17 = MFLocalizedAddressSeparator();
-    v18 = [objc_opt_class() highlightedTitleStringAttributes];
-    [v17 sizeWithAttributes:v18];
+    highlightedTitleStringAttributes = [objc_opt_class() highlightedTitleStringAttributes];
+    [v17 sizeWithAttributes:highlightedTitleStringAttributes];
     v20 = v19;
     v21 = v16 || v77;
 
     v22 = 0;
     v23 = 0;
     v24 = 0.0;
-    while (v22 < [v12 count])
+    while (v22 < [childrenWithCompleteMatches count])
     {
-      v25 = [v12 objectAtIndex:v22];
+      v25 = [childrenWithCompleteMatches objectAtIndex:v22];
       v26 = _displayNameForRecipient(v25, v21);
-      v27 = [objc_opt_class() highlightedTitleStringAttributes];
-      [v26 sizeWithAttributes:v27];
+      highlightedTitleStringAttributes2 = [objc_opt_class() highlightedTitleStringAttributes];
+      [v26 sizeWithAttributes:highlightedTitleStringAttributes2];
       v29 = v28;
 
       v24 = v24 + v20 + v29;
-      if (a4 <= 0.0 || v24 <= a4)
+      if (width <= 0.0 || v24 <= width)
       {
         [v86 addObject:v26];
       }
 
       else
       {
-        v30 = v23;
+        array = v23;
         if (!v23)
         {
-          v30 = [MEMORY[0x1E695DF70] array];
+          array = [MEMORY[0x1E695DF70] array];
         }
 
-        v23 = v30;
-        [v30 addObject:v25];
+        v23 = array;
+        [array addObject:v25];
       }
 
       ++v22;
@@ -414,12 +414,12 @@ void __60__MFRecipientTableViewCell__realDetailButtonAccessoryMargin__block_invo
     if ([v23 count])
     {
       v31 = v23;
-      *a5 = v23;
+      *recipients = v23;
     }
 
     if ([v86 count])
     {
-      if ([v86 count] != 2 || (v32 = objc_msgSend(v86, "count"), objc_msgSend(v83, "children"), v33 = objc_claimAutoreleasedReturnValue(), v34 = objc_msgSend(v33, "count"), v33, v32 != v34))
+      if ([v86 count] != 2 || (v32 = objc_msgSend(v86, "count"), objc_msgSend(recipientCopy, "children"), v33 = objc_claimAutoreleasedReturnValue(), v34 = objc_msgSend(v33, "count"), v33, v32 != v34))
       {
         obj = [MEMORY[0x1E696AD60] string];
         for (i = 0; [v86 count] > i; ++i)
@@ -441,8 +441,8 @@ void __60__MFRecipientTableViewCell__realDetailButtonAccessoryMargin__block_invo
         }
 
         v44 = [v86 count];
-        v45 = [v83 children];
-        v46 = [v45 count];
+        children3 = [recipientCopy children];
+        v46 = [children3 count];
 
         if (v44 < v46)
         {
@@ -459,8 +459,8 @@ LABEL_45:
           v95 = 0u;
           v92 = 0u;
           v93 = 0u;
-          v48 = [v83 children];
-          v49 = [v48 countByEnumeratingWithState:&v92 objects:v98 count:16];
+          children4 = [recipientCopy children];
+          v49 = [children4 countByEnumeratingWithState:&v92 objects:v98 count:16];
           if (v49)
           {
             v50 = 0;
@@ -472,7 +472,7 @@ LABEL_48:
             {
               if (*v93 != v51)
               {
-                objc_enumerationMutation(v48);
+                objc_enumerationMutation(children4);
               }
 
               v50 = *(*(&v92 + 1) + 8 * v52);
@@ -486,7 +486,7 @@ LABEL_48:
               v53 = v50;
               if (v49 == v52)
               {
-                v49 = [v48 countByEnumeratingWithState:&v92 objects:v98 count:16];
+                v49 = [children4 countByEnumeratingWithState:&v92 objects:v98 count:16];
                 if (v49)
                 {
                   goto LABEL_48;
@@ -503,7 +503,7 @@ LABEL_48:
 
             v54 = _displayNameForRecipient(v50, 1);
             [v54 sizeWithAttributes:v79];
-            if (v24 + v55 >= a4)
+            if (v24 + v55 >= width)
             {
               if (v23)
               {
@@ -513,7 +513,7 @@ LABEL_48:
               else
               {
                 v97 = v50;
-                *a5 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v97 count:1];
+                *recipients = [MEMORY[0x1E695DEC8] arrayWithObjects:&v97 count:1];
               }
             }
 
@@ -531,7 +531,7 @@ LABEL_48:
 
           else
           {
-            v50 = v48;
+            v50 = children4;
           }
         }
 
@@ -562,13 +562,13 @@ LABEL_63:
   }
 
 LABEL_64:
-  if (v81)
+  if (highlightingCopy)
   {
     v90 = 0u;
     v91 = 0u;
     v88 = 0u;
     v89 = 0u;
-    obja = [v83 completelyMatchedAttributedStrings];
+    obja = [recipientCopy completelyMatchedAttributedStrings];
     v61 = [obja countByEnumeratingWithState:&v88 objects:v96 count:16];
     if (v61)
     {
@@ -583,22 +583,22 @@ LABEL_64:
           }
 
           v63 = *(*(&v88 + 1) + 8 * j);
-          v64 = [v11 string];
-          v65 = [v63 string];
-          v66 = [v64 rangeOfString:v65];
+          string = [v11 string];
+          string2 = [v63 string];
+          v66 = [string rangeOfString:string2];
           v68 = v67;
 
           while (v66 != 0x7FFFFFFFFFFFFFFFLL)
           {
-            v69 = [objc_opt_class() highlightedTitleStringAttributes];
-            [v11 addAttributes:v69 range:{v66, v68}];
+            highlightedTitleStringAttributes3 = [objc_opt_class() highlightedTitleStringAttributes];
+            [v11 addAttributes:highlightedTitleStringAttributes3 range:{v66, v68}];
 
-            v70 = [v11 string];
-            v71 = [v70 length];
+            string3 = [v11 string];
+            v71 = [string3 length];
 
-            v72 = [v11 string];
-            v73 = [v63 string];
-            v66 = [v72 rangeOfString:v73 options:0 range:{v66 + 1, v71 + ~v66}];
+            string4 = [v11 string];
+            string5 = [v63 string];
+            v66 = [string4 rangeOfString:string5 options:0 range:{v66 + 1, v71 + ~v66}];
             v68 = v74;
           }
         }
@@ -609,42 +609,42 @@ LABEL_64:
       while (v61);
     }
 
-    v75 = obja;
+    regularTitleStringAttributes = obja;
   }
 
   else
   {
-    v75 = [objc_opt_class() regularTitleStringAttributes];
-    [v11 setAttributes:v75 range:{0, objc_msgSend(v11, "length")}];
+    regularTitleStringAttributes = [objc_opt_class() regularTitleStringAttributes];
+    [v11 setAttributes:regularTitleStringAttributes range:{0, objc_msgSend(v11, "length")}];
   }
 
   return v11;
 }
 
-+ (id)_copyAttributedStringRepresentationOfGroupRecipient:(id)a3 withSortedRecipientList:(id)a4
++ (id)_copyAttributedStringRepresentationOfGroupRecipient:(id)recipient withSortedRecipientList:(id)list
 {
   v42 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v35 = v5;
-  v36 = v6;
-  if ([v6 count])
+  recipientCopy = recipient;
+  listCopy = list;
+  v35 = recipientCopy;
+  v36 = listCopy;
+  if ([listCopy count])
   {
-    if ([v6 count] == 1)
+    if ([listCopy count] == 1)
     {
-      v7 = [v5 children];
-      [v7 count];
+      children = [recipientCopy children];
+      [children count];
     }
 
-    v8 = v6;
+    children2 = listCopy;
   }
 
   else
   {
-    v8 = [v5 children];
+    children2 = [recipientCopy children];
   }
 
-  v9 = v8;
+  v9 = children2;
   v10 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v9, "count")}];
   v39 = 0u;
   v40 = 0u;
@@ -693,9 +693,9 @@ LABEL_64:
     v23 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
     v24 = [v23 localizedStringForKey:@"GROUP_FINAL_ITEM" value:&stru_1F3CF3758 table:@"Main"];
 
-    v25 = [v22 mutableString];
+    mutableString = [v22 mutableString];
     v26 = [v10 objectAtIndex:0];
-    [v25 appendFormat:v24, v26];
+    [mutableString appendFormat:v24, v26];
   }
 
   else
@@ -726,23 +726,23 @@ LABEL_64:
 
       v32 = v31;
 
-      v33 = [v22 mutableString];
+      mutableString2 = [v22 mutableString];
       v34 = [v10 objectAtIndexedSubscript:j];
-      [v33 appendFormat:v32, v34];
+      [mutableString2 appendFormat:v32, v34];
     }
   }
 
-  v27 = [objc_opt_class() groupDetailStringAttributes];
-  [v22 setAttributes:v27 range:{0, objc_msgSend(v22, "length")}];
+  groupDetailStringAttributes = [objc_opt_class() groupDetailStringAttributes];
+  [v22 setAttributes:groupDetailStringAttributes range:{0, objc_msgSend(v22, "length")}];
 
   return v22;
 }
 
-+ (id)_attributedStringRepresentationOfPartialEmailMatchForSingleRecipient:(id)a3 useHighlighting:(BOOL)a4
++ (id)_attributedStringRepresentationOfPartialEmailMatchForSingleRecipient:(id)recipient useHighlighting:(BOOL)highlighting
 {
-  v4 = a4;
-  v5 = a3;
-  if ([v5 isGroup])
+  highlightingCopy = highlighting;
+  recipientCopy = recipient;
+  if ([recipientCopy isGroup])
   {
     v6 = 0;
   }
@@ -750,25 +750,25 @@ LABEL_64:
   else
   {
     v7 = objc_alloc(MEMORY[0x1E696AD40]);
-    v8 = [v5 address];
-    v9 = [objc_opt_class() defaultDetailStringAttributes];
-    v6 = [v7 initWithString:v8 attributes:v9];
+    address = [recipientCopy address];
+    defaultDetailStringAttributes = [objc_opt_class() defaultDetailStringAttributes];
+    v6 = [v7 initWithString:address attributes:defaultDetailStringAttributes];
 
-    if (v4)
+    if (highlightingCopy)
     {
-      v10 = [v5 originContext];
-      v11 = [v10 searchTerm];
+      originContext = [recipientCopy originContext];
+      searchTerm = [originContext searchTerm];
 
-      if ([v11 length])
+      if ([searchTerm length])
       {
-        v12 = [v6 string];
-        v13 = [v12 rangeOfString:v11];
+        string = [v6 string];
+        v13 = [string rangeOfString:searchTerm];
         v15 = v14;
 
         if (!v13)
         {
-          v16 = [objc_opt_class() highlightedDetailStringAttributes];
-          [v6 setAttributes:v16 range:{0, v15}];
+          highlightedDetailStringAttributes = [objc_opt_class() highlightedDetailStringAttributes];
+          [v6 setAttributes:highlightedDetailStringAttributes range:{0, v15}];
         }
       }
     }
@@ -777,23 +777,23 @@ LABEL_64:
   return v6;
 }
 
-+ (id)_tintedAttributedString:(id)a3 toColor:(id)a4 shouldDim:(BOOL)a5
++ (id)_tintedAttributedString:(id)string toColor:(id)color shouldDim:(BOOL)dim
 {
-  v5 = a5;
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 mutableCopy];
+  dimCopy = dim;
+  stringCopy = string;
+  colorCopy = color;
+  v9 = [stringCopy mutableCopy];
   v10 = v9;
-  if (v5)
+  if (dimCopy)
   {
-    ColorSpace = CGColorGetColorSpace([v8 CGColor]);
+    ColorSpace = CGColorGetColorSpace([colorCopy CGColor]);
     if (CGColorSpaceGetModel(ColorSpace))
     {
       v24 = NAN;
       v25 = NAN;
       v22 = NAN;
       v23 = NAN;
-      [v8 getHue:&v24 saturation:&v23 brightness:&v22 alpha:&v25];
+      [colorCopy getHue:&v24 saturation:&v23 brightness:&v22 alpha:&v25];
       v12 = [MEMORY[0x1E69DC888] colorWithHue:v24 saturation:v23 * 0.5 brightness:v22 * 0.75 alpha:v25];
     }
 
@@ -803,22 +803,22 @@ LABEL_64:
     }
 
     v14 = v12;
-    v15 = [v7 length];
+    v15 = [stringCopy length];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __70__MFRecipientTableViewCell__tintedAttributedString_toColor_shouldDim___block_invoke;
     v18[3] = &unk_1E80707B8;
-    v19 = v8;
+    v19 = colorCopy;
     v16 = v14;
     v20 = v16;
     v21 = v10;
-    [v7 enumerateAttributesInRange:0 options:v15 usingBlock:{0x100000, v18}];
+    [stringCopy enumerateAttributesInRange:0 options:v15 usingBlock:{0x100000, v18}];
   }
 
   else
   {
     v13 = [v9 length];
-    [v10 addAttribute:*MEMORY[0x1E69DB650] value:v8 range:{0, v13}];
+    [v10 addAttribute:*MEMORY[0x1E69DB650] value:colorCopy range:{0, v13}];
   }
 
   return v10;
@@ -858,20 +858,20 @@ void __70__MFRecipientTableViewCell__tintedAttributedString_toColor_shouldDim___
 LABEL_8:
 }
 
-- (void)setRecipient:(id)a3
+- (void)setRecipient:(id)recipient
 {
   v68 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = v5;
-  if (!v5 || self->_recipient == v5)
+  recipientCopy = recipient;
+  v6 = recipientCopy;
+  if (!recipientCopy || self->_recipient == recipientCopy)
   {
     goto LABEL_37;
   }
 
-  objc_storeStrong(&self->_recipient, a3);
+  objc_storeStrong(&self->_recipient, recipient);
   self->_shouldHideDetailLabel = 0;
-  v7 = [(MFRecipientTableViewCell *)self titleLabel];
-  [v7 bounds];
+  titleLabel = [(MFRecipientTableViewCell *)self titleLabel];
+  [titleLabel bounds];
   v9 = v8;
 
   v10 = objc_opt_class();
@@ -879,18 +879,18 @@ LABEL_8:
   v66 = 0;
   v60 = [v10 _attributedStringRepresentationOfCompleteMatchesForRecipient:recipient constrainedToWidth:&v66 overflowRecipients:-[MFRecipientTableViewCell shouldHighlightCompleteMatches](self useHighlighting:{"shouldHighlightCompleteMatches"), v9}];
   v61 = v66;
-  v12 = [(MFRecipientTableViewCell *)self titleLabel];
-  v13 = [(MFRecipientTableViewCell *)self tintColor];
-  v14 = [MFRecipientTableViewCell _tintedAttributedString:v60 toColor:v13 shouldDim:self->_shouldDimIrrelevantInformation];
-  [v12 setAttributedText:v14];
+  titleLabel2 = [(MFRecipientTableViewCell *)self titleLabel];
+  tintColor = [(MFRecipientTableViewCell *)self tintColor];
+  v14 = [MFRecipientTableViewCell _tintedAttributedString:v60 toColor:tintColor shouldDim:self->_shouldDimIrrelevantInformation];
+  [titleLabel2 setAttributedText:v14];
 
   if ([(MFComposeRecipient *)v6 isGroup])
   {
-    v15 = [(MFComposeRecipient *)v6 childrenWithCompleteMatches];
-    self->_shouldHideDetailLabel = [v15 count] != 0;
+    childrenWithCompleteMatches = [(MFComposeRecipient *)v6 childrenWithCompleteMatches];
+    self->_shouldHideDetailLabel = [childrenWithCompleteMatches count] != 0;
 
-    v16 = [(MFComposeRecipient *)v6 children];
-    v17 = [v16 count];
+    children = [(MFComposeRecipient *)v6 children];
+    v17 = [children count];
     shouldHideDetailLabel = self->_shouldHideDetailLabel;
     if (v17 >= 3)
     {
@@ -907,34 +907,34 @@ LABEL_8:
     }
 
     self->_shouldHideDetailLabel = v20;
-    v21 = [(MFComposeRecipient *)v6 childrenWithCompleteMatches];
+    childrenWithCompleteMatches2 = [(MFComposeRecipient *)v6 childrenWithCompleteMatches];
     if ([v61 count])
     {
-      v22 = [v21 arrayByExcludingObjectsInArray:v61];
+      v22 = [childrenWithCompleteMatches2 arrayByExcludingObjectsInArray:v61];
 
-      v21 = v22;
+      childrenWithCompleteMatches2 = v22;
     }
 
-    v23 = [(MFComposeRecipient *)v6 sortedChildren];
-    v24 = [v23 arrayByExcludingObjectsInArray:v21];
+    sortedChildren = [(MFComposeRecipient *)v6 sortedChildren];
+    v24 = [sortedChildren arrayByExcludingObjectsInArray:childrenWithCompleteMatches2];
 
     v25 = [objc_opt_class() _copyAttributedStringRepresentationOfGroupRecipient:v6 withSortedRecipientList:v24];
-    v26 = [(MFRecipientTableViewCell *)self detailLabel];
-    v27 = [(MFRecipientTableViewCell *)self tintColor];
-    v28 = [MFRecipientTableViewCell _tintedAttributedString:v25 toColor:v27 shouldDim:self->_shouldDimIrrelevantInformation];
-    [v26 setAttributedText:v28];
+    detailLabel = [(MFRecipientTableViewCell *)self detailLabel];
+    tintColor2 = [(MFRecipientTableViewCell *)self tintColor];
+    v28 = [MFRecipientTableViewCell _tintedAttributedString:v25 toColor:tintColor2 shouldDim:self->_shouldDimIrrelevantInformation];
+    [detailLabel setAttributedText:v28];
 
-    v29 = [(MFRecipientTableViewCell *)self detailLabel];
-    [v29 setNumberOfLines:0];
+    detailLabel2 = [(MFRecipientTableViewCell *)self detailLabel];
+    [detailLabel2 setNumberOfLines:0];
   }
 
   else
   {
-    v30 = [(MFRecipientTableViewCell *)self detailLabel];
-    [v30 setHidden:0];
+    detailLabel3 = [(MFRecipientTableViewCell *)self detailLabel];
+    [detailLabel3 setHidden:0];
 
-    v31 = [(MFComposeRecipient *)v6 address];
-    if ([v31 length])
+    address = [(MFComposeRecipient *)v6 address];
+    if ([address length])
     {
       v32 = [(MFComposeRecipient *)v6 kind]== 4;
 
@@ -946,11 +946,11 @@ LABEL_8:
           v65 = 0u;
           v62 = 0u;
           v63 = 0u;
-          v33 = [(MFComposeRecipient *)self->_recipient completelyMatchedAttributedStrings];
-          v34 = [v33 countByEnumeratingWithState:&v62 objects:v67 count:16];
+          completelyMatchedAttributedStrings = [(MFComposeRecipient *)self->_recipient completelyMatchedAttributedStrings];
+          v34 = [completelyMatchedAttributedStrings countByEnumeratingWithState:&v62 objects:v67 count:16];
           if (v34)
           {
-            obj = v33;
+            obj = completelyMatchedAttributedStrings;
             v35 = *v63;
             while (2)
             {
@@ -983,7 +983,7 @@ LABEL_8:
 
             v40 = 1;
 LABEL_27:
-            v33 = obj;
+            completelyMatchedAttributedStrings = obj;
           }
 
           else
@@ -997,22 +997,22 @@ LABEL_27:
           v40 = 0;
         }
 
-        v43 = [(MFRecipientTableViewCell *)self detailLabel];
-        [v43 setNumberOfLines:!MFModernUIApplicationPreferredContentSizeIsLargerThanLarge()];
+        detailLabel4 = [(MFRecipientTableViewCell *)self detailLabel];
+        [detailLabel4 setNumberOfLines:!MFModernUIApplicationPreferredContentSizeIsLargerThanLarge()];
 
         v44 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:&stru_1F3CF3758];
-        v45 = [(MFComposeRecipient *)v6 label];
-        v46 = [v45 length];
+        label = [(MFComposeRecipient *)v6 label];
+        v46 = [label length];
 
         if (v46)
         {
           v47 = objc_alloc(MEMORY[0x1E696AAB0]);
-          v48 = [(MFComposeRecipient *)v6 label];
-          v49 = [objc_opt_class() labelDetailStringAttributes];
-          v50 = [v47 initWithString:v48 attributes:v49];
+          label2 = [(MFComposeRecipient *)v6 label];
+          labelDetailStringAttributes = [objc_opt_class() labelDetailStringAttributes];
+          v50 = [v47 initWithString:label2 attributes:labelDetailStringAttributes];
 
-          v51 = [(MFRecipientTableViewCell *)self tintColor];
-          v52 = [MFRecipientTableViewCell _tintedAttributedString:v50 toColor:v51 shouldDim:self->_shouldDimIrrelevantInformation];
+          tintColor3 = [(MFRecipientTableViewCell *)self tintColor];
+          v52 = [MFRecipientTableViewCell _tintedAttributedString:v50 toColor:tintColor3 shouldDim:self->_shouldDimIrrelevantInformation];
           [v44 appendAttributedString:v52];
 
           v53 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:@"  "];
@@ -1020,12 +1020,12 @@ LABEL_27:
         }
 
         v54 = [objc_opt_class() _attributedStringRepresentationOfPartialEmailMatchForSingleRecipient:v6 useHighlighting:v40];
-        v55 = [(MFRecipientTableViewCell *)self tintColor];
-        v56 = [MFRecipientTableViewCell _tintedAttributedString:v54 toColor:v55 shouldDim:self->_shouldDimIrrelevantInformation];
+        tintColor4 = [(MFRecipientTableViewCell *)self tintColor];
+        v56 = [MFRecipientTableViewCell _tintedAttributedString:v54 toColor:tintColor4 shouldDim:self->_shouldDimIrrelevantInformation];
         [v44 appendAttributedString:v56];
 
-        v57 = [(MFRecipientTableViewCell *)self detailLabel];
-        [v57 setAttributedText:v44];
+        detailLabel5 = [(MFRecipientTableViewCell *)self detailLabel];
+        [detailLabel5 setAttributedText:v44];
 
         goto LABEL_33;
       }
@@ -1035,9 +1035,9 @@ LABEL_27:
     {
     }
 
-    v41 = [(MFRecipientTableViewCell *)self detailLabel];
+    detailLabel6 = [(MFRecipientTableViewCell *)self detailLabel];
     v42 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:&stru_1F3CF3758];
-    [v41 setAttributedText:v42];
+    [detailLabel6 setAttributedText:v42];
 
     self->_shouldHideDetailLabel = 1;
   }
@@ -1045,30 +1045,30 @@ LABEL_27:
 LABEL_33:
   if (self->_shouldHideDetailLabel)
   {
-    v58 = [(MFRecipientTableViewCell *)self detailLabel];
-    [v58 setHidden:1];
+    detailLabel7 = [(MFRecipientTableViewCell *)self detailLabel];
+    [detailLabel7 setHidden:1];
   }
 
   else
   {
-    v58 = [(MFRecipientTableViewCell *)self detailLabel];
-    [v58 setHidden:0];
+    detailLabel7 = [(MFRecipientTableViewCell *)self detailLabel];
+    [detailLabel7 setHidden:0];
   }
 
   [(MFRecipientTableViewCell *)self updateActiveConstraints];
 LABEL_37:
 }
 
-+ (double)heightWithRecipient:(id)a3 width:(double)a4
++ (double)heightWithRecipient:(id)recipient width:(double)width
 {
-  v5 = a3;
-  v6 = [objc_opt_class() defaultTitleStringAttributes];
+  recipientCopy = recipient;
+  defaultTitleStringAttributes = [objc_opt_class() defaultTitleStringAttributes];
   v7 = *MEMORY[0x1E69DB648];
-  v8 = [v6 objectForKey:*MEMORY[0x1E69DB648]];
+  v8 = [defaultTitleStringAttributes objectForKey:*MEMORY[0x1E69DB648]];
   [v8 capHeight];
 
-  v9 = [objc_opt_class() defaultDetailStringAttributes];
-  v10 = [v9 objectForKey:v7];
+  defaultDetailStringAttributes = [objc_opt_class() defaultDetailStringAttributes];
+  v10 = [defaultDetailStringAttributes objectForKey:v7];
   [v10 capHeight];
 
   v11 = +[MFFontMetricCache sharedFontMetricCache];
@@ -1080,45 +1080,45 @@ LABEL_37:
   v14 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:v12];
   [v14 _bodyLeading];
 
-  if (v5 && [v5 isGroup])
+  if (recipientCopy && [recipientCopy isGroup])
   {
-    v15 = [v5 sortedChildren];
-    v16 = [v5 childrenWithCompleteMatches];
-    if ([v16 count])
+    sortedChildren = [recipientCopy sortedChildren];
+    childrenWithCompleteMatches = [recipientCopy childrenWithCompleteMatches];
+    if ([childrenWithCompleteMatches count])
     {
-      [a1 _realDetailButtonAccessoryMargin];
-      [a1 _constrainedWidthForTitleViewWithAccessoryWidth:? containerWidth:?];
+      [self _realDetailButtonAccessoryMargin];
+      [self _constrainedWidthForTitleViewWithAccessoryWidth:? containerWidth:?];
       v29 = 0;
-      v17 = [a1 _attributedStringRepresentationOfCompleteMatchesForRecipient:v5 constrainedToWidth:&v29 overflowRecipients:0 useHighlighting:?];
+      v17 = [self _attributedStringRepresentationOfCompleteMatchesForRecipient:recipientCopy constrainedToWidth:&v29 overflowRecipients:0 useHighlighting:?];
       v18 = v29;
       if ([v18 count])
       {
-        v19 = [v16 arrayByExcludingObjectsInArray:v18];
+        v19 = [childrenWithCompleteMatches arrayByExcludingObjectsInArray:v18];
 
-        v16 = v19;
+        childrenWithCompleteMatches = v19;
       }
 
-      if ([v16 count])
+      if ([childrenWithCompleteMatches count])
       {
-        v20 = [v15 arrayByExcludingObjectsInArray:v16];
+        v20 = [sortedChildren arrayByExcludingObjectsInArray:childrenWithCompleteMatches];
 
-        v15 = v20;
+        sortedChildren = v20;
       }
     }
 
-    if ([v15 count])
+    if ([sortedChildren count])
     {
-      [a1 _realDetailButtonAccessoryMargin];
-      [a1 _constrainedWidthForDetailViewWithAccessoryWidth:? containerWidth:?];
+      [self _realDetailButtonAccessoryMargin];
+      [self _constrainedWidthForDetailViewWithAccessoryWidth:? containerWidth:?];
       v22 = v21;
-      v23 = [a1 _copyAttributedStringRepresentationOfGroupRecipient:v5 withSortedRecipientList:v15];
+      v23 = [self _copyAttributedStringRepresentationOfGroupRecipient:recipientCopy withSortedRecipientList:sortedChildren];
       [v23 boundingRectWithSize:1 options:0 context:{v22, 1.79769313e308}];
       v24 = [v23 attribute:v7 atIndex:0 effectiveRange:0];
       [v24 lineHeight];
     }
   }
 
-  v25 = [MEMORY[0x1E69DD2E8] _applicationKeyWindow];
+  _applicationKeyWindow = [MEMORY[0x1E69DD2E8] _applicationKeyWindow];
   UIRoundToViewScale();
   v27 = v26;
 
@@ -1134,12 +1134,12 @@ double __54__MFRecipientTableViewCell_heightWithRecipient_width___block_invoke()
   return v2;
 }
 
-- (void)setOpaque:(BOOL)a3
+- (void)setOpaque:(BOOL)opaque
 {
   v8.receiver = self;
   v8.super_class = MFRecipientTableViewCell;
   [(MFRecipientTableViewCell *)&v8 setOpaque:?];
-  if (a3)
+  if (opaque)
   {
     [(MFRecipientTableViewCell *)self backgroundColor];
   }
@@ -1149,33 +1149,33 @@ double __54__MFRecipientTableViewCell_heightWithRecipient_width___block_invoke()
     [MEMORY[0x1E69DC888] clearColor];
   }
   v5 = ;
-  v6 = [(MFRecipientTableViewCell *)self detailLabel];
-  [v6 setBackgroundColor:v5];
-  v7 = [(MFRecipientTableViewCell *)self titleLabel];
-  [v7 setBackgroundColor:v5];
+  detailLabel = [(MFRecipientTableViewCell *)self detailLabel];
+  [detailLabel setBackgroundColor:v5];
+  titleLabel = [(MFRecipientTableViewCell *)self titleLabel];
+  [titleLabel setBackgroundColor:v5];
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   v9.receiver = self;
   v9.super_class = MFRecipientTableViewCell;
-  [(MFRecipientTableViewCell *)&v9 setBackgroundColor:v4];
+  [(MFRecipientTableViewCell *)&v9 setBackgroundColor:colorCopy];
   if ([(MFRecipientTableViewCell *)self isOpaque])
   {
-    v5 = v4;
+    clearColor = colorCopy;
   }
 
   else
   {
-    v5 = [MEMORY[0x1E69DC888] clearColor];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
   }
 
-  v6 = v5;
-  v7 = [(MFRecipientTableViewCell *)self detailLabel];
-  [v7 setBackgroundColor:v6];
-  v8 = [(MFRecipientTableViewCell *)self titleLabel];
-  [v8 setBackgroundColor:v6];
+  v6 = clearColor;
+  detailLabel = [(MFRecipientTableViewCell *)self detailLabel];
+  [detailLabel setBackgroundColor:v6];
+  titleLabel = [(MFRecipientTableViewCell *)self titleLabel];
+  [titleLabel setBackgroundColor:v6];
 }
 
 - (id)tintColor
@@ -1193,14 +1193,14 @@ double __54__MFRecipientTableViewCell_heightWithRecipient_width___block_invoke()
   return tintColor;
 }
 
-- (void)setTintColor:(id)a3 animated:(BOOL)a4
+- (void)setTintColor:(id)color animated:(BOOL)animated
 {
-  v4 = a4;
-  v7 = a3;
-  v8 = v7;
-  if (v7 && self->_tintColor != v7)
+  animatedCopy = animated;
+  colorCopy = color;
+  v8 = colorCopy;
+  if (colorCopy && self->_tintColor != colorCopy)
   {
-    objc_storeStrong(&self->_tintColor, a3);
+    objc_storeStrong(&self->_tintColor, color);
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __50__MFRecipientTableViewCell_setTintColor_animated___block_invoke;
@@ -1213,13 +1213,13 @@ double __54__MFRecipientTableViewCell_heightWithRecipient_width___block_invoke()
     v13[3] = &unk_1E806C570;
     v13[4] = self;
     v10 = _Block_copy(v13);
-    if (v4)
+    if (animatedCopy)
     {
-      v11 = [(MFRecipientTableViewCell *)self titleLabel];
-      [(MFRecipientTableViewCell *)self animateSnapshotOfLabel:v11 withBlock:v9];
+      titleLabel = [(MFRecipientTableViewCell *)self titleLabel];
+      [(MFRecipientTableViewCell *)self animateSnapshotOfLabel:titleLabel withBlock:v9];
 
-      v12 = [(MFRecipientTableViewCell *)self detailLabel];
-      [(MFRecipientTableViewCell *)self animateSnapshotOfLabel:v12 withBlock:v10];
+      detailLabel = [(MFRecipientTableViewCell *)self detailLabel];
+      [(MFRecipientTableViewCell *)self animateSnapshotOfLabel:detailLabel withBlock:v10];
     }
 
     else
@@ -1250,24 +1250,24 @@ void __50__MFRecipientTableViewCell_setTintColor_animated___block_invoke_2(uint6
   [v5 setAttributedText:v4];
 }
 
-- (void)animateSnapshotOfLabel:(id)a3 withBlock:(id)a4
+- (void)animateSnapshotOfLabel:(id)label withBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  labelCopy = label;
+  blockCopy = block;
   v8 = objc_alloc(MEMORY[0x1E69DCF70]);
-  [v6 frame];
+  [labelCopy frame];
   v9 = [v8 initWithFrame:?];
-  [v9 captureSnapshotOfView:v6 withSnapshotType:1];
+  [v9 captureSnapshotOfView:labelCopy withSnapshotType:1];
   [(MFRecipientTableViewCell *)self addSubview:v9];
-  [v6 setAlpha:0.0];
-  v7[2](v7);
+  [labelCopy setAlpha:0.0];
+  blockCopy[2](blockCopy);
   v10 = MEMORY[0x1E69DD250];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __61__MFRecipientTableViewCell_animateSnapshotOfLabel_withBlock___block_invoke;
   v15[3] = &unk_1E806C520;
   v16 = v9;
-  v11 = v6;
+  v11 = labelCopy;
   v17 = v11;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
@@ -1340,7 +1340,7 @@ id __56__MFRecipientTableViewCell_defaultTitleStringAttributes__block_invoke()
   v6[1] = 3221225472;
   v6[2] = __56__MFRecipientTableViewCell_regularTitleStringAttributes__block_invoke;
   v6[3] = &__block_descriptor_40_e19___NSDictionary_8__0l;
-  v6[4] = a1;
+  v6[4] = self;
   v4 = [v3 cachedAttributesForIdentifier:@"regularTitle" constructionBlock:v6];
 
   return v4;
@@ -1430,7 +1430,7 @@ id __57__MFRecipientTableViewCell_defaultDetailStringAttributes__block_invoke()
   v6[1] = 3221225472;
   v6[2] = __61__MFRecipientTableViewCell_highlightedDetailStringAttributes__block_invoke;
   v6[3] = &__block_descriptor_40_e19___NSDictionary_8__0l;
-  v6[4] = a1;
+  v6[4] = self;
   v4 = [v3 cachedAttributesForIdentifier:@"detailHigh" constructionBlock:v6];
 
   return v4;

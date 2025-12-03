@@ -2,11 +2,11 @@
 + (id)motionProvider;
 - (PRUISDeviceMotionProviderDelegate)delegate;
 - (PRUISTestingDeviceMotionProvider)init;
-- (float64x2_t)_circularRotationWithProgress:(double)a3@<D1> radius:;
+- (float64x2_t)_circularRotationWithProgress:(double)progress@<D1> radius:;
 - (void)_rescheduleTimer;
 - (void)_scheduleTimerIfNeeded;
 - (void)dealloc;
-- (void)setMotionUpdateInterval:(double)a3;
+- (void)setMotionUpdateInterval:(double)interval;
 - (void)stopGeneratingMotionEvents;
 @end
 
@@ -39,7 +39,7 @@
   block[1] = 3221225472;
   block[2] = __50__PRUISTestingDeviceMotionProvider_motionProvider__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (motionProvider_onceToken_0 != -1)
   {
     dispatch_once(&motionProvider_onceToken_0, block);
@@ -58,11 +58,11 @@ uint64_t __50__PRUISTestingDeviceMotionProvider_motionProvider__block_invoke(uin
   return MEMORY[0x1EEE66BB8](v1);
 }
 
-- (void)setMotionUpdateInterval:(double)a3
+- (void)setMotionUpdateInterval:(double)interval
 {
-  if (self->_motionUpdateInterval != a3)
+  if (self->_motionUpdateInterval != interval)
   {
-    self->_motionUpdateInterval = a3;
+    self->_motionUpdateInterval = interval;
     [(PRUISTestingDeviceMotionProvider *)self _rescheduleTimer];
   }
 }
@@ -163,10 +163,10 @@ void __58__PRUISTestingDeviceMotionProvider__scheduleTimerIfNeeded__block_invoke
   [(PRUISTestingDeviceMotionProvider *)self _scheduleTimerIfNeeded];
 }
 
-- (float64x2_t)_circularRotationWithProgress:(double)a3@<D1> radius:
+- (float64x2_t)_circularRotationWithProgress:(double)progress@<D1> radius:
 {
   v4 = fmin(fmax(a2, 0.0), 1.0);
-  v5 = fmin(fmax(a3, 0.0), 1.0);
+  v5 = fmin(fmax(progress, 0.0), 1.0);
   v6 = __sincos_stret(v4 * 3.14159265 + v4 * 3.14159265);
   v7.f64[0] = v5 * v6.__cosval;
   v7.f64[1] = v5 * v6.__sinval;
@@ -186,8 +186,8 @@ void __58__PRUISTestingDeviceMotionProvider__scheduleTimerIfNeeded__block_invoke
   v17.f64[0] = -xa.f64[0];
   v15.f64[0] = -v21.f64[0];
   result = vmlaq_f64(vmulq_f64(vmulq_f64(vextq_s8(xa, xa, 8uLL), v13), v15), vzip1q_s64(xa, v22), vmulq_f64(vextq_s8(v21, v21, 8uLL), v14));
-  *a1 = result;
-  a1[1] = vmlaq_f64(vmulq_f64(vmulq_laneq_f64(v17, xa, 1), vzip1q_s64(v22, xa)), v16, vmulq_f64(v21, vextq_s8(v21, v22, 8uLL)));
+  *self = result;
+  self[1] = vmlaq_f64(vmulq_f64(vmulq_laneq_f64(v17, xa, 1), vzip1q_s64(v22, xa)), v16, vmulq_f64(v21, vextq_s8(v21, v22, 8uLL)));
   return result;
 }
 

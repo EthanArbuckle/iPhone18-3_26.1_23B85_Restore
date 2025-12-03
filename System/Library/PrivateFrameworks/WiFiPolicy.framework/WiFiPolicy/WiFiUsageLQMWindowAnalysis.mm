@@ -1,24 +1,24 @@
 @interface WiFiUsageLQMWindowAnalysis
-+ (BOOL)isInCallAnalysisDue:(id)a3;
++ (BOOL)isInCallAnalysisDue:(id)due;
 + (id)config;
-+ (unint64_t)canCreateAnalysisFor:(id)a3;
-+ (void)computeFeatures:(id)a3 For:(id)a4 WithLogLabel:(id)a5;
++ (unint64_t)canCreateAnalysisFor:(id)for;
++ (void)computeFeatures:(id)features For:(id)for WithLogLabel:(id)label;
 + (void)initialize;
 + (void)updateConfig;
 - (BOOL)canSubmitToCA;
 - (BOOL)getBeforeKernelWindowWithLikelyhood;
-- (id)addDimensionsTo:(id)a3;
-- (id)dumpAnalysis:(id)a3;
-- (id)dumpDimensions:(id)a3;
-- (id)fetchKernelLQMRollingWindowForInterface:(id)a3 into:(id)a4;
-- (id)metricCallbackForMetric:(id)a3 AndField:(id)a4;
+- (id)addDimensionsTo:(id)to;
+- (id)dumpAnalysis:(id)analysis;
+- (id)dumpDimensions:(id)dimensions;
+- (id)fetchKernelLQMRollingWindowForInterface:(id)interface into:(id)into;
+- (id)metricCallbackForMetric:(id)metric AndField:(id)field;
 - (os_state_data_s)_generateState;
-- (void)computeBins:(id)a3 WithSampleKind:(Class)a4;
-- (void)computeFeaturesFor:(id)a3 WithLogLabel:(id)a4;
+- (void)computeBins:(id)bins WithSampleKind:(Class)kind;
+- (void)computeFeaturesFor:(id)for WithLogLabel:(id)label;
 - (void)dealloc;
 - (void)performAnalysis;
-- (void)updateWithLQMSample:(id)a3;
-- (void)updateWithSubsequentTrigger:(id)a3;
+- (void)updateWithLQMSample:(id)sample;
+- (void)updateWithSubsequentTrigger:(id)trigger;
 @end
 
 @implementation WiFiUsageLQMWindowAnalysis
@@ -49,14 +49,14 @@
   [(WiFiUsageLQMWindowAnalysis *)&v5 dealloc];
 }
 
-+ (BOOL)isInCallAnalysisDue:(id)a3
++ (BOOL)isInCallAnalysisDue:(id)due
 {
   if (_inCallAnalysisIntervalSecEnabled != 1)
   {
     return 0;
   }
 
-  [a3 timeIntervalSinceNow];
+  [due timeIntervalSinceNow];
   return *&_inCallAnalysisIntervalSec <= -v5;
 }
 
@@ -64,12 +64,12 @@
 {
   if (_isKernelParsingEnabled == 1)
   {
-    v2 = [MEMORY[0x277CCACA8] stringWithFormat:@"with likelyhood of fetching in-kernel LQM rolling window: %@", _fetchKernelWindowSamplingRates];
+    _fetchKernelWindowSamplingRates = [MEMORY[0x277CCACA8] stringWithFormat:@"with likelyhood of fetching in-kernel LQM rolling window: %@", _fetchKernelWindowSamplingRates];
   }
 
   else
   {
-    v2 = &stru_28487EF20;
+    _fetchKernelWindowSamplingRates = &stru_28487EF20;
   }
 
   if (_inCallAnalysisIntervalSecEnabled == 1)
@@ -101,7 +101,7 @@
     v7 = @"YES";
   }
 
-  v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"metricPrefix set to '%@'  cdfMetricName set to '%@' ; sankeyMetricName set to '%@' ; maxConcurrentAnalysis set to %u\nLikelyhood of creating an analysis: %@\nLikelyhood of sending analysis to CA: %@\nKernel window parsing enabled: %@ %@\nInCall LQMAnalysis enabled: %@ %@", _metricPrefix, _cdfMetricName, _sankeyMetricName, _maxConcurrentAnalysis, _createAnalysisSamplingRates, _submitToCASamplingRates, v8, v2, v7, v6];;
+  v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"metricPrefix set to '%@'  cdfMetricName set to '%@' ; sankeyMetricName set to '%@' ; maxConcurrentAnalysis set to %u\nLikelyhood of creating an analysis: %@\nLikelyhood of sending analysis to CA: %@\nKernel window parsing enabled: %@ %@\nInCall LQMAnalysis enabled: %@ %@", _metricPrefix, _cdfMetricName, _sankeyMetricName, _maxConcurrentAnalysis, _createAnalysisSamplingRates, _submitToCASamplingRates, v8, _fetchKernelWindowSamplingRates, v7, v6];;
 
   return v9;
 }
@@ -111,7 +111,7 @@
   v51 = *MEMORY[0x277D85DE8];
   v3 = objc_opt_self();
 
-  if (v3 == a1)
+  if (v3 == self)
   {
     v4 = _metricPrefix;
     _metricPrefix = @"com.apple.wifi.lqmanalysis";
@@ -234,11 +234,11 @@
 
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
-      v45 = [a1 config];
+      config = [self config];
       *buf = 136315394;
       v48 = "+[WiFiUsageLQMWindowAnalysis initialize]";
       v49 = 2112;
-      v50 = v45;
+      v50 = config;
       _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%s: %@", buf, 0x16u);
     }
   }
@@ -304,7 +304,7 @@
         v9 = [v4 objectForKey:@"AnalysisCreationSampling"];
 
         v51 = v4;
-        v52 = a1;
+        selfCopy = self;
         if (v9)
         {
           objc_opt_class();
@@ -316,8 +316,8 @@
             v62 = 0u;
             v63 = 0u;
             v64 = 0u;
-            v11 = [v10 allKeys];
-            v12 = [v11 countByEnumeratingWithState:&v61 objects:v69 count:16];
+            allKeys = [v10 allKeys];
+            v12 = [allKeys countByEnumeratingWithState:&v61 objects:v69 count:16];
             if (v12)
             {
               v13 = v12;
@@ -328,7 +328,7 @@
                 {
                   if (*v62 != v14)
                   {
-                    objc_enumerationMutation(v11);
+                    objc_enumerationMutation(allKeys);
                   }
 
                   v16 = *(*(&v61 + 1) + 8 * i);
@@ -345,14 +345,14 @@
                   }
                 }
 
-                v13 = [v11 countByEnumeratingWithState:&v61 objects:v69 count:16];
+                v13 = [allKeys countByEnumeratingWithState:&v61 objects:v69 count:16];
               }
 
               while (v13);
             }
 
             v4 = v51;
-            a1 = v52;
+            self = selfCopy;
             v9 = v48;
           }
         }
@@ -370,8 +370,8 @@
             v58 = 0u;
             v59 = 0u;
             v60 = 0u;
-            v21 = [v20 allKeys];
-            v22 = [v21 countByEnumeratingWithState:&v57 objects:v68 count:16];
+            allKeys2 = [v20 allKeys];
+            v22 = [allKeys2 countByEnumeratingWithState:&v57 objects:v68 count:16];
             if (v22)
             {
               v23 = v22;
@@ -382,7 +382,7 @@
                 {
                   if (*v58 != v24)
                   {
-                    objc_enumerationMutation(v21);
+                    objc_enumerationMutation(allKeys2);
                   }
 
                   v26 = *(*(&v57 + 1) + 8 * j);
@@ -399,14 +399,14 @@
                   }
                 }
 
-                v23 = [v21 countByEnumeratingWithState:&v57 objects:v68 count:16];
+                v23 = [allKeys2 countByEnumeratingWithState:&v57 objects:v68 count:16];
               }
 
               while (v23);
             }
 
             v4 = v51;
-            a1 = v52;
+            self = selfCopy;
             v19 = v49;
           }
         }
@@ -435,8 +435,8 @@
             v54 = 0u;
             v55 = 0u;
             v56 = 0u;
-            v32 = [v31 allKeys];
-            v33 = [v32 countByEnumeratingWithState:&v53 objects:v67 count:16];
+            allKeys3 = [v31 allKeys];
+            v33 = [allKeys3 countByEnumeratingWithState:&v53 objects:v67 count:16];
             if (v33)
             {
               v34 = v33;
@@ -447,7 +447,7 @@
                 {
                   if (*v54 != v35)
                   {
-                    objc_enumerationMutation(v32);
+                    objc_enumerationMutation(allKeys3);
                   }
 
                   v37 = *(*(&v53 + 1) + 8 * k);
@@ -464,14 +464,14 @@
                   }
                 }
 
-                v34 = [v32 countByEnumeratingWithState:&v53 objects:v67 count:16];
+                v34 = [allKeys3 countByEnumeratingWithState:&v53 objects:v67 count:16];
               }
 
               while (v34);
             }
 
             v4 = v51;
-            a1 = v52;
+            self = selfCopy;
             v30 = v50;
           }
         }
@@ -493,15 +493,15 @@
   }
 
   v42 = MEMORY[0x277CCACA8];
-  v43 = [a1 config];
-  v44 = [v42 stringWithFormat:@"%s: %@", "+[WiFiUsageLQMWindowAnalysis updateConfig]", v43];
+  config = [self config];
+  v44 = [v42 stringWithFormat:@"%s: %@", "+[WiFiUsageLQMWindowAnalysis updateConfig]", config];
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     v45 = [MEMORY[0x277CCACA8] stringWithFormat:@"[WiFiPolicy] %s", objc_msgSend(v44, "UTF8String")];
-    v46 = [v45 UTF8String];
+    uTF8String = [v45 UTF8String];
     *buf = 136446210;
-    v66 = v46;
+    v66 = uTF8String;
     _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%{public}s", buf, 0xCu);
   }
 
@@ -525,56 +525,56 @@ uint64_t __94__WiFiUsageLQMWindowAnalysis_initWithRollingWindow_andReason_andCon
   return v2;
 }
 
-- (void)updateWithLQMSample:(id)a3
+- (void)updateWithLQMSample:(id)sample
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  sampleCopy = sample;
+  if (sampleCopy)
   {
-    v5 = [(WiFiUsageLQMRollingWindow *)self->_windowAfterTrigger samples];
-    if (v5)
+    samples = [(WiFiUsageLQMRollingWindow *)self->_windowAfterTrigger samples];
+    if (samples)
     {
-      v6 = [(WiFiUsageLQMRollingWindow *)self->_windowAfterTrigger samples];
-      if ([v6 count])
+      samples2 = [(WiFiUsageLQMRollingWindow *)self->_windowAfterTrigger samples];
+      if ([samples2 count])
       {
-        v7 = [(WiFiUsageLQMRollingWindow *)self->_windowAfterTrigger samples];
-        v8 = [v7 firstObject];
-        v9 = [v8 networkDetails];
-        v10 = [v9 connectedBss];
-        v11 = [v10 bssid];
+        samples3 = [(WiFiUsageLQMRollingWindow *)self->_windowAfterTrigger samples];
+        firstObject = [samples3 firstObject];
+        networkDetails = [firstObject networkDetails];
+        connectedBss = [networkDetails connectedBss];
+        bssid = [connectedBss bssid];
       }
 
       else
       {
-        v11 = 0;
+        bssid = 0;
       }
     }
 
     else
     {
-      v11 = 0;
+      bssid = 0;
     }
 
-    v12 = [v4 networkDetails];
-    v13 = [v12 connectedBss];
-    v14 = [v13 bssid];
+    networkDetails2 = [sampleCopy networkDetails];
+    connectedBss2 = [networkDetails2 connectedBss];
+    bssid2 = [connectedBss2 bssid];
 
-    if (v11 && ([v11 isEqualToString:v14] & 1) == 0)
+    if (bssid && ([bssid isEqualToString:bssid2] & 1) == 0)
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
       {
         v16 = 136316418;
         v17 = "[WiFiUsageLQMWindowAnalysis updateWithLQMSample:]";
         v18 = 2112;
-        v19 = self;
+        selfCopy = self;
         v20 = 2160;
         v21 = 1752392040;
         v22 = 2112;
-        v23 = v11;
+        v23 = bssid;
         v24 = 2160;
         v25 = 1752392040;
         v26 = 2112;
-        v27 = v14;
+        v27 = bssid2;
         _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%s: performing LQM window analysis for reason %@ (ending this analysis early because the BSSID has changed (%{mask.hash}@ -> %{mask.hash}@)", &v16, 0x3Eu);
       }
 
@@ -583,58 +583,58 @@ uint64_t __94__WiFiUsageLQMWindowAnalysis_initWithRollingWindow_andReason_andCon
 
     else
     {
-      [(WiFiUsageLQMRollingWindow *)self->_windowAfterTrigger addSample:v4];
+      [(WiFiUsageLQMRollingWindow *)self->_windowAfterTrigger addSample:sampleCopy];
     }
   }
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateWithSubsequentTrigger:(id)a3
+- (void)updateWithSubsequentTrigger:(id)trigger
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  triggerCopy = trigger;
+  v5 = triggerCopy;
+  if (triggerCopy)
   {
-    v8 = v4;
-    v4 = [(NSMutableArray *)self->_subsequentTriggers addObject:v4];
+    v8 = triggerCopy;
+    triggerCopy = [(NSMutableArray *)self->_subsequentTriggers addObject:triggerCopy];
     v5 = v8;
     if (!self->_firstSubsequentLinkDownReason)
     {
-      v6 = [v8 trigger];
+      trigger = [v8 trigger];
 
       v5 = v8;
-      if (v6 == @"LinkDown")
+      if (trigger == @"LinkDown")
       {
-        v7 = [v8 reason];
-        [(WiFiUsageLQMWindowAnalysis *)self setFirstSubsequentLinkDownReason:v7];
+        reason = [v8 reason];
+        [(WiFiUsageLQMWindowAnalysis *)self setFirstSubsequentLinkDownReason:reason];
 
         v5 = v8;
       }
     }
   }
 
-  MEMORY[0x2821F96F8](v4, v5);
+  MEMORY[0x2821F96F8](triggerCopy, v5);
 }
 
-- (void)computeFeaturesFor:(id)a3 WithLogLabel:(id)a4
+- (void)computeFeaturesFor:(id)for WithLogLabel:(id)label
 {
-  v6 = a4;
-  v7 = a3;
+  labelCopy = label;
+  forCopy = for;
   v8 = objc_opt_class();
   lqmWindowsFeatures = self->_lqmWindowsFeatures;
-  v10 = [v7 samples];
+  samples = [forCopy samples];
 
-  [v8 computeFeatures:lqmWindowsFeatures For:v10 WithLogLabel:v6];
+  [v8 computeFeatures:lqmWindowsFeatures For:samples WithLogLabel:labelCopy];
 }
 
-+ (void)computeFeatures:(id)a3 For:(id)a4 WithLogLabel:(id)a5
++ (void)computeFeatures:(id)features For:(id)for WithLogLabel:(id)label
 {
   v59 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v37 = a4;
-  v38 = a5;
-  v36 = [v37 firstObject];
+  featuresCopy = features;
+  forCopy = for;
+  labelCopy = label;
+  firstObject = [forCopy firstObject];
   v8 = objc_opt_class();
   v44 = 0u;
   v45 = 0u;
@@ -665,7 +665,7 @@ uint64_t __94__WiFiUsageLQMWindowAnalysis_initWithRollingWindow_andReason_andCon
           v15 = v9;
         }
 
-        v16 = [*(v10 + 3240) stringWithFormat:@"%@_%@%@", v14, v12, v15, v36];
+        v16 = [*(v10 + 3240) stringWithFormat:@"%@_%@%@", v14, v12, v15, firstObject];
         v43 = v16;
         if (v14)
         {
@@ -683,20 +683,20 @@ uint64_t __94__WiFiUsageLQMWindowAnalysis_initWithRollingWindow_andReason_andCon
           v19 = [*(v10 + 3240) stringWithFormat:v18, v14];
           aSelector = NSSelectorFromString(v19);
 
-          v20 = [v7 objectForKeyedSubscript:v17];
+          v20 = [featuresCopy objectForKeyedSubscript:v17];
           if (!v20)
           {
             goto LABEL_14;
           }
 
           v21 = v20;
-          [v7 objectForKeyedSubscript:v43];
+          [featuresCopy objectForKeyedSubscript:v43];
           v22 = v9;
           v23 = v8;
-          v25 = v24 = v7;
-          v26 = [v25 objectForKeyedSubscript:v38];
+          v25 = v24 = featuresCopy;
+          v26 = [v25 objectForKeyedSubscript:labelCopy];
 
-          v7 = v24;
+          featuresCopy = v24;
           v8 = v23;
           v9 = v22;
 
@@ -707,20 +707,20 @@ LABEL_14:
             {
               v27 = [WiFiUsageLQMRollingWindow methodForSelector:aSelector];
               v28 = objc_opt_class();
-              v29 = v27(v28, aSelector, v12, v13, v37);
+              v29 = v27(v28, aSelector, v12, v13, forCopy);
               if (v29)
               {
                 v30 = v29;
-                v31 = [v7 valueForKey:v43];
+                v31 = [featuresCopy valueForKey:v43];
 
                 if (!v31)
                 {
                   v32 = objc_opt_new();
-                  [v7 setObject:v32 forKeyedSubscript:v43];
+                  [featuresCopy setObject:v32 forKeyedSubscript:v43];
                 }
 
-                v33 = [v7 objectForKeyedSubscript:v43];
-                [v33 setObject:v30 forKeyedSubscript:v38];
+                v33 = [featuresCopy objectForKeyedSubscript:v43];
+                [v33 setObject:v30 forKeyedSubscript:labelCopy];
               }
             }
 
@@ -767,15 +767,15 @@ LABEL_14:
   v35 = *MEMORY[0x277D85DE8];
 }
 
-- (void)computeBins:(id)a3 WithSampleKind:(Class)a4
+- (void)computeBins:(id)bins WithSampleKind:(Class)kind
 {
   v47 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  binsCopy = bins;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
-  obj = [v4 allKeys];
+  obj = [binsCopy allKeys];
   v5 = [obj countByEnumeratingWithState:&v37 objects:v46 count:16];
   if (v5)
   {
@@ -806,11 +806,11 @@ LABEL_14:
           v34 = 0u;
           v35 = 0u;
           v36 = 0u;
-          v12 = [v4 objectForKeyedSubscript:v10];
-          v13 = [v12 allKeys];
+          v12 = [binsCopy objectForKeyedSubscript:v10];
+          allKeys = [v12 allKeys];
 
-          v30 = v13;
-          v14 = [v13 countByEnumeratingWithState:&v33 objects:v41 count:16];
+          v30 = allKeys;
+          v14 = [allKeys countByEnumeratingWithState:&v33 objects:v41 count:16];
           if (v14)
           {
             v15 = v14;
@@ -825,10 +825,10 @@ LABEL_14:
                 }
 
                 v18 = *(*(&v33 + 1) + 8 * i);
-                v19 = [v4 objectForKeyedSubscript:v10];
+                v19 = [binsCopy objectForKeyedSubscript:v10];
                 v20 = [v19 objectForKeyedSubscript:v18];
-                v21 = -[objc_class binLabelfromFieldName:value:](a4, "binLabelfromFieldName:value:", v32, [v20 integerValue]);
-                v22 = [v4 objectForKeyedSubscript:v10];
+                v21 = -[objc_class binLabelfromFieldName:value:](kind, "binLabelfromFieldName:value:", v32, [v20 integerValue]);
+                v22 = [binsCopy objectForKeyedSubscript:v10];
                 [v22 setObject:v21 forKeyedSubscript:v18];
               }
 
@@ -869,55 +869,55 @@ LABEL_14:
 - (void)performAnalysis
 {
   v79 = *MEMORY[0x277D85DE8];
-  v3 = [(WiFiUsageLQMRollingWindow *)self->_windowBeforeTrigger samples];
-  if (v3)
+  samples = [(WiFiUsageLQMRollingWindow *)self->_windowBeforeTrigger samples];
+  if (samples)
   {
-    v4 = [(WiFiUsageLQMRollingWindow *)self->_windowBeforeTrigger samples];
-    v5 = [v4 firstObject];
+    samples2 = [(WiFiUsageLQMRollingWindow *)self->_windowBeforeTrigger samples];
+    firstObject = [samples2 firstObject];
   }
 
   else
   {
-    v5 = 0;
+    firstObject = 0;
   }
 
-  v6 = [(WiFiUsageLQMRollingWindow *)self->_windowAfterTrigger samples];
-  if (v6)
+  samples3 = [(WiFiUsageLQMRollingWindow *)self->_windowAfterTrigger samples];
+  if (samples3)
   {
-    v7 = [(WiFiUsageLQMRollingWindow *)self->_windowAfterTrigger samples];
-    v8 = [v7 lastObject];
+    samples4 = [(WiFiUsageLQMRollingWindow *)self->_windowAfterTrigger samples];
+    lastObject = [samples4 lastObject];
   }
 
   else
   {
-    v8 = 0;
+    lastObject = 0;
   }
 
-  if (!v5)
+  if (!firstObject)
   {
     goto LABEL_32;
   }
 
-  v56 = v8;
+  v56 = lastObject;
   if ([(NSMutableDictionary *)self->_lqmWindowsFeatures count]&& !+[WiFiUsageLQMKernelRollingWindow isOngoing])
   {
-    v9 = [(WiFiUsageLQMRollingWindow *)self->_windowAfterTrigger interfaceName];
+    interfaceName = [(WiFiUsageLQMRollingWindow *)self->_windowAfterTrigger interfaceName];
 
     v10 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT);
-    if (v9)
+    if (interfaceName)
     {
       if (v10)
       {
         *buf = 136315394;
-        v58 = "[WiFiUsageLQMWindowAnalysis performAnalysis]";
+        selfCopy2 = "[WiFiUsageLQMWindowAnalysis performAnalysis]";
         v59 = 2112;
-        v60 = self;
+        selfCopy = self;
         _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%s: Fetching after kernel rolling window for analysis: %@", buf, 0x16u);
       }
 
-      v11 = objc_opt_new();
-      v12 = [(WiFiUsageLQMRollingWindow *)self->_windowAfterTrigger interfaceName];
-      v13 = [(WiFiUsageLQMWindowAnalysis *)self fetchKernelLQMRollingWindowForInterface:v12 into:v11];
+      interfaceName3 = objc_opt_new();
+      interfaceName2 = [(WiFiUsageLQMRollingWindow *)self->_windowAfterTrigger interfaceName];
+      v13 = [(WiFiUsageLQMWindowAnalysis *)self fetchKernelLQMRollingWindowForInterface:interfaceName2 into:interfaceName3];
 
       if (v13)
       {
@@ -931,11 +931,11 @@ LABEL_14:
 
     if (v10)
     {
-      v11 = [(WiFiUsageLQMRollingWindow *)self->_windowAfterTrigger interfaceName];
+      interfaceName3 = [(WiFiUsageLQMRollingWindow *)self->_windowAfterTrigger interfaceName];
       *buf = 136315394;
-      v58 = "[WiFiUsageLQMWindowAnalysis performAnalysis]";
+      selfCopy2 = "[WiFiUsageLQMWindowAnalysis performAnalysis]";
       v59 = 2112;
-      v60 = v11;
+      selfCopy = interfaceName3;
       _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%s - Cannot fetch the kernel rolling window (invalid interface name on windowAfterTrigger: %@)", buf, 0x16u);
 LABEL_18:
     }
@@ -951,41 +951,41 @@ LABEL_18:
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     v19 = _dateFormatter_1;
-    v50 = [v5 timestamp];
+    timestamp = [firstObject timestamp];
     v55 = [v19 stringFromDate:?];
     v20 = _dateFormatter_1;
-    v49 = [(WiFiUsageLQMRollingWindow *)self->_windowBeforeTrigger samples];
-    v48 = [v49 lastObject];
-    v47 = [v48 timestamp];
+    samples5 = [(WiFiUsageLQMRollingWindow *)self->_windowBeforeTrigger samples];
+    lastObject2 = [samples5 lastObject];
+    timestamp2 = [lastObject2 timestamp];
     v54 = [v20 stringFromDate:?];
     v21 = _dateFormatter_1;
-    v46 = [(WiFiUsageLQMRollingWindow *)self->_windowAfterTrigger samples];
-    v45 = [v46 firstObject];
-    v22 = [v45 timestamp];
-    v53 = [v21 stringFromDate:v22];
+    samples6 = [(WiFiUsageLQMRollingWindow *)self->_windowAfterTrigger samples];
+    firstObject2 = [samples6 firstObject];
+    timestamp3 = [firstObject2 timestamp];
+    v53 = [v21 stringFromDate:timestamp3];
     v23 = _dateFormatter_1;
-    v24 = [(WiFiUsageLQMRollingWindow *)self->_windowAfterTrigger samples];
-    v25 = [v24 lastObject];
-    v26 = [v25 timestamp];
-    v52 = [v23 stringFromDate:v26];
-    v27 = [v5 networkDetails];
-    v51 = v5;
+    samples7 = [(WiFiUsageLQMRollingWindow *)self->_windowAfterTrigger samples];
+    lastObject3 = [samples7 lastObject];
+    timestamp4 = [lastObject3 timestamp];
+    v52 = [v23 stringFromDate:timestamp4];
+    networkDetails = [firstObject networkDetails];
+    v51 = firstObject;
     if (v56)
     {
-      v28 = [v56 networkDetails];
+      networkDetails2 = [v56 networkDetails];
     }
 
     else
     {
-      v28 = 0;
+      networkDetails2 = 0;
     }
 
     v29 = [(WiFiUsageLQMWindowAnalysis *)self dumpDimensions:self->dimensions];
     v30 = [(WiFiUsageLQMWindowAnalysis *)self dumpAnalysis:self->_lqmWindowsFeatures];
     *buf = 138414851;
-    v58 = self;
+    selfCopy2 = self;
     v59 = 2112;
-    v60 = @"before";
+    selfCopy = @"before";
     v61 = 2112;
     v62 = v55;
     v63 = 2112;
@@ -997,9 +997,9 @@ LABEL_18:
     v69 = 2112;
     v70 = v52;
     v71 = 2113;
-    v72 = v27;
+    v72 = networkDetails;
     v73 = 2113;
-    v74 = v28;
+    v74 = networkDetails2;
     v75 = 2112;
     v76 = v29;
     v77 = 2112;
@@ -1009,18 +1009,18 @@ LABEL_18:
     {
     }
 
-    v5 = v51;
+    firstObject = v51;
   }
 
   [(WiFiUsageLQMWindowAnalysis *)self computeBins:self->_lqmWindowsFeatures WithSampleKind:objc_opt_class()];
   v31 = objc_alloc(MEMORY[0x277CBEAC0]);
   v32 = 0x277CBE000uLL;
   v33 = MEMORY[0x277CBEB18];
-  v34 = [(NSMutableDictionary *)self->_lqmWindowsFeatures allKeys];
-  v35 = [v33 arrayWithArray:v34];
+  allKeys = [(NSMutableDictionary *)self->_lqmWindowsFeatures allKeys];
+  v35 = [v33 arrayWithArray:allKeys];
   metricNameCDF = self->_metricNameCDF;
-  v37 = [(NSMutableDictionary *)self->_lqmWindowsFeatures allKeys];
-  v38 = [v37 count];
+  allKeys2 = [(NSMutableDictionary *)self->_lqmWindowsFeatures allKeys];
+  v38 = [allKeys2 count];
   v39 = MEMORY[0x277CBEB18];
   if (v38)
   {
@@ -1043,7 +1043,7 @@ LABEL_18:
     v40 = v32;
   }
 
-  v8 = v56;
+  lastObject = v56;
 LABEL_32:
   if (!self->_isDone)
   {
@@ -1068,34 +1068,34 @@ LABEL_32:
     _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%s: BEGIN", buf, 0xCu);
   }
 
-  v3 = [(WiFiUsageLQMRollingWindow *)self->_windowBeforeTrigger samples];
-  if (v3)
+  samples = [(WiFiUsageLQMRollingWindow *)self->_windowBeforeTrigger samples];
+  if (samples)
   {
-    v4 = [(WiFiUsageLQMRollingWindow *)self->_windowBeforeTrigger samples];
-    v5 = [v4 firstObject];
+    samples2 = [(WiFiUsageLQMRollingWindow *)self->_windowBeforeTrigger samples];
+    firstObject = [samples2 firstObject];
   }
 
   else
   {
-    v5 = 0;
+    firstObject = 0;
   }
 
-  v6 = [(WiFiUsageLQMRollingWindow *)self->_windowAfterTrigger samples];
-  if (v6)
+  samples3 = [(WiFiUsageLQMRollingWindow *)self->_windowAfterTrigger samples];
+  if (samples3)
   {
-    v7 = [(WiFiUsageLQMRollingWindow *)self->_windowAfterTrigger samples];
-    v8 = [v7 lastObject];
+    samples4 = [(WiFiUsageLQMRollingWindow *)self->_windowAfterTrigger samples];
+    lastObject = [samples4 lastObject];
   }
 
   else
   {
-    v8 = 0;
+    lastObject = 0;
   }
 
-  v9 = [MEMORY[0x277CBEB38] dictionary];
-  v10 = [MEMORY[0x277CBEB38] dictionary];
-  v11 = v10;
-  if (!(v5 | v8))
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+  v11 = dictionary2;
+  if (!(firstObject | lastObject))
   {
     v25 = 0;
 LABEL_23:
@@ -1104,49 +1104,49 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  v62 = v10;
-  v59 = v9;
-  v12 = [MEMORY[0x277CBEB18] array];
+  v62 = dictionary2;
+  v59 = dictionary;
+  array = [MEMORY[0x277CBEB18] array];
   v53 = MEMORY[0x277CCACA8];
-  v54 = v12;
+  v54 = array;
   v13 = _dateFormatter_1;
-  v58 = [v5 timestamp];
-  v52 = [v13 stringFromDate:v58];
+  timestamp = [firstObject timestamp];
+  v52 = [v13 stringFromDate:timestamp];
   v14 = _dateFormatter_1;
-  v57 = [(WiFiUsageLQMRollingWindow *)self->_windowBeforeTrigger samples];
-  v56 = [v57 lastObject];
-  v55 = [v56 timestamp];
-  [v14 stringFromDate:v55];
-  v15 = v61 = v5;
+  samples5 = [(WiFiUsageLQMRollingWindow *)self->_windowBeforeTrigger samples];
+  lastObject2 = [samples5 lastObject];
+  timestamp2 = [lastObject2 timestamp];
+  [v14 stringFromDate:timestamp2];
+  v15 = v61 = firstObject;
   v16 = _dateFormatter_1;
-  v17 = [(WiFiUsageLQMRollingWindow *)self->_windowAfterTrigger samples];
-  v18 = [v17 firstObject];
-  v19 = [v18 timestamp];
-  v20 = [v16 stringFromDate:v19];
+  samples6 = [(WiFiUsageLQMRollingWindow *)self->_windowAfterTrigger samples];
+  firstObject2 = [samples6 firstObject];
+  timestamp3 = [firstObject2 timestamp];
+  v20 = [v16 stringFromDate:timestamp3];
   v21 = _dateFormatter_1;
-  v60 = v8;
-  v22 = [v8 timestamp];
-  v23 = [v21 stringFromDate:v22];
+  v60 = lastObject;
+  timestamp4 = [lastObject timestamp];
+  v23 = [v21 stringFromDate:timestamp4];
   v24 = [v53 stringWithFormat:@"LQM window analysis for %@ (%@: %@ - %@  %@: %@ - %@)\n", self, @"before", v52, v15, @"after", v20, v23];;
   v25 = v54;
   [v54 addObject:v24];
 
-  v5 = v61;
+  firstObject = v61;
   if (v61)
   {
     v26 = MEMORY[0x277CCACA8];
-    v27 = [v61 networkDetails];
-    v28 = [v26 stringWithFormat:@"Network at trigger: %@", v27];
+    networkDetails = [v61 networkDetails];
+    v28 = [v26 stringWithFormat:@"Network at trigger: %@", networkDetails];
     [v54 addObject:v28];
   }
 
-  v9 = v59;
-  v8 = v60;
+  dictionary = v59;
+  lastObject = v60;
   if (v60)
   {
     v29 = MEMORY[0x277CCACA8];
-    v30 = [v60 networkDetails];
-    v31 = [v29 stringWithFormat:@"Network at end of analysis: %@", v30];
+    networkDetails2 = [v60 networkDetails];
+    v31 = [v29 stringWithFormat:@"Network at end of analysis: %@", networkDetails2];
     [v54 addObject:v31];
   }
 
@@ -1163,12 +1163,12 @@ LABEL_23:
   if (v62)
   {
     v36 = objc_opt_class();
-    v37 = [(WiFiUsageLQMRollingWindow *)self->_windowBeforeTrigger samples];
-    [v36 computeFeatures:v62 For:v37 WithLogLabel:@"before"];
+    samples7 = [(WiFiUsageLQMRollingWindow *)self->_windowBeforeTrigger samples];
+    [v36 computeFeatures:v62 For:samples7 WithLogLabel:@"before"];
 
     v38 = objc_opt_class();
-    v39 = [(WiFiUsageLQMRollingWindow *)self->_windowAfterTrigger samples];
-    [v38 computeFeatures:v62 For:v39 WithLogLabel:@"after"];
+    samples8 = [(WiFiUsageLQMRollingWindow *)self->_windowAfterTrigger samples];
+    [v38 computeFeatures:v62 For:samples8 WithLogLabel:@"after"];
 
     v40 = MEMORY[0x277CCACA8];
     v41 = [(WiFiUsageLQMWindowAnalysis *)self dumpAnalysis:v62];
@@ -1231,18 +1231,18 @@ LABEL_25:
   return v48;
 }
 
-+ (unint64_t)canCreateAnalysisFor:(id)a3
++ (unint64_t)canCreateAnalysisFor:(id)for
 {
-  v3 = a3;
+  forCopy = for;
   if ([_createAnalysisSamplingRates count])
   {
-    v4 = [_createAnalysisSamplingRates objectForKeyedSubscript:v3];
+    v4 = [_createAnalysisSamplingRates objectForKeyedSubscript:forCopy];
     LODWORD(v5) = arc4random_uniform([v4 samplingBase]);
 
-    v6 = [_createAnalysisSamplingRates objectForKeyedSubscript:v3];
+    v6 = [_createAnalysisSamplingRates objectForKeyedSubscript:forCopy];
     if (v6)
     {
-      v7 = [_createAnalysisSamplingRates objectForKeyedSubscript:v3];
+      v7 = [_createAnalysisSamplingRates objectForKeyedSubscript:forCopy];
       if (v5 >= [v7 samplingRate])
       {
         v5 = 0;
@@ -1277,11 +1277,11 @@ LABEL_25:
   }
 
   v4 = [_createAnalysisSamplingRates objectForKeyedSubscript:self->_reason];
-  v5 = [v4 samplingBase];
+  samplingBase = [v4 samplingBase];
   v6 = [_submitToCASamplingRates objectForKeyedSubscript:self->_reason];
-  v7 = [v6 samplingBase];
+  samplingBase2 = [v6 samplingBase];
 
-  if (v5 != v7)
+  if (samplingBase != samplingBase2)
   {
     v8 = [_submitToCASamplingRates objectForKeyedSubscript:self->_reason];
     diceRoll = arc4random_uniform([v8 samplingBase]);
@@ -1302,16 +1302,16 @@ LABEL_25:
   return v11;
 }
 
-- (id)metricCallbackForMetric:(id)a3 AndField:(id)a4
+- (id)metricCallbackForMetric:(id)metric AndField:(id)field
 {
   v37 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  metricCopy = metric;
+  fieldCopy = field;
   v8 = objc_opt_new();
-  if ([v6 hasPrefix:self->_metricNameSankey])
+  if ([metricCopy hasPrefix:self->_metricNameSankey])
   {
-    v28 = v7;
-    v29 = v6;
+    v28 = fieldCopy;
+    v29 = metricCopy;
     v34 = 0u;
     v35 = 0u;
     v32 = 0u;
@@ -1349,28 +1349,28 @@ LABEL_25:
       while (v10);
     }
 
-    v7 = v28;
-    v6 = v29;
+    fieldCopy = v28;
+    metricCopy = v29;
   }
 
   else
   {
-    v19 = [v6 hasPrefix:self->_metricNameCDF];
-    if (v7 && v19)
+    v19 = [metricCopy hasPrefix:self->_metricNameCDF];
+    if (fieldCopy && v19)
     {
-      [v8 setObject:v7 forKeyedSubscript:@"fieldName"];
-      v20 = [(NSMutableDictionary *)self->_lqmWindowsFeatures objectForKeyedSubscript:v7];
+      [v8 setObject:fieldCopy forKeyedSubscript:@"fieldName"];
+      v20 = [(NSMutableDictionary *)self->_lqmWindowsFeatures objectForKeyedSubscript:fieldCopy];
       v21 = [v20 objectForKeyedSubscript:@"before"];
       [v8 setObject:v21 forKeyedSubscript:@"before"];
 
-      v22 = [(NSMutableDictionary *)self->_lqmWindowsFeatures objectForKeyedSubscript:v7];
+      v22 = [(NSMutableDictionary *)self->_lqmWindowsFeatures objectForKeyedSubscript:fieldCopy];
       v23 = [v22 objectForKeyedSubscript:@"after"];
       [v8 setObject:v23 forKeyedSubscript:@"after"];
     }
   }
 
-  v24 = [v8 allKeys];
-  v25 = [v24 count];
+  allKeys = [v8 allKeys];
+  v25 = [allKeys count];
 
   if (v25)
   {
@@ -1382,85 +1382,85 @@ LABEL_25:
   return v8;
 }
 
-- (id)addDimensionsTo:(id)a3
+- (id)addDimensionsTo:(id)to
 {
   v160 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  [v4 setObject:self->_reason forKeyedSubscript:@"trigger"];
+  toCopy = to;
+  [toCopy setObject:self->_reason forKeyedSubscript:@"trigger"];
   v5 = MEMORY[0x277CCACA8];
   [(WiFiUsageLQMRollingWindow *)self->_windowBeforeTrigger duration];
   v7 = [v5 stringWithFormat:@"%lu", v6];
-  [v4 setObject:v7 forKeyedSubscript:@"duration"];
+  [toCopy setObject:v7 forKeyedSubscript:@"duration"];
 
-  [v4 setObject:self->_fgApp forKeyedSubscript:@"fgApp"];
+  [toCopy setObject:self->_fgApp forKeyedSubscript:@"fgApp"];
   v8 = MEMORY[0x277CCACA8];
-  v9 = [(WiFiUsageLQMRollingWindow *)self->_windowBeforeTrigger capabilities];
-  v10 = [v8 stringWithFormat:@"%lu", objc_msgSend(v9, "maxInterfacePHYRate")];
-  [v4 setObject:v10 forKeyedSubscript:@"deviceTheoreticalMaxRate"];
+  capabilities = [(WiFiUsageLQMRollingWindow *)self->_windowBeforeTrigger capabilities];
+  v10 = [v8 stringWithFormat:@"%lu", objc_msgSend(capabilities, "maxInterfacePHYRate")];
+  [toCopy setObject:v10 forKeyedSubscript:@"deviceTheoreticalMaxRate"];
 
   v11 = [MEMORY[0x277CCABB0] numberWithBool:self->_inCall];
-  [v4 setObject:v11 forKeyedSubscript:@"inCall"];
+  [toCopy setObject:v11 forKeyedSubscript:@"inCall"];
 
   v12 = [MEMORY[0x277CCABB0] numberWithBool:self->_hasKernel];
-  [v4 setObject:v12 forKeyedSubscript:@"hasKernelStats"];
+  [toCopy setObject:v12 forKeyedSubscript:@"hasKernelStats"];
 
   v13 = [MEMORY[0x277CCABB0] numberWithBool:self->_inA2dp];
-  [v4 setObject:v13 forKeyedSubscript:@"inA2DP"];
+  [toCopy setObject:v13 forKeyedSubscript:@"inA2DP"];
 
   v14 = [MEMORY[0x277CCABB0] numberWithBool:self->_inEsco];
-  [v4 setObject:v14 forKeyedSubscript:@"ineSCO"];
+  [toCopy setObject:v14 forKeyedSubscript:@"ineSCO"];
 
-  v15 = [(WiFiUsageLQMRollingWindow *)self->_windowBeforeTrigger samples];
-  v16 = [v15 lastObject];
-  v17 = [v16 networkDetails];
+  samples = [(WiFiUsageLQMRollingWindow *)self->_windowBeforeTrigger samples];
+  lastObject = [samples lastObject];
+  networkDetails = [lastObject networkDetails];
 
   v18 = MEMORY[0x277CCACA8];
-  v19 = [v17 connectedBss];
-  v20 = [v18 stringWithFormat:@"%ld", objc_msgSend(v19, "channel")];
-  [v4 setObject:v20 forKeyedSubscript:@"channel"];
+  connectedBss = [networkDetails connectedBss];
+  v20 = [v18 stringWithFormat:@"%ld", objc_msgSend(connectedBss, "channel")];
+  [toCopy setObject:v20 forKeyedSubscript:@"channel"];
 
-  v21 = [v17 connectedBss];
-  v22 = +[WiFiUsagePrivacyFilter bandAsString:](WiFiUsagePrivacyFilter, "bandAsString:", [v21 band]);
-  [v4 setObject:v22 forKeyedSubscript:@"band"];
+  connectedBss2 = [networkDetails connectedBss];
+  v22 = +[WiFiUsagePrivacyFilter bandAsString:](WiFiUsagePrivacyFilter, "bandAsString:", [connectedBss2 band]);
+  [toCopy setObject:v22 forKeyedSubscript:@"band"];
 
   v23 = MEMORY[0x277CCACA8];
-  v24 = [v17 connectedBss];
-  v25 = [v23 stringWithFormat:@"%ld", objc_msgSend(v24, "channelWidth")];
-  [v4 setObject:v25 forKeyedSubscript:@"channelWidth"];
+  connectedBss3 = [networkDetails connectedBss];
+  v25 = [v23 stringWithFormat:@"%ld", objc_msgSend(connectedBss3, "channelWidth")];
+  [toCopy setObject:v25 forKeyedSubscript:@"channelWidth"];
 
-  v26 = [v17 connectedBss];
-  v27 = [v26 apProfile];
-  [v4 setObject:v27 forKeyedSubscript:@"apProfile"];
+  connectedBss4 = [networkDetails connectedBss];
+  apProfile = [connectedBss4 apProfile];
+  [toCopy setObject:apProfile forKeyedSubscript:@"apProfile"];
 
-  v28 = [v17 connectedBss];
-  v29 = [v28 bssid];
-  v30 = [WiFiUsagePrivacyFilter sanitizedOUI:v29];
-  [v4 setObject:v30 forKeyedSubscript:@"oui"];
+  connectedBss5 = [networkDetails connectedBss];
+  bssid = [connectedBss5 bssid];
+  v30 = [WiFiUsagePrivacyFilter sanitizedOUI:bssid];
+  [toCopy setObject:v30 forKeyedSubscript:@"oui"];
 
-  v147 = v17;
-  v31 = [v17 connectedBss];
-  v32 = [v31 bssid];
-  v33 = [(WiFiUsageLQMRollingWindow *)self->_windowAfterTrigger samples];
-  v34 = [v33 lastObject];
-  v35 = [v34 networkDetails];
-  v36 = [v35 connectedBss];
-  v37 = [v36 bssid];
-  v38 = [v32 isEqualToString:v37];
+  v147 = networkDetails;
+  connectedBss6 = [networkDetails connectedBss];
+  bssid2 = [connectedBss6 bssid];
+  samples2 = [(WiFiUsageLQMRollingWindow *)self->_windowAfterTrigger samples];
+  lastObject2 = [samples2 lastObject];
+  networkDetails2 = [lastObject2 networkDetails];
+  connectedBss7 = [networkDetails2 connectedBss];
+  bssid3 = [connectedBss7 bssid];
+  v38 = [bssid2 isEqualToString:bssid3];
   v39 = [MEMORY[0x277CCABB0] numberWithBool:v38];
-  [v4 setObject:v39 forKeyedSubscript:@"sameBSSID"];
+  [toCopy setObject:v39 forKeyedSubscript:@"sameBSSID"];
 
   v40 = [MEMORY[0x277CCABB0] numberWithBool:{-[WiFiUsageLQMRollingWindow hasChanged:](self->_windowBeforeTrigger, "hasChanged:", @"networkDetails.connectedBss.channel"}];
-  [v4 setObject:v40 forKeyedSubscript:@"channel_hasChanged_inBefore"];
+  [toCopy setObject:v40 forKeyedSubscript:@"channel_hasChanged_inBefore"];
 
   v41 = [MEMORY[0x277CCABB0] numberWithBool:{-[WiFiUsageLQMRollingWindow hasChanged:](self->_windowAfterTrigger, "hasChanged:", @"networkDetails.connectedBss.channel"}];
-  [v4 setObject:v41 forKeyedSubscript:@"channel_hasChanged_inAfter"];
+  [toCopy setObject:v41 forKeyedSubscript:@"channel_hasChanged_inAfter"];
 
   v42 = [MEMORY[0x277CCABB0] numberWithBool:{-[WiFiUsageLQMRollingWindow hasChanged:](self->_windowBeforeTrigger, "hasChanged:", @"networkDetails.connectedBss.band"}];
-  [v4 setObject:v42 forKeyedSubscript:@"band_hasChanged_inBefore"];
+  [toCopy setObject:v42 forKeyedSubscript:@"band_hasChanged_inBefore"];
 
   v43 = [MEMORY[0x277CCABB0] numberWithBool:{-[WiFiUsageLQMRollingWindow hasChanged:](self->_windowAfterTrigger, "hasChanged:", @"networkDetails.connectedBss.band"}];
-  v148 = v4;
-  [v4 setObject:v43 forKeyedSubscript:@"band_hasChanged_inAfter"];
+  v148 = toCopy;
+  [toCopy setObject:v43 forKeyedSubscript:@"band_hasChanged_inAfter"];
 
   v44 = objc_opt_new();
   v154 = 0u;
@@ -1482,8 +1482,8 @@ LABEL_25:
           objc_enumerationMutation(v45);
         }
 
-        v50 = [*(*(&v154 + 1) + 8 * i) trigger];
-        [v44 appendFormat:@"&%@", v50];
+        trigger = [*(*(&v154 + 1) + 8 * i) trigger];
+        [v44 appendFormat:@"&%@", trigger];
       }
 
       v47 = [(NSArray *)v45 countByEnumeratingWithState:&v154 objects:v159 count:16];
@@ -1493,7 +1493,7 @@ LABEL_25:
   }
 
   v146 = v44;
-  [v4 setObject:v44 forKeyedSubscript:@"preceedingTriggers"];
+  [toCopy setObject:v44 forKeyedSubscript:@"preceedingTriggers"];
   v149 = objc_opt_new();
   v150 = 0u;
   v151 = 0u;
@@ -1515,16 +1515,16 @@ LABEL_25:
         }
 
         v56 = *(*(&v150 + 1) + 8 * j);
-        v57 = [v56 timestamp];
+        timestamp = [v56 timestamp];
         timestamp = self->_timestamp;
         [(WiFiUsageLQMRollingWindow *)self->_windowAfterTrigger duration];
         v59 = [(NSDate *)timestamp dateByAddingTimeInterval:?];
-        v60 = [v57 compare:v59];
+        v60 = [timestamp compare:v59];
 
         if (v60 != 1)
         {
-          v61 = [v56 trigger];
-          [v149 appendFormat:@"&%@", v61];
+          trigger2 = [v56 trigger];
+          [v149 appendFormat:@"&%@", trigger2];
         }
       }
 
@@ -1542,164 +1542,164 @@ LABEL_25:
   v63 = [WiFiUsagePrivacyFilter getLabelsForNetworkProperties:v147];
   [v148 addEntriesFromDictionary:v63];
 
-  v64 = [v147 bssEnvironment];
-  [v148 setObject:v64 forKeyedSubscript:@"bssEnvironment"];
+  bssEnvironment = [v147 bssEnvironment];
+  [v148 setObject:bssEnvironment forKeyedSubscript:@"bssEnvironment"];
 
-  v65 = [v147 privateMacType];
-  [v148 setObject:v65 forKeyedSubscript:@"privateMacType"];
+  privateMacType = [v147 privateMacType];
+  [v148 setObject:privateMacType forKeyedSubscript:@"privateMacType"];
 
   v66 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v147, "privateRelayEnabled")}];
   [v148 setObject:v66 forKeyedSubscript:@"privacyProxyEnabled"];
 
-  v67 = [(WiFiUsageLQMRollingWindow *)self->_windowBeforeTrigger samples];
-  v68 = [v67 lastObject];
-  v69 = [v68 motionState];
-  [v148 setObject:v69 forKeyedSubscript:@"motionStatus"];
+  samples3 = [(WiFiUsageLQMRollingWindow *)self->_windowBeforeTrigger samples];
+  lastObject3 = [samples3 lastObject];
+  motionState = [lastObject3 motionState];
+  [v148 setObject:motionState forKeyedSubscript:@"motionStatus"];
 
   v70 = MEMORY[0x277CCABB0];
-  v71 = [(WiFiUsageLQMRollingWindow *)self->_windowBeforeTrigger samples];
-  v72 = [v71 lastObject];
-  v73 = [v70 numberWithBool:{objc_msgSend(v72, "isAnyAppInFG")}];
+  samples4 = [(WiFiUsageLQMRollingWindow *)self->_windowBeforeTrigger samples];
+  lastObject4 = [samples4 lastObject];
+  v73 = [v70 numberWithBool:{objc_msgSend(lastObject4, "isAnyAppInFG")}];
   [v148 setObject:v73 forKeyedSubscript:@"isAnyAppInFG"];
 
   v74 = MEMORY[0x277CCABB0];
-  v75 = [(WiFiUsageLQMRollingWindow *)self->_windowBeforeTrigger samples];
-  v76 = [v75 lastObject];
-  v77 = [v74 numberWithBool:{objc_msgSend(v76, "isFTactive")}];
+  samples5 = [(WiFiUsageLQMRollingWindow *)self->_windowBeforeTrigger samples];
+  lastObject5 = [samples5 lastObject];
+  v77 = [v74 numberWithBool:{objc_msgSend(lastObject5, "isFTactive")}];
   [v148 setObject:v77 forKeyedSubscript:@"isFTactive"];
 
   v78 = MEMORY[0x277CCABB0];
-  v79 = [(WiFiUsageLQMRollingWindow *)self->_windowBeforeTrigger samples];
-  v80 = [v79 lastObject];
-  v81 = [v78 numberWithBool:{objc_msgSend(v80, "isTimeSensitiveAppRunning")}];
+  samples6 = [(WiFiUsageLQMRollingWindow *)self->_windowBeforeTrigger samples];
+  lastObject6 = [samples6 lastObject];
+  v81 = [v78 numberWithBool:{objc_msgSend(lastObject6, "isTimeSensitiveAppRunning")}];
   [v148 setObject:v81 forKeyedSubscript:@"isTimeSensitiveAppRunning"];
 
-  v82 = [(WiFiUsageLQMRollingWindow *)self->_windowBeforeTrigger samples];
-  v83 = [v82 lastObject];
-  v84 = +[WiFiUsageLQMTransformations getLabelTrafficState:](WiFiUsageLQMTransformations, "getLabelTrafficState:", [v83 trafficState]);
+  samples7 = [(WiFiUsageLQMRollingWindow *)self->_windowBeforeTrigger samples];
+  lastObject7 = [samples7 lastObject];
+  v84 = +[WiFiUsageLQMTransformations getLabelTrafficState:](WiFiUsageLQMTransformations, "getLabelTrafficState:", [lastObject7 trafficState]);
   [v148 setObject:v84 forKeyedSubscript:@"last_trafficState_before"];
 
   if (+[WiFiUsagePrivacyFilter isInternalInstall](WiFiUsagePrivacyFilter, "isInternalInstall") && [v147 isInternal])
   {
-    v85 = [v147 networkName];
-    [v148 setObject:v85 forKeyedSubscript:@"NetworkName"];
+    networkName = [v147 networkName];
+    [v148 setObject:networkName forKeyedSubscript:@"NetworkName"];
 
-    v86 = [v147 connectedBss];
-    v87 = [v86 bssid];
-    v88 = [WiFiUsageAccessPointProfile apNameForBSSID:v87];
+    connectedBss8 = [v147 connectedBss];
+    bssid4 = [connectedBss8 bssid];
+    v88 = [WiFiUsageAccessPointProfile apNameForBSSID:bssid4];
 
     v89 = [[WiFiUsageAppleWiFiNameBlocks alloc] initWithAPName:v88];
     [v148 setObject:v88 forKeyedSubscript:@"apName"];
     if (v89)
     {
-      v90 = [(WiFiUsageAppleWiFiNameBlocks *)v89 building];
-      [v148 setObject:v90 forKeyedSubscript:@"apNamePortionA"];
+      building = [(WiFiUsageAppleWiFiNameBlocks *)v89 building];
+      [v148 setObject:building forKeyedSubscript:@"apNamePortionA"];
 
-      v91 = [(WiFiUsageAppleWiFiNameBlocks *)v89 section];
-      [v148 setObject:v91 forKeyedSubscript:@"apNamePortionB"];
+      section = [(WiFiUsageAppleWiFiNameBlocks *)v89 section];
+      [v148 setObject:section forKeyedSubscript:@"apNamePortionB"];
 
-      v92 = [(WiFiUsageAppleWiFiNameBlocks *)v89 floor];
-      [v148 setObject:v92 forKeyedSubscript:@"apNamePortionC"];
+      floor = [(WiFiUsageAppleWiFiNameBlocks *)v89 floor];
+      [v148 setObject:floor forKeyedSubscript:@"apNamePortionC"];
 
       v93 = [(WiFiUsageAppleWiFiNameBlocks *)v89 pod];
       [v148 setObject:v93 forKeyedSubscript:@"apNamePortionD"];
 
-      v94 = [(WiFiUsageAppleWiFiNameBlocks *)v89 other];
-      [v148 setObject:v94 forKeyedSubscript:@"apNamePortionE"];
+      other = [(WiFiUsageAppleWiFiNameBlocks *)v89 other];
+      [v148 setObject:other forKeyedSubscript:@"apNamePortionE"];
     }
   }
 
-  v95 = [(WiFiUsageLQMRollingWindow *)self->_windowBeforeTrigger samples];
-  v96 = [v95 lastObject];
-  v97 = [v96 timestamp];
-  v98 = [(WiFiUsageLQMRollingWindow *)self->_windowBeforeTrigger samples];
-  v99 = [v98 firstObject];
-  v100 = [v99 timestamp];
-  [v97 timeIntervalSinceDate:v100];
+  samples8 = [(WiFiUsageLQMRollingWindow *)self->_windowBeforeTrigger samples];
+  lastObject8 = [samples8 lastObject];
+  timestamp2 = [lastObject8 timestamp];
+  samples9 = [(WiFiUsageLQMRollingWindow *)self->_windowBeforeTrigger samples];
+  firstObject = [samples9 firstObject];
+  timestamp3 = [firstObject timestamp];
+  [timestamp2 timeIntervalSinceDate:timestamp3];
   v102 = [WiFiUsagePrivacyFilter getBinEvery10Over100:v101 As:0];
   [v148 setObject:v102 forKeyedSubscript:@"windowSpan_before"];
 
-  v103 = [(WiFiUsageLQMRollingWindow *)self->_windowAfterTrigger samples];
-  v104 = [v103 lastObject];
-  v105 = [v104 timestamp];
-  v106 = [(WiFiUsageLQMRollingWindow *)self->_windowAfterTrigger samples];
-  v107 = [v106 firstObject];
-  v108 = [v107 timestamp];
-  [v105 timeIntervalSinceDate:v108];
+  samples10 = [(WiFiUsageLQMRollingWindow *)self->_windowAfterTrigger samples];
+  lastObject9 = [samples10 lastObject];
+  timestamp4 = [lastObject9 timestamp];
+  samples11 = [(WiFiUsageLQMRollingWindow *)self->_windowAfterTrigger samples];
+  firstObject2 = [samples11 firstObject];
+  timestamp5 = [firstObject2 timestamp];
+  [timestamp4 timeIntervalSinceDate:timestamp5];
   v110 = [WiFiUsagePrivacyFilter getBinEvery10Over100:v109 As:0];
   [v148 setObject:v110 forKeyedSubscript:@"windowSpan_after"];
 
-  v111 = [(WiFiUsageLQMRollingWindow *)self->_windowBeforeTrigger samples];
-  v112 = +[WiFiUsagePrivacyFilter getBinEvery10Over100:As:](WiFiUsagePrivacyFilter, "getBinEvery10Over100:As:", [v111 count], 0);
+  samples12 = [(WiFiUsageLQMRollingWindow *)self->_windowBeforeTrigger samples];
+  v112 = +[WiFiUsagePrivacyFilter getBinEvery10Over100:As:](WiFiUsagePrivacyFilter, "getBinEvery10Over100:As:", [samples12 count], 0);
   [v148 setObject:v112 forKeyedSubscript:@"samplesCount_before"];
 
-  v113 = [(WiFiUsageLQMRollingWindow *)self->_windowAfterTrigger samples];
-  v114 = +[WiFiUsagePrivacyFilter getBinEvery10Over100:As:](WiFiUsagePrivacyFilter, "getBinEvery10Over100:As:", [v113 count], 0);
+  samples13 = [(WiFiUsageLQMRollingWindow *)self->_windowAfterTrigger samples];
+  v114 = +[WiFiUsagePrivacyFilter getBinEvery10Over100:As:](WiFiUsagePrivacyFilter, "getBinEvery10Over100:As:", [samples13 count], 0);
   [v148 setObject:v114 forKeyedSubscript:@"samplesCount_after"];
 
-  v115 = [(WiFiUsageLQMRollingWindow *)self->_windowAfterTrigger samples];
-  v116 = [v115 lastObject];
-  v117 = [v116 networkDetails];
+  samples14 = [(WiFiUsageLQMRollingWindow *)self->_windowAfterTrigger samples];
+  lastObject10 = [samples14 lastObject];
+  networkDetails3 = [lastObject10 networkDetails];
 
   v118 = MEMORY[0x277CCACA8];
-  v119 = [v117 connectedBss];
-  v120 = [v118 stringWithFormat:@"%ld", objc_msgSend(v119, "channel")];
+  connectedBss9 = [networkDetails3 connectedBss];
+  v120 = [v118 stringWithFormat:@"%ld", objc_msgSend(connectedBss9, "channel")];
   [v148 setObject:v120 forKeyedSubscript:@"channel_after"];
 
-  v121 = [v117 connectedBss];
-  v122 = +[WiFiUsagePrivacyFilter bandAsString:](WiFiUsagePrivacyFilter, "bandAsString:", [v121 band]);
+  connectedBss10 = [networkDetails3 connectedBss];
+  v122 = +[WiFiUsagePrivacyFilter bandAsString:](WiFiUsagePrivacyFilter, "bandAsString:", [connectedBss10 band]);
   [v148 setObject:v122 forKeyedSubscript:@"band_after"];
 
   v123 = MEMORY[0x277CCACA8];
-  v124 = [v117 connectedBss];
-  v125 = [v123 stringWithFormat:@"%ld", objc_msgSend(v124, "channelWidth")];
+  connectedBss11 = [networkDetails3 connectedBss];
+  v125 = [v123 stringWithFormat:@"%ld", objc_msgSend(connectedBss11, "channelWidth")];
   [v148 setObject:v125 forKeyedSubscript:@"channelWidth_after"];
 
-  v126 = [v117 connectedBss];
-  v127 = [v126 apProfile];
-  [v148 setObject:v127 forKeyedSubscript:@"apProfile_after"];
+  connectedBss12 = [networkDetails3 connectedBss];
+  apProfile2 = [connectedBss12 apProfile];
+  [v148 setObject:apProfile2 forKeyedSubscript:@"apProfile_after"];
 
-  v128 = [v117 connectedBss];
-  v129 = [v128 bssid];
-  v130 = [WiFiUsagePrivacyFilter sanitizedOUI:v129];
+  connectedBss13 = [networkDetails3 connectedBss];
+  bssid5 = [connectedBss13 bssid];
+  v130 = [WiFiUsagePrivacyFilter sanitizedOUI:bssid5];
   [v148 setObject:v130 forKeyedSubscript:@"oui_after"];
 
-  v131 = [WiFiUsagePrivacyFilter getLabelsForNetworkProperties:v117];
+  v131 = [WiFiUsagePrivacyFilter getLabelsForNetworkProperties:networkDetails3];
   [v148 addEntriesFromDictionary:v131];
 
-  v132 = [v117 bssEnvironment];
-  [v148 setObject:v132 forKeyedSubscript:@"bssEnvironment_after"];
+  bssEnvironment2 = [networkDetails3 bssEnvironment];
+  [v148 setObject:bssEnvironment2 forKeyedSubscript:@"bssEnvironment_after"];
 
-  v133 = [v117 privateMacType];
-  [v148 setObject:v133 forKeyedSubscript:@"privateMacType_after"];
+  privateMacType2 = [networkDetails3 privateMacType];
+  [v148 setObject:privateMacType2 forKeyedSubscript:@"privateMacType_after"];
 
-  v134 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v117, "privateRelayEnabled")}];
+  v134 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(networkDetails3, "privateRelayEnabled")}];
   [v148 setObject:v134 forKeyedSubscript:@"privacyProxyEnabled_after"];
 
-  if (+[WiFiUsagePrivacyFilter isInternalInstall](WiFiUsagePrivacyFilter, "isInternalInstall") && [v117 isInternal])
+  if (+[WiFiUsagePrivacyFilter isInternalInstall](WiFiUsagePrivacyFilter, "isInternalInstall") && [networkDetails3 isInternal])
   {
-    v135 = [v117 connectedBss];
-    v136 = [v135 bssid];
-    v137 = [WiFiUsageAccessPointProfile apNameForBSSID:v136];
+    connectedBss14 = [networkDetails3 connectedBss];
+    bssid6 = [connectedBss14 bssid];
+    v137 = [WiFiUsageAccessPointProfile apNameForBSSID:bssid6];
 
     v138 = [[WiFiUsageAppleWiFiNameBlocks alloc] initWithAPName:v137];
     [v148 setObject:v137 forKeyedSubscript:@"apName_after"];
     if (v138)
     {
-      v139 = [(WiFiUsageAppleWiFiNameBlocks *)v138 building];
-      [v148 setObject:v139 forKeyedSubscript:@"apNamePortionA_after"];
+      building2 = [(WiFiUsageAppleWiFiNameBlocks *)v138 building];
+      [v148 setObject:building2 forKeyedSubscript:@"apNamePortionA_after"];
 
-      v140 = [(WiFiUsageAppleWiFiNameBlocks *)v138 section];
-      [v148 setObject:v140 forKeyedSubscript:@"apNamePortionB_after"];
+      section2 = [(WiFiUsageAppleWiFiNameBlocks *)v138 section];
+      [v148 setObject:section2 forKeyedSubscript:@"apNamePortionB_after"];
 
-      v141 = [(WiFiUsageAppleWiFiNameBlocks *)v138 floor];
-      [v148 setObject:v141 forKeyedSubscript:@"apNamePortionC_after"];
+      floor2 = [(WiFiUsageAppleWiFiNameBlocks *)v138 floor];
+      [v148 setObject:floor2 forKeyedSubscript:@"apNamePortionC_after"];
 
       v142 = [(WiFiUsageAppleWiFiNameBlocks *)v138 pod];
       [v148 setObject:v142 forKeyedSubscript:@"apNamePortionD_after"];
 
-      v143 = [(WiFiUsageAppleWiFiNameBlocks *)v138 other];
-      [v148 setObject:v143 forKeyedSubscript:@"apNamePortionE_after"];
+      other2 = [(WiFiUsageAppleWiFiNameBlocks *)v138 other];
+      [v148 setObject:other2 forKeyedSubscript:@"apNamePortionE_after"];
     }
   }
 
@@ -1708,24 +1708,24 @@ LABEL_25:
   return v148;
 }
 
-- (id)dumpAnalysis:(id)a3
+- (id)dumpAnalysis:(id)analysis
 {
   v36 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  analysisCopy = analysis;
   v4 = [MEMORY[0x277CCAB68] stringWithFormat:@"(format: fieldName=<feature %@>|<feature %@>|<median change>)\n", @"before", @"after"];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v5 = [v3 allKeys];
-  v6 = [v5 sortedArrayUsingSelector:sel_caseInsensitiveCompare_];
+  allKeys = [analysisCopy allKeys];
+  v6 = [allKeys sortedArrayUsingSelector:sel_caseInsensitiveCompare_];
 
   obj = v6;
   v28 = [v6 countByEnumeratingWithState:&v31 objects:v35 count:16];
   if (v28)
   {
     v27 = *v32;
-    v23 = v3;
+    v23 = analysisCopy;
     do
     {
       for (i = 0; i != v28; ++i)
@@ -1737,20 +1737,20 @@ LABEL_25:
 
         v8 = *(*(&v31 + 1) + 8 * i);
         [v4 appendFormat:@"%@=", v8];
-        v30 = [v3 objectForKeyedSubscript:v8];
+        v30 = [analysisCopy objectForKeyedSubscript:v8];
         v9 = [v30 objectForKeyedSubscript:@"before"];
-        v29 = [v3 objectForKeyedSubscript:v8];
+        v29 = [analysisCopy objectForKeyedSubscript:v8];
         v10 = [v29 objectForKeyedSubscript:@"after"];
-        v11 = [v3 objectForKeyedSubscript:v8];
+        v11 = [analysisCopy objectForKeyedSubscript:v8];
         v12 = [v11 objectForKeyedSubscript:@"after"];
         if (objc_opt_respondsToSelector())
         {
           v25 = MEMORY[0x277CCABB0];
-          v26 = [v3 objectForKeyedSubscript:v8];
+          v26 = [analysisCopy objectForKeyedSubscript:v8];
           v13 = [v26 objectForKeyedSubscript:@"after"];
           [v13 doubleValue];
           v15 = v14;
-          v16 = [v3 objectForKeyedSubscript:v8];
+          v16 = [analysisCopy objectForKeyedSubscript:v8];
           v17 = [v16 objectForKeyedSubscript:@"before"];
           [v17 doubleValue];
           [v25 numberWithDouble:v15 - v18];
@@ -1758,7 +1758,7 @@ LABEL_25:
           [v19 appendFormat:@"%@|%@|%@", v9, v10, v20];
 
           v4 = v19;
-          v3 = v23;
+          analysisCopy = v23;
         }
 
         else
@@ -1780,17 +1780,17 @@ LABEL_25:
   return v4;
 }
 
-- (id)dumpDimensions:(id)a3
+- (id)dumpDimensions:(id)dimensions
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  dimensionsCopy = dimensions;
   v4 = objc_opt_new();
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [v3 allKeys];
-  v6 = [v5 sortedArrayUsingSelector:sel_caseInsensitiveCompare_];
+  allKeys = [dimensionsCopy allKeys];
+  v6 = [allKeys sortedArrayUsingSelector:sel_caseInsensitiveCompare_];
 
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
@@ -1807,7 +1807,7 @@ LABEL_25:
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        v12 = [v3 objectForKeyedSubscript:v11];
+        v12 = [dimensionsCopy objectForKeyedSubscript:v11];
         [v4 appendFormat:@"%@=%@;", v11, v12];
       }
 
@@ -1822,10 +1822,10 @@ LABEL_25:
   return v4;
 }
 
-- (id)fetchKernelLQMRollingWindowForInterface:(id)a3 into:(id)a4
+- (id)fetchKernelLQMRollingWindowForInterface:(id)interface into:(id)into
 {
-  v5 = a3;
-  v6 = a4;
+  interfaceCopy = interface;
+  intoCopy = into;
   v7 = Apple80211Open();
   if (v7)
   {
@@ -1837,7 +1837,7 @@ LABEL_25:
     v8 = Apple80211BindToInterface();
     if (v8)
     {
-      [WiFiUsageLQMWindowAnalysis fetchKernelLQMRollingWindowForInterface:v5 into:v8];
+      [WiFiUsageLQMWindowAnalysis fetchKernelLQMRollingWindowForInterface:interfaceCopy into:v8];
     }
 
     else
@@ -1850,7 +1850,7 @@ LABEL_25:
 
       else
       {
-        v10 = [v6 objectForKeyedSubscript:&unk_2848BA7C0];
+        v10 = [intoCopy objectForKeyedSubscript:&unk_2848BA7C0];
         if (v10)
         {
           v11 = v10;
@@ -1873,11 +1873,11 @@ LABEL_6:
   v45 = *MEMORY[0x277D85DE8];
   diceRoll = self->_diceRoll;
   v4 = [_createAnalysisSamplingRates objectForKeyedSubscript:self->_reason];
-  v5 = [v4 samplingBase];
+  samplingBase = [v4 samplingBase];
   v6 = [_fetchKernelWindowSamplingRates objectForKeyedSubscript:self->_reason];
-  v7 = [v6 samplingBase];
+  samplingBase2 = [v6 samplingBase];
 
-  if (v5 != v7)
+  if (samplingBase != samplingBase2)
   {
     v8 = [_fetchKernelWindowSamplingRates objectForKeyedSubscript:self->_reason];
     diceRoll = arc4random_uniform([v8 samplingBase]);
@@ -1892,10 +1892,10 @@ LABEL_6:
 
   v10 = v9;
   v11 = [_fetchKernelWindowSamplingRates objectForKeyedSubscript:self->_reason];
-  v12 = [v11 samplingRate];
-  v13 = diceRoll < v12;
+  samplingRate = [v11 samplingRate];
+  v13 = diceRoll < samplingRate;
 
-  if (_isKernelParsingEnabled != 1 || diceRoll >= v12)
+  if (_isKernelParsingEnabled != 1 || diceRoll >= samplingRate)
   {
 LABEL_9:
     v14 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT);
@@ -1923,7 +1923,7 @@ LABEL_9:
 
       v17 = self->_diceRoll;
       v18 = [_fetchKernelWindowSamplingRates objectForKeyedSubscript:self->_reason];
-      v19 = [v18 samplingRate];
+      samplingRate2 = [v18 samplingRate];
       v31 = 136316674;
       v32 = "[WiFiUsageLQMWindowAnalysis getBeforeKernelWindowWithLikelyhood]";
       if (+[WiFiUsageLQMKernelRollingWindow isOngoing])
@@ -1937,7 +1937,7 @@ LABEL_9:
       }
 
       v33 = 2112;
-      v34 = self;
+      selfCopy2 = self;
       v35 = 2112;
       v36 = v15;
       v37 = 2112;
@@ -1945,7 +1945,7 @@ LABEL_9:
       v39 = 2048;
       v40 = v17;
       v41 = 1024;
-      v42 = v19;
+      v42 = samplingRate2;
       v43 = 2112;
       v44 = v20;
       _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%s - Not fetching before kernel rolling window for analysis: %@ (enabled: %@ - sampling:%@(%lu>=%u) - ongoing kernel window parsing:%@)", &v31, 0x44u);
@@ -1964,21 +1964,21 @@ LABEL_20:
     goto LABEL_9;
   }
 
-  v22 = [(WiFiUsageLQMRollingWindow *)self->_windowBeforeTrigger interfaceName];
+  interfaceName = [(WiFiUsageLQMRollingWindow *)self->_windowBeforeTrigger interfaceName];
 
   v14 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT);
-  if (!v22)
+  if (!interfaceName)
   {
     if (!v14)
     {
       goto LABEL_21;
     }
 
-    v29 = [(WiFiUsageLQMRollingWindow *)self->_windowBeforeTrigger interfaceName];
+    interfaceName2 = [(WiFiUsageLQMRollingWindow *)self->_windowBeforeTrigger interfaceName];
     v31 = 136315394;
     v32 = "[WiFiUsageLQMWindowAnalysis getBeforeKernelWindowWithLikelyhood]";
     v33 = 2112;
-    v34 = v29;
+    selfCopy2 = interfaceName2;
     _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%s - Cannot fetch the kernel rolling window (invalid interface name on windowBeforeTrigger: %@)", &v31, 0x16u);
 
     goto LABEL_20;
@@ -1986,19 +1986,19 @@ LABEL_20:
 
   if (v14)
   {
-    v23 = [(WiFiUsageLQMRollingWindow *)self->_windowBeforeTrigger interfaceName];
+    interfaceName3 = [(WiFiUsageLQMRollingWindow *)self->_windowBeforeTrigger interfaceName];
     v31 = 136315650;
     v32 = "[WiFiUsageLQMWindowAnalysis getBeforeKernelWindowWithLikelyhood]";
     v33 = 2112;
-    v34 = self;
+    selfCopy2 = self;
     v35 = 2112;
-    v36 = v23;
+    v36 = interfaceName3;
     _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%s: Fetching before kernel rolling window for analysis %@ on interface %@", &v31, 0x20u);
   }
 
   v24 = objc_opt_new();
-  v25 = [(WiFiUsageLQMRollingWindow *)self->_windowBeforeTrigger interfaceName];
-  v26 = [(WiFiUsageLQMWindowAnalysis *)self fetchKernelLQMRollingWindowForInterface:v25 into:v24];
+  interfaceName4 = [(WiFiUsageLQMRollingWindow *)self->_windowBeforeTrigger interfaceName];
+  v26 = [(WiFiUsageLQMWindowAnalysis *)self fetchKernelLQMRollingWindowForInterface:interfaceName4 into:v24];
 
   if (v26)
   {

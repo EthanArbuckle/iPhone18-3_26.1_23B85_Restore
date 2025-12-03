@@ -1,7 +1,7 @@
 @interface PSICollection
-- (PSICollection)initWithUUID:(id)a3 startDate:(id)a4 endDate:(id)a5 title:(id)a6 subtitle:(id)a7 type:(unint64_t)a8 assetsCountPrivate:(unint64_t)a9 assetsCountShared:(unint64_t)a10 sortDate:(id)a11;
-- (id)_initForCopy:(BOOL)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PSICollection)initWithUUID:(id)d startDate:(id)date endDate:(id)endDate title:(id)title subtitle:(id)subtitle type:(unint64_t)type assetsCountPrivate:(unint64_t)private assetsCountShared:(unint64_t)self0 sortDate:(id)self1;
+- (id)_initForCopy:(BOOL)copy;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -10,8 +10,8 @@
 - (id)description
 {
   v3 = objc_opt_new();
-  v4 = [(PSIObject *)self uuid];
-  [v3 appendFormat:@"UUID: %@, ", v4];
+  uuid = [(PSIObject *)self uuid];
+  [v3 appendFormat:@"UUID: %@, ", uuid];
 
   [v3 appendFormat:@"Title: %@, ", self->_title];
   [v3 appendFormat:@"subtitle: %@, ", self->_subtitle];
@@ -21,11 +21,11 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v10.receiver = self;
   v10.super_class = PSICollection;
-  v4 = [(PSIObject *)&v10 copyWithZone:a3];
+  v4 = [(PSIObject *)&v10 copyWithZone:zone];
   objc_storeStrong(v4 + 5, self->_startDate);
   objc_storeStrong(v4 + 6, self->_endDate);
   v5 = [(NSString *)self->_title copy];
@@ -43,12 +43,12 @@
   return v4;
 }
 
-- (id)_initForCopy:(BOOL)a3
+- (id)_initForCopy:(BOOL)copy
 {
   v8.receiver = self;
   v8.super_class = PSICollection;
   v4 = [(PSIObject *)&v8 _initForCopy:?];
-  if (v4 && !a3)
+  if (v4 && !copy)
   {
     v5 = objc_alloc_init(MEMORY[0x1E696AEC0]);
     v6 = v4[7];
@@ -58,33 +58,33 @@
   return v4;
 }
 
-- (PSICollection)initWithUUID:(id)a3 startDate:(id)a4 endDate:(id)a5 title:(id)a6 subtitle:(id)a7 type:(unint64_t)a8 assetsCountPrivate:(unint64_t)a9 assetsCountShared:(unint64_t)a10 sortDate:(id)a11
+- (PSICollection)initWithUUID:(id)d startDate:(id)date endDate:(id)endDate title:(id)title subtitle:(id)subtitle type:(unint64_t)type assetsCountPrivate:(unint64_t)private assetsCountShared:(unint64_t)self0 sortDate:(id)self1
 {
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a11;
+  dateCopy = date;
+  endDateCopy = endDate;
+  titleCopy = title;
+  subtitleCopy = subtitle;
+  sortDateCopy = sortDate;
   v30.receiver = self;
   v30.super_class = PSICollection;
-  v22 = [(PSIObject *)&v30 initWithUUID:a3];
+  v22 = [(PSIObject *)&v30 initWithUUID:d];
   v23 = v22;
   if (v22)
   {
-    objc_storeStrong(&v22->_startDate, a4);
-    objc_storeStrong(&v23->_endDate, a5);
-    v24 = [v19 copy];
+    objc_storeStrong(&v22->_startDate, date);
+    objc_storeStrong(&v23->_endDate, endDate);
+    v24 = [titleCopy copy];
     title = v23->_title;
     v23->_title = v24;
 
-    v26 = [v20 copy];
+    v26 = [subtitleCopy copy];
     subtitle = v23->_subtitle;
     v23->_subtitle = v26;
 
-    v23->_type = a8;
-    v23->_assetsCountPrivate = a9;
-    v23->_assetsCountShared = a10;
-    objc_storeStrong(&v23->_sortDate, a11);
+    v23->_type = type;
+    v23->_assetsCountPrivate = private;
+    v23->_assetsCountShared = shared;
+    objc_storeStrong(&v23->_sortDate, sortDate);
   }
 
   return v23;

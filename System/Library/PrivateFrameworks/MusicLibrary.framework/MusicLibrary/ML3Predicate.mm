@@ -1,18 +1,18 @@
 @interface ML3Predicate
-- (BOOL)isEqual:(id)a3;
-- (ML3Predicate)initWithCoder:(id)a3;
-- (id)SQLForEntityClass:(Class)a3;
+- (BOOL)isEqual:(id)equal;
+- (ML3Predicate)initWithCoder:(id)coder;
+- (id)SQLForEntityClass:(Class)class;
 - (unint64_t)hash;
 @end
 
 @implementation ML3Predicate
 
-- (id)SQLForEntityClass:(Class)a3
+- (id)SQLForEntityClass:(Class)class
 {
-  v5 = [MEMORY[0x277CCAB68] string];
-  [(ML3Predicate *)self appendSQLToMutableString:v5 entityClass:a3];
+  string = [MEMORY[0x277CCAB68] string];
+  [(ML3Predicate *)self appendSQLToMutableString:string entityClass:class];
 
-  return v5;
+  return string;
 }
 
 - (unint64_t)hash
@@ -22,9 +22,9 @@
   return [v2 hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
@@ -33,7 +33,7 @@
   return v3 == objc_opt_class();
 }
 
-- (ML3Predicate)initWithCoder:(id)a3
+- (ML3Predicate)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = ML3Predicate;

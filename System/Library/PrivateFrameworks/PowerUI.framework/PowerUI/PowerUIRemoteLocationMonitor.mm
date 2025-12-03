@@ -1,14 +1,14 @@
 @interface PowerUIRemoteLocationMonitor
-- (PowerUIRemoteLocationMonitor)initWithManager:(id)a3 withLocationManager:(id)a4 withContext:(id)a5 withDefaultsDomain:(id)a6 withTrialManager:(id)a7;
+- (PowerUIRemoteLocationMonitor)initWithManager:(id)manager withLocationManager:(id)locationManager withContext:(id)context withDefaultsDomain:(id)domain withTrialManager:(id)trialManager;
 @end
 
 @implementation PowerUIRemoteLocationMonitor
 
-- (PowerUIRemoteLocationMonitor)initWithManager:(id)a3 withLocationManager:(id)a4 withContext:(id)a5 withDefaultsDomain:(id)a6 withTrialManager:(id)a7
+- (PowerUIRemoteLocationMonitor)initWithManager:(id)manager withLocationManager:(id)locationManager withContext:(id)context withDefaultsDomain:(id)domain withTrialManager:(id)trialManager
 {
   v8.receiver = self;
   v8.super_class = PowerUIRemoteLocationMonitor;
-  return [(PowerUIRemoteLocationMonitor *)&v8 init:a3];
+  return [(PowerUIRemoteLocationMonitor *)&v8 init:manager];
 }
 
 @end

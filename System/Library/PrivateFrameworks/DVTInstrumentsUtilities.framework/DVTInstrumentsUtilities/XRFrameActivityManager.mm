@@ -1,19 +1,19 @@
 @interface XRFrameActivityManager
 + (void)initialize;
 - (XRFrameActivityManager)init;
-- (XRFrameActivityManager)initWithRing:(id)a3;
+- (XRFrameActivityManager)initWithRing:(id)ring;
 - (id).cxx_construct;
-- (id)scheduleActivityAsOperation:(id)a3;
-- (void)_reevaluateArrivingAgent:(id)a3;
+- (id)scheduleActivityAsOperation:(id)operation;
+- (void)_reevaluateArrivingAgent:(id)agent;
 - (void)dealloc;
-- (void)setupVisitDuringMinorFrame:(id)a3 agent:(id)a4 mode:(id)a5 ticket:(id)a6;
+- (void)setupVisitDuringMinorFrame:(id)frame agent:(id)agent mode:(id)mode ticket:(id)ticket;
 @end
 
 @implementation XRFrameActivityManager
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v6 = objc_msgSend_internalSignposts(XRFeatureFlag, v2, v3, v4, v5);
     byte_27EE869B8 = v6;
@@ -26,9 +26,9 @@
   }
 }
 
-- (XRFrameActivityManager)initWithRing:(id)a3
+- (XRFrameActivityManager)initWithRing:(id)ring
 {
-  v4 = a3;
+  ringCopy = ring;
   v20.receiver = self;
   v20.super_class = XRFrameActivityManager;
   if ([(XRFrameActivityManager *)&v20 init])
@@ -37,9 +37,9 @@
     objc_msgSend__establishesAffinity(v5, v6, v7, v8, v9);
     v10 = objc_opt_class();
     objc_msgSend_enableConcurrentActivities(v10, v11, v12, v13, v14);
-    if (v4)
+    if (ringCopy)
     {
-      objc_msgSend__parent(v4, v15, v16, v17, v18);
+      objc_msgSend__parent(ringCopy, v15, v16, v17, v18);
     }
 
     sub_2480A14C4();
@@ -74,36 +74,36 @@
   [(XRFrameActivityManager *)&v5 dealloc];
 }
 
-- (id)scheduleActivityAsOperation:(id)a3
+- (id)scheduleActivityAsOperation:(id)operation
 {
-  v4 = a3;
+  operationCopy = operation;
   v5 = [XRFrameActivityBlockAgent alloc];
-  v9 = objc_msgSend_initWithBlock_(v5, v6, v4, v7, v8);
+  v9 = objc_msgSend_initWithBlock_(v5, v6, operationCopy, v7, v8);
   objc_msgSend_activateAtStop_activationTicket_finalDestination_finalTicket_(v9, v10, self, 0, 0, 0);
   v15 = objc_msgSend_operationRepresentation(v9, v11, v12, v13, v14);
 
   return v15;
 }
 
-- (void)setupVisitDuringMinorFrame:(id)a3 agent:(id)a4 mode:(id)a5 ticket:(id)a6
+- (void)setupVisitDuringMinorFrame:(id)frame agent:(id)agent mode:(id)mode ticket:(id)ticket
 {
-  v23 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if ((objc_msgSend_holdsItinerary_(v11, v14, v23, v15, v16) & 1) == 0)
+  frameCopy = frame;
+  agentCopy = agent;
+  modeCopy = mode;
+  ticketCopy = ticket;
+  if ((objc_msgSend_holdsItinerary_(agentCopy, v14, frameCopy, v15, v16) & 1) == 0)
   {
     v21 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v17, v18, v19, v20);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v21, v22, a2, self, @"XRFrameActivityManager.mm", 164, @"Invalid parameter not satisfying: %@", @"[agent holdsItinerary:itinerary]");
   }
 
-  objc_msgSend_setNextStop_mode_ticket_(v23, v17, self, v12, v13);
+  objc_msgSend_setNextStop_mode_ticket_(frameCopy, v17, self, modeCopy, ticketCopy);
 }
 
-- (void)_reevaluateArrivingAgent:(id)a3
+- (void)_reevaluateArrivingAgent:(id)agent
 {
-  v4 = a3;
-  v9 = objc_msgSend_desiredQoS(v4, v5, v6, v7, v8);
+  agentCopy = agent;
+  v9 = objc_msgSend_desiredQoS(agentCopy, v5, v6, v7, v8);
   v10 = 24;
   if (v9 > 0x18)
   {
@@ -116,7 +116,7 @@
   v13[2] = sub_2480A109C;
   v13[3] = &unk_278EFC288;
   v13[4] = self;
-  v12 = v4;
+  v12 = agentCopy;
   v14 = v12;
   sub_2480A8B28(v11, v13);
 }

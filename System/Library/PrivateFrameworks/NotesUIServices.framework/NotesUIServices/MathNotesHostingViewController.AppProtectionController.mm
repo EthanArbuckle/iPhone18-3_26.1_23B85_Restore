@@ -1,24 +1,24 @@
 @interface MathNotesHostingViewController.AppProtectionController
 - (_TtCC15NotesUIServices30MathNotesHostingViewControllerP33_82644AFB0C2F2CCE6D5FA1AE07FA364223AppProtectionController)init;
-- (void)appProtectionSubjectsChanged:(id)a3 forSubscription:(id)a4;
-- (void)shieldViewUnlockButtonPressed:(id)a3;
+- (void)appProtectionSubjectsChanged:(id)changed forSubscription:(id)subscription;
+- (void)shieldViewUnlockButtonPressed:(id)pressed;
 @end
 
 @implementation MathNotesHostingViewController.AppProtectionController
 
-- (void)shieldViewUnlockButtonPressed:(id)a3
+- (void)shieldViewUnlockButtonPressed:(id)pressed
 {
-  v4 = a3;
-  v5 = self;
+  pressedCopy = pressed;
+  selfCopy = self;
   sub_25C7A10F0();
 }
 
-- (void)appProtectionSubjectsChanged:(id)a3 forSubscription:(id)a4
+- (void)appProtectionSubjectsChanged:(id)changed forSubscription:(id)subscription
 {
   sub_25C7AAC0C();
   v5 = sub_25C7AAAFC();
   swift_unknownObjectRetain();
-  v6 = self;
+  selfCopy = self;
   sub_25C7A1230(v5);
   swift_unknownObjectRelease();
 }

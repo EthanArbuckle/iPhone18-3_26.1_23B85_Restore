@@ -1,14 +1,14 @@
 @interface NPKSettingsPreservingFileDataAccessor
-- (void)updateSettings:(unint64_t)a3;
+- (void)updateSettings:(unint64_t)settings;
 @end
 
 @implementation NPKSettingsPreservingFileDataAccessor
 
-- (void)updateSettings:(unint64_t)a3
+- (void)updateSettings:(unint64_t)settings
 {
   connection = self->_connection;
-  v5 = [(NPKSettingsPreservingFileDataAccessor *)self objectUniqueID];
-  [(NPKCompanionAgentConnection *)connection updateSettings:a3 forPassWithUniqueID:v5];
+  objectUniqueID = [(NPKSettingsPreservingFileDataAccessor *)self objectUniqueID];
+  [(NPKCompanionAgentConnection *)connection updateSettings:settings forPassWithUniqueID:objectUniqueID];
 }
 
 @end

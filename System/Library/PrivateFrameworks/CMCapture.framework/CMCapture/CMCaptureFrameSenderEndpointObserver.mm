@@ -1,19 +1,19 @@
 @interface CMCaptureFrameSenderEndpointObserver
-- (CMCaptureFrameSenderEndpointObserver)initWithEndpointsChangedHandler:(id)a3;
-- (void)_handleFrameServerEndpointsChangedNotification:(id)a3;
+- (CMCaptureFrameSenderEndpointObserver)initWithEndpointsChangedHandler:(id)handler;
+- (void)_handleFrameServerEndpointsChangedNotification:(id)notification;
 - (void)dealloc;
 @end
 
 @implementation CMCaptureFrameSenderEndpointObserver
 
-- (CMCaptureFrameSenderEndpointObserver)initWithEndpointsChangedHandler:(id)a3
+- (CMCaptureFrameSenderEndpointObserver)initWithEndpointsChangedHandler:(id)handler
 {
   v8.receiver = self;
   v8.super_class = CMCaptureFrameSenderEndpointObserver;
   v4 = [(CMCaptureFrameSenderEndpointObserver *)&v8 init];
   if (v4)
   {
-    v4->_endpointsChangedHandler = [a3 copy];
+    v4->_endpointsChangedHandler = [handler copy];
     v5 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v4->_frameSenderEndpointsChangedNotificationQueue = dispatch_queue_create("com.apple.cmio.frame-sender-endpoint-observer", v5);
     [objc_msgSend(MEMORY[0x1E696ABB0] "defaultCenter")];
@@ -33,7 +33,7 @@
   [(CMCaptureFrameSenderEndpointObserver *)&v3 dealloc];
 }
 
-- (void)_handleFrameServerEndpointsChangedNotification:(id)a3
+- (void)_handleFrameServerEndpointsChangedNotification:(id)notification
 {
   frameSenderEndpointsChangedNotificationQueue = self->_frameSenderEndpointsChangedNotificationQueue;
   block[0] = MEMORY[0x1E69E9820];

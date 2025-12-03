@@ -1,7 +1,7 @@
 @interface MFProtectedDatabasePersistence_iOS
 - (BOOL)protectedDataAvailable;
-- (void)addAdditionalCriteriaToCleanupActivity:(id)a3;
-- (void)finishJournalReconciliation:(unint64_t)a3;
+- (void)addAdditionalCriteriaToCleanupActivity:(id)activity;
+- (void)finishJournalReconciliation:(unint64_t)reconciliation;
 @end
 
 @implementation MFProtectedDatabasePersistence_iOS
@@ -13,23 +13,23 @@
   {
     v6.receiver = self;
     v6.super_class = MFProtectedDatabasePersistence_iOS;
-    v4 = [(EDProtectedDatabasePersistence *)&v6 protectedDataAvailable];
+    protectedDataAvailable = [(EDProtectedDatabasePersistence *)&v6 protectedDataAvailable];
   }
 
   else
   {
-    v4 = 0;
+    protectedDataAvailable = 0;
   }
 
-  return v4;
+  return protectedDataAvailable;
 }
 
-- (void)finishJournalReconciliation:(unint64_t)a3
+- (void)finishJournalReconciliation:(unint64_t)reconciliation
 {
   v5.receiver = self;
   v5.super_class = MFProtectedDatabasePersistence_iOS;
   [(EDProtectedDatabasePersistence *)&v5 finishJournalReconciliation:?];
-  if (a3 == 2)
+  if (reconciliation == 2)
   {
     v4 = +[MFMailMessageLibrary defaultInstance];
     [v4 journalReconciliationFailed];
@@ -37,7 +37,7 @@
 
   else
   {
-    if (a3)
+    if (reconciliation)
     {
       return;
     }
@@ -47,13 +47,13 @@
   }
 }
 
-- (void)addAdditionalCriteriaToCleanupActivity:(id)a3
+- (void)addAdditionalCriteriaToCleanupActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   v10.receiver = self;
   v10.super_class = MFProtectedDatabasePersistence_iOS;
-  [(EDProtectedDatabasePersistence *)&v10 addAdditionalCriteriaToCleanupActivity:v4];
-  v5 = v4;
+  [(EDProtectedDatabasePersistence *)&v10 addAdditionalCriteriaToCleanupActivity:activityCopy];
+  v5 = activityCopy;
   v6 = _os_feature_enabled_impl();
   v7 = v5;
   v8 = v7;

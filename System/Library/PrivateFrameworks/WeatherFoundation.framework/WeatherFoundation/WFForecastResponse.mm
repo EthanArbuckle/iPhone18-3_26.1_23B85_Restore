@@ -1,48 +1,48 @@
 @interface WFForecastResponse
-- (WFForecastResponse)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (WFForecastResponse)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFForecastResponse
 
-- (WFForecastResponse)initWithCoder:(id)a3
+- (WFForecastResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = WFForecastResponse;
-  v5 = [(WFResponse *)&v9 initWithCoder:v4];
+  v5 = [(WFResponse *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WFForecastResponseForecastKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WFForecastResponseForecastKey"];
     [(WFForecastResponse *)v5 setForecast:v6];
 
-    -[WFForecastResponse setForecastType:](v5, "setForecastType:", [v4 decodeIntegerForKey:@"WFForecastResponseForecastTypeKey"]);
-    v7 = [v4 decodeObjectForKey:@"WFForecastResponseRawAPIResponse"];
+    -[WFForecastResponse setForecastType:](v5, "setForecastType:", [coderCopy decodeIntegerForKey:@"WFForecastResponseForecastTypeKey"]);
+    v7 = [coderCopy decodeObjectForKey:@"WFForecastResponseRawAPIResponse"];
     [(WFForecastResponse *)v5 setRawAPIData:v7];
 
-    -[WFForecastResponse setResponseWasFromCache:](v5, "setResponseWasFromCache:", [v4 decodeBoolForKey:@"WFForecastResponseWasFromCacheKey"]);
+    -[WFForecastResponse setResponseWasFromCache:](v5, "setResponseWasFromCache:", [coderCopy decodeBoolForKey:@"WFForecastResponseWasFromCacheKey"]);
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = WFForecastResponse;
-  [(WFResponse *)&v8 encodeWithCoder:v4];
-  v5 = [(WFForecastResponse *)self forecast];
-  [v4 encodeObject:v5 forKey:@"WFForecastResponseForecastKey"];
+  [(WFResponse *)&v8 encodeWithCoder:coderCopy];
+  forecast = [(WFForecastResponse *)self forecast];
+  [coderCopy encodeObject:forecast forKey:@"WFForecastResponseForecastKey"];
 
-  [v4 encodeInteger:-[WFForecastResponse forecastType](self forKey:{"forecastType"), @"WFForecastResponseForecastTypeKey"}];
-  [v4 encodeBool:-[WFForecastResponse responseWasFromCache](self forKey:{"responseWasFromCache"), @"WFForecastResponseWasFromCacheKey"}];
-  v6 = [(WFForecastResponse *)self rawAPIData];
+  [coderCopy encodeInteger:-[WFForecastResponse forecastType](self forKey:{"forecastType"), @"WFForecastResponseForecastTypeKey"}];
+  [coderCopy encodeBool:-[WFForecastResponse responseWasFromCache](self forKey:{"responseWasFromCache"), @"WFForecastResponseWasFromCacheKey"}];
+  rawAPIData = [(WFForecastResponse *)self rawAPIData];
 
-  if (v6)
+  if (rawAPIData)
   {
-    v7 = [(WFForecastResponse *)self rawAPIData];
-    [v4 encodeObject:v7 forKey:@"WFForecastResponseRawAPIResponse"];
+    rawAPIData2 = [(WFForecastResponse *)self rawAPIData];
+    [coderCopy encodeObject:rawAPIData2 forKey:@"WFForecastResponseRawAPIResponse"];
   }
 }
 

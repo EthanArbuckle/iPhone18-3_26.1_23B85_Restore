@@ -1,19 +1,19 @@
 @interface AAHIDDevice
-- (AAHIDDevice)initWithHIDDeviceAndSensorInfo:(id)a3 sensorInfo:(id)a4;
+- (AAHIDDevice)initWithHIDDeviceAndSensorInfo:(id)info sensorInfo:(id)sensorInfo;
 @end
 
 @implementation AAHIDDevice
 
-- (AAHIDDevice)initWithHIDDeviceAndSensorInfo:(id)a3 sensorInfo:(id)a4
+- (AAHIDDevice)initWithHIDDeviceAndSensorInfo:(id)info sensorInfo:(id)sensorInfo
 {
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  sensorInfoCopy = sensorInfo;
   hidDevice = self->_hidDevice;
-  self->_hidDevice = v6;
-  v9 = v6;
+  self->_hidDevice = infoCopy;
+  v9 = infoCopy;
 
   sensorInfo = self->_sensorInfo;
-  self->_sensorInfo = v7;
+  self->_sensorInfo = sensorInfoCopy;
 
   return self;
 }

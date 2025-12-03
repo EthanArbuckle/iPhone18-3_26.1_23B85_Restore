@@ -1,78 +1,78 @@
 @interface SXProxyAuthenticationHandler
-- (SXProxyAuthenticationHandler)initWithCredentialFactory:(id)a3 proxyConfiguration:(id)a4 retryCount:(unint64_t)a5;
-- (void)handleAuthenticationChallenge:(id)a3 completion:(id)a4;
+- (SXProxyAuthenticationHandler)initWithCredentialFactory:(id)factory proxyConfiguration:(id)configuration retryCount:(unint64_t)count;
+- (void)handleAuthenticationChallenge:(id)challenge completion:(id)completion;
 @end
 
 @implementation SXProxyAuthenticationHandler
 
-- (SXProxyAuthenticationHandler)initWithCredentialFactory:(id)a3 proxyConfiguration:(id)a4 retryCount:(unint64_t)a5
+- (SXProxyAuthenticationHandler)initWithCredentialFactory:(id)factory proxyConfiguration:(id)configuration retryCount:(unint64_t)count
 {
-  v9 = a3;
-  v10 = a4;
+  factoryCopy = factory;
+  configurationCopy = configuration;
   v15.receiver = self;
   v15.super_class = SXProxyAuthenticationHandler;
   v11 = [(SXProxyAuthenticationHandler *)&v15 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_credentialFactory, a3);
-    objc_storeStrong(&v12->_proxyConfiguration, a4);
-    v13 = SXProxyAuthenticationHandlerDefaultRetryCount;
-    if (SXProxyAuthenticationHandlerDefaultRetryCount <= a5)
+    objc_storeStrong(&v11->_credentialFactory, factory);
+    objc_storeStrong(&v12->_proxyConfiguration, configuration);
+    countCopy = SXProxyAuthenticationHandlerDefaultRetryCount;
+    if (SXProxyAuthenticationHandlerDefaultRetryCount <= count)
     {
-      v13 = a5;
+      countCopy = count;
     }
 
-    v12->_retryCount = v13;
+    v12->_retryCount = countCopy;
   }
 
   return v12;
 }
 
-- (void)handleAuthenticationChallenge:(id)a3 completion:(id)a4
+- (void)handleAuthenticationChallenge:(id)challenge completion:(id)completion
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 protectionSpace];
-  v9 = [v6 failureResponse];
-  if ([v6 previousFailureCount] <= self->_retryCount)
+  challengeCopy = challenge;
+  completionCopy = completion;
+  protectionSpace = [challengeCopy protectionSpace];
+  failureResponse = [challengeCopy failureResponse];
+  if ([challengeCopy previousFailureCount] <= self->_retryCount)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      if ([v9 statusCode] == 407)
+      if ([failureResponse statusCode] == 407)
       {
-        if ([v8 isProxy])
+        if ([protectionSpace isProxy])
         {
-          v12 = [(SXProxyConfiguration *)self->_proxyConfiguration proxyHost];
+          proxyHost = [(SXProxyConfiguration *)self->_proxyConfiguration proxyHost];
 
-          if (v12)
+          if (proxyHost)
           {
-            v13 = [v8 host];
-            v14 = [(SXProxyConfiguration *)self->_proxyConfiguration proxyHost];
-            v15 = [v13 isEqualToString:v14];
+            host = [protectionSpace host];
+            proxyHost2 = [(SXProxyConfiguration *)self->_proxyConfiguration proxyHost];
+            v15 = [host isEqualToString:proxyHost2];
 
             if (v15)
             {
-              v16 = [v8 proxyType];
-              v17 = [v16 isEqualToString:*MEMORY[0x1E695ABA8]];
+              proxyType = [protectionSpace proxyType];
+              v17 = [proxyType isEqualToString:*MEMORY[0x1E695ABA8]];
 
               if (v17)
               {
-                v18 = [v8 authenticationMethod];
-                v19 = [v18 isEqualToString:*MEMORY[0x1E695AB58]];
+                authenticationMethod = [protectionSpace authenticationMethod];
+                v19 = [authenticationMethod isEqualToString:*MEMORY[0x1E695AB58]];
 
                 if (v19)
                 {
-                  v20 = [(SXProxyAuthenticationHandler *)self credentialFactory];
-                  v21 = [MEMORY[0x1E695DF00] date];
+                  credentialFactory = [(SXProxyAuthenticationHandler *)self credentialFactory];
+                  date = [MEMORY[0x1E695DF00] date];
                   v25[0] = MEMORY[0x1E69E9820];
                   v25[1] = 3221225472;
                   v25[2] = __73__SXProxyAuthenticationHandler_handleAuthenticationChallenge_completion___block_invoke;
                   v25[3] = &unk_1E85003A0;
-                  v26 = v7;
-                  [v20 createCredentialForResponse:v9 date:v21 completion:v25];
+                  v26 = completionCopy;
+                  [credentialFactory createCredentialForResponse:failureResponse date:date completion:v25];
 
                   goto LABEL_27;
                 }
@@ -94,7 +94,7 @@
               v24 = SXProxyLog;
               if (os_log_type_enabled(SXProxyLog, OS_LOG_TYPE_ERROR))
               {
-                [SXProxyAuthenticationHandler handleAuthenticationChallenge:v24 completion:v8];
+                [SXProxyAuthenticationHandler handleAuthenticationChallenge:v24 completion:protectionSpace];
               }
             }
           }
@@ -115,7 +115,7 @@
           }
         }
 
-        (*(v7 + 2))(v7, 3, 0);
+        (*(completionCopy + 2))(completionCopy, 3, 0);
         goto LABEL_27;
       }
 
@@ -127,7 +127,7 @@
       }
     }
 
-    (*(v7 + 2))(v7, 1, 0);
+    (*(completionCopy + 2))(completionCopy, 1, 0);
     goto LABEL_27;
   }
 
@@ -136,11 +136,11 @@
   {
     v11 = v10;
     *buf = 134217984;
-    v28 = [v6 previousFailureCount];
+    previousFailureCount = [challengeCopy previousFailureCount];
     _os_log_impl(&dword_1D825C000, v11, OS_LOG_TYPE_DEFAULT, "Cancelling authentication challenge due to failure count: %li", buf, 0xCu);
   }
 
-  (*(v7 + 2))(v7, 2, 0);
+  (*(completionCopy + 2))(completionCopy, 2, 0);
 LABEL_27:
 }
 

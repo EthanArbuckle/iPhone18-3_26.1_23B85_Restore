@@ -3,8 +3,8 @@
 - (FMDBluetoothDiscovery)init;
 - (id)discoveredDevices;
 - (void)dealloc;
-- (void)finishDiscoveringWithError:(id)a3;
-- (void)processDeviceInformation:(id)a3 lost:(BOOL)a4;
+- (void)finishDiscoveringWithError:(id)error;
+- (void)processDeviceInformation:(id)information lost:(BOOL)lost;
 - (void)startBLEDiscovery;
 - (void)stopBLEDiscovery;
 - (void)stopDiscovery;
@@ -37,18 +37,18 @@
 
 - (BOOL)_isDiscoveryActive
 {
-  v2 = [(FMDBluetoothDiscovery *)self deviceDiscovery];
-  v3 = v2 != 0;
+  deviceDiscovery = [(FMDBluetoothDiscovery *)self deviceDiscovery];
+  v3 = deviceDiscovery != 0;
 
   return v3;
 }
 
 - (id)discoveredDevices
 {
-  v2 = [(FMDBluetoothDiscovery *)self devicesByIdentifier];
-  v3 = [v2 allValues];
+  devicesByIdentifier = [(FMDBluetoothDiscovery *)self devicesByIdentifier];
+  allValues = [devicesByIdentifier allValues];
 
-  return v3;
+  return allValues;
 }
 
 - (void)stopDiscovery
@@ -63,11 +63,11 @@
 
 - (void)startBLEDiscovery
 {
-  v3 = [(FMDBluetoothDiscovery *)self deviceDiscovery];
+  deviceDiscovery = [(FMDBluetoothDiscovery *)self deviceDiscovery];
 
   v4 = sub_1000012D0();
   v5 = v4;
-  if (v3)
+  if (deviceDiscovery)
   {
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
     {
@@ -86,20 +86,20 @@
     v6 = +[FMDSFDeviceDiscoveryFactory deviceDiscovery];
     [(FMDBluetoothDiscovery *)self setDeviceDiscovery:v6];
 
-    v7 = [(FMDBluetoothDiscovery *)self deviceDiscovery];
-    [v7 setChangeFlags:1];
+    deviceDiscovery2 = [(FMDBluetoothDiscovery *)self deviceDiscovery];
+    [deviceDiscovery2 setChangeFlags:1];
 
-    v8 = [(FMDBluetoothDiscovery *)self deviceDiscovery];
-    [v8 setDiscoveryFlags:2];
+    deviceDiscovery3 = [(FMDBluetoothDiscovery *)self deviceDiscovery];
+    [deviceDiscovery3 setDiscoveryFlags:2];
 
-    v9 = [(FMDBluetoothDiscovery *)self deviceDiscovery];
-    [v9 setRssiThreshold:-120];
+    deviceDiscovery4 = [(FMDBluetoothDiscovery *)self deviceDiscovery];
+    [deviceDiscovery4 setRssiThreshold:-120];
 
-    v10 = [(FMDBluetoothDiscovery *)self deviceDiscovery];
-    [v10 setScanRate:20];
+    deviceDiscovery5 = [(FMDBluetoothDiscovery *)self deviceDiscovery];
+    [deviceDiscovery5 setScanRate:20];
 
-    v11 = [(FMDBluetoothDiscovery *)self deviceDiscovery];
-    [v11 setOverrideScreenOff:1];
+    deviceDiscovery6 = [(FMDBluetoothDiscovery *)self deviceDiscovery];
+    [deviceDiscovery6 setOverrideScreenOff:1];
 
     objc_initWeak(buf, self);
     v22[0] = _NSConcreteStackBlock;
@@ -107,32 +107,32 @@
     v22[2] = sub_1000033F8;
     v22[3] = &unk_10000CEF8;
     objc_copyWeak(&v23, buf);
-    v12 = [(FMDBluetoothDiscovery *)self deviceDiscovery];
-    [v12 setDeviceFoundHandler:v22];
+    deviceDiscovery7 = [(FMDBluetoothDiscovery *)self deviceDiscovery];
+    [deviceDiscovery7 setDeviceFoundHandler:v22];
 
     v20[0] = _NSConcreteStackBlock;
     v20[1] = 3221225472;
     v20[2] = sub_100003470;
     v20[3] = &unk_10000CF20;
     objc_copyWeak(&v21, buf);
-    v13 = [(FMDBluetoothDiscovery *)self deviceDiscovery];
-    [v13 setDeviceChangedHandler:v20];
+    deviceDiscovery8 = [(FMDBluetoothDiscovery *)self deviceDiscovery];
+    [deviceDiscovery8 setDeviceChangedHandler:v20];
 
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
     v18[2] = sub_1000034E8;
     v18[3] = &unk_10000CEF8;
     objc_copyWeak(&v19, buf);
-    v14 = [(FMDBluetoothDiscovery *)self deviceDiscovery];
-    [v14 setDeviceLostHandler:v18];
+    deviceDiscovery9 = [(FMDBluetoothDiscovery *)self deviceDiscovery];
+    [deviceDiscovery9 setDeviceLostHandler:v18];
 
-    v15 = [(FMDBluetoothDiscovery *)self deviceDiscovery];
+    deviceDiscovery10 = [(FMDBluetoothDiscovery *)self deviceDiscovery];
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = sub_100003560;
     v16[3] = &unk_10000C468;
     objc_copyWeak(&v17, buf);
-    [v15 activateWithCompletion:v16];
+    [deviceDiscovery10 activateWithCompletion:v16];
 
     objc_destroyWeak(&v17);
     objc_destroyWeak(&v19);
@@ -150,12 +150,12 @@
     sub_100004218();
   }
 
-  v4 = [(FMDBluetoothDiscovery *)self deviceDiscovery];
-  [v4 invalidate];
+  deviceDiscovery = [(FMDBluetoothDiscovery *)self deviceDiscovery];
+  [deviceDiscovery invalidate];
 
   [(FMDBluetoothDiscovery *)self setDeviceDiscovery:0];
-  v5 = [(FMDBluetoothDiscovery *)self devicesByIdentifier];
-  v6 = [v5 copy];
+  devicesByIdentifier = [(FMDBluetoothDiscovery *)self devicesByIdentifier];
+  v6 = [devicesByIdentifier copy];
 
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
@@ -163,33 +163,33 @@
   v8[3] = &unk_10000CF48;
   v8[4] = self;
   [v6 enumerateKeysAndObjectsUsingBlock:v8];
-  v7 = [(FMDBluetoothDiscovery *)self devicesByIdentifier];
-  [v7 removeAllObjects];
+  devicesByIdentifier2 = [(FMDBluetoothDiscovery *)self devicesByIdentifier];
+  [devicesByIdentifier2 removeAllObjects];
 }
 
-- (void)finishDiscoveringWithError:(id)a3
+- (void)finishDiscoveringWithError:(id)error
 {
-  v6 = a3;
-  v4 = [(FMDBluetoothDiscovery *)self didEndDiscovery];
-  v5 = v4;
-  if (v4)
+  errorCopy = error;
+  didEndDiscovery = [(FMDBluetoothDiscovery *)self didEndDiscovery];
+  v5 = didEndDiscovery;
+  if (didEndDiscovery)
   {
-    (*(v4 + 16))(v4, v6);
+    (*(didEndDiscovery + 16))(didEndDiscovery, errorCopy);
   }
 }
 
-- (void)processDeviceInformation:(id)a3 lost:(BOOL)a4
+- (void)processDeviceInformation:(id)information lost:(BOOL)lost
 {
-  v4 = a4;
-  v6 = a3;
+  lostCopy = lost;
+  informationCopy = information;
   v7 = objc_autoreleasePoolPush();
   if ([(FMDBluetoothDiscovery *)self _isDiscoveryActive])
   {
-    v8 = [v6 bleDevice];
-    v9 = [v8 bluetoothAddress];
-    v10 = [v9 fm_MACAddressString];
+    bleDevice = [informationCopy bleDevice];
+    bluetoothAddress = [bleDevice bluetoothAddress];
+    fm_MACAddressString = [bluetoothAddress fm_MACAddressString];
 
-    if (!v10)
+    if (!fm_MACAddressString)
     {
       v11 = sub_1000012D0();
       if (os_log_type_enabled(&v11->super, OS_LOG_TYPE_DEFAULT))
@@ -201,11 +201,11 @@
       goto LABEL_39;
     }
 
-    v11 = [[FMDBLEBeaconIdentifier alloc] initWithBLEDevice:v8 other:0];
-    v12 = [(FMDBLEBeaconIdentifier *)v11 isValid];
+    v11 = [[FMDBLEBeaconIdentifier alloc] initWithBLEDevice:bleDevice other:0];
+    isValid = [(FMDBLEBeaconIdentifier *)v11 isValid];
     v13 = sub_1000012D0();
-    v14 = v13;
-    if ((v12 & 1) == 0)
+    didLoseDevice2 = v13;
+    if ((isValid & 1) == 0)
     {
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
       {
@@ -217,22 +217,22 @@
 
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [v8 bluetoothAddress];
-      v16 = [v8 advertisementFields];
+      bluetoothAddress2 = [bleDevice bluetoothAddress];
+      advertisementFields = [bleDevice advertisementFields];
       *buf = 138413058;
-      v40 = v15;
+      v40 = bluetoothAddress2;
       v41 = 2112;
       v42 = v11;
       v43 = 2112;
-      v44 = v16;
+      v44 = advertisementFields;
       v45 = 2048;
-      v46 = [v8 rssi];
-      _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "FMDBluetoothDiscovery : %@ %@ %@ %li", buf, 0x2Au);
+      rssi = [bleDevice rssi];
+      _os_log_impl(&_mh_execute_header, didLoseDevice2, OS_LOG_TYPE_DEFAULT, "FMDBluetoothDiscovery : %@ %@ %@ %li", buf, 0x2Au);
     }
 
     v17 = sub_1000012D0();
     v18 = os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT);
-    if (v4)
+    if (lostCopy)
     {
       if (v18)
       {
@@ -240,12 +240,12 @@
         _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "FMDBluetoothDiscovery lost beacon", buf, 2u);
       }
 
-      v19 = [(FMDBluetoothDiscovery *)self devicesByIdentifier];
-      [v19 removeObjectForKey:v11];
+      devicesByIdentifier = [(FMDBluetoothDiscovery *)self devicesByIdentifier];
+      [devicesByIdentifier removeObjectForKey:v11];
 
-      v20 = [(FMDBluetoothDiscovery *)self didLoseDevice];
+      didLoseDevice = [(FMDBluetoothDiscovery *)self didLoseDevice];
 
-      if (!v20)
+      if (!didLoseDevice)
       {
         goto LABEL_39;
       }
@@ -257,8 +257,8 @@
         _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "FMDBluetoothDiscovery updating the callee with lost btle beacons", buf, 2u);
       }
 
-      v14 = [(FMDBluetoothDiscovery *)self didLoseDevice];
-      (*(v14 + 16))(v14, v8);
+      didLoseDevice2 = [(FMDBluetoothDiscovery *)self didLoseDevice];
+      (*(didLoseDevice2 + 16))(didLoseDevice2, bleDevice);
     }
 
     else
@@ -269,21 +269,21 @@
         _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "FMDBluetoothDiscovery found change in beacon", buf, 2u);
       }
 
-      v22 = [(FMDBluetoothDiscovery *)self devicesByIdentifier];
-      v14 = [v22 objectForKeyedSubscript:v11];
+      devicesByIdentifier2 = [(FMDBluetoothDiscovery *)self devicesByIdentifier];
+      didLoseDevice2 = [devicesByIdentifier2 objectForKeyedSubscript:v11];
 
-      if (v14)
+      if (didLoseDevice2)
       {
-        v23 = [v8 rssi];
-        v24 = [v14 rssi];
-        if (v23 - v24 >= 0)
+        rssi2 = [bleDevice rssi];
+        rssi3 = [didLoseDevice2 rssi];
+        if (rssi2 - rssi3 >= 0)
         {
-          v25 = v23 - v24;
+          v25 = rssi2 - rssi3;
         }
 
         else
         {
-          v25 = v24 - v23;
+          v25 = rssi3 - rssi2;
         }
 
         v26 = sub_1000012D0();
@@ -296,15 +296,15 @@
             _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "FMDBluetoothDiscovery checking change in advertisement packet", buf, 2u);
           }
 
-          v28 = [v8 advertisementFields];
-          v29 = [v28 objectForKeyedSubscript:@"hsStatus"];
-          v38 = [v29 unsignedIntValue];
+          advertisementFields2 = [bleDevice advertisementFields];
+          v29 = [advertisementFields2 objectForKeyedSubscript:@"hsStatus"];
+          unsignedIntValue = [v29 unsignedIntValue];
 
-          v30 = [v14 advertisementFields];
-          v31 = [v30 objectForKeyedSubscript:@"hsStatus"];
-          v32 = [v31 unsignedIntValue];
+          advertisementFields3 = [didLoseDevice2 advertisementFields];
+          v31 = [advertisementFields3 objectForKeyedSubscript:@"hsStatus"];
+          unsignedIntValue2 = [v31 unsignedIntValue];
 
-          if (v38 == v32)
+          if (unsignedIntValue == unsignedIntValue2)
           {
             goto LABEL_38;
           }
@@ -326,12 +326,12 @@
         sub_1000042B4();
       }
 
-      v34 = [(FMDBluetoothDiscovery *)self devicesByIdentifier];
-      [v34 setObject:v8 forKeyedSubscript:v11];
+      devicesByIdentifier3 = [(FMDBluetoothDiscovery *)self devicesByIdentifier];
+      [devicesByIdentifier3 setObject:bleDevice forKeyedSubscript:v11];
 
-      v35 = [(FMDBluetoothDiscovery *)self didDiscoverDevice];
+      didDiscoverDevice = [(FMDBluetoothDiscovery *)self didDiscoverDevice];
 
-      if (v35)
+      if (didDiscoverDevice)
       {
         v36 = sub_1000012D0();
         if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
@@ -340,8 +340,8 @@
           _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_DEFAULT, "FMDBluetoothDiscovery updating the callee with btle beacons", buf, 2u);
         }
 
-        v37 = [(FMDBluetoothDiscovery *)self didDiscoverDevice];
-        (v37)[2](v37, v8);
+        didDiscoverDevice2 = [(FMDBluetoothDiscovery *)self didDiscoverDevice];
+        (didDiscoverDevice2)[2](didDiscoverDevice2, bleDevice);
       }
     }
 
@@ -351,11 +351,11 @@ LABEL_39:
     goto LABEL_40;
   }
 
-  v8 = sub_1000012D0();
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  bleDevice = sub_1000012D0();
+  if (os_log_type_enabled(bleDevice, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
-    _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "FMDBluetoothDiscovery is no longer active. Ignoring device.", buf, 2u);
+    _os_log_impl(&_mh_execute_header, bleDevice, OS_LOG_TYPE_DEFAULT, "FMDBluetoothDiscovery is no longer active. Ignoring device.", buf, 2u);
   }
 
 LABEL_40:

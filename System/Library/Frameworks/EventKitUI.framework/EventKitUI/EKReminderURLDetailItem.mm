@@ -1,6 +1,6 @@
 @interface EKReminderURLDetailItem
 + (id)titleForCell;
-- (BOOL)configureWithEvent:(id)a3 calendar:(id)a4 preview:(BOOL)a5;
+- (BOOL)configureWithEvent:(id)event calendar:(id)calendar preview:(BOOL)preview;
 - (BOOL)hasCellBelow;
 - (id)_createEventDetailCell;
 - (id)urlAttributedText;
@@ -10,32 +10,32 @@
 
 - (id)urlAttributedText
 {
-  v2 = [(REMReminder *)self->super.super.super._reminder attachmentContext];
-  v3 = [v2 urlAttachments];
-  v4 = [v3 firstObject];
-  v5 = [v4 url];
+  attachmentContext = [(REMReminder *)self->super.super.super._reminder attachmentContext];
+  urlAttachments = [attachmentContext urlAttachments];
+  firstObject = [urlAttachments firstObject];
+  v5 = [firstObject url];
 
   if (v5)
   {
-    v6 = [v5 absoluteString];
+    absoluteString = [v5 absoluteString];
 
-    if (v6)
+    if (absoluteString)
     {
-      v6 = CUIKGetAttributedStringForEventDetailWithURL();
+      absoluteString = CUIKGetAttributedStringForEventDetailWithURL();
     }
   }
 
   else
   {
-    v6 = 0;
+    absoluteString = 0;
   }
 
-  return v6;
+  return absoluteString;
 }
 
-- (BOOL)configureWithEvent:(id)a3 calendar:(id)a4 preview:(BOOL)a5
+- (BOOL)configureWithEvent:(id)event calendar:(id)calendar preview:(BOOL)preview
 {
-  v5 = [(EKReminderURLDetailItem *)self urlAttributedText:a3];
+  v5 = [(EKReminderURLDetailItem *)self urlAttributedText:event];
   v6 = v5 != 0;
 
   return v6;
@@ -51,8 +51,8 @@
 
 - (BOOL)hasCellBelow
 {
-  v2 = [(REMReminder *)self->super.super.super._reminder notes];
-  v3 = [v2 string];
+  notes = [(REMReminder *)self->super.super.super._reminder notes];
+  string = [notes string];
   v4 = CUIKShouldDisplayNotes();
 
   return v4;
@@ -63,10 +63,10 @@
   v3 = [EKReminderDetailTextCell alloc];
   event = self->super.super.super._event;
   reminder = self->super.super.super._reminder;
-  v6 = [(EKReminderURLDetailItem *)self showExtraSpaceAtBottom];
-  v7 = [objc_opt_class() titleForCell];
-  v8 = [(EKReminderURLDetailItem *)self urlAttributedText];
-  v9 = [(EKReminderDetailTextCell *)v3 initWithEvent:event reminder:reminder editable:0 showExtraSpaceAtBottom:v6 title:v7 attributedText:v8];
+  showExtraSpaceAtBottom = [(EKReminderURLDetailItem *)self showExtraSpaceAtBottom];
+  titleForCell = [objc_opt_class() titleForCell];
+  urlAttributedText = [(EKReminderURLDetailItem *)self urlAttributedText];
+  v9 = [(EKReminderDetailTextCell *)v3 initWithEvent:event reminder:reminder editable:0 showExtraSpaceAtBottom:showExtraSpaceAtBottom title:titleForCell attributedText:urlAttributedText];
 
   [(EKReminderDetailTextCell *)v9 setHideBottomCellSeparator:[(EKReminderURLDetailItem *)self hasCellBelow]^ 1];
 

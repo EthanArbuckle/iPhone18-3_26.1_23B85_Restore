@@ -1,7 +1,7 @@
 @interface AXSSActionHIDSender
 - (AXSSActionHIDSender)init;
 - (void)dealloc;
-- (void)sendEvent:(id)a3;
+- (void)sendEvent:(id)event;
 @end
 
 @implementation AXSSActionHIDSender
@@ -86,17 +86,17 @@ void __30__AXSSActionHIDSender_dealloc__block_invoke(uint64_t a1)
   *(v2 + 24) = 0;
 }
 
-- (void)sendEvent:(id)a3
+- (void)sendEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   eventSendingQueue = self->_eventSendingQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __33__AXSSActionHIDSender_sendEvent___block_invoke;
   v7[3] = &unk_1E8134950;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = eventCopy;
+  v6 = eventCopy;
   dispatch_async(eventSendingQueue, v7);
 }
 

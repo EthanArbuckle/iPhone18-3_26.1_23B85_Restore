@@ -1,79 +1,79 @@
 @interface PXStoryPPTConfiguration
-+ (id)configurationsForPreset:(unint64_t)a3 subpreset:(unint64_t)a4 testOptions:(id)a5;
-+ (void)_configureConfiguration:(id)a3 forSubpreset:(unint64_t)a4;
-+ (void)_fetchLatestMemoriesWithMaximumCount:(int64_t)a3 resultHandler:(id)a4;
-+ (void)_requestPhotoLibraryWithResultHandler:(id)a3;
++ (id)configurationsForPreset:(unint64_t)preset subpreset:(unint64_t)subpreset testOptions:(id)options;
++ (void)_configureConfiguration:(id)configuration forSubpreset:(unint64_t)subpreset;
++ (void)_fetchLatestMemoriesWithMaximumCount:(int64_t)count resultHandler:(id)handler;
++ (void)_requestPhotoLibraryWithResultHandler:(id)handler;
 - (NSString)name;
 - (PXStoryPPTConfiguration)init;
-- (PXStoryPPTConfiguration)initWithAssetCollection:(id)a3 name:(id)a4;
-- (PXStoryPPTConfiguration)initWithAssetType:(unint64_t)a3 count:(unint64_t)a4;
+- (PXStoryPPTConfiguration)initWithAssetCollection:(id)collection name:(id)name;
+- (PXStoryPPTConfiguration)initWithAssetType:(unint64_t)type count:(unint64_t)count;
 - (PXStoryPPTConfiguration)initWithDefaultMemory;
-- (PXStoryPPTConfiguration)initWithLatestCollectionOfType:(int64_t)a3;
-- (PXStoryPPTConfiguration)initWithPreset:(unint64_t)a3;
-- (id)_stringFromAssetCount:(unint64_t)a3;
-- (id)_stringFromAssetType:(unint64_t)a3;
-- (void)_completeConfigurationRequestWithAssetCollection:(id)a3 resultHandler:(id)a4;
-- (void)_completeConfigurationRequestWithFetchResult:(id)a3 resultHandler:(id)a4;
-- (void)_completeConfigurationRequestWithStoryConfiguration:(id)a3 resultHandler:(id)a4;
-- (void)_configureWithMemoryFetchResultProvider:(id)a3 resultHandler:(id)a4;
-- (void)_createSyntheticAssetsWithResultHandler:(id)a3;
-- (void)_fetchAssetsWithResultHandler:(id)a3;
-- (void)_fetchDefaultMemoryWithResultHandler:(id)a3;
-- (void)_fetchLatestAssetCollectionOfType:(int64_t)a3 resultHandler:(id)a4;
-- (void)_fetchMemoryByLocalIdentifier:(id)a3 resultHandler:(id)a4;
-- (void)_fetchMemoryByName:(id)a3 resultHandler:(id)a4;
-- (void)_performPhotoLibraryFetch:(id)a3;
-- (void)requestStoryConfigurationWithOptions:(id)a3 resultHandler:(id)a4;
+- (PXStoryPPTConfiguration)initWithLatestCollectionOfType:(int64_t)type;
+- (PXStoryPPTConfiguration)initWithPreset:(unint64_t)preset;
+- (id)_stringFromAssetCount:(unint64_t)count;
+- (id)_stringFromAssetType:(unint64_t)type;
+- (void)_completeConfigurationRequestWithAssetCollection:(id)collection resultHandler:(id)handler;
+- (void)_completeConfigurationRequestWithFetchResult:(id)result resultHandler:(id)handler;
+- (void)_completeConfigurationRequestWithStoryConfiguration:(id)configuration resultHandler:(id)handler;
+- (void)_configureWithMemoryFetchResultProvider:(id)provider resultHandler:(id)handler;
+- (void)_createSyntheticAssetsWithResultHandler:(id)handler;
+- (void)_fetchAssetsWithResultHandler:(id)handler;
+- (void)_fetchDefaultMemoryWithResultHandler:(id)handler;
+- (void)_fetchLatestAssetCollectionOfType:(int64_t)type resultHandler:(id)handler;
+- (void)_fetchMemoryByLocalIdentifier:(id)identifier resultHandler:(id)handler;
+- (void)_fetchMemoryByName:(id)name resultHandler:(id)handler;
+- (void)_performPhotoLibraryFetch:(id)fetch;
+- (void)requestStoryConfigurationWithOptions:(id)options resultHandler:(id)handler;
 @end
 
 @implementation PXStoryPPTConfiguration
 
 - (PXStoryPPTConfiguration)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXStoryPPTConfiguration.m" lineNumber:406 description:{@"%s is not available as initializer", "-[PXStoryPPTConfiguration init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryPPTConfiguration.m" lineNumber:406 description:{@"%s is not available as initializer", "-[PXStoryPPTConfiguration init]"}];
 
   abort();
 }
 
-- (id)_stringFromAssetType:(unint64_t)a3
+- (id)_stringFromAssetType:(unint64_t)type
 {
-  if (a3 - 1 > 2)
+  if (type - 1 > 2)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_1E7747608[a3 - 1];
+    return off_1E7747608[type - 1];
   }
 }
 
-- (id)_stringFromAssetCount:(unint64_t)a3
+- (id)_stringFromAssetCount:(unint64_t)count
 {
-  if (a3 < 0x3E8)
+  if (count < 0x3E8)
   {
-    v3 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%lu", a3];
+    0x3E8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%lu", count];
   }
 
   else
   {
-    v3 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%luk", a3 / 0x3E8];
+    0x3E8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%luk", count / 0x3E8];
   }
 
-  return v3;
+  return 0x3E8;
 }
 
-- (void)_performPhotoLibraryFetch:(id)a3
+- (void)_performPhotoLibraryFetch:(id)fetch
 {
-  v3 = a3;
+  fetchCopy = fetch;
   v4 = objc_opt_class();
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __53__PXStoryPPTConfiguration__performPhotoLibraryFetch___block_invoke;
   v6[3] = &unk_1E77475E8;
-  v7 = v3;
-  v5 = v3;
+  v7 = fetchCopy;
+  v5 = fetchCopy;
   [v4 _requestPhotoLibraryWithResultHandler:v6];
 }
 
@@ -83,44 +83,44 @@ void __53__PXStoryPPTConfiguration__performPhotoLibraryFetch___block_invoke(uint
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)_completeConfigurationRequestWithStoryConfiguration:(id)a3 resultHandler:(id)a4
+- (void)_completeConfigurationRequestWithStoryConfiguration:(id)configuration resultHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  handlerCopy = handler;
   if ([(PXStoryPPTConfiguration *)self assetType]== 1)
   {
     v8 = objc_alloc_init(off_1E7721900);
-    [v6 setMediaProvider:v8];
+    [configurationCopy setMediaProvider:v8];
   }
 
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __93__PXStoryPPTConfiguration__completeConfigurationRequestWithStoryConfiguration_resultHandler___block_invoke;
   v11[3] = &unk_1E774C2F0;
-  v12 = v6;
-  v13 = v7;
-  v9 = v6;
-  v10 = v7;
+  v12 = configurationCopy;
+  v13 = handlerCopy;
+  v9 = configurationCopy;
+  v10 = handlerCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v11);
 }
 
-- (void)_completeConfigurationRequestWithFetchResult:(id)a3 resultHandler:(id)a4
+- (void)_completeConfigurationRequestWithFetchResult:(id)result resultHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[PXStoryConfiguration alloc] initWithAssets:v7];
+  handlerCopy = handler;
+  resultCopy = result;
+  v8 = [[PXStoryConfiguration alloc] initWithAssets:resultCopy];
 
-  [(PXStoryPPTConfiguration *)self _completeConfigurationRequestWithStoryConfiguration:v8 resultHandler:v6];
+  [(PXStoryPPTConfiguration *)self _completeConfigurationRequestWithStoryConfiguration:v8 resultHandler:handlerCopy];
 }
 
-- (void)_completeConfigurationRequestWithAssetCollection:(id)a3 resultHandler:(id)a4
+- (void)_completeConfigurationRequestWithAssetCollection:(id)collection resultHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  collectionCopy = collection;
+  handlerCopy = handler;
+  v8 = handlerCopy;
+  if (collectionCopy)
   {
-    v9 = [[PXStoryConfiguration alloc] initWithAssetCollection:v6];
+    v9 = [[PXStoryConfiguration alloc] initWithAssetCollection:collectionCopy];
     [(PXStoryPPTConfiguration *)self _completeConfigurationRequestWithStoryConfiguration:v9 resultHandler:v8];
   }
 
@@ -130,14 +130,14 @@ void __53__PXStoryPPTConfiguration__performPhotoLibraryFetch___block_invoke(uint
     block[1] = 3221225472;
     block[2] = __90__PXStoryPPTConfiguration__completeConfigurationRequestWithAssetCollection_resultHandler___block_invoke;
     block[3] = &unk_1E774C250;
-    v11 = v7;
+    v11 = handlerCopy;
     dispatch_async(MEMORY[0x1E69E96A0], block);
   }
 }
 
-- (void)_createSyntheticAssetsWithResultHandler:(id)a3
+- (void)_createSyntheticAssetsWithResultHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   if ([(PXStoryPPTConfiguration *)self assetCount])
   {
@@ -181,9 +181,9 @@ void __67__PXStoryPPTConfiguration__createSyntheticAssetsWithResultHandler___blo
   [v5 setLabel:v4];
 }
 
-- (void)_fetchAssetsWithResultHandler:(id)a3
+- (void)_fetchAssetsWithResultHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v9[0] = 0;
   v9[1] = v9;
   v9[2] = 0x3032000000;
@@ -196,7 +196,7 @@ void __67__PXStoryPPTConfiguration__createSyntheticAssetsWithResultHandler___blo
   v6[3] = &unk_1E7747578;
   v6[4] = self;
   v8 = v9;
-  v5 = v4;
+  v5 = handlerCopy;
   v7 = v5;
   [(PXStoryPPTConfiguration *)self _performPhotoLibraryFetch:v6];
 
@@ -240,11 +240,11 @@ uint64_t __57__PXStoryPPTConfiguration__fetchAssetsWithResultHandler___block_inv
   return [*(a1 + 32) _completeConfigurationRequestWithFetchResult:*(*(*(a1 + 48) + 8) + 40) resultHandler:*(a1 + 40)];
 }
 
-- (void)_fetchLatestAssetCollectionOfType:(int64_t)a3 resultHandler:(id)a4
+- (void)_fetchLatestAssetCollectionOfType:(int64_t)type resultHandler:(id)handler
 {
-  v6 = a4;
-  v7 = v6;
-  if (a3 == 4)
+  handlerCopy = handler;
+  v7 = handlerCopy;
+  if (type == 4)
   {
     v8 = objc_opt_class();
     v12[0] = MEMORY[0x1E69E9820];
@@ -263,10 +263,10 @@ uint64_t __57__PXStoryPPTConfiguration__fetchAssetsWithResultHandler___block_inv
     v10[1] = 3221225472;
     v10[2] = __75__PXStoryPPTConfiguration__fetchLatestAssetCollectionOfType_resultHandler___block_invoke_2;
     v10[3] = &unk_1E7747528;
-    v11[1] = a3;
+    v11[1] = type;
     v10[4] = self;
     v9 = v11;
-    v11[0] = v6;
+    v11[0] = handlerCopy;
     [(PXStoryPPTConfiguration *)self _performPhotoLibraryFetch:v10];
   }
 }
@@ -295,20 +295,20 @@ void __75__PXStoryPPTConfiguration__fetchLatestAssetCollectionOfType_resultHandl
   [*(a1 + 32) _completeConfigurationRequestWithAssetCollection:v7 resultHandler:*(a1 + 40)];
 }
 
-- (void)_configureWithMemoryFetchResultProvider:(id)a3 resultHandler:(id)a4
+- (void)_configureWithMemoryFetchResultProvider:(id)provider resultHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  providerCopy = provider;
+  handlerCopy = handler;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __81__PXStoryPPTConfiguration__configureWithMemoryFetchResultProvider_resultHandler___block_invoke;
   v11[3] = &unk_1E77474D8;
   v11[4] = self;
-  v12 = v7;
-  v13 = v8;
+  v12 = providerCopy;
+  v13 = handlerCopy;
   v14 = a2;
-  v9 = v8;
-  v10 = v7;
+  v9 = handlerCopy;
+  v10 = providerCopy;
   [(PXStoryPPTConfiguration *)self _performPhotoLibraryFetch:v11];
 }
 
@@ -340,16 +340,16 @@ void __81__PXStoryPPTConfiguration__configureWithMemoryFetchResultProvider_resul
   [a1[4] _completeConfigurationRequestWithAssetCollection:v4 resultHandler:a1[6]];
 }
 
-- (void)_fetchMemoryByName:(id)a3 resultHandler:(id)a4
+- (void)_fetchMemoryByName:(id)name resultHandler:(id)handler
 {
-  v6 = a3;
+  nameCopy = name;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __60__PXStoryPPTConfiguration__fetchMemoryByName_resultHandler___block_invoke;
   v8[3] = &unk_1E77474B0;
-  v9 = v6;
-  v7 = v6;
-  [(PXStoryPPTConfiguration *)self _configureWithMemoryFetchResultProvider:v8 resultHandler:a4];
+  v9 = nameCopy;
+  v7 = nameCopy;
+  [(PXStoryPPTConfiguration *)self _configureWithMemoryFetchResultProvider:v8 resultHandler:handler];
 }
 
 id __60__PXStoryPPTConfiguration__fetchMemoryByName_resultHandler___block_invoke(uint64_t a1, void *a2)
@@ -380,16 +380,16 @@ id __60__PXStoryPPTConfiguration__fetchMemoryByName_resultHandler___block_invoke
   return v10;
 }
 
-- (void)_fetchMemoryByLocalIdentifier:(id)a3 resultHandler:(id)a4
+- (void)_fetchMemoryByLocalIdentifier:(id)identifier resultHandler:(id)handler
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __71__PXStoryPPTConfiguration__fetchMemoryByLocalIdentifier_resultHandler___block_invoke;
   v8[3] = &unk_1E77474B0;
-  v9 = v6;
-  v7 = v6;
-  [(PXStoryPPTConfiguration *)self _configureWithMemoryFetchResultProvider:v8 resultHandler:a4];
+  v9 = identifierCopy;
+  v7 = identifierCopy;
+  [(PXStoryPPTConfiguration *)self _configureWithMemoryFetchResultProvider:v8 resultHandler:handler];
 }
 
 id __71__PXStoryPPTConfiguration__fetchMemoryByLocalIdentifier_resultHandler___block_invoke(uint64_t a1, void *a2)
@@ -405,16 +405,16 @@ id __71__PXStoryPPTConfiguration__fetchMemoryByLocalIdentifier_resultHandler___b
   return v6;
 }
 
-- (void)_fetchDefaultMemoryWithResultHandler:(id)a3
+- (void)_fetchDefaultMemoryWithResultHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v6 = [v5 objectForKey:@"PXStoryPPTDefaultMemoryLocalIdentifier"];
-  v7 = [v5 objectForKey:@"PXStoryPPTDefaultMemoryName"];
+  handlerCopy = handler;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v6 = [standardUserDefaults objectForKey:@"PXStoryPPTDefaultMemoryLocalIdentifier"];
+  v7 = [standardUserDefaults objectForKey:@"PXStoryPPTDefaultMemoryName"];
   v8 = v7;
   if (v6)
   {
-    [(PXStoryPPTConfiguration *)self _fetchMemoryByLocalIdentifier:v6 resultHandler:v4];
+    [(PXStoryPPTConfiguration *)self _fetchMemoryByLocalIdentifier:v6 resultHandler:handlerCopy];
   }
 
   else
@@ -424,15 +424,15 @@ id __71__PXStoryPPTConfiguration__fetchMemoryByLocalIdentifier_resultHandler___b
       PXAssertGetLog();
     }
 
-    [(PXStoryPPTConfiguration *)self _fetchMemoryByName:v7 resultHandler:v4];
+    [(PXStoryPPTConfiguration *)self _fetchMemoryByName:v7 resultHandler:handlerCopy];
   }
 }
 
-- (void)requestStoryConfigurationWithOptions:(id)a3 resultHandler:(id)a4
+- (void)requestStoryConfigurationWithOptions:(id)options resultHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 objectForKeyedSubscript:@"storyDuration"];
+  optionsCopy = options;
+  handlerCopy = handler;
+  v9 = [optionsCopy objectForKeyedSubscript:@"storyDuration"];
   [v9 doubleValue];
   v11 = v10;
 
@@ -442,13 +442,13 @@ id __71__PXStoryPPTConfiguration__fetchMemoryByLocalIdentifier_resultHandler___b
     [(PXStoryPPTConfiguration *)self setPreferredStoryDuration:v11];
   }
 
-  v12 = [(PXStoryPPTConfiguration *)self subpreset];
+  subpreset = [(PXStoryPPTConfiguration *)self subpreset];
   v18 = MEMORY[0x1E69E9820];
   v19 = 3221225472;
   v20 = __78__PXStoryPPTConfiguration_requestStoryConfigurationWithOptions_resultHandler___block_invoke;
   v21 = &unk_1E7747488;
-  v23 = v12;
-  v13 = v8;
+  v23 = subpreset;
+  v13 = handlerCopy;
   v22 = v13;
   v14 = _Block_copy(&v18);
   v15 = [(PXStoryPPTConfiguration *)self assetCollection:v18];
@@ -469,21 +469,21 @@ id __71__PXStoryPPTConfiguration__fetchMemoryByLocalIdentifier_resultHandler___b
 
   else
   {
-    v16 = [(PXStoryPPTConfiguration *)self assetType];
-    if (v16 - 2 < 2)
+    assetType = [(PXStoryPPTConfiguration *)self assetType];
+    if (assetType - 2 < 2)
     {
       [(PXStoryPPTConfiguration *)self _fetchAssetsWithResultHandler:v14];
     }
 
-    else if (v16 == 1)
+    else if (assetType == 1)
     {
       [(PXStoryPPTConfiguration *)self _createSyntheticAssetsWithResultHandler:v14];
     }
 
-    else if (!v16)
+    else if (!assetType)
     {
-      v17 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v17 handleFailureInMethod:a2 object:self file:@"PXStoryPPTConfiguration.m" lineNumber:199 description:@"Code which should be unreachable has been reached"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryPPTConfiguration.m" lineNumber:199 description:@"Code which should be unreachable has been reached"];
 
       abort();
     }
@@ -501,20 +501,20 @@ void __78__PXStoryPPTConfiguration_requestStoryConfigurationWithOptions_resultHa
 - (NSString)name
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v4 = [(PXStoryPPTConfiguration *)self contentDescription];
-  [v3 addObject:v4];
+  contentDescription = [(PXStoryPPTConfiguration *)self contentDescription];
+  [v3 addObject:contentDescription];
 
-  v5 = [(PXStoryPPTConfiguration *)self subpreset];
-  if (v5)
+  subpreset = [(PXStoryPPTConfiguration *)self subpreset];
+  if (subpreset)
   {
-    if (v5 > 3)
+    if (subpreset > 3)
     {
       v6 = @"??";
     }
 
     else
     {
-      v6 = off_1E7733B98[v5];
+      v6 = off_1E7733B98[subpreset];
     }
 
     v7 = v6;
@@ -527,7 +527,7 @@ void __78__PXStoryPPTConfiguration_requestStoryConfigurationWithOptions_resultHa
   return v9;
 }
 
-- (PXStoryPPTConfiguration)initWithAssetType:(unint64_t)a3 count:(unint64_t)a4
+- (PXStoryPPTConfiguration)initWithAssetType:(unint64_t)type count:(unint64_t)count
 {
   v13.receiver = self;
   v13.super_class = PXStoryPPTConfiguration;
@@ -535,10 +535,10 @@ void __78__PXStoryPPTConfiguration_requestStoryConfigurationWithOptions_resultHa
   v7 = v6;
   if (v6)
   {
-    v6->_assetType = a3;
-    v6->_assetCount = a4;
-    v8 = [(PXStoryPPTConfiguration *)v6 _stringFromAssetCount:a4];
-    v9 = [(PXStoryPPTConfiguration *)v7 _stringFromAssetType:a3];
+    v6->_assetType = type;
+    v6->_assetCount = count;
+    v8 = [(PXStoryPPTConfiguration *)v6 _stringFromAssetCount:count];
+    v9 = [(PXStoryPPTConfiguration *)v7 _stringFromAssetType:type];
     v10 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@_%@", v8, v9];
     contentDescription = v7->_contentDescription;
     v7->_contentDescription = v10;
@@ -547,18 +547,18 @@ void __78__PXStoryPPTConfiguration_requestStoryConfigurationWithOptions_resultHa
   return v7;
 }
 
-- (PXStoryPPTConfiguration)initWithAssetCollection:(id)a3 name:(id)a4
+- (PXStoryPPTConfiguration)initWithAssetCollection:(id)collection name:(id)name
 {
-  v7 = a3;
-  v8 = a4;
+  collectionCopy = collection;
+  nameCopy = name;
   v14.receiver = self;
   v14.super_class = PXStoryPPTConfiguration;
   v9 = [(PXStoryPPTConfiguration *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_assetCollection, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_assetCollection, collection);
+    v11 = [nameCopy copy];
     contentDescription = v10->_contentDescription;
     v10->_contentDescription = v11;
   }
@@ -583,7 +583,7 @@ void __78__PXStoryPPTConfiguration_requestStoryConfigurationWithOptions_resultHa
   return v3;
 }
 
-- (PXStoryPPTConfiguration)initWithLatestCollectionOfType:(int64_t)a3
+- (PXStoryPPTConfiguration)initWithLatestCollectionOfType:(int64_t)type
 {
   v11.receiver = self;
   v11.super_class = PXStoryPPTConfiguration;
@@ -591,17 +591,17 @@ void __78__PXStoryPPTConfiguration_requestStoryConfigurationWithOptions_resultHa
   v6 = v5;
   if (v5)
   {
-    if (a3 == 4)
+    if (type == 4)
     {
       v7 = @"LatestMemory";
     }
 
     else
     {
-      if (a3 != 1)
+      if (type != 1)
       {
-        v10 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v10 handleFailureInMethod:a2 object:v6 file:@"PXStoryPPTConfiguration.m" lineNumber:114 description:@"Code which should be unreachable has been reached"];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:v6 file:@"PXStoryPPTConfiguration.m" lineNumber:114 description:@"Code which should be unreachable has been reached"];
 
         abort();
       }
@@ -612,96 +612,96 @@ void __78__PXStoryPPTConfiguration_requestStoryConfigurationWithOptions_resultHa
     contentDescription = v5->_contentDescription;
     v5->_contentDescription = &v7->isa;
 
-    v6->_collectionType = a3;
+    v6->_collectionType = type;
   }
 
   return v6;
 }
 
-- (PXStoryPPTConfiguration)initWithPreset:(unint64_t)a3
+- (PXStoryPPTConfiguration)initWithPreset:(unint64_t)preset
 {
-  if (a3 <= 4)
+  if (preset <= 4)
   {
-    if (a3 > 2)
+    if (preset > 2)
     {
-      if (a3 != 3)
+      if (preset != 3)
       {
         v3 = 3;
 LABEL_13:
-        v4 = [(PXStoryPPTConfiguration *)self initWithAssetType:v3 count:1000];
+        initWithDefaultMemory = [(PXStoryPPTConfiguration *)self initWithAssetType:v3 count:1000];
         goto LABEL_16;
       }
 
       v5 = 1;
 LABEL_15:
-      v4 = [(PXStoryPPTConfiguration *)self initWithLatestCollectionOfType:v5];
+      initWithDefaultMemory = [(PXStoryPPTConfiguration *)self initWithLatestCollectionOfType:v5];
       goto LABEL_16;
     }
 
-    if (a3 == 2)
+    if (preset == 2)
     {
       v5 = 4;
       goto LABEL_15;
     }
 
-    if (a3 < 2)
+    if (preset < 2)
     {
-      v10 = [MEMORY[0x1E696AAA8] currentHandler];
-      v11 = v10;
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      v11 = currentHandler;
       v12 = a2;
-      v13 = self;
+      selfCopy2 = self;
       v14 = 86;
       goto LABEL_20;
     }
 
 LABEL_19:
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    v11 = v10;
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    v11 = currentHandler;
     v12 = a2;
-    v13 = self;
+    selfCopy2 = self;
     v14 = 100;
 LABEL_20:
-    [v10 handleFailureInMethod:v12 object:v13 file:@"PXStoryPPTConfiguration.m" lineNumber:v14 description:@"Code which should be unreachable has been reached"];
+    [currentHandler handleFailureInMethod:v12 object:selfCopy2 file:@"PXStoryPPTConfiguration.m" lineNumber:v14 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  if (a3 == 5)
+  if (preset == 5)
   {
     v3 = 2;
     goto LABEL_13;
   }
 
-  if (a3 == 6)
+  if (preset == 6)
   {
     v3 = 1;
     goto LABEL_13;
   }
 
-  if (a3 != 7)
+  if (preset != 7)
   {
     goto LABEL_19;
   }
 
-  v4 = [(PXStoryPPTConfiguration *)self initWithDefaultMemory];
+  initWithDefaultMemory = [(PXStoryPPTConfiguration *)self initWithDefaultMemory];
 LABEL_16:
-  v6 = v4;
+  v6 = initWithDefaultMemory;
 
   return v6;
 }
 
-+ (void)_requestPhotoLibraryWithResultHandler:(id)a3
++ (void)_requestPhotoLibraryWithResultHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   v6 = MEMORY[0x1E69789A8];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __65__PXStoryPPTConfiguration__requestPhotoLibraryWithResultHandler___block_invoke;
   v8[3] = &unk_1E77475C0;
   v10 = a2;
-  v11 = a1;
-  v9 = v5;
-  v7 = v5;
+  selfCopy = self;
+  v9 = handlerCopy;
+  v7 = handlerCopy;
   [v6 requestAuthorizationForAccessLevel:2 handler:v8];
 }
 
@@ -719,19 +719,19 @@ void __65__PXStoryPPTConfiguration__requestPhotoLibraryWithResultHandler___block
   px_dispatch_on_main_queue();
 }
 
-+ (void)_fetchLatestMemoriesWithMaximumCount:(int64_t)a3 resultHandler:(id)a4
++ (void)_fetchLatestMemoriesWithMaximumCount:(int64_t)count resultHandler:(id)handler
 {
-  v7 = a4;
+  handlerCopy = handler;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __78__PXStoryPPTConfiguration__fetchLatestMemoriesWithMaximumCount_resultHandler___block_invoke;
   v9[3] = &unk_1E7747550;
   v12 = a2;
-  v13 = a1;
-  v10 = v7;
-  v11 = a3;
-  v8 = v7;
-  [a1 _requestPhotoLibraryWithResultHandler:v9];
+  selfCopy = self;
+  v10 = handlerCopy;
+  countCopy = count;
+  v8 = handlerCopy;
+  [self _requestPhotoLibraryWithResultHandler:v9];
 }
 
 void __78__PXStoryPPTConfiguration__fetchLatestMemoriesWithMaximumCount_resultHandler___block_invoke(void *a1, void *a2)
@@ -869,48 +869,48 @@ LABEL_26:
   (*(a1[4] + 16))();
 }
 
-+ (void)_configureConfiguration:(id)a3 forSubpreset:(unint64_t)a4
++ (void)_configureConfiguration:(id)configuration forSubpreset:(unint64_t)subpreset
 {
-  v5 = a3;
-  if (a4 - 1 <= 2)
+  configurationCopy = configuration;
+  if (subpreset - 1 <= 2)
   {
-    v7 = v5;
-    v6 = [[PXStoryPrecomposedTimelineProducer alloc] initWithTimelineKind:a4];
+    v7 = configurationCopy;
+    v6 = [[PXStoryPrecomposedTimelineProducer alloc] initWithTimelineKind:subpreset];
     [v7 setTimelineProducer:v6];
 
-    v5 = v7;
+    configurationCopy = v7;
   }
 }
 
-+ (id)configurationsForPreset:(unint64_t)a3 subpreset:(unint64_t)a4 testOptions:(id)a5
++ (id)configurationsForPreset:(unint64_t)preset subpreset:(unint64_t)subpreset testOptions:(id)options
 {
-  v9 = a5;
+  optionsCopy = options;
   v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __73__PXStoryPPTConfiguration_configurationsForPreset_subpreset_testOptions___block_invoke;
   aBlock[3] = &unk_1E77473E8;
-  v32 = a4;
+  subpresetCopy = subpreset;
   v11 = v10;
   v31 = v11;
   v12 = _Block_copy(aBlock);
   v13 = v12;
-  if (a3 == 1)
+  if (preset == 1)
   {
-    v14 = [v9 objectForKeyedSubscript:@"dataSet"];
-    v15 = [v9 objectForKeyedSubscript:@"dataSetLimit"];
+    v14 = [optionsCopy objectForKeyedSubscript:@"dataSet"];
+    v15 = [optionsCopy objectForKeyedSubscript:@"dataSetLimit"];
     if (v14 && ![v14 isEqualToString:@"Default"])
     {
       if (![v14 isEqualToString:@"Memories"])
       {
-        v22 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v22 handleFailureInMethod:a2 object:a1 file:@"PXStoryPPTConfiguration.m" lineNumber:73 description:{@"invalid dataSet option: %@", v14}];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryPPTConfiguration.m" lineNumber:73 description:{@"invalid dataSet option: %@", v14}];
 
         abort();
       }
 
       v18 = dispatch_semaphore_create(0);
-      v19 = [v15 integerValue];
+      integerValue = [v15 integerValue];
       v23[0] = MEMORY[0x1E69E9820];
       v23[1] = 3221225472;
       v23[2] = __73__PXStoryPPTConfiguration_configurationsForPreset_subpreset_testOptions___block_invoke_3;
@@ -918,7 +918,7 @@ LABEL_26:
       v24 = v11;
       v25 = v18;
       v17 = v18;
-      [a1 _fetchLatestMemoriesWithMaximumCount:v19 resultHandler:v23];
+      [self _fetchLatestMemoriesWithMaximumCount:integerValue resultHandler:v23];
       dispatch_semaphore_wait(v17, 0xFFFFFFFFFFFFFFFFLL);
     }
 
@@ -940,7 +940,7 @@ LABEL_26:
 
   else
   {
-    (*(v12 + 2))(v12, a3);
+    (*(v12 + 2))(v12, preset);
   }
 
   v20 = v11;

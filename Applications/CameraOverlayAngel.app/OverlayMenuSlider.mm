@@ -1,19 +1,19 @@
 @interface OverlayMenuSlider
-- (BOOL)isDisabledAtIndex:(int64_t)a3;
+- (BOOL)isDisabledAtIndex:(int64_t)index;
 - (CGAffineTransform)orientationTransform;
-- (CGSize)sizeForImageAtIndex:(int64_t)a3;
+- (CGSize)sizeForImageAtIndex:(int64_t)index;
 - (NSArray)imageNames;
 - (NSIndexSet)disabledMenuItemsIndices;
 - (_TtP18CameraOverlayAngel25OverlayMenuSliderDelegate_)delegate;
-- (id)imageForTickMarkAtIndex:(int64_t)a3;
-- (void)discreteSliderDidChangeValue:(id)a3;
+- (id)imageForTickMarkAtIndex:(int64_t)index;
+- (void)discreteSliderDidChangeValue:(id)value;
 - (void)layoutSubviews;
-- (void)setAlignment:(unint64_t)a3;
-- (void)setDisabledMenuItemsIndices:(id)a3;
-- (void)setImageNames:(id)a3;
-- (void)setOrientation:(int64_t)a3;
-- (void)setOrientation:(int64_t)a3 animated:(BOOL)a4;
-- (void)setSelectedControlIndex:(int64_t)a3 animated:(BOOL)a4;
+- (void)setAlignment:(unint64_t)alignment;
+- (void)setDisabledMenuItemsIndices:(id)indices;
+- (void)setImageNames:(id)names;
+- (void)setOrientation:(int64_t)orientation;
+- (void)setOrientation:(int64_t)orientation animated:(BOOL)animated;
+- (void)setSelectedControlIndex:(int64_t)index animated:(BOOL)animated;
 @end
 
 @implementation OverlayMenuSlider
@@ -25,10 +25,10 @@
   return Strong;
 }
 
-- (void)setSelectedControlIndex:(int64_t)a3 animated:(BOOL)a4
+- (void)setSelectedControlIndex:(int64_t)index animated:(BOOL)animated
 {
-  v6 = self;
-  sub_10001D740(a3, a4);
+  selfCopy = self;
+  sub_10001D740(index, animated);
 }
 
 - (NSArray)imageNames
@@ -40,12 +40,12 @@
   return v3.super.isa;
 }
 
-- (void)setImageNames:(id)a3
+- (void)setImageNames:(id)names
 {
   v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   v5 = *(self + OBJC_IVAR____TtC18CameraOverlayAngel17OverlayMenuSlider_imageNames);
   *(self + OBJC_IVAR____TtC18CameraOverlayAngel17OverlayMenuSlider_imageNames) = v4;
-  v6 = self;
+  selfCopy = self;
   sub_10001D9A0(v5);
 }
 
@@ -66,48 +66,48 @@
   return v11;
 }
 
-- (void)setDisabledMenuItemsIndices:(id)a3
+- (void)setDisabledMenuItemsIndices:(id)indices
 {
   v4 = type metadata accessor for IndexSet();
   v5 = *(*(v4 - 8) + 64);
   __chkstk_darwin(v4 - 8);
   v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexSet._unconditionallyBridgeFromObjectiveC(_:)();
-  v8 = self;
+  selfCopy = self;
   sub_10001DFB4(v7);
 }
 
-- (void)discreteSliderDidChangeValue:(id)a3
+- (void)discreteSliderDidChangeValue:(id)value
 {
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)
   {
     v6 = Strong;
-    v7 = a3;
-    v8 = self;
-    [v6 overlayMenuSlider:v8 didSelectControlAt:{objc_msgSend(v7, "selectedIndex")}];
+    valueCopy = value;
+    selfCopy = self;
+    [v6 overlayMenuSlider:selfCopy didSelectControlAt:{objc_msgSend(valueCopy, "selectedIndex")}];
     swift_unknownObjectRelease();
   }
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_10001E5C8();
 }
 
-- (id)imageForTickMarkAtIndex:(int64_t)a3
+- (id)imageForTickMarkAtIndex:(int64_t)index
 {
-  v4 = self;
-  v5 = sub_10001E924(a3);
+  selfCopy = self;
+  v5 = sub_10001E924(index);
 
   return v5;
 }
 
-- (CGSize)sizeForImageAtIndex:(int64_t)a3
+- (CGSize)sizeForImageAtIndex:(int64_t)index
 {
-  v4 = self;
-  sub_10001DC5C(a3);
+  selfCopy = self;
+  sub_10001DC5C(index);
   v6 = v5;
   v8 = v7;
 
@@ -118,7 +118,7 @@
   return result;
 }
 
-- (BOOL)isDisabledAtIndex:(int64_t)a3
+- (BOOL)isDisabledAtIndex:(int64_t)index
 {
   v5 = type metadata accessor for IndexSet();
   v6 = *(v5 - 8);
@@ -128,26 +128,26 @@
   v10 = OBJC_IVAR____TtC18CameraOverlayAngel17OverlayMenuSlider_disabledMenuItemsIndices;
   swift_beginAccess();
   (*(v6 + 16))(v9, self + v10, v5);
-  LOBYTE(a3) = IndexSet.contains(_:)(a3);
+  LOBYTE(index) = IndexSet.contains(_:)(index);
   (*(v6 + 8))(v9, v5);
-  return a3 & 1;
+  return index & 1;
 }
 
-- (void)setOrientation:(int64_t)a3
+- (void)setOrientation:(int64_t)orientation
 {
-  v4 = self;
-  sub_10001EC94(a3);
+  selfCopy = self;
+  sub_10001EC94(orientation);
 }
 
-- (void)setOrientation:(int64_t)a3 animated:(BOOL)a4
+- (void)setOrientation:(int64_t)orientation animated:(BOOL)animated
 {
-  v6 = self;
-  sub_10001ED30(a3, a4);
+  selfCopy = self;
+  sub_10001ED30(orientation, animated);
 }
 
 - (CGAffineTransform)orientationTransform
 {
-  v4 = self;
+  selfCopy = self;
   sub_10001E7AC(v8);
 
   v6 = v8[1];
@@ -158,11 +158,11 @@
   return result;
 }
 
-- (void)setAlignment:(unint64_t)a3
+- (void)setAlignment:(unint64_t)alignment
 {
   v3 = *(self + OBJC_IVAR____TtC18CameraOverlayAngel17OverlayMenuSlider_alignment);
-  *(self + OBJC_IVAR____TtC18CameraOverlayAngel17OverlayMenuSlider_alignment) = a3;
-  if (v3 != a3)
+  *(self + OBJC_IVAR____TtC18CameraOverlayAngel17OverlayMenuSlider_alignment) = alignment;
+  if (v3 != alignment)
   {
     [(OverlayMenuSlider *)self setNeedsLayout];
   }

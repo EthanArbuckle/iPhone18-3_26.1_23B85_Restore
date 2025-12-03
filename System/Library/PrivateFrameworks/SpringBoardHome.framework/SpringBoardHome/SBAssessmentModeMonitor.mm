@@ -2,7 +2,7 @@
 + (id)sharedInstance;
 - (id)_init;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation SBAssessmentModeMonitor
@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = __41__SBAssessmentModeMonitor_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_2 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_2, block);
@@ -88,23 +88,23 @@ uint64_t __41__SBAssessmentModeMonitor_sharedInstance__block_invoke(uint64_t a1)
   [(SBAssessmentModeMonitor *)&v4 dealloc];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v24 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if ([v10 isEqualToString:@"active"] && self->_assessmentModeGestalt == v11)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if ([pathCopy isEqualToString:@"active"] && self->_assessmentModeGestalt == objectCopy)
   {
-    v13 = [v12 objectForKeyedSubscript:*MEMORY[0x1E696A4F0]];
+    v13 = [changeCopy objectForKeyedSubscript:*MEMORY[0x1E696A4F0]];
     v14 = v13;
     if (v13)
     {
       active = self->_active;
-      v16 = [v13 BOOLValue];
-      if (active != v16)
+      bOOLValue = [v13 BOOLValue];
+      if (active != bOOLValue)
       {
-        v17 = v16;
+        v17 = bOOLValue;
         v18 = SBLogAssessmentMode();
         if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
         {
@@ -124,7 +124,7 @@ uint64_t __41__SBAssessmentModeMonitor_sharedInstance__block_invoke(uint64_t a1)
   {
     v19.receiver = self;
     v19.super_class = SBAssessmentModeMonitor;
-    [(SBAssessmentModeMonitor *)&v19 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(SBAssessmentModeMonitor *)&v19 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 

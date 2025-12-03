@@ -1,32 +1,32 @@
 @interface HMDHomeActivityState
 + (id)logCategory;
 + (unint64_t)stateType;
-- (BOOL)lookupAndTransitionToState:(unint64_t)a3 withEvent:(id)a4;
+- (BOOL)lookupAndTransitionToState:(unint64_t)state withEvent:(id)event;
 - (HMDHomeActivityState)currentHomeActivityState;
-- (HMDHomeActivityState)initWithParent:(id)a3;
-- (HMDHomeActivityState)initWithParent:(id)a3 dataSource:(id)a4;
+- (HMDHomeActivityState)initWithParent:(id)parent;
+- (HMDHomeActivityState)initWithParent:(id)parent dataSource:(id)source;
 - (HMDHomeActivityStateMachine)homeActivityStateMachine;
 - (id)logIdentifier;
-- (void)checkAndNotifyAllConsumersAboutStateChangeDueToEvent:(id)a3;
-- (void)notifyStateChangeToAllConsumers:(unint64_t)a3 withHoldInfo:(id)a4 transitionalStateEndDate:(id)a5 reason:(int64_t)a6;
-- (void)onInitialTransition:(id)a3;
+- (void)checkAndNotifyAllConsumersAboutStateChangeDueToEvent:(id)event;
+- (void)notifyStateChangeToAllConsumers:(unint64_t)consumers withHoldInfo:(id)info transitionalStateEndDate:(id)date reason:(int64_t)reason;
+- (void)onInitialTransition:(id)transition;
 @end
 
 @implementation HMDHomeActivityState
 
 - (id)logIdentifier
 {
-  v2 = [(HMDHomeActivityState *)self dataSource];
-  v3 = [v2 logIdentifier];
+  dataSource = [(HMDHomeActivityState *)self dataSource];
+  logIdentifier = [dataSource logIdentifier];
 
-  return v3;
+  return logIdentifier;
 }
 
 - (HMDHomeActivityStateMachine)homeActivityStateMachine
 {
   v3 = [(HMDHierarchicalStateMachineState *)self hsm];
-  v4 = [v3 queue];
-  dispatch_assert_queue_V2(v4);
+  queue = [v3 queue];
+  dispatch_assert_queue_V2(queue);
 
   v5 = [(HMDHierarchicalStateMachineState *)self hsm];
   objc_opt_class();
@@ -48,16 +48,16 @@
 - (HMDHomeActivityState)currentHomeActivityState
 {
   v3 = [(HMDHierarchicalStateMachineState *)self hsm];
-  v4 = [v3 queue];
-  dispatch_assert_queue_V2(v4);
+  queue = [v3 queue];
+  dispatch_assert_queue_V2(queue);
 
-  v5 = [(HMDHomeActivityState *)self homeActivityStateMachine];
-  v6 = [v5 currentHSMState];
+  homeActivityStateMachine = [(HMDHomeActivityState *)self homeActivityStateMachine];
+  currentHSMState = [homeActivityStateMachine currentHSMState];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
+    v7 = currentHSMState;
   }
 
   else
@@ -70,46 +70,46 @@
   return v7;
 }
 
-- (void)onInitialTransition:(id)a3
+- (void)onInitialTransition:(id)transition
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  transitionCopy = transition;
   v13.receiver = self;
   v13.super_class = HMDHomeActivityState;
-  [(HMDHierarchicalStateMachineState *)&v13 onInitialTransition:v4];
+  [(HMDHierarchicalStateMachineState *)&v13 onInitialTransition:transitionCopy];
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v8 = HMFGetLogIdentifier();
     v9 = objc_opt_class();
     v10 = NSStringFromClass(v9);
-    v11 = [v4 name];
+    name = [transitionCopy name];
     *buf = 138543874;
     v15 = v8;
     v16 = 2112;
     v17 = v10;
     v18 = 2112;
-    v19 = v11;
+    v19 = name;
     _os_log_impl(&dword_229538000, v7, OS_LOG_TYPE_INFO, "%{public}@onInitialTransition : %@ / %@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v5);
-  [(HMDHomeActivityState *)v6 checkAndNotifyAllConsumersAboutStateChangeDueToEvent:v4];
+  [(HMDHomeActivityState *)selfCopy checkAndNotifyAllConsumersAboutStateChangeDueToEvent:transitionCopy];
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)checkAndNotifyAllConsumersAboutStateChangeDueToEvent:(id)a3
+- (void)checkAndNotifyAllConsumersAboutStateChangeDueToEvent:(id)event
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [objc_opt_class() stateType];
-  if (v5 > 0xA || ((0x729uLL >> v5) & 1) != 0)
+  eventCopy = event;
+  stateType = [objc_opt_class() stateType];
+  if (stateType > 0xA || ((0x729uLL >> stateType) & 1) != 0)
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
@@ -117,7 +117,7 @@
       v14 = 138543618;
       v15 = v12;
       v16 = 2112;
-      v17 = v4;
+      v17 = eventCopy;
       _os_log_impl(&dword_229538000, v11, OS_LOG_TYPE_DEBUG, "%{public}@Not notifying state change because it is unknown. Event: %@", &v14, 0x16u);
     }
 
@@ -126,32 +126,32 @@
 
   else
   {
-    v6 = qword_22A587C50[v5];
-    v7 = [v4 userInfo];
-    v8 = [v7 hmf_dateForKey:@"transitionalStateEndDate"];
+    v6 = qword_22A587C50[stateType];
+    userInfo = [eventCopy userInfo];
+    v8 = [userInfo hmf_dateForKey:@"transitionalStateEndDate"];
 
-    [(HMDHomeActivityState *)self notifyStateChangeToAllConsumers:v6 withHoldInfo:0 transitionalStateEndDate:v8 reason:[HMDHomeActivityStateMachine reasonForStateEvent:v4]];
+    [(HMDHomeActivityState *)self notifyStateChangeToAllConsumers:v6 withHoldInfo:0 transitionalStateEndDate:v8 reason:[HMDHomeActivityStateMachine reasonForStateEvent:eventCopy]];
   }
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)notifyStateChangeToAllConsumers:(unint64_t)a3 withHoldInfo:(id)a4 transitionalStateEndDate:(id)a5 reason:(int64_t)a6
+- (void)notifyStateChangeToAllConsumers:(unint64_t)consumers withHoldInfo:(id)info transitionalStateEndDate:(id)date reason:(int64_t)reason
 {
   v21 = *MEMORY[0x277D85DE8];
-  v10 = a4;
-  v11 = a5;
-  v12 = [(HMDHomeActivityState *)self homeActivityStateMachine];
-  v13 = v12;
-  if (v12)
+  infoCopy = info;
+  dateCopy = date;
+  homeActivityStateMachine = [(HMDHomeActivityState *)self homeActivityStateMachine];
+  v13 = homeActivityStateMachine;
+  if (homeActivityStateMachine)
   {
-    [v12 handleHomeActivityStateChange:a3 withHoldInfo:v10 transitionalStateEndDate:v11 reason:a6];
+    [homeActivityStateMachine handleHomeActivityStateChange:consumers withHoldInfo:infoCopy transitionalStateEndDate:dateCopy reason:reason];
   }
 
   else
   {
     v14 = objc_autoreleasePoolPush();
-    v15 = self;
+    selfCopy = self;
     v16 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
@@ -167,28 +167,28 @@
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)lookupAndTransitionToState:(unint64_t)a3 withEvent:(id)a4
+- (BOOL)lookupAndTransitionToState:(unint64_t)state withEvent:(id)event
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  eventCopy = event;
   v7 = [(HMDHierarchicalStateMachineState *)self hsm];
-  v8 = HMDHomeActivityStateTypeToString(a3);
+  v8 = HMDHomeActivityStateTypeToString(state);
   v9 = [v7 stateWithName:v8];
 
   if (v9)
   {
-    [v7 transitionToState:v9 withEvent:v6];
+    [v7 transitionToState:v9 withEvent:eventCopy];
   }
 
   else
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       v13 = HMFGetLogIdentifier();
-      v14 = HMDHomeActivityStateTypeToString(a3);
+      v14 = HMDHomeActivityStateTypeToString(state);
       v17 = 138543618;
       v18 = v13;
       v19 = 2112;
@@ -203,28 +203,28 @@
   return v9 != 0;
 }
 
-- (HMDHomeActivityState)initWithParent:(id)a3
+- (HMDHomeActivityState)initWithParent:(id)parent
 {
-  v4 = a3;
-  v5 = [v4 dataSource];
-  v6 = [(HMDHomeActivityState *)self initWithParent:v4 dataSource:v5];
+  parentCopy = parent;
+  dataSource = [parentCopy dataSource];
+  v6 = [(HMDHomeActivityState *)self initWithParent:parentCopy dataSource:dataSource];
 
   return v6;
 }
 
-- (HMDHomeActivityState)initWithParent:(id)a3 dataSource:(id)a4
+- (HMDHomeActivityState)initWithParent:(id)parent dataSource:(id)source
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [objc_opt_class() stateType];
-  v10 = HMDHomeActivityStateTypeToString(v9);
+  sourceCopy = source;
+  parentCopy = parent;
+  stateType = [objc_opt_class() stateType];
+  v10 = HMDHomeActivityStateTypeToString(stateType);
   v13.receiver = self;
   v13.super_class = HMDHomeActivityState;
-  v11 = [(HMDHierarchicalStateMachineState *)&v13 initWithName:v10 parent:v8];
+  v11 = [(HMDHierarchicalStateMachineState *)&v13 initWithName:v10 parent:parentCopy];
 
   if (v11)
   {
-    objc_storeStrong(&v11->_dataSource, a4);
+    objc_storeStrong(&v11->_dataSource, source);
     v11->_autoNotifySubsystemsAboutStateChange = 1;
   }
 

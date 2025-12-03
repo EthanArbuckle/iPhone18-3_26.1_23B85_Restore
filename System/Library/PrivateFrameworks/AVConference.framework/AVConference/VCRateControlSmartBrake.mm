@@ -1,11 +1,11 @@
 @interface VCRateControlSmartBrake
 - (VCRateControlSmartBrake)init;
-- (VCRateControlSmartBrake)initWithCompletionHandler:(id)a3;
+- (VCRateControlSmartBrake)initWithCompletionHandler:(id)handler;
 - (int)bindInputBuffers;
 - (int)bindLSTMBuffers;
 - (int)bindOutputBuffers;
 - (int)setupModel;
-- (int)setupNetAndConfigFromPath:(id)a3;
+- (int)setupNetAndConfigFromPath:(id)path;
 - (tagVCRateControlSmartBrakeConfig)config;
 - (void)compileModel;
 - (void)dealloc;
@@ -47,9 +47,9 @@ LABEL_9:
   return v3;
 }
 
-- (VCRateControlSmartBrake)initWithCompletionHandler:(id)a3
+- (VCRateControlSmartBrake)initWithCompletionHandler:(id)handler
 {
-  self->_completionHandler = [a3 copy];
+  self->_completionHandler = [handler copy];
 
   return [(VCRateControlSmartBrake *)self init];
 }
@@ -132,7 +132,7 @@ LABEL_9:
           v33 = 2112;
           v34 = v10;
           v35 = 2048;
-          v36 = self;
+          selfCopy5 = self;
           _os_log_error_impl(&dword_1DB56E000, v13, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Unable to load Trial client", &v27, 0x30u);
         }
       }
@@ -185,7 +185,7 @@ LABEL_9:
           v33 = 2112;
           v34 = v11;
           v35 = 2048;
-          v36 = self;
+          selfCopy5 = self;
           v37 = 1024;
           v38 = -1;
           _os_log_error_impl(&dword_1DB56E000, v15, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Unable to load Trial client, switch to bundled model instead returnStatus=%d", &v27, 0x36u);
@@ -247,7 +247,7 @@ LABEL_28:
         v33 = 2112;
         v34 = v16;
         v35 = 2048;
-        v36 = self;
+        selfCopy5 = self;
         v37 = 1024;
         v38 = v8;
         _os_log_error_impl(&dword_1DB56E000, v18, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Unable to load Trial model, switch to bundled model instead returnStatus=%d", &v27, 0x36u);
@@ -305,7 +305,7 @@ LABEL_39:
           v33 = 2112;
           v34 = v21;
           v35 = 2048;
-          v36 = self;
+          selfCopy5 = self;
           v37 = 1024;
           v38 = v19;
           v25 = " [%s] %s:%d %@(%p) Unable to build espresso plan, returnStatus=%d";
@@ -359,7 +359,7 @@ LABEL_64:
         v33 = 2112;
         v34 = v22;
         v35 = 2048;
-        v36 = self;
+        selfCopy5 = self;
         v37 = 1024;
         v38 = v19;
         v25 = " [%s] %s:%d %@(%p) Unable to load Bundled model returnStatus=%d";
@@ -371,16 +371,16 @@ LABEL_64:
   return v19;
 }
 
-- (int)setupNetAndConfigFromPath:(id)a3
+- (int)setupNetAndConfigFromPath:(id)path
 {
-  v3 = a3;
+  pathCopy = path;
   v34 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!path)
   {
-    v3 = [objc_msgSend(MEMORY[0x1E696AAE8] bundleForClass:{objc_opt_class()), "pathForResource:ofType:", @"smartBrakeModel", 0}];
+    pathCopy = [objc_msgSend(MEMORY[0x1E696AAE8] bundleForClass:{objc_opt_class()), "pathForResource:ofType:", @"smartBrakeModel", 0}];
   }
 
-  v5 = [v3 stringByAppendingPathComponent:@"params.plist"];
+  v5 = [pathCopy stringByAppendingPathComponent:@"params.plist"];
   v6 = [objc_alloc(MEMORY[0x1E695DF20]) initWithContentsOfFile:v5];
   if (!v6)
   {
@@ -429,7 +429,7 @@ LABEL_64:
     v28 = 2112;
     v29 = v18;
     v30 = 2048;
-    v31 = self;
+    selfCopy3 = self;
     v32 = 2112;
     v33 = v5;
     v17 = " [%s] %s:%d %@(%p) Unable to load config file from configPath=%@";
@@ -490,7 +490,7 @@ LABEL_64:
     v28 = 2112;
     v29 = v13;
     v30 = 2048;
-    v31 = self;
+    selfCopy3 = self;
     v32 = 2112;
     v33 = v5;
     v17 = " [%s] %s:%d %@(%p) Unable to format model config file from configPath=%@";
@@ -499,7 +499,7 @@ LABEL_23:
     return -2;
   }
 
-  v10 = [v3 stringByAppendingPathComponent:@"model.espresso.net"];
+  v10 = [pathCopy stringByAppendingPathComponent:@"model.espresso.net"];
   [v10 UTF8String];
   v11 = espresso_plan_add_network();
   if (v11)
@@ -543,7 +543,7 @@ LABEL_23:
           v28 = 2112;
           v29 = v12;
           v30 = 2048;
-          v31 = self;
+          selfCopy3 = self;
           v32 = 2112;
           v33 = v10;
           _os_log_error_impl(&dword_1DB56E000, v21, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Unable to format load espresso net file from netPath=%@", &v22, 0x3Au);
@@ -774,7 +774,7 @@ LABEL_19:
       v39 = v24;
       v40 = "LSTMStateIn";
       v41 = v25;
-      LODWORD(v42) = v20;
+      LODWORD(selfCopy) = v20;
       OUTLINED_FUNCTION_2();
       v31 = 44;
     }
@@ -810,7 +810,7 @@ LABEL_19:
       v39 = 2112;
       v40 = v22;
       v41 = 2048;
-      v42 = self;
+      selfCopy = self;
       v43 = v34;
       v44 = "LSTMStateIn";
       v45 = v35;
@@ -847,7 +847,7 @@ LABEL_19:
 - (void)init
 {
   v16 = *MEMORY[0x1E69E9840];
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     if (VRTraceGetErrorLogLevelForModule() < 3)
     {
@@ -875,7 +875,7 @@ LABEL_12:
 
   if (objc_opt_respondsToSelector())
   {
-    v2 = [a1 performSelector:sel_logPrefix];
+    v2 = [self performSelector:sel_logPrefix];
   }
 
   else
@@ -895,7 +895,7 @@ LABEL_12:
       OUTLINED_FUNCTION_29();
       v13 = v2;
       v14 = 2048;
-      v15 = a1;
+      selfCopy = self;
       v5 = " [%s] %s:%d %@(%p) Unable to initialize asynchronous compilation dispatch queue";
       v6 = v9;
       v7 = 48;
@@ -906,7 +906,7 @@ LABEL_12:
 
 - (void)setupModel
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     if (VRTraceGetErrorLogLevelForModule() < 3)
     {
@@ -929,7 +929,7 @@ LABEL_11:
 
   if (objc_opt_respondsToSelector())
   {
-    [a1 performSelector:sel_logPrefix];
+    [self performSelector:sel_logPrefix];
   }
 
   if (VRTraceGetErrorLogLevelForModule() >= 3)

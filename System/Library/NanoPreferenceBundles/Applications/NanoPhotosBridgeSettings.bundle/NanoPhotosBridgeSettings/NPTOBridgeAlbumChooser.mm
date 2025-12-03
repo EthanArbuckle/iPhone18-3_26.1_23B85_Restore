@@ -1,21 +1,21 @@
 @interface NPTOBridgeAlbumChooser
 - (BOOL)_isTinkerPaired;
 - (NPTOBridgeAlbumChooser)init;
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
 - (id)_albumsSectionTitle;
 - (id)_device;
 - (id)_noneAlbumName;
 - (id)_preferencesAccessor;
 - (id)_title;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)_reloadData;
 - (void)_syncedAlbumIdentifierPreferenceChanged;
 - (void)dealloc;
-- (void)photoLibraryDidChange:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)photoLibraryDidChange:(id)change;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -36,8 +36,8 @@
   {
     v5 = +[PHPhotoLibrary sharedPhotoLibrary];
     [v5 registerChangeObserver:v4];
-    v6 = [(NPTOBridgeAlbumChooser *)v4 _title];
-    [(NPTOBridgeAlbumChooser *)v4 setTitle:v6];
+    _title = [(NPTOBridgeAlbumChooser *)v4 _title];
+    [(NPTOBridgeAlbumChooser *)v4 setTitle:_title];
   }
 
   return v4;
@@ -59,11 +59,11 @@
   v6.super_class = NPTOBridgeAlbumChooser;
   [(NPTOBridgeAlbumChooser *)&v6 viewDidLoad];
   v3 = BPSBridgeTintColor();
-  v4 = [(NPTOBridgeAlbumChooser *)self view];
-  [v4 setTintColor:v3];
+  view = [(NPTOBridgeAlbumChooser *)self view];
+  [view setTintColor:v3];
 
-  v5 = [(NPTOBridgeAlbumChooser *)self _mainTableView];
-  [v5 setSeparatorStyle:1];
+  _mainTableView = [(NPTOBridgeAlbumChooser *)self _mainTableView];
+  [_mainTableView setSeparatorStyle:1];
 
   [(NPTOBridgeAlbumChooser *)self _reloadData];
 }
@@ -74,8 +74,8 @@
   v4 = [PHAssetCollection fetchAssetCollectionsWithType:2 subtype:203 options:0];
   if ([v4 count])
   {
-    v5 = [v4 firstObject];
-    [v3 addObject:v5];
+    firstObject = [v4 firstObject];
+    [v3 addObject:firstObject];
   }
 
   if ([(NPTOBridgeAlbumChooser *)self _allowsRecentAlbumSelection])
@@ -83,8 +83,8 @@
     v6 = [PHAssetCollection fetchAssetCollectionsWithType:2 subtype:209 options:0];
     if ([v6 count])
     {
-      v7 = [v6 firstObject];
-      [v3 addObject:v7];
+      firstObject2 = [v6 firstObject];
+      [v3 addObject:firstObject2];
     }
   }
 
@@ -120,15 +120,15 @@
 
 - (void)_syncedAlbumIdentifierPreferenceChanged
 {
-  v3 = [(NPTOBridgeAlbumChooser *)self _mainTableView];
-  v4 = [(NPTOBridgeAlbumChooser *)self _preferencesAccessor];
-  v5 = [v4 npto_syncedAlbumIdentifier];
+  _mainTableView = [(NPTOBridgeAlbumChooser *)self _mainTableView];
+  _preferencesAccessor = [(NPTOBridgeAlbumChooser *)self _preferencesAccessor];
+  npto_syncedAlbumIdentifier = [_preferencesAccessor npto_syncedAlbumIdentifier];
 
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  obj = [v3 indexPathsForVisibleRows];
+  obj = [_mainTableView indexPathsForVisibleRows];
   v6 = [obj countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v6)
   {
@@ -145,13 +145,13 @@
         }
 
         v10 = *(*(&v25 + 1) + 8 * i);
-        v11 = [v10 section];
-        if (v11 == [(NPTOBridgeAlbumChooser *)self topPlaceholdersSection])
+        section = [v10 section];
+        if (section == [(NPTOBridgeAlbumChooser *)self topPlaceholdersSection])
         {
           v12 = [NSIndexPath indexPathForRow:0 inSection:[(NPTOBridgeAlbumChooser *)self topPlaceholdersSection]];
-          v13 = [v3 cellForRowAtIndexPath:v12];
+          v13 = [_mainTableView cellForRowAtIndexPath:v12];
 
-          if ([v5 isEqualToString:v23])
+          if ([npto_syncedAlbumIdentifier isEqualToString:v23])
           {
             v14 = 3;
           }
@@ -164,14 +164,14 @@
           [v13 setAccessoryType:v14];
         }
 
-        v15 = [v10 section];
-        v16 = [(NPTOBridgeAlbumChooser *)self albumsSections];
-        if (v15 >= v16 && v15 - v16 < v17)
+        section2 = [v10 section];
+        albumsSections = [(NPTOBridgeAlbumChooser *)self albumsSections];
+        if (section2 >= albumsSections && section2 - albumsSections < v17)
         {
           v19 = [(NPTOBridgeAlbumChooser *)self collectionAtIndexPath:v10];
-          v20 = [v3 cellForRowAtIndexPath:v10];
-          v21 = [v19 localIdentifier];
-          if ([v21 isEqualToString:v5])
+          v20 = [_mainTableView cellForRowAtIndexPath:v10];
+          localIdentifier = [v19 localIdentifier];
+          if ([localIdentifier isEqualToString:npto_syncedAlbumIdentifier])
           {
             v22 = 3;
           }
@@ -192,7 +192,7 @@
   }
 }
 
-- (void)photoLibraryDidChange:(id)a3
+- (void)photoLibraryDidChange:(id)change
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -202,27 +202,27 @@
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NPTOBridgeAlbumChooser *)self _preferencesAccessor];
-  v9 = [v8 npto_syncedAlbumIdentifier];
+  viewCopy = view;
+  pathCopy = path;
+  _preferencesAccessor = [(NPTOBridgeAlbumChooser *)self _preferencesAccessor];
+  npto_syncedAlbumIdentifier = [_preferencesAccessor npto_syncedAlbumIdentifier];
 
-  v10 = [v7 section];
-  if (v10 == [(NPTOBridgeAlbumChooser *)self topPlaceholdersSection])
+  section = [pathCopy section];
+  if (section == [(NPTOBridgeAlbumChooser *)self topPlaceholdersSection])
   {
-    v11 = [v6 dequeueReusableCellWithIdentifier:@"NoAlbumCell"];
+    v11 = [viewCopy dequeueReusableCellWithIdentifier:@"NoAlbumCell"];
     if (!v11)
     {
       v11 = [[UITableViewCell alloc] initWithStyle:0 reuseIdentifier:@"NoAlbumCell"];
     }
 
-    v12 = [(NPTOBridgeAlbumChooser *)self _noneAlbumName];
-    v13 = [v11 textLabel];
-    [v13 setText:v12];
+    _noneAlbumName = [(NPTOBridgeAlbumChooser *)self _noneAlbumName];
+    textLabel = [v11 textLabel];
+    [textLabel setText:_noneAlbumName];
 
-    if ([v9 isEqualToString:NPTOPreferencesSyncedAlbumIdentifierNone])
+    if ([npto_syncedAlbumIdentifier isEqualToString:NPTOPreferencesSyncedAlbumIdentifierNone])
     {
       v14 = 3;
     }
@@ -237,23 +237,23 @@
 
   else
   {
-    v15 = [v7 section];
-    v16 = [(NPTOBridgeAlbumChooser *)self albumsSections];
-    if (v15 < v16 || v15 - v16 >= v17)
+    section2 = [pathCopy section];
+    albumsSections = [(NPTOBridgeAlbumChooser *)self albumsSections];
+    if (section2 < albumsSections || section2 - albumsSections >= v17)
     {
       v27.receiver = self;
       v27.super_class = NPTOBridgeAlbumChooser;
-      v11 = [(NPTOBridgeAlbumChooser *)&v27 tableView:v6 cellForRowAtIndexPath:v7];
+      v11 = [(NPTOBridgeAlbumChooser *)&v27 tableView:viewCopy cellForRowAtIndexPath:pathCopy];
     }
 
     else
     {
       v28.receiver = self;
       v28.super_class = NPTOBridgeAlbumChooser;
-      v11 = [(NPTOBridgeAlbumChooser *)&v28 tableView:v6 cellForRowAtIndexPath:v7];
-      v18 = [(NPTOBridgeAlbumChooser *)self collectionAtIndexPath:v7];
-      v19 = [v18 localIdentifier];
-      if ([v19 isEqualToString:v9])
+      v11 = [(NPTOBridgeAlbumChooser *)&v28 tableView:viewCopy cellForRowAtIndexPath:pathCopy];
+      v18 = [(NPTOBridgeAlbumChooser *)self collectionAtIndexPath:pathCopy];
+      localIdentifier = [v18 localIdentifier];
+      if ([localIdentifier isEqualToString:npto_syncedAlbumIdentifier])
       {
         v20 = 3;
       }
@@ -274,8 +274,8 @@
       [v22 setBackgroundColor:v23];
 
       [v11 setSelectedBackgroundView:v22];
-      v24 = [(NPTOBridgeAlbumChooser *)self spec];
-      [v24 stackSize];
+      spec = [(NPTOBridgeAlbumChooser *)self spec];
+      [spec stackSize];
       [v11 setSeparatorInset:{0.0, v25 + 16.0 + 8.0, 0.0, 0.0}];
     }
   }
@@ -283,10 +283,10 @@
   return v11;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v6 = a3;
-  if ([(NPTOBridgeAlbumChooser *)self topPlaceholdersSection]== a4)
+  viewCopy = view;
+  if ([(NPTOBridgeAlbumChooser *)self topPlaceholdersSection]== section)
   {
     v7 = &dword_0 + 1;
   }
@@ -295,18 +295,18 @@
   {
     v9.receiver = self;
     v9.super_class = NPTOBridgeAlbumChooser;
-    v7 = [(NPTOBridgeAlbumChooser *)&v9 tableView:v6 numberOfRowsInSection:a4];
+    v7 = [(NPTOBridgeAlbumChooser *)&v9 tableView:viewCopy numberOfRowsInSection:section];
   }
 
   return v7;
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 section];
-  if (v8 == [(NPTOBridgeAlbumChooser *)self topPlaceholdersSection])
+  viewCopy = view;
+  pathCopy = path;
+  section = [pathCopy section];
+  if (section == [(NPTOBridgeAlbumChooser *)self topPlaceholdersSection])
   {
     v9 = UITableViewAutomaticDimension;
   }
@@ -315,26 +315,26 @@
   {
     v12.receiver = self;
     v12.super_class = NPTOBridgeAlbumChooser;
-    [(NPTOBridgeAlbumChooser *)&v12 tableView:v6 heightForRowAtIndexPath:v7];
+    [(NPTOBridgeAlbumChooser *)&v12 tableView:viewCopy heightForRowAtIndexPath:pathCopy];
     v9 = v10;
   }
 
   return v9;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  [v6 deselectRowAtIndexPath:v7 animated:1];
-  v8 = [v6 cellForRowAtIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
+  v8 = [viewCopy cellForRowAtIndexPath:pathCopy];
   [v8 setAccessoryType:3];
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v9 = [v6 visibleCells];
-  v10 = [v9 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  visibleCells = [viewCopy visibleCells];
+  v10 = [visibleCells countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v10)
   {
     v11 = v10;
@@ -345,7 +345,7 @@
       {
         if (*v23 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(visibleCells);
         }
 
         v14 = *(*(&v22 + 1) + 8 * i);
@@ -355,30 +355,30 @@
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v11 = [visibleCells countByEnumeratingWithState:&v22 objects:v26 count:16];
     }
 
     while (v11);
   }
 
-  v15 = [v7 section];
-  if (v15 == [(NPTOBridgeAlbumChooser *)self topPlaceholdersSection])
+  section = [pathCopy section];
+  if (section == [(NPTOBridgeAlbumChooser *)self topPlaceholdersSection])
   {
-    v16 = [(NPTOBridgeAlbumChooser *)self _preferencesAccessor];
-    [v16 setObject:NPTOPreferencesSyncedAlbumIdentifierNone forKey:NPTOPreferencesSyncedAlbumIdentifierKey];
+    _preferencesAccessor = [(NPTOBridgeAlbumChooser *)self _preferencesAccessor];
+    [_preferencesAccessor setObject:NPTOPreferencesSyncedAlbumIdentifierNone forKey:NPTOPreferencesSyncedAlbumIdentifierKey];
 LABEL_15:
 
     goto LABEL_16;
   }
 
-  v17 = [v7 section];
-  v18 = [(NPTOBridgeAlbumChooser *)self albumsSections];
-  if (v17 >= v18 && v17 - v18 < v19)
+  section2 = [pathCopy section];
+  albumsSections = [(NPTOBridgeAlbumChooser *)self albumsSections];
+  if (section2 >= albumsSections && section2 - albumsSections < v19)
   {
-    v16 = [(NPTOBridgeAlbumChooser *)self collectionAtIndexPath:v7];
-    v20 = [(NPTOBridgeAlbumChooser *)self _preferencesAccessor];
-    v21 = [v16 localIdentifier];
-    [v20 setObject:v21 forKey:NPTOPreferencesSyncedAlbumIdentifierKey];
+    _preferencesAccessor = [(NPTOBridgeAlbumChooser *)self collectionAtIndexPath:pathCopy];
+    _preferencesAccessor2 = [(NPTOBridgeAlbumChooser *)self _preferencesAccessor];
+    localIdentifier = [_preferencesAccessor localIdentifier];
+    [_preferencesAccessor2 setObject:localIdentifier forKey:NPTOPreferencesSyncedAlbumIdentifierKey];
 
     goto LABEL_15;
   }
@@ -386,33 +386,33 @@ LABEL_15:
 LABEL_16:
 }
 
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section
 {
-  if ([(NPTOBridgeAlbumChooser *)self topPlaceholdersSection]!= a4)
+  if ([(NPTOBridgeAlbumChooser *)self topPlaceholdersSection]!= section)
   {
     return UITableViewAutomaticDimension;
   }
 
-  v5 = [(NPTOBridgeAlbumChooser *)self spec];
-  [v5 sectionHeaderHeight];
+  spec = [(NPTOBridgeAlbumChooser *)self spec];
+  [spec sectionHeaderHeight];
   v7 = v6;
 
   return v7;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  if ([(NPTOBridgeAlbumChooser *)self albumsSection]== a4)
+  if ([(NPTOBridgeAlbumChooser *)self albumsSection]== section)
   {
-    v5 = [(NPTOBridgeAlbumChooser *)self _albumsSectionTitle];
+    _albumsSectionTitle = [(NPTOBridgeAlbumChooser *)self _albumsSectionTitle];
   }
 
   else
   {
-    v5 = 0;
+    _albumsSectionTitle = 0;
   }
 
-  return v5;
+  return _albumsSectionTitle;
 }
 
 - (id)_preferencesAccessor
@@ -421,8 +421,8 @@ LABEL_16:
   if (!preferencesAccessor)
   {
     v4 = [NPTOPreferencesAccessor alloc];
-    v5 = [(NPTOBridgeAlbumChooser *)self _device];
-    v6 = [v4 initWithDevice:v5];
+    _device = [(NPTOBridgeAlbumChooser *)self _device];
+    v6 = [v4 initWithDevice:_device];
     v7 = self->_preferencesAccessor;
     self->_preferencesAccessor = v6;
 
@@ -437,9 +437,9 @@ LABEL_16:
   v2 = +[NRPairedDeviceRegistry sharedInstance];
   v3 = +[NRPairedDeviceRegistry activePairedDeviceSelectorBlock];
   v4 = [v2 getAllDevicesWithArchivedAltAccountDevicesMatching:v3];
-  v5 = [v4 firstObject];
+  firstObject = [v4 firstObject];
 
-  return v5;
+  return firstObject;
 }
 
 - (id)_title
@@ -468,11 +468,11 @@ LABEL_16:
 
 - (BOOL)_isTinkerPaired
 {
-  v2 = [(NPTOBridgeAlbumChooser *)self _device];
-  v3 = [v2 valueForProperty:NRDevicePropertyIsAltAccount];
-  v4 = [v3 BOOLValue];
+  _device = [(NPTOBridgeAlbumChooser *)self _device];
+  v3 = [_device valueForProperty:NRDevicePropertyIsAltAccount];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 @end

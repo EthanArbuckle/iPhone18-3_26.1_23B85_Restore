@@ -1,44 +1,44 @@
 @interface AFDeviceCapabilities
-- (AFDeviceCapabilities)initWithCoder:(id)a3;
-- (AFDeviceCapabilities)initWithSerializedBackingStore:(id)a3;
-- (AFDeviceCapabilities)initWithVoiceTriggerEnabled:(int64_t)a3;
-- (BOOL)isEqual:(id)a3;
+- (AFDeviceCapabilities)initWithCoder:(id)coder;
+- (AFDeviceCapabilities)initWithSerializedBackingStore:(id)store;
+- (AFDeviceCapabilities)initWithVoiceTriggerEnabled:(int64_t)enabled;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 - (id)serializedBackingStore;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AFDeviceCapabilities
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(AFDeviceCapabilities *)self serializedBackingStore];
-  [v4 encodeObject:v5 forKey:@"serializedBackingStore"];
+  coderCopy = coder;
+  serializedBackingStore = [(AFDeviceCapabilities *)self serializedBackingStore];
+  [coderCopy encodeObject:serializedBackingStore forKey:@"serializedBackingStore"];
 }
 
-- (AFDeviceCapabilities)initWithCoder:(id)a3
+- (AFDeviceCapabilities)initWithCoder:(id)coder
 {
   v15 = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
+  coderCopy = coder;
   v12 = objc_opt_class();
   v13 = objc_opt_class();
   v14 = objc_opt_class();
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v12 count:3];
   v7 = [v4 setWithArray:{v6, v12, v13}];
-  v8 = [v5 decodeObjectOfClasses:v7 forKey:@"serializedBackingStore"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"serializedBackingStore"];
 
   v9 = [(AFDeviceCapabilities *)self initWithSerializedBackingStore:v8];
   v10 = *MEMORY[0x1E69E9840];
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -48,9 +48,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(AFDeviceCapabilities *)self serializedBackingStore];
-      v6 = [(AFDeviceCapabilities *)v4 serializedBackingStore];
-      v7 = [v5 isEqual:v6];
+      serializedBackingStore = [(AFDeviceCapabilities *)self serializedBackingStore];
+      serializedBackingStore2 = [(AFDeviceCapabilities *)equalCopy serializedBackingStore];
+      v7 = [serializedBackingStore isEqual:serializedBackingStore2];
     }
 
     else
@@ -64,8 +64,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(AFDeviceCapabilities *)self serializedBackingStore];
-  v3 = [v2 hash];
+  serializedBackingStore = [(AFDeviceCapabilities *)self serializedBackingStore];
+  v3 = [serializedBackingStore hash];
 
   return v3;
 }
@@ -127,28 +127,28 @@ LABEL_8:
   return v4;
 }
 
-- (AFDeviceCapabilities)initWithSerializedBackingStore:(id)a3
+- (AFDeviceCapabilities)initWithSerializedBackingStore:(id)store
 {
-  v5 = a3;
-  v6 = [v5 objectForKey:@"voiceTriggerEnabled"];
+  storeCopy = store;
+  v6 = [storeCopy objectForKey:@"voiceTriggerEnabled"];
   v7 = -[AFDeviceCapabilities initWithVoiceTriggerEnabled:](self, "initWithVoiceTriggerEnabled:", [v6 integerValue]);
 
   if (v7)
   {
-    objc_storeStrong(&v7->_serializedBackingStore, a3);
+    objc_storeStrong(&v7->_serializedBackingStore, store);
   }
 
   return v7;
 }
 
-- (AFDeviceCapabilities)initWithVoiceTriggerEnabled:(int64_t)a3
+- (AFDeviceCapabilities)initWithVoiceTriggerEnabled:(int64_t)enabled
 {
   v5.receiver = self;
   v5.super_class = AFDeviceCapabilities;
   result = [(AFDeviceCapabilities *)&v5 init];
   if (result)
   {
-    result->_voiceTriggerEnabled = a3;
+    result->_voiceTriggerEnabled = enabled;
   }
 
   return result;

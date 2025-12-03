@@ -1,8 +1,8 @@
 @interface _DKNotificationWatchNearbyMonitor
-+ (id)_eventWithNearbyDeviceCount:(unint64_t)a3;
++ (id)_eventWithNearbyDeviceCount:(unint64_t)count;
 - (void)deactivate;
 - (void)dealloc;
-- (void)receiveNotificationEvent:(id)a3;
+- (void)receiveNotificationEvent:(id)event;
 - (void)setWatchIsNearby;
 - (void)start;
 - (void)stop;
@@ -19,9 +19,9 @@
   [(_DKMonitor *)&v3 dealloc];
 }
 
-+ (id)_eventWithNearbyDeviceCount:(unint64_t)a3
++ (id)_eventWithNearbyDeviceCount:(unint64_t)count
 {
-  if (a3)
+  if (count)
   {
     [MEMORY[0x277CFE1A0] yes];
   }
@@ -31,12 +31,12 @@
     [MEMORY[0x277CFE1A0] no];
   }
   v4 = ;
-  [_DKNotificationWatchNearbyMonitor setIsWatchNearby:a3 != 0];
+  [_DKNotificationWatchNearbyMonitor setIsWatchNearby:count != 0];
   v5 = MEMORY[0x277CFE1D8];
-  v6 = [MEMORY[0x277CFE298] watchNearbyStream];
-  v7 = [MEMORY[0x277CBEAA8] date];
-  v8 = [MEMORY[0x277CBEAA8] distantFuture];
-  v9 = [v5 eventWithStream:v6 startDate:v7 endDate:v8 value:v4];
+  watchNearbyStream = [MEMORY[0x277CFE298] watchNearbyStream];
+  date = [MEMORY[0x277CBEAA8] date];
+  distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+  v9 = [v5 eventWithStream:watchNearbyStream startDate:date endDate:distantFuture value:v4];
 
   return v9;
 }
@@ -44,9 +44,9 @@
 - (void)setWatchIsNearby
 {
   out_token = 0;
-  v3 = [@"com.apple.coreduetd.nearbydeviceschanged" UTF8String];
-  v4 = [(_DKMonitor *)self queue];
-  notify_register_dispatch(v3, &out_token, v4, &__block_literal_global_10);
+  uTF8String = [@"com.apple.coreduetd.nearbydeviceschanged" UTF8String];
+  queue = [(_DKMonitor *)self queue];
+  notify_register_dispatch(uTF8String, &out_token, queue, &__block_literal_global_10);
 
   v5 = 0;
   if (!notify_get_state(out_token, &v5))
@@ -65,18 +65,18 @@
   {
     self->_enabled = 1;
     v3 = BiomeLibrary();
-    v4 = [v3 Device];
-    v5 = [v4 Wireless];
-    v6 = [v5 DefaultPairedNearby];
-    v7 = [v6 source];
+    device = [v3 Device];
+    wireless = [device Wireless];
+    defaultPairedNearby = [wireless DefaultPairedNearby];
+    source = [defaultPairedNearby source];
     biome = self->_biome;
-    self->_biome = v7;
+    self->_biome = source;
 
     self->_token = -1;
     [(_DKNotificationWatchNearbyMonitor *)self setWatchIsNearby];
-    v9 = [@"com.apple.coreduetd.nearbydeviceschanged" UTF8String];
-    v10 = [(_DKMonitor *)self queue];
-    notify_register_dispatch(v9, &self->_token, v10, &__block_literal_global_22);
+    uTF8String = [@"com.apple.coreduetd.nearbydeviceschanged" UTF8String];
+    queue = [(_DKMonitor *)self queue];
+    notify_register_dispatch(uTF8String, &self->_token, queue, &__block_literal_global_22);
   }
 }
 
@@ -108,34 +108,34 @@
   }
 }
 
-- (void)receiveNotificationEvent:(id)a3
+- (void)receiveNotificationEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v5 = os_transaction_create();
   v6 = objc_autoreleasePoolPush();
   if (self->_enabled)
   {
-    v7 = [v4 objectForKeyedSubscript:@"Notification"];
+    v7 = [eventCopy objectForKeyedSubscript:@"Notification"];
     v8 = [v7 isEqual:@"com.apple.coreduetd.nearbydeviceschanged"];
 
     if (v8)
     {
-      v9 = [MEMORY[0x277CFE0C8] contextChannel];
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+      contextChannel = [MEMORY[0x277CFE0C8] contextChannel];
+      if (os_log_type_enabled(contextChannel, OS_LOG_TYPE_DEFAULT))
       {
         *v16 = 0;
-        _os_log_impl(&dword_22595A000, v9, OS_LOG_TYPE_DEFAULT, "Received notification event for nearby devices changed!", v16, 2u);
+        _os_log_impl(&dword_22595A000, contextChannel, OS_LOG_TYPE_DEFAULT, "Received notification event for nearby devices changed!", v16, 2u);
       }
 
-      v10 = [v4 objectForKeyedSubscript:@"_State"];
-      v11 = [v10 unsignedIntegerValue];
+      v10 = [eventCopy objectForKeyedSubscript:@"_State"];
+      unsignedIntegerValue = [v10 unsignedIntegerValue];
 
       v12 = objc_alloc(MEMORY[0x277CF10D0]);
-      v13 = [MEMORY[0x277CCABB0] numberWithInt:v11 != 0];
+      v13 = [MEMORY[0x277CCABB0] numberWithInt:unsignedIntegerValue != 0];
       v14 = [v12 initWithStarting:v13];
 
       [(BMSource *)self->_biome sendEvent:v14];
-      v15 = [_DKNotificationWatchNearbyMonitor _eventWithNearbyDeviceCount:v11];
+      v15 = [_DKNotificationWatchNearbyMonitor _eventWithNearbyDeviceCount:unsignedIntegerValue];
       [(_DKMonitor *)self setCurrentEvent:v15 inferHistoricalState:1];
     }
   }

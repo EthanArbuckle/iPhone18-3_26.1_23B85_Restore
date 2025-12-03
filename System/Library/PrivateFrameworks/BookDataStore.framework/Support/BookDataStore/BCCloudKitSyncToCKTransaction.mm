@@ -1,45 +1,45 @@
 @interface BCCloudKitSyncToCKTransaction
-- (BCCloudKitSyncToCKTransaction)initWithEntityName:(id)a3 syncManager:(id)a4 delegate:(id)a5;
-- (void)performWorkWithCompletion:(id)a3;
+- (BCCloudKitSyncToCKTransaction)initWithEntityName:(id)name syncManager:(id)manager delegate:(id)delegate;
+- (void)performWorkWithCompletion:(id)completion;
 @end
 
 @implementation BCCloudKitSyncToCKTransaction
 
-- (BCCloudKitSyncToCKTransaction)initWithEntityName:(id)a3 syncManager:(id)a4 delegate:(id)a5
+- (BCCloudKitSyncToCKTransaction)initWithEntityName:(id)name syncManager:(id)manager delegate:(id)delegate
 {
-  v9 = a4;
+  managerCopy = manager;
   v13.receiver = self;
   v13.super_class = BCCloudKitSyncToCKTransaction;
-  v10 = [(BCCloudKitTransaction *)&v13 initWithEntityName:a3 delegate:a5];
+  v10 = [(BCCloudKitTransaction *)&v13 initWithEntityName:name delegate:delegate];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_syncManager, a4);
+    objc_storeStrong(&v10->_syncManager, manager);
   }
 
   return v11;
 }
 
-- (void)performWorkWithCompletion:(id)a3
+- (void)performWorkWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = +[BULogUtilities shared];
-  v6 = [v5 verboseLoggingEnabled];
+  verboseLoggingEnabled = [v5 verboseLoggingEnabled];
 
-  if (v6)
+  if (verboseLoggingEnabled)
   {
     v7 = sub_10000DB80();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(BCCloudKitTransaction *)self entityName];
+      entityName = [(BCCloudKitTransaction *)self entityName];
       v10 = 138412290;
-      v11 = v8;
+      v11 = entityName;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "\\Transaction - Signaling Sync Manager for  %@\\"", &v10, 0xCu);
     }
   }
 
-  v9 = [(BCCloudKitSyncToCKTransaction *)self syncManager];
-  [v9 startSyncToCKWithCompletion:v4];
+  syncManager = [(BCCloudKitSyncToCKTransaction *)self syncManager];
+  [syncManager startSyncToCKWithCompletion:completionCopy];
 }
 
 @end

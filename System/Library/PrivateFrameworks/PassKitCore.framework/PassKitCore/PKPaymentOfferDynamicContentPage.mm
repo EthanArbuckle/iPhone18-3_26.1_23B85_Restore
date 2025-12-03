@@ -1,35 +1,35 @@
 @interface PKPaymentOfferDynamicContentPage
-+ (id)postPurchaseChoosePlanDynamicContentPageForAmountString:(id)a3 merchantName:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (PKPaymentOfferDynamicContentPage)initWithCoder:(id)a3;
-- (PKPaymentOfferDynamicContentPage)initWithDictionary:(id)a3 pageType:(unint64_t)a4;
++ (id)postPurchaseChoosePlanDynamicContentPageForAmountString:(id)string merchantName:(id)name;
+- (BOOL)isEqual:(id)equal;
+- (PKPaymentOfferDynamicContentPage)initWithCoder:(id)coder;
+- (PKPaymentOfferDynamicContentPage)initWithDictionary:(id)dictionary pageType:(unint64_t)type;
 - (id)bodyLinkContent;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPaymentOfferDynamicContentPage
 
-- (PKPaymentOfferDynamicContentPage)initWithDictionary:(id)a3 pageType:(unint64_t)a4
+- (PKPaymentOfferDynamicContentPage)initWithDictionary:(id)dictionary pageType:(unint64_t)type
 {
   v58 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 PKStringForKey:@"title"];
-  v8 = [v6 PKStringForKey:@"subtitle"];
-  v9 = [v6 PKStringForKey:@"body"];
-  v10 = [v6 PKArrayContaining:objc_opt_class() forKey:@"bodyLinks"];
-  v11 = [v6 PKStringForKey:@"primaryActionTitle"];
-  v47 = [v6 PKDictionaryForKey:@"primaryActionDetails"];
-  v51 = [v6 PKStringForKey:@"secondaryActionTitle"];
-  v46 = [v6 PKDictionaryForKey:@"secondaryActionDetails"];
-  v12 = [v6 PKDictionaryForKey:@"iconURL"];
-  v48 = [v6 PKDictionaryForKey:@"systemIcon"];
-  v50 = [v6 PKDictionaryForKey:@"footerContent"];
-  v49 = [v6 PKDictionaryForKey:@"altFooterContent"];
-  v13 = [v6 PKArrayContaining:objc_opt_class() forKey:@"customLayout"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy PKStringForKey:@"title"];
+  v8 = [dictionaryCopy PKStringForKey:@"subtitle"];
+  v9 = [dictionaryCopy PKStringForKey:@"body"];
+  v10 = [dictionaryCopy PKArrayContaining:objc_opt_class() forKey:@"bodyLinks"];
+  v11 = [dictionaryCopy PKStringForKey:@"primaryActionTitle"];
+  v47 = [dictionaryCopy PKDictionaryForKey:@"primaryActionDetails"];
+  v51 = [dictionaryCopy PKStringForKey:@"secondaryActionTitle"];
+  v46 = [dictionaryCopy PKDictionaryForKey:@"secondaryActionDetails"];
+  v12 = [dictionaryCopy PKDictionaryForKey:@"iconURL"];
+  v48 = [dictionaryCopy PKDictionaryForKey:@"systemIcon"];
+  v50 = [dictionaryCopy PKDictionaryForKey:@"footerContent"];
+  v49 = [dictionaryCopy PKDictionaryForKey:@"altFooterContent"];
+  v13 = [dictionaryCopy PKArrayContaining:objc_opt_class() forKey:@"customLayout"];
   if (v7 || v8 || v9 || v11 || v51 || [v12 count] || objc_msgSend(v12, "count") || objc_msgSend(v50, "count") || objc_msgSend(v49, "count") || objc_msgSend(v13, "count") || objc_msgSend(v10, "count") || objc_msgSend(v48, "count") || objc_msgSend(v47, "count") || objc_msgSend(v46, "count"))
   {
     v56.receiver = self;
@@ -39,7 +39,7 @@
     if (v14)
     {
       v45 = v13;
-      v14->_pageType = a4;
+      v14->_pageType = type;
       objc_storeStrong(&v14->_title, v7);
       objc_storeStrong(&v15->_subtitle, v8);
       objc_storeStrong(&v15->_body, v9);
@@ -148,15 +148,15 @@
     }
 
     self = v15;
-    v39 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v39 = 0;
+    selfCopy = 0;
   }
 
-  return v39;
+  return selfCopy;
 }
 
 - (id)dictionaryRepresentation
@@ -169,30 +169,30 @@
   [v3 setObject:self->_subtitle forKeyedSubscript:@"subtitle"];
   [v3 setObject:self->_body forKeyedSubscript:@"body"];
   [v3 setObject:self->_primaryActionTitle forKeyedSubscript:@"primaryActionTitle"];
-  v5 = [(PKApplyFooterContentLink *)self->_primaryActionDetails dictionaryRepresentation];
-  [v3 setObject:v5 forKeyedSubscript:@"primaryActionDetails"];
+  dictionaryRepresentation = [(PKApplyFooterContentLink *)self->_primaryActionDetails dictionaryRepresentation];
+  [v3 setObject:dictionaryRepresentation forKeyedSubscript:@"primaryActionDetails"];
 
   [v3 setObject:self->_secondaryActionTitle forKeyedSubscript:@"secondaryActionTitle"];
-  v6 = [(PKApplyFooterContentLink *)self->_secondaryActionDetails dictionaryRepresentation];
-  [v3 setObject:v6 forKeyedSubscript:@"secondaryActionDetails"];
+  dictionaryRepresentation2 = [(PKApplyFooterContentLink *)self->_secondaryActionDetails dictionaryRepresentation];
+  [v3 setObject:dictionaryRepresentation2 forKeyedSubscript:@"secondaryActionDetails"];
 
-  v7 = [(PKPaymentOfferDynamicContentIcon *)self->_iconURL dictionaryRepresentation];
-  [v3 setObject:v7 forKeyedSubscript:@"iconURL"];
+  dictionaryRepresentation3 = [(PKPaymentOfferDynamicContentIcon *)self->_iconURL dictionaryRepresentation];
+  [v3 setObject:dictionaryRepresentation3 forKeyedSubscript:@"iconURL"];
 
-  v8 = [(PKSystemIconConfiguration *)self->_systemIcon dictionaryRepresentation];
-  [v3 setObject:v8 forKeyedSubscript:@"systemIcon"];
+  dictionaryRepresentation4 = [(PKSystemIconConfiguration *)self->_systemIcon dictionaryRepresentation];
+  [v3 setObject:dictionaryRepresentation4 forKeyedSubscript:@"systemIcon"];
 
-  v9 = [(PKApplyFooterContent *)self->_footerContent dictionaryRepresentation];
-  [v3 setObject:v9 forKeyedSubscript:@"footerContent"];
+  dictionaryRepresentation5 = [(PKApplyFooterContent *)self->_footerContent dictionaryRepresentation];
+  [v3 setObject:dictionaryRepresentation5 forKeyedSubscript:@"footerContent"];
 
-  v10 = [(PKApplyFooterContent *)self->_altFooterContent dictionaryRepresentation];
-  [v3 setObject:v10 forKeyedSubscript:@"altFooterContent"];
+  dictionaryRepresentation6 = [(PKApplyFooterContent *)self->_altFooterContent dictionaryRepresentation];
+  [v3 setObject:dictionaryRepresentation6 forKeyedSubscript:@"altFooterContent"];
 
-  v11 = [(PKPaymentOfferDynamicContentCustomLayout *)self->_customLayout arrayRepresentation];
-  [v3 setObject:v11 forKeyedSubscript:@"customLayout"];
+  arrayRepresentation = [(PKPaymentOfferDynamicContentCustomLayout *)self->_customLayout arrayRepresentation];
+  [v3 setObject:arrayRepresentation forKeyedSubscript:@"customLayout"];
 
-  v12 = [(NSSet *)self->_bodyLinks allObjects];
-  v13 = [v12 pk_createArrayBySafelyApplyingBlock:&__block_literal_global_185];
+  allObjects = [(NSSet *)self->_bodyLinks allObjects];
+  v13 = [allObjects pk_createArrayBySafelyApplyingBlock:&__block_literal_global_185];
   [v3 setObject:v13 forKeyedSubscript:@"bodyLinks"];
 
   v14 = [v3 copy];
@@ -217,18 +217,18 @@
   return v3;
 }
 
-+ (id)postPurchaseChoosePlanDynamicContentPageForAmountString:(id)a3 merchantName:(id)a4
++ (id)postPurchaseChoosePlanDynamicContentPageForAmountString:(id)string merchantName:(id)name
 {
   v4 = 0;
-  if (a3 && a4)
+  if (string && name)
   {
-    v6 = a4;
-    v7 = a3;
+    nameCopy = name;
+    stringCopy = string;
     v4 = objc_alloc_init(PKPaymentOfferDynamicContentPage);
     v8 = PKLocalizedPaymentOffersString(&cfstr_TransactionNot.isa, 0);
     [(PKPaymentOfferDynamicContentPage *)v4 setTitle:v8];
 
-    v9 = PKLocalizedPaymentOffersString(&cfstr_TransactionDet_10.isa, &cfstr_12_0.isa, v6, v7);
+    v9 = PKLocalizedPaymentOffersString(&cfstr_TransactionDet_10.isa, &cfstr_12_0.isa, nameCopy, stringCopy);
 
     [(PKPaymentOfferDynamicContentPage *)v4 setBody:v9];
     v10 = PKLocalizedPaymentOffersString(&cfstr_TransactionDet_11.isa, 0);
@@ -238,18 +238,18 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
 
   else
   {
-    if (v4)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -604,67 +604,67 @@ LABEL_43:
   return v3;
 }
 
-- (PKPaymentOfferDynamicContentPage)initWithCoder:(id)a3
+- (PKPaymentOfferDynamicContentPage)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v36.receiver = self;
   v36.super_class = PKPaymentOfferDynamicContentPage;
   v5 = [(PKPaymentOfferDynamicContentPage *)&v36 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
     title = v5->_title;
     v5->_title = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"subtitle"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"subtitle"];
     subtitle = v5->_subtitle;
     v5->_subtitle = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"body"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"body"];
     body = v5->_body;
     v5->_body = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"primaryActionTitle"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"primaryActionTitle"];
     primaryActionTitle = v5->_primaryActionTitle;
     v5->_primaryActionTitle = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"primaryActionDetails"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"primaryActionDetails"];
     primaryActionDetails = v5->_primaryActionDetails;
     v5->_primaryActionDetails = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"secondaryActionTitle"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"secondaryActionTitle"];
     secondaryActionTitle = v5->_secondaryActionTitle;
     v5->_secondaryActionTitle = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"secondaryActionDetails"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"secondaryActionDetails"];
     secondaryActionDetails = v5->_secondaryActionDetails;
     v5->_secondaryActionDetails = v18;
 
-    v5->_pageType = [v4 decodeIntegerForKey:@"pageType"];
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"footerContent"];
+    v5->_pageType = [coderCopy decodeIntegerForKey:@"pageType"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"footerContent"];
     footerContent = v5->_footerContent;
     v5->_footerContent = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"altFooterContent"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"altFooterContent"];
     altFooterContent = v5->_altFooterContent;
     v5->_altFooterContent = v22;
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"customLayout"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"customLayout"];
     customLayout = v5->_customLayout;
     v5->_customLayout = v24;
 
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"iconURL"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"iconURL"];
     iconURL = v5->_iconURL;
     v5->_iconURL = v26;
 
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"systemIcon"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"systemIcon"];
     systemIcon = v5->_systemIcon;
     v5->_systemIcon = v28;
 
     v30 = MEMORY[0x1E695DFD8];
     v31 = objc_opt_class();
     v32 = [v30 setWithObjects:{v31, objc_opt_class(), 0}];
-    v33 = [v4 decodeObjectOfClasses:v32 forKey:@"bodyLinks"];
+    v33 = [coderCopy decodeObjectOfClasses:v32 forKey:@"bodyLinks"];
     bodyLinks = v5->_bodyLinks;
     v5->_bodyLinks = v33;
   }
@@ -672,78 +672,78 @@ LABEL_43:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   title = self->_title;
-  v5 = a3;
-  [v5 encodeObject:title forKey:@"title"];
-  [v5 encodeObject:self->_subtitle forKey:@"subtitle"];
-  [v5 encodeObject:self->_body forKey:@"body"];
-  [v5 encodeObject:self->_primaryActionTitle forKey:@"primaryActionTitle"];
-  [v5 encodeObject:self->_primaryActionDetails forKey:@"primaryActionDetails"];
-  [v5 encodeObject:self->_secondaryActionTitle forKey:@"secondaryActionTitle"];
-  [v5 encodeObject:self->_secondaryActionDetails forKey:@"secondaryActionDetails"];
-  [v5 encodeInteger:self->_pageType forKey:@"pageType"];
-  [v5 encodeObject:self->_footerContent forKey:@"footerContent"];
-  [v5 encodeObject:self->_altFooterContent forKey:@"altFooterContent"];
-  [v5 encodeObject:self->_customLayout forKey:@"customLayout"];
-  [v5 encodeObject:self->_iconURL forKey:@"iconURL"];
-  [v5 encodeObject:self->_systemIcon forKey:@"systemIcon"];
-  [v5 encodeObject:self->_bodyLinks forKey:@"bodyLinks"];
+  coderCopy = coder;
+  [coderCopy encodeObject:title forKey:@"title"];
+  [coderCopy encodeObject:self->_subtitle forKey:@"subtitle"];
+  [coderCopy encodeObject:self->_body forKey:@"body"];
+  [coderCopy encodeObject:self->_primaryActionTitle forKey:@"primaryActionTitle"];
+  [coderCopy encodeObject:self->_primaryActionDetails forKey:@"primaryActionDetails"];
+  [coderCopy encodeObject:self->_secondaryActionTitle forKey:@"secondaryActionTitle"];
+  [coderCopy encodeObject:self->_secondaryActionDetails forKey:@"secondaryActionDetails"];
+  [coderCopy encodeInteger:self->_pageType forKey:@"pageType"];
+  [coderCopy encodeObject:self->_footerContent forKey:@"footerContent"];
+  [coderCopy encodeObject:self->_altFooterContent forKey:@"altFooterContent"];
+  [coderCopy encodeObject:self->_customLayout forKey:@"customLayout"];
+  [coderCopy encodeObject:self->_iconURL forKey:@"iconURL"];
+  [coderCopy encodeObject:self->_systemIcon forKey:@"systemIcon"];
+  [coderCopy encodeObject:self->_bodyLinks forKey:@"bodyLinks"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[PKPaymentOfferDynamicContentPage allocWithZone:](PKPaymentOfferDynamicContentPage init];
-  v6 = [(NSString *)self->_title copyWithZone:a3];
+  v6 = [(NSString *)self->_title copyWithZone:zone];
   title = v5->_title;
   v5->_title = v6;
 
-  v8 = [(NSString *)self->_subtitle copyWithZone:a3];
+  v8 = [(NSString *)self->_subtitle copyWithZone:zone];
   subtitle = v5->_subtitle;
   v5->_subtitle = v8;
 
-  v10 = [(NSString *)self->_body copyWithZone:a3];
+  v10 = [(NSString *)self->_body copyWithZone:zone];
   body = v5->_body;
   v5->_body = v10;
 
-  v12 = [(NSString *)self->_primaryActionTitle copyWithZone:a3];
+  v12 = [(NSString *)self->_primaryActionTitle copyWithZone:zone];
   primaryActionTitle = v5->_primaryActionTitle;
   v5->_primaryActionTitle = v12;
 
-  v14 = [(PKApplyFooterContentLink *)self->_primaryActionDetails copyWithZone:a3];
+  v14 = [(PKApplyFooterContentLink *)self->_primaryActionDetails copyWithZone:zone];
   primaryActionDetails = v5->_primaryActionDetails;
   v5->_primaryActionDetails = v14;
 
-  v16 = [(NSString *)self->_secondaryActionTitle copyWithZone:a3];
+  v16 = [(NSString *)self->_secondaryActionTitle copyWithZone:zone];
   secondaryActionTitle = v5->_secondaryActionTitle;
   v5->_secondaryActionTitle = v16;
 
-  v18 = [(PKApplyFooterContentLink *)self->_secondaryActionDetails copyWithZone:a3];
+  v18 = [(PKApplyFooterContentLink *)self->_secondaryActionDetails copyWithZone:zone];
   secondaryActionDetails = v5->_secondaryActionDetails;
   v5->_secondaryActionDetails = v18;
 
-  v20 = [(PKApplyFooterContent *)self->_footerContent copyWithZone:a3];
+  v20 = [(PKApplyFooterContent *)self->_footerContent copyWithZone:zone];
   footerContent = v5->_footerContent;
   v5->_footerContent = v20;
 
-  v22 = [(PKApplyFooterContent *)self->_altFooterContent copyWithZone:a3];
+  v22 = [(PKApplyFooterContent *)self->_altFooterContent copyWithZone:zone];
   altFooterContent = v5->_altFooterContent;
   v5->_altFooterContent = v22;
 
-  v24 = [(PKPaymentOfferDynamicContentCustomLayout *)self->_customLayout copyWithZone:a3];
+  v24 = [(PKPaymentOfferDynamicContentCustomLayout *)self->_customLayout copyWithZone:zone];
   customLayout = v5->_customLayout;
   v5->_customLayout = v24;
 
-  v26 = [(PKPaymentOfferDynamicContentIcon *)self->_iconURL copyWithZone:a3];
+  v26 = [(PKPaymentOfferDynamicContentIcon *)self->_iconURL copyWithZone:zone];
   iconURL = v5->_iconURL;
   v5->_iconURL = v26;
 
-  v28 = [(PKSystemIconConfiguration *)self->_systemIcon copyWithZone:a3];
+  v28 = [(PKSystemIconConfiguration *)self->_systemIcon copyWithZone:zone];
   systemIcon = v5->_systemIcon;
   v5->_systemIcon = v28;
 
-  v30 = [(NSSet *)self->_bodyLinks copyWithZone:a3];
+  v30 = [(NSSet *)self->_bodyLinks copyWithZone:zone];
   bodyLinks = v5->_bodyLinks;
   v5->_bodyLinks = v30;
 

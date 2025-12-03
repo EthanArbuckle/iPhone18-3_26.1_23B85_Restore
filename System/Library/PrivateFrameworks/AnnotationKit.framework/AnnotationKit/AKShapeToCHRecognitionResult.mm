@@ -1,21 +1,21 @@
 @interface AKShapeToCHRecognitionResult
-- (AKShapeToCHRecognitionResult)initWith:(int64_t)a3 result:(id)a4;
+- (AKShapeToCHRecognitionResult)initWith:(int64_t)with result:(id)result;
 - (CGRect)doodlePathBoundsInInputView;
 @end
 
 @implementation AKShapeToCHRecognitionResult
 
-- (AKShapeToCHRecognitionResult)initWith:(int64_t)a3 result:(id)a4
+- (AKShapeToCHRecognitionResult)initWith:(int64_t)with result:(id)result
 {
-  v7 = a4;
+  resultCopy = result;
   v11.receiver = self;
   v11.super_class = AKShapeToCHRecognitionResult;
   v8 = [(AKShapeToCHRecognitionResult *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_tag = a3;
-    objc_storeStrong(&v8->_result, a4);
+    v8->_tag = with;
+    objc_storeStrong(&v8->_result, result);
   }
 
   return v9;

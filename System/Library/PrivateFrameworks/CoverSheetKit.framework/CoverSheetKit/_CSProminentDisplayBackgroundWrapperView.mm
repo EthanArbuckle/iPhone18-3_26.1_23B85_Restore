@@ -1,15 +1,15 @@
 @interface _CSProminentDisplayBackgroundWrapperView
 - (UIView)wrappedView;
 - (void)_ensureWrappedViewIsAtIndexZero;
-- (void)addSubview:(id)a3;
-- (void)bringSubviewToFront:(id)a3;
-- (void)exchangeSubviewAtIndex:(int64_t)a3 withSubviewAtIndex:(int64_t)a4;
-- (void)insertSubview:(id)a3 aboveSubview:(id)a4;
-- (void)insertSubview:(id)a3 atIndex:(int64_t)a4;
-- (void)insertSubview:(id)a3 belowSubview:(id)a4;
+- (void)addSubview:(id)subview;
+- (void)bringSubviewToFront:(id)front;
+- (void)exchangeSubviewAtIndex:(int64_t)index withSubviewAtIndex:(int64_t)atIndex;
+- (void)insertSubview:(id)subview aboveSubview:(id)aboveSubview;
+- (void)insertSubview:(id)subview atIndex:(int64_t)index;
+- (void)insertSubview:(id)subview belowSubview:(id)belowSubview;
 - (void)layoutSubviews;
-- (void)sendSubviewToBack:(id)a3;
-- (void)setWrappedView:(id)a3;
+- (void)sendSubviewToBack:(id)back;
+- (void)setWrappedView:(id)view;
 @end
 
 @implementation _CSProminentDisplayBackgroundWrapperView
@@ -24,29 +24,29 @@
   [WeakRetained setFrame:?];
 }
 
-- (void)setWrappedView:(id)a3
+- (void)setWrappedView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   WeakRetained = objc_loadWeakRetained(&self->_wrappedView);
 
-  if (WeakRetained != v4)
+  if (WeakRetained != viewCopy)
   {
     v6 = objc_loadWeakRetained(&self->_wrappedView);
     [v6 removeFromSuperview];
 
-    objc_storeWeak(&self->_wrappedView, v4);
+    objc_storeWeak(&self->_wrappedView, viewCopy);
     v7.receiver = self;
     v7.super_class = _CSProminentDisplayBackgroundWrapperView;
-    [(_CSProminentDisplayBackgroundWrapperView *)&v7 insertSubview:v4 atIndex:0];
+    [(_CSProminentDisplayBackgroundWrapperView *)&v7 insertSubview:viewCopy atIndex:0];
     [(_CSProminentDisplayBackgroundWrapperView *)self setNeedsLayout];
   }
 }
 
-- (void)addSubview:(id)a3
+- (void)addSubview:(id)subview
 {
   v4.receiver = self;
   v4.super_class = _CSProminentDisplayBackgroundWrapperView;
-  [(_CSProminentDisplayBackgroundWrapperView *)&v4 addSubview:a3];
+  [(_CSProminentDisplayBackgroundWrapperView *)&v4 addSubview:subview];
   [(_CSProminentDisplayBackgroundWrapperView *)&self->super.super.super.isa _ensureWrappedViewIsAtIndexZero];
 }
 
@@ -59,63 +59,63 @@
 
 - (void)_ensureWrappedViewIsAtIndexZero
 {
-  if (a1)
+  if (self)
   {
-    WeakRetained = objc_loadWeakRetained(a1 + 51);
+    WeakRetained = objc_loadWeakRetained(self + 51);
 
     if (WeakRetained)
     {
-      v3 = objc_loadWeakRetained(a1 + 51);
-      [a1 sendSubviewToBack:v3];
+      v3 = objc_loadWeakRetained(self + 51);
+      [self sendSubviewToBack:v3];
     }
   }
 }
 
-- (void)insertSubview:(id)a3 atIndex:(int64_t)a4
+- (void)insertSubview:(id)subview atIndex:(int64_t)index
 {
   v5.receiver = self;
   v5.super_class = _CSProminentDisplayBackgroundWrapperView;
-  [(_CSProminentDisplayBackgroundWrapperView *)&v5 insertSubview:a3 atIndex:a4];
+  [(_CSProminentDisplayBackgroundWrapperView *)&v5 insertSubview:subview atIndex:index];
   [(_CSProminentDisplayBackgroundWrapperView *)&self->super.super.super.isa _ensureWrappedViewIsAtIndexZero];
 }
 
-- (void)exchangeSubviewAtIndex:(int64_t)a3 withSubviewAtIndex:(int64_t)a4
+- (void)exchangeSubviewAtIndex:(int64_t)index withSubviewAtIndex:(int64_t)atIndex
 {
   v5.receiver = self;
   v5.super_class = _CSProminentDisplayBackgroundWrapperView;
-  [(_CSProminentDisplayBackgroundWrapperView *)&v5 exchangeSubviewAtIndex:a3 withSubviewAtIndex:a4];
+  [(_CSProminentDisplayBackgroundWrapperView *)&v5 exchangeSubviewAtIndex:index withSubviewAtIndex:atIndex];
   [(_CSProminentDisplayBackgroundWrapperView *)&self->super.super.super.isa _ensureWrappedViewIsAtIndexZero];
 }
 
-- (void)insertSubview:(id)a3 belowSubview:(id)a4
+- (void)insertSubview:(id)subview belowSubview:(id)belowSubview
 {
   v5.receiver = self;
   v5.super_class = _CSProminentDisplayBackgroundWrapperView;
-  [(_CSProminentDisplayBackgroundWrapperView *)&v5 insertSubview:a3 belowSubview:a4];
+  [(_CSProminentDisplayBackgroundWrapperView *)&v5 insertSubview:subview belowSubview:belowSubview];
   [(_CSProminentDisplayBackgroundWrapperView *)&self->super.super.super.isa _ensureWrappedViewIsAtIndexZero];
 }
 
-- (void)insertSubview:(id)a3 aboveSubview:(id)a4
+- (void)insertSubview:(id)subview aboveSubview:(id)aboveSubview
 {
   v5.receiver = self;
   v5.super_class = _CSProminentDisplayBackgroundWrapperView;
-  [(_CSProminentDisplayBackgroundWrapperView *)&v5 insertSubview:a3 aboveSubview:a4];
+  [(_CSProminentDisplayBackgroundWrapperView *)&v5 insertSubview:subview aboveSubview:aboveSubview];
   [(_CSProminentDisplayBackgroundWrapperView *)&self->super.super.super.isa _ensureWrappedViewIsAtIndexZero];
 }
 
-- (void)bringSubviewToFront:(id)a3
+- (void)bringSubviewToFront:(id)front
 {
   v4.receiver = self;
   v4.super_class = _CSProminentDisplayBackgroundWrapperView;
-  [(_CSProminentDisplayBackgroundWrapperView *)&v4 bringSubviewToFront:a3];
+  [(_CSProminentDisplayBackgroundWrapperView *)&v4 bringSubviewToFront:front];
   [(_CSProminentDisplayBackgroundWrapperView *)&self->super.super.super.isa _ensureWrappedViewIsAtIndexZero];
 }
 
-- (void)sendSubviewToBack:(id)a3
+- (void)sendSubviewToBack:(id)back
 {
   v4.receiver = self;
   v4.super_class = _CSProminentDisplayBackgroundWrapperView;
-  [(_CSProminentDisplayBackgroundWrapperView *)&v4 sendSubviewToBack:a3];
+  [(_CSProminentDisplayBackgroundWrapperView *)&v4 sendSubviewToBack:back];
   [(_CSProminentDisplayBackgroundWrapperView *)&self->super.super.super.isa _ensureWrappedViewIsAtIndexZero];
 }
 

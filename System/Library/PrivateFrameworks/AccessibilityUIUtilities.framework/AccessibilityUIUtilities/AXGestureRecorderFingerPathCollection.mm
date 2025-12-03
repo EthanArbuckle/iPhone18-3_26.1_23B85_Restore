@@ -1,25 +1,25 @@
 @interface AXGestureRecorderFingerPathCollection
 - (AXGestureRecorderFingerPathCollection)init;
-- (AXGestureRecorderFingerPathCollection)initWithMaximumFingerPathsCount:(unint64_t)a3;
+- (AXGestureRecorderFingerPathCollection)initWithMaximumFingerPathsCount:(unint64_t)count;
 - (AXGestureRecorderFingerPathCollectionDelegate)delegate;
-- (CGPoint)_interfaceOrientedScreenPointForPoint:(CGPoint)a3 view:(id)a4;
+- (CGPoint)_interfaceOrientedScreenPointForPoint:(CGPoint)point view:(id)view;
 - (NSMutableArray)referenceTimesArray;
-- (double)timestampAtIndex:(unint64_t)a3;
-- (id)_bezierPathToAppendForTouchLocation:(CGPoint)a3 unnamedValue:(double)a4 optionalPreviousTouchLocation:(id)a5 optionalPreviousForce:(id)a6;
-- (id)_nonRealTimeFingerPathToAppendForIndex:(unint64_t)a3 upToPositionForTimestampAtIndex:(unint64_t)a4;
-- (id)_realTimeFingerPathToAppendForIndex:(unint64_t)a3 upToPositionForTimestampAtIndex:(unint64_t)a4;
-- (id)fingerPathAtIndex:(unint64_t)a3;
-- (id)fingerPathToAppendForIndex:(unint64_t)a3 forTimestampAtIndex:(unint64_t)a4;
-- (id)propertyListRepresentationWithName:(id)a3;
+- (double)timestampAtIndex:(unint64_t)index;
+- (id)_bezierPathToAppendForTouchLocation:(CGPoint)location unnamedValue:(double)value optionalPreviousTouchLocation:(id)touchLocation optionalPreviousForce:(id)force;
+- (id)_nonRealTimeFingerPathToAppendForIndex:(unint64_t)index upToPositionForTimestampAtIndex:(unint64_t)atIndex;
+- (id)_realTimeFingerPathToAppendForIndex:(unint64_t)index upToPositionForTimestampAtIndex:(unint64_t)atIndex;
+- (id)fingerPathAtIndex:(unint64_t)index;
+- (id)fingerPathToAppendForIndex:(unint64_t)index forTimestampAtIndex:(unint64_t)atIndex;
+- (id)propertyListRepresentationWithName:(id)name;
 - (unint64_t)fingerPathsCount;
 - (unint64_t)timestampsCount;
-- (void)_addPointsToReplayableGesture:(id)a3 forces:(id)a4 time:(double)a5;
-- (void)_didInsertFingerPathAtIndex:(unint64_t)a3;
-- (void)_didUpdateFingerPathAtIndex:(unint64_t)a3;
-- (void)appendFingerPathsFromFingerPathCollection:(id)a3;
-- (void)appendPointsForTouches:(id)a3 referenceView:(id)a4 time:(double)a5;
+- (void)_addPointsToReplayableGesture:(id)gesture forces:(id)forces time:(double)time;
+- (void)_didInsertFingerPathAtIndex:(unint64_t)index;
+- (void)_didUpdateFingerPathAtIndex:(unint64_t)index;
+- (void)appendFingerPathsFromFingerPathCollection:(id)collection;
+- (void)appendPointsForTouches:(id)touches referenceView:(id)view time:(double)time;
 - (void)dealloc;
-- (void)handleLiftForTouches:(id)a3 referenceView:(id)a4 time:(double)a5;
+- (void)handleLiftForTouches:(id)touches referenceView:(id)view time:(double)time;
 - (void)reset;
 @end
 
@@ -37,7 +37,7 @@
   return 0;
 }
 
-- (AXGestureRecorderFingerPathCollection)initWithMaximumFingerPathsCount:(unint64_t)a3
+- (AXGestureRecorderFingerPathCollection)initWithMaximumFingerPathsCount:(unint64_t)count
 {
   v7.receiver = self;
   v7.super_class = AXGestureRecorderFingerPathCollection;
@@ -45,7 +45,7 @@
   v5 = v4;
   if (v4)
   {
-    [(AXGestureRecorderFingerPathCollection *)v4 setMaximumFingerPathsCount:a3];
+    [(AXGestureRecorderFingerPathCollection *)v4 setMaximumFingerPathsCount:count];
     [(AXGestureRecorderFingerPathCollection *)v5 _referenceTimesArrayIndexNeedsRefresh];
   }
 
@@ -62,8 +62,8 @@
 
 - (unint64_t)fingerPathsCount
 {
-  v2 = [(AXGestureRecorderFingerPathCollection *)self fingerPaths];
-  v3 = [v2 count];
+  fingerPaths = [(AXGestureRecorderFingerPathCollection *)self fingerPaths];
+  v3 = [fingerPaths count];
 
   return v3;
 }
@@ -77,8 +77,8 @@
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v3 = [(AXGestureRecorderFingerPathCollection *)self timesArrays];
-    v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    timesArrays = [(AXGestureRecorderFingerPathCollection *)self timesArrays];
+    v4 = [timesArrays countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v4)
     {
       v5 = v4;
@@ -90,13 +90,13 @@
         {
           if (*v13 != v7)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(timesArrays);
           }
 
           v6 += [*(*(&v12 + 1) + 8 * i) count];
         }
 
-        v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v5 = [timesArrays countByEnumeratingWithState:&v12 objects:v16 count:16];
       }
 
       while (v5);
@@ -112,8 +112,8 @@
 
   else
   {
-    v9 = [(AXGestureRecorderFingerPathCollection *)self referenceTimesArray];
-    v10 = [v9 count];
+    referenceTimesArray = [(AXGestureRecorderFingerPathCollection *)self referenceTimesArray];
+    v10 = [referenceTimesArray count];
 
     return v10;
   }
@@ -127,18 +127,18 @@
     _AXAssert();
   }
 
-  v3 = [(AXGestureRecorderFingerPathCollection *)self referenceTimesArrayIndex];
-  v4 = [(AXGestureRecorderFingerPathCollection *)self timesArrays];
-  v5 = [v4 count];
-  if (v3 == 0x7FFFFFFFFFFFFFFFLL)
+  referenceTimesArrayIndex = [(AXGestureRecorderFingerPathCollection *)self referenceTimesArrayIndex];
+  timesArrays = [(AXGestureRecorderFingerPathCollection *)self timesArrays];
+  v5 = [timesArrays count];
+  if (referenceTimesArrayIndex == 0x7FFFFFFFFFFFFFFFLL)
   {
     v19 = v5;
-    v20 = v4;
+    v20 = timesArrays;
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v6 = v4;
+    v6 = timesArrays;
     v7 = [v6 countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v7)
     {
@@ -146,7 +146,7 @@
       v9 = 0;
       v10 = *v22;
       v11 = 0x7FFFFFFFFFFFFFFFLL;
-      v3 = 0x7FFFFFFFFFFFFFFFLL;
+      referenceTimesArrayIndex = 0x7FFFFFFFFFFFFFFFLL;
       do
       {
         v12 = 0;
@@ -162,7 +162,7 @@
           if (v11 == 0x7FFFFFFFFFFFFFFFLL || v14 > v11)
           {
             v11 = v14;
-            v3 = v13;
+            referenceTimesArrayIndex = v13;
           }
 
           ++v13;
@@ -179,86 +179,86 @@
 
     else
     {
-      v3 = 0x7FFFFFFFFFFFFFFFLL;
+      referenceTimesArrayIndex = 0x7FFFFFFFFFFFFFFFLL;
     }
 
-    [(AXGestureRecorderFingerPathCollection *)self setReferenceTimesArrayIndex:v3];
+    [(AXGestureRecorderFingerPathCollection *)self setReferenceTimesArrayIndex:referenceTimesArrayIndex];
     v5 = v19;
-    v4 = v20;
+    timesArrays = v20;
   }
 
   v17 = 0;
-  if (v3 != 0x7FFFFFFFFFFFFFFFLL && v3 < v5)
+  if (referenceTimesArrayIndex != 0x7FFFFFFFFFFFFFFFLL && referenceTimesArrayIndex < v5)
   {
-    v17 = [v4 objectAtIndex:v3];
+    v17 = [timesArrays objectAtIndex:referenceTimesArrayIndex];
   }
 
   return v17;
 }
 
-- (id)fingerPathAtIndex:(unint64_t)a3
+- (id)fingerPathAtIndex:(unint64_t)index
 {
-  v4 = [(AXGestureRecorderFingerPathCollection *)self fingerPaths];
-  v5 = [v4 objectAtIndex:a3];
+  fingerPaths = [(AXGestureRecorderFingerPathCollection *)self fingerPaths];
+  v5 = [fingerPaths objectAtIndex:index];
 
   return v5;
 }
 
-- (id)fingerPathToAppendForIndex:(unint64_t)a3 forTimestampAtIndex:(unint64_t)a4
+- (id)fingerPathToAppendForIndex:(unint64_t)index forTimestampAtIndex:(unint64_t)atIndex
 {
   if ([(AXGestureRecorderFingerPathCollection *)self shouldRecordRealTimeGesture])
   {
-    [(AXGestureRecorderFingerPathCollection *)self _realTimeFingerPathToAppendForIndex:a3 upToPositionForTimestampAtIndex:a4];
+    [(AXGestureRecorderFingerPathCollection *)self _realTimeFingerPathToAppendForIndex:index upToPositionForTimestampAtIndex:atIndex];
   }
 
   else
   {
-    [(AXGestureRecorderFingerPathCollection *)self _nonRealTimeFingerPathToAppendForIndex:a3 upToPositionForTimestampAtIndex:a4];
+    [(AXGestureRecorderFingerPathCollection *)self _nonRealTimeFingerPathToAppendForIndex:index upToPositionForTimestampAtIndex:atIndex];
   }
   v7 = ;
 
   return v7;
 }
 
-- (id)_nonRealTimeFingerPathToAppendForIndex:(unint64_t)a3 upToPositionForTimestampAtIndex:(unint64_t)a4
+- (id)_nonRealTimeFingerPathToAppendForIndex:(unint64_t)index upToPositionForTimestampAtIndex:(unint64_t)atIndex
 {
-  v4 = a4;
-  if ([(AXGestureRecorderFingerPathCollection *)self timestampsCount]<= a4)
+  atIndexCopy = atIndex;
+  if ([(AXGestureRecorderFingerPathCollection *)self timestampsCount]<= atIndex)
   {
-    v11 = 0;
+    bezierPath = 0;
   }
 
   else
   {
-    v7 = [(AXGestureRecorderFingerPathCollection *)self pointsArrays];
-    v8 = [v7 objectAtIndex:a3];
+    pointsArrays = [(AXGestureRecorderFingerPathCollection *)self pointsArrays];
+    v8 = [pointsArrays objectAtIndex:index];
 
-    v9 = [(AXGestureRecorderFingerPathCollection *)self forcesArrays];
-    v10 = [v9 objectAtIndex:a3];
+    forcesArrays = [(AXGestureRecorderFingerPathCollection *)self forcesArrays];
+    v10 = [forcesArrays objectAtIndex:index];
 
-    if ([v8 count] <= v4)
+    if ([v8 count] <= atIndexCopy)
     {
-      v11 = 0;
+      bezierPath = 0;
     }
 
     else
     {
-      v11 = [MEMORY[0x1E69DC728] bezierPath];
-      if ([v8 count] > v4)
+      bezierPath = [MEMORY[0x1E69DC728] bezierPath];
+      if ([v8 count] > atIndexCopy)
       {
-        v12 = [v8 objectAtIndexedSubscript:v4];
+        v12 = [v8 objectAtIndexedSubscript:atIndexCopy];
         [v12 CGPointValue];
         v14 = v13;
         v16 = v15;
 
-        v17 = [v10 objectAtIndexedSubscript:v4];
+        v17 = [v10 objectAtIndexedSubscript:atIndexCopy];
         [v17 doubleValue];
         v19 = v18;
 
-        if (v4)
+        if (atIndexCopy)
         {
-          v20 = v4 - 1;
-          v4 = [v8 objectAtIndexedSubscript:v4 - 1];
+          v20 = atIndexCopy - 1;
+          atIndexCopy = [v8 objectAtIndexedSubscript:atIndexCopy - 1];
           v21 = [v10 objectAtIndexedSubscript:v20];
         }
 
@@ -267,25 +267,25 @@
           v21 = 0;
         }
 
-        v22 = [(AXGestureRecorderFingerPathCollection *)self _bezierPathToAppendForTouchLocation:v4 unnamedValue:v21 optionalPreviousTouchLocation:v14 optionalPreviousForce:v16, v19];
-        [v11 appendBezierPath:v22];
+        v22 = [(AXGestureRecorderFingerPathCollection *)self _bezierPathToAppendForTouchLocation:atIndexCopy unnamedValue:v21 optionalPreviousTouchLocation:v14 optionalPreviousForce:v16, v19];
+        [bezierPath appendBezierPath:v22];
       }
     }
   }
 
-  return v11;
+  return bezierPath;
 }
 
-- (id)_realTimeFingerPathToAppendForIndex:(unint64_t)a3 upToPositionForTimestampAtIndex:(unint64_t)a4
+- (id)_realTimeFingerPathToAppendForIndex:(unint64_t)index upToPositionForTimestampAtIndex:(unint64_t)atIndex
 {
-  v4 = a4;
-  if ([(AXGestureRecorderFingerPathCollection *)self timestampsCount]<= a4)
+  atIndexCopy = atIndex;
+  if ([(AXGestureRecorderFingerPathCollection *)self timestampsCount]<= atIndex)
   {
-    v10 = 0;
+    bezierPath = 0;
     goto LABEL_26;
   }
 
-  [(AXGestureRecorderFingerPathCollection *)self timestampAtIndex:v4];
+  [(AXGestureRecorderFingerPathCollection *)self timestampAtIndex:atIndexCopy];
   v8 = v7;
   v47 = 0;
   v48 = &v47;
@@ -293,43 +293,43 @@
   v50 = __Block_byref_object_copy__0;
   v51 = __Block_byref_object_dispose__0;
   v52 = 0;
-  v9 = [(AXGestureRecorderFingerPathCollection *)self touchPathIndicesToFingerPathIndices];
+  touchPathIndicesToFingerPathIndices = [(AXGestureRecorderFingerPathCollection *)self touchPathIndicesToFingerPathIndices];
   v46[0] = MEMORY[0x1E69E9820];
   v46[1] = 3221225472;
   v46[2] = __109__AXGestureRecorderFingerPathCollection__realTimeFingerPathToAppendForIndex_upToPositionForTimestampAtIndex___block_invoke;
   v46[3] = &unk_1E812E430;
   v46[4] = &v47;
-  v46[5] = a3;
-  [v9 enumerateKeysAndObjectsUsingBlock:v46];
+  v46[5] = index;
+  [touchPathIndicesToFingerPathIndices enumerateKeysAndObjectsUsingBlock:v46];
 
-  v10 = [MEMORY[0x1E69DC728] bezierPath];
-  v11 = [(AXGestureRecorderFingerPathCollection *)self replayableGesture];
-  v12 = [v11 numberOfEvents];
+  bezierPath = [MEMORY[0x1E69DC728] bezierPath];
+  replayableGesture = [(AXGestureRecorderFingerPathCollection *)self replayableGesture];
+  numberOfEvents = [replayableGesture numberOfEvents];
 
-  if (v12 > v4)
+  if (numberOfEvents > atIndexCopy)
   {
     while (1)
     {
-      v13 = [(AXGestureRecorderFingerPathCollection *)self replayableGesture];
-      [v13 timeAtEventIndex:v4];
+      replayableGesture2 = [(AXGestureRecorderFingerPathCollection *)self replayableGesture];
+      [replayableGesture2 timeAtEventIndex:atIndexCopy];
       v15 = v14;
 
-      if (v15 >= v8 || v4 >= v12)
+      if (v15 >= v8 || atIndexCopy >= numberOfEvents)
       {
         break;
       }
 
-      ++v4;
+      ++atIndexCopy;
     }
 
-    if (v4 >= v12)
+    if (atIndexCopy >= numberOfEvents)
     {
       v44 = v8;
       _AXAssert();
     }
 
-    v17 = [(AXGestureRecorderFingerPathCollection *)self replayableGesture];
-    [v17 timeAtEventIndex:v4];
+    replayableGesture3 = [(AXGestureRecorderFingerPathCollection *)self replayableGesture];
+    [replayableGesture3 timeAtEventIndex:atIndexCopy];
     v19 = v18;
 
     if (v19 != v8)
@@ -338,65 +338,65 @@
       _AXAssert();
     }
 
-    if (v4 >= v12)
+    if (atIndexCopy >= numberOfEvents)
     {
       goto LABEL_25;
     }
 
-    v20 = [(AXGestureRecorderFingerPathCollection *)self replayableGesture];
-    [v20 timeAtEventIndex:v4];
+    replayableGesture4 = [(AXGestureRecorderFingerPathCollection *)self replayableGesture];
+    [replayableGesture4 timeAtEventIndex:atIndexCopy];
     v22 = v21;
 
-    if (v22 != v8 || v4 == 0x7FFFFFFFFFFFFFFFLL)
+    if (v22 != v8 || atIndexCopy == 0x7FFFFFFFFFFFFFFFLL)
     {
       goto LABEL_25;
     }
 
-    v23 = [(AXGestureRecorderFingerPathCollection *)self replayableGesture];
-    v24 = [v23 fingerIdentifiersAtEventIndex:v4];
+    replayableGesture5 = [(AXGestureRecorderFingerPathCollection *)self replayableGesture];
+    v24 = [replayableGesture5 fingerIdentifiersAtEventIndex:atIndexCopy];
 
     if (![v24 containsObject:v48[5]])
     {
       goto LABEL_24;
     }
 
-    v25 = [(AXGestureRecorderFingerPathCollection *)self replayableGesture];
-    [v25 pointForFingerIdentifier:v48[5] atEventIndex:v4];
+    replayableGesture6 = [(AXGestureRecorderFingerPathCollection *)self replayableGesture];
+    [replayableGesture6 pointForFingerIdentifier:v48[5] atEventIndex:atIndexCopy];
     v27 = v26;
     v29 = v28;
 
-    v30 = [(AXGestureRecorderFingerPathCollection *)self replayableGesture];
-    [v30 forceForFingerIdentifier:v48[5] atEventIndex:v4];
+    replayableGesture7 = [(AXGestureRecorderFingerPathCollection *)self replayableGesture];
+    [replayableGesture7 forceForFingerIdentifier:v48[5] atEventIndex:atIndexCopy];
     v32 = v31;
 
-    if (v4)
+    if (atIndexCopy)
     {
-      v33 = [(AXGestureRecorderFingerPathCollection *)self replayableGesture];
-      v34 = v4 - 1;
-      v35 = [v33 fingerIdentifiersAtEventIndex:v4 - 1];
+      replayableGesture8 = [(AXGestureRecorderFingerPathCollection *)self replayableGesture];
+      v34 = atIndexCopy - 1;
+      v35 = [replayableGesture8 fingerIdentifiersAtEventIndex:atIndexCopy - 1];
       v36 = [v35 containsObject:v48[5]];
 
       if (v36)
       {
         v37 = MEMORY[0x1E696B098];
-        v38 = [(AXGestureRecorderFingerPathCollection *)self replayableGesture];
-        [v38 pointForFingerIdentifier:v48[5] atEventIndex:v34];
-        v4 = [v37 valueWithCGPoint:?];
+        replayableGesture9 = [(AXGestureRecorderFingerPathCollection *)self replayableGesture];
+        [replayableGesture9 pointForFingerIdentifier:v48[5] atEventIndex:v34];
+        atIndexCopy = [v37 valueWithCGPoint:?];
 
         v39 = MEMORY[0x1E696AD98];
-        v40 = [(AXGestureRecorderFingerPathCollection *)self replayableGesture];
-        [v40 forceForFingerIdentifier:v48[5] atEventIndex:v34];
+        replayableGesture10 = [(AXGestureRecorderFingerPathCollection *)self replayableGesture];
+        [replayableGesture10 forceForFingerIdentifier:v48[5] atEventIndex:v34];
         v41 = [v39 numberWithDouble:?];
 
 LABEL_23:
-        v42 = [(AXGestureRecorderFingerPathCollection *)self _bezierPathToAppendForTouchLocation:v4 unnamedValue:v41 optionalPreviousTouchLocation:v27 optionalPreviousForce:v29, v32, *&v45];
-        [v10 appendBezierPath:v42];
+        v42 = [(AXGestureRecorderFingerPathCollection *)self _bezierPathToAppendForTouchLocation:atIndexCopy unnamedValue:v41 optionalPreviousTouchLocation:v27 optionalPreviousForce:v29, v32, *&v45];
+        [bezierPath appendBezierPath:v42];
 
 LABEL_24:
         goto LABEL_25;
       }
 
-      v4 = 0;
+      atIndexCopy = 0;
     }
 
     v41 = 0;
@@ -409,7 +409,7 @@ LABEL_25:
 
 LABEL_26:
 
-  return v10;
+  return bezierPath;
 }
 
 void __109__AXGestureRecorderFingerPathCollection__realTimeFingerPathToAppendForIndex_upToPositionForTimestampAtIndex___block_invoke(uint64_t a1, void *a2, void *a3, _BYTE *a4)
@@ -422,7 +422,7 @@ void __109__AXGestureRecorderFingerPathCollection__realTimeFingerPathToAppendFor
   }
 }
 
-- (double)timestampAtIndex:(unint64_t)a3
+- (double)timestampAtIndex:(unint64_t)index
 {
   v21 = *MEMORY[0x1E69E9840];
   if ([(AXGestureRecorderFingerPathCollection *)self shouldRecordRealTimeGesture])
@@ -431,8 +431,8 @@ void __109__AXGestureRecorderFingerPathCollection__realTimeFingerPathToAppendFor
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v5 = [(AXGestureRecorderFingerPathCollection *)self timesArrays];
-    v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    timesArrays = [(AXGestureRecorderFingerPathCollection *)self timesArrays];
+    v6 = [timesArrays countByEnumeratingWithState:&v16 objects:v20 count:16];
     v7 = 0.0;
     if (v6)
     {
@@ -444,20 +444,20 @@ void __109__AXGestureRecorderFingerPathCollection__realTimeFingerPathToAppendFor
         {
           if (*v17 != v9)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(timesArrays);
           }
 
           v11 = *(*(&v16 + 1) + 8 * i);
-          if (a3 < [v11 count])
+          if (index < [v11 count])
           {
-            v12 = v11;
+            referenceTimesArray = v11;
             goto LABEL_13;
           }
 
-          a3 -= [v11 count];
+          index -= [v11 count];
         }
 
-        v8 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v8 = [timesArrays countByEnumeratingWithState:&v16 objects:v20 count:16];
         if (v8)
         {
           continue;
@@ -470,10 +470,10 @@ void __109__AXGestureRecorderFingerPathCollection__realTimeFingerPathToAppendFor
 
   else
   {
-    v12 = [(AXGestureRecorderFingerPathCollection *)self referenceTimesArray];
-    v5 = v12;
+    referenceTimesArray = [(AXGestureRecorderFingerPathCollection *)self referenceTimesArray];
+    timesArrays = referenceTimesArray;
 LABEL_13:
-    v13 = [v12 objectAtIndexedSubscript:a3];
+    v13 = [referenceTimesArray objectAtIndexedSubscript:index];
     [v13 doubleValue];
     v7 = v14;
   }
@@ -481,12 +481,12 @@ LABEL_13:
   return v7;
 }
 
-- (id)propertyListRepresentationWithName:(id)a3
+- (id)propertyListRepresentationWithName:(id)name
 {
   v47 = *MEMORY[0x1E69E9840];
-  v35 = a3;
+  nameCopy = name;
   v4 = objc_opt_new();
-  v34 = self;
+  selfCopy = self;
   [(AXGestureRecorderFingerPathCollection *)self pointsArrays];
   v41 = 0u;
   v42 = 0u;
@@ -601,24 +601,24 @@ LABEL_28:
   }
 
   v29 = MEMORY[0x1E695DF20];
-  v30 = [(AXGestureRecorderFingerPathCollection *)v34 forcesArrays];
-  v31 = [(AXGestureRecorderFingerPathCollection *)v34 timesArrays];
-  v32 = [v29 dictionaryWithObjectsAndKeys:{v35, @"Name", v19, @"Points", v30, @"Forces", v31, @"Times", 0}];
+  forcesArrays = [(AXGestureRecorderFingerPathCollection *)selfCopy forcesArrays];
+  timesArrays = [(AXGestureRecorderFingerPathCollection *)selfCopy timesArrays];
+  v32 = [v29 dictionaryWithObjectsAndKeys:{nameCopy, @"Name", v19, @"Points", forcesArrays, @"Forces", timesArrays, @"Times", 0}];
 
   return v32;
 }
 
-- (CGPoint)_interfaceOrientedScreenPointForPoint:(CGPoint)a3 view:(id)a4
+- (CGPoint)_interfaceOrientedScreenPointForPoint:(CGPoint)point view:(id)view
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = a4;
-  v7 = [v6 window];
-  [v6 convertPoint:0 toView:{x, y}];
+  y = point.y;
+  x = point.x;
+  viewCopy = view;
+  window = [viewCopy window];
+  [viewCopy convertPoint:0 toView:{x, y}];
   v9 = v8;
   v11 = v10;
 
-  [v7 convertPoint:0 toWindow:{v9, v11}];
+  [window convertPoint:0 toWindow:{v9, v11}];
   v13 = v12;
   v15 = v14;
 
@@ -629,30 +629,30 @@ LABEL_28:
   return result;
 }
 
-- (id)_bezierPathToAppendForTouchLocation:(CGPoint)a3 unnamedValue:(double)a4 optionalPreviousTouchLocation:(id)a5 optionalPreviousForce:(id)a6
+- (id)_bezierPathToAppendForTouchLocation:(CGPoint)location unnamedValue:(double)value optionalPreviousTouchLocation:(id)touchLocation optionalPreviousForce:(id)force
 {
-  y = a3.y;
-  x = a3.x;
-  v11 = a5;
-  v12 = a6;
-  v13 = [MEMORY[0x1E69DC728] bezierPath];
+  y = location.y;
+  x = location.x;
+  touchLocationCopy = touchLocation;
+  forceCopy = force;
+  bezierPath = [MEMORY[0x1E69DC728] bezierPath];
   [(AXGestureRecorderFingerPathCollection *)self minimumFingerLineWidth];
   v15 = v14;
-  v16 = a4 / 2000.0;
+  v16 = value / 2000.0;
   [(AXGestureRecorderFingerPathCollection *)self maximumFingerLineWidth];
   v18 = v17;
   [(AXGestureRecorderFingerPathCollection *)self minimumFingerLineWidth];
   v20 = (v15 + v16 * (v18 - v19)) * 0.5;
   v21 = [MEMORY[0x1E69DC728] bezierPathWithArcCenter:1 radius:x startAngle:y endAngle:v20 clockwise:{0.0, 6.28318531}];
-  [v13 appendPath:v21];
-  if (v11)
+  [bezierPath appendPath:v21];
+  if (touchLocationCopy)
   {
-    [v11 CGPointValue];
+    [touchLocationCopy CGPointValue];
     v24 = v23;
     if (v23 != x || v22 != y)
     {
       v39 = v22;
-      [v12 doubleValue];
+      [forceCopy doubleValue];
       v26 = v25;
       [(AXGestureRecorderFingerPathCollection *)self minimumFingerLineWidth];
       v28 = v27;
@@ -661,51 +661,51 @@ LABEL_28:
       v31 = v30;
       [(AXGestureRecorderFingerPathCollection *)self minimumFingerLineWidth];
       v33 = (v28 + v29 * (v31 - v32)) * 0.5;
-      v34 = [MEMORY[0x1E69DC728] bezierPath];
+      bezierPath2 = [MEMORY[0x1E69DC728] bezierPath];
       v38 = atan2(y - v39, x - v24);
       v35 = __sincos_stret(v38 + -1.57079633);
-      [v34 moveToPoint:{v24 + v33 * v35.__cosval, v39 + v33 * v35.__sinval}];
-      [v34 addLineToPoint:{x + v20 * v35.__cosval, y + v20 * v35.__sinval}];
+      [bezierPath2 moveToPoint:{v24 + v33 * v35.__cosval, v39 + v33 * v35.__sinval}];
+      [bezierPath2 addLineToPoint:{x + v20 * v35.__cosval, y + v20 * v35.__sinval}];
       v36 = __sincos_stret(v38 + 1.57079633);
-      [v34 addLineToPoint:{x + v20 * v36.__cosval, y + v20 * v36.__sinval}];
-      [v34 addLineToPoint:{v24 + v33 * v36.__cosval, v39 + v33 * v36.__sinval}];
-      [v34 closePath];
-      [v13 appendPath:v34];
+      [bezierPath2 addLineToPoint:{x + v20 * v36.__cosval, y + v20 * v36.__sinval}];
+      [bezierPath2 addLineToPoint:{v24 + v33 * v36.__cosval, v39 + v33 * v36.__sinval}];
+      [bezierPath2 closePath];
+      [bezierPath appendPath:bezierPath2];
     }
   }
 
-  return v13;
+  return bezierPath;
 }
 
-- (void)appendPointsForTouches:(id)a3 referenceView:(id)a4 time:(double)a5
+- (void)appendPointsForTouches:(id)touches referenceView:(id)view time:(double)time
 {
   v73 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v56 = a4;
-  v63 = [(AXGestureRecorderFingerPathCollection *)self fingerPaths];
-  v9 = [v63 count];
-  v64 = self;
+  touchesCopy = touches;
+  viewCopy = view;
+  fingerPaths = [(AXGestureRecorderFingerPathCollection *)self fingerPaths];
+  v9 = [fingerPaths count];
+  selfCopy = self;
   if (v9 > [(AXGestureRecorderFingerPathCollection *)self maximumFingerPathsCount])
   {
     goto LABEL_27;
   }
 
   context = objc_autoreleasePoolPush();
-  v10 = [(AXGestureRecorderFingerPathCollection *)self timesArrays];
-  v11 = [v10 count];
+  timesArrays = [(AXGestureRecorderFingerPathCollection *)self timesArrays];
+  v11 = [timesArrays count];
   v12 = v11;
-  if (!v10)
+  if (!timesArrays)
   {
-    v10 = objc_opt_new();
-    [(AXGestureRecorderFingerPathCollection *)v64 setTimesArrays:v10];
+    timesArrays = objc_opt_new();
+    [(AXGestureRecorderFingerPathCollection *)selfCopy setTimesArrays:timesArrays];
     if (v12)
     {
       goto LABEL_4;
     }
 
 LABEL_6:
-    v13 = objc_opt_new();
-    [v10 addObject:v13];
+    lastObject = objc_opt_new();
+    [timesArrays addObject:lastObject];
     goto LABEL_7;
   }
 
@@ -715,13 +715,13 @@ LABEL_6:
   }
 
 LABEL_4:
-  v13 = [v10 lastObject];
+  lastObject = [timesArrays lastObject];
 LABEL_7:
-  v45 = [objc_alloc(MEMORY[0x1E696AD98]) initWithDouble:a5];
-  [v13 addObject:?];
-  v59 = [(AXGestureRecorderFingerPathCollection *)v64 pointsArrays];
-  v58 = [(AXGestureRecorderFingerPathCollection *)v64 forcesArrays];
-  v60 = [(AXGestureRecorderFingerPathCollection *)v64 touchPathIndicesToFingerPathIndices];
+  v45 = [objc_alloc(MEMORY[0x1E696AD98]) initWithDouble:time];
+  [lastObject addObject:?];
+  pointsArrays = [(AXGestureRecorderFingerPathCollection *)selfCopy pointsArrays];
+  forcesArrays = [(AXGestureRecorderFingerPathCollection *)selfCopy forcesArrays];
+  touchPathIndicesToFingerPathIndices = [(AXGestureRecorderFingerPathCollection *)selfCopy touchPathIndicesToFingerPathIndices];
   if (v9)
   {
     v51 = [objc_alloc(MEMORY[0x1E696AD50]) initWithIndexesInRange:{0, v9}];
@@ -732,17 +732,17 @@ LABEL_7:
     v51 = 0;
   }
 
-  v47 = v10;
+  v47 = timesArrays;
   v55 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v54 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v68 = 0u;
   v69 = 0u;
   v70 = 0u;
   v71 = 0u;
-  obj = v8;
+  obj = touchesCopy;
   v57 = [obj countByEnumeratingWithState:&v68 objects:v72 count:16];
-  v49 = v8;
-  v46 = v13;
+  v49 = touchesCopy;
+  v46 = lastObject;
   if (v57)
   {
     v52 = v9;
@@ -757,10 +757,10 @@ LABEL_7:
         }
 
         v15 = *(*(&v68 + 1) + 8 * i);
-        v16 = [v15 _pathIndex];
-        v62 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v16];
-        v17 = [v60 objectForKey:?];
-        [v15 locationInView:v56];
+        _pathIndex = [v15 _pathIndex];
+        v62 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:_pathIndex];
+        v17 = [touchPathIndicesToFingerPathIndices objectForKey:?];
+        [v15 locationInView:viewCopy];
         v19 = v18;
         v21 = v20;
         v22 = [MEMORY[0x1E696B098] valueWithCGPoint:?];
@@ -769,30 +769,30 @@ LABEL_7:
         v25 = objc_alloc(MEMORY[0x1E696AD98]);
         *&v26 = v24;
         v27 = [v25 initWithFloat:v26];
-        v28 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v16];
+        v28 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:_pathIndex];
         [v55 setObject:v27 forKeyedSubscript:v28];
 
         v29 = MEMORY[0x1E696B098];
-        [(AXGestureRecorderFingerPathCollection *)v64 _interfaceOrientedScreenPointForPoint:v56 view:v19, v21];
+        [(AXGestureRecorderFingerPathCollection *)selfCopy _interfaceOrientedScreenPointForPoint:viewCopy view:v19, v21];
         v30 = [v29 valueWithCGPoint:?];
-        v31 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v16];
+        v31 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:_pathIndex];
         [v54 setObject:v30 forKeyedSubscript:v31];
 
         if (v17)
         {
           v61 = v17;
-          v32 = [v17 unsignedIntegerValue];
-          v33 = [v59 objectAtIndex:v32];
-          v34 = [v58 objectAtIndex:v32];
-          v35 = [v34 lastObject];
-          v36 = [v33 lastObject];
-          v37 = [v63 objectAtIndex:v32];
-          v38 = [(AXGestureRecorderFingerPathCollection *)v64 _bezierPathToAppendForTouchLocation:v36 unnamedValue:v35 optionalPreviousTouchLocation:v19 optionalPreviousForce:v21, v24];
+          unsignedIntegerValue = [v17 unsignedIntegerValue];
+          v33 = [pointsArrays objectAtIndex:unsignedIntegerValue];
+          v34 = [forcesArrays objectAtIndex:unsignedIntegerValue];
+          lastObject2 = [v34 lastObject];
+          lastObject3 = [v33 lastObject];
+          v37 = [fingerPaths objectAtIndex:unsignedIntegerValue];
+          v38 = [(AXGestureRecorderFingerPathCollection *)selfCopy _bezierPathToAppendForTouchLocation:lastObject3 unnamedValue:lastObject2 optionalPreviousTouchLocation:v19 optionalPreviousForce:v21, v24];
           [v37 appendBezierPath:v38];
           [v33 addObject:v22];
           [v34 addObject:v27];
-          [v51 removeIndex:v32];
-          [(AXGestureRecorderFingerPathCollection *)v64 _didUpdateFingerPathAtIndex:v32];
+          [v51 removeIndex:unsignedIntegerValue];
+          [(AXGestureRecorderFingerPathCollection *)selfCopy _didUpdateFingerPathAtIndex:unsignedIntegerValue];
 
           v39 = v62;
           v40 = v22;
@@ -801,41 +801,41 @@ LABEL_7:
         else
         {
           v40 = v22;
-          if (!v63)
+          if (!fingerPaths)
           {
-            v63 = objc_opt_new();
-            [(AXGestureRecorderFingerPathCollection *)v64 setFingerPaths:?];
+            fingerPaths = objc_opt_new();
+            [(AXGestureRecorderFingerPathCollection *)selfCopy setFingerPaths:?];
           }
 
-          v41 = [(AXGestureRecorderFingerPathCollection *)v64 _bezierPathToAppendForTouchLocation:0 unnamedValue:0 optionalPreviousTouchLocation:v19 optionalPreviousForce:v21, v24];
-          [v63 addObject:v41];
-          v42 = v58;
+          v41 = [(AXGestureRecorderFingerPathCollection *)selfCopy _bezierPathToAppendForTouchLocation:0 unnamedValue:0 optionalPreviousTouchLocation:v19 optionalPreviousForce:v21, v24];
+          [fingerPaths addObject:v41];
+          v42 = forcesArrays;
           v39 = v62;
-          if (!v59)
+          if (!pointsArrays)
           {
-            v59 = objc_opt_new();
-            [(AXGestureRecorderFingerPathCollection *)v64 setPointsArrays:?];
+            pointsArrays = objc_opt_new();
+            [(AXGestureRecorderFingerPathCollection *)selfCopy setPointsArrays:?];
             v42 = objc_opt_new();
 
-            [(AXGestureRecorderFingerPathCollection *)v64 setForcesArrays:v42];
+            [(AXGestureRecorderFingerPathCollection *)selfCopy setForcesArrays:v42];
           }
 
           v34 = objc_opt_new();
           [v34 addObject:v40];
-          [v59 addObject:v34];
-          v35 = objc_opt_new();
-          [v35 addObject:v27];
-          v58 = v42;
-          [v42 addObject:v35];
-          if (!v60)
+          [pointsArrays addObject:v34];
+          lastObject2 = objc_opt_new();
+          [lastObject2 addObject:v27];
+          forcesArrays = v42;
+          [v42 addObject:lastObject2];
+          if (!touchPathIndicesToFingerPathIndices)
           {
-            v60 = objc_opt_new();
-            [(AXGestureRecorderFingerPathCollection *)v64 setTouchPathIndicesToFingerPathIndices:?];
+            touchPathIndicesToFingerPathIndices = objc_opt_new();
+            [(AXGestureRecorderFingerPathCollection *)selfCopy setTouchPathIndicesToFingerPathIndices:?];
           }
 
           v61 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInteger:v52];
-          [v60 setObject:? forKey:?];
-          [(AXGestureRecorderFingerPathCollection *)v64 _didInsertFingerPathAtIndex:v52++];
+          [touchPathIndicesToFingerPathIndices setObject:? forKey:?];
+          [(AXGestureRecorderFingerPathCollection *)selfCopy _didInsertFingerPathAtIndex:v52++];
           v33 = v41;
         }
       }
@@ -850,16 +850,16 @@ LABEL_7:
   v65[1] = 3221225472;
   v65[2] = __83__AXGestureRecorderFingerPathCollection_appendPointsForTouches_referenceView_time___block_invoke;
   v65[3] = &unk_1E812E458;
-  v66 = v59;
-  v67 = v58;
-  v43 = v58;
-  v44 = v59;
+  v66 = pointsArrays;
+  v67 = forcesArrays;
+  v43 = forcesArrays;
+  v44 = pointsArrays;
   [v51 enumerateIndexesUsingBlock:v65];
-  [(AXGestureRecorderFingerPathCollection *)v64 _addPointsToReplayableGesture:v54 forces:v55 time:a5];
-  [(AXGestureRecorderFingerPathCollection *)v64 _referenceTimesArrayIndexNeedsRefresh];
+  [(AXGestureRecorderFingerPathCollection *)selfCopy _addPointsToReplayableGesture:v54 forces:v55 time:time];
+  [(AXGestureRecorderFingerPathCollection *)selfCopy _referenceTimesArrayIndexNeedsRefresh];
 
   objc_autoreleasePoolPop(context);
-  v8 = v49;
+  touchesCopy = v49;
 LABEL_27:
 }
 
@@ -873,27 +873,27 @@ void __83__AXGestureRecorderFingerPathCollection_appendPointsForTouches_referenc
   [v5 addObject:v6];
 }
 
-- (void)handleLiftForTouches:(id)a3 referenceView:(id)a4 time:(double)a5
+- (void)handleLiftForTouches:(id)touches referenceView:(id)view time:(double)time
 {
   v53 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = [(AXGestureRecorderFingerPathCollection *)self replayableGesture];
-  v9 = [v8 numberOfEvents];
+  touchesCopy = touches;
+  replayableGesture = [(AXGestureRecorderFingerPathCollection *)self replayableGesture];
+  numberOfEvents = [replayableGesture numberOfEvents];
 
-  if (v9)
+  if (numberOfEvents)
   {
-    v41 = self;
-    v10 = [(AXGestureRecorderFingerPathCollection *)self replayableGesture];
-    v40 = [v10 numberOfEvents] - 1;
+    selfCopy = self;
+    replayableGesture2 = [(AXGestureRecorderFingerPathCollection *)self replayableGesture];
+    v40 = [replayableGesture2 numberOfEvents] - 1;
 
-    v11 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(v7, "count")}];
-    v12 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(v7, "count")}];
+    v11 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(touchesCopy, "count")}];
+    v12 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(touchesCopy, "count")}];
     v47 = 0u;
     v48 = 0u;
     v49 = 0u;
     v50 = 0u;
-    v37 = v7;
-    v13 = v7;
+    v37 = touchesCopy;
+    v13 = touchesCopy;
     v14 = [v13 countByEnumeratingWithState:&v47 objects:v52 count:16];
     if (v14)
     {
@@ -924,11 +924,11 @@ void __83__AXGestureRecorderFingerPathCollection_appendPointsForTouches_referenc
       while (v15);
     }
 
-    v22 = [(AXGestureRecorderFingerPathCollection *)v41 replayableGesture];
-    v23 = [v22 fingerIdentifiersAtEventIndex:v40];
+    replayableGesture3 = [(AXGestureRecorderFingerPathCollection *)selfCopy replayableGesture];
+    v23 = [replayableGesture3 fingerIdentifiersAtEventIndex:v40];
 
-    v39 = [MEMORY[0x1E695DF90] dictionary];
-    v38 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     v43 = 0u;
     v44 = 0u;
     v45 = 0u;
@@ -952,17 +952,17 @@ void __83__AXGestureRecorderFingerPathCollection_appendPointsForTouches_referenc
           if (([v11 containsObject:{v28, v37}] & 1) == 0)
           {
             v29 = MEMORY[0x1E696B098];
-            v30 = [(AXGestureRecorderFingerPathCollection *)v41 replayableGesture];
-            [v30 pointForFingerIdentifier:v28 atEventIndex:v40];
+            replayableGesture4 = [(AXGestureRecorderFingerPathCollection *)selfCopy replayableGesture];
+            [replayableGesture4 pointForFingerIdentifier:v28 atEventIndex:v40];
             v31 = [v29 valueWithCGPoint:?];
-            [v39 setObject:v31 forKeyedSubscript:v28];
+            [dictionary setObject:v31 forKeyedSubscript:v28];
 
             v32 = MEMORY[0x1E696AD98];
-            v33 = [(AXGestureRecorderFingerPathCollection *)v41 replayableGesture];
-            [v33 forceForFingerIdentifier:v28 atEventIndex:v40];
+            replayableGesture5 = [(AXGestureRecorderFingerPathCollection *)selfCopy replayableGesture];
+            [replayableGesture5 forceForFingerIdentifier:v28 atEventIndex:v40];
             *&v34 = v34;
             v35 = [v32 numberWithFloat:v34];
-            [v38 setObject:v35 forKeyedSubscript:v28];
+            [dictionary2 setObject:v35 forKeyedSubscript:v28];
           }
         }
 
@@ -972,104 +972,104 @@ void __83__AXGestureRecorderFingerPathCollection_appendPointsForTouches_referenc
       while (v25);
     }
 
-    v36 = [(AXGestureRecorderFingerPathCollection *)v41 replayableGesture];
-    [v36 addPointsByFingerIdentifier:v39 forces:v38 atTime:a5];
+    replayableGesture6 = [(AXGestureRecorderFingerPathCollection *)selfCopy replayableGesture];
+    [replayableGesture6 addPointsByFingerIdentifier:dictionary forces:dictionary2 atTime:time];
 
-    v7 = v37;
+    touchesCopy = v37;
   }
 }
 
-- (void)appendFingerPathsFromFingerPathCollection:(id)a3
+- (void)appendFingerPathsFromFingerPathCollection:(id)collection
 {
   v49 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  collectionCopy = collection;
+  if (collectionCopy)
   {
-    v5 = [(AXGestureRecorderFingerPathCollection *)self fingerPaths];
-    v43 = [v5 count];
+    fingerPaths = [(AXGestureRecorderFingerPathCollection *)self fingerPaths];
+    v43 = [fingerPaths count];
 
-    v6 = [v4 fingerPaths];
-    if (v6)
+    fingerPaths2 = [collectionCopy fingerPaths];
+    if (fingerPaths2)
     {
-      v7 = [(AXGestureRecorderFingerPathCollection *)self fingerPaths];
-      v8 = v7;
-      if (v7)
+      fingerPaths3 = [(AXGestureRecorderFingerPathCollection *)self fingerPaths];
+      v8 = fingerPaths3;
+      if (fingerPaths3)
       {
-        [v7 addObjectsFromArray:v6];
+        [fingerPaths3 addObjectsFromArray:fingerPaths2];
       }
 
       else
       {
-        v9 = [v6 mutableCopy];
+        v9 = [fingerPaths2 mutableCopy];
         [(AXGestureRecorderFingerPathCollection *)self setFingerPaths:v9];
       }
     }
 
-    v10 = [v4 pointsArrays];
-    if (v10)
+    pointsArrays = [collectionCopy pointsArrays];
+    if (pointsArrays)
     {
-      v11 = [(AXGestureRecorderFingerPathCollection *)self pointsArrays];
-      v12 = v11;
-      if (v11)
+      pointsArrays2 = [(AXGestureRecorderFingerPathCollection *)self pointsArrays];
+      v12 = pointsArrays2;
+      if (pointsArrays2)
       {
-        [v11 addObjectsFromArray:v10];
+        [pointsArrays2 addObjectsFromArray:pointsArrays];
       }
 
       else
       {
-        v13 = [v10 mutableCopy];
+        v13 = [pointsArrays mutableCopy];
         [(AXGestureRecorderFingerPathCollection *)self setPointsArrays:v13];
       }
     }
 
-    v14 = [v4 forcesArrays];
-    if (v14)
+    forcesArrays = [collectionCopy forcesArrays];
+    if (forcesArrays)
     {
-      v15 = [(AXGestureRecorderFingerPathCollection *)self forcesArrays];
-      v16 = v15;
-      if (v15)
+      forcesArrays2 = [(AXGestureRecorderFingerPathCollection *)self forcesArrays];
+      v16 = forcesArrays2;
+      if (forcesArrays2)
       {
-        [v15 addObjectsFromArray:v14];
+        [forcesArrays2 addObjectsFromArray:forcesArrays];
       }
 
       else
       {
-        v17 = [v14 mutableCopy];
+        v17 = [forcesArrays mutableCopy];
         [(AXGestureRecorderFingerPathCollection *)self setForcesArrays:v17];
       }
     }
 
-    v18 = [v4 timesArrays];
-    if (v18)
+    timesArrays = [collectionCopy timesArrays];
+    if (timesArrays)
     {
-      v19 = [(AXGestureRecorderFingerPathCollection *)self timesArrays];
-      v20 = v19;
-      if (v19)
+      timesArrays2 = [(AXGestureRecorderFingerPathCollection *)self timesArrays];
+      v20 = timesArrays2;
+      if (timesArrays2)
       {
-        [v19 addObjectsFromArray:v18];
+        [timesArrays2 addObjectsFromArray:timesArrays];
       }
 
       else
       {
-        v21 = [v18 mutableCopy];
+        v21 = [timesArrays mutableCopy];
         [(AXGestureRecorderFingerPathCollection *)self setTimesArrays:v21];
       }
     }
 
-    v22 = [(AXGestureRecorderFingerPathCollection *)self touchPathIndicesToFingerPathIndices];
+    touchPathIndicesToFingerPathIndices = [(AXGestureRecorderFingerPathCollection *)self touchPathIndicesToFingerPathIndices];
 
-    if (v22)
+    if (touchPathIndicesToFingerPathIndices)
     {
-      v38 = v18;
-      v39 = v14;
-      v40 = v10;
-      v41 = v6;
+      v38 = timesArrays;
+      v39 = forcesArrays;
+      v40 = pointsArrays;
+      v41 = fingerPaths2;
       v46 = 0u;
       v47 = 0u;
       v44 = 0u;
       v45 = 0u;
-      v23 = v4;
-      obj = [v4 touchPathIndicesToFingerPathIndices];
+      v23 = collectionCopy;
+      obj = [collectionCopy touchPathIndicesToFingerPathIndices];
       v24 = [obj countByEnumeratingWithState:&v44 objects:v48 count:16];
       if (v24)
       {
@@ -1086,11 +1086,11 @@ void __83__AXGestureRecorderFingerPathCollection_appendPointsForTouches_referenc
 
             v28 = *(*(&v44 + 1) + 8 * i);
             v29 = MEMORY[0x1E696AD98];
-            v30 = [v23 touchPathIndicesToFingerPathIndices];
-            v31 = [v30 objectForKeyedSubscript:v28];
+            touchPathIndicesToFingerPathIndices2 = [v23 touchPathIndicesToFingerPathIndices];
+            v31 = [touchPathIndicesToFingerPathIndices2 objectForKeyedSubscript:v28];
             v32 = [v29 numberWithUnsignedInteger:{objc_msgSend(v31, "unsignedIntegerValue") + v43}];
-            v33 = [(AXGestureRecorderFingerPathCollection *)self touchPathIndicesToFingerPathIndices];
-            [v33 setObject:v32 forKeyedSubscript:v28];
+            touchPathIndicesToFingerPathIndices3 = [(AXGestureRecorderFingerPathCollection *)self touchPathIndicesToFingerPathIndices];
+            [touchPathIndicesToFingerPathIndices3 setObject:v32 forKeyedSubscript:v28];
           }
 
           v25 = [obj countByEnumeratingWithState:&v44 objects:v48 count:16];
@@ -1099,32 +1099,32 @@ void __83__AXGestureRecorderFingerPathCollection_appendPointsForTouches_referenc
         while (v25);
       }
 
-      v4 = v23;
-      v10 = v40;
-      v6 = v41;
-      v18 = v38;
-      v14 = v39;
+      collectionCopy = v23;
+      pointsArrays = v40;
+      fingerPaths2 = v41;
+      timesArrays = v38;
+      forcesArrays = v39;
     }
 
     else
     {
-      v34 = [v4 touchPathIndicesToFingerPathIndices];
-      [(AXGestureRecorderFingerPathCollection *)self setTouchPathIndicesToFingerPathIndices:v34];
+      touchPathIndicesToFingerPathIndices4 = [collectionCopy touchPathIndicesToFingerPathIndices];
+      [(AXGestureRecorderFingerPathCollection *)self setTouchPathIndicesToFingerPathIndices:touchPathIndicesToFingerPathIndices4];
     }
 
-    v35 = [(AXGestureRecorderFingerPathCollection *)self replayableGesture];
+    replayableGesture = [(AXGestureRecorderFingerPathCollection *)self replayableGesture];
 
-    if (v35)
+    if (replayableGesture)
     {
-      v36 = [(AXGestureRecorderFingerPathCollection *)self replayableGesture];
-      v37 = [v4 replayableGesture];
-      [v36 addPointsFromReplayableGesture:v37];
+      replayableGesture2 = [(AXGestureRecorderFingerPathCollection *)self replayableGesture];
+      replayableGesture3 = [collectionCopy replayableGesture];
+      [replayableGesture2 addPointsFromReplayableGesture:replayableGesture3];
     }
 
     else
     {
-      v36 = [v4 replayableGesture];
-      [(AXGestureRecorderFingerPathCollection *)self setReplayableGesture:v36];
+      replayableGesture2 = [collectionCopy replayableGesture];
+      [(AXGestureRecorderFingerPathCollection *)self setReplayableGesture:replayableGesture2];
     }
 
     [(AXGestureRecorderFingerPathCollection *)self _referenceTimesArrayIndexNeedsRefresh];
@@ -1143,33 +1143,33 @@ void __83__AXGestureRecorderFingerPathCollection_appendPointsForTouches_referenc
   [(AXGestureRecorderFingerPathCollection *)self _referenceTimesArrayIndexNeedsRefresh];
 }
 
-- (void)_addPointsToReplayableGesture:(id)a3 forces:(id)a4 time:(double)a5
+- (void)_addPointsToReplayableGesture:(id)gesture forces:(id)forces time:(double)time
 {
   v37 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v31 = a4;
-  v9 = [(AXGestureRecorderFingerPathCollection *)self replayableGesture];
+  gestureCopy = gesture;
+  forcesCopy = forces;
+  replayableGesture = [(AXGestureRecorderFingerPathCollection *)self replayableGesture];
 
-  if (!v9)
+  if (!replayableGesture)
   {
     v10 = objc_alloc_init(MEMORY[0x1E6989880]);
     [(AXGestureRecorderFingerPathCollection *)self setReplayableGesture:v10];
   }
 
-  v11 = [(AXGestureRecorderFingerPathCollection *)self replayableGesture];
-  v12 = [v11 numberOfEvents];
+  replayableGesture2 = [(AXGestureRecorderFingerPathCollection *)self replayableGesture];
+  numberOfEvents = [replayableGesture2 numberOfEvents];
 
-  if (v12)
+  if (numberOfEvents)
   {
-    v13 = [(AXGestureRecorderFingerPathCollection *)self replayableGesture];
-    v14 = [v13 numberOfEvents] - 1;
+    replayableGesture3 = [(AXGestureRecorderFingerPathCollection *)self replayableGesture];
+    v14 = [replayableGesture3 numberOfEvents] - 1;
 
     v34 = 0u;
     v35 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v15 = [(AXGestureRecorderFingerPathCollection *)self replayableGesture];
-    v16 = [v15 fingerIdentifiersAtEventIndex:v14];
+    replayableGesture4 = [(AXGestureRecorderFingerPathCollection *)self replayableGesture];
+    v16 = [replayableGesture4 fingerIdentifiersAtEventIndex:v14];
 
     v17 = [v16 countByEnumeratingWithState:&v32 objects:v36 count:16];
     if (v17)
@@ -1186,22 +1186,22 @@ void __83__AXGestureRecorderFingerPathCollection_appendPointsForTouches_referenc
           }
 
           v21 = *(*(&v32 + 1) + 8 * i);
-          v22 = [v8 objectForKeyedSubscript:v21];
+          v22 = [gestureCopy objectForKeyedSubscript:v21];
 
           if (!v22)
           {
             v23 = MEMORY[0x1E696B098];
-            v24 = [(AXGestureRecorderFingerPathCollection *)self replayableGesture];
-            [v24 pointForFingerIdentifier:v21 atEventIndex:v14];
+            replayableGesture5 = [(AXGestureRecorderFingerPathCollection *)self replayableGesture];
+            [replayableGesture5 pointForFingerIdentifier:v21 atEventIndex:v14];
             v25 = [v23 valueWithCGPoint:?];
-            [v8 setObject:v25 forKeyedSubscript:v21];
+            [gestureCopy setObject:v25 forKeyedSubscript:v21];
 
             v26 = MEMORY[0x1E696AD98];
-            v27 = [(AXGestureRecorderFingerPathCollection *)self replayableGesture];
-            [v27 forceForFingerIdentifier:v21 atEventIndex:v14];
+            replayableGesture6 = [(AXGestureRecorderFingerPathCollection *)self replayableGesture];
+            [replayableGesture6 forceForFingerIdentifier:v21 atEventIndex:v14];
             *&v28 = v28;
             v29 = [v26 numberWithFloat:v28];
-            [v31 setObject:v29 forKeyedSubscript:v21];
+            [forcesCopy setObject:v29 forKeyedSubscript:v21];
           }
         }
 
@@ -1212,25 +1212,25 @@ void __83__AXGestureRecorderFingerPathCollection_appendPointsForTouches_referenc
     }
   }
 
-  v30 = [(AXGestureRecorderFingerPathCollection *)self replayableGesture];
-  [v30 addPointsByFingerIdentifier:v8 forces:v31 atTime:a5];
+  replayableGesture7 = [(AXGestureRecorderFingerPathCollection *)self replayableGesture];
+  [replayableGesture7 addPointsByFingerIdentifier:gestureCopy forces:forcesCopy atTime:time];
 }
 
-- (void)_didInsertFingerPathAtIndex:(unint64_t)a3
+- (void)_didInsertFingerPathAtIndex:(unint64_t)index
 {
-  v5 = [(AXGestureRecorderFingerPathCollection *)self delegate];
+  delegate = [(AXGestureRecorderFingerPathCollection *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 gestureRecorderFingerPathCollection:self didInsertFingerPathAtIndex:a3];
+    [delegate gestureRecorderFingerPathCollection:self didInsertFingerPathAtIndex:index];
   }
 }
 
-- (void)_didUpdateFingerPathAtIndex:(unint64_t)a3
+- (void)_didUpdateFingerPathAtIndex:(unint64_t)index
 {
-  v5 = [(AXGestureRecorderFingerPathCollection *)self delegate];
+  delegate = [(AXGestureRecorderFingerPathCollection *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 gestureRecorderFingerPathCollection:self didUpdateFingerPathAtIndex:a3];
+    [delegate gestureRecorderFingerPathCollection:self didUpdateFingerPathAtIndex:index];
   }
 }
 

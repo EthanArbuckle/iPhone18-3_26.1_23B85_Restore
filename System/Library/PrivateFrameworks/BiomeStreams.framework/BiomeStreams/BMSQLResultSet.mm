@@ -1,6 +1,6 @@
 @interface BMSQLResultSet
-- (BMSQLResultSet)initWithQuery:(id)a3 error:(id)a4 database:(id)a5;
-- (BMSQLResultSet)initWithStatement:(sqlite3_stmt *)a3 database:(id)a4;
+- (BMSQLResultSet)initWithQuery:(id)query error:(id)error database:(id)database;
+- (BMSQLResultSet)initWithStatement:(sqlite3_stmt *)statement database:(id)database;
 - (BOOL)_next;
 - (BOOL)next;
 - (NSArray)columns;
@@ -72,11 +72,11 @@ LABEL_29:
     goto LABEL_30;
   }
 
-  v39 = [(BMSQLResultSet *)self _columns];
+  _columns = [(BMSQLResultSet *)self _columns];
   v7 = sqlite3_column_count(self->_stmt);
   v8 = MEMORY[0x1E695DF90];
-  v9 = [(BMSQLResultSet *)self _keySet];
-  v40 = [v8 dictionaryWithSharedKeySet:v9];
+  _keySet = [(BMSQLResultSet *)self _keySet];
+  v40 = [v8 dictionaryWithSharedKeySet:_keySet];
 
   if (!v7)
   {
@@ -95,7 +95,7 @@ LABEL_26:
   v12 = v7;
   while (1)
   {
-    v13 = [v39 objectAtIndexedSubscript:v10];
+    v13 = [_columns objectAtIndexedSubscript:v10];
     v14 = sqlite3_column_type(self->_stmt, v10);
     v15 = 0;
     if (v14 > 2)
@@ -190,9 +190,9 @@ LABEL_30:
   [(BMSQLResultSet *)&v3 dealloc];
 }
 
-- (BMSQLResultSet)initWithStatement:(sqlite3_stmt *)a3 database:(id)a4
+- (BMSQLResultSet)initWithStatement:(sqlite3_stmt *)statement database:(id)database
 {
-  v7 = a4;
+  databaseCopy = database;
   v14.receiver = self;
   v14.super_class = BMSQLResultSet;
   v8 = [(BMSQLResultSet *)&v14 init];
@@ -200,13 +200,13 @@ LABEL_30:
   if (v8)
   {
     v8->_lock._os_unfair_lock_opaque = 0;
-    v8->_stmt = a3;
-    objc_storeStrong(&v8->_database, a4);
+    v8->_stmt = statement;
+    objc_storeStrong(&v8->_database, database);
     v9->_finished = 0;
     v9->_cursor = 0;
-    if (a3)
+    if (statement)
     {
-      v10 = sqlite3_sql(a3);
+      v10 = sqlite3_sql(statement);
       if (v10)
       {
         v11 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithUTF8String:v10];
@@ -219,20 +219,20 @@ LABEL_30:
   return v9;
 }
 
-- (BMSQLResultSet)initWithQuery:(id)a3 error:(id)a4 database:(id)a5
+- (BMSQLResultSet)initWithQuery:(id)query error:(id)error database:(id)database
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(BMSQLResultSet *)self initWithStatement:0 database:a5];
+  queryCopy = query;
+  errorCopy = error;
+  v10 = [(BMSQLResultSet *)self initWithStatement:0 database:database];
   v11 = v10;
   if (v10)
   {
     v10->_lock._os_unfair_lock_opaque = 0;
-    v12 = [v8 copy];
+    v12 = [queryCopy copy];
     query = v11->_query;
     v11->_query = v12;
 
-    objc_storeStrong(&v11->_error, a4);
+    objc_storeStrong(&v11->_error, error);
     v11->_finished = 1;
   }
 
@@ -243,10 +243,10 @@ LABEL_30:
 {
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(BMSQLResultSet *)self _columns];
+  _columns = [(BMSQLResultSet *)self _columns];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v3;
+  return _columns;
 }
 
 - (id)_columns
@@ -283,8 +283,8 @@ LABEL_30:
   if (!keySet)
   {
     v4 = MEMORY[0x1E695DF90];
-    v5 = [(BMSQLResultSet *)self _columns];
-    v6 = [v4 sharedKeySetForKeys:v5];
+    _columns = [(BMSQLResultSet *)self _columns];
+    v6 = [v4 sharedKeySetForKeys:_columns];
     v7 = self->_keySet;
     self->_keySet = v6;
 
@@ -300,9 +300,9 @@ LABEL_30:
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
   v4 = objc_opt_class();
-  v5 = [(BMSQLResultSet *)self query];
+  query = [(BMSQLResultSet *)self query];
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_cursor];
-  v7 = [v3 initWithFormat:@"<%@ %p> query: %@, current row: %@", v4, self, v5, v6];
+  v7 = [v3 initWithFormat:@"<%@ %p> query: %@, current row: %@", v4, self, query, v6];
 
   return v7;
 }

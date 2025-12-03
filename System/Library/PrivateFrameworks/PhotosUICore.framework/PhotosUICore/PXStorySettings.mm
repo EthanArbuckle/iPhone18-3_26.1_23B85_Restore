@@ -7,15 +7,15 @@
 + (id)settingsControllerModule;
 + (id)sharedInstance;
 + (id)transientProperties;
-- (BOOL)allowsRandomFallbackForShowcaseMode:(int64_t)a3;
+- (BOOL)allowsRandomFallbackForShowcaseMode:(int64_t)mode;
 - (BOOL)shouldShowAppleMusicRelatedUI;
 - (CGSize)inlinePlaybackCriticalInsets;
 - (id)feedItemShadow;
-- (id)possibleClipCompositionsForFallback:(id)a3;
-- (id)possibleTransitionKindsForFallback:(int64_t)a3;
+- (id)possibleClipCompositionsForFallback:(id)fallback;
+- (id)possibleTransitionKindsForFallback:(int64_t)fallback;
 - (unint64_t)fullsizePaperTrailOptions;
 - (void)createChildren;
-- (void)didChangeValueForKey:(id)a3;
+- (void)didChangeValueForKey:(id)key;
 - (void)performPostSaveActions;
 - (void)setDefaultValues;
 @end
@@ -24,25 +24,25 @@
 
 - (void)createChildren
 {
-  v3 = [(PTSettings *)[PXStoryConcreteTimelineSettings alloc] initWithDefaultValues];
+  initWithDefaultValues = [(PTSettings *)[PXStoryConcreteTimelineSettings alloc] initWithDefaultValues];
   concreteTimelineSettings = self->_concreteTimelineSettings;
-  self->_concreteTimelineSettings = v3;
+  self->_concreteTimelineSettings = initWithDefaultValues;
 
-  v5 = [(PTSettings *)[PXStoryScrubberLayoutSettings alloc] initWithDefaultValues];
+  initWithDefaultValues2 = [(PTSettings *)[PXStoryScrubberLayoutSettings alloc] initWithDefaultValues];
   scrubberLayoutSettings = self->_scrubberLayoutSettings;
-  self->_scrubberLayoutSettings = v5;
+  self->_scrubberLayoutSettings = initWithDefaultValues2;
 
-  v7 = [(PTSettings *)[PXStoryTransitionsSettings alloc] initWithDefaultValues];
+  initWithDefaultValues3 = [(PTSettings *)[PXStoryTransitionsSettings alloc] initWithDefaultValues];
   transitionsSettings = self->_transitionsSettings;
-  self->_transitionsSettings = v7;
+  self->_transitionsSettings = initWithDefaultValues3;
 
-  v9 = [(PTSettings *)[PXStoryMultipartPanoramaSettings alloc] initWithDefaultValues];
+  initWithDefaultValues4 = [(PTSettings *)[PXStoryMultipartPanoramaSettings alloc] initWithDefaultValues];
   multipartPanoramaSettings = self->_multipartPanoramaSettings;
-  self->_multipartPanoramaSettings = v9;
+  self->_multipartPanoramaSettings = initWithDefaultValues4;
 
-  v11 = [(PTSettings *)[PXStoryChapterSettings alloc] initWithDefaultValues];
+  initWithDefaultValues5 = [(PTSettings *)[PXStoryChapterSettings alloc] initWithDefaultValues];
   chapterSettings = self->_chapterSettings;
-  self->_chapterSettings = v11;
+  self->_chapterSettings = initWithDefaultValues5;
 }
 
 - (void)setDefaultValues
@@ -359,17 +359,17 @@
   return [(PXStorySettings *)self forceFlexIncludesAppleMusic];
 }
 
-- (id)possibleTransitionKindsForFallback:(int64_t)a3
+- (id)possibleTransitionKindsForFallback:(int64_t)fallback
 {
   v6[1] = *MEMORY[0x1E69E9840];
-  if (a3 == -1)
+  if (fallback == -1)
   {
     v4 = +[PXStoryTransitionsSettings supportedTransitions];
   }
 
   else
   {
-    v3 = [MEMORY[0x1E696AD98] numberWithChar:a3];
+    v3 = [MEMORY[0x1E696AD98] numberWithChar:fallback];
     v6[0] = v3;
     v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:1];
   }
@@ -377,18 +377,18 @@
   return v4;
 }
 
-- (id)possibleClipCompositionsForFallback:(id)a3
+- (id)possibleClipCompositionsForFallback:(id)fallback
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [objc_opt_class() availableClipCompositions];
-  if (![v3 isEqualToString:@"All"])
+  fallbackCopy = fallback;
+  availableClipCompositions = [objc_opt_class() availableClipCompositions];
+  if (![fallbackCopy isEqualToString:@"All"])
   {
-    v3;
+    fallbackCopy;
     PXFilter();
   }
 
-  v5 = v4;
+  v5 = availableClipCompositions;
   if (![v5 count])
   {
     v6 = +[PXStoryClipCompositionFactory oneUpComposition];
@@ -431,18 +431,18 @@ uint64_t __55__PXStorySettings_possibleClipCompositionsForFallback___block_invok
   [v3 setShadowBlurRadius:20.0];
   if ([(PXStorySettings *)self wantsHighContrastColors])
   {
-    v5 = [MEMORY[0x1E69DC888] redColor];
-    v6 = [v5 colorWithAlphaComponent:0.75];
+    redColor = [MEMORY[0x1E69DC888] redColor];
+    v6 = [redColor colorWithAlphaComponent:0.75];
     [v3 setShadowColor:v6];
   }
 
   return v3;
 }
 
-- (BOOL)allowsRandomFallbackForShowcaseMode:(int64_t)a3
+- (BOOL)allowsRandomFallbackForShowcaseMode:(int64_t)mode
 {
   result = [(PXStorySettings *)self allowsShowcase];
-  if ((a3 - 1) >= 2)
+  if ((mode - 1) >= 2)
   {
     return 0;
   }
@@ -453,9 +453,9 @@ uint64_t __55__PXStorySettings_possibleClipCompositionsForFallback___block_invok
 - (unint64_t)fullsizePaperTrailOptions
 {
   v3 = +[PXRootSettings sharedInstance];
-  v4 = [v3 canShowInternalUI];
+  canShowInternalUI = [v3 canShowInternalUI];
 
-  if (!v4)
+  if (!canShowInternalUI)
   {
     return 0;
   }
@@ -463,20 +463,20 @@ uint64_t __55__PXStorySettings_possibleClipCompositionsForFallback___block_invok
   return [(PXStorySettings *)self preferredFullsizePaperTrailOptions];
 }
 
-- (void)didChangeValueForKey:(id)a3
+- (void)didChangeValueForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v9.receiver = self;
   v9.super_class = PXStorySettings;
-  [(PXStorySettings *)&v9 didChangeValueForKey:v4];
+  [(PXStorySettings *)&v9 didChangeValueForKey:keyCopy];
   v5 = NSStringFromSelector(sel_curationScorePercentileThreshold);
-  if (v5 != v4 && ([v4 isEqualToString:v5] & 1) == 0)
+  if (v5 != keyCopy && ([keyCopy isEqualToString:v5] & 1) == 0)
   {
     v6 = NSStringFromSelector(sel_aestheticsScorePercentileThreshold);
     v7 = v6;
-    if (v6 != v4)
+    if (v6 != keyCopy)
     {
-      v8 = [v4 isEqualToString:v6];
+      v8 = [keyCopy isEqualToString:v6];
 
       if ((v8 & 1) == 0)
       {
@@ -497,9 +497,9 @@ LABEL_9:
   v11.receiver = self;
   v11.super_class = PXStorySettings;
   [(PXSettings *)&v11 performPostSaveActions];
-  v3 = [MEMORY[0x1E695E000] standardUserDefaults];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
   v4 = *MEMORY[0x1E696A400];
-  v5 = [v3 persistentDomainForName:*MEMORY[0x1E696A400]];
+  v5 = [standardUserDefaults persistentDomainForName:*MEMORY[0x1E696A400]];
   v6 = [v5 mutableCopy];
 
   v7 = MEMORY[0x1E696AD98];
@@ -512,7 +512,7 @@ LABEL_9:
   v10 = [v9 numberWithDouble:?];
   [v6 setObject:v10 forKey:*MEMORY[0x1E6978BB8]];
 
-  [v3 setPersistentDomain:v6 forName:v4];
+  [standardUserDefaults setPersistentDomain:v6 forName:v4];
 }
 
 + (id)possibleNormalizationModes
@@ -548,7 +548,7 @@ LABEL_9:
 
 + (id)possibleTransitionFallbackTitles
 {
-  [a1 possibleTransitionFallbacks];
+  [self possibleTransitionFallbacks];
   objc_claimAutoreleasedReturnValue();
   PXMap();
 }
@@ -589,7 +589,7 @@ __CFString *__51__PXStorySettings_possibleTransitionFallbackTitles__block_invoke
 
 + (id)possibleClipCompositionFallbacks
 {
-  [a1 availableClipCompositions];
+  [self availableClipCompositions];
   objc_claimAutoreleasedReturnValue();
   PXMap();
 }
@@ -600,7 +600,7 @@ __CFString *__51__PXStorySettings_possibleTransitionFallbackTitles__block_invoke
   block[1] = 3221225472;
   block[2] = __38__PXStorySettings_transientProperties__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (transientProperties_onceToken_43198 != -1)
   {
     dispatch_once(&transientProperties_onceToken_43198, block);
@@ -663,7 +663,7 @@ void __33__PXStorySettings_sharedInstance__block_invoke()
 
 + (id)settingsControllerModule
 {
-  MEMORY[0x1EEE9AC00](a1);
+  MEMORY[0x1EEE9AC00](self);
   v3 = v2;
   v1293[32] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E696AE18];
@@ -707,9 +707,9 @@ void __33__PXStorySettings_sharedInstance__block_invoke()
   v1248 = NSStringFromSelector(sel_clipCompositionFallback);
   v1247 = [v18 rowWithTitle:@"Fallback Composition(s)" valueKeyPath:v1248];
   v19 = v3;
-  v1246 = [v3 possibleClipCompositionFallbacks];
-  v1245 = [v3 possibleClipCompositionFallbackTitles];
-  v1243 = [v1247 possibleValues:v1246 titles:v1245];
+  possibleClipCompositionFallbacks = [v3 possibleClipCompositionFallbacks];
+  possibleClipCompositionFallbackTitles = [v3 possibleClipCompositionFallbackTitles];
+  v1243 = [v1247 possibleValues:possibleClipCompositionFallbacks titles:possibleClipCompositionFallbackTitles];
   v20 = MEMORY[0x1E696AE18];
   v1244 = NSStringFromSelector(sel_clipCompositionShowcaseMode);
   v1242 = [v20 predicateWithFormat:@"%K != %li", v1244, 0];
@@ -723,9 +723,9 @@ void __33__PXStorySettings_sharedInstance__block_invoke()
   v22 = MEMORY[0x1E69C65F8];
   v1237 = NSStringFromSelector(sel_transitionFallback);
   v1236 = [v22 rowWithTitle:@"Fallback Transition(s)" valueKeyPath:v1237];
-  v1235 = [v19 possibleTransitionFallbacks];
-  v1234 = [v19 possibleTransitionFallbackTitles];
-  v1232 = [v1236 possibleValues:v1235 titles:v1234];
+  possibleTransitionFallbacks = [v19 possibleTransitionFallbacks];
+  possibleTransitionFallbackTitles = [v19 possibleTransitionFallbackTitles];
+  v1232 = [v1236 possibleValues:possibleTransitionFallbacks titles:possibleTransitionFallbackTitles];
   v23 = MEMORY[0x1E696AE18];
   v1233 = NSStringFromSelector(sel_transitionShowcaseMode);
   v1231 = [v23 predicateWithFormat:@"%K != %li", v1233, 0];
@@ -782,18 +782,18 @@ void __33__PXStorySettings_sharedInstance__block_invoke()
   v1200 = [v34 rowWithTitle:@"HUD Visible" valueKeyPath:v1202];
   v35 = MEMORY[0x1E696AE18];
   v1201 = NSStringFromSelector(sel_isHUDEnabled);
-  v1199 = [v35 predicateWithFormat:@"%K != 0", v1201];
-  v1198 = [v1200 condition:v1199];
+  v1201 = [v35 predicateWithFormat:@"%K != 0", v1201];
+  v1198 = [v1200 condition:v1201];
   v1290[3] = v1198;
   v36 = MEMORY[0x1E69C65F8];
   v1197 = NSStringFromSelector(sel_defaultHUDType);
   v1196 = [v36 rowWithTitle:@"HUD Type" valueKeyPath:v1197];
-  v1195 = [v19 possibleDefaultHUDTypes];
-  v1193 = [v1196 px_possibleValues:v1195 formatter:&__block_literal_global_466];
+  possibleDefaultHUDTypes = [v19 possibleDefaultHUDTypes];
+  v1193 = [v1196 px_possibleValues:possibleDefaultHUDTypes formatter:&__block_literal_global_466];
   v37 = MEMORY[0x1E696AE18];
   v1194 = NSStringFromSelector(sel_isHUDEnabled);
-  v1192 = [v37 predicateWithFormat:@"%K != 0", v1194];
-  v1191 = [v1193 condition:v1192];
+  v1194 = [v37 predicateWithFormat:@"%K != 0", v1194];
+  v1191 = [v1193 condition:v1194];
   v1290[4] = v1191;
   v38 = MEMORY[0x1E69C66A8];
   v1190 = NSStringFromSelector(sel_isExportHUDEnabled);
@@ -802,12 +802,12 @@ void __33__PXStorySettings_sharedInstance__block_invoke()
   v39 = MEMORY[0x1E69C65F8];
   v1188 = NSStringFromSelector(sel_exportHUDType);
   v1187 = [v39 rowWithTitle:@"Export HUD Type" valueKeyPath:v1188];
-  v1186 = [v19 possibleDefaultHUDTypes];
-  v1184 = [v1187 px_possibleValues:v1186 formatter:&__block_literal_global_478];
+  possibleDefaultHUDTypes2 = [v19 possibleDefaultHUDTypes];
+  v1184 = [v1187 px_possibleValues:possibleDefaultHUDTypes2 formatter:&__block_literal_global_478];
   v40 = MEMORY[0x1E696AE18];
   v1185 = NSStringFromSelector(sel_isExportHUDEnabled);
-  v1183 = [v40 predicateWithFormat:@"%K != 0", v1185];
-  v1182 = [v1184 condition:v1183];
+  v1185 = [v40 predicateWithFormat:@"%K != 0", v1185];
+  v1182 = [v1184 condition:v1185];
   v1290[6] = v1182;
   v41 = MEMORY[0x1E69C66A8];
   v1181 = NSStringFromSelector(sel_enableDemoAction);
@@ -820,8 +820,8 @@ void __33__PXStorySettings_sharedInstance__block_invoke()
   v1176 = [MEMORY[0x1E69C6610] px_rowWithTitle:@"Proto Playground Settings" action:&__block_literal_global_495_186151];
   v43 = MEMORY[0x1E696AE18];
   v1177 = NSStringFromSelector(sel_enableProtoPlayground);
-  v1175 = [v43 predicateWithFormat:@"%K != 0", v1177];
-  v1174 = [v1176 condition:v1175];
+  v1177 = [v43 predicateWithFormat:@"%K != 0", v1177];
+  v1174 = [v1176 condition:v1177];
   v1290[9] = v1174;
   v44 = MEMORY[0x1E69C65F8];
   v1173 = NSStringFromSelector(sel_preferredFullsizePaperTrailOptions);
@@ -936,8 +936,8 @@ void __33__PXStorySettings_sharedInstance__block_invoke()
   v1112 = [v69 rowWithTitle:@"Recombine with Same Visible Segments" valueKeyPath:v1114];
   v70 = MEMORY[0x1E696AE18];
   v1113 = NSStringFromSelector(sel_allowsTimelineRecombination);
-  v1111 = [v70 predicateWithFormat:@"%K != 0", v1113];
-  v1110 = [v1112 condition:v1111];
+  v1113 = [v70 predicateWithFormat:@"%K != 0", v1113];
+  v1110 = [v1112 condition:v1113];
   v1287[2] = v1110;
   v71 = MEMORY[0x1E69C6610];
   v1109 = NSStringFromSelector(sel_multipartPanoramaSettings);
@@ -956,8 +956,8 @@ void __33__PXStorySettings_sharedInstance__block_invoke()
   v1101 = [v74 rowWithTitle:@"Limit A/R to Card" valueKeyPath:v1103];
   v75 = MEMORY[0x1E696AE18];
   v1102 = NSStringFromSelector(sel_allowNonFillingCompositionsForKeyAsset);
-  v1100 = [v75 predicateWithFormat:@"%K != 0", v1102];
-  v1099 = [v1101 condition:v1100];
+  v1102 = [v75 predicateWithFormat:@"%K != 0", v1102];
+  v1099 = [v1101 condition:v1102];
   v1287[6] = v1099;
   v76 = MEMORY[0x1E69C65F8];
   v1098 = NSStringFromSelector(sel_keyAssetAspectRatioOverride);
@@ -1184,8 +1184,8 @@ void __33__PXStorySettings_sharedInstance__block_invoke()
   v974 = [v976 minValue:0.0 maxValue:1.0];
   v127 = MEMORY[0x1E696AE18];
   v975 = NSStringFromSelector(sel_allowsContinuousKenBurnsAnimations);
-  v973 = [v127 predicateWithFormat:@"%K != 0", v975];
-  v972 = [v974 condition:v973];
+  v975 = [v127 predicateWithFormat:@"%K != 0", v975];
+  v972 = [v974 condition:v975];
   v1281[1] = v972;
   v128 = MEMORY[0x1E69C66A8];
   v971 = NSStringFromSelector(sel_forceMinDurationKenBurnsAnimations);
@@ -1322,8 +1322,8 @@ void __33__PXStorySettings_sharedInstance__block_invoke()
   v898 = [v900 minValue:0.0 maxValue:1.0];
   v162 = MEMORY[0x1E696AE18];
   v899 = NSStringFromSelector(sel_wantsAudioFade);
-  v897 = [v162 predicateWithFormat:@"%K != 0", v899];
-  v896 = [v898 condition:v897];
+  v899 = [v162 predicateWithFormat:@"%K != 0", v899];
+  v896 = [v898 condition:v899];
   v1279[10] = v896;
   v163 = MEMORY[0x1E69C66A0];
   v895 = NSStringFromSelector(sel_audioFadeMaxDuration);
@@ -1331,8 +1331,8 @@ void __33__PXStorySettings_sharedInstance__block_invoke()
   v892 = [v894 minValue:0.0 maxValue:1.0];
   v164 = MEMORY[0x1E696AE18];
   v893 = NSStringFromSelector(sel_wantsAudioFade);
-  v891 = [v164 predicateWithFormat:@"%K != 0", v893];
-  v890 = [v892 condition:v891];
+  v893 = [v164 predicateWithFormat:@"%K != 0", v893];
+  v890 = [v892 condition:v893];
   v1279[11] = v890;
   v165 = MEMORY[0x1E69C65F8];
   v889 = NSStringFromSelector(sel_audioFadeCurve);
@@ -1341,8 +1341,8 @@ void __33__PXStorySettings_sharedInstance__block_invoke()
   v886 = [v888 px_possibleValues:&unk_1F190FF58 formatter:&__block_literal_global_1170];
   v167 = MEMORY[0x1E696AE18];
   v887 = NSStringFromSelector(sel_wantsAudioFade);
-  v885 = [v167 predicateWithFormat:@"%K != 0", v887];
-  v884 = [v886 condition:v885];
+  v887 = [v167 predicateWithFormat:@"%K != 0", v887];
+  v884 = [v886 condition:v887];
   v1279[12] = v884;
   v168 = MEMORY[0x1E69C66A8];
   v883 = NSStringFromSelector(sel_wantsAudioJLCuts);
@@ -1355,8 +1355,8 @@ void __33__PXStorySettings_sharedInstance__block_invoke()
   v878 = [v880 px_possibleValues:&unk_1F190FF40 formatter:&__block_literal_global_1183];
   v171 = MEMORY[0x1E696AE18];
   v879 = NSStringFromSelector(sel_wantsAudioJLCuts);
-  v877 = [v171 predicateWithFormat:@"%K != 0", v879];
-  v876 = [v878 condition:v877];
+  v879 = [v171 predicateWithFormat:@"%K != 0", v879];
+  v876 = [v878 condition:v879];
   v1279[14] = v876;
   v172 = MEMORY[0x1E69C65F8];
   v875 = NSStringFromSelector(sel_audioLCutStrategy);
@@ -1365,8 +1365,8 @@ void __33__PXStorySettings_sharedInstance__block_invoke()
   v872 = [v874 px_possibleValues:&unk_1F190FF40 formatter:&__block_literal_global_1191];
   v174 = MEMORY[0x1E696AE18];
   v873 = NSStringFromSelector(sel_wantsAudioJLCuts);
-  v871 = [v174 predicateWithFormat:@"%K != 0", v873];
-  v870 = [v872 condition:v871];
+  v873 = [v174 predicateWithFormat:@"%K != 0", v873];
+  v870 = [v872 condition:v873];
   v1279[15] = v870;
   v175 = MEMORY[0x1E69C66A0];
   v869 = NSStringFromSelector(sel_audioJCutDuration);
@@ -1374,8 +1374,8 @@ void __33__PXStorySettings_sharedInstance__block_invoke()
   v866 = [v868 minValue:0.0 maxValue:2.0];
   v176 = MEMORY[0x1E696AE18];
   v867 = NSStringFromSelector(sel_wantsAudioJLCuts);
-  v865 = [v176 predicateWithFormat:@"%K != 0", v867];
-  v864 = [v866 condition:v865];
+  v867 = [v176 predicateWithFormat:@"%K != 0", v867];
+  v864 = [v866 condition:v867];
   v1279[16] = v864;
   v177 = MEMORY[0x1E69C66A0];
   v863 = NSStringFromSelector(sel_audioLCutDuration);
@@ -1383,8 +1383,8 @@ void __33__PXStorySettings_sharedInstance__block_invoke()
   v860 = [v862 minValue:0.0 maxValue:2.0];
   v178 = MEMORY[0x1E696AE18];
   v861 = NSStringFromSelector(sel_wantsAudioJLCuts);
-  v859 = [v178 predicateWithFormat:@"%K != 0", v861];
-  v858 = [v860 condition:v859];
+  v861 = [v178 predicateWithFormat:@"%K != 0", v861];
+  v858 = [v860 condition:v861];
   v1279[17] = v858;
   v179 = MEMORY[0x1E69C66A8];
   v857 = NSStringFromSelector(sel_debugShowAudioPlaybackDetails);
@@ -1436,8 +1436,8 @@ void __33__PXStorySettings_sharedInstance__block_invoke()
   v828 = [v830 minValue:0.0 maxValue:20.0];
   v190 = MEMORY[0x1E696AE18];
   v829 = NSStringFromSelector(sel_simulateSlowResourcesBuffering);
-  v827 = [v190 predicateWithFormat:@"%K != 0", v829];
-  v826 = [v828 condition:v827];
+  v829 = [v190 predicateWithFormat:@"%K != 0", v829];
+  v826 = [v828 condition:v829];
   v1278[6] = v826;
   v191 = MEMORY[0x1E69C66A8];
   v825 = NSStringFromSelector(sel_exaggerateResourceDownloadTimes);
@@ -1530,8 +1530,8 @@ void __33__PXStorySettings_sharedInstance__block_invoke()
   v774 = [v776 minValue:0.0 maxValue:10.0];
   v211 = MEMORY[0x1E696AE18];
   v775 = NSStringFromSelector(sel_chromeAllowAutoHide);
-  v773 = [v211 predicateWithFormat:@"%K != 0", v775];
-  v772 = [v774 condition:v773];
+  v775 = [v211 predicateWithFormat:@"%K != 0", v775];
+  v772 = [v774 condition:v775];
   v1276[1] = v772;
   v212 = MEMORY[0x1E69C66A0];
   v771 = NSStringFromSelector(sel_legibilityGradientOpacity);
@@ -1785,14 +1785,14 @@ void __33__PXStorySettings_sharedInstance__block_invoke()
   v265 = MEMORY[0x1E69C65F8];
   v626 = NSStringFromSelector(sel_colorNormalizationMode);
   v625 = [v265 rowWithTitle:@"Mode" valueKeyPath:v626];
-  v624 = [v19 possibleNormalizationModes];
-  v623 = [v625 px_possibleValues:v624 formatter:&__block_literal_global_1666];
+  possibleNormalizationModes = [v19 possibleNormalizationModes];
+  v623 = [v625 px_possibleValues:possibleNormalizationModes formatter:&__block_literal_global_1666];
   v1268[0] = v623;
   v266 = MEMORY[0x1E69C65F8];
   v622 = NSStringFromSelector(sel_colorNormalizationTechnique);
   v621 = [v266 rowWithTitle:@"Technique" valueKeyPath:v622];
-  v620 = [v19 possibleNormalizationTechniques];
-  v619 = [v621 px_possibleValues:v620 formatter:&__block_literal_global_1673];
+  possibleNormalizationTechniques = [v19 possibleNormalizationTechniques];
+  v619 = [v621 px_possibleValues:possibleNormalizationTechniques formatter:&__block_literal_global_1673];
   v1268[1] = v619;
   v267 = MEMORY[0x1E69C66A8];
   v618 = NSStringFromSelector(sel_enableScrubberColorNormalization);
@@ -1861,12 +1861,12 @@ void __33__PXStorySettings_sharedInstance__block_invoke()
   v282 = MEMORY[0x1E69C65F8];
   v584 = NSStringFromSelector(sel_feedHUDType);
   v583 = [v282 rowWithTitle:@"HUD Type" valueKeyPath:v584];
-  v739 = [v19 possibleFeedHUDTypes];
-  v581 = [v583 px_possibleValues:v739 formatter:&__block_literal_global_1747];
+  possibleFeedHUDTypes = [v19 possibleFeedHUDTypes];
+  v581 = [v583 px_possibleValues:possibleFeedHUDTypes formatter:&__block_literal_global_1747];
   v283 = MEMORY[0x1E696AE18];
   v582 = NSStringFromSelector(sel_isFeedHUDVisible);
-  v580 = [v283 predicateWithFormat:@"%K != 0", v582];
-  v579 = [v581 condition:v580];
+  v582 = [v283 predicateWithFormat:@"%K != 0", v582];
+  v579 = [v581 condition:v582];
   v1267[5] = v579;
   v284 = MEMORY[0x1E69C66A0];
   v578 = NSStringFromSelector(sel_feedInitialLimit);
@@ -2035,8 +2035,8 @@ void __33__PXStorySettings_sharedInstance__block_invoke()
   v477 = [v479 minValue:0.0 maxValue:1.0];
   v316 = MEMORY[0x1E696AE18];
   v478 = NSStringFromSelector(sel_autoEditUseMomentRecipes);
-  v476 = [v316 predicateWithFormat:@"%K != 0", v478];
-  v475 = [v477 condition:v476];
+  v478 = [v316 predicateWithFormat:@"%K != 0", v478];
+  v475 = [v477 condition:v478];
   v1265[12] = v475;
   v317 = MEMORY[0x1E69C66A0];
   v474 = NSStringFromSelector(sel_panRecipeRelativeFrequency);
@@ -2044,8 +2044,8 @@ void __33__PXStorySettings_sharedInstance__block_invoke()
   v471 = [v473 minValue:0.0 maxValue:1.0];
   v318 = MEMORY[0x1E696AE18];
   v472 = NSStringFromSelector(sel_autoEditUseMomentRecipes);
-  v470 = [v318 predicateWithFormat:@"%K != 0", v472];
-  v469 = [v471 condition:v470];
+  v472 = [v318 predicateWithFormat:@"%K != 0", v472];
+  v469 = [v471 condition:v472];
   v1265[13] = v469;
   v319 = MEMORY[0x1E69C66A0];
   v468 = NSStringFromSelector(sel_exposeToBlackRecipeRelativeFrequency);
@@ -2053,8 +2053,8 @@ void __33__PXStorySettings_sharedInstance__block_invoke()
   v465 = [v467 minValue:0.0 maxValue:1.0];
   v320 = MEMORY[0x1E696AE18];
   v466 = NSStringFromSelector(sel_autoEditUseMomentRecipes);
-  v464 = [v320 predicateWithFormat:@"%K != 0", v466];
-  v463 = [v465 condition:v464];
+  v466 = [v320 predicateWithFormat:@"%K != 0", v466];
+  v463 = [v465 condition:v466];
   v1265[14] = v463;
   v321 = MEMORY[0x1E69C66A0];
   v462 = NSStringFromSelector(sel_autoEditSceneConfidenceThreshold);
@@ -2062,8 +2062,8 @@ void __33__PXStorySettings_sharedInstance__block_invoke()
   v459 = [v461 minValue:0.0 maxValue:1.0];
   v322 = MEMORY[0x1E696AE18];
   v460 = NSStringFromSelector(sel_autoEditUseMomentRecipes);
-  v458 = [v322 predicateWithFormat:@"%K != 0", v460];
-  v457 = [v459 condition:v458];
+  v460 = [v322 predicateWithFormat:@"%K != 0", v460];
+  v457 = [v459 condition:v460];
   v1265[15] = v457;
   v323 = MEMORY[0x1E69C66A0];
   v456 = NSStringFromSelector(sel_autoEditHighCurationScoreThreshold);
@@ -2071,8 +2071,8 @@ void __33__PXStorySettings_sharedInstance__block_invoke()
   v453 = [v455 minValue:0.0 maxValue:1.0];
   v324 = MEMORY[0x1E696AE18];
   v454 = NSStringFromSelector(sel_autoEditUseMomentRecipes);
-  v452 = [v324 predicateWithFormat:@"%K != 0", v454];
-  v451 = [v453 condition:v452];
+  v454 = [v324 predicateWithFormat:@"%K != 0", v454];
+  v451 = [v453 condition:v454];
   v1265[16] = v451;
   v325 = MEMORY[0x1E69C66A0];
   v450 = NSStringFromSelector(sel_autoEditDoublePlaceMultiplier);
@@ -2080,8 +2080,8 @@ void __33__PXStorySettings_sharedInstance__block_invoke()
   v447 = [v449 minValue:0.1 maxValue:1.0];
   v326 = MEMORY[0x1E696AE18];
   v448 = NSStringFromSelector(sel_autoEditUseMomentRecipes);
-  v446 = [v326 predicateWithFormat:@"%K != 0", v448];
-  v445 = [v447 condition:v446];
+  v448 = [v326 predicateWithFormat:@"%K != 0", v448];
+  v445 = [v447 condition:v448];
   v1265[17] = v445;
   v444 = [MEMORY[0x1E695DEC8] arrayWithObjects:v1265 count:18];
   v443 = [v302 sectionWithRows:v444 title:@"Auto Edit"];
@@ -2229,8 +2229,8 @@ void __33__PXStorySettings_sharedInstance__block_invoke()
   v362 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v1262 count:1];
   v363 = [v358 sectionWithRows:v362 title:@"Actions"];
   v1293[30] = v363;
-  v364 = [MEMORY[0x1E69C6638] px_restoreDefaultsSection];
-  v1293[31] = v364;
+  px_restoreDefaultsSection = [MEMORY[0x1E69C6638] px_restoreDefaultsSection];
+  v1293[31] = px_restoreDefaultsSection;
   v365 = [MEMORY[0x1E695DEC8] arrayWithObjects:v1293 count:32];
   v961 = [v960 moduleWithTitle:@"Interactive Memories" contents:v365];
 

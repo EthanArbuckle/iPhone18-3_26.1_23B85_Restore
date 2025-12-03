@@ -1,59 +1,59 @@
 @interface AppDelegate
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4;
-- (BOOL)application:(id)a3 runTest:(id)a4 options:(id)a5;
-- (BOOL)application:(id)a3 willFinishLaunchingWithOptions:(id)a4;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
-- (id)application:(id)a3 configurationForConnectingSceneSession:(id)a4 options:(id)a5;
-- (id)forwardingTargetForSelector:(SEL)a3;
-- (void)application:(id)a3 didDiscardSceneSessions:(id)a4;
-- (void)application:(id)a3 didFailToRegisterForRemoteNotificationsWithError:(id)a4;
-- (void)application:(id)a3 didReceiveRemoteNotification:(id)a4 fetchCompletionHandler:(id)a5;
-- (void)application:(id)a3 didRegisterForRemoteNotificationsWithDeviceToken:(id)a4;
-- (void)application:(id)a3 performFetchWithCompletionHandler:(id)a4;
-- (void)applicationWillTerminate:(id)a3;
-- (void)buildMenuWithBuilder:(id)a3;
-- (void)validateCommand:(id)a3;
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options;
+- (BOOL)application:(id)application runTest:(id)test options:(id)options;
+- (BOOL)application:(id)application willFinishLaunchingWithOptions:(id)options;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
+- (id)application:(id)application configurationForConnectingSceneSession:(id)session options:(id)options;
+- (id)forwardingTargetForSelector:(SEL)selector;
+- (void)application:(id)application didDiscardSceneSessions:(id)sessions;
+- (void)application:(id)application didFailToRegisterForRemoteNotificationsWithError:(id)error;
+- (void)application:(id)application didReceiveRemoteNotification:(id)notification fetchCompletionHandler:(id)handler;
+- (void)application:(id)application didRegisterForRemoteNotificationsWithDeviceToken:(id)token;
+- (void)application:(id)application performFetchWithCompletionHandler:(id)handler;
+- (void)applicationWillTerminate:(id)terminate;
+- (void)buildMenuWithBuilder:(id)builder;
+- (void)validateCommand:(id)command;
 @end
 
 @implementation AppDelegate
 
-- (BOOL)application:(id)a3 willFinishLaunchingWithOptions:(id)a4
+- (BOOL)application:(id)application willFinishLaunchingWithOptions:(id)options
 {
-  v4 = a4;
-  if (a4)
+  optionsCopy = options;
+  if (options)
   {
     type metadata accessor for LaunchOptionsKey(0);
     sub_10000402C(&qword_10004F080, 255, type metadata accessor for LaunchOptionsKey);
-    v4 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
+    optionsCopy = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v7 = a3;
-  v8 = self;
-  v9 = sub_100002AF4(v4);
+  applicationCopy = application;
+  selfCopy = self;
+  v9 = sub_100002AF4(optionsCopy);
 
   return v9 & 1;
 }
 
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options
 {
-  v4 = a4;
-  if (a4)
+  optionsCopy = options;
+  if (options)
   {
     type metadata accessor for LaunchOptionsKey(0);
     sub_10000402C(&qword_10004F080, 255, type metadata accessor for LaunchOptionsKey);
-    v4 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
+    optionsCopy = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v7 = a3;
-  v8 = self;
-  v9 = sub_10000916C(v7, v4);
+  applicationCopy = application;
+  selfCopy = self;
+  v9 = sub_10000916C(applicationCopy, optionsCopy);
 
   return v9 & 1;
 }
 
-- (void)application:(id)a3 didRegisterForRemoteNotificationsWithDeviceToken:(id)a4
+- (void)application:(id)application didRegisterForRemoteNotificationsWithDeviceToken:(id)token
 {
-  v4 = a4;
+  tokenCopy = token;
   v5 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   sub_10000F96C(v5, v6);
 
@@ -63,71 +63,71 @@
   os_log(_:dso:log:type:_:)();
 }
 
-- (void)applicationWillTerminate:(id)a3
+- (void)applicationWillTerminate:(id)terminate
 {
-  v4 = a3;
-  v5 = self;
+  terminateCopy = terminate;
+  selfCopy = self;
   sub_10001524C();
 }
 
-- (id)application:(id)a3 configurationForConnectingSceneSession:(id)a4 options:(id)a5
+- (id)application:(id)application configurationForConnectingSceneSession:(id)session options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  v12 = sub_1000154F4(v9);
+  applicationCopy = application;
+  sessionCopy = session;
+  optionsCopy = options;
+  selfCopy = self;
+  v12 = sub_1000154F4(sessionCopy);
 
   return v12;
 }
 
-- (void)application:(id)a3 didDiscardSceneSessions:(id)a4
+- (void)application:(id)application didDiscardSceneSessions:(id)sessions
 {
   sub_10000557C(0, &qword_10004F068, UISceneSession_ptr);
   sub_1000160EC();
   v6 = static Set._unconditionallyBridgeFromObjectiveC(_:)();
-  v7 = a3;
-  v8 = self;
+  applicationCopy = application;
+  selfCopy = self;
   sub_100015768(v6);
 }
 
-- (void)application:(id)a3 didReceiveRemoteNotification:(id)a4 fetchCompletionHandler:(id)a5
+- (void)application:(id)application didReceiveRemoteNotification:(id)notification fetchCompletionHandler:(id)handler
 {
-  v7 = _Block_copy(a5);
+  v7 = _Block_copy(handler);
   v8 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
   v9 = swift_allocObject();
   *(v9 + 16) = v7;
-  v10 = a3;
-  v11 = self;
+  applicationCopy = application;
+  selfCopy = self;
   sub_100015A3C(v8, sub_10001615C, v9);
 }
 
-- (void)application:(id)a3 didFailToRegisterForRemoteNotificationsWithError:(id)a4
+- (void)application:(id)application didFailToRegisterForRemoteNotificationsWithError:(id)error
 {
-  v6 = a3;
-  v8 = a4;
-  v7 = self;
+  applicationCopy = application;
+  errorCopy = error;
+  selfCopy = self;
   sub_100015CB4();
 }
 
-- (void)application:(id)a3 performFetchWithCompletionHandler:(id)a4
+- (void)application:(id)application performFetchWithCompletionHandler:(id)handler
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(handler);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
-  v8 = a3;
-  v9 = self;
+  applicationCopy = application;
+  selfCopy = self;
   sub_100015DF8(sub_100016074, v7);
 }
 
-- (BOOL)application:(id)a3 runTest:(id)a4 options:(id)a5
+- (BOOL)application:(id)application runTest:(id)test options:(id)options
 {
-  v5 = a5;
-  if (!a4)
+  optionsCopy = options;
+  if (!test)
   {
     v8 = 0;
     v10 = 0;
-    if (!a5)
+    if (!options)
     {
       goto LABEL_4;
     }
@@ -137,34 +137,34 @@
 
   v8 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v10 = v9;
-  if (v5)
+  if (optionsCopy)
   {
 LABEL_3:
-    v5 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
+    optionsCopy = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
 LABEL_4:
-  v11 = a3;
-  v12 = self;
-  v13 = sub_100015F6C(v8, v10, v5);
+  applicationCopy = application;
+  selfCopy = self;
+  v13 = sub_100015F6C(v8, v10, optionsCopy);
 
   return v13 & 1;
 }
 
-- (void)buildMenuWithBuilder:(id)a3
+- (void)buildMenuWithBuilder:(id)builder
 {
   swift_unknownObjectRetain();
-  v6 = self;
+  selfCopy = self;
   v5 = sub_100013D40();
-  [v5 buildMenuWithBuilder:a3];
+  [v5 buildMenuWithBuilder:builder];
 
   swift_unknownObjectRelease();
 }
 
-- (id)forwardingTargetForSelector:(SEL)a3
+- (id)forwardingTargetForSelector:(SEL)selector
 {
-  v4 = self;
-  sub_1000149D4(a3, v13);
+  selfCopy = self;
+  sub_1000149D4(selector, v13);
 
   v5 = v14;
   if (v14)
@@ -188,18 +188,18 @@ LABEL_4:
   return v11;
 }
 
-- (void)validateCommand:(id)a3
+- (void)validateCommand:(id)command
 {
-  v4 = a3;
-  v5 = self;
+  commandCopy = command;
+  selfCopy = self;
   sub_100014C24();
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  if (a4)
+  if (sender)
   {
-    v6 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -208,10 +208,10 @@ LABEL_4:
   else
   {
     memset(v10, 0, sizeof(v10));
-    v7 = self;
+    selfCopy2 = self;
   }
 
-  v8 = sub_100014DD4(a3, v10);
+  v8 = sub_100014DD4(action, v10);
 
   sub_100015138(v10);
   return v8 & 1;

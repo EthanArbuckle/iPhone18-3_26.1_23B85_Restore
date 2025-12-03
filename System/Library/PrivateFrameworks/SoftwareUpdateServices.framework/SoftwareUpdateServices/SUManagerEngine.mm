@@ -1,104 +1,104 @@
 @interface SUManagerEngine
-+ (BOOL)shouldHideInstallAlertForCoreDescriptor:(id)a3;
-+ (id)SUDescriptorFromCoreDescriptor:(id)a3;
-+ (id)SUDescriptorFromRollbackDescriptor:(id)a3;
++ (BOOL)shouldHideInstallAlertForCoreDescriptor:(id)descriptor;
++ (id)SUDescriptorFromCoreDescriptor:(id)descriptor;
++ (id)SUDescriptorFromRollbackDescriptor:(id)descriptor;
 + (id)_generateStateTable;
-+ (id)rollbackDescriptorForSUCoreRollbackDescriptor:(id)a3;
-+ (int)softwareUpdateTypeForDescriptor:(id)a3;
-+ (unint64_t)SUCoreAudienceTypeToSUSAudienceType:(int64_t)a3;
-+ (unint64_t)SUCorePreferredTypeToSUSPreferenceType:(int64_t)a3;
-+ (unint64_t)upgradeTypeForCoreDescriptor:(id)a3;
-- (BOOL)_queue_createBrainLoadLockAssertion:(id *)a3;
-- (BOOL)isBrainNetworkError:(id)a3;
-- (BOOL)isBrainReloadError:(id)a3;
-- (SUManagerEngine)initWithDelegate:(id)a3;
++ (id)rollbackDescriptorForSUCoreRollbackDescriptor:(id)descriptor;
++ (int)softwareUpdateTypeForDescriptor:(id)descriptor;
++ (unint64_t)SUCoreAudienceTypeToSUSAudienceType:(int64_t)type;
++ (unint64_t)SUCorePreferredTypeToSUSPreferenceType:(int64_t)type;
++ (unint64_t)upgradeTypeForCoreDescriptor:(id)descriptor;
+- (BOOL)_queue_createBrainLoadLockAssertion:(id *)assertion;
+- (BOOL)isBrainNetworkError:(id)error;
+- (BOOL)isBrainReloadError:(id)error;
+- (SUManagerEngine)initWithDelegate:(id)delegate;
 - (SUManagerEngineDelegate)managerDelegate;
-- (id)SUOperationProgressFromSUCoreProgress:(id)a3;
+- (id)SUOperationProgressFromSUCoreProgress:(id)progress;
 - (id)availableRollback;
 - (id)previousRollback;
 - (id)rollbackPolicy;
 - (id)updatePolicy;
-- (int64_t)actionUnknownAction:(id)a3 error:(id *)a4;
-- (int64_t)action_ArmInstallOrFail:(id)a3 error:(id *)a4;
-- (int64_t)action_BrainLoaded:(id)a3 error:(id *)a4;
-- (int64_t)action_Cancel:(id)a3 error:(id *)a4;
-- (int64_t)action_CanceledDownloadRequested:(id)a3 error:(id *)a4;
-- (int64_t)action_CheckLockAndNetwork:(id)a3 error:(id *)a4;
-- (int64_t)action_DownloadAndPrepare:(id)a3 error:(id *)a4;
-- (int64_t)action_HandleCanceledPendingRollback:(id)a3 error:(id *)a4;
-- (int64_t)action_HandlePendingDownload:(id)a3 error:(id *)a4;
-- (int64_t)action_HandlePendingRollback:(id)a3 error:(id *)a4;
-- (int64_t)action_InstallArmed:(id)a3 error:(id *)a4;
-- (int64_t)action_InstallUpdate:(id)a3 error:(id *)a4;
-- (int64_t)action_LoadBrain:(id)a3 error:(id *)a4;
-- (int64_t)action_NewDownloadPending:(id)a3 error:(id *)a4;
-- (int64_t)action_Prepare:(id)a3 error:(id *)a4;
-- (int64_t)action_ReloadBrain:(id)a3 error:(id *)a4;
-- (int64_t)action_RemoveAll:(id)a3 error:(id *)a4;
-- (int64_t)action_RemoveAllPreserveCache:(id)a3 error:(id *)a4;
-- (int64_t)action_RemovePreserving:(id)a3 error:(id *)a4;
-- (int64_t)action_ReportApplyFailed:(id)a3 error:(id *)a4;
-- (int64_t)action_ReportApplyFailedRemoveAll:(id)a3 error:(id *)a4;
-- (int64_t)action_ReportAwaitingReboot:(id)a3 error:(id *)a4;
-- (int64_t)action_ReportDownloadAwaitingReboot:(id)a3 error:(id *)a4;
-- (int64_t)action_ReportDownloadFailedNoUpdate:(id)a3 error:(id *)a4;
-- (int64_t)action_ReportDownloadFailedRemoveAll:(id)a3 error:(id *)a4;
-- (int64_t)action_ReportDownloadFailedRollingBack:(id)a3 error:(id *)a4;
-- (int64_t)action_ReportDownloadInstalling:(id)a3 error:(id *)a4;
-- (int64_t)action_ReportDownloadProgress:(id)a3 error:(id *)a4;
-- (int64_t)action_ReportInstallAwaitingReboot:(id)a3 error:(id *)a4;
-- (int64_t)action_ReportInstallFailedNoUpdate:(id)a3 error:(id *)a4;
-- (int64_t)action_ReportInstallFailedRollingBack:(id)a3 error:(id *)a4;
-- (int64_t)action_ReportPrepared:(id)a3 error:(id *)a4;
-- (int64_t)action_ReportPreparedSet:(id)a3 error:(id *)a4;
-- (int64_t)action_ReportRemoveAwaitingReboot:(id)a3 error:(id *)a4;
-- (int64_t)action_ReportRemoveFailedRollingBack:(id)a3 error:(id *)a4;
-- (int64_t)action_ReportRemoveInstalling:(id)a3 error:(id *)a4;
-- (int64_t)action_ReportRollbackAwaitingReboot:(id)a3 error:(id *)a4;
-- (int64_t)action_ReportRollbackFailed:(id)a3 error:(id *)a4;
-- (int64_t)action_ReportRollbackInstalling:(id)a3 error:(id *)a4;
-- (int64_t)action_ReportRollbackSucceeded:(id)a3 error:(id *)a4;
-- (int64_t)action_Resume:(id)a3 error:(id *)a4;
-- (int64_t)action_RollbackUpdate:(id)a3 error:(id *)a4;
-- (int64_t)loadBrainHelper:(id)a3;
-- (int64_t)performAction:(id)a3 onEvent:(id)a4 inState:(id)a5 withInfo:(id)a6 nextState:(id)a7 error:(id *)a8;
+- (int64_t)actionUnknownAction:(id)action error:(id *)error;
+- (int64_t)action_ArmInstallOrFail:(id)fail error:(id *)error;
+- (int64_t)action_BrainLoaded:(id)loaded error:(id *)error;
+- (int64_t)action_Cancel:(id)cancel error:(id *)error;
+- (int64_t)action_CanceledDownloadRequested:(id)requested error:(id *)error;
+- (int64_t)action_CheckLockAndNetwork:(id)network error:(id *)error;
+- (int64_t)action_DownloadAndPrepare:(id)prepare error:(id *)error;
+- (int64_t)action_HandleCanceledPendingRollback:(id)rollback error:(id *)error;
+- (int64_t)action_HandlePendingDownload:(id)download error:(id *)error;
+- (int64_t)action_HandlePendingRollback:(id)rollback error:(id *)error;
+- (int64_t)action_InstallArmed:(id)armed error:(id *)error;
+- (int64_t)action_InstallUpdate:(id)update error:(id *)error;
+- (int64_t)action_LoadBrain:(id)brain error:(id *)error;
+- (int64_t)action_NewDownloadPending:(id)pending error:(id *)error;
+- (int64_t)action_Prepare:(id)prepare error:(id *)error;
+- (int64_t)action_ReloadBrain:(id)brain error:(id *)error;
+- (int64_t)action_RemoveAll:(id)all error:(id *)error;
+- (int64_t)action_RemoveAllPreserveCache:(id)cache error:(id *)error;
+- (int64_t)action_RemovePreserving:(id)preserving error:(id *)error;
+- (int64_t)action_ReportApplyFailed:(id)failed error:(id *)error;
+- (int64_t)action_ReportApplyFailedRemoveAll:(id)all error:(id *)error;
+- (int64_t)action_ReportAwaitingReboot:(id)reboot error:(id *)error;
+- (int64_t)action_ReportDownloadAwaitingReboot:(id)reboot error:(id *)error;
+- (int64_t)action_ReportDownloadFailedNoUpdate:(id)update error:(id *)error;
+- (int64_t)action_ReportDownloadFailedRemoveAll:(id)all error:(id *)error;
+- (int64_t)action_ReportDownloadFailedRollingBack:(id)back error:(id *)error;
+- (int64_t)action_ReportDownloadInstalling:(id)installing error:(id *)error;
+- (int64_t)action_ReportDownloadProgress:(id)progress error:(id *)error;
+- (int64_t)action_ReportInstallAwaitingReboot:(id)reboot error:(id *)error;
+- (int64_t)action_ReportInstallFailedNoUpdate:(id)update error:(id *)error;
+- (int64_t)action_ReportInstallFailedRollingBack:(id)back error:(id *)error;
+- (int64_t)action_ReportPrepared:(id)prepared error:(id *)error;
+- (int64_t)action_ReportPreparedSet:(id)set error:(id *)error;
+- (int64_t)action_ReportRemoveAwaitingReboot:(id)reboot error:(id *)error;
+- (int64_t)action_ReportRemoveFailedRollingBack:(id)back error:(id *)error;
+- (int64_t)action_ReportRemoveInstalling:(id)installing error:(id *)error;
+- (int64_t)action_ReportRollbackAwaitingReboot:(id)reboot error:(id *)error;
+- (int64_t)action_ReportRollbackFailed:(id)failed error:(id *)error;
+- (int64_t)action_ReportRollbackInstalling:(id)installing error:(id *)error;
+- (int64_t)action_ReportRollbackSucceeded:(id)succeeded error:(id *)error;
+- (int64_t)action_Resume:(id)resume error:(id *)error;
+- (int64_t)action_RollbackUpdate:(id)update error:(id *)error;
+- (int64_t)loadBrainHelper:(id)helper;
+- (int64_t)performAction:(id)action onEvent:(id)event inState:(id)state withInfo:(id)info nextState:(id)nextState error:(id *)error;
 - (void)_queue_cancelLockAssertion;
-- (void)_updatePolicyFactoryMetricEventFields:(id)a3 updateUUID:(id)a4 cleanupLevel:(id)a5;
-- (void)actionHelper_ReportApplyFailed:(id)a3;
+- (void)_updatePolicyFactoryMetricEventFields:(id)fields updateUUID:(id)d cleanupLevel:(id)level;
+- (void)actionHelper_ReportApplyFailed:(id)failed;
 - (void)actionHelper_ReportDownloadFailedRollingBack;
 - (void)actionHelper_ReportInstallFailedNoUpdate;
 - (void)actionHelper_ReportInstallFailedRollingBack;
-- (void)actionHelper_ReportPrepared:(BOOL)a3;
+- (void)actionHelper_ReportPrepared:(BOOL)prepared;
 - (void)actionHelper_ReportRemoveFailedRollingBack;
-- (void)actionHelper_ReportRollbackCompleted:(id)a3 withError:(id)a4;
-- (void)activateLoadingPersisted:(id)a3;
-- (void)applyAttemptFailed:(id)a3;
+- (void)actionHelper_ReportRollbackCompleted:(id)completed withError:(id)error;
+- (void)activateLoadingPersisted:(id)persisted;
+- (void)applyAttemptFailed:(id)failed;
 - (void)cancelLockAssertion;
-- (void)createBrainLoadLockAssertion:(id)a3;
-- (void)downloadUpdate:(id)a3;
-- (void)installUpdate:(id)a3;
-- (void)notifyRollbackStarted:(id)a3;
+- (void)createBrainLoadLockAssertion:(id)assertion;
+- (void)downloadUpdate:(id)update;
+- (void)installUpdate:(id)update;
+- (void)notifyRollbackStarted:(id)started;
 - (void)onUnlock;
-- (void)pathSatisficationStatusChangedTo:(BOOL)a3;
-- (void)refreshInstallTonightConfig:(id)a3;
-- (void)removeUpdateKeepingDocAssets:(BOOL)a3;
+- (void)pathSatisficationStatusChangedTo:(BOOL)to;
+- (void)refreshInstallTonightConfig:(id)config;
+- (void)removeUpdateKeepingDocAssets:(BOOL)assets;
 - (void)resetPolicy;
-- (void)rollbackAttemptFailed:(id)a3 withError:(id)a4;
-- (void)rollbackUpdateWithOptions:(id)a3;
-- (void)updateAnomaly:(id)a3;
+- (void)rollbackAttemptFailed:(id)failed withError:(id)error;
+- (void)rollbackUpdateWithOptions:(id)options;
+- (void)updateAnomaly:(id)anomaly;
 - (void)updateApplied;
 - (void)updateAssetDownloadPreflighted;
-- (void)updateAssetDownloadProgress:(id)a3;
-- (void)updateAssetDownloadStalled:(id)a3;
-- (void)updateAssetDownloaded:(id)a3;
-- (void)updateAttemptFailed:(id)a3;
-- (void)updateBrainLoadProgress:(id)a3;
-- (void)updateBrainLoadStalled:(id)a3;
-- (void)updateBrainLoaded:(id)a3;
+- (void)updateAssetDownloadProgress:(id)progress;
+- (void)updateAssetDownloadStalled:(id)stalled;
+- (void)updateAssetDownloaded:(id)downloaded;
+- (void)updateAttemptFailed:(id)failed;
+- (void)updateBrainLoadProgress:(id)progress;
+- (void)updateBrainLoadStalled:(id)stalled;
+- (void)updateBrainLoaded:(id)loaded;
 - (void)updateCanceled;
-- (void)updatePrepareProgress:(id)a3;
-- (void)updatePrepared:(id)a3;
-- (void)updateRolledBack:(id)a3;
+- (void)updatePrepareProgress:(id)progress;
+- (void)updatePrepared:(id)prepared;
+- (void)updateRolledBack:(id)back;
 @end
 
 @implementation SUManagerEngine
@@ -921,235 +921,235 @@
   return v21;
 }
 
-- (int64_t)performAction:(id)a3 onEvent:(id)a4 inState:(id)a5 withInfo:(id)a6 nextState:(id)a7 error:(id *)a8
+- (int64_t)performAction:(id)action onEvent:(id)event inState:(id)state withInfo:(id)info nextState:(id)nextState error:(id *)error
 {
-  v11 = a3;
-  v12 = a6;
-  if ([v11 isEqualToString:*MEMORY[0x277D647D8]])
+  actionCopy = action;
+  infoCopy = info;
+  if ([actionCopy isEqualToString:*MEMORY[0x277D647D8]])
   {
     v13 = 0;
   }
 
   else
   {
-    if ([v11 isEqualToString:@"RemovePreserving"])
+    if ([actionCopy isEqualToString:@"RemovePreserving"])
     {
-      v14 = [(SUManagerEngine *)self action_RemovePreserving:v12 error:a8];
+      v14 = [(SUManagerEngine *)self action_RemovePreserving:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"Activated"])
+    else if ([actionCopy isEqualToString:@"Activated"])
     {
-      v14 = [(SUManagerEngine *)self action_Activated:v12 error:a8];
+      v14 = [(SUManagerEngine *)self action_Activated:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"ActivatedClean"])
+    else if ([actionCopy isEqualToString:@"ActivatedClean"])
     {
-      v14 = [(SUManagerEngine *)self action_ActivatedClean:v12 error:a8];
+      v14 = [(SUManagerEngine *)self action_ActivatedClean:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"NewDownloadPending"])
+    else if ([actionCopy isEqualToString:@"NewDownloadPending"])
     {
-      v14 = [(SUManagerEngine *)self action_NewDownloadPending:v12 error:a8];
+      v14 = [(SUManagerEngine *)self action_NewDownloadPending:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"HandlePendingDownload"])
+    else if ([actionCopy isEqualToString:@"HandlePendingDownload"])
     {
-      v14 = [(SUManagerEngine *)self action_HandlePendingDownload:v12 error:a8];
+      v14 = [(SUManagerEngine *)self action_HandlePendingDownload:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"CheckLockAndNetwork"])
+    else if ([actionCopy isEqualToString:@"CheckLockAndNetwork"])
     {
-      v14 = [(SUManagerEngine *)self action_CheckLockAndNetwork:v12 error:a8];
+      v14 = [(SUManagerEngine *)self action_CheckLockAndNetwork:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"BrainLoaded"])
+    else if ([actionCopy isEqualToString:@"BrainLoaded"])
     {
-      v14 = [(SUManagerEngine *)self action_BrainLoaded:v12 error:a8];
+      v14 = [(SUManagerEngine *)self action_BrainLoaded:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:*MEMORY[0x277D64360]])
+    else if ([actionCopy isEqualToString:*MEMORY[0x277D64360]])
     {
-      v14 = [(SUManagerEngine *)self action_LoadBrain:v12 error:a8];
+      v14 = [(SUManagerEngine *)self action_LoadBrain:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"ReloadBrain"])
+    else if ([actionCopy isEqualToString:@"ReloadBrain"])
     {
-      v14 = [(SUManagerEngine *)self action_ReloadBrain:v12 error:a8];
+      v14 = [(SUManagerEngine *)self action_ReloadBrain:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"DownloadAndPrepare"])
+    else if ([actionCopy isEqualToString:@"DownloadAndPrepare"])
     {
-      v14 = [(SUManagerEngine *)self action_DownloadAndPrepare:v12 error:a8];
+      v14 = [(SUManagerEngine *)self action_DownloadAndPrepare:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"Prepare"])
+    else if ([actionCopy isEqualToString:@"Prepare"])
     {
-      v14 = [(SUManagerEngine *)self action_Prepare:v12 error:a8];
+      v14 = [(SUManagerEngine *)self action_Prepare:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:*MEMORY[0x277D64390]])
+    else if ([actionCopy isEqualToString:*MEMORY[0x277D64390]])
     {
-      v14 = [(SUManagerEngine *)self action_Resume:v12 error:a8];
+      v14 = [(SUManagerEngine *)self action_Resume:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"InstallUpdate"])
+    else if ([actionCopy isEqualToString:@"InstallUpdate"])
     {
-      v14 = [(SUManagerEngine *)self action_InstallUpdate:v12 error:a8];
+      v14 = [(SUManagerEngine *)self action_InstallUpdate:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"ArmInstallOrFail"])
+    else if ([actionCopy isEqualToString:@"ArmInstallOrFail"])
     {
-      v14 = [(SUManagerEngine *)self action_ArmInstallOrFail:v12 error:a8];
+      v14 = [(SUManagerEngine *)self action_ArmInstallOrFail:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"InstallArmed"])
+    else if ([actionCopy isEqualToString:@"InstallArmed"])
     {
-      v14 = [(SUManagerEngine *)self action_InstallArmed:v12 error:a8];
+      v14 = [(SUManagerEngine *)self action_InstallArmed:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"Cancel"])
+    else if ([actionCopy isEqualToString:@"Cancel"])
     {
-      v14 = [(SUManagerEngine *)self action_Cancel:v12 error:a8];
+      v14 = [(SUManagerEngine *)self action_Cancel:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"CanceledDownloadRequested"])
+    else if ([actionCopy isEqualToString:@"CanceledDownloadRequested"])
     {
-      v14 = [(SUManagerEngine *)self action_CanceledDownloadRequested:v12 error:a8];
+      v14 = [(SUManagerEngine *)self action_CanceledDownloadRequested:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"RemoveAll"])
+    else if ([actionCopy isEqualToString:@"RemoveAll"])
     {
-      v14 = [(SUManagerEngine *)self action_RemoveAll:v12 error:a8];
+      v14 = [(SUManagerEngine *)self action_RemoveAll:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"RemoveAllPreserveCache"])
+    else if ([actionCopy isEqualToString:@"RemoveAllPreserveCache"])
     {
-      v14 = [(SUManagerEngine *)self action_RemoveAllPreserveCache:v12 error:a8];
+      v14 = [(SUManagerEngine *)self action_RemoveAllPreserveCache:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"PerformRollback"])
+    else if ([actionCopy isEqualToString:@"PerformRollback"])
     {
-      v14 = [(SUManagerEngine *)self action_RollbackUpdate:v12 error:a8];
+      v14 = [(SUManagerEngine *)self action_RollbackUpdate:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"HandlePendingRollback"])
+    else if ([actionCopy isEqualToString:@"HandlePendingRollback"])
     {
-      v14 = [(SUManagerEngine *)self action_HandlePendingRollback:v12 error:a8];
+      v14 = [(SUManagerEngine *)self action_HandlePendingRollback:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"HandleCanceledPendingRollback"])
+    else if ([actionCopy isEqualToString:@"HandleCanceledPendingRollback"])
     {
-      v14 = [(SUManagerEngine *)self action_HandleCanceledPendingRollback:v12 error:a8];
+      v14 = [(SUManagerEngine *)self action_HandleCanceledPendingRollback:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"ReportDownloadFailedRemoveAll"])
+    else if ([actionCopy isEqualToString:@"ReportDownloadFailedRemoveAll"])
     {
-      v14 = [(SUManagerEngine *)self action_ReportDownloadFailedRemoveAll:v12 error:a8];
+      v14 = [(SUManagerEngine *)self action_ReportDownloadFailedRemoveAll:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:*MEMORY[0x277D64370]])
+    else if ([actionCopy isEqualToString:*MEMORY[0x277D64370]])
     {
-      v14 = [(SUManagerEngine *)self action_ReportDownloadProgress:v12 error:a8];
+      v14 = [(SUManagerEngine *)self action_ReportDownloadProgress:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"ReportPreparedSet"])
+    else if ([actionCopy isEqualToString:@"ReportPreparedSet"])
     {
-      v14 = [(SUManagerEngine *)self action_ReportPreparedSet:v12 error:a8];
+      v14 = [(SUManagerEngine *)self action_ReportPreparedSet:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:*MEMORY[0x277D64378]])
+    else if ([actionCopy isEqualToString:*MEMORY[0x277D64378]])
     {
-      v14 = [(SUManagerEngine *)self action_ReportPrepared:v12 error:a8];
+      v14 = [(SUManagerEngine *)self action_ReportPrepared:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:*MEMORY[0x277D64368]])
+    else if ([actionCopy isEqualToString:*MEMORY[0x277D64368]])
     {
-      v14 = [(SUManagerEngine *)self action_ReportApplyFailed:v12 error:a8];
+      v14 = [(SUManagerEngine *)self action_ReportApplyFailed:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"ReportApplyFailedRemoveAll"])
+    else if ([actionCopy isEqualToString:@"ReportApplyFailedRemoveAll"])
     {
-      v14 = [(SUManagerEngine *)self action_ReportApplyFailedRemoveAll:v12 error:a8];
+      v14 = [(SUManagerEngine *)self action_ReportApplyFailedRemoveAll:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"ReportDownloadFailedNoUpdate"])
+    else if ([actionCopy isEqualToString:@"ReportDownloadFailedNoUpdate"])
     {
-      v14 = [(SUManagerEngine *)self action_ReportDownloadFailedNoUpdate:v12 error:a8];
+      v14 = [(SUManagerEngine *)self action_ReportDownloadFailedNoUpdate:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"ReportInstallFailedNoUpdate"])
+    else if ([actionCopy isEqualToString:@"ReportInstallFailedNoUpdate"])
     {
-      v14 = [(SUManagerEngine *)self action_ReportInstallFailedNoUpdate:v12 error:a8];
+      v14 = [(SUManagerEngine *)self action_ReportInstallFailedNoUpdate:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"ReportDownloadFailedRollingBack"])
+    else if ([actionCopy isEqualToString:@"ReportDownloadFailedRollingBack"])
     {
-      v14 = [(SUManagerEngine *)self action_ReportDownloadFailedRollingBack:v12 error:a8];
+      v14 = [(SUManagerEngine *)self action_ReportDownloadFailedRollingBack:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"ReportInstallFailedRollingBack"])
+    else if ([actionCopy isEqualToString:@"ReportInstallFailedRollingBack"])
     {
-      v14 = [(SUManagerEngine *)self action_ReportInstallFailedRollingBack:v12 error:a8];
+      v14 = [(SUManagerEngine *)self action_ReportInstallFailedRollingBack:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"ReportRemoveFailedRollingBack"])
+    else if ([actionCopy isEqualToString:@"ReportRemoveFailedRollingBack"])
     {
-      v14 = [(SUManagerEngine *)self action_ReportRemoveFailedRollingBack:v12 error:a8];
+      v14 = [(SUManagerEngine *)self action_ReportRemoveFailedRollingBack:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"ReportDownloadInstalling"])
+    else if ([actionCopy isEqualToString:@"ReportDownloadInstalling"])
     {
-      v14 = [(SUManagerEngine *)self action_ReportDownloadInstalling:v12 error:a8];
+      v14 = [(SUManagerEngine *)self action_ReportDownloadInstalling:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"ReportRemoveInstalling"])
+    else if ([actionCopy isEqualToString:@"ReportRemoveInstalling"])
     {
-      v14 = [(SUManagerEngine *)self action_ReportRemoveInstalling:v12 error:a8];
+      v14 = [(SUManagerEngine *)self action_ReportRemoveInstalling:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"ReportRollbackInstalling"])
+    else if ([actionCopy isEqualToString:@"ReportRollbackInstalling"])
     {
-      v14 = [(SUManagerEngine *)self action_ReportRollbackInstalling:v12 error:a8];
+      v14 = [(SUManagerEngine *)self action_ReportRollbackInstalling:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"ReportAwaitingReboot"])
+    else if ([actionCopy isEqualToString:@"ReportAwaitingReboot"])
     {
-      v14 = [(SUManagerEngine *)self action_ReportAwaitingReboot:v12 error:a8];
+      v14 = [(SUManagerEngine *)self action_ReportAwaitingReboot:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"ReportDownloadAwaitingReboot"])
+    else if ([actionCopy isEqualToString:@"ReportDownloadAwaitingReboot"])
     {
-      v14 = [(SUManagerEngine *)self action_ReportDownloadAwaitingReboot:v12 error:a8];
+      v14 = [(SUManagerEngine *)self action_ReportDownloadAwaitingReboot:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"ReportInstallAwaitingReboot"])
+    else if ([actionCopy isEqualToString:@"ReportInstallAwaitingReboot"])
     {
-      v14 = [(SUManagerEngine *)self action_ReportInstallAwaitingReboot:v12 error:a8];
+      v14 = [(SUManagerEngine *)self action_ReportInstallAwaitingReboot:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"ReportRemoveAwaitingReboot"])
+    else if ([actionCopy isEqualToString:@"ReportRemoveAwaitingReboot"])
     {
-      v14 = [(SUManagerEngine *)self action_ReportRemoveAwaitingReboot:v12 error:a8];
+      v14 = [(SUManagerEngine *)self action_ReportRemoveAwaitingReboot:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"ReportRollbackAwaitingReboot"])
+    else if ([actionCopy isEqualToString:@"ReportRollbackAwaitingReboot"])
     {
-      v14 = [(SUManagerEngine *)self action_ReportRollbackAwaitingReboot:v12 error:a8];
+      v14 = [(SUManagerEngine *)self action_ReportRollbackAwaitingReboot:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:*MEMORY[0x277D64380]])
+    else if ([actionCopy isEqualToString:*MEMORY[0x277D64380]])
     {
-      v14 = [(SUManagerEngine *)self action_ReportRollbackFailed:v12 error:a8];
+      v14 = [(SUManagerEngine *)self action_ReportRollbackFailed:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:*MEMORY[0x277D64388]])
+    else if ([actionCopy isEqualToString:*MEMORY[0x277D64388]])
     {
-      v14 = [(SUManagerEngine *)self action_ReportRollbackSucceeded:v12 error:a8];
+      v14 = [(SUManagerEngine *)self action_ReportRollbackSucceeded:infoCopy error:error];
     }
 
     else
     {
-      v14 = [(SUManagerEngine *)self actionUnknownAction:v11 error:a8];
+      v14 = [(SUManagerEngine *)self actionUnknownAction:actionCopy error:error];
     }
 
     v13 = v14;
@@ -1158,161 +1158,161 @@
   return v13;
 }
 
-- (int64_t)action_RemovePreserving:(id)a3 error:(id *)a4
+- (int64_t)action_RemovePreserving:(id)preserving error:(id *)error
 {
-  v5 = a3;
-  v6 = [(SUManagerEngine *)self engineFSM];
-  v7 = [v6 extendedStateQueue];
-  dispatch_assert_queue_V2(v7);
+  preservingCopy = preserving;
+  engineFSM = [(SUManagerEngine *)self engineFSM];
+  extendedStateQueue = [engineFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v8 = [v5 paramType];
-  v9 = [(SUManagerEngine *)self engineFSM];
-  v10 = v9;
-  if (v8 == 2)
+  paramType = [preservingCopy paramType];
+  engineFSM2 = [(SUManagerEngine *)self engineFSM];
+  v10 = engineFSM2;
+  if (paramType == 2)
   {
-    [v9 postEvent:@"PreservedValidated" withInfo:v5];
+    [engineFSM2 postEvent:@"PreservedValidated" withInfo:preservingCopy];
     v11 = 0;
   }
 
   else
   {
-    v12 = [v9 diag];
+    diag = [engineFSM2 diag];
     v11 = 8102;
-    [v12 trackAnomaly:@"[ENGINE]" forReason:@"param type is not DOWNLOAD_DESCRIPTOR" withResult:8102 withError:0];
+    [diag trackAnomaly:@"[ENGINE]" forReason:@"param type is not DOWNLOAD_DESCRIPTOR" withResult:8102 withError:0];
   }
 
   return v11;
 }
 
-- (int64_t)action_NewDownloadPending:(id)a3 error:(id *)a4
+- (int64_t)action_NewDownloadPending:(id)pending error:(id *)error
 {
-  v5 = a3;
-  v6 = [(SUManagerEngine *)self engineFSM];
-  v7 = [v6 extendedStateQueue];
-  dispatch_assert_queue_V2(v7);
+  pendingCopy = pending;
+  engineFSM = [(SUManagerEngine *)self engineFSM];
+  extendedStateQueue = [engineFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v8 = [v5 downloadDescriptor];
+  downloadDescriptor = [pendingCopy downloadDescriptor];
 
-  [(SUManagerEngine *)self setDownloadDescriptor:v8];
+  [(SUManagerEngine *)self setDownloadDescriptor:downloadDescriptor];
   return 0;
 }
 
-- (int64_t)action_HandlePendingDownload:(id)a3 error:(id *)a4
+- (int64_t)action_HandlePendingDownload:(id)download error:(id *)error
 {
-  v5 = [(SUManagerEngine *)self engineFSM:a3];
-  v6 = [v5 extendedStateQueue];
-  dispatch_assert_queue_V2(v6);
+  v5 = [(SUManagerEngine *)self engineFSM:download];
+  extendedStateQueue = [v5 extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v7 = [(SUManagerEngine *)self engineFSM];
+  engineFSM = [(SUManagerEngine *)self engineFSM];
   v8 = [SUManagerEngineParam alloc];
-  v9 = [(SUManagerEngine *)self downloadDescriptor];
-  v10 = [(SUManagerEngineParam *)v8 initWithDownloadDescriptor:v9];
-  [v7 followupEvent:@"ReadyToDownload" withInfo:v10];
+  downloadDescriptor = [(SUManagerEngine *)self downloadDescriptor];
+  v10 = [(SUManagerEngineParam *)v8 initWithDownloadDescriptor:downloadDescriptor];
+  [engineFSM followupEvent:@"ReadyToDownload" withInfo:v10];
 
   return 0;
 }
 
-- (int64_t)action_CheckLockAndNetwork:(id)a3 error:(id *)a4
+- (int64_t)action_CheckLockAndNetwork:(id)network error:(id *)error
 {
   v50 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [(SUManagerEngine *)self engineFSM];
-  v7 = [v6 extendedStateQueue];
-  dispatch_assert_queue_V2(v7);
+  networkCopy = network;
+  engineFSM = [(SUManagerEngine *)self engineFSM];
+  extendedStateQueue = [engineFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v8 = [(SUManagerEngine *)self downloadDescriptor];
-  LODWORD(v7) = [v8 disarmInstall];
+  downloadDescriptor = [(SUManagerEngine *)self downloadDescriptor];
+  LODWORD(extendedStateQueue) = [downloadDescriptor disarmInstall];
 
-  if (v7)
+  if (extendedStateQueue)
   {
-    v9 = [(SUManagerEngine *)self engineLog];
-    v10 = [v9 oslog];
+    engineLog = [(SUManagerEngine *)self engineLog];
+    oslog = [engineLog oslog];
 
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [(SUManagerEngine *)self engineName];
+      engineName = [(SUManagerEngine *)self engineName];
       *buf = 138412290;
-      v49 = v11;
-      _os_log_impl(&dword_26AB34000, v10, OS_LOG_TYPE_DEFAULT, "%@ disarming install", buf, 0xCu);
+      v49 = engineName;
+      _os_log_impl(&dword_26AB34000, oslog, OS_LOG_TYPE_DEFAULT, "%@ disarming install", buf, 0xCu);
     }
 
     [(SUManagerEngine *)self actionHelper_ReportInstallFailedNoUpdate];
   }
 
-  v12 = [(SUManagerEngine *)self downloadDescriptor];
-  v13 = [v12 asset];
+  downloadDescriptor2 = [(SUManagerEngine *)self downloadDescriptor];
+  asset = [downloadDescriptor2 asset];
 
-  if (!v13)
+  if (!asset)
   {
     goto LABEL_28;
   }
 
-  if (!-[SUManagerEngine isBrainNetworkError:](self, "isBrainNetworkError:", v5) || (+[SUNetworkMonitor sharedInstance](SUNetworkMonitor, "sharedInstance"), v14 = objc_claimAutoreleasedReturnValue(), v15 = [v14 isPathSatisfied], v14, (v15 & 1) != 0))
+  if (!-[SUManagerEngine isBrainNetworkError:](self, "isBrainNetworkError:", networkCopy) || (+[SUNetworkMonitor sharedInstance](SUNetworkMonitor, "sharedInstance"), v14 = objc_claimAutoreleasedReturnValue(), v15 = [v14 isPathSatisfied], v14, (v15 & 1) != 0))
   {
-    if ([(SUManagerEngine *)self isBrainReloadError:v5])
+    if ([(SUManagerEngine *)self isBrainReloadError:networkCopy])
     {
-      v16 = 0;
+      engineFSM3 = 0;
     }
 
     else
     {
-      v17 = [(SUManagerEngine *)self downloadDescriptor];
-      v18 = [v17 asset];
-      v19 = [v18 attributes];
+      downloadDescriptor3 = [(SUManagerEngine *)self downloadDescriptor];
+      asset2 = [downloadDescriptor3 asset];
+      attributes = [asset2 attributes];
       v20 = SUCoreBorder_MSUBrainIsLoadable();
-      v16 = v20;
+      engineFSM3 = v20;
       if (v20)
       {
-        v21 = [v20 userInfo];
-        v22 = [v21 objectForKeyedSubscript:@"LoadTrustCachePurgedBrain"];
+        userInfo = [v20 userInfo];
+        v22 = [userInfo objectForKeyedSubscript:@"LoadTrustCachePurgedBrain"];
         v23 = [v22 isEqual:MEMORY[0x277CBEC38]];
 
         if (!v23)
         {
           v24 = +[SUKeybagInterface sharedInstance];
-          v25 = [v24 isPasscodeLocked];
+          isPasscodeLocked = [v24 isPasscodeLocked];
 
-          if (v25)
+          if (isPasscodeLocked)
           {
-            v26 = [(SUManagerEngine *)self managerDelegate];
+            managerDelegate = [(SUManagerEngine *)self managerDelegate];
             v27 = objc_opt_respondsToSelector();
 
-            v28 = [(SUManagerEngine *)self engineLog];
-            v29 = [v28 oslog];
+            engineLog2 = [(SUManagerEngine *)self engineLog];
+            oslog2 = [engineLog2 oslog];
 
-            v30 = os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT);
+            v30 = os_log_type_enabled(oslog2, OS_LOG_TYPE_DEFAULT);
             if (v27)
             {
               if (v30)
               {
-                v31 = [(SUManagerEngine *)self engineName];
+                engineName2 = [(SUManagerEngine *)self engineName];
                 *buf = 138412290;
-                v49 = v31;
-                _os_log_impl(&dword_26AB34000, v29, OS_LOG_TYPE_DEFAULT, "%@ load brain failed, waiting for unlock", buf, 0xCu);
+                v49 = engineName2;
+                _os_log_impl(&dword_26AB34000, oslog2, OS_LOG_TYPE_DEFAULT, "%@ load brain failed, waiting for unlock", buf, 0xCu);
               }
 
-              v32 = [(SUManagerEngine *)self engineFSM];
+              engineFSM2 = [(SUManagerEngine *)self engineFSM];
               v33 = objc_alloc_init(SUManagerEngineParam);
-              [v32 followupEvent:@"WaitUnlock" withInfo:v33];
+              [engineFSM2 followupEvent:@"WaitUnlock" withInfo:v33];
 
-              v34 = [MEMORY[0x277D64400] sharedCore];
-              v35 = [v34 delegateCallbackQueue];
+              mEMORY[0x277D64400] = [MEMORY[0x277D64400] sharedCore];
+              delegateCallbackQueue = [mEMORY[0x277D64400] delegateCallbackQueue];
               block[0] = MEMORY[0x277D85DD0];
               block[1] = 3221225472;
               block[2] = __52__SUManagerEngine_action_CheckLockAndNetwork_error___block_invoke;
               block[3] = &unk_279CAA708;
               block[4] = self;
-              dispatch_async(v35, block);
+              dispatch_async(delegateCallbackQueue, block);
 
               goto LABEL_23;
             }
 
             if (v30)
             {
-              v44 = [(SUManagerEngine *)self engineName];
+              engineName3 = [(SUManagerEngine *)self engineName];
               *buf = 138412290;
-              v49 = v44;
-              _os_log_impl(&dword_26AB34000, v29, OS_LOG_TYPE_DEFAULT, "%@ delegate does not respond to sendUnlockNotifications, failing", buf, 0xCu);
+              v49 = engineName3;
+              _os_log_impl(&dword_26AB34000, oslog2, OS_LOG_TYPE_DEFAULT, "%@ delegate does not respond to sendUnlockNotifications, failing", buf, 0xCu);
             }
           }
 
@@ -1327,11 +1327,11 @@
 
     if ([(SUManagerEngine *)self loadBrainRetries]<= 9)
     {
-      v34 = [(SUManagerEngine *)self engineFSM];
+      mEMORY[0x277D64400] = [(SUManagerEngine *)self engineFSM];
       v41 = [SUManagerEngineParam alloc];
-      v42 = [(SUManagerEngine *)self downloadDescriptor];
-      v43 = [(SUManagerEngineParam *)v41 initWithDownloadDescriptor:v42];
-      [v34 followupEvent:@"Unlocked" withInfo:v43];
+      downloadDescriptor4 = [(SUManagerEngine *)self downloadDescriptor];
+      v43 = [(SUManagerEngineParam *)v41 initWithDownloadDescriptor:downloadDescriptor4];
+      [mEMORY[0x277D64400] followupEvent:@"Unlocked" withInfo:v43];
 
 LABEL_23:
       goto LABEL_29;
@@ -1341,28 +1341,28 @@ LABEL_27:
 
 LABEL_28:
     [(SUManagerEngine *)self _queue_cancelLockAssertion];
-    v16 = [(SUManagerEngine *)self engineFSM];
-    [v16 followupEvent:*MEMORY[0x277D643A8] withInfo:v5];
+    engineFSM3 = [(SUManagerEngine *)self engineFSM];
+    [engineFSM3 followupEvent:*MEMORY[0x277D643A8] withInfo:networkCopy];
     goto LABEL_29;
   }
 
-  v36 = [(SUManagerEngine *)self engineLog];
-  v37 = [v36 oslog];
+  engineLog3 = [(SUManagerEngine *)self engineLog];
+  oslog3 = [engineLog3 oslog];
 
-  if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog3, OS_LOG_TYPE_DEFAULT))
   {
-    v38 = [(SUManagerEngine *)self engineName];
+    engineName4 = [(SUManagerEngine *)self engineName];
     *buf = 138412290;
-    v49 = v38;
-    _os_log_impl(&dword_26AB34000, v37, OS_LOG_TYPE_DEFAULT, "%@ network unavailable, will wait for network", buf, 0xCu);
+    v49 = engineName4;
+    _os_log_impl(&dword_26AB34000, oslog3, OS_LOG_TYPE_DEFAULT, "%@ network unavailable, will wait for network", buf, 0xCu);
   }
 
   v39 = +[SUNetworkMonitor sharedInstance];
   [v39 addObserver:self];
 
-  v16 = [(SUManagerEngine *)self engineFSM];
+  engineFSM3 = [(SUManagerEngine *)self engineFSM];
   v40 = objc_alloc_init(SUManagerEngineParam);
-  [v16 followupEvent:@"WaitNetwork" withInfo:v40];
+  [engineFSM3 followupEvent:@"WaitNetwork" withInfo:v40];
 
 LABEL_29:
   v45 = *MEMORY[0x277D85DE8];
@@ -1375,67 +1375,67 @@ void __52__SUManagerEngine_action_CheckLockAndNetwork_error___block_invoke(uint6
   [v1 sendUnlockNotifications:1];
 }
 
-- (int64_t)action_BrainLoaded:(id)a3 error:(id *)a4
+- (int64_t)action_BrainLoaded:(id)loaded error:(id *)error
 {
-  v5 = a3;
-  v6 = [(SUManagerEngine *)self engineFSM];
-  v7 = [v6 extendedStateQueue];
-  dispatch_assert_queue_V2(v7);
+  loadedCopy = loaded;
+  engineFSM = [(SUManagerEngine *)self engineFSM];
+  extendedStateQueue = [engineFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v8 = [(SUManagerEngine *)self downloadDescriptor];
-  v9 = [v8 asset];
-  if (v9)
+  downloadDescriptor = [(SUManagerEngine *)self downloadDescriptor];
+  asset = [downloadDescriptor asset];
+  if (asset)
   {
-    v10 = v9;
-    v11 = [(SUManagerEngine *)self downloadDescriptor];
-    v12 = [v11 asset];
-    v13 = [v12 attributes];
+    v10 = asset;
+    downloadDescriptor2 = [(SUManagerEngine *)self downloadDescriptor];
+    asset2 = [downloadDescriptor2 asset];
+    attributes = [asset2 attributes];
     v14 = SUCoreBorder_MSUBrainIsLoadable();
 
     if (!v14)
     {
-      v15 = [(SUManagerEngine *)self downloadDescriptor];
-      v16 = [v15 atPhase];
+      downloadDescriptor3 = [(SUManagerEngine *)self downloadDescriptor];
+      atPhase = [downloadDescriptor3 atPhase];
 
-      if (v16 == 6)
+      if (atPhase == 6)
       {
-        v17 = [(SUManagerEngine *)self engineFSM];
-        v14 = v17;
+        engineFSM2 = [(SUManagerEngine *)self engineFSM];
+        v14 = engineFSM2;
         v18 = @"ArmedInstall";
       }
 
       else
       {
-        v27 = [(SUManagerEngine *)self downloadDescriptor];
-        v28 = [v27 atPhase];
+        downloadDescriptor4 = [(SUManagerEngine *)self downloadDescriptor];
+        atPhase2 = [downloadDescriptor4 atPhase];
 
-        if (v28 == 5)
+        if (atPhase2 == 5)
         {
-          v17 = [(SUManagerEngine *)self engineFSM];
-          v14 = v17;
+          engineFSM2 = [(SUManagerEngine *)self engineFSM];
+          v14 = engineFSM2;
           v18 = @"AlreadyPrepared";
         }
 
         else
         {
-          v29 = [(SUManagerEngine *)self downloadDescriptor];
-          v30 = [v29 atPhase];
+          downloadDescriptor5 = [(SUManagerEngine *)self downloadDescriptor];
+          atPhase3 = [downloadDescriptor5 atPhase];
 
-          if (v30 == 4)
+          if (atPhase3 == 4)
           {
-            v17 = [(SUManagerEngine *)self engineFSM];
-            v14 = v17;
+            engineFSM2 = [(SUManagerEngine *)self engineFSM];
+            v14 = engineFSM2;
             v18 = @"PrepareInterrupted";
           }
 
           else
           {
-            v31 = [(SUManagerEngine *)self downloadDescriptor];
-            v32 = [v31 atPhase];
+            downloadDescriptor6 = [(SUManagerEngine *)self downloadDescriptor];
+            atPhase4 = [downloadDescriptor6 atPhase];
 
-            v17 = [(SUManagerEngine *)self engineFSM];
-            v14 = v17;
-            if (v32 == 3)
+            engineFSM2 = [(SUManagerEngine *)self engineFSM];
+            v14 = engineFSM2;
+            if (atPhase4 == 3)
             {
               v18 = @"AlreadyDownloaded";
             }
@@ -1448,7 +1448,7 @@ void __52__SUManagerEngine_action_CheckLockAndNetwork_error___block_invoke(uint6
         }
       }
 
-      [v17 followupEvent:v18 withInfo:v5];
+      [engineFSM2 followupEvent:v18 withInfo:loadedCopy];
       goto LABEL_18;
     }
   }
@@ -1459,8 +1459,8 @@ void __52__SUManagerEngine_action_CheckLockAndNetwork_error___block_invoke(uint6
     v14 = 0;
   }
 
-  v19 = [v14 userInfo];
-  v20 = [v19 objectForKeyedSubscript:@"LoadTrustCachePurgedBrain"];
+  userInfo = [v14 userInfo];
+  v20 = [userInfo objectForKeyedSubscript:@"LoadTrustCachePurgedBrain"];
   v21 = [v20 isEqual:MEMORY[0x277CBEC38]];
 
   if (v21)
@@ -1473,55 +1473,55 @@ void __52__SUManagerEngine_action_CheckLockAndNetwork_error___block_invoke(uint6
     v22 = 54;
   }
 
-  v23 = [(SUManagerEngine *)self engineFSM];
+  engineFSM3 = [(SUManagerEngine *)self engineFSM];
   v24 = [SUManagerEngineParam alloc];
   v25 = [SUUtility errorWithCode:v22];
   v26 = [(SUManagerEngineParam *)v24 initWithError:v25];
-  [v23 followupEvent:@"UpdateFailed" withInfo:v26];
+  [engineFSM3 followupEvent:@"UpdateFailed" withInfo:v26];
 
 LABEL_18:
   return 0;
 }
 
-- (int64_t)loadBrainHelper:(id)a3
+- (int64_t)loadBrainHelper:(id)helper
 {
-  v4 = a3;
-  v5 = [(SUManagerEngine *)self engineFSM];
-  v6 = [v5 extendedStateQueue];
-  dispatch_assert_queue_V2(v6);
+  helperCopy = helper;
+  engineFSM = [(SUManagerEngine *)self engineFSM];
+  extendedStateQueue = [engineFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  if ([v4 paramType] == 2)
+  if ([helperCopy paramType] == 2)
   {
-    v7 = [v4 downloadDescriptor];
-    [(SUManagerEngine *)self setDownloadDescriptor:v7];
+    downloadDescriptor = [helperCopy downloadDescriptor];
+    [(SUManagerEngine *)self setDownloadDescriptor:downloadDescriptor];
 
-    v8 = [(SUManagerEngine *)self downloadDescriptor];
-    v9 = [v8 coreDescriptor];
+    downloadDescriptor2 = [(SUManagerEngine *)self downloadDescriptor];
+    coreDescriptor = [downloadDescriptor2 coreDescriptor];
 
     [(SUManagerEngine *)self resetPolicy];
     [(SUManagerEngine *)self setPendingPurgeParams:0];
-    v10 = [(SUManagerEngine *)self downloadDescriptor];
-    v11 = [v10 installTonightConfig];
-    v12 = [(SUManagerEngine *)self downloadDescriptor];
-    v13 = [v12 sessionID];
-    v14 = [(SUManagerEngine *)self downloadDescriptor];
-    v15 = [v14 cleanupLevel];
-    [(SUManagerEngine *)self _updatePolicyFactoryMetricEventFields:v11 updateUUID:v13 cleanupLevel:v15];
+    downloadDescriptor3 = [(SUManagerEngine *)self downloadDescriptor];
+    installTonightConfig = [downloadDescriptor3 installTonightConfig];
+    downloadDescriptor4 = [(SUManagerEngine *)self downloadDescriptor];
+    sessionID = [downloadDescriptor4 sessionID];
+    downloadDescriptor5 = [(SUManagerEngine *)self downloadDescriptor];
+    cleanupLevel = [downloadDescriptor5 cleanupLevel];
+    [(SUManagerEngine *)self _updatePolicyFactoryMetricEventFields:installTonightConfig updateUUID:sessionID cleanupLevel:cleanupLevel];
 
     v16 = objc_alloc(MEMORY[0x277D641F0]);
-    v17 = [(SUManagerEngine *)self downloadDescriptor];
-    v18 = [v17 sessionID];
-    v19 = [v16 initWithDelegate:self updateDescriptor:v9 updateUUID:v18];
+    downloadDescriptor6 = [(SUManagerEngine *)self downloadDescriptor];
+    sessionID2 = [downloadDescriptor6 sessionID];
+    v19 = [v16 initWithDelegate:self updateDescriptor:coreDescriptor updateUUID:sessionID2];
     [(SUManagerEngine *)self setUpdateControl:v19];
 
-    v20 = [(SUManagerEngine *)self policyFactory];
-    v21 = [v4 downloadDescriptor];
-    v22 = [v21 scanOptions];
-    [v20 setScanOptions:v22];
+    policyFactory = [(SUManagerEngine *)self policyFactory];
+    downloadDescriptor7 = [helperCopy downloadDescriptor];
+    scanOptions = [downloadDescriptor7 scanOptions];
+    [policyFactory setScanOptions:scanOptions];
 
-    v23 = [(SUManagerEngine *)self updateControl];
-    v24 = [(SUManagerEngine *)self updatePolicy];
-    [v23 targetBrainLoaded:v24];
+    updateControl = [(SUManagerEngine *)self updateControl];
+    updatePolicy = [(SUManagerEngine *)self updatePolicy];
+    [updateControl targetBrainLoaded:updatePolicy];
 
     if (![(SUManagerEngine *)self activating])
     {
@@ -1529,220 +1529,220 @@ LABEL_18:
       goto LABEL_7;
     }
 
-    v25 = [(SUManagerEngine *)self engineFSM];
+    engineFSM2 = [(SUManagerEngine *)self engineFSM];
     v26 = objc_alloc_init(SUManagerEngineParam);
-    [v25 followupEvent:@"BrainLoading" withInfo:v26];
+    [engineFSM2 followupEvent:@"BrainLoading" withInfo:v26];
 
     v27 = 0;
   }
 
   else
   {
-    v9 = [(SUManagerEngine *)self engineFSM];
-    v25 = [v9 diag];
+    coreDescriptor = [(SUManagerEngine *)self engineFSM];
+    engineFSM2 = [coreDescriptor diag];
     v27 = 8102;
-    [v25 trackAnomaly:@"[ENGINE]" forReason:@"param type is not DOWNLOAD_DESCRIPTOR" withResult:8102 withError:0];
+    [engineFSM2 trackAnomaly:@"[ENGINE]" forReason:@"param type is not DOWNLOAD_DESCRIPTOR" withResult:8102 withError:0];
   }
 
 LABEL_7:
   return v27;
 }
 
-- (int64_t)action_LoadBrain:(id)a3 error:(id *)a4
+- (int64_t)action_LoadBrain:(id)brain error:(id *)error
 {
-  v5 = a3;
-  v6 = [(SUManagerEngine *)self engineFSM];
-  v7 = [v6 extendedStateQueue];
-  dispatch_assert_queue_V2(v7);
+  brainCopy = brain;
+  engineFSM = [(SUManagerEngine *)self engineFSM];
+  extendedStateQueue = [engineFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
   [(SUManagerEngine *)self setLoadBrainRetries:0];
-  v8 = [(SUManagerEngine *)self loadBrainHelper:v5];
+  v8 = [(SUManagerEngine *)self loadBrainHelper:brainCopy];
 
   return v8;
 }
 
-- (int64_t)action_ReloadBrain:(id)a3 error:(id *)a4
+- (int64_t)action_ReloadBrain:(id)brain error:(id *)error
 {
-  v5 = a3;
-  v6 = [(SUManagerEngine *)self engineFSM];
-  v7 = [v6 extendedStateQueue];
-  dispatch_assert_queue_V2(v7);
+  brainCopy = brain;
+  engineFSM = [(SUManagerEngine *)self engineFSM];
+  extendedStateQueue = [engineFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
   [(SUManagerEngine *)self setLoadBrainRetries:[(SUManagerEngine *)self loadBrainRetries]+ 1];
-  v8 = [(SUManagerEngine *)self loadBrainHelper:v5];
+  v8 = [(SUManagerEngine *)self loadBrainHelper:brainCopy];
 
   return v8;
 }
 
-- (int64_t)action_DownloadAndPrepare:(id)a3 error:(id *)a4
+- (int64_t)action_DownloadAndPrepare:(id)prepare error:(id *)error
 {
-  v5 = a3;
-  v6 = [(SUManagerEngine *)self engineFSM];
-  v7 = [v6 extendedStateQueue];
-  dispatch_assert_queue_V2(v7);
+  prepareCopy = prepare;
+  engineFSM = [(SUManagerEngine *)self engineFSM];
+  extendedStateQueue = [engineFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v8 = [(SUManagerEngine *)self policyFactory];
-  v9 = [(SUManagerEngine *)self downloadDescriptor];
-  v10 = [v9 downloadOptions];
-  [v8 setDownloadOptions:v10];
+  policyFactory = [(SUManagerEngine *)self policyFactory];
+  downloadDescriptor = [(SUManagerEngine *)self downloadDescriptor];
+  downloadOptions = [downloadDescriptor downloadOptions];
+  [policyFactory setDownloadOptions:downloadOptions];
 
-  v11 = [(SUManagerEngine *)self engineFSM];
-  [v11 followupEvent:@"UpdateProgress" withInfo:v5];
+  engineFSM2 = [(SUManagerEngine *)self engineFSM];
+  [engineFSM2 followupEvent:@"UpdateProgress" withInfo:prepareCopy];
 
-  v12 = [(SUManagerEngine *)self updateControl];
-  v13 = [(SUManagerEngine *)self updatePolicy];
-  [v12 targetPrepared:v13];
+  updateControl = [(SUManagerEngine *)self updateControl];
+  updatePolicy = [(SUManagerEngine *)self updatePolicy];
+  [updateControl targetPrepared:updatePolicy];
 
   return 0;
 }
 
-- (int64_t)action_Prepare:(id)a3 error:(id *)a4
+- (int64_t)action_Prepare:(id)prepare error:(id *)error
 {
-  v5 = a3;
-  v6 = [(SUManagerEngine *)self engineFSM];
-  v7 = [v6 extendedStateQueue];
-  dispatch_assert_queue_V2(v7);
+  prepareCopy = prepare;
+  engineFSM = [(SUManagerEngine *)self engineFSM];
+  extendedStateQueue = [engineFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v8 = [(SUManagerEngine *)self policyFactory];
-  v9 = [(SUManagerEngine *)self downloadDescriptor];
-  v10 = [v9 downloadOptions];
-  [v8 setDownloadOptions:v10];
+  policyFactory = [(SUManagerEngine *)self policyFactory];
+  downloadDescriptor = [(SUManagerEngine *)self downloadDescriptor];
+  downloadOptions = [downloadDescriptor downloadOptions];
+  [policyFactory setDownloadOptions:downloadOptions];
 
-  v11 = [(SUManagerEngine *)self engineFSM];
-  [v11 followupEvent:@"UpdateProgress" withInfo:v5];
+  engineFSM2 = [(SUManagerEngine *)self engineFSM];
+  [engineFSM2 followupEvent:@"UpdateProgress" withInfo:prepareCopy];
 
-  v12 = [(SUManagerEngine *)self updatePolicy];
-  [v12 setCheckAvailableSpace:0];
+  updatePolicy = [(SUManagerEngine *)self updatePolicy];
+  [updatePolicy setCheckAvailableSpace:0];
 
-  v13 = [(SUManagerEngine *)self updatePolicy];
-  v14 = [v13 downloadPreflightPolicy];
-  [v14 setSkipPhase:1];
+  updatePolicy2 = [(SUManagerEngine *)self updatePolicy];
+  downloadPreflightPolicy = [updatePolicy2 downloadPreflightPolicy];
+  [downloadPreflightPolicy setSkipPhase:1];
 
-  v15 = [(SUManagerEngine *)self updatePolicy];
-  v16 = [v15 softwareUpdateDownloadPolicy];
-  [v16 setSkipPhase:1];
+  updatePolicy3 = [(SUManagerEngine *)self updatePolicy];
+  softwareUpdateDownloadPolicy = [updatePolicy3 softwareUpdateDownloadPolicy];
+  [softwareUpdateDownloadPolicy setSkipPhase:1];
 
-  v17 = [(SUManagerEngine *)self updateControl];
-  v18 = [(SUManagerEngine *)self updatePolicy];
-  [v17 targetPrepared:v18];
+  updateControl = [(SUManagerEngine *)self updateControl];
+  updatePolicy4 = [(SUManagerEngine *)self updatePolicy];
+  [updateControl targetPrepared:updatePolicy4];
 
   return 0;
 }
 
-- (int64_t)action_Resume:(id)a3 error:(id *)a4
+- (int64_t)action_Resume:(id)resume error:(id *)error
 {
-  v5 = [(SUManagerEngine *)self engineFSM:a3];
-  v6 = [v5 extendedStateQueue];
-  dispatch_assert_queue_V2(v6);
+  v5 = [(SUManagerEngine *)self engineFSM:resume];
+  extendedStateQueue = [v5 extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v7 = [(SUManagerEngine *)self updatePolicy];
-  v8 = [v7 downloadPreflightPolicy];
-  [v8 setSkipPhase:1];
+  updatePolicy = [(SUManagerEngine *)self updatePolicy];
+  downloadPreflightPolicy = [updatePolicy downloadPreflightPolicy];
+  [downloadPreflightPolicy setSkipPhase:1];
 
-  v9 = [(SUManagerEngine *)self updatePolicy];
-  [v9 setCheckAvailableSpace:0];
+  updatePolicy2 = [(SUManagerEngine *)self updatePolicy];
+  [updatePolicy2 setCheckAvailableSpace:0];
 
-  v10 = [(SUManagerEngine *)self updatePolicy];
-  v11 = [v10 softwareUpdateDownloadPolicy];
-  [v11 setSkipPhase:1];
+  updatePolicy3 = [(SUManagerEngine *)self updatePolicy];
+  softwareUpdateDownloadPolicy = [updatePolicy3 softwareUpdateDownloadPolicy];
+  [softwareUpdateDownloadPolicy setSkipPhase:1];
 
-  v12 = [(SUManagerEngine *)self updatePolicy];
-  v13 = [v12 preparePolicy];
-  [v13 setSkipPhase:1];
+  updatePolicy4 = [(SUManagerEngine *)self updatePolicy];
+  preparePolicy = [updatePolicy4 preparePolicy];
+  [preparePolicy setSkipPhase:1];
 
-  v14 = [(SUManagerEngine *)self updatePolicy];
-  v15 = [v14 suspendPolicy];
-  [v15 setSkipPhase:1];
+  updatePolicy5 = [(SUManagerEngine *)self updatePolicy];
+  suspendPolicy = [updatePolicy5 suspendPolicy];
+  [suspendPolicy setSkipPhase:1];
 
-  v16 = [(SUManagerEngine *)self updateControl];
-  v17 = [(SUManagerEngine *)self updatePolicy];
-  [v16 targetPrepared:v17];
+  updateControl = [(SUManagerEngine *)self updateControl];
+  updatePolicy6 = [(SUManagerEngine *)self updatePolicy];
+  [updateControl targetPrepared:updatePolicy6];
 
   return 0;
 }
 
-- (int64_t)action_InstallUpdate:(id)a3 error:(id *)a4
+- (int64_t)action_InstallUpdate:(id)update error:(id *)error
 {
-  v5 = a3;
-  v6 = [(SUManagerEngine *)self engineFSM];
-  v7 = [v6 extendedStateQueue];
-  dispatch_assert_queue_V2(v7);
+  updateCopy = update;
+  engineFSM = [(SUManagerEngine *)self engineFSM];
+  extendedStateQueue = [engineFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v8 = [(SUManagerEngine *)self policyFactory];
-  v9 = [v5 installOptions];
+  policyFactory = [(SUManagerEngine *)self policyFactory];
+  installOptions = [updateCopy installOptions];
 
-  [v8 setInstallOptions:v9];
-  v10 = [(SUManagerEngine *)self updateControl];
-  v11 = [(SUManagerEngine *)self updatePolicy];
-  [v10 targetApplied:v11];
+  [policyFactory setInstallOptions:installOptions];
+  updateControl = [(SUManagerEngine *)self updateControl];
+  updatePolicy = [(SUManagerEngine *)self updatePolicy];
+  [updateControl targetApplied:updatePolicy];
 
   return 0;
 }
 
-- (int64_t)action_InstallArmed:(id)a3 error:(id *)a4
+- (int64_t)action_InstallArmed:(id)armed error:(id *)error
 {
-  v5 = [(SUManagerEngine *)self engineFSM:a3];
-  v6 = [v5 extendedStateQueue];
-  dispatch_assert_queue_V2(v6);
+  v5 = [(SUManagerEngine *)self engineFSM:armed];
+  extendedStateQueue = [v5 extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v7 = [(SUManagerEngine *)self policyFactory];
-  v8 = [(SUManagerEngine *)self downloadDescriptor];
-  v9 = [v8 installOptions];
-  [v7 setInstallOptions:v9];
+  policyFactory = [(SUManagerEngine *)self policyFactory];
+  downloadDescriptor = [(SUManagerEngine *)self downloadDescriptor];
+  installOptions = [downloadDescriptor installOptions];
+  [policyFactory setInstallOptions:installOptions];
 
-  v10 = [(SUManagerEngine *)self updatePolicy];
-  [v10 setCheckAvailableSpace:0];
+  updatePolicy = [(SUManagerEngine *)self updatePolicy];
+  [updatePolicy setCheckAvailableSpace:0];
 
-  v11 = [(SUManagerEngine *)self updatePolicy];
-  v12 = [v11 downloadPreflightPolicy];
-  [v12 setSkipPhase:1];
+  updatePolicy2 = [(SUManagerEngine *)self updatePolicy];
+  downloadPreflightPolicy = [updatePolicy2 downloadPreflightPolicy];
+  [downloadPreflightPolicy setSkipPhase:1];
 
-  v13 = [(SUManagerEngine *)self updatePolicy];
-  v14 = [v13 softwareUpdateDownloadPolicy];
-  [v14 setSkipPhase:1];
+  updatePolicy3 = [(SUManagerEngine *)self updatePolicy];
+  softwareUpdateDownloadPolicy = [updatePolicy3 softwareUpdateDownloadPolicy];
+  [softwareUpdateDownloadPolicy setSkipPhase:1];
 
-  v15 = [(SUManagerEngine *)self updatePolicy];
-  v16 = [v15 preparePolicy];
-  [v16 setSkipPhase:1];
+  updatePolicy4 = [(SUManagerEngine *)self updatePolicy];
+  preparePolicy = [updatePolicy4 preparePolicy];
+  [preparePolicy setSkipPhase:1];
 
-  v17 = [(SUManagerEngine *)self updatePolicy];
-  v18 = [v17 suspendPolicy];
-  [v18 setSkipPhase:1];
+  updatePolicy5 = [(SUManagerEngine *)self updatePolicy];
+  suspendPolicy = [updatePolicy5 suspendPolicy];
+  [suspendPolicy setSkipPhase:1];
 
-  v19 = [(SUManagerEngine *)self updateControl];
-  v20 = [(SUManagerEngine *)self updatePolicy];
-  [v19 targetApplied:v20];
+  updateControl = [(SUManagerEngine *)self updateControl];
+  updatePolicy6 = [(SUManagerEngine *)self updatePolicy];
+  [updateControl targetApplied:updatePolicy6];
 
   return 0;
 }
 
-- (int64_t)action_ArmInstallOrFail:(id)a3 error:(id *)a4
+- (int64_t)action_ArmInstallOrFail:(id)fail error:(id *)error
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [(SUManagerEngine *)self engineFSM];
-  v7 = [v6 extendedStateQueue];
-  dispatch_assert_queue_V2(v7);
+  failCopy = fail;
+  engineFSM = [(SUManagerEngine *)self engineFSM];
+  extendedStateQueue = [engineFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v8 = [(SUManagerEngine *)self downloadDescriptor];
-  v9 = [v5 installOptions];
-  v10 = [v8 armInstall:v9];
+  downloadDescriptor = [(SUManagerEngine *)self downloadDescriptor];
+  installOptions = [failCopy installOptions];
+  v10 = [downloadDescriptor armInstall:installOptions];
 
-  v11 = [(SUManagerEngine *)self engineLog];
-  v12 = [v11 oslog];
+  engineLog = [(SUManagerEngine *)self engineLog];
+  oslog = [engineLog oslog];
 
-  v13 = os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT);
+  v13 = os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT);
   if (v10)
   {
     if (v13)
     {
-      v14 = [(SUManagerEngine *)self engineName];
-      v15 = [v5 installOptions];
+      engineName = [(SUManagerEngine *)self engineName];
+      installOptions2 = [failCopy installOptions];
       v19 = 138412546;
-      v20 = v14;
+      v20 = engineName;
       v21 = 2112;
-      v22 = v15;
-      _os_log_impl(&dword_26AB34000, v12, OS_LOG_TYPE_DEFAULT, "%@ install is armed with options:%@", &v19, 0x16u);
+      v22 = installOptions2;
+      _os_log_impl(&dword_26AB34000, oslog, OS_LOG_TYPE_DEFAULT, "%@ install is armed with options:%@", &v19, 0x16u);
     }
   }
 
@@ -1750,10 +1750,10 @@ LABEL_7:
   {
     if (v13)
     {
-      v16 = [(SUManagerEngine *)self engineName];
+      engineName2 = [(SUManagerEngine *)self engineName];
       v19 = 138412290;
-      v20 = v16;
-      _os_log_impl(&dword_26AB34000, v12, OS_LOG_TYPE_DEFAULT, "%@ install can't be armed", &v19, 0xCu);
+      v20 = engineName2;
+      _os_log_impl(&dword_26AB34000, oslog, OS_LOG_TYPE_DEFAULT, "%@ install can't be armed", &v19, 0xCu);
     }
 
     [(SUManagerEngine *)self actionHelper_ReportInstallFailedNoUpdate];
@@ -1763,82 +1763,82 @@ LABEL_7:
   return 0;
 }
 
-- (int64_t)action_Cancel:(id)a3 error:(id *)a4
+- (int64_t)action_Cancel:(id)cancel error:(id *)error
 {
-  v5 = a3;
-  v6 = [(SUManagerEngine *)self engineFSM];
-  v7 = [v6 extendedStateQueue];
-  dispatch_assert_queue_V2(v7);
+  cancelCopy = cancel;
+  engineFSM = [(SUManagerEngine *)self engineFSM];
+  extendedStateQueue = [engineFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v8 = [v5 downloadDescriptor];
-  [(SUManagerEngine *)self setDownloadDescriptor:v8];
+  downloadDescriptor = [cancelCopy downloadDescriptor];
+  [(SUManagerEngine *)self setDownloadDescriptor:downloadDescriptor];
 
-  if ([v5 paramType] == 9)
+  if ([cancelCopy paramType] == 9)
   {
-    [(SUManagerEngine *)self setPendingPurgeParams:v5];
+    [(SUManagerEngine *)self setPendingPurgeParams:cancelCopy];
   }
 
-  v9 = [(SUManagerEngine *)self updateControl];
-  [v9 cancelCurrentUpdate];
+  updateControl = [(SUManagerEngine *)self updateControl];
+  [updateControl cancelCurrentUpdate];
 
   return 0;
 }
 
-- (int64_t)action_CanceledDownloadRequested:(id)a3 error:(id *)a4
+- (int64_t)action_CanceledDownloadRequested:(id)requested error:(id *)error
 {
-  v5 = [(SUManagerEngine *)self engineFSM:a3];
-  v6 = [v5 extendedStateQueue];
-  dispatch_assert_queue_V2(v6);
+  v5 = [(SUManagerEngine *)self engineFSM:requested];
+  extendedStateQueue = [v5 extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v7 = [(SUManagerEngine *)self engineFSM];
+  engineFSM = [(SUManagerEngine *)self engineFSM];
   v8 = [SUManagerEngineParam alloc];
-  v9 = [(SUManagerEngine *)self downloadDescriptor];
-  v10 = [(SUManagerEngineParam *)v8 initWithDownloadDescriptor:v9];
-  [v7 followupEvent:@"ReadyToDownload" withInfo:v10];
+  downloadDescriptor = [(SUManagerEngine *)self downloadDescriptor];
+  v10 = [(SUManagerEngineParam *)v8 initWithDownloadDescriptor:downloadDescriptor];
+  [engineFSM followupEvent:@"ReadyToDownload" withInfo:v10];
 
   return 0;
 }
 
-- (int64_t)action_RemoveAll:(id)a3 error:(id *)a4
+- (int64_t)action_RemoveAll:(id)all error:(id *)error
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [(SUManagerEngine *)self engineFSM];
-  v7 = [v6 extendedStateQueue];
-  dispatch_assert_queue_V2(v7);
+  allCopy = all;
+  engineFSM = [(SUManagerEngine *)self engineFSM];
+  extendedStateQueue = [engineFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
   [(SUManagerEngine *)self setUpdateControl:0];
   [(SUManagerEngine *)self setDownloadDescriptor:0];
-  v8 = [(SUManagerEngine *)self policyFactory];
-  [v8 setScanOptions:0];
+  policyFactory = [(SUManagerEngine *)self policyFactory];
+  [policyFactory setScanOptions:0];
 
-  v9 = [(SUManagerEngine *)self policyFactory];
-  [v9 setDownloadOptions:0];
+  policyFactory2 = [(SUManagerEngine *)self policyFactory];
+  [policyFactory2 setDownloadOptions:0];
 
-  v10 = [(SUManagerEngine *)self policyFactory];
-  [v10 setInstallOptions:0];
+  policyFactory3 = [(SUManagerEngine *)self policyFactory];
+  [policyFactory3 setInstallOptions:0];
 
-  v11 = [(SUManagerEngine *)self updatePolicy];
-  v12 = [v11 copy];
+  updatePolicy = [(SUManagerEngine *)self updatePolicy];
+  v12 = [updatePolicy copy];
 
-  if ([v5 paramType] == 9)
+  if ([allCopy paramType] == 9)
   {
-    if ([v5 skipDocAssetsPurge])
+    if ([allCopy skipDocAssetsPurge])
     {
       [v12 setDocumentationAssetType:0];
     }
 
-    if ([v5 skipPreSUStagingAssetsPurge])
+    if ([allCopy skipPreSUStagingAssetsPurge])
     {
-      v13 = [(SUManagerEngine *)self engineLog];
-      v14 = [v13 oslog];
+      engineLog = [(SUManagerEngine *)self engineLog];
+      oslog = [engineLog oslog];
 
-      if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
       {
-        v15 = [(SUManagerEngine *)self engineName];
+        engineName = [(SUManagerEngine *)self engineName];
         *buf = 138412290;
-        v20 = v15;
-        _os_log_impl(&dword_26AB34000, v14, OS_LOG_TYPE_DEFAULT, "%@ Temporarily disabling PSUS to skip purging the assets", buf, 0xCu);
+        v20 = engineName;
+        _os_log_impl(&dword_26AB34000, oslog, OS_LOG_TYPE_DEFAULT, "%@ Temporarily disabling PSUS to skip purging the assets", buf, 0xCu);
       }
 
       [v12 setEnablePreSUStaging:0];
@@ -1993,23 +1993,23 @@ void __42__SUManagerEngine_action_RemoveAll_error___block_invoke_536(uint64_t a1
   [v2 postEvent:@"RemovedAll" withInfo:v1];
 }
 
-- (int64_t)action_RemoveAllPreserveCache:(id)a3 error:(id *)a4
+- (int64_t)action_RemoveAllPreserveCache:(id)cache error:(id *)error
 {
-  v5 = [(SUManagerEngine *)self engineFSM:a3];
-  v6 = [v5 extendedStateQueue];
-  dispatch_assert_queue_V2(v6);
+  v5 = [(SUManagerEngine *)self engineFSM:cache];
+  extendedStateQueue = [v5 extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v7 = [(SUManagerEngine *)self downloadDescriptor];
-  [v7 resetPhase];
+  downloadDescriptor = [(SUManagerEngine *)self downloadDescriptor];
+  [downloadDescriptor resetPhase];
 
   v8 = MEMORY[0x277D641D0];
-  v9 = [(SUManagerEngine *)self updatePolicy];
+  updatePolicy = [(SUManagerEngine *)self updatePolicy];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __55__SUManagerEngine_action_RemoveAllPreserveCache_error___block_invoke;
   v11[3] = &unk_279CABA10;
   v11[4] = self;
-  [v8 removeAllUpdateContentWithPolicy:v9 completion:v11];
+  [v8 removeAllUpdateContentWithPolicy:updatePolicy completion:v11];
 
   return 0;
 }
@@ -2030,91 +2030,91 @@ void __55__SUManagerEngine_action_RemoveAllPreserveCache_error___block_invoke(ui
   [v8 postEvent:@"RemovedAllPreservedCache" withInfo:v7];
 }
 
-- (int64_t)action_RollbackUpdate:(id)a3 error:(id *)a4
+- (int64_t)action_RollbackUpdate:(id)update error:(id *)error
 {
-  v5 = a3;
-  v6 = [(SUManagerEngine *)self engineFSM];
-  v7 = [v6 extendedStateQueue];
-  dispatch_assert_queue_V2(v7);
+  updateCopy = update;
+  engineFSM = [(SUManagerEngine *)self engineFSM];
+  extendedStateQueue = [engineFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v8 = [(SUManagerEngine *)self policyFactory];
-  v9 = [v5 rollbackOptions];
+  policyFactory = [(SUManagerEngine *)self policyFactory];
+  rollbackOptions = [updateCopy rollbackOptions];
 
-  [v8 setRollbackOptions:v9];
-  v10 = [(SUManagerEngine *)self updateControl];
+  [policyFactory setRollbackOptions:rollbackOptions];
+  updateControl = [(SUManagerEngine *)self updateControl];
 
-  if (!v10)
+  if (!updateControl)
   {
     v11 = [objc_alloc(MEMORY[0x277D641F0]) initWithDelegate:self updateDescriptor:0 updateUUID:self->_rollbackUUID];
     [(SUManagerEngine *)self setUpdateControl:v11];
   }
 
-  v12 = [(SUManagerEngine *)self updateControl];
-  v13 = [v12 rollbackAvailable];
-  [(SUManagerEngine *)self notifyRollbackStarted:v13];
+  updateControl2 = [(SUManagerEngine *)self updateControl];
+  rollbackAvailable = [updateControl2 rollbackAvailable];
+  [(SUManagerEngine *)self notifyRollbackStarted:rollbackAvailable];
 
-  v14 = [(SUManagerEngine *)self updateControl];
-  v15 = [(SUManagerEngine *)self rollbackPolicy];
-  [v14 targetRollback:v15];
+  updateControl3 = [(SUManagerEngine *)self updateControl];
+  rollbackPolicy = [(SUManagerEngine *)self rollbackPolicy];
+  [updateControl3 targetRollback:rollbackPolicy];
 
   return 0;
 }
 
-- (int64_t)action_HandlePendingRollback:(id)a3 error:(id *)a4
+- (int64_t)action_HandlePendingRollback:(id)rollback error:(id *)error
 {
-  v5 = a3;
-  v6 = [(SUManagerEngine *)self engineFSM];
-  v7 = [v6 extendedStateQueue];
-  dispatch_assert_queue_V2(v7);
+  rollbackCopy = rollback;
+  engineFSM = [(SUManagerEngine *)self engineFSM];
+  extendedStateQueue = [engineFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v8 = [(SUManagerEngine *)self engineFSM];
-  [v8 followupEvent:@"ReadyToRollback" withInfo:v5];
+  engineFSM2 = [(SUManagerEngine *)self engineFSM];
+  [engineFSM2 followupEvent:@"ReadyToRollback" withInfo:rollbackCopy];
 
   return 0;
 }
 
-- (int64_t)action_HandleCanceledPendingRollback:(id)a3 error:(id *)a4
+- (int64_t)action_HandleCanceledPendingRollback:(id)rollback error:(id *)error
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [(SUManagerEngine *)self engineFSM];
-  v7 = [v6 extendedStateQueue];
-  dispatch_assert_queue_V2(v7);
+  rollbackCopy = rollback;
+  engineFSM = [(SUManagerEngine *)self engineFSM];
+  extendedStateQueue = [engineFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v8 = [(SUManagerEngine *)self managerDelegate];
-  LOBYTE(v7) = objc_opt_respondsToSelector();
+  managerDelegate = [(SUManagerEngine *)self managerDelegate];
+  LOBYTE(extendedStateQueue) = objc_opt_respondsToSelector();
 
-  if (v7)
+  if (extendedStateQueue)
   {
-    v9 = [MEMORY[0x277D64400] sharedCore];
-    v10 = [v9 delegateCallbackQueue];
+    mEMORY[0x277D64400] = [MEMORY[0x277D64400] sharedCore];
+    delegateCallbackQueue = [mEMORY[0x277D64400] delegateCallbackQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __62__SUManagerEngine_action_HandleCanceledPendingRollback_error___block_invoke;
     block[3] = &unk_279CAA708;
     block[4] = self;
-    dispatch_async(v10, block);
+    dispatch_async(delegateCallbackQueue, block);
 LABEL_5:
 
     goto LABEL_6;
   }
 
-  v11 = [(SUManagerEngine *)self engineLog];
-  v9 = [v11 oslog];
+  engineLog = [(SUManagerEngine *)self engineLog];
+  mEMORY[0x277D64400] = [engineLog oslog];
 
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(mEMORY[0x277D64400], OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [(SUManagerEngine *)self engineName];
+    delegateCallbackQueue = [(SUManagerEngine *)self engineName];
     *buf = 138412290;
-    v17 = v10;
-    _os_log_impl(&dword_26AB34000, v9, OS_LOG_TYPE_DEFAULT, "%@ delegate does not respond to selector(downloadCompleted:) so not reporting", buf, 0xCu);
+    v17 = delegateCallbackQueue;
+    _os_log_impl(&dword_26AB34000, mEMORY[0x277D64400], OS_LOG_TYPE_DEFAULT, "%@ delegate does not respond to selector(downloadCompleted:) so not reporting", buf, 0xCu);
     goto LABEL_5;
   }
 
 LABEL_6:
 
-  v12 = [(SUManagerEngine *)self engineFSM];
-  [v12 followupEvent:@"ReadyToRollback" withInfo:v5];
+  engineFSM2 = [(SUManagerEngine *)self engineFSM];
+  [engineFSM2 followupEvent:@"ReadyToRollback" withInfo:rollbackCopy];
 
   v13 = *MEMORY[0x277D85DE8];
   return 0;
@@ -2127,51 +2127,51 @@ void __62__SUManagerEngine_action_HandleCanceledPendingRollback_error___block_in
   [v2 downloadCompleted:v1];
 }
 
-- (int64_t)action_ReportDownloadProgress:(id)a3 error:(id *)a4
+- (int64_t)action_ReportDownloadProgress:(id)progress error:(id *)error
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [(SUManagerEngine *)self engineFSM];
-  v7 = [v6 extendedStateQueue];
-  dispatch_assert_queue_V2(v7);
+  progressCopy = progress;
+  engineFSM = [(SUManagerEngine *)self engineFSM];
+  extendedStateQueue = [engineFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v8 = [v5 progress];
-  v9 = [(SUManagerEngine *)self SUOperationProgressFromSUCoreProgress:v8];
-  v10 = [v9 phase];
-  IsBeyondBrainLoad = SUDownloadPhaseIsBeyondBrainLoad(v10);
+  progress = [progressCopy progress];
+  v9 = [(SUManagerEngine *)self SUOperationProgressFromSUCoreProgress:progress];
+  phase = [v9 phase];
+  IsBeyondBrainLoad = SUDownloadPhaseIsBeyondBrainLoad(phase);
 
   if (IsBeyondBrainLoad)
   {
     [(SUManagerEngine *)self _queue_cancelLockAssertion];
   }
 
-  v12 = [(SUManagerEngine *)self managerDelegate];
+  managerDelegate = [(SUManagerEngine *)self managerDelegate];
   v13 = objc_opt_respondsToSelector();
 
   if (v13)
   {
-    v14 = [MEMORY[0x277D64400] sharedCore];
-    v15 = [v14 delegateCallbackQueue];
+    mEMORY[0x277D64400] = [MEMORY[0x277D64400] sharedCore];
+    delegateCallbackQueue = [mEMORY[0x277D64400] delegateCallbackQueue];
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __55__SUManagerEngine_action_ReportDownloadProgress_error___block_invoke;
     v21[3] = &unk_279CAA7C0;
     v21[4] = self;
-    v22 = v5;
-    dispatch_async(v15, v21);
+    v22 = progressCopy;
+    dispatch_async(delegateCallbackQueue, v21);
   }
 
   else
   {
-    v16 = [(SUManagerEngine *)self engineLog];
-    v17 = [v16 oslog];
+    engineLog = [(SUManagerEngine *)self engineLog];
+    oslog = [engineLog oslog];
 
-    if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
-      v18 = [(SUManagerEngine *)self engineName];
+      engineName = [(SUManagerEngine *)self engineName];
       *buf = 138412290;
-      v24 = v18;
-      _os_log_impl(&dword_26AB34000, v17, OS_LOG_TYPE_DEFAULT, "%@ delegate does not respond to selector(downloadProgress:) so not reporting", buf, 0xCu);
+      v24 = engineName;
+      _os_log_impl(&dword_26AB34000, oslog, OS_LOG_TYPE_DEFAULT, "%@ delegate does not respond to selector(downloadProgress:) so not reporting", buf, 0xCu);
     }
   }
 
@@ -2188,36 +2188,36 @@ void __55__SUManagerEngine_action_ReportDownloadProgress_error___block_invoke(ui
   [v5 downloadProgress:v4];
 }
 
-- (void)actionHelper_ReportPrepared:(BOOL)a3
+- (void)actionHelper_ReportPrepared:(BOOL)prepared
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = [(SUManagerEngine *)self managerDelegate];
+  managerDelegate = [(SUManagerEngine *)self managerDelegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [MEMORY[0x277D64400] sharedCore];
-    v8 = [v7 delegateCallbackQueue];
+    mEMORY[0x277D64400] = [MEMORY[0x277D64400] sharedCore];
+    delegateCallbackQueue = [mEMORY[0x277D64400] delegateCallbackQueue];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __47__SUManagerEngine_actionHelper_ReportPrepared___block_invoke;
     v13[3] = &unk_279CAAD00;
     v13[4] = self;
-    v14 = a3;
-    dispatch_async(v8, v13);
+    preparedCopy = prepared;
+    dispatch_async(delegateCallbackQueue, v13);
   }
 
   else
   {
-    v9 = [(SUManagerEngine *)self engineLog];
-    v10 = [v9 oslog];
+    engineLog = [(SUManagerEngine *)self engineLog];
+    oslog = [engineLog oslog];
 
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [(SUManagerEngine *)self engineName];
+      engineName = [(SUManagerEngine *)self engineName];
       *buf = 138412290;
-      v16 = v11;
-      _os_log_impl(&dword_26AB34000, v10, OS_LOG_TYPE_DEFAULT, "%@ delegate does not respond to selector(downloadCompleted:) so not reporting", buf, 0xCu);
+      v16 = engineName;
+      _os_log_impl(&dword_26AB34000, oslog, OS_LOG_TYPE_DEFAULT, "%@ delegate does not respond to selector(downloadCompleted:) so not reporting", buf, 0xCu);
     }
   }
 
@@ -2230,83 +2230,83 @@ void __47__SUManagerEngine_actionHelper_ReportPrepared___block_invoke(uint64_t a
   [v2 downloadCompleted:0 informClients:*(a1 + 40)];
 }
 
-- (int64_t)action_ReportPrepared:(id)a3 error:(id *)a4
+- (int64_t)action_ReportPrepared:(id)prepared error:(id *)error
 {
-  v5 = [(SUManagerEngine *)self engineFSM:a3];
-  v6 = [v5 extendedStateQueue];
-  dispatch_assert_queue_V2(v6);
+  v5 = [(SUManagerEngine *)self engineFSM:prepared];
+  extendedStateQueue = [v5 extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
   [(SUManagerEngine *)self actionHelper_ReportPrepared:1];
   return 0;
 }
 
-- (int64_t)action_ReportPreparedSet:(id)a3 error:(id *)a4
+- (int64_t)action_ReportPreparedSet:(id)set error:(id *)error
 {
-  v5 = [(SUManagerEngine *)self engineFSM:a3];
-  v6 = [v5 extendedStateQueue];
-  dispatch_assert_queue_V2(v6);
+  v5 = [(SUManagerEngine *)self engineFSM:set];
+  extendedStateQueue = [v5 extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v7 = [(SUManagerEngine *)self policyFactory];
-  v8 = [(SUManagerEngine *)self downloadDescriptor];
-  v9 = [v8 downloadOptions];
-  [v7 setDownloadOptions:v9];
+  policyFactory = [(SUManagerEngine *)self policyFactory];
+  downloadDescriptor = [(SUManagerEngine *)self downloadDescriptor];
+  downloadOptions = [downloadDescriptor downloadOptions];
+  [policyFactory setDownloadOptions:downloadOptions];
 
-  v10 = [(SUManagerEngine *)self updatePolicy];
-  [v10 setCheckAvailableSpace:0];
+  updatePolicy = [(SUManagerEngine *)self updatePolicy];
+  [updatePolicy setCheckAvailableSpace:0];
 
-  v11 = [(SUManagerEngine *)self updatePolicy];
-  v12 = [v11 downloadPreflightPolicy];
-  [v12 setSkipPhase:1];
+  updatePolicy2 = [(SUManagerEngine *)self updatePolicy];
+  downloadPreflightPolicy = [updatePolicy2 downloadPreflightPolicy];
+  [downloadPreflightPolicy setSkipPhase:1];
 
-  v13 = [(SUManagerEngine *)self updatePolicy];
-  v14 = [v13 softwareUpdateDownloadPolicy];
-  [v14 setSkipPhase:1];
+  updatePolicy3 = [(SUManagerEngine *)self updatePolicy];
+  softwareUpdateDownloadPolicy = [updatePolicy3 softwareUpdateDownloadPolicy];
+  [softwareUpdateDownloadPolicy setSkipPhase:1];
 
-  v15 = [(SUManagerEngine *)self updatePolicy];
-  v16 = [v15 preparePolicy];
-  [v16 setSkipPhase:1];
+  updatePolicy4 = [(SUManagerEngine *)self updatePolicy];
+  preparePolicy = [updatePolicy4 preparePolicy];
+  [preparePolicy setSkipPhase:1];
 
-  v17 = [(SUManagerEngine *)self updatePolicy];
-  v18 = [v17 suspendPolicy];
-  [v18 setSkipPhase:1];
+  updatePolicy5 = [(SUManagerEngine *)self updatePolicy];
+  suspendPolicy = [updatePolicy5 suspendPolicy];
+  [suspendPolicy setSkipPhase:1];
 
   [(SUManagerEngine *)self actionHelper_ReportPrepared:0];
   return 0;
 }
 
-- (int64_t)action_ReportDownloadFailedNoUpdate:(id)a3 error:(id *)a4
+- (int64_t)action_ReportDownloadFailedNoUpdate:(id)update error:(id *)error
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = [(SUManagerEngine *)self engineFSM:a3];
-  v6 = [v5 extendedStateQueue];
-  dispatch_assert_queue_V2(v6);
+  v5 = [(SUManagerEngine *)self engineFSM:update];
+  extendedStateQueue = [v5 extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v7 = [(SUManagerEngine *)self managerDelegate];
-  LOBYTE(v6) = objc_opt_respondsToSelector();
+  managerDelegate = [(SUManagerEngine *)self managerDelegate];
+  LOBYTE(extendedStateQueue) = objc_opt_respondsToSelector();
 
-  if (v6)
+  if (extendedStateQueue)
   {
-    v8 = [MEMORY[0x277D64400] sharedCore];
-    v9 = [v8 delegateCallbackQueue];
+    mEMORY[0x277D64400] = [MEMORY[0x277D64400] sharedCore];
+    delegateCallbackQueue = [mEMORY[0x277D64400] delegateCallbackQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __61__SUManagerEngine_action_ReportDownloadFailedNoUpdate_error___block_invoke;
     block[3] = &unk_279CAA708;
     block[4] = self;
-    dispatch_async(v9, block);
+    dispatch_async(delegateCallbackQueue, block);
   }
 
   else
   {
-    v10 = [(SUManagerEngine *)self engineLog];
-    v8 = [v10 oslog];
+    engineLog = [(SUManagerEngine *)self engineLog];
+    mEMORY[0x277D64400] = [engineLog oslog];
 
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(mEMORY[0x277D64400], OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [(SUManagerEngine *)self engineName];
+      engineName = [(SUManagerEngine *)self engineName];
       *buf = 138412290;
-      v16 = v11;
-      _os_log_impl(&dword_26AB34000, v8, OS_LOG_TYPE_DEFAULT, "%@ delegate does not respond to selector(downloadCompleted:) so not reporting", buf, 0xCu);
+      v16 = engineName;
+      _os_log_impl(&dword_26AB34000, mEMORY[0x277D64400], OS_LOG_TYPE_DEFAULT, "%@ delegate does not respond to selector(downloadCompleted:) so not reporting", buf, 0xCu);
     }
   }
 
@@ -2324,32 +2324,32 @@ void __61__SUManagerEngine_action_ReportDownloadFailedNoUpdate_error___block_inv
 - (void)actionHelper_ReportInstallFailedNoUpdate
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = [(SUManagerEngine *)self managerDelegate];
+  managerDelegate = [(SUManagerEngine *)self managerDelegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [MEMORY[0x277D64400] sharedCore];
-    v6 = [v5 delegateCallbackQueue];
+    mEMORY[0x277D64400] = [MEMORY[0x277D64400] sharedCore];
+    delegateCallbackQueue = [mEMORY[0x277D64400] delegateCallbackQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __59__SUManagerEngine_actionHelper_ReportInstallFailedNoUpdate__block_invoke;
     block[3] = &unk_279CAA708;
     block[4] = self;
-    dispatch_async(v6, block);
+    dispatch_async(delegateCallbackQueue, block);
   }
 
   else
   {
-    v7 = [(SUManagerEngine *)self engineLog];
-    v5 = [v7 oslog];
+    engineLog = [(SUManagerEngine *)self engineLog];
+    mEMORY[0x277D64400] = [engineLog oslog];
 
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(mEMORY[0x277D64400], OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(SUManagerEngine *)self engineName];
+      engineName = [(SUManagerEngine *)self engineName];
       *buf = 138412290;
-      v12 = v8;
-      _os_log_impl(&dword_26AB34000, v5, OS_LOG_TYPE_DEFAULT, "%@ delegate does not respond to selector(installCompleted:) so not reporting", buf, 0xCu);
+      v12 = engineName;
+      _os_log_impl(&dword_26AB34000, mEMORY[0x277D64400], OS_LOG_TYPE_DEFAULT, "%@ delegate does not respond to selector(installCompleted:) so not reporting", buf, 0xCu);
     }
   }
 
@@ -2363,11 +2363,11 @@ void __59__SUManagerEngine_actionHelper_ReportInstallFailedNoUpdate__block_invok
   [v2 installCompleted:v1];
 }
 
-- (int64_t)action_ReportInstallFailedNoUpdate:(id)a3 error:(id *)a4
+- (int64_t)action_ReportInstallFailedNoUpdate:(id)update error:(id *)error
 {
-  v5 = [(SUManagerEngine *)self engineFSM:a3];
-  v6 = [v5 extendedStateQueue];
-  dispatch_assert_queue_V2(v6);
+  v5 = [(SUManagerEngine *)self engineFSM:update];
+  extendedStateQueue = [v5 extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
   [(SUManagerEngine *)self actionHelper_ReportInstallFailedNoUpdate];
   return 0;
@@ -2376,32 +2376,32 @@ void __59__SUManagerEngine_actionHelper_ReportInstallFailedNoUpdate__block_invok
 - (void)actionHelper_ReportInstallFailedRollingBack
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = [(SUManagerEngine *)self managerDelegate];
+  managerDelegate = [(SUManagerEngine *)self managerDelegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [MEMORY[0x277D64400] sharedCore];
-    v6 = [v5 delegateCallbackQueue];
+    mEMORY[0x277D64400] = [MEMORY[0x277D64400] sharedCore];
+    delegateCallbackQueue = [mEMORY[0x277D64400] delegateCallbackQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __62__SUManagerEngine_actionHelper_ReportInstallFailedRollingBack__block_invoke;
     block[3] = &unk_279CAA708;
     block[4] = self;
-    dispatch_async(v6, block);
+    dispatch_async(delegateCallbackQueue, block);
   }
 
   else
   {
-    v7 = [(SUManagerEngine *)self engineLog];
-    v5 = [v7 oslog];
+    engineLog = [(SUManagerEngine *)self engineLog];
+    mEMORY[0x277D64400] = [engineLog oslog];
 
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(mEMORY[0x277D64400], OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(SUManagerEngine *)self engineName];
+      engineName = [(SUManagerEngine *)self engineName];
       *buf = 138412290;
-      v12 = v8;
-      _os_log_impl(&dword_26AB34000, v5, OS_LOG_TYPE_DEFAULT, "%@ delegate does not respond to selector(installCompleted:) so not reporting", buf, 0xCu);
+      v12 = engineName;
+      _os_log_impl(&dword_26AB34000, mEMORY[0x277D64400], OS_LOG_TYPE_DEFAULT, "%@ delegate does not respond to selector(installCompleted:) so not reporting", buf, 0xCu);
     }
   }
 
@@ -2415,11 +2415,11 @@ void __62__SUManagerEngine_actionHelper_ReportInstallFailedRollingBack__block_in
   [v2 installCompleted:v1];
 }
 
-- (int64_t)action_ReportInstallFailedRollingBack:(id)a3 error:(id *)a4
+- (int64_t)action_ReportInstallFailedRollingBack:(id)back error:(id *)error
 {
-  v5 = [(SUManagerEngine *)self engineFSM:a3];
-  v6 = [v5 extendedStateQueue];
-  dispatch_assert_queue_V2(v6);
+  v5 = [(SUManagerEngine *)self engineFSM:back];
+  extendedStateQueue = [v5 extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
   [(SUManagerEngine *)self actionHelper_ReportInstallFailedRollingBack];
   return 0;
@@ -2428,32 +2428,32 @@ void __62__SUManagerEngine_actionHelper_ReportInstallFailedRollingBack__block_in
 - (void)actionHelper_ReportDownloadFailedRollingBack
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = [(SUManagerEngine *)self managerDelegate];
+  managerDelegate = [(SUManagerEngine *)self managerDelegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [MEMORY[0x277D64400] sharedCore];
-    v6 = [v5 delegateCallbackQueue];
+    mEMORY[0x277D64400] = [MEMORY[0x277D64400] sharedCore];
+    delegateCallbackQueue = [mEMORY[0x277D64400] delegateCallbackQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __63__SUManagerEngine_actionHelper_ReportDownloadFailedRollingBack__block_invoke;
     block[3] = &unk_279CAA708;
     block[4] = self;
-    dispatch_async(v6, block);
+    dispatch_async(delegateCallbackQueue, block);
   }
 
   else
   {
-    v7 = [(SUManagerEngine *)self engineLog];
-    v5 = [v7 oslog];
+    engineLog = [(SUManagerEngine *)self engineLog];
+    mEMORY[0x277D64400] = [engineLog oslog];
 
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(mEMORY[0x277D64400], OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(SUManagerEngine *)self engineName];
+      engineName = [(SUManagerEngine *)self engineName];
       *buf = 138412290;
-      v12 = v8;
-      _os_log_impl(&dword_26AB34000, v5, OS_LOG_TYPE_DEFAULT, "%@ delegate does not respond to selector(downloadCompleted:) so not reporting", buf, 0xCu);
+      v12 = engineName;
+      _os_log_impl(&dword_26AB34000, mEMORY[0x277D64400], OS_LOG_TYPE_DEFAULT, "%@ delegate does not respond to selector(downloadCompleted:) so not reporting", buf, 0xCu);
     }
   }
 
@@ -2467,11 +2467,11 @@ void __63__SUManagerEngine_actionHelper_ReportDownloadFailedRollingBack__block_i
   [v2 downloadCompleted:v1];
 }
 
-- (int64_t)action_ReportDownloadFailedRollingBack:(id)a3 error:(id *)a4
+- (int64_t)action_ReportDownloadFailedRollingBack:(id)back error:(id *)error
 {
-  v5 = [(SUManagerEngine *)self engineFSM:a3];
-  v6 = [v5 extendedStateQueue];
-  dispatch_assert_queue_V2(v6);
+  v5 = [(SUManagerEngine *)self engineFSM:back];
+  extendedStateQueue = [v5 extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
   [(SUManagerEngine *)self actionHelper_ReportDownloadFailedRollingBack];
   return 0;
@@ -2480,32 +2480,32 @@ void __63__SUManagerEngine_actionHelper_ReportDownloadFailedRollingBack__block_i
 - (void)actionHelper_ReportRemoveFailedRollingBack
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = [(SUManagerEngine *)self managerDelegate];
+  managerDelegate = [(SUManagerEngine *)self managerDelegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [MEMORY[0x277D64400] sharedCore];
-    v6 = [v5 delegateCallbackQueue];
+    mEMORY[0x277D64400] = [MEMORY[0x277D64400] sharedCore];
+    delegateCallbackQueue = [mEMORY[0x277D64400] delegateCallbackQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __61__SUManagerEngine_actionHelper_ReportRemoveFailedRollingBack__block_invoke;
     block[3] = &unk_279CAA708;
     block[4] = self;
-    dispatch_async(v6, block);
+    dispatch_async(delegateCallbackQueue, block);
   }
 
   else
   {
-    v7 = [(SUManagerEngine *)self engineLog];
-    v5 = [v7 oslog];
+    engineLog = [(SUManagerEngine *)self engineLog];
+    mEMORY[0x277D64400] = [engineLog oslog];
 
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(mEMORY[0x277D64400], OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(SUManagerEngine *)self engineName];
+      engineName = [(SUManagerEngine *)self engineName];
       *buf = 138412290;
-      v12 = v8;
-      _os_log_impl(&dword_26AB34000, v5, OS_LOG_TYPE_DEFAULT, "%@ delegate does not respond to selector(removeCompleted:) so not reporting", buf, 0xCu);
+      v12 = engineName;
+      _os_log_impl(&dword_26AB34000, mEMORY[0x277D64400], OS_LOG_TYPE_DEFAULT, "%@ delegate does not respond to selector(removeCompleted:) so not reporting", buf, 0xCu);
     }
   }
 
@@ -2519,49 +2519,49 @@ void __61__SUManagerEngine_actionHelper_ReportRemoveFailedRollingBack__block_inv
   [v2 removeCompleted:v1];
 }
 
-- (int64_t)action_ReportRemoveFailedRollingBack:(id)a3 error:(id *)a4
+- (int64_t)action_ReportRemoveFailedRollingBack:(id)back error:(id *)error
 {
-  v5 = [(SUManagerEngine *)self engineFSM:a3];
-  v6 = [v5 extendedStateQueue];
-  dispatch_assert_queue_V2(v6);
+  v5 = [(SUManagerEngine *)self engineFSM:back];
+  extendedStateQueue = [v5 extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
   [(SUManagerEngine *)self actionHelper_ReportRemoveFailedRollingBack];
   return 0;
 }
 
-- (int64_t)action_ReportDownloadInstalling:(id)a3 error:(id *)a4
+- (int64_t)action_ReportDownloadInstalling:(id)installing error:(id *)error
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = [(SUManagerEngine *)self engineFSM:a3];
-  v6 = [v5 extendedStateQueue];
-  dispatch_assert_queue_V2(v6);
+  v5 = [(SUManagerEngine *)self engineFSM:installing];
+  extendedStateQueue = [v5 extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v7 = [(SUManagerEngine *)self managerDelegate];
-  LOBYTE(v6) = objc_opt_respondsToSelector();
+  managerDelegate = [(SUManagerEngine *)self managerDelegate];
+  LOBYTE(extendedStateQueue) = objc_opt_respondsToSelector();
 
-  if (v6)
+  if (extendedStateQueue)
   {
-    v8 = [MEMORY[0x277D64400] sharedCore];
-    v9 = [v8 delegateCallbackQueue];
+    mEMORY[0x277D64400] = [MEMORY[0x277D64400] sharedCore];
+    delegateCallbackQueue = [mEMORY[0x277D64400] delegateCallbackQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __57__SUManagerEngine_action_ReportDownloadInstalling_error___block_invoke;
     block[3] = &unk_279CAA708;
     block[4] = self;
-    dispatch_async(v9, block);
+    dispatch_async(delegateCallbackQueue, block);
   }
 
   else
   {
-    v10 = [(SUManagerEngine *)self engineLog];
-    v8 = [v10 oslog];
+    engineLog = [(SUManagerEngine *)self engineLog];
+    mEMORY[0x277D64400] = [engineLog oslog];
 
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(mEMORY[0x277D64400], OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [(SUManagerEngine *)self engineName];
+      engineName = [(SUManagerEngine *)self engineName];
       *buf = 138412290;
-      v16 = v11;
-      _os_log_impl(&dword_26AB34000, v8, OS_LOG_TYPE_DEFAULT, "%@ delegate does not respond to selector(downloadCompleted:) so not reporting", buf, 0xCu);
+      v16 = engineName;
+      _os_log_impl(&dword_26AB34000, mEMORY[0x277D64400], OS_LOG_TYPE_DEFAULT, "%@ delegate does not respond to selector(downloadCompleted:) so not reporting", buf, 0xCu);
     }
   }
 
@@ -2576,39 +2576,39 @@ void __57__SUManagerEngine_action_ReportDownloadInstalling_error___block_invoke(
   [v2 downloadCompleted:v1];
 }
 
-- (int64_t)action_ReportRemoveInstalling:(id)a3 error:(id *)a4
+- (int64_t)action_ReportRemoveInstalling:(id)installing error:(id *)error
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = [(SUManagerEngine *)self engineFSM:a3];
-  v6 = [v5 extendedStateQueue];
-  dispatch_assert_queue_V2(v6);
+  v5 = [(SUManagerEngine *)self engineFSM:installing];
+  extendedStateQueue = [v5 extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v7 = [(SUManagerEngine *)self managerDelegate];
-  LOBYTE(v6) = objc_opt_respondsToSelector();
+  managerDelegate = [(SUManagerEngine *)self managerDelegate];
+  LOBYTE(extendedStateQueue) = objc_opt_respondsToSelector();
 
-  if (v6)
+  if (extendedStateQueue)
   {
-    v8 = [MEMORY[0x277D64400] sharedCore];
-    v9 = [v8 delegateCallbackQueue];
+    mEMORY[0x277D64400] = [MEMORY[0x277D64400] sharedCore];
+    delegateCallbackQueue = [mEMORY[0x277D64400] delegateCallbackQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __55__SUManagerEngine_action_ReportRemoveInstalling_error___block_invoke;
     block[3] = &unk_279CAA708;
     block[4] = self;
-    dispatch_async(v9, block);
+    dispatch_async(delegateCallbackQueue, block);
   }
 
   else
   {
-    v10 = [(SUManagerEngine *)self engineLog];
-    v8 = [v10 oslog];
+    engineLog = [(SUManagerEngine *)self engineLog];
+    mEMORY[0x277D64400] = [engineLog oslog];
 
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(mEMORY[0x277D64400], OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [(SUManagerEngine *)self engineName];
+      engineName = [(SUManagerEngine *)self engineName];
       *buf = 138412290;
-      v16 = v11;
-      _os_log_impl(&dword_26AB34000, v8, OS_LOG_TYPE_DEFAULT, "%@ delegate does not respond to selector(removeCompleted:) so not reporting", buf, 0xCu);
+      v16 = engineName;
+      _os_log_impl(&dword_26AB34000, mEMORY[0x277D64400], OS_LOG_TYPE_DEFAULT, "%@ delegate does not respond to selector(removeCompleted:) so not reporting", buf, 0xCu);
     }
   }
 
@@ -2623,41 +2623,41 @@ void __55__SUManagerEngine_action_ReportRemoveInstalling_error___block_invoke(ui
   [v2 removeCompleted:v1];
 }
 
-- (int64_t)action_ReportRollbackInstalling:(id)a3 error:(id *)a4
+- (int64_t)action_ReportRollbackInstalling:(id)installing error:(id *)error
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [(SUManagerEngine *)self engineFSM];
-  v7 = [v6 extendedStateQueue];
-  dispatch_assert_queue_V2(v7);
+  installingCopy = installing;
+  engineFSM = [(SUManagerEngine *)self engineFSM];
+  extendedStateQueue = [engineFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v8 = [(SUManagerEngine *)self managerDelegate];
-  LOBYTE(v7) = objc_opt_respondsToSelector();
+  managerDelegate = [(SUManagerEngine *)self managerDelegate];
+  LOBYTE(extendedStateQueue) = objc_opt_respondsToSelector();
 
-  if (v7)
+  if (extendedStateQueue)
   {
-    v9 = [MEMORY[0x277D64400] sharedCore];
-    v10 = [v9 delegateCallbackQueue];
+    mEMORY[0x277D64400] = [MEMORY[0x277D64400] sharedCore];
+    delegateCallbackQueue = [mEMORY[0x277D64400] delegateCallbackQueue];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __57__SUManagerEngine_action_ReportRollbackInstalling_error___block_invoke;
     v16[3] = &unk_279CAA7C0;
     v16[4] = self;
-    v17 = v5;
-    dispatch_async(v10, v16);
+    v17 = installingCopy;
+    dispatch_async(delegateCallbackQueue, v16);
   }
 
   else
   {
-    v11 = [(SUManagerEngine *)self engineLog];
-    v12 = [v11 oslog];
+    engineLog = [(SUManagerEngine *)self engineLog];
+    oslog = [engineLog oslog];
 
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [(SUManagerEngine *)self engineName];
+      engineName = [(SUManagerEngine *)self engineName];
       *buf = 138412290;
-      v19 = v13;
-      _os_log_impl(&dword_26AB34000, v12, OS_LOG_TYPE_DEFAULT, "%@ delegate does not respond to selector(rollbackCompleted:withError:) so not reporting", buf, 0xCu);
+      v19 = engineName;
+      _os_log_impl(&dword_26AB34000, oslog, OS_LOG_TYPE_DEFAULT, "%@ delegate does not respond to selector(rollbackCompleted:withError:) so not reporting", buf, 0xCu);
     }
   }
 
@@ -2674,39 +2674,39 @@ void __57__SUManagerEngine_action_ReportRollbackInstalling_error___block_invoke(
   [v5 rollbackCompleted:v3 withError:v4];
 }
 
-- (int64_t)action_ReportDownloadAwaitingReboot:(id)a3 error:(id *)a4
+- (int64_t)action_ReportDownloadAwaitingReboot:(id)reboot error:(id *)error
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = [(SUManagerEngine *)self engineFSM:a3];
-  v6 = [v5 extendedStateQueue];
-  dispatch_assert_queue_V2(v6);
+  v5 = [(SUManagerEngine *)self engineFSM:reboot];
+  extendedStateQueue = [v5 extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v7 = [(SUManagerEngine *)self managerDelegate];
-  LOBYTE(v6) = objc_opt_respondsToSelector();
+  managerDelegate = [(SUManagerEngine *)self managerDelegate];
+  LOBYTE(extendedStateQueue) = objc_opt_respondsToSelector();
 
-  if (v6)
+  if (extendedStateQueue)
   {
-    v8 = [MEMORY[0x277D64400] sharedCore];
-    v9 = [v8 delegateCallbackQueue];
+    mEMORY[0x277D64400] = [MEMORY[0x277D64400] sharedCore];
+    delegateCallbackQueue = [mEMORY[0x277D64400] delegateCallbackQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __61__SUManagerEngine_action_ReportDownloadAwaitingReboot_error___block_invoke;
     block[3] = &unk_279CAA708;
     block[4] = self;
-    dispatch_async(v9, block);
+    dispatch_async(delegateCallbackQueue, block);
   }
 
   else
   {
-    v10 = [(SUManagerEngine *)self engineLog];
-    v8 = [v10 oslog];
+    engineLog = [(SUManagerEngine *)self engineLog];
+    mEMORY[0x277D64400] = [engineLog oslog];
 
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(mEMORY[0x277D64400], OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [(SUManagerEngine *)self engineName];
+      engineName = [(SUManagerEngine *)self engineName];
       *buf = 138412290;
-      v16 = v11;
-      _os_log_impl(&dword_26AB34000, v8, OS_LOG_TYPE_DEFAULT, "%@ delegate does not respond to selector(downloadCompleted:) so not reporting", buf, 0xCu);
+      v16 = engineName;
+      _os_log_impl(&dword_26AB34000, mEMORY[0x277D64400], OS_LOG_TYPE_DEFAULT, "%@ delegate does not respond to selector(downloadCompleted:) so not reporting", buf, 0xCu);
     }
   }
 
@@ -2721,39 +2721,39 @@ void __61__SUManagerEngine_action_ReportDownloadAwaitingReboot_error___block_inv
   [v2 downloadCompleted:v1];
 }
 
-- (int64_t)action_ReportInstallAwaitingReboot:(id)a3 error:(id *)a4
+- (int64_t)action_ReportInstallAwaitingReboot:(id)reboot error:(id *)error
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = [(SUManagerEngine *)self engineFSM:a3];
-  v6 = [v5 extendedStateQueue];
-  dispatch_assert_queue_V2(v6);
+  v5 = [(SUManagerEngine *)self engineFSM:reboot];
+  extendedStateQueue = [v5 extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v7 = [(SUManagerEngine *)self managerDelegate];
-  LOBYTE(v6) = objc_opt_respondsToSelector();
+  managerDelegate = [(SUManagerEngine *)self managerDelegate];
+  LOBYTE(extendedStateQueue) = objc_opt_respondsToSelector();
 
-  if (v6)
+  if (extendedStateQueue)
   {
-    v8 = [MEMORY[0x277D64400] sharedCore];
-    v9 = [v8 delegateCallbackQueue];
+    mEMORY[0x277D64400] = [MEMORY[0x277D64400] sharedCore];
+    delegateCallbackQueue = [mEMORY[0x277D64400] delegateCallbackQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __60__SUManagerEngine_action_ReportInstallAwaitingReboot_error___block_invoke;
     block[3] = &unk_279CAA708;
     block[4] = self;
-    dispatch_async(v9, block);
+    dispatch_async(delegateCallbackQueue, block);
   }
 
   else
   {
-    v10 = [(SUManagerEngine *)self engineLog];
-    v8 = [v10 oslog];
+    engineLog = [(SUManagerEngine *)self engineLog];
+    mEMORY[0x277D64400] = [engineLog oslog];
 
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(mEMORY[0x277D64400], OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [(SUManagerEngine *)self engineName];
+      engineName = [(SUManagerEngine *)self engineName];
       *buf = 138412290;
-      v16 = v11;
-      _os_log_impl(&dword_26AB34000, v8, OS_LOG_TYPE_DEFAULT, "%@ delegate does not respond to selector(installCompleted:) so not reporting", buf, 0xCu);
+      v16 = engineName;
+      _os_log_impl(&dword_26AB34000, mEMORY[0x277D64400], OS_LOG_TYPE_DEFAULT, "%@ delegate does not respond to selector(installCompleted:) so not reporting", buf, 0xCu);
     }
   }
 
@@ -2768,39 +2768,39 @@ void __60__SUManagerEngine_action_ReportInstallAwaitingReboot_error___block_invo
   [v2 installCompleted:v1];
 }
 
-- (int64_t)action_ReportRemoveAwaitingReboot:(id)a3 error:(id *)a4
+- (int64_t)action_ReportRemoveAwaitingReboot:(id)reboot error:(id *)error
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = [(SUManagerEngine *)self engineFSM:a3];
-  v6 = [v5 extendedStateQueue];
-  dispatch_assert_queue_V2(v6);
+  v5 = [(SUManagerEngine *)self engineFSM:reboot];
+  extendedStateQueue = [v5 extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v7 = [(SUManagerEngine *)self managerDelegate];
-  LOBYTE(v6) = objc_opt_respondsToSelector();
+  managerDelegate = [(SUManagerEngine *)self managerDelegate];
+  LOBYTE(extendedStateQueue) = objc_opt_respondsToSelector();
 
-  if (v6)
+  if (extendedStateQueue)
   {
-    v8 = [MEMORY[0x277D64400] sharedCore];
-    v9 = [v8 delegateCallbackQueue];
+    mEMORY[0x277D64400] = [MEMORY[0x277D64400] sharedCore];
+    delegateCallbackQueue = [mEMORY[0x277D64400] delegateCallbackQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __59__SUManagerEngine_action_ReportRemoveAwaitingReboot_error___block_invoke;
     block[3] = &unk_279CAA708;
     block[4] = self;
-    dispatch_async(v9, block);
+    dispatch_async(delegateCallbackQueue, block);
   }
 
   else
   {
-    v10 = [(SUManagerEngine *)self engineLog];
-    v8 = [v10 oslog];
+    engineLog = [(SUManagerEngine *)self engineLog];
+    mEMORY[0x277D64400] = [engineLog oslog];
 
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(mEMORY[0x277D64400], OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [(SUManagerEngine *)self engineName];
+      engineName = [(SUManagerEngine *)self engineName];
       *buf = 138412290;
-      v16 = v11;
-      _os_log_impl(&dword_26AB34000, v8, OS_LOG_TYPE_DEFAULT, "%@ delegate does not respond to selector(removeCompleted:) so not reporting", buf, 0xCu);
+      v16 = engineName;
+      _os_log_impl(&dword_26AB34000, mEMORY[0x277D64400], OS_LOG_TYPE_DEFAULT, "%@ delegate does not respond to selector(removeCompleted:) so not reporting", buf, 0xCu);
     }
   }
 
@@ -2815,41 +2815,41 @@ void __59__SUManagerEngine_action_ReportRemoveAwaitingReboot_error___block_invok
   [v2 removeCompleted:v1];
 }
 
-- (int64_t)action_ReportRollbackAwaitingReboot:(id)a3 error:(id *)a4
+- (int64_t)action_ReportRollbackAwaitingReboot:(id)reboot error:(id *)error
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [(SUManagerEngine *)self engineFSM];
-  v7 = [v6 extendedStateQueue];
-  dispatch_assert_queue_V2(v7);
+  rebootCopy = reboot;
+  engineFSM = [(SUManagerEngine *)self engineFSM];
+  extendedStateQueue = [engineFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v8 = [(SUManagerEngine *)self managerDelegate];
-  LOBYTE(v7) = objc_opt_respondsToSelector();
+  managerDelegate = [(SUManagerEngine *)self managerDelegate];
+  LOBYTE(extendedStateQueue) = objc_opt_respondsToSelector();
 
-  if (v7)
+  if (extendedStateQueue)
   {
-    v9 = [MEMORY[0x277D64400] sharedCore];
-    v10 = [v9 delegateCallbackQueue];
+    mEMORY[0x277D64400] = [MEMORY[0x277D64400] sharedCore];
+    delegateCallbackQueue = [mEMORY[0x277D64400] delegateCallbackQueue];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __61__SUManagerEngine_action_ReportRollbackAwaitingReboot_error___block_invoke;
     v16[3] = &unk_279CAA7C0;
     v16[4] = self;
-    v17 = v5;
-    dispatch_async(v10, v16);
+    v17 = rebootCopy;
+    dispatch_async(delegateCallbackQueue, v16);
   }
 
   else
   {
-    v11 = [(SUManagerEngine *)self engineLog];
-    v12 = [v11 oslog];
+    engineLog = [(SUManagerEngine *)self engineLog];
+    oslog = [engineLog oslog];
 
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [(SUManagerEngine *)self engineName];
+      engineName = [(SUManagerEngine *)self engineName];
       *buf = 138412290;
-      v19 = v13;
-      _os_log_impl(&dword_26AB34000, v12, OS_LOG_TYPE_DEFAULT, "%@ delegate does not respond to selector(rollbackCompleted:withError:) so not reporting", buf, 0xCu);
+      v19 = engineName;
+      _os_log_impl(&dword_26AB34000, oslog, OS_LOG_TYPE_DEFAULT, "%@ delegate does not respond to selector(rollbackCompleted:withError:) so not reporting", buf, 0xCu);
     }
   }
 
@@ -2866,46 +2866,46 @@ void __61__SUManagerEngine_action_ReportRollbackAwaitingReboot_error___block_inv
   [v5 rollbackCompleted:v3 withError:v4];
 }
 
-- (int64_t)action_ReportDownloadFailedRemoveAll:(id)a3 error:(id *)a4
+- (int64_t)action_ReportDownloadFailedRemoveAll:(id)all error:(id *)error
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [(SUManagerEngine *)self engineFSM];
-  v7 = [v6 extendedStateQueue];
-  dispatch_assert_queue_V2(v7);
+  allCopy = all;
+  engineFSM = [(SUManagerEngine *)self engineFSM];
+  extendedStateQueue = [engineFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v8 = [(SUManagerEngine *)self managerDelegate];
-  LOBYTE(v7) = objc_opt_respondsToSelector();
+  managerDelegate = [(SUManagerEngine *)self managerDelegate];
+  LOBYTE(extendedStateQueue) = objc_opt_respondsToSelector();
 
-  if (v7)
+  if (extendedStateQueue)
   {
-    v9 = [MEMORY[0x277D64400] sharedCore];
-    v10 = [v9 delegateCallbackQueue];
+    mEMORY[0x277D64400] = [MEMORY[0x277D64400] sharedCore];
+    delegateCallbackQueue = [mEMORY[0x277D64400] delegateCallbackQueue];
     v17 = MEMORY[0x277D85DD0];
     v18 = 3221225472;
     v19 = __62__SUManagerEngine_action_ReportDownloadFailedRemoveAll_error___block_invoke;
     v20 = &unk_279CAA7C0;
-    v21 = self;
-    v22 = v5;
-    dispatch_async(v10, &v17);
+    selfCopy = self;
+    v22 = allCopy;
+    dispatch_async(delegateCallbackQueue, &v17);
   }
 
   else
   {
-    v11 = [(SUManagerEngine *)self engineLog];
-    v12 = [v11 oslog];
+    engineLog = [(SUManagerEngine *)self engineLog];
+    oslog = [engineLog oslog];
 
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [(SUManagerEngine *)self engineName];
+      engineName = [(SUManagerEngine *)self engineName];
       *buf = 138412290;
-      v24 = v13;
-      _os_log_impl(&dword_26AB34000, v12, OS_LOG_TYPE_DEFAULT, "%@ delegate does not respond to selector(downloadCompleted:) so not reporting", buf, 0xCu);
+      v24 = engineName;
+      _os_log_impl(&dword_26AB34000, oslog, OS_LOG_TYPE_DEFAULT, "%@ delegate does not respond to selector(downloadCompleted:) so not reporting", buf, 0xCu);
     }
   }
 
   v14 = [(SUManagerEngine *)self engineFSM:v17];
-  [v14 followupEvent:@"UpdateFailed" withInfo:v5];
+  [v14 followupEvent:@"UpdateFailed" withInfo:allCopy];
 
   v15 = *MEMORY[0x277D85DE8];
   return 0;
@@ -2918,37 +2918,37 @@ void __62__SUManagerEngine_action_ReportDownloadFailedRemoveAll_error___block_in
   [v3 downloadCompleted:v2];
 }
 
-- (void)actionHelper_ReportApplyFailed:(id)a3
+- (void)actionHelper_ReportApplyFailed:(id)failed
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SUManagerEngine *)self managerDelegate];
+  failedCopy = failed;
+  managerDelegate = [(SUManagerEngine *)self managerDelegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [MEMORY[0x277D64400] sharedCore];
-    v8 = [v7 delegateCallbackQueue];
+    mEMORY[0x277D64400] = [MEMORY[0x277D64400] sharedCore];
+    delegateCallbackQueue = [mEMORY[0x277D64400] delegateCallbackQueue];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __50__SUManagerEngine_actionHelper_ReportApplyFailed___block_invoke;
     v13[3] = &unk_279CAA7C0;
     v13[4] = self;
-    v14 = v4;
-    dispatch_async(v8, v13);
+    v14 = failedCopy;
+    dispatch_async(delegateCallbackQueue, v13);
   }
 
   else
   {
-    v9 = [(SUManagerEngine *)self engineLog];
-    v10 = [v9 oslog];
+    engineLog = [(SUManagerEngine *)self engineLog];
+    oslog = [engineLog oslog];
 
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [(SUManagerEngine *)self engineName];
+      engineName = [(SUManagerEngine *)self engineName];
       *buf = 138412290;
-      v16 = v11;
-      _os_log_impl(&dword_26AB34000, v10, OS_LOG_TYPE_DEFAULT, "%@ delegate does not respond to selector(installCompleted:) so not reporting", buf, 0xCu);
+      v16 = engineName;
+      _os_log_impl(&dword_26AB34000, oslog, OS_LOG_TYPE_DEFAULT, "%@ delegate does not respond to selector(installCompleted:) so not reporting", buf, 0xCu);
     }
   }
 
@@ -2961,69 +2961,69 @@ void __50__SUManagerEngine_actionHelper_ReportApplyFailed___block_invoke(uint64_
   [v2 installCompleted:*(a1 + 40)];
 }
 
-- (int64_t)action_ReportApplyFailed:(id)a3 error:(id *)a4
+- (int64_t)action_ReportApplyFailed:(id)failed error:(id *)error
 {
-  v5 = a3;
-  v6 = [(SUManagerEngine *)self engineFSM];
-  v7 = [v6 extendedStateQueue];
-  dispatch_assert_queue_V2(v7);
+  failedCopy = failed;
+  engineFSM = [(SUManagerEngine *)self engineFSM];
+  extendedStateQueue = [engineFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v8 = [v5 error];
+  error = [failedCopy error];
 
-  [(SUManagerEngine *)self actionHelper_ReportApplyFailed:v8];
+  [(SUManagerEngine *)self actionHelper_ReportApplyFailed:error];
   return 0;
 }
 
-- (int64_t)action_ReportApplyFailedRemoveAll:(id)a3 error:(id *)a4
+- (int64_t)action_ReportApplyFailedRemoveAll:(id)all error:(id *)error
 {
-  v5 = a3;
-  v6 = [(SUManagerEngine *)self engineFSM];
-  v7 = [v6 extendedStateQueue];
-  dispatch_assert_queue_V2(v7);
+  allCopy = all;
+  engineFSM = [(SUManagerEngine *)self engineFSM];
+  extendedStateQueue = [engineFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v8 = [v5 error];
-  v9 = [SUUtility errorWithCode:78 originalError:v8];
+  error = [allCopy error];
+  v9 = [SUUtility errorWithCode:78 originalError:error];
 
   [(SUManagerEngine *)self actionHelper_ReportApplyFailed:v9];
-  v10 = [(SUManagerEngine *)self engineFSM];
-  [v10 followupEvent:@"ApplyFailedRemoveNow" withInfo:v5];
+  engineFSM2 = [(SUManagerEngine *)self engineFSM];
+  [engineFSM2 followupEvent:@"ApplyFailedRemoveNow" withInfo:allCopy];
 
   return 0;
 }
 
-- (int64_t)action_ReportAwaitingReboot:(id)a3 error:(id *)a4
+- (int64_t)action_ReportAwaitingReboot:(id)reboot error:(id *)error
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = [(SUManagerEngine *)self engineFSM:a3];
-  v6 = [v5 extendedStateQueue];
-  dispatch_assert_queue_V2(v6);
+  v5 = [(SUManagerEngine *)self engineFSM:reboot];
+  extendedStateQueue = [v5 extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v7 = [(SUManagerEngine *)self managerDelegate];
-  LOBYTE(v6) = objc_opt_respondsToSelector();
+  managerDelegate = [(SUManagerEngine *)self managerDelegate];
+  LOBYTE(extendedStateQueue) = objc_opt_respondsToSelector();
 
-  if (v6)
+  if (extendedStateQueue)
   {
-    v8 = [MEMORY[0x277D64400] sharedCore];
-    v9 = [v8 delegateCallbackQueue];
+    mEMORY[0x277D64400] = [MEMORY[0x277D64400] sharedCore];
+    delegateCallbackQueue = [mEMORY[0x277D64400] delegateCallbackQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __53__SUManagerEngine_action_ReportAwaitingReboot_error___block_invoke;
     block[3] = &unk_279CAA708;
     block[4] = self;
-    dispatch_async(v9, block);
+    dispatch_async(delegateCallbackQueue, block);
   }
 
   else
   {
-    v10 = [(SUManagerEngine *)self engineLog];
-    v8 = [v10 oslog];
+    engineLog = [(SUManagerEngine *)self engineLog];
+    mEMORY[0x277D64400] = [engineLog oslog];
 
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(mEMORY[0x277D64400], OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [(SUManagerEngine *)self engineName];
+      engineName = [(SUManagerEngine *)self engineName];
       *buf = 138412290;
-      v16 = v11;
-      _os_log_impl(&dword_26AB34000, v8, OS_LOG_TYPE_DEFAULT, "%@ delegate does not respond to selector(installCompleted:) so not reporting", buf, 0xCu);
+      v16 = engineName;
+      _os_log_impl(&dword_26AB34000, mEMORY[0x277D64400], OS_LOG_TYPE_DEFAULT, "%@ delegate does not respond to selector(installCompleted:) so not reporting", buf, 0xCu);
     }
   }
 
@@ -3037,39 +3037,39 @@ void __53__SUManagerEngine_action_ReportAwaitingReboot_error___block_invoke(uint
   [v1 installCompleted:0];
 }
 
-- (void)actionHelper_ReportRollbackCompleted:(id)a3 withError:(id)a4
+- (void)actionHelper_ReportRollbackCompleted:(id)completed withError:(id)error
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SUManagerEngine *)self managerDelegate];
+  completedCopy = completed;
+  errorCopy = error;
+  managerDelegate = [(SUManagerEngine *)self managerDelegate];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [MEMORY[0x277D64400] sharedCore];
-    v11 = [v10 delegateCallbackQueue];
+    mEMORY[0x277D64400] = [MEMORY[0x277D64400] sharedCore];
+    delegateCallbackQueue = [mEMORY[0x277D64400] delegateCallbackQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __66__SUManagerEngine_actionHelper_ReportRollbackCompleted_withError___block_invoke;
     block[3] = &unk_279CAA798;
     block[4] = self;
-    v17 = v6;
-    v18 = v7;
-    dispatch_async(v11, block);
+    v17 = completedCopy;
+    v18 = errorCopy;
+    dispatch_async(delegateCallbackQueue, block);
   }
 
   else
   {
-    v12 = [(SUManagerEngine *)self engineLog];
-    v13 = [v12 oslog];
+    engineLog = [(SUManagerEngine *)self engineLog];
+    oslog = [engineLog oslog];
 
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [(SUManagerEngine *)self engineName];
+      engineName = [(SUManagerEngine *)self engineName];
       *buf = 138412290;
-      v20 = v14;
-      _os_log_impl(&dword_26AB34000, v13, OS_LOG_TYPE_DEFAULT, "%@ delegate does not respond to selector(rollbackCompleted:withError:) so not reporting", buf, 0xCu);
+      v20 = engineName;
+      _os_log_impl(&dword_26AB34000, oslog, OS_LOG_TYPE_DEFAULT, "%@ delegate does not respond to selector(rollbackCompleted:withError:) so not reporting", buf, 0xCu);
     }
   }
 
@@ -3082,66 +3082,66 @@ void __66__SUManagerEngine_actionHelper_ReportRollbackCompleted_withError___bloc
   [v2 rollbackCompleted:*(a1 + 40) withError:*(a1 + 48)];
 }
 
-- (int64_t)action_ReportRollbackFailed:(id)a3 error:(id *)a4
+- (int64_t)action_ReportRollbackFailed:(id)failed error:(id *)error
 {
-  v5 = a3;
-  v6 = [(SUManagerEngine *)self engineFSM];
-  v7 = [v6 extendedStateQueue];
-  dispatch_assert_queue_V2(v7);
+  failedCopy = failed;
+  engineFSM = [(SUManagerEngine *)self engineFSM];
+  extendedStateQueue = [engineFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v8 = [v5 rollback];
-  v9 = [v8 eligibleRollback];
-  v10 = [v5 error];
+  rollback = [failedCopy rollback];
+  eligibleRollback = [rollback eligibleRollback];
+  error = [failedCopy error];
 
-  [(SUManagerEngine *)self actionHelper_ReportRollbackCompleted:v9 withError:v10];
+  [(SUManagerEngine *)self actionHelper_ReportRollbackCompleted:eligibleRollback withError:error];
   return 0;
 }
 
-- (int64_t)action_ReportRollbackSucceeded:(id)a3 error:(id *)a4
+- (int64_t)action_ReportRollbackSucceeded:(id)succeeded error:(id *)error
 {
-  v5 = a3;
-  v6 = [(SUManagerEngine *)self engineFSM];
-  v7 = [v6 extendedStateQueue];
-  dispatch_assert_queue_V2(v7);
+  succeededCopy = succeeded;
+  engineFSM = [(SUManagerEngine *)self engineFSM];
+  extendedStateQueue = [engineFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v8 = [v5 rollback];
-  v9 = [v8 eligibleRollback];
-  v10 = [v5 error];
+  rollback = [succeededCopy rollback];
+  eligibleRollback = [rollback eligibleRollback];
+  error = [succeededCopy error];
 
-  [(SUManagerEngine *)self actionHelper_ReportRollbackCompleted:v9 withError:v10];
+  [(SUManagerEngine *)self actionHelper_ReportRollbackCompleted:eligibleRollback withError:error];
   return 0;
 }
 
-- (int64_t)actionUnknownAction:(id)a3 error:(id *)a4
+- (int64_t)actionUnknownAction:(id)action error:(id *)error
 {
   v5 = MEMORY[0x277CCACA8];
-  v6 = a3;
-  v7 = [[v5 alloc] initWithFormat:@"unknown action(%@)", v6];
+  actionCopy = action;
+  actionCopy = [[v5 alloc] initWithFormat:@"unknown action(%@)", actionCopy];
 
-  v8 = [(SUManagerEngine *)self engineFSM];
-  v9 = [v8 diag];
-  [v9 dumpTracked:v7 dumpingTo:5 usingFilename:0 clearingStatistics:0 clearingHistory:0];
+  engineFSM = [(SUManagerEngine *)self engineFSM];
+  diag = [engineFSM diag];
+  [diag dumpTracked:actionCopy dumpingTo:5 usingFilename:0 clearingStatistics:0 clearingHistory:0];
 
-  v10 = [MEMORY[0x277D64400] sharedCore];
-  v11 = [v10 buildError:8116 underlying:0 description:v7];
+  mEMORY[0x277D64400] = [MEMORY[0x277D64400] sharedCore];
+  v11 = [mEMORY[0x277D64400] buildError:8116 underlying:0 description:actionCopy];
 
-  v12 = [(SUManagerEngine *)self engineFSM];
-  v13 = [v12 diag];
-  [v13 trackAnomaly:@"[ENGINE]" forReason:@"engine FSM has reported an anomaly" withResult:objc_msgSend(v11 withError:{"code"), v11}];
+  engineFSM2 = [(SUManagerEngine *)self engineFSM];
+  diag2 = [engineFSM2 diag];
+  [diag2 trackAnomaly:@"[ENGINE]" forReason:@"engine FSM has reported an anomaly" withResult:objc_msgSend(v11 withError:{"code"), v11}];
 
   return 0;
 }
 
-- (SUManagerEngine)initWithDelegate:(id)a3
+- (SUManagerEngine)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v44.receiver = self;
   v44.super_class = SUManagerEngine;
   v5 = [(SUManagerEngine *)&v44 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_managerDelegate, v4);
+    objc_storeWeak(&v5->_managerDelegate, delegateCopy);
     v7 = [objc_alloc(MEMORY[0x277D64468]) initWithCategory:@"engine"];
     engineLog = v6->_engineLog;
     v6->_engineLog = v7;
@@ -3164,9 +3164,9 @@ void __66__SUManagerEngine_actionHelper_ReportRollbackCompleted_withError___bloc
     engineName = v6->_engineName;
     v6->_engineName = v21;
 
-    v23 = [objc_opt_class() _generateStateTable];
+    _generateStateTable = [objc_opt_class() _generateStateTable];
     stateTable = v6->_stateTable;
-    v6->_stateTable = v23;
+    v6->_stateTable = _generateStateTable;
 
     v25 = objc_alloc(MEMORY[0x277D64450]);
     v26 = [v25 initMachine:v6->_engineName withTable:v6->_stateTable startingIn:*MEMORY[0x277D643F0] usingDelegate:v6 registeringAllInfoClass:objc_opt_class()];
@@ -3193,10 +3193,10 @@ void __66__SUManagerEngine_actionHelper_ReportRollbackCompleted_withError___bloc
 
     *&v6->_activating = 0;
     v6->_loadBrainRetries = 0;
-    v38 = [MEMORY[0x277CCAD78] UUID];
-    v39 = [v38 UUIDString];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
     rollbackUUID = v6->_rollbackUUID;
-    v6->_rollbackUUID = v39;
+    v6->_rollbackUUID = uUIDString;
   }
 
   v41 = v6;
@@ -3205,19 +3205,19 @@ LABEL_8:
   return v41;
 }
 
-- (void)activateLoadingPersisted:(id)a3
+- (void)activateLoadingPersisted:(id)persisted
 {
-  v4 = a3;
-  v5 = [(SUManagerEngine *)self engineFSM];
-  v6 = [v5 extendedStateQueue];
+  persistedCopy = persisted;
+  engineFSM = [(SUManagerEngine *)self engineFSM];
+  extendedStateQueue = [engineFSM extendedStateQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __44__SUManagerEngine_activateLoadingPersisted___block_invoke;
   v8[3] = &unk_279CAA7C0;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = persistedCopy;
+  v7 = persistedCopy;
+  dispatch_async(extendedStateQueue, v8);
 }
 
 void __44__SUManagerEngine_activateLoadingPersisted___block_invoke(uint64_t a1)
@@ -3482,77 +3482,77 @@ LABEL_39:
   v35 = *MEMORY[0x277D85DE8];
 }
 
-- (void)downloadUpdate:(id)a3
+- (void)downloadUpdate:(id)update
 {
-  v4 = a3;
-  v6 = [(SUManagerEngine *)self engineFSM];
-  v5 = [[SUManagerEngineParam alloc] initWithDownloadDescriptor:v4];
+  updateCopy = update;
+  engineFSM = [(SUManagerEngine *)self engineFSM];
+  v5 = [[SUManagerEngineParam alloc] initWithDownloadDescriptor:updateCopy];
 
-  [v6 postEvent:@"DownloadAndPrepare" withInfo:v5];
+  [engineFSM postEvent:@"DownloadAndPrepare" withInfo:v5];
 }
 
-- (void)refreshInstallTonightConfig:(id)a3
+- (void)refreshInstallTonightConfig:(id)config
 {
-  v4 = a3;
-  v5 = [(SUManagerEngine *)self engineFSM];
-  v6 = [v5 extendedStateQueue];
+  configCopy = config;
+  engineFSM = [(SUManagerEngine *)self engineFSM];
+  extendedStateQueue = [engineFSM extendedStateQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __47__SUManagerEngine_refreshInstallTonightConfig___block_invoke;
   v8[3] = &unk_279CAA7C0;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = configCopy;
+  v7 = configCopy;
+  dispatch_async(extendedStateQueue, v8);
 }
 
-- (void)_updatePolicyFactoryMetricEventFields:(id)a3 updateUUID:(id)a4 cleanupLevel:(id)a5
+- (void)_updatePolicyFactoryMetricEventFields:(id)fields updateUUID:(id)d cleanupLevel:(id)level
 {
-  v18 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(SUManagerEngine *)self engineFSM];
-  v11 = [v10 extendedStateQueue];
-  dispatch_assert_queue_V2(v11);
+  fieldsCopy = fields;
+  dCopy = d;
+  levelCopy = level;
+  engineFSM = [(SUManagerEngine *)self engineFSM];
+  extendedStateQueue = [engineFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
   v12 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v13 = v12;
-  if (v18)
+  if (fieldsCopy)
   {
-    [v12 setValue:v18 forKey:*MEMORY[0x277D64620]];
+    [v12 setValue:fieldsCopy forKey:*MEMORY[0x277D64620]];
   }
 
-  if (v8)
+  if (dCopy)
   {
-    [v13 setValue:v8 forKey:*MEMORY[0x277D647C0]];
+    [v13 setValue:dCopy forKey:*MEMORY[0x277D647C0]];
   }
 
-  if (v9)
+  if (levelCopy)
   {
-    v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@", v9];
-    [v13 setSafeObject:v14 forKey:@"cleanupLevel"];
+    levelCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@", levelCopy];
+    [v13 setSafeObject:levelCopy forKey:@"cleanupLevel"];
   }
 
-  v15 = [(SUManagerEngine *)self policyFactory];
-  v16 = [v15 globalOptions];
+  policyFactory = [(SUManagerEngine *)self policyFactory];
+  globalOptions = [policyFactory globalOptions];
 
-  [v16 appendUpdateMetricEventFields:v13];
-  v17 = [(SUManagerEngine *)self policyFactory];
-  [v17 setGlobalOptions:v16];
+  [globalOptions appendUpdateMetricEventFields:v13];
+  policyFactory2 = [(SUManagerEngine *)self policyFactory];
+  [policyFactory2 setGlobalOptions:globalOptions];
 }
 
-- (void)installUpdate:(id)a3
+- (void)installUpdate:(id)update
 {
-  v4 = a3;
-  v6 = [(SUManagerEngine *)self engineFSM];
-  v5 = [[SUManagerEngineParam alloc] initWithInstallOptions:v4];
+  updateCopy = update;
+  engineFSM = [(SUManagerEngine *)self engineFSM];
+  v5 = [[SUManagerEngineParam alloc] initWithInstallOptions:updateCopy];
 
-  [v6 postEvent:@"InstallUpdate" withInfo:v5];
+  [engineFSM postEvent:@"InstallUpdate" withInfo:v5];
 }
 
-- (void)removeUpdateKeepingDocAssets:(BOOL)a3
+- (void)removeUpdateKeepingDocAssets:(BOOL)assets
 {
-  if (a3)
+  if (assets)
   {
     v4 = [[SUManagerEngineParam alloc] initWithPurgeOptions:1 withError:0];
   }
@@ -3563,61 +3563,61 @@ LABEL_39:
   }
 
   v6 = v4;
-  v5 = [(SUManagerEngine *)self engineFSM];
-  [v5 postEvent:@"RemoveUpdate" withInfo:v6];
+  engineFSM = [(SUManagerEngine *)self engineFSM];
+  [engineFSM postEvent:@"RemoveUpdate" withInfo:v6];
 }
 
 - (id)availableRollback
 {
-  v3 = [(SUManagerEngine *)self updateControl];
+  updateControl = [(SUManagerEngine *)self updateControl];
 
-  if (!v3)
+  if (!updateControl)
   {
     v4 = [objc_alloc(MEMORY[0x277D641F0]) initWithDelegate:self updateDescriptor:0 updateUUID:self->_rollbackUUID];
     [(SUManagerEngine *)self setUpdateControl:v4];
   }
 
-  v5 = [(SUManagerEngine *)self updateControl];
-  v6 = [v5 rollbackAvailable];
+  updateControl2 = [(SUManagerEngine *)self updateControl];
+  rollbackAvailable = [updateControl2 rollbackAvailable];
 
-  return v6;
+  return rollbackAvailable;
 }
 
 - (id)previousRollback
 {
-  v3 = [(SUManagerEngine *)self updateControl];
+  updateControl = [(SUManagerEngine *)self updateControl];
 
-  if (!v3)
+  if (!updateControl)
   {
     v4 = [objc_alloc(MEMORY[0x277D641F0]) initWithDelegate:self updateDescriptor:0 updateUUID:self->_rollbackUUID];
     [(SUManagerEngine *)self setUpdateControl:v4];
   }
 
-  v5 = [(SUManagerEngine *)self updateControl];
-  v6 = [v5 previousRollback];
+  updateControl2 = [(SUManagerEngine *)self updateControl];
+  previousRollback = [updateControl2 previousRollback];
 
-  return v6;
+  return previousRollback;
 }
 
-- (void)rollbackUpdateWithOptions:(id)a3
+- (void)rollbackUpdateWithOptions:(id)options
 {
-  v4 = a3;
-  v6 = [(SUManagerEngine *)self engineFSM];
-  v5 = [[SUManagerEngineParam alloc] initWithRollbackOptions:v4];
+  optionsCopy = options;
+  engineFSM = [(SUManagerEngine *)self engineFSM];
+  v5 = [[SUManagerEngineParam alloc] initWithRollbackOptions:optionsCopy];
 
-  [v6 postEvent:@"RollbackRequested" withInfo:v5];
+  [engineFSM postEvent:@"RollbackRequested" withInfo:v5];
 }
 
 - (void)onUnlock
 {
-  v3 = [(SUManagerEngine *)self engineFSM];
-  v4 = [v3 extendedStateQueue];
+  engineFSM = [(SUManagerEngine *)self engineFSM];
+  extendedStateQueue = [engineFSM extendedStateQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __27__SUManagerEngine_onUnlock__block_invoke;
   block[3] = &unk_279CAA708;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(extendedStateQueue, block);
 }
 
 void __27__SUManagerEngine_onUnlock__block_invoke(uint64_t a1)
@@ -3650,19 +3650,19 @@ void __27__SUManagerEngine_onUnlock__block_invoke_2(uint64_t a1)
   [v1 sendUnlockNotifications:0];
 }
 
-- (void)createBrainLoadLockAssertion:(id)a3
+- (void)createBrainLoadLockAssertion:(id)assertion
 {
-  v4 = a3;
-  v5 = [(SUManagerEngine *)self engineFSM];
-  v6 = [v5 extendedStateQueue];
+  assertionCopy = assertion;
+  engineFSM = [(SUManagerEngine *)self engineFSM];
+  extendedStateQueue = [engineFSM extendedStateQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __48__SUManagerEngine_createBrainLoadLockAssertion___block_invoke;
   v8[3] = &unk_279CAA8D0;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = assertionCopy;
+  v7 = assertionCopy;
+  dispatch_async(extendedStateQueue, v8);
 }
 
 void __48__SUManagerEngine_createBrainLoadLockAssertion___block_invoke(uint64_t a1)
@@ -3678,11 +3678,11 @@ void __48__SUManagerEngine_createBrainLoadLockAssertion___block_invoke(uint64_t 
   }
 }
 
-- (BOOL)_queue_createBrainLoadLockAssertion:(id *)a3
+- (BOOL)_queue_createBrainLoadLockAssertion:(id *)assertion
 {
-  v5 = [(SUManagerEngine *)self engineFSM];
-  v6 = [v5 extendedStateQueue];
-  dispatch_assert_queue_V2(v6);
+  engineFSM = [(SUManagerEngine *)self engineFSM];
+  extendedStateQueue = [engineFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
   v7 = +[SUKeybagInterface sharedInstance];
   v8 = [v7 createPreventLockAssertionWithDuration:240];
@@ -3690,27 +3690,27 @@ void __48__SUManagerEngine_createBrainLoadLockAssertion___block_invoke(uint64_t 
   self->_lockAssertion = v8;
 
   v10 = self->_lockAssertion;
-  if (a3 && !v10)
+  if (assertion && !v10)
   {
-    *a3 = [SUUtility errorWithCode:-1];
+    *assertion = [SUUtility errorWithCode:-1];
   }
 
   return v10 != 0;
 }
 
-- (void)updateBrainLoadProgress:(id)a3
+- (void)updateBrainLoadProgress:(id)progress
 {
-  v4 = a3;
-  v5 = [(SUManagerEngine *)self engineFSM];
-  v6 = [v5 extendedStateQueue];
+  progressCopy = progress;
+  engineFSM = [(SUManagerEngine *)self engineFSM];
+  extendedStateQueue = [engineFSM extendedStateQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __43__SUManagerEngine_updateBrainLoadProgress___block_invoke;
   v8[3] = &unk_279CAA7C0;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = progressCopy;
+  v7 = progressCopy;
+  dispatch_async(extendedStateQueue, v8);
 }
 
 void __43__SUManagerEngine_updateBrainLoadProgress___block_invoke(uint64_t a1)
@@ -3720,19 +3720,19 @@ void __43__SUManagerEngine_updateBrainLoadProgress___block_invoke(uint64_t a1)
   [v3 postEvent:@"UpdateProgress" withInfo:v2];
 }
 
-- (void)updateBrainLoadStalled:(id)a3
+- (void)updateBrainLoadStalled:(id)stalled
 {
-  v4 = a3;
-  v5 = [(SUManagerEngine *)self engineFSM];
-  v6 = [v5 extendedStateQueue];
+  stalledCopy = stalled;
+  engineFSM = [(SUManagerEngine *)self engineFSM];
+  extendedStateQueue = [engineFSM extendedStateQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __42__SUManagerEngine_updateBrainLoadStalled___block_invoke;
   v8[3] = &unk_279CAA7C0;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = stalledCopy;
+  v7 = stalledCopy;
+  dispatch_async(extendedStateQueue, v8);
 }
 
 void __42__SUManagerEngine_updateBrainLoadStalled___block_invoke(uint64_t a1)
@@ -3742,19 +3742,19 @@ void __42__SUManagerEngine_updateBrainLoadStalled___block_invoke(uint64_t a1)
   [v3 postEvent:@"UpdateProgress" withInfo:v2];
 }
 
-- (void)updateBrainLoaded:(id)a3
+- (void)updateBrainLoaded:(id)loaded
 {
-  v4 = a3;
-  v5 = [(SUManagerEngine *)self engineFSM];
-  v6 = [v5 extendedStateQueue];
+  loadedCopy = loaded;
+  engineFSM = [(SUManagerEngine *)self engineFSM];
+  extendedStateQueue = [engineFSM extendedStateQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __37__SUManagerEngine_updateBrainLoaded___block_invoke;
   v8[3] = &unk_279CAA7C0;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = loadedCopy;
+  v7 = loadedCopy;
+  dispatch_async(extendedStateQueue, v8);
 }
 
 void __37__SUManagerEngine_updateBrainLoaded___block_invoke(uint64_t a1)
@@ -3768,33 +3768,33 @@ void __37__SUManagerEngine_updateBrainLoaded___block_invoke(uint64_t a1)
 - (void)updateAssetDownloadPreflighted
 {
   v9 = *MEMORY[0x277D85DE8];
-  v3 = [(SUManagerEngine *)self engineLog];
-  v4 = [v3 oslog];
+  engineLog = [(SUManagerEngine *)self engineLog];
+  oslog = [engineLog oslog];
 
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(SUManagerEngine *)self engineName];
+    engineName = [(SUManagerEngine *)self engineName];
     v7 = 138412290;
-    v8 = v5;
-    _os_log_impl(&dword_26AB34000, v4, OS_LOG_TYPE_DEFAULT, "%@ update asset download preflighted", &v7, 0xCu);
+    v8 = engineName;
+    _os_log_impl(&dword_26AB34000, oslog, OS_LOG_TYPE_DEFAULT, "%@ update asset download preflighted", &v7, 0xCu);
   }
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateAssetDownloadProgress:(id)a3
+- (void)updateAssetDownloadProgress:(id)progress
 {
-  v4 = a3;
-  v5 = [(SUManagerEngine *)self engineFSM];
-  v6 = [v5 extendedStateQueue];
+  progressCopy = progress;
+  engineFSM = [(SUManagerEngine *)self engineFSM];
+  extendedStateQueue = [engineFSM extendedStateQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __47__SUManagerEngine_updateAssetDownloadProgress___block_invoke;
   v8[3] = &unk_279CAA7C0;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = progressCopy;
+  v7 = progressCopy;
+  dispatch_async(extendedStateQueue, v8);
 }
 
 void __47__SUManagerEngine_updateAssetDownloadProgress___block_invoke(uint64_t a1)
@@ -3804,19 +3804,19 @@ void __47__SUManagerEngine_updateAssetDownloadProgress___block_invoke(uint64_t a
   [v3 postEvent:@"UpdateProgress" withInfo:v2];
 }
 
-- (void)updateAssetDownloadStalled:(id)a3
+- (void)updateAssetDownloadStalled:(id)stalled
 {
-  v4 = a3;
-  v5 = [(SUManagerEngine *)self engineFSM];
-  v6 = [v5 extendedStateQueue];
+  stalledCopy = stalled;
+  engineFSM = [(SUManagerEngine *)self engineFSM];
+  extendedStateQueue = [engineFSM extendedStateQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __46__SUManagerEngine_updateAssetDownloadStalled___block_invoke;
   v8[3] = &unk_279CAA7C0;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = stalledCopy;
+  v7 = stalledCopy;
+  dispatch_async(extendedStateQueue, v8);
 }
 
 void __46__SUManagerEngine_updateAssetDownloadStalled___block_invoke(uint64_t a1)
@@ -3826,19 +3826,19 @@ void __46__SUManagerEngine_updateAssetDownloadStalled___block_invoke(uint64_t a1
   [v3 postEvent:@"UpdateProgress" withInfo:v2];
 }
 
-- (void)updateAssetDownloaded:(id)a3
+- (void)updateAssetDownloaded:(id)downloaded
 {
-  v4 = a3;
-  v5 = [(SUManagerEngine *)self engineFSM];
-  v6 = [v5 extendedStateQueue];
+  downloadedCopy = downloaded;
+  engineFSM = [(SUManagerEngine *)self engineFSM];
+  extendedStateQueue = [engineFSM extendedStateQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __41__SUManagerEngine_updateAssetDownloaded___block_invoke;
   v8[3] = &unk_279CAA7C0;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = downloadedCopy;
+  v7 = downloadedCopy;
+  dispatch_async(extendedStateQueue, v8);
 }
 
 void __41__SUManagerEngine_updateAssetDownloaded___block_invoke(uint64_t a1)
@@ -3848,19 +3848,19 @@ void __41__SUManagerEngine_updateAssetDownloaded___block_invoke(uint64_t a1)
   [v3 postEvent:@"UpdateProgress" withInfo:v2];
 }
 
-- (void)updatePrepareProgress:(id)a3
+- (void)updatePrepareProgress:(id)progress
 {
-  v4 = a3;
-  v5 = [(SUManagerEngine *)self engineFSM];
-  v6 = [v5 extendedStateQueue];
+  progressCopy = progress;
+  engineFSM = [(SUManagerEngine *)self engineFSM];
+  extendedStateQueue = [engineFSM extendedStateQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __41__SUManagerEngine_updatePrepareProgress___block_invoke;
   v8[3] = &unk_279CAA7C0;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = progressCopy;
+  v7 = progressCopy;
+  dispatch_async(extendedStateQueue, v8);
 }
 
 void __41__SUManagerEngine_updatePrepareProgress___block_invoke(uint64_t a1)
@@ -3870,19 +3870,19 @@ void __41__SUManagerEngine_updatePrepareProgress___block_invoke(uint64_t a1)
   [v3 postEvent:@"UpdateProgress" withInfo:v2];
 }
 
-- (void)updatePrepared:(id)a3
+- (void)updatePrepared:(id)prepared
 {
-  v4 = a3;
-  v5 = [(SUManagerEngine *)self engineFSM];
-  v6 = [v5 extendedStateQueue];
+  preparedCopy = prepared;
+  engineFSM = [(SUManagerEngine *)self engineFSM];
+  extendedStateQueue = [engineFSM extendedStateQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __34__SUManagerEngine_updatePrepared___block_invoke;
   v8[3] = &unk_279CAA7C0;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = preparedCopy;
+  v7 = preparedCopy;
+  dispatch_async(extendedStateQueue, v8);
 }
 
 void __34__SUManagerEngine_updatePrepared___block_invoke(uint64_t a1)
@@ -3895,14 +3895,14 @@ void __34__SUManagerEngine_updatePrepared___block_invoke(uint64_t a1)
 
 - (void)updateApplied
 {
-  v3 = [(SUManagerEngine *)self engineFSM];
-  v4 = [v3 extendedStateQueue];
+  engineFSM = [(SUManagerEngine *)self engineFSM];
+  extendedStateQueue = [engineFSM extendedStateQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __32__SUManagerEngine_updateApplied__block_invoke;
   block[3] = &unk_279CAA708;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(extendedStateQueue, block);
 }
 
 void __32__SUManagerEngine_updateApplied__block_invoke(uint64_t a1)
@@ -3913,19 +3913,19 @@ void __32__SUManagerEngine_updateApplied__block_invoke(uint64_t a1)
   [v3 postEvent:v1 withInfo:v2];
 }
 
-- (void)applyAttemptFailed:(id)a3
+- (void)applyAttemptFailed:(id)failed
 {
-  v4 = a3;
-  v5 = [(SUManagerEngine *)self engineFSM];
-  v6 = [v5 extendedStateQueue];
+  failedCopy = failed;
+  engineFSM = [(SUManagerEngine *)self engineFSM];
+  extendedStateQueue = [engineFSM extendedStateQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __38__SUManagerEngine_applyAttemptFailed___block_invoke;
   v8[3] = &unk_279CAA7C0;
-  v9 = v4;
-  v10 = self;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = failedCopy;
+  selfCopy = self;
+  v7 = failedCopy;
+  dispatch_async(extendedStateQueue, v8);
 }
 
 void __38__SUManagerEngine_applyAttemptFailed___block_invoke(uint64_t a1)
@@ -4061,19 +4061,19 @@ LABEL_23:
   [v30 postEvent:v34 withInfo:v33];
 }
 
-- (void)updateAttemptFailed:(id)a3
+- (void)updateAttemptFailed:(id)failed
 {
-  v4 = a3;
-  v5 = [(SUManagerEngine *)self engineFSM];
-  v6 = [v5 extendedStateQueue];
+  failedCopy = failed;
+  engineFSM = [(SUManagerEngine *)self engineFSM];
+  extendedStateQueue = [engineFSM extendedStateQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __39__SUManagerEngine_updateAttemptFailed___block_invoke;
   v8[3] = &unk_279CAA7C0;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = failedCopy;
+  v7 = failedCopy;
+  dispatch_async(extendedStateQueue, v8);
 }
 
 void __39__SUManagerEngine_updateAttemptFailed___block_invoke(uint64_t a1)
@@ -4102,14 +4102,14 @@ void __39__SUManagerEngine_updateAttemptFailed___block_invoke(uint64_t a1)
 
 - (void)updateCanceled
 {
-  v3 = [(SUManagerEngine *)self engineFSM];
-  v4 = [v3 extendedStateQueue];
+  engineFSM = [(SUManagerEngine *)self engineFSM];
+  extendedStateQueue = [engineFSM extendedStateQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __33__SUManagerEngine_updateCanceled__block_invoke;
   block[3] = &unk_279CAA708;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(extendedStateQueue, block);
 }
 
 void __33__SUManagerEngine_updateCanceled__block_invoke(uint64_t a1)
@@ -4131,19 +4131,19 @@ void __33__SUManagerEngine_updateCanceled__block_invoke(uint64_t a1)
   [v3 postEvent:@"UpdateCanceled" withInfo:v4];
 }
 
-- (void)updateRolledBack:(id)a3
+- (void)updateRolledBack:(id)back
 {
-  v4 = a3;
-  v5 = [(SUManagerEngine *)self engineFSM];
-  v6 = [v5 extendedStateQueue];
+  backCopy = back;
+  engineFSM = [(SUManagerEngine *)self engineFSM];
+  extendedStateQueue = [engineFSM extendedStateQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __36__SUManagerEngine_updateRolledBack___block_invoke;
   v8[3] = &unk_279CAA7C0;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = backCopy;
+  v7 = backCopy;
+  dispatch_async(extendedStateQueue, v8);
 }
 
 void __36__SUManagerEngine_updateRolledBack___block_invoke(uint64_t a1)
@@ -4153,22 +4153,22 @@ void __36__SUManagerEngine_updateRolledBack___block_invoke(uint64_t a1)
   [v3 postEvent:@"RollbackComplete" withInfo:v2];
 }
 
-- (void)rollbackAttemptFailed:(id)a3 withError:(id)a4
+- (void)rollbackAttemptFailed:(id)failed withError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SUManagerEngine *)self engineFSM];
-  v9 = [v8 extendedStateQueue];
+  failedCopy = failed;
+  errorCopy = error;
+  engineFSM = [(SUManagerEngine *)self engineFSM];
+  extendedStateQueue = [engineFSM extendedStateQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __51__SUManagerEngine_rollbackAttemptFailed_withError___block_invoke;
   block[3] = &unk_279CAA798;
   block[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
-  dispatch_async(v9, block);
+  v13 = failedCopy;
+  v14 = errorCopy;
+  v10 = errorCopy;
+  v11 = failedCopy;
+  dispatch_async(extendedStateQueue, block);
 }
 
 void __51__SUManagerEngine_rollbackAttemptFailed_withError___block_invoke(uint64_t a1)
@@ -4178,53 +4178,53 @@ void __51__SUManagerEngine_rollbackAttemptFailed_withError___block_invoke(uint64
   [v3 postEvent:@"RollbackFailed" withInfo:v2];
 }
 
-- (void)updateAnomaly:(id)a3
+- (void)updateAnomaly:(id)anomaly
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SUManagerEngine *)self engineLog];
-  v6 = [v5 oslog];
+  anomalyCopy = anomaly;
+  engineLog = [(SUManagerEngine *)self engineLog];
+  oslog = [engineLog oslog];
 
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(SUManagerEngine *)self engineName];
+    engineName = [(SUManagerEngine *)self engineName];
     v9 = 138412546;
-    v10 = v7;
+    v10 = engineName;
     v11 = 2112;
-    v12 = v4;
-    _os_log_impl(&dword_26AB34000, v6, OS_LOG_TYPE_DEFAULT, "%@ anomaly reporteed by update control interface, error:%@", &v9, 0x16u);
+    v12 = anomalyCopy;
+    _os_log_impl(&dword_26AB34000, oslog, OS_LOG_TYPE_DEFAULT, "%@ anomaly reporteed by update control interface, error:%@", &v9, 0x16u);
   }
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)pathSatisficationStatusChangedTo:(BOOL)a3
+- (void)pathSatisficationStatusChangedTo:(BOOL)to
 {
-  v3 = a3;
+  toCopy = to;
   v16 = *MEMORY[0x277D85DE8];
-  v5 = [(SUManagerEngine *)self engineLog];
-  v6 = [v5 oslog];
+  engineLog = [(SUManagerEngine *)self engineLog];
+  oslog = [engineLog oslog];
 
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(SUManagerEngine *)self engineName];
+    engineName = [(SUManagerEngine *)self engineName];
     *buf = 138412546;
-    v13 = v7;
+    v13 = engineName;
     v14 = 1024;
-    v15 = v3;
-    _os_log_impl(&dword_26AB34000, v6, OS_LOG_TYPE_DEFAULT, "%@ path satisfication changed to: %d", buf, 0x12u);
+    v15 = toCopy;
+    _os_log_impl(&dword_26AB34000, oslog, OS_LOG_TYPE_DEFAULT, "%@ path satisfication changed to: %d", buf, 0x12u);
   }
 
-  if (v3)
+  if (toCopy)
   {
-    v8 = [(SUManagerEngine *)self engineFSM];
-    v9 = [v8 extendedStateQueue];
+    engineFSM = [(SUManagerEngine *)self engineFSM];
+    extendedStateQueue = [engineFSM extendedStateQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __52__SUManagerEngine_pathSatisficationStatusChangedTo___block_invoke;
     block[3] = &unk_279CAA708;
     block[4] = self;
-    dispatch_async(v9, block);
+    dispatch_async(extendedStateQueue, block);
   }
 
   v10 = *MEMORY[0x277D85DE8];
@@ -4242,83 +4242,83 @@ void __52__SUManagerEngine_pathSatisficationStatusChangedTo___block_invoke(uint6
   [v6 postEvent:@"NetworkAvailable" withInfo:v5];
 }
 
-- (BOOL)isBrainNetworkError:(id)a3
+- (BOOL)isBrainNetworkError:(id)error
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SUManagerEngine *)self engineLog];
-  v6 = [v5 oslog];
+  errorCopy = error;
+  engineLog = [(SUManagerEngine *)self engineLog];
+  oslog = [engineLog oslog];
 
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(SUManagerEngine *)self engineName];
+    engineName = [(SUManagerEngine *)self engineName];
     v25 = 138412546;
-    v26 = v7;
+    v26 = engineName;
     v27 = 2112;
-    v28 = v4;
-    _os_log_impl(&dword_26AB34000, v6, OS_LOG_TYPE_DEFAULT, "%@ Checking if engine parameter is brain network error, %@", &v25, 0x16u);
+    v28 = errorCopy;
+    _os_log_impl(&dword_26AB34000, oslog, OS_LOG_TYPE_DEFAULT, "%@ Checking if engine parameter is brain network error, %@", &v25, 0x16u);
   }
 
-  if ([v4 paramType] != 5)
+  if ([errorCopy paramType] != 5)
   {
-    v12 = [(SUManagerEngine *)self engineLog];
-    v13 = [v12 oslog];
+    engineLog2 = [(SUManagerEngine *)self engineLog];
+    oslog2 = [engineLog2 oslog];
 
-    if (!os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+    if (!os_log_type_enabled(oslog2, OS_LOG_TYPE_DEFAULT))
     {
       goto LABEL_12;
     }
 
-    v14 = [(SUManagerEngine *)self engineName];
+    engineName2 = [(SUManagerEngine *)self engineName];
     v25 = 138412290;
-    v26 = v14;
+    v26 = engineName2;
     v15 = "%@ engine parameter is not an error";
 LABEL_11:
-    _os_log_impl(&dword_26AB34000, v13, OS_LOG_TYPE_DEFAULT, v15, &v25, 0xCu);
+    _os_log_impl(&dword_26AB34000, oslog2, OS_LOG_TYPE_DEFAULT, v15, &v25, 0xCu);
 
     goto LABEL_12;
   }
 
-  v8 = [v4 error];
-  v9 = [v8 domain];
-  v10 = [v9 isEqualToString:*MEMORY[0x277D292C8]];
+  error = [errorCopy error];
+  domain = [error domain];
+  v10 = [domain isEqualToString:*MEMORY[0x277D292C8]];
 
   if ((v10 & 1) == 0)
   {
-    v16 = [(SUManagerEngine *)self engineLog];
-    v13 = [v16 oslog];
+    engineLog3 = [(SUManagerEngine *)self engineLog];
+    oslog2 = [engineLog3 oslog];
 
-    if (!os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+    if (!os_log_type_enabled(oslog2, OS_LOG_TYPE_DEFAULT))
     {
       goto LABEL_12;
     }
 
-    v14 = [(SUManagerEngine *)self engineName];
+    engineName2 = [(SUManagerEngine *)self engineName];
     v25 = 138412290;
-    v26 = v14;
+    v26 = engineName2;
     v15 = "%@ engine error parameter is not in MSU domain";
     goto LABEL_11;
   }
 
-  v11 = [v4 error];
-  if ([v11 code] != 812)
+  error2 = [errorCopy error];
+  if ([error2 code] != 812)
   {
-    v20 = [v4 error];
-    v21 = [v20 code];
+    error3 = [errorCopy error];
+    code = [error3 code];
 
-    if (v21 == 806)
+    if (code == 806)
     {
       goto LABEL_15;
     }
 
-    v24 = [(SUManagerEngine *)self engineLog];
-    v13 = [v24 oslog];
+    engineLog4 = [(SUManagerEngine *)self engineLog];
+    oslog2 = [engineLog4 oslog];
 
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog2, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [(SUManagerEngine *)self engineName];
+      engineName2 = [(SUManagerEngine *)self engineName];
       v25 = 138412290;
-      v26 = v14;
+      v26 = engineName2;
       v15 = "%@ engine error parameter does not have a network failure code";
       goto LABEL_11;
     }
@@ -4329,15 +4329,15 @@ LABEL_12:
   }
 
 LABEL_15:
-  v22 = [(SUManagerEngine *)self engineLog];
-  v13 = [v22 oslog];
+  engineLog5 = [(SUManagerEngine *)self engineLog];
+  oslog2 = [engineLog5 oslog];
 
-  if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog2, OS_LOG_TYPE_DEFAULT))
   {
-    v23 = [(SUManagerEngine *)self engineName];
+    engineName3 = [(SUManagerEngine *)self engineName];
     v25 = 138412290;
-    v26 = v23;
-    _os_log_impl(&dword_26AB34000, v13, OS_LOG_TYPE_DEFAULT, "%@ Engine parameter is brain network error", &v25, 0xCu);
+    v26 = engineName3;
+    _os_log_impl(&dword_26AB34000, oslog2, OS_LOG_TYPE_DEFAULT, "%@ Engine parameter is brain network error", &v25, 0xCu);
   }
 
   v17 = 1;
@@ -4347,78 +4347,78 @@ LABEL_13:
   return v17;
 }
 
-- (BOOL)isBrainReloadError:(id)a3
+- (BOOL)isBrainReloadError:(id)error
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SUManagerEngine *)self engineLog];
-  v6 = [v5 oslog];
+  errorCopy = error;
+  engineLog = [(SUManagerEngine *)self engineLog];
+  oslog = [engineLog oslog];
 
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(SUManagerEngine *)self engineName];
+    engineName = [(SUManagerEngine *)self engineName];
     v24 = 138412546;
-    v25 = v7;
+    v25 = engineName;
     v26 = 2112;
-    v27 = v4;
-    _os_log_impl(&dword_26AB34000, v6, OS_LOG_TYPE_DEFAULT, "%@ Checking if engine parameter is brain error that should be retried, %@", &v24, 0x16u);
+    v27 = errorCopy;
+    _os_log_impl(&dword_26AB34000, oslog, OS_LOG_TYPE_DEFAULT, "%@ Checking if engine parameter is brain error that should be retried, %@", &v24, 0x16u);
   }
 
-  if ([v4 paramType] != 5)
+  if ([errorCopy paramType] != 5)
   {
-    v18 = [(SUManagerEngine *)self engineLog];
-    v14 = [v18 oslog];
+    engineLog2 = [(SUManagerEngine *)self engineLog];
+    oslog2 = [engineLog2 oslog];
 
-    if (!os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+    if (!os_log_type_enabled(oslog2, OS_LOG_TYPE_DEFAULT))
     {
       goto LABEL_16;
     }
 
-    v19 = [(SUManagerEngine *)self engineName];
+    engineName2 = [(SUManagerEngine *)self engineName];
     v24 = 138412290;
-    v25 = v19;
+    v25 = engineName2;
     v20 = "%@ engine parameter is not an error";
 LABEL_15:
-    _os_log_impl(&dword_26AB34000, v14, OS_LOG_TYPE_DEFAULT, v20, &v24, 0xCu);
+    _os_log_impl(&dword_26AB34000, oslog2, OS_LOG_TYPE_DEFAULT, v20, &v24, 0xCu);
 
     goto LABEL_16;
   }
 
-  v8 = [v4 error];
-  v9 = [v8 domain];
-  v10 = [v9 isEqualToString:@"com.apple.softwareupdateservices.errors"];
+  error = [errorCopy error];
+  domain = [error domain];
+  v10 = [domain isEqualToString:@"com.apple.softwareupdateservices.errors"];
 
   if ((v10 & 1) == 0)
   {
-    v21 = [(SUManagerEngine *)self engineLog];
-    v14 = [v21 oslog];
+    engineLog3 = [(SUManagerEngine *)self engineLog];
+    oslog2 = [engineLog3 oslog];
 
-    if (!os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+    if (!os_log_type_enabled(oslog2, OS_LOG_TYPE_DEFAULT))
     {
       goto LABEL_16;
     }
 
-    v19 = [(SUManagerEngine *)self engineName];
+    engineName2 = [(SUManagerEngine *)self engineName];
     v24 = 138412290;
-    v25 = v19;
+    v25 = engineName2;
     v20 = "%@ engine error parameter is not in SU domain";
     goto LABEL_15;
   }
 
-  v11 = [v4 error];
-  v12 = [v11 code];
+  error2 = [errorCopy error];
+  code = [error2 code];
 
-  v13 = [(SUManagerEngine *)self engineLog];
-  v14 = [v13 oslog];
+  engineLog4 = [(SUManagerEngine *)self engineLog];
+  oslog2 = [engineLog4 oslog];
 
-  v15 = os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
-  if (v12 != 107)
+  v15 = os_log_type_enabled(oslog2, OS_LOG_TYPE_DEFAULT);
+  if (code != 107)
   {
     if (v15)
     {
-      v19 = [(SUManagerEngine *)self engineName];
+      engineName2 = [(SUManagerEngine *)self engineName];
       v24 = 138412290;
-      v25 = v19;
+      v25 = engineName2;
       v20 = "%@ engine error parameter does not have a brain should retry failure code";
       goto LABEL_15;
     }
@@ -4430,10 +4430,10 @@ LABEL_16:
 
   if (v15)
   {
-    v16 = [(SUManagerEngine *)self engineName];
+    engineName3 = [(SUManagerEngine *)self engineName];
     v24 = 138412290;
-    v25 = v16;
-    _os_log_impl(&dword_26AB34000, v14, OS_LOG_TYPE_DEFAULT, "%@ Engine parameter is brain retry error", &v24, 0xCu);
+    v25 = engineName3;
+    _os_log_impl(&dword_26AB34000, oslog2, OS_LOG_TYPE_DEFAULT, "%@ Engine parameter is brain retry error", &v24, 0xCu);
   }
 
   v17 = 1;
@@ -4445,21 +4445,21 @@ LABEL_17:
 
 - (void)cancelLockAssertion
 {
-  v3 = [(SUManagerEngine *)self engineFSM];
-  v4 = [v3 extendedStateQueue];
+  engineFSM = [(SUManagerEngine *)self engineFSM];
+  extendedStateQueue = [engineFSM extendedStateQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __38__SUManagerEngine_cancelLockAssertion__block_invoke;
   block[3] = &unk_279CAA708;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(extendedStateQueue, block);
 }
 
 - (void)_queue_cancelLockAssertion
 {
-  v3 = [(SUManagerEngine *)self engineFSM];
-  v4 = [v3 extendedStateQueue];
-  dispatch_assert_queue_V2(v4);
+  engineFSM = [(SUManagerEngine *)self engineFSM];
+  extendedStateQueue = [engineFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
   if (self->_lockAssertion)
   {
@@ -4472,18 +4472,18 @@ LABEL_17:
 
 - (id)updatePolicy
 {
-  v2 = [(SUManagerEngine *)self policyFactory];
-  v3 = [v2 corePolicy];
+  policyFactory = [(SUManagerEngine *)self policyFactory];
+  corePolicy = [policyFactory corePolicy];
 
-  return v3;
+  return corePolicy;
 }
 
 - (id)rollbackPolicy
 {
-  v2 = [(SUManagerEngine *)self policyFactory];
-  v3 = [v2 rollbackPolicy];
+  policyFactory = [(SUManagerEngine *)self policyFactory];
+  rollbackPolicy = [policyFactory rollbackPolicy];
 
-  return v3;
+  return rollbackPolicy;
 }
 
 - (void)resetPolicy
@@ -4492,37 +4492,37 @@ LABEL_17:
   [(SUManagerEngine *)self setPolicyFactory:v3];
 }
 
-- (void)notifyRollbackStarted:(id)a3
+- (void)notifyRollbackStarted:(id)started
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SUManagerEngine *)self managerDelegate];
+  startedCopy = started;
+  managerDelegate = [(SUManagerEngine *)self managerDelegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [MEMORY[0x277D64400] sharedCore];
-    v8 = [v7 delegateCallbackQueue];
+    mEMORY[0x277D64400] = [MEMORY[0x277D64400] sharedCore];
+    delegateCallbackQueue = [mEMORY[0x277D64400] delegateCallbackQueue];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __41__SUManagerEngine_notifyRollbackStarted___block_invoke;
     v13[3] = &unk_279CAA7C0;
     v13[4] = self;
-    v14 = v4;
-    dispatch_async(v8, v13);
+    v14 = startedCopy;
+    dispatch_async(delegateCallbackQueue, v13);
   }
 
   else
   {
-    v9 = [(SUManagerEngine *)self engineLog];
-    v10 = [v9 oslog];
+    engineLog = [(SUManagerEngine *)self engineLog];
+    oslog = [engineLog oslog];
 
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [(SUManagerEngine *)self engineName];
+      engineName = [(SUManagerEngine *)self engineName];
       *buf = 138412290;
-      v16 = v11;
-      _os_log_impl(&dword_26AB34000, v10, OS_LOG_TYPE_DEFAULT, "%@ delegate does not respond to selector(rollbackStarted:) so not reporting", buf, 0xCu);
+      v16 = engineName;
+      _os_log_impl(&dword_26AB34000, oslog, OS_LOG_TYPE_DEFAULT, "%@ delegate does not respond to selector(rollbackStarted:) so not reporting", buf, 0xCu);
     }
   }
 
@@ -4535,20 +4535,20 @@ void __41__SUManagerEngine_notifyRollbackStarted___block_invoke(uint64_t a1)
   [v2 rollbackStarted:*(a1 + 40)];
 }
 
-+ (int)softwareUpdateTypeForDescriptor:(id)a3
++ (int)softwareUpdateTypeForDescriptor:(id)descriptor
 {
-  v3 = a3;
-  if ([v3 splatOnly])
+  descriptorCopy = descriptor;
+  if ([descriptorCopy splatOnly])
   {
     v4 = 4;
   }
 
   else
   {
-    v5 = [v3 updateType];
-    if ((v5 - 1) <= 2)
+    updateType = [descriptorCopy updateType];
+    if ((updateType - 1) <= 2)
     {
-      v4 = v5;
+      v4 = updateType;
     }
 
     else
@@ -4560,38 +4560,38 @@ void __41__SUManagerEngine_notifyRollbackStarted___block_invoke(uint64_t a1)
   return v4;
 }
 
-+ (unint64_t)SUCoreAudienceTypeToSUSAudienceType:(int64_t)a3
++ (unint64_t)SUCoreAudienceTypeToSUSAudienceType:(int64_t)type
 {
-  if (a3 == 2)
+  if (type == 2)
   {
     return 2;
   }
 
   else
   {
-    return a3 == 1;
+    return type == 1;
   }
 }
 
-+ (unint64_t)SUCorePreferredTypeToSUSPreferenceType:(int64_t)a3
++ (unint64_t)SUCorePreferredTypeToSUSPreferenceType:(int64_t)type
 {
-  if (a3 == 1)
+  if (type == 1)
   {
     return 1;
   }
 
   else
   {
-    return 2 * (a3 == 2);
+    return 2 * (type == 2);
   }
 }
 
-+ (unint64_t)upgradeTypeForCoreDescriptor:(id)a3
++ (unint64_t)upgradeTypeForCoreDescriptor:(id)descriptor
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277D64420] sharedDevice];
-  v5 = [v3 productBuildVersion];
-  v6 = [v4 isMinorOSUpdate:v5];
+  descriptorCopy = descriptor;
+  mEMORY[0x277D64420] = [MEMORY[0x277D64420] sharedDevice];
+  productBuildVersion = [descriptorCopy productBuildVersion];
+  v6 = [mEMORY[0x277D64420] isMinorOSUpdate:productBuildVersion];
 
   if (v6)
   {
@@ -4600,8 +4600,8 @@ void __41__SUManagerEngine_notifyRollbackStarted___block_invoke(uint64_t a1)
 
   else
   {
-    v8 = [v3 productBuildVersion];
-    v9 = [v4 isMajorOSUpdate:v8];
+    productBuildVersion2 = [descriptorCopy productBuildVersion];
+    v9 = [mEMORY[0x277D64420] isMajorOSUpdate:productBuildVersion2];
 
     if (v9)
     {
@@ -4617,27 +4617,27 @@ void __41__SUManagerEngine_notifyRollbackStarted___block_invoke(uint64_t a1)
   return v7;
 }
 
-- (id)SUOperationProgressFromSUCoreProgress:(id)a3
+- (id)SUOperationProgressFromSUCoreProgress:(id)progress
 {
-  v3 = a3;
+  progressCopy = progress;
   v4 = objc_alloc_init(SUOperationProgress);
-  v5 = [v3 phase];
-  v6 = [v5 isEqualToString:*MEMORY[0x277D64840]];
+  phase = [progressCopy phase];
+  v6 = [phase isEqualToString:*MEMORY[0x277D64840]];
 
   if (v6)
   {
-    [v3 portionComplete];
+    [progressCopy portionComplete];
     if (v7 == 1.0)
     {
       v8 = kSUDownloadPhaseBrainExtracting;
       goto LABEL_11;
     }
 
-    v11 = [v3 isStalled];
+    isStalled = [progressCopy isStalled];
     v8 = kSUDownloadPhaseBrainFetching;
     v12 = kSUDownloadPhaseBrainFetchingStalled;
 LABEL_9:
-    if (v11)
+    if (isStalled)
     {
       v8 = v12;
     }
@@ -4645,19 +4645,19 @@ LABEL_9:
     goto LABEL_11;
   }
 
-  v9 = [v3 phase];
-  v10 = [v9 isEqualToString:*MEMORY[0x277D64830]];
+  phase2 = [progressCopy phase];
+  v10 = [phase2 isEqualToString:*MEMORY[0x277D64830]];
 
   if (v10)
   {
-    v11 = [v3 isStalled];
+    isStalled = [progressCopy isStalled];
     v8 = kSUDownloadPhaseUpdateFetching;
     v12 = kSUDownloadPhaseUpdateFetchingStalled;
     goto LABEL_9;
   }
 
-  v13 = [v3 phase];
-  v14 = [v13 isEqualToString:*MEMORY[0x277D64848]];
+  phase3 = [progressCopy phase];
+  v14 = [phase3 isEqualToString:*MEMORY[0x277D64848]];
 
   if (!v14)
   {
@@ -4668,11 +4668,11 @@ LABEL_9:
 LABEL_11:
   [(SUOperationProgress *)v4 setPhase:*v8];
 LABEL_12:
-  [v3 portionComplete];
+  [progressCopy portionComplete];
   [(SUOperationProgress *)v4 setIsDone:v15 == 1.0];
-  [v3 portionComplete];
+  [progressCopy portionComplete];
   [(SUOperationProgress *)v4 setPercentComplete:?];
-  [v3 estimatedTimeRemaining];
+  [progressCopy estimatedTimeRemaining];
   [(SUOperationProgress *)v4 setTimeRemaining:?];
   LODWORD(v16) = -1.0;
   [(SUOperationProgress *)v4 setNormalizedPercentComplete:v16];
@@ -4680,140 +4680,140 @@ LABEL_12:
   return v4;
 }
 
-+ (id)SUDescriptorFromCoreDescriptor:(id)a3
++ (id)SUDescriptorFromCoreDescriptor:(id)descriptor
 {
-  v4 = a3;
-  if (v4)
+  descriptorCopy = descriptor;
+  if (descriptorCopy)
   {
     v5 = objc_alloc_init(SUDescriptor);
-    v6 = [v4 documentation];
+    documentation = [descriptorCopy documentation];
 
-    if (v6)
+    if (documentation)
     {
       v7 = [SUDocumentation alloc];
-      v8 = [v4 documentation];
-      v9 = [(SUDocumentation *)v7 initWithSUCoreDocumentation:v8];
+      documentation2 = [descriptorCopy documentation];
+      v9 = [(SUDocumentation *)v7 initWithSUCoreDocumentation:documentation2];
       [(SUDescriptor *)v5 setDocumentation:v9];
     }
 
-    v10 = [v4 publisher];
-    [(SUDescriptor *)v5 setPublisher:v10];
+    publisher = [descriptorCopy publisher];
+    [(SUDescriptor *)v5 setPublisher:publisher];
 
-    v11 = [v4 productSystemName];
-    [(SUDescriptor *)v5 setProductSystemName:v11];
+    productSystemName = [descriptorCopy productSystemName];
+    [(SUDescriptor *)v5 setProductSystemName:productSystemName];
 
-    v12 = [v4 productVersion];
-    [(SUDescriptor *)v5 setProductVersion:v12];
+    productVersion = [descriptorCopy productVersion];
+    [(SUDescriptor *)v5 setProductVersion:productVersion];
 
-    v13 = [v4 productVersionExtra];
-    [(SUDescriptor *)v5 setProductVersionExtra:v13];
+    productVersionExtra = [descriptorCopy productVersionExtra];
+    [(SUDescriptor *)v5 setProductVersionExtra:productVersionExtra];
 
-    v14 = [v4 productBuildVersion];
-    [(SUDescriptor *)v5 setProductBuildVersion:v14];
+    productBuildVersion = [descriptorCopy productBuildVersion];
+    [(SUDescriptor *)v5 setProductBuildVersion:productBuildVersion];
 
-    v15 = [v4 prerequisiteBuild];
-    [(SUDescriptor *)v5 setPrerequisiteBuild:v15];
+    prerequisiteBuild = [descriptorCopy prerequisiteBuild];
+    [(SUDescriptor *)v5 setPrerequisiteBuild:prerequisiteBuild];
 
-    v16 = [v4 prerequisiteOSVersion];
-    [(SUDescriptor *)v5 setPrerequisiteOS:v16];
+    prerequisiteOSVersion = [descriptorCopy prerequisiteOSVersion];
+    [(SUDescriptor *)v5 setPrerequisiteOS:prerequisiteOSVersion];
 
-    v17 = [v4 releaseType];
-    [(SUDescriptor *)v5 setReleaseType:v17];
+    releaseType = [descriptorCopy releaseType];
+    [(SUDescriptor *)v5 setReleaseType:releaseType];
 
-    -[SUDescriptor setDownloadSize:](v5, "setDownloadSize:", [v4 preSUStagingOptionalSize] + objc_msgSend(v4, "downloadSize"));
-    -[SUDescriptor _setUnarchiveSize:](v5, "_setUnarchiveSize:", [v4 unarchivedSize]);
-    -[SUDescriptor _setMsuPrepareSize:](v5, "_setMsuPrepareSize:", [v4 msuPrepareSize]);
-    -[SUDescriptor setInstallationSize:](v5, "setInstallationSize:", [v4 installationSize]);
-    -[SUDescriptor setMinimumSystemPartitionSize:](v5, "setMinimumSystemPartitionSize:", [v4 minimumSystemPartitionSize]);
-    -[SUDescriptor setPreparationSize:](v5, "setPreparationSize:", [v4 preparationSize]);
-    -[SUDescriptor setTotalRequiredFreeSpace:](v5, "setTotalRequiredFreeSpace:", [v4 totalRequiredFreeSpace]);
-    -[SUDescriptor setTotalSnapshotRequiredFreeSpace:](v5, "setTotalSnapshotRequiredFreeSpace:", [v4 totalSnapshotRequiredFreeSpace]);
-    -[SUDescriptor setPreSUStagingRequiredSize:](v5, "setPreSUStagingRequiredSize:", [v4 preSUStagingRequiredSize]);
-    -[SUDescriptor setPreSUStagingOptionalSize:](v5, "setPreSUStagingOptionalSize:", [v4 preSUStagingOptionalSize]);
-    -[SUDescriptor setMinFreeSpacePostStageOptionalAssets:](v5, "setMinFreeSpacePostStageOptionalAssets:", [v4 minFreeSpacePostStageOptionalAssets]);
-    -[SUDescriptor setUnentitledReserveAmount:](v5, "setUnentitledReserveAmount:", [v4 unentitledReserveAmount]);
-    -[SUDescriptor _setStreamingZipCapable:](v5, "_setStreamingZipCapable:", [v4 streamingZipCapable]);
-    -[SUDescriptor setUpdateType:](v5, "setUpdateType:", [a1 softwareUpdateTypeForDescriptor:v4]);
-    -[SUDescriptor setAutoDownloadAllowableForCellular:](v5, "setAutoDownloadAllowableForCellular:", [v4 autoDownloadAllowableOverCellular]);
-    -[SUDescriptor setDownloadableOverCellular:](v5, "setDownloadableOverCellular:", [v4 downloadAllowableOverCellular]);
-    -[SUDescriptor setDownloadable:](v5, "setDownloadable:", [v4 downloadable]);
-    -[SUDescriptor _setDisableSiriVoiceDeletion:](v5, "_setDisableSiriVoiceDeletion:", [v4 disableSiriVoiceDeletion]);
-    -[SUDescriptor _setDisableCDLevel4:](v5, "_setDisableCDLevel4:", [v4 disableCDLevel4]);
-    -[SUDescriptor _setDisableAppDemotion:](v5, "_setDisableAppDemotion:", [v4 disableAppDemotion]);
-    -[SUDescriptor _setDisableMASuspension:](v5, "_setDisableMASuspension:", [v4 disableMASuspension]);
-    -[SUDescriptor _setDisableInstallTonight:](v5, "_setDisableInstallTonight:", [v4 disableInstallTonight]);
-    -[SUDescriptor setRampEnabled:](v5, "setRampEnabled:", [v4 rampEnabled]);
-    -[SUDescriptor setGranularlyRamped:](v5, "setGranularlyRamped:", [v4 granularlyRamped]);
-    -[SUDescriptor setCriticalOutOfBoxOnly:](v5, "setCriticalOutOfBoxOnly:", [v4 criticalOutOfBoxOnly]);
-    -[SUDescriptor setAutoUpdateEnabled:](v5, "setAutoUpdateEnabled:", [v4 autoUpdateEnabled]);
-    v18 = [v4 setupCritical];
-    [(SUDescriptor *)v5 setSetupCritical:v18];
+    -[SUDescriptor setDownloadSize:](v5, "setDownloadSize:", [descriptorCopy preSUStagingOptionalSize] + objc_msgSend(descriptorCopy, "downloadSize"));
+    -[SUDescriptor _setUnarchiveSize:](v5, "_setUnarchiveSize:", [descriptorCopy unarchivedSize]);
+    -[SUDescriptor _setMsuPrepareSize:](v5, "_setMsuPrepareSize:", [descriptorCopy msuPrepareSize]);
+    -[SUDescriptor setInstallationSize:](v5, "setInstallationSize:", [descriptorCopy installationSize]);
+    -[SUDescriptor setMinimumSystemPartitionSize:](v5, "setMinimumSystemPartitionSize:", [descriptorCopy minimumSystemPartitionSize]);
+    -[SUDescriptor setPreparationSize:](v5, "setPreparationSize:", [descriptorCopy preparationSize]);
+    -[SUDescriptor setTotalRequiredFreeSpace:](v5, "setTotalRequiredFreeSpace:", [descriptorCopy totalRequiredFreeSpace]);
+    -[SUDescriptor setTotalSnapshotRequiredFreeSpace:](v5, "setTotalSnapshotRequiredFreeSpace:", [descriptorCopy totalSnapshotRequiredFreeSpace]);
+    -[SUDescriptor setPreSUStagingRequiredSize:](v5, "setPreSUStagingRequiredSize:", [descriptorCopy preSUStagingRequiredSize]);
+    -[SUDescriptor setPreSUStagingOptionalSize:](v5, "setPreSUStagingOptionalSize:", [descriptorCopy preSUStagingOptionalSize]);
+    -[SUDescriptor setMinFreeSpacePostStageOptionalAssets:](v5, "setMinFreeSpacePostStageOptionalAssets:", [descriptorCopy minFreeSpacePostStageOptionalAssets]);
+    -[SUDescriptor setUnentitledReserveAmount:](v5, "setUnentitledReserveAmount:", [descriptorCopy unentitledReserveAmount]);
+    -[SUDescriptor _setStreamingZipCapable:](v5, "_setStreamingZipCapable:", [descriptorCopy streamingZipCapable]);
+    -[SUDescriptor setUpdateType:](v5, "setUpdateType:", [self softwareUpdateTypeForDescriptor:descriptorCopy]);
+    -[SUDescriptor setAutoDownloadAllowableForCellular:](v5, "setAutoDownloadAllowableForCellular:", [descriptorCopy autoDownloadAllowableOverCellular]);
+    -[SUDescriptor setDownloadableOverCellular:](v5, "setDownloadableOverCellular:", [descriptorCopy downloadAllowableOverCellular]);
+    -[SUDescriptor setDownloadable:](v5, "setDownloadable:", [descriptorCopy downloadable]);
+    -[SUDescriptor _setDisableSiriVoiceDeletion:](v5, "_setDisableSiriVoiceDeletion:", [descriptorCopy disableSiriVoiceDeletion]);
+    -[SUDescriptor _setDisableCDLevel4:](v5, "_setDisableCDLevel4:", [descriptorCopy disableCDLevel4]);
+    -[SUDescriptor _setDisableAppDemotion:](v5, "_setDisableAppDemotion:", [descriptorCopy disableAppDemotion]);
+    -[SUDescriptor _setDisableMASuspension:](v5, "_setDisableMASuspension:", [descriptorCopy disableMASuspension]);
+    -[SUDescriptor _setDisableInstallTonight:](v5, "_setDisableInstallTonight:", [descriptorCopy disableInstallTonight]);
+    -[SUDescriptor setRampEnabled:](v5, "setRampEnabled:", [descriptorCopy rampEnabled]);
+    -[SUDescriptor setGranularlyRamped:](v5, "setGranularlyRamped:", [descriptorCopy granularlyRamped]);
+    -[SUDescriptor setCriticalOutOfBoxOnly:](v5, "setCriticalOutOfBoxOnly:", [descriptorCopy criticalOutOfBoxOnly]);
+    -[SUDescriptor setAutoUpdateEnabled:](v5, "setAutoUpdateEnabled:", [descriptorCopy autoUpdateEnabled]);
+    setupCritical = [descriptorCopy setupCritical];
+    [(SUDescriptor *)v5 setSetupCritical:setupCritical];
 
-    v19 = [v4 criticalOverrideCellularPolicy];
-    [(SUDescriptor *)v5 setCriticalDownloadPolicy:v19];
+    criticalOverrideCellularPolicy = [descriptorCopy criticalOverrideCellularPolicy];
+    [(SUDescriptor *)v5 setCriticalDownloadPolicy:criticalOverrideCellularPolicy];
 
-    v20 = [v4 systemPartitionPadding];
-    [(SUDescriptor *)v5 setSystemPartitionPadding:v20];
+    systemPartitionPadding = [descriptorCopy systemPartitionPadding];
+    [(SUDescriptor *)v5 setSystemPartitionPadding:systemPartitionPadding];
 
-    v21 = [v4 sepDigest];
-    [(SUDescriptor *)v5 setSEPDigest:v21];
+    sepDigest = [descriptorCopy sepDigest];
+    [(SUDescriptor *)v5 setSEPDigest:sepDigest];
 
-    v22 = [v4 rsepDigest];
-    [(SUDescriptor *)v5 setRSEPDigest:v22];
+    rsepDigest = [descriptorCopy rsepDigest];
+    [(SUDescriptor *)v5 setRSEPDigest:rsepDigest];
 
-    v23 = [v4 sepTBMDigests];
-    [(SUDescriptor *)v5 setSEPTBMDigest:v23];
+    sepTBMDigests = [descriptorCopy sepTBMDigests];
+    [(SUDescriptor *)v5 setSEPTBMDigest:sepTBMDigests];
 
-    v24 = [v4 rsepTBMDigests];
-    [(SUDescriptor *)v5 setRSEPTBMDigest:v24];
+    rsepTBMDigests = [descriptorCopy rsepTBMDigests];
+    [(SUDescriptor *)v5 setRSEPTBMDigest:rsepTBMDigests];
 
-    v25 = [v4 releaseDate];
-    [(SUDescriptor *)v5 setReleaseDate:v25];
+    releaseDate = [descriptorCopy releaseDate];
+    [(SUDescriptor *)v5 setReleaseDate:releaseDate];
 
-    -[SUDescriptor setMdmDelayInterval:](v5, "setMdmDelayInterval:", [v4 mdmDelayInterval]);
-    v26 = [v4 assetID];
-    [(SUDescriptor *)v5 setAssetID:v26];
+    -[SUDescriptor setMdmDelayInterval:](v5, "setMdmDelayInterval:", [descriptorCopy mdmDelayInterval]);
+    assetID = [descriptorCopy assetID];
+    [(SUDescriptor *)v5 setAssetID:assetID];
 
-    -[SUDescriptor setAudienceType:](v5, "setAudienceType:", [a1 SUCoreAudienceTypeToSUSAudienceType:{objc_msgSend(v4, "descriptorAudienceType")}]);
-    -[SUDescriptor setPreferenceType:](v5, "setPreferenceType:", [a1 SUCorePreferredTypeToSUSPreferenceType:{objc_msgSend(v4, "preferredUpdateType")}]);
-    -[SUDescriptor setUpgradeType:](v5, "setUpgradeType:", [a1 upgradeTypeForCoreDescriptor:v4]);
+    -[SUDescriptor setAudienceType:](v5, "setAudienceType:", [self SUCoreAudienceTypeToSUSAudienceType:{objc_msgSend(descriptorCopy, "descriptorAudienceType")}]);
+    -[SUDescriptor setPreferenceType:](v5, "setPreferenceType:", [self SUCorePreferredTypeToSUSPreferenceType:{objc_msgSend(descriptorCopy, "preferredUpdateType")}]);
+    -[SUDescriptor setUpgradeType:](v5, "setUpgradeType:", [self upgradeTypeForCoreDescriptor:descriptorCopy]);
     v27 = +[SUPreferences sharedInstance];
     if ([v27 alwaysPromoteAlternate])
     {
-      v28 = 1;
+      promoteAlternateUpdate = 1;
     }
 
     else
     {
-      v28 = [v4 promoteAlternateUpdate];
+      promoteAlternateUpdate = [descriptorCopy promoteAlternateUpdate];
     }
 
-    [(SUDescriptor *)v5 setPromoteAlternateUpdate:v28];
+    [(SUDescriptor *)v5 setPromoteAlternateUpdate:promoteAlternateUpdate];
 
-    -[SUDescriptor setHideInstallAlert:](v5, "setHideInstallAlert:", [a1 shouldHideInstallAlertForCoreDescriptor:v4]);
-    -[SUDescriptor setIsSplatOnly:](v5, "setIsSplatOnly:", [v4 splatOnly]);
-    v29 = [v4 humanReadableUpdateName];
-    [(SUDescriptor *)v5 setHumanReadableUpdateName:v29];
+    -[SUDescriptor setHideInstallAlert:](v5, "setHideInstallAlert:", [self shouldHideInstallAlertForCoreDescriptor:descriptorCopy]);
+    -[SUDescriptor setIsSplatOnly:](v5, "setIsSplatOnly:", [descriptorCopy splatOnly]);
+    humanReadableUpdateName = [descriptorCopy humanReadableUpdateName];
+    [(SUDescriptor *)v5 setHumanReadableUpdateName:humanReadableUpdateName];
 
-    -[SUDescriptor setMandatoryUpdateEligible:](v5, "setMandatoryUpdateEligible:", [v4 mandatoryUpdateEligible]);
-    v30 = [v4 mandatoryUpdateVersionMin];
-    [(SUDescriptor *)v5 setMandatoryUpdateVersionMin:v30];
+    -[SUDescriptor setMandatoryUpdateEligible:](v5, "setMandatoryUpdateEligible:", [descriptorCopy mandatoryUpdateEligible]);
+    mandatoryUpdateVersionMin = [descriptorCopy mandatoryUpdateVersionMin];
+    [(SUDescriptor *)v5 setMandatoryUpdateVersionMin:mandatoryUpdateVersionMin];
 
-    v31 = [v4 mandatoryUpdateVersionMax];
-    [(SUDescriptor *)v5 setMandatoryUpdateVersionMax:v31];
+    mandatoryUpdateVersionMax = [descriptorCopy mandatoryUpdateVersionMax];
+    [(SUDescriptor *)v5 setMandatoryUpdateVersionMax:mandatoryUpdateVersionMax];
 
-    -[SUDescriptor setMandatoryUpdateOptional:](v5, "setMandatoryUpdateOptional:", [v4 mandatoryUpdateOptional]);
-    -[SUDescriptor setMandatoryUpdateRestrictedToOutOfTheBox:](v5, "setMandatoryUpdateRestrictedToOutOfTheBox:", [v4 mandatoryUpdateRestrictedToOutOfTheBox]);
-    -[SUDescriptor setForcePasscodeRequired:](v5, "setForcePasscodeRequired:", [v4 forcePasscodeRequired]);
-    -[SUDescriptor setAllowAutoDownloadOnBattery:](v5, "setAllowAutoDownloadOnBattery:", [v4 allowAutoDownloadOnBattery]);
-    -[SUDescriptor setAutoDownloadOnBatteryDelay:](v5, "setAutoDownloadOnBatteryDelay:", [v4 autoDownloadOnBatteryDelay]);
-    -[SUDescriptor setAutoDownloadOnBatteryMinBattery:](v5, "setAutoDownloadOnBatteryMinBattery:", [v4 autoDownloadOnBatteryMinBattery]);
-    v32 = [v4 associatedSplatDescriptor];
-    [(SUDescriptor *)v5 setIsSplombo:v32 != 0];
+    -[SUDescriptor setMandatoryUpdateOptional:](v5, "setMandatoryUpdateOptional:", [descriptorCopy mandatoryUpdateOptional]);
+    -[SUDescriptor setMandatoryUpdateRestrictedToOutOfTheBox:](v5, "setMandatoryUpdateRestrictedToOutOfTheBox:", [descriptorCopy mandatoryUpdateRestrictedToOutOfTheBox]);
+    -[SUDescriptor setForcePasscodeRequired:](v5, "setForcePasscodeRequired:", [descriptorCopy forcePasscodeRequired]);
+    -[SUDescriptor setAllowAutoDownloadOnBattery:](v5, "setAllowAutoDownloadOnBattery:", [descriptorCopy allowAutoDownloadOnBattery]);
+    -[SUDescriptor setAutoDownloadOnBatteryDelay:](v5, "setAutoDownloadOnBatteryDelay:", [descriptorCopy autoDownloadOnBatteryDelay]);
+    -[SUDescriptor setAutoDownloadOnBatteryMinBattery:](v5, "setAutoDownloadOnBatteryMinBattery:", [descriptorCopy autoDownloadOnBatteryMinBattery]);
+    associatedSplatDescriptor = [descriptorCopy associatedSplatDescriptor];
+    [(SUDescriptor *)v5 setIsSplombo:associatedSplatDescriptor != 0];
 
-    v33 = [v4 associatedSplatDescriptor];
-    v34 = [v33 productBuildVersion];
-    [(SUDescriptor *)v5 setSplatComboBuildVersion:v34];
+    associatedSplatDescriptor2 = [descriptorCopy associatedSplatDescriptor];
+    productBuildVersion2 = [associatedSplatDescriptor2 productBuildVersion];
+    [(SUDescriptor *)v5 setSplatComboBuildVersion:productBuildVersion2];
   }
 
   else
@@ -4824,21 +4824,21 @@ LABEL_12:
   return v5;
 }
 
-+ (id)SUDescriptorFromRollbackDescriptor:(id)a3
++ (id)SUDescriptorFromRollbackDescriptor:(id)descriptor
 {
-  if (a3)
+  if (descriptor)
   {
-    v3 = a3;
+    descriptorCopy = descriptor;
     v4 = objc_alloc_init(SUDescriptor);
-    v5 = [v3 productBuildVersion];
-    [(SUDescriptor *)v4 setProductBuildVersion:v5];
+    productBuildVersion = [descriptorCopy productBuildVersion];
+    [(SUDescriptor *)v4 setProductBuildVersion:productBuildVersion];
 
-    v6 = [v3 productVersion];
-    [(SUDescriptor *)v4 setProductVersion:v6];
+    productVersion = [descriptorCopy productVersion];
+    [(SUDescriptor *)v4 setProductVersion:productVersion];
 
-    v7 = [v3 releaseType];
+    releaseType = [descriptorCopy releaseType];
 
-    [(SUDescriptor *)v4 setReleaseType:v7];
+    [(SUDescriptor *)v4 setReleaseType:releaseType];
   }
 
   else
@@ -4849,10 +4849,10 @@ LABEL_12:
   return v4;
 }
 
-+ (BOOL)shouldHideInstallAlertForCoreDescriptor:(id)a3
++ (BOOL)shouldHideInstallAlertForCoreDescriptor:(id)descriptor
 {
-  v3 = a3;
-  if ([v3 hideInstallAlert] == 2)
+  descriptorCopy = descriptor;
+  if ([descriptorCopy hideInstallAlert] == 2)
   {
     v4 = +[SUUtility currentReleaseType];
     v5 = [v4 isEqualToString:@"Beta"];
@@ -4864,8 +4864,8 @@ LABEL_12:
 
     else
     {
-      v7 = [v3 productVersion];
-      v6 = [SUAssetSupport updateIsPreCRelease:v7];
+      productVersion = [descriptorCopy productVersion];
+      v6 = [SUAssetSupport updateIsPreCRelease:productVersion];
 
       SULogInfo(@"%s: Current release type is not developer, overriding HideInstallAlert to: %@", v8, v9, v10, v11, v12, v13, v14, "+[SUManagerEngine shouldHideInstallAlertForCoreDescriptor:]");
     }
@@ -4873,30 +4873,30 @@ LABEL_12:
 
   else
   {
-    v6 = [v3 hideInstallAlert] != 0;
+    v6 = [descriptorCopy hideInstallAlert] != 0;
   }
 
   return v6;
 }
 
-+ (id)rollbackDescriptorForSUCoreRollbackDescriptor:(id)a3
++ (id)rollbackDescriptorForSUCoreRollbackDescriptor:(id)descriptor
 {
-  if (a3)
+  if (descriptor)
   {
-    v3 = a3;
+    descriptorCopy = descriptor;
     v4 = objc_alloc_init(SURollbackDescriptor);
-    v5 = [v3 restoreVersion];
-    [(SURollbackDescriptor *)v4 setRestoreVersion:v5];
+    restoreVersion = [descriptorCopy restoreVersion];
+    [(SURollbackDescriptor *)v4 setRestoreVersion:restoreVersion];
 
-    v6 = [v3 productVersion];
-    [(SURollbackDescriptor *)v4 setProductVersion:v6];
+    productVersion = [descriptorCopy productVersion];
+    [(SURollbackDescriptor *)v4 setProductVersion:productVersion];
 
-    v7 = [v3 productBuildVersion];
-    [(SURollbackDescriptor *)v4 setProductBuildVersion:v7];
+    productBuildVersion = [descriptorCopy productBuildVersion];
+    [(SURollbackDescriptor *)v4 setProductBuildVersion:productBuildVersion];
 
-    v8 = [v3 releaseType];
+    releaseType = [descriptorCopy releaseType];
 
-    [(SURollbackDescriptor *)v4 setReleaseType:v8];
+    [(SURollbackDescriptor *)v4 setReleaseType:releaseType];
   }
 
   else

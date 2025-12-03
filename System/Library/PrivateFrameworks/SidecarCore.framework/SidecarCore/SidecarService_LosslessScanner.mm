@@ -19,12 +19,12 @@
 
 - (id)makeRequest
 {
-  v3 = [(SidecarService *)self devices];
-  v4 = [v3 firstObject];
+  devices = [(SidecarService *)self devices];
+  firstObject = [devices firstObject];
 
-  if (v4)
+  if (firstObject)
   {
-    v5 = [[SidecarRequest_ScanLosslessDocument alloc] initWithService:self device:v4];
+    v5 = [[SidecarRequest_ScanLosslessDocument alloc] initWithService:self device:firstObject];
   }
 
   else

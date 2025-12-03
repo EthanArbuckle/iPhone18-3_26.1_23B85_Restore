@@ -1,35 +1,35 @@
 @interface ASRSchemaASRContextualEntityState
-- (ASRSchemaASRContextualEntityState)initWithDictionary:(id)a3;
-- (ASRSchemaASRContextualEntityState)initWithJSON:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (ASRSchemaASRContextualEntityState)initWithDictionary:(id)dictionary;
+- (ASRSchemaASRContextualEntityState)initWithJSON:(id)n;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasEnrollmentResult:(BOOL)a3;
-- (void)setHasRejectReason:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasEnrollmentResult:(BOOL)result;
+- (void)setHasRejectReason:(BOOL)reason;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ASRSchemaASRContextualEntityState
 
-- (ASRSchemaASRContextualEntityState)initWithDictionary:(id)a3
+- (ASRSchemaASRContextualEntityState)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = ASRSchemaASRContextualEntityState;
   v5 = [(ASRSchemaASRContextualEntityState *)&v13 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"contextType"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"contextType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ASRSchemaASRContextualEntityState setContextType:](v5, "setContextType:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"entityType"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"entityType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -37,14 +37,14 @@
       [(ASRSchemaASRContextualEntityState *)v5 setEntityType:v8];
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"enrollmentResult"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"enrollmentResult"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ASRSchemaASRContextualEntityState setEnrollmentResult:](v5, "setEnrollmentResult:", [v9 intValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"rejectReason"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"rejectReason"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -57,30 +57,30 @@
   return v5;
 }
 
-- (ASRSchemaASRContextualEntityState)initWithJSON:(id)a3
+- (ASRSchemaASRContextualEntityState)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ASRSchemaASRContextualEntityState *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ASRSchemaASRContextualEntityState *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ASRSchemaASRContextualEntityState *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -93,7 +93,7 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if (has)
   {
@@ -108,20 +108,20 @@
       v6 = off_1E78D1C70[v5];
     }
 
-    [v3 setObject:v6 forKeyedSubscript:@"contextType"];
+    [dictionary setObject:v6 forKeyedSubscript:@"contextType"];
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    v7 = [(ASRSchemaASRContextualEntityState *)self enrollmentResult];
+    enrollmentResult = [(ASRSchemaASRContextualEntityState *)self enrollmentResult];
     v8 = @"ASRENTITYENROLLMENTRESULT_UNKNOWN";
-    if (v7 == 1)
+    if (enrollmentResult == 1)
     {
       v8 = @"ASRENTITYENROLLMENTRESULT_ENROLL";
     }
 
-    if (v7 == 2)
+    if (enrollmentResult == 2)
     {
       v9 = @"ASRENTITYENROLLMENTRESULT_REJECT";
     }
@@ -131,22 +131,22 @@
       v9 = v8;
     }
 
-    [v3 setObject:v9 forKeyedSubscript:@"enrollmentResult"];
+    [dictionary setObject:v9 forKeyedSubscript:@"enrollmentResult"];
   }
 
   if (self->_entityType)
   {
-    v10 = [(ASRSchemaASRContextualEntityState *)self entityType];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    entityType = [(ASRSchemaASRContextualEntityState *)self entityType];
+    dictionaryRepresentation = [entityType dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"entityType"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"entityType"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"entityType"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"entityType"];
     }
   }
 
@@ -163,12 +163,12 @@
       v14 = off_1E78D1D68[v13];
     }
 
-    [v3 setObject:v14 forKeyedSubscript:@"rejectReason"];
+    [dictionary setObject:v14 forKeyedSubscript:@"rejectReason"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -208,15 +208,15 @@ LABEL_6:
   return v4 ^ v3 ^ v5 ^ v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_19;
   }
 
-  if ((*&self->_has & 1) != (v4[32] & 1))
+  if ((*&self->_has & 1) != (equalCopy[32] & 1))
   {
     goto LABEL_19;
   }
@@ -224,28 +224,28 @@ LABEL_6:
   if (*&self->_has)
   {
     contextType = self->_contextType;
-    if (contextType != [v4 contextType])
+    if (contextType != [equalCopy contextType])
     {
       goto LABEL_19;
     }
   }
 
-  v6 = [(ASRSchemaASRContextualEntityState *)self entityType];
-  v7 = [v4 entityType];
-  v8 = v7;
-  if ((v6 != 0) == (v7 == 0))
+  entityType = [(ASRSchemaASRContextualEntityState *)self entityType];
+  entityType2 = [equalCopy entityType];
+  v8 = entityType2;
+  if ((entityType != 0) == (entityType2 == 0))
   {
 
     goto LABEL_19;
   }
 
-  v9 = [(ASRSchemaASRContextualEntityState *)self entityType];
-  if (v9)
+  entityType3 = [(ASRSchemaASRContextualEntityState *)self entityType];
+  if (entityType3)
   {
-    v10 = v9;
-    v11 = [(ASRSchemaASRContextualEntityState *)self entityType];
-    v12 = [v4 entityType];
-    v13 = [v11 isEqual:v12];
+    v10 = entityType3;
+    entityType4 = [(ASRSchemaASRContextualEntityState *)self entityType];
+    entityType5 = [equalCopy entityType];
+    v13 = [entityType4 isEqual:entityType5];
 
     if (!v13)
     {
@@ -259,7 +259,7 @@ LABEL_6:
 
   has = self->_has;
   v15 = (*&has >> 1) & 1;
-  v16 = v4[32];
+  v16 = equalCopy[32];
   if (v15 != ((v16 >> 1) & 1))
   {
 LABEL_19:
@@ -270,10 +270,10 @@ LABEL_19:
   if (v15)
   {
     enrollmentResult = self->_enrollmentResult;
-    if (enrollmentResult == [v4 enrollmentResult])
+    if (enrollmentResult == [equalCopy enrollmentResult])
     {
       has = self->_has;
-      v16 = v4[32];
+      v16 = equalCopy[32];
       goto LABEL_15;
     }
 
@@ -290,7 +290,7 @@ LABEL_15:
   if (v18)
   {
     rejectReason = self->_rejectReason;
-    if (rejectReason != [v4 rejectReason])
+    if (rejectReason != [equalCopy rejectReason])
     {
       goto LABEL_19;
     }
@@ -302,19 +302,19 @@ LABEL_20:
   return v20;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v7 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     PBDataWriterWriteInt32Field();
   }
 
-  v4 = [(ASRSchemaASRContextualEntityState *)self entityType];
+  entityType = [(ASRSchemaASRContextualEntityState *)self entityType];
 
-  if (v4)
+  if (entityType)
   {
-    v5 = [(ASRSchemaASRContextualEntityState *)self entityType];
+    entityType2 = [(ASRSchemaASRContextualEntityState *)self entityType];
     PBDataWriterWriteSubmessage();
   }
 
@@ -331,9 +331,9 @@ LABEL_20:
   }
 }
 
-- (void)setHasRejectReason:(BOOL)a3
+- (void)setHasRejectReason:(BOOL)reason
 {
-  if (a3)
+  if (reason)
   {
     v3 = 4;
   }
@@ -346,9 +346,9 @@ LABEL_20:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasEnrollmentResult:(BOOL)a3
+- (void)setHasEnrollmentResult:(BOOL)result
 {
-  if (a3)
+  if (result)
   {
     v3 = 2;
   }
@@ -361,17 +361,17 @@ LABEL_20:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = ASRSchemaASRContextualEntityState;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(ASRSchemaASRContextualEntityState *)self entityType:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(ASRSchemaASRContextualEntityState *)self deleteEntityType];
   }

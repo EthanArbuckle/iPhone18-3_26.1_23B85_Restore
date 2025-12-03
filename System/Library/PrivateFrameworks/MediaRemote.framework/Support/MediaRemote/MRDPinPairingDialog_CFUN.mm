@@ -1,17 +1,17 @@
 @interface MRDPinPairingDialog_CFUN
-- (void)showWithPin:(id)a3 forClient:(id)a4;
+- (void)showWithPin:(id)pin forClient:(id)client;
 @end
 
 @implementation MRDPinPairingDialog_CFUN
 
-- (void)showWithPin:(id)a3 forClient:(id)a4
+- (void)showWithPin:(id)pin forClient:(id)client
 {
-  v4 = a3;
+  pinCopy = pin;
   v8 = objc_alloc_init(MSVSystemDialogOptions);
   v5 = MRLocalizedString();
   [v8 setAlertHeader:v5];
 
-  [v8 setAlertMessage:v4];
+  [v8 setAlertMessage:pinCopy];
   v6 = MRLocalizedString();
   [v8 setDefaultButtonTitle:v6];
 

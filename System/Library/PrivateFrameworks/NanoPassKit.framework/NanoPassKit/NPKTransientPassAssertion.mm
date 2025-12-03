@@ -1,20 +1,20 @@
 @interface NPKTransientPassAssertion
-- (NPKTransientPassAssertion)initWithPassWithUniqueID:(id)a3;
+- (NPKTransientPassAssertion)initWithPassWithUniqueID:(id)d;
 - (void)_resyncState;
 @end
 
 @implementation NPKTransientPassAssertion
 
-- (NPKTransientPassAssertion)initWithPassWithUniqueID:(id)a3
+- (NPKTransientPassAssertion)initWithPassWithUniqueID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v9.receiver = self;
   v9.super_class = NPKTransientPassAssertion;
   v6 = [(NPKTransientAssertion *)&v9 initWithQueue:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_uniqueID, a3);
+    objc_storeStrong(&v6->_uniqueID, d);
     [(NPKTransientPassAssertion *)v7 _resyncState];
   }
 
@@ -39,14 +39,14 @@
     }
   }
 
-  v7 = [(NPKTransientAssertion *)self _remoteObjectProxy];
-  [v7 setTransientPassUniqueID:self->_uniqueID];
+  _remoteObjectProxy = [(NPKTransientAssertion *)self _remoteObjectProxy];
+  [_remoteObjectProxy setTransientPassUniqueID:self->_uniqueID];
 
-  v8 = [(NPKTransientAssertion *)self _remoteObjectProxy];
-  [v8 setServiceModeRequested:self->_requestServiceMode];
+  _remoteObjectProxy2 = [(NPKTransientAssertion *)self _remoteObjectProxy];
+  [_remoteObjectProxy2 setServiceModeRequested:self->_requestServiceMode];
 
-  v9 = [(NPKTransientAssertion *)self _remoteObjectProxy];
-  [v9 setDisableCardSelection:self->_disableCardSelection];
+  _remoteObjectProxy3 = [(NPKTransientAssertion *)self _remoteObjectProxy];
+  [_remoteObjectProxy3 setDisableCardSelection:self->_disableCardSelection];
 
   v10 = *MEMORY[0x277D85DE8];
 }

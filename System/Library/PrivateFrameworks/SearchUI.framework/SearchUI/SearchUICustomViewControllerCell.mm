@@ -1,44 +1,44 @@
 @interface SearchUICustomViewControllerCell
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (void)layoutSubviews;
-- (void)setEmbeddedViewController:(id)a3;
+- (void)setEmbeddedViewController:(id)controller;
 @end
 
 @implementation SearchUICustomViewControllerCell
 
-- (void)setEmbeddedViewController:(id)a3
+- (void)setEmbeddedViewController:(id)controller
 {
-  v5 = a3;
-  if (self->_embeddedViewController != v5)
+  controllerCopy = controller;
+  if (self->_embeddedViewController != controllerCopy)
   {
-    v11 = v5;
-    v6 = [(SearchUICustomViewControllerCell *)self hostedView];
-    [v6 removeFromSuperview];
+    v11 = controllerCopy;
+    hostedView = [(SearchUICustomViewControllerCell *)self hostedView];
+    [hostedView removeFromSuperview];
 
     if (v11)
     {
       v7 = objc_alloc(MEMORY[0x1E69DD410]);
-      v8 = [(UIViewController *)v11 view];
-      v9 = [v7 initWithHostedView:v8];
+      view = [(UIViewController *)v11 view];
+      v9 = [v7 initWithHostedView:view];
 
-      v10 = [(SearchUICustomViewControllerCell *)self contentView];
-      [v10 addSubview:v9];
+      contentView = [(SearchUICustomViewControllerCell *)self contentView];
+      [contentView addSubview:v9];
 
       [(SearchUICollectionViewCell *)self setUseSystemSizing:1];
       [(SearchUICustomViewControllerCell *)self setHostedView:v9];
     }
 
-    objc_storeStrong(&self->_embeddedViewController, a3);
-    v5 = v11;
+    objc_storeStrong(&self->_embeddedViewController, controller);
+    controllerCopy = v11;
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(SearchUICustomViewControllerCell *)self hostedView];
-  [v5 sizeThatFits:{width, height}];
+  height = fits.height;
+  width = fits.width;
+  hostedView = [(SearchUICustomViewControllerCell *)self hostedView];
+  [hostedView sizeThatFits:{width, height}];
   v7 = v6;
   v9 = v8;
 
@@ -54,14 +54,14 @@
   v13.receiver = self;
   v13.super_class = SearchUICustomViewControllerCell;
   [(SearchUICollectionViewCell *)&v13 layoutSubviews];
-  v3 = [(SearchUICustomViewControllerCell *)self contentView];
-  [v3 bounds];
+  contentView = [(SearchUICustomViewControllerCell *)self contentView];
+  [contentView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(SearchUICustomViewControllerCell *)self hostedView];
-  [v12 setFrame:{v5, v7, v9, v11}];
+  hostedView = [(SearchUICustomViewControllerCell *)self hostedView];
+  [hostedView setFrame:{v5, v7, v9, v11}];
 }
 
 @end

@@ -1,40 +1,40 @@
 @interface PXLikeSharedAlbumAssetsAction
-+ (BOOL)canPerformOnAsset:(id)a3 inAssetCollection:(id)a4;
-+ (BOOL)currentValueForAssets:(id)a3;
-+ (BOOL)toggledValueForAssets:(id)a3;
-- (PXLikeSharedAlbumAssetsAction)initWithAssets:(id)a3;
-- (PXLikeSharedAlbumAssetsAction)initWithAssets:(id)a3 like:(BOOL)a4;
++ (BOOL)canPerformOnAsset:(id)asset inAssetCollection:(id)collection;
++ (BOOL)currentValueForAssets:(id)assets;
++ (BOOL)toggledValueForAssets:(id)assets;
+- (PXLikeSharedAlbumAssetsAction)initWithAssets:(id)assets;
+- (PXLikeSharedAlbumAssetsAction)initWithAssets:(id)assets like:(BOOL)like;
 - (id)actionNameLocalizationKey;
-- (void)performAction:(id)a3;
-- (void)performUndo:(id)a3;
+- (void)performAction:(id)action;
+- (void)performUndo:(id)undo;
 @end
 
 @implementation PXLikeSharedAlbumAssetsAction
 
-- (void)performUndo:(id)a3
+- (void)performUndo:(id)undo
 {
-  v4 = a3;
-  v5 = [(PXLikeSharedAlbumAssetsAction *)self isLike];
-  v6 = [(PXAssetsAction *)self assets];
-  [PXSharedAlbumsUtilities setLikedTo:!v5 forAssets:v6 completionHandler:v4];
+  undoCopy = undo;
+  isLike = [(PXLikeSharedAlbumAssetsAction *)self isLike];
+  assets = [(PXAssetsAction *)self assets];
+  [PXSharedAlbumsUtilities setLikedTo:!isLike forAssets:assets completionHandler:undoCopy];
 }
 
-- (void)performAction:(id)a3
+- (void)performAction:(id)action
 {
-  v4 = a3;
-  v5 = [(PXLikeSharedAlbumAssetsAction *)self isLike];
-  v6 = [(PXAssetsAction *)self assets];
-  [PXSharedAlbumsUtilities setLikedTo:v5 forAssets:v6 completionHandler:v4];
+  actionCopy = action;
+  isLike = [(PXLikeSharedAlbumAssetsAction *)self isLike];
+  assets = [(PXAssetsAction *)self assets];
+  [PXSharedAlbumsUtilities setLikedTo:isLike forAssets:assets completionHandler:actionCopy];
 }
 
 - (id)actionNameLocalizationKey
 {
-  v3 = [(PXLikeSharedAlbumAssetsAction *)self isLike];
-  v4 = [(PXAssetsAction *)self assets];
-  v5 = [v4 count];
+  isLike = [(PXLikeSharedAlbumAssetsAction *)self isLike];
+  assets = [(PXAssetsAction *)self assets];
+  v5 = [assets count];
 
-  v6 = [(PXLikeSharedAlbumAssetsAction *)self mediaType];
-  if (v3)
+  mediaType = [(PXLikeSharedAlbumAssetsAction *)self mediaType];
+  if (isLike)
   {
     if (v5 != 1)
     {
@@ -64,40 +64,40 @@
 
   v9 = v7;
 LABEL_9:
-  v10 = PXLocalizationKeyForMediaType(v6, v7, v8, v9);
+  v10 = PXLocalizationKeyForMediaType(mediaType, v7, v8, v9);
 
   return v10;
 }
 
-- (PXLikeSharedAlbumAssetsAction)initWithAssets:(id)a3
+- (PXLikeSharedAlbumAssetsAction)initWithAssets:(id)assets
 {
-  v4 = a3;
-  v5 = -[PXLikeSharedAlbumAssetsAction initWithAssets:like:](self, "initWithAssets:like:", v4, [objc_opt_class() toggledValueForAssets:v4]);
+  assetsCopy = assets;
+  v5 = -[PXLikeSharedAlbumAssetsAction initWithAssets:like:](self, "initWithAssets:like:", assetsCopy, [objc_opt_class() toggledValueForAssets:assetsCopy]);
 
   return v5;
 }
 
-- (PXLikeSharedAlbumAssetsAction)initWithAssets:(id)a3 like:(BOOL)a4
+- (PXLikeSharedAlbumAssetsAction)initWithAssets:(id)assets like:(BOOL)like
 {
-  v6 = a3;
+  assetsCopy = assets;
   v9.receiver = self;
   v9.super_class = PXLikeSharedAlbumAssetsAction;
-  v7 = [(PXAssetsAction *)&v9 initWithAssets:v6];
+  v7 = [(PXAssetsAction *)&v9 initWithAssets:assetsCopy];
   if (v7)
   {
-    v7->_like = a4;
+    v7->_like = like;
     PXMediaTypeForAssets();
   }
 
   return 0;
 }
 
-+ (BOOL)canPerformOnAsset:(id)a3 inAssetCollection:(id)a4
++ (BOOL)canPerformOnAsset:(id)asset inAssetCollection:(id)collection
 {
-  v4 = a3;
-  if ([v4 px_isSharedAlbumAsset])
+  assetCopy = asset;
+  if ([assetCopy px_isSharedAlbumAsset])
   {
-    v5 = [v4 needsSensitivityProtection] ^ 1;
+    v5 = [assetCopy needsSensitivityProtection] ^ 1;
   }
 
   else
@@ -108,12 +108,12 @@ LABEL_9:
   return v5;
 }
 
-+ (BOOL)currentValueForAssets:(id)a3
++ (BOOL)currentValueForAssets:(id)assets
 {
-  v4 = a3;
-  if ([v4 count])
+  assetsCopy = assets;
+  if ([assetsCopy count])
   {
-    v5 = [a1 toggledValueForAssets:v4] ^ 1;
+    v5 = [self toggledValueForAssets:assetsCopy] ^ 1;
   }
 
   else
@@ -124,10 +124,10 @@ LABEL_9:
   return v5;
 }
 
-+ (BOOL)toggledValueForAssets:(id)a3
++ (BOOL)toggledValueForAssets:(id)assets
 {
-  v3 = a3;
-  if ([v3 count])
+  assetsCopy = assets;
+  if ([assetsCopy count])
   {
     PXExists();
   }

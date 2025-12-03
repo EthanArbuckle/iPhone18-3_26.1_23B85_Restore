@@ -1,27 +1,27 @@
 @interface AKAuthHandlerImpl
-- (id)buildReauthenticationContextFromContext:(id)a3 error:(id *)a4;
-- (void)reauthenticateWithContext:(id)a3 completion:(id)a4;
-- (void)reauthenticateWithContext:(id)a3 completionWithResults:(id)a4;
+- (id)buildReauthenticationContextFromContext:(id)context error:(id *)error;
+- (void)reauthenticateWithContext:(id)context completion:(id)completion;
+- (void)reauthenticateWithContext:(id)context completionWithResults:(id)results;
 @end
 
 @implementation AKAuthHandlerImpl
 
-- (id)buildReauthenticationContextFromContext:(id)a3 error:(id *)a4
+- (id)buildReauthenticationContextFromContext:(id)context error:(id *)error
 {
-  v34 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v32 = a4;
+  objc_storeStrong(location, context);
+  errorCopy = error;
   v31 = objc_opt_new();
   [v31 _updateWithValuesFromContext:location[0]];
   [v31 setIsUsernameEditable:0];
   [v31 setShouldSkipSettingsLaunchAlert:1];
   [v31 setNeedsNewAppleID:0];
   [v31 setRequestedNewAccountAgeRange:0];
-  v19 = [v31 username];
-  MEMORY[0x1E69E5920](v19);
-  if (v19)
+  username = [v31 username];
+  MEMORY[0x1E69E5920](username);
+  if (username)
   {
     goto LABEL_14;
   }
@@ -38,13 +38,13 @@
 
   objc_storeStrong(&v30, 0);
   v14 = +[AKAccountManager sharedInstance];
-  v13 = [location[0] altDSID];
+  altDSID = [location[0] altDSID];
   v27 = [AKAccountManager authKitAccountWithAltDSID:v14 error:"authKitAccountWithAltDSID:error:"];
-  MEMORY[0x1E69E5920](v13);
+  MEMORY[0x1E69E5920](altDSID);
   MEMORY[0x1E69E5920](v14);
-  v15 = [v27 username];
-  MEMORY[0x1E69E5920](v15);
-  if (v15)
+  username2 = [v27 username];
+  MEMORY[0x1E69E5920](username2);
+  if (username2)
   {
     v22 = _AKLogSystem();
     v21 = OS_LOG_TYPE_DEFAULT;
@@ -57,9 +57,9 @@
     }
 
     objc_storeStrong(&v22, 0);
-    v7 = [v27 username];
+    username3 = [v27 username];
     [v31 setUsername:?];
-    MEMORY[0x1E69E5920](v7);
+    MEMORY[0x1E69E5920](username3);
     v23 = 0;
   }
 
@@ -76,11 +76,11 @@
     }
 
     objc_storeStrong(&v26, 0);
-    if (v32)
+    if (errorCopy)
     {
       v10 = [MEMORY[0x1E696ABC0] ak_errorWithCode:-7022];
       v4 = v10;
-      *v32 = v10;
+      *errorCopy = v10;
     }
 
     v35 = 0;
@@ -91,7 +91,7 @@
   if (!v23)
   {
 LABEL_14:
-    if ([(AKAuthHandlerImpl *)v34 forceSilentAuth])
+    if ([(AKAuthHandlerImpl *)selfCopy forceSilentAuth])
     {
       [v31 setAuthenticationType:1];
     }
@@ -107,15 +107,15 @@ LABEL_14:
   return v5;
 }
 
-- (void)reauthenticateWithContext:(id)a3 completion:(id)a4
+- (void)reauthenticateWithContext:(id)context completion:(id)completion
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v13 = 0;
-  objc_storeStrong(&v13, a4);
-  v6 = v15;
+  objc_storeStrong(&v13, completion);
+  v6 = selfCopy;
   v5 = location[0];
   v7 = MEMORY[0x1E69E9820];
   v8 = -1073741824;
@@ -141,14 +141,14 @@ void __58__AKAuthHandlerImpl_reauthenticateWithContext_completion___block_invoke
   objc_storeStrong(location, 0);
 }
 
-- (void)reauthenticateWithContext:(id)a3 completionWithResults:(id)a4
+- (void)reauthenticateWithContext:(id)context completionWithResults:(id)results
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v6 = 0;
-  objc_storeStrong(&v6, a4);
+  objc_storeStrong(&v6, results);
   v5 = objc_alloc_init(AKAppleIDAuthenticationController);
   [(AKAppleIDAuthenticationController *)v5 authenticateWithContext:location[0] completion:v6];
   objc_storeStrong(&v5, 0);

@@ -1,6 +1,6 @@
 @interface WebDataSource
-+ (Class)_representationClassForMIMEType:(id)a3 allowingPlugins:(BOOL)a4;
-+ (id)_repTypesAllowImageTypeOmission:(BOOL)a3;
++ (Class)_representationClassForMIMEType:(id)type allowingPlugins:(BOOL)plugins;
++ (id)_repTypesAllowImageTypeOmission:(BOOL)omission;
 - (BOOL)_isDocumentHTML;
 - (NSArray)subresources;
 - (NSData)data;
@@ -14,38 +14,38 @@
 - (WebResource)mainResource;
 - (WebResource)subresourceForURL:(NSURL *)URL;
 - (id)_URL;
-- (id)_documentFragmentWithArchive:(id)a3;
-- (id)_documentFragmentWithImageResource:(id)a3;
-- (id)_imageElementWithImageResource:(id)a3;
-- (id)_initWithDocumentLoader:(void *)a3;
+- (id)_documentFragmentWithArchive:(id)archive;
+- (id)_documentFragmentWithImageResource:(id)resource;
+- (id)_imageElementWithImageResource:(id)resource;
+- (id)_initWithDocumentLoader:(void *)loader;
 - (id)_responseMIMEType;
 - (id)_webView;
-- (void)_addSubframeArchives:(id)a3;
+- (void)_addSubframeArchives:(id)archives;
 - (void)_finishedLoading;
 - (void)_makeRepresentation;
-- (void)_receivedData:(id)a3;
-- (void)_replaceSelectionWithArchive:(id)a3 selectReplacement:(BOOL)a4;
-- (void)_setMainDocumentError:(id)a3;
-- (void)_setOverrideTextEncodingName:(id)a3;
-- (void)_setQuickLookContent:(id)a3;
-- (void)_setQuickLookPreviewLoaderClient:(void *)a3;
-- (void)_setRepresentation:(id)a3;
+- (void)_receivedData:(id)data;
+- (void)_replaceSelectionWithArchive:(id)archive selectReplacement:(BOOL)replacement;
+- (void)_setMainDocumentError:(id)error;
+- (void)_setOverrideTextEncodingName:(id)name;
+- (void)_setQuickLookContent:(id)content;
+- (void)_setQuickLookPreviewLoaderClient:(void *)client;
+- (void)_setRepresentation:(id)representation;
 - (void)addSubresource:(WebResource *)subresource;
 - (void)dealloc;
 @end
 
 @implementation WebDataSource
 
-- (void)_setRepresentation:(id)a3
+- (void)_setRepresentation:(id)representation
 {
   v5 = self->_private;
-  if (a3)
+  if (representation)
   {
-    v6 = a3;
+    representationCopy = representation;
   }
 
   v7 = v5[1];
-  v5[1] = a3;
+  v5[1] = representation;
   if (v7)
   {
   }
@@ -53,10 +53,10 @@
   *(self->_private + 16) = 0;
 }
 
-+ (Class)_representationClassForMIMEType:(id)a3 allowingPlugins:(BOOL)a4
++ (Class)_representationClassForMIMEType:(id)type allowingPlugins:(BOOL)plugins
 {
   v5 = 0;
-  if ([WebView _viewClass:0 andRepresentationClass:&v5 forMIMEType:a3 allowingPlugins:a4])
+  if ([WebView _viewClass:0 andRepresentationClass:&v5 forMIMEType:type allowingPlugins:plugins])
   {
     return v5;
   }
@@ -67,14 +67,14 @@
   }
 }
 
-- (void)_addSubframeArchives:(id)a3
+- (void)_addSubframeArchives:(id)archives
 {
   v13 = *MEMORY[0x1E69E9840];
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v4 = [a3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  v4 = [archives countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -86,7 +86,7 @@
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(archives);
         }
 
         [*(*(&v8 + 1) + 8 * v7) _coreLegacyWebArchive];
@@ -95,7 +95,7 @@
       }
 
       while (v5 != v7);
-      v5 = [a3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [archives countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
@@ -104,15 +104,15 @@
 
 - (id)_responseMIMEType
 {
-  v2 = [(WebDataSource *)self response];
+  response = [(WebDataSource *)self response];
 
-  return [(NSURLResponse *)v2 MIMEType];
+  return [(NSURLResponse *)response MIMEType];
 }
 
-- (void)_setOverrideTextEncodingName:(id)a3
+- (void)_setOverrideTextEncodingName:(id)name
 {
   v3 = *self->_private;
-  MEMORY[0x1CCA63A40](&v8, a3);
+  MEMORY[0x1CCA63A40](&v8, name);
   v5 = v8;
   if (v8)
   {
@@ -140,40 +140,40 @@
 - (void)_finishedLoading
 {
   *(self->_private + 16) = 1;
-  v3 = [(WebDataSource *)self representation];
+  representation = [(WebDataSource *)self representation];
 
-  [v3 finishedLoadingWithDataSource:self];
+  [representation finishedLoadingWithDataSource:self];
 }
 
-- (void)_receivedData:(id)a3
+- (void)_receivedData:(id)data
 {
-  v5 = self;
+  selfCopy = self;
   if (self)
   {
-    v4 = self;
-    self = v5;
+    selfCopy2 = self;
+    self = selfCopy;
   }
 
   [-[WebDataSource representation](self "representation")];
-  [(NSView *)[(WebFrameView *)[(WebFrame *)[(WebDataSource *)v5 webFrame] frameView] documentView] dataSourceUpdated:v5];
-  if (v5)
+  [(NSView *)[(WebFrameView *)[(WebFrame *)[(WebDataSource *)selfCopy webFrame] frameView] documentView] dataSourceUpdated:selfCopy];
+  if (selfCopy)
   {
   }
 }
 
-- (void)_setMainDocumentError:(id)a3
+- (void)_setMainDocumentError:(id)error
 {
   v4 = self->_private;
   if ((v4[16] & 1) == 0)
   {
     v4[16] = 1;
-    v7 = [(WebDataSource *)self representation];
+    representation = [(WebDataSource *)self representation];
 
-    [v7 receivedError:a3 withDataSource:self];
+    [representation receivedError:error withDataSource:self];
   }
 }
 
-+ (id)_repTypesAllowImageTypeOmission:(BOOL)a3
++ (id)_repTypesAllowImageTypeOmission:(BOOL)omission
 {
   if (_MergedGlobals_10 == 1)
   {
@@ -186,9 +186,9 @@
 
   else
   {
-    v9 = a3;
+    omissionCopy = omission;
     +[WebDataSource(WebInternal) _repTypesAllowImageTypeOmission:]::$_3::operator()(&v10);
-    a3 = v9;
+    omission = omissionCopy;
     v3 = v10;
     qword_1ED6A60F8 = v10;
     _MergedGlobals_10 = 1;
@@ -198,25 +198,25 @@
     }
   }
 
-  if (!a3)
+  if (!omission)
   {
     v4 = objc_opt_class();
     v5 = [+[WebHTMLRepresentation supportedImageMIMETypes](WebHTMLRepresentation "supportedImageMIMETypes")];
-    v6 = [v5 nextObject];
-    if (v6)
+    nextObject = [v5 nextObject];
+    if (nextObject)
     {
-      v7 = v6;
+      nextObject2 = nextObject;
       do
       {
-        if (![v3 objectForKey:v7])
+        if (![v3 objectForKey:nextObject2])
         {
-          [v3 setObject:v4 forKey:v7];
+          [v3 setObject:v4 forKey:nextObject2];
         }
 
-        v7 = [v5 nextObject];
+        nextObject2 = [v5 nextObject];
       }
 
-      while (v7);
+      while (nextObject2);
     }
 
     byte_1ED6A60F1 = 1;
@@ -226,30 +226,30 @@
   return v3;
 }
 
-- (void)_replaceSelectionWithArchive:(id)a3 selectReplacement:(BOOL)a4
+- (void)_replaceSelectionWithArchive:(id)archive selectReplacement:(BOOL)replacement
 {
-  v4 = a4;
-  v6 = [(WebDataSource *)self _documentFragmentWithArchive:a3];
+  replacementCopy = replacement;
+  v6 = [(WebDataSource *)self _documentFragmentWithArchive:archive];
   if (v6)
   {
     v7 = v6;
-    v8 = [(WebDataSource *)self webFrame];
+    webFrame = [(WebDataSource *)self webFrame];
 
-    [(WebFrame *)v8 _replaceSelectionWithFragment:v7 selectReplacement:v4 smartReplace:0 matchStyle:0];
+    [(WebFrame *)webFrame _replaceSelectionWithFragment:v7 selectReplacement:replacementCopy smartReplace:0 matchStyle:0];
   }
 }
 
-- (id)_documentFragmentWithArchive:(id)a3
+- (id)_documentFragmentWithArchive:(id)archive
 {
-  result = [a3 mainResource];
+  result = [archive mainResource];
   if (result)
   {
     v6 = result;
-    v7 = [result MIMEType];
-    if ([WebView canShowMIMETypeAsHTML:v7])
+    mIMEType = [result MIMEType];
+    if ([WebView canShowMIMETypeAsHTML:mIMEType])
     {
       v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:objc_msgSend(v6 encoding:{"data"), 4}];
-      [a3 _coreLegacyWebArchive];
+      [archive _coreLegacyWebArchive];
       WebCore::DocumentLoader::addAllArchiveResources();
       result = -[WebFrame _documentFragmentWithMarkupString:baseURLString:](-[WebDataSource webFrame](self, "webFrame"), "_documentFragmentWithMarkupString:baseURLString:", v8, [objc_msgSend(v6 "URL")]);
       if (v8)
@@ -262,7 +262,7 @@
 
     else
     {
-      MEMORY[0x1CCA63A40](&v14, v7);
+      MEMORY[0x1CCA63A40](&v14, mIMEType);
       isSupportedImageMIMEType = WebCore::MIMETypeRegistry::isSupportedImageMIMEType(&v14, v10);
       v13 = v14;
       v14 = 0;
@@ -286,41 +286,41 @@
   return result;
 }
 
-- (id)_documentFragmentWithImageResource:(id)a3
+- (id)_documentFragmentWithImageResource:(id)resource
 {
-  v4 = [(WebDataSource *)self _imageElementWithImageResource:a3];
+  v4 = [(WebDataSource *)self _imageElementWithImageResource:resource];
   if (!v4)
   {
     return 0;
   }
 
   v5 = v4;
-  v6 = [[(WebFrame *)[(WebDataSource *)self webFrame] DOMDocument] createDocumentFragment];
-  [(DOMNode *)v6 appendChild:v5];
-  return v6;
+  createDocumentFragment = [[(WebFrame *)[(WebDataSource *)self webFrame] DOMDocument] createDocumentFragment];
+  [(DOMNode *)createDocumentFragment appendChild:v5];
+  return createDocumentFragment;
 }
 
-- (id)_imageElementWithImageResource:(id)a3
+- (id)_imageElementWithImageResource:(id)resource
 {
-  if (!a3)
+  if (!resource)
   {
     return 0;
   }
 
   [(WebDataSource *)self addSubresource:?];
   v5 = [[(WebFrame *)[(WebDataSource *)self webFrame] DOMDocument] createElement:@"img"];
-  v6 = [a3 URL];
+  v6 = [resource URL];
   if ([v6 isFileURL])
   {
-    v7 = [v6 absoluteString];
+    absoluteString = [v6 absoluteString];
   }
 
   else
   {
-    v7 = [v6 _web_originalDataAsString];
+    absoluteString = [v6 _web_originalDataAsString];
   }
 
-  [(DOMElement *)v5 setAttribute:@"src" value:v7];
+  [(DOMElement *)v5 setAttribute:@"src" value:absoluteString];
   return v5;
 }
 
@@ -350,16 +350,16 @@
 
 - (id)_webView
 {
-  v2 = [(WebDataSource *)self webFrame];
+  webFrame = [(WebDataSource *)self webFrame];
 
-  return [(WebFrame *)v2 webView];
+  return [(WebFrame *)webFrame webView];
 }
 
 - (BOOL)_isDocumentHTML
 {
-  v2 = [(WebDataSource *)self _responseMIMEType];
+  _responseMIMEType = [(WebDataSource *)self _responseMIMEType];
 
-  return [WebView canShowMIMETypeAsHTML:v2];
+  return [WebView canShowMIMETypeAsHTML:_responseMIMEType];
 }
 
 - (void)_makeRepresentation
@@ -399,7 +399,7 @@
   }
 }
 
-- (id)_initWithDocumentLoader:(void *)a3
+- (id)_initWithDocumentLoader:(void *)loader
 {
   v4.receiver = self;
   v4.super_class = WebDataSource;
@@ -411,9 +411,9 @@
   return 0;
 }
 
-- (void)_setQuickLookContent:(id)a3
+- (void)_setQuickLookContent:(id)content
 {
-  v4 = [a3 copy];
+  v4 = [content copy];
   v5 = self->_private;
   v6 = v5[4];
   v5[4] = v4;
@@ -422,16 +422,16 @@
   }
 }
 
-- (void)_setQuickLookPreviewLoaderClient:(void *)a3
+- (void)_setQuickLookPreviewLoaderClient:(void *)client
 {
   v3 = self->_private;
-  if (a3)
+  if (client)
   {
-    ++*(a3 + 2);
+    ++*(client + 2);
   }
 
   v4 = v3[5];
-  v3[5] = a3;
+  v3[5] = client;
   if (v4)
   {
     if (v4[2] == 1)
@@ -764,11 +764,11 @@ LABEL_11:
     goto LABEL_5;
   }
 
-  v6 = [(NSURLResponse *)[(WebDataSource *)self response] textEncodingName];
-  v5 = v6;
-  if (v6)
+  textEncodingName = [(NSURLResponse *)[(WebDataSource *)self response] textEncodingName];
+  v5 = textEncodingName;
+  if (textEncodingName)
   {
-    v7 = v6;
+    v7 = textEncodingName;
   }
 
   v8 = v13;
@@ -790,9 +790,9 @@ LABEL_11:
 
 - (NSString)pageTitle
 {
-  v2 = [(WebDataSource *)self representation];
+  representation = [(WebDataSource *)self representation];
 
-  return [v2 title];
+  return [representation title];
 }
 
 - (NSURL)unreachableURL
@@ -828,8 +828,8 @@ LABEL_11:
   }
 
   v3 = [WebArchive alloc];
-  v4 = [(WebDataSource *)self webFrame];
-  WebCore::LegacyWebArchive::create(&v11, v4->_private->coreFrame.m_ptr, v5);
+  webFrame = [(WebDataSource *)self webFrame];
+  WebCore::LegacyWebArchive::create(&v11, webFrame->_private->coreFrame.m_ptr, v5);
   result = [(WebArchive *)v3 _initWithCoreLegacyWebArchive:&v11];
   if (result)
   {

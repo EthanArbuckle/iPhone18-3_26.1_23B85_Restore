@@ -1,18 +1,18 @@
 @interface ATFileBuffer
 - (ATFileBuffer)init;
-- (id)readDataOfLength:(unint64_t)a3;
-- (void)appendData:(id)a3;
-- (void)rewind:(unint64_t)a3;
-- (void)rewindData:(id)a3;
+- (id)readDataOfLength:(unint64_t)length;
+- (void)appendData:(id)data;
+- (void)rewind:(unint64_t)rewind;
+- (void)rewindData:(id)data;
 @end
 
 @implementation ATFileBuffer
 
-- (void)rewind:(unint64_t)a3
+- (void)rewind:(unint64_t)rewind
 {
   currentReadLocation = self->_currentReadLocation;
-  v4 = currentReadLocation >= a3;
-  v5 = currentReadLocation - a3;
+  v4 = currentReadLocation >= rewind;
+  v5 = currentReadLocation - rewind;
   if (!v4)
   {
     v5 = 0;
@@ -21,10 +21,10 @@
   self->_currentReadLocation = v5;
 }
 
-- (id)readDataOfLength:(unint64_t)a3
+- (id)readDataOfLength:(unint64_t)length
 {
   [(NSFileHandle *)self->_bufferFileHandle seekToFileOffset:self->_currentReadLocation];
-  v5 = [(NSFileHandle *)self->_bufferFileHandle readDataOfLength:a3];
+  v5 = [(NSFileHandle *)self->_bufferFileHandle readDataOfLength:length];
   self->_currentReadLocation += [v5 length];
   v6 = self->_length - [v5 length];
   self->_length = v6;
@@ -39,26 +39,26 @@
   return v5;
 }
 
-- (void)rewindData:(id)a3
+- (void)rewindData:(id)data
 {
   if (self->_currentReadLocation)
   {
-    self->_currentReadLocation -= [a3 length];
+    self->_currentReadLocation -= [data length];
   }
 
   else
   {
 
-    [(ATFileBuffer *)self appendData:a3];
+    [(ATFileBuffer *)self appendData:data];
   }
 }
 
-- (void)appendData:(id)a3
+- (void)appendData:(id)data
 {
   bufferFileHandle = self->_bufferFileHandle;
-  v5 = a3;
-  [(NSFileHandle *)bufferFileHandle writeData:v5];
-  v6 = [v5 length];
+  dataCopy = data;
+  [(NSFileHandle *)bufferFileHandle writeData:dataCopy];
+  v6 = [dataCopy length];
 
   self->_length += v6;
 }

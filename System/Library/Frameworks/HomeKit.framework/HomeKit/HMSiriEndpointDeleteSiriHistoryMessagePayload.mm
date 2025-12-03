@@ -1,9 +1,9 @@
 @interface HMSiriEndpointDeleteSiriHistoryMessagePayload
 + (id)logCategory;
 + (id)shortDescription;
-- (BOOL)isEqual:(id)a3;
-- (HMSiriEndpointDeleteSiriHistoryMessagePayload)initWithAccessoryUUID:(id)a3;
-- (HMSiriEndpointDeleteSiriHistoryMessagePayload)initWithPayload:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (HMSiriEndpointDeleteSiriHistoryMessagePayload)initWithAccessoryUUID:(id)d;
+- (HMSiriEndpointDeleteSiriHistoryMessagePayload)initWithPayload:(id)payload;
 - (NSArray)attributeDescriptions;
 - (NSString)shortDescription;
 - (id)payloadCopy;
@@ -14,16 +14,16 @@
 
 - (unint64_t)hash
 {
-  v2 = [(HMSiriEndpointDeleteSiriHistoryMessagePayload *)self accessoryUUID];
-  v3 = [v2 hash];
+  accessoryUUID = [(HMSiriEndpointDeleteSiriHistoryMessagePayload *)self accessoryUUID];
+  v3 = [accessoryUUID hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v9 = 1;
   }
@@ -33,7 +33,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -44,9 +44,9 @@
     v6 = v5;
     if (v6)
     {
-      v7 = [(HMSiriEndpointDeleteSiriHistoryMessagePayload *)self accessoryUUID];
-      v8 = [(HMSiriEndpointDeleteSiriHistoryMessagePayload *)v6 accessoryUUID];
-      v9 = [v7 hmf_isEqualToUUID:v8];
+      accessoryUUID = [(HMSiriEndpointDeleteSiriHistoryMessagePayload *)self accessoryUUID];
+      accessoryUUID2 = [(HMSiriEndpointDeleteSiriHistoryMessagePayload *)v6 accessoryUUID];
+      v9 = [accessoryUUID hmf_isEqualToUUID:accessoryUUID2];
     }
 
     else
@@ -62,8 +62,8 @@
 {
   v9[1] = *MEMORY[0x1E69E9840];
   v3 = objc_alloc(MEMORY[0x1E69A29C8]);
-  v4 = [(HMSiriEndpointDeleteSiriHistoryMessagePayload *)self accessoryUUID];
-  v5 = [v3 initWithName:@"accessoryUUID" value:v4];
+  accessoryUUID = [(HMSiriEndpointDeleteSiriHistoryMessagePayload *)self accessoryUUID];
+  v5 = [v3 initWithName:@"accessoryUUID" value:accessoryUUID];
   v9[0] = v5;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
 
@@ -79,21 +79,21 @@
   return [v2 shortDescription];
 }
 
-- (HMSiriEndpointDeleteSiriHistoryMessagePayload)initWithPayload:(id)a3
+- (HMSiriEndpointDeleteSiriHistoryMessagePayload)initWithPayload:(id)payload
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 hmf_UUIDForKey:@"HMAccessoryUUIDPayloadKey"];
+  payloadCopy = payload;
+  v5 = [payloadCopy hmf_UUIDForKey:@"HMAccessoryUUIDPayloadKey"];
   if (v5)
   {
-    v6 = [(HMSiriEndpointDeleteSiriHistoryMessagePayload *)self initWithAccessoryUUID:v5];
-    v7 = v6;
+    selfCopy = [(HMSiriEndpointDeleteSiriHistoryMessagePayload *)self initWithAccessoryUUID:v5];
+    v7 = selfCopy;
   }
 
   else
   {
     v8 = objc_autoreleasePoolPush();
-    v6 = self;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
@@ -101,7 +101,7 @@
       v13 = 138543618;
       v14 = v10;
       v15 = 2112;
-      v16 = v4;
+      v16 = payloadCopy;
       _os_log_impl(&dword_19BB39000, v9, OS_LOG_TYPE_INFO, "%{public}@Failed to decode delete siri history payload: %@", &v13, 0x16u);
     }
 
@@ -117,9 +117,9 @@
 {
   v8[1] = *MEMORY[0x1E69E9840];
   v7 = @"HMAccessoryUUIDPayloadKey";
-  v2 = [(HMSiriEndpointDeleteSiriHistoryMessagePayload *)self accessoryUUID];
-  v3 = [v2 UUIDString];
-  v8[0] = v3;
+  accessoryUUID = [(HMSiriEndpointDeleteSiriHistoryMessagePayload *)self accessoryUUID];
+  uUIDString = [accessoryUUID UUIDString];
+  v8[0] = uUIDString;
   v4 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:&v7 count:1];
 
   v5 = *MEMORY[0x1E69E9840];
@@ -127,16 +127,16 @@
   return v4;
 }
 
-- (HMSiriEndpointDeleteSiriHistoryMessagePayload)initWithAccessoryUUID:(id)a3
+- (HMSiriEndpointDeleteSiriHistoryMessagePayload)initWithAccessoryUUID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v9.receiver = self;
   v9.super_class = HMSiriEndpointDeleteSiriHistoryMessagePayload;
   v6 = [(HMSiriEndpointDeleteSiriHistoryMessagePayload *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_accessoryUUID, a3);
+    objc_storeStrong(&v6->_accessoryUUID, d);
   }
 
   return v7;

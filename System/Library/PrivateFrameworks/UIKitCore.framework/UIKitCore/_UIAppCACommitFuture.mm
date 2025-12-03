@@ -1,7 +1,7 @@
 @interface _UIAppCACommitFuture
-+ (id)scheduledPostCommitFuture:(id)a3;
-+ (id)scheduledPreCommitFuture:(id)a3;
-- (_UIAppCACommitFuture)initWithPhase:(unint64_t)a3 block:(id)a4;
++ (id)scheduledPostCommitFuture:(id)future;
++ (id)scheduledPreCommitFuture:(id)future;
+- (_UIAppCACommitFuture)initWithPhase:(unint64_t)phase block:(id)block;
 - (void)_invoke;
 - (void)invalidate;
 @end
@@ -32,36 +32,36 @@
   }
 }
 
-+ (id)scheduledPostCommitFuture:(id)a3
++ (id)scheduledPostCommitFuture:(id)future
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithPhase:0 block:v4];
+  futureCopy = future;
+  v5 = [[self alloc] initWithPhase:0 block:futureCopy];
 
   return v5;
 }
 
-+ (id)scheduledPreCommitFuture:(id)a3
++ (id)scheduledPreCommitFuture:(id)future
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithPhase:1 block:v4];
+  futureCopy = future;
+  v5 = [[self alloc] initWithPhase:1 block:futureCopy];
 
   return v5;
 }
 
-- (_UIAppCACommitFuture)initWithPhase:(unint64_t)a3 block:(id)a4
+- (_UIAppCACommitFuture)initWithPhase:(unint64_t)phase block:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v18.receiver = self;
   v18.super_class = _UIAppCACommitFuture;
   v7 = [(_UIAppCACommitFuture *)&v18 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [blockCopy copy];
     block = v7->_block;
     v7->_block = v8;
 
     *&v7->_invalidated = 0;
-    if (a3 == 1)
+    if (phase == 1)
     {
       [MEMORY[0x1E6979518] activate];
       v12 = MEMORY[0x1E6979518];
@@ -75,7 +75,7 @@
       goto LABEL_6;
     }
 
-    if (!a3)
+    if (!phase)
     {
       v10 = UIApp;
       v16[0] = MEMORY[0x1E69E9820];

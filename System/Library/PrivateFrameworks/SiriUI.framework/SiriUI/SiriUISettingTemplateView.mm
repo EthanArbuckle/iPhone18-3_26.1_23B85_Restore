@@ -1,16 +1,16 @@
 @interface SiriUISettingTemplateView
-- (SiriUISettingTemplateView)initWithDataSource:(id)a3;
+- (SiriUISettingTemplateView)initWithDataSource:(id)source;
 - (void)layoutSubviews;
 - (void)reloadData;
 @end
 
 @implementation SiriUISettingTemplateView
 
-- (SiriUISettingTemplateView)initWithDataSource:(id)a3
+- (SiriUISettingTemplateView)initWithDataSource:(id)source
 {
   v9.receiver = self;
   v9.super_class = SiriUISettingTemplateView;
-  v3 = [(SiriUIBaseTemplateView *)&v9 initWithDataSource:a3];
+  v3 = [(SiriUIBaseTemplateView *)&v9 initWithDataSource:source];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x277D756B8]);
@@ -32,10 +32,10 @@
   v6.receiver = self;
   v6.super_class = SiriUISettingTemplateView;
   [(SiriUIBaseTemplateView *)&v6 reloadData];
-  v3 = [(SiriUIBaseTemplateView *)self dataSource];
+  dataSource = [(SiriUIBaseTemplateView *)self dataSource];
   textLabel = self->_textLabel;
-  v5 = [v3 text];
-  [(UILabel *)textLabel setText:v5];
+  text = [dataSource text];
+  [(UILabel *)textLabel setText:text];
 
   [(SiriUISettingTemplateView *)self setNeedsLayout];
 }
@@ -50,12 +50,12 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(SiriUIBaseTemplateView *)self templatedSuperview];
-  [v11 templatedContentMargins];
+  templatedSuperview = [(SiriUIBaseTemplateView *)self templatedSuperview];
+  [templatedSuperview templatedContentMargins];
 
-  v12 = [(SiriUISettingTemplateView *)self semanticContentAttribute];
+  semanticContentAttribute = [(SiriUISettingTemplateView *)self semanticContentAttribute];
   [(UILabel *)self->_textLabel sizeThatFits:v8, v10];
-  if (v12 == 4)
+  if (semanticContentAttribute == 4)
   {
     v14.origin.x = v4;
     v14.origin.y = v6;

@@ -1,12 +1,12 @@
 @interface _CNFlatMapSubscriptionContext
-- (_CNFlatMapSubscriptionContext)initWithSchedulerProvider:(id)a3;
+- (_CNFlatMapSubscriptionContext)initWithSchedulerProvider:(id)provider;
 @end
 
 @implementation _CNFlatMapSubscriptionContext
 
-- (_CNFlatMapSubscriptionContext)initWithSchedulerProvider:(id)a3
+- (_CNFlatMapSubscriptionContext)initWithSchedulerProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v16.receiver = self;
   v16.super_class = _CNFlatMapSubscriptionContext;
   v5 = [(_CNFlatMapSubscriptionContext *)&v16 init];
@@ -20,11 +20,11 @@
     tokens = v5->_tokens;
     v5->_tokens = v8;
 
-    v10 = [v4 newSerialSchedulerWithName:@"com.apple.contacts.reactive.flat-map.downstream"];
+    v10 = [providerCopy newSerialSchedulerWithName:@"com.apple.contacts.reactive.flat-map.downstream"];
     downstream = v5->_downstream;
     v5->_downstream = v10;
 
-    v12 = [v4 newSynchronousSerialSchedulerWithName:@"com.apple.contacts.reactive.flat-map.resource"];
+    v12 = [providerCopy newSynchronousSerialSchedulerWithName:@"com.apple.contacts.reactive.flat-map.resource"];
     resourceLock = v5->_resourceLock;
     v5->_resourceLock = v12;
 

@@ -10,13 +10,13 @@
 + (id)loadAppShortcutAlwaysTriggeredAllowList
 {
   v3 = [MEMORY[0x277CBEB58] set];
-  v4 = [a1 loadAppShortcutAlwaysTriggeredAllowListPlist];
-  [v3 addObjectsFromArray:v4];
+  loadAppShortcutAlwaysTriggeredAllowListPlist = [self loadAppShortcutAlwaysTriggeredAllowListPlist];
+  [v3 addObjectsFromArray:loadAppShortcutAlwaysTriggeredAllowListPlist];
 
-  if ([a1 isInternalInstall])
+  if ([self isInternalInstall])
   {
-    v5 = [a1 loadAppShortcutAlwaysTriggeredAllowListUserDefaults];
-    [v3 addObjectsFromArray:v5];
+    loadAppShortcutAlwaysTriggeredAllowListUserDefaults = [self loadAppShortcutAlwaysTriggeredAllowListUserDefaults];
+    [v3 addObjectsFromArray:loadAppShortcutAlwaysTriggeredAllowListUserDefaults];
   }
 
   return v3;
@@ -25,7 +25,7 @@
 + (id)loadAppShortcutAlwaysTriggeredAllowListPlist
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCA8D8] bundleForClass:a1];
+  v3 = [MEMORY[0x277CCA8D8] bundleForClass:self];
   v4 = [v3 URLForResource:@"SSUAppShortcutAlwaysTriggeredAllowList" withExtension:@"plist"];
 
   if (!v4)
@@ -41,7 +41,7 @@
     goto LABEL_21;
   }
 
-  v5 = [a1 loadPlistArrayFromURL:v4];
+  v5 = [self loadPlistArrayFromURL:v4];
   if (!v5)
   {
     v15 = SNLPOSLoggerForCategory(8);
@@ -54,12 +54,12 @@
 
     v8 = 0;
 LABEL_21:
-    v7 = 0;
+    array = 0;
     goto LABEL_22;
   }
 
   v6 = v5;
-  v7 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -83,7 +83,7 @@ LABEL_21:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          [v7 addObject:v13];
+          [array addObject:v13];
         }
 
         else
@@ -109,7 +109,7 @@ LABEL_21:
 LABEL_22:
   v16 = *MEMORY[0x277D85DE8];
 
-  return v7;
+  return array;
 }
 
 + (BOOL)isInternalInstall

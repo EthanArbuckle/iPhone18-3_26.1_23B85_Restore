@@ -17,10 +17,10 @@
   {
     v12[0] = a5 + 1;
     v12[1] = a3;
-    [a1 appendBytes:v12 length:2];
+    [self appendBytes:v12 length:2];
     if (a5)
     {
-      [a1 appendBytes:a4 length:a5];
+      [self appendBytes:a4 length:a5];
     }
   }
 
@@ -124,7 +124,7 @@
     BYTE4(v13) = v5;
   }
 
-  result = [a1 appendBytes:&v13 length:v4];
+  result = [self appendBytes:&v13 length:v4];
   v12 = *MEMORY[0x1E69E9840];
   return result;
 }
@@ -243,7 +243,7 @@
     v4 = 3;
   }
 
-  result = [a1 appendBytes:&v13 length:v4];
+  result = [self appendBytes:&v13 length:v4];
   v12 = *MEMORY[0x1E69E9840];
   return result;
 }

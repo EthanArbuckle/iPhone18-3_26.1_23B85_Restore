@@ -1,15 +1,15 @@
 @interface Reactions.Control
 - (CGRect)frame;
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtCE5MusicO11MusicCoreUI9Reactions7Control)initWithCoder:(id)a3;
-- (_TtCE5MusicO11MusicCoreUI9Reactions7Control)initWithFrame:(CGRect)a3;
-- (void)setFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtCE5MusicO11MusicCoreUI9Reactions7Control)initWithCoder:(id)coder;
+- (_TtCE5MusicO11MusicCoreUI9Reactions7Control)initWithFrame:(CGRect)frame;
+- (void)setFrame:(CGRect)frame;
 @end
 
 @implementation Reactions.Control
 
-- (_TtCE5MusicO11MusicCoreUI9Reactions7Control)initWithCoder:(id)a3
+- (_TtCE5MusicO11MusicCoreUI9Reactions7Control)initWithCoder:(id)coder
 {
   result = _assertionFailure(_:_:file:line:flags:)();
   __break(1u);
@@ -24,9 +24,9 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(Reactions.Control *)self intrinsicContentSize:a3.width];
+  [(Reactions.Control *)self intrinsicContentSize:fits.width];
   result.height = v4;
   result.width = v3;
   return result;
@@ -44,12 +44,12 @@
   return result;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v9.receiver = self;
   v9.super_class = _s7ControlCMa(0);
   v7 = v9.receiver;
@@ -59,7 +59,7 @@
   [v8 setFrame:?];
 }
 
-- (_TtCE5MusicO11MusicCoreUI9Reactions7Control)initWithFrame:(CGRect)a3
+- (_TtCE5MusicO11MusicCoreUI9Reactions7Control)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

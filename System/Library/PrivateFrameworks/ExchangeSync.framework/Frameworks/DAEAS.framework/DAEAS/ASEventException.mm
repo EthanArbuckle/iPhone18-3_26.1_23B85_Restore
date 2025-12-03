@@ -5,29 +5,29 @@
 + (BOOL)parsingLeafNode;
 + (BOOL)parsingWithSubItems;
 + (id)asParseRules;
-+ (id)eventExceptionWithCalEvent:(void *)a3 originalEvent:(id)a4 account:(id)a5;
++ (id)eventExceptionWithCalEvent:(void *)event originalEvent:(id)originalEvent account:(id)account;
 - (ASEvent)originalEvent;
-- (ASEventException)initWithCalEvent:(void *)a3 originalEvent:(id)a4 account:(id)a5;
-- (ASEventException)initWithCoder:(id)a3;
-- (ASEventException)initWithExceptionStartTime:(id)a3;
+- (ASEventException)initWithCalEvent:(void *)event originalEvent:(id)originalEvent account:(id)account;
+- (ASEventException)initWithCoder:(id)coder;
+- (ASEventException)initWithExceptionStartTime:(id)time;
 - (BOOL)deleteFromCalendar;
-- (BOOL)fillOutMissingExternalIdsForAccountID:(id)a3;
+- (BOOL)fillOutMissingExternalIdsForAccountID:(id)d;
 - (BOOL)hasOccurrenceInTheFuture;
-- (BOOL)verifyExternalIdsForAccountID:(id)a3;
-- (id)_transformedExceptionStartDateForActiveSync:(id)a3 isFloating:(BOOL)a4;
-- (id)_transformedExceptionStartDateForCalFramework:(id)a3;
+- (BOOL)verifyExternalIdsForAccountID:(id)d;
+- (id)_transformedExceptionStartDateForActiveSync:(id)sync isFloating:(BOOL)floating;
+- (id)_transformedExceptionStartDateForCalFramework:(id)framework;
 - (id)description;
-- (id)serverIdForCalFrameworkWithParentEvent:(id)a3;
-- (id)serverIdForCalFrameworkWithParentServerId:(id)a3;
-- (id)uidGeneratedIfNecessaryWithLocalEvent:(void *)a3 forAccount:(id)a4;
-- (void)_loadAttributesFromCalEvent:(void *)a3 withKnownExceptionDate:(id)a4 forAccount:(id)a5;
-- (void)appendActiveSyncDataForTask:(id)a3 toWBXMLData:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (id)serverIdForCalFrameworkWithParentEvent:(id)event;
+- (id)serverIdForCalFrameworkWithParentServerId:(id)id;
+- (id)uidGeneratedIfNecessaryWithLocalEvent:(void *)event forAccount:(id)account;
+- (void)_loadAttributesFromCalEvent:(void *)event withKnownExceptionDate:(id)date forAccount:(id)account;
+- (void)appendActiveSyncDataForTask:(id)task toWBXMLData:(id)data;
+- (void)encodeWithCoder:(id)coder;
 - (void)loadClientIDs;
-- (void)parseASParseContext:(id)a3 root:(id)a4 parent:(id)a5 callbackDict:(id)a6 streamCallbackDict:(id)a7 account:(id)a8;
+- (void)parseASParseContext:(id)context root:(id)root parent:(id)parent callbackDict:(id)dict streamCallbackDict:(id)callbackDict account:(id)account;
 - (void)postProcessApplicationData;
-- (void)saveToCalendarWithParentASEvent:(id)a3 existingRecord:(void *)a4 intoCalendar:(void *)a5 shouldMergeProperties:(BOOL)a6 outMergeDidChooseLocalProperties:(BOOL *)a7 account:(id)a8;
-- (void)takeValuesFromParentForAccount:(id)a3;
+- (void)saveToCalendarWithParentASEvent:(id)event existingRecord:(void *)record intoCalendar:(void *)calendar shouldMergeProperties:(BOOL)properties outMergeDidChooseLocalProperties:(BOOL *)localProperties account:(id)account;
+- (void)takeValuesFromParentForAccount:(id)account;
 @end
 
 @implementation ASEventException
@@ -41,7 +41,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D64D60];
+    v2 = [self conformsToProtocol:&unk_285D64D60];
     acceptsTopLevelLeaves___result_28 = v2;
     acceptsTopLevelLeaves___haveChecked_28 = 1;
   }
@@ -58,7 +58,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D5E660];
+    v2 = [self conformsToProtocol:&unk_285D5E660];
     parsingLeafNode___result_28 = v2;
     parsingLeafNode___haveChecked_28 = 1;
   }
@@ -75,7 +75,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D64A10];
+    v2 = [self conformsToProtocol:&unk_285D64A10];
     parsingWithSubItems___result_28 = v2;
     parsingWithSubItems___haveChecked_28 = 1;
   }
@@ -92,7 +92,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D5F9B0];
+    v2 = [self conformsToProtocol:&unk_285D5F9B0];
     frontingBasicTypes___result_28 = v2;
     frontingBasicTypes___haveChecked_28 = 1;
   }
@@ -109,7 +109,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D6EED0];
+    v2 = [self conformsToProtocol:&unk_285D6EED0];
     notifyOfUnknownTokens___result_28 = v2;
     notifyOfUnknownTokens___haveChecked_28 = 1;
   }
@@ -120,12 +120,12 @@
 + (id)asParseRules
 {
   v3 = +[ASItem parseRuleCache];
-  v4 = NSStringFromClass(a1);
+  v4 = NSStringFromClass(self);
   v5 = [v3 objectForKey:v4];
 
   if (!v5)
   {
-    v46.receiver = a1;
+    v46.receiver = self;
     v46.super_class = &OBJC_METACLASS___ASEventException;
     v6 = objc_msgSendSuper2(&v46, sel_asParseRules);
     v35 = [v6 mutableCopy];
@@ -135,7 +135,7 @@
     v44 = [MEMORY[0x277CCABB0] numberWithInt:29];
     v7 = [ASParseRule alloc];
     v8 = objc_opt_class();
-    v41 = a1;
+    selfCopy = self;
     v9 = MEMORY[0x277CBEAC0];
     v38 = [[ASParseRule alloc] initWithMinimumNumber:0 maximumNumber:1209 codePage:4 token:15 objectClass:objc_opt_class() setterMethod:sel_addItem_ dataclass:0 callbackDict:0 streamCallbackDict:0 subclassRuleSet:0];
     v37 = [MEMORY[0x277CCABB0] numberWithInt:1039];
@@ -169,25 +169,25 @@
     v5 = v35;
     [v35 addEntriesFromDictionary:v40];
     v21 = +[ASItem parseRuleCache];
-    v22 = NSStringFromClass(v41);
+    v22 = NSStringFromClass(selfCopy);
     [v21 setObject:v35 forKey:v22];
   }
 
   return v5;
 }
 
-- (void)parseASParseContext:(id)a3 root:(id)a4 parent:(id)a5 callbackDict:(id)a6 streamCallbackDict:(id)a7 account:(id)a8
+- (void)parseASParseContext:(id)context root:(id)root parent:(id)parent callbackDict:(id)dict streamCallbackDict:(id)callbackDict account:(id)account
 {
-  v14 = a8;
-  v15 = a7;
-  v16 = a6;
-  v17 = a5;
-  v18 = a4;
-  v19 = a3;
+  accountCopy = account;
+  callbackDictCopy = callbackDict;
+  dictCopy = dict;
+  parentCopy = parent;
+  rootCopy = root;
+  contextCopy = context;
   [(ASChangedCollectionLeaf *)self setValidateOpeningTokens:0];
   v21.receiver = self;
   v21.super_class = ASEventException;
-  [(ASEvent *)&v21 parseASParseContext:v19 root:v18 parent:v17 callbackDict:v16 streamCallbackDict:v15 account:v14];
+  [(ASEvent *)&v21 parseASParseContext:contextCopy root:rootCopy parent:parentCopy callbackDict:dictCopy streamCallbackDict:callbackDictCopy account:accountCopy];
 
   parsingState = self->super.super.super._parsingState;
   if ((parsingState - 3) <= 1)
@@ -196,85 +196,85 @@
   }
 }
 
-- (id)_transformedExceptionStartDateForCalFramework:(id)a3
+- (id)_transformedExceptionStartDateForCalFramework:(id)framework
 {
-  v4 = a3;
-  v5 = [(ASEventException *)self originalEvent];
-  v6 = [v5 allDayEvent];
-  v7 = [v6 intValue];
+  frameworkCopy = framework;
+  originalEvent = [(ASEventException *)self originalEvent];
+  allDayEvent = [originalEvent allDayEvent];
+  intValue = [allDayEvent intValue];
 
-  if (v7)
+  if (intValue)
   {
-    v8 = [v4 nearestMidnight];
+    nearestMidnight = [frameworkCopy nearestMidnight];
   }
 
   else
   {
-    v8 = v4;
+    nearestMidnight = frameworkCopy;
   }
 
-  v9 = v8;
+  v9 = nearestMidnight;
 
   return v9;
 }
 
-- (id)_transformedExceptionStartDateForActiveSync:(id)a3 isFloating:(BOOL)a4
+- (id)_transformedExceptionStartDateForActiveSync:(id)sync isFloating:(BOOL)floating
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(ASEventException *)self originalEvent];
-  v8 = [v7 allDayEvent];
-  v9 = [v8 intValue];
+  floatingCopy = floating;
+  syncCopy = sync;
+  originalEvent = [(ASEventException *)self originalEvent];
+  allDayEvent = [originalEvent allDayEvent];
+  intValue = [allDayEvent intValue];
 
-  if (v9 || v4)
+  if (intValue || floatingCopy)
   {
-    v11 = [(ASEventException *)self originalEvent];
-    v12 = [v11 timeZone];
-    v10 = [v6 gmtDateToDateInTimeZone:v12];
+    originalEvent2 = [(ASEventException *)self originalEvent];
+    timeZone = [originalEvent2 timeZone];
+    v10 = [syncCopy gmtDateToDateInTimeZone:timeZone];
   }
 
   else
   {
-    v10 = v6;
+    v10 = syncCopy;
   }
 
   return v10;
 }
 
-- (id)serverIdForCalFrameworkWithParentEvent:(id)a3
+- (id)serverIdForCalFrameworkWithParentEvent:(id)event
 {
-  v4 = [a3 serverID];
-  v5 = [(ASEventException *)self serverIdForCalFrameworkWithParentServerId:v4];
+  serverID = [event serverID];
+  v5 = [(ASEventException *)self serverIdForCalFrameworkWithParentServerId:serverID];
 
   return v5;
 }
 
-- (id)serverIdForCalFrameworkWithParentServerId:(id)a3
+- (id)serverIdForCalFrameworkWithParentServerId:(id)id
 {
   v4 = MEMORY[0x277CCACA8];
-  v5 = a3;
-  v6 = [(ASEventException *)self exceptionStartTime];
-  v7 = [v6 activeSyncStringWithoutSeparators];
-  v8 = [v4 stringWithFormat:@"%@%@%@", v5, @"<!ExceptionDate!>", v7];
+  idCopy = id;
+  exceptionStartTime = [(ASEventException *)self exceptionStartTime];
+  activeSyncStringWithoutSeparators = [exceptionStartTime activeSyncStringWithoutSeparators];
+  v8 = [v4 stringWithFormat:@"%@%@%@", idCopy, @"<!ExceptionDate!>", activeSyncStringWithoutSeparators];
 
   return v8;
 }
 
-- (BOOL)verifyExternalIdsForAccountID:(id)a3
+- (BOOL)verifyExternalIdsForAccountID:(id)d
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ASChangedCollectionLeaf *)self clientID];
+  dCopy = d;
+  clientID = [(ASChangedCollectionLeaf *)self clientID];
 
-  if (!v5)
+  if (!clientID)
   {
     goto LABEL_9;
   }
 
   v6 = +[ASLocalDBHelper sharedInstance];
-  [v6 calDatabaseForAccountID:v4];
-  v7 = [(ASChangedCollectionLeaf *)self clientID];
-  [v7 intValue];
+  [v6 calDatabaseForAccountID:dCopy];
+  clientID2 = [(ASChangedCollectionLeaf *)self clientID];
+  [clientID2 intValue];
   v8 = CalDatabaseCopyCalendarItemWithRowID();
 
   if (v8)
@@ -315,8 +315,8 @@
         v28 = 0u;
         v25 = 0u;
         v26 = 0u;
-        v17 = [(ASEvent *)self exceptions];
-        v18 = [v17 countByEnumeratingWithState:&v25 objects:v29 count:16];
+        exceptions = [(ASEvent *)self exceptions];
+        v18 = [exceptions countByEnumeratingWithState:&v25 objects:v29 count:16];
         if (v18)
         {
           v19 = v18;
@@ -327,13 +327,13 @@
             {
               if (*v26 != v20)
               {
-                objc_enumerationMutation(v17);
+                objc_enumerationMutation(exceptions);
               }
 
-              v14 |= [*(*(&v25 + 1) + 8 * i) verifyExternalIdsForAccountID:v4];
+              v14 |= [*(*(&v25 + 1) + 8 * i) verifyExternalIdsForAccountID:dCopy];
             }
 
-            v19 = [v17 countByEnumeratingWithState:&v25 objects:v29 count:16];
+            v19 = [exceptions countByEnumeratingWithState:&v25 objects:v29 count:16];
           }
 
           while (v19);
@@ -366,37 +366,37 @@ LABEL_9:
   return v14 & 1;
 }
 
-- (BOOL)fillOutMissingExternalIdsForAccountID:(id)a3
+- (BOOL)fillOutMissingExternalIdsForAccountID:(id)d
 {
-  v3 = self;
+  selfCopy = self;
   v7.receiver = self;
   v7.super_class = ASEventException;
-  v4 = a3;
-  v5 = [(ASEvent *)&v7 fillOutMissingExternalIdsForAccountID:v4];
-  LOBYTE(v3) = [(ASEventException *)v3 verifyExternalIdsForAccountID:v4, v7.receiver, v7.super_class];
+  dCopy = d;
+  v5 = [(ASEvent *)&v7 fillOutMissingExternalIdsForAccountID:dCopy];
+  LOBYTE(selfCopy) = [(ASEventException *)selfCopy verifyExternalIdsForAccountID:dCopy, v7.receiver, v7.super_class];
 
-  return (v3 | v5) & 1;
+  return (selfCopy | v5) & 1;
 }
 
-- (void)saveToCalendarWithParentASEvent:(id)a3 existingRecord:(void *)a4 intoCalendar:(void *)a5 shouldMergeProperties:(BOOL)a6 outMergeDidChooseLocalProperties:(BOOL *)a7 account:(id)a8
+- (void)saveToCalendarWithParentASEvent:(id)event existingRecord:(void *)record intoCalendar:(void *)calendar shouldMergeProperties:(BOOL)properties outMergeDidChooseLocalProperties:(BOOL *)localProperties account:(id)account
 {
-  v20 = a6;
-  v12 = a3;
-  v13 = a8;
-  [v12 calEvent];
-  v14 = [(ASEventException *)self exceptionStartTime];
-  v15 = [v12 timeZone];
-  v16 = [v14 dateWithCalendarFormat:0 timeZone:v15];
+  propertiesCopy = properties;
+  eventCopy = event;
+  accountCopy = account;
+  [eventCopy calEvent];
+  exceptionStartTime = [(ASEventException *)self exceptionStartTime];
+  timeZone = [eventCopy timeZone];
+  v16 = [exceptionStartTime dateWithCalendarFormat:0 timeZone:timeZone];
   v17 = [(ASEventException *)self _transformedExceptionStartDateForCalFramework:v16];
 
-  v18 = [(ASEventException *)self isDeleted];
-  LOBYTE(v16) = [v18 BOOLValue];
+  isDeleted = [(ASEventException *)self isDeleted];
+  LOBYTE(v16) = [isDeleted BOOLValue];
 
   if ((v16 & 1) == 0)
   {
     v22.receiver = self;
     v22.super_class = ASEventException;
-    [(ASEvent *)&v22 saveToCalendarWithExistingRecord:a4 intoCalendar:a5 shouldMergeProperties:v20 outMergeDidChooseLocalProperties:a7 account:v13];
+    [(ASEvent *)&v22 saveToCalendarWithExistingRecord:record intoCalendar:calendar shouldMergeProperties:propertiesCopy outMergeDidChooseLocalProperties:localProperties account:accountCopy];
 
     [(ASEvent *)self calEvent];
     CalEventAddDetachedEvent();
@@ -404,13 +404,13 @@ LABEL_9:
     [v17 timeIntervalSinceReferenceDate];
     CalEventSetOriginalStartDate();
     [(ASEvent *)self calEvent];
-    [(ASEventException *)self serverIdForCalFrameworkWithParentEvent:v12];
+    [(ASEventException *)self serverIdForCalFrameworkWithParentEvent:eventCopy];
 LABEL_7:
     CalCalendarItemSetExternalID();
     goto LABEL_8;
   }
 
-  v19 = [v12 cachedOrganizerIsSelfWithAccount:v13];
+  v19 = [eventCopy cachedOrganizerIsSelfWithAccount:accountCopy];
 
   if ((v19 & 1) == 0 && (CalCalendarItemGetStatus() == 3 || CalEventGetParticipationStatus() == 2))
   {
@@ -424,9 +424,9 @@ LABEL_8:
 
 - (void)postProcessApplicationData
 {
-  v3 = [(ASChangedCollectionLeaf *)self applicationData];
+  applicationData = [(ASChangedCollectionLeaf *)self applicationData];
   v4 = [MEMORY[0x277CCABB0] numberWithInt:1045];
-  v5 = [v3 objectForKey:v4];
+  v5 = [applicationData objectForKey:v4];
 
   if (v5)
   {
@@ -438,9 +438,9 @@ LABEL_8:
     }
   }
 
-  v7 = [(ASChangedCollectionLeaf *)self applicationData];
+  applicationData2 = [(ASChangedCollectionLeaf *)self applicationData];
   v8 = [MEMORY[0x277CCABB0] numberWithInt:4397];
-  v9 = [v7 objectForKey:v8];
+  v9 = [applicationData2 objectForKey:v8];
 
   if (v9)
   {
@@ -452,13 +452,13 @@ LABEL_8:
     }
   }
 
-  v11 = [(ASEventException *)self exceptionStartTime];
+  exceptionStartTime = [(ASEventException *)self exceptionStartTime];
 
-  if (!v11)
+  if (!exceptionStartTime)
   {
-    v12 = [(ASChangedCollectionLeaf *)self applicationData];
+    applicationData3 = [(ASChangedCollectionLeaf *)self applicationData];
     v13 = [MEMORY[0x277CCABB0] numberWithInt:1046];
-    v14 = [v12 objectForKey:v13];
+    v14 = [applicationData3 objectForKey:v13];
 
     if (v14)
     {
@@ -474,152 +474,152 @@ LABEL_8:
   v19.receiver = self;
   v19.super_class = ASEventException;
   [(ASEvent *)&v19 postProcessApplicationData];
-  v16 = [(ASItem *)self parent];
-  v17 = [v16 parent];
-  v18 = [v17 parent];
-  [(ASEventException *)self setOriginalEvent:v18];
+  parent = [(ASItem *)self parent];
+  v16Parent = [parent parent];
+  v17Parent = [v16Parent parent];
+  [(ASEventException *)self setOriginalEvent:v17Parent];
 }
 
-- (id)uidGeneratedIfNecessaryWithLocalEvent:(void *)a3 forAccount:(id)a4
+- (id)uidGeneratedIfNecessaryWithLocalEvent:(void *)event forAccount:(id)account
 {
-  v6 = a4;
-  v7 = [(ASEvent *)self eventUID];
-  v8 = [v7 uidForCalFramework];
+  accountCopy = account;
+  eventUID = [(ASEvent *)self eventUID];
+  uidForCalFramework = [eventUID uidForCalFramework];
 
-  if (!v8)
+  if (!uidForCalFramework)
   {
-    if (a3)
+    if (event)
     {
       v9 = CalCalendarItemCopyUniqueIdentifier();
-      v10 = v9;
+      da_new64ByteGUID = v9;
       if (!v9)
       {
-        v11 = [(ASEventException *)self originalEvent];
-        v12 = [(ASEventException *)self originalEvent];
-        v10 = [v11 uidGeneratedIfNecessaryWithLocalEvent:objc_msgSend(v12 forAccount:{"calEvent"), v6}];
+        originalEvent = [(ASEventException *)self originalEvent];
+        originalEvent2 = [(ASEventException *)self originalEvent];
+        da_new64ByteGUID = [originalEvent uidGeneratedIfNecessaryWithLocalEvent:objc_msgSend(originalEvent2 forAccount:{"calEvent"), accountCopy}];
 
-        if (!v10)
+        if (!da_new64ByteGUID)
         {
-          v10 = [MEMORY[0x277CCACA8] da_new64ByteGUID];
+          da_new64ByteGUID = [MEMORY[0x277CCACA8] da_new64ByteGUID];
         }
       }
 
-      v13 = [[ASEventUID alloc] initWithCalFrameworkString:v10];
-      v14 = [(ASEventException *)self exceptionDate];
+      v13 = [[ASEventUID alloc] initWithCalFrameworkString:da_new64ByteGUID];
+      exceptionDate = [(ASEventException *)self exceptionDate];
 
-      if (v14)
+      if (exceptionDate)
       {
-        v15 = [(ASEventException *)self exceptionDate];
-        [(ASEventUID *)v13 setExceptionDate:v15];
+        exceptionDate2 = [(ASEventException *)self exceptionDate];
+        [(ASEventUID *)v13 setExceptionDate:exceptionDate2];
       }
 
       [(ASEvent *)self setEventUID:v13];
-      v16 = [(ASEvent *)self eventUID];
-      v17 = [v16 uidForCalFramework];
+      eventUID2 = [(ASEvent *)self eventUID];
+      uidForCalFramework2 = [eventUID2 uidForCalFramework];
 
       if (!v9)
       {
         CalCalendarItemSetUniqueIdentifier();
         v18 = +[ASLocalDBHelper sharedInstance];
-        v19 = [v6 accountID];
-        [v18 calSaveDatabaseForAccountID:v19];
+        accountID = [accountCopy accountID];
+        [v18 calSaveDatabaseForAccountID:accountID];
       }
 
-      v8 = v17;
+      uidForCalFramework = uidForCalFramework2;
     }
 
     else
     {
-      v8 = 0;
+      uidForCalFramework = 0;
     }
   }
 
-  return v8;
+  return uidForCalFramework;
 }
 
-- (void)takeValuesFromParentForAccount:(id)a3
+- (void)takeValuesFromParentForAccount:(id)account
 {
   v91 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ASEventException *)self originalEvent];
-  v6 = [v5 eventUID];
+  accountCopy = account;
+  originalEvent = [(ASEventException *)self originalEvent];
+  eventUID = [originalEvent eventUID];
 
-  v7 = [v6 copy];
+  v7 = [eventUID copy];
   [(ASEvent *)self setEventUID:v7];
-  v8 = [(ASEvent *)self eventUID];
-  v9 = [(ASEventException *)self exceptionDate];
-  [v8 setExceptionDate:v9];
+  eventUID2 = [(ASEvent *)self eventUID];
+  exceptionDate = [(ASEventException *)self exceptionDate];
+  [eventUID2 setExceptionDate:exceptionDate];
 
-  v10 = [(ASEvent *)self allDayEvent];
+  allDayEvent = [(ASEvent *)self allDayEvent];
 
-  if (!v10)
+  if (!allDayEvent)
   {
-    v11 = [(ASEventException *)self originalEvent];
-    v12 = [v11 allDayEvent];
-    [(ASEvent *)self setAllDayEvent:v12];
+    originalEvent2 = [(ASEventException *)self originalEvent];
+    allDayEvent2 = [originalEvent2 allDayEvent];
+    [(ASEvent *)self setAllDayEvent:allDayEvent2];
   }
 
-  v13 = [(ASEvent *)self body];
+  body = [(ASEvent *)self body];
 
-  if (!v13)
+  if (!body)
   {
-    v14 = [(ASEventException *)self originalEvent];
-    v15 = [v14 body];
-    [(ASEvent *)self setBody:v15];
+    originalEvent3 = [(ASEventException *)self originalEvent];
+    body2 = [originalEvent3 body];
+    [(ASEvent *)self setBody:body2];
   }
 
   if (![(ASEvent *)self bodyTruncated])
   {
-    v16 = [(ASEventException *)self originalEvent];
-    -[ASEvent setBodyTruncated:](self, "setBodyTruncated:", [v16 bodyTruncated]);
+    originalEvent4 = [(ASEventException *)self originalEvent];
+    -[ASEvent setBodyTruncated:](self, "setBodyTruncated:", [originalEvent4 bodyTruncated]);
   }
 
-  v17 = [(ASEvent *)self busyStatus];
+  busyStatus = [(ASEvent *)self busyStatus];
 
-  if (!v17)
+  if (!busyStatus)
   {
-    v18 = [(ASEventException *)self originalEvent];
-    v19 = [v18 busyStatus];
-    [(ASEvent *)self setBusyStatus:v19];
+    originalEvent5 = [(ASEventException *)self originalEvent];
+    busyStatus2 = [originalEvent5 busyStatus];
+    [(ASEvent *)self setBusyStatus:busyStatus2];
   }
 
-  v20 = [(ASEvent *)self location];
+  location = [(ASEvent *)self location];
 
-  if (!v20)
+  if (!location)
   {
-    v21 = [(ASEventException *)self originalEvent];
-    v22 = [v21 location];
-    [(ASEvent *)self setLocation:v22];
+    originalEvent6 = [(ASEventException *)self originalEvent];
+    location2 = [originalEvent6 location];
+    [(ASEvent *)self setLocation:location2];
   }
 
-  v23 = [(ASEvent *)self reminderMinsBefore];
+  reminderMinsBefore = [(ASEvent *)self reminderMinsBefore];
 
-  if (!v23)
+  if (!reminderMinsBefore)
   {
-    v24 = [(ASEventException *)self originalEvent];
-    v25 = [v24 reminderMinsBefore];
-    [(ASEvent *)self setReminderMinsBefore:v25];
+    originalEvent7 = [(ASEventException *)self originalEvent];
+    reminderMinsBefore2 = [originalEvent7 reminderMinsBefore];
+    [(ASEvent *)self setReminderMinsBefore:reminderMinsBefore2];
   }
 
-  v26 = [(ASEvent *)self subject];
+  subject = [(ASEvent *)self subject];
 
-  if (!v26)
+  if (!subject)
   {
-    v27 = [(ASEventException *)self originalEvent];
-    v28 = [v27 subject];
-    [(ASEvent *)self setSubject:v28];
+    originalEvent8 = [(ASEventException *)self originalEvent];
+    subject2 = [originalEvent8 subject];
+    [(ASEvent *)self setSubject:subject2];
   }
 
-  v29 = [(ASEvent *)self startTime];
+  startTime = [(ASEvent *)self startTime];
 
-  if (!v29)
+  if (!startTime)
   {
-    v30 = [(ASEventException *)self exceptionStartTime];
+    exceptionStartTime = [(ASEventException *)self exceptionStartTime];
 
-    if (v30)
+    if (exceptionStartTime)
     {
-      v31 = [(ASEventException *)self exceptionStartTime];
-      [(ASEvent *)self setStartTime:v31];
+      exceptionStartTime2 = [(ASEventException *)self exceptionStartTime];
+      [(ASEvent *)self setStartTime:exceptionStartTime2];
     }
 
     else
@@ -629,47 +629,47 @@ LABEL_8:
       if (os_log_type_enabled(v32, v33))
       {
         *buf = 138412290;
-        v90 = self;
+        selfCopy = self;
         _os_log_impl(&dword_24A0AC000, v32, v33, "Have an exception with no start date or exception start date.  Results are undefined, event is %@", buf, 0xCu);
       }
 
-      v31 = [(ASEventException *)self originalEvent];
-      v34 = [v31 startTime];
-      [(ASEvent *)self setStartTime:v34];
+      exceptionStartTime2 = [(ASEventException *)self originalEvent];
+      startTime2 = [exceptionStartTime2 startTime];
+      [(ASEvent *)self setStartTime:startTime2];
     }
   }
 
-  v35 = [(ASEvent *)self endTime];
+  endTime = [(ASEvent *)self endTime];
 
-  if (!v35)
+  if (!endTime)
   {
-    v36 = [(ASEventException *)self originalEvent];
-    v37 = [v36 endTime];
+    originalEvent9 = [(ASEventException *)self originalEvent];
+    endTime2 = [originalEvent9 endTime];
 
-    v38 = [(ASEventException *)self originalEvent];
-    v39 = [v38 startTime];
+    originalEvent10 = [(ASEventException *)self originalEvent];
+    startTime3 = [originalEvent10 startTime];
 
-    [v37 timeIntervalSinceDate:v39];
+    [endTime2 timeIntervalSinceDate:startTime3];
     v41 = v40;
-    v42 = [(ASEventException *)self exceptionStartTime];
-    v43 = [v42 dateByAddingTimeInterval:v41];
+    exceptionStartTime3 = [(ASEventException *)self exceptionStartTime];
+    v43 = [exceptionStartTime3 dateByAddingTimeInterval:v41];
 
     [(ASEvent *)self setEndTime:v43];
   }
 
-  v44 = [(ASEvent *)self attendees];
+  attendees = [(ASEvent *)self attendees];
 
-  if (!v44)
+  if (!attendees)
   {
-    v45 = [(ASEventException *)self originalEvent];
-    v46 = [v45 attendees];
+    originalEvent11 = [(ASEventException *)self originalEvent];
+    attendees2 = [originalEvent11 attendees];
 
-    v47 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v46, "count")}];
+    v47 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(attendees2, "count")}];
     v84 = 0u;
     v85 = 0u;
     v86 = 0u;
     v87 = 0u;
-    v48 = v46;
+    v48 = attendees2;
     v49 = [v48 countByEnumeratingWithState:&v84 objects:v88 count:16];
     if (v49)
     {
@@ -684,8 +684,8 @@ LABEL_8:
             objc_enumerationMutation(v48);
           }
 
-          v53 = [*(*(&v84 + 1) + 8 * i) copyOfSelfWithoutLocalID];
-          [v47 addObject:v53];
+          copyOfSelfWithoutLocalID = [*(*(&v84 + 1) + 8 * i) copyOfSelfWithoutLocalID];
+          [v47 addObject:copyOfSelfWithoutLocalID];
         }
 
         v50 = [v48 countByEnumeratingWithState:&v84 objects:v88 count:16];
@@ -697,81 +697,81 @@ LABEL_8:
     [(ASEvent *)self setAttendees:v47];
   }
 
-  v54 = [(ASEvent *)self organizerName];
+  organizerName = [(ASEvent *)self organizerName];
 
-  if (!v54)
+  if (!organizerName)
   {
-    v55 = [(ASEventException *)self originalEvent];
-    v56 = [v55 organizerName];
-    [(ASEvent *)self setOrganizerName:v56];
+    originalEvent12 = [(ASEventException *)self originalEvent];
+    organizerName2 = [originalEvent12 organizerName];
+    [(ASEvent *)self setOrganizerName:organizerName2];
   }
 
-  v57 = [(ASEvent *)self organizerEmail];
+  organizerEmail = [(ASEvent *)self organizerEmail];
 
-  if (!v57)
+  if (!organizerEmail)
   {
-    v58 = [(ASEventException *)self originalEvent];
-    v59 = [v58 organizerEmail];
-    [(ASEvent *)self setOrganizerEmail:v59];
+    originalEvent13 = [(ASEventException *)self originalEvent];
+    organizerEmail2 = [originalEvent13 organizerEmail];
+    [(ASEvent *)self setOrganizerEmail:organizerEmail2];
   }
 
-  v60 = [(ASEvent *)self timeZone];
+  timeZone = [(ASEvent *)self timeZone];
 
-  if (!v60)
+  if (!timeZone)
   {
-    v61 = [(ASEventException *)self originalEvent];
-    v62 = [v61 timeZone];
-    [(ASEvent *)self setTimeZone:v62];
+    originalEvent14 = [(ASEventException *)self originalEvent];
+    timeZone2 = [originalEvent14 timeZone];
+    [(ASEvent *)self setTimeZone:timeZone2];
   }
 
-  v63 = [(ASEvent *)self dTStamp];
+  dTStamp = [(ASEvent *)self dTStamp];
 
-  if (!v63)
+  if (!dTStamp)
   {
-    v64 = [(ASEventException *)self originalEvent];
-    v65 = [v64 dTStamp];
-    [(ASEvent *)self setDTStamp:v65];
+    originalEvent15 = [(ASEventException *)self originalEvent];
+    dTStamp2 = [originalEvent15 dTStamp];
+    [(ASEvent *)self setDTStamp:dTStamp2];
   }
 
-  v66 = [(ASEvent *)self responseRequested];
+  responseRequested = [(ASEvent *)self responseRequested];
 
-  if (!v66)
+  if (!responseRequested)
   {
-    v67 = [(ASEventException *)self originalEvent];
-    v68 = [v67 responseRequested];
-    [(ASEvent *)self setResponseRequested:v68];
+    originalEvent16 = [(ASEventException *)self originalEvent];
+    responseRequested2 = [originalEvent16 responseRequested];
+    [(ASEvent *)self setResponseRequested:responseRequested2];
   }
 
-  v69 = [(ASEvent *)self meetingStatus];
+  meetingStatus = [(ASEvent *)self meetingStatus];
 
-  if (!v69)
+  if (!meetingStatus)
   {
-    v70 = [(ASEventException *)self originalEvent];
-    v71 = [v70 meetingStatus];
-    [(ASEvent *)self setMeetingStatus:v71];
+    originalEvent17 = [(ASEventException *)self originalEvent];
+    meetingStatus2 = [originalEvent17 meetingStatus];
+    [(ASEvent *)self setMeetingStatus:meetingStatus2];
   }
 
-  v72 = [(ASEvent *)self responseType];
+  responseType = [(ASEvent *)self responseType];
 
-  if (!v72)
+  if (!responseType)
   {
-    v73 = [(ASEventException *)self originalEvent];
-    v74 = [v73 responseType];
-    [(ASEvent *)self setResponseType:v74];
+    originalEvent18 = [(ASEventException *)self originalEvent];
+    responseType2 = [originalEvent18 responseType];
+    [(ASEvent *)self setResponseType:responseType2];
   }
 
-  [(ASEvent *)self _determineSelfnessWithLocalEvent:0 forAccount:v4];
-  v75 = [(ASEventException *)self exceptionStartTime];
+  [(ASEvent *)self _determineSelfnessWithLocalEvent:0 forAccount:accountCopy];
+  exceptionStartTime4 = [(ASEventException *)self exceptionStartTime];
 
-  if (v75)
+  if (exceptionStartTime4)
   {
     v76 = MEMORY[0x277CCA8F8];
-    v77 = [(ASEventException *)self exceptionStartTime];
-    v78 = [(ASEventException *)self originalEvent];
-    v79 = [v78 startTime];
-    v80 = [(ASEventException *)self originalEvent];
-    v81 = [v80 timeZone];
-    v82 = [v76 combinedDateWithYMDFrom:v77 HMSFrom:v79 componentDatesTimezone:v81];
+    exceptionStartTime5 = [(ASEventException *)self exceptionStartTime];
+    originalEvent19 = [(ASEventException *)self originalEvent];
+    startTime4 = [originalEvent19 startTime];
+    originalEvent20 = [(ASEventException *)self originalEvent];
+    timeZone3 = [originalEvent20 timeZone];
+    v82 = [v76 combinedDateWithYMDFrom:exceptionStartTime5 HMSFrom:startTime4 componentDatesTimezone:timeZone3];
 
     [(ASEventException *)self setExceptionStartTime:v82];
   }
@@ -779,13 +779,13 @@ LABEL_8:
   v83 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_loadAttributesFromCalEvent:(void *)a3 withKnownExceptionDate:(id)a4 forAccount:(id)a5
+- (void)_loadAttributesFromCalEvent:(void *)event withKnownExceptionDate:(id)date forAccount:(id)account
 {
   v14.receiver = self;
   v14.super_class = ASEventException;
-  v8 = a4;
-  [(ASEvent *)&v14 _loadAttributesFromCalEvent:a3 forAccount:a5];
-  [(ASEventException *)self setExceptionDate:v8, v14.receiver, v14.super_class];
+  dateCopy = date;
+  [(ASEvent *)&v14 _loadAttributesFromCalEvent:event forAccount:account];
+  [(ASEventException *)self setExceptionDate:dateCopy, v14.receiver, v14.super_class];
 
   ModifiedDate = CalCalendarItemCopyLastModifiedDate();
   if (ModifiedDate)
@@ -795,31 +795,31 @@ LABEL_8:
 
   else
   {
-    v10 = [(ASEventException *)self originalEvent];
-    v11 = [v10 dTStamp];
-    [(ASEvent *)self setDTStamp:v11];
+    originalEvent = [(ASEventException *)self originalEvent];
+    dTStamp = [originalEvent dTStamp];
+    [(ASEvent *)self setDTStamp:dTStamp];
   }
 
-  v12 = [(ASEventException *)self originalEvent];
-  v13 = [v12 responseRequested];
-  [(ASEvent *)self setResponseRequested:v13];
+  originalEvent2 = [(ASEventException *)self originalEvent];
+  responseRequested = [originalEvent2 responseRequested];
+  [(ASEvent *)self setResponseRequested:responseRequested];
 }
 
-- (ASEventException)initWithCalEvent:(void *)a3 originalEvent:(id)a4 account:(id)a5
+- (ASEventException)initWithCalEvent:(void *)event originalEvent:(id)originalEvent account:(id)account
 {
-  v8 = a4;
-  v9 = a5;
+  originalEventCopy = originalEvent;
+  accountCopy = account;
   v22.receiver = self;
   v22.super_class = ASEventException;
   v10 = [(ASEvent *)&v22 init];
   v11 = v10;
   if (v10)
   {
-    [(ASEventException *)v10 setOriginalEvent:v8];
-    if (a3)
+    [(ASEventException *)v10 setOriginalEvent:originalEventCopy];
+    if (event)
     {
       IsFloating = CalCalendarItemIsFloating();
-      v13 = CalCalendarItemGetStatus() == 3 || ([v8 cachedOrganizerIsSelfWithAccount:v9] & 1) == 0 && (CalEventGetParticipationStatus() == 2 || CalEventGetPendingParticipationStatus() == 2);
+      v13 = CalCalendarItemGetStatus() == 3 || ([originalEventCopy cachedOrganizerIsSelfWithAccount:accountCopy] & 1) == 0 && (CalEventGetParticipationStatus() == 2 || CalEventGetPendingParticipationStatus() == 2);
     }
 
     else
@@ -837,8 +837,8 @@ LABEL_8:
     if (v16)
     {
       v17 = v16;
-      v18 = [v8 timeZone];
-      v19 = [v17 dateWithCalendarFormat:0 timeZone:v18];
+      timeZone = [originalEventCopy timeZone];
+      v19 = [v17 dateWithCalendarFormat:0 timeZone:timeZone];
       v20 = [(ASEventException *)v11 _transformedExceptionStartDateForActiveSync:v19 isFloating:IsFloating];
 
       [(ASEventException *)v11 setExceptionDate:v20];
@@ -849,32 +849,32 @@ LABEL_8:
       v20 = 0;
     }
 
-    [(ASEventException *)v11 _loadAttributesFromCalEvent:a3 withKnownExceptionDate:v20 forAccount:v9];
-    [(ASEvent *)v11 setCalEvent:a3];
+    [(ASEventException *)v11 _loadAttributesFromCalEvent:event withKnownExceptionDate:v20 forAccount:accountCopy];
+    [(ASEvent *)v11 setCalEvent:event];
   }
 
   return v11;
 }
 
-+ (id)eventExceptionWithCalEvent:(void *)a3 originalEvent:(id)a4 account:(id)a5
++ (id)eventExceptionWithCalEvent:(void *)event originalEvent:(id)originalEvent account:(id)account
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [[a1 alloc] initWithCalEvent:a3 originalEvent:v9 account:v8];
+  accountCopy = account;
+  originalEventCopy = originalEvent;
+  v10 = [[self alloc] initWithCalEvent:event originalEvent:originalEventCopy account:accountCopy];
 
   return v10;
 }
 
-- (ASEventException)initWithExceptionStartTime:(id)a3
+- (ASEventException)initWithExceptionStartTime:(id)time
 {
-  v4 = a3;
+  timeCopy = time;
   v8.receiver = self;
   v8.super_class = ASEventException;
   v5 = [(ASEvent *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(ASEventException *)v5 setExceptionStartTime:v4];
+    [(ASEventException *)v5 setExceptionStartTime:timeCopy];
     [(ASEventException *)v6 setIsDeleted:&unk_285D57E28];
   }
 
@@ -892,43 +892,43 @@ LABEL_8:
   return 1;
 }
 
-- (void)appendActiveSyncDataForTask:(id)a3 toWBXMLData:(id)a4
+- (void)appendActiveSyncDataForTask:(id)task toWBXMLData:(id)data
 {
   v122 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ASEventException *)self isDeleted];
-  v9 = [v8 BOOLValue];
+  taskCopy = task;
+  dataCopy = data;
+  isDeleted = [(ASEventException *)self isDeleted];
+  bOOLValue = [isDeleted BOOLValue];
 
   if ([(ASEvent *)self calEvent])
   {
     [(ASEvent *)self calEvent];
-    v9 |= CalCalendarItemGetStatus() == 3;
+    bOOLValue |= CalCalendarItemGetStatus() == 3;
   }
 
-  v10 = v9 & 1;
-  v11 = [v6 taskManager];
-  v12 = [v11 protocol];
-  v13 = [v12 usesAirSyncBaseNamespace];
+  v10 = bOOLValue & 1;
+  taskManager = [taskCopy taskManager];
+  protocol = [taskManager protocol];
+  usesAirSyncBaseNamespace = [protocol usesAirSyncBaseNamespace];
 
-  v14 = [v6 taskManager];
-  v15 = [v14 protocol];
-  v116 = [v15 useStructuredLocation];
+  taskManager2 = [taskCopy taskManager];
+  protocol2 = [taskManager2 protocol];
+  useStructuredLocation = [protocol2 useStructuredLocation];
 
-  v16 = [v6 taskManager];
-  v17 = [v16 protocol];
-  v18 = [v17 useInstanceIdForException];
+  taskManager3 = [taskCopy taskManager];
+  protocol3 = [taskManager3 protocol];
+  useInstanceIdForException = [protocol3 useInstanceIdForException];
 
-  v19 = [v6 taskManager];
-  v20 = [v19 protocol];
-  v115 = [v20 useEmptyLocation];
+  taskManager4 = [taskCopy taskManager];
+  protocol4 = [taskManager4 protocol];
+  useEmptyLocation = [protocol4 useEmptyLocation];
 
-  v21 = [(ASEvent *)self organizerEmail];
-  if ([v21 length])
+  organizerEmail = [(ASEvent *)self organizerEmail];
+  if ([organizerEmail length])
   {
-    v22 = [v6 taskManager];
-    v23 = [v22 account];
-    v24 = [(ASEvent *)self cachedOrganizerIsSelfWithAccount:v23];
+    taskManager5 = [taskCopy taskManager];
+    account = [taskManager5 account];
+    v24 = [(ASEvent *)self cachedOrganizerIsSelfWithAccount:account];
 
     if (!v24)
     {
@@ -942,9 +942,9 @@ LABEL_8:
   {
   }
 
-  v26 = [(ASEvent *)self doNotSendBody];
-  v27 = v26;
-  v28 = !v26;
+  doNotSendBody = [(ASEvent *)self doNotSendBody];
+  v27 = doNotSendBody;
+  v28 = !doNotSendBody;
   if ([(ASEvent *)self calEvent]&& !v27)
   {
     [(ASEvent *)self calEvent];
@@ -952,36 +952,36 @@ LABEL_8:
   }
 
   v25 = v28 ^ 1;
-  if ((v28 & v13) == 1 && (v10 & 1) == 0)
+  if ((v28 & usesAirSyncBaseNamespace) == 1 && (v10 & 1) == 0)
   {
-    v29 = [(ASEvent *)self body];
-    [v7 switchToCodePage:17];
-    [v7 openTag:10];
-    [v7 appendTag:6 withIntContent:1];
-    if ([v29 length])
+    body = [(ASEvent *)self body];
+    [dataCopy switchToCodePage:17];
+    [dataCopy openTag:10];
+    [dataCopy appendTag:6 withIntContent:1];
+    if ([body length])
     {
-      [v7 appendTag:11 withStringContent:v29];
+      [dataCopy appendTag:11 withStringContent:body];
     }
 
     else
     {
-      [v7 appendEmptyTag:11];
+      [dataCopy appendEmptyTag:11];
     }
 
-    [v7 closeTag:10];
+    [dataCopy closeTag:10];
   }
 
 LABEL_16:
-  [v7 switchToCodePage:4];
-  if ((v18 & 1) == 0)
+  [dataCopy switchToCodePage:4];
+  if ((useInstanceIdForException & 1) == 0)
   {
-    [v7 appendTag:21 withIntContent:v10];
-    v30 = [(ASEventException *)self exceptionStartTime];
-    v31 = v30;
-    if (v30)
+    [dataCopy appendTag:21 withIntContent:v10];
+    exceptionStartTime = [(ASEventException *)self exceptionStartTime];
+    v31 = exceptionStartTime;
+    if (exceptionStartTime)
     {
-      v32 = [v30 activeSyncStringWithoutSeparators];
-      [v7 appendTag:22 withStringContent:v32];
+      activeSyncStringWithoutSeparators = [exceptionStartTime activeSyncStringWithoutSeparators];
+      [dataCopy appendTag:22 withStringContent:activeSyncStringWithoutSeparators];
     }
   }
 
@@ -990,239 +990,239 @@ LABEL_16:
     goto LABEL_85;
   }
 
-  v33 = [(ASEvent *)self startTime];
-  v34 = v33;
-  if (v33)
+  startTime = [(ASEvent *)self startTime];
+  v34 = startTime;
+  if (startTime)
   {
-    v35 = [v33 activeSyncStringWithoutSeparators];
-    [v7 appendTag:39 withStringContent:v35];
+    activeSyncStringWithoutSeparators2 = [startTime activeSyncStringWithoutSeparators];
+    [dataCopy appendTag:39 withStringContent:activeSyncStringWithoutSeparators2];
   }
 
-  v36 = [(ASEvent *)self endTime];
-  v37 = v36;
-  if (v36)
+  endTime = [(ASEvent *)self endTime];
+  v37 = endTime;
+  if (endTime)
   {
-    v38 = [v36 activeSyncStringWithoutSeparators];
-    [v7 appendTag:18 withStringContent:v38];
+    activeSyncStringWithoutSeparators3 = [endTime activeSyncStringWithoutSeparators];
+    [dataCopy appendTag:18 withStringContent:activeSyncStringWithoutSeparators3];
   }
 
-  v39 = [(ASEvent *)self subject];
-  if (v39)
+  subject = [(ASEvent *)self subject];
+  if (subject)
   {
-    [v7 appendTag:38 withStringContent:v39];
+    [dataCopy appendTag:38 withStringContent:subject];
   }
 
-  v40 = [(ASEvent *)self busyStatus];
+  busyStatus = [(ASEvent *)self busyStatus];
 
-  if (v40)
+  if (busyStatus)
   {
-    v41 = [(ASEvent *)self busyStatus];
-    [v7 appendTag:13 withIntContent:{objc_msgSend(v41, "intValue")}];
+    busyStatus2 = [(ASEvent *)self busyStatus];
+    [dataCopy appendTag:13 withIntContent:{objc_msgSend(busyStatus2, "intValue")}];
   }
 
   else
   {
-    [v7 appendTag:13 withIntContent:2];
+    [dataCopy appendTag:13 withIntContent:2];
   }
 
-  v42 = [(ASEvent *)self allDayEvent];
-  v43 = v42;
-  if (v42)
+  allDayEvent = [(ASEvent *)self allDayEvent];
+  v43 = allDayEvent;
+  if (allDayEvent)
   {
-    [v7 appendTag:6 withIntContent:{objc_msgSend(v42, "intValue")}];
+    [dataCopy appendTag:6 withIntContent:{objc_msgSend(allDayEvent, "intValue")}];
   }
 
-  if (((v25 | v13) & 1) == 0)
+  if (((v25 | usesAirSyncBaseNamespace) & 1) == 0)
   {
-    v44 = [(ASEvent *)self body];
-    if (v44)
+    body2 = [(ASEvent *)self body];
+    if (body2)
     {
-      [v7 appendTag:11 withStringContent:v44];
+      [dataCopy appendTag:11 withStringContent:body2];
     }
   }
 
-  v45 = [(ASEvent *)self location];
+  location = [(ASEvent *)self location];
 
-  if (!v45)
+  if (!location)
   {
-    if (!v115)
+    if (!useEmptyLocation)
     {
       goto LABEL_68;
     }
 
-    [v7 switchToCodePage:17];
-    [v7 appendEmptyTag:32];
+    [dataCopy switchToCodePage:17];
+    [dataCopy appendEmptyTag:32];
     goto LABEL_65;
   }
 
-  if (v116)
+  if (useStructuredLocation)
   {
-    [v7 switchToCodePage:17];
-    [v7 openTag:32];
-    v46 = [(ASEvent *)self location];
-    v47 = [v46 displayName];
+    [dataCopy switchToCodePage:17];
+    [dataCopy openTag:32];
+    location2 = [(ASEvent *)self location];
+    displayName = [location2 displayName];
 
-    if (v47)
+    if (displayName)
     {
-      v48 = [(ASEvent *)self location];
-      v49 = [v48 displayName];
-      [v7 appendTag:16 withStringContent:v49];
+      location3 = [(ASEvent *)self location];
+      displayName2 = [location3 displayName];
+      [dataCopy appendTag:16 withStringContent:displayName2];
     }
 
-    v50 = [(ASEvent *)self location];
-    v51 = [v50 annotation];
+    location4 = [(ASEvent *)self location];
+    annotation = [location4 annotation];
 
-    if (v51)
+    if (annotation)
     {
-      v52 = [(ASEvent *)self location];
-      v53 = [v52 annotation];
-      [v7 appendTag:33 withStringContent:v53];
+      location5 = [(ASEvent *)self location];
+      annotation2 = [location5 annotation];
+      [dataCopy appendTag:33 withStringContent:annotation2];
     }
 
-    v54 = [(ASEvent *)self location];
-    v55 = [v54 street];
+    location6 = [(ASEvent *)self location];
+    street = [location6 street];
 
-    if (v55)
+    if (street)
     {
-      v56 = [(ASEvent *)self location];
-      v57 = [v56 street];
-      [v7 appendTag:34 withStringContent:v57];
+      location7 = [(ASEvent *)self location];
+      street2 = [location7 street];
+      [dataCopy appendTag:34 withStringContent:street2];
     }
 
-    v58 = [(ASEvent *)self location];
-    v59 = [v58 city];
+    location8 = [(ASEvent *)self location];
+    city = [location8 city];
 
-    if (v59)
+    if (city)
     {
-      v60 = [(ASEvent *)self location];
-      v61 = [v60 city];
-      [v7 appendTag:35 withStringContent:v61];
+      location9 = [(ASEvent *)self location];
+      city2 = [location9 city];
+      [dataCopy appendTag:35 withStringContent:city2];
     }
 
-    v62 = [(ASEvent *)self location];
-    v63 = [v62 state];
+    location10 = [(ASEvent *)self location];
+    state = [location10 state];
 
-    if (v63)
+    if (state)
     {
-      v64 = [(ASEvent *)self location];
-      v65 = [v64 state];
-      [v7 appendTag:36 withStringContent:v65];
+      location11 = [(ASEvent *)self location];
+      state2 = [location11 state];
+      [dataCopy appendTag:36 withStringContent:state2];
     }
 
-    v66 = [(ASEvent *)self location];
-    v67 = [v66 postalCode];
+    location12 = [(ASEvent *)self location];
+    postalCode = [location12 postalCode];
 
-    if (v67)
+    if (postalCode)
     {
-      v68 = [(ASEvent *)self location];
-      v69 = [v68 postalCode];
-      [v7 appendTag:38 withStringContent:v69];
+      location13 = [(ASEvent *)self location];
+      postalCode2 = [location13 postalCode];
+      [dataCopy appendTag:38 withStringContent:postalCode2];
     }
 
-    v70 = [(ASEvent *)self location];
-    v71 = [v70 country];
+    location14 = [(ASEvent *)self location];
+    country = [location14 country];
 
-    if (v71)
+    if (country)
     {
-      v72 = [(ASEvent *)self location];
-      v73 = [v72 country];
-      [v7 appendTag:37 withStringContent:v73];
+      location15 = [(ASEvent *)self location];
+      country2 = [location15 country];
+      [dataCopy appendTag:37 withStringContent:country2];
     }
 
-    v74 = [(ASEvent *)self location];
-    v75 = [v74 latitude];
+    location16 = [(ASEvent *)self location];
+    latitude = [location16 latitude];
 
-    if (v75)
+    if (latitude)
     {
-      v76 = [(ASEvent *)self location];
-      v77 = [v76 latitude];
-      [v7 appendTag:39 withStringContent:v77];
+      location17 = [(ASEvent *)self location];
+      latitude2 = [location17 latitude];
+      [dataCopy appendTag:39 withStringContent:latitude2];
     }
 
-    v78 = [(ASEvent *)self location];
-    v79 = [v78 longitude];
+    location18 = [(ASEvent *)self location];
+    longitude = [location18 longitude];
 
-    if (v79)
+    if (longitude)
     {
-      v80 = [(ASEvent *)self location];
-      v81 = [v80 longitude];
-      [v7 appendTag:40 withStringContent:v81];
+      location19 = [(ASEvent *)self location];
+      longitude2 = [location19 longitude];
+      [dataCopy appendTag:40 withStringContent:longitude2];
     }
 
-    v82 = [(ASEvent *)self location];
-    v83 = [v82 accuracy];
+    location20 = [(ASEvent *)self location];
+    accuracy = [location20 accuracy];
 
-    if (v83)
+    if (accuracy)
     {
-      v84 = [(ASEvent *)self location];
-      v85 = [v84 accuracy];
-      [v7 appendTag:41 withStringContent:v85];
+      location21 = [(ASEvent *)self location];
+      accuracy2 = [location21 accuracy];
+      [dataCopy appendTag:41 withStringContent:accuracy2];
     }
 
-    v86 = [(ASEvent *)self location];
-    v87 = [v86 altitude];
+    location22 = [(ASEvent *)self location];
+    altitude = [location22 altitude];
 
-    if (v87)
+    if (altitude)
     {
-      v88 = [(ASEvent *)self location];
-      v89 = [v88 altitude];
-      [v7 appendTag:42 withStringContent:v89];
+      location23 = [(ASEvent *)self location];
+      altitude2 = [location23 altitude];
+      [dataCopy appendTag:42 withStringContent:altitude2];
     }
 
-    v90 = [(ASEvent *)self location];
-    v91 = [v90 altitudeAccuracy];
+    location24 = [(ASEvent *)self location];
+    altitudeAccuracy = [location24 altitudeAccuracy];
 
-    if (v91)
+    if (altitudeAccuracy)
     {
-      v92 = [(ASEvent *)self location];
-      v93 = [v92 altitudeAccuracy];
-      [v7 appendTag:43 withStringContent:v93];
+      location25 = [(ASEvent *)self location];
+      altitudeAccuracy2 = [location25 altitudeAccuracy];
+      [dataCopy appendTag:43 withStringContent:altitudeAccuracy2];
     }
 
-    [v7 closeTag:32];
+    [dataCopy closeTag:32];
 LABEL_65:
-    [v7 switchToCodePage:4];
+    [dataCopy switchToCodePage:4];
     goto LABEL_68;
   }
 
-  v94 = [(ASEvent *)self location];
-  v95 = [v94 displayName];
+  location26 = [(ASEvent *)self location];
+  displayName3 = [location26 displayName];
 
-  if (v95)
+  if (displayName3)
   {
-    v96 = [(ASEvent *)self location];
-    v97 = [v96 displayName];
-    [v7 appendTag:23 withStringContent:v97];
+    location27 = [(ASEvent *)self location];
+    displayName4 = [location27 displayName];
+    [dataCopy appendTag:23 withStringContent:displayName4];
   }
 
 LABEL_68:
-  v98 = [(ASEvent *)self reminderMinsBefore];
-  v99 = v98;
-  if (v98)
+  reminderMinsBefore = [(ASEvent *)self reminderMinsBefore];
+  v99 = reminderMinsBefore;
+  if (reminderMinsBefore)
   {
-    [v7 appendTag:36 withIntContent:{objc_msgSend(v98, "intValue")}];
+    [dataCopy appendTag:36 withIntContent:{objc_msgSend(reminderMinsBefore, "intValue")}];
   }
 
-  v100 = [v6 taskManager];
-  v101 = [v100 protocol];
-  v102 = [v101 supportsAttendeesInExceptions];
+  taskManager6 = [taskCopy taskManager];
+  protocol5 = [taskManager6 protocol];
+  supportsAttendeesInExceptions = [protocol5 supportsAttendeesInExceptions];
 
-  if (v102)
+  if (supportsAttendeesInExceptions)
   {
-    v103 = [(ASEventException *)self originalEvent];
-    v104 = [v103 attendees];
-    v105 = [(ASEvent *)self attendees];
-    v106 = [v104 isEqual:v105];
+    originalEvent = [(ASEventException *)self originalEvent];
+    attendees = [originalEvent attendees];
+    attendees2 = [(ASEvent *)self attendees];
+    v106 = [attendees isEqual:attendees2];
 
     if ((v106 & 1) == 0)
     {
-      [v7 openProspectiveTag:7];
+      [dataCopy openProspectiveTag:7];
       v119 = 0u;
       v120 = 0u;
       v117 = 0u;
       v118 = 0u;
-      v107 = [(ASEvent *)self attendees];
-      v108 = [v107 countByEnumeratingWithState:&v117 objects:v121 count:16];
+      attendees3 = [(ASEvent *)self attendees];
+      v108 = [attendees3 countByEnumeratingWithState:&v117 objects:v121 count:16];
       if (v108)
       {
         v109 = v108;
@@ -1234,25 +1234,25 @@ LABEL_68:
           {
             if (*v118 != v111)
             {
-              objc_enumerationMutation(v107);
+              objc_enumerationMutation(attendees3);
             }
 
             v113 = *(*(&v117 + 1) + 8 * i);
             if ([v113 status] != 6)
             {
-              [v7 openTag:8];
-              [v113 appendActiveSyncDataForTask:v6 toData:v7];
-              [v7 closeTag:8];
+              [dataCopy openTag:8];
+              [v113 appendActiveSyncDataForTask:taskCopy toData:dataCopy];
+              [dataCopy closeTag:8];
               v110 = 1;
             }
           }
 
-          v109 = [v107 countByEnumeratingWithState:&v117 objects:v121 count:16];
+          v109 = [attendees3 countByEnumeratingWithState:&v117 objects:v121 count:16];
         }
 
         while (v109);
 
-        [v7 closeProspectiveTag:7];
+        [dataCopy closeProspectiveTag:7];
         if (v110)
         {
           goto LABEL_85;
@@ -1262,10 +1262,10 @@ LABEL_68:
       else
       {
 
-        [v7 closeProspectiveTag:7];
+        [dataCopy closeProspectiveTag:7];
       }
 
-      [v7 appendEmptyTag:7];
+      [dataCopy appendEmptyTag:7];
     }
   }
 
@@ -1291,35 +1291,35 @@ LABEL_85:
   v11.receiver = self;
   v11.super_class = ASEventException;
   v4 = [(ASEvent *)&v11 description];
-  v5 = [(ASEventException *)self exceptionStartTime];
-  v6 = [(ASEventException *)self isDeleted];
-  v7 = [v6 intValue];
+  exceptionStartTime = [(ASEventException *)self exceptionStartTime];
+  isDeleted = [(ASEventException *)self isDeleted];
+  intValue = [isDeleted intValue];
   v8 = @"YES";
-  if (!v7)
+  if (!intValue)
   {
     v8 = @"NO";
   }
 
-  v9 = [v3 stringWithFormat:@"%@: exceptionStartTime %@ isDeleted %@", v4, v5, v8];
+  v9 = [v3 stringWithFormat:@"%@: exceptionStartTime %@ isDeleted %@", v4, exceptionStartTime, v8];
 
   return v9;
 }
 
-- (ASEventException)initWithCoder:(id)a3
+- (ASEventException)initWithCoder:(id)coder
 {
   v15[2] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = ASEventException;
-  v6 = [(ASEvent *)&v14 initWithCoder:v5];
+  v6 = [(ASEvent *)&v14 initWithCoder:coderCopy];
   if (v6)
   {
-    if (([v5 allowsKeyedCoding] & 1) == 0)
+    if (([coderCopy allowsKeyedCoding] & 1) == 0)
     {
       [(ASEventException *)a2 initWithCoder:v6];
     }
 
-    v7 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"isDeleted"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"isDeleted"];
     [(ASEventException *)v6 setIsDeleted:v7];
 
     v8 = MEMORY[0x277CBEB98];
@@ -1327,7 +1327,7 @@ LABEL_85:
     v15[1] = objc_opt_class();
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:2];
     v10 = [v8 setWithArray:v9];
-    v11 = [v5 decodeObjectOfClasses:v10 forKey:@"exceptionStartTime"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"exceptionStartTime"];
     [(ASEventException *)v6 setExceptionStartTime:v11];
   }
 
@@ -1335,22 +1335,22 @@ LABEL_85:
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = ASEventException;
-  [(ASEvent *)&v8 encodeWithCoder:v5];
-  if (([v5 allowsKeyedCoding] & 1) == 0)
+  [(ASEvent *)&v8 encodeWithCoder:coderCopy];
+  if (([coderCopy allowsKeyedCoding] & 1) == 0)
   {
     [(ASEventException *)a2 encodeWithCoder:?];
   }
 
-  v6 = [(ASEventException *)self isDeleted];
-  [v5 encodeObject:v6 forKey:@"isDeleted"];
+  isDeleted = [(ASEventException *)self isDeleted];
+  [coderCopy encodeObject:isDeleted forKey:@"isDeleted"];
 
-  v7 = [(ASEventException *)self exceptionStartTime];
-  [v5 encodeObject:v7 forKey:@"exceptionStartTime"];
+  exceptionStartTime = [(ASEventException *)self exceptionStartTime];
+  [coderCopy encodeObject:exceptionStartTime forKey:@"exceptionStartTime"];
 }
 
 - (BOOL)hasOccurrenceInTheFuture
@@ -1358,8 +1358,8 @@ LABEL_85:
   if (!-[ASEvent calEvent](self, "calEvent") && (-[ASEventException originalEvent](self, "originalEvent"), v5 = objc_claimAutoreleasedReturnValue(), v5, v5) && (-[ASEventException originalEvent](self, "originalEvent"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 calEvent], v6, v7))
   {
     Duration = CalEventGetDuration();
-    v9 = [(ASEventException *)self exceptionDate];
-    v10 = [v9 dateByAddingTimeInterval:Duration];
+    exceptionDate = [(ASEventException *)self exceptionDate];
+    v10 = [exceptionDate dateByAddingTimeInterval:Duration];
 
     [v10 timeIntervalSinceNow];
     v3 = v11 >= 0.0;

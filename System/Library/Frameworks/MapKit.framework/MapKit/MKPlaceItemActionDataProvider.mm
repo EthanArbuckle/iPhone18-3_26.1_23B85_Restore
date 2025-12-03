@@ -3,37 +3,37 @@
 - (BOOL)supportsMessagesForBusiness;
 - (CNContact)contact;
 - (id)messagesForBusinessURL;
-- (void)updateWithPlaceItem:(id)a3 options:(unint64_t)a4;
+- (void)updateWithPlaceItem:(id)item options:(unint64_t)options;
 @end
 
 @implementation MKPlaceItemActionDataProvider
 
 - (CNContact)contact
 {
-  v3 = [(_MKPlaceItem *)self->_placeItem contact];
-  v4 = v3;
-  if (v3)
+  contact = [(_MKPlaceItem *)self->_placeItem contact];
+  v4 = contact;
+  if (contact)
   {
-    v5 = v3;
+    _placeCardContact = contact;
   }
 
   else
   {
-    v6 = [(_MKPlaceItem *)self->_placeItem mapItem];
-    v5 = [v6 _placeCardContact];
+    mapItem = [(_MKPlaceItem *)self->_placeItem mapItem];
+    _placeCardContact = [mapItem _placeCardContact];
   }
 
-  return v5;
+  return _placeCardContact;
 }
 
 - (BOOL)canShowCallAction
 {
-  v3 = [(MKPlaceItemActionDataProvider *)self contact];
-  v4 = [v3 phoneNumbers];
-  if ([v4 count])
+  contact = [(MKPlaceItemActionDataProvider *)self contact];
+  phoneNumbers = [contact phoneNumbers];
+  if ([phoneNumbers count])
   {
-    v5 = [(MKPlaceItemActionDataProvider *)self placeItem];
-    v6 = ([v5 options] & 8) == 0;
+    placeItem = [(MKPlaceItemActionDataProvider *)self placeItem];
+    v6 = ([placeItem options] & 8) == 0;
   }
 
   else
@@ -49,9 +49,9 @@
   if ([(MKPlaceItemActionDataProvider *)self supportsMessagesForBusiness])
   {
     v3 = MEMORY[0x1E695DFF8];
-    v4 = [(MKPlaceItemActionDataProvider *)self mapItem];
-    v5 = [v4 _messageURLString];
-    v6 = [v3 URLWithString:v5];
+    mapItem = [(MKPlaceItemActionDataProvider *)self mapItem];
+    _messageURLString = [mapItem _messageURLString];
+    v6 = [v3 URLWithString:_messageURLString];
   }
 
   else
@@ -64,23 +64,23 @@
 
 - (BOOL)supportsMessagesForBusiness
 {
-  v2 = [(MKPlaceItemActionDataProvider *)self mapItem];
-  v3 = [v2 _messageURLString];
-  v4 = [v3 length] != 0;
+  mapItem = [(MKPlaceItemActionDataProvider *)self mapItem];
+  _messageURLString = [mapItem _messageURLString];
+  v4 = [_messageURLString length] != 0;
 
   return v4;
 }
 
-- (void)updateWithPlaceItem:(id)a3 options:(unint64_t)a4
+- (void)updateWithPlaceItem:(id)item options:(unint64_t)options
 {
-  v7 = a3;
-  if (*&self->_placeItem != __PAIR128__(a4, v7))
+  itemCopy = item;
+  if (*&self->_placeItem != __PAIR128__(options, itemCopy))
   {
-    v8 = v7;
-    objc_storeStrong(&self->_placeItem, a3);
-    self->_options = a4;
+    v8 = itemCopy;
+    objc_storeStrong(&self->_placeItem, item);
+    self->_options = options;
     [(MKPlaceItemActionDataProvider *)self _placeItemDidUpdate];
-    v7 = v8;
+    itemCopy = v8;
   }
 }
 

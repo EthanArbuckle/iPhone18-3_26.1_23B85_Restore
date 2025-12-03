@@ -57,8 +57,8 @@
         CFArrayAppendValue(v13, HostNames);
         if (SCDynamicStoreSetNotificationKeys(v11, v13, 0))
         {
-          v16 = [(__HMFSystemConfigurationDataSource *)v9 queue];
-          v17 = SCDynamicStoreSetDispatchQueue(v11, v16);
+          queue = [(__HMFSystemConfigurationDataSource *)v9 queue];
+          v17 = SCDynamicStoreSetDispatchQueue(v11, queue);
 
           if (v17)
           {

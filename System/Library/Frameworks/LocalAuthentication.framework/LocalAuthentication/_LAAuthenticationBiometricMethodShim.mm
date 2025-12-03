@@ -1,9 +1,9 @@
 @interface _LAAuthenticationBiometricMethodShim
 + (_LAAuthenticationBiometricMethodShim)sharedInstance;
 - (_LAAuthenticationBiometricMethodShim)init;
-- (void)authenticationMethod:(id)a3 didAuthenticateWithResult:(id)a4;
-- (void)authenticationMethod:(id)a3 didChangeState:(id)a4;
-- (void)authenticationMethod:(id)a3 didStartWithState:(id)a4;
+- (void)authenticationMethod:(id)method didAuthenticateWithResult:(id)result;
+- (void)authenticationMethod:(id)method didChangeState:(id)state;
+- (void)authenticationMethod:(id)method didStartWithState:(id)state;
 - (void)init;
 @end
 
@@ -33,13 +33,13 @@
     biometricMethod = v2->_biometricMethod;
     v2->_biometricMethod = v4;
 
-    v6 = [(_LAAuthenticationBiometricMethodShim *)v2 biometricMethod];
-    [v6 addObserver:v2];
+    biometricMethod = [(_LAAuthenticationBiometricMethodShim *)v2 biometricMethod];
+    [biometricMethod addObserver:v2];
 
-    v7 = [(_LAAuthenticationBiometricMethodShim *)v2 biometricMethod];
-    v8 = [v7 start];
+    biometricMethod2 = [(_LAAuthenticationBiometricMethodShim *)v2 biometricMethod];
+    start = [biometricMethod2 start];
 
-    if ((v8 & 1) == 0)
+    if ((start & 1) == 0)
     {
       v9 = v2->_biometricMethod;
       v2->_biometricMethod = 0;
@@ -55,10 +55,10 @@
   return v2;
 }
 
-- (void)authenticationMethod:(id)a3 didStartWithState:(id)a4
+- (void)authenticationMethod:(id)method didStartWithState:(id)state
 {
-  v6 = a3;
-  v7 = a4;
+  methodCopy = method;
+  stateCopy = state;
   v8 = +[_LABKLog log];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -66,13 +66,13 @@
   }
 
   biometricMethodState = self->_biometricMethodState;
-  self->_biometricMethodState = v7;
+  self->_biometricMethodState = stateCopy;
 }
 
-- (void)authenticationMethod:(id)a3 didChangeState:(id)a4
+- (void)authenticationMethod:(id)method didChangeState:(id)state
 {
-  v6 = a3;
-  v7 = a4;
+  methodCopy = method;
+  stateCopy = state;
   v8 = +[_LABKLog log];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -83,18 +83,18 @@
   [(_LAAuthenticationBiometricMethodShim *)self willChangeValueForKey:v9];
 
   biometricMethodState = self->_biometricMethodState;
-  self->_biometricMethodState = v7;
-  v11 = v7;
+  self->_biometricMethodState = stateCopy;
+  v11 = stateCopy;
 
   v12 = NSStringFromSelector(sel_biometricMethodState);
 
   [(_LAAuthenticationBiometricMethodShim *)self didChangeValueForKey:v12];
 }
 
-- (void)authenticationMethod:(id)a3 didAuthenticateWithResult:(id)a4
+- (void)authenticationMethod:(id)method didAuthenticateWithResult:(id)result
 {
-  v6 = a3;
-  v7 = a4;
+  methodCopy = method;
+  resultCopy = result;
   v8 = +[_LABKLog log];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -105,8 +105,8 @@
   [(_LAAuthenticationBiometricMethodShim *)self willChangeValueForKey:v9];
 
   biometricMethodResult = self->_biometricMethodResult;
-  self->_biometricMethodResult = v7;
-  v11 = v7;
+  self->_biometricMethodResult = resultCopy;
+  v11 = resultCopy;
 
   v12 = NSStringFromSelector(sel_biometricMethodResult);
 
@@ -116,11 +116,11 @@
 - (void)init
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = [a1 biometricMethod];
+  biometricMethod = [self biometricMethod];
   v6 = 138412546;
-  v7 = a1;
+  selfCopy = self;
   v8 = 2112;
-  v9 = v4;
+  v9 = biometricMethod;
   _os_log_debug_impl(&dword_1A784E000, a2, OS_LOG_TYPE_DEBUG, "%@ init, method=%@", &v6, 0x16u);
 
   v5 = *MEMORY[0x1E69E9840];

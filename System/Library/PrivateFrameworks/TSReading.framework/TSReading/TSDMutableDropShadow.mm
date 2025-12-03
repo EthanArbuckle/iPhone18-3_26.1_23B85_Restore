@@ -1,14 +1,14 @@
 @interface TSDMutableDropShadow
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setColor:(CGColor *)a3;
-- (void)setTSUColor:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setColor:(CGColor *)color;
+- (void)setTSUColor:(id)color;
 @end
 
 @implementation TSDMutableDropShadow
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [TSDDropShadow allocWithZone:a3];
+  v4 = [TSDDropShadow allocWithZone:zone];
   [(TSDShadow *)self angle];
   v6 = v5;
   [(TSDShadow *)self offset];
@@ -17,34 +17,34 @@
   v10 = v9;
   [(TSDShadow *)self opacity];
   v12 = v11;
-  v13 = [(TSDShadow *)self color];
-  v14 = [(TSDShadow *)self isEnabled];
+  color = [(TSDShadow *)self color];
+  isEnabled = [(TSDShadow *)self isEnabled];
 
-  return [(TSDDropShadow *)v4 initWithAngle:v13 offset:v14 radius:v6 opacity:v8 color:v10 enabled:v12];
+  return [(TSDDropShadow *)v4 initWithAngle:color offset:isEnabled radius:v6 opacity:v8 color:v10 enabled:v12];
 }
 
-- (void)setColor:(CGColor *)a3
+- (void)setColor:(CGColor *)color
 {
-  if (!a3)
+  if (!color)
   {
-    v5 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDMutableDropShadow setColor:]"];
-    [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDDropShadow.m"), 314, @"invalid nil value for '%s'", "color"}];
+    [currentHandler handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDDropShadow.m"), 314, @"invalid nil value for '%s'", "color"}];
   }
 
   mColor = self->super.super.mColor;
-  if (mColor != a3)
+  if (mColor != color)
   {
     CGColorRelease(mColor);
-    self->super.super.mColor = CGColorRetain(a3);
+    self->super.super.mColor = CGColorRetain(color);
   }
 }
 
-- (void)setTSUColor:(id)a3
+- (void)setTSUColor:(id)color
 {
-  v4 = [a3 CGColor];
+  cGColor = [color CGColor];
 
-  [(TSDMutableDropShadow *)self setColor:v4];
+  [(TSDMutableDropShadow *)self setColor:cGColor];
 }
 
 @end

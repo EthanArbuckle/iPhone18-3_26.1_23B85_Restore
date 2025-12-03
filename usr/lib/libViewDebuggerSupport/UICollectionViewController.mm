@@ -1,6 +1,6 @@
 @interface UICollectionViewController
 + (id)fallback_debugHierarchyPropertyDescriptions;
-+ (id)fallback_debugHierarchyValueForPropertyWithName:(id)a3 onObject:(id)a4 outOptions:(id *)a5 outError:(id *)a6;
++ (id)fallback_debugHierarchyValueForPropertyWithName:(id)name onObject:(id)object outOptions:(id *)options outError:(id *)error;
 @end
 
 @implementation UICollectionViewController
@@ -40,14 +40,14 @@
   return v7;
 }
 
-+ (id)fallback_debugHierarchyValueForPropertyWithName:(id)a3 onObject:(id)a4 outOptions:(id *)a5 outError:(id *)a6
++ (id)fallback_debugHierarchyValueForPropertyWithName:(id)name onObject:(id)object outOptions:(id *)options outError:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if (![v8 isEqualToString:@"collectionView"])
+  nameCopy = name;
+  objectCopy = object;
+  if (![nameCopy isEqualToString:@"collectionView"])
   {
-    v11 = v9;
-    v12 = v8;
+    v11 = objectCopy;
+    v12 = nameCopy;
     if ([(NSString *)v12 length])
     {
       NSSelectorFromString(v12);
@@ -57,7 +57,7 @@
         if (v13)
         {
 LABEL_7:
-          a6 = [v11 valueForKey:v13];
+          error = [v11 valueForKey:v13];
 LABEL_25:
 
           goto LABEL_26;
@@ -68,18 +68,18 @@ LABEL_25:
       {
         if ([(NSString *)v12 length]< 2)
         {
-          v17 = [(NSString *)v12 uppercaseString];
+          uppercaseString = [(NSString *)v12 uppercaseString];
         }
 
         else
         {
           v14 = [(NSString *)v12 substringToIndex:1];
-          v15 = [v14 uppercaseString];
+          uppercaseString2 = [v14 uppercaseString];
           v16 = [(NSString *)v12 substringFromIndex:1];
-          v17 = [v15 stringByAppendingString:v16];
+          uppercaseString = [uppercaseString2 stringByAppendingString:v16];
         }
 
-        v18 = [@"is" stringByAppendingString:v17];
+        v18 = [@"is" stringByAppendingString:uppercaseString];
         NSSelectorFromString(v18);
         if (objc_opt_respondsToSelector())
         {
@@ -98,7 +98,7 @@ LABEL_25:
       }
     }
 
-    if (a6)
+    if (error)
     {
       v19 = v12;
       if (v11)
@@ -132,10 +132,10 @@ LABEL_25:
       v24 = [NSError errorWithDomain:@"DebugHierarchyErrorDomain" code:100 userInfo:v23];
 
       v25 = v24;
-      *a6 = v24;
+      *error = v24;
 
       v13 = 0;
-      a6 = 0;
+      error = 0;
     }
 
     else
@@ -146,21 +146,21 @@ LABEL_25:
     goto LABEL_25;
   }
 
-  v10 = [v9 viewIfLoaded];
+  viewIfLoaded = [objectCopy viewIfLoaded];
 
-  if (v10)
+  if (viewIfLoaded)
   {
-    a6 = [v9 collectionView];
+    error = [objectCopy collectionView];
   }
 
   else
   {
-    a6 = 0;
+    error = 0;
   }
 
 LABEL_26:
 
-  return a6;
+  return error;
 }
 
 @end

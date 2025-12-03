@@ -2,10 +2,10 @@
 + (id)sharedController;
 - (ServiceBridgedNavigationController)init;
 - (ServiceBridgedNavigationControllerProxy)proxyHandler;
-- (id)popToViewController:(id)a3 animated:(BOOL)a4;
+- (id)popToViewController:(id)controller animated:(BOOL)animated;
 - (id)topViewController;
 - (void)removeAllContainerViewControllers;
-- (void)setupWithContainerViewController:(id)a3;
+- (void)setupWithContainerViewController:(id)controller;
 - (void)synchonrizeContinainerViewControllers;
 @end
 
@@ -42,18 +42,18 @@
   return v2;
 }
 
-- (void)setupWithContainerViewController:(id)a3
+- (void)setupWithContainerViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   [(ServiceBridgedNavigationController *)self removeAllContainerViewControllers];
-  v5 = [(ServiceBridgedNavigationController *)self containerViewControllers];
-  [v5 addObject:v4];
+  containerViewControllers = [(ServiceBridgedNavigationController *)self containerViewControllers];
+  [containerViewControllers addObject:controllerCopy];
 }
 
 - (void)synchonrizeContinainerViewControllers
 {
-  v3 = [(ServiceBridgedNavigationController *)self containerViewControllers];
-  v4 = [v3 copy];
+  containerViewControllers = [(ServiceBridgedNavigationController *)self containerViewControllers];
+  v4 = [containerViewControllers copy];
 
   v15 = 0u;
   v16 = 0u;
@@ -75,12 +75,12 @@
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
-        v11 = [v10 parentViewController];
+        parentViewController = [v10 parentViewController];
 
-        if (!v11)
+        if (!parentViewController)
         {
-          v12 = [(ServiceBridgedNavigationController *)self containerViewControllers];
-          [v12 removeObject:v10];
+          containerViewControllers2 = [(ServiceBridgedNavigationController *)self containerViewControllers];
+          [containerViewControllers2 removeObject:v10];
         }
       }
 
@@ -93,28 +93,28 @@
 
 - (void)removeAllContainerViewControllers
 {
-  v2 = [(ServiceBridgedNavigationController *)self containerViewControllers];
-  [v2 removeAllObjects];
+  containerViewControllers = [(ServiceBridgedNavigationController *)self containerViewControllers];
+  [containerViewControllers removeAllObjects];
 }
 
 - (id)topViewController
 {
-  v2 = [(ServiceBridgedNavigationController *)self containerViewControllers];
-  v3 = [v2 lastObject];
+  containerViewControllers = [(ServiceBridgedNavigationController *)self containerViewControllers];
+  lastObject = [containerViewControllers lastObject];
 
-  return v3;
+  return lastObject;
 }
 
-- (id)popToViewController:(id)a3 animated:(BOOL)a4
+- (id)popToViewController:(id)controller animated:(BOOL)animated
 {
-  v5 = a3;
-  if (v5 && (-[ServiceBridgedNavigationController containerViewControllers](self, "containerViewControllers"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 indexOfObject:v5], v6, v7 != 0x7FFFFFFFFFFFFFFFLL))
+  controllerCopy = controller;
+  if (controllerCopy && (-[ServiceBridgedNavigationController containerViewControllers](self, "containerViewControllers"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 indexOfObject:controllerCopy], v6, v7 != 0x7FFFFFFFFFFFFFFFLL))
   {
-    v8 = [(ServiceBridgedNavigationController *)self containerViewControllers];
-    v9 = [v8 count] - v7 - 1;
+    containerViewControllers = [(ServiceBridgedNavigationController *)self containerViewControllers];
+    v9 = [containerViewControllers count] - v7 - 1;
 
-    v10 = [(ServiceBridgedNavigationController *)self containerViewControllers];
-    [v10 removeObjectsInRange:{v7 + 1, v9}];
+    containerViewControllers2 = [(ServiceBridgedNavigationController *)self containerViewControllers];
+    [containerViewControllers2 removeObjectsInRange:{v7 + 1, v9}];
   }
 
   else
@@ -123,8 +123,8 @@
     v7 = -1;
   }
 
-  v11 = [(ServiceBridgedNavigationController *)self proxyHandler];
-  [v11 popBridgedViewControllersToIndex:v7];
+  proxyHandler = [(ServiceBridgedNavigationController *)self proxyHandler];
+  [proxyHandler popBridgedViewControllersToIndex:v7];
 
   return 0;
 }

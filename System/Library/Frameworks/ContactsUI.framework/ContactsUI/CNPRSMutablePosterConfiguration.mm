@@ -21,9 +21,9 @@
   v5 = PRSMutablePosterConfigurationClass;
   if ((v3 & 1) == 0)
   {
-    v12 = [PRSMutablePosterConfigurationClass mutableConfiguration];
+    mutableConfiguration = [PRSMutablePosterConfigurationClass mutableConfiguration];
     wrappedMutablePosterConfiguration = v2->_wrappedMutablePosterConfiguration;
-    v2->_wrappedMutablePosterConfiguration = v12;
+    v2->_wrappedMutablePosterConfiguration = mutableConfiguration;
     goto LABEL_8;
   }
 
@@ -61,9 +61,9 @@ LABEL_9:
     return v2;
   }
 
-  v15 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v16 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getPRSPosterRoleIncomingCall(void)"];
-  [v15 handleFailureInFunction:v16 file:@"CNPostersSoftLink.h" lineNumber:27 description:{@"%s", dlerror()}];
+  [currentHandler handleFailureInFunction:v16 file:@"CNPostersSoftLink.h" lineNumber:27 description:{@"%s", dlerror()}];
 
   __break(1u);
   return result;

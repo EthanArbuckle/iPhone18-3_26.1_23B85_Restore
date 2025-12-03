@@ -1,50 +1,50 @@
 @interface ADCoreBluetoothManager
-+ (void)fetchCBUUIDForConnectedDeviceWithAddress:(id)a3 completion:(id)a4;
-+ (void)retrieveConnectedDevicesInfoOnDoAPServiceWithCompletion:(id)a3;
-+ (void)retrieveConnectedDevicesInfoWithCompletion:(id)a3;
-- (id)_adCoreBluetoothDeviceForPeripheral:(id)a3 RSSI:(id)a4;
-- (id)_getPeripheralStateDescriptionFromState:(int64_t)a3;
++ (void)fetchCBUUIDForConnectedDeviceWithAddress:(id)address completion:(id)completion;
++ (void)retrieveConnectedDevicesInfoOnDoAPServiceWithCompletion:(id)completion;
++ (void)retrieveConnectedDevicesInfoWithCompletion:(id)completion;
+- (id)_adCoreBluetoothDeviceForPeripheral:(id)peripheral RSSI:(id)i;
+- (id)_getPeripheralStateDescriptionFromState:(int64_t)state;
 - (id)_init;
-- (void)_connectToPeripherals:(id)a3;
-- (void)_didReadRSSI:(id)a3 forPeripheral:(id)a4;
-- (void)_retrieveConnectedDevicesInfoOnServices:(id)a3 completion:(id)a4;
-- (void)centralManager:(id)a3 didConnectPeripheral:(id)a4;
-- (void)centralManager:(id)a3 didFailToConnectPeripheral:(id)a4 error:(id)a5;
-- (void)centralManagerDidUpdateState:(id)a3;
-- (void)peripheral:(id)a3 didReadRSSI:(id)a4 error:(id)a5;
+- (void)_connectToPeripherals:(id)peripherals;
+- (void)_didReadRSSI:(id)i forPeripheral:(id)peripheral;
+- (void)_retrieveConnectedDevicesInfoOnServices:(id)services completion:(id)completion;
+- (void)centralManager:(id)manager didConnectPeripheral:(id)peripheral;
+- (void)centralManager:(id)manager didFailToConnectPeripheral:(id)peripheral error:(id)error;
+- (void)centralManagerDidUpdateState:(id)state;
+- (void)peripheral:(id)peripheral didReadRSSI:(id)i error:(id)error;
 @end
 
 @implementation ADCoreBluetoothManager
 
-- (void)peripheral:(id)a3 didReadRSSI:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didReadRSSI:(id)i error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  peripheralCopy = peripheral;
+  iCopy = i;
+  errorCopy = error;
   queue = self->_queue;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_1002BA62C;
   v15[3] = &unk_10051DB18;
   v15[4] = self;
-  v16 = v8;
-  v17 = v10;
-  v18 = v9;
-  v12 = v9;
-  v13 = v10;
-  v14 = v8;
+  v16 = peripheralCopy;
+  v17 = errorCopy;
+  v18 = iCopy;
+  v12 = iCopy;
+  v13 = errorCopy;
+  v14 = peripheralCopy;
   dispatch_async(queue, v15);
 }
 
-- (void)centralManager:(id)a3 didFailToConnectPeripheral:(id)a4 error:(id)a5
+- (void)centralManager:(id)manager didFailToConnectPeripheral:(id)peripheral error:(id)error
 {
-  v8 = a4;
-  v9 = a5;
-  if ([a3 isEqual:self->_cbManager])
+  peripheralCopy = peripheral;
+  errorCopy = error;
+  if ([manager isEqual:self->_cbManager])
   {
     peripheralsPendingRSSI = self->_peripheralsPendingRSSI;
-    v11 = [v8 identifier];
-    v12 = [(NSMutableDictionary *)peripheralsPendingRSSI objectForKey:v11];
+    identifier = [peripheralCopy identifier];
+    v12 = [(NSMutableDictionary *)peripheralsPendingRSSI objectForKey:identifier];
 
     if (v12)
     {
@@ -54,21 +54,21 @@
         v14 = 136315650;
         v15 = "[ADCoreBluetoothManager centralManager:didFailToConnectPeripheral:error:]";
         v16 = 2112;
-        v17 = v8;
+        v17 = peripheralCopy;
         v18 = 2112;
-        v19 = v9;
+        v19 = errorCopy;
         _os_log_debug_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEBUG, "%s %@: %@", &v14, 0x20u);
       }
 
-      [(ADCoreBluetoothManager *)self _didReadRSSI:0 forPeripheral:v8];
+      [(ADCoreBluetoothManager *)self _didReadRSSI:0 forPeripheral:peripheralCopy];
     }
   }
 }
 
-- (void)centralManager:(id)a3 didConnectPeripheral:(id)a4
+- (void)centralManager:(id)manager didConnectPeripheral:(id)peripheral
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  peripheralCopy = peripheral;
   if (self->_invalidated)
   {
     v8 = AFSiriLogContextDaemon;
@@ -77,12 +77,12 @@
       v10 = 136315394;
       v11 = "[ADCoreBluetoothManager centralManager:didConnectPeripheral:]";
       v12 = 2112;
-      v13 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%s %@ already invalidated", &v10, 0x16u);
     }
   }
 
-  else if ([v6 isEqual:self->_cbManager])
+  else if ([managerCopy isEqual:self->_cbManager])
   {
     v9 = AFSiriLogContextDaemon;
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
@@ -90,24 +90,24 @@
       v10 = 136315394;
       v11 = "[ADCoreBluetoothManager centralManager:didConnectPeripheral:]";
       v12 = 2112;
-      v13 = v7;
+      selfCopy = peripheralCopy;
       _os_log_debug_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEBUG, "%s %@ connected, now reading RSSI", &v10, 0x16u);
     }
 
-    [(ADCoreBluetoothManager *)v7 readRSSI];
+    [(ADCoreBluetoothManager *)peripheralCopy readRSSI];
   }
 }
 
-- (void)centralManagerDidUpdateState:(id)a3
+- (void)centralManagerDidUpdateState:(id)state
 {
-  v4 = a3;
-  if ([(NSArray *)v4 isEqual:self->_cbManager])
+  stateCopy = state;
+  if ([(NSArray *)stateCopy isEqual:self->_cbManager])
   {
-    v5 = [(CBCentralManager *)self->_cbManager state];
-    v6 = [(CBCentralManager *)self->_cbManager state];
+    state = [(CBCentralManager *)self->_cbManager state];
+    state2 = [(CBCentralManager *)self->_cbManager state];
     v7 = AFSiriLogContextDaemon;
     v8 = os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO);
-    if (v6 > 4)
+    if (state2 > 4)
     {
       if (v8)
       {
@@ -130,7 +130,7 @@
         v14 = 136315394;
         v15 = "[ADCoreBluetoothManager centralManagerDidUpdateState:]";
         v16 = 2048;
-        v17 = v5;
+        v17 = state;
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "%s Invalid CBCentral manager state: %ld", &v14, 0x16u);
       }
 
@@ -152,7 +152,7 @@
       v14 = 136315650;
       v15 = "[ADCoreBluetoothManager centralManagerDidUpdateState:]";
       v16 = 2112;
-      v17 = v4;
+      v17 = stateCopy;
       v18 = 2112;
       v19 = cbManager;
       _os_log_debug_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEBUG, "%s Ignoring update from irrelevant CB manager: %@, current manager is %@", &v14, 0x20u);
@@ -160,16 +160,16 @@
   }
 }
 
-- (void)_didReadRSSI:(id)a3 forPeripheral:(id)a4
+- (void)_didReadRSSI:(id)i forPeripheral:(id)peripheral
 {
-  v6 = a4;
-  v10 = [(ADCoreBluetoothManager *)self _adCoreBluetoothDeviceForPeripheral:v6 RSSI:a3];
+  peripheralCopy = peripheral;
+  v10 = [(ADCoreBluetoothManager *)self _adCoreBluetoothDeviceForPeripheral:peripheralCopy RSSI:i];
   [(NSMutableArray *)self->_peripheralsWithRSSIRead addObject:?];
   peripheralsPendingRSSI = self->_peripheralsPendingRSSI;
-  v8 = [v6 identifier];
-  [(NSMutableDictionary *)peripheralsPendingRSSI removeObjectForKey:v8];
+  identifier = [peripheralCopy identifier];
+  [(NSMutableDictionary *)peripheralsPendingRSSI removeObjectForKey:identifier];
 
-  [(CBCentralManager *)self->_cbManager cancelPeripheralConnection:v6];
+  [(CBCentralManager *)self->_cbManager cancelPeripheralConnection:peripheralCopy];
   group = self->_group;
   if (group)
   {
@@ -177,10 +177,10 @@
   }
 }
 
-- (void)_connectToPeripherals:(id)a3
+- (void)_connectToPeripherals:(id)peripherals
 {
-  v4 = a3;
-  v5 = [v4 count];
+  peripheralsCopy = peripherals;
+  v5 = [peripheralsCopy count];
   if (v5)
   {
     v6 = v5;
@@ -200,7 +200,7 @@
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v13 = v4;
+    v13 = peripheralsCopy;
     v14 = [v13 countByEnumeratingWithState:&v25 objects:v29 count:16];
     if (v14)
     {
@@ -217,8 +217,8 @@
 
           v18 = *(*(&v25 + 1) + 8 * i);
           v19 = self->_peripheralsPendingRSSI;
-          v20 = [v18 identifier];
-          [(NSMutableDictionary *)v19 setObject:v18 forKey:v20];
+          identifier = [v18 identifier];
+          [(NSMutableDictionary *)v19 setObject:v18 forKey:identifier];
 
           [v18 setDelegate:self];
           dispatch_group_enter(self->_group);
@@ -248,51 +248,51 @@
   }
 }
 
-- (id)_adCoreBluetoothDeviceForPeripheral:(id)a3 RSSI:(id)a4
+- (id)_adCoreBluetoothDeviceForPeripheral:(id)peripheral RSSI:(id)i
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = -[ADCoreBluetoothManager _getPeripheralStateDescriptionFromState:](self, "_getPeripheralStateDescriptionFromState:", [v7 state]);
+  iCopy = i;
+  peripheralCopy = peripheral;
+  v8 = -[ADCoreBluetoothManager _getPeripheralStateDescriptionFromState:](self, "_getPeripheralStateDescriptionFromState:", [peripheralCopy state]);
   v9 = [ADCoreBluetoothDevice alloc];
-  v10 = [v7 identifier];
-  v11 = [v7 name];
+  identifier = [peripheralCopy identifier];
+  name = [peripheralCopy name];
 
-  v12 = [(ADCoreBluetoothDevice *)v9 initWithIdentifier:v10 name:v11 RSSI:v6 state:v8];
+  v12 = [(ADCoreBluetoothDevice *)v9 initWithIdentifier:identifier name:name RSSI:iCopy state:v8];
   counter = self->_counter;
   self->_counter = counter + 1;
-  v14 = [NSString stringWithFormat:@"%tu", counter];
-  [(ADCoreBluetoothDevice *)v12 setIndex:v14];
+  counter = [NSString stringWithFormat:@"%tu", counter];
+  [(ADCoreBluetoothDevice *)v12 setIndex:counter];
 
   return v12;
 }
 
-- (id)_getPeripheralStateDescriptionFromState:(int64_t)a3
+- (id)_getPeripheralStateDescriptionFromState:(int64_t)state
 {
-  if (a3 > 3)
+  if (state > 3)
   {
     return @"unknown";
   }
 
   else
   {
-    return off_100519BF8[a3];
+    return off_100519BF8[state];
   }
 }
 
-- (void)_retrieveConnectedDevicesInfoOnServices:(id)a3 completion:(id)a4
+- (void)_retrieveConnectedDevicesInfoOnServices:(id)services completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  servicesCopy = services;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1002BB20C;
   block[3] = &unk_10051E088;
-  v12 = v6;
-  v13 = v7;
+  v12 = servicesCopy;
+  v13 = completionCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = servicesCopy;
+  v10 = completionCopy;
   dispatch_async(queue, block);
 }
 
@@ -325,46 +325,46 @@
   return v2;
 }
 
-+ (void)fetchCBUUIDForConnectedDeviceWithAddress:(id)a3 completion:(id)a4
++ (void)fetchCBUUIDForConnectedDeviceWithAddress:(id)address completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  addressCopy = address;
+  completionCopy = completion;
   v7 = objc_alloc_init(CBController);
   v8 = objc_alloc_init(CBDevice);
-  [v8 setIdentifier:v5];
+  [v8 setIdentifier:addressCopy];
   v9 = objc_alloc_init(CBDeviceRequest);
   [v9 setRequestFlags:64];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_1002BBA10;
   v12[3] = &unk_100519BB0;
-  v13 = v5;
-  v14 = v6;
-  v10 = v6;
-  v11 = v5;
+  v13 = addressCopy;
+  v14 = completionCopy;
+  v10 = completionCopy;
+  v11 = addressCopy;
   [v7 performDeviceRequest:v9 device:v8 completion:v12];
 }
 
-+ (void)retrieveConnectedDevicesInfoOnDoAPServiceWithCompletion:(id)a3
++ (void)retrieveConnectedDevicesInfoOnDoAPServiceWithCompletion:(id)completion
 {
-  if (a3)
+  if (completion)
   {
-    v3 = a3;
-    v4 = [[ADCoreBluetoothManager alloc] _init];
+    completionCopy = completion;
+    _init = [[ADCoreBluetoothManager alloc] _init];
     v5 = [CBUUID UUIDWithString:CBUUIDDoAPServiceString];
     v7 = v5;
     v6 = [NSArray arrayWithObjects:&v7 count:1];
-    [v4 _retrieveConnectedDevicesInfoOnServices:v6 completion:v3];
+    [_init _retrieveConnectedDevicesInfoOnServices:v6 completion:completionCopy];
   }
 }
 
-+ (void)retrieveConnectedDevicesInfoWithCompletion:(id)a3
++ (void)retrieveConnectedDevicesInfoWithCompletion:(id)completion
 {
-  if (a3)
+  if (completion)
   {
-    v3 = a3;
-    v4 = [[ADCoreBluetoothManager alloc] _init];
-    [v4 _retrieveConnectedDevicesInfoOnServices:&__NSArray0__struct completion:v3];
+    completionCopy = completion;
+    _init = [[ADCoreBluetoothManager alloc] _init];
+    [_init _retrieveConnectedDevicesInfoOnServices:&__NSArray0__struct completion:completionCopy];
   }
 }
 

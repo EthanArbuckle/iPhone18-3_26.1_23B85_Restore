@@ -1,7 +1,7 @@
 @interface RBPLEventQueue
 - (RBPLEventQueue)init;
 - (id)dequeueEvent;
-- (void)enqueueEvent:(id)a3;
+- (void)enqueueEvent:(id)event;
 - (void)scheduleWork;
 @end
 
@@ -23,13 +23,13 @@
     os_unfair_lock_lock(&self->_lock);
     if ([(NSMutableArray *)self->_eventQueue count])
     {
-      v3 = [(NSMutableArray *)self->_eventQueue firstObject];
+      firstObject = [(NSMutableArray *)self->_eventQueue firstObject];
       [(NSMutableArray *)self->_eventQueue removeObjectAtIndex:0];
     }
 
     else
     {
-      v3 = 0;
+      firstObject = 0;
     }
 
     os_unfair_lock_unlock(&self->_lock);
@@ -37,10 +37,10 @@
 
   else
   {
-    v3 = 0;
+    firstObject = 0;
   }
 
-  return v3;
+  return firstObject;
 }
 
 void __30__RBPLEventQueue_scheduleWork__block_invoke(uint64_t a1)
@@ -144,13 +144,13 @@ LABEL_10:
   return v2;
 }
 
-- (void)enqueueEvent:(id)a3
+- (void)enqueueEvent:(id)event
 {
   if (MEMORY[0x2822275F0])
   {
-    v4 = a3;
+    eventCopy = event;
     os_unfair_lock_lock(&self->_lock);
-    [(NSMutableArray *)self->_eventQueue addObject:v4];
+    [(NSMutableArray *)self->_eventQueue addObject:eventCopy];
 
     if (!self->_scheduled)
     {

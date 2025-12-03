@@ -1,9 +1,9 @@
 @interface SBSceneLayoutFrameCoordinateSpace
 - (CGRect)bounds;
-- (CGRect)convertRect:(CGRect)a3 fromCoordinateSpace:(id)a4;
-- (CGRect)convertRect:(CGRect)a3 toCoordinateSpace:(id)a4;
-- (SBSceneLayoutFrameCoordinateSpace)initWithFrame:(CGRect)a3 withinCoordinateSpace:(id)a4;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
+- (CGRect)convertRect:(CGRect)rect fromCoordinateSpace:(id)space;
+- (CGRect)convertRect:(CGRect)rect toCoordinateSpace:(id)space;
+- (SBSceneLayoutFrameCoordinateSpace)initWithFrame:(CGRect)frame withinCoordinateSpace:(id)space;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
 @end
 
 @implementation SBSceneLayoutFrameCoordinateSpace
@@ -18,29 +18,29 @@
   return result;
 }
 
-- (SBSceneLayoutFrameCoordinateSpace)initWithFrame:(CGRect)a3 withinCoordinateSpace:(id)a4
+- (SBSceneLayoutFrameCoordinateSpace)initWithFrame:(CGRect)frame withinCoordinateSpace:(id)space
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  spaceCopy = space;
   v17.receiver = self;
   v17.super_class = SBSceneLayoutFrameCoordinateSpace;
-  v10 = [(SBSceneLayoutCoordinateSpace *)&v17 initWithParentCoordinateSpace:v9];
+  v10 = [(SBSceneLayoutCoordinateSpace *)&v17 initWithParentCoordinateSpace:spaceCopy];
   if (v10)
   {
-    v11 = [MEMORY[0x277CD9ED0] layer];
+    layer = [MEMORY[0x277CD9ED0] layer];
     contentLayer = v10->_contentLayer;
-    v10->_contentLayer = v11;
+    v10->_contentLayer = layer;
 
-    v13 = [MEMORY[0x277CD9ED0] layer];
+    layer2 = [MEMORY[0x277CD9ED0] layer];
     containerLayer = v10->_containerLayer;
-    v10->_containerLayer = v13;
+    v10->_containerLayer = layer2;
 
     [(CALayer *)v10->_contentLayer setFrame:x, y, width, height];
     v15 = v10->_containerLayer;
-    [v9 bounds];
+    [spaceCopy bounds];
     [(CALayer *)v15 setFrame:?];
     [(CALayer *)v10->_containerLayer addSublayer:v10->_contentLayer];
   }
@@ -48,21 +48,21 @@
   return v10;
 }
 
-- (CGRect)convertRect:(CGRect)a3 toCoordinateSpace:(id)a4
+- (CGRect)convertRect:(CGRect)rect toCoordinateSpace:(id)space
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  spaceCopy = space;
   [(CALayer *)self->_containerLayer convertRect:self->_contentLayer fromLayer:x, y, width, height];
   v14 = v10;
   v15 = v11;
   v16 = v12;
   v17 = v13;
-  if (v9)
+  if (spaceCopy)
   {
-    [v9 convertRect:self->super._parentCoordinateSpace fromCoordinateSpace:{v10, v11, v12, v13}];
+    [spaceCopy convertRect:self->super._parentCoordinateSpace fromCoordinateSpace:{v10, v11, v12, v13}];
     v14 = v18;
     v15 = v19;
     v16 = v20;
@@ -80,17 +80,17 @@
   return result;
 }
 
-- (CGRect)convertRect:(CGRect)a3 fromCoordinateSpace:(id)a4
+- (CGRect)convertRect:(CGRect)rect fromCoordinateSpace:(id)space
 {
-  if (a4)
+  if (space)
   {
-    [a4 convertRect:self->super._parentCoordinateSpace toCoordinateSpace:{a3.origin.x, a3.origin.y, a3.size.width, a3.size.height}];
+    [space convertRect:self->super._parentCoordinateSpace toCoordinateSpace:{rect.origin.x, rect.origin.y, rect.size.width, rect.size.height}];
   }
 
   containerLayer = self->_containerLayer;
   contentLayer = self->_contentLayer;
 
-  [(CALayer *)containerLayer convertRect:contentLayer toLayer:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(CALayer *)containerLayer convertRect:contentLayer toLayer:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   result.size.height = v10;
   result.size.width = v9;
   result.origin.y = v8;
@@ -98,20 +98,20 @@
   return result;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v12.receiver = self;
   v12.super_class = SBSceneLayoutFrameCoordinateSpace;
-  v4 = a3;
-  v5 = [(SBSceneLayoutCoordinateSpace *)&v12 descriptionBuilderWithMultilinePrefix:v4];
+  prefixCopy = prefix;
+  v5 = [(SBSceneLayoutCoordinateSpace *)&v12 descriptionBuilderWithMultilinePrefix:prefixCopy];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __75__SBSceneLayoutFrameCoordinateSpace_descriptionBuilderWithMultilinePrefix___block_invoke;
   v9[3] = &unk_2783A92D8;
   v6 = v5;
   v10 = v6;
-  v11 = self;
-  [v6 appendBodySectionWithName:0 multilinePrefix:v4 block:v9];
+  selfCopy = self;
+  [v6 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v9];
 
   v7 = v6;
   return v6;

@@ -1,72 +1,72 @@
 @interface StoreKitServiceConnection
 + (id)allConnections;
-+ (id)connectionForClient:(id)a3;
-+ (id)octaneConnectionForBundleID:(id)a3;
-+ (int64_t)_apiVersionForClientDict:(id)a3;
++ (id)connectionForClient:(id)client;
++ (id)octaneConnectionForBundleID:(id)d;
++ (int64_t)_apiVersionForClientDict:(id)dict;
 + (void)initialize;
-- (StoreKitServiceConnection)initWithConnection:(id)a3 remoteObject:(id)a4 pid:(int)a5;
-- (id)_bundleURLForConnection:(id)a3;
-- (id)_offerCodeRedemptionURLForClient:(id)a3;
-- (id)_processDownloadsForTransactions:(id)a3;
-- (void)_handleTokenFamily:(id)a3 bundleID:(id)a4 reply:(id)a5;
-- (void)_processPayment:(id)a3 excludeReceipt:(BOOL)a4 privacyAcknowledgementRequired:(BOOL)a5 forClient:(id)a6 apiVersion:(int64_t)a7 paymentDelegate:(id)a8 dialogDelegate:(id)a9 isProcessingInterruptedBuy:(BOOL)a10 reply:(id)a11;
-- (void)addDownloadWithID:(id)a3;
-- (void)appTransactionForClient:(id)a3 ignoreCache:(BOOL)a4 reply:(id)a5;
-- (void)arcadeSubscriptionStatusWithNonce:(unint64_t)a3 resultHandler:(id)a4;
-- (void)authenticateAndSyncTransactionsAndStatusWithReply:(id)a3;
-- (void)canMakePaymentsWithReply:(id)a3;
-- (void)cancelDownloadWithID:(id)a3;
+- (StoreKitServiceConnection)initWithConnection:(id)connection remoteObject:(id)object pid:(int)pid;
+- (id)_bundleURLForConnection:(id)connection;
+- (id)_offerCodeRedemptionURLForClient:(id)client;
+- (id)_processDownloadsForTransactions:(id)transactions;
+- (void)_handleTokenFamily:(id)family bundleID:(id)d reply:(id)reply;
+- (void)_processPayment:(id)payment excludeReceipt:(BOOL)receipt privacyAcknowledgementRequired:(BOOL)required forClient:(id)client apiVersion:(int64_t)version paymentDelegate:(id)delegate dialogDelegate:(id)dialogDelegate isProcessingInterruptedBuy:(BOOL)self0 reply:(id)self1;
+- (void)addDownloadWithID:(id)d;
+- (void)appTransactionForClient:(id)client ignoreCache:(BOOL)cache reply:(id)reply;
+- (void)arcadeSubscriptionStatusWithNonce:(unint64_t)nonce resultHandler:(id)handler;
+- (void)authenticateAndSyncTransactionsAndStatusWithReply:(id)reply;
+- (void)canMakePaymentsWithReply:(id)reply;
+- (void)cancelDownloadWithID:(id)d;
 - (void)checkForMessages;
-- (void)checkServerQueueForClientIfNecessary:(id)a3 forceCheck:(BOOL)a4 reply:(id)a5;
-- (void)checkServerQueueForQueue:(id)a3 withClient:(id)a4;
+- (void)checkServerQueueForClientIfNecessary:(id)necessary forceCheck:(BOOL)check reply:(id)reply;
+- (void)checkServerQueueForQueue:(id)queue withClient:(id)client;
 - (void)dealloc;
-- (void)deleteContentForProductID:(id)a3;
-- (void)displayMessageWithType:(id)a3;
-- (void)downloadManager:(id)a3 updatedStatus:(id)a4;
-- (void)endAdImpressionWithConfig:(id)a3 completionHandler:(id)a4;
-- (void)engagementRequestForOfferCodeRedemptionSheetWithReply:(id)a3;
-- (void)enumerateCurrentReceiptsForClient:(id)a3 productID:(id)a4 withReceiver:(id)a5 skipTransactionSync:(BOOL)a6 reply:(id)a7;
-- (void)enumerateReceiptsForClient:(id)a3 productID:(id)a4 withReceiver:(id)a5 skipTransactionSync:(BOOL)a6 reply:(id)a7;
-- (void)enumerateSubscriptionStatusesForClient:(id)a3 withReceiver:(id)a4 skipStatusSync:(BOOL)a5 reply:(id)a6;
-- (void)enumerateUnfinishedTransactionsForClient:(id)a3 withReceiver:(id)a4 skipTransactionSync:(BOOL)a5 reply:(id)a6;
-- (void)executeAppTransactionQuery:(id)a3 withReceiver:(id)a4 ignoreCache:(BOOL)a5 reply:(id)a6;
-- (void)finishPaymentWithIdentifier:(id)a3 reply:(id)a4;
-- (void)handleInvalidReceipt:(id)a3;
-- (void)insertMessageForBundleID:(id)a3 status:(int64_t)a4 type:(int64_t)a5 allowDeveloperControl:(BOOL)a6 environment:(int64_t)a7 reply:(id)a8;
-- (void)invalidateTransactionsAndStatusCacheWithReply:(id)a3;
-- (void)isEligibleForIntroductoryOfferForGroupID:(id)a3 reply:(id)a4;
-- (void)isXcodeTestAppWithReply:(id)a3;
-- (void)loadUnfinishedTransactionsWithLogKey:(id)a3 completion:(id)a4;
-- (void)lookUpItemIDsForDeletableSystemAppsWithBundleIDs:(id)a3 reply:(id)a4;
-- (void)notifyOfRevokedProductIdentifiers:(id)a3 reply:(id)a4;
-- (void)pauseDownloadWithID:(id)a3;
-- (void)performPurchase:(id)a3 authDelegate:(id)a4 reply:(id)a5;
+- (void)deleteContentForProductID:(id)d;
+- (void)displayMessageWithType:(id)type;
+- (void)downloadManager:(id)manager updatedStatus:(id)status;
+- (void)endAdImpressionWithConfig:(id)config completionHandler:(id)handler;
+- (void)engagementRequestForOfferCodeRedemptionSheetWithReply:(id)reply;
+- (void)enumerateCurrentReceiptsForClient:(id)client productID:(id)d withReceiver:(id)receiver skipTransactionSync:(BOOL)sync reply:(id)reply;
+- (void)enumerateReceiptsForClient:(id)client productID:(id)d withReceiver:(id)receiver skipTransactionSync:(BOOL)sync reply:(id)reply;
+- (void)enumerateSubscriptionStatusesForClient:(id)client withReceiver:(id)receiver skipStatusSync:(BOOL)sync reply:(id)reply;
+- (void)enumerateUnfinishedTransactionsForClient:(id)client withReceiver:(id)receiver skipTransactionSync:(BOOL)sync reply:(id)reply;
+- (void)executeAppTransactionQuery:(id)query withReceiver:(id)receiver ignoreCache:(BOOL)cache reply:(id)reply;
+- (void)finishPaymentWithIdentifier:(id)identifier reply:(id)reply;
+- (void)handleInvalidReceipt:(id)receipt;
+- (void)insertMessageForBundleID:(id)d status:(int64_t)status type:(int64_t)type allowDeveloperControl:(BOOL)control environment:(int64_t)environment reply:(id)reply;
+- (void)invalidateTransactionsAndStatusCacheWithReply:(id)reply;
+- (void)isEligibleForIntroductoryOfferForGroupID:(id)d reply:(id)reply;
+- (void)isXcodeTestAppWithReply:(id)reply;
+- (void)loadUnfinishedTransactionsWithLogKey:(id)key completion:(id)completion;
+- (void)lookUpItemIDsForDeletableSystemAppsWithBundleIDs:(id)ds reply:(id)reply;
+- (void)notifyOfRevokedProductIdentifiers:(id)identifiers reply:(id)reply;
+- (void)pauseDownloadWithID:(id)d;
+- (void)performPurchase:(id)purchase authDelegate:(id)delegate reply:(id)reply;
 - (void)presentCodeRedemptionSheet;
-- (void)presentRefundRequestSheetForTransactionID:(id)a3 sceneID:(id)a4 reply:(id)a5;
-- (void)processPayment:(id)a3 forClient:(id)a4 paymentDelegate:(id)a5 reply:(id)a6;
-- (void)processPaymentWithBuyParamsString:(id)a3 reply:(id)a4;
-- (void)promotionInfoForProductIdentifiers:(id)a3 client:(id)a4 reply:(id)a5;
-- (void)receivedTransactions:(id)a3;
-- (void)refundRequestForTransactionId:(id)a3 replyBlock:(id)a4;
-- (void)registerArcadeAppWithRandomFromLib:(id)a3 randomFromLibLength:(unsigned int)a4 resultHandler:(id)a5;
+- (void)presentRefundRequestSheetForTransactionID:(id)d sceneID:(id)iD reply:(id)reply;
+- (void)processPayment:(id)payment forClient:(id)client paymentDelegate:(id)delegate reply:(id)reply;
+- (void)processPaymentWithBuyParamsString:(id)string reply:(id)reply;
+- (void)promotionInfoForProductIdentifiers:(id)identifiers client:(id)client reply:(id)reply;
+- (void)receivedTransactions:(id)transactions;
+- (void)refundRequestForTransactionId:(id)id replyBlock:(id)block;
+- (void)registerArcadeAppWithRandomFromLib:(id)lib randomFromLibLength:(unsigned int)length resultHandler:(id)handler;
 - (void)registerForInstallAttribution;
-- (void)renewReceiptWithOptions:(id)a3 client:(id)a4 replyBlock:(id)a5;
+- (void)renewReceiptWithOptions:(id)options client:(id)client replyBlock:(id)block;
 - (void)repairArcadeApp;
-- (void)requestProductReviewWithInterfaceOrientation:(unint64_t)a3 bundleIdentifier:(id)a4 sceneID:(id)a5 replyBlock:(id)a6;
-- (void)restoreCompletedTransactionsForUsername:(id)a3 client:(id)a4 reply:(id)a5;
-- (void)resumeDownloadWithID:(id)a3;
-- (void)setPromotionInfo:(id)a3 forClient:(id)a4 reply:(id)a5;
-- (void)startAdImpressionWithConfig:(id)a3 completionHandler:(id)a4;
-- (void)statusForClient:(id)a3 subscriptionGroupID:(id)a4 skipStatusSync:(BOOL)a5 reply:(id)a6;
-- (void)statusForClient:(id)a3 transactionID:(id)a4 skipStatusSync:(BOOL)a5 reply:(id)a6;
-- (void)transactionForID:(id)a3 client:(id)a4 skipTransactionSync:(BOOL)a5 reply:(id)a6;
-- (void)updateConversionValue:(id)a3;
-- (void)updateConversionValue:(id)a3 coarseValue:(id)a4 lockWindow:(BOOL)a5 completionHandler:(id)a6;
-- (void)updateConversionValue:(id)a3 completionHandler:(id)a4;
-- (void)updateTransactions:(id)a3 forClient:(id)a4;
-- (void)xcodeTestCertificatesShouldSimulateRevocationWithReply:(id)a3;
-- (void)xcodeTestCertificatesWithReply:(id)a3;
-- (void)xcodeTestServerPortWithReplyBlock:(id)a3;
+- (void)requestProductReviewWithInterfaceOrientation:(unint64_t)orientation bundleIdentifier:(id)identifier sceneID:(id)d replyBlock:(id)block;
+- (void)restoreCompletedTransactionsForUsername:(id)username client:(id)client reply:(id)reply;
+- (void)resumeDownloadWithID:(id)d;
+- (void)setPromotionInfo:(id)info forClient:(id)client reply:(id)reply;
+- (void)startAdImpressionWithConfig:(id)config completionHandler:(id)handler;
+- (void)statusForClient:(id)client subscriptionGroupID:(id)d skipStatusSync:(BOOL)sync reply:(id)reply;
+- (void)statusForClient:(id)client transactionID:(id)d skipStatusSync:(BOOL)sync reply:(id)reply;
+- (void)transactionForID:(id)d client:(id)client skipTransactionSync:(BOOL)sync reply:(id)reply;
+- (void)updateConversionValue:(id)value;
+- (void)updateConversionValue:(id)value coarseValue:(id)coarseValue lockWindow:(BOOL)window completionHandler:(id)handler;
+- (void)updateConversionValue:(id)value completionHandler:(id)handler;
+- (void)updateTransactions:(id)transactions forClient:(id)client;
+- (void)xcodeTestCertificatesShouldSimulateRevocationWithReply:(id)reply;
+- (void)xcodeTestCertificatesWithReply:(id)reply;
+- (void)xcodeTestServerPortWithReplyBlock:(id)block;
 @end
 
 @implementation StoreKitServiceConnection
@@ -85,16 +85,16 @@
 + (id)allConnections
 {
   [qword_1003D4150 lock];
-  v2 = [qword_1003D4158 allObjects];
+  allObjects = [qword_1003D4158 allObjects];
   [qword_1003D4150 unlock];
 
-  return v2;
+  return allObjects;
 }
 
-+ (id)connectionForClient:(id)a3
++ (id)connectionForClient:(id)client
 {
-  v3 = a3;
-  if ([v3 storeItemID] && objc_msgSend(v3, "storeExternalVersionID"))
+  clientCopy = client;
+  if ([clientCopy storeItemID] && objc_msgSend(clientCopy, "storeExternalVersionID"))
   {
     v32 = 0u;
     v33 = 0u;
@@ -116,15 +116,15 @@
           }
 
           v9 = *(*(&v30 + 1) + 8 * i);
-          v10 = [v9 client];
-          v11 = [v10 storeItemID];
-          if (v11 == [v3 storeItemID])
+          client = [v9 client];
+          storeItemID = [client storeItemID];
+          if (storeItemID == [clientCopy storeItemID])
           {
-            v12 = [v9 client];
-            v13 = [v12 storeExternalVersionID];
-            v14 = [v3 storeExternalVersionID];
+            client2 = [v9 client];
+            storeExternalVersionID = [client2 storeExternalVersionID];
+            storeExternalVersionID2 = [clientCopy storeExternalVersionID];
 
-            if (v13 == v14)
+            if (storeExternalVersionID == storeExternalVersionID2)
             {
               goto LABEL_25;
             }
@@ -144,8 +144,8 @@
 
   else
   {
-    v15 = [v3 callerBundleID];
-    v16 = [v15 length];
+    callerBundleID = [clientCopy callerBundleID];
+    v16 = [callerBundleID length];
 
     if (!v16)
     {
@@ -172,10 +172,10 @@
           }
 
           v9 = *(*(&v26 + 1) + 8 * j);
-          v21 = [v9 client];
-          v22 = [v21 callerBundleID];
-          v23 = [v3 callerBundleID];
-          v24 = [v22 isEqualToString:v23];
+          client3 = [v9 client];
+          callerBundleID2 = [client3 callerBundleID];
+          callerBundleID3 = [clientCopy callerBundleID];
+          v24 = [callerBundleID2 isEqualToString:callerBundleID3];
 
           if (v24)
           {
@@ -204,9 +204,9 @@ LABEL_27:
   return v16;
 }
 
-+ (id)octaneConnectionForBundleID:(id)a3
++ (id)octaneConnectionForBundleID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   [qword_1003D4150 lock];
   v16 = 0u;
   v17 = 0u;
@@ -227,14 +227,14 @@ LABEL_27:
         }
 
         v8 = *(*(&v14 + 1) + 8 * i);
-        v9 = [v8 client];
-        v10 = [v9 requestBundleID];
-        if ([v10 isEqualToString:v3])
+        client = [v8 client];
+        requestBundleID = [client requestBundleID];
+        if ([requestBundleID isEqualToString:dCopy])
         {
-          v11 = [v8 client];
-          v12 = [v11 objc_clientType];
+          client2 = [v8 client];
+          objc_clientType = [client2 objc_clientType];
 
-          if (v12 == 3)
+          if (objc_clientType == 3)
           {
             v5 = v8;
             goto LABEL_12;
@@ -259,10 +259,10 @@ LABEL_12:
   return v5;
 }
 
-- (StoreKitServiceConnection)initWithConnection:(id)a3 remoteObject:(id)a4 pid:(int)a5
+- (StoreKitServiceConnection)initWithConnection:(id)connection remoteObject:(id)object pid:(int)pid
 {
-  v9 = a3;
-  v10 = a4;
+  connectionCopy = connection;
+  objectCopy = object;
   v44.receiver = self;
   v44.super_class = StoreKitServiceConnection;
   v11 = [(StoreKitServiceConnection *)&v44 init];
@@ -272,11 +272,11 @@ LABEL_12:
     downloadIDs = v11->_downloadIDs;
     v11->_downloadIDs = v12;
 
-    v11->_pid = a5;
-    objc_storeStrong(&v11->_remoteObject, a4);
-    objc_storeStrong(&v11->_xpcConnection, a3);
-    v14 = [v9 sk_processName];
-    v15 = [[_TtC9storekitd6Client alloc] initWithConnection:v9 overridesDictionary:0];
+    v11->_pid = pid;
+    objc_storeStrong(&v11->_remoteObject, object);
+    objc_storeStrong(&v11->_xpcConnection, connection);
+    sk_processName = [connectionCopy sk_processName];
+    v15 = [[_TtC9storekitd6Client alloc] initWithConnection:connectionCopy overridesDictionary:0];
     v16 = &off_1003CB000;
     if (v15)
     {
@@ -291,14 +291,14 @@ LABEL_12:
         v18 = v17;
         v19 = objc_opt_class();
         v20 = v19;
-        v21 = [(Client *)v15 callerBundleID];
-        v22 = [(Client *)v15 objc_clientType];
+        callerBundleID = [(Client *)v15 callerBundleID];
+        objc_clientType = [(Client *)v15 objc_clientType];
         *buf = 138543874;
         v46 = v19;
         v47 = 2114;
-        v48 = v21;
+        pidCopy = callerBundleID;
         v49 = 2048;
-        v50 = v22;
+        v50 = objc_clientType;
         _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_INFO, "%{public}@: %{public}@ client type: %ld", buf, 0x20u);
 
         v16 = &off_1003CB000;
@@ -319,9 +319,9 @@ LABEL_12:
       if (os_log_type_enabled(qword_1003CB4F8, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543618;
-        v46 = v14;
+        v46 = sk_processName;
         v47 = 2048;
-        v48 = a5;
+        pidCopy = pid;
         _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "No StoreKitClient available for %{public}@[%ld]", buf, 0x16u);
       }
     }
@@ -367,9 +367,9 @@ LABEL_12:
     if (os_log_type_enabled(v39, OS_LOG_TYPE_INFO))
     {
       v40 = v39;
-      v41 = [v9 sk_allowClientOverride];
+      sk_allowClientOverride = [connectionCopy sk_allowClientOverride];
       v42 = @"NO";
-      if (v41)
+      if (sk_allowClientOverride)
       {
         v42 = @"YES";
       }
@@ -377,7 +377,7 @@ LABEL_12:
       *buf = 138543618;
       v46 = v11;
       v47 = 2114;
-      v48 = v42;
+      pidCopy = v42;
       _os_log_impl(&_mh_execute_header, v40, OS_LOG_TYPE_INFO, "%{public}@: Allows client override: %{public}@", buf, 0x16u);
     }
   }
@@ -409,15 +409,15 @@ LABEL_12:
   [(StoreKitServiceConnection *)&v3 dealloc];
 }
 
-- (void)loadUnfinishedTransactionsWithLogKey:(id)a3 completion:(id)a4
+- (void)loadUnfinishedTransactionsWithLogKey:(id)key completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  completionCopy = completion;
   v8 = [LoadUnfinishedInAppTransactionsTask alloc];
-  v9 = [(StoreKitServiceConnection *)self client];
-  v10 = [(LoadUnfinishedInAppTransactionsTask *)v8 initWithClient:v9];
+  client = [(StoreKitServiceConnection *)self client];
+  v10 = [(LoadUnfinishedInAppTransactionsTask *)v8 initWithClient:client];
 
-  [(LoadUnfinishedInAppTransactionsTask *)v10 setLogKey:v6];
+  [(LoadUnfinishedInAppTransactionsTask *)v10 setLogKey:keyCopy];
   [(LoadUnfinishedInAppTransactionsTask *)v10 setForceServerCheck:1];
   objc_initWeak(&location, v10);
   v13 = _NSConcreteStackBlock;
@@ -425,9 +425,9 @@ LABEL_12:
   v15 = sub_10003C0F4;
   v16 = &unk_100381910;
   objc_copyWeak(&v19, &location);
-  v11 = v6;
+  v11 = keyCopy;
   v17 = v11;
-  v12 = v7;
+  v12 = completionCopy;
   v18 = v12;
   [(LoadUnfinishedInAppTransactionsTask *)v10 setCompletionBlock:&v13];
   [(NSOperationQueue *)self->_paymentQueue addOperation:v10, v13, v14, v15, v16];
@@ -436,23 +436,23 @@ LABEL_12:
   objc_destroyWeak(&location);
 }
 
-- (void)checkServerQueueForQueue:(id)a3 withClient:(id)a4
+- (void)checkServerQueueForQueue:(id)queue withClient:(id)client
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10003C270;
   v7[3] = &unk_100381938;
-  v8 = a3;
-  v9 = self;
-  v6 = v8;
-  [(StoreKitServiceConnection *)self checkServerQueueForClientIfNecessary:a4 forceCheck:1 reply:v7];
+  queueCopy = queue;
+  selfCopy = self;
+  v6 = queueCopy;
+  [(StoreKitServiceConnection *)self checkServerQueueForClientIfNecessary:client forceCheck:1 reply:v7];
 }
 
-- (void)checkServerQueueForClientIfNecessary:(id)a3 forceCheck:(BOOL)a4 reply:(id)a5
+- (void)checkServerQueueForClientIfNecessary:(id)necessary forceCheck:(BOOL)check reply:(id)reply
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  checkCopy = check;
+  necessaryCopy = necessary;
+  replyCopy = reply;
   if (qword_1003D4160 != -1)
   {
     sub_1002CB534();
@@ -462,22 +462,22 @@ LABEL_12:
   if (os_log_type_enabled(qword_1003CB4F8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v29 = self;
+    selfCopy = self;
     v30 = 2082;
     v31 = "[StoreKitServiceConnection checkServerQueueForClientIfNecessary:forceCheck:reply:]";
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "[%{public}@]: %{public}s", buf, 0x16u);
   }
 
   v11 = +[NSXPCConnection currentConnection];
-  v12 = [(StoreKitServiceConnection *)self client];
-  if ([v12 objc_clientType] == 3)
+  client = [(StoreKitServiceConnection *)self client];
+  if ([client objc_clientType] == 3)
   {
-    v13 = [v11 sk_connectionIsOctaneService];
+    sk_connectionIsOctaneService = [v11 sk_connectionIsOctaneService];
 
-    if (v13)
+    if (sk_connectionIsOctaneService)
     {
 LABEL_18:
-      v16 = [(StoreKitServiceConnection *)self client];
+      client2 = [(StoreKitServiceConnection *)self client];
       goto LABEL_19;
     }
   }
@@ -488,7 +488,7 @@ LABEL_18:
 
   if ([v11 sk_allowClientOverride])
   {
-    v14 = v8;
+    v14 = necessaryCopy;
   }
 
   else
@@ -497,16 +497,16 @@ LABEL_18:
   }
 
   v15 = v14;
-  v16 = [[_TtC9storekitd6Client alloc] initWithConnection:v11 overridesDictionary:v15];
+  client2 = [[_TtC9storekitd6Client alloc] initWithConnection:v11 overridesDictionary:v15];
 
-  if (!v16)
+  if (!client2)
   {
-    v17 = [(StoreKitServiceConnection *)self client];
-    v18 = [v17 objc_clientType] == 3;
+    client3 = [(StoreKitServiceConnection *)self client];
+    v18 = [client3 objc_clientType] == 3;
 
     if (!v18)
     {
-      v16 = 0;
+      client2 = 0;
       goto LABEL_28;
     }
 
@@ -524,9 +524,9 @@ LABEL_18:
   }
 
 LABEL_19:
-  if (v16)
+  if (client2)
   {
-    if ([(Client *)v16 isClip])
+    if ([(Client *)client2 isClip])
     {
       if (qword_1003D4160 != -1)
       {
@@ -539,13 +539,13 @@ LABEL_19:
       }
 
       v19 = ASDErrorWithDescription();
-      v9[2](v9, 0, v19);
+      replyCopy[2](replyCopy, 0, v19);
     }
 
     else
     {
-      v19 = [[LoadUnfinishedInAppTransactionsTask alloc] initWithClient:v16];
-      [(LoadUnfinishedInAppTransactionsTask *)v19 setForceServerCheck:v6];
+      v19 = [[LoadUnfinishedInAppTransactionsTask alloc] initWithClient:client2];
+      [(LoadUnfinishedInAppTransactionsTask *)v19 setForceServerCheck:checkCopy];
       objc_initWeak(buf, self);
       objc_initWeak(&location, v19);
       v20 = _NSConcreteStackBlock;
@@ -554,7 +554,7 @@ LABEL_19:
       v23 = &unk_100381960;
       objc_copyWeak(&v25, &location);
       objc_copyWeak(&v26, buf);
-      v24 = v9;
+      v24 = replyCopy;
       [(LoadUnfinishedInAppTransactionsTask *)v19 setCompletionBlock:&v20];
       [(NSOperationQueue *)self->_paymentQueue addOperation:v19, v20, v21, v22, v23];
 
@@ -579,13 +579,13 @@ LABEL_28:
   }
 
   v19 = ASDErrorWithTitleAndMessage();
-  v9[2](v9, 0, v19);
+  replyCopy[2](replyCopy, 0, v19);
 LABEL_33:
 }
 
-- (void)receivedTransactions:(id)a3
+- (void)receivedTransactions:(id)transactions
 {
-  v4 = a3;
+  transactionsCopy = transactions;
   if (qword_1003D4160 != -1)
   {
     sub_1002CB534();
@@ -595,23 +595,23 @@ LABEL_33:
   if (os_log_type_enabled(qword_1003CB4F8, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543618;
-    v8 = self;
+    selfCopy = self;
     v9 = 2082;
     v10 = "[StoreKitServiceConnection receivedTransactions:]";
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@]: %{public}s", &v7, 0x16u);
   }
 
-  if ([v4 count])
+  if ([transactionsCopy count])
   {
-    v6 = [(StoreKitServiceConnection *)self _processDownloadsForTransactions:v4];
+    v6 = [(StoreKitServiceConnection *)self _processDownloadsForTransactions:transactionsCopy];
     [(SKClientProtocol *)self->_remoteObject updatedTransactions:v6];
   }
 }
 
-- (void)updateTransactions:(id)a3 forClient:(id)a4
+- (void)updateTransactions:(id)transactions forClient:(id)client
 {
-  v6 = a3;
-  v7 = a4;
+  transactionsCopy = transactions;
+  clientCopy = client;
   if (qword_1003D4160 != -1)
   {
     sub_1002CB534();
@@ -621,25 +621,25 @@ LABEL_33:
   if (os_log_type_enabled(qword_1003CB4F8, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 138543618;
-    v15 = self;
+    selfCopy = self;
     v16 = 2082;
     v17 = "[StoreKitServiceConnection updateTransactions:forClient:]";
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "[%{public}@]: %{public}s", &v14, 0x16u);
   }
 
   v9 = +[NSXPCConnection currentConnection];
-  v10 = [v9 sk_allowClientOverride];
+  sk_allowClientOverride = [v9 sk_allowClientOverride];
 
-  if (v10)
+  if (sk_allowClientOverride)
   {
-    v11 = [v7 objectForKey:off_1003CAEA0];
+    v11 = [clientCopy objectForKey:off_1003CAEA0];
     if (v11)
     {
       v12 = [[_TtC9storekitd6Client alloc] initWithAuditTokenData:v11];
       v13 = [StoreKitServiceConnection connectionForClient:v12];
-      if (v13 && [v6 count])
+      if (v13 && [transactionsCopy count])
       {
-        [v13 receivedTransactions:v6];
+        [v13 receivedTransactions:transactionsCopy];
       }
     }
 
@@ -671,11 +671,11 @@ LABEL_33:
   }
 }
 
-- (void)insertMessageForBundleID:(id)a3 status:(int64_t)a4 type:(int64_t)a5 allowDeveloperControl:(BOOL)a6 environment:(int64_t)a7 reply:(id)a8
+- (void)insertMessageForBundleID:(id)d status:(int64_t)status type:(int64_t)type allowDeveloperControl:(BOOL)control environment:(int64_t)environment reply:(id)reply
 {
-  v10 = a6;
-  v13 = a3;
-  v14 = a8;
+  controlCopy = control;
+  dCopy = d;
+  replyCopy = reply;
   if (qword_1003D4160 != -1)
   {
     sub_1002CB534();
@@ -685,16 +685,16 @@ LABEL_33:
   if (os_log_type_enabled(qword_1003CB4F8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v30 = self;
+    selfCopy = self;
     v31 = 2082;
     v32 = "[StoreKitServiceConnection insertMessageForBundleID:status:type:allowDeveloperControl:environment:reply:]";
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "[%{public}@]: %{public}s", buf, 0x16u);
   }
 
   v16 = +[NSXPCConnection currentConnection];
-  v17 = [v16 sk_allowClientOverride];
+  sk_allowClientOverride = [v16 sk_allowClientOverride];
 
-  if ((v17 & 1) == 0)
+  if ((sk_allowClientOverride & 1) == 0)
   {
     if (qword_1003D4160 != -1)
     {
@@ -709,15 +709,15 @@ LABEL_33:
     goto LABEL_23;
   }
 
-  if (a7 == 1)
+  if (environment == 1)
   {
     v18 = &AMSAccountMediaTypeProduction;
     goto LABEL_17;
   }
 
-  if (a7 != 3)
+  if (environment != 3)
   {
-    if (a7 != 2)
+    if (environment != 2)
     {
 LABEL_19:
       if (qword_1003D4160 != -1)
@@ -731,19 +731,19 @@ LABEL_19:
       }
 
 LABEL_23:
-      v19 = ASDErrorWithTitleAndMessage();
-      v14[2](v14, v19);
+      ams_DSID = ASDErrorWithTitleAndMessage();
+      replyCopy[2](replyCopy, ams_DSID);
       goto LABEL_24;
     }
 
     v18 = &AMSAccountMediaTypeAppStoreSandbox;
 LABEL_17:
     v20 = [ACAccountStore ams_sharedAccountStoreForMediaType:*v18];
-    v21 = [v20 ams_activeiTunesAccount];
+    ams_activeiTunesAccount = [v20 ams_activeiTunesAccount];
 
-    v19 = [v21 ams_DSID];
+    ams_DSID = [ams_activeiTunesAccount ams_DSID];
 
-    if (v19)
+    if (ams_DSID)
     {
       goto LABEL_18;
     }
@@ -751,24 +751,24 @@ LABEL_17:
     goto LABEL_19;
   }
 
-  v19 = &off_1003A1468;
+  ams_DSID = &off_1003A1468;
 LABEL_18:
   v22 = +[StoreKitMessagesManager sharedManager];
-  v23 = [NSNumber numberWithInteger:a4];
+  v23 = [NSNumber numberWithInteger:status];
   v28 = 0;
-  [v22 addMessageStatus:v23 forBundleID:v13 accountID:v19 allowDeveloperControl:v10 messageType:v27 error:&v28];
+  [v22 addMessageStatus:v23 forBundleID:dCopy accountID:ams_DSID allowDeveloperControl:controlCopy messageType:v27 error:&v28];
   v24 = v28;
 
   v25 = [v24 toASDErrorWithMetadata:0];
 
-  v14[2](v14, v25);
+  replyCopy[2](replyCopy, v25);
 LABEL_24:
 }
 
-- (void)processPaymentWithBuyParamsString:(id)a3 reply:(id)a4
+- (void)processPaymentWithBuyParamsString:(id)string reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  stringCopy = string;
+  replyCopy = reply;
   v8 = +[NSUUID lib_shortLogKey];
   if (qword_1003D4160 != -1)
   {
@@ -779,7 +779,7 @@ LABEL_24:
   if (os_log_type_enabled(qword_1003CB510, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
-    v59 = self;
+    selfCopy = self;
     v60 = 2114;
     v61 = v8;
     v62 = 2082;
@@ -787,40 +787,40 @@ LABEL_24:
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "[%{public}@][%{public}@] %{public}s", buf, 0x20u);
   }
 
-  if ([(StoreKitServiceConnection *)v6 length])
+  if ([(StoreKitServiceConnection *)stringCopy length])
   {
     v10 = +[NSXPCConnection currentConnection];
-    v11 = [v10 sk_allowClientOverride];
+    sk_allowClientOverride = [v10 sk_allowClientOverride];
 
-    if (v11)
+    if (sk_allowClientOverride)
     {
       if (qword_1003D4160 != -1)
       {
         sub_1002CB50C();
       }
 
-      v44 = self;
+      selfCopy2 = self;
       v12 = qword_1003CB510;
       if (os_log_type_enabled(qword_1003CB510, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543618;
-        v59 = v8;
+        selfCopy = v8;
         v60 = 2114;
-        v61 = v6;
+        v61 = stringCopy;
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "[%{public}@] Processing buyParams %{public}@", buf, 0x16u);
       }
 
-      v13 = [AMSBuyParams buyParamsWithString:v6];
-      v14 = [v13 dictionary];
-      v15 = [v14 tcr_numberForKey:@"appAdamId"];
+      v13 = [AMSBuyParams buyParamsWithString:stringCopy];
+      dictionary = [v13 dictionary];
+      v15 = [dictionary tcr_numberForKey:@"appAdamId"];
 
-      v16 = [v13 dictionary];
-      v46 = [v16 tcr_numberForKey:AMSBuyParamPropertyAppExtVrsId];
+      dictionary2 = [v13 dictionary];
+      v46 = [dictionary2 tcr_numberForKey:AMSBuyParamPropertyAppExtVrsId];
 
       v17 = [v13 parameterForKey:@"bid"];
       v18 = [v13 parameterForKey:AMSBuyParamPropertyBundleVersion];
       v19 = [v13 parameterForKey:@"vendorName"];
-      v49 = [v19 stringByRemovingPercentEncoding];
+      stringByRemovingPercentEncoding = [v19 stringByRemovingPercentEncoding];
 
       [v13 setObject:0 forKeyedSubscript:@"vendorName"];
       v56 = @"buyParams";
@@ -878,7 +878,7 @@ LABEL_24:
         }
 
         v25 = v48;
-        if (![v49 length])
+        if (![stringByRemovingPercentEncoding length])
         {
           v45 = 0;
           goto LABEL_62;
@@ -894,7 +894,7 @@ LABEL_24:
         if (os_log_type_enabled(qword_1003CB510, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543874;
-          v59 = v8;
+          selfCopy = v8;
           v60 = 2114;
           v61 = v17;
           v62 = 2114;
@@ -921,7 +921,7 @@ LABEL_24:
         [v27 setObject:v46 forKeyedSubscript:off_1003CAED0];
         [v27 setObject:&off_1003A1480 forKeyedSubscript:off_1003CAEC0];
         v39 = +[LSApplicationWorkspace defaultWorkspace];
-        v29 = [v39 createDeviceIdentifierWithVendorName:v49 bundleIdentifier:v17];
+        v29 = [v39 createDeviceIdentifierWithVendorName:stringByRemovingPercentEncoding bundleIdentifier:v17];
         v45 = v29 != 0;
         if (v29)
         {
@@ -934,11 +934,11 @@ LABEL_24:
           if (os_log_type_enabled(qword_1003CB510, OS_LOG_TYPE_DEFAULT))
           {
             v31 = v30;
-            v32 = [v29 UUIDString];
+            uUIDString = [v29 UUIDString];
             *buf = 138543619;
-            v59 = v8;
+            selfCopy = v8;
             v60 = 2113;
-            v61 = v32;
+            v61 = uUIDString;
             _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEFAULT, "[%{public}@] Generated VID for purchase %{private}@", buf, 0x16u);
           }
 
@@ -965,7 +965,7 @@ LABEL_62:
           }
 
           v36 = ASDErrorWithTitleAndMessage();
-          v7[2](v7, 0, v36);
+          replyCopy[2](replyCopy, 0, v36);
 
           if (!v45)
           {
@@ -981,12 +981,12 @@ LABEL_62:
           if (os_log_type_enabled(qword_1003CB510, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138543362;
-            v59 = v8;
+            selfCopy = v8;
             _os_log_impl(&_mh_execute_header, v37, OS_LOG_TYPE_DEFAULT, "[%{public}@] Releasing VID for failed purchase", buf, 0xCu);
           }
 
           v20 = +[LSApplicationWorkspace defaultWorkspace];
-          [(Client *)v20 removeDeviceIdentifierForVendorName:v49 bundleIdentifier:v17];
+          [(Client *)v20 removeDeviceIdentifierForVendorName:stringByRemovingPercentEncoding bundleIdentifier:v17];
 LABEL_72:
 
           v25 = v48;
@@ -1006,11 +1006,11 @@ LABEL_73:
       if (os_log_type_enabled(qword_1003CB510, OS_LOG_TYPE_DEFAULT))
       {
         v34 = v33;
-        v35 = [v13 stringValue];
+        stringValue = [v13 stringValue];
         *buf = 138543618;
-        v59 = v8;
+        selfCopy = v8;
         v60 = 2114;
-        v61 = v35;
+        v61 = stringValue;
         _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_DEFAULT, "[%{public}@] Processing payment with buyParams %{public}@", buf, 0x16u);
       }
 
@@ -1021,10 +1021,10 @@ LABEL_73:
       v51 = v8;
       v52 = v17;
       v55 = v45;
-      v53 = v49;
-      v54 = v7;
+      v53 = stringByRemovingPercentEncoding;
+      v54 = replyCopy;
       LOBYTE(v38) = 1;
-      [(StoreKitServiceConnection *)v44 _processPayment:v47 excludeReceipt:v43 privacyAcknowledgementRequired:0 forClient:v20 apiVersion:1 paymentDelegate:0 dialogDelegate:0 isProcessingInterruptedBuy:v38 reply:v50];
+      [(StoreKitServiceConnection *)selfCopy2 _processPayment:v47 excludeReceipt:v43 privacyAcknowledgementRequired:0 forClient:v20 apiVersion:1 paymentDelegate:0 dialogDelegate:0 isProcessingInterruptedBuy:v38 reply:v50];
 
       goto LABEL_72;
     }
@@ -1054,16 +1054,16 @@ LABEL_73:
   }
 
   v13 = ASDErrorWithDescription();
-  v7[2](v7, 0, v13);
+  replyCopy[2](replyCopy, 0, v13);
 LABEL_74:
 }
 
-- (void)processPayment:(id)a3 forClient:(id)a4 paymentDelegate:(id)a5 reply:(id)a6
+- (void)processPayment:(id)payment forClient:(id)client paymentDelegate:(id)delegate reply:(id)reply
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  paymentCopy = payment;
+  clientCopy = client;
+  delegateCopy = delegate;
+  replyCopy = reply;
   if (qword_1003D4160 != -1)
   {
     sub_1002CB534();
@@ -1073,7 +1073,7 @@ LABEL_74:
   if (os_log_type_enabled(qword_1003CB4F8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v55 = self;
+    selfCopy = self;
     v56 = 2082;
     v57 = "[StoreKitServiceConnection processPayment:forClient:paymentDelegate:reply:]";
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "[%{public}@]: %{public}s", buf, 0x16u);
@@ -1082,7 +1082,7 @@ LABEL_74:
   v15 = +[NSXPCConnection currentConnection];
   if ([v15 sk_allowClientOverride])
   {
-    v16 = v11;
+    v16 = clientCopy;
   }
 
   else
@@ -1113,10 +1113,10 @@ LABEL_10:
       v43 = v21;
       v48 = v18;
       v49 = v17;
-      v47 = self;
+      selfCopy2 = self;
       if ([v15 sk_allowClientOverride])
       {
-        v22 = [v10 objectForKeyedSubscript:off_1003CB1F8];
+        v22 = [paymentCopy objectForKeyedSubscript:off_1003CB1F8];
         if ([v22 length])
         {
           [v22 UTF8String];
@@ -1144,7 +1144,7 @@ LABEL_10:
 
       else
       {
-        v26 = [v10 mutableCopy];
+        v26 = [paymentCopy mutableCopy];
         [v26 setObject:0 forKeyedSubscript:off_1003CB160];
         [v26 setObject:0 forKeyedSubscript:off_1003CB200];
         [v26 setObject:0 forKeyedSubscript:off_1003CB1F0];
@@ -1154,14 +1154,14 @@ LABEL_10:
         [v26 setObject:0 forKeyedSubscript:off_1003CB218];
         [v26 setObject:0 forKeyedSubscript:off_1003CB210];
         v46 = -1;
-        v22 = v10;
-        v10 = v26;
+        v22 = paymentCopy;
+        paymentCopy = v26;
       }
 
-      v25 = [v10 tcr_dataForKey:off_1003CB1B8];
+      v25 = [paymentCopy tcr_dataForKey:off_1003CB1B8];
       if ([v25 length] && (objc_msgSend(v15, "sk_allowPaymentRequestData") & 1) == 0)
       {
-        if (([v10 tcr_BOOLForKey:off_1003CB158] & 1) == 0)
+        if (([paymentCopy tcr_BOOLForKey:off_1003CB158] & 1) == 0)
         {
           if (qword_1003D4160 != -1)
           {
@@ -1175,36 +1175,36 @@ LABEL_10:
           }
 
           v39 = ASDErrorWithDescription();
-          v13[2](v13, 0, v39);
+          replyCopy[2](replyCopy, 0, v39);
           goto LABEL_42;
         }
 
-        v27 = [v10 mutableCopy];
+        v27 = [paymentCopy mutableCopy];
         [v27 setObject:0 forKeyedSubscript:off_1003CB1B8];
 
-        v10 = v27;
+        paymentCopy = v27;
       }
 
-      v45 = [v10 tcr_dataForKey:off_1003CB1C8];
+      v45 = [paymentCopy tcr_dataForKey:off_1003CB1C8];
       if (v45 && ([v15 sk_allowAdvancedPurchase] & 1) == 0)
       {
-        v28 = [v10 mutableCopy];
+        v28 = [paymentCopy mutableCopy];
         [v28 setObject:0 forKeyedSubscript:off_1003CB1C8];
 
-        v10 = v28;
+        paymentCopy = v28;
       }
 
       if ([(Client *)v20 canMakePayments])
       {
-        v29 = [StoreKitServiceConnection _apiVersionForClientDict:v11];
+        v29 = [StoreKitServiceConnection _apiVersionForClientDict:clientCopy];
         v51[0] = _NSConcreteStackBlock;
         v51[1] = 3221225472;
         v51[2] = sub_10003E2C8;
         v51[3] = &unk_1003819B0;
         v53 = v46;
-        v52 = v13;
+        v52 = replyCopy;
         LOBYTE(v40) = 0;
-        [(StoreKitServiceConnection *)v47 _processPayment:v10 excludeReceipt:v43 privacyAcknowledgementRequired:1 forClient:v20 apiVersion:v29 paymentDelegate:v12 dialogDelegate:0 isProcessingInterruptedBuy:v40 reply:v51];
+        [(StoreKitServiceConnection *)selfCopy2 _processPayment:paymentCopy excludeReceipt:v43 privacyAcknowledgementRequired:1 forClient:v20 apiVersion:v29 paymentDelegate:delegateCopy dialogDelegate:0 isProcessingInterruptedBuy:v40 reply:v51];
         v30 = v52;
       }
 
@@ -1215,9 +1215,9 @@ LABEL_10:
           sub_1002CB50C();
         }
 
-        v41 = v13;
-        v42 = v12;
-        v44 = v11;
+        v41 = replyCopy;
+        v42 = delegateCopy;
+        v44 = clientCopy;
         if (os_log_type_enabled(qword_1003CB510, OS_LOG_TYPE_ERROR))
         {
           sub_1002CBC20();
@@ -1228,16 +1228,16 @@ LABEL_10:
         v30 = [AMSDialogRequest requestWithTitle:v31 message:v32];
 
         v33 = [_TtC9storekitd13DialogContext alloc];
-        v34 = [(Client *)v20 callerBundleID];
-        v35 = [(Client *)v20 callerBundleURL];
-        v36 = [(Client *)v20 processInfo];
-        v37 = [(DialogContext *)v33 initWithBundleID:v34 bundleURL:v35 processInfo:v36 dialogObserver:0];
+        callerBundleID = [(Client *)v20 callerBundleID];
+        callerBundleURL = [(Client *)v20 callerBundleURL];
+        processInfo = [(Client *)v20 processInfo];
+        v37 = [(DialogContext *)v33 initWithBundleID:callerBundleID bundleURL:callerBundleURL processInfo:processInfo dialogObserver:0];
 
         v50[0] = _NSConcreteStackBlock;
         v50[1] = 3221225472;
         v50[2] = sub_10003E360;
         v50[3] = &unk_1003819D8;
-        v50[4] = v47;
+        v50[4] = selfCopy2;
         [(DialogContext *)v37 handleDialogRequest:v30 completionHandler:v50];
         if (v46 >= 1)
         {
@@ -1247,9 +1247,9 @@ LABEL_10:
         v38 = ASDErrorWithTitleAndMessage();
         v41[2](v41, 0, v38);
 
-        v13 = v41;
-        v12 = v42;
-        v11 = v44;
+        replyCopy = v41;
+        delegateCopy = v42;
+        clientCopy = v44;
       }
 
       v17 = v49;
@@ -1273,19 +1273,19 @@ LABEL_42:
   }
 
   v25 = ASDErrorWithTitleAndMessage();
-  v13[2](v13, 0, v25);
+  replyCopy[2](replyCopy, 0, v25);
 LABEL_43:
 }
 
-- (void)_processPayment:(id)a3 excludeReceipt:(BOOL)a4 privacyAcknowledgementRequired:(BOOL)a5 forClient:(id)a6 apiVersion:(int64_t)a7 paymentDelegate:(id)a8 dialogDelegate:(id)a9 isProcessingInterruptedBuy:(BOOL)a10 reply:(id)a11
+- (void)_processPayment:(id)payment excludeReceipt:(BOOL)receipt privacyAcknowledgementRequired:(BOOL)required forClient:(id)client apiVersion:(int64_t)version paymentDelegate:(id)delegate dialogDelegate:(id)dialogDelegate isProcessingInterruptedBuy:(BOOL)self0 reply:(id)self1
 {
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
-  v17 = a6;
-  v62 = a8;
-  v63 = a9;
-  v18 = a11;
+  requiredCopy = required;
+  receiptCopy = receipt;
+  paymentCopy = payment;
+  clientCopy = client;
+  delegateCopy = delegate;
+  dialogDelegateCopy = dialogDelegate;
+  replyCopy = reply;
   if (qword_1003D4160 != -1)
   {
     sub_1002CB534();
@@ -1295,13 +1295,13 @@ LABEL_43:
   if (os_log_type_enabled(qword_1003CB4F8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v74 = self;
+    selfCopy3 = self;
     v75 = 2082;
     v76 = "[StoreKitServiceConnection _processPayment:excludeReceipt:privacyAcknowledgementRequired:forClient:apiVersion:paymentDelegate:dialogDelegate:isProcessingInterruptedBuy:reply:]";
     _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "[%{public}@]: %{public}s", buf, 0x16u);
   }
 
-  if ([v17 isClip])
+  if ([clientCopy isClip])
   {
     if (qword_1003D4160 != -1)
     {
@@ -1314,14 +1314,14 @@ LABEL_43:
     }
 
     v65 = ASDErrorWithDescription();
-    (*(v18 + 2))(v18, 0, 0, v65);
+    (*(replyCopy + 2))(replyCopy, 0, 0, v65);
   }
 
   else
   {
-    v65 = [v16 objectForKeyedSubscript:@"buyParams"];
-    v61 = [v16 tcr_stringForKey:off_1003CB1A8];
-    v20 = [v16 tcr_unsignedLongLongForKey:off_1003CB1B0];
+    v65 = [paymentCopy objectForKeyedSubscript:@"buyParams"];
+    v61 = [paymentCopy tcr_stringForKey:off_1003CB1A8];
+    v20 = [paymentCopy tcr_unsignedLongLongForKey:off_1003CB1B0];
     if (v20)
     {
       v21 = v61 == 0;
@@ -1337,81 +1337,81 @@ LABEL_43:
       v24 = [InAppTransactionTask alloc];
       if (v65)
       {
-        v23 = [(InAppTransactionTask *)v24 initWithBuyParams:v65 client:v17 apiVersion:a7];
+        v23 = [(InAppTransactionTask *)v24 initWithBuyParams:v65 client:clientCopy apiVersion:version];
       }
 
       else
       {
-        v23 = [(InAppTransactionTask *)v24 initWithProductIdentifier:v61 quantity:v20 client:v17 apiVersion:a7];
-        v25 = [v16 tcr_dictionaryForKey:off_1003CB130];
+        v23 = [(InAppTransactionTask *)v24 initWithProductIdentifier:v61 quantity:v20 client:clientCopy apiVersion:version];
+        v25 = [paymentCopy tcr_dictionaryForKey:off_1003CB130];
         [(InAppTransactionTask *)v23 setAdditionalBuyParams:v25];
       }
 
-      v26 = [v16 tcr_stringForKey:off_1003CB138];
+      v26 = [paymentCopy tcr_stringForKey:off_1003CB138];
       [(InAppTransactionTask *)v23 setAdvancedCommerceData:v26];
 
-      v27 = [v16 tcr_stringForKey:off_1003CB148];
+      v27 = [paymentCopy tcr_stringForKey:off_1003CB148];
       [(InAppTransactionTask *)v23 setApplicationUsername:v27];
 
-      v28 = [v16 tcr_stringForKey:off_1003CB178];
+      v28 = [paymentCopy tcr_stringForKey:off_1003CB178];
       [(InAppTransactionTask *)v23 setDiscountIdentifier:v28];
 
-      v29 = [v16 tcr_stringForKey:off_1003CB180];
+      v29 = [paymentCopy tcr_stringForKey:off_1003CB180];
       [(InAppTransactionTask *)v23 setDiscountKeyIdentifier:v29];
 
-      v30 = [v16 tcr_stringForKey:off_1003CB188];
+      v30 = [paymentCopy tcr_stringForKey:off_1003CB188];
       [(InAppTransactionTask *)v23 setDiscountNonceString:v30];
 
-      v31 = [v16 tcr_stringForKey:off_1003CB190];
+      v31 = [paymentCopy tcr_stringForKey:off_1003CB190];
       [(InAppTransactionTask *)v23 setDiscountSignature:v31];
 
-      v32 = [v16 tcr_numberForKey:off_1003CB198];
+      v32 = [paymentCopy tcr_numberForKey:off_1003CB198];
       [(InAppTransactionTask *)v23 setDiscountTimestamp:v32];
 
-      v33 = [v16 tcr_dataForKey:off_1003CB1C8];
+      v33 = [paymentCopy tcr_dataForKey:off_1003CB1C8];
       [(InAppTransactionTask *)v23 setMetricsOverlayData:v33];
 
-      v34 = [v16 tcr_stringForKey:off_1003CB1D0];
+      v34 = [paymentCopy tcr_stringForKey:off_1003CB1D0];
       [(InAppTransactionTask *)v23 setPartnerIdentifier:v34];
 
-      v35 = [v16 tcr_stringForKey:off_1003CB1D8];
+      v35 = [paymentCopy tcr_stringForKey:off_1003CB1D8];
       [(InAppTransactionTask *)v23 setPartnerTransactionIdentifier:v35];
 
-      v36 = [v16 tcr_stringForKey:off_1003CB1E8];
+      v36 = [paymentCopy tcr_stringForKey:off_1003CB1E8];
       [(InAppTransactionTask *)v23 setProductKind:v36];
 
-      [(InAppTransactionTask *)v23 setPrivacyAcknowledgementRequired:v14];
-      v37 = [v16 tcr_dataForKey:off_1003CB1B8];
+      [(InAppTransactionTask *)v23 setPrivacyAcknowledgementRequired:requiredCopy];
+      v37 = [paymentCopy tcr_dataForKey:off_1003CB1B8];
       [(InAppTransactionTask *)v23 setRequestData:v37];
 
-      -[InAppTransactionTask setSimulateAskToBuy:](v23, "setSimulateAskToBuy:", [v16 tcr_BOOLForKey:off_1003CB1C0]);
-      -[InAppTransactionTask setStorekitViewInitiated:](v23, "setStorekitViewInitiated:", [v16 tcr_BOOLForKey:off_1003CB228]);
-      -[InAppTransactionTask setStoreOriginated:](v23, "setStoreOriginated:", [v16 tcr_BOOLForKey:off_1003CB1A0]);
-      v38 = [v16 tcr_stringForKey:off_1003CB220];
+      -[InAppTransactionTask setSimulateAskToBuy:](v23, "setSimulateAskToBuy:", [paymentCopy tcr_BOOLForKey:off_1003CB1C0]);
+      -[InAppTransactionTask setStorekitViewInitiated:](v23, "setStorekitViewInitiated:", [paymentCopy tcr_BOOLForKey:off_1003CB228]);
+      -[InAppTransactionTask setStoreOriginated:](v23, "setStoreOriginated:", [paymentCopy tcr_BOOLForKey:off_1003CB1A0]);
+      v38 = [paymentCopy tcr_stringForKey:off_1003CB220];
       [(InAppTransactionTask *)v23 setSubscriptionPeriod:v38];
 
-      v39 = [v16 tcr_stringForKey:off_1003CB1E0];
+      v39 = [paymentCopy tcr_stringForKey:off_1003CB1E0];
       [(InAppTransactionTask *)v23 setPresentingSceneID:v39];
 
-      v40 = [v16 tcr_stringForKey:off_1003CB230];
+      v40 = [paymentCopy tcr_stringForKey:off_1003CB230];
       [(InAppTransactionTask *)v23 setWinbackOfferIdentifier:v40];
 
-      [(InAppTransactionTask *)v23 setExcludeReceiptFromRequest:v15];
-      -[InAppTransactionTask setForceAuthentication:](v23, "setForceAuthentication:", [v16 tcr_BOOLForKey:off_1003CB200]);
-      -[InAppTransactionTask setHideConfirmation:](v23, "setHideConfirmation:", [v16 tcr_BOOLForKey:off_1003CB160]);
-      v41 = [v16 tcr_stringForKey:off_1003CB140];
+      [(InAppTransactionTask *)v23 setExcludeReceiptFromRequest:receiptCopy];
+      -[InAppTransactionTask setForceAuthentication:](v23, "setForceAuthentication:", [paymentCopy tcr_BOOLForKey:off_1003CB200]);
+      -[InAppTransactionTask setHideConfirmation:](v23, "setHideConfirmation:", [paymentCopy tcr_BOOLForKey:off_1003CB160]);
+      v41 = [paymentCopy tcr_stringForKey:off_1003CB140];
       [(InAppTransactionTask *)v23 setAppAccountToken:v41];
 
-      [(InAppTransactionTask *)v23 setIsProcessingInterruptedBuy:a10];
+      [(InAppTransactionTask *)v23 setIsProcessingInterruptedBuy:buy];
       v42 = [_TtC9storekitd13DialogContext alloc];
-      v43 = [v17 callerBundleID];
-      v44 = [v17 callerBundleURL];
-      v45 = [v17 processInfo];
-      v59 = [(DialogContext *)v42 initWithBundleID:v43 bundleURL:v44 processInfo:v45 dialogObserver:v63];
+      callerBundleID = [clientCopy callerBundleID];
+      callerBundleURL = [clientCopy callerBundleURL];
+      processInfo = [clientCopy processInfo];
+      v59 = [(DialogContext *)v42 initWithBundleID:callerBundleID bundleURL:callerBundleURL processInfo:processInfo dialogObserver:dialogDelegateCopy];
 
       [(InAppTransactionTask *)v23 setDialogContext:v59];
-      [(InAppTransactionTask *)v23 setPaymentDelegate:v62];
-      v60 = [v16 tcr_stringForKey:off_1003CB1F0];
+      [(InAppTransactionTask *)v23 setPaymentDelegate:delegateCopy];
+      v60 = [paymentCopy tcr_stringForKey:off_1003CB1F0];
       if (v60)
       {
         v46 = [NSURL fileURLWithPath:v60 isDirectory:1];
@@ -1420,18 +1420,18 @@ LABEL_43:
         [(InAppTransactionTask *)v23 setReceiptInstallURL:v48];
       }
 
-      if (a7 != 1)
+      if (version != 1)
       {
-        v49 = [v16 tcr_dictionaryForKey:off_1003CB150];
+        v49 = [paymentCopy tcr_dictionaryForKey:off_1003CB150];
         [(InAppTransactionTask *)v23 setCustomBuyParams:v49];
       }
 
-      v50 = [v16 tcr_stringForKey:off_1003CB208];
-      v51 = [v16 tcr_stringForKey:off_1003CB218];
+      v50 = [paymentCopy tcr_stringForKey:off_1003CB208];
+      v51 = [paymentCopy tcr_stringForKey:off_1003CB218];
       v52 = v51;
       if (v50 && v51)
       {
-        v53 = [v16 tcr_stringForKey:off_1003CB210];
+        v53 = [paymentCopy tcr_stringForKey:off_1003CB210];
         v54 = [[AppleIDAuthorizationRequestInfo alloc] initWithClientID:v50 teamID:v52 serviceID:v53];
         [(InAppTransactionTask *)v23 setSiwaAuthorizationInfo:v54];
       }
@@ -1444,8 +1444,8 @@ LABEL_43:
       v66[3] = &unk_100381A28;
       objc_copyWeak(&v69, &from);
       objc_copyWeak(&v70, &location);
-      v67 = v17;
-      v68 = v18;
+      v67 = clientCopy;
+      v68 = replyCopy;
       [(InAppTransactionTask *)v23 setCompletionBlock:v66];
       if (qword_1003D4160 != -1)
       {
@@ -1455,17 +1455,17 @@ LABEL_43:
       v55 = qword_1003CB510;
       if (os_log_type_enabled(v55, OS_LOG_TYPE_DEFAULT))
       {
-        v56 = [(InAppTransactionTask *)v23 logKey];
-        v57 = [(InAppTransactionTask *)v23 productIdentifier];
-        v58 = [(InAppTransactionTask *)v23 quantity];
+        logKey = [(InAppTransactionTask *)v23 logKey];
+        productIdentifier = [(InAppTransactionTask *)v23 productIdentifier];
+        quantity = [(InAppTransactionTask *)v23 quantity];
         *buf = 138544130;
-        v74 = self;
+        selfCopy3 = self;
         v75 = 2114;
-        v76 = v56;
+        v76 = logKey;
         v77 = 2114;
-        v78 = v57;
+        v78 = productIdentifier;
         v79 = 2048;
-        v80 = v58;
+        v80 = quantity;
         _os_log_impl(&_mh_execute_header, v55, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Adding payment for %{public}@ and quantity %lu", buf, 0x2Au);
       }
 
@@ -1487,7 +1487,7 @@ LABEL_43:
       if (os_log_type_enabled(qword_1003CB510, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543874;
-        v74 = self;
+        selfCopy3 = self;
         v75 = 2114;
         v76 = v61;
         v77 = 2048;
@@ -1496,15 +1496,15 @@ LABEL_43:
       }
 
       v23 = ASDErrorWithDescription();
-      (*(v18 + 2))(v18, 0, 0, v23);
+      (*(replyCopy + 2))(replyCopy, 0, 0, v23);
     }
   }
 }
 
-- (void)finishPaymentWithIdentifier:(id)a3 reply:(id)a4
+- (void)finishPaymentWithIdentifier:(id)identifier reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  replyCopy = reply;
   if (qword_1003D4160 != -1)
   {
     sub_1002CB534();
@@ -1514,7 +1514,7 @@ LABEL_43:
   if (os_log_type_enabled(qword_1003CB4F8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v22 = self;
+    selfCopy2 = self;
     v23 = 2082;
     v24 = "[StoreKitServiceConnection finishPaymentWithIdentifier:reply:]";
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "[%{public}@]: %{public}s", buf, 0x16u);
@@ -1539,15 +1539,15 @@ LABEL_43:
       }
 
       v12 = ASDErrorWithDescription();
-      v7[2](v7, v12);
+      replyCopy[2](replyCopy, v12);
     }
 
-    else if ([v6 length])
+    else if ([identifierCopy length])
     {
       v14 = +[InAppDownloadManager manager];
-      [v14 removeDownloadsForTransactionID:v6];
+      [v14 removeDownloadsForTransactionID:identifierCopy];
 
-      v15 = [[FinishInAppTransactionTask alloc] initWithTransactionID:v6 client:v11];
+      v15 = [[FinishInAppTransactionTask alloc] initWithTransactionID:identifierCopy client:v11];
       objc_initWeak(buf, v15);
       v17[0] = _NSConcreteStackBlock;
       v17[1] = 3221225472;
@@ -1555,7 +1555,7 @@ LABEL_43:
       v17[3] = &unk_100381910;
       objc_copyWeak(&v20, buf);
       v18 = v11;
-      v19 = v7;
+      v19 = replyCopy;
       [(FinishInAppTransactionTask *)v15 setCompletionBlock:v17];
       [(NSOperationQueue *)self->_finishPaymentQueue addOperation:v15];
 
@@ -1574,11 +1574,11 @@ LABEL_43:
       if (os_log_type_enabled(qword_1003CB510, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v22 = self;
+        selfCopy2 = self;
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "%{public}@: No transaction identifier to finish payment", buf, 0xCu);
       }
 
-      v7[2](v7, 0);
+      replyCopy[2](replyCopy, 0);
     }
   }
 
@@ -1595,14 +1595,14 @@ LABEL_43:
     }
 
     v13 = ASDErrorWithTitleAndMessage();
-    v7[2](v7, v13);
+    replyCopy[2](replyCopy, v13);
   }
 }
 
-- (void)notifyOfRevokedProductIdentifiers:(id)a3 reply:(id)a4
+- (void)notifyOfRevokedProductIdentifiers:(id)identifiers reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  identifiersCopy = identifiers;
+  replyCopy = reply;
   if (qword_1003D4160 != -1)
   {
     sub_1002CB534();
@@ -1612,7 +1612,7 @@ LABEL_43:
   if (os_log_type_enabled(qword_1003CB4F8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v16 = self;
+    selfCopy = self;
     v17 = 2082;
     v18 = "[StoreKitServiceConnection notifyOfRevokedProductIdentifiers:reply:]";
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "[%{public}@]: %{public}s", buf, 0x16u);
@@ -1624,9 +1624,9 @@ LABEL_43:
   v11[2] = sub_10003F8CC;
   v11[3] = &unk_100381A50;
   objc_copyWeak(&v14, buf);
-  v9 = v6;
+  v9 = identifiersCopy;
   v12 = v9;
-  v10 = v7;
+  v10 = replyCopy;
   v13 = v10;
   [(StoreKitServiceConnection *)self renewReceiptWithOptions:0 client:0 replyBlock:v11];
 
@@ -1634,11 +1634,11 @@ LABEL_43:
   objc_destroyWeak(buf);
 }
 
-- (void)restoreCompletedTransactionsForUsername:(id)a3 client:(id)a4 reply:(id)a5
+- (void)restoreCompletedTransactionsForUsername:(id)username client:(id)client reply:(id)reply
 {
-  v25 = a3;
-  v27 = a4;
-  v8 = a5;
+  usernameCopy = username;
+  clientCopy = client;
+  replyCopy = reply;
   if (qword_1003D4160 != -1)
   {
     sub_1002CB534();
@@ -1648,16 +1648,16 @@ LABEL_43:
   if (os_log_type_enabled(qword_1003CB4F8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v36 = self;
+    selfCopy = self;
     v37 = 2082;
     v38 = "[StoreKitServiceConnection restoreCompletedTransactionsForUsername:client:reply:]";
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "[%{public}@]: %{public}s", buf, 0x16u);
   }
 
   v10 = +[NSXPCConnection currentConnection];
-  v11 = [v10 sk_allowClientOverride];
-  v12 = v27;
-  if (!v11)
+  sk_allowClientOverride = [v10 sk_allowClientOverride];
+  v12 = clientCopy;
+  if (!sk_allowClientOverride)
   {
     v12 = 0;
   }
@@ -1680,16 +1680,16 @@ LABEL_43:
       }
 
       v16 = ASDErrorWithDescription();
-      v8[2](v8, 0, v16);
+      replyCopy[2](replyCopy, 0, v16);
     }
 
     else
     {
       v17 = [_TtC9storekitd13DialogContext alloc];
-      v18 = [(Client *)v15 callerBundleID];
-      v19 = [(Client *)v15 callerBundleURL];
-      v20 = [(Client *)v15 processInfo];
-      v16 = [(DialogContext *)v17 initWithBundleID:v18 bundleURL:v19 processInfo:v20 dialogObserver:0];
+      callerBundleID = [(Client *)v15 callerBundleID];
+      callerBundleURL = [(Client *)v15 callerBundleURL];
+      processInfo = [(Client *)v15 processInfo];
+      v16 = [(DialogContext *)v17 initWithBundleID:callerBundleID bundleURL:callerBundleURL processInfo:processInfo dialogObserver:0];
 
       if ([(Client *)v15 canMakePayments])
       {
@@ -1705,7 +1705,7 @@ LABEL_43:
         objc_copyWeak(&v31, &location);
         objc_copyWeak(&v32, buf);
         v29 = v15;
-        v30 = v8;
+        v30 = replyCopy;
         [(RestoreInAppTransactionsTask *)v21 setCompletionBlock:v28];
         [(NSOperationQueue *)self->_paymentQueue addOperation:v21];
 
@@ -1738,7 +1738,7 @@ LABEL_43:
         v34[4] = self;
         [(DialogContext *)v16 handleDialogRequest:v21 completionHandler:v34];
         v24 = ASDErrorWithDescription();
-        v8[2](v8, 0, v24);
+        replyCopy[2](replyCopy, 0, v24);
       }
     }
   }
@@ -1756,16 +1756,16 @@ LABEL_43:
     }
 
     v16 = ASDErrorWithTitleAndMessage();
-    v8[2](v8, 0, v16);
+    replyCopy[2](replyCopy, 0, v16);
   }
 }
 
-- (void)statusForClient:(id)a3 subscriptionGroupID:(id)a4 skipStatusSync:(BOOL)a5 reply:(id)a6
+- (void)statusForClient:(id)client subscriptionGroupID:(id)d skipStatusSync:(BOOL)sync reply:(id)reply
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  syncCopy = sync;
+  clientCopy = client;
+  dCopy = d;
+  replyCopy = reply;
   if (qword_1003D4160 != -1)
   {
     sub_1002CB534();
@@ -1775,7 +1775,7 @@ LABEL_43:
   if (os_log_type_enabled(qword_1003CB4F8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v25 = self;
+    selfCopy2 = self;
     v26 = 2082;
     v27 = "[StoreKitServiceConnection statusForClient:subscriptionGroupID:skipStatusSync:reply:]";
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "[%{public}@]: %{public}s", buf, 0x16u);
@@ -1784,7 +1784,7 @@ LABEL_43:
   v14 = +[NSXPCConnection currentConnection];
   if ([v14 sk_allowClientOverride])
   {
-    v15 = v10;
+    v15 = clientCopy;
   }
 
   else
@@ -1801,13 +1801,13 @@ LABEL_43:
     if (!v18)
     {
       v20 = [ReceiptManager managerForClient:v17];
-      v21 = [v14 sk_allowAdvancedTransactionQueries];
+      sk_allowAdvancedTransactionQueries = [v14 sk_allowAdvancedTransactionQueries];
       v22[0] = _NSConcreteStackBlock;
       v22[1] = 3221225472;
       v22[2] = sub_10004050C;
       v22[3] = &unk_100381A78;
-      v23 = v12;
-      [v20 subscriptionStatusForSubscriptionGroupID:v11 skipStatusSync:v21 & v7 completionHandler:v22];
+      v23 = replyCopy;
+      [v20 subscriptionStatusForSubscriptionGroupID:dCopy skipStatusSync:sk_allowAdvancedTransactionQueries & syncCopy completionHandler:v22];
 
       goto LABEL_21;
     }
@@ -1821,7 +1821,7 @@ LABEL_43:
     if (os_log_type_enabled(qword_1003CB4F8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v25 = self;
+      selfCopy2 = self;
       v26 = 2114;
       v27 = v18;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "%{public}@: Found simulated failure: %{public}@", buf, 0x16u);
@@ -1843,16 +1843,16 @@ LABEL_43:
     v18 = ASDErrorWithTitleAndMessage();
   }
 
-  (*(v12 + 2))(v12, 0, v18);
+  (*(replyCopy + 2))(replyCopy, 0, v18);
 LABEL_21:
 }
 
-- (void)statusForClient:(id)a3 transactionID:(id)a4 skipStatusSync:(BOOL)a5 reply:(id)a6
+- (void)statusForClient:(id)client transactionID:(id)d skipStatusSync:(BOOL)sync reply:(id)reply
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  syncCopy = sync;
+  clientCopy = client;
+  dCopy = d;
+  replyCopy = reply;
   if (qword_1003D4160 != -1)
   {
     sub_1002CB534();
@@ -1862,7 +1862,7 @@ LABEL_21:
   if (os_log_type_enabled(qword_1003CB4F8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v25 = self;
+    selfCopy2 = self;
     v26 = 2082;
     v27 = "[StoreKitServiceConnection statusForClient:transactionID:skipStatusSync:reply:]";
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "[%{public}@]: %{public}s", buf, 0x16u);
@@ -1871,7 +1871,7 @@ LABEL_21:
   v14 = +[NSXPCConnection currentConnection];
   if ([v14 sk_allowClientOverride])
   {
-    v15 = v10;
+    v15 = clientCopy;
   }
 
   else
@@ -1888,13 +1888,13 @@ LABEL_21:
     if (!v18)
     {
       v20 = [ReceiptManager managerForClient:v17];
-      v21 = [v14 sk_allowAdvancedTransactionQueries];
+      sk_allowAdvancedTransactionQueries = [v14 sk_allowAdvancedTransactionQueries];
       v22[0] = _NSConcreteStackBlock;
       v22[1] = 3221225472;
       v22[2] = sub_100040830;
       v22[3] = &unk_100381A78;
-      v23 = v12;
-      [v20 subscriptionStatusForTransactionID:v11 skipStatusSync:v21 & v7 completionHandler:v22];
+      v23 = replyCopy;
+      [v20 subscriptionStatusForTransactionID:dCopy skipStatusSync:sk_allowAdvancedTransactionQueries & syncCopy completionHandler:v22];
 
       goto LABEL_21;
     }
@@ -1908,7 +1908,7 @@ LABEL_21:
     if (os_log_type_enabled(qword_1003CB4F8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v25 = self;
+      selfCopy2 = self;
       v26 = 2114;
       v27 = v18;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "%{public}@: Found simulated failure: %{public}@", buf, 0x16u);
@@ -1930,16 +1930,16 @@ LABEL_21:
     v18 = ASDErrorWithTitleAndMessage();
   }
 
-  (*(v12 + 2))(v12, 0, v18);
+  (*(replyCopy + 2))(replyCopy, 0, v18);
 LABEL_21:
 }
 
-- (void)enumerateSubscriptionStatusesForClient:(id)a3 withReceiver:(id)a4 skipStatusSync:(BOOL)a5 reply:(id)a6
+- (void)enumerateSubscriptionStatusesForClient:(id)client withReceiver:(id)receiver skipStatusSync:(BOOL)sync reply:(id)reply
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  syncCopy = sync;
+  clientCopy = client;
+  receiverCopy = receiver;
+  replyCopy = reply;
   if (qword_1003D4160 != -1)
   {
     sub_1002CB534();
@@ -1949,7 +1949,7 @@ LABEL_21:
   if (os_log_type_enabled(qword_1003CB4F8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v26 = self;
+    selfCopy = self;
     v27 = 2082;
     v28 = "[StoreKitServiceConnection enumerateSubscriptionStatusesForClient:withReceiver:skipStatusSync:reply:]";
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "[%{public}@]: %{public}s", buf, 0x16u);
@@ -1958,7 +1958,7 @@ LABEL_21:
   v14 = +[NSXPCConnection currentConnection];
   if ([v14 sk_allowClientOverride])
   {
-    v15 = v10;
+    v15 = clientCopy;
   }
 
   else
@@ -1972,19 +1972,19 @@ LABEL_21:
   if (v17)
   {
     v18 = [ReceiptManager managerForClient:v17];
-    v19 = [v14 sk_allowAdvancedTransactionQueries];
+    sk_allowAdvancedTransactionQueries = [v14 sk_allowAdvancedTransactionQueries];
     v23[0] = _NSConcreteStackBlock;
     v23[1] = 3221225472;
     v23[2] = sub_100040B24;
     v23[3] = &unk_100381AA0;
-    v24 = v11;
+    v24 = receiverCopy;
     v20[0] = _NSConcreteStackBlock;
     v20[1] = 3221225472;
     v20[2] = sub_100040BC0;
     v20[3] = &unk_100381AC8;
     v21 = v24;
-    v22 = v12;
-    [v18 enumerateSubscriptionStatusSkippingStatusSync:v19 & v7 usingBlock:v23 completionHandler:v20];
+    v22 = replyCopy;
+    [v18 enumerateSubscriptionStatusSkippingStatusSync:sk_allowAdvancedTransactionQueries & syncCopy usingBlock:v23 completionHandler:v20];
   }
 
   else
@@ -2000,13 +2000,13 @@ LABEL_21:
     }
 
     v18 = ASDErrorWithTitleAndMessage();
-    (*(v12 + 2))(v12, v18);
+    (*(replyCopy + 2))(replyCopy, v18);
   }
 }
 
-- (void)addDownloadWithID:(id)a3
+- (void)addDownloadWithID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   if (qword_1003D4160 != -1)
   {
     sub_1002CB534();
@@ -2026,7 +2026,7 @@ LABEL_21:
   v7 = [[_TtC9storekitd6Client alloc] initWithConnection:v6 overridesDictionary:0];
   if (v7)
   {
-    if (v4)
+    if (dCopy)
     {
       memset(buf, 0, 32);
       if (v6)
@@ -2037,13 +2037,13 @@ LABEL_21:
       v8 = +[InAppDownloadManager manager];
       v12[0] = *buf;
       v12[1] = *&buf[16];
-      v9 = [v8 startDownloadWithID:v4 client:v7 auditToken:v12];
+      v9 = [v8 startDownloadWithID:dCopy client:v7 auditToken:v12];
 
       if (v9)
       {
         remoteObject = self->_remoteObject;
         v13 = @"download";
-        v14 = v4;
+        v14 = dCopy;
         v11 = [NSDictionary dictionaryWithObjects:&v14 forKeys:&v13 count:1];
         [(SKClientProtocol *)remoteObject downloadAdded:v11];
       }
@@ -2077,9 +2077,9 @@ LABEL_21:
   }
 }
 
-- (void)cancelDownloadWithID:(id)a3
+- (void)cancelDownloadWithID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   if (qword_1003D4160 != -1)
   {
     sub_1002CB534();
@@ -2089,16 +2089,16 @@ LABEL_21:
   if (os_log_type_enabled(qword_1003CB4F8, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543618;
-    v8 = self;
+    selfCopy = self;
     v9 = 2082;
     v10 = "[StoreKitServiceConnection cancelDownloadWithID:]";
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@]: %{public}s", &v7, 0x16u);
   }
 
-  if (v4)
+  if (dCopy)
   {
     v6 = +[InAppDownloadManager manager];
-    [v6 cancelDownloadWithID:v4];
+    [v6 cancelDownloadWithID:dCopy];
   }
 
   else
@@ -2115,9 +2115,9 @@ LABEL_21:
   }
 }
 
-- (void)pauseDownloadWithID:(id)a3
+- (void)pauseDownloadWithID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   if (qword_1003D4160 != -1)
   {
     sub_1002CB534();
@@ -2127,16 +2127,16 @@ LABEL_21:
   if (os_log_type_enabled(qword_1003CB4F8, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543618;
-    v8 = self;
+    selfCopy = self;
     v9 = 2082;
     v10 = "[StoreKitServiceConnection pauseDownloadWithID:]";
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@]: %{public}s", &v7, 0x16u);
   }
 
-  if (v4)
+  if (dCopy)
   {
     v6 = +[InAppDownloadManager manager];
-    [v6 pauseDownloadWithID:v4];
+    [v6 pauseDownloadWithID:dCopy];
   }
 
   else
@@ -2153,9 +2153,9 @@ LABEL_21:
   }
 }
 
-- (void)resumeDownloadWithID:(id)a3
+- (void)resumeDownloadWithID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   if (qword_1003D4160 != -1)
   {
     sub_1002CB534();
@@ -2175,7 +2175,7 @@ LABEL_21:
   v7 = [[_TtC9storekitd6Client alloc] initWithConnection:v6 overridesDictionary:0];
   if (v7)
   {
-    if (v4)
+    if (dCopy)
     {
       memset(buf, 0, 32);
       if (v6)
@@ -2186,7 +2186,7 @@ LABEL_21:
       v8 = +[InAppDownloadManager manager];
       v9[0] = *buf;
       v9[1] = *&buf[16];
-      [v8 startDownloadWithID:v4 client:v7 auditToken:v9];
+      [v8 startDownloadWithID:dCopy client:v7 auditToken:v9];
     }
 
     else
@@ -2217,9 +2217,9 @@ LABEL_21:
   }
 }
 
-- (void)deleteContentForProductID:(id)a3
+- (void)deleteContentForProductID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   if (qword_1003D4160 != -1)
   {
     sub_1002CB534();
@@ -2229,18 +2229,18 @@ LABEL_21:
   if (os_log_type_enabled(qword_1003CB4F8, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138543618;
-    v7 = self;
+    selfCopy = self;
     v8 = 2082;
     v9 = "[StoreKitServiceConnection deleteContentForProductID:]";
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@]: %{public}s", &v6, 0x16u);
   }
 }
 
-- (void)renewReceiptWithOptions:(id)a3 client:(id)a4 replyBlock:(id)a5
+- (void)renewReceiptWithOptions:(id)options client:(id)client replyBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  optionsCopy = options;
+  clientCopy = client;
+  blockCopy = block;
   v11 = [NSUUID lib_shortLogKeyWithAPIVersion:1];
   if (qword_1003D4160 != -1)
   {
@@ -2258,14 +2258,14 @@ LABEL_21:
   }
 
   v13 = +[NSXPCConnection currentConnection];
-  v14 = [(StoreKitServiceConnection *)self client];
-  if ([v14 objc_clientType] == 3)
+  client = [(StoreKitServiceConnection *)self client];
+  if ([client objc_clientType] == 3)
   {
-    v15 = [v13 sk_connectionIsOctaneService];
+    sk_connectionIsOctaneService = [v13 sk_connectionIsOctaneService];
 
-    if (v15)
+    if (sk_connectionIsOctaneService)
     {
-      v16 = [(StoreKitServiceConnection *)self client];
+      client2 = [(StoreKitServiceConnection *)self client];
       goto LABEL_13;
     }
   }
@@ -2276,7 +2276,7 @@ LABEL_21:
 
   if ([v13 sk_allowClientOverride])
   {
-    v17 = v9;
+    v17 = clientCopy;
   }
 
   else
@@ -2285,14 +2285,14 @@ LABEL_21:
   }
 
   v18 = v17;
-  v16 = [[_TtC9storekitd6Client alloc] initWithConnection:v13 overridesDictionary:v18];
+  client2 = [[_TtC9storekitd6Client alloc] initWithConnection:v13 overridesDictionary:v18];
 
 LABEL_13:
   if ([v13 sk_allowClientOverride])
   {
-    v19 = v8;
-    v20 = [v9 objectForKeyedSubscript:@"tok"];
-    v21 = [v9 objectForKeyedSubscript:@"recp"];
+    v19 = optionsCopy;
+    v20 = [clientCopy objectForKeyedSubscript:@"tok"];
+    v21 = [clientCopy objectForKeyedSubscript:@"recp"];
     if (v21 && [v20 length])
     {
       v22 = [NSURL fileURLWithPath:v21 isDirectory:1];
@@ -2335,8 +2335,8 @@ LABEL_13:
       v24 = -1;
     }
 
-    v8 = v19;
-    if (!v16)
+    optionsCopy = v19;
+    if (!client2)
     {
       goto LABEL_34;
     }
@@ -2345,7 +2345,7 @@ LABEL_13:
   else
   {
     v24 = -1;
-    if (!v16)
+    if (!client2)
     {
 LABEL_34:
       if (qword_1003D4160 != -1)
@@ -2363,35 +2363,35 @@ LABEL_34:
     }
   }
 
-  if (![(Client *)v16 isClip])
+  if (![(Client *)client2 isClip])
   {
     v30 = [_TtC9storekitd13DialogContext alloc];
-    v31 = [(Client *)v16 callerBundleID];
-    [(Client *)v16 callerBundleURL];
+    callerBundleID = [(Client *)client2 callerBundleID];
+    [(Client *)client2 callerBundleURL];
     v44 = v24;
-    v32 = v9;
-    v33 = v10;
-    v35 = v34 = v8;
-    [(Client *)v16 processInfo];
+    v32 = clientCopy;
+    v33 = blockCopy;
+    v35 = v34 = optionsCopy;
+    [(Client *)client2 processInfo];
     v36 = v13;
     v38 = v37 = v11;
-    v43 = [(DialogContext *)v30 initWithBundleID:v31 bundleURL:v35 processInfo:v38 dialogObserver:0];
+    v43 = [(DialogContext *)v30 initWithBundleID:callerBundleID bundleURL:v35 processInfo:v38 dialogObserver:0];
 
     v11 = v37;
     v13 = v36;
 
-    v8 = v34;
-    v10 = v33;
-    v9 = v32;
+    optionsCopy = v34;
+    blockCopy = v33;
+    clientCopy = v32;
 
-    v39 = [ReceiptManager managerForClient:v16];
+    v39 = [ReceiptManager managerForClient:client2];
     v45[0] = _NSConcreteStackBlock;
     v45[1] = 3221225472;
     v45[2] = sub_10004191C;
     v45[3] = &unk_100381AF0;
-    v46 = v10;
+    v46 = blockCopy;
     v47 = v44;
-    [v39 requestUnifiedAppReceiptWithDialogContext:v43 logKey:v11 options:v8 completionHandler:v45];
+    [v39 requestUnifiedAppReceiptWithDialogContext:v43 logKey:v11 options:optionsCopy completionHandler:v45];
 
     goto LABEL_41;
   }
@@ -2409,7 +2409,7 @@ LABEL_34:
   v29 = ASDErrorWithDescription();
 LABEL_39:
   v40 = v29;
-  (*(v10 + 2))(v10, 0, v29);
+  (*(blockCopy + 2))(blockCopy, 0, v29);
 
   if (v24 >= 1)
   {
@@ -2419,9 +2419,9 @@ LABEL_39:
 LABEL_41:
 }
 
-- (void)handleInvalidReceipt:(id)a3
+- (void)handleInvalidReceipt:(id)receipt
 {
-  v4 = a3;
+  receiptCopy = receipt;
   if (qword_1003D4160 != -1)
   {
     sub_1002CB534();
@@ -2431,7 +2431,7 @@ LABEL_41:
   if (os_log_type_enabled(qword_1003CB4F8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v15 = self;
+    selfCopy2 = self;
     v16 = 2082;
     v17 = "[StoreKitServiceConnection handleInvalidReceipt:]";
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@]: %{public}s", buf, 0x16u);
@@ -2450,11 +2450,11 @@ LABEL_41:
     if (os_log_type_enabled(qword_1003CB520, OS_LOG_TYPE_DEFAULT))
     {
       v9 = v8;
-      v10 = [(Client *)v7 callerBundleID];
+      callerBundleID = [(Client *)v7 callerBundleID];
       *buf = 138543618;
-      v15 = self;
+      selfCopy2 = self;
       v16 = 2114;
-      v17 = v10;
+      v17 = callerBundleID;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%{public}@: handleInvalidReceipt for %{public}@", buf, 0x16u);
     }
 
@@ -2463,7 +2463,7 @@ LABEL_41:
     v12[1] = 3221225472;
     v12[2] = sub_100041C3C;
     v12[3] = &unk_10037F820;
-    v13 = v4;
+    v13 = receiptCopy;
     [(HandleInvalidReceiptTask *)v11 setCompletionBlock:v12];
     [(NSOperationQueue *)self->_appTerminationQueue addOperation:v11];
   }
@@ -2480,13 +2480,13 @@ LABEL_41:
       sub_1002CC34C();
     }
 
-    v4[2](v4);
+    receiptCopy[2](receiptCopy);
   }
 }
 
-- (void)xcodeTestServerPortWithReplyBlock:(id)a3
+- (void)xcodeTestServerPortWithReplyBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   if (qword_1003D4160 != -1)
   {
     sub_1002CB534();
@@ -2496,20 +2496,20 @@ LABEL_41:
   if (os_log_type_enabled(qword_1003CB4F8, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543618;
-    v8 = self;
+    selfCopy = self;
     v9 = 2082;
     v10 = "[StoreKitServiceConnection xcodeTestServerPortWithReplyBlock:]";
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@]: %{public}s", &v7, 0x16u);
   }
 
   v6 = +[OctaneManager sharedInstance];
-  v4[2](v4, [v6 activePort]);
+  blockCopy[2](blockCopy, [v6 activePort]);
 }
 
-- (void)refundRequestForTransactionId:(id)a3 replyBlock:(id)a4
+- (void)refundRequestForTransactionId:(id)id replyBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  idCopy = id;
+  blockCopy = block;
   if (qword_1003D4160 != -1)
   {
     sub_1002CB534();
@@ -2519,7 +2519,7 @@ LABEL_41:
   if (os_log_type_enabled(qword_1003CB4F8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v48 = self;
+    selfCopy2 = self;
     v49 = 2082;
     v50 = "[StoreKitServiceConnection refundRequestForTransactionId:replyBlock:]";
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "[%{public}@]: %{public}s", buf, 0x16u);
@@ -2568,14 +2568,14 @@ LABEL_41:
         sub_1002CC4C0();
       }
 
-      v18 = [v42 toASDErrorWithMetadata:0];
-      v7[2](v7, v18, 0);
+      account = [v42 toASDErrorWithMetadata:0];
+      blockCopy[2](blockCopy, account, 0);
       goto LABEL_56;
     }
 
-    v18 = [(Client *)v11 account];
-    v19 = [v18 ams_DSID];
-    if (v19)
+    account = [(Client *)v11 account];
+    ams_DSID = [account ams_DSID];
+    if (ams_DSID)
     {
     }
 
@@ -2593,15 +2593,15 @@ LABEL_41:
       }
 
       v28 = ASDErrorWithTitleAndMessage();
-      v7[2](v7, v28, 0);
+      blockCopy[2](blockCopy, v28, 0);
       goto LABEL_55;
     }
 
     v38 = v17;
     [NSURLComponents componentsWithURL:v17 resolvingAgainstBaseURL:1];
-    v40 = v39 = v6;
-    v21 = [NSString stringWithFormat:@"%@", v6];
-    v22 = [NSURLQueryItem queryItemWithName:@"transactionId" value:v21];
+    v40 = v39 = idCopy;
+    idCopy = [NSString stringWithFormat:@"%@", idCopy];
+    v22 = [NSURLQueryItem queryItemWithName:@"transactionId" value:idCopy];
     v46 = v22;
     v23 = [NSArray arrayWithObjects:&v46 count:1];
     v24 = [NSMutableArray arrayWithArray:v23];
@@ -2637,7 +2637,7 @@ LABEL_41:
       v31 = [v40 URL];
       [v30 setURL:v31];
 
-      [v30 setAccount:v18];
+      [v30 setAccount:account];
       v44 = 0;
       v32 = [NSKeyedArchiver archivedDataWithRootObject:v30 requiringSecureCoding:1 error:&v44];
       v33 = v44;
@@ -2649,7 +2649,7 @@ LABEL_41:
 
         if (v34)
         {
-          (v7)[2](v7, 0, v34);
+          (blockCopy)[2](blockCopy, 0, v34);
           v33 = v35;
           v20 = v42;
         }
@@ -2664,7 +2664,7 @@ LABEL_41:
           }
 
           v37 = [v35 toASDErrorWithMetadata:0];
-          v7[2](v7, v37, 0);
+          blockCopy[2](blockCopy, v37, 0);
 
           v33 = v35;
         }
@@ -2684,10 +2684,10 @@ LABEL_41:
         }
 
         v34 = [v33 toASDErrorWithMetadata:0];
-        v7[2](v7, v34, 0);
+        blockCopy[2](blockCopy, v34, 0);
       }
 
-      v6 = v39;
+      idCopy = v39;
       v28 = v40;
     }
 
@@ -2698,7 +2698,7 @@ LABEL_41:
         sub_1002CB50C();
       }
 
-      v6 = v39;
+      idCopy = v39;
       v20 = v42;
       if (os_log_type_enabled(qword_1003CB4F8, OS_LOG_TYPE_ERROR))
       {
@@ -2706,7 +2706,7 @@ LABEL_41:
       }
 
       v30 = [v42 toASDErrorWithMetadata:0];
-      v7[2](v7, v30, 0);
+      blockCopy[2](blockCopy, v30, 0);
     }
 
     v17 = v38;
@@ -2725,20 +2725,20 @@ LABEL_56:
   if (os_log_type_enabled(qword_1003CB4F8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v48 = self;
+    selfCopy2 = self;
     v49 = 2114;
     v50 = v12;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "%{public}@: Found simulated failure: %{public}@", buf, 0x16u);
   }
 
 LABEL_16:
-  v7[2](v7, v12, 0);
+  blockCopy[2](blockCopy, v12, 0);
 LABEL_57:
 }
 
-- (void)displayMessageWithType:(id)a3
+- (void)displayMessageWithType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   if (qword_1003D4160 != -1)
   {
     sub_1002CB534();
@@ -2748,7 +2748,7 @@ LABEL_57:
   if (os_log_type_enabled(qword_1003CB4F8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138543618;
-    v10 = self;
+    selfCopy = self;
     v11 = 2082;
     v12 = "[StoreKitServiceConnection displayMessageWithType:]";
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@]: %{public}s", &v9, 0x16u);
@@ -2757,13 +2757,13 @@ LABEL_57:
   v6 = +[NSXPCConnection currentConnection];
   v7 = [[_TtC9storekitd6Client alloc] initWithConnection:v6 overridesDictionary:0];
   v8 = +[StoreKitMessagesManager sharedManager];
-  [v8 displayMessageWithType:v4 forClient:v7 connection:v6];
-  [v8 recordMessageDisplayEventWithType:2 messageType:objc_msgSend(v4 client:{"integerValue"), v7}];
+  [v8 displayMessageWithType:typeCopy forClient:v7 connection:v6];
+  [v8 recordMessageDisplayEventWithType:2 messageType:objc_msgSend(typeCopy client:{"integerValue"), v7}];
 }
 
-- (void)xcodeTestCertificatesWithReply:(id)a3
+- (void)xcodeTestCertificatesWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   if (qword_1003D4160 != -1)
   {
     sub_1002CB534();
@@ -2773,7 +2773,7 @@ LABEL_57:
   if (os_log_type_enabled(qword_1003CB4F8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v19 = self;
+    selfCopy = self;
     v20 = 2082;
     v21 = "[StoreKitServiceConnection xcodeTestCertificatesWithReply:]";
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@]: %{public}s", buf, 0x16u);
@@ -2786,8 +2786,8 @@ LABEL_57:
   if ([(Client *)v8 objc_clientType]== 3)
   {
     v9 = +[OctaneManager sharedInstance];
-    v10 = [(Client *)v8 requestBundleID];
-    v11 = [OctaneActionContext contextWithBundleID:v10];
+    requestBundleID = [(Client *)v8 requestBundleID];
+    v11 = [OctaneActionContext contextWithBundleID:requestBundleID];
 
     v12 = [v9 getStringValueForIdentifier:8 withContext:v11];
     v13 = v12;
@@ -2812,19 +2812,19 @@ LABEL_57:
       v16 = &__NSArray0__struct;
     }
 
-    v4[2](v4, v16, 0);
+    replyCopy[2](replyCopy, v16, 0);
   }
 
   else
   {
     v9 = ASDErrorWithDescription();
-    (v4)[2](v4, 0, v9);
+    (replyCopy)[2](replyCopy, 0, v9);
   }
 }
 
-- (void)xcodeTestCertificatesShouldSimulateRevocationWithReply:(id)a3
+- (void)xcodeTestCertificatesShouldSimulateRevocationWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   if (qword_1003D4160 != -1)
   {
     sub_1002CB534();
@@ -2834,7 +2834,7 @@ LABEL_57:
   if (os_log_type_enabled(qword_1003CB4F8, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138543618;
-    v13 = self;
+    selfCopy = self;
     v14 = 2082;
     v15 = "[StoreKitServiceConnection xcodeTestCertificatesShouldSimulateRevocationWithReply:]";
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@]: %{public}s", &v12, 0x16u);
@@ -2846,21 +2846,21 @@ LABEL_57:
 
   if ([(Client *)v8 objc_clientType]!= 3)
   {
-    v4[2](v4, 0);
+    replyCopy[2](replyCopy, 0);
   }
 
   v9 = +[OctaneManager sharedInstance];
-  v10 = [(Client *)v8 requestBundleID];
-  v11 = [v9 storeKitErrorForCategory:2 bundleID:v10];
+  requestBundleID = [(Client *)v8 requestBundleID];
+  v11 = [v9 storeKitErrorForCategory:2 bundleID:requestBundleID];
 
-  (v4)[2](v4, v11 == 17);
+  (replyCopy)[2](replyCopy, v11 == 17);
 }
 
-- (void)requestProductReviewWithInterfaceOrientation:(unint64_t)a3 bundleIdentifier:(id)a4 sceneID:(id)a5 replyBlock:(id)a6
+- (void)requestProductReviewWithInterfaceOrientation:(unint64_t)orientation bundleIdentifier:(id)identifier sceneID:(id)d replyBlock:(id)block
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  identifierCopy = identifier;
+  dCopy = d;
+  blockCopy = block;
   if (qword_1003D4160 != -1)
   {
     sub_1002CB534();
@@ -2870,7 +2870,7 @@ LABEL_57:
   if (os_log_type_enabled(qword_1003CB4F8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v28 = self;
+    selfCopy = self;
     v29 = 2082;
     v30 = "[StoreKitServiceConnection requestProductReviewWithInterfaceOrientation:bundleIdentifier:sceneID:replyBlock:]";
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "[%{public}@]: %{public}s", buf, 0x16u);
@@ -2894,7 +2894,7 @@ LABEL_57:
     }
 
     *buf = 136446210;
-    v28 = v18;
+    selfCopy = v18;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "Using %{public}s request-review flow", buf, 0xCu);
   }
 
@@ -2904,25 +2904,25 @@ LABEL_57:
     [(StoreKitServiceConnection *)self setRemoteAlertWrapper:v19];
 
     v20 = [(Client *)v15 objc_clientType]!= 1;
-    v21 = [(StoreKitServiceConnection *)self remoteAlertWrapper];
-    v22 = [NSNumber numberWithUnsignedInteger:a3, @"orientation"];
+    remoteAlertWrapper = [(StoreKitServiceConnection *)self remoteAlertWrapper];
+    v22 = [NSNumber numberWithUnsignedInteger:orientation, @"orientation"];
     v26[0] = v22;
-    v26[1] = v10;
+    v26[1] = identifierCopy;
     v25[1] = @"bundleIdentifier";
     v25[2] = @"sandboxed";
     v23 = [NSNumber numberWithBool:v20];
     v26[2] = v23;
     v24 = [NSDictionary dictionaryWithObjects:v26 forKeys:v25 count:3];
-    [v21 activateForTargetXPCConnection:v14 sceneID:v11 shouldDismissOnUILock:1 userInfo:v24];
+    [remoteAlertWrapper activateForTargetXPCConnection:v14 sceneID:dCopy shouldDismissOnUILock:1 userInfo:v24];
   }
 
-  v12[2](v12, v16 ^ 1u);
+  blockCopy[2](blockCopy, v16 ^ 1u);
 }
 
-- (void)lookUpItemIDsForDeletableSystemAppsWithBundleIDs:(id)a3 reply:(id)a4
+- (void)lookUpItemIDsForDeletableSystemAppsWithBundleIDs:(id)ds reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  replyCopy = reply;
   if (qword_1003D4160 != -1)
   {
     sub_1002CB534();
@@ -2932,7 +2932,7 @@ LABEL_57:
   if (os_log_type_enabled(qword_1003CB4F8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v51 = self;
+    selfCopy = self;
     v52 = 2082;
     v53 = "[StoreKitServiceConnection lookUpItemIDsForDeletableSystemAppsWithBundleIDs:reply:]";
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "[%{public}@]: %{public}s", buf, 0x16u);
@@ -2948,16 +2948,16 @@ LABEL_57:
   if (v12)
   {
     v35 = v13;
-    v37 = v7;
-    v38 = v6;
+    v37 = replyCopy;
+    v38 = dsCopy;
     v14 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v12 count]);
     v43 = 0u;
     v44 = 0u;
     v45 = 0u;
     v46 = 0u;
     v36 = v12;
-    v15 = [v12 tcr_dictionaryEnumerator];
-    v16 = [v15 countByEnumeratingWithState:&v43 objects:v49 count:16];
+    tcr_dictionaryEnumerator = [v12 tcr_dictionaryEnumerator];
+    v16 = [tcr_dictionaryEnumerator countByEnumeratingWithState:&v43 objects:v49 count:16];
     if (v16)
     {
       v17 = v16;
@@ -2968,7 +2968,7 @@ LABEL_57:
         {
           if (*v44 != v18)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(tcr_dictionaryEnumerator);
           }
 
           v20 = *(*(&v43 + 1) + 8 * i);
@@ -2992,13 +2992,13 @@ LABEL_57:
           }
         }
 
-        v17 = [v15 countByEnumeratingWithState:&v43 objects:v49 count:16];
+        v17 = [tcr_dictionaryEnumerator countByEnumeratingWithState:&v43 objects:v49 count:16];
       }
 
       while (v17);
     }
 
-    v6 = v38;
+    dsCopy = v38;
     v26 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v38 count]);
     v39 = 0u;
     v40 = 0u;
@@ -3031,7 +3031,7 @@ LABEL_57:
       while (v29);
     }
 
-    v7 = v37;
+    replyCopy = v37;
     v37[2](v37, v26, 0);
 
     v12 = v36;
@@ -3051,13 +3051,13 @@ LABEL_57:
     }
 
     v14 = [v13 toASDErrorWithMetadata:0];
-    v7[2](v7, &__NSDictionary0__struct, v14);
+    replyCopy[2](replyCopy, &__NSDictionary0__struct, v14);
   }
 }
 
-- (void)canMakePaymentsWithReply:(id)a3
+- (void)canMakePaymentsWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   if (qword_1003D4160 != -1)
   {
     sub_1002CB534();
@@ -3067,7 +3067,7 @@ LABEL_57:
   if (os_log_type_enabled(qword_1003CB4F8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138543618;
-    v10 = self;
+    selfCopy = self;
     v11 = 2082;
     v12 = "[StoreKitServiceConnection canMakePaymentsWithReply:]";
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@]: %{public}s", &v9, 0x16u);
@@ -3077,14 +3077,14 @@ LABEL_57:
   v7 = +[NSXPCConnection currentConnection];
   v8 = [(Client *)v6 initWithConnection:v7 overridesDictionary:0];
 
-  v4[2](v4, [(Client *)v8 canMakePayments], 0);
+  replyCopy[2](replyCopy, [(Client *)v8 canMakePayments], 0);
 }
 
-- (void)promotionInfoForProductIdentifiers:(id)a3 client:(id)a4 reply:(id)a5
+- (void)promotionInfoForProductIdentifiers:(id)identifiers client:(id)client reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifiersCopy = identifiers;
+  clientCopy = client;
+  replyCopy = reply;
   if (qword_1003D4160 != -1)
   {
     sub_1002CB534();
@@ -3094,7 +3094,7 @@ LABEL_57:
   if (os_log_type_enabled(qword_1003CB4F8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v23 = self;
+    selfCopy = self;
     v24 = 2082;
     v25 = "[StoreKitServiceConnection promotionInfoForProductIdentifiers:client:reply:]";
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "[%{public}@]: %{public}s", buf, 0x16u);
@@ -3103,7 +3103,7 @@ LABEL_57:
   v12 = +[NSXPCConnection currentConnection];
   if ([v12 sk_allowClientOverride])
   {
-    v13 = v9;
+    v13 = clientCopy;
   }
 
   else
@@ -3121,9 +3121,9 @@ LABEL_57:
     block[1] = 3221225472;
     block[2] = sub_100043504;
     block[3] = &unk_10037FDC8;
-    v19 = v8;
+    v19 = identifiersCopy;
     v20 = v15;
-    v21 = v10;
+    v21 = replyCopy;
     dispatch_async(productPromotionsQueue, block);
 
     v17 = v19;
@@ -3142,15 +3142,15 @@ LABEL_57:
     }
 
     v17 = ASDErrorWithTitleAndMessage();
-    (*(v10 + 2))(v10, 0, v17);
+    (*(replyCopy + 2))(replyCopy, 0, v17);
   }
 }
 
-- (void)setPromotionInfo:(id)a3 forClient:(id)a4 reply:(id)a5
+- (void)setPromotionInfo:(id)info forClient:(id)client reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  infoCopy = info;
+  clientCopy = client;
+  replyCopy = reply;
   if (qword_1003D4160 != -1)
   {
     sub_1002CB534();
@@ -3160,7 +3160,7 @@ LABEL_57:
   if (os_log_type_enabled(qword_1003CB4F8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v23 = self;
+    selfCopy = self;
     v24 = 2082;
     v25 = "[StoreKitServiceConnection setPromotionInfo:forClient:reply:]";
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "[%{public}@]: %{public}s", buf, 0x16u);
@@ -3169,7 +3169,7 @@ LABEL_57:
   v12 = +[NSXPCConnection currentConnection];
   if ([v12 sk_allowClientOverride])
   {
-    v13 = v9;
+    v13 = clientCopy;
   }
 
   else
@@ -3187,9 +3187,9 @@ LABEL_57:
     block[1] = 3221225472;
     block[2] = sub_100043838;
     block[3] = &unk_10037FDC8;
-    v19 = v8;
+    v19 = infoCopy;
     v20 = v15;
-    v21 = v10;
+    v21 = replyCopy;
     dispatch_async(productPromotionsQueue, block);
 
     v17 = v19;
@@ -3208,15 +3208,15 @@ LABEL_57:
     }
 
     v17 = ASDErrorWithTitleAndMessage();
-    (*(v10 + 2))(v10, v17);
+    (*(replyCopy + 2))(replyCopy, v17);
   }
 }
 
-- (void)appTransactionForClient:(id)a3 ignoreCache:(BOOL)a4 reply:(id)a5
+- (void)appTransactionForClient:(id)client ignoreCache:(BOOL)cache reply:(id)reply
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  cacheCopy = cache;
+  clientCopy = client;
+  replyCopy = reply;
   if (qword_1003D4160 != -1)
   {
     sub_1002CB534();
@@ -3226,7 +3226,7 @@ LABEL_57:
   if (os_log_type_enabled(qword_1003CB4F8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v27 = self;
+    selfCopy2 = self;
     v28 = 2082;
     v29 = "[StoreKitServiceConnection appTransactionForClient:ignoreCache:reply:]";
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "[%{public}@]: %{public}s", buf, 0x16u);
@@ -3235,7 +3235,7 @@ LABEL_57:
   v11 = +[NSXPCConnection currentConnection];
   if ([v11 sk_allowClientOverride])
   {
-    v12 = v8;
+    v12 = clientCopy;
   }
 
   else
@@ -3284,18 +3284,18 @@ LABEL_20:
   if (!v16)
   {
     v18 = [_TtC9storekitd13DialogContext alloc];
-    v19 = [(Client *)v14 callerBundleID];
-    v20 = [(Client *)v14 callerBundleURL];
-    v21 = [(Client *)v14 processInfo];
-    v22 = [(DialogContext *)v18 initWithBundleID:v19 bundleURL:v20 processInfo:v21 dialogObserver:0];
+    callerBundleID = [(Client *)v14 callerBundleID];
+    callerBundleURL = [(Client *)v14 callerBundleURL];
+    processInfo = [(Client *)v14 processInfo];
+    v22 = [(DialogContext *)v18 initWithBundleID:callerBundleID bundleURL:callerBundleURL processInfo:processInfo dialogObserver:0];
 
     v23 = [ReceiptManager managerForClient:v14];
     v24[0] = _NSConcreteStackBlock;
     v24[1] = 3221225472;
     v24[2] = sub_100043CB8;
     v24[3] = &unk_100380E88;
-    v25 = v9;
-    [v23 appTransactionWithDialogContext:v22 ignoreCache:v6 completionHandler:v24];
+    v25 = replyCopy;
+    [v23 appTransactionWithDialogContext:v22 ignoreCache:cacheCopy completionHandler:v24];
 
     goto LABEL_22;
   }
@@ -3309,20 +3309,20 @@ LABEL_20:
   if (os_log_type_enabled(qword_1003CB4F8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v27 = self;
+    selfCopy2 = self;
     v28 = 2114;
     v29 = v16;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "%{public}@: Found simulated failure: %{public}@", buf, 0x16u);
   }
 
 LABEL_21:
-  (*(v9 + 2))(v9, 0, v16);
+  (*(replyCopy + 2))(replyCopy, 0, v16);
 LABEL_22:
 }
 
-- (void)authenticateAndSyncTransactionsAndStatusWithReply:(id)a3
+- (void)authenticateAndSyncTransactionsAndStatusWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   if (qword_1003D4160 != -1)
   {
     sub_1002CB534();
@@ -3332,7 +3332,7 @@ LABEL_22:
   if (os_log_type_enabled(qword_1003CB4F8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v21 = self;
+    selfCopy2 = self;
     v22 = 2082;
     v23 = "[StoreKitServiceConnection authenticateAndSyncTransactionsAndStatusWithReply:]";
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@]: %{public}s", buf, 0x16u);
@@ -3348,10 +3348,10 @@ LABEL_22:
     if (!v9)
     {
       v11 = [_TtC9storekitd13DialogContext alloc];
-      v12 = [(Client *)v8 callerBundleID];
-      v13 = [(Client *)v8 callerBundleURL];
-      v14 = [(Client *)v8 processInfo];
-      v15 = [(DialogContext *)v11 initWithBundleID:v12 bundleURL:v13 processInfo:v14 dialogObserver:0];
+      callerBundleID = [(Client *)v8 callerBundleID];
+      callerBundleURL = [(Client *)v8 callerBundleURL];
+      processInfo = [(Client *)v8 processInfo];
+      v15 = [(DialogContext *)v11 initWithBundleID:callerBundleID bundleURL:callerBundleURL processInfo:processInfo dialogObserver:0];
 
       v16 = [ReceiptManager managerForClient:v8];
       v17[0] = _NSConcreteStackBlock;
@@ -3359,7 +3359,7 @@ LABEL_22:
       v17[2] = sub_100044070;
       v17[3] = &unk_100381AC8;
       v18 = v8;
-      v19 = v4;
+      v19 = replyCopy;
       [v16 authenticateAndSyncWithDialogContext:v15 completionHandler:v17];
 
       goto LABEL_18;
@@ -3374,7 +3374,7 @@ LABEL_22:
     if (os_log_type_enabled(qword_1003CB4F8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v21 = self;
+      selfCopy2 = self;
       v22 = 2114;
       v23 = v9;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%{public}@: Found simulated failure: %{public}@", buf, 0x16u);
@@ -3396,17 +3396,17 @@ LABEL_22:
     v9 = ASDErrorWithTitleAndMessage();
   }
 
-  (*(v4 + 2))(v4, v9);
+  (*(replyCopy + 2))(replyCopy, v9);
 LABEL_18:
 }
 
-- (void)enumerateCurrentReceiptsForClient:(id)a3 productID:(id)a4 withReceiver:(id)a5 skipTransactionSync:(BOOL)a6 reply:(id)a7
+- (void)enumerateCurrentReceiptsForClient:(id)client productID:(id)d withReceiver:(id)receiver skipTransactionSync:(BOOL)sync reply:(id)reply
 {
-  v8 = a6;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  syncCopy = sync;
+  clientCopy = client;
+  dCopy = d;
+  receiverCopy = receiver;
+  replyCopy = reply;
   if (qword_1003D4160 != -1)
   {
     sub_1002CB534();
@@ -3416,7 +3416,7 @@ LABEL_18:
   if (os_log_type_enabled(qword_1003CB4F8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v30 = self;
+    selfCopy = self;
     v31 = 2082;
     v32 = "[StoreKitServiceConnection enumerateCurrentReceiptsForClient:productID:withReceiver:skipTransactionSync:reply:]";
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "[%{public}@]: %{public}s", buf, 0x16u);
@@ -3425,7 +3425,7 @@ LABEL_18:
   v17 = +[NSXPCConnection currentConnection];
   if ([v17 sk_allowClientOverride])
   {
-    v18 = v12;
+    v18 = clientCopy;
   }
 
   else
@@ -3439,20 +3439,20 @@ LABEL_18:
   if (v20)
   {
     v21 = [ReceiptManager managerForClient:v20];
-    v22 = [v17 sk_allowAdvancedTransactionQueries];
+    sk_allowAdvancedTransactionQueries = [v17 sk_allowAdvancedTransactionQueries];
     v27[0] = _NSConcreteStackBlock;
     v27[1] = 3221225472;
     v27[2] = sub_1000444B4;
     v27[3] = &unk_100381B40;
-    v28 = v14;
+    v28 = receiverCopy;
     v23[0] = _NSConcreteStackBlock;
     v23[1] = 3221225472;
     v23[2] = sub_100044550;
     v23[3] = &unk_100381B90;
     v24 = v28;
     v25 = v20;
-    v26 = v15;
-    [v21 enumerateCurrentReceiptsForProductID:v13 skipTransactionSync:v22 & v8 usingBlock:v27 completionHandler:v23];
+    v26 = replyCopy;
+    [v21 enumerateCurrentReceiptsForProductID:dCopy skipTransactionSync:sk_allowAdvancedTransactionQueries & syncCopy usingBlock:v27 completionHandler:v23];
   }
 
   else
@@ -3468,17 +3468,17 @@ LABEL_18:
     }
 
     v21 = ASDErrorWithTitleAndMessage();
-    (*(v15 + 2))(v15, v21);
+    (*(replyCopy + 2))(replyCopy, v21);
   }
 }
 
-- (void)enumerateReceiptsForClient:(id)a3 productID:(id)a4 withReceiver:(id)a5 skipTransactionSync:(BOOL)a6 reply:(id)a7
+- (void)enumerateReceiptsForClient:(id)client productID:(id)d withReceiver:(id)receiver skipTransactionSync:(BOOL)sync reply:(id)reply
 {
-  v8 = a6;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  syncCopy = sync;
+  clientCopy = client;
+  dCopy = d;
+  receiverCopy = receiver;
+  replyCopy = reply;
   if (qword_1003D4160 != -1)
   {
     sub_1002CB534();
@@ -3488,7 +3488,7 @@ LABEL_18:
   if (os_log_type_enabled(qword_1003CB4F8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v30 = self;
+    selfCopy = self;
     v31 = 2082;
     v32 = "[StoreKitServiceConnection enumerateReceiptsForClient:productID:withReceiver:skipTransactionSync:reply:]";
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "[%{public}@]: %{public}s", buf, 0x16u);
@@ -3497,7 +3497,7 @@ LABEL_18:
   v17 = +[NSXPCConnection currentConnection];
   if ([v17 sk_allowClientOverride])
   {
-    v18 = v12;
+    v18 = clientCopy;
   }
 
   else
@@ -3511,20 +3511,20 @@ LABEL_18:
   if (v20)
   {
     v21 = [ReceiptManager managerForClient:v20];
-    v22 = [v17 sk_allowAdvancedTransactionQueries];
+    sk_allowAdvancedTransactionQueries = [v17 sk_allowAdvancedTransactionQueries];
     v27[0] = _NSConcreteStackBlock;
     v27[1] = 3221225472;
     v27[2] = sub_1000449F0;
     v27[3] = &unk_100381B40;
-    v28 = v14;
+    v28 = receiverCopy;
     v23[0] = _NSConcreteStackBlock;
     v23[1] = 3221225472;
     v23[2] = sub_100044A8C;
     v23[3] = &unk_100381B90;
     v24 = v28;
     v25 = v20;
-    v26 = v15;
-    [v21 enumerateReceiptsForProductID:v13 skipTransactionSync:v22 & v8 usingBlock:v27 completionHandler:v23];
+    v26 = replyCopy;
+    [v21 enumerateReceiptsForProductID:dCopy skipTransactionSync:sk_allowAdvancedTransactionQueries & syncCopy usingBlock:v27 completionHandler:v23];
   }
 
   else
@@ -3540,16 +3540,16 @@ LABEL_18:
     }
 
     v21 = ASDErrorWithTitleAndMessage();
-    (*(v15 + 2))(v15, v21);
+    (*(replyCopy + 2))(replyCopy, v21);
   }
 }
 
-- (void)enumerateUnfinishedTransactionsForClient:(id)a3 withReceiver:(id)a4 skipTransactionSync:(BOOL)a5 reply:(id)a6
+- (void)enumerateUnfinishedTransactionsForClient:(id)client withReceiver:(id)receiver skipTransactionSync:(BOOL)sync reply:(id)reply
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  syncCopy = sync;
+  clientCopy = client;
+  receiverCopy = receiver;
+  replyCopy = reply;
   if (qword_1003D4160 != -1)
   {
     sub_1002CB534();
@@ -3559,7 +3559,7 @@ LABEL_18:
   if (os_log_type_enabled(qword_1003CB4F8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v27 = self;
+    selfCopy = self;
     v28 = 2082;
     v29 = "[StoreKitServiceConnection enumerateUnfinishedTransactionsForClient:withReceiver:skipTransactionSync:reply:]";
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "[%{public}@]: %{public}s", buf, 0x16u);
@@ -3568,7 +3568,7 @@ LABEL_18:
   v14 = +[NSXPCConnection currentConnection];
   if ([v14 sk_allowClientOverride])
   {
-    v15 = v10;
+    v15 = clientCopy;
   }
 
   else
@@ -3582,20 +3582,20 @@ LABEL_18:
   if (v17)
   {
     v18 = [ReceiptManager managerForClient:v17];
-    v19 = [v14 sk_allowAdvancedTransactionQueries];
+    sk_allowAdvancedTransactionQueries = [v14 sk_allowAdvancedTransactionQueries];
     v24[0] = _NSConcreteStackBlock;
     v24[1] = 3221225472;
     v24[2] = sub_100044F18;
     v24[3] = &unk_100381B40;
-    v25 = v11;
+    v25 = receiverCopy;
     v20[0] = _NSConcreteStackBlock;
     v20[1] = 3221225472;
     v20[2] = sub_100044FB4;
     v20[3] = &unk_100381B90;
     v21 = v25;
     v22 = v17;
-    v23 = v12;
-    [v18 enumerateUnfinishedTransactionsSkippingTransactionSync:v19 & v7 usingBlock:v24 completionHandler:v20];
+    v23 = replyCopy;
+    [v18 enumerateUnfinishedTransactionsSkippingTransactionSync:sk_allowAdvancedTransactionQueries & syncCopy usingBlock:v24 completionHandler:v20];
   }
 
   else
@@ -3611,13 +3611,13 @@ LABEL_18:
     }
 
     v18 = ASDErrorWithTitleAndMessage();
-    (*(v12 + 2))(v12, v18);
+    (*(replyCopy + 2))(replyCopy, v18);
   }
 }
 
-- (void)invalidateTransactionsAndStatusCacheWithReply:(id)a3
+- (void)invalidateTransactionsAndStatusCacheWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   if (qword_1003D4160 != -1)
   {
     sub_1002CB534();
@@ -3627,7 +3627,7 @@ LABEL_18:
   if (os_log_type_enabled(qword_1003CB4F8, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138543618;
-    v11 = self;
+    selfCopy = self;
     v12 = 2082;
     v13 = "[StoreKitServiceConnection invalidateTransactionsAndStatusCacheWithReply:]";
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@]: %{public}s", &v10, 0x16u);
@@ -3656,12 +3656,12 @@ LABEL_18:
     }
   }
 
-  v4[2](v4);
+  replyCopy[2](replyCopy);
 }
 
-- (void)isXcodeTestAppWithReply:(id)a3
+- (void)isXcodeTestAppWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   if (qword_1003D4160 != -1)
   {
     sub_1002CB534();
@@ -3671,7 +3671,7 @@ LABEL_18:
   if (os_log_type_enabled(qword_1003CB4F8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138543618;
-    v10 = self;
+    selfCopy = self;
     v11 = 2082;
     v12 = "[StoreKitServiceConnection isXcodeTestAppWithReply:]";
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@]: %{public}s", &v9, 0x16u);
@@ -3681,14 +3681,14 @@ LABEL_18:
   v7 = +[NSXPCConnection currentConnection];
   v8 = [(Client *)v6 initWithConnection:v7 overridesDictionary:0];
 
-  v4[2](v4, [(Client *)v8 objc_clientType]== 3);
+  replyCopy[2](replyCopy, [(Client *)v8 objc_clientType]== 3);
 }
 
-- (void)transactionForID:(id)a3 client:(id)a4 skipTransactionSync:(BOOL)a5 reply:(id)a6
+- (void)transactionForID:(id)d client:(id)client skipTransactionSync:(BOOL)sync reply:(id)reply
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
+  dCopy = d;
+  clientCopy = client;
+  replyCopy = reply;
   if (qword_1003D4160 != -1)
   {
     sub_1002CB534();
@@ -3698,7 +3698,7 @@ LABEL_18:
   if (os_log_type_enabled(qword_1003CB4F8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v21 = self;
+    selfCopy = self;
     v22 = 2082;
     v23 = "[StoreKitServiceConnection transactionForID:client:skipTransactionSync:reply:]";
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "[%{public}@]: %{public}s", buf, 0x16u);
@@ -3707,7 +3707,7 @@ LABEL_18:
   v13 = +[NSXPCConnection currentConnection];
   if ([v13 sk_allowClientOverride])
   {
-    v14 = v10;
+    v14 = clientCopy;
   }
 
   else
@@ -3726,8 +3726,8 @@ LABEL_18:
     v18[1] = 3221225472;
     v18[2] = sub_100045698;
     v18[3] = &unk_100381BB8;
-    v19 = v11;
-    [v17 transactionWithID:v9 completionHandler:v18];
+    v19 = replyCopy;
+    [v17 transactionWithID:dCopy completionHandler:v18];
   }
 
   else
@@ -3743,7 +3743,7 @@ LABEL_18:
     }
 
     v17 = ASDErrorWithTitleAndMessage();
-    (*(v11 + 2))(v11, 0, v17);
+    (*(replyCopy + 2))(replyCopy, 0, v17);
   }
 }
 
@@ -3758,7 +3758,7 @@ LABEL_18:
   if (os_log_type_enabled(qword_1003CB4F8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v13 = self;
+    selfCopy = self;
     v14 = 2082;
     v15 = "[StoreKitServiceConnection checkForMessages]";
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "[%{public}@]: %{public}s", buf, 0x16u);
@@ -3828,7 +3828,7 @@ LABEL_18:
   if (os_log_type_enabled(qword_1003CB4F8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v25 = self;
+    selfCopy = self;
     v26 = 2082;
     v27 = "[StoreKitServiceConnection presentCodeRedemptionSheet]";
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "[%{public}@]: %{public}s", buf, 0x16u);
@@ -3855,8 +3855,8 @@ LABEL_18:
 
     else
     {
-      v7 = [(Client *)v6 account];
-      if (v7 || [(Client *)v6 objc_clientType]== 3)
+      account = [(Client *)v6 account];
+      if (account || [(Client *)v6 objc_clientType]== 3)
       {
         v8 = [(StoreKitServiceConnection *)self _offerCodeRedemptionURLForClient:v6];
         v9 = [ReceiptManager managerForClient:v6];
@@ -3865,12 +3865,12 @@ LABEL_18:
           if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
-            v25 = v8;
+            selfCopy = v8;
             _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "StoreKit: Opening redemption URL: %@", buf, 0xCu);
           }
 
-          v10 = [(StoreKitServiceConnection *)v8 scheme];
-          v11 = [v10 isEqualToString:@"itms-ui"];
+          scheme = [(StoreKitServiceConnection *)v8 scheme];
+          v11 = [scheme isEqualToString:@"itms-ui"];
 
           if (v11)
           {
@@ -3882,22 +3882,22 @@ LABEL_18:
           {
             v13 = objc_alloc_init(AMSEngagementRequest);
             [v13 setURL:v8];
-            [v13 setAccount:v7];
+            [v13 setAccount:account];
             v14 = [[AMSSystemEngagementTask alloc] initWithRequest:v13];
             v15 = [(Client *)v6 bag];
             [v14 setBag:v15];
 
-            v16 = [(Client *)v6 processInfo];
-            [v14 setClientInfo:v16];
+            processInfo = [(Client *)v6 processInfo];
+            [v14 setClientInfo:processInfo];
 
-            v17 = [v14 present];
+            present = [v14 present];
             v18 = _NSConcreteStackBlock;
             v19 = 3221225472;
             v20 = sub_100045DE0;
             v21 = &unk_100381C08;
-            v22 = self;
+            selfCopy2 = self;
             v23 = v9;
-            [v17 addFinishBlock:&v18];
+            [present addFinishBlock:&v18];
           }
         }
 
@@ -3946,10 +3946,10 @@ LABEL_18:
   }
 }
 
-- (void)registerArcadeAppWithRandomFromLib:(id)a3 randomFromLibLength:(unsigned int)a4 resultHandler:(id)a5
+- (void)registerArcadeAppWithRandomFromLib:(id)lib randomFromLibLength:(unsigned int)length resultHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  libCopy = lib;
+  handlerCopy = handler;
   if (qword_1003D4160 != -1)
   {
     sub_1002CB534();
@@ -3959,7 +3959,7 @@ LABEL_18:
   if (os_log_type_enabled(qword_1003CB4F8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v25 = self;
+    selfCopy2 = self;
     v26 = 2082;
     v27 = "[StoreKitServiceConnection registerArcadeAppWithRandomFromLib:randomFromLibLength:resultHandler:]";
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "[%{public}@]: %{public}s", buf, 0x16u);
@@ -3977,14 +3977,14 @@ LABEL_18:
     if (os_log_type_enabled(qword_1003CB4F8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v25 = self;
+      selfCopy2 = self;
       v26 = 2114;
       v27 = @"c4052938-7e9a-4cbd-a934-3b2c4b8a0937";
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "%{public}@: %{public}@", buf, 0x16u);
     }
 
     v13 = [[_TtC9storekitd6Client alloc] initWithConnection:v11 overridesDictionary:0];
-    v14 = [v11 processIdentifier];
+    processIdentifier = [v11 processIdentifier];
     v15 = objc_opt_new();
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
@@ -3992,10 +3992,10 @@ LABEL_18:
     v17[3] = &unk_100381C30;
     v17[4] = self;
     v18 = v13;
-    v21 = v9;
-    v22 = a4;
-    v23 = v14;
-    v19 = v8;
+    v21 = handlerCopy;
+    lengthCopy = length;
+    v23 = processIdentifier;
+    v19 = libCopy;
     v20 = @"c4052938-7e9a-4cbd-a934-3b2c4b8a0937";
     v16 = v13;
     [v15 subscriptionStateWithCompletionBlock:v17];
@@ -4014,13 +4014,13 @@ LABEL_18:
     }
 
     v15 = ASDErrorWithDescription();
-    (*(v9 + 2))(v9, 0, 0, 0, 0, v15);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, 0, 0, v15);
   }
 }
 
-- (void)arcadeSubscriptionStatusWithNonce:(unint64_t)a3 resultHandler:(id)a4
+- (void)arcadeSubscriptionStatusWithNonce:(unint64_t)nonce resultHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   if (qword_1003D4160 != -1)
   {
     sub_1002CB534();
@@ -4030,7 +4030,7 @@ LABEL_18:
   if (os_log_type_enabled(qword_1003CB4F8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v25 = self;
+    selfCopy3 = self;
     v26 = 2082;
     v27 = "[StoreKitServiceConnection arcadeSubscriptionStatusWithNonce:resultHandler:]";
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "[%{public}@]: %{public}s", buf, 0x16u);
@@ -4062,7 +4062,7 @@ LABEL_18:
   if (os_log_type_enabled(qword_1003CB4F8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v25 = self;
+    selfCopy3 = self;
     v26 = 2114;
     v27 = @"34708d07-5a16-4532-9c48-5dbb144b8f28";
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%{public}@: %{public}@", buf, 0x16u);
@@ -4086,7 +4086,7 @@ LABEL_18:
     }
 
 LABEL_20:
-    (*(v6 + 2))(v6, 0, 0, 0, 0, v12);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, 0, 0, v12);
     goto LABEL_21;
   }
 
@@ -4094,7 +4094,7 @@ LABEL_20:
   v21 = 0;
   v20 = 0;
   v19 = 0;
-  sub_1002A210C(v11, a3, [v8 processIdentifier], &v22, &v21, &v20, &v19);
+  sub_1002A210C(v11, nonce, [v8 processIdentifier], &v22, &v21, &v20, &v19);
   v14 = v13;
   if (qword_1003D4160 != -1)
   {
@@ -4105,7 +4105,7 @@ LABEL_20:
   if (os_log_type_enabled(qword_1003CB4F8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
-    v25 = self;
+    selfCopy3 = self;
     v26 = 2114;
     v27 = @"34708d07-5a16-4532-9c48-5dbb144b8f28";
     v28 = 2048;
@@ -4127,7 +4127,7 @@ LABEL_20:
     v18 = v19;
   }
 
-  (*(v6 + 2))(v6, v16, v21, v17, v18, 0);
+  (*(handlerCopy + 2))(handlerCopy, v16, v21, v17, v18, 0);
 
 LABEL_21:
 }
@@ -4143,7 +4143,7 @@ LABEL_21:
   if (os_log_type_enabled(qword_1003CB4F8, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138543618;
-    v12 = self;
+    selfCopy2 = self;
     v13 = 2082;
     v14 = "[StoreKitServiceConnection repairArcadeApp]";
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "[%{public}@]: %{public}s", &v11, 0x16u);
@@ -4164,13 +4164,13 @@ LABEL_21:
       if (os_log_type_enabled(qword_1003CB4F8, OS_LOG_TYPE_DEFAULT))
       {
         v11 = 138543362;
-        v12 = self;
+        selfCopy2 = self;
         _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: dc0d07d6-d699-41a8-aa7a-6784f6c89969", &v11, 0xCu);
       }
 
       v7 = [ASDRepairOptions alloc];
-      v8 = [(Client *)v5 callerBundleID];
-      v9 = [v7 initWithBundleID:v8];
+      callerBundleID = [(Client *)v5 callerBundleID];
+      v9 = [v7 initWithBundleID:callerBundleID];
 
       [v9 setExitReason:16];
       v10 = +[ASDRepairService defaultService];
@@ -4216,7 +4216,7 @@ LABEL_21:
   if (os_log_type_enabled(qword_1003CB4F8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v11 = self;
+    selfCopy = self;
     v12 = 2082;
     v13 = "[StoreKitServiceConnection registerForInstallAttribution]";
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "[%{public}@]: %{public}s", buf, 0x16u);
@@ -4284,9 +4284,9 @@ LABEL_21:
   }
 }
 
-- (void)updateConversionValue:(id)a3
+- (void)updateConversionValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   if (qword_1003D4160 != -1)
   {
     sub_1002CB534();
@@ -4296,19 +4296,19 @@ LABEL_21:
   if (os_log_type_enabled(qword_1003CB4F8, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138543618;
-    v7 = self;
+    selfCopy = self;
     v8 = 2082;
     v9 = "[StoreKitServiceConnection updateConversionValue:]";
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@]: %{public}s", &v6, 0x16u);
   }
 
-  [(StoreKitServiceConnection *)self updateConversionValue:v4 completionHandler:0];
+  [(StoreKitServiceConnection *)self updateConversionValue:valueCopy completionHandler:0];
 }
 
-- (void)updateConversionValue:(id)a3 completionHandler:(id)a4
+- (void)updateConversionValue:(id)value completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  handlerCopy = handler;
   if (qword_1003D4160 != -1)
   {
     sub_1002CB534();
@@ -4318,7 +4318,7 @@ LABEL_21:
   if (os_log_type_enabled(qword_1003CB4F8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v17 = self;
+    selfCopy = self;
     v18 = 2082;
     v19 = "[StoreKitServiceConnection updateConversionValue:completionHandler:]";
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "[%{public}@]: %{public}s", buf, 0x16u);
@@ -4339,8 +4339,8 @@ LABEL_21:
       v14[2] = sub_100047288;
       v14[3] = &unk_100381AC8;
       v14[4] = self;
-      v15 = v7;
-      [v12 updateConversionValueForInstallAttributionPingbackForApp:v13 conversionValue:v6 completionHandler:v14];
+      v15 = handlerCopy;
+      [v12 updateConversionValueForInstallAttributionPingbackForApp:v13 conversionValue:valueCopy completionHandler:v14];
 
       goto LABEL_18;
     }
@@ -4353,7 +4353,7 @@ LABEL_21:
     if (os_log_type_enabled(qword_1003CB4F8, OS_LOG_TYPE_ERROR))
     {
       sub_1002CD1B0();
-      if (!v7)
+      if (!handlerCopy)
       {
         goto LABEL_18;
       }
@@ -4372,7 +4372,7 @@ LABEL_21:
     if (os_log_type_enabled(qword_1003CB4F8, OS_LOG_TYPE_ERROR))
     {
       sub_1002CD218();
-      if (!v7)
+      if (!handlerCopy)
       {
         goto LABEL_18;
       }
@@ -4381,21 +4381,21 @@ LABEL_21:
     }
   }
 
-  if (v7)
+  if (handlerCopy)
   {
 LABEL_16:
-    (*(v7 + 2))(v7, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 
 LABEL_18:
 }
 
-- (void)updateConversionValue:(id)a3 coarseValue:(id)a4 lockWindow:(BOOL)a5 completionHandler:(id)a6
+- (void)updateConversionValue:(id)value coarseValue:(id)coarseValue lockWindow:(BOOL)window completionHandler:(id)handler
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  windowCopy = window;
+  valueCopy = value;
+  coarseValueCopy = coarseValue;
+  handlerCopy = handler;
   v13 = [_TtC9storekitd6Client alloc];
   v14 = +[NSXPCConnection currentConnection];
   v15 = [(Client *)v13 initWithConnection:v14 overridesDictionary:0];
@@ -4411,8 +4411,8 @@ LABEL_18:
       v18[2] = sub_10004755C;
       v18[3] = &unk_100381AC8;
       v18[4] = self;
-      v19 = v12;
-      [v16 updatePostbackConversionValuesForApp:v17 fineConversionValue:v10 coarseConversionValue:v11 lockWindow:v7 completionHandler:v18];
+      v19 = handlerCopy;
+      [v16 updatePostbackConversionValuesForApp:v17 fineConversionValue:valueCopy coarseConversionValue:coarseValueCopy lockWindow:windowCopy completionHandler:v18];
 
       goto LABEL_14;
     }
@@ -4425,7 +4425,7 @@ LABEL_18:
     if (os_log_type_enabled(qword_1003CB4F8, OS_LOG_TYPE_ERROR))
     {
       sub_1002CD2F0();
-      if (!v12)
+      if (!handlerCopy)
       {
         goto LABEL_14;
       }
@@ -4444,7 +4444,7 @@ LABEL_18:
     if (os_log_type_enabled(qword_1003CB4F8, OS_LOG_TYPE_ERROR))
     {
       sub_1002CD358();
-      if (!v12)
+      if (!handlerCopy)
       {
         goto LABEL_14;
       }
@@ -4453,19 +4453,19 @@ LABEL_18:
     }
   }
 
-  if (v12)
+  if (handlerCopy)
   {
 LABEL_12:
-    (*(v12 + 2))(v12, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 
 LABEL_14:
 }
 
-- (void)startAdImpressionWithConfig:(id)a3 completionHandler:(id)a4
+- (void)startAdImpressionWithConfig:(id)config completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  configCopy = config;
+  handlerCopy = handler;
   if (qword_1003D4160 != -1)
   {
     sub_1002CB534();
@@ -4475,17 +4475,17 @@ LABEL_14:
   if (os_log_type_enabled(qword_1003CB4F8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v33 = self;
+    selfCopy = self;
     v34 = 2082;
     v35 = "[StoreKitServiceConnection startAdImpressionWithConfig:completionHandler:]";
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "[%{public}@]: %{public}s", buf, 0x16u);
   }
 
-  v9 = [v6 objectForKeyedSubscript:@"version"];
+  v9 = [configCopy objectForKeyedSubscript:@"version"];
   v10 = [(StoreKitServiceConnection *)self _isSKANVersionFourOrHigher:v9];
   if (v10)
   {
-    v11 = [v6 objectForKeyedSubscript:@"source-identifier"];
+    v11 = [configCopy objectForKeyedSubscript:@"source-identifier"];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -4497,7 +4497,7 @@ LABEL_14:
 
   else
   {
-    v13 = [v6 objectForKeyedSubscript:@"campaign-id"];
+    v13 = [configCopy objectForKeyedSubscript:@"campaign-id"];
     objc_opt_class();
     v14 = objc_opt_isKindOfClass();
 
@@ -4505,7 +4505,7 @@ LABEL_14:
     {
 LABEL_11:
       v15 = ASDErrorWithDescription();
-      v7[2](v7, v15);
+      handlerCopy[2](handlerCopy, v15);
       goto LABEL_14;
     }
   }
@@ -4513,46 +4513,46 @@ LABEL_11:
   v15 = +[NSXPCConnection currentConnection];
   v16 = [[_TtC9storekitd6Client alloc] initWithConnection:v15 overridesDictionary:0];
   v17 = objc_opt_new();
-  v18 = [v6 objectForKeyedSubscript:@"app-adam-id"];
+  v18 = [configCopy objectForKeyedSubscript:@"app-adam-id"];
   [v17 setAppAdamId:v18];
 
-  v19 = [v6 objectForKeyedSubscript:@"ad-network-id"];
+  v19 = [configCopy objectForKeyedSubscript:@"ad-network-id"];
   [v17 setAdNetworkId:v19];
 
   if (v10)
   {
-    v20 = [v6 objectForKeyedSubscript:@"source-identifier"];
+    v20 = [configCopy objectForKeyedSubscript:@"source-identifier"];
     [v17 setSourceIdentifier:v20];
   }
 
   else
   {
-    v20 = [v6 objectForKeyedSubscript:@"campaign-id"];
+    v20 = [configCopy objectForKeyedSubscript:@"campaign-id"];
     [v17 setCampaignId:v20];
   }
 
-  v21 = [v6 objectForKeyedSubscript:@"impression-id"];
+  v21 = [configCopy objectForKeyedSubscript:@"impression-id"];
   [v17 setImpressionId:v21];
 
-  v22 = [v6 objectForKeyedSubscript:@"source-app-adamid"];
+  v22 = [configCopy objectForKeyedSubscript:@"source-app-adamid"];
   [v17 setSourceAppAdamId:v22];
 
-  v23 = [(Client *)v16 requestBundleID];
-  [v17 setSourceAppBundleId:v23];
+  requestBundleID = [(Client *)v16 requestBundleID];
+  [v17 setSourceAppBundleId:requestBundleID];
 
-  v24 = [v6 objectForKeyedSubscript:@"attr-signature"];
+  v24 = [configCopy objectForKeyedSubscript:@"attr-signature"];
   [v17 setAttributionSignature:v24];
 
-  v25 = [v6 objectForKeyedSubscript:@"version"];
+  v25 = [configCopy objectForKeyedSubscript:@"version"];
   [v17 setVersion:v25];
 
-  v26 = [v6 objectForKeyedSubscript:@"fidelity-type"];
+  v26 = [configCopy objectForKeyedSubscript:@"fidelity-type"];
   [v17 setFidelityType:v26];
 
-  v27 = [v15 sk_processName];
-  [v17 setProcessName:v27];
+  sk_processName = [v15 sk_processName];
+  [v17 setProcessName:sk_processName];
 
-  v28 = [v6 objectForKeyedSubscript:@"impression-timestamp"];
+  v28 = [configCopy objectForKeyedSubscript:@"impression-timestamp"];
   [v17 setTimestamp:v28];
 
   v29 = +[ASDInstallAttribution sharedInstance];
@@ -4560,16 +4560,16 @@ LABEL_11:
   v30[1] = 3221225472;
   v30[2] = sub_100047AAC;
   v30[3] = &unk_10037FFD0;
-  v31 = v7;
+  v31 = handlerCopy;
   [v29 startImpressionWithConfig:v17 completionHandler:v30];
 
 LABEL_14:
 }
 
-- (void)endAdImpressionWithConfig:(id)a3 completionHandler:(id)a4
+- (void)endAdImpressionWithConfig:(id)config completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  configCopy = config;
+  handlerCopy = handler;
   if (qword_1003D4160 != -1)
   {
     sub_1002CB534();
@@ -4579,17 +4579,17 @@ LABEL_14:
   if (os_log_type_enabled(qword_1003CB4F8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v33 = self;
+    selfCopy = self;
     v34 = 2082;
     v35 = "[StoreKitServiceConnection endAdImpressionWithConfig:completionHandler:]";
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "[%{public}@]: %{public}s", buf, 0x16u);
   }
 
-  v9 = [v6 objectForKeyedSubscript:@"version"];
+  v9 = [configCopy objectForKeyedSubscript:@"version"];
   v10 = [(StoreKitServiceConnection *)self _isSKANVersionFourOrHigher:v9];
   if (v10)
   {
-    v11 = [v6 objectForKeyedSubscript:@"source-identifier"];
+    v11 = [configCopy objectForKeyedSubscript:@"source-identifier"];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -4601,7 +4601,7 @@ LABEL_14:
 
   else
   {
-    v13 = [v6 objectForKeyedSubscript:@"campaign-id"];
+    v13 = [configCopy objectForKeyedSubscript:@"campaign-id"];
     objc_opt_class();
     v14 = objc_opt_isKindOfClass();
 
@@ -4609,7 +4609,7 @@ LABEL_14:
     {
 LABEL_11:
       v15 = ASDErrorWithDescription();
-      v7[2](v7, v15);
+      handlerCopy[2](handlerCopy, v15);
       goto LABEL_14;
     }
   }
@@ -4617,46 +4617,46 @@ LABEL_11:
   v15 = +[NSXPCConnection currentConnection];
   v16 = [[_TtC9storekitd6Client alloc] initWithConnection:v15 overridesDictionary:0];
   v17 = objc_opt_new();
-  v18 = [v6 objectForKeyedSubscript:@"app-adam-id"];
+  v18 = [configCopy objectForKeyedSubscript:@"app-adam-id"];
   [v17 setAppAdamId:v18];
 
-  v19 = [v6 objectForKeyedSubscript:@"ad-network-id"];
+  v19 = [configCopy objectForKeyedSubscript:@"ad-network-id"];
   [v17 setAdNetworkId:v19];
 
   if (v10)
   {
-    v20 = [v6 objectForKeyedSubscript:@"source-identifier"];
+    v20 = [configCopy objectForKeyedSubscript:@"source-identifier"];
     [v17 setSourceIdentifier:v20];
   }
 
   else
   {
-    v20 = [v6 objectForKeyedSubscript:@"campaign-id"];
+    v20 = [configCopy objectForKeyedSubscript:@"campaign-id"];
     [v17 setCampaignId:v20];
   }
 
-  v21 = [v6 objectForKeyedSubscript:@"impression-id"];
+  v21 = [configCopy objectForKeyedSubscript:@"impression-id"];
   [v17 setImpressionId:v21];
 
-  v22 = [v6 objectForKeyedSubscript:@"source-app-adamid"];
+  v22 = [configCopy objectForKeyedSubscript:@"source-app-adamid"];
   [v17 setSourceAppAdamId:v22];
 
-  v23 = [(Client *)v16 requestBundleID];
-  [v17 setSourceAppBundleId:v23];
+  requestBundleID = [(Client *)v16 requestBundleID];
+  [v17 setSourceAppBundleId:requestBundleID];
 
-  v24 = [v6 objectForKeyedSubscript:@"attr-signature"];
+  v24 = [configCopy objectForKeyedSubscript:@"attr-signature"];
   [v17 setAttributionSignature:v24];
 
-  v25 = [v6 objectForKeyedSubscript:@"version"];
+  v25 = [configCopy objectForKeyedSubscript:@"version"];
   [v17 setVersion:v25];
 
-  v26 = [v6 objectForKeyedSubscript:@"fidelity-type"];
+  v26 = [configCopy objectForKeyedSubscript:@"fidelity-type"];
   [v17 setFidelityType:v26];
 
-  v27 = [v15 sk_processName];
-  [v17 setProcessName:v27];
+  sk_processName = [v15 sk_processName];
+  [v17 setProcessName:sk_processName];
 
-  v28 = [v6 objectForKeyedSubscript:@"impression-timestamp"];
+  v28 = [configCopy objectForKeyedSubscript:@"impression-timestamp"];
   [v17 setTimestamp:v28];
 
   v29 = +[ASDInstallAttribution sharedInstance];
@@ -4664,15 +4664,15 @@ LABEL_11:
   v30[1] = 3221225472;
   v30[2] = sub_100047FF4;
   v30[3] = &unk_10037FFD0;
-  v31 = v7;
+  v31 = handlerCopy;
   [v29 endImpressionWithConfig:v17 completionHandler:v30];
 
 LABEL_14:
 }
 
-- (void)engagementRequestForOfferCodeRedemptionSheetWithReply:(id)a3
+- (void)engagementRequestForOfferCodeRedemptionSheetWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   if (qword_1003D4160 != -1)
   {
     sub_1002CB534();
@@ -4682,7 +4682,7 @@ LABEL_14:
   if (os_log_type_enabled(qword_1003CB4F8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v29 = self;
+    selfCopy3 = self;
     v30 = 2082;
     v31 = "[StoreKitServiceConnection engagementRequestForOfferCodeRedemptionSheetWithReply:]";
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@]: %{public}s", buf, 0x16u);
@@ -4721,7 +4721,7 @@ LABEL_14:
       if (os_log_type_enabled(qword_1003CB4F8, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543618;
-        v29 = self;
+        selfCopy3 = self;
         v30 = 2114;
         v31 = v9;
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%{public}@: Found simulated failure: %{public}@", buf, 0x16u);
@@ -4730,7 +4730,7 @@ LABEL_14:
       goto LABEL_17;
     }
 
-    v11 = [(Client *)v8 account];
+    account = [(Client *)v8 account];
     v12 = [(StoreKitServiceConnection *)self _offerCodeRedemptionURLForClient:v8];
     v13 = v12;
     if (!v12)
@@ -4738,8 +4738,8 @@ LABEL_14:
       goto LABEL_31;
     }
 
-    v14 = [v12 scheme];
-    v15 = [v14 isEqualToString:@"itms-ui"];
+    scheme = [v12 scheme];
+    v15 = [scheme isEqualToString:@"itms-ui"];
 
     if (v15)
     {
@@ -4752,11 +4752,11 @@ LABEL_14:
       if (os_log_type_enabled(qword_1003CB4F8, OS_LOG_TYPE_DEFAULT))
       {
         v17 = v16;
-        v18 = [(Client *)v8 callerBundleID];
+        callerBundleID = [(Client *)v8 callerBundleID];
         *buf = 138543618;
-        v29 = self;
+        selfCopy3 = self;
         v30 = 2114;
-        v31 = v18;
+        v31 = callerBundleID;
         _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "%{public}@: Using code redeem legacy flow for %{public}@", buf, 0x16u);
       }
 
@@ -4767,14 +4767,14 @@ LABEL_31:
       v20 = ASDErrorWithDescription();
       v21 = 0;
 LABEL_43:
-      v4[2](v4, v20, v21);
+      replyCopy[2](replyCopy, v20, v21);
 
       goto LABEL_18;
     }
 
     v22 = objc_alloc_init(AMSEngagementRequest);
     [v22 setURL:v13];
-    [v22 setAccount:v11];
+    [v22 setAccount:account];
     v27 = 0;
     v23 = [NSKeyedArchiver archivedDataWithRootObject:v22 requiringSecureCoding:1 error:&v27];
     v20 = v27;
@@ -4827,66 +4827,66 @@ LABEL_42:
 LABEL_16:
   v9 = ASDErrorWithDescription();
 LABEL_17:
-  v4[2](v4, v9, 0);
+  replyCopy[2](replyCopy, v9, 0);
 LABEL_18:
 }
 
-- (void)downloadManager:(id)a3 updatedStatus:(id)a4
+- (void)downloadManager:(id)manager updatedStatus:(id)status
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  statusCopy = status;
   v8 = self->_downloadIDs;
   objc_sync_enter(v8);
   downloadIDs = self->_downloadIDs;
-  v10 = [v7 downloadID];
-  LODWORD(downloadIDs) = [(NSMutableSet *)downloadIDs containsObject:v10];
+  downloadID = [statusCopy downloadID];
+  LODWORD(downloadIDs) = [(NSMutableSet *)downloadIDs containsObject:downloadID];
 
   objc_sync_exit(v8);
   if (downloadIDs)
   {
     v11 = +[NSMutableDictionary dictionary];
-    v12 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v7 state]);
+    v12 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [statusCopy state]);
     [v11 setObject:v12 forKeyedSubscript:@"state"];
 
-    [v7 progress];
+    [statusCopy progress];
     v13 = [NSNumber numberWithDouble:?];
     [v11 setObject:v13 forKeyedSubscript:@"progress"];
 
-    [v7 timeRemaining];
+    [statusCopy timeRemaining];
     v14 = [NSNumber numberWithDouble:?];
     [v11 setObject:v14 forKeyedSubscript:@"time-remaining"];
 
-    v15 = [v7 error];
-    v16 = [v15 toASDErrorWithMetadata:0];
+    error = [statusCopy error];
+    v16 = [error toASDErrorWithMetadata:0];
     [v11 setObject:v16 forKeyedSubscript:@"error"];
 
-    v17 = [v7 installPath];
-    [v11 setObject:v17 forKeyedSubscript:@"download-install-path"];
+    installPath = [statusCopy installPath];
+    [v11 setObject:installPath forKeyedSubscript:@"download-install-path"];
 
     remoteObject = self->_remoteObject;
     v26[0] = @"download";
-    v19 = [v7 downloadID];
+    downloadID2 = [statusCopy downloadID];
     v26[1] = @"download-status";
-    v27[0] = v19;
+    v27[0] = downloadID2;
     v27[1] = v11;
     v20 = [NSDictionary dictionaryWithObjects:v27 forKeys:v26 count:2];
     [(SKClientProtocol *)remoteObject downloadStatusChanged:v20];
 
-    if ([v7 state] == 3 || objc_msgSend(v7, "state") == 4)
+    if ([statusCopy state] == 3 || objc_msgSend(statusCopy, "state") == 4)
     {
       v21 = self->_remoteObject;
       v24 = @"download";
-      v22 = [v7 downloadID];
-      v25 = v22;
+      downloadID3 = [statusCopy downloadID];
+      v25 = downloadID3;
       v23 = [NSDictionary dictionaryWithObjects:&v25 forKeys:&v24 count:1];
       [(SKClientProtocol *)v21 downloadRemoved:v23];
     }
   }
 }
 
-- (id)_bundleURLForConnection:(id)a3
+- (id)_bundleURLForConnection:(id)connection
 {
-  if (proc_pidpath([a3 processIdentifier], buffer, 0x1000u) < 1)
+  if (proc_pidpath([connection processIdentifier], buffer, 0x1000u) < 1)
   {
     v3 = 0;
   }
@@ -4913,11 +4913,11 @@ LABEL_7:
   return v6;
 }
 
-- (id)_processDownloadsForTransactions:(id)a3
+- (id)_processDownloadsForTransactions:(id)transactions
 {
-  v17 = a3;
+  transactionsCopy = transactions;
   v4 = +[InAppDownloadManager manager];
-  v5 = [v4 processDownloadsForTransactions:v17];
+  v5 = [v4 processDownloadsForTransactions:transactionsCopy];
 
   obj = self->_downloadIDs;
   objc_sync_enter(obj);
@@ -4964,7 +4964,7 @@ LABEL_7:
           if (os_log_type_enabled(off_1003CB4F0, OS_LOG_TYPE_INFO))
           {
             *buf = 138543618;
-            v23 = self;
+            selfCopy = self;
             v24 = 2114;
             v25 = v11;
             _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "%{public}@: Processed download with ID: %{public}@", buf, 0x16u);
@@ -4988,10 +4988,10 @@ LABEL_7:
   return v6;
 }
 
-- (id)_offerCodeRedemptionURLForClient:(id)a3
+- (id)_offerCodeRedemptionURLForClient:(id)client
 {
-  v3 = a3;
-  v4 = [v3 bag];
+  clientCopy = client;
+  v4 = [clientCopy bag];
   v5 = +[_TtC9storekitd6BagKey redeemCodeURL];
   v6 = [v4 URLForKey:v5];
   v25 = 0;
@@ -5001,9 +5001,9 @@ LABEL_7:
   if (v7)
   {
     v9 = [NSURLComponents componentsWithURL:v7 resolvingAgainstBaseURL:0];
-    if ([v3 objc_clientType] != 3)
+    if ([clientCopy objc_clientType] != 3)
     {
-      v10 = [v3 bag];
+      v10 = [clientCopy bag];
       v11 = [_TtC9storekitd20objc_URLParserHelper urlTypeFor:v7 bag:v10 error:0];
 
       if (!v11 || [v11 integerValue] == 1)
@@ -5012,13 +5012,13 @@ LABEL_7:
       }
     }
 
-    v12 = [v9 queryItems];
-    v13 = [NSMutableArray arrayWithArray:v12];
+    queryItems = [v9 queryItems];
+    v13 = [NSMutableArray arrayWithArray:queryItems];
 
-    v14 = [v3 requestBundleID];
-    v15 = [NSURLQueryItem queryItemWithName:@"pbid" value:v14];
+    requestBundleID = [clientCopy requestBundleID];
+    v15 = [NSURLQueryItem queryItemWithName:@"pbid" value:requestBundleID];
 
-    v16 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%lld", [v3 storeItemID]);
+    v16 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%lld", [clientCopy storeItemID]);
     v17 = [NSURLQueryItem queryItemWithName:@"paid" value:v16];
 
     v18 = [NSURLQueryItem queryItemWithName:@"ctx" value:@"offercodes"];
@@ -5070,9 +5070,9 @@ LABEL_7:
   return v22;
 }
 
-+ (int64_t)_apiVersionForClientDict:(id)a3
++ (int64_t)_apiVersionForClientDict:(id)dict
 {
-  v3 = [a3 objectForKeyedSubscript:off_1003CAE90];
+  v3 = [dict objectForKeyedSubscript:off_1003CAE90];
   v4 = v3;
   if (v3 && ([v3 isEqualToNumber:&off_1003A1498] & 1) != 0)
   {
@@ -5087,46 +5087,46 @@ LABEL_7:
   return v5;
 }
 
-- (void)performPurchase:(id)a3 authDelegate:(id)a4 reply:(id)a5
+- (void)performPurchase:(id)purchase authDelegate:(id)delegate reply:(id)reply
 {
-  v8 = _Block_copy(a5);
-  v9 = a3;
+  v8 = _Block_copy(reply);
+  purchaseCopy = purchase;
   swift_unknownObjectRetain();
-  v14 = self;
+  selfCopy = self;
   v10 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v12 = v11;
 
   v13 = swift_allocObject();
   *(v13 + 16) = v8;
-  StoreKitServiceConnection.performPurchase(_:authDelegate:reply:)(v10, v12, a4, sub_1000EBF9C, v13);
+  StoreKitServiceConnection.performPurchase(_:authDelegate:reply:)(v10, v12, delegate, sub_1000EBF9C, v13);
 
   sub_10008E168(v10, v12);
   swift_unknownObjectRelease();
 }
 
-- (void)executeAppTransactionQuery:(id)a3 withReceiver:(id)a4 ignoreCache:(BOOL)a5 reply:(id)a6
+- (void)executeAppTransactionQuery:(id)query withReceiver:(id)receiver ignoreCache:(BOOL)cache reply:(id)reply
 {
-  v6 = a5;
-  v10 = _Block_copy(a6);
-  v11 = a3;
+  cacheCopy = cache;
+  v10 = _Block_copy(reply);
+  queryCopy = query;
   swift_unknownObjectRetain();
-  v15 = self;
+  selfCopy = self;
   v12 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v14 = v13;
 
   _Block_copy(v10);
-  sub_1001E8078(v12, v14, a4, v6, v15, v10);
+  sub_1001E8078(v12, v14, receiver, cacheCopy, selfCopy, v10);
   _Block_release(v10);
   sub_10008E168(v12, v14);
   swift_unknownObjectRelease();
 }
 
-- (void)_handleTokenFamily:(id)a3 bundleID:(id)a4 reply:(id)a5
+- (void)_handleTokenFamily:(id)family bundleID:(id)d reply:(id)reply
 {
-  v8 = _Block_copy(a5);
-  v9 = a3;
-  v10 = a4;
-  v17 = self;
+  v8 = _Block_copy(reply);
+  familyCopy = family;
+  dCopy = d;
+  selfCopy = self;
   v11 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v13 = v12;
 
@@ -5134,19 +5134,19 @@ LABEL_7:
   v16 = v15;
 
   _Block_copy(v8);
-  sub_1001EE498(v11, v13, v14, v16, v17, v8);
+  sub_1001EE498(v11, v13, v14, v16, selfCopy, v8);
   _Block_release(v8);
 
   sub_10008E168(v11, v13);
 }
 
-- (void)presentRefundRequestSheetForTransactionID:(id)a3 sceneID:(id)a4 reply:(id)a5
+- (void)presentRefundRequestSheetForTransactionID:(id)d sceneID:(id)iD reply:(id)reply
 {
-  v8 = _Block_copy(a5);
-  if (a4)
+  v8 = _Block_copy(reply);
+  if (iD)
   {
     v9 = static String._unconditionallyBridgeFromObjectiveC(_:)();
-    a4 = v10;
+    iD = v10;
   }
 
   else
@@ -5155,20 +5155,20 @@ LABEL_7:
   }
 
   _Block_copy(v8);
-  v11 = a3;
-  v12 = self;
-  sub_1001F33BC(v11, v9, a4, v12, v8);
+  dCopy = d;
+  selfCopy = self;
+  sub_1001F33BC(dCopy, v9, iD, selfCopy, v8);
   _Block_release(v8);
 }
 
-- (void)isEligibleForIntroductoryOfferForGroupID:(id)a3 reply:(id)a4
+- (void)isEligibleForIntroductoryOfferForGroupID:(id)d reply:(id)reply
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(reply);
   v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = v7;
   _Block_copy(v5);
-  v9 = self;
-  sub_10020B42C(v6, v8, v9, v5);
+  selfCopy = self;
+  sub_10020B42C(v6, v8, selfCopy, v5);
   _Block_release(v5);
 }
 

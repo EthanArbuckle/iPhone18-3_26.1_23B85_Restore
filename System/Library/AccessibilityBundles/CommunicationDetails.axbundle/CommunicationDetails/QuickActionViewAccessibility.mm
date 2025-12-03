@@ -1,5 +1,5 @@
 @interface QuickActionViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityActivate;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
@@ -7,45 +7,45 @@
 
 @implementation QuickActionViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CommunicationDetails.QuickActionView" hasSwiftField:@"type" withSwiftType:"ButtonType"];
-  [v3 validateClass:@"CommunicationDetails.QuickActionView" hasSwiftField:@"button" withSwiftType:"Button"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CommunicationDetails.QuickActionView" hasSwiftField:@"type" withSwiftType:"ButtonType"];
+  [validationsCopy validateClass:@"CommunicationDetails.QuickActionView" hasSwiftField:@"button" withSwiftType:"Button"];
 }
 
 - (id)accessibilityLabel
 {
   v3 = [(QuickActionViewAccessibility *)self safeSwiftValueForKey:@"type"];
-  v4 = [v3 safeSwiftEnumCase];
+  safeSwiftEnumCase = [v3 safeSwiftEnumCase];
 
-  if ([v4 isEqualToString:@"phone"])
+  if ([safeSwiftEnumCase isEqualToString:@"phone"])
   {
     v5 = @"quickActions.call";
 LABEL_11:
-    v6 = accessibilityLocalizedString(v5);
+    accessibilityLabel = accessibilityLocalizedString(v5);
     goto LABEL_12;
   }
 
-  if ([v4 isEqualToString:@"video"])
+  if ([safeSwiftEnumCase isEqualToString:@"video"])
   {
     v5 = @"quickActions.video";
     goto LABEL_11;
   }
 
-  if ([v4 isEqualToString:@"mail"])
+  if ([safeSwiftEnumCase isEqualToString:@"mail"])
   {
     v5 = @"quickActions.mail";
     goto LABEL_11;
   }
 
-  if ([v4 isEqualToString:@"message"])
+  if ([safeSwiftEnumCase isEqualToString:@"message"])
   {
     v5 = @"quickActions.message";
     goto LABEL_11;
   }
 
-  if ([v4 isEqualToString:@"screenSharing"])
+  if ([safeSwiftEnumCase isEqualToString:@"screenSharing"])
   {
     v5 = @"quickActions.screenShare";
     goto LABEL_11;
@@ -53,9 +53,9 @@ LABEL_11:
 
   v9.receiver = self;
   v9.super_class = QuickActionViewAccessibility;
-  v6 = [(QuickActionViewAccessibility *)&v9 accessibilityLabel];
+  accessibilityLabel = [(QuickActionViewAccessibility *)&v9 accessibilityLabel];
 LABEL_12:
-  v7 = v6;
+  v7 = accessibilityLabel;
 
   return v7;
 }
@@ -63,17 +63,17 @@ LABEL_12:
 - (unint64_t)accessibilityTraits
 {
   v2 = [(QuickActionViewAccessibility *)self safeSwiftValueForKey:@"button"];
-  v3 = [v2 accessibilityTraits];
+  accessibilityTraits = [v2 accessibilityTraits];
 
-  return v3;
+  return accessibilityTraits;
 }
 
 - (BOOL)accessibilityActivate
 {
   v2 = [(QuickActionViewAccessibility *)self safeSwiftValueForKey:@"button"];
-  v3 = [v2 accessibilityActivate];
+  accessibilityActivate = [v2 accessibilityActivate];
 
-  return v3;
+  return accessibilityActivate;
 }
 
 @end

@@ -17,7 +17,7 @@
   v27 = v13;
   v9 = v8;
   v26 = v9;
-  [a1 enumerateObjectsUsingBlock:v25];
+  [self enumerateObjectsUsingBlock:v25];
   v10 = objc_opt_new();
   if (v9 && [v9 count])
   {

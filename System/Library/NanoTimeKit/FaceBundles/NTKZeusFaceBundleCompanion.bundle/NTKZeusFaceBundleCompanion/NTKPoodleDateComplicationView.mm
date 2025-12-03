@@ -1,26 +1,26 @@
 @interface NTKPoodleDateComplicationView
 - (CGRect)contentFrame;
-- (CGRect)padContentFrame:(CGRect)a3;
-- (NTKPoodleDateComplicationView)initWithBackgroundView:(id)a3;
+- (CGRect)padContentFrame:(CGRect)frame;
+- (NTKPoodleDateComplicationView)initWithBackgroundView:(id)view;
 - (void)_updateLabel;
-- (void)applyPalette:(id)a3;
-- (void)applyTransitionFraction:(double)a3 fromPalette:(id)a4 toPalette:(id)a5;
+- (void)applyPalette:(id)palette;
+- (void)applyTransitionFraction:(double)fraction fromPalette:(id)palette toPalette:(id)toPalette;
 - (void)layoutSubviews;
-- (void)setDateComplicationText:(id)a3 withDayRange:(_NSRange)a4 forDateStyle:(unint64_t)a5;
+- (void)setDateComplicationText:(id)text withDayRange:(_NSRange)range forDateStyle:(unint64_t)style;
 @end
 
 @implementation NTKPoodleDateComplicationView
 
-- (NTKPoodleDateComplicationView)initWithBackgroundView:(id)a3
+- (NTKPoodleDateComplicationView)initWithBackgroundView:(id)view
 {
   v13.receiver = self;
   v13.super_class = NTKPoodleDateComplicationView;
-  v3 = [(NTKZeusComplicationView *)&v13 initWithBackgroundView:a3];
+  v3 = [(NTKZeusComplicationView *)&v13 initWithBackgroundView:view];
   v4 = v3;
   if (v3)
   {
-    v5 = [(NTKZeusComplicationView *)v3 device];
-    sub_1F3FC(v5, v5);
+    device = [(NTKZeusComplicationView *)v3 device];
+    sub_1F3FC(device, device);
     v7 = v6;
 
     v8 = objc_opt_new();
@@ -37,14 +37,14 @@
   return v4;
 }
 
-- (CGRect)padContentFrame:(CGRect)a3
+- (CGRect)padContentFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = [(NTKZeusComplicationView *)self device];
-  v8 = sub_1EDA8(v7, x, y, width, height);
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  device = [(NTKZeusComplicationView *)self device];
+  v8 = sub_1EDA8(device, x, y, width, height);
   v10 = v9;
   v12 = v11;
   v14 = v13;
@@ -60,12 +60,12 @@
   return result;
 }
 
-- (void)setDateComplicationText:(id)a3 withDayRange:(_NSRange)a4 forDateStyle:(unint64_t)a5
+- (void)setDateComplicationText:(id)text withDayRange:(_NSRange)range forDateStyle:(unint64_t)style
 {
-  v6 = [a3 intValue];
-  if (v6 != self->_currentDayNumber)
+  intValue = [text intValue];
+  if (intValue != self->_currentDayNumber)
   {
-    self->_currentDayNumber = v6;
+    self->_currentDayNumber = intValue;
 
     [(NTKPoodleDateComplicationView *)self _updateLabel];
   }
@@ -78,16 +78,16 @@
   [(UILabel *)label setText:v4];
 
   v5 = self->_label;
-  v6 = [(NTKZeusComplicationView *)self palette];
-  v7 = [v6 bottomComplication];
-  [(UILabel *)v5 setTextColor:v7];
+  palette = [(NTKZeusComplicationView *)self palette];
+  bottomComplication = [palette bottomComplication];
+  [(UILabel *)v5 setTextColor:bottomComplication];
 
   [(NTKPoodleDateComplicationView *)self setNeedsLayout];
 }
 
 - (void)layoutSubviews
 {
-  v3 = [(NTKZeusComplicationView *)self device];
+  device = [(NTKZeusComplicationView *)self device];
   [(UILabel *)self->_label sizeThatFits:CGSizeZero.width, CGSizeZero.height];
   [(NTKPoodleDateComplicationView *)self bounds];
   label = self->_label;
@@ -96,8 +96,8 @@
   [(NTKPoodleDateComplicationView *)self contentFrame];
   v6 = v5;
   v7 = self->_label;
-  v8 = [(UILabel *)v7 font];
-  [v8 capHeight];
+  font = [(UILabel *)v7 font];
+  [font capHeight];
   [(UILabel *)v7 _setFirstLineBaselineFrameOriginY:v6 + v9];
 
   v10.receiver = self;
@@ -108,11 +108,11 @@
 - (CGRect)contentFrame
 {
   [(UILabel *)self->_label sizeThatFits:CGSizeZero.width, CGSizeZero.height];
-  v3 = [(UILabel *)self->_label font];
-  [v3 capHeight];
+  font = [(UILabel *)self->_label font];
+  [font capHeight];
 
   [(NTKPoodleDateComplicationView *)self bounds];
-  v4 = [(NTKZeusComplicationView *)self device];
+  device = [(NTKZeusComplicationView *)self device];
   CLKRectCenteredIntegralRectForDevice();
   v6 = v5;
   v8 = v7;
@@ -130,25 +130,25 @@
   return result;
 }
 
-- (void)applyPalette:(id)a3
+- (void)applyPalette:(id)palette
 {
   v4.receiver = self;
   v4.super_class = NTKPoodleDateComplicationView;
-  [(NTKZeusComplicationView *)&v4 applyPalette:a3];
+  [(NTKZeusComplicationView *)&v4 applyPalette:palette];
   [(NTKPoodleDateComplicationView *)self _updateLabel];
 }
 
-- (void)applyTransitionFraction:(double)a3 fromPalette:(id)a4 toPalette:(id)a5
+- (void)applyTransitionFraction:(double)fraction fromPalette:(id)palette toPalette:(id)toPalette
 {
   v14.receiver = self;
   v14.super_class = NTKPoodleDateComplicationView;
-  v8 = a5;
-  v9 = a4;
-  [(NTKZeusComplicationView *)&v14 applyTransitionFraction:v9 fromPalette:v8 toPalette:a3];
+  toPaletteCopy = toPalette;
+  paletteCopy = palette;
+  [(NTKZeusComplicationView *)&v14 applyTransitionFraction:paletteCopy fromPalette:toPaletteCopy toPalette:fraction];
   label = self->_label;
-  v11 = [v9 bottomComplication];
+  bottomComplication = [paletteCopy bottomComplication];
 
-  v12 = [v8 bottomComplication];
+  bottomComplication2 = [toPaletteCopy bottomComplication];
 
   v13 = NTKInterpolateBetweenColors();
   [(UILabel *)label setTextColor:v13];

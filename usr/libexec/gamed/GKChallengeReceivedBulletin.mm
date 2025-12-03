@@ -1,10 +1,10 @@
 @interface GKChallengeReceivedBulletin
-+ (void)loadBulletinsForPushNotification:(id)a3 withHandler:(id)a4;
++ (void)loadBulletinsForPushNotification:(id)notification withHandler:(id)handler;
 - (GKChallengeReceivedBulletin)init;
 - (void)assembleBulletin;
-- (void)handleAction:(id)a3;
+- (void)handleAction:(id)action;
 - (void)handleDeclineAction;
-- (void)notifyClient:(id)a3;
+- (void)notifyClient:(id)client;
 @end
 
 @implementation GKChallengeReceivedBulletin
@@ -16,10 +16,10 @@
   return [(GKChallengeBulletin *)&v3 init];
 }
 
-+ (void)loadBulletinsForPushNotification:(id)a3 withHandler:(id)a4
++ (void)loadBulletinsForPushNotification:(id)notification withHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  notificationCopy = notification;
+  handlerCopy = handler;
   if (!os_log_GKGeneral)
   {
     v8 = GKOSLoggers();
@@ -32,11 +32,11 @@
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "GKChallengeReceivedBulletin loadBulletinsForPushNotification: withHandler:", buf, 2u);
   }
 
-  [a1 expireChallengeList];
+  [self expireChallengeList];
   v10 = +[GKReporter reporter];
   [v10 reportEvent:GKReporterDomainPushCount type:GKReporterPushCountChallengeReceived];
 
-  v11 = [v6 objectForKey:@"di"];
+  v11 = [notificationCopy objectForKey:@"di"];
   v12 = [v11 _gkValuesForKeyPath:@"ci"];
   v13 = [NSSet setWithArray:v12];
 
@@ -54,29 +54,29 @@
   v29 = v19;
   v20 = v13;
   v30 = v20;
-  v21 = v6;
+  v21 = notificationCopy;
   v31 = v21;
   v22 = v18;
   v32 = v22;
   v23 = v14;
   v33 = v23;
   [v22 perform:v28];
-  if (v7)
+  if (handlerCopy)
   {
-    v24 = [v15 replyQueue];
+    replyQueue = [v15 replyQueue];
     v25[0] = _NSConcreteStackBlock;
     v25[1] = 3221225472;
     v25[2] = sub_100199E6C;
     v25[3] = &unk_100360EB0;
-    v27 = v7;
+    v27 = handlerCopy;
     v26 = v23;
-    [v22 notifyOnQueue:v24 block:v25];
+    [v22 notifyOnQueue:replyQueue block:v25];
   }
 }
 
-- (void)notifyClient:(id)a3
+- (void)notifyClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   if (!os_log_GKGeneral)
   {
     v5 = GKOSLoggers();
@@ -89,8 +89,8 @@
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "GKChallengeReceivedBulletin notifyClient:", v8, 2u);
   }
 
-  v7 = [(GKChallengeBulletin *)self challenge];
-  [v4 challengeReceived:v7];
+  challenge = [(GKChallengeBulletin *)self challenge];
+  [clientCopy challengeReceived:challenge];
 }
 
 - (void)assembleBulletin
@@ -112,13 +112,13 @@
   [(GKChallengeBulletin *)&v23 assembleBulletin];
   v5 = objc_alloc_init(GKBulletinAction);
   [(GKBulletinAction *)v5 setType:1];
-  v6 = [(GKChallengeBulletin *)self gameDescriptor];
-  v7 = [v6 adamID];
-  [(GKBulletinAction *)v5 setAdamID:v7];
+  gameDescriptor = [(GKChallengeBulletin *)self gameDescriptor];
+  adamID = [gameDescriptor adamID];
+  [(GKBulletinAction *)v5 setAdamID:adamID];
 
-  v8 = [(GKChallengeBulletin *)self gameDescriptor];
-  v9 = [v8 bundleIdentifier];
-  [(GKBulletinAction *)v5 setBundleID:v9];
+  gameDescriptor2 = [(GKChallengeBulletin *)self gameDescriptor];
+  bundleIdentifier = [gameDescriptor2 bundleIdentifier];
+  [(GKBulletinAction *)v5 setBundleID:bundleIdentifier];
 
   if ([(GKGameplayBulletin *)self gameLocation]== 2)
   {
@@ -151,16 +151,16 @@
   [(GKBulletin *)self setDefaultAction:v5];
   [(GKBulletin *)self setDeclineAction:v12];
   [(GKBulletin *)self setDismissAction:v14];
-  v16 = [(GKChallengeBulletin *)self originatorPlayer];
-  v17 = [v16 displayNameWithOptions:0];
+  originatorPlayer = [(GKChallengeBulletin *)self originatorPlayer];
+  v17 = [originatorPlayer displayNameWithOptions:0];
 
-  v18 = [(GKChallengeBulletin *)self challenge];
-  v19 = [v18 message];
+  challenge = [(GKChallengeBulletin *)self challenge];
+  message = [challenge message];
 
-  if ([v19 length])
+  if ([message length])
   {
     v20 = +[_TtC20GameCenterFoundation19GCFLocalizedStrings KETTLE_CHALLENGE_RECEIVED_OUT_OF_GAME_BANNER_1_PLAYER_2_CUSTOM_MESSAGE_FORMAT];
-    [NSString localizedStringWithFormat:v20, v17, v19];
+    [NSString localizedStringWithFormat:v20, v17, message];
   }
 
   else
@@ -174,9 +174,9 @@
   [(GKBulletin *)self setBulletinType:801];
 }
 
-- (void)handleAction:(id)a3
+- (void)handleAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   if (!os_log_GKGeneral)
   {
     v5 = GKOSLoggers();
@@ -191,7 +191,7 @@
 
   v9.receiver = self;
   v9.super_class = GKChallengeReceivedBulletin;
-  [(GKBulletin *)&v9 handleAction:v4];
+  [(GKBulletin *)&v9 handleAction:actionCopy];
   if (!os_log_GKGeneral)
   {
     v7 = GKOSLoggers();
@@ -201,16 +201,16 @@
   if (os_log_type_enabled(os_log_GKDaemon, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v11 = v4;
+    v11 = actionCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "bulletin handle challenge action: %@", buf, 0xCu);
   }
 
-  if (([v4 isEqualToString:@"GKAccepted"] & 1) != 0 || objc_msgSend(v4, "isEqualToString:", @"GKDefault"))
+  if (([actionCopy isEqualToString:@"GKAccepted"] & 1) != 0 || objc_msgSend(actionCopy, "isEqualToString:", @"GKDefault"))
   {
     [(GKChallengeBulletin *)self handleAcceptAction];
   }
 
-  else if ([v4 isEqualToString:@"GKDeclined"])
+  else if ([actionCopy isEqualToString:@"GKDeclined"])
   {
     [(GKChallengeReceivedBulletin *)self handleDeclineAction];
   }
@@ -239,19 +239,19 @@
   if (os_log_type_enabled(os_log_GKDaemon, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v15 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "challenge received handling decline action %@", buf, 0xCu);
   }
 
-  v7 = [(GKChallengeBulletin *)self challenge];
-  if (v7)
+  challenge = [(GKChallengeBulletin *)self challenge];
+  if (challenge)
   {
-    v8 = [(GKChallengeBulletin *)self gameDescriptor];
-    v9 = [v8 bundleIdentifier];
-    v10 = [GKClientProxy clientForBundleID:v9];
+    gameDescriptor = [(GKChallengeBulletin *)self gameDescriptor];
+    bundleIdentifier = [gameDescriptor bundleIdentifier];
+    v10 = [GKClientProxy clientForBundleID:bundleIdentifier];
 
     v11 = [(GKService *)GKChallengeService serviceWithTransport:0 forClient:v10 localPlayer:0];
-    v13 = v7;
+    v13 = challenge;
     v12 = [NSArray arrayWithObjects:&v13 count:1];
     [v11 abortChallenges:v12 handler:0];
   }

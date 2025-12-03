@@ -1,8 +1,8 @@
 @interface CRLZipFileWriteChannel
 - (CRLZipFileWriteChannel)init;
-- (CRLZipFileWriteChannel)initWithArchiveWriter:(id)a3;
-- (void)flushWithCompletion:(id)a3;
-- (void)writeData:(id)a3 handler:(id)a4;
+- (CRLZipFileWriteChannel)initWithArchiveWriter:(id)writer;
+- (void)flushWithCompletion:(id)completion;
+- (void)writeData:(id)data handler:(id)handler;
 @end
 
 @implementation CRLZipFileWriteChannel
@@ -64,16 +64,16 @@
   objc_exception_throw(v15);
 }
 
-- (CRLZipFileWriteChannel)initWithArchiveWriter:(id)a3
+- (CRLZipFileWriteChannel)initWithArchiveWriter:(id)writer
 {
-  v5 = a3;
+  writerCopy = writer;
   v12.receiver = self;
   v12.super_class = CRLZipFileWriteChannel;
   v6 = [(CRLZipFileWriteChannel *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_archiveWriter, a3);
+    objc_storeStrong(&v6->_archiveWriter, writer);
     v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v9 = dispatch_queue_create("CRLZipFileWriteChannel.Writer", v8);
     writerQueue = v7->_writerQueue;
@@ -83,10 +83,10 @@
   return v7;
 }
 
-- (void)writeData:(id)a3 handler:(id)a4
+- (void)writeData:(id)data handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  handlerCopy = handler;
   v8 = atomic_load(&self->_isClosed);
   if (v8)
   {
@@ -122,9 +122,9 @@
     abort();
   }
 
-  if (v6)
+  if (dataCopy)
   {
-    size = dispatch_data_get_size(v6);
+    size = dispatch_data_get_size(dataCopy);
   }
 
   else
@@ -138,15 +138,15 @@
   v27[1] = 3221225472;
   v27[2] = sub_100364524;
   v27[3] = &unk_1018590C8;
-  v12 = v7;
+  v12 = handlerCopy;
   v28 = v12;
   v29 = size;
-  [(CRLZipWriter *)archiveWriter addData:v6 queue:writerQueue completion:v27];
+  [(CRLZipWriter *)archiveWriter addData:dataCopy queue:writerQueue completion:v27];
 }
 
-- (void)flushWithCompletion:(id)a3
+- (void)flushWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = +[CRLAssertionHandler _atomicIncrementAssertCount];
   if (qword_101AD5A10 != -1)
   {
@@ -178,7 +178,7 @@
   v11[1] = 3221225472;
   v11[2] = sub_100364900;
   v11[3] = &unk_10184A5A8;
-  v10 = v4;
+  v10 = completionCopy;
   v12 = v10;
   [(CRLZipFileWriteChannel *)self addBarrier:v11];
 }

@@ -1,21 +1,21 @@
 @interface IMDCKInitialAttachmentSyncController
 - (BOOL)_deviceConditionsAllowsMessageSync;
-- (BOOL)_deviceConditionsAllowsMessageSyncForActivity:(id)a3 deviceConditionsToCheck:(unint64_t)a4 currentBatchCount:(int64_t)a5 maxBatchCount:(int64_t)a6;
-- (BOOL)_deviceConditionsAllowsMessageSyncForCurrentBatchCount:(int64_t)a3 maxBatchCount:(int64_t)a4;
-- (BOOL)_deviceConditionsAllowsMessageSyncIgnoreFeatureEnabled:(BOOL)a3;
-- (BOOL)_kickOffWriteIfNeededForSyncType:(int64_t)a3 activity:(id)a4 completion:(id)a5;
+- (BOOL)_deviceConditionsAllowsMessageSyncForActivity:(id)activity deviceConditionsToCheck:(unint64_t)check currentBatchCount:(int64_t)count maxBatchCount:(int64_t)batchCount;
+- (BOOL)_deviceConditionsAllowsMessageSyncForCurrentBatchCount:(int64_t)count maxBatchCount:(int64_t)batchCount;
+- (BOOL)_deviceConditionsAllowsMessageSyncIgnoreFeatureEnabled:(BOOL)enabled;
+- (BOOL)_kickOffWriteIfNeededForSyncType:(int64_t)type activity:(id)activity completion:(id)completion;
 @end
 
 @implementation IMDCKInitialAttachmentSyncController
 
-- (BOOL)_deviceConditionsAllowsMessageSyncForCurrentBatchCount:(int64_t)a3 maxBatchCount:(int64_t)a4
+- (BOOL)_deviceConditionsAllowsMessageSyncForCurrentBatchCount:(int64_t)count maxBatchCount:(int64_t)batchCount
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = [(IMDCKInitialAttachmentSyncController *)self ckUtilities:a3];
-  v6 = [v5 cloudKitSyncingEnabled];
+  v5 = [(IMDCKInitialAttachmentSyncController *)self ckUtilities:count];
+  cloudKitSyncingEnabled = [v5 cloudKitSyncingEnabled];
 
-  v7 = [(IMDCKInitialAttachmentSyncController *)self ckUtilities];
-  v8 = [v7 iCloudAccountMatchesiMessageAccount];
+  ckUtilities = [(IMDCKInitialAttachmentSyncController *)self ckUtilities];
+  iCloudAccountMatchesiMessageAccount = [ckUtilities iCloudAccountMatchesiMessageAccount];
 
   if (IMOSLoggingEnabled())
   {
@@ -23,7 +23,7 @@
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       v10 = @"NO";
-      if (v6)
+      if (cloudKitSyncingEnabled)
       {
         v11 = @"YES";
       }
@@ -33,7 +33,7 @@
         v11 = @"NO";
       }
 
-      if (v8)
+      if (iCloudAccountMatchesiMessageAccount)
       {
         v10 = @"YES";
       }
@@ -47,18 +47,18 @@
   }
 
   v12 = *MEMORY[0x277D85DE8];
-  return v6 & v8;
+  return cloudKitSyncingEnabled & iCloudAccountMatchesiMessageAccount;
 }
 
-- (BOOL)_deviceConditionsAllowsMessageSyncForActivity:(id)a3 deviceConditionsToCheck:(unint64_t)a4 currentBatchCount:(int64_t)a5 maxBatchCount:(int64_t)a6
+- (BOOL)_deviceConditionsAllowsMessageSyncForActivity:(id)activity deviceConditionsToCheck:(unint64_t)check currentBatchCount:(int64_t)count maxBatchCount:(int64_t)batchCount
 {
   v21 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = [(IMDCKInitialAttachmentSyncController *)self ckUtilities];
-  v9 = [v8 cloudKitSyncingEnabled];
+  activityCopy = activity;
+  ckUtilities = [(IMDCKInitialAttachmentSyncController *)self ckUtilities];
+  cloudKitSyncingEnabled = [ckUtilities cloudKitSyncingEnabled];
 
-  v10 = [(IMDCKInitialAttachmentSyncController *)self ckUtilities];
-  v11 = [v10 iCloudAccountMatchesiMessageAccount];
+  ckUtilities2 = [(IMDCKInitialAttachmentSyncController *)self ckUtilities];
+  iCloudAccountMatchesiMessageAccount = [ckUtilities2 iCloudAccountMatchesiMessageAccount];
 
   if (IMOSLoggingEnabled())
   {
@@ -66,7 +66,7 @@
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
       v13 = @"NO";
-      if (v9)
+      if (cloudKitSyncingEnabled)
       {
         v14 = @"YES";
       }
@@ -76,7 +76,7 @@
         v14 = @"NO";
       }
 
-      if (v11)
+      if (iCloudAccountMatchesiMessageAccount)
       {
         v13 = @"YES";
       }
@@ -90,14 +90,14 @@
   }
 
   v15 = *MEMORY[0x277D85DE8];
-  return v9 & v11;
+  return cloudKitSyncingEnabled & iCloudAccountMatchesiMessageAccount;
 }
 
 - (BOOL)_deviceConditionsAllowsMessageSync
 {
   v8 = *MEMORY[0x277D85DE8];
-  v2 = [(IMDCKInitialAttachmentSyncController *)self ckUtilities];
-  v3 = [v2 cloudKitSyncingEnabled];
+  ckUtilities = [(IMDCKInitialAttachmentSyncController *)self ckUtilities];
+  cloudKitSyncingEnabled = [ckUtilities cloudKitSyncingEnabled];
 
   if (IMOSLoggingEnabled())
   {
@@ -105,16 +105,16 @@
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
       v7[0] = 67109120;
-      v7[1] = v3;
+      v7[1] = cloudKitSyncingEnabled;
       _os_log_impl(&dword_22B4CC000, v4, OS_LOG_TYPE_INFO, "Initial sync device conditions check if CloudKit sync is enabled: %d", v7, 8u);
     }
   }
 
   v5 = *MEMORY[0x277D85DE8];
-  return v3;
+  return cloudKitSyncingEnabled;
 }
 
-- (BOOL)_deviceConditionsAllowsMessageSyncIgnoreFeatureEnabled:(BOOL)a3
+- (BOOL)_deviceConditionsAllowsMessageSyncIgnoreFeatureEnabled:(BOOL)enabled
 {
   if (IMOSLoggingEnabled())
   {
@@ -129,10 +129,10 @@
   return 1;
 }
 
-- (BOOL)_kickOffWriteIfNeededForSyncType:(int64_t)a3 activity:(id)a4 completion:(id)a5
+- (BOOL)_kickOffWriteIfNeededForSyncType:(int64_t)type activity:(id)activity completion:(id)completion
 {
-  v6 = a4;
-  v7 = a5;
+  activityCopy = activity;
+  completionCopy = completion;
   if (IMOSLoggingEnabled())
   {
     v8 = OSLogHandleForIMFoundationCategory();
@@ -143,9 +143,9 @@
     }
   }
 
-  if (v7)
+  if (completionCopy)
   {
-    v7[2](v7, 1, 0);
+    completionCopy[2](completionCopy, 1, 0);
   }
 
   return 0;

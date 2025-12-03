@@ -3,8 +3,8 @@
 - (_TtC5Files26DOCPinchZoomTestParameters)init;
 - (id)completionHandler;
 - (id)composerBlock;
-- (void)setCompletionHandler:(id)a3;
-- (void)setTestName:(id)a3;
+- (void)setCompletionHandler:(id)handler;
+- (void)setTestName:(id)name;
 @end
 
 @implementation DOCPinchZoomTestParameters
@@ -27,9 +27,9 @@
   return v4;
 }
 
-- (void)setTestName:(id)a3
+- (void)setTestName:(id)name
 {
-  if (a3)
+  if (name)
   {
     v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
@@ -68,9 +68,9 @@
   return v3;
 }
 
-- (void)setCompletionHandler:(id)a3
+- (void)setCompletionHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = v4;
@@ -89,7 +89,7 @@
   v9 = *(self + OBJC_IVAR____TtC5Files26DOCPinchZoomTestParameters_completionHandler + 8);
   *v7 = v6;
   v7[1] = v4;
-  v10 = self;
+  selfCopy = self;
   sub_10003461C(v8);
 }
 
@@ -99,7 +99,7 @@
   v3 = *(self + OBJC_IVAR____TtC5Files26DOCPinchZoomTestParameters_bounds + 8);
   v4 = *(self + OBJC_IVAR____TtC5Files26DOCPinchZoomTestParameters_bounds + 16);
   v5 = *(self + OBJC_IVAR____TtC5Files26DOCPinchZoomTestParameters_bounds + 24);
-  v6 = self;
+  selfCopy = self;
   v15.origin.x = v2;
   v15.origin.y = v3;
   v15.size.width = v4;

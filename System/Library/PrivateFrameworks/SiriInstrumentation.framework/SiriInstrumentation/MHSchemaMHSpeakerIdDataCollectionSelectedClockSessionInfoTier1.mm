@@ -1,26 +1,26 @@
 @interface MHSchemaMHSpeakerIdDataCollectionSelectedClockSessionInfoTier1
-- (BOOL)isEqual:(id)a3;
-- (MHSchemaMHSpeakerIdDataCollectionSelectedClockSessionInfoTier1)initWithDictionary:(id)a3;
-- (MHSchemaMHSpeakerIdDataCollectionSelectedClockSessionInfoTier1)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (MHSchemaMHSpeakerIdDataCollectionSelectedClockSessionInfoTier1)initWithDictionary:(id)dictionary;
+- (MHSchemaMHSpeakerIdDataCollectionSelectedClockSessionInfoTier1)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MHSchemaMHSpeakerIdDataCollectionSelectedClockSessionInfoTier1
 
-- (MHSchemaMHSpeakerIdDataCollectionSelectedClockSessionInfoTier1)initWithDictionary:(id)a3
+- (MHSchemaMHSpeakerIdDataCollectionSelectedClockSessionInfoTier1)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = MHSchemaMHSpeakerIdDataCollectionSelectedClockSessionInfoTier1;
   v5 = [(MHSchemaMHSpeakerIdDataCollectionSelectedClockSessionInfoTier1 *)&v13 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"clockIdentifier"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"clockIdentifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -28,7 +28,7 @@
       [(MHSchemaMHSpeakerIdDataCollectionSelectedClockSessionInfoTier1 *)v5 setClockIdentifier:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"requestId"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"requestId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -36,7 +36,7 @@
       [(MHSchemaMHSpeakerIdDataCollectionSelectedClockSessionInfoTier1 *)v5 setRequestId:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"approximateSessionTimeStamp"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"approximateSessionTimeStamp"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -49,30 +49,30 @@
   return v5;
 }
 
-- (MHSchemaMHSpeakerIdDataCollectionSelectedClockSessionInfoTier1)initWithJSON:(id)a3
+- (MHSchemaMHSpeakerIdDataCollectionSelectedClockSessionInfoTier1)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(MHSchemaMHSpeakerIdDataCollectionSelectedClockSessionInfoTier1 *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(MHSchemaMHSpeakerIdDataCollectionSelectedClockSessionInfoTier1 *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(MHSchemaMHSpeakerIdDataCollectionSelectedClockSessionInfoTier1 *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -85,48 +85,48 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[MHSchemaMHSpeakerIdDataCollectionSelectedClockSessionInfoTier1 approximateSessionTimeStamp](self, "approximateSessionTimeStamp")}];
-    [v3 setObject:v4 forKeyedSubscript:@"approximateSessionTimeStamp"];
+    [dictionary setObject:v4 forKeyedSubscript:@"approximateSessionTimeStamp"];
   }
 
   if (self->_clockIdentifier)
   {
-    v5 = [(MHSchemaMHSpeakerIdDataCollectionSelectedClockSessionInfoTier1 *)self clockIdentifier];
-    v6 = [v5 dictionaryRepresentation];
-    if (v6)
+    clockIdentifier = [(MHSchemaMHSpeakerIdDataCollectionSelectedClockSessionInfoTier1 *)self clockIdentifier];
+    dictionaryRepresentation = [clockIdentifier dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v6 forKeyedSubscript:@"clockIdentifier"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"clockIdentifier"];
     }
 
     else
     {
-      v7 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v7 forKeyedSubscript:@"clockIdentifier"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"clockIdentifier"];
     }
   }
 
   if (self->_requestId)
   {
-    v8 = [(MHSchemaMHSpeakerIdDataCollectionSelectedClockSessionInfoTier1 *)self requestId];
-    v9 = [v8 dictionaryRepresentation];
-    if (v9)
+    requestId = [(MHSchemaMHSpeakerIdDataCollectionSelectedClockSessionInfoTier1 *)self requestId];
+    dictionaryRepresentation2 = [requestId dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v9 forKeyedSubscript:@"requestId"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"requestId"];
     }
 
     else
     {
-      v10 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v10 forKeyedSubscript:@"requestId"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"requestId"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -146,28 +146,28 @@
   return v4 ^ v3 ^ v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(MHSchemaMHSpeakerIdDataCollectionSelectedClockSessionInfoTier1 *)self clockIdentifier];
-  v6 = [v4 clockIdentifier];
-  if ((v5 != 0) == (v6 == 0))
+  clockIdentifier = [(MHSchemaMHSpeakerIdDataCollectionSelectedClockSessionInfoTier1 *)self clockIdentifier];
+  clockIdentifier2 = [equalCopy clockIdentifier];
+  if ((clockIdentifier != 0) == (clockIdentifier2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(MHSchemaMHSpeakerIdDataCollectionSelectedClockSessionInfoTier1 *)self clockIdentifier];
-  if (v7)
+  clockIdentifier3 = [(MHSchemaMHSpeakerIdDataCollectionSelectedClockSessionInfoTier1 *)self clockIdentifier];
+  if (clockIdentifier3)
   {
-    v8 = v7;
-    v9 = [(MHSchemaMHSpeakerIdDataCollectionSelectedClockSessionInfoTier1 *)self clockIdentifier];
-    v10 = [v4 clockIdentifier];
-    v11 = [v9 isEqual:v10];
+    v8 = clockIdentifier3;
+    clockIdentifier4 = [(MHSchemaMHSpeakerIdDataCollectionSelectedClockSessionInfoTier1 *)self clockIdentifier];
+    clockIdentifier5 = [equalCopy clockIdentifier];
+    v11 = [clockIdentifier4 isEqual:clockIdentifier5];
 
     if (!v11)
     {
@@ -179,22 +179,22 @@
   {
   }
 
-  v5 = [(MHSchemaMHSpeakerIdDataCollectionSelectedClockSessionInfoTier1 *)self requestId];
-  v6 = [v4 requestId];
-  if ((v5 != 0) == (v6 == 0))
+  clockIdentifier = [(MHSchemaMHSpeakerIdDataCollectionSelectedClockSessionInfoTier1 *)self requestId];
+  clockIdentifier2 = [equalCopy requestId];
+  if ((clockIdentifier != 0) == (clockIdentifier2 == 0))
   {
 LABEL_11:
 
     goto LABEL_12;
   }
 
-  v12 = [(MHSchemaMHSpeakerIdDataCollectionSelectedClockSessionInfoTier1 *)self requestId];
-  if (v12)
+  requestId = [(MHSchemaMHSpeakerIdDataCollectionSelectedClockSessionInfoTier1 *)self requestId];
+  if (requestId)
   {
-    v13 = v12;
-    v14 = [(MHSchemaMHSpeakerIdDataCollectionSelectedClockSessionInfoTier1 *)self requestId];
-    v15 = [v4 requestId];
-    v16 = [v14 isEqual:v15];
+    v13 = requestId;
+    requestId2 = [(MHSchemaMHSpeakerIdDataCollectionSelectedClockSessionInfoTier1 *)self requestId];
+    requestId3 = [equalCopy requestId];
+    v16 = [requestId2 isEqual:requestId3];
 
     if (!v16)
     {
@@ -206,9 +206,9 @@ LABEL_11:
   {
   }
 
-  if ((*&self->_has & 1) == (v4[32] & 1))
+  if ((*&self->_has & 1) == (equalCopy[32] & 1))
   {
-    if ((*&self->_has & 1) == 0 || (approximateSessionTimeStamp = self->_approximateSessionTimeStamp, approximateSessionTimeStamp == [v4 approximateSessionTimeStamp]))
+    if ((*&self->_has & 1) == 0 || (approximateSessionTimeStamp = self->_approximateSessionTimeStamp, approximateSessionTimeStamp == [equalCopy approximateSessionTimeStamp]))
     {
       v17 = 1;
       goto LABEL_13;
@@ -222,22 +222,22 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(MHSchemaMHSpeakerIdDataCollectionSelectedClockSessionInfoTier1 *)self clockIdentifier];
+  toCopy = to;
+  clockIdentifier = [(MHSchemaMHSpeakerIdDataCollectionSelectedClockSessionInfoTier1 *)self clockIdentifier];
 
-  if (v4)
+  if (clockIdentifier)
   {
-    v5 = [(MHSchemaMHSpeakerIdDataCollectionSelectedClockSessionInfoTier1 *)self clockIdentifier];
+    clockIdentifier2 = [(MHSchemaMHSpeakerIdDataCollectionSelectedClockSessionInfoTier1 *)self clockIdentifier];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(MHSchemaMHSpeakerIdDataCollectionSelectedClockSessionInfoTier1 *)self requestId];
+  requestId = [(MHSchemaMHSpeakerIdDataCollectionSelectedClockSessionInfoTier1 *)self requestId];
 
-  if (v6)
+  if (requestId)
   {
-    v7 = [(MHSchemaMHSpeakerIdDataCollectionSelectedClockSessionInfoTier1 *)self requestId];
+    requestId2 = [(MHSchemaMHSpeakerIdDataCollectionSelectedClockSessionInfoTier1 *)self requestId];
     PBDataWriterWriteSubmessage();
   }
 
@@ -247,26 +247,26 @@ LABEL_13:
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v13.receiver = self;
   v13.super_class = MHSchemaMHSpeakerIdDataCollectionSelectedClockSessionInfoTier1;
-  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:v4];
-  v6 = [(MHSchemaMHSpeakerIdDataCollectionSelectedClockSessionInfoTier1 *)self clockIdentifier];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:policyCopy];
+  clockIdentifier = [(MHSchemaMHSpeakerIdDataCollectionSelectedClockSessionInfoTier1 *)self clockIdentifier];
+  v7 = [clockIdentifier applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(MHSchemaMHSpeakerIdDataCollectionSelectedClockSessionInfoTier1 *)self deleteClockIdentifier];
   }
 
-  v9 = [(MHSchemaMHSpeakerIdDataCollectionSelectedClockSessionInfoTier1 *)self requestId];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  requestId = [(MHSchemaMHSpeakerIdDataCollectionSelectedClockSessionInfoTier1 *)self requestId];
+  v10 = [requestId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(MHSchemaMHSpeakerIdDataCollectionSelectedClockSessionInfoTier1 *)self deleteRequestId];
   }

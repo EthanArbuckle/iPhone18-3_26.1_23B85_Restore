@@ -1,62 +1,62 @@
 @interface TSCERemoteDataSpecifier
-+ (id)specifierFromArchive:(const void *)a3;
-+ (id)specifierWithFunctionIndex:(unsigned __int16)a3 symbol:(id)a4 attribute:(int64_t)a5;
-+ (id)specifierWithFunctionIndex:(unsigned __int16)a3 symbol:(id)a4 attribute:(int64_t)a5 year:(int64_t)a6 month:(int64_t)a7 day:(int64_t)a8;
-- (BOOL)hasDateEqualToDate:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)specifierFromArchive:(const void *)archive;
++ (id)specifierWithFunctionIndex:(unsigned __int16)index symbol:(id)symbol attribute:(int64_t)attribute;
++ (id)specifierWithFunctionIndex:(unsigned __int16)index symbol:(id)symbol attribute:(int64_t)attribute year:(int64_t)year month:(int64_t)month day:(int64_t)day;
+- (BOOL)hasDateEqualToDate:(id)date;
+- (BOOL)isEqual:(id)equal;
 - (NSString)functionName;
-- (TSCERemoteDataSpecifier)initWithFunctionIndex:(unsigned __int16)a3 symbol:(id)a4 attribute:(int64_t)a5 year:(int64_t)a6 month:(int64_t)a7 day:(int64_t)a8;
+- (TSCERemoteDataSpecifier)initWithFunctionIndex:(unsigned __int16)index symbol:(id)symbol attribute:(int64_t)attribute year:(int64_t)year month:(int64_t)month day:(int64_t)day;
 - (TSCEValue)invalidAttributeErrorValue;
 - (TSCEValue)invalidSymbolErrorValue;
 - (double)p_timeInterval;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)initFromArchive:(const void *)a3;
-- (id)specifierByChangingAttributeTo:(int64_t)a3;
-- (void)encodeToArchive:(void *)a3;
+- (id)initFromArchive:(const void *)archive;
+- (id)specifierByChangingAttributeTo:(int64_t)to;
+- (void)encodeToArchive:(void *)archive;
 @end
 
 @implementation TSCERemoteDataSpecifier
 
-+ (id)specifierWithFunctionIndex:(unsigned __int16)a3 symbol:(id)a4 attribute:(int64_t)a5
++ (id)specifierWithFunctionIndex:(unsigned __int16)index symbol:(id)symbol attribute:(int64_t)attribute
 {
-  v6 = a3;
-  v7 = a4;
+  indexCopy = index;
+  symbolCopy = symbol;
   v8 = objc_alloc(objc_opt_class());
-  v10 = objc_msgSend_initWithFunctionIndex_symbol_attribute_year_month_day_(v8, v9, v6, v7, a5, 0x7FFFFFFFFFFFFFFFLL, 0x7FFFFFFFFFFFFFFFLL, 0x7FFFFFFFFFFFFFFFLL);
+  v10 = objc_msgSend_initWithFunctionIndex_symbol_attribute_year_month_day_(v8, v9, indexCopy, symbolCopy, attribute, 0x7FFFFFFFFFFFFFFFLL, 0x7FFFFFFFFFFFFFFFLL, 0x7FFFFFFFFFFFFFFFLL);
 
   return v10;
 }
 
-+ (id)specifierWithFunctionIndex:(unsigned __int16)a3 symbol:(id)a4 attribute:(int64_t)a5 year:(int64_t)a6 month:(int64_t)a7 day:(int64_t)a8
++ (id)specifierWithFunctionIndex:(unsigned __int16)index symbol:(id)symbol attribute:(int64_t)attribute year:(int64_t)year month:(int64_t)month day:(int64_t)day
 {
-  v12 = a3;
-  v13 = a4;
+  indexCopy = index;
+  symbolCopy = symbol;
   v14 = objc_alloc(objc_opt_class());
-  v16 = objc_msgSend_initWithFunctionIndex_symbol_attribute_year_month_day_(v14, v15, v12, v13, a5, a6, a7, a8);
+  v16 = objc_msgSend_initWithFunctionIndex_symbol_attribute_year_month_day_(v14, v15, indexCopy, symbolCopy, attribute, year, month, day);
 
   return v16;
 }
 
-- (TSCERemoteDataSpecifier)initWithFunctionIndex:(unsigned __int16)a3 symbol:(id)a4 attribute:(int64_t)a5 year:(int64_t)a6 month:(int64_t)a7 day:(int64_t)a8
+- (TSCERemoteDataSpecifier)initWithFunctionIndex:(unsigned __int16)index symbol:(id)symbol attribute:(int64_t)attribute year:(int64_t)year month:(int64_t)month day:(int64_t)day
 {
-  v14 = a4;
+  symbolCopy = symbol;
   v49.receiver = self;
   v49.super_class = TSCERemoteDataSpecifier;
   v15 = [(TSCERemoteDataSpecifier *)&v49 init];
   v20 = v15;
   if (v15)
   {
-    v15->_functionIndex = a3;
-    v21 = objc_msgSend_copy(v14, v16, v17, v18, v19);
+    v15->_functionIndex = index;
+    v21 = objc_msgSend_copy(symbolCopy, v16, v17, v18, v19);
     symbol = v20->_symbol;
     v20->_symbol = v21;
 
-    v20->_attribute = a5;
-    v20->_year = a6;
-    v20->_month = a7;
-    v20->_day = a8;
-    if (a6 == 0x7FFFFFFFFFFFFFFFLL)
+    v20->_attribute = attribute;
+    v20->_year = year;
+    v20->_month = month;
+    v20->_day = day;
+    if (year == 0x7FFFFFFFFFFFFFFFLL)
     {
       if (objc_msgSend_isCold(v20, v23, v24, v25, v26))
       {
@@ -87,7 +87,7 @@ LABEL_7:
   return v20;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   functionIndex = self->_functionIndex;
@@ -100,35 +100,35 @@ LABEL_7:
   return objc_msgSend_initWithFunctionIndex_symbol_attribute_year_month_day_(v4, v5, functionIndex, symbol, attribute, year, month, day);
 }
 
-- (id)specifierByChangingAttributeTo:(int64_t)a3
+- (id)specifierByChangingAttributeTo:(int64_t)to
 {
   v5 = objc_alloc(objc_opt_class());
-  v7 = objc_msgSend_initWithFunctionIndex_symbol_attribute_year_month_day_(v5, v6, self->_functionIndex, self->_symbol, a3, self->_year, self->_month, self->_day);
+  v7 = objc_msgSend_initWithFunctionIndex_symbol_attribute_year_month_day_(v5, v6, self->_functionIndex, self->_symbol, to, self->_year, self->_month, self->_day);
 
   return v7;
 }
 
-+ (id)specifierFromArchive:(const void *)a3
++ (id)specifierFromArchive:(const void *)archive
 {
   v4 = objc_alloc(objc_opt_class());
-  v8 = objc_msgSend_initFromArchive_(v4, v5, a3, v6, v7);
+  v8 = objc_msgSend_initFromArchive_(v4, v5, archive, v6, v7);
 
   return v8;
 }
 
-- (id)initFromArchive:(const void *)a3
+- (id)initFromArchive:(const void *)archive
 {
-  v7 = *(a3 + 8);
-  v12 = objc_msgSend_tsp_stringWithProtobufString_(MEMORY[0x277CCACA8], a2, *(a3 + 3) & 0xFFFFFFFFFFFFFFFELL, v3, v4);
-  v13 = *(a3 + 9);
+  v7 = *(archive + 8);
+  v12 = objc_msgSend_tsp_stringWithProtobufString_(MEMORY[0x277CCACA8], a2, *(archive + 3) & 0xFFFFFFFFFFFFFFFELL, v3, v4);
+  v13 = *(archive + 9);
   v26 = 0x7FFFFFFFFFFFFFFFLL;
   v27 = 0x7FFFFFFFFFFFFFFFLL;
   v25 = 0x7FFFFFFFFFFFFFFFLL;
   v14 = 0x7FFFFFFFFFFFFFFFLL;
   v15 = 0x7FFFFFFFFFFFFFFFLL;
-  if ((*(a3 + 16) & 8) != 0)
+  if ((*(archive + 16) & 8) != 0)
   {
-    v16 = objc_msgSend_dateWithTimeIntervalSinceReferenceDate_(MEMORY[0x277CBEAA8], v8, v9, v10, v11, 0x7FFFFFFFFFFFFFFFLL, 0x7FFFFFFFFFFFFFFFLL, *(a3 + 5));
+    v16 = objc_msgSend_dateWithTimeIntervalSinceReferenceDate_(MEMORY[0x277CBEAA8], v8, v9, v10, v11, 0x7FFFFFFFFFFFFFFFLL, 0x7FFFFFFFFFFFFFFFLL, *(archive + 5));
     v21 = objc_msgSend_gregorianCalendar(TSCECalendar, v17, v18, v19, v20);
     objc_msgSend_extractComponentsFromDate_year_month_day_(v21, v22, v16, &v27, &v26, &v25);
 
@@ -141,14 +141,14 @@ LABEL_7:
   return v23;
 }
 
-- (void)encodeToArchive:(void *)a3
+- (void)encodeToArchive:(void *)archive
 {
-  v7 = objc_msgSend_functionIndex(self, a2, a3, v3, v4);
-  *(a3 + 4) |= 2u;
-  *(a3 + 8) = v7;
+  v7 = objc_msgSend_functionIndex(self, a2, archive, v3, v4);
+  *(archive + 4) |= 2u;
+  *(archive + 8) = v7;
   v12 = objc_msgSend_symbol(self, v8, v9, v10, v11);
   v17 = objc_msgSend_tsp_protobufString(v12, v13, v14, v15, v16);
-  sub_2213CE784(a3, v17);
+  sub_2213CE784(archive, v17);
 
   v22 = objc_msgSend_attribute(self, v18, v19, v20, v21);
   if (v22 >= 0x100000000)
@@ -173,19 +173,19 @@ LABEL_7:
     LODWORD(v22) = 0;
   }
 
-  *(a3 + 4) |= 4u;
-  *(a3 + 9) = v22;
+  *(archive + 4) |= 4u;
+  *(archive + 9) = v22;
   if (objc_msgSend_isCold(self, v23, v24, v25, v26))
   {
     objc_msgSend_p_timeInterval(self, v27, v28, v29, v30);
-    *(a3 + 4) |= 8u;
-    *(a3 + 5) = v31;
+    *(archive + 4) |= 8u;
+    *(archive + 5) = v31;
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   v5 = TSUDynamicCast();
   if (v5 && v5[7] == self->_hashVal && *(v5 + 4) == self->_functionIndex && v5[3] == self->_attribute && v5[4] == self->_year && v5[5] == self->_month && v5[6] == self->_day)
@@ -201,11 +201,11 @@ LABEL_7:
   return isEqualToString;
 }
 
-- (BOOL)hasDateEqualToDate:(id)a3
+- (BOOL)hasDateEqualToDate:(id)date
 {
-  v8 = a3;
+  dateCopy = date;
   year = self->_year;
-  if (v8)
+  if (dateCopy)
   {
     if (year == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -224,7 +224,7 @@ LABEL_8:
   v16 = 0;
   v14 = 0;
   v10 = objc_msgSend_gregorianCalendar(TSCECalendar, v4, v5, v6, v7);
-  objc_msgSend_extractComponentsFromDate_year_month_day_(v10, v11, v8, &v16, &v15, &v14);
+  objc_msgSend_extractComponentsFromDate_year_month_day_(v10, v11, dateCopy, &v16, &v15, &v14);
   if (v16 != self->_year || v15 != self->_month)
   {
     goto LABEL_8;

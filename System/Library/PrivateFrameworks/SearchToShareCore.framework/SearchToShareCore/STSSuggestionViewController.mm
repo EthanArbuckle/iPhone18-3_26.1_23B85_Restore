@@ -2,20 +2,20 @@
 - (STSSuggestionViewController)init;
 - (STSSuggestionViewControllerDelegate)selectionDelegate;
 - (UIEdgeInsets)contentInset;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)_hideNoticeOverlay;
 - (void)_updateFooterOrigin;
-- (void)_updateFooterOriginForBoundsHeight:(double)a3;
+- (void)_updateFooterOriginForBoundsHeight:(double)height;
 - (void)clearSuggestions;
-- (void)searchModelUpdatedQuerySuggestions:(id)a3;
-- (void)setContentInset:(UIEdgeInsets)a3;
-- (void)suggestionViewDidTapLogo:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)updateContentOffset:(double)a3;
-- (void)updateQuerySuggestions:(id)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)searchModelUpdatedQuerySuggestions:(id)suggestions;
+- (void)setContentInset:(UIEdgeInsets)inset;
+- (void)suggestionViewDidTapLogo:(id)logo;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)updateContentOffset:(double)offset;
+- (void)updateQuerySuggestions:(id)suggestions;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation STSSuggestionViewController
@@ -29,17 +29,17 @@
   {
     v3 = objc_alloc_init(STSSuggestionView);
     [(STSSuggestionView *)v3 setDelegate:v2];
-    v4 = [(STSSuggestionView *)v3 tableView];
-    [v4 setDataSource:v2];
+    tableView = [(STSSuggestionView *)v3 tableView];
+    [tableView setDataSource:v2];
 
-    v5 = [(STSSuggestionView *)v3 tableView];
-    [v5 setDelegate:v2];
+    tableView2 = [(STSSuggestionView *)v3 tableView];
+    [tableView2 setDelegate:v2];
 
-    v6 = [(STSSuggestionView *)v3 tableView];
-    [v6 registerClass:objc_opt_class() forCellReuseIdentifier:@"SuggestionCell"];
+    tableView3 = [(STSSuggestionView *)v3 tableView];
+    [tableView3 registerClass:objc_opt_class() forCellReuseIdentifier:@"SuggestionCell"];
 
-    v7 = [(STSSuggestionView *)v3 tableView];
-    [v7 setSeparatorStyle:1];
+    tableView4 = [(STSSuggestionView *)v3 tableView];
+    [tableView4 setSeparatorStyle:1];
 
     [(STSSuggestionViewController *)v2 setView:v3];
   }
@@ -47,30 +47,30 @@
   return v2;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v5 = [(STSSuggestionViewController *)self view];
+  view = [(STSSuggestionViewController *)self view];
   v3 = +[STSImageCache sharedCache];
-  v4 = [v3 searchProviderImage];
-  [v5 updateFooterImage:v4];
+  searchProviderImage = [v3 searchProviderImage];
+  [view updateFooterImage:searchProviderImage];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   [(STSSuggestionViewController *)self _updateFooterOriginForBoundsHeight:height];
-  [v7 animateAlongsideTransition:0 completion:0];
+  [coordinatorCopy animateAlongsideTransition:0 completion:0];
   v8.receiver = self;
   v8.super_class = STSSuggestionViewController;
-  [(STSSuggestionViewController *)&v8 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  [(STSSuggestionViewController *)&v8 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
 }
 
 - (UIEdgeInsets)contentInset
 {
-  v2 = [(STSSuggestionViewController *)self view];
-  [v2 contentInset];
+  view = [(STSSuggestionViewController *)self view];
+  [view contentInset];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -87,14 +87,14 @@
   return result;
 }
 
-- (void)setContentInset:(UIEdgeInsets)a3
+- (void)setContentInset:(UIEdgeInsets)inset
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
-  v8 = [(STSSuggestionViewController *)self view];
-  [v8 setContentInset:{top, left, bottom, right}];
+  right = inset.right;
+  bottom = inset.bottom;
+  left = inset.left;
+  top = inset.top;
+  view = [(STSSuggestionViewController *)self view];
+  [view setContentInset:{top, left, bottom, right}];
 
   [MEMORY[0x277D75D18] setAnimationsEnabled:0];
   [(STSSuggestionViewController *)self _updateFooterOrigin];
@@ -103,136 +103,136 @@
   [v9 setAnimationsEnabled:1];
 }
 
-- (void)updateContentOffset:(double)a3
+- (void)updateContentOffset:(double)offset
 {
-  v9 = [(STSSuggestionViewController *)self view];
-  v5 = [v9 tableView];
-  v6 = [(STSSuggestionViewController *)self view];
-  v7 = [v6 tableView];
-  [v7 contentInset];
-  [v5 setContentOffset:{-v8, a3}];
+  view = [(STSSuggestionViewController *)self view];
+  tableView = [view tableView];
+  view2 = [(STSSuggestionViewController *)self view];
+  tableView2 = [view2 tableView];
+  [tableView2 contentInset];
+  [tableView setContentOffset:{-v8, offset}];
 }
 
 - (void)clearSuggestions
 {
   [(STSSearchModel *)self->_searchModel removeQuerySuggestions];
-  v3 = [(STSSuggestionViewController *)self view];
-  v4 = [v3 tableView];
-  [v4 reloadData];
+  view = [(STSSuggestionViewController *)self view];
+  tableView = [view tableView];
+  [tableView reloadData];
 
   [(STSSuggestionViewController *)self _updateFooterOrigin];
 }
 
-- (void)updateQuerySuggestions:(id)a3
+- (void)updateQuerySuggestions:(id)suggestions
 {
-  [(STSSearchModel *)self->_searchModel setQuerySuggestions:a3];
-  v4 = [(STSSuggestionViewController *)self view];
-  v5 = [v4 tableView];
-  [v5 reloadData];
+  [(STSSearchModel *)self->_searchModel setQuerySuggestions:suggestions];
+  view = [(STSSuggestionViewController *)self view];
+  tableView = [view tableView];
+  [tableView reloadData];
 
   [(STSSuggestionViewController *)self _updateFooterOrigin];
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(STSSearchModel *)self->_searchModel querySuggestions:a3];
+  v4 = [(STSSearchModel *)self->_searchModel querySuggestions:view];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"SuggestionCell" forIndexPath:v6];
-  v8 = [MEMORY[0x277D75348] clearColor];
-  [v7 setBackgroundColor:v8];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"SuggestionCell" forIndexPath:pathCopy];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [v7 setBackgroundColor:clearColor];
 
-  v9 = [v7 textLabel];
-  v10 = [(STSSearchModel *)self->_searchModel querySuggestions];
-  v11 = [v6 row];
+  textLabel = [v7 textLabel];
+  querySuggestions = [(STSSearchModel *)self->_searchModel querySuggestions];
+  v11 = [pathCopy row];
 
-  v12 = [v10 objectAtIndex:v11];
-  v13 = [v12 suggestion];
-  [v9 setText:v13];
+  v12 = [querySuggestions objectAtIndex:v11];
+  suggestion = [v12 suggestion];
+  [textLabel setText:suggestion];
 
-  v14 = [v7 textLabel];
-  v15 = [MEMORY[0x277D75348] systemPinkColor];
-  [v14 setTextColor:v15];
+  textLabel2 = [v7 textLabel];
+  systemPinkColor = [MEMORY[0x277D75348] systemPinkColor];
+  [textLabel2 setTextColor:systemPinkColor];
 
-  v16 = [v7 textLabel];
+  textLabel3 = [v7 textLabel];
   v17 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76918]];
-  [v16 setFont:v17];
+  [textLabel3 setFont:v17];
 
   v18 = _UIImageGetSearchGlass();
   v19 = MEMORY[0x277D755B8];
   [v18 size];
   v21 = v20;
   v23 = v22;
-  v24 = [MEMORY[0x277D75348] sts_magnifyingGlassGrayTintColor];
+  sts_magnifyingGlassGrayTintColor = [MEMORY[0x277D75348] sts_magnifyingGlassGrayTintColor];
   v25 = _UIImageGetSearchGlass();
-  v26 = [v19 _tintedImageForSize:v24 withTint:0 effectsImage:v25 maskImage:0 style:{v21, v23}];
+  v26 = [v19 _tintedImageForSize:sts_magnifyingGlassGrayTintColor withTint:0 effectsImage:v25 maskImage:0 style:{v21, v23}];
 
-  v27 = [v7 imageView];
-  [v27 setImage:v26];
+  imageView = [v7 imageView];
+  [imageView setImage:v26];
 
   return v7;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v7 = [(STSSuggestionViewController *)self selectionDelegate];
-  v6 = [v5 row];
+  pathCopy = path;
+  selectionDelegate = [(STSSuggestionViewController *)self selectionDelegate];
+  v6 = [pathCopy row];
 
-  [v7 suggestionViewController:self didSelectSuggestionAtIndex:v6];
+  [selectionDelegate suggestionViewController:self didSelectSuggestionAtIndex:v6];
 }
 
-- (void)searchModelUpdatedQuerySuggestions:(id)a3
+- (void)searchModelUpdatedQuerySuggestions:(id)suggestions
 {
-  v4 = [(STSSuggestionViewController *)self view];
-  v5 = [v4 tableView];
-  [v5 reloadData];
+  view = [(STSSuggestionViewController *)self view];
+  tableView = [view tableView];
+  [tableView reloadData];
 
   [(STSSuggestionViewController *)self _updateFooterOrigin];
 }
 
-- (void)suggestionViewDidTapLogo:(id)a3
+- (void)suggestionViewDidTapLogo:(id)logo
 {
-  v4 = [(STSSuggestionViewController *)self selectionDelegate];
-  [v4 suggestionViewControllerDidTapLogo:self];
+  selectionDelegate = [(STSSuggestionViewController *)self selectionDelegate];
+  [selectionDelegate suggestionViewControllerDidTapLogo:self];
 }
 
 - (void)_hideNoticeOverlay
 {
-  v2 = [(STSSuggestionViewController *)self view];
-  [v2 setOverlayView:0 animated:1];
+  view = [(STSSuggestionViewController *)self view];
+  [view setOverlayView:0 animated:1];
 }
 
 - (void)_updateFooterOrigin
 {
-  v3 = [(STSSuggestionViewController *)self view];
-  [v3 bounds];
+  view = [(STSSuggestionViewController *)self view];
+  [view bounds];
   [(STSSuggestionViewController *)self _updateFooterOriginForBoundsHeight:CGRectGetHeight(v5)];
 }
 
-- (void)_updateFooterOriginForBoundsHeight:(double)a3
+- (void)_updateFooterOriginForBoundsHeight:(double)height
 {
-  v5 = [(STSSuggestionViewController *)self view];
-  v6 = [v5 readableContentGuide];
-  [v6 layoutFrame];
+  view = [(STSSuggestionViewController *)self view];
+  readableContentGuide = [view readableContentGuide];
+  [readableContentGuide layoutFrame];
   MinX = CGRectGetMinX(v55);
-  v8 = [(STSSuggestionViewController *)self view];
-  [v8 footerSize];
+  view2 = [(STSSuggestionViewController *)self view];
+  [view2 footerSize];
   v9 = 20.0;
   v11 = v10 + 20.0 + 10.0;
 
   if (MinX >= v11)
   {
     [(STSSuggestionViewController *)self contentInset];
-    v42 = a3 - v41;
-    v43 = [(STSSuggestionViewController *)self view];
-    [v43 footerSize];
+    v42 = height - v41;
+    view3 = [(STSSuggestionViewController *)self view];
+    [view3 footerSize];
     v45 = v42 - v44;
 
     v20 = 1;
@@ -240,32 +240,32 @@
 
   else
   {
-    v12 = [(STSSearchModel *)self->_searchModel querySuggestions];
-    v13 = [v12 count];
+    querySuggestions = [(STSSearchModel *)self->_searchModel querySuggestions];
+    v13 = [querySuggestions count];
 
     if (v13)
     {
       v14 = MEMORY[0x277CCAA70];
-      v15 = [(STSSearchModel *)self->_searchModel querySuggestions];
-      v16 = [v14 indexPathForRow:objc_msgSend(v15 inSection:{"count") - 1, 0}];
+      querySuggestions2 = [(STSSearchModel *)self->_searchModel querySuggestions];
+      v16 = [v14 indexPathForRow:objc_msgSend(querySuggestions2 inSection:{"count") - 1, 0}];
 
-      v17 = [(STSSuggestionViewController *)self view];
-      v18 = [v17 tableView];
-      v19 = [v18 cellForRowAtIndexPath:v16];
+      view4 = [(STSSuggestionViewController *)self view];
+      tableView = [view4 tableView];
+      v19 = [tableView cellForRowAtIndexPath:v16];
 
       v20 = v19 != 0;
-      MaxY = a3;
+      MaxY = height;
       if (v19)
       {
-        v22 = [(STSSuggestionViewController *)self view];
+        view5 = [(STSSuggestionViewController *)self view];
         [v19 frame];
         v24 = v23;
         v26 = v25;
         v28 = v27;
         v30 = v29;
-        v31 = [(STSSuggestionViewController *)self view];
-        v32 = [v31 tableView];
-        [v22 convertRect:v32 fromView:{v24, v26, v28, v30}];
+        view6 = [(STSSuggestionViewController *)self view];
+        tableView2 = [view6 tableView];
+        [view5 convertRect:tableView2 fromView:{v24, v26, v28, v30}];
         v34 = v33;
         v36 = v35;
         v38 = v37;
@@ -282,18 +282,18 @@
     else
     {
       v20 = 0;
-      MaxY = a3;
+      MaxY = height;
     }
 
-    v46 = [(STSSuggestionViewController *)self view];
-    v47 = [v46 readableContentGuide];
-    [v47 layoutFrame];
+    view7 = [(STSSuggestionViewController *)self view];
+    readableContentGuide2 = [view7 readableContentGuide];
+    [readableContentGuide2 layoutFrame];
     v9 = CGRectGetMinX(v57);
 
     [(STSSuggestionViewController *)self contentInset];
-    v49 = a3 - v48;
-    v50 = [(STSSuggestionViewController *)self view];
-    [v50 footerSize];
+    v49 = height - v48;
+    view8 = [(STSSuggestionViewController *)self view];
+    [view8 footerSize];
     v45 = v49 - v51;
 
     if (MaxY >= v45)
@@ -302,11 +302,11 @@
     }
   }
 
-  v52 = [(STSSuggestionViewController *)self view];
-  [v52 setFooterOffset:{v9, v45}];
+  view9 = [(STSSuggestionViewController *)self view];
+  [view9 setFooterOffset:{v9, v45}];
 
-  v53 = [(STSSuggestionViewController *)self view];
-  [v53 setShowingFooter:v20];
+  view10 = [(STSSuggestionViewController *)self view];
+  [view10 setShowingFooter:v20];
 }
 
 - (STSSuggestionViewControllerDelegate)selectionDelegate

@@ -1,14 +1,14 @@
 @interface GKSCoreAnalyticsAdaptor
-+ (BOOL)analyticsSendEventWrapper:(id)a3 withPayload:(id)a4 hasHistogram:(BOOL)a5;
++ (BOOL)analyticsSendEventWrapper:(id)wrapper withPayload:(id)payload hasHistogram:(BOOL)histogram;
 @end
 
 @implementation GKSCoreAnalyticsAdaptor
 
-+ (BOOL)analyticsSendEventWrapper:(id)a3 withPayload:(id)a4 hasHistogram:(BOOL)a5
++ (BOOL)analyticsSendEventWrapper:(id)wrapper withPayload:(id)payload hasHistogram:(BOOL)histogram
 {
-  v5 = a5;
+  histogramCopy = histogram;
   v22 = *MEMORY[0x277D85DE8];
-  v7 = [a1 fullEventName:a3];
+  v7 = [self fullEventName:wrapper];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
   {
     v8 = VRTraceErrorLogLevelToCSTR();
@@ -24,12 +24,12 @@
       v18 = 2112;
       v19 = v7;
       v20 = 2112;
-      v21 = a4;
+      payloadCopy = payload;
       _os_log_impl(&dword_23D482000, v9, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Sending CoreAnalytics event with fullEventName=%@ payload=%@", buf, 0x30u);
     }
   }
 
-  if (v5)
+  if (histogramCopy)
   {
     result = AnalyticsSendExplodingEventLazy();
   }

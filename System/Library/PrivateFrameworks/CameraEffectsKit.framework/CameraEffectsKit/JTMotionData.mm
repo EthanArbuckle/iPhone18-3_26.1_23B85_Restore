@@ -20,7 +20,7 @@
   block[1] = 3221225472;
   block[2] = __30__JTMotionData_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_3 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_3, block);
@@ -107,25 +107,25 @@ uint64_t __30__JTMotionData_sharedInstance__block_invoke(uint64_t a1)
 
 - (void)startMotion
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v2->_started = 1;
-  v3 = [(JTMotionData *)v2 motionManager];
-  v4 = [v3 deviceMotion];
-  v5 = [v4 attitude];
-  refAttitude = v2->_refAttitude;
-  v2->_refAttitude = v5;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  selfCopy->_started = 1;
+  motionManager = [(JTMotionData *)selfCopy motionManager];
+  deviceMotion = [motionManager deviceMotion];
+  attitude = [deviceMotion attitude];
+  refAttitude = selfCopy->_refAttitude;
+  selfCopy->_refAttitude = attitude;
 
-  v7 = [(JTMotionData *)v2 motionManager];
-  v8 = [(JTMotionData *)v2 motionQueue];
+  motionManager2 = [(JTMotionData *)selfCopy motionManager];
+  motionQueue = [(JTMotionData *)selfCopy motionQueue];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __27__JTMotionData_startMotion__block_invoke;
   v9[3] = &unk_278D7AF80;
-  v9[4] = v2;
-  [v7 startDeviceMotionUpdatesUsingReferenceFrame:4 toQueue:v8 withHandler:v9];
+  v9[4] = selfCopy;
+  [motionManager2 startDeviceMotionUpdatesUsingReferenceFrame:4 toQueue:motionQueue withHandler:v9];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 void __27__JTMotionData_startMotion__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -327,8 +327,8 @@ void __27__JTMotionData_startMotion__block_invoke(uint64_t a1, void *a2, void *a
   v2 = obj;
   if (obj->_started)
   {
-    v3 = [(JTMotionData *)obj motionManager];
-    [v3 stopDeviceMotionUpdates];
+    motionManager = [(JTMotionData *)obj motionManager];
+    [motionManager stopDeviceMotionUpdates];
 
     v2 = obj;
   }
@@ -338,13 +338,13 @@ void __27__JTMotionData_startMotion__block_invoke(uint64_t a1, void *a2, void *a
 
 - ($01BB1521EC52D44A8E7628F5261DCEC8)currentOrientation
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  x = v2->_currentAttitude.x;
-  y = v2->_currentAttitude.y;
-  z = v2->_currentAttitude.z;
-  w = v2->_currentAttitude.w;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  x = selfCopy->_currentAttitude.x;
+  y = selfCopy->_currentAttitude.y;
+  z = selfCopy->_currentAttitude.z;
+  w = selfCopy->_currentAttitude.w;
+  objc_sync_exit(selfCopy);
 
   v7 = x;
   v8 = y;
@@ -359,30 +359,30 @@ void __27__JTMotionData_startMotion__block_invoke(uint64_t a1, void *a2, void *a
 
 - (double)yawRadians
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  yawRadians = v2->_yawRadians;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  yawRadians = selfCopy->_yawRadians;
+  objc_sync_exit(selfCopy);
 
   return yawRadians;
 }
 
 - (double)rollRadians
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  rollRadians = v2->_rollRadians;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  rollRadians = selfCopy->_rollRadians;
+  objc_sync_exit(selfCopy);
 
   return rollRadians;
 }
 
 - (double)pitchRadians
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  pitchRadians = v2->_pitchRadians;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  pitchRadians = selfCopy->_pitchRadians;
+  objc_sync_exit(selfCopy);
 
   return pitchRadians;
 }

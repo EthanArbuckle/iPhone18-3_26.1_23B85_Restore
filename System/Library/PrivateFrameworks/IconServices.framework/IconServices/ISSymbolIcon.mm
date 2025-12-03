@@ -1,49 +1,49 @@
 @interface ISSymbolIcon
-- (ISSymbolIcon)initWithCoder:(id)a3;
-- (ISSymbolIcon)initWithSymbolName:(id)a3 configuration:(id)a4;
-- (id)_generateImageWithDescriptor:(id)a3;
-- (id)_specUpdatedDescriptorForDescriptor:(id)a3;
+- (ISSymbolIcon)initWithCoder:(id)coder;
+- (ISSymbolIcon)initWithSymbolName:(id)name configuration:(id)configuration;
+- (id)_generateImageWithDescriptor:(id)descriptor;
+- (id)_specUpdatedDescriptorForDescriptor:(id)descriptor;
 - (id)description;
-- (id)imageForImageDescriptor:(id)a3;
+- (id)imageForImageDescriptor:(id)descriptor;
 - (id)symbol;
-- (void)_prepareImagesForImageDescriptors:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)getImageForImageDescriptor:(id)a3 completion:(id)a4;
+- (void)_prepareImagesForImageDescriptors:(id)descriptors;
+- (void)encodeWithCoder:(id)coder;
+- (void)getImageForImageDescriptor:(id)descriptor completion:(id)completion;
 @end
 
 @implementation ISSymbolIcon
 
-- (ISSymbolIcon)initWithSymbolName:(id)a3 configuration:(id)a4
+- (ISSymbolIcon)initWithSymbolName:(id)name configuration:(id)configuration
 {
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  configurationCopy = configuration;
   v16.receiver = self;
   v16.super_class = ISSymbolIcon;
-  v9 = [(ISCodableIcon *)&v16 _init];
-  if (v9)
+  _init = [(ISCodableIcon *)&v16 _init];
+  if (_init)
   {
     v10 = objc_opt_new();
-    imageCache = v9->_imageCache;
-    v9->_imageCache = v10;
+    imageCache = _init->_imageCache;
+    _init->_imageCache = v10;
 
-    objc_storeStrong(&v9->_symbolName, a3);
-    graphicSymbolDescriptor = v9->_graphicSymbolDescriptor;
-    v9->_graphicSymbolDescriptor = 0;
+    objc_storeStrong(&_init->_symbolName, name);
+    graphicSymbolDescriptor = _init->_graphicSymbolDescriptor;
+    _init->_graphicSymbolDescriptor = 0;
 
-    v13 = [v8 copy];
-    config = v9->_config;
-    v9->_config = v13;
+    v13 = [configurationCopy copy];
+    config = _init->_config;
+    _init->_config = v13;
   }
 
-  return v9;
+  return _init;
 }
 
-- (ISSymbolIcon)initWithCoder:(id)a3
+- (ISSymbolIcon)initWithCoder:(id)coder
 {
   v18[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"symbolName"];
-  if ([v4 decodeBoolForKey:@"configset"])
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"symbolName"];
+  if ([coderCopy decodeBoolForKey:@"configset"])
   {
     v6 = objc_opt_new();
     v7 = MEMORY[0x1E695DFD8];
@@ -51,7 +51,7 @@
     v18[1] = objc_opt_class();
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:2];
     v9 = [v7 setWithArray:v8];
-    v10 = [v4 decodeArrayOfObjectsOfClasses:v9 forKey:@"symbolColors"];
+    v10 = [coderCopy decodeArrayOfObjectsOfClasses:v9 forKey:@"symbolColors"];
     [v6 setSymbolColors:v10];
 
     v11 = MEMORY[0x1E695DFD8];
@@ -59,10 +59,10 @@
     v17[1] = objc_opt_class();
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:2];
     v13 = [v11 setWithArray:v12];
-    v14 = [v4 decodeArrayOfObjectsOfClasses:v13 forKey:@"enclosureColors"];
+    v14 = [coderCopy decodeArrayOfObjectsOfClasses:v13 forKey:@"enclosureColors"];
     [v6 setEnclosureColors:v14];
 
-    [v6 setRenderingMode:{objc_msgSend(v4, "decodeIntegerForKey:", @"renderingMode"}];
+    [v6 setRenderingMode:{objc_msgSend(coderCopy, "decodeIntegerForKey:", @"renderingMode"}];
     if (!v5)
     {
       goto LABEL_6;
@@ -84,64 +84,64 @@ LABEL_6:
   return self;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  [v6 encodeObject:self->_symbolName forKey:@"symbolName"];
-  v4 = [(ISGraphicIconConfiguration *)self->_config symbolColors];
-  [v6 encodeObject:v4 forKey:@"symbolColors"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_symbolName forKey:@"symbolName"];
+  symbolColors = [(ISGraphicIconConfiguration *)self->_config symbolColors];
+  [coderCopy encodeObject:symbolColors forKey:@"symbolColors"];
 
-  v5 = [(ISGraphicIconConfiguration *)self->_config enclosureColors];
-  [v6 encodeObject:v5 forKey:@"enclosureColors"];
+  enclosureColors = [(ISGraphicIconConfiguration *)self->_config enclosureColors];
+  [coderCopy encodeObject:enclosureColors forKey:@"enclosureColors"];
 
-  [v6 encodeInteger:-[ISGraphicIconConfiguration renderingMode](self->_config forKey:{"renderingMode"), @"renderingMode"}];
+  [coderCopy encodeInteger:-[ISGraphicIconConfiguration renderingMode](self->_config forKey:{"renderingMode"), @"renderingMode"}];
   if (self->_config)
   {
-    [v6 encodeBool:1 forKey:@"configset"];
+    [coderCopy encodeBool:1 forKey:@"configset"];
   }
 }
 
 - (id)symbol
 {
   v3 = objc_alloc(MEMORY[0x1E69A89B0]);
-  v4 = [(ISSymbolIcon *)self symbolName];
-  v5 = [v3 initWithSymbolName:v4 bundleURL:0];
+  symbolName = [(ISSymbolIcon *)self symbolName];
+  v5 = [v3 initWithSymbolName:symbolName bundleURL:0];
 
   return v5;
 }
 
-- (id)_generateImageWithDescriptor:(id)a3
+- (id)_generateImageWithDescriptor:(id)descriptor
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  descriptorCopy = descriptor;
   v5 = objc_alloc(MEMORY[0x1E69A89B0]);
-  v6 = [(ISSymbolIcon *)self symbolName];
-  v7 = [v5 initWithSymbolName:v6 bundleURL:0];
+  symbolName = [(ISSymbolIcon *)self symbolName];
+  v7 = [v5 initWithSymbolName:symbolName bundleURL:0];
 
   if (v7)
   {
-    v8 = [(ISSymbolIcon *)self config];
+    config = [(ISSymbolIcon *)self config];
 
-    if (v8)
+    if (config)
     {
-      v9 = [(ISSymbolIcon *)self config];
-      v10 = [(ISSymbolIcon *)self symbolName];
-      v11 = [ISGraphicSymbolResource graphicSymbolResourceWithConfiguration:v9 symbolName:v10 url:0];
+      config2 = [(ISSymbolIcon *)self config];
+      symbolName2 = [(ISSymbolIcon *)self symbolName];
+      v11 = [ISGraphicSymbolResource graphicSymbolResourceWithConfiguration:config2 symbolName:symbolName2 url:0];
 
-      [v11 updateDescriptorWithImageDescriptor:v4];
-      [v4 size];
+      [v11 updateDescriptorWithImageDescriptor:descriptorCopy];
+      [descriptorCopy size];
       v13 = v12;
       v15 = v14;
-      [v4 scale];
+      [descriptorCopy scale];
       v17 = [v11 imageForSize:v13 scale:{v15, v16}];
     }
 
     else
     {
-      [v4 size];
+      [descriptorCopy size];
       v21 = v20;
       v23 = v22;
-      [v4 scale];
+      [descriptorCopy scale];
       v17 = [v7 imageForSize:v21 scale:{v23, v24}];
     }
   }
@@ -151,9 +151,9 @@ LABEL_6:
     v18 = _ISDefaultLog();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
     {
-      v19 = [(ISSymbolIcon *)self symbolName];
+      symbolName3 = [(ISSymbolIcon *)self symbolName];
       v27 = 138412290;
-      v28 = v19;
+      v28 = symbolName3;
     }
 
     v17 = 0;
@@ -164,32 +164,32 @@ LABEL_6:
   return v17;
 }
 
-- (id)_specUpdatedDescriptorForDescriptor:(id)a3
+- (id)_specUpdatedDescriptorForDescriptor:(id)descriptor
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E69A8980] defaultIconSpecification];
-  [v3 size];
+  descriptorCopy = descriptor;
+  defaultIconSpecification = [MEMORY[0x1E69A8980] defaultIconSpecification];
+  [descriptorCopy size];
   v6 = v5;
   v8 = v7;
-  [v3 scale];
-  v10 = [v4 imageSpecificationForSize:v6 scale:{v8, v9}];
+  [descriptorCopy scale];
+  v10 = [defaultIconSpecification imageSpecificationForSize:v6 scale:{v8, v9}];
   [v10 size];
-  [v3 setSize:?];
+  [descriptorCopy setSize:?];
   [v10 scale];
-  [v3 setScale:?];
+  [descriptorCopy setScale:?];
 
-  return v3;
+  return descriptorCopy;
 }
 
-- (void)_prepareImagesForImageDescriptors:(id)a3
+- (void)_prepareImagesForImageDescriptors:(id)descriptors
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  descriptorsCopy = descriptors;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  v5 = [descriptorsCopy countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v5)
   {
     v6 = v5;
@@ -200,7 +200,7 @@ LABEL_6:
       {
         if (*v23 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(descriptorsCopy);
         }
 
         v9 = [*(*(&v22 + 1) + 8 * i) copy];
@@ -217,7 +217,7 @@ LABEL_6:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v6 = [descriptorsCopy countByEnumeratingWithState:&v22 objects:v26 count:16];
     }
 
     while (v6);
@@ -226,10 +226,10 @@ LABEL_6:
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (id)imageForImageDescriptor:(id)a3
+- (id)imageForImageDescriptor:(id)descriptor
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v4 = [a3 copy];
+  v4 = [descriptor copy];
   v5 = [(ISSymbolIcon *)self _specUpdatedDescriptorForDescriptor:v4];
 
   v6 = [(ISImageCache *)self->_imageCache imageForDescriptor:v5];
@@ -250,19 +250,19 @@ LABEL_6:
   return v7;
 }
 
-- (void)getImageForImageDescriptor:(id)a3 completion:(id)a4
+- (void)getImageForImageDescriptor:(id)descriptor completion:(id)completion
 {
   v13 = *MEMORY[0x1E69E9840];
-  v12 = a3;
+  descriptorCopy = descriptor;
   v6 = MEMORY[0x1E695DEC8];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 arrayWithObjects:&v12 count:1];
-  [(ISIcon *)self prepareImagesForImageDescriptors:v9, v12, v13];
+  completionCopy = completion;
+  descriptorCopy2 = descriptor;
+  v9 = [v6 arrayWithObjects:&descriptorCopy count:1];
+  [(ISIcon *)self prepareImagesForImageDescriptors:v9, descriptorCopy, v13];
 
-  v10 = [(ISSymbolIcon *)self imageForImageDescriptor:v8];
+  v10 = [(ISSymbolIcon *)self imageForImageDescriptor:descriptorCopy2];
 
-  v7[2](v7, v10);
+  completionCopy[2](completionCopy, v10);
   v11 = *MEMORY[0x1E69E9840];
 }
 
@@ -272,10 +272,10 @@ LABEL_6:
   v10.receiver = self;
   v10.super_class = ISSymbolIcon;
   v4 = [(ISSymbolIcon *)&v10 description];
-  v5 = [(ISSymbolIcon *)self symbolName];
-  v6 = [(ISSymbolIcon *)self config];
-  v7 = [(ISSymbolIcon *)self config];
-  v8 = [v3 stringWithFormat:@"%@ Symbol name: %@ Config: %d - %@", v4, v5, v6 != 0, v7];
+  symbolName = [(ISSymbolIcon *)self symbolName];
+  config = [(ISSymbolIcon *)self config];
+  config2 = [(ISSymbolIcon *)self config];
+  v8 = [v3 stringWithFormat:@"%@ Symbol name: %@ Config: %d - %@", v4, symbolName, config != 0, config2];
 
   return v8;
 }

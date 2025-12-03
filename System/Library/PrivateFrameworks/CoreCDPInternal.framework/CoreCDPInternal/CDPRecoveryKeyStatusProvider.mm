@@ -1,22 +1,22 @@
 @interface CDPRecoveryKeyStatusProvider
 - (BOOL)idmsHasRK;
-- (BOOL)isRecoveryKeySetInOctagonWithError:(id *)a3;
-- (BOOL)isRecoveryKeySetInSOSWithError:(id *)a3;
-- (CDPRecoveryKeyStatusProvider)initWithContext:(id)a3;
+- (BOOL)isRecoveryKeySetInOctagonWithError:(id *)error;
+- (BOOL)isRecoveryKeySetInSOSWithError:(id *)error;
+- (CDPRecoveryKeyStatusProvider)initWithContext:(id)context;
 - (void)idmsHasRK;
 @end
 
 @implementation CDPRecoveryKeyStatusProvider
 
-- (CDPRecoveryKeyStatusProvider)initWithContext:(id)a3
+- (CDPRecoveryKeyStatusProvider)initWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v9.receiver = self;
   v9.super_class = CDPRecoveryKeyStatusProvider;
   v5 = [(CDPRecoveryKeyStatusProvider *)&v9 init];
   if (v5)
   {
-    v6 = [MEMORY[0x277CFD4A8] preflightContext:v4];
+    v6 = [MEMORY[0x277CFD4A8] preflightContext:contextCopy];
     context = v5->_context;
     v5->_context = v6;
   }
@@ -26,9 +26,9 @@
 
 - (BOOL)idmsHasRK
 {
-  v3 = [MEMORY[0x277CF0130] sharedInstance];
-  v4 = [(CDPContext *)self->_context altDSID];
-  v5 = [v3 authKitAccountWithAltDSID:v4];
+  mEMORY[0x277CF0130] = [MEMORY[0x277CF0130] sharedInstance];
+  altDSID = [(CDPContext *)self->_context altDSID];
+  v5 = [mEMORY[0x277CF0130] authKitAccountWithAltDSID:altDSID];
 
   if (!v5)
   {
@@ -44,24 +44,24 @@
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
 LABEL_7:
-    v7 = 0;
+    bOOLValue = 0;
     goto LABEL_8;
   }
 
-  v6 = [v3 hasModernRecoveryKeyForAccount:v5];
-  v7 = [v6 BOOLValue];
+  v6 = [mEMORY[0x277CF0130] hasModernRecoveryKeyForAccount:v5];
+  bOOLValue = [v6 BOOLValue];
 
 LABEL_8:
-  return v7;
+  return bOOLValue;
 }
 
-- (BOOL)isRecoveryKeySetInOctagonWithError:(id *)a3
+- (BOOL)isRecoveryKeySetInOctagonWithError:(id *)error
 {
-  v4 = [(CDPContext *)self->_context cliqueConfiguration];
-  if (v4)
+  cliqueConfiguration = [(CDPContext *)self->_context cliqueConfiguration];
+  if (cliqueConfiguration)
   {
     v17 = 0;
-    v5 = [MEMORY[0x277CDBD48] isRecoveryKeySetInOctagon:v4 error:&v17];
+    v5 = [MEMORY[0x277CDBD48] isRecoveryKeySetInOctagon:cliqueConfiguration error:&v17];
     v6 = v17;
     if (v6)
     {
@@ -71,11 +71,11 @@ LABEL_8:
         [(CDPRecoveryKeyStatusProvider *)v6 isRecoveryKeySetInOctagonWithError:v7, v8, v9, v10, v11, v12, v13];
       }
 
-      if (a3)
+      if (error)
       {
         v14 = v6;
         v5 = 0;
-        *a3 = v6;
+        *error = v6;
       }
 
       else
@@ -93,10 +93,10 @@ LABEL_8:
       [CDPRecoveryKeyStatusProvider isRecoveryKeySetInOctagonWithError:v15];
     }
 
-    if (a3)
+    if (error)
     {
-      [MEMORY[0x277CCA9B8] cdp_errorWithCode:-5217 underlyingError:*a3];
-      *a3 = v5 = 0;
+      [MEMORY[0x277CCA9B8] cdp_errorWithCode:-5217 underlyingError:*error];
+      *error = v5 = 0;
     }
 
     else
@@ -108,11 +108,11 @@ LABEL_8:
   return v5;
 }
 
-- (BOOL)isRecoveryKeySetInSOSWithError:(id *)a3
+- (BOOL)isRecoveryKeySetInSOSWithError:(id *)error
 {
-  v4 = [(CDPContext *)self->_context cliqueConfiguration];
+  cliqueConfiguration = [(CDPContext *)self->_context cliqueConfiguration];
   v16 = 0;
-  v5 = [MEMORY[0x277CDBD48] isRecoveryKeySetInSOS:v4 error:&v16];
+  v5 = [MEMORY[0x277CDBD48] isRecoveryKeySetInSOS:cliqueConfiguration error:&v16];
   v6 = v16;
   if (v6)
   {
@@ -122,11 +122,11 @@ LABEL_8:
       [(CDPRecoveryKeyStatusProvider *)v6 isRecoveryKeySetInSOSWithError:v7, v8, v9, v10, v11, v12, v13];
     }
 
-    if (a3)
+    if (error)
     {
       v14 = v6;
       v5 = 0;
-      *a3 = v6;
+      *error = v6;
     }
 
     else
@@ -141,7 +141,7 @@ LABEL_8:
 - (void)idmsHasRK
 {
   v9 = *MEMORY[0x277D85DE8];
-  OUTLINED_FUNCTION_0_0(&dword_24510B000, a1, a3, "%s: Can't find account. Returning...", a5, a6, a7, a8, 2u);
+  OUTLINED_FUNCTION_0_0(&dword_24510B000, self, a3, "%s: Can't find account. Returning...", a5, a6, a7, a8, 2u);
   v8 = *MEMORY[0x277D85DE8];
 }
 

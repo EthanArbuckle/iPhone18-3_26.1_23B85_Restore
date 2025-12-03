@@ -5,18 +5,18 @@
 - (id)_newNeedleAODView;
 - (id)_newNeedleView;
 - (id)_newTicksView;
-- (id)initFullColorImageViewWithDevice:(id)a3;
-- (void)configureWithImageProvider:(id)a3 reason:(int64_t)a4;
+- (id)initFullColorImageViewWithDevice:(id)device;
+- (void)configureWithImageProvider:(id)provider reason:(int64_t)reason;
 - (void)layoutSubviews;
 @end
 
 @implementation CompassRichDialView
 
-- (id)initFullColorImageViewWithDevice:(id)a3
+- (id)initFullColorImageViewWithDevice:(id)device
 {
   v24.receiver = self;
   v24.super_class = CompassRichDialView;
-  v3 = [(NanoCompassBaseRichView *)&v24 initFullColorImageViewWithDevice:a3];
+  v3 = [(NanoCompassBaseRichView *)&v24 initFullColorImageViewWithDevice:device];
   v7 = v3;
   if (v3)
   {
@@ -78,10 +78,10 @@
   return needleAODView;
 }
 
-- (void)configureWithImageProvider:(id)a3 reason:(int64_t)a4
+- (void)configureWithImageProvider:(id)provider reason:(int64_t)reason
 {
-  v5 = a3;
-  v9 = objc_msgSend_metadata(v5, v6, v7, v8);
+  providerCopy = provider;
+  v9 = objc_msgSend_metadata(providerCopy, v6, v7, v8);
   v12 = objc_msgSend_objectForKeyedSubscript_(v9, v10, @"heading", v11);
 
   v16 = objc_msgSend_null(MEMORY[0x277CBEB68], v13, v14, v15);
@@ -98,12 +98,12 @@
   needleView = self->_needleView;
   v55 = v56;
   objc_msgSend_setTransform_(needleView, v25, &v55, v26);
-  v30 = objc_msgSend_metadata(v5, v27, v28, v29);
+  v30 = objc_msgSend_metadata(providerCopy, v27, v28, v29);
   v33 = objc_msgSend_objectForKeyedSubscript_(v30, v31, @"alwayson", v32);
   v37 = objc_msgSend_BOOLValue(v33, v34, v35, v36);
 
   objc_msgSend_setHidden_(self->_needleAODView, v38, v37 ^ 1u, v39);
-  v43 = objc_msgSend_metadata(v5, v40, v41, v42);
+  v43 = objc_msgSend_metadata(providerCopy, v40, v41, v42);
 
   v46 = objc_msgSend_objectForKeyedSubscript_(v43, v44, @"nodata", v45);
   v50 = objc_msgSend_BOOLValue(v46, v47, v48, v49);

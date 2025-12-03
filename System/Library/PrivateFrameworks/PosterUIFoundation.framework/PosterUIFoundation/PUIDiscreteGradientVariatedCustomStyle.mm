@@ -1,27 +1,27 @@
 @interface PUIDiscreteGradientVariatedCustomStyle
-+ (double)hueForLegacyVariation:(double)a3;
-+ (double)maxLuminanceForStyle:(id)a3;
-+ (double)minLuminanceForStyle:(id)a3;
-+ (double)variationForHue:(double)a3;
++ (double)hueForLegacyVariation:(double)variation;
++ (double)maxLuminanceForStyle:(id)style;
++ (double)minLuminanceForStyle:(id)style;
++ (double)variationForHue:(double)hue;
 + (id)discreteGradientVariatedColors;
-+ (id)variatedColorForVariation:(double)a3 fromColors:(id)a4 usingSaturation:(id)a5 alpha:(double)a6;
-- (BOOL)isEqual:(id)a3 ignoringVariation:(BOOL)a4;
-- (BOOL)isEqualToStyle:(id)a3 ignoringVariation:(BOOL)a4;
++ (id)variatedColorForVariation:(double)variation fromColors:(id)colors usingSaturation:(id)saturation alpha:(double)alpha;
+- (BOOL)isEqual:(id)equal ignoringVariation:(BOOL)variation;
+- (BOOL)isEqualToStyle:(id)style ignoringVariation:(BOOL)variation;
 - (NSArray)variationAppliedColors;
 - (NSString)identifier;
-- (PUIDiscreteGradientVariatedCustomStyle)initWithCoder:(id)a3;
-- (PUIDiscreteGradientVariatedCustomStyle)initWithHue:(double)a3 saturation:(double)a4 luminanceValue:(double)a5 alpha:(double)a6;
-- (PUIDiscreteGradientVariatedCustomStyle)initWithVariation:(double)a3 luminance:(double)a4 saturation:(double)a5 alpha:(double)a6;
+- (PUIDiscreteGradientVariatedCustomStyle)initWithCoder:(id)coder;
+- (PUIDiscreteGradientVariatedCustomStyle)initWithHue:(double)hue saturation:(double)saturation luminanceValue:(double)value alpha:(double)alpha;
+- (PUIDiscreteGradientVariatedCustomStyle)initWithVariation:(double)variation luminance:(double)luminance saturation:(double)saturation alpha:(double)alpha;
 - (UIColor)luminanceAppliedColor;
-- (id)copyWithLuminance:(double)a3 saturation:(double)a4 alpha:(double)a5;
+- (id)copyWithLuminance:(double)luminance saturation:(double)saturation alpha:(double)alpha;
 - (id)copyWithResetSaturation;
-- (id)copyWithVariatedColor:(id)a3;
-- (id)copyWithVariation:(double)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithVariatedColor:(id)color;
+- (id)copyWithVariation:(double)variation;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)nonVariatedIdentifier;
-- (id)variatedColorResettingSaturation:(BOOL)a3;
+- (id)variatedColorResettingSaturation:(BOOL)saturation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PUIDiscreteGradientVariatedCustomStyle
@@ -54,15 +54,15 @@
   return v9;
 }
 
-+ (double)minLuminanceForStyle:(id)a3
++ (double)minLuminanceForStyle:(id)style
 {
-  v3 = a3;
-  v4 = [v3 variationAppliedColors];
-  v5 = [v4 firstObject];
+  styleCopy = style;
+  variationAppliedColors = [styleCopy variationAppliedColors];
+  firstObject = [variationAppliedColors firstObject];
 
-  [v5 pui_minLuminance];
+  [firstObject pui_minLuminance];
   v7 = v6;
-  [v3 luminance];
+  [styleCopy luminance];
   v9 = v8;
 
   if (v9 < v7)
@@ -77,27 +77,27 @@
   return v7;
 }
 
-+ (double)maxLuminanceForStyle:(id)a3
++ (double)maxLuminanceForStyle:(id)style
 {
-  v3 = [a3 variationAppliedColors];
-  v4 = [v3 firstObject];
+  variationAppliedColors = [style variationAppliedColors];
+  firstObject = [variationAppliedColors firstObject];
 
-  [v4 pui_maxLuminance];
+  [firstObject pui_maxLuminance];
   v6 = v5;
 
   return v6;
 }
 
-- (PUIDiscreteGradientVariatedCustomStyle)initWithVariation:(double)a3 luminance:(double)a4 saturation:(double)a5 alpha:(double)a6
+- (PUIDiscreteGradientVariatedCustomStyle)initWithVariation:(double)variation luminance:(double)luminance saturation:(double)saturation alpha:(double)alpha
 {
-  [objc_opt_class() hueForLegacyVariation:a3];
+  [objc_opt_class() hueForLegacyVariation:variation];
   v11 = v10;
-  [objc_opt_class() luminanceForLegacyLuminance:a4];
+  [objc_opt_class() luminanceForLegacyLuminance:luminance];
 
-  return [(PUIDiscreteGradientVariatedCustomStyle *)self initWithHue:v11 saturation:a5 luminanceValue:v12 alpha:a6];
+  return [(PUIDiscreteGradientVariatedCustomStyle *)self initWithHue:v11 saturation:saturation luminanceValue:v12 alpha:alpha];
 }
 
-- (PUIDiscreteGradientVariatedCustomStyle)initWithHue:(double)a3 saturation:(double)a4 luminanceValue:(double)a5 alpha:(double)a6
+- (PUIDiscreteGradientVariatedCustomStyle)initWithHue:(double)hue saturation:(double)saturation luminanceValue:(double)value alpha:(double)alpha
 {
   v11 = objc_opt_class();
   v12 = NSStringFromClass(v11);
@@ -107,15 +107,15 @@
 
   if (v13)
   {
-    v14 = [objc_opt_class() discreteGradientVariatedColors];
+    discreteGradientVariatedColors = [objc_opt_class() discreteGradientVariatedColors];
     colors = v13->_colors;
-    v13->_colors = v14;
+    v13->_colors = discreteGradientVariatedColors;
 
-    v13->_hue = a3;
-    v13->_luminanceValue = a5;
-    v13->_saturation = a4;
-    v13->_alpha = a6;
-    [objc_opt_class() variationForHue:a3];
+    v13->_hue = hue;
+    v13->_luminanceValue = value;
+    v13->_saturation = saturation;
+    v13->_alpha = alpha;
+    [objc_opt_class() variationForHue:hue];
     v13->_variation = v16;
     [objc_opt_class() legacyLuminanceForLuminanceValue:v13->_luminanceValue];
     v13->_luminance = v17;
@@ -125,11 +125,11 @@
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3 ignoringVariation:(BOOL)a4
+- (BOOL)isEqual:(id)equal ignoringVariation:(BOOL)variation
 {
-  v4 = a4;
-  v6 = a3;
-  if (v6 == self)
+  variationCopy = variation;
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
@@ -137,23 +137,23 @@
   else
   {
     objc_opt_class();
-    v7 = (objc_opt_isKindOfClass() & 1) != 0 && [(PUIDiscreteGradientVariatedCustomStyle *)self isEqualToStyle:v6 ignoringVariation:v4];
+    v7 = (objc_opt_isKindOfClass() & 1) != 0 && [(PUIDiscreteGradientVariatedCustomStyle *)self isEqualToStyle:equalCopy ignoringVariation:variationCopy];
   }
 
   return v7;
 }
 
-- (BOOL)isEqualToStyle:(id)a3 ignoringVariation:(BOOL)a4
+- (BOOL)isEqualToStyle:(id)style ignoringVariation:(BOOL)variation
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = v6;
-  if (v6 == self)
+  variationCopy = variation;
+  styleCopy = style;
+  v7 = styleCopy;
+  if (styleCopy == self)
   {
     v11 = 1;
   }
 
-  else if (v6 && _PUIStyleCompareUsingIdentifiers(self, v6, v4) && (-[PUIDiscreteGradientVariatedCustomStyle colors](self, "colors"), v8 = objc_claimAutoreleasedReturnValue(), -[PUIDiscreteGradientVariatedCustomStyle colors](v7, "colors"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v8 isEqualToArray:v9], v9, v8, v10) && (-[PUIDiscreteGradientVariatedCustomStyle hue](self, "hue"), -[PUIDiscreteGradientVariatedCustomStyle hue](v7, "hue"), BSFloatEqualToFloat()) && (-[PUIDiscreteGradientVariatedCustomStyle luminanceValue](self, "luminanceValue"), -[PUIDiscreteGradientVariatedCustomStyle luminanceValue](v7, "luminanceValue"), BSFloatEqualToFloat()) && (-[PUIDiscreteGradientVariatedCustomStyle saturation](self, "saturation"), -[PUIDiscreteGradientVariatedCustomStyle saturation](v7, "saturation"), BSFloatEqualToFloat()))
+  else if (styleCopy && _PUIStyleCompareUsingIdentifiers(self, styleCopy, variationCopy) && (-[PUIDiscreteGradientVariatedCustomStyle colors](self, "colors"), v8 = objc_claimAutoreleasedReturnValue(), -[PUIDiscreteGradientVariatedCustomStyle colors](v7, "colors"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v8 isEqualToArray:v9], v9, v8, v10) && (-[PUIDiscreteGradientVariatedCustomStyle hue](self, "hue"), -[PUIDiscreteGradientVariatedCustomStyle hue](v7, "hue"), BSFloatEqualToFloat()) && (-[PUIDiscreteGradientVariatedCustomStyle luminanceValue](self, "luminanceValue"), -[PUIDiscreteGradientVariatedCustomStyle luminanceValue](v7, "luminanceValue"), BSFloatEqualToFloat()) && (-[PUIDiscreteGradientVariatedCustomStyle saturation](self, "saturation"), -[PUIDiscreteGradientVariatedCustomStyle saturation](v7, "saturation"), BSFloatEqualToFloat()))
   {
     [(PUIDiscreteGradientVariatedCustomStyle *)self alpha];
     [(PUIDiscreteGradientVariatedCustomStyle *)v7 alpha];
@@ -184,8 +184,8 @@
 - (id)nonVariatedIdentifier
 {
   v3 = NSStringFromPUIStyleType([(PUIDiscreteGradientVariatedCustomStyle *)self type]);
-  v4 = [(PUIDiscreteGradientVariatedCustomStyle *)self colors];
-  v5 = [v4 bs_map:&__block_literal_global_313];
+  colors = [(PUIDiscreteGradientVariatedCustomStyle *)self colors];
+  v5 = [colors bs_map:&__block_literal_global_313];
   v6 = [v5 componentsJoinedByString:@"_"];
   v7 = [MEMORY[0x1E696AD98] numberWithDouble:self->_hue];
   v8 = [MEMORY[0x1E696AD98] numberWithDouble:self->_luminanceValue];
@@ -206,9 +206,9 @@ uint64_t __63__PUIDiscreteGradientVariatedCustomStyle_nonVariatedIdentifier__blo
 - (UIColor)luminanceAppliedColor
 {
   v2 = [[PUIColorValues alloc] initWithHue:self->_hue saturation:self->_saturation luminance:self->_luminanceValue alpha:self->_alpha];
-  v3 = [(PUIColorValues *)v2 color];
+  color = [(PUIColorValues *)v2 color];
 
-  return v3;
+  return color;
 }
 
 - (NSArray)variationAppliedColors
@@ -221,12 +221,12 @@ uint64_t __63__PUIDiscreteGradientVariatedCustomStyle_nonVariatedIdentifier__blo
   return v3;
 }
 
-- (id)variatedColorResettingSaturation:(BOOL)a3
+- (id)variatedColorResettingSaturation:(BOOL)saturation
 {
   v5 = objc_opt_class();
   variation = self->_variation;
   colors = self->_colors;
-  if (a3)
+  if (saturation)
   {
     v8 = 0;
   }
@@ -237,24 +237,24 @@ uint64_t __63__PUIDiscreteGradientVariatedCustomStyle_nonVariatedIdentifier__blo
   }
 
   v9 = [v5 variatedColorForVariation:colors fromColors:v8 usingSaturation:variation alpha:self->_alpha];
-  if (!a3)
+  if (!saturation)
   {
   }
 
   return v9;
 }
 
-+ (id)variatedColorForVariation:(double)a3 fromColors:(id)a4 usingSaturation:(id)a5 alpha:(double)a6
++ (id)variatedColorForVariation:(double)variation fromColors:(id)colors usingSaturation:(id)saturation alpha:(double)alpha
 {
-  v9 = a4;
-  v10 = a5;
-  v36 = a6;
-  v11 = [v9 count];
-  v12 = (a3 + 1.0) * 0.5 + 0.0;
+  colorsCopy = colors;
+  saturationCopy = saturation;
+  alphaCopy = alpha;
+  v11 = [colorsCopy count];
+  v12 = (variation + 1.0) * 0.5 + 0.0;
   v13 = vcvtmd_s64_f64(v12 / (1.0 / (v11 - 1)));
   if (v11 - 1 <= v13)
   {
-    v22 = [v9 objectAtIndexedSubscript:?];
+    color = [colorsCopy objectAtIndexedSubscript:?];
   }
 
   else
@@ -263,38 +263,38 @@ uint64_t __63__PUIDiscreteGradientVariatedCustomStyle_nonVariatedIdentifier__blo
     v35 = 0.0;
     v14 = (v12 - v13 / (v11 - 1)) / ((v13 + 1.0) / (v11 - 1) - v13 / (v11 - 1)) + 0.0;
     v33 = 0.0;
-    v15 = [v9 objectAtIndexedSubscript:v13];
-    [v15 getRed:&v35 green:&v34 blue:&v33 alpha:&v36];
+    v15 = [colorsCopy objectAtIndexedSubscript:v13];
+    [v15 getRed:&v35 green:&v34 blue:&v33 alpha:&alphaCopy];
     v31 = 0.0;
     v32 = 0.0;
     v30 = 0.0;
-    v16 = [v9 objectAtIndexedSubscript:v13 + 1];
-    [v16 getRed:&v32 green:&v31 blue:&v30 alpha:&v36];
+    v16 = [colorsCopy objectAtIndexedSubscript:v13 + 1];
+    [v16 getRed:&v32 green:&v31 blue:&v30 alpha:&alphaCopy];
     v17 = v14 * v32 + (1.0 - v14) * v35;
     v18 = v14 * v31 + (1.0 - v14) * v34;
     v19 = v14 * v30 + (1.0 - v14) * v33;
     v20 = objc_alloc(MEMORY[0x1E69DC888]);
-    v21 = [v20 initWithRed:v17 green:v18 blue:v19 alpha:v36];
-    v22 = v21;
-    if (v10)
+    v21 = [v20 initWithRed:v17 green:v18 blue:v19 alpha:alphaCopy];
+    color = v21;
+    if (saturationCopy)
     {
       v23 = [[PUIColorValues alloc] initWithColor:v21];
-      v24 = [(PUIColorValues *)v23 hslValues];
-      [v24 luminance];
+      hslValues = [(PUIColorValues *)v23 hslValues];
+      [hslValues luminance];
       v26 = v25;
-      [v10 bs_CGFloatValue];
+      [saturationCopy bs_CGFloatValue];
       v28 = [(PUIColorValues *)v23 copyWithLuminance:v26 saturation:v27];
 
-      v22 = [v28 color];
+      color = [v28 color];
     }
   }
 
-  return v22;
+  return color;
 }
 
-- (id)copyWithVariation:(double)a3
+- (id)copyWithVariation:(double)variation
 {
-  [objc_opt_class() hueForLegacyVariation:a3];
+  [objc_opt_class() hueForLegacyVariation:variation];
   v5 = v4;
   v6 = [PUIDiscreteGradientVariatedCustomStyle alloc];
   saturation = self->_saturation;
@@ -304,42 +304,42 @@ uint64_t __63__PUIDiscreteGradientVariatedCustomStyle_nonVariatedIdentifier__blo
   return [(PUIDiscreteGradientVariatedCustomStyle *)v6 initWithHue:v5 saturation:saturation luminanceValue:luminanceValue alpha:alpha];
 }
 
-- (id)copyWithLuminance:(double)a3 saturation:(double)a4 alpha:(double)a5
+- (id)copyWithLuminance:(double)luminance saturation:(double)saturation alpha:(double)alpha
 {
   v9 = [PUIDiscreteGradientVariatedCustomStyle alloc];
   hue = self->_hue;
 
-  return [(PUIDiscreteGradientVariatedCustomStyle *)v9 initWithHue:hue saturation:a4 luminanceValue:a3 alpha:a5];
+  return [(PUIDiscreteGradientVariatedCustomStyle *)v9 initWithHue:hue saturation:saturation luminanceValue:luminance alpha:alpha];
 }
 
 - (id)copyWithResetSaturation
 {
   v3 = [(PUIDiscreteGradientVariatedCustomStyle *)self variatedColorResettingSaturation:1];
-  v4 = [v3 pui_hslValues];
-  [v4 saturation];
+  pui_hslValues = [v3 pui_hslValues];
+  [pui_hslValues saturation];
   v6 = v5;
 
   v7 = [[PUIDiscreteGradientVariatedCustomStyle alloc] initWithHue:self->_hue saturation:v6 luminanceValue:self->_luminanceValue alpha:self->_alpha];
   return v7;
 }
 
-- (id)copyWithVariatedColor:(id)a3
+- (id)copyWithVariatedColor:(id)color
 {
   v10 = 0.0;
   v11 = 0.0;
   v9 = 0.0;
   v4 = MEMORY[0x1E69DC888];
-  v5 = a3;
-  v6 = [(PUIDiscreteGradientVariatedCustomStyle *)self colors];
-  [v4 pui_determineVarianceAndLuminanceForColor:v5 amongstColors:v6 minLuminance:0 maxLuminance:0 outHue:&v11 outSaturation:&v9 outLuminance:&v10];
+  colorCopy = color;
+  colors = [(PUIDiscreteGradientVariatedCustomStyle *)self colors];
+  [v4 pui_determineVarianceAndLuminanceForColor:colorCopy amongstColors:colors minLuminance:0 maxLuminance:0 outHue:&v11 outSaturation:&v9 outLuminance:&v10];
 
   v7 = [PUIDiscreteGradientVariatedCustomStyle alloc];
   return [(PUIDiscreteGradientVariatedCustomStyle *)v7 initWithHue:v11 saturation:v9 luminanceValue:v10 alpha:self->_alpha];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [PUIDiscreteGradientVariatedCustomStyle allocWithZone:a3];
+  v4 = [PUIDiscreteGradientVariatedCustomStyle allocWithZone:zone];
   hue = self->_hue;
   saturation = self->_saturation;
   luminanceValue = self->_luminanceValue;
@@ -348,36 +348,36 @@ uint64_t __63__PUIDiscreteGradientVariatedCustomStyle_nonVariatedIdentifier__blo
   return [(PUIDiscreteGradientVariatedCustomStyle *)v4 initWithHue:hue saturation:saturation luminanceValue:luminanceValue alpha:alpha];
 }
 
-+ (double)hueForLegacyVariation:(double)a3
++ (double)hueForLegacyVariation:(double)variation
 {
-  v5 = [a1 discreteGradientVariatedColors];
-  v6 = [a1 variatedColorForVariation:v5 fromColors:0 usingSaturation:a3 alpha:1.0];
+  discreteGradientVariatedColors = [self discreteGradientVariatedColors];
+  v6 = [self variatedColorForVariation:discreteGradientVariatedColors fromColors:0 usingSaturation:variation alpha:1.0];
 
-  v7 = [v6 pui_hslValues];
-  [v7 hue];
+  pui_hslValues = [v6 pui_hslValues];
+  [pui_hslValues hue];
   v9 = v8;
 
   return v9;
 }
 
-+ (double)variationForHue:(double)a3
++ (double)variationForHue:(double)hue
 {
   v4 = MEMORY[0x1E69DC888];
-  v5 = [a1 discreteGradientVariatedColors];
-  [v4 pui_determineVarianceForHue:v5 forColors:a3];
+  discreteGradientVariatedColors = [self discreteGradientVariatedColors];
+  [v4 pui_determineVarianceForHue:discreteGradientVariatedColors forColors:hue];
   v7 = v6;
 
   return v7;
 }
 
-- (PUIDiscreteGradientVariatedCustomStyle)initWithCoder:(id)a3
+- (PUIDiscreteGradientVariatedCustomStyle)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_version"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_hue"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_luminanceValue"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_saturation"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_alpha"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_version"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_hue"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_luminanceValue"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_saturation"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_alpha"];
   v10 = v9;
   v11 = &unk_1F1C929C8;
   if (v9)
@@ -398,10 +398,10 @@ uint64_t __63__PUIDiscreteGradientVariatedCustomStyle_nonVariatedIdentifier__blo
 
   if (!v5)
   {
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_variation"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_variation"];
     [v21 bs_CGFloatValue];
     v23 = v22;
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_luminance"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_luminance"];
     [v24 bs_CGFloatValue];
     v26 = v25;
     [objc_opt_class() hueForLegacyVariation:v23];
@@ -415,28 +415,28 @@ uint64_t __63__PUIDiscreteGradientVariatedCustomStyle_nonVariatedIdentifier__blo
   return v29;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E696AD98];
   version = self->_version;
-  v6 = a3;
+  coderCopy = coder;
   v7 = [v4 numberWithUnsignedInteger:version];
-  [v6 encodeObject:v7 forKey:@"_version"];
+  [coderCopy encodeObject:v7 forKey:@"_version"];
 
   v8 = [MEMORY[0x1E696AD98] numberWithDouble:self->_hue];
-  [v6 encodeObject:v8 forKey:@"_hue"];
+  [coderCopy encodeObject:v8 forKey:@"_hue"];
 
   v9 = [MEMORY[0x1E696AD98] numberWithDouble:self->_luminanceValue];
-  [v6 encodeObject:v9 forKey:@"_luminanceValue"];
+  [coderCopy encodeObject:v9 forKey:@"_luminanceValue"];
 
   v10 = [MEMORY[0x1E696AD98] numberWithDouble:self->_luminance];
-  [v6 encodeObject:v10 forKey:@"_luminance"];
+  [coderCopy encodeObject:v10 forKey:@"_luminance"];
 
   v11 = [MEMORY[0x1E696AD98] numberWithDouble:self->_saturation];
-  [v6 encodeObject:v11 forKey:@"_saturation"];
+  [coderCopy encodeObject:v11 forKey:@"_saturation"];
 
   v12 = [MEMORY[0x1E696AD98] numberWithDouble:self->_alpha];
-  [v6 encodeObject:v12 forKey:@"_alpha"];
+  [coderCopy encodeObject:v12 forKey:@"_alpha"];
 }
 
 @end

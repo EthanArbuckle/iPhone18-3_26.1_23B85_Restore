@@ -6,14 +6,14 @@
 + (PXSharedLibraryMockDataSourceManager)participantExitingDataSourceManager;
 + (PXSharedLibraryMockDataSourceManager)participantPreviewDataSourceManager;
 + (PXSharedLibraryMockDataSourceManager)participantSharedLibraryDataSourceManager;
-+ (id)_sharedLibraryMockWithType:(int64_t)a3;
++ (id)_sharedLibraryMockWithType:(int64_t)type;
 - (PXSharedLibraryMockDataSourceManager)init;
-- (PXSharedLibraryMockDataSourceManager)initWithDataSourceType:(int64_t)a3;
+- (PXSharedLibraryMockDataSourceManager)initWithDataSourceType:(int64_t)type;
 - (id)createInitialDataSource;
 - (id)fetchExiting;
 - (id)fetchPreview;
 - (id)fetchSharedLibrary;
-- (void)fetchSharedLibraryForURL:(id)a3 completionHandler:(id)a4;
+- (void)fetchSharedLibraryForURL:(id)l completionHandler:(id)handler;
 @end
 
 @implementation PXSharedLibraryMockDataSourceManager
@@ -34,8 +34,8 @@
 {
   if ((self->_type - 7) <= 0xFFFFFFFFFFFFFFFDLL)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryMockDataSource.m" lineNumber:166 description:{@"Invalid parameter not satisfying: %@", @"_type == _PXSharedLibraryMockDataSourceTypeExitingOwner || _type == _PXSharedLibraryMockDataSourceTypeExitingParticipant"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedLibraryMockDataSource.m" lineNumber:166 description:{@"Invalid parameter not satisfying: %@", @"_type == _PXSharedLibraryMockDataSourceTypeExitingOwner || _type == _PXSharedLibraryMockDataSourceTypeExitingParticipant"}];
   }
 
   v3 = objc_opt_class();
@@ -48,8 +48,8 @@
 {
   if ((self->_type - 5) <= 0xFFFFFFFFFFFFFFFDLL)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryMockDataSource.m" lineNumber:159 description:{@"Invalid parameter not satisfying: %@", @"(_type == _PXSharedLibraryMockDataSourceTypeSharedLibraryOwner) || (_type == _PXSharedLibraryMockDataSourceTypeSharedLibraryParticipant)"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedLibraryMockDataSource.m" lineNumber:159 description:{@"Invalid parameter not satisfying: %@", @"(_type == _PXSharedLibraryMockDataSourceTypeSharedLibraryOwner) || (_type == _PXSharedLibraryMockDataSourceTypeSharedLibraryParticipant)"}];
   }
 
   v3 = objc_opt_class();
@@ -62,8 +62,8 @@
 {
   if ((self->_type - 3) <= 0xFFFFFFFFFFFFFFFDLL)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryMockDataSource.m" lineNumber:152 description:{@"Invalid parameter not satisfying: %@", @"(_type == _PXSharedLibraryMockDataSourceTypePreviewOwner) || (_type == _PXSharedLibraryMockDataSourceTypePreviewParticipant)"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedLibraryMockDataSource.m" lineNumber:152 description:{@"Invalid parameter not satisfying: %@", @"(_type == _PXSharedLibraryMockDataSourceTypePreviewOwner) || (_type == _PXSharedLibraryMockDataSourceTypePreviewParticipant)"}];
   }
 
   v3 = objc_opt_class();
@@ -72,13 +72,13 @@
   return [v3 _sharedLibraryMockWithType:type];
 }
 
-- (void)fetchSharedLibraryForURL:(id)a3 completionHandler:(id)a4
+- (void)fetchSharedLibraryForURL:(id)l completionHandler:(id)handler
 {
-  v11 = a3;
-  v7 = a4;
-  if (v11)
+  lCopy = l;
+  handlerCopy = handler;
+  if (lCopy)
   {
-    if (v7)
+    if (handlerCopy)
     {
       goto LABEL_3;
     }
@@ -86,31 +86,31 @@
 
   else
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryMockDataSource.m" lineNumber:144 description:{@"Invalid parameter not satisfying: %@", @"shareURL"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedLibraryMockDataSource.m" lineNumber:144 description:{@"Invalid parameter not satisfying: %@", @"shareURL"}];
 
-    if (v7)
+    if (handlerCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v10 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v10 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryMockDataSource.m" lineNumber:145 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryMockDataSource.m" lineNumber:145 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
 
 LABEL_3:
   v8 = [MEMORY[0x1E696ABC0] px_errorWithDomain:@"PXSharedLibraryErrorDomain" code:-1000 debugDescription:@"Failed to shared library for URL in the PXSharedLibraryMockDataSourceManager"];
-  v7[2](v7, 0, v8);
+  handlerCopy[2](handlerCopy, 0, v8);
 }
 
-- (PXSharedLibraryMockDataSourceManager)initWithDataSourceType:(int64_t)a3
+- (PXSharedLibraryMockDataSourceManager)initWithDataSourceType:(int64_t)type
 {
   v5.receiver = self;
   v5.super_class = PXSharedLibraryMockDataSourceManager;
   result = [(PXSectionedDataSourceManager *)&v5 init];
   if (result)
   {
-    result->_type = a3;
+    result->_type = type;
   }
 
   return result;
@@ -118,22 +118,22 @@ LABEL_3:
 
 - (PXSharedLibraryMockDataSourceManager)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryMockDataSource.m" lineNumber:87 description:{@"%s is not available as initializer", "-[PXSharedLibraryMockDataSourceManager init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedLibraryMockDataSource.m" lineNumber:87 description:{@"%s is not available as initializer", "-[PXSharedLibraryMockDataSourceManager init]"}];
 
   abort();
 }
 
-+ (id)_sharedLibraryMockWithType:(int64_t)a3
++ (id)_sharedLibraryMockWithType:(int64_t)type
 {
   v14[2] = *MEMORY[0x1E69E9840];
   v4 = objc_alloc_init(PXSharedLibraryMock);
   v5 = v4;
-  if (a3 > 2)
+  if (type > 2)
   {
-    if (a3 <= 4)
+    if (type <= 4)
     {
-      if (a3 == 3)
+      if (type == 3)
       {
         [(PXSharedLibraryMock *)v4 setIsOwned:1];
       }
@@ -141,9 +141,9 @@ LABEL_3:
       goto LABEL_13;
     }
 
-    if (a3 != 5)
+    if (type != 5)
     {
-      if (a3 == 6)
+      if (type == 6)
       {
         [(PXSharedLibraryMock *)v4 setIsPublished:1];
         [(PXSharedLibraryMock *)v5 setIsExiting:1];
@@ -159,7 +159,7 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  switch(a3)
+  switch(type)
   {
     case 0:
 LABEL_13:
@@ -203,49 +203,49 @@ LABEL_17:
 
 + (PXSharedLibraryMockDataSourceManager)participantExitingDataSourceManager
 {
-  v2 = [[a1 alloc] initWithDataSourceType:6];
+  v2 = [[self alloc] initWithDataSourceType:6];
 
   return v2;
 }
 
 + (PXSharedLibraryMockDataSourceManager)ownerExitingDataSourceManager
 {
-  v2 = [[a1 alloc] initWithDataSourceType:5];
+  v2 = [[self alloc] initWithDataSourceType:5];
 
   return v2;
 }
 
 + (PXSharedLibraryMockDataSourceManager)participantSharedLibraryDataSourceManager
 {
-  v2 = [[a1 alloc] initWithDataSourceType:4];
+  v2 = [[self alloc] initWithDataSourceType:4];
 
   return v2;
 }
 
 + (PXSharedLibraryMockDataSourceManager)ownerSharedLibraryDataSourceManager
 {
-  v2 = [[a1 alloc] initWithDataSourceType:3];
+  v2 = [[self alloc] initWithDataSourceType:3];
 
   return v2;
 }
 
 + (PXSharedLibraryMockDataSourceManager)participantPreviewDataSourceManager
 {
-  v2 = [[a1 alloc] initWithDataSourceType:2];
+  v2 = [[self alloc] initWithDataSourceType:2];
 
   return v2;
 }
 
 + (PXSharedLibraryMockDataSourceManager)ownerPreviewDataSourceManager
 {
-  v2 = [[a1 alloc] initWithDataSourceType:1];
+  v2 = [[self alloc] initWithDataSourceType:1];
 
   return v2;
 }
 
 + (PXSharedLibraryMockDataSourceManager)invitationsDataSourceManager
 {
-  v2 = [[a1 alloc] initWithDataSourceType:0];
+  v2 = [[self alloc] initWithDataSourceType:0];
 
   return v2;
 }

@@ -20,18 +20,18 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [MEMORY[0x29EDC5CB0] defaultManager];
-    v5 = [v4 attachmentForContentID:v3];
+    defaultManager = [MEMORY[0x29EDC5CB0] defaultManager];
+    v5 = [defaultManager attachmentForContentID:v3];
 
-    v6 = [v5 fileName];
+    fileName = [v5 fileName];
   }
 
   else
   {
-    v6 = 0;
+    fileName = 0;
   }
 
-  return v6;
+  return fileName;
 }
 
 - (uint64_t)_accessibilityApplicationIsModal

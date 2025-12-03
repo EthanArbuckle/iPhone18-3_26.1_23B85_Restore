@@ -1,16 +1,16 @@
 @interface JavaLangTwoEnumerationsInOne
 - (BOOL)hasMoreElements;
-- (JavaLangTwoEnumerationsInOne)initWithJavaUtilEnumeration:(id)a3 withJavaUtilEnumeration:(id)a4;
+- (JavaLangTwoEnumerationsInOne)initWithJavaUtilEnumeration:(id)enumeration withJavaUtilEnumeration:(id)utilEnumeration;
 - (id)nextElement;
 - (void)dealloc;
 @end
 
 @implementation JavaLangTwoEnumerationsInOne
 
-- (JavaLangTwoEnumerationsInOne)initWithJavaUtilEnumeration:(id)a3 withJavaUtilEnumeration:(id)a4
+- (JavaLangTwoEnumerationsInOne)initWithJavaUtilEnumeration:(id)enumeration withJavaUtilEnumeration:(id)utilEnumeration
 {
-  JreStrongAssign(&self->first_, a3);
-  JreStrongAssign(&self->second_, a4);
+  JreStrongAssign(&self->first_, enumeration);
+  JreStrongAssign(&self->second_, utilEnumeration);
   return self;
 }
 

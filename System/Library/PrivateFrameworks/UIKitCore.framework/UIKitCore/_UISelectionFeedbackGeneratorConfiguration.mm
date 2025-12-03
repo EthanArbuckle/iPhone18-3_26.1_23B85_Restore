@@ -1,11 +1,11 @@
 @interface _UISelectionFeedbackGeneratorConfiguration
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_UIFeedbackDiscretePlayable)feedback;
-- (id)_alternateFeedback:(id)a3 forDevice:(int64_t)a4 senderID:(unint64_t)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_alternateFeedback:(id)feedback forDevice:(int64_t)device senderID:(unint64_t)d;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)feedbackKeyPaths;
 - (id)hidFeedbackPatternNameKeyPaths;
-- (void)setFeedback:(id)a3;
+- (void)setFeedback:(id)feedback;
 @end
 
 @implementation _UISelectionFeedbackGeneratorConfiguration
@@ -22,30 +22,30 @@
 {
   v6.receiver = self;
   v6.super_class = _UISelectionFeedbackGeneratorConfiguration;
-  v2 = [(_UIFeedbackGeneratorUserInteractionDrivenConfiguration *)&v6 feedbackKeyPaths];
+  feedbackKeyPaths = [(_UIFeedbackGeneratorUserInteractionDrivenConfiguration *)&v6 feedbackKeyPaths];
   v3 = NSStringFromSelector(sel_feedback);
-  v4 = [v2 arrayByAddingObject:v3];
+  v4 = [feedbackKeyPaths arrayByAddingObject:v3];
 
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5.receiver = self;
   v5.super_class = _UISelectionFeedbackGeneratorConfiguration;
-  result = [(_UIFeedbackGeneratorConfiguration *)&v5 copyWithZone:a3];
+  result = [(_UIFeedbackGeneratorConfiguration *)&v5 copyWithZone:zone];
   *(result + 15) = *&self->_minimumInterval;
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v7.receiver = self;
   v7.super_class = _UISelectionFeedbackGeneratorConfiguration;
-  if ([(_UIFeedbackGeneratorConfiguration *)&v7 isEqual:v4])
+  if ([(_UIFeedbackGeneratorConfiguration *)&v7 isEqual:equalCopy])
   {
-    v5 = self->_minimumInterval == v4[15];
+    v5 = self->_minimumInterval == equalCopy[15];
   }
 
   else
@@ -60,27 +60,27 @@
 {
   v6.receiver = self;
   v6.super_class = _UISelectionFeedbackGeneratorConfiguration;
-  v2 = [(_UIFeedbackGeneratorConfiguration *)&v6 hidFeedbackPatternNameKeyPaths];
+  hidFeedbackPatternNameKeyPaths = [(_UIFeedbackGeneratorConfiguration *)&v6 hidFeedbackPatternNameKeyPaths];
   v3 = NSStringFromSelector(sel_hidFeedbackPatternName);
-  v4 = [v2 arrayByAddingObject:v3];
+  v4 = [hidFeedbackPatternNameKeyPaths arrayByAddingObject:v3];
 
   return v4;
 }
 
-- (id)_alternateFeedback:(id)a3 forDevice:(int64_t)a4 senderID:(unint64_t)a5
+- (id)_alternateFeedback:(id)feedback forDevice:(int64_t)device senderID:(unint64_t)d
 {
-  v8 = a3;
-  v9 = [(_UISelectionFeedbackGeneratorConfiguration *)self hidFeedbackPatternName];
-  if (v9)
+  feedbackCopy = feedback;
+  hidFeedbackPatternName = [(_UISelectionFeedbackGeneratorConfiguration *)self hidFeedbackPatternName];
+  if (hidFeedbackPatternName)
   {
-    v10 = [_UIFeedbackBackBoardHIDPattern feedbackPatternWithName:v9 deviceType:a4 senderID:a5];
+    v10 = [_UIFeedbackBackBoardHIDPattern feedbackPatternWithName:hidFeedbackPatternName deviceType:device senderID:d];
   }
 
   else
   {
     v13.receiver = self;
     v13.super_class = _UISelectionFeedbackGeneratorConfiguration;
-    v10 = [(_UIFeedbackGeneratorConfiguration *)&v13 _alternateFeedback:v8 forDevice:a4 senderID:a5];
+    v10 = [(_UIFeedbackGeneratorConfiguration *)&v13 _alternateFeedback:feedbackCopy forDevice:device senderID:d];
   }
 
   v11 = v10;
@@ -88,12 +88,12 @@
   return v11;
 }
 
-- (void)setFeedback:(id)a3
+- (void)setFeedback:(id)feedback
 {
-  v4 = a3;
+  feedbackCopy = feedback;
   [(_UIFeedbackGeneratorConfiguration *)self _setupIfNecessary];
   feedback = self->_feedback;
-  self->_feedback = v4;
+  self->_feedback = feedbackCopy;
 }
 
 @end

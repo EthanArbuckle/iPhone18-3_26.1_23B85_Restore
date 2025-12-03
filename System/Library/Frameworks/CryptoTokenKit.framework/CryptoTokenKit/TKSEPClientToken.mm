@@ -1,7 +1,7 @@
 @interface TKSEPClientToken
-+ (BOOL)handlesTokenID:(id)a3;
++ (BOOL)handlesTokenID:(id)d;
 + (id)builtinTokenIDs;
-- (TKSEPClientToken)initWithTokenID:(id)a3;
+- (TKSEPClientToken)initWithTokenID:(id)d;
 @end
 
 @implementation TKSEPClientToken
@@ -46,22 +46,22 @@ void __35__TKSEPClientToken_builtinTokenIDs__block_invoke()
   v6 = *MEMORY[0x1E69E9840];
 }
 
-+ (BOOL)handlesTokenID:(id)a3
++ (BOOL)handlesTokenID:(id)d
 {
-  v3 = a3;
-  v4 = [[TKTokenID alloc] initWithTokenID:v3];
+  dCopy = d;
+  v4 = [[TKTokenID alloc] initWithTokenID:dCopy];
 
-  v5 = [(TKTokenID *)v4 classID];
-  v6 = [v5 isEqualToString:*MEMORY[0x1E697AEE0]];
+  classID = [(TKTokenID *)v4 classID];
+  v6 = [classID isEqualToString:*MEMORY[0x1E697AEE0]];
 
   return v6;
 }
 
-- (TKSEPClientToken)initWithTokenID:(id)a3
+- (TKSEPClientToken)initWithTokenID:(id)d
 {
   v4.receiver = self;
   v4.super_class = TKSEPClientToken;
-  return [(TKClientToken *)&v4 _initWithTokenID:a3];
+  return [(TKClientToken *)&v4 _initWithTokenID:d];
 }
 
 @end

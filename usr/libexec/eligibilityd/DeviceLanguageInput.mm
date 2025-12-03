@@ -1,38 +1,38 @@
 @interface DeviceLanguageInput
-- (BOOL)canFallbackTo:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)canFallbackTo:(id)to;
+- (BOOL)isEqual:(id)equal;
 - (DeviceLanguageInput)init;
-- (DeviceLanguageInput)initWithCoder:(id)a3;
+- (DeviceLanguageInput)initWithCoder:(id)coder;
 - (NSArray)deviceLanguages;
 - (NSString)primaryLanguage;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DeviceLanguageInput
 
 - (id)description
 {
-  v3 = [(DeviceLanguageInput *)self primaryLanguage];
-  v4 = [(DeviceLanguageInput *)self deviceLanguages];
+  primaryLanguage = [(DeviceLanguageInput *)self primaryLanguage];
+  deviceLanguages = [(DeviceLanguageInput *)self deviceLanguages];
   v8.receiver = self;
   v8.super_class = DeviceLanguageInput;
   v5 = [(EligibilityInput *)&v8 description];
-  v6 = [NSString stringWithFormat:@"[DeviceLanguageInput deviceLanguages:(%@)%@ %@]", v3, v4, v5];
+  v6 = [NSString stringWithFormat:@"[DeviceLanguageInput deviceLanguages:(%@)%@ %@]", primaryLanguage, deviceLanguages, v5];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v7.receiver = self;
   v7.super_class = DeviceLanguageInput;
-  if ([(EligibilityInput *)&v7 isEqual:v4])
+  if ([(EligibilityInput *)&v7 isEqual:equalCopy])
   {
-    if (v4 == self)
+    if (equalCopy == self)
     {
       isKindOfClass = 1;
     }
@@ -59,25 +59,25 @@
   return [(EligibilityInput *)&v3 hash];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4.receiver = self;
   v4.super_class = DeviceLanguageInput;
-  return [(EligibilityInput *)&v4 copyWithZone:a3];
+  return [(EligibilityInput *)&v4 copyWithZone:zone];
 }
 
-- (DeviceLanguageInput)initWithCoder:(id)a3
+- (DeviceLanguageInput)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = DeviceLanguageInput;
-  return [(EligibilityInput *)&v4 initWithCoder:a3];
+  return [(EligibilityInput *)&v4 initWithCoder:coder];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = DeviceLanguageInput;
-  [(EligibilityInput *)&v3 encodeWithCoder:a3];
+  [(EligibilityInput *)&v3 encodeWithCoder:coder];
 }
 
 - (DeviceLanguageInput)init
@@ -87,14 +87,14 @@
   return [(EligibilityInput *)&v3 initWithInputType:7 status:0 process:@"eligibilityd"];
 }
 
-- (BOOL)canFallbackTo:(id)a3
+- (BOOL)canFallbackTo:(id)to
 {
-  v4 = a3;
-  v5 = [(DeviceLanguageInput *)self primaryLanguage];
-  if (v5)
+  toCopy = to;
+  primaryLanguage = [(DeviceLanguageInput *)self primaryLanguage];
+  if (primaryLanguage)
   {
     objc_opt_class();
-    v6 = v4;
+    v6 = toCopy;
     if (objc_opt_isKindOfClass())
     {
       if (v6)
@@ -102,7 +102,7 @@
         objc_opt_class();
         if (sub_100027870(v6))
         {
-          v7 = [[NSLocale alloc] initWithLocaleIdentifier:v5];
+          v7 = [[NSLocale alloc] initWithLocaleIdentifier:primaryLanguage];
           v18 = 0u;
           v19 = 0u;
           v20 = 0u;
@@ -193,25 +193,25 @@ LABEL_20:
 - (NSString)primaryLanguage
 {
   v3 = +[NSLocale systemLanguages];
-  v4 = [(DeviceLanguageInput *)self deviceLanguages];
-  v5 = [NSBundle preferredLocalizationsFromArray:v3 forPreferences:v4];
-  v6 = [v5 firstObject];
+  deviceLanguages = [(DeviceLanguageInput *)self deviceLanguages];
+  v5 = [NSBundle preferredLocalizationsFromArray:v3 forPreferences:deviceLanguages];
+  firstObject = [v5 firstObject];
 
-  return v6;
+  return firstObject;
 }
 
 - (NSArray)deviceLanguages
 {
   v2 = +[GlobalConfiguration sharedInstance];
-  v3 = [v2 currentUsername];
+  currentUsername = [v2 currentUsername];
 
-  if (!v3)
+  if (!currentUsername)
   {
     v7 = 0;
     goto LABEL_14;
   }
 
-  v4 = CFPreferencesCopyValue(@"AppleLanguages", kCFPreferencesAnyApplication, v3, kCFPreferencesAnyHost);
+  v4 = CFPreferencesCopyValue(@"AppleLanguages", kCFPreferencesAnyApplication, currentUsername, kCFPreferencesAnyHost);
   objc_opt_class();
   v5 = v4;
   if (objc_opt_isKindOfClass())

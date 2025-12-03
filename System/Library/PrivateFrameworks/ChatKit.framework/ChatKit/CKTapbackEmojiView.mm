@@ -1,13 +1,13 @@
 @interface CKTapbackEmojiView
 - (BOOL)isSelected;
-- (CKTapbackEmojiView)initWithFrame:(CGRect)a3;
+- (CKTapbackEmojiView)initWithFrame:(CGRect)frame;
 - (CKTapbackViewDelegate)delegate;
 - (UIEdgeInsets)platterEdgeInsets;
-- (void)configureForTapback:(id)a3 isSelected:(BOOL)a4;
+- (void)configureForTapback:(id)tapback isSelected:(BOOL)selected;
 - (void)displayScaleChanged;
 - (void)layoutSubviews;
 - (void)performViewControllerAppearingAnimation;
-- (void)setIsSelected:(BOOL)a3;
+- (void)setIsSelected:(BOOL)selected;
 @end
 
 @implementation CKTapbackEmojiView
@@ -32,11 +32,11 @@
   return *(self + v3);
 }
 
-- (void)setIsSelected:(BOOL)a3
+- (void)setIsSelected:(BOOL)selected
 {
   v5 = OBJC_IVAR___CKTapbackEmojiView_isSelected;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = selected;
 }
 
 - (CKTapbackViewDelegate)delegate
@@ -58,27 +58,27 @@
 
 - (void)displayScaleChanged
 {
-  v2 = self;
+  selfCopy = self;
   sub_190CE3F74();
 }
 
-- (CKTapbackEmojiView)initWithFrame:(CGRect)a3
+- (CKTapbackEmojiView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)configureForTapback:(id)a3 isSelected:(BOOL)a4
+- (void)configureForTapback:(id)tapback isSelected:(BOOL)selected
 {
-  v6 = a3;
-  v7 = self;
-  TapbackEmojiView.configure(for:isSelected:)(v6, a4);
+  tapbackCopy = tapback;
+  selfCopy = self;
+  TapbackEmojiView.configure(for:isSelected:)(tapbackCopy, selected);
 }
 
 - (void)performViewControllerAppearingAnimation
 {
-  v2 = self;
+  selfCopy = self;
   TapbackEmojiView.performViewControllerAppearingAnimation()();
 }
 

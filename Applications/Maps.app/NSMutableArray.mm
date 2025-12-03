@@ -1,16 +1,16 @@
 @interface NSMutableArray
-- (void)_maps_moveObjectAtIndex:(unint64_t)a3 toIndex:(unint64_t)a4;
-- (void)_maps_popToFirstContextOfClass:(Class)a3;
-- (void)_maps_popToLastContextOfClass:(Class)a3;
-- (void)addObjectIfNotNil:(id)a3;
-- (void)trimToLength:(unint64_t)a3;
+- (void)_maps_moveObjectAtIndex:(unint64_t)index toIndex:(unint64_t)toIndex;
+- (void)_maps_popToFirstContextOfClass:(Class)class;
+- (void)_maps_popToLastContextOfClass:(Class)class;
+- (void)addObjectIfNotNil:(id)nil;
+- (void)trimToLength:(unint64_t)length;
 @end
 
 @implementation NSMutableArray
 
-- (void)_maps_popToLastContextOfClass:(Class)a3
+- (void)_maps_popToLastContextOfClass:(Class)class
 {
-  if (a3)
+  if (class)
   {
     v4 = [(NSMutableArray *)self _maps_lastContextOfClass:?];
     v5 = [(NSMutableArray *)self indexOfObject:v4];
@@ -25,9 +25,9 @@
   }
 }
 
-- (void)_maps_popToFirstContextOfClass:(Class)a3
+- (void)_maps_popToFirstContextOfClass:(Class)class
 {
-  if (a3)
+  if (class)
   {
     v4 = [(NSMutableArray *)self _maps_firstContextOfClass:?];
     v5 = [(NSMutableArray *)self indexOfObject:v4];
@@ -42,34 +42,34 @@
   }
 }
 
-- (void)trimToLength:(unint64_t)a3
+- (void)trimToLength:(unint64_t)length
 {
-  if ([(NSMutableArray *)self count]> a3)
+  if ([(NSMutableArray *)self count]> length)
   {
-    v5 = [(NSMutableArray *)self count]- a3;
+    v5 = [(NSMutableArray *)self count]- length;
 
-    [(NSMutableArray *)self removeObjectsInRange:a3, v5];
+    [(NSMutableArray *)self removeObjectsInRange:length, v5];
   }
 }
 
-- (void)addObjectIfNotNil:(id)a3
+- (void)addObjectIfNotNil:(id)nil
 {
-  if (a3)
+  if (nil)
   {
     [(NSMutableArray *)self addObject:?];
   }
 }
 
-- (void)_maps_moveObjectAtIndex:(unint64_t)a3 toIndex:(unint64_t)a4
+- (void)_maps_moveObjectAtIndex:(unint64_t)index toIndex:(unint64_t)toIndex
 {
-  if ([(NSMutableArray *)self count]<= a3)
+  if ([(NSMutableArray *)self count]<= index)
   {
     v7 = NSInvalidArgumentException;
     v8 = @"fromIndex out of bounds";
     goto LABEL_5;
   }
 
-  if ([(NSMutableArray *)self count]- 1 < a4)
+  if ([(NSMutableArray *)self count]- 1 < toIndex)
   {
     v7 = NSInvalidArgumentException;
     v8 = @"toIndex out of bounds";
@@ -79,9 +79,9 @@ LABEL_5:
     goto LABEL_7;
   }
 
-  v9 = [(NSMutableArray *)self objectAtIndexedSubscript:a3];
-  [(NSMutableArray *)self removeObjectAtIndex:a3];
-  [(NSMutableArray *)self insertObject:v9 atIndex:a4];
+  v9 = [(NSMutableArray *)self objectAtIndexedSubscript:index];
+  [(NSMutableArray *)self removeObjectAtIndex:index];
+  [(NSMutableArray *)self insertObject:v9 atIndex:toIndex];
 LABEL_7:
 }
 

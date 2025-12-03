@@ -2,22 +2,22 @@
 + (CGSize)readableContentSize;
 + (CGSize)size;
 + (void)adaptiveMetricsDidChange;
-+ (void)addObject:(id)a3;
-+ (void)removeObject:(id)a3;
-+ (void)setOverrideTrackingAdaptiveView:(id)a3;
++ (void)addObject:(id)object;
++ (void)removeObject:(id)object;
++ (void)setOverrideTrackingAdaptiveView:(id)view;
 + (void)setup;
-+ (void)windowSizeDidChange:(id)a3;
++ (void)windowSizeDidChange:(id)change;
 @end
 
 @implementation TKAdaptiveResourceManager
 
-+ (void)addObject:(id)a3
++ (void)addObject:(id)object
 {
-  v6 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [v6 setup];
+  objc_storeStrong(location, object);
+  [selfCopy setup];
   v3 = _references;
   v4 = [MEMORY[0x277D73420] weakReferenceWithObject:location[0]];
   [v3 addObject:?];
@@ -25,12 +25,12 @@
   objc_storeStrong(location, 0);
 }
 
-+ (void)removeObject:(id)a3
++ (void)removeObject:(id)object
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, object);
   v3 = _references;
   v4 = MEMORY[0x277D85DD0];
   v5 = -1073741824;
@@ -60,24 +60,24 @@ void __42__TKAdaptiveResourceManager_removeObject___block_invoke(void *a1, void 
   objc_storeStrong(location, 0);
 }
 
-+ (void)setOverrideTrackingAdaptiveView:(id)a3
++ (void)setOverrideTrackingAdaptiveView:(id)view
 {
-  v7 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, view);
   if (!location[0])
   {
-    v5 = [MEMORY[0x277D75128] sharedApplication];
-    v3 = [v5 keyWindow];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    keyWindow = [mEMORY[0x277D75128] keyWindow];
     v4 = location[0];
-    location[0] = v3;
+    location[0] = keyWindow;
     MEMORY[0x277D82BD8](v4);
-    MEMORY[0x277D82BD8](v5);
+    MEMORY[0x277D82BD8](mEMORY[0x277D75128]);
   }
 
   objc_storeStrong(&_trackingAdaptiveView, location[0]);
-  [v7 adaptiveMetricsDidChange];
+  [selfCopy adaptiveMetricsDidChange];
   objc_storeStrong(location, 0);
 }
 
@@ -101,14 +101,14 @@ void __42__TKAdaptiveResourceManager_removeObject___block_invoke(void *a1, void 
 
 + (void)setup
 {
-  v9 = a1;
+  selfCopy = self;
   v8 = a2;
   obj = MEMORY[0x277D85DD0];
   v3 = -1073741824;
   v4 = 0;
   v5 = __34__TKAdaptiveResourceManager_setup__block_invoke;
   v6 = &__block_descriptor_40_e5_v8__0l;
-  v7 = a1;
+  selfCopy2 = self;
   v11 = &setup_onceToken_0;
   location = 0;
   objc_storeStrong(&location, &obj);
@@ -145,16 +145,16 @@ uint64_t __34__TKAdaptiveResourceManager_setup__block_invoke(uint64_t a1)
   return result;
 }
 
-+ (void)windowSizeDidChange:(id)a3
++ (void)windowSizeDidChange:(id)change
 {
-  v15 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, change);
   v7 = _trackingAdaptiveView;
-  v6 = [location[0] object];
-  MEMORY[0x277D82BD8](v6);
-  if (v7 == v6)
+  object = [location[0] object];
+  MEMORY[0x277D82BD8](object);
+  if (v7 == object)
   {
     v4 = MEMORY[0x277D85CD0];
     v3 = MEMORY[0x277D85CD0];
@@ -164,7 +164,7 @@ uint64_t __34__TKAdaptiveResourceManager_setup__block_invoke(uint64_t a1)
     v10 = 0;
     v11 = __49__TKAdaptiveResourceManager_windowSizeDidChange___block_invoke;
     v12 = &__block_descriptor_40_e5_v8__0l;
-    v13 = v15;
+    v13 = selfCopy;
     dispatch_async(v5, &block);
     MEMORY[0x277D82BD8](v5);
   }
@@ -174,7 +174,7 @@ uint64_t __34__TKAdaptiveResourceManager_setup__block_invoke(uint64_t a1)
 
 + (void)adaptiveMetricsDidChange
 {
-  v19 = a1;
+  selfCopy = self;
   v18 = a2;
   if (_trackingAdaptiveView)
   {
@@ -184,14 +184,14 @@ uint64_t __34__TKAdaptiveResourceManager_setup__block_invoke(uint64_t a1)
     *&v16 = v4;
     *(&v16 + 1) = v5;
     v17 = v16;
-    v10 = [_trackingAdaptiveView readableContentGuide];
-    [v10 layoutFrame];
+    readableContentGuide = [_trackingAdaptiveView readableContentGuide];
+    [readableContentGuide layoutFrame];
     obj[1] = v6;
     obj[2] = v7;
     *&v12 = v8;
     *(&v12 + 1) = v9;
     v13 = v12;
-    MEMORY[0x277D82BD8](v10);
+    MEMORY[0x277D82BD8](readableContentGuide);
     obj[0] = [_trackingAdaptiveView traitCollection];
     if (!__CGSizeEqualToSize(*&_size, *(&_size + 1), *&v16, *(&v16 + 1)) || !__CGSizeEqualToSize(*&_readableContentSize, *(&_readableContentSize + 1), *&v13, *(&v13 + 1)) || _traitCollection != obj[0])
     {

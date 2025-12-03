@@ -10,9 +10,9 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [a1 type];
-    v6 = [v4 type];
-    v7 = [v5 isEqualToString:v6];
+    type = [self type];
+    type2 = [v4 type];
+    v7 = [type isEqualToString:type2];
 
     if (!v7)
     {
@@ -20,11 +20,11 @@
       goto LABEL_19;
     }
 
-    v8 = [a1 value];
-    v9 = [v8 lowercaseString];
-    v10 = [v4 value];
-    v11 = [v10 lowercaseString];
-    v12 = [v9 isEqual:v11];
+    value = [self value];
+    lowercaseString = [value lowercaseString];
+    value2 = [v4 value];
+    lowercaseString2 = [value2 lowercaseString];
+    v12 = [lowercaseString isEqual:lowercaseString2];
 
     if (v12)
     {
@@ -34,7 +34,7 @@ LABEL_19:
       goto LABEL_20;
     }
 
-    [a1 coreResult];
+    [self coreResult];
     v14 = *MEMORY[0x277D04140];
     if (DDResultHasType())
     {
@@ -65,7 +65,7 @@ LABEL_18:
       if (!DDResultHasType())
       {
         v24 = 0;
-        v13 = [a1 getPhoneValue:&v24 label:0];
+        v13 = [self getPhoneValue:&v24 label:0];
         v15 = v24;
         if (v13)
         {
@@ -83,9 +83,9 @@ LABEL_18:
 
             else if ([v15 containsString:@"@"])
             {
-              v21 = [v15 lowercaseString];
-              v22 = [v20 lowercaseString];
-              v13 = [v21 isEqualToString:v22];
+              lowercaseString3 = [v15 lowercaseString];
+              lowercaseString4 = [v20 lowercaseString];
+              v13 = [lowercaseString3 isEqualToString:lowercaseString4];
             }
 
             else

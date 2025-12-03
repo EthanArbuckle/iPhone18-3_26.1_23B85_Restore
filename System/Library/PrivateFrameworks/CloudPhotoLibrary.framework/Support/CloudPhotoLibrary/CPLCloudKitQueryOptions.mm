@@ -1,23 +1,23 @@
 @interface CPLCloudKitQueryOptions
-- (CPLCloudKitQueryOptions)initWithRecordType:(id)a3 predicate:(id)a4 resultsLimit:(int64_t)a5;
+- (CPLCloudKitQueryOptions)initWithRecordType:(id)type predicate:(id)predicate resultsLimit:(int64_t)limit;
 @end
 
 @implementation CPLCloudKitQueryOptions
 
-- (CPLCloudKitQueryOptions)initWithRecordType:(id)a3 predicate:(id)a4 resultsLimit:(int64_t)a5
+- (CPLCloudKitQueryOptions)initWithRecordType:(id)type predicate:(id)predicate resultsLimit:(int64_t)limit
 {
-  v8 = a3;
-  v9 = a4;
+  typeCopy = type;
+  predicateCopy = predicate;
   v14.receiver = self;
   v14.super_class = CPLCloudKitQueryOptions;
   v10 = [(CPLCloudKitQueryOptions *)&v14 init];
   if (v10)
   {
-    v11 = [[CKQuery alloc] initWithRecordType:v8 predicate:v9];
+    v11 = [[CKQuery alloc] initWithRecordType:typeCopy predicate:predicateCopy];
     query = v10->_query;
     v10->_query = v11;
 
-    v10->_resultsLimit = a5;
+    v10->_resultsLimit = limit;
   }
 
   return v10;

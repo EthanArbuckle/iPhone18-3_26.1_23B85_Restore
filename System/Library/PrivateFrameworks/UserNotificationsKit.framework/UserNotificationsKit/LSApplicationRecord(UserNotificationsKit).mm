@@ -10,29 +10,29 @@
 + (void)unkit_enumerateApplicationRecordsEligibleToDeliverNotifications:()UserNotificationsKit
 {
   v4 = a3;
-  [a1 _unkit_enumerateRecordsWithOptions:0 block:v4];
-  [a1 _unkit_enumerateRecordsWithOptions:64 block:v4];
+  [self _unkit_enumerateRecordsWithOptions:0 block:v4];
+  [self _unkit_enumerateRecordsWithOptions:64 block:v4];
 }
 
 - (uint64_t)unkit_isEligibleToDeliverNotificationsAllowingSystemPlaceholders:()UserNotificationsKit
 {
-  v5 = [a1 isLaunchProhibited];
-  v6 = [a1 applicationState];
-  if (![v6 isInstalled] || v5)
+  isLaunchProhibited = [self isLaunchProhibited];
+  applicationState = [self applicationState];
+  if (![applicationState isInstalled] || isLaunchProhibited)
   {
-    v7 = [a1 unkit_isWebAppPlaceholder];
-    if ((v7 & 1) == 0 && a3)
+    unkit_isWebAppPlaceholder = [self unkit_isWebAppPlaceholder];
+    if ((unkit_isWebAppPlaceholder & 1) == 0 && a3)
     {
-      v7 = [a1 isSystemPlaceholder];
+      unkit_isWebAppPlaceholder = [self isSystemPlaceholder];
     }
   }
 
   else
   {
-    v7 = 1;
+    unkit_isWebAppPlaceholder = 1;
   }
 
-  return v7;
+  return unkit_isWebAppPlaceholder;
 }
 
 + (id)unkit_applicationRecordIfEligibleToDeliverNotificationsForBundleIdentifier:()UserNotificationsKit

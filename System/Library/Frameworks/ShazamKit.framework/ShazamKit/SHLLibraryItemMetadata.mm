@@ -1,42 +1,42 @@
 @interface SHLLibraryItemMetadata
-- (SHLLibraryItemMetadata)initWithEncodedSystemData:(id)a3;
-- (SHLLibraryItemMetadata)initWithMetadata:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SHLLibraryItemMetadata)initWithEncodedSystemData:(id)data;
+- (SHLLibraryItemMetadata)initWithMetadata:(id)metadata;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation SHLLibraryItemMetadata
 
-- (SHLLibraryItemMetadata)initWithEncodedSystemData:(id)a3
+- (SHLLibraryItemMetadata)initWithEncodedSystemData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
   v10.receiver = self;
   v10.super_class = SHLLibraryItemMetadata;
   v6 = [(SHLLibraryItemMetadata *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    if (![(SHLLibraryItemMetadata *)v6 validEncodedSystemData:v5])
+    if (![(SHLLibraryItemMetadata *)v6 validEncodedSystemData:dataCopy])
     {
       v9 = [NSException shl_exceptionWithName:NSInvalidArgumentException reason:@"You must provide a valid encoded data."];
       objc_exception_throw(v9);
     }
 
-    objc_storeStrong(&v7->_encodedSystemData, a3);
+    objc_storeStrong(&v7->_encodedSystemData, data);
   }
 
   return v7;
 }
 
-- (SHLLibraryItemMetadata)initWithMetadata:(id)a3
+- (SHLLibraryItemMetadata)initWithMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   v10.receiver = self;
   v10.super_class = SHLLibraryItemMetadata;
   v5 = [(SHLLibraryItemMetadata *)&v10 init];
   if (v5)
   {
-    v6 = [v4 encodedSystemData];
-    v7 = [v6 copy];
+    encodedSystemData = [metadataCopy encodedSystemData];
+    v7 = [encodedSystemData copy];
     encodedSystemData = v5->_encodedSystemData;
     v5->_encodedSystemData = v7;
   }
@@ -44,9 +44,9 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [SHLLibraryItemMetadata allocWithZone:a3];
+  v4 = [SHLLibraryItemMetadata allocWithZone:zone];
 
   return [(SHLLibraryItemMetadata *)v4 initWithMetadata:self];
 }

@@ -10,7 +10,7 @@
   v4 = a3;
   [v4 capInsets];
   v6 = v5;
-  [a1 maxInsetForImage:v4];
+  [self maxInsetForImage:v4];
   v8 = v7;
 
   return v6 - v8;
@@ -81,11 +81,11 @@
     v22 = v6 / v16;
   }
 
-  [a1 setMasksToBounds:1];
-  [a1 setCornerContentsMasksEdges:1];
-  [a1 setCornerContents:{objc_msgSend(v17, "CGImage")}];
-  [a1 setCornerContentsCenter:{v21, v22, v21 * -2.0 + 1.0, v22 * -2.0 + 1.0}];
-  [a1 setCornerRadius:v6];
+  [self setMasksToBounds:1];
+  [self setCornerContentsMasksEdges:1];
+  [self setCornerContents:{objc_msgSend(v17, "CGImage")}];
+  [self setCornerContentsCenter:{v21, v22, v21 * -2.0 + 1.0, v22 * -2.0 + 1.0}];
+  [self setCornerRadius:v6];
 }
 
 - (void)setMaskImage:()BalloonLayerExtension .cold.1(NSObject *a1, double a2, double a3)

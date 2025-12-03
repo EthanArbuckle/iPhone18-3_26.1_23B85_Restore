@@ -1,5 +1,5 @@
 @interface FBSceneClientHandle
-+ (id)handleForScene:(id)a3 clientProcess:(id)a4;
++ (id)handleForScene:(id)scene clientProcess:(id)process;
 - (id)description;
 @end
 
@@ -7,27 +7,27 @@
 
 - (id)description
 {
-  v2 = [(FBSceneClientHandle *)self processHandle];
-  v3 = [v2 description];
+  processHandle = [(FBSceneClientHandle *)self processHandle];
+  v3 = [processHandle description];
 
   return v3;
 }
 
-+ (id)handleForScene:(id)a3 clientProcess:(id)a4
++ (id)handleForScene:(id)scene clientProcess:(id)process
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  sceneCopy = scene;
+  processCopy = process;
+  if (!sceneCopy)
   {
     [FBSceneClientHandle handleForScene:a2 clientProcess:?];
   }
 
-  v8 = v7;
-  v9 = [v7 rbsHandle];
-  if (![(FBScene *)v6 _isLegacy]|| v9)
+  v8 = processCopy;
+  rbsHandle = [processCopy rbsHandle];
+  if (![(FBScene *)sceneCopy _isLegacy]|| rbsHandle)
   {
     NSClassFromString(&cfstr_Rbsprocesshand_1.isa);
-    if (!v9)
+    if (!rbsHandle)
     {
       [FBSceneClientHandle handleForScene:a2 clientProcess:?];
     }
@@ -41,12 +41,12 @@
   v10 = objc_alloc_init(FBSceneClientHandle);
   if (v10)
   {
-    v11 = [v6 definition];
-    v12 = [v11 clientIdentity];
+    definition = [sceneCopy definition];
+    clientIdentity = [definition clientIdentity];
     identity = v10->_identity;
-    v10->_identity = v12;
+    v10->_identity = clientIdentity;
 
-    objc_storeStrong(&v10->_legacyProcess, a4);
+    objc_storeStrong(&v10->_legacyProcess, process);
   }
 
   return v10;

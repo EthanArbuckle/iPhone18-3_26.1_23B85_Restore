@@ -3,24 +3,24 @@
 - (APWebProcessVideoAdJSODelegate)delegate;
 - (BOOL)shouldVideoAutoPlay;
 - (void)_callListenersOfContentSizeChange;
-- (void)addEventListener:(id)a3 listener:(id)a4;
-- (void)contentSizeDidChange:(id)a3;
+- (void)addEventListener:(id)listener listener:(id)a4;
+- (void)contentSizeDidChange:(id)change;
 - (void)creativeViewLoaded;
-- (void)exitFullScreenTapped:(float)a3 atVolume:(float)a4;
-- (void)fullScreenTapped:(float)a3 atVolume:(float)a4;
-- (void)moreInfoTapped:(float)a3 atVolume:(float)a4;
-- (void)playCompletedAtVolume:(float)a3;
-- (void)playFailed:(id)a3;
-- (void)playPaused:(float)a3 atVolume:(float)a4;
-- (void)playResumed:(float)a3 atVolume:(float)a4;
-- (void)playStarted:(float)a3 atVolume:(float)a4;
-- (void)playTimeUpdated:(float)a3 atVolume:(float)a4;
-- (void)removeEventListener:(id)a3 listener:(id)a4;
-- (void)skipAdTapped:(float)a3 atVolume:(float)a4;
-- (void)videoTapped:(float)a3 atVolume:(float)a4;
-- (void)volumeChanged:(float)a3 playtime:(float)a4;
-- (void)volumeMuted:(float)a3;
-- (void)volumeUnmuted:(float)a3 atVolume:(float)a4;
+- (void)exitFullScreenTapped:(float)tapped atVolume:(float)volume;
+- (void)fullScreenTapped:(float)tapped atVolume:(float)volume;
+- (void)moreInfoTapped:(float)tapped atVolume:(float)volume;
+- (void)playCompletedAtVolume:(float)volume;
+- (void)playFailed:(id)failed;
+- (void)playPaused:(float)paused atVolume:(float)volume;
+- (void)playResumed:(float)resumed atVolume:(float)volume;
+- (void)playStarted:(float)started atVolume:(float)volume;
+- (void)playTimeUpdated:(float)updated atVolume:(float)volume;
+- (void)removeEventListener:(id)listener listener:(id)a4;
+- (void)skipAdTapped:(float)tapped atVolume:(float)volume;
+- (void)videoTapped:(float)tapped atVolume:(float)volume;
+- (void)volumeChanged:(float)changed playtime:(float)playtime;
+- (void)volumeMuted:(float)muted;
+- (void)volumeUnmuted:(float)unmuted atVolume:(float)volume;
 @end
 
 @implementation APWebProcessVideoAdJSO
@@ -44,36 +44,36 @@
   return v3;
 }
 
-- (void)contentSizeDidChange:(id)a3
+- (void)contentSizeDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [v4 valueForKey:@"AdMarkerHeight"];
+  changeCopy = change;
+  v5 = [changeCopy valueForKey:@"AdMarkerHeight"];
   [(APWebProcessVideoAdJSO *)self setAdMarkerHeight:v5];
 
-  v6 = [v4 valueForKey:@"AdMarkerWidth"];
+  v6 = [changeCopy valueForKey:@"AdMarkerWidth"];
   [(APWebProcessVideoAdJSO *)self setAdMarkerWidth:v6];
 
-  v7 = [v4 valueForKey:@"FontSize"];
+  v7 = [changeCopy valueForKey:@"FontSize"];
   [(APWebProcessVideoAdJSO *)self setFontSize:v7];
 
-  v8 = [v4 valueForKey:@"DeviceContentSize"];
+  v8 = [changeCopy valueForKey:@"DeviceContentSize"];
   [(APWebProcessVideoAdJSO *)self setDeviceContentSize:v8];
 
-  v9 = [v4 valueForKey:@"CornerRadius"];
+  v9 = [changeCopy valueForKey:@"CornerRadius"];
 
   [(APWebProcessVideoAdJSO *)self setCornerRadius:v9];
 
   [(APWebProcessVideoAdJSO *)self _callListenersOfContentSizeChange];
 }
 
-- (void)playFailed:(id)a3
+- (void)playFailed:(id)failed
 {
-  v4 = a3;
+  failedCopy = failed;
   if ([(APWebProcessVideoAdJSO *)self playFailedRequestCount]< 2)
   {
-    if ([v4 length] >= 0x1F5)
+    if ([failedCopy length] >= 0x1F5)
     {
-      v6 = [v4 substringToIndex:500];
+      v6 = [failedCopy substringToIndex:500];
 
       v7 = sub_3260();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
@@ -85,16 +85,16 @@
         _os_log_impl(&dword_0, v7, OS_LOG_TYPE_INFO, "[%{private}@] %{public}@", &v11, 0x16u);
       }
 
-      v4 = v6;
+      failedCopy = v6;
     }
 
-    v8 = [(APWebProcessVideoAdJSO *)self delegate];
+    delegate = [(APWebProcessVideoAdJSO *)self delegate];
     v9 = objc_opt_respondsToSelector();
 
     if (v9)
     {
-      v10 = [(APWebProcessVideoAdJSO *)self delegate];
-      [v10 webProcessVideoAdJSOMediaPlaybackFailedWithErrorDescription:v4];
+      delegate2 = [(APWebProcessVideoAdJSO *)self delegate];
+      [delegate2 webProcessVideoAdJSOMediaPlaybackFailedWithErrorDescription:failedCopy];
 
       [(APWebProcessVideoAdJSO *)self setPlayFailedRequestCount:([(APWebProcessVideoAdJSO *)self playFailedRequestCount]+ 1)];
     }
@@ -112,137 +112,137 @@
 
 - (void)creativeViewLoaded
 {
-  v3 = [(APWebProcessVideoAdJSO *)self delegate];
+  delegate = [(APWebProcessVideoAdJSO *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(APWebProcessVideoAdJSO *)self delegate];
-    [v5 webProcessVideoAdJSOCreativeViewLoaded];
+    delegate2 = [(APWebProcessVideoAdJSO *)self delegate];
+    [delegate2 webProcessVideoAdJSOCreativeViewLoaded];
   }
 }
 
-- (void)playStarted:(float)a3 atVolume:(float)a4
+- (void)playStarted:(float)started atVolume:(float)volume
 {
-  v7 = [(APWebProcessVideoAdJSO *)self delegate];
+  delegate = [(APWebProcessVideoAdJSO *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v11 = [(APWebProcessVideoAdJSO *)self delegate];
-    *&v9 = a3;
-    *&v10 = a4;
-    [v11 webProcessVideoAdJSOPlayStarted:v9 volume:v10];
+    delegate2 = [(APWebProcessVideoAdJSO *)self delegate];
+    *&v9 = started;
+    *&v10 = volume;
+    [delegate2 webProcessVideoAdJSOPlayStarted:v9 volume:v10];
   }
 }
 
-- (void)playResumed:(float)a3 atVolume:(float)a4
+- (void)playResumed:(float)resumed atVolume:(float)volume
 {
-  v7 = [(APWebProcessVideoAdJSO *)self delegate];
+  delegate = [(APWebProcessVideoAdJSO *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v11 = [(APWebProcessVideoAdJSO *)self delegate];
-    *&v9 = a3;
-    *&v10 = a4;
-    [v11 webProcessVideoAdJSOPlayResumed:v9 volume:v10];
+    delegate2 = [(APWebProcessVideoAdJSO *)self delegate];
+    *&v9 = resumed;
+    *&v10 = volume;
+    [delegate2 webProcessVideoAdJSOPlayResumed:v9 volume:v10];
   }
 }
 
-- (void)playTimeUpdated:(float)a3 atVolume:(float)a4
+- (void)playTimeUpdated:(float)updated atVolume:(float)volume
 {
-  v7 = [(APWebProcessVideoAdJSO *)self delegate];
+  delegate = [(APWebProcessVideoAdJSO *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v11 = [(APWebProcessVideoAdJSO *)self delegate];
-    *&v9 = a3;
-    *&v10 = a4;
-    [v11 webProcessVideoAdJSOPlayProgressed:v9 volume:v10];
+    delegate2 = [(APWebProcessVideoAdJSO *)self delegate];
+    *&v9 = updated;
+    *&v10 = volume;
+    [delegate2 webProcessVideoAdJSOPlayProgressed:v9 volume:v10];
   }
 }
 
-- (void)playPaused:(float)a3 atVolume:(float)a4
+- (void)playPaused:(float)paused atVolume:(float)volume
 {
-  v7 = [(APWebProcessVideoAdJSO *)self delegate];
+  delegate = [(APWebProcessVideoAdJSO *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v11 = [(APWebProcessVideoAdJSO *)self delegate];
-    *&v9 = a3;
-    *&v10 = a4;
-    [v11 webProcessVideoAdJSOPlayPaused:v9 volume:v10];
+    delegate2 = [(APWebProcessVideoAdJSO *)self delegate];
+    *&v9 = paused;
+    *&v10 = volume;
+    [delegate2 webProcessVideoAdJSOPlayPaused:v9 volume:v10];
   }
 }
 
-- (void)playCompletedAtVolume:(float)a3
+- (void)playCompletedAtVolume:(float)volume
 {
-  v5 = [(APWebProcessVideoAdJSO *)self delegate];
+  delegate = [(APWebProcessVideoAdJSO *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v8 = [(APWebProcessVideoAdJSO *)self delegate];
-    *&v7 = a3;
-    [v8 webProcessVideoAdJSOPlayCompletedWithVolume:v7];
+    delegate2 = [(APWebProcessVideoAdJSO *)self delegate];
+    *&v7 = volume;
+    [delegate2 webProcessVideoAdJSOPlayCompletedWithVolume:v7];
   }
 }
 
-- (void)volumeChanged:(float)a3 playtime:(float)a4
+- (void)volumeChanged:(float)changed playtime:(float)playtime
 {
-  v7 = [(APWebProcessVideoAdJSO *)self delegate];
+  delegate = [(APWebProcessVideoAdJSO *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v11 = [(APWebProcessVideoAdJSO *)self delegate];
-    *&v9 = a3;
-    *&v10 = a4;
-    [v11 webProcessVideoAdJSOVolumeChanged:v9 playTime:v10];
+    delegate2 = [(APWebProcessVideoAdJSO *)self delegate];
+    *&v9 = changed;
+    *&v10 = playtime;
+    [delegate2 webProcessVideoAdJSOVolumeChanged:v9 playTime:v10];
   }
 }
 
-- (void)volumeMuted:(float)a3
+- (void)volumeMuted:(float)muted
 {
-  v5 = [(APWebProcessVideoAdJSO *)self delegate];
+  delegate = [(APWebProcessVideoAdJSO *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v8 = [(APWebProcessVideoAdJSO *)self delegate];
-    *&v7 = a3;
-    [v8 webProcessVideoAdJSOAudioMuted:v7];
+    delegate2 = [(APWebProcessVideoAdJSO *)self delegate];
+    *&v7 = muted;
+    [delegate2 webProcessVideoAdJSOAudioMuted:v7];
   }
 }
 
-- (void)volumeUnmuted:(float)a3 atVolume:(float)a4
+- (void)volumeUnmuted:(float)unmuted atVolume:(float)volume
 {
-  v7 = [(APWebProcessVideoAdJSO *)self delegate];
+  delegate = [(APWebProcessVideoAdJSO *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v11 = [(APWebProcessVideoAdJSO *)self delegate];
-    *&v9 = a3;
-    *&v10 = a4;
-    [v11 webProcessVideoAdJSOAudioUnmuted:v9 volume:v10];
+    delegate2 = [(APWebProcessVideoAdJSO *)self delegate];
+    *&v9 = unmuted;
+    *&v10 = volume;
+    [delegate2 webProcessVideoAdJSOAudioUnmuted:v9 volume:v10];
   }
 }
 
-- (void)moreInfoTapped:(float)a3 atVolume:(float)a4
+- (void)moreInfoTapped:(float)tapped atVolume:(float)volume
 {
-  v7 = [(APWebProcessVideoAdJSO *)self delegate];
+  delegate = [(APWebProcessVideoAdJSO *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v11 = [(APWebProcessVideoAdJSO *)self delegate];
-    *&v9 = a3;
-    *&v10 = a4;
-    [v11 webProcessVideoAdJSOMoreInfoTapped:v9 volume:v10];
+    delegate2 = [(APWebProcessVideoAdJSO *)self delegate];
+    *&v9 = tapped;
+    *&v10 = volume;
+    [delegate2 webProcessVideoAdJSOMoreInfoTapped:v9 volume:v10];
   }
 }
 
@@ -282,65 +282,65 @@
   return !IsReduceMotionEnabled && IsVideoAutoplayEnabled;
 }
 
-- (void)videoTapped:(float)a3 atVolume:(float)a4
+- (void)videoTapped:(float)tapped atVolume:(float)volume
 {
-  v7 = [(APWebProcessVideoAdJSO *)self delegate];
+  delegate = [(APWebProcessVideoAdJSO *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v11 = [(APWebProcessVideoAdJSO *)self delegate];
-    *&v9 = a3;
-    *&v10 = a4;
-    [v11 webProcessVideoAdJSOVideoTapped:v9 volume:v10];
+    delegate2 = [(APWebProcessVideoAdJSO *)self delegate];
+    *&v9 = tapped;
+    *&v10 = volume;
+    [delegate2 webProcessVideoAdJSOVideoTapped:v9 volume:v10];
   }
 }
 
-- (void)skipAdTapped:(float)a3 atVolume:(float)a4
+- (void)skipAdTapped:(float)tapped atVolume:(float)volume
 {
-  v7 = [(APWebProcessVideoAdJSO *)self delegate];
+  delegate = [(APWebProcessVideoAdJSO *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v11 = [(APWebProcessVideoAdJSO *)self delegate];
-    *&v9 = a3;
-    *&v10 = a4;
-    [v11 webProcessVideoAdJSOSkipAdTapped:v9 volume:v10];
+    delegate2 = [(APWebProcessVideoAdJSO *)self delegate];
+    *&v9 = tapped;
+    *&v10 = volume;
+    [delegate2 webProcessVideoAdJSOSkipAdTapped:v9 volume:v10];
   }
 }
 
-- (void)fullScreenTapped:(float)a3 atVolume:(float)a4
+- (void)fullScreenTapped:(float)tapped atVolume:(float)volume
 {
-  v7 = [(APWebProcessVideoAdJSO *)self delegate];
+  delegate = [(APWebProcessVideoAdJSO *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v11 = [(APWebProcessVideoAdJSO *)self delegate];
-    *&v9 = a3;
-    *&v10 = a4;
-    [v11 webProcessVideoAdJSOFullScreenTapped:v9 volume:v10];
+    delegate2 = [(APWebProcessVideoAdJSO *)self delegate];
+    *&v9 = tapped;
+    *&v10 = volume;
+    [delegate2 webProcessVideoAdJSOFullScreenTapped:v9 volume:v10];
   }
 }
 
-- (void)exitFullScreenTapped:(float)a3 atVolume:(float)a4
+- (void)exitFullScreenTapped:(float)tapped atVolume:(float)volume
 {
-  v7 = [(APWebProcessVideoAdJSO *)self delegate];
+  delegate = [(APWebProcessVideoAdJSO *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v11 = [(APWebProcessVideoAdJSO *)self delegate];
-    *&v9 = a3;
-    *&v10 = a4;
-    [v11 webProcessVideoAdJSOExitFullScreenTapped:v9 volume:v10];
+    delegate2 = [(APWebProcessVideoAdJSO *)self delegate];
+    *&v9 = tapped;
+    *&v10 = volume;
+    [delegate2 webProcessVideoAdJSOExitFullScreenTapped:v9 volume:v10];
   }
 }
 
-- (void)addEventListener:(id)a3 listener:(id)a4
+- (void)addEventListener:(id)listener listener:(id)a4
 {
-  v6 = a3;
+  listenerCopy = listener;
   v7 = a4;
   v8 = sub_3260();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
@@ -348,23 +348,23 @@
     *v14 = 138478083;
     *&v14[4] = objc_opt_class();
     *&v14[12] = 2114;
-    *&v14[14] = v6;
+    *&v14[14] = listenerCopy;
     v9 = *&v14[4];
     _os_log_impl(&dword_0, v8, OS_LOG_TYPE_INFO, "[%{private}@] Adding event listener of type: %{public}@", v14, 0x16u);
   }
 
-  v10 = [v6 length];
+  v10 = [listenerCopy length];
   if (v7 && v10)
   {
     [(APWebProcessVideoAdJSO *)self lock];
-    v11 = [(APWebProcessVideoAdJSO *)self listenersDictionary];
-    v12 = [v11 objectForKeyedSubscript:v6];
+    listenersDictionary = [(APWebProcessVideoAdJSO *)self listenersDictionary];
+    v12 = [listenersDictionary objectForKeyedSubscript:listenerCopy];
 
     if (!v12)
     {
       v12 = +[NSMutableArray array];
-      v13 = [(APWebProcessVideoAdJSO *)self listenersDictionary];
-      [v13 setObject:v12 forKey:v6];
+      listenersDictionary2 = [(APWebProcessVideoAdJSO *)self listenersDictionary];
+      [listenersDictionary2 setObject:v12 forKey:listenerCopy];
     }
 
     if (([v12 containsObject:{v7, *v14, *&v14[16]}] & 1) == 0)
@@ -376,9 +376,9 @@
   }
 }
 
-- (void)removeEventListener:(id)a3 listener:(id)a4
+- (void)removeEventListener:(id)listener listener:(id)a4
 {
-  v6 = a3;
+  listenerCopy = listener;
   v7 = a4;
   v8 = sub_3260();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
@@ -386,21 +386,21 @@
     v13 = 138478083;
     v14 = objc_opt_class();
     v15 = 2114;
-    v16 = v6;
+    v16 = listenerCopy;
     v9 = v14;
     _os_log_impl(&dword_0, v8, OS_LOG_TYPE_INFO, "[%{private}@] Removing event listener of type: %{public}@", &v13, 0x16u);
   }
 
-  if (v6)
+  if (listenerCopy)
   {
-    v10 = [v6 length];
+    v10 = [listenerCopy length];
     if (v7)
     {
       if (v10)
       {
         [(APWebProcessVideoAdJSO *)self lock];
-        v11 = [(APWebProcessVideoAdJSO *)self listenersDictionary];
-        v12 = [v11 objectForKeyedSubscript:v6];
+        listenersDictionary = [(APWebProcessVideoAdJSO *)self listenersDictionary];
+        v12 = [listenersDictionary objectForKeyedSubscript:listenerCopy];
         [v12 removeObject:v7];
 
         [(APWebProcessVideoAdJSO *)self unlock];
@@ -423,8 +423,8 @@
   }
 
   [(APWebProcessVideoAdJSO *)self lock];
-  v5 = [(APWebProcessVideoAdJSO *)self listenersDictionary];
-  v6 = [v5 objectForKeyedSubscript:@"contentSizeChange"];
+  listenersDictionary = [(APWebProcessVideoAdJSO *)self listenersDictionary];
+  v6 = [listenersDictionary objectForKeyedSubscript:@"contentSizeChange"];
   v7 = [v6 copy];
 
   [(APWebProcessVideoAdJSO *)self unlock];

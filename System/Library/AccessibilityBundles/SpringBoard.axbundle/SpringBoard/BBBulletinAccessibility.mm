@@ -1,22 +1,22 @@
 @interface BBBulletinAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilitySectionNameForIcon;
 @end
 
 @implementation BBBulletinAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBApplicationController"];
-  [v3 validateClass:@"SBApplicationController" hasClassMethod:@"sharedInstance" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBApplicationController" hasInstanceMethod:@"applicationWithBundleIdentifier:" withFullSignature:{"@", "@", 0}];
-  [v3 validateClass:@"SBApplication" hasInstanceMethod:@"displayName" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBApplicationController"];
+  [validationsCopy validateClass:@"SBApplicationController" hasClassMethod:@"sharedInstance" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBApplicationController" hasInstanceMethod:@"applicationWithBundleIdentifier:" withFullSignature:{"@", "@", 0}];
+  [validationsCopy validateClass:@"SBApplication" hasInstanceMethod:@"displayName" withFullSignature:{"@", 0}];
 }
 
 - (id)_accessibilitySectionNameForIcon
 {
-  v2 = [(BBBulletinAccessibility *)self sectionID];
+  sectionID = [(BBBulletinAccessibility *)self sectionID];
   [NSClassFromString(&cfstr_Sbapplicationc.isa) safeValueForKey:@"sharedInstance"];
   v7 = 0;
   v8 = &v7;
@@ -24,7 +24,7 @@
   v10 = __Block_byref_object_copy__1;
   v11 = __Block_byref_object_dispose__1;
   v5 = v12 = 0;
-  v6 = v2;
+  v6 = sectionID;
   AXPerformSafeBlock();
   v3 = v8[5];
 

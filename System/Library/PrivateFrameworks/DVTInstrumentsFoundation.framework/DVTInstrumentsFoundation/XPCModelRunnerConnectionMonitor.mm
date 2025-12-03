@@ -1,12 +1,12 @@
 @interface XPCModelRunnerConnectionMonitor
-+ (int64_t)diagnoseNoXPCResponse:(int)a3;
++ (int64_t)diagnoseNoXPCResponse:(int)response;
 + (void)disableMonitoring;
 + (void)enableMonitoring;
 @end
 
 @implementation XPCModelRunnerConnectionMonitor
 
-+ (int64_t)diagnoseNoXPCResponse:(int)a3
++ (int64_t)diagnoseNoXPCResponse:(int)response
 {
   v57 = *MEMORY[0x277D85DE8];
   v4 = qword_27EE82098;
@@ -23,7 +23,7 @@
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
     *buf = 67109120;
-    *&buf[4] = a3;
+    *&buf[4] = response;
     _os_log_impl(&dword_247F67000, v4, OS_LOG_TYPE_DEBUG, "diagnoseNoXPCResponseReason - DTMLModelRunnerService pid: %d", buf, 8u);
   }
 
@@ -40,7 +40,7 @@
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     *buf = 67109120;
-    *&buf[4] = a3;
+    *&buf[4] = response;
     _os_log_impl(&dword_247F67000, v8, OS_LOG_TYPE_DEBUG, "diagnoseNoXPCResponseReason - DTMLModelRunnerService pid: %d", buf, 8u);
   }
 
@@ -116,13 +116,13 @@
           *v50 = 67109376;
           *v51 = v25;
           *&v51[4] = 1024;
-          *&v51[6] = a3;
+          *&v51[6] = response;
           _os_log_impl(&dword_247F67000, v22, OS_LOG_TYPE_DEBUG, "diagnoseNoXPCResponseReason - record: pid: %d, desired pid: %d", v50, 0xEu);
         }
 
         v26 = &v21[v19];
         v27 = qword_27EE82098;
-        if (*&v21[v19 + 20] == a3)
+        if (*&v21[v19 + 20] == response)
         {
           if (qword_27EE82098 == v5)
           {

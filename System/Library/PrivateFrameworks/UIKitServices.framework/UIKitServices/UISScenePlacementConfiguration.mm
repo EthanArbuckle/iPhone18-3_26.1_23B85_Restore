@@ -1,11 +1,11 @@
 @interface UISScenePlacementConfiguration
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (UISScenePlacementConfiguration)init;
-- (UISScenePlacementConfiguration)initWithBSXPCCoder:(id)a3;
-- (UISScenePlacementConfiguration)initWithCoder:(id)a3;
-- (id)debugDescriptionWithMultilinePrefix:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (UISScenePlacementConfiguration)initWithBSXPCCoder:(id)coder;
+- (UISScenePlacementConfiguration)initWithCoder:(id)coder;
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 @end
@@ -19,13 +19,13 @@
   return [(UISScenePlacementConfiguration *)&v3 init];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy)
   {
-    if (self == v4)
+    if (self == equalCopy)
     {
       v7 = 1;
     }
@@ -45,14 +45,14 @@
   return v7;
 }
 
-- (UISScenePlacementConfiguration)initWithCoder:(id)a3
+- (UISScenePlacementConfiguration)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = UISScenePlacementConfiguration;
   return [(UISScenePlacementConfiguration *)&v4 init];
 }
 
-- (UISScenePlacementConfiguration)initWithBSXPCCoder:(id)a3
+- (UISScenePlacementConfiguration)initWithBSXPCCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = UISScenePlacementConfiguration;
@@ -61,10 +61,10 @@
 
 - (id)succinctDescription
 {
-  v2 = [(UISScenePlacementConfiguration *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(UISScenePlacementConfiguration *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -76,7 +76,7 @@
   v7[3] = &unk_1E7458FE0;
   v4 = v3;
   v8 = v4;
-  v9 = self;
+  selfCopy = self;
   [v4 appendProem:0 block:v7];
   v5 = v4;
 
@@ -91,29 +91,29 @@ void __60__UISScenePlacementConfiguration_succinctDescriptionBuilder__block_invo
   [v1 appendString:v3 withName:@"placementType"];
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(UISScenePlacementConfiguration *)self succinctDescriptionBuilder];
-  [v5 setActiveMultilinePrefix:v4];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(UISScenePlacementConfiguration *)self succinctDescriptionBuilder];
+  [succinctDescriptionBuilder setActiveMultilinePrefix:prefixCopy];
 
-  return v5;
+  return succinctDescriptionBuilder;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(UISScenePlacementConfiguration *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(UISScenePlacementConfiguration *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)debugDescriptionWithMultilinePrefix:(id)a3
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(UISScenePlacementConfiguration *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(UISScenePlacementConfiguration *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 @end

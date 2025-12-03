@@ -1,12 +1,12 @@
 @interface CNMAIDMapper
 + (id)os_log;
 - (CNMAIDMapper)init;
-- (CNMAIDMapper)initWithConfiguration:(id)a3;
-- (CNMAIDMapper)initWithDataStore:(id)a3 environment:(id)a4;
+- (CNMAIDMapper)initWithConfiguration:(id)configuration;
+- (CNMAIDMapper)initWithDataStore:(id)store environment:(id)environment;
 - (NSString)description;
-- (id)authorizedKeysForContactKeys:(id)a3 error:(id *)a4;
-- (id)contactObservableForFetchRequest:(id)a3;
-- (id)policyForContainerWithIdentifier:(id)a3 error:(id *)a4;
+- (id)authorizedKeysForContactKeys:(id)keys error:(id *)error;
+- (id)contactObservableForFetchRequest:(id)request;
+- (id)policyForContainerWithIdentifier:(id)identifier error:(id *)error;
 @end
 
 @implementation CNMAIDMapper
@@ -34,34 +34,34 @@ uint64_t __22__CNMAIDMapper_os_log__block_invoke()
 
 - (CNMAIDMapper)init
 {
-  v3 = [MEMORY[0x1E695B4B0] shared];
+  mEMORY[0x1E695B4B0] = [MEMORY[0x1E695B4B0] shared];
   v4 = +[CNContactsEnvironment currentEnvironment];
-  v5 = [(CNMAIDMapper *)self initWithDataStore:v3 environment:v4];
+  v5 = [(CNMAIDMapper *)self initWithDataStore:mEMORY[0x1E695B4B0] environment:v4];
 
   return v5;
 }
 
-- (CNMAIDMapper)initWithConfiguration:(id)a3
+- (CNMAIDMapper)initWithConfiguration:(id)configuration
 {
   v4 = MEMORY[0x1E695B4B0];
-  v5 = a3;
-  v6 = [v4 shared];
-  v7 = [v5 environment];
+  configurationCopy = configuration;
+  shared = [v4 shared];
+  environment = [configurationCopy environment];
 
-  v8 = [(CNMAIDMapper *)self initWithDataStore:v6 environment:v7];
+  v8 = [(CNMAIDMapper *)self initWithDataStore:shared environment:environment];
   return v8;
 }
 
-- (CNMAIDMapper)initWithDataStore:(id)a3 environment:(id)a4
+- (CNMAIDMapper)initWithDataStore:(id)store environment:(id)environment
 {
-  v6 = a3;
+  storeCopy = store;
   v11.receiver = self;
   v11.super_class = CNMAIDMapper;
   v7 = [(CNMAIDMapper *)&v11 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_dataStore, a3);
+    objc_storeStrong(&v7->_dataStore, store);
     v9 = v8;
   }
 
@@ -71,22 +71,22 @@ uint64_t __22__CNMAIDMapper_os_log__block_invoke()
 - (NSString)description
 {
   v2 = [MEMORY[0x1E69966B0] descriptionBuilderWithObject:self];
-  v3 = [v2 build];
+  build = [v2 build];
 
-  return v3;
+  return build;
 }
 
-- (id)contactObservableForFetchRequest:(id)a3
+- (id)contactObservableForFetchRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(CNMAIDMapper *)self dataStore];
+  requestCopy = request;
+  dataStore = [(CNMAIDMapper *)self dataStore];
 
-  if (v5)
+  if (dataStore)
   {
-    v6 = [v4 predicate];
-    if ([v6 conformsToProtocol:&unk_1F0995B20])
+    predicate = [requestCopy predicate];
+    if ([predicate conformsToProtocol:&unk_1F0995B20])
     {
-      v7 = v6;
+      v7 = predicate;
     }
 
     else
@@ -98,65 +98,65 @@ uint64_t __22__CNMAIDMapper_os_log__block_invoke()
 
     if (v8)
     {
-      v9 = [(CNMAIDMapper *)self dataStore];
-      v10 = [v8 contactsFromCLSDataStore:v9];
+      dataStore2 = [(CNMAIDMapper *)self dataStore];
+      v10 = [v8 contactsFromCLSDataStore:dataStore2];
 
       if ([v10 isFailure])
       {
-        v11 = [v10 error];
-        v12 = [objc_opt_class() os_log];
-        if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+        error = [v10 error];
+        os_log = [objc_opt_class() os_log];
+        if (os_log_type_enabled(os_log, OS_LOG_TYPE_ERROR))
         {
-          [(CNMAIDMapper *)v11 contactObservableForFetchRequest:v12];
+          [(CNMAIDMapper *)error contactObservableForFetchRequest:os_log];
         }
 
-        v13 = [MEMORY[0x1E6996798] emptyObservable];
+        emptyObservable = [MEMORY[0x1E6996798] emptyObservable];
       }
 
       else
       {
-        v11 = [v10 value];
-        v15 = [v11 _cn_filter:&__block_literal_global_52];
+        error = [v10 value];
+        v15 = [error _cn_filter:&__block_literal_global_52];
         v16 = [v15 _cn_map:&__block_literal_global_58];
-        v13 = [MEMORY[0x1E6996798] observableWithResult:v16];
+        emptyObservable = [MEMORY[0x1E6996798] observableWithResult:v16];
       }
     }
 
     else
     {
-      v13 = [MEMORY[0x1E6996798] emptyObservable];
+      emptyObservable = [MEMORY[0x1E6996798] emptyObservable];
     }
   }
 
   else
   {
-    v14 = [objc_opt_class() os_log];
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+    os_log2 = [objc_opt_class() os_log];
+    if (os_log_type_enabled(os_log2, OS_LOG_TYPE_ERROR))
     {
-      [CNMAIDMapper contactObservableForFetchRequest:v14];
+      [CNMAIDMapper contactObservableForFetchRequest:os_log2];
     }
 
-    v13 = [MEMORY[0x1E6996798] emptyObservable];
+    emptyObservable = [MEMORY[0x1E6996798] emptyObservable];
   }
 
-  return v13;
+  return emptyObservable;
 }
 
-- (id)policyForContainerWithIdentifier:(id)a3 error:(id *)a4
+- (id)policyForContainerWithIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v7 = objc_alloc_init(CNPolicyDescription);
-  [(CNPolicyDescription *)v7 setContainerIdentifier:v6];
+  [(CNPolicyDescription *)v7 setContainerIdentifier:identifierCopy];
 
-  v8 = [(CNMAIDMapper *)self policyWithDescription:v7 error:a4];
+  v8 = [(CNMAIDMapper *)self policyWithDescription:v7 error:error];
 
   return v8;
 }
 
-- (id)authorizedKeysForContactKeys:(id)a3 error:(id *)a4
+- (id)authorizedKeysForContactKeys:(id)keys error:(id *)error
 {
-  v5 = a3;
-  v6 = self;
+  keysCopy = keys;
+  selfCopy = self;
   v7 = CNUnimplementedMethodException();
   objc_exception_throw(v7);
 }

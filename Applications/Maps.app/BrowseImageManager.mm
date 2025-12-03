@@ -5,15 +5,15 @@
 - (BrowseManager)browseManager;
 - (CGSize)desiredImageSize;
 - (MapsUIImageCacheUserInterfaceDelegate)userInterfaceDelegate;
-- (double)_screenScaleForScale:(double)a3 isCarplay:(BOOL)a4;
-- (id)_cachedImageForCategory:(id)a3 scale:(double)a4 traits:(id)a5 isCarplay:(BOOL)a6 outputCategoryKey:(id *)a7;
-- (id)_createImageForCategory:(id)a3 scale:(double)a4 traits:(id)a5 isCarplay:(BOOL)a6 nightMode:(BOOL)a7;
-- (id)_scaleImage:(id)a3 ifNeededToFitSize:(CGSize)a4;
-- (id)synchronousImageForCategory:(id)a3 scale:(double)a4 traits:(id)a5 isCarplay:(BOOL)a6;
-- (id)transparentImageForCategory:(id)a3;
-- (void)imageForCategory:(id)a3 resultHandler:(id)a4;
-- (void)imageForCategory:(id)a3 scale:(double)a4 traits:(id)a5 isCarplay:(BOOL)a6 isTouchBar:(BOOL)a7 resultHandler:(id)a8;
-- (void)maskedImage:(id)a3 inRect:(CGRect)a4 withColor:(CGColor *)a5 inContext:(CGContext *)a6;
+- (double)_screenScaleForScale:(double)scale isCarplay:(BOOL)carplay;
+- (id)_cachedImageForCategory:(id)category scale:(double)scale traits:(id)traits isCarplay:(BOOL)carplay outputCategoryKey:(id *)key;
+- (id)_createImageForCategory:(id)category scale:(double)scale traits:(id)traits isCarplay:(BOOL)carplay nightMode:(BOOL)mode;
+- (id)_scaleImage:(id)image ifNeededToFitSize:(CGSize)size;
+- (id)synchronousImageForCategory:(id)category scale:(double)scale traits:(id)traits isCarplay:(BOOL)carplay;
+- (id)transparentImageForCategory:(id)category;
+- (void)imageForCategory:(id)category resultHandler:(id)handler;
+- (void)imageForCategory:(id)category scale:(double)scale traits:(id)traits isCarplay:(BOOL)carplay isTouchBar:(BOOL)bar resultHandler:(id)handler;
+- (void)maskedImage:(id)image inRect:(CGRect)rect withColor:(CGColor *)color inContext:(CGContext *)context;
 @end
 
 @implementation BrowseImageManager
@@ -48,10 +48,10 @@
 {
   if (+[NSThread isMainThread])
   {
-    v3 = [(BrowseImageManager *)self userInterfaceDelegate];
-    v4 = [v3 isNightMode];
+    userInterfaceDelegate = [(BrowseImageManager *)self userInterfaceDelegate];
+    isNightMode = [userInterfaceDelegate isNightMode];
 
-    return v4;
+    return isNightMode;
   }
 
   else
@@ -94,16 +94,16 @@
   return WeakRetained;
 }
 
-- (id)_scaleImage:(id)a3 ifNeededToFitSize:(CGSize)a4
+- (id)_scaleImage:(id)image ifNeededToFitSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v6 = a3;
-  [v6 size];
+  height = size.height;
+  width = size.width;
+  imageCopy = image;
+  [imageCopy size];
   v9 = width == v7 && height == v8;
   if (v9 || ((v10 = v7, v11 = v8, width == CGSizeZero.width) ? (v12 = height == CGSizeZero.height) : (v12 = 0), v12))
   {
-    v13 = v6;
+    v13 = imageCopy;
   }
 
   else
@@ -139,7 +139,7 @@
     UIGraphicsBeginImageContextWithOptions(v21, 0, 0.0);
     CurrentContext = UIGraphicsGetCurrentContext();
     CGContextSetInterpolationQuality(CurrentContext, kCGInterpolationHigh);
-    [v6 drawInRect:{CGPointZero.x, y, v10, v11}];
+    [imageCopy drawInRect:{CGPointZero.x, y, v10, v11}];
     v13 = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
   }
@@ -147,33 +147,33 @@
   return v13;
 }
 
-- (id)transparentImageForCategory:(id)a3
+- (id)transparentImageForCategory:(id)category
 {
-  v3 = a3;
+  categoryCopy = category;
   v4 = +[MKSystemController sharedInstance];
   [v4 screenScale];
   v6 = v5;
 
-  v7 = [v3 styleAttributes];
+  styleAttributes = [categoryCopy styleAttributes];
   v8 = objc_alloc_init(CategoryKey);
-  [(CategoryKey *)v8 setCategory:v3];
+  [(CategoryKey *)v8 setCategory:categoryCopy];
 
   [(CategoryKey *)v8 setTransitMode:0];
   [(CategoryKey *)v8 setPrefix:@"transparent"];
   [(CategoryKey *)v8 setRenderAsTemplate:1];
-  v9 = [objc_opt_class() sharedImageCache];
-  v10 = [v9 objectForKey:v8];
+  sharedImageCache = [objc_opt_class() sharedImageCache];
+  v10 = [sharedImageCache objectForKey:v8];
 
   if (!v10)
   {
-    v11 = [MKIconManager imageForStyle:v7 size:4 forScale:1 format:1 transparent:0 transitMode:v6];
+    v11 = [MKIconManager imageForStyle:styleAttributes size:4 forScale:1 format:1 transparent:0 transitMode:v6];
     if (v11 || ([UIImage systemImageNamed:@"magnifyingglass"], (v11 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v12 = v11;
       v10 = [v11 imageWithRenderingMode:2];
 
-      v13 = [objc_opt_class() sharedImageCache];
-      [v13 setObject:v10 forKey:v8];
+      sharedImageCache2 = [objc_opt_class() sharedImageCache];
+      [sharedImageCache2 setObject:v10 forKey:v8];
     }
 
     else
@@ -185,40 +185,40 @@
   return v10;
 }
 
-- (double)_screenScaleForScale:(double)a3 isCarplay:(BOOL)a4
+- (double)_screenScaleForScale:(double)scale isCarplay:(BOOL)carplay
 {
-  v4 = a3;
-  if (a3 == 0.0)
+  scaleCopy = scale;
+  if (scale == 0.0)
   {
-    if (a4)
+    if (carplay)
     {
       v5 = +[CarDisplayController sharedInstance];
-      v6 = [v5 screenTraitCollection];
-      [v6 displayScale];
-      v4 = v7;
+      screenTraitCollection = [v5 screenTraitCollection];
+      [screenTraitCollection displayScale];
+      scaleCopy = v7;
     }
 
     else
     {
       v5 = +[MKSystemController sharedInstance];
       [v5 screenScale];
-      v4 = v8;
+      scaleCopy = v8;
     }
   }
 
-  return v4;
+  return scaleCopy;
 }
 
-- (id)_createImageForCategory:(id)a3 scale:(double)a4 traits:(id)a5 isCarplay:(BOOL)a6 nightMode:(BOOL)a7
+- (id)_createImageForCategory:(id)category scale:(double)scale traits:(id)traits isCarplay:(BOOL)carplay nightMode:(BOOL)mode
 {
-  v8 = a6;
-  v12 = a5;
-  v13 = [a3 category];
-  v14 = [v13 styleAttributes];
+  carplayCopy = carplay;
+  traitsCopy = traits;
+  category = [category category];
+  styleAttributes = [category styleAttributes];
 
-  LODWORD(v13) = [v12 mode];
-  v15 = v13 == 4;
-  LOBYTE(v12) = [(BrowseImageManager *)self isTransparencyEnabled];
+  LODWORD(category) = [traitsCopy mode];
+  v15 = category == 4;
+  LOBYTE(traitsCopy) = [(BrowseImageManager *)self isTransparencyEnabled];
   [(BrowseImageManager *)self desiredImageSize];
   v17 = v16;
   v19 = v18;
@@ -234,19 +234,19 @@
   v34[1] = 3221225472;
   v34[2] = sub_100B2E4CC;
   v34[3] = &unk_1016388C0;
-  v22 = v14;
+  v22 = styleAttributes;
   v35 = v22;
-  v37 = v12;
+  v37 = traitsCopy;
   v38 = v15;
-  v39 = a7;
+  modeCopy = mode;
   v40 = !v21;
   v23 = v20;
   v36 = v23;
   v24 = objc_retainBlock(v34);
-  [(BrowseImageManager *)self _screenScaleForScale:v8 isCarplay:a4];
+  [(BrowseImageManager *)self _screenScaleForScale:carplayCopy isCarplay:scale];
   v26 = v25;
-  v27 = (v24[2])(v24, 4, v8);
-  if (!v27 && v8)
+  v27 = (v24[2])(v24, 4, carplayCopy);
+  if (!v27 && carplayCopy)
   {
     v28 = +[UIScreen mainScreen];
     [v28 scale];
@@ -288,26 +288,26 @@ LABEL_10:
   return v27;
 }
 
-- (id)_cachedImageForCategory:(id)a3 scale:(double)a4 traits:(id)a5 isCarplay:(BOOL)a6 outputCategoryKey:(id *)a7
+- (id)_cachedImageForCategory:(id)category scale:(double)scale traits:(id)traits isCarplay:(BOOL)carplay outputCategoryKey:(id *)key
 {
-  v8 = a6;
-  v12 = a3;
-  v13 = [a5 mode] == 4;
-  v14 = [(BrowseImageManager *)self userInterfaceDelegate];
-  v15 = [v14 isNightMode];
+  carplayCopy = carplay;
+  categoryCopy = category;
+  v13 = [traits mode] == 4;
+  userInterfaceDelegate = [(BrowseImageManager *)self userInterfaceDelegate];
+  isNightMode = [userInterfaceDelegate isNightMode];
 
-  [(BrowseImageManager *)self _screenScaleForScale:v8 isCarplay:a4];
+  [(BrowseImageManager *)self _screenScaleForScale:carplayCopy isCarplay:scale];
   v17 = v16;
   v18 = objc_alloc_init(CategoryKey);
-  v19 = [v12 category];
+  category = [categoryCopy category];
 
-  [(CategoryKey *)v18 setCategory:v19];
+  [(CategoryKey *)v18 setCategory:category];
   [(CategoryKey *)v18 setTransitMode:v13];
   [(CategoryKey *)v18 setScale:v17];
   [(BrowseImageManager *)self desiredImageSize];
   [(CategoryKey *)v18 setSize:?];
-  [(CategoryKey *)v18 setIsCarPlay:v8];
-  [(CategoryKey *)v18 setIsNightMode:v15];
+  [(CategoryKey *)v18 setIsCarPlay:carplayCopy];
+  [(CategoryKey *)v18 setIsNightMode:isNightMode];
   if ([(BrowseImageManager *)self isTransparencyEnabled])
   {
     v20 = @"transparent";
@@ -320,42 +320,42 @@ LABEL_10:
 
   [(CategoryKey *)v18 setPrefix:v20];
   v21 = v18;
-  *a7 = v18;
-  v22 = [objc_opt_class() sharedImageCache];
-  v23 = [v22 objectForKey:v18];
+  *key = v18;
+  sharedImageCache = [objc_opt_class() sharedImageCache];
+  v23 = [sharedImageCache objectForKey:v18];
 
   return v23;
 }
 
-- (id)synchronousImageForCategory:(id)a3 scale:(double)a4 traits:(id)a5 isCarplay:(BOOL)a6
+- (id)synchronousImageForCategory:(id)category scale:(double)scale traits:(id)traits isCarplay:(BOOL)carplay
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = a5;
+  carplayCopy = carplay;
+  categoryCopy = category;
+  traitsCopy = traits;
   v18 = 0;
-  v12 = [(BrowseImageManager *)self _cachedImageForCategory:v10 scale:v11 traits:v6 isCarplay:&v18 outputCategoryKey:a4];
+  v12 = [(BrowseImageManager *)self _cachedImageForCategory:categoryCopy scale:traitsCopy traits:carplayCopy isCarplay:&v18 outputCategoryKey:scale];
   v13 = v18;
   if (!v12)
   {
-    v14 = [(BrowseImageManager *)self _createImageForCategory:v10 scale:v11 traits:v6 isCarplay:[(BrowseImageManager *)self _isNightMode] nightMode:a4];
+    v14 = [(BrowseImageManager *)self _createImageForCategory:categoryCopy scale:traitsCopy traits:carplayCopy isCarplay:[(BrowseImageManager *)self _isNightMode] nightMode:scale];
     if (v14)
     {
       v12 = v14;
-      v15 = [objc_opt_class() sharedImageCache];
-      [v15 setObject:v12 forKey:v13];
+      sharedImageCache = [objc_opt_class() sharedImageCache];
+      [sharedImageCache setObject:v12 forKey:v13];
     }
 
     else
     {
-      v15 = sub_10008C23C();
-      if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
+      sharedImageCache = sub_10008C23C();
+      if (os_log_type_enabled(sharedImageCache, OS_LOG_TYPE_INFO))
       {
-        v16 = [v10 name];
+        name = [categoryCopy name];
         *buf = 138412546;
-        v20 = v16;
+        v20 = name;
         v21 = 2112;
         v22 = v13;
-        _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "Failed to create image for category %@, key: %@", buf, 0x16u);
+        _os_log_impl(&_mh_execute_header, sharedImageCache, OS_LOG_TYPE_INFO, "Failed to create image for category %@, key: %@", buf, 0x16u);
       }
 
       v12 = 0;
@@ -365,88 +365,88 @@ LABEL_10:
   return v12;
 }
 
-- (void)imageForCategory:(id)a3 scale:(double)a4 traits:(id)a5 isCarplay:(BOOL)a6 isTouchBar:(BOOL)a7 resultHandler:(id)a8
+- (void)imageForCategory:(id)category scale:(double)scale traits:(id)traits isCarplay:(BOOL)carplay isTouchBar:(BOOL)bar resultHandler:(id)handler
 {
-  v9 = a6;
-  v13 = a3;
-  v14 = a5;
-  v15 = a8;
+  carplayCopy = carplay;
+  categoryCopy = category;
+  traitsCopy = traits;
+  handlerCopy = handler;
   v30 = 0;
-  v16 = [(BrowseImageManager *)self _cachedImageForCategory:v13 scale:v14 traits:v9 isCarplay:&v30 outputCategoryKey:a4];
+  v16 = [(BrowseImageManager *)self _cachedImageForCategory:categoryCopy scale:traitsCopy traits:carplayCopy isCarplay:&v30 outputCategoryKey:scale];
   v17 = v30;
   if (v16)
   {
-    if (v15)
+    if (handlerCopy)
     {
-      v15[2](v15, v16);
+      handlerCopy[2](handlerCopy, v16);
     }
   }
 
   else
   {
-    v18 = [(BrowseImageManager *)self _isNightMode];
+    _isNightMode = [(BrowseImageManager *)self _isNightMode];
     objc_initWeak(&location, self);
     v21[0] = _NSConcreteStackBlock;
     v21[1] = 3221225472;
     v21[2] = sub_100B2EADC;
     v21[3] = &unk_101638878;
     objc_copyWeak(v26, &location);
-    v22 = v13;
-    v26[1] = *&a4;
-    v23 = v14;
-    v27 = v9;
-    v28 = v18;
+    v22 = categoryCopy;
+    v26[1] = *&scale;
+    v23 = traitsCopy;
+    v27 = carplayCopy;
+    v28 = _isNightMode;
     v24 = v17;
-    v25 = v15;
+    v25 = handlerCopy;
     v19 = [NSBlockOperation blockOperationWithBlock:v21];
-    v20 = [(BrowseImageManager *)self imageOperationQueue];
-    [v20 addOperation:v19];
+    imageOperationQueue = [(BrowseImageManager *)self imageOperationQueue];
+    [imageOperationQueue addOperation:v19];
 
     objc_destroyWeak(v26);
     objc_destroyWeak(&location);
   }
 }
 
-- (void)imageForCategory:(id)a3 resultHandler:(id)a4
+- (void)imageForCategory:(id)category resultHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(BrowseImageManager *)self browseManager];
-  v8 = [v9 traits];
-  [(BrowseImageManager *)self imageForCategory:v7 traits:v8 resultHandler:v6];
+  handlerCopy = handler;
+  categoryCopy = category;
+  browseManager = [(BrowseImageManager *)self browseManager];
+  traits = [browseManager traits];
+  [(BrowseImageManager *)self imageForCategory:categoryCopy traits:traits resultHandler:handlerCopy];
 }
 
-- (void)maskedImage:(id)a3 inRect:(CGRect)a4 withColor:(CGColor *)a5 inContext:(CGContext *)a6
+- (void)maskedImage:(id)image inRect:(CGRect)rect withColor:(CGColor *)color inContext:(CGContext *)context
 {
-  if (a5 && a3 && a6)
+  if (color && image && context)
   {
-    height = a4.size.height;
-    width = a4.size.width;
-    y = a4.origin.y;
-    x = a4.origin.x;
-    v12 = a3;
+    height = rect.size.height;
+    width = rect.size.width;
+    y = rect.origin.y;
+    x = rect.origin.x;
+    imageCopy = image;
     v13 = +[UIColor clearColor];
-    CGContextSetFillColorWithColor(a6, [v13 CGColor]);
+    CGContextSetFillColorWithColor(context, [v13 CGColor]);
 
     v20.origin.x = x;
     v20.origin.y = y;
     v20.size.width = width;
     v20.size.height = height;
-    CGContextFillRect(a6, v20);
-    v14 = [v12 CGImage];
+    CGContextFillRect(context, v20);
+    cGImage = [imageCopy CGImage];
 
     v21.origin.x = x;
     v21.origin.y = y;
     v21.size.width = width;
     v21.size.height = height;
-    CGContextClipToMask(a6, v21, v14);
-    CGContextSetFillColorWithColor(a6, a5);
+    CGContextClipToMask(context, v21, cGImage);
+    CGContextSetFillColorWithColor(context, color);
     v15 = x;
     v16 = y;
     v17 = width;
     v18 = height;
 
-    CGContextFillRect(a6, *&v15);
+    CGContextFillRect(context, *&v15);
   }
 }
 

@@ -1,16 +1,16 @@
 @interface DNDSWorkoutTriggerManager
 - (BOOL)_isWorkoutDNDMigrated;
 - (BOOL)_isWorkoutDNDNanoPreferenceEnabled;
-- (BOOL)_isWorkoutTriggerEnabledForModeConfiguration:(id)a3;
+- (BOOL)_isWorkoutTriggerEnabledForModeConfiguration:(id)configuration;
 - (DNDSWorkoutTriggerManager)init;
 - (DNDSWorkoutTriggerManagerDataSource)dataSource;
 - (id)_accessor;
-- (id)_assertionIdentifierForHealthKitWorkoutEvent:(id)a3;
-- (void)_configureWorkoutTriggerWithMode:(id)a3;
+- (id)_assertionIdentifierForHealthKitWorkoutEvent:(id)event;
+- (void)_configureWorkoutTriggerWithMode:(id)mode;
 - (void)_migrateWorkoutDNDNanoPreference;
 - (void)_refresh;
 - (void)_refreshMigratingIfNecessary;
-- (void)_refreshWithMode:(id)a3 event:(id)a4;
+- (void)_refreshWithMode:(id)mode event:(id)event;
 - (void)_setWorkoutDNDIsMigrated;
 - (void)pairedDeviceDidChange;
 - (void)refresh;
@@ -30,9 +30,9 @@
     biomeQueue = v2->_biomeQueue;
     v2->_biomeQueue = v3;
 
-    v5 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     sinks = v2->_sinks;
-    v2->_sinks = v5;
+    v2->_sinks = dictionary;
 
     v2->_lock._os_unfair_lock_opaque = 0;
     v7 = objc_alloc_init(MEMORY[0x277D2BA60]);
@@ -86,21 +86,21 @@
 
   if ([(DNDSWorkoutTriggerManager *)self _isWorkoutTriggerEnabledForModeConfiguration:v4])
   {
-    v5 = [v4 mode];
+    mode = [v4 mode];
   }
 
   else
   {
-    v5 = 0;
+    mode = 0;
   }
 
-  [(DNDSWorkoutTriggerManager *)self _configureWorkoutTriggerWithMode:v5];
-  [(DNDSWorkoutTriggerManager *)self _refreshWithMode:v5 event:0];
+  [(DNDSWorkoutTriggerManager *)self _configureWorkoutTriggerWithMode:mode];
+  [(DNDSWorkoutTriggerManager *)self _refreshWithMode:mode event:0];
   v6 = DNDSLogWorkoutTrigger;
   if (os_log_type_enabled(DNDSLogWorkoutTrigger, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138543362;
-    v9 = v5;
+    v9 = mode;
     _os_log_impl(&dword_24912E000, v6, OS_LOG_TYPE_DEFAULT, "Refresh workout trigger for system: mode=%{public}@", &v8, 0xCu);
   }
 
@@ -135,63 +135,63 @@ void __50__DNDSWorkoutTriggerManager_pairedDeviceDidChange__block_invoke(uint64_
   }
 }
 
-- (void)_refreshWithMode:(id)a3 event:(id)a4
+- (void)_refreshWithMode:(id)mode event:(id)event
 {
   v72 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
-  v8 = [(DNDSWorkoutTriggerManager *)self dataSource];
-  v9 = [v7 modeIdentifier];
+  eventCopy = event;
+  modeCopy = mode;
+  dataSource = [(DNDSWorkoutTriggerManager *)self dataSource];
+  modeIdentifier = [modeCopy modeIdentifier];
 
   v67 = 0;
-  v10 = [v8 triggerManager:self assertionsWithClientIdentifer:@"com.apple.donotdisturb.private.workout-trigger" error:&v67];
+  v10 = [dataSource triggerManager:self assertionsWithClientIdentifer:@"com.apple.donotdisturb.private.workout-trigger" error:&v67];
   v11 = v67;
-  if (v6)
+  if (eventCopy)
   {
-    if (v9)
+    if (modeIdentifier)
     {
-      v12 = [v6 eventBody];
-      v13 = [v12 eventType];
+      eventBody = [eventCopy eventBody];
+      eventType = [eventBody eventType];
 
-      v59 = [(DNDSWorkoutTriggerManager *)self _assertionIdentifierForHealthKitWorkoutEvent:v6];
-      v14 = [v10 firstObject];
-      v15 = [v14 details];
-      v16 = [v15 identifier];
+      v59 = [(DNDSWorkoutTriggerManager *)self _assertionIdentifierForHealthKitWorkoutEvent:eventCopy];
+      firstObject = [v10 firstObject];
+      details = [firstObject details];
+      identifier = [details identifier];
 
-      if (v13 == 1)
+      if (eventType == 1)
       {
         if ([v10 count])
         {
           v18 = v59;
-          v17 = v16;
-          if ([v59 isEqualToString:v16])
+          v17 = identifier;
+          if ([v59 isEqualToString:identifier])
           {
             v62[0] = MEMORY[0x277D85DD0];
             v62[1] = 3221225472;
             v62[2] = __52__DNDSWorkoutTriggerManager__refreshWithMode_event___block_invoke;
             v62[3] = &unk_278F8A0B0;
-            v63 = v9;
+            v63 = modeIdentifier;
             v37 = [v10 bs_filter:v62];
-            v38 = [v37 firstObject];
+            firstObject2 = [v37 firstObject];
 
-            if (v38)
+            if (firstObject2)
             {
-              v39 = [v38 UUID];
+              uUID = [firstObject2 UUID];
               v61 = v11;
-              v40 = [v8 triggerManager:self invalidateModeAssertionWithUUID:v39 reason:2 reasonOverride:0 clientIdentifier:@"com.apple.donotdisturb.private.workout-trigger" error:&v61];
+              v40 = [dataSource triggerManager:self invalidateModeAssertionWithUUID:uUID reason:2 reasonOverride:0 clientIdentifier:@"com.apple.donotdisturb.private.workout-trigger" error:&v61];
               v21 = v61;
 
               v41 = DNDSLogWorkoutTrigger;
               if (os_log_type_enabled(DNDSLogWorkoutTrigger, OS_LOG_TYPE_DEFAULT))
               {
                 v42 = v41;
-                v43 = [v38 details];
-                v44 = [v43 modeIdentifier];
+                details2 = [firstObject2 details];
+                modeIdentifier2 = [details2 modeIdentifier];
                 *buf = 138543362;
-                v69 = v44;
+                v69 = modeIdentifier2;
                 _os_log_impl(&dword_24912E000, v42, OS_LOG_TYPE_DEFAULT, "Invalidating active assertion workout trigger in response to event; previousModeID=%{public}@", buf, 0xCu);
 
-                v17 = v16;
+                v17 = identifier;
               }
             }
 
@@ -214,11 +214,11 @@ LABEL_31:
         }
       }
 
-      else if (!v13)
+      else if (!eventType)
       {
-        v17 = v16;
+        v17 = identifier;
         v18 = v59;
-        if ([v10 count] && (objc_msgSend(v59, "isEqualToString:", v16) & 1) != 0)
+        if ([v10 count] && (objc_msgSend(v59, "isEqualToString:", identifier) & 1) != 0)
         {
           goto LABEL_31;
         }
@@ -226,45 +226,45 @@ LABEL_31:
         v19 = objc_alloc_init(MEMORY[0x277D05A40]);
         [v19 setIdentifier:v59];
         [v19 setLifetime:0];
-        [v19 setModeIdentifier:v9];
+        [v19 setModeIdentifier:modeIdentifier];
         [v19 setReason:1];
         v64 = v11;
-        v20 = [v8 triggerManager:self takeModeAssertionWithDetails:v19 clientIdentifier:@"com.apple.donotdisturb.private.workout-trigger" error:&v64];
+        v20 = [dataSource triggerManager:self takeModeAssertionWithDetails:v19 clientIdentifier:@"com.apple.donotdisturb.private.workout-trigger" error:&v64];
         v21 = v64;
 
         v22 = DNDSLogWorkoutTrigger;
         if (os_log_type_enabled(DNDSLogWorkoutTrigger, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543362;
-          v69 = v9;
+          v69 = modeIdentifier;
           _os_log_impl(&dword_24912E000, v22, OS_LOG_TYPE_DEFAULT, "Acquiring assertion for workout trigger in response to event; modeID=%{public}@", buf, 0xCu);
         }
 
         goto LABEL_30;
       }
 
-      v17 = v16;
+      v17 = identifier;
       v18 = v59;
       goto LABEL_31;
     }
 
     if ([v10 count])
     {
-      v29 = [v10 firstObject];
-      v30 = [v29 UUID];
+      firstObject3 = [v10 firstObject];
+      uUID2 = [firstObject3 UUID];
       v60 = v11;
-      v31 = [v8 triggerManager:self invalidateModeAssertionWithUUID:v30 reason:3 reasonOverride:0 clientIdentifier:@"com.apple.donotdisturb.private.workout-trigger" error:&v60];
+      v31 = [dataSource triggerManager:self invalidateModeAssertionWithUUID:uUID2 reason:3 reasonOverride:0 clientIdentifier:@"com.apple.donotdisturb.private.workout-trigger" error:&v60];
       v28 = v60;
 
       v32 = DNDSLogWorkoutTrigger;
       if (os_log_type_enabled(DNDSLogWorkoutTrigger, OS_LOG_TYPE_DEFAULT))
       {
         v33 = v32;
-        v34 = [v10 firstObject];
-        v35 = [v34 details];
-        v36 = [v35 modeIdentifier];
+        firstObject4 = [v10 firstObject];
+        details3 = [firstObject4 details];
+        modeIdentifier3 = [details3 modeIdentifier];
         *buf = 138543362;
-        v69 = v36;
+        v69 = modeIdentifier3;
         _os_log_impl(&dword_24912E000, v33, OS_LOG_TYPE_DEFAULT, "Invalidating active assertion no mode identifer for workout trigger in response to event; previousModeID=%{public}@", buf, 0xCu);
       }
 
@@ -281,13 +281,13 @@ LABEL_32:
     goto LABEL_32;
   }
 
-  v23 = [v10 firstObject];
-  v24 = v23;
-  if (v9)
+  firstObject5 = [v10 firstObject];
+  v24 = firstObject5;
+  if (modeIdentifier)
   {
-    v25 = [v23 details];
-    v26 = [v25 modeIdentifier];
-    v27 = [v9 isEqualToString:v26];
+    details4 = [firstObject5 details];
+    modeIdentifier4 = [details4 modeIdentifier];
+    v27 = [modeIdentifier isEqualToString:modeIdentifier4];
 
     if (v27)
     {
@@ -296,24 +296,24 @@ LABEL_32:
 
     else
     {
-      v51 = [v24 details];
-      v52 = [v51 mutableCopy];
+      details5 = [v24 details];
+      v52 = [details5 mutableCopy];
 
-      [v52 setModeIdentifier:v9];
+      [v52 setModeIdentifier:modeIdentifier];
       v65 = v11;
-      v53 = [v8 triggerManager:self takeModeAssertionWithDetails:v52 clientIdentifier:@"com.apple.donotdisturb.private.workout-trigger" error:&v65];
+      v53 = [dataSource triggerManager:self takeModeAssertionWithDetails:v52 clientIdentifier:@"com.apple.donotdisturb.private.workout-trigger" error:&v65];
       v28 = v65;
 
       v54 = DNDSLogWorkoutTrigger;
       if (os_log_type_enabled(DNDSLogWorkoutTrigger, OS_LOG_TYPE_DEFAULT))
       {
         v55 = v54;
-        v56 = [v24 details];
-        v57 = [v56 modeIdentifier];
+        details6 = [v24 details];
+        modeIdentifier5 = [details6 modeIdentifier];
         *buf = 138543618;
-        v69 = v9;
+        v69 = modeIdentifier;
         v70 = 2114;
-        v71 = v57;
+        v71 = modeIdentifier5;
         _os_log_impl(&dword_24912E000, v55, OS_LOG_TYPE_DEFAULT, "Updating active assertion to new mode identifer for workout trigger; modeID=%{public}@ previousModeID=%{public}@", buf, 0x16u);
       }
     }
@@ -321,19 +321,19 @@ LABEL_32:
 
   else
   {
-    v45 = [v23 UUID];
+    uUID3 = [firstObject5 UUID];
     v66 = v11;
-    v46 = [v8 triggerManager:self invalidateModeAssertionWithUUID:v45 reason:2 reasonOverride:0 clientIdentifier:@"com.apple.donotdisturb.private.workout-trigger" error:&v66];
+    v46 = [dataSource triggerManager:self invalidateModeAssertionWithUUID:uUID3 reason:2 reasonOverride:0 clientIdentifier:@"com.apple.donotdisturb.private.workout-trigger" error:&v66];
     v28 = v66;
 
     v47 = DNDSLogWorkoutTrigger;
     if (os_log_type_enabled(DNDSLogWorkoutTrigger, OS_LOG_TYPE_DEFAULT))
     {
       v48 = v47;
-      v49 = [v24 details];
-      v50 = [v49 modeIdentifier];
+      details7 = [v24 details];
+      modeIdentifier6 = [details7 modeIdentifier];
       *buf = 138543362;
-      v69 = v50;
+      v69 = modeIdentifier6;
       _os_log_impl(&dword_24912E000, v48, OS_LOG_TYPE_DEFAULT, "Invalidating active assertion no mode identifer for workout trigger; previousModeID=%{public}@", buf, 0xCu);
     }
   }
@@ -351,26 +351,26 @@ uint64_t __52__DNDSWorkoutTriggerManager__refreshWithMode_event___block_invoke(u
   return v5;
 }
 
-- (id)_assertionIdentifierForHealthKitWorkoutEvent:(id)a3
+- (id)_assertionIdentifierForHealthKitWorkoutEvent:(id)event
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [a3 eventBody];
-  v5 = [v4 activityUUID];
-  v6 = [v3 stringWithFormat:@"%@.%@", @"com.apple.donotdisturb.trigger.workout", v5];
+  eventBody = [event eventBody];
+  activityUUID = [eventBody activityUUID];
+  v6 = [v3 stringWithFormat:@"%@.%@", @"com.apple.donotdisturb.trigger.workout", activityUUID];
 
   return v6;
 }
 
-- (void)_configureWorkoutTriggerWithMode:(id)a3
+- (void)_configureWorkoutTriggerWithMode:(id)mode
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  modeCopy = mode;
   os_unfair_lock_lock(&self->_lock);
   v5 = [(NSMutableDictionary *)self->_sinks objectForKeyedSubscript:@"system"];
   v6 = v5;
-  if (!v4 || v5)
+  if (!modeCopy || v5)
   {
-    if (!v4 && v5)
+    if (!modeCopy && v5)
     {
       [v5 cancel];
       [(NSMutableDictionary *)self->_sinks removeObjectForKey:@"system"];
@@ -383,23 +383,23 @@ uint64_t __52__DNDSWorkoutTriggerManager__refreshWithMode_event___block_invoke(u
     if (os_log_type_enabled(DNDSLogWorkoutTrigger, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v20 = v4;
+      v20 = modeCopy;
       _os_log_impl(&dword_24912E000, v7, OS_LOG_TYPE_DEFAULT, "Adding biome workout event monitor; mode=%{public}@", buf, 0xCu);
     }
 
     v8 = [objc_alloc(MEMORY[0x277CF1918]) initWithIdentifier:@"com.apple.donotdisturb.workoutTrigger" targetQueue:self->_biomeQueue];
-    v9 = [MEMORY[0x277CF1B58] healthKitWorkoutStream];
-    v10 = [v9 publisher];
-    v11 = [v10 subscribeOn:v8];
+    healthKitWorkoutStream = [MEMORY[0x277CF1B58] healthKitWorkoutStream];
+    publisher = [healthKitWorkoutStream publisher];
+    v11 = [publisher subscribeOn:v8];
     v13 = MEMORY[0x277D85DD0];
     v14 = 3221225472;
     v15 = __62__DNDSWorkoutTriggerManager__configureWorkoutTriggerWithMode___block_invoke_35;
     v16 = &unk_278F8AC30;
-    v17 = self;
-    v18 = v4;
+    selfCopy = self;
+    v18 = modeCopy;
     v6 = [v11 sinkWithCompletion:&__block_literal_global_14 receiveInput:&v13];
 
-    [(NSMutableDictionary *)self->_sinks setObject:v6 forKeyedSubscript:@"system", v13, v14, v15, v16, v17];
+    [(NSMutableDictionary *)self->_sinks setObject:v6 forKeyedSubscript:@"system", v13, v14, v15, v16, selfCopy];
   }
 
   os_unfair_lock_unlock(&self->_lock);
@@ -467,15 +467,15 @@ void __62__DNDSWorkoutTriggerManager__configureWorkoutTriggerWithMode___block_in
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_isWorkoutTriggerEnabledForModeConfiguration:(id)a3
+- (BOOL)_isWorkoutTriggerEnabledForModeConfiguration:(id)configuration
 {
   v16 = *MEMORY[0x277D85DE8];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [a3 triggers];
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  triggers = [configuration triggers];
+  v4 = [triggers countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = *v12;
@@ -485,7 +485,7 @@ void __62__DNDSWorkoutTriggerManager__configureWorkoutTriggerWithMode___block_in
       {
         if (*v12 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(triggers);
         }
 
         v7 = *(*(&v11 + 1) + 8 * i);
@@ -497,7 +497,7 @@ void __62__DNDSWorkoutTriggerManager__configureWorkoutTriggerWithMode___block_in
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v4 = [triggers countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v4)
       {
         continue;
@@ -509,22 +509,22 @@ void __62__DNDSWorkoutTriggerManager__configureWorkoutTriggerWithMode___block_in
 
 LABEL_11:
 
-  v8 = [v4 isEnabled];
+  isEnabled = [v4 isEnabled];
   v9 = *MEMORY[0x277D85DE8];
-  return v8;
+  return isEnabled;
 }
 
 - (void)_migrateWorkoutDNDNanoPreference
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = [(DNDSWorkoutTriggerManager *)self _accessor];
+  _accessor = [(DNDSWorkoutTriggerManager *)self _accessor];
 
-  if (v3 && ![(DNDSWorkoutTriggerManager *)self _isWorkoutDNDMigrated])
+  if (_accessor && ![(DNDSWorkoutTriggerManager *)self _isWorkoutDNDMigrated])
   {
     WeakRetained = objc_loadWeakRetained(&self->_dataSource);
     v5 = [WeakRetained workoutModeForWorkoutTriggerManager:self];
-    v6 = [(DNDSWorkoutTriggerManager *)self _isWorkoutDNDNanoPreferenceEnabled];
-    if (!v5 && v6)
+    _isWorkoutDNDNanoPreferenceEnabled = [(DNDSWorkoutTriggerManager *)self _isWorkoutDNDNanoPreferenceEnabled];
+    if (!v5 && _isWorkoutDNDNanoPreferenceEnabled)
     {
       v7 = DNDSLogWorkoutTrigger;
       if (os_log_type_enabled(DNDSLogWorkoutTrigger, OS_LOG_TYPE_DEFAULT))
@@ -538,9 +538,9 @@ LABEL_11:
       if (os_log_type_enabled(DNDSLogWorkoutTrigger, OS_LOG_TYPE_DEFAULT))
       {
         v9 = v8;
-        v10 = [v5 mode];
+        mode = [v5 mode];
         v12 = 138543362;
-        v13 = v10;
+        v13 = mode;
         _os_log_impl(&dword_24912E000, v9, OS_LOG_TYPE_DEFAULT, "Created mode for workout trigger: mode=%{public}@", &v12, 0xCu);
       }
     }
@@ -557,14 +557,14 @@ LABEL_11:
   accessor = self->_accessor;
   if (!accessor)
   {
-    v4 = [MEMORY[0x277D058F8] currentDevice];
-    if ([v4 deviceClass] == 1 || objc_msgSend(v4, "deviceClass") == 5)
+    currentDevice = [MEMORY[0x277D058F8] currentDevice];
+    if ([currentDevice deviceClass] == 1 || objc_msgSend(currentDevice, "deviceClass") == 5)
     {
       v5 = [objc_alloc(MEMORY[0x277D2BA58]) initWithDomain:@"com.apple.nano"];
       v6 = self->_accessor;
       self->_accessor = v5;
 
-      v7 = [(NPSDomainAccessor *)self->_accessor synchronize];
+      synchronize = [(NPSDomainAccessor *)self->_accessor synchronize];
     }
 
     accessor = self->_accessor;
@@ -575,9 +575,9 @@ LABEL_11:
 
 - (BOOL)_isWorkoutDNDMigrated
 {
-  v2 = [(DNDSWorkoutTriggerManager *)self _accessor];
+  _accessor = [(DNDSWorkoutTriggerManager *)self _accessor];
   v6 = 0;
-  v3 = [v2 BOOLForKey:@"workoutDNDMigrated" keyExistsAndHasValidFormat:&v6];
+  v3 = [_accessor BOOLForKey:@"workoutDNDMigrated" keyExistsAndHasValidFormat:&v6];
   v4 = v6 & v3;
 
   return v4 & 1;
@@ -585,15 +585,15 @@ LABEL_11:
 
 - (void)_setWorkoutDNDIsMigrated
 {
-  v2 = [(DNDSWorkoutTriggerManager *)self _accessor];
-  [v2 setBool:1 forKey:@"workoutDNDMigrated"];
+  _accessor = [(DNDSWorkoutTriggerManager *)self _accessor];
+  [_accessor setBool:1 forKey:@"workoutDNDMigrated"];
 }
 
 - (BOOL)_isWorkoutDNDNanoPreferenceEnabled
 {
-  v2 = [(DNDSWorkoutTriggerManager *)self _accessor];
+  _accessor = [(DNDSWorkoutTriggerManager *)self _accessor];
   v6 = 0;
-  v3 = [v2 BOOLForKey:@"workoutDND" keyExistsAndHasValidFormat:&v6];
+  v3 = [_accessor BOOLForKey:@"workoutDND" keyExistsAndHasValidFormat:&v6];
   v4 = v6 & v3;
 
   return v4 & 1;

@@ -1,20 +1,20 @@
 @interface PBBProtoCompanionTermsResponse
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasTermsAccepted:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasTermsAccepted:(BOOL)accepted;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PBBProtoCompanionTermsResponse
 
-- (void)setHasTermsAccepted:(BOOL)a3
+- (void)setHasTermsAccepted:(BOOL)accepted
 {
-  if (a3)
+  if (accepted)
   {
     v3 = 2;
   }
@@ -33,105 +33,105 @@
   v8.receiver = self;
   v8.super_class = PBBProtoCompanionTermsResponse;
   v4 = [(PBBProtoCompanionTermsResponse *)&v8 description];
-  v5 = [(PBBProtoCompanionTermsResponse *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(PBBProtoCompanionTermsResponse *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if ((*&self->_has & 2) != 0)
   {
     v4 = [MEMORY[0x277CCABB0] numberWithBool:self->_termsAccepted];
-    [v3 setObject:v4 forKey:@"termsAccepted"];
+    [dictionary setObject:v4 forKey:@"termsAccepted"];
   }
 
   userAgent = self->_userAgent;
   if (userAgent)
   {
-    [v3 setObject:userAgent forKey:@"userAgent"];
+    [dictionary setObject:userAgent forKey:@"userAgent"];
   }
 
   if (*&self->_has)
   {
     v6 = [MEMORY[0x277CCABB0] numberWithBool:self->_isExistingAccountTerms];
-    [v3 setObject:v6 forKey:@"isExistingAccountTerms"];
+    [dictionary setObject:v6 forKey:@"isExistingAccountTerms"];
   }
 
   responseData = self->_responseData;
   if (responseData)
   {
-    [v3 setObject:responseData forKey:@"responseData"];
+    [dictionary setObject:responseData forKey:@"responseData"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v7 = v4;
+  toCopy = to;
+  v7 = toCopy;
   if ((*&self->_has & 2) != 0)
   {
     termsAccepted = self->_termsAccepted;
     PBDataWriterWriteBOOLField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_userAgent)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (*&self->_has)
   {
     isExistingAccountTerms = self->_isExistingAccountTerms;
     PBDataWriterWriteBOOLField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_responseData)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 2) != 0)
   {
-    v4[25] = self->_termsAccepted;
-    v4[28] |= 2u;
+    toCopy[25] = self->_termsAccepted;
+    toCopy[28] |= 2u;
   }
 
-  v5 = v4;
+  v5 = toCopy;
   if (self->_userAgent)
   {
-    [v4 setUserAgent:?];
-    v4 = v5;
+    [toCopy setUserAgent:?];
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    v4[24] = self->_isExistingAccountTerms;
-    v4[28] |= 1u;
+    toCopy[24] = self->_isExistingAccountTerms;
+    toCopy[28] |= 1u;
   }
 
   if (self->_responseData)
   {
     [v5 setResponseData:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if ((*&self->_has & 2) != 0)
   {
@@ -139,7 +139,7 @@
     *(v5 + 28) |= 2u;
   }
 
-  v7 = [(NSString *)self->_userAgent copyWithZone:a3];
+  v7 = [(NSString *)self->_userAgent copyWithZone:zone];
   v8 = *(v6 + 16);
   *(v6 + 16) = v7;
 
@@ -149,52 +149,52 @@
     *(v6 + 28) |= 1u;
   }
 
-  v9 = [(NSString *)self->_responseData copyWithZone:a3];
+  v9 = [(NSString *)self->_responseData copyWithZone:zone];
   v10 = *(v6 + 8);
   *(v6 + 8) = v9;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_23;
   }
 
   has = self->_has;
-  v6 = *(v4 + 28);
+  v6 = *(equalCopy + 28);
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 28) & 2) == 0)
+    if ((*(equalCopy + 28) & 2) == 0)
     {
       goto LABEL_23;
     }
 
-    v11 = *(v4 + 25);
+    v11 = *(equalCopy + 25);
     if (self->_termsAccepted)
     {
-      if ((*(v4 + 25) & 1) == 0)
+      if ((*(equalCopy + 25) & 1) == 0)
       {
         goto LABEL_23;
       }
     }
 
-    else if (*(v4 + 25))
+    else if (*(equalCopy + 25))
     {
       goto LABEL_23;
     }
   }
 
-  else if ((*(v4 + 28) & 2) != 0)
+  else if ((*(equalCopy + 28) & 2) != 0)
   {
     goto LABEL_23;
   }
 
   userAgent = self->_userAgent;
-  if (userAgent | *(v4 + 2))
+  if (userAgent | *(equalCopy + 2))
   {
     if (![(NSString *)userAgent isEqual:?])
     {
@@ -204,10 +204,10 @@
     has = self->_has;
   }
 
-  v8 = *(v4 + 28);
+  v8 = *(equalCopy + 28);
   if ((has & 1) == 0)
   {
-    if ((*(v4 + 28) & 1) == 0)
+    if ((*(equalCopy + 28) & 1) == 0)
     {
       goto LABEL_9;
     }
@@ -217,28 +217,28 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  if ((*(v4 + 28) & 1) == 0)
+  if ((*(equalCopy + 28) & 1) == 0)
   {
     goto LABEL_23;
   }
 
-  v12 = *(v4 + 24);
+  v12 = *(equalCopy + 24);
   if (self->_isExistingAccountTerms)
   {
-    if ((*(v4 + 24) & 1) == 0)
+    if ((*(equalCopy + 24) & 1) == 0)
     {
       goto LABEL_23;
     }
   }
 
-  else if (*(v4 + 24))
+  else if (*(equalCopy + 24))
   {
     goto LABEL_23;
   }
 
 LABEL_9:
   responseData = self->_responseData;
-  if (responseData | *(v4 + 1))
+  if (responseData | *(equalCopy + 1))
   {
     v10 = [(NSString *)responseData isEqual:?];
   }
@@ -279,32 +279,32 @@ LABEL_24:
   return v4 ^ v3 ^ v5 ^ [(NSString *)self->_responseData hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if ((v4[28] & 2) != 0)
+  fromCopy = from;
+  if ((fromCopy[28] & 2) != 0)
   {
-    self->_termsAccepted = v4[25];
+    self->_termsAccepted = fromCopy[25];
     *&self->_has |= 2u;
   }
 
-  v5 = v4;
-  if (*(v4 + 2))
+  v5 = fromCopy;
+  if (*(fromCopy + 2))
   {
     [(PBBProtoCompanionTermsResponse *)self setUserAgent:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[28])
+  if (fromCopy[28])
   {
-    self->_isExistingAccountTerms = v4[24];
+    self->_isExistingAccountTerms = fromCopy[24];
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(PBBProtoCompanionTermsResponse *)self setResponseData:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 

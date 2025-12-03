@@ -1,16 +1,16 @@
 @interface HDSQLiteDatabaseIndexSchema
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 @end
 
 @implementation HDSQLiteDatabaseIndexSchema
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   columns = self->_columns;
-  v6 = v4[3];
-  v7 = (columns == v6 || v6 && [(NSArray *)columns isEqual:?]) && self->_isUnique == *(v4 + 8);
+  v6 = equalCopy[3];
+  v7 = (columns == v6 || v6 && [(NSArray *)columns isEqual:?]) && self->_isUnique == *(equalCopy + 8);
 
   return v7;
 }

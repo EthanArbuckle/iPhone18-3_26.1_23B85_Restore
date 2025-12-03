@@ -16,8 +16,8 @@
 - (CGVector)direction;
 - (NSArray)items;
 - (UIFieldBehavior)init;
-- (id)_initWithField:(id)a3;
-- (void)_addFieldItem:(id)a3;
+- (id)_initWithField:(id)field;
+- (void)_addFieldItem:(id)item;
 - (void)_associate;
 - (void)_changedParameter;
 - (void)_dissociate;
@@ -25,7 +25,7 @@
 - (void)removeItem:(id)item;
 - (void)setAnimationSpeed:(CGFloat)animationSpeed;
 - (void)setDirection:(CGVector)direction;
-- (void)setEnabled:(BOOL)a3;
+- (void)setEnabled:(BOOL)enabled;
 - (void)setFalloff:(CGFloat)falloff;
 - (void)setMinimumRadius:(CGFloat)minimumRadius;
 - (void)setPosition:(CGPoint)position;
@@ -38,18 +38,18 @@
 
 + (UIFieldBehavior)dragField
 {
-  v2 = [a1 alloc];
-  v3 = [MEMORY[0x1E69C49E0] field];
-  v4 = [v2 _initWithField:v3];
+  v2 = [self alloc];
+  field = [MEMORY[0x1E69C49E0] field];
+  v4 = [v2 _initWithField:field];
 
   return v4;
 }
 
 + (UIFieldBehavior)vortexField
 {
-  v2 = [a1 alloc];
-  v3 = [MEMORY[0x1E69C4A28] field];
-  v4 = [v2 _initWithField:v3];
+  v2 = [self alloc];
+  field = [MEMORY[0x1E69C4A28] field];
+  v4 = [v2 _initWithField:field];
 
   return v4;
 }
@@ -58,9 +58,9 @@
 {
   y = position.y;
   x = position.x;
-  v5 = [a1 alloc];
-  v6 = [MEMORY[0x1E69C4A08] field];
-  v7 = [v5 _initWithField:v6];
+  v5 = [self alloc];
+  field = [MEMORY[0x1E69C4A08] field];
+  v7 = [v5 _initWithField:field];
 
   [v7 setPosition:{x, y}];
 
@@ -71,9 +71,9 @@
 {
   dy = direction.dy;
   dx = direction.dx;
-  v5 = [a1 alloc];
-  v6 = [MEMORY[0x1E69C49F0] field];
-  v7 = [v5 _initWithField:v6];
+  v5 = [self alloc];
+  field = [MEMORY[0x1E69C49F0] field];
+  v7 = [v5 _initWithField:field];
 
   [v7 setDirection:{dx, dy}];
 
@@ -84,7 +84,7 @@
 {
   dy = direction.dy;
   dx = direction.dx;
-  v5 = [a1 alloc];
+  v5 = [self alloc];
   v6 = [MEMORY[0x1E69C4A20] fieldWithGrid:0];
   v7 = [v5 _initWithField:v6];
 
@@ -95,9 +95,9 @@
 
 + (UIFieldBehavior)noiseFieldWithSmoothness:(CGFloat)smoothness animationSpeed:(CGFloat)speed
 {
-  v6 = [a1 alloc];
-  v7 = [MEMORY[0x1E69C4A00] field];
-  v8 = [v6 _initWithField:v7];
+  v6 = [self alloc];
+  field = [MEMORY[0x1E69C4A00] field];
+  v8 = [v6 _initWithField:field];
 
   v8[56] |= 1u;
   [v8 setSmoothness:smoothness];
@@ -108,9 +108,9 @@
 
 + (UIFieldBehavior)turbulenceFieldWithSmoothness:(CGFloat)smoothness animationSpeed:(CGFloat)speed
 {
-  v6 = [a1 alloc];
-  v7 = [MEMORY[0x1E69C4A18] field];
-  v8 = [v6 _initWithField:v7];
+  v6 = [self alloc];
+  field = [MEMORY[0x1E69C4A18] field];
+  v8 = [v6 _initWithField:field];
 
   v8[56] |= 1u;
   [v8 setSmoothness:smoothness];
@@ -121,27 +121,27 @@
 
 + (UIFieldBehavior)springField
 {
-  v2 = [a1 alloc];
-  v3 = [MEMORY[0x1E69C4A10] field];
-  v4 = [v2 _initWithField:v3];
+  v2 = [self alloc];
+  field = [MEMORY[0x1E69C4A10] field];
+  v4 = [v2 _initWithField:field];
 
   return v4;
 }
 
 + (UIFieldBehavior)electricField
 {
-  v2 = [a1 alloc];
-  v3 = [MEMORY[0x1E69C49E8] field];
-  v4 = [v2 _initWithField:v3];
+  v2 = [self alloc];
+  field = [MEMORY[0x1E69C49E8] field];
+  v4 = [v2 _initWithField:field];
 
   return v4;
 }
 
 + (UIFieldBehavior)magneticField
 {
-  v2 = [a1 alloc];
-  v3 = [MEMORY[0x1E69C49F8] field];
-  v4 = [v2 _initWithField:v3];
+  v2 = [self alloc];
+  field = [MEMORY[0x1E69C49F8] field];
+  v4 = [v2 _initWithField:field];
 
   return v4;
 }
@@ -151,8 +151,8 @@
   v5 = block;
   if (!v5)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:a1 file:@"UIFieldBehavior.mm" lineNumber:114 description:{@"Invalid parameter not satisfying: %@", @"block"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIFieldBehavior.mm" lineNumber:114 description:{@"Invalid parameter not satisfying: %@", @"block"}];
   }
 
   v16 = 0;
@@ -161,7 +161,7 @@
   v19 = __Block_byref_object_copy__72;
   v20 = __Block_byref_object_dispose__72;
   v21 = 0;
-  v6 = [a1 alloc];
+  v6 = [self alloc];
   v7 = MEMORY[0x1E69C49D8];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
@@ -212,13 +212,13 @@ void __44__UIFieldBehavior_fieldWithEvaluationBlock___block_invoke(uint64_t a1, 
   }
 }
 
-- (id)_initWithField:(id)a3
+- (id)_initWithField:(id)field
 {
-  v6 = a3;
-  if (!v6)
+  fieldCopy = field;
+  if (!fieldCopy)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"UIFieldBehavior.mm" lineNumber:139 description:{@"Invalid parameter not satisfying: %@", @"field"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIFieldBehavior.mm" lineNumber:139 description:{@"Invalid parameter not satisfying: %@", @"field"}];
   }
 
   v15.receiver = self;
@@ -228,8 +228,8 @@ void __44__UIFieldBehavior_fieldWithEvaluationBlock___block_invoke(uint64_t a1, 
   if (v7)
   {
     v9 = v7;
-    v10 = v6;
-    objc_storeStrong(v9 + 6, a3);
+    v10 = fieldCopy;
+    objc_storeStrong(v9 + 6, field);
     v11 = +[UIRegion infiniteRegion];
     [v9 setRegion:v11];
 
@@ -248,11 +248,11 @@ void __44__UIFieldBehavior_fieldWithEvaluationBlock___block_invoke(uint64_t a1, 
   return 0;
 }
 
-- (void)_addFieldItem:(id)a3
+- (void)_addFieldItem:(id)item
 {
-  v6 = a3;
-  v4 = [(UIDynamicBehavior *)self dynamicAnimator];
-  v5 = [v4 _registerBodyForItem:v6];
+  itemCopy = item;
+  dynamicAnimator = [(UIDynamicBehavior *)self dynamicAnimator];
+  v5 = [dynamicAnimator _registerBodyForItem:itemCopy];
 
   [v5 setUsesPreciseCollisionDetection:1];
   [v5 setResting:0];
@@ -262,15 +262,15 @@ void __44__UIFieldBehavior_fieldWithEvaluationBlock___block_invoke(uint64_t a1, 
 - (void)_changedParameter
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = [(UIDynamicBehavior *)self dynamicAnimator];
-  if (v3)
+  dynamicAnimator = [(UIDynamicBehavior *)self dynamicAnimator];
+  if (dynamicAnimator)
   {
     v11 = 0u;
     v12 = 0u;
     v9 = 0u;
     v10 = 0u;
-    v4 = [(UIFieldBehavior *)self items];
-    v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+    items = [(UIFieldBehavior *)self items];
+    v5 = [items countByEnumeratingWithState:&v9 objects:v13 count:16];
     if (v5)
     {
       v6 = *v10;
@@ -281,38 +281,38 @@ void __44__UIFieldBehavior_fieldWithEvaluationBlock___block_invoke(uint64_t a1, 
         {
           if (*v10 != v6)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(items);
           }
 
-          v8 = [v3 _bodyForItem:*(*(&v9 + 1) + 8 * v7)];
+          v8 = [dynamicAnimator _bodyForItem:*(*(&v9 + 1) + 8 * v7)];
           [v8 setResting:0];
 
           ++v7;
         }
 
         while (v5 != v7);
-        v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+        v5 = [items countByEnumeratingWithState:&v9 objects:v13 count:16];
       }
 
       while (v5);
     }
 
-    [v3 _tickle];
+    [dynamicAnimator _tickle];
   }
 }
 
 - (void)addItem:(id)item
 {
   v6 = item;
-  v4 = [(UIDynamicBehavior *)self _items];
-  if (([v4 containsObject:v6] & 1) == 0)
+  _items = [(UIDynamicBehavior *)self _items];
+  if (([_items containsObject:v6] & 1) == 0)
   {
     [(UIDynamicBehavior *)self _addItem:v6];
-    v5 = [(UIDynamicBehavior *)self dynamicAnimator];
-    if (v5)
+    dynamicAnimator = [(UIDynamicBehavior *)self dynamicAnimator];
+    if (dynamicAnimator)
     {
       [(UIFieldBehavior *)self _addFieldItem:v6];
-      [v5 _tickle];
+      [dynamicAnimator _tickle];
     }
   }
 }
@@ -320,17 +320,17 @@ void __44__UIFieldBehavior_fieldWithEvaluationBlock___block_invoke(uint64_t a1, 
 - (void)removeItem:(id)item
 {
   v4 = item;
-  v5 = [(UIDynamicBehavior *)self _items];
-  if ([v5 containsObject:v4])
+  _items = [(UIDynamicBehavior *)self _items];
+  if ([_items containsObject:v4])
   {
-    v6 = [(UIDynamicBehavior *)self dynamicAnimator];
+    dynamicAnimator = [(UIDynamicBehavior *)self dynamicAnimator];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __30__UIFieldBehavior_removeItem___block_invoke;
     v7[3] = &unk_1E7106C30;
     v7[4] = self;
-    [v6 _unregisterBodyForItem:v4 action:v7];
-    [v6 _tickle];
+    [dynamicAnimator _unregisterBodyForItem:v4 action:v7];
+    [dynamicAnimator _tickle];
     [(UIDynamicBehavior *)self _removeItem:v4];
   }
 }
@@ -345,8 +345,8 @@ void __30__UIFieldBehavior_removeItem___block_invoke(uint64_t a1, void *a2)
 - (NSArray)items
 {
   v2 = MEMORY[0x1E695DEC8];
-  v3 = [(UIDynamicBehavior *)self _items];
-  v4 = [v2 arrayWithArray:v3];
+  _items = [(UIDynamicBehavior *)self _items];
+  v4 = [v2 arrayWithArray:_items];
 
   return v4;
 }
@@ -379,8 +379,8 @@ void __30__UIFieldBehavior_removeItem___block_invoke(uint64_t a1, void *a2)
 {
   v6 = region;
   objc_storeStrong(&self->_region, region);
-  v5 = [(UIRegion *)v6 _region];
-  [(PKPhysicsField *)self->_field setRegion:v5];
+  _region = [(UIRegion *)v6 _region];
+  [(PKPhysicsField *)self->_field setRegion:_region];
 
   [(UIFieldBehavior *)self _changedParameter];
 }
@@ -409,9 +409,9 @@ void __30__UIFieldBehavior_removeItem___block_invoke(uint64_t a1, void *a2)
   [(UIFieldBehavior *)self _changedParameter];
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  [(PKPhysicsField *)self->_field setEnabled:a3];
+  [(PKPhysicsField *)self->_field setEnabled:enabled];
 
   [(UIFieldBehavior *)self _changedParameter];
 }
@@ -484,9 +484,9 @@ void __30__UIFieldBehavior_removeItem___block_invoke(uint64_t a1, void *a2)
 - (void)_associate
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = [(UIDynamicBehavior *)self dynamicAnimator];
-  v4 = [v3 _world];
-  [v4 addField:self->_field];
+  dynamicAnimator = [(UIDynamicBehavior *)self dynamicAnimator];
+  _world = [dynamicAnimator _world];
+  [_world addField:self->_field];
 
   [(UIDynamicBehavior *)self _items];
   v11 = 0u;
@@ -521,11 +521,11 @@ void __30__UIFieldBehavior_removeItem___block_invoke(uint64_t a1, void *a2)
 - (void)_dissociate
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [(UIDynamicBehavior *)self dynamicAnimator];
-  v4 = [v3 _world];
-  [v4 removeField:self->_field];
+  dynamicAnimator = [(UIDynamicBehavior *)self dynamicAnimator];
+  _world = [dynamicAnimator _world];
+  [_world removeField:self->_field];
 
-  v5 = [(PKPhysicsField *)self->_field categoryBitMask];
+  categoryBitMask = [(PKPhysicsField *)self->_field categoryBitMask];
   [(UIDynamicBehavior *)self _items];
   v15 = 0u;
   v16 = 0u;
@@ -550,8 +550,8 @@ void __30__UIFieldBehavior_removeItem___block_invoke(uint64_t a1, void *a2)
         v11[1] = 3221225472;
         v11[2] = __30__UIFieldBehavior__dissociate__block_invoke;
         v11[3] = &__block_descriptor_36_e31_v16__0__PKExtendedPhysicsBody_8l;
-        v12 = v5;
-        [v3 _unregisterBodyForItem:v10 action:v11];
+        v12 = categoryBitMask;
+        [dynamicAnimator _unregisterBodyForItem:v10 action:v11];
         ++v9;
       }
 
